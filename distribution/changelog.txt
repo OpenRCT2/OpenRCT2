@@ -1,4 +1,4 @@
-0.2.0-beta (2015-05-22)
+0.0.2-beta (2015-05-22)
 ------------------------------------------------------------------------
 - Feature: Allow both types of powered launch (with and without passing the station) for every roller coaster that supported one type in RCT2.
 - Feature: Localisation of decimal and thousands separators.
