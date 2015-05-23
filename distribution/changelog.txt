@@ -1,5 +1,18 @@
-0.2.0-beta (2015-02-06)
+0.0.2-beta (2015-05-22)
 ------------------------------------------------------------------------
+- Feature: Allow both types of powered launch (with and without passing the station) for every roller coaster that supported one type in RCT2.
+- Feature: Localisation of decimal and thousands separators.
+- Feature: Increase limits for maximum of circuits per roller coaster (20) and people on mazes (64) (up from the old limits of 7 and 16, respectively).
+- Feature: Game speed button on toolbar.
+- Feature: In-game console.
+- Feature: New title screen logo.
+- Feature: Cheat to disable all breakdowns.
+- Feature: Cheat to disable brakes failure.
+- Feature: Cheat to allow maximum operating settings and lift hill speeds (410 km/h).
+- Feature: Buy land and construction rights land tool window. (Currently only in-game).
+- Feature: Cheat to fix all rides.
+- Feature: Toggle RCT1 / RCT2 colour scheme.
+- Feature: Toggle between software and hardware video mode.
 - Feature: Toggle between window and fullscreen.
 - Feature: Resizable window mode.
 - Feature: Mountain tool available in play mode.
@@ -9,7 +22,7 @@
 - Feature: Extra viewport windows.
 - Feature: Windows now snap to the borders of other windows when dragging (snap radius configurable).
 - Feature: Text input is now an in game window.
-- Feature: Cheats window (CTRL-ALT-C).
+- Feature: Cheats window (CTRL-ALT-C) or by toolbar button (configurable).
 - Feature: Improved settings window with tab interface.
 - Feature: Ability to change language while in game.
 - Feature: Game configuration, cache, scores and screenshots now saved in user documents directory under OpenRCT2.

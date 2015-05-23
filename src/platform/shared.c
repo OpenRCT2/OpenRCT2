@@ -52,9 +52,13 @@ SDL_Color gPalette[256];
 
 static SDL_Surface *_surface;
 static SDL_Palette *_palette;
-static int _screenBufferSize;
+
 static void *_screenBuffer;
+static int _screenBufferSize;
+static int _screenBufferWidth;
+static int _screenBufferHeight;
 static int _screenBufferPitch;
+
 static SDL_Cursor* _cursors[CURSOR_COUNT];
 static const int _fullscreen_modes[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
 static unsigned int _lastGestureTimestamp;
@@ -63,6 +67,8 @@ static float _gestureRadius;
 static void platform_create_window();
 static void platform_load_cursors();
 static void platform_unload_cursors();
+
+static void platform_refresh_screenbuffer(int width, int height, int pitch);
 
 int resolution_sort_func(const void *pa, const void *pb)
 {
@@ -228,45 +234,12 @@ void platform_draw()
 
 static void platform_resize(int width, int height)
 {
-	rct_drawpixelinfo *screenDPI;
-	int newScreenBufferSize;
-	void *newScreenBuffer;
 	uint32 flags;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) = width;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) = height;
 
 	platform_refresh_video();
-
-	newScreenBufferSize = _screenBufferPitch * height;
-	newScreenBuffer = malloc(newScreenBufferSize);
-	if (_screenBuffer == NULL) {
-		memset(newScreenBuffer, 0, newScreenBufferSize);
-	} else {
-		memcpy(newScreenBuffer, _screenBuffer, min(_screenBufferSize, newScreenBufferSize));
-		if (newScreenBufferSize - _screenBufferSize > 0)
-			memset((uint8*)newScreenBuffer + _screenBufferSize, 0, newScreenBufferSize - _screenBufferSize);
-		free(_screenBuffer);
-	}
-
-	_screenBuffer = newScreenBuffer;
-	_screenBufferSize = newScreenBufferSize;
-
-	screenDPI = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
-	screenDPI->bits = _screenBuffer;
-	screenDPI->x = 0;
-	screenDPI->y = 0;
-	screenDPI->width = width;
-	screenDPI->height = height;
-	screenDPI->pitch = _screenBufferPitch - width;
-
-	RCT2_GLOBAL(0x009ABDF0, uint8) = 6;
-	RCT2_GLOBAL(0x009ABDF1, uint8) = 3;
-	RCT2_GLOBAL(0x009ABDF2, uint8) = 1;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, sint16) = 64;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, sint16) = 8;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) = (width >> 6) + 1;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, sint32) = (height >> 3) + 1;
 
 	flags = SDL_GetWindowFlags(gWindow);
 
@@ -752,7 +725,7 @@ void platform_refresh_video()
 			SDL_DestroyTexture(gBufferTexture);
 	
 		gBufferTexture = SDL_CreateTexture(gRenderer, SDL_PIXELFORMAT_RGBX8888, SDL_TEXTUREACCESS_STREAMING, width, height);
-		_screenBufferPitch = width;
+		platform_refresh_screenbuffer(width, height, width);
 	} else {
 		if (_surface != NULL)
 			SDL_FreeSurface(_surface);
@@ -772,6 +745,59 @@ void platform_refresh_video()
 			exit(-1);
 		}
 
-		_screenBufferPitch = _surface->pitch;
+		platform_refresh_screenbuffer(width, height, _surface->pitch);
 	}
+}
+
+static void platform_refresh_screenbuffer(int width, int height, int pitch)
+{
+	int newScreenBufferSize = pitch * height;
+	char *newScreenBuffer = (char*)malloc(newScreenBufferSize);
+	if (_screenBuffer == NULL) {
+		memset(newScreenBuffer, 0, newScreenBufferSize);
+	} else {
+		if (_screenBufferPitch == pitch) {
+			memcpy(newScreenBuffer, _screenBuffer, min(_screenBufferSize, newScreenBufferSize));
+		} else {
+			char *src = _screenBuffer;
+			char *dst = newScreenBuffer;
+
+			int minWidth = min(_screenBufferWidth, width);
+			int minHeight = min(_screenBufferHeight, height);
+			for (int y = 0; y < minHeight; y++) {
+				memcpy(dst, src, minWidth);
+				if (pitch - minWidth > 0)
+					memset(dst + minWidth, 0, pitch - minWidth);
+
+				src += _screenBufferPitch;
+				dst += pitch;
+			}
+		}
+		if (newScreenBufferSize - _screenBufferSize > 0)
+			memset((uint8*)newScreenBuffer + _screenBufferSize, 0, newScreenBufferSize - _screenBufferSize);
+		free(_screenBuffer);
+	}
+
+	_screenBuffer = newScreenBuffer;
+	_screenBufferSize = newScreenBufferSize;
+	_screenBufferWidth = width;
+	_screenBufferHeight = height;
+	_screenBufferPitch = pitch;
+
+	rct_drawpixelinfo *screenDPI;
+	screenDPI = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
+	screenDPI->bits = _screenBuffer;
+	screenDPI->x = 0;
+	screenDPI->y = 0;
+	screenDPI->width = width;
+	screenDPI->height = height;
+	screenDPI->pitch = _screenBufferPitch - width;
+
+	RCT2_GLOBAL(0x009ABDF0, uint8) = 6;
+	RCT2_GLOBAL(0x009ABDF1, uint8) = 3;
+	RCT2_GLOBAL(0x009ABDF2, uint8) = 1;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, sint16) = 64;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, sint16) = 8;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) = (width >> 6) + 1;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, sint32) = (height >> 3) + 1;
 }
