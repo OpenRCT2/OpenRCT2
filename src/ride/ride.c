@@ -1325,6 +1325,30 @@ static void ride_update(int rideIndex)
 			ride_breakdown_status_update(rideIndex);
 
 	ride_inspection_update(ride);
+
+	// Used to bring up the "real" ride window after a crash. Can be removed once vehicle_update is decompiled
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED) {
+		if ((ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED_WINDOW_OPENED) == 0) {
+			ride->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED_WINDOW_OPENED;
+			window_ride_main_open(rideIndex);
+		}
+	}
+	else if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED_WINDOW_OPENED) {
+		ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED_WINDOW_OPENED;
+	}
+
+	if (ride->status == RIDE_STATUS_TESTING && gConfigGeneral.no_test_crashes) {
+		for (int i = 0; i < ride->num_vehicles; i++) {
+			rct_vehicle *vehicle = &(g_sprite_list[ride->vehicles[i]].vehicle);
+
+			if (vehicle->status == VEHICLE_STATUS_CRASHED || vehicle->status == VEHICLE_STATUS_CRASHING) {
+				ride_set_status(rideIndex, RIDE_STATUS_CLOSED);
+				ride_set_status(rideIndex, RIDE_STATUS_CLOSED);
+				ride_set_status(rideIndex, RIDE_STATUS_TESTING);
+				break;
+			}
+		}
+	}
 }
 
 /**
@@ -3599,6 +3623,131 @@ rct_map_element *loc_6B4F6B(int rideIndex, int x, int y)
 	return NULL;
 }
 
+int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplying)
+{
+	int stationIndex;
+	rct_ride *ride;
+	rct_xy_element trackElement, problematicTrackElement;
+
+	ride = GET_RIDE(rideIndex);
+
+	window_close_by_class(WC_RIDE_CONSTRUCTION);
+
+	stationIndex = ride_mode_check_station_present(ride);
+	if (stationIndex == -1)return 0;
+
+	if (!ride_mode_check_valid_station_numbers(ride))
+		return 0;
+
+	if (!ride_check_for_entrance_exit(rideIndex)) {
+		loc_6B51C0(rideIndex);
+		return 0;
+	}
+
+	if (goingToBeOpen && isApplying) {
+		sub_6B5952(rideIndex);
+		ride->lifecycle_flags |= RIDE_LIFECYCLE_EVER_BEEN_OPENED;
+	}
+
+	// z = ride->station_heights[i] * 8;
+	trackElement.x = (ride->station_starts[stationIndex] & 0xFF) * 32;
+	trackElement.y = (ride->station_starts[stationIndex] >> 8) * 32;
+	trackElement.element = loc_6B4F6B(rideIndex, trackElement.x, trackElement.y);
+	if (trackElement.element == NULL) {
+		// Maze is strange, station start is 0... investigation required
+		if (ride->type != RIDE_TYPE_MAZE)
+			return 0;
+	}
+
+	if (
+		ride->type == RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER ||
+		ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT ||
+		ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED ||
+		ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
+		) {
+		if (ride_find_track_gap(&trackElement, &problematicTrackElement) && (!gConfigGeneral.test_unfinished_tracks ||
+			ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
+			loc_6B528A(&problematicTrackElement);
+			return 0;
+		}
+	}
+
+	if (
+		ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED ||
+		ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
+		) {
+		if (!ride_check_block_brakes(&trackElement, &problematicTrackElement)) {
+			loc_6B528A(&problematicTrackElement);
+			return 0;
+		}
+	}
+
+	if (ride->subtype != 255) {
+		rct_ride_type *rideType = GET_RIDE_ENTRY(ride->subtype);
+		if (rideType->var_008 & 2) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
+			if (ride_check_track_suitability_a(&trackElement, &problematicTrackElement)) {
+				loc_6B528A(&problematicTrackElement);
+				return 0;
+			}
+		}
+		if (rideType->var_008 & 4) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
+			if (ride_check_track_suitability_b(&trackElement, &problematicTrackElement)) {
+				loc_6B528A(&problematicTrackElement);
+				return 0;
+			}
+		}
+	}
+
+	if (ride->mode == RIDE_MODE_STATION_TO_STATION) {
+		if (!ride_find_track_gap(&trackElement, &problematicTrackElement)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
+			return 0;
+		}
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_STATION_NOT_LONG_ENOUGH;
+		if (ride_check_station_length(&trackElement, &problematicTrackElement)) {
+
+			// This is to prevent a bug in the check_station_length function
+			// remove when check_station_length is reveresed and fixed. Prevents
+			// null dereference. Does not prevent moving screen to top left corner.
+			if (map_element_get_type(problematicTrackElement.element) != MAP_ELEMENT_TYPE_TRACK)
+				loc_6B528A(&trackElement);
+			else loc_6B528A(&problematicTrackElement);
+			return 0;
+		}
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
+		if (ride_check_start_and_end_is_station(&trackElement, &problematicTrackElement)) {
+			loc_6B528A(&problematicTrackElement);
+			return 0;
+		}
+	}
+
+	if (isApplying)
+		sub_6B4D26(rideIndex, &trackElement);
+
+	if (
+		!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13) &&
+		!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+		) {
+		if (sub_6DD84C(ride, rideIndex, &trackElement, isApplying))
+			return 0;
+	}
+
+	if (
+		(RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint32) & 0x400) &&
+		(ride->lifecycle_flags & RIDE_LIFECYCLE_16) &&
+		!(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
+		) {
+		if (sub_6DF4D4(ride, &trackElement, isApplying))
+			return 0;
+	}
+
+	return 1;
+}
 /**
  * 
  *  rct2: 0x006B4EEA
@@ -3777,7 +3926,13 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 			return;
 		}
 
-		if (!ride_is_valid_for_open(rideIndex, targetStatus == RIDE_STATUS_OPEN, *ebx & GAME_COMMAND_FLAG_APPLY)) {
+		if (targetStatus == RIDE_STATUS_TESTING) {
+			if (!ride_is_valid_for_test(rideIndex, targetStatus == RIDE_STATUS_OPEN, *ebx & GAME_COMMAND_FLAG_APPLY)) {
+				*ebx = MONEY32_UNDEFINED;
+				return;
+			}
+		}
+		else if (!ride_is_valid_for_open(rideIndex, targetStatus == RIDE_STATUS_OPEN, *ebx & GAME_COMMAND_FLAG_APPLY)) {
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}

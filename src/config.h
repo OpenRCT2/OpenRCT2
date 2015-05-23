@@ -131,6 +131,8 @@ typedef struct {
 	uint8 window_snap_proximity;
 	uint8 autosave_frequency;
 	uint8 hardware_display;
+	uint8 test_unfinished_tracks;
+	uint8 no_test_crashes;
 } general_configuration;
 
 typedef struct {
@@ -154,6 +156,7 @@ typedef struct {
 	uint8 fast_lift_hill;
 	uint8 disable_brakes_failure;
 	uint8 disable_all_breakdowns;
+	uint8 unlock_all_prices;
 } cheat_configuration;
 
 typedef struct {

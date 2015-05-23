@@ -490,6 +490,12 @@ static int cc_get(const char **argv, int argc)
 		else if (strcmp(argv[0], "console_small_font") == 0) {
 			console_printf("console_small_font %d", gConfigInterface.console_small_font);
 		}
+		else if (strcmp(argv[0], "test_unfinished_tracks") == 0) {
+			console_printf("test_unfinished_tracks %d", gConfigGeneral.test_unfinished_tracks);
+		}
+		else if (strcmp(argv[0], "no_test_crashes") == 0) {
+			console_printf("no_test_crashes %d", gConfigGeneral.no_test_crashes);
+		}
 		else {
 			console_writeline_warning("Invalid variable.");
 		}
@@ -608,6 +614,16 @@ static int cc_set(const char **argv, int argc)
 			config_save_default();
 			console_execute_silent("get console_small_font");
 		}
+		else if (strcmp(argv[0], "test_unfinished_tracks") == 0 && int_valid) {
+			gConfigGeneral.test_unfinished_tracks = (int_val != 0);
+			config_save_default();
+			console_execute_silent("get test_unfinished_tracks");
+		}
+		else if (strcmp(argv[0], "no_test_crashes") == 0 && int_valid) {
+			gConfigGeneral.no_test_crashes = (int_val != 0);
+			config_save_default();
+			console_execute_silent("get no_test_crashes");
+		}
 		else {
 			console_writeline_error("Invalid variable or value.");
 		}
@@ -658,7 +674,9 @@ char* console_variable_table[] = {
 	"park_open",
 	"climate",
 	"game_speed",
-	"console_small_font"
+	"console_small_font",
+	"test_unfinished_tracks",
+	"no_test_crashes"
 };
 
 console_command console_command_table[] = {

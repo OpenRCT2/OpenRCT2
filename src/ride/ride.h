@@ -362,7 +362,10 @@ enum {
 	RIDE_LIFECYCLE_16 = 1 << 16,
 	RIDE_LIFECYCLE_CABLE_LIFT = 1 << 17,
 	RIDE_LIFECYCLE_18 = 1 << 18,
-	RIDE_LIFECYCLE_SIX_FLAGS = 1 << 19
+	RIDE_LIFECYCLE_SIX_FLAGS = 1 << 19,
+
+	// Used to bring up the "real" ride window after a crash. Can be removed once vehicle_update is decompiled
+	RIDE_LIFECYCLE_CRASHED_WINDOW_OPENED = 1 << 20
 };
 
 enum {

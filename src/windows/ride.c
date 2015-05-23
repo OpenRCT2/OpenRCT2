@@ -5520,11 +5520,11 @@ static void window_ride_income_invalidate()
 	// Primary item
 	w->pressed_widgets &= ~(1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
 	w->disabled_widgets &= ~(1 << WIDX_PRIMARY_PRICE);
-	if (
-		!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) &&
-		rideEntry->shop_item == 255 &&
-		ride->type != RIDE_TYPE_BATHROOM
-	) {
+
+	//If the park doesn't have free entry, lock the admission price, unless the cheat to unlock all prices is activated.
+	if ((!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) && rideEntry->shop_item == 255 && ride->type != RIDE_TYPE_BATHROOM)
+		&& (!gConfigCheat.unlock_all_prices))
+	{
 		w->disabled_widgets |= (1 << WIDX_PRIMARY_PRICE);
 	}
 
