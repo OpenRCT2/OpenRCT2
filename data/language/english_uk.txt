@@ -3488,15 +3488,18 @@ STR_5151    :,
 STR_5152    :.
 STR_5153    :RCT1 colour scheme
 STR_5154    :Hardware display
-STR_5157	:Twitch Channel name
-STR_5158	:Name peeps after followers
-STR_5159	:Will name peeps after channel's Twitch followers
-STR_5160	:Track follower peeps
-STR_5161	:Will turn on tracking information for guests named after channel's Twitch followers
-STR_5162	:Name peeps after people in Twitch chat
-STR_5163	:Will name peeps after people in Twitch chat
-STR_5164	:Track chat peeps
-STR_5165	:Will turn on tracking information for guests named after Twitch chat participants
-STR_5166	:Pull Twitch chat as news
-STR_5167	:Will use Twitch chat messages preceded by !news for in game notifications
-STR_5168	:Input the name of your Twitch channel
+STR_5155    :Allow testing of unfinished tracks
+STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
+STR_5157    :Unlock all prices
+STR_5158	:Twitch Channel name
+STR_5159	:Name peeps after followers
+STR_5160	:Will name peeps after channel's Twitch followers
+STR_5161	:Track follower peeps
+STR_5162	:Will turn on tracking information for guests named after channel's Twitch followers
+STR_5163	:Name peeps after people in Twitch chat
+STR_5164	:Will name peeps after people in Twitch chat
+STR_5165	:Track chat peeps
+STR_5166	:Will turn on tracking information for guests named after Twitch chat participants
+STR_5167	:Pull Twitch chat as news
+STR_5168	:Will use Twitch chat messages preceded by !news for in game notifications
+STR_5169	:Input the name of your Twitch channel

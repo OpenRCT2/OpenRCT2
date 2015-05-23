@@ -3491,3 +3491,4 @@ STR_5150    :Enable debugging tools
 STR_5151    :,
 #Decimals separator
 STR_5152    :. 
+STR_5153    :RCT1 color scheme

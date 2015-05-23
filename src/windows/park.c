@@ -1501,7 +1501,9 @@ static void window_park_price_invalidate()
 	window_park_set_pressed_tab(w);
 	window_park_prepare_window_title_text();
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) {
+	// If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY)
+		&& (!gConfigCheat.unlock_all_prices)) {
 		window_park_price_widgets[WIDX_PRICE].type = WWT_12;
 		window_park_price_widgets[WIDX_INCREASE_PRICE].type = WWT_EMPTY;
 		window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_EMPTY;

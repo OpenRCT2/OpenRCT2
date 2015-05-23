@@ -103,6 +103,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_AUTOSAVE_DROPDOWN,
 	WIDX_ALLOW_SUBTYPE_SWITCHING,
 	WIDX_DEBUGGING_TOOLS,
+	WIDX_TEST_UNFINISHED_TRACKS,
 
 	WIDX_CHANNEL_BUTTON,
 	WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX,
@@ -114,7 +115,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 };
 
 #define WW 310
-#define WH 153
+#define WH 183
 
 static rct_widget window_options_widgets[] = {
 	{ WWT_FRAME,			0,	0,		WW - 1,	0,		WH - 1,	STR_NONE,		STR_NONE },
@@ -174,14 +175,15 @@ static rct_widget window_options_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	84,		93,		876,			STR_NONE },
 	{ WWT_CHECKBOX,			2,	10,		299,	98,		109,	5122,			STR_NONE }, // allow subtype 
 	{ WWT_CHECKBOX,			2,	10,		299,	113,	124,	5150,			STR_NONE }, // enabled debugging tools
+	{ WWT_CHECKBOX,			2,	10,		299,	128,	139,	5155,			5156 }, // test unfinished tracks
 
 	//Twitch tab
-	{ WWT_DROPDOWN_BUTTON,	2,	10,		299,	53,		64,		5157,			STR_NONE }, // Twitch channel name
-	{ WWT_CHECKBOX,			2,	10,		299,	68,		79,		5158,			5159     },	// Twitch name peeps by follows
-	{ WWT_CHECKBOX,			2,	10,		299,	83,		94,		5160,			5161	 }, // Twitch information on for follows
-	{ WWT_CHECKBOX,			2,	10,		299,	98,		109,	5162,			5163	 }, // Twitch name peeps by chat
-	{ WWT_CHECKBOX,			2,	10,		299,	113,	124,	5164,			5165	 }, // Twitch information on for chat
-	{ WWT_CHECKBOX,			2,	10,		299,	128,	139,	5166,			5167	 }, // Twitch chat !news as notifications in game
+	{ WWT_DROPDOWN_BUTTON,	2,	10,		299,	53,		64,		5158,			STR_NONE }, // Twitch channel name
+	{ WWT_CHECKBOX,			2,	10,		299,	68,		79,		5159,			5160     },	// Twitch name peeps by follows
+	{ WWT_CHECKBOX,			2,	10,		299,	83,		94,		5161,			5162	 }, // Twitch information on for follows
+	{ WWT_CHECKBOX,			2,	10,		299,	98,		109,	5163,			5164	 }, // Twitch name peeps by chat
+	{ WWT_CHECKBOX,			2,	10,		299,	113,	124,	5165,			5166	 }, // Twitch information on for chat
+	{ WWT_CHECKBOX,			2,	10,		299,	128,	139,	5167,			5168	 }, // Twitch chat !news as notifications in game
 
 	{ WIDGETS_END },
 };
@@ -295,6 +297,7 @@ void window_options_open()
 		(1ULL << WIDX_AUTOSAVE_DROPDOWN) |
 		(1ULL << WIDX_ALLOW_SUBTYPE_SWITCHING) |
 		(1ULL << WIDX_DEBUGGING_TOOLS) |
+		(1ULL << WIDX_TEST_UNFINISHED_TRACKS) |
 		(1ULL << WIDX_CHANNEL_BUTTON) |
 		(1ULL << WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX) |
 		(1ULL << WIDX_FOLLOWER_PEEP_TRACKING_CHECKBOX) |
@@ -337,7 +340,7 @@ static void window_options_mouseup()
 		window_shortcut_keys_open();
 		break;
 	case WIDX_CHANNEL_BUTTON:
-		window_text_input_raw_open(w, widgetIndex, 5157, 5168, gConfigTwitch.channel, 32);
+		window_text_input_raw_open(w, widgetIndex, 5158, 5169, gConfigTwitch.channel, 32);
 		break;
 	case WIDX_SCREEN_EDGE_SCROLLING:
 		gConfigGeneral.edge_scrolling ^= 1;
@@ -375,6 +378,11 @@ static void window_options_mouseup()
 		break;
 	case WIDX_DEBUGGING_TOOLS:
 		gConfigGeneral.debugging_tools ^= 1;
+		config_save_default();
+		window_invalidate(w);
+		break;
+	case WIDX_TEST_UNFINISHED_TRACKS:
+		gConfigGeneral.test_unfinished_tracks ^= 1;
 		config_save_default();
 		window_invalidate(w);
 		break;
@@ -883,6 +891,7 @@ static void window_options_invalidate()
 			window_options_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
 
 		widget_set_checkbox_value(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
+		widget_set_checkbox_value(w, WIDX_TEST_UNFINISHED_TRACKS, gConfigGeneral.test_unfinished_tracks);
 
 		window_options_widgets[WIDX_REAL_NAME_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
@@ -890,6 +899,7 @@ static void window_options_invalidate()
 		window_options_widgets[WIDX_AUTOSAVE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_widgets[WIDX_ALLOW_SUBTYPE_SWITCHING].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_DEBUGGING_TOOLS].type = WWT_CHECKBOX;
+		window_options_widgets[WIDX_TEST_UNFINISHED_TRACKS].type = WWT_CHECKBOX;
 		break;
 	case WINDOW_OPTIONS_PAGE_TWITCH:
 		widget_set_checkbox_value(w, WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX, gConfigTwitch.enable_follower_peep_names);
@@ -1011,7 +1021,6 @@ static void window_options_text_input(){
 	window_text_input_get_registers(w, widgetIndex, _cl, text);
 	if (_cl == 0)
 	{
-		window_close(w);
 		return;
 	}
 
