@@ -3488,3 +3488,15 @@ STR_5151    :,
 STR_5152    :.
 STR_5153    :RCT1 colour scheme
 STR_5154    :Hardware display
+STR_5157	:Twitch Channel name
+STR_5158	:Name peeps after followers
+STR_5159	:Will name peeps after channel's Twitch followers
+STR_5160	:Track follower peeps
+STR_5161	:Will turn on tracking information for guests named after channel's Twitch followers
+STR_5162	:Name peeps after people in Twitch chat
+STR_5163	:Will name peeps after people in Twitch chat
+STR_5164	:Track chat peeps
+STR_5165	:Will turn on tracking information for guests named after Twitch chat participants
+STR_5166	:Pull Twitch chat as news
+STR_5167	:Will use Twitch chat messages preceded by !news for in game notifications
+STR_5168	:Input the name of your Twitch channel

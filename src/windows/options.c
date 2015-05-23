@@ -46,6 +46,7 @@ enum {
 	WINDOW_OPTIONS_PAGE_AUDIO,
 	WINDOW_OPTIONS_PAGE_INPUT,
 	WINDOW_OPTIONS_PAGE_MISC,
+	WINDOW_OPTIONS_PAGE_TWITCH,
 	WINDOW_OPTIONS_PAGE_COUNT
 };
 
@@ -59,6 +60,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_TAB_3,
 	WIDX_TAB_4,
 	WIDX_TAB_5,
+	WIDX_TAB_6,
 
 	WIDX_RESOLUTION,
 	WIDX_RESOLUTION_DROPDOWN,
@@ -101,6 +103,13 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_AUTOSAVE_DROPDOWN,
 	WIDX_ALLOW_SUBTYPE_SWITCHING,
 	WIDX_DEBUGGING_TOOLS,
+
+	WIDX_CHANNEL_BUTTON,
+	WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX,
+	WIDX_FOLLOWER_PEEP_TRACKING_CHECKBOX,
+	WIDX_CHAT_PEEP_NAMES_CHECKBOX,
+	WIDX_CHAT_PEEP_TRACKING_CHECKBOX,
+	WIDX_NEWS_CHECKBOX,
 	WINDOW_OPTIONS_WIDGETS_SIZE // Marks the end of the widget list, leave as last item
 };
 
@@ -117,6 +126,7 @@ static rct_widget window_options_widgets[] = {
 	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,		STR_NONE },
 	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,		STR_NONE },
 	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,		STR_NONE },
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,		STR_NONE },
 
 	// Display tab
 	{ WWT_DROPDOWN,			0,	155,	299,	53,		64,		840,			STR_NONE },	// resolution
@@ -164,11 +174,20 @@ static rct_widget window_options_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	84,		93,		876,			STR_NONE },
 	{ WWT_CHECKBOX,			2,	10,		299,	98,		109,	5122,			STR_NONE }, // allow subtype 
 	{ WWT_CHECKBOX,			2,	10,		299,	113,	124,	5150,			STR_NONE }, // enabled debugging tools
+
+	//Twitch tab
+	{ WWT_DROPDOWN_BUTTON,	2,	10,		299,	53,		64,		5157,			STR_NONE }, // Twitch channel name
+	{ WWT_CHECKBOX,			2,	10,		299,	68,		79,		5158,			5159     },	// Twitch name peeps by follows
+	{ WWT_CHECKBOX,			2,	10,		299,	83,		94,		5160,			5161	 }, // Twitch information on for follows
+	{ WWT_CHECKBOX,			2,	10,		299,	98,		109,	5162,			5163	 }, // Twitch name peeps by chat
+	{ WWT_CHECKBOX,			2,	10,		299,	113,	124,	5164,			5165	 }, // Twitch information on for chat
+	{ WWT_CHECKBOX,			2,	10,		299,	128,	139,	5166,			5167	 }, // Twitch chat !news as notifications in game
+
 	{ WIDGETS_END },
 };
 
-const int window_options_tab_animation_divisor[] = { 4, 8, 2, 2, 2 };
-const int window_options_tab_animation_frames[] = { 16, 8, 16, 4, 16 };
+const int window_options_tab_animation_divisor[] = { 4, 8, 2, 2, 2, 1 };
+const int window_options_tab_animation_frames[] = { 16, 8, 16, 4, 16, 1 };
 
 static void window_options_set_page(rct_window *w, int page);
 static void window_options_set_pressed_tab(rct_window *w);
@@ -182,6 +201,7 @@ static void window_options_dropdown();
 static void window_options_update(rct_window *w);
 static void window_options_invalidate();
 static void window_options_paint();
+static void window_options_text_input();
 static void window_options_show_dropdown(rct_window *w, rct_widget *widget, int num_items);
 static void window_options_update_height_markers();
 
@@ -205,7 +225,7 @@ static void* window_options_events[] = {
 	window_options_emptysub,
 	window_options_emptysub,
 	window_options_emptysub,
-	window_options_emptysub,
+	window_options_text_input,
 	window_options_emptysub,
 	window_options_emptysub,
 	window_options_emptysub,
@@ -238,6 +258,7 @@ void window_options_open()
 		(1ULL << WIDX_TAB_3) |
 		(1ULL << WIDX_TAB_4) |
 		(1ULL << WIDX_TAB_5) |
+		(1ULL << WIDX_TAB_6) |
 		(1ULL << WIDX_SOUND) |
 		(1ULL << WIDX_SOUND_DROPDOWN) |
 		(1ULL << WIDX_SOUND_CHECKBOX) |
@@ -274,6 +295,12 @@ void window_options_open()
 		(1ULL << WIDX_AUTOSAVE_DROPDOWN) |
 		(1ULL << WIDX_ALLOW_SUBTYPE_SWITCHING) |
 		(1ULL << WIDX_DEBUGGING_TOOLS) |
+		(1ULL << WIDX_CHANNEL_BUTTON) |
+		(1ULL << WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX) |
+		(1ULL << WIDX_FOLLOWER_PEEP_TRACKING_CHECKBOX) |
+		(1ULL << WIDX_CHAT_PEEP_NAMES_CHECKBOX) |
+		(1ULL << WIDX_CHAT_PEEP_TRACKING_CHECKBOX) |
+		(1ULL << WIDX_NEWS_CHECKBOX) |
 		(1ULL << WIDX_RCT1_COLOUR_SCHEME);
 
 	w->page = WINDOW_OPTIONS_PAGE_DISPLAY;
@@ -303,10 +330,14 @@ static void window_options_mouseup()
 	case WIDX_TAB_3:
 	case WIDX_TAB_4:
 	case WIDX_TAB_5:
+	case WIDX_TAB_6:
 		window_options_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_HOTKEY_DROPDOWN:
 		window_shortcut_keys_open();
+		break;
+	case WIDX_CHANNEL_BUTTON:
+		window_text_input_raw_open(w, widgetIndex, 5157, 5168, gConfigTwitch.channel, 32);
 		break;
 	case WIDX_SCREEN_EDGE_SCROLLING:
 		gConfigGeneral.edge_scrolling ^= 1;
@@ -370,6 +401,31 @@ static void window_options_mouseup()
 	case WIDX_HARDWARE_DISPLAY_CHECKBOX:
 		gConfigGeneral.hardware_display ^= 1;
 		platform_refresh_video();
+		config_save_default();
+		window_invalidate(w);
+		break;
+	case WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX:
+		gConfigTwitch.enable_follower_peep_names ^= 1;
+		config_save_default();
+		window_invalidate(w);
+		break;
+	case WIDX_FOLLOWER_PEEP_TRACKING_CHECKBOX:
+		gConfigTwitch.enable_follower_peep_tracking ^= 1;
+		config_save_default();
+		window_invalidate(w);
+		break;
+	case WIDX_CHAT_PEEP_NAMES_CHECKBOX:
+		gConfigTwitch.enable_chat_peep_names ^= 1;
+		config_save_default();
+		window_invalidate(w);
+		break;
+	case WIDX_CHAT_PEEP_TRACKING_CHECKBOX:
+		gConfigTwitch.enable_chat_peep_tracking ^= 1;
+		config_save_default();
+		window_invalidate(w);
+		break;
+	case WIDX_NEWS_CHECKBOX:
+		gConfigTwitch.enable_news ^= 1;
 		config_save_default();
 		window_invalidate(w);
 		break;
@@ -835,6 +891,21 @@ static void window_options_invalidate()
 		window_options_widgets[WIDX_ALLOW_SUBTYPE_SWITCHING].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_DEBUGGING_TOOLS].type = WWT_CHECKBOX;
 		break;
+	case WINDOW_OPTIONS_PAGE_TWITCH:
+		widget_set_checkbox_value(w, WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX, gConfigTwitch.enable_follower_peep_names);
+		widget_set_checkbox_value(w, WIDX_FOLLOWER_PEEP_TRACKING_CHECKBOX, gConfigTwitch.enable_follower_peep_tracking);
+		widget_set_checkbox_value(w, WIDX_CHAT_PEEP_NAMES_CHECKBOX, gConfigTwitch.enable_chat_peep_names);
+		widget_set_checkbox_value(w, WIDX_CHAT_PEEP_TRACKING_CHECKBOX, gConfigTwitch.enable_chat_peep_tracking);
+		widget_set_checkbox_value(w, WIDX_NEWS_CHECKBOX, gConfigTwitch.enable_news);
+
+		window_options_widgets[WIDX_CHANNEL_BUTTON].type = WWT_DROPDOWN_BUTTON;
+		window_options_widgets[WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX].type = WWT_CHECKBOX;
+		window_options_widgets[WIDX_FOLLOWER_PEEP_TRACKING_CHECKBOX].type = WWT_CHECKBOX;
+		window_options_widgets[WIDX_CHAT_PEEP_NAMES_CHECKBOX].type = WWT_CHECKBOX;
+		window_options_widgets[WIDX_CHAT_PEEP_TRACKING_CHECKBOX].type = WWT_CHECKBOX;
+		window_options_widgets[WIDX_NEWS_CHECKBOX].type = WWT_CHECKBOX;
+		
+		break;
 	}
 }
 
@@ -931,6 +1002,27 @@ static void window_options_update_height_markers()
 	gfx_invalidate_screen();
 }
 
+static void window_options_text_input(){
+	short widgetIndex;
+	rct_window *w;
+	char _cl;
+	char* text;
+
+	window_text_input_get_registers(w, widgetIndex, _cl, text);
+	if (_cl == 0)
+	{
+		window_close(w);
+		return;
+	}
+
+	if (widgetIndex == WIDX_CHANNEL_BUTTON){
+		if (gConfigTwitch.channel != NULL)
+			free(gConfigTwitch.channel);
+		gConfigTwitch.channel = _strdup(text);
+		config_save_default();
+	}
+}
+
 #pragma region Common
 
 static void window_options_set_page(rct_window *w, int page)
@@ -974,6 +1066,7 @@ static void window_options_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w
 	window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_AUDIO, 5335);
 	window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_INPUT, 5201);
 	window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_MISC, 5205);
+	window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_TWITCH, SPR_G2_TAB_TWITCH);
 }
 
 #pragma endregion

@@ -373,13 +373,22 @@ static void twitch_parse_chat_message(const char *message)
 	message++;
 	ch = strchrm(message, " \t");
 	strncpy(buffer, message, ch - message);
-
+	buffer[ch - message] = 0;
 	if (_strcmpi(buffer, "news") == 0) {
 		if (gConfigTwitch.enable_news) {
 			ch = strskipwhitespace(ch);
 
 			buffer[0] = (char)FORMAT_TOPAZ;
 			strncpy(buffer + 1, ch, sizeof(buffer) - 2);
+			buffer[sizeof(buffer) - 2] = 0;
+
+			ch = buffer;
+			while (ch[0] != 0) {
+				if ((unsigned char)ch[0] < 32 || (unsigned char)ch[0] > 122) {
+					ch[0] = ' ';
+				}
+				ch++;
+			}
 
 			news_item_add_to_queue_raw(NEWS_ITEM_BLANK, buffer, 0);
 		}
