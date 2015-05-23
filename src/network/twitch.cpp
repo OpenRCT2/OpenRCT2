@@ -71,8 +71,15 @@ void twitch_update()
 
 		switch (_twitchState) {
 		case TWITCH_STATE_LEFT:
-			twitch_join();
+		{
+			uint32 currentTime = SDL_GetTicks();
+			uint32 timeSinceLastPulse = currentTime - _twitchLastPulseTick;
+			if (_twitchLastPulseTick == 0 || timeSinceLastPulse > PULSE_TIME) {
+				_twitchLastPulseTick = currentTime;
+				twitch_join();
+			}
 			break;
+		}
 		case TWITCH_STATE_JOINED:
 		{
 			uint32 currentTime = SDL_GetTicks();
@@ -145,6 +152,7 @@ static void twitch_leave()
 
 	console_writeline("Left twitch channel.");
 	_twitchState = TWITCH_STATE_LEFT;
+	_twitchLastPulseTick = 0;
 
 	// char url[256];
 	// sprintf(url, "%sleave/%s", TwitchExtendedBaseUrl, gConfigTwitch.channel);
