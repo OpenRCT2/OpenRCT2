@@ -69,6 +69,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_FIX_VANDALISM,
 	WIDX_REMOVE_LITTER,
 	WIDX_WIN_SCENARIO,
+	WIDX_UNLOCK_ALL_PRICES,
 	WIDX_RENEW_RIDES = 8,
 	WIDX_REMOVE_SIX_FLAGS,
 	WIDX_MAKE_DESTRUCTIBLE,
@@ -138,19 +139,18 @@ static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		2462 },						// tab 2
 	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,		2462},						// tab 3
 	{ WWT_TAB,				1,	96,			126,	17,		43,		0x2000144E,		2462},						// tab 4
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(0), HPL(0),		2767,			STR_NONE},					// Freeze climate
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		2769,			STR_NONE},					// open / close park
-	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(3), HPL(3),		2759,			STR_NONE},					// Zero Clearance
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(4), HPL(4),		2757,			STR_NONE},					// Sun
-	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(4), HPL(4),		2758,			STR_NONE},					// Thunder
-
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(5), HPL(5),		2752,			STR_NONE},					// Clear grass
-	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(5), HPL(5),		2753,			STR_NONE},					// Mowed grass
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(6), HPL(6),		2754,			STR_NONE},					// Water plants
-	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(6), HPL(6),		2755,			STR_NONE},					// Fix vandalism
-	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(7), HPL(7),		2756,			STR_NONE},					// Remove litter
-
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(1), HPL(1),		2767,			STR_NONE},					// Freeze climate
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(0), HPL(0),		2769,			STR_NONE},					// open / close park
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		2759,			STR_NONE},					// Zero Clearance
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(2), HPL(2),		2757,			STR_NONE},					// Sun
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(2), HPL(2),		2758,			STR_NONE},					// Thunder
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(3), HPL(3),		2752,			STR_NONE},					// Clear grass
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(3), HPL(3),		2753,			STR_NONE},					// Mowed grass
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(4), HPL(4),		2754,			STR_NONE},					// Water plants
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(4), HPL(4),		2755,			STR_NONE},					// Fix vandalism
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(5), HPL(5),		2756,			STR_NONE},					// Remove litter
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(0), HPL(0),		2766,			STR_NONE},					// Win scenario
+	{ WWT_CHECKBOX,			1, XPL(0),    OWPL, YPL(8),OHPL(8),		5155,			STR_NONE}, 					// Unlock all prices
 	{ WIDGETS_END },
 };
 static rct_widget window_cheats_rides_widgets[] = {
@@ -326,7 +326,7 @@ static void* window_cheats_page_events[] = {
 static uint32 window_cheats_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_PARK_ENTRANCE_FEE),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HAPPY_GUESTS) | (1 << WIDX_TRAM_GUESTS),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO),
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO) | (1 << WIDX_UNLOCK_ALL_PRICES),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_RENEW_RIDES) | (1 << WIDX_REMOVE_SIX_FLAGS) | (1 << WIDX_MAKE_DESTRUCTIBLE) | (1 << WIDX_FIX_ALL) | (1 << WIDX_FAST_LIFT_HILL) | (1 << WIDX_DISABLE_BRAKES_FAILURE) | (1 << WIDX_DISABLE_ALL_BREAKDOWNS)
 };
 
@@ -549,6 +549,7 @@ static void window_cheats_money_mouseup()
 	case WIDX_PARK_ENTRANCE_FEE:
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_PARK_FREE_ENTRY;
 		window_invalidate_by_class(WC_PARK_INFORMATION);
+		window_invalidate_by_class(WC_RIDE);
 		break;
 	}
 }
@@ -632,6 +633,13 @@ static void window_cheats_misc_mouseup()
 	case WIDX_WIN_SCENARIO:
 		scenario_success();
 		break;
+	case WIDX_UNLOCK_ALL_PRICES:
+		gConfigCheat.unlock_all_prices ^= 1;
+		config_save_default();
+		window_invalidate(w);
+		window_invalidate_by_class(WC_RIDE);
+		window_invalidate_by_class(WC_PARK_INFORMATION);
+		break;
 	}
 }
 
@@ -711,6 +719,7 @@ static void window_cheats_invalidate()
 	case WINDOW_CHEATS_PAGE_MISC:
 		w->widgets[WIDX_OPEN_CLOSE_PARK].image = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN ?
 			2770 : 2769;
+		widget_set_checkbox_value(w, WIDX_UNLOCK_ALL_PRICES, gConfigCheat.unlock_all_prices);
 		break;
 	case WINDOW_CHEATS_PAGE_RIDES:
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = 255;
