@@ -161,6 +161,66 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 	w->colours[2] = call_w->colours[2];
 }
 
+void window_text_input_raw_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, int maxLength)
+{
+	_maxInputLength = maxLength;
+
+	window_close_by_class(WC_TEXTINPUT);
+
+	// Clear the text input buffer
+	memset(text_input, 0, maxLength);
+
+	// Enter in the the text input buffer any existing
+	// text.
+	strncpy(text_input, existing_text, maxLength);
+
+	// In order to prevent strings that exceed the maxLength
+	// from crashing the game.
+	text_input[maxLength - 1] = '\0';
+
+	// This is the text displayed above the input box
+	input_text_description = description;
+
+	// Work out the existing size of the window
+	char wrapped_string[512];
+	strcpy(wrapped_string, text_input);
+
+	int no_lines = 0, font_height = 0;
+
+	// String length needs to add 12 either side of box
+	// +13 for cursor when max length.
+	gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines, &font_height);
+
+	int height = no_lines * 10 + WH;
+
+	// Window will be in the center of the screen
+	rct_window* w = window_create_centred(
+		WW,
+		height,
+		(uint32*)window_text_input_events,
+		WC_TEXTINPUT,
+		WF_STICK_TO_FRONT
+		);
+
+	w->widgets = window_text_input_widgets;
+	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_CANCEL) | (1 << WIDX_OKAY);
+
+	window_text_input_widgets[WIDX_TITLE].image = title;
+
+	// Save calling window details so that the information
+	// can be passed back to the correct window & widget
+	calling_class = call_w->classification;
+	calling_number = call_w->number;
+	calling_widget = call_widget;
+
+	platform_start_text_input(text_input, maxLength);
+
+	window_init_scroll_widgets(w);
+	w->colours[0] = call_w->colours[0];
+	w->colours[1] = call_w->colours[1];
+	w->colours[2] = call_w->colours[2];
+}
+
 /**
 *
 */
