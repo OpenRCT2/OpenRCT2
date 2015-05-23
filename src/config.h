@@ -131,6 +131,8 @@ typedef struct {
 	uint8 window_snap_proximity;
 	uint8 autosave_frequency;
 	uint8 hardware_display;
+	uint8 test_unfinished_tracks;
+	uint8 no_test_crashes;
 } general_configuration;
 
 typedef struct {
