@@ -116,20 +116,22 @@ static void twitch_join()
 	_twitchState = TWITCH_STATE_JOINING;
 	_twitchIdle = false;
 	http_request_json_async(url, [](http_json_response *jsonResponse) -> void {
-		if (jsonResponse == NULL)
+		if (jsonResponse == NULL) {
 			_twitchState = TWITCH_STATE_LEFT;
+			console_writeline("Unable to connect to twitch channel.");
+		} else {
+			json_t *jsonStatus = json_object_get(jsonResponse->root, "status");
+			if (json_is_number(jsonStatus) && json_integer_value(jsonStatus) == 200)
+				_twitchState = TWITCH_STATE_JOINED;
+			else
+				_twitchState = TWITCH_STATE_LEFT;
 
-		json_t *jsonStatus = json_object_get(jsonResponse->root, "status");
-		if (json_is_number(jsonStatus) && json_integer_value(jsonStatus) == 200)
-			_twitchState = TWITCH_STATE_JOINED;
-		else
-			_twitchState = TWITCH_STATE_LEFT;
-	
-		http_request_json_dispose(jsonResponse);
+			http_request_json_dispose(jsonResponse);
 
-		_twitchLastPulseTick = 0;
+			_twitchLastPulseTick = 0;
+			console_writeline("Connected to twitch channel.");
+		}
 		_twitchIdle = true;
-		console_writeline("Connected to twitch channel.");
 	});
 }
 

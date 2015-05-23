@@ -172,7 +172,8 @@ void window_text_input_raw_open(rct_window* call_w, int call_widget, rct_string_
 
 	// Enter in the the text input buffer any existing
 	// text.
-	strncpy(text_input, existing_text, maxLength);
+	if (existing_text != NULL)
+		strncpy(text_input, existing_text, maxLength);
 
 	// In order to prevent strings that exceed the maxLength
 	// from crashing the game.
