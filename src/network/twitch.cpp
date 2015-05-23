@@ -143,6 +143,7 @@ static void twitch_leave()
 	if (_twitchJsonResponse != NULL)
 		http_request_json_dispose(_twitchJsonResponse);
 
+	console_writeline("Left twitch channel.");
 	_twitchState = TWITCH_STATE_LEFT;
 
 	// char url[256];
@@ -169,8 +170,12 @@ static void twitch_get_followers()
 	_twitchState = TWITCH_STATE_WAITING;
 	_twitchIdle = false;
 	http_request_json_async(url, [](http_json_response *jsonResponse) -> void {
-		_twitchJsonResponse = jsonResponse;
-		_twitchState = TWITCH_STATE_GET_FOLLOWERS;
+		if (jsonResponse == NULL) {
+			_twitchState = TWITCH_STATE_JOINED;
+		} else {
+			_twitchJsonResponse = jsonResponse;
+			_twitchState = TWITCH_STATE_GET_FOLLOWERS;
+		}
 		_twitchIdle = true;
 	});
 }
@@ -186,8 +191,12 @@ static void twitch_get_messages()
 	_twitchState = TWITCH_STATE_WAITING;
 	_twitchIdle = false;
 	http_request_json_async(url, [](http_json_response *jsonResponse) -> void {
-		_twitchJsonResponse = jsonResponse;
-		_twitchState = TWITCH_STATE_GET_MESSAGES;
+		if (jsonResponse == NULL) {
+			_twitchState = TWITCH_STATE_JOINED;
+		} else {
+			_twitchJsonResponse = jsonResponse;
+			_twitchState = TWITCH_STATE_GET_MESSAGES;
+		}
 		_twitchIdle = true;
 	});
 }
