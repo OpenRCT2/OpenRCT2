@@ -36,6 +36,8 @@ rct_research_item *gResearchItems = (rct_research_item*)RCT2_RESEARCH_ITEMS;
 // 0x00EE787C
 uint8 gResearchUncompletedCategories;
 
+bool gSilentResearch = false;
+
 /**
  *
  *  rct2: 0x006671AD, part of 0x00667132
@@ -198,7 +200,8 @@ void research_finish_item(sint32 entryIndex)
 		if (RCT2_GLOBAL(0x009AC06C, uint8) == 0) {
 			RCT2_GLOBAL(0x013CE952, rct_string_id) = rideEntry->var_008 & 0x1000 ?
 				rideEntry->name : ecx + 2;
-			news_item_add_to_queue(NEWS_ITEM_RESEARCH, 2249, entryIndex);
+			if (!gSilentResearch)
+				news_item_add_to_queue(NEWS_ITEM_RESEARCH, 2249, entryIndex);
 		}
 
 		research_invalidate_related_windows();
@@ -213,7 +216,8 @@ void research_finish_item(sint32 entryIndex)
 		// I don't think 0x009AC06C is ever not 0, so probably redundant
 		if (RCT2_GLOBAL(0x009AC06C, uint8) == 0) {
 			RCT2_GLOBAL(0x013CE952, rct_string_id) = scenerySetEntry->name;
-			news_item_add_to_queue(NEWS_ITEM_RESEARCH, 2250, entryIndex);
+			if (!gSilentResearch)
+				news_item_add_to_queue(NEWS_ITEM_RESEARCH, 2250, entryIndex);
 		}
 
 		research_invalidate_related_windows();
@@ -426,7 +430,7 @@ static void research_insert_researched(int entryIndex, int category)
 	} while (entryIndex != (researchItem++)->entryIndex);
 }
 
-static void research_insert(int researched, int entryIndex, int category)
+void research_insert(int researched, int entryIndex, int category)
 {
 	if (researched)
 		research_insert_researched(entryIndex, category);
@@ -466,6 +470,35 @@ void research_populate_list_random()
 
 		researched = (scenario_rand() & 0xFF) > 85;
 		research_insert(researched, i, RESEARCH_CATEGORY_SCENERYSET);
+	}
+}
+
+void research_populate_list_researched()
+{
+	rct_ride_type *rideEntry;
+	rct_scenery_set_entry *scenerySetEntry;
+	int rideType;
+
+	// Rides
+	for (int i = 0; i < 128; i++) {
+		rideEntry = GET_RIDE_ENTRY(i);
+		if (rideEntry == (rct_ride_type*)-1)
+			continue;
+
+		for (int j = 0; j < 3; j++) {
+			rideType = rideEntry->ride_type[j];
+			if (rideType != 255)
+				research_insert(true, 0x10000 | (rideType << 8) | i, rideEntry->category[0]);
+		}
+	}
+
+	// Scenery
+	for (int i = 0; i < 19; i++) {
+		scenerySetEntry = g_scenerySetEntries[i];
+		if (scenerySetEntry == (rct_scenery_set_entry*)-1)
+			continue;
+
+		research_insert(true, i, RESEARCH_CATEGORY_SCENERYSET);
 	}
 }
 

@@ -176,5 +176,6 @@ void scenery_update_tile(int x, int y);
 void scenery_update_age(int x, int y, rct_map_element *mapElement);
 void scenery_set_default_placement_configuration();
 void scenery_remove_ghost_tool_placement();
+void scenery_set_default_placement_configuration();
 
 #endif

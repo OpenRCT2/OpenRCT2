@@ -76,6 +76,7 @@ int object_read_and_load_entries(FILE *file);
 int object_load_packed(FILE *file);
 void object_unload_all();
 
+int check_object_entry(rct_object_entry *entry);
 int object_load(int groupIndex, rct_object_entry *entry, int* chunk_size);
 int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSize, const rct_object_entry *installedObject);
 void object_unload(int groupIndex, rct_object_entry_extended *entry);
