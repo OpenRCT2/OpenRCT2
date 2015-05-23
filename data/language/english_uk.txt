@@ -3489,3 +3489,5 @@ STR_5152    :.
 STR_5153    :RCT1 colour scheme
 STR_5154    :Hardware display
 STR_5155    :Unlock all prices
+STR_5156    :Quit to menu
+STR_5157    :Exit OpenRCT2
