@@ -80,6 +80,8 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_TEMPERATURE_DROPDOWN,
 	WIDX_HEIGHT_LABELS,
 	WIDX_HEIGHT_LABELS_DROPDOWN,
+	WIDX_DATE_FORMAT,
+	WIDX_DATE_FORMAT_DROPDOWN,
 
 	WIDX_SOUND,
 	WIDX_SOUND_DROPDOWN,
@@ -141,6 +143,8 @@ static rct_widget window_options_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	99,		108,	876,			STR_NONE }, //jjj
 	{ WWT_DROPDOWN,			0,	155,	299,	113,	124,	868,			STR_NONE },	// height labels
 	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	114,	123,	876,			STR_NONE },
+	{ WWT_DROPDOWN,			0,	155,	299,	128,	139,	STR_NONE,		STR_NONE },	// date format
+	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	129,	138,	876,			STR_NONE },
 
 	// Audio tab
 	{ WWT_DROPDOWN,			0,	10,		299,	53,		64,		865,			STR_NONE },	// sound
@@ -277,7 +281,9 @@ void window_options_open()
 		(1ULL << WIDX_ALLOW_SUBTYPE_SWITCHING) |
 		(1ULL << WIDX_DEBUGGING_TOOLS) |
 		(1ULL << WIDX_TEST_UNFINISHED_TRACKS) |
-		(1ULL << WIDX_RCT1_COLOUR_SCHEME);
+		(1ULL << WIDX_RCT1_COLOUR_SCHEME) |
+		(1ULL << WIDX_DATE_FORMAT) |
+		(1ULL << WIDX_DATE_FORMAT_DROPDOWN);
 
 	w->page = WINDOW_OPTIONS_PAGE_DISPLAY;
 	window_init_scroll_widgets(w);
@@ -548,6 +554,14 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		window_options_show_dropdown(w, widget, AUTOSAVE_NEVER + 1);
 		gDropdownItemsChecked = 1 << gConfigGeneral.autosave_frequency;
 		break;
+	case WIDX_DATE_FORMAT_DROPDOWN:
+		for (i = 0; i < 2; i++) {
+			gDropdownItemsFormat[i] = 1142;
+			gDropdownItemsArgs[i] = 5162 + i;
+		}
+		window_options_show_dropdown(w, widget, 2);
+		gDropdownItemsChecked = 1 << (gConfigGeneral.date_format);
+		break;
 	}
 }
 
@@ -676,6 +690,13 @@ static void window_options_dropdown()
 			window_invalidate(w);
 		}
 		break;
+	case WIDX_DATE_FORMAT_DROPDOWN:
+		if (dropdownIndex != gConfigGeneral.date_format) {
+			gConfigGeneral.date_format = (uint8)dropdownIndex;
+			config_save_default();
+			gfx_invalidate_screen();
+		}
+		break;
 	}
 }
 
@@ -767,6 +788,8 @@ static void window_options_invalidate()
 		window_options_widgets[WIDX_TEMPERATURE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_widgets[WIDX_HEIGHT_LABELS].type = WWT_DROPDOWN;
 		window_options_widgets[WIDX_HEIGHT_LABELS_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+		window_options_widgets[WIDX_DATE_FORMAT].type = WWT_DROPDOWN;
+		window_options_widgets[WIDX_DATE_FORMAT_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		break;
 	case WINDOW_OPTIONS_PAGE_AUDIO:
 		currentSoundDevice = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32);
@@ -893,6 +916,15 @@ static void window_options_paint()
 		gfx_draw_string_left(dpi, STR_DISTANCE_AND_SPEED, w, 0, w->x + 10, w->y + window_options_widgets[WIDX_DISTANCE].top + 1);
 		gfx_draw_string_left(dpi, STR_TEMPERATURE, w, 0, w->x + 10, w->y + window_options_widgets[WIDX_TEMPERATURE].top + 1);
 		gfx_draw_string_left(dpi, STR_HEIGHT_LABELS, w, 0, w->x + 10, w->y + window_options_widgets[WIDX_HEIGHT_LABELS].top + 1);
+		gfx_draw_string_left(dpi, 5161, w, 0, w->x + 10, w->y + window_options_widgets[WIDX_DATE_FORMAT].top + 1);
+		gfx_draw_string_left(
+			dpi,
+			5162 + gConfigGeneral.date_format,
+			NULL,
+			12,
+			w->x + window_options_widgets[WIDX_DATE_FORMAT].left + 1,
+			w->y + window_options_widgets[WIDX_DATE_FORMAT].top
+			);
 		break;
 	case WINDOW_OPTIONS_PAGE_AUDIO:
 		gfx_draw_string_left(dpi, 2738, w, 12, w->x + 10, w->y + window_options_widgets[WIDX_TITLE_MUSIC].top + 1);
