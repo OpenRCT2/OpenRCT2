@@ -25,6 +25,7 @@
 #include "config.h"
 #include "editor.h"
 #include "localisation/localisation.h"
+#include "network/http.h"
 #include "openrct2.h"
 #include "platform/platform.h"
 #include "util/sawyercoding.h"
@@ -141,6 +142,7 @@ void openrct2_launch()
 	audio_get_devices();
 	get_dsound_devices();
 	language_open(gConfigGeneral.language);
+	http_init();
 	if (!rct2_init())
 		return;
 
@@ -174,6 +176,8 @@ void openrct2_launch()
 
 	log_verbose("begin openrct2 loop");
 	openrct2_loop();
+
+	http_dispose();
 	platform_free();
 
 	// HACK Some threads are still running which causes the game to not terminate. Investigation required!

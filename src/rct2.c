@@ -34,6 +34,7 @@
 #include "localisation/date.h"
 #include "localisation/localisation.h"
 #include "management/news_item.h"
+#include "network/twitch.h"
 #include "object.h"
 #include "openrct2.h"
 #include "platform/platform.h"
@@ -346,6 +347,7 @@ void rct2_update_2()
 	else
 		game_update();
 
+	twitch_update();
 	console_update();
 	console_draw(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo));
 }

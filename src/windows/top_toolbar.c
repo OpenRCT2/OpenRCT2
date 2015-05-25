@@ -29,6 +29,7 @@
 #include "../interface/window.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
+#include "../network/twitch.h"
 #include "../scenario.h"
 #include "../world/scenery.h"
 #include "../world/banner.h"
@@ -65,11 +66,15 @@ enum {
 typedef enum {
 	DDIDX_LOAD_GAME = 0,
 	DDIDX_SAVE_GAME = 1,
+	// seperator
 	DDIDX_ABOUT = 3,
 	DDIDX_OPTIONS = 4,
 	DDIDX_SCREENSHOT = 5,
+	// seperator
 	DDIDX_QUIT_TO_MENU = 7,
 	DDIDX_EXIT_OPENRCT2 = 8,
+	// seperator
+	DDIDX_ENABLE_TWITCH = 10
 } FILE_MENU_DDIDX;
 
 typedef enum {
@@ -204,6 +209,8 @@ void toggle_land_window(rct_window *topToolbar, int widgetIndex);
 void toggle_clear_scenery_window(rct_window *topToolbar, int widgetIndex);
 void toggle_water_window(rct_window *topToolbar, int widgetIndex);
 
+static bool _menuDropdownIncludesTwitch;
+
 /**
  * Creates the main game top toolbar window.
  *  rct2: 0x0066B485 (part of 0x0066B3E8)
@@ -306,6 +313,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 
 	switch (widgetIndex) {
 	case WIDX_FILE_MENU:
+		_menuDropdownIncludesTwitch = false;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 			gDropdownItemsFormat[0] = STR_ABOUT;
 			gDropdownItemsFormat[1] = STR_OPTIONS;
@@ -340,6 +348,16 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			gDropdownItemsFormat[7] = STR_QUIT_TO_MENU;
 			gDropdownItemsFormat[8] = STR_EXIT_OPENRCT2;
 			numItems = 9;
+
+		#ifndef DISABLE_TWITCH
+			if (gConfigTwitch.channel != NULL && gConfigTwitch.channel[0] != 0) {
+				_menuDropdownIncludesTwitch = true;
+				gDropdownItemsFormat[9] = 0;
+				gDropdownItemsFormat[10] = 1156;
+				gDropdownItemsArgs[10] = STR_TWITCH_ENABLE;
+				numItems = 11;
+			}
+		#endif
 		}
 		window_dropdown_show_text(
 			w->x + widget->left,
@@ -349,6 +367,9 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			DROPDOWN_FLAG_STAY_OPEN,
 			numItems
 		);
+
+		if (_menuDropdownIncludesTwitch && gTwitchEnable)
+			gDropdownItemsChecked |= (1 << 10);
 		break;
 	case WIDX_VIEW_MENU:
 		top_toolbar_init_view_menu(w, widget);
@@ -424,6 +445,9 @@ static void window_top_toolbar_dropdown()
 			break;
 		case DDIDX_EXIT_OPENRCT2:
 			rct2_quit();
+			break;
+		case DDIDX_ENABLE_TWITCH:
+			gTwitchEnable = !gTwitchEnable;
 			break;
 		}
 		break;
