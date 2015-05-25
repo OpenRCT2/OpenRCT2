@@ -178,12 +178,12 @@ static rct_widget window_options_widgets[] = {
 	{ WWT_CHECKBOX,			2,	10,		299,	128,	139,	5155,			5156 }, // test unfinished tracks
 
 	//Twitch tab
-	{ WWT_DROPDOWN_BUTTON,	2,	10,		299,	53,		64,		5158,			STR_NONE }, // Twitch channel name
-	{ WWT_CHECKBOX,			2,	10,		299,	68,		79,		5159,			5160     },	// Twitch name peeps by follows
-	{ WWT_CHECKBOX,			2,	10,		299,	83,		94,		5161,			5162	 }, // Twitch information on for follows
-	{ WWT_CHECKBOX,			2,	10,		299,	98,		109,	5163,			5164	 }, // Twitch name peeps by chat
-	{ WWT_CHECKBOX,			2,	10,		299,	113,	124,	5165,			5166	 }, // Twitch information on for chat
-	{ WWT_CHECKBOX,			2,	10,		299,	128,	139,	5167,			5168	 }, // Twitch chat !news as notifications in game
+	{ WWT_DROPDOWN_BUTTON,	2,	10,		299,	53,		64,		STR_TWITCH_NAME,			STR_NONE }, // Twitch channel name
+	{ WWT_CHECKBOX,			2,	10,		299,	68,		79,		STR_TWITCH_PEEP_FOLLOWERS,	STR_TWITCH_PEEP_FOLLOWERS_TIP }, // Twitch name peeps by follows
+	{ WWT_CHECKBOX,			2,	10,		299,	83,		94,		STR_TWITCH_FOLLOWERS_TRACK,	STR_TWITCH_FOLLOWERS_TRACK_TIP}, // Twitch information on for follows
+	{ WWT_CHECKBOX,			2,	10,		299,	98,		109,	STR_TWITCH_PEEP_CHAT,		STR_TWITCH_PEEP_CHAT_TIP	  }, // Twitch name peeps by chat
+	{ WWT_CHECKBOX,			2,	10,		299,	113,	124,	STR_TWITCH_CHAT_TRACK,		STR_TWITCH_CHAT_TRACK_TIP	  }, // Twitch information on for chat
+	{ WWT_CHECKBOX,			2,	10,		299,	128,	139,	STR_TWITCH_CHAT_NEWS,		STR_TWITCH_CHAT_NEWS_TIP	  }, // Twitch chat !news as notifications in game
 
 	{ WIDGETS_END },
 };
@@ -340,7 +340,7 @@ static void window_options_mouseup()
 		window_shortcut_keys_open();
 		break;
 	case WIDX_CHANNEL_BUTTON:
-		window_text_input_raw_open(w, widgetIndex, 5158, 5169, gConfigTwitch.channel, 32);
+		window_text_input_raw_open(w, widgetIndex, STR_TWITCH_NAME, STR_TWITCH_NAME_DESC, gConfigTwitch.channel, 32);
 		break;
 	case WIDX_SCREEN_EDGE_SCROLLING:
 		gConfigGeneral.edge_scrolling ^= 1;
