@@ -279,6 +279,7 @@ rct_map_element *map_element_insert(int x, int y, int z, int flags);
 int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *clearFunc, uint8 bl);
 int map_can_construct_at(int x, int y, int zLow, int zHigh, uint8 bl);
 int sub_6BA278(int ebx);
+money32 map_clear_scenery(int x0, int y0, int x1, int y1, int flags);
 
 void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
