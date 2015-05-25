@@ -5,6 +5,7 @@
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
 #include "../world/park.h"
+#include "../util/sawyercoding.h"
 #include "../config.h"
 #include "../cursors.h"
 #include "../game.h"
@@ -13,6 +14,8 @@
 #include "../object.h"
 #include "console.h"
 #include "window.h"
+#include "../world/scenery.h"
+#include "../management/research.h"
 
 #define CONSOLE_BUFFER_SIZE 8192
 #define CONSOLE_BUFFER_2_SIZE 256
@@ -48,6 +51,7 @@ static int console_parse_int(const char *src, bool *valid);
 static double console_parse_double(const char *src, bool *valid);
 
 static int cc_variables(const char **argv, int argc);
+static int cc_windows(const char **argv, int argc);
 static int cc_help(const char **argv, int argc);
 
 #define SET_FLAG(variable, flag, value) {if (value) variable |= flag; else variable &= ~flag;}
@@ -632,7 +636,6 @@ static int cc_set(const char **argv, int argc)
 	}
 	return 0;
 }
-
 static int cc_twitch(const char **argv, int argc)
 {
 #ifdef DISABLE_TWITCH
@@ -642,12 +645,154 @@ static int cc_twitch(const char **argv, int argc)
 #endif
 	return 0;
 }
+static void editor_load_selected_objects_console()
+{
+	uint8 *selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
+	rct_object_entry *installed_entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) == 0)
+		return;
+
+	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i != 0; i--, selection_flags++) {
+		if (*selection_flags & 1) {
+			uint8 entry_index, entry_type;
+			if (!find_object_in_entry_group(installed_entry, &entry_type, &entry_index)){
+				int chunk_size;
+				if (!object_load(-1, installed_entry, &chunk_size)) {
+					log_error("Failed to load entry %.8s", installed_entry->name);
+				}
+			}
+		}
+
+		installed_entry = object_get_next(installed_entry);
+	}
+}
+
+static int cc_load_object(const char **argv, int argc) {
+	if (argc > 0) {
+		char path[260];
+
+		subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), argv[0]);
+		// Require pointer to start of filename
+		char* last_char = path + strlen(path);
+		strcat(path, ".DAT\0");
+
+		rct_object_entry entry;
+		if (object_load_entry(path, &entry)) {
+			uint8 type = entry.flags & 0xF;
+			uint8 index;
+
+			if (check_object_entry(&entry)) {
+				if (!find_object_in_entry_group(&entry, &type, &index)){
+
+					int entryGroupIndex = 0;
+					for (; entryGroupIndex < object_entry_group_counts[type]; entryGroupIndex++){
+						if (object_entry_groups[type].chunks[entryGroupIndex] == (uint8*)-1){
+							break;
+						}
+					}
+
+					if (entryGroupIndex >= object_entry_group_counts[type]) {
+						console_writeline_error("Too many objects of that type.");
+					}
+					else {
+						// Load the obect
+						if (!object_load(entryGroupIndex, &entry, NULL)) {
+							console_writeline_error("Could not load object file.");
+						}
+						else {
+							reset_loaded_objects();
+							if (type == OBJECT_TYPE_RIDE) {
+								// Automatically research the ride so it's supported by the game.
+								rct_ride_type *rideEntry;
+								int rideType;
+
+								rideEntry = GET_RIDE_ENTRY(entryGroupIndex);
+
+								for (int j = 0; j < 3; j++) {
+									rideType = rideEntry->ride_type[j];
+									if (rideType != 255)
+										research_insert(true, 0x10000 | (rideType << 8) | entryGroupIndex, rideEntry->category[0]);
+								}
+
+								gSilentResearch = true;
+								sub_684AC3();
+								gSilentResearch = false;
+							}
+							else if (type == OBJECT_TYPE_SCENERY_SETS) {
+								rct_scenery_set_entry *scenerySetEntry;
+
+								scenerySetEntry = g_scenerySetEntries[entryGroupIndex];
+
+								research_insert(true, entryGroupIndex, RESEARCH_CATEGORY_SCENERYSET);
+
+								gSilentResearch = true;
+								sub_684AC3();
+								gSilentResearch = false;
+							}
+							scenery_set_default_placement_configuration();
+							window_new_ride_init_vars();
+
+							RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
+							gfx_invalidate_screen();
+							console_writeline("Object file loaded.");
+						}
+					}
+				}
+				else {
+					console_writeline_error("Object is already in scenario.");
+				}
+			}
+			else {
+				console_writeline_error("The object file was invalid.");
+			}
+		}
+		else {
+			console_writeline_error("Could not find the object file.");
+		}
+	}
+
+	return 0;
+}
+static int cc_object_count(const char **argv, int argc) {
+	const char* object_type_names[] = { "Rides", "Small scenery", "Large scenery", "Walls", "Banners", "Paths", "Path Additions", "Scenery groups", "Park entrances", "Water" };
+	for (int i = 0; i < 10; i++) {
+
+		int entryGroupIndex = 0;
+		for (; entryGroupIndex < object_entry_group_counts[i]; entryGroupIndex++){
+			if (object_entry_groups[i].chunks[entryGroupIndex] == (uint8*)-1){
+				break;
+			}
+		}
+		console_printf("%s: %d/%d", object_type_names[i], entryGroupIndex, object_entry_group_counts[i]);
+	}
+
+	return 0;
+}
+static int cc_open(const char **argv, int argc) {
+	if (argc > 0) {
+		if (strcmp(argv[0], "object_selection") == 0) {
+			// Only this window should be open for safety reasons
+			window_close_all();
+			window_editor_object_selection_open();
+		} else if (strcmp(argv[0], "inventions_list") == 0) {
+			window_editor_inventions_list_open();
+		} else if (strcmp(argv[0], "options") == 0) {
+			window_options_open();
+		} else {
+			console_writeline_error("Invalid window.");
+		}
+	}
+	return 0;
+}
+
 
 typedef int (*console_command_func)(const char **argv, int argc);
 typedef struct {
 	char *command;
 	console_command_func func;
 	char *help;
+	char *usage;
 } console_command;
 
 char* console_variable_table[] = {
@@ -678,17 +823,34 @@ char* console_variable_table[] = {
 	"test_unfinished_tracks",
 	"no_test_crashes"
 };
-
-console_command console_command_table[] = {
-	{ "clear", cc_clear, "Clears the console." },
-	{ "echo", cc_echo, "Echos the text to the console.\necho text" },
-	{ "help", cc_help, "Lists commands or info about a command.\nhelp [command]" },
-	{ "get", cc_get, "Gets the value of the specified variable.\nget variable" },
-	{ "set", cc_set, "Sets the variable to the specified value.\nset variable value" },
-	{ "twitch", cc_twitch, "Twitch API" },
-	{ "variables", cc_variables, "Lists all the variables that can be used with get and sometimes set." }
+char* console_window_table[] = {
+	"object_selection",
+	"inventions_list",
+	"options"
 };
 
+console_command console_command_table[] = {
+	{ "clear", cc_clear, "Clears the console." "clear"},
+	{ "echo", cc_echo, "Echos the text to the console.", "echo <text>" },
+	{ "help", cc_help, "Lists commands or info about a command.", "help [command]" },
+	{ "get", cc_get, "Gets the value of the specified variable.", "get <variable>" },
+	{ "set", cc_set, "Sets the variable to the specified value.", "set <variable> <value>" },
+	{ "open", cc_open, "Opens the window with the give name.", "open <window>." },
+	{ "variables", cc_variables, "Lists all the variables that can be used with get and sometimes set.", "variables" },
+	{ "windows", cc_windows, "Lists all the windows that can be opened.", "windows" },
+	{ "load_object", cc_load_object, "Loads the object file into the scenario.\n"
+									"Loading a scenery group will not load its associated objects.\n"
+									"This is a safer method opposed to \"open object_selection\".", 
+									"load_object <objectfilenodat>" },
+	{ "object_count", cc_object_count, "Shows the number of objects of each type in the scenario.", "object_count" },
+	{ "twitch", cc_twitch, "Twitch API" }
+};
+
+static int cc_windows(const char **argv, int argc) {
+	for (int i = 0; i < countof(console_window_table); i++)
+		console_writeline(console_window_table[i]);
+	return 0;
+}
 static int cc_variables(const char **argv, int argc)
 {
 	for (int i = 0; i < countof(console_variable_table); i++)
@@ -700,8 +862,10 @@ static int cc_help(const char **argv, int argc)
 {
 	if (argc > 0) {
 		for (int i = 0; i < countof(console_command_table); i++) {
-			if (strcmp(console_command_table[i].command, argv[0]) == 0)
+			if (strcmp(console_command_table[i].command, argv[0]) == 0) {
 				console_writeline(console_command_table[i].help);
+				console_printf("\nUsage:   %s", console_command_table[i].usage);
+			}
 		}
 	}
 	else {

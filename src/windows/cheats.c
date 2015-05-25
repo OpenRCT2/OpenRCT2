@@ -150,7 +150,7 @@ static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(4), HPL(4),		2755,			STR_NONE},					// Fix vandalism
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(5), HPL(5),		2756,			STR_NONE},					// Remove litter
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(0), HPL(0),		2766,			STR_NONE},					// Win scenario
-	{ WWT_CHECKBOX,			1, XPL(0),    OWPL, YPL(8),OHPL(8),		5155,			STR_NONE}, 					// Unlock all prices
+	{ WWT_CHECKBOX,			1, XPL(0),    OWPL, YPL(8),OHPL(8),		5157,			STR_NONE}, 					// Unlock all prices
 	{ WIDGETS_END },
 };
 static rct_widget window_cheats_rides_widgets[] = {

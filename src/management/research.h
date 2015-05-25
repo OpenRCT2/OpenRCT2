@@ -60,6 +60,7 @@ enum {
 
 extern rct_research_item *gResearchItems;
 extern uint8 gResearchUncompletedCategories;
+extern bool gSilentResearch;
 
 void research_reset_items();
 void research_update_uncompleted_types();
@@ -67,9 +68,12 @@ void research_update();
 void sub_684AC3();
 void research_remove_non_separate_vehicle_types();
 void research_populate_list_random();
+void research_populate_list_researched();
 
 void research_set_funding(int amount);
 void research_set_priority(int activeCategories);
 void game_command_set_research_funding(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void research_finish_item(sint32 entryIndex);
+void research_insert(int researched, int entryIndex, int category);
 
 #endif

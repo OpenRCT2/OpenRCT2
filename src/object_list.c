@@ -385,7 +385,7 @@ static int object_list_cache_save(int fileCount, uint64 totalFileSize, int fileD
 	return 1;
 }
 
-static int check_object_entry(rct_object_entry *entry)
+int check_object_entry(rct_object_entry *entry)
 {
 	uint32 *dwords = (uint32*)entry;
 	return (0xFFFFFFFF & dwords[0] & dwords[1] & dwords[2] & dwords[3]) + 1 != 0;

@@ -449,6 +449,7 @@ void window_close_by_class(rct_windowclass cls);
 void window_close_by_number(rct_windowclass cls, rct_windownumber number);
 void window_close_top();
 void window_close_all();
+void window_close_all_except_class(rct_windowclass cls);
 rct_window *window_find_by_class(rct_windowclass cls);
 rct_window *window_find_by_number(rct_windowclass cls, rct_windownumber number);
 rct_window *window_find_from_point(int x, int y);

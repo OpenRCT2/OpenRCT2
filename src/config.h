@@ -105,6 +105,11 @@ enum {
 	AUTOSAVE_NEVER
 };
 
+enum {
+	DATE_FORMAT_DMY,
+	DATE_FORMAT_MDY
+};
+
 typedef struct {
 	uint8 play_intro;
 	uint8 confirmation_prompt;
@@ -133,6 +138,7 @@ typedef struct {
 	uint8 hardware_display;
 	uint8 test_unfinished_tracks;
 	uint8 no_test_crashes;
+	uint8 date_format;
 } general_configuration;
 
 typedef struct {

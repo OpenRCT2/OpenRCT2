@@ -245,19 +245,26 @@ static void window_editor_object_selection_close()
 	rct_window* w;
 	window_get_register(w);
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 
-		(SCREEN_FLAGS_SCENARIO_EDITOR | 
-		SCREEN_FLAGS_TRACK_DESIGNER | 
-		SCREEN_FLAGS_TRACK_MANAGER))
-		)return;
+	//if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR))
+	//	return;
 
 	RCT2_CALLPROC_EBPSAFE(0x6ABB66);
 	editor_load_selected_objects();
 	reset_loaded_objects();
 	object_free_scenario_text();
 	RCT2_CALLPROC_EBPSAFE(0x6AB316);
-	research_populate_list_random();
-	research_remove_non_separate_vehicle_types();
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR) {
+		research_populate_list_random();
+		research_remove_non_separate_vehicle_types();
+	}
+	else {
+		// Used for in-game object selection cheat
+		research_reset_items();
+		research_populate_list_researched();
+		gSilentResearch = true;
+		sub_684AC3();
+		gSilentResearch = false;
+	}
 	window_new_ride_init_vars();
 }
 
@@ -274,7 +281,13 @@ static void window_editor_object_selection_mouseup()
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
-		game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR) {
+			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
+		}
+		else {
+			// Used for in-game object selection cheat
+			window_close(w);
+		}
 		break;
 
 	case WIDX_TAB_1:
@@ -340,6 +353,10 @@ static void window_editor_object_selection_scroll_mousedown()
 
 	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
+	// Used for in-game object selection cheat to prevent crashing the game
+	// when windows attempt to draw objects that don't exist any more
+	window_close_all_except_class(WC_EDITOR_OBJECT_SELECTION);
+
 	uint8 object_selection_flags;
 	rct_object_entry* installed_entry;
 	int selected_object = get_object_from_object_selection((w->selected_tab & 0xFF), y, &object_selection_flags, &installed_entry);
@@ -349,6 +366,7 @@ static void window_editor_object_selection_scroll_mousedown()
 	window_invalidate(w);
 
 	sound_play_panned(SOUND_CLICK_1, RCT2_GLOBAL(0x142406C,uint32), 0, 0, 0);
+
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
 		if (!window_editor_object_selection_select_object(1, installed_entry))

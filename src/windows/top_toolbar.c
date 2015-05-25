@@ -68,7 +68,8 @@ typedef enum {
 	DDIDX_ABOUT = 3,
 	DDIDX_OPTIONS = 4,
 	DDIDX_SCREENSHOT = 5,
-	DDIDX_QUIT_GAME = 7,
+	DDIDX_QUIT_TO_MENU = 7,
+	DDIDX_EXIT_OPENRCT2 = 8,
 } FILE_MENU_DDIDX;
 
 typedef enum {
@@ -311,11 +312,12 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			gDropdownItemsFormat[2] = STR_SCREENSHOT;
 			gDropdownItemsFormat[3] = 0;
 			gDropdownItemsFormat[4] = STR_QUIT_TRACK_DESIGNS_MANAGER;
+			gDropdownItemsFormat[5] = STR_EXIT_OPENRCT2;
 
 			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
 				gDropdownItemsFormat[4] = STR_QUIT_ROLLERCOASTER_DESIGNER;
 
-			numItems = 5;
+			numItems = 6;
 		} else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
 			gDropdownItemsFormat[0] = STR_LOAD_LANDSCAPE;
 			gDropdownItemsFormat[1] = STR_SAVE_LANDSCAPE;
@@ -325,7 +327,8 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			gDropdownItemsFormat[5] = STR_SCREENSHOT;
 			gDropdownItemsFormat[6] = 0;
 			gDropdownItemsFormat[7] = STR_QUIT_SCENARIO_EDITOR;
-			numItems = 8;
+			gDropdownItemsFormat[8] = STR_EXIT_OPENRCT2;
+			numItems = 9;
 		} else {
 			gDropdownItemsFormat[0] = STR_LOAD_GAME;
 			gDropdownItemsFormat[1] = STR_SAVE_GAME;
@@ -334,8 +337,9 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			gDropdownItemsFormat[4] = STR_OPTIONS;
 			gDropdownItemsFormat[5] = STR_SCREENSHOT;
 			gDropdownItemsFormat[6] = 0;
-			gDropdownItemsFormat[7] = STR_QUIT_GAME;
-			numItems = 8;
+			gDropdownItemsFormat[7] = STR_QUIT_TO_MENU;
+			gDropdownItemsFormat[8] = STR_EXIT_OPENRCT2;
+			numItems = 9;
 		}
 		window_dropdown_show_text(
 			w->x + widget->left,
@@ -413,10 +417,13 @@ static void window_top_toolbar_dropdown()
 		case DDIDX_SCREENSHOT:
 			RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, sint8) = 10;
 			break;
-		case DDIDX_QUIT_GAME:
+		case DDIDX_QUIT_TO_MENU:
 			window_close_by_class(WC_MANAGE_TRACK_DESIGN);
 			window_close_by_class(WC_TRACK_DELETE_PROMPT);
 			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
+			break;
+		case DDIDX_EXIT_OPENRCT2:
+			rct2_quit();
 			break;
 		}
 		break;

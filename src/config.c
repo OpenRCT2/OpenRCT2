@@ -134,6 +134,12 @@ config_enum_definition _languageEnum[] = {
 	END_OF_ENUM
 };
 
+config_enum_definition _dateFormatEnum[] = {
+	{ "DD/MM/YY", DATE_FORMAT_DMY },
+	{ "MM/DD/YY", DATE_FORMAT_MDY },
+	END_OF_ENUM
+};
+
 #pragma endregion
 
 #pragma region Section / property definitions
@@ -164,6 +170,7 @@ config_property_definition _generalDefinitions[] = {
 	{ offsetof(general_configuration, hardware_display),				"hardware_display",				CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(general_configuration, test_unfinished_tracks),			"test_unfinished_tracks",		CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(general_configuration, no_test_crashes),					"no_test_crashes",				CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(general_configuration, date_format),						"date_format",					CONFIG_VALUE_TYPE_UINT8,		DATE_FORMAT_DMY,				_dateFormatEnum			},
 };
 
 config_property_definition _interfaceDefinitions[] = {
