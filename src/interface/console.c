@@ -1,5 +1,6 @@
 #include <stdarg.h>
 #include <SDL_scancode.h>
+
 #include "../addresses.h"
 #include "../drawing/drawing.h"
 #include "../localisation/localisation.h"
@@ -10,11 +11,12 @@
 #include "../cursors.h"
 #include "../game.h"
 #include "../input.h"
+#include "../network/twitch.h"
 #include "../object.h"
-#include "console.h"
-#include "window.h"
 #include "../world/scenery.h"
 #include "../management/research.h"
+#include "console.h"
+#include "window.h"
 
 #define CONSOLE_BUFFER_SIZE 8192
 #define CONSOLE_BUFFER_2_SIZE 256
@@ -635,6 +637,15 @@ static int cc_set(const char **argv, int argc)
 	}
 	return 0;
 }
+static int cc_twitch(const char **argv, int argc)
+{
+#ifdef DISABLE_TWITCH
+	console_writeline_error("OpenRCT2 build not compiled with Twitch integeration.");
+#else
+	// TODO add some twitch commands
+#endif
+	return 0;
+}
 static void editor_load_selected_objects_console()
 {
 	uint8 *selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
@@ -694,7 +705,6 @@ static int cc_load_object(const char **argv, int argc) {
 							reset_loaded_objects();
 							if (type == OBJECT_TYPE_RIDE) {
 								// Automatically research the ride so it's supported by the game.
-
 								rct_ride_type *rideEntry;
 								int rideType;
 
@@ -833,7 +843,8 @@ console_command console_command_table[] = {
 									"Loading a scenery group will not load its associated objects.\n"
 									"This is a safer method opposed to \"open object_selection\".", 
 									"load_object <objectfilenodat>" },
-	{ "object_count", cc_object_count, "Shows the number of objects of each type in the scenario.", "object_count" }
+	{ "object_count", cc_object_count, "Shows the number of objects of each type in the scenario.", "object_count" },
+	{ "twitch", cc_twitch, "Twitch API" }
 };
 
 static int cc_windows(const char **argv, int argc) {

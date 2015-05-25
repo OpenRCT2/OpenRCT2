@@ -13,6 +13,12 @@
     <Filter Include="lodepng">
       <UniqueIdentifier>{7f953e55-d294-4158-b309-67f41fa82760}</UniqueIdentifier>
     </Filter>
+    <Filter Include="libcurl">
+      <UniqueIdentifier>{7b46a2d6-1095-4e7a-b98b-006b832ef7a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="jansson">
+      <UniqueIdentifier>{16ee6cb9-307a-4e8a-8261-a69d91b17739}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\lib\argparse\argparse.c">
@@ -23,6 +29,39 @@
     </ClCompile>
     <ClCompile Include="..\..\lib\lodepng\lodepng.c">
       <Filter>lodepng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\jansson\jansson\dump.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\jansson\jansson\error.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\jansson\jansson\hashtable.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\jansson\jansson\hashtable_seed.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\jansson\jansson\load.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\jansson\jansson\memory.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\jansson\jansson\pack_unpack.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\jansson\jansson\strbuffer.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\jansson\jansson\strconv.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\jansson\jansson\utf.c">
+      <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\jansson\jansson\value.c">
+      <Filter>jansson</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -49,6 +88,30 @@
     </ClInclude>
     <ClInclude Include="..\..\lib\lodepng\lodepng.h">
       <Filter>lodepng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\jansson\jansson_config.h">
+      <Filter>jansson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\jansson\jansson_private_config.h">
+      <Filter>jansson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\jansson\jansson\hashtable.h">
+      <Filter>jansson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\jansson\jansson\jansson.h">
+      <Filter>jansson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\jansson\jansson\jansson_private.h">
+      <Filter>jansson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\jansson\jansson\lookup3.h">
+      <Filter>jansson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\jansson\jansson\strbuffer.h">
+      <Filter>jansson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\jansson\jansson\utf.h">
+      <Filter>jansson</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

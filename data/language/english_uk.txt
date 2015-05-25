@@ -3497,3 +3497,16 @@ STR_5160    :{MONTH} {STRINGID}, Year {COMMA16}
 STR_5161    :{WHITE}Date Format:
 STR_5162    :Day/Month/Year
 STR_5163    :Month/Day/Year
+STR_5164    :Twitch Channel name
+STR_5165    :Name peeps after followers
+STR_5166    :Will name peeps after channel's Twitch followers
+STR_5167    :Track follower peeps
+STR_5168    :Will turn on tracking information for guests named after channel's Twitch followers
+STR_5169    :Name peeps after people in Twitch chat
+STR_5170    :Will name peeps after people in Twitch chat
+STR_5171    :Track chat peeps
+STR_5172    :Will turn on tracking information for guests named after Twitch chat participants
+STR_5173    :Pull Twitch chat as news
+STR_5174    :Will use Twitch chat messages preceded by !news for in game notifications
+STR_5175    :Input the name of your Twitch channel
+STR_5176    :Enable Twitch integration
