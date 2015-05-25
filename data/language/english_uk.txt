@@ -3493,3 +3493,7 @@ STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the t
 STR_5157    :Unlock all prices
 STR_5158    :Quit to menu
 STR_5159    :Exit OpenRCT2
+STR_5160    :{MONTH} {STRINGID}, Year {COMMA16}
+STR_5161    :{WHITE}Date Format:
+STR_5162    :Day/Month/Year
+STR_5163    :Month/Day/Year

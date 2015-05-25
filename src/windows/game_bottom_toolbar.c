@@ -498,13 +498,19 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	int year = date_get_year(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)) + 1;
 	int month = date_get_month(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7);
 	int day = ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) * days_in_month[month]) >> 16) & 0xFF;
-		
-	RCT2_GLOBAL(0x013CE952, short) = STR_DATE_DAY_1 + day;
-	RCT2_GLOBAL(0x013CE954, short) = month;
+	if (gConfigGeneral.date_format) {
+		RCT2_GLOBAL(0x013CE952, short) = month;
+		RCT2_GLOBAL(0x013CE954, short) = STR_DATE_DAY_1 + day;
+	}
+	else {
+		RCT2_GLOBAL(0x013CE952, short) = STR_DATE_DAY_1 + day;
+		RCT2_GLOBAL(0x013CE954, short) = month;
+	}
+	
 	RCT2_GLOBAL(0x013CE956, short) = year;
 	gfx_draw_string_centred(
 		dpi,
-		2737,
+		(gConfigGeneral.date_format ? 5160 : 2737),
 		x,
 		y,
 		(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) == 2 && RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, sint32) == WIDX_DATE ? 2 : w->colours[0] & 0x7F),
