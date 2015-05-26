@@ -209,6 +209,9 @@ void toggle_land_window(rct_window *topToolbar, int widgetIndex);
 void toggle_clear_scenery_window(rct_window *topToolbar, int widgetIndex);
 void toggle_water_window(rct_window *topToolbar, int widgetIndex);
 
+money32 selection_lower_land(uint8 flags);
+money32 selection_raise_land(uint8 flags);
+
 static bool _menuDropdownIncludesTwitch;
 
 /**
@@ -1620,6 +1623,176 @@ void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
 }
 
 /**
+*
+*  rct2: 0x00664280
+*/
+void top_toolbar_tool_update_land(sint16 x, sint16 y){
+	map_invalidate_selection_rect();
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) == 3){
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0)))
+			return;
+
+		money32 lower_cost = selection_lower_land(0);
+		money32 raise_cost = selection_raise_land(0);
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) != raise_cost || 
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) != lower_cost){
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) = raise_cost;
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) = lower_cost;
+			window_invalidate_by_class(WC_LAND);
+		}
+		return;
+	}
+
+	sint16 tool_size = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+	rct_xy16 mapTile = { .x = x, .y = y };
+
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
+	if (tool_size == 1){
+		int direction;
+		screen_pos_to_map_pos(&mapTile.x, &mapTile.y, &direction);
+
+		if (mapTile.x == (sint16)0x8000){
+			money32 lower_cost = MONEY32_UNDEFINED;
+			money32 raise_cost = MONEY32_UNDEFINED;
+
+			if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) != raise_cost ||
+				RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) != lower_cost){
+				RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) = raise_cost;
+				RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) = lower_cost;
+				window_invalidate_by_class(WC_LAND);
+			}
+			return;
+		}
+
+		uint8 state_changed = 0;
+
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0))){
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
+			state_changed++;
+		}
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) != direction){
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = direction;
+			state_changed++;
+		}
+
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) != mapTile.x){
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) = mapTile.x;
+			state_changed++;
+		}
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) != mapTile.y){
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) = mapTile.y;
+			state_changed++;
+		}
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) != mapTile.x){
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) = mapTile.x;
+			state_changed++;
+		}
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) != mapTile.y){
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) = mapTile.y;
+			state_changed++;
+		}
+
+		map_invalidate_selection_rect();
+		if (!state_changed)
+			return;
+
+		money32 lower_cost = selection_lower_land(0);
+		money32 raise_cost = selection_raise_land(0);
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) != raise_cost ||
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) != lower_cost){
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) = raise_cost;
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) = lower_cost;
+			window_invalidate_by_class(WC_LAND);
+		}
+		return;
+	}
+
+	sub_688972(x, y, &mapTile.x, &mapTile.y, NULL);
+
+	if (mapTile.x == (sint16)0x8000){
+		money32 lower_cost = MONEY32_UNDEFINED;
+		money32 raise_cost = MONEY32_UNDEFINED;
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) != raise_cost ||
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) != lower_cost){
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) = raise_cost;
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) = lower_cost;
+			window_invalidate_by_class(WC_LAND);
+		}
+		return;
+	}
+
+	uint8 state_changed = 0;
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0))){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
+		state_changed++;
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) != 4){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
+		state_changed++;
+	}
+
+	
+	if (tool_size == 0)
+		tool_size = 1;
+
+	sint16 tool_length = (tool_size - 1) * 32;
+
+	// Move to tool bottom left
+	mapTile.x -= (tool_size - 1) * 16;
+	mapTile.y -= (tool_size - 1) * 16;
+	mapTile.x &= 0xFFE0;
+	mapTile.y &= 0xFFE0;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) != mapTile.x){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) = mapTile.x;
+		state_changed++;
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) != mapTile.y){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) = mapTile.y;
+		state_changed++;
+	}
+
+	mapTile.x += tool_length;
+	mapTile.y += tool_length;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) != mapTile.x){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) = mapTile.x;
+		state_changed++;
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) != mapTile.y){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) = mapTile.y;
+		state_changed++;
+	}
+
+	map_invalidate_selection_rect();
+	if (!state_changed)
+		return;
+
+	money32 lower_cost = selection_lower_land(0);
+	money32 raise_cost = selection_raise_land(0);
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) != raise_cost ||
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) != lower_cost){
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) = raise_cost;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) = lower_cost;
+		window_invalidate_by_class(WC_LAND);
+	}
+}
+
+/**
  *
  *  rct2: 0x0066CB25
  */
@@ -1640,7 +1813,7 @@ static void window_top_toolbar_tool_update()
 			// Create a new version for this instance as scenery_clear is silly for this
 			RCT2_CALLPROC_X(0x0068E213, x, y, 0, widgetIndex, (int)w, 0, 0);
 		else
-			RCT2_CALLPROC_X(0x00664280, x, y, 0, widgetIndex, (int)w, 0, 0);
+			top_toolbar_tool_update_land(x, y);
 		break;
 	case WIDX_WATER:
 		RCT2_CALLPROC_X(0x006E6BDC, x, y, 0, widgetIndex, (int)w, 0, 0);
@@ -1709,7 +1882,7 @@ static void window_top_toolbar_tool_down(){
 *  
 *  rct2: 0x006644DD
 */
-void selection_raise_land(uint8 flags){
+money32 selection_raise_land(uint8 flags){
 	int center_x = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) +
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16)
 		) / 2;
@@ -1730,12 +1903,12 @@ void selection_raise_land(uint8 flags){
 	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) == 0) {
 		int di = 1;
 
-		game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_EDIT_LAND_SMOOTH, di, bp);
+		return game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_EDIT_LAND_SMOOTH, di, bp);
 	}
 	else {
 		int di = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16);
 
-		game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_RAISE_LAND, di, bp);
+		return game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_RAISE_LAND, di, bp);
 	}
 }
 
@@ -1743,7 +1916,7 @@ void selection_raise_land(uint8 flags){
 *
 *  rct2: 0x006645B3
 */
-void selection_lower_land(uint8 flags){
+money32 selection_lower_land(uint8 flags){
 	int center_x = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) + 
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16)
 		) / 2;
@@ -1764,11 +1937,11 @@ void selection_lower_land(uint8 flags){
 	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) == 0) {
 		int di = 0xFFFF;
 
-		game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_EDIT_LAND_SMOOTH, di, bp);
+		return game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_EDIT_LAND_SMOOTH, di, bp);
 	} else {
 		int di = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16);
 
-		game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_LOWER_LAND, di, bp);
+		return game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_LOWER_LAND, di, bp);
 	}
 }
 
