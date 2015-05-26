@@ -465,15 +465,13 @@ static void window_map_update(rct_window *w)
 */
 static void window_map_scrollgetsize()
 {
+	int width, height;
+
 	window_map_invalidate();
 
-	#ifdef _MSC_VER
-	__asm mov ecx, 512
-	__asm mov edx, 512
-	#else
-	__asm__ ( "mov ecx, 512 " );
-	__asm__ ( "mov edx, 512 " );
-	#endif
+	width = 512;
+	height = 512;
+	window_scrollsize_set_registers(width, height);
 }
 
 /**

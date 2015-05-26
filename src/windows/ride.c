@@ -5081,18 +5081,7 @@ static void window_ride_graphs_scrollgetheight()
 	if (measurement != NULL)
 		width = max(width, measurement->num_items);
 
-	// Return size
-	#ifdef _MSC_VER
-	__asm mov ecx, width
-	#else
-	__asm__ ( "mov ecx, 0 "  );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov edx, height
-	#else
-	__asm__ ( "mov edx, %[height] " : [height] "+m" (height) );
-	#endif
+	window_scrollsize_set_registers(width, height);
 }
 
 /**
@@ -5115,12 +5104,12 @@ static void window_ride_graphs_15()
 static void window_ride_graphs_tooltip()
 {
 	rct_window *w;
-	short unused, widgetIndex, result;
+	short widgetIndex, result;
 	rct_ride *ride;
 	rct_ride_measurement *measurement;
 	rct_string_id stringId;
 
-	window_dropdown_get_registers(w, unused, widgetIndex);
+	window_tooltip_get_registers(w, widgetIndex);
 
 	result = -1;
 	if (widgetIndex == WIDX_GRAPH) {
@@ -5136,11 +5125,7 @@ static void window_ride_graphs_tooltip()
 		}
 	}
 
-	#ifdef _MSC_VER
-		__asm mov ax, result
-	#else
-		__asm__ ( "mov ax, %[result] " : [result] "+m" (result) );
-	#endif
+	window_tooltip_set_registers(result);
 }
 
 /**

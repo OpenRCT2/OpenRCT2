@@ -1979,7 +1979,7 @@ static void window_park_awards_paint()
 
 	count = 0;
 	for (i = 0; i < MAX_AWARDS; i++) {
-		award = &RCT2_ADDRESS(RCT2_ADDRESS_AWARD_LIST, rct_award)[i];
+		award = &gCurrentAwards[i];
 		if (award->time == 0)
 			continue;
 

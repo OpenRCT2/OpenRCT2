@@ -130,13 +130,11 @@ static void window_music_credits_mouseup()
  */
 static void window_music_credits_scrollgetsize()
 {
-	int y = 560;
+	int width, height;
 
-	#ifdef _MSC_VER
-	__asm mov edx, y
-	#else
-	__asm__("mov edx, %[y] " : [y] "+m" (y));
-	#endif
+	width = 0;
+	height = 560;
+	window_scrollsize_set_registers(width, height);
 }
 
 /**

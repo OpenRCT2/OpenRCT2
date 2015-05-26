@@ -418,7 +418,7 @@ static void window_guest_list_update(rct_window *w)
  */
 static void window_guest_list_scrollgetsize()
 {
-	int i, y, numGuests, spriteIndex;
+	int i, y, numGuests, spriteIndex, width, height;
 	rct_window *w;
 	rct_peep *peep;
 
@@ -469,18 +469,10 @@ static void window_guest_list_scrollgetsize()
 		window_invalidate(w);
 	}
 
-	#ifdef _MSC_VER
-	__asm mov ecx, 447
-	#else
-	__asm__ ( "mov ecx, 447 "  );
-	#endif
+	width = 447;
+	height = y;
 
-	#ifdef _MSC_VER
-	__asm mov edx, y
-	#else
-	__asm__ ( "mov edx, %[y] " : [y] "+m" (y) );
-	#endif
-
+	window_scrollsize_set_registers(width, height);
 }
 
 /**

@@ -435,7 +435,7 @@ static int park_calculate_guest_generation_probability()
 
 	// Reward or penalties for park awards
 	for (i = 0; i < MAX_AWARDS; i++) {
-		rct_award *award = &RCT2_ADDRESS(RCT2_ADDRESS_AWARD_LIST, rct_award)[i];
+		rct_award *award = &gCurrentAwards[i];
 		if (award->time == 0)
 			continue;
 

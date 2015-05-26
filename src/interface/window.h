@@ -659,6 +659,13 @@ int window_can_resize(rct_window *w);
 	#define window_cursor_set_registers(cursorId)										\
 		__asm mov ebx, cursorId
 
+	#define window_tooltip_get_registers(w, widgetIndex)								\
+		__asm mov widgetIndex, ax														\
+		__asm mov w, esi
+
+	#define window_tooltip_set_registers(value)											\
+		__asm mov ax, value
+
 #else
 	#define window_get_register(w)														\
 		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
@@ -721,6 +728,13 @@ int window_can_resize(rct_window *w);
 
 	#define window_cursor_set_registers(cursorId)										\
 		__asm__ ( "mov ebx, %[cursorId] " : [cursorId] "+m" (cursorId) );
+
+	#define window_tooltip_get_registers(w, widgetIndex)								\
+		__asm__ ( "mov %["#widgetIndex"], ax " : [widgetIndex] "+m" (widgetIndex) );	\
+		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
+
+	#define window_tooltip_set_registers(value)											\
+		__asm__ ( "mov ax, %[value] " : [value] "+m" (value) );
 #endif
 
 #endif
