@@ -3484,3 +3484,12 @@ STR_5151    :.
 STR_5152    :,
 STR_5153    :RCT1-kleurenschema
 STR_5154    :Weergave uitgevoerd door hardware
+STR_5155    :Testen van onvoltooide banen toestaan
+STR_5156    :{SMALLFONT}{BLACK}Maakt het mogelijk om de meeste attractietypes te testen, zelfs als de baan niet voltooid is. Werkt niet als de baan gebruik maakt van een blokremmodus.
+STR_5157    :Alle prijzen ontgrendelen
+STR_5158    :Terug naar het hoofdmenu
+STR_5159    :OpenRCT2 afsluiten
+STR_5160    :{MONTH} {STRINGID}, jaar {COMMA16}
+STR_5161    :{WHITE}Datumnotatie:
+STR_5162    :Dag/maand/jaar
+STR_5163    :Maand/dag/jaar
