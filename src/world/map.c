@@ -1732,6 +1732,12 @@ void game_command_remove_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 			return;
 		}
 	}
+
+	if (!(*ebx & GAME_COMMAND_FLAG_APPLY)){
+		*ebx = 0;
+		return;
+	}
+
 	rct_scenery_entry* scenery_entry = RCT2_ADDRESS(RCT2_ADDRESS_WALL_SCENERY_ENTRIES, rct_scenery_entry*)[map_element->properties.fence.type];
 	if(scenery_entry->wall.var_0D != 0xFF){
 		rct_banner* banner = &gBanners[map_element->properties.fence.item[0]];

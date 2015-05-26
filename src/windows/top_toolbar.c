@@ -1539,7 +1539,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 *
 *  rct2: 0x0068E213
 */
-void sub_68E213(sint16 x, sint16 y){
+void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
 	map_invalidate_selection_rect();
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
 
@@ -1550,8 +1550,8 @@ void sub_68E213(sint16 x, sint16 y){
 		if (RCT2_GLOBAL(0x00F1AD62, money32) != MONEY32_UNDEFINED){
 			RCT2_GLOBAL(0x00F1AD62, money32) = MONEY32_UNDEFINED;
 			window_invalidate_by_class(WC_CLEAR_SCENERY);
-			return;
 		}
+		return;
 	}
 
 	uint8 state_changed = 0;
@@ -1606,10 +1606,10 @@ void sub_68E213(sint16 x, sint16 y){
 		return;
 
 	money32 cost = map_clear_scenery(
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) / 32,
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) / 32,
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) / 32,
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) / 32,
 		0);
 
 	if (RCT2_GLOBAL(0x00F1AD62, money32) != cost){
@@ -1633,11 +1633,11 @@ static void window_top_toolbar_tool_update()
 
 	switch (widgetIndex){
 	case WIDX_CLEAR_SCENERY:
-		sub_68E213(x, y);
+		top_toolbar_tool_update_scenery_clear(x, y);
 		break;
 	case WIDX_LAND:
 		if (LandPaintMode)
-			// Use the method that allows dragging the selection area
+			// Create a new version for this instance as scenery_clear is silly for this
 			RCT2_CALLPROC_X(0x0068E213, x, y, 0, widgetIndex, (int)w, 0, 0);
 		else
 			RCT2_CALLPROC_X(0x00664280, x, y, 0, widgetIndex, (int)w, 0, 0);
