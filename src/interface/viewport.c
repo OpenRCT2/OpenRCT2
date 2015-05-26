@@ -1665,9 +1665,9 @@ void screen_pos_to_map_pos(sint16 *x, sint16 *y, int *direction)
 			}
 		} else {
 			if (mod_y < 16) {
-				my_direction = 0;
-			} else {
 				my_direction = 1;
+			} else {
+				my_direction = 0;
 			}
 		}
 	}
