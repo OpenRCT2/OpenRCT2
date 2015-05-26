@@ -175,6 +175,10 @@ typedef struct {
 } twitch_configuration;
 
 typedef struct {
+	uint8 window_palettes[][6];
+} colour_schemes_configuration;
+
+typedef struct {
 	uint8 key;
 	uint8 modifier;
 } shortcut_entry;
@@ -184,6 +188,7 @@ extern interface_configuration gConfigInterface;
 extern sound_configuration gConfigSound;
 extern cheat_configuration gConfigCheat;
 extern twitch_configuration gConfigTwitch;
+extern colour_schemes_configuration gConfigColourSchemes;
 
 extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 

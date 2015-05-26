@@ -404,7 +404,8 @@ enum {
 	WC_LOADSAVE = 115,
 	WC_LOADSAVE_OVERWRITE_PROMPT = 116,
 	WC_TITLE_OPTIONS = 117,
-	WC_LAND_RIGHTS = 118
+	WC_LAND_RIGHTS = 118,
+	WC_COLOUR_SCHEMES = 119,
 } WINDOW_CLASS;
 
 enum PROMPT_MODE {
@@ -560,6 +561,7 @@ void window_music_credits_open();
 void window_publisher_credits_open();
 void window_track_manage_open();
 void window_viewport_open();
+void window_window_palettes_open();
 void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uint32 existing_args, int maxLength);
 void window_text_input_raw_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, int maxLength);
 rct_window *window_mapgen_open();

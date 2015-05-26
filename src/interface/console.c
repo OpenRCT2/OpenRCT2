@@ -780,7 +780,10 @@ static int cc_open(const char **argv, int argc) {
 			window_editor_inventions_list_open();
 		} else if (strcmp(argv[0], "options") == 0) {
 			window_options_open();
-		} else {
+		} else if (strcmp(argv[0], "window_palettes") == 0) {
+			window_window_palettes_open();
+		}
+		else {
 			console_writeline_error("Invalid window.");
 		}
 	}
@@ -827,7 +830,8 @@ char* console_variable_table[] = {
 char* console_window_table[] = {
 	"object_selection",
 	"inventions_list",
-	"options"
+	"options",
+	"window_palettes"
 };
 
 console_command console_command_table[] = {

@@ -450,6 +450,12 @@
     <ClCompile Include="..\src\network\http.cpp">
       <Filter>Source\Network</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\windows\colour_schemes.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interface\colour_schemes.c">
+      <Filter>Source\Interface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">
@@ -661,6 +667,9 @@
     </ClInclude>
     <ClInclude Include="..\src\network\twitch.h">
       <Filter>Source\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\interface\colour_schemes.h">
+      <Filter>Source\Interface</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
