@@ -1,6 +1,6 @@
 0.0.2-beta (2015-05-22)
 ------------------------------------------------------------------------
-- Feature: Show month before day (e.g. March 14, year 15)
+- Feature: Show month before day (e.g. March 14th, year 15)
 - Feature: Change available object in-game (only available from console)
 - Feature: Exit OpenRCT2 to desktop
 - Feature: Allow testing of incomplete tracks
