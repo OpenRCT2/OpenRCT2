@@ -102,7 +102,7 @@ void update_palette_effects()
 		if ((sint32)water_type != -1) {
 			palette = water_type->image_id;
 		}
-		rct_g1_element g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[palette];
+		rct_g1_element g1_element = g1Elements[palette];
 		int xoffset = g1_element.x_offset;
 		xoffset = xoffset * 4;
 		for (int i = 0; i < g1_element.width; i++) {
@@ -123,7 +123,7 @@ void update_palette_effects()
 				palette = water_type->image_id;
 			}
 
-			rct_g1_element g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[palette];
+			rct_g1_element g1_element = g1Elements[palette];
 			int xoffset = g1_element.x_offset;
 			xoffset = xoffset * 4;
 			for (int i = 0; i < g1_element.width; i++) {
@@ -148,7 +148,7 @@ void update_palette_effects()
 		if ((sint32)water_type != -1) {
 			p = water_type->var_06;
 		}
-		rct_g1_element g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[q + p];
+		rct_g1_element g1_element = g1Elements[q + p];
 		uint8* vs = &g1_element.offset[j * 3];
 		uint8* vd = RCT2_ADDRESS(0x01424A18, uint8);
 		int n = 5;
@@ -167,7 +167,7 @@ void update_palette_effects()
 		if ((sint32)water_type != -1) {
 			p = water_type->var_0A;
 		}
-		g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[q + p];
+		g1_element = g1Elements[q + p];
 		vs = &g1_element.offset[j * 3];
 		n = 5;
 		for (int i = 0; i < n; i++) {
@@ -183,7 +183,7 @@ void update_palette_effects()
 
 		j = ((uint16)(RCT2_GLOBAL(RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO, uint32) * -960) * 3) >> 16;
 		p = 1539;
-		g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[q + p];
+		g1_element = g1Elements[q + p];
 		vs = &g1_element.offset[j * 3];
 		vd += 12;
 		n = 3;

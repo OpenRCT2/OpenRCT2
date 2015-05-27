@@ -38,6 +38,8 @@ typedef struct {
 
 rct_gx g2;
 
+rct_g1_element *g1Elements = (rct_g1_element*)RCT2_ADDRESS_G1_ELEMENTS;
+
 /**
  * 
  *  rct2: 0x00678998
@@ -49,8 +51,6 @@ int gfx_load_g1()
 	FILE *file;
 	rct_g1_header header;
 	unsigned int i;
-
-	rct_g1_element *g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
 
 	file = fopen(get_file_path(PATH_ID_G1), "rb");
 	if (file != NULL) {
@@ -116,6 +116,19 @@ int gfx_load_g2()
 	// Unsuccessful
 	log_fatal("Unable to load g2 graphics");
 	return 0;
+}
+
+/**
+ * This function looks like it initialises the 0x009E3CE4 array which references sprites used for background / palette mixing or
+ * something. Further investigation is needed.
+ */
+void sub_68371D()
+{
+	uint8 **unk_9E3CE4 = (uint8**)0x009E3CE4;
+
+	unk_9E3CE4[0] = NULL;
+	for (int i = 1; i < 8; i++)
+		unk_9E3CE4[i] = g1Elements[23199 + i].offset;
 }
 
 /**
@@ -405,7 +418,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 
 		}
 
 		uint16 palette_offset = palette_to_g1_offset[palette_ref];
-		palette_pointer = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[palette_offset].offset;
+		palette_pointer = g1Elements[palette_offset].offset;
 	}
 	else if (image_type && !(image_type & IMAGE_TYPE_USE_PALETTE)){
 		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
@@ -416,9 +429,9 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 
 		uint32 secondary_offset = palette_to_g1_offset[(image_id >> 24) & 0x1F];
 		uint32 tertiary_offset = palette_to_g1_offset[tertiary_colour];
 
-		rct_g1_element* primary_colour = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[primary_offset];
-		rct_g1_element* secondary_colour = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[secondary_offset];
-		rct_g1_element* tertiary_colour = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[tertiary_offset];
+		rct_g1_element* primary_colour = &g1Elements[primary_offset];
+		rct_g1_element* secondary_colour = &g1Elements[secondary_offset];
+		rct_g1_element* tertiary_colour = &g1Elements[tertiary_offset];
 
 		memcpy(palette_pointer + 0xF3, &primary_colour->offset[0xF3], 12);
 		memcpy(palette_pointer + 0xCA, &secondary_colour->offset[0xF3], 12);
@@ -437,13 +450,13 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 
 		//Top
 		int top_type = (image_id >> 19) & 0x1f;
 		uint32 top_offset = palette_to_g1_offset[top_type]; //RCT2_ADDRESS(0x97FCBC, uint32)[top_type];
-		rct_g1_element top_palette = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[top_offset];
+		rct_g1_element top_palette = g1Elements[top_offset];
 		memcpy(palette_pointer + 0xF3, top_palette.offset + 0xF3, 12);
 		
 		//Trousers
 		int trouser_type = (image_id >> 24) & 0x1f;
 		uint32 trouser_offset = palette_to_g1_offset[trouser_type]; //RCT2_ADDRESS(0x97FCBC, uint32)[trouser_type];
-		rct_g1_element trouser_palette = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[trouser_offset];
+		rct_g1_element trouser_palette = g1Elements[trouser_offset];
 		memcpy(palette_pointer + 0xCA, trouser_palette.offset + 0xF3, 12);
 	}
 
@@ -469,7 +482,7 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	
 	rct_g1_element* g1_source;
 	if (image_element < SPR_G2_BEGIN) {
-		g1_source = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[image_element]);
+		g1_source = &g1Elements[image_element];
 	} else {
 		g1_source = &g2.elements[image_element - SPR_G2_BEGIN];
 	}

@@ -893,7 +893,7 @@ static void window_map_scrollpaint()
 
 	gfx_clear(dpi, 0x0A0A0A0A);
 
-	g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
+	g1_element = &g1Elements[0];
 	pushed_g1_element = *g1_element;
 
 	g1_element->offset = RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint8*);

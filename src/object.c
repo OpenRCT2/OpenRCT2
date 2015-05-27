@@ -396,7 +396,7 @@ int object_chunk_load_image_directory(uint8_t** chunk)
 
 	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32_t) = no_images + image_start_no;
 
-	rct_g1_element* g1_dest = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[image_start_no];
+	rct_g1_element* g1_dest = &g1Elements[image_start_no];
 
 	// After length of data is the start of all g1 element structs
 	rct_g1_element* g1_source = (rct_g1_element*)(*chunk);

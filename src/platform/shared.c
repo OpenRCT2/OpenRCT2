@@ -525,7 +525,10 @@ static void platform_create_window()
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 0);
 
 	platform_load_cursors();
-	RCT2_CALLPROC_EBPSAFE(0x0068371D);
+
+	// TODO This should probably be called somewhere else. It has nothing to do with window creation and can be done as soon as
+	// g1.dat is loaded.
+	sub_68371D();
 
 	// Get window size
 	width = gConfigGeneral.window_width;

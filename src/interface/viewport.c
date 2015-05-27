@@ -88,7 +88,7 @@ void viewport_init_all()
 	// Palette from sprites?
 	d = 0;
 	for (i = 4915; i < 4947; i++) {
-		g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[i]);
+		g1_element = &g1Elements[i];
 		*((int*)(0x0141FC44 + d)) = *((int*)(&g1_element->offset[0xF5]));
 		*((int*)(0x0141FC48 + d)) = *((int*)(&g1_element->offset[0xF9]));
 		*((int*)(0x0141FD44 + d)) = *((int*)(&g1_element->offset[0xFD]));
@@ -743,7 +743,7 @@ int sub_0x686806(rct_sprite* sprite, int eax, int image_id, int ecx, int edx){
 
 	ps->image_id = image_id;
 
-	rct_g1_element *g1Element = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[image_id & 0x7FFFF];
+	rct_g1_element *g1Element = &g1Elements[image_id & 0x7FFFF];
 
 	eax = (eax & 0xFF) + RCT2_GLOBAL(0x9DE568, uint16);
 	ecx = (ecx & 0xFF) + RCT2_GLOBAL(0x9DE56C, uint16);
