@@ -3493,3 +3493,16 @@ STR_5160    :{MONTH} {STRINGID}, jaar {COMMA16}
 STR_5161    :{WHITE}Datumnotatie:
 STR_5162    :Dag/maand/jaar
 STR_5163    :Maand/dag/jaar
+STR_5164    :Twitch-kanaalnaam
+STR_5165    :Bezoekers namen van volgers geven
+STR_5166    :Geeft bezoekers namen van gebruikers die het Twitch-kanaal volgen.
+STR_5167    :Bezoekers met Twitch-volgersnamen volgen in berichtengebied
+STR_5168    :Zet het bezoekersvolgsysteem aan voor bezoekers die naar Twitch-volgers zijn genoemd.
+STR_5169    :Bezoekers namen van gebruikers in de Twitch-chat geven
+STR_5170    :Geeft bezoekers namen van gebruikers in de Twitch-chat.
+STR_5171    :Bezoekers met Twitch-chatnamen volgen in berichtengebied
+STR_5172    :Zet het bezoekersvolgsysteem aan voor bezoekers die naar Twitch-chatters zijn genoemd.
+STR_5173    :Twitch-chat als nieuws weergeven
+STR_5174    :Zal chatberichten op Twitch die beginnen met !news in het berichtengebied tonen.
+STR_5175    :Voer de naam van je Twitch-kanaal in
+STR_5176    :Twitch-integratie inschakelen
