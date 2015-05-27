@@ -493,9 +493,11 @@ void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y,
 	int z, interactionType;
 	rct_map_element *myMapElement;
 	rct_viewport *viewport;
-	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_FOOTPATH, x, y, &interactionType, &myMapElement, &viewport);
+	rct_xy16 map_pos = { 0 };
+
+	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_FOOTPATH, &map_pos.x, &map_pos.y, &interactionType, &myMapElement, &viewport);
 	if (interactionType != VIEWPORT_INTERACTION_ITEM_FOOTPATH || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL))) {
-		get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, x, y, &interactionType, &myMapElement, &viewport);
+		get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &map_pos.x, &map_pos.y, &interactionType, &myMapElement, &viewport);
 		if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
 			if (x != NULL) *x = 0x8000;
 			return;
@@ -512,16 +514,15 @@ void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y,
 	}
 
 	RCT2_GLOBAL(0x00F1AD3C, uint16) = z;
-	RCT2_GLOBAL(0x00F1AD34, sint16) = *x;
-	RCT2_GLOBAL(0x00F1AD36, sint16) = *y;
-	RCT2_GLOBAL(0x00F1AD38, sint16) = *x + 31;
-	RCT2_GLOBAL(0x00F1AD3A, sint16) = *y + 31;
+	RCT2_GLOBAL(0x00F1AD34, sint16) = map_pos.x;
+	RCT2_GLOBAL(0x00F1AD36, sint16) = map_pos.y;
+	RCT2_GLOBAL(0x00F1AD38, sint16) = map_pos.x + 31;
+	RCT2_GLOBAL(0x00F1AD3A, sint16) = map_pos.y + 31;
 
-	*x += 16;
-	*y += 16;
+	map_pos.x += 16;
+	map_pos.y += 16;
 
 	rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
-	rct_xy16 map_pos = { *x, *y };
 
 	for (int i = 0; i < 5; i++) {
 		if (RCT2_GLOBAL(0x00F1AD3E, uint8) != 6) {
@@ -573,7 +574,12 @@ void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y,
 	// First check if we point at an entrance or exit. In that case, we would want the path coming from the entrance/exit.
 	int interactionType;
 	rct_viewport *viewport;
-	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_RIDE, x, y, &interactionType, mapElement, &viewport);
+
+	rct_xy16 map_pos = { 0 };
+	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_RIDE, &map_pos.x, &map_pos.y, &interactionType, mapElement, &viewport);
+	*x = map_pos.x;
+	*y = map_pos.y;
+
 	if (interactionType == VIEWPORT_INTERACTION_ITEM_RIDE
 		&& viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
 		&& map_element_get_type(*mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
@@ -588,7 +594,9 @@ void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y,
 		}
 	}
 	
-	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, x, y, &interactionType, mapElement, &viewport);
+	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &map_pos.x, &map_pos.y, &interactionType, mapElement, &viewport);
+	*x = map_pos.x;
+	*y = map_pos.y;
 	if (interactionType == VIEWPORT_INTERACTION_ITEM_RIDE && map_element_get_type(*mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
 		int ebp = (*mapElement)->properties.entrance.type << 4;
 		int bl = (*mapElement)->properties.entrance.index & 0xF; // Seems to be always 0?

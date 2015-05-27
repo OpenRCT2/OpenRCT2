@@ -59,7 +59,10 @@ int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->var_000 != 6)
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, &info->x, &info->y, &info->type, &info->mapElement, NULL);
+	rct_xy16 mapCoord = { 0 };
+	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, &mapCoord.x, &mapCoord.y, &info->type, &info->mapElement, NULL);
+	info->x = mapCoord.x;
+	info->y = mapCoord.y;
 	mapElement = info->mapElement;
 	sprite = (rct_sprite*)mapElement;
 
@@ -179,7 +182,10 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->var_000 != 6)
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-	get_map_coordinates_from_pos(x, y, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), &info->x, &info->y, &info->type, &info->mapElement, NULL);
+	rct_xy16 mapCoord = { 0 };
+	get_map_coordinates_from_pos(x, y, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), &mapCoord.x, &mapCoord.y, &info->type, &info->mapElement, NULL);
+	info->x = mapCoord.x;
+	info->y = mapCoord.y;
 	mapElement = info->mapElement;
 	sprite = (rct_sprite*)mapElement;
 
@@ -566,7 +572,8 @@ static rct_peep *viewport_interaction_get_closest_peep(int x, int y, int maxDist
  */
 void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rct_map_element **mapElement)
 {
-	int my_x, my_y, z, interactionType;
+	sint16 my_x, my_y;
+	int z, interactionType;
 	rct_map_element *myMapElement;
 	rct_viewport *viewport;
 	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &my_x, &my_y, &interactionType, &myMapElement, &viewport);

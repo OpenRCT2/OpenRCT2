@@ -729,7 +729,8 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	//RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, 0, 0, 0);
 	//return;
 	// ax, cx, bl
-	int grid_x, grid_y, type;
+	sint16 grid_x, grid_y;
+	int type;
 	// edx
 	rct_map_element* map_element;
 	uint16 flags =
@@ -1051,10 +1052,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			int interaction_type = 0;
 			rct_map_element* map_element;
 
-			int map_x, map_y;
-			get_map_coordinates_from_pos(x, y, flags, &map_x, &map_y, &interaction_type, &map_element, NULL);
-			*grid_x = (sint16)map_x;
-			*grid_y = (sint16)map_y;
+			get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, NULL);
 
 			if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
 			{
@@ -1133,10 +1131,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		int interaction_type = 0;
 		rct_map_element* map_element;
 
-		int map_x, map_y;
-		get_map_coordinates_from_pos(x, y, flags, &map_x, &map_y, &interaction_type, &map_element, NULL);
-		*grid_x = (sint16)map_x;
-		*grid_y = (sint16)map_y;
+		get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, NULL);
 
 		if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
 		{
@@ -1284,10 +1279,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		int interaction_type = 0;
 		rct_map_element* map_element;
 
-		int map_x, map_y;
-		get_map_coordinates_from_pos(x, y, flags, &map_x, &map_y, &interaction_type, &map_element, NULL);
-		*grid_x = (sint16)map_x;
-		*grid_y = (sint16)map_y;
+		get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, NULL);
 
 		if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
 		{

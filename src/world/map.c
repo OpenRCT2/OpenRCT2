@@ -1595,7 +1595,7 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags){
 					height = map_element->base_height + 2;
 				}
 
-				money32 cost2 = game_do_command(GAME_COMMAND_16, xi, flags, yi, (max_height << 8) + height, 0, 0, 0);
+				money32 cost2 = game_do_command(xi, flags, yi, (max_height << 8) + height, GAME_COMMAND_16, 0, 0);
 				if (cost2 == MONEY32_UNDEFINED){
 					return MONEY32_UNDEFINED;
 				}

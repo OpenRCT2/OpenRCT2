@@ -1609,7 +1609,8 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
  *		viewport: edi
  */
 void sub_688972(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **viewport) {
-	int my_x, my_y, z, interactionType;
+	sint16 my_x, my_y;
+	int z, interactionType;
 	rct_viewport *myViewport;
 	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN, &my_x, &my_y, &interactionType, NULL, &myViewport);
 	if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
