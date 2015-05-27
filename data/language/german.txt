@@ -769,7 +769,7 @@ STR_0764    :Besucher {INT32}
 STR_0765    :Besucher {INT32}
 STR_0766    :Besucher {INT32}
 STR_0767    :Besucher {INT32}
-STR_0768    :Handwerker {INT32}
+STR_0768    :Parkpfleger {INT32}
 STR_0769    :Mechaniker {INT32}
 STR_0770    :Aufseher {INT32}
 STR_0771    :Animateur {INT32}
@@ -878,8 +878,8 @@ STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}{DOWN}
-STR_0877    :Zu niedrig !
-STR_0878    :Zu hoch !
+STR_0877    :Zu niedrig!
+STR_0878    :Zu hoch!
 STR_0879    :Gelände kann hier nicht tiefer gemacht werden...
 STR_0880    :Gelände kann hier nicht höher gemacht werden...
 STR_0881    :Objekt ist im Weg
@@ -1432,7 +1432,7 @@ STR_1427    :{WINDOW_COLOUR_2}Besucher: {BLACK}{COMMA32} pro Stunde
 STR_1428    :{WINDOW_COLOUR_2}Eintrittspreis:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Kostenlos
-STR_1431    :Beim Gehen
+STR_1431    :Läuft herum
 STR_1432    :Geht Richtung {STRINGID}
 STR_1433    :Steht in Schlange für {STRINGID}
 STR_1434    :Ertrinkt
@@ -1701,7 +1701,7 @@ STR_1696    :{SMALLFONT}{BLACK}Besucherinformationen
 STR_1697    :Können nicht in Wartebereich platziert werden
 STR_1698    :Können nur in Wartebereich platziert werden
 STR_1699    :Zu viele Leute im Spiel
-STR_1700    :Neuen Handwerker einstellen
+STR_1700    :Neuen Parkpfleger einstellen
 STR_1701    :Neuen Mechaniker einstellen
 STR_1702    :Neuen Aufseher einstellen
 STR_1703    :Neuen Animateur einstellen
@@ -1742,7 +1742,7 @@ STR_1737    :{COMMA16}
 STR_1738    :Rundenanzahl kann nicht geändert werden...
 STR_1739    :Rennen gewonnen von Besucher {INT32}
 STR_1740    :Rennen wurde gewonnen von {STRINGID}
-STR_1741    :Noch nicht gebaut !
+STR_1741    :Noch nicht gebaut!
 STR_1742    :{WINDOW_COLOUR_2}Max. Besucherzahl:
 STR_1743    :{SMALLFONT}{BLACK}Höchstzahl zulässiger Personen zu einem Zeitpunkt bei dieser Bahn
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1860,11 +1860,11 @@ STR_1855    :{WINDOW_COLOUR_2}Baudatum: Vor {BLACK}{COMMA16} Jahren
 STR_1856    :{WINDOW_COLOUR_2}Gewinn pro verkaufter Artikel: {BLACK}{CURRENCY2DP}
 STR_1857    :{WINDOW_COLOUR_2}Verlust pro verkaufter Artikel: {BLACK}{CURRENCY2DP}
 STR_1858    :{WINDOW_COLOUR_2}Kosten: {BLACK}{CURRENCY} pro Monat
-STR_1859    :Handwerker
+STR_1859    :Parkpfleger
 STR_1860    :Mechaniker
 STR_1861    :Aufseher
 STR_1862    :Animateur
-STR_1863    :Handwerker
+STR_1863    :Parkpfleger
 STR_1864    :Mechaniker
 STR_1865    :Aufseher
 STR_1866    :Animateur
@@ -2211,7 +2211,7 @@ STR_2206    :Leerer Getränkekarton
 STR_2207    :Leeres Saftglas
 STR_2208    :Bratwurst
 STR_2209    :Leere Schüssel
-STR_2210    :{SMALLFONT}{BLACK}Liste der Handwerker im Park anzeigen
+STR_2210    :{SMALLFONT}{BLACK}Liste der Parkpfleger im Park anzeigen
 STR_2211    :{SMALLFONT}{BLACK}Liste der Mechaniker im Park anzeigen
 STR_2212    :{SMALLFONT}{BLACK}Liste der Aufseher im Park anzeigen
 STR_2213    :{SMALLFONT}{BLACK}Liste der Animateure im Park anzeigen
@@ -2810,8 +2810,8 @@ STR_2802    :Karte
 STR_2803    :{SMALLFONT}{BLACK}Diese Besucher auf Karte hervorheben
 STR_2804    :{SMALLFONT}{BLACK}Diese Mitarbeiter auf Karte hervorheben
 STR_2805    :{SMALLFONT}{BLACK}Parkkarte anzeigen
-STR_2806    :{RED}Die Besucher beschweren sich über den schrecklichen Zustand der Fußwege in Ihrem Park{NEWLINE}Überprüfen Sie, wo Ihre Handwerker sind, und organisieren Sie sie erforderlichenfalls besser
-STR_2807    :{RED}Die Besucher beschweren sich über das Müllaufkommen in Ihrem Park{NEWLINE}Überprüfen Sie, wo Ihre Handwerker sind, und organisieren Sie sie erforderlichenfalls besser
+STR_2806    :{RED}Die Besucher beschweren sich über den schrecklichen Zustand der Fußwege in Ihrem Park{NEWLINE}Überprüfen Sie, wo Ihre Parkpfleger sind, und organisieren Sie sie erforderlichenfalls besser
+STR_2807    :{RED}Die Besucher beschweren sich über das Müllaufkommen in Ihrem Park{NEWLINE}Überprüfen Sie, wo Ihre Parkpfleger sind, und organisieren Sie sie erforderlichenfalls besser
 STR_2808    :{RED}Die Besucher beschweren sich über den Vandalismus in Ihrem Park{NEWLINE}Überprüfen Sie, wo Ihre Aufseher sind, und organisieren Sie sie erforderlichenfalls besser
 STR_2809    :{RED}Die Besucher sind hungrig und können nirgendwo etwas finden, um Speisen zu kaufen
 STR_2810    :{RED}Die Besucher sind durstig und können nirgendwo etwas finden, um Getränke zu kaufen
@@ -2836,7 +2836,7 @@ STR_2828    :{WINDOW_COLOUR_2}Auszeichnung f. bunteste Farbschemas
 STR_2829    :{WINDOW_COLOUR_2}Auszeichnung f. konfuseste Parkanordn.
 STR_2830    :{WINDOW_COLOUR_2}Auszeichnung f. beste gemäßigte Bahn
 STR_2831    :{TOPAZ}Ihr Park hat die Auszeichnung `Ungepflegtester Park des Landes' erhalten!
-STR_2832    :{TOPAZ}Ihr Park hat die Auszeichnung `Säuberster Park des Landes' erhalten!
+STR_2832    :{TOPAZ}Ihr Park hat die Auszeichnung `Sauberster Park des Landes' erhalten!
 STR_2833    :{TOPAZ}Ihr Park hat die Auszeichnung `Park mit den besten Achterbahnen' erhalten!
 STR_2834    :{TOPAZ}Ihr Park hat die Auszeichnung `Park mit dem besten Angebot des Landes' erhalten!
 STR_2835    :{TOPAZ}Ihr Park hat die Auszeichnung `Schönster Park des Landes' erhalten!
@@ -2858,7 +2858,7 @@ STR_2850    :Neuer Streckenentwurf erfolgreich installiert
 STR_2851    :Szenario bereits installiert
 STR_2852    :Streckenentwurf bereits installiert
 STR_2853    :Von der örtlichen Behörde verboten!
-STR_2854    :{RED}Besucher gelangen nicht zum Eingang von {STRINGID} !{NEWLINE}Bauen Sie einen Fußweg zum Eingang
+STR_2854    :{RED}Besucher gelangen nicht zum Eingang von {STRINGID}!{NEWLINE}Bauen Sie einen Fußweg zum Eingang
 STR_2855    :{RED}{STRINGID} hat keinen Fußweg, der vom Ausgang wegführt!{NEWLINE}Legen Sie einen Fußweg an, der vom Bahnausgang wegführt
 STR_2856    :{WINDOW_COLOUR_2}Lehrgang
 STR_2857    :{WINDOW_COLOUR_2}(Drücken Sie eine Taste oder klicken Sie mit der Maus, um die Kontrolle zu übernehmen)
