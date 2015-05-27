@@ -734,7 +734,7 @@ int window_can_resize(rct_window *w);
 		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
 
 	#define window_tooltip_set_registers(value)											\
-		__asm__ ( "mov ax, %[value] " : [value] "+m" (value) );
+		__asm__ ( "mov ax, %["#value"] " : [value] "+m" (value) );
 #endif
 
 #endif
