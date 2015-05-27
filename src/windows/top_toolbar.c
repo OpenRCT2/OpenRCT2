@@ -1793,6 +1793,140 @@ void top_toolbar_tool_update_land(sint16 x, sint16 y){
 }
 
 /**
+*
+*  rct2: 0x006E6BDC
+*/
+void top_toolbar_tool_update_water(sint16 x, sint16 y){
+	map_invalidate_selection_rect();
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) == 3){
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0)))
+			return;
+
+		money32 lower_cost = lower_water(
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16),
+			0);
+
+		money32 raise_cost = raise_water(
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16),
+			0);
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, money32) != raise_cost ||
+			RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, money32) != lower_cost){
+			RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, money32) = raise_cost;
+			RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, money32) = lower_cost;
+			window_invalidate_by_class(WC_WATER);
+		}
+		return;
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
+
+	rct_xy16 mapTile = { 0 };
+	int interaction_type = 0;
+	get_map_coordinates_from_pos(
+		x, 
+		y, 
+		VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, 
+		&mapTile.x, 
+		&mapTile.y, 
+		&interaction_type,
+		NULL,
+		NULL);
+
+	if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, money32) != MONEY32_UNDEFINED ||
+			RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, money32) != MONEY32_UNDEFINED){
+			RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, money32) = MONEY32_UNDEFINED;
+			RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, money32) = MONEY32_UNDEFINED;
+			window_invalidate_by_class(WC_WATER);
+		}
+		return;
+	}
+
+	mapTile.x += 16;
+	mapTile.y += 16;
+
+	uint8 state_changed = 0;
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0))){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
+		state_changed++;
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) != 4){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
+		state_changed++;
+	}
+
+	sint16 tool_size = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+	if (tool_size == 0)
+		tool_size = 1;
+
+	sint16 tool_length = (tool_size - 1) * 32;
+
+	// Move to tool bottom left
+	mapTile.x -= (tool_size - 1) * 16;
+	mapTile.y -= (tool_size - 1) * 16;
+	mapTile.x &= 0xFFE0;
+	mapTile.y &= 0xFFE0;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) != mapTile.x){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) = mapTile.x;
+		state_changed++;
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) != mapTile.y){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) = mapTile.y;
+		state_changed++;
+	}
+
+	mapTile.x += tool_length;
+	mapTile.y += tool_length;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) != mapTile.x){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) = mapTile.x;
+		state_changed++;
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) != mapTile.y){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) = mapTile.y;
+		state_changed++;
+	}
+
+	map_invalidate_selection_rect();
+	if (!state_changed)
+		return;
+
+	money32 lower_cost = lower_water(
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16),
+		0);
+
+	money32 raise_cost = raise_water(
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16),
+		0);
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, money32) != raise_cost ||
+		RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, money32) != lower_cost){
+		RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, money32) = raise_cost;
+		RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, money32) = lower_cost;
+		window_invalidate_by_class(WC_WATER);
+	}
+}
+
+/**
  *
  *  rct2: 0x0066CB25
  */

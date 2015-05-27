@@ -1955,7 +1955,7 @@ void sub_68862C()
  * mapElement: edx
  * viewport: edi
  */
-void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *interactionType, rct_map_element **mapElement, rct_viewport **viewport)
+void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x, sint16 *y, int *interactionType, rct_map_element **mapElement, rct_viewport **viewport)
 {
 	RCT2_GLOBAL(0x9AC154, uint16_t) = flags & 0xFFFF;
 	RCT2_GLOBAL(0x9AC148, uint8_t) = 0;
@@ -1994,7 +1994,7 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, i
 		if (viewport != NULL) *viewport = myviewport;
 	}
 	if (interactionType != NULL) *interactionType = RCT2_GLOBAL(0x9AC148, uint8_t);
-	if (x != NULL) *x = (int)RCT2_GLOBAL(0x9AC14C, int16_t);
-	if (y != NULL) *y = (int)RCT2_GLOBAL(0x9AC14E, int16_t);
+	if (x != NULL) *x = RCT2_GLOBAL(0x9AC14C, int16_t);
+	if (y != NULL) *y = RCT2_GLOBAL(0x9AC14E, int16_t);
 	if (mapElement != NULL) *mapElement = RCT2_GLOBAL(0x9AC150, rct_map_element*);
 }
