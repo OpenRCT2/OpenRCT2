@@ -1918,6 +1918,15 @@ void top_toolbar_tool_update_water(sint16 x, sint16 y){
 	}
 }
 
+money32 sub_6E24F6(rct_xy16 map_tile, uint32 parameter_1, uint32 parameter_2, uint32 parameter_3, uint16 selected_tab){
+
+	int eax = map_tile.x, ebx = parameter_1, ecx = map_tile.y, edx = parameter_2, esi = 0, ebp = selected_tab, edi = parameter_3;
+
+	RCT2_CALLFUNC_X(0x006E24F6, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	return (money32)ebx;
+}
+
 /**
 *
 *  rct2: 0x006E287B
@@ -1950,16 +1959,171 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		return;
 	}
 	
+	rct_scenery_entry* scenery;
+	uint8 bl;
+	money32 cost;
+
 	switch (scenery_type){
 	case 0:
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) = mapTile.x;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) = mapTile.y;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) = mapTile.x;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) = mapTile.y;
+
+		scenery = g_smallSceneryEntries[selected_scenery];
+
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
+		if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)){
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = ((parameter2 & 0xFF) ^ 2) + 6;
+		}
+
+		map_invalidate_selection_rect();
+
+		// If no change in ghost placement
+		if ((RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 0)) &&
+			mapTile.x == RCT2_GLOBAL(0x00F64EC4, sint16) &&
+			mapTile.y == RCT2_GLOBAL(0x00F64EC6, sint16) &&
+			(parameter2 & 0xFF) == RCT2_GLOBAL(0x00F64F0E, uint8)&&
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) == RCT2_GLOBAL(0x00F64F0A, sint16) &&
+			RCT2_GLOBAL(0x00F64EDA, uint16) == selected_tab){
+			return;		
+		}
+
+		scenery_remove_ghost_tool_placement();
+
+		RCT2_GLOBAL(0x00F64F0E, uint8) = (parameter2 & 0xFF);
+		RCT2_GLOBAL(0x00F64F0A, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16);
+
+		bl = 1;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+			bl = 20;
+		}
+
+		for (; bl != 0; bl--){
+			cost = sub_6E24F6(
+				mapTile,
+				parameter1,
+				parameter2,
+				parameter3,
+				selected_tab);
+
+			if (cost != MONEY32_UNDEFINED)
+				break;
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
+		}
+
+		RCT2_GLOBAL(0x00F64EB4, money32) = cost;
 		break;
 	case 1:
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) = mapTile.x;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) = mapTile.y;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) = mapTile.x;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) = mapTile.y;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
+
+		map_invalidate_selection_rect();
+
+		// If no change in ghost placement
+		if ((RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 1)) &&
+			mapTile.x == RCT2_GLOBAL(0x00F64EC4, sint16) &&
+			mapTile.y == RCT2_GLOBAL(0x00F64EC6, sint16) &&
+			(parameter2 & 0xFF) == RCT2_GLOBAL(0x00F64F09, uint8)){
+			return;
+		}
+
+		scenery_remove_ghost_tool_placement();
+
+		cost = sub_6E24F6(
+			mapTile,
+			parameter1,
+			parameter2,
+			parameter3,
+			selected_tab);
+
+		RCT2_GLOBAL(0x00F64EB4, money32) = cost;
 		break;
 	case 2:
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) = mapTile.x;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) = mapTile.y;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) = mapTile.x;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) = mapTile.y;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 10 + parameter2 & 0xFF;
+
+		map_invalidate_selection_rect();
+
+		// If no change in ghost placement
+		if ((RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 2)) &&
+			mapTile.x == RCT2_GLOBAL(0x00F64EC4, sint16) &&
+			mapTile.y == RCT2_GLOBAL(0x00F64EC6, sint16) &&
+			(parameter2 & 0xFF) == RCT2_GLOBAL(0x00F64F11, uint8) &&
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) == RCT2_GLOBAL(0x00F64F0A, sint16)
+			){
+			return;
+		}
+
+		scenery_remove_ghost_tool_placement();
+
+		RCT2_GLOBAL(0x00F64F11, uint8) = (parameter2 & 0xFF);
+		RCT2_GLOBAL(0x00F64F0A, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16);
+
+		bl = 1;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+			bl = 20;
+		}
+
+		cost = 0;
+		for (; bl != 0; bl--){
+			cost = sub_6E24F6(
+				mapTile,
+				parameter1,
+				parameter2,
+				parameter3,
+				selected_tab);
+
+			if (cost != MONEY32_UNDEFINED)
+				break;
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
+		}
+
+		RCT2_GLOBAL(0x00F64EB4, money32) = cost;
 		break;
 	case 3:
+		//6e29f2
 		break;
 	case 4:
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) = mapTile.x;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) = mapTile.y;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) = mapTile.x;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) = mapTile.y;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
+
+		map_invalidate_selection_rect();
+
+		// If no change in ghost placement
+		if ((RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 4)) &&
+			mapTile.x == RCT2_GLOBAL(0x00F64EC4, sint16) &&
+			mapTile.y == RCT2_GLOBAL(0x00F64EC6, sint16) &&
+			(parameter2 & 0xFF) == RCT2_GLOBAL(0x00F64F09, uint8) &&
+			((parameter2 >> 8) & 0xFF) == RCT2_GLOBAL(0x00F64EC0, uint8)){
+			return;
+		}
+
+		scenery_remove_ghost_tool_placement();
+
+		cost = sub_6E24F6(
+			mapTile,
+			parameter1,
+			parameter2,
+			parameter3,
+			selected_tab);
+
+		RCT2_GLOBAL(0x00F64EB4, money32) = cost;
 		break;
 	}
 }
@@ -1991,7 +2155,7 @@ static void window_top_toolbar_tool_update()
 		top_toolbar_tool_update_water(x, y);
 		break;
 	case WIDX_SCENERY:
-		RCT2_CALLPROC_X(0x006E287B, x, y, 0, widgetIndex, (int)w, 0, 0);
+		top_toolbar_tool_update_scenery(x, y);
 		break;
 	}
 }
