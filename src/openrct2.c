@@ -108,24 +108,21 @@ static void openrct2_copy_original_user_files_over()
 	openrct2_copy_files_over((char*)RCT2_ADDRESS_LANDSCAPES_PATH, path, ".sc6");
 }
 
-/**
- * Launches the game, after command line arguments have been parsed and processed.
- */
-void openrct2_launch()
+bool openrct2_initialise()
 {
 	char userPath[MAX_PATH];
 
 	platform_get_user_directory(userPath, NULL);
 	if (!platform_ensure_directory_exists(userPath)) {
 		log_fatal("Could not create user directory (do you have write access to your documents folder?)");
-		return;
+		return false;
 	}
 
 	config_set_defaults();
 	if (!config_open_default()) {
 		if (!config_find_or_browse_install_directory()) {
 			log_fatal("An RCT2 install directory must be specified!");
-			return;
+			return false;
 		}
 	}
 
@@ -133,8 +130,8 @@ void openrct2_launch()
 
 	// TODO add configuration option to allow multiple instances
 	if (!platform_lock_single_instance()) {
-		fprintf(stderr, "OpenRCT2 is already running.\n");
-		return;
+		log_fatal("OpenRCT2 is already running.");
+		return false;
 	}
 
 	get_system_info();
@@ -144,44 +141,55 @@ void openrct2_launch()
 	language_open(gConfigGeneral.language);
 	http_init();
 	if (!rct2_init())
-		return;
+		return false;
 
 	openrct2_copy_original_user_files_over();
 
 	Mixer_Init(NULL);
+	return true;
+}
 
-	switch (gOpenRCT2StartupAction) {
-	case STARTUP_ACTION_INTRO:
-		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 8;
-		break;
-	case STARTUP_ACTION_TITLE:
-		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TITLE_DEMO;
-		break;
-	case STARTUP_ACTION_OPEN:
-		assert(gOpenRCT2StartupActionPath != NULL);
-		rct2_open_file(gOpenRCT2StartupActionPath);
+/**
+ * Launches the game, after command line arguments have been parsed and processed.
+ */
+void openrct2_launch()
+{
+	if (openrct2_initialise()) {
+		switch (gOpenRCT2StartupAction) {
+		case STARTUP_ACTION_INTRO:
+			RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 8;
+			break;
+		case STARTUP_ACTION_TITLE:
+			RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TITLE_DEMO;
+			break;
+		case STARTUP_ACTION_OPEN:
+			assert(gOpenRCT2StartupActionPath != NULL);
+			rct2_open_file(gOpenRCT2StartupActionPath);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
-		break;
-	case STARTUP_ACTION_EDIT:
-		if (strlen(gOpenRCT2StartupActionPath) == 0) {
-			editor_load();
-		} else {
-			editor_load_landscape(gOpenRCT2StartupActionPath);
+			RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
+			break;
+		case STARTUP_ACTION_EDIT:
+			if (strlen(gOpenRCT2StartupActionPath) == 0) {
+				editor_load();
+			} else {
+				editor_load_landscape(gOpenRCT2StartupActionPath);
+			}
+			break;
 		}
-		break;
+		openrct2_loop();
 	}
-
-	log_verbose("begin openrct2 loop");
-	openrct2_loop();
-
-	http_dispose();
-	platform_free();
+	openrct2_dispose();
 
 	// HACK Some threads are still running which causes the game to not terminate. Investigation required!
 	exit(gExitCode);
+}
+
+void openrct2_dispose()
+{
+	http_dispose();
+	platform_free();
 }
 
 /**
@@ -190,6 +198,8 @@ void openrct2_launch()
 static void openrct2_loop()
 {
 	uint32 currentTick, ticksElapsed, lastTick = 0;
+
+	log_verbose("begin openrct2 loop");
 
 	_finished = 0;
 	do {
