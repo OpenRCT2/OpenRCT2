@@ -112,7 +112,7 @@ void viewport_init_all()
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, sint16) = -1;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) = 0;
 	RCT2_GLOBAL(0x009DEA50, sint16) = -1;
-	RCT2_CALLPROC_EBPSAFE(0x006EE3C3);
+	textinput_cancel();
 	format_string((char*)0x0141FA44, STR_CANCEL, NULL);
 	format_string((char*)0x0141F944, STR_OK, NULL);
 }

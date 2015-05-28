@@ -590,8 +590,10 @@ void window_event_resize_call(rct_window* w);
 void window_event_mouse_down_call(rct_window* w, int widgetIndex);
 void window_event_invalidate_call(rct_window* w);
 void window_event_update_call(rct_window *w);
+void window_event_textinput_call(rct_window *w, int widgetIndex, char *text);
 
 void sub_6EA73F();
+void textinput_cancel();
 
 void window_move_and_snap(rct_window *w, int newWindowX, int newWindowY, int snapProximity);
 int window_can_resize(rct_window *w);
