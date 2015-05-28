@@ -368,8 +368,10 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			numItems
 		);
 
+#ifndef DISABLE_TWITCH
 		if (_menuDropdownIncludesTwitch && gTwitchEnable)
 			gDropdownItemsChecked |= (1 << 10);
+#endif
 		break;
 	case WIDX_VIEW_MENU:
 		top_toolbar_init_view_menu(w, widget);
@@ -446,9 +448,11 @@ static void window_top_toolbar_dropdown()
 		case DDIDX_EXIT_OPENRCT2:
 			rct2_quit();
 			break;
+#ifndef DISABLE_TWITCH
 		case DDIDX_ENABLE_TWITCH:
 			gTwitchEnable = !gTwitchEnable;
 			break;
+#endif
 		}
 		break;
 	case WIDX_VIEW_MENU:
