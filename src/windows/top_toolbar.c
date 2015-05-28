@@ -1919,6 +1919,52 @@ void top_toolbar_tool_update_water(sint16 x, sint16 y){
 }
 
 /**
+*
+*  rct2: 0x006E287B
+*/
+void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
+	map_invalidate_selection_rect();
+	map_invalidate_map_selection_tiles();
+
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~((1 << 0) | (1 << 1));
+
+	if (window_scenery_is_repaint_scenery_tool_on)
+		return;
+
+	sint16 selected_tab = window_scenery_selected_scenery_by_tab[window_scenery_active_tab_index];
+
+	if (selected_tab == -1){
+		scenery_remove_ghost_tool_placement();
+		return;
+	}
+
+	uint8 scenery_type = (selected_tab & 0xFF00) >> 8;
+	uint8 selected_scenery = selected_tab & 0xFF;
+	rct_xy16 mapTile = { 0 };
+	uint32 parameter1, parameter2, parameter3;
+
+	sub_6E1F34(x, y, selected_tab, &mapTile.x, &mapTile.y, &parameter1, &parameter2, &parameter3);
+
+	if (mapTile.x == (sint16)0x8000){
+		scenery_remove_ghost_tool_placement();
+		return;
+	}
+	
+	switch (scenery_type){
+	case 0:
+		break;
+	case 1:
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+	case 4:
+		break;
+	}
+}
+
+/**
  *
  *  rct2: 0x0066CB25
  */
@@ -1942,7 +1988,7 @@ static void window_top_toolbar_tool_update()
 			top_toolbar_tool_update_land(x, y);
 		break;
 	case WIDX_WATER:
-		RCT2_CALLPROC_X(0x006E6BDC, x, y, 0, widgetIndex, (int)w, 0, 0);
+		top_toolbar_tool_update_water(x, y);
 		break;
 	case WIDX_SCENERY:
 		RCT2_CALLPROC_X(0x006E287B, x, y, 0, widgetIndex, (int)w, 0, 0);
