@@ -3490,7 +3490,7 @@ STR_5150    :Enable debugging tools
 #Thousands separator
 STR_5151    :,
 #Decimals separator
-STR_5152    :. 
+STR_5152    :.
 STR_5153    :RCT1 color scheme
 STR_5154    :Hardware display
 STR_5155    :Allow testing of unfinished tracks
