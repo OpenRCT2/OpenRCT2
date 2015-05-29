@@ -34,6 +34,9 @@
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 char gOpenRCT2StartupActionPath[512] = { 0 };
 
+// This should probably be changed later and allow a custom selection of things to initialise like SDL_INIT
+bool gOpenRCT2Headless = false;
+
 /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to 0. */
 int _finished;
 
@@ -129,15 +132,17 @@ bool openrct2_initialise()
 	config_save_default();
 
 	// TODO add configuration option to allow multiple instances
-	if (!platform_lock_single_instance()) {
+	if (!gOpenRCT2Headless && !platform_lock_single_instance()) {
 		log_fatal("OpenRCT2 is already running.");
 		return false;
 	}
 
 	get_system_info();
-	audio_init();
-	audio_get_devices();
-	get_dsound_devices();
+	if (!gOpenRCT2Headless) {
+		audio_init();
+		audio_get_devices();
+		get_dsound_devices();
+	}
 	language_open(gConfigGeneral.language);
 	http_init();
 	if (!rct2_init())

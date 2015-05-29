@@ -347,6 +347,7 @@ int cmdline_for_screenshot(const char **argv, int argc)
 		customRotation = atoi(argv[7]) & 3;
 	}
 
+	gOpenRCT2Headless = true;
 	if (openrct2_initialise()) {
 		rct2_open_file(inputPath);
 

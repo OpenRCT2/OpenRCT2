@@ -32,6 +32,7 @@ enum {
 
 extern int gOpenRCT2StartupAction;
 extern char gOpenRCT2StartupActionPath[512];
+extern bool gOpenRCT2Headless;
 
 bool openrct2_initialise();
 void openrct2_launch();
