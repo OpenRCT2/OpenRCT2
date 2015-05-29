@@ -1865,7 +1865,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 			if(RCT2_GLOBAL(0x009D8150, uint8) & 1 || (x <= RCT2_GLOBAL(0x01358836, uint16) && y <= RCT2_GLOBAL(0x01358836, uint16))){
 				rct_scenery_entry* scenery_entry = (rct_scenery_entry*)object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].chunks[scenery_type];
 				if((scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE && scenery_entry->small_scenery.flags & (SMALL_SCENERY_FLAG9 | SMALL_SCENERY_FLAG24 | SMALL_SCENERY_FLAG25)) || scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG9){
-					base_height = 0;
+					quadrant = 0;
 				}
 				int x2 = x;
 				int y2 = y;
@@ -1936,7 +1936,6 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 						}
 						if(!(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG24)){
 							if(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG9 && scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE){
-								// this stuff that uses rol and ror are untested, couldnt find any scenery with these flags
 								if(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG25){
 									bp ^= 2;
 									bp += rotation;
@@ -1948,7 +1947,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 									bp += rotation;
 									bp &= 1;
 									bl = 0xA;
-									bl = ror8(bl, bp);
+									bl >>= bp;
 								}
 							}
 						}else{
