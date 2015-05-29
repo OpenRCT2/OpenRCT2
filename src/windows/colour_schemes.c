@@ -107,7 +107,6 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
 	WIDX_COLOUR_SCHEMES_SETTINGS_TAB,
 	WIDX_COLOUR_SCHEMES_PRESETS,
 	WIDX_COLOUR_SCHEMES_PRESETS_DROPDOWN,
-	WIDX_COLOUR_SCHEMES_RCT1_STYLES_CHECKBOX,
 	WIDX_COLOUR_SCHEMES_COLORBTN_MASK,
 	WIDX_COLOUR_SCHEMES_LIST,
 };
@@ -125,10 +124,9 @@ static rct_widget window_colour_schemes_widgets[] = {
 	{ WWT_TAB,				1,	158,	188,	17,		43,		0x02000144E,					5233 },						// misc tab
 	{ WWT_TAB,				1,	189,	219,	17,		43,		0x02000144E,					5234 },						// prompts tab
 	{ WWT_TAB,				1,	220,	250,	17,		43,		0x02000144E,					5235 },						// settings tab
-	{ WWT_COLORBTN,			1,	0,		0,		0,		0,		STR_NONE,						STR_NONE },					// color button mask
-	{ WWT_DROPDOWN,			1,	155,	299,	60,		71,		STR_NONE,						STR_NONE },					// Preset colour schemes
+	{ WWT_DROPDOWN,			1,	125,	299,	60,		71,		STR_NONE,						STR_NONE },					// Preset colour schemes
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	61,		70,		876,							STR_NONE },
-	{ WWT_CHECKBOX,			1,	10,		229,	68,		79,		STR_SOUND,						STR_NONE },					// RCT1 menu styles
+	{ WWT_COLORBTN,			1,	0,		0,		0,		0,		STR_NONE,						STR_NONE },					// color button mask
 	{ WWT_SCROLL,			1,	3,		316,	60,		266,	2,								STR_NONE },					// staff list
 	{ WIDGETS_END },
 };
@@ -325,7 +323,9 @@ void window_colour_schemes_open()
 		(1 << WIDX_COLOUR_SCHEMES_MISC_TAB) |
 		(1 << WIDX_COLOUR_SCHEMES_PROMPTS_TAB) |
 		(1 << WIDX_COLOUR_SCHEMES_SETTINGS_TAB) |
-		(1 << WIDX_COLOUR_SCHEMES_COLORBTN_MASK);
+		(1 << WIDX_COLOUR_SCHEMES_COLORBTN_MASK) |
+		(1 << WIDX_COLOUR_SCHEMES_PRESETS) |
+		(1 << WIDX_COLOUR_SCHEMES_PRESETS_DROPDOWN);
 
 	window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_LIST].type = WWT_SCROLL;
 
@@ -383,6 +383,7 @@ static void window_colour_schemes_resize()
 static void window_colour_schemes_mousedown(int widgetIndex, rct_window* w, rct_widget* widget)
 {
 	short newSelectedTab;
+	int num_items, i;
 
 	switch (widgetIndex) {
 	case WIDX_COLOUR_SCHEMES_MAIN_UI_TAB:
@@ -401,6 +402,30 @@ static void window_colour_schemes_mousedown(int widgetIndex, rct_window* w, rct_
 		w->frame_no = 0;
 		window_invalidate(w);
 		break;
+	case WIDX_COLOUR_SCHEMES_PRESETS_DROPDOWN:
+		num_items = gConfigColourSchemes.num_presets;
+
+		for (i = 0; i < num_items; i++) {
+			//gDropdownItemsFormat[i] = 2777;
+			//gDropdownItemsArgs[i] = 1170 | ((uint64)(intptr_t)gConfigColourSchemes.presets[i].name << 16);
+			//gDropdownItemsFormat[i] = 1170;
+			//gDropdownItemsArgs[i] = ((uint64)&gConfigColourSchemes.presets[i].name) << 32;
+			gDropdownItemsFormat[i] = 1170;
+			gDropdownItemsArgs[i] = &gConfigColourSchemes.presets[i].name;
+		}
+
+		window_dropdown_show_text_custom_width(
+			w->x + widget->left,
+			w->y + widget->top,
+			widget->bottom - widget->top + 1,
+			w->colours[1],
+			DROPDOWN_FLAG_STAY_OPEN,
+			num_items,
+			widget->right - widget->left - 3
+			);
+
+		gDropdownItemsChecked = 1 << gCurrentColourSchemePreset;
+		break;
 	}
 }
 
@@ -410,12 +435,22 @@ static void window_colour_schemes_dropdown()
 	short widgetIndex, dropdownIndex;
 	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
-	if (widgetIndex == WIDX_COLOUR_SCHEMES_LIST && dropdownIndex != -1) {
-		get_colour_scheme_tab()->colours[_color_index_2] = dropdownIndex | get_colour_scheme_tab()->colours[_color_index_2] & 0x80;
-		window_invalidate_all();
+	switch (widgetIndex) {
+	case WIDX_COLOUR_SCHEMES_LIST:
+		if (dropdownIndex != -1) {
+			get_colour_scheme_tab()->colours[_color_index_2] = dropdownIndex | get_colour_scheme_tab()->colours[_color_index_2] & 0x80;
+			window_invalidate_all();
+			_color_index_1 = -1;
+			_color_index_2 = -1;
+		}
+		break;
+	case WIDX_COLOUR_SCHEMES_PRESETS_DROPDOWN:
+		if (dropdownIndex != -1) {
+			colour_scheme_change_preset(dropdownIndex);
+		}
+		break;
 	}
-	_color_index_1 = -1;
-	_color_index_2 = -1;
+
 }
 
 void window_colour_schemes_update(rct_window *w)
@@ -562,6 +597,18 @@ void window_colour_schemes_paint() {
 
 		gfx_draw_string_left(dpi, 5236, w, w->colours[1], w->x + 6, 58 - 12 + w->y + 1);
 		gfx_draw_string_left(dpi, 5237, w, w->colours[1], w->x + 220, 58 - 12 + w->y + 1);
+	}
+	else {
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = &gConfigColourSchemes.presets[gCurrentColourSchemePreset].name;
+		gfx_draw_string_left(dpi, 5238, NULL, 12, w->x + 10, w->y + window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_PRESETS].top + 1);
+		gfx_draw_string_left(
+			dpi,
+			1170,
+			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
+			12,
+			w->x + window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_PRESETS].left + 1,
+			w->y + window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_PRESETS].top
+			);
 	}
 }
 

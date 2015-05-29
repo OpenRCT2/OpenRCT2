@@ -150,6 +150,9 @@ void openrct2_launch()
 
 	Mixer_Init(NULL);
 
+	colour_schemes_set_default();
+	colour_schemes_load_presets();
+
 	switch (gOpenRCT2StartupAction) {
 	case STARTUP_ACTION_INTRO:
 		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 8;

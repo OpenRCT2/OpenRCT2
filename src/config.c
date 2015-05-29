@@ -20,7 +20,10 @@
 
 #include "addresses.h"
 #include "config.h"
+#include "localisation/language.h"
 #include "localisation/localisation.h"
+#include "util/util.h"
+#include "interface/colour_schemes.h"
 
 // Magic number for original game cfg file
 static const int MagicNumber = 0x0003113A;
@@ -171,6 +174,7 @@ config_property_definition _generalDefinitions[] = {
 	{ offsetof(general_configuration, test_unfinished_tracks),			"test_unfinished_tracks",		CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(general_configuration, no_test_crashes),					"no_test_crashes",				CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(general_configuration, date_format),						"date_format",					CONFIG_VALUE_TYPE_UINT8,		DATE_FORMAT_DMY,				_dateFormatEnum			},
+	{ offsetof(general_configuration, current_colour_scheme_preset),	"colour_scheme_preset",			CONFIG_VALUE_TYPE_STRING,		{ .value_string = "*RCT2" },	NULL					},
 };
 
 config_property_definition _interfaceDefinitions[] = {
@@ -375,23 +379,6 @@ bool config_save(const utf8string path)
 				config_write_enum(file, property->type, value, property->enum_definitions);
 			else
 				config_save_property_value(file, property->type, value);
-			fputc('\n', file);
-		}
-		fputc('\n', file);
-	}
-
-	fputc('[', file);
-	fwrite("colour_schemes", "colour_schemes", 1, file);
-	fputc(']', file);
-	fputc('\n', file);
-	for (i = 0; i < gNumColourSchemeWindows; i++) {
-		window_colour_scheme colour_scheme = gColourSchemes[i];
-		for (j = 0; j < colour_scheme.num_colours; j++) {
-
-			fwrite(colour_scheme.ini_name, strlen(colour_scheme.ini_name), 1, file);
-			fprintf(file, "_%d", j);
-			fwrite(" = ", 3, 1, file);
-			fprintf(file, "%u", colour_scheme.colours[j]);
 			fputc('\n', file);
 		}
 		fputc('\n', file);
@@ -1016,31 +1003,233 @@ bool config_shortcut_keys_save()
 #pragma region Colour Schemes
 
 
+static bool colour_schemes_open(const utf8string path);
+static bool colour_schemes_save(const utf8string path);
+static void colour_schemes_read_properties(int preset, window_colour_scheme **colour_scheme, const_utf8string line);
+static void colour_schemes_set_property(window_colour_scheme **colour_scheme, const_utf8string line);
+
+
+void colour_schemes_remove_extension(char *path)
+{
+	char *ch;
+
+	for (ch = path; *ch != 0; ch++) {
+		if (*ch == '.') {
+			*ch = '\0';
+			break;
+		}
+	}
+}
+
 void colour_schemes_set_default()
 {
 	gConfigColourSchemes.num_presets = 2;
+	gConfigColourSchemes.presets = malloc(sizeof(colour_scheme_preset*) * gConfigColourSchemes.num_presets);
 
-	gConfigColourSchemes.presets = malloc(sizeof(colour_schemes_setting*) * gConfigColourSchemes.num_presets);
-
+	// Set RCT2 colour scheme
+	strcpy(gConfigColourSchemes.presets[0].name, language_get_string(2741));
 	gConfigColourSchemes.presets[0].colour_schemes = malloc(sizeof(window_colours) * gNumColourSchemeWindows);
-
-	for (int j = 0; j < gNumColourSchemeWindows; j++) {
-		for (int k = 0; k < 6; k++)
-			gConfigColourSchemes.presets[0].colour_schemes[j].colours[k] = gColourSchemes[j].colours[k];
+	for (int i = 0; i < gNumColourSchemeWindows; i++) {
+		for (int j = 0; j < 6; j++)
+			gConfigColourSchemes.presets[0].colour_schemes[i].colours[j] = gColourSchemes[i].colours[j];
 	}
 
+	// Set RCT1 colour scheme
+	strcpy(gConfigColourSchemes.presets[1].name, language_get_string(2740));
+	gConfigColourSchemes.presets[1].colour_schemes = malloc(sizeof(window_colours) * gNumColourSchemeWindows);
+	for (int i = 0; i < gNumColourSchemeWindows; i++) {
+		uint8 changed_colour = 0xFF;
+		for (int k = 0; gColourSchemesRCT1[k].classification != 0xFF; k++) {
+			if (gColourSchemesRCT1[k].classification == gColourSchemes[k].classification) {
+				changed_colour = (uint8)k;
+				break;
+			}
+		}
+		for (int j = 0; j < 6; j++) {
+			gConfigColourSchemes.presets[1].colour_schemes[i].colours[j] = (changed_colour != 0xFF ? gColourSchemesRCT1[changed_colour].colours[j] : gColourSchemes[i].colours[j]);
+		}
+	}
 }
 
-bool colour_schemes_open_default()
+void colour_schemes_load_presets()
 {
+	utf8 path[MAX_PATH];
+	file_info file;
+	int fileEnumHandle;
 
-
+	platform_get_user_directory(path, "colour schemes");
+	strcpy(path, "*.ini");
+	fileEnumHandle = platform_enumerate_files_begin(path);
+	while (platform_enumerate_files_next(fileEnumHandle, &file)) {
+		colour_schemes_open(file.path);
+	}
+	platform_enumerate_files_end(fileEnumHandle);
 }
 
-bool colour_schemes_save_default()
+bool colour_schemes_save_preset(int preset)
 {
+	utf8 path[MAX_PATH];
+	
+	platform_get_user_directory(path, "colour schemes");
+	strcat(path, "custom.ini");
+	if (config_save(path)) {
+		return true;
+	}
+
+	return false;
+}
+
+bool colour_schemes_open(const utf8string path)
+{
+	FILE *file;
+	uint8 *lineBuffer;
+	size_t lineBufferCapacity;
+	size_t lineLength;
+	int c, preset;
+	window_colour_scheme *currentColourScheme;
+
+	file = fopen(path, "rb");
+	if (file == NULL)
+		return false;
+
+	// Check if the colour scheme is already loaded
+	// No nead to read the first two presets as they're hardcoded in
+	for (preset = 2; preset < gConfigColourSchemes.num_presets; preset++) {
+		if (strcmp(path, gConfigColourSchemes.presets[preset].name) == 0) {
+			break;
+		}
+	}
+	// Otherwise allocate one
+	if (preset == gConfigColourSchemes.num_presets) {
+		gConfigColourSchemes.num_presets++;
+		gConfigColourSchemes.presets = realloc(gConfigColourSchemes.presets, sizeof(colour_scheme_preset*) * gConfigColourSchemes.num_presets);
+		strcpy(gConfigColourSchemes.presets[preset].name, path_get_filename(path));
+		gConfigColourSchemes.presets[preset].colour_schemes = malloc(sizeof(window_colours) * gNumColourSchemeWindows);
+		for (int i = 0; i < gNumColourSchemeWindows; i++) {
+			for (int j = 0; j < 6; j++)
+				gConfigColourSchemes.presets[preset].colour_schemes[i].colours[j] = gColourSchemes[i].colours[j];
+		}
+	}
+
+	currentColourScheme = NULL;
+	lineBufferCapacity = 64;
+	lineBuffer = malloc(lineBufferCapacity);
+	lineLength = 0;
+
+	// Skim UTF-8 byte order mark
+	fread(lineBuffer, 3, 1, file);
+	if (!(lineBuffer[0] == 0xEF && lineBuffer[1] == 0xBB && lineBuffer[2] == 0xBF))
+		fseek(file, 0, SEEK_SET);
+
+	while ((c = fgetc(file)) != EOF) {
+		if (c == '\n' || c == '\r') {
+			lineBuffer[lineLength++] = 0;
+			colour_schemes_read_properties(preset, &currentColourScheme, (const_utf8string)lineBuffer);
+			lineLength = 0;
+		}
+		else {
+			lineBuffer[lineLength++] = c;
+		}
+
+		if (lineLength >= lineBufferCapacity) {
+			lineBufferCapacity *= 2;
+			lineBuffer = realloc(lineBuffer, lineBufferCapacity);
+		}
+	}
+
+	if (lineLength > 0) {
+		lineBuffer[lineLength++] = 0;
+		colour_schemes_read_properties(preset, &currentColourScheme, lineBuffer);
+	}
+
+	free(lineBuffer);
+	fclose(file);
+	return true;
+}
+
+static bool colour_schemes_save(const utf8string path)
+{
+	FILE *file;
+	int i, j, preset;
+	value_union *value;
+
+	file = fopen(path, "wb");
+	if (file == NULL) {
+		log_error("Unable to write to colour scheme file.");
+		return false;
+	}
+
+	for (preset = 2; preset < gConfigColourSchemes.num_presets; preset++) {
+		if (strcmp(path, gConfigColourSchemes.presets[preset].name) == 0) {
+			break;
+		}
+	}
+	if (preset == gConfigColourSchemes.num_presets) {
+		log_error("Unable to write colour scheme, no preset with that name found.");
+		return false;
+	}
+
+	for (i = 0; i < gNumColourSchemeWindows; i++) {
+		window_colour_scheme* colour_scheme = &(gColourSchemes[i]);
+
+		fputc('[', file);
+		fwrite(colour_scheme->section_name, strlen(colour_scheme->section_name), 1, file);
+		fputc(']', file);
+		fputc('\n', file);
+
+		for (j = 0; j < colour_scheme->num_colours; j++) {
+
+			fprintf(file, "colour_%d", j);
+			fwrite(" = ", 3, 1, file);
+			fprintf(file, "%u", colour_scheme->colours[j]);
+			fputc('\n', file);
+		}
+		fputc('\n', file);
+	}
+
+	fclose(file);
+	return true;
+}
 
 
+static void colour_schemes_read_properties(int preset, window_colour_scheme **colour_scheme, const_utf8string line)
+{
+	utf8string ch = (utf8string)line;
+	utf8_skip_whitespace(&ch);
+
+	if (*ch == '[') {
+		const_utf8string sectionName;
+		int sectionNameSize;
+		if (config_get_section(ch, &sectionName, &sectionNameSize)) {
+			for (int i = 0; i < gNumColourSchemeWindows; i++) {
+				if (strcmp(sectionName, gColourSchemes[i].section_name)) {
+					*colour_scheme = &(gConfigColourSchemes.presets[preset].colour_schemes[i]);
+					break;
+				}
+			}
+		}
+	}
+	else {
+		if (*colour_scheme != NULL) {
+			const_utf8string propertyName, *value;
+			int propertyNameSize, valueSize;
+			if (config_get_property_name_value(ch, &propertyName, &propertyNameSize, &value, &valueSize)) {
+				colour_schemes_set_property(colour_scheme, propertyName, value);
+			}
+		}
+	}
+}
+
+
+static void colour_schemes_set_property(window_colour_scheme *colour_scheme, const_utf8string name, const_utf8string value)
+{
+	const_utf8string colour_names[] = { "colour_0", "colour_1", "colour_2", "colour_3", "colour_4", "colour_5" };
+
+	for (int i = 0; i < 6; i++) {
+		if (strcmp(name, colour_names[i]) == 0) {
+			colour_scheme->colours[i] = (uint8)strtol(value, NULL, 0);
+		}
+	}
 }
 
 #pragma endregion

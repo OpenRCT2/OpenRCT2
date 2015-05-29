@@ -76,60 +76,28 @@ window_colour_scheme gColourSchemes[] = {
 	{ WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR, { 150, 150, 141, 0, 0, 0 }, 3, 5181, "editor_scenario_bottom_toolbar" },
 };
 
+
 marked_window_colours gColourSchemesRCT1[sizeof(gColourSchemes)] = {
 	{ WC_TOP_TOOLBAR, { 1, 1, 1, 1, 0, 0 } }, // WC_TOP_TOOLBAR
 	{ WC_BOTTOM_TOOLBAR, { 129, 129, 0, 18, 0, 0 } }, // WC_BOTTOM_TOOLBAR
 	{ WC_RIDE, { 26, 1, 11, 0, 0, 0 } }, // WC_RIDE
-	{ 0, 0, 0, 0, 0, 0 }, // WC_RIDE_CONSTRUCTION
-	{ WC_RIDE_LIST, { 0, 0, 0, 0, 0, 0 } }, // WC_RIDE_LIST
-	{ 0, 0, 0, 0, 0, 0 }, // WC_SAVE_PROMPT
-	{ 0, 0, 0, 0, 0, 0 }, // WC_CONSTRUCT_RIDE
-	{ 0, 0, 0, 0, 0, 0 }, // WC_DEMOLISH_RIDE_PROMPT
-	{ 0, 0, 0, 0, 0, 0 }, // WC_SCENERY
-	{ 0, 0, 0, 0, 0, 0 }, // WC_OPTIONS
-	{ 0, 0, 0, 0, 0, 0 }, // WC_FOOTPATH
-	{ 0, 0, 0, 0, 0, 0 }, // WC_LAND
-	{ 0, 0, 0, 0, 0, 0 }, // WC_WATER
-	{ 0, 0, 0, 0, 0, 0 }, // WC_PEEP
-	{ 0, 0, 0, 0, 0, 0 }, // WC_GUEST_LIST
-	{ 0, 0, 0, 0, 0, 0 }, // WC_STAFF_LIST
-	{ 0, 0, 0, 0, 0, 0 }, // WC_FIRE_PROMPT
-	{ 0, 0, 0, 0, 0, 0 }, // WC_PARK_INFORMATION
-	{ 0, 0, 0, 0, 0, 0 }, // WC_FINANCES
-	{ 0, 0, 0, 0, 0, 0 }, // WC_TITLE_MENU
-	{ 0, 0, 0, 0, 0, 0 }, // WC_TITLE_EXIT
-	{ 0, 0, 0, 0, 0, 0 }, // WC_RECENT_NEWS
-	{ 0, 0, 0, 0, 0, 0 }, // WC_SCENARIO_SELECT
-	{ 0, 0, 0, 0, 0, 0 }, // WC_TRACK_DESIGN_LIST
-	{ 0, 0, 0, 0, 0, 0 }, // WC_TRACK_DESIGN_PLACE
-	{ 0, 0, 0, 0, 0, 0 }, // WC_NEW_CAMPAIGN
-	{ 0, 0, 0, 0, 0, 0 }, // WC_KEYBOARD_SHORTCUT_LIST
-	{ 0, 0, 0, 0, 0, 0 }, // WC_CHANGE_KEYBOARD_SHORTCUT
-	{ 0, 0, 0, 0, 0, 0 }, // WC_MAP
-	{ 0, 0, 0, 0, 0, 0 }, // WC_BANNER
-	{ 0, 0, 0, 0, 0, 0 }, // WC_EDITOR_OBJECT_SELECTION
-	{ 0, 0, 0, 0, 0, 0 }, // WC_EDITOR_INVENTION_LIST
-	{ 0, 0, 0, 0, 0, 0 }, // WC_EDITOR_SCENARIO_OPTIONS
-	{ 0, 0, 0, 0, 0, 0 }, // WC_EDTIOR_OBJECTIVE_OPTIONS
-	{ 0, 0, 0, 0, 0, 0 }, // WC_MANAGE_TRACK_DESIGN
-	{ 0, 0, 0, 0, 0, 0 }, // WC_TRACK_DELETE_PROMPT
-	{ 0, 0, 0, 0, 0, 0 }, // WC_INSTALL_TRACK
-	{ 0, 0, 0, 0, 0, 0 }, // WC_CLEAR_SCENERY
-	{ 0, 0, 0, 0, 0, 0 }, // WC_CHEATS
-	{ 0, 0, 0, 0, 0, 0 }, // WC_RESEARCH
-	{ 0, 0, 0, 0, 0, 0 }, // WC_VIEWPORT
-	{ 0, 0, 0, 0, 0, 0 }, // WC_MAPGEN
-	{ 0, 0, 0, 0, 0, 0 }, // WC_LOADSAVE
-	{ 0, 0, 0, 0, 0, 0 }, // WC_LOADSAVE_OVERWRITE_PROMPT
-	{ 0, 0, 0, 0, 0, 0 }, // WC_TITLE_OPTIONS
-	{ 0, 0, 0, 0, 0, 0 }, // WC_LAND_RIGHTS
-	{ 0, 0, 0, 0, 0, 0 }, // WC_COLOUR_SCHEMES
-	{ 0, 0, 0, 0, 0, 0 }, // WC_STAFF
-	{ 0, 0, 0, 0, 0, 0 }, // WC_EDITOR_TRACK_BOTTOM_TOOLBAR
-	{ 0, 0, 0, 0, 0, 0 }, // WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR
+	{ WC_RIDE_LIST, { 26, 1, 1, 0, 0, 0 } }, // WC_RIDE_LIST
+	{ WC_CONSTRUCT_RIDE, { 26, 1, 1, 0, 0, 0 } }, // WC_CONSTRUCT_RIDE
+	{ WC_PEEP, { 22, 26, 26, 0, 0, 0 } }, // WC_PEEP
+	{ WC_GUEST_LIST, { 22, 26, 26, 0, 0, 0 } }, // WC_GUEST_LIST
+	{ WC_STAFF_LIST, { 12, 4, 4, 0, 0, 0 } }, // WC_STAFF_LIST
+	{ WC_FINANCES, { 4, 1, 1, 0, 0, 0 } }, // WC_FINANCES
+	{ WC_TITLE_MENU, { 129, 129, 129, 0, 0, 0 } }, // WC_TITLE_MENU
+	{ WC_TITLE_EXIT, { 129, 129, 129, 0, 0, 0 } }, // WC_TITLE_EXIT
+	{ WC_NEW_CAMPAIGN, { 4, 4, 1, 0, 0, 0 } }, // WC_NEW_CAMPAIGN
+	{ WC_TITLE_OPTIONS, { 129, 129, 129, 0, 0, 0 } }, // WC_TITLE_OPTIONS
+	{ WC_STAFF, { 12, 4, 4, 0, 0, 0 } }, // WC_STAFF
+
+
+	{ 0xFF, { 0, 0, 0, 0, 0, 0 } } // End
 };
 
-
+uint16 gCurrentColourSchemePreset = 0;
 uint32 gNumColourSchemeWindows = sizeof(gColourSchemes) / sizeof(window_colour_scheme);
 
 window_colour_scheme* colour_scheme_get_by_class(rct_windowclass classification)
@@ -154,10 +122,10 @@ void colour_scheme_update(rct_window *window)
 			transparent = true;
 		}
 	}
-	//if (transparent)
+	if (transparent)
 		window->flags |= WF_TRANSPARENT;
-	//else
-	//	window->flags &= ~WF_TRANSPARENT;
+	else
+		window->flags &= ~WF_TRANSPARENT;
 }
 
 void colour_scheme_update_by_class(rct_window *window, rct_windowclass classification)
@@ -171,8 +139,47 @@ void colour_scheme_update_by_class(rct_window *window, rct_windowclass classific
 			transparent = true;
 		}
 	}
-	//if (transparent)
+	if (transparent)
 		window->flags |= WF_TRANSPARENT;
-	//else
-	//	window->flags &= ~WF_TRANSPARENT;
+	else
+		window->flags &= ~WF_TRANSPARENT;
+}
+
+void colour_scheme_change_preset(int preset)
+{
+	if (preset >= 0 && preset < gConfigColourSchemes.num_presets) {
+		switch (preset) {
+		case 0:
+			gConfigGeneral.current_colour_scheme_preset = "*RCT2";
+			break;
+		case 1:
+			gConfigGeneral.current_colour_scheme_preset = "*RCT1";
+			break;
+		default:
+			gConfigGeneral.current_colour_scheme_preset = gConfigColourSchemes.presets[preset].name;
+			break;
+		}
+		gCurrentColourSchemePreset = preset;
+		for (int i = 0; i < gNumColourSchemeWindows; i++) {
+			for (int j = 0; j < gColourSchemes[i].num_colours; j++) {
+				gColourSchemes[i].colours[j] = gConfigColourSchemes.presets[preset].colour_schemes[i].colours[j];
+			}
+		}
+	}
+	window_invalidate_all();
+}
+
+bool colour_scheme_create_preset(const char *name)
+{
+	int preset = gConfigColourSchemes.num_presets;
+	gConfigColourSchemes.num_presets++;
+	gConfigColourSchemes.presets = realloc(gConfigColourSchemes.presets, sizeof(colour_scheme_preset*) * gConfigColourSchemes.num_presets);
+	strcpy(gConfigColourSchemes.presets[preset].name, name);
+	gConfigColourSchemes.presets[preset].colour_schemes = malloc(sizeof(window_colours) * gNumColourSchemeWindows);
+	for (int i = 0; i < gNumColourSchemeWindows; i++) {
+		for (int j = 0; j < 6; j++)
+			gConfigColourSchemes.presets[preset].colour_schemes[i].colours[j] = gColourSchemes[i].colours[j];
+	}
+	colour_schemes_save_preset(preset);
+	colour_scheme_change_preset(gConfigColourSchemes.num_presets - 1);
 }

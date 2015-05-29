@@ -24,7 +24,6 @@
 #include "common.h"
 #include "localisation/currency.h"
 #include "platform/platform.h"
-#include "interface/colour_schemes.h"
 
 enum {
 	CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES = (1 << 0),
@@ -140,6 +139,7 @@ typedef struct {
 	uint8 test_unfinished_tracks;
 	uint8 no_test_crashes;
 	uint8 date_format;
+	utf8string current_colour_scheme_preset;
 } general_configuration;
 
 typedef struct {
@@ -176,12 +176,16 @@ typedef struct {
 } twitch_configuration;
 
 typedef struct {
-	window_colours *colour_schemes;
-	char *name;
-} colour_schemes_setting;
+	uint8 colours[6];
+} window_colours;
 
 typedef struct {
-	colour_schemes_setting *presets;
+	window_colours *colour_schemes;
+	char name[256];
+} colour_scheme_preset;
+
+typedef struct {
+	colour_scheme_preset *presets;
 	uint16 num_presets;
 } colour_schemes_configuration;
 
@@ -212,7 +216,7 @@ bool config_shortcut_keys_save();
 bool config_find_or_browse_install_directory();
 
 void colour_schemes_set_default();
-bool colour_schemes_open_default();
-bool colour_schemes_save_default();
+void colour_schemes_load_presets();
+bool colour_schemes_save_preset(int preset);
 
 #endif
