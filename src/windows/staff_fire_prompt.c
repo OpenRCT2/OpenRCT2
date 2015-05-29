@@ -27,6 +27,7 @@
 #include "../peep/staff.h"
 #include "../sprites.h"
 #include "../world/sprite.h"
+#include "../interface/colour_schemes.h"
 
 #define WW 200
 #define WH 100
@@ -51,6 +52,7 @@ static rct_widget window_staff_fire_widgets[] = {
 
 static void window_staff_fire_emptysub(){}
 static void window_staff_fire_mouseup();
+static void window_staff_fire_invalidate();
 static void window_staff_fire_paint();
 
 //0x9A3F7C
@@ -80,7 +82,7 @@ static void* window_staff_fire_events[] = {
 	window_staff_fire_emptysub,
 	window_staff_fire_emptysub,
 	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
+	window_staff_fire_invalidate,
 	window_staff_fire_paint,
 	window_staff_fire_emptysub
 };
@@ -99,7 +101,6 @@ void window_staff_fire_prompt_open(rct_peep* peep){
 
 	w->flags |= WF_TRANSPARENT;
 	w->number = peep->sprite_index;
-	w->colours[0] = 0x9A;
 }
 
 
@@ -123,6 +124,14 @@ static void window_staff_fire_mouseup(){
 	case WIDX_CLOSE:
 		window_close(w);
 	}
+}
+
+static void window_staff_fire_invalidate()
+{
+	rct_window *w;
+
+	window_get_register(w);
+	colour_scheme_update(w);
 }
 
 /**

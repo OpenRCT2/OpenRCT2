@@ -28,6 +28,7 @@
 #include "../openrct2.h"
 #include "../sprites.h"
 #include "../tutorial.h"
+#include "../interface/colour_schemes.h"
 
 enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -70,6 +71,7 @@ static rct_widget window_quit_prompt_widgets[] = {
 static void window_save_prompt_emptysub() { }
 static void window_save_prompt_close();
 static void window_save_prompt_mouseup();
+static void window_save_prompt_invalidate();
 static void window_save_prompt_paint();
 
 static void* window_save_prompt_events[] = {
@@ -98,7 +100,7 @@ static void* window_save_prompt_events[] = {
 	window_save_prompt_emptysub,
 	window_save_prompt_emptysub,
 	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
+	window_save_prompt_invalidate,
 	window_save_prompt_paint,
 	window_save_prompt_emptysub
 };
@@ -161,7 +163,6 @@ void window_save_prompt_open()
 	window->widgets = widgets;
 	window->enabled_widgets = enabled_widgets;
 	window_init_scroll_widgets(window);
-	window->colours[0] = 154;
 
 	// Pause the game
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) |= 2;
@@ -200,7 +201,6 @@ void window_save_prompt_open()
 			return;
 		}
 	}
-	
 }
 
 /**
@@ -272,6 +272,14 @@ static void window_save_prompt_mouseup()
 		game_load_or_quit_no_save_prompt();
 		return;
 	}
+}
+
+static void window_save_prompt_invalidate()
+{
+	rct_window *w;
+
+	window_get_register(w);
+	colour_scheme_update(w);
 }
 
 static void window_save_prompt_paint()

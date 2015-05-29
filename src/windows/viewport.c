@@ -28,6 +28,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "dropdown.h"
+#include "../interface/colour_schemes.h"
 
 #define INITIAL_WIDTH 500
 #define INITIAL_HEIGHT 350
@@ -118,9 +119,6 @@ void window_viewport_open()
 		(1 << WIDX_ZOOM_OUT) |
 		(1 << WIDX_LOCATE);
 	w->number = _viewportNumber++;
-	w->colours[0] = 24;
-	w->colours[1] = 24;
-	w->colours[2] = 24;
 
 	rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32);
 
@@ -218,6 +216,7 @@ static void window_viewport_invalidate()
 	int i;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	viewportWidget = &window_viewport_widgets[WIDX_VIEWPORT];
 	viewport = w->viewport;

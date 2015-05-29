@@ -221,6 +221,7 @@ interface_configuration gConfigInterface;
 sound_configuration gConfigSound;
 cheat_configuration gConfigCheat;
 twitch_configuration gConfigTwitch;
+colour_schemes_configuration gConfigColourSchemes;
 
 bool config_open(const utf8string path);
 bool config_save(const utf8string path);
@@ -374,6 +375,23 @@ bool config_save(const utf8string path)
 				config_write_enum(file, property->type, value, property->enum_definitions);
 			else
 				config_save_property_value(file, property->type, value);
+			fputc('\n', file);
+		}
+		fputc('\n', file);
+	}
+
+	fputc('[', file);
+	fwrite("colour_schemes", "colour_schemes", 1, file);
+	fputc(']', file);
+	fputc('\n', file);
+	for (i = 0; i < gNumColourSchemeWindows; i++) {
+		window_colour_scheme colour_scheme = gColourSchemes[i];
+		for (j = 0; j < colour_scheme.num_colours; j++) {
+
+			fwrite(colour_scheme.ini_name, strlen(colour_scheme.ini_name), 1, file);
+			fprintf(file, "_%d", j);
+			fwrite(" = ", 3, 1, file);
+			fprintf(file, "%u", colour_scheme.colours[j]);
 			fputc('\n', file);
 		}
 		fputc('\n', file);
@@ -990,6 +1008,39 @@ bool config_shortcut_keys_save()
 	}
 
 	return result;
+}
+
+#pragma endregion
+
+
+#pragma region Colour Schemes
+
+
+void colour_schemes_set_default()
+{
+	gConfigColourSchemes.num_presets = 2;
+
+	gConfigColourSchemes.presets = malloc(sizeof(colour_schemes_setting*) * gConfigColourSchemes.num_presets);
+
+	gConfigColourSchemes.presets[0].colour_schemes = malloc(sizeof(window_colours) * gNumColourSchemeWindows);
+
+	for (int j = 0; j < gNumColourSchemeWindows; j++) {
+		for (int k = 0; k < 6; k++)
+			gConfigColourSchemes.presets[0].colour_schemes[j].colours[k] = gColourSchemes[j].colours[k];
+	}
+
+}
+
+bool colour_schemes_open_default()
+{
+
+
+}
+
+bool colour_schemes_save_default()
+{
+
+
 }
 
 #pragma endregion

@@ -25,6 +25,7 @@
 #include "../sprites.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../interface/colour_schemes.h"
 
 enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -106,9 +107,6 @@ void window_clear_scenery_open()
 	window_push_others_below(window);
 
 	RCT2_GLOBAL(0x00F1AD62, uint32) = MONEY32_UNDEFINED;
-	window->colours[0] = 24;
-	window->colours[1] = 24;
-	window->colours[2] = 24;
 }
 
 /**
@@ -219,6 +217,7 @@ static void window_clear_scenery_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	// Set the preview image button to be pressed down
 	w->pressed_widgets |= (1 << WIDX_PREVIEW);

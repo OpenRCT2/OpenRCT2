@@ -31,6 +31,7 @@
 #include "../peep/staff.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
+#include "../interface/colour_schemes.h"
 
 enum {
 	WINDOW_STAFF_LIST_TAB_HANDYMEN,
@@ -455,19 +456,7 @@ void window_staff_list_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
-
-	if(!gConfigInterface.rct1_colour_scheme)
-	{
-		w->colours[0] = 1;
-		w->colours[1] = 4;
-		w->colours[2] = 4;
-	}
-	else
-	{
-		w->colours[0] = 12;
-		w->colours[1] = 4;
-		w->colours[2] = 4;
-	}
+	colour_scheme_update(w);
 
 	int pressed_widgets = w->pressed_widgets & 0xFFFFFF0F;
 	uint8 tabIndex = RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8);

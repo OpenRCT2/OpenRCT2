@@ -28,6 +28,7 @@
 #include "../ride/track.h"
 #include "../sprites.h"
 #include "error.h"
+#include "../interface/colour_schemes.h"
 
 enum {
 	WIDX_BACKGROUND,
@@ -128,9 +129,6 @@ void window_track_list_open(ride_list_item item)
 	w->widgets = window_track_list_widgets;
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY);
 	window_init_scroll_widgets(w);
-	w->colours[0] = 26;
-	w->colours[1] = 26;
-	w->colours[2] = 26;
 	w->track_list.var_480 = 0xFFFF;
 	w->track_list.var_482 = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 1;
 	w->track_list.var_484 = 0;
@@ -346,6 +344,7 @@ static void window_track_list_invalidate()
 	rct_string_id stringId;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	entry = GET_RIDE_ENTRY(_window_track_list_item.entry_index);
 

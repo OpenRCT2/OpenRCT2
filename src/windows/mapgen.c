@@ -28,6 +28,7 @@
 #include "../world/mapgen.h"
 #include "../world/scenery.h"
 #include "dropdown.h"
+#include "../interface/colour_schemes.h"
 
 enum {
 	WINDOW_MAPGEN_PAGE_BASE,
@@ -429,9 +430,6 @@ rct_window *window_mapgen_open()
 		);
 		w->number = 0;
 		w->frame_no = 0;
-		w->colours[0] = 12;
-		w->colours[1] = 24;
-		w->colours[2] = 24;
 	}
 
 	w->page = WINDOW_MAPGEN_PAGE_BASE;
@@ -602,6 +600,7 @@ static void window_mapgen_base_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	if (w->widgets != window_mapgen_page_widgets[WINDOW_MAPGEN_PAGE_BASE]) {
 		w->widgets = window_mapgen_page_widgets[WINDOW_MAPGEN_PAGE_BASE];
@@ -705,6 +704,7 @@ static void window_mapgen_random_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	if (w->widgets != window_mapgen_page_widgets[WINDOW_MAPGEN_PAGE_RANDOM]) {
 		w->widgets = window_mapgen_page_widgets[WINDOW_MAPGEN_PAGE_RANDOM];
@@ -922,6 +922,7 @@ static void window_mapgen_simplex_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	if (w->widgets != window_mapgen_page_widgets[WINDOW_MAPGEN_PAGE_SIMPLEX]) {
 		w->widgets = window_mapgen_page_widgets[WINDOW_MAPGEN_PAGE_SIMPLEX];

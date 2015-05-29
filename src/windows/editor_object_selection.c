@@ -29,6 +29,7 @@
 #include "../ride/track.h"
 #include "../scenario.h"
 #include "error.h"
+#include "../interface/colour_schemes.h"
 
 enum {
 	WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS,
@@ -231,9 +232,6 @@ void window_editor_object_selection_open()
 	window->selected_tab = 0;
 	window->selected_list_item = -1;
 	window->var_494 = 0xFFFFFFFF;
-	window->colours[0] = 4;
-	window->colours[1] = 1;
-	window->colours[2] = 1;
 }
 
 /**
@@ -372,7 +370,9 @@ static void window_editor_object_selection_scroll_mousedown()
 		if (!window_editor_object_selection_select_object(1, installed_entry))
 			return;
 
-		window_close(w);
+		// Close any other open windows such as options/colour schemes to prevent a crash.
+		window_close_all();
+		//window_close(w);
 
 		//This function calls window_track_list_open
 		window_editor_object_selection_manage_tracks();
@@ -475,6 +475,7 @@ static void window_editor_object_selection_invalidate()
 	rct_widget *widget;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	// Set pressed widgets
 	w->pressed_widgets |= 1 << WIDX_PREVIEW;

@@ -28,6 +28,7 @@
 #include "../ride/track.h"
 #include "../sprites.h"
 #include "error.h"
+#include "../interface/colour_schemes.h"
 
 enum {
 	WIDX_BACKGROUND,
@@ -130,9 +131,6 @@ void window_install_track_open(const char* path)
 	w->widgets = window_install_track_widgets;
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY) | (1 << WIDX_INSTALL) | (1 << WIDX_CANCEL);
 	window_init_scroll_widgets(w);
-	w->colours[0] = 26;
-	w->colours[1] = 26;
-	w->colours[2] = 26;
 	w->track_list.var_482 = 0;
 	w->track_list.var_484 = 0;
 	window_push_others_right(w);
@@ -270,6 +268,7 @@ static void window_install_track_invalidate()
 {
 	rct_window *w;
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	w->pressed_widgets |= 1 << WIDX_TRACK_PREVIEW;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) == 0)

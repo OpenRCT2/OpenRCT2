@@ -28,6 +28,7 @@
 #include "../world/park.h"
 #include "dropdown.h"
 #include "error.h"
+#include "../interface/colour_schemes.h"
 
 #define DISABLE_SIX_FLAGS_CHECKBOX
 
@@ -271,9 +272,6 @@ void window_editor_objective_options_open()
 	w->no_list_items = 0;
 	w->selected_list_item = -1;
 	RCT2_CALLPROC_X(0x00672609, 0, 0, 0, 0, (int)w, 0, 0);
-	w->colours[0] = 4;
-	w->colours[1] = 1;
-	w->colours[2] = 1;
 }
 
 static void window_editor_objective_options_set_pressed_tab(rct_window *w)
@@ -834,6 +832,7 @@ static void window_editor_objective_options_main_invalidate()
 	rct_stex_entry *stex;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	stex = g_stexEntries[0];
 	if (stex == (rct_stex_entry*)0xFFFFFFFF)
@@ -1208,6 +1207,7 @@ static void window_editor_objective_options_rides_invalidate()
 	rct_widget *widgets;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	widgets = window_editor_objective_options_widgets[w->page];
 	if (w->widgets != widgets) {

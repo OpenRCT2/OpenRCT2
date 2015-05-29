@@ -30,11 +30,19 @@
 #include "../peep/peep.h"
 #include "../peep/staff.h"
 #include "../world/sprite.h"
+#include "../sprites.h"
 #include "dropdown.h"
+#include "../interface/colour_schemes.h"
 
 enum {
-	WINDOW_COLOUR_SCHEMES_TAB_WINDOWS,
-	WINDOW_COLOUR_SCHEMES_TAB_PRESETS,
+	WINDOW_COLOUR_SCHEMES_TAB_MAIN_UI,
+	WINDOW_COLOUR_SCHEMES_TAB_PARK,
+	WINDOW_COLOUR_SCHEMES_TAB_TOOLS,
+	WINDOW_COLOUR_SCHEMES_TAB_RIDES_PEEPS,
+	WINDOW_COLOUR_SCHEMES_TAB_EDITORS,
+	WINDOW_COLOUR_SCHEMES_TAB_MISC,
+	WINDOW_COLOUR_SCHEMES_TAB_PROMPTS,
+	WINDOW_COLOUR_SCHEMES_TAB_SETTINGS
 } WINDOW_COLOUR_SCHEMES_TAB;
 
 static void window_colour_schemes_emptysub() { }
@@ -51,6 +59,7 @@ static void window_colour_schemes_tooltip();
 static void window_colour_schemes_invalidate();
 static void window_colour_schemes_paint();
 static void window_colour_schemes_scrollpaint();
+static void window_colour_schemes_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
 
 static void* window_colour_schemes_events[] = {
 	window_colour_schemes_close,
@@ -88,41 +97,211 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
 	WIDX_COLOUR_SCHEMES_TITLE,
 	WIDX_COLOUR_SCHEMES_CLOSE,
 	WIDX_COLOUR_SCHEMES_TAB_CONTENT_PANEL,
-	WIDX_COLOUR_SCHEMES_WINDOWS_TAB,
-	WIDX_COLOUR_SCHEMES_PRESETS_TAB,
+	WIDX_COLOUR_SCHEMES_MAIN_UI_TAB,
+	WIDX_COLOUR_SCHEMES_PARK_TAB,
+	WIDX_COLOUR_SCHEMES_TOOLS_TAB,
+	WIDX_COLOUR_SCHEMES_RIDE_PEEPS_TAB,
+	WIDX_COLOUR_SCHEMES_EDITORS_TAB,
+	WIDX_COLOUR_SCHEMES_MISC_TAB,
+	WIDX_COLOUR_SCHEMES_PROMPTS_TAB,
+	WIDX_COLOUR_SCHEMES_SETTINGS_TAB,
+	WIDX_COLOUR_SCHEMES_PRESETS,
+	WIDX_COLOUR_SCHEMES_PRESETS_DROPDOWN,
+	WIDX_COLOUR_SCHEMES_RCT1_STYLES_CHECKBOX,
 	WIDX_COLOUR_SCHEMES_COLORBTN_MASK,
 	WIDX_COLOUR_SCHEMES_LIST,
 };
 
 static rct_widget window_colour_schemes_widgets[] = {
-	{ WWT_FRAME,			0,	0,		319,	0,		269,	0x0FFFFFFFF,					STR_NONE },							// panel / background
-	{ WWT_CAPTION,			0,	1,		318,	1,		14,		STR_STAFF,						STR_WINDOW_TITLE_TIP },				// title bar
-	{ WWT_CLOSEBOX,			0,	307,	317,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },				// close button
-	{ WWT_RESIZE,			1,	0,		319,	43,		269,	0x0FFFFFFFF,					STR_NONE },							// tab content panel
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x02000144E,					STR_NONE },							// windows tab
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x02000144E,					STR_NONE },							// presets tab
-	{ WWT_COLORBTN,			1,	0,		0,		0,		0,		STR_NONE,						STR_NONE },							// color button mask
-	{ WWT_SCROLL,			1,	3,		316,	72,		266,	3,								STR_NONE },							// staff list
+	{ WWT_FRAME,			0,	0,		319,	0,		269,	0x0FFFFFFFF,					STR_NONE },					// panel / background
+	{ WWT_CAPTION,			0,	1,		318,	1,		14,		5177,							STR_WINDOW_TITLE_TIP },		// title bar
+	{ WWT_CLOSEBOX,			0,	307,	317,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },		// close button
+	{ WWT_RESIZE,			1,	0,		319,	43,		269,	0x0FFFFFFFF,					STR_NONE },					// tab content panel
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x02000144E,					5228 },						// main ui tab
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x02000144E,					5229 },						// park tab
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x02000144E,					5230 },						// tools tab
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x02000144E,					5231 },						// rides and peeps tab
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x02000144E,					5232 },						// editors tab
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x02000144E,					5233 },						// misc tab
+	{ WWT_TAB,				1,	189,	219,	17,		43,		0x02000144E,					5234 },						// prompts tab
+	{ WWT_TAB,				1,	220,	250,	17,		43,		0x02000144E,					5235 },						// settings tab
+	{ WWT_COLORBTN,			1,	0,		0,		0,		0,		STR_NONE,						STR_NONE },					// color button mask
+	{ WWT_DROPDOWN,			1,	155,	299,	60,		71,		STR_NONE,						STR_NONE },					// Preset colour schemes
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	61,		70,		876,							STR_NONE },
+	{ WWT_CHECKBOX,			1,	10,		229,	68,		79,		STR_SOUND,						STR_NONE },					// RCT1 menu styles
+	{ WWT_SCROLL,			1,	3,		316,	60,		266,	2,								STR_NONE },					// staff list
 	{ WIDGETS_END },
 };
 
+static int window_colour_schemes_tab_animation_loops[] = {
+	32,
+	1,
+	1,
+	64,
+	32,
+	8,
+	14,
+	28
+};
+static int window_colour_schemes_tab_animation_divisor[] = {
+	4,
+	1,
+	1,
+	4,
+	2,
+	2,
+	2,
+	4
+};
+static int window_colour_schemes_tab_sprites[] = {
+	SPR_TAB_KIOSKS_AND_FACILITIES_0,
+	5200,
+	SPR_G2_TAB_LAND,
+	SPR_TAB_RIDE_0,
+	5205,
+	5201,
+	SPR_TAB_STAFF_OPTIONS_0,
+	SPR_TAB_STATS_0
+};
 
-static uint8 _window_colors[16][6];
+static rct_windowclass window_colour_schemes_tab_1_classes[] = {
+	WC_TOP_TOOLBAR,
+	WC_BOTTOM_TOOLBAR,
+	WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR,
+	WC_EDITOR_TRACK_BOTTOM_TOOLBAR,
+	WC_TITLE_MENU,
+	WC_TITLE_EXIT,
+	WC_TITLE_OPTIONS,
+	WC_SCENARIO_SELECT
+};
+
+static rct_windowclass window_colour_schemes_tab_2_classes[] = {
+	WC_PARK_INFORMATION,
+	WC_FINANCES,
+	WC_NEW_CAMPAIGN,
+	WC_RESEARCH,
+	WC_MAP,
+	WC_VIEWPORT,
+	WC_RECENT_NEWS
+};
+
+static rct_windowclass window_colour_schemes_tab_3_classes[] = {
+	WC_LAND,
+	WC_WATER,
+	WC_CLEAR_SCENERY,
+	WC_LAND_RIGHTS,
+	WC_SCENERY,
+	WC_FOOTPATH,
+	WC_RIDE_CONSTRUCTION,
+	WC_TRACK_DESIGN_PLACE,
+	WC_CONSTRUCT_RIDE,
+	WC_TRACK_DESIGN_LIST
+};
+
+static rct_windowclass window_colour_schemes_tab_4_classes[] = {
+	WC_RIDE,
+	WC_RIDE_LIST,
+	WC_PEEP,
+	WC_GUEST_LIST,
+	WC_STAFF,
+	WC_STAFF_LIST,
+	WC_BANNER
+};
+
+static rct_windowclass window_colour_schemes_tab_5_classes[] = {
+	WC_EDITOR_OBJECT_SELECTION,
+	WC_EDITOR_INVENTION_LIST,
+	WC_EDITOR_SCENARIO_OPTIONS,
+	WC_EDTIOR_OBJECTIVE_OPTIONS,
+	WC_MAPGEN,
+	WC_MANAGE_TRACK_DESIGN,
+	WC_INSTALL_TRACK
+};
+
+static rct_windowclass window_colour_schemes_tab_6_classes[] = {
+	WC_CHEATS,
+	WC_COLOUR_SCHEMES,
+	WC_OPTIONS,
+	WC_KEYBOARD_SHORTCUT_LIST,
+	WC_CHANGE_KEYBOARD_SHORTCUT,
+	WC_LOADSAVE
+};
+
+static rct_windowclass window_colour_schemes_tab_7_classes[] = {
+	WC_SAVE_PROMPT,
+	WC_DEMOLISH_RIDE_PROMPT,
+	WC_FIRE_PROMPT,
+	WC_TRACK_DELETE_PROMPT,
+	WC_LOADSAVE_OVERWRITE_PROMPT
+};
+
+// Info, Research, Wrench, Entrance, Slide, Gears, Point Finger
+// Info, Entrance, Construction, Slide, Wrench, Gear, Todo
+static uint8 _selected_tab = 0;
 static sint16 _color_index_1 = -1;
 static sint8 _color_index_2 = -1;
-static uint8 _selected_tab = 0;
-static const uint8 _row_height = 16;
-static const uint8 _button_offset_x = 110;
-static const uint8 _button_offset_y = 2;
+static const uint8 _row_height = 32;
+static const uint8 _button_offset_x = 220;
+static const uint8 _button_offset_y = 3;
+static const uint8 _check_offset_y = 3 + 12 + 2;
 
-static uint16 _window_staff_list_selected_type_count = 0;
-// TODO: These are still referenced in non-decompiled code
-//static int _window_staff_list_highlighted_index;
-//static int _window_staff_list_selected_tab;
 
 void window_colour_schemes_init_vars()
 {
-	_selected_tab = WINDOW_COLOUR_SCHEMES_TAB_WINDOWS;
+	_selected_tab = WINDOW_COLOUR_SCHEMES_TAB_MAIN_UI;
+}
+
+static window_colour_scheme* get_colour_scheme_tab()
+{
+	switch (_selected_tab) {
+	case 0: return colour_scheme_get_by_class(window_colour_schemes_tab_1_classes[_color_index_1]);
+	case 1: return colour_scheme_get_by_class(window_colour_schemes_tab_2_classes[_color_index_1]);
+	case 2: return colour_scheme_get_by_class(window_colour_schemes_tab_3_classes[_color_index_1]);
+	case 3: return colour_scheme_get_by_class(window_colour_schemes_tab_4_classes[_color_index_1]);
+	case 4: return colour_scheme_get_by_class(window_colour_schemes_tab_5_classes[_color_index_1]);
+	case 5: return colour_scheme_get_by_class(window_colour_schemes_tab_6_classes[_color_index_1]);
+	case 6: return colour_scheme_get_by_class(window_colour_schemes_tab_7_classes[_color_index_1]);
+	}
+	return NULL;
+}
+static window_colour_scheme* get_colour_scheme_tab_by_index(int index)
+{
+	switch (_selected_tab) {
+	case 0: return colour_scheme_get_by_class(window_colour_schemes_tab_1_classes[index]);
+	case 1: return colour_scheme_get_by_class(window_colour_schemes_tab_2_classes[index]);
+	case 2: return colour_scheme_get_by_class(window_colour_schemes_tab_3_classes[index]);
+	case 3: return colour_scheme_get_by_class(window_colour_schemes_tab_4_classes[index]);
+	case 4: return colour_scheme_get_by_class(window_colour_schemes_tab_5_classes[index]);
+	case 5: return colour_scheme_get_by_class(window_colour_schemes_tab_6_classes[index]);
+	case 6: return colour_scheme_get_by_class(window_colour_schemes_tab_7_classes[index]);
+	}
+	return NULL;
+}
+
+static int get_colour_scheme_tab_count()
+{
+	switch (_selected_tab) {
+	case 0: return sizeof(window_colour_schemes_tab_1_classes);
+	case 1: return sizeof(window_colour_schemes_tab_2_classes);
+	case 2: return sizeof(window_colour_schemes_tab_3_classes);
+	case 3: return sizeof(window_colour_schemes_tab_4_classes);
+	case 4: return sizeof(window_colour_schemes_tab_5_classes);
+	case 5: return sizeof(window_colour_schemes_tab_6_classes);
+	case 6: return sizeof(window_colour_schemes_tab_7_classes);
+	}
+	return 0;
+}
+
+static void window_colour_schemes_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
+{
+	int sprite_idx;
+
+	for (int i = 0; i < 8; i++) {
+		sprite_idx = window_colour_schemes_tab_sprites[i];
+		if (_selected_tab == i)
+			sprite_idx += w->frame_no / window_colour_schemes_tab_animation_divisor[_selected_tab];
+		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_COLOUR_SCHEMES_MAIN_UI_TAB + i].left, w->y + w->widgets[WIDX_COLOUR_SCHEMES_MAIN_UI_TAB + i].top, 0);
+	}
 }
 
 void window_colour_schemes_open()
@@ -138,9 +317,19 @@ void window_colour_schemes_open()
 	window->widgets = window_colour_schemes_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_COLOUR_SCHEMES_CLOSE) |
-		(1 << WIDX_COLOUR_SCHEMES_WINDOWS_TAB) |
-		(1 << WIDX_COLOUR_SCHEMES_PRESETS_TAB) |
+		(1 << WIDX_COLOUR_SCHEMES_MAIN_UI_TAB) |
+		(1 << WIDX_COLOUR_SCHEMES_PARK_TAB) |
+		(1 << WIDX_COLOUR_SCHEMES_TOOLS_TAB) |
+		(1 << WIDX_COLOUR_SCHEMES_RIDE_PEEPS_TAB) |
+		(1 << WIDX_COLOUR_SCHEMES_EDITORS_TAB) |
+		(1 << WIDX_COLOUR_SCHEMES_MISC_TAB) |
+		(1 << WIDX_COLOUR_SCHEMES_PROMPTS_TAB) |
+		(1 << WIDX_COLOUR_SCHEMES_SETTINGS_TAB) |
 		(1 << WIDX_COLOUR_SCHEMES_COLORBTN_MASK);
+
+	window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_LIST].type = WWT_SCROLL;
+
+	window_colour_schemes_init_vars();
 
 	window_init_scroll_widgets(window);
 	window->list_information_type = 0;
@@ -148,7 +337,7 @@ void window_colour_schemes_open()
 	_color_index_2 = -1;
 	window->min_width = 320;
 	window->min_height = 270;
-	window->max_width = 500;
+	window->max_width = 320;
 	window->max_height = 450;
 	window->flags |= WF_RESIZABLE;
 }
@@ -196,18 +385,23 @@ static void window_colour_schemes_mousedown(int widgetIndex, rct_window* w, rct_
 	short newSelectedTab;
 
 	switch (widgetIndex) {
-	case WIDX_COLOUR_SCHEMES_WINDOWS_TAB:
-	case WIDX_COLOUR_SCHEMES_PRESETS_TAB:
-		newSelectedTab = widgetIndex - WIDX_COLOUR_SCHEMES_WINDOWS_TAB;
+	case WIDX_COLOUR_SCHEMES_MAIN_UI_TAB:
+	case WIDX_COLOUR_SCHEMES_PARK_TAB:
+	case WIDX_COLOUR_SCHEMES_TOOLS_TAB:
+	case WIDX_COLOUR_SCHEMES_RIDE_PEEPS_TAB:
+	case WIDX_COLOUR_SCHEMES_EDITORS_TAB:
+	case WIDX_COLOUR_SCHEMES_MISC_TAB:
+	case WIDX_COLOUR_SCHEMES_PROMPTS_TAB:
+	case WIDX_COLOUR_SCHEMES_SETTINGS_TAB:
+		newSelectedTab = widgetIndex - WIDX_COLOUR_SCHEMES_MAIN_UI_TAB;
 		if (_selected_tab == newSelectedTab)
 			break;
 		_selected_tab = (uint8)newSelectedTab;
-		window_invalidate(w);
 		w->scrolls[0].v_top = 0;
+		w->frame_no = 0;
+		window_invalidate(w);
 		break;
 	}
-
-
 }
 
 static void window_colour_schemes_dropdown()
@@ -217,7 +411,7 @@ static void window_colour_schemes_dropdown()
 	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
 	if (widgetIndex == WIDX_COLOUR_SCHEMES_LIST && dropdownIndex != -1) {
-		_window_colors[_color_index_1][_color_index_2] = dropdownIndex;
+		get_colour_scheme_tab()->colours[_color_index_2] = dropdownIndex | get_colour_scheme_tab()->colours[_color_index_2] & 0x80;
 		window_invalidate_all();
 	}
 	_color_index_1 = -1;
@@ -226,16 +420,12 @@ static void window_colour_schemes_dropdown()
 
 void window_colour_schemes_update(rct_window *w)
 {
-	/*int spriteIndex;
-	rct_peep *peep;
+	w->frame_no++;
+	if (w->frame_no >= window_colour_schemes_tab_animation_loops[_selected_tab])
+		w->frame_no = 0;
 
-	w->list_information_type++;
-	if (w->list_information_type >= 24) {
-		w->list_information_type = 0;
-	}
-	else {
-		widget_invalidate(w, WIDX_COLOUR_SCHEMES_WINDOWS_TAB + _selected_tab);
-	}*/
+	widget_invalidate(w, WIDX_COLOUR_SCHEMES_MAIN_UI_TAB + _selected_tab);
+
 }
 
 void window_colour_schemes_scrollgetsize() {
@@ -245,18 +435,7 @@ void window_colour_schemes_scrollgetsize() {
 
 	window_get_register(w);
 
-	uint16 staffCount = 15;
-
-	_window_staff_list_selected_type_count = staffCount;
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short) != -1) {
-		RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short) = -1;
-		window_invalidate(w);
-	}
-
-	int rowHeight = 15;
-
-	int scrollHeight = staffCount * rowHeight;
+	int scrollHeight = get_colour_scheme_tab_count() * _row_height;
 	int i = scrollHeight - window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_LIST].bottom + window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_LIST].top + 21;
 	if (i < 0)
 		i = 0;
@@ -286,33 +465,32 @@ void window_colour_schemes_scrollmousedown() {
 	rct_drawpixelinfo *dpi;
 
 	window_scrollmouse_get_registers(w, scrollIndex, x, y);
-	
-	int rowHeight = 15;
+
+	if (_selected_tab == 7)
+		return;
+
 	selectedTab = _selected_tab;
-	if (y / rowHeight < 15) {
-		if (x >= 110 && x < 110 + 12 * 6) {
-			_color_index_1 = y / rowHeight;
-			_color_index_2 = ((x - 110) / 12);
-			window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_COLORBTN_MASK].left = 110 + _color_index_2 * 12 + window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_LIST].left;
-			window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_COLORBTN_MASK].top = _color_index_1 * rowHeight - scrollIndex + window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_LIST].top;
-			window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_COLORBTN_MASK].right = window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_COLORBTN_MASK].left + 11;
-			window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_COLORBTN_MASK].bottom = window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_COLORBTN_MASK].top + 11;
-			window_dropdown_show_colour(w, &(window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_COLORBTN_MASK]), w->colours[1], _window_colors[_color_index_1][_color_index_2]);
+	if (y / _row_height < get_colour_scheme_tab_count()) {
+		int y2 = y % _row_height;
+		_color_index_1 = y / _row_height;
+		_color_index_2 = ((x - _button_offset_x) / 12);
+		if (_color_index_2 < get_colour_scheme_tab()->num_colours) {
+			if (x >= _button_offset_x && x < _button_offset_x + 12 * 6 && y2 >= _button_offset_y && y2 < _button_offset_y + 11) {
+				window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_COLORBTN_MASK].left = _button_offset_x + _color_index_2 * 12 + window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_LIST].left;
+				window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_COLORBTN_MASK].top = _color_index_1 * _row_height + _button_offset_y - w->scrolls[0].v_top + window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_LIST].top;
+				window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_COLORBTN_MASK].right = window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_COLORBTN_MASK].left + 11;
+				window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_COLORBTN_MASK].bottom = window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_COLORBTN_MASK].top + 11;
+				window_dropdown_show_colour(w, &(window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_COLORBTN_MASK]), w->colours[1], get_colour_scheme_tab()->colours[_color_index_2]);
+			}
+			else if (x >= _button_offset_x && x < _button_offset_x + 12 * 6 - 1 && y2 >= _check_offset_y && y2 < _check_offset_y + 11) {
+				if (get_colour_scheme_tab()->colours[_color_index_2] & 0x80)
+					get_colour_scheme_tab()->colours[_color_index_2] &= 0x7F;
+				else
+					get_colour_scheme_tab()->colours[_color_index_2] |= 0x80;
+				window_invalidate_all();
+			}
 		}
 	}
-
-	/*for (int i = y / rowHeight; i >= 0; i--) {
-		if (i == 0) {
-			if (x >= 110 && x < 110 + 12 * 6) {
-				_color_index_1 = i;
-				_color_index_2 = ((x - 110) / 12);
-				window_dropdown_show_colour(w, &(w->widgets[WIDX_COLOUR_SCHEMES_LIST]), w->colours[1], _window_colors[_color_index_1][_color_index_2]);
-			}
-			break;
-		}
-
-		i--;
-	}*/
 }
 
 void window_colour_schemes_scrollmouseover() {
@@ -322,11 +500,8 @@ void window_colour_schemes_scrollmouseover() {
 
 	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
-	/*i = y / 10;
-	if (i != RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short) = i;
-		window_invalidate(w);
-	}*/
+	//if (_selected_tab == 7)
+	//	return;
 }
 
 void window_colour_schemes_tooltip()
@@ -339,21 +514,9 @@ void window_colour_schemes_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
-	if (!gConfigInterface.rct1_colour_scheme)
-	{
-		w->colours[0] = 1;
-		w->colours[1] = 4;
-		w->colours[2] = 4;
-	}
-	else
-	{
-		w->colours[0] = 12;
-		w->colours[1] = 4;
-		w->colours[2] = 4;
-	}
-
-	int pressed_widgets = w->pressed_widgets & 0xFFFFFFCF;
+	int pressed_widgets = w->pressed_widgets & 0xFFFFF00F;
 	uint8 tabIndex = _selected_tab;
 	uint8 widgetIndex = tabIndex + 4;
 
@@ -374,6 +537,13 @@ void window_colour_schemes_invalidate()
 	window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_CLOSE].right = w->width - 2 - 0x0B + 0x0A;
 	window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_LIST].right = w->width - 4;
 	window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_LIST].bottom = w->height - 0x0F;
+
+	if (_selected_tab == 7) {
+		window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_LIST].type = WWT_EMPTY;
+	}
+	else {
+		window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_LIST].type = WWT_SCROLL;
+	}
 }
 
 void window_colour_schemes_paint() {
@@ -386,21 +556,13 @@ void window_colour_schemes_paint() {
 
 	// Widgets
 	window_draw_widgets(w, dpi);
+	window_colour_schemes_draw_tab_images(dpi, w);
 
-	selectedTab = RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8);
+	if (_selected_tab < 7) {
 
-	// Handymen tab image
-	/*i = (selectedTab == 0 ? w->list_information_type & 0x0FFFFFFFC : 0);
-	i += RCT2_ADDRESS(RCT2_GLOBAL(0x00982710, int), int)[0] + 1;
-	i |= 0x20000000;
-	i |= RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) << 19;
-	gfx_draw_sprite(
-		dpi,
-		i,
-		(window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_WINDOWS_TAB].left + window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_WINDOWS_TAB].right) / 2 + w->x,
-		window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_WINDOWS_TAB].bottom - 6 + w->y, 0
-		);*/
-
+		gfx_draw_string_left(dpi, 5236, w, w->colours[1], w->x + 6, 58 - 12 + w->y + 1);
+		gfx_draw_string_left(dpi, 5237, w, w->colours[1], w->x + 220, 58 - 12 + w->y + 1);
+	}
 }
 
 /**
@@ -416,24 +578,56 @@ void window_colour_schemes_scrollpaint()
 
 	window_paint_get_registers(w, dpi);
 
-	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ((char*)0x0141FC48)[w->colours[1] * 8]);
-	int rowHeight = 15;
+	if (_selected_tab == 7)
+		return;
+
+	if ((w->colours[1] & 0x80) == 0)
+		//gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ((char*)0x0141FC48)[w->colours[1] * 8]);
+		gfx_clear(dpi, ((char*)0x0141FC48)[w->colours[1] * 8] * 0x1010101);
 	y = 0;
 	selectedTab = _selected_tab;
-	for (int i = 0; i < 15; i++) {
+	for (int i = 0; i < get_colour_scheme_tab_count(); i++) {
 		if (y > dpi->y + dpi->height) {
 			break;
 		}
-		if (y + rowHeight >= dpi->y) {
-			for (int j = 0; j < 6; j++) {
-				uint32 image = (_window_colors[i][j] << 19) + 0x600013C3;
-				if (i == _color_index_1 && j == _color_index_2) {
-					image = (_window_colors[i][j] << 19) + 0x600013C4;
+		if (y + _row_height >= dpi->y) {
+			if (i + 1 < get_colour_scheme_tab_count()) {
+				int colour = w->colours[1];
+				if (colour & 0x80) {
+					colour = RCT2_ADDRESS(0x009DEDF4, uint8)[colour];
+
+					colour = colour | 0x2000000;
+					gfx_fill_rect(dpi, 0, y + _row_height - 2, window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_LIST].right, y + _row_height - 2, colour + 1);
+					gfx_fill_rect(dpi, 0, y + _row_height - 1, window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_LIST].right, y + _row_height - 1, colour + 2);
 				}
-				gfx_draw_sprite(dpi, image, 110 + 12 * j, y - 1, 0);
+				else {
+					colour = RCT2_ADDRESS(0x0141FC47, uint8)[w->colours[1] * 8];
+					gfx_fill_rect(dpi, 0, y + _row_height - 2, window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_LIST].right, y + _row_height - 2, colour);
+					colour = RCT2_ADDRESS(0x0141FC4B, uint8)[w->colours[1] * 8];
+					gfx_fill_rect(dpi, 0, y + _row_height - 1, window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_LIST].right, y + _row_height - 1, colour);
+				}
+			}
+			//gfx_fill_rect_inset(dpi, 0, y + _row_height - 2, window_colour_schemes_widgets[WIDX_COLOUR_SCHEMES_LIST].right + 1, y + _row_height - 1, w->colours[1], 0x20);
+
+			for (int j = 0; j < get_colour_scheme_tab_by_index(i)->num_colours; j++) {
+
+				gfx_draw_string_left(dpi, get_colour_scheme_tab_by_index(i)->name, NULL, w->colours[1], 2, y + 4);
+
+				uint32 image = ((get_colour_scheme_tab_by_index(i)->colours[j] & 0x7F) << 19) + 0x600013C3;
+				if (i == _color_index_1 && j == _color_index_2) {
+					image = ((get_colour_scheme_tab_by_index(i)->colours[j] & 0x7F) << 19) + 0x600013C4;
+				}
+				gfx_draw_sprite(dpi, image, _button_offset_x + 12 * j, y + _button_offset_y, 0);
+
+				gfx_fill_rect_inset(dpi, _button_offset_x + 12 * j, y + _check_offset_y, _button_offset_x + 12 * j + 9, y + _check_offset_y + 10, w->colours[1], 0xE0);
+				if (get_colour_scheme_tab_by_index(i)->colours[j] & 0x80) {
+					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = -1;
+					gfx_draw_string(dpi, (char*)0x009DED72, w->colours[1] & 0x7F, _button_offset_x + 12 * j, y + _check_offset_y);
+				}
+
 			}
 		}
 
-		y += rowHeight;
+		y += _row_height;
 	}
 }

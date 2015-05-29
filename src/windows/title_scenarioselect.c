@@ -27,6 +27,7 @@
 #include "../sprites.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../interface/colour_schemes.h"
 
 enum {
 	WIDX_BACKGROUND,
@@ -123,9 +124,6 @@ void window_scenarioselect_open()
 	
 	window->enabled_widgets = 0x04 | 0x10 | 0x20 | 0x40 | 0x80 | 0x100;
 	window_init_scroll_widgets(window);
-	window->colours[0] = 1;
-	window->colours[1] = 26;
-	window->colours[2] = 26;
 	window->viewport_focus_coordinates.var_480 = -1;
 	window->var_494 = 0;
 
@@ -284,6 +282,7 @@ static void window_scenarioselect_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	w->pressed_widgets &= ~(0x10 | 0x20 | 0x40 | 0x80 | 0x100);
 	w->pressed_widgets |= 1LL << (w->selected_tab + 4);

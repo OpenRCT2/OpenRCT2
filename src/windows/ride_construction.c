@@ -24,6 +24,7 @@
 #include "../game.h"
 #include "../ride/track.h"
 #include "../drawing/drawing.h"
+#include "../interface/colour_schemes.h"
 
 /* move to ride.c */
 void sub_6b2fa9(rct_windownumber number){
@@ -142,9 +143,7 @@ rct_window *window_construction_open()
 
 		window_init_scroll_widgets(w);
 
-		w->colours[0] = 24;
-		w->colours[1] = 24;
-		w->colours[2] = 24;
+		colour_scheme_update(w);
 
 		w->number = ride_id;
 
@@ -200,6 +199,7 @@ rct_window *window_construction_open()
 	RCT2_GLOBAL(0x00F440B1, uint8) = 0;
 	RCT2_GLOBAL(0x00F44159, uint8) = 0;
 	RCT2_GLOBAL(0x00F4415C, uint8) = 0;
+	colour_scheme_update(w);
 	return w;
 }
 

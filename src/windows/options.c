@@ -39,6 +39,7 @@
 #include "../sprites.h"
 #include "dropdown.h"
 #include "error.h"
+#include "../interface/colour_schemes.h"
 
 enum {
 	WINDOW_OPTIONS_PAGE_DISPLAY,
@@ -71,6 +72,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_CONSTRUCTION_MARKER,
 	WIDX_CONSTRUCTION_MARKER_DROPDOWN,
 	WIDX_HARDWARE_DISPLAY_CHECKBOX,
+	WIDX_COLOUR_SCHEMES,
 	
 	WIDX_LANGUAGE,
 	WIDX_LANGUAGE_DROPDOWN,
@@ -132,41 +134,42 @@ static rct_widget window_options_widgets[] = {
 	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,		STR_NONE },
 
 	// Display tab
-	{ WWT_DROPDOWN,			0,	155,	299,	53,		64,		840,			STR_NONE },	// resolution
-	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	54,		63,		876,			STR_NONE },
-	{ WWT_DROPDOWN,			0,	155,	299,	68,		79,		871,			STR_NONE },	// fullscreen
-	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	69,		78,		876,			STR_NONE },
-	{ WWT_CHECKBOX,			0,	10,		299,	84,		95,		STR_TILE_SMOOTHING, STR_TILE_SMOOTHING_TIP },
-	{ WWT_CHECKBOX,			0,	10,		299,	99,		110,	STR_GRIDLINES,	STR_GRIDLINES_TIP },
-	{ WWT_DROPDOWN,			0,	155,	299,	113,	124,	STR_NONE,		STR_NONE },	// construction marker
-	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	114,	123,	876,			STR_NONE },
-	{ WWT_CHECKBOX,			0,	10,		290,	129,	140,	5154,			STR_NONE },
+	{ WWT_DROPDOWN,			1,	155,	299,	53,		64,		840,			STR_NONE },	// resolution
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	54,		63,		876,			STR_NONE },
+	{ WWT_DROPDOWN,			1,	155,	299,	68,		79,		871,			STR_NONE },	// fullscreen
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	69,		78,		876,			STR_NONE },
+	{ WWT_CHECKBOX,			1,	10,		299,	84,		95,		STR_TILE_SMOOTHING, STR_TILE_SMOOTHING_TIP },
+	{ WWT_CHECKBOX,			1,	10,		299,	99,		110,	STR_GRIDLINES,	STR_GRIDLINES_TIP },
+	{ WWT_DROPDOWN,			1,	155,	299,	113,	124,	STR_NONE,		STR_NONE },	// construction marker
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	114,	123,	876,			STR_NONE },
+	{ WWT_CHECKBOX,			1,	10,		290,	129,	140,	5154,			STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	144,	155,	5218,			STR_NONE },
 
 	// Culture / units tab
-	{ WWT_DROPDOWN,			0,	155,	299,	53,		64,		STR_NONE,		STR_NONE },	// language
-	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	54,		63,		876,			STR_NONE },
-	{ WWT_DROPDOWN,			0,	155,	299,	68,		79,		871,			STR_NONE },	// currency
-	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	69,		78,		876,			STR_NONE }, //
-	{ WWT_DROPDOWN,			0,	155,	299,	83,		94,		872,			STR_NONE },	// distance
-	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	84,		93,		876,			STR_NONE },
-	{ WWT_DROPDOWN,			0,	155,	299,	98,		110,	875,			STR_NONE },	// temperature
-	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	99,		108,	876,			STR_NONE }, //jjj
-	{ WWT_DROPDOWN,			0,	155,	299,	113,	124,	868,			STR_NONE },	// height labels
-	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	114,	123,	876,			STR_NONE },
-	{ WWT_DROPDOWN,			0,	155,	299,	128,	139,	STR_NONE,		STR_NONE },	// date format
-	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	129,	138,	876,			STR_NONE },
+	{ WWT_DROPDOWN,			1,	155,	299,	53,		64,		STR_NONE,		STR_NONE },	// language
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	54,		63,		876,			STR_NONE },
+	{ WWT_DROPDOWN,			1,	155,	299,	68,		79,		871,			STR_NONE },	// currency
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	69,		78,		876,			STR_NONE }, //
+	{ WWT_DROPDOWN,			1,	155,	299,	83,		94,		872,			STR_NONE },	// distance
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	84,		93,		876,			STR_NONE },
+	{ WWT_DROPDOWN,			1,	155,	299,	98,		110,	875,			STR_NONE },	// temperature
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	99,		108,	876,			STR_NONE }, //jjj
+	{ WWT_DROPDOWN,			1,	155,	299,	113,	124,	868,			STR_NONE },	// height labels
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	114,	123,	876,			STR_NONE },
+	{ WWT_DROPDOWN,			1,	155,	299,	128,	139,	STR_NONE,		STR_NONE },	// date format
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	129,	138,	876,			STR_NONE },
 
 	// Audio tab
-	{ WWT_DROPDOWN,			0,	10,		299,	53,		64,		865,			STR_NONE },	// sound
-	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	54,		63,		876,			STR_NONE },
-	{ WWT_CHECKBOX,			0,	10,		229,	68,		79,		STR_SOUND,		STR_NONE }, // enable / disable sound
-	{ WWT_CHECKBOX,			0,	10,		229,	83,		94,		STR_MUSIC,		STR_NONE }, // enable / disable music
-	{ WWT_DROPDOWN,			0,	155,	299,	98,		109,	STR_NONE,		STR_NONE },	// title music
-	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	99,		108,	876,			STR_NONE },
+	{ WWT_DROPDOWN,			1,	10,		299,	53,		64,		865,			STR_NONE },	// sound
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	54,		63,		876,			STR_NONE },
+	{ WWT_CHECKBOX,			1,	10,		229,	68,		79,		STR_SOUND,		STR_NONE }, // enable / disable sound
+	{ WWT_CHECKBOX,			1,	10,		229,	83,		94,		STR_MUSIC,		STR_NONE }, // enable / disable music
+	{ WWT_DROPDOWN,			1,	155,	299,	98,		109,	STR_NONE,		STR_NONE },	// title music
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	99,		108,	876,			STR_NONE },
 
 	// Controls tab
 	{ WWT_CHECKBOX,			2,	10,		299,	53,		64,		STR_SCREEN_EDGE_SCROLLING, STR_SCREEN_EDGE_SCROLLING_TIP },
-	{ WWT_DROPDOWN_BUTTON,	0,	26,		185,	68,		78,		STR_HOTKEY,		STR_HOTKEY_TIP },
+	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	68,		78,		STR_HOTKEY,		STR_HOTKEY_TIP },
 	{ WWT_CHECKBOX,			2,	10,		299,	82,		93,		5120,			STR_NONE },
 	{ WWT_CHECKBOX,			2,	10,		299,	97,		108,	5121,			STR_NONE },
 	{ WWT_CHECKBOX,			2,	10,		299,	112,	123,	5147,			STR_NONE },
@@ -175,8 +178,8 @@ static rct_widget window_options_widgets[] = {
 	// Misc
 	{ WWT_CHECKBOX,			2,	10,		299,	53,		64,		STR_REAL_NAME,	STR_REAL_NAME_TIP },
 	{ WWT_CHECKBOX,			2,	10,		299,	68,		79,		STR_SAVE_PLUGIN_DATA, STR_SAVE_PLUGIN_DATA_TIP },
-	{ WWT_DROPDOWN,			0,	155,	299,	83,		94,		STR_NONE,		STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	0,	288,	298,	84,		93,		876,			STR_NONE },
+	{ WWT_DROPDOWN,			1,	155,	299,	83,		94,		STR_NONE,		STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	84,		93,		876,			STR_NONE },
 	{ WWT_CHECKBOX,			2,	10,		299,	98,		109,	5122,			STR_NONE }, // allow subtype 
 	{ WWT_CHECKBOX,			2,	10,		299,	113,	124,	5150,			STR_NONE }, // enabled debugging tools
 	{ WWT_CHECKBOX,			2,	10,		299,	128,	139,	5155,			5156 }, // test unfinished tracks
@@ -296,6 +299,7 @@ void window_options_open()
 		(1ULL << WIDX_TILE_SMOOTHING_CHECKBOX) |
 		(1ULL << WIDX_GRIDLINES_CHECKBOX) |
 		(1ULL << WIDX_HARDWARE_DISPLAY_CHECKBOX) |
+		(1ULL << WIDX_COLOUR_SCHEMES) |
 		(1ULL << WIDX_SAVE_PLUGIN_DATA_CHECKBOX) |
 		(1ULL << WIDX_AUTOSAVE) |
 		(1ULL << WIDX_AUTOSAVE_DROPDOWN) |
@@ -314,9 +318,6 @@ void window_options_open()
 
 	w->page = WINDOW_OPTIONS_PAGE_DISPLAY;
 	window_init_scroll_widgets(w);
-	w->colours[0] = 7;
-	w->colours[1] = 7;
-	w->colours[2] = 7;
 }
 
 /**
@@ -416,6 +417,10 @@ static void window_options_mouseup()
 		gConfigGeneral.hardware_display ^= 1;
 		platform_refresh_video();
 		config_save_default();
+		window_invalidate(w);
+		break;
+	case WIDX_COLOUR_SCHEMES:
+		window_colour_schemes_open();
 		window_invalidate(w);
 		break;
 	case WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX:
@@ -767,6 +772,7 @@ static void window_options_invalidate()
 	sint32 currentSoundDevice;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	window_options_set_pressed_tab(w);
 	for (i = WIDX_RESOLUTION; i < WINDOW_OPTIONS_WIDGETS_SIZE; i++) {
@@ -820,6 +826,7 @@ static void window_options_invalidate()
 		window_options_widgets[WIDX_CONSTRUCTION_MARKER].type = WWT_DROPDOWN;
 		window_options_widgets[WIDX_CONSTRUCTION_MARKER_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_widgets[WIDX_HARDWARE_DISPLAY_CHECKBOX].type = WWT_CHECKBOX;
+		window_options_widgets[WIDX_COLOUR_SCHEMES].type = WWT_DROPDOWN_BUTTON;
 		break;
 	case WINDOW_OPTIONS_PAGE_CULTURE:
 		// currency: pounds, dollars, etc. (10 total)

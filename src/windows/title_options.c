@@ -24,6 +24,7 @@
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../interface/colour_schemes.h"
 
 static rct_widget window_title_options_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON, 2, 0, 79, 0, 11, STR_OPTIONS, STR_NONE },
@@ -114,17 +115,5 @@ static void window_title_options_invalidate()
 {
 	rct_window *w;
 	window_get_register(w);
-
-	if(!gConfigInterface.rct1_colour_scheme)
-	{
-		w->colours[0] = 140;
-		w->colours[1] = 140;
-		w->colours[2] = 140;
-	}
-	else
-	{
-		w->colours[0] = 129;
-		w->colours[1] = 129;
-		w->colours[2] = 129;
-	}
+	colour_scheme_update(w);
 }

@@ -200,7 +200,7 @@ static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	// Draw the resize sprite at the bottom right corner
 	l = w->x + widget->right - 18;
 	t = w->y + widget->bottom - 18;
-	gfx_draw_sprite(dpi, SPR_RESIZE | 0x20000000 | (colour << 19), l, t, 0);
+	gfx_draw_sprite(dpi, SPR_RESIZE | 0x20000000 | ((colour & 0x7F) << 19), l, t, 0);
 }
 
 /**
@@ -237,7 +237,7 @@ static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 	// Draw the resize sprite at the bottom right corner
 	l = w->x + widget->right - 18;
 	t = w->y + widget->bottom - 18;
-	gfx_draw_sprite(dpi, SPR_RESIZE | 0x20000000 | (colour << 19), l, t, 0);
+	gfx_draw_sprite(dpi, SPR_RESIZE | 0x20000000 | ((colour & 0x7F) << 19), l, t, 0);
 }
 
 /**
@@ -316,7 +316,7 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetInd
 	b = w->y + widget->bottom;
 
 	// Get the colour and image
-	colour = w->colours[widget->colour];
+	colour = w->colours[widget->colour] & 0x7F;
 	image = widget->image + 2;
 
 	// Draw coloured image
@@ -835,6 +835,7 @@ static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 
 static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, int l, int t, int r, int b, int colour)
 {
+	colour &= 0x7F;
 	// Trough
 	gfx_fill_rect(dpi, l + 10, t, r - 10, b, *((char*)(0x0141FC4B + (colour * 8))));
 	gfx_fill_rect(dpi, l + 10, t, r - 10, b, 0x1000000 | *((char*)(0x0141FC47 + (colour * 8))));
@@ -860,6 +861,7 @@ static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 
 static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, int l, int t, int r, int b, int colour)
 {
+	colour &= 0x7F;
 	// Trough
 	gfx_fill_rect(dpi, l, t + 10, r, b - 10, *((char*)(0x0141FC4B + (colour * 8))));
 	gfx_fill_rect(dpi, l, t + 10, r, b - 10, 0x1000000 | *((char*)(0x0141FC47 + (colour * 8))));
@@ -907,7 +909,7 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	b = w->y + widget->bottom;
 
 	// Get the colour
-	colour = w->colours[widget->colour];
+	colour = w->colours[widget->colour] & 0x7F;
 
 	if (widget->type == WWT_4 || widget->type == WWT_COLORBTN || widget->type == WWT_TRNBTN || widget->type == WWT_TAB)
 		if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))

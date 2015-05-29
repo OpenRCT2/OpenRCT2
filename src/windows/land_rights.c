@@ -27,6 +27,7 @@
 #include "../sprites.h"
 #include "../world/map.h"
 #include "../game.h"
+#include "../interface/colour_schemes.h"
 
 const int MAX_LAND_RIGHTS_SIZE = 64;
 
@@ -115,9 +116,6 @@ void window_land_rights_open()
 
 	RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) = MONEY32_UNDEFINED;
 	RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) = MONEY32_UNDEFINED;
-	window->colours[0] = 19;
-	window->colours[1] = 19;
-	window->colours[2] = 19;
 
 	show_land_rights();
 }
@@ -231,6 +229,7 @@ static void window_land_rights_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	// Set the preview image button to be pressed down
 	w->pressed_widgets |= (1 << WIDX_PREVIEW) | (1 << (LandRightsMode ? WIDX_BUY_LAND_RIGHTS : WIDX_BUY_CONSTRUCTION_RIGHTS));

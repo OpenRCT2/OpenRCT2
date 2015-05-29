@@ -28,11 +28,28 @@ typedef struct {
 	rct_windowclass classification;
 	uint8 colours[6];
 	uint8 num_colours;
+	rct_string_id name;
+	char *ini_name;
 } window_colour_scheme;
 
-extern window_colour_scheme gColorSchemes[] = {
-	{WC_}
-}
+typedef struct {
+	uint8 colours[6];
+} window_colours;
 
+typedef struct {
+	rct_windowclass classification;
+	uint8 colours[6];
+} marked_window_colours;
+
+extern window_colour_scheme gColourSchemes[];
+
+extern window_colours gColourSchemesRCT1[];
+
+extern uint32 gNumColourSchemeWindows;
+
+window_colour_scheme* colour_scheme_get_by_class(rct_windowclass classification);
+
+void colour_scheme_update(rct_window *window);
+void colour_scheme_update_by_class(rct_window *window, rct_windowclass classification);
 
 #endif

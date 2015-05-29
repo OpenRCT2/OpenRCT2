@@ -26,6 +26,7 @@
 #include "../interface/window.h"
 #include "../sprites.h"
 #include "../world/scenery.h"
+#include "../interface/colour_schemes.h"
 
 
 enum WINDOW_MAP_WIDGET_IDX {
@@ -187,9 +188,6 @@ void window_map_open()
 	window_map_init_map();
 	RCT2_GLOBAL(0x00F64F05, uint8) = 0;
 	window_map_center_on_view_point();
-
-	w->colours[0] = 12;
-	w->colours[1] = 24;
 }
 
 /**
@@ -513,6 +511,7 @@ static void window_map_invalidate()
 	int i, height;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	// set the pressed widgets
 	pressed_widgets = (uint32)w->pressed_widgets;

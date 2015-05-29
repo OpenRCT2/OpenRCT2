@@ -31,6 +31,7 @@
 #include "error.h"
 #include "dropdown.h"
 #include "../drawing/drawing.h"
+#include "../interface/colour_schemes.h"
 
 #define WW 113
 #define WH 96
@@ -130,9 +131,6 @@ void window_banner_open(rct_windownumber number)
 
 	w->number = number;
 	window_init_scroll_widgets(w);
-	w->colours[0] = 24;
-	w->colours[1] = 24;
-	w->colours[2] = 24;
 
 	int view_x = gBanners[w->number].x << 5;
 	int view_y = gBanners[w->number].y << 5;
@@ -338,6 +336,7 @@ static void window_banner_invalidate()
 	rct_window* w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	rct_banner* banner = &gBanners[w->number];
 	rct_widget* colour_btn = &window_banner_widgets[WIDX_MAIN_COLOR];

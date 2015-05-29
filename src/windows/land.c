@@ -26,6 +26,7 @@
 #include "../sprites.h"
 #include "../world/map.h"
 #include "dropdown.h"
+#include "../interface/colour_schemes.h"
 
 enum WINDOW_LAND_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -148,9 +149,6 @@ void window_land_open()
 	_selectedWallTexture = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) = MONEY32_UNDEFINED;
 	RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) = MONEY32_UNDEFINED;
-	window->colours[0] = 24;
-	window->colours[1] = 24;
-	window->colours[2] = 24;
 }
 
 /**
@@ -365,6 +363,7 @@ static void window_land_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	w->pressed_widgets = (1 << WIDX_PREVIEW);
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) != 255)

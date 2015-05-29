@@ -3510,3 +3510,64 @@ STR_5173    :Pull Twitch chat as news
 STR_5174    :Will use Twitch chat messages preceded by !news for in game notifications
 STR_5175    :Input the name of your Twitch channel
 STR_5176    :Enable Twitch integration
+STR_5177    :Colour schemes
+STR_5178    :Top Toolbar
+STR_5179    :Bottom Toolbar
+STR_5180    :Track Editor Bottom Toolbar
+STR_5181    :Scenario Editor Bottom Toolbar
+STR_5182    :Title Menu Buttons
+STR_5183    :Title Exit Button
+STR_5184    :Title Options Button
+STR_5185    :Title Scenario Selection
+STR_5186    :Park Information
+STR_5187    :Finances
+STR_5188    :New Campaign
+STR_5189    :Research
+STR_5190    :Map
+STR_5191    :Viewport
+STR_5192    :Recent News
+STR_5193    :Land
+STR_5194    :Water
+STR_5195    :Clear Scenery
+STR_5196    :Land Rights
+STR_5197    :Scenery
+STR_5198    :Footpath
+STR_5199    :Ride Construction
+STR_5200    :Track Design Place
+STR_5201    :New Ride
+STR_5202    :Track Design Selection
+STR_5203    :Ride
+STR_5204    :Ride List
+STR_5205    :Guest
+STR_5206    :Guest List
+STR_5207    :Staff
+STR_5208    :Staff List
+STR_5209    :Banner
+STR_5210    :Object Selection
+STR_5211    :Invention List
+STR_5212    :Scenario Options
+STR_5213    :Objective Options
+STR_5214    :Map Generation
+STR_5215    :Track Design Manager
+STR_5216    :Track Design Manager List
+STR_5217    :Cheats
+STR_5218    :Colour Schemes
+STR_5219    :Options
+STR_5220    :Keyboard Shortcuts
+STR_5221    :Change Keyboard Shortcut
+STR_5222    :Load/Save
+STR_5223    :Save Prompt
+STR_5224    :Demolish Ride Prompt
+STR_5225    :Fire Staff Prompt
+STR_5226    :Track Delete Prompt
+STR_5227    :Save Overwrite Prompt
+STR_5228    :{SMALLFONT}{BLACK}Main UI
+STR_5229    :{SMALLFONT}{BLACK}Park
+STR_5230    :{SMALLFONT}{BLACK}Tools
+STR_5231    :{SMALLFONT}{BLACK}Rides and Peeps
+STR_5232    :{SMALLFONT}{BLACK}Editors
+STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
+STR_5234    :{SMALLFONT}{BLACK}Prompts
+STR_5235    :{SMALLFONT}{BLACK}Settings
+STR_5236    :Window:
+STR_5237    :Palette:

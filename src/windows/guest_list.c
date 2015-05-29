@@ -29,6 +29,7 @@
 #include "../sprites.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
+#include "../interface/colour_schemes.h"
 
 enum {
 	PAGE_INDIVIDUAL,
@@ -569,19 +570,7 @@ static void window_guest_list_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
-
-	if(!gConfigInterface.rct1_colour_scheme)
-	{
-		w->colours[0] = 1;
-		w->colours[1] = 15;
-		w->colours[2] = 15;
-	}
-	else
-	{
-		w->colours[0] = 22;
-		w->colours[1] = 26;
-		w->colours[2] = 26;
-	}
+	colour_scheme_update(w);
 
 	w->pressed_widgets &= ~(1 << WIDX_TAB_1);
 	w->pressed_widgets &= ~(1 << WIDX_TAB_2);

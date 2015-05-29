@@ -28,6 +28,7 @@
 #include "../scenario.h"
 #include "../title.h"
 #include "../windows/error.h"
+#include "../interface/colour_schemes.h"
 
 #pragma region Widgets
 
@@ -65,6 +66,7 @@ static void window_loadsave_scrollmousedown();
 static void window_loadsave_scrollmouseover();
 static void window_loadsave_textinput();
 static void window_loadsave_tooltip();
+static void window_loadsave_invalidate();
 static void window_loadsave_paint();
 static void window_loadsave_scrollpaint();
 
@@ -94,7 +96,7 @@ static void* window_loadsave_events[] = {
 	window_loadsave_tooltip,
 	window_loadsave_emptysub,
 	window_loadsave_emptysub,
-	window_loadsave_emptysub, 
+	window_loadsave_invalidate,
 	window_loadsave_paint,
 	window_loadsave_scrollpaint
 };
@@ -424,6 +426,14 @@ static void window_loadsave_tooltip()
 	RCT2_GLOBAL(0x013CE952, uint16) = STR_LIST;
 }
 
+static void window_loadsave_invalidate()
+{
+	rct_window *w;
+
+	window_get_register(w);
+	colour_scheme_update(w);
+}
+
 static void window_loadsave_paint()
 {
 	rct_window *w;
@@ -686,6 +696,7 @@ static rct_widget window_overwrite_prompt_widgets[] = {
 
 static void window_overwrite_prompt_emptysub(){}
 static void window_overwrite_prompt_mouseup();
+static void window_overwrite_prompt_invalidate();
 static void window_overwrite_prompt_paint();
 
 static void* window_overwrite_prompt_events[] = {
@@ -714,7 +725,7 @@ static void* window_overwrite_prompt_events[] = {
 	window_overwrite_prompt_emptysub,
 	window_overwrite_prompt_emptysub,
 	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
+	window_overwrite_prompt_invalidate,
 	window_overwrite_prompt_paint,
 	window_overwrite_prompt_emptysub
 };
@@ -759,6 +770,14 @@ static void window_overwrite_prompt_mouseup()
 	case WIDX_OVERWRITE_CLOSE:
 		window_close(w);
 	}
+}
+
+static void window_overwrite_prompt_invalidate()
+{
+	rct_window *w;
+
+	window_get_register(w);
+	colour_scheme_update(w);
 }
 
 static void window_overwrite_prompt_paint()

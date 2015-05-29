@@ -24,6 +24,7 @@
 #include "../localisation/localisation.h"
 #include "../ride/track.h"
 #include "error.h"
+#include "../interface/colour_schemes.h"
 
 #pragma region Widgets
 
@@ -65,11 +66,13 @@ static void window_track_manage_emptysub() { }
 static void window_track_manage_close();
 static void window_track_manage_mouseup();
 static void window_track_manage_textinput();
+static void window_track_manage_invalidate();
 static void window_track_manage_paint();
 
 static void window_track_delete_prompt_emptysub() { }
 
 static void window_track_delete_prompt_mouseup();
+static void window_track_delete_prompt_invalidate();
 static void window_track_delete_prompt_paint();
 
 // 0x009940EC
@@ -99,7 +102,7 @@ static void* window_track_manage_events[] = {
 	window_track_manage_emptysub,
 	window_track_manage_emptysub,
 	window_track_manage_emptysub,
-	window_track_manage_emptysub,
+	window_track_manage_invalidate,
 	window_track_manage_paint,
 	window_track_manage_emptysub
 };
@@ -131,7 +134,7 @@ static void* window_track_delete_prompt_events[] = {
 	window_track_delete_prompt_emptysub,
 	window_track_delete_prompt_emptysub,
 	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
+	window_track_delete_prompt_invalidate,
 	window_track_delete_prompt_paint,
 	window_track_delete_prompt_emptysub
 };
@@ -164,9 +167,6 @@ void window_track_manage_open()
 		(1 << WIDX_DELETE);
 	window_init_scroll_widgets(w);
 	w->flags |= WF_TRANSPARENT;
-	w->colours[0] = 1;
-	w->colours[1] = 1;
-	w->colours[2] = 1;
 
 	trackDesignListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
 	if (trackDesignListWindow != NULL)
@@ -244,6 +244,14 @@ static void window_track_manage_textinput()
 	}
 }
 
+static void window_track_manage_invalidate()
+{
+	rct_window *w;
+
+	window_get_register(w);
+	colour_scheme_update(w);
+}
+
 /**
  *
  *  rct2: 0x006D3523
@@ -284,9 +292,6 @@ static void window_track_delete_prompt_open()
 		(1 << WIDX_DELETE);
 	window_init_scroll_widgets(w);
 	w->flags |= WF_TRANSPARENT;
-	w->colours[0] = 26;
-	w->colours[1] = 26;
-	w->colours[2] = 26;
 }
 
 /**
@@ -313,6 +318,14 @@ static void window_track_delete_prompt_mouseup()
 			window_error_open(STR_CANT_DELETE_TRACK_DESIGN, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16));
 		break;
 	}
+}
+
+static void window_track_delete_prompt_invalidate()
+{
+	rct_window *w;
+
+	window_get_register(w);
+	colour_scheme_update(w);
 }
 
 /**

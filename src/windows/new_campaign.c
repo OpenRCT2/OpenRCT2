@@ -27,6 +27,7 @@
 #include "../management/marketing.h"
 #include "../ride/ride.h"
 #include "dropdown.h"
+#include "../interface/colour_schemes.h"
 
 #define SELECTED_RIDE_UNDEFINED ((uint16)0xFFFF)
 
@@ -345,19 +346,7 @@ static void window_new_campaign_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
-
-	if(!gConfigInterface.rct1_colour_scheme)
-	{
-		w->colours[0] = 19;
-		w->colours[1] = 19;
-		w->colours[2] = 19;
-	}
-	else
-	{
-		w->colours[0] = 4;
-		w->colours[1] = 4;
-		w->colours[2] = 1;
-	}
+	colour_scheme_update(w);
 
 	window_new_campaign_widgets[WIDX_RIDE_LABEL].type = WWT_EMPTY;
 	window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WWT_EMPTY;
