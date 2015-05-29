@@ -3510,3 +3510,4 @@ STR_5173    :Pull Twitch chat as news
 STR_5174    :Will use Twitch chat messages preceded by !news for in game notifications
 STR_5175    :Input the name of your Twitch channel
 STR_5176    :Enable Twitch integration
+STR_5177    :Fullscreen mode:

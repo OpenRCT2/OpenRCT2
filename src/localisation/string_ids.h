@@ -1422,6 +1422,8 @@ enum {
 	STR_TWITCH_NAME_DESC = 5175,
 	STR_TWITCH_ENABLE = 5176,
 
+	STR_FULLSCREEN_MODE = 5177,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
