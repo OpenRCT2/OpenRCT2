@@ -2093,7 +2093,64 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		RCT2_GLOBAL(0x00F64EB4, money32) = cost;
 		break;
 	case 3:
-		//6e29f2
+		scenery = g_largeSceneryEntries[selected_scenery];
+		rct_xy16* selectedTile = gMapSelectionTiles;
+
+		for (rct_large_scenery_tile* tile = scenery->large_scenery.tiles; tile->x_offset != (sint16)0xFFFF; tile++){
+			rct_xy16 tileLocation = { 
+				.x = tile->x_offset, 
+				.y = tile->y_offset 
+			};
+
+			rotate_map_coordinates(&tileLocation.x, &tileLocation.y, (parameter1 >> 8) & 0xFF);
+
+			tileLocation.x += mapTile.x;
+			tileLocation.y += mapTile.y;
+
+			selectedTile->x = tileLocation.x;
+			selectedTile->y = tileLocation.y;
+			selectedTile++;
+		}
+		selectedTile->x = 0xFFFF;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 1);
+		map_invalidate_map_selection_tiles();
+
+		// If no change in ghost placement
+		if ((RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 3)) &&
+			mapTile.x == RCT2_GLOBAL(0x00F64EC4, sint16) &&
+			mapTile.y == RCT2_GLOBAL(0x00F64EC6, sint16) &&
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) == RCT2_GLOBAL(0x00F64F0A, sint16) &&
+			(parameter3 & 0xFFFF) == RCT2_GLOBAL(0x00F64EDA, uint16)){
+			return;
+		}
+
+		scenery_remove_ghost_tool_placement();
+
+		RCT2_GLOBAL(0x00F64EDA, uint16) = (parameter3 & 0xFFFF);
+		RCT2_GLOBAL(0x00F64F0A, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16);
+
+		bl = 1;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+			bl = 20;
+		}
+
+		cost = 0;
+		for (; bl != 0; bl--){
+			cost = sub_6E24F6(
+				mapTile,
+				parameter1,
+				parameter2,
+				parameter3,
+				selected_tab);
+
+			if (cost != MONEY32_UNDEFINED)
+				break;
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
+		}
+
+		RCT2_GLOBAL(0x00F64EB4, money32) = cost;
 		break;
 	case 4:
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
