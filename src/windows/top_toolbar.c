@@ -1918,13 +1918,154 @@ void top_toolbar_tool_update_water(sint16 x, sint16 y){
 	}
 }
 
-money32 sub_6E24F6(rct_xy16 map_tile, uint32 parameter_1, uint32 parameter_2, uint32 parameter_3, uint16 selected_tab){
+/* rct2: 0x006E24F6 
+ * On failure returns MONEY32_UNDEFINED
+ * On success places ghost scenery and returns cost to place proper
+ */
+money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 parameter_2, uint32 parameter_3, uint16 selected_tab){
+	scenery_remove_ghost_tool_placement();
 
-	int eax = map_tile.x, ebx = parameter_1, ecx = map_tile.y, edx = parameter_2, esi = 0, ebp = selected_tab, edi = parameter_3;
+	uint8 scenery_type = (selected_tab & 0xFF00) >> 8;
+	uint8 selected_scenery = selected_tab & 0xFF;
+	money32 cost = 0;
+	rct_map_element* mapElement;
 
-	RCT2_CALLFUNC_X(0x006E24F6, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	switch (scenery_type){
+	case 0:
+		// Small Scenery
+		//6e252b
+		cost = game_do_command(
+			map_tile.x, 
+			parameter_1 | 0x69,
+			map_tile.y, 
+			parameter_2, 
+			GAME_COMMAND_PLACE_SCENERY, 
+			parameter_3, 
+			RCT2_GLOBAL(0x00F64ED4, sint16));
 
-	return (money32)ebx;
+		if (cost == MONEY32_UNDEFINED)
+			return cost;
+
+		RCT2_GLOBAL(0x00F64EC4, sint16) = map_tile.x;
+		RCT2_GLOBAL(0x00F64EC6, sint16) = map_tile.y;
+		RCT2_GLOBAL(0x00F64EC0, uint16) = (uint16)(parameter_3 & 0xFFFF);
+		RCT2_GLOBAL(0x00F64EDA, sint16) = selected_tab;
+		
+		mapElement = RCT2_GLOBAL(0x00F64EBC, rct_map_element*);
+		RCT2_GLOBAL(0x00F64F09, uint8) = mapElement->base_height;
+		RCT2_GLOBAL(0x00F64F0C, uint8) = mapElement->type;
+		if (RCT2_GLOBAL(0x00F64F14, uint8) & (1 << 1)){
+			viewport_set_visibility(4);
+		}
+		else{
+			viewport_set_visibility(5);
+		}
+
+		RCT2_GLOBAL(0x00F64F0D, uint8) |= (1 << 0);
+		break;
+	case 1:
+		// Path Bits
+		//6e265b
+		cost = game_do_command(
+			map_tile.x,
+			parameter_1 | 0xE9,
+			map_tile.y,
+			parameter_2,
+			GAME_COMMAND_PLACE_PATH,
+			parameter_3,
+			0);
+
+		if (cost == MONEY32_UNDEFINED)
+			return cost;
+
+		RCT2_GLOBAL(0x00F64EC4, sint16) = map_tile.x;
+		RCT2_GLOBAL(0x00F64EC6, sint16) = map_tile.y;
+		RCT2_GLOBAL(0x00F64F09, uint8) = (parameter_2 & 0xFF);
+		RCT2_GLOBAL(0x00F64F0F, uint8) = ((parameter_1 >> 8) & 0xFF);
+		RCT2_GLOBAL(0x00F64F10, uint8) = ((parameter_2 >> 8) & 0xFF);
+		RCT2_GLOBAL(0x00F64EAC, uint32) = parameter_3;
+
+		RCT2_GLOBAL(0x00F64F0D, uint8) |= (1 << 1);
+		break;
+	case 2:
+		// Walls
+		//6e26b0
+		cost = game_do_command(
+			map_tile.x,
+			parameter_1 | 0x69,
+			map_tile.y,
+			parameter_2,
+			GAME_COMMAND_41,
+			RCT2_GLOBAL(0x00F64ED4, uint16),
+			RCT2_GLOBAL(0x00F64F15, uint16));
+
+		if (cost == MONEY32_UNDEFINED)
+			return cost;
+
+		RCT2_GLOBAL(0x00F64EC4, sint16) = map_tile.x;
+		RCT2_GLOBAL(0x00F64EC6, sint16) = map_tile.y;
+		RCT2_GLOBAL(0x00F64F11, uint8) = (parameter_2 & 0xFF);
+		
+		mapElement = RCT2_GLOBAL(0x00F64EBC, rct_map_element*);
+		RCT2_GLOBAL(0x00F64F09, uint8) = mapElement->base_height;
+
+		RCT2_GLOBAL(0x00F64F0D, uint8) |= (1 << 2);
+		break;
+	case 3:
+		// Large Scenery
+		//6e25a7
+		cost = game_do_command(
+			map_tile.x,
+			parameter_1 | 0x69,
+			map_tile.y,
+			parameter_2,
+			GAME_COMMAND_43,
+			parameter_3,
+			RCT2_GLOBAL(0x00F64ED4, uint16));
+
+		if (cost == MONEY32_UNDEFINED)
+			return cost;
+
+		RCT2_GLOBAL(0x00F64EC4, sint16) = map_tile.x;
+		RCT2_GLOBAL(0x00F64EC6, sint16) = map_tile.y;
+		RCT2_GLOBAL(0x00F64EC0, uint8) = ((parameter_1 >> 8) & 0xFF);
+
+		mapElement = RCT2_GLOBAL(0x00F64EBC, rct_map_element*);
+		RCT2_GLOBAL(0x00F64F09, uint8) = mapElement->base_height;
+
+		if (RCT2_GLOBAL(0x00F64F14, uint8) & (1 << 1)){
+			viewport_set_visibility(4);
+		}
+		else{
+			viewport_set_visibility(5);
+		}
+
+		RCT2_GLOBAL(0x00F64F0D, uint8) |= (1 << 3);
+		break;
+	case 4:
+		// Banners
+		//6e2612
+		cost = game_do_command(
+			map_tile.x,
+			parameter_1 | 0x69,
+			map_tile.y,
+			parameter_2,
+			GAME_COMMAND_PLACE_BANNER,
+			parameter_3,
+			0);
+
+		if (cost == MONEY32_UNDEFINED)
+			return cost;
+
+		RCT2_GLOBAL(0x00F64EC4, sint16) = map_tile.x;
+		RCT2_GLOBAL(0x00F64EC6, sint16) = map_tile.y;
+		RCT2_GLOBAL(0x00F64F09, uint8) = (parameter_2 & 0xFF);
+		RCT2_GLOBAL(0x00F64EC0, uint8) = ((parameter_2 >> 8) & 0xFF);
+		RCT2_GLOBAL(0x00F64F0D, uint8) |= (1 << 4);
+		break;
+	}
+
+	return cost;
 }
 
 /**
@@ -2002,7 +2143,7 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		}
 
 		for (; bl != 0; bl--){
-			cost = sub_6E24F6(
+			cost = try_place_ghost_scenery(
 				mapTile,
 				parameter1,
 				parameter2,
@@ -2036,7 +2177,7 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 
 		scenery_remove_ghost_tool_placement();
 
-		cost = sub_6E24F6(
+		cost = try_place_ghost_scenery(
 			mapTile,
 			parameter1,
 			parameter2,
@@ -2078,7 +2219,7 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 
 		cost = 0;
 		for (; bl != 0; bl--){
-			cost = sub_6E24F6(
+			cost = try_place_ghost_scenery(
 				mapTile,
 				parameter1,
 				parameter2,
@@ -2138,7 +2279,7 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 
 		cost = 0;
 		for (; bl != 0; bl--){
-			cost = sub_6E24F6(
+			cost = try_place_ghost_scenery(
 				mapTile,
 				parameter1,
 				parameter2,
@@ -2173,7 +2314,7 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 
 		scenery_remove_ghost_tool_placement();
 
-		cost = sub_6E24F6(
+		cost = try_place_ghost_scenery(
 			mapTile,
 			parameter1,
 			parameter2,
