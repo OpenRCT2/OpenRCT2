@@ -318,33 +318,45 @@ bool screenshot_write_png(rct_drawpixelinfo *dpi, const char *path)
 
 int cmdline_for_screenshot(const char **argv, int argc)
 {
-	if (argc != 4 && argc != 8) {
+	bool giantScreenshot = argc == 5 && _stricmp(argv[2], "giant") == 0;
+	if (argc != 4 && argc != 8 && !giantScreenshot) {
 		printf("Usage: openrct2 screenshot <file> <ouput_image> <width> <height> [<x> <y> <zoom> <rotation>]\n");
+		printf("Usage: openrct2 screenshot <file> <ouput_image> giant <zoom> <rotation>\n");
 		return -1;
 	}
 
 	bool customLocation = false;
 	bool centreMapX = false;
 	bool centreMapY = false;
-	int customX, customY, customZoom, customRotation;
+	int resolutionWidth, resolutionHeight, customX, customY, customZoom, customRotation;
 	
 	const char *inputPath = argv[0];
 	const char *outputPath = argv[1];
-	int resolutionWidth = atoi(argv[2]);
-	int resolutionHeight = atoi(argv[3]);
-	if (argc == 8) {
+	if (giantScreenshot) {
+		resolutionWidth = 0;
+		resolutionHeight = 0;
 		customLocation = true;
-		if (argv[4][0] == 'c')
-			centreMapX = true;
-		else
-			customX = atoi(argv[4]);
-		if (argv[5][0] == 'c')
-			centreMapY = true;
-		else
-			customY = atoi(argv[5]);
+		centreMapX = true;
+		centreMapY = true;
+		customZoom = atoi(argv[3]);
+		customRotation = atoi(argv[4]) & 3;
+	} else {
+		resolutionWidth = atoi(argv[2]);
+		resolutionHeight = atoi(argv[3]);
+		if (argc == 8) {
+			customLocation = true;
+			if (argv[4][0] == 'c')
+				centreMapX = true;
+			else
+				customX = atoi(argv[4]);
+			if (argv[5][0] == 'c')
+				centreMapY = true;
+			else
+				customY = atoi(argv[5]);
 
-		customZoom = atoi(argv[6]);
-		customRotation = atoi(argv[7]) & 3;
+			customZoom = atoi(argv[6]);
+			customRotation = atoi(argv[7]) & 3;
+		}
 	}
 
 	gOpenRCT2Headless = true;
@@ -353,6 +365,15 @@ int cmdline_for_screenshot(const char **argv, int argc)
 
 		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
+
+		int mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
+		if (resolutionWidth == 0 || resolutionHeight == 0) {
+			resolutionWidth = (mapSize * 32 * 2) >> customZoom;
+			resolutionHeight = (mapSize * 32 * 1) >> customZoom;
+
+			resolutionWidth += 8;
+			resolutionHeight += 128;
+		}
 
 		rct_viewport viewport;
 		viewport.x = 0;
@@ -366,9 +387,9 @@ int cmdline_for_screenshot(const char **argv, int argc)
 
 		if (customLocation) {
 			if (centreMapX)
-				customX = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint8) / 2) * 32 + 16;
+				customX = (mapSize / 2) * 32 + 16;
 			if (centreMapY)
-				customY = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint8) / 2) * 32 + 16;
+				customY = (mapSize / 2) * 32 + 16;
 
 			int x, y;
 			int z = map_element_height(customX, customY);
@@ -391,8 +412,8 @@ int cmdline_for_screenshot(const char **argv, int argc)
 				break;
 			}
 
-			viewport.view_x = x - (viewport.view_width / 2);
-			viewport.view_y = y - (viewport.view_height / 2);
+			viewport.view_x = x - ((viewport.view_width << customZoom) / 2);
+			viewport.view_y = y - ((viewport.view_height << customZoom) / 2);
 			viewport.zoom = customZoom;
 
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) = customRotation;
@@ -403,6 +424,8 @@ int cmdline_for_screenshot(const char **argv, int argc)
 
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) >> 8;
 		}
+
+		sub_69E9A7();
 
 		rct_drawpixelinfo dpi;
 		dpi.x = 0;
