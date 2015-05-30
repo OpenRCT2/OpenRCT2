@@ -106,10 +106,10 @@ static rct_widget window_cheats_money_widgets[] = {
 	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			3165,			STR_WINDOW_TITLE_TIP},	// title bar
 	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,			0x338,			STR_CLOSE_WINDOW_TIP},	// close x button
 	{ WWT_IMGBTN,			1,	0,			WW - 1,	43,		WH - 1,		0x0FFFFFFFF,	65535},					// tab content panel
-	{ WWT_TAB,				1,	3,			33,		17,		43,			0x2000144E,		2462},					// tab 1
-	{ WWT_TAB,				1,	34,			64,		17,		43,			0x2000144E,		2462},					// tab 2
-	{ WWT_TAB,				1,	65,			95,		17,		43,			0x2000144E,		2462},					// tab 3
-	{ WWT_TAB,				1,	96,			126,	17,		43,		0x2000144E,		2462},						// tab 4
+	{ WWT_TAB,				1,	3,			33,		17,		43,			0x2000144E,		5178 },					// tab 1
+	{ WWT_TAB,				1,	34,			64,		17,		43,			0x2000144E,		5179 },					// tab 2
+	{ WWT_TAB,				1,	65,			95,		17,		43,			0x2000144E,		5180 },					// tab 3
+	{ WWT_TAB,				1,	96,			126,	17,		43,			0x2000144E,		5181 },					// tab 4
 	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(1),	HPL(1),		2760,			STR_NONE},				// high money
 	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(3),	HPL(3),		2761,			STR_NONE},				//Park Entrance Fee Toggle	
 	{ WIDGETS_END },
@@ -120,10 +120,10 @@ static rct_widget window_cheats_guests_widgets[] = {
 	{ WWT_CAPTION,			0, 1,			WW - 2, 1,	14,			3165,			STR_WINDOW_TITLE_TIP },		// title bar
 	{ WWT_CLOSEBOX,			0, WW - 13,		WW - 3, 2,	13,			0x338,			STR_CLOSE_WINDOW_TIP },		// close x button
 	{ WWT_IMGBTN,			1, 0,			WW - 1, 43, WH - 1,		0x0FFFFFFFF,	65535 },					// tab content panel
-	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,		2462 },						// tab 1
-	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		2462 },						// tab 2
-	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,		2462 },						// tab 3
-	{ WWT_TAB,				1,	96,			126,	17,		43,		0x2000144E,		2462},						// tab 4
+	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,		5178 },						// tab 1
+	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		5179 },						// tab 2
+	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,		5180 },						// tab 3
+	{ WWT_TAB,				1,	96,			126,	17,		43,		0x2000144E,		5181 },						// tab 4
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		2764,			STR_NONE},					// happy guests
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(3), HPL(3),		2765,			STR_NONE},					// large tram
 	{ WIDGETS_END },
@@ -135,10 +135,10 @@ static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_CAPTION,			0, 1,			WW - 2, 1,	14,			3165,			STR_WINDOW_TITLE_TIP },		// title bar
 	{ WWT_CLOSEBOX,			0, WW - 13,		WW - 3, 2,	13,			0x338,			STR_CLOSE_WINDOW_TIP },		// close x button
 	{ WWT_IMGBTN,			1, 0,			WW - 1, 43, WH - 1,		0x0FFFFFFFF,	65535 },					// tab content panel
-	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,		2462 },						// tab 1
-	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		2462 },						// tab 2
-	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,		2462},						// tab 3
-	{ WWT_TAB,				1,	96,			126,	17,		43,		0x2000144E,		2462},						// tab 4
+	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,		5178 },						// tab 1
+	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		5179 },						// tab 2
+	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,		5180 },						// tab 3
+	{ WWT_TAB,				1,	96,			126,	17,		43,		0x2000144E,		5181 },						// tab 4
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(1), HPL(1),		2767,			STR_NONE},					// Freeze climate
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(0), HPL(0),		2769,			STR_NONE},					// open / close park
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		2759,			STR_NONE},					// Zero Clearance
@@ -158,10 +158,10 @@ static rct_widget window_cheats_rides_widgets[] = {
 	{ WWT_CAPTION,			0, 1,			WW - 2, 1,	14,			3165,			STR_WINDOW_TITLE_TIP },		// title bar
 	{ WWT_CLOSEBOX,			0, WW - 13,		WW - 3, 2,	13,			0x338,			STR_CLOSE_WINDOW_TIP },		// close x button
 	{ WWT_IMGBTN,			1, 0,			WW - 1, 43, WH - 1,		0x0FFFFFFFF,	65535 },					// tab content panel
-	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,		2462 },						// tab 1
-	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		2462 },						// tab 2
-	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,		2462},						// tab 3
-	{ WWT_TAB,				1,	96,			126,	17,		43,		0x2000144E,		2462},						// tab 4
+	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,		5178 },						// tab 1
+	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		5179 },						// tab 2
+	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,		5180 },						// tab 3
+	{ WWT_TAB,				1,	96,			126,	17,		43,		0x2000144E,		5181 },						// tab 4
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(0), HPL(0),		5123,			STR_NONE},					// Renew rides
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(0), HPL(0),		5124,			STR_NONE},					// Remove flags
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(1), HPL(1),		5125,			STR_NONE},					// Make destructable
