@@ -139,7 +139,6 @@ typedef struct {
 	uint8 test_unfinished_tracks;
 	uint8 no_test_crashes;
 	uint8 date_format;
-	utf8string current_colour_scheme_preset;
 } general_configuration;
 
 typedef struct {
@@ -147,8 +146,8 @@ typedef struct {
 	uint8 toolbar_show_research;
 	uint8 toolbar_show_cheats;
 	uint8 allow_subtype_switching;
-	uint8 rct1_colour_scheme;
 	uint8 console_small_font;
+	utf8string current_colour_scheme_preset;
 } interface_configuration;
 
 typedef struct {

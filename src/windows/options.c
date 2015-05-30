@@ -73,6 +73,8 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_CONSTRUCTION_MARKER_DROPDOWN,
 	WIDX_HARDWARE_DISPLAY_CHECKBOX,
 	WIDX_COLOUR_SCHEMES,
+	WIDX_COLOUR_SCHEMES_DROPDOWN,
+	WIDX_COLOUR_SCHEMES_BUTTON,
 	
 	WIDX_LANGUAGE,
 	WIDX_LANGUAGE_DROPDOWN,
@@ -99,7 +101,6 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_TOOLBAR_SHOW_FINANCES,
 	WIDX_TOOLBAR_SHOW_RESEARCH,
 	WIDX_TOOLBAR_SHOW_CHEATS,
-	WIDX_RCT1_COLOUR_SCHEME,
 
 	WIDX_REAL_NAME_CHECKBOX,
 	WIDX_SAVE_PLUGIN_DATA_CHECKBOX,
@@ -143,7 +144,9 @@ static rct_widget window_options_widgets[] = {
 	{ WWT_DROPDOWN,			1,	155,	299,	113,	124,	STR_NONE,		STR_NONE },	// construction marker
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	114,	123,	876,			STR_NONE },
 	{ WWT_CHECKBOX,			1,	10,		290,	129,	140,	5154,			STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	144,	155,	5218,			STR_NONE },
+	{ WWT_DROPDOWN,			1,	155,	299,	143,	154,	STR_NONE,		STR_NONE },	// colour schemes
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	144,	153,	876,			STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	159,	170,	5153,			STR_NONE }, // colour schemes button
 
 	// Culture / units tab
 	{ WWT_DROPDOWN,			1,	155,	299,	53,		64,		STR_NONE,		STR_NONE },	// language
@@ -173,7 +176,6 @@ static rct_widget window_options_widgets[] = {
 	{ WWT_CHECKBOX,			2,	10,		299,	82,		93,		5120,			STR_NONE },
 	{ WWT_CHECKBOX,			2,	10,		299,	97,		108,	5121,			STR_NONE },
 	{ WWT_CHECKBOX,			2,	10,		299,	112,	123,	5147,			STR_NONE },
-	{ WWT_CHECKBOX,			2,	10,		299,	127,	138,	5153,			STR_NONE }, // rct1 colour scheme
 
 	// Misc
 	{ WWT_CHECKBOX,			2,	10,		299,	53,		64,		STR_REAL_NAME,	STR_REAL_NAME_TIP },
@@ -185,7 +187,7 @@ static rct_widget window_options_widgets[] = {
 	{ WWT_CHECKBOX,			2,	10,		299,	128,	139,	5155,			5156 }, // test unfinished tracks
 
 	//Twitch tab
-	{ WWT_DROPDOWN_BUTTON,	2,	10,		299,	53,		64,		STR_TWITCH_NAME,			STR_NONE }, // Twitch channel name
+	{ WWT_DROPDOWN_BUTTON,	2,	10,		299,	53,		64,		STR_TWITCH_NAME,			STR_NONE }, // Twitch channel name 
 	{ WWT_CHECKBOX,			2,	10,		299,	68,		79,		STR_TWITCH_PEEP_FOLLOWERS,	STR_TWITCH_PEEP_FOLLOWERS_TIP }, // Twitch name peeps by follows
 	{ WWT_CHECKBOX,			2,	10,		299,	83,		94,		STR_TWITCH_FOLLOWERS_TRACK,	STR_TWITCH_FOLLOWERS_TRACK_TIP}, // Twitch information on for follows
 	{ WWT_CHECKBOX,			2,	10,		299,	98,		109,	STR_TWITCH_PEEP_CHAT,		STR_TWITCH_PEEP_CHAT_TIP	  }, // Twitch name peeps by chat
@@ -300,13 +302,14 @@ void window_options_open()
 		(1ULL << WIDX_GRIDLINES_CHECKBOX) |
 		(1ULL << WIDX_HARDWARE_DISPLAY_CHECKBOX) |
 		(1ULL << WIDX_COLOUR_SCHEMES) |
+		(1ULL << WIDX_COLOUR_SCHEMES_DROPDOWN) |
+		(1ULL << WIDX_COLOUR_SCHEMES_BUTTON) |
 		(1ULL << WIDX_SAVE_PLUGIN_DATA_CHECKBOX) |
 		(1ULL << WIDX_AUTOSAVE) |
 		(1ULL << WIDX_AUTOSAVE_DROPDOWN) |
 		(1ULL << WIDX_ALLOW_SUBTYPE_SWITCHING) |
 		(1ULL << WIDX_DEBUGGING_TOOLS) |
 		(1ULL << WIDX_TEST_UNFINISHED_TRACKS) |
-		(1ULL << WIDX_RCT1_COLOUR_SCHEME) |
 		(1ULL << WIDX_DATE_FORMAT) |
 		(1ULL << WIDX_DATE_FORMAT_DROPDOWN) |
 		(1ULL << WIDX_CHANNEL_BUTTON) |
@@ -372,11 +375,6 @@ static void window_options_mouseup()
 		window_invalidate(w);
 		window_invalidate_by_class(WC_TOP_TOOLBAR);
 		break;
-	case WIDX_RCT1_COLOUR_SCHEME:
-		gConfigInterface.rct1_colour_scheme ^= 1;
-		config_save_default();
-		window_invalidate_all();
-		break;
 	case WIDX_ALLOW_SUBTYPE_SWITCHING:
 		gConfigInterface.allow_subtype_switching ^= 1;
 		config_save_default();
@@ -419,7 +417,7 @@ static void window_options_mouseup()
 		config_save_default();
 		window_invalidate(w);
 		break;
-	case WIDX_COLOUR_SCHEMES:
+	case WIDX_COLOUR_SCHEMES_BUTTON:
 		window_colour_schemes_open();
 		window_invalidate(w);
 		break;
@@ -599,6 +597,18 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 		gDropdownItemsChecked = 1 << gConfigGeneral.construction_marker_colour;
 		break;
+	case WIDX_COLOUR_SCHEMES_DROPDOWN:
+		num_items = gConfigColourSchemes.num_presets;
+
+		for (i = 0; i < num_items; i++) {
+			gDropdownItemsFormat[i] = 2777;
+			gDropdownItemsArgs[i] = (uint64)&gConfigColourSchemes.presets[i].name;
+		}
+
+		window_options_show_dropdown(w, widget, num_items);
+
+		gDropdownItemsChecked = 1 << gCurrentColourSchemePreset;
+		break;
 	case WIDX_LANGUAGE_DROPDOWN:
 		for (i = 1; i < LANGUAGE_COUNT; i++) {
 			gDropdownItemsFormat[i - 1] = 2777;
@@ -758,6 +768,12 @@ static void window_options_dropdown()
 			gfx_invalidate_screen();
 		}
 		break;
+	case WIDX_COLOUR_SCHEMES_DROPDOWN:
+		if (dropdownIndex != -1) {
+			colour_scheme_change_preset(dropdownIndex);
+		}
+		config_save_default();
+		break;
 	}
 }
 
@@ -826,7 +842,9 @@ static void window_options_invalidate()
 		window_options_widgets[WIDX_CONSTRUCTION_MARKER].type = WWT_DROPDOWN;
 		window_options_widgets[WIDX_CONSTRUCTION_MARKER_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_widgets[WIDX_HARDWARE_DISPLAY_CHECKBOX].type = WWT_CHECKBOX;
-		window_options_widgets[WIDX_COLOUR_SCHEMES].type = WWT_DROPDOWN_BUTTON;
+		window_options_widgets[WIDX_COLOUR_SCHEMES].type = WWT_DROPDOWN;
+		window_options_widgets[WIDX_COLOUR_SCHEMES_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+		window_options_widgets[WIDX_COLOUR_SCHEMES_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		break;
 	case WINDOW_OPTIONS_PAGE_CULTURE:
 		// currency: pounds, dollars, etc. (10 total)
@@ -886,14 +904,12 @@ static void window_options_invalidate()
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
-		widget_set_checkbox_value(w, WIDX_RCT1_COLOUR_SCHEME, gConfigInterface.rct1_colour_scheme);
 
 		window_options_widgets[WIDX_SCREEN_EDGE_SCROLLING].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_HOTKEY_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_widgets[WIDX_TOOLBAR_SHOW_FINANCES].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_TOOLBAR_SHOW_RESEARCH].type = WWT_CHECKBOX;
 		window_options_widgets[WIDX_TOOLBAR_SHOW_CHEATS].type = WWT_CHECKBOX;
-		window_options_widgets[WIDX_RCT1_COLOUR_SCHEME].type = WWT_CHECKBOX;
 		break;
 	case WINDOW_OPTIONS_PAGE_MISC:
 		widget_set_checkbox_value(w, WIDX_ALLOW_SUBTYPE_SWITCHING, gConfigInterface.allow_subtype_switching);
@@ -979,6 +995,17 @@ static void window_options_paint()
 		gfx_draw_string(dpi, buffer, 0, w->x + 10, w->y + window_options_widgets[WIDX_FULLSCREEN].top + 1);
 
 		gfx_draw_string_left(dpi, STR_CONSTRUCTION_MARKER, w, 0, w->x + 10, w->y + window_options_widgets[WIDX_CONSTRUCTION_MARKER].top + 1);
+
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&gConfigColourSchemes.presets[gCurrentColourSchemePreset].name;
+		gfx_draw_string_left(dpi, 5238, NULL, w->colours[1], w->x + 10, w->y + window_options_widgets[WIDX_COLOUR_SCHEMES].top + 1);
+		gfx_draw_string_left(
+			dpi,
+			1170,
+			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
+			w->colours[1],
+			w->x + window_options_widgets[WIDX_COLOUR_SCHEMES].left + 1,
+			w->y + window_options_widgets[WIDX_COLOUR_SCHEMES].top
+			);
 		break;
 	case WINDOW_OPTIONS_PAGE_CULTURE:
 		gfx_draw_string_left(dpi, 2776, w, 12, w->x + 10, w->y + window_options_widgets[WIDX_LANGUAGE].top + 1);

@@ -301,7 +301,9 @@ static void window_scenarioselect_paint()
 	window_draw_widgets(w, dpi);
 
 	// Use small text for the tabs when the RCT1 colour scheme is selected.
-	format = (gConfigInterface.rct1_colour_scheme) ? 5138 : 1193;
+	//format = (gConfigInterface.rct1_colour_scheme) ? 5138 : 1193;
+	// Will reimplement this later
+	format = 1193;
 
 	// Text for each tab
 	for (i = 0; i < 5; i++) {
@@ -367,8 +369,11 @@ static void window_scenarioselect_scrollpaint()
 	gfx_clear(dpi, colour);
 
 	// Use white text for the scenario names when the RCT1 colour scheme is selected
-	highlighted_format = gConfigInterface.rct1_colour_scheme ? 5139 : 1193;
-	unhighlighted_format = gConfigInterface.rct1_colour_scheme ? 5139 : 1191;
+	//highlighted_format = gConfigInterface.rct1_colour_scheme ? 5139 : 1193;
+	//unhighlighted_format = gConfigInterface.rct1_colour_scheme ? 5139 : 1191;
+	// Will reimplement this later
+	highlighted_format = 1193;
+	unhighlighted_format = 1191;
 
 	y = 0;
 	for (i = 0; i < gScenarioListCount; i++) {

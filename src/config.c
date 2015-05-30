@@ -174,7 +174,6 @@ config_property_definition _generalDefinitions[] = {
 	{ offsetof(general_configuration, test_unfinished_tracks),			"test_unfinished_tracks",		CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(general_configuration, no_test_crashes),					"no_test_crashes",				CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(general_configuration, date_format),						"date_format",					CONFIG_VALUE_TYPE_UINT8,		DATE_FORMAT_DMY,				_dateFormatEnum			},
-	{ offsetof(general_configuration, current_colour_scheme_preset),	"colour_scheme_preset",			CONFIG_VALUE_TYPE_STRING,		{ .value_string = "*RCT2" },	NULL					},
 };
 
 config_property_definition _interfaceDefinitions[] = {
@@ -182,8 +181,8 @@ config_property_definition _interfaceDefinitions[] = {
 	{ offsetof(interface_configuration, toolbar_show_research),			"toolbar_show_research",		CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
 	{ offsetof(interface_configuration, toolbar_show_cheats),			"toolbar_show_cheats",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(interface_configuration, allow_subtype_switching),		"allow_subtype_switching",		CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
-	{ offsetof(interface_configuration, rct1_colour_scheme),			"rct1_colour_scheme",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(interface_configuration, console_small_font),			"console_small_font",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(interface_configuration, current_colour_scheme_preset),	"colour_scheme_preset",			CONFIG_VALUE_TYPE_STRING,		{ .value_string = "*RCT2" },	NULL					},
 };
 
 config_property_definition _soundDefinitions[] = {
@@ -1061,15 +1060,15 @@ void colour_schemes_load_presets()
 	}
 	platform_enumerate_files_end(fileEnumHandle);
 
-	if (strcmp(gConfigGeneral.current_colour_scheme_preset, "*RCT2") == 0) {
+	if (strcmp(gConfigInterface.current_colour_scheme_preset, "*RCT2") == 0) {
 		colour_scheme_change_preset(0);
 	}
-	else if (strcmp(gConfigGeneral.current_colour_scheme_preset, "*RCT1") == 0) {
+	else if (strcmp(gConfigInterface.current_colour_scheme_preset, "*RCT1") == 0) {
 		colour_scheme_change_preset(1);
 	}
 	else {
 		for (i = 2; i < gConfigColourSchemes.num_presets; i++) {
-			if (strcmp(gConfigGeneral.current_colour_scheme_preset, gConfigColourSchemes.presets[i].name) == 0) {
+			if (strcmp(gConfigInterface.current_colour_scheme_preset, gConfigColourSchemes.presets[i].name) == 0) {
 				colour_scheme_change_preset(i);
 				break;
 			}
@@ -1206,7 +1205,6 @@ static void colour_schemes_read_properties(int preset, window_colours **colour_s
 		utf8string sectionName;
 		int sectionNameSize;
 		if (config_get_section(ch, &sectionName, &sectionNameSize)) {
-			printf("%s\n", sectionName);
 			sectionName[strlen(sectionName) - 1] = '\0';
 			for (int i = 0; i < (int)gNumColourSchemeWindows; i++) {
 				if (strcmp(sectionName, gColourSchemes[i].section_name) == 0) {

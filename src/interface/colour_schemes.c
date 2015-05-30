@@ -160,13 +160,13 @@ void colour_scheme_change_preset(int preset)
 	if (preset >= 0 && preset < gConfigColourSchemes.num_presets) {
 		switch (preset) {
 		case 0:
-			gConfigGeneral.current_colour_scheme_preset = "*RCT2";
+			gConfigInterface.current_colour_scheme_preset = "*RCT2";
 			break;
 		case 1:
-			gConfigGeneral.current_colour_scheme_preset = "*RCT1";
+			gConfigInterface.current_colour_scheme_preset = "*RCT1";
 			break;
 		default:
-			gConfigGeneral.current_colour_scheme_preset = gConfigColourSchemes.presets[preset].name;
+			gConfigInterface.current_colour_scheme_preset = gConfigColourSchemes.presets[preset].name;
 			break;
 		}
 		gCurrentColourSchemePreset = preset;
@@ -196,8 +196,7 @@ void colour_scheme_create_preset(const char *name)
 
 void colour_scheme_delete_preset(int preset)
 {
-	if (preset >= 2)
-	{
+	if (preset >= 2) {
 		utf8 path[MAX_PATH];
 		platform_get_user_directory(path, "colour schemes");
 		strcat(path, gConfigColourSchemes.presets[preset].name);
@@ -214,14 +213,20 @@ void colour_scheme_delete_preset(int preset)
 
 void colour_scheme_rename_preset(int preset, const char *newName)
 {
-	utf8 src[MAX_PATH], dest[MAX_PATH];
-	platform_get_user_directory(src, "colour schemes");
-	platform_get_user_directory(dest, "colour schemes");
-	strcat(src, gConfigColourSchemes.presets[preset].name);
-	strcat(dest, newName);
-	strcat(src, ".ini");
-	strcat(dest, ".ini");
-	platform_file_move(src, dest);
+	if (preset >= 2) {
+		utf8 src[MAX_PATH], dest[MAX_PATH];
+		platform_get_user_directory(src, "colour schemes");
+		platform_get_user_directory(dest, "colour schemes");
+		strcat(src, gConfigColourSchemes.presets[preset].name);
+		strcat(dest, newName);
+		strcat(src, ".ini");
+		strcat(dest, ".ini");
+		platform_file_move(src, dest);
 
-	strcpy(gConfigColourSchemes.presets[gCurrentColourSchemePreset].name, newName);
+		strcpy(gConfigColourSchemes.presets[gCurrentColourSchemePreset].name, newName);
+
+		if (preset == gCurrentColourSchemePreset) {
+			gConfigInterface.current_colour_scheme_preset = gConfigColourSchemes.presets[gCurrentColourSchemePreset].name;
+		}
+	}
 }

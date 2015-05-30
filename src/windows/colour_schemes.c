@@ -147,7 +147,7 @@ static int window_colour_schemes_tab_animation_loops[] = {
 	32,
 	8,
 	14,
-	28
+	32
 };
 static int window_colour_schemes_tab_animation_divisor[] = {
 	4,
@@ -167,7 +167,7 @@ static int window_colour_schemes_tab_sprites[] = {
 	5205,
 	5201,
 	SPR_TAB_STAFF_OPTIONS_0,
-	SPR_TAB_STATS_0
+	5221
 };
 
 static rct_windowclass window_colour_schemes_tab_1_classes[] = {
@@ -383,6 +383,25 @@ static void window_colour_schemes_mouseup()
 	case WIDX_COLOUR_SCHEMES_CLOSE:
 		window_close(w);
 		break;
+	case WIDX_COLOUR_SCHEMES_DUPLICATE_BUTTON:
+		window_text_input_open(w, widgetIndex, 5239, 5240, 1170, (uint32)&gConfigColourSchemes.presets[gCurrentColourSchemePreset].name, 64);
+		break;
+	case WIDX_COLOUR_SCHEMES_DELETE_BUTTON:
+		if (gCurrentColourSchemePreset >= 2) {
+			colour_scheme_delete_preset(gCurrentColourSchemePreset);
+		}
+		else {
+			window_error_open(5241, STR_NONE);
+		}
+		break;
+	case WIDX_COLOUR_SCHEMES_RENAME_BUTTON:
+		if (gCurrentColourSchemePreset >= 2) {
+			window_text_input_open(w, widgetIndex, 3348, 5240, 1170, (uint32)&gConfigColourSchemes.presets[gCurrentColourSchemePreset].name, 64);
+		}
+		else {
+			window_error_open(5241, STR_NONE);
+		}
+		break;
 	}
 }
 
@@ -472,25 +491,6 @@ static void window_colour_schemes_mousedown(int widgetIndex, rct_window* w, rct_
 			);
 
 		gDropdownItemsChecked = 1 << gCurrentColourSchemePreset;
-		break;
-	case WIDX_COLOUR_SCHEMES_DUPLICATE_BUTTON:
-		window_text_input_open(w, widgetIndex, 5239, 5240, 1170, (rct_string_id)&gConfigColourSchemes.presets[gCurrentColourSchemePreset].name, 64);
-		break;
-	case WIDX_COLOUR_SCHEMES_DELETE_BUTTON:
-		if (gCurrentColourSchemePreset >= 2) {
-			colour_scheme_delete_preset(gCurrentColourSchemePreset);
-		}
-		else {
-			window_error_open(5241, STR_NONE);
-		}
-		break;
-	case WIDX_COLOUR_SCHEMES_RENAME_BUTTON:
-		if (gCurrentColourSchemePreset >= 2) {
-			window_text_input_open(w, widgetIndex, 3348, 5240, 1170, (rct_string_id)&gConfigColourSchemes.presets[gCurrentColourSchemePreset].name, 64);
-		}
-		else {
-			window_error_open(5241, STR_NONE);
-		}
 		break;
 	}
 }

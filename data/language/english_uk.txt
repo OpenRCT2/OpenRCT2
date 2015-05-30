@@ -3486,7 +3486,7 @@ STR_5149    :{SMALLFONT}{BLACK}Open the cheats window
 STR_5150    :Enable debugging tools
 STR_5151    :,
 STR_5152    :.
-STR_5153    :Custom
+STR_5153    :Colour schemes...
 STR_5154    :Hardware display
 STR_5155    :Allow testing of unfinished tracks
 STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
@@ -3571,7 +3571,7 @@ STR_5234    :{SMALLFONT}{BLACK}Prompts
 STR_5235    :{SMALLFONT}{BLACK}Settings
 STR_5236    :Window:
 STR_5237    :Palette:
-STR_5238    :Presets:
+STR_5238    :Colour Schemes:
 STR_5239    :Duplicate
 STR_5240    :Enter a name for the colour scheme
 STR_5241    :Can't change this preset
