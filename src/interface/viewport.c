@@ -821,7 +821,7 @@ void sub_0x6736FC(rct_litter* litter, int ebx, int edx){
 *  Paint Quadrant
 *  rct2: 0x0069E8B0
 */
-void sub_0x69E8B0(uint32 eax, uint32 ecx){
+void sub_0x69E8B0(uint16 eax, uint16 ecx){
 	uint32 _eax = eax, _ecx = ecx;
 	rct_drawpixelinfo* dpi;
 
@@ -1231,36 +1231,42 @@ void sub_68B35F(int ax, int cx)
 void sub_0x68B6C2(){
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 	sint16 ax, bx, cx, dx;
+	uint16 num_vertical_quadrants = 0;
+	rct_xy16 mapTile;
 	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)){
 	case 0:
-		ax = dpi->y;
-		bx = dpi->x;
+		mapTile.x = dpi->x & 0xFFE0;
+		mapTile.y = (dpi->y - 16) & 0xFFE0;
+		
+		bx = mapTile.x / 2;
+		mapTile.x = mapTile.y - bx;
+		mapTile.y = mapTile.y + bx;
 
-		ax -= 16;
-		bx &= 0xFFE0;
-		ax &= 0xFFE0;
-		bx >>= 1;
-		cx = ax;
-		ax -= bx;
-		cx += bx;
-		ax &= 0xFFE0;
-		cx &= 0xFFE0;
-		dx = dpi->height;
-		dx += 2128;
-		dx >>= 5;
-		for (int i = dx; i > 0; --i){
-			sub_68B35F(ax, cx);
-			sub_0x69E8B0(ax, cx);
-			cx += 0x20;
-			ax -= 0x20;
-			sub_0x69E8B0(ax, cx);
-			ax += 0x20;
-			sub_68B35F(ax, cx);
-			sub_0x69E8B0(ax, cx);
-			ax += 0x20;
-			cx -= 0x20;
-			sub_0x69E8B0(ax, cx);
-			cx += 0x20;
+		mapTile.x &= 0xFFE0;
+		mapTile.y &= 0xFFE0;
+
+		num_vertical_quadrants = (dpi->height + 2128) / 32;
+
+		for (; num_vertical_quadrants > 0; --num_vertical_quadrants){
+			sub_68B35F(mapTile.x, mapTile.y);
+			sub_0x69E8B0(mapTile.x, mapTile.y);
+
+			mapTile.x -= 32;
+			mapTile.y += 32;
+
+			sub_0x69E8B0(mapTile.x, mapTile.y);
+
+			mapTile.x += 32;
+
+			sub_68B35F(mapTile.x, mapTile.y);
+			sub_0x69E8B0(mapTile.x, mapTile.y);
+
+			mapTile.x += 32;
+			mapTile.y -= 32;
+
+			sub_0x69E8B0(mapTile.x, mapTile.y);
+
+			mapTile.y += 32;
 		}
 		break;
 	case 1:
@@ -1513,8 +1519,8 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 	left &= bitmask;
 	top &= bitmask;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, uint16) = left;
-	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, uint16) = top;
+	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, sint16) = left;
+	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, sint16) = top;
 	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_WIDTH, uint16) = width;
 	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_HEIGHT, uint16) = height;
 
@@ -1522,11 +1528,11 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 
 	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_PITCH, uint16) = (dpi->width + dpi->pitch) - width;
 
-	int x = (sint16)(left - (sint16)(viewport->view_x & bitmask));
+	sint16 x = (sint16)(left - (sint16)(viewport->view_x & bitmask));
 	x >>= viewport->zoom;
 	x += viewport->x;
 
-	int y = (sint16)(top - (sint16)(viewport->view_y & bitmask));
+	sint16 y = (sint16)(top - (sint16)(viewport->view_y & bitmask));
 	y >>= viewport->zoom;
 	y += viewport->y;
 
@@ -1534,16 +1540,16 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_BITS_PTR, uint8*) = bits_pointer;
 
 	rct_drawpixelinfo* dpi2 = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_DPI, rct_drawpixelinfo);
-	dpi2->y = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, uint16);
+	dpi2->y = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, sint16);
 	dpi2->height = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_HEIGHT, uint16);
 	dpi2->zoom_level = (uint8)RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16);
 
 	//Splits the screen into 32 pixel columns and renders them.
-	for (x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, uint16) & 0xFFFFFFE0;
-		x < RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, uint16) + RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_WIDTH, uint16);
+	for (x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, sint16) & 0xFFFFFFE0;
+		x < RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_WIDTH, uint16);
 		x += 32){
 
-		int start_x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, uint16);
+		int start_x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, sint16);
 		int width_col = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_WIDTH, uint16);
 		bits_pointer = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_BITS_PTR, uint8*);
 		int pitch = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_PITCH, uint16);
