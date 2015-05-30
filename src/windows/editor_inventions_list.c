@@ -27,6 +27,7 @@
 #include "../management/research.h"
 #include "../object.h"
 #include "../world/scenery.h"
+#include "../interface/colour_schemes.h"
 
 #pragma region Widgets
 
@@ -434,9 +435,6 @@ void window_editor_inventions_list_open()
 	w->selected_tab = 0;
 	WindowHighlightedItem(w) = NULL;
 	_editorInventionsListDraggedItem = NULL;
-	w->colours[0] = 4;
-	w->colours[1] = 1;
-	w->colours[2] = 1;
 }
 
 /**
@@ -627,6 +625,7 @@ static void window_editor_inventions_list_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	w->pressed_widgets |= 1 << WIDX_PREVIEW;
 	w->pressed_widgets |= 1 << WIDX_TAB_1;

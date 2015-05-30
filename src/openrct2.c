@@ -145,6 +145,10 @@ bool openrct2_initialise()
 	}
 	language_open(gConfigGeneral.language);
 	http_init();
+
+	colour_schemes_set_default();
+	colour_schemes_load_presets();
+
 	if (!rct2_init())
 		return false;
 
@@ -160,29 +164,29 @@ bool openrct2_initialise()
 void openrct2_launch()
 {
 	if (openrct2_initialise()) {
-		switch (gOpenRCT2StartupAction) {
-		case STARTUP_ACTION_INTRO:
-			RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 8;
-			break;
-		case STARTUP_ACTION_TITLE:
-			RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
-			RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TITLE_DEMO;
-			break;
-		case STARTUP_ACTION_OPEN:
-			assert(gOpenRCT2StartupActionPath != NULL);
-			rct2_open_file(gOpenRCT2StartupActionPath);
+	switch (gOpenRCT2StartupAction) {
+	case STARTUP_ACTION_INTRO:
+		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 8;
+		break;
+	case STARTUP_ACTION_TITLE:
+		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TITLE_DEMO;
+		break;
+	case STARTUP_ACTION_OPEN:
+		assert(gOpenRCT2StartupActionPath != NULL);
+		rct2_open_file(gOpenRCT2StartupActionPath);
 
-			RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
-			RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
-			break;
-		case STARTUP_ACTION_EDIT:
-			if (strlen(gOpenRCT2StartupActionPath) == 0) {
-				editor_load();
-			} else {
-				editor_load_landscape(gOpenRCT2StartupActionPath);
-			}
-			break;
+		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
+		break;
+	case STARTUP_ACTION_EDIT:
+		if (strlen(gOpenRCT2StartupActionPath) == 0) {
+			editor_load();
+		} else {
+			editor_load_landscape(gOpenRCT2StartupActionPath);
 		}
+		break;
+	}
 		openrct2_loop();
 	}
 	openrct2_dispose();

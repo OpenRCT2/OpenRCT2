@@ -30,6 +30,7 @@
 #include "../sprites.h"
 #include "../world/scenery.h"
 #include "dropdown.h"
+#include "../interface/colour_schemes.h"
 
 enum {
 	WINDOW_RESEARCH_PAGE_DEVELOPMENT,
@@ -235,9 +236,6 @@ void window_research_open()
 		w->page = 0;
 		w->frame_no = 0;
 		w->disabled_widgets = 0;
-		w->colours[0] = 1;
-		w->colours[1] = 19;
-		w->colours[2] = 19;
 		research_update_uncompleted_types();
 	}
 
@@ -304,6 +302,7 @@ static void window_research_development_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	if (w->widgets != window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT]) {
 		w->widgets = window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT];
@@ -521,6 +520,7 @@ static void window_research_funding_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	if (w->widgets != window_research_page_widgets[WINDOW_RESEARCH_PAGE_FUNDING]) {
 		w->widgets = window_research_page_widgets[WINDOW_RESEARCH_PAGE_FUNDING];

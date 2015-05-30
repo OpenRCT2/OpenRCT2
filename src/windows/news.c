@@ -27,6 +27,7 @@
 #include "../sprites.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../interface/colour_schemes.h"
 
 enum WINDOW_NEWS_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -49,6 +50,7 @@ static void window_news_update(rct_window *w);
 static void window_news_scrollgetsize();
 static void window_news_scrollmousedown();
 static void window_news_tooltip();
+static void window_news_invalidate();
 static void window_news_paint();
 static void window_news_scrollpaint();
 
@@ -78,7 +80,7 @@ static void* window_news_events[] = {
 	window_news_tooltip,
 	window_news_emptysub,
 	window_news_emptysub,
-	window_news_emptysub,
+	window_news_invalidate,
 	window_news_paint,
 	window_news_scrollpaint
 };
@@ -104,9 +106,6 @@ void window_news_open()
 		window->widgets = window_news_widgets;
 		window->enabled_widgets = (1 << WIDX_CLOSE);
 		window_init_scroll_widgets(window);
-		window->colours[0] = 1;
-		window->colours[1] = 1;
-		window->colours[2] = 0;
 		window->news.var_480 = -1;
 	}
 
@@ -118,6 +117,7 @@ void window_news_open()
 	widget = &window_news_widgets[WIDX_SCROLL];
 	window->scrolls[0].v_top = max(0, height - (widget->bottom - widget->top - 1));
 	widget_scroll_update_thumbs(window, WIDX_SCROLL);
+
 }
 
 /**
@@ -276,6 +276,14 @@ static void window_news_paint()
 	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
+}
+
+static void window_news_invalidate()
+{
+	rct_window *w;
+
+	window_get_register(w);
+	colour_scheme_update(w);
 }
 
 /**

@@ -38,6 +38,7 @@
 #include "../world/sprite.h"
 #include "../management/finance.h"
 #include "dropdown.h"
+#include "../interface/colour_schemes.h"
 
 enum WINDOW_PARK_PAGE {
 	WINDOW_PARK_PAGE_ENTRANCE,
@@ -615,9 +616,6 @@ rct_window *window_park_open()
 	w->var_48C = -1;
 	w->var_492 = 0;
 	window_park_set_disabled_tabs(w);
-	w->colours[0] = 1;
-	w->colours[1] = 19;
-	w->colours[2] = 19;
 
 	return w;
 }
@@ -974,6 +972,7 @@ static void window_park_entrance_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	w->widgets = window_park_page_widgets[w->page];
 	window_init_scroll_widgets(w);
@@ -1224,6 +1223,7 @@ static void window_park_rating_invalidate()
 	rct_widget *widgets;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1357,6 +1357,7 @@ static void window_park_guests_invalidate()
 	rct_widget *widgets;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1492,6 +1493,7 @@ static void window_park_price_invalidate()
 	rct_widget *widgets;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1614,6 +1616,7 @@ static void window_park_stats_invalidate()
 	rct_widget *widgets;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1800,6 +1803,7 @@ static void window_park_objective_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	window_park_set_pressed_tab(w);
 	window_park_prepare_window_title_text();
@@ -1945,6 +1949,7 @@ static void window_park_awards_invalidate()
 	rct_widget *widgets;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {

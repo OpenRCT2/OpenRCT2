@@ -25,6 +25,7 @@
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "../world/map.h"
+#include "../interface/colour_schemes.h"
 
 enum WINDOW_WATER_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -107,9 +108,6 @@ void window_water_open()
 
 	RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) = MONEY32_UNDEFINED;
 	RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) = MONEY32_UNDEFINED;
-	window->colours[0] = 24;
-	window->colours[1] = 24;
-	window->colours[2] = 24;
 }
 
 /**
@@ -220,6 +218,7 @@ static void window_water_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	// Set the preview image button to be pressed down
 	w->pressed_widgets |= (1 << WIDX_PREVIEW);

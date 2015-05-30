@@ -28,6 +28,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "dropdown.h"
+#include "../interface/colour_schemes.h"
 
 enum {
 	PAGE_RIDES,
@@ -389,6 +390,7 @@ static void window_ride_list_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	window_ride_list_widgets[WIDX_CURRENT_INFORMATION_TYPE].image = STR_STATUS + _window_ride_list_information_type;
 
@@ -410,19 +412,6 @@ static void window_ride_list_invalidate()
 	w->widgets[WIDX_LIST].bottom = w->height - 4;
 	w->widgets[WIDX_OPEN_CLOSE_ALL].right = w->width - 2;
 	w->widgets[WIDX_OPEN_CLOSE_ALL].left = w->width - 25;
-
-	if(!gConfigInterface.rct1_colour_scheme)
-	{
-		w->colours[0] = 1;
-		w->colours[1] = 26;
-		w->colours[2] = 26;
-	}
-	else
-	{
-		w->colours[0] = 26;
-		w->colours[1] = 1;
-		w->colours[2] = 1;
-	}
 }
 
 /**

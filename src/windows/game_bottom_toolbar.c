@@ -31,6 +31,7 @@
 #include "../world/climate.h"
 #include "../world/park.h"
 #include "../world/sprite.h"
+#include "../interface/colour_schemes.h"
 
 enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
 	WIDX_LEFT_OUTSET,
@@ -253,19 +254,7 @@ static void window_game_bottom_toolbar_invalidate()
 	rct_news_item *newsItem;
 
 	window_get_register(w);
-
-	if(!gConfigInterface.rct1_colour_scheme)
-	{
-		w->colours[0] = 140;
-		w->colours[1] = 140;
-		w->colours[2] = 0;
-	}
-	else
-	{
-		w->colours[0] = 129;
-		w->colours[1] = 129;
-		w->colours[2] = 0;
-	}
+	colour_scheme_update(w);
 
 	// Anchor the middle and right panel to the right
 	x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
@@ -429,12 +418,10 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 	);
 
 	// Draw park rating
-	int park_rating_bar_colour=!gConfigInterface.rct1_colour_scheme ? 14 : 18;
-
 	window_game_bottom_toolbar_draw_park_rating(
 		dpi,
 		w,
-		park_rating_bar_colour,
+		w->colours[3],
 		w->x + window_game_bottom_toolbar_widgets[WIDX_PARK_RATING].left + 11,
 		w->y + window_game_bottom_toolbar_widgets[WIDX_PARK_RATING].top,
 		max(10, ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16) / 4) * 263) / 256)

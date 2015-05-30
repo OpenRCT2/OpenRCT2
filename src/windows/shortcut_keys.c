@@ -24,6 +24,7 @@
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
+#include "../interface/colour_schemes.h"
 
 #define WW 340
 #define WH 240
@@ -48,6 +49,7 @@ static rct_widget window_shortcut_widgets[] = {
 
 void window_shortcut_emptysub() { }
 static void window_shortcut_mouseup();
+static void window_shortcut_invalidate();
 static void window_shortcut_paint();
 static void window_shortcut_tooltip();
 static void window_shortcut_scrollgetsize();
@@ -81,7 +83,7 @@ static void* window_shortcut_events[] = {
 	window_shortcut_tooltip,
 	window_shortcut_emptysub,
 	window_shortcut_emptysub,
-	window_shortcut_emptysub,
+	window_shortcut_invalidate,
 	window_shortcut_paint,
 	window_shortcut_scrollpaint
 };
@@ -104,9 +106,6 @@ void window_shortcut_keys_open()
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RESET);
 	window_init_scroll_widgets(w);
 
-	w->colours[0] = 7;
-	w->colours[1] = 7;
-	w->colours[2] = 7;
 	w->no_list_items = 32;
 	w->selected_list_item = -1;
 }
@@ -132,6 +131,14 @@ static void window_shortcut_mouseup()
 		window_invalidate(w);
 		break;
 	}
+}
+
+static void window_shortcut_invalidate()
+{
+	rct_window *w;
+
+	window_get_register(w);
+	colour_scheme_update(w);
 }
 
 /**

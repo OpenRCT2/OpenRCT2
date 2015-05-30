@@ -34,6 +34,7 @@
 #include "../input.h"
 #include "dropdown.h"
 #include "error.h"
+#include "../interface/colour_schemes.h"
 
 #define WW 190
 #define WH 180
@@ -723,8 +724,7 @@ void window_staff_unknown_05(){
 void window_staff_stats_invalidate(){
 	rct_window* w;
 	window_get_register(w);
-
-	window_staff_set_colours();
+	colour_scheme_update_by_class(w, (rct_windowclass)WC_STAFF);
 
 	if (window_staff_page_widgets[w->page] != w->widgets){
 		w->widgets = window_staff_page_widgets[w->page];
@@ -757,8 +757,7 @@ void window_staff_stats_invalidate(){
 void window_staff_options_invalidate(){
 	rct_window* w;
 	window_get_register(w);
-
-	window_staff_set_colours();
+	colour_scheme_update_by_class(w, (rct_windowclass)WC_STAFF);
 
 	if (window_staff_page_widgets[w->page] != w->widgets){
 		w->widgets = window_staff_page_widgets[w->page];
@@ -831,8 +830,7 @@ void window_staff_options_invalidate(){
 void window_staff_overview_invalidate(){
 	rct_window* w;
 	window_get_register(w);
-
-	window_staff_set_colours();
+	colour_scheme_update_by_class(w, (rct_windowclass)WC_STAFF);
 
 	if (window_staff_page_widgets[w->page] != w->widgets){
 		w->widgets = window_staff_page_widgets[w->page];
@@ -1387,23 +1385,4 @@ void window_staff_options_dropdown()
 	int costume = (RCT2_ADDRESS(0xF4391B, uint8)[dropdownIndex] - 4) | 0x80;
 
 	game_do_command(peep->x, (costume << 8) | 1, peep->y, w->number, GAME_COMMAND_SET_STAFF_ORDER, (int)peep, 0);
-}
-
-void window_staff_set_colours()
-{
-	rct_window* w;
-	window_get_register(w);
-
-	if(!gConfigInterface.rct1_colour_scheme)
-	{
-		w->colours[0] = 1;
-		w->colours[1] = 4;
-		w->colours[2] = 4;
-	}
-	else
-	{
-		w->colours[0] = 12;
-		w->colours[1] = 4;
-		w->colours[2] = 4;
-	}
 }

@@ -26,6 +26,7 @@
 #include "../sprites.h"
 #include "error.h"
 #include "dropdown.h"
+#include "../interface/colour_schemes.h"
 
 #pragma region Widgets
 
@@ -352,9 +353,6 @@ void window_editor_scenario_options_open()
 	window_init_scroll_widgets(w);
 	w->var_4AE = 0;
 	w->page = 0;
-	w->colours[0] = 4;
-	w->colours[1] = 1;
-	w->colours[2] = 1;
 }
 
 static void window_editor_scenario_options_set_pressed_tab(rct_window *w)
@@ -580,6 +578,7 @@ static void window_editor_scenario_options_financial_invalidate()
 	int i;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	widgets = window_editor_scenario_options_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -820,6 +819,7 @@ static void window_editor_scenario_options_guests_invalidate()
 	rct_widget *widgets;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	widgets = window_editor_scenario_options_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1110,6 +1110,7 @@ static void window_editor_scenario_options_park_invalidate()
 	uint64 pressedWidgets;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	widgets = window_editor_scenario_options_widgets[w->page];
 	if (w->widgets != widgets) {

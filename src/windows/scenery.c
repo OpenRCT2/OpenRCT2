@@ -32,6 +32,7 @@
 #include "../world/scenery.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
+#include "../interface/colour_schemes.h"
 
 #define WINDOW_SCENERY_WIDTH	634
 #define WINDOW_SCENERY_HEIGHT	142
@@ -473,9 +474,6 @@ void window_scenery_open()
 	window->max_width = WINDOW_SCENERY_WIDTH;
 	window->min_height = WINDOW_SCENERY_HEIGHT;
 	window->max_height = WINDOW_SCENERY_HEIGHT;
-	window->colours[0] = 0x18;
-	window->colours[1] = 0x0C;
-	window->colours[2] = 0x0C;
 }
 
 /**
@@ -887,6 +885,7 @@ void window_scenery_invalidate()
 	rct_window* w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	uint16 tabIndex = window_scenery_active_tab_index;
 	uint32 titleStringId = 1813;

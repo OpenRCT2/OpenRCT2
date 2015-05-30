@@ -37,6 +37,7 @@
 #include "../input.h"
 #include "dropdown.h"
 #include "error.h"
+#include "../interface/colour_schemes.h"
 
 enum WINDOW_GUEST_PAGE {
 	WINDOW_GUEST_OVERVIEW,
@@ -1028,7 +1029,7 @@ void window_guest_overview_paint(){
 void window_guest_overview_invalidate(){
 	rct_window* w;
 	window_get_register(w);
-	window_guest_set_colours();
+	colour_scheme_update(w);
 	
 	if (window_guest_page_widgets[w->page] != w->widgets){
 		w->widgets = window_guest_page_widgets[w->page];
@@ -1333,7 +1334,7 @@ void window_guest_stats_update(){
 void window_guest_stats_invalidate(){
 	rct_window* w;
 	window_get_register(w);
-	window_guest_set_colours();
+	colour_scheme_update(w);
 
 	if (w->widgets != window_guest_page_widgets[w->page]) {
 		w->widgets = window_guest_page_widgets[w->page];
@@ -1658,7 +1659,7 @@ void window_guest_rides_scroll_mouse_over(){
 void window_guest_rides_invalidate(){
 	rct_window* w;
 	window_get_register(w);
-	window_guest_set_colours();
+	colour_scheme_update(w);
 
 	if (window_guest_page_widgets[w->page] != w->widgets){
 		w->widgets = window_guest_page_widgets[w->page];
@@ -1782,7 +1783,7 @@ void window_guest_finance_update(){
 void window_guest_finance_invalidate(){
 	rct_window* w;
 	window_get_register(w);
-	window_guest_set_colours();
+	colour_scheme_update(w);
 
 	if (window_guest_page_widgets[w->page] != w->widgets){
 		w->widgets = window_guest_page_widgets[w->page];
@@ -1922,7 +1923,7 @@ void window_guest_thoughts_update(){
 void window_guest_thoughts_invalidate(){
 	rct_window* w;
 	window_get_register(w);
-	window_guest_set_colours();
+	colour_scheme_update(w);
 
 	if (window_guest_page_widgets[w->page] != w->widgets){
 		w->widgets = window_guest_page_widgets[w->page];
@@ -2025,7 +2026,7 @@ void window_guest_inventory_update(){
 void window_guest_inventory_invalidate(){
 	rct_window* w;
 	window_get_register(w);
-	window_guest_set_colours();
+	colour_scheme_update(w);
 
 	if (window_guest_page_widgets[w->page] != w->widgets){
 		w->widgets = window_guest_page_widgets[w->page];
@@ -2183,24 +2184,5 @@ void window_guest_inventory_paint(){
 
 	if (!no_items){
 		gfx_draw_string_left(dpi, 2293, (void*)0, 0, x, y);
-	}
-}
-
-void window_guest_set_colours()
-{
-	rct_window* w;
-	window_get_register(w);
-
-	if(!gConfigInterface.rct1_colour_scheme)
-	{
-		w->colours[0] = 1;
-		w->colours[1] = 15;
-		w->colours[2] = 15;
-	}
-	else
-	{
-		w->colours[0] = 22;
-		w->colours[1] = 26;
-		w->colours[2] = 26;			
 	}
 }

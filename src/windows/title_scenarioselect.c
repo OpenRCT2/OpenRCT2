@@ -27,6 +27,7 @@
 #include "../sprites.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../interface/colour_schemes.h"
 
 enum {
 	WIDX_BACKGROUND,
@@ -123,9 +124,6 @@ void window_scenarioselect_open()
 	
 	window->enabled_widgets = 0x04 | 0x10 | 0x20 | 0x40 | 0x80 | 0x100;
 	window_init_scroll_widgets(window);
-	window->colours[0] = 1;
-	window->colours[1] = 26;
-	window->colours[2] = 26;
 	window->viewport_focus_coordinates.var_480 = -1;
 	window->var_494 = 0;
 
@@ -274,6 +272,7 @@ static void window_scenarioselect_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	w->pressed_widgets &= ~(0x10 | 0x20 | 0x40 | 0x80 | 0x100);
 	w->pressed_widgets |= 1LL << (w->selected_tab + 4);
@@ -292,7 +291,9 @@ static void window_scenarioselect_paint()
 	window_draw_widgets(w, dpi);
 
 	// Use small text for the tabs when the RCT1 colour scheme is selected.
-	format = (gConfigInterface.rct1_colour_scheme) ? 5138 : 1193;
+	//format = (gConfigInterface.rct1_colour_scheme) ? 5138 : 1193;
+	// Will reimplement this later
+	format = 1193;
 
 	// Text for each tab
 	for (i = 0; i < 5; i++) {
@@ -358,8 +359,11 @@ static void window_scenarioselect_scrollpaint()
 	gfx_clear(dpi, colour);
 
 	// Use white text for the scenario names when the RCT1 colour scheme is selected
-	highlighted_format = gConfigInterface.rct1_colour_scheme ? 5139 : 1193;
-	unhighlighted_format = gConfigInterface.rct1_colour_scheme ? 5139 : 1191;
+	//highlighted_format = gConfigInterface.rct1_colour_scheme ? 5139 : 1193;
+	//unhighlighted_format = gConfigInterface.rct1_colour_scheme ? 5139 : 1191;
+	// Will reimplement this later
+	highlighted_format = 1193;
+	unhighlighted_format = 1191;
 
 	y = 0;
 	for (i = 0; i < gScenarioListCount; i++) {

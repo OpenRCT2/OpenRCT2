@@ -30,6 +30,7 @@
 #include "../world/footpath.h"
 #include "../world/map.h"
 #include "dropdown.h"
+#include "../interface/colour_schemes.h"
 
 enum {
 	PATH_CONSTRUCTION_MODE_LAND,
@@ -202,9 +203,6 @@ void window_footpath_open()
 	window_init_scroll_widgets(window);
 	window_push_others_right(window);
 	show_gridlines();
-	window->colours[0] = 24;
-	window->colours[1] = 24;
-	window->colours[2] = 24;
 
 	tool_cancel();
 	RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) = PATH_CONSTRUCTION_MODE_LAND;
@@ -520,6 +518,7 @@ static void window_footpath_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 	
 	// Press / unpress footpath and queue type buttons
 	w->pressed_widgets &= ~(1 << WIDX_FOOTPATH_TYPE);

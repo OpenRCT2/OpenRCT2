@@ -33,6 +33,7 @@
 #include "../world/footpath.h"
 #include "../world/park.h"
 #include "../world/sprite.h"
+#include "../interface/colour_schemes.h"
 
 //#define WW 200
 //#define WH 128
@@ -521,9 +522,6 @@ void window_cheats_open()
 	window->enabled_widgets = window_cheats_page_enabled_widgets[0];
 	window_init_scroll_widgets(window);
 	window->page = WINDOW_CHEATS_PAGE_MONEY;
-	window->colours[0] = 1;
-	window->colours[1] = 19;
-	window->colours[2] = 19;
 }
 
 static void window_cheats_money_mouseup()
@@ -702,6 +700,7 @@ static void window_cheats_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	strcpy((char*)0x009BC677, "Cheats");
 

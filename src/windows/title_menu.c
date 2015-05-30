@@ -28,6 +28,7 @@
 #include "../sprites.h"
 #include "../tutorial.h"
 #include "dropdown.h"
+#include "../interface/colour_schemes.h"
 
 enum {
 	WIDX_START_NEW_GAME,
@@ -194,17 +195,5 @@ static void window_title_menu_invalidate()
 {
 	rct_window *w;
 	window_get_register(w);
-
-	if(!gConfigInterface.rct1_colour_scheme)
-	{
-		w->colours[0] = 140;
-		w->colours[1] = 140;
-		w->colours[2] = 140;
-	}
-	else
-	{
-		w->colours[0] = 129;
-		w->colours[1] = 129;
-		w->colours[2] = 129;
-	}
+	colour_scheme_update(w);
 }

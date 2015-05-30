@@ -32,6 +32,7 @@
 #include "error.h"
 #include "dropdown.h"
 #include "../drawing/drawing.h"
+#include "../interface/colour_schemes.h"
 
 #define WW 113
 #define WH 96
@@ -163,9 +164,6 @@ void window_sign_open(rct_windownumber number)
 
 	w->number = number;
 	window_init_scroll_widgets(w);
-	w->colours[0] = 24;
-	w->colours[1] = 24;
-	w->colours[2] = 24;
 
 	int view_x = gBanners[w->number].x << 5;
 	int view_y = gBanners[w->number].y << 5;
@@ -387,6 +385,7 @@ static void window_sign_invalidate()
 	rct_window* w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOR];
 	rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOR];
@@ -645,6 +644,7 @@ static void window_sign_small_invalidate()
 	rct_window* w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOR];
 	rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOR];

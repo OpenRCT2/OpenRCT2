@@ -84,7 +84,8 @@
       <AdditionalDependencies>libcurl.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PreBuildEvent>
-      <Command>$(ProjectDir)..\..\VSgetLibs.bat</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

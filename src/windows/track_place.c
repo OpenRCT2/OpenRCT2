@@ -29,6 +29,7 @@
 #include "../sprites.h"
 #include "../ride/track.h"
 #include "../ride/track_data.h"
+#include "../interface/colour_schemes.h"
 
 #define TRACK_MINI_PREVIEW_WIDTH	168
 #define TRACK_MINI_PREVIEW_HEIGHT	78
@@ -63,6 +64,7 @@ static void window_track_place_toolupdate();
 static void window_track_place_tooldown();
 static void window_track_place_toolabort();
 static void window_track_place_unknown14();
+static void window_track_place_invalidate();
 static void window_track_place_paint();
 
 static void* window_track_place_events[] = {
@@ -91,7 +93,7 @@ static void* window_track_place_events[] = {
 	window_track_place_emptysub,
 	window_track_place_emptysub,
 	window_track_place_emptysub,
-	window_track_place_emptysub,
+	window_track_place_invalidate,
 	window_track_place_paint,
 	window_track_place_emptysub
 };
@@ -378,9 +380,6 @@ void window_track_place_open()
 	w->widgets = window_track_place_widgets;
 	w->enabled_widgets = 4 | 8 | 0x10 | 0x20;
 	window_init_scroll_widgets(w);
-	w->colours[0] = 24;
-	w->colours[1] = 24;
-	w->colours[2] = 24;
 	tool_set(w, 6, 12);
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
 	window_push_others_right(w);
@@ -586,6 +585,14 @@ static void window_track_place_toolabort()
 static void window_track_place_unknown14()
 {
 	window_track_place_draw_mini_preview();
+}
+
+static void window_track_place_invalidate()
+{
+	rct_window *w;
+
+	window_get_register(w);
+	colour_scheme_update(w);
 }
 
 /**
