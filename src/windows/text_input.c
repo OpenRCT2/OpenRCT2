@@ -240,7 +240,7 @@ static void window_text_input_mouseup(){
 		// Pass back the text that has been entered.
 		// ecx when zero means text input failed
 		if (calling_w != NULL)
-			RCT2_CALLPROC_X(calling_w->event_handlers[WE_TEXT_INPUT], 0, 0, 0, calling_widget, (int)calling_w, (int)text_input, 0);
+			window_event_textinput_call(calling_w, calling_widget, NULL);
 		window_close(w);
 		break;
 	case WIDX_OKAY:
@@ -248,7 +248,7 @@ static void window_text_input_mouseup(){
 		// Pass back the text that has been entered.
 		// ecx when none zero means text input success
 		if (calling_w != NULL)
-			RCT2_CALLPROC_X(calling_w->event_handlers[WE_TEXT_INPUT], 0, 0, 1, calling_widget, (int)calling_w, (int)text_input, 0);
+			window_event_textinput_call(calling_w, calling_widget, text_input);
 		window_close(w);
 	}
 }
@@ -340,7 +340,7 @@ static void window_text_input_text(int key, rct_window* w){
 		// Pass back the text that has been entered.
 		// ecx when none zero means text input success
 		if (calling_w)
-			RCT2_CALLPROC_X(calling_w->event_handlers[WE_TEXT_INPUT], 0, 0, 1, calling_widget, (int)calling_w, (int)text_input, 0);
+			window_event_textinput_call(calling_w, calling_widget, text_input);
 	}
 	
 	window_invalidate(w);

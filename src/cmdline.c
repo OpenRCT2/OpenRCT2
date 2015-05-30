@@ -22,6 +22,7 @@
 #include <argparse/argparse.h>
 #include "addresses.h"
 #include "cmdline.h"
+#include "interface/screenshot.h"
 #include "openrct2.h"
 #include "platform/platform.h"
 #include "util/util.h"
@@ -138,7 +139,8 @@ static int cmdline_for_none(const char **argv, int argc)
 struct { const char *firstArg; cmdline_action action; } cmdline_table[] = {
 	{ "intro", cmdline_for_intro },
 	{ "edit", cmdline_for_edit },
-	{ "sprite", cmdline_for_sprite }
+	{ "sprite", cmdline_for_sprite },
+	{ "screenshot", cmdline_for_screenshot }
 };
 
 static int cmdline_call_action(const char **argv, int argc)

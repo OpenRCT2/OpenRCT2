@@ -308,7 +308,7 @@ static void window_ride_list_update(rct_window *w)
  */
 static void window_ride_list_scrollgetsize()
 {
-	int top, height;
+	int top, width, height;
 	rct_window *w;
 	
 	window_get_register(w);
@@ -327,18 +327,8 @@ static void window_ride_list_scrollgetsize()
 		window_invalidate(w);
 	}
 
-	#ifdef _MSC_VER
-	__asm mov ecx, 0
-	#else
-	__asm__ ( "mov ecx, 0 "  );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov edx, height
-	#else
-	__asm__ ( "mov edx, %[height] " : [height] "+m" (height) );
-	#endif
-
+	width = 0;
+	window_scrollsize_set_registers(width, height);
 }
 
 /**

@@ -205,7 +205,7 @@ static void window_banner_mouseup()
 		window_text_input_open(w, WIDX_BANNER_TEXT, 2982, 2983, gBanners[w->number].string_idx, 0, 32);
 		break;
 	case WIDX_BANNER_NO_ENTRY:
-		RCT2_CALLPROC_EBPSAFE(0x006EE3C3);
+		textinput_cancel();
 		banner->flags ^= BANNER_FLAG_NO_ENTRY;
 		window_invalidate(w);
 

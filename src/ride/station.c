@@ -291,6 +291,10 @@ static void ride_invalidate_station_start(rct_ride *ride, int stationIndex, int 
 	y = (ride->station_starts[stationIndex] >> 8) * 32;
 	mapElement = ride_get_station_start_track_element(ride, stationIndex);
 
+	// If no station track found return
+	if (mapElement == NULL)
+		return;
+
 	mapElement->properties.track.sequence &= 0x7F;
 	if (dl != 0)
 		mapElement->properties.track.sequence |= 0x80;

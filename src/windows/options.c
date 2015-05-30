@@ -990,10 +990,7 @@ static void window_options_paint()
 	switch (w->page) {
 	case WINDOW_OPTIONS_PAGE_DISPLAY:
 		gfx_draw_string_left(dpi, STR_DISPLAY_RESOLUTION, w, 0, w->x + 10, w->y + window_options_widgets[WIDX_RESOLUTION].top + 1);
-
-		sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_WINDOW_COLOUR_2, "Fullscreen mode:");
-		gfx_draw_string(dpi, buffer, 0, w->x + 10, w->y + window_options_widgets[WIDX_FULLSCREEN].top + 1);
-
+		gfx_draw_string_left(dpi, STR_FULLSCREEN_MODE, w, 12, w->x + 10, w->y + window_options_widgets[WIDX_FULLSCREEN].top + 1);
 		gfx_draw_string_left(dpi, STR_CONSTRUCTION_MARKER, w, 0, w->x + 10, w->y + window_options_widgets[WIDX_CONSTRUCTION_MARKER].top + 1);
 
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&gConfigColourSchemes.presets[gCurrentColourSchemePreset].name;

@@ -184,9 +184,10 @@ static void window_news_update(rct_window *w)
  */
 static void window_news_scrollgetsize()
 {
-	int i, height;
+	int i, width, height;
 	rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 
+	width = 0;
 	height = 0;
 	for (i = 11; i < 61; i++) {
 		if (newsItems[i].type == NEWS_ITEM_NULL)
@@ -195,12 +196,7 @@ static void window_news_scrollgetsize()
 		height += 42;
 	}
 
-	#ifdef _MSC_VER
-	__asm mov edx, height
-	#else
-	__asm__ ( "mov edx, %[height] " : [height] "+m" (height) );
-	#endif
-
+	window_scrollsize_set_registers(width, height);
 }
 
 /**

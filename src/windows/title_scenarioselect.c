@@ -190,12 +190,13 @@ static void window_scenarioselect_mousedown(int widgetIndex, rct_window*w, rct_w
 
 static void window_scenarioselect_scrollgetsize()
 {
-	int i, height;
+	int i, width, height;
 	rct_window *w;
 	rct_scenario_basic *scenario;
 
 	window_get_register(w);
 
+	width = 0;
 	height = 0;
 	for (i = 0; i < gScenarioListCount; i++) {
 		scenario = &gScenarioList[i];
@@ -205,18 +206,7 @@ static void window_scenarioselect_scrollgetsize()
 			height += 24;
 	}
 
-	#ifdef _MSC_VER
-	__asm mov ecx, 0
-	#else
-	__asm__ ( "mov ecx, 0 "  );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov edx, height
-	#else
-	__asm__ ( "mov edx, %[height] " : [height] "+m" (height) );
-	#endif
-
+	window_scrollsize_set_registers(width, height);
 }
 
 /* rct2: 0x6780FE */

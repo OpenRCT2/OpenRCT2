@@ -1594,12 +1594,15 @@ void window_guest_rides_tooltip(){
 }
 
 /* rct2: 0x69784E */
-void window_guest_rides_scroll_get_size(){
+void window_guest_rides_scroll_get_size()
+{
 	rct_window *w;
+	int width, height;
 
 	window_get_register(w);
 
-	int height = w->no_list_items * 10;
+	width = 0;
+	height = w->no_list_items * 10;
 
 	if (w->selected_list_item != -1){
 		w->selected_list_item = -1;
@@ -1618,17 +1621,7 @@ void window_guest_rides_scroll_get_size(){
 		window_invalidate(w);
 	}
 
-#ifdef _MSC_VER
-	__asm mov ecx, 0
-#else
-	__asm__("mov ecx, 0 ");
-#endif
-
-#ifdef _MSC_VER
-	__asm mov edx, height
-#else
-	__asm__("mov edx, %[height] " : [height] "+m" (height));
-#endif
+	window_scrollsize_set_registers(width, height);
 }
 
 /* rct2: 0x006978CC */

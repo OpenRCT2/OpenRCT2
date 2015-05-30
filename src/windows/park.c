@@ -812,6 +812,7 @@ static void window_park_entrance_toolupdate()
 
 	switch (widgetIndex){
 	case WIDX_BUY_LAND_RIGHTS:
+		// Create a new version for this instance as scenery_clear is silly for this
 		RCT2_CALLPROC_X(0x0068E213, x, y, 0, widgetIndex, (int)w, 0, 0);
 		RCT2_GLOBAL(0x00F1AD62, uint32) = game_do_command(
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
@@ -1984,7 +1985,7 @@ static void window_park_awards_paint()
 
 	count = 0;
 	for (i = 0; i < MAX_AWARDS; i++) {
-		award = &RCT2_ADDRESS(RCT2_ADDRESS_AWARD_LIST, rct_award)[i];
+		award = &gCurrentAwards[i];
 		if (award->time == 0)
 			continue;
 

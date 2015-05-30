@@ -603,7 +603,7 @@ static void window_track_place_paint()
 {
 	rct_window *w;
 	rct_drawpixelinfo *dpi, *clippedDpi;
-	rct_g1_element tmpElement, *subsituteElement, *g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
+	rct_g1_element tmpElement, *subsituteElement;
 	
 	window_paint_get_registers(w, dpi);
 

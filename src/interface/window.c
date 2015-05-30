@@ -1220,7 +1220,7 @@ void window_rotate_camera(rct_window *w)
 	window_invalidate(w);
 
 	sub_688956();
-	sub_69E9A7();
+	reset_all_sprite_quadrant_placements();
 }
 
 /**
@@ -2140,4 +2140,35 @@ void window_move_and_snap(rct_window *w, int newWindowX, int newWindowY, int sna
 int window_can_resize(rct_window *w)
 {
 	return (w->flags & WF_RESIZABLE) && (w->min_width != w->max_width || w->min_height != w->max_height);
+}
+
+void window_event_textinput_call(rct_window *w, int widgetIndex, char *text)
+{
+	RCT2_CALLPROC_X(w->event_handlers[WE_TEXT_INPUT], 0, 0, text != NULL, widgetIndex, (int)w, (int)text, 0);
+}
+
+/**
+ *
+ *  rct2: 0x006EE3C3
+ */
+void textinput_cancel()
+{
+	rct_window *w;
+
+	// Close the new text input window
+	window_close_by_class(WC_TEXTINPUT);
+
+	// The following code is only necessary for the old Windows text input dialog. In theory this isn't used anymore, but can
+	// still be triggered via original code paths.
+	RCT2_CALLPROC_EBPSAFE(0x0040701D);
+	if (RCT2_GLOBAL(0x009DEB8C, uint8) != 255) {
+		RCT2_CALLPROC_EBPSAFE(0x006EE4E2);
+		w = window_find_by_number(
+			RCT2_GLOBAL(RCT2_ADDRESS_TEXTINPUT_WINDOWCLASS, rct_windowclass),
+			RCT2_GLOBAL(RCT2_ADDRESS_TEXTINPUT_WINDOWNUMBER, rct_windownumber)
+		);
+		if (w != NULL) {
+			window_event_textinput_call(w, RCT2_GLOBAL(RCT2_ADDRESS_TEXTINPUT_WIDGETINDEX, uint16), NULL);
+		}
+	}
 }

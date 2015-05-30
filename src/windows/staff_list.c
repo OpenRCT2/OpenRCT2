@@ -349,8 +349,9 @@ void window_staff_list_toolabort() {
 *
 *  rct2: 0x006BDBE6
 */
-void window_staff_list_scrollgetsize() {
-	int spriteIndex;
+void window_staff_list_scrollgetsize()
+{
+	int i, width, height, spriteIndex;
 	rct_peep *peep;
 	rct_window *w;
 
@@ -369,8 +370,8 @@ void window_staff_list_scrollgetsize() {
 		window_invalidate(w);
 	}
 	
-	int scrollHeight = staffCount * 10;
-	int i = scrollHeight - window_staff_list_widgets[WIDX_STAFF_LIST_LIST].bottom + window_staff_list_widgets[WIDX_STAFF_LIST_LIST].top + 21;
+	height = staffCount * 10;
+	i = height - window_staff_list_widgets[WIDX_STAFF_LIST_LIST].bottom + window_staff_list_widgets[WIDX_STAFF_LIST_LIST].top + 21;
 	if (i < 0)
 		i = 0;
 	if (i < w->scrolls[0].v_top) {
@@ -378,17 +379,8 @@ void window_staff_list_scrollgetsize() {
 		window_invalidate(w);
 	}
 
-	#ifdef _MSC_VER
-	__asm mov ecx, 420
-	#else
-	__asm__("mov ecx, 420 ");
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov edx, scrollHeight
-	#else
-	__asm__("mov edx, %[scrollHeight] " : [scrollHeight] "+m" (scrollHeight));
-	#endif
+	width = 420;
+	window_scrollsize_set_registers(width, height);
 }
 
 /**

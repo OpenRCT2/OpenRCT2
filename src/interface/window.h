@@ -597,8 +597,10 @@ void window_event_resize_call(rct_window* w);
 void window_event_mouse_down_call(rct_window* w, int widgetIndex);
 void window_event_invalidate_call(rct_window* w);
 void window_event_update_call(rct_window *w);
+void window_event_textinput_call(rct_window *w, int widgetIndex, char *text);
 
 void sub_6EA73F();
+void textinput_cancel();
 
 void window_move_and_snap(rct_window *w, int newWindowX, int newWindowY, int snapProximity);
 int window_can_resize(rct_window *w);
@@ -666,6 +668,13 @@ int window_can_resize(rct_window *w);
 	#define window_cursor_set_registers(cursorId)										\
 		__asm mov ebx, cursorId
 
+	#define window_tooltip_get_registers(w, widgetIndex)								\
+		__asm mov widgetIndex, ax														\
+		__asm mov w, esi
+
+	#define window_tooltip_set_registers(value)											\
+		__asm mov ax, value
+
 #else
 	#define window_get_register(w)														\
 		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
@@ -728,6 +737,13 @@ int window_can_resize(rct_window *w);
 
 	#define window_cursor_set_registers(cursorId)										\
 		__asm__ ( "mov ebx, %[cursorId] " : [cursorId] "+m" (cursorId) );
+
+	#define window_tooltip_get_registers(w, widgetIndex)								\
+		__asm__ ( "mov %["#widgetIndex"], ax " : [widgetIndex] "+m" (widgetIndex) );	\
+		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
+
+	#define window_tooltip_set_registers(value)											\
+		__asm__ ( "mov ax, %["#value"] " : [value] "+m" (value) );
 #endif
 
 #endif

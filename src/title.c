@@ -203,7 +203,7 @@ static void title_update_showcase()
 				}
 
 				window_invalidate(w);
-				sub_69E9A7();
+				reset_all_sprite_quadrant_placements();
 				window_new_ride_init_vars();
 				sub_684AC3();
 				scenery_set_default_placement_configuration();

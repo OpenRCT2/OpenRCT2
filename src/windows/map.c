@@ -463,15 +463,13 @@ static void window_map_update(rct_window *w)
 */
 static void window_map_scrollgetsize()
 {
+	int width, height;
+
 	window_map_invalidate();
 
-	#ifdef _MSC_VER
-	__asm mov ecx, 512
-	__asm mov edx, 512
-	#else
-	__asm__ ( "mov ecx, 512 " );
-	__asm__ ( "mov edx, 512 " );
-	#endif
+	width = 512;
+	height = 512;
+	window_scrollsize_set_registers(width, height);
 }
 
 /**
@@ -894,7 +892,7 @@ static void window_map_scrollpaint()
 
 	gfx_clear(dpi, 0x0A0A0A0A);
 
-	g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
+	g1_element = &g1Elements[0];
 	pushed_g1_element = *g1_element;
 
 	g1_element->offset = RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint8*);

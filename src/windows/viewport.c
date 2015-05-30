@@ -151,7 +151,7 @@ static void window_viewport_mouseup()
 {
 	short widgetIndex;
 	rct_window *w, *mainWindow;
-	int x, y;
+	sint16 x, y;
 
 	window_widget_get_registers(w, widgetIndex);
 

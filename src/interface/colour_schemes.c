@@ -24,8 +24,8 @@
 #include "colour_schemes.h"
 
 window_colour_scheme gColourSchemes[] = {
-	{ WC_TOP_TOOLBAR, { 7, 12, 24, 1, 0, 0 }, 4, 5178, "top_toolbar" },
-	{ WC_BOTTOM_TOOLBAR, { 140, 140, 0, 14, 0, 0 }, 4, 5179, "bottom_toolbar" },
+	{ WC_TOP_TOOLBAR, { 7, 12, 24, 1, 0, 0 }, 4, 5245, "top_toolbar" },
+	{ WC_BOTTOM_TOOLBAR, { 140, 140, 0, 14, 0, 0 }, 4, 5246, "bottom_toolbar" },
 	{ WC_RIDE, { 1, 26, 11, 0, 0, 0 }, 3, 5203, "ride" },
 	{ WC_RIDE_CONSTRUCTION, { 24, 24, 24, 0, 0, 0 }, 3, 5199, "ride_construction" },
 	{ WC_RIDE_LIST, { 1, 26, 26, 0, 0, 0 }, 3, 5204, "ride_list" },
@@ -41,12 +41,12 @@ window_colour_scheme gColourSchemes[] = {
 	{ WC_GUEST_LIST, { 1, 15, 15, 0, 0, 0 }, 3, 5206, "guest_list" },
 	{ WC_STAFF_LIST, { 1, 4, 4, 0, 0, 0 }, 3, 5208, "staff_list" },
 	{ WC_FIRE_PROMPT, { 154, 0, 0, 0, 0, 0 }, 1, 5225, "staff_fire_prompt" },
-	{ WC_PARK_INFORMATION, { 1, 19, 19, 0, 0, 0 }, 3, 5186, "park_information" },
+	{ WC_PARK_INFORMATION, { 1, 19, 19, 0, 0, 0 }, 3, 5253, "park_information" },
 	{ WC_FINANCES, { 1, 19, 19, 0, 0, 0 }, 3, 5187, "finances" },
-	{ WC_TITLE_MENU, { 140, 140, 140, 0, 0, 0 }, 3, 5182, "title_menu" },
-	{ WC_TITLE_EXIT, { 140, 140, 140, 0, 0, 0 }, 3, 5183, "title_exit" },
+	{ WC_TITLE_MENU, { 140, 140, 140, 0, 0, 0 }, 3, 5249, "title_menu" },
+	{ WC_TITLE_EXIT, { 140, 140, 140, 0, 0, 0 }, 3, 5250, "title_exit" },
 	{ WC_RECENT_NEWS, { 1, 1, 0, 0, 0, 0 }, 3, 5192, "recent_news" },
-	{ WC_SCENARIO_SELECT, { 1, 26, 26, 0, 0, 0 }, 3, 5185, "scenario_select" },
+	{ WC_SCENARIO_SELECT, { 1, 26, 26, 0, 0, 0 }, 3, 5252, "scenario_select" },
 	{ WC_TRACK_DESIGN_LIST, { 26, 26, 26, 0, 0, 0 }, 3, 5202, "track_design_list" },
 	{ WC_TRACK_DESIGN_PLACE, { 24, 24, 24, 0, 0, 0 }, 3, 5200, "track_design_place" },
 	{ WC_NEW_CAMPAIGN, { 19, 19, 19, 0, 0, 0 }, 3, 5188, "new_campaign" },
@@ -68,12 +68,12 @@ window_colour_scheme gColourSchemes[] = {
 	{ WC_MAPGEN, { 12, 24, 24, 0, 0, 0 }, 3, 5214, "map_generation" },
 	{ WC_LOADSAVE, { 7, 7, 7, 0, 0, 0 }, 3, 5222, "loadsave" },
 	{ WC_LOADSAVE_OVERWRITE_PROMPT, { 154, 0, 0, 0, 0, 0 }, 1, 5227, "loadsave_overwrite_prompt" },
-	{ WC_TITLE_OPTIONS, { 140, 140, 140, 0, 0, 0 }, 3, 5184, "title_options" },
+	{ WC_TITLE_OPTIONS, { 140, 140, 140, 0, 0, 0 }, 3, 5251, "title_options" },
 	{ WC_LAND_RIGHTS, { 19, 19, 19, 0, 0, 0 }, 3, 5196, "land_rights" },
 	{ WC_COLOUR_SCHEMES, { 1, 12, 12, 0, 0, 0 }, 3, 5218, "colour_schemes" },
 	{ WC_STAFF, { 1, 4, 4, 0, 0, 0 }, 3, 5207, "staff" },
-	{ WC_EDITOR_TRACK_BOTTOM_TOOLBAR, { 135, 135, 135, 0, 0, 0 }, 3, 5180, "editor_track_bottom_toolbar" },
-	{ WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR, { 150, 150, 141, 0, 0, 0 }, 3, 5181, "editor_scenario_bottom_toolbar" },
+	{ WC_EDITOR_TRACK_BOTTOM_TOOLBAR, { 135, 135, 135, 0, 0, 0 }, 3, 5247, "editor_track_bottom_toolbar" },
+	{ WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR, { 150, 150, 141, 0, 0, 0 }, 3, 5248, "editor_scenario_bottom_toolbar" },
 };
 
 

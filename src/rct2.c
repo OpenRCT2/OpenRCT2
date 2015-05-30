@@ -96,8 +96,10 @@ int rct2_init()
 	gfx_load_g1();
 	gfx_load_g2();
 	gfx_load_character_widths();
-	platform_init();
-	audio_init1();
+	if (!gOpenRCT2Headless) {
+		platform_init();
+		audio_init1();
+	}
 	viewport_init_all();
 	news_item_init_queue();
 	get_local_time();
@@ -109,7 +111,8 @@ int rct2_init()
 	sub_6BD3A4();
 	map_init(150);
 	park_init();
-	window_title_menu_open();
+	if (!gOpenRCT2Headless)
+		window_title_menu_open();
 	date_reset();
 	climate_reset(CLIMATE_COOL_AND_WET);
 	scenery_set_default_placement_configuration();
@@ -117,10 +120,12 @@ int rct2_init()
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
 
-	title_load();
+	if (!gOpenRCT2Headless) {
+		title_load();
 
-	gfx_clear(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 10);
-	RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = gConfigGeneral.play_intro ? 8 : 255;
+		gfx_clear(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 10);
+		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = gConfigGeneral.play_intro ? 8 : 255;
+	}
 
 	log_verbose("initialising game finished");
 	return 1;

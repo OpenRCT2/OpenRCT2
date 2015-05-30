@@ -672,7 +672,10 @@ static void window_footpath_set_provisional_path_at_point(int x, int y)
 	map_invalidate_selection_rect();
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 2);
 
-	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &x, &y, &interactionType, &mapElement, NULL);
+	rct_xy16 mapCoord = { 0 };
+	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
+	x = mapCoord.x;
+	y = mapCoord.y;
 
 	if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
@@ -759,7 +762,11 @@ static void window_footpath_place_path_at_point(int x, int y)
 
 	footpath_provisional_update();
 
-	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &x, &y, &interactionType, &mapElement, NULL);
+	rct_xy16 mapCoord = { 0 };
+	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
+	x = mapCoord.x;
+	y = mapCoord.y;
+
 	if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
 		return;
 

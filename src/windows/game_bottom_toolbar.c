@@ -215,31 +215,20 @@ static void window_game_bottom_toolbar_mouseup()
 static void window_game_bottom_toolbar_tooltip()
 {
 	int month, day;
-	short tool_tip_index;
+	short widgetIndex, result;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov tool_tip_index, ax
-	#else
-	__asm__ ( "mov %[tool_tip_index], ax " : [tool_tip_index] "+m" (tool_tip_index) );
-	#endif
+	window_tooltip_get_registers(w, widgetIndex);
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-
-	switch (tool_tip_index) {
+	switch (widgetIndex) {
 	case WIDX_MONEY:
 		RCT2_GLOBAL(0x013CE952, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, sint32);
 		RCT2_GLOBAL(0x013CE956, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
-		tool_tip_index = 0;
+		result = 0;
 		break;
 	case WIDX_PARK_RATING:
 		RCT2_GLOBAL(0x013CE952, short) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16);
-		tool_tip_index = 0;
+		result = 0;
 		break;
 	case WIDX_DATE:
 		month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
@@ -247,15 +236,11 @@ static void window_game_bottom_toolbar_tooltip()
 		
 		RCT2_GLOBAL(0x013CE952, short) = STR_DATE_DAY_1 + day;
 		RCT2_GLOBAL(0x013CE954, short) = STR_MONTH_MARCH + month;
-		tool_tip_index = 0;
+		result = 0;
 		break;
 	}
 
-#ifdef _MSC_VER
-	__asm mov  ax, tool_tip_index
-#else
-	__asm__("mov ax, %[tool_tip_index] " :[tool_tip_index] "+m" (tool_tip_index));
-#endif
+	window_tooltip_set_registers(result);
 }
 
 /**

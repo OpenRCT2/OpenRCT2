@@ -135,7 +135,7 @@ void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour)
  */
 void gfx_transpose_palette(int pal, unsigned char product)
 {
-	rct_g1_element g1 = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[pal];
+	rct_g1_element g1 = g1Elements[pal];
 	int width = g1.width;
 	int x = g1.x_offset;  
 	uint8* dest_pointer = (uint8*)&(RCT2_ADDRESS(0x01424680, uint8)[x * 4]);
@@ -161,7 +161,7 @@ void load_palette(){
 		palette = water_type->image_id;
 	}
 
-	rct_g1_element g1 = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[palette];
+	rct_g1_element g1 = g1Elements[palette];
 	int width = g1.width;
 	int x = g1.x_offset;
 	uint8* dest_pointer = (uint8*)&(RCT2_ADDRESS(0x01424680, uint8)[x * 4]);
@@ -514,7 +514,7 @@ void redraw_peep_and_rain()
 		if (sprite != -1) {
 			sprite = sprite & 0x7FFFF;
 			
-			rct_g1_element *g1_elements = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[sprite];
+			rct_g1_element *g1_elements = &g1Elements[sprite];
 			int left = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, sint16) + g1_elements->x_offset;
 			int top = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16) + g1_elements->y_offset;
 			int right = left + g1_elements->width;

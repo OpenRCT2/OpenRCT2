@@ -434,7 +434,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 
 		fprintf(stderr, "Building: %s\n", spriteFilePath);
 		for (int i = 0; fileExists; i++) {
-			itoa(i, number, 10);
+			_itoa(i, number, 10);
 			strcpy(imagePath, resourcePath);
 			if (resourceLength == 0 || (resourcePath[resourceLength - 1] != '/' && resourcePath[resourceLength - 1] != '\\'))
 				strcat(imagePath, "/");

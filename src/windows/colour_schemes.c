@@ -118,7 +118,7 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
 
 static rct_widget window_colour_schemes_widgets[] = {
 	{ WWT_FRAME,			0,	0,		319,	0,		269,	0x0FFFFFFFF,					STR_NONE },					// panel / background
-	{ WWT_CAPTION,			0,	1,		318,	1,		14,		5177,							STR_WINDOW_TITLE_TIP },		// title bar
+	{ WWT_CAPTION,			0,	1,		318,	1,		14,		5244,							STR_WINDOW_TITLE_TIP },		// title bar
 	{ WWT_CLOSEBOX,			0,	307,	317,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },		// close button
 	{ WWT_RESIZE,			1,	0,		319,	43,		269,	0x0FFFFFFFF,					STR_NONE },					// tab content panel
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x02000144E,					5228 },						// main ui tab

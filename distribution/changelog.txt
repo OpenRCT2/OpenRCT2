@@ -1,5 +1,11 @@
 0.0.2-beta (2015-05-22)
 ------------------------------------------------------------------------
+- Feature: Show month before day (e.g. March 14th, year 15)
+- Feature: Change available object in-game (only available from console)
+- Feature: Exit OpenRCT2 to desktop
+- Feature: Allow testing of incomplete tracks
+- Feature: Twitch integration
+- Feature: Hardware display (useful for streaming)
 - Feature: Allow both types of powered launch (with and without passing the station) for every roller coaster that supported one type in RCT2.
 - Feature: Localisation of decimal and thousands separators.
 - Feature: Increase limits for maximum of circuits per roller coaster (20) and people on mazes (64) (up from the old limits of 7 and 16, respectively).

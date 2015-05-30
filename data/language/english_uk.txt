@@ -2702,7 +2702,7 @@ STR_2696    :Place trees
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
-STR_2700    :Autosave frequency
+STR_2700    :Autosave frequency:
 STR_2701    :Every week
 STR_2702    :Every 2 weeks
 STR_2703    :Every month
@@ -2740,7 +2740,7 @@ STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, Year {COMMA16}
 STR_2737    :{STRINGID} {MONTH}, Year {COMMA16}
-STR_2738    :Title screen music
+STR_2738    :Title screen music:
 STR_2739    :None
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
@@ -2779,7 +2779,7 @@ STR_2772    :Faster Gamespeed
 STR_2773    :Windowed
 STR_2774    :Fullscreen
 STR_2775    :Fullscreen (desktop)
-STR_2776    :Language
+STR_2776    :Language:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Viewport #{COMMA16}
@@ -3499,27 +3499,27 @@ STR_5162    :Day/Month/Year
 STR_5163    :Month/Day/Year
 STR_5164    :Twitch Channel name
 STR_5165    :Name peeps after followers
-STR_5166    :Will name peeps after channel's Twitch followers
+STR_5166    :{SMALLFONT}{BLACK}Will name peeps after channel's Twitch followers
 STR_5167    :Track follower peeps
-STR_5168    :Will turn on tracking information for guests named after channel's Twitch followers
+STR_5168    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after channel's Twitch followers
 STR_5169    :Name peeps after people in Twitch chat
-STR_5170    :Will name peeps after people in Twitch chat
+STR_5170    :{SMALLFONT}{BLACK}Will name peeps after people in Twitch chat
 STR_5171    :Track chat peeps
-STR_5172    :Will turn on tracking information for guests named after Twitch chat participants
+STR_5172    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after Twitch chat participants
 STR_5173    :Pull Twitch chat as news
-STR_5174    :Will use Twitch chat messages preceded by !news for in game notifications
+STR_5174    :{SMALLFONT}{BLACK}Will use Twitch chat messages preceded by !news for in game notifications
 STR_5175    :Input the name of your Twitch channel
 STR_5176    :Enable Twitch integration
-STR_5177    :Colour schemes
-STR_5178    :Top Toolbar
-STR_5179    :Bottom Toolbar
-STR_5180    :Track Editor Bottom Toolbar
-STR_5181    :Scenario Editor Bottom Toolbar
-STR_5182    :Title Menu Buttons
-STR_5183    :Title Exit Button
-STR_5184    :Title Options Button
-STR_5185    :Title Scenario Selection
-STR_5186    :Park Information
+STR_5177    :Fullscreen mode:
+STR_5178    :{SMALLFONT}{BLACK}Show financial cheats
+STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
+STR_5180    :{SMALLFONT}{BLACK}Show park cheats
+STR_5181    :{SMALLFONT}{BLACK}Show ride cheats
+STR_5182    :{INT32}
+STR_5183    :Base height
+STR_5184    :Enter base height between {COMMA16} and {COMMA16}
+STR_5185    :Water level
+STR_5186    :Enter water level between {COMMA16} and {COMMA16} 
 STR_5187    :Finances
 STR_5188    :New Campaign
 STR_5189    :Research
@@ -3577,3 +3577,13 @@ STR_5240    :Enter a name for the colour scheme
 STR_5241    :Can't change this preset
 STR_5242    :Preset name already exists
 STR_5243    :Invalid characters used
+STR_5244    :Colour schemes
+STR_5245    :Top Toolbar
+STR_5246    :Bottom Toolbar
+STR_5247    :Track Editor Bottom Toolbar
+STR_5248    :Scenario Editor Bottom Toolbar
+STR_5249    :Title Menu Buttons
+STR_5250    :Title Exit Button
+STR_5251    :Title Options Button
+STR_5252    :Title Scenario Selection
+STR_5253    :Park Information

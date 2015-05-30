@@ -635,27 +635,17 @@ static void window_new_ride_update(rct_window *w)
 static void window_new_ride_scrollgetsize()
 {
 	ride_list_item *listItem = (ride_list_item*)0x00F43523;
-	int scrollWidth, scrollHeight;
+	int width, height;
 
 	int count = 0;
 	while (listItem->type != 255 || listItem->entry_index != 255) {
 		count++;
 		listItem++;
 	}
-	scrollWidth = 0;
-	scrollHeight = ((count + 4) / 5) * 116;
+	width = 0;
+	height = ((count + 4) / 5) * 116;
 
-	#ifdef _MSC_VER
-	__asm mov ecx, scrollWidth
-	#else
-	__asm__ ( "mov ecx, %[scrollWidth] " : [scrollWidth] "+m" (scrollWidth) );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov edx, scrollHeight
-	#else
-	__asm__ ( "mov edx, %[scrollHeight] " : [scrollHeight] "+m" (scrollHeight) );
-	#endif
+	window_scrollsize_set_registers(width, height);
 }
 
 /**
