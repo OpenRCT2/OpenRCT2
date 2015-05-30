@@ -4,7 +4,7 @@
     <LocalDebuggerWorkingDirectory>$(TargetDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerCommand>$(TargetDir)\openrct2.exe</LocalDebuggerCommand>
-    <LocalDebuggerCommandArguments>screenshot "C:\Program Files (x86)\Infogrames\RollerCoaster Tycoon 2\Scenarios\Six Flags Magic Mountain.SC6" "test.png" 1920 1080</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>screenshot "C:\GOG Games\RollerCoaster Tycoon 2 Triple Thrill Pack\Scenarios\Six Flags Magic Mountain.SC6" "test.png" 16000 8000 c c 0 0</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup>
     <ShowAllFiles>false</ShowAllFiles>

@@ -1220,7 +1220,7 @@ void window_rotate_camera(rct_window *w)
 	window_invalidate(w);
 
 	sub_688956();
-	sub_69E9A7();
+	reset_all_sprite_quadrant_placements();
 }
 
 /**

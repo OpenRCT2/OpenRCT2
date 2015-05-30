@@ -248,7 +248,7 @@ int scenario_load_and_play_from_path(const char *path)
 	mainWindow->saved_view_y -= mainWindow->viewport->view_height >> 1;
 	window_invalidate(mainWindow);
 
-	sub_69E9A7();
+	reset_all_sprite_quadrant_placements();
 	window_new_ride_init_vars();
 
 	// Set the scenario pseduo-random seeds

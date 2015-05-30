@@ -97,7 +97,7 @@ void game_reduce_game_speed();
 void game_create_windows();
 void game_update();
 void game_logic_update();
-void sub_69E9A7(); 
+void reset_all_sprite_quadrant_placements();
 void update_palette_effects();
 
 int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
