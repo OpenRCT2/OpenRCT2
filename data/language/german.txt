@@ -1064,8 +1064,8 @@ STR_1059    :Bahn/Attraktion kann nicht umbenannt werden...
 STR_1060    :Ungültiger Bahn-/Attraktionsname
 STR_1061    :Normaler Modus
 STR_1062    :Durchgängiger Rundenmodus
-STR_1063    :Shuttle-Modus (Start bei umgek. Neig.)
-STR_1064    :Angetriebener Start
+STR_1063    :Shuttle-Modus (Start bei umgekehrter Neigung)
+STR_1064    :Angetriebener Start (Station passieren)
 STR_1065    :Shuttle-Modus
 STR_1066    :Mietsboot-Modus
 STR_1067    :Aufwärtsstart
@@ -1096,9 +1096,9 @@ STR_1091    :Zirkusmodus
 STR_1092    :Start nach unten
 STR_1093    :Schiefes Haus
 STR_1094    :Freefall-Modus
-STR_1095    :Durchgängig. Streckenmodus m. Blockber.
-STR_1096    :Angetriebener Start
-STR_1097    :Modus mit angetrieb. Start u. Blockber.
+STR_1095    :Durchgängiger Streckenmodus mit Blockbereichen
+STR_1096    :Angetriebener Start (Station nicht passieren)
+STR_1097    :Modus mit angetriebenem Start und Blockbereichen
 STR_1098    :Geht ans Ende d. {POP16}{STRINGID}
 STR_1099    :Warten auf Fahrgäste bei {POP16}{STRINGID}
 STR_1100    :Wartet auf Abfahrt {POP16}{STRINGID}
@@ -1149,11 +1149,11 @@ STR_1144    :Eingang für diese Bahn/Attraktion kann nicht gebaut/verschoben wer
 STR_1145    :Ausgang für diese Bahn/Attraktion kann nicht gebaut/verschoben werden...
 STR_1146    :Eingang noch nicht gebaut
 STR_1147    :Ausgang noch nicht gebaut
-STR_1148    :Viertellast
-STR_1149    :Halblast
-STR_1150    :Dreiviertellast
-STR_1151    :Volle Last
-STR_1152    :Beliebige Last
+STR_1148    :Viertelvoll
+STR_1149    :Halbvoll
+STR_1150    :Dreiviertelvoll
+STR_1151    :Voll
+STR_1152    :Beliebig
 STR_1153    :Höhenmarkierungen an Fahrstrecken
 STR_1154    :Höhenmarkierungen auf dem Gelände
 STR_1155    :Höhenmarkierungen an Fußwegen
@@ -1216,7 +1216,7 @@ STR_1211    :{WINDOW_COLOUR_2}Mindestwartezeit:
 STR_1212    :{WINDOW_COLOUR_2}Höchstwartezeit:
 STR_1213    :{SMALLFONT}{BLACK}Wählen Sie die Mindestwartezeit vor der Abfahrt aus
 STR_1214    :{SMALLFONT}{BLACK}Wählen Sie die Höchstwartezeit vor der Abfahrt aus
-STR_1215    :{WINDOW_COLOUR_2}Mit benachb. Stationen synchron.
+STR_1215    :{WINDOW_COLOUR_2}Mit benachbarten Stationen synchronisieren
 STR_1216    :{SMALLFONT}{BLACK}Auswählen, ob Abfahrt mit allen benachbarten Stationen (für `Rennen') synchronisiert werden soll
 STR_1217    :{COMMA16} Sekunden
 STR_1218    :{BLACK}{SMALLUP}
@@ -1341,14 +1341,14 @@ STR_1336    :{STRINGID} - Station {POP16}{COMMA16} Eingang
 STR_1337    :{STRINGID} - Ausgang{POP16}{POP16}
 STR_1338    :{STRINGID} - Station {POP16}{COMMA16} Ausgang
 STR_1339    :{BLACK}Noch keine Testergebnisse...
-STR_1340    :{WINDOW_COLOUR_2}Max. Geschw: {BLACK}{VELOCITY}
+STR_1340    :{WINDOW_COLOUR_2}Max. Geschwindigkeit: {BLACK}{VELOCITY}
 STR_1341    :{WINDOW_COLOUR_2}Fahrtdauer: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1342    :{DURATION}
 STR_1343    :{DURATION} /
 STR_1344    :{WINDOW_COLOUR_2}Fahrtlänge: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1345    :{LENGTH}
 STR_1346    :{LENGTH} /
-STR_1347    :{WINDOW_COLOUR_2}Durchschn. G.: {BLACK}{VELOCITY}
+STR_1347    :{WINDOW_COLOUR_2}Durchschn. Geschwindigkeit: {BLACK}{VELOCITY}
 STR_1348    :{WINDOW_COLOUR_2}Max. positive vertikale G-Kraft: {BLACK}{COMMA2DP32}G
 STR_1349    :{WINDOW_COLOUR_2}Max. positive vertikale G-Kraft: {OUTLINE}{RED}{COMMA2DP32}G
 STR_1350    :{WINDOW_COLOUR_2}Max. negative vertikale G-Kraft: {BLACK}{COMMA2DP32}G
@@ -1356,7 +1356,7 @@ STR_1351    :{WINDOW_COLOUR_2}Max. negative vertikale G-Kraft: {OUTLINE}{RED}{CO
 STR_1352    :{WINDOW_COLOUR_2}Max. seitliche G-Kraft: {BLACK}{COMMA2DP32}G
 STR_1353    :{WINDOW_COLOUR_2}Max. seitliche G-Kraft: {OUTLINE}{RED}{COMMA2DP32}G
 STR_1354    :{WINDOW_COLOUR_2}Höchste Fallhöhe: {BLACK}{LENGTH}
-STR_1355    :{WINDOW_COLOUR_2}Abfälle: {BLACK}{COMMA16}
+STR_1355    :{WINDOW_COLOUR_2}Stürze: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Umkehrungen: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}Löcher: {BLACK}{COMMA16}
 STR_1358    :{WINDOW_COLOUR_2}Gesamtzeit `in der Luft': {BLACK}{COMMA2DP32}Sek.
@@ -1432,7 +1432,7 @@ STR_1427    :{WINDOW_COLOUR_2}Besucher: {BLACK}{COMMA32} pro Stunde
 STR_1428    :{WINDOW_COLOUR_2}Eintrittspreis:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Kostenlos
-STR_1431    :Läuft herum
+STR_1431    :Geht
 STR_1432    :Geht Richtung {STRINGID}
 STR_1433    :Steht in Schlange für {STRINGID}
 STR_1434    :Ertrinkt
@@ -1693,7 +1693,7 @@ STR_1688    :Grundflächengröße 4 x 1
 STR_1689    :Klotzbremsen
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Kosten: {BLACK}{CURRENCY}
-STR_1692    :{WINDOW_COLOUR_2}  Kosten: {BLACK}von {CURRENCY}
+STR_1692    :{WINDOW_COLOUR_2}  Kosten: {BLACK}ab {CURRENCY}
 STR_1693    :{SMALLFONT}{BLACK}Besucher
 STR_1694    :{SMALLFONT}{BLACK}Personal
 STR_1695    :{SMALLFONT}{BLACK}Einkünfte und Kosten
@@ -1723,7 +1723,7 @@ STR_1718    :Parkname
 STR_1719    :Geben Sie einen Parknamen ein:
 STR_1720    :{SMALLFONT}{BLACK}Park benennen
 STR_1721    :Park geschlossen
-STR_1722    :Park eröffnet
+STR_1722    :Park geöffnet
 STR_1723    :Park kann nicht eröffnet werden...
 STR_1724    :Park kann nicht geschlossen werden...
 STR_1725    :Land kann nicht gekauft werden...
@@ -2312,12 +2312,12 @@ STR_2307    :Entwurf {STRINGID} auswählen
 STR_2308    :{STRINGID} Streckenentwürfe
 STR_2309    :Neuen Streckenentwurf installieren
 STR_2310    :Nach eigenem Entwurf bauen
-STR_2311    :{WINDOW_COLOUR_2}Nervenkitzelwert: {BLACK}{COMMA2DP32} (ungef.)
-STR_2312    :{WINDOW_COLOUR_2}Intensitätswert: {BLACK}{COMMA2DP32} (ungef.)
-STR_2313    :{WINDOW_COLOUR_2}Übelkeitswert: {BLACK}{COMMA2DP32} (ungef.)
+STR_2311    :{WINDOW_COLOUR_2}Nervenkitzelwert: {BLACK}{COMMA2DP32} (ungefähr)
+STR_2312    :{WINDOW_COLOUR_2}Intensitätswert: {BLACK}{COMMA2DP32} (ungefähr)
+STR_2313    :{WINDOW_COLOUR_2}Übelkeitswert: {BLACK}{COMMA2DP32} (ungefähr)
 STR_2314    :{WINDOW_COLOUR_2}Fahrtlänge: {BLACK}{STRINGID}
-STR_2315    :{WINDOW_COLOUR_2}Kosten: {BLACK}ungef. {CURRENCY}
-STR_2316    :{WINDOW_COLOUR_2}Erforderl. Platz {BLACK}{COMMA16} x {COMMA16} Blöcke
+STR_2315    :{WINDOW_COLOUR_2}Kosten: {BLACK}ungefähr {CURRENCY}
+STR_2316    :{WINDOW_COLOUR_2}Erforderlicher Platz: {BLACK}{COMMA16} x {COMMA16} Blöcke
 STR_2317    :{WINDOW_COLOUR_2}Soundqualität:
 STR_2318    :Niedrig
 STR_2319    :Mittel
@@ -2488,12 +2488,13 @@ STR_2483    :{WINDOW_COLOUR_2}Wöchentlicher Gewinn: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Wöchentlicher Gewinn: {RED}{CURRENCY2DP}
 STR_2485    :Steuerung
 STR_2486    :Allgemein
-STR_2487    :Echte Besuchernamen anzeigen
+STR_2487    :`Echte' Besuchernamen anzeigen
 STR_2488    :{SMALLFONT}{BLACK}Zwischen `echten' Besuchernamen und Besucherzahlen umschalten
-STR_2489    :Kürzeltasten...
+STR_2489    :Tastenkürzel...
 STR_2490    :Tastaturkürzel
-STR_2491    :Tast. zur.
-STR_2492    :{SMALLFONT}{BLACK}Alle Kürzeltasten auf Standardeinstellung zurücksetzen
+#new
+STR_2491    :Tasten zurücksetzen
+STR_2492    :{SMALLFONT}{BLACK}Alle Tastenkürzel auf Standardeinstellung zurücksetzen
 STR_2493    :Oberstes Fenster schließen
 STR_2494    :Alle freien Fenster schließen
 STR_2495    :Baumodus abbrechen
@@ -2712,7 +2713,7 @@ STR_2706    :Nie
 STR_2707    :Neues Fenster
 STR_2708    :{WINDOW_COLOUR_1}Sind Sie sicher, dass Sie {STRINGID} überschreiben möchten?
 STR_2709    :Überschreiben
-STR_2710    :Geben Sie den Dateinamen ein.
+STR_2710    :Geben Sie den Dateinamen ein:
 STR_2711    :;
 STR_2712    :=
 STR_2713    :,
@@ -2722,18 +2723,18 @@ STR_2716    :/
 STR_2717    :'
 STR_2718    :(Hoch)
 STR_2719    :(Neue Datei)
-STR_2720    :{UINT16}s 
-STR_2721    :{UINT16}s
-STR_2722    :{UINT16}min:{UINT16}s
-STR_2723    :{UINT16}min:{UINT16}s
-STR_2724    :{UINT16}min:{UINT16}s
-STR_2725    :{UINT16}min:{UINT16}s
-STR_2726    :{UINT16}min
-STR_2727    :{UINT16}min
-STR_2728    :{UINT16}h:{UINT16}min
-STR_2729    :{UINT16}h:{UINT16}min
-STR_2730    :{UINT16}h:{UINT16}min
-STR_2731    :{UINT16}h:{UINT16}min
+STR_2720    :{UINT16}Sek.
+STR_2721    :{UINT16}Sek.
+STR_2722    :{UINT16}Min:{UINT16}Sek.
+STR_2723    :{UINT16}Min:{UINT16}Sek.
+STR_2724    :{UINT16}Min:{UINT16}Sek.
+STR_2725    :{UINT16}Min:{UINT16}Sek.
+STR_2726    :{UINT16}Min.
+STR_2727    :{UINT16}Min.
+STR_2728    :{UINT16}Stunde:{UINT16}Min.
+STR_2729    :{UINT16}Stunde:{UINT16}Min.
+STR_2730    :{UINT16}Stunden:{UINT16}Min.
+STR_2731    :{UINT16}Stunden:{UINT16}Min.
 STR_2732    :{COMMA16}ft
 STR_2733    :{COMMA16}m
 STR_2734    :{COMMA16}mph
@@ -2789,7 +2790,7 @@ STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
 STR_2782    :UMSCHALT +
 STR_2783    :STRG +
 STR_2784    :Tastaturkürzel ändern
-STR_2785    :{WINDOW_COLOUR_2}Drücken Sie die neue Kürzeltaste für:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2785    :{WINDOW_COLOUR_2}Drücken Sie die neue Taste für:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
 STR_2786    :{SMALLFONT}{BLACK}Klicken Sie auf die Kürzelbeschreibung, um eine neue Taste auszuwählen
 STR_2787    :{WINDOW_COLOUR_2}Verkehrswert: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Glückwunsch!{NEWLINE}{BLACK}Sie haben Ihr Ziel mit einem Firmenwert von {CURRENCY} erreicht!
@@ -2803,7 +2804,7 @@ STR_2795    :Sortieren
 STR_2796    :{SMALLFONT}{BLACK}Sortieren Sie die Bahnliste in die richtige Reihenfolge mit Hilfe der angezeigten Informationsart
 STR_2797    :Ansicht rollen, wenn Zeiger am Bildschirmrand ist
 STR_2798    :{SMALLFONT}{BLACK}Wählen Sie aus, ob die Ansicht gerollt werden soll, wenn sich der Mauszeiger am Bildschirmrand befindet
-STR_2799    :{SMALLFONT}{BLACK}Steuertastenzuweisungen anzeigen oder ändern
+STR_2799    :{SMALLFONT}{BLACK}Tastenkürzel anzeigen oder ändern
 STR_2800    :{WINDOW_COLOUR_2}Besucher gesammt: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Einkünfte d. Eintrittskarten: {BLACK}{CURRENCY2DP}
 STR_2802    :Karte
@@ -2818,23 +2819,23 @@ STR_2810    :{RED}Die Besucher sind durstig und können nirgendwo etwas finden, 
 STR_2811    :{RED}Die Besucher beschweren sich, weil sie die Toiletten in Ihrem Park nicht finden können
 STR_2812    :{RED}Die Besucher verirren sich oder es kommt zu Staus{NEWLINE}Überprüfen Sie, ob die Anordnung Ihrer Fußwege eventuell verbessert werden muss, damit die Besucher sich zurechtfinden
 STR_2813    :{RED}Der Eintrittspreis für Ihren Park ist zu hoch!{NEWLINE}Verringern Sie den Eintrittspreis oder verbessern Sie das Parkangebot, um mehr Besucher anzuziehen
-STR_2814    :{WINDOW_COLOUR_2}Auszeichnug f. ungepflegtesten Park
-STR_2815    :{WINDOW_COLOUR_2}Auszeichnung f. saubersten Park
-STR_2816    :{WINDOW_COLOUR_2}Auszeichnung f. Park mit besten Achterbahnen
-STR_2817    :{WINDOW_COLOUR_2}Auszeichnung f. Park mit bestem Angebot
-STR_2818    :{WINDOW_COLOUR_2}Auszeichnung f. den schönsten Park
-STR_2819    :{WINDOW_COLOUR_2}Auszeichnung f. Park m. schlimmst. Ang.
-STR_2820    :{WINDOW_COLOUR_2}Auszeichnung f. den sichersten Park
-STR_2821    :{WINDOW_COLOUR_2}Auszeichnung f. das beste Personal
-STR_2822    :{WINDOW_COLOUR_2}Auszeichnung f. bestes Essen
-STR_2823    :{WINDOW_COLOUR_2}Auszeichnung f. schlechtestes Essen
-STR_2824    :{WINDOW_COLOUR_2}Auszeichnung f. beste Parktoiletten
-STR_2825    :{WINDOW_COLOUR_2}Auszeichnung f. enttäuschendsten Park
-STR_2826    :{WINDOW_COLOUR_2}Auszeichnung f. die besten Wasserbahnen
-STR_2827    :{WINDOW_COLOUR_2}Auszeichnung f. beste selbstentw. Bahn.
-STR_2828    :{WINDOW_COLOUR_2}Auszeichnung f. bunteste Farbschemas
-STR_2829    :{WINDOW_COLOUR_2}Auszeichnung f. konfuseste Parkanordn.
-STR_2830    :{WINDOW_COLOUR_2}Auszeichnung f. beste gemäßigte Bahn
+STR_2814    :{WINDOW_COLOUR_2}Auszeichnung für ungepflegtesten Park
+STR_2815    :{WINDOW_COLOUR_2}Auszeichnung für saubersten Park
+STR_2816    :{WINDOW_COLOUR_2}Auszeichnung für Park mit den besten Achterbahnen
+STR_2817    :{WINDOW_COLOUR_2}Auszeichnung für Park mit bestem Angebot
+STR_2818    :{WINDOW_COLOUR_2}Auszeichnung für den schönsten Park
+STR_2819    :{WINDOW_COLOUR_2}Auszeichnung für Park mit schlimmstem Angebot
+STR_2820    :{WINDOW_COLOUR_2}Auszeichnung für den sichersten Park
+STR_2821    :{WINDOW_COLOUR_2}Auszeichnung für das beste Personal
+STR_2822    :{WINDOW_COLOUR_2}Auszeichnung für bestes Essen
+STR_2823    :{WINDOW_COLOUR_2}Auszeichnung für schlechtestes Essen
+STR_2824    :{WINDOW_COLOUR_2}Auszeichnung für beste Parktoiletten
+STR_2825    :{WINDOW_COLOUR_2}Auszeichnung für enttäuschendsten Park
+STR_2826    :{WINDOW_COLOUR_2}Auszeichnung für die besten Wasserbahnen
+STR_2827    :{WINDOW_COLOUR_2}Auszeichnung für beste selbstentwickelte Bahn
+STR_2828    :{WINDOW_COLOUR_2}Auszeichnung für bunteste Farbschemas
+STR_2829    :{WINDOW_COLOUR_2}Auszeichnung für konfuseste Parkanordnung
+STR_2830    :{WINDOW_COLOUR_2}Auszeichnung für beste gemäßigte Bahn
 STR_2831    :{TOPAZ}Ihr Park hat die Auszeichnung `Ungepflegtester Park des Landes' erhalten!
 STR_2832    :{TOPAZ}Ihr Park hat die Auszeichnung `Sauberster Park des Landes' erhalten!
 STR_2833    :{TOPAZ}Ihr Park hat die Auszeichnung `Park mit den besten Achterbahnen' erhalten!
@@ -3089,7 +3090,7 @@ STR_3081    :Burgeingang (grau)
 STR_3082    :Burgeingang (braun)
 STR_3083    :Dschungeleingang
 STR_3084    :Blockhütteneingang
-STR_3085    :Klassischer/Röm. Eingang
+STR_3085    :Klassischer/Römischer Eingang
 STR_3086    :Abstrakter Eingang
 STR_3087    :Schnee-/Eis-Eingang
 STR_3088    :Pagodeneingang
@@ -3141,7 +3142,7 @@ STR_3133    :Dies kann nicht auf schrägem Untergrund gebaut werden
 STR_3134    :{RED}(Der Entwurf enthält Szenerie, die nicht verfügbar ist)
 STR_3135    :{RED}(Fahrzeugentwurf nicht verfügbar - Dies kann sich auf die Bahn-Performance auswirken)
 STR_3136    :Warnung: Dieser Entwurf wird mit einer alternativen Fahrzeugart gebaut und könnte möglicherweise nicht wie gewünscht funktionieren
-STR_3137    :Nahe Szenerie ausw.
+STR_3137    :Nahe Szenerie auswählen
 STR_3138    :Auswahl zurücksetzen
 STR_3139    :Kabellift funktioniert nicht in diesem Betriebsmodus
 STR_3140    :Kabellifthügel muss direkt nach der Station beginnen
@@ -3283,8 +3284,8 @@ STR_3275    :Höhere Schwierigkeitsstufe für Besuchergewinnung
 STR_3276    :{SMALLFONT}{BLACK}Machen Sie das Anlocken von Besuchern schwieriger
 STR_3277    :{WINDOW_COLOUR_2}Kosten für Landkauf:
 STR_3278    :{WINDOW_COLOUR_2}Kosten für Erwerb v. Baurechten:
-STR_3279    :Freier Eintritt/Bez. pro Fahrt
-STR_3280    :Bez. f. Eintritt/Gratis fahren
+STR_3279    :Freier Eintritt/Bezahlen pro Fahrt
+STR_3280    :Bezahlen für Eintritt/Gratis fahren
 STR_3281    :{WINDOW_COLOUR_2}Eintrittspreis:
 STR_3282    :{SMALLFONT}{BLACK}Ziel und Parkname auswählen
 STR_3283    :{SMALLFONT}{BLACK}Bahnen auswählen, die beibehalten werden sollen
@@ -3451,7 +3452,6 @@ STR_3443    :Seite 4
 STR_3444    :Seite 5
 STR_3445    :Patrouillenbereich festlegen
 STR_3446    :Patrouillenbereich verwerfen
-
 # New strings, cleaner
 STR_5120    :Finanzen in der Symbolleiste anzeigen
 STR_5121    :Forschung in der Symbolleiste anzeigen
@@ -3487,7 +3487,7 @@ STR_5150    :Aktiviere Debugging-Tools
 STR_5151    :.
 STR_5152    :,
 STR_5153    :RCT1 Farbschema
-STR_5154    :Hardware display
+STR_5154    :Anzeige über Hardware durchführen
 STR_5155    :Testen unfertiger Bahnen erlauben
 STR_5156    :{SMALLFONT}{BLACK}Erlaubt das Testen der meisten Bahnarten, selbst wenn die Strecke nicht fertiggestellt ist, das gilt nicht für den Streckenmodus mit Blockbereichen
 STR_5157    :Alle Preise freischalten
@@ -3500,13 +3500,14 @@ STR_5163    :Monat/Tag/Jahr
 STR_5164    :Twitch-Kanalname
 STR_5165    :Parkbesucher nach Followern benennen
 STR_5166    :Benennt die Parkbesucher nach den Followern des Twitch-Kanals
-STR_5167    :Verfolge Follower-Parkbesucher
-STR_5168    :Aktiviert das Sammeln von Informationen für Parkbesucher, die nach Twitch-Followern benannt sind
+STR_5167    :Überwache Follower-Parkbesucher
+STR_5168    :Überwachungsinformationen zu Parkbesuchern, die nach Twitch-Followern benannt sind, einschalten - (Bei eingeschalteter Überwachung werden Besucheraktivitäten im Nachrichtenbereich angezeigt)
 STR_5169    :Parkbesucher nach Twitch-Chatbenutzern benennen
 STR_5170    :Benennt die Parkbesucher nach Twitch-Chatbenutzern
-STR_5171    :Verfolge Chat-Parkbesucher
-STR_5172    :Aktiviert das Sammeln von Informationen für Parkbesucher, die nach Twitch-Chatbenutzern{NEWLINE}benannt sind
+STR_5171    :Überwache Chat-Parkbesucher
+STR_5172    :Überwachungsinformationen zu Parkbesuchern, die nach Twitch-Chatbenutzern benannt sind, einschalten - (Bei eingeschalteter Überwachung werden Besucheraktivitäten im Nachrichtenbereich angezeigt)
 STR_5173    :Erhalte Twitch-Chat als Spielnachrichten
 STR_5174    :Benutzt Twitch-Chatnachrichten, welchen !news vorangestellt ist, für Spielbenachrichtigungen
 STR_5175    :Name Ihres Twitch-Kanals eingeben:
 STR_5176    :Twitch-Integration aktivieren
+STR_5177    :Vollbildmodus:
