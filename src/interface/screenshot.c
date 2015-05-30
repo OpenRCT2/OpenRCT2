@@ -396,6 +396,8 @@ int cmdline_for_screenshot(const char **argv, int argc)
 			viewport.zoom = customZoom;
 
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) = customRotation;
+
+			reset_all_sprite_quadrant_placements();
 		} else {
 			viewport.view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16) - (viewport.view_width / 2);
 			viewport.view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16) - (viewport.view_height / 2);

@@ -705,7 +705,7 @@ int game_load_save(const char *path)
 	mainWindow->saved_view_y -= mainWindow->viewport->view_height >> 1;
 	window_invalidate(mainWindow);
 
-	sub_69E9A7(); 
+	reset_all_sprite_quadrant_placements();
 	scenery_set_default_placement_configuration();
 	window_new_ride_init_vars();
 	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
@@ -722,8 +722,9 @@ int game_load_save(const char *path)
 /*
  *
  * rct2: 0x0069E9A7
+ * Call after a rotation or loading of a save to reset sprite quadrants
  */
-void sub_69E9A7()
+void reset_all_sprite_quadrant_placements()
 {
 	for (rct_sprite* spr = g_sprite_list; spr < (rct_sprite*)RCT2_ADDRESS_SPRITES_NEXT_INDEX; spr++)
 		if (spr->unknown.sprite_identifier != 0xFF)
