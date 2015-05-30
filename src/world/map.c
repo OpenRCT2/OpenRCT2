@@ -1560,68 +1560,59 @@ void game_command_lower_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, i
 	*ebx = cost;
 }
 
-/**
- *
- *  rct2: 0x006E66A0
- */
-void game_command_raise_water(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
-{
-	int ax = (uint16)*eax;
-	int ay = (uint16)*ecx;
-	int bx = (uint16)*edi;
-	int by = (uint16)*ebp;
-
-	int cost = 0;
+money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags){
+	money32 cost = 0;
 
 	uint8 max_height = 0xFF;
 
-	for(int yi = ay; yi <= by; yi += 32){
-		for(int xi = ax; xi <= bx; xi += 32){
+	for (int yi = y0; yi <= y1; yi += 32){
+		for (int xi = x0; xi <= x1; xi += 32){
 			rct_map_element* map_element = map_get_surface_element_at(xi / 32, yi / 32);
 			uint8 height = map_element->base_height;
-			if(map_element->properties.surface.terrain & 0x1F){
+			if (map_element->properties.surface.terrain & 0x1F){
 				height = (map_element->properties.surface.terrain & 0x1F) * 2;
 			}
-			if(max_height > height){
+			if (max_height > height){
 				max_height = height;
 			}
 		}
 	}
 
-	for(int yi = ay; yi <= by; yi += 32){
-		for(int xi = ax; xi <= bx; xi += 32){
+	for (int yi = y0; yi <= y1; yi += 32){
+		for (int xi = x0; xi <= x1; xi += 32){
 			rct_map_element* map_element = map_get_surface_element_at(xi / 32, yi / 32);
-			
-			if(map_element->base_height <= max_height){
+
+			if (map_element->base_height <= max_height){
 				uint8 height = (map_element->properties.surface.terrain & 0x1F);
-				if(height){
+				if (height){
 					height *= 2;
-					if(height > max_height){
+					if (height > max_height){
 						continue;
 					}
 					height += 2;
-				}else{
+				}
+				else{
 					height = map_element->base_height + 2;
 				}
-				int eax2 = xi, ebx2 = *ebx, ecx2 = yi, edx2 = (max_height << 8) + height, esi2, edi2, ebp2;
-				ebx2 = game_do_command_p(GAME_COMMAND_16, &eax2, &ebx2, &ecx2, &edx2, &esi2, &edi2, &ebp2);
-				if(ebx2 == MONEY32_UNDEFINED){
-					*ebx = MONEY32_UNDEFINED;
-					return;
-				}else{
-					cost += ebx2;
+
+				money32 cost2 = game_do_command(xi, flags, yi, (max_height << 8) + height, GAME_COMMAND_16, 0, 0);
+				if (cost2 == MONEY32_UNDEFINED){
+					return MONEY32_UNDEFINED;
+				}
+				else{
+					cost += cost2;
 				}
 			}
 		}
 	}
-	if(*ebx & GAME_COMMAND_FLAG_APPLY){
-		int x = ((ax + bx) / 2) + 16;
-		int y = ((ay + by) / 2) + 16;
+	if (flags & GAME_COMMAND_FLAG_APPLY){
+		int x = ((x0 + x1) / 2) + 16;
+		int y = ((y0 + y1) / 2) + 16;
 		int z = map_element_height(x, y);
 		sint16 water_height_z = z >> 16;
 		sint16 base_height_z = z;
 		z = water_height_z;
-		if(!z){
+		if (!z){
 			z = base_height_z;
 		}
 		RCT2_GLOBAL(0x009DEA5E, uint32) = x;
@@ -1629,7 +1620,79 @@ void game_command_raise_water(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 		RCT2_GLOBAL(0x009DEA62, uint32) = z;
 		sound_play_panned(SOUND_LAYING_OUT_WATER, 0x8001, x, y, z);
 	}
-	*ebx = cost;
+	return cost;
+}
+
+/**
+ *
+ *  rct2: 0x006E66A0
+ */
+void game_command_raise_water(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	*ebx = raise_water(
+		(sint16)*eax,
+		(sint16)*ecx,
+		(sint16)*edi,
+		(sint16)*ebp,
+		(uint8)*ebx);
+}
+
+money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags){
+	money32 cost = 0;
+
+	uint8 min_height = 0;
+
+	for (int yi = y0; yi <= y1; yi += 32){
+		for (int xi = x0; xi <= x1; xi += 32){
+			rct_map_element* map_element = map_get_surface_element_at(xi / 32, yi / 32);
+
+			uint8 height = map_element->properties.surface.terrain & 0x1F;
+			if (height){
+				height *= 2;
+				if (height > min_height){
+					min_height = height;
+				}
+			}
+		}
+	}
+
+	for (int yi = y0; yi <= y1; yi += 32){
+		for (int xi = x0; xi <= x1; xi += 32){
+			rct_map_element* map_element = map_get_surface_element_at(xi / 32, yi / 32);
+
+			uint8 height = (map_element->properties.surface.terrain & 0x1F);
+			if (height){
+				height *= 2;
+				if (height < min_height){
+					continue;
+				}
+				height -= 2;
+				int cost2 = game_do_command(xi, flags, yi, (min_height << 8) + height, GAME_COMMAND_16, 0, 0);
+				if (cost2 == MONEY32_UNDEFINED){
+					return MONEY32_UNDEFINED;
+				}
+				else{
+					cost += cost2;
+				}
+			}
+		}
+	}
+	if (flags & GAME_COMMAND_FLAG_APPLY){
+		int x = ((x0 + x1) / 2) + 16;
+		int y = ((y0 + y1) / 2) + 16;
+		int z = map_element_height(x, y);
+		sint16 water_height_z = z >> 16;
+		sint16 base_height_z = z;
+		z = water_height_z;
+		if (!z){
+			z = base_height_z;
+		}
+		RCT2_GLOBAL(0x009DEA5E, uint32) = x;
+		RCT2_GLOBAL(0x009DEA60, uint32) = y;
+		RCT2_GLOBAL(0x009DEA62, uint32) = z;
+		sound_play_panned(SOUND_LAYING_OUT_WATER, 0x8001, x, y, z);
+	}
+	return cost;
 }
 
 /**
@@ -1638,66 +1701,12 @@ void game_command_raise_water(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
  */
 void game_command_lower_water(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
-	int ax = (uint16)*eax;
-	int ay = (uint16)*ecx;
-	int bx = (uint16)*edi;
-	int by = (uint16)*ebp;
-
-	int cost = 0;
-
-	uint8 min_height = 0;
-
-	for(int yi = ay; yi <= by; yi += 32){
-		for(int xi = ax; xi <= bx; xi += 32){
-			rct_map_element* map_element = map_get_surface_element_at(xi / 32, yi / 32);
-
-			uint8 height = map_element->properties.surface.terrain & 0x1F;
-			if(height){
-				height *= 2;
-				if(height > min_height){
-					min_height = height;
-				}
-			}
-		}
-	}
-
-	for(int yi = ay; yi <= by; yi += 32){
-		for(int xi = ax; xi <= bx; xi += 32){
-			rct_map_element* map_element = map_get_surface_element_at(xi / 32, yi / 32);
-			
-			uint8 height = (map_element->properties.surface.terrain & 0x1F);
-			if(height){
-				height *= 2;
-				if(height < min_height){
-					continue;
-				}
-				height -= 2;
-				int ebx2 = game_do_command(xi, *ebx, yi, (min_height << 8) + height, GAME_COMMAND_16, 0, 0);
-				if(ebx2 == MONEY32_UNDEFINED){
-					*ebx = MONEY32_UNDEFINED;
-					return;
-				}else{
-					cost += ebx2;
-				}
-			}
-		}
-	}
-	if(*ebx & GAME_COMMAND_FLAG_APPLY){
-		int x = ((ax + bx) / 2) + 16;
-		int y = ((ay + by) / 2) + 16;
-		int z = map_element_height(x, y);
-		sint16 water_height_z = z >> 16;
-		sint16 base_height_z = z;
-		z = water_height_z;
-		if(!z){
-			z = base_height_z;
-		}
-		RCT2_GLOBAL(0x009DEA5E, uint32) = x;
-		RCT2_GLOBAL(0x009DEA60, uint32) = y;
-		RCT2_GLOBAL(0x009DEA62, uint32) = z;
-		sound_play_panned(SOUND_LAYING_OUT_WATER, 0x8001, x, y, z);
-	}
-	*ebx = cost;
+	*ebx = lower_water(
+		(sint16)*eax, 
+		(sint16)*ecx, 
+		(sint16)*edi, 
+		(sint16)*ebp, 
+		(uint8)*ebx);
 }
 
 /**
@@ -1732,6 +1741,12 @@ void game_command_remove_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 			return;
 		}
 	}
+
+	if (!(*ebx & GAME_COMMAND_FLAG_APPLY)){
+		*ebx = 0;
+		return;
+	}
+
 	rct_scenery_entry* scenery_entry = RCT2_ADDRESS(RCT2_ADDRESS_WALL_SCENERY_ENTRIES, rct_scenery_entry*)[map_element->properties.fence.type];
 	if(scenery_entry->wall.var_0D != 0xFF){
 		rct_banner* banner = &gBanners[map_element->properties.fence.item[0]];

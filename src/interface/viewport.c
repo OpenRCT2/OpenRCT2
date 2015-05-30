@@ -1609,7 +1609,8 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
  *		viewport: edi
  */
 void sub_688972(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **viewport) {
-	int my_x, my_y, z, interactionType;
+	sint16 my_x, my_y;
+	int z, interactionType;
 	rct_viewport *myViewport;
 	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN, &my_x, &my_y, &interactionType, NULL, &myViewport);
 	if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
@@ -1665,9 +1666,9 @@ void screen_pos_to_map_pos(sint16 *x, sint16 *y, int *direction)
 			}
 		} else {
 			if (mod_y < 16) {
-				my_direction = 0;
-			} else {
 				my_direction = 1;
+			} else {
+				my_direction = 0;
 			}
 		}
 	}
@@ -1955,7 +1956,7 @@ void sub_68862C()
  * mapElement: edx
  * viewport: edi
  */
-void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *interactionType, rct_map_element **mapElement, rct_viewport **viewport)
+void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x, sint16 *y, int *interactionType, rct_map_element **mapElement, rct_viewport **viewport)
 {
 	RCT2_GLOBAL(0x9AC154, uint16_t) = flags & 0xFFFF;
 	RCT2_GLOBAL(0x9AC148, uint8_t) = 0;
@@ -1994,7 +1995,7 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, i
 		if (viewport != NULL) *viewport = myviewport;
 	}
 	if (interactionType != NULL) *interactionType = RCT2_GLOBAL(0x9AC148, uint8_t);
-	if (x != NULL) *x = (int)RCT2_GLOBAL(0x9AC14C, int16_t);
-	if (y != NULL) *y = (int)RCT2_GLOBAL(0x9AC14E, int16_t);
+	if (x != NULL) *x = RCT2_GLOBAL(0x9AC14C, int16_t);
+	if (y != NULL) *y = RCT2_GLOBAL(0x9AC14E, int16_t);
 	if (mapElement != NULL) *mapElement = RCT2_GLOBAL(0x9AC150, rct_map_element*);
 }

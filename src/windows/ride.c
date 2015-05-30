@@ -3565,7 +3565,10 @@ static void window_ride_set_track_colour_scheme(rct_window *w, int x, int y)
 
 	int interactionType;
 
-	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_RIDE, &x, &y, &interactionType, &mapElement, NULL);
+	rct_xy16 mapCoord = { 0 };
+	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_RIDE, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
+	x = mapCoord.x;
+	y = mapCoord.y;
 	// Get map coordinates from point
 	/*int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = x;
