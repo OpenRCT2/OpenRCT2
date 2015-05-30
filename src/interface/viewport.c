@@ -872,32 +872,34 @@ void sub_0x69E8B0(uint16 eax, uint16 ecx){
 }
 
 /*rct2: 0x006C42D9*/
-int sub_6C42D9(rct_string_id string_id, int scroll, int ebp)
+int sub_6C42D9(rct_string_id string_id, uint16 scroll, uint16 ebp)
 {
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+
 	if (dpi->zoom_level != 0) return 0x626;
-	RCT2_GLOBAL(0x9D7A80, uint32_t)++;
-	uint32_t edx = 0xFFFFFFFF;
+
+	RCT2_GLOBAL(0x9D7A80, uint32)++;
+	uint32 edx = 0xFFFFFFFF;
 	for (int i = 0; i < 0x20; i++)
 	{
-		uint8_t* unknown_pointer = RCT2_ADDRESS(0x9C3840, uint8_t) + 0xA12 * i;
-		if (edx >= *((uint32_t*)(unknown_pointer + 0x0E)))
+		uint8_t* unknown_pointer = RCT2_ADDRESS(0x9C3840, uint8) + 0xA12 * i;
+		if (edx >= *((uint32*)(unknown_pointer + 0x0E)))
 		{
-			edx = *((uint32_t*)(unknown_pointer + 0x0E));
-			RCT2_GLOBAL(0x9D7A84, uint32_t) = i;
-			RCT2_GLOBAL(0x9D7A88, uint32_t) = (uint32_t)unknown_pointer;
+			edx = *((uint32*)(unknown_pointer + 0x0E));
+			RCT2_GLOBAL(0x9D7A84, uint32) = i;
+			RCT2_GLOBAL(0x9D7A88, uint32) = (uint32)unknown_pointer;
 		}
 		if (*((rct_string_id*)unknown_pointer) == string_id &&
-			*((uint32_t*)(unknown_pointer + 0x02)) == RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32_t) &&
-			*((uint32_t*)(unknown_pointer + 0x06)) == RCT2_GLOBAL(0x13CE956, uint32_t) &&
-			*((uint16_t*)(unknown_pointer + 0x0A)) == scroll &&
-			*((uint16_t*)(unknown_pointer + 0x0C)) == ebp)
+			*((uint32*)(unknown_pointer + 0x02)) == RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) &&
+			*((uint32*)(unknown_pointer + 0x06)) == RCT2_GLOBAL(0x13CE956, uint32) &&
+			*((uint16*)(unknown_pointer + 0x0A)) == scroll &&
+			*((uint16*)(unknown_pointer + 0x0C)) == ebp)
 		{
-			*((uint32_t*)(unknown_pointer + 0x0E)) = RCT2_GLOBAL(0x9D7A80, uint32_t);
+			*((uint32*)(unknown_pointer + 0x0E)) = RCT2_GLOBAL(0x9D7A80, uint32);
 			return i + 0x606;
 		}
 	}
-	uint8_t* unknown_pointer = RCT2_GLOBAL(0x9D7A88, uint8_t*);
+	uint8* unknown_pointer = RCT2_GLOBAL(0x9D7A88, uint8*);
 	*((rct_string_id*)unknown_pointer) = string_id;
 	*((uint32_t*)(unknown_pointer + 0x02)) = RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32_t);
 	*((uint32_t*)(unknown_pointer + 0x06)) = RCT2_GLOBAL(0x13CE956, uint32_t);
@@ -907,112 +909,132 @@ int sub_6C42D9(rct_string_id string_id, int scroll, int ebp)
 	unknown_pointer += 0x12;
 	memset(unknown_pointer, 0, 0x280 * 4);
 	format_string(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), string_id, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
-	int al = RCT2_GLOBAL(0x13CE959, uint8_t);
-	int edi = al & 0x7F;
+	uint8 character = RCT2_GLOBAL(0x13CE959, uint8);
+	int edi = character & 0x7F;
 	int offs = 0;
-	if (al >= 0x80) offs = 2;
-	RCT2_GLOBAL(0x9D7A8C, uint8_t) = RCT2_ADDRESS(0x0141FC47, uint8_t)[offs + edi * 8];
+	if (character >= 0x80) offs = 2;
+	
+	uint8 character_colour = RCT2_ADDRESS(0x0141FC47, uint8)[offs + edi * 8];
 	int16_t* unk = RCT2_ADDRESS(0x992FB8, uint16_t*)[ebp];
 	uint8_t* format_result = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, uint8_t);
 	while (true)
 	{
-		al = *format_result;
+		character = *format_result;
 		format_result++;
-		if (al == 0)
+		if (character == 0)
 		{
 			format_result = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 			continue;
 		}
-		if (al <= FORMAT_COLOUR_CODE_END && al >= FORMAT_COLOUR_CODE_START)
+		if (character <= FORMAT_COLOUR_CODE_END && character >= FORMAT_COLOUR_CODE_START)
 		{
-			al -= FORMAT_COLOUR_CODE_START;
-			RCT2_GLOBAL(0x9D7A8C, uint8_t) = RCT2_ADDRESS(RCT2_GLOBAL(0x9FF048, uint32_t), uint8_t)[al * 4];
+			character -= FORMAT_COLOUR_CODE_START;
+			character_colour = RCT2_GLOBAL(0x9FF048, uint8*)[character * 4];
 			continue;
 		}
-		if (al < 0x20) continue;
-		al -= 0x20;
-		int edx = RCT2_ADDRESS(0x141EBA8, uint8_t)[al];
-		uint8_t* unk2 = &(RCT2_ADDRESS(0xF4393C, uint8)[al * 8]);
-		while (true)
+		if (character < 0x20) continue;
+		character -= 0x20;
+
+		uint8 character_width = RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH + 0x1C0, uint8)[character];
+		uint8* character_bitmap = &(RCT2_ADDRESS(RCT2_ADDRESS_CHARACTER_BITMAP, uint8)[character * 8]);
+		for (; character_width != 0;character_width--,character_bitmap++)
 		{
+			// Skip any none displayed columns
 			if (scroll != 0)
 			{
 				scroll--;
-				unk2++;
-				edx--;
-				if (edx == 0) break;
+				continue;
 			}
-			else
+
+			int16_t eax = *unk;
+			if (eax == -1) return RCT2_GLOBAL(0x9D7A84, uint32_t) + 0x606;
+			if (eax > -1)
 			{
-				int16_t eax = *unk;
-				if (eax == -1) return RCT2_GLOBAL(0x9D7A84, uint32_t) + 0x606;
-				if (eax > -1)
+				uint8_t* dst = &unknown_pointer[eax];
+				int ah = *character_bitmap;
+				while (true)
 				{
-					uint8_t* dst = &unknown_pointer[eax];
-					int ah = *unk2;
-					int al = RCT2_GLOBAL(0x9D7A8C, uint8_t);
-					while (true)
-					{
-						if (ah & 1) *dst = al;
-						ah >>= 1;
-						dst += 0x40;
-						if (ah == 0) break;
-					}
+					if (ah & 1) *dst = character_colour;
+					ah >>= 1;
+					dst += 0x40;
+					if (ah == 0) break;
 				}
-				unk2++;
-				unk++;
-				edx--;
-				if (edx == 0)  break;
 			}
+			unk++;
+			
 		}
 	}
 }
 
 /* rct2: 0x006B9CC4 */
-void viewport_banner_paint_setup(uint32_t direction, int edx, rct_map_element* map_element)
+void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* map_element)
 {
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+
 	RCT2_GLOBAL(0x9DE570, uint8_t) = 0xC;
+
 	if (dpi->zoom_level > 1 || RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1) return;
-	edx -= 16;
+
+	height -= 16;
+
 	rct_scenery_entry* banner_scenery = g_bannerSceneryEntries[gBanners[map_element->properties.banner.index].type];
+
 	direction += map_element->properties.banner.position;
 	direction &= 3;
-	RCT2_GLOBAL(0x9DEA56, uint16_t) = edx + 2;
+
+	RCT2_GLOBAL(0x9DEA56, uint16_t) = height + 2;
+
 	RCT2_GLOBAL(0x9DEA52, uint32_t) = RCT2_ADDRESS(0x98D884, uint32_t)[direction * 2];
-	int ebx = (direction << 1) + banner_scenery->image;
-	ebx += (gBanners[map_element->properties.banner.index].colour << 19) | 0x20000000;
-	if (map_element->flags & 0x10)//if being placed (ghost appearance)
+
+	uint32 base_id = (direction << 1) + banner_scenery->image;
+	uint32 image_id = base_id;
+
+	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST)//if being placed
 	{
 		RCT2_GLOBAL(0x9DE570, uint8_t) = 0;
-		ebx &= 0x7FFFF;
-		ebx |= RCT2_ADDRESS(0x993CC4, uint32_t)[RCT2_GLOBAL(0x9AACBF, uint8_t)];
+		image_id |= RCT2_ADDRESS(0x993CC4, uint32_t)[RCT2_GLOBAL(0x9AACBF, uint8_t)];
 	}
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-		0x1500, ebx, 0, edx, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
-	RCT2_GLOBAL(0x9DEA52, uint32_t) = RCT2_ADDRESS(0x98D888, uint32_t)[direction * 2];
-	ebx++;
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-		0x1500, ebx, 0, edx, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	else{
+		image_id |=
+			(gBanners[map_element->properties.banner.index].colour << 19) |
+			0x20000000;
+	}
+
+	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
+		0x1500, image_id, 0, height, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	RCT2_GLOBAL(0x9DEA52, uint32) = RCT2_ADDRESS(0x98D888, uint32)[direction * 2];
+
+	image_id++;
+	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
+		0x1500, image_id, 0, height, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+
+	// Opposite direction
 	direction ^= 2;
 	direction--;
-	if (direction >= 2 || (map_element->flags & 0x10)) return;
+	// If text not showing / ghost
+	if (direction >= 2 || (map_element->flags & MAP_ELEMENT_FLAG_GHOST)) return;
+
 	int ebp = banner_scenery->banner.var_06;
 	ebp += direction;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32_t) = 0;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = 0;
 	RCT2_GLOBAL(0x13CE956, uint32_t) = 0;
-	rct_string_id string_id = 0xBA5;//no entry
+
+	rct_string_id string_id = STR_NO_ENTRY;
 	if (!(gBanners[map_element->properties.banner.index].flags & BANNER_FLAG_NO_ENTRY))
 	{
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16_t) = gBanners[map_element->properties.banner.index].string_idx;
-		string_id = 0x6C3;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = gBanners[map_element->properties.banner.index].string_idx;
+		string_id = STR_BANNER_TEXT;
 	}
 	format_string(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), string_id, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16_t) = 0x1C0;
-	uint16_t string_width = gfx_get_string_width(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char));
-	uint16_t scroll = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32_t) >> 1) % string_width;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0x1C0;
+
+	uint16 string_width = gfx_get_string_width(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char));
+	uint16 scroll = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) / 2) % string_width;
+
 	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-		0x1500, sub_6C42D9(string_id, scroll, ebp), 0, edx + 22, 1, 1, 0);
+		0x1500, sub_6C42D9(string_id, scroll, ebp), 0, height + 22, 1, 1, 0);
 }
 
 /*rct2: 0x0068B35F*/
@@ -1157,9 +1179,9 @@ void sub_68B35F(int ax, int cx)
 					case MAP_ELEMENT_TYPE_BANNER:
 						//there are still some small localisation glitches,
 						//because the old function still gets called sometimes
-						//viewport_banner_paint_setup(direction, dx, map_element);
+						viewport_banner_paint_setup(direction, dx, map_element);
 						//Until that is solved, use the original function instead
-						RCT2_CALLPROC_X(0x6B9CC4, 0, 0, direction, dx, (int)map_element, 0, 0);
+						//RCT2_CALLPROC_X(0x6B9CC4, 0, 0, direction, dx, (int)map_element, 0, 0);
 						break;
 					default:
 						// This is a little hack for taking care of undefined map_elements

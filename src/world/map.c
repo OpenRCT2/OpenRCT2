@@ -904,6 +904,7 @@ void game_command_set_scenery_colour(int* eax, int* ebx, int* ecx, int* edx, int
 			return;
 		}
 	}
+
 	if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST)){
 		*ebx = 0;
 		return;

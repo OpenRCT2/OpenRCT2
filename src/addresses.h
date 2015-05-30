@@ -304,6 +304,11 @@
 
 #define RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX		0x00F43908
 
+// Each character is painted onto a drawing surface
+// any coloured pixels are marked in this bitmap
+// 8 x 8 in size.
+#define RCT2_ADDRESS_CHARACTER_BITMAP				0x00F4393C
+
 #define RCT2_ADDRESS_TRACK_PREVIEW_ROTATION			0x00F440AE
 
 #define RCT2_ADDRESS_TRACK_PREVIEW_X_MIN			0x00F440F9
