@@ -188,6 +188,7 @@ static void window_mapgen_base_mouseup();
 static void window_mapgen_base_mousedown(int widgetIndex, rct_window *w, rct_widget* widget);
 static void window_mapgen_base_dropdown();
 static void window_mapgen_base_update(rct_window *w);
+static void window_mapgen_textinput();
 static void window_mapgen_base_invalidate();
 static void window_mapgen_base_paint();
 static void window_mapgen_random_mouseup();
@@ -222,7 +223,7 @@ static void* window_mapgen_base_events[] = {
 	window_mapgen_emptysub,
 	window_mapgen_emptysub,
 	window_mapgen_emptysub,
-	window_mapgen_emptysub,
+	window_mapgen_textinput,
 	window_mapgen_emptysub,
 	window_mapgen_emptysub,
 	window_mapgen_emptysub,
@@ -311,10 +312,13 @@ static uint32 window_mapgen_page_enabled_widgets[] = {
 	(1 << WIDX_TAB_2) |
 	(1 << WIDX_TAB_3) |
 	(1 << WIDX_GENERATE) |
+	(1 << WIDX_MAP_SIZE) |
 	(1 << WIDX_MAP_SIZE_UP) |
 	(1 << WIDX_MAP_SIZE_DOWN) |
+	(1 << WIDX_BASE_HEIGHT) |
 	(1 << WIDX_BASE_HEIGHT_UP) |
 	(1 << WIDX_BASE_HEIGHT_DOWN) |
+	(1 << WIDX_WATER_LEVEL) |
 	(1 << WIDX_WATER_LEVEL_UP) |
 	(1 << WIDX_WATER_LEVEL_DOWN) |
 	(1 << WIDX_FLOOR_TEXTURE) |
@@ -383,6 +387,13 @@ static uint32 window_mapgen_page_hold_down_widgets[] = {
 #pragma endregion
 
 const int window_mapgen_tab_animation_loops[] = { 16, 16 };
+
+#define MAPSIZE_MIN	16
+#define MAPSIZE_MAX 256
+#define BASESIZE_MIN 0
+#define BASESIZE_MAX 60
+#define WATERLEVEL_MIN 0
+#define WATERLEVEL_MAX 54
 
 static void window_mapgen_set_page(rct_window *w, int page);
 static void window_mapgen_set_pressed_tab(rct_window *w);
@@ -476,6 +487,21 @@ static void window_mapgen_base_mouseup()
 		mapgen_generate_blank(&mapgenSettings);
 		gfx_invalidate_screen();
 		break;
+	case WIDX_MAP_SIZE:
+		((uint16*)TextInputDescriptionArgs)[0] = MAPSIZE_MIN;
+		((uint16*)TextInputDescriptionArgs)[1] = MAPSIZE_MAX;
+		window_text_input_open(w, WIDX_MAP_SIZE, 5130, 5131, 5182, _mapSize, 4);
+		break;
+	case WIDX_BASE_HEIGHT:
+		((uint16*)TextInputDescriptionArgs)[0] = (BASESIZE_MIN - 12) / 2;
+		((uint16*)TextInputDescriptionArgs)[1] = (BASESIZE_MAX - 12) / 2;
+		window_text_input_open(w, WIDX_BASE_HEIGHT, 5183, 5184, 5182, (_baseHeight - 12) / 2, 3);
+		break;
+	case WIDX_WATER_LEVEL:
+		((uint16*)TextInputDescriptionArgs)[0] = (WATERLEVEL_MIN - 12) / 2;
+		((uint16*)TextInputDescriptionArgs)[1] = (WATERLEVEL_MAX - 12) / 2;
+		window_text_input_open(w, WIDX_WATER_LEVEL, 5185, 5186, 5182, (_waterLevel - 12) / 2, 3);
+		break;
 	}
 }
 
@@ -485,27 +511,27 @@ static void window_mapgen_base_mousedown(int widgetIndex, rct_window *w, rct_wid
 
 	switch (widgetIndex) {
 	case WIDX_MAP_SIZE_UP:
-		_mapSize = min(_mapSize + 1, 256);
+		_mapSize = min(_mapSize + 1, MAPSIZE_MAX);
 		window_invalidate(w);
 		break;
 	case WIDX_MAP_SIZE_DOWN:
-		_mapSize = max(_mapSize - 1, 16);
+		_mapSize = max(_mapSize - 1, MAPSIZE_MIN);
 		window_invalidate(w);
 		break;
 	case WIDX_BASE_HEIGHT_UP:
-		_baseHeight = min(_baseHeight + 2, 60);
+		_baseHeight = min(_baseHeight + 2, BASESIZE_MAX);
 		window_invalidate(w);
 		break;
 	case WIDX_BASE_HEIGHT_DOWN:
-		_baseHeight = max(_baseHeight - 2, 0);
+		_baseHeight = max(_baseHeight - 2, BASESIZE_MIN);
 		window_invalidate(w);
 		break;
 	case WIDX_WATER_LEVEL_UP:
-		_waterLevel = min(_waterLevel + 2, 54);
+		_waterLevel = min(_waterLevel + 2, WATERLEVEL_MAX);
 		window_invalidate(w);
 		break;
 	case WIDX_WATER_LEVEL_DOWN:
-		_waterLevel = max(_waterLevel - 2, 0);
+		_waterLevel = max(_waterLevel - 2, WATERLEVEL_MIN);
 		window_invalidate(w);
 		break;
 	case WIDX_FLOOR_TEXTURE:
@@ -595,6 +621,43 @@ static void window_mapgen_base_update(rct_window *w)
 	if (++w->frame_no >= window_mapgen_tab_animation_loops[w->page])
 		w->frame_no = 0;
 	widget_invalidate(w, WIDX_TAB_1);
+}
+
+static void window_mapgen_textinput()
+{
+	uint8 result;
+	short widgetIndex;
+	rct_window *w;
+	char *text;
+	int value;
+	char* end;
+
+	window_textinput_get_registers(w, widgetIndex, result, text);
+
+	if (!result) {
+		return;
+	}
+
+	value = strtol(text, &end, 10);
+
+	if (*end != '\0') {
+		return;
+	}
+
+	switch (widgetIndex) {
+	case WIDX_MAP_SIZE:
+		_mapSize = clamp(MAPSIZE_MIN, value, MAPSIZE_MAX);
+		break;
+	case WIDX_BASE_HEIGHT:
+		_baseHeight = clamp(BASESIZE_MIN, (value * 2) + 12, BASESIZE_MAX);
+		break;
+	case WIDX_WATER_LEVEL:
+		_waterLevel = clamp(WATERLEVEL_MIN, (value * 2) + 12, WATERLEVEL_MAX);
+		break;
+	}
+
+	window_invalidate(w);
+
 }
 
 static void window_mapgen_base_invalidate()
