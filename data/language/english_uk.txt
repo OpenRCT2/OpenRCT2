@@ -3515,3 +3515,8 @@ STR_5178    :{SMALLFONT}{BLACK}Show financial cheats
 STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
 STR_5180    :{SMALLFONT}{BLACK}Show park cheats
 STR_5181    :{SMALLFONT}{BLACK}Show ride cheats
+STR_5182    :{INT32}
+STR_5183    :Base height
+STR_5184    :Enter base height between {COMMA16} and {COMMA16}
+STR_5185    :Water level
+STR_5186    :Enter water level between {COMMA16} and {COMMA16}
