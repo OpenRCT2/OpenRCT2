@@ -1267,25 +1267,26 @@ void sub_68B35F(int ax, int cx)
 *
 *  rct2: 0x0068B6C2
 */
-void sub_0x68B6C2(){
-	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
-	sint16 ax, bx, cx, dx;
-	uint16 num_vertical_quadrants = 0;
-	rct_xy16 mapTile;
+void viewport_paint_setup(){
+	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);	
+	
+	rct_xy16 mapTile = {
+		.x = dpi->x & 0xFFE0,
+		.y = (dpi->y - 16) & 0xFFE0
+	};
+
+	sint16 half_x = mapTile.x / 2;
+
+	uint16 num_vertical_quadrants = (dpi->height + 2128) / 32;
+
 	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)){
 	case 0:
-		mapTile.x = dpi->x & 0xFFE0;
-		mapTile.y = (dpi->y - 16) & 0xFFE0;
-		
-		bx = mapTile.x / 2;
-		mapTile.x = mapTile.y - bx;
-		mapTile.y = mapTile.y + bx;
+		mapTile.x = mapTile.y - half_x;
+		mapTile.y = mapTile.y + half_x;
 
 		mapTile.x &= 0xFFE0;
 		mapTile.y &= 0xFFE0;
-
-		num_vertical_quadrants = (dpi->height + 2128) / 32;
-
+		
 		for (; num_vertical_quadrants > 0; --num_vertical_quadrants){
 			sub_68B35F(mapTile.x, mapTile.y);
 			sub_0x69E8B0(mapTile.x, mapTile.y);
@@ -1309,98 +1310,90 @@ void sub_0x68B6C2(){
 		}
 		break;
 	case 1:
-		ax = dpi->y;
-		bx = dpi->x;
-		ax -= 0x10;
-		bx &= 0xFFE0;
-		ax &= 0xFFE0;
-		bx >>= 1;
-		cx = ax;
-		ax = -ax;
-		ax -= bx;
-		cx -= bx;
-		cx -= 0x10;
-		ax &= 0xFFE0;
-		cx &= 0xFFE0;
-		dx = dpi->height;
-		dx += 0x860;
-		dx >>= 5;
-		for (int i = dx; i > 0; i--){
-			sub_68B35F(ax, cx);
-			sub_0x69E8B0(ax, cx);
-			ax -= 0x20;
-			cx -= 0x20;
-			sub_0x69E8B0(ax, cx);
-			cx += 0x20;
-			sub_68B35F(ax, cx);
-			sub_0x69E8B0(ax, cx);
-			ax += 0x20;
-			cx += 0x20;
-			sub_0x69E8B0(ax, cx);
-			ax -= 0x20;
+		mapTile.x = -mapTile.y - half_x;
+		mapTile.y = mapTile.y - half_x - 16;
+
+		mapTile.x &= 0xFFE0;
+		mapTile.y &= 0xFFE0;
+
+		for (; num_vertical_quadrants > 0; --num_vertical_quadrants){
+			sub_68B35F(mapTile.x, mapTile.y);
+			sub_0x69E8B0(mapTile.x, mapTile.y);
+
+			mapTile.x -= 32;
+			mapTile.y -= 32;
+
+			sub_0x69E8B0(mapTile.x, mapTile.y);
+
+			mapTile.y += 32;
+
+			sub_68B35F(mapTile.x, mapTile.y);
+			sub_0x69E8B0(mapTile.x, mapTile.y);
+
+			mapTile.x += 32;
+			mapTile.y += 32;
+
+			sub_0x69E8B0(mapTile.x, mapTile.y);
+
+			mapTile.x -= 32;
 		}
 		break;
 	case 2:
-		ax = dpi->y;
-		bx = dpi->x;
-		ax -= 0x10;
-		bx &= 0xFFE0;
-		ax &= 0xFFE0;
-		bx >>= 1;
-		ax = -ax;
-		cx = ax;
-		ax += bx;
-		cx -= bx;
-		ax &= 0xFFE0;
-		cx &= 0xFFE0;
-		dx = dpi->height;
-		dx += 0x860;
-		dx >>= 5;
-		for (int i = dx; i > 0; i--){
-			sub_68B35F(ax, cx);
-			sub_0x69E8B0(ax, cx);
-			ax += 0x20;
-			cx -= 0x20;
-			sub_0x69E8B0(ax, cx);
-			ax -= 0x20;
-			sub_68B35F(ax, cx);
-			sub_0x69E8B0(ax, cx);
-			ax -= 0x20;
-			cx += 0x20;
-			sub_0x69E8B0(ax, cx);
-			cx -= 0x20;
+		mapTile.x = -mapTile.y + half_x;
+		mapTile.y = -mapTile.y - half_x;
+
+		mapTile.x &= 0xFFE0;
+		mapTile.y &= 0xFFE0;
+		
+		for (; num_vertical_quadrants > 0; --num_vertical_quadrants){
+			sub_68B35F(mapTile.x, mapTile.y);
+			sub_0x69E8B0(mapTile.x, mapTile.y);
+
+			mapTile.x += 32;
+			mapTile.y -= 32;
+
+			sub_0x69E8B0(mapTile.x, mapTile.y);
+
+			mapTile.x -= 32;
+
+			sub_68B35F(mapTile.x, mapTile.y);
+			sub_0x69E8B0(mapTile.x, mapTile.y);
+
+			mapTile.x -= 32;
+			mapTile.y += 32;
+
+			sub_0x69E8B0(mapTile.x, mapTile.y);
+
+			mapTile.y -= 32;
 		}
 		break;
 	case 3:
-		ax = dpi->y;
-		bx = dpi->x;
-		ax -= 0x10;
-		bx &= 0xFFE0;
-		ax &= 0xFFE0;
-		bx >>= 1;
-		cx = ax;
-		ax += bx;
-		cx = -cx;
-		cx += bx;
-		cx -= 0x10;
-		ax &= 0xFFE0;
-		cx &= 0xFFE0;
-		dx = dpi->height;
-		dx += 0x860;
-		dx >>= 5;
-		for (int i = dx; i > 0; i--){
-			sub_68B35F(ax, cx);
-			sub_0x69E8B0(ax, cx);
-			ax += 0x20;
-			cx += 0x20;
-			sub_0x69E8B0(ax, cx);
-			cx -= 0x20;
-			sub_68B35F(ax, cx);
-			sub_0x69E8B0(ax, cx);
-			ax -= 0x20;
-			cx -= 0x20;
-			sub_0x69E8B0(ax, cx);
-			ax += 0x20;
+		mapTile.x = mapTile.y + half_x;
+		mapTile.y = -mapTile.y + half_x - 16;
+
+		mapTile.x &= 0xFFE0;
+		mapTile.y &= 0xFFE0;
+
+		for (; num_vertical_quadrants > 0; --num_vertical_quadrants){
+			sub_68B35F(mapTile.x, mapTile.y);
+			sub_0x69E8B0(mapTile.x, mapTile.y);
+
+			mapTile.x += 32;
+			mapTile.y += 32;
+
+			sub_0x69E8B0(mapTile.x, mapTile.y);
+
+			mapTile.y -= 32;
+
+			sub_68B35F(mapTile.x, mapTile.y);
+			sub_0x69E8B0(mapTile.x, mapTile.y);
+
+			mapTile.x -= 32;
+			mapTile.y -= 32;
+
+			sub_0x69E8B0(mapTile.x, mapTile.y);
+
+			mapTile.x += 32;
 		}
 		break;
 	}
@@ -1622,7 +1615,7 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		RCT2_GLOBAL(0x140E9A8, uint32) = (int)dpi2;
 		int ebp = 0, ebx = 0, esi = 0, ecx = 0;
 		sub_0x68615B(0xEE788C); //Memory copy
-		sub_0x68B6C2();
+		viewport_paint_setup();
 		sub_688217();
 		sub_688485();
 
@@ -2026,7 +2019,7 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x
 			RCT2_GLOBAL(0xEE7880, uint32_t) = 0xF1A4CC;
 			RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*) = dpi;
 			sub_0x68615B(0xEE788C);
-			sub_0x68B6C2();
+			viewport_paint_setup();
 			sub_688217();
 			sub_68862C();
 		}
