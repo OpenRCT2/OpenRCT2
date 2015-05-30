@@ -371,7 +371,7 @@ int cmdline_for_screenshot(const char **argv, int argc)
 				customY = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint8) / 2) * 32 + 16;
 
 			int x, y;
-			int z = map_element_height(customX, customY);
+			int z = map_element_height(customX, customY) & 0xFFFF;
 			switch (customRotation) {
 			case 0:
 				x = customY - customX;
