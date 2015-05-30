@@ -28,6 +28,7 @@
 #include "../interface/keyboard_shortcut.h"
 #include "../interface/window.h"
 #include "../input.h"
+#include "../openrct2.h"
 #include "platform.h"
 
 typedef void(*update_palette_func)(char*, int, int);
@@ -275,7 +276,7 @@ void platform_update_palette(char* colours, int start_index, int num_colours)
 		colours += 4;
 	}
 
-	if (!gConfigGeneral.hardware_display) {
+	if (!gOpenRCT2Headless && !gConfigGeneral.hardware_display) {
 		surface = SDL_GetWindowSurface(gWindow);
 		if (!surface) {
 			log_fatal("SDL_GetWindowSurface failed %s", SDL_GetError());

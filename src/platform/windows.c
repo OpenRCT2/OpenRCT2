@@ -80,6 +80,7 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	if (runGame)
 		openrct2_launch();
 
+	exit(gExitCode);
 	return gExitCode;
 }
 

@@ -25,9 +25,11 @@
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
+#include "../openrct2.h"
 #include "../platform/platform.h"
 #include "../windows/error.h"
 #include "screenshot.h"
+#include "viewport.h"
 
 static const char *_screenshot_format_extension[] = { ".bmp", ".png" };
 
@@ -273,4 +275,173 @@ int screenshot_dump_png()
 
 	free(png);
 	return index;
+}
+
+bool screenshot_write_png(rct_drawpixelinfo *dpi, const char *path)
+{
+	unsigned int error;
+	unsigned char* png;
+	size_t pngSize;
+	LodePNGState state;
+
+	lodepng_state_init(&state);
+	state.info_raw.colortype = LCT_PALETTE;
+
+	// Get image size
+	int stride = (dpi->width + 3) & ~3;
+
+	for (int i = 0; i < 256; i++) {
+		unsigned char r, g, b, a = 255;
+
+		b = RCT2_ADDRESS(0x01424680, uint8)[i * 4 + 0];
+		g = RCT2_ADDRESS(0x01424680, uint8)[i * 4 + 1];
+		r = RCT2_ADDRESS(0x01424680, uint8)[i * 4 + 2];
+
+		lodepng_palette_add(&state.info_raw, r, g, b, a);
+	}
+
+	error = lodepng_encode(&png, &pngSize, dpi->bits, stride, dpi->height, &state);
+	if (error != 0) {
+		free(png);
+		return false;
+	} else {
+		error = lodepng_save_file(png, pngSize, path);
+		if (error != 0) {
+			free(png);
+			return false;
+		}
+	}
+
+	free(png);
+	return true;
+}
+
+int cmdline_for_screenshot(const char **argv, int argc)
+{
+	bool giantScreenshot = argc == 5 && _stricmp(argv[2], "giant") == 0;
+	if (argc != 4 && argc != 8 && !giantScreenshot) {
+		printf("Usage: openrct2 screenshot <file> <ouput_image> <width> <height> [<x> <y> <zoom> <rotation>]\n");
+		printf("Usage: openrct2 screenshot <file> <ouput_image> giant <zoom> <rotation>\n");
+		return -1;
+	}
+
+	bool customLocation = false;
+	bool centreMapX = false;
+	bool centreMapY = false;
+	int resolutionWidth, resolutionHeight, customX, customY, customZoom, customRotation;
+	
+	const char *inputPath = argv[0];
+	const char *outputPath = argv[1];
+	if (giantScreenshot) {
+		resolutionWidth = 0;
+		resolutionHeight = 0;
+		customLocation = true;
+		centreMapX = true;
+		centreMapY = true;
+		customZoom = atoi(argv[3]);
+		customRotation = atoi(argv[4]) & 3;
+	} else {
+		resolutionWidth = atoi(argv[2]);
+		resolutionHeight = atoi(argv[3]);
+		if (argc == 8) {
+			customLocation = true;
+			if (argv[4][0] == 'c')
+				centreMapX = true;
+			else
+				customX = atoi(argv[4]);
+			if (argv[5][0] == 'c')
+				centreMapY = true;
+			else
+				customY = atoi(argv[5]);
+
+			customZoom = atoi(argv[6]);
+			customRotation = atoi(argv[7]) & 3;
+		}
+	}
+
+	gOpenRCT2Headless = true;
+	if (openrct2_initialise()) {
+		rct2_open_file(inputPath);
+
+		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
+
+		int mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
+		if (resolutionWidth == 0 || resolutionHeight == 0) {
+			resolutionWidth = (mapSize * 32 * 2) >> customZoom;
+			resolutionHeight = (mapSize * 32 * 1) >> customZoom;
+
+			resolutionWidth += 8;
+			resolutionHeight += 128;
+		}
+
+		rct_viewport viewport;
+		viewport.x = 0;
+		viewport.y = 0;
+		viewport.width = resolutionWidth;
+		viewport.height = resolutionHeight;
+		viewport.view_width = viewport.width;
+		viewport.view_height = viewport.height;
+		viewport.var_11 = 0;
+		viewport.flags = 0;
+
+		if (customLocation) {
+			if (centreMapX)
+				customX = (mapSize / 2) * 32 + 16;
+			if (centreMapY)
+				customY = (mapSize / 2) * 32 + 16;
+
+			int x, y;
+			int z = map_element_height(customX, customY);
+			switch (customRotation) {
+			case 0:
+				x = customY - customX;
+				y = ((customX + customY) / 2) - z;
+				break;
+			case 1:
+				x = -customY - customX;
+				y = ((-customX + customY) / 2) - z;
+				break;
+			case 2:
+				x = -customY + customX;
+				y = ((-customX - customY) / 2) - z;
+				break;
+			case 3:
+				x = customY + customX;
+				y = ((customX - customY) / 2) - z;
+				break;
+			}
+
+			viewport.view_x = x - ((viewport.view_width << customZoom) / 2);
+			viewport.view_y = y - ((viewport.view_height << customZoom) / 2);
+			viewport.zoom = customZoom;
+
+			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) = customRotation;
+		} else {
+			viewport.view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16) - (viewport.view_width / 2);
+			viewport.view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16) - (viewport.view_height / 2);
+			viewport.zoom = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) & 0xFF;
+
+			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) >> 8;
+		}
+
+		sub_69E9A7();
+
+		rct_drawpixelinfo dpi;
+		dpi.x = 0;
+		dpi.y = 0;
+		dpi.width = resolutionWidth;
+		dpi.height = resolutionHeight;
+		dpi.pitch = 0;
+		dpi.zoom_level = 0;
+		dpi.bits = malloc(dpi.width * dpi.height);
+
+		viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
+
+		screenshot_write_png(&dpi, outputPath);
+
+		free(dpi.bits);
+	}
+	openrct2_dispose();
+	return 1;
 }
