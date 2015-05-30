@@ -350,7 +350,8 @@ static void window_options_mouseup()
 		window_shortcut_keys_open();
 		break;
 	case WIDX_CHANNEL_BUTTON:
-		window_text_input_raw_open(w, widgetIndex, STR_TWITCH_NAME, STR_TWITCH_NAME_DESC, gConfigTwitch.channel, 32);
+		//window_text_input_raw_open(w, widgetIndex, STR_TWITCH_NAME, STR_TWITCH_NAME_DESC, gConfigTwitch.channel, 32);
+		window_twitch_open();
 		break;
 	case WIDX_SCREEN_EDGE_SCROLLING:
 		gConfigGeneral.edge_scrolling ^= 1;

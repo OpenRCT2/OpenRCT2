@@ -1426,6 +1426,10 @@ enum {
 
 	STR_GIANT_SCREENSHOT = 5260,
 
+	STR_TWITCH_WINDOW_TITLE = 5261,
+	STR_TWITCH_AUTH = 5262,
+	STR_TWITCH_AUTH_TIP = 5263,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

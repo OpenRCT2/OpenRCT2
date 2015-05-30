@@ -406,6 +406,7 @@ enum {
 	WC_TITLE_OPTIONS = 117,
 	WC_LAND_RIGHTS = 118,
 	WC_THEMES = 119,
+	WC_TWITCH = 120,
 
 	// Only used for colour schemes
 	WC_STAFF = 220,
@@ -513,6 +514,7 @@ void window_resize_gui_scenario_editor(int width, int height);
 void window_top_toolbar_open();
 void window_game_bottom_toolbar_open();
 void window_about_open();
+void window_twitch_open();
 void window_footpath_open();
 void window_save_prompt_open();
 void window_title_menu_open();

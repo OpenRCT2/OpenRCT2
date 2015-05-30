@@ -3594,3 +3594,6 @@ STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
 STR_5258    :{SMALLFONT}{BLACK}Delete the current theme
 STR_5259    :{SMALLFONT}{BLACK}Rename the current theme
 STR_5260    :Giant Screenshot
+STR_5261	:Twitch Integration Options
+STR_5262	:Log in with Twtich
+STR_5263	:{SMALLFONT}{BLACK}Authenticate the game with your Twitch account to enable Twitch features
