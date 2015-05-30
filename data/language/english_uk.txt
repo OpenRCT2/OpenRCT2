@@ -3572,3 +3572,8 @@ STR_5235    :{SMALLFONT}{BLACK}Settings
 STR_5236    :Window:
 STR_5237    :Palette:
 STR_5238    :Presets:
+STR_5239    :Duplicate
+STR_5240    :Enter a name for the colour scheme
+STR_5241    :Can't change this preset
+STR_5242    :Preset name already exists
+STR_5243    :Invalid characters used

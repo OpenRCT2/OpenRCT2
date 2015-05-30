@@ -110,6 +110,16 @@ window_colour_scheme* colour_scheme_get_by_class(rct_windowclass classification)
 	return NULL;
 }
 
+int colour_scheme_get_index_by_class(rct_windowclass classification)
+{
+	for (int i = 0; i < sizeof(gColourSchemes); i++) {
+		if (gColourSchemes[i].classification == classification) {
+			return i;
+		}
+	}
+	return -1;
+}
+
 
 void colour_scheme_update(rct_window *window)
 {
@@ -122,10 +132,10 @@ void colour_scheme_update(rct_window *window)
 			transparent = true;
 		}
 	}
-	if (transparent)
+	//if (transparent)
 		window->flags |= WF_TRANSPARENT;
-	else
-		window->flags &= ~WF_TRANSPARENT;
+	//else
+	//	window->flags &= ~WF_TRANSPARENT;
 }
 
 void colour_scheme_update_by_class(rct_window *window, rct_windowclass classification)
@@ -139,10 +149,10 @@ void colour_scheme_update_by_class(rct_window *window, rct_windowclass classific
 			transparent = true;
 		}
 	}
-	if (transparent)
+	//if (transparent)
 		window->flags |= WF_TRANSPARENT;
-	else
-		window->flags &= ~WF_TRANSPARENT;
+	//else
+	//	window->flags &= ~WF_TRANSPARENT;
 }
 
 void colour_scheme_change_preset(int preset)
@@ -160,7 +170,7 @@ void colour_scheme_change_preset(int preset)
 			break;
 		}
 		gCurrentColourSchemePreset = preset;
-		for (int i = 0; i < gNumColourSchemeWindows; i++) {
+		for (int i = 0; i < (int)gNumColourSchemeWindows; i++) {
 			for (int j = 0; j < gColourSchemes[i].num_colours; j++) {
 				gColourSchemes[i].colours[j] = gConfigColourSchemes.presets[preset].colour_schemes[i].colours[j];
 			}
@@ -169,17 +179,49 @@ void colour_scheme_change_preset(int preset)
 	window_invalidate_all();
 }
 
-bool colour_scheme_create_preset(const char *name)
+void colour_scheme_create_preset(const char *name)
 {
 	int preset = gConfigColourSchemes.num_presets;
 	gConfigColourSchemes.num_presets++;
-	gConfigColourSchemes.presets = realloc(gConfigColourSchemes.presets, sizeof(colour_scheme_preset*) * gConfigColourSchemes.num_presets);
+	gConfigColourSchemes.presets = realloc(gConfigColourSchemes.presets, sizeof(colour_scheme_preset) * gConfigColourSchemes.num_presets);
 	strcpy(gConfigColourSchemes.presets[preset].name, name);
 	gConfigColourSchemes.presets[preset].colour_schemes = malloc(sizeof(window_colours) * gNumColourSchemeWindows);
-	for (int i = 0; i < gNumColourSchemeWindows; i++) {
+	for (int i = 0; i < (int)gNumColourSchemeWindows; i++) {
 		for (int j = 0; j < 6; j++)
 			gConfigColourSchemes.presets[preset].colour_schemes[i].colours[j] = gColourSchemes[i].colours[j];
 	}
 	colour_schemes_save_preset(preset);
-	colour_scheme_change_preset(gConfigColourSchemes.num_presets - 1);
+	colour_scheme_change_preset(preset);
+}
+
+void colour_scheme_delete_preset(int preset)
+{
+	if (preset >= 2)
+	{
+		utf8 path[MAX_PATH];
+		platform_get_user_directory(path, "colour schemes");
+		strcat(path, gConfigColourSchemes.presets[preset].name);
+		strcat(path, ".ini");
+		platform_file_delete(path);
+
+		for (int i = preset; i < gConfigColourSchemes.num_presets - 1; i++) {
+			gConfigColourSchemes.presets[i] = gConfigColourSchemes.presets[i + 1];
+		}
+		gConfigColourSchemes.num_presets--;
+		colour_scheme_change_preset(0);
+	}
+}
+
+void colour_scheme_rename_preset(int preset, const char *newName)
+{
+	utf8 src[MAX_PATH], dest[MAX_PATH];
+	platform_get_user_directory(src, "colour schemes");
+	platform_get_user_directory(dest, "colour schemes");
+	strcat(src, gConfigColourSchemes.presets[preset].name);
+	strcat(dest, newName);
+	strcat(src, ".ini");
+	strcat(dest, ".ini");
+	platform_file_move(src, dest);
+
+	strcpy(gConfigColourSchemes.presets[gCurrentColourSchemePreset].name, newName);
 }

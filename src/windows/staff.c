@@ -724,7 +724,7 @@ void window_staff_unknown_05(){
 void window_staff_stats_invalidate(){
 	rct_window* w;
 	window_get_register(w);
-	colour_scheme_update_by_class(w, WC_STAFF);
+	colour_scheme_update_by_class(w, (rct_windowclass)WC_STAFF);
 
 	if (window_staff_page_widgets[w->page] != w->widgets){
 		w->widgets = window_staff_page_widgets[w->page];
@@ -757,7 +757,7 @@ void window_staff_stats_invalidate(){
 void window_staff_options_invalidate(){
 	rct_window* w;
 	window_get_register(w);
-	colour_scheme_update_by_class(w, WC_STAFF);
+	colour_scheme_update_by_class(w, (rct_windowclass)WC_STAFF);
 
 	if (window_staff_page_widgets[w->page] != w->widgets){
 		w->widgets = window_staff_page_widgets[w->page];
@@ -830,7 +830,7 @@ void window_staff_options_invalidate(){
 void window_staff_overview_invalidate(){
 	rct_window* w;
 	window_get_register(w);
-	colour_scheme_update_by_class(w, WC_STAFF);
+	colour_scheme_update_by_class(w, (rct_windowclass)WC_STAFF);
 
 	if (window_staff_page_widgets[w->page] != w->widgets){
 		w->widgets = window_staff_page_widgets[w->page];

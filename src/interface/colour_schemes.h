@@ -47,11 +47,14 @@ extern uint16 gCurrentColourSchemePreset;
 extern uint32 gNumColourSchemeWindows;
 
 window_colour_scheme* colour_scheme_get_by_class(rct_windowclass classification);
+int colour_scheme_get_index_by_class(rct_windowclass classification);
 
 void colour_scheme_update(rct_window *window);
 void colour_scheme_update_by_class(rct_window *window, rct_windowclass classification);
 
 void colour_scheme_change_preset(int preset);
-bool colour_scheme_create_preset(const char *name);
+void colour_scheme_create_preset(const char *name);
+void colour_scheme_delete_preset(int preset);
+void colour_scheme_rename_preset(int preset, const char *newName);
 
 #endif
