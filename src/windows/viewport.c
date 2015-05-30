@@ -45,15 +45,15 @@ enum {
 };
 
 static rct_widget window_viewport_widgets[] = {
-	{ WWT_FRAME,			0,	0,	0,	0,	0,	0xFFFFFFFF,		STR_NONE				},	// panel / background
-	{ WWT_CAPTION,			0,	1,	0,	1,	14,	2779,			STR_WINDOW_TITLE_TIP	},	// title bar
-	{ WWT_CLOSEBOX,			0,	0,	0,	2,	13,	0x338,			STR_CLOSE_WINDOW_TIP	},	// close x button
-	{ WWT_RESIZE,			1,	0,	0,	14,	0,	0xFFFFFFFF,		STR_NONE				},	// resize
-	{ WWT_VIEWPORT,			0,	3,	0,	17,	0,	0xFFFFFFFF,		STR_NONE				},	// viewport
+	{ WWT_FRAME,			0,	0,	0,	0,	0,	0xFFFFFFFF,			STR_NONE				},	// panel / background
+	{ WWT_CAPTION,			0,	1,	0,	1,	14,	2779,				STR_WINDOW_TITLE_TIP	},	// title bar
+	{ WWT_CLOSEBOX,			0,	0,	0,	2,	13,	0x338,				STR_CLOSE_WINDOW_TIP	},	// close x button
+	{ WWT_RESIZE,			1,	0,	0,	14,	0,	0xFFFFFFFF,			STR_NONE				},	// resize
+	{ WWT_VIEWPORT,			0,	3,	0,	17,	0,	0xFFFFFFFF,			STR_NONE				},	// viewport
 
-	{ WWT_FLATBTN,			0,	0,	0,	17,	40,	0xFFFFFFFF,		STR_ZOOM_IN_TIP			},	// zoom in
-	{ WWT_FLATBTN,			0,	0,	0,	41,	64,	0xFFFFFFFF,		STR_ZOOM_OUT_TIP		},	// zoom out
-	{ WWT_FLATBTN,			0,	0,	0,	65,	88,	SPR_LOCATE,		STR_LOCATE_SUBJECT_TIP	},	// locate
+	{ WWT_FLATBTN,			0,	0,	0,	17,	40,	SPR_G2_ZOOM_IN,		STR_ZOOM_IN_TIP			},	// zoom in
+	{ WWT_FLATBTN,			0,	0,	0,	41,	64,	SPR_G2_ZOOM_OUT,	STR_ZOOM_OUT_TIP		},	// zoom out
+	{ WWT_FLATBTN,			0,	0,	0,	65,	88,	SPR_LOCATE,			STR_LOCATE_SUBJECT_TIP	},	// locate
 	{ WIDGETS_END },
 };
 

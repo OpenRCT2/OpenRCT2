@@ -980,7 +980,6 @@ static void window_options_paint()
 {
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
-	char buffer[256];
 
 	window_paint_get_registers(w, dpi);
 
