@@ -3587,3 +3587,5 @@ STR_5250    :Title Exit Button
 STR_5251    :Title Options Button
 STR_5252    :Title Scenario Selection
 STR_5253    :Park Information
+STR_5254    :Add nausea
+STR_5255    :{MEDIUMFONT}{BLACK}All peeps become nauseous

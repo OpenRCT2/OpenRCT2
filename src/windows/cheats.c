@@ -59,6 +59,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_PARK_ENTRANCE_FEE,
 	WIDX_HAPPY_GUESTS = 8, //Same as HIGH_MONEY as it is also the 8th widget but on a different page
 	WIDX_TRAM_GUESTS,
+	WIDX_NAUSEA_GUESTS,
 	WIDX_FREEZE_CLIMATE = 8,
 	WIDX_OPEN_CLOSE_PARK,
 	WIDX_ZERO_CLEARANCE,
@@ -87,7 +88,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 #define XSPA 5			//X spacing
 #define YSPA 5			//Y spacing
 #define XOS 0			+ XSPA	//X offset from left
-#define YOS TAB_HEIGHT	+ YSPA	//Y offset ofrom top (includes tabs height)
+#define YOS TAB_HEIGHT	+ YSPA	//Y offset from top (includes tabs height)
 #define BTNW 110		//button width
 #define BTNH 16			//button height
 #define OPTW 220		//Option (checkbox) width (two colums)
@@ -112,7 +113,7 @@ static rct_widget window_cheats_money_widgets[] = {
 	{ WWT_TAB,				1,	65,			95,		17,		43,			0x2000144E,		5180 },					// tab 3
 	{ WWT_TAB,				1,	96,			126,	17,		43,			0x2000144E,		5181 },					// tab 4
 	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(1),	HPL(1),		2760,			STR_NONE},				// high money
-	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(3),	HPL(3),		2761,			STR_NONE},				//Park Entrance Fee Toggle	
+	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(3),	HPL(3),		2761,			STR_NONE},				// Park Entrance Fee Toggle	
 	{ WIDGETS_END },
 };
 
@@ -127,6 +128,7 @@ static rct_widget window_cheats_guests_widgets[] = {
 	{ WWT_TAB,				1,	96,			126,	17,		43,		0x2000144E,		5181 },						// tab 4
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		2764,			STR_NONE},					// happy guests
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(3), HPL(3),		2765,			STR_NONE},					// large tram
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(5), HPL(5),		5254,			STR_NONE},					// nausea
 	{ WIDGETS_END },
 };
 
@@ -326,7 +328,7 @@ static void* window_cheats_page_events[] = {
 
 static uint32 window_cheats_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_PARK_ENTRANCE_FEE),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HAPPY_GUESTS) | (1 << WIDX_TRAM_GUESTS),
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HAPPY_GUESTS) | (1 << WIDX_TRAM_GUESTS) | (1 << WIDX_NAUSEA_GUESTS),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO) | (1 << WIDX_UNLOCK_ALL_PRICES),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_RENEW_RIDES) | (1 << WIDX_REMOVE_SIX_FLAGS) | (1 << WIDX_MAKE_DESTRUCTIBLE) | (1 << WIDX_FIX_ALL) | (1 << WIDX_FAST_LIFT_HILL) | (1 << WIDX_DISABLE_BRAKES_FAILURE) | (1 << WIDX_DISABLE_ALL_BREAKDOWNS)
 };
@@ -401,6 +403,8 @@ static void cheat_remove_litter()
 		nextSpriteIndex = litter->next;
 		sprite_remove((rct_sprite*)litter);
 	}
+
+	gfx_invalidate_screen();
 }
 
 static void cheat_fix_rides()
@@ -506,6 +510,15 @@ static void cheat_make_guests_happy()
 			peep->happiness = 255;
 }
 
+static void cheat_make_guests_nauseous()
+{
+	int spriteIndex;
+	rct_peep *peep;
+
+	FOR_ALL_GUESTS(spriteIndex, peep)
+		peep->flags |= PEEP_FLAGS_NAUSEA;
+}
+
 #pragma endregion
 
 void window_cheats_open()
@@ -574,6 +587,9 @@ static void window_cheats_guests_mouseup()
 		break;
 	case WIDX_TRAM_GUESTS:
 		cheat_generate_guests(CHEATS_TRAM_INCREMENT);
+		break;
+	case WIDX_NAUSEA_GUESTS:
+		cheat_make_guests_nauseous();
 		break;
 	}
 }
@@ -751,6 +767,7 @@ static void window_cheats_paint()
 	else if (w->page == WINDOW_CHEATS_PAGE_GUESTS){
 		gfx_draw_string(dpi, (char*)language_get_string(2683), 0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
 		gfx_draw_string(dpi, (char*)language_get_string(2684), 0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
+		gfx_draw_string(dpi, (char*)language_get_string(5255), 0, w->x + XPL(0) + TXTO, w->y + YPL(4) + TXTO);
 	}
 
 }
