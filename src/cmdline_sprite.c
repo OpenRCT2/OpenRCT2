@@ -3,6 +3,10 @@
 #include "drawing/drawing.h"
 #include "util/util.h"
 
+#define MODE_DEFAULT 0
+#define MODE_CLOSEST 1
+#define MODE_DITHERING 2
+
 typedef struct {
 	uint32 num_entries;
 	uint32 total_size;
@@ -171,6 +175,49 @@ bool sprite_file_export(int spriteIndex, const char *outPath)
 	}
 }
 
+bool is_transparent_pixel(uint8 *colour){
+	return colour[3] == 0;
+}
+
+// Returns true if pixel index is an index not used for remapping
+bool is_changable_pixel(int palette_index) {
+	if (palette_index == -1)
+		return true;
+	if (palette_index == 0)
+		return false;
+	if (palette_index >= 203 && palette_index < 214)
+		return false;
+	if (palette_index == 226)
+		return false;
+	if (palette_index >= 227 && palette_index < 229)
+		return false;
+	if (palette_index >= 243)
+		return false;
+	return true;
+}
+
+int get_closest_palette_index(uint32 colour){
+	sint32 smallest_error = -1;
+	int best_match = -1;
+
+	uint8 *rgba = (uint8*)(&colour);
+
+	for (int x = 0; x < 256; x++){
+		if (is_changable_pixel(x)){
+			sint32 error =
+				(spriteFilePalette[x].r - rgba[0]) * (spriteFilePalette[x].r - rgba[0]) +
+				(spriteFilePalette[x].g - rgba[1]) * (spriteFilePalette[x].g - rgba[1]) +
+				(spriteFilePalette[x].b - rgba[2]) * (spriteFilePalette[x].b - rgba[2]);
+
+			if (smallest_error == -1 || smallest_error > error){
+				best_match = x;
+				smallest_error = error;
+			}
+		}
+	}
+	return best_match;
+}
+
 int get_palette_index(uint32 colour)
 {
 	uint8 *rgba = (uint8*)(&colour);
@@ -193,7 +240,7 @@ typedef struct {
 	uint8 offset_x;
 } rle_code;
 
-bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **outBuffer, int *outBufferLength)
+bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **outBuffer, int *outBufferLength, int mode)
 {
 	unsigned char *pixels;
 	unsigned int width, height;
@@ -217,6 +264,8 @@ bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **ou
 	uint16 *yOffsets = (uint16*)buffer;
 	uint8 *src = pixels;
 	uint8 *dst = buffer + (height * 2);
+
+	int dos = 0;
 	
 	for (unsigned int y = 0; y < height; y++) {
 		rle_code *previousCode, *currentCode;
@@ -231,8 +280,67 @@ bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **ou
 		bool pushRun = false;
 		for (unsigned int x = 0; x < width; x++) {
 			int paletteIndex = get_palette_index(*((uint32*)src));
+
+			if (mode == MODE_CLOSEST || mode == MODE_DITHERING)
+				if (paletteIndex == -1 && !is_transparent_pixel(src))
+					paletteIndex = get_closest_palette_index(*((uint32*)src));
+			
+
+			if (mode == MODE_DITHERING)
+				if (!is_transparent_pixel(src) && is_changable_pixel(get_palette_index(*((uint32*)src)))){
+					int dr = src[0] - spriteFilePalette[paletteIndex].r;
+					int dg = src[1] - spriteFilePalette[paletteIndex].g;
+					int db = src[2] - spriteFilePalette[paletteIndex].b;
+
+					if (dos < 40){
+						printf("Original: %d, %d, %d\n", src[0], src[1], src[2]);
+						printf("Chosen: %d, %d, %d\n", spriteFilePalette[paletteIndex].r, spriteFilePalette[paletteIndex].g, spriteFilePalette[paletteIndex].b);
+						printf("%d - %d = %d", src[0], spriteFilePalette[paletteIndex].r, src[0] - spriteFilePalette[paletteIndex].r);
+						printf("Pixel: %d.\n", paletteIndex);
+						printf("%d, %d, %d\n", dr, dg, db);
+						puts("");
+						dos++;
+					}
+
+					if (x + 1 < width){
+						if (!is_transparent_pixel(src + 4) && is_changable_pixel(get_palette_index(*((uint32*)(src + 4))))){
+							// Right
+							src[4] += dr * 7 / 16;
+							src[5] += dg * 7 / 16;
+							src[6] += db * 7 / 16;
+						}
+					}
+
+					if (y + 1 < height){
+						if (x > 0){
+							if (!is_transparent_pixel(src + 4 * (width - 1)) && is_changable_pixel(get_palette_index(*((uint32*)(src + 4 * (width - 1)))))){
+								// Below left
+								src[4 * (width - 1)] += dr * 3 / 16;
+								src[4 * (width - 1) + 1] += dg * 3 / 16;
+								src[4 * (width - 1) + 2] += db * 3 / 16;
+							}
+						}
+
+						// Below
+						if (!is_transparent_pixel(src + 4 * width) && is_changable_pixel(get_palette_index(*((uint32*)(src + 4 * width))))){
+							src[4 * width] += dr * 5 / 16;
+							src[4 * width + 1] += dg * 5 / 16;
+							src[4 * width + 2] += db * 5 / 16;
+						}
+
+						if (x + 1 < width){
+							if (!is_transparent_pixel(src + 4 * (width - 1)) && is_changable_pixel(get_palette_index(*((uint32*)(src + 4 * (width + 1)))))){
+								// Below right
+								src[4 * (width + 1)] += dr * 1 / 16;
+								src[4 * (width + 1) + 1] += dg * 1 / 16;
+								src[4 * (width + 1) + 2] += db * 1 / 16;
+							}
+						}
+					}
+				}
+
 			src += 4;
-			if (paletteIndex == -1) {
+			if (is_transparent_pixel(src)) {
 				if (pixels != 0) {
 					x--;
 					src -= 4;
@@ -391,7 +499,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		rct_g1_element spriteElement;
 		uint8 *buffer;
 		int bufferLength;
-		if (!sprite_file_import(imagePath, &spriteElement, &buffer, &bufferLength))
+		if (!sprite_file_import(imagePath, &spriteElement, &buffer, &bufferLength, sprite_mode))
 			return -1;
 
 		if (!sprite_file_open(spriteFilePath)) {
@@ -445,7 +553,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 				rct_g1_element spriteElement;
 				uint8 *buffer;
 				int bufferLength;
-				if (!sprite_file_import(imagePath, &spriteElement, &buffer, &bufferLength)) {
+				if (!sprite_file_import(imagePath, &spriteElement, &buffer, &bufferLength, sprite_mode)) {
 					fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath);
 					return -1;
 				}
@@ -487,6 +595,8 @@ int cmdline_for_sprite(const char **argv, int argc)
 		return 1;
 	}
 }
+
+
 
 static rct_sprite_file_palette_entry _standardPalette[256] = {
 	// 0 (unused)
