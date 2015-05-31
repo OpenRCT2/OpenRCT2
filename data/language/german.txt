@@ -1778,7 +1778,7 @@ STR_1773    :Nur ein Fahrtfoto-Bereich pro Bahn erlaubt
 STR_1774    :Nur ein Kabellifthügel pro Bahn erlaubt
 STR_1775    :Aus
 STR_1776    :Ein
-STR_1777    :{WINDOW_COLOUR_2}Musik:
+STR_1777    :{WINDOW_COLOUR_2}Musik
 STR_1778    :{STRINGID} - -
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandakostüm
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigerkostüm
@@ -2342,7 +2342,7 @@ STR_2337    :Deutsche Mark (DM)
 STR_2338    :Yen ({YEN})
 STR_2339    :Peseten (Pts)
 STR_2340    :Lire (L)
-STR_2341    :Gulden (Dfl.)
+STR_2341    :Gulden (fl.)
 STR_2342    :Kronen (kr)
 STR_2343    :Euro ({EURO})
 STR_2344    :Englisch
@@ -2703,7 +2703,7 @@ STR_2696    :Bäume platzieren
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
-STR_2700    :Autosave-Frequenz
+STR_2700    :Autosave-Frequenz:
 STR_2701    :Jede Woche
 STR_2702    :Alle 2 Wochen
 STR_2703    :Jeden Monat
@@ -2741,7 +2741,7 @@ STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, Jahr {COMMA16}
 STR_2737    :{STRINGID} {MONTH}, Jahr {COMMA16}
-STR_2738    :Musik im Hauptmenü
+STR_2738    :Musik im Hauptmenü:
 STR_2739    :Keine
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
@@ -2780,7 +2780,7 @@ STR_2772    :Zeit schneller
 STR_2773    :Fenstermodus
 STR_2774    :Vollbild
 STR_2775    :Vollbild (Desktop)
-STR_2776    :Sprache
+STR_2776    :Sprache:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Ansichtsfenster {COMMA16}
@@ -3499,15 +3499,19 @@ STR_5162    :Tag/Monat/Jahr
 STR_5163    :Monat/Tag/Jahr
 STR_5164    :Twitch-Kanalname
 STR_5165    :Parkbesucher nach Followern benennen
-STR_5166    :Benennt die Parkbesucher nach den Followern des Twitch-Kanals
+STR_5166    :{SMALLFONT}{BLACK}Benennt die Parkbesucher nach den Followern des Twitch-Kanals
 STR_5167    :Überwache Follower-Parkbesucher
-STR_5168    :Überwachungsinformationen zu Parkbesuchern, die nach Twitch-Followern benannt sind, einschalten - (Bei eingeschalteter Überwachung werden Besucheraktivitäten im Nachrichtenbereich angezeigt)
+STR_5168    :{SMALLFONT}{BLACK}Überwachungsinformationen zu Parkbesuchern, die nach Twitch-Followern benannt sind, einschalten - (Bei eingeschalteter Überwachung werden Besucheraktivitäten im Nachrichtenbereich angezeigt)
 STR_5169    :Parkbesucher nach Twitch-Chatbenutzern benennen
-STR_5170    :Benennt die Parkbesucher nach Twitch-Chatbenutzern
+STR_5170    :{SMALLFONT}{BLACK}Benennt die Parkbesucher nach Twitch-Chatbenutzern
 STR_5171    :Überwache Chat-Parkbesucher
-STR_5172    :Überwachungsinformationen zu Parkbesuchern, die nach Twitch-Chatbenutzern benannt sind, einschalten - (Bei eingeschalteter Überwachung werden Besucheraktivitäten im Nachrichtenbereich angezeigt)
+STR_5172    :{SMALLFONT}{BLACK}Überwachungsinformationen zu Parkbesuchern, die nach Twitch-Chatbenutzern benannt sind, einschalten - (Bei eingeschalteter Überwachung werden Besucheraktivitäten im Nachrichtenbereich angezeigt)
 STR_5173    :Erhalte Twitch-Chat als Spielnachrichten
-STR_5174    :Benutzt Twitch-Chatnachrichten, welchen !news vorangestellt ist, für Spielbenachrichtigungen
+STR_5174    :{SMALLFONT}{BLACK}Benutzt Twitch-Chatnachrichten, welchen !news vorangestellt ist, für Spielbenachrichtigungen
 STR_5175    :Name Ihres Twitch-Kanals eingeben:
 STR_5176    :Twitch-Integration aktivieren
 STR_5177    :Vollbildmodus:
+STR_5178    :{SMALLFONT}{BLACK}Cheats für Finanzen anzeigen
+STR_5179    :{SMALLFONT}{BLACK}Cheats für Parkbesucher anzeigen
+STR_5180    :{SMALLFONT}{BLACK}Cheats für Park anzeigen
+STR_5181    :{SMALLFONT}{BLACK}Cheats für Attraktionen anzeigen

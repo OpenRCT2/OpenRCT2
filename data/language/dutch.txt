@@ -2736,7 +2736,7 @@ STR_2734    :{COMMA16} mph
 STR_2735    :{COMMA16} km/h
 STR_2736    :{MONTH}, jaar {COMMA16}
 STR_2737    :{STRINGID} {MONTH}, jaar {COMMA16}
-STR_2738    :Titelschermmuziek
+STR_2738    :Titelschermmuziek:
 STR_2739    :Geen
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
@@ -2774,7 +2774,7 @@ STR_2772    :Hogere spelsnelheid
 STR_2773    :Venster
 STR_2774    :Volledig scherm
 STR_2775    :Volledig scherm (bureaublad)
-STR_2776    :Taal
+STR_2776    :Taal:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Kijkvenster {COMMA16}
@@ -3506,3 +3506,4 @@ STR_5173    :Twitch-chat als nieuws weergeven
 STR_5174    :Zal chatberichten op Twitch die beginnen met !news in het berichtengebied tonen.
 STR_5175    :Voer de naam van je Twitch-kanaal in
 STR_5176    :Twitch-integratie inschakelen
+STR_5177    :Schermmodus:
