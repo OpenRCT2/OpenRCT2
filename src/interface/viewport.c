@@ -992,6 +992,51 @@ int scrolling_text_setup(rct_string_id string_id, uint16 scroll, uint16 scrollin
 	}
 }
 
+/* rct2: 0x00664FD4 */
+void viewport_entrance_paint_setup(uint8 direction, int height, rct_map_element* map_element){
+	RCT2_GLOBAL(0x9DE570, uint8_t) = 0xB;
+
+	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_PATH_HEIGHTS &&
+		dpi->zoom_level == 0){
+		uint32 ebx = 
+			(map_element->properties.entrance.type << 4) | 
+			(map_element->properties.entrance.index & 0xF);
+
+		if (RCT2_ADDRESS(0x0097B974, uint8)[ebx] & 0xF){
+
+			int z = map_element->base_height * 8 + 3;
+			uint32 image_id = 
+				z / 16 +
+				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS,sint16) +
+				0x20101689;
+
+			image_id -= RCT2_GLOBAL(0x01359208, sint16);
+
+			RCT2_GLOBAL(0x009DEA52, uint16) = 31;
+			RCT2_GLOBAL(0x009DEA54, uint16) = 31;
+			RCT2_GLOBAL(0x009DEA56, sint16) = z;
+			RCT2_GLOBAL(0x009DEA56, uint16) += 64;
+
+			RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
+				16, image_id, 16, height, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+		}
+	}
+
+	switch (map_element->properties.entrance.type){
+	case ENTRANCE_TYPE_RIDE_ENTRANCE:
+		//66508C
+		break;
+	case ENTRANCE_TYPE_RIDE_EXIT:
+		//665540
+		break;
+	case ENTRANCE_TYPE_PARK_ENTRANCE:
+		//6658ED
+		break;
+	}
+}
+
 /* rct2: 0x006B9CC4 */
 void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* map_element)
 {
@@ -1195,6 +1240,7 @@ void map_element_paint_setup(int x, int y)
 				RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, height, (int)map_element, 0, 0);
 				break;
 			case MAP_ELEMENT_TYPE_ENTRANCE:
+				//viewport_entrance_paint_setup(direction, height, map_element);
 				RCT2_CALLPROC_X(0x664FD4, 0, 0, direction, height, (int)map_element, 0, 0);
 				break;
 			case MAP_ELEMENT_TYPE_FENCE:
