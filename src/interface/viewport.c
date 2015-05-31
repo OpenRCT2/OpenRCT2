@@ -1064,12 +1064,14 @@ void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* m
 }
 
 /*rct2: 0x0068B35F*/
-void sub_68B35F(int ax, int cx)
+void map_element_paint_setup(int x, int y)
 {
-	if (ax < RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16_t) &&
-		cx < RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16_t) &&
-		ax >= 32 && cx >= 32)
-	{
+	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+
+	if (x < RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16_t) &&
+		y < RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16_t) &&
+		x >= 32 && y >= 32){
+
 		RCT2_GLOBAL(0x141E9B4, uint32_t) = 0xFFFF;
 		RCT2_GLOBAL(0x141E9B8, uint32_t) = 0xFFFF;
 		RCT2_GLOBAL(0x141E9BC, uint32_t) = 0xFFFF;
@@ -1086,166 +1088,156 @@ void sub_68B35F(int ax, int cx)
 		RCT2_GLOBAL(0x9E3138, uint8_t) = 0xFF;
 		RCT2_GLOBAL(0x9E30B6, uint8_t) = 0xFF;
 		RCT2_GLOBAL(0x9E323C, uint8_t) = 0xFF;
-		RCT2_GLOBAL(0x9DE56A, uint16_t) = ax;
-		RCT2_GLOBAL(0x9DE56E, uint16_t) = cx;
-		RCT2_GLOBAL(0x9DE574, uint16_t) = ax;
-		RCT2_GLOBAL(0x9DE576, uint16_t) = cx;
-		int dx = cx;
-		int esi = dx;
-		esi <<= 8;
-		esi |= ax;
-		esi >>= 3;
-		int ax_tmp = ax;
-		int cx_tmp = cx;
-		rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(esi / 4);
-		rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+		RCT2_GLOBAL(0x9DE56A, uint16_t) = x;
+		RCT2_GLOBAL(0x9DE56E, uint16_t) = y;
+		RCT2_GLOBAL(0x9DE574, uint16_t) = x;
+		RCT2_GLOBAL(0x9DE576, uint16_t) = y;
+
+		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+
+		int dx = 0;
 		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t))
 		{
 		case 0:
-			dx = ax + cx;
+			dx = x + y;
 			break;
 		case 1:
-			ax += 32;
-			dx = cx - ax;
+			x += 32;
+			dx = y - x;
 			break;
 		case 2:
-			ax += 32;
-			cx += 32;
-			dx = -(ax + cx);
+			x += 32;
+			y += 32;
+			dx = -(x + y);
 			break;
 		case 3:
-			cx += 32;
-			dx = ax - cx;
+			y += 32;
+			dx = x - y;
 			break;
 		}
 		dx /= 2;
 		// Display little yellow arrow when building footpaths?
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16_t) & 4) &&
-			RCT2_GLOBAL(0x9DE56A, uint16_t) == RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, uint16_t) &&
-			RCT2_GLOBAL(0x9DE56E, uint16_t) == RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, uint16_t))
-		{
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & 4) &&
+			RCT2_GLOBAL(0x9DE56A, uint16) == RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, uint16) &&
+			RCT2_GLOBAL(0x9DE56E, uint16) == RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, uint16)){
+			uint8 arrowRotation = 
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)
+				+ (RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) & 3) & 3;
 
-			int ebx = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t);
-			RCT2_GLOBAL(0x9DE568, uint16_t) = ax;
-			RCT2_GLOBAL(0x9DE56C, uint16_t) = cx;
-			int dl = RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8_t) & 3;
-			ebx += dl;
-			ebx &= 3;
-			dl = RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8_t) & 0xFC;
-			ebx += dl;
-			ebx += 0x20900C27;
-			int d = RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16_t);
-			RCT2_GLOBAL(0x9DE570, uint8_t) = 0;
-			RCT2_GLOBAL(0x9DEA52, uint16_t) = 0;
-			RCT2_GLOBAL(0x9DEA54, uint16_t) = 0;
-			RCT2_GLOBAL(0x9DEA56, uint16_t) = d + 18;
+			uint32 imageId = 
+				arrowRotation + 
+				(RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) & 0xFC) +
+				0x20900C27;
+
+			int arrowZ = RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16);
+
+			RCT2_GLOBAL(0x9DE568, uint16) = x;
+			RCT2_GLOBAL(0x9DE56C, uint16) = y;
+			RCT2_GLOBAL(0x9DE570, uint8) = 0;
+			RCT2_GLOBAL(0x9DEA52, uint16) = 0;
+			RCT2_GLOBAL(0x9DEA54, uint16) = 0;
+			RCT2_GLOBAL(0x9DEA56, uint16) = arrowZ + 18;
+
 			RCT2_CALLPROC_X(
-				(int)RCT2_ADDRESS(0x0098197C, uint32_t*)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-				0xFF00, ebx, cx & 0xFF00, d, 32, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+				(int)RCT2_ADDRESS(0x0098197C, uint32*)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)],
+				0xFF00, imageId, y & 0xFF00, arrowZ, 32, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32));
 		}
 		int bx = dx + 52;
-		if (bx > dpi->y)
-		{
-			rct_map_element* element = map_element;//push map_element
-			bx = element->clearance_height;
-			if (!map_element_is_last_for_tile(element))
-			{
-				while (true)
-				{
-					element++;
-					bx = max(bx, element->clearance_height);
-					if (map_element_is_last_for_tile(element)) break;
-				}
-			}
-			if (map_element_get_type(element) == MAP_ELEMENT_TYPE_SURFACE &&
-				(element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) != 0)
-			{
-				bx = (element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) << 1;
-			}
-			bx <<= 3;
-			dx -= bx;
-			dx -= 32;
-			element = map_element;//pop map_element
-			dx -= dpi->height;
-			if (dx < dpi->y)
-			{
-				RCT2_GLOBAL(0x9DE568, uint16_t) = ax;
-				RCT2_GLOBAL(0x9DE56C, uint16_t) = cx;
-				RCT2_GLOBAL(0x9DE57C, uint16_t) = 0;
-				while (true)
-				{
-					int direction = (map_element->type + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)) & MAP_ELEMENT_DIRECTION_MASK;
-					dx = map_element->base_height * 8;
-					uint32_t dword_9DE574 = RCT2_GLOBAL(0x9DE574, uint32_t);
-					RCT2_GLOBAL(0x9DE578, rct_map_element*) = map_element;
-					//setup the painting of for example: the underground, signs, rides, scenery, etc.
-					switch (map_element_get_type(map_element))
-					{
-					case MAP_ELEMENT_TYPE_SURFACE:
-						RCT2_CALLPROC_X(0x66062C, 0, 0, direction, dx, (int)map_element, 0, 0);
-						break;
-					case MAP_ELEMENT_TYPE_PATH:
-						RCT2_CALLPROC_X(0x6A3590, 0, 0, direction, dx, (int)map_element, 0, 0);
-						break;
-					case MAP_ELEMENT_TYPE_TRACK:
-						RCT2_CALLPROC_X(0x6C4794, 0, 0, direction, dx, (int)map_element, 0, 0);
-						break;
-					case MAP_ELEMENT_TYPE_SCENERY:
-						RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, dx, (int)map_element, 0, 0);
-						break;
-					case MAP_ELEMENT_TYPE_ENTRANCE:
-						RCT2_CALLPROC_X(0x664FD4, 0, 0, direction, dx, (int)map_element, 0, 0);
-						break;
-					case MAP_ELEMENT_TYPE_FENCE:
-						RCT2_CALLPROC_X(0x6E44B0, 0, 0, direction, dx, (int)map_element, 0, 0);
-						break;
-					case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
-						RCT2_CALLPROC_X(0x6B7F0C, 0, 0, direction, dx, (int)map_element, 0, 0);
-						break;
-					case MAP_ELEMENT_TYPE_BANNER:
-						//there are still some small localisation glitches,
-						//because the old function still gets called sometimes
-						viewport_banner_paint_setup(direction, dx, map_element);
-						//Until that is solved, use the original function instead
-						//RCT2_CALLPROC_X(0x6B9CC4, 0, 0, direction, dx, (int)map_element, 0, 0);
-						break;
-					default:
-						// This is a little hack for taking care of undefined map_elements
-						// 8cars MOM used a dirty version of this to skip drawing certain elements
-						if (map_element_is_last_for_tile(map_element))
-							return;
-						map_element++;
-						break;
-					}
-					RCT2_GLOBAL(0x9DE574, uint32_t) = dword_9DE574;
-					int stop = map_element_is_last_for_tile(map_element);
-					map_element++;
-					if (stop) break;
-				}
-			}
+
+		if (bx <= dpi->y)
+			return;
+		
+		rct_map_element* element = map_element;//push map_element
+
+		sint16 max_height = 0;
+		do{
+			max_height = max(max_height, element->clearance_height);
+		} while (!map_element_is_last_for_tile(element++));
+
+		element--;
+
+		if (map_element_get_type(element) == MAP_ELEMENT_TYPE_SURFACE &&
+			(element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) != 0){
+			max_height = (element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) << 1;
 		}
+
+		max_height *= 8;
+
+		dx -= max_height + 32;
+
+		element = map_element;//pop map_element
+		dx -= dpi->height;
+		if (dx >= dpi->y)
+			return;
+		
+		RCT2_GLOBAL(0x9DE568, uint16_t) = x;
+		RCT2_GLOBAL(0x9DE56C, uint16_t) = y;
+		RCT2_GLOBAL(0x9DE57C, uint16_t) = 0;
+		do{
+			int direction = (map_element->type + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)) & MAP_ELEMENT_DIRECTION_MASK;
+			int height = map_element->base_height * 8;
+
+			uint32_t dword_9DE574 = RCT2_GLOBAL(0x9DE574, uint32_t);
+			RCT2_GLOBAL(0x9DE578, rct_map_element*) = map_element;
+			//setup the painting of for example: the underground, signs, rides, scenery, etc.
+			switch (map_element_get_type(map_element))
+			{
+			case MAP_ELEMENT_TYPE_SURFACE:
+				RCT2_CALLPROC_X(0x66062C, 0, 0, direction, height, (int)map_element, 0, 0);
+				break;
+			case MAP_ELEMENT_TYPE_PATH:
+				RCT2_CALLPROC_X(0x6A3590, 0, 0, direction, height, (int)map_element, 0, 0);
+				break;
+			case MAP_ELEMENT_TYPE_TRACK:
+				RCT2_CALLPROC_X(0x6C4794, 0, 0, direction, height, (int)map_element, 0, 0);
+				break;
+			case MAP_ELEMENT_TYPE_SCENERY:
+				RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, height, (int)map_element, 0, 0);
+				break;
+			case MAP_ELEMENT_TYPE_ENTRANCE:
+				RCT2_CALLPROC_X(0x664FD4, 0, 0, direction, height, (int)map_element, 0, 0);
+				break;
+			case MAP_ELEMENT_TYPE_FENCE:
+				RCT2_CALLPROC_X(0x6E44B0, 0, 0, direction, height, (int)map_element, 0, 0);
+				break;
+			case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
+				RCT2_CALLPROC_X(0x6B7F0C, 0, 0, direction, height, (int)map_element, 0, 0);
+				break;
+			case MAP_ELEMENT_TYPE_BANNER:
+				viewport_banner_paint_setup(direction, height, map_element);
+				break;
+			default:
+				// This is a little hack for taking care of undefined map_elements
+				// 8cars MOM used a dirty version of this to skip drawing certain elements
+				if (map_element_is_last_for_tile(map_element))
+					return;
+				map_element++;
+				break;
+			}
+			RCT2_GLOBAL(0x9DE574, uint32_t) = dword_9DE574;
+		} while (!map_element_is_last_for_tile(map_element++));
+		
 	}
-	else
-	{
-		rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	else{
+
 		int dx;
 		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t))
 		{
 		case 0:
-			dx = ax + cx;
+			dx = x + y;
 			break;
 		case 1:
-			ax += 32;
-			dx = cx - ax;
+			x += 32;
+			dx = y - x;
 			break;
 		case 2:
-			ax += 32;
-			cx += 32;
-			dx = -(ax + cx);
+			x += 32;
+			y += 32;
+			dx = -(x + y);
 			break;
 		case 3:
-			cx += 32;
-			dx = ax - cx;
+			y += 32;
+			dx = x - y;
 			break;
 		}
 		dx /= 2;
@@ -1255,11 +1247,11 @@ void sub_68B35F(int ax, int cx)
 		dx -= 20;
 		dx -= dpi->height;
 		if (dx >= dpi->y) return;
-		RCT2_GLOBAL(0x9DE568, uint16_t) = ax;
-		RCT2_GLOBAL(0x9DE56C, uint16_t) = cx;
+		RCT2_GLOBAL(0x9DE568, uint16_t) = x;
+		RCT2_GLOBAL(0x9DE56C, uint16_t) = y;
 		RCT2_GLOBAL(0x9DE570, uint8_t) = 0;
 		RCT2_CALLPROC_X((int)RCT2_ADDRESS(0x98196C, uint32_t*)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-			0xFF00, 3123, cx & 0xFF00, 16, 32, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+			0xFF00, 3123, y & 0xFF00, 16, 32, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 	}
 }
 
@@ -1288,7 +1280,7 @@ void viewport_paint_setup(){
 		mapTile.y &= 0xFFE0;
 		
 		for (; num_vertical_quadrants > 0; --num_vertical_quadrants){
-			sub_68B35F(mapTile.x, mapTile.y);
+			map_element_paint_setup(mapTile.x, mapTile.y);
 			sub_0x69E8B0(mapTile.x, mapTile.y);
 
 			mapTile.x -= 32;
@@ -1298,7 +1290,7 @@ void viewport_paint_setup(){
 
 			mapTile.x += 32;
 
-			sub_68B35F(mapTile.x, mapTile.y);
+			map_element_paint_setup(mapTile.x, mapTile.y);
 			sub_0x69E8B0(mapTile.x, mapTile.y);
 
 			mapTile.x += 32;
@@ -1317,7 +1309,7 @@ void viewport_paint_setup(){
 		mapTile.y &= 0xFFE0;
 
 		for (; num_vertical_quadrants > 0; --num_vertical_quadrants){
-			sub_68B35F(mapTile.x, mapTile.y);
+			map_element_paint_setup(mapTile.x, mapTile.y);
 			sub_0x69E8B0(mapTile.x, mapTile.y);
 
 			mapTile.x -= 32;
@@ -1327,7 +1319,7 @@ void viewport_paint_setup(){
 
 			mapTile.y += 32;
 
-			sub_68B35F(mapTile.x, mapTile.y);
+			map_element_paint_setup(mapTile.x, mapTile.y);
 			sub_0x69E8B0(mapTile.x, mapTile.y);
 
 			mapTile.x += 32;
@@ -1346,7 +1338,7 @@ void viewport_paint_setup(){
 		mapTile.y &= 0xFFE0;
 		
 		for (; num_vertical_quadrants > 0; --num_vertical_quadrants){
-			sub_68B35F(mapTile.x, mapTile.y);
+			map_element_paint_setup(mapTile.x, mapTile.y);
 			sub_0x69E8B0(mapTile.x, mapTile.y);
 
 			mapTile.x += 32;
@@ -1356,7 +1348,7 @@ void viewport_paint_setup(){
 
 			mapTile.x -= 32;
 
-			sub_68B35F(mapTile.x, mapTile.y);
+			map_element_paint_setup(mapTile.x, mapTile.y);
 			sub_0x69E8B0(mapTile.x, mapTile.y);
 
 			mapTile.x -= 32;
@@ -1375,7 +1367,7 @@ void viewport_paint_setup(){
 		mapTile.y &= 0xFFE0;
 
 		for (; num_vertical_quadrants > 0; --num_vertical_quadrants){
-			sub_68B35F(mapTile.x, mapTile.y);
+			map_element_paint_setup(mapTile.x, mapTile.y);
 			sub_0x69E8B0(mapTile.x, mapTile.y);
 
 			mapTile.x += 32;
@@ -1385,7 +1377,7 @@ void viewport_paint_setup(){
 
 			mapTile.y -= 32;
 
-			sub_68B35F(mapTile.x, mapTile.y);
+			map_element_paint_setup(mapTile.x, mapTile.y);
 			sub_0x69E8B0(mapTile.x, mapTile.y);
 
 			mapTile.x -= 32;
