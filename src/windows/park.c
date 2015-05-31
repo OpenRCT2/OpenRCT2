@@ -1650,7 +1650,7 @@ static void window_park_stats_paint()
 	y = w->y + window_park_awards_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
 	// Draw park size
-	parkSize = RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, sint16) * 10;
+	parkSize = RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, uint16) * 10;
 	stringIndex = STR_PARK_SIZE_METRIC_LABEL;
 	if (!RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8)) {
 		stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
