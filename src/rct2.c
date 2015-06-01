@@ -281,12 +281,12 @@ int check_file_path(int pathId)
 
 	case PATH_ID_CUSTOM1:
 		if (file != INVALID_HANDLE_VALUE)
-			RCT2_GLOBAL(0x009AF164, unsigned int) = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom1_size @ 0x009AF164
+			ride_music_info_list[36]->length = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom1_size @ 0x009AF164
 		break;
 
 	case PATH_ID_CUSTOM2:
 		if (file != INVALID_HANDLE_VALUE)
-			RCT2_GLOBAL(0x009AF16E, unsigned int) = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom2_size @ 0x009AF16E
+			ride_music_info_list[37]->length = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom2_size @ 0x009AF16E
 		break;
 	}
 

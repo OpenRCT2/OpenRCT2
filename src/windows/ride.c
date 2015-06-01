@@ -4343,9 +4343,9 @@ static void window_ride_music_mousedown(int widgetIndex, rct_window *w, rct_widg
 		for (i = 0; i < countof(MusicStyleOrder); i++)
 			window_ride_current_music_style_order[numItems++] = MusicStyleOrder[i];
 
-		if (RCT2_GLOBAL(0x009AF164, uint32) != 0)
+		if (ride_music_info_list[36]->length != 0)
 			window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_CUSTOM_MUSIC_1;
-		if (RCT2_GLOBAL(0x009AF16E, uint32) != 0)
+		if (ride_music_info_list[37]->length != 0)
 			window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_CUSTOM_MUSIC_2;
 	}
 
