@@ -36,6 +36,7 @@
 #include "../world/banner.h"
 #include "dropdown.h"
 #include "../interface/themes.h"
+#include "../interface/console.h"
 
 enum {
 	WIDX_PAUSE,
@@ -59,6 +60,7 @@ enum {
 
 	WIDX_FASTFORWARD,
 	WIDX_CHEATS,
+	WIDX_DEBUG,
 	WIDX_FINANCES,
 	WIDX_RESEARCH,
 
@@ -93,6 +95,11 @@ typedef enum {
 	DDIDX_PATH_HEIGHTS = 11,
 } TOP_TOOLBAR_VIEW_MENU_DDIDX;
 
+typedef enum {
+	DDIDX_CONSOLE = 0,
+	DDIDX_TILE_INSPECTOR = 1
+} TOP_TOOLBAR_DEBUG_DDIDX;
+
 #pragma region Toolbar_widget_ordering
 
 // from left to right
@@ -101,6 +108,7 @@ static const int left_aligned_widgets_order[] = {
 	WIDX_FASTFORWARD,
 	WIDX_FILE_MENU,
 	WIDX_CHEATS,
+	WIDX_DEBUG,
 
 	WIDX_SEPARATOR,
 
@@ -154,7 +162,8 @@ static rct_widget window_top_toolbar_widgets[] = {
 
 	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						5148 },								// Fast forward
 	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						5149 },								// Cheats
-	{ WWT_TRNBTN,	3,	0x001E, 0x003B, 0,						27,		0x20000000 | 0x15F9,						3235 },								// Finances
+	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_DEBUG_TIP },								// Debug
+	{ WWT_TRNBTN,	3,	0x001E,	0x003B, 0,						27,		0x20000000 | 0x15F9,						3235 },								// Finances
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						2275 },								// Research
 	
 	{ WWT_EMPTY,	0,	0,		10-1,	0,						0,		0xFFFFFFFF,									STR_NONE },							// Artificial widget separator
@@ -206,6 +215,8 @@ void top_toolbar_init_view_menu(rct_window *window, rct_widget *widget);
 void top_toolbar_view_menu_dropdown(short dropdownIndex);
 void top_toolbar_init_fastforward_menu(rct_window *window, rct_widget *widget);
 void top_toolbar_fastforward_menu_dropdown(short dropdownIndex);
+void top_toolbar_init_debug_menu(rct_window *window, rct_widget *widget);
+void top_toolbar_debug_menu_dropdown(short dropdownIndex);
 
 void toggle_footpath_window();
 void toggle_land_window(rct_window *topToolbar, int widgetIndex);
@@ -408,6 +419,9 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 	case WIDX_FASTFORWARD:
 		top_toolbar_init_fastforward_menu(w, widget);
 		break;
+	case WIDX_DEBUG:
+		top_toolbar_init_debug_menu(w, widget);
+		break;
 	}
 }
 
@@ -489,6 +503,9 @@ static void window_top_toolbar_dropdown()
 	case WIDX_FASTFORWARD:
 		top_toolbar_fastforward_menu_dropdown(dropdownIndex);
 		break;
+	case WIDX_DEBUG:
+		top_toolbar_debug_menu_dropdown(dropdownIndex);
+		break;
 	}
 }
 
@@ -527,6 +544,7 @@ static void window_top_toolbar_invalidate()
 	window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_DEBUG].type = WWT_TRNBTN;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
@@ -537,6 +555,7 @@ static void window_top_toolbar_invalidate()
 		window_top_toolbar_widgets[WIDX_FINANCES].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_EMPTY;
+		window_top_toolbar_widgets[WIDX_DEBUG].type = WWT_EMPTY;
 
 		if (g_editor_step != EDITOR_STEP_LANDSCAPE_EDITOR) {
 			window_top_toolbar_widgets[WIDX_MAP].type = WWT_EMPTY;
@@ -567,6 +586,10 @@ static void window_top_toolbar_invalidate()
 
 		if (!gConfigInterface.toolbar_show_cheats)
 			window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_EMPTY;
+
+		if (!gConfigGeneral.debugging_tools)
+			window_top_toolbar_widgets[WIDX_DEBUG].type = WWT_EMPTY;
+
 	}
 
 	enabledWidgets = 0;
@@ -695,6 +718,16 @@ static void window_top_toolbar_paint()
 		if (widget_is_pressed(w, WIDX_CHEATS))
 			y++;
 		imgId = SPR_TAB_OBJECTIVE_0;
+		gfx_draw_sprite(dpi, imgId, x, y, 3);
+	}
+
+	// Draw debug button
+	if (window_top_toolbar_widgets[WIDX_DEBUG].type != WWT_EMPTY) {
+		x = w->x + window_top_toolbar_widgets[WIDX_DEBUG].left;
+		y = w->y + window_top_toolbar_widgets[WIDX_DEBUG].top - 1;
+		if (widget_is_pressed(w, WIDX_DEBUG))
+			y++;
+		imgId = 5201;
 		gfx_draw_sprite(dpi, imgId, x, y, 3);
 	}
 
@@ -2742,6 +2775,37 @@ void top_toolbar_fastforward_menu_dropdown(short dropdownIndex) {
 			if (gGameSpeed >= 5)
 				gGameSpeed = 8;
 			window_invalidate(w);
+		}
+	}
+}
+
+void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget) {
+	gDropdownItemsFormat[0] = STR_DEBUG_DROPDOWN_CONSOLE;
+	gDropdownItemsFormat[1] = STR_DEBUG_DROPDOWN_TILE_INSPECTOR;
+
+	window_dropdown_show_text(
+		w->x + widget->left,
+		w->y + widget->top,
+		widget->bottom - widget->top + 1,
+		w->colours[1] | 0x80,
+		0,
+		2
+	);
+
+	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
+}
+
+void top_toolbar_debug_menu_dropdown(short dropdownIndex) {
+	if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+	rct_window* w = window_get_main();
+	if (w) {
+		switch (dropdownIndex) {
+		case DDIDX_CONSOLE:
+			console_open();
+			break;
+		case DDIDX_TILE_INSPECTOR:
+			window_tile_inspector_open();
+			break;
 		}
 	}
 }

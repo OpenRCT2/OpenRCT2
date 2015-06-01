@@ -3644,3 +3644,35 @@ STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
 STR_5308    :RollerCoaster Tycoon 2
 STR_5309    :OpenRCT2
 STR_5310    :Random
+STR_5311    :{SMALLFONT}{BLACK}Debug tools
+STR_5312    :Show console
+STR_5313    :Show tile inspector
+STR_5314    :Tile inspector
+STR_5315    :Grass
+STR_5316    :Sand
+STR_5317    :Dirt
+STR_5318    :Rock
+STR_5319    :Martian
+STR_5320    :Checkerboard
+STR_5321    :Grass clumps
+STR_5322    :Ice
+STR_5323    :Grid (red)
+STR_5324    :Grid (yellow)
+STR_5325    :Grid (blue)
+STR_5326    :Grid (green)
+STR_5327    :Sand (dark)
+STR_5328    :Sand (light)
+STR_5329    :Checkerboard (inverted)
+STR_5330    :Underground view
+STR_5331    :Rock
+STR_5332    :Wood (red)
+STR_5333    :Wood (black)
+STR_5334    :Ice
+STR_5335    :Ride entrance
+STR_5336    :Ride exit
+STR_5337    :Park entrance
+STR_5338    :Element type
+STR_5339    :Base height
+STR_5340    :Clearance height
+STR_5341    :Flags
+STR_5342    :Choose a map tile

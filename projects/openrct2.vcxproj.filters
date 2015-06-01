@@ -474,6 +474,9 @@
     <ClCompile Include="..\test\ride\ride_ratings_test.c">
       <Filter>Test\Ride</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\windows\tile_inspector.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">

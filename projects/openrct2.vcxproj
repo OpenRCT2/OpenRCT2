@@ -142,6 +142,7 @@
     <ClCompile Include="..\src\windows\staff_list.c" />
     <ClCompile Include="..\src\windows\staff.c" />
     <ClCompile Include="..\src\windows\text_input.c" />
+    <ClCompile Include="..\src\windows\tile_inspector.c" />
     <ClCompile Include="..\src\windows\title_exit.c" />
     <ClCompile Include="..\src\windows\title_logo.c" />
     <ClCompile Include="..\src\windows\title_menu.c" />

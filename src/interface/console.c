@@ -403,6 +403,12 @@ static int cc_clear(const char **argv, int argc)
 	return 0;
 }
 
+static int cc_hide(const char **argv, int argc)
+{
+	console_close();
+	return 0;
+}
+
 static int cc_echo(const char **argv, int argc)
 {
 	if (argc > 0)
@@ -835,7 +841,8 @@ char* console_window_table[] = {
 };
 
 console_command console_command_table[] = {
-	{ "clear", cc_clear, "Clears the console." "clear"},
+	{ "clear", cc_clear, "Clears the console.", "clear"},
+	{ "hide", cc_hide, "Hides the console.", "hide"},
 	{ "echo", cc_echo, "Echos the text to the console.", "echo <text>" },
 	{ "help", cc_help, "Lists commands or info about a command.", "help [command]" },
 	{ "get", cc_get, "Gets the value of the specified variable.", "get <variable>" },
