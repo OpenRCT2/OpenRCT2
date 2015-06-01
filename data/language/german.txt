@@ -2369,7 +2369,7 @@ STR_2364    :{SMALLFONT}{BLACK}Gitterlinien bei Landschaft ein-/ausblenden
 STR_2365    :Die Bank will Ihr Darlehen nicht erhöhen!
 STR_2366    :Celsius ({DEGREE}C)
 STR_2367    :Fahrenheit (F)
-STR_2368    :Kein
+STR_2368    :Keine
 STR_2369    :Niedrig
 STR_2370    :Durchschnitt
 STR_2371    :Hoch
@@ -2491,7 +2491,7 @@ STR_2486    :Allgemein
 STR_2487    :`Echte' Besuchernamen anzeigen
 STR_2488    :{SMALLFONT}{BLACK}Zwischen `echten' Besuchernamen und Besucherzahlen umschalten
 STR_2489    :Tastenkürzel...
-STR_2490    :Tastaturkürzel
+STR_2490    :Tastenkürzel
 #new
 STR_2491    :Tasten zurücksetzen
 STR_2492    :{SMALLFONT}{BLACK}Alle Tastenkürzel auf Standardeinstellung zurücksetzen
@@ -2688,12 +2688,12 @@ STR_2681    :{MEDIUMFONT}{BLACK}Erhöht Ihr Geld um 5.000
 STR_2682    :{MEDIUMFONT}{BLACK}Zw. freiem und kostenpfl. Eintritt umsch.
 STR_2683    :{MEDIUMFONT}{BLACK}Erhöht das Vergnügen der Besucher maximal
 STR_2684    :{MEDIUMFONT}{BLACK}Eine große Gruppe von Besuchern tritt ein
-STR_2685    :Simplex Noise Parameters
+STR_2685    :`Simplex Noise' Param.
 STR_2686    :{WINDOW_COLOUR_2}Niedrig:
 STR_2687    :{WINDOW_COLOUR_2}Hoch:
 STR_2688    :{WINDOW_COLOUR_2}Basisfrequenz:
 STR_2689    :{WINDOW_COLOUR_2}Oktaven:
-STR_2690    :Karten Generierung
+STR_2690    :Kartengenerierung
 STR_2691    :{WINDOW_COLOUR_2}Basishöhe:
 STR_2692    :{WINDOW_COLOUR_2}Wasserhöhe:
 STR_2693    :{WINDOW_COLOUR_2}Terrain:
@@ -3486,7 +3486,7 @@ STR_5149    :{SMALLFONT}{BLACK}Cheats anzeigen
 STR_5150    :Aktiviere Debugging-Tools
 STR_5151    :.
 STR_5152    :,
-STR_5153    :RCT1 Farbschema
+STR_5153    :Farbschemas...
 STR_5154    :Anzeige über Hardware durchführen
 STR_5155    :Testen unfertiger Bahnen erlauben
 STR_5156    :{SMALLFONT}{BLACK}Erlaubt das Testen der meisten Bahnarten, selbst wenn die Strecke nicht fertiggestellt ist, das gilt nicht für den Streckenmodus mit Blockbereichen
@@ -3515,3 +3515,77 @@ STR_5178    :{SMALLFONT}{BLACK}Cheats für Finanzen anzeigen
 STR_5179    :{SMALLFONT}{BLACK}Cheats für Parkbesucher anzeigen
 STR_5180    :{SMALLFONT}{BLACK}Cheats für Park anzeigen
 STR_5181    :{SMALLFONT}{BLACK}Cheats für Attraktionen anzeigen
+STR_5182    :{INT32}
+STR_5183    :Basishöhe
+STR_5184    :Basishöhe zwischen {COMMA16} und {COMMA16} eingeben:
+STR_5185    :Wasserhöhe
+STR_5186    :Wasserhöhe zwischen {COMMA16} und {COMMA16} eingeben:
+STR_5187    :Finanzen
+STR_5188    :Neue Kampagne
+STR_5189    :Forschung
+STR_5190    :Karte
+STR_5191    :Ansichtsfenster
+STR_5192    :Aktuelle Nachrichten
+STR_5193    :Land
+STR_5194    :Wasser
+STR_5195    :Szenerie entfernen
+STR_5196    :Landrechte
+STR_5197    :Szenerie
+STR_5198    :Fußweg
+STR_5199    :Bahnkonstruktion
+STR_5200    :Streckenentwurf plazieren
+STR_5201    :Neue Bahn
+STR_5202    :Streckenentwurf auswählen
+STR_5203    :Bahn
+STR_5204    :Bahnliste
+STR_5205    :Besucher
+STR_5206    :Besucherliste
+STR_5207    :Mitarbeiter
+STR_5208    :Mitarbeiterliste
+STR_5209    :Banner
+STR_5210    :Objektauswahl
+STR_5211    :Erfindungsliste
+STR_5212    :Szenariooptionen
+STR_5213    :Zieloptionen
+STR_5214    :Kartengenerierung
+STR_5215    :Streckenentwurf-Manager
+STR_5216    :Streckenentwurf-Manager Liste
+STR_5217    :Cheats
+STR_5218    :Farbschemas
+STR_5219    :Optionen
+STR_5220    :Tastenkürzel
+STR_5221    :Tastenkürzel ändern
+STR_5222    :Laden/Speichern
+STR_5223    :Speichern
+STR_5224    :Attraktion abreißen
+STR_5225    :Mitarbeiter entlassen
+STR_5226    :Strecke löschen
+STR_5227    :Spielstand überschreiben
+STR_5228    :{SMALLFONT}{BLACK}Allgemeine Benutzeroberfläche
+STR_5229    :{SMALLFONT}{BLACK}Park
+STR_5230    :{SMALLFONT}{BLACK}Werkzeuge
+STR_5231    :{SMALLFONT}{BLACK}Attraktionen und Besucher
+STR_5232    :{SMALLFONT}{BLACK}Editoren
+STR_5233    :{SMALLFONT}{BLACK}Verschiedenes
+STR_5234    :{SMALLFONT}{BLACK}Eingabeaufforderungen
+STR_5235    :{SMALLFONT}{BLACK}Einstellungen
+STR_5236    :Fenster:
+STR_5237    :Farbpalette:
+STR_5238    :Farbschemas:
+STR_5239    :Duplizieren
+STR_5240    :Name für Farbschema eingeben:
+STR_5241    :Kann Vorlage nicht ändern
+STR_5242    :Vorlagenname existiert bereits
+STR_5243    :Unzulässige Zeichen benutzt
+STR_5244    :Farbschemas
+STR_5245    :Obere Symbolleiste
+STR_5246    :Untere Symbolleiste
+STR_5247    :Untere Symbolleiste Achterb.-Designer
+STR_5248    :Untere Symbolleiste Szenario-Editor
+STR_5249    :Hauptmenü Schaltflächen
+STR_5250    :Hauptmenü Beenden-Schaltfläche
+STR_5251    :Hauptmenü Optionen-Schaltfläche
+STR_5252    :Hauptmenü Szenarioauswahl
+STR_5253    :Parkinformationen
+STR_5254    :Übelkeit hinzufügen
+STR_5255    :{MEDIUMFONT}{BLACK}Allen Besuchern wird übel
