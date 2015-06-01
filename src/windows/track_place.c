@@ -29,7 +29,7 @@
 #include "../sprites.h"
 #include "../ride/track.h"
 #include "../ride/track_data.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 #define TRACK_MINI_PREVIEW_WIDTH	168
 #define TRACK_MINI_PREVIEW_HEIGHT	78

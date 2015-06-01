@@ -37,7 +37,7 @@
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\hook.c" />
     <ClCompile Include="..\src\input.c" />
-    <ClCompile Include="..\src\interface\colour_schemes.c">
+    <ClCompile Include="..\src\interface\themes.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </ExcludedFromBuild>
     </ClCompile>
@@ -145,7 +145,7 @@
     <ClCompile Include="..\src\windows\track_place.c" />
     <ClCompile Include="..\src\windows\viewport.c" />
     <ClCompile Include="..\src\windows\water.c" />
-    <ClCompile Include="..\src\windows\colour_schemes.c">
+    <ClCompile Include="..\src\windows\themes.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </ExcludedFromBuild>
     </ClCompile>
@@ -175,7 +175,7 @@
     <ClInclude Include="..\src\game.h" />
     <ClInclude Include="..\src\hook.h" />
     <ClInclude Include="..\src\input.h" />
-    <ClInclude Include="..\src\interface\colour_schemes.h">
+    <ClInclude Include="..\src\interface\themes.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </ExcludedFromBuild>
     </ClInclude>

@@ -25,7 +25,7 @@
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "../world/map.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 enum WINDOW_WATER_WIDGET_IDX {
 	WIDX_BACKGROUND,

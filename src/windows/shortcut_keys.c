@@ -24,7 +24,7 @@
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 #define WW 340
 #define WH 240

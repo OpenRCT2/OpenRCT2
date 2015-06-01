@@ -28,7 +28,7 @@
 #include "../world/park.h"
 #include "dropdown.h"
 #include "error.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 #define DISABLE_SIX_FLAGS_CHECKBOX
 

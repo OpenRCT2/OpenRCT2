@@ -23,7 +23,7 @@
 #include "../sprites.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 enum WINDOW_ABOUT_WIDGET_IDX {
 	WIDX_BACKGROUND,

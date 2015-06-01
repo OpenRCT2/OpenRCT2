@@ -21,7 +21,7 @@
 #include "../config.h"
 #include "../localisation/string_ids.h"
 #include "window.h"
-#include "colour_schemes.h"
+#include "themes.h"
 
 window_colour_scheme gColourSchemes[] = {
 	{ WC_TOP_TOOLBAR, { 7, 12, 24, 1, 0, 0 }, 4, 5245, "top_toolbar" },
@@ -70,7 +70,7 @@ window_colour_scheme gColourSchemes[] = {
 	{ WC_LOADSAVE_OVERWRITE_PROMPT, { 154, 0, 0, 0, 0, 0 }, 1, 5227, "loadsave_overwrite_prompt" },
 	{ WC_TITLE_OPTIONS, { 140, 140, 140, 0, 0, 0 }, 3, 5251, "title_options" },
 	{ WC_LAND_RIGHTS, { 19, 19, 19, 0, 0, 0 }, 3, 5196, "land_rights" },
-	{ WC_COLOUR_SCHEMES, { 1, 12, 12, 0, 0, 0 }, 3, 5218, "colour_schemes" },
+	{ WC_THEMES, { 1, 12, 12, 0, 0, 0 }, 3, 5218, "themes" },
 	{ WC_STAFF, { 1, 4, 4, 0, 0, 0 }, 3, 5207, "staff" },
 	{ WC_EDITOR_TRACK_BOTTOM_TOOLBAR, { 135, 135, 135, 0, 0, 0 }, 3, 5247, "editor_track_bottom_toolbar" },
 	{ WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR, { 150, 150, 141, 0, 0, 0 }, 3, 5248, "editor_scenario_bottom_toolbar" },
@@ -97,7 +97,7 @@ marked_window_colours gColourSchemesRCT1[sizeof(gColourSchemes)] = {
 	{ 0xFF, { 0, 0, 0, 0, 0, 0 } } // End
 };
 
-uint16 gCurrentColourSchemePreset = 0;
+uint16 gCurrentTheme = 0;
 uint32 gNumColourSchemeWindows = sizeof(gColourSchemes) / sizeof(window_colour_scheme);
 
 window_colour_scheme* colour_scheme_get_by_class(rct_windowclass classification)
@@ -155,78 +155,78 @@ void colour_scheme_update_by_class(rct_window *window, rct_windowclass classific
 	//	window->flags &= ~WF_TRANSPARENT;
 }
 
-void colour_scheme_change_preset(int preset)
+void theme_change_preset(int preset)
 {
-	if (preset >= 0 && preset < gConfigColourSchemes.num_presets) {
+	if (preset >= 0 && preset < gConfigThemes.num_presets) {
 		switch (preset) {
 		case 0:
-			gConfigInterface.current_colour_scheme_preset = "*RCT2";
+			gConfigInterface.current_theme_preset = "*RCT2";
 			break;
 		case 1:
-			gConfigInterface.current_colour_scheme_preset = "*RCT1";
+			gConfigInterface.current_theme_preset = "*RCT1";
 			break;
 		default:
-			gConfigInterface.current_colour_scheme_preset = gConfigColourSchemes.presets[preset].name;
+			gConfigInterface.current_theme_preset = gConfigThemes.presets[preset].name;
 			break;
 		}
-		gCurrentColourSchemePreset = preset;
+		gCurrentTheme = preset;
 		for (int i = 0; i < (int)gNumColourSchemeWindows; i++) {
 			for (int j = 0; j < gColourSchemes[i].num_colours; j++) {
-				gColourSchemes[i].colours[j] = gConfigColourSchemes.presets[preset].colour_schemes[i].colours[j];
+				gColourSchemes[i].colours[j] = gConfigThemes.presets[preset].colour_schemes[i].colours[j];
 			}
 		}
 	}
 	window_invalidate_all();
 }
 
-void colour_scheme_create_preset(const char *name)
+void theme_create_preset(const char *name)
 {
-	int preset = gConfigColourSchemes.num_presets;
-	gConfigColourSchemes.num_presets++;
-	gConfigColourSchemes.presets = realloc(gConfigColourSchemes.presets, sizeof(colour_scheme_preset) * gConfigColourSchemes.num_presets);
-	strcpy(gConfigColourSchemes.presets[preset].name, name);
-	gConfigColourSchemes.presets[preset].colour_schemes = malloc(sizeof(window_colours) * gNumColourSchemeWindows);
+	int preset = gConfigThemes.num_presets;
+	gConfigThemes.num_presets++;
+	gConfigThemes.presets = realloc(gConfigThemes.presets, sizeof(theme_preset) * gConfigThemes.num_presets);
+	strcpy(gConfigThemes.presets[preset].name, name);
+	gConfigThemes.presets[preset].colour_schemes = malloc(sizeof(window_colours) * gNumColourSchemeWindows);
 	for (int i = 0; i < (int)gNumColourSchemeWindows; i++) {
 		for (int j = 0; j < 6; j++)
-			gConfigColourSchemes.presets[preset].colour_schemes[i].colours[j] = gColourSchemes[i].colours[j];
+			gConfigThemes.presets[preset].colour_schemes[i].colours[j] = gColourSchemes[i].colours[j];
 	}
-	colour_schemes_save_preset(preset);
-	colour_scheme_change_preset(preset);
+	themes_save_preset(preset);
+	theme_change_preset(preset);
 }
 
-void colour_scheme_delete_preset(int preset)
+void theme_delete_preset(int preset)
 {
 	if (preset >= 2) {
 		utf8 path[MAX_PATH];
-		platform_get_user_directory(path, "colour schemes");
-		strcat(path, gConfigColourSchemes.presets[preset].name);
+		platform_get_user_directory(path, "themes");
+		strcat(path, gConfigThemes.presets[preset].name);
 		strcat(path, ".ini");
 		platform_file_delete(path);
 
-		for (int i = preset; i < gConfigColourSchemes.num_presets - 1; i++) {
-			gConfigColourSchemes.presets[i] = gConfigColourSchemes.presets[i + 1];
+		for (int i = preset; i < gConfigThemes.num_presets - 1; i++) {
+			gConfigThemes.presets[i] = gConfigThemes.presets[i + 1];
 		}
-		gConfigColourSchemes.num_presets--;
-		colour_scheme_change_preset(0);
+		gConfigThemes.num_presets--;
+		theme_change_preset(0);
 	}
 }
 
-void colour_scheme_rename_preset(int preset, const char *newName)
+void theme_rename_preset(int preset, const char *newName)
 {
 	if (preset >= 2) {
 		utf8 src[MAX_PATH], dest[MAX_PATH];
-		platform_get_user_directory(src, "colour schemes");
-		platform_get_user_directory(dest, "colour schemes");
-		strcat(src, gConfigColourSchemes.presets[preset].name);
+		platform_get_user_directory(src, "themes");
+		platform_get_user_directory(dest, "themes");
+		strcat(src, gConfigThemes.presets[preset].name);
 		strcat(dest, newName);
 		strcat(src, ".ini");
 		strcat(dest, ".ini");
 		platform_file_move(src, dest);
 
-		strcpy(gConfigColourSchemes.presets[gCurrentColourSchemePreset].name, newName);
+		strcpy(gConfigThemes.presets[gCurrentTheme].name, newName);
 
-		if (preset == gCurrentColourSchemePreset) {
-			gConfigInterface.current_colour_scheme_preset = gConfigColourSchemes.presets[gCurrentColourSchemePreset].name;
+		if (preset == gCurrentTheme) {
+			gConfigInterface.current_theme_preset = gConfigThemes.presets[gCurrentTheme].name;
 		}
 	}
 }

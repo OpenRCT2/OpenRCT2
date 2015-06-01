@@ -450,11 +450,11 @@
     <ClCompile Include="..\src\network\http.cpp">
       <Filter>Source\Network</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\windows\colour_schemes.c">
-      <Filter>Source\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\interface\colour_schemes.c">
+    <ClCompile Include="..\src\interface\themes.c">
       <Filter>Source\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\themes.c">
+      <Filter>Source\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -668,7 +668,7 @@
     <ClInclude Include="..\src\network\twitch.h">
       <Filter>Source\Network</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\interface\colour_schemes.h">
+    <ClInclude Include="..\src\interface\themes.h">
       <Filter>Source\Interface</Filter>
     </ClInclude>
   </ItemGroup>

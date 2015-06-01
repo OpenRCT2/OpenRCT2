@@ -32,7 +32,7 @@
 #include "error.h"
 #include "dropdown.h"
 #include "../drawing/drawing.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 #define WW 113
 #define WH 96

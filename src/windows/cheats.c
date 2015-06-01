@@ -33,7 +33,7 @@
 #include "../world/footpath.h"
 #include "../world/park.h"
 #include "../world/sprite.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 //#define WW 200
 //#define WH 128

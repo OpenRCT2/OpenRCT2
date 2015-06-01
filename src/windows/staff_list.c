@@ -31,7 +31,7 @@
 #include "../peep/staff.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 enum {
 	WINDOW_STAFF_LIST_TAB_HANDYMEN,

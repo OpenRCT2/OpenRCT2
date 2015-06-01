@@ -28,7 +28,7 @@
 #include "../scenario.h"
 #include "../title.h"
 #include "../windows/error.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 #pragma region Widgets
 

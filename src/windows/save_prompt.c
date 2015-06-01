@@ -28,7 +28,7 @@
 #include "../openrct2.h"
 #include "../sprites.h"
 #include "../tutorial.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
 	WIDX_BACKGROUND,

@@ -28,7 +28,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "dropdown.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 #define INITIAL_WIDTH 500
 #define INITIAL_HEIGHT 350

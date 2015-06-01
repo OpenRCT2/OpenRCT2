@@ -27,7 +27,7 @@
 #include "../peep/staff.h"
 #include "../sprites.h"
 #include "../world/sprite.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 #define WW 200
 #define WH 100

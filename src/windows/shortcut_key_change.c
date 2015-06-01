@@ -23,7 +23,7 @@
 #include "../interface/window.h"
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 #define WW 250
 #define WH 60

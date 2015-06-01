@@ -28,7 +28,7 @@
 #include "../ride/track.h"
 #include "../sprites.h"
 #include "error.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 enum {
 	WIDX_BACKGROUND,

@@ -33,7 +33,7 @@
 #include "../util/util.h"
 #include "../world/scenery.h"
 #include "error.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 enum {
 	WIDX_PREVIOUS_IMAGE,		// 1
