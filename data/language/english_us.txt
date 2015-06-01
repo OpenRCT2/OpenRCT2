@@ -3491,7 +3491,7 @@ STR_5150    :Enable debugging tools
 STR_5151    :,
 #Decimals separator
 STR_5152    :.
-STR_5153    :RCT1 color scheme
+STR_5153    :Color schemes...
 STR_5154    :Hardware display
 STR_5155    :Allow testing of unfinished tracks
 STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
@@ -3520,3 +3520,77 @@ STR_5178    :{SMALLFONT}{BLACK}Show financial cheats
 STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
 STR_5180    :{SMALLFONT}{BLACK}Show park cheats
 STR_5181    :{SMALLFONT}{BLACK}Show ride cheats
+STR_5182    :{INT32}
+STR_5183    :Base height
+STR_5184    :Enter base height between {COMMA16} and {COMMA16}
+STR_5185    :Water level
+STR_5186    :Enter water level between {COMMA16} and {COMMA16} 
+STR_5187    :Finances
+STR_5188    :New Campaign
+STR_5189    :Research
+STR_5190    :Map
+STR_5191    :Viewport
+STR_5192    :Recent News
+STR_5193    :Land
+STR_5194    :Water
+STR_5195    :Clear Scenery
+STR_5196    :Land Rights
+STR_5197    :Scenery
+STR_5198    :Footpath
+STR_5199    :Ride Construction
+STR_5200    :Track Design Place
+STR_5201    :New Ride
+STR_5202    :Track Design Selection
+STR_5203    :Ride
+STR_5204    :Ride List
+STR_5205    :Guest
+STR_5206    :Guest List
+STR_5207    :Staff
+STR_5208    :Staff List
+STR_5209    :Banner
+STR_5210    :Object Selection
+STR_5211    :Invention List
+STR_5212    :Scenario Options
+STR_5213    :Objective Options
+STR_5214    :Map Generation
+STR_5215    :Track Design Manager
+STR_5216    :Track Design Manager List
+STR_5217    :Cheats
+STR_5218    :Color Schemes
+STR_5219    :Options
+STR_5220    :Keyboard Shortcuts
+STR_5221    :Change Keyboard Shortcut
+STR_5222    :Load/Save
+STR_5223    :Save Prompt
+STR_5224    :Demolish Ride Prompt
+STR_5225    :Fire Staff Prompt
+STR_5226    :Track Delete Prompt
+STR_5227    :Save Overwrite Prompt
+STR_5228    :{SMALLFONT}{BLACK}Main UI
+STR_5229    :{SMALLFONT}{BLACK}Park
+STR_5230    :{SMALLFONT}{BLACK}Tools
+STR_5231    :{SMALLFONT}{BLACK}Rides and Peeps
+STR_5232    :{SMALLFONT}{BLACK}Editors
+STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
+STR_5234    :{SMALLFONT}{BLACK}Prompts
+STR_5235    :{SMALLFONT}{BLACK}Settings
+STR_5236    :Window:
+STR_5237    :Palette:
+STR_5238    :Color Schemes:
+STR_5239    :Duplicate
+STR_5240    :Enter a name for the color scheme
+STR_5241    :Can't change this preset
+STR_5242    :Preset name already exists
+STR_5243    :Invalid characters used
+STR_5244    :Color schemes
+STR_5245    :Top Toolbar
+STR_5246    :Bottom Toolbar
+STR_5247    :Track Editor Bottom Toolbar
+STR_5248    :Scenario Editor Bottom Toolbar
+STR_5249    :Title Menu Buttons
+STR_5250    :Title Exit Button
+STR_5251    :Title Options Button
+STR_5252    :Title Scenario Selection
+STR_5253    :Park Information
+STR_5254    :Add nausea
+STR_5255    :{MEDIUMFONT}{BLACK}All peeps become nauseous
