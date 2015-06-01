@@ -146,8 +146,8 @@ bool openrct2_initialise()
 	language_open(gConfigGeneral.language);
 	http_init();
 
-	colour_schemes_set_default();
-	colour_schemes_load_presets();
+	themes_set_default();
+	themes_load_presets();
 
 	if (!rct2_init())
 		return false;

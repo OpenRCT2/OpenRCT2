@@ -27,7 +27,7 @@
 #include "../management/marketing.h"
 #include "../ride/ride.h"
 #include "dropdown.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 #define SELECTED_RIDE_UNDEFINED ((uint16)0xFFFF)
 

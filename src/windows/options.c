@@ -39,7 +39,7 @@
 #include "../sprites.h"
 #include "dropdown.h"
 #include "error.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 enum {
 	WINDOW_OPTIONS_PAGE_DISPLAY,
@@ -72,9 +72,9 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_CONSTRUCTION_MARKER,
 	WIDX_CONSTRUCTION_MARKER_DROPDOWN,
 	WIDX_HARDWARE_DISPLAY_CHECKBOX,
-	WIDX_COLOUR_SCHEMES,
-	WIDX_COLOUR_SCHEMES_DROPDOWN,
-	WIDX_COLOUR_SCHEMES_BUTTON,
+	WIDX_THEMES,
+	WIDX_THEMES_DROPDOWN,
+	WIDX_THEMES_BUTTON,
 	
 	WIDX_LANGUAGE,
 	WIDX_LANGUAGE_DROPDOWN,
@@ -301,9 +301,9 @@ void window_options_open()
 		(1ULL << WIDX_TILE_SMOOTHING_CHECKBOX) |
 		(1ULL << WIDX_GRIDLINES_CHECKBOX) |
 		(1ULL << WIDX_HARDWARE_DISPLAY_CHECKBOX) |
-		(1ULL << WIDX_COLOUR_SCHEMES) |
-		(1ULL << WIDX_COLOUR_SCHEMES_DROPDOWN) |
-		(1ULL << WIDX_COLOUR_SCHEMES_BUTTON) |
+		(1ULL << WIDX_THEMES) |
+		(1ULL << WIDX_THEMES_DROPDOWN) |
+		(1ULL << WIDX_THEMES_BUTTON) |
 		(1ULL << WIDX_SAVE_PLUGIN_DATA_CHECKBOX) |
 		(1ULL << WIDX_AUTOSAVE) |
 		(1ULL << WIDX_AUTOSAVE_DROPDOWN) |
@@ -417,8 +417,8 @@ static void window_options_mouseup()
 		config_save_default();
 		window_invalidate(w);
 		break;
-	case WIDX_COLOUR_SCHEMES_BUTTON:
-		window_colour_schemes_open();
+	case WIDX_THEMES_BUTTON:
+		window_themes_open();
 		window_invalidate(w);
 		break;
 	case WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX:
@@ -597,17 +597,17 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 		gDropdownItemsChecked = 1 << gConfigGeneral.construction_marker_colour;
 		break;
-	case WIDX_COLOUR_SCHEMES_DROPDOWN:
-		num_items = gConfigColourSchemes.num_presets;
+	case WIDX_THEMES_DROPDOWN:
+		num_items = gConfigThemes.num_presets;
 
 		for (i = 0; i < num_items; i++) {
 			gDropdownItemsFormat[i] = 2777;
-			gDropdownItemsArgs[i] = (uint64)&gConfigColourSchemes.presets[i].name;
+			gDropdownItemsArgs[i] = (uint64)&gConfigThemes.presets[i].name;
 		}
 
 		window_options_show_dropdown(w, widget, num_items);
 
-		gDropdownItemsChecked = 1 << gCurrentColourSchemePreset;
+		gDropdownItemsChecked = 1 << gCurrentTheme;
 		break;
 	case WIDX_LANGUAGE_DROPDOWN:
 		for (i = 1; i < LANGUAGE_COUNT; i++) {
@@ -768,9 +768,9 @@ static void window_options_dropdown()
 			gfx_invalidate_screen();
 		}
 		break;
-	case WIDX_COLOUR_SCHEMES_DROPDOWN:
+	case WIDX_THEMES_DROPDOWN:
 		if (dropdownIndex != -1) {
-			colour_scheme_change_preset(dropdownIndex);
+			theme_change_preset(dropdownIndex);
 		}
 		config_save_default();
 		break;
@@ -842,9 +842,9 @@ static void window_options_invalidate()
 		window_options_widgets[WIDX_CONSTRUCTION_MARKER].type = WWT_DROPDOWN;
 		window_options_widgets[WIDX_CONSTRUCTION_MARKER_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_widgets[WIDX_HARDWARE_DISPLAY_CHECKBOX].type = WWT_CHECKBOX;
-		window_options_widgets[WIDX_COLOUR_SCHEMES].type = WWT_DROPDOWN;
-		window_options_widgets[WIDX_COLOUR_SCHEMES_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
-		window_options_widgets[WIDX_COLOUR_SCHEMES_BUTTON].type = WWT_DROPDOWN_BUTTON;
+		window_options_widgets[WIDX_THEMES].type = WWT_DROPDOWN;
+		window_options_widgets[WIDX_THEMES_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+		window_options_widgets[WIDX_THEMES_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		break;
 	case WINDOW_OPTIONS_PAGE_CULTURE:
 		// currency: pounds, dollars, etc. (10 total)
@@ -992,15 +992,16 @@ static void window_options_paint()
 		gfx_draw_string_left(dpi, STR_FULLSCREEN_MODE, w, 12, w->x + 10, w->y + window_options_widgets[WIDX_FULLSCREEN].top + 1);
 		gfx_draw_string_left(dpi, STR_CONSTRUCTION_MARKER, w, 0, w->x + 10, w->y + window_options_widgets[WIDX_CONSTRUCTION_MARKER].top + 1);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&gConfigColourSchemes.presets[gCurrentColourSchemePreset].name;
-		gfx_draw_string_left(dpi, 5238, NULL, w->colours[1], w->x + 10, w->y + window_options_widgets[WIDX_COLOUR_SCHEMES].top + 1);
-		gfx_draw_string_left(
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&gConfigThemes.presets[gCurrentTheme].name;
+		gfx_draw_string_left(dpi, 5238, NULL, w->colours[1], w->x + 10, w->y + window_options_widgets[WIDX_THEMES].top + 1);
+		gfx_draw_string_left_clipped(
 			dpi,
 			1170,
 			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
 			w->colours[1],
-			w->x + window_options_widgets[WIDX_COLOUR_SCHEMES].left + 1,
-			w->y + window_options_widgets[WIDX_COLOUR_SCHEMES].top
+			w->x + window_options_widgets[WIDX_THEMES].left + 1,
+			w->y + window_options_widgets[WIDX_THEMES].top,
+			window_options_widgets[WIDX_THEMES_DROPDOWN].left - window_options_widgets[WIDX_THEMES].left - 4
 			);
 		break;
 	case WINDOW_OPTIONS_PAGE_CULTURE:

@@ -26,7 +26,7 @@
 #include "../sprites.h"
 #include "error.h"
 #include "dropdown.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 #pragma region Widgets
 

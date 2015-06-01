@@ -30,7 +30,7 @@
 #include "../sprites.h"
 #include "../world/scenery.h"
 #include "dropdown.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 enum {
 	WINDOW_RESEARCH_PAGE_DEVELOPMENT,

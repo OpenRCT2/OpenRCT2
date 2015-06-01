@@ -34,7 +34,7 @@
 #include "../world/scenery.h"
 #include "../world/banner.h"
 #include "dropdown.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 enum {
 	WIDX_PAUSE,

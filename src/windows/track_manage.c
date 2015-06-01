@@ -24,7 +24,7 @@
 #include "../localisation/localisation.h"
 #include "../ride/track.h"
 #include "error.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 #pragma region Widgets
 

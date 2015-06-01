@@ -37,7 +37,7 @@
 #include "../input.h"
 #include "dropdown.h"
 #include "error.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 enum WINDOW_GUEST_PAGE {
 	WINDOW_GUEST_OVERVIEW,

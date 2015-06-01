@@ -24,7 +24,7 @@
 #include "../game.h"
 #include "../ride/track.h"
 #include "../drawing/drawing.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 /* move to ride.c */
 void sub_6b2fa9(rct_windownumber number){

@@ -147,7 +147,7 @@ typedef struct {
 	uint8 toolbar_show_cheats;
 	uint8 allow_subtype_switching;
 	uint8 console_small_font;
-	utf8string current_colour_scheme_preset;
+	utf8string current_theme_preset;
 } interface_configuration;
 
 typedef struct {
@@ -181,12 +181,12 @@ typedef struct {
 typedef struct {
 	window_colours *colour_schemes;
 	char name[256];
-} colour_scheme_preset;
+} theme_preset;
 
 typedef struct {
-	colour_scheme_preset *presets;
+	theme_preset *presets;
 	uint16 num_presets;
-} colour_schemes_configuration;
+} themes_configuration;
 
 typedef struct {
 	uint8 key;
@@ -198,7 +198,7 @@ extern interface_configuration gConfigInterface;
 extern sound_configuration gConfigSound;
 extern cheat_configuration gConfigCheat;
 extern twitch_configuration gConfigTwitch;
-extern colour_schemes_configuration gConfigColourSchemes;
+extern themes_configuration gConfigThemes;
 
 extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 
@@ -214,8 +214,8 @@ bool config_shortcut_keys_save();
 
 bool config_find_or_browse_install_directory();
 
-void colour_schemes_set_default();
-void colour_schemes_load_presets();
-bool colour_schemes_save_preset(int preset);
+void themes_set_default();
+void themes_load_presets();
+bool themes_save_preset(int preset);
 
 #endif

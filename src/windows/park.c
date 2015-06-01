@@ -38,7 +38,7 @@
 #include "../world/sprite.h"
 #include "../management/finance.h"
 #include "dropdown.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 enum WINDOW_PARK_PAGE {
 	WINDOW_PARK_PAGE_ENTRANCE,

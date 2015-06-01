@@ -28,7 +28,7 @@
 #include "../sprites.h"
 #include "../tutorial.h"
 #include "dropdown.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 enum {
 	WIDX_START_NEW_GAME,

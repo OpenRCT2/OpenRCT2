@@ -42,7 +42,7 @@ extern window_colour_scheme gColourSchemes[];
 
 extern marked_window_colours gColourSchemesRCT1[];
 
-extern uint16 gCurrentColourSchemePreset;
+extern uint16 gCurrentTheme;
 
 extern uint32 gNumColourSchemeWindows;
 
@@ -52,9 +52,9 @@ int colour_scheme_get_index_by_class(rct_windowclass classification);
 void colour_scheme_update(rct_window *window);
 void colour_scheme_update_by_class(rct_window *window, rct_windowclass classification);
 
-void colour_scheme_change_preset(int preset);
-void colour_scheme_create_preset(const char *name);
-void colour_scheme_delete_preset(int preset);
-void colour_scheme_rename_preset(int preset, const char *newName);
+void theme_change_preset(int preset);
+void theme_create_preset(const char *name);
+void theme_delete_preset(int preset);
+void theme_rename_preset(int preset, const char *newName);
 
 #endif

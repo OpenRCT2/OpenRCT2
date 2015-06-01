@@ -30,7 +30,7 @@
 #include "../ride/track.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 #define _window_new_ride_current_tab RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_RIDE_LIST_SELECTED_TAB, uint8)
 

@@ -34,7 +34,7 @@
 #include "../input.h"
 #include "dropdown.h"
 #include "error.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 #define WW 190
 #define WH 180

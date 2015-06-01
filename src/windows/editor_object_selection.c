@@ -29,7 +29,7 @@
 #include "../ride/track.h"
 #include "../scenario.h"
 #include "error.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 enum {
 	WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS,

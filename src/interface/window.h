@@ -405,7 +405,7 @@ enum {
 	WC_LOADSAVE_OVERWRITE_PROMPT = 116,
 	WC_TITLE_OPTIONS = 117,
 	WC_LAND_RIGHTS = 118,
-	WC_COLOUR_SCHEMES = 119,
+	WC_THEMES = 119,
 
 	// Only used for colour schemes
 	WC_STAFF = 220,
@@ -566,7 +566,7 @@ void window_music_credits_open();
 void window_publisher_credits_open();
 void window_track_manage_open();
 void window_viewport_open();
-void window_colour_schemes_open();
+void window_themes_open();
 void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uint32 existing_args, int maxLength);
 void window_text_input_raw_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, int maxLength);
 rct_window *window_mapgen_open();

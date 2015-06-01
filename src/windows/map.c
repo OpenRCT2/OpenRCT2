@@ -26,7 +26,7 @@
 #include "../interface/window.h"
 #include "../sprites.h"
 #include "../world/scenery.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 
 enum WINDOW_MAP_WIDGET_IDX {

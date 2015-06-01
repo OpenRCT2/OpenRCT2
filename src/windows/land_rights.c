@@ -27,7 +27,7 @@
 #include "../sprites.h"
 #include "../world/map.h"
 #include "../game.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 const int MAX_LAND_RIGHTS_SIZE = 64;
 

@@ -32,7 +32,7 @@
 #include "../world/scenery.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 #define WINDOW_SCENERY_WIDTH	634
 #define WINDOW_SCENERY_HEIGHT	142

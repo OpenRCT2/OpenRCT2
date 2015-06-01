@@ -31,7 +31,7 @@
 #include "../world/climate.h"
 #include "../world/park.h"
 #include "../world/sprite.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
 	WIDX_LEFT_OUTSET,

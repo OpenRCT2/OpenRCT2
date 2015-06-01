@@ -25,7 +25,7 @@
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 static rct_widget window_title_exit_widgets[] = {
 	{ WWT_IMGBTN, 2, 0, 39, 0, 63, SPR_MENU_EXIT, STR_EXIT },

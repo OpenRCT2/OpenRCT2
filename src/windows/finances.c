@@ -33,7 +33,7 @@
 #include "../scenario.h"
 #include "../sprites.h"
 #include "dropdown.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 enum {
 	WINDOW_FINANCES_PAGE_SUMMARY,

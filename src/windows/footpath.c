@@ -30,7 +30,7 @@
 #include "../world/footpath.h"
 #include "../world/map.h"
 #include "dropdown.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 enum {
 	PATH_CONSTRUCTION_MODE_LAND,

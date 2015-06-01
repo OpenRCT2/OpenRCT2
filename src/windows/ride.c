@@ -36,7 +36,7 @@
 #include "../world/sprite.h"
 #include "../audio/audio.h"
 #include "dropdown.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 #define var_496(w)	RCT2_GLOBAL((int)w + 0x496, uint16)
 

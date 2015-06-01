@@ -27,7 +27,7 @@
 #include "../management/research.h"
 #include "../object.h"
 #include "../world/scenery.h"
-#include "../interface/colour_schemes.h"
+#include "../interface/themes.h"
 
 #pragma region Widgets
 
