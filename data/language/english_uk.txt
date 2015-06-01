@@ -3574,8 +3574,8 @@ STR_5237    :Palette:
 STR_5238    :Current Theme:
 STR_5239    :Duplicate
 STR_5240    :Enter a name for the theme
-STR_5241    :Can't change this preset
-STR_5242    :Preset name already exists
+STR_5241    :Can't change this theme
+STR_5242    :Theme name already exists
 STR_5243    :Invalid characters used
 STR_5244    :Themes
 STR_5245    :Top Toolbar
