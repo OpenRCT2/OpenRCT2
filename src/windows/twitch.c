@@ -29,7 +29,8 @@ enum window_twitch_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
-	WIDX_TWITCH_AUTH
+	WIDX_TWITCH_AUTH, 
+	WINDOW_TWITCH_WIDGETS_SIZE
 };
 
 rct_widget window_twitch_widgets[] = {
@@ -151,4 +152,17 @@ static void window_twitch_paint()
 
 	gfx_draw_sprite(dpi, SPR_G2_PROMO_UL, x, y, 0);
 
+}
+
+static void window_twitch_invalidate()
+{
+	rct_window *w;
+	int i;
+	sint32 currentSoundDevice;
+
+	window_get_register(w);
+
+	for (i = WIDX_TWITCH_AUTH; i < WINDOW_TWITCH_WIDGETS_SIZE; i++) {
+		window_twitch_widgets[i].type = WWT_EMPTY;
+	}
 }

@@ -61,7 +61,7 @@ static void window_multi_text_input_emptysub(){}
 static void window_multi_text_input_mouseup();
 static void window_multi_text_input_paint();
 static void window_multi_text_input_text(int key, rct_window* w);
-static void window_multi_text_input_update7();
+static void window_multi_text_input_update();
 static void window_multi_text_input_close();
 static void window_multi_text_input_invalidate();
 
@@ -74,7 +74,7 @@ static void* window_text_input_events[] = {
 	window_multi_text_input_emptysub,
 	window_multi_text_input_emptysub,
 	window_multi_text_input_emptysub,
-	window_multi_text_input_update7,
+	window_multi_text_input_update,
 	window_multi_text_input_emptysub,
 	window_multi_text_input_emptysub,
 	window_multi_text_input_emptysub,
@@ -504,7 +504,7 @@ static void window_multi_text_input_text(int key, rct_window* w){
 	window_invalidate(w);
 }
 
-void window_multi_text_input_update7()
+void window_multi_text_input_update()
 {
 	rct_window* w;
 
