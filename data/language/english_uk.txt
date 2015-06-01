@@ -2685,8 +2685,8 @@ STR_2679    :???
 STR_2680    :All research complete
 STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by 5,000
 STR_2682    :{MEDIUMFONT}{BLACK}Toggle between Free and Paid Entry
-STR_2683    :{MEDIUMFONT}{BLACK}Increases every peeps happiness to max
-STR_2684    :{MEDIUMFONT}{BLACK}Large group of peeps arrive
+STR_2683    :{SMALLFONT}{BLACK}Increases every peeps happiness to max
+STR_2684    :{SMALLFONT}{BLACK}Large group of peeps arrive
 STR_2685    :Simplex Noise Parameters
 STR_2686    :{WINDOW_COLOUR_2}Low:
 STR_2687    :{WINDOW_COLOUR_2}High:
@@ -3588,4 +3588,8 @@ STR_5251    :Title Options Button
 STR_5252    :Title Scenario Selection
 STR_5253    :Park Information
 STR_5254    :Add nausea
-STR_5255    :{MEDIUMFONT}{BLACK}All peeps become nauseous
+STR_5255    :{SMALLFONT}{BLACK}All peeps become nauseous
+STR_5256    :Add hunger/thirst
+STR_5257    :{SMALLFONT}{BLACK}All peeps become hungry and thirsty
+STR_5258    :Need bathroom
+STR_5259    :{SMALLFONT}{BLACK}All peeps need to go to the bathroom

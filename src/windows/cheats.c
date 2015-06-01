@@ -60,6 +60,8 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_HAPPY_GUESTS = 8, //Same as HIGH_MONEY as it is also the 8th widget but on a different page
 	WIDX_TRAM_GUESTS,
 	WIDX_NAUSEA_GUESTS,
+	WIDX_HUNGRY_AND_THIRSTY_GUESTS,
+	WIDX_GUESTS_NEED_BATHROOM,
 	WIDX_FREEZE_CLIMATE = 8,
 	WIDX_OPEN_CLOSE_PARK,
 	WIDX_ZERO_CLEARANCE,
@@ -126,9 +128,11 @@ static rct_widget window_cheats_guests_widgets[] = {
 	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		5179 },						// tab 2
 	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,		5180 },						// tab 3
 	{ WWT_TAB,				1,	96,			126,	17,		43,		0x2000144E,		5181 },						// tab 4
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		2764,			STR_NONE},					// happy guests
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(3), HPL(3),		2765,			STR_NONE},					// large tram
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(5), HPL(5),		5254,			STR_NONE},					// nausea
+	{ WWT_CLOSEBOX, 		1, XPL(0), 	WPL(0), YPL(0), HPL(0), 	2764, 			2683 },					// happy guests
+	{ WWT_CLOSEBOX, 		1, XPL(0), 	WPL(0), YPL(1), HPL(1), 	2765, 			2684 },					// large tram
+	{ WWT_CLOSEBOX, 		1, XPL(1), 	WPL(1), YPL(0), HPL(0), 	5254, 			5255 },					// nausea
+	{ WWT_CLOSEBOX, 		1, XPL(1), 	WPL(1), YPL(1), HPL(1), 	5256, 			5257 },					// hunger and thirst
+	{ WWT_CLOSEBOX, 		1, XPL(0), 	WPL(0), YPL(2), HPL(2), 	5258, 			5259 },					// bathroom
 	{ WIDGETS_END },
 };
 
@@ -328,7 +332,7 @@ static void* window_cheats_page_events[] = {
 
 static uint32 window_cheats_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_PARK_ENTRANCE_FEE),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HAPPY_GUESTS) | (1 << WIDX_TRAM_GUESTS) | (1 << WIDX_NAUSEA_GUESTS),
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HAPPY_GUESTS) | (1 << WIDX_TRAM_GUESTS) | (1 << WIDX_NAUSEA_GUESTS) | (1 << WIDX_HUNGRY_AND_THIRSTY_GUESTS) | (1 << WIDX_GUESTS_NEED_BATHROOM),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO) | (1 << WIDX_UNLOCK_ALL_PRICES),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_RENEW_RIDES) | (1 << WIDX_REMOVE_SIX_FLAGS) | (1 << WIDX_MAKE_DESTRUCTIBLE) | (1 << WIDX_FIX_ALL) | (1 << WIDX_FAST_LIFT_HILL) | (1 << WIDX_DISABLE_BRAKES_FAILURE) | (1 << WIDX_DISABLE_ALL_BREAKDOWNS)
 };
@@ -519,6 +523,26 @@ static void cheat_make_guests_nauseous()
 		peep->flags |= PEEP_FLAGS_NAUSEA;
 }
 
+static void cheat_make_guests_hungry_and_thirsty()
+{
+	int spriteIndex;
+	rct_peep *peep;
+
+	FOR_ALL_GUESTS(spriteIndex, peep)
+		if (peep->var_2A == 0)
+			peep->hunger = -255, peep->thirst = -255;
+}
+
+static void cheat_guests_need_bathroom()
+{
+	int spriteIndex;
+	rct_peep *peep;
+
+	FOR_ALL_GUESTS(spriteIndex, peep)
+		if (peep->var_2A == 0)
+			peep->bathroom = 255;
+}
+
 #pragma endregion
 
 void window_cheats_open()
@@ -590,6 +614,12 @@ static void window_cheats_guests_mouseup()
 		break;
 	case WIDX_NAUSEA_GUESTS:
 		cheat_make_guests_nauseous();
+		break;
+	case WIDX_HUNGRY_AND_THIRSTY_GUESTS:
+		cheat_make_guests_hungry_and_thirsty();
+		break;
+	case WIDX_GUESTS_NEED_BATHROOM:
+		cheat_guests_need_bathroom();
 		break;
 	}
 }
@@ -764,12 +794,6 @@ static void window_cheats_paint()
 		gfx_draw_string(dpi, (char*)language_get_string(2681), 0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
 		gfx_draw_string(dpi, (char*)language_get_string(2682), 0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 	}
-	else if (w->page == WINDOW_CHEATS_PAGE_GUESTS){
-		gfx_draw_string(dpi, (char*)language_get_string(2683), 0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
-		gfx_draw_string(dpi, (char*)language_get_string(2684), 0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
-		gfx_draw_string(dpi, (char*)language_get_string(5255), 0, w->x + XPL(0) + TXTO, w->y + YPL(4) + TXTO);
-	}
-
 }
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
