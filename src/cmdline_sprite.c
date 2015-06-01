@@ -176,7 +176,7 @@ bool sprite_file_export(int spriteIndex, const char *outPath)
 }
 
 bool is_transparent_pixel(sint16 *colour){
-	return colour[3] == 0;
+	return colour[3] < 128;
 }
 
 // Returns true if pixel index is an index not used for remapping
@@ -218,7 +218,7 @@ int get_closest_palette_index(sint16 *colour){
 
 int get_palette_index(sint16 *colour)
 {	
-	if (colour[3] < 128)
+	if (is_transparent_pixel(colour))
 		return -1;
 
 	for (int i = 0; i < 256; i++) {
@@ -261,13 +261,11 @@ bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **ou
 
 	// A larger range is needed for proper dithering
 	sint16 *src = malloc(height * width * 4 * 2);
-	for (int x = 0; x < height * width * 4; x++){
+	for (uint32 x = 0; x < height * width * 4; x++){
 		src[x] = (sint16) pixels[x];
 	}
 
 	uint8 *dst = buffer + (height * 2);
-
-	int dos = 0;
 	
 	for (unsigned int y = 0; y < height; y++) {
 		rle_code *previousCode, *currentCode;
@@ -293,16 +291,6 @@ bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **ou
 					sint16 dr = src[0] - (sint16)(spriteFilePalette[paletteIndex].r);
 					sint16 dg = src[1] - (sint16)(spriteFilePalette[paletteIndex].g);
 					sint16 db = src[2] - (sint16)(spriteFilePalette[paletteIndex].b);
-
-					if (dos < 40){
-						printf("Original: %d, %d, %d\n", src[0], src[1], src[2]);
-						printf("Chosen: %d, %d, %d\n", spriteFilePalette[paletteIndex].r, spriteFilePalette[paletteIndex].g, spriteFilePalette[paletteIndex].b);
-						printf("%d - %d = %d", src[0], spriteFilePalette[paletteIndex].r, src[0] - spriteFilePalette[paletteIndex].r);
-						printf("Pixel: %d.\n", paletteIndex);
-						printf("%d, %d, %d\n", dr, dg, db);
-						puts("");
-						dos++;
-					}
 
 					if (x + 1 < width){
 						if (!is_transparent_pixel(src + 4) && is_changable_pixel(get_palette_index(src + 4))){
