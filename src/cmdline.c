@@ -60,6 +60,7 @@ int cmdline_run(const char **argv, int argc)
 		OPT_HELP(),
 		OPT_BOOLEAN('v', "version", &version, "show version information and exit"),
 		OPT_BOOLEAN(0, "verbose", &verbose, "log verbose messages"),
+		OPT_INTEGER('m', "mode", &sprite_mode, "the type of sprite conversion. 0 = default, 1 = simple closest pixel match, 2 = dithering"),
 		OPT_END()
 	};
 
