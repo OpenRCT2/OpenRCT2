@@ -500,7 +500,11 @@ int cmdline_for_sprite(const char **argv, int argc)
 		spriteFileHeader.num_entries++;
 		spriteFileHeader.total_size += bufferLength;
 		spriteFileEntries = realloc(spriteFileEntries, spriteFileHeader.num_entries * sizeof(rct_g1_element));
+
+		sprite_entries_make_relative();
 		spriteFileData = realloc(spriteFileData, spriteFileHeader.total_size);
+		sprite_entries_make_absolute();
+
 		spriteFileEntries[spriteFileHeader.num_entries - 1] = spriteElement;
 		memcpy(spriteFileData + (spriteFileHeader.total_size - bufferLength), buffer, bufferLength);
 		spriteFileEntries[spriteFileHeader.num_entries - 1].offset = spriteFileData + (spriteFileHeader.total_size - bufferLength);
@@ -556,7 +560,11 @@ int cmdline_for_sprite(const char **argv, int argc)
 				spriteFileHeader.num_entries++;
 				spriteFileHeader.total_size += bufferLength;
 				spriteFileEntries = realloc(spriteFileEntries, spriteFileHeader.num_entries * sizeof(rct_g1_element));
+
+				sprite_entries_make_relative();
 				spriteFileData = realloc(spriteFileData, spriteFileHeader.total_size);
+				sprite_entries_make_absolute();
+
 				spriteFileEntries[spriteFileHeader.num_entries - 1] = spriteElement;
 				memcpy(spriteFileData + (spriteFileHeader.total_size - bufferLength), buffer, bufferLength);
 				spriteFileEntries[spriteFileHeader.num_entries - 1].offset = spriteFileData + (spriteFileHeader.total_size - bufferLength);
