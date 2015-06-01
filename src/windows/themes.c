@@ -566,9 +566,10 @@ void window_themes_scrollmousedown() {
 				if (gCurrentTheme >= 2) {
 					window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].left = _button_offset_x + _color_index_2 * 12 + window_themes_widgets[WIDX_THEMES_LIST].left;
 					window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].top = _color_index_1 * _row_height + _button_offset_y - w->scrolls[0].v_top + window_themes_widgets[WIDX_THEMES_LIST].top;
-					window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].right = window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].left + 11;
-					window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].bottom = window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].top + 11;
+					window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].right = window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].left + 12;
+					window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].bottom = window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].top + 12;
 					window_dropdown_show_colour(w, &(window_themes_widgets[WIDX_THEMES_COLORBTN_MASK]), w->colours[1], get_colour_scheme_tab()->colours[_color_index_2]);
+					widget_invalidate(w, WIDX_THEMES_LIST);
 				}
 				else {
 					window_error_open(5241, 5256);
