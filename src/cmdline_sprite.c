@@ -330,7 +330,7 @@ bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **ou
 				}
 
 			src += 4;
-			if (is_transparent_pixel(src)) {
+			if (paletteIndex == -1) {
 				if (pixels != 0) {
 					x--;
 					src -= 4;
