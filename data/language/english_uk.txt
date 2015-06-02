@@ -3497,7 +3497,7 @@ STR_5160    :{MONTH} {STRINGID}, Year {COMMA16}
 STR_5161    :{WHITE}Date Format:
 STR_5162    :Day/Month/Year
 STR_5163    :Month/Day/Year
-STR_5164    :Twitch Channel name
+STR_5164    :Twitch Integration Options
 STR_5165    :Name peeps after followers
 STR_5166    :{SMALLFONT}{BLACK}Will name peeps after channel's Twitch followers
 STR_5167    :Track follower peeps
@@ -3508,7 +3508,7 @@ STR_5171    :Track chat peeps
 STR_5172    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after Twitch chat participants
 STR_5173    :Pull Twitch chat as news
 STR_5174    :{SMALLFONT}{BLACK}Will use Twitch chat messages preceded by !news for in game notifications
-STR_5175    :Input the name of your Twitch channel
+STR_5175    :Login with your Twitch account.
 STR_5176    :Enable Twitch integration
 STR_5177    :Fullscreen mode:
 STR_5178    :{SMALLFONT}{BLACK}Show financial cheats
@@ -3587,6 +3587,7 @@ STR_5250    :Title Exit Button
 STR_5251    :Title Options Button
 STR_5252    :Title Scenario Selection
 STR_5253    :Park Information
+<<<<<<< HEAD
 STR_5254    :Add nausea
 STR_5255    :{MEDIUMFONT}{BLACK}All peeps become nauseous
 STR_5256    :Create a new theme to make changes to
@@ -3594,3 +3595,6 @@ STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
 STR_5258    :{SMALLFONT}{BLACK}Delete the current theme
 STR_5259    :{SMALLFONT}{BLACK}Rename the current theme
 STR_5260    :Giant Screenshot
+STR_5261	:Twitch Integration Options
+STR_5262	:Log in with Twitch
+STR_5263	:{SMALLFONT}{BLACK}Authenticate the game with your Twitch account to enable Twitch features

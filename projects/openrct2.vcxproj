@@ -112,6 +112,7 @@
     <ClCompile Include="..\src\windows\map.c" />
     <ClCompile Include="..\src\windows\mapgen.c" />
     <ClCompile Include="..\src\windows\map_tooltip.c" />
+    <ClCompile Include="..\src\windows\multi_text_input.c" />
     <ClCompile Include="..\src\windows\music_credits.c" />
     <ClCompile Include="..\src\windows\news.c" />
     <ClCompile Include="..\src\windows\new_campaign.c" />
@@ -143,6 +144,7 @@
     <ClCompile Include="..\src\windows\track_list.c" />
     <ClCompile Include="..\src\windows\track_manage.c" />
     <ClCompile Include="..\src\windows\track_place.c" />
+    <ClCompile Include="..\src\windows\twitch.c" />
     <ClCompile Include="..\src\windows\viewport.c" />
     <ClCompile Include="..\src\windows\water.c" />
     <ClCompile Include="..\src\windows\themes.c">
