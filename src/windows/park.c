@@ -799,6 +799,84 @@ static void window_park_entrance_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_1);
 }
 
+
+void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y){
+	map_invalidate_selection_rect();
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
+
+	rct_xy16 mapTile = { 0 };
+	sub_688972(x, y, &mapTile.x, &mapTile.y, NULL);
+
+	if (mapTile.x == (sint16)0x8000){
+		if (RCT2_GLOBAL(0x00F1AD62, money32) != MONEY32_UNDEFINED){
+			RCT2_GLOBAL(0x00F1AD62, money32) = MONEY32_UNDEFINED;
+			window_invalidate_by_class(WC_CLEAR_SCENERY);
+		}
+		return;
+	}
+
+	uint8 state_changed = 0;
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0))){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
+		state_changed++;
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) != 4){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
+		state_changed++;
+	}
+
+	sint16 tool_size = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+	if (tool_size == 0)
+		tool_size = 1;
+
+	sint16 tool_length = (tool_size - 1) * 32;
+
+	// Move to tool bottom left
+	mapTile.x -= (tool_size - 1) * 16;
+	mapTile.y -= (tool_size - 1) * 16;
+	mapTile.x &= 0xFFE0;
+	mapTile.y &= 0xFFE0;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) != mapTile.x){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) = mapTile.x;
+		state_changed++;
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) != mapTile.y){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) = mapTile.y;
+		state_changed++;
+	}
+
+	mapTile.x += tool_length;
+	mapTile.y += tool_length;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) != mapTile.x){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) = mapTile.x;
+		state_changed++;
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) != mapTile.y){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) = mapTile.y;
+		state_changed++;
+	}
+
+	map_invalidate_selection_rect();
+	if (!state_changed)
+		return;
+
+	RCT2_GLOBAL(0x00F1AD62, uint32) = game_do_command(
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
+		0x4,
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
+		LandRightsMode ? 0x00E : 0x20F,
+		35,
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+		);
+}
+
 /**
  * 
  *  rct2: 0x006681D1
@@ -812,17 +890,7 @@ static void window_park_entrance_toolupdate()
 
 	switch (widgetIndex){
 	case WIDX_BUY_LAND_RIGHTS:
-		// Create a new version for this instance as scenery_clear is silly for this
-		RCT2_CALLPROC_X(0x0068E213, x, y, 0, widgetIndex, (int)w, 0, 0);
-		RCT2_GLOBAL(0x00F1AD62, uint32) = game_do_command(
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
-			0x4,
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
-			LandRightsMode ? 0x00E : 0x20F,
-			35,
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
-			);
+		window_park_entrance_tool_update_land_rights(x, y);
 		break;
 	}
 }
