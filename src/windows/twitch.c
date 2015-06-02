@@ -44,6 +44,8 @@ rct_widget window_twitch_widgets[] = {
 static void window_twitch_emptysub() { }
 static void window_twitch_mouseup();
 static void window_twitch_paint();
+static void window_twitch_invalidate();
+static void window_twitch_text_input();
 
 static void* window_twitch_events[] = {
 	window_twitch_emptysub,
@@ -154,15 +156,26 @@ static void window_twitch_paint()
 
 }
 
+static void window_twitch_text_input(){
+	short widgetIndex;
+	rct_window *w;
+	char _cl;
+	char* text;
+
+	//just a stub
+}
+
 static void window_twitch_invalidate()
 {
 	rct_window *w;
 	int i;
 	sint32 currentSoundDevice;
 
+	//just a stub
+
 	window_get_register(w);
 
-	for (i = WIDX_TWITCH_AUTH; i < WINDOW_TWITCH_WIDGETS_SIZE; i++) {
+	/*for (i = WIDX_TWITCH_AUTH; i < WINDOW_TWITCH_WIDGETS_SIZE; i++) {
 		window_twitch_widgets[i].type = WWT_EMPTY;
-	}
+	}*/
 }
