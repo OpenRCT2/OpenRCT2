@@ -111,12 +111,12 @@ http_json_response *http_request_json(const char *url)
 void http_request_json_async(const char *url, void (*callback)(http_json_response*))
 {
 	struct TempThreadArgs {
-		const char *url;
+		char *url;
 		void (*callback)(http_json_response*);
 	};
 
 	TempThreadArgs *args = (TempThreadArgs*)malloc(sizeof(TempThreadArgs));
-	args->url = url;
+	args->url = _strdup(url);
 	args->callback = callback;
 
 	SDL_Thread *thread = SDL_CreateThread([](void *ptr) -> int {
@@ -124,6 +124,8 @@ void http_request_json_async(const char *url, void (*callback)(http_json_respons
 
 		http_json_response *response = http_request_json(args->url);
 		args->callback(response);
+
+		free(args->url);
 		free(args);
 		return 0;
 	}, NULL, args);
