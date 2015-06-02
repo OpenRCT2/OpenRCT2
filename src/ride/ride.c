@@ -1707,9 +1707,17 @@ static void ride_prepare_breakdown(int rideIndex, int breakdownReason)
 
 		// Set flag on broken car
 		vehicle = &(g_sprite_list[ride->vehicles[ride->broken_vehicle]].vehicle);
-		for (i = ride->broken_car; i > 0; i--)
-			vehicle = &(g_sprite_list[vehicle->next_vehicle_on_train].vehicle);
-		vehicle->var_48 |= 0x100;
+		for (i = ride->broken_car; i > 0; i--) {
+			if (vehicle->next_vehicle_on_train == (uint16)0xFFFFFFFF) {
+				vehicle = NULL;
+				break;
+			}
+			else {
+				vehicle = &(g_sprite_list[vehicle->next_vehicle_on_train].vehicle);
+			}
+		}
+		if (vehicle != NULL)
+			vehicle->var_48 |= 0x100;
 		break;
 	case BREAKDOWN_VEHICLE_MALFUNCTION:
 		// Choose a random train
