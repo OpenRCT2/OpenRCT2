@@ -46,7 +46,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)\</IntDir>
-    <IncludePath>..\..\lib\libcurl\include;..\..\lib\jansson;$(IncludePath)</IncludePath>
+    <IncludePath>..\..\lib\libcurl\include;..\..\lib\jansson;..\..\lib\cutest\CuTest.h;$(IncludePath)</IncludePath>
     <LibraryPath>..\..\lib\libcurl\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -92,6 +92,7 @@
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
     </ClCompile>
+    <ClCompile Include="..\..\lib\cutest\CuTest.c" />
     <ClCompile Include="..\..\lib\jansson\jansson\dump.c" />
     <ClCompile Include="..\..\lib\jansson\jansson\error.c" />
     <ClCompile Include="..\..\lib\jansson\jansson\hashtable.c" />
@@ -111,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\lib\argparse\argparse.h" />
+    <ClInclude Include="..\..\lib\cutest\CuTest.h" />
     <ClInclude Include="..\..\lib\jansson\jansson\hashtable.h" />
     <ClInclude Include="..\..\lib\jansson\jansson\jansson.h" />
     <ClInclude Include="..\..\lib\jansson\jansson\jansson_private.h" />

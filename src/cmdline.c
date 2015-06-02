@@ -123,6 +123,13 @@ static int cmdline_for_edit(const char **argv, int argc)
 	return 0;
 }
 
+static int cmdline_for_test(const char **argv, int argc)
+{
+	gOpenRCT2StartupAction = STARTUP_ACTION_TEST;
+	gOpenRCT2Headless = true;
+	return 0;
+}
+
 static int cmdline_for_none(const char **argv, int argc)
 {
 	assert(argc >= 1);
@@ -141,7 +148,8 @@ struct { const char *firstArg; cmdline_action action; } cmdline_table[] = {
 	{ "intro", cmdline_for_intro },
 	{ "edit", cmdline_for_edit },
 	{ "sprite", cmdline_for_sprite },
-	{ "screenshot", cmdline_for_screenshot }
+	{ "screenshot", cmdline_for_screenshot },
+	{ "test", cmdline_for_test }
 };
 
 static int cmdline_call_action(const char **argv, int argc)

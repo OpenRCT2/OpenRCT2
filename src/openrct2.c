@@ -30,6 +30,7 @@
 #include "platform/platform.h"
 #include "util/sawyercoding.h"
 #include "world/mapgen.h"
+#include "test/tests.h"
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 char gOpenRCT2StartupActionPath[512] = { 0 };
@@ -186,6 +187,11 @@ void openrct2_launch()
 			editor_load_landscape(gOpenRCT2StartupActionPath);
 		}
 		break;
+	case STARTUP_ACTION_TEST:
+		gExitCode = run_all_tests();
+		openrct2_dispose();
+		exit(gExitCode);
+		return;
 	}
 		openrct2_loop();
 	}
