@@ -168,9 +168,11 @@ typedef struct {
 	uint8 min_waiting_time;			// 0x0CE
 	uint8 max_waiting_time;			// 0x0CF
 	union {
-		uint8 var_0D0;
+		uint8 operation_option;
 		uint8 time_limit;			// 0x0D0
 		uint8 num_laps;				// 0x0D0
+		uint8 launch_speed;			// 0x0D0
+		uint8 speed;				// 0x0D0
 	};
 	uint8 pad_0D1[0x3];
 	uint8 measurement_index;		// 0x0D4
@@ -270,10 +272,10 @@ typedef struct {
 	money16 price_secondary;		// 0x194
 	// Starts at RIDE_INITIAL_RELIABILITY and decreases from there. Right shift
 	// this number by 8 to get a reliability percentage 0-100
-	uint16 reliability;
+	uint16 reliability;				// 0x196
 	// Small constant used to increase the unreliability as the game continues,
 	// making breakdowns more and more likely.
-	uint8 unreliability_factor;
+	uint8 unreliability_factor;		// 0x198
 	// Range from [0, 100]
 	uint8 downtime;                 // 0x199
 	uint8 inspection_interval;		// 0x19A

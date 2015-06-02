@@ -1366,7 +1366,7 @@ static void ride_chairlift_update(rct_ride *ride)
 	if (ride->breakdown_reason_pending == 0)
 		return;
 
-	ax = ride->var_0D0 * 2048;
+	ax = ride->operation_option * 2048;
 	bx = ride->var_148;
 	cx = bx + ax;
 	ride->var_148 = cx;

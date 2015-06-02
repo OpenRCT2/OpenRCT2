@@ -983,7 +983,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 	uint8* car_array = RCT2_ADDRESS(0xF1AD78, uint8);
 
 	if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_13){
-		if (ride->num_riders >= ride->var_0D0)
+		if (ride->num_riders >= ride->operation_option)
 			return;
 	}
 	else{

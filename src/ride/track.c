@@ -2894,7 +2894,7 @@ int ride_to_td6(uint8 rideIndex){
 	track_design->number_of_cars_per_train = ride->num_cars_per_train;
 	track_design->min_waiting_time = ride->min_waiting_time;
 	track_design->max_waiting_time = ride->max_waiting_time;
-	track_design->var_50 = ride->var_0D0;
+	track_design->var_50 = ride->operation_option;
 	track_design->lift_hill_speed_num_circuits =
 		ride->lift_hill_speed |
 		(ride->num_circuits << 5);

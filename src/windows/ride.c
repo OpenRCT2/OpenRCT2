@@ -2691,7 +2691,7 @@ static void window_ride_mode_tweak_set(rct_window *w, uint8 value)
 static void window_ride_mode_tweak_increase(rct_window *w)
 {
 	rct_ride *ride = GET_RIDE(w->number);
-	uint8 value = ride->var_0D0;
+	uint8 value = ride->operation_option;
 	//fast_lift_hill is the cheat that allows maxing out many limits on the Operating tab.
 	uint8 max_value = gConfigCheat.fast_lift_hill ? 255 : RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 5, uint8);
 
@@ -2712,7 +2712,7 @@ static void window_ride_mode_tweak_increase(rct_window *w)
 static void window_ride_mode_tweak_decrease(rct_window *w)
 {
 	rct_ride *ride = GET_RIDE(w->number);
-	uint8 value = ride->var_0D0;
+	uint8 value = ride->operation_option;
 	if (value > RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 4, uint8))
 		value -= ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
 
@@ -3115,25 +3115,25 @@ static void window_ride_operating_invalidate()
 		w->pressed_widgets |= (1 << WIDX_MAXIMUM_LENGTH_CHECKBOX);
 
 	// Mode specific functionality
-	RCT2_GLOBAL(0x013CE964, uint16) = ride->var_0D0;
+	RCT2_GLOBAL(0x013CE964, uint16) = ride->operation_option;
 	switch (ride->mode) {
 	case RIDE_MODE_POWERED_LAUNCH_PASSTROUGH:
 	case RIDE_MODE_POWERED_LAUNCH:
 	case RIDE_MODE_UPWARD_LAUNCH:
 	case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
-		RCT2_GLOBAL(0x013CE964, uint16) = (ride->var_0D0 * 9) / 4;
+		RCT2_GLOBAL(0x013CE964, uint16) = (ride->launch_speed * 9) / 4;
 		format = 1331;
 		caption = STR_LAUNCH_SPEED;
 		tooltip = STR_LAUNCH_SPEED_TIP;
 		break;
 	case RIDE_MODE_STATION_TO_STATION:
-		RCT2_GLOBAL(0x013CE964, uint16) = (ride->var_0D0 * 9) / 4;
+		RCT2_GLOBAL(0x013CE964, uint16) = (ride->speed * 9) / 4;
 		format = 1331;
 		caption = STR_SPEED;
 		tooltip = STR_SPEED_TIP;
 		break;
 	case RIDE_MODE_RACE:
-		RCT2_GLOBAL(0x013CE964, uint16) = ride->var_0D0;
+		RCT2_GLOBAL(0x013CE964, uint16) = ride->num_laps;
 		format = 1736;
 		caption = STR_NUMBER_OF_LAPS;
 		tooltip = STR_NUMBER_OF_LAPS_TIP;
