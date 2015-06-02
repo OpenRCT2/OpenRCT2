@@ -27,6 +27,7 @@
 #include "../localisation/localisation.h"
 #include "../openrct2.h"
 #include "../platform/platform.h"
+#include "../util/util.h"
 #include "../windows/error.h"
 #include "screenshot.h"
 #include "viewport.h"
@@ -51,10 +52,10 @@ void screenshot_check()
 			screenshotIndex = screenshot_dump();
 
 			if (screenshotIndex != -1) {
-				char *lang_3165 = (char*)0x009BC677;
-				sprintf(lang_3165, "SCR%d%s", screenshotIndex, _screenshot_format_extension[gConfigGeneral.screenshot_format]);
+				rct_string_id stringId = 3165;
+				sprintf((char*)language_get_string(stringId), "SCR%d%s", screenshotIndex, _screenshot_format_extension[gConfigGeneral.screenshot_format]);
 
-				RCT2_GLOBAL(0x013CE952, uint16) = 3165;
+				RCT2_GLOBAL(0x013CE952, uint16) = stringId;
 				// RCT2_GLOBAL(0x013CE952, uint16) = STR_SCR_BMP;
 				// RCT2_GLOBAL(0x013CE952 + 2, uint16) = screenshotIndex;
 				RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
@@ -314,6 +315,98 @@ bool screenshot_write_png(rct_drawpixelinfo *dpi, const char *path)
 
 	free(png);
 	return true;
+}
+
+void screenshot_giant()
+{
+	int originalRotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+	int originalZoom = 0;
+
+	rct_window *mainWindow = window_get_main();
+	if (mainWindow != NULL && mainWindow->viewport != NULL)
+		originalZoom = mainWindow->viewport->zoom;
+
+	int rotation = originalRotation;
+	int zoom = originalZoom;
+	int mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
+	int resolutionWidth = (mapSize * 32 * 2) >> zoom;
+	int resolutionHeight = (mapSize * 32 * 1) >> zoom;
+
+	resolutionWidth += 8;
+	resolutionHeight += 128;
+
+	rct_viewport viewport;
+	viewport.x = 0;
+	viewport.y = 0;
+	viewport.width = resolutionWidth;
+	viewport.height = resolutionHeight;
+	viewport.view_width = viewport.width;
+	viewport.view_height = viewport.height;
+	viewport.var_11 = 0;
+	viewport.flags = 0;
+
+	int centreX = (mapSize / 2) * 32 + 16;
+	int centreY = (mapSize / 2) * 32 + 16;
+
+	int x, y;
+	int z = map_element_height(centreX, centreY) & 0xFFFF;
+	switch (rotation) {
+	case 0:
+		x = centreY - centreX;
+		y = ((centreX + centreY) / 2) - z;
+		break;
+	case 1:
+		x = -centreY - centreX;
+		y = ((-centreX + centreY) / 2) - z;
+		break;
+	case 2:
+		x = -centreY + centreX;
+		y = ((-centreX - centreY) / 2) - z;
+		break;
+	case 3:
+		x = centreY + centreX;
+		y = ((centreX - centreY) / 2) - z;
+		break;
+	}
+
+	viewport.view_x = x - ((viewport.view_width << zoom) / 2);
+	viewport.view_y = y - ((viewport.view_height << zoom) / 2);
+	viewport.zoom = zoom;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) = rotation;
+
+	// Ensure sprites appear regardless of rotation
+	reset_all_sprite_quadrant_placements();
+
+	rct_drawpixelinfo dpi;
+	dpi.x = 0;
+	dpi.y = 0;
+	dpi.width = resolutionWidth;
+	dpi.height = resolutionHeight;
+	dpi.pitch = 0;
+	dpi.zoom_level = 0;
+	dpi.bits = malloc(dpi.width * dpi.height);
+
+	viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
+
+	// Get a free screenshot path
+	char path[MAX_PATH];
+	int index;
+	if ((index = screenshot_get_next_path(path, SCREENSHOT_FORMAT_PNG)) == -1) {
+		log_error("Giant screenshot failed, unable to find a suitable destination path.");
+		window_error_open(STR_SCREENSHOT_FAILED, -1);
+		return;
+	}
+
+	screenshot_write_png(&dpi, path);
+
+	free(dpi.bits);
+
+	// Show user that screenshot saved successfully
+	rct_string_id stringId = 3165;
+	strcpy((char*)language_get_string(stringId), path_get_filename(path));
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = stringId;
+	window_error_open(STR_SCREENSHOT_SAVED_AS, -1);
 }
 
 int cmdline_for_screenshot(const char **argv, int argc)

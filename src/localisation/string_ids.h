@@ -1424,6 +1424,8 @@ enum {
 
 	STR_FULLSCREEN_MODE = 5177,
 
+	STR_GIANT_SCREENSHOT = 5260,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

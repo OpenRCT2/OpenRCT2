@@ -25,6 +25,7 @@
 #include "../input.h"
 #include "../sprites.h"
 #include "../audio/audio.h"
+#include "../interface/screenshot.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../interface/viewport.h"
@@ -71,11 +72,12 @@ typedef enum {
 	DDIDX_ABOUT = 3,
 	DDIDX_OPTIONS = 4,
 	DDIDX_SCREENSHOT = 5,
+	DDIDX_GIANT_SCREENSHOT = 6,
 	// seperator
-	DDIDX_QUIT_TO_MENU = 7,
-	DDIDX_EXIT_OPENRCT2 = 8,
+	DDIDX_QUIT_TO_MENU = 8,
+	DDIDX_EXIT_OPENRCT2 = 9,
 	// seperator
-	DDIDX_ENABLE_TWITCH = 10
+	DDIDX_ENABLE_TWITCH = 11
 } FILE_MENU_DDIDX;
 
 typedef enum {
@@ -322,9 +324,10 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			gDropdownItemsFormat[0] = STR_ABOUT;
 			gDropdownItemsFormat[1] = STR_OPTIONS;
 			gDropdownItemsFormat[2] = STR_SCREENSHOT;
-			gDropdownItemsFormat[3] = 0;
-			gDropdownItemsFormat[4] = STR_QUIT_TRACK_DESIGNS_MANAGER;
-			gDropdownItemsFormat[5] = STR_EXIT_OPENRCT2;
+			gDropdownItemsFormat[3] = STR_GIANT_SCREENSHOT;
+			gDropdownItemsFormat[4] = 0;
+			gDropdownItemsFormat[5] = STR_QUIT_TRACK_DESIGNS_MANAGER;
+			gDropdownItemsFormat[6] = STR_EXIT_OPENRCT2;
 
 			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
 				gDropdownItemsFormat[4] = STR_QUIT_ROLLERCOASTER_DESIGNER;
@@ -337,10 +340,11 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			gDropdownItemsFormat[3] = STR_ABOUT;
 			gDropdownItemsFormat[4] = STR_OPTIONS;
 			gDropdownItemsFormat[5] = STR_SCREENSHOT;
-			gDropdownItemsFormat[6] = 0;
-			gDropdownItemsFormat[7] = STR_QUIT_SCENARIO_EDITOR;
-			gDropdownItemsFormat[8] = STR_EXIT_OPENRCT2;
-			numItems = 9;
+			gDropdownItemsFormat[6] = STR_GIANT_SCREENSHOT;
+			gDropdownItemsFormat[7] = 0;
+			gDropdownItemsFormat[8] = STR_QUIT_SCENARIO_EDITOR;
+			gDropdownItemsFormat[9] = STR_EXIT_OPENRCT2;
+			numItems = 10;
 		} else {
 			gDropdownItemsFormat[0] = STR_LOAD_GAME;
 			gDropdownItemsFormat[1] = STR_SAVE_GAME;
@@ -348,18 +352,19 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			gDropdownItemsFormat[3] = STR_ABOUT;
 			gDropdownItemsFormat[4] = STR_OPTIONS;
 			gDropdownItemsFormat[5] = STR_SCREENSHOT;
-			gDropdownItemsFormat[6] = 0;
-			gDropdownItemsFormat[7] = STR_QUIT_TO_MENU;
-			gDropdownItemsFormat[8] = STR_EXIT_OPENRCT2;
-			numItems = 9;
+			gDropdownItemsFormat[6] = STR_GIANT_SCREENSHOT;
+			gDropdownItemsFormat[7] = 0;
+			gDropdownItemsFormat[8] = STR_QUIT_TO_MENU;
+			gDropdownItemsFormat[9] = STR_EXIT_OPENRCT2;
+			numItems = 10;
 
 		#ifndef DISABLE_TWITCH
 			if (gConfigTwitch.channel != NULL && gConfigTwitch.channel[0] != 0) {
 				_menuDropdownIncludesTwitch = true;
-				gDropdownItemsFormat[9] = 0;
-				gDropdownItemsFormat[10] = 1156;
-				gDropdownItemsArgs[10] = STR_TWITCH_ENABLE;
-				numItems = 11;
+				gDropdownItemsFormat[10] = 0;
+				gDropdownItemsFormat[11] = 1156;
+				gDropdownItemsArgs[11] = STR_TWITCH_ENABLE;
+				numItems = 12;
 			}
 		#endif
 		}
@@ -374,7 +379,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 
 #ifndef DISABLE_TWITCH
 		if (_menuDropdownIncludesTwitch && gTwitchEnable)
-			gDropdownItemsChecked |= (1 << 10);
+			gDropdownItemsChecked |= (1 << 11);
 #endif
 		break;
 	case WIDX_VIEW_MENU:
@@ -443,6 +448,9 @@ static void window_top_toolbar_dropdown()
 			break;
 		case DDIDX_SCREENSHOT:
 			RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, sint8) = 10;
+			break;
+		case DDIDX_GIANT_SCREENSHOT:
+			screenshot_giant();
 			break;
 		case DDIDX_QUIT_TO_MENU:
 			window_close_by_class(WC_MANAGE_TRACK_DESIGN);
