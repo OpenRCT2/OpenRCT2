@@ -26,6 +26,8 @@
 #include "../world/map.h"
 #include "../world/sprite.h"
 #include "../world/banner.h"
+#include "../world/entrance.h"
+#include "../world/footpath.h"
 #include "../world/scenery.h"
 #include "viewport.h"
 #include "window.h"
@@ -1165,6 +1167,31 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 	}
 }
 
+/* rct2: 0x006658ED */
+void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_element* map_element){
+	if (RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1)
+		return;
+
+	RCT2_GLOBAL(0x009DE570, uint8) = 8;
+	RCT2_GLOBAL(0x009E32BC, uint32) = 0;
+	uint32 image_id, ghost_id;
+	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST){
+		RCT2_GLOBAL(0x009DE570, uint8) = 0;
+		ghost_id = RCT2_ADDRESS(0x993CC4, uint32)[RCT2_GLOBAL(0x9AACBF, uint8)];
+		RCT2_GLOBAL(0x009E32BC, uint32) = ghost_id;
+	}
+
+	rct_path_type* path_entry = g_pathTypeEntries[map_element->properties.entrance.path_type];
+
+	switch ((map_element->properties.entrance.index & 0xF << 2) | direction){
+	case 0:
+		image_id = (path_entry->image + 5) | ghost_id;
+		//665988
+		break;
+		//665939
+	}
+}
+
 /* rct2: 0x00664FD4 */
 void viewport_entrance_paint_setup(uint8 direction, int height, rct_map_element* map_element){
 	RCT2_GLOBAL(0x9DE570, uint8_t) = 0xB;
@@ -1205,7 +1232,7 @@ void viewport_entrance_paint_setup(uint8 direction, int height, rct_map_element*
 		viewport_ride_entrance_exit_paint_setup(direction, height, map_element);
 		break;
 	case ENTRANCE_TYPE_PARK_ENTRANCE:
-		//6658ED
+		viewport_park_entrance_paint_setup(direction, height, map_element);
 		break;
 	}
 }
