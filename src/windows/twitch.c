@@ -159,19 +159,18 @@ static void window_twitch_paint()
 static void window_twitch_text_input(){
 	short widgetIndex;
 	rct_window *w;
-	char _cl;
+	uint8 result;
 	char* text;
 
-	//just a stub
+	window_textinput_get_registers(w, widgetIndex, result, text);
+
+	char *userName = multi_text_input;
+	char *password = multi_text_input2;
 }
 
 static void window_twitch_invalidate()
 {
 	rct_window *w;
-	int i;
-	sint32 currentSoundDevice;
-
-	//just a stub
 
 	window_get_register(w);
 
