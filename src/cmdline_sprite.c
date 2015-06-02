@@ -1,9 +1,9 @@
 #include <lodepng/lodepng.h>
+#include <math.h>
 #include "cmdline.h"
 #include "drawing/drawing.h"
+#include "platform/platform.h"
 #include "util/util.h"
-#include <math.h>
-#include "platform\platform.h"
 
 #define MODE_DEFAULT 0
 #define MODE_CLOSEST 1
