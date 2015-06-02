@@ -140,7 +140,7 @@ static rct_widget window_mapgen_simplex_widgets[] = {
 
 	{ WWT_DROPDOWN_BUTTON,	1,	104,	198,	52,		63,		2694,					STR_NONE },
 
-	{ WWT_12,				1,	4,		141,	52,		63,		2685,					STR_NONE },
+	{ WWT_12,				1,	4,		198,	52,		63,		2685,					STR_NONE },
 
 	{ WWT_SPINNER,			1,	104,	198,	70,		81,		STR_NONE,				STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	187,	197,	71,		75,		STR_NUMERIC_UP,			STR_NONE },
@@ -171,6 +171,9 @@ static rct_widget window_mapgen_simplex_widgets[] = {
 	
 	{ WIDGETS_END },
 };
+
+const int window_mapgen_tab_animation_divisor[] = { 1, 1, 1 };
+const int window_mapgen_tab_animation_frames[] = { 1, 1, 1 };
 
 
 static rct_widget *window_mapgen_page_widgets[] = {
@@ -1086,10 +1089,8 @@ static void window_mapgen_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, 
 
 	if (!(w->disabled_widgets & (1LL << widgetIndex))) {
 		if (w->page == page) {
-			int frame = w->frame_no / 2;
-			if (page == WINDOW_MAPGEN_PAGE_BASE)
-				frame %= 8;
-			spriteIndex += frame;
+			int frame = w->frame_no / window_mapgen_tab_animation_divisor[w->page];
+			spriteIndex += (frame % window_mapgen_tab_animation_frames[w->page]);
 		}
 
 		gfx_draw_sprite(dpi, spriteIndex, w->x + w->widgets[widgetIndex].left, w->y + w->widgets[widgetIndex].top, 0);
@@ -1098,7 +1099,9 @@ static void window_mapgen_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, 
 
 static void window_mapgen_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 {
-
+	window_mapgen_draw_tab_image(dpi, w, WINDOW_MAPGEN_PAGE_BASE, SPR_G2_TAB_LAND);
+	window_mapgen_draw_tab_image(dpi, w, WINDOW_MAPGEN_PAGE_RANDOM, SPR_G2_TAB_TREE);
+	window_mapgen_draw_tab_image(dpi, w, WINDOW_MAPGEN_PAGE_SIMPLEX, SPR_G2_TAB_PENCIL);
 }
 
 #pragma endregion
