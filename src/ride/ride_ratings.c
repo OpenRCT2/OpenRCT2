@@ -625,21 +625,21 @@ static rating_tuple get_var_10E_rating(rct_ride* ride) {
  * rct2: 0x0065DF72
  */
 static rating_tuple get_var_110_rating(rct_ride* ride) {
-	int var_10E_unk_1 = get_var_10E_unk_1(ride);
-	int var_10E_unk_2 = get_var_10E_unk_2(ride);
-	int var_10E_unk_3 = get_var_10E_unk_3(ride);
+	int var_110_unk_1 = get_var_110_unk_1(ride);
+	int var_110_unk_2 = get_var_110_unk_2(ride);
+	int var_110_unk_3 = get_var_110_unk_3(ride);
 
-	int excitement = (var_10E_unk_1 * 0x3c000) >> 16;
-	excitement += (var_10E_unk_2 * 0x3c000) >> 16;
-	excitement += (var_10E_unk_3 * 73992) >> 16;
+	int excitement = (var_110_unk_1 * 0x3c000) >> 16;
+	excitement += (var_110_unk_2 * 0x3c000) >> 16;
+	excitement += (var_110_unk_3 * 73992) >> 16;
 
-	int intensity = (var_10E_unk_1 * 0x14000) >> 16;
-	intensity += (var_10E_unk_2 * 49152) >> 16;
-	intensity += (var_10E_unk_3 * 21140) >> 16;
+	int intensity = (var_110_unk_1 * 0x14000) >> 16;
+	intensity += (var_110_unk_2 * 49152) >> 16;
+	intensity += (var_110_unk_3 * 21140) >> 16;
 
-	int nausea = var_10E_unk_1 * 5;
-	nausea += (var_10E_unk_2 * 0x32000) >> 16;
-	nausea += (var_10E_unk_3 * 48623) >> 16;
+	int nausea = var_110_unk_1 * 5;
+	nausea += (var_110_unk_2 * 0x32000) >> 16;
+	nausea += (var_110_unk_3 * 48623) >> 16;
 
 	rating_tuple rating = { excitement, intensity, nausea };
 	return rating;
@@ -1195,6 +1195,65 @@ static void ride_ratings_calculate_spiral_slide(rct_ride *ride)
 	ride->inversions |= 2 << 5;
 }
 
+static void ride_ratings_calculate_go_karts(rct_ride *ride)
+{
+	rating_tuple ratings, subRating;
+
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+		return;
+
+	ride->unreliability_factor = 16;
+	set_unreliability_factor(ride);
+
+	ratings.excitement =	RIDE_RATING(1,42);
+	ratings.intensity =		RIDE_RATING(1,73);
+	ratings.nausea =		RIDE_RATING(0,40);
+
+	ratings.excitement += (min(ride_get_total_length(ride) >> 16, 700) * 32768) >> 16;
+	if (ride->mode == RIDE_MODE_RACE && ride->num_vehicles >= 4) {
+		ratings.excitement +=	RIDE_RATING(1,40);
+		ratings.intensity +=	RIDE_RATING(0,50);
+
+		int lapsFactor = (ride->num_laps - 1) * 30;
+		ratings.excitement += lapsFactor;
+		ratings.intensity += lapsFactor / 2;
+	}
+
+	subRating = sub_65DDD1(ride);
+	ratings.excitement += (subRating.excitement * 4458) >> 16;
+	ratings.intensity += (subRating.intensity * 3476) >> 16;
+	ratings.nausea += (subRating.nausea * 5718) >> 16;
+
+	subRating = ride_ratings_get_drop_ratings(ride);
+	ratings.excitement += (subRating.excitement * 8738) >> 16;
+	ratings.intensity += (subRating.intensity * 5461) >> 16;
+	ratings.nausea += (subRating.nausea * 6553) >> 16;
+
+	subRating = sub_65E1C2(ride);
+	ratings.excitement += (subRating.excitement * 2570) >> 16;
+	ratings.intensity += (subRating.intensity * 8738) >> 16;
+	ratings.nausea += (subRating.nausea * 2340) >> 16;
+
+	ratings.excitement += (sub_65E277() * 11183) >> 16;
+	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 16732) >> 16;
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+
+	int edx = sub_65E72D(ride);
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= edx << 5;
+
+	if (((edx >> 8) & 0xFF) >= 6)
+		ride->excitement /= 2;
+}
+
 static void ride_ratings_calculate_pirate_ship(rct_ride *ride)
 {
 	rating_tuple ratings;
@@ -1590,8 +1649,6 @@ static void ride_ratings_calculate_mini_golf(rct_ride *ride)
 {
 	rating_tuple ratings, unkRating;
 
-	// RCT2_CALLPROC_X(0x0065BF97, 0, 0, 0, 0, 0, (int)ride, 0); return;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
@@ -1863,7 +1920,7 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[91] = {
 	NULL,											// CORKSCREW_ROLLER_COASTER
 	ride_ratings_calculate_maze,					// MAZE
 	ride_ratings_calculate_spiral_slide,			// SPIRAL_SLIDE
-	NULL,											// GO_KARTS
+	ride_ratings_calculate_go_karts,				// GO_KARTS
 	NULL,											// LOG_FLUME
 	NULL,											// RIVER_RAPIDS
 	NULL,											// BUMPER_CARS

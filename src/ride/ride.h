@@ -168,7 +168,7 @@ typedef struct {
 	uint8 min_waiting_time;			// 0x0CE
 	uint8 max_waiting_time;			// 0x0CF
 	union {
-		uint8 operation_option;
+		uint8 operation_option;		// 0x0D0
 		uint8 time_limit;			// 0x0D0
 		uint8 num_laps;				// 0x0D0
 		uint8 launch_speed;			// 0x0D0
