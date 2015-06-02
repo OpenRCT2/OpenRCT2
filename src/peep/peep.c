@@ -1201,7 +1201,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 
 		map_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
 
-		uint8 direction_track = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+		uint8 direction_track = (!map_element ? 0 : map_element->type & MAP_ELEMENT_DIRECTION_MASK);
 
 		peep->var_37 = (direction_entrance << 2) | (direction_track << 4);
 
@@ -1246,7 +1246,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 
 		map_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
 
-		uint8 direction_track = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+		uint8 direction_track = (!map_element ? 0 : map_element->type & MAP_ELEMENT_DIRECTION_MASK);
 
 		vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
 		ride_entry = GET_RIDE_ENTRY(vehicle->ride_subtype);
@@ -1726,7 +1726,7 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
 
 	map_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
 
-	uint8 station_direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+	uint8 station_direction = (!map_element ? 0 : map_element->type & MAP_ELEMENT_DIRECTION_MASK);
 
 	vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
 	
