@@ -40,6 +40,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (KingHual) - Housecleaning
 * Alexander Overvoorde (Overv) - Misc.
 * (eezstreet) - Misc.
+* Thomas den Hollander (ThomasdenH) - Misc.
 
 ## Bug fixes
 * (halfbro)
