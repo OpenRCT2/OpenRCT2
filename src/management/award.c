@@ -374,7 +374,7 @@ static int award_is_deserved_best_restrooms(int awardType, int activeAwardTypes)
 	// Count open restrooms
 	numRestrooms = 0;
 	FOR_ALL_RIDES(i, ride)
-		if (ride->type == RIDE_TYPE_BATHROOM && ride->status == RIDE_STATUS_OPEN)
+		if (ride->type == RIDE_TYPE_TOILETS && ride->status == RIDE_STATUS_OPEN)
 			numRestrooms++;
 
 	// At least 4 open restrooms

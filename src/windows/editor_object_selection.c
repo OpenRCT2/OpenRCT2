@@ -761,6 +761,24 @@ static void window_editor_object_selection_paint()
 	}
 	gfx_draw_string_right(dpi, stringId, NULL, 2, w->x + w->width - 5, w->y + w->height - 3 - 12 - 14);
 
+	// 
+	if (w->selected_tab == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS) {
+		y = w->y + w->height - 3 - 12 - 14 - 14;
+
+		rct_ride_type *rideType = (rct_ride_type*)stex_entry;
+		for (int i = 0; i < 3; i++) {
+			if (rideType->ride_type[i] == 255)
+				continue;
+
+			stringId = 2 + rideType->ride_type[i];
+			gfx_draw_string_right(dpi, stringId, NULL, 2, w->x + w->width - 5, y);
+			y -= 11;
+		}
+	}
+
+	//stringId = highlightedEntry->checksum
+	// gfx_draw_string_right(dpi, stringId, NULL, 2, w->x + w->width - 5, w->y + w->height - 3 - 12 - 14);
+
 	// Draw object dat name
 	stringId = 3165;
 	strcpy(stringBuffer, datName);

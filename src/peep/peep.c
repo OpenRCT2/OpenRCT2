@@ -3337,7 +3337,7 @@ static void peep_update_buying(rct_peep* peep)
 			return;
 		}
 
-		if (ride->type == RIDE_TYPE_ATM){
+		if (ride->type == RIDE_TYPE_CASH_MACHINE){
 			if (peep->current_ride != peep->previous_ride){
 				peep->cash_in_pocket += MONEY(50,00);
 			}
@@ -3357,7 +3357,7 @@ static void peep_update_buying(rct_peep* peep)
 	uint8 item_bought = 0;
 
 	if (peep->current_ride != peep->previous_ride){
-		if (ride->type == RIDE_TYPE_ATM){
+		if (ride->type == RIDE_TYPE_CASH_MACHINE){
 			item_bought = !(RCT2_CALLPROC_X(0x0069AEB7, peep->current_ride << 8, 0, 0, 0, (int)peep, 0, 0) & 0x100);
 
 			if (!item_bought){
@@ -5272,7 +5272,7 @@ static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type){
 		thought_type = PEEP_THOUGHT_TYPE_THIRSTY;
 		if (!(RCT2_ADDRESS(0x97CF40, uint32)[ride_type * 2] & 0x1000000)){
 			thought_type = PEEP_THOUGHT_RUNNING_OUT;
-			if (ride_type != RIDE_TYPE_ATM){
+			if (ride_type != RIDE_TYPE_CASH_MACHINE){
 				thought_type = PEEP_THOUGHT_TYPE_BATHROOM;
 				if (!(RCT2_ADDRESS(0x97CF40, uint32)[ride_type * 2] & 0x2000000)){
 					return;

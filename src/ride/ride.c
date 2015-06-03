@@ -3475,7 +3475,7 @@ void sub_6B4D26(int rideIndex, rct_xy_element *startElement)
 	int trackType;
 
 	ride = GET_RIDE(rideIndex);
-	if (ride->type == RIDE_TYPE_BUMPER_BOATS) {
+	if (ride->type == RIDE_TYPE_BOAT_RIDE) {
 
 	} else if (ride->type != RIDE_TYPE_MAZE) {
 
