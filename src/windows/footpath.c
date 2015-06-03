@@ -719,7 +719,7 @@ static void window_footpath_set_selection_start_bridge_at_point(int screenX, int
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0) & ~(1 << 2);
 
 	footpath_bridge_get_info_from_pos(screenX, screenY, &x, &y, &direction, &mapElement);
-	if (x == 0x8000)
+	if (x == (sint16)0x8000)
 		return;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0) | (1 << 2);
@@ -801,7 +801,7 @@ static void window_footpath_start_bridge_at_point(int screenX, int screenY)
 	rct_map_element *mapElement;
 
 	footpath_bridge_get_info_from_pos(screenX, screenY, &x, &y, &direction, &mapElement);
-	if (x == 0x8000)
+	if (x == (sint16)0x8000)
 		return;
 
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) {

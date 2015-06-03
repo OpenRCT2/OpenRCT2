@@ -1652,7 +1652,7 @@ void sub_688972(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **v
 void screen_pos_to_map_pos(sint16 *x, sint16 *y, int *direction)
 {
 	sub_688972(*x, *y, x, y, NULL);
-	if (*x == 0x8000)
+	if (*x == (sint16)0x8000)
 		return;
 
 	int my_direction;

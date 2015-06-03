@@ -500,7 +500,7 @@ static void sub_666DFD()
 
 	x = RCT2_GLOBAL(0x013573EA, uint16);
 	y = RCT2_GLOBAL(0x013573EC, uint16);
-	if (x == 0x8000)
+	if (x == (sint16)0x8000)
 		return;
 
 	x /= 32;

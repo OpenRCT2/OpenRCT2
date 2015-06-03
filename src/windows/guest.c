@@ -1149,7 +1149,7 @@ void window_guest_overview_tool_update(){
 
 	int map_x, map_y;
 	footpath_get_coordinates_from_pos(x, y + 16, &map_x, &map_y, NULL, NULL);
-	if (map_x != 0x8000){
+	if (map_x != (sint16)0x8000){
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 1;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = map_x;
@@ -1199,7 +1199,7 @@ void window_guest_overview_tool_down(){
 	rct_map_element *mapElement;
 	footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, NULL, &mapElement);
 
-	if (dest_x == 0x8000)return;
+	if (dest_x == (sint16)0x8000)return;
 
 	// Set the coordinate of destination to be exactly 
 	// in the middle of a tile.
@@ -1263,7 +1263,7 @@ void window_guest_overview_tool_abort(){
 	sprite_move( w->var_48C, peep->y, peep->z + 8, (rct_sprite*)peep);
 	invalidate_sprite((rct_sprite*)peep);
 
-	if (peep->x != 0x8000){
+	if (peep->x != (sint16)0x8000){
 		peep_decrement_num_riders(peep);
 		peep->state = 0;
 		peep_window_state_update(peep);

@@ -37,7 +37,7 @@ void vehicle_update_sound_params(rct_vehicle* vehicle)
 {
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) || RCT2_GLOBAL(0x0141F570, uint8) == 6)) {
 		if (vehicle->sound1_id != (uint8)-1 || vehicle->sound2_id != (uint8)-1) {
-			if (vehicle->sprite_left != 0x8000) {
+			if (vehicle->sprite_left != (sint16)0x8000) {
 				RCT2_GLOBAL(0x009AF5A0, sint16) = vehicle->sprite_left;
 				RCT2_GLOBAL(0x009AF5A2, sint16) = vehicle->sprite_top;
 				RCT2_GLOBAL(0x009AF5A4, sint16) = vehicle->sprite_right;
@@ -116,7 +116,7 @@ void vehicle_update_sound_params(rct_vehicle* vehicle)
 							i->frequency = (uint16)v19;
 							i->id = vehicle->sprite_index;
 							i->volume = 0;
-							if (vehicle->x != 0x8000) {
+							if (vehicle->x != (sint16)0x8000) {
 								int tile_idx = (((vehicle->y & 0xFFE0) * 256) + (vehicle->x & 0xFFE0)) / 32;
 								rct_map_element* map_element;
 								for (map_element = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx]; map_element->type & MAP_ELEMENT_TYPE_MASK; map_element++);

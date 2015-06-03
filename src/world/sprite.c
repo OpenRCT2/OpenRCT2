@@ -808,14 +808,14 @@ void sprite_misc_update_all()
  */
 void sprite_move(int x, int y, int z, rct_sprite* sprite){
 	int new_position = x;
-	if ((uint16)x == 0x8000)new_position = 0x10000;
+	if (x == (sint16)0x8000)new_position = 0x10000;
 	else{
 		new_position &= 0x1FE0;
 		new_position = (y >> 5) | (new_position << 3);
 	}
 
 	int current_position = sprite->unknown.x;
-	if ((uint16)sprite->unknown.x == 0x8000)current_position = 0x10000;
+	if (sprite->unknown.x == (sint16)0x8000)current_position = 0x10000;
 	else{
 		current_position &= 0x1FE0;
 		current_position = (sprite->unknown.y >> 5) | (current_position << 3);
@@ -835,7 +835,7 @@ void sprite_move(int x, int y, int z, rct_sprite* sprite){
 		sprite->unknown.next_in_quadrant = temp_sprite_idx;
 	}
 
-	if (x == 0x8000){
+	if (x == (sint16)0x8000){
 		sprite->unknown.sprite_left = 0x8000;
 		sprite->unknown.x = x;
 		sprite->unknown.y = y;

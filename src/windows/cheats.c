@@ -836,7 +836,7 @@ static void window_cheats_misc_tool_update()
 
 	int map_x, map_y;
 	footpath_get_coordinates_from_pos(x, y + 16, &map_x, &map_y, NULL, NULL);
-	if (map_x != 0x8000){
+	if (map_x != (sint16)0x8000){
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 1;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = map_x;
@@ -862,7 +862,7 @@ static void window_cheats_misc_tool_down()
 	int dest_x, dest_y;
 	footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, NULL, NULL);
 
-	if (dest_x == 0x8000)return;
+	if (dest_x == (sint16)0x8000)return;
 
 	// Set the coordinate of destination to be exactly 
 	// in the middle of a tile.
