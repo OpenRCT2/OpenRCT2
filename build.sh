@@ -11,6 +11,9 @@ pushd build
 	make
 popd
 
+echo Building: data/g2.dat
+./build_g2.sh > /dev/null 2>&1
+
 if [[ ! -h openrct2.dll ]]; then 
     ln -s build/openrct2.dll openrct2.dll
 fi
