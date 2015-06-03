@@ -806,7 +806,7 @@ void sprite_misc_update_all()
  * cx: y
  * dx: z
  */
-void sprite_move(int x, int y, int z, rct_sprite* sprite){
+void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite* sprite){
 	int new_position = x;
 	if (x == (sint16)0x8000)new_position = 0x10000;
 	else{
@@ -842,7 +842,7 @@ void sprite_move(int x, int y, int z, rct_sprite* sprite){
 		sprite->unknown.z = z;
 		return;
 	}
-	int new_x = x, new_y = y, start_x = x;
+	sint16 new_x = x, new_y = y, start_x = x;
 	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)){
 	case 0:
 		new_x = new_y - new_x;
