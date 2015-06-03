@@ -587,7 +587,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 
 		const char *spriteFilePath = argv[1];
 		const char *resourcePath = argv[2];
-		char imagePath[256], number[8];
+		char imagePath[MAX_PATH];
 		int resourceLength = strlen(resourcePath);
 
 		bool silent = (argc >= 4 && strcmp(argv[3], "silent") == 0);
@@ -599,14 +599,16 @@ int cmdline_for_sprite(const char **argv, int argc)
 		sprite_file_save(spriteFilePath);
 
 		fprintf(stderr, "Building: %s\n", spriteFilePath);
-		for (int i = 0; fileExists; i++) {
-			_itoa(i, number, 10);
+		int i = 0;
+		do {
+			// Create image path
 			strcpy(imagePath, resourcePath);
-			if (resourceLength == 0 || (resourcePath[resourceLength - 1] != '/' && resourcePath[resourceLength - 1] != '\\'))
-				strcat(imagePath, "/");
-			strcat(imagePath, number);
-			strcat(imagePath, ".png");
-			if (file = fopen(imagePath, "r")) {
+			if (resourcePath[resourceLength - 1] == '/' || resourcePath[resourceLength - 1] == '\\')
+				imagePath[resourceLength - 1] = 0;
+			sprintf(imagePath, "%s%c%d.png", imagePath, platform_get_path_separator(), i);
+
+			file = fopen(imagePath, "r");
+			if (file != NULL) {
 				fclose(file);
 				rct_g1_element spriteElement;
 				uint8 *buffer;
@@ -642,12 +644,8 @@ int cmdline_for_sprite(const char **argv, int argc)
 				if (!silent)
 					fprintf(stderr, "Added: %s\n", imagePath);
 			}
-			else {
-
-				fprintf(stderr, "Could not find file: %s\n", imagePath);
-				fileExists = false;
-			}
-		}
+			i++;
+		} while (file != NULL);
 
 
 		fprintf(stderr, "Finished\n", imagePath);
