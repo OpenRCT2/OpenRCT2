@@ -446,6 +446,14 @@ int ride_get_total_length(rct_ride *ride)
 	return totalLength;
 }
 
+int ride_get_total_time(rct_ride *ride)
+{
+	int i, totalTime = 0;
+	for (i = 0; i < ride->num_stations; i++)
+		totalTime += ride->time[i];
+	return totalTime;
+}
+
 int ride_can_have_multiple_circuits(rct_ride *ride)
 {
 	if (!(RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x200))
