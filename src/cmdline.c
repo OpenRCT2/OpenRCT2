@@ -118,7 +118,7 @@ static int cmdline_for_edit(const char **argv, int argc)
 {
 	gOpenRCT2StartupAction = STARTUP_ACTION_EDIT;
 	if (argc >= 1)
-		strcpy(gOpenRCT2StartupActionPath, argv[1]);
+		strcpy(gOpenRCT2StartupActionPath, argv[0]);
 
 	return 0;
 }

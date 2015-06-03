@@ -124,7 +124,6 @@ int rct2_init()
 		title_load();
 
 		gfx_clear(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 10);
-		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = gConfigGeneral.play_intro ? 8 : 255;
 	}
 
 	log_verbose("initialising game finished");
