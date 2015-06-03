@@ -170,7 +170,7 @@ static void sub_693BE5(rct_peep* peep, uint8 al){
 
 	// If NONE_1 or NONE_2
 	if (peep->action >= PEEP_ACTION_NONE_1){
-		peep->action = PEEP_STATE_FALLING;
+		peep->action_sprite_image_offset = 0;
 	}
 	sub_693B58(peep);
 }
@@ -667,7 +667,7 @@ void peep_update_falling(rct_peep* peep){
 					if (peep->item_standard_flags & PEEP_ITEM_BALLOON){
 						peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
 
-						if (peep->sprite_type == 19 && peep->x != 0x8000){
+						if (peep->sprite_type == 19 && peep->x != (sint16)0x8000){
 							create_balloon(peep->x, peep->y, height, peep->balloon_colour, 0);
 							peep->var_45 |= (1 << 3);
 							peep_update_sprite_type(peep);
@@ -4619,7 +4619,7 @@ void peep_applause()
 		// Release balloon
 		if (peep->item_standard_flags & PEEP_ITEM_BALLOON) {
 			peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
-			if (peep->x != 0x8000) {
+			if (peep->x != (sint16)0x8000) {
 				create_balloon(peep->x, peep->y, peep->z + 9, peep->balloon_colour, 0);
 				peep->var_45 |= 8;
 				peep_update_sprite_type(peep);

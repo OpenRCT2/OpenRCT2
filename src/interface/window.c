@@ -845,6 +845,12 @@ void window_update_scroll_widgets(rct_window *w)
 
 		scroll = &w->scrolls[scrollIndex];
 		window_get_scroll_size(w, scrollIndex, &width, &height);
+		if (height == 0){
+			scroll->v_top = 0;
+		}
+		else if (width == 0){
+			scroll->h_left = 0;
+		}
 		width++;
 		height++;
 
@@ -872,7 +878,7 @@ int window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *heig
 	rct_widget *widget = window_get_scroll_widget(w, scrollIndex);
 	int widgetIndex = window_get_widget_index(w, widget);
 
-	int eax = 0, ebx = scrollIndex * sizeof(rct_scroll), ecx = 0, edx = 0, esi = (int)w, edi = widgetIndex * sizeof(rct_widget), ebp = 0;
+	int eax = scrollIndex, ebx = scrollIndex * sizeof(rct_scroll), ecx = 0, edx = 0, esi = (int)w, edi = widgetIndex * sizeof(rct_widget), ebp = 0;
 	RCT2_CALLFUNC_X(w->event_handlers[WE_SCROLL_GETSIZE], & eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	*width = ecx;
 	*height = edx;

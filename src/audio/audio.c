@@ -1482,7 +1482,7 @@ int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z)
 		}
 		other_sound->id = sound_id;
 		int pan;
-		if (ebx == 0x8000) {
+		if (ebx == (sint16)0x8000) {
 			pan = 0;
 		} else {
 			int x2 = ebx << 16;

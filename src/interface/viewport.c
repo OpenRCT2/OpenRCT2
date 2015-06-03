@@ -147,6 +147,15 @@ void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_view
 		break;
 	}
 
+	// If the start location was invalid
+	// propagate the invalid location to the output.
+	// This fixes a bug that caused the game to enter an infinite loop.
+	if (start_x == (sint16)0x8000){
+		*out_x = (sint16)0x8000;
+		*out_y = 0;
+		return;
+	}
+
 	*out_x = x - viewport->view_width / 2;
 	*out_y = y - viewport->view_height / 2;
 }
@@ -1652,7 +1661,7 @@ void sub_688972(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **v
 void screen_pos_to_map_pos(sint16 *x, sint16 *y, int *direction)
 {
 	sub_688972(*x, *y, x, y, NULL);
-	if (*x == 0x8000)
+	if (*x == (sint16)0x8000)
 		return;
 
 	int my_direction;
