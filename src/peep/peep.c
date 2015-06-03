@@ -170,7 +170,7 @@ static void sub_693BE5(rct_peep* peep, uint8 al){
 
 	// If NONE_1 or NONE_2
 	if (peep->action >= PEEP_ACTION_NONE_1){
-		peep->action = PEEP_STATE_FALLING;
+		peep->action_sprite_image_offset = 0;
 	}
 	sub_693B58(peep);
 }
