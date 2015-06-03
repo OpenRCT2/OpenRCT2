@@ -119,7 +119,7 @@ static void* window_editor_inventions_list_events[] = {
 	window_editor_inventions_list_scrollpaint
 };
 
-// 0x0098177C
+// 0x009817EC
 static void* window_editor_inventions_list_drag_events[] = {
 	window_editor_inventions_list_emptysub,
 	window_editor_inventions_list_emptysub,
@@ -170,7 +170,14 @@ static int research_item_is_always_researched(rct_research_item *researchItem)
  */
 static void sub_685901()
 {
-	RCT2_CALLPROC_EBPSAFE(0x00685901);
+	for (rct_research_item* research = gResearchItems; 
+		research->entryIndex != -3; 
+		research++){
+
+		if (research->entryIndex < -3){
+			research->entryIndex &= 0x00FFFFFF;
+		}
+	}
 }
 
 /**

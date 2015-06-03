@@ -861,7 +861,7 @@ void process_mouse_over(int x, int y)
 				RCT2_GLOBAL(0x9DE558, uint16) = x;
 				RCT2_GLOBAL(0x9DE55A, uint16) = y;
 				int output_x, output_y, output_scroll_area, scroll_id;
-				widget_scroll_get_part(window, window->widgets, x, y, &output_x, &output_y, &output_scroll_area, &scroll_id);
+				widget_scroll_get_part(window, window->widgets, x, y, &x, &y, &output_scroll_area, &scroll_id);
 				cursorId = scroll_id;
 				if (output_scroll_area != SCROLL_PART_VIEW)
 				{
