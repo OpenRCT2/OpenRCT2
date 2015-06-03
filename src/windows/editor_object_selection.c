@@ -30,6 +30,25 @@
 #include "../scenario.h"
 #include "error.h"
 #include "../interface/themes.h"
+#include "dropdown.h"
+
+
+enum {
+	FILTER_RCT2 = (1 << 0),
+	FILTER_WW = (1 << 1),
+	FILTER_TT = (1 << 2),
+	FILTER_CUSTOM = (1 << 3),
+	FILTER_ALL = 0xF
+} FILTER_FLAGS;
+
+uint32 _filter_flags;
+uint16 _filter_object_counts[11];
+
+#define _FILTER_ALL ((_filter_flags & FILTER_ALL) == FILTER_ALL)
+#define _FILTER_RCT2 (_filter_flags & FILTER_RCT2)
+#define _FILTER_WW (_filter_flags & FILTER_WW)
+#define _FILTER_TT (_filter_flags & FILTER_TT)
+#define _FILTER_CUSTOM (_filter_flags & FILTER_CUSTOM)
 
 enum {
 	WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS,
@@ -68,6 +87,7 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
 	WIDX_LIST,					// 16, 10000
 	WIDX_PREVIEW,				// 17, 20000
 	WIDX_DROPDOWN2,				// 18, 40000
+	WIDX_FILTER_DROPDOWN,		// 19, 80000
 };
 
 static rct_widget window_editor_object_selection_widgets[] = {
@@ -90,6 +110,7 @@ static rct_widget window_editor_object_selection_widgets[] = {
 	{ WWT_SCROLL,			1,	4,		291,	46,		386,	2,								STR_NONE },
 	{ WWT_FLATBTN,			1,	391,	504,	46,		159,	0xFFFFFFFF,						STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	0,	384,	595,	24,		35,		STR_INSTALL_NEW_TRACK_DESIGN,	STR_INSTALL_NEW_TRACK_DESIGN_TIP },
+	{ WWT_DROPDOWN_BUTTON,	0,	350,	463,	23,		34,		5261,							5265 },
 	{ WIDGETS_END }
 };
 
@@ -101,6 +122,8 @@ static void window_editor_object_selection_emptysub() { }
 
 static void window_editor_object_selection_close();
 static void window_editor_object_selection_mouseup();
+static void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
+static void window_editor_object_selection_dropdown();
 static void window_editor_object_selection_scrollgetsize();
 static void window_editor_object_selection_scroll_mousedown();
 static void window_editor_object_selection_scroll_mouseover();
@@ -113,8 +136,8 @@ static void* window_editor_object_selection_events[] = {
 	window_editor_object_selection_close,
 	(void*)window_editor_object_selection_mouseup,
 	(void*)window_editor_object_selection_emptysub,
-	(void*)window_editor_object_selection_emptysub,
-	(void*)window_editor_object_selection_emptysub,
+	(void*)window_editor_object_selection_mousedown,
+	(void*)window_editor_object_selection_dropdown,
 	(void*)window_editor_object_selection_emptysub,
 	(void*)window_editor_object_selection_emptysub,
 	(void*)window_editor_object_selection_emptysub,
@@ -222,7 +245,10 @@ void window_editor_object_selection_open()
 	window->enabled_widgets =
 		(1 << WIDX_DROPDOWN1) |
 		(1 << WIDX_DROPDOWN2) |
+		(1 << WIDX_FILTER_DROPDOWN) |
 		(1 << WIDX_CLOSE);
+
+	_filter_flags = FILTER_ALL;
 
 	for (int i = WIDX_TAB_1; i <= WIDX_TAB_11; i++)
 		window->enabled_widgets |= (1LL << i);
@@ -319,6 +345,78 @@ static void window_editor_object_selection_mouseup()
 	}
 }
 
+void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
+{
+	int num_items;
+
+	//widget = &w->widgets[widgetIndex - 1];
+
+	switch (widgetIndex) {
+	case WIDX_FILTER_DROPDOWN:
+
+		num_items = 4;
+		gDropdownItemsFormat[0] = 1142;
+		gDropdownItemsFormat[1] = 1142;
+		gDropdownItemsFormat[2] = 1142;
+		gDropdownItemsFormat[3] = 1142;
+		gDropdownItemsArgs[0] = 2741;
+		gDropdownItemsArgs[1] = 5262;
+		gDropdownItemsArgs[2] = 5263;
+		gDropdownItemsArgs[3] = 5264;
+
+		window_dropdown_show_text(
+			w->x + widget->left,
+			w->y + widget->top,
+			widget->bottom - widget->top + 1,
+			w->colours[widget->colour],
+			DROPDOWN_FLAG_STAY_OPEN,
+			num_items
+			);
+
+		gDropdownItemsChecked = _filter_flags;
+		break;
+	}
+
+
+}
+
+static void window_editor_object_selection_dropdown()
+{
+	short dropdownIndex;
+	short widgetIndex;
+	rct_window *w;
+
+	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
+
+	if (dropdownIndex == -1)
+		return;
+	switch (widgetIndex) {
+	case WIDX_FILTER_DROPDOWN:
+
+		_filter_flags ^= (1 << dropdownIndex);
+
+		if (!_FILTER_ALL) {
+			rct_object_entry *installed_entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+			uint8 type, source;
+			for (int i = 0; i < 11; i++) {
+				_filter_object_counts[i] = 0;
+			}
+			for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i) {
+				type = installed_entry->flags & 0xF;
+				source = (installed_entry->flags & 0xF0) >> 4;
+				if ((_FILTER_RCT2 && source == 8) || (_FILTER_WW && source == 1) || (_FILTER_TT && source == 2) || (_FILTER_CUSTOM && source != 8 && source != 1 && source != 2)) {
+					_filter_object_counts[type]++;
+				}
+				installed_entry = object_get_next(installed_entry);
+			}
+		}
+		w->scrolls->v_top = 0;
+
+		window_invalidate(w);
+		break;
+	}
+}
+
 /**
  * 
  *  rct2: 0x006AB031
@@ -333,7 +431,9 @@ static void window_editor_object_selection_scrollgetsize()
 
 	numItems = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER) ?
 		RCT2_GLOBAL(0x00F43412, uint16) :
-		RCT2_ADDRESS(0x00F433E1, uint16)[w->selected_tab];
+		(_FILTER_ALL ? 
+		RCT2_ADDRESS(0x00F433E1, uint16)[w->selected_tab] :
+		_filter_object_counts[w->selected_tab]);
 
 	width = 0;
 	height = numItems * 12;
@@ -518,11 +618,13 @@ static void window_editor_object_selection_invalidate()
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TRACK_DESIGNER)) {
 		w->widgets[WIDX_DROPDOWN1].type = WWT_EMPTY;
+		w->widgets[WIDX_FILTER_DROPDOWN].type = WWT_EMPTY;
 		for (i = 1; i < WINDOW_OBJECT_SELECTION_PAGE_COUNT; i++)
 			w->widgets[WIDX_TAB_1 + i].type = WWT_EMPTY;
 		x = 150;
 	} else {
 		w->widgets[WIDX_DROPDOWN1].type = WWT_DROPDOWN_BUTTON;
+		w->widgets[WIDX_FILTER_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		x = 300;
 	}
 
@@ -543,7 +645,7 @@ static void window_editor_object_selection_paint()
 	rct_widget *widget;
 	rct_object_entry *highlightedEntry;
 	rct_string_id stringId;
-	uint8 *text;
+	uint8 *text, source;
 	char *datName, *name, *stringBuffer;
 
 	window_paint_get_registers(w, dpi);
@@ -649,7 +751,18 @@ static void window_editor_object_selection_paint()
 	y += 15;
 	object_paint(type, 259, type, x, y, (int)w, (int)dpi, (int)stex_entry);
 
+	// Draw object source
+	source = (highlightedEntry->flags & 0xF0) >> 4;
+	switch (source) {
+	case 8: stringId = 2741; break;
+	case 1: stringId = 5262; break;
+	case 2: stringId = 5263; break;
+	default: stringId = 5264; break;
+	}
+	gfx_draw_string_right(dpi, stringId, NULL, 2, w->x + w->width - 5, w->y + w->height - 3 - 12 - 14);
+
 	// Draw object dat name
+	stringId = 3165;
 	strcpy(stringBuffer, datName);
 	gfx_draw_string_right(dpi, stringId, NULL, 0, w->x + w->width - 5, w->y + w->height - 3 - 12);
 }
@@ -666,6 +779,7 @@ static void window_editor_object_selection_scrollpaint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 	uint8 *itemFlags;
+	uint8 source;
 
 	window_scrollpaint_get_registers(w, dpi, scrollIndex);
 
@@ -679,7 +793,8 @@ static void window_editor_object_selection_scrollpaint()
 	y = 0;
 	for (i = 0; i < numObjects; i++) {
 		type = entry->flags & 0x0F;
-		if (type == w->selected_tab && !(*itemFlags & 0x20)) {
+		source = (entry->flags & 0xF0) >> 4;
+		if (type == w->selected_tab && !(*itemFlags & 0x20) && ((_FILTER_RCT2 && source == 8) || (_FILTER_WW && source == 1) || (_FILTER_TT && source == 2) || (_FILTER_CUSTOM && source != 8 && source != 1 && source != 2))) {
 			if (y + 12 >= dpi->y && y <= dpi->y + dpi->height) {
 				// Draw checkbox
 				if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && !(*itemFlags & 0x20))
@@ -789,9 +904,11 @@ static int get_object_from_object_selection(uint8 object_type, int y, uint8 *obj
 {
 	*installed_entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
+	uint8 source;
 	int object_count = 0;
 	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
-		if (((*installed_entry)->flags & 0xF) == object_type){
+		source = ((*installed_entry)->flags & 0xF0) >> 4;
+		if (((*installed_entry)->flags & 0xF) == object_type && ((_FILTER_RCT2 && source == 8) || (_FILTER_WW && source == 1) || (_FILTER_TT && source == 2) || (_FILTER_CUSTOM && source != 8 && source != 1 && source != 2))){
 			if (!(*selection_flags & 0x20)){
 				y -= 12;
 				*object_selection_flags = *selection_flags;
