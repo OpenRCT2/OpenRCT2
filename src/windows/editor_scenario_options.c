@@ -1226,7 +1226,7 @@ static void window_editor_scenario_options_park_paint()
 	
 	if (w->widgets[WIDX_ENTRY_PRICE].type != WWT_EMPTY) {
 		// Entry price label
-		x = w->x + w->widgets[WIDX_ENTRY_PRICE].right + 8;
+		x = w->x + w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].right + 8;
 		y = w->y + w->widgets[WIDX_ENTRY_PRICE].top;
 		gfx_draw_string_left(dpi, 3281, NULL, 0, x, y);
 
