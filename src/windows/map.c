@@ -641,7 +641,8 @@ static void window_map_paint()
 	y = w->y + (window_map_widgets[WIDX_LAND_TOOL].top + window_map_widgets[WIDX_LAND_TOOL].bottom) / 2;
 
 	// FEATURE larger land tool size support
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > 7) &&
+	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE &&
+		(RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > 7) &&
 		(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == WC_MAP)) {
 		RCT2_GLOBAL(0x009BC677, char) = FORMAT_BLACK;
 		RCT2_GLOBAL(0x009BC678, char) = FORMAT_COMMA16;
