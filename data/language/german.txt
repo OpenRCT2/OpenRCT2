@@ -1209,7 +1209,7 @@ STR_1204    :{COMMA16} Minute Wartezeit
 STR_1205    :{COMMA16} Minuten Wartezeit
 STR_1206    :{WINDOW_COLOUR_2}Warten auf:
 STR_1207    :{WINDOW_COLOUR_2}Abfahren, wenn anderer Zug in Station ankommt
-STR_1208    :{WINDOW_COLOUR_2}Abfahren, wenn ander. Boot in Station ankommt
+STR_1208    :{WINDOW_COLOUR_2}Abfahren, wenn anderes Boot in Station ankommt
 STR_1209    :{SMALLFONT}{BLACK}Auswählen, ob vor Abfahrt auf Fahrgäste gewartet werden soll
 STR_1210    :{SMALLFONT}{BLACK}Auswählen, ob abgefahren werden soll, wenn anderes Fahrzeug in gleicher Station ankommt
 STR_1211    :{WINDOW_COLOUR_2}Mindestwartezeit:
@@ -1658,10 +1658,10 @@ STR_1653    :{SMALLFONT}{OPENQUOTES}...und hier sind wir bei d. {STRINGID}!{ENDQ
 STR_1654    :{WINDOW_COLOUR_2}Aktuelle Gedanken:
 STR_1655    :{SMALLFONT}{BLACK}Fußweg auf Gelände anlegen
 STR_1656    :{SMALLFONT}{BLACK}Brücke bauen oder Tunnelfußweg anlegen
-STR_1657    :{WINDOW_COLOUR_2}Bevorzugte Bahn
-STR_1658    :{WINDOW_COLOUR_2}Intensität: {BLACK}weniger als {COMMA16}
-STR_1659    :{WINDOW_COLOUR_2}Intensität: {BLACK}zwischen {COMMA16} und {COMMA16}
-STR_1660    :{WINDOW_COLOUR_2}Intensität: {BLACK}mehr als {COMMA16}
+STR_1657    :{WINDOW_COLOUR_2}Bevorzugte Bahn-
+STR_1658    :{WINDOW_COLOUR_2}intensität: {BLACK}weniger als {COMMA16}
+STR_1659    :{WINDOW_COLOUR_2}intensität: {BLACK}zwischen {COMMA16} und {COMMA16}
+STR_1660    :{WINDOW_COLOUR_2}intensität: {BLACK}mehr als {COMMA16}
 STR_1661    :{WINDOW_COLOUR_2}Übelkeitstoleranz: {BLACK}{STRINGID}
 STR_1662    :{WINDOW_COLOUR_2}Vergnügen:
 STR_1663    :{WINDOW_COLOUR_2}Übelkeit:
@@ -2330,7 +2330,7 @@ STR_2325    :{SMALLFONT}{BLACK}Land für Parkvergrößerung kaufen
 STR_2326    :{SMALLFONT}{BLACK}Kaufen Sie Baurechte für Bauten über oder unter dem Gelände außerhalb des Parks
 STR_2327    :Optionen
 STR_2328    :{WINDOW_COLOUR_2}Währung:
-STR_2329    :{WINDOW_COLOUR_2}Distanz u. Geschwind.:
+STR_2329    :{WINDOW_COLOUR_2}Distanz und Geschwind.:
 STR_2330    :{WINDOW_COLOUR_2}Temperatur:
 STR_2331    :{WINDOW_COLOUR_2}Höhenmarkierungen:
 STR_2332    :Einheiten
@@ -3486,7 +3486,7 @@ STR_5149    :{SMALLFONT}{BLACK}Cheats anzeigen
 STR_5150    :Aktiviere Debugging-Tools
 STR_5151    :.
 STR_5152    :,
-STR_5153    :Farbschemas...
+STR_5153    :Themen bearbeiten...
 STR_5154    :Anzeige über Hardware durchführen
 STR_5155    :Testen unfertiger Bahnen erlauben
 STR_5156    :{SMALLFONT}{BLACK}Erlaubt das Testen der meisten Bahnarten, selbst wenn die Strecke nicht fertiggestellt ist, das gilt nicht für den Streckenmodus mit Blockbereichen
@@ -3551,7 +3551,7 @@ STR_5214    :Kartengenerierung
 STR_5215    :Streckenentwurf-Manager
 STR_5216    :Streckenentwurf-Manager Liste
 STR_5217    :Cheats
-STR_5218    :Farbschemas
+STR_5218    :Themen
 STR_5219    :Optionen
 STR_5220    :Tastenkürzel
 STR_5221    :Tastenkürzel ändern
@@ -3571,13 +3571,13 @@ STR_5234    :{SMALLFONT}{BLACK}Eingabeaufforderungen
 STR_5235    :{SMALLFONT}{BLACK}Einstellungen
 STR_5236    :Fenster:
 STR_5237    :Farbpalette:
-STR_5238    :Farbschemas:
+STR_5238    :Aktuelles Thema:
 STR_5239    :Duplizieren
-STR_5240    :Name für Farbschema eingeben:
-STR_5241    :Kann Vorlage nicht ändern
-STR_5242    :Vorlagenname existiert bereits
+STR_5240    :Name für Thema eingeben:
+STR_5241    :Dieses Thema kann nicht geändert werden
+STR_5242    :Dieser Themenname existiert bereits
 STR_5243    :Unzulässige Zeichen benutzt
-STR_5244    :Farbschemas
+STR_5244    :Themen
 STR_5245    :Obere Symbolleiste
 STR_5246    :Untere Symbolleiste
 STR_5247    :Untere Symbolleiste Achterb.-Designer
@@ -3589,3 +3589,8 @@ STR_5252    :Hauptmenü Szenarioauswahl
 STR_5253    :Parkinformationen
 STR_5254    :Übelkeit hinzufügen
 STR_5255    :{MEDIUMFONT}{BLACK}Allen Besuchern wird übel
+STR_5256    :Neues Thema zum bearbeiten erstellen
+STR_5257    :{SMALLFONT}{BLACK}Neues Thema durch duplizieren des aktuellen Themas erstellen
+STR_5258    :{SMALLFONT}{BLACK}Aktuelles Thema löschen
+STR_5259    :{SMALLFONT}{BLACK}Aktuelles Thema umbenennen
+STR_5260    :Riesiger Screenshot
