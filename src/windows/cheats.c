@@ -763,13 +763,13 @@ static void window_cheats_paint()
 	window_cheats_draw_tab_images(dpi, w);
 
 	if (w->page == WINDOW_CHEATS_PAGE_MONEY){
-		gfx_draw_string(dpi, (char*)language_get_string(STR_CHEAT_TIP_5K_MONEY),			0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
-		gfx_draw_string(dpi, (char*)language_get_string(STR_CHEAT_TIP_PAY_ENTRY),			0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_TIP_5K_MONEY,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_TIP_PAY_ENTRY,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 	}
 	else if (w->page == WINDOW_CHEATS_PAGE_GUESTS){
-		gfx_draw_string(dpi, (char*)language_get_string(STR_CHEAT_TIP_HAPPY_GUESTS),		0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
-		gfx_draw_string(dpi, (char*)language_get_string(STR_CHEAT_TIP_LARGE_TRAM_GUESTS),	0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
-		gfx_draw_string(dpi, (char*)language_get_string(STR_CHEAT_TIP_NAUSEA),				0, w->x + XPL(0) + TXTO, w->y + YPL(4) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_TIP_HAPPY_GUESTS,		NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_TIP_LARGE_TRAM_GUESTS,	NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_TIP_NAUSEA,				NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(4) + TXTO);
 	}
 
 }
