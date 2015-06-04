@@ -33,6 +33,7 @@
 	static int cmdline_for_test_error(const char **argv, int argc)
 	{
 		printf("OpenRCT2 has not been built with the test suite.\n");
+		return -1;
 	}
 #endif
 
