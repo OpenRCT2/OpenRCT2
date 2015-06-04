@@ -816,6 +816,8 @@ static void window_cheats_set_page(rct_window *w, int page)
 	
 	w->enabled_widgets = window_cheats_page_enabled_widgets[page];
 	
+	w->pressed_widgets = 0;
+
 	w->event_handlers = window_cheats_page_events[page];
 	w->widgets = window_cheats_page_widgets[page];
 
