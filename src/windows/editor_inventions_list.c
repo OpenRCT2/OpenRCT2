@@ -666,12 +666,12 @@ static void window_editor_inventions_list_paint()
 	// Pre-researched items label
 	x = w->x + w->widgets[WIDX_PRE_RESEARCHED_SCROLL].left;
 	y = w->y + w->widgets[WIDX_PRE_RESEARCHED_SCROLL].top - 11;
-	gfx_draw_string_left(dpi, 3197, NULL, 0, x, y);
+	gfx_draw_string_left(dpi, 3197, NULL, 0, x, y - 1);
 
 	// Research order label
 	x = w->x + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].left;
 	y = w->y + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].top - 11;
-	gfx_draw_string_left(dpi, 3198, NULL, 0, x, y);
+	gfx_draw_string_left(dpi, 3198, NULL, 0, x, y - 1);
 
 	// Preview background
 	widget = &w->widgets[WIDX_PREVIEW];
