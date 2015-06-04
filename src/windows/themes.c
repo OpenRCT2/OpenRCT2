@@ -407,8 +407,27 @@ static void window_themes_resize()
 	window_get_register(w);
 
 	if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS) {
-		window_set_resize(w, 320, 107, 320, 107);
-		gfx_invalidate_screen();
+		w->min_width = 320;
+		w->min_height = 107;
+		w->max_width = 320;
+		w->max_height = 107;
+
+		if (w->width < w->min_width) {
+			w->width = w->min_width;
+			gfx_invalidate_screen();
+		}
+		if (w->height < w->min_height) {
+			w->height = w->min_height;
+			gfx_invalidate_screen();
+		}
+		if (w->width > w->max_width) {
+			w->width = w->max_width;
+			gfx_invalidate_screen();
+		}
+		if (w->height > w->max_height) {
+			w->height = w->max_height;
+			gfx_invalidate_screen();
+		}
 	}
 	else {
 		w->min_width = 320;
@@ -526,6 +545,9 @@ void window_themes_scrollgetsize() {
 
 	window_get_register(w);
 
+	if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
+		return;
+
 	int scrollHeight = get_colour_scheme_tab_count() * _row_height;
 	int i = scrollHeight - window_themes_widgets[WIDX_THEMES_LIST].bottom + window_themes_widgets[WIDX_THEMES_LIST].top + 21;
 	if (i < 0)
@@ -553,9 +575,6 @@ void window_themes_scrollmousedown() {
 	rct_window *w;
 
 	window_scrollmouse_get_registers(w, scrollIndex, x, y);
-
-	if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
-		return;
 
 	if (y / _row_height < get_colour_scheme_tab_count()) {
 		int y2 = y % _row_height;
