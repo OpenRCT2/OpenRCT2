@@ -1860,13 +1860,13 @@ static void ride_ratings_calculate_motion_simulator(rct_ride *ride)
 
 	// Base ratings
 	if (ride->mode == RIDE_MODE_FILM_THRILL_RIDERS) {
-		ratings.excitement	= RIDE_RATING(2,90);
-		ratings.intensity	= RIDE_RATING(3,50);
-		ratings.nausea		= RIDE_RATING(3,00);
-	} else {
 		ratings.excitement	= RIDE_RATING(3,25);
 		ratings.intensity	= RIDE_RATING(4,10);
 		ratings.nausea		= RIDE_RATING(3,30);
+	} else {
+		ratings.excitement	= RIDE_RATING(2,90);
+		ratings.intensity	= RIDE_RATING(3,50);
+		ratings.nausea		= RIDE_RATING(3,00);
 	}
 
 	ride_ratings_apply_intensity_penalty(&ratings);
