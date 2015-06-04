@@ -104,74 +104,74 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 #pragma endregion
 
 static rct_widget window_cheats_money_widgets[] = {
-	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		0x0FFFFFFFF,	65535},					// panel / background
-	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			3165,			STR_WINDOW_TITLE_TIP},	// title bar
-	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,			0x338,			STR_CLOSE_WINDOW_TIP},	// close x button
-	{ WWT_IMGBTN,			1,	0,			WW - 1,	43,		WH - 1,		0x0FFFFFFFF,	65535},					// tab content panel
-	{ WWT_TAB,				1,	3,			33,		17,		43,			0x2000144E,		5178 },					// tab 1
-	{ WWT_TAB,				1,	34,			64,		17,		43,			0x2000144E,		5179 },					// tab 2
-	{ WWT_TAB,				1,	65,			95,		17,		43,			0x2000144E,		5180 },					// tab 3
-	{ WWT_TAB,				1,	96,			126,	17,		43,			0x2000144E,		5181 },					// tab 4
-	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(1),	HPL(1),		2760,			STR_NONE},				// high money
-	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(3),	HPL(3),		2761,			STR_NONE},				// Park Entrance Fee Toggle	
+	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		0x0FFFFFFFF,				65535},						// panel / background
+	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			3165,						STR_WINDOW_TITLE_TIP},		// title bar
+	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,			0x338,						STR_CLOSE_WINDOW_TIP},		// close x button
+	{ WWT_IMGBTN,			1,	0,			WW - 1,	43,		WH - 1,		0x0FFFFFFFF,				65535},						// tab content panel
+	{ WWT_TAB,				1,	3,			33,		17,		43,			0x2000144E,					STR_FINANCIAL_CHEATS_TIP },	// tab 1
+	{ WWT_TAB,				1,	34,			64,		17,		43,			0x2000144E,					STR_GUEST_CHEATS_TIP },		// tab 2
+	{ WWT_TAB,				1,	65,			95,		17,		43,			0x2000144E,					STR_PARK_CHEATS_TIP },		// tab 3
+	{ WWT_TAB,				1,	96,			126,	17,		43,			0x2000144E,					STR_RIDE_CHEATS_TIP },		// tab 4
+	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(1),	HPL(1),		STR_CHEAT_5K_MONEY,			STR_NONE},					// high money
+	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(3),	HPL(3),		STR_CHEAT_PAY_ENTRANCE,		STR_NONE},					// Park Entrance Fee Toggle	
 	{ WIDGETS_END },
 };
 
 static rct_widget window_cheats_guests_widgets[] = {
-	{ WWT_FRAME,			0, 0,			WW - 1, 0,	WH - 1,		0x0FFFFFFFF,	65535 },					// panel / background
-	{ WWT_CAPTION,			0, 1,			WW - 2, 1,	14,			3165,			STR_WINDOW_TITLE_TIP },		// title bar
-	{ WWT_CLOSEBOX,			0, WW - 13,		WW - 3, 2,	13,			0x338,			STR_CLOSE_WINDOW_TIP },		// close x button
-	{ WWT_IMGBTN,			1, 0,			WW - 1, 43, WH - 1,		0x0FFFFFFFF,	65535 },					// tab content panel
-	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,		5178 },						// tab 1
-	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		5179 },						// tab 2
-	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,		5180 },						// tab 3
-	{ WWT_TAB,				1,	96,			126,	17,		43,		0x2000144E,		5181 },						// tab 4
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		2764,			STR_NONE},					// happy guests
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(3), HPL(3),		2765,			STR_NONE},					// large tram
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(5), HPL(5),		5254,			STR_NONE},					// nausea
+	{ WWT_FRAME,			0, 0,			WW - 1, 0,	WH - 1,		0x0FFFFFFFF,					65535 },					// panel / background
+	{ WWT_CAPTION,			0, 1,			WW - 2, 1,	14,			3165,							STR_WINDOW_TITLE_TIP },		// title bar
+	{ WWT_CLOSEBOX,			0, WW - 13,		WW - 3, 2,	13,			0x338,							STR_CLOSE_WINDOW_TIP },		// close x button
+	{ WWT_IMGBTN,			1, 0,			WW - 1, 43, WH - 1,		0x0FFFFFFFF,					65535 },					// tab content panel
+	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,						STR_FINANCIAL_CHEATS_TIP },	// tab 1
+	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,						STR_GUEST_CHEATS_TIP },		// tab 2
+	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,						STR_PARK_CHEATS_TIP },		// tab 3
+	{ WWT_TAB,				1,	96,			126,	17,		43,		0x2000144E,						STR_RIDE_CHEATS_TIP },		// tab 4
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		STR_CHEAT_HAPPY_GUESTS,			STR_NONE},					// happy guests
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(3), HPL(3),		STR_CHEAT_LARGE_TRAM_GUESTS,	STR_NONE},					// large tram
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(5), HPL(5),		STR_CHEAT_NAUSEA,				STR_NONE},					// nausea
 	{ WIDGETS_END },
 };
 
 //Strings for following moved to window_cheats_paint()
 static rct_widget window_cheats_misc_widgets[] = {
-	{ WWT_FRAME,			0, 0,			WW - 1, 0,	WH - 1,		0x0FFFFFFFF,	65535 },					// panel / background
-	{ WWT_CAPTION,			0, 1,			WW - 2, 1,	14,			3165,			STR_WINDOW_TITLE_TIP },		// title bar
-	{ WWT_CLOSEBOX,			0, WW - 13,		WW - 3, 2,	13,			0x338,			STR_CLOSE_WINDOW_TIP },		// close x button
-	{ WWT_IMGBTN,			1, 0,			WW - 1, 43, WH - 1,		0x0FFFFFFFF,	65535 },					// tab content panel
-	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,		5178 },						// tab 1
-	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		5179 },						// tab 2
-	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,		5180 },						// tab 3
-	{ WWT_TAB,				1,	96,			126,	17,		43,		0x2000144E,		5181 },						// tab 4
-	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(1), HPL(1),		2767,			STR_NONE},					// Freeze climate
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(0), HPL(0),		2769,			STR_NONE},					// open / close park
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		2759,			STR_NONE},					// Zero Clearance
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(2), HPL(2),		2757,			STR_NONE},					// Sun
-	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(2), HPL(2),		2758,			STR_NONE},					// Thunder
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(3), HPL(3),		2752,			STR_NONE},					// Clear grass
-	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(3), HPL(3),		2753,			STR_NONE},					// Mowed grass
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(4), HPL(4),		2754,			STR_NONE},					// Water plants
-	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(4), HPL(4),		2755,			STR_NONE},					// Fix vandalism
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(5), HPL(5),		2756,			STR_NONE},					// Remove litter
-	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(0), HPL(0),		2766,			STR_NONE},					// Win scenario
-	{ WWT_CHECKBOX,			1, XPL(0),    OWPL, YPL(8),OHPL(8),		5157,			STR_NONE}, 					// Unlock all prices
+	{ WWT_FRAME,			0, 0,			WW - 1, 0,	WH - 1,		0x0FFFFFFFF,					65535 },					// panel / background
+	{ WWT_CAPTION,			0, 1,			WW - 2, 1,	14,			3165,							STR_WINDOW_TITLE_TIP },		// title bar
+	{ WWT_CLOSEBOX,			0, WW - 13,		WW - 3, 2,	13,			0x338,							STR_CLOSE_WINDOW_TIP },		// close x button
+	{ WWT_IMGBTN,			1, 0,			WW - 1, 43, WH - 1,		0x0FFFFFFFF,					65535 },					// tab content panel
+	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,						STR_FINANCIAL_CHEATS_TIP },	// tab 1
+	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,						STR_GUEST_CHEATS_TIP },		// tab 2
+	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,						STR_PARK_CHEATS_TIP },		// tab 3
+	{ WWT_TAB,				1,	96,			126,	17,		43,		0x2000144E,						STR_RIDE_CHEATS_TIP },		// tab 4
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(1), HPL(1),		STR_CHEAT_FREEZE_CLIMATE,		STR_NONE},					// Freeze climate
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(0), HPL(0),		STR_CHEAT_OPEN_PARK,			STR_NONE},					// open / close park
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(1), HPL(1),		STR_CHEAT_ZERO_CLEARANCE,		STR_NONE},					// Zero Clearance
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(2), HPL(2),		STR_CHEAT_FORCE_SUN,			STR_NONE},					// Sun
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(2), HPL(2),		STR_CHEAT_FORCE_THUNDER,		STR_NONE},					// Thunder
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(3), HPL(3),		STR_CHEAT_CLEAR_GRASS,			STR_NONE},					// Clear grass
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(3), HPL(3),		STR_CHEAT_MOWED_GRASS,			STR_NONE},					// Mowed grass
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(4), HPL(4),		STR_CHEAT_WATER_PLANTS,			STR_NONE},					// Water plants
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(4), HPL(4),		STR_CHEAT_FIX_VANDALISM,		STR_NONE},					// Fix vandalism
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(5), HPL(5),		STR_CHEAT_REMOVE_LITTER,		STR_NONE},					// Remove litter
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(0), HPL(0),		STR_CHEAT_WIN_SCENARIO,			STR_NONE},					// Win scenario
+	{ WWT_CHECKBOX,			1, XPL(0),    OWPL, YPL(8),OHPL(8),		STR_CHEAT_UNLOCK_PRICES,		STR_NONE}, 					// Unlock all prices
 	{ WIDGETS_END },
 };
 static rct_widget window_cheats_rides_widgets[] = {
-	{ WWT_FRAME,			0, 0,			WW - 1, 0,	WH - 1,		0x0FFFFFFFF,	65535 },					// panel / background
-	{ WWT_CAPTION,			0, 1,			WW - 2, 1,	14,			3165,			STR_WINDOW_TITLE_TIP },		// title bar
-	{ WWT_CLOSEBOX,			0, WW - 13,		WW - 3, 2,	13,			0x338,			STR_CLOSE_WINDOW_TIP },		// close x button
-	{ WWT_IMGBTN,			1, 0,			WW - 1, 43, WH - 1,		0x0FFFFFFFF,	65535 },					// tab content panel
-	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,		5178 },						// tab 1
-	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,		5179 },						// tab 2
-	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,		5180 },						// tab 3
-	{ WWT_TAB,				1,	96,			126,	17,		43,		0x2000144E,		5181 },						// tab 4
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(0), HPL(0),		5123,			STR_NONE},					// Renew rides
-	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(0), HPL(0),		5124,			STR_NONE},					// Remove flags
-	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(1), HPL(1),		5125,			STR_NONE},					// Make destructable
-	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0), YPL(1), HPL(1),		5132,			STR_NONE },					// Fix all rides
-	{ WWT_CHECKBOX,			2, XPL(0),    OWPL, YPL(8),OHPL(8),		5137,			STR_NONE }, 				// 410 km/h lift hill
-	{ WWT_CHECKBOX,			2, XPL(0),    OWPL, YPL(6),OHPL(6),		5140,			STR_NONE }, 				// Disable brakes failure
-	{ WWT_CHECKBOX,			2, XPL(0),    OWPL, YPL(7),OHPL(7),		5141,			STR_NONE }, 				// Disable all breakdowns
+	{ WWT_FRAME,			0, 0,			WW - 1, 0,	WH - 1,		0x0FFFFFFFF,					65535 },					// panel / background
+	{ WWT_CAPTION,			0, 1,			WW - 2, 1,	14,			3165,							STR_WINDOW_TITLE_TIP },		// title bar
+	{ WWT_CLOSEBOX,			0, WW - 13,		WW - 3, 2,	13,			0x338,							STR_CLOSE_WINDOW_TIP },		// close x button
+	{ WWT_IMGBTN,			1, 0,			WW - 1, 43, WH - 1,		0x0FFFFFFFF,					65535 },					// tab content panel
+	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,						STR_FINANCIAL_CHEATS_TIP },	// tab 1
+	{ WWT_TAB,				1, 34,			64,		17, 43,			0x2000144E,						STR_GUEST_CHEATS_TIP },		// tab 2
+	{ WWT_TAB,				1,	65,			95,		17,		43,		0x2000144E,						STR_PARK_CHEATS_TIP },		// tab 3
+	{ WWT_TAB,				1,	96,			126,	17,		43,		0x2000144E,						STR_RIDE_CHEATS_TIP },		// tab 4
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(0), HPL(0),		STR_CHEAT_RENEW_RIDES,			STR_NONE},					// Renew rides
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(0), HPL(0),		STR_CHEAT_REMOVE_FLAGS,			STR_NONE},					// Remove flags
+	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(1), HPL(1),		STR_CHEAT_MAKE_DESTRUCTABLE,	STR_NONE},					// Make destructable
+	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0), YPL(1), HPL(1),		STR_CHEAT_FIX_ALL_RIDES,		STR_NONE },					// Fix all rides
+	{ WWT_CHECKBOX,			2, XPL(0),    OWPL, YPL(8),OHPL(8),		STR_CHEAT_410_HILL_LIFT,		STR_NONE }, 				// 410 km/h lift hill
+	{ WWT_CHECKBOX,			2, XPL(0),    OWPL, YPL(6),OHPL(6),		STR_BRAKES_FAILURE,				STR_NONE }, 				// Disable brakes failure
+	{ WWT_CHECKBOX,			2, XPL(0),    OWPL, YPL(7),OHPL(7),		STR_CHEAT_DISABLE_BREAKDOWNS,	STR_NONE }, 				// Disable all breakdowns
 	{ WIDGETS_END },
 };
 
@@ -613,7 +613,7 @@ static void window_cheats_misc_mouseup()
 		break;
 	case WIDX_FREEZE_CLIMATE:
 		toggle_climate_lock();
-		w->widgets[widgetIndex].image = w->widgets[widgetIndex].image == 2767 ? 2768 : 2767;
+		w->widgets[widgetIndex].image = w->widgets[widgetIndex].image == STR_CHEAT_FREEZE_CLIMATE ? STR_CHEAT_UNFREEZE_CLIMATE : STR_CHEAT_FREEZE_CLIMATE;
 		break;
 	case WIDX_OPEN_CLOSE_PARK:
 		park_set_open(park_is_open() ? 0 : 1);
@@ -726,14 +726,16 @@ static void window_cheats_invalidate()
 		window_init_scroll_widgets(w);
 	}
 
+	w->pressed_widgets = 0;
+
 	switch (w->page) {
 	case WINDOW_CHEATS_PAGE_MONEY:
 		w->widgets[WIDX_PARK_ENTRANCE_FEE].image = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY ?
-			2761 : 2762;
+			STR_CHEAT_PAY_ENTRANCE : STR_CHEAT_PAY_RIDES;
 		break;
 	case WINDOW_CHEATS_PAGE_MISC:
 		w->widgets[WIDX_OPEN_CLOSE_PARK].image = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN ?
-			2770 : 2769;
+			STR_CHEAT_CLOSE_PARK : STR_CHEAT_OPEN_PARK;
 		widget_set_checkbox_value(w, WIDX_UNLOCK_ALL_PRICES, gConfigCheat.unlock_all_prices);
 		break;
 	case WINDOW_CHEATS_PAGE_RIDES:
@@ -761,13 +763,13 @@ static void window_cheats_paint()
 	window_cheats_draw_tab_images(dpi, w);
 
 	if (w->page == WINDOW_CHEATS_PAGE_MONEY){
-		gfx_draw_string(dpi, (char*)language_get_string(2681), 0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
-		gfx_draw_string(dpi, (char*)language_get_string(2682), 0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
+		gfx_draw_string(dpi, (char*)language_get_string(STR_CHEAT_TIP_5K_MONEY),			0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
+		gfx_draw_string(dpi, (char*)language_get_string(STR_CHEAT_TIP_PAY_ENTRY),			0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 	}
 	else if (w->page == WINDOW_CHEATS_PAGE_GUESTS){
-		gfx_draw_string(dpi, (char*)language_get_string(2683), 0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
-		gfx_draw_string(dpi, (char*)language_get_string(2684), 0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
-		gfx_draw_string(dpi, (char*)language_get_string(5255), 0, w->x + XPL(0) + TXTO, w->y + YPL(4) + TXTO);
+		gfx_draw_string(dpi, (char*)language_get_string(STR_CHEAT_TIP_HAPPY_GUESTS),		0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
+		gfx_draw_string(dpi, (char*)language_get_string(STR_CHEAT_TIP_LARGE_TRAM_GUESTS),	0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
+		gfx_draw_string(dpi, (char*)language_get_string(STR_CHEAT_TIP_NAUSEA),				0, w->x + XPL(0) + TXTO, w->y + YPL(4) + TXTO);
 	}
 
 }
