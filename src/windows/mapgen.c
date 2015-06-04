@@ -1077,7 +1077,7 @@ static void window_mapgen_anchor_border_widgets(rct_window *w)
 	w->widgets[WIDX_BACKGROUND].right = w->width - 1;
 	w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 	w->widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
-	w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 3 - height - 3;
+	w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
 	w->widgets[WIDX_TITLE].right = w->width - 2;
 	w->widgets[WIDX_CLOSE].left = w->width - 13;
 	w->widgets[WIDX_CLOSE].right = w->width - 3;
