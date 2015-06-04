@@ -910,7 +910,7 @@ void window_staff_overview_paint(){
 	RCT2_GLOBAL(0x13CE952 + 4, uint32) = argument2;
 	rct_widget* widget = &w->widgets[WIDX_BTM_LABEL];
 	int x = (widget->left + widget->right) / 2 + w->x;
-	int y = w->y + widget->top - 1;
+	int y = w->y + widget->top;
 	int width = widget->right - widget->left;
 	gfx_draw_string_centred_clipped(dpi, 1191, (void*)0x13CE952, 0, x, y, width);
 }
