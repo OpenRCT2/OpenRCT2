@@ -970,7 +970,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 			stringId = 3340;
 			break;
 		}
-		gfx_draw_string_left(dpi, stringId, &_lastTrackDesignCount, 0, x, y + 40);
+		gfx_draw_string_left(dpi, stringId, &_lastTrackDesignCount, 0, x, y + 39);
 	}
 
 	// Price
@@ -990,7 +990,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 		if (!ride_type_has_flag(item.type, RIDE_TYPE_FLAG_15))
 			stringId++;
 
-		gfx_draw_string_right(dpi, stringId, &price, 0, x + width, y + 40);
+		gfx_draw_string_right(dpi, stringId, &price, 0, x + width, y + 39);
 	}
 }
 
