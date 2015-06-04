@@ -29,6 +29,11 @@
 #define MIXER_LOOP_NONE			0
 #define MIXER_LOOP_INFINITE		-1
 
+enum {
+	MIXER_GROUP_NONE,
+	MIXER_GROUP_MUSIC,
+};
+
 #ifdef __cplusplus
 
 #include <list>
@@ -124,6 +129,7 @@ public:
 	bool IsPlaying();
 	unsigned long GetOffset();
 	bool SetOffset(unsigned long offset);
+	void SetGroup(int group);
 
 	friend class Mixer;
 
@@ -140,6 +146,7 @@ private:
 	bool deletesourceondone;
 	bool stopping;
 	int oldvolume;
+	int group;
 	SpeexResamplerState* resampler;
 	Source* source;
 };
@@ -188,6 +195,7 @@ void Mixer_Channel_Rate(void* channel, double rate);
 int Mixer_Channel_IsPlaying(void* channel);
 unsigned long Mixer_Channel_GetOffset(void* channel);
 int Mixer_Channel_SetOffset(void* channel, unsigned long offset);
+void Mixer_Channel_SetGroup(void* channel, int group);
 void* Mixer_Play_Music(int pathid, int loop, int streaming);
 
 static int DStoMixerVolume(int volume) { return (int)(SDL_MIX_MAXVOLUME * (SDL_pow(10, (float)volume / 2000))); };
