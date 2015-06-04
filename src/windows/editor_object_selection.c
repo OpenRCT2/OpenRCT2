@@ -677,7 +677,7 @@ static void window_editor_object_selection_paint()
 	// Draw number of selected items
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER)) {
 		x = w->x + 3;
-		y = w->y + w->height - 12;
+		y = w->y + w->height - 13;
 
 		numSelected = RCT2_ADDRESS(0x00F433F7, uint16)[w->selected_tab];
 		totalSelectable = object_entry_group_counts[w->selected_tab];

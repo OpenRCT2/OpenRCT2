@@ -2205,7 +2205,7 @@ static void window_ride_main_paint()
 		(void*)0x013CE952,
 		0,
 		w->x + (widget->left + widget->right) / 2,
-		w->y + widget->top - 1,
+		w->y + widget->top,
 		widget->right - widget->left
 	);
 }
