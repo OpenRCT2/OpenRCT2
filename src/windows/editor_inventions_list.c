@@ -170,14 +170,7 @@ static int research_item_is_always_researched(rct_research_item *researchItem)
  */
 static void sub_685901()
 {
-	for (rct_research_item* research = gResearchItems; 
-		research->entryIndex != -3; 
-		research++){
-
-		if (research->entryIndex < -3){
-			research->entryIndex &= 0x00FFFFFF;
-		}
-	}
+	RCT2_CALLPROC_EBPSAFE(0x00685901);
 }
 
 /**
@@ -185,8 +178,15 @@ static void sub_685901()
  *  rct2: 0x00685A79
  */
 static void sub_685A79()
-{
-	RCT2_CALLPROC_EBPSAFE(0x00685A79);
+{	
+	for (rct_research_item* research = gResearchItems; 
+		research->entryIndex != RESEARCHED_ITEMS_END_2;
+		research++){
+
+		if (research->entryIndex < RESEARCHED_ITEMS_END_2){
+			research->entryIndex &= 0x00FFFFFF;
+		}
+	}
 }
 
 /**
@@ -551,7 +551,7 @@ static void window_editor_inventions_list_scrollmousedown()
 	if (researchItem == NULL)
 		return;
 
-	if (researchItem->entryIndex < (uint32)-3 && research_item_is_always_researched(researchItem))
+	if (researchItem->entryIndex < (uint32)RESEARCHED_ITEMS_END_2 && research_item_is_always_researched(researchItem))
 		return;
 
 	window_invalidate(w);
@@ -613,7 +613,7 @@ static void window_editor_inventions_list_cursor()
 	if (researchItem == NULL)
 		return;
 
-	if (researchItem->entryIndex < (uint32)-3 && research_item_is_always_researched(researchItem)) {
+	if (researchItem->entryIndex < (uint32)RESEARCHED_ITEMS_END_2 && research_item_is_always_researched(researchItem)) {
 		cursorId = -1;
 		window_cursor_set_registers(cursorId);
 		return;
@@ -699,12 +699,12 @@ static void window_editor_inventions_list_paint()
 	if (eax >= 0x10000)
 		objectEntryType = 0;
 
-	void **entries = RCT2_GLOBAL(0x0098D97C + (objectEntryType * 8), void*);
-	void *entry = entries[researchItem->entryIndex & 0xFF];
-	if (entry == NULL || entry == (void*)0xFFFFFFFF)
+	void *chunk = object_entry_groups[objectEntryType].chunks[researchItem->entryIndex & 0xFF];
+
+	if (chunk == NULL || chunk == (void*)0xFFFFFFFF)
 		return;
 
-	object_paint(objectEntryType, 3, objectEntryType, x, y, 0, (int)dpi, (int)entry);
+	object_paint(objectEntryType, 3, objectEntryType, x, y, 0, (int)dpi, (int)chunk);
 
 	// Item name
 	x = w->x + ((widget->left + widget->right) / 2) + 1;

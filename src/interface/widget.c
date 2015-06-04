@@ -793,6 +793,8 @@ static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 	r--;
 	b--;
 
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = 0xE0;
+
 	// Horizontal scrollbar
 	if (scroll->flags & HSCROLLBAR_VISIBLE)
 		widget_hscrollbar_draw(dpi, scroll, l, b - 10, (scroll->flags & VSCROLLBAR_VISIBLE ? r - 10 : r), b, colour);
@@ -882,7 +884,7 @@ static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 
 	// Down button
 	gfx_fill_rect_inset(dpi, l, b - 9, r, b, colour, (scroll->flags & VSCROLLBAR_DOWN_PRESSED ? 0x20 : 0));
-	gfx_draw_string(dpi, (char*)0x009DED69, 0, l + 1, b - 8);
+	gfx_draw_string(dpi, (char*)0x009DED69, 0, l + 1, b - 9);
 }
 
 /**

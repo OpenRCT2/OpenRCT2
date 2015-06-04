@@ -771,7 +771,6 @@ static void window_cheats_paint()
 		gfx_draw_string(dpi, (char*)language_get_string(STR_CHEAT_TIP_LARGE_TRAM_GUESTS),	0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 		gfx_draw_string(dpi, (char*)language_get_string(STR_CHEAT_TIP_NAUSEA),				0, w->x + XPL(0) + TXTO, w->y + YPL(4) + TXTO);
 	}
-
 }
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
@@ -816,6 +815,8 @@ static void window_cheats_set_page(rct_window *w, int page)
 	
 	w->enabled_widgets = window_cheats_page_enabled_widgets[page];
 	
+	w->pressed_widgets = 0;
+
 	w->event_handlers = window_cheats_page_events[page];
 	w->widgets = window_cheats_page_widgets[page];
 
