@@ -771,7 +771,6 @@ static void window_cheats_paint()
 		gfx_draw_string(dpi, (char*)language_get_string(STR_CHEAT_TIP_LARGE_TRAM_GUESTS),	0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 		gfx_draw_string(dpi, (char*)language_get_string(STR_CHEAT_TIP_NAUSEA),				0, w->x + XPL(0) + TXTO, w->y + YPL(4) + TXTO);
 	}
-
 }
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)

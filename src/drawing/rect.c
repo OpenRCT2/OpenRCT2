@@ -51,9 +51,9 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 	uint16 cross_pattern = 0;
 
 	int start_x = left - dpi->x;
-	if (start_x < 0){
-		start_x = 0;
+	if (start_x < 0){		
 		cross_pattern ^= start_x;
+		start_x = 0;
 	}
 
 	int end_x = right - dpi->x;
@@ -64,9 +64,9 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 	int width = end_x - start_x;
 
 	int start_y = top - dpi->y;
-	if (start_y < 0){
-		start_y = 0;
+	if (start_y < 0){		
 		cross_pattern ^= start_y;
+		start_y = 0;
 	}
 	int end_y = bottom - dpi->y;
 	end_y++;
