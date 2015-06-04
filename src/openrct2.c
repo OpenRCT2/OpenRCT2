@@ -185,7 +185,7 @@ void openrct2_launch()
 				editor_load_landscape(gOpenRCT2StartupActionPath);
 			}
 			break;
-		}
+    	}
 		openrct2_loop();
 	}
 	openrct2_dispose();

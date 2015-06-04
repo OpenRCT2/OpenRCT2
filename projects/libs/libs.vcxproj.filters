@@ -19,6 +19,9 @@
     <Filter Include="jansson">
       <UniqueIdentifier>{16ee6cb9-307a-4e8a-8261-a69d91b17739}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cutest">
+      <UniqueIdentifier>{92e56bd7-37be-465c-9212-3b6cfb8cf7c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\lib\argparse\argparse.c">
@@ -62,6 +65,9 @@
     </ClCompile>
     <ClCompile Include="..\..\lib\jansson\jansson\value.c">
       <Filter>jansson</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\cutest\CuTest.c">
+      <Filter>cutest</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -113,5 +119,6 @@
     <ClInclude Include="..\..\lib\jansson\jansson\utf.h">
       <Filter>jansson</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\lib\cutest\CuTest.h" />
   </ItemGroup>
 </Project>

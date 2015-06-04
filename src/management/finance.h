@@ -60,6 +60,10 @@ void finance_shift_expenditure_table();
 void sub_69E869();
 
 void finance_set_loan(money32 loan);
+money32 finance_get_initial_cash();
+money32 finance_get_current_loan();
+money32 finance_get_maximum_loan();
+money32 finance_get_current_cash();
 void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
 #endif

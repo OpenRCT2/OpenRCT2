@@ -402,6 +402,7 @@ extern rct_scenario_basic *gScenarioList;
 
 int scenario_scores_save();
 void scenario_load_list();
+rct_scenario_basic *get_scenario_by_filename(const char *filename);
 int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info);
 int scenario_load(const char *path);
 int scenario_load_and_play(const rct_scenario_basic *scenario);

@@ -27,6 +27,15 @@
 #include "platform/platform.h"
 #include "util/util.h"
 
+#ifdef ENABLE_TESTS
+	#include "../test/tests.h"
+#else
+	static int cmdline_for_test_error(const char **argv, int argc)
+	{
+		printf("OpenRCT2 has not been built with the test suite.\n");
+	}
+#endif
+
 typedef struct tm tm_t;
 typedef struct argparse_option argparse_option_t;
 typedef struct argparse argparse_t;
@@ -141,7 +150,13 @@ struct { const char *firstArg; cmdline_action action; } cmdline_table[] = {
 	{ "intro", cmdline_for_intro },
 	{ "edit", cmdline_for_edit },
 	{ "sprite", cmdline_for_sprite },
-	{ "screenshot", cmdline_for_screenshot }
+	{ "screenshot", cmdline_for_screenshot },
+
+#ifdef ENABLE_TESTS
+	{ "test", cmdline_for_test },
+#else
+	{ "test", cmdline_for_test_error },
+#endif
 };
 
 static int cmdline_call_action(const char **argv, int argc)

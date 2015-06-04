@@ -258,6 +258,26 @@ void finance_set_loan(money32 loan)
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, loan, GAME_COMMAND_SET_CURRENT_LOAN, 0, 0);
 }
 
+money32 finance_get_initial_cash()
+{
+	return RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32);
+}
+
+money32 finance_get_current_loan()
+{
+	return RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+}
+
+money32 finance_get_maximum_loan()
+{
+	return RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32);
+}
+
+money32 finance_get_current_cash()
+{
+	return DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32));
+}
+
 /**
  *
  *  rct2: 0x0069DFB3

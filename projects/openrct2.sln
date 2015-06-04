@@ -15,19 +15,26 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
+		Release with Tests|Win32 = Release with Tests|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D24D94F6-2A74-480C-B512-629C306CE92F}.Debug|Win32.ActiveCfg = Debug|Win32
 		{D24D94F6-2A74-480C-B512-629C306CE92F}.Debug|Win32.Build.0 = Debug|Win32
+		{D24D94F6-2A74-480C-B512-629C306CE92F}.Release with Tests|Win32.ActiveCfg = Release with Tests|Win32
+		{D24D94F6-2A74-480C-B512-629C306CE92F}.Release with Tests|Win32.Build.0 = Release with Tests|Win32
 		{D24D94F6-2A74-480C-B512-629C306CE92F}.Release|Win32.ActiveCfg = Release|Win32
 		{D24D94F6-2A74-480C-B512-629C306CE92F}.Release|Win32.Build.0 = Release|Win32
 		{0468FC1E-5881-4DB9-9DDE-1892290B31D9}.Debug|Win32.ActiveCfg = Debug|Win32
 		{0468FC1E-5881-4DB9-9DDE-1892290B31D9}.Debug|Win32.Build.0 = Debug|Win32
+		{0468FC1E-5881-4DB9-9DDE-1892290B31D9}.Release with Tests|Win32.ActiveCfg = Release with Tests|Win32
+		{0468FC1E-5881-4DB9-9DDE-1892290B31D9}.Release with Tests|Win32.Build.0 = Release with Tests|Win32
 		{0468FC1E-5881-4DB9-9DDE-1892290B31D9}.Release|Win32.ActiveCfg = Release|Win32
 		{0468FC1E-5881-4DB9-9DDE-1892290B31D9}.Release|Win32.Build.0 = Release|Win32
 		{074DC930-05C6-4B7F-B5DD-DD237E6E44DB}.Debug|Win32.ActiveCfg = Debug|Win32
 		{074DC930-05C6-4B7F-B5DD-DD237E6E44DB}.Debug|Win32.Build.0 = Debug|Win32
+		{074DC930-05C6-4B7F-B5DD-DD237E6E44DB}.Release with Tests|Win32.ActiveCfg = Release with Tests|Win32
+		{074DC930-05C6-4B7F-B5DD-DD237E6E44DB}.Release with Tests|Win32.Build.0 = Release with Tests|Win32
 		{074DC930-05C6-4B7F-B5DD-DD237E6E44DB}.Release|Win32.ActiveCfg = Release|Win32
 		{074DC930-05C6-4B7F-B5DD-DD237E6E44DB}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
