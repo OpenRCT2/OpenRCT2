@@ -187,11 +187,11 @@ void platform_draw()
 				uint32 *dst = pixels;
 				for (int i = width * height; i > 0; i--) *(dst++) = *(uint32 *)(&gPaletteHWMapped[*src++]);
 			} else
-			if (((pitch == width * 2) + 3) & ~3) {
+			if (pitch == (((width * 2) + 3) & ~3)) {
 				uint16 *dst = pixels;
 				for (int i = width * height; i > 0; i--) *(dst++) = *(uint16 *)(&gPaletteHWMapped[*src++]);
 			} else
-			if (((pitch == width) + 3) & ~3) {
+			if (pitch == (((width) + 3) & ~3)) {
 				uint8 *dst = pixels;
 				for (int i = width * height; i > 0; i--) *(dst++) = *(uint8 *)(&gPaletteHWMapped[*src++]);
 			}

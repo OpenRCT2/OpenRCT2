@@ -26,6 +26,7 @@
  *      Padding between the widgets and the window needs reducing, an artifact from originally being inside group boxes.
  */
 
+#include <math.h>
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
@@ -102,6 +103,8 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_MUSIC_CHECKBOX,
 	WIDX_TITLE_MUSIC,
 	WIDX_TITLE_MUSIC_DROPDOWN,
+	WIDX_MASTER_VOLUME,
+	WIDX_MUSIC_VOLUME,
 
 	// Controls
 	WIDX_SCREEN_EDGE_SCROLLING = WIDX_PAGE_START,
@@ -185,6 +188,8 @@ static rct_widget window_options_audio_widgets[] = {
 	{ WWT_CHECKBOX,			1,	10,		229,	84,		95,		STR_MUSIC,		STR_NONE },	// enable / disable music
 	{ WWT_DROPDOWN,			1,	155,	299,	98,		109,	STR_NONE,		STR_NONE },	// title music
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	99,		108,	876,			STR_NONE },
+	{ WWT_SCROLL,			1,	155,	299,	68,		80,		1,				STR_NONE }, // master volume
+	{ WWT_SCROLL,			1,	155,	299,	83,		95,		1,				STR_NONE }, // music volume
 	{ WIDGETS_END },
 };
 
@@ -252,6 +257,7 @@ static void window_options_dropdown();
 static void window_options_update(rct_window *w);
 static void window_options_invalidate();
 static void window_options_paint();
+static void window_options_scrollgetsize();
 static void window_options_text_input();
 
 static void* window_options_events[] = {
@@ -270,7 +276,7 @@ static void* window_options_events[] = {
 	window_options_emptysub,
 	window_options_emptysub,
 	window_options_emptysub,
-	window_options_emptysub,
+	window_options_scrollgetsize,
 	window_options_emptysub,
 	window_options_emptysub,
 	window_options_emptysub,
@@ -931,6 +937,7 @@ static void window_options_dropdown()
 static void window_options_invalidate()
 {
 	rct_window *w;
+	rct_widget* widget;
 	sint32 currentSoundDevice;
 
 	window_get_register(w);
@@ -1027,12 +1034,24 @@ static void window_options_invalidate()
 		widget_set_checkbox_value(w, WIDX_SOUND_CHECKBOX, gConfigSound.sound);
 		widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8));
 
+		if(w->frame_no == 0){ // initialize only on first frame, otherwise the scrollbars wont be able to be modified
+			widget = &window_options_audio_widgets[WIDX_MASTER_VOLUME];
+			w->scrolls[0].h_left = (sint16)ceil((gConfigSound.master_volume / 100.0f) * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1)));
+			widget = &window_options_audio_widgets[WIDX_MUSIC_VOLUME];
+			w->scrolls[1].h_left = (sint16)ceil((gConfigSound.music_volume / 100.0f) * (w->scrolls[1].h_right - ((widget->right - widget->left) - 1)));
+		}
+
+		widget_scroll_update_thumbs(w, WIDX_MASTER_VOLUME);
+		widget_scroll_update_thumbs(w, WIDX_MUSIC_VOLUME);
+
 		window_options_audio_widgets[WIDX_SOUND].type = WWT_DROPDOWN;
 		window_options_audio_widgets[WIDX_SOUND_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_audio_widgets[WIDX_SOUND_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_audio_widgets[WIDX_MUSIC_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_audio_widgets[WIDX_TITLE_MUSIC].type = WWT_DROPDOWN;
 		window_options_audio_widgets[WIDX_TITLE_MUSIC_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+		window_options_audio_widgets[WIDX_MASTER_VOLUME].type = WWT_SCROLL;
+		window_options_audio_widgets[WIDX_MUSIC_VOLUME].type = WWT_SCROLL;
 		break;
 
 	case WINDOW_OPTIONS_PAGE_CONTROLS:
@@ -1096,6 +1115,24 @@ static void window_options_update(rct_window *w)
 	// Tab animation
 	w->frame_no++;
 	widget_invalidate(w, WIDX_TAB_1 + w->page);
+
+	rct_widget *widget;
+	if (w->page == WINDOW_OPTIONS_PAGE_AUDIO) {
+		widget = &window_options_audio_widgets[WIDX_MASTER_VOLUME];
+		uint8 master_volume = (uint8)(((float)w->scrolls[0].h_left / (w->scrolls[0].h_right - ((widget->right - widget->left) - 1))) * 100);
+		widget = &window_options_audio_widgets[WIDX_MUSIC_VOLUME];
+		uint8 music_volume = (uint8)(((float)w->scrolls[1].h_left / (w->scrolls[1].h_right - ((widget->right - widget->left) - 1))) * 100);
+		if (master_volume != gConfigSound.master_volume) {
+			gConfigSound.master_volume = master_volume;
+			config_save_default();
+		}
+		if (music_volume != gConfigSound.music_volume) {
+			gConfigSound.music_volume = music_volume;
+			config_save_default();
+		}
+		widget_invalidate(w, WIDX_MASTER_VOLUME);
+		widget_invalidate(w, WIDX_MUSIC_VOLUME);
+	}
 }
 
 /**
@@ -1199,6 +1236,20 @@ static void window_options_update_height_markers()
 		0 : (gConfigGeneral.measurement_format + 1) * 256;
 	config_save_default();
 	gfx_invalidate_screen();
+}
+
+static void window_options_scrollgetsize()
+{
+	rct_window *w;
+	short scrollIndex;
+
+	window_scroll_get_registers(w, scrollIndex);
+
+	if (w->page == WINDOW_OPTIONS_PAGE_AUDIO) {
+		int width = 1000;
+		int height = 0;
+		window_scrollsize_set_registers(width, height);
+	}
 }
 
 static void window_options_text_input(){

@@ -4578,6 +4578,9 @@ void peep_update_crowd_noise()
 #ifdef USE_MIXER
 			if (!gCrowdSoundChannel) {
 				gCrowdSoundChannel = Mixer_Play_Music(PATH_ID_CSS2, MIXER_LOOP_INFINITE, false);
+				if (gCrowdSoundChannel) {
+					Mixer_Channel_SetGroup(gCrowdSoundChannel, MIXER_GROUP_NONE);
+				}
 			}
 			if (gCrowdSoundChannel) {
 				Mixer_Channel_Volume(gCrowdSoundChannel, DStoMixerVolume(volume));

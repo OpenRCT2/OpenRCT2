@@ -191,6 +191,8 @@ config_property_definition _soundDefinitions[] = {
 	{ offsetof(sound_configuration, title_music),						"title_music",					CONFIG_VALUE_TYPE_UINT8,		2,								NULL					},
 	{ offsetof(sound_configuration, sound),								"sound",						CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
 	{ offsetof(sound_configuration, ride_music),						"ride_music",					CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
+	{ offsetof(sound_configuration, master_volume),						"master_volume",				CONFIG_VALUE_TYPE_UINT8,		100,							NULL					},
+	{ offsetof(sound_configuration, music_volume),						"music_volume",					CONFIG_VALUE_TYPE_UINT8,		100,							NULL					},
 };
 
 config_property_definition _cheatDefinitions[] = {
