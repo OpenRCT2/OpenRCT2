@@ -32,7 +32,7 @@ static void scenario_list_sort();
 static int scenario_list_sort_compare(const void *a, const void *b);
 static int scenario_scores_load();
 
-static rct_scenario_basic *get_scenario_by_filename(const char *filename)
+rct_scenario_basic *get_scenario_by_filename(const char *filename)
 {
 	int i;
 	for (i = 0; i < gScenarioListCount; i++)

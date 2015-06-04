@@ -83,6 +83,8 @@
     <ClCompile Include="..\src\ride\vehicle.c" />
     <ClCompile Include="..\src\scenario.c" />
     <ClCompile Include="..\src\scenario_list.c" />
+    <ClCompile Include="..\src\test\management\finance_test.c" />
+    <ClCompile Include="..\src\test\tests.c" />
     <ClCompile Include="..\src\title.c" />
     <ClCompile Include="..\src\tutorial.c" />
     <ClCompile Include="..\src\util\sawyercoding.c" />
@@ -216,6 +218,8 @@
     <ClInclude Include="..\src\ride\vehicle.h" />
     <ClInclude Include="..\src\scenario.h" />
     <ClInclude Include="..\src\sprites.h" />
+    <ClInclude Include="..\src\test\management\finance_test.h" />
+    <ClInclude Include="..\src\test\tests.h" />
     <ClInclude Include="..\src\title.h" />
     <ClInclude Include="..\src\tutorial.h" />
     <ClInclude Include="..\src\util\sawyercoding.h" />
@@ -278,7 +282,7 @@
     <IntDir>$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)..\lib;$(SolutionDir)..\lib\libspeex;$(SolutionDir)..\lib\sdl\include;$(SolutionDir)..\lib\libcurl\include;$(SolutionDir)..\lib\jansson;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\lib;$(SolutionDir)..\lib\libspeex;$(SolutionDir)..\lib\sdl\include;$(SolutionDir)..\lib\libcurl\include;$(SolutionDir)..\lib\jansson;$(SolutionDir)..\lib\cutest;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\lib\sdl\lib\x86;$(SolutionDir)..\lib\libcurl\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)\</IntDir>

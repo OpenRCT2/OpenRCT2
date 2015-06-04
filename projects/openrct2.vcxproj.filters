@@ -44,6 +44,12 @@
     <Filter Include="Source\Network">
       <UniqueIdentifier>{ae88ed08-902b-4167-a78c-9b521ce67749}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test">
+      <UniqueIdentifier>{9b842d7a-225e-4ba9-807d-1cb6ebacbdd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test\Management">
+      <UniqueIdentifier>{73238872-312d-437f-8497-7cb66466d835}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">
@@ -456,6 +462,12 @@
     <ClCompile Include="..\src\windows\themes.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\test\tests.c">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\test\management\finance_test.c">
+      <Filter>Test\Management</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">
@@ -670,6 +682,12 @@
     </ClInclude>
     <ClInclude Include="..\src\interface\themes.h">
       <Filter>Source\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\test\tests.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\test\management\finance_test.h">
+      <Filter>Test\Management</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
