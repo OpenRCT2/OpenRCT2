@@ -46,7 +46,7 @@ void research_reset_items()
 {
 	gResearchItems[0].entryIndex = RESEARCHED_ITEMS_SEPERATOR;
 	gResearchItems[1].entryIndex = RESEARCHED_ITEMS_END;
-	gResearchItems[2].entryIndex = -3;
+	gResearchItems[2].entryIndex = RESEARCHED_ITEMS_END_2;
 }
 
 /**
@@ -276,10 +276,10 @@ void research_update()
  */
 void sub_684AC3(){
 	rct_research_item* research = gResearchItems;
-	for (; research->entryIndex != -2; research++);
+	for (; research->entryIndex != RESEARCHED_ITEMS_END; research++);
 
 	research++;
-	for (; research->entryIndex != -3; research += 2){
+	for (; research->entryIndex != RESEARCHED_ITEMS_END_2; research += 2){
 		if (scenario_rand() & 1) continue;
 
 		rct_research_item* edx;
@@ -321,7 +321,7 @@ void sub_684AC3(){
 	}
 
 	
-	for (research = gResearchItems; research->entryIndex != -1; research++){
+	for (research = gResearchItems; research->entryIndex != RESEARCHED_ITEMS_SEPERATOR; research++){
 		research_finish_item(research->entryIndex);
 	}
 
