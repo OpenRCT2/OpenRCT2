@@ -50,6 +50,9 @@
     <Filter Include="Test\Management">
       <UniqueIdentifier>{73238872-312d-437f-8497-7cb66466d835}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test\Ride">
+      <UniqueIdentifier>{c6b9c169-ff2a-41df-9b1c-47d15763c3e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">
@@ -462,11 +465,14 @@
     <ClCompile Include="..\src\windows\themes.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\test\tests.c">
+    <ClCompile Include="..\test\tests.c">
       <Filter>Test</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\test\management\finance_test.c">
+    <ClCompile Include="..\test\management\finance_test.c">
       <Filter>Test\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="..\test\ride\ride_ratings_test.c">
+      <Filter>Test\Ride</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -683,11 +689,14 @@
     <ClInclude Include="..\src\interface\themes.h">
       <Filter>Source\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\test\tests.h">
+    <ClInclude Include="..\test\tests.h">
       <Filter>Test</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\test\management\finance_test.h">
+    <ClInclude Include="..\test\management\finance_test.h">
       <Filter>Test\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="..\test\ride\ride_ratings_test.h">
+      <Filter>Test\Ride</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

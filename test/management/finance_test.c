@@ -18,11 +18,11 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#include "../../addresses.h"
-#include "../../openrct2.h"
-#include "../../scenario.h"
+#include "../../src/addresses.h"
+#include "../../src/management/finance.h"
+#include "../../src/openrct2.h"
+#include "../../src/scenario.h"
 
-#include "../../management/finance.h"
 #include "finance_test.h"
 
 void test_finance_setup(CuTest* tc) {

@@ -18,37 +18,26 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#include "management/finance_test.h"
+#ifndef _TESTS_H_
+#define _TESTS_H_
 
-CuSuite* new_suite(void)
-{
-	CuSuite* suite = CuSuiteNew();
-	
-	// Test Finance
-	SUITE_ADD_TEST(suite, test_finance_setup);
-	SUITE_ADD_TEST(suite, test_finance_loan_increase);
-	SUITE_ADD_TEST(suite, test_finance_loan_pay_back);
+#include <stdio.h>
+#include <CuTest.h>
+#include "../src/common.h"
 
-	// Future Tests:
-	// Test X
-	// SUITE_ADD_TEST(suite, test_X_setup);
-	// SUITE_ADD_TEST(suite, test_X_Y);
-	// SUITE_ADD_TEST(suite, test_X_Z);
+int cmdline_for_test(const char **argv, int argc);
+int run_all_tests();
 
-	return suite;
+// Test utilities
+
+#include "../src/scenario.h"
+
+static void test_load_scenario(CuTest* tc, const char* file_name) {
+	const rct_scenario_basic* scenario = get_scenario_by_filename(file_name);
+	if (scenario == NULL) {
+		CuFail(tc, "Could not load scenario");
+	}
+	scenario_load_and_play(scenario);
 }
 
-int run_all_tests(void)
-{
-	CuString *output = CuStringNew();
-	CuSuite* suite = CuSuiteNew();
-
-	CuSuiteAddSuite(suite, new_suite());
-
-	CuSuiteRun(suite);
-	CuSuiteSummary(suite, output);
-	CuSuiteDetails(suite, output);
-	printf("Test results:\n%s\n", output->buffer);
-
-	return suite->failCount > 0;
-}
+#endif

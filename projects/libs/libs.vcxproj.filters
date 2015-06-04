@@ -119,8 +119,6 @@
     <ClInclude Include="..\..\lib\jansson\jansson\utf.h">
       <Filter>jansson</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\lib\cutest\CuTest.h">
-      <Filter>cutest</Filter>
-    </ClCompile>
+    <ClInclude Include="..\..\lib\cutest\CuTest.h" />
   </ItemGroup>
 </Project>
