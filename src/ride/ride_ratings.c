@@ -1565,7 +1565,7 @@ static void ride_ratings_calculate_log_flume(rct_ride *ride)
 
 static void ride_ratings_calculate_river_rapids(rct_ride *ride)
 {
-	rating_tuple ratings, subRating;
+	rating_tuple ratings;
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
@@ -1573,46 +1573,17 @@ static void ride_ratings_calculate_river_rapids(rct_ride *ride)
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
-	ratings.excitement =	RIDE_RATING(1,20);
-	ratings.intensity =		RIDE_RATING(0,70);
-	ratings.nausea =		RIDE_RATING(0,50);
-
-	ratings.excitement += (min(ride_get_total_length(ride) >> 16, 2000) * 6225) >> 16;
-
-	if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) {
-		ratings.excitement += RIDE_RATING(0,30);
-		ratings.intensity += RIDE_RATING(0,05);
-	}
-
-	ratings.excitement += (ride->max_speed >> 16) * 115130 >> 16;
-	ratings.intensity += (ride->max_speed >> 16) * 159411 >> 16;
-	ratings.nausea += (ride->max_speed >> 16) * 106274 >> 16;
-
-	ratings.excitement += (min(ride_get_total_time(ride), 500) * 13107) >> 16;
-
-	subRating = sub_65DDD1(ride);
-	ratings.excitement += (subRating.excitement * 29721) >> 16;
-	ratings.intensity += (subRating.intensity * 22598) >> 16;
-	ratings.nausea += (subRating.nausea * 5718) >> 16;
-
-	subRating = ride_ratings_get_drop_ratings(ride);
-	ratings.excitement += (subRating.excitement * 40777) >> 16;
-	ratings.intensity += (subRating.intensity * 46811) >> 16;
-	ratings.nausea += (subRating.nausea * 49152) >> 16;
-
-	subRating = sub_65E1C2(ride);
-	ratings.excitement += (subRating.excitement * 16705) >> 16;
-	ratings.intensity += (subRating.intensity * 30583) >> 16;
-	ratings.nausea += (subRating.nausea * 35108) >> 16;
-
-	ratings.excitement += (sub_65E277() * 31314) >> 16;
-	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 13943) >> 16;
-
-	if (ride->highest_drop_height < 2) {
-		ratings.excitement /= 2;
-		ratings.intensity /= 2;
-		ratings.nausea /= 2;
-	}
+	ride_ratings_set(&ratings, RIDE_RATING(1,20), RIDE_RATING(0,70), RIDE_RATING(0,50));
+	ride_ratings_apply_length(&ratings, ride, 2000, 6225);
+	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,30), RIDE_RATING(0,05));
+	ride_ratings_apply_max_speed(&ratings, ride, 115130, 159411, 106274);
+	ride_ratings_apply_duration(&ratings, ride, 500, 13107);
+	ride_ratings_apply_65DDD1(&ratings, ride, 29721, 22598, 5718);
+	ride_ratings_apply_drops(&ratings, ride, 40777, 46811, 49152);
+	ride_ratings_apply_65E1C2(&ratings, ride, 16705, 30583, 35108);
+	ride_ratings_apply_65E277(&ratings, ride, 31314);
+	ride_ratings_apply_scenery(&ratings, ride, 13943);
+	ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 2, 2, 2, 2);
 
 	if (ride->length[0] < 0xC80000) {
 		ratings.excitement /= 2;
@@ -1641,9 +1612,7 @@ static void ride_ratings_calculate_dodgems(rct_ride *ride)
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
-	ratings.excitement =	RIDE_RATING(1,30);
-	ratings.intensity =		RIDE_RATING(0,50);
-	ratings.nausea =		RIDE_RATING(0,35);
+	ride_ratings_set(&ratings, RIDE_RATING(1,30), RIDE_RATING(0,50), RIDE_RATING(0,35));
 
 	if (ride->num_vehicles >= 4)
 		ratings.excitement += RIDE_RATING(0,40);
@@ -1654,7 +1623,7 @@ static void ride_ratings_calculate_dodgems(rct_ride *ride)
 	if (ride->num_vehicles >= 4)
 		ratings.excitement += RIDE_RATING(0,40);
 
-	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 5577) >> 16;
+	ride_ratings_apply_scenery(&ratings, ride, 5577);
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -1677,16 +1646,13 @@ static void ride_ratings_calculate_pirate_ship(rct_ride *ride)
 	ride->unreliability_factor = 10;
 	set_unreliability_factor(ride);
 
-	// Base ratings
-	ratings.excitement =	RIDE_RATING(1,50);
-	ratings.intensity =		RIDE_RATING(1,90);
-	ratings.nausea =		RIDE_RATING(1,41);
+	ride_ratings_set(&ratings, RIDE_RATING(1,50), RIDE_RATING(1,90), RIDE_RATING(1,41));
 
 	ratings.excitement += ride->operation_option * 5;
 	ratings.intensity += ride->operation_option * 5;
 	ratings.nausea += ride->operation_option * 10;
 
-	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 16732) >> 16;
+	ride_ratings_apply_scenery(&ratings, ride, 16732);
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -1709,16 +1675,13 @@ static void ride_ratings_calculate_inverter_ship(rct_ride *ride)
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
-	// Base ratings
-	ratings.excitement =	RIDE_RATING(2,50);
-	ratings.intensity =		RIDE_RATING(2,70);
-	ratings.nausea =		RIDE_RATING(2,74);
+	ride_ratings_set(&ratings, RIDE_RATING(2,50), RIDE_RATING(2,70), RIDE_RATING(2,74));
 
 	ratings.excitement += ride->operation_option * 11;
 	ratings.intensity += ride->operation_option * 22;
 	ratings.nausea += ride->operation_option * 22;
 
-	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 11155) >> 16;
+	ride_ratings_apply_scenery(&ratings, ride, 11155);
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -1759,10 +1722,14 @@ static void ride_ratings_calculate_merry_go_round(rct_ride *ride)
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
-	int unk = ride->operation_option * 5;
-	ratings.excitement	= unk + RIDE_RATING(0,60) + ((ride_ratings_get_scenery_score(ride) * 19521) >> 16);
-	ratings.intensity	= unk + RIDE_RATING(0,15);
-	ratings.nausea		= unk + RIDE_RATING(0,30);
+	ride_ratings_set(&ratings, RIDE_RATING(0,60), RIDE_RATING(0,15), RIDE_RATING(0,30));
+
+	int rotationsFactor = ride->rotations * 5;
+	ratings.excitement += rotationsFactor;
+	ratings.intensity += rotationsFactor;
+	ratings.nausea += rotationsFactor;
+
+	ride_ratings_apply_scenery(&ratings, ride, 19521);
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -1797,10 +1764,14 @@ static void ride_ratings_calculate_ferris_wheel(rct_ride *ride)
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
-	int unk = ride->operation_option * 25;
-	ratings.excitement	= unk + RIDE_RATING(0,60) + ((ride_ratings_get_scenery_score(ride) * 41831) >> 16);
-	ratings.intensity	= unk + RIDE_RATING(0,25);
-	ratings.nausea		= unk + RIDE_RATING(0,30);
+	ride_ratings_set(&ratings, RIDE_RATING(0,60), RIDE_RATING(0,25), RIDE_RATING(0,30));
+
+	int rotationsFactor = ride->rotations * 25;
+	ratings.excitement += rotationsFactor;
+	ratings.intensity += rotationsFactor;
+	ratings.nausea += rotationsFactor;
+
+	ride_ratings_apply_scenery(&ratings, ride, 41831);
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -1916,7 +1887,7 @@ static void ride_ratings_calculate_top_spin(rct_ride *ride)
 		break;
 	}
 
-	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 11155) >> 16;
+	ride_ratings_apply_scenery(&ratings, ride, 11155);
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -1939,12 +1910,8 @@ static void ride_ratings_calculate_space_rings(rct_ride *ride)
 	ride->unreliability_factor = 7;
 	set_unreliability_factor(ride);
 
-	// Base ratings
-	ratings.excitement	= RIDE_RATING(1,50);
-	ratings.intensity	= RIDE_RATING(2,10);
-	ratings.nausea		= RIDE_RATING(6,50);
-
-	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 25098) >> 16;
+	ride_ratings_set(&ratings, RIDE_RATING(1,50), RIDE_RATING(2,10), RIDE_RATING(6,50));
+	ride_ratings_apply_scenery(&ratings, ride, 25098);
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -1969,17 +1936,14 @@ static void ride_ratings_calculate_lift(rct_ride *ride)
 	ride->unreliability_factor = 15;
 	set_unreliability_factor(ride);
 
-	// Base ratings
-	ratings.excitement	= RIDE_RATING(1,11);
-	ratings.intensity	= RIDE_RATING(0,35);
-	ratings.nausea		= RIDE_RATING(0,30);
+	ride_ratings_set(&ratings, RIDE_RATING(1,11), RIDE_RATING(0,35), RIDE_RATING(0,30));
 
-	// Apply length factor
 	totalLength = ride_get_total_length(ride) >> 16;
 	ratings.excitement += (totalLength * 45875) >> 16;
-	ratings.excitement += (sub_65E277() * 11183) >> 16;
-	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 83662) >> 16;
 	ratings.nausea += (totalLength * 26214) >> 16;
+
+	ride_ratings_apply_65E277(&ratings, ride, 11183);
+	ride_ratings_apply_scenery(&ratings, ride, 83662);
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -2011,16 +1975,13 @@ static void ride_ratings_calculate_twist(rct_ride *ride)
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
-	// Base ratings
-	ratings.excitement	= RIDE_RATING(1,13);
-	ratings.intensity	= RIDE_RATING(0,97);
-	ratings.nausea		= RIDE_RATING(1,90);
+	ride_ratings_set(&ratings, RIDE_RATING(1,13), RIDE_RATING(0,97), RIDE_RATING(1,90));
 
-	ratings.excitement += ride->operation_option * 20;
-	ratings.intensity += ride->operation_option * 20;
-	ratings.nausea += ride->operation_option * 20;
+	ratings.excitement += ride->rotations * 20;
+	ratings.intensity += ride->rotations * 20;
+	ratings.nausea += ride->rotations * 20;
 
-	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 13943) >> 16;
+	ride_ratings_apply_scenery(&ratings, ride, 13943);
 	
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -2061,7 +2022,7 @@ static void ride_ratings_calculate_haunted_house(rct_ride *ride)
 
 static void ride_ratings_calculate_splash_boats(rct_ride *ride)
 {
-	rating_tuple ratings, subRating;
+	rating_tuple ratings;
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
@@ -2069,46 +2030,17 @@ static void ride_ratings_calculate_splash_boats(rct_ride *ride)
 	ride->unreliability_factor = 15;
 	set_unreliability_factor(ride);
 
-	ratings.excitement =	RIDE_RATING(1,46);
-	ratings.intensity =		RIDE_RATING(0,35);
-	ratings.nausea =		RIDE_RATING(0,30);
-
-	ratings.excitement += (min(ride_get_total_length(ride) >> 16, 2000) * 7208) >> 16;
-
-	if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) {
-		ratings.excitement += RIDE_RATING(0,40);
-		ratings.intensity += RIDE_RATING(0,05);
-	}
-
-	ratings.excitement += (ride->max_speed >> 16) * 797059 >> 16;
-	ratings.intensity += (ride->max_speed >> 16) * 655360 >> 16;
-	ratings.nausea += (ride->max_speed >> 16) * 301111 >> 16;
-
-	ratings.excitement += (min(ride_get_total_time(ride), 500) * 13107) >> 16;
-
-	subRating = sub_65DDD1(ride);
-	ratings.excitement += (subRating.excitement * 22291) >> 16;
-	ratings.intensity += (subRating.intensity * 20860) >> 16;
-	ratings.nausea += (subRating.nausea * 4574) >> 16;
-
-	subRating = ride_ratings_get_drop_ratings(ride);
-	ratings.excitement += (subRating.excitement * 87381) >> 16;
-	ratings.intensity += (subRating.intensity * 93622) >> 16;
-	ratings.nausea += (subRating.nausea * 62259) >> 16;
-
-	subRating = sub_65E1C2(ride);
-	ratings.excitement += (subRating.excitement * 16705) >> 16;
-	ratings.intensity += (subRating.intensity * 30583) >> 16;
-	ratings.nausea += (subRating.nausea * 35108) >> 16;
-
-	ratings.excitement += (sub_65E277() * 22367) >> 16;
-	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 11155) >> 16;
-
-	if (ride->highest_drop_height < 6) {
-		ratings.excitement /= 2;
-		ratings.intensity /= 2;
-		ratings.nausea /= 2;
-	}
+	ride_ratings_set(&ratings, RIDE_RATING(1,46), RIDE_RATING(0,35), RIDE_RATING(0,30));
+	ride_ratings_apply_length(&ratings, ride, 2000, 7208);
+	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
+	ride_ratings_apply_max_speed(&ratings, ride, 797059, 655360, 301111);
+	ride_ratings_apply_duration(&ratings, ride, 500, 13107);
+	ride_ratings_apply_65DDD1(&ratings, ride, 22291, 20860, 4574);
+	ride_ratings_apply_drops(&ratings, ride, 87381, 93622, 62259);
+	ride_ratings_apply_65E1C2(&ratings, ride, 16705, 30583, 35108);
+	ride_ratings_apply_65E277(&ratings, ride, 22367);
+	ride_ratings_apply_scenery(&ratings, ride, 11155);
+	ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 6, 2, 2, 2);
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -2124,7 +2056,7 @@ static void ride_ratings_calculate_splash_boats(rct_ride *ride)
 
 static void ride_ratings_calculate_mini_helicopters(rct_ride *ride)
 {
-	rating_tuple ratings, subRating;
+	rating_tuple ratings;
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
@@ -2132,43 +2064,18 @@ static void ride_ratings_calculate_mini_helicopters(rct_ride *ride)
 	ride->unreliability_factor = 12;
 	set_unreliability_factor(ride);
 
-	ratings.excitement =	RIDE_RATING(1,60);
-	ratings.intensity =		RIDE_RATING(0,40);
-	ratings.nausea =		RIDE_RATING(0,00);
-
-	ratings.excitement += (min(ride_get_total_length(ride) >> 16, 6000) * 764) >> 16;
-
-	if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
-		ratings.excitement += RIDE_RATING(0,15);
-	
-	ratings.excitement += ((ride->num_cars_per_train - 1) * 187245) >> 16;
-
-	ratings.excitement += (ride->max_speed >> 16) * 44281 >> 16;
-	ratings.intensity += (ride->max_speed >> 16) * 88562 >> 16;
-	ratings.nausea += (ride->max_speed >> 16) * 35424 >> 16;
-
-	ratings.excitement += (ride->average_speed >> 16) * 291271 >> 16;
-	ratings.intensity += (ride->average_speed >> 16) * 436906 >> 16;
-
-	ratings.excitement += (min(ride_get_total_time(ride), 150) * 26214) >> 16;
-
-	subRating = sub_65DDD1(ride);
-	ratings.excitement += (subRating.excitement * 14860) >> 16;
-	ratings.intensity += (subRating.intensity * 0) >> 16;
-	ratings.nausea += (subRating.nausea * 4574) >> 16;
-
-	subRating = ride_ratings_get_drop_ratings(ride);
-	ratings.excitement += (subRating.excitement * 8738) >> 16;
-	ratings.intensity += (subRating.intensity * 0) >> 16;
-	ratings.nausea += (subRating.nausea * 0) >> 16;
-
-	subRating = sub_65E1C2(ride);
-	ratings.excitement += (subRating.excitement * 12850) >> 16;
-	ratings.intensity += (subRating.intensity * 6553) >> 16;
-	ratings.nausea += (subRating.nausea * 4681) >> 16;
-
-	ratings.excitement += (sub_65E277() * 8946) >> 16;
-	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 8366) >> 16;
+	ride_ratings_set(&ratings, RIDE_RATING(1,60), RIDE_RATING(0,40), RIDE_RATING(0,00));
+	ride_ratings_apply_length(&ratings, ride, 6000, 764);
+	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,15), RIDE_RATING(0,00));
+	ride_ratings_apply_train_length(&ratings, ride, 187245);
+	ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
+	ride_ratings_apply_average_speed(&ratings, ride, 291271, 436906);
+	ride_ratings_apply_duration(&ratings, ride, 150, 26214);
+	ride_ratings_apply_65DDD1(&ratings, ride, 14860, 0, 4574);
+	ride_ratings_apply_drops(&ratings, ride, 8738, 0, 0);
+	ride_ratings_apply_65E1C2(&ratings, ride, 12850, 6553, 4681);
+	ride_ratings_apply_65E277(&ratings, ride, 8946);
+	ride_ratings_apply_scenery(&ratings, ride, 8366);
 
 	if (ride->length[0] < 0xA00000) {
 		ratings.excitement /= 2;
@@ -2190,7 +2097,7 @@ static void ride_ratings_calculate_mini_helicopters(rct_ride *ride)
 
 static void ride_ratings_calculate_suspended_monorail(rct_ride *ride)
 {
-	rating_tuple ratings, subRating;
+	rating_tuple ratings;
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
@@ -2198,29 +2105,15 @@ static void ride_ratings_calculate_suspended_monorail(rct_ride *ride)
 	ride->unreliability_factor = 14;
 	set_unreliability_factor(ride);
 
-	ratings.excitement =	RIDE_RATING(2,15);
-	ratings.intensity =		RIDE_RATING(0,23);
-	ratings.nausea =		RIDE_RATING(0, 8);
-
-	ratings.excitement += (min(ride_get_total_length(ride) >> 16, 6000) * 764) >> 16;
-	ratings.excitement += ((ride->num_cars_per_train - 1) * 93622) >> 16;
-
-	ratings.excitement += (ride->max_speed >> 16) * 44281 >> 16;
-	ratings.intensity += (ride->max_speed >> 16) * 70849 >> 16;
-	ratings.nausea += (ride->max_speed >> 16) * 35424 >> 16;
-
-	ratings.excitement += (ride->average_speed >> 16) * 291271 >> 16;
-	ratings.intensity += (ride->average_speed >> 16) * 218453 >> 16;
-
-	ratings.excitement += (min(ride_get_total_time(ride), 150) * 21845) >> 16;
-
-	subRating = sub_65E1C2(ride);
-	ratings.excitement += (subRating.excitement * 5140) >> 16;
-	ratings.intensity += (subRating.intensity * 6553) >> 16;
-	ratings.nausea += (subRating.nausea * 18724) >> 16;
-
-	ratings.excitement += (sub_65E277() * 12525) >> 16;
-	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 25098) >> 16;
+	ride_ratings_set(&ratings, RIDE_RATING(2,15), RIDE_RATING(0,23), RIDE_RATING(0, 8));
+	ride_ratings_apply_length(&ratings, ride, 6000, 764);
+	ride_ratings_apply_train_length(&ratings, ride, 93622);
+	ride_ratings_apply_max_speed(&ratings, ride, 44281, 70849, 35424);
+	ride_ratings_apply_average_speed(&ratings, ride, 291271, 218453);
+	ride_ratings_apply_duration(&ratings, ride, 150, 21845);
+	ride_ratings_apply_65E1C2(&ratings, ride, 5140, 6553, 18724);
+	ride_ratings_apply_65E277(&ratings, ride, 12525);
+	ride_ratings_apply_scenery(&ratings, ride, 25098);
 
 	if (ride->length[0] < 0xAA0000) {
 		ratings.excitement /= 2;
@@ -2246,7 +2139,7 @@ static void ride_ratings_calculate_suspended_monorail(rct_ride *ride)
 
 static void ride_ratings_calculate_mini_golf(rct_ride *ride)
 {
-	rating_tuple ratings, unkRating;
+	rating_tuple ratings;
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
@@ -2254,29 +2147,12 @@ static void ride_ratings_calculate_mini_golf(rct_ride *ride)
 	ride->unreliability_factor = 0;
 	set_unreliability_factor(ride);
 
-	// Base ratings
-	ratings.excitement =	RIDE_RATING(1,50);
-	ratings.intensity =		RIDE_RATING(0,90);
-	ratings.nausea =		RIDE_RATING(0,00);
-
-	// Apply length factor
-	int length = ride_get_total_length(ride) >> 16;
-	ratings.excitement += (min(6000, length) * 873) >> 16;
-
-	// Apply ?
-	unkRating = sub_65DDD1(ride);
-	ratings.excitement += (unkRating.excitement * 14860) >> 16;
-
-	// Apply ?
-	unkRating = sub_65E1C2(ride);
-	ratings.excitement += (unkRating.excitement * 5140) >> 16;
-	ratings.intensity += (unkRating.intensity * 6553) >> 16;
-	ratings.nausea += (unkRating.nausea * 4681) >> 16;
-
-	// Apply ?
-	ratings.excitement += (sub_65E277() * 15657) >> 16;
-
-	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 27887) >> 16;
+	ride_ratings_set(&ratings, RIDE_RATING(1,50), RIDE_RATING(0,90), RIDE_RATING(0,00));
+	ride_ratings_apply_length(&ratings, ride, 6000, 873);
+	ride_ratings_apply_65DDD1(&ratings, ride, 14860, 0, 0);
+	ride_ratings_apply_65E1C2(&ratings, ride, 5140, 6553, 4681);
+	ride_ratings_apply_65E277(&ratings, ride, 15657);
+	ride_ratings_apply_scenery(&ratings, ride, 27887);
 
 	// Apply golf holes factor
 	ratings.excitement += (ride->holes & 0x1F) * 5;
@@ -2333,7 +2209,7 @@ static void ride_ratings_calculate_circus_show(rct_ride *ride)
 
 static void ride_ratings_calculate_ghost_train(rct_ride *ride)
 {
-	rating_tuple ratings, subRating;
+	rating_tuple ratings;
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
@@ -2341,41 +2217,17 @@ static void ride_ratings_calculate_ghost_train(rct_ride *ride)
 	ride->unreliability_factor = 12;
 	set_unreliability_factor(ride);
 
-	ratings.excitement =	RIDE_RATING(2,00);
-	ratings.intensity =		RIDE_RATING(0,20);
-	ratings.nausea =		RIDE_RATING(0,03);
-
-	ratings.excitement += (min(ride_get_total_length(ride) >> 16, 6000) * 764) >> 16;
-
-	if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
-		ratings.excitement += RIDE_RATING(0,15);
-
-	ratings.excitement += (ride->max_speed >> 16) * 44281 >> 16;
-	ratings.intensity += (ride->max_speed >> 16) * 88562 >> 16;
-	ratings.nausea += (ride->max_speed >> 16) * 35424 >> 16;
-
-	ratings.excitement += (ride->average_speed >> 16) * 291271 >> 16;
-	ratings.intensity += (ride->average_speed >> 16) * 436906 >> 16;
-
-	ratings.excitement += (min(ride_get_total_time(ride), 150) * 26214) >> 16;
-
-	subRating = sub_65DDD1(ride);
-	ratings.excitement += (subRating.excitement * 14860) >> 16;
-	ratings.intensity += (subRating.intensity * 0) >> 16;
-	ratings.nausea += (subRating.nausea * 11437) >> 16;
-
-	subRating = ride_ratings_get_drop_ratings(ride);
-	ratings.excitement += (subRating.excitement * 8738) >> 16;
-	ratings.intensity += (subRating.intensity * 0) >> 16;
-	ratings.nausea += (subRating.nausea * 0) >> 16;
-
-	subRating = sub_65E1C2(ride);
-	ratings.excitement += (subRating.excitement * 25700) >> 16;
-	ratings.intensity += (subRating.intensity * 6553) >> 16;
-	ratings.nausea += (subRating.nausea * 4681) >> 16;
-
-	ratings.excitement += (sub_65E277() * 11183) >> 16;
-	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 8366) >> 16;
+	ride_ratings_set(&ratings, RIDE_RATING(2,00), RIDE_RATING(0,20), RIDE_RATING(0,03));
+	ride_ratings_apply_length(&ratings, ride, 6000, 764);
+	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,15), RIDE_RATING(0,00));
+	ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
+	ride_ratings_apply_average_speed(&ratings, ride, 291271, 436906);
+	ride_ratings_apply_duration(&ratings, ride, 150, 26214);
+	ride_ratings_apply_65DDD1(&ratings, ride, 14860, 0, 11437);
+	ride_ratings_apply_drops(&ratings, ride, 8738, 0, 0);
+	ride_ratings_apply_65E1C2(&ratings, ride, 25700, 6553, 4681);
+	ride_ratings_apply_65E277(&ratings, ride, 11183);
+	ride_ratings_apply_scenery(&ratings, ride, 8366);
 
 	if (ride->length[0] < 0xB40000) {
 		ratings.excitement /= 2;
@@ -2405,18 +2257,15 @@ static void ride_ratings_calculate_roto_drop(rct_ride *ride)
 	ride->unreliability_factor = 24;
 	set_unreliability_factor(ride);
 
-	ratings.excitement	= RIDE_RATING(2,80);
-	ratings.intensity	= RIDE_RATING(3,50);
-	ratings.nausea		= RIDE_RATING(3,50);
+	ride_ratings_set(&ratings, RIDE_RATING(2,80), RIDE_RATING(3,50), RIDE_RATING(3,50));
 
 	int lengthFactor = ((ride_get_total_length(ride) >> 16) * 209715) >> 16;
-
 	ratings.excitement += lengthFactor;
 	ratings.intensity += lengthFactor * 2;
 	ratings.nausea += lengthFactor * 2;
 
-	ratings.excitement += (sub_65E277() * 11183) >> 16;
-	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 25098) >> 16;
+	ride_ratings_apply_65E277(&ratings, ride, 11183);
+	ride_ratings_apply_scenery(&ratings, ride, 25098);
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -2452,7 +2301,7 @@ static void ride_ratings_calculate_flying_saucers(rct_ride *ride)
 	if (ride->num_vehicles >= 4)
 		ratings.excitement += RIDE_RATING(0,40);
 
-	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 5577) >> 16;
+	ride_ratings_apply_scenery(&ratings, ride, 5577);
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -2500,16 +2349,13 @@ static void ride_ratings_calculate_magic_carpet(rct_ride *ride)
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
-	// Base ratings
-	ratings.excitement	= RIDE_RATING(2,45);
-	ratings.intensity	= RIDE_RATING(1,60);
-	ratings.nausea		= RIDE_RATING(2,60);
+	ride_ratings_set(&ratings, RIDE_RATING(2,45), RIDE_RATING(1,60), RIDE_RATING(2,60));
 
 	ratings.excitement += ride->operation_option * 10;
 	ratings.intensity += ride->operation_option * 20;
 	ratings.nausea += ride->operation_option * 20;
 
-	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 11155) >> 16;
+	ride_ratings_apply_scenery(&ratings, ride, 11155);
 	
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -2532,13 +2378,10 @@ static void ride_ratings_calculate_submarine_ride(rct_ride *ride)
 
 	// NOTE Fixed bug from original game, see boat ride.
 
-	ratings.excitement =	RIDE_RATING(2,20);
-	ratings.intensity =		RIDE_RATING(1,80);
-	ratings.nausea =		RIDE_RATING(1,40);
-
-	ratings.excitement += (min(ride_get_total_length(ride) >> 16, 6000) * 764) >> 16;
-	ratings.excitement += (sub_65E277() * 11183) >> 16;
-	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 22310) >> 16;
+	ride_ratings_set(&ratings, RIDE_RATING(2,20), RIDE_RATING(1,80), RIDE_RATING(1,40));
+	ride_ratings_apply_length(&ratings, ride, 6000, 764);
+	ride_ratings_apply_65E277(&ratings, ride, 11183);
+	ride_ratings_apply_scenery(&ratings, ride, 22310);
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -2554,7 +2397,7 @@ static void ride_ratings_calculate_submarine_ride(rct_ride *ride)
 
 static void ride_ratings_calculate_river_rafts(rct_ride *ride)
 {
-	rating_tuple ratings, subRating;
+	rating_tuple ratings;
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
@@ -2562,36 +2405,16 @@ static void ride_ratings_calculate_river_rafts(rct_ride *ride)
 	ride->unreliability_factor = 12;
 	set_unreliability_factor(ride);
 
-	ratings.excitement	= RIDE_RATING(1,45);
-	ratings.intensity	= RIDE_RATING(0,25);
-	ratings.nausea		= RIDE_RATING(0,34);
-
-	ratings.excitement += ((min(ride_get_total_length(ride) >> 16, 2000)) * 7208) >> 16;
-
-	if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) {
-		ratings.intensity += RIDE_RATING(0,40);
-		ratings.nausea += RIDE_RATING(0,05);
-	}
-
-	ratings.excitement += ((ride->max_speed >> 16) * 531372) >> 16;
-	ratings.intensity += ((ride->max_speed >> 16) * 655360) >> 16;
-	ratings.nausea += ((ride->max_speed >> 16) * 301111) >> 16;
-
-	ratings.excitement += (min(ride_get_total_time(ride), 500) * 13107) >> 16;
-
-	subRating = sub_65DDD1(ride);
-	ratings.excitement += (subRating.excitement * 22291) >> 16;
-	ratings.intensity += (subRating.intensity * 20860) >> 16;
-	ratings.nausea += (subRating.nausea * 4574) >> 16;
+	ride_ratings_set(&ratings, RIDE_RATING(1,45), RIDE_RATING(0,25), RIDE_RATING(0,34));
+	ride_ratings_apply_length(&ratings, ride, 2000, 7208);
+	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
+	ride_ratings_apply_max_speed(&ratings, ride, 531372, 655360, 301111);
+	ride_ratings_apply_duration(&ratings, ride, 500, 13107);
+	ride_ratings_apply_65DDD1(&ratings, ride, 22291, 20860, 4574);
+	ride_ratings_apply_drops(&ratings, ride, 78643, 93622, 62259);
+	ride_ratings_apply_65E277(&ratings, ride, 13420);
+	ride_ratings_apply_scenery(&ratings, ride, 11155);
 	
-	subRating = ride_ratings_get_drop_ratings(ride);
-	ratings.excitement += (subRating.excitement * 78643) >> 16;
-	ratings.intensity += (subRating.intensity * 93622) >> 16;
-	ratings.nausea += (subRating.nausea * 62259) >> 16;
-
-	ratings.excitement += (sub_65E277() * 13420) >> 16;
-	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 11155) >> 16;
-
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -2622,7 +2445,7 @@ static void ride_ratings_calculate_enterprise(rct_ride *ride)
 	ratings.intensity += ride->operation_option * 16;
 	ratings.nausea += ride->operation_option * 16;
 
-	ratings.excitement += (ride_ratings_get_scenery_score(ride) * 19521) >> 16;
+	ride_ratings_apply_scenery(&ratings, ride, 19521);
 	
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);

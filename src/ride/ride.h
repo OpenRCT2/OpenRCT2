@@ -173,6 +173,7 @@ typedef struct {
 		uint8 num_laps;				// 0x0D0
 		uint8 launch_speed;			// 0x0D0
 		uint8 speed;				// 0x0D0
+		uint8 rotations;			// 0x0D0
 	};
 	uint8 pad_0D1[0x3];
 	uint8 measurement_index;		// 0x0D4
