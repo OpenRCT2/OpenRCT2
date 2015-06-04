@@ -1,96 +1,96 @@
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
-STR_0002    :Attractie
-STR_0003    :Attractie
+STR_0002    :Spiraalachtbaan
+STR_0003    :Staande achtbaan
 STR_0004    :Omgekeerde schommelachtbaan
-STR_0005    :Attractie
+STR_0005    :Omgekeerde achtbaan
 STR_0006    :Juniorachtbaan
 STR_0007    :Miniatuurspoorweg
 STR_0008    :Monorail
 STR_0009    :Omgekeerde mini-achtbaan
-STR_0010    :Attractie
-STR_0011    :Attractie
-STR_0012    :Attractie
+STR_0010    :Bootverhuur
+STR_0011    :Houten wildemuisachtbaan
+STR_0012    :Steeplechase
 STR_0013    :Autorondrit
-STR_0014    :Attractie
-STR_0015    :Attractie
-STR_0016    :Attractie
+STR_0014    :Gelanceerde vrije val
+STR_0015    :Bobslee-achtbaan
+STR_0016    :Observatietoren
 STR_0017    :Stalen achtbaan
-STR_0018    :Attractie
-STR_0019    :Attractie
+STR_0018    :Waterglijbaan
+STR_0019    :Mijntreinachtbaan
 STR_0020    :Kabelbaan
-STR_0021    :Attractie
-STR_0022    :Attractie
-STR_0023    :Attractie
-STR_0024    :Attractie
-STR_0025    :Attractie
-STR_0026    :Attractie
-STR_0027    :Attractie
-STR_0028    :Attractie
-STR_0029    :Attractie
-STR_0030    :Kraam
-STR_0031    :Kraam
-STR_0032    :Kraam
-STR_0033    :Kraam
-STR_0034    :Kraam
-STR_0035    :Attractie
-STR_0036    :Kraam
-STR_0037    :Kiosk
+STR_0021    :Stalen schroefachtbaan
+STR_0022    :Doolhof
+STR_0023    :Spiraalglijbaan
+STR_0024    :Go Karts
+STR_0025    :Boomstamattractie
+STR_0026    :Wildwaterbaan
+STR_0027    :Botsauto's
+STR_0028    :Schommelschip
+STR_0029    :Schommelschip dat over de kop gaat
+STR_0030    :Eetkraam
+STR_0031    :Onbekende kraam (1D)
+STR_0032    :Drankkraam
+STR_0033    :Onbekende kraam (1F)
+STR_0034    :Winkel
+STR_0035    :Draaimolen
+STR_0036    :Onbekende kraam (22)
+STR_0037    :Informatiekiosk
 STR_0038    :Toilet
-STR_0039    :Attractie
-STR_0040    :Attractie
-STR_0041    :Attractie
-STR_0042    :Attractie
-STR_0043    :Attractie
+STR_0039    :Reuzenrad
+STR_0040    :Bewegingssimulator
+STR_0041    :3D-bioscoop
+STR_0042    :Topspin
+STR_0043    :Ruimteringen
 STR_0044    :Omgekeerde vrijevalachtbaan
 STR_0045    :Lift
-STR_0046    :Attractie
-STR_0047    :Attractie
-STR_0048    :Attractie
-STR_0049    :Attractie
-STR_0050    :Attractie
-STR_0051    :Attractie
-STR_0052    :Attractie
+STR_0046    :Verticale achtbaan
+STR_0047    :Geldautomaat
+STR_0048    :Twist
+STR_0049    :Spookhuis
+STR_0050    :Eerste hulp
+STR_0051    :Circus
+STR_0052    :Spooktrein
 STR_0053    :Hyper-twisterachtbaan
 STR_0054    :Houten achtbaan
 STR_0055    :Zijfrictie-achtbaan
 STR_0056    :Wilde muis
 STR_0057    :Multidimensie-achtbaan
-STR_0058    :Attractie
+STR_0058    :Onbekende attractie (38)
 STR_0059    :Omgekeerde luchtachtbaan
-STR_0060    :Attractie
-STR_0061    :Attractie
-STR_0062    :Attractie
-STR_0063    :Attractie
-STR_0064    :Attractie
+STR_0060    :Onbekende attractie (3A)
+STR_0061    :Virginia Reel
+STR_0062    :Plonsboten
+STR_0063    :Minihelikopters
+STR_0064    :Liggende achtbaan
 STR_0065    :Omgekeerde monorail
-STR_0066    :Attractie
-STR_0067    :Attractie
+STR_0066    :Onbekende attractie (40)
+STR_0067    :Houten achteruitachtbaan
 STR_0068    :Heartline-twisterachtbaan
-STR_0069    :Attractie
-STR_0070    :Attractie
-STR_0071    :Attractie
-STR_0072    :Attractie
-STR_0073    :Attractie
-STR_0074    :Attractie
-STR_0075    :Attractie
+STR_0069    :Minigolf
+STR_0070    :Giga-achtbaan
+STR_0071    :Roto-drop
+STR_0072    :Vliegende schotels
+STR_0073    :Crooked house
+STR_0074    :Fietsbaan
+STR_0075    :Compacte omgekeerde achtbaan
 STR_0076    :Waterachtbaan
-STR_0077    :Attractie
-STR_0078    :Attractie
-STR_0079    :Attractie
-STR_0080    :Attractie
-STR_0081    :Attractie
-STR_0082    :Attractie
-STR_0083    :Attractie
-STR_0084    :Attractie
-STR_0085    :Attractie
-STR_0086    :Attractie
-STR_0087    :Attractie
-STR_0088    :Attractie
+STR_0077    :Luchtaangedreven verticale achtbaan
+STR_0078    :Omgekeerde haarspeldachtbaan
+STR_0079    :Vliegend tapijt
+STR_0080    :Onderzeeër-attractie
+STR_0081    :Riviertocht
+STR_0082    :Onbekende attractie (50)
+STR_0083    :Enterprise
+STR_0084    :Onbekende attractie (52)
+STR_0085    :Onbekende attractie (53)
+STR_0086    :Onbekende attractie (54)
+STR_0087    :Onbekende attractie (55)
+STR_0088    :Omgekeerde Impulse-achtbaan
 STR_0089    :Mini-achtbaan
-STR_0090    :Attractie
-STR_0091    :Attractie
-STR_0092    :Attractie
+STR_0090    :Aandreven mijntrein
+STR_0091    :Onbekende attractie (59)
+STR_0092    :LIM-lanceringsachtbaan
 STR_0093    :
 STR_0094    :
 STR_0095    :
@@ -1172,7 +1172,7 @@ STR_1170    :{STRING}
 STR_1171    :{RED}Gesloten - - 
 STR_1172    :{YELLLOW}{STRINGID} - - 
 STR_1173    :{SMALLFONT}{BLACK}Voetpaden en wachtrijen aanleggen
-STR_1174    :Banier in de weg
+STR_1174    :Lichtkrant in de weg
 STR_1175    :Kan dit niet op hellend voetpad neerzetten
 STR_1176    :Kan hier geen voetpad aanleggen...
 STR_1177    :Kan dit voetpad niet verwijderen...
@@ -2978,15 +2978,15 @@ STR_2976    :{SMALLFONT}{BLACK}Met het geselecteerde kleurenschema een onderdeel
 STR_2977    :Naam werknemer
 STR_2978    :Voer een nieuwe naam in voor deze werknemer:
 STR_2979    :Kan de naam van deze werknemer niet veranderen...
-STR_2980    :Teveel banieren in dit park
+STR_2980    :Teveel lichtkranten in dit park
 STR_2981    :{RED}Geen toegang - - 
-STR_2982    :Baniertekst
-STR_2983    :Voer een nieuwe tekst in voer deze banier:
-STR_2984    :Kan de tekst op deze banier niet veranderen...
-STR_2985    :Banier
-STR_2986    :{SMALLFONT}{BLACK}Tekst op deze banier aanpassen
-STR_2987    :{SMALLFONT}{BLACK}Deze banier gebruiken als bord voor 'geen toegang' voor de bezoekers
-STR_2988    :{SMALLFONT}{BLACK}Deze banier verwijderen
+STR_2982    :Lichtkranttekst
+STR_2983    :Voer een nieuwe tekst in voer deze lichtkrant:
+STR_2984    :Kan de tekst op deze lichtkrant niet veranderen...
+STR_2985    :Lichtkrant
+STR_2986    :{SMALLFONT}{BLACK}Tekst op deze lichtkrant aanpassen
+STR_2987    :{SMALLFONT}{BLACK}Deze lichtkrant gebruiken als bord voor 'geen toegang' voor de bezoekers
+STR_2988    :{SMALLFONT}{BLACK}Deze lichtkrant verwijderen
 STR_2989    :{SMALLFONT}{BLACK}Hoofdkleur selecteren
 STR_2990    :{SMALLFONT}{BLACK}Tekstkleur selecteren
 STR_2991    :Bord
@@ -3482,8 +3482,7 @@ STR_5150    :Debugging-hulpmiddelen inschakelen
 STR_5151    :.
 #Scheidingsteken voor decimalen
 STR_5152    :,
-#5153 needs new translation:
-STR_5153    :RCT1-kleurenschema
+STR_5153    :Thema's
 STR_5154    :Weergave uitgevoerd door hardware
 STR_5155    :Testen van onvoltooide banen toestaan
 STR_5156    :{SMALLFONT}{BLACK}Maakt het mogelijk om de meeste attractietypes te testen, zelfs als de baan niet voltooid is. Werkt niet als de baan gebruik maakt van een blokremmodus.
@@ -3513,80 +3512,86 @@ STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
 STR_5180    :{SMALLFONT}{BLACK}Show park cheats
 STR_5181    :{SMALLFONT}{BLACK}Show ride cheats
 STR_5182    :{INT32}
-STR_5183    :Base height
+STR_5183    :Basishoogte
 STR_5184    :Enter base height between {COMMA16} and {COMMA16}
-STR_5185    :Water level
+STR_5185    :Waterniveau
 STR_5186    :Enter water level between {COMMA16} and {COMMA16} 
-STR_5187    :Finances
-STR_5188    :New Campaign
-STR_5189    :Research
-STR_5190    :Map
-STR_5191    :Viewport
-STR_5192    :Recent News
+STR_5187    :Financiën
+STR_5188    :Nieuwe advertentiecampagne
+STR_5189    :Onderzoek
+STR_5190    :Kaart
+STR_5191    :Kijkvenster
+STR_5192    :Recente berichten
 STR_5193    :Land
 STR_5194    :Water
-STR_5195    :Clear Scenery
-STR_5196    :Land Rights
-STR_5197    :Scenery
-STR_5198    :Footpath
-STR_5199    :Ride Construction
-STR_5200    :Track Design Place
-STR_5201    :New Ride
-STR_5202    :Track Design Selection
-STR_5203    :Ride
-STR_5204    :Ride List
-STR_5205    :Guest
-STR_5206    :Guest List
-STR_5207    :Staff
-STR_5208    :Staff List
-STR_5209    :Banner
-STR_5210    :Object Selection
-STR_5211    :Invention List
-STR_5212    :Scenario Options
-STR_5213    :Objective Options
-STR_5214    :Map Generation
-STR_5215    :Track Design Manager
-STR_5216    :Track Design Manager List
+STR_5195    :Decor verwijderen
+STR_5196    :Landrechten
+STR_5197    :Decor
+STR_5198    :Voetpaden
+STR_5199    :Bouwvenster attracties
+STR_5200    :Baanontwerp plaatsen
+STR_5201    :Nieuwe attractie
+STR_5202    :Selectie baanontwerp
+STR_5203    :Attractie
+STR_5204    :Attractielijst
+STR_5205    :Bezoeker
+STR_5206    :Bezoekerslijst
+STR_5207    :Werknemer
+STR_5208    :Werknemerslijst
+STR_5209    :Lichtkrant
+STR_5210    :Objectselectie
+STR_5211    :Uitvindingenlijst
+STR_5212    :Scenario-opties
+STR_5213    :Doelstellingsopties
+STR_5214    :Kaartgenerator
+STR_5215    :Baanontwerpbeheer
+STR_5216    :Lijst baanontwerpbeheer
 STR_5217    :Cheats
-STR_5218    :Themes
-STR_5219    :Options
-STR_5220    :Keyboard Shortcuts
-STR_5221    :Change Keyboard Shortcut
-STR_5222    :Load/Save
-STR_5223    :Save Prompt
-STR_5224    :Demolish Ride Prompt
-STR_5225    :Fire Staff Prompt
-STR_5226    :Track Delete Prompt
-STR_5227    :Save Overwrite Prompt
-STR_5228    :{SMALLFONT}{BLACK}Main UI
+STR_5218    :Thema's
+STR_5219    :Opties
+STR_5220    :Sneltoetsen
+STR_5221    :Sneltoets aanpassen
+STR_5222    :Laden/opslaan
+STR_5223    :Opslagbevestiging
+STR_5224    :Afbraakbevestiging
+STR_5225    :Ontslagbevestiging
+STR_5226    :Bevestiging verwijderen baanontwerp
+STR_5227    :Overschrijvingsbevestiging
+STR_5228    :{SMALLFONT}{BLACK}Hoofdinterface
 STR_5229    :{SMALLFONT}{BLACK}Park
-STR_5230    :{SMALLFONT}{BLACK}Tools
-STR_5231    :{SMALLFONT}{BLACK}Rides and Peeps
+STR_5230    :{SMALLFONT}{BLACK}Hulpmiddelen
+STR_5231    :{SMALLFONT}{BLACK}Attracties en bezoekers
 STR_5232    :{SMALLFONT}{BLACK}Editors
-STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
-STR_5234    :{SMALLFONT}{BLACK}Prompts
-STR_5235    :{SMALLFONT}{BLACK}Settings
-STR_5236    :Window:
-STR_5237    :Palette:
-STR_5238    :Current Theme:
-STR_5239    :Duplicate
-STR_5240    :Enter a name for the theme
-STR_5241    :Can't change this theme
-STR_5242    :Theme name already exists
-STR_5243    :Invalid characters used
-STR_5244    :Themes
-STR_5245    :Top Toolbar
-STR_5246    :Bottom Toolbar
-STR_5247    :Track Editor Bottom Toolbar
-STR_5248    :Scenario Editor Bottom Toolbar
-STR_5249    :Title Menu Buttons
-STR_5250    :Title Exit Button
-STR_5251    :Title Options Button
-STR_5252    :Title Scenario Selection
-STR_5253    :Park Information
-STR_5254    :Add nausea
-STR_5255    :{MEDIUMFONT}{BLACK}All peeps become nauseous
-STR_5256    :Create a new theme to make changes to
-STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
-STR_5258    :{SMALLFONT}{BLACK}Delete the current theme
-STR_5259    :{SMALLFONT}{BLACK}Rename the current theme
+STR_5233    :{SMALLFONT}{BLACK}Overigs
+STR_5234    :{SMALLFONT}{BLACK}Dialoogvensters
+STR_5235    :{SMALLFONT}{BLACK}Instellingen
+STR_5236    :Venster:
+STR_5237    :Palet:
+STR_5238    :Huidig thema:
+STR_5239    :Kopiëren
+STR_5240    :Voer een naam in voor dit thema
+STR_5241    :Kan dit thema niet wijzigen
+STR_5242    :Themanaam bestaat al
+STR_5243    :Er zijn ongeldige tekens gebruikt
+STR_5244    :Thema's
+STR_5245    :Bovenste werkbalk
+STR_5246    :Onderste werkbalk
+STR_5247    :Onderste werkbalk baanontwerper/beheerder
+STR_5248    :Onderste werkbalk scenariobewerker
+STR_5249    :Menuknoppen titelsherm
+STR_5250    :Afsluitknop titelscherm
+STR_5251    :Optiesknop titelscherm
+STR_5252    :Scenarioselectie titelscherm
+STR_5253    :Parkinformatie
+STR_5254    :Misselijk maken
+STR_5255    :{MEDIUMFONT}{BLACK}Zal alle bezoekers misselijk maken
+STR_5256    :Een nieuw thema aanmaken om wijzigingen aan te brengen
+STR_5257    :{SMALLFONT}{BLACK}Een nieuw thema aanmaken dat is gebaseerd op het huidige
+STR_5258    :{SMALLFONT}{BLACK}Het huidige thema verwijderen
+STR_5259    :{SMALLFONT}{BLACK}Het huidige thema hernoemen
+STR_5260    :Enorm screenshot
+STR_5261    :Filter
+STR_5262    :Wacky Worlds
+STR_5263    :Time Twister
+STR_5264    :Overig
+STR_5265    :{SMALLFONT}{BLACK}Selecteer uit welke bronnen objecten zichtbaar zijn
