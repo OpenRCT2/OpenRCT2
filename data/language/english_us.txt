@@ -3,97 +3,97 @@
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
-STR_0002    :Ride
-STR_0003    :Ride
+STR_0002    :Spiral Roller Coaster
+STR_0003    :Stand-up Roller Coaster
 STR_0004    :Suspended Swinging Coaster
-STR_0005    :Ride
+STR_0005    :Inverted Roller Coaster
 STR_0006    :Junior Roller Coaster
-STR_0007    :Miniature Railway
+STR_0007    :Miniature Railroad
 STR_0008    :Monorail
 STR_0009    :Mini Suspended Coaster
-STR_0010    :Ride
-STR_0011    :Ride
-STR_0012    :Ride
+STR_0010    :Boat Hire
+STR_0011    :Wooden Wild Mouse
+STR_0012    :Steeplechase
 STR_0013    :Car Ride
-STR_0014    :Ride
-STR_0015    :Ride
-STR_0016    :Ride
+STR_0014    :Launched Freefall
+STR_0015    :Bobsled Coaster
+STR_0016    :Observation Tower
 STR_0017    :Looping Roller Coaster
-STR_0018    :Ride
-STR_0019    :Ride
+STR_0018    :Dinghy Slide
+STR_0019    :Mine Train Coaster
 STR_0020    :Chairlift
-STR_0021    :Ride
-STR_0022    :Ride
-STR_0023    :Ride
-STR_0024    :Ride
-STR_0025    :Ride
-STR_0026    :Ride
-STR_0027    :Ride
-STR_0028    :Ride
-STR_0029    :Ride
-STR_0030    :Stall
-STR_0031    :Stall
-STR_0032    :Stall
-STR_0033    :Stall
-STR_0034    :Stall
-STR_0035    :Ride
-STR_0036    :Stall
-STR_0037    :Kiosk
+STR_0021    :Corkscrew Roller Coaster
+STR_0022    :Maze
+STR_0023    :Spiral Slide
+STR_0024    :Go Karts
+STR_0025    :Log Flume
+STR_0026    :River Rapids
+STR_0027    :Bumper Cars
+STR_0028    :Pirate Ship
+STR_0029    :Swinging Inverter Ship
+STR_0030    :Food Stall
+STR_0031    :Unknown Stall (1D)
+STR_0032    :Drink Stall
+STR_0033    :Unknown Stall (1F)
+STR_0034    :Shop
+STR_0035    :Carousel
+STR_0036    :Unknown Stall (22)
+STR_0037    :Information Kiosk
 STR_0038    :Restroom
-STR_0039    :Ride
-STR_0040    :Ride
-STR_0041    :Ride
-STR_0042    :Ride
-STR_0043    :Ride
+STR_0039    :Ferris Wheel
+STR_0040    :Motion Simulator
+STR_0041    :3D Theater
+STR_0042    :Top Spin
+STR_0043    :Space Rings
 STR_0044    :Reverse Freefall Coaster
-STR_0045    :Lift
-STR_0046    :Ride
-STR_0047    :Ride
-STR_0048    :Ride
-STR_0049    :Ride
-STR_0050    :Ride
-STR_0051    :Ride
-STR_0052    :Ride
-STR_0053    :Hyper-Twister Roller Coaster
+STR_0045    :Elevator
+STR_0046    :Vertical Drop Roller Coaster
+STR_0047    :ATM
+STR_0048    :Twist
+STR_0049    :Haunted House
+STR_0050    :First Aid Room
+STR_0051    :Circus Show
+STR_0052    :Tunnel Of Horror
+STR_0053    :Twister Roller Coaster
 STR_0054    :Wooden Roller Coaster
 STR_0055    :Side-Friction Roller Coaster
 STR_0056    :Wild Mouse
 STR_0057    :Multi-Dimension Roller Coaster
-STR_0058    :Ride
-STR_0059    :Aerial Inverted Roller Coaster
-STR_0060    :Ride
-STR_0061    :Ride
-STR_0062    :Ride
-STR_0063    :Ride
-STR_0064    :Ride
+STR_0058    :Unknown Ride (38)
+STR_0059    :Flying Roller Coaster
+STR_0060    :Unknown Ride (3A)
+STR_0061    :Virginia Reel
+STR_0062    :Splash Boats
+STR_0063    :Mini Helicopters
+STR_0064    :Lay-down Roller Coaster
 STR_0065    :Suspended Monorail
-STR_0066    :Ride
-STR_0067    :Ride
+STR_0066    :Unknown Ride (40)
+STR_0067    :Reverser Roller Coaster
 STR_0068    :Heartline Twister Coaster
-STR_0069    :Ride
-STR_0070    :Ride
-STR_0071    :Ride
-STR_0072    :Ride
-STR_0073    :Ride
-STR_0074    :Ride
-STR_0075    :Ride
+STR_0069    :Mini Golf
+STR_0070    :Giga Coaster
+STR_0071    :Roto-Drop
+STR_0072    :Flying Saucers
+STR_0073    :Crooked House
+STR_0074    :Monorail Cycles
+STR_0075    :Compact Inverted Coaster
 STR_0076    :Water Coaster
-STR_0077    :Ride
-STR_0078    :Ride
-STR_0079    :Ride
-STR_0080    :Ride
-STR_0081    :Ride
-STR_0082    :Ride
-STR_0083    :Ride
-STR_0084    :Ride
-STR_0085    :Ride
-STR_0086    :Ride
-STR_0087    :Ride
-STR_0088    :Ride
+STR_0077    :Air Powered Vertical Coaster
+STR_0078    :Inverted Hairpin Coaster
+STR_0079    :Magic Carpet
+STR_0080    :Submarine Ride
+STR_0081    :River Rafts
+STR_0082    :Unknown Ride (50)
+STR_0083    :Enterprise
+STR_0084    :Unknown Ride (52)
+STR_0085    :Unknown Ride (53)
+STR_0086    :Unknown Ride (54)
+STR_0087    :Unknown Ride (55)
+STR_0088    :Inverted Impulse Coaster
 STR_0089    :Mini Roller Coaster
-STR_0090    :Ride
-STR_0091    :Ride
-STR_0092    :Ride
+STR_0090    :Mine Ride
+STR_0091    :Unknown Ride (59)
+STR_0092    :LIM Launched Roller Coaster
 STR_0093    :
 STR_0094    :
 STR_0095    :
@@ -3599,3 +3599,8 @@ STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
 STR_5258    :{SMALLFONT}{BLACK}Delete the current theme
 STR_5259    :{SMALLFONT}{BLACK}Rename the current theme
 STR_5260    :Giant Screenshot
+STR_5261    :Filter
+STR_5262    :Wacky Worlds
+STR_5263    :Time Twister
+STR_5264    :Custom
+STR_5265    :{SMALLFONT}{BLACK}Select which content sources are visible
