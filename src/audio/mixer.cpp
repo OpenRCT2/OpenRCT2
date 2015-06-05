@@ -522,7 +522,6 @@ Channel* Mixer::Play(Source& source, int loop, bool deleteondone, bool deletesou
 		newchannel->Play(source, loop);
 		newchannel->deleteondone = deleteondone;
 		newchannel->deletesourceondone = deletesourceondone;
-		newchannel->stopping = false;
 		channels.push_back(newchannel);
 	}
 	Unlock();
@@ -867,8 +866,9 @@ void* Mixer_Play_Music(int pathid, int loop, int streaming)
 			Channel* channel = gMixer.Play(*source_samplestream, loop, false, true);
 			if (!channel) {
 				delete source_samplestream;
+			} else {
+				channel->SetGroup(MIXER_GROUP_MUSIC);
 			}
-			channel->SetGroup(MIXER_GROUP_MUSIC);
 			return channel;
 		} else {
 			delete source_samplestream;

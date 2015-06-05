@@ -266,7 +266,7 @@ int screenshot_dump_png()
 		lodepng_palette_add(&state.info_raw, r, g, b, a);
 	}
 
-	error = lodepng_encode(&png, &pngSize, dpi->bits, stride, dpi->height, &state);
+	error = lodepng_encode(&png, &pngSize, dpi->bits, width, height, &state);
 	if (error) {
 		log_error("Unable to save screenshot, %u: %s", lodepng_error_text(error));
 		index = -1;
