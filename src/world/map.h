@@ -246,6 +246,10 @@ extern rct_xy16 *gMapSelectionTiles;
 extern bool LandPaintMode;
 // Used in the land rights tool window to either buy land rights or construction rights
 extern bool LandRightsMode;
+// Used in the clear scenery tool
+extern bool gClearSmallScenery;
+extern bool gClearLargeScenery;
+extern bool gClearFootpath;
 
 void map_init(int size);
 void map_update_tile_pointers();

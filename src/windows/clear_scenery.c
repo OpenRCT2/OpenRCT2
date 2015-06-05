@@ -33,18 +33,25 @@ enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
 	WIDX_CLOSE,
 	WIDX_PREVIEW,
 	WIDX_DECREMENT,
-	WIDX_INCREMENT
+	WIDX_INCREMENT,
+	WIDX_SMALL_SCENERY,
+	WIDX_LARGE_SCENERY,
+	WIDX_FOOTPATH
 };
 
 rct_widget window_clear_scenery_widgets[] = {
-	{ WWT_FRAME,	0,	0,	97,	0,	66,	-1,										STR_NONE },							// panel / background
+	{ WWT_FRAME,	0,	0,	97,	0,	93,	-1,										STR_NONE },							// panel / background
 	{ WWT_CAPTION,	0,	1,	96,	1,	14,	STR_CLEAR_SCENERY,						STR_WINDOW_TITLE_TIP },				// title bar
 	{ WWT_CLOSEBOX,	0,	85,	95,	2,	13,	STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP },				// close x button
 	{ WWT_IMGBTN,	0,	27,	70,	17,	48,	SPR_LAND_TOOL_SIZE_0,					STR_NONE },							// preview box
 	{ WWT_TRNBTN,	1,	28,	43,	18,	33,	0x20000000 | SPR_LAND_TOOL_DECREASE,	STR_ADJUST_SMALLER_LAND_TIP },		// decrement size
 	{ WWT_TRNBTN,	1,	54,	69,	32,	47,	0x20000000 | SPR_LAND_TOOL_INCREASE,	STR_ADJUST_LARGER_LAND_TIP },		// increment size
+	{ WWT_FLATBTN,  1,	7,	30,	53,	76,	0x20000000 | SPR_G2_BUTTON_TREES,			5272 }, // small scenery
+	{ WWT_FLATBTN,	1,	37,	60,	53,	76,	0x20000000 | SPR_G2_BUTTON_LARGE_SCENERY,	5273 }, // large scenery
+	{ WWT_FLATBTN,	1,	67,	90,	53,	76,	0x20000000 | SPR_G2_BUTTON_FOOTPATH,		5274 }, // footpaths
 	{ WIDGETS_END },
 };
+
 
 static int window_clear_scenery_should_close();
 
@@ -100,13 +107,18 @@ void window_clear_scenery_open()
 	if (window_find_by_class(WC_CLEAR_SCENERY) != NULL)
 		return;
 
-	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 98, 29, 98, 67, (uint32*)window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
+	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 98, 29, 98, 94, (uint32*)window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
 	window->widgets = window_clear_scenery_widgets;
-	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_PREVIEW);
+	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_PREVIEW) |
+		(1 << WIDX_SMALL_SCENERY) | (1 << WIDX_LARGE_SCENERY) | (1 << WIDX_FOOTPATH);
 	window_init_scroll_widgets(window);
 	window_push_others_below(window);
 
 	RCT2_GLOBAL(0x00F1AD62, uint32) = MONEY32_UNDEFINED;
+
+	gClearSmallScenery = true;
+	gClearLargeScenery = false;
+	gClearFootpath = false;
 }
 
 /**
@@ -164,6 +176,18 @@ static void window_clear_scenery_mouseup()
 	case WIDX_PREVIEW:
 		window_clear_scenery_inputsize(w);
 		break;
+	case WIDX_SMALL_SCENERY:
+		gClearSmallScenery ^= 1;
+		window_invalidate(w);
+		break;
+	case WIDX_LARGE_SCENERY:
+		gClearLargeScenery ^= 1;
+		window_invalidate(w);
+		break;
+	case WIDX_FOOTPATH:
+		gClearFootpath ^= 1;
+		window_invalidate(w);
+		break;
 	}
 }
 
@@ -220,7 +244,10 @@ static void window_clear_scenery_invalidate()
 	colour_scheme_update(w);
 
 	// Set the preview image button to be pressed down
-	w->pressed_widgets |= (1 << WIDX_PREVIEW);
+	w->pressed_widgets = (1 << WIDX_PREVIEW) |
+		(gClearSmallScenery ? (1 << WIDX_SMALL_SCENERY) : 0) |
+		(gClearLargeScenery ? (1 << WIDX_LARGE_SCENERY) : 0) | 
+		(gClearFootpath     ? (1 << WIDX_FOOTPATH)      : 0);
 
 	// Update the preview image
 	window_clear_scenery_widgets[WIDX_PREVIEW].image = SPR_LAND_TOOL_SIZE_0 + RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
@@ -242,7 +269,7 @@ static void window_clear_scenery_paint()
 
 	// Draw cost amount
 	x = (window_clear_scenery_widgets[WIDX_PREVIEW].left + window_clear_scenery_widgets[WIDX_PREVIEW].right) / 2 + w->x;
-	y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + w->y + 5;
+	y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + w->y + 5 + 27;
 	if (RCT2_GLOBAL(0x00F1AD62, uint32) != MONEY32_UNDEFINED && RCT2_GLOBAL(0x00F1AD62, uint32) != 0)
 		gfx_draw_string_centred(dpi, 986, x, y, 0, (void*)0x00F1AD62);
 }
