@@ -4380,3 +4380,11 @@ uint8 ride_get_helix_sections(rct_ride *ride) {
 	// Helix sections stored in the low 5 bits.
 	return ride->special_track_elements & 0x1F;
 }
+
+bool ride_is_powered_launched(rct_ride *ride)
+{
+	return
+		ride->mode == RIDE_MODE_POWERED_LAUNCH_PASSTROUGH ||
+		ride->mode == RIDE_MODE_POWERED_LAUNCH ||
+		ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED;
+}

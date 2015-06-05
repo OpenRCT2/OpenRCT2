@@ -797,5 +797,6 @@ bool ride_has_waterfall(rct_ride *ride);
 bool ride_has_whirlpool(rct_ride *ride);
 
 bool ride_type_has_flag(int rideType, int flag);
+bool ride_is_powered_launched(rct_ride *ride);
 
 #endif
