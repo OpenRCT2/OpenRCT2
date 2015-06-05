@@ -536,10 +536,10 @@ static void ride_ratings_apply_adjustments(rct_ride *ride, rating_tuple *ratings
 	if (flags & 0x80) {
 		uint16 totalAirTime = ride->total_air_time;
 		if (rideEntry->var_008 & 0x800) {
-			totalAirTime -= 96;
-			if (totalAirTime >= 0) {
+			if (totalAirTime >= 96) {
+				totalAirTime -= 96;
 				ratings->excitement -= totalAirTime / 8;
-				ratings->nausea -= totalAirTime / 16;
+				ratings->nausea += totalAirTime / 16;
 			}
 		} else {
 			ratings->excitement += totalAirTime / 8;
@@ -1072,6 +1072,15 @@ static void ride_ratings_apply_max_negative_g_penalty(rating_tuple *ratings, rct
 	}
 }
 
+static void ride_ratings_apply_max_lateral_g_penalty(rating_tuple *ratings, rct_ride *ride, int minMaxLateralG, int excitementPenalty, int intensityPenalty, int nauseaPenalty)
+{
+	if (ride->max_lateral_g < minMaxLateralG) {
+		ratings->excitement /= excitementPenalty;
+		ratings->intensity /= intensityPenalty;
+		ratings->nausea /= nauseaPenalty;
+	}
+}
+
 static void ride_ratings_apply_first_length_penalty(rating_tuple *ratings, rct_ride *ride, int minFirstLength, int excitementPenalty, int intensityPenalty, int nauseaPenalty)
 {
 	if (ride->length[0] < minFirstLength) {
@@ -1084,6 +1093,47 @@ static void ride_ratings_apply_first_length_penalty(rating_tuple *ratings, rct_r
 #pragma endregion
 
 #pragma region Ride rating calculation functions
+
+static void ride_ratings_calculate_suspended_swinging_coaster(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+		return;
+	
+	ride->unreliability_factor = 18;
+	set_unreliability_factor(ride);
+
+	ride_ratings_set(&ratings, RIDE_RATING(3,30), RIDE_RATING(2,90), RIDE_RATING(3,50));
+	ride_ratings_apply_length(&ratings, ride, 6000, 764);
+	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,10));
+	ride_ratings_apply_train_length(&ratings, ride, 187245);
+	ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
+	ride_ratings_apply_average_speed(&ratings, ride, 291271, 436906);
+	ride_ratings_apply_duration(&ratings, ride, 150, 26214);
+	ride_ratings_apply_gforces(&ratings, ride, 32768, 23831, 79437);
+	ride_ratings_apply_65DDD1(&ratings, ride, 26749, 34767, 48036);
+	ride_ratings_apply_drops(&ratings, ride, 29127, 46811, 49152);
+	ride_ratings_apply_65E1C2(&ratings, ride, 15420, 32768, 35108);
+	ride_ratings_apply_65E277(&ratings, ride, 20130);
+	ride_ratings_apply_scenery(&ratings, ride, 6971);
+	ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 8, 2, 2, 2);
+	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xC0000, 2, 2, 2);
+	ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 60), 2, 2, 2);
+	ride_ratings_apply_max_lateral_g_penalty(&ratings, ride, FIXED_2DP(1, 50), 2, 2, 2);
+	ride_ratings_apply_first_length_penalty(&ratings, ride, 0x1720000, 2, 2, 2);
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= sub_65E72D(ride) << 5;
+}
 
 static void ride_ratings_calculate_junior_roller_coaster(rct_ride *ride)
 {
@@ -2001,6 +2051,38 @@ static void ride_ratings_calculate_space_rings(rct_ride *ride)
 	ride->inversions |= 0 << 5;
 }
 
+static void ride_ratings_calculate_reverse_freefall_coaster(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+		return;
+	
+	ride->unreliability_factor = 25;
+	set_unreliability_factor(ride);
+
+	ride_ratings_set(&ratings, RIDE_RATING(2,00), RIDE_RATING(3,20), RIDE_RATING(2,80));
+	ride_ratings_apply_length(&ratings, ride, 6000, 327);
+	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,60), RIDE_RATING(0,15));
+	ride_ratings_apply_max_speed(&ratings, ride, 436906, 436906, 320398);
+	ride_ratings_apply_gforces(&ratings, ride, 24576, 41704, 59578);
+	ride_ratings_apply_65E1C2(&ratings, ride, 12850, 28398, 11702);
+	ride_ratings_apply_65E277(&ratings, ride, 17893);
+	ride_ratings_apply_scenery(&ratings, ride, 11155);
+	ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 34, 2, 2, 2);
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= sub_65E72D(ride) << 5;
+}
+
 static void ride_ratings_calculate_lift(rct_ride *ride)
 {
 	rating_tuple ratings;
@@ -2308,6 +2390,52 @@ static void ride_ratings_calculate_ghost_train(rct_ride *ride)
 	ride->inversions |= sub_65E72D(ride) << 5;
 }
 
+static void ride_ratings_calculate_twister_roller_coaster(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+		return;
+	
+	ride->unreliability_factor = 15;
+	set_unreliability_factor(ride);
+
+	ride_ratings_set(&ratings, RIDE_RATING(3,50), RIDE_RATING(0,40), RIDE_RATING(0,30));
+	ride_ratings_apply_length(&ratings, ride, 6000, 764);
+	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
+	ride_ratings_apply_train_length(&ratings, ride, 187245);
+	ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
+	ride_ratings_apply_average_speed(&ratings, ride, 291271, 436906);
+	ride_ratings_apply_duration(&ratings, ride, 150, 26214);
+	ride_ratings_apply_gforces(&ratings, ride, 24576, 32768, 49648);
+	ride_ratings_apply_65DDD1(&ratings, ride, 26749, 34767, 45749);
+	ride_ratings_apply_drops(&ratings, ride, 29127, 46811, 49152);
+	ride_ratings_apply_65E1C2(&ratings, ride, 15420, 32768, 35108);
+	ride_ratings_apply_65E277(&ratings, ride, 20130);
+	ride_ratings_apply_scenery(&ratings, ride, 6693);
+
+	if ((ride->inversions & 0x1F) == 0)
+		ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 12, 2, 2, 2);
+
+	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 2, 2);
+
+	if ((ride->inversions & 0x1F) == 0) {
+		ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 40), 2, 2, 2);
+		ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
+	}
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= sub_65E72D(ride) << 5;
+}
+
 static void ride_ratings_calculate_wooden_roller_coaster(rct_ride *ride)
 {
 	rating_tuple ratings;
@@ -2336,6 +2464,52 @@ static void ride_ratings_calculate_wooden_roller_coaster(rct_ride *ride)
 	ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0,10), 2, 2, 2);
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0x1720000, 2, 2, 2);
 	ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= sub_65E72D(ride) << 5;
+}
+
+static void ride_ratings_calculate_multi_dimension_roller_coaster(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+		return;
+	
+	ride->unreliability_factor = 18;
+	set_unreliability_factor(ride);
+
+	ride_ratings_set(&ratings, RIDE_RATING(3,75), RIDE_RATING(1,95), RIDE_RATING(4,79));
+	ride_ratings_apply_length(&ratings, ride, 6000, 764);
+	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
+	ride_ratings_apply_train_length(&ratings, ride, 187245);
+	ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
+	ride_ratings_apply_average_speed(&ratings, ride, 291271, 436906);
+	ride_ratings_apply_duration(&ratings, ride, 150, 26214);
+	ride_ratings_apply_gforces(&ratings, ride, 24576, 38130, 49648);
+	ride_ratings_apply_65DDD1(&ratings, ride, 26749, 34767, 45749);
+	ride_ratings_apply_drops(&ratings, ride, 29127, 46811, 49152);
+	ride_ratings_apply_65E1C2(&ratings, ride, 15420, 32768, 35108);
+	ride_ratings_apply_65E277(&ratings, ride, 20130);
+	ride_ratings_apply_scenery(&ratings, ride, 6693);
+
+	if ((ride->inversions & 0x1F) == 0)
+		ratings.excitement /= 4;
+
+	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 1, 1);
+	if ((ride->inversions & 0x1F) == 0)
+		ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0,40), 2, 1, 1);
+
+	if ((ride->inversions & 0x1F) == 0)
+		ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 1, 1);
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -2440,6 +2614,50 @@ static void ride_ratings_calculate_crooked_house(rct_ride *ride)
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= 0xE0;
+}
+
+static void ride_ratings_calculate_compact_inverted_coaster(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+		return;
+
+	ride->unreliability_factor = ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE ? 31 : 21;
+	set_unreliability_factor(ride);
+
+	ride_ratings_set(&ratings, RIDE_RATING(3,15), RIDE_RATING(2,80), RIDE_RATING(3,20));
+	ride_ratings_apply_length(&ratings, ride, 6000, 764);
+	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,42), RIDE_RATING(0,05));
+	ride_ratings_apply_train_length(&ratings, ride, 187245);
+	ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
+	ride_ratings_apply_average_speed(&ratings, ride, 291271, 436906);
+	ride_ratings_apply_duration(&ratings, ride, 150, 26214);
+	ride_ratings_apply_gforces(&ratings, ride, 24576, 30980, 55606);
+	ride_ratings_apply_65DDD1(&ratings, ride, 26749, 29552, 57186);
+	ride_ratings_apply_drops(&ratings, ride, 29127, 39009, 49152);
+	ride_ratings_apply_65E1C2(&ratings, ride, 15420, 15291, 35108);
+	ride_ratings_apply_65E277(&ratings, ride, 15657);
+	ride_ratings_apply_scenery(&ratings, ride, 8366);
+
+	if ((ride->inversions & 0x1F) == 0)
+		ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 12, 2, 2, 2);
+
+	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 2, 2);
+
+	if ((ride->inversions & 0x1F) == 0)
+		ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0,30), 2, 2, 2);
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= sub_65E72D(ride) << 5;
 }
 
 static void ride_ratings_calculate_magic_carpet(rct_ride *ride)
@@ -2567,97 +2785,97 @@ static void ride_ratings_calculate_enterprise(rct_ride *ride)
 
 // rct2: 0x0097E050
 static const ride_ratings_calculation ride_ratings_calculate_func_table[91] = {
-	NULL,											// SPIRAL_ROLLER_COASTER
-	NULL,											// STAND_UP_ROLLER_COASTER
-	NULL,											// SUSPENDED_SWINGING_COASTER
-	NULL,											// INVERTED_ROLLER_COASTER
-	ride_ratings_calculate_junior_roller_coaster,	// JUNIOR_ROLLER_COASTER
-	ride_ratings_calculate_miniature_railway,		// MINIATURE_RAILWAY
-	ride_ratings_calculate_monorail,				// MONORAIL
-	NULL,											// MINI_SUSPENDED_COASTER
-	ride_ratings_calculate_boat_ride,				// BOAT_RIDE
-	NULL,											// WOODEN_WILD_MOUSE
-	ride_ratings_calculate_steeplechase,			// STEEPLECHASE
-	ride_ratings_calculate_car_ride,				// CAR_RIDE
-	ride_ratings_calculate_launched_freefall,		// LAUNCHED_FREEFALL
-	NULL,											// BOBSLEIGH_COASTER
-	ride_ratings_calculate_observation_tower,		// OBSERVATION_TOWER
-	ride_ratings_calculate_looping_roller_coaster,	// LOOPING_ROLLER_COASTER
-	NULL,											// DINGHY_SLIDE
-	ride_ratings_calculate_mine_train_coaster,		// MINE_TRAIN_COASTER
-	ride_ratings_calculate_chairlift,				// CHAIRLIFT
-	NULL,											// CORKSCREW_ROLLER_COASTER
-	ride_ratings_calculate_maze,					// MAZE
-	ride_ratings_calculate_spiral_slide,			// SPIRAL_SLIDE
-	ride_ratings_calculate_go_karts,				// GO_KARTS
-	ride_ratings_calculate_log_flume,				// LOG_FLUME
-	ride_ratings_calculate_river_rapids,			// RIVER_RAPIDS
-	ride_ratings_calculate_dodgems,					// DODGEMS
-	ride_ratings_calculate_pirate_ship,				// PIRATE_SHIP
-	ride_ratings_calculate_inverter_ship,			// SWINGING_INVERTER_SHIP
-	ride_ratings_calculate_food_stall,				// FOOD_STALL
-	NULL,											// 1D
-	ride_ratings_calculate_drink_stall,				// DRINK_STALL
-	NULL,											// 1F
-	ride_ratings_calculate_shop,					// SHOP
-	ride_ratings_calculate_merry_go_round,			// MERRY_GO_ROUND
-	NULL,											// 22
-	ride_ratings_calculate_information_kiosk,		// INFORMATION_KIOSK
-	ride_ratings_calculate_toilets,					// TOILETS
-	ride_ratings_calculate_ferris_wheel,			// FERRIS_WHEEL
-	ride_ratings_calculate_motion_simulator,		// MOTION_SIMULATOR
-	ride_ratings_calculate_3d_cinema,				// 3D_CINEMA
-	ride_ratings_calculate_top_spin,				// TOP_SPIN
-	ride_ratings_calculate_space_rings,				// SPACE_RINGS
-	NULL,											// REVERSE_FREEFALL_COASTER
-	ride_ratings_calculate_lift,					// LIFT
-	NULL,											// VERTICAL_DROP_ROLLER_COASTER
-	ride_ratings_calculate_cash_machine,			// CASH_MACHINE
-	ride_ratings_calculate_twist,					// TWIST
-	ride_ratings_calculate_haunted_house,			// HAUNTED_HOUSE
-	ride_ratings_calculate_first_aid,				// FIRST_AID
-	ride_ratings_calculate_circus_show,				// CIRCUS_SHOW
-	ride_ratings_calculate_ghost_train,				// GHOST_TRAIN
-	NULL,											// TWISTER_ROLLER_COASTER
-	ride_ratings_calculate_wooden_roller_coaster,	// WOODEN_ROLLER_COASTER
-	NULL,											// SIDE_FRICTION_ROLLER_COASTER
-	NULL,											// WILD_MOUSE
-	NULL,											// MULTI_DIMENSION_ROLLER_COASTER
-	NULL,											// 38
-	NULL,											// FLYING_ROLLER_COASTER
-	NULL,											// 3A
-	NULL,											// VIRGINIA_REEL
-	ride_ratings_calculate_splash_boats,			// SPLASH_BOATS
-	ride_ratings_calculate_mini_helicopters,		// MINI_HELICOPTERS
-	NULL,											// LAY_DOWN_ROLLER_COASTER
-	ride_ratings_calculate_suspended_monorail,		// SUSPENDED_MONORAIL
-	NULL,											// 40
-	NULL,											// REVERSER_ROLLER_COASTER
-	NULL,											// HEARTLINE_TWISTER_COASTER
-	ride_ratings_calculate_mini_golf,				// MINI_GOLF
-	NULL,											// GIGA_COASTER
-	ride_ratings_calculate_roto_drop,				// ROTO_DROP
-	ride_ratings_calculate_flying_saucers,			// FLYING_SAUCERS
-	ride_ratings_calculate_crooked_house,			// CROOKED_HOUSE
-	NULL,											// MONORAIL_CYCLES
-	NULL,											// COMPACT_INVERTED_COASTER
-	NULL,											// WATER_COASTER
-	NULL,											// AIR_POWERED_VERTICAL_COASTER
-	NULL,											// INVERTED_HAIRPIN_COASTER
-	ride_ratings_calculate_magic_carpet,			// MAGIC_CARPET
-	ride_ratings_calculate_submarine_ride,			// SUBMARINE_RIDE
-	ride_ratings_calculate_river_rafts,				// RIVER_RAFTS
-	NULL,											// 50
-	ride_ratings_calculate_enterprise,				// ENTERPRISE
-	NULL,											// 52
-	NULL,											// 53
-	NULL,											// 54
-	NULL,											// 55
-	NULL,											// INVERTED_IMPULSE_COASTER
-	NULL,											// MINI_ROLLER_COASTER
-	NULL,											// MINE_RIDE
-	NULL,											// 59
-	NULL,											// LIM_LAUNCHED_ROLLER_COASTER
+	NULL,														// SPIRAL_ROLLER_COASTER
+	NULL,														// STAND_UP_ROLLER_COASTER
+	ride_ratings_calculate_suspended_swinging_coaster,			// SUSPENDED_SWINGING_COASTER
+	NULL,														// INVERTED_ROLLER_COASTER
+	ride_ratings_calculate_junior_roller_coaster,				// JUNIOR_ROLLER_COASTER
+	ride_ratings_calculate_miniature_railway,					// MINIATURE_RAILWAY
+	ride_ratings_calculate_monorail,							// MONORAIL
+	NULL,														// MINI_SUSPENDED_COASTER
+	ride_ratings_calculate_boat_ride,							// BOAT_RIDE
+	NULL,														// WOODEN_WILD_MOUSE
+	ride_ratings_calculate_steeplechase,						// STEEPLECHASE
+	ride_ratings_calculate_car_ride,							// CAR_RIDE
+	ride_ratings_calculate_launched_freefall,					// LAUNCHED_FREEFALL
+	NULL,														// BOBSLEIGH_COASTER
+	ride_ratings_calculate_observation_tower,					// OBSERVATION_TOWER
+	ride_ratings_calculate_looping_roller_coaster,				// LOOPING_ROLLER_COASTER
+	NULL,														// DINGHY_SLIDE
+	ride_ratings_calculate_mine_train_coaster,					// MINE_TRAIN_COASTER
+	ride_ratings_calculate_chairlift,							// CHAIRLIFT
+	NULL,														// CORKSCREW_ROLLER_COASTER
+	ride_ratings_calculate_maze,								// MAZE
+	ride_ratings_calculate_spiral_slide,						// SPIRAL_SLIDE
+	ride_ratings_calculate_go_karts,							// GO_KARTS
+	ride_ratings_calculate_log_flume,							// LOG_FLUME
+	ride_ratings_calculate_river_rapids,						// RIVER_RAPIDS
+	ride_ratings_calculate_dodgems,								// DODGEMS
+	ride_ratings_calculate_pirate_ship,							// PIRATE_SHIP
+	ride_ratings_calculate_inverter_ship,						// SWINGING_INVERTER_SHIP
+	ride_ratings_calculate_food_stall,							// FOOD_STALL
+	NULL,														// 1D
+	ride_ratings_calculate_drink_stall,							// DRINK_STALL
+	NULL,														// 1F
+	ride_ratings_calculate_shop,								// SHOP
+	ride_ratings_calculate_merry_go_round,						// MERRY_GO_ROUND
+	NULL,														// 22
+	ride_ratings_calculate_information_kiosk,					// INFORMATION_KIOSK
+	ride_ratings_calculate_toilets,								// TOILETS
+	ride_ratings_calculate_ferris_wheel,						// FERRIS_WHEEL
+	ride_ratings_calculate_motion_simulator,					// MOTION_SIMULATOR
+	ride_ratings_calculate_3d_cinema,							// 3D_CINEMA
+	ride_ratings_calculate_top_spin,							// TOP_SPIN
+	ride_ratings_calculate_space_rings,							// SPACE_RINGS
+	ride_ratings_calculate_reverse_freefall_coaster,			// REVERSE_FREEFALL_COASTER
+	ride_ratings_calculate_lift,								// LIFT
+	NULL,														// VERTICAL_DROP_ROLLER_COASTER
+	ride_ratings_calculate_cash_machine,						// CASH_MACHINE
+	ride_ratings_calculate_twist,								// TWIST
+	ride_ratings_calculate_haunted_house,						// HAUNTED_HOUSE
+	ride_ratings_calculate_first_aid,							// FIRST_AID
+	ride_ratings_calculate_circus_show,							// CIRCUS_SHOW
+	ride_ratings_calculate_ghost_train,							// GHOST_TRAIN
+	ride_ratings_calculate_twister_roller_coaster,				// TWISTER_ROLLER_COASTER
+	ride_ratings_calculate_wooden_roller_coaster,				// WOODEN_ROLLER_COASTER
+	NULL,														// SIDE_FRICTION_ROLLER_COASTER
+	NULL,														// WILD_MOUSE
+	ride_ratings_calculate_multi_dimension_roller_coaster,		// MULTI_DIMENSION_ROLLER_COASTER
+	NULL,														// 38
+	NULL,														// FLYING_ROLLER_COASTER
+	NULL,														// 3A
+	NULL,														// VIRGINIA_REEL
+	ride_ratings_calculate_splash_boats,						// SPLASH_BOATS
+	ride_ratings_calculate_mini_helicopters,					// MINI_HELICOPTERS
+	NULL,														// LAY_DOWN_ROLLER_COASTER
+	ride_ratings_calculate_suspended_monorail,					// SUSPENDED_MONORAIL
+	NULL,														// 40
+	NULL,														// REVERSER_ROLLER_COASTER
+	NULL,														// HEARTLINE_TWISTER_COASTER
+	ride_ratings_calculate_mini_golf,							// MINI_GOLF
+	NULL,														// GIGA_COASTER
+	ride_ratings_calculate_roto_drop,							// ROTO_DROP
+	ride_ratings_calculate_flying_saucers,						// FLYING_SAUCERS
+	ride_ratings_calculate_crooked_house,						// CROOKED_HOUSE
+	NULL,														// MONORAIL_CYCLES
+	ride_ratings_calculate_compact_inverted_coaster,			// COMPACT_INVERTED_COASTER
+	NULL,														// WATER_COASTER
+	NULL,														// AIR_POWERED_VERTICAL_COASTER
+	NULL,														// INVERTED_HAIRPIN_COASTER
+	ride_ratings_calculate_magic_carpet,						// MAGIC_CARPET
+	ride_ratings_calculate_submarine_ride,						// SUBMARINE_RIDE
+	ride_ratings_calculate_river_rafts,							// RIVER_RAFTS
+	NULL,														// 50
+	ride_ratings_calculate_enterprise,							// ENTERPRISE
+	NULL,														// 52
+	NULL,														// 53
+	NULL,														// 54
+	NULL,														// 55
+	NULL,														// INVERTED_IMPULSE_COASTER
+	NULL,														// MINI_ROLLER_COASTER
+	NULL,														// MINE_RIDE
+	NULL,														// 59
+	NULL,														// LIM_LAUNCHED_ROLLER_COASTER
 };
 
 #pragma endregion
