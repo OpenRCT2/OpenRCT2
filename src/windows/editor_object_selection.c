@@ -356,7 +356,7 @@ static void window_editor_object_selection_mouseup()
 		window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
 		break;
 	case WIDX_FILTER_STRING_BUTTON:
-		window_text_input_open(w, widgetIndex, 5272, 5273, 1170, _filter_string, 40);
+		window_text_input_open(w, widgetIndex, 5272, 5273, 1170, (uint32)_filter_string, 40);
 		break;
 	case WIDX_FILTER_CLEAR_BUTTON:
 		memset(_filter_string, 0, sizeof(_filter_string));
@@ -1067,9 +1067,9 @@ static bool filter_string(rct_object_entry *entry)
 	strcpy(name_lower, name);
 	strcpy(filter_lower, _filter_string);
 
-	for (int i = 0; i < strlen(name_lower); i++)
+	for (int i = 0; i < (int)strlen(name_lower); i++)
 		name_lower[i] = (char)tolower(name_lower[i]);
-	for (int i = 0; i < strlen(filter_lower); i++)
+	for (int i = 0; i < (int)strlen(filter_lower); i++)
 		filter_lower[i] = (char)tolower(filter_lower[i]);
 
 	return strstr(name_lower, filter_lower) != NULL;
