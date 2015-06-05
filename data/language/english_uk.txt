@@ -3605,3 +3605,6 @@ STR_5268    :{SMALLFONT}{BLACK}Audio
 STR_5269    :{SMALLFONT}{BLACK}Controls
 STR_5270    :{SMALLFONT}{BLACK}Miscellaneous
 STR_5271    :{SMALLFONT}{BLACK}Twitch
+STR_5272    :Find Objects
+STR_5273    :Enter the name of an object to look for
+STR_5274    :Clear
