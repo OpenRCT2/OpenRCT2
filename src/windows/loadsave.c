@@ -346,8 +346,7 @@ static void window_loadsave_scrollmousedown()
 		char *templateString;
 
 		templateString = (char*)language_get_string(templateStringId);
-		int folderlength = strlen(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char));
-		strcpy(templateString, RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH_2 + folderlength, char));
+		strcpy(templateString, path_get_filename(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH_2, char)));
 		path_remove_extension(templateString);
 
 		window_text_input_open(w, WIDX_SCROLL, STR_NONE, 2710, templateStringId, 0, 64);

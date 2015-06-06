@@ -71,9 +71,7 @@ void path_set_extension(char *path, const char *extension)
 
 void path_remove_extension(char *path)
 {
-	char *ch = path;
-
-	while (*ch != '\0') ++ch;
+	char *ch = path + strlen(path);
 	for (--ch; ch >= path; --ch) {
 		if (*ch == '.') {
 			*ch = '\0';
