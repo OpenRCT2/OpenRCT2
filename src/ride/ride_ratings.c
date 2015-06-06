@@ -1305,7 +1305,7 @@ static void ride_ratings_calculate_steeplechase(rct_ride *ride)
 	ride_ratings_apply_scenery(&ratings, ride, 9760);
 	ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 4, 2, 2, 2);
 	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0x80000, 2, 2, 2);
-	ride_ratings_apply_max_negative_g_penalty(&ratings, ride, 50, 2, 2, 2);
+	ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0,50), 2, 2, 2);
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0xF00000, 2, 2, 2);
 	ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 
@@ -1379,6 +1379,45 @@ static void ride_ratings_calculate_launched_freefall(rct_ride *ride)
 	ride_ratings_apply_operation_option(&ratings, ride, 0, 1355917, 451972);
 	ride_ratings_apply_65E277(&ratings, ride, 20130);
 	ride_ratings_apply_scenery(&ratings, ride, 25098);
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= sub_65E72D(ride) << 5;
+}
+
+static void ride_ratings_calculate_bobsleigh_coaster(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+		return;
+	
+	ride->unreliability_factor = 16;
+	set_unreliability_factor(ride);
+
+	ride_ratings_set(&ratings, RIDE_RATING(2,80), RIDE_RATING(3,20), RIDE_RATING(2,50));
+	ride_ratings_apply_length(&ratings, ride, 6000, 764);
+	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,20), RIDE_RATING(0,00));
+	ride_ratings_apply_train_length(&ratings, ride, 187245);
+	ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
+	ride_ratings_apply_average_speed(&ratings, ride, 291271, 436906);
+	ride_ratings_apply_duration(&ratings, ride, 150, 26214);
+	ride_ratings_apply_gforces(&ratings, ride, 65536, 23831, 49648);
+	ride_ratings_apply_65DDD1(&ratings, ride, 26749, 34767, 45749);
+	ride_ratings_apply_drops(&ratings, ride, 29127, 46811, 49152);
+	ride_ratings_apply_65E1C2(&ratings, ride, 15420, 32768, 35108);
+	ride_ratings_apply_65E277(&ratings, ride, 20130);
+	ride_ratings_apply_scenery(&ratings, ride, 5577);
+	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xC0000, 2, 2, 2);
+	ride_ratings_apply_max_lateral_g_penalty(&ratings, ride, FIXED_2DP(1,20), 2, 2, 2);
+	ride_ratings_apply_first_length_penalty(&ratings, ride, 0x1720000, 2, 2, 2);
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -1552,6 +1591,52 @@ static void ride_ratings_calculate_chairlift(rct_ride *ride)
 
 	ride->inversions &= 0x1F;
 	ride->inversions |= edx << 5;
+}
+
+static void ride_ratings_calculate_corkscrew_roller_coaster(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+		return;
+	
+	ride->unreliability_factor = 16;
+	set_unreliability_factor(ride);
+
+	ride_ratings_set(&ratings, RIDE_RATING(3,00), RIDE_RATING(0,50), RIDE_RATING(0,20));
+	ride_ratings_apply_length(&ratings, ride, 6000, 764);
+	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
+	ride_ratings_apply_train_length(&ratings, ride, 187245);
+	ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
+	ride_ratings_apply_average_speed(&ratings, ride, 291271, 436906);
+	ride_ratings_apply_duration(&ratings, ride, 150, 26214);
+	ride_ratings_apply_gforces(&ratings, ride, 24576, 35746, 49648);
+	ride_ratings_apply_65DDD1(&ratings, ride, 26749, 34767, 45749);
+	ride_ratings_apply_drops(&ratings, ride, 29127, 46811, 49152);
+	ride_ratings_apply_65E1C2(&ratings, ride, 15420, 32768, 35108);
+	ride_ratings_apply_65E277(&ratings, ride, 20130);
+	ride_ratings_apply_scenery(&ratings, ride, 6693);
+
+	if ((ride->inversions & 0x1F) == 0)
+		ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 12, 2, 2, 2);
+
+	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 2, 2);
+
+	if ((ride->inversions & 0x1F) == 0) {
+		ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 40), 2, 2, 2);
+		ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
+	}
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= sub_65E72D(ride) << 5;
 }
 
 static void ride_ratings_calculate_maze(rct_ride *ride)
@@ -2477,6 +2562,47 @@ static void ride_ratings_calculate_wooden_roller_coaster(rct_ride *ride)
 	ride->inversions |= sub_65E72D(ride) << 5;
 }
 
+static void ride_ratings_calculate_wild_mouse(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+		return;
+	
+	ride->unreliability_factor = 14;
+	set_unreliability_factor(ride);
+
+	ride_ratings_set(&ratings, RIDE_RATING(2,80), RIDE_RATING(2,50), RIDE_RATING(2,10));
+	ride_ratings_apply_length(&ratings, ride, 6000, 873);
+	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0, 8));
+	ride_ratings_apply_train_length(&ratings, ride, 187245);
+	ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
+	ride_ratings_apply_average_speed(&ratings, ride, 364088, 655360);
+	ride_ratings_apply_duration(&ratings, ride, 150, 26214);
+	ride_ratings_apply_gforces(&ratings, ride, 102400, 35746, 49648);
+	ride_ratings_apply_65DDD1(&ratings, ride, 29721, 43458, 45749);
+	ride_ratings_apply_drops(&ratings, ride, 40777, 46811, 49152);
+	ride_ratings_apply_65E1C2(&ratings, ride, 16705, 30583, 35108);
+	ride_ratings_apply_65E277(&ratings, ride, 17893);
+	ride_ratings_apply_scenery(&ratings, ride, 5577);
+	ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 6, 2, 2, 2);
+	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0x70000, 2, 2, 2);
+	ride_ratings_apply_max_lateral_g_penalty(&ratings, ride, FIXED_2DP(1,50), 2, 2, 2);
+	ride_ratings_apply_first_length_penalty(&ratings, ride, 0xAA0000, 2, 2, 2);
+	ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= sub_65E72D(ride) << 5;
+}
+
 static void ride_ratings_calculate_multi_dimension_roller_coaster(rct_ride *ride)
 {
 	rating_tuple ratings;
@@ -2510,6 +2636,52 @@ static void ride_ratings_calculate_multi_dimension_roller_coaster(rct_ride *ride
 
 	if ((ride->inversions & 0x1F) == 0)
 		ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 1, 1);
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= sub_65E72D(ride) << 5;
+}
+
+static void ride_ratings_calculate_giga_coaster(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+		return;
+	
+	ride->unreliability_factor = 14;
+	set_unreliability_factor(ride);
+
+	ride_ratings_set(&ratings, RIDE_RATING(3,85), RIDE_RATING(0,40), RIDE_RATING(0,35));
+	ride_ratings_apply_length(&ratings, ride, 6000, 819);
+	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
+	ride_ratings_apply_train_length(&ratings, ride, 140434);
+	ride_ratings_apply_max_speed(&ratings, ride, 51366, 85019, 35424);
+	ride_ratings_apply_average_speed(&ratings, ride, 364088, 400497);
+	ride_ratings_apply_duration(&ratings, ride, 150, 26214);
+	ride_ratings_apply_gforces(&ratings, ride, 36864, 30384, 49648);
+	ride_ratings_apply_65DDD1(&ratings, ride, 28235, 34767, 45749);
+	ride_ratings_apply_drops(&ratings, ride, 43690, 46811, 49152);
+	ride_ratings_apply_65E1C2(&ratings, ride, 15420, 32768, 35108);
+	ride_ratings_apply_65E277(&ratings, ride, 20130);
+	ride_ratings_apply_scenery(&ratings, ride, 6693);
+
+	if ((ride->inversions & 0x1F) == 0)
+		ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 16, 2, 2, 2);
+	
+	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 2, 2);
+	
+	if ((ride->inversions & 0x1F) == 0) {
+		ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 40), 2, 2, 2);
+		ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
+	}
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -2779,6 +2951,46 @@ static void ride_ratings_calculate_enterprise(rct_ride *ride)
 	ride->inversions |= 3 << 5;
 }
 
+static void ride_ratings_calculate_mini_roller_coaster(rct_ride *ride)
+{
+	rating_tuple ratings;
+
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+		return;
+
+	ride->unreliability_factor = 13;
+	set_unreliability_factor(ride);
+
+	ride_ratings_set(&ratings, RIDE_RATING(2,55), RIDE_RATING(2,40), RIDE_RATING(1,85));
+	ride_ratings_apply_length(&ratings, ride, 6000, 764);
+	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
+	ride_ratings_apply_train_length(&ratings, ride, 187245);
+	ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
+	ride_ratings_apply_average_speed(&ratings, ride, 291271, 436906);
+	ride_ratings_apply_duration(&ratings, ride, 150, 26214);
+	ride_ratings_apply_gforces(&ratings, ride, 20480, 23831, 49648);
+	ride_ratings_apply_65DDD1(&ratings, ride, 26749, 34767, 45749);
+	ride_ratings_apply_drops(&ratings, ride, 29127, 46811, 49152);
+	ride_ratings_apply_65E1C2(&ratings, ride, 25700, 30583, 35108);
+	ride_ratings_apply_65E277(&ratings, ride, 20130);
+	ride_ratings_apply_scenery(&ratings, ride, 9760);
+	ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 12, 2, 2, 2);
+	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0x70000, 2, 2, 2);
+	ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0,50), 2, 2, 2);
+	ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
+
+	ride_ratings_apply_intensity_penalty(&ratings);
+	ride_ratings_apply_adjustments(ride, &ratings);
+
+	ride->ratings = ratings;
+
+	ride->upkeep_cost = ride_compute_upkeep(ride);
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+
+	ride->inversions &= 0x1F;
+	ride->inversions |= sub_65E72D(ride) << 5;
+}
+
 #pragma endregion
 
 #pragma region Ride rating calculation function table
@@ -2798,13 +3010,13 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[91] = {
 	ride_ratings_calculate_steeplechase,						// STEEPLECHASE
 	ride_ratings_calculate_car_ride,							// CAR_RIDE
 	ride_ratings_calculate_launched_freefall,					// LAUNCHED_FREEFALL
-	NULL,														// BOBSLEIGH_COASTER
+	ride_ratings_calculate_bobsleigh_coaster,					// BOBSLEIGH_COASTER
 	ride_ratings_calculate_observation_tower,					// OBSERVATION_TOWER
 	ride_ratings_calculate_looping_roller_coaster,				// LOOPING_ROLLER_COASTER
 	NULL,														// DINGHY_SLIDE
 	ride_ratings_calculate_mine_train_coaster,					// MINE_TRAIN_COASTER
 	ride_ratings_calculate_chairlift,							// CHAIRLIFT
-	NULL,														// CORKSCREW_ROLLER_COASTER
+	ride_ratings_calculate_corkscrew_roller_coaster,			// CORKSCREW_ROLLER_COASTER
 	ride_ratings_calculate_maze,								// MAZE
 	ride_ratings_calculate_spiral_slide,						// SPIRAL_SLIDE
 	ride_ratings_calculate_go_karts,							// GO_KARTS
@@ -2839,7 +3051,7 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[91] = {
 	ride_ratings_calculate_twister_roller_coaster,				// TWISTER_ROLLER_COASTER
 	ride_ratings_calculate_wooden_roller_coaster,				// WOODEN_ROLLER_COASTER
 	NULL,														// SIDE_FRICTION_ROLLER_COASTER
-	NULL,														// WILD_MOUSE
+	ride_ratings_calculate_wild_mouse,							// WILD_MOUSE
 	ride_ratings_calculate_multi_dimension_roller_coaster,		// MULTI_DIMENSION_ROLLER_COASTER
 	NULL,														// 38
 	NULL,														// FLYING_ROLLER_COASTER
@@ -2853,7 +3065,7 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[91] = {
 	NULL,														// REVERSER_ROLLER_COASTER
 	NULL,														// HEARTLINE_TWISTER_COASTER
 	ride_ratings_calculate_mini_golf,							// MINI_GOLF
-	NULL,														// GIGA_COASTER
+	ride_ratings_calculate_giga_coaster,						// GIGA_COASTER
 	ride_ratings_calculate_roto_drop,							// ROTO_DROP
 	ride_ratings_calculate_flying_saucers,						// FLYING_SAUCERS
 	ride_ratings_calculate_crooked_house,						// CROOKED_HOUSE
@@ -2872,7 +3084,7 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[91] = {
 	NULL,														// 54
 	NULL,														// 55
 	NULL,														// INVERTED_IMPULSE_COASTER
-	NULL,														// MINI_ROLLER_COASTER
+	ride_ratings_calculate_mini_roller_coaster,					// MINI_ROLLER_COASTER
 	NULL,														// MINE_RIDE
 	NULL,														// 59
 	NULL,														// LIM_LAUNCHED_ROLLER_COASTER
