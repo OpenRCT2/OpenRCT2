@@ -29,8 +29,11 @@ typedef struct {
 	uint8 category;
 } rct_research_item;
 
+// Everything before this point has been researched
 #define RESEARCHED_ITEMS_SEPERATOR -1
+// Everything before this point and after seperator still requires research
 #define RESEARCHED_ITEMS_END -2
+// Extra end of list entry. Unsure why?
 #define RESEARCHED_ITEMS_END_2 -3
 
 enum {

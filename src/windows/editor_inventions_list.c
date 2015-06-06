@@ -290,7 +290,8 @@ static void sub_685A79()
 		research->entryIndex != RESEARCHED_ITEMS_END_2;
 		research++){
 
-		if (research->entryIndex < RESEARCHED_ITEMS_END_2){
+		// Clear the always researched flags.
+		if (research->entryIndex > RESEARCHED_ITEMS_SEPERATOR){
 			research->entryIndex &= 0x00FFFFFF;
 		}
 	}
@@ -418,7 +419,8 @@ static void move_research_item(rct_research_item *beforeItem)
 	do {
 		*researchItem = *(researchItem + 1);
 		researchItem++;
-	} while ((researchItem - 1)->entryIndex != RESEARCHED_ITEMS_END);
+	} while (researchItem->entryIndex != RESEARCHED_ITEMS_END_2);
+	// At end of this researchItem points to the end of the list
 
 	if (beforeItem > _editorInventionsListDraggedItem)
 		beforeItem--;
@@ -479,13 +481,13 @@ static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y_i
 		researchItem++;
 	}
 
-	for (; researchItem->entryIndex != RESEARCHED_ITEMS_END_2; researchItem++) {
+	for (; researchItem->entryIndex != RESEARCHED_ITEMS_SEPERATOR && researchItem->entryIndex != RESEARCHED_ITEMS_END; researchItem++) {
 		y -= 10;
 		if (y < 0)
 			return researchItem;
 	}
 
-	return researchItem - 1;
+	return researchItem;
 }
 
 static rct_research_item *get_research_item_at(int x, int y)
@@ -581,10 +583,12 @@ static void window_editor_inventions_list_mouseup()
 		break;
 	case WIDX_MOVE_ITEMS_TO_TOP:
 		research_items_make_all_researched();
+		window_init_scroll_widgets(w);
 		window_invalidate(w);
 		break;
 	case WIDX_MOVE_ITEMS_TO_BOTTOM:
 		research_items_make_all_unresearched();
+		window_init_scroll_widgets(w);
 		window_invalidate(w);
 		break;
 	}
@@ -794,7 +798,8 @@ static void window_editor_inventions_list_paint()
 	researchItem = _editorInventionsListDraggedItem;
 	if (researchItem == NULL)
 		researchItem = WindowHighlightedItem(w);
-	if (researchItem == NULL)
+	// If the research item is null or a list seperator.
+	if (researchItem == NULL || researchItem->entryIndex < 0)
 		return;
 
 	// Preview image
@@ -861,8 +866,10 @@ static void window_editor_inventions_list_scrollpaint()
 		researchItemEndMarker = RESEARCHED_ITEMS_SEPERATOR;
 	}
 
-	itemY = 0;
-	for (; researchItem->entryIndex != researchItemEndMarker; researchItem++, itemY += 10) {
+	// Since this is now a do while need to conteract the +10
+	itemY = -10;
+	do{ 
+		itemY += 10;
 		if (itemY + 10 < dpi->y || itemY >= dpi->y + dpi->height)
 			continue;
 
@@ -911,7 +918,7 @@ static void window_editor_inventions_list_scrollpaint()
 		left = 1;
 		top = itemY - 1;
 		gfx_draw_string(dpi, buffer, colour, left, top);
-	}
+	}while(researchItem++->entryIndex != researchItemEndMarker);
 }
 
 #pragma region Drag item
