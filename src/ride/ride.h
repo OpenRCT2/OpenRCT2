@@ -101,7 +101,7 @@ typedef struct {
 	rct_string_id name;						// 0x000
 	rct_string_id description;				// 0x002
 	uint32 images_offset;					// 0x004
-	uint32 var_008;
+	uint32 flags;							// 0x008
 	uint8 ride_type[3];						// 0x00C
 	uint8 min_cars_in_train;				// 0x00F
 	uint8 max_cars_in_train;				// 0x010
@@ -369,6 +369,42 @@ enum {
 
 	// Used to bring up the "real" ride window after a crash. Can be removed once vehicle_update is decompiled
 	RIDE_LIFECYCLE_CRASHED_WINDOW_OPENED = 1 << 20
+};
+
+// Constants used by the ride_type->flags property at 0x008
+enum {
+	RIDE_ENTRY_FLAG_0 = 1 << 0, // 0x1
+	RIDE_ENTRY_FLAG_1 = 1 << 1, // 0x2
+	RIDE_ENTRY_FLAG_2 = 1 << 2, // 0x4
+	RIDE_ENTRY_FLAG_3 = 1 << 3, // 0x8
+	RIDE_ENTRY_FLAG_4 = 1 << 4, // 0x10
+	RIDE_ENTRY_FLAG_5 = 1 << 5, // 0x20
+	RIDE_ENTRY_FLAG_6 = 1 << 6, // 0x40
+	RIDE_ENTRY_FLAG_7 = 1 << 7, // 0x80
+	RIDE_ENTRY_FLAG_8 = 1 << 8, // 0x100
+	RIDE_ENTRY_FLAG_9 = 1 << 9, // 0x200
+	RIDE_ENTRY_FLAG_COVERED_RIDE = 1 << 10, // 0x400
+	RIDE_ENTRY_FLAG_11 = 1 << 11, // 0x800
+	RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME = 1 << 12, // 0x1000
+	RIDE_ENTRY_FLAG_SEPERATE_RIDE = 1 << 13, // 0x2000
+	RIDE_ENTRY_FLAG_14 = 1 << 14, // 0x4000
+	RIDE_ENTRY_FLAG_15 = 1 << 15, // 0x8000
+	RIDE_ENTRY_FLAG_16 = 1 << 16, // 0x10000
+	RIDE_ENTRY_FLAG_17 = 1 << 17, // 0x20000
+	RIDE_ENTRY_FLAG_18 = 1 << 18, // 0x40000
+	RIDE_ENTRY_FLAG_19 = 1 << 19, // 0x80000
+	RIDE_ENTRY_FLAG_20 = 1 << 20, // 0x100000
+	RIDE_ENTRY_FLAG_21 = 1 << 21, // 0x200000
+	RIDE_ENTRY_FLAG_22 = 1 << 22, // 0x400000
+	RIDE_ENTRY_FLAG_23 = 1 << 23, // 0x800000
+	RIDE_ENTRY_FLAG_24 = 1 << 24, // 0x1000000
+	RIDE_ENTRY_FLAG_25 = 1 << 25, // 0x2000000
+	RIDE_ENTRY_FLAG_26 = 1 << 26, // 0x4000000
+	RIDE_ENTRY_FLAG_27 = 1 << 27, // 0x8000000
+	RIDE_ENTRY_FLAG_28 = 1 << 28, // 0x10000000
+	RIDE_ENTRY_FLAG_29 = 1 << 29, // 0x20000000
+	RIDE_ENTRY_FLAG_30 = 1 << 30, // 0x40000000
+	RIDE_ENTRY_FLAG_31 = 1 << 31, // 0x80000000
 };
 
 enum {

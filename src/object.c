@@ -677,7 +677,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 
 		int di = ride_type->ride_type[0] | (ride_type->ride_type[1] << 8) | (ride_type->ride_type[2] << 16);
 
-		if (ride_type->var_008 & 0x1000) di |= 0x1000000;
+		if (ride_type->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME) di |= 0x1000000;
 
 		RCT2_GLOBAL(0xF433DD, uint32) = di;
 		return 0;// flags;
@@ -755,7 +755,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 			int width = w->x + w->width - x - 4;
 
 			int format_args = ride_type->description;
-			if (!(ride_type->var_008 & 0x1000))
+			if (!(ride_type->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME))
 			{
 				format_args = ride_type->ride_type[0];
 				if ((format_args & 0xFF) == 0xFF)

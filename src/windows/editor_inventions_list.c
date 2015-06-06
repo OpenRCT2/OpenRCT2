@@ -165,18 +165,20 @@ static int research_item_is_always_researched(rct_research_item *researchItem)
 	return (researchItem->entryIndex & 0x60000000) != 0;
 }
 
-/* rct2: 0x0068596F */
-static void sub_68596F(){
+/* rct2: 0x0068596F 
+ * Sets rides that are in use to be always researched
+ */
+static void research_rides_setup(){
 	// Reset all objects to not required
 	for (uint8 object_type = OBJECT_TYPE_RIDE; object_type < 11; object_type++){
-		uint8* esi = RCT2_ADDRESS(0x0098DA38, uint8*)[object_type];
+		uint8* in_use = RCT2_ADDRESS(0x0098DA38, uint8*)[object_type];
 		for (uint8 num_objects = object_entry_group_counts[object_type]; num_objects != 0; num_objects--){
-			*esi++ = 0;
+			*in_use++ = 0;
 		}
 	}
 
 	// Set research required for rides in use
-	for (uint16 rideIndex = 0; rideIndex <= 0xFF; rideIndex++){
+	for (uint16 rideIndex = 0; rideIndex < 255; rideIndex++){
 		rct_ride* ride = &g_ride_list[rideIndex];
 		if (ride->type == RIDE_TYPE_NULL)continue;
 		RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_RIDE][ride->subtype] |= 1;
@@ -190,28 +192,29 @@ static void sub_68596F(){
 		if ((research->entryIndex & 0xFFFFFF) < 0x10000)
 			continue;
 
-		uint8 ah = (research->entryIndex >> 8) & 0xFF;
+		uint8 ride_base_type = (research->entryIndex >> 8) & 0xFF;
 
 		uint8 object_index = research->entryIndex & 0xFF;
 		rct_ride_type* ride_entry = GET_RIDE_ENTRY(object_index);
 
 		uint8 master_found = 0;
-		if (!(ride_entry->var_008 & (1 << 13))){
+		if (!(ride_entry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE)){
 
 			for (uint8 rideType = 0; rideType < object_entry_group_counts[OBJECT_TYPE_RIDE]; rideType++){
 				rct_ride_type* master_ride = GET_RIDE_ENTRY(rideType);
 				if (master_ride == NULL || (uint32)master_ride == 0xFFFFFFFF)
 					continue;
 
-				if (master_ride->var_008 & (1 << 13))
+				if (master_ride->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE)
 					continue;
 
+				// If master ride not in use
 				if (!(RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_RIDE][rideType] & (1 << 0)))
 					continue;
 
-				if (ah == master_ride->ride_type[0] ||
-					ah == master_ride->ride_type[1] ||
-					ah == master_ride->ride_type[2]){
+				if (ride_base_type == master_ride->ride_type[0] ||
+					ride_base_type == master_ride->ride_type[1] ||
+					ride_base_type == master_ride->ride_type[2]){
 					master_found = 1;
 					break;
 				}
@@ -219,11 +222,12 @@ static void sub_68596F(){
 		}
 
 		if (!master_found){
+			// If not in use
 			if (!(RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_RIDE][object_index] & (1 << 0)))
 				continue;
-			if (ah != ride_entry->ride_type[0] &&
-				ah != ride_entry->ride_type[1] &&
-				ah != ride_entry->ride_type[2]){
+			if (ride_base_type != ride_entry->ride_type[0] &&
+				ride_base_type != ride_entry->ride_type[1] &&
+				ride_base_type != ride_entry->ride_type[2]){
 				continue;
 			}
 		}
@@ -236,19 +240,44 @@ static void sub_68596F(){
 	}
 }
 
-/* rct2: 0x0068590C */
-static void sub_68590C(){
-	RCT2_CALLPROC_EBPSAFE(0x0068590C);
+/* rct2: 0x0068590C 
+ * Sets the critical scenery sets to always researched
+ */
+static void research_scenery_sets_setup(){
+	
+	for (rct_object_entry* object = RCT2_ADDRESS(0x0098DA74, rct_object_entry);
+		(object->flags & 0xFF) != 0xFF;
+		object++){
+
+		uint8 entry_type, entry_index;
+		if (!find_object_in_entry_group(object, &entry_type, &entry_index))
+			continue;
+
+		if (entry_type != OBJECT_TYPE_SCENERY_SETS)
+			continue;
+
+		rct_research_item* research = gResearchItems;
+		for (; research->entryIndex != RESEARCHED_ITEMS_END; research++){
+
+			if ((research->entryIndex & 0xFFFFFF) != entry_index)
+				continue;
+
+			research->entryIndex |= (1 << 29);
+			_editorInventionsListDraggedItem = research;
+			move_research_item(gResearchItems);
+			_editorInventionsListDraggedItem = NULL;
+		}
+	}
 }
 
 /**
  *
  *  rct2: 0x00685901
  */
-static void sub_685901()
+static void research_always_researched_setup()
 {
-	sub_68596F();
-	sub_68590C();
+	research_rides_setup();
+	research_scenery_sets_setup();
 }
 
 /**
@@ -288,7 +317,7 @@ static rct_string_id research_item_get_name(uint32 researchItem)
 	if (rideEntry == NULL || rideEntry == (rct_ride_type*)0xFFFFFFFF)
 		return 0;
 
-	if (rideEntry->var_008 & 0x1000)
+	if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME)
 		return rideEntry->name;
 
 	return ((researchItem >> 8) & 0xFF) + 2;
@@ -499,7 +528,7 @@ void window_editor_inventions_list_open()
 	if (w != NULL)
 		return;
 
-	sub_685901();
+	research_always_researched_setup();
 
 	w = window_create_centred(
 		600,
