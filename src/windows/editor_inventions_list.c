@@ -162,7 +162,7 @@ static void move_research_item(rct_research_item *beforeItem);
 
 static int research_item_is_always_researched(rct_research_item *researchItem)
 {
-	return (researchItem->entryIndex & 0x60000000) != 0;
+	return (researchItem->entryIndex & (RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED | RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED)) != 0;
 }
 
 /* rct2: 0x0068596F 
@@ -185,7 +185,7 @@ static void research_rides_setup(){
 	}
 
 	for (rct_research_item* research = gResearchItems; research->entryIndex != RESEARCHED_ITEMS_END; research++){
-		if (research->entryIndex & (1 << 30))
+		if (research->entryIndex & RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED)
 			continue;
 
 		// If not a ride
@@ -232,7 +232,7 @@ static void research_rides_setup(){
 			}
 		}
 
-		research->entryIndex |= (1 << 30);
+		research->entryIndex |= RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED;
 		_editorInventionsListDraggedItem = research;
 		move_research_item(gResearchItems);
 		_editorInventionsListDraggedItem = NULL;
@@ -262,7 +262,7 @@ static void research_scenery_sets_setup(){
 			if ((research->entryIndex & 0xFFFFFF) != entry_index)
 				continue;
 
-			research->entryIndex |= (1 << 29);
+			research->entryIndex |= RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED;
 			_editorInventionsListDraggedItem = research;
 			move_research_item(gResearchItems);
 			_editorInventionsListDraggedItem = NULL;
