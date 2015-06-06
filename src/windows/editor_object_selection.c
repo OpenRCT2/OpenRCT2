@@ -116,7 +116,7 @@ static rct_widget window_editor_object_selection_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	0,	384,	595,	24,		35,		STR_INSTALL_NEW_TRACK_DESIGN,	STR_INSTALL_NEW_TRACK_DESIGN_TIP },
 	{ WWT_DROPDOWN_BUTTON,	0,	350,	463,	23,		34,		5261,							5265 },
 	{ WWT_DROPDOWN_BUTTON,	1,	4,		214,	46,		57,		STR_NONE,						STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	218,	287,	46,		57,		5274,							STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	218,	287,	46,		57,		5277,							STR_NONE },
 	{ WIDGETS_END }
 };
 
@@ -356,7 +356,7 @@ static void window_editor_object_selection_mouseup()
 		window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
 		break;
 	case WIDX_FILTER_STRING_BUTTON:
-		window_text_input_open(w, widgetIndex, 5272, 5273, 1170, (uint32)_filter_string, 40);
+		window_text_input_open(w, widgetIndex, 5275, 5276, 1170, (uint32)_filter_string, 40);
 		break;
 	case WIDX_FILTER_CLEAR_BUTTON:
 		memset(_filter_string, 0, sizeof(_filter_string));
