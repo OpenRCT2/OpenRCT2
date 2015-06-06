@@ -499,7 +499,7 @@ void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y,
 	if (interactionType != VIEWPORT_INTERACTION_ITEM_FOOTPATH || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL))) {
 		get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &map_pos.x, &map_pos.y, &interactionType, &myMapElement, &viewport);
 		if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
-			if (x != NULL) *x = 0x8000;
+			if (x != NULL) *x = (sint16)0x8000;
 			return;
 		}
 	}
