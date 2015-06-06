@@ -24,6 +24,8 @@
 #include "../sprites.h"
 #include "widget.h"
 #include "window.h"
+#include "../platform/platform.h"
+#include "../localisation/localisation.h"
 
 static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
@@ -35,6 +37,7 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widge
 static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_text_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
+static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
@@ -159,6 +162,9 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 		widget_checkbox_draw(dpi, w, widgetIndex);
 		break;
 	case WWT_25:
+		break;
+	case WWT_TEXT_BOX:
+		widget_text_box_draw(dpi, w, widgetIndex);
 		break;
 	}
 }
@@ -1124,4 +1130,77 @@ void widget_set_checkbox_value(rct_window *w, int widgetIndex, int value)
 		w->pressed_widgets |= (1ULL << widgetIndex);
 	else
 		w->pressed_widgets &= ~(1ULL << widgetIndex);
+}
+
+static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
+{
+	rct_widget* widget;
+	int l, t, r, b;
+	uint8 colour;
+	int no_lines = 0;
+	int font_height = 0;
+	char wrapped_string[512];
+
+	// Get the widget
+	widget = &w->widgets[widgetIndex];
+
+	// Resolve the absolute ltrb
+	l = w->x + widget->left;
+	t = w->y + widget->top;
+	r = w->x + widget->right;
+	b = w->y + widget->bottom;
+
+	// Get the colour
+	colour = w->colours[widget->colour];
+
+
+	bool active = w->classification == gCurrentTextBox.window.classification &&
+		w->number == gCurrentTextBox.window.number &&
+		widgetIndex == gCurrentTextBox.widget_index;
+
+	//gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
+	gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x60);
+
+
+	if (!active) {
+
+		if (w->widgets[widgetIndex].image != 0) {
+			strcpy(wrapped_string, (char*)w->widgets[widgetIndex].image);
+			gfx_wrap_string(wrapped_string, r - l - 5, &no_lines, &font_height);
+			gfx_draw_string(dpi, wrapped_string, w->colours[1], l + 2, t);
+		}
+		return;
+	}
+
+
+	strcpy(wrapped_string, gTextBoxInput);
+
+	// String length needs to add 12 either side of box
+	// +13 for cursor when max length.
+	gfx_wrap_string(wrapped_string, r - l - 5 - 6, &no_lines, &font_height);
+
+
+	gfx_draw_string(dpi, wrapped_string, w->colours[1], l + 2, t);
+
+
+	int string_length = get_string_length(wrapped_string);
+
+	// Make a copy of the string for measuring the width.
+	char temp_string[512] = { 0 };
+	memcpy(temp_string, wrapped_string, min(string_length, gTextInputCursorPosition));
+	int cur_x = l + gfx_get_string_width(temp_string) + 3;
+
+	int width = 6;
+	if ((uint32)gTextInputCursorPosition < strlen(gTextBoxInput)){
+		// Make a new 1 character wide string for measuring the width
+		// of the character that the cursor is under.
+		temp_string[1] = '\0';
+		temp_string[0] = gTextBoxInput[gTextInputCursorPosition];
+		width = max(gfx_get_string_width(temp_string) - 2, 4);
+	}
+
+	if (gTextBoxFrameNo <= 15){
+		uint8 colour = RCT2_ADDRESS(0x0141FC48, uint8)[w->colours[1] * 8];
+		gfx_fill_rect(dpi, cur_x, t + 9, cur_x + width, t + 9, colour + 5);
+	}
 }

@@ -31,6 +31,10 @@
 struct rct_window;
 union rct_window_event;
 extern uint8 TextInputDescriptionArgs[8];
+extern char gTextBoxInput[512];
+extern int gMaxTextBoxInputLength;
+extern int gTextBoxFrameNo;
+extern bool gUsingWidgetTextBox;
 
 typedef void wndproc(struct rct_window*, union rct_window_event*);
 
@@ -46,6 +50,8 @@ typedef struct {
 	window_identifier window;
 	int widget_index;
 } widget_identifier;
+
+extern widget_identifier gCurrentTextBox;
 
 /**
  * Widget structure
@@ -604,6 +610,11 @@ void textinput_cancel();
 
 void window_move_and_snap(rct_window *w, int newWindowX, int newWindowY, int snapProximity);
 int window_can_resize(rct_window *w);
+
+void window_start_textbox(rct_window *call_w, int call_widget, rct_string_id existing_text, uint32 existing_args, int maxLength);
+void window_cancel_textbox();
+void window_update_textbox_caret();
+void window_update_textbox();
 
 #ifdef _MSC_VER
 	#define window_get_register(w)														\
