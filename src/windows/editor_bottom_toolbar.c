@@ -314,6 +314,7 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 
 	window_close_all();
 
+	strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, s6Info->name);
 	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO);
 	return;
 
