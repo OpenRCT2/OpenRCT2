@@ -29,6 +29,7 @@ int mph_to_kmph(int mph);
 
 const char *path_get_filename(const char *path);
 void path_set_extension(char *path, const char *extension);
+void path_remove_extension(char *path);
 long fsize(FILE *fp);
 bool readentirefile(const char *path, void **outBuffer, long *outLength);
 

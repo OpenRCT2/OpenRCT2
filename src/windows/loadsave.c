@@ -29,6 +29,7 @@
 #include "../title.h"
 #include "../windows/error.h"
 #include "../interface/themes.h"
+#include "../util/util.h"
 
 #pragma region Widgets
 
@@ -345,7 +346,10 @@ static void window_loadsave_scrollmousedown()
 		char *templateString;
 
 		templateString = (char*)language_get_string(templateStringId);
-		strcpy(templateString, (char*)RCT2_ADDRESS_SCENARIO_NAME);
+		int folderlength = strlen(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char));
+		strcpy(templateString, RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH_2 + folderlength, char));
+		path_remove_extension(templateString);
+
 		window_text_input_open(w, WIDX_SCROLL, STR_NONE, 2710, templateStringId, 0, 64);
 	} else {
 		if (_listItems[selectedItem].path[strlen(_listItems[selectedItem].path) - 1] == platform_get_path_separator()){
