@@ -49,6 +49,9 @@ rct_xy16 *gMapSelectionTiles = (rct_xy16*)0x009DE596;
 
 bool LandPaintMode;
 bool LandRightsMode;
+bool gClearSmallScenery;
+bool gClearLargeScenery;
+bool gClearFootpath;
 
 int _sub_6A876D_save_x;
 int _sub_6A876D_save_y;
@@ -1173,50 +1176,70 @@ restart_from_beginning:
 		type = map_element_get_type(mapElement);
 		switch (type) {
 		case MAP_ELEMENT_TYPE_PATH:
-#ifdef CLEAR_SCENERY_REMOVES_PATHS
-			cost = sub_6A67C0(x, y, mapElement->base_height, flags);
-			if (cost == MONEY32_UNDEFINED)
-				return MONEY32_UNDEFINED;
+			if (gClearFootpath) {
+				cost = sub_6A67C0(x, y, mapElement->base_height, flags);
+				if (cost == MONEY32_UNDEFINED)
+					return MONEY32_UNDEFINED;
 
-			totalCost += cost;
-			if (flags & 1)
-				goto restart_from_beginning;
-#endif
+				totalCost += cost;
+				if (flags & 1)
+					goto restart_from_beginning;
+			} break;
+		case MAP_ELEMENT_TYPE_SCENERY:
+			if (gClearSmallScenery) {
+				int eax = x * 32;
+				int ebx = (mapElement->type << 8) | flags;
+				int ecx = y * 32;
+				int edx = (mapElement->properties.scenery.type << 8) | (mapElement->base_height);
+				int esi, edi, ebp; 
+				game_command_remove_scenery(&eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+				cost = ebx;
+
+				if (cost == MONEY32_UNDEFINED)
+					return MONEY32_UNDEFINED;
+
+				totalCost += cost;
+				if (flags & 1)
+					goto restart_from_beginning;
+
+			} break;
+		case MAP_ELEMENT_TYPE_FENCE:
+			if (gClearSmallScenery) {
+				int eax = x * 32;
+				int ebx = flags;
+				int ecx = y * 32;
+				int edx = (mapElement->base_height << 8) | (mapElement->type & MAP_ELEMENT_DIRECTION_MASK);
+				int esi, edi, ebp; 
+				game_command_remove_fence(&eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+				cost = ebx;
+
+				if (cost == MONEY32_UNDEFINED)
+					return MONEY32_UNDEFINED;
+
+				totalCost += cost;
+				if (flags & 1)
+					goto restart_from_beginning;
+
+			} break;
+		case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
+			if (gClearLargeScenery) {
+				int eax = x * 32;
+				int ebx = flags | ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) << 8);
+				int ecx = y * 32;
+				int edx = mapElement->base_height | ((mapElement->properties.scenerymultiple.type >> 10) << 8);
+				int esi, edi, ebp;
+				game_command_remove_large_scenery(&eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+				cost = ebx;
+
+				if (cost == MONEY32_UNDEFINED)
+					return MONEY32_UNDEFINED;
+
+				totalCost += cost;
+				if (flags & 1)
+					goto restart_from_beginning;
+
+			} break;
 			break;
-		case MAP_ELEMENT_TYPE_SCENERY:{
-			int eax = x * 32;
-			int ebx = (mapElement->type << 8) | flags;
-			int ecx = y * 32;
-			int edx = (mapElement->properties.scenery.type << 8) | (mapElement->base_height);
-			int esi, edi, ebp; 
-			game_command_remove_scenery(&eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-			cost = ebx;
-
-			if (cost == MONEY32_UNDEFINED)
-				return MONEY32_UNDEFINED;
-
-			totalCost += cost;
-			if (flags & 1)
-				goto restart_from_beginning;
-
-			}break;
-		case MAP_ELEMENT_TYPE_FENCE:{
-			int eax = x * 32;
-			int ebx = flags;
-			int ecx = y * 32;
-			int edx = (mapElement->base_height << 8) | (mapElement->type & MAP_ELEMENT_DIRECTION_MASK);
-			int esi, edi, ebp; 
-			game_command_remove_fence(&eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-			cost = ebx;
-
-			if (cost == MONEY32_UNDEFINED)
-				return MONEY32_UNDEFINED;
-
-			totalCost += cost;
-			if (flags & 1)
-				goto restart_from_beginning;
-
-			}break;
 		}
 	} while (!map_element_is_last_for_tile(mapElement++));
 
