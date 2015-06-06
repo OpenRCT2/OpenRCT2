@@ -50,7 +50,8 @@ typedef enum {
 	WWT_CHECKBOX = 23,
 	WWT_24,
 	WWT_25,
-	WWT_LAST = 26,
+	WWT_TEXT_BOX = 26,
+	WWT_LAST = 27,
 } WINDOW_WIDGET_TYPES;
 #define WIDGETS_END		WWT_LAST, 0, 0, 0, 0, 0, 0, 0
 

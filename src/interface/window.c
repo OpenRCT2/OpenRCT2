@@ -29,6 +29,8 @@
 #include "widget.h"
 #include "window.h"
 #include "viewport.h"
+#include "../localisation/string_ids.h"
+#include "../localisation/localisation.h"
 
 #define RCT2_FIRST_WINDOW		(RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window))
 #define RCT2_LAST_WINDOW		(RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*) - 1)
@@ -39,6 +41,11 @@
 rct_window* g_window_list = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window);
 
 uint8 TextInputDescriptionArgs[8];
+widget_identifier gCurrentTextBox = { { 255, 0 }, 0 };
+char gTextBoxInput[512] = { 0 };
+int gMaxTextBoxInputLength = 0;
+int gTextBoxFrameNo = 0;
+bool gUsingWidgetTextBox = 0;
 
 // converted from uint16 values at 0x009A41EC - 0x009A4230
 // these are percentage coordinates of the viewport to center to, if a window is obscuring a location, the next is tried
@@ -2176,5 +2183,71 @@ void textinput_cancel()
 		if (w != NULL) {
 			window_event_textinput_call(w, RCT2_GLOBAL(RCT2_ADDRESS_TEXTINPUT_WIDGETINDEX, uint16), NULL);
 		}
+	}
+}
+
+void window_start_textbox(rct_window *call_w, int call_widget, rct_string_id existing_text, uint32 existing_args, int maxLength)
+{
+	if (gUsingWidgetTextBox)
+		window_cancel_textbox();
+
+	gUsingWidgetTextBox = true;
+	gCurrentTextBox.window.classification = call_w->classification;
+	gCurrentTextBox.window.number = call_w->number;
+	gCurrentTextBox.widget_index = call_widget;
+	gTextBoxFrameNo = 0;
+
+	gMaxTextBoxInputLength = maxLength;
+
+	window_close_by_class(WC_TEXTINPUT);
+
+	// Clear the text input buffer
+	memset(gTextBoxInput, 0, maxLength);
+
+	// Enter in the the text input buffer any existing
+	// text.
+	if (existing_text != (rct_string_id)STR_NONE)
+		format_string(gTextBoxInput, existing_text, &existing_args);
+
+	// In order to prevent strings that exceed the maxLength
+	// from crashing the game.
+	gTextBoxInput[maxLength - 1] = '\0';
+
+	platform_start_text_input(gTextBoxInput, maxLength);
+}
+
+void window_cancel_textbox()
+{
+	if (gUsingWidgetTextBox) {
+		rct_window *w = window_find_by_number(
+			gCurrentTextBox.window.classification,
+			gCurrentTextBox.window.number
+			);
+		gCurrentTextBox.window.classification = 255;
+		gCurrentTextBox.window.number = 0;
+		platform_stop_text_input();
+		gUsingWidgetTextBox = false;
+		widget_invalidate(w, gCurrentTextBox.widget_index);
+		gCurrentTextBox.widget_index = WWT_LAST;
+	}
+}
+
+void window_update_textbox_caret()
+{
+	gTextBoxFrameNo++;
+	if (gTextBoxFrameNo > 30)
+		gTextBoxFrameNo = 0;
+}
+
+void window_update_textbox()
+{
+	if (gUsingWidgetTextBox) {
+		gTextBoxFrameNo = 0;
+		rct_window *w = window_find_by_number(
+			gCurrentTextBox.window.classification,
+			gCurrentTextBox.window.number
+			);
+		widget_invalidate(w, gCurrentTextBox.widget_index);
+		window_event_textinput_call(w, gCurrentTextBox.widget_index, gTextBoxInput);
 	}
 }

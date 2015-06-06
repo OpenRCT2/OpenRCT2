@@ -115,7 +115,7 @@ static rct_widget window_editor_object_selection_widgets[] = {
 	{ WWT_FLATBTN,			1,	391,	504,	46,		159,	0xFFFFFFFF,						STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	0,	384,	595,	24,		35,		STR_INSTALL_NEW_TRACK_DESIGN,	STR_INSTALL_NEW_TRACK_DESIGN_TIP },
 	{ WWT_DROPDOWN_BUTTON,	0,	350,	463,	23,		34,		5261,							5265 },
-	{ WWT_DROPDOWN_BUTTON,	1,	4,		214,	46,		57,		STR_NONE,						STR_NONE },
+	{ WWT_TEXT_BOX,			1,	4,		214,	46,		57,		(uint32)_filter_string,			STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	218,	287,	46,		57,		5277,							STR_NONE },
 	{ WIDGETS_END }
 };
@@ -130,6 +130,7 @@ static void window_editor_object_selection_close();
 static void window_editor_object_selection_mouseup();
 static void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_editor_object_selection_dropdown();
+static void window_editor_object_selection_update(rct_window *w);
 static void window_editor_object_selection_scrollgetsize();
 static void window_editor_object_selection_scroll_mousedown();
 static void window_editor_object_selection_scroll_mouseover();
@@ -146,7 +147,7 @@ static void* window_editor_object_selection_events[] = {
 	(void*)window_editor_object_selection_mousedown,
 	(void*)window_editor_object_selection_dropdown,
 	(void*)window_editor_object_selection_emptysub,
-	(void*)window_editor_object_selection_emptysub,
+	(void*)window_editor_object_selection_update,
 	(void*)window_editor_object_selection_emptysub,
 	(void*)window_editor_object_selection_emptysub,
 	(void*)window_editor_object_selection_emptysub,
@@ -356,7 +357,8 @@ static void window_editor_object_selection_mouseup()
 		window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
 		break;
 	case WIDX_FILTER_STRING_BUTTON:
-		window_text_input_open(w, widgetIndex, 5275, 5276, 1170, (uint32)_filter_string, 40);
+		//window_text_input_open(w, widgetIndex, 5275, 5276, 1170, (uint32)_filter_string, 40);
+		window_start_textbox(w, widgetIndex, 1170, (uint32)_filter_string, 40);
 		break;
 	case WIDX_FILTER_CLEAR_BUTTON:
 		memset(_filter_string, 0, sizeof(_filter_string));
@@ -698,7 +700,7 @@ static void window_editor_object_selection_paint()
 
 	rct_stex_entry* stex_entry = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, rct_stex_entry*);
 
-	gfx_fill_rect_inset(dpi,
+	/*gfx_fill_rect_inset(dpi,
 		w->x + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].left,
 		w->y + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].top,
 		w->x + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].right,
@@ -716,7 +718,7 @@ static void window_editor_object_selection_paint()
 		w->x + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].left + 1,
 		w->y + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].top,
 		w->x + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].right
-		);
+		);*/
 
 	if (w->selected_list_item == -1 || stex_entry == NULL)
 		return;
@@ -1034,6 +1036,15 @@ static void editor_load_selected_objects()
 	}
 }
 
+static void window_editor_object_selection_update(rct_window *w)
+{
+	if (gCurrentTextBox.window.classification == w->classification &&
+		gCurrentTextBox.window.number == w->number) {
+		window_update_textbox_caret();
+		widget_invalidate(w, WIDX_FILTER_STRING_BUTTON);
+	}
+}
+
 static void window_editor_object_selection_textinput()
 {
 	uint8 result;
@@ -1045,6 +1056,10 @@ static void window_editor_object_selection_textinput()
 
 	if (widgetIndex != WIDX_FILTER_STRING_BUTTON || !result)
 		return;
+
+	if (strcmp(_filter_string, text) == 0)
+		return;
+
 	if (strlen(text) == 0) {
 		memset(_filter_string, 0, sizeof(_filter_string));
 	}

@@ -389,6 +389,7 @@ void platform_process_messages()
 				gTextInputCursorPosition--;
 				gTextInputLength--;
 				console_refresh_caret();
+				window_update_textbox();
 			}
 			if (e.key.keysym.sym == SDLK_END){
 				gTextInputCursorPosition = gTextInputLength;
@@ -403,6 +404,10 @@ void platform_process_messages()
 				gTextInput[gTextInputMaxLength - 1] = '\0';
 				gTextInputLength--;
 				console_refresh_caret();
+				window_update_textbox();
+			}
+			if (e.key.keysym.sym == SDLK_RETURN && gTextInput) {
+				window_cancel_textbox();
 			}
 			if (e.key.keysym.sym == SDLK_LEFT && gTextInput){
 				if (gTextInputCursorPosition) gTextInputCursorPosition--;
@@ -432,7 +437,7 @@ void platform_process_messages()
 
 						gTextInputCursorPosition++;
 					}
-
+					window_update_textbox();
 				}
 			}
 			break;
@@ -479,6 +484,7 @@ void platform_process_messages()
 
 				gTextInputCursorPosition++;
 				console_refresh_caret();
+				window_update_textbox();
 			}
 			break;
 		default:

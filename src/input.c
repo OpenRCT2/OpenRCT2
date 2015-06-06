@@ -736,6 +736,12 @@ static void input_widget_left(int x, int y, rct_window *w, int widgetIndex)
 	if (widgetIndex == -1)
 		return;
 
+	if (windowClass != gCurrentTextBox.window.classification ||
+		windowNumber != gCurrentTextBox.window.number ||
+		widgetIndex != gCurrentTextBox.widget_index) {
+		window_cancel_textbox();
+	}
+
 	widget = &w->widgets[widgetIndex];
 
 	switch (widget->type) {
@@ -1173,8 +1179,10 @@ void game_handle_keyboard_input()
 
 		// Reserve backtick for console
 		if (key == SDL_SCANCODE_GRAVE) {
-			if (gConfigGeneral.debugging_tools || gConsoleOpen)
+			if (gConfigGeneral.debugging_tools || gConsoleOpen) {
+				window_cancel_textbox();
 				console_toggle();
+			}
 			continue;
 		} else if (gConsoleOpen) {
 			console_input(key);
@@ -1195,7 +1203,7 @@ void game_handle_keyboard_input()
 			if (w != NULL){
 				((void(*)(int, rct_window*))w->event_handlers[WE_TEXT_INPUT])(key, w);
 			}
-			else {
+			else if (!gUsingWidgetTextBox) {
 				keyboard_shortcut_handle(key);
 			}
 		}
@@ -1374,7 +1382,7 @@ void game_handle_key_scroll()
 	rct_window *textWindow;
 
 	textWindow = window_find_by_class(WC_TEXTINPUT);
-	if (textWindow) return;
+	if (textWindow || gUsingWidgetTextBox) return;
 
 	scrollX = 0;
 	scrollY = 0;
