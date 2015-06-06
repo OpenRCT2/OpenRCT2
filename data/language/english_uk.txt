@@ -3607,4 +3607,7 @@ STR_5270    :{SMALLFONT}{BLACK}Miscellaneous
 STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Small Scenery
 STR_5273    :{SMALLFONT}{BLACK}Large Scenery
-STR_5274    :{SMALLFONT}{BLACK}Footpaths
+STR_5274    :{SMALLFONT}{BLACK}Footpath
+STR_5275    :Search for Objects
+STR_5276    :Enter the name of an object to search for
+STR_5277    :Clear
