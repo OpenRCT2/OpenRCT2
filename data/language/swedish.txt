@@ -3499,7 +3499,7 @@ STR_5157    :Unlock all prices
 STR_5158    :Quit to menu
 STR_5159    :Exit OpenRCT2
 STR_5160    :{MONTH} {STRINGID}, Year {COMMA16}
-STR_5161    :{WHITE}Date Format:
+STR_5161    :Date Format:
 STR_5162    :Day/Month/Year
 STR_5163    :Month/Day/Year
 STR_5164    :Twitch Channel name
@@ -3604,3 +3604,12 @@ STR_5262    :Wacky Worlds
 STR_5263    :Time Twister
 STR_5264    :Custom
 STR_5265    :{SMALLFONT}{BLACK}Select which content sources are visible
+STR_5266    :{SMALLFONT}{BLACK}Display
+STR_5267    :{SMALLFONT}{BLACK}Culture and Units
+STR_5268    :{SMALLFONT}{BLACK}Audio
+STR_5269    :{SMALLFONT}{BLACK}Controls
+STR_5270    :{SMALLFONT}{BLACK}Miscellaneous
+STR_5271    :{SMALLFONT}{BLACK}Twitch
+STR_5272    :{SMALLFONT}{BLACK}Small Scenery
+STR_5273    :{SMALLFONT}{BLACK}Large Scenery
+STR_5274    :{SMALLFONT}{BLACK}Footpaths

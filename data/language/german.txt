@@ -2364,7 +2364,7 @@ STR_2359    :Echte Werte
 STR_2360    :{WINDOW_COLOUR_2}Bildschirmauflösung:
 STR_2361    :Landschaftsglättung
 STR_2362    :{SMALLFONT}{BLACK}Kantenglättung des Landschaftsquadrats ein-/ausschalten
-STR_2363    :Gitterlinien bei Landschaft
+STR_2363    :Gitterlinien auf Landschaft
 STR_2364    :{SMALLFONT}{BLACK}Gitterlinien bei Landschaft ein-/ausblenden
 STR_2365    :Die Bank will Ihr Darlehen nicht erhöhen!
 STR_2366    :Celsius ({DEGREE}C)
@@ -3494,7 +3494,7 @@ STR_5157    :Alle Preise freischalten
 STR_5158    :Spiel Beenden
 STR_5159    :OpenRCT2 Beenden
 STR_5160    :{MONTH} {STRINGID}, Jahr {COMMA16}
-STR_5161    :{WHITE}Datumsformat:
+STR_5161    :Datumsformat:
 STR_5162    :Tag/Monat/Jahr
 STR_5163    :Monat/Tag/Jahr
 STR_5164    :Twitch-Kanalname
@@ -3566,7 +3566,7 @@ STR_5229    :{SMALLFONT}{BLACK}Park
 STR_5230    :{SMALLFONT}{BLACK}Werkzeuge
 STR_5231    :{SMALLFONT}{BLACK}Attraktionen und Besucher
 STR_5232    :{SMALLFONT}{BLACK}Editoren
-STR_5233    :{SMALLFONT}{BLACK}Verschiedenes
+STR_5233    :{SMALLFONT}{BLACK}Sonstiges
 STR_5234    :{SMALLFONT}{BLACK}Eingabeaufforderungen
 STR_5235    :{SMALLFONT}{BLACK}Einstellungen
 STR_5236    :Fenster:
@@ -3599,3 +3599,12 @@ STR_5262    :Wacky Worlds
 STR_5263    :Time Twister
 STR_5264    :Eigene
 STR_5265    :{SMALLFONT}{BLACK}Auswählen, welche Inhaltsquellen angezeigt werden sollen
+STR_5266    :{SMALLFONT}{BLACK}Anzeige
+STR_5267    :{SMALLFONT}{BLACK}Sprache und Einheiten
+STR_5268    :{SMALLFONT}{BLACK}Audio
+STR_5269    :{SMALLFONT}{BLACK}Steuerung
+STR_5270    :{SMALLFONT}{BLACK}Sonstiges
+STR_5271    :{SMALLFONT}{BLACK}Twitch
+STR_5272    :{SMALLFONT}{BLACK}Kleine Szenerie
+STR_5273    :{SMALLFONT}{BLACK}Große Szenerie
+STR_5274    :{SMALLFONT}{BLACK}Fußwege

@@ -3490,7 +3490,7 @@ STR_5157    :Alle prijzen ontgrendelen
 STR_5158    :Terug naar het hoofdmenu
 STR_5159    :OpenRCT2 afsluiten
 STR_5160    :{MONTH} {STRINGID}, jaar {COMMA16}
-STR_5161    :{WHITE}Datumnotatie:
+STR_5161    :Datumnotatie:
 STR_5162    :Dag/maand/jaar
 STR_5163    :Maand/dag/jaar
 STR_5164    :Twitch-kanaalnaam
@@ -3595,3 +3595,9 @@ STR_5262    :Wacky Worlds
 STR_5263    :Time Twister
 STR_5264    :Overig
 STR_5265    :{SMALLFONT}{BLACK}Selecteer uit welke bronnen objecten zichtbaar zijn
+STR_5266    :{SMALLFONT}{BLACK}Weergave
+STR_5267    :{SMALLFONT}{BLACK}Landinstellingen
+STR_5268    :{SMALLFONT}{BLACK}Audio
+STR_5269    :{SMALLFONT}{BLACK}Bediening
+STR_5270    :{SMALLFONT}{BLACK}Overig
+STR_5271    :{SMALLFONT}{BLACK}Twitch
