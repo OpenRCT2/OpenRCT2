@@ -113,6 +113,7 @@ int _listItemsCount = 0;
 loadsave_list_item *_listItems = NULL;
 char _directory[MAX_PATH];
 char _extension[32];
+char *_defaultName = NULL;
 int _loadsaveType;
 int _type;
 
@@ -123,12 +124,13 @@ static int hasExtension(char *path, char *extension);
 
 static rct_window *window_overwrite_prompt_open(const char *name, const char *path);
 
-rct_window *window_loadsave_open(int type)
+rct_window *window_loadsave_open(int type, char *defaultName)
 {
 	char path[MAX_PATH], *ch;
 	int includeNewItem;
 	rct_window* w;
 	_type = type;
+	_defaultName = defaultName;
 
 	w = window_bring_to_front_by_class(WC_LOADSAVE);
 	if (w == NULL) {
@@ -346,8 +348,7 @@ static void window_loadsave_scrollmousedown()
 		char *templateString;
 
 		templateString = (char*)language_get_string(templateStringId);
-		strcpy(templateString, path_get_filename(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH_2, char)));
-		path_remove_extension(templateString);
+		strcpy(templateString, _defaultName);
 
 		window_text_input_open(w, WIDX_SCROLL, STR_NONE, 2710, templateStringId, 0, 64);
 	} else {

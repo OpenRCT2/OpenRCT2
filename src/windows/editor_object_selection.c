@@ -354,7 +354,7 @@ static void window_editor_object_selection_mouseup()
 		}
 		window_invalidate(w);
 
-		window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
+		window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK, NULL);
 		break;
 	case WIDX_FILTER_STRING_BUTTON:
 		//window_text_input_open(w, widgetIndex, 5275, 5276, 1170, (uint32)_filter_string, 40);
