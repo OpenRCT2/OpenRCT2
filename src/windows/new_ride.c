@@ -553,7 +553,7 @@ static void window_new_ride_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w
 {
 	int widgetIndex = WIDX_TAB_1 + page;
 
-	if (!(w->disabled_widgets & (1LL << widgetIndex))) {
+	if (w->widgets[widgetIndex].type != WWT_EMPTY && !(w->disabled_widgets & (1LL << widgetIndex))) {
 		int frame = 0;
 		if (_window_new_ride_current_tab == page)
 			frame = w->frame_no / window_new_ride_tab_animation_divisor[page];
