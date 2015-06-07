@@ -3601,3 +3601,9 @@ STR_5268    :{SMALLFONT}{BLACK}Audio
 STR_5269    :{SMALLFONT}{BLACK}Bediening
 STR_5270    :{SMALLFONT}{BLACK}Overig
 STR_5271    :{SMALLFONT}{BLACK}Twitch
+STR_5272    :{SMALLFONT}{BLACK}Klein decor
+STR_5273    :{SMALLFONT}{BLACK}Groot decor
+STR_5274    :{SMALLFONT}{BLACK}Voetpaden
+STR_5275    :Naar objecten zoeken
+STR_5276    :Voer de naam van een op te zoeken object in:
+STR_5277    :Wissen

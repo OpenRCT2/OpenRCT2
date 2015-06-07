@@ -3608,3 +3608,6 @@ STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Kleine Szenerie
 STR_5273    :{SMALLFONT}{BLACK}Große Szenerie
 STR_5274    :{SMALLFONT}{BLACK}Fußwege
+STR_5275    :Nach Objekten suchen
+STR_5276    :Zu suchenden Objektnamen eingeben:
+STR_5277    :Entfernen
