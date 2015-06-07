@@ -236,7 +236,7 @@ int screenshot_dump_png()
 {
 	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
 
-	int i, index, width, height, stride;
+	int i, index, width, height, padding;
 	char path[MAX_PATH] = "";
 	unsigned int error;
 	unsigned char r, g, b, a = 255;
@@ -256,7 +256,8 @@ int screenshot_dump_png()
 	// Get image size
 	width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
 	height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
-	stride = (width + 3) & ~3;
+
+	padding = dpi->pitch;
 
 	for (i = 0; i < 256; i++) {
 		b = RCT2_ADDRESS(0x01424680, uint8)[i * 4 + 0];
@@ -266,7 +267,24 @@ int screenshot_dump_png()
 		lodepng_palette_add(&state.info_raw, r, g, b, a);
 	}
 
-	error = lodepng_encode(&png, &pngSize, dpi->bits, width, height, &state);
+	uint8* pixels = dpi->bits;
+
+	if (padding > 0) {
+		pixels = malloc(width * height);
+		if (!pixels) {
+			return -1;
+		}
+		uint8* src = dpi->bits;
+		uint8* dst = pixels;
+		for (int y = height; y > 0; y--) {
+			for (int x = width; x > 0; x--) {
+				*dst++ = *src++;
+			}
+			src += padding;
+		}
+	}
+
+	error = lodepng_encode(&png, &pngSize, pixels, width, height, &state);
 	if (error) {
 		log_error("Unable to save screenshot, %u: %s", lodepng_error_text(error));
 		index = -1;
@@ -275,6 +293,9 @@ int screenshot_dump_png()
 	}
 
 	free(png);
+	if (pixels != dpi->bits) {
+		free(pixels);
+	}
 	return index;
 }
 
