@@ -1624,7 +1624,7 @@ static int ride_get_new_breakdown_problem(rct_ride *ride)
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8) == 0 ? 3 : 20;
 
 	entry = ride_get_entry(ride);
-	if (entry->var_008 & 0x4000)
+	if (entry->flags & RIDE_ENTRY_FLAG_14)
 		return -1;
 	
 	availableBreakdownProblems = RideAvailableBreakdowns[ride->type];
@@ -3147,7 +3147,7 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 		for (int i = 0; i < ride->type; i++) {
 			while (*(available_modes++) != 255) {}
 		}
-		if (ride_entry->var_008 & (1 << 17)){
+		if (ride_entry->flags & RIDE_ENTRY_FLAG_17){
 			available_modes += 2;
 		}
 
@@ -3160,7 +3160,7 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 		if (*available_modes == 0xFF) new_value = default_mode;
 
 		if (available_modes[1] == 0xFF){
-			if (ride_entry->var_008 & (1 << 15))
+			if (ride_entry->flags & RIDE_ENTRY_FLAG_15)
 				new_value = default_mode;
 		}
 
@@ -3701,14 +3701,14 @@ int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplying)
 
 	if (ride->subtype != 255) {
 		rct_ride_type *rideType = GET_RIDE_ENTRY(ride->subtype);
-		if (rideType->var_008 & 2) {
+		if (rideType->flags & RIDE_ENTRY_FLAG_1) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
 			if (ride_check_track_suitability_a(&trackElement, &problematicTrackElement)) {
 				loc_6B528A(&problematicTrackElement);
 				return 0;
 			}
 		}
-		if (rideType->var_008 & 4) {
+		if (rideType->flags & RIDE_ENTRY_FLAG_2) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
 			if (ride_check_track_suitability_b(&trackElement, &problematicTrackElement)) {
 				loc_6B528A(&problematicTrackElement);
@@ -3830,14 +3830,14 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 
 	if (ride->subtype != 255) {
 		rct_ride_type *rideType = GET_RIDE_ENTRY(ride->subtype);
-		if (rideType->var_008 & 2) {
+		if (rideType->flags & RIDE_ENTRY_FLAG_1) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
 			if (ride_check_track_suitability_a(&trackElement, &problematicTrackElement)) {
 				loc_6B528A(&problematicTrackElement);
 				return 0;
 			}
 		}
-		if (rideType->var_008 & 4) {
+		if (rideType->flags & RIDE_ENTRY_FLAG_2) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
 			if (ride_check_track_suitability_b(&trackElement, &problematicTrackElement)) {
 				loc_6B528A(&problematicTrackElement);

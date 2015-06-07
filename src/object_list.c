@@ -647,7 +647,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 	uint8* chunk = RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_CHUNK_POINTER, uint8*); // Loaded in object_load
 
 	// When made of two parts i.e Wooden Roller Coaster (Dream Woodie Cars)
-	if ((objectType == OBJECT_TYPE_RIDE) && !((((rct_ride_type*)chunk)->var_008) & 0x1000)) {
+	if ((objectType == OBJECT_TYPE_RIDE) && !((((rct_ride_type*)chunk)->flags) & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME)) {
 		rct_ride_type* ride_type = (rct_ride_type*)chunk;
 		rct_string_id obj_string = ride_type->ride_type[0];
 		if (obj_string == 0xFF){

@@ -535,7 +535,7 @@ static void ride_ratings_apply_adjustments(rct_ride *ride, rating_tuple *ratings
 	uint16 flags = RCT2_GLOBAL(0x0097D4F2 + ride->type * 8, uint16);
 	if (flags & 0x80) {
 		uint16 totalAirTime = ride->total_air_time;
-		if (rideEntry->var_008 & 0x800) {
+		if (rideEntry->flags & RIDE_ENTRY_FLAG_11) {
 			if (totalAirTime >= 96) {
 				totalAirTime -= 96;
 				ratings->excitement -= totalAirTime / 8;
@@ -608,7 +608,7 @@ static int sub_65E72D(rct_ride *ride)
 
 	int dh = numShelteredEighths;
 	rct_ride_type *rideType = GET_RIDE_ENTRY(ride->subtype);
-	if (rideType->var_008 & RIDE_TYPE_FLAG_HAS_DROPS)
+	if (rideType->flags & RIDE_ENTRY_FLAG_COVERED_RIDE)
 		numShelteredEighths = 7;
 
 	return (dh << 8) | numShelteredEighths;

@@ -317,7 +317,7 @@ static void window_new_ride_populate_list()
 				if (currentCategory != rideEntry->category[0] && currentCategory != rideEntry->category[1])
 					continue;
 
-				if (rideEntry->var_008 & 0x2000) {
+				if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE) {
 					dh &= ~4;
 					nextListItem->type = rideType;
 					nextListItem->entry_index = rideEntryIndex;
@@ -785,7 +785,7 @@ static void window_new_ride_paint()
 				uint32 typeId = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, uint32);
 				if (typeId >= 0x10000) {
 					rct_ride_type *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, rct_ride_type*);
-					stringId = rideEntry->var_008 & 0x1000 ?
+					stringId = rideEntry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME ?
 						rideEntry->name :
 						(typeId & 0xFF00) + 2;
 				}
@@ -823,7 +823,7 @@ static void window_new_ride_paint()
 	if (typeId != 0xFFFFFFFF) {
 		if (typeId >= 0x10000) {
 			rct_ride_type *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, rct_ride_type*);
-			stringId = rideEntry->var_008 & 0x1000 ?
+			stringId = rideEntry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME ?
 				rideEntry->name :
 				((typeId >> 8) & 0xFF) + 2;
 
@@ -942,7 +942,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 	// Ride name and description
 	rct_string_id rideName = rideEntry->name;
 	rct_string_id rideDescription = rideEntry->description;
-	if (!(rideEntry->var_008 & 0x1000)) {
+	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME)) {
 		rideName = item.type + 2;
 		rideDescription = item.type + 512;
 	}
