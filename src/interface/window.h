@@ -616,6 +616,9 @@ void window_cancel_textbox();
 void window_update_textbox_caret();
 void window_update_textbox();
 
+//Cheat: in-game land ownership editor
+void toggle_ingame_land_ownership_editor();
+
 #ifdef _MSC_VER
 	#define window_get_register(w)														\
 		__asm mov w, esi

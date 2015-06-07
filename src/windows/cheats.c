@@ -72,6 +72,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_REMOVE_LITTER,
 	WIDX_WIN_SCENARIO,
 	WIDX_UNLOCK_ALL_PRICES,
+	WIDX_INGAME_LAND_OWNERSHIP_EDITOR,
 	WIDX_RENEW_RIDES = 8,
 	WIDX_REMOVE_SIX_FLAGS,
 	WIDX_MAKE_DESTRUCTIBLE,
@@ -154,6 +155,7 @@ static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0),	YPL(5), HPL(5),		STR_CHEAT_REMOVE_LITTER,		STR_NONE},					// Remove litter
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(0), HPL(0),		STR_CHEAT_WIN_SCENARIO,			STR_NONE},					// Win scenario
 	{ WWT_CHECKBOX,			1, XPL(0),    OWPL, YPL(8),OHPL(8),		STR_CHEAT_UNLOCK_PRICES,		STR_NONE}, 					// Unlock all prices
+	{ WWT_CLOSEBOX,			1, XPL(1),  WPL(1), YPL(5), HPL(5),		STR_CHEAT_INGAME_LAND_OWNERSHIP_EDITOR,STR_CHEAT_INGAME_LAND_OWNERSHIP_EDITOR_TIP},// In-game land ownership editor
 	{ WIDGETS_END },
 };
 static rct_widget window_cheats_rides_widgets[] = {
@@ -170,7 +172,7 @@ static rct_widget window_cheats_rides_widgets[] = {
 	{ WWT_CLOSEBOX,			1, XPL(1),	WPL(1),	YPL(1), HPL(1),		STR_CHEAT_MAKE_DESTRUCTABLE,	STR_NONE},					// Make destructable
 	{ WWT_CLOSEBOX,			1, XPL(0),	WPL(0), YPL(1), HPL(1),		STR_CHEAT_FIX_ALL_RIDES,		STR_NONE },					// Fix all rides
 	{ WWT_CHECKBOX,			2, XPL(0),    OWPL, YPL(8),OHPL(8),		STR_CHEAT_410_HILL_LIFT,		STR_NONE }, 				// 410 km/h lift hill
-	{ WWT_CHECKBOX,			2, XPL(0),    OWPL, YPL(6),OHPL(6),		STR_BRAKES_FAILURE,				STR_NONE }, 				// Disable brakes failure
+	{ WWT_CHECKBOX,			2, XPL(0),    OWPL, YPL(6),OHPL(6),		STR_CHEAT_DISABLE_BRAKES_FAILURE,STR_NONE }, 				// Disable brakes failure
 	{ WWT_CHECKBOX,			2, XPL(0),    OWPL, YPL(7),OHPL(7),		STR_CHEAT_DISABLE_BREAKDOWNS,	STR_NONE }, 				// Disable all breakdowns
 	{ WIDGETS_END },
 };
@@ -329,7 +331,7 @@ static void* window_cheats_page_events[] = {
 static uint32 window_cheats_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_PARK_ENTRANCE_FEE),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HAPPY_GUESTS) | (1 << WIDX_TRAM_GUESTS) | (1 << WIDX_NAUSEA_GUESTS),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO) | (1 << WIDX_UNLOCK_ALL_PRICES),
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO) | (1 << WIDX_UNLOCK_ALL_PRICES) | (1 << WIDX_INGAME_LAND_OWNERSHIP_EDITOR),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_RENEW_RIDES) | (1 << WIDX_REMOVE_SIX_FLAGS) | (1 << WIDX_MAKE_DESTRUCTIBLE) | (1 << WIDX_FIX_ALL) | (1 << WIDX_FAST_LIFT_HILL) | (1 << WIDX_DISABLE_BRAKES_FAILURE) | (1 << WIDX_DISABLE_ALL_BREAKDOWNS)
 };
 
@@ -653,6 +655,12 @@ static void window_cheats_misc_mouseup()
 		window_invalidate(w);
 		window_invalidate_by_class(WC_RIDE);
 		window_invalidate_by_class(WC_PARK_INFORMATION);
+		break;
+	case WIDX_INGAME_LAND_OWNERSHIP_EDITOR:
+		toggle_ingame_land_ownership_editor();
+		w->widgets[widgetIndex].image = w->widgets[widgetIndex].image == STR_CHEAT_INGAME_LAND_OWNERSHIP_EDITOR ? STR_CHEAT_INGAME_LAND_OWNERSHIP_EDITOR_DISABLE : STR_CHEAT_INGAME_LAND_OWNERSHIP_EDITOR;
+		// To prevent tools from staying active after disabling cheat
+		window_close_by_class(WC_MAP);
 		break;
 	}
 }

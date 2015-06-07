@@ -1476,6 +1476,10 @@ enum {
 
 	STR_GIANT_SCREENSHOT = 5260,
 
+	STR_CHEAT_INGAME_LAND_OWNERSHIP_EDITOR = 5278,
+	STR_CHEAT_INGAME_LAND_OWNERSHIP_EDITOR_DISABLE = 5279,
+	STR_CHEAT_INGAME_LAND_OWNERSHIP_EDITOR_TIP = 5280,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
