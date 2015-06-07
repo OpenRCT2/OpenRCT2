@@ -84,6 +84,10 @@ int climate_celsius_to_fahrenheit(int celsius)
 	return (celsius * 29) / 16 + 32;
 }
 
+// cheats
+extern int g_climate_locked;
+extern void toggle_climate_lock();
+
 /**
  *  Set climate and determine start weather.
  *  rct2: 0x006C45ED
