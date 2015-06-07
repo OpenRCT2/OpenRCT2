@@ -1174,7 +1174,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 
 	RCT2_GLOBAL(0x009DE570, uint8) = 8;
 	RCT2_GLOBAL(0x009E32BC, uint32) = 0;
-	uint32 image_id, ghost_id;
+	uint32 image_id, ghost_id = 0;
 	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST){
 		RCT2_GLOBAL(0x009DE570, uint8) = 0;
 		ghost_id = RCT2_ADDRESS(0x993CC4, uint32)[RCT2_GLOBAL(0x9AACBF, uint8)];
@@ -1183,12 +1183,91 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 
 	rct_path_type* path_entry = g_pathTypeEntries[map_element->properties.entrance.path_type];
 
-	switch ((map_element->properties.entrance.index & 0xF << 2) | direction){
+	switch (((map_element->properties.entrance.index & 0xF) << 2) | direction){
+	case 1:
+	case 2:
+	case 3:
 	case 0:
-		image_id = (path_entry->image + 5) | ghost_id;
-		//665988
+		image_id = (path_entry->image + 5 * (1 + (direction & 1))) | ghost_id;
+		RCT2_GLOBAL(0x009DEA52, uint16) = 0;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height;
+
+		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
+			0, image_id, 0, height, 0x1C, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+
+		rct_entrance_type* entrance = (rct_entrance_type*)object_entry_groups[OBJECT_TYPE_PARK_ENTRANCE].chunks[0];
+		image_id = (entrance->image_id + direction * 3) | ghost_id;
+
+		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 32;
+
+		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
+			0x2F00, image_id, 0, height, 0x1C, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+
+		if ((direction + 1) & (1 << 1))
+			break;
+		if (ghost_id != 0)
+			break;
+
+		rct_string_id park_text_id = 1730;
+		RCT2_GLOBAL(0x0013CE952, uint32) = 0;
+		RCT2_GLOBAL(0x0013CE956, uint32) = 0;
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN){
+			RCT2_GLOBAL(0x0013CE952, rct_string_id) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
+			RCT2_GLOBAL(0x0013CE954, rct_string_id) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, rct_string_id);
+
+			park_text_id = 1731;
+		}
+
+		uint8 park_name[MAX_PATH];
+		format_string(park_name, park_text_id, RCT2_ADDRESS(0x0013CE952, void));
+
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0x1C0;
+		uint16 string_width = gfx_get_string_width(park_name);
+		uint16 scroll = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) / 2) % string_width;
+
+		if (entrance->scrolling_mode == 0xFF)
+			break;
+
+		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + entrance->text_height;
+
+		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
+			0x2F00, scrolling_text_setup(park_text_id, scroll, entrance->scrolling_mode + direction / 2), 0, height + entrance->text_height, 0x1C, 0x1C, 0);
 		break;
 		//665939
+	}
+
+	image_id = ghost_id;
+	if (!image_id){
+		image_id = 0x20B80000;
+	}
+
+	if (direction & 1){
+		sub_6629BC(height, 0, image_id, 1);
+	}
+	else{
+		sub_6629BC(height, 0, image_id, 0);
+	}
+
+	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x141E9BC, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x141E9C0, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
+
+	height += 80;
+	if (RCT2_GLOBAL(0x141E9D8, sint16) < height){
+		RCT2_GLOBAL(0x141E9D8, sint16) = height;
+		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
 	}
 }
 
