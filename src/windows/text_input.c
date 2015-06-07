@@ -274,6 +274,9 @@ static void window_text_input_paint(){
 
 	y += 25;
 
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
+
 	char wrapped_string[512];
 	strcpy(wrapped_string, text_input);
 
