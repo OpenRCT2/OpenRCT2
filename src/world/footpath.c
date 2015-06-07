@@ -61,10 +61,10 @@ static void automatically_set_peep_spawn(int x, int y, int z)
 		}
 	}
 
-	peepSpawn->x = (word_981D6C[direction].x * 15) + 16;
-	peepSpawn->y = (word_981D6C[direction].y * 15) + 16;
+	peepSpawn->x = x + (word_981D6C[direction].x * 15) + 16;
+	peepSpawn->y = y + (word_981D6C[direction].y * 15) + 16;
 	peepSpawn->direction = direction;
-	peepSpawn->z = z / 2;
+	peepSpawn->z = z;
 }
 
 rct_map_element *map_get_footpath_element(int x, int y, int z)
