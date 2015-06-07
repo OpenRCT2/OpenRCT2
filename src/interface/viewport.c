@@ -1185,6 +1185,11 @@ void sub_68B35F(int ax, int cx)
 						RCT2_CALLPROC_X(0x6B9CC4, 0, 0, direction, dx, (int)map_element, 0, 0);
 						break;
 					default:
+						// This is a little hack for taking care of undefined map_elements
+						// 8cars MOM used a dirty version of this to skip drawing certain elements
+						if (map_element_is_last_for_tile(map_element))
+							return;
+						map_element++;
 						break;
 					}
 					RCT2_GLOBAL(0x9DE574, uint32_t) = dword_9DE574;
