@@ -69,6 +69,7 @@ float window_scroll_locations[][2] = {
 	{0.125f,	0.125f},
 };
 
+static bool sub_6EA95D(int x, int y, int width, int height);
 static void window_all_wheel_input();
 static int window_draw_split(rct_window *w, int left, int top, int right, int bottom);
 
@@ -163,9 +164,6 @@ void window_update_all()
 	rct_window* w;
 
 	RCT2_GLOBAL(0x009E3CD8, sint32)++;
-	// if (RCT2_GLOBAL(0x009E3CD8, sint32) == 224 && RCT2_GLOBAL(0x009ABDF2, sint8) != 0)
-	//	RCT2_CALLPROC(0x004067E3); // ddwindow_move_to_top_corner
-
 	if (RCT2_GLOBAL(0x009ABDF2, sint8) == 0)
 		return;
 
@@ -192,7 +190,6 @@ void window_update_all()
 		}
 	}
 
-	// RCT2_CALLPROC_X(0x006E7868, 0, 0, 0, 0, 0, RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 0); // process_mouse_wheel_input();
 	window_all_wheel_input();
 }
 
@@ -426,6 +423,76 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
 }
 
 /**
+ * 
+ *  rct2: 0x006EA934
+ *
+ * @param x (dx)
+ * @param y (ax)
+ * @param width (bx)
+ * @param height (cx)
+ */
+static bool sub_6EA8EC(int x, int y, int width, int height)
+{
+	uint16 screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+	uint16 screenHeight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	int unk;
+
+	unk = -(width / 4);
+	if (x < unk) return false;
+	unk =  screenWidth + (unk * 2);
+	if (x > unk) return false;
+	if (y < 28) return false;
+	unk = screenHeight - (height / 4);
+	if (y > unk) return false;
+	return sub_6EA95D(x, y, width, height);
+}
+
+/**
+ * 
+ *  rct2: 0x006EA934
+ *
+ * @param x (dx)
+ * @param y (ax)
+ * @param width (bx)
+ * @param height (cx)
+ */
+static bool sub_6EA934(int x, int y, int width, int height)
+{
+	if (x < 0) return false;
+	if (y < 28) return false;
+	if (x + width > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16)) return false;
+	if (y + height > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16)) return false;
+	return sub_6EA95D(x, y, width, height);
+}
+
+/**
+ * 
+ *  rct2: 0x006EA934
+ *
+ * @param x (dx)
+ * @param y (ax)
+ * @param width (bx)
+ * @param height (cx)
+ */
+static bool sub_6EA95D(int x, int y, int width, int height)
+{
+	rct_window *w;
+
+	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
+		if (w->flags & WF_STICK_TO_BACK)
+			continue;
+
+		if (x + width <= w->x) continue;
+		if (x >= w->x + w->width) continue;
+		if (y + height <= w->y) continue;
+		if (y >= w->y + w->height) continue;
+		return false;
+	}
+
+	return true;
+}
+
+/**
  * Opens a new window, supposedly automatically positioned
  *  rct2: 0x006EA9B1
  *
@@ -437,13 +504,124 @@ rct_window *window_create(int x, int y, int width, int height, uint32 *event_han
  */
 rct_window *window_create_auto_pos(int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
+	rct_window *w;
+	int x, y;
 
-	ebx = (height << 16) | width;
-	ecx = (flags << 8) | cls;
-	edx = (int)event_handlers;
-	RCT2_CALLFUNC_X(0x006EA9B1, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return (rct_window*)esi;
+	uint16 screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+	uint16 screenHeight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+
+	if (cls & 0x80) {
+		cls &= ~0x80;
+		w = window_find_by_number(RCT2_GLOBAL(0x0013CE928, rct_windowclass), RCT2_GLOBAL(0x0013CE92A, rct_windownumber));
+		if (w != NULL) {
+			if (w->x > -60 && w->x < RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 20) {
+				if (w->y < RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 20) {
+					x = w->x;
+					if (w->x + width > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16))
+						x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 20 - width;
+					y = w->y;
+					return window_create(x + 10, y + 10, width, height, event_handlers, cls, flags);
+				}
+			}
+		}
+	}
+
+	// Place window in an empty corner of the screen
+	x = 0;
+	y = 30;
+	if (sub_6EA934(x, y, width, height)) goto foundSpace;
+
+	x = screenWidth - width;
+	y = 30;
+	if (sub_6EA934(x, y, width, height)) goto foundSpace;
+
+	x = 0;
+	y = screenHeight - 34 - height;
+	if (sub_6EA934(x, y, width, height)) goto foundSpace;
+
+	x = screenWidth - width;
+	y = screenHeight - 34 - height;
+	if (sub_6EA934(x, y, width, height)) goto foundSpace;
+
+	// Place window next to another
+	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
+		if (w->flags & WF_STICK_TO_BACK)
+			continue;
+
+		x = w->x + w->width + 2;
+		y = w->y;
+		if (sub_6EA934(x, y, width, height)) goto foundSpace;
+
+		x = w->x - w->width - 2;
+		y = w->y;
+		if (sub_6EA934(x, y, width, height)) goto foundSpace;
+
+		x = w->x;
+		y = w->y + w->height + 2;
+		if (sub_6EA934(x, y, width, height)) goto foundSpace;
+
+		x = w->x;
+		y = w->y - w->height - 2;
+		if (sub_6EA934(x, y, width, height)) goto foundSpace;
+
+		x = w->x + w->width + 2;
+		y = w->y - w->height - 2;
+		if (sub_6EA934(x, y, width, height)) goto foundSpace;
+
+		x = w->x - w->width - 2;
+		y = w->y - w->height - 2;
+		if (sub_6EA934(x, y, width, height)) goto foundSpace;
+
+		x = w->x + w->width + 2;
+		y = w->y + w->height + 2;
+		if (sub_6EA934(x, y, width, height)) goto foundSpace;
+
+		x = w->x - w->width - 2;
+		y = w->y + w->height + 2;
+		if (sub_6EA934(x, y, width, height)) goto foundSpace;
+	}
+
+	// Overlap
+	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
+		if (w->flags & WF_STICK_TO_BACK)
+			continue;
+
+		x = w->x + w->width + 2;
+		y = w->y;
+		if (sub_6EA8EC(x, y, width, height)) goto foundSpace;
+
+		x = w->x - w->width - 2;
+		y = w->y;
+		if (sub_6EA8EC(x, y, width, height)) goto foundSpace;
+
+		x = w->x;
+		y = w->y + w->height + 2;
+		if (sub_6EA8EC(x, y, width, height)) goto foundSpace;
+
+		x = w->x;
+		y = w->y - w->height - 2;
+		if (sub_6EA8EC(x, y, width, height)) goto foundSpace;
+	}
+
+	// Cascade
+	x = 0;
+	y = 30;
+	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
+		if (x != w->x || y != w->y)
+			continue;
+
+		x += 5;
+		y += 5;
+	}
+
+	// Clamp to inside the screen
+foundSpace:
+	if (x < 0)
+		x = x;
+	if (x + width > screenWidth)
+		x = screenWidth - width;
+
+	return window_create(x, y, width, height, event_handlers, cls, flags);
 }
 
 rct_window *window_create_centred(int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags)
@@ -1317,9 +1495,6 @@ void window_draw(rct_window *w, int left, int top, int right, int bottom)
 	rct_drawpixelinfo *dpi, copy;
 	int overflow;
 
-	// RCT2_CALLPROC_X(0x006E756C, left, top, 0, right, w, 0, bottom);
-	// return;
-
 	// Split window into only the regions that require drawing
 	if (window_draw_split(w, left, top, right, bottom))
 		return;
@@ -1453,9 +1628,6 @@ void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	rct_widget *widget;
 	int widgetIndex;
-
-	// RCT2_CALLPROC_X(0x006EB15C, 0, 0, 0, 0, w, dpi, 0);
-	// return;
 
 	if ((w->flags & WF_TRANSPARENT) && !(w->flags & WF_5))
 		gfx_fill_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, 0x2000000 | 51);
