@@ -576,7 +576,7 @@ void window_themes_open();
 void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uint32 existing_args, int maxLength);
 void window_text_input_raw_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, int maxLength);
 rct_window *window_mapgen_open();
-rct_window *window_loadsave_open(int type);
+rct_window *window_loadsave_open(int type, char *defaultName);
 
 void window_editor_main_open();
 void window_editor_bottom_toolbar_open();

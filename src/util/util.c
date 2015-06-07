@@ -69,6 +69,17 @@ void path_set_extension(char *path, const char *extension)
 	strcpy(ch, extension);
 }
 
+void path_remove_extension(char *path)
+{
+	char *ch = path + strlen(path);
+	for (--ch; ch >= path; --ch) {
+		if (*ch == '.') {
+			*ch = '\0';
+			break;
+		}
+	}
+}
+
 long fsize(FILE *fp)
 {
 	long originalPosition, size;

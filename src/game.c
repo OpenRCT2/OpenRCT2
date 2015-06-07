@@ -568,7 +568,7 @@ static int open_load_game_dialog()
  */
 static void load_landscape()
 {
-	window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE);
+	window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE, NULL);
 	return;
 
 	if (open_landscape_file_dialog() == 0) {
@@ -611,6 +611,11 @@ int game_load_save(const char *path)
 	log_verbose("loading saved game, %s", path);
 
 	strcpy((char*)0x0141EF68, path);
+	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, path);
+
+	strcpy(gScenarioSaveName, path_get_filename(path));
+	path_remove_extension(gScenarioSaveName);
+
 	file = fopen(path, "rb");
 	if (file == NULL) {
 		log_error("unable to open %s", path);
@@ -737,7 +742,7 @@ void reset_all_sprite_quadrant_placements()
  */
 static void load_game()
 {
-	window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
+	window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
 	return;
 
 	if (open_load_game_dialog() == 0) {
@@ -794,7 +799,7 @@ static int show_save_game_dialog(char *resultPath)
 
 char save_game()
 {
-	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME);
+	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, gScenarioSaveName);
 	return 0;
 
 	char path[256];

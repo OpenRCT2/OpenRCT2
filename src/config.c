@@ -1003,7 +1003,6 @@ bool config_shortcut_keys_save()
 
 #pragma region Themes
 
-static void themes_remove_extension(char *path);
 static bool themes_open(const utf8string path);
 static bool themes_save(const utf8string path, int preset);
 static void themes_read_properties(int preset, window_colours **current_window_colours, const_utf8string line);
@@ -1120,7 +1119,7 @@ bool themes_open(const utf8string path)
 		gConfigThemes.num_presets++;
 		gConfigThemes.presets = realloc(gConfigThemes.presets, sizeof(theme_preset) * gConfigThemes.num_presets);
 		strcpy(gConfigThemes.presets[preset].name, path_get_filename(path));
-		themes_remove_extension(gConfigThemes.presets[preset].name);
+		path_remove_extension(gConfigThemes.presets[preset].name);
 		gConfigThemes.presets[preset].colour_schemes = malloc(sizeof(window_colours) * gNumColourSchemeWindows);
 		for (int i = 0; i < (int)gNumColourSchemeWindows; i++) {
 			for (int j = 0; j < 6; j++)
@@ -1235,18 +1234,6 @@ static void themes_set_property(window_colours *colour_scheme, utf8string name, 
 	for (int i = 0; i < 6; i++) {
 		if (strcmp(name, colour_names[i]) == 0) {
 			colour_scheme->colours[i] = (uint8)strtol(value, NULL, 0);
-		}
-	}
-}
-
-static void themes_remove_extension(char *path)
-{
-	char *ch;
-
-	for (ch = path; *ch != 0; ch++) {
-		if (*ch == '.') {
-			*ch = '\0';
-			break;
 		}
 	}
 }
