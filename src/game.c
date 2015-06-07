@@ -611,6 +611,7 @@ int game_load_save(const char *path)
 	log_verbose("loading saved game, %s", path);
 
 	strcpy((char*)0x0141EF68, path);
+	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, path);
 	file = fopen(path, "rb");
 	if (file == NULL) {
 		log_error("unable to open %s", path);
