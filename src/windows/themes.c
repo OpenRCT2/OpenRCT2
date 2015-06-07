@@ -125,7 +125,7 @@ static rct_widget window_themes_widgets[] = {
 	{ WWT_TAB,				1,	34,		64,		17,		43,		0x02000144E,					5228 },						// main ui tab
 	{ WWT_TAB,				1,	65,		95,		17,		43,		0x02000144E,					5229 },						// park tab
 	{ WWT_TAB,				1,	96,		126,	17,		43,		0x02000144E,					5230 },						// tools tab
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x02000144E,					5232 },						// rides and peeps tab
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x02000144E,					5231 },						// rides and peeps tab
 	{ WWT_TAB,				1,	158,	188,	17,		43,		0x02000144E,					5232 },						// editors tab
 	{ WWT_TAB,				1,	189,	219,	17,		43,		0x02000144E,					5233 },						// misc tab
 	{ WWT_TAB,				1,	220,	250,	17,		43,		0x02000144E,					5234 },						// prompts tab
