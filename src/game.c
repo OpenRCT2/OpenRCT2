@@ -613,8 +613,8 @@ int game_load_save(const char *path)
 	strcpy((char*)0x0141EF68, path);
 	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, path);
 
-	strcpy(scenarioSaveName, path_get_filename(path));
-	path_remove_extension(scenarioSaveName);
+	strcpy(gScenarioSaveName, path_get_filename(path));
+	path_remove_extension(gScenarioSaveName);
 
 	file = fopen(path, "rb");
 	if (file == NULL) {
@@ -799,7 +799,7 @@ static int show_save_game_dialog(char *resultPath)
 
 char save_game()
 {
-	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, scenarioSaveName);
+	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, gScenarioSaveName);
 	return 0;
 
 	char path[256];

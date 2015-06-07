@@ -401,7 +401,7 @@ extern int gScenarioListCount;
 extern int gScenarioListCapacity;
 extern rct_scenario_basic *gScenarioList;
 
-extern char scenarioSaveName[MAX_PATH];
+extern char gScenarioSaveName[MAX_PATH];
 
 int scenario_scores_save();
 void scenario_load_list();
