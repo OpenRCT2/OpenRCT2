@@ -19,9 +19,11 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../audio/audio.h"
 #include "../config.h"
 #include "../game.h"
 #include "../input.h"
+#include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -34,9 +36,7 @@
 #include "../windows/error.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
-#include "../audio/audio.h"
 #include "dropdown.h"
-#include "../interface/themes.h"
 
 #define var_496(w)	RCT2_GLOBAL((int)w + 0x496, uint16)
 
@@ -4516,7 +4516,7 @@ static void setup_scenery_selection(rct_window* w){
  */
 static void window_ride_measurements_design_reset()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006D3026);
+	track_save_reset_scenery();
 }
 
 /**
@@ -4525,7 +4525,7 @@ static void window_ride_measurements_design_reset()
  */
 static void window_ride_measurements_design_select_nearby_scenery()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006D303D);
+	track_save_select_nearby_scenery(RCT2_GLOBAL(0x00F64DE8, uint8));
 }
 
 /**

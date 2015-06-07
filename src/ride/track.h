@@ -442,4 +442,7 @@ int install_track(char* source_path, char* dest_name);
 void window_track_list_format_name(char *dst, const char *src, char colour, char quotes);
 void game_command_place_track(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
+void track_save_reset_scenery();
+void track_save_select_nearby_scenery(int rideIndex);
+
 #endif

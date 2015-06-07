@@ -234,6 +234,10 @@ const rct_trackdefinition gTrackDefinitions_INCORRECT[] = {
     { TRACK_HALF_LOOP_2,			TRACK_DOWN_25,				TRACK_NONE,					TRACK_BANK_NONE,		TRACK_BANK_UPSIDE_DOWN,	TRACK_HALF_LOOP_DOWN		},	// ELEM_LEFT_LARGE_HALF_LOOP_DOWN
 };
 
+static bool track_save_should_select_scenery_around(int rideIndex, rct_map_element *mapElement);
+static void track_save_select_nearby_scenery_for_tile(int rideIndex, int cx, int cy);
+static void track_save_add_map_element(int mapElementSelectType, int x, int y, rct_map_element *mapElement);
+
 uint32* sub_6AB49A(rct_object_entry* entry){
 	rct_object_entry* object_list_entry = object_list_find(entry);
 
@@ -3308,4 +3312,117 @@ void game_command_place_track(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	RCT2_GLOBAL(0x00141F56C, uint8) = 0;
 	*ebx = RCT2_GLOBAL(0x00F44121, money32);
 	*edi = rideIndex;
+}
+
+/**
+ * 
+ * rct2: 0x006D3026
+ */
+void track_save_reset_scenery()
+{
+	rct_map_element **savedMapElements = (rct_map_element**)0x00F63674;
+
+	RCT2_GLOBAL(0x009DA193, uint8) = 255;
+	savedMapElements[0] = (rct_map_element*)0xFFFFFFFF;
+	gfx_invalidate_screen();
+}
+
+/**
+ * 
+ * rct2: 0x006D303D
+ */
+void track_save_select_nearby_scenery(int rideIndex)
+{
+	rct_map_element *mapElement;
+
+	for (int y = 0; y < 256; y++) {
+		for (int x = 0; x < 256; x++) {
+			mapElement = map_get_first_element_at(x, y);
+			do {
+				if (track_save_should_select_scenery_around(rideIndex, mapElement)) {
+					track_save_select_nearby_scenery_for_tile(rideIndex, x, y);
+					break;
+				}
+			} while (!map_element_is_last_for_tile(mapElement++));
+		}
+	}
+	gfx_invalidate_screen();
+}
+
+static bool track_save_should_select_scenery_around(int rideIndex, rct_map_element *mapElement)
+{
+	switch (map_element_get_type(mapElement)) {
+	case MAP_ELEMENT_TYPE_PATH:
+		if ((mapElement->type & 1) && mapElement->properties.path.addition_status == rideIndex)
+			return true;
+		break;
+	case MAP_ELEMENT_TYPE_TRACK:
+		if (mapElement->properties.track.ride_index == rideIndex)
+			return true;
+		break;
+	case MAP_ELEMENT_TYPE_ENTRANCE:
+		if (mapElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE)
+			break;
+		if (mapElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_EXIT)
+			break;
+		if (mapElement->properties.entrance.ride_index == rideIndex)
+			return true;
+		break;
+	}
+	return false;
+}
+
+static void track_save_select_nearby_scenery_for_tile(int rideIndex, int cx, int cy)
+{
+	rct_map_element *mapElement;
+
+	for (int y = cy - 1; y <= cy + 1; y++) {
+		for (int x = cx - 1; x <= cx + 1; x++) {
+			mapElement = map_get_first_element_at(x, y);
+			do {
+				int mapElementSelectType = 0;
+				switch (map_element_get_type(mapElement)) {
+				case MAP_ELEMENT_TYPE_PATH:
+					if (!(mapElement->type & 1))
+						mapElementSelectType = 6;
+					else if (mapElement->properties.path.addition_status == rideIndex)
+						mapElementSelectType = 6;
+					break;
+				case MAP_ELEMENT_TYPE_SCENERY:
+					mapElementSelectType = 5;
+					break;
+				case MAP_ELEMENT_TYPE_FENCE:
+					mapElementSelectType = 9;
+					break;
+				case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
+					mapElementSelectType = 10;
+					break;
+				}
+
+				if (mapElementSelectType != 0) {
+					bool mapElementAlreadySelected = false;
+					rct_map_element **savedMapElement = (rct_map_element**)0x00F63674;
+					while (*savedMapElement != (rct_map_element*)0xFFFFFFFF) {
+						if (*savedMapElement == mapElement) {
+							mapElementAlreadySelected = true;
+							break;
+						}
+						savedMapElement++;
+					}
+
+					if (!mapElementAlreadySelected)
+						track_save_add_map_element(mapElementSelectType, x * 32, y * 32, mapElement);
+				}
+			} while (!map_element_is_last_for_tile(mapElement++));
+		}
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006D2B3C
+ */
+static void track_save_add_map_element(int mapElementSelectType, int x, int y, rct_map_element *mapElement)
+{
+	RCT2_CALLPROC_X(0x006D2B3C, x, mapElementSelectType, y, (int)mapElement, 0, 0, 0);
 }
