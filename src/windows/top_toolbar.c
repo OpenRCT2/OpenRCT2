@@ -330,9 +330,9 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			gDropdownItemsFormat[6] = STR_EXIT_OPENRCT2;
 
 			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
-				gDropdownItemsFormat[4] = STR_QUIT_ROLLERCOASTER_DESIGNER;
+				gDropdownItemsFormat[5] = STR_QUIT_ROLLERCOASTER_DESIGNER;
 
-			numItems = 6;
+			numItems = 7;
 		} else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
 			gDropdownItemsFormat[0] = STR_LOAD_LANDSCAPE;
 			gDropdownItemsFormat[1] = STR_SAVE_LANDSCAPE;
