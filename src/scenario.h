@@ -23,6 +23,7 @@
 
 #include "rct2.h"
 #include "object.h"
+#include "platform/platform.h"
 
 /**
  * SV6/SC6 header chunk
@@ -399,6 +400,8 @@ enum {
 extern int gScenarioListCount;
 extern int gScenarioListCapacity;
 extern rct_scenario_basic *gScenarioList;
+
+extern char gScenarioSaveName[MAX_PATH];
 
 int scenario_scores_save();
 void scenario_load_list();

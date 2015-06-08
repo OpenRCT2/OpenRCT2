@@ -57,10 +57,9 @@ void research_update_uncompleted_types()
 {
 	int uncompletedResearchTypes = 0;
 	rct_research_item *researchItem = gResearchItems;
-	while (researchItem->entryIndex != -1)
-		researchItem++;
-	researchItem++;
-	for (; researchItem->entryIndex != -2; researchItem++)
+	while (researchItem++->entryIndex != RESEARCHED_ITEMS_SEPERATOR);
+
+	for (; researchItem->entryIndex != RESEARCHED_ITEMS_END; researchItem++)
 		uncompletedResearchTypes |= (1 << researchItem->category);
 
 	gResearchUncompletedCategories = uncompletedResearchTypes;
@@ -163,7 +162,7 @@ static void research_next_design()
  */
 void research_finish_item(sint32 entryIndex)
 {
-	int i, ebx, ecx, rideEntryIndex, subSceneryEntryIndex;
+	int i, ebx, base_ride_type, rideEntryIndex, subSceneryEntryIndex;
 	rct_ride_type *rideEntry, *rideEntry2;
 	rct_scenery_set_entry *scenerySetEntry;
 
@@ -171,35 +170,35 @@ void research_finish_item(sint32 entryIndex)
 	research_invalidate_related_windows();
 	if (entryIndex >= 0x10000) {
 		// Ride
-		ecx = (entryIndex >> 8) & 0xFF;
+		base_ride_type = (entryIndex >> 8) & 0xFF;
 		rideEntryIndex = entryIndex & 0xFF;
 		rideEntry = GET_RIDE_ENTRY(rideEntryIndex);
-		RCT2_ADDRESS(0x01357404, uint32)[ecx >> 5] |= (1 << (ecx & 0x1F));
-		RCT2_ADDRESS(0x01357444, uint32)[ecx] = RCT2_ADDRESS(0x0097C468, uint32)[ecx];
-		RCT2_ADDRESS(0x01357644, uint32)[ecx] = RCT2_ADDRESS(0x0097C5D4, uint32)[ecx];
-		if (RCT2_GLOBAL(0x0097D4F2 + (ecx * 8), uint16) & 8) {
-			ebx = RCT2_GLOBAL(0x0097D4F5 + (ecx * 8), uint8);
+		RCT2_ADDRESS(0x01357404, uint32)[base_ride_type >> 5] |= (1 << (base_ride_type & 0x1F));
+		RCT2_ADDRESS(0x01357444, uint32)[base_ride_type] = RCT2_ADDRESS(0x0097C468, uint32)[base_ride_type];
+		RCT2_ADDRESS(0x01357644, uint32)[base_ride_type] = RCT2_ADDRESS(0x0097C5D4, uint32)[base_ride_type];
+		if (RCT2_GLOBAL(0x0097D4F2 + (base_ride_type * 8), uint16) & 8) {
+			ebx = RCT2_GLOBAL(0x0097D4F5 + (base_ride_type * 8), uint8);
 			RCT2_ADDRESS(0x01357444, uint32)[ebx] = RCT2_ADDRESS(0x0097C468, uint32)[ebx];
 			RCT2_ADDRESS(0x01357644, uint32)[ebx] = RCT2_ADDRESS(0x0097C5D4, uint32)[ebx];
 		}
 		RCT2_ADDRESS(0x001357424, uint32)[rideEntryIndex >> 5] |= 1 << (rideEntryIndex & 0x1F);
-		if (!(rideEntry->var_008 & 0x2000)) {
+		if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE)) {
 			for (i = 0; i < 128; i++) {
 				rideEntry2 = GET_RIDE_ENTRY(i);
 				if (rideEntry2 == (rct_ride_type*)-1)
 					continue;
-				if (rideEntry2->var_008 & 0x2000)
+				if (rideEntry2->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE)
 					continue;
 
-				if (rideEntry2->ride_type[0] == ecx || rideEntry2->ride_type[1] == ecx || rideEntry2->ride_type[2] == ecx)
+				if (rideEntry2->ride_type[0] == base_ride_type || rideEntry2->ride_type[1] == base_ride_type || rideEntry2->ride_type[2] == base_ride_type)
 					RCT2_ADDRESS(0x001357424, uint32)[i >> 5] |= 1 << (i & 0x1F);
 			}
 		}
 
 		// I don't think 0x009AC06C is ever not 0, so probably redundant
 		if (RCT2_GLOBAL(0x009AC06C, uint8) == 0) {
-			RCT2_GLOBAL(0x013CE952, rct_string_id) = rideEntry->var_008 & 0x1000 ?
-				rideEntry->name : ecx + 2;
+			RCT2_GLOBAL(0x013CE952, rct_string_id) = rideEntry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME ?
+				rideEntry->name : base_ride_type + 2;
 			if (!gSilentResearch)
 				news_item_add_to_queue(NEWS_ITEM_RESEARCH, 2249, entryIndex);
 		}
@@ -292,7 +291,7 @@ void sub_684AC3(){
 			if ((research + 1)->entryIndex == inner_research->entryIndex){
 				ebp = inner_research;
 			}
-		} while ((inner_research++)->entryIndex != -2);
+		} while ((inner_research++)->entryIndex != RESEARCHED_ITEMS_END);
 		edx->entryIndex = research->entryIndex;
 		ebp->entryIndex = (research + 1)->entryIndex;
 
@@ -352,7 +351,9 @@ void research_remove_non_separate_vehicle_types()
 			researchItem->entryIndex >= 0x10000			
 		) {
 			rct_ride_type *rideEntry = GET_RIDE_ENTRY(researchItem->entryIndex & 0xFF);
-			if (!(rideEntry->var_008 & 0x3000)) {
+			if (!(rideEntry->flags & 
+				(RIDE_ENTRY_FLAG_SEPERATE_RIDE | 
+				RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME))) {
 				// Check if ride type already exists further up for a vehicle type that isn't displayed as a ride
 				researchItem2 = researchItem - 1;
 				do {
@@ -361,13 +362,16 @@ void research_remove_non_separate_vehicle_types()
 						researchItem2->entryIndex >= 0x10000
 					) {
 						rideEntry = GET_RIDE_ENTRY(researchItem2->entryIndex & 0xFF);
-						if (!(rideEntry->var_008 & 0x3000)) {
+						if (!(rideEntry->flags & 
+							(RIDE_ENTRY_FLAG_SEPERATE_RIDE |
+							RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME))) {
+
 							if (((researchItem->entryIndex >> 8) & 0xFF) == ((researchItem2->entryIndex >> 8) & 0xFF)) {
 								// Remove item
 								researchItem2 = researchItem;
 								do {
 									*researchItem2 = *(researchItem2 + 1);
-								} while ((researchItem2++)->entryIndex != RESEARCHED_ITEMS_END);
+								} while ((researchItem2++)->entryIndex != RESEARCHED_ITEMS_END_2);
 								goto loopBeginning;
 							}
 						}

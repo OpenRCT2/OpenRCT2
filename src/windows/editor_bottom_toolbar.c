@@ -314,7 +314,7 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 
 	window_close_all();
 
-	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO);
+	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO, s6Info->name);
 	return;
 
 	if (!show_save_scenario_dialog(path)) {

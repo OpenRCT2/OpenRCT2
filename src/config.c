@@ -1041,8 +1041,6 @@ theme_section_definition _themeSectionDefinitions[] = {
 	{ offsetof(theme_preset, features),		"features",		_themeFeaturesDefinitions,	countof(_themeFeaturesDefinitions)	},
 };
 
-
-static void themes_remove_extension(char *path);
 static bool themes_open(const_utf8string path);
 static bool themes_save(const_utf8string path, int preset);
 static void themes_read_properties(theme_preset *theme, theme_section_definition **currentSection, utf8string line);
@@ -1093,8 +1091,8 @@ void themes_set_default()
 			}
 		}
 		gConfigThemes.presets[1].windows[i] = (changed_colour != 0xFF ? gThemeWindowsRCT1[changed_colour].window : gThemeWindowDefinitions[i].window);
+		}
 	}
-}
 
 void themes_load_presets()
 {
@@ -1170,7 +1168,7 @@ bool themes_open(const_utf8string path)
 		gConfigThemes.num_presets++;
 		gConfigThemes.presets = realloc(gConfigThemes.presets, sizeof(theme_preset) * gConfigThemes.num_presets);
 		strcpy(gConfigThemes.presets[preset].name, path_get_filename(path));
-		themes_remove_extension(gConfigThemes.presets[preset].name);
+		path_remove_extension(gConfigThemes.presets[preset].name);
 		gConfigThemes.presets[preset].windows = malloc(sizeof(theme_window) * gNumThemeWindows);
 		gConfigThemes.presets[preset].features.rct1_ride_lights = false;
 		gConfigThemes.presets[preset].features.rct1_park_lights = false;
@@ -1227,7 +1225,7 @@ static bool themes_save(const_utf8string path, int preset)
 		log_error("Unable to write to theme file.");
 		return false;
 	}
-	
+
 	// Skip the window definition, we'll do that after
 	for (i = 1; i < countof(_themeSectionDefinitions); i++) {
 		theme_section_definition *section = &_themeSectionDefinitions[i];
@@ -1251,8 +1249,8 @@ static bool themes_save(const_utf8string path, int preset)
 				config_save_property_value(file, property->type, value);
 			fputc('\n', file);
 		}
-		fputc('\n', file);
-	}
+			fputc('\n', file);
+		}
 
 	for (i = 0; i < (int)gNumThemeWindows; i++) {
 		theme_section_definition *section = &_themeSectionDefinitions[0];
@@ -1274,8 +1272,8 @@ static bool themes_save(const_utf8string path, int preset)
 				config_write_enum(file, property->type, value, property->enum_definitions);
 			else
 				config_save_property_value(file, property->type, value);
-			fputc('\n', file);
-		}
+		fputc('\n', file);
+	}
 	}
 
 	fclose(file);
@@ -1377,7 +1375,7 @@ static theme_section_definition* themes_get_section_def(utf8string name, int siz
 	}
 
 	return NULL;
-}
+		}
 static theme_property_definition *themes_get_property_def(theme_section_definition *section, utf8string name, int size)
 {
 	int i;
@@ -1389,18 +1387,6 @@ static theme_property_definition *themes_get_property_def(theme_section_definiti
 	}
 
 	return NULL;
-}
-
-static void themes_remove_extension(char *path)
-{
-	char *ch;
-
-	for (ch = path; *ch != 0; ch++) {
-		if (*ch == '.') {
-			*ch = '\0';
-			break;
-		}
-	}
 }
 
 #pragma endregion

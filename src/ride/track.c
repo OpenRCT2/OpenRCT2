@@ -344,7 +344,10 @@ void track_list_populate(ride_list_item item, uint8* track_list_cache){
 		}
 		else{
 			if (find_object_in_entry_group(track_object, &entry_type, &entry_index)){
-				if (GET_RIDE_ENTRY(entry_index)->var_008 & 0x3000)continue;
+				if (GET_RIDE_ENTRY(entry_index)->flags & 
+					(RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME | 
+					RIDE_ENTRY_FLAG_SEPERATE_RIDE))
+					continue;
 			}
 			else{
 				uint32* esi = sub_6AB49A(track_object);
@@ -393,7 +396,7 @@ void track_load_list(ride_list_item item)
 
 	if (item.type < 0x80){
 		rct_ride_type* ride_type = gRideTypeList[item.entry_index];
-		if (!(ride_type->var_008 & 0x2000)){
+		if (!(ride_type->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE)){
 			item.entry_index = 0xFF;
 		}
 	}

@@ -349,7 +349,7 @@ static void window_track_list_invalidate()
 	entry = GET_RIDE_ENTRY(_window_track_list_item.entry_index);
 
 	stringId = entry->name;
-	if (!(entry->var_008 & 0x1000))
+	if (!(entry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME))
 		stringId = _window_track_list_item.type + 2;
 
 	RCT2_GLOBAL(0x013CE952, uint16) = stringId;
