@@ -2077,7 +2077,7 @@ static void window_ride_main_invalidate()
 		window_ride_main_widgets[WIDX_CLOSE_LIGHT].type = WWT_EMPTY;
 		window_ride_main_widgets[WIDX_TEST_LIGHT].type = WWT_EMPTY;
 		window_ride_main_widgets[WIDX_OPEN_LIGHT].type = WWT_EMPTY;
-		height = window_ride_main_widgets[WIDX_OPEN].top;
+		height = 46;
 	}
 	for (i = WIDX_CLOSE_LIGHT; i <= WIDX_OPEN_LIGHT; i++) {
 		window_ride_main_widgets[i].left = w->width - 20;
