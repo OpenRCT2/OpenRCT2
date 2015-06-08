@@ -176,13 +176,28 @@ typedef struct {
 	uint8 enable_news;
 } twitch_configuration;
 
-typedef struct {
+typedef struct theme_window {
 	uint8 colours[6];
-} window_colours;
 
+	// Define any other settings for all windows here
+
+} theme_window;
+
+// Define structures for any other settings here
 typedef struct {
-	window_colours *colour_schemes;
+	uint8 rct1_ride_lights;
+	uint8 rct1_park_lights;
+	uint8 rct1_scenario_font;
+} theme_features;
+
+
+typedef struct theme_preset {
 	char name[256];
+	theme_window *windows;
+
+	// Add structures for any other settings here
+	theme_features features;
+
 } theme_preset;
 
 typedef struct {

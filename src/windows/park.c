@@ -70,6 +70,8 @@ enum WINDOW_PARK_WIDGET_IDX {
 	//WIDX_BUY_CONSTRUCTION_RIGHTS,
 	WIDX_LOCATE,
 	WIDX_RENAME,
+	WIDX_CLOSE_LIGHT,
+	WIDX_OPEN_LIGHT,
 
 	WIDX__ = 11,
 	WIDX_PRICE,
@@ -101,6 +103,8 @@ static rct_widget window_park_entrance_widgets[] = {
 	//{ WWT_FLATBTN,			1,	205,	228,	97,		120,	SPR_BUY_CONSTRUCTION_RIGHTS,	SPR_BUY_CONSTRUCTION_RIGHTS_TIP },	// buy construction rights
 	{ WWT_FLATBTN,			1,	205,	228,	97,		120,	SPR_LOCATE,						STR_LOCATE_SUBJECT_TIP },			// locate
 	{ WWT_FLATBTN,			1,	205,	228,	121,	144,	SPR_RENAME,						STR_NAME_PARK_TIP },				// rename
+	{ WWT_IMGBTN,			1,	210,	223,	51,		65,		SPR_G2_RCT1_CLOSE_BUTTON_0,		STR_NONE },
+	{ WWT_IMGBTN,			1,	210,	223,	66,		79,		SPR_G2_RCT1_OPEN_BUTTON_0,		STR_NONE },
 	{ WIDGETS_END },
 };
 
@@ -515,7 +519,9 @@ static uint32 window_park_page_enabled_widgets[] = {
 	(1 << WIDX_BUY_LAND_RIGHTS) |
 	//(1 << WIDX_BUY_CONSTRUCTION_RIGHTS) |
 	(1 << WIDX_LOCATE) |
-	(1 << WIDX_RENAME),
+	(1 << WIDX_RENAME) |
+	(1 << WIDX_CLOSE_LIGHT) |
+	(1 << WIDX_OPEN_LIGHT),
 
 	(1 << WIDX_CLOSE) |
 	(1 << WIDX_TAB_1) |
@@ -715,6 +721,12 @@ static void window_park_entrance_mouseup()
 	case WIDX_RENAME:
 		RCT2_GLOBAL(0x013CE962, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
 		window_text_input_open(w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), 0, 32);
+		break;
+	case WIDX_CLOSE_LIGHT:
+		park_set_open(0);
+		break;
+	case WIDX_OPEN_LIGHT:
+		park_set_open(1);
 		break;
 	}
 }
@@ -1036,7 +1048,7 @@ static void window_park_entrance_textinput()
  */
 static void window_park_entrance_invalidate()
 {
-	int i;
+	int i, height;
 	rct_window *w;
 
 	window_get_register(w);
@@ -1051,6 +1063,8 @@ static void window_park_entrance_invalidate()
 	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
 	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
 	window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].image = park_is_open() ? SPR_OPEN : SPR_CLOSED;
+	window_park_entrance_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !park_is_open() * 2 + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
+	window_park_entrance_widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + park_is_open() * 2 + widget_is_pressed(w, WIDX_OPEN_LIGHT);
 
 	// Only allow closing of park for guest / rating objective
 	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_GUESTS_AND_RATING)
@@ -1065,20 +1079,44 @@ static void window_park_entrance_invalidate()
 	window_park_entrance_widgets[WIDX_STATUS].right = w->width - 26;
 	window_park_entrance_widgets[WIDX_STATUS].top = w->height - 13;
 	window_park_entrance_widgets[WIDX_STATUS].bottom = w->height - 3;
-	for (i = WIDX_OPEN_OR_CLOSE; i <= WIDX_RENAME; i++) {
+	/*for (i = WIDX_OPEN_OR_CLOSE; i <= WIDX_RENAME; i++) {
 		window_park_entrance_widgets[i].left = w->width - 25;
 		window_park_entrance_widgets[i].right = w->width - 2;
+	}*/
+	
+	if (theme_get_preset()->features.rct1_park_lights) {
+		window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WWT_EMPTY;
+		window_park_entrance_widgets[WIDX_CLOSE_LIGHT].type = WWT_IMGBTN;
+		window_park_entrance_widgets[WIDX_OPEN_LIGHT].type = WWT_IMGBTN;
+		height = window_park_entrance_widgets[WIDX_OPEN_LIGHT].bottom + 5 - 24;
+	}
+	else {
+		window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WWT_FLATBTN;
+		window_park_entrance_widgets[WIDX_CLOSE_LIGHT].type = WWT_EMPTY;
+		window_park_entrance_widgets[WIDX_OPEN_LIGHT].type = WWT_EMPTY;
+		height = 49;
 	}
 
 	// Only allow closing of park and purchase of land when there is money
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
 		window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WWT_EMPTY;
+		window_park_entrance_widgets[WIDX_CLOSE_LIGHT].type = WWT_EMPTY;
+		window_park_entrance_widgets[WIDX_OPEN_LIGHT].type = WWT_EMPTY;
 		window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WWT_EMPTY;
 		//window_park_entrance_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].type = WWT_EMPTY;
 	} else {
-		window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WWT_FLATBTN;
 		window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WWT_FLATBTN;
 		//window_park_entrance_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].type = WWT_FLATBTN;
+	}
+	for (i = WIDX_CLOSE_LIGHT; i <= WIDX_OPEN_LIGHT; i++) {
+		window_park_entrance_widgets[i].left = w->width - 20;
+		window_park_entrance_widgets[i].right = w->width - 7;
+	}
+	for (i = WIDX_OPEN_OR_CLOSE; i <= WIDX_RENAME; i++, height += 24) {
+		window_park_entrance_widgets[i].left = w->width - 25;
+		window_park_entrance_widgets[i].right = w->width - 2;
+		window_park_entrance_widgets[i].top = height;
+		window_park_entrance_widgets[i].bottom = height + 23;
 	}
 }
 

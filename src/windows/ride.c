@@ -81,6 +81,9 @@ enum {
 	WIDX_RENAME,
 	WIDX_LOCATE,
 	WIDX_DEMOLISH,
+	WIDX_CLOSE_LIGHT,
+	WIDX_TEST_LIGHT,
+	WIDX_OPEN_LIGHT,
 
 	WIDX_VEHICLE_TYPE = 14,
 	WIDX_VEHICLE_TYPE_DROPDOWN,
@@ -175,6 +178,8 @@ enum {
 	WIDX_SHOW_GUESTS_QUEUING
 };
 
+#define RCT1_LIGHT_OFFSET 4
+
 // 0x009ADC34
 static rct_widget window_ride_main_widgets[] = {
 	{ WWT_FRAME,			0,	0,		315,	0,		206,	0x0FFFFFFFF,					STR_NONE									},
@@ -201,6 +206,9 @@ static rct_widget window_ride_main_widgets[] = {
 	{ WWT_FLATBTN,			1,	291,	314,	94,		117,	SPR_RENAME,						STR_NAME_RIDE_TIP							},
 	{ WWT_FLATBTN,			1,	291,	314,	118,	141,	SPR_LOCATE,						STR_LOCATE_SUBJECT_TIP						},
 	{ WWT_FLATBTN,			1,	291,	314,	142,	165,	SPR_DEMOLISH,					STR_DEMOLISH_RIDE_TIP						},
+	{ WWT_IMGBTN,			1,	296,	309,	48,		61,		SPR_G2_RCT1_CLOSE_BUTTON_0,		STR_NONE									},
+	{ WWT_IMGBTN,			1,	296,	309,	62,		75,		SPR_G2_RCT1_TEST_BUTTON_0,		STR_NONE									},
+	{ WWT_IMGBTN,			1,	296,	309,	76,		89,		SPR_G2_RCT1_OPEN_BUTTON_0,		STR_NONE									},
 	{ WIDGETS_END },
 };
 
@@ -481,7 +489,7 @@ static rct_widget *window_ride_page_widgets[] = {
 };
 
 const uint64 window_ride_page_enabled_widgets[] = {
-	0x00000000007DBFF4,
+	0x0000000003FDBFF4,
 	0x00000000001EFFF4,
 	0x0000019E777DBFF4,
 	0x000000000001FFF4,
@@ -1609,6 +1617,8 @@ static void window_ride_main_mouseup()
 {
 	short widgetIndex;
 	rct_window *w;
+	rct_ride *ride;
+	int status;
 
 	window_widget_get_registers(w, widgetIndex);
 
@@ -1640,6 +1650,31 @@ static void window_ride_main_mouseup()
 	case WIDX_DEMOLISH:
 		window_ride_demolish_prompt_open(w->number);
 		break;
+	case WIDX_CLOSE_LIGHT:
+	case WIDX_TEST_LIGHT:
+	case WIDX_OPEN_LIGHT:
+
+		ride = GET_RIDE(w->number);
+
+		switch (widgetIndex - WIDX_CLOSE_LIGHT) {
+		case 0:
+			status = RIDE_STATUS_CLOSED;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1004;
+			break;
+		case 1:
+			status = RIDE_STATUS_TESTING;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1003;
+			break;
+		case 2:
+			status = RIDE_STATUS_OPEN;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1002;
+			break;
+		}
+
+		RCT2_GLOBAL(0x013CE952 + 6, uint16) = ride->name;
+		RCT2_GLOBAL(0x013CE952 + 8, uint32) = ride->name_arguments;
+		ride_set_status(w->number, status);
+		break;
 	}
 }
 
@@ -1656,7 +1691,10 @@ static void window_ride_main_resize()
 	window_get_register(w);
 
 	w->flags |= WF_RESIZABLE;
-	window_set_resize(w, 316, 180, 500, 450);
+	int minHeight = 180;
+	if (theme_get_preset()->features.rct1_ride_lights);
+		minHeight = 200 + RCT1_LIGHT_OFFSET - (ride_type_has_flag(GET_RIDE(w->number)->type, RIDE_TYPE_FLAG_NO_TEST_MODE) ? 14 : 0);
+	window_set_resize(w, 316, minHeight, 500, 450);
 
 	viewport = w->viewport;
 	if (viewport != NULL) {
@@ -1972,7 +2010,7 @@ static void window_ride_main_invalidate()
 {
 	rct_window *w;
 	rct_widget *widgets;
-	int i;
+	int i, height;
 
 	window_get_register(w);
 	colour_scheme_update(w);
@@ -1996,6 +2034,10 @@ static void window_ride_main_invalidate()
 	RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->name_arguments;
 	window_ride_main_widgets[WIDX_OPEN].image = SPR_CLOSED + ride->status;
 
+	window_ride_main_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RIDE_STATUS_CLOSED) * 2 + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
+	window_ride_main_widgets[WIDX_TEST_LIGHT].image = SPR_G2_RCT1_TEST_BUTTON_0 + (ride->status == RIDE_STATUS_TESTING) * 2 + widget_is_pressed(w, WIDX_TEST_LIGHT);
+	window_ride_main_widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + (ride->status == RIDE_STATUS_OPEN) * 2 + widget_is_pressed(w, WIDX_OPEN_LIGHT);
+
 	window_ride_anchor_border_widgets(w);
 
 	// Anchor main page specific widgets
@@ -2004,15 +2046,49 @@ static void window_ride_main_invalidate()
 	window_ride_main_widgets[WIDX_STATUS].right = w->width - 26;
 	window_ride_main_widgets[WIDX_STATUS].top = w->height - 13;
 	window_ride_main_widgets[WIDX_STATUS].bottom = w->height - 3;
-	for (i = WIDX_OPEN; i <= WIDX_DEMOLISH; i++) {
-		window_ride_main_widgets[i].left = w->width - 25;
-		window_ride_main_widgets[i].right = w->width - 2;
-	}
 	window_ride_main_widgets[WIDX_VIEW].right = w->width - 60;
 	window_ride_main_widgets[WIDX_VIEW_DROPDOWN].right = w->width - 61;
 	window_ride_main_widgets[WIDX_VIEW_DROPDOWN].left = w->width - 71;
 
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
+
+	if (theme_get_preset()->features.rct1_ride_lights) {
+		window_ride_main_widgets[WIDX_OPEN].type = WWT_EMPTY;
+		window_ride_main_widgets[WIDX_CLOSE_LIGHT].type = WWT_IMGBTN;
+		window_ride_main_widgets[WIDX_TEST_LIGHT].type = (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_TEST_MODE) ? WWT_EMPTY : WWT_IMGBTN);
+		window_ride_main_widgets[WIDX_OPEN_LIGHT].type = WWT_IMGBTN;
+		
+		height = 62;
+		if (window_ride_main_widgets[WIDX_TEST_LIGHT].type != WWT_EMPTY) {
+			window_ride_main_widgets[WIDX_TEST_LIGHT].top = height;
+			window_ride_main_widgets[WIDX_TEST_LIGHT].bottom = height + 13;
+			height += 14;
+		}
+		window_ride_main_widgets[WIDX_OPEN_LIGHT].top = height;
+		window_ride_main_widgets[WIDX_OPEN_LIGHT].bottom = height + 13;
+		height += 14 - 24 + RCT1_LIGHT_OFFSET;
+
+		w->min_height = 200 + RCT1_LIGHT_OFFSET - (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_TEST_MODE) ? 14 : 0);
+		if (w->height < w->min_height)
+			window_event_resize_call(w);
+	}
+	else {
+		window_ride_main_widgets[WIDX_OPEN].type = WWT_FLATBTN;
+		window_ride_main_widgets[WIDX_CLOSE_LIGHT].type = WWT_EMPTY;
+		window_ride_main_widgets[WIDX_TEST_LIGHT].type = WWT_EMPTY;
+		window_ride_main_widgets[WIDX_OPEN_LIGHT].type = WWT_EMPTY;
+		height = window_ride_main_widgets[WIDX_OPEN].top;
+	}
+	for (i = WIDX_CLOSE_LIGHT; i <= WIDX_OPEN_LIGHT; i++) {
+		window_ride_main_widgets[i].left = w->width - 20;
+		window_ride_main_widgets[i].right = w->width - 7;
+	}
+	for (i = WIDX_OPEN; i <= WIDX_DEMOLISH; i++, height += 24) {
+		window_ride_main_widgets[i].left = w->width - 25;
+		window_ride_main_widgets[i].right = w->width - 2;
+		window_ride_main_widgets[i].top = height;
+		window_ride_main_widgets[i].bottom = height + 23;
+	}
 }
 
 /**

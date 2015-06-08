@@ -1003,15 +1003,53 @@ bool config_shortcut_keys_save()
 
 #pragma region Themes
 
-static bool themes_open(const utf8string path);
-static bool themes_save(const utf8string path, int preset);
-static void themes_read_properties(int preset, window_colours **current_window_colours, const_utf8string line);
-static void themes_set_property(window_colours *colour_scheme, utf8string name, utf8string value);
+typedef struct {
+	size_t offset;
+	const_utf8string property_name;
+	uint8 type;
+	value_union default_value;
+	config_enum_definition *enum_definitions;
+} theme_property_definition;
 
+typedef struct {
+	size_t offset;
+	const_utf8string section_name;
+	theme_property_definition *property_definitions;
+	int property_definitions_count;
+} theme_section_definition;
+
+
+theme_property_definition _themeWindowDefinitions[] = {
+	{ offsetof(theme_window, colours[0]),		"colour_0",		CONFIG_VALUE_TYPE_UINT8,	0,	NULL },
+	{ offsetof(theme_window, colours[1]),		"colour_1",		CONFIG_VALUE_TYPE_UINT8,	0,	NULL },
+	{ offsetof(theme_window, colours[2]),		"colour_2",		CONFIG_VALUE_TYPE_UINT8,	0,	NULL },
+	{ offsetof(theme_window, colours[3]),		"colour_3",		CONFIG_VALUE_TYPE_UINT8,	0,	NULL },
+	{ offsetof(theme_window, colours[4]),		"colour_4",		CONFIG_VALUE_TYPE_UINT8,	0,	NULL },
+	{ offsetof(theme_window, colours[5]),		"colour_5",		CONFIG_VALUE_TYPE_UINT8,	0,	NULL },
+};
+
+theme_property_definition _themeFeaturesDefinitions[] = {
+	{ offsetof(theme_features, rct1_ride_lights),		"rct1_ride_lights",			CONFIG_VALUE_TYPE_BOOLEAN,	false,	NULL },
+	{ offsetof(theme_features, rct1_park_lights),		"rct1_park_lights",			CONFIG_VALUE_TYPE_BOOLEAN,	false,	NULL },
+	{ offsetof(theme_features, rct1_scenario_font),		"rct1_scenario_font",		CONFIG_VALUE_TYPE_BOOLEAN,	false,	NULL },
+};
+
+
+theme_section_definition _themeSectionDefinitions[] = {
+	// Special definition for theme windows
+	{ 0,									"",				_themeWindowDefinitions,	countof(_themeWindowDefinitions)	},
+	{ offsetof(theme_preset, features),		"features",		_themeFeaturesDefinitions,	countof(_themeFeaturesDefinitions)	},
+};
+
+static bool themes_open(const_utf8string path);
+static bool themes_save(const_utf8string path, int preset);
+static void themes_read_properties(theme_preset *theme, theme_section_definition **currentSection, utf8string line);
+static void themes_set_property(theme_preset *theme, const theme_section_definition *section, const theme_property_definition *property, utf8string value, int valueSize);
+static theme_section_definition* themes_get_section_def(utf8string name, int size);
+static theme_property_definition *themes_get_property_def(theme_section_definition *section, utf8string name, int size);
 
 void themes_set_default()
 {
-
 	utf8 path[MAX_PATH];
 
 	platform_get_user_directory(path, "themes");
@@ -1020,30 +1058,41 @@ void themes_set_default()
 	gConfigThemes.num_presets = 2;
 	gConfigThemes.presets = malloc(sizeof(theme_preset) * gConfigThemes.num_presets);
 
-	// Set RCT2 colour scheme
+	// Set RCT2 theme
 	strcpy(gConfigThemes.presets[0].name, language_get_string(2741));
-	gConfigThemes.presets[0].colour_schemes = malloc(sizeof(window_colours) * gNumColourSchemeWindows);
-	for (int i = 0; i < (int)gNumColourSchemeWindows; i++) {
-		for (int j = 0; j < 6; j++)
-			gConfigThemes.presets[0].colour_schemes[i].colours[j] = gColourSchemes[i].colours[j];
+	gConfigThemes.presets[0].windows = malloc(sizeof(theme_window) * gNumThemeWindows);
+
+	// Define the defaults for RCT2 here
+	gConfigThemes.presets[0].features.rct1_ride_lights = false;
+	gConfigThemes.presets[0].features.rct1_park_lights = false;
+	gConfigThemes.presets[0].features.rct1_scenario_font = false;
+
+
+	for (int i = 0; i < (int)gNumThemeWindows; i++) {
+		gConfigThemes.presets[0].windows[i] = gThemeWindowDefinitions[i].window;
 	}
 
-	// Set RCT1 colour scheme
+	// Set RCT1 theme
 	strcpy(gConfigThemes.presets[1].name, language_get_string(2740));
-	gConfigThemes.presets[1].colour_schemes = malloc(sizeof(window_colours) * gNumColourSchemeWindows);
-	for (int i = 0; i < (int)gNumColourSchemeWindows; i++) {
+	gConfigThemes.presets[1].windows = malloc(sizeof(theme_window) * gNumThemeWindows);
+
+	// Define the defaults for RCT1 here
+	gConfigThemes.presets[1].features.rct1_ride_lights = true;
+	gConfigThemes.presets[1].features.rct1_park_lights = true;
+	gConfigThemes.presets[1].features.rct1_scenario_font = true;
+
+
+	for (int i = 0; i < (int)gNumThemeWindows; i++) {
 		uint8 changed_colour = 0xFF;
-		for (int k = 0; gColourSchemesRCT1[k].classification != 0xFF; k++) {
-			if (gColourSchemesRCT1[k].classification == gColourSchemes[i].classification) {
+		for (int k = 0; gThemeWindowsRCT1[k].classification != 0xFF; k++) {
+			if (gThemeWindowsRCT1[k].classification == gThemeWindowDefinitions[i].classification) {
 				changed_colour = (uint8)k;
 				break;
 			}
 		}
-		for (int j = 0; j < 6; j++) {
-			gConfigThemes.presets[1].colour_schemes[i].colours[j] = (changed_colour != 0xFF ? gColourSchemesRCT1[changed_colour].colours[j] : gColourSchemes[i].colours[j]);
+		gConfigThemes.presets[1].windows[i] = (changed_colour != 0xFF ? gThemeWindowsRCT1[changed_colour].window : gThemeWindowDefinitions[i].window);
 		}
 	}
-}
 
 void themes_load_presets()
 {
@@ -1094,14 +1143,14 @@ bool themes_save_preset(int preset)
 	return false;
 }
 
-bool themes_open(const utf8string path)
+bool themes_open(const_utf8string path)
 {
 	FILE *file;
 	uint8 *lineBuffer;
 	size_t lineBufferCapacity;
 	size_t lineLength;
 	int c, preset;
-	window_colours *currentColourScheme;
+	theme_section_definition *currentSection;
 
 	file = fopen(path, "rb");
 	if (file == NULL)
@@ -1120,14 +1169,16 @@ bool themes_open(const utf8string path)
 		gConfigThemes.presets = realloc(gConfigThemes.presets, sizeof(theme_preset) * gConfigThemes.num_presets);
 		strcpy(gConfigThemes.presets[preset].name, path_get_filename(path));
 		path_remove_extension(gConfigThemes.presets[preset].name);
-		gConfigThemes.presets[preset].colour_schemes = malloc(sizeof(window_colours) * gNumColourSchemeWindows);
-		for (int i = 0; i < (int)gNumColourSchemeWindows; i++) {
-			for (int j = 0; j < 6; j++)
-				gConfigThemes.presets[preset].colour_schemes[i].colours[j] = gColourSchemes[i].colours[j];
+		gConfigThemes.presets[preset].windows = malloc(sizeof(theme_window) * gNumThemeWindows);
+		gConfigThemes.presets[preset].features.rct1_ride_lights = false;
+		gConfigThemes.presets[preset].features.rct1_park_lights = false;
+		gConfigThemes.presets[preset].features.rct1_scenario_font = false;
+		for (int i = 0; i < (int)gNumThemeWindows; i++) {
+			gConfigThemes.presets[preset].windows[i] = gThemeWindowDefinitions[i].window;
 		}
 	}
 
-	currentColourScheme = NULL;
+	currentSection = NULL;
 	lineBufferCapacity = 64;
 	lineBuffer = malloc(lineBufferCapacity);
 	lineLength = 0;
@@ -1140,7 +1191,7 @@ bool themes_open(const utf8string path)
 	while ((c = fgetc(file)) != EOF) {
 		if (c == '\n' || c == '\r') {
 			lineBuffer[lineLength++] = 0;
-			themes_read_properties(preset, &currentColourScheme, (const_utf8string)lineBuffer);
+			themes_read_properties(&gConfigThemes.presets[preset], &currentSection, (utf8string)lineBuffer);
 			lineLength = 0;
 		}
 		else {
@@ -1155,7 +1206,7 @@ bool themes_open(const utf8string path)
 
 	if (lineLength > 0) {
 		lineBuffer[lineLength++] = 0;
-		themes_read_properties(preset, &currentColourScheme, lineBuffer);
+		themes_read_properties(&gConfigThemes.presets[preset], &currentSection, lineBuffer);
 	}
 
 	free(lineBuffer);
@@ -1163,79 +1214,179 @@ bool themes_open(const utf8string path)
 	return true;
 }
 
-static bool themes_save(const utf8string path, int preset)
+static bool themes_save(const_utf8string path, int preset)
 {
 	FILE *file;
 	int i, j;
+	value_union *value;
 
 	file = fopen(path, "wb");
 	if (file == NULL) {
-		log_error("Unable to write to colour scheme file.");
+		log_error("Unable to write to theme file.");
 		return false;
 	}
 
-	for (i = 0; i < (int)gNumColourSchemeWindows; i++) {
-		window_colour_scheme* colour_scheme_info = &gColourSchemes[i];
-		window_colours* colour_scheme = &gConfigThemes.presets[preset].colour_schemes[i];
+	// Skip the window definition, we'll do that after
+	for (i = 1; i < countof(_themeSectionDefinitions); i++) {
+		theme_section_definition *section = &_themeSectionDefinitions[i];
 
 		fputc('[', file);
-		fwrite(colour_scheme_info->section_name, strlen(colour_scheme_info->section_name), 1, file);
+		fwrite(section->section_name, strlen(section->section_name), 1, file);
 		fputc(']', file);
 		fputc('\n', file);
 
-		for (j = 0; j < colour_scheme_info->num_colours; j++) {
+		for (j = 0; j < section->property_definitions_count; j++) {
+			theme_property_definition *property = &section->property_definitions[j];
 
-			fprintf(file, "colour_%d", j);
+			fwrite(property->property_name, strlen(property->property_name), 1, file);
 			fwrite(" = ", 3, 1, file);
-			fprintf(file, "%u", colour_scheme->colours[j]);
+
+			value = (value_union*)((size_t)&gConfigThemes.presets[preset] + (size_t)section->offset + (size_t)property->offset);
+
+			if (property->enum_definitions != NULL)
+				config_write_enum(file, property->type, value, property->enum_definitions);
+			else
+				config_save_property_value(file, property->type, value);
 			fputc('\n', file);
 		}
+			fputc('\n', file);
+		}
+
+	for (i = 0; i < (int)gNumThemeWindows; i++) {
+		theme_section_definition *section = &_themeSectionDefinitions[0];
+		
+		fputc('[', file);
+		fwrite(gThemeWindowDefinitions[i].section_name, strlen(gThemeWindowDefinitions[i].section_name), 1, file);
+		fputc(']', file);
 		fputc('\n', file);
+
+		for (j = 0; j < section->property_definitions_count; j++) {
+			theme_property_definition *property = &section->property_definitions[j];
+
+			fwrite(property->property_name, strlen(property->property_name), 1, file);
+			fwrite(" = ", 3, 1, file);
+
+			value = (value_union*)((size_t)gConfigThemes.presets[preset].windows + (size_t)(sizeof(theme_window) * i) + (size_t)property->offset);
+
+			if (property->enum_definitions != NULL)
+				config_write_enum(file, property->type, value, property->enum_definitions);
+			else
+				config_save_property_value(file, property->type, value);
+		fputc('\n', file);
+	}
 	}
 
 	fclose(file);
 	return true;
 }
 
-static void themes_read_properties(int preset, window_colours **colour_scheme, const_utf8string line)
+
+static void themes_read_properties(theme_preset *theme, theme_section_definition **currentSection, utf8string line)
 {
-	utf8string ch = (utf8string)line;
+	utf8 *ch = (utf8*)line;
 	utf8_skip_whitespace(&ch);
 
 	if (*ch == '[') {
-		utf8string sectionName;
+		const utf8 *sectionName;
 		int sectionNameSize;
-		if (config_get_section(ch, &sectionName, &sectionNameSize)) {
-			sectionName[strlen(sectionName) - 1] = '\0';
-			for (int i = 0; i < (int)gNumColourSchemeWindows; i++) {
-				if (strcmp(sectionName, gColourSchemes[i].section_name) == 0) {
-					*colour_scheme = &(gConfigThemes.presets[preset].colour_schemes[i]);
-					break;
-				}
-			}
-		}
+		if (config_get_section(ch, &sectionName, &sectionNameSize))
+			*currentSection = themes_get_section_def((utf8string)sectionName, sectionNameSize);
 	}
 	else {
-		if (*colour_scheme != NULL) {
-			utf8string propertyName, value;
+		if (*currentSection != NULL) {
+			utf8 *propertyName, *value;
 			int propertyNameSize, valueSize;
 			if (config_get_property_name_value(ch, &propertyName, &propertyNameSize, &value, &valueSize)) {
-				propertyName[propertyNameSize] = '\0';
-				themes_set_property(*colour_scheme, propertyName, value);
+				theme_property_definition *property;
+				property = themes_get_property_def(*currentSection, propertyName, propertyNameSize);
+				if (property != NULL)
+					themes_set_property(theme, *currentSection, property, value, valueSize);
 			}
 		}
 	}
 }
-
-static void themes_set_property(window_colours *colour_scheme, utf8string name, utf8string value)
+static void themes_set_property(theme_preset *theme, const theme_section_definition *section, const theme_property_definition *property, utf8string value, int valueSize)
 {
-	const_utf8string colour_names[] = { "colour_0", "colour_1", "colour_2", "colour_3", "colour_4", "colour_5" };
+	value_union *destValue = (value_union*)((size_t)theme + (size_t)section->offset + (size_t)property->offset);
 
-	for (int i = 0; i < 6; i++) {
-		if (strcmp(name, colour_names[i]) == 0) {
-			colour_scheme->colours[i] = (uint8)strtol(value, NULL, 0);
+	// Get getting the address from the windows pointer instead
+	if (section == &_themeSectionDefinitions[0])
+		destValue = (value_union*)((size_t)theme->windows + (size_t)section->offset + (size_t)property->offset);
+
+	if (property->enum_definitions != NULL)
+		if (config_read_enum(destValue, _configValueTypeSize[property->type], value, valueSize, property->enum_definitions))
+			return;
+
+	switch (property->type) {
+	case CONFIG_VALUE_TYPE_BOOLEAN:
+		if (_strnicmp(value, "false", valueSize) == 0) destValue->value_boolean = false;
+		else if (_strnicmp(value, "true", valueSize) == 0) destValue->value_boolean = true;
+		else destValue->value_boolean = strtol(value, NULL, 0) != 0;
+		break;
+	case CONFIG_VALUE_TYPE_UINT8:
+		destValue->value_uint8 = (uint8)strtol(value, NULL, 0);
+		break;
+	case CONFIG_VALUE_TYPE_UINT16:
+		destValue->value_uint16 = (uint16)strtol(value, NULL, 0);
+		break;
+	case CONFIG_VALUE_TYPE_UINT32:
+		destValue->value_uint32 = (uint32)strtol(value, NULL, 0);
+		break;
+	case CONFIG_VALUE_TYPE_SINT8:
+		destValue->value_sint8 = (sint8)strtol(value, NULL, 0);
+		break;
+	case CONFIG_VALUE_TYPE_SINT16:
+		destValue->value_sint16 = (sint16)strtol(value, NULL, 0);
+		break;
+	case CONFIG_VALUE_TYPE_SINT32:
+		destValue->value_sint32 = (sint32)strtol(value, NULL, 0);
+		break;
+	case CONFIG_VALUE_TYPE_FLOAT:
+		destValue->value_float = strtof(value, NULL);
+		break;
+	case CONFIG_VALUE_TYPE_DOUBLE:
+		destValue->value_double = strtod(value, NULL);
+		break;
+	case CONFIG_VALUE_TYPE_STRING:
+		SafeFree(destValue->value_string);
+		destValue->value_string = malloc(valueSize + 1);
+		memcpy(destValue->value_string, value, valueSize);
+		destValue->value_string[valueSize] = 0;
+		break;
+	}
+}
+static theme_section_definition* themes_get_section_def(utf8string name, int size)
+{
+	int i;
+
+	// Skip the special definition
+	for (i = 1; i < countof(_themeSectionDefinitions); i++) {
+		const_utf8string sectionName = _themeSectionDefinitions[i].section_name;
+		if (sectionName[size] == 0 && _strnicmp(sectionName, name, size) == 0)
+			return &_themeSectionDefinitions[i];
+	}
+	// Check for window definitions
+	for (i = 0; i < (int)gNumThemeWindows; i++) {
+		const_utf8string sectionName = gThemeWindowDefinitions[i].section_name;
+		if (sectionName[size] == 0 && _strnicmp(sectionName, name, size) == 0) {
+			_themeSectionDefinitions[0].offset = (size_t)(sizeof(theme_window) * i);
+			return &_themeSectionDefinitions[0];
 		}
 	}
+
+	return NULL;
+		}
+static theme_property_definition *themes_get_property_def(theme_section_definition *section, utf8string name, int size)
+{
+	int i;
+
+	for (i = 0; i < section->property_definitions_count; i++) {
+		const_utf8string propertyName = section->property_definitions[i].property_name;
+		if (propertyName[size] == 0 && _strnicmp(propertyName, name, size) == 0)
+			return &section->property_definitions[i];
+	}
+
+	return NULL;
 }
 
 #pragma endregion
