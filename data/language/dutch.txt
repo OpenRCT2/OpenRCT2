@@ -3607,3 +3607,6 @@ STR_5274    :{SMALLFONT}{BLACK}Voetpaden
 STR_5275    :Naar objecten zoeken
 STR_5276    :Voer de naam van een op te zoeken object in:
 STR_5277    :Wissen
+STR_5278    :Landrechten bewerkbaar
+STR_5279    :Normaal Kaart-venster
+STR_5280    :{SMALLFONT}{BLACK}Maakt het mogelijk om landeigendom aan te passen via het Kaart-venster
