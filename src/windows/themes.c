@@ -158,7 +158,7 @@ static int window_themes_tab_animation_loops[] = {
 	32,
 	8,
 	14,
-	32
+	38
 };
 static int window_themes_tab_animation_divisor[] = {
 	4,
