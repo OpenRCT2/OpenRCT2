@@ -1183,10 +1183,13 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 
 	rct_path_type* path_entry = g_pathTypeEntries[map_element->properties.entrance.path_type];
 
-	switch (((map_element->properties.entrance.index & 0xF) << 2) | direction){
-	case 1:
-	case 2:
-	case 3:
+	// Index to which part of the entrance
+	// Middle, left, right
+	uint8 part_index = map_element->properties.entrance.index & 0xF;
+	rct_entrance_type* entrance;
+	uint8 di = (direction / 2 + part_index / 2) & 1 ? 0x1A : 0x20;
+
+	switch (part_index){
 	case 0:
 		image_id = (path_entry->image + 5 * (1 + (direction & 1))) | ghost_id;
 		RCT2_GLOBAL(0x009DEA52, uint16) = 0;
@@ -1196,7 +1199,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
 			0, image_id, 0, height, 0x1C, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 
-		rct_entrance_type* entrance = (rct_entrance_type*)object_entry_groups[OBJECT_TYPE_PARK_ENTRANCE].chunks[0];
+		entrance = (rct_entrance_type*)object_entry_groups[OBJECT_TYPE_PARK_ENTRANCE].chunks[0];
 		image_id = (entrance->image_id + direction * 3) | ghost_id;
 
 		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
@@ -1239,7 +1242,18 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
 			0x2F00, scrolling_text_setup(park_text_id, scroll, entrance->scrolling_mode + direction / 2), 0, height + entrance->text_height, 0x1C, 0x1C, 0);
 		break;
-		//665939
+	case 1:
+	case 2:
+		entrance = (rct_entrance_type*)object_entry_groups[OBJECT_TYPE_PARK_ENTRANCE].chunks[0];
+		image_id = (entrance->image_id + part_index + direction * 3) | ghost_id;
+
+		RCT2_GLOBAL(0x009DEA52, uint16) = 3;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 3;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height;
+
+		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
+			0x4F00, image_id, 0, height, di, 0x1A, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+		break;
 	}
 
 	image_id = ghost_id;
