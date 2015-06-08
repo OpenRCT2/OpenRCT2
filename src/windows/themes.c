@@ -548,7 +548,12 @@ static void window_themes_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 		num_items = gConfigThemes.num_presets;
 
 		widget--;
-		for (i = 0; i < num_items; i++) {
+		gDropdownItemsFormat[0] = 2777;
+		gDropdownItemsArgs[0] = (uint64)&gConfigThemes.presets[1].name;
+		gDropdownItemsFormat[1] = 2777;
+		gDropdownItemsArgs[1] = (uint64)&gConfigThemes.presets[0].name;
+
+		for (i = 2; i < num_items; i++) {
 			gDropdownItemsFormat[i] = 2777;
 			gDropdownItemsArgs[i] = (uint64)&gConfigThemes.presets[i].name;
 		}
@@ -563,7 +568,10 @@ static void window_themes_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 			widget->right - widget->left - 3
 			);
 
-		gDropdownItemsChecked = 1 << gCurrentTheme;
+		if (gCurrentTheme == 0 || gCurrentTheme == 1)
+			gDropdownItemsChecked = 1 << (gCurrentTheme ^ 1);
+		else
+			gDropdownItemsChecked = 1 << (gCurrentTheme);
 		break;
 	case WIDX_THEMES_RCT1_RIDE_LIGHTS:
 		if (gCurrentTheme >= 2) {
@@ -618,6 +626,8 @@ static void window_themes_dropdown()
 		break;
 	case WIDX_THEMES_PRESETS_DROPDOWN:
 		if (dropdownIndex != -1) {
+			if (dropdownIndex == 0 || dropdownIndex == 1)
+				dropdownIndex ^= 1;
 			theme_change_preset(dropdownIndex);
 		}
 		config_save_default();
