@@ -321,7 +321,7 @@ bool config_open(const utf8string path)
 
 	// Skim UTF-8 byte order mark
 	fread(lineBuffer, 3, 1, file);
-	if (!(lineBuffer[0] == 0xEF && lineBuffer[1] == 0xBB && lineBuffer[2] == 0xBF))
+	if (!utf8_is_bom(lineBuffer))
 		fseek(file, 0, SEEK_SET);
 
 	while ((c = fgetc(file)) != EOF) {

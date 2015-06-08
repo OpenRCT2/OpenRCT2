@@ -19,8 +19,17 @@
  *****************************************************************************/
 
 #include "../addresses.h"
-#include "localisation.h"
 #include "../object.h"
+#include "../util/util.h"
+#include "localisation.h"
+
+typedef struct {
+	int id;
+	int num_strings;
+	char **strings;
+	size_t string_data_size;
+	char *string_data;
+} language_data;
 
 const char *language_names[LANGUAGE_COUNT] = {
 	"",					// LANGUAGE_UNDEFINED
@@ -52,15 +61,13 @@ const char *language_filenames[LANGUAGE_COUNT] = {
 
 int gCurrentLanguage = LANGUAGE_UNDEFINED;
 
-// Buffer storing all the string data
-long language_buffer_size = 0;
-char *language_buffer = NULL;
+language_data _languageFallback = { 0 };
+language_data _languageCurrent = { 0 };
 
-// List of string pointers into the string data
-int language_num_strings = 0;
-char **language_strings = NULL;
+const char **_languageOriginal = (char**)0x009BF2D4;
 
-static int language_open_file(const char *filename);
+static int language_open_file(const char *filename, language_data *language);
+static void language_close(language_data *language);
 
 static int utf8_get_next(char *char_ptr, char **nextchar_ptr)
 {
@@ -84,36 +91,58 @@ static int utf8_get_next(char *char_ptr, char **nextchar_ptr)
 
 const char *language_get_string(rct_string_id id)
 {
-	if (id >= STR_OPENRCT2_BEGIN_STRING_ID) {
-		const char *openrct = language_strings == NULL ? NULL : language_strings[id];
-		if (openrct != NULL)
-			return openrct;
+	const char *openrctString = NULL;
 
-		// TODO Fall back to another language or otherwise English (UK)
-		return "(undefined string)";
+	if (id == (rct_string_id)STR_NONE)
+		return NULL;
+
+	if (_languageCurrent.num_strings > id)
+		openrctString = _languageCurrent.strings[id];
+	else if (_languageFallback.num_strings > id)
+		openrctString = _languageFallback.strings[id];
+
+	if (id >= STR_OPENRCT2_BEGIN_STRING_ID) {
+		return openrctString != NULL ? openrctString : "(undefined string)";
 	} else {
-		const char *rct = RCT2_ADDRESS(0x009BF2D4, const char*)[id];
-		const char *openrct = language_strings == NULL ? NULL : language_strings[id];
-		const char *str = (openrct == NULL || strlen(openrct) == 0 ? rct : openrct);
+		const char *rct = _languageOriginal[id];
+		const char *str = (openrctString == NULL || strlen(openrctString) == 0 ? rct : openrctString);
 		return str == NULL ? "" : str;
 	}
 }
 
 int language_open(int id)
 {
+	static const char *languagePath = "data/language/%s.txt";
 	char filename[_MAX_PATH];
 
-	language_close();
+	language_close_all();
 	if (id == LANGUAGE_UNDEFINED)
 		return 1;
 
-	sprintf(filename, "data/language/%s.txt", language_filenames[id]);
-	if (language_open_file(filename)) {
+	if (id != LANGUAGE_ENGLISH_UK) {
+		sprintf(filename, languagePath, language_filenames[LANGUAGE_ENGLISH_UK]);
+		if (language_open_file(filename, &_languageFallback)) {
+			_languageFallback.id = LANGUAGE_ENGLISH_UK;
+		}
+	}
+
+	sprintf(filename, languagePath, language_filenames[id]);
+	if (language_open_file(filename, &_languageCurrent)) {
+		_languageCurrent.id = id;
 		gCurrentLanguage = id;
 		return 1;
 	}
 
 	return 0;
+}
+
+void language_close_all()
+{
+	language_close(&_languageFallback);
+	language_close(&_languageCurrent);
+	_languageFallback.id = LANGUAGE_UNDEFINED;
+	_languageCurrent.id = LANGUAGE_UNDEFINED;
+	gCurrentLanguage = LANGUAGE_UNDEFINED;
 }
 
 /**
@@ -132,32 +161,36 @@ int language_open(int id)
  * colon and before the new line will be saved as the string. Tokens are written with inside curly braces {TOKEN}.
  * Use # at the beginning of a line to leave a comment.
  */
-static int language_open_file(const char *filename)
+static int language_open_file(const char *filename, language_data *language)
 {
+	assert(filename != NULL);
+	assert(language != NULL);
+
 	FILE *f = fopen(filename, "rb");
 	if (f == NULL)
 		return 0;
 
 	fseek(f, 0, SEEK_END);
-	language_buffer_size = ftell(f) + 1;
-	language_buffer = calloc(1, language_buffer_size);
+	language->string_data_size = ftell(f) + 1;
+	language->string_data = calloc(1, language->string_data_size);
 	fseek(f, 0, SEEK_SET);
-	fread(language_buffer, language_buffer_size, 1, f);
+	fread(language->string_data, language->string_data_size, 1, f);
 	fclose(f);
 
-	language_strings = calloc(STR_COUNT, sizeof(char*));
+	language->strings = calloc(STR_COUNT, sizeof(char*));
 
 	char *dst = NULL;
 	char *token = NULL;
 	char tokenBuffer[64];
-	int i = 0, stringIndex = 0, mode = 0, string_no;
+	int stringIndex = 0, mode = 0, stringId, maxStringId = 0;
+	size_t i = 0;
 
 	// Skim UTF-8 byte order mark
-	if (language_buffer[0] == (char)0xEF && language_buffer[1] == (char)0xBB && language_buffer[2] == (char)0xBF)
+	if (utf8_is_bom(language->string_data))
 		i += 3;
 
-	for (; i < language_buffer_size; i++) {
-		char *src = &language_buffer[i];
+	for (; i < language->string_data_size; i++) {
+		char *src = &language->string_data[i];
 
 		// Handle UTF-8
 		char *srcNext;
@@ -173,16 +206,18 @@ static int language_open_file(const char *filename)
 			// Search for a comment
 			if (utf8Char == '#') {
 				mode = 3;
-			} else if (utf8Char == ':' && string_no != -1) {
+			} else if (utf8Char == ':' && stringId != -1) {
 				// Search for colon
 				dst = src + 1;
-				language_strings[string_no] = dst;
+				language->strings[stringId] = dst;
 				stringIndex++;
 				mode = 1;
 			} else if (!strncmp(src, "STR_", 4)){
 				// Copy in the string number, 4 characters only
-				if (sscanf(src, "STR_%4d", &string_no) != 1) {
-					string_no = -1;
+				if (sscanf(src, "STR_%4d", &stringId) != 1) {
+					stringId = -1;
+				} else {
+					maxStringId = max(maxStringId, stringId);
 				}
 			}
 			break;
@@ -217,24 +252,18 @@ static int language_open_file(const char *filename)
 			}
 		}
 	}
-	language_num_strings = stringIndex;
+	language->num_strings = maxStringId + 1;
+	language->strings = realloc(language->strings, language->num_strings * sizeof(char*));
 
 	return 1;
 }
 
-void language_close()
+static void language_close(language_data *language)
 {
-	if (language_buffer != NULL)
-		free(language_buffer);
-	language_buffer = NULL;
-	language_buffer_size = 0;
-
-	if (language_strings != NULL)
-		free(language_strings);
-	language_strings = NULL;
-	language_num_strings = 0;
-
-	gCurrentLanguage = LANGUAGE_UNDEFINED;
+	SafeFree(language->strings);
+	SafeFree(language->string_data);
+	language->num_strings = 0;
+	language->string_data_size = 0;
 }
 
 const int OpenRCT2LangIdToObjectLangId[] = {
@@ -298,20 +327,22 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 		stringid += tableindex;
 
 		//put pointer in stringtable
-		language_strings[stringid] = pString;
+		if (_languageCurrent.num_strings > stringid)
+			_languageCurrent.strings[stringid] = pString;
 		// Until all string related functions are finished copy
 		// to old array as well.
-		RCT2_ADDRESS(0x009BF2D4, char*)[stringid] = pString;
+		_languageOriginal[stringid] = pString;
 		return stringid;
 	}
 	else
 	{
 		int stringid = 3447 + tableindex;
 		//put pointer in stringtable
-		language_strings[stringid] = pString;
+		if (_languageCurrent.num_strings > stringid)
+			_languageCurrent.strings[stringid] = pString;
 		// Until all string related functions are finished copy
 		// to old array as well.
-		RCT2_ADDRESS(0x009BF2D4, char*)[stringid] = pString;
+		_languageOriginal[stringid] = pString;
 		return stringid;
 	}
 }

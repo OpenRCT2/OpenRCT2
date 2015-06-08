@@ -197,6 +197,7 @@ void openrct2_launch()
 void openrct2_dispose()
 {
 	http_dispose();
+	language_close_all();
 	platform_free();
 }
 

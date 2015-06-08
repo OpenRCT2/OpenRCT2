@@ -37,4 +37,6 @@ int bitscanforward(int source);
 bool strequals(const char *a, const char *b, int length, bool caseInsensitive);
 int strcicmp(char const *a, char const *b);
 
+bool utf8_is_bom(const char *str);
+
 #endif

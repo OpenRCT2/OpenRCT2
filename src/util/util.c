@@ -145,3 +145,8 @@ int strcicmp(char const *a, char const *b)
 			return d;
 	}
 }
+
+bool utf8_is_bom(const char *str)
+{
+	return str[0] == 0xEF && str[1] == 0xBB && str[2] == 0xBF;
+}
