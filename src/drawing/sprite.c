@@ -25,18 +25,7 @@
 #include "../platform/platform.h"
 #include "../openrct2.h"
 
-typedef struct {
-	uint32 num_entries;
-	uint32 total_size;
-} rct_g1_header;
-
 void *_g1Buffer = NULL;
-
-typedef struct {
-	rct_g1_header header;
-	rct_g1_element *elements;
-	void *data;
-} rct_gx;
 
 rct_gx g2;
 

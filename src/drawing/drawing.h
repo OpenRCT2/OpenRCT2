@@ -57,6 +57,17 @@ enum{
 	IMAGE_TYPE_UNKNOWN = (1<<3)
 };
 
+typedef struct {
+	uint32 num_entries;
+	uint32 total_size;
+} rct_g1_header;
+
+typedef struct {
+	rct_g1_header header;
+	rct_g1_element *elements;
+	void *data;
+} rct_gx;
+
 extern const uint16 palette_to_g1_offset[];
 extern const uint8 peep_palette[];
 extern uint8 text_palette[];
@@ -65,6 +76,7 @@ extern int gLastDrawStringX;
 extern int gLastDrawStringY;
 
 extern rct_g1_element *g1Elements;
+extern rct_gx g2;
 
 // 
 rct_drawpixelinfo* clip_drawpixelinfo(rct_drawpixelinfo* dpi, int left, int width, int top, int height);

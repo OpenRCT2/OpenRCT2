@@ -68,13 +68,13 @@ struct paint_struct{
 	uint8 var_1B;
 	paint_struct* attached_ps;	//0x1C
 	paint_struct* var_20;
-	paint_struct* var_24;
+	paint_struct* next_quadrant_ps; // 0x24
 	uint8 sprite_type;		//0x28
 	uint8 var_29;
 	uint16 pad_2A;
 	uint16 map_x;			// 0x2C
 	uint16 map_y;			// 0x2E
-	rct_map_element *mapElement; // 0x30
+	rct_map_element *mapElement; // 0x30 (or sprite pointer)
 };
 
 /**
@@ -663,9 +663,9 @@ void paint_attached_ps(paint_struct* ps, paint_struct* attached_ps, rct_drawpixe
 void sub_688485(){
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 	paint_struct* ps = RCT2_GLOBAL(0xEE7884, paint_struct*);
-	paint_struct* previous_ps = ps->var_24;
+	paint_struct* previous_ps = ps->next_quadrant_ps;
 
-	for (ps = ps->var_24; ps;){
+	for (ps = ps->next_quadrant_ps; ps;){
 		sint16 x = ps->x;
 		sint16 y = ps->y;
 		if (ps->sprite_type == 2){
@@ -715,17 +715,17 @@ void sub_688485(){
 		}
 
 		paint_attached_ps(ps, ps->attached_ps, dpi);
-		ps = previous_ps->var_24;
+		ps = previous_ps->next_quadrant_ps;
 		previous_ps = ps;
 	}
 
 }
 
-int sub_0x686806(rct_sprite* sprite, int eax, int image_id, int ecx, int edx){
+int sub_0x686806(int eax, int image_id, int ecx, int edx, sint16 di, sint16 si){
 	int ebp = (eax >> 8) & 0xFF;
 	edx <<= 16;
 	ebp += RCT2_GLOBAL(0x9DEA56, uint16);
-	RCT2_GLOBAL(0xF1AD28, uint32) = 0;
+	RCT2_GLOBAL(0xF1AD28, paint_struct*) = 0;
 	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
 	edx = (edx >> 16) | (ebp << 16);
 
@@ -736,7 +736,15 @@ int sub_0x686806(rct_sprite* sprite, int eax, int image_id, int ecx, int edx){
 
 	ps->image_id = image_id;
 
-	rct_g1_element *g1Element = &g1Elements[image_id & 0x7FFFF];
+	rct_g1_element *g1Element;
+	uint32 image_element = image_id & 0x7FFFF;
+
+	if (image_element < SPR_G2_BEGIN) {
+		g1Element = &g1Elements[image_element];
+	}
+	else {
+		g1Element = &g2.elements[image_element - SPR_G2_BEGIN];
+	}
 
 	eax = (eax & 0xFF) + RCT2_GLOBAL(0x9DE568, uint16);
 	ecx = (ecx & 0xFF) + RCT2_GLOBAL(0x9DE56C, uint16);
@@ -763,9 +771,44 @@ int sub_0x686806(rct_sprite* sprite, int eax, int image_id, int ecx, int edx){
 	if (left > dpi->x + dpi->width) return 1;
 	if (bottom > dpi->y + dpi->height) return 1;
 
-	RCT2_GLOBAL(0x9DE568, uint16);
 	//686918 not finished
+	ps->other_x = di - 1 + RCT2_GLOBAL(0x9DEA52, sint16) + RCT2_GLOBAL(0x9DE568, sint16);
+	ps->some_x = RCT2_GLOBAL(0x009DEA56, sint16);
+	ps->other_y = si - 1 + RCT2_GLOBAL(0x9DEA54, sint16) + RCT2_GLOBAL(0x009DE56C, sint16);
+	ps->var_1A = 0;
+	ps->attached_x = RCT2_GLOBAL(0x9DEA52, sint16) + RCT2_GLOBAL(0x9DE568, sint16);
+	ps->attached_y = RCT2_GLOBAL(0x9DEA54, sint16) + RCT2_GLOBAL(0x009DE56C, sint16);
+	ps->attached_ps = NULL;
+	ps->var_20 = NULL;
+	ps->sprite_type = RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint16);
+	ps->map_x = RCT2_GLOBAL(0x9DE574, uint16);
+	ps->map_y = RCT2_GLOBAL(0x9DE576, uint16);
+	ps->mapElement = RCT2_GLOBAL(0x9DE578, rct_map_element*);
 
+	RCT2_GLOBAL(0xF1AD28, uint32) = ps;
+
+	di = ps->attached_y + ps->attached_x;
+	if (di < 0)
+		di = 0;
+
+	di /= 32;
+	if (di > 511)
+		di = 511;
+
+	ps->var_18 = di;
+	paint_struct* old_ps = RCT2_ADDRESS(0x00F1A50C, paint_struct*)[di];
+	RCT2_ADDRESS(0x00F1A50C, paint_struct*)[di] = ps;
+	ps->next_quadrant_ps = old_ps;
+
+	if (di < RCT2_GLOBAL(0x00F1AD0C, sint32)){
+		RCT2_GLOBAL(0x00F1AD0C, sint32) = di;
+	}
+
+	if (di > RCT2_GLOBAL(0x00F1AD10, sint32)){
+		RCT2_GLOBAL(0x00F1AD10, sint32) = di;
+	}
+
+	RCT2_GLOBAL(0xEE7888, paint_struct*) += sizeof(paint_struct);
 	return 0;
 }
 
@@ -840,7 +883,7 @@ void sprite_paint_setup(uint16 eax, uint16 ecx){
 		int ebp = spr->unknown.sprite_identifier;
 
 		RCT2_GLOBAL(0x9DE568, uint16) = spr->unknown.x;
-		RCT2_GLOBAL(0x9DE570, uint8) = 2;
+		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_SPRITE;
 		RCT2_GLOBAL(0x9DE56C, uint16) = spr->unknown.y;
 
 		switch (spr->unknown.sprite_identifier){
@@ -1030,11 +1073,11 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 	colour_2 = ride->track_colour_additional[0];
 	image_id = (colour_1 << 19) | (colour_2 << 24) | 0xA0000000;
 
-	RCT2_GLOBAL(0x009DE570, uint8) = 3;
+	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_RIDE;
 	RCT2_GLOBAL(0x009E32BC, uint32) = 0;
 
 	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST){
-		RCT2_GLOBAL(0x009DE570, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
 		image_id = RCT2_ADDRESS(0x993CC4, uint32_t)[RCT2_GLOBAL(0x9AACBF, uint8)];
 		RCT2_GLOBAL(0x009E32BC, uint32) = image_id;
 		if (transparant_image_id)
@@ -1172,11 +1215,11 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 	if (RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1)
 		return;
 
-	RCT2_GLOBAL(0x009DE570, uint8) = 8;
+	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_PARK;
 	RCT2_GLOBAL(0x009E32BC, uint32) = 0;
 	uint32 image_id, ghost_id = 0;
 	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST){
-		RCT2_GLOBAL(0x009DE570, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
 		ghost_id = RCT2_ADDRESS(0x993CC4, uint32)[RCT2_GLOBAL(0x9AACBF, uint8)];
 		RCT2_GLOBAL(0x009E32BC, uint32) = ghost_id;
 	}
@@ -1287,7 +1330,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 
 /* rct2: 0x00664FD4 */
 void viewport_entrance_paint_setup(uint8 direction, int height, rct_map_element* map_element){
-	RCT2_GLOBAL(0x9DE570, uint8_t) = 0xB;
+	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_LABEL;
 
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 
@@ -1335,7 +1378,7 @@ void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* m
 {
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 
-	RCT2_GLOBAL(0x9DE570, uint8_t) = 0xC;
+	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_BANNER;
 
 	if (dpi->zoom_level > 1 || RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1) return;
 
@@ -1355,7 +1398,7 @@ void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* m
 
 	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST)//if being placed
 	{
-		RCT2_GLOBAL(0x9DE570, uint8_t) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_NONE;
 		image_id |= RCT2_ADDRESS(0x993CC4, uint32_t)[RCT2_GLOBAL(0x9AACBF, uint8)];
 	}
 	else{
@@ -1471,7 +1514,7 @@ void map_element_paint_setup(int x, int y)
 
 			RCT2_GLOBAL(0x9DE568, uint16) = x;
 			RCT2_GLOBAL(0x9DE56C, uint16) = y;
-			RCT2_GLOBAL(0x9DE570, uint8) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
 			RCT2_GLOBAL(0x9DEA52, uint16) = 0;
 			RCT2_GLOBAL(0x9DEA54, uint16) = 0;
 			RCT2_GLOBAL(0x9DEA56, uint16) = arrowZ + 18;
@@ -1588,7 +1631,7 @@ void map_element_paint_setup(int x, int y)
 		if (dx >= dpi->y) return;
 		RCT2_GLOBAL(0x9DE568, uint16_t) = x;
 		RCT2_GLOBAL(0x9DE56C, uint16_t) = y;
-		RCT2_GLOBAL(0x9DE570, uint8_t) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_NONE;
 		RCT2_CALLPROC_X((int)RCT2_ADDRESS(0x98196C, uint32_t*)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
 			0xFF00, 3123, y & 0xFF00, 16, 32, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 	}
@@ -1737,14 +1780,14 @@ void sub_688217_helper(uint16 ax, uint8 flag)
 
 	do {
 		ps = ps_next;
-		ps_next = ps_next->var_24;
+		ps_next = ps_next->next_quadrant_ps;
 		if (ps_next == NULL) return;
 	} while (ax > ps_next->var_18);
 
 	RCT2_GLOBAL(0x00F1AD14, paint_struct*) = ps;
 
 	do {
-		ps = ps->var_24;
+		ps = ps->next_quadrant_ps;
 		if (ps == NULL) break;
 
 		if (ps->var_18 > ax + 1) {
@@ -1760,7 +1803,7 @@ void sub_688217_helper(uint16 ax, uint8 flag)
 
 	while (true) {
 		while (true) {
-			ps_next = ps->var_24;
+			ps_next = ps->next_quadrant_ps;
 			if (ps_next == NULL) return;
 			if (ps_next->var_1B & (1 << 7)) return;
 			if (ps_next->var_1B & (1 << 0)) break;
@@ -1779,7 +1822,7 @@ void sub_688217_helper(uint16 ax, uint8 flag)
 
 		while (true) {
 			ps = ps_next;
-			ps_next = ps_next->var_24;
+			ps_next = ps_next->next_quadrant_ps;
 			if (ps_next == NULL) break;
 			if (ps_next->var_1B & (1 << 7)) break;
 			if (!(ps_next->var_1B & (1 << 1))) continue;
@@ -1809,10 +1852,10 @@ void sub_688217_helper(uint16 ax, uint8 flag)
 			}
 
 			if (yes) {
-				ps->var_24 = ps_next->var_24;
-				paint_struct *ps_temp = RCT2_GLOBAL(0x00F1AD18, paint_struct*)->var_24;
-				RCT2_GLOBAL(0x00F1AD18, paint_struct*)->var_24 = ps_next;
-				ps_next->var_24 = ps_temp;
+				ps->next_quadrant_ps = ps_next->next_quadrant_ps;
+				paint_struct *ps_temp = RCT2_GLOBAL(0x00F1AD18, paint_struct*)->next_quadrant_ps;
+				RCT2_GLOBAL(0x00F1AD18, paint_struct*)->next_quadrant_ps = ps_next;
+				ps_next->next_quadrant_ps = ps_temp;
 				ps_next = ps;
 			}
 		}
@@ -1831,7 +1874,7 @@ void sub_688217()
 	paint_struct *ps_next;
 	RCT2_GLOBAL(0x00EE7888, uint32) += 0x34; // 0x34 is size of paint_struct?
 	RCT2_GLOBAL(0x00EE7884, paint_struct*) = ps;
-	ps->var_24 = NULL;
+	ps->next_quadrant_ps = NULL;
 	uint32 edi = RCT2_GLOBAL(0x00F1AD0C, uint32);
 	if (edi == -1)
 		return;
@@ -1839,10 +1882,10 @@ void sub_688217()
 	do {
 		ps_next = RCT2_GLOBAL(0x00F1A50C + 4 * edi, paint_struct*);
 		if (ps_next != NULL) {
-			ps->var_24 = ps_next;
+			ps->next_quadrant_ps = ps_next;
 			do {
 				ps = ps_next;
-				ps_next = ps_next->var_24;
+				ps_next = ps_next->next_quadrant_ps;
 			} while (ps_next != NULL);
 		}
 	} while (++edi <= RCT2_GLOBAL(0x00F1AD10, uint32));
@@ -2270,7 +2313,7 @@ void sub_68862C()
 	paint_struct *ps = RCT2_GLOBAL(0x00EE7884, paint_struct*), *old_ps, *next_ps, *attached_ps;
 	uint32 eax = 0xBBBBBBBB, ebx = 0xBBBBBBBB, ecx = 0xBBBBBBBB, edx = 0xBBBBBBBB, esi = 0xBBBBBBBB, edi = 0xBBBBBBBB, ebp = 0xBBBBBBBB;
 
-	while ((ps = ps->var_24) != NULL) {
+	while ((ps = ps->next_quadrant_ps) != NULL) {
 		old_ps = ps;
 
 		next_ps = ps;
