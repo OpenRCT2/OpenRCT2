@@ -1434,6 +1434,54 @@ const uint8 map_element_raise_styles[5][32] = {
 	{0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x22, 0x20, 0x20, 0x20, 0x21, 0x20, 0x28, 0x24, 0x20},
 };
 
+static money32 sub_66397F(int flags, int x, int y, int height, int style, int selectionType)
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+		return MONEY32_UNDEFINED;
+	}
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
+			return MONEY32_UNDEFINED;
+		}
+	}
+
+	if (x > RCT2_GLOBAL(0x01358836, uint16) || y > RCT2_GLOBAL(0x01358836, uint16)) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_OFF_EDGE_OF_MAP;
+		return MONEY32_UNDEFINED;
+	}
+
+	if (height < 2) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_LOW;
+		return MONEY32_UNDEFINED;
+	}
+
+	if (height > 62) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH;
+		return MONEY32_UNDEFINED;
+	} else if (height == 62 && (style & 0x1F) != 0) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH;
+		return MONEY32_UNDEFINED;
+	}
+
+	if (height == 60 && (style & 0x10)) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH;
+		return MONEY32_UNDEFINED;
+	}
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)) {
+		if (!map_is_location_in_park(x, y)) {
+			return MONEY32_UNDEFINED;
+		}
+	}
+
+	int eax = x, ebx = flags, ecx = y, edx = (style << 8) | height, esi = 0, edi = selectionType << 5, ebp = 0;
+	RCT2_CALLFUNC_X(0x006639FE, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return ebx;
+}
+
 /**
  *
  *  rct2: 0x0068C542
@@ -1477,10 +1525,7 @@ void game_command_raise_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, i
 					height += 2;
 					new_style &= ~0x20;
 				}
-				int ebx2 = *ebx;
-				int edx2 = (new_style << 8) | height;
-				int edi2 = selection_type << 5;
-				RCT2_CALLFUNC_X(0x0066397F, &xi, &ebx2, &yi, &edx2, (int*)&map_element, &edi2, ebp); // actually apply the change
+				int ebx2 = sub_66397F(*ebx, xi, yi, height, new_style, selection_type);
 				if(ebx2 == MONEY32_UNDEFINED){
 					*ebx = MONEY32_UNDEFINED;
 					return;
@@ -1563,10 +1608,7 @@ void game_command_lower_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, i
 					height -= 2;
 					new_style &= ~0x20;
 				}
-				int ebx2 = *ebx;
-				int edx2 = (new_style << 8) | height;
-				int edi2 = selection_type << 5;
-				RCT2_CALLFUNC_X(0x0066397F, &xi, &ebx2, &yi, &edx2, (int*)&map_element, &edi2, ebp); // actually apply the change
+				int ebx2 = sub_66397F(*ebx, xi, yi, height, new_style, selection_type);
 				if(ebx2 == MONEY32_UNDEFINED){
 					*ebx = MONEY32_UNDEFINED;
 					return;
