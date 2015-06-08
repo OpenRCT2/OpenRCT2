@@ -611,19 +611,15 @@ void reset_sprite_list(){
 
 	RCT2_GLOBAL(0x13573C8, uint16) = 0x2710;
 
-	//RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
 	reset_0x69EBE4();
 }
 
-/*
- *
- * rct: 0x0069EBE4
+/**
+ * rct2: 0x0069EBE4
  * This function looks as though it sets some sort of order for sprites.
  * Sprites can share thier position if this is the case.
  */
 void reset_0x69EBE4(){
-	//RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
-	//return;
 	memset((uint16*)0xF1EF60, -1, 0x10001*2);
 
 	rct_sprite* spr = g_sprite_list;
@@ -645,6 +641,28 @@ void reset_0x69EBE4(){
 			RCT2_ADDRESS(0xF1EF60,uint16)[edi] = spr->unknown.sprite_index;
 			spr->unknown.next_in_quadrant = ax;
 		}
+	}
+}
+
+/**
+ * Clears all the unused sprite memory to zero. Probably so that it can be compressed better when saving.
+ * rct2: 0x0069EBA4
+ */
+void sprite_clear_all_unused()
+{
+	rct_unk_sprite *sprite;
+	uint16 spriteIndex, nextSpriteIndex;
+	
+	spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16);
+	while (spriteIndex != SPRITE_INDEX_NULL) {
+		sprite = &g_sprite_list[spriteIndex].unknown;
+		nextSpriteIndex = sprite->next;
+		memset(sprite, 0, sizeof(rct_sprite));
+		sprite->sprite_identifier = SPRITE_IDENTIFIER_NULL;
+		sprite->next = nextSpriteIndex;
+		sprite->linked_list_type_offset = SPRITE_LINKEDLIST_OFFSET_NULL;
+		sprite->sprite_index = spriteIndex;
+		spriteIndex = nextSpriteIndex;
 	}
 }
 

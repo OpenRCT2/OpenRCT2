@@ -799,6 +799,27 @@ int scenario_write_available_objects(FILE *file)
 	return 1;
 }
 
+static void sub_677552()
+{
+	RCT2_GLOBAL(0x0013587BC, uint32) = 0x31144;
+	RCT2_GLOBAL(0x001358778, uint32) = RCT2_GLOBAL(0x009E2D28, uint32);
+}
+
+static void sub_674BCF()
+{
+	char *savedExpansionPackNames = (char*)0x0135946C;
+
+	for (int i = 0; i < 16; i++) {
+		char *dst = &savedExpansionPackNames[i * 128];
+		if (RCT2_GLOBAL(RCT2_ADDRESS_EXPANSION_FLAGS, uint16) & (1 << i)) {
+			char *src = &(RCT2_ADDRESS(RCT2_ADDRESS_EXPANSION_NAMES, char)[i * 128]);
+			strncpy(dst, src, 128);
+		} else {
+			*dst = 0;
+		}
+	}
+}
+
 /**
  *
  *  rct2: 0x006754F5
@@ -833,10 +854,10 @@ int scenario_save(char *path, int flags)
 		window_close_construction_windows();
 
 	map_reorganise_elements();
-	RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
-	RCT2_CALLPROC_EBPSAFE(0x0069EBA4);
-	RCT2_CALLPROC_EBPSAFE(0x00677552);
-	RCT2_CALLPROC_EBPSAFE(0x00674BCF);
+	reset_0x69EBE4();
+	sprite_clear_all_unused();
+	sub_677552();
+	sub_674BCF();
 
 	// Set saved view
 	w = window_get_main();

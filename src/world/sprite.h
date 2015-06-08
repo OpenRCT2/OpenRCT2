@@ -34,9 +34,11 @@ enum SPRITE_IDENTIFIER{
 	SPRITE_IDENTIFIER_PEEP = 1,
 	SPRITE_IDENTIFIER_MISC = 2,
 	SPRITE_IDENTIFIER_LITTER = 3,
+	SPRITE_IDENTIFIER_NULL = 255
 };
 
 typedef enum {
+	SPRITE_LINKEDLIST_OFFSET_NULL = 0,
 	SPRITE_LINKEDLIST_OFFSET_VEHICLE = 2,
 	SPRITE_LINKEDLIST_OFFSET_PEEP = 4,
 	SPRITE_LINKEDLIST_OFFSET_MISC = 6,
@@ -243,6 +245,7 @@ void money_effect_create(money32 value);
 rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();
 void reset_0x69EBE4();
+void sprite_clear_all_unused();
 void move_sprite_to_list(rct_sprite *sprite, uint8 cl);
 void sprite_misc_update_all();
 void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite* sprite);

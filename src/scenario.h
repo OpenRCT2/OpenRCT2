@@ -255,7 +255,7 @@ typedef struct {
 	uint16 word_01358836;
 	uint32 word_01358838;
 	uint16 suggested_max_guests;
-	uint16 word_0135883E;
+	uint16 park_rating_warning_days;
 	uint8 word_01358840;
 	uint8 rct1_water_colour;
 	uint8 pad_01358842[2];
@@ -270,10 +270,9 @@ typedef struct {
 	uint16 park_entrance_x[4];
 	uint16 park_entrance_y[4];
 	uint16 park_entrance_z[4];
-	uint8 byte_01359368;
-	uint8 pad_01359369[3];
-	uint8 byte_0135936C[256];
-	uint8 byte_0135946C[3256];
+	uint8 park_entrance_direction[4];
+	uint8 scenario_filename[256];
+	uint8 saved_expansion_pack_names[3256];
 	rct_banner banners[250]
 	char custom_strings[0x8000];
 	uint32 game_ticks_1;
