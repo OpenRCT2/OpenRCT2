@@ -70,56 +70,6 @@ typedef struct {
 	vehicle_colour list[256];
 } vehicle_colour_preset_list;
 
-/** 
- * Ride type vehicle structure.
- * size: 0x65
- */
-typedef struct{
-	uint16 var_00;				// 0x00 , 0x1A
-	uint8 var_02;				// 0x02 , 0x1C
-	uint8 var_03;				// 0x03 , 0x1D
-	uint32 spacing;				// 0x04 , 0x1E
-	uint16 friction;			// 0x08 , 0x22
-	sint8 var_0A;				// 0x0A , 0x24
-	uint8 pad_0B;
-	uint16 available_sprites;	// 0x0C , 0x26
-	uint8 var_0E;				// 0x0E , 0x28
-	uint8 var_0F;				// 0x0F , 0x29
-	uint8 var_10;				// 0x10 , 0x2A
-	uint8 var_11;				// 0x11 , 0x2B
-	uint16 var_12;				// 0x12 , 0x2C
-	uint16 var_14;				// 0x14 , 0x2E
-	uint16 var_16;				// 0x16 , 0x30
-	uint32 base_image_id;		// 0x18 , 0x32
-	uint32 var_1C;				// 0x1C , 0x36
-	uint32 var_20;				// 0x20 , 0x3A
-	uint32 var_24;				// 0x24 , 0x3E
-	uint32 var_28;				// 0x28 , 0x42
-	uint32 var_2C;				// 0x2C , 0x46
-	uint32 var_30;				// 0x30 , 0x4A
-	uint32 var_34;				// 0x34 , 0x4E
-	uint32 var_38;				// 0x38 , 0x52
-	uint32 var_3C;				// 0x3C , 0x56
-	uint32 var_40;				// 0x40 , 0x5A
-	uint32 var_44;				// 0x44 , 0x5E
-	uint32 var_48;				// 0x48 , 0x62
-	uint32 var_4C;				// 0x4C , 0x66
-	uint32 no_vehicle_images;	// 0x50 , 0x6A
-	uint8 no_seating_rows;		// 0x54 , 0x6E
-	uint8 spinning_inertia;		// 0x55 , 0x6F
-	uint8 spinning_friction;	// 0x56 , 0x70
-	uint8 var_57;				// 0x57 , 0x71
-	uint8 pad_58;
-	uint8 sound_range;			// 0x59 , 0x73
-	uint8 var_5A;				// 0x5A , 0x74
-	uint8 pad_5B;				// 0x5B , 0x75
-	uint8 var_5C;				// 0x5C , 0x76
-	uint8 var_5D;				// 0x5D , 0x77
-	uint8 pad_5E[0x2];
-	uint8 var_60;				// 0x60 , 0x7A
-	sint8* peep_loading_positions;	// 0x61 , 0x7B
-} rct_ride_type_vehicle;
-
 /**
  * Ride type structure.
  * size: unknown
@@ -147,7 +97,7 @@ typedef struct {
 	uint8 third_vehicle;					// 0x018
 	uint8 pad_019;
 	rct_ride_type_vehicle vehicles[4];		// 0x1A
-	uint32 var_1AE;
+	vehicle_colour_preset_list *vehicle_preset_list;	// 0x1AE
 	sint8 excitement_multipler;				// 0x1B2
 	sint8 intensity_multipler;				// 0x1B3
 	sint8 nausea_multipler;					// 0x1B4

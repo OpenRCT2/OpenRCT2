@@ -931,23 +931,24 @@ static int sub_65E72D(rct_ride *ride)
 }
 
 static rating_tuple get_flat_turns_rating(rct_ride* ride) {
+	rating_tuple rating;
+
 	int no_3_plus_turns = get_turn_count_3_elements(ride, 0);
 	int no_2_turns = get_turn_count_2_elements(ride, 0);
 	int no_1_turns = get_turn_count_1_element(ride, 0);
 
-	int excitement = (no_3_plus_turns * 0x28000) >> 16;
-	excitement += no_2_turns * 3;
-	excitement += (no_1_turns * 63421) >> 16;
+	rating.excitement = (no_3_plus_turns * 0x28000) >> 16;
+	rating.excitement += (no_2_turns * 0x30000) >> 16;
+	rating.excitement += (no_1_turns * 63421) >> 16;
 
-	int intensity = (no_3_plus_turns * 81920) >> 16;
-	intensity += (no_2_turns * 49152) >> 16;
-	intensity += (no_1_turns * 21140) >> 16;
+	rating.intensity = (no_3_plus_turns * 81920) >> 16;
+	rating.intensity += (no_2_turns * 49152) >> 16;
+	rating.intensity += (no_1_turns * 21140) >> 16;
 
-	int nausea = no_3_plus_turns * 5;
-	nausea += (no_2_turns * 0x3200) >> 16;
-	nausea += (no_1_turns * 42281) >> 16;
+	rating.nausea = (no_3_plus_turns * 0x50000) >> 16;
+	rating.nausea += (no_2_turns * 0x32000) >> 16;
+	rating.nausea += (no_1_turns * 42281) >> 16;
 
-	rating_tuple rating = { excitement, intensity, nausea };
 	return rating;
 }
 
@@ -955,23 +956,24 @@ static rating_tuple get_flat_turns_rating(rct_ride* ride) {
  * rct2: 0x0065DF72
  */
 static rating_tuple get_banked_turns_rating(rct_ride* ride) {
+	rating_tuple rating;
+
 	int no_3_plus_turns = get_turn_count_3_elements(ride, 1);
 	int no_2_turns = get_turn_count_2_elements(ride, 1);
 	int no_1_turns = get_turn_count_1_element(ride, 1);
 
-	int excitement = (no_3_plus_turns * 0x3c000) >> 16;
-	excitement += (no_2_turns * 0x3c000) >> 16;
-	excitement += (no_1_turns * 73992) >> 16;
+	rating.excitement = (no_3_plus_turns * 0x3C000) >> 16;
+	rating.excitement += (no_2_turns * 0x3C000) >> 16;
+	rating.excitement += (no_1_turns * 73992) >> 16;
 
-	int intensity = (no_3_plus_turns * 0x14000) >> 16;
-	intensity += (no_2_turns * 49152) >> 16;
-	intensity += (no_1_turns * 21140) >> 16;
+	rating.intensity = (no_3_plus_turns * 0x14000) >> 16;
+	rating.intensity += (no_2_turns * 49152) >> 16;
+	rating.intensity += (no_1_turns * 21140) >> 16;
 
-	int nausea = no_3_plus_turns * 5;
-	nausea += (no_2_turns * 0x32000) >> 16;
-	nausea += (no_1_turns * 48623) >> 16;
+	rating.nausea = (no_3_plus_turns * 0x50000) >> 16;
+	rating.nausea += (no_2_turns * 0x32000) >> 16;
+	rating.nausea += (no_1_turns * 48623) >> 16;
 
-	rating_tuple rating = { excitement, intensity, nausea };
 	return rating;
 }
 
@@ -979,28 +981,20 @@ static rating_tuple get_banked_turns_rating(rct_ride* ride) {
  * rct2: 0x0065E047
  */
 static rating_tuple get_sloped_turns_rating(rct_ride* ride) {
+	rating_tuple rating;
+	
 	int no_4_plus_turns = get_turn_count_4_plus_elements(ride, 2);
 	int no_3_turns = get_turn_count_3_elements(ride, 2);
 	int no_2_turns = get_turn_count_2_elements(ride, 2);
 	int no_1_turns = get_turn_count_1_element(ride, 2);
-	int al;
 
-	al = min(no_4_plus_turns, 4);
-	int excitement = (al * 0x78000) >> 16;
+	rating.excitement = (min(no_4_plus_turns, 4) * 0x78000) >> 16;
+	rating.excitement += (min(no_3_turns, 6) * 273066) >> 16;
+	rating.excitement += (min(no_2_turns, 6) * 0x3AAAA) >> 16;
+	rating.excitement += (min(no_1_turns, 7) * 187245) >> 16;
+	rating.intensity = 0;
+	rating.nausea = (min(no_4_plus_turns, 8) * 0x78000) >> 16;
 
-	al = min(no_4_plus_turns, 8);
-	int nausea = (al * 0x78000) >> 16;
-
-	al = min(no_3_turns, 6);
-	excitement += (al * 273066) >> 16;
-
-	al = min(no_2_turns, 6);
-	excitement += (al * 0x3aaaa) >> 16;
-
-	al = min(no_1_turns, 7);
-	excitement += (al * 187245) >> 16;
-
-	rating_tuple rating = { excitement, 0, nausea };
 	return rating;
 }
 
@@ -1008,11 +1002,12 @@ static rating_tuple get_sloped_turns_rating(rct_ride* ride) {
  * rct2: 0x0065E0F2
  */
 static rating_tuple get_inversions_ratings(uint8 inversions) {
-	int excitement = (min(inversions, 6) * 0x1AAAAA) >> 16;
-	int intensity = (inversions * 0x320000) >> 16;
-	int nausea = (inversions * 0x15AAAA) >> 16;
+	rating_tuple rating;
 
-	rating_tuple rating = { excitement, intensity, nausea };
+	rating.excitement = (min(inversions, 6) * 0x1AAAAA) >> 16;
+	rating.intensity = (inversions * 0x320000) >> 16;
+	rating.nausea = (inversions * 0x15AAAA) >> 16;
+
 	return rating;
 }
 

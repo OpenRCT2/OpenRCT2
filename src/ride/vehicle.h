@@ -37,7 +37,7 @@ typedef struct {
 	uint16 rotation_frame_mask;		// 0x00 , 0x1A
 	uint8 var_02;					// 0x02 , 0x1C
 	uint8 var_03;					// 0x03 , 0x1D
-	uint32 var_04;					// 0x04 , 0x1E
+	uint32 spacing;					// 0x04 , 0x1E
 	uint16 car_friction;			// 0x08 , 0x22
 	sint8 tab_height;				// 0x0A , 0x24
 	uint8 num_seats;				// 0x0B , 0x25
@@ -67,7 +67,9 @@ typedef struct {
 	uint8 no_seating_rows;			// 0x54 , 0x6E
 	uint8 spinning_inertia;			// 0x55 , 0x6F
 	uint8 spinning_friction;		// 0x56 , 0x70
-	uint8 pad_57[0x3];
+	uint8 var_57;					// 0x57 , 0x71
+	uint8 pad_58;
+	uint8 sound_range;				// 0x59 , 0x73
 	uint8 var_5A;					// 0x5A , 0x74
 	uint8 powered_acceleration;		// 0x5B , 0x75
 	uint8 powered_max_speed;		// 0x5C , 0x76
@@ -105,7 +107,6 @@ typedef struct {
 	uint8 var_20;
 	uint8 pad_21[3];
 	uint32 var_24;
-	uint8 pad_21[0x07];
 	sint32 velocity;				// 0x28
 	sint32 var_2C;
 	uint8 ride;						// 0x30
@@ -265,25 +266,6 @@ enum {
 	VEHICLE_VISUAL_ROTO_DROP,
 	VEHICLE_VISUAL_VIRGINIA_REEL = 15,
 	VEHICLE_VISUAL_SUBMARINE
-};
-
-enum{
-	VEHICLE_UPDATE_FLAG_0 = (1 << 0),
-	VEHICLE_UPDATE_FLAG_1 = (1 << 1),
-	VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT = (1 << 2),
-	VEHICLE_UPDATE_FLAG_3 = (1 << 3),
-	VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART = (1 << 4),
-	VEHICLE_UPDATE_FLAG_TESTING = (1 << 5),
-	VEHICLE_UPDATE_FLAG_6 = (1 << 6),
-	VEHICLE_UPDATE_FLAG_7 = (1 << 7),
-	VEHICLE_UPDATE_FLAG_BROKEN_CAR = (1 << 8),
-	VEHICLE_UPDATE_FLAG_BROKEN_TRAIN = (1 << 9),
-	VEHICLE_UPDATE_FLAG_10 = (1 << 10),
-	VEHICLE_UPDATE_FLAG_11 = (1 << 11),
-	VEHICLE_UPDATE_FLAG_12 = (1 << 12),
-	VEHICLE_UPDATE_FLAG_13 = (1 << 13),
-	VEHICLE_UPDATE_FLAG_14 = (1 << 14),
-	VEHICLE_UPDATE_FLAG_15 = (1 << 15)
 };
 
 #define VEHICLE_SEAT_PAIR_FLAG	0x80

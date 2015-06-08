@@ -517,7 +517,7 @@ static int vehicle_close_restraints(rct_vehicle* vehicle){
 			}
 			vehicle->var_B5 -= 20;
 		}		
-		invalidate_sprite((rct_sprite*)vehicle);
+		invalidate_sprite_2((rct_sprite*)vehicle);
 		ebp++;
 	} while ((vehicle_id = vehicle->next_vehicle_on_train) != 0xFFFF);
 
@@ -563,7 +563,7 @@ static int vehicle_open_restraints(rct_vehicle* vehicle){
 			vehicle->var_BA += value;
 			vehicle->var_B6 -= value;
 
-			invalidate_sprite((rct_sprite*)vehicle);
+			invalidate_sprite_2((rct_sprite*)vehicle);
 			continue;
 		}
 
@@ -574,7 +574,7 @@ static int vehicle_open_restraints(rct_vehicle* vehicle){
 				vehicle->var_C8 = vehicle->var_C8 + 0x3333 - 0xFFFF;
 				vehicle->var_C5++;
 				vehicle->var_C5 &= 7;
-				invalidate_sprite((rct_sprite*)vehicle);
+				invalidate_sprite_2((rct_sprite*)vehicle);
 			}
 			else{
 				vehicle->var_C8 += 0x3333;
@@ -616,7 +616,7 @@ static int vehicle_open_restraints(rct_vehicle* vehicle){
 				continue;
 			}
 			vehicle->var_B5 += 20;
-			invalidate_sprite((rct_sprite*)vehicle);
+			invalidate_sprite_2((rct_sprite*)vehicle);
 			ebp++;
 		}
 
@@ -696,9 +696,9 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 		}
 	}
 
-	uint16 map_location = (vehicle->var_38 / 32) | ((vehicle->var_3A / 32) << 8);
-	if (vehicle->var_3C / 8 != ride->var_11F || map_location != ride->var_10C){
-		ride->var_11F = vehicle->var_3C / 8;
+	uint16 map_location = (vehicle->track_x / 32) | ((vehicle->track_y / 32) << 8);
+	if (vehicle->track_z / 8 != ride->var_11F || map_location != ride->var_10C){
+		ride->var_11F = vehicle->track_z / 8;
 		ride->var_10C = map_location;
 
 		if (ride->entrances[ride->var_1F6] == 0xFFFF)
@@ -1089,15 +1089,6 @@ static void vehicle_ride_null_update_arriving(rct_vehicle *vehicle)
 		vehicle->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
 }
 
-static void sub_6DAB4C(rct_vehicle* vehicle, int* eax, int* ebx){
-	int eax_, ebx_, ecx, edx, esi, ebp, edi;
-	esi = (int)vehicle;
-	RCT2_CALLFUNC_X(0x006DAB4C, &eax_, &ebx_, &ecx, &edx, &esi, &edi, &ebp);
-
-	*eax = eax_;
-	*ebx = ebx_;
-}
-
 /**
 *
 *  rct2: 0x006D7BCC
@@ -1119,7 +1110,7 @@ static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle){
 			vehicle->var_2C = 0;
 		}
 
-		sub_6DAB4C(vehicle, &eax, &ebx);
+		eax = sub_6DAB4C(vehicle, &ebx);
 		if (!(eax&(1 << 5)))
 			break;
 		//Fall through to next case
@@ -1163,7 +1154,7 @@ static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle){
 		}
 
 		int station;
-		sub_6DAB4C(vehicle, &eax, &station);
+		eax = sub_6DAB4C(vehicle, &station);
 
 		if (eax & (1 << 1)){
 			vehicle->velocity = 0;
@@ -1276,7 +1267,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 		vehicle->var_51 = 1;
 		vehicle->var_C0 = 0;
 
-		invalidate_sprite((rct_sprite*)vehicle);
+		invalidate_sprite_2((rct_sprite*)vehicle);
 		return;
 	}
 	else if (vehicle->var_51 == 1){
@@ -1552,9 +1543,7 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 }
 
 /**
-<<<<<<< 0bfcf9391dbd97ecf76b3e6440e443ad52442517
  *
-=======
  * 
  *  rct2: 0x006D796B
  */
