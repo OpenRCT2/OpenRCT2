@@ -49,6 +49,7 @@ static const char *_scenarioFileName;
 char gScenarioSaveName[MAX_PATH];
 
 static int scenario_create_ducks();
+static void scenario_objective_check();
 
 /**
  * Loads only the basic information from a scenario.
@@ -350,7 +351,6 @@ int scenario_load_and_play_from_path(const char *path)
 	return 1;
 }
 
-
 void scenario_end()
 {
 	rct_window* w;
@@ -440,171 +440,6 @@ void scenario_success_submit_name(const char *name)
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 }
 
-/**
-* Checks if there are 10 rollercoasters of different subtype with
-* excitement >= 600 .
-* rct2:
-**/
-void scenario_objective5_check()
-{
-	int i, rcs = 0;
-	uint8 type_already_counted[256];
-	rct_ride* ride;
-
-	memset(type_already_counted, 0, 256);
-
-	FOR_ALL_RIDES(i, ride) {
-		uint8 subtype_id = ride->subtype;
-		rct_ride_type *rideType = gRideTypeList[subtype_id];
-
-		if ((rideType->category[0] == RIDE_GROUP_ROLLERCOASTER || rideType->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
-			ride->status == RIDE_STATUS_OPEN &&
-			ride->excitement >= RIDE_RATING(6,00) && type_already_counted[subtype_id] == 0){
-			type_already_counted[subtype_id]++;
-			rcs++;
-		}
-	}
-
-	if (rcs >= 10)
-		scenario_success();
-}
-
-/**
- * Checks if there are 10 rollercoasters of different subtype with
- * excitement > 700 and a minimum length;
- * rct2: 0x0066A6B5
- **/
-void scenario_objective8_check()
-{
-	int i, rcs = 0;
-	uint8 type_already_counted[256];
-	rct_ride* ride;
-	sint16 objective_length = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
-
-	memset(type_already_counted, 0, 256);
-
-	FOR_ALL_RIDES(i, ride) {
-		uint8 subtype_id = ride->subtype;
-		rct_ride_type *rideType = gRideTypeList[subtype_id];
-		if ((rideType->category[0] == RIDE_GROUP_ROLLERCOASTER || rideType->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
-			ride->status == RIDE_STATUS_OPEN &&
-			ride->excitement >= RIDE_RATING(7,00) && type_already_counted[subtype_id] == 0){
-
-			if ((ride_get_total_length(ride) >> 16) > objective_length) {
-				type_already_counted[subtype_id]++;
-				rcs++;
-			}
-		}
-	}
-
-	if (rcs >= 10)
-		scenario_success();
-}
-
-
-
-/*
- * Checks the win/lose conditions of the current objective.
- * rct2: 0x0066A4B2
- **/
-void scenario_objectives_check()
-{
-	uint8 objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8),
-		objective_year = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
-	sint16 park_rating = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16),
-		guests_in_park = RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16),
-		objective_guests = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16),
-		cur_month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
-	uint32 scenario_completed_company_value = RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32);
-	sint32 objective_currency = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32),
-		park_value = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
-
-
-	if ( scenario_completed_company_value != MONEY32_UNDEFINED)
-		return;
-
-	switch (objective_type) {
-	case OBJECTIVE_GUESTS_BY://1
-
-		if (cur_month_year == 8 * objective_year){
-			if (park_rating >= 600 && guests_in_park >= objective_guests)
-				scenario_success();
-			else
-				scenario_failure();
-		}
-		break;
-
-	case OBJECTIVE_PARK_VALUE_BY://2
-
-		if (cur_month_year == 8 * objective_year) {
-			if (park_value >= objective_currency)
-				scenario_success();
-			else
-				scenario_failure();
-		}
-		break;
-
-	case OBJECTIVE_10_ROLLERCOASTERS://5
-
-		scenario_objective5_check();
-		break;
-
-	case OBJECTIVE_GUESTS_AND_RATING://6
-
-		if (park_rating >= 700 && guests_in_park >= objective_guests)
-			scenario_success();
-		break;
-
-	case OBJECTIVE_MONTHLY_RIDE_INCOME://7
-	{
-		sint32 monthly_ride_income = RCT2_GLOBAL(RCT2_ADDRESS_MONTHLY_RIDE_INCOME, sint32);
-		if (monthly_ride_income >= objective_currency)
-			scenario_success();
-		break;
-	}
-	case OBJECTIVE_10_ROLLERCOASTERS_LENGTH://8
-
-		scenario_objective8_check();
-		break;
-
-	case OBJECTIVE_FINISH_5_ROLLERCOASTERS://9
-	{
-		int i;
-		rct_ride* ride;
-
-		// ORIGINAL BUG?:
-		// This does not check if the rides are even rollercoasters nevermind the right rollercoasters to be finished.
-		// It also did not exclude null rides.
-		int rcs = 0;
-		FOR_ALL_RIDES(i, ride)
-			if (ride->status != RIDE_STATUS_CLOSED && ride->excitement >= objective_currency)
-				rcs++;
-
-		if (rcs >= 5)
-			scenario_success();
-		break;
-	}
-	case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE://A
-	{
-		sint32 current_loan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint32);
-		if (current_loan <= 0 && park_value >= objective_currency)
-			scenario_success();
-		break;
-	}
-	case OBJECTIVE_MONTHLY_FOOD_INCOME://B
-	{
-		sint32 income_sum = RCT2_GLOBAL(0x013578A4, sint32) + RCT2_GLOBAL(0x013578A0, sint32) +
-						   RCT2_GLOBAL(0x0135789C, sint32) + RCT2_GLOBAL(0x01357898, sint32);
-		if (income_sum >= objective_currency)
-			scenario_success();
-		break;
-	}
-	default:
-		return;
-	}
-}
-
-
 /*
  * Send a warning when entrance price is too high.
  * rct2: 0x0066A80E
@@ -658,80 +493,94 @@ static void scenario_autosave_check()
 		game_autosave();
 }
 
+static void scenario_day_update()
+{
+	finance_update_daily_profit();
+	peep_update_days_in_queue();
+	get_local_time();
+	switch (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8)) {
+	case OBJECTIVE_10_ROLLERCOASTERS:
+	case OBJECTIVE_GUESTS_AND_RATING:
+	case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
+	case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
+	case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
+		scenario_objective_check();
+		break;
+	}
+
+	uint16 unk = (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) ? 40 : 7;
+	RCT2_GLOBAL(0x00135882E, uint16) = RCT2_GLOBAL(0x00135882E, uint16) > unk ? RCT2_GLOBAL(0x00135882E, uint16) - unk : 0;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_DATE;
+}
+
+static void scenario_week_update()
+{
+	int month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
+
+	finance_pay_wages();
+	finance_pay_research();
+	finance_pay_interest();
+	marketing_update();
+	peep_problem_warnings_update();
+	ride_check_all_reachable();
+	ride_update_favourited_stat();
+
+	rct_water_type* water_type = (rct_water_type*)object_entry_groups[OBJECT_TYPE_WATER].chunks[0];
+
+	if (month <= MONTH_APRIL && (sint32)water_type != -1 && water_type->var_0E & 1) {
+		// 100 attempts at finding some water to create a few ducks at
+		for (int i = 0; i < 100; i++) {
+			if (scenario_create_ducks())
+				break;
+		}
+	}
+	park_update_histories();
+	park_calculate_size();
+}
+
+static void scenario_fortnight_update()
+{
+	finance_pay_ride_upkeep();
+}
+
+static void scenario_month_update()
+{
+	finance_shift_expenditure_table();
+	scenario_objective_check();
+	scenario_entrance_fee_too_high_check();
+	award_update_all();
+}
+
 /*
  * Scenario and finance related update iteration.
  * rct2: 0x006C44B1
  **/
 void scenario_update()
 {
-	uint8 screen_flags = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8);
-	uint32 month_tick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16),
-		next_month_tick = month_tick + 4;
-	uint8 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7,
-		current_days_in_month = (uint8)days_in_month[month],
-		objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
-
-	if (screen_flags & (~SCREEN_FLAGS_PLAYING)) // only in normal play mode
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & ~SCREEN_FLAGS_PLAYING)
 		return;
 
+	uint32 currentMonthTick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16);
+	uint32 nextMonthTick = currentMonthTick + 4;
+	uint8 currentMonth = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
+	uint8 currentDaysInMonth = (uint8)days_in_month[currentMonth];
+
 	scenario_autosave_check();
-
-	if ((current_days_in_month * next_month_tick) >> 16 != (current_days_in_month * month_tick) >> 16) {
-		// daily checks
-		finance_update_daily_profit();
-		peep_update_days_in_queue();
-		get_local_time();
-		RCT2_CALLPROC_EBPSAFE(0x0066A13C); // objective 6 dragging
-		switch (objective_type) {
-		case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
-		case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-		case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-		case OBJECTIVE_GUESTS_AND_RATING:
-		case OBJECTIVE_10_ROLLERCOASTERS:
-			scenario_objectives_check();
-			break;
-		}
-
-		window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+	if ((currentDaysInMonth * nextMonthTick) >> 16 != (currentDaysInMonth * currentMonthTick) >> 16) {
+		scenario_day_update();
+	}
+	if (nextMonthTick % 0x4000 == 0) {
+		scenario_week_update();
+	}
+	if (nextMonthTick % 0x8000 == 0) {
+		scenario_fortnight_update();
 	}
 
-	if (next_month_tick % 0x4000 == 0) {
-		// weekly checks
-		finance_pay_wages();
-		finance_pay_research();
-		finance_pay_interest();
-		marketing_update();
-		peep_problem_warnings_update();
-		ride_check_all_reachable();
-		ride_update_favourited_stat();
-
-		rct_water_type* water_type = (rct_water_type*)object_entry_groups[OBJECT_TYPE_WATER].chunks[0];
-
-		if (month <= 1 && (sint32)water_type != -1 && water_type->var_0E & 1) {
-			// 100 attempts at finding some water to create a few ducks at
-			for (int i = 0; i < 100; i++) {
-				if (scenario_create_ducks())
-					break;
-			}
-		}
-		park_update_histories();
-		park_calculate_size();
-	}
-
-	if (next_month_tick % 0x8000 == 0) {
-		// fortnightly 
-		finance_pay_ride_upkeep();
-	}
-
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = (uint16)next_month_tick;
-	if (next_month_tick >= 0x10000) {
-		// month ends actions
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = (uint16)nextMonthTick;
+	if (nextMonthTick >= 0x10000) {
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)++;
-		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_DATE;
-		finance_shift_expenditure_table();
-		scenario_objectives_check();
-		scenario_entrance_fee_too_high_check();
-		award_update_all();
+		scenario_month_update();
 	}
 }
 
@@ -1146,4 +995,229 @@ int scenario_save(char *path, int flags)
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
 	return 1;
+}
+
+static void scenario_objective_check_guests_by()
+{
+	uint8 objectiveYear = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
+	sint16 parkRating = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16);
+	sint16 guestsInPark = RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16);
+	sint16 objectiveGuests = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
+	sint16 currentMonthYear = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
+
+	if (currentMonthYear == 8 * objectiveYear){
+		if (parkRating >= 600 && guestsInPark >= objectiveGuests)
+			scenario_success();
+		else
+			scenario_failure();
+	}
+}
+
+static void scenario_objective_check_park_value_by()
+{
+	uint8 objectiveYear = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
+	sint16 currentMonthYear = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
+	money32 objectiveParkValue = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+	money32 parkValue = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32);
+
+	if (currentMonthYear == 8 * objectiveYear) {
+		if (parkValue >= objectiveParkValue)
+			scenario_success();
+		else
+			scenario_failure();
+	}
+}
+
+/**
+* Checks if there are 10 rollercoasters of different subtype with
+* excitement >= 600 .
+* rct2:
+**/
+static void scenario_objective_check_10_rollercoasters()
+{
+	int i, rcs = 0;
+	uint8 type_already_counted[256];
+	rct_ride* ride;
+
+	memset(type_already_counted, 0, 256);
+
+	FOR_ALL_RIDES(i, ride) {
+		uint8 subtype_id = ride->subtype;
+		rct_ride_type *rideType = gRideTypeList[subtype_id];
+
+		if ((rideType->category[0] == RIDE_GROUP_ROLLERCOASTER || rideType->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
+			ride->status == RIDE_STATUS_OPEN &&
+			ride->excitement >= RIDE_RATING(6,00) && type_already_counted[subtype_id] == 0){
+			type_already_counted[subtype_id]++;
+			rcs++;
+		}
+	}
+
+	if (rcs >= 10)
+		scenario_success();
+}
+
+/**
+ *
+ * rct2: 0x0066A13C
+ */
+static void scenario_objective_check_guests_and_rating()
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) < 700 && RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) >= 1) {
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16)++;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 1) {
+			news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0);
+		} else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 8) {
+			news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0);
+		} else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 15) {
+			news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0);
+		} else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 22) {
+			news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0);
+		} else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 29) {
+			news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0);
+			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_PARK_OPEN;
+			scenario_failure();
+			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) = 50;
+		}
+	} else if (RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32) != 0x80000001) {
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) = 0;
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32) != MONEY32_UNDEFINED)
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) >= 700)
+			if (RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) >= RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16))
+				scenario_success();
+}
+
+static void scenario_objective_check_monthly_ride_income()
+{
+	money32 objectiveMonthlyRideIncome = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+	money32 monthlyRideIncome = RCT2_GLOBAL(RCT2_ADDRESS_MONTHLY_RIDE_INCOME, money32);
+	if (monthlyRideIncome >= objectiveMonthlyRideIncome)
+		scenario_success();
+}
+
+/**
+ * Checks if there are 10 rollercoasters of different subtype with
+ * excitement > 700 and a minimum length;
+ * rct2: 0x0066A6B5
+ **/
+static void scenario_objective_check_10_rollercoasters_length()
+{
+	int i, rcs = 0;
+	uint8 type_already_counted[256];
+	sint16 objective_length = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
+	rct_ride* ride;
+
+	memset(type_already_counted, 0, 256);
+
+	FOR_ALL_RIDES(i, ride) {
+		uint8 subtype_id = ride->subtype;
+		rct_ride_type *rideType = gRideTypeList[subtype_id];
+		if ((rideType->category[0] == RIDE_GROUP_ROLLERCOASTER || rideType->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
+			ride->status == RIDE_STATUS_OPEN &&
+			ride->excitement >= RIDE_RATING(7,00) && type_already_counted[subtype_id] == 0){
+
+			if ((ride_get_total_length(ride) >> 16) > objective_length) {
+				type_already_counted[subtype_id]++;
+				rcs++;
+			}
+		}
+	}
+
+	if (rcs >= 10)
+		scenario_success();
+}
+
+static void scenario_objective_check_finish_5_rollercoasters()
+{
+	int i;
+	rct_ride* ride;
+
+	money32 objectiveRideExcitement = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+
+	// ORIGINAL BUG?:
+	// This does not check if the rides are even rollercoasters nevermind the right rollercoasters to be finished.
+	// It also did not exclude null rides.
+	int rcs = 0;
+	FOR_ALL_RIDES(i, ride)
+		if (ride->status != RIDE_STATUS_CLOSED && ride->excitement >= objectiveRideExcitement)
+			rcs++;
+
+	if (rcs >= 5)
+		scenario_success();
+}
+
+static void scenario_objective_check_replay_loan_and_park_value()
+{
+	money32 objectiveParkValue = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+	money32 parkValue = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32);
+	money32 currentLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+
+	if (currentLoan <= 0 && parkValue >= objectiveParkValue)
+		scenario_success();
+}
+
+static void scenario_objective_check_monthly_food_income()
+{
+	money32 objectiveMonthlyIncome = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+	sint32 monthlyIncome =
+		RCT2_GLOBAL(0x013578A4, money32) +
+		RCT2_GLOBAL(0x013578A0, money32) +
+		RCT2_GLOBAL(0x0135789C, money32) +
+		RCT2_GLOBAL(0x01357898, money32);
+
+	if (monthlyIncome >= objectiveMonthlyIncome)
+		scenario_success();
+}
+
+/*
+ * Checks the win/lose conditions of the current objective.
+ * rct2: 0x0066A4B2
+ **/
+static void scenario_objective_check()
+{
+	uint8 objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8),
+		objective_year = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
+	sint16 park_rating = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16),
+		guests_in_park = RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16),
+		objective_guests = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16),
+		cur_month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
+	uint32 scenario_completed_company_value = RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32);
+	sint32 objective_currency = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32),
+		park_value = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
+
+
+	if (scenario_completed_company_value != MONEY32_UNDEFINED)
+		return;
+
+	switch (objective_type) {
+	case OBJECTIVE_GUESTS_BY:
+		scenario_objective_check_guests_by();
+		break;
+	case OBJECTIVE_PARK_VALUE_BY:
+		scenario_objective_check_park_value_by();
+		break;
+	case OBJECTIVE_10_ROLLERCOASTERS:
+		scenario_objective_check_10_rollercoasters();
+		break;
+	case OBJECTIVE_GUESTS_AND_RATING:
+		scenario_objective_check_guests_and_rating();
+		break;
+	case OBJECTIVE_MONTHLY_RIDE_INCOME:
+		scenario_objective_check_monthly_ride_income();
+		break;
+	case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
+		scenario_objective_check_10_rollercoasters_length();
+		break;
+	case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
+		scenario_objective_check_finish_5_rollercoasters();
+		break;
+	case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
+		scenario_objective_check_replay_loan_and_park_value();
+		break;
+	case OBJECTIVE_MONTHLY_FOOD_INCOME:
+		scenario_objective_check_monthly_food_income();
+		break;
+	}
 }
