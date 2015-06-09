@@ -1509,8 +1509,11 @@ void game_command_raise_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, i
 	for(int yi = ay; yi <= by; yi += 32){
 		for(int xi = ax; xi <= bx; xi += 32){
 			rct_map_element* map_element = map_get_surface_element_at(xi / 32, yi / 32);
-			if(min_height > map_element->base_height){
-				min_height = map_element->base_height;
+			if (map_element != NULL)
+			{
+				if(min_height > map_element->base_height){
+					min_height = map_element->base_height;
+				}
 			}
 		}
 	}
@@ -1518,19 +1521,22 @@ void game_command_raise_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, i
 	for(int yi = ay; yi <= by; yi += 32){
 		for(int xi = ax; xi <= bx; xi += 32){
 			rct_map_element* map_element = map_get_surface_element_at(xi / 32, yi / 32);
-			uint8 height = map_element->base_height;
-			if(height <= min_height){
-				uint8 new_style = map_element_raise_styles[selection_type][map_element->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK];
-				if(new_style & 0x20){ // needs to be raised
-					height += 2;
-					new_style &= ~0x20;
-				}
-				int ebx2 = sub_66397F(*ebx, xi, yi, height, new_style, selection_type);
-				if(ebx2 == MONEY32_UNDEFINED){
-					*ebx = MONEY32_UNDEFINED;
-					return;
-				}else{
-					cost += ebx2;
+			if (map_element != NULL)
+			{
+				uint8 height = map_element->base_height;
+				if(height <= min_height){
+					uint8 new_style = map_element_raise_styles[selection_type][map_element->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK];
+					if(new_style & 0x20){ // needs to be raised
+						height += 2;
+						new_style &= ~0x20;
+					}
+					int ebx2 = sub_66397F(*ebx, xi, yi, height, new_style, selection_type);
+					if(ebx2 == MONEY32_UNDEFINED){
+						*ebx = MONEY32_UNDEFINED;
+						return;
+					}else{
+						cost += ebx2;
+					}
 				}
 			}
 		}
@@ -1578,15 +1584,18 @@ void game_command_lower_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, i
 	for(int yi = ay; yi <= by; yi += 32){
 		for(int xi = ax; xi <= bx; xi += 32){
 			rct_map_element* map_element = map_get_surface_element_at(xi / 32, yi / 32);
-			uint8 base_height = map_element->base_height;
-			if(map_element->properties.surface.slope & 0xF){
-				base_height += 2;
-			}
-			if(map_element->properties.surface.slope & 0x10){
-				base_height += 2;
-			}
-			if(max_height < base_height){
-				max_height = base_height;
+			if (map_element != NULL)
+			{
+				uint8 base_height = map_element->base_height;
+				if(map_element->properties.surface.slope & 0xF){
+					base_height += 2;
+				}
+				if(map_element->properties.surface.slope & 0x10){
+					base_height += 2;
+				}
+				if(max_height < base_height){
+					max_height = base_height;
+				}
 			}
 		}
 	}
@@ -1594,26 +1603,29 @@ void game_command_lower_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, i
 	for(int yi = ay; yi <= by; yi += 32){
 		for(int xi = ax; xi <= bx; xi += 32){
 			rct_map_element* map_element = map_get_surface_element_at(xi / 32, yi / 32);
-			uint8 height = map_element->base_height;
-			if(map_element->properties.surface.slope & 0xF){
-				height += 2;
-			}
-			if(map_element->properties.surface.slope & 0x10){
-				height += 2;
-			}
-			if(height >= max_height){
-				height =  map_element->base_height;
-				uint8 new_style = map_element_lower_styles[selection_type][map_element->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK];
-				if(new_style & 0x20){ // needs to be lowered
-					height -= 2;
-					new_style &= ~0x20;
+			if (map_element != NULL)
+			{
+				uint8 height = map_element->base_height;
+				if(map_element->properties.surface.slope & 0xF){
+					height += 2;
 				}
-				int ebx2 = sub_66397F(*ebx, xi, yi, height, new_style, selection_type);
-				if(ebx2 == MONEY32_UNDEFINED){
-					*ebx = MONEY32_UNDEFINED;
-					return;
-				}else{
-					cost += ebx2;
+				if(map_element->properties.surface.slope & 0x10){
+					height += 2;
+				}
+				if(height >= max_height){
+					height =  map_element->base_height;
+					uint8 new_style = map_element_lower_styles[selection_type][map_element->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK];
+					if(new_style & 0x20){ // needs to be lowered
+						height -= 2;
+						new_style &= ~0x20;
+					}
+					int ebx2 = sub_66397F(*ebx, xi, yi, height, new_style, selection_type);
+					if(ebx2 == MONEY32_UNDEFINED){
+						*ebx = MONEY32_UNDEFINED;
+						return;
+					}else{
+						cost += ebx2;
+					}
 				}
 			}
 		}
@@ -1633,12 +1645,15 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags){
 	for (int yi = y0; yi <= y1; yi += 32){
 		for (int xi = x0; xi <= x1; xi += 32){
 			rct_map_element* map_element = map_get_surface_element_at(xi / 32, yi / 32);
-			uint8 height = map_element->base_height;
-			if (map_element->properties.surface.terrain & 0x1F){
-				height = (map_element->properties.surface.terrain & 0x1F) * 2;
-			}
-			if (max_height > height){
-				max_height = height;
+			if (map_element != NULL)
+			{
+				uint8 height = map_element->base_height;
+				if (map_element->properties.surface.terrain & 0x1F){
+					height = (map_element->properties.surface.terrain & 0x1F) * 2;
+				}
+				if (max_height > height){
+					max_height = height;
+				}
 			}
 		}
 	}
@@ -1646,26 +1661,29 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags){
 	for (int yi = y0; yi <= y1; yi += 32){
 		for (int xi = x0; xi <= x1; xi += 32){
 			rct_map_element* map_element = map_get_surface_element_at(xi / 32, yi / 32);
-
-			if (map_element->base_height <= max_height){
-				uint8 height = (map_element->properties.surface.terrain & 0x1F);
-				if (height){
-					height *= 2;
-					if (height > max_height){
-						continue;
+			
+			if (map_element != NULL)
+			{
+				if (map_element->base_height <= max_height){
+					uint8 height = (map_element->properties.surface.terrain & 0x1F);
+					if (height){
+						height *= 2;
+						if (height > max_height){
+							continue;
+						}
+						height += 2;
 					}
-					height += 2;
-				}
-				else{
-					height = map_element->base_height + 2;
-				}
-
-				money32 cost2 = game_do_command(xi, flags, yi, (max_height << 8) + height, GAME_COMMAND_16, 0, 0);
-				if (cost2 == MONEY32_UNDEFINED){
-					return MONEY32_UNDEFINED;
-				}
-				else{
-					cost += cost2;
+					else{
+						height = map_element->base_height + 2;
+					}
+	
+					money32 cost2 = game_do_command(xi, flags, yi, (max_height << 8) + height, GAME_COMMAND_16, 0, 0);
+					if (cost2 == MONEY32_UNDEFINED){
+						return MONEY32_UNDEFINED;
+					}
+					else{
+						cost += cost2;
+					}
 				}
 			}
 		}
@@ -1710,12 +1728,15 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags){
 	for (int yi = y0; yi <= y1; yi += 32){
 		for (int xi = x0; xi <= x1; xi += 32){
 			rct_map_element* map_element = map_get_surface_element_at(xi / 32, yi / 32);
-
-			uint8 height = map_element->properties.surface.terrain & 0x1F;
-			if (height){
-				height *= 2;
-				if (height > min_height){
-					min_height = height;
+			
+			if (map_element != NULL)
+			{
+				uint8 height = map_element->properties.surface.terrain & 0x1F;
+				if (height){
+					height *= 2;
+					if (height > min_height){
+						min_height = height;
+					}
 				}
 			}
 		}
@@ -1724,20 +1745,23 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags){
 	for (int yi = y0; yi <= y1; yi += 32){
 		for (int xi = x0; xi <= x1; xi += 32){
 			rct_map_element* map_element = map_get_surface_element_at(xi / 32, yi / 32);
-
-			uint8 height = (map_element->properties.surface.terrain & 0x1F);
-			if (height){
-				height *= 2;
-				if (height < min_height){
-					continue;
-				}
-				height -= 2;
-				int cost2 = game_do_command(xi, flags, yi, (min_height << 8) + height, GAME_COMMAND_16, 0, 0);
-				if (cost2 == MONEY32_UNDEFINED){
-					return MONEY32_UNDEFINED;
-				}
-				else{
-					cost += cost2;
+			
+			if (map_element != NULL)
+			{
+				uint8 height = (map_element->properties.surface.terrain & 0x1F);
+				if (height){
+					height *= 2;
+					if (height < min_height){
+						continue;
+					}
+					height -= 2;
+					int cost2 = game_do_command(xi, flags, yi, (min_height << 8) + height, GAME_COMMAND_16, 0, 0);
+					if (cost2 == MONEY32_UNDEFINED){
+						return MONEY32_UNDEFINED;
+					}
+					else{
+						cost += cost2;
+					}
 				}
 			}
 		}
