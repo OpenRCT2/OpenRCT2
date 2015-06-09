@@ -369,7 +369,7 @@ static void window_footpath_dropdown()
 			if (pathType->flags & flags)
 				continue;
 			// Skip queue lines of scenario editor-only paths (only applicable when the game is in sandbox mode)
-			if(widgetIndex == WIDX_QUEUELINE_TYPE && pathType->flags & 4)
+			if(widgetIndex == WIDX_QUEUELINE_TYPE && (pathType->flags & 4))
 				continue;
 
 			if (j == pathId)
