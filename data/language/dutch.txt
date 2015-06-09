@@ -3610,3 +3610,7 @@ STR_5277    :Wissen
 STR_5278    :Landrechten bewerkbaar
 STR_5279    :Normaal Kaart-venster
 STR_5280    :{SMALLFONT}{BLACK}Maakt het mogelijk om landeigendom aan te passen via het Kaart-venster
+STR_5281    :{SMALLFONT}{BLACK}Features
+STR_5282    :Attracties openen/sluiten via RCT1-stoplichten
+STR_5283    :Park openen/sluiten via RCT1-stoplichten
+STR_5284    :Scenarioselectie-lettertype in RCT1-stijl

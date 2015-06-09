@@ -3611,3 +3611,10 @@ STR_5274    :{SMALLFONT}{BLACK}Fußwege
 STR_5275    :Nach Objekten suchen
 STR_5276    :Zu suchenden Objektnamen eingeben:
 STR_5277    :Entfernen
+STR_5278    :Landrechte bearb.
+STR_5279    :Norm. Kartenfenster
+STR_5280    :{SMALLFONT}{BLACK}Erlaubt das Bearbeiten der Landrechte im Kartenfenster
+STR_5281    :{SMALLFONT}{BLACK}Features
+STR_5282    :RCT1-Ampel Bahn öffnen/schließen
+STR_5283    :RCT1-Ampel Park öffnen/schließen
+STR_5284    :RCT1-Schriftart Szenarioauswahl

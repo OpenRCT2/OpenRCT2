@@ -3619,3 +3619,7 @@ STR_5277    :Clear
 STR_5278    :Editable land rights
 STR_5279    :Normal map window
 STR_5280    :{SMALLFONT}{BLACK}Allow editing land ownership settings through the Map window
+STR_5281    :{SMALLFONT}{BLACK}Features
+STR_5282    :RCT1 Ride Open/Close Lights
+STR_5283    :RCT1 Park Open/Close Lights
+STR_5284    :RCT1 Scenario Selection Font
