@@ -5432,7 +5432,26 @@ static void window_ride_income_toggle_secondary_price(rct_window *w)
  */
 static void window_ride_income_increase_primary_price(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x006AE1E4, 0, 0, 0, 0, (int)w, 0, 0);
+	//RCT2_CALLPROC_X(0x006AE1E4, 0, 0, 0, 0, (int)w, 0, 0);
+	//ebp w->number
+	//eax ride->subtype
+	rct_ride *ride;
+	rct_ride_type *ride_type;
+
+	ride = GET_RIDE(w->number);
+	ride_type = gRideTypeList[ride->subtype];
+	
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) == 0) {
+		if (ride->type != RIDE_TYPE_TOILETS && ride_type->shop_item == 0xFF) {
+			if (!gConfigCheat.unlock_all_prices)
+				return;
+		}
+	}
+	money16 price = ride->price;
+	if (price < MONEY(20, 00))
+		price++;
+
+	game_do_command(0, 1, 0, w->number, GAME_COMMAND_SET_RIDE_PRICE, price, 0);
 }
 
 /**
@@ -5441,7 +5460,25 @@ static void window_ride_income_increase_primary_price(rct_window *w)
  */
 static void window_ride_income_decrease_primary_price(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x006AE237, 0, 0, 0, 0, (int)w, 0, 0);
+	//RCT2_CALLPROC_X(0x006AE237, 0, 0, 0, 0, (int)w, 0, 0);
+
+	rct_ride *ride;
+	rct_ride_type *ride_type;
+
+	ride = GET_RIDE(w->number);
+	ride_type = gRideTypeList[ride->subtype];
+
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) == 0) {
+		if (ride->type != RIDE_TYPE_TOILETS && ride_type->shop_item == 0xFF) {
+			if (!gConfigCheat.unlock_all_prices)
+				return;
+		}
+	}
+	money16 price = ride->price;
+	if (price > MONEY(0, 00))
+		price--;
+
+	game_do_command(0, 1, 0, w->number, GAME_COMMAND_SET_RIDE_PRICE, price, 0);
 }
 
 /**
@@ -5450,7 +5487,25 @@ static void window_ride_income_decrease_primary_price(rct_window *w)
  */
 static void window_ride_income_increase_secondary_price(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x006AE269, 0, 0, 0, 0, (int)w, 0, 0);
+	//RCT2_CALLPROC_X(0x006AE269, 0, 0, 0, 0, (int)w, 0, 0);
+	
+	rct_ride *ride;
+	rct_ride_type *ride_type;
+
+	ride = GET_RIDE(w->number);
+	ride_type = gRideTypeList[ride->subtype];
+	
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) == 0) {
+		if (ride->type != RIDE_TYPE_TOILETS && ride_type->shop_item_secondary == 0xFF) {
+			if (!gConfigCheat.unlock_all_prices)
+				return;
+		}
+	}
+	money16 price = ride->price_secondary;
+	if (price < MONEY(20, 00))
+		price++;
+
+	game_do_command(0, 1, 0, (w->number & 0x00FF) | 0x0100, GAME_COMMAND_SET_RIDE_PRICE, price, 0);
 }
 
 /**
@@ -5459,7 +5514,25 @@ static void window_ride_income_increase_secondary_price(rct_window *w)
  */
 static void window_ride_income_decrease_secondary_price(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x006AE28D, 0, 0, 0, 0, (int)w, 0, 0);
+	//RCT2_CALLPROC_X(0x006AE28D, 0, 0, 0, 0, (int)w, 0, 0);
+
+	rct_ride *ride;
+	rct_ride_type *ride_type;
+
+	ride = GET_RIDE(w->number);
+	ride_type = gRideTypeList[ride->subtype];
+	
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) == 0) {
+		if (ride->type != RIDE_TYPE_TOILETS && ride_type->shop_item_secondary == 0xFF) {
+			if (!gConfigCheat.unlock_all_prices)
+				return;
+		}
+	}
+	money16 price = ride->price_secondary;
+	if (price > MONEY(0, 00))
+		price--;
+
+	game_do_command(0, 1, 0, (w->number & 0x00FF) | 0x0100, GAME_COMMAND_SET_RIDE_PRICE, price, 0);
 }
 
 /**

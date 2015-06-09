@@ -4297,6 +4297,93 @@ void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, in
 	}
 	*ebx = 0;
 }
+void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	uint32 flags, shop_item;
+	uint8 ride_number;
+	money16 price;
+	rct_ride *ride;
+	rct_ride_type *ride_type;
+	bool secondary_price;
+	
+	flags = *ebx;
+	ride_number = (*edx & 0xFF);
+	ride = GET_RIDE(ride_number);
+	ride_type = gRideTypeList[ride->subtype];
+	price = *edi;
+	secondary_price = (*edx >> 8);
+
+	//eax
+	//ebx flags
+	//ecx ecx
+	//edx ride_number
+	//ebp ride_type
+
+	RCT2_GLOBAL(0x141F56C, uint8) = 0x14;
+	if (flags & 0x1) {
+		if (!secondary_price) {
+			shop_item = 0x1F;
+			if (ride->type != RIDE_TYPE_TOILETS) {
+				shop_item = ride_type->shop_item;
+				if (shop_item == 0xFF) {
+					ride->price = price;
+					window_invalidate_by_class(WC_RIDE);
+					return;
+				}
+			}
+			// Check same price in park flags
+			if ((RCT2_GLOBAL(0x01358838, uint32) & (1 << (shop_item - (shop_item >= 0x20 ? 20 : 0)))) == 0) {
+				ride->price = price;
+				window_invalidate_by_class(WC_RIDE);
+				return;
+			}
+		}
+		else {
+			shop_item = ride_type->shop_item_secondary;
+			if (shop_item == 0xFF) {
+				if ((ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0) {
+					ride->price_secondary = price;
+					window_invalidate_by_class(WC_RIDE);
+					return;
+				}
+			}
+			// Check same price in park flags
+			if ((RCT2_GLOBAL(0x01358838, uint32) & (1 << (shop_item - (shop_item >= 0x20 ? 20 : 0)))) == 0) {
+				ride->price_secondary = price;
+				window_invalidate_by_class(WC_RIDE);
+				return;
+			}
+		}
+		ride = GET_RIDE(0);
+		ride_type = gRideTypeList[ride->subtype];
+		uint8 count = 0;
+		while (count < 0xFF) {
+			if (ride->type != 0xFF) {
+				if (ride->type != RIDE_TYPE_TOILETS || shop_item != 0x1F) {
+					if (ride_type->shop_item == shop_item) {
+						ride->price = price;
+						window_invalidate_by_number(WC_RIDE, ride_number);
+					}
+				}
+				else {
+					ride->price = price;
+					window_invalidate_by_number(WC_RIDE, ride_number);
+				}
+				// If the shop item is the same or an on-ride photo
+				if (ride_type->shop_item_secondary == shop_item ||
+					(ride_type->shop_item_secondary == 0xFF &&
+					(shop_item == 0x3 || shop_item == 0x20 || shop_item == 0x21 || shop_item == 0x22))) {
+
+					ride->price_secondary = price;
+					window_invalidate_by_number(WC_RIDE, ride_number);
+				}
+			}
+			count++;
+			ride++;
+			ride_type = gRideTypeList[ride->subtype];
+		}
+	}
+}
 
 bool ride_type_has_flag(int rideType, int flag)
 {
