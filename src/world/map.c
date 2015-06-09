@@ -2155,7 +2155,7 @@ void map_remove_all_rides()
 
 			// fall-through
 		case MAP_ELEMENT_TYPE_TRACK:
-			RCT2_CALLPROC_EBPSAFE(0x006A7594);
+			sub_6A7594();
 			sub_6A6AA7(it.x * 32, it.y * 32, it.element);
 			map_element_remove(it.element);
 			map_element_iterator_restart_for_tile(&it);
@@ -2445,4 +2445,9 @@ static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int 
 	z0 = mapElement->base_height * 8;
 	z1 = z0 + 16;
 	gfx_invalidate_viewport_tile(x, y, z0, z1);
+}
+
+void sub_6A7594()
+{
+	RCT2_GLOBAL(0x00F3EFF4, uint32) = 0x00F3EFF8;
 }

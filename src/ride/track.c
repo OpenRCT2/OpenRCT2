@@ -1280,7 +1280,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 						if (map_element == NULL)
 							continue;
 
-						RCT2_CALLPROC_EBPSAFE(0x006A7594);
+						sub_6A7594();
 						sub_6A6AA7(mapCoord.x, mapCoord.y, map_element);
 
 						bl = 1;
