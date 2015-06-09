@@ -966,6 +966,7 @@ static void window_options_invalidate()
 		window_init_scroll_widgets(w);
 	}
 	window_options_set_pressed_tab(w);
+	w->disabled_widgets = 0;
 
 	switch (w->page) {
 	case WINDOW_OPTIONS_PAGE_DISPLAY:
