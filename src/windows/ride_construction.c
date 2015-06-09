@@ -126,10 +126,6 @@ static void* window_construction_events[] = {
  */
 rct_window *window_construction_open()
 {
-	//int eax, ebx, ecx, edx, esi, edi, ebp;
-	//RCT2_CALLFUNC_X(0x006CB481, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	//return (rct_window*)esi;
-
 	int ride_id = RCT2_GLOBAL(0xF440A7, uint8);
 	sub_6b2fa9(ride_id);
 

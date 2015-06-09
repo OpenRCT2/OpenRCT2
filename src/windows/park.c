@@ -710,10 +710,8 @@ static void window_park_entrance_mouseup()
 		break;
 	case WIDX_BUY_LAND_RIGHTS:
 		toggle_land_rights_window(w, WIDX_BUY_LAND_RIGHTS);
-		//RCT2_CALLPROC_X(0x006682F7, 0, 0, 0, widgetIndex, (int)w, 0, 0);
 		break;
-	//case WIDX_BUY_CONSTRUCTION_RIGHTS:
-	//	RCT2_CALLPROC_X(0x00668393, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+	// case WIDX_BUY_CONSTRUCTION_RIGHTS:
 	//	break;
 	case WIDX_LOCATE:
 		window_scroll_to_viewport(w);

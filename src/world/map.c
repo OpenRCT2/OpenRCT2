@@ -1411,9 +1411,6 @@ money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surface_s
 
 /* rct2: 0x00663CCD */
 void game_command_change_surface_style(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp){
-	//RCT2_CALLFUNC_X(0x663CCD, eax, ebx, ecx, edx, esi, edi, ebp);
-	//return;
-
 	*ebx = map_change_surface_style(
 		(*eax & 0xFFFF),
 		(*ecx & 0xFFFF),

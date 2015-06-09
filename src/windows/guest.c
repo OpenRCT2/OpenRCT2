@@ -1106,11 +1106,9 @@ void window_guest_overview_update(rct_window* w){
 			if (rand <= 0x2AAA){
 				rct_peep* peep = GET_PEEP(w->number);
 				peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WATCHED, 0xFF);
-				//RCT2_CALLPROC_X(0x699F5A, 0xFF00 | PEEP_THOUGHT_TYPE_WATCHED, 0, 0, 0, (int)peep, 0, 0);
 			}
 		}
 	}
-	
 }
 
 /* rct2:0x696A6A */
@@ -1368,8 +1366,6 @@ void window_guest_stats_invalidate(){
 *  ebp: colour, contains flag 0x80000000 for blinking
 */
 void window_guest_stats_bars_paint(int value, int x, int y, rct_window *w, rct_drawpixelinfo *dpi, int colour){
-	//RCT2_CALLPROC_X(0x6974FC, value, 0, x, y, (int)w, (int)dpi, colour);
-
 	value *= 0x76;
 	value >>= 8;
 

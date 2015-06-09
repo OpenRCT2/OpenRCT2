@@ -433,7 +433,6 @@ static void window_top_toolbar_dropdown()
 			break;
 		case DDIDX_SAVE_GAME:
 			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
-				// RCT2_CALLPROC_EBPSAFE(0x0066FE2A);
 				rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 				window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE, s6Info->name);
 			} else {
@@ -722,8 +721,6 @@ static void window_top_toolbar_paint()
 
 /* rct2: 0x006E3158 */
 static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
-	//RCT2_CALLPROC_X(0x6E2CC6, x, y, 0, widgetIndex, 0, 0, 0);
-	//return;
 	// ax, cx, bl
 	sint16 grid_x, grid_y;
 	int type;
@@ -2547,8 +2544,6 @@ money32 selection_lower_land(uint8 flags){
 */
 void window_top_toolbar_land_tool_drag(short x, short y)
 {
-	//RCT2_CALLPROC_X(0x00664454, x, y, 0, widgetIndex, (int)w, 0, 0);
-
 	rct_window *window = window_find_from_point(x, y);
 	if (!window)
 		return;
@@ -2594,8 +2589,6 @@ void window_top_toolbar_land_tool_drag(short x, short y)
 */
 void window_top_toolbar_water_tool_drag(short x, short y)
 {
-	//RCT2_CALLPROC_X(0x006E6D4B, x, y, 0, widgetIndex, (int)w, 0, 0);
-
 	rct_window *window = window_find_from_point(x, y);
 	if (!window)
 		return;

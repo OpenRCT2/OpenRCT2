@@ -160,7 +160,6 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 	if (colour & 0x8000000){
 		//0x8000000
 		// 00678B3A    00678EC9 still to be implemented
-		//RCT2_CALLPROC_X(0x00678AD4, left, right, top, bottom, 0, dpi, colour);
 		int esi = left - RCT2_GLOBAL(0x1420070,sint16);
 		RCT2_GLOBAL(0xEDF824,uint32) = esi;
 		esi = top - RCT2_GLOBAL(0x1420072,sint16);
@@ -223,7 +222,6 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 		memset(dest_pointer, (colour & 0xFF), width);
 		dest_pointer += dpi->width + dpi->pitch;
 	}
-	// RCT2_CALLPROC_X(0x00678AD4, left, right, top, bottom, 0, dpi, colour);
 }
 
 /**

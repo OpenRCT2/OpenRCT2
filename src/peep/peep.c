@@ -568,9 +568,6 @@ void peep_window_state_update(rct_peep* peep){
 
 /* rct2: 0x0069A535*/
 void peep_sprite_remove(rct_peep* peep){
-	//RCT2_CALLPROC_X(0x69A535, 0, 0, 0, 0, (int)peep, 0, 0);
-	//return;
-
 	remove_peep_from_ride(peep);
 	invalidate_sprite((rct_sprite*)peep);
 
@@ -622,7 +619,6 @@ void peep_update_falling(rct_peep* peep){
 		sint16 x, y, xy_distance;
 
 		peep_update_action(&x, &y, &xy_distance, peep);
-		//RCT2_CALLPROC_X(0x6939EB, 0, 0, 0, 0, (int)peep, 0, 0);
 		if (peep->action == PEEP_ACTION_DROWNING) return;
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x80000)){
 			RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
@@ -780,7 +776,6 @@ void peep_update_sitting(rct_peep* peep){
 		if (peep->action < 0xFE){
 			sint16 x, y, xy_distance;
 			peep_update_action(&x, &y, &xy_distance, peep);
-			//RCT2_CALLPROC_X(0x6939EB, 0, 0, 0, 0, (int)peep, 0, 0);
 			if (peep->action != 0xFF) return;
 
 			peep->action = 0xFE;
@@ -3317,9 +3312,6 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
 /* rct2: 0x006912A3 */
 static void peep_update_buying(rct_peep* peep)
 {
-	//RCT2_CALLPROC_X(0x006912A3, 0, 0, 0, 0, (int)peep, 0, 0);
-	//return;
-
 	if (!sub_68F3AE(peep))return;
 	
 	rct_ride* ride = GET_RIDE(peep->current_ride);
@@ -3413,8 +3405,6 @@ static void peep_update_buying(rct_peep* peep)
 
 /* rct2: 0x00691089 */
 static void peep_update_using_bin(rct_peep* peep){
-	//RCT2_CALLPROC_X(0x0691089, 0, 0, 0, 0, peep, 0, 0);
-	//return;
 	if (peep->sub_state == 0){
 		if (!sub_68F3AE(peep))return;
 
@@ -3544,8 +3534,6 @@ static void peep_update_using_bin(rct_peep* peep){
 
 /* rct2: 0x006C16D7 */
 static void peep_update_heading_to_inspect(rct_peep* peep){
-	//RCT2_CALLPROC_X(0x006C16D7, 0, 0, 0, 0, (int)peep, 0, 0);
-	//return;
 	rct_ride* ride = GET_RIDE(peep->current_ride);
 
 	if (ride->type == RIDE_TYPE_NULL){
@@ -3652,8 +3640,6 @@ static void peep_update_heading_to_inspect(rct_peep* peep){
 
 /* rct2: 0x006C0CB8 */
 static void peep_update_answering(rct_peep* peep){
-	//RCT2_CALLPROC_X(0x006C0CB8, 0, 0, 0, 0, (int)peep, 0, 0);
-	//return;
 	rct_ride* ride = GET_RIDE(peep->current_ride);
 
 	if (ride->type == RIDE_TYPE_NULL || 
@@ -3979,9 +3965,6 @@ static void peep_update_patrolling(rct_peep* peep){
 
 /* rct2: 0x0069030A */
 static void peep_update_walking(rct_peep* peep){
-	//RCT2_CALLPROC_X(0x0069030A, 0, 0, 0, 0, (int)peep, 0, 0);
-	//return;
-
 	if (!sub_68F3AE(peep))return;
 
 	if (peep->flags & PEEP_FLAGS_WAVING){
@@ -4262,9 +4245,6 @@ static void peep_update_thoughts(rct_peep* peep){
  */
 static void peep_update(rct_peep *peep)
 {
-	//RCT2_CALLPROC_X(0x0068FC1E, 0, 0, 0, 0, (int)peep, 0, 0); return;
-	//return;
-
 	if (peep->type == PEEP_TYPE_GUEST) {
 		if (peep->previous_ride != 255)
 			if (++peep->previous_ride_time_out >= 720)
@@ -4292,8 +4272,6 @@ static void peep_update(rct_peep *peep)
 		RCT2_CALLPROC_X(0x0068FD3A, 0, 0, 0, 0, (int)peep, 0, 0);
 	} else {
 		// loc_68FD2F
-		//RCT2_CALLPROC_X(0x68FD2F, 0, 0, 0, 0, (int)peep, 0, 0);
-		//return;
 		switch (peep->state) {
 		case PEEP_STATE_FALLING:
 			peep_update_falling(peep);
@@ -4667,13 +4645,6 @@ void peep_update_days_in_queue()
  */
 rct_peep *peep_generate(int x, int y, int z)
 {
-	//int eax, ebx, ecx, _edx, esi, edi, ebp;
-	//eax = x;
-	//ecx = y;
-	//_edx = z;
-	//RCT2_CALLFUNC_X(0x0069A05D, &eax, &ebx, &ecx, &_edx, &esi, &edi, &ebp);
-	//return (rct_peep*)esi;
-
 	if (RCT2_GLOBAL(0x13573C8, uint16) < 400)
 		return NULL;
 

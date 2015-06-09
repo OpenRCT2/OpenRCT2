@@ -790,9 +790,6 @@ static void ride_remove_peeps(int rideIndex)
  */
 int sub_6C683D(int* x, int* y, int* z, int direction, int type, uint16 extra_params, rct_map_element** output_element, uint16 flags)
 {
-	//int ebx = (direction << 8) | type;
-	//return RCT2_CALLFUNC_X(0x006C683D, x, &ebx, y, &z, &esi, &edi, &ebp)&0x100;
-
 	rct_map_element* map_element = map_get_first_element_at(*x / 32, *y / 32);
 	rct_map_element* success_map = NULL;
 
@@ -1190,10 +1187,6 @@ int ride_modify(rct_xy_element *input)
 
 	sub_6C84CE();
 	return 1;
-
-	// Success stored in carry flag which can't be accessed after call using is macro
-	// RCT2_CALLPROC_X(0x006CC056, 0, 0, 0, (int)trackMapElement, 0, 0, 0);
-	// return 1;
 }
 
 /**
@@ -3338,8 +3331,6 @@ void sub_6B5952(int rideIndex)
  */
 int ride_check_block_brakes(rct_xy_element *input, rct_xy_element *output)
 {
-	// return RCT2_CALLPROC_X(0x006D3319, x, 0, y, 0, (int)mapElement, 0, 0) & 0x100;
-
 	int rideIndex, type;
 	rct_xy_element trackElement, nextTrackElement;
 	rct_map_element *loopTrackElement;

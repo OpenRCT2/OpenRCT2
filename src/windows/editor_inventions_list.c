@@ -353,8 +353,6 @@ static void research_items_shuffle()
 		researchOrderBase[i] = researchOrderBase[ri];
 		researchOrderBase[ri] = researchItemTemp;
 	}
-
-	// RCT2_CALLPROC_EBPSAFE(0x00685A93);
 }
 
 static void research_items_make_all_unresearched()
@@ -522,8 +520,6 @@ static rct_research_item *get_research_item_at(int x, int y)
  */
 void window_editor_inventions_list_open()
 {
-	// RCT2_CALLPROC_EBPSAFE(0x00684E04); return;
-
 	rct_window *w;
 
 	w = window_bring_to_front_by_class(WC_EDITOR_INVENTION_LIST);

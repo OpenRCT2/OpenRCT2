@@ -151,27 +151,7 @@ static void game_get_next_input(int *x, int *y, int *state)
 	*y = eax->y;
 	*state = eax->state;
 
-	//int eax, ebx, ecx, edx, esi, edi, ebp;
-	//RCT2_CALLFUNC_X(0x006E83C7, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	//*x = eax & 0xFFFF;
-	//*y = ebx & 0xFFFF;
-	//*state = ecx & 0xFF;
-	//return;
-
-	//int on_tutorial = RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8);
-	//if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_5) {
-	//	if (on_tutorial == 1) {
-
-	//	} else {
-	//		RCT2_CALLPROC_EBPSAFE(0x00407074);
-	//	}
-	//	if (on_tutorial == 2) {
-
-	//	}
-
-	//} else {
-
-	//}
+	// NOTE this function lacks tutorial logic
 }
 
 /**
@@ -266,7 +246,6 @@ static void game_handle_input_mouse(int x, int y, int state)
 		input_state_widget_pressed(x, y, state, widgetIndex, w, widget);
 		break;
 	case INPUT_STATE_VIEWPORT_LEFT:
-		//RCT2_CALLPROC_X(0x006E87B4, x, y, state, widgetIndex, (int)w, (int)widget, 0);
 		w = window_find_by_number(
 			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass),
 			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber)
@@ -1081,7 +1060,6 @@ static void input_update_tooltip(rct_window *w, int widgetIndex, int x, int y)
 			}
 
 			window_tooltip_open(w, widgetIndex, x, y);
-			// RCT2_CALLPROC_X(0x006EA10D, x, y, 0, widgetIndex, w, widget, 0); // window_tooltip_open();
 		}
 	}
 	else {

@@ -174,8 +174,6 @@ int scenario_load(const char *path)
 				set_load_objects_fail_reason();
 				return 0;
 			}
-			// Check expansion pack
-			// RCT2_CALLPROC_EBPSAFE(0x006757E6);
 
 			reset_loaded_objects();
 			map_update_tile_pointers();

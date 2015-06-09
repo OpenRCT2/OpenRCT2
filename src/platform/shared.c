@@ -522,7 +522,6 @@ void platform_init()
 	platform_create_window();
 	gKeysPressed = malloc(sizeof(unsigned char) * 256);
 	memset(gKeysPressed, 0, sizeof(unsigned char) * 256);
-	// RCT2_CALLPROC(0x00404584); // dinput_init()
 }
 
 static void platform_create_window()

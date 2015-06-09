@@ -1113,8 +1113,6 @@ static void window_ride_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 */
 void window_ride_disable_tabs(rct_window *w)
 {
-	//RCT2_CALLPROC_X(0x006AEB9F, 0, 0, 0, 0, (int)w, 0, 0);
-
 	uint32 disabled_tabs = 0;
 	rct_ride *ride = GET_RIDE(w->number & 0xFF);
 
@@ -5432,9 +5430,6 @@ static void window_ride_income_toggle_secondary_price(rct_window *w)
  */
 static void window_ride_income_increase_primary_price(rct_window *w)
 {
-	//RCT2_CALLPROC_X(0x006AE1E4, 0, 0, 0, 0, (int)w, 0, 0);
-	//ebp w->number
-	//eax ride->subtype
 	rct_ride *ride;
 	rct_ride_type *ride_type;
 
@@ -5460,8 +5455,6 @@ static void window_ride_income_increase_primary_price(rct_window *w)
  */
 static void window_ride_income_decrease_primary_price(rct_window *w)
 {
-	//RCT2_CALLPROC_X(0x006AE237, 0, 0, 0, 0, (int)w, 0, 0);
-
 	rct_ride *ride;
 	rct_ride_type *ride_type;
 
@@ -5487,8 +5480,6 @@ static void window_ride_income_decrease_primary_price(rct_window *w)
  */
 static void window_ride_income_increase_secondary_price(rct_window *w)
 {
-	//RCT2_CALLPROC_X(0x006AE269, 0, 0, 0, 0, (int)w, 0, 0);
-	
 	rct_ride *ride;
 	rct_ride_type *ride_type;
 
@@ -5514,8 +5505,6 @@ static void window_ride_income_increase_secondary_price(rct_window *w)
  */
 static void window_ride_income_decrease_secondary_price(rct_window *w)
 {
-	//RCT2_CALLPROC_X(0x006AE28D, 0, 0, 0, 0, (int)w, 0, 0);
-
 	rct_ride *ride;
 	rct_ride_type *ride_type;
 

@@ -394,9 +394,6 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
  */
 void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour)
 {
-	//RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, tertiary_colour);
-	//return;
-
 	int image_type = (image_id & 0xE0000000) >> 28;
 	int image_sub_type = (image_id & 0x1C000000) >> 26;
 
@@ -487,20 +484,6 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 		g1_source = &g2.elements[image_element - SPR_G2_BEGIN];
 	}
 
-	//Zooming code has been integrated into main code.
-	//if (dpi->zoom_level >= 1){ //These have not been tested
-	//	//something to do with zooming
-	//	if (dpi->zoom_level == 1){
-	//		RCT2_CALLPROC_X(0x0067A28E, 0, image_id, x, y, 0, (int)dpi, 0);
-	//		return;
-	//	}
-	//	if (dpi->zoom_level == 2){
-	//		RCT2_CALLPROC_X(0x0067DADA, 0, (int)g1_source, x, y, 0, (int)dpi, 0);
-	//		return;
-	//	}
-	//	RCT2_CALLPROC_X(0x0067FAAE, 0, (int)g1_source, x, y, 0, (int)dpi, 0);
-	//	return;
-	//}
 	if ( dpi->zoom_level && (g1_source->flags & (1<<4)) ){
 		rct_drawpixelinfo zoomed_dpi = {
 			.bits = dpi->bits,

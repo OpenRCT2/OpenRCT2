@@ -189,8 +189,6 @@ void window_guest_list_open()
 */
 void window_guest_list_open_with_filter(int type, int index)
 {
-	//RCT2_CALLPROC_X(0x006993BA, type, ebx, 0, 0, 0, 0, 0);
-
 	uint32 eax, edx;
 
 	window_guest_list_open();

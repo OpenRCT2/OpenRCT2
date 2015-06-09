@@ -462,7 +462,6 @@ void track_load_list(ride_list_item item)
 
 	track_list_populate(item, track_list_cache);
 	free(track_list_cache);
-    //RCT2_CALLPROC_X(0x006CED50, 0, 0, 0, *((uint16*)&item), 0, 0, 0);
 }
 
 static void read(void *dst, char **src, int length)
@@ -3099,7 +3098,6 @@ rct_track_design *temp_track_get_info(char* path, uint8** preview)
 		memcpy(&trackDesign->track_td6, loaded_track, sizeof(rct_track_td6));
 		// Load in a new preview image, calculate cost variable, calculate var_06
 		draw_track_preview((uint8**)trackDesign->preview);
-		//RCT2_CALLPROC_X(0x006D1EF0, 0, 0, 0, 0, 0, (int)&trackDesign->preview, 0);
 
 		trackDesign->track_td6.cost = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_COST, money32);
 		trackDesign->track_td6.track_flags = RCT2_GLOBAL(0x00F44151, uint8) & 7;

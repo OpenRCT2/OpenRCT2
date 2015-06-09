@@ -237,7 +237,6 @@ void window_map_resize()
 */
 static void window_map_mouseup()
 {
-	//RCT2_CALLPROC_EBPSAFE(0x0068CFC1);
 	sint16 var_idx;
 	rct_window* var_w;
 	//Maximum land ownership tool size
@@ -762,9 +761,6 @@ static void window_map_transform_to_map_coords(sint16 *left, sint16 *top)
 */
 static void window_map_paint_peep_overlay(rct_drawpixelinfo *dpi)
 {
-	//RCT2_CALLPROC_X(0x68DADA, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws dots representing guests
-	//return;
-
 	rct_peep *peep;
 	uint16 spriteIndex;
 
@@ -812,9 +808,6 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo *dpi)
 */
 static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi)
 {
-	//RCT2_CALLPROC_X(0x68DBC1, 0, 0, 0, 0, (int)w, (int)dpi, 0);	//draws dots representing trains
-	//return;
-
 	rct_vehicle *train, *vehicle;
 	uint16 train_index, vehicle_index;
 
@@ -849,9 +842,6 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi)
 */
 static void window_map_paint_hud_rectangle(rct_drawpixelinfo *dpi)
 {
-	//RCT2_CALLPROC_X(0x68D8CE, 0, 0, 0, 0, 0, (int)dpi, 0);
-	//return;
-
 	rct_window *main_window = window_get_main();
 	if (main_window == NULL)
 		return;
@@ -891,8 +881,6 @@ static void window_map_paint_hud_rectangle(rct_drawpixelinfo *dpi)
 */
 static void window_map_scrollpaint()
 {
-	//RCT2_CALLPROC_EBPSAFE(0x0068CF23);
-
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 	rct_g1_element *g1_element, pushed_g1_element;

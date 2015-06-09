@@ -335,7 +335,6 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = parkFlagsBackup;
 
 	if (success) {
-		// RCT2_CALLPROC_EBPSAFE(0x0066DC83);
 		title_load();
 	} else {
 		window_error_open(STR_SCENARIO_SAVE_FAILED, -1);

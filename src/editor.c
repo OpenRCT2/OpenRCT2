@@ -342,9 +342,6 @@ static int editor_read_s6(const char *path)
 	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
-	// strcpy((char *)0x0141EF68, path);
-	// RCT2_CALLPROC_EBPSAFE(0x006758FE);
-
 	log_verbose("loading landscape, %s", path);
 
 	file = fopen(path, "rb");
@@ -425,8 +422,6 @@ static int editor_read_s6(const char *path)
 			set_load_objects_fail_reason();
 			return 0;
 		}
-		// Check expansion pack
-		// RCT2_CALLPROC_EBPSAFE(0x006757E6);
 
 		reset_loaded_objects();
 		map_update_tile_pointers();

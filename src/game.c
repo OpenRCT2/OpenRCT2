@@ -223,7 +223,6 @@ void game_update()
 	redraw_peep_and_rain();
 
 	// 0x006E3AEC // screen_game_process_mouse_input();
-	// RCT2_CALLPROC_EBPSAFE(0x006E3AEC); // screen_game_process_keyboard_input();
 	screenshot_check();
 	game_handle_keyboard_input();
 
@@ -664,9 +663,6 @@ int game_load_save(const char *path)
 	sawyercoding_read_chunk(file, (uint8*)0x010E63B8);
 
 	fclose(file);
-
-	// Check expansion pack
-	// RCT2_CALLPROC_EBPSAFE(0x006757E6);
 
 	if (!load_success){
 		set_load_objects_fail_reason();

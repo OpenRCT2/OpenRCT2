@@ -1460,7 +1460,6 @@ int paint_stex_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 
 int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 {
-	//return RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098D9D4, uint32)[type], eax, ebx, ecx, edx, esi, edi, ebp) & 0x100;
 	switch (type)
 	{
 	case OBJECT_TYPE_RIDE:
@@ -1497,8 +1496,6 @@ int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi,
  */
 int object_get_scenario_text(rct_object_entry *entry)
 {
-	// RCT2_CALLPROC_X(0x006A9428, 0, 0, 0, 0, 0, 0, (int)entry); return;
-
 	rct_object_entry *installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
 
 	installedObject = object_list_find(entry);
