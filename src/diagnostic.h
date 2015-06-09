@@ -53,6 +53,7 @@ void diagnostic_log_with_location(int diagnosticLevel, const char *file, const c
 #define log_error(format, ...)		diagnostic_log_macro(DIAGNOSTIC_LEVEL_ERROR, format, ## __VA_ARGS__)
 #define log_warning(format, ...)	diagnostic_log_macro(DIAGNOSTIC_LEVEL_WARNING, format, ## __VA_ARGS__)
 #define log_verbose(format, ...)	diagnostic_log(DIAGNOSTIC_LEVEL_VERBOSE, format, ## __VA_ARGS__)
+#define log_info(format, ...)		diagnostic_log_macro(DIAGNOSTIC_LEVEL_INFORMATION, format, ## __VA_ARGS__)
 
 #endif
 
