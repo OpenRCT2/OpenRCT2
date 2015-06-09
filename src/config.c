@@ -186,8 +186,6 @@ config_property_definition _interfaceDefinitions[] = {
 };
 
 config_property_definition _soundDefinitions[] = {
-	{ offsetof(sound_configuration, forced_software_buffering),			"forced_software_buffering",	CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
-	{ offsetof(sound_configuration, sound_quality),						"sound_quality",				CONFIG_VALUE_TYPE_UINT8,		2,								NULL					},
 	{ offsetof(sound_configuration, title_music),						"title_music",					CONFIG_VALUE_TYPE_UINT8,		2,								NULL					},
 	{ offsetof(sound_configuration, sound),								"sound",						CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
 	{ offsetof(sound_configuration, ride_music),						"ride_music",					CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
@@ -749,8 +747,9 @@ void config_apply_to_old_addresses()
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gConfigGeneral.measurement_format;
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = gConfigGeneral.temperature_format;
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8) = gConfigGeneral.construction_marker_colour;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = gConfigSound.sound_quality;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, sint8) = gConfigSound.forced_software_buffering; 
+	// Force best sound quality and software buffering, for original code.
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = 2;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, sint8) = 1;
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (gConfigGeneral.measurement_format + 1) * 256;
 	if (gConfigGeneral.show_height_as_units)
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 0;
@@ -830,9 +829,9 @@ void config_dat_load()
 				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= !CONFIG_FLAG_SAVE_PLUGIN_DATA;
 			}
 
-			//sound configuration
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = gConfigSound.sound_quality;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, sint8) = gConfigSound.forced_software_buffering; 
+			//sound configuration: force software buffering and best quality
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = 2;
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, sint8) = 1; 
 
 			// Line below is temporaraly disabled until all config is in the new format.
 			//if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1) 

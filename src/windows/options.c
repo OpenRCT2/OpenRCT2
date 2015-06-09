@@ -1046,9 +1046,6 @@ static void window_options_invalidate()
 		// music: on/off
 		RCT2_GLOBAL(0x013CE952 + 8, uint16) = STR_OFF + RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8);
 
-		// sound quality: low/medium/high
-		RCT2_GLOBAL(0x013CE952 + 10, uint16) = STR_SOUND_LOW + gConfigSound.sound_quality;
-
 		widget_set_checkbox_value(w, WIDX_SOUND_CHECKBOX, gConfigSound.sound);
 		widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8));
 

@@ -1764,10 +1764,10 @@ void audio_init2(int device)
 			ride_music->rideid = -1;
 		}
 	}
+
+	// Used by original code for directsound
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 1 << 4)) {
-		gConfigSound.forced_software_buffering = RCT2_GLOBAL(0x001425B74, uint32) != RCT2_GLOBAL(0x001425B78, uint32) || RCT2_GLOBAL(0x001425B74, uint32) != RCT2_GLOBAL(0x001425B7C, uint32);
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= 1 << 4;
-		config_save_default();
 	}
 
 	// When all sound code is reversed this can be removed.

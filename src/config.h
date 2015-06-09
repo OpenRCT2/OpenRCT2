@@ -89,13 +89,6 @@ enum {
 	MEASUREMENT_FORMAT_METRIC
 };
 
-enum{
-	SOUND_QUALITY_LOW,
-	SOUND_QUALITY_MEDIUM,
-	SOUND_QUALITY_HIGH
-
-};
-
 enum {
 	AUTOSAVE_EVERY_WEEK,
 	AUTOSAVE_EVERY_2_WEEKS,
@@ -151,8 +144,6 @@ typedef struct {
 } interface_configuration;
 
 typedef struct {
-	sint8 forced_software_buffering;
-	sint8 sound_quality;
 	uint8 title_music;
 	uint8 sound;
 	uint8 ride_music;
