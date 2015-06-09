@@ -127,6 +127,32 @@ void window_save_prompt_open()
 		return;
 	}
 
+	if (!gConfigGeneral.confirmation_prompt) {
+		/* game_load_or_quit_no_save_prompt() will exec requested task and close this window
+		* immediately again.
+		* TODO restructure these functions when we're sure game_load_or_quit_no_save_prompt()
+		* and game_load_or_quit() are not called by the original binary anymore.
+		*/
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 0) {
+			if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 1) {
+				RCT2_CALLPROC_EBPSAFE(0x0066EE54);
+				game_load_or_quit_no_save_prompt();
+				return;
+			}
+			else {
+				tutorial_stop();
+				game_load_or_quit_no_save_prompt();
+				return;
+			}
+		}
+
+		if (RCT2_GLOBAL(0x009DEA66, uint16) < 3840) {
+			game_load_or_quit_no_save_prompt();
+			return;
+		}
+	}
+
 	// Check if window is already open
 	window = window_bring_to_front_by_class(WC_SAVE_PROMPT);
 	if (window){
@@ -176,31 +202,6 @@ void window_save_prompt_open()
 		stringId = STR_QUIT_SCENARIO_EDITOR;
 	window_save_prompt_widgets[WIDX_TITLE].image = stringId;
 	window_save_prompt_widgets[WIDX_LABEL].image = prompt_mode + STR_SAVE_BEFORE_LOADING;
-
-	if (!gConfigGeneral.confirmation_prompt) {
-		/* game_load_or_quit_no_save_prompt() will exec requested task and close this window
-		 * immediately again.
-		 * TODO restructure these functions when we're sure game_load_or_quit_no_save_prompt()
-		 * and game_load_or_quit() are not called by the original binary anymore.
-		 */
-		
-		if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 0) {
-			if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 1) {
-				RCT2_CALLPROC_EBPSAFE(0x0066EE54);
-				game_load_or_quit_no_save_prompt();
-				return;
-			} else {
-				tutorial_stop();
-				game_load_or_quit_no_save_prompt();
-				return;
-			}
-		}
-		
-		if (RCT2_GLOBAL(0x009DEA66, uint16) < 3840) {
-			game_load_or_quit_no_save_prompt();
-			return;
-		}
-	}
 }
 
 /**
