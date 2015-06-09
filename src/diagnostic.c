@@ -23,14 +23,15 @@
 #include <stdio.h>
 #include "diagnostic.h"
 
-int _log_levels[DIAGNOSTIC_LEVEL_COUNT] = { 1, 1, 1, 0 };
+int _log_levels[DIAGNOSTIC_LEVEL_COUNT] = { 1, 1, 1, 0, 1 };
 int _log_location_enabled = 1;
 
 const char * _level_strings[] = {
 	"FATAL",
 	"ERROR",
 	"WARNING",
-	"VERBOSE"
+	"VERBOSE",
+	"INFO"
 };
 
 void diagnostic_log(int diagnosticLevel, const char *format, ...)
