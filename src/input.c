@@ -972,7 +972,7 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = cursor_widgetIndex;
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = cursor_w_class;
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = cursor_w_number;
-				window_event_dropdown_call(w, cursor_widgetIndex, dropdown_index);
+				window_event_dropdown_call(cursor_w, cursor_widgetIndex, dropdown_index);
 			}
 		dropdown_cleanup:
 			window_close_by_class(WC_DROPDOWN);
