@@ -1297,7 +1297,7 @@ void game_command_clear_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 /* rct2: 0x00663CCD */
 money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surface_style, uint8 edge_style, uint8 flags)
 {
-	RCT2_GLOBAL(0x141F56C, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
 
 	int x_mid, y_mid;
 
@@ -1538,7 +1538,7 @@ void game_command_raise_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, i
 			}
 		}
 	}
-	RCT2_GLOBAL(0x141F56C, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
 	RCT2_GLOBAL(0x009DEA5E, uint32) = x;
 	RCT2_GLOBAL(0x009DEA60, uint32) = y;
 	RCT2_GLOBAL(0x009DEA62, uint32) = z;
@@ -1627,7 +1627,7 @@ void game_command_lower_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, i
 			}
 		}
 	}
-	RCT2_GLOBAL(0x141F56C, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
 	RCT2_GLOBAL(0x009DEA5E, uint32) = x;
 	RCT2_GLOBAL(0x009DEA60, uint32) = y;
 	RCT2_GLOBAL(0x009DEA62, uint32) = z;
@@ -1806,7 +1806,7 @@ void game_command_remove_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 	uint8 base_height = (*edx >> 8);
 	uint8 direction = *edx;
 
-	RCT2_GLOBAL(0x141F56C, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
 	if(!(*ebx & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0){
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
@@ -1862,7 +1862,7 @@ void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 	RCT2_GLOBAL(0x009DEA5E, uint32) = x + 16;
 	RCT2_GLOBAL(0x009DEA60, uint32) = y + 16;
 	RCT2_GLOBAL(0x009DEA62, uint32) = base_height * 16;
-	RCT2_GLOBAL(0x141F56C, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
 	if(RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0){
 		if(sub_68B044() && x < 8192 && y < 8192){
 			rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
@@ -1937,7 +1937,7 @@ void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi,
  */
 void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
-	RCT2_GLOBAL(0x141F56C, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
 	int x = (uint16)*eax;
 	int y = (uint16)*ecx;
 	uint8 color2 = *edi >> 16;

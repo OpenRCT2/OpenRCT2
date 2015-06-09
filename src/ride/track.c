@@ -3209,7 +3209,7 @@ void game_command_place_track(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 		game_do_command_p(GAME_COMMAND_6, &_eax, &_ebx, &_ecx, &_edx, &_esi, &_edi, &_ebp);
 		if (_ebx == MONEY32_UNDEFINED){
 			*ebx = MONEY32_UNDEFINED;
-			RCT2_GLOBAL(0x00141F56C, uint8) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 0;
 			RCT2_GLOBAL(0x00F44121, money32) = MONEY32_UNDEFINED;
 			return;
 		}
@@ -3243,7 +3243,7 @@ void game_command_place_track(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, rideIndex, GAME_COMMAND_7, 0, 0);
 		*ebx = cost;
 		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = error_reason;
-		RCT2_GLOBAL(0x00141F56C, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 0;
 		RCT2_GLOBAL(0x00F44121, money32) = cost;
 		return;
 	}
@@ -3310,7 +3310,7 @@ void game_command_place_track(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 
 	ride_set_name(rideIndex, RCT2_ADDRESS(0x009E3504,const char));
 
-	RCT2_GLOBAL(0x00141F56C, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 0;
 	*ebx = RCT2_GLOBAL(0x00F44121, money32);
 	*edi = rideIndex;
 }

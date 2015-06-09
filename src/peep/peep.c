@@ -1366,7 +1366,7 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ri
 		else{
 			ride->total_profit += ride->price;
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
-			RCT2_GLOBAL(0x0141F56C, uint8) = 20;
+			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 20;
 			RCT2_GLOBAL(0xF1AEC0, uint32) = 230;
 
 			RCT2_CALLPROC_X(0x0069926C, 0, ride->price, 0, 0, (int)peep, 0, 0);
