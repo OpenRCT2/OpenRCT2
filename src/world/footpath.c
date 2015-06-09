@@ -291,7 +291,7 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 {
 	rct_map_element *mapElement;
 
-	RCT2_GLOBAL(0x0141F56C, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
 	RCT2_GLOBAL(0x009DEA5E, uint16) = x + 16;
 	RCT2_GLOBAL(0x009DEA60, uint16) = y + 16;
 	RCT2_GLOBAL(0x009DEA62, uint16) = z * 8;
@@ -352,7 +352,7 @@ money32 footpath_remove_real(int x, int y, int z, int flags)
 {
 	rct_map_element *mapElement;
 
-	RCT2_GLOBAL(0x0141F56C, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
 	RCT2_GLOBAL(0x009DEA5E, uint16) = x + 16;
 	RCT2_GLOBAL(0x009DEA60, uint16) = y + 16;
 	RCT2_GLOBAL(0x009DEA62, uint16) = z * 8;

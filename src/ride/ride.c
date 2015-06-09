@@ -3082,7 +3082,7 @@ void ride_music_update_final()
 /* rct2: 0x006B5559 */
 void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	RCT2_GLOBAL(0x141F56C, uint8) = 4;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 4;
 	
 	uint8 ride_id = *edx & 0xFF;
 	rct_ride* ride = GET_RIDE(ride_id);
@@ -3902,7 +3902,7 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 	rideIndex = *edx & 0xFF;
 	targetStatus = (*edx >> 8) & 0xFF;
 
-	RCT2_GLOBAL(0x0141F56C, uint8) = 4;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 4;
 
 	ride = GET_RIDE(rideIndex);
 	RCT2_GLOBAL(0x00F43484, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32);
@@ -4288,6 +4288,11 @@ void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, in
 	}
 	*ebx = 0;
 }
+
+/**
+ * 
+ *  rct2: 0x006B53E9
+ */
 void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
 	uint32 flags, shop_item;
@@ -4310,7 +4315,7 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 	//edx ride_number
 	//ebp ride_type
 
-	RCT2_GLOBAL(0x141F56C, uint8) = 0x14;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 0x14;
 	if (flags & 0x1) {
 		if (!secondary_price) {
 			shop_item = 0x1F;
@@ -4323,7 +4328,7 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 				}
 			}
 			// Check same price in park flags
-			if ((RCT2_GLOBAL(0x01358838, uint32) & (1 << (shop_item - (shop_item >= 0x20 ? 20 : 0)))) == 0) {
+			if ((shop_item < 32 ? RCT2_GLOBAL(0x01358838, uint32) & (1 << shop_item) : RCT2_GLOBAL(0x0135934C, uint32) & (1 << (shop_item - 32))) == 0) {
 				ride->price = price;
 				window_invalidate_by_class(WC_RIDE);
 				return;
@@ -4332,6 +4337,7 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 		else {
 			shop_item = ride_type->shop_item_secondary;
 			if (shop_item == 0xFF) {
+				shop_item = RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8);
 				if ((ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0) {
 					ride->price_secondary = price;
 					window_invalidate_by_class(WC_RIDE);
@@ -4339,7 +4345,7 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 				}
 			}
 			// Check same price in park flags
-			if ((RCT2_GLOBAL(0x01358838, uint32) & (1 << (shop_item - (shop_item >= 0x20 ? 20 : 0)))) == 0) {
+			if ((shop_item < 32 ? RCT2_GLOBAL(0x01358838, uint32) & (1 << shop_item) : RCT2_GLOBAL(0x0135934C, uint32) & (1 << (shop_item - 32))) == 0) {
 				ride->price_secondary = price;
 				window_invalidate_by_class(WC_RIDE);
 				return;
@@ -4353,12 +4359,12 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 				if (ride->type != RIDE_TYPE_TOILETS || shop_item != 0x1F) {
 					if (ride_type->shop_item == shop_item) {
 						ride->price = price;
-						window_invalidate_by_number(WC_RIDE, ride_number);
+						window_invalidate_by_number(WC_RIDE, count);
 					}
 				}
 				else {
 					ride->price = price;
-					window_invalidate_by_number(WC_RIDE, ride_number);
+					window_invalidate_by_number(WC_RIDE, count);
 				}
 				// If the shop item is the same or an on-ride photo
 				if (ride_type->shop_item_secondary == shop_item ||
@@ -4366,7 +4372,7 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 					(shop_item == 0x3 || shop_item == 0x20 || shop_item == 0x21 || shop_item == 0x22))) {
 
 					ride->price_secondary = price;
-					window_invalidate_by_number(WC_RIDE, ride_number);
+					window_invalidate_by_number(WC_RIDE, count);
 				}
 			}
 			count++;
