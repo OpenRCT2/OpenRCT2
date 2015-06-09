@@ -299,6 +299,10 @@ void format_currency(char **dest, long long value)
 	int rate = currencySpec->rate;
 	value *= rate;
 
+	// Divide by 100 to get rid of the pennies
+	// Do this before anything else to prevent negative zero.
+	value /= 100;
+
 	// Negative sign
 	if (value < 0) {
 		*(*dest)++ = '-';
@@ -314,8 +318,7 @@ void format_currency(char **dest, long long value)
 		*dest += strlen(*dest);
 	}
 
-	// Divide by 100 to get rid of the pennies
-	format_comma_separated_integer(dest, value / 100);
+	format_comma_separated_integer(dest, value);
 
 	// Currency symbol suffix
 	if (currencySpec->affix == CURRENCY_SUFFIX) {
