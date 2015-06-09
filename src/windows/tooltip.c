@@ -94,7 +94,7 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 		return;
 
 	widget = &widgetWindow->widgets[widgetIndex];
-	RCT2_CALLPROC_X(widgetWindow->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)widgetWindow, 0, 0);
+	window_event_invalidate_call(widgetWindow);
 	if (widget->tooltip == 0xFFFF)
 		return;
 
@@ -102,11 +102,7 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = widgetWindow->number;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = widgetIndex;
 
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = widgetIndex;
-	esi = (int)widgetWindow;
-	RCT2_CALLFUNC_X(widgetWindow->event_handlers[WE_TOOLTIP], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	if ((eax & 0xFFFF) == 0xFFFF)
+	if (window_event_tooltip_call(widgetWindow, widgetIndex) == (rct_string_id)STR_NONE)
 		return;
 
 	w = window_find_by_class(WC_ERROR);
@@ -128,7 +124,9 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 		tooltip_text_width = 196;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
-	tooltip_text_width = gfx_wrap_string(buffer, tooltip_text_width + 1, &tooltip_text_height, &ebx);
+
+	int fontHeight;
+	tooltip_text_width = gfx_wrap_string(buffer, tooltip_text_width + 1, &tooltip_text_height, &fontHeight);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TEXT_HEIGHT, sint16) = tooltip_text_height;
 	width = tooltip_text_width + 3;

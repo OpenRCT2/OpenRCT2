@@ -178,7 +178,7 @@ void window_update_all()
 	if (RCT2_GLOBAL(0x009DEB7C, sint16) >= 1000) {
 		RCT2_GLOBAL(0x009DEB7C, sint16) = 0;
 		for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
-			RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_07], 0, 0, 0, 0, (int) w, 0, 0);
+			window_event_unknown_07_call(w);
 	}
 
 	// Border flash invalidation
@@ -651,8 +651,7 @@ void window_close(rct_window* window)
 	rct_windowclass cls = window->classification;
 	rct_windownumber number = window->number;
 
-	// Call close event of window
-	RCT2_CALLPROC_X(window->event_handlers[WE_CLOSE], 0, 0, 0, 0, (int)window, 0, 0);
+	window_event_close_call(window);
 
 	window = window_find_by_number(cls, number);
 	if (window == NULL)
@@ -1058,18 +1057,6 @@ void window_update_scroll_widgets(rct_window *w)
 	}
 }
 
-int window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *height)
-{
-	rct_widget *widget = window_get_scroll_widget(w, scrollIndex);
-	int widgetIndex = window_get_widget_index(w, widget);
-
-	int eax = scrollIndex, ebx = scrollIndex * sizeof(rct_scroll), ecx = 0, edx = 0, esi = (int)w, edi = widgetIndex * sizeof(rct_widget), ebp = 0;
-	RCT2_CALLFUNC_X(w->event_handlers[WE_SCROLL_GETSIZE], & eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	*width = ecx;
-	*height = edx;
-	return 1;
-}
-
 int window_get_scroll_data_index(rct_window *w, int widget_index)
 {
 	int i, result;
@@ -1366,7 +1353,7 @@ void sub_688956()
 	rct_window *w;
 
 	for (w = RCT2_NEW_WINDOW - 1; w >= g_window_list; w--)
-		RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_14], 0, 0, 0, 0, (int)w, 0, 0);
+		window_event_unknown_14_call(w);
 }
 
 /**
@@ -1564,11 +1551,8 @@ void window_draw(rct_window *w, int left, int top, int right, int bottom)
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_3, uint8) = v->colours[2] & 0x7F;
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_4, uint8) = v->colours[3] & 0x7F;
 
-		// Invalidate the window
 		window_event_invalidate_call(v);
-
-		// Paint the window
-		RCT2_CALLPROC_X(v->event_handlers[WE_PAINT], 0, 0, 0, 0, (int)v, (int)dpi, 0);
+		window_event_paint_call(v, dpi);
 	}
 }
 
@@ -1804,7 +1788,7 @@ void tool_cancel()
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber)
 			);
 			if (w != NULL)
-				RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_ABORT], 0, 0, 0, RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16), (int)w, 0, 0);
+				window_event_tool_abort_call(w, RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16));
 		}
 	}
 }
@@ -1835,6 +1819,33 @@ void window_guest_list_init_vars_b()
 	RCT2_GLOBAL(0x00F1AF20, uint16) = 0;
 }
 
+static void window_event_call_address(int address, rct_window *w)
+{
+	#ifdef _MSC_VER
+	__asm {
+			push address
+			push w
+			mov esi, w
+			call[esp + 4]
+			add esp, 8
+	}
+	#else
+	__asm__ ( "\
+				push %[address]\n\
+				mov eax, %[w]  \n\
+				push eax		\n\
+				mov esi, %[w]	\n\
+				call [esp+4]	\n\
+				add esp, 8	\n\
+			" : [address] "+m" (address), [w] "+m" (w) : : "eax", "esi" );
+	#endif
+}
+
+void window_event_close_call(rct_window* w)
+{
+	window_event_call_address(w->event_handlers[WE_CLOSE], w);
+}
+
 void window_event_mouse_up_call(rct_window* w, int widgetIndex)
 {
 	RCT2_CALLPROC_X(w->event_handlers[WE_MOUSE_UP], 0, 0, 0, widgetIndex, (int)w, (int)&(w->event_handlers[widgetIndex]), 0);
@@ -1842,7 +1853,7 @@ void window_event_mouse_up_call(rct_window* w, int widgetIndex)
 
 void window_event_resize_call(rct_window* w)
 {
-	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
+	window_event_call_address(w->event_handlers[WE_RESIZE], w);
 }
 
 void window_event_mouse_down_call(rct_window *w, int widgetIndex)
@@ -1883,36 +1894,135 @@ void window_event_mouse_down_call(rct_window *w, int widgetIndex)
 	#endif
 }
 
-void window_event_invalidate_call(rct_window* w)
+void window_event_dropdown_call(rct_window* w, int widgetIndex, int dropdownIndex)
 {
-	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	RCT2_CALLPROC_X(w->event_handlers[WE_DROPDOWN], dropdownIndex, 0, 0, widgetIndex, (int)w, 0, 0);
 }
 
-static void window_event_call_address(int address, rct_window *w)
+void window_event_unknown_05_call(rct_window* w)
 {
-	#ifdef _MSC_VER
-	__asm {
-			push address
-			push w
-			mov esi, w
-			call[esp + 4]
-			add esp, 8
-	}
-	#else
-	__asm__ ( "\
-				push %[address]\n\
-				mov eax, %[w]  \n\
-				push eax		\n\
-				mov esi, %[w]	\n\
-				call [esp+4]	\n\
-				add esp, 8	\n\
-			" : [address] "+m" (address), [w] "+m" (w) : : "eax", "esi" );
-	#endif
+	window_event_call_address(w->event_handlers[WE_UNKNOWN_05], w);
 }
 
 void window_event_update_call(rct_window *w)
 {
 	window_event_call_address(w->event_handlers[WE_UPDATE], w);
+}
+
+void window_event_unknown_07_call(rct_window* w)
+{
+	window_event_call_address(w->event_handlers[WE_UNKNOWN_07], w);
+}
+
+void window_event_unknown_08_call(rct_window* w)
+{
+	window_event_call_address(w->event_handlers[WE_UNKNOWN_08], w);
+}
+
+void window_event_tool_update_call(rct_window* w, int widgetIndex, int x, int y)
+{
+	RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_UPDATE], x, y, 0, widgetIndex, (int)w, 0, 0);
+}
+
+void window_event_tool_down_call(rct_window* w, int widgetIndex, int x, int y)
+{
+	RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_DOWN], x, y, 0, widgetIndex, (int)w, 0, 0);
+}
+
+void window_event_tool_drag_call(rct_window* w, int widgetIndex, int x, int y)
+{
+	RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_DRAG], x, y, 0, widgetIndex, (int)w, 0, 0);
+}
+
+void window_event_tool_up_call(rct_window* w, int widgetIndex, int x, int y)
+{
+	RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_UP], x, y, 0, widgetIndex, (int)w, 0, 0);
+}
+
+void window_event_tool_abort_call(rct_window* w, int widgetIndex)
+{
+	RCT2_CALLPROC_X(w->event_handlers[WE_TOOL_ABORT], 0, 0, 0, widgetIndex, (int)w, 0, 0);
+}
+
+void window_event_unknown_0E_call(rct_window* w)
+{
+	window_event_call_address(w->event_handlers[WE_UNKNOWN_0E], w);
+}
+
+int window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *height)
+{
+	rct_widget *widget = window_get_scroll_widget(w, scrollIndex);
+	int widgetIndex = window_get_widget_index(w, widget);
+
+	int eax = scrollIndex, ebx = scrollIndex * sizeof(rct_scroll), ecx = 0, edx = 0, esi = (int)w, edi = widgetIndex * sizeof(rct_widget), ebp = 0;
+	RCT2_CALLFUNC_X(w->event_handlers[WE_SCROLL_GETSIZE], & eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	*width = ecx;
+	*height = edx;
+	return 1;
+}
+
+void window_event_scroll_mousedown_call(rct_window* w, int scrollIndex, int x, int y)
+{
+	RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_MOUSEDOWN], scrollIndex, 0, x, y, (int)w, (int)window_get_scroll_widget(w, scrollIndex), 0);
+}
+
+void window_event_unknown_11_call(rct_window* w)
+{
+	window_event_call_address(w->event_handlers[WE_UNKNOWN_11], w);
+}
+
+void window_event_scroll_mouseover_call(rct_window* w, int scrollIndex, int x, int y)
+{
+	RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_MOUSEOVER], scrollIndex, 0, x, y, (int)w, (int)window_get_scroll_widget(w, scrollIndex), 0);
+}
+
+void window_event_textinput_call(rct_window *w, int widgetIndex, char *text)
+{
+	RCT2_CALLPROC_X(w->event_handlers[WE_TEXT_INPUT], 0, 0, text != NULL, widgetIndex, (int)w, (int)text, 0);
+}
+
+void window_event_unknown_14_call(rct_window* w)
+{
+	window_event_call_address(w->event_handlers[WE_UNKNOWN_14], w);
+}
+
+void window_event_unknown_15_call(rct_window* w)
+{
+	window_event_call_address(w->event_handlers[WE_UNKNOWN_15], w);
+}
+
+rct_string_id window_event_tooltip_call(rct_window* w, int widgetIndex)
+{
+	int eax = widgetIndex, ebx, ecx, edx, esi = (int)w, edi, ebp;
+	RCT2_CALLFUNC_X(w->event_handlers[WE_TOOLTIP], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return eax & 0xFFFF;
+}
+
+int window_event_cursor_call(rct_window* w, int widgetIndex, int x, int y)
+{
+	int eax = widgetIndex, ebx = -1, ecx = x, edx = y, esi = (int)w, edi = &w->widgets[widgetIndex], ebp;
+	RCT2_CALLFUNC_X(w->event_handlers[WE_CURSOR], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return ebx;
+}
+
+void window_event_moved_call(rct_window* w, int x, int y)
+{
+	RCT2_CALLPROC_X(w->event_handlers[WE_MOVED], 0, 0, x, y, (int)w, 0, 0);
+}
+
+void window_event_invalidate_call(rct_window* w)
+{
+	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+}
+
+void window_event_paint_call(rct_window* w, rct_drawpixelinfo *dpi)
+{
+	RCT2_CALLPROC_X(w->event_handlers[WE_PAINT], 0, 0, 0, 0, (int)w, (int)dpi, 0);
+}
+
+void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo *dpi, int scrollIndex)
+{
+	RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_PAINT], scrollIndex, 0, 0, 0, (int)w, (int)dpi, 0);
 }
 
 /**
@@ -2325,11 +2435,6 @@ void window_move_and_snap(rct_window *w, int newWindowX, int newWindowY, int sna
 int window_can_resize(rct_window *w)
 {
 	return (w->flags & WF_RESIZABLE) && (w->min_width != w->max_width || w->min_height != w->max_height);
-}
-
-void window_event_textinput_call(rct_window *w, int widgetIndex, char *text)
-{
-	RCT2_CALLPROC_X(w->event_handlers[WE_TEXT_INPUT], 0, 0, text != NULL, widgetIndex, (int)w, (int)text, 0);
 }
 
 /**

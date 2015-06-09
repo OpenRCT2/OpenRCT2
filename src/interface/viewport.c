@@ -442,7 +442,7 @@ void viewport_set_underground_flag(int underground, rct_window* window, rct_view
  */
 void viewport_update_position(rct_window *window)
 {
-	RCT2_CALLPROC_X(window->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)window, 0, 0);
+	window_event_resize_call(window);
 
 	rct_viewport* viewport = window->viewport;
 	if (!viewport)return;

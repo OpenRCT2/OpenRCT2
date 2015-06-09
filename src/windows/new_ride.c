@@ -349,14 +349,8 @@ static void window_new_ride_populate_list()
  */
 static void window_new_ride_scroll_to_focused_ride(rct_window *w)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-
-	// Get the scroll height
-	eax = 0;
-	esi = (int)w;
-	RCT2_CALLFUNC_X(w->event_handlers[WE_SCROLL_GETSIZE], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	int scrollHeight = edx;
-	ebx = 0;
+	int scrollWidth, scrollHeight;
+	window_get_scroll_size(w, 0, &scrollWidth, &scrollHeight);
 	
 	// Find row index of the focused ride type
 	rct_widget *listWidget = &window_new_ride_widgets[WIDX_RIDE_LIST];

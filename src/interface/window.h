@@ -476,7 +476,6 @@ void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, i
 void window_init_scroll_widgets(rct_window *w);
 void window_update_scroll_widgets(rct_window *w);
 int window_get_scroll_data_index(rct_window *w, int widget_index);
-int window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *height);
 
 rct_window *window_bring_to_front(rct_window *w);
 rct_window *window_bring_to_front_by_class(rct_windowclass cls);
@@ -598,12 +597,34 @@ void window_map_tooltip_update_visibility();
 
 void window_staff_list_init_vars();
 
+void window_event_close_call(rct_window* w);
 void window_event_mouse_up_call(rct_window* w, int widgetIndex);
 void window_event_resize_call(rct_window* w);
-void window_event_mouse_down_call(rct_window* w, int widgetIndex);
-void window_event_invalidate_call(rct_window* w);
+void window_event_mouse_down_call(rct_window *w, int widgetIndex);
+void window_event_dropdown_call(rct_window* w, int widgetIndex, int dropdownIndex);
+void window_event_unknown_05_call(rct_window* w);
 void window_event_update_call(rct_window *w);
+void window_event_unknown_07_call(rct_window* w);
+void window_event_unknown_08_call(rct_window* w);
+void window_event_tool_update_call(rct_window* w, int widgetIndex, int x, int y);
+void window_event_tool_down_call(rct_window* w, int widgetIndex, int x, int y);
+void window_event_tool_drag_call(rct_window* w, int widgetIndex, int x, int y);
+void window_event_tool_up_call(rct_window* w, int widgetIndex, int x, int y);
+void window_event_tool_abort_call(rct_window* w, int widgetIndex);
+void window_event_unknown_0E_call(rct_window* w);
+int window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *height);
+void window_event_scroll_mousedown_call(rct_window* w, int scrollIndex, int x, int y);
+void window_event_unknown_11_call(rct_window* w);
+void window_event_scroll_mouseover_call(rct_window* w, int scrollIndex, int x, int y);
 void window_event_textinput_call(rct_window *w, int widgetIndex, char *text);
+void window_event_unknown_14_call(rct_window* w);
+void window_event_unknown_15_call(rct_window* w);
+rct_string_id window_event_tooltip_call(rct_window* w, int widgetIndex);
+int window_event_cursor_call(rct_window* w, int widgetIndex, int x, int y);
+void window_event_moved_call(rct_window* w, int x, int y);
+void window_event_invalidate_call(rct_window* w);
+void window_event_paint_call(rct_window* w, rct_drawpixelinfo *dpi);
+void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo *dpi, int scrollIndex);
 
 void sub_6EA73F();
 void textinput_cancel();
