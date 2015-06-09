@@ -26,9 +26,7 @@
 #include "map.h"
 #include "scenery.h"
 
-void sub_673883(int x, int y, int z);
-void sub_69A48B(int x, int y, int z);
-
+void footpath_interrupt_peeps(int x, int y, int z);
 
 enum {
 	FOOTPATH_CONSTRUCTION_FLAG_ALLOW_DURING_PAUSED = 1 << 3
@@ -126,7 +124,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 		return MONEY32_UNDEFINED;
 
 	if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & (FOOTPATH_CONSTRUCTION_FLAG_ALLOW_DURING_PAUSED | (1 << 6))))
-		sub_673883(x, y, RCT2_GLOBAL(0x009DEA62, uint16));
+		footpath_remove_litter(x, y, RCT2_GLOBAL(0x009DEA62, uint16));
 
 	// loc_6A649D:
 	RCT2_GLOBAL(0x00F3EFD9, money32) += MONEY(12, 00);
@@ -303,7 +301,7 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 	}
 
 	if (flags & GAME_COMMAND_FLAG_APPLY)
-		sub_69A48B(x, y, z * 8);
+		footpath_interrupt_peeps(x, y, z * 8);
 
 	RCT2_GLOBAL(0x00F3EFD9, money32) = 0;
 	RCT2_GLOBAL(0x00F3EFA4, uint8) = 0;
@@ -364,8 +362,8 @@ money32 footpath_remove_real(int x, int y, int z, int flags)
 	}
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
-		sub_69A48B(x, y, z * 8);
-		sub_673883(x, y, z * 8);
+		footpath_interrupt_peeps(x, y, z * 8);
+		footpath_remove_litter(x, y, z * 8);
 	}
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned(x, y, z * 8))
@@ -618,18 +616,58 @@ void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y,
  * 
  *  rct2: 0x00673883
  */
-void sub_673883(int x, int y, int z)
+void footpath_remove_litter(int x, int y, int z)
 {
-	RCT2_CALLPROC_X(0x00673883, x, 0, y, z, 0, 0, 0);
+	int index;
+	uint16 spriteIndex, nextSpriteIndex;
+	rct_litter *sprite;
+
+	index = (x & 0x1FE0) << 3 | (y >> 5);
+	spriteIndex = RCT2_ADDRESS(0x00F1EF60, uint16)[index];
+	while (spriteIndex != SPRITE_INDEX_NULL) {
+		sprite = &g_sprite_list[spriteIndex].litter;
+		nextSpriteIndex = sprite->next_in_quadrant;
+		if (sprite->linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_LITTER) {
+			int distanceZ = abs(sprite->z - z);
+			if (distanceZ <= 32) {
+				sub_6EC60B((rct_sprite*)sprite);
+				sprite_remove((rct_sprite*)sprite);
+			}
+		}
+		spriteIndex = nextSpriteIndex;
+	}
 }
 
 /**
  * 
  *  rct2: 0x0069A48B
  */
-void sub_69A48B(int x, int y, int z)
+void footpath_interrupt_peeps(int x, int y, int z)
 {
-	RCT2_CALLPROC_X(0x0069A48B, x, 0, y, z, 0, 0, 0);
+	int index;
+	uint16 spriteIndex, nextSpriteIndex;
+	rct_peep *peep;
+
+	index = (x & 0x1FE0) << 3 | (y >> 5);
+	spriteIndex = RCT2_ADDRESS(0x00F1EF60, uint16)[index];
+	while (spriteIndex != SPRITE_INDEX_NULL) {
+		peep = &g_sprite_list[spriteIndex].peep;
+		nextSpriteIndex = peep->next_in_quadrant;
+		if (peep->linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_PEEP) {
+			if (peep->state == PEEP_STATE_SITTING || peep->state == PEEP_STATE_WATCHING) {
+				if (peep->z == 0) {
+					peep_decrement_num_riders(peep);
+					peep->state = PEEP_STATE_WALKING;
+					peep_window_state_update(peep);
+					peep->destination_x = (peep->x & 0xFFE0) + 16;
+					peep->destination_y = (peep->y & 0xFFE0) + 16;
+					peep->destination_tolerence = 5;
+					sub_693B58(peep);
+				}
+			}
+		}
+		spriteIndex = nextSpriteIndex;
+	}
 }
 
 /**
@@ -641,6 +679,10 @@ void sub_6A6C66(int x, int y, rct_map_element *mapElement, int flags)
 	RCT2_CALLPROC_X(0x006A6C66, x, flags, y, 0, (int)mapElement, 0, 0);
 }
 
+/**
+ * 
+ *  rct2: 0x006A742F
+ */
 void sub_6A742F(int rideIndex, int entranceIndex, int x, int y, rct_map_element *mapElement, int direction)
 {
 	RCT2_CALLPROC_X(0x006A742F, x, direction, y, (entranceIndex << 8) | rideIndex, (int)mapElement, 0, 0);

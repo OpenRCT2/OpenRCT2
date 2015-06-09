@@ -1971,7 +1971,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 					return;
 				}
 				if(*ebx & GAME_COMMAND_FLAG_APPLY && !(*ebx & 0x40)){
-					sub_673883(x, y, F64EC8);
+					footpath_remove_litter(x, y, F64EC8);
 					if(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG19){
 						RCT2_CALLPROC_X(0x006E588E, x, scenery_entry->small_scenery.height, y, F64EC8, 0, 0, 0);
 					}
