@@ -879,13 +879,13 @@ void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y){
 		return;
 
 	RCT2_GLOBAL(0x00F1AD62, uint32) = game_do_command(
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 		0x4,
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
 		LandRightsMode ? 0x00E : 0x20F,
 		35,
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
 		);
 }
 
@@ -924,13 +924,13 @@ static void window_park_entrance_tooldown()
 			if (x != (sint16)0x8000) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6BD; // Can't buy land...
 				game_do_command(
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 					1,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
 					0x00E,
 					GAME_COMMAND_BUY_LAND_RIGHTS,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
 					);
 			}
 		}
@@ -938,13 +938,13 @@ static void window_park_entrance_tooldown()
 			if (x != (sint16)0x8000) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6C0; // Can't buy construction rights here...
 				game_do_command(
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 					1,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
 					0x20F,
 					GAME_COMMAND_BUY_LAND_RIGHTS,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
 					);
 			}
 		}
@@ -972,13 +972,13 @@ static void window_park_entrance_tooldrag()
 				if (x != (sint16)0x8000) {
 					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6BD; // Can't buy land...
 					game_do_command(
-						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 						1,
-						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
 						0x00E,
 						GAME_COMMAND_BUY_LAND_RIGHTS,
-						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
-						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
 						);
 				}
 			}
@@ -986,13 +986,13 @@ static void window_park_entrance_tooldrag()
 				if (x != (sint16)0x8000) {
 					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6C0; // Can't buy construction rights here...
 					game_do_command(
-						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 						1,
-						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
 						0x20F,
 						GAME_COMMAND_BUY_LAND_RIGHTS,
-						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
-						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
 						);
 				}
 			}
