@@ -721,8 +721,21 @@ void sub_688485(){
 
 }
 
-int sub_0x686806(int eax, int image_id, int ecx, int edx, sint16 di, sint16 si){
-	int ebp = (eax >> 8) & 0xFF;
+int sub_0x686806(int eax, int image_id, int ecx, int edx, sint16 si, sint16 di);
+
+int sub_98197C(int eax, int image_id, int ecx, int edx, sint16 si, sint16 di, uint32 rotation){
+	switch (rotation){
+	case 0:
+		return sub_0x686806(eax, image_id, ecx, edx, si, di);
+	default:
+		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
+			eax, image_id, ecx, edx, si, di, 0);
+		return 1;
+	}
+}
+
+int sub_0x686806(int eax, int image_id, int ecx, int edx, sint16 si, sint16 di){
+	int ebp = (sint8)((eax >> 8) & 0xFF);
 	edx <<= 16;
 	ebp += RCT2_GLOBAL(0x9DEA56, uint16);
 	RCT2_GLOBAL(0xF1AD28, paint_struct*) = 0;
@@ -774,18 +787,20 @@ int sub_0x686806(int eax, int image_id, int ecx, int edx, sint16 di, sint16 si){
 	//686918 not finished
 	ps->other_x = di - 1 + RCT2_GLOBAL(0x9DEA52, sint16) + RCT2_GLOBAL(0x9DE568, sint16);
 	ps->some_x = RCT2_GLOBAL(0x009DEA56, sint16);
+	ps->some_y = edx >> 16;
 	ps->other_y = si - 1 + RCT2_GLOBAL(0x9DEA54, sint16) + RCT2_GLOBAL(0x009DE56C, sint16);
 	ps->var_1A = 0;
 	ps->attached_x = RCT2_GLOBAL(0x9DEA52, sint16) + RCT2_GLOBAL(0x9DE568, sint16);
 	ps->attached_y = RCT2_GLOBAL(0x9DEA54, sint16) + RCT2_GLOBAL(0x009DE56C, sint16);
 	ps->attached_ps = NULL;
 	ps->var_20 = NULL;
-	ps->sprite_type = RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint16);
+	ps->sprite_type = RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8);
+	ps->var_29 = RCT2_GLOBAL(0x9DE571, uint8);
 	ps->map_x = RCT2_GLOBAL(0x9DE574, uint16);
 	ps->map_y = RCT2_GLOBAL(0x9DE576, uint16);
 	ps->mapElement = RCT2_GLOBAL(0x9DE578, rct_map_element*);
 
-	RCT2_GLOBAL(0xF1AD28, uint32) = ps;
+	RCT2_GLOBAL(0xF1AD28, paint_struct*) = ps;
 
 	di = ps->attached_y + ps->attached_x;
 	if (di < 0)
@@ -835,8 +850,7 @@ void viewport_litter_paint_setup(rct_litter* litter, int image_direction, int he
 	RCT2_GLOBAL(0x9DEA54, uint16) = 0xFFFC;
 	RCT2_GLOBAL(0x9DEA56, uint16) = height + 2;
 
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-		0xFF00, image_id, 0, height, 4, 4, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	sub_98197C(0xFF00, image_id, 0, height, 4, 4, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 }
 
 
@@ -1101,8 +1115,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 
 	uint16 ax = is_exit ? 0x2300 : 0x3300;
 
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-		ax, image_id, 0, height, 2, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	sub_98197C(ax, image_id, 0, height, 2, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 
 	if (transparant_image_id){
 		if (is_exit){
@@ -1115,8 +1128,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height;
 
-		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-			ax, transparant_image_id, 0, height, 2, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+		sub_98197C(ax, transparant_image_id, 0, height, 2, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 	}
 
 	image_id += 4;
@@ -1125,8 +1137,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 	RCT2_GLOBAL(0x009DEA54, uint16) = 28;
 	RCT2_GLOBAL(0x009DEA56, uint16) = height;
 
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-		ax, image_id, 0, height, 2, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	sub_98197C(ax, image_id, 0, height, 2, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 
 	if (transparant_image_id){
 		transparant_image_id += 4;
@@ -1134,8 +1145,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 		RCT2_GLOBAL(0x009DEA54, uint16) = 28;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height;
 
-		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-			ax, transparant_image_id, 0, height, 2, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+		sub_98197C(ax, transparant_image_id, 0, height, 2, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 	}
 
 	uint32 eax = 0xFFFF0600 | ((height / 16) & 0xFF);
@@ -1239,8 +1249,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height;
 
-		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-			0, image_id, 0, height, 0x1C, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+		sub_98197C(0, image_id, 0, height, 0x1C, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 
 		entrance = (rct_entrance_type*)object_entry_groups[OBJECT_TYPE_PARK_ENTRANCE].chunks[0];
 		image_id = (entrance->image_id + direction * 3) | ghost_id;
@@ -1249,8 +1258,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height + 32;
 
-		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-			0x2F00, image_id, 0, height, 0x1C, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+		sub_98197C(0x2F00, image_id, 0, height, 0x1C, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 
 		if ((direction + 1) & (1 << 1))
 			break;
@@ -1294,8 +1302,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 		RCT2_GLOBAL(0x009DEA54, uint16) = 3;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height;
 
-		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-			0x4F00, image_id, 0, height, di, 0x1A, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+		sub_98197C(0x4F00, image_id, 0, height, di, 0x1A, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 		break;
 	}
 
@@ -1355,8 +1362,7 @@ void viewport_entrance_paint_setup(uint8 direction, int height, rct_map_element*
 			RCT2_GLOBAL(0x009DEA56, sint16) = z;
 			RCT2_GLOBAL(0x009DEA56, uint16) += 64;
 
-			RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-				16, image_id, 16, height, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+			sub_98197C(16, image_id, 16, height, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 		}
 	}
 
@@ -1407,13 +1413,11 @@ void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* m
 			0x20000000;
 	}
 
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-		0x1500, image_id, 0, height, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	sub_98197C(0x1500, image_id, 0, height, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 	RCT2_GLOBAL(0x9DEA52, uint32) = RCT2_ADDRESS(0x98D888, uint32)[direction * 2];
 
 	image_id++;
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-		0x1500, image_id, 0, height, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	sub_98197C(0x1500, image_id, 0, height, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 
 	// Opposite direction
 	direction ^= 2;
@@ -1519,9 +1523,7 @@ void map_element_paint_setup(int x, int y)
 			RCT2_GLOBAL(0x9DEA54, uint16) = 0;
 			RCT2_GLOBAL(0x9DEA56, uint16) = arrowZ + 18;
 
-			RCT2_CALLPROC_X(
-				(int)RCT2_ADDRESS(0x0098197C, uint32*)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)],
-				0xFF00, imageId, y & 0xFF00, arrowZ, 32, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32));
+			sub_98197C(0xFF00, imageId, y & 0xFF00, arrowZ, 32, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32));
 		}
 		int bx = dx + 52;
 
