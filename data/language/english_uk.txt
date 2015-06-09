@@ -3613,7 +3613,7 @@ STR_5276    :Enter the name of an object to search for
 STR_5277    :Clear
 STR_5278    :Sandbox mode
 STR_5279    :Sandbox mode off
-STR_5280    :{SMALLFONT}{BLACK}Allow editing land ownership settings through the Map window{NEWLINE}and other options that are normally restricted to the Scenario Editor
+STR_5280    :{SMALLFONT}{BLACK}Allow editing land ownership settings through the Map window and other options that are normally restricted to the Scenario Editor
 STR_5281    :{SMALLFONT}{BLACK}Features
 STR_5282    :RCT1 Ride Open/Close Lights
 STR_5283    :RCT1 Park Open/Close Lights
