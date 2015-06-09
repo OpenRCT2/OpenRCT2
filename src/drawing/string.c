@@ -1110,5 +1110,35 @@ void draw_string_centred_underline(rct_drawpixelinfo *dpi, int format, void *arg
  */
 void draw_string_centred_raw(rct_drawpixelinfo *dpi, int x, int y, int numLines, char *text)
 {
-	RCT2_CALLPROC_X(0x006C1DB7, 0, 0, x, y, (int)text, (int)dpi, numLines);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	gfx_draw_string(dpi, (char*)0x009C383D, 0, dpi->x, dpi->y);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
+
+	for (int i = 0; i <= numLines; i++) {
+		int width = gfx_get_string_width(text);
+		gfx_draw_string(dpi, text, 254, x - (width / 2), y);
+
+		char c;
+		while ((c = *text++) != 0) {
+			if (c >= 32) continue;
+			if (c <= 4) {
+				text++;
+				continue;
+			}
+			if (c <= 16) continue;
+			text += 2;
+			if (c <= 22) continue;
+			text += 2;
+		}
+
+		y += 10;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) <= 224)
+			continue;
+		
+		y -= 4;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) <= 448)
+			continue;
+
+		y += 12;
+	}
 }
