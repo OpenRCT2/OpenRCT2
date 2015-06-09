@@ -27,6 +27,7 @@
 #include "../sprites.h"
 #include "../world/scenery.h"
 #include "../interface/themes.h"
+#include "../cheats.h"
 
 
 enum WINDOW_MAP_WIDGET_IDX {
@@ -135,10 +136,6 @@ static void* window_map_events[] = {
 	window_map_paint,
 	window_map_scrollpaint
 };
-
-// Cheat: in-game land ownership editor
-int g_ingame_land_ownership_editor;
-extern void toggle_ingame_land_ownership_editor();
 
 /**
 *
@@ -546,7 +543,7 @@ static void window_map_invalidate()
 	w->widgets[WIDX_MAP].right = w->width - 4;
 
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) ||
-		g_ingame_land_ownership_editor)
+		gSandboxMode)
 		w->widgets[WIDX_MAP].bottom = w->height - 1 - 72;
 	else if (w->selected_tab == 1)
 		w->widgets[WIDX_MAP].bottom = w->height - 1 - 44;
@@ -593,7 +590,7 @@ static void window_map_invalidate()
 
 
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) ||
-		g_ingame_land_ownership_editor) {
+		gSandboxMode) {
 		// scenario editor: build park entrance selected, show rotate button
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == WC_MAP &&
@@ -684,7 +681,7 @@ static void window_map_paint()
 	}
 
 	if (!((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
-		|| g_ingame_land_ownership_editor)) {
+		|| gSandboxMode)) {
 		// render the map legend
 		if (w->selected_tab != 0) {
 			x = w->x + 4;
@@ -972,10 +969,4 @@ static void window_map_center_on_view_point()
 	w_map->scrolls[0].h_left = cx;
 	w_map->scrolls[0].v_top = dx;
 	widget_scroll_update_thumbs(w_map, WIDX_MAP);
-}
-
-// In-game land ownership editor cheat
-void toggle_ingame_land_ownership_editor()
-{
-	g_ingame_land_ownership_editor = !g_ingame_land_ownership_editor;
 }

@@ -33,6 +33,7 @@
 #include "map_animation.h"
 #include "park.h"
 #include "scenery.h"
+#include "../cheats.h"
 
 const rct_xy16 TileDirectionDelta[] = {
 	{ -32,   0 },
@@ -656,7 +657,7 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 		return;
 	}
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !(*ebx & 0x40)) {
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !(*ebx & 0x40) && !gSandboxMode) {
 		// Check if allowed to remove item
 		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL) {
 			if (entry->small_scenery.height > 64) {
@@ -782,7 +783,7 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 		currentTile.y += firstTile.y;
 		currentTile.z += firstTile.z;
 
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)){
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gSandboxMode){
 			if (!map_is_location_owned(currentTile.x, currentTile.y, currentTile.z)){
 				*ebx = MONEY32_UNDEFINED;
 				return;
@@ -847,7 +848,7 @@ void game_command_remove_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
-	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned(x, y, z - 16)){
+	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gSandboxMode && !map_is_location_owned(x, y, z - 16)){
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
@@ -894,7 +895,7 @@ void game_command_set_scenery_colour(int* eax, int* ebx, int* ecx, int* edx, int
 	RCT2_GLOBAL(0x009DEA5E, uint16) = x + 16;
 	RCT2_GLOBAL(0x009DEA60, uint16) = y + 16;
 	RCT2_GLOBAL(0x009DEA62, uint16) = z;
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)){
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gSandboxMode){
 		if (!map_is_location_owned(x, y, z)){
 			*ebx = MONEY32_UNDEFINED;
 			return;
@@ -944,7 +945,7 @@ void game_command_set_fence_colour(int* eax, int* ebx, int* ecx, int* edx, int* 
 	RCT2_GLOBAL(0x009DEA5E, uint16) = x + 16;
 	RCT2_GLOBAL(0x009DEA60, uint16) = y + 16;
 	RCT2_GLOBAL(0x009DEA62, uint16) = z;
-	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)){
+	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gSandboxMode){
 		if(!map_is_location_in_park(x, y)){
 			*ebx = MONEY32_UNDEFINED;
 			return;
@@ -1071,7 +1072,7 @@ void game_command_set_large_scenery_colour(int* eax, int* ebx, int* ecx, int* ed
 		x3 += x2;
 		y3 += y2;
 		z3 += z2;
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)){
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gSandboxMode){
 			if (!map_is_location_owned(x3, y3, z3)){
 				*ebx = MONEY32_UNDEFINED;
 				return;
@@ -1115,7 +1116,7 @@ void game_command_set_banner_colour(int* eax, int* ebx, int* ecx, int* edx, int*
 	RCT2_GLOBAL(0x009DEA60, uint16) = y + 16;
 	RCT2_GLOBAL(0x009DEA62, uint16) = z;
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)){
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gSandboxMode){
 		if (!map_is_location_owned(x, y, z - 16)){
 			*ebx = MONEY32_UNDEFINED;
 			return;
@@ -1322,7 +1323,7 @@ money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surface_s
 		return cur_cost;
 	}
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES){
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gSandboxMode && RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES){
 		cur_cost += RCT2_GLOBAL(0x9E32B4, uint32);
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
@@ -1336,7 +1337,7 @@ money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surface_s
 			if (x > 0x1FFF)continue;
 			if (y > 0x1FFF)continue;
 
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)){
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gSandboxMode){
 				if (!map_is_location_in_park(x, y))continue;
 			}
 			
@@ -1438,7 +1439,7 @@ static money32 sub_66397F(int flags, int x, int y, int height, int style, int se
 		return MONEY32_UNDEFINED;
 	}
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)) {
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gSandboxMode) {
 		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
 			return MONEY32_UNDEFINED;
@@ -1468,7 +1469,7 @@ static money32 sub_66397F(int flags, int x, int y, int height, int style, int se
 		return MONEY32_UNDEFINED;
 	}
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)) {
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gSandboxMode) {
 		if (!map_is_location_in_park(x, y)) {
 			return MONEY32_UNDEFINED;
 		}
@@ -1812,7 +1813,7 @@ void game_command_remove_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
-	if(!(*ebx & 0x40) && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned(x, y, base_height * 8)){
+	if(!(*ebx & 0x40) && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gSandboxMode && !map_is_location_owned(x, y, base_height * 8)){
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
@@ -1878,7 +1879,7 @@ void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 					return;
 				}
 			}
-			if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned(x, y, base_height * 16)){
+			if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gSandboxMode && !map_is_location_owned(x, y, base_height * 16)){
 				*ebx = MONEY32_UNDEFINED;
 				return;
 			}
@@ -1987,7 +1988,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 				if(F64EC8 == 0){
 					F64EC8 = base_height2;
 				}
-				if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned(x, y, F64EC8)){
+				if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gSandboxMode && !map_is_location_owned(x, y, F64EC8)){
 					*ebx = MONEY32_UNDEFINED;
 					return;
 				}
@@ -2472,3 +2473,4 @@ void sub_6A7594()
 {
 	RCT2_GLOBAL(0x00F3EFF4, uint32) = 0x00F3EFF8;
 }
+

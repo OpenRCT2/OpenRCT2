@@ -31,6 +31,7 @@
 #include "../world/map.h"
 #include "dropdown.h"
 #include "../interface/themes.h"
+#include "../cheats.h"
 
 enum {
 	PATH_CONSTRUCTION_MODE_LAND,
@@ -168,6 +169,8 @@ static void footpath_get_next_path_info(int *type, int *x, int *y, int *z, int *
 void window_footpath_open()
 {
 	rct_window* window;
+	sint16 pathId;
+	rct_path_type *pathType;
 
 	// Check if window is already open
 	window = window_bring_to_front_by_class(WC_FOOTPATH);
@@ -203,6 +206,13 @@ void window_footpath_open()
 	window_init_scroll_widgets(window);
 	window_push_others_right(window);
 	show_gridlines();
+
+	// If a restricted path was selected when the game is no longer in Sandbox mode, reset it
+	pathId = RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16);
+	pathType = g_pathTypeEntries[pathId];
+	if((pathType->flags & 4) && !gSandboxMode) {
+		RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = 0;
+	}
 
 	tool_cancel();
 	RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) = PATH_CONSTRUCTION_MODE_LAND;
@@ -348,7 +358,7 @@ static void window_footpath_dropdown()
 		pathId = RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16);
 	} else {
 		int flags = 4;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gSandboxMode)
 			flags = 0;
 
 		j = 0;
@@ -357,6 +367,9 @@ static void window_footpath_dropdown()
 			if (pathType == (rct_path_type*)-1)
 				continue;
 			if (pathType->flags & flags)
+				continue;
+			// Skip queue lines of scenario editor-only paths (only applicable when the game is in sandbox mode)
+			if(widgetIndex == WIDX_QUEUELINE_TYPE && pathType->flags & 4)
 				continue;
 
 			if (j == pathId)
@@ -538,11 +551,17 @@ static void window_footpath_invalidate()
 
 	int pathImage = 71 + pathType->image;
 	window_footpath_widgets[WIDX_FOOTPATH_TYPE].image = pathImage;
-	window_footpath_widgets[WIDX_QUEUELINE_TYPE].image = pathImage + 1;
-	window_footpath_widgets[WIDX_QUEUELINE_TYPE].type = WWT_FLATBTN;
 
-	// Disable queue in if in editor
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+	// Disable queue line button when the path is scenario editor-only (and therefore usually shouldn't have one)
+	if(!(pathType->flags & 4)) {
+		window_footpath_widgets[WIDX_QUEUELINE_TYPE].image = pathImage + 1;
+		window_footpath_widgets[WIDX_QUEUELINE_TYPE].type = WWT_FLATBTN;
+	} else {
+		window_footpath_widgets[WIDX_QUEUELINE_TYPE].type = WWT_EMPTY;
+	}	
+
+	// Disable queue line button if in Scenario Editor
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
 		window_footpath_widgets[WIDX_QUEUELINE_TYPE].type = WWT_EMPTY;
 }
 
@@ -606,7 +625,8 @@ static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget
 
 	numPathTypes = 0;
 	flags = 4;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+	// If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor, but not their queues (since these usually shouldn't have one)
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || (gSandboxMode && !showQueues))
 		flags = 0;
 
 	for (i = 0; i < 16; i++) {

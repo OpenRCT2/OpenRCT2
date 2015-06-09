@@ -31,6 +31,7 @@
 #include "../world/sprite.h"
 #include "../input.h"
 #include "viewport.h"
+#include "../cheats.h"
 
 static void viewport_interaction_remove_scenery(rct_map_element *mapElement, int x, int y);
 static void viewport_interaction_remove_footpath(rct_map_element *mapElement, int x, int y);
@@ -301,7 +302,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		return info->type;
 
 	case VIEWPORT_INTERACTION_ITEM_PARK:
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR))
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gSandboxMode)
 			break;
 
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
