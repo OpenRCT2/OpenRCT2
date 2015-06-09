@@ -350,6 +350,21 @@ static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int file
 				return 1;
 			}
 		}
+		else if (pluginHeader.total_files != totalFiles) {
+			int fileCount = totalFiles - pluginHeader.total_files;
+			if (fileCount < 0) {
+				log_info("%d object removed... updating object list cache", abs(fileCount));
+			} else {
+				log_info("%d object added... updating object list cache", fileCount);
+			}
+		} else if (pluginHeader.total_file_size != totalFileSize) {
+			log_info("Objects files size changed... updating object list cache");
+		} else if (pluginHeader.date_modified_checksum != fileDateModifiedChecksum) {
+			log_info("Objects files have been updated... updating object list cache");
+		}
+
+		fclose(file);
+		return 0;
 	}
 
 	fclose(file);
