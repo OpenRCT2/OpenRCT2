@@ -911,10 +911,11 @@ static void peep_go_to_ride_entrance(rct_peep* peep, rct_ride* ride){
 	int x = ride->entrances[peep->current_ride_station] & 0xFF;
 	int y = ride->entrances[peep->current_ride_station] >> 8;
 	int z = ride->station_heights[peep->current_ride_station];
-
+	
 	rct_map_element* map_element = ride_get_station_exit_element(ride, x, y, z);
 
-	uint8 direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+	uint8 direction = !map_element ? 0 : map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+
 	x *= 32;
 	y *= 32;
 	x += 16;
@@ -1234,7 +1235,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 
 		rct_map_element* map_element = ride_get_station_exit_element(ride, x, y, z);
 
-		uint8 direction_entrance = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+		uint8 direction_entrance = !map_element ? 0 : map_element->type & MAP_ELEMENT_DIRECTION_MASK;
 
 		x = ride->station_starts[peep->current_ride_station] & 0xFF;
 		y = ride->station_starts[peep->current_ride_station] >> 8;
@@ -1414,7 +1415,7 @@ static void peep_update_ride_sub_state_2_rejoin_queue(rct_peep* peep, rct_ride* 
 
 	rct_map_element* map_element = ride_get_station_exit_element(ride, x, y, z);
 
-	uint8 direction_entrance = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+	uint8 direction_entrance = !map_element ? 0 : map_element->type & MAP_ELEMENT_DIRECTION_MASK;
 
 	x *= 32;
 	y *= 32;
