@@ -827,6 +827,9 @@ void sprite_misc_update_all()
  * dx: z
  */
 void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite* sprite){
+	if (x < 0 || y < 0 || x > 0x1FFF || y > 0x1FFF)
+		x = 0x8000;
+
 	int new_position = x;
 	if (x == (sint16)0x8000)new_position = 0x10000;
 	else{
