@@ -651,15 +651,17 @@ void reset_0x69EBE4(){
 void sprite_clear_all_unused()
 {
 	rct_unk_sprite *sprite;
-	uint16 spriteIndex, nextSpriteIndex;
+	uint16 spriteIndex, nextSpriteIndex, previousSpriteIndex;
 	
 	spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16);
 	while (spriteIndex != SPRITE_INDEX_NULL) {
 		sprite = &g_sprite_list[spriteIndex].unknown;
 		nextSpriteIndex = sprite->next;
+		previousSpriteIndex = sprite->previous;
 		memset(sprite, 0, sizeof(rct_sprite));
 		sprite->sprite_identifier = SPRITE_IDENTIFIER_NULL;
 		sprite->next = nextSpriteIndex;
+		sprite->previous = previousSpriteIndex;
 		sprite->linked_list_type_offset = SPRITE_LINKEDLIST_OFFSET_NULL;
 		sprite->sprite_index = spriteIndex;
 		spriteIndex = nextSpriteIndex;
