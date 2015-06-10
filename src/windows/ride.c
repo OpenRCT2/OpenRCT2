@@ -3519,8 +3519,6 @@ static void window_ride_maintenance_dropdown()
 
 	case WIDX_FORCE_BREAKDOWN:
 		if (dropdownIndex == 0) {
-			// This doesn't work for all breakdown types.
-			//We'll need to decompile the peep_fixing function to figure out how to solve this.
 			switch (ride->breakdown_reason_pending) {
 			case BREAKDOWN_RESTRAINTS_STUCK_CLOSED:
 			case BREAKDOWN_RESTRAINTS_STUCK_OPEN:
