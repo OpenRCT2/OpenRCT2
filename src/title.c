@@ -115,6 +115,9 @@ void title_load()
 	window_staff_list_init_vars();
 	map_update_tile_pointers();
 	reset_0x69EBE4();
+	stop_ride_music();
+	stop_crowd_sound();
+	stop_other_sounds();
 	viewport_init_all();
 	news_item_init_queue();
 	title_create_windows();
