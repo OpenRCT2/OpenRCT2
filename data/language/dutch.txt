@@ -3607,9 +3607,9 @@ STR_5274    :{SMALLFONT}{BLACK}Voetpaden
 STR_5275    :Naar objecten zoeken
 STR_5276    :Voer de naam van een op te zoeken object in:
 STR_5277    :Wissen
-STR_5278    :Landrechten bewerkbaar
-STR_5279    :Normaal Kaart-venster
-STR_5280    :{SMALLFONT}{BLACK}Maakt het mogelijk om landeigendom aan te passen via het Kaart-venster
+STR_5278    :Zandbakmodus
+STR_5279    :Zandbakmodus uit
+STR_5280    :{SMALLFONT}{BLACK}Maakt het aanpassen van landeigendom via het Kaart-venster en andere zaken die normaal gesproken alleen in de Scenariobewerker beschikbaar zijn mogelijk
 STR_5281    :{SMALLFONT}{BLACK}Features
 STR_5282    :Attracties openen/sluiten via RCT1-stoplichten
 STR_5283    :Park openen/sluiten via RCT1-stoplichten
