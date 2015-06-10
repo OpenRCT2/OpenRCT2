@@ -293,8 +293,9 @@ static void window_track_list_scrollmousedown()
 
 	if (w->track_list.var_484 & 1)
 		return;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0)
-		return;
+	// Made it impossible to click a design in pause mode. Since the UI now stays responsive in pause mode, always allow clicking a design.
+	/*if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0)
+		return;*/
 
 	i = window_track_list_get_list_item_index_from_position(x, y);
 	if (i != -1)

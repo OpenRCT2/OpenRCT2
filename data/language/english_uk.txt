@@ -3634,3 +3634,4 @@ STR_5297    :{SMALLFONT}{BLACK}Open park
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :{SMALLFONT}{BLACK}Quick fire staff
+STR_5301    :Allow building in pause mode

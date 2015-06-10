@@ -34,6 +34,7 @@
 #include "park.h"
 #include "scenery.h"
 #include "../cheats.h"
+#include "../config.h"
 
 const rct_xy16 TileDirectionDelta[] = {
 	{ -32,   0 },
@@ -651,7 +652,7 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 	RCT2_GLOBAL(0x009DEA60, uint32) = y + 16;
 	RCT2_GLOBAL(0x009DEA62, uint32) = base_height * 8;
 
-	if (!(*ebx & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
+	if (!(*ebx & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -711,7 +712,7 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 	RCT2_GLOBAL(0x009DEA62, uint16) = z;
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
 	
-	if (!(*ebx & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
+	if (!(*ebx & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -843,7 +844,7 @@ void game_command_remove_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi
  	RCT2_GLOBAL(0x009DEA5E, uint16) = x + 16;
 	RCT2_GLOBAL(0x009DEA60, uint16) = y + 16;
 	RCT2_GLOBAL(0x009DEA62, uint16) = z;
-	if(!(*ebx & 0x40) && RCT2_GLOBAL(0x009DEA6E, uint8) != 0){
+	if(!(*ebx & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode){
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -1319,7 +1320,7 @@ money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surfaceSt
 
 	money32 cost = 0;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
 		cost += RCT2_GLOBAL(0x009E32B4, uint32);
 		return (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) ? 0 : cost;
 	}
@@ -1437,7 +1438,7 @@ const uint8 map_element_lower_styles[5][32] = {
 
 static money32 sub_66397F(int flags, int x, int y, int height, int style, int selectionType)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
@@ -1809,7 +1810,7 @@ void game_command_remove_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 	uint8 direction = *edx;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
-	if(!(*ebx & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0){
+	if(!(*ebx & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode){
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -1865,7 +1866,7 @@ void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 	RCT2_GLOBAL(0x009DEA60, uint32) = y + 16;
 	RCT2_GLOBAL(0x009DEA62, uint32) = base_height * 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
-	if(RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0){
+	if(RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gConfigCheat.build_in_pause_mode){
 		if(sub_68B044() && x < 8192 && y < 8192){
 			rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 			int dl = base_height * 2;
@@ -1963,7 +1964,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	}
 	RCT2_GLOBAL(0x009DEA5E, uint16) += 16;
 	RCT2_GLOBAL(0x009DEA60, uint16) += 16;
-	if(RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0){
+	if(RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gConfigCheat.build_in_pause_mode){
 		if(sub_68B044()){
 			if(RCT2_GLOBAL(0x009D8150, uint8) & 1 || (x <= RCT2_GLOBAL(0x01358836, uint16) && y <= RCT2_GLOBAL(0x01358836, uint16))){
 				rct_scenery_entry* scenery_entry = (rct_scenery_entry*)object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].chunks[scenery_type];
