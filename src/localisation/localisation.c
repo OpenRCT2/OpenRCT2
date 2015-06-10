@@ -301,8 +301,14 @@ void format_currency(char **dest, long long value)
 
 	// Negative sign
 	if (value < 0) {
+		// Round the value away from zero
+		value = (value - 99) / 100;
 		*(*dest)++ = '-';
 		value = -value;
+	}
+	else{
+		//Round the value away from zero
+		value = (value + 99) / 100;
 	}
 
 	// Currency symbol
@@ -314,8 +320,7 @@ void format_currency(char **dest, long long value)
 		*dest += strlen(*dest);
 	}
 
-	// Divide by 100 to get rid of the pennies
-	format_comma_separated_integer(dest, value / 100);
+	format_comma_separated_integer(dest, value);
 
 	// Currency symbol suffix
 	if (currencySpec->affix == CURRENCY_SUFFIX) {
