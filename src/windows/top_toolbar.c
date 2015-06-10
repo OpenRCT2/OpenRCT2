@@ -455,9 +455,6 @@ static void window_top_toolbar_dropdown()
 		case DDIDX_QUIT_TO_MENU:
 			window_close_by_class(WC_MANAGE_TRACK_DESIGN);
 			window_close_by_class(WC_TRACK_DELETE_PROMPT);
-			stop_ride_music();
-			stop_crowd_sound();
-			stop_other_sounds();
 			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
 			break;
 		case DDIDX_EXIT_OPENRCT2:
