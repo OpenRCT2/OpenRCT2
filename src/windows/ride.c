@@ -5530,7 +5530,45 @@ static void window_ride_graphs_scrollpaint()
  */
 static void window_ride_income_toggle_primary_price(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x006ADEFD, 0, 0, 0, 0, (int)w, 0, 0);
+	rct_ride *ride;
+	rct_ride_type *ride_type;
+	uint32 newFlags, shop_item;
+	money16 price;
+
+	ride = GET_RIDE(w->number);
+	ride_type = gRideTypeList[ride->subtype];
+	
+	if (ride->type == RIDE_TYPE_TOILETS) {
+		shop_item = 0x1F;
+	}
+	else {
+		shop_item = ride_type->shop_item;
+		if (shop_item == 0xFFFF)
+			return;
+	}
+	if (shop_item == 0x3 || shop_item == 0x20 || shop_item == 0x21 || shop_item == 0x22) {
+		newFlags = RCT2_GLOBAL(0x01358838, uint32);
+		newFlags ^= (1 << 0x3);
+		game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+
+		newFlags = RCT2_GLOBAL(0x0135934C, uint32);
+		newFlags ^= (1 << 0x0) | (1 << 0x1) | (1 << 0x2);
+		game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+	}
+	else {
+		if (shop_item < 32) {
+			newFlags = RCT2_GLOBAL(0x01358838, uint32);
+			newFlags ^= (1 << shop_item);
+			game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+		}
+		else {
+			newFlags = RCT2_GLOBAL(0x0135934C, uint32);
+			newFlags ^= (1 << (shop_item - 32));
+			game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+		}
+	}
+	price = ride->price;
+	game_do_command(0, 1, 0, w->number, GAME_COMMAND_SET_RIDE_PRICE, price, 0);
 }
 
 /**
@@ -5539,7 +5577,41 @@ static void window_ride_income_toggle_primary_price(rct_window *w)
  */
 static void window_ride_income_toggle_secondary_price(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x006AE06E, 0, 0, 0, 0, (int)w, 0, 0);
+	rct_ride *ride;
+	rct_ride_type *ride_type;
+	uint32 newFlags, shop_item;
+	money16 price;
+
+	ride = GET_RIDE(w->number);
+	ride_type = gRideTypeList[ride->subtype];
+	
+	shop_item = ride_type->shop_item_secondary;
+	if (shop_item == 0xFF)
+		shop_item = RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8);
+
+	if (shop_item == 0x3 || shop_item == 0x20 || shop_item == 0x21 || shop_item == 0x22) {
+		newFlags = RCT2_GLOBAL(0x01358838, uint32);
+		newFlags ^= (1 << 0x3);
+		game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+
+		newFlags = RCT2_GLOBAL(0x0135934C, uint32);
+		newFlags ^= (1 << 0x0) | (1 << 0x1) | (1 << 0x2);
+		game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+	}
+	else {
+		if (shop_item < 32) {
+			newFlags = RCT2_GLOBAL(0x01358838, uint32);
+			newFlags ^= (1 << shop_item);
+			game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+		}
+		else {
+			newFlags = RCT2_GLOBAL(0x0135934C, uint32);
+			newFlags ^= (1 << (shop_item - 32));
+			game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+		}
+	}
+	price = ride->price_secondary;
+	game_do_command(0, 1, 0, (1 << 8) | w->number, GAME_COMMAND_SET_RIDE_PRICE, price, 0);
 }
 
 /**
