@@ -1594,11 +1594,12 @@ void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
 		return;
 
 	money32 cost = map_clear_scenery(
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) / 32,
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) / 32,
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) / 32,
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) / 32,
-		0);
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16),
+		0
+	);
 
 	if (RCT2_GLOBAL(0x00F1AD62, money32) != cost){
 		RCT2_GLOBAL(0x00F1AD62, money32) = cost;
@@ -2475,33 +2476,21 @@ static void window_top_toolbar_tool_down(){
 *  
 *  rct2: 0x006644DD
 */
-money32 selection_raise_land(uint8 flags){
-	int center_x = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) +
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16)
-		) / 2;
-	int center_y = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) +
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
-		) / 2;
+money32 selection_raise_land(uint8 flags)
+{
+	int centreX = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16)) / 2;
+	int centreY = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)) / 2;
+	centreX += 16;
+	centreY += 16;
 
-	center_x += 16;
-	center_y += 16;
-
-	uint32 dx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) |
-		(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) << 16);
-	uint32 bp = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) |
-		(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) << 16);
+	uint32 xBounds = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) & 0xFFFF) | (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) << 16);
+	uint32 yBounds = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) & 0xFFFF) | (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) << 16);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_RAISE_LAND_HERE;
-
 	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) == 0) {
-		int di = 1;
-
-		return game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_EDIT_LAND_SMOOTH, di, bp);
-	}
-	else {
-		int di = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16);
-
-		return game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_RAISE_LAND, di, bp);
+		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_EDIT_LAND_SMOOTH, 1, yBounds);
+	} else {
+		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_RAISE_LAND, RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16), yBounds);
 	}
 }
 
@@ -2509,32 +2498,21 @@ money32 selection_raise_land(uint8 flags){
 *
 *  rct2: 0x006645B3
 */
-money32 selection_lower_land(uint8 flags){
-	int center_x = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) + 
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16)
-		) / 2;
-	int center_y = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) +
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
-		) / 2;
+money32 selection_lower_land(uint8 flags)
+{
+	int centreX = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16)) / 2;
+	int centreY = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)) / 2;
+	centreX += 16;
+	centreY += 16;
 
-	center_x += 16;
-	center_y += 16;
-
-	int dx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) | 
-		(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) << 16);
-	int bp = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) |
-		(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) << 16);
+	uint32 xBounds = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) & 0xFFFF) | (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) << 16);
+	uint32 yBounds = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) & 0xFFFF) | (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) << 16);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_LOWER_LAND_HERE;
-
 	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) == 0) {
-		int di = 0xFFFF;
-
-		return game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_EDIT_LAND_SMOOTH, di, bp);
+		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_EDIT_LAND_SMOOTH, 0xFFFF, yBounds);
 	} else {
-		int di = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16);
-
-		return game_do_command(center_x, flags, center_y, dx, GAME_COMMAND_LOWER_LAND, di, bp);
+		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_LOWER_LAND, RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16), yBounds);
 	}
 }
 
