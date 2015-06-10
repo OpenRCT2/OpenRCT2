@@ -657,7 +657,12 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 			press |= 0x80;
 
 		gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
-		gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, 0x2000000 | 47);
+
+		// Black caption bars look slightly green, this fixes that
+		if (colour == 0)
+			gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, *((char*)(0x0141FC46 + (colour * 8))));
+		else
+			gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, 0x2000000 | 47);
 	}
 
 	// Draw text
