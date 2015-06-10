@@ -124,6 +124,7 @@ enum {
 	WIDX_INSPECTION_INTERVAL = 14,
 	WIDX_INSPECTION_INTERVAL_DROPDOWN,
 	WIDX_LOCATE_MECHANIC,
+	WIDX_FORCE_BREAKDOWN,
 
 	WIDX_TRACK_PREVIEW = 14,
 	WIDX_TRACK_COLOUR_SCHEME,
@@ -306,6 +307,7 @@ static rct_widget window_ride_maintenance_widgets[] = {
 	{ WWT_DROPDOWN,			1,	107,	308,	71,		82,		0,								STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE		},
 	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	72,		81,		876,							STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE		},
 	{ WWT_FLATBTN,			1,	289,	312,	108,	131,	0xFFFFFFFF,						STR_LOCATE_NEAREST_AVAILABLE_MECHANIC_TIP					},
+	{ WWT_FLATBTN,			1,	265,	288,	108,	131,	SPR_NO_ENTRY,					5292														},
 	{ WIDGETS_END },
 };
 
@@ -492,7 +494,7 @@ const uint64 window_ride_page_enabled_widgets[] = {
 	0x0000000003FDBFF4,
 	0x00000000001EFFF4,
 	0x0000019E777DBFF4,
-	0x000000000001FFF4,
+	0x000000000003FFF4,
 	0x00000003F37F3FF4,
 	0x000000000001FFF4,
 	0x000000000007FFF4,
@@ -3340,7 +3342,7 @@ static void window_ride_maintenance_draw_bar(rct_window *w, rct_drawpixelinfo *d
 
 	value = ((186 * ((value * 2) & 0xFF)) >> 8) & 0xFF;
 	if (value > 2) {
-		gfx_fill_rect_inset(dpi, x + 2, y + 1, x + value + 1, y + 8, unk, 0);
+		gfx_fill_rect_inset(dpi, x + 2, y + 1, x + value + 1, y + 7, unk, 0);
 	}
 }
 
@@ -3396,30 +3398,96 @@ static void window_ride_maintenance_resize()
  */
 static void window_ride_maintenance_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
 {
+	rct_ride *ride;
+	rct_ride_type *ride_type;
 	rct_widget *dropdownWidget;
-	int i;
+	int i, j, num_items;
+	uint8 breakdownReason;
+	
+	dropdownWidget = widget;
 
-	if (widgetIndex != WIDX_INSPECTION_INTERVAL_DROPDOWN)
-		return;
+	ride = GET_RIDE(w->number);
+	ride_type = gRideTypeList[ride->subtype];
 
-	dropdownWidget = widget - 1;
-	rct_ride *ride = GET_RIDE(w->number);
+	switch (widgetIndex) {
+	case WIDX_INSPECTION_INTERVAL_DROPDOWN:
+		dropdownWidget--;
+		for (i = 0; i < 7; i++) {
+			gDropdownItemsFormat[i] = 1142;
+			gDropdownItemsArgs[i] = STR_EVERY_10_MINUTES + i;
+		}
+		window_dropdown_show_text_custom_width(
+			w->x + dropdownWidget->left,
+			w->y + dropdownWidget->top,
+			dropdownWidget->bottom - dropdownWidget->top + 1,
+			w->colours[1],
+			DROPDOWN_FLAG_STAY_OPEN,
+			7,
+			widget->right - dropdownWidget->left
+		);
 
-	for (i = 0; i < 7; i++) {
-		gDropdownItemsFormat[i] = 1142;
-		gDropdownItemsArgs[i] = STR_EVERY_10_MINUTES + i;
+		gDropdownItemsChecked = (1 << ride->inspection_interval);
+		break;
+
+	case WIDX_FORCE_BREAKDOWN:
+		num_items = 1;
+		for (j = 0; j < 3; j++) {
+			if (ride_type->ride_type[j] != 0xFF)
+				break;
+		}
+		gDropdownItemsFormat[0] = 1142;
+		gDropdownItemsArgs[0] = 5290;
+		for (i = 0; i < 8; i++) {
+			if (RideAvailableBreakdowns[ride_type->ride_type[j]] & (uint8)(1 << i)) {
+				if (i == BREAKDOWN_BRAKES_FAILURE && (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)) {
+					if (ride->num_vehicles != 1)
+						continue;
+				}
+				gDropdownItemsFormat[num_items] = 1142;
+				gDropdownItemsArgs[num_items] = STR_SAFETY_CUT_OUT + i;
+				num_items++;
+			}
+		}
+		if (num_items == 1) {
+			window_error_open(5289, STR_NONE);
+		}
+		else {
+			window_dropdown_show_text(
+				w->x + dropdownWidget->left,
+				w->y + dropdownWidget->top,
+				dropdownWidget->bottom - dropdownWidget->top + 1,
+				w->colours[1],
+				DROPDOWN_FLAG_STAY_OPEN,
+				num_items
+				);
+			
+			num_items = 1;
+			breakdownReason = ride->breakdown_reason_pending;
+			if (breakdownReason != BREAKDOWN_NONE && (ride->lifecycle_flags & RIDE_LIFECYCLE_BREAKDOWN_PENDING)) {
+				for (i = 0; i < 8; i++) {
+					if (RideAvailableBreakdowns[ride_type->ride_type[j]] & (uint8)(1 << i)) {
+						if (i == BREAKDOWN_BRAKES_FAILURE && (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)) {
+							if (ride->num_vehicles != 1)
+								continue;
+						}
+						if (i == breakdownReason) {
+							gDropdownItemsChecked = (1 << num_items);
+							break;
+						}
+						gDropdownItemsFormat[num_items] = 1142;
+						gDropdownItemsArgs[num_items] = STR_SAFETY_CUT_OUT + i;
+						num_items++;
+					}
+				}
+			}
+
+			if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BREAKDOWN_PENDING) == 0) {
+				*gDropdownItemsDisabled = (1 << 0);
+			}
+		}
+		break;
 	}
-	window_dropdown_show_text_custom_width(
-		w->x + dropdownWidget->left,
-		w->y + dropdownWidget->top,
-		dropdownWidget->bottom - dropdownWidget->top + 1,
-		w->colours[1],
-		DROPDOWN_FLAG_STAY_OPEN,
-		7,
-		widget->right - dropdownWidget->left
-	);
-
-	gDropdownItemsChecked = (1 << ride->inspection_interval);
+	
 }
 
 /**
@@ -3430,17 +3498,72 @@ static void window_ride_maintenance_dropdown()
 {
 	rct_window *w;
 	rct_ride *ride;
+	rct_ride_type *ride_type;
+	rct_vehicle *vehicle;
 	short widgetIndex, dropdownIndex;
+	int i, j, num_items;
 
 	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
-	if (widgetIndex != WIDX_INSPECTION_INTERVAL_DROPDOWN || dropdownIndex == -1)
+	if (dropdownIndex == -1)
 		return;
-
+	
 	ride = GET_RIDE(w->number);
+	ride_type = gRideTypeList[ride->subtype];
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_CHANGE_OPERATING_MODE;
-	game_do_command(0, (dropdownIndex << 8) | 1, 0, (5 << 8) | w->number, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+	switch (widgetIndex) {
+	case WIDX_INSPECTION_INTERVAL_DROPDOWN:
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_CHANGE_OPERATING_MODE;
+		game_do_command(0, (dropdownIndex << 8) | 1, 0, (5 << 8) | w->number, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+		break;
+
+	case WIDX_FORCE_BREAKDOWN:
+		if (dropdownIndex == 0) {
+			switch (ride->breakdown_reason_pending) {
+			case BREAKDOWN_RESTRAINTS_STUCK_CLOSED:
+			case BREAKDOWN_RESTRAINTS_STUCK_OPEN:
+			case BREAKDOWN_DOORS_STUCK_CLOSED:
+			case BREAKDOWN_DOORS_STUCK_OPEN:
+				vehicle = &(g_sprite_list[ride->vehicles[ride->broken_vehicle]].vehicle);
+				vehicle->var_48 &= ~0x100;
+				break;
+			case BREAKDOWN_VEHICLE_MALFUNCTION:
+				vehicle = &(g_sprite_list[ride->vehicles[ride->broken_vehicle]].vehicle);
+				vehicle->var_48 &= ~0x200;
+				break;
+			}
+			ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
+			window_invalidate_by_number(WC_RIDE, w->number);
+			break;
+		}
+		if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)) {
+			window_error_open(5291, 5287);
+		}
+		else if (ride->status == RIDE_STATUS_CLOSED) {
+			window_error_open(5291, 5288);
+		}
+		else {
+			num_items = 1;
+			for (j = 0; j < 3; j++) {
+				if (ride_type->ride_type[j] != 0xFF)
+					break;
+			}
+			for (i = 0; i < 8; i++) {
+				if (RideAvailableBreakdowns[ride_type->ride_type[j]] & (uint8)(1 << i)) {
+					if (i == BREAKDOWN_BRAKES_FAILURE && (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)) {
+						if (ride->num_vehicles != 1)
+							continue;
+					}
+					if (num_items == dropdownIndex)
+						break;
+					num_items++;
+				}
+			}
+			ride_prepare_breakdown(w->number, i);
+		}
+		break;
+	}
+
 }
 
 /**
@@ -3490,6 +3613,14 @@ static void window_ride_maintenance_invalidate()
 
 	window_ride_anchor_border_widgets(w);
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
+
+	if (gConfigGeneral.debugging_tools) {
+		window_ride_maintenance_widgets[WIDX_FORCE_BREAKDOWN].type = WWT_FLATBTN;
+	}
+	else {
+		window_ride_maintenance_widgets[WIDX_FORCE_BREAKDOWN].type = WWT_EMPTY;
+
+	}
 }
 
 /**

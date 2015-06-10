@@ -134,7 +134,7 @@ static int ride_get_new_breakdown_problem(rct_ride *ride);
 static void ride_inspection_update(rct_ride *ride);
 static void ride_mechanic_status_update(int rideIndex, int mechanicStatus);
 static void ride_music_update(int rideIndex);
-static void ride_prepare_breakdown(int rideIndex, int breakdownReason);
+void ride_prepare_breakdown(int rideIndex, int breakdownReason);
 static void ride_shop_connected(rct_ride* ride, int ride_idx);
 static void ride_spiral_slide_update(rct_ride *ride);
 static void ride_update(int rideIndex);
@@ -1655,7 +1655,7 @@ static int ride_get_new_breakdown_problem(rct_ride *ride)
 			return -1;
 
 	// If brakes failure is disabled, also take it out of the equation (see above comment why)
-	if(gConfigCheat.disable_brakes_failure)
+	if (gConfigCheat.disable_brakes_failure)
 		return -1;
 
 	monthsOld = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint8) - ride->build_date;
@@ -1669,7 +1669,7 @@ static int ride_get_new_breakdown_problem(rct_ride *ride)
  *
  *  rct2: 0x006B7348
  */
-static void ride_prepare_breakdown(int rideIndex, int breakdownReason)
+void ride_prepare_breakdown(int rideIndex, int breakdownReason)
 {
 	int i;
 	rct_ride *ride;
