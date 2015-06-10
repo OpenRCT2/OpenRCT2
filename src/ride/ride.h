@@ -802,6 +802,7 @@ int sub_6C683D(int* x, int* y, int* z, int direction, int type, uint16 extra_par
 void ride_set_map_tooltip(rct_map_element *mapElement);
 int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId);
 void ride_music_update_final();
+void ride_prepare_breakdown(int rideIndex, int breakdownReason);
 rct_map_element *ride_get_station_start_track_element(rct_ride *ride, int stationIndex);
 rct_map_element *ride_get_station_exit_element(rct_ride *ride, int x, int y, int z);
 void ride_set_status(int rideIndex, int status);
@@ -813,6 +814,7 @@ int ride_get_refund_price(int ride_id);
 void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+
 
 int get_var_10E_unk_1(rct_ride* ride);
 int get_var_10E_unk_2(rct_ride* ride);

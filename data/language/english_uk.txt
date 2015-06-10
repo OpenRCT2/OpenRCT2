@@ -3618,3 +3618,11 @@ STR_5281    :{SMALLFONT}{BLACK}Features
 STR_5282    :RCT1 Ride Open/Close Lights
 STR_5283    :RCT1 Park Open/Close Lights
 STR_5284    :RCT1 Scenario Selection Font
+STR_5285    :EXPLODE!!!
+STR_5286    :{MEDIUMFONT}{BLACK}Makes guests explode
+STR_5287    :Ride is already broken down
+STR_5288    :Ride is closed
+STR_5289    :No breakdowns available for this ride
+STR_5290    :Fix ride
+STR_5291    :Can't force breakdown
+STR_5292    :{SMALLFONT}{BLACK}Force a breakdown
