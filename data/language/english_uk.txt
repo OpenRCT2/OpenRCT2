@@ -3626,3 +3626,4 @@ STR_5289    :No breakdowns available for this ride
 STR_5290    :Fix ride
 STR_5291    :Can't force breakdown
 STR_5292    :{SMALLFONT}{BLACK}Force a breakdown
+STR_5293    :Allow building in pause mode

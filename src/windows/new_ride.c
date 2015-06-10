@@ -654,8 +654,9 @@ static void window_new_ride_scrollmousedown()
 
 	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0)
-		return;
+	// Made it impossible to click a ride in pause mode. Since the UI now stays responsive in pause mode, always allow clicking a ride.
+	/*if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0)
+		return;*/
 
 	item = window_new_ride_scroll_get_ride_list_item_at(w, x, y);
 	if (item.type == 255 && item.entry_index == 255)

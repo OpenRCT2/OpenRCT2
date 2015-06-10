@@ -20,6 +20,7 @@
 
 #include "../addresses.h"
 #include "../audio/audio.h"
+#include "../config.h"
 #include "../game.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
@@ -3181,8 +3182,8 @@ void game_command_place_track(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	RCT2_GLOBAL(0x009DEA62, sint16) = z;
 
 	if (!(flags & (1 << 3))){
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0){
-			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 2214;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode){
+			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
