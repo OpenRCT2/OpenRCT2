@@ -1718,7 +1718,7 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 		sint16 water_height_z = z >> 16;
 		sint16 base_height_z = z;
 		z = water_height_z;
-		if (z != 0)
+		if (z == 0)
 			z = base_height_z;
 		RCT2_GLOBAL(0x009DEA5E, uint32) = x;
 		RCT2_GLOBAL(0x009DEA60, uint32) = y;
