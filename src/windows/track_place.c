@@ -485,7 +485,7 @@ static void window_track_place_toolupdate()
 
 	// Get base Z position
 	z = window_track_place_get_base_z(x, y);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gConfigCheat.build_in_pause_mode) {
 		window_track_place_clear_provisional();
 		
 		// Try increasing Z until a feasible placement is found

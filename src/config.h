@@ -156,6 +156,7 @@ typedef struct {
 	uint8 disable_brakes_failure;
 	uint8 disable_all_breakdowns;
 	uint8 unlock_all_prices;
+	uint8 build_in_pause_mode;
 } cheat_configuration;
 
 typedef struct {
