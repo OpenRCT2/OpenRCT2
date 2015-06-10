@@ -99,6 +99,8 @@ void window_staff_fire_prompt_open(rct_peep* peep){
 
 	window_init_scroll_widgets(w);
 
+	colour_scheme_update(w);
+
 	w->flags |= WF_TRANSPARENT;
 	w->number = peep->sprite_index;
 }
