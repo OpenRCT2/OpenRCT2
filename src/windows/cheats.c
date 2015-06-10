@@ -58,6 +58,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_TAB_4,
 	WIDX_HIGH_MONEY,
 	WIDX_PARK_ENTRANCE_FEE,
+	WIDX_CLEAR_LOAN,
 	WIDX_HAPPY_GUESTS = 8, //Same as HIGH_MONEY as it is also the 8th widget but on a different page
 	WIDX_TRAM_GUESTS,
 	WIDX_NAUSEA_GUESTS,
@@ -117,6 +118,7 @@ static rct_widget window_cheats_money_widgets[] = {
 	{ WWT_TAB,				1,	96,			126,	17,		43,			0x2000144E,					STR_RIDE_CHEATS_TIP },		// tab 4
 	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(1),	HPL(1),		STR_CHEAT_5K_MONEY,			STR_NONE},					// high money
 	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(3),	HPL(3),		STR_CHEAT_PAY_ENTRANCE,		STR_NONE},					// Park Entrance Fee Toggle	
+	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0), YPL(5), HPL(5),		STR_CHEAT_CLEAR_LOAN,		STR_NONE },					// Clear loan
 	{ WIDGETS_END },
 };
 
@@ -332,7 +334,7 @@ static void* window_cheats_page_events[] = {
 };
 
 static uint32 window_cheats_page_enabled_widgets[] = {
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_PARK_ENTRANCE_FEE),
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_PARK_ENTRANCE_FEE) | (1 << WIDX_CLEAR_LOAN),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HAPPY_GUESTS) | (1 << WIDX_TRAM_GUESTS) | (1 << WIDX_NAUSEA_GUESTS) | (1 << WIDX_EXPLODE_GUESTS),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO) | (1 << WIDX_UNLOCK_ALL_PRICES) | (1 << WIDX_SANDBOX_MODE),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_RENEW_RIDES) | (1 << WIDX_REMOVE_SIX_FLAGS) | (1 << WIDX_MAKE_DESTRUCTIBLE) | (1 << WIDX_FIX_ALL) | (1 << WIDX_FAST_LIFT_HILL) | (1 << WIDX_DISABLE_BRAKES_FAILURE) | (1 << WIDX_DISABLE_ALL_BREAKDOWNS)
@@ -473,13 +475,6 @@ static void cheat_make_destructible()
 	window_invalidate_by_class(WC_RIDE);
 }
 
-static void cheat_clear_loan()
-{
-	// TODO, this sets the loan but stops loan borrowing from working, possible due to cheat detection stuff
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = MONEY(0,00);
-	window_invalidate_by_class(WC_FINANCES);
-}
-
 static void cheat_increase_money(money32 amount)
 {
 	money32 currentMoney;
@@ -493,6 +488,17 @@ static void cheat_increase_money(money32 amount)
 
 	window_invalidate_by_class(WC_FINANCES);
 	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+}
+
+static void cheat_clear_loan()
+{
+	// First give money
+	cheat_increase_money(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32));
+
+	// Then pay the loan
+	money32 newLoan;
+	newLoan = MONEY(0, 00);
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, newLoan, GAME_COMMAND_SET_CURRENT_LOAN, 0, 0);
 }
 
 static void cheat_generate_guests(int count)
@@ -575,6 +581,9 @@ static void window_cheats_money_mouseup()
 		break;
 	case WIDX_HIGH_MONEY:
 		cheat_increase_money(CHEATS_MONEY_INCREMENT);
+		break;
+	case WIDX_CLEAR_LOAN:
+		cheat_clear_loan();
 		break;
 	case WIDX_PARK_ENTRANCE_FEE:
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_PARK_FREE_ENTRY;
@@ -795,6 +804,7 @@ static void window_cheats_paint()
 	if (w->page == WINDOW_CHEATS_PAGE_MONEY){
 		gfx_draw_string_left(dpi, STR_CHEAT_TIP_5K_MONEY,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
 		gfx_draw_string_left(dpi, STR_CHEAT_TIP_PAY_ENTRY,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_TIP_CLEAR_LOAN,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(4) + TXTO);
 	}
 	else if (w->page == WINDOW_CHEATS_PAGE_GUESTS){
 		gfx_draw_string_left(dpi, STR_CHEAT_TIP_HAPPY_GUESTS,		NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
