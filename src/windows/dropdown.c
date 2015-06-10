@@ -54,6 +54,7 @@ uint16 gDropdownItemsFormat[64];
 sint64 gDropdownItemsArgs[64];
 // Replaces 0x009DED38
 uint32 gDropdownItemsChecked;
+uint32 *gDropdownItemsDisabled = RCT2_ADDRESS(0x009DED34, uint32);
 
 static void window_dropdown_emptysub() { }
 static void window_dropdown_paint();

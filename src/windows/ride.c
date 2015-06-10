@@ -3463,7 +3463,7 @@ static void window_ride_maintenance_mousedown(int widgetIndex, rct_window *w, rc
 			
 			num_items = 1;
 			breakdownReason = ride->breakdown_reason_pending;
-			if (breakdownReason != BREAKDOWN_NONE && (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING))) {
+			if (breakdownReason != BREAKDOWN_NONE && (ride->lifecycle_flags & RIDE_LIFECYCLE_BREAKDOWN_PENDING)) {
 				for (i = 0; i < 8; i++) {
 					if (RideAvailableBreakdowns[ride_type->ride_type[j]] & (uint8)(1 << i)) {
 						if (i == BREAKDOWN_BRAKES_FAILURE && (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)) {
@@ -3479,6 +3479,15 @@ static void window_ride_maintenance_mousedown(int widgetIndex, rct_window *w, rc
 						num_items++;
 					}
 				}
+			}
+
+			if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BREAKDOWN_PENDING) == 0 ||
+				breakdownReason == BREAKDOWN_VEHICLE_MALFUNCTION ||
+				breakdownReason == BREAKDOWN_RESTRAINTS_STUCK_CLOSED ||
+				breakdownReason == BREAKDOWN_RESTRAINTS_STUCK_OPEN ||
+				breakdownReason == BREAKDOWN_DOORS_STUCK_CLOSED ||
+				breakdownReason == BREAKDOWN_DOORS_STUCK_OPEN) {
+				*gDropdownItemsDisabled = (1 << 0);
 			}
 		}
 		break;
