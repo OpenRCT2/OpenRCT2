@@ -176,6 +176,7 @@ config_property_definition _generalDefinitions[] = {
 	{ offsetof(general_configuration, no_test_crashes),					"no_test_crashes",				CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(general_configuration, date_format),						"date_format",					CONFIG_VALUE_TYPE_UINT8,		DATE_FORMAT_DMY,				_dateFormatEnum			},
 	{ offsetof(general_configuration, auto_staff_placement),			"auto_staff",					CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(general_configuration, title_sequence),					"title_sequence",				CONFIG_VALUE_TYPE_UINT8,		TITLE_SEQUENCE_OPENRCT2,		NULL					},
 };
 
 config_property_definition _interfaceDefinitions[] = {

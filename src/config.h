@@ -103,6 +103,15 @@ enum {
 	DATE_FORMAT_MDY
 };
 
+enum {
+	TITLE_SEQUENCE_RCT1,
+	TITLE_SEQUENCE_RCT1_AA,
+	TITLE_SEQUENCE_RCT1_AA_LL,
+	TITLE_SEQUENCE_RCT2,
+	TITLE_SEQUENCE_OPENRCT2,
+	TITLE_SEQUENCE_RANDOM
+};
+
 typedef struct {
 	uint8 play_intro;
 	uint8 confirmation_prompt;
@@ -133,6 +142,7 @@ typedef struct {
 	uint8 no_test_crashes;
 	uint8 date_format;
 	uint8 auto_staff_placement;
+	uint8 title_sequence;
 } general_configuration;
 
 typedef struct {

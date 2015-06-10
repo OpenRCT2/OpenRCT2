@@ -21,8 +21,6 @@
 #ifndef _TITLE_H_
 #define _TITLE_H_
 
-extern const int gOldMusic;
-
 void title_load();
 void title_update();
 

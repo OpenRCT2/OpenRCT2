@@ -678,7 +678,7 @@ int game_load_sv6(const char *path)
 	// The rest is the same as in scenario load and play
 	reset_loaded_objects();
 	map_update_tile_pointers();
-	reset_0x69EBE4();// RCT2_CALLPROC_EBPSAFE(0x0069EBE4);
+	reset_0x69EBE4();
 	return 1;
 }
 

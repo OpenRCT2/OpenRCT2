@@ -42,7 +42,6 @@
 #include "world/scenery.h"
 #include "world/sprite.h"
 
-const int gOldMusic = 0;
 static const int gRandomShowcase = 0;
 
 #pragma region Showcase script
@@ -156,9 +155,22 @@ static void title_create_windows()
 static void title_init_showcase()
 {
 	_scriptNoLoadsSinceRestart = 1;
-	_currentScript = _loadedScript = title_script_load();
-	if (gRandomShowcase)
-		_currentScript = generate_random_script();
+
+	SafeFree(_loadedScript);
+
+	_currentScript = _magicMountainScript;
+	switch (gConfigGeneral.title_sequence) {
+	case TITLE_SEQUENCE_OPENRCT2:
+		_loadedScript = title_script_load();
+		if (_loadedScript != NULL)
+			_currentScript = _loadedScript;
+		break;
+	case TITLE_SEQUENCE_RANDOM:
+		_loadedScript = generate_random_script();
+		_currentScript = _loadedScript;
+		break;
+	}
+
 	_scriptWaitCounter = 0;
 	title_update_showcase();
 }
@@ -311,8 +323,12 @@ static void title_do_next_script_opcode()
 				}
 
 				if (script_opcode == TITLE_SCRIPT_RESTART && _scriptNoLoadsSinceRestart) {
-					log_fatal("OpenRCT2 can not currently cope when unable to load title screen scenario.");
-					exit(-1);
+					if (_currentScript != _magicMountainScript) {
+						_currentScript = _magicMountainScript;
+					} else {
+						log_fatal("OpenRCT2 can not currently cope when unable to load title screen scenario.");
+						exit(-1);
+					}
 				}
 			}
 		}
