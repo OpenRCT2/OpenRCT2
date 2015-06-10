@@ -33,6 +33,7 @@
 #include "../world/map.h"
 #include "park.h"
 #include "sprite.h"
+#include "../config.h"
 
 /**
  * In a difficult guest generation scenario, no guests will be generated if over this value.
@@ -1133,7 +1134,7 @@ int map_buy_land_rights(int x0, int y0, int x1, int y1, int setting, int flags)
 	// Game command modified to accept selection size
 	totalCost = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gConfigCheat.build_in_pause_mode) {
 		for (y = y0; y <= y1; y += 32) {
 			for (x = x0; x <= x1; x += 32) {
 				cost = map_buy_land_rights_for_tile(x, y, setting, flags);
