@@ -3342,7 +3342,7 @@ static void window_ride_maintenance_draw_bar(rct_window *w, rct_drawpixelinfo *d
 
 	value = ((186 * ((value * 2) & 0xFF)) >> 8) & 0xFF;
 	if (value > 2) {
-		gfx_fill_rect_inset(dpi, x + 2, y + 1, x + value + 1, y + 8, unk, 0);
+		gfx_fill_rect_inset(dpi, x + 2, y + 1, x + value + 1, y + 7, unk, 0);
 	}
 }
 
@@ -3448,7 +3448,7 @@ static void window_ride_maintenance_mousedown(int widgetIndex, rct_window *w, rc
 				num_items++;
 			}
 		}
-		if (num_items <= 1) {
+		if (num_items == 1) {
 			window_error_open(5289, STR_NONE);
 		}
 		else {
@@ -3460,11 +3460,9 @@ static void window_ride_maintenance_mousedown(int widgetIndex, rct_window *w, rc
 				DROPDOWN_FLAG_STAY_OPEN,
 				num_items
 				);
-
-			breakdownReason = ride->breakdown_reason_pending;
-			//if (breakdownReason == BREAKDOWN_NONE)
-			//	breakdownReason = ride->breakdown_reason;
+			
 			num_items = 1;
+			breakdownReason = ride->breakdown_reason_pending;
 			if (breakdownReason != BREAKDOWN_NONE && (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING))) {
 				for (i = 0; i < 8; i++) {
 					if (RideAvailableBreakdowns[ride_type->ride_type[j]] & (uint8)(1 << i)) {
@@ -3516,6 +3514,8 @@ static void window_ride_maintenance_dropdown()
 
 	case WIDX_FORCE_BREAKDOWN:
 		if (dropdownIndex == 0) {
+			// This doesn't work for all breakdown types.
+			//We'll need to decompile the peep_fixing function to figure out how to solve this.
 			ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
 			window_invalidate_by_number(WC_RIDE, w->number);
 			break;
@@ -3527,7 +3527,7 @@ static void window_ride_maintenance_dropdown()
 			window_error_open(5291, 5288);
 		}
 		else {
-			num_items = 0;
+			num_items = 1;
 			for (j = 0; j < 3; j++) {
 				if (ride_type->ride_type[j] != 0xFF)
 					break;
@@ -3538,15 +3538,12 @@ static void window_ride_maintenance_dropdown()
 						if (ride->num_vehicles != 1)
 							continue;
 					}
-					if (num_items == (dropdownIndex - 1))
+					if (num_items == dropdownIndex)
 						break;
 					num_items++;
 				}
 			}
 			ride_prepare_breakdown(w->number, i);
-			//ride_breakdown_status_update(w->number);
-			//ride_inspection_update(ride);
-			//gForceRideBreakdown[w->number] = i + 1;
 		}
 		break;
 	}
