@@ -3481,12 +3481,7 @@ static void window_ride_maintenance_mousedown(int widgetIndex, rct_window *w, rc
 				}
 			}
 
-			if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BREAKDOWN_PENDING) == 0 ||
-				breakdownReason == BREAKDOWN_VEHICLE_MALFUNCTION ||
-				breakdownReason == BREAKDOWN_RESTRAINTS_STUCK_CLOSED ||
-				breakdownReason == BREAKDOWN_RESTRAINTS_STUCK_OPEN ||
-				breakdownReason == BREAKDOWN_DOORS_STUCK_CLOSED ||
-				breakdownReason == BREAKDOWN_DOORS_STUCK_OPEN) {
+			if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BREAKDOWN_PENDING) == 0) {
 				*gDropdownItemsDisabled = (1 << 0);
 			}
 		}
@@ -3504,6 +3499,7 @@ static void window_ride_maintenance_dropdown()
 	rct_window *w;
 	rct_ride *ride;
 	rct_ride_type *ride_type;
+	rct_vehicle *vehicle;
 	short widgetIndex, dropdownIndex;
 	int i, j, num_items;
 
@@ -3525,6 +3521,19 @@ static void window_ride_maintenance_dropdown()
 		if (dropdownIndex == 0) {
 			// This doesn't work for all breakdown types.
 			//We'll need to decompile the peep_fixing function to figure out how to solve this.
+			switch (ride->breakdown_reason_pending) {
+			case BREAKDOWN_RESTRAINTS_STUCK_CLOSED:
+			case BREAKDOWN_RESTRAINTS_STUCK_OPEN:
+			case BREAKDOWN_DOORS_STUCK_CLOSED:
+			case BREAKDOWN_DOORS_STUCK_OPEN:
+				vehicle = &(g_sprite_list[ride->vehicles[ride->broken_vehicle]].vehicle);
+				vehicle->var_48 &= ~0x100;
+				break;
+			case BREAKDOWN_VEHICLE_MALFUNCTION:
+				vehicle = &(g_sprite_list[ride->vehicles[ride->broken_vehicle]].vehicle);
+				vehicle->var_48 &= ~0x200;
+				break;
+			}
 			ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
 			window_invalidate_by_number(WC_RIDE, w->number);
 			break;
