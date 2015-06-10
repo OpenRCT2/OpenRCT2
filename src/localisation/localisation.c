@@ -299,14 +299,16 @@ void format_currency(char **dest, long long value)
 	int rate = currencySpec->rate;
 	value *= rate;
 
-	// Divide by 100 to get rid of the pennies
-	// Do this before anything else to prevent negative zero.
-	value /= 100;
-
 	// Negative sign
 	if (value < 0) {
+		// Round the value away from zero
+		value = (value - 99) / 100;
 		*(*dest)++ = '-';
 		value = -value;
+	}
+	else{
+		//Round the value away from zero
+		value = (value + 99) / 100;
 	}
 
 	// Currency symbol
