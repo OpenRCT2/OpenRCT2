@@ -660,7 +660,7 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 
 		// Black caption bars look slightly green, this fixes that
 		if (colour == 0)
-			gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, *((char*)(0x0141FC47 + (colour * 8))));
+			gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, *((char*)(0x0141FC46 + (colour * 8))));
 		else
 			gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, 0x2000000 | 47);
 	}
