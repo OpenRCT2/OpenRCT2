@@ -632,6 +632,9 @@ uint16 platform_get_locale_language(){
 	else if (strcmp(langCode, "SVE") == 0){
 		return LANGUAGE_SWEDISH;
 	}
+	else if (strcmp(langCode, "ITA") == 0){
+		return LANGUAGE_ITALIAN;
+	}
 	return LANGUAGE_UNDEFINED;
 }
 
