@@ -26,6 +26,7 @@
 #include "map.h"
 #include "scenery.h"
 #include "../cheats.h"
+#include "../config.h"
 
 void footpath_interrupt_peeps(int x, int y, int z);
 
@@ -296,7 +297,7 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 	RCT2_GLOBAL(0x009DEA60, uint16) = y + 16;
 	RCT2_GLOBAL(0x009DEA62, uint16) = z * 8;
 
-	if (!(flags & FOOTPATH_CONSTRUCTION_FLAG_ALLOW_DURING_PAUSED) && RCT2_GLOBAL(0x009DEA6E, uint8) != 0) {
+	if (!(flags & FOOTPATH_CONSTRUCTION_FLAG_ALLOW_DURING_PAUSED) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
@@ -357,7 +358,7 @@ money32 footpath_remove_real(int x, int y, int z, int flags)
 	RCT2_GLOBAL(0x009DEA60, uint16) = y + 16;
 	RCT2_GLOBAL(0x009DEA62, uint16) = z * 8;
 
-	if (!(flags & FOOTPATH_CONSTRUCTION_FLAG_ALLOW_DURING_PAUSED) && RCT2_GLOBAL(0x009DEA6E, uint8) != 0) {
+	if (!(flags & FOOTPATH_CONSTRUCTION_FLAG_ALLOW_DURING_PAUSED) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
