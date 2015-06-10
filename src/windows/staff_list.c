@@ -32,6 +32,7 @@
 #include "../world/sprite.h"
 #include "dropdown.h"
 #include "../interface/themes.h"
+#include "../sprites.h"
 
 enum {
 	WINDOW_STAFF_LIST_TAB_HANDYMEN,
@@ -39,6 +40,8 @@ enum {
 	WINDOW_STAFF_LIST_TAB_SECURITY,
 	WINDOW_STAFF_LIST_TAB_ENTERTAINERS
 } WINDOW_STAFF_LIST_TAB;
+
+bool _quick_fire_mode = false;
 
 static void window_staff_list_emptysub() { }
 static void window_staff_list_close();
@@ -102,6 +105,7 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
 	WIDX_STAFF_LIST_HIRE_BUTTON,
 	WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON,
 	WIDX_STAFF_LIST_MAP,
+	WIDX_STAFF_LIST_QUICK_FIRE,
 };
 
 static rct_widget window_staff_list_widgets[] = {
@@ -118,6 +122,7 @@ static rct_widget window_staff_list_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	0,	165,	309,	17,		29,		STR_NONE,						STR_HIRE_STAFF_TIP },				// hire button
 	{ WWT_FLATBTN,			1,	267,	290,	46,		69,		5175,							STR_SHOW_PATROL_AREA_TIP },			// show staff patrol area tool
 	{ WWT_FLATBTN,			1,	291,	314,	46,		69,		5192,							STR_SHOW_STAFF_ON_MAP_TIP },		// show staff on map button
+	{ WWT_FLATBTN,			1,	243,	266,	46,		69,		SPR_DEMOLISH,					5300 },		// quick fire staff
 	{ WIDGETS_END },
 };
 
@@ -157,7 +162,8 @@ void window_staff_list_open()
 		(1 << WIDX_STAFF_LIST_HIRE_BUTTON) |
 		(1 << WIDX_STAFF_LIST_UNIFORM_COLOR_PICKER) |
 		(1 << WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON) |
-		(1 << WIDX_STAFF_LIST_MAP);
+		(1 << WIDX_STAFF_LIST_MAP) |
+		(1 << WIDX_STAFF_LIST_QUICK_FIRE);
 
 	window_init_scroll_widgets(window);
 	RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short) = -1;
@@ -169,6 +175,7 @@ void window_staff_list_open()
 	window->max_width = 500;
 	window->max_height = 450;
 	window->flags |= WF_RESIZABLE;
+	_quick_fire_mode = false;
 }
 
 void window_staff_list_cancel_tools(rct_window *w) {
@@ -229,6 +236,10 @@ static void window_staff_list_mouseup()
 		break;
 	case WIDX_STAFF_LIST_MAP:
 		window_map_open();
+		break;
+	case WIDX_STAFF_LIST_QUICK_FIRE:
+		_quick_fire_mode ^= 1;
+		window_invalidate(w);
 		break;
 	}
 }
@@ -404,7 +415,10 @@ void window_staff_list_scrollmousedown() {
 			continue;
 
 		if (i == 0) {
-			window_staff_open(peep);
+			if (_quick_fire_mode)
+				game_do_command(peep->x, 1, peep->y, spriteIndex, GAME_COMMAND_FIRE_STAFF_MEMBER, 0, 0);
+			else
+				window_staff_open(peep);
 			break;
 		}
 
@@ -464,6 +478,10 @@ void window_staff_list_invalidate()
 			((uint32)RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[tabIndex] << 19) +
 			0x600013C3;
 	}
+	if (_quick_fire_mode)
+		w->pressed_widgets |= (1 << WIDX_STAFF_LIST_QUICK_FIRE);
+	else
+		w->pressed_widgets &= ~(1 << WIDX_STAFF_LIST_QUICK_FIRE);
 
 	window_staff_list_widgets[WIDX_STAFF_LIST_BACKGROUND].right = w->width - 1;
 	window_staff_list_widgets[WIDX_STAFF_LIST_BACKGROUND].bottom = w->height - 1;
@@ -600,11 +618,11 @@ void window_staff_list_scrollpaint()
 			}
 
 			if (y + 11 >= dpi->y) {
-				int format = 0x4A7;
+				int format = (_quick_fire_mode ? 5298 : 1191);
 
 				if (i == RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short)) {
 					gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
-					format = 0x4A9;
+					format = (_quick_fire_mode ? 5299 : 1193);
 				}
 
 				RCT2_GLOBAL(0x013CE952, uint16) = peep->name_string_idx;
