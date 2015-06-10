@@ -3631,3 +3631,6 @@ STR_5294    :{SMALLFONT}{BLACK}Test ride/attraction
 STR_5295    :{SMALLFONT}{BLACK}Open ride/attraction
 STR_5296    :{SMALLFONT}{BLACK}Close park
 STR_5297    :{SMALLFONT}{BLACK}Open park
+STR_5298    :{RED}{STRINGID}
+STR_5299    :{LIGHTPINK}{STRINGID}
+STR_5300    :{SMALLFONT}{BLACK}Quick fire staff
