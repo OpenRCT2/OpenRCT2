@@ -3676,3 +3676,4 @@ STR_5339    :Base height
 STR_5340    :Clearance height
 STR_5341    :Flags
 STR_5342    :Choose a map tile
+STR_5343    :Automatically place staff

@@ -19,7 +19,9 @@
 *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
+#include "../scenario.h"
 #include "../interface/viewport.h"
 #include "../localisation/string_ids.h"
 #include "../management/finance.h"
@@ -105,22 +107,10 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		sprite_remove((rct_sprite*)newPeep);
 	} else {
 		move_sprite_to_list((rct_sprite *)newPeep, SPRITE_LINKEDLIST_OFFSET_PEEP);
-
+		
 		newPeep->sprite_identifier = 1;
-		newPeep->sprite_height_negative = 0x0F;
-		newPeep->sprite_height_positive = 5;
-		newPeep->sprite_width = 8;
-		newPeep->sprite_direction = 0;
-
-		sprite_move(_ax, *ecx, _dx, (rct_sprite*)newPeep);
-
-		newPeep->state = PEEP_STATE_PICKED;
-		if (newPeep->x != -32768) {
-			newPeep->state = 0;
-		}
-
 		newPeep->var_45 = 0;
-		newPeep->action = 0xFF;
+		newPeep->action = PEEP_ACTION_NONE_2;
 		newPeep->var_6D = 0;
 		newPeep->action_sprite_image_offset = 0;
 		newPeep->no_action_frame_no = 0;
@@ -141,8 +131,6 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		else if (staff_type == 1) {
 			newPeep->var_C6 = 3;
 		}
-
-		newPeep->staff_type = 0xFF;
 
 		uint16 idSearchSpriteIndex;
 		rct_peep* idSearchPeep;
@@ -180,8 +168,80 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		newPeep->sprite_height_negative = *((uint8*)(_edx + 1));
 		newPeep->sprite_height_positive = *((uint8*)(_edx + 2));
 
-		sprite_move( newPeep->x, newPeep->y, newPeep->z, (rct_sprite*)newPeep);
-		invalidate_sprite((rct_sprite*)newPeep);
+		if ((gConfigGeneral.auto_staff_placement != 0) != ((SDL_GetModState() & KMOD_SHIFT) != 0)) {
+			newPeep->state = PEEP_STATE_FALLING;
+
+			sint16 x, y, z;
+			uint32 count = 0;
+			uint16 sprite_index;
+			rct_peep *guest;
+
+			FOR_ALL_GUESTS(sprite_index, guest)
+				if (guest->state == PEEP_STATE_WALKING) ++count;
+
+			if (count == 0) {
+				count = 0;
+				uint8 i;
+				for (i = 0; i < 4; ++i) {
+					if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] != SPRITE_LOCATION_NULL) ++count;
+				}
+
+				if (count > 0) {
+					uint32 max = ((uint32)0xFFFFFFFF) - (((uint32)0xFFFFFFFF) % count) - 1;
+					if (max + count == 0) max = ((uint32)0xFFFFFFFF);
+					uint32 rand;
+					do {
+						rand = scenario_rand();
+					} while (rand > max);
+					rand %= count;
+
+					for (i = 0; i < 4; ++i) {
+						if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] != SPRITE_LOCATION_NULL) {
+							if (rand == 0) break;
+							--rand;
+						}
+					}
+
+					uint8 dir = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[i];
+					x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[i];
+					y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[i];
+					z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, sint16)[i];
+					x += 16 + ((dir & 1) == 0 ? ((dir & 2) ? 32 : -32) : 0);
+					y += 16 + ((dir & 1) == 1 ? ((dir & 2) ? -32 : 32) : 0);
+				} else {
+					newPeep->state = PEEP_STATE_PICKED;
+					x = newPeep->x;
+					y = newPeep->y;
+					z = newPeep->z;
+				}
+			} else {
+				uint32 max = ((uint32)0xFFFFFFFF) - (((uint32)0xFFFFFFFF) % count) - 1;
+				if (max + count == 0) max = ((uint32)0xFFFFFFFF);
+				uint32 rand;
+				do {
+					rand = scenario_rand();
+				} while (rand > max);
+				rand %= count;
+
+				FOR_ALL_GUESTS(sprite_index, guest)
+					if (guest->state == PEEP_STATE_WALKING) {
+						if (rand == 0) break;
+						--rand;
+					}
+
+				x = guest->x;
+				y = guest->y;
+				z = guest->z;
+			}
+
+			sprite_move(x, y, z + 16, (rct_sprite*)newPeep);
+			invalidate_sprite((rct_sprite*)newPeep);
+		} else {
+			newPeep->state = PEEP_STATE_PICKED;
+
+			sprite_move(newPeep->x, newPeep->y, newPeep->z, (rct_sprite*)newPeep);
+			invalidate_sprite((rct_sprite*)newPeep);
+		}
 
 		newPeep->time_in_park = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
 		newPeep->var_CC = 0xFFFFFFFF;
