@@ -308,7 +308,7 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 
 			if (x_start & ~zoom_mask){
 				no_pixels -= (x_start&~zoom_mask);
-				x_start += (x_start&~zoom_mask);
+				x_start += ~zoom_mask;
 				source_pointer += (x_start&~zoom_mask);
 				if (no_pixels <= 0) continue;
 			}
