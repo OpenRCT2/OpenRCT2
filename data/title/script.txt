@@ -2,13 +2,13 @@
 # WORK IN PROGRESS
 #  ...more to be included and timings to be tweaked
 
-# Axel Putra (AxelP800)
-LOAD axel.sv6
+# Kenton (PFCKrutonium)
+LOAD pfckrutonium1.sv6
 LOCATION 86 80
 WAIT 15
 
 # Nick Drago (ndragortt)
-LOAD nick.sv6
+LOAD achilleshiel.sv6
 
 LOCATION 134 176
 ROTATE 1
