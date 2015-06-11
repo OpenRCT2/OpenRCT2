@@ -839,8 +839,10 @@ int scenario_save(char *path, int flags)
 	rct_viewport *viewport;
 	int viewX, viewY, viewZoom, viewRotation;
 
-	strcpy(gScenarioSaveName, path_get_filename(path));
-	path_remove_extension(gScenarioSaveName);
+	if (strcmp(path_get_filename(path), "autosave.sv6")) {
+		strcpy(gScenarioSaveName, path_get_filename(path));
+		path_remove_extension(gScenarioSaveName);
+	}
 
 	if (flags & 2)
 		log_verbose("saving scenario, %s", path);
