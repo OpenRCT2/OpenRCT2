@@ -1692,7 +1692,7 @@ static void window_ride_main_resize()
 
 	w->flags |= WF_RESIZABLE;
 	int minHeight = 180;
-	if (theme_get_preset()->features.rct1_ride_lights);
+	if (theme_get_preset()->features.rct1_ride_lights)
 		minHeight = 200 + RCT1_LIGHT_OFFSET - (ride_type_has_flag(GET_RIDE(w->number)->type, RIDE_TYPE_FLAG_NO_TEST_MODE) ? 14 : 0);
 	window_set_resize(w, 316, minHeight, 500, 450);
 

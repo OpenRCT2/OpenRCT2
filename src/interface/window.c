@@ -2000,7 +2000,7 @@ rct_string_id window_event_tooltip_call(rct_window* w, int widgetIndex)
 
 int window_event_cursor_call(rct_window* w, int widgetIndex, int x, int y)
 {
-	int eax = widgetIndex, ebx = -1, ecx = x, edx = y, esi = (int)w, edi = &w->widgets[widgetIndex], ebp;
+	int eax = widgetIndex, ebx = -1, ecx = x, edx = y, esi = (int)w, edi = (int)&w->widgets[widgetIndex], ebp;
 	RCT2_CALLFUNC_X(w->event_handlers[WE_CURSOR], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	return ebx;
 }
