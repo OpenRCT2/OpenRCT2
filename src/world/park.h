@@ -62,6 +62,7 @@ void park_update_histories();
 uint8 calculate_guest_initial_happiness(uint8 percentage);
 
 void park_set_open(int open);
+int park_get_entrance_index(int x, int y, int z);
 void park_set_name(const char *name);
 void park_set_entrance_fee(money32 value);
 

@@ -119,8 +119,8 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_AUTOSAVE,
 	WIDX_AUTOSAVE_DROPDOWN,
 	WIDX_ALLOW_SUBTYPE_SWITCHING,
-	WIDX_DEBUGGING_TOOLS,
 	WIDX_TEST_UNFINISHED_TRACKS,
+	WIDX_DEBUGGING_TOOLS,
 
 	// Twitch
 	WIDX_CHANNEL_BUTTON = WIDX_PAGE_START,
@@ -516,6 +516,7 @@ static void window_options_mouseup()
 			gConfigGeneral.debugging_tools ^= 1;
 			config_save_default();
 			window_invalidate(w);
+			window_invalidate_by_class(WC_TOP_TOOLBAR);
 			break;
 		case WIDX_TEST_UNFINISHED_TRACKS:
 			gConfigGeneral.test_unfinished_tracks ^= 1;
