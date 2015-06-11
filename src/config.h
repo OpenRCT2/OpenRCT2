@@ -132,6 +132,7 @@ typedef struct {
 	uint8 test_unfinished_tracks;
 	uint8 no_test_crashes;
 	uint8 date_format;
+	uint8 auto_staff_placement;
 } general_configuration;
 
 typedef struct {

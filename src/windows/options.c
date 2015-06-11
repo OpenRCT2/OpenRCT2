@@ -120,6 +120,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_AUTOSAVE_DROPDOWN,
 	WIDX_ALLOW_SUBTYPE_SWITCHING,
 	WIDX_TEST_UNFINISHED_TRACKS,
+	WIDX_AUTO_STAFF_PLACEMENT,
 	WIDX_DEBUGGING_TOOLS,
 
 	// Twitch
@@ -211,7 +212,8 @@ static rct_widget window_options_misc_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	84,		93,		876,					STR_NONE },
 	{ WWT_CHECKBOX,			2,	10,		299,	99,		110,	5122,					STR_NONE },	// allow subtype 
 	{ WWT_CHECKBOX,			2,	10,		299,	114,	125,	5155,					5156 },		// test unfinished tracks
-	{ WWT_CHECKBOX,			2,	10,		299,	129,	140,	5150,					STR_NONE },	// enabled debugging tools
+	{ WWT_CHECKBOX,			2,	10,		299,	129,	140,	5343,					STR_NONE }, // auto staff placement
+	{ WWT_CHECKBOX,			2,	10,		299,	144,	155,	5150,					STR_NONE },	// enabled debugging tools
 	{ WIDGETS_END },
 };
 
@@ -355,6 +357,7 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_AUTOSAVE_DROPDOWN) |
 	(1 << WIDX_ALLOW_SUBTYPE_SWITCHING) |
 	(1 << WIDX_TEST_UNFINISHED_TRACKS) |
+	(1 << WIDX_AUTO_STAFF_PLACEMENT) |
 	(1 << WIDX_DEBUGGING_TOOLS),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
@@ -529,6 +532,11 @@ static void window_options_mouseup()
 			break;
 		case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
 			gConfigGeneral.save_plugin_data ^= 1;
+			config_save_default();
+			window_invalidate(w);
+			break;
+		case WIDX_AUTO_STAFF_PLACEMENT:
+			gConfigGeneral.auto_staff_placement ^= 1;
 			config_save_default();
 			window_invalidate(w);
 			break;
@@ -1098,16 +1106,18 @@ static void window_options_invalidate()
 		widget_set_checkbox_value(w, WIDX_ALLOW_SUBTYPE_SWITCHING, gConfigInterface.allow_subtype_switching);
 		widget_set_checkbox_value(w, WIDX_REAL_NAME_CHECKBOX, RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SHOW_REAL_GUEST_NAMES);
 		widget_set_checkbox_value(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
-		widget_set_checkbox_value(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
 		widget_set_checkbox_value(w, WIDX_TEST_UNFINISHED_TRACKS, gConfigGeneral.test_unfinished_tracks);
+		widget_set_checkbox_value(w, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
+		widget_set_checkbox_value(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
 
 		window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_AUTOSAVE].type = WWT_DROPDOWN;
 		window_options_misc_widgets[WIDX_AUTOSAVE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_misc_widgets[WIDX_ALLOW_SUBTYPE_SWITCHING].type = WWT_CHECKBOX;
-		window_options_misc_widgets[WIDX_DEBUGGING_TOOLS].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_TEST_UNFINISHED_TRACKS].type = WWT_CHECKBOX;
+		window_options_misc_widgets[WIDX_AUTO_STAFF_PLACEMENT].type = WWT_CHECKBOX;
+		window_options_misc_widgets[WIDX_DEBUGGING_TOOLS].type = WWT_CHECKBOX;
 		break;
 
 	case WINDOW_OPTIONS_PAGE_TWITCH:
