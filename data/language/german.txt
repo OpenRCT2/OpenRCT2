@@ -1842,7 +1842,7 @@ STR_1837    :Zufriedenheit: Unbekannt
 STR_1838    :Zufriedenheit: {COMMA16}%
 STR_1839    :Zuverlässigkeit: {COMMA16}%
 STR_1840    :Ausfallzeit: {COMMA16}%
-STR_1841    :Gewinn: {CURRENCY} pro Stunde
+STR_1841    :Gewinn: {CURRENCY2DP} pro Stunde
 STR_1842    :Favorit von: {COMMA16} Besucher
 STR_1843    :Favorit von: {COMMA16} Besuchern
 STR_1844    :{SMALLFONT}{BLACK}Informationsart auswählen, die in Attraktionsliste angezeigt werden soll
@@ -1859,7 +1859,7 @@ STR_1854    :{WINDOW_COLOUR_2}Erbaut: {BLACK}Letztes Jahr
 STR_1855    :{WINDOW_COLOUR_2}Erbaut: {BLACK}Vor {COMMA16} Jahren
 STR_1856    :{WINDOW_COLOUR_2}Gewinn pro verkauftem Artikel: {BLACK}{CURRENCY2DP}
 STR_1857    :{WINDOW_COLOUR_2}Verlust pro verkauftem Artikel: {BLACK}{CURRENCY2DP}
-STR_1858    :{WINDOW_COLOUR_2}Kosten: {BLACK}{CURRENCY} pro Monat
+STR_1858    :{WINDOW_COLOUR_2}Kosten: {BLACK}{CURRENCY2DP} pro Monat
 STR_1859    :Parkpfleger
 STR_1860    :Mechaniker
 STR_1861    :Aufseher
@@ -1874,8 +1874,8 @@ STR_1869    :{WINDOW_COLOUR_2}Anzahl der Drehungen:
 STR_1870    :{SMALLFONT}{BLACK}Anzahl kompletter Drehungen
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1872    :{COMMA16}
-STR_1873    :{WINDOW_COLOUR_2}Einkünfte: {BLACK}{CURRENCY} pro Stunde
-STR_1874    :{WINDOW_COLOUR_2}Gewinn: {BLACK}{CURRENCY} pro Stunde
+STR_1873    :{WINDOW_COLOUR_2}Einkünfte: {BLACK}{CURRENCY2DP} pro Stunde
+STR_1874    :{WINDOW_COLOUR_2}Gewinn: {BLACK}{CURRENCY2DP} pro Stunde
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Bahnen inspizieren
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Bahnen reparieren
@@ -3618,3 +3618,22 @@ STR_5281    :{SMALLFONT}{BLACK}Features
 STR_5282    :RCT1-Ampel Bahn öffnen/schließen
 STR_5283    :RCT1-Ampel Park öffnen/schließen
 STR_5284    :RCT1-Schriftart Szenarioauswahl
+STR_5285    :SPRENGEN!!!
+STR_5286    :{MEDIUMFONT}{BLACK}Lässt Besucher explodieren
+STR_5287    :Bahn ist schon defekt
+STR_5288    :Bahn ist geschlossen
+STR_5289    :Für diese Bahn sind keine Defekte verfügbar
+STR_5290    :Bahn reparieren
+STR_5291    :Kann Defekt nicht erzwingen
+STR_5292    :{SMALLFONT}{BLACK}Defekt erzwingen
+STR_5293    :{SMALLFONT}{BLACK}Attraktion schließen
+STR_5294    :{SMALLFONT}{BLACK}Attraktion testen
+STR_5295    :{SMALLFONT}{BLACK}Attraktion öffnen
+STR_5296    :{SMALLFONT}{BLACK}Park schließen
+STR_5297    :{SMALLFONT}{BLACK}Park öffnen
+STR_5298    :{RED}{STRINGID}
+STR_5299    :{LIGHTPINK}{STRINGID}
+STR_5300    :{SMALLFONT}{BLACK}Personal schnell feuern
+STR_5301    :{MEDIUMFONT}{BLACK}Ihr Darlehen zurückzahlen
+STR_5302    :Darlehen zurückzahl.
+STR_5303    :Erlaube im Pausenmodus zu bauen
