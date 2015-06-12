@@ -83,6 +83,12 @@ static void input_viewport_drag_end();
 static void input_scroll_begin();
 static void input_scroll_continue(rct_window *w, int widgetIndex, int state, int x, int y);
 static void input_scroll_end();
+static void input_scroll_part_update_hthumb(rct_window *w, int widgetIndex, int x);
+static void input_scroll_part_update_hleft(rct_window *w, int widgetIndex, int scroll_id);
+static void input_scroll_part_update_hright(rct_window *w, int widgetIndex, int scroll_id);
+static void input_scroll_part_update_vthumb(rct_window *w, int widgetIndex, int y);
+static void input_scroll_part_update_vtop(rct_window *w, int widgetIndex, int scroll_id);
+static void input_scroll_part_update_vbottom(rct_window *w, int widgetIndex, int scroll_id);
 static void input_update_tooltip(rct_window *w, int widgetIndex, int x, int y);
 
 #pragma region Mouse input
@@ -519,6 +525,7 @@ static void input_scroll_begin(rct_window *w, int widgetIndex, int x, int y)
 static void input_scroll_continue(rct_window *w, int widgetIndex, int state, int x, int y)
 {
 	rct_widget *widget;
+	int scroll_part, scroll_id;
 
 	widget = &w->widgets[widgetIndex];
 	if (widgetIndex != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32)){
@@ -533,12 +540,12 @@ static void input_scroll_continue(rct_window *w, int widgetIndex, int state, int
 		invalidate_scroll();
 		return;
 	}
-
+	
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_AREA, uint16) == SCROLL_PART_HSCROLLBAR_THUMB){
 		int temp_x = x;
 		x -= RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, uint16);
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, uint16) = temp_x;
-		RCT2_CALLPROC_X(0x006E98F2, x, temp_x, state, w->number, (int)w, (int)widget, x);
+		input_scroll_part_update_hthumb(w, widgetIndex, x);
 		return;
 	}
 
@@ -546,10 +553,10 @@ static void input_scroll_continue(rct_window *w, int widgetIndex, int state, int
 		int temp_y = y;
 		y -= RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, uint16);
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, uint16) = temp_y;
-		RCT2_CALLPROC_X(0x006E99A9, temp_y, y, state, w->number, (int)w, (int)widget, y);
+		input_scroll_part_update_vthumb(w, widgetIndex, y);
 		return;
 	}
-	int scroll_part, scroll_id;
+	
 	widget_scroll_get_part(w, widget, x, y, &x, &y, &scroll_part, &scroll_id);
 
 	if (scroll_part != RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_AREA, uint16)){
@@ -562,10 +569,10 @@ static void input_scroll_continue(rct_window *w, int widgetIndex, int state, int
 		window_event_tool_drag_call(w, widgetIndex, w->number / 18, y);
 		break;
 	case SCROLL_PART_HSCROLLBAR_LEFT:
-		RCT2_CALLPROC_X(0x006E9A60, x, y, scroll_part, w->number, (int)w, (int)widget, 0);
+		input_scroll_part_update_hleft(w, widgetIndex, scroll_id);
 		break;
 	case SCROLL_PART_HSCROLLBAR_RIGHT:
-		RCT2_CALLPROC_X(0x006E9ABF, x, y, scroll_part, w->number, (int)w, (int)widget, 0);
+		input_scroll_part_update_hright(w, widgetIndex, scroll_id);
 		break;
 	case SCROLL_PART_HSCROLLBAR_LEFT_TROUGH:
 	case SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH:
@@ -573,10 +580,10 @@ static void input_scroll_continue(rct_window *w, int widgetIndex, int state, int
 		break;
 	case SCROLL_PART_HSCROLLBAR_THUMB:
 	case SCROLL_PART_VSCROLLBAR_TOP:
-		RCT2_CALLPROC_X(0x006E9C37, x, y, scroll_part, w->number, (int)w, (int)widget, 0);
+		input_scroll_part_update_vtop(w, widgetIndex, scroll_id);
 		break;
 	case SCROLL_PART_VSCROLLBAR_BOTTOM:
-		RCT2_CALLPROC_X(0x006E9C96, x, y, scroll_part, w->number, (int)w, (int)widget, 0);
+		input_scroll_part_update_vbottom(w, widgetIndex, scroll_id);
 		break;
 	case SCROLL_PART_VSCROLLBAR_TOP_TROUGH:
 	case SCROLL_PART_VSCROLLBAR_BOTTOM_TROUGH:
@@ -591,6 +598,160 @@ static void input_scroll_end()
 {
 			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_RESET;
 	invalidate_scroll();
+}
+
+/**
+ *
+ * rct: 0x006E98F2
+ */
+static void input_scroll_part_update_hthumb(rct_window *w, int widgetIndex, int x)
+{
+	rct_widget *widget = &w->widgets[widgetIndex];
+	int newLeft, scroll_id = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_ID, uint32);
+
+	if (window_find_by_number(w->classification, w->number)) {
+		newLeft = w->scrolls[scroll_id].h_right;
+		newLeft *= x;
+		x = widget->right - widget->left - 21;
+		if (w->scrolls[scroll_id].flags & VSCROLLBAR_VISIBLE)
+			x -= 11;
+		newLeft /= x;
+		x = newLeft;
+		w->scrolls[scroll_id].flags |= HSCROLLBAR_THUMB_PRESSED;
+		newLeft = w->scrolls[scroll_id].h_left;
+		newLeft += x;
+		if (newLeft < 0)
+			newLeft = 0;
+		x = widget->right - widget->left - 1;
+		if (w->scrolls[scroll_id].flags & VSCROLLBAR_VISIBLE)
+			x -= 11;
+		x *= -1;
+		x += w->scrolls[scroll_id].h_right;
+		if (x < 0)
+			x = 0;
+		if (newLeft > x)
+			newLeft = x;
+		w->scrolls[scroll_id].h_left = newLeft;
+		widget_scroll_update_thumbs(w, widgetIndex);
+		widget_invalidate_by_number(w->classification, w->number, widgetIndex);
+	}
+}
+
+/**
+ *
+ * rct: 0x006E99A9
+ */
+static void input_scroll_part_update_vthumb(rct_window *w, int widgetIndex, int y)
+{
+	rct_widget *widget = &w->widgets[widgetIndex];
+	int newTop, scroll_id = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_ID, uint32);
+
+	if (window_find_by_number(w->classification, w->number)) {
+		newTop = w->scrolls[scroll_id].v_bottom;
+		newTop *= y;
+		y = widget->bottom - widget->top - 21;
+		if (w->scrolls[scroll_id].flags & HSCROLLBAR_VISIBLE)
+			y -= 11;
+		newTop /= y;
+		y = newTop;
+		w->scrolls[scroll_id].flags |= VSCROLLBAR_THUMB_PRESSED;
+		newTop = w->scrolls[scroll_id].v_top;
+		newTop += y;
+		if (newTop < 0)
+			newTop = 0;
+		y = widget->bottom - widget->top - 1;
+		if (w->scrolls[scroll_id].flags & HSCROLLBAR_VISIBLE)
+			y -= 11;
+		y *= -1;
+		y += w->scrolls[scroll_id].v_bottom;
+		if (y < 0)
+			y = 0;
+		if (newTop > y)
+			newTop = y;
+		w->scrolls[scroll_id].v_top = newTop;
+		widget_scroll_update_thumbs(w, widgetIndex);
+		widget_invalidate_by_number(w->classification, w->number, widgetIndex);
+	}
+}
+
+/**
+ *
+ * rct: 0x006E9A60
+ */
+static void input_scroll_part_update_hleft(rct_window *w, int widgetIndex, int scroll_id)
+{
+	if (window_find_by_number(w->classification, w->number)) {
+		w->scrolls[scroll_id].flags |= HSCROLLBAR_LEFT_PRESSED;
+		w->scrolls[scroll_id].h_left -= 3;
+		if (w->scrolls[scroll_id].h_left < 0)
+			w->scrolls[scroll_id].h_left = 0;
+		widget_scroll_update_thumbs(w, widgetIndex);
+		widget_invalidate_by_number(w->classification, w->number, widgetIndex);
+	}
+}
+
+/**
+ *
+ * rct: 0x006E9ABF
+ */
+static void input_scroll_part_update_hright(rct_window *w, int widgetIndex, int scroll_id)
+{
+	rct_widget *widget = &w->widgets[widgetIndex];
+	if (window_find_by_number(w->classification, w->number)) {
+		w->scrolls[scroll_id].flags |= HSCROLLBAR_RIGHT_PRESSED;
+		w->scrolls[scroll_id].h_left += 3;
+		int newLeft = widget->right - widget->left - 1;
+		if (w->scrolls[scroll_id].flags & VSCROLLBAR_VISIBLE)
+			newLeft -= 11;
+		newLeft *= -1;
+		newLeft += w->scrolls[scroll_id].h_right;
+		if (newLeft < 0)
+			newLeft = 0;
+		if (w->scrolls[scroll_id].h_left > newLeft)
+			w->scrolls[scroll_id].h_left = newLeft;
+		widget_scroll_update_thumbs(w, widgetIndex);
+		widget_invalidate_by_number(w->classification, w->number, widgetIndex);
+	}
+}
+
+/**
+ *
+ * rct: 0x006E9C37
+ */
+static void input_scroll_part_update_vtop(rct_window *w, int widgetIndex, int scroll_id)
+{;
+	if (window_find_by_number(w->classification, w->number)) {
+		w->scrolls[scroll_id].flags |= VSCROLLBAR_UP_PRESSED;
+		w->scrolls[scroll_id].v_top -= 3;
+		if (w->scrolls[scroll_id].v_top < 0)
+			w->scrolls[scroll_id].v_top = 0;
+		widget_scroll_update_thumbs(w, widgetIndex);
+		widget_invalidate_by_number(w->classification, w->number, widgetIndex);
+	}
+}
+
+/**
+ *
+ * rct: 0x006E9C96
+ */
+static void input_scroll_part_update_vbottom(rct_window *w, int widgetIndex, int scroll_id)
+{
+	rct_widget *widget = &w->widgets[widgetIndex];
+	if (window_find_by_number(w->classification, w->number)) {
+		w->scrolls[scroll_id].flags |= VSCROLLBAR_DOWN_PRESSED;
+		w->scrolls[scroll_id].v_top += 3;
+		int newTop = widget->bottom - widget->top - 1;
+		if (w->scrolls[scroll_id].flags & HSCROLLBAR_VISIBLE)
+			newTop -= 11;
+		newTop *= -1;
+		newTop += w->scrolls[scroll_id].v_bottom;
+		if (newTop < 0)
+			newTop = 0;
+		if (w->scrolls[scroll_id].v_top > newTop)
+			w->scrolls[scroll_id].v_top = newTop;
+		widget_scroll_update_thumbs(w, widgetIndex);
+		widget_invalidate_by_number(w->classification, w->number, widgetIndex);
+	}
 }
 
 #pragma endregion
