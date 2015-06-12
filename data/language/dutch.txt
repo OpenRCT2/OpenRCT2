@@ -1839,7 +1839,7 @@ STR_1837    :Voldoening: onbekend
 STR_1838    :Voldoening: {COMMA16}%
 STR_1839    :Betrouwbaarheid: {COMMA16}%
 STR_1840    :Stilstandtijd: {COMMA16}%
-STR_1841    :Winst: {CURRENCY} per uur
+STR_1841    :Winst: {CURRENCY2DP} per uur
 STR_1842    :Favoriete attractie van: {COMMA16} bezoeker
 STR_1843    :Favoriete attractie van: {COMMA16} bezoekers
 STR_1844    :{SMALLFONT}{BLACK}Selecteer het type informatie dat je in de attractielijst wilt zien
@@ -1856,7 +1856,7 @@ STR_1854    :{WINDOW_COLOUR_2}Bouw: {BLACK}vorig jaar
 STR_1855    :{WINDOW_COLOUR_2}Bouw: {BLACK}{COMMA16} jaar geleden
 STR_1856    :{WINDOW_COLOUR_2}Winst per verkocht artikel: {BLACK}{CURRENCY2DP}
 STR_1857    :{WINDOW_COLOUR_2}Verlies per verkocht artikel: {BLACK}{CURRENCY2DP}
-STR_1858    :{WINDOW_COLOUR_2}Kosten: {BLACK}{CURRENCY} per maand
+STR_1858    :{WINDOW_COLOUR_2}Kosten: {BLACK}{CURRENCY2DP} per maand
 STR_1859    :Klusjesmannen
 STR_1860    :Monteurs
 STR_1861    :Bewakers
@@ -1871,8 +1871,8 @@ STR_1869    :{WINDOW_COLOUR_2}Aantal rotaties:
 STR_1870    :{SMALLFONT}{BLACK}Aantal complete rotaties
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1872    :{COMMA16}
-STR_1873    :{WINDOW_COLOUR_2}Inkomsten: {BLACK}{CURRENCY} per uur
-STR_1874    :{WINDOW_COLOUR_2}Winst: {BLACK}{CURRENCY} per uur
+STR_1873    :{WINDOW_COLOUR_2}Inkomsten: {BLACK}{CURRENCY2DP} per uur
+STR_1874    :{WINDOW_COLOUR_2}Winst: {BLACK}{CURRENCY2DP} per uur
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Attracties inspecteren
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Attracties repareren
@@ -3622,3 +3622,14 @@ STR_5289    :Deze attractie kan niet defect raken
 STR_5290    :Attractie repareren
 STR_5291    :Kan geen defect forceren
 STR_5292    :{SMALLFONT}{BLACK}Defect forceren
+STR_5293    :{SMALLFONT}{BLACK}Attractie sluiten
+STR_5294    :{SMALLFONT}{BLACK}Attractie testen
+STR_5295    :{SMALLFONT}{BLACK}Attractie openen
+STR_5296    :{SMALLFONT}{BLACK}Park sluiten
+STR_5297    :{SMALLFONT}{BLACK}Park openen
+STR_5298    :{RED}{STRINGID}
+STR_5299    :{LIGHTPINK}{STRINGID}
+STR_5300    :{SMALLFONT}{BLACK}Snel ontslaan
+STR_5301    :{MEDIUMFONT}{BLACK}Wist je lening
+STR_5302    :Lening afbetalen
+STR_5303    :Bouwen in pauzemodus toestaan
