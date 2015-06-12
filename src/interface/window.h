@@ -621,7 +621,7 @@ void window_event_unknown_11_call(rct_window* w);
 void window_event_scroll_mouseover_call(rct_window* w, int scrollIndex, int x, int y);
 void window_event_textinput_call(rct_window *w, int widgetIndex, char *text);
 void window_event_unknown_14_call(rct_window* w);
-void window_event_unknown_15_call(rct_window* w);
+void window_event_unknown_15_call(rct_window* w, int scrollIndex, int scrollAreaType);
 rct_string_id window_event_tooltip_call(rct_window* w, int widgetIndex);
 int window_event_cursor_call(rct_window* w, int widgetIndex, int x, int y);
 void window_event_moved_call(rct_window* w, int x, int y);

@@ -1986,9 +1986,10 @@ void window_event_unknown_14_call(rct_window* w)
 	window_event_call_address(w->event_handlers[WE_UNKNOWN_14], w);
 }
 
-void window_event_unknown_15_call(rct_window* w)
+void window_event_unknown_15_call(rct_window* w, int scrollIndex, int scrollAreaType)
 {
-	window_event_call_address(w->event_handlers[WE_UNKNOWN_15], w);
+	rct_widget *widget = window_get_scroll_widget(w, scrollIndex);
+	RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_15], scrollIndex * sizeof(rct_scroll), 0, scrollAreaType, scrollIndex, (int)w, (int)widget, 0);
 }
 
 rct_string_id window_event_tooltip_call(rct_window* w, int widgetIndex)

@@ -90,6 +90,8 @@ static void input_scroll_part_update_vthumb(rct_window *w, int widgetIndex, int 
 static void input_scroll_part_update_vtop(rct_window *w, int widgetIndex, int scroll_id);
 static void input_scroll_part_update_vbottom(rct_window *w, int widgetIndex, int scroll_id);
 static void input_update_tooltip(rct_window *w, int widgetIndex, int x, int y);
+static void update_cursor_position();
+static void sub_6EA2AA(rct_window *w, int widgetIndex, int x, int y, int edi);
 
 #pragma region Mouse input
 
@@ -112,7 +114,7 @@ void game_handle_input()
 			window_event_unknown_07_call(w);
 
 		sub_6EA73F();
-		RCT2_CALLPROC_EBPSAFE(0x006E8346); // update_cursor_position
+		update_cursor_position();
 
 		for (;;) {
 			game_get_next_input(&x, &y, &state);
@@ -470,8 +472,8 @@ static void input_scroll_begin(rct_window *w, int widgetIndex, int x, int y)
 	widget_scroll_get_part(w, widget, x, y, &eax, &ebx, &scroll_area, &scroll_id);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_AREA, uint16) = scroll_area;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_ID, uint32) = scroll_id * sizeof(rct_scroll);//We do this because scroll id is not all decompiled
-	RCT2_CALLPROC_X(w->event_handlers[WE_UNKNOWN_15], RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_ID, uint32), ebx, scroll_area, scroll_id, (int)w, (int)widget, 0);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_ID, uint32) = scroll_id * sizeof(rct_scroll);
+	window_event_unknown_15_call(w, scroll_id, scroll_area);
 	if (scroll_area == SCROLL_PART_VIEW){
 		window_event_scroll_mousedown_call(w, scroll_id, eax, ebx);
 		return;
@@ -1359,7 +1361,7 @@ void game_handle_keyboard_input()
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 4)) {
 			window_tooltip_close();
 			if ((w = window_get_main()) != NULL) {
-				RCT2_CALLPROC_X(0x006EA2AA, 0, 0, 0, 0, (int)w, RCT2_GLOBAL(0x009DEA72, uint16), 0);
+				sub_6EA2AA(w, 0, 0, 0, RCT2_GLOBAL(0x009DEA72, uint16));
 				RCT2_GLOBAL(0x009DEA72, uint16)++;
 			}
 		}
@@ -1367,6 +1369,48 @@ void game_handle_keyboard_input()
 		// Write tutorial input
 		RCT2_CALLPROC_X(0x0066EEE1, RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8), 0, 0, 0, 0, 0, 0);
 	}
+}
+
+static void sub_6EA2AA(rct_window *w, int widgetIndex, int x, int y, int edi)
+{
+	RCT2_CALLPROC_X(0x006EA2AA, 0, 0, 0, 0, (int)w, RCT2_GLOBAL(0x009DEA72, uint16), 0);
+	return;
+
+	rct_window *tooltipWindow;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = w->classification;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = w->number;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = widgetIndex;
+
+	rct_string_id stringId = window_event_tooltip_call(w, widgetIndex);
+	if (stringId == (rct_string_id)STR_NONE)
+		return;
+
+	tooltipWindow = window_find_by_class(WC_TOOLTIP);
+	if (tooltipWindow == NULL)
+		return;
+
+	char *buffer = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
+
+	RCT2_GLOBAL(0x0142006C, uint32) = edi;
+	format_string(buffer, edi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	int width = gfx_get_string_width_new_lined(buffer);
+	width = min(width, 196);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+
+	int numLines, fontHeight;
+	gfx_wrap_string(buffer, width + 1, &numLines, &fontHeight);
+
+	RCT2_GLOBAL(0x01420044, uint16) = numLines;
+	tooltipWindow->widgets[0].right = width + 3;
+	tooltipWindow->widgets[0].bottom = ((numLines + 1) * 10) + 4;
+
+	char *tooltipBuffer = (char*)RCT2_ADDRESS_TOOLTIP_TEXT_BUFFER;
+	memcpy(tooltipBuffer, buffer, 512);
+
+	window_tooltip_open(w, widgetIndex, x, y);
 }
 
 /**
@@ -1536,5 +1580,24 @@ void game_handle_key_scroll()
 	if (scrollY != 0) {
 		mainWindow->saved_view_y += scrollY * (12 << mainWindow->viewport->zoom);
 		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_VIEWPORT_SCROLLING;
+	}
+}
+
+/**
+ * rct2: 0x006E8346
+ */
+static void update_cursor_position()
+{
+	switch (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8)) {
+	case 0:
+		// RCT2_GLOBAL(0x0142004C, sint32) = RCT2_GLOBAL(0x0142406C, sint32);
+		// RCT2_GLOBAL(0x01420050, sint32) = RCT2_GLOBAL(0x01424070, sint32);
+		break;
+	case 1:
+		// read tutorial cursor position
+		break;
+	case 2:
+		// write tutorial cursor position
+		break;
 	}
 }
