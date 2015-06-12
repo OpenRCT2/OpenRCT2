@@ -45,7 +45,7 @@ rct_widget window_tile_inspector_widgets[] = {
 	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			STR_TILE_INSPECTOR_TITLE,			STR_WINDOW_TITLE_TIP },	// title bar
 	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,			STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },	// close x button
 	{ WWT_RESIZE,			1,	0,			WW - 1,	43,		WH - 1,		0x0FFFFFFFF,						STR_NONE },				// content panel
-	{ WWT_SCROLL,			1,	3,			WW - 3,	65,		WH - 30,	3,									STR_NONE },				// scroll area
+	{ WWT_SCROLL,			1,	3,			WW - 3,	65,		WH - 30,	2,									STR_NONE },				// scroll area
 	{ WIDGETS_END },
 };
 

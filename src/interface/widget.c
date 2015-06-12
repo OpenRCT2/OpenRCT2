@@ -808,11 +808,11 @@ static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 
 	// Horizontal scrollbar
 	if (scroll->flags & HSCROLLBAR_VISIBLE)
-		widget_hscrollbar_draw(dpi, scroll, l, b - 10, (scroll->flags & VSCROLLBAR_VISIBLE ? r - 10 : r), b, colour);
+		widget_hscrollbar_draw(dpi, scroll, l, b - 10, (scroll->flags & VSCROLLBAR_VISIBLE ? r - 11 : r), b, colour);
 
 	// Vertical scrollbar
 	if (scroll->flags & VSCROLLBAR_VISIBLE)
-		widget_vscrollbar_draw(dpi, scroll, r - 10, t, r, (scroll->flags & HSCROLLBAR_VISIBLE ? b - 10 : b), colour);
+		widget_vscrollbar_draw(dpi, scroll, r - 10, t, r, (scroll->flags & HSCROLLBAR_VISIBLE ? b - 11 : b), colour);
 
 	// Contents
 	if (scroll->flags & HSCROLLBAR_VISIBLE)
