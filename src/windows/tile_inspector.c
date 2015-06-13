@@ -131,7 +131,7 @@ void window_tile_inspector_open()
 	window_tile_inspector_tile_x = -1;
 	window_tile_inspector_tile_y = -1;
 
-	tool_set(window, WIDX_BACKGROUND, 62);
+	tool_set(window, WIDX_BACKGROUND, 12);
 }
 
 static void window_tile_inspector_close()
@@ -225,7 +225,6 @@ static void window_tile_inspector_tool_down()
 
 	w->scrolls[0].v_top = 0;
 	window_invalidate(w);
-
 }
 
 static void window_tile_inspector_tool_abort()
