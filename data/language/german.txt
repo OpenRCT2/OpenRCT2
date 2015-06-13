@@ -3533,7 +3533,7 @@ STR_5196    :Landrechte
 STR_5197    :Szenerie
 STR_5198    :Fußweg
 STR_5199    :Bahnkonstruktion
-STR_5200    :Streckenentwurf plazieren
+STR_5200    :Streckenentwurf platzieren
 STR_5201    :Neue Bahn
 STR_5202    :Streckenentwurf auswählen
 STR_5203    :Bahn
@@ -3637,3 +3637,43 @@ STR_5300    :{SMALLFONT}{BLACK}Personal schnell feuern
 STR_5301    :{MEDIUMFONT}{BLACK}Ihr Darlehen zurückzahlen
 STR_5302    :Darlehen zurückzahl.
 STR_5303    :Erlaube im Pausenmodus zu bauen
+STR_5304    :Titelsequenz:
+STR_5305    :RollerCoaster Tycoon 1
+STR_5306    :RollerCoaster Tycoon 1 (AA)
+STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
+STR_5308    :RollerCoaster Tycoon 2
+STR_5309    :OpenRCT2
+STR_5310    :Zufällig
+STR_5311    :{SMALLFONT}{BLACK}Debugging-Tools
+STR_5312    :Konsole anzeigen
+STR_5313    :Kachelinspektor anzeigen
+STR_5314    :Kachelinspektor
+STR_5315    :Gras
+STR_5316    :Sand
+STR_5317    :Erde
+STR_5318    :Gestein
+STR_5319    :Mars
+STR_5320    :Schachbrett
+STR_5321    :Grasklumpen
+STR_5322    :Eis
+STR_5323    :Gitter (rot)
+STR_5324    :Gitter (gelb)
+STR_5325    :Gitter (blau)
+STR_5326    :Gitter (grün)
+STR_5327    :Sand (dunkel)
+STR_5328    :Sand (hell)
+STR_5329    :Schachbrett (invertiert)
+STR_5330    :Untergrundansicht
+STR_5331    :Gestein
+STR_5332    :Holz (rot)
+STR_5333    :Holz (schwarz)
+STR_5334    :Eis
+STR_5335    :Attraktionseingang
+STR_5336    :Attraktionsausgang
+STR_5337    :Parkeingang
+STR_5338    :Elementtyp
+STR_5339    :Basishöhe
+STR_5340    :Lichte Höhe
+STR_5341    :Kennzeichen
+STR_5342    :Eine Kachel auf der Karte auswählen
+STR_5343    :Personal automatisch platzieren
