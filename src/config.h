@@ -133,6 +133,7 @@ typedef struct {
 	uint8 no_test_crashes;
 	uint8 date_format;
 	uint8 auto_staff_placement;
+	utf8string last_run_version;
 } general_configuration;
 
 typedef struct {

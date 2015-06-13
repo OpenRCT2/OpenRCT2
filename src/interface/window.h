@@ -413,6 +413,7 @@ enum {
 	WC_LAND_RIGHTS = 118,
 	WC_THEMES = 119,
 	WC_TILE_INSPECTOR = 120,
+	WC_CHANGELOG = 121,
 
 	// Only used for colour schemes
 	WC_STAFF = 220,
@@ -579,6 +580,7 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 void window_text_input_raw_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, int maxLength);
 rct_window *window_mapgen_open();
 rct_window *window_loadsave_open(int type, char *defaultName);
+rct_window *window_changelog_open();
 
 void window_editor_main_open();
 void window_editor_bottom_toolbar_open();

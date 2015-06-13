@@ -477,6 +477,9 @@
     <ClCompile Include="..\src\windows\tile_inspector.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\windows\changelog.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">

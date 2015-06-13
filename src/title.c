@@ -33,6 +33,7 @@
 #include "intro.h"
 #include "management/news_item.h"
 #include "management/research.h"
+#include "openrct2.h"
 #include "ride/ride.h"
 #include "scenario.h"
 #include "world/climate.h"
@@ -124,6 +125,9 @@ void title_load()
 	title_init_showcase();
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
+
+	if (gOpenRCT2ShowChangelog)
+		window_changelog_open();
 
 	log_verbose("loading title finished");
 }

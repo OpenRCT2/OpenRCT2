@@ -1504,6 +1504,8 @@ enum {
 	STR_TILE_INSPECTOR_FLAGS = 5341,
 	STR_TILE_INSPECTOR_CHOOSE_MSG = 5342,
 
+	STR_CHANGELOG_TITLE = 5344,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
