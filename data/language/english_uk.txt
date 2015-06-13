@@ -3678,3 +3678,7 @@ STR_5341    :Flags
 STR_5342    :Choose a map tile
 STR_5343    :Automatically place staff
 STR_5344    :Changelog
+STR_5345    :Financial cheats
+STR_5346    :Guest cheats
+STR_5347    :Ride cheats
+STR_5348    :Park cheats
