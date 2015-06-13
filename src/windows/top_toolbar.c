@@ -544,7 +544,7 @@ static void window_top_toolbar_invalidate()
 	window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_TRNBTN;
-	window_top_toolbar_widgets[WIDX_DEBUG].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_DEBUG].type = gConfigGeneral.debugging_tools ? WWT_TRNBTN : WWT_EMPTY;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
@@ -555,7 +555,6 @@ static void window_top_toolbar_invalidate()
 		window_top_toolbar_widgets[WIDX_FINANCES].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_EMPTY;
-		window_top_toolbar_widgets[WIDX_DEBUG].type = WWT_EMPTY;
 
 		if (g_editor_step != EDITOR_STEP_LANDSCAPE_EDITOR) {
 			window_top_toolbar_widgets[WIDX_MAP].type = WWT_EMPTY;
@@ -586,10 +585,6 @@ static void window_top_toolbar_invalidate()
 
 		if (!gConfigInterface.toolbar_show_cheats)
 			window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_EMPTY;
-
-		if (!gConfigGeneral.debugging_tools)
-			window_top_toolbar_widgets[WIDX_DEBUG].type = WWT_EMPTY;
-
 	}
 
 	enabledWidgets = 0;

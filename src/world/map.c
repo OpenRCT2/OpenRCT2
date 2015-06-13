@@ -255,10 +255,10 @@ void map_init(int size)
 	RCT2_GLOBAL(RCT2_ADDRESS_GRASS_SCENERY_TILEPOS, sint16) = 0;
 	_sub_6A876D_save_x = 0;
 	_sub_6A876D_save_y = 0;
-	RCT2_GLOBAL(0x01358830, sint16) = size * 32 - 32;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16) = size * 32 - 2;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16) = size * 32 - 32;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16) = size * 32 - 2;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16) = size;
-	RCT2_GLOBAL(0x01358836, sint16) = size * 32 - 33;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, sint16) = size * 32 - 33;
 	RCT2_GLOBAL(0x01359208, sint16) = 7;
 	map_update_tile_pointers();
 	RCT2_CALLPROC_EBPSAFE(0x0068ADBC);
@@ -1264,8 +1264,8 @@ money32 map_clear_scenery(int x0, int y0, int x1, int y1, int flags)
 
 	x0 = max(x0, 32);
 	y0 = max(y0, 32);
-	x1 = min(x1, RCT2_GLOBAL(0x01358836, uint16));
-	y1 = min(y1, RCT2_GLOBAL(0x01358836, uint16));
+	x1 = min(x1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
+	y1 = min(y1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
 
 	totalCost = 0;
 	for (y = y0; y <= y1; y += 32) {
@@ -1303,8 +1303,8 @@ money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surfaceSt
 
 	x0 = max(x0, 32);
 	y0 = max(y0, 32);
-	x1 = min(x1, RCT2_GLOBAL(0x01358836, uint16));
-	y1 = min(y1, RCT2_GLOBAL(0x01358836, uint16));
+	x1 = min(x1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
+	y1 = min(y1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
 
 	int xMid, yMid;
 
@@ -1450,7 +1450,7 @@ static money32 sub_66397F(int flags, int x, int y, int height, int style, int se
 		}
 	}
 
-	if (x > RCT2_GLOBAL(0x01358836, uint16) || y > RCT2_GLOBAL(0x01358836, uint16)) {
+	if (x > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16) || y > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_OFF_EDGE_OF_MAP;
 		return MONEY32_UNDEFINED;
 	}
@@ -1496,8 +1496,8 @@ money32 raise_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 
 	ax = max(ax, 32);
 	ay = max(ay, 32);
-	bx = min(bx, RCT2_GLOBAL(0x01358836, uint16));
-	by = min(by, RCT2_GLOBAL(0x01358836, uint16));
+	bx = min(bx, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
+	by = min(by, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
 
 	// find lowest map element in selection
 	for (int yi = ay; yi <= by; yi += 32) {
@@ -1549,8 +1549,8 @@ money32 lower_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 
 	ax = max(ax, 32);
 	ay = max(ay, 32);
-	bx = min(bx, RCT2_GLOBAL(0x01358836, uint16));
-	by = min(by, RCT2_GLOBAL(0x01358836, uint16));
+	bx = min(bx, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
+	by = min(by, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
 
 	// find highest map element in selection
 	for (int yi = ay; yi <= by; yi += 32) {
@@ -1609,8 +1609,8 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 
 	x0 = max(x0, 32);
 	y0 = max(y0, 32);
-	x1 = min(x1, RCT2_GLOBAL(0x01358836, uint16));
-	y1 = min(y1, RCT2_GLOBAL(0x01358836, uint16));
+	x1 = min(x1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
+	y1 = min(y1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
 
 	for (int yi = y0; yi <= y1; yi += 32) {
 		for (int xi = x0; xi <= x1; xi += 32) {
@@ -1676,8 +1676,8 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 
 	x0 = max(x0, 32);
 	y0 = max(y0, 32);
-	x1 = min(x1, RCT2_GLOBAL(0x01358836, uint16));
-	y1 = min(y1, RCT2_GLOBAL(0x01358836, uint16));
+	x1 = min(x1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
+	y1 = min(y1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
 
 	for (int yi = y0; yi <= y1; yi += 32){
 		for (int xi = x0; xi <= x1; xi += 32){
@@ -1966,7 +1966,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	RCT2_GLOBAL(0x009DEA60, uint16) += 16;
 	if(RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gConfigCheat.build_in_pause_mode){
 		if(sub_68B044()){
-			if(RCT2_GLOBAL(0x009D8150, uint8) & 1 || (x <= RCT2_GLOBAL(0x01358836, uint16) && y <= RCT2_GLOBAL(0x01358836, uint16))){
+			if(RCT2_GLOBAL(0x009D8150, uint8) & 1 || (x <= RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16) && y <= RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16))){
 				rct_scenery_entry* scenery_entry = (rct_scenery_entry*)object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].chunks[scenery_type];
 				if((scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE && scenery_entry->small_scenery.flags & (SMALL_SCENERY_FLAG9 | SMALL_SCENERY_FLAG24 | SMALL_SCENERY_FLAG25)) || scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG9){
 					quadrant = 0;

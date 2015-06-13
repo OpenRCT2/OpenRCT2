@@ -51,9 +51,9 @@ static void automatically_set_peep_spawn(int x, int y, int z)
 	int direction = 0;
 	if (x != 32) {
 		direction++;
-		if (y != RCT2_GLOBAL(0x001358830, uint16) - 32) {
+		if (y != RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) - 32) {
 			direction++;
-			if (x != RCT2_GLOBAL(0x001358830, uint16) - 32) {
+			if (x != RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) - 32) {
 				direction++;
 				if (y != 32)
 					return;
@@ -309,7 +309,7 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 	RCT2_GLOBAL(0x00F3EFA4, uint8) = 0;
 	RCT2_GLOBAL(0x00F3EF88, uint16) = path_bit_type; // di
 
-	if (x >= RCT2_GLOBAL(0x01358830, uint16) || y >= RCT2_GLOBAL(0x01358830, uint16)) {
+	if (x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_OFF_EDGE_OF_MAP;
 		return MONEY32_UNDEFINED;
 	}

@@ -260,7 +260,7 @@ void sub_689174(sint16* x, sint16* y, sint16 *z)
 
 		// HACK: This is to prevent the x and y values being set to values outside
 		// of the map. This can happen when the height is larger than the map size.
-		sint16 max = RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16);
+		sint16 max = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16);
 		if (pos.x > max && pos.y > max) {
 			int x_corr[] = { -1, 1, 1, -1 };
 			int y_corr[] = { -1, -1, 1, 1 };
@@ -483,12 +483,12 @@ void viewport_update_position(rct_window *window)
 	}
 
 	//Clamp to the map maximum value (scenario specific)
-	if (x > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16)){
-		x = RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16);
+	if (x > RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16)){
+		x = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16);
 		at_map_edge = 1;
 	}
-	if (y > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16)){
-		y = RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, sint16);
+	if (y > RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16)){
+		y = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16);
 		at_map_edge = 1;
 	}
 
