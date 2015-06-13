@@ -94,7 +94,7 @@ void window_music_credits_open()
 		(uint32*)window_music_credits_events,
 		WC_MUSIC_CREDITS,
 		0
-		);
+	);
 
 	window->widgets = window_music_credits_widgets;
 	window->enabled_widgets = 1 << WIDX_CLOSE;

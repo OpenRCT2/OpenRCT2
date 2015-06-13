@@ -94,7 +94,7 @@ void window_publisher_credits_open()
 		(uint32*)window_publisher_credits_events,
 		WC_PUBLISHER_CREDITS,
 		0
-		);
+	);
 
 	window->widgets = window_publisher_credits_widgets;
 	window->enabled_widgets = 1 << WIDX_CLOSE;

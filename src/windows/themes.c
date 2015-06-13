@@ -368,7 +368,7 @@ void window_themes_open()
 	if (window != NULL)
 		return;
 
-	window = window_create_auto_pos(320, 107, (uint32*)window_themes_events, WC_THEMES, 0x0400);
+	window = window_create_auto_pos(320, 107, (uint32*)window_themes_events, WC_THEMES, WF_10 | WF_RESIZABLE);
 	window->widgets = window_themes_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_THEMES_CLOSE) |
@@ -401,7 +401,6 @@ void window_themes_open()
 	window->min_height = 107;
 	window->max_width = 320;
 	window->max_height = 107;
-	window->flags |= WF_RESIZABLE;
 }
 
 void window_themes_close() {

@@ -493,7 +493,7 @@ void window_guest_open(rct_peep* peep){
 
 	window = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index);
 	if (window == NULL){
-		window = window_create_auto_pos(192, 157, (uint32*)window_guest_overview_events, WC_PEEP, 0);
+		window = window_create_auto_pos(192, 157, (uint32*)window_guest_overview_events, WC_PEEP, WF_RESIZABLE);
 		window->widgets = window_guest_overview_widgets;
 		window->enabled_widgets = window_guest_page_enabled_widgets[0];
 		window->number = peep->sprite_index;
@@ -508,7 +508,6 @@ void window_guest_open(rct_peep* peep){
 		window->min_height = 157;
 		window->max_width = 500;
 		window->max_height = 450;
-		window->flags = WF_RESIZABLE;
 		window->no_list_items = 0;
 		window->selected_list_item = -1;
 

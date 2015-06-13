@@ -390,7 +390,7 @@ rct_window *window_new_ride_open()
 	window_close_by_class(WC_TRACK_DESIGN_LIST);
 	window_close_by_class(WC_TRACK_DESIGN_PLACE);
 
-	w = window_create_auto_pos(601, 370, (uint32*)window_new_ride_events, WC_CONSTRUCT_RIDE, 0x400);
+	w = window_create_auto_pos(601, 370, (uint32*)window_new_ride_events, WC_CONSTRUCT_RIDE, WF_10);
 	w->widgets = window_new_ride_widgets;
 	w->enabled_widgets =
 		(1 << WIDX_CLOSE) |

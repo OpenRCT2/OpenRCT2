@@ -550,7 +550,7 @@ rct_window *window_park_open()
 {
 	rct_window* w;
 
-	w = window_create_auto_pos(230, 174 + 9, (uint32*)window_park_entrance_events, WC_PARK_INFORMATION, 0x0400);
+	w = window_create_auto_pos(230, 174 + 9, (uint32*)window_park_entrance_events, WC_PARK_INFORMATION, WF_10);
 	w->widgets = window_park_entrance_widgets;
 	w->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_ENTRANCE];
 	w->number = 0;
