@@ -93,7 +93,7 @@ void window_staff_fire_prompt_open(rct_peep* peep){
 		return;
 	}
 
-	rct_window* w = window_create_centred(WW, WH, (uint32*)0x992C3C, 0x1A, 0);
+	rct_window* w = window_create_centred(WW, WH, (uint32*)0x992C3C, 0x1A, WF_TRANSPARENT);
 	w->widgets = window_staff_fire_widgets;
 	w->enabled_widgets |= (1 << WIDX_CLOSE) | (1 << WIDX_YES) | (1 << WIDX_CANCEL);
 
@@ -101,7 +101,6 @@ void window_staff_fire_prompt_open(rct_peep* peep){
 
 	colour_scheme_update(w);
 
-	w->flags |= WF_TRANSPARENT;
 	w->number = peep->sprite_index;
 }
 

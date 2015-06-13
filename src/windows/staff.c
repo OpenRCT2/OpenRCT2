@@ -303,7 +303,7 @@ void window_staff_open(rct_peep* peep)
 {
 	rct_window* w = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index);
 	if (w == NULL) {
-		w = window_create_auto_pos(WW, WH, (uint32*)window_staff_overview_events, WC_PEEP, (uint16)0x400);
+		w = window_create_auto_pos(WW, WH, (uint32*)window_staff_overview_events, WC_PEEP, WF_10 | WF_RESIZABLE);
 
 		w->widgets = RCT2_GLOBAL(0x9AF81C, rct_widget*);
 		w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
@@ -321,7 +321,6 @@ void window_staff_open(rct_peep* peep)
 		w->max_width = 500;
 		w->max_height = 450;
 
-		w->flags = 1 << 8;
 	}
 	w->page = 0;
 	window_invalidate(w);

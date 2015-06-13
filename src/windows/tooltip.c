@@ -146,7 +146,15 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 		y -= height + 40;
 	y = clamp(22, y, max_y);
 
-	w = window_create(x, y, width, height, (uint32*)window_tooltip_events, WC_TOOLTIP, WF_TRANSPARENT | WF_STICK_TO_FRONT);
+	w = window_create(
+		x,
+		y,
+		width,
+		height,
+		(uint32*)window_tooltip_events,
+		WC_TOOLTIP,
+		WF_TRANSPARENT | WF_STICK_TO_FRONT
+	);
 	w->widgets = window_tooltip_widgets;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, uint16) = 0;

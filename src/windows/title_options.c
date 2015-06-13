@@ -79,12 +79,11 @@ void window_title_options_open()
 		80, 12,
 		(uint32*)window_title_options_events,
 		WC_TITLE_OPTIONS,
-		WF_STICK_TO_BACK
+		WF_STICK_TO_BACK | WF_TRANSPARENT
 	);
 	window->widgets = window_title_options_widgets;
 	window->enabled_widgets |= 1;
 	window_init_scroll_widgets(window);
-	window->flags |= 16;
 }
 
 static void window_title_options_mouseup()

@@ -125,7 +125,15 @@ void window_track_list_open(ride_list_item item)
 		x = 0;
 		y = 29;
 	}
-	w = window_create(x, y, 600, 400, (uint32*)window_track_list_events, WC_TRACK_DESIGN_LIST, 0);
+	w = window_create(
+		x,
+		y,
+		600,
+		400,
+		(uint32*)window_track_list_events,
+		WC_TRACK_DESIGN_LIST,
+		0
+	);
 	w->widgets = window_track_list_widgets;
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY);
 	window_init_scroll_widgets(w);

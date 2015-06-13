@@ -118,7 +118,7 @@ void window_banner_open(rct_windownumber number)
 	if (w != NULL)
 		return;
 
-	w = window_create_auto_pos(WW, WH, (uint32*)window_banner_events, WC_BANNER, 0);
+	w = window_create_auto_pos(WW, WH, (uint32*)window_banner_events, WC_BANNER, WF_2);
 	w->widgets = window_banner_widgets;
 	w->enabled_widgets =
 		(1 << WIDX_CLOSE) |
@@ -170,7 +170,6 @@ void window_banner_open(rct_windownumber number)
 	);
 
 	w->viewport->flags = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES) ? VIEWPORT_FLAG_GRIDLINES : 0;
-	w->flags |= WF_2;
 	window_invalidate(w);
 }
 

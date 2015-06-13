@@ -376,7 +376,15 @@ void window_track_place_open()
 	_window_track_place_mini_preview = malloc(TRACK_MINI_PREVIEW_SIZE);
 	window_track_place_clear_mini_preview();
 
-	w = window_create(0, 29, 200, 124, (uint32*)window_track_place_events, WC_TRACK_DESIGN_PLACE, 0);
+	w = window_create(
+		0,
+		29,
+		200,
+		124,
+		(uint32*)window_track_place_events,
+		WC_TRACK_DESIGN_PLACE,
+		0
+	);
 	w->widgets = window_track_place_widgets;
 	w->enabled_widgets = 4 | 8 | 0x10 | 0x20;
 	window_init_scroll_widgets(w);

@@ -146,7 +146,7 @@ void window_ride_list_open()
 	// Check if window is already open
 	window = window_bring_to_front_by_class(WC_RIDE_LIST);
 	if (window == NULL) {
-		window = window_create_auto_pos(340, 240, (uint32*)window_ride_list_events, WC_RIDE_LIST, 0x0400);
+		window = window_create_auto_pos(340, 240, (uint32*)window_ride_list_events, WC_RIDE_LIST, WF_10 | WF_RESIZABLE);
 		window->widgets = window_ride_list_widgets;
 		window->enabled_widgets =
 			(1 << WIDX_CLOSE) |
@@ -168,7 +168,6 @@ void window_ride_list_open()
 		window->min_height = 240;
 		window->max_width = 400;
 		window->max_height = 450;
-		window->flags |= WF_RESIZABLE;
 	}
 	_window_ride_list_information_type = INFORMATION_TYPE_STATUS;
 	window->list_information_type = 0;

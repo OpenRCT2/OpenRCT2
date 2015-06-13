@@ -81,12 +81,11 @@ void window_title_exit_open()
 		40, 64,
 		(uint32*)window_title_exit_events,
 		WC_TITLE_EXIT,
-		WF_STICK_TO_BACK
+		WF_STICK_TO_BACK | WF_TRANSPARENT
 	);
 	window->widgets = window_title_exit_widgets;
 	window->enabled_widgets |= 1;
 	window_init_scroll_widgets(window);
-	window->flags |= 16;
 }
 
 /**

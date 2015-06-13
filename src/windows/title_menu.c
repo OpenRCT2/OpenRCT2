@@ -97,12 +97,11 @@ void window_title_menu_open()
 		328, 82,
 		(uint32*)window_title_menu_events,
 		WC_TITLE_MENU,
-		WF_STICK_TO_BACK
+		WF_STICK_TO_BACK | WF_TRANSPARENT
 	);
 	window->widgets = window_title_menu_widgets;
 	window->enabled_widgets |= (8 | 4 | 2 | 1);
 	window_init_scroll_widgets(window);
-	window->flags |= 16;
 }
 
 static void window_title_menu_mouseup()

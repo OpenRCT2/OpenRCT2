@@ -113,7 +113,7 @@ void window_tile_inspector_open()
 		WH,
 		(uint32*)window_tile_inspector_events,
 		WC_TILE_INSPECTOR,
-		0x100
+		WF_RESIZABLE
 	);
 	window->widgets = window_tile_inspector_widgets;
 	window->enabled_widgets = (1 << WIDX_CLOSE);
@@ -122,7 +122,6 @@ void window_tile_inspector_open()
 	window->colours[0] = 7;
 	window->colours[1] = 7;
 	window->colours[2] = 7;
-	window->flags |= WF_RESIZABLE;
 	window->min_width = WW;
 	window->min_height = MIN_WH;
 	window->max_width = WW;
