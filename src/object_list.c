@@ -274,6 +274,7 @@ void object_list_load()
 	}
 
 	uint32 fileCount = 0;
+	uint32 objectCount = 0;
 	uint32 current_item_offset = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_ORIGINAL_RCT2_OBJECT_COUNT, uint32) = 0;
 
@@ -309,15 +310,17 @@ void object_list_load()
 				continue;
 
 			if (_installedObjectFilters)
-				_installedObjectFilters = realloc(_installedObjectFilters, sizeof(rct_object_filters) * fileCount);
+				_installedObjectFilters = realloc(_installedObjectFilters, sizeof(rct_object_filters) * (objectCount + 1));
 			else
-				_installedObjectFilters = malloc(sizeof(rct_object_filters) * fileCount);
+				_installedObjectFilters = malloc(sizeof(rct_object_filters) * (objectCount + 1));
 
 			rct_object_entry* installed_entry = (rct_object_entry*)(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, uint8*) + current_item_offset);
 			rct_object_filters filter;
 
 			current_item_offset += install_object_entry(&entry, installed_entry, enumFileInfo.path, &filter);
-			_installedObjectFilters[fileCount - 1] = filter;
+			_installedObjectFilters[objectCount] = filter;
+
+			objectCount++;
 		}
 		platform_enumerate_files_end(enumFileHandle);
 	}
@@ -372,12 +375,12 @@ static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int file
 				if (pluginHeader.object_list_no_items != (pluginHeader.total_files & 0xFFFFFF))
 					log_error("Potential mismatch in file numbers. Possible corrupt file. Consider deleting plugin.dat.");
 
-				if (fread(&filterVersion, sizeof(filterVersion), 1, file)) {
+				if (fread(&filterVersion, sizeof(filterVersion), 1, file) == 1) {
 					if (filterVersion == FILTER_VERSION) {
 						if (_installedObjectFilters)
 							free(_installedObjectFilters);
 						_installedObjectFilters = malloc(sizeof(rct_object_filters) * pluginHeader.object_list_no_items);
-						if (fread(_installedObjectFilters, sizeof(rct_object_filters) * pluginHeader.object_list_no_items, 1, file)) {
+						if (fread(_installedObjectFilters, sizeof(rct_object_filters) * pluginHeader.object_list_no_items, 1, file) == 1) {
 							
 							fclose(file);
 							reset_loaded_objects();
@@ -386,7 +389,7 @@ static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int file
 						}
 					}
 				}
-
+				log_info("Filter version updated... updating object list cache");
 			}
 		}
 		else if (pluginHeader.total_files != totalFiles) {

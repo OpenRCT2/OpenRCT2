@@ -137,12 +137,12 @@ static rct_widget window_editor_object_selection_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	218,	287,	46,		57,		5277,							STR_NONE },
 	{ WWT_RESIZE,			1,	3,		287,	73,		76,		0xFFFFFFFF,						STR_NONE },
 	{ WWT_TAB,				1,	3,		33,		47,		73,		0x2000144E,						5349 },
-	{ WWT_TAB,				1,	34,		64,		47,		73,		0x2000144E,						5350 },
-	{ WWT_TAB,				1,	65,		95,		47,		73,		0x2000144E,						5351 },
-	{ WWT_TAB,				1,	96,		126,	47,		73,		0x2000144E,						5352 },
-	{ WWT_TAB,				1,	127,	157,	47,		73,		0x2000144E,						5353 },
-	{ WWT_TAB,				1,	158,	188,	47,		73,		0x2000144E,						5354 },
-	{ WWT_TAB,				1,	189,	219,	47,		73,		0x2000144E,						5355 },
+	{ WWT_TAB,				1,	34,		64,		47,		73,		0x2000144E,						1223 },
+	{ WWT_TAB,				1,	65,		95,		47,		73,		0x2000144E,						1224 },
+	{ WWT_TAB,				1,	96,		126,	47,		73,		0x2000144E,						1225 },
+	{ WWT_TAB,				1,	127,	157,	47,		73,		0x2000144E,						1226 },
+	{ WWT_TAB,				1,	158,	188,	47,		73,		0x2000144E,						1227 },
+	{ WWT_TAB,				1,	189,	219,	47,		73,		0x2000144E,						1228 },
 	{ WIDGETS_END }
 };
 
@@ -371,8 +371,11 @@ static void window_editor_object_selection_mouseup()
 	case WIDX_FILTER_RIDE_TAB_ALL:
 		_filter_flags |= 0x7E0;
 		filter_update_counts();
-		w->scrolls->v_top = 0;
 
+		w->selected_list_item = -1;
+		w->var_494 = 0xFFFFFFFF;
+		w->scrolls[0].v_top = 0;
+		object_free_scenario_text();
 		window_invalidate(w);
 		break;
 	case WIDX_FILTER_RIDE_TAB_TRANSPORT:
@@ -382,12 +385,14 @@ static void window_editor_object_selection_mouseup()
 	case WIDX_FILTER_RIDE_TAB_WATER:
 	case WIDX_FILTER_RIDE_TAB_STALL:
 		_filter_flags &= ~0x7E0;
-
 		_filter_flags |= (1 << (widgetIndex - WIDX_FILTER_RIDE_TAB_TRANSPORT + 5));
 
 		filter_update_counts();
-		w->scrolls->v_top = 0;
 
+		w->selected_list_item = -1;
+		w->var_494 = 0xFFFFFFFF;
+		w->scrolls[0].v_top = 0;
+		object_free_scenario_text();
 		window_invalidate(w);
 		break;
 
