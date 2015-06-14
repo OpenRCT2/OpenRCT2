@@ -89,7 +89,7 @@ int sawyercoding_read_chunk(FILE *file, uint8 *buffer)
 
 	// Read chunk header
 	if (fread(&chunkHeader, sizeof(sawyercoding_chunk_header), 1, file) != 1) {
-		RCT2_ERROR("Unable to read chunk header!");
+		log_error("Unable to read chunk header!");
 		return -1;
 	}
 
@@ -98,7 +98,7 @@ int sawyercoding_read_chunk(FILE *file, uint8 *buffer)
 	// Read chunk data
 	if (fread(src_buffer, chunkHeader.length, 1, file) != 1) {
 		free(src_buffer);
-		RCT2_ERROR("Unable to read chunk data!");
+		log_error("Unable to read chunk data!");
 		return -1;
 	}
 

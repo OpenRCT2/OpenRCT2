@@ -43,7 +43,7 @@ void *gTitleMusicChannel = 0;
 void audio_init(int i)
 {
 	if (SDL_Init(SDL_INIT_AUDIO) < 0) {
-		RCT2_ERROR("SDL_Init %s", SDL_GetError());
+		log_fatal("SDL_Init %s", SDL_GetError());
 		exit(-1);
 	}
 }
