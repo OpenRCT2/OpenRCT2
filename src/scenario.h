@@ -411,6 +411,7 @@ int scenario_load_and_play(const rct_scenario_basic *scenario);
 int scenario_load_and_play_from_path(const char *path);
 void scenario_update();
 unsigned int scenario_rand();
+unsigned int scenario_rand_max(unsigned int max);
 int scenario_prepare_for_save();
 int scenario_save(char *path, int flags);
 void scenario_set_filename(const char *value);
