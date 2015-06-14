@@ -310,9 +310,9 @@ void object_list_load()
 				continue;
 
 			if (_installedObjectFilters)
-				_installedObjectFilters = realloc(_installedObjectFilters, sizeof(rct_object_filters) * fileCount);
+				_installedObjectFilters = realloc(_installedObjectFilters, sizeof(rct_object_filters) * (objectCount + 1));
 			else
-				_installedObjectFilters = malloc(sizeof(rct_object_filters) * fileCount);
+				_installedObjectFilters = malloc(sizeof(rct_object_filters) * (objectCount + 1));
 
 			rct_object_entry* installed_entry = (rct_object_entry*)(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, uint8*) + current_item_offset);
 			rct_object_filters filter;
