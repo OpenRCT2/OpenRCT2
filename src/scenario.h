@@ -249,10 +249,10 @@ typedef struct {
 	money32 cash;
 	uint8 pad_013587FC[50];
 	uint16 word_0135882E;
-	uint16 word_01358830;
-	uint16 word_01358832;
+	uint16 map_size_units;
+	uint16 map_size_minus_2;
 	uint16 map_size;
-	uint16 word_01358836;
+	uint16 map_max_xy;
 	uint32 word_01358838;
 	uint16 suggested_max_guests;
 	uint16 park_rating_warning_days;

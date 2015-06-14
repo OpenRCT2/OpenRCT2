@@ -154,10 +154,10 @@ typedef struct {
 	uint16 cheat_detection_sv6_sc4[4];
 	uint16 unk_199C84;
 	uint16 unk_199C86;
-	uint16 map_size_unk_a;
+	uint16 map_size_units;
 	uint16 map_size_unk_b;
 	uint16 map_size;
-	uint16 map_size_unk_c;
+	uint16 map_size_max_xy;
 	uint32 same_price_flags;
 	uint16 unk_199C94;
 	uint8 unk_199C96[3];

@@ -118,7 +118,7 @@ int platform_lock_single_instance()
 		// Create new mutex
 		status = CreateMutex(NULL, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
 		if (status == NULL)
-			fprintf(stderr, "unable to create mutex\n");
+			log_error("unable to create mutex\n");
 
 		return 1;
 	} else {

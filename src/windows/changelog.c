@@ -98,7 +98,7 @@ rct_window *window_changelog_open()
 		screenHeight * 4 / 5,
 		(uint32*)window_changelog_events,
 		WC_CHANGELOG,
-		0x100
+		WF_RESIZABLE
 	);
 	window->widgets = window_changelog_widgets;
 	window->enabled_widgets = (1 << WIDX_CLOSE);
@@ -107,7 +107,6 @@ rct_window *window_changelog_open()
 	window->colours[0] = 7;
 	window->colours[1] = 7;
 	window->colours[2] = 7;
-	window->flags |= WF_RESIZABLE;
 	window->min_width = MIN_WW;
 	window->min_height = MIN_WH;
 	window->max_width = MIN_WW;

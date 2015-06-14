@@ -422,8 +422,15 @@ void window_scenery_open()
 
 	init_scenery();
 
-	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - WINDOW_SCENERY_WIDTH, 0x1D, WINDOW_SCENERY_WIDTH, WINDOW_SCENERY_HEIGHT,
-		(uint32*)window_scenery_events, WC_SCENERY, WF_2);
+	window = window_create(
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - WINDOW_SCENERY_WIDTH,
+		0x1D,
+		WINDOW_SCENERY_WIDTH,
+		WINDOW_SCENERY_HEIGHT,
+		(uint32*)window_scenery_events,
+		WC_SCENERY,
+		WF_2
+	);
 	window->widgets = window_scenery_widgets;
 
 	window->enabled_widgets =

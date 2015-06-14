@@ -68,12 +68,6 @@ typedef utf16* utf16string;
 
 #define countof(x)			((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
 
-#ifdef _MSC_VER
-#define RCT2_ERROR(format,...) fprintf(stderr, "ERROR %s:%s():%d: " format "\n", __FILE__, __FUNCTION__, __LINE__, __VA_ARGS__);
-#else
-#define RCT2_ERROR(format,...) fprintf(stderr, "ERROR %s:%s():%d: " format "\n", __FILE__, __func__, __LINE__, ## __VA_ARGS__);
-#endif
-
 #ifndef _MSC_VER
 // use similar struct packing as MSVC for our structs
 #pragma pack(1)

@@ -158,7 +158,7 @@ void window_track_manage_open()
 		44,
 		(uint32*)window_track_manage_events,
 		WC_MANAGE_TRACK_DESIGN,
-		WF_STICK_TO_FRONT
+		WF_STICK_TO_FRONT | WF_TRANSPARENT
 	);
 	w->widgets = window_track_manage_widgets;
 	w->enabled_widgets =
@@ -166,7 +166,6 @@ void window_track_manage_open()
 		(1 << WIDX_RENAME) |
 		(1 << WIDX_DELETE);
 	window_init_scroll_widgets(w);
-	w->flags |= WF_TRANSPARENT;
 
 	trackDesignListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
 	if (trackDesignListWindow != NULL)

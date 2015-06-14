@@ -544,7 +544,7 @@ static void window_top_toolbar_invalidate()
 	window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_TRNBTN;
-	window_top_toolbar_widgets[WIDX_DEBUG].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_DEBUG].type = gConfigGeneral.debugging_tools ? WWT_TRNBTN : WWT_EMPTY;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
@@ -555,7 +555,6 @@ static void window_top_toolbar_invalidate()
 		window_top_toolbar_widgets[WIDX_FINANCES].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_EMPTY;
-		window_top_toolbar_widgets[WIDX_DEBUG].type = WWT_EMPTY;
 
 		if (g_editor_step != EDITOR_STEP_LANDSCAPE_EDITOR) {
 			window_top_toolbar_widgets[WIDX_MAP].type = WWT_EMPTY;
@@ -586,10 +585,6 @@ static void window_top_toolbar_invalidate()
 
 		if (!gConfigInterface.toolbar_show_cheats)
 			window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_EMPTY;
-
-		if (!gConfigGeneral.debugging_tools)
-			window_top_toolbar_widgets[WIDX_DEBUG].type = WWT_EMPTY;
-
 	}
 
 	enabledWidgets = 0;
@@ -1508,9 +1503,11 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 		for (; bl != 0; bl--){
 			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
 
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
+
 			int ebx = (parameter_1 & 0xFF00) | 1;
 
-			int cost = game_do_command(grid_x, ebx, grid_y, parameter_2, GAME_COMMAND_43, parameter_3, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
+			int cost = game_do_command(grid_x, ebx, grid_y, parameter_2, GAME_COMMAND_PLACE_LARGE_SCENERY, parameter_3, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
 
 
 			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
@@ -2113,7 +2110,7 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 			parameter_1 | 0x69,
 			map_tile.y,
 			parameter_2,
-			GAME_COMMAND_43,
+			GAME_COMMAND_PLACE_LARGE_SCENERY,
 			parameter_3,
 			RCT2_GLOBAL(0x00F64ED4, uint16));
 

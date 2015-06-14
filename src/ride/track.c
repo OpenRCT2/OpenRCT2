@@ -686,7 +686,7 @@ int backup_map(){
 	uint8* backup_info = RCT2_GLOBAL(0xF440F5, uint8*);
 	*(uint32*)backup_info = RCT2_GLOBAL(0x0140E9A4, uint32);
 	*(uint16*)(backup_info + 4) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16);
-	*(uint16*)(backup_info + 6) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, uint16);
+	*(uint16*)(backup_info + 6) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, uint16);
 	*(uint16*)(backup_info + 8) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
 	*(uint32*)(backup_info + 10) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
 	return 1;
@@ -703,7 +703,7 @@ void reload_map_backup(){
 	uint8* backup_info = RCT2_GLOBAL(0xF440F5, uint8*);
 	RCT2_GLOBAL(0x0140E9A4, uint32) = *(uint32*)backup_info;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) = *(uint16*)(backup_info + 4);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, uint16) = *(uint16*)(backup_info + 6);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, uint16) = *(uint16*)(backup_info + 6);
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) = *(uint16*)(backup_info + 8);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = *(uint32*)(backup_info + 10);
 
@@ -718,7 +718,7 @@ void blank_map(){
 	// These values were previously allocated in backup map but
 	// it seems more fitting to place in this function
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) = 0x1FE0;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAXIMUM_X_Y, uint16) = 0x20FE;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, uint16) = 0x20FE;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) = 0x100;
 
 	rct_map_element* map_element;
@@ -1205,7 +1205,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 						bl | (rotation << 8),
 						mapCoord.y,
 						scenery->primary_colour | (scenery->secondary_colour << 8),
-						GAME_COMMAND_43,
+						GAME_COMMAND_PLACE_LARGE_SCENERY,
 						entry_index,
 						z
 						);

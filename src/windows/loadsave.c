@@ -120,7 +120,7 @@ int _type;
 static void window_loadsave_populate_list(int includeNewItem, bool browsable, const char *directory, const char *extension);
 static void window_loadsave_select(rct_window *w, const char *path);
 
-static int hasExtension(char *path, char *extension);
+static int has_extension(char *path, char *extension);
 
 static rct_window *window_overwrite_prompt_open(const char *name, const char *path);
 
@@ -172,7 +172,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	case LOADSAVETYPE_GAME:
 		platform_get_user_directory(path, "save");
 		if (!platform_ensure_directory_exists(path)) {
-			fprintf(stderr, "Unable to create save directory.");
+			log_error("Unable to create save directory.");
 			window_close(w);
 			return NULL;
 		}
@@ -182,7 +182,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	case LOADSAVETYPE_LANDSCAPE:
 		platform_get_user_directory(path, "landscape");
 		if (!platform_ensure_directory_exists(path)) {
-			fprintf(stderr, "Unable to create landscapes directory.");
+			log_error("Unable to create landscapes directory.");
 			window_close(w);
 			return NULL;
 		}
@@ -195,7 +195,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 
 		platform_get_user_directory(path, "scenario");
 		if (!platform_ensure_directory_exists(path)) {
-		fprintf(stderr, "Unable to create scenarios directory.");
+		log_error("Unable to create scenarios directory.");
 		window_close(w);
 		return NULL;
 		}
@@ -214,7 +214,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 
 		platform_get_user_directory(path, "tracks");
 		if (!platform_ensure_directory_exists(path)) {
-		fprintf(stderr, "Unable to create tracks directory.");
+		log_error("Unable to create tracks directory.");
 		window_close(w);
 		return NULL;
 		}
@@ -245,8 +245,10 @@ static void window_loadsave_close()
 
 static void window_loadsave_mouseup()
 {
-	short widgetIndex;
 	rct_window *w;
+	short widgetIndex;
+	int result;
+	char filename[MAX_PATH], filter[MAX_PATH];
 
 	window_widget_get_registers(w, widgetIndex);
 
@@ -254,16 +256,11 @@ static void window_loadsave_mouseup()
 	case WIDX_CLOSE:
 		window_close(w);
 		break;
-	
 	case WIDX_BROWSE:
-		{
-		char filename[MAX_PATH], filter[MAX_PATH];
-		int result;
-
 		strcpy(filename, _directory);
-		if (_type & LOADSAVETYPE_SAVE){
+		if (_type & LOADSAVETYPE_SAVE)
 			strcat(filename, (char*)RCT2_ADDRESS_SCENARIO_NAME);
-		}
+
 		memset(filter, '\0', MAX_PATH);
 		strncpy(filter, "*", MAX_PATH);
 		strncat(filter, _extension, MAX_PATH);
@@ -288,24 +285,22 @@ static void window_loadsave_mouseup()
 			result = platform_open_common_file_dialog(1, (char*)language_get_string(1039), filename, filter, _extension);
 			break;
 		}
-		if (result){
-			if (!hasExtension(filename, _extension)){
+
+		if (result) {
+			if (!has_extension(filename, _extension)) {
 				strncat(filename, _extension, MAX_PATH);
-				puts("added extension");
 			}
 			window_loadsave_select(w, filename);
-		}
 		}
 		break;
 	}
 }
 
-static int hasExtension(char *path, char *extension)
+static int has_extension(char *path, char *extension)
 {
 	int extensionLength = strlen(extension);
 	int pathLength = strlen(path);
-	for (int u = 0; u < extensionLength; u++){
-		printf("%c, %c\n", tolower(path[pathLength - extensionLength + u]), tolower(extension[u]));
+	for (int u = 0; u < extensionLength; u++) {
 		if (tolower(path[pathLength - extensionLength + u]) != tolower(extension[u]))
 			return 0;
 	}

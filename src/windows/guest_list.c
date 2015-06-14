@@ -148,7 +148,7 @@ void window_guest_list_open()
 	if (window != NULL)
 		return;
 
-	window = window_create_auto_pos(350, 330, (uint32*)window_guest_list_events, WC_GUEST_LIST, 0x0400);
+	window = window_create_auto_pos(350, 330, (uint32*)window_guest_list_events, WC_GUEST_LIST, WF_10 | WF_RESIZABLE);
 	window->widgets = window_guest_list_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_CLOSE) |
@@ -174,7 +174,6 @@ void window_guest_list_open()
 	window->min_height = 330;
 	window->max_width = 500;
 	window->max_height = 450;
-	window->flags |= WF_RESIZABLE;
 }
 
 /**

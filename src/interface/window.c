@@ -1545,13 +1545,16 @@ void window_draw(rct_window *w, int left, int top, int right, int bottom)
 
 		RCT2_GLOBAL(0x01420070, sint32) = v->x;
 
+		// Invalidate modifies the window colours so first get the correct
+		// colour before setting the global variables for the string painting
+		window_event_invalidate_call(v);
+
 		// Text colouring
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_1, uint8) = v->colours[0] & 0x7F;
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_2, uint8) = v->colours[1] & 0x7F;
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_3, uint8) = v->colours[2] & 0x7F;
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_4, uint8) = v->colours[3] & 0x7F;
 
-		window_event_invalidate_call(v);
 		window_event_paint_call(v, dpi);
 	}
 }

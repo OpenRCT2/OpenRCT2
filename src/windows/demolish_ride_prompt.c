@@ -95,11 +95,10 @@ void window_ride_demolish_prompt_open(int rideIndex){
 	if (w != NULL)
 		return;
 
-	w = window_create_centred(WW, WH, (uint32*)window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, 0);
+	w = window_create_centred(WW, WH, (uint32*)window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
 	w->widgets = window_ride_demolish_widgets;
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_CANCEL) | (1 << WIDX_DEMOLISH);
 	window_init_scroll_widgets(w);
-	w->flags |= WF_TRANSPARENT;
 	w->number = rideIndex;
 }
 

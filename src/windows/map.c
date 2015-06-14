@@ -159,7 +159,7 @@ void window_map_open()
 		return;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32*) = map_image_data;
-	w = window_create_auto_pos(245, 259, (uint32*)window_map_events, WC_MAP, 0x0400);
+	w = window_create_auto_pos(245, 259, (uint32*)window_map_events, WC_MAP, WF_10);
 	w->widgets = window_map_widgets;
 	w->enabled_widgets =
 		(1 << WIDX_CLOSE) |

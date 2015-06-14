@@ -38,6 +38,7 @@ typedef struct {
 
 enum{
 	BANNER_FLAG_NO_ENTRY = (1 << 0),
+	BANNER_FLAG_1 = (1 << 1),
 	BANNER_FLAG_2 = (1 << 2)
 } BANNER_FLAGS;
 

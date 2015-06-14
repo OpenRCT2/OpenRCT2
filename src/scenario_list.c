@@ -184,7 +184,7 @@ static int scenario_scores_load()
 	if (file == NULL) {
 		file = fopen(get_file_path(PATH_ID_SCORES), "rb");
 		if (file == NULL) {
-			RCT2_ERROR("Unable to load scenario scores.");
+			log_error("Unable to load scenario scores.");
 			return 0;
 		}
 	}
@@ -193,7 +193,7 @@ static int scenario_scores_load()
 	rct_scenario_scores_header header;
 	if (fread(&header, 16, 1, file) != 1) {
 		fclose(file);
-		RCT2_ERROR("Invalid header in scenario scores file.");
+		log_error("Invalid header in scenario scores file.");
 		return 0;
 	}
 	gScenarioListCount = header.scenario_count;
@@ -229,7 +229,7 @@ int scenario_scores_save()
 
 	file = fopen(scoresPath, "wb");
 	if (file == NULL) {
-		RCT2_ERROR("Unable to save scenario scores.");
+		log_error("Unable to save scenario scores.");
 		return 0;
 	}
 

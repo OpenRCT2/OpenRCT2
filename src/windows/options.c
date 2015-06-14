@@ -384,12 +384,11 @@ void window_options_open()
 	if (w != NULL)
 		return;
 
-	w = window_create_centred(WW, WH, (uint32*)window_options_events, WC_OPTIONS, 0);
+	w = window_create_centred(WW, WH, (uint32*)window_options_events, WC_OPTIONS, WF_RESIZABLE);
 	w->widgets = window_options_display_widgets;
 	w->enabled_widgets = window_options_page_enabled_widgets[WINDOW_OPTIONS_PAGE_DISPLAY];
 	w->page = WINDOW_OPTIONS_PAGE_DISPLAY;
 	w->frame_no = 0;
-	w->flags = WF_RESIZABLE;
 	window_init_scroll_widgets(w);
 	//window_invalidate(w);
 

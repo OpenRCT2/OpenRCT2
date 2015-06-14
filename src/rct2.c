@@ -378,7 +378,7 @@ const char *get_file_path(int pathId)
 	{
 		if (strlen(path) >= MAX_PATH - 1)
 		{
-			RCT2_ERROR("Path for %s too long", file_paths[pathId]);
+			log_error("Path for %s too long", file_paths[pathId]);
 			path[0] = '\0';
 			return path;
 		}
@@ -387,9 +387,8 @@ const char *get_file_path(int pathId)
 	}
 
 	// Concatenate file path
-	if (strlen(path) + strlen(file_paths[pathId]) > MAX_PATH)
-	{
-		RCT2_ERROR("Path for %s too long", file_paths[pathId]);
+	if (strlen(path) + strlen(file_paths[pathId]) > MAX_PATH) {
+		log_error("Path for %s too long", file_paths[pathId]);
 		path[0] = '\0';
 		return path;
 	}

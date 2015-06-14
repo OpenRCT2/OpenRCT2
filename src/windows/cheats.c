@@ -110,7 +110,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 
 static rct_widget window_cheats_money_widgets[] = {
 	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		0x0FFFFFFFF,				65535},						// panel / background
-	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			3165,						STR_WINDOW_TITLE_TIP},		// title bar
+	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			STR_CHEAT_TITLE_FINANCIAL,	STR_WINDOW_TITLE_TIP},		// title bar
 	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,			0x338,						STR_CLOSE_WINDOW_TIP},		// close x button
 	{ WWT_IMGBTN,			1,	0,			WW - 1,	43,		WH - 1,		0x0FFFFFFFF,				65535},						// tab content panel
 	{ WWT_TAB,				1,	3,			33,		17,		43,			0x2000144E,					STR_FINANCIAL_CHEATS_TIP },	// tab 1
@@ -125,7 +125,7 @@ static rct_widget window_cheats_money_widgets[] = {
 
 static rct_widget window_cheats_guests_widgets[] = {
 	{ WWT_FRAME,			0, 0,			WW - 1, 0,	WH - 1,		0x0FFFFFFFF,					65535 },					// panel / background
-	{ WWT_CAPTION,			0, 1,			WW - 2, 1,	14,			3165,							STR_WINDOW_TITLE_TIP },		// title bar
+	{ WWT_CAPTION,			0, 1,			WW - 2, 1,	14,			STR_CHEAT_TITLE_GUEST,			STR_WINDOW_TITLE_TIP },		// title bar
 	{ WWT_CLOSEBOX,			0, WW - 13,		WW - 3, 2,	13,			0x338,							STR_CLOSE_WINDOW_TIP },		// close x button
 	{ WWT_IMGBTN,			1, 0,			WW - 1, 43, WH - 1,		0x0FFFFFFFF,					65535 },					// tab content panel
 	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,						STR_FINANCIAL_CHEATS_TIP },	// tab 1
@@ -142,7 +142,7 @@ static rct_widget window_cheats_guests_widgets[] = {
 //Strings for following moved to window_cheats_paint()
 static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_FRAME,			0, 0,			WW - 1, 0,	WH - 1,		0x0FFFFFFFF,					65535 },					// panel / background
-	{ WWT_CAPTION,			0, 1,			WW - 2, 1,	14,			3165,							STR_WINDOW_TITLE_TIP },		// title bar
+	{ WWT_CAPTION,			0, 1,			WW - 2, 1,	14,			STR_CHEAT_TITLE_PARK,			STR_WINDOW_TITLE_TIP },		// title bar
 	{ WWT_CLOSEBOX,			0, WW - 13,		WW - 3, 2,	13,			0x338,							STR_CLOSE_WINDOW_TIP },		// close x button
 	{ WWT_IMGBTN,			1, 0,			WW - 1, 43, WH - 1,		0x0FFFFFFFF,					65535 },					// tab content panel
 	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,						STR_FINANCIAL_CHEATS_TIP },	// tab 1
@@ -166,7 +166,7 @@ static rct_widget window_cheats_misc_widgets[] = {
 };
 static rct_widget window_cheats_rides_widgets[] = {
 	{ WWT_FRAME,			0, 0,			WW - 1, 0,	WH - 1,		0x0FFFFFFFF,					65535 },					// panel / background
-	{ WWT_CAPTION,			0, 1,			WW - 2, 1,	14,			3165,							STR_WINDOW_TITLE_TIP },		// title bar
+	{ WWT_CAPTION,			0, 1,			WW - 2, 1,	14,			STR_CHEAT_TITLE_RIDE,			STR_WINDOW_TITLE_TIP },		// title bar
 	{ WWT_CLOSEBOX,			0, WW - 13,		WW - 3, 2,	13,			0x338,							STR_CLOSE_WINDOW_TIP },		// close x button
 	{ WWT_IMGBTN,			1, 0,			WW - 1, 43, WH - 1,		0x0FFFFFFFF,					65535 },					// tab content panel
 	{ WWT_TAB,				1, 3,			33,		17, 43,			0x2000144E,						STR_FINANCIAL_CHEATS_TIP },	// tab 1
@@ -762,8 +762,6 @@ static void window_cheats_invalidate()
 
 	window_get_register(w);
 	colour_scheme_update(w);
-
-	strcpy((char*)0x009BC677, "Cheats");
 
 	rct_widget *widgets = window_cheats_page_widgets[w->page];
 	if (w->widgets != widgets) {
