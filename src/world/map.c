@@ -2195,20 +2195,22 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 				}
 				x2 += x;
 				y2 += y;
-				if(x2 >= 0x1FFF || y2 >= 0x1FFF){
+				if(x2 >= 0x1FFF || y2 >= 0x1FFF || x2 < 0 || y2 < 0){
 					tile++;
 					continue;
 				}
 				rct_map_element* map_element = map_get_surface_element_at(x2 / 32, y2 / 32);
-				int height = map_element->base_height * 8;
-				if(map_element->properties.scenerymultiple.type & 0xF){
-					height += 16;
-					if(map_element->properties.scenerymultiple.type & 0x10){
+				if(map_element != NULL){
+					int height = map_element->base_height * 8;
+					if(map_element->properties.scenerymultiple.type & 0xF){
 						height += 16;
+						if(map_element->properties.scenerymultiple.type & 0x10){
+							height += 16;
+						}
 					}
-				}
-				if(height > F43884){
-					F43884 = height;
+					if(height > F43884){
+						F43884 = height;
+					}
 				}
 				tile++;
 			}while(1);
