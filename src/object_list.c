@@ -110,7 +110,6 @@ static void object_list_sort()
 	numObjects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32);
 	copied = calloc(numObjects, sizeof(uint8));
 	
-	printf("numObjects: %i\n", numObjects);
 	// Get buffer size
 	entry = *objectBuffer;
 	for (i = 0; i < numObjects; i++)
@@ -285,7 +284,6 @@ void object_list_load()
 		_installedObjectFilters = NULL;
 	}
 	
-	printf("Start");
 	enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char));
 	if (enumFileHandle != INVALID_HANDLE) {
 		uint32 installed_buffer_size = 0x1000;
@@ -323,7 +321,6 @@ void object_list_load()
 		}
 		platform_enumerate_files_end(enumFileHandle);
 	}
-	printf("fileCount: %i\n", fileCount);
 
 	reset_loaded_objects();
 
