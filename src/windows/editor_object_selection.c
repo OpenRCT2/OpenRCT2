@@ -371,8 +371,11 @@ static void window_editor_object_selection_mouseup()
 	case WIDX_FILTER_RIDE_TAB_ALL:
 		_filter_flags |= 0x7E0;
 		filter_update_counts();
-		w->scrolls->v_top = 0;
 
+		w->selected_list_item = -1;
+		w->var_494 = 0xFFFFFFFF;
+		w->scrolls[0].v_top = 0;
+		object_free_scenario_text();
 		window_invalidate(w);
 		break;
 	case WIDX_FILTER_RIDE_TAB_TRANSPORT:
