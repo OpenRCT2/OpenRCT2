@@ -3633,3 +3633,44 @@ STR_5300    :{SMALLFONT}{BLACK}Snel ontslaan
 STR_5301    :{MEDIUMFONT}{BLACK}Wist je lening
 STR_5302    :Lening afbetalen
 STR_5303    :Bouwen in pauzemodus toestaan
+STR_5304    :Titelshow:
+STR_5305    :RollerCoaster Tycoon 1
+STR_5306    :RollerCoaster Tycoon 1 (AA)
+STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
+STR_5308    :RollerCoaster Tycoon 2
+STR_5309    :OpenRCT2
+STR_5310    :Willekeurige
+STR_5311    :{SMALLFONT}{BLACK}Debugginghulpmiddelen
+STR_5312    :Console tonen
+STR_5313    :Vakinspecteur tonen
+STR_5314    :Vakinspecteur
+STR_5315    :Gras
+STR_5316    :Zand
+STR_5317    :Aarde
+STR_5318    :Steen
+STR_5319    :Buitenaards
+STR_5320    :Schaakbord
+STR_5321    :Kluiten gras
+STR_5322    :IJs
+STR_5323    :Raster (rood)
+STR_5324    :Raster (geel)
+STR_5325    :Raster (blauw)
+STR_5326    :Raster (groen)
+STR_5327    :Raster (donker)
+STR_5328    :Raster (licht)
+STR_5329    :Schaakbord (omgekeerd)
+STR_5330    :Ondergronds zicht
+STR_5331    :Steen
+STR_5332    :Houten palen (rood)
+STR_5333    :Houten palen (zwart)
+STR_5334    :IJs
+STR_5335    :Attractie-ingang
+STR_5336    :Attractie-uitgang
+STR_5337    :Parkingang
+STR_5338    :Elementtype
+STR_5339    :Hoogte onderkant
+STR_5340    :Hoogte bovenkant
+STR_5341    :Eigenschappen
+STR_5342    :Kies een vakje op de kaart
+STR_5343    :Werknemers automatisch plaatsen
+STR_5344    :Wijzigingsoverzicht
