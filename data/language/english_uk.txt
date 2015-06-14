@@ -3678,3 +3678,14 @@ STR_5341    :Flags
 STR_5342    :Choose a map tile
 STR_5343    :Automatically place staff
 STR_5344    :Changelog
+STR_5345    :Financial cheats
+STR_5346    :Guest cheats
+STR_5347    :Ride cheats
+STR_5348    :Park cheats
+STR_5349    :{SMALLFONT}{BLACK}All Rides
+STR_5350    :{SMALLFONT}{BLACK}Transport Rides
+STR_5351    :{SMALLFONT}{BLACK}Gentle Rides
+STR_5352    :{SMALLFONT}{BLACK}Roller Coasters
+STR_5353    :{SMALLFONT}{BLACK}Thrill Rides
+STR_5354    :{SMALLFONT}{BLACK}Water Rides
+STR_5355    :{SMALLFONT}{BLACK}Shops & Stalls

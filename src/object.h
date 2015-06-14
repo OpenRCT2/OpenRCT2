@@ -67,6 +67,17 @@ typedef struct {
 	rct_object_entry_extended *entries;
 } rct_object_entry_group;
 
+typedef struct {
+	uint8 category[2];
+
+} rct_ride_filters;
+
+typedef struct {
+	union {
+		rct_ride_filters ride;
+	};
+} rct_object_filters;
+
 extern rct_object_entry_group object_entry_groups[];
 
 int object_load_entry(const char *path, rct_object_entry *outEntry);
@@ -94,5 +105,7 @@ int find_object_in_entry_group(rct_object_entry* entry, uint8* entry_type, uint8
 rct_object_entry *object_list_find(rct_object_entry *entry);
 
 char *object_get_name(rct_object_entry *entry);
+
+rct_object_filters *get_object_filter(int index);
 
 #endif
