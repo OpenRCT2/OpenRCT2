@@ -2280,7 +2280,7 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 									RCT2_CALLPROC_X(0x006E588E, x2, bh << 8 | flags, y2, zLow * 8, 0, 0, 0);
 								}
 								rct_map_element *new_map_element = map_element_insert(x2 / 32, y2 / 32, zLow, F43887);
-								map_animation_create(0xB, x2 / 32, y2 / 32, zLow);
+								map_animation_create(0xB, x2, y2, zLow);
 
 								new_map_element->clearance_height = zHigh;
 								new_map_element->type = MAP_ELEMENT_TYPE_SCENERY_MULTIPLE | rotation;
