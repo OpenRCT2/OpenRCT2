@@ -187,14 +187,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 				}
 
 				if (count > 0) {
-					uint32 max = ((uint32)0xFFFFFFFF) - (((uint32)0xFFFFFFFF) % count) - 1;
-					if (max + count == 0) max = ((uint32)0xFFFFFFFF);
-					uint32 rand;
-					do {
-						rand = scenario_rand();
-					} while (rand > max);
-					rand %= count;
-
+					uint32 rand = scenario_rand_max(count);
 					for (i = 0; i < 4; ++i) {
 						if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] != SPRITE_LOCATION_NULL) {
 							if (rand == 0) break;
@@ -215,14 +208,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 					z = newPeep->z;
 				}
 			} else {
-				uint32 max = ((uint32)0xFFFFFFFF) - (((uint32)0xFFFFFFFF) % count) - 1;
-				if (max + count == 0) max = ((uint32)0xFFFFFFFF);
-				uint32 rand;
-				do {
-					rand = scenario_rand();
-				} while (rand > max);
-				rand %= count;
-
+				uint32 rand = scenario_rand_max(count);
 				FOR_ALL_GUESTS(sprite_index, guest)
 					if (guest->state == PEEP_STATE_WALKING) {
 						if (rand == 0) break;
