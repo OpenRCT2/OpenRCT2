@@ -1401,26 +1401,31 @@ void window_rotate_camera(rct_window *w)
 	reset_all_sprite_quadrant_placements();
 }
 
-/**
- * 
- *  rct2: 0x006887A6
- */
-void window_zoom_in(rct_window *w)
+void window_zoom_set(rct_window *w, int zoomLevel)
 {
 	rct_viewport* v = w->viewport;
-	
-	// Prevent zooming more than possible.
-	if (v->zoom <= 0) {
+
+	zoomLevel = clamp(0, zoomLevel, 3);
+	if (v->zoom == zoomLevel)
 		return;
+
+	// Zoom in
+	while (v->zoom > zoomLevel) {
+		v->zoom--;
+		w->saved_view_x += v->view_width / 4;
+		w->saved_view_y += v->view_height / 4;
+		v->view_width /= 2;
+		v->view_height /= 2;
 	}
 
-	v->zoom--;
-
-	v->view_width /= 2;
-	v->view_height /= 2;
-
-	w->saved_view_x += v->view_width >> 1;
-	w->saved_view_y += v->view_height >> 1;
+	// Zoom out
+	while (v->zoom < zoomLevel) {
+		v->zoom++;
+		w->saved_view_x -= v->view_width / 2;
+		w->saved_view_y -= v->view_height / 2;
+		v->view_width *= 2;
+		v->view_height *= 2;
+	}
 
 	// HACK: Prevents the redraw from failing when there is
 	// a window on top of the viewport.
@@ -1430,32 +1435,20 @@ void window_zoom_in(rct_window *w)
 
 /**
  * 
+ *  rct2: 0x006887A6
+ */
+void window_zoom_in(rct_window *w)
+{
+	window_zoom_set(w, w->viewport->zoom - 1);
+}
+
+/**
+ * 
  *  rct2: 0x006887E0
  */
 void window_zoom_out(rct_window *w)
 {
-	rct_viewport* v = w->viewport;
-
-	// Prevent zooming more than possible.
-	if (v->zoom >= 3) {
-		return;
-	}
-
-	v->zoom++;
-
-	int width = v->view_width;
-	int height = v->view_height;
-	
-	v->view_width *= 2;
-	v->view_height *= 2;
-
-	w->saved_view_x -= width / 2;
-	w->saved_view_y -= height >> 1;
-
-	// HACK: Prevents the redraw from failing when there is
-	// a window on top of the viewport.
-	window_bring_to_front(w);
-	window_invalidate(w);
+	window_zoom_set(w, w->viewport->zoom + 1);
 }
 
 /**

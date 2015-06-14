@@ -56,6 +56,15 @@ const char *path_get_filename(const char *path)
 	return result;
 }
 
+const char *path_get_extension(const char *path)
+{
+	const char *ch = path;
+	while (*ch != '.' && *ch != 0) {
+		ch++;
+	}
+	return ch;
+}
+
 void path_set_extension(char *path, const char *extension)
 {
 	char *ch = path;

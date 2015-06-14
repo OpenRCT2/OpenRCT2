@@ -1512,6 +1512,14 @@ enum {
 
 	STR_CHANGELOG_TITLE = 5344,
 
+	STR_TITLE_SEQUENCE = 5304,
+	STR_TITLE_SEQUENCE_RCT1 = 5305,
+	STR_TITLE_SEQUENCE_RCT1_AA = 5306,
+	STR_TITLE_SEQUENCE_RCT1_AA_LL = 5307,
+	STR_TITLE_SEQUENCE_RCT2 = 5308,
+	STR_TITLE_SEQUENCE_OPENRCT2 = 5309,
+	STR_TITLE_SEQUENCE_RANDOM = 5310,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

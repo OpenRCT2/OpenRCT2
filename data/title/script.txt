@@ -1,0 +1,90 @@
+# OpenRCT2 0.0.2 Title Sequence Script
+# Arranged by IntelOrca
+
+# PFCKrutonium
+LOAD pfckrutonium1.sv6
+LOCATION 7 41
+WAIT 15
+LOCATION 49 15
+ROTATE 1
+WAIT 10
+
+# Achilleshiel
+LOAD achilleshiel.sv6
+LOCATION 25 77
+WAIT 10
+
+LOCATION 36 58
+ROTATE 3
+WAIT 12
+
+LOCATION 64 40
+ROTATE 1
+WAIT 8
+
+# PFCKrutonium
+LOAD pfckrutonium2.sv6
+LOCATION 116 58
+WAIT 14
+
+ROTATE 1
+WAIT 12
+
+# Shotguns (http://www.nedesigns.com/park/3107/rougarou/)
+LOAD shotguns.sv6
+LOCATION 20 13
+WAIT 16
+
+# Faas (http://www.nedesigns.com/park/2996/lucky-lake-amusement-park/)
+LOAD faas.sv6
+LOCATION 42 11
+WAIT 10
+
+LOCATION 30 18
+ROTATE 1
+WAIT 16
+
+LOCATION 17 71
+ROTATE 2
+WAIT 12
+
+LOCATION 88 68
+WAIT 12
+
+# MCI (http://www.nedesigns.com/park/2973/maerchen-paradies/)
+LOAD mci.sv6
+LOCATION 46 60
+WAIT 16
+
+LOCATION 78 43
+ROTATE 2
+WAIT 12
+
+LOCATION 76 32
+ROTATE 1
+WAIT 8
+
+# Ride6 (http://www.nedesigns.com/park/2545/banana-valley/)
+LOAD rid6.sv6
+LOCATION 56 34
+WAIT 10
+
+LOCATION 48 4
+WAIT 4
+
+LOCATION 10 29
+ROTATE 1
+WAIT 12
+
+# Poke (http://www.nedesigns.com/park/2967/mystic-mountain/)
+LOAD poke.sv6
+LOCATION 43 83
+WAIT 16
+
+LOCATION 63 35
+ROTATE 3
+WAIT 12
+
+LOCATION 12 47
+ROTATE 3
+WAIT 20

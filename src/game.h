@@ -107,6 +107,7 @@ void game_increase_game_speed();
 void game_reduce_game_speed();
 
 void game_load_or_quit_no_save_prompt();
+int game_load_sv6(const char *path);
 int game_load_save(const char *path);
 void game_pause_toggle(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void pause_toggle();

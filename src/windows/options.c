@@ -122,6 +122,8 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_TEST_UNFINISHED_TRACKS,
 	WIDX_AUTO_STAFF_PLACEMENT,
 	WIDX_DEBUGGING_TOOLS,
+	WIDX_TITLE_SEQUENCE,
+	WIDX_TITLE_SEQUENCE_DROPDOWN,
 
 	// Twitch
 	WIDX_CHANNEL_BUTTON = WIDX_PAGE_START,
@@ -214,6 +216,8 @@ static rct_widget window_options_misc_widgets[] = {
 	{ WWT_CHECKBOX,			2,	10,		299,	114,	125,	5155,					5156 },		// test unfinished tracks
 	{ WWT_CHECKBOX,			2,	10,		299,	129,	140,	5343,					STR_NONE }, // auto staff placement
 	{ WWT_CHECKBOX,			2,	10,		299,	144,	155,	5150,					STR_NONE },	// enabled debugging tools
+	{ WWT_DROPDOWN,			1,	155,	299,	158,	169,	STR_NONE,				STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	159,	168,	876,					STR_NONE },
 	{ WIDGETS_END },
 };
 
@@ -358,7 +362,9 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_ALLOW_SUBTYPE_SWITCHING) |
 	(1 << WIDX_TEST_UNFINISHED_TRACKS) |
 	(1 << WIDX_AUTO_STAFF_PLACEMENT) |
-	(1 << WIDX_DEBUGGING_TOOLS),
+	(1 << WIDX_DEBUGGING_TOOLS) |
+	(1 << WIDX_TITLE_SEQUENCE) |
+	(1 << WIDX_TITLE_SEQUENCE_DROPDOWN),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_CHANNEL_BUTTON) |
@@ -778,6 +784,17 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			window_options_show_dropdown(w, widget, AUTOSAVE_NEVER + 1);
 			gDropdownItemsChecked = 1 << gConfigGeneral.autosave_frequency;
 			break;
+		case WIDX_TITLE_SEQUENCE_DROPDOWN:
+			gDropdownItemsFormat[0] = 1142;
+			gDropdownItemsArgs[0] = STR_TITLE_SEQUENCE_RCT2;
+			gDropdownItemsFormat[1] = 1142;
+			gDropdownItemsArgs[1] = STR_TITLE_SEQUENCE_OPENRCT2;
+			window_options_show_dropdown(w, widget, 2);
+			if (gConfigGeneral.title_sequence == TITLE_SEQUENCE_RCT2)
+				gDropdownItemsChecked = 1 << 0;
+			else if (gConfigGeneral.title_sequence == TITLE_SEQUENCE_OPENRCT2)
+				gDropdownItemsChecked = 1 << 1;
+			break;
 		}
 		break;
 
@@ -944,6 +961,14 @@ static void window_options_dropdown()
 		case WIDX_AUTOSAVE_DROPDOWN:
 			if (dropdownIndex != gConfigGeneral.autosave_frequency) {
 				gConfigGeneral.autosave_frequency = (uint8)dropdownIndex;
+				config_save_default();
+				window_invalidate(w);
+			}
+			break;
+		case WIDX_TITLE_SEQUENCE_DROPDOWN:
+			if (dropdownIndex != gConfigGeneral.title_sequence) {
+				if (dropdownIndex == 0) gConfigGeneral.title_sequence = TITLE_SEQUENCE_RCT2;
+				else if (dropdownIndex == 1) gConfigGeneral.title_sequence = TITLE_SEQUENCE_OPENRCT2;
 				config_save_default();
 				window_invalidate(w);
 			}
@@ -1117,6 +1142,8 @@ static void window_options_invalidate()
 		window_options_misc_widgets[WIDX_TEST_UNFINISHED_TRACKS].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_AUTO_STAFF_PLACEMENT].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_DEBUGGING_TOOLS].type = WWT_CHECKBOX;
+		window_options_misc_widgets[WIDX_TITLE_SEQUENCE].type = WWT_DROPDOWN;
+		window_options_misc_widgets[WIDX_TITLE_SEQUENCE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		break;
 
 	case WINDOW_OPTIONS_PAGE_TWITCH:
@@ -1237,6 +1264,16 @@ static void window_options_paint()
 			w->colours[1],
 			w->x + window_options_misc_widgets[WIDX_AUTOSAVE].left + 1,
 			w->y + window_options_misc_widgets[WIDX_AUTOSAVE].top
+		);
+
+		gfx_draw_string_left(dpi, STR_TITLE_SEQUENCE, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1);
+		gfx_draw_string_left(
+			dpi,
+			STR_TITLE_SEQUENCE_RCT1 + gConfigGeneral.title_sequence,
+			NULL,
+			w->colours[1],
+			w->x + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].left + 1,
+			w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top
 		);
 		break;
 	}

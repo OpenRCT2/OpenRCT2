@@ -333,6 +333,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>winmm.lib;sdl2.lib;Dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>"$(TargetDir)\openrct2.exe" sprite build "$(SolutionDir)\..\Data\g2.dat" "$(SolutionDir)\..\Resources\g2\"
+xcopy /YS "$(SolutionDir)\..\Data" "$(TargetDir)\Data"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -361,7 +365,7 @@
     </Link>
     <PostBuildEvent>
       <Command>"$(TargetDir)\openrct2.exe" sprite build "$(SolutionDir)\..\Data\g2.dat" "$(SolutionDir)\..\Resources\g2\"
-xcopy /Y "$(SolutionDir)\..\Data\*.*" "$(TargetDir)\Data\"</Command>
+xcopy /YS "$(SolutionDir)\..\Data" "$(TargetDir)\Data"</Command>
       <Message>Build g2.dat and copy the Data directory.</Message>
     </PostBuildEvent>
     <CustomBuildStep>
@@ -400,7 +404,7 @@ xcopy /Y "$(SolutionDir)\..\Data\*.*" "$(TargetDir)\Data\"</Command>
     </Link>
     <PostBuildEvent>
       <Command>"$(TargetDir)\openrct2.exe" sprite build "$(SolutionDir)\..\Data\g2.dat" "$(SolutionDir)\..\Resources\g2\"
-xcopy /Y "$(SolutionDir)\..\Data\*.*" "$(TargetDir)\Data\"</Command>
+xcopy /YS "$(SolutionDir)\..\Data" "$(TargetDir)\Data"</Command>
       <Message>Build g2.dat and copy the Data directory.</Message>
     </PostBuildEvent>
     <CustomBuildStep>
