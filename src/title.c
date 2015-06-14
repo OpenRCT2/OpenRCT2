@@ -213,7 +213,8 @@ static int title_load_park(const char *path)
 	window_invalidate(w);
 	reset_all_sprite_quadrant_placements();
 	window_new_ride_init_vars();
-	sub_684AC3();
+	if (_strcmpi(path_get_extension(path), ".sv6") != 0)
+		sub_684AC3();
 	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
 	news_item_init_queue();
 	gfx_invalidate_screen();
