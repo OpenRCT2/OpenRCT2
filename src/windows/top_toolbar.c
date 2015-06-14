@@ -1503,9 +1503,11 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 		for (; bl != 0; bl--){
 			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
 
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
+
 			int ebx = (parameter_1 & 0xFF00) | 1;
 
-			int cost = game_do_command(grid_x, ebx, grid_y, parameter_2, GAME_COMMAND_43, parameter_3, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
+			int cost = game_do_command(grid_x, ebx, grid_y, parameter_2, GAME_COMMAND_PLACE_LARGE_SCENERY, parameter_3, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
 
 
 			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
@@ -2108,7 +2110,7 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 			parameter_1 | 0x69,
 			map_tile.y,
 			parameter_2,
-			GAME_COMMAND_43,
+			GAME_COMMAND_PLACE_LARGE_SCENERY,
 			parameter_3,
 			RCT2_GLOBAL(0x00F64ED4, uint16));
 

@@ -1205,7 +1205,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 						bl | (rotation << 8),
 						mapCoord.y,
 						scenery->primary_colour | (scenery->secondary_colour << 8),
-						GAME_COMMAND_43,
+						GAME_COMMAND_PLACE_LARGE_SCENERY,
 						entry_index,
 						z
 						);
