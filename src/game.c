@@ -932,7 +932,7 @@ static uint32 game_do_command_table[58] = {
 	0, // 40
 	0x006E519A,
 	0,
-	0x006B893C,
+	0,
 	0,
 	0,
 	0,
@@ -995,7 +995,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_update_staff_colour, // 40
 	game_command_emptysub,
 	game_command_remove_fence,
-	game_command_emptysub,
+	game_command_place_large_scenery,
 	game_command_remove_large_scenery,
 	game_command_set_current_loan,
 	game_command_set_research_funding,
