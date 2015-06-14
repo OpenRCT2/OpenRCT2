@@ -202,7 +202,7 @@ static void* window_editor_object_selection_events[] = {
 static void window_editor_object_set_page(rct_window *w, int page);
 static void window_editor_object_selection_set_pressed_tab(rct_window *w);
 static void window_editor_object_selection_select_default_objects();
-static int window_editor_object_selection_select_object(int flags, rct_object_entry *entry);
+static int window_editor_object_selection_select_object(uint8 bh, int flags, rct_object_entry *entry);
 static int get_object_from_object_selection(uint8 object_type, int y, uint8 *object_selection_flags, rct_object_entry **installed_entry);
 static void window_editor_object_selection_manage_tracks();
 static void editor_load_selected_objects();
@@ -530,7 +530,7 @@ static void window_editor_object_selection_scroll_mousedown()
 
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
-		if (!window_editor_object_selection_select_object(1, installed_entry))
+		if (!window_editor_object_selection_select_object(0, 1, installed_entry))
 			return;
 
 		// Close any other open windows such as options/colour schemes to prevent a crash.
@@ -548,7 +548,7 @@ static void window_editor_object_selection_scroll_mousedown()
 		ebx = 7;
 
 	RCT2_GLOBAL(0xF43411, uint8) = 0;
-	if (!window_editor_object_selection_select_object(ebx, installed_entry)) {
+	if (!window_editor_object_selection_select_object(0, ebx, installed_entry)) {
 		rct_string_id error_title = ebx & 1 ?
 			STR_UNABLE_TO_SELECT_THIS_OBJECT :
 			STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
@@ -983,24 +983,25 @@ static void window_editor_object_selection_scrollpaint()
 
 				// Draw text
 				char *buffer = (char*)0x0141ED68;
-				*buffer = colour;
-				strcpy(buffer + 1, object_get_name(entry));
-				if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
-					while (*buffer != 0 && *buffer != 9)
-						buffer++;
+*buffer = colour;
+strcpy(buffer + 1, object_get_name(entry));
+if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+	while (*buffer != 0 && *buffer != 9)
+		buffer++;
 
-					*buffer = 0;
-				}
+	*buffer = 0;
+}
 
-				if (*itemFlags & 0x20) {
-					colour = w->colours[1] & 0x7F;
-					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = -1;
-				} else {
-					colour = 0;
-					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = 224;
-				}
-				x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
-				gfx_draw_string(dpi, (char*)0x0141ED68, colour, x, y);
+if (*itemFlags & 0x20) {
+	colour = w->colours[1] & 0x7F;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = -1;
+}
+else {
+	colour = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = 224;
+}
+x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
+gfx_draw_string(dpi, (char*)0x0141ED68, colour, x, y);
 			}
 			y += 12;
 		}
@@ -1043,15 +1044,231 @@ static void window_editor_object_selection_select_default_objects()
 		return;
 
 	for (i = 0; i < countof(DefaultSelectedObjects); i++)
-		window_editor_object_selection_select_object(7, &DefaultSelectedObjects[i]);
+		window_editor_object_selection_select_object(0, 7, &DefaultSelectedObjects[i]);
 }
 
 /**
  *
  *  rct2: 0x006AB54F
  */
-static int window_editor_object_selection_select_object(int flags, rct_object_entry *entry)
+static int window_editor_object_selection_select_object(uint8 bh, int flags, rct_object_entry *entry)
 {
+	uint8* selection_flags;
+	if (bh == 0){
+		// Unsure what this does??
+		uint16 total_objects = 0;
+		for (uint8 i = 0; i < 11; ++i){
+			total_objects += RCT2_ADDRESS(0x00F433E1, uint16)[i];
+		}
+
+		selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
+		for (; total_objects != 0; total_objects--, selection_flags++){
+			uint8 select_flag = *selection_flags & 0xFD;
+			if (select_flag & 1){
+				select_flag |= (1 << 1);
+			}
+		}
+	}
+
+	selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
+	// There was previously a check to make sure the object list had an item
+	rct_object_entry* installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	rct_object_entry* test = object_list_find(entry);
+	uint8 not_found = 1;
+	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
+		if (object_entry_compare(entry, installedObject)){
+			not_found = 0;
+			break;
+		}
+
+		installedObject = object_get_next(installedObject);
+		selection_flags++;
+	}
+	if (not_found){
+		RCT2_GLOBAL(0x141E9AC, uint16) = 3169;
+		if (bh != 0){
+			// Bunch of code that looks like it does nothing removed.
+			RCT2_CALLPROC_EBPSAFE(0x006AA770);
+		}
+		return 0;
+	}
+
+	if (!(flags & 1)){
+		if (!(*selection_flags & (1 << 0)))
+		{
+			if (bh == 0){
+				RCT2_CALLPROC_EBPSAFE(0x006AB923);
+			}
+			return 1;
+		} else if (*selection_flags & (1 << 2)){
+			RCT2_GLOBAL(0x141E9AC, uint16) = 3173;
+			if (bh != 0){
+				// Bunch of code that looks like it does nothing removed.
+				RCT2_CALLPROC_EBPSAFE(0x006AA770);
+			}
+			return 0;
+		}
+		else if (*selection_flags & (1 << 3)){
+			RCT2_GLOBAL(0x141E9AC, uint16) = 3174;
+			if (bh != 0){
+				RCT2_CALLPROC_EBPSAFE(0x006AA770);
+			}
+			return 0;
+		}
+		else if (*selection_flags & (1 << 4)){
+			RCT2_GLOBAL(0x141E9AC, uint16) = 3175;
+			if (bh != 0){
+				RCT2_CALLPROC_EBPSAFE(0x006AA770);
+			}
+			return 0;
+		}
+
+		uint8* pos = (uint8*)installedObject;
+		// Skip sizeof(rct_object_entry)
+		pos += 16;
+
+		// Skip filename
+		while (*pos++);
+
+		// Skip no of images
+		pos += 4;
+
+		// Skip name
+		while (*pos++);
+
+		uint32 size_of_chunk = *((uint32*)pos);
+		// Skip size of chunk
+		pos += 4;
+
+		// Skip 
+		pos += *pos * 16 + 1;
+
+		uint8 no_theme_objects = *pos++;
+
+		if (no_theme_objects != 0 && flags&(1 << 2)){
+			rct_object_entry* theme_object = (rct_object_entry*)pos;
+			for (; no_theme_objects > 0; no_theme_objects--){
+				window_editor_object_selection_select_object(++bh, flags, theme_object);
+				theme_object++;
+			}
+		}
+
+		RCT2_GLOBAL(0x00F4340D, uint32) -= size_of_chunk;
+		uint8 object_type = installedObject->flags & 0xF;
+		RCT2_ADDRESS(0x00F433F7, uint16)[object_type]--;
+		*selection_flags &= ~(1 << 0);
+		if (bh == 0){
+			RCT2_CALLPROC_EBPSAFE(0x006AB923);
+		}
+		return 1;
+	}
+	else{
+		if (bh == 0){
+			if (flags & (1 << 3)){
+				*selection_flags |= (1 << 4);
+			}
+		}
+		if (*selection_flags&(1 << 0)){
+			if (bh == 0){
+				RCT2_CALLPROC_EBPSAFE(0x006AB923);
+			}
+			return 1;
+		}
+
+		uint8 object_type = installedObject->flags & 0xF;
+		uint16 no_objects = object_entry_group_counts[object_type];
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER){
+			no_objects = 4;
+		}
+
+		if (no_objects <= RCT2_ADDRESS(0x00F433F7, uint16)[object_type]){
+			RCT2_GLOBAL(0x141E9AC, uint16) = 3171;
+			if (bh != 0){
+				// Bunch of code that looks like it does nothing removed.
+				RCT2_CALLPROC_EBPSAFE(0x006AA770);
+			}
+			return 0;
+		}
+
+		uint8* pos = (uint8*)installedObject;
+		// Skip sizeof(rct_object_entry)
+		pos += 16;
+
+		// Skip filename
+		while (*pos++);
+
+		// Skip no of images
+		pos += 4;
+
+		// Skip name
+		while (*pos++);
+
+		uint32 size_of_chunk = *((uint32*)pos);
+		// Skip size of chunk
+		pos += 4;
+
+		uint8 num_unks = *pos++;	
+		rct_object_entry* unks = (rct_object_entry*)pos;
+		for (; num_unks != 0; num_unks--){
+			if (!window_editor_object_selection_select_object(++bh, flags, unks)){
+				if (bh != 0){
+					// Bunch of code that looks like it does nothing removed.
+					RCT2_CALLPROC_EBPSAFE(0x006AA770);
+				}
+				return 0;
+			}
+			unks++;
+		}
+		pos = (uint8*)unks;
+
+		uint8 num_theme_objects = *pos++;
+		rct_object_entry* theme_object = (rct_object_entry*)pos;
+		for (; num_theme_objects != 0; num_theme_objects--){
+			if (flags & (1 << 2)){
+				if (!window_editor_object_selection_select_object(++bh, flags, theme_object)){
+					RCT2_GLOBAL(0x00F43411, uint8) |= 1;
+				}
+			}
+			theme_object++;
+		}
+		
+		if (bh != 0 && !(flags&(1 << 1))){
+			RCT2_CALLPROC_X(0x6AB344, 0, 0, 0, 0, 0, (int)0x009BC95A, (int)installedObject);
+			RCT2_GLOBAL(0x141E9AC, uint16) = 3172;
+			if (bh != 0){
+				// Bunch of code that looks like it does nothing removed.
+				RCT2_CALLPROC_EBPSAFE(0x006AA770);
+			}
+			return 0;
+		}
+
+		if (RCT2_GLOBAL(0x00F4340D, uint32) + size_of_chunk > 0x40000){
+			RCT2_GLOBAL(0x141E9AC, uint16) = 3170;
+			if (bh != 0){
+				// Bunch of code that looks like it does nothing removed.
+				RCT2_CALLPROC_EBPSAFE(0x006AA770);
+			}
+			return 0;
+		}
+
+		if (no_objects <= RCT2_ADDRESS(0x00F433F7, uint16)[object_type]){
+			RCT2_GLOBAL(0x141E9AC, uint16) = 3171;
+			if (bh != 0){
+				// Bunch of code that looks like it does nothing removed.
+				RCT2_CALLPROC_EBPSAFE(0x006AA770);
+			}
+			return 0;
+		}
+
+		RCT2_GLOBAL(0x00F4340D, uint32) = size_of_chunk;
+		RCT2_ADDRESS(0x00F433F7, uint16)[object_type]++;
+
+		*selection_flags |= (1 << 0);
+		if (bh == 0){
+			RCT2_CALLPROC_EBPSAFE(0x006AB923);
+		}
+		return 1;
+	}
 	return (RCT2_CALLPROC_X(0x006AB54F, 0, flags, 0, 0, 0, 0, (int)entry) & 0x100) == 0;
 }
 
