@@ -523,7 +523,7 @@ static void window_editor_object_selection_scroll_mousedown()
 	uint8 object_selection_flags;
 	rct_object_entry* installed_entry;
 	int selected_object = get_object_from_object_selection((w->selected_tab & 0xFF), y, &object_selection_flags, &installed_entry);
-	if (selected_object == -1 || (object_selection_flags & 0x20))
+	if (selected_object == -1 || (object_selection_flags & OBJECT_SELECTION_FLAG_6))
 		return;
 
 	window_invalidate(w);
@@ -546,7 +546,7 @@ static void window_editor_object_selection_scroll_mousedown()
 
 	int ebx = 6;
 	// If already selected
-	if (!(object_selection_flags & 1))
+	if (!(object_selection_flags & OBJECT_SELECTION_FLAG_SELECTED))
 		ebx = 7;
 
 	RCT2_GLOBAL(0xF43411, uint8) = 0;
@@ -582,7 +582,7 @@ static void window_editor_object_selection_scroll_mouseover()
 	selectedObject = get_object_from_object_selection(
 		w->selected_tab & 0xFF, y, &objectSelectionFlags, &installedEntry
 	);
-	if (objectSelectionFlags & 0x20)
+	if (objectSelectionFlags & OBJECT_SELECTION_FLAG_6)
 		selectedObject = -1;
 
 	if (selectedObject == w->selected_list_item)
@@ -953,13 +953,13 @@ static void window_editor_object_selection_scrollpaint()
 
 	numObjects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32);
 	entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
-	itemFlags = RCT2_GLOBAL(0x009ADAEC, uint8*);
+	itemFlags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 	y = 0;
 	for (i = 0; i < numObjects; i++) {
 		filter = get_object_filter(i);
 		type = entry->flags & 0x0F;
 		source = (entry->flags & 0xF0) >> 4;
-		if (type == w->selected_tab && !(*itemFlags & 0x20) && filter_source(entry) && filter_string(entry) && filter_chunks(entry, filter)) {
+		if (type == w->selected_tab && !(*itemFlags & OBJECT_SELECTION_FLAG_6) && filter_source(entry) && filter_string(entry) && filter_chunks(entry, filter)) {
 			if (y + 12 >= dpi->y && y <= dpi->y + dpi->height) {
 				// Draw checkbox
 				if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && !(*itemFlags & 0x20))
@@ -967,17 +967,17 @@ static void window_editor_object_selection_scrollpaint()
 
 				// Highlight background
 				colour = 142;
-				if (entry == (rct_object_entry*)w->var_494 && !(*itemFlags & 0x20)) {
+				if (entry == (rct_object_entry*)w->var_494 && !(*itemFlags & OBJECT_SELECTION_FLAG_6)) {
 					gfx_fill_rect(dpi, 0, y, w->width, y + 11, 0x2000031);
 					colour = 14;
 				}
 
 				// Draw checkmark
-				if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && (*itemFlags & 1)) {
+				if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && (*itemFlags & OBJECT_SELECTION_FLAG_SELECTED)) {
 					x = 2;
 					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = colour == 14 ? -2 : -1;
 					colour2 = w->colours[1] & 0x7F;
-					if (*itemFlags & 0x1C)
+					if (*itemFlags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_REQUIRED | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
 						colour2 |= 0x40;
 
 					gfx_draw_string(dpi, (char*)0x009DED72, colour2, x, y);
@@ -985,25 +985,25 @@ static void window_editor_object_selection_scrollpaint()
 
 				// Draw text
 				char *buffer = (char*)0x0141ED68;
-*buffer = colour;
-strcpy(buffer + 1, object_get_name(entry));
-if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
-	while (*buffer != 0 && *buffer != 9)
-		buffer++;
+				*buffer = colour;
+				strcpy(buffer + 1, object_get_name(entry));
+				if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+					while (*buffer != 0 && *buffer != 9)
+						buffer++;
 
-	*buffer = 0;
-}
+					*buffer = 0;
+				}
 
-if (*itemFlags & 0x20) {
-	colour = w->colours[1] & 0x7F;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = -1;
-}
-else {
-	colour = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = 224;
-}
-x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
-gfx_draw_string(dpi, (char*)0x0141ED68, colour, x, y);
+				if (*itemFlags & OBJECT_SELECTION_FLAG_6) {
+					colour = w->colours[1] & 0x7F;
+					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = -1;
+				}
+				else {
+					colour = 0;
+					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = 224;
+				}
+				x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
+				gfx_draw_string(dpi, (char*)0x0141ED68, colour, x, y);
 			}
 			y += 12;
 		}
@@ -1063,7 +1063,7 @@ void reset_selected_object_count_and_size(){
 	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
 		uint8 object_type = installedObject->flags & 0xF;
 
-		if (*selection_flags & (1 << 0)){
+		if (*selection_flags & OBJECT_SELECTION_FLAG_SELECTED){
 			uint8* pos = (uint8*)installedObject;
 			// Skip sizeof(rct_object_entry)
 			pos += 16;
@@ -1095,7 +1095,7 @@ void set_required_object_flags(rct_object_entry* required_object){
 
 	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
 		if (object_entry_compare(required_object, installedObject)){
-			*selection_flags |= (1 << 3);
+			*selection_flags |= OBJECT_SELECTION_FLAG_REQUIRED;
 
 			uint8* pos = (uint8*)installedObject;
 			// Skip sizeof(rct_object_entry)
@@ -1113,13 +1113,12 @@ void set_required_object_flags(rct_object_entry* required_object){
 			// Skip size of chunk
 			pos += 4;
 
-			// Skip 
-			uint8 no_unk_objects = *pos++;
+			uint8 no_required_objects = *pos++;
 
-			rct_object_entry* unk_object = (rct_object_entry*)pos;
-			for (; no_unk_objects > 0; no_unk_objects--){
-				set_required_object_flags(unk_object);
-				unk_object++;
+			required_object = (rct_object_entry*)pos;
+			for (; no_required_objects > 0; no_required_objects--){
+				set_required_object_flags(required_object);
+				required_object++;
 			}
 			return;
 		}
@@ -1133,7 +1132,7 @@ void set_required_object_flags(rct_object_entry* required_object){
 void reset_required_object_flags(){
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
-		*selection_flags &= ~(1 << 3);
+		*selection_flags &= ~OBJECT_SELECTION_FLAG_REQUIRED;
 		selection_flags++;
 	}
 
@@ -1141,7 +1140,7 @@ void reset_required_object_flags(){
 	rct_object_entry* installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
 
 	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
-		if (*selection_flags&(1 << 0)){
+		if (*selection_flags & OBJECT_SELECTION_FLAG_SELECTED){
 			uint8* pos = (uint8*)installedObject;
 			// Skip sizeof(rct_object_entry)
 			pos += 16;
@@ -1158,13 +1157,12 @@ void reset_required_object_flags(){
 			// Skip size of chunk
 			pos += 4;
 
-			// Skip 
-			uint8 no_unk_objects = *pos++;
+			uint8 no_required_objects = *pos++;
 
-			rct_object_entry* unk_object = (rct_object_entry*)pos;
-			for (; no_unk_objects > 0; no_unk_objects--){
-				set_required_object_flags(unk_object);
-				unk_object++;
+			rct_object_entry* required_object = (rct_object_entry*)pos;
+			for (; no_required_objects > 0; no_required_objects--){
+				set_required_object_flags(required_object);
+				required_object++;
 			}
 			
 		}
@@ -1190,9 +1188,9 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 
 		selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 		for (; total_objects != 0; total_objects--, selection_flags++){
-			uint8 select_flag = *selection_flags & 0xFD;
-			if (select_flag & 1){
-				select_flag |= (1 << 1);
+			uint8 select_flag = *selection_flags & ~OBJECT_SELECTION_FLAG_2;
+			if (select_flag & OBJECT_SELECTION_FLAG_SELECTED){
+				select_flag |= OBJECT_SELECTION_FLAG_2;
 			}
 		}
 	}
@@ -1200,7 +1198,7 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 	selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 	// There was previously a check to make sure the object list had an item
 	rct_object_entry* installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
-	rct_object_entry* test = object_list_find(entry);
+
 	uint8 not_found = 1;
 	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
 		if (object_entry_compare(entry, installedObject)){
@@ -1221,13 +1219,14 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 	}
 
 	if (!(flags & 1)){
-		if (!(*selection_flags & (1 << 0)))
+		if (!(*selection_flags & OBJECT_SELECTION_FLAG_SELECTED))
 		{
 			if (bh == 0){
 				reset_required_object_flags();
 			}
 			return 1;
-		} else if (*selection_flags & (1 << 2)){
+		}
+		else if (*selection_flags & OBJECT_SELECTION_FLAG_IN_USE){
 			RCT2_GLOBAL(0x141E9AC, uint16) = 3173;
 			if (bh != 0){
 				// Bunch of code that looks like it does nothing removed.
@@ -1235,14 +1234,14 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 			}
 			return 0;
 		}
-		else if (*selection_flags & (1 << 3)){
+		else if (*selection_flags & OBJECT_SELECTION_FLAG_REQUIRED){
 			RCT2_GLOBAL(0x141E9AC, uint16) = 3174;
 			if (bh != 0){
 				reset_selected_object_count_and_size();
 			}
 			return 0;
 		}
-		else if (*selection_flags & (1 << 4)){
+		else if (*selection_flags & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED){
 			RCT2_GLOBAL(0x141E9AC, uint16) = 3175;
 			if (bh != 0){
 				reset_selected_object_count_and_size();
@@ -1267,7 +1266,7 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 		// Skip size of chunk
 		pos += 4;
 
-		// Skip 
+		// Skip required objects
 		pos += *pos * 16 + 1;
 
 		uint8 no_theme_objects = *pos++;
@@ -1283,7 +1282,7 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 		RCT2_GLOBAL(0x00F4340D, uint32) -= size_of_chunk;
 		uint8 object_type = installedObject->flags & 0xF;
 		RCT2_ADDRESS(0x00F433F7, uint16)[object_type]--;
-		*selection_flags &= ~(1 << 0);
+		*selection_flags &= ~OBJECT_SELECTION_FLAG_SELECTED;
 		if (bh == 0){
 			reset_required_object_flags();
 		}
@@ -1292,10 +1291,10 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 	else{
 		if (bh == 0){
 			if (flags & (1 << 3)){
-				*selection_flags |= (1 << 4);
+				*selection_flags |= OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED;
 			}
 		}
-		if (*selection_flags&(1 << 0)){
+		if (*selection_flags & OBJECT_SELECTION_FLAG_SELECTED){
 			if (bh == 0){
 				reset_required_object_flags();
 			}
@@ -1334,19 +1333,19 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 		// Skip size of chunk
 		pos += 4;
 
-		uint8 num_unks = *pos++;	
-		rct_object_entry* unks = (rct_object_entry*)pos;
-		for (; num_unks != 0; num_unks--){
-			if (!window_editor_object_selection_select_object(++bh, flags, unks)){
+		uint8 num_required_objects = *pos++;	
+		rct_object_entry* required_objects = (rct_object_entry*)pos;
+		for (; num_required_objects != 0; num_required_objects--){
+			if (!window_editor_object_selection_select_object(++bh, flags, required_objects)){
 				if (bh != 0){
 					// Bunch of code that looks like it does nothing removed.
 					reset_selected_object_count_and_size();
 				}
 				return 0;
 			}
-			unks++;
+			required_objects++;
 		}
-		pos = (uint8*)unks;
+		pos = (uint8*)required_objects;
 
 		uint8 num_theme_objects = *pos++;
 		rct_object_entry* theme_object = (rct_object_entry*)pos;
@@ -1390,13 +1389,12 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 		RCT2_GLOBAL(0x00F4340D, uint32) += size_of_chunk;
 		RCT2_ADDRESS(0x00F433F7, uint16)[object_type]++;
 
-		*selection_flags |= (1 << 0);
+		*selection_flags |= OBJECT_SELECTION_FLAG_SELECTED;
 		if (bh == 0){
 			reset_required_object_flags();
 		}
 		return 1;
 	}
-	return (RCT2_CALLPROC_X(0x006AB54F, 0, flags, 0, 0, 0, 0, (int)entry) & 0x100) == 0;
 }
 
 /**
@@ -1418,7 +1416,7 @@ static int get_object_from_object_selection(uint8 object_type, int y, uint8 *obj
 		filter = get_object_filter(RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) - i);
 		source = ((*installed_entry)->flags & 0xF0) >> 4;
 		if (((*installed_entry)->flags & 0xF) == object_type && filter_source(*installed_entry) && filter_string(*installed_entry) && filter_chunks(*installed_entry, filter)){
-			if (!(*selection_flags & 0x20)){
+			if (!(*selection_flags & OBJECT_SELECTION_FLAG_6)){
 				y -= 12;
 				*object_selection_flags = *selection_flags;
 				if (y < 0)return object_count;
@@ -1484,7 +1482,7 @@ static void editor_load_selected_objects()
 		return;
 
 	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i != 0; i--, selection_flags++) {
-		if (*selection_flags & 1) {
+		if (*selection_flags & OBJECT_SELECTION_FLAG_SELECTED) {
 			uint8 entry_index, entry_type;
 			if (!find_object_in_entry_group(installed_entry, &entry_type, &entry_index)){
 				int chunk_size;
