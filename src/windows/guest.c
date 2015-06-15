@@ -1566,8 +1566,8 @@ void window_guest_rides_update(){
 	uint8 curr_list_position = 0;
 	for (uint8 ride_id = 0; ride_id < 255; ++ride_id){
 		// Offset to the ride_id bit in peep_rides_been_on
-		uint8 ride_id_bit = ride_id & 0x1F;
-		uint8 ride_id_offset = ride_id / 32;
+		uint8 ride_id_bit = ride_id & 0x7;
+		uint8 ride_id_offset = ride_id / 8;
 		if (peep->rides_been_on[ride_id_offset] & (1 << ride_id_bit)){
 			rct_ride* ride = GET_RIDE(ride_id);
 			if (RCT2_ADDRESS(0x97C3AF, uint8)[ride->type] == 0){

@@ -923,7 +923,7 @@ void window_scenery_invalidate()
 				window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WWT_FLATBTN;
 			}
 		}
-		else if (tabSelectedSceneryId > 0x300) {
+		else if (tabSelectedSceneryId >= 0x300) {
 			window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WWT_FLATBTN;
 		}
 	}
