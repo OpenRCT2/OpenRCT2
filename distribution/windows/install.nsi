@@ -1,7 +1,7 @@
 # Version numbers to update
 !define /ifndef APPV_MAJOR 0
 !define /ifndef APPV_MINOR 0
-!define /ifndef APPV_MAINT 2
+!define /ifndef APPV_MAINT 3
 !define /ifndef APPV_BUILD 0
 !define /ifndef APPV_EXTRA "-beta"
 
@@ -121,6 +121,9 @@ Section "!OpenRCT2" Section1
 
     ; Copy the rest of the stuff
     SetOutPath "$INSTDIR\"
+	
+	; Copy curl ca file
+	File ..\..\curl-ca-bundle.crt
 
     ; Copy text files
     File ..\changelog.txt
