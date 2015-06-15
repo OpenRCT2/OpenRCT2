@@ -4472,3 +4472,39 @@ bool ride_is_powered_launched(rct_ride *ride)
 		ride->mode == RIDE_MODE_POWERED_LAUNCH ||
 		ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED;
 }
+
+bool ride_has_any_track_elements(int rideIndex)
+{
+	map_element_iterator it;
+
+	map_element_iterator_begin(&it);
+	while (map_element_iterator_next(&it)) {
+		if (map_element_get_type(it.element) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
+		if (it.element->properties.track.ride_index != rideIndex)
+			continue;
+		if (it.element->flags & MAP_ELEMENT_FLAG_GHOST)
+			continue;
+
+		return true;
+	}
+
+	return false;
+}
+
+void ride_all_has_any_track_elements(bool *rideIndexArray)
+{
+	map_element_iterator it;
+
+	memset(rideIndexArray, 0, MAX_RIDES * sizeof(bool));
+
+	map_element_iterator_begin(&it);
+	while (map_element_iterator_next(&it)) {
+		if (map_element_get_type(it.element) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
+		if (it.element->flags & MAP_ELEMENT_FLAG_GHOST)
+			continue;
+
+		rideIndexArray[it.element->properties.track.ride_index] = true;
+	}
+}

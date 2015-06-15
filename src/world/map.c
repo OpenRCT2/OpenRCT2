@@ -679,7 +679,7 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 	while(map_element->type != map_element_type ||
 		map_element->base_height != base_height ||
 		map_element->properties.scenery.type != scenery_type ||
-		(*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_5)){
+		(*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST)){
 		map_element++;
 		if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
 			*ebx = 0;
@@ -742,7 +742,7 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 		return;
 	}
 
-	if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_5)){
+	if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST)){
 		*ebx = 0;
 		return;
 	}
@@ -913,7 +913,7 @@ void game_command_set_scenery_colour(int* eax, int* ebx, int* ecx, int* edx, int
 			return;
 		}
 	}
-	if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_5)){
+	if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST)){
 		*ebx = 0;
 		return;
 	}
@@ -955,14 +955,14 @@ void game_command_set_fence_colour(int* eax, int* ebx, int* ecx, int* edx, int* 
 		while(map_element_get_type(map_element) != MAP_ELEMENT_TYPE_FENCE ||
 			map_element->base_height != base_height ||
 			(map_element->type & MAP_ELEMENT_DIRECTION_MASK) != map_element_direction||
-			((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_5))){
+			((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST))){
 			map_element++;
 			if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
 				*ebx = 0;
 				return;
 			}
 		}
-		if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_5)){
+		if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST)){
 			*ebx = 0;
 			return;
 		}
@@ -1014,7 +1014,7 @@ void game_command_set_large_scenery_colour(int* eax, int* ebx, int* ecx, int* ed
 			return;
 		}
 	}
-	if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_5)){
+	if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST)){
 		*ebx = 0;
 		return;
 	}
@@ -1823,7 +1823,7 @@ void game_command_remove_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 	while(map_element_get_type(map_element) != MAP_ELEMENT_TYPE_FENCE ||
 	map_element->base_height != base_height ||
 	(map_element->type & MAP_ELEMENT_DIRECTION_MASK) != direction ||
-	((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_5))){
+	((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST))){
 		map_element++;
 		if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
 			*ebx = 0;
@@ -2305,7 +2305,7 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 								}
 
 								if(*ebx & 0x40){
-									new_map_element->flags |= MAP_ELEMENT_FLAG_5;
+									new_map_element->flags |= MAP_ELEMENT_FLAG_GHOST;
 								}
 								if(tile_num == 0){
 									RCT2_GLOBAL(0x00F64EBC, rct_map_element*) = new_map_element;
