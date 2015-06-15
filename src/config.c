@@ -694,6 +694,14 @@ static config_line *_configLines = NULL;
 static bool config_find_rct2_path(char *resultPath)
 {
 	int i;
+	char exePath[261];
+	char orctFolder[261];
+	int pathEnd;
+
+	GetModuleFileName(NULL, exePath, 261);
+	pathEnd = strlen(exePath) - 13;
+	strncpy(orctFolder, exePath, pathEnd);
+	orctFolder[pathEnd] = '\0';
 
 	log_verbose("searching common installation locations.");
 
@@ -704,7 +712,8 @@ static bool config_find_rct2_path(char *resultPath)
 		"C:\\Program Files (x86)\\Infogrames Interactive\\RollerCoaster Tycoon 2",
 		"C:\\Program Files\\Atari\\RollerCoaster Tycoon 2",
 		"C:\\Program Files (x86)\\Atari\\RollerCoaster Tycoon 2",
-		"C:\\GOG Games\\RollerCoaster Tycoon 2 Triple Thrill Pack"
+		"C:\\GOG Games\\RollerCoaster Tycoon 2 Triple Thrill Pack",
+		orctFolder
 	};
 
 	for (i = 0; i < countof(searchLocations); i++) {
