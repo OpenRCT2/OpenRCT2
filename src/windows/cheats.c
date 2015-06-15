@@ -538,8 +538,7 @@ static void cheat_explode_guests()
 	rct_peep *peep;
 
 	FOR_ALL_GUESTS(sprite_index, peep) {
-		unsigned int rand = scenario_rand();
-		if ((rand & 0x07) == 0) {
+		if (scenario_rand_max(6) == 0) {
 			peep->flags |= PEEP_FLAGS_EXPLODE;
 		}
 	}

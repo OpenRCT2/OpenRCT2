@@ -648,6 +648,18 @@ unsigned int scenario_rand()
 	return RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) = ror32(eax, 3);
 }
 
+unsigned int scenario_rand_max(unsigned int max)
+{
+	if (max < 2) return 0;
+	if ((max & (max - 1)) == 0)
+		return scenario_rand() & (max - 1);
+	unsigned int rand, cap = ~((unsigned int)0) - (~((unsigned int)0) % max) - 1;
+	do {
+		rand = scenario_rand();
+	} while (rand > cap);
+	return rand % max;
+}
+
 /**
  * Prepare rides, for the finish five rollercoasters objective.
  *  rct2: 0x006788F7
