@@ -238,7 +238,7 @@ static int award_is_deserved_safest(int awardType, int activeAwardTypes)
 
 	// Check for rides that have crashed maybe?
 	FOR_ALL_RIDES(i, ride)
-		if (ride->var_1AE != 0)
+		if (ride->last_crash_type != RIDE_CRASH_TYPE_NONE)
 			return 0;
 
 	return 1;

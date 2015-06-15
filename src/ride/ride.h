@@ -293,7 +293,7 @@ typedef struct {
 	uint32 no_secondary_items_sold; // 0x1A8
 	uint8 var_1AC;
 	uint8 var_1AD;
-	uint8 var_1AE;
+	uint8 last_crash_type;
 	uint8 connected_message_throttle;	// 0x1AF
 	money32 income_per_hour;		// 0x1B0
 	money32 profit;					// 0x1B4
@@ -734,6 +734,12 @@ enum {
 	RIDE_TYPE_FLAG_29 = 1 << 29,
 	RIDE_TYPE_FLAG_30 = 1 << 30,
 	RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = 1 << 31,
+};
+
+enum {
+	RIDE_CRASH_TYPE_NONE = 0,
+	RIDE_CRASH_TYPE_NO_FATALITIES = 2,
+	RIDE_CRASH_TYPE_FATALITIES = 8
 };
 
 #define MAX_RIDES 255
