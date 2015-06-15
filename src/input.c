@@ -83,10 +83,10 @@ static void input_viewport_drag_end();
 static void input_scroll_begin();
 static void input_scroll_continue(rct_window *w, int widgetIndex, int state, int x, int y);
 static void input_scroll_end();
-static void input_scroll_part_update_hthumb(rct_window *w, int widgetIndex, int x);
+static void input_scroll_part_update_hthumb(rct_window *w, int widgetIndex, int x, int scroll_id);
 static void input_scroll_part_update_hleft(rct_window *w, int widgetIndex, int scroll_id);
 static void input_scroll_part_update_hright(rct_window *w, int widgetIndex, int scroll_id);
-static void input_scroll_part_update_vthumb(rct_window *w, int widgetIndex, int y);
+static void input_scroll_part_update_vthumb(rct_window *w, int widgetIndex, int y, int scroll_id);
 static void input_scroll_part_update_vtop(rct_window *w, int widgetIndex, int scroll_id);
 static void input_scroll_part_update_vbottom(rct_window *w, int widgetIndex, int scroll_id);
 static void input_update_tooltip(rct_window *w, int widgetIndex, int x, int y);
@@ -543,11 +543,13 @@ static void input_scroll_continue(rct_window *w, int widgetIndex, int state, int
 		return;
 	}
 	
+	widget_scroll_get_part(w, widget, x, y, &x, &y, &scroll_part, &scroll_id);
+
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_AREA, uint16) == SCROLL_PART_HSCROLLBAR_THUMB){
 		int temp_x = x;
 		x -= RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, uint16);
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, uint16) = temp_x;
-		input_scroll_part_update_hthumb(w, widgetIndex, x);
+		input_scroll_part_update_hthumb(w, widgetIndex, x, scroll_id);
 		return;
 	}
 
@@ -555,11 +557,10 @@ static void input_scroll_continue(rct_window *w, int widgetIndex, int state, int
 		int temp_y = y;
 		y -= RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, uint16);
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, uint16) = temp_y;
-		input_scroll_part_update_vthumb(w, widgetIndex, y);
+		input_scroll_part_update_vthumb(w, widgetIndex, y, scroll_id);
 		return;
 	}
 	
-	widget_scroll_get_part(w, widget, x, y, &x, &y, &scroll_part, &scroll_id);
 
 	if (scroll_part != RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_AREA, uint16)){
 		invalidate_scroll();
@@ -606,10 +607,10 @@ static void input_scroll_end()
  *
  * rct: 0x006E98F2
  */
-static void input_scroll_part_update_hthumb(rct_window *w, int widgetIndex, int x)
+static void input_scroll_part_update_hthumb(rct_window *w, int widgetIndex, int x, int scroll_id)
 {
 	rct_widget *widget = &w->widgets[widgetIndex];
-	int newLeft, scroll_id = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_ID, uint32);
+	int newLeft;
 
 	if (window_find_by_number(w->classification, w->number)) {
 		newLeft = w->scrolls[scroll_id].h_right;
@@ -643,10 +644,10 @@ static void input_scroll_part_update_hthumb(rct_window *w, int widgetIndex, int 
  *
  * rct: 0x006E99A9
  */
-static void input_scroll_part_update_vthumb(rct_window *w, int widgetIndex, int y)
+static void input_scroll_part_update_vthumb(rct_window *w, int widgetIndex, int y, int scroll_id)
 {
 	rct_widget *widget = &w->widgets[widgetIndex];
-	int newTop, scroll_id = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_ID, uint32);
+	int newTop;
 
 	if (window_find_by_number(w->classification, w->number)) {
 		newTop = w->scrolls[scroll_id].v_bottom;
