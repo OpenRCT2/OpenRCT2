@@ -122,6 +122,9 @@ Section "!OpenRCT2" Section1
     ; Copy the rest of the stuff
     SetOutPath "$INSTDIR\"
 
+    ; Copy curl ca file
+    File ..\..\curl-ca-bundle.crt
+
     ; Copy text files
     File ..\changelog.txt
     Push "$INSTDIR\changelog.txt"
