@@ -374,6 +374,12 @@ static void DrawOpenRCT2(int x, int y)
 
 	// Format text (name and version)
 	sprintf(buffer, "%c%c%c%s, v%s", FORMAT_MEDIUMFONT, FORMAT_OUTLINE, FORMAT_WHITE, OPENRCT2_NAME, OPENRCT2_VERSION);
+	if (!str_is_null_or_empty(OPENRCT2_BRANCH))
+		sprintf(strchr(buffer, 0), "-%s", OPENRCT2_BRANCH);
+	if (!str_is_null_or_empty(OPENRCT2_COMMIT_SHA1_SHORT))
+		sprintf(strchr(buffer, 0), " (%s)", OPENRCT2_COMMIT_SHA1_SHORT);
+	if (!str_is_null_or_empty(OPENRCT2_BUILD_SERVER))
+		sprintf(strchr(buffer, 0), " provided by %s", OPENRCT2_BUILD_SERVER);
 
 	// Draw Text
 	gfx_draw_string(dpi, buffer, 0, x + 5, y + 5);
