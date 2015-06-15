@@ -766,7 +766,7 @@ void update_park_fences(int x, int y)
 			if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
 				continue;
 
-			if (!(mapElement->flags & MAP_ELEMENT_FLAG_5)){
+			if (!(mapElement->flags & MAP_ELEMENT_FLAG_GHOST)) {
 				fence_required = 0;
 				break;
 			}

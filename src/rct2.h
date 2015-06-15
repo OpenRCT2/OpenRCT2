@@ -74,10 +74,16 @@ typedef utf16* utf16string;
 #endif
 
 #define OPENRCT2_NAME				"OpenRCT2"
-#define OPENRCT2_VERSION			"develop"
+#define OPENRCT2_VERSION			"0.0.3"
 #define OPENRCT2_ARCHITECTURE		"x86"
 #define OPENRCT2_PLATFORM			"Windows"
 #define OPENRCT2_TIMESTAMP			__DATE__ " " __TIME__
+
+// The following constants are for automated build servers
+#define OPENRCT2_BUILD_SERVER		""
+#define OPENRCT2_BRANCH				"develop"
+#define OPENRCT2_COMMIT_SHA1		""
+#define OPENRCT2_COMMIT_SHA1_SHORT	""
 
 // Represent fixed point numbers. dp = decimal point
 typedef sint16 fixed16_1dp;

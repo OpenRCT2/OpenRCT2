@@ -830,6 +830,26 @@ static void sub_674BCF()
 	}
 }
 
+static void get_map_elements_without_ghost(rct_map_element *resultElements)
+{
+	size_t mapElementTotalSize = MAX_MAP_ELEMENTS * sizeof(rct_map_element);
+	rct_map_element *destinationElement = resultElements;
+
+	for (int y = 0; y < 256; y++) {
+		for (int x = 0; x < 256; x++) {
+			rct_map_element *originalElement = map_get_first_element_at(x, y);
+			do {
+				if (!(originalElement->flags & MAP_ELEMENT_FLAG_GHOST)) {
+					*destinationElement++ = *originalElement;
+				}
+			} while (!map_element_is_last_for_tile(originalElement++));
+
+			// Set last element flag in case the original last element was never added
+			(destinationElement - 1)->flags |= MAP_ELEMENT_FLAG_LAST_TILE;
+		}
+	}
+}
+
 /**
  *
  *  rct2: 0x006754F5
@@ -944,10 +964,16 @@ int scenario_save(char *path, int flags)
 	fwrite(buffer, encodedLength, 1, file);
 
 	// Write map elements
+	uint8 *chunkData = malloc(0x4A85EC);
+	get_map_elements_without_ghost((rct_map_element*)chunkData);
+	memcpy(chunkData + 0x180000, (uint8*)(RCT2_ADDRESS_MAP_ELEMENTS + 0x180000), 0x4A85EC - 0x180000);
+
 	chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 	chunkHeader.length = 0x4A85EC;
-	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x00F663B8, chunkHeader);
+	encodedLength = sawyercoding_write_chunk_buffer(buffer, chunkData, chunkHeader);
 	fwrite(buffer, encodedLength, 1, file);
+
+	free(chunkData);
 
 	if (flags & 2) {
 		// Write chunk
@@ -992,16 +1018,38 @@ int scenario_save(char *path, int flags)
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x0135853C, chunkHeader);
 		fwrite(buffer, encodedLength, 1, file);
 
-		// Write chunk
+		// Write chunk (don't save rides which have no track pieces)
+		uint8 *chunkData = malloc(0x761E8);
+		memcpy(chunkData, (void*)0x01358740, 0x761E8);
+		bool rideHasTrack[MAX_RIDES];
+		rct_ride *rides = (rct_ride*)(chunkData + (0x013628F8 - 0x01358740));
+		ride_all_has_any_track_elements(rideHasTrack);
+		for (int i = 0; i < MAX_RIDES; i++) {
+			if (!rideHasTrack[i])
+				rides[i].type = RIDE_TYPE_NULL;
+		}
+
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 0x761E8;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x01358740, chunkHeader);
 		fwrite(buffer, encodedLength, 1, file);
+
+		free(chunkData);
 	} else {
-		// Write chunk
+		// Write chunk (don't save rides which have no track pieces)
+		uint8 *chunkData = malloc(0x2E8570);
+		memcpy(chunkData, (void*)0x010E63B8, 0x2E8570);
+		bool rideHasTrack[MAX_RIDES];
+		rct_ride *rides = (rct_ride*)(chunkData + (0x013628F8 - 0x010E63B8));
+		ride_all_has_any_track_elements(rideHasTrack);
+		for (int i = 0; i < MAX_RIDES; i++) {
+			if (!rideHasTrack[i])
+				rides[i].type = RIDE_TYPE_NULL;
+		}
+
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 0x2E8570;
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x010E63B8, chunkHeader);
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, chunkData, chunkHeader);
 		fwrite(buffer, encodedLength, 1, file);
 	}
 

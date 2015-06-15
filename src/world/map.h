@@ -129,7 +129,7 @@ enum {
 };
 
 enum {
-	MAP_ELEMENT_FLAG_5 = (1 << 4),
+	MAP_ELEMENT_FLAG_GHOST = (1 << 4),
 	MAP_ELEMENT_FLAG_BROKEN = (1 << 5),
 	MAP_ELEMENT_FLAG_LAST_TILE = (1 << 7)
 };
