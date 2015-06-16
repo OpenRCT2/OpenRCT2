@@ -16,7 +16,7 @@ An open source clone of RollerCoaster Tycoon 2 built by decompiling the original
   - 1.3 - [Progress](#13-progress)
   - 1.4 - [Aim](#14-aim)
 - 2 - [Downloading the game / Building the source code](#2-building-the-source-code)
-  - 2.1 - [Prerequisites](#21-prerequisites)
+  - 2.1 - [Building Prerequisites](#21-building-prerequisites)
   - 2.2 - [Compiling and running](#22-compiling-and-running)
 - 3 - [Contributing](#3-contributing)
   - 3.1 - [Decompiling](#31-decompiling)
@@ -51,10 +51,10 @@ The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-p
 - Improved title sequence
 - Translation into more languages
 - Re-introduction of RollerCoaster Tycoon 1 mechanics:
-    - Shuttle Loop compatibility
-    - Have Fun! objective
-    - Finish building five coasters objective
-    - Using the mountain tool during the game
+	- Shuttle Loop compatibility
+	- Have Fun! objective
+	- Finish building five coasters objective
+	- Using the mountain tool during the game
 
 # 2 Downloading the game / Building the source code
 
@@ -65,35 +65,36 @@ A couple of third parties offer downloadable precompiled builds. However, buildi
 
 There is also a Launcher available from [OpenRCT.net](https://openrct.net/download) that will automatically update your build so that you always have the current version as they are released.
 
-## 2.1 Prerequisites
+## 2.1 Building prerequisites
+
+OpenRCT2 requires original files of Rollercoaster Tycoon 2 to play. It can be bought at either [Steam](http://store.steampowered.com/app/285330/) or [GOG.com](http://www.gog.com/game/rollercoaster_tycoon_2).
+
 ### Windows:
 - Windows XP / Vista / 7 / 8 / 10
-- RollerCoaster Tycoon 2
 - Visual Studio 2013 (Professional / [Community](http://www.visualstudio.com/en-us/products/visual-studio-community-vs.aspx) / [Express for Windows Desktop](http://www.visualstudio.com/downloads/download-visual-studio-vs#d-express-windows-desktop))
-- [SDL2 development library for Visual C++](http://www.libsdl.org/release/SDL2-devel-2.0.3-VC.zip).
+- [Powershell 4.0](http://social.technet.microsoft.com/wiki/contents/articles/21016.how-to-install-windows-powershell-4-0.aspx).
 
-### Max OS X:
-- [Homebrew](http://brew.sh)
-- RollerCoaster Tycoon 2
+### Mac OS X:
+- [Homebrew](http://brew.sh) or [MacPorts](https://www.macports.org/)
 
 ### Mac OS X / Linux:
 - [MinGW-w64](http://mingw-w64.sourceforge.net/)
 - [Wine](http://www.winehq.org)
-- RollerCoaster Tycoon 2
 - libsdl2 compiled with MinGW-w64
 
 ## 2.2 Compiling and running
 ### Windows:
 1. Check out the repository. This can be done using [GitHub Windows](https://windows.github.com/) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
-2. Download the [SDL2 development library for Visual C++]((http://www.libsdl.org/release/SDL2-devel-2.0.3-VC.zip)) and copy it to a new directory called "sdl" in the repository. This directory should contain "include". The path should resemble ```\OpenRCT2\lib\sdl\include\```.
-3. Open the solution in the projects directory (**openrct2.sln**) with Visual Studio.
-4. [Select the 'Release' configuration](http://msdn.microsoft.com/en-us/library/wx0123s5.aspx) and click Build -> Rebuild Solution. The dropdown menu to enable the 'release' configuration is towards the top of the VS Express window, near the "TEST" menu.
-5. Start debugging. Press the "Local Windows Debugger" button with a green "play" icon next to it. If Visual Studio shows a warning about *openrct2.exe* not having debug information, press Continue.
-6. When OpenRCT2 is run for the first time, it creates a settings file in `My Documents/OpenRCT2`. If it can't find the original installation of RCT2, you will need to edit `config.ini` in that folder and change the value of `game_path` to where RCT2 is installed.
-7. If the game crashes, you may need to press the red, square Stop button along the top of VS Express to stop the program.
+2. Open the solution in the projects directory (**openrct2.sln**) with Visual Studio.
+3. [Select the 'Release' configuration](http://msdn.microsoft.com/en-us/library/wx0123s5.aspx) and click Build -> Rebuild Solution. The dropdown menu to enable the 'release' configuration is towards the top of the VS Express window, near the "TEST" menu.
+4. Start debugging. Press the "Local Windows Debugger" button with a green "play" icon next to it. If Visual Studio shows a warning about *openrct2.exe* not having debug information, press Continue.
+5. When OpenRCT2 is run for the first time, it creates a settings file in `My Documents/OpenRCT2`. If it can't find the original installation of RCT2, you will need to edit `config.ini` in that folder and change the value of `game_path` to where RCT2 is installed.
+6. If the game crashes, you may need to press the red, square Stop button along the top of VS Express to stop the program.
+
+Alternatively, to simply build the project you can just execute ``build.bat`` within VS2013 Native Tools Command prompt or Github Windows prompt.
 
 ### Mac OS X:
-Providing Homebrew is installed, OpenRCT2's dependencies and Wine can be installed automatically through `install.sh`.
+Providing Homebrew or MacPorts are installed (but not both!), OpenRCT2's dependencies and Wine can be installed automatically through `install.sh`.
 ```
 bash install.sh
 bash build.sh
