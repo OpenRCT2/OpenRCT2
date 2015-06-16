@@ -80,6 +80,7 @@ typedef utf16* utf16string;
 #define OPENRCT2_TIMESTAMP			__DATE__ " " __TIME__
 
 // The following constants are for automated build servers
+#define OPENRCT2_BUILD_NUMBER		""
 #define OPENRCT2_BUILD_SERVER		""
 #define OPENRCT2_BRANCH				"develop"
 #define OPENRCT2_COMMIT_SHA1		""

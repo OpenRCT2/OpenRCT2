@@ -376,6 +376,8 @@ static void DrawOpenRCT2(int x, int y)
 	sprintf(buffer, "%c%c%c%s, v%s", FORMAT_MEDIUMFONT, FORMAT_OUTLINE, FORMAT_WHITE, OPENRCT2_NAME, OPENRCT2_VERSION);
 	if (!str_is_null_or_empty(OPENRCT2_BRANCH))
 		sprintf(strchr(buffer, 0), "-%s", OPENRCT2_BRANCH);
+	if (!str_is_null_or_empty(OPENRCT2_BUILD_NUMBER))
+		sprintf(strchr(buffer, 0), " build %s", OPENRCT2_BUILD_NUMBER);
 	if (!str_is_null_or_empty(OPENRCT2_COMMIT_SHA1_SHORT))
 		sprintf(strchr(buffer, 0), " (%s)", OPENRCT2_COMMIT_SHA1_SHORT);
 	if (!str_is_null_or_empty(OPENRCT2_BUILD_SERVER))
