@@ -303,6 +303,35 @@ void window_editor_object_selection_open()
 	window->var_494 = 0xFFFFFFFF;
 }
 
+/* rct2: 0x006AB211 */
+static int sub_6AB211(){
+	uint32 total_objects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) = rct2_malloc(total_objects);
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) == NULL){
+		log_error("Failed to allocate memory for object flag list.");
+		return 0;
+	}
+
+	memset(RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*), 0, total_objects);
+	for (uint8 object_type = 0; object_type < 11; object_type++){
+		RCT2_ADDRESS(0x00F433F7, uint16)[object_type] = 0;
+		RCT2_ADDRESS(0x00F433E1, uint16)[object_type] = 0;
+	}
+
+	rct_object_entry* installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+
+	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
+		uint8 object_type = installedObject->flags & 0xF;
+		RCT2_ADDRESS(0x00F433E1, uint16)[object_type]++;
+
+		installedObject = object_get_next(installedObject);
+	}
+
+	//0x6ab2c4
+}
+
 /**
  * 
  *  rct2: 0x006AB199
@@ -1052,7 +1081,7 @@ static void window_editor_object_selection_select_default_objects()
 /* rct2: 0x006AA770 */
 void reset_selected_object_count_and_size(){
 	for (uint8 object_type = 0; object_type < 11; object_type++){
-		RCT2_ADDRESS(0x00F443F7, uint16)[object_type] = 0;
+		RCT2_ADDRESS(0x00F433F7, uint16)[object_type] = 0;
 	}
 
 	uint32 total_object_size = 0;
@@ -1085,7 +1114,7 @@ void reset_selected_object_count_and_size(){
 		installedObject = object_get_next(installedObject);
 	}
 
-	RCT2_GLOBAL(0x00F4340D, uint32) = total_object_size;
+	RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_OBJECTS_FILE_SIZE, uint32) = total_object_size;
 }
 
 /* rct2: 0x006AB863 */
@@ -1172,6 +1201,18 @@ void reset_required_object_flags(){
 	}
 }
 
+/* 
+ * Master objects are objects that are not
+ * optional / required dependants of an 
+ * object.
+ */
+void set_object_selection_error(uint8 is_master_object, rct_string_id error_msg){
+	RCT2_GLOBAL(0x141E9AC, rct_string_id) = error_msg;
+	if (!is_master_object){
+		reset_selected_object_count_and_size();
+	}
+}
+
 /**
  *
  *  rct2: 0x006AB54F
@@ -1179,21 +1220,21 @@ void reset_required_object_flags(){
 static int window_editor_object_selection_select_object(uint8 bh, int flags, rct_object_entry *entry)
 {
 	uint8* selection_flags;
-	if (bh == 0){
-		// Unsure what this does??
-		uint16 total_objects = 0;
-		for (uint8 i = 0; i < 11; ++i){
-			total_objects += RCT2_ADDRESS(0x00F433E1, uint16)[i];
-		}
+	//if (bh == 0){
+	//	// Unsure what this does??
+	//	uint16 total_objects = 0;
+	//	for (uint8 i = 0; i < 11; ++i){
+	//		total_objects += RCT2_ADDRESS(0x00F433E1, uint16)[i];
+	//	}
 
-		selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-		for (; total_objects != 0; total_objects--, selection_flags++){
-			uint8 select_flag = *selection_flags & ~OBJECT_SELECTION_FLAG_2;
-			if (select_flag & OBJECT_SELECTION_FLAG_SELECTED){
-				select_flag |= OBJECT_SELECTION_FLAG_2;
-			}
-		}
-	}
+	//	selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
+	//	for (; total_objects != 0; total_objects--, selection_flags++){
+	//		uint8 select_flag = *selection_flags & ~OBJECT_SELECTION_FLAG_2;
+	//		if (select_flag & OBJECT_SELECTION_FLAG_SELECTED){
+	//			select_flag |= OBJECT_SELECTION_FLAG_2;
+	//		}
+	//	}
+	//}
 
 	selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 	// There was previously a check to make sure the object list had an item
@@ -1210,11 +1251,7 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 		selection_flags++;
 	}
 	if (not_found){
-		RCT2_GLOBAL(0x141E9AC, uint16) = 3169;
-		if (bh != 0){
-			// Bunch of code that looks like it does nothing removed.
-			reset_selected_object_count_and_size();
-		}
+		set_object_selection_error(bh, 3169);
 		return 0;
 	}
 
@@ -1227,25 +1264,15 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 			return 1;
 		}
 		else if (*selection_flags & OBJECT_SELECTION_FLAG_IN_USE){
-			RCT2_GLOBAL(0x141E9AC, uint16) = 3173;
-			if (bh != 0){
-				// Bunch of code that looks like it does nothing removed.
-				reset_selected_object_count_and_size();
-			}
+			set_object_selection_error(bh, 3173);
 			return 0;
 		}
 		else if (*selection_flags & OBJECT_SELECTION_FLAG_REQUIRED){
-			RCT2_GLOBAL(0x141E9AC, uint16) = 3174;
-			if (bh != 0){
-				reset_selected_object_count_and_size();
-			}
+			set_object_selection_error(bh, 3174);
 			return 0;
 		}
 		else if (*selection_flags & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED){
-			RCT2_GLOBAL(0x141E9AC, uint16) = 3175;
-			if (bh != 0){
-				reset_selected_object_count_and_size();
-			}
+			set_object_selection_error(bh, 3175);
 			return 0;
 		}
 
@@ -1279,7 +1306,7 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 			}
 		}
 
-		RCT2_GLOBAL(0x00F4340D, uint32) -= size_of_chunk;
+		RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_OBJECTS_FILE_SIZE, uint32) -= size_of_chunk;
 		uint8 object_type = installedObject->flags & 0xF;
 		RCT2_ADDRESS(0x00F433F7, uint16)[object_type]--;
 		*selection_flags &= ~OBJECT_SELECTION_FLAG_SELECTED;
@@ -1308,11 +1335,7 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 		}
 
 		if (no_objects <= RCT2_ADDRESS(0x00F433F7, uint16)[object_type]){
-			RCT2_GLOBAL(0x141E9AC, uint16) = 3171;
-			if (bh != 0){
-				// Bunch of code that looks like it does nothing removed.
-				reset_selected_object_count_and_size();
-			}
+			set_object_selection_error(bh, 3171);
 			return 0;
 		}
 
@@ -1338,7 +1361,6 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 		for (; num_required_objects != 0; num_required_objects--){
 			if (!window_editor_object_selection_select_object(++bh, flags, required_objects)){
 				if (bh != 0){
-					// Bunch of code that looks like it does nothing removed.
 					reset_selected_object_count_and_size();
 				}
 				return 0;
@@ -1360,33 +1382,21 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 		
 		if (bh != 0 && !(flags&(1 << 1))){
 			RCT2_CALLPROC_X(0x6AB344, 0, 0, 0, 0, 0, (int)0x009BC95A, (int)installedObject);
-			RCT2_GLOBAL(0x141E9AC, uint16) = 3172;
-			if (bh != 0){
-				// Bunch of code that looks like it does nothing removed.
-				reset_selected_object_count_and_size();
-			}
+			set_object_selection_error(bh, 3172);
 			return 0;
 		}
 
-		if (RCT2_GLOBAL(0x00F4340D, uint32) + size_of_chunk > 0x40000){
-			RCT2_GLOBAL(0x141E9AC, uint16) = 3170;
-			if (bh != 0){
-				// Bunch of code that looks like it does nothing removed.
-				reset_selected_object_count_and_size();
-			}
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_OBJECTS_FILE_SIZE, uint32) + size_of_chunk > 0x40000){
+			set_object_selection_error(bh, 3170);
 			return 0;
 		}
 
 		if (no_objects <= RCT2_ADDRESS(0x00F433F7, uint16)[object_type]){
-			RCT2_GLOBAL(0x141E9AC, uint16) = 3171;
-			if (bh != 0){
-				// Bunch of code that looks like it does nothing removed.
-				reset_selected_object_count_and_size();
-			}
+			set_object_selection_error(bh, 3171);
 			return 0;
 		}
 
-		RCT2_GLOBAL(0x00F4340D, uint32) += size_of_chunk;
+		RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_OBJECTS_FILE_SIZE, uint32) += size_of_chunk;
 		RCT2_ADDRESS(0x00F433F7, uint16)[object_type]++;
 
 		*selection_flags |= OBJECT_SELECTION_FLAG_SELECTED;
