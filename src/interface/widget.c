@@ -732,7 +732,7 @@ static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 {
 	rct_widget* widget;
-	int l, t, b;
+	int l, t, b, yMid;
 	uint8 colour;
 
 	// Get the widget
@@ -742,18 +742,19 @@ static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	l = w->x + widget->left;
 	t = w->y + widget->top;
 	b = w->y + widget->bottom;
+	yMid = (b + t) / 2;
 
 	// Get the colour
 	colour = w->colours[widget->colour];
 
 	if (widget->type != WWT_24) {
 		// checkbox
-		gfx_fill_rect_inset(dpi, l, t, l + 9, b - 1, colour, 0x60);
+		gfx_fill_rect_inset(dpi, l, yMid - 5, l + 9, yMid + 4, colour, 0x60);
 
 		// fill it when checkbox is pressed
 		if (widget_is_pressed(w, widgetIndex)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
-			gfx_draw_string(dpi, (char*)0x009DED72, colour & 0x7F, l, t);
+			gfx_draw_string(dpi, (char*)0x009DED72, colour & 0x7F, l, yMid - 5);
 		}
 	}
 
@@ -764,7 +765,12 @@ static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	if (widget_is_disabled(w, widgetIndex)) {
 		colour |= 0x40;
 	}
-	gfx_draw_string_left(dpi, widget->image, (char*)0x013CE952, colour, l + 14, t);
+
+	// TODO extract this to a string method and maybe a draw vertically centred
+	char *buffer = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
+	format_string(buffer, (rct_string_id)widget->image, (void*)0x013CE952);
+	int height = string_get_height_raw(buffer);
+	gfx_draw_string(dpi, buffer, colour, l + 14, yMid - (height / 2));
 }
 
 /**

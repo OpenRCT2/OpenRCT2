@@ -1142,3 +1142,66 @@ void draw_string_centred_raw(rct_drawpixelinfo *dpi, int x, int y, int numLines,
 		y += 12;
 	}
 }
+
+int string_get_height_raw(char *buffer)
+{
+	uint16 fontBase = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+
+	int height = 0;
+	if (fontBase <= 224)
+		height += 10;
+	else if (fontBase == 448)
+		height += 6;
+
+	char *ch = buffer;
+	while (*ch != 0) {
+		char c = *ch++;
+		switch (c) {
+		case FORMAT_NEWLINE:
+			if (fontBase <= 224) {
+				height += 10;
+				break;
+			} else if (fontBase == 448) {
+				height += 6;
+				break;
+			}
+			height += 18;
+			break;
+		case FORMAT_NEWLINE_SMALLER:
+			if (fontBase <= 224) {
+				height += 5;
+				break;
+			} else if (fontBase == 448) {
+				height += 3;
+				break;
+			}
+			height += 9;
+			break;
+		case FORMAT_TINYFONT:
+			fontBase = 448;
+			break;
+		case FORMAT_BIGFONT:
+			fontBase = 672;
+			break;
+		case FORMAT_MEDIUMFONT:
+			fontBase = 224;
+			break;
+		case FORMAT_SMALLFONT:
+			fontBase = 0;
+			break;
+		default:
+			if (c >= 32) continue;
+			if (c <= 4) {
+				ch++;
+				continue;
+			}
+			if (c <= 16) continue;
+			ch += 2;
+			if (c <= 22) continue;
+			ch += 2;
+			break;
+		}
+	}
+
+	return height;
+}
