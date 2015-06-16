@@ -1,5 +1,5 @@
 Last updated:    2015-02-06
-Release version: 0.2.0-beta
+Release version: 0.0.2-beta
 ------------------------------------------------------------------------
 
 
@@ -89,13 +89,14 @@ a directory of your choice.
 
 When you start OpenRCT2 for the first time, it will look for the RCT2 data files
 in the following locations:
-  - C:\Program Files\Infogrames\RollerCoaster Tycoon 2",
-  - C:\Program Files (x86)\Infogrames\RollerCoaster Tycoon 2",
-  - C:\Program Files\Infogrames Interactive\RollerCoaster Tycoon 2",
-  - C:\Program Files (x86)\Infogrames Interactive\RollerCoaster Tycoon 2",
-  - C:\Program Files\Atari\RollerCoaster Tycoon 2",
-  - C:\Program Files (x86)\Atari\RollerCoaster Tycoon 2",
-  - C:\GOG Games\RollerCoaster Tycoon 2 Triple Thrill Pack"
+  - C:\Program Files\Infogrames\RollerCoaster Tycoon 2,
+  - C:\Program Files (x86)\Infogrames\RollerCoaster Tycoon 2,
+  - C:\Program Files\Infogrames Interactive\RollerCoaster Tycoon 2,
+  - C:\Program Files (x86)\Infogrames Interactive\RollerCoaster Tycoon 2,
+  - C:\Program Files\Atari\RollerCoaster Tycoon 2,
+  - C:\Program Files (x86)\Atari\RollerCoaster Tycoon 2,
+  - C:\GOG Games\RollerCoaster Tycoon 2 Triple Thrill Pack
+  - The location of the openrct2.exe (where OpenRCT2 was extracted/installed)
 
 If none of these locations are found, OpenRCT2 will ask you to manually specify
 the directory. Alternatively after running OpenRCT2 for the first time, you can

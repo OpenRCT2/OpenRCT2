@@ -22,6 +22,8 @@
 #include "../common.h"
 #include "../sprites.h"
 #include "drawing.h"
+#include "../platform/platform.h"
+#include "../openrct2.h"
 
 typedef struct {
 	uint32 num_entries;
@@ -90,7 +92,9 @@ int gfx_load_g2()
 	FILE *file;
 	unsigned int i;
 
-	file = fopen("data/g2.dat", "rb");
+	char path[MAX_PATH];
+	sprintf(path, "%s%cdata%cg2.dat", gExePath, platform_get_path_separator(), platform_get_path_separator());
+	file = fopen(path, "rb");
 	if (file != NULL) {
 		if (fread(&g2.header, 8, 1, file) == 1) {
 			// Read element headers
