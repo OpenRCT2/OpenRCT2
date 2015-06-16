@@ -669,7 +669,7 @@ static void ride_remove_vehicles(rct_ride *ride)
  * 
  * rct2: 0x006DD4AC
  */
-static void ride_clear_for_construction(int rideIndex)
+void ride_clear_for_construction(int rideIndex)
 {
 	rct_ride *ride;
 	rct_window *w;
@@ -693,7 +693,7 @@ static void ride_clear_for_construction(int rideIndex)
  * 
  * rct2: 0x006664DF
  */
-static void ride_remove_peeps(int rideIndex)
+void ride_remove_peeps(int rideIndex)
 {
 	int i, stationIndex, x, y, z, exitX, exitY, exitZ, exitDirection;
 	uint16 xy, spriteIndex;
