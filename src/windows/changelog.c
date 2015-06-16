@@ -7,6 +7,8 @@
 #include "../world/map.h"
 #include "../world/footpath.h"
 #include "../util/util.h"
+#include "../openrct2.h"
+#include "../platform/platform.h"
 
 enum {
 	WIDX_BACKGROUND,
@@ -220,7 +222,9 @@ static void window_changelog_scrollpaint()
 static bool window_changelog_read_file()
 {
 	window_changelog_dispose_file();
-	if (!readentirefile("changelog.txt", &_changelogText, &_changelogTextSize)) {
+	char path[MAX_PATH];
+	sprintf(path, "%s%cchangelog.txt", gExePath, platform_get_path_separator());
+	if (!readentirefile(path, &_changelogText, &_changelogTextSize)) {
 		log_error("Unable to read changelog.txt");
 		return false;
 	}

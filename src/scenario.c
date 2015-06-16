@@ -830,16 +830,30 @@ static void sub_674BCF()
 	}
 }
 
-static void get_map_elements_without_ghost(rct_map_element *resultElements)
+/**
+ * Modifys the given S6 data so that ghost elements, rides with no track elements or unused banners / user strings are saved.
+ */
+static scenario_fix_ghosts(rct_s6_data *s6)
 {
+	// Remove all ghost elements
 	size_t mapElementTotalSize = MAX_MAP_ELEMENTS * sizeof(rct_map_element);
-	rct_map_element *destinationElement = resultElements;
+	rct_map_element *destinationElement = s6->map_elements;
 
 	for (int y = 0; y < 256; y++) {
 		for (int x = 0; x < 256; x++) {
 			rct_map_element *originalElement = map_get_first_element_at(x, y);
 			do {
-				if (!(originalElement->flags & MAP_ELEMENT_FLAG_GHOST)) {
+				if (originalElement->flags & MAP_ELEMENT_FLAG_GHOST) {
+					int bannerIndex = map_element_get_banner_index(originalElement);
+					if (bannerIndex != -1) {
+						rct_banner *banner = &s6->banners[bannerIndex];
+						if (banner->type != BANNER_NULL) {
+							banner->type = BANNER_NULL;
+							if (is_user_string_id(banner->string_idx))
+								s6->custom_strings[(banner->string_idx % MAX_USER_STRINGS) * USER_STRING_MAX_LENGTH] = 0;
+						}
+					}
+				} else {
 					*destinationElement++ = *originalElement;
 				}
 			} while (!map_element_is_last_for_tile(originalElement++));
@@ -847,6 +861,20 @@ static void get_map_elements_without_ghost(rct_map_element *resultElements)
 			// Set last element flag in case the original last element was never added
 			(destinationElement - 1)->flags |= MAP_ELEMENT_FLAG_LAST_TILE;
 		}
+	}
+
+	// Remove trackless rides
+	bool rideHasTrack[MAX_RIDES];
+	ride_all_has_any_track_elements(rideHasTrack);
+	for (int i = 0; i < MAX_RIDES; i++) {
+		rct_ride *ride = &s6->rides[i];
+
+		if (rideHasTrack[i] || ride->type == RIDE_TYPE_NULL)
+			continue;
+
+		ride->type = RIDE_TYPE_NULL;
+		if (is_user_string_id(ride->name))
+			s6->custom_strings[(ride->name % MAX_USER_STRINGS) * USER_STRING_MAX_LENGTH] = 0;
 	}
 }
 
@@ -857,16 +885,6 @@ static void get_map_elements_without_ghost(rct_map_element *resultElements)
  */
 int scenario_save(char *path, int flags)
 {
-	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
-	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
-
-	FILE *file;
-	char *buffer;
-	sawyercoding_chunk_header chunkHeader;
-	int encodedLength;
-	long fileSize;
-	uint32 checksum;
-
 	rct_window *w;
 	rct_viewport *viewport;
 	int viewX, viewY, viewZoom, viewRotation;
@@ -911,145 +929,159 @@ int scenario_save(char *path, int flags)
 	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, uint16) = viewY;
 	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) = viewZoom | (viewRotation << 8);
 
-	// 
-	memset(s6Header, 0, sizeof(rct_s6_header));
-	s6Header->type = flags & 2 ? S6_TYPE_SCENARIO : S6_TYPE_SAVEDGAME;
-	s6Header->num_packed_objects = flags & 1 ? scenario_get_num_packed_objects_to_write() : 0;
-	s6Header->version = S6_RCT2_VERSION;
-	s6Header->magic_number = S6_MAGIC_NUMBER;
+	// Prepare S6
+	rct_s6_data *s6 = malloc(sizeof(rct_s6_data));
+	s6->header.type = flags & 2 ? S6_TYPE_SCENARIO : S6_TYPE_SAVEDGAME;
+	s6->header.num_packed_objects = flags & 1 ? scenario_get_num_packed_objects_to_write() : 0;
+	s6->header.version = S6_RCT2_VERSION;
+	s6->header.magic_number = S6_MAGIC_NUMBER;
+
+	memcpy(&s6->info, (rct_s6_info*)0x0141F570, sizeof(rct_s6_info));
+
+	for (int i = 0; i < 721; i++) {
+		uint32 chunkPtr = RCT2_ADDRESS(0x009ACFA4, uint32)[i];
+		rct_object_entry_extended *entry = &(RCT2_ADDRESS(0x00F3F03C, rct_object_entry_extended)[i]);
+
+		if (RCT2_ADDRESS(0x009ACFA4, uint32)[i] == 0xFFFFFFFF) {
+			memset(&s6->objects[i], 0xFF, sizeof(rct_object_entry));
+		} else {
+			s6->objects[i] = *((rct_object_entry*)entry);
+		}
+	}
+
+	memcpy(&s6->elapsed_months, (void*)0x00F663A8, 16);
+	memcpy(s6->map_elements, (void*)0x00F663B8, 0x180000);
+	memcpy(&s6->dword_010E63B8, (void*)0x010E63B8, 0x2E8570);
+
+	scenario_fix_ghosts(s6);
+	scenario_save_s6(path, s6);
+
+	free(s6);
+
+	if (!(flags & 0x80000000))
+		reset_loaded_objects();
+
+	gfx_invalidate_screen();
+	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
+	return 1;
+}
+
+bool scenario_save_s6(char *path, rct_s6_data *s6)
+{
+	FILE *file;
+	char *buffer;
+	sawyercoding_chunk_header chunkHeader;
+	int encodedLength;
+	long fileSize;
+	uint32 checksum;
 
 	file = fopen(path, "wb+");
 	if (file == NULL) {
 		log_error("Unable to write to %s", path);
-		return 0;
+		return false;
 	}
 
 	buffer = malloc(0x600000);
 	if (buffer == NULL) {
 		log_error("Unable to allocate enough space for a write buffer.");
 		fclose(file);
-		return 0;
+		return false;
 	}
 
-	// Write header chunk
+	// 0: Write header chunk
 	chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
 	chunkHeader.length = sizeof(rct_s6_header);
-	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)s6Header, chunkHeader);
+	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->header, chunkHeader);
 	fwrite(buffer, encodedLength, 1, file);
 
-	// Write scenario info chunk
-	if (flags & 2) {
+	// 1: Write scenario info chunk
+	if (s6->header.type == S6_TYPE_SCENARIO) {
 		chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
 		chunkHeader.length = sizeof(rct_s6_info);
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)s6Info, chunkHeader);
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->info, chunkHeader);
 		fwrite(buffer, encodedLength, 1, file);
 	}
 
-	// Write packed objects
-	if (s6Header->num_packed_objects > 0) {
+	// 2: Write packed objects
+	if (s6->header.num_packed_objects > 0) {
 		if (!scenario_write_packed_objects(file)) {
 			free(buffer);
 			fclose(file);
-			return 0;
+			return false;
 		}
 	}
 
-	// Write available objects chunk
-	scenario_write_available_objects(file);
+	// 3: Write available objects chunk
+	chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
+	chunkHeader.length = 721 * sizeof(rct_object_entry);
+	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)s6->objects, chunkHeader);
+	fwrite(buffer, encodedLength, 1, file);
 
-	// Write date etc. chunk
+	// 4: Misc fields (data, rand...) chunk
 	chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 	chunkHeader.length = 16;
-	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x00F663A8, chunkHeader);
+	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->elapsed_months, chunkHeader);
 	fwrite(buffer, encodedLength, 1, file);
 
-	// Write map elements
-	uint8 *chunkData = malloc(0x4A85EC);
-	get_map_elements_without_ghost((rct_map_element*)chunkData);
-	memcpy(chunkData + 0x180000, (uint8*)(RCT2_ADDRESS_MAP_ELEMENTS + 0x180000), 0x4A85EC - 0x180000);
-
+	// 5: Map elements + sprites and other fields chunk
 	chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-	chunkHeader.length = 0x4A85EC;
-	encodedLength = sawyercoding_write_chunk_buffer(buffer, chunkData, chunkHeader);
+	chunkHeader.length = 0x180000;
+	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)s6->map_elements, chunkHeader);
 	fwrite(buffer, encodedLength, 1, file);
 
-	free(chunkData);
-
-	if (flags & 2) {
-		// Write chunk
+	if (s6->header.type == S6_TYPE_SCENARIO) {
+		// 6:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 0x27104C;
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x010E63B8, chunkHeader);
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->dword_010E63B8, chunkHeader);
 		fwrite(buffer, encodedLength, 1, file);
 
-		// Write chunk
+		// 7:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 4;
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x01357844, chunkHeader);
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->guests_in_park, chunkHeader);
 		fwrite(buffer, encodedLength, 1, file);
 
-		// Write chunk
+		// 8:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 8;
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x01357BC8, chunkHeader);
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->last_guests_in_park, chunkHeader);
 		fwrite(buffer, encodedLength, 1, file);
 
-		// Write chunk
+		// 9:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 2;
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x01357CB0, chunkHeader);
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->park_rating, chunkHeader);
 		fwrite(buffer, encodedLength, 1, file);
 
-		// Write chunk
+		// 10:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 1082;
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x01357CF2, chunkHeader);
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->active_research_types, chunkHeader);
 		fwrite(buffer, encodedLength, 1, file);
 
-		// Write chunk
+		// 11:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 16;
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x0135832C, chunkHeader);
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->current_expenditure, chunkHeader);
 		fwrite(buffer, encodedLength, 1, file);
 
-		// Write chunk
+		// 12:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 4;
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x0135853C, chunkHeader);
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->park_value, chunkHeader);
 		fwrite(buffer, encodedLength, 1, file);
 
-		// Write chunk (don't save rides which have no track pieces)
-		uint8 *chunkData = malloc(0x761E8);
-		memcpy(chunkData, (void*)0x01358740, 0x761E8);
-		bool rideHasTrack[MAX_RIDES];
-		rct_ride *rides = (rct_ride*)(chunkData + (0x013628F8 - 0x01358740));
-		ride_all_has_any_track_elements(rideHasTrack);
-		for (int i = 0; i < MAX_RIDES; i++) {
-			if (!rideHasTrack[i])
-				rides[i].type = RIDE_TYPE_NULL;
-		}
-
+		// 13:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 0x761E8;
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)0x01358740, chunkHeader);
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->completed_company_value, chunkHeader);
 		fwrite(buffer, encodedLength, 1, file);
-
-		free(chunkData);
 	} else {
-		// Write chunk (don't save rides which have no track pieces)
-		uint8 *chunkData = malloc(0x2E8570);
-		memcpy(chunkData, (void*)0x010E63B8, 0x2E8570);
-		bool rideHasTrack[MAX_RIDES];
-		rct_ride *rides = (rct_ride*)(chunkData + (0x013628F8 - 0x010E63B8));
-		ride_all_has_any_track_elements(rideHasTrack);
-		for (int i = 0; i < MAX_RIDES; i++) {
-			if (!rideHasTrack[i])
-				rides[i].type = RIDE_TYPE_NULL;
-		}
-
+		// 6: Everything else...
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 0x2E8570;
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, chunkData, chunkHeader);
+		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->dword_010E63B8, chunkHeader);
 		fwrite(buffer, encodedLength, 1, file);
 	}
 
@@ -1069,13 +1101,7 @@ int scenario_save(char *path, int flags)
 	fseek(file, fileSize, SEEK_SET);
 	fwrite(&checksum, sizeof(uint32), 1, file);
 	fclose(file);
-
-	if (!(flags & 0x80000000))
-		reset_loaded_objects();
-
-	gfx_invalidate_screen();
-	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
-	return 1;
+	return true;
 }
 
 static void scenario_objective_check_guests_by()

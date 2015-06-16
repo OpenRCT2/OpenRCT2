@@ -106,6 +106,9 @@ typedef fixed32_1dp money32;
 
 #define MONEY_FREE						MONEY(0,00)
 #define MONEY32_UNDEFINED				((money32)0x80000000)
+#ifndef MAX_PATH
+#define MAX_PATH 260
+#endif
 
 typedef void (EMPTY_ARGS_VOID_POINTER)();
 typedef unsigned short rct_string_id;

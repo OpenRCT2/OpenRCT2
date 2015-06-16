@@ -22,6 +22,7 @@
 #include "../object.h"
 #include "../util/util.h"
 #include "localisation.h"
+#include "../openrct2.h"
 
 typedef struct {
 	int id;
@@ -112,21 +113,21 @@ const char *language_get_string(rct_string_id id)
 
 int language_open(int id)
 {
-	static const char *languagePath = "data/language/%s.txt";
-	char filename[_MAX_PATH];
+	static const char *languagePath = "%s/data/language/%s.txt";
+	char filename[MAX_PATH];
 
 	language_close_all();
 	if (id == LANGUAGE_UNDEFINED)
 		return 1;
 
 	if (id != LANGUAGE_ENGLISH_UK) {
-		sprintf(filename, languagePath, language_filenames[LANGUAGE_ENGLISH_UK]);
+		sprintf(filename, languagePath, gExePath, language_filenames[LANGUAGE_ENGLISH_UK]);
 		if (language_open_file(filename, &_languageFallback)) {
 			_languageFallback.id = LANGUAGE_ENGLISH_UK;
 		}
 	}
 
-	sprintf(filename, languagePath, language_filenames[id]);
+	sprintf(filename, languagePath, gExePath, language_filenames[id]);
 	if (language_open_file(filename, &_languageCurrent)) {
 		_languageCurrent.id = id;
 		gCurrentLanguage = id;

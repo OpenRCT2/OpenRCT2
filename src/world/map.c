@@ -746,19 +746,11 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 		*ebx = 0;
 		return;
 	}
-	int ecx2 = map_element->properties.scenerymultiple.type >> 10;
-	rct_scenery_entry* scenery_entry = RCT2_ADDRESS(RCT2_ADDRESS_LARGE_SCENERY_ENTRIES, rct_scenery_entry*)[map_element->properties.scenerymultiple.type & 0x3FF];
-	if(scenery_entry->large_scenery.var_11 != 0xFF){
-		uint8 banner_num = map_element->type & MAP_ELEMENT_QUADRANT_MASK;
-		banner_num |= (map_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2;
-		banner_num |= (map_element->properties.scenerymultiple.colour[1] & 0xE0) >> 5;
-		if(gBanners[banner_num].type != BANNER_NULL){
-			window_close_by_number(WC_BANNER, banner_num);
-			gBanners[banner_num].type = BANNER_NULL;
-			user_string_free(gBanners[banner_num].string_idx);
-		}
-	}
 
+	map_element_remove_banner_entry(map_element);
+	
+	int ecx2 = map_element->properties.scenerymultiple.type >> 10;
+	rct_scenery_entry* scenery_entry = g_largeSceneryEntries[map_element->properties.scenerymultiple.type & 0x3FF];
 	rct_xyz16 firstTile = { 
 		.x = scenery_entry->large_scenery.tiles[ecx2].x_offset, 
 		.y = scenery_entry->large_scenery.tiles[ecx2].y_offset,
@@ -863,15 +855,13 @@ void game_command_remove_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi
 		}
 	}
 	rct_banner *banner = &gBanners[map_element->properties.banner.index];
-	uint8 banner_type = banner->type;
-	if(*ebx & GAME_COMMAND_FLAG_APPLY){
-		window_close_by_number(WC_BANNER, map_element->properties.banner.index);
-		user_string_free(banner->string_idx);
-		banner->type = BANNER_NULL;
+	uint8 bannerType = banner->type;
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		map_element_remove_banner_entry(map_element);
 		map_invalidate_tile(x, y, z, z + 32);
 		map_element_remove(map_element);
 	}
-	rct_scenery_entry *scenery_entry = (rct_scenery_entry*)object_entry_groups[OBJECT_TYPE_BANNERS].chunks[banner_type];
+	rct_scenery_entry *scenery_entry = (rct_scenery_entry*)object_entry_groups[OBJECT_TYPE_BANNERS].chunks[bannerType];
 	*ebx = (scenery_entry->banner.price * -3) / 4;
 	if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
 		*ebx = 0;
@@ -1836,15 +1826,7 @@ void game_command_remove_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 		return;
 	}
 
-	rct_scenery_entry* scenery_entry = RCT2_ADDRESS(RCT2_ADDRESS_WALL_SCENERY_ENTRIES, rct_scenery_entry*)[map_element->properties.fence.type];
-	if(scenery_entry->wall.var_0D != 0xFF){
-		rct_banner* banner = &gBanners[map_element->properties.fence.item[0]];
-		if(banner->type != BANNER_NULL){
-			window_close_by_number(WC_BANNER, map_element->properties.fence.item[0]);
-			banner->type = BANNER_NULL;
-			user_string_free(banner->string_idx);
-		}
-	}
+	map_element_remove_banner_entry(map_element);
 	map_invalidate_tile(x, y, map_element->base_height * 8, (map_element->base_height * 8) + 72);
 	map_element_remove(map_element);
 	*ebx = 0;
@@ -2693,3 +2675,43 @@ void sub_6A7594()
 	RCT2_GLOBAL(0x00F3EFF4, uint32) = 0x00F3EFF8;
 }
 
+int map_element_get_banner_index(rct_map_element *mapElement)
+{
+	rct_scenery_entry* sceneryEntry;
+
+	switch (map_element_get_type(mapElement)) {
+	case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
+		sceneryEntry = g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & 0x3FF];
+		if (sceneryEntry->large_scenery.var_11 == 0xFF)
+			return -1;
+
+		return
+			(mapElement->type & MAP_ELEMENT_QUADRANT_MASK) |
+			((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2);
+			((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
+	case MAP_ELEMENT_TYPE_FENCE:
+		sceneryEntry = g_wallSceneryEntries[mapElement->properties.fence.type];
+		if (sceneryEntry->wall.var_0D == 0xFF)
+			return -1;
+
+		return mapElement->properties.fence.item[0];
+	case MAP_ELEMENT_TYPE_BANNER:
+		return mapElement->properties.banner.index;
+	default:
+		return -1;
+	}
+}
+
+void map_element_remove_banner_entry(rct_map_element *mapElement)
+{
+	int bannerIndex = map_element_get_banner_index(mapElement);
+	if (bannerIndex == -1)
+		return;
+
+	rct_banner* banner = &gBanners[bannerIndex];
+	if (banner->type != BANNER_NULL) {
+		window_close_by_number(WC_BANNER, bannerIndex);
+		banner->type = BANNER_NULL;
+		user_string_free(banner->string_idx);
+	}
+}
