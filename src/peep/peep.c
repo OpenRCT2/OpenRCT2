@@ -1592,7 +1592,7 @@ static void peep_update_ride_sub_state_5(rct_peep* peep){
 }
 
 /* rct2: 0x00693028*/
-static void peep_update_ride_sub_state_7(rct_peep* peep){
+void peep_update_ride_sub_state_7(rct_peep* peep){
 	rct_ride* ride = GET_RIDE(peep->current_ride);
 
 	rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
