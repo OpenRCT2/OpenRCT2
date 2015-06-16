@@ -244,8 +244,7 @@ static bool window_changelog_read_file()
 	while (*ch != 0) {
 		unsigned char c = *ch;
 		if (c == '\n') {
-			*ch = 0;
-			ch++;
+			*ch++ = 0;
 			_changelogNumLines++;
 			if (_changelogNumLines > changelogLinesCapacity) {
 				changelogLinesCapacity *= 2;
@@ -254,10 +253,10 @@ static bool window_changelog_read_file()
 			_changelogLines[_changelogNumLines - 1] = ch;
 		} else if (c < 32 || c > 122) {
 			// A character that won't be drawn or change state.
-			*ch = FORMAT_OUTLINE_OFF;
+			*ch++ = FORMAT_OUTLINE_OFF;
+		} else {
+			ch++;
 		}
-
-		ch++;
 	}
 
 	_changelogLines = realloc(_changelogLines, _changelogNumLines * sizeof(char*));
