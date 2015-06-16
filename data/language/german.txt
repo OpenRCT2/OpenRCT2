@@ -3619,7 +3619,7 @@ STR_5282    :RCT1-Ampel Bahn öffnen/schließen
 STR_5283    :RCT1-Ampel Park öffnen/schließen
 STR_5284    :RCT1-Schriftart Szenarioauswahl
 STR_5285    :SPRENGEN!!!
-STR_5286    :{MEDIUMFONT}{BLACK}Lässt Besucher explodieren
+STR_5286    :{MEDIUMFONT}{BLACK}Lässt einige Besucher explodieren
 STR_5287    :Bahn ist schon defekt
 STR_5288    :Bahn ist geschlossen
 STR_5289    :Für diese Bahn sind keine Defekte verfügbar
@@ -3677,3 +3677,9 @@ STR_5340    :Lichte Höhe
 STR_5341    :Kennzeichen
 STR_5342    :Eine Kachel auf der Karte auswählen
 STR_5343    :Personal automatisch platzieren
+STR_5344    :Changelog
+STR_5345    :Cheats für Finanzen
+STR_5346    :Cheats für Parkbesucher
+STR_5347    :Cheats für Attraktionen
+STR_5348    :Cheats für Park
+STR_5349    :{SMALLFONT}{BLACK}Alle Attraktionen
