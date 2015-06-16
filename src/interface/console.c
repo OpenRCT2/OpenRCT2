@@ -17,6 +17,7 @@
 #include "../management/research.h"
 #include "console.h"
 #include "window.h"
+#include "viewport.h"
 
 #define CONSOLE_BUFFER_SIZE 8192
 #define CONSOLE_BUFFER_2_SIZE 256
@@ -507,6 +508,23 @@ static int cc_get(const char **argv, int argc)
 		else if (strcmp(argv[0], "no_test_crashes") == 0) {
 			console_printf("no_test_crashes %d", gConfigGeneral.no_test_crashes);
 		}
+		else if (strcmp(argv[0], "location") == 0) {
+			rct_window *w = window_get_main();
+			if (w != NULL) {
+				int interactionType;
+				rct_map_element *mapElement;
+				rct_xy16 mapCoord = { 0 };
+
+				get_map_coordinates_from_pos(w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
+				mapCoord.x -= 16;
+				mapCoord.x /= 32;
+				mapCoord.y -= 16;
+				mapCoord.y /= 32;
+				mapCoord.x++;
+				mapCoord.y++;
+				console_printf("location %d %d", mapCoord.x, mapCoord.y);
+			}
+		}
 		else {
 			console_writeline_warning("Invalid variable.");
 		}
@@ -517,9 +535,12 @@ static int cc_set(const char **argv, int argc)
 {
 	if (argc > 1) {
 		bool int_valid = true, double_valid = true;
+		bool int_valid2 = true, double_valid2 = true;
 
 		int int_val = console_parse_int(argv[1], &int_valid);
 		double double_val = console_parse_double(argv[1], &double_valid);
+		int int_val2 = console_parse_int(argv[2], &int_valid2);
+		double double_val2 = console_parse_double(argv[2], &double_valid2);
 
 		if (strcmp(argv[0], "money") == 0 && double_valid) {
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(MONEY((int)double_val, ((int)(double_val * 100)) % 100));
@@ -634,6 +655,18 @@ static int cc_set(const char **argv, int argc)
 			gConfigGeneral.no_test_crashes = (int_val != 0);
 			config_save_default();
 			console_execute_silent("get no_test_crashes");
+		}
+		else if (strcmp(argv[0], "location") == 0 && int_valid && int_valid2) {
+			rct_window *w = window_get_main();
+			if (w != NULL) {
+				int x = (sint16)(int_val * 32 + 16);
+				int y = (sint16)(int_val2 * 32 + 16);
+				int z = map_element_height(x, y);
+				window_scroll_to_location(w, x, y, z);
+				w->flags &= ~WF_SCROLLING_TO_LOCATION;
+				viewport_update_position(w);
+				console_execute_silent("get location");
+			}
 		}
 		else {
 			console_writeline_error("Invalid variable or value.");
@@ -831,7 +864,8 @@ char* console_variable_table[] = {
 	"game_speed",
 	"console_small_font",
 	"test_unfinished_tracks",
-	"no_test_crashes"
+	"no_test_crashes",
+	"location"
 };
 char* console_window_table[] = {
 	"object_selection",
