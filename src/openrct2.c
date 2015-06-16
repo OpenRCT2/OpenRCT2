@@ -33,6 +33,7 @@
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 char gOpenRCT2StartupActionPath[512] = { 0 };
+char gExePath[MAX_PATH];
 
 // This should probably be changed later and allow a custom selection of things to initialise like SDL_INIT
 bool gOpenRCT2Headless = false;
@@ -99,6 +100,23 @@ static void openrct2_copy_files_over(const char *originalDirectory, const char *
 	platform_enumerate_directories_end(fileEnumHandle);
 }
 
+static void openrct2_set_exe_path()
+{
+	char exePath[MAX_PATH];
+	char tempPath[MAX_PATH];
+	char *exeDelimiter;
+	int pathEnd;
+	int exeDelimiterIndex;
+
+	GetModuleFileName(NULL, exePath, MAX_PATH);
+	exeDelimiter = strrchr(exePath, platform_get_path_separator());
+	exeDelimiterIndex = (int)(exeDelimiter - exePath);
+	pathEnd = strlen(exePath) - (strlen(exePath) - exeDelimiterIndex);
+	strncpy(tempPath, exePath, pathEnd);
+	tempPath[pathEnd] = '\0';
+	_fullpath(gExePath, tempPath, strlen(tempPath));
+}
+
 /**
  * Copy saved games and landscapes to user directory
  */
@@ -122,6 +140,8 @@ bool openrct2_initialise()
 		log_fatal("Could not create user directory (do you have write access to your documents folder?)");
 		return false;
 	}
+
+	openrct2_set_exe_path();
 
 	config_set_defaults();
 	if (!config_open_default()) {

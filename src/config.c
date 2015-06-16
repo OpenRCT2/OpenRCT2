@@ -24,6 +24,7 @@
 #include "localisation/localisation.h"
 #include "util/util.h"
 #include "interface/themes.h"
+#include "openrct2.h"
 
 // Magic number for original game cfg file
 static const int MagicNumber = 0x0003113A;
@@ -704,7 +705,8 @@ static bool config_find_rct2_path(char *resultPath)
 		"C:\\Program Files (x86)\\Infogrames Interactive\\RollerCoaster Tycoon 2",
 		"C:\\Program Files\\Atari\\RollerCoaster Tycoon 2",
 		"C:\\Program Files (x86)\\Atari\\RollerCoaster Tycoon 2",
-		"C:\\GOG Games\\RollerCoaster Tycoon 2 Triple Thrill Pack"
+		"C:\\GOG Games\\RollerCoaster Tycoon 2 Triple Thrill Pack",
+		gExePath
 	};
 
 	for (i = 0; i < countof(searchLocations); i++) {

@@ -325,7 +325,7 @@ static void title_do_next_script_opcode()
 			} while (*(_currentScript - 1) != 0);
 
 			// Construct full relative path
-			sprintf(path, "data%ctitle%c%s", platform_get_path_separator(), platform_get_path_separator(), filename);
+			sprintf(path, "%s%cData%ctitle%c%s", gExePath, platform_get_path_separator(), platform_get_path_separator(), platform_get_path_separator(), filename);
 			if (title_load_park(path)) {
 				_scriptNoLoadsSinceRestart = 0;
 			} else {
@@ -491,8 +491,10 @@ static uint8 *title_script_load()
 	FILE *file;
 	char parts[3 * 32], *token, *part1, *part2, *src;
 
-	char path[] = "data/title/script.txt";
-
+	char path[MAX_PATH];
+	char filePath[] = "data/title/script.txt";
+	
+	sprintf(path, "%s%c%s", gExePath, platform_get_path_separator(), filePath);
 	log_verbose("loading title script, %s", path);
 	file = fopen(path, "r");
 	if (file == NULL) {
