@@ -114,7 +114,7 @@ static void openrct2_set_exe_path()
 	pathEnd = strlen(exePath) - (strlen(exePath) - exeDelimiterIndex);
 	strncpy(tempPath, exePath, pathEnd);
 	tempPath[pathEnd] = '\0';
-	_fullpath(gExePath, tempPath, strlen(tempPath));
+	_fullpath(gExePath, tempPath, MAX_PATH);
 }
 
 /**
