@@ -602,16 +602,19 @@ static void window_scenery_resize()
 	window_get_register(w);
 		
 	if (w->width < w->min_width) {
+		window_invalidate(w);
 		w->width = w->min_width;
 		window_invalidate(w);
 	}
 
 	if (w->width > w->max_width) {
+		window_invalidate(w);
 		w->width = w->max_width;
 		window_invalidate(w);
 	}
 
 	if (w->height < w->min_height) {
+		window_invalidate(w);
 		w->height = w->min_height;
 		window_invalidate(w);
 		// HACK: For some reason invalidate has not been called
@@ -620,6 +623,7 @@ static void window_scenery_resize()
 	}
 
 	if (w->height > w->max_height) {
+		window_invalidate(w);
 		w->height = w->max_height;
 		window_invalidate(w);
 		// HACK: For some reason invalidate has not been called
@@ -736,7 +740,7 @@ static void window_scenery_update(rct_window *w)
 		}
 	}
 
-	gfx_invalidate_screen();
+	window_invalidate(w);
 	
 	if (!window_scenery_is_scenery_tool_active()){
 		window_close(w);
