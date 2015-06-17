@@ -143,3 +143,4 @@ Translations are in progress for German, Dutch, French, Hungarian, Polish, Spani
 - [Launcher that keeps your copy up-to-date](https://openrct.net/download)  
 - [rct2 subreddit](http://www.reddit.com/r/rct/)
 - [openrct2 subreddit](http://www.reddit.com/r/openrct2)
+- [openrct2 subverse](http://www.voat.co/v/openrct2)
