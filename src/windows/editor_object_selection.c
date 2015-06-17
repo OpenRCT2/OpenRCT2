@@ -475,6 +475,15 @@ static int sub_6AB211(){
 	return 1;
 }
 
+/* rct2: 0x006AB316 */
+static void editor_object_flags_free(){
+	if (RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) == NULL){
+		return;
+	}
+	free(RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*));
+	RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) = NULL;
+}
+
 /**
  * 
  *  rct2: 0x006AB199
@@ -491,7 +500,8 @@ static void window_editor_object_selection_close()
 	editor_load_selected_objects();
 	reset_loaded_objects();
 	object_free_scenario_text();
-	RCT2_CALLPROC_EBPSAFE(0x6AB316);
+	editor_object_flags_free();
+
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR) {
 		research_populate_list_random();
 		research_remove_non_separate_vehicle_types();
