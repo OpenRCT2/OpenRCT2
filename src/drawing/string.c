@@ -707,8 +707,22 @@ void gfx_draw_string_left(rct_drawpixelinfo *dpi, int format, void *args, int co
 
 	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	format_string(buffer, format, args);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0xE0;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
 	gfx_draw_string(dpi, buffer, colour, x, y);
+}
+
+/**
+ * Draws text that is left aligned and vertically centred.
+ */
+void gfx_draw_string_left_centred(rct_drawpixelinfo *dpi, rct_string_id format, void *args, int colour, int x, int y)
+{
+	char* buffer;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	buffer = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
+	format_string(buffer, format, args);
+	int height = string_get_height_raw(buffer);
+	gfx_draw_string(dpi, buffer, colour, x, y - (height / 2));
 }
 
 /**
