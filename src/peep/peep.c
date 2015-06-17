@@ -4381,7 +4381,7 @@ void peep_problem_warnings_update()
 			break;
 
 		case PEEP_THOUGHT_TYPE_HUNGRY: // 0x14
-			if (peep->guest_heading_to_ride_id == -1){
+			if (peep->guest_heading_to_ride_id == 0xFF){
 				hunger_counter++;
 				break;
 			}
@@ -4391,7 +4391,7 @@ void peep_problem_warnings_update()
 			break;
 
 		case PEEP_THOUGHT_TYPE_THIRSTY:
-			if (peep->guest_heading_to_ride_id == -1){
+			if (peep->guest_heading_to_ride_id == 0xFF){
 				thirst_counter++;
 				break;
 			}
@@ -4401,7 +4401,7 @@ void peep_problem_warnings_update()
 			break;
 
 		case PEEP_THOUGHT_TYPE_BATHROOM:
-			if (peep->guest_heading_to_ride_id == -1){
+			if (peep->guest_heading_to_ride_id == 0xFF){
 				bathroom_counter++;
 				break;
 			}
