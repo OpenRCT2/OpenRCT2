@@ -2531,10 +2531,7 @@ int sub_6BA278(int ebx)
  */
 void map_remove_intersecting_walls(int x, int y, int z0, int z1, int direction)
 {
-	int bannerIndex;
-	rct_banner *banner;
 	rct_map_element *mapElement;
-	rct_scenery_entry *sceneryEntry;
 
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);
 	do {
@@ -2547,20 +2544,10 @@ void map_remove_intersecting_walls(int x, int y, int z0, int z1, int direction)
 		if (direction != (mapElement->type & 3))
 			continue;
 
-		sceneryEntry = g_wallSceneryEntries[mapElement->properties.fence.type];
-		if (sceneryEntry->wall.var_0D != 255) {
-			bannerIndex = mapElement->properties.fence.item[0];
-			banner = &gBanners[bannerIndex];
-			if (banner->type != BANNER_NULL) {
-				window_close_by_number(WC_BANNER, bannerIndex);
-				banner->type = BANNER_NULL;
-				user_string_free(banner->string_idx);
-			}
-		}
-		
+		map_element_remove_banner_entry(mapElement);
 		map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->base_height * 8 + 72);
 		map_element_remove(mapElement);
-		mapElement -= 1;
+		mapElement--;
 	} while (!map_element_is_last_for_tile(mapElement++));
 }
 
@@ -2687,7 +2674,7 @@ int map_element_get_banner_index(rct_map_element *mapElement)
 
 		return
 			(mapElement->type & MAP_ELEMENT_QUADRANT_MASK) |
-			((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2);
+			((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
 			((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
 	case MAP_ELEMENT_TYPE_FENCE:
 		sceneryEntry = g_wallSceneryEntries[mapElement->properties.fence.type];
