@@ -133,8 +133,10 @@ void title_load()
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
 
-	if (gOpenRCT2ShowChangelog)
+	if (gOpenRCT2ShowChangelog) {
+		gOpenRCT2ShowChangelog = false;
 		window_changelog_open();
+	}
 
 	log_verbose("loading title finished");
 }
