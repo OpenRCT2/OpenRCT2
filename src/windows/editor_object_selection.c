@@ -425,6 +425,105 @@ static void setup_track_designer_objects(){
 	RCT2_GLOBAL(0x00F43412, uint16) = num_objects;
 }
 
+/* rct2: 0x006AA82B */
+static void setup_in_use_selection_flags(){
+
+	for (uint8 object_type = 0; object_type < 11; object_type++){
+		for (uint16 i = 0; i < object_entry_group_counts[object_type]; i++){
+			RCT2_ADDRESS(0x0098DA38, uint8*)[object_type][i] = 0;
+		}
+	}
+
+	for (uint8 object_type = 0; object_type < 11; object_type++){
+		for (uint16 i = 0; i < object_entry_group_counts[object_type]; i++){
+			if (object_entry_groups[object_type].chunks[i] != (uint8*)0xFFFFFFFF){
+				RCT2_ADDRESS(0x0098DA38, uint8*)[object_type][i] |= (1 << 1);
+			}
+		}
+	}
+
+	map_element_iterator iter;
+	map_element_iterator_begin(&iter);
+	do {
+		uint16 type;
+		uint8 path_additions;
+		rct_banner* banner;
+
+		switch (map_element_get_type(iter.element)) {
+		default:
+		case MAP_ELEMENT_TYPE_SURFACE:
+		case MAP_ELEMENT_TYPE_TRACK:
+			break;
+		case MAP_ELEMENT_TYPE_PATH:
+			type = iter.element->properties.path.type;
+			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_PATHS][type] |= (1 << 0);
+
+			path_additions = iter.element->properties.path.additions & 0xF;
+			if (path_additions){
+				path_additions--;
+				RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_PATH_BITS][path_additions] |= (1 << 0);
+			}
+			break;
+		case MAP_ELEMENT_TYPE_SCENERY:
+			type = iter.element->properties.scenery.type;
+			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_SMALL_SCENERY][type] |= (1 << 0);
+			break;
+		case MAP_ELEMENT_TYPE_ENTRANCE:
+			if (iter.element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+				break;
+
+			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_PARK_ENTRANCE][0] |= (1 << 0);
+
+			type = iter.element->properties.entrance.path_type;
+			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_PATHS][type] |= (1 << 0);
+			break;
+		case MAP_ELEMENT_TYPE_FENCE:
+			type = iter.element->properties.fence.type;
+			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_WALLS][type] |= (1 << 0);
+			break;
+		case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
+			type = iter.element->properties.scenerymultiple.type & 0x3FF;
+			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_LARGE_SCENERY][type] |= (1 << 0);
+			break;
+		case MAP_ELEMENT_TYPE_BANNER:
+			banner = &gBanners[iter.element->properties.banner.index];
+			type = banner->type;
+			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_BANNERS][type] |= (1 << 0);
+			break;
+		}
+	} while (map_element_iterator_next(&iter));
+
+	for (uint8 ride_index = 0; ride_index < 0xFF; ride_index++){
+		rct_ride* ride = GET_RIDE(ride_index);
+		if (ride->type == RIDE_TYPE_NULL)
+			continue;
+
+		uint8 type = ride->subtype;
+		RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_RIDE][type] |= (1 << 0);
+	}
+
+	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
+	rct_object_entry* installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+
+	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
+		*selection_flags &= ~OBJECT_SELECTION_FLAG_IN_USE;
+
+		uint8 entry_type, entry_index;
+		if (find_object_in_entry_group(installedObject, &entry_type, &entry_index)){
+			if (RCT2_ADDRESS(0x0098DA38, uint8*)[entry_type][entry_index] & (1 << 0)){
+				*selection_flags |= 
+					OBJECT_SELECTION_FLAG_IN_USE | 
+					OBJECT_SELECTION_FLAG_SELECTED;
+			}
+			if (RCT2_ADDRESS(0x0098DA38, uint8*)[entry_type][entry_index] & (1 << 1)){
+				*selection_flags |= OBJECT_SELECTION_FLAG_SELECTED;
+			}
+		}
+		installedObject = object_get_next(installedObject);
+		selection_flags++;
+	}
+}
+
 /* rct2: 0x006AB211 */
 static int sub_6AB211(){
 	uint32 total_objects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32);
@@ -459,7 +558,7 @@ static int sub_6AB211(){
 		setup_track_manager_objects();
 	}
 
-	RCT2_CALLPROC_EBPSAFE(0x006AA82B);
+	setup_in_use_selection_flags();
 	reset_selected_object_count_and_size();
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))){
