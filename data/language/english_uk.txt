@@ -3698,3 +3698,6 @@ STR_5361    :{BLACK}Give all guests:
 STR_5362    :{BLACK}Preferred intensity:
 STR_5363    :> 1
 STR_5364    :< 15
+STR_5365    :{BLACK}Staff speed:
+STR_5366    :Normal
+STR_5367    :Fast

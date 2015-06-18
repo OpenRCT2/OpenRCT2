@@ -236,6 +236,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		newPeep->tshirt_colour = colour;
 		newPeep->trousers_colour = colour;
 
+		// Staff energy determines their walking speed
 		newPeep->energy = 0x60;
 		newPeep->energy_growth_rate = 0x60;
 		newPeep->var_E2 = 0;
