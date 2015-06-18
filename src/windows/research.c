@@ -327,21 +327,28 @@ static void window_research_development_paint()
 {
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
-	int x, y;
-	rct_string_id stringId;
 
 	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 	window_research_draw_tab_images(dpi, w);
 
-	x = w->x + 10;
-	y = w->y + window_research_development_widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].top + 12;
+	window_research_development_page_paint(w, dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
+}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) == RESEARCH_STAGE_FINISHED_ALL){
+void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dpi, int baseWidgetIndex)
+{
+	baseWidgetIndex = baseWidgetIndex - WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP;
+
+	int x = w->x + 10;
+	int y = w->y + w->widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12;
+	rct_string_id stringId;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) == RESEARCH_STAGE_FINISHED_ALL) {
 		stringId = STR_RESEARCH_UNKNOWN;
 		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, 0);
 		y += 25;
+
 		// Progress
 		stringId = 2680;
 		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, 0);
@@ -349,21 +356,19 @@ static void window_research_development_paint()
 
 		RCT2_GLOBAL(0x013CE952, uint16) = STR_UNKNOWN;
 		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, (void*)0x013CE952, 0, x, y);
-	}
-	else{
+	} else {
 		// Research type
 		stringId = STR_RESEARCH_UNKNOWN;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) != 0) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) != RESEARCH_STAGE_INITIAL_RESEARCH) {
 			stringId = STR_TRANSPORT_RIDE + RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_CATEGORY, uint8);
-			if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) != 1) {
+			if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) != RESEARCH_STAGE_DESIGNING) {
 				uint32 typeId = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, uint32);
 				if (typeId >= 0x10000) {
 					rct_ride_type *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, rct_ride_type*);
 					stringId = rideEntry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME ?
 						rideEntry->name :
-						((typeId >> 8) & 0xFF) + 2;
-				}
-				else {
+						(typeId & 0xFF00) + 2;
+				} else {
 					stringId = g_scenerySetEntries[typeId]->name;
 				}
 			}
@@ -381,16 +386,17 @@ static void window_research_development_paint()
 		if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) != 0) {
 			uint16 expectedDay = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_DAY, uint8);
 			if (expectedDay != 255) {
+				RCT2_GLOBAL(0x013CE952, uint16) = 2289;
 				RCT2_GLOBAL(0x013CE952 + 2, uint16) = STR_DATE_DAY_1 + expectedDay;
 				RCT2_GLOBAL(0x013CE952 + 4, uint16) = STR_MONTH_MARCH + RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_MONTH, uint8);
-				RCT2_GLOBAL(0x013CE952, uint16) = 2289;
 			}
 		}
 		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, (void*)0x013CE952, 0, x, y);
 	}
+
 	// Last development
 	x = w->x + 10;
-	y = w->y + window_research_development_widgets[WIDX_LAST_DEVELOPMENT_GROUP].top + 12;
+	y = w->y + w->widgets[WIDX_LAST_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12;
 
 	uint32 typeId = RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, uint32);
 	int lastDevelopmentFormat;
@@ -581,11 +587,17 @@ static void window_research_funding_paint()
 	window_draw_widgets(w, dpi);
 	window_research_draw_tab_images(dpi, w);
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
-		int currentResearchLevel = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
-		money32 currentResearchCostPerWeek = research_cost_table[currentResearchLevel];
-		gfx_draw_string_left(dpi, STR_RESEARCH_COST_PER_MONTH, &currentResearchCostPerWeek, 0, w->x + 10, w->y + 77);
-	}
+	window_research_funding_page_paint(w, dpi, WIDX_RESEARCH_FUNDING);
+}
+
+void window_research_funding_page_paint(rct_window *w, rct_drawpixelinfo *dpi, int baseWidgetIndex)
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+		return;
+
+	int currentResearchLevel = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
+	money32 currentResearchCostPerWeek = research_cost_table[currentResearchLevel];
+	gfx_draw_string_left(dpi, STR_RESEARCH_COST_PER_MONTH, &currentResearchCostPerWeek, 0, w->x + 10, w->y + 77);
 }
 
 #pragma endregion

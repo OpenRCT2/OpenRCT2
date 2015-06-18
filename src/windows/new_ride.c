@@ -164,6 +164,7 @@ enum {
 	WIDX_TAB_6,
 	WIDX_TAB_7,
 	WIDX_RIDE_LIST,
+
 	WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP,
 	WIDX_LAST_DEVELOPMENT_GROUP,
 	WIDX_LAST_DEVELOPMENT_BUTTON,
@@ -748,86 +749,10 @@ static void window_new_ride_paint()
 
 	if (_window_new_ride_current_tab != WINDOW_NEW_RIDE_PAGE_RESEARCH) {
 		ride_list_item item = *((ride_list_item*)&w->new_ride.highlighted_ride_id);
-		if (item.type == 255 && item.entry_index == 255)
-			return;
-
-		window_new_ride_paint_ride_information(w, dpi, item, w->x + 3, w->y + w->height - 52, w->width - 6);
-		return;
-	}
-
-	int x = w->x + 10;
-	int y = w->y + window_new_ride_widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].top + 12;
-	rct_string_id stringId;
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) == RESEARCH_STAGE_FINISHED_ALL){
-		stringId = STR_RESEARCH_UNKNOWN;
-		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, 0);
-		y += 25;
-		// Progress
-		stringId = 2680;
-		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, 0);
-		y += 15;
-
-		RCT2_GLOBAL(0x013CE952, uint16) = STR_UNKNOWN;
-		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, (void*)0x013CE952, 0, x, y);
-	}
-	else{
-		// Research type
-		stringId = STR_RESEARCH_UNKNOWN;
-		if (RCT2_GLOBAL(0x01357CF3, uint8) != 0) {
-			stringId = STR_TRANSPORT_RIDE + RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_CATEGORY, uint8);
-			if (RCT2_GLOBAL(0x01357CF3, uint8) != 1) {
-				uint32 typeId = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, uint32);
-				if (typeId >= 0x10000) {
-					rct_ride_type *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, rct_ride_type*);
-					stringId = rideEntry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME ?
-						rideEntry->name :
-						(typeId & 0xFF00) + 2;
-				}
-				else {
-					stringId = g_scenerySetEntries[typeId]->name;
-				}
-			}
-		}
-		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, 0);
-		y += 25;
-
-		// Progress
-		stringId = 2285 + RCT2_GLOBAL(0x01357CF3, uint8);
-		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, 0);
-		y += 15;
-
-		// Expected
-		RCT2_GLOBAL(0x013CE952, uint16) = STR_UNKNOWN;
-		if (RCT2_GLOBAL(0x01357CF3, uint8) != 0) {
-			uint16 expectedDay = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_DAY, uint8);
-			if (expectedDay != 255) {
-				RCT2_GLOBAL(0x013CE952 + 2, uint16) = STR_DATE_DAY_1 + expectedDay;
-				RCT2_GLOBAL(0x013CE952 + 4, uint16) = STR_MONTH_MARCH + RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_MONTH, uint8);
-				RCT2_GLOBAL(0x013CE952, uint16) = 2289;
-			}
-		}
-		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, (void*)0x013CE952, 0, x, y);
-	}
-	// Last development
-	x = w->x + 10;
-	y = w->y + window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_GROUP].top + 12;
-
-	uint32 typeId = RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, uint32);
-	int lastDevelopmentFormat;
-	if (typeId != 0xFFFFFFFF) {
-		if (typeId >= 0x10000) {
-			rct_ride_type *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, rct_ride_type*);
-			stringId = rideEntry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME ?
-				rideEntry->name :
-				((typeId >> 8) & 0xFF) + 2;
-
-			lastDevelopmentFormat = STR_RESEARCH_RIDE_LABEL;
-		} else {
-			stringId = g_scenerySetEntries[typeId]->name;
-			lastDevelopmentFormat = STR_RESEARCH_SCENERY_LABEL;
-		}
-		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 266, lastDevelopmentFormat, 0);
+		if (item.type != 255 || item.entry_index != 255)
+			window_new_ride_paint_ride_information(w, dpi, item, w->x + 3, w->y + w->height - 52, w->width - 6);
+	} else {
+		window_research_development_page_paint(w, dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
 	}
 }
 
