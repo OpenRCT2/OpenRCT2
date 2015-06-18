@@ -3624,7 +3624,7 @@ STR_5282    :RCT1 Ride Open/Close Lights
 STR_5283    :RCT1 Park Open/Close Lights
 STR_5284    :RCT1 Scenario Selection Font
 STR_5285    :EXPLODE!!!
-STR_5286    :{MEDIUMFONT}{BLACK}Makes guests explode
+STR_5286    :{MEDIUMFONT}{BLACK}Makes some guests explode
 STR_5287    :Ride is already broken down
 STR_5288    :Ride is closed
 STR_5289    :No breakdowns available for this ride
@@ -3683,3 +3683,8 @@ STR_5341    :Flags
 STR_5342    :Choose a map tile
 STR_5343    :Automatically place staff
 STR_5344    :Changelog
+STR_5345    :Financial cheats
+STR_5346    :Guest cheats
+STR_5347    :Ride cheats
+STR_5348    :Park cheats
+STR_5349    :{SMALLFONT}{BLACK}All Rides
