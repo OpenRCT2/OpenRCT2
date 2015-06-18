@@ -1509,6 +1509,8 @@ enum {
 	STR_CHEAT_SANDBOX_MODE = 5278,
 	STR_CHEAT_SANDBOX_MODE_DISABLE = 5279,
 	STR_CHEAT_SANDBOX_MODE_TIP = 5280,
+	STR_CHEAT_STAFF_SPEED = 5365,
+	STR_CHEAT_RESET_CRASH_STATUS = 5368,
 
 	STR_DEBUG_TIP = 5311,
 	STR_DEBUG_DROPDOWN_CONSOLE = 5312,
@@ -1535,6 +1537,8 @@ enum {
 
 	STR_MAX = 5350,
 	STR_MIN = 5351,
+	STR_NORMAL = 5366,
+	STR_FAST = 5367,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
