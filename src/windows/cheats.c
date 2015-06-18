@@ -103,7 +103,8 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_FAST_LIFT_HILL,
 	WIDX_DISABLE_BRAKES_FAILURE,
 	WIDX_DISABLE_ALL_BREAKDOWNS,
-	WIDX_BUILD_IN_PAUSE_MODE
+	WIDX_BUILD_IN_PAUSE_MODE,
+	WIDX_RESET_CRASH_STATUS
 };
 
 enum {
@@ -225,6 +226,7 @@ static rct_widget window_cheats_rides_widgets[] = {
 	{ WWT_CHECKBOX,	2, XPL(0),    OWPL, YPL(9),OHPL(9),		STR_CHEAT_DISABLE_BRAKES_FAILURE,STR_NONE }, 						// Disable brakes failure
 	{ WWT_CHECKBOX,	2, XPL(0),    OWPL, YPL(10),OHPL(10),	STR_CHEAT_DISABLE_BREAKDOWNS,	STR_NONE }, 						// Disable all breakdowns
 	{ WWT_CHECKBOX,	2, XPL(0),    OWPL, YPL(8),OHPL(8),		STR_CHEAT_BUILD_IN_PAUSE_MODE,	STR_NONE }, 						// Build in pause mode
+	{ WWT_CLOSEBOX,	1, XPL(0),	WPL(0), YPL(2), HPL(2),		STR_CHEAT_RESET_CRASH_STATUS,	STR_NONE },							// Reset crash status
 	{ WIDGETS_END },
 };
 
@@ -383,7 +385,7 @@ static uint32 window_cheats_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_PARK_ENTRANCE_FEE) | (1 << WIDX_CLEAR_LOAN),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_GUEST_HAPPINESS_MAX)  | (1 << WIDX_GUEST_HAPPINESS_MIN) | (1 << WIDX_GUEST_ENERGY_MAX) | (1 << WIDX_GUEST_ENERGY_MIN) | (1 << WIDX_GUEST_HUNGER_MAX) | (1 << WIDX_GUEST_HUNGER_MIN) | (1 << WIDX_GUEST_THIRST_MAX) | (1 << WIDX_GUEST_THIRST_MIN) | (1 << WIDX_GUEST_NAUSEA_MAX) | (1 << WIDX_GUEST_NAUSEA_MIN) | (1 << WIDX_GUEST_NAUSEA_TOLERANCE_MAX) | (1 << WIDX_GUEST_NAUSEA_TOLERANCE_MIN) | (1 << WIDX_GUEST_BATHROOM_MAX) | (1 << WIDX_GUEST_BATHROOM_MIN) | (1 << WIDX_GUEST_RIDE_INTENSITY_MORE_THAN_1) | (1 << WIDX_GUEST_RIDE_INTENSITY_LESS_THAN_15) | (1 << WIDX_TRAM_GUESTS) | (1 << WIDX_REMOVE_ALL_GUESTS) | (1 << WIDX_EXPLODE_GUESTS) | (1 << WIDX_GIVE_GUESTS_PARK_MAPS) | (1 << WIDX_GIVE_GUESTS_BALLOONS) | (1 << WIDX_GIVE_GUESTS_UMBRELLAS),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO) | (1 << WIDX_UNLOCK_ALL_PRICES) | (1 << WIDX_SANDBOX_MODE) | (1 << WIDX_FAST_STAFF) | (1 << WIDX_NORMAL_STAFF),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_RENEW_RIDES) | (1 << WIDX_REMOVE_SIX_FLAGS) | (1 << WIDX_MAKE_DESTRUCTIBLE) | (1 << WIDX_FIX_ALL) | (1 << WIDX_FAST_LIFT_HILL) | (1 << WIDX_DISABLE_BRAKES_FAILURE) | (1 << WIDX_DISABLE_ALL_BREAKDOWNS) | (1 << WIDX_BUILD_IN_PAUSE_MODE)
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_RENEW_RIDES) | (1 << WIDX_REMOVE_SIX_FLAGS) | (1 << WIDX_MAKE_DESTRUCTIBLE) | (1 << WIDX_FIX_ALL) | (1 << WIDX_FAST_LIFT_HILL) | (1 << WIDX_DISABLE_BRAKES_FAILURE) | (1 << WIDX_DISABLE_ALL_BREAKDOWNS) | (1 << WIDX_BUILD_IN_PAUSE_MODE) | (1 << WIDX_RESET_CRASH_STATUS)
 };
 
 static rct_string_id window_cheats_page_titles[] = {
@@ -541,6 +543,23 @@ static void cheat_make_destructible()
 	{
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
 			ride->lifecycle_flags&=~RIDE_LIFECYCLE_INDESTRUCTIBLE;
+		if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+			ride->lifecycle_flags&=~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+	}
+	window_invalidate_by_class(WC_RIDE);
+}
+
+static void cheat_reset_crash_status()
+{
+	int i;
+	rct_ride *ride;
+
+	FOR_ALL_RIDES(i, ride){
+		//reset crash status
+		if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+			ride->lifecycle_flags&=~RIDE_LIFECYCLE_CRASHED;
+		//reset crash history
+		ride->last_crash_type=RIDE_CRASH_TYPE_NONE;
 	}
 	window_invalidate_by_class(WC_RIDE);
 }
@@ -952,6 +971,10 @@ static void window_cheats_rides_mouseup()
 		gConfigCheat.build_in_pause_mode ^= 1;
 		config_save_default();
 		window_invalidate(w);
+		break;
+	case WIDX_RESET_CRASH_STATUS:
+		cheat_reset_crash_status();
+		break;
 	}
 }
 
