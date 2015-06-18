@@ -436,14 +436,14 @@ static void viewport_interaction_remove_footpath_item(rct_map_element *mapElemen
 {
 	int type;
 
-	type = mapElement->properties.scenery.type >> 4;
-	if (mapElement->type & 0x80)
+	type = mapElement->properties.path.type >> 4;
+	if (mapElement->type & 1)
 		type |= 0x80;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_REMOVE_THIS;
 	game_do_command(
 		x,
-		((mapElement->properties.scenery.type & 7) << 8) | 1,
+		((mapElement->properties.path.type & 7) << 8) | 1,
 		y,
 		(type << 8) | mapElement->base_height,
 		GAME_COMMAND_PLACE_PATH,
