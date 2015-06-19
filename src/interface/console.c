@@ -650,7 +650,7 @@ static int cc_set(const char **argv, int argc)
 			if (i == 4)
 				invalidArgs = true;
 			else
-				console_execute_silent("get climate");
+			console_execute_silent("get climate");
 		}
 		else if (strcmp(argv[0], "game_speed") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
 			gGameSpeed = clamp(int_val[0], 1, 8);
@@ -840,6 +840,8 @@ static int cc_open(const char **argv, int argc) {
 			window_editor_object_selection_open();
 		} else if (strcmp(argv[0], "inventions_list") == 0 && invalidArguments(&invalidTitle, !title)) {
 			window_editor_inventions_list_open();
+		} else if (strcmp(argv[0], "scenario_options") == 0) {
+			window_editor_scenario_options_open();
 		} else if (strcmp(argv[0], "options") == 0) {
 			window_options_open();
 		} else if (strcmp(argv[0], "themes") == 0) {

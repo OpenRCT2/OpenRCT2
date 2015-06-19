@@ -2687,7 +2687,7 @@ STR_2680    :Alle Forschungen beendet
 STR_2681    :{MEDIUMFONT}{BLACK}Erhöht Ihr Geld um 5.000
 STR_2682    :{MEDIUMFONT}{BLACK}Zw. freiem und kostenpfl. Eintritt umsch.
 STR_2683    :{MEDIUMFONT}{BLACK}Erhöht das Vergnügen der Besucher maximal
-STR_2684    :{MEDIUMFONT}{BLACK}Eine große Gruppe von Besuchern tritt ein
+STR_2684    :{SMALLFONT}{BLACK}Eine große Gruppe von Besuchern tritt ein
 STR_2685    :`Simplex Noise' Param.
 STR_2686    :{WINDOW_COLOUR_2}Niedrig:
 STR_2687    :{WINDOW_COLOUR_2}Hoch:
@@ -3619,7 +3619,7 @@ STR_5282    :RCT1-Ampel Bahn öffnen/schließen
 STR_5283    :RCT1-Ampel Park öffnen/schließen
 STR_5284    :RCT1-Schriftart Szenarioauswahl
 STR_5285    :SPRENGEN!!!
-STR_5286    :{MEDIUMFONT}{BLACK}Lässt einige Besucher explodieren
+STR_5286    :{SMALLFONT}{BLACK}Lässt einige Besucher explodieren
 STR_5287    :Bahn ist schon defekt
 STR_5288    :Bahn ist geschlossen
 STR_5289    :Für diese Bahn sind keine Defekte verfügbar
@@ -3683,3 +3683,22 @@ STR_5346    :Cheats für Parkbesucher
 STR_5347    :Cheats für Attraktionen
 STR_5348    :Cheats für Park
 STR_5349    :{SMALLFONT}{BLACK}Alle Attraktionen
+STR_5350    :Max
+STR_5351    :Min
+STR_5352    :{BLACK}Vergnügen:
+STR_5353    :{BLACK}Energie:
+STR_5354    :{BLACK}Hunger:
+STR_5355    :{BLACK}Durst:
+STR_5356    :{BLACK}Übelkeit:
+STR_5357    :{BLACK}Übelkeitstoleranz:
+STR_5358    :{BLACK}Toilette:
+STR_5359    :Besucher entfernen
+STR_5360    :{SMALLFONT}{BLACK}Alle Besucher von der Karte entfernen
+STR_5361    :{BLACK}Für alle Besucher:
+STR_5362    :{BLACK}Bevorz. Intensität:
+STR_5363    :> 1
+STR_5364    :< 15
+STR_5365    :{BLACK}Personalgeschw.:
+STR_5366    :Normal
+STR_5367    :Schnell
+STR_5368    :Unfallstatus entf.

@@ -766,11 +766,7 @@ static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 		colour |= 0x40;
 	}
 
-	// TODO extract this to a string method and maybe a draw vertically centred
-	char *buffer = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
-	format_string(buffer, (rct_string_id)widget->image, (void*)0x013CE952);
-	int height = string_get_height_raw(buffer);
-	gfx_draw_string(dpi, buffer, colour, l + 14, yMid - (height / 2));
+	gfx_draw_string_left_centred(dpi, (rct_string_id)widget->image, (void*)0x013CE952, colour, l + 14, yMid);
 }
 
 /**

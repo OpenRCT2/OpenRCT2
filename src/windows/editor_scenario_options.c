@@ -451,7 +451,18 @@ static void window_editor_scenario_options_financial_mouseup()
 		window_editor_scenario_options_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_NO_MONEY:
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_NO_MONEY_SCENARIO;
+		if(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
+			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_NO_MONEY_SCENARIO;
+		}
+		else {
+			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_NO_MONEY;
+			// Invalidate all windows that have anything to do with finance
+			window_invalidate_by_class(WC_RIDE);
+			window_invalidate_by_class(WC_PEEP);
+			window_invalidate_by_class(WC_PARK_INFORMATION);
+			window_invalidate_by_class(WC_FINANCES);
+			window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+		}
 		window_invalidate(w);
 		break;
 	case WIDX_FORBID_MARKETING:
@@ -482,7 +493,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 {
 	switch (widgetIndex) {
 	case WIDX_INITIAL_CASH_INCREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) < MONEY(10000,00)) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) < MONEY(1000000,00)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) += MONEY(500,00);
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32));
 			sub_69E869();
@@ -546,13 +557,18 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		window_invalidate(w);
 		break;
 	case WIDX_INTEREST_RATE_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32) > 5) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32) >= 0) {
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32)--;
 		} else {
 			window_error_open(3255, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
+	}
+
+	if(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_PLAYING) {
+		window_invalidate_by_class(WC_FINANCES);
+		window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 	}
 }
 
@@ -732,7 +748,7 @@ static void window_editor_scenario_options_guests_mousedown(int widgetIndex, rct
 {
 	switch (widgetIndex) {
 	case WIDX_CASH_PER_GUEST_INCREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) < MONEY(100, 00)) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) < MONEY(1000, 00)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) += MONEY(1, 00);
 		} else {
 			window_error_open(3264, STR_NONE);
@@ -1071,19 +1087,33 @@ static void window_editor_scenario_options_park_dropdown()
 	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
 	if (widgetIndex == WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN && dropdownIndex != -1) {
-		if (dropdownIndex == 0) {
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY)) {
-				RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_FREE_ENTRY;
-				RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) = MONEY(0, 00);
-				window_invalidate(w);
-			}
-		} else {
-			if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) {
-				RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-				RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) = MONEY(10, 00);
-				window_invalidate(w);
+		if(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
+			if (dropdownIndex == 0) {
+				if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY)) {
+					RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_FREE_ENTRY;
+					RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) = MONEY(0, 00);
+				}
+			} else {
+				if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) {
+					RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+					RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) = MONEY(10, 00);
+				}
 			}
 		}
+		else {
+			if (dropdownIndex == 0) {
+				if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY)) {
+					RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_FREE_ENTRY;
+				}
+			} else {
+				if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) {
+					RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+				}
+			}
+			window_invalidate_by_class(WC_PARK_INFORMATION);
+			window_invalidate_by_class(WC_RIDE);
+		}
+		window_invalidate(w);
 	}
 }
 

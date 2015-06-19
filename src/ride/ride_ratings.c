@@ -924,8 +924,8 @@ static int ride_ratings_get_scenery_score(rct_ride *ride)
 
 	// Count surrounding scenery items
 	numSceneryItems = 0;
-	for (yy = max(y - 5, 0); yy <= y + 5; yy++) {
-		for (xx = max(x - 5, 0); xx <= x + 5; xx++) {
+	for (yy = max(y - 5, 0); yy <= min(y + 5, 255); yy++) {
+		for (xx = max(x - 5, 0); xx <= min(x + 5, 255); xx++) {
 			// Count scenery items on this tile
 			mapElement = map_get_first_element_at(xx, yy);
 			do {

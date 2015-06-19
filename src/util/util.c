@@ -58,24 +58,36 @@ const char *path_get_filename(const char *path)
 
 const char *path_get_extension(const char *path)
 {
+	const char *extension = NULL;
 	const char *ch = path;
-	while (*ch != '.' && *ch != 0) {
+	while (*ch != 0) {
+		if (*ch == '.')
+			extension = ch;
+
 		ch++;
 	}
-	return ch;
+	if (extension == NULL)
+		extension = ch;
+	return extension;
 }
 
-void path_set_extension(char *path, const char *extension)
+void path_set_extension(char *path, const char *newExtension)
 {
+	char *extension = NULL;
 	char *ch = path;
-	while (*ch != '.' && *ch != 0) {
+	while (*ch != 0) {
+		if (*ch == '.')
+			extension = ch;
+
 		ch++;
 	}
+	if (extension == NULL)
+		extension = ch;
 
-	if (extension[0] != '.')
-		*ch++ = '.';
+	if (newExtension[0] != '.')
+		*extension++ = '.';
 
-	strcpy(ch, extension);
+	strcpy(extension, newExtension);
 }
 
 void path_remove_extension(char *path)

@@ -1484,9 +1484,7 @@ static void window_finances_research_paint()
 	window_draw_widgets(w, dpi);
 	window_finances_draw_tab_images(dpi, w);
 
-	int currentResearchLevel = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
-	money32 currentResearchCostPerWeek = research_cost_table[currentResearchLevel];
-	gfx_draw_string_left(dpi, STR_RESEARCH_COST_PER_MONTH, &currentResearchCostPerWeek, 0, w->x + 10, w->y + 77);
+	window_research_funding_page_paint(w, dpi, WIDX_RESEARCH_FUNDING);
 }
 
 #pragma endregion

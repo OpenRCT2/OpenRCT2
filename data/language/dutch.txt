@@ -2682,7 +2682,7 @@ STR_2680    :Alle onderzoeken zijn voltooid
 STR_2681    :{MEDIUMFONT}{BLACK}Krijg 5.000 extra geld
 STR_2682    :{MEDIUMFONT}{BLACK}Wissel tussen betaalde en gratis entree
 STR_2683    :{MEDIUMFONT}{BLACK}Alle bezoekers hebben een maximale tevredenheid
-STR_2684    :{MEDIUMFONT}{BLACK}Er arriveert een grote groep bezoekers
+STR_2684    :{SMALLFONT}{BLACK}Er arriveert een grote groep bezoekers
 STR_2685    :Parameters voor Simplex noise
 STR_2686    :Minimum:
 STR_2687    :Maximum:
@@ -2754,7 +2754,7 @@ STR_2752    :Onkruid weg
 STR_2753    :Gras maaien
 STR_2754    :Bloemen water geven
 STR_2755    :Vandalisme repareren
-STR_2756    :Afval op paden weghalen
+STR_2756    :Afval verwijderen
 STR_2757    :Mooi weer
 STR_2758    :Regen
 STR_2759    :Hoogtes op nul
@@ -3449,7 +3449,7 @@ STR_3446    :Werkgebied wissen
 #Start van OpenRCT2-indices
 STR_5120    :'Financiën'-knop in de werkbalk tonen
 STR_5121    :'Onderzoek'-knop in de werkbalk tonen
-STR_5122    :Alle voertuigen met hetzelfde baan- of attractietype tonen
+STR_5122    :Alle voertuigen met hetzelfde baan-/attractietype tonen
 STR_5123    :Attr. vernieuwen
 STR_5124    :Six Flags weg
 STR_5125    :Afbreekbaar maken
@@ -3496,11 +3496,11 @@ STR_5163    :Maand/dag/jaar
 STR_5164    :Twitch-kanaalnaam
 STR_5165    :Bezoekers namen van volgers geven
 STR_5166    :Geeft bezoekers namen van gebruikers die het Twitch-kanaal volgen.
-STR_5167    :Bezoekers met Twitch-volgersnamen volgen in berichtengebied
+STR_5167    :Bez. met Twitch-volgersnamen volgen in berichtengebied
 STR_5168    :Zet het bezoekersvolgsysteem aan voor bezoekers die naar Twitch-volgers zijn genoemd.
-STR_5169    :Bezoekers namen van gebruikers in de Twitch-chat geven
+STR_5169    :Bez. namen van gebruikers in de Twitch-chat geven
 STR_5170    :Geeft bezoekers namen van gebruikers in de Twitch-chat.
-STR_5171    :Bezoekers met Twitch-chatnamen volgen in berichtengebied
+STR_5171    :Bez. met Twitch-chatnamen volgen in berichtengebied
 STR_5172    :Zet het bezoekersvolgsysteem aan voor bezoekers die naar Twitch-chatters zijn genoemd.
 STR_5173    :Twitch-chat als nieuws weergeven
 STR_5174    :Zal chatberichten op Twitch die beginnen met !news in het berichtengebied tonen.
@@ -3615,7 +3615,7 @@ STR_5282    :Attracties openen/sluiten via RCT1-stoplichten
 STR_5283    :Park openen/sluiten via RCT1-stoplichten
 STR_5284    :Scenarioselectie-lettertype in RCT1-stijl
 STR_5285    :KABOEM!
-STR_5286    :{MEDIUMFONT}{BLACK}Laat alle gasten exploderen
+STR_5286    :{SMALLFONT}{BLACK}Laat sommige gasten exploderen
 STR_5287    :Attractie is al defect
 STR_5288    :Attractie is gesloten
 STR_5289    :Deze attractie kan niet defect raken
@@ -3674,3 +3674,27 @@ STR_5341    :Eigenschappen
 STR_5342    :Kies een vakje op de kaart
 STR_5343    :Werknemers automatisch plaatsen
 STR_5344    :Wijzigingsoverzicht
+STR_5345    :Cheats voor geld
+STR_5346    :Cheats voor bezoekers
+STR_5347    :Cheats voor attracties
+STR_5348    :Cheats voor het park
+STR_5349    :{SMALLFONT}{BLACK}Alle attracties
+STR_5350    :Max
+STR_5351    :Min
+STR_5352    :{BLACK}Stemming:
+STR_5353    :{BLACK}Energie:
+STR_5354    :{BLACK}Honger:
+STR_5355    :{BLACK}Dorst:
+STR_5356    :{BLACK}Misselijkh.:
+STR_5357    :{BLACK}Misselijkheidstol.:
+STR_5358    :{BLACK}WC:
+STR_5359    :Bez. verwijderen
+STR_5360    :{SMALLFONT}{BLACK}Verwijdert alle bezoekers van de kaart
+STR_5361    :{BLACK}Geef alle bez.:
+STR_5362    :{BLACK}Voorkeursintensiteit:
+STR_5363    :> 1
+STR_5364    :< 15
+STR_5365    :{BLACK}Snelheid werknemers:
+STR_5366    :Normaal
+STR_5367    :Snel
+STR_5368    :Crashstatus weg
