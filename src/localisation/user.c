@@ -80,7 +80,7 @@ static bool user_string_exists(const char *text)
 		if (userString[0] == 0)
 			continue;
 
-		if (_stricmp(userString, text) == 0)
+		if (strcmp(userString, text) == 0)
 			return true;
 	}
 	return false;

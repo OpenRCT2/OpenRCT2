@@ -409,8 +409,8 @@ void window_construction_paint()
 		z += 1024;
 		ebx = RCT2_GLOBAL(0xF44135, uint8_t);
 		short bx;
-		if (RCT2_GLOBAL(0xF44064, uint32_t) & 0x80000) bx = RCT2_GLOBAL(0x9984A2 + ebx * 8, uint8_t);
-		else bx = RCT2_GLOBAL(0x997CA2 + ebx * 8, uint8_t);
+		if (RCT2_GLOBAL(0xF44064, uint32_t) & 0x80000) bx = RCT2_GLOBAL(0x9984A2 + ebx * 8, sint8);
+		else bx = RCT2_GLOBAL(0x997CA2 + ebx * 8, sint8);
 		z -= bx;
 		int start_x = x;
 		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t))
@@ -438,7 +438,7 @@ void window_construction_paint()
 		uint32_t d = RCT2_GLOBAL(0xF44136, int16_t) << 16;
 		d |= RCT2_GLOBAL(0xF44133, uint8_t);// Ride id
 		d |= RCT2_GLOBAL(0xF44135, uint8_t) << 8;
-		RCT2_CALLPROC_X(0x6CBCE2, 0x1000, (((uint16_t)bx) & 0xFF) | (RCT2_GLOBAL(0xF44134, uint8_t) << 8), 0x1000, d, width, 0x400, height);
+		RCT2_CALLPROC_X(0x6CBCE2, 0x1000, (((uint16_t)bx) & 0xFF) | (RCT2_GLOBAL(0xF44134, uint8_t) << 8), 0x1000, d, width / 2, 0x400, height / 2);
 		rct2_free(clip_dpi);
 	}
 	short string_x = (RCT2_GLOBAL(0x9D7C02, int16_t) + RCT2_GLOBAL(0x9D7C04, int16_t)) / 2 + w->x;

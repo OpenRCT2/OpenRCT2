@@ -279,29 +279,20 @@ int scenario_load_and_play_from_path(const char *path)
 
 	rct_stex_entry* stex = g_stexEntries[0];
 	if ((int)stex != -1) {
-		// 
-		format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, stex->park_name, 0);
-		
-		// Set park name
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_PARK;
-		game_do_command(1, 1, 0, *((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 0)), GAME_COMMAND_SET_PARK_NAME,
-			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 8)), 
-			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 4)));
-		game_do_command(2, 1, 0, *((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 12)), GAME_COMMAND_SET_PARK_NAME, 
-			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 20)),
-			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 16)));
-		game_do_command(0, 1, 0, *((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 24)), GAME_COMMAND_SET_PARK_NAME,
-			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 32)),
-			*((int*)(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER + 28)));
+		char *buffer = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
 
-		// 
-		format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, stex->scenario_name, 0);
-		strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, 31);
+		// Set localised park name
+		format_string(buffer, stex->park_name, 0);
+		park_set_name(buffer);
+
+		// Set localised scenario name
+		format_string(buffer, stex->scenario_name, 0);
+		strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, buffer, 31);
 		((char*)RCT2_ADDRESS_SCENARIO_NAME)[31] = '\0';
 
-		// Set scenario details
-		format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, stex->details, 0);
-		strncpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, 255);
+		// Set localised scenario details
+		format_string(buffer, stex->details, 0);
+		strncpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, buffer, 255);
 		((char*)RCT2_ADDRESS_SCENARIO_DETAILS)[255] = '\0';
 	}
 
