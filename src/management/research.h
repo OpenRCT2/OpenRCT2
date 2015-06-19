@@ -83,5 +83,6 @@ void research_set_priority(int activeCategories);
 void game_command_set_research_funding(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void research_finish_item(sint32 entryIndex);
 void research_insert(int researched, int entryIndex, int category);
+void research_remove(sint32 entryIndex);
 
 #endif
