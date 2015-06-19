@@ -583,6 +583,35 @@ static void editor_object_flags_free(){
 	RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) = NULL;
 }
 
+/* rct2: 0x00685791 */
+void sub_685791(rct_object_entry* installedObject){
+	uint8 entry_type, entry_index;
+	if (!find_object_in_entry_group(installedObject, entry_type, entry_index))
+		return;
+
+	if (entry_type == OBJECT_TYPE_RIDE){
+		//6857af
+	}
+	else if (entry_type == OBJECT_TYPE_SCENERY_SETS){
+		//6857a5
+	}
+}
+
+/* rct2: 0x006ABB66 */
+void sub_6ABB66(){
+	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
+	rct_object_entry* installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+
+	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
+		if (*selection_flags & OBJECT_SELECTION_FLAG_SELECTED){
+			sub_685791(installedObject);
+			object_unload(0, installedObject);
+		}
+		selection_flags++;
+		installedObject = object_get_next(installedObject);
+	}
+}
+
 /**
  * 
  *  rct2: 0x006AB199
@@ -1645,7 +1674,9 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 		}
 		
 		if (bh != 0 && !(flags&(1 << 1))){
-			RCT2_CALLPROC_X(0x6AB344, 0, 0, 0, 0, 0, (int)0x009BC95A, (int)installedObject);
+			uint32* arguments = RCT2_ADDRESS(0x0013CE952, uint32);
+			object_create_identifier_name((char*)0x009BC95A, installedObject);
+			*arguments = (uint32)0x009BC95A;
 			set_object_selection_error(bh, 3172);
 			return 0;
 		}
