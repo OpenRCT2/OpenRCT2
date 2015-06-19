@@ -1243,21 +1243,35 @@ void title_handle_keyboard_input()
 {
 	rct_window *w;
 	int key;
-
-	// Handle modifier keys and key scrolling
-	RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
-	if (RCT2_GLOBAL(0x009E2B64, uint32) != 1) {
-		if (gKeysState[SDL_SCANCODE_LSHIFT] || gKeysState[SDL_SCANCODE_RSHIFT])
-			RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 1;
-		if (gKeysState[SDL_SCANCODE_LCTRL] || gKeysState[SDL_SCANCODE_RCTRL])
-			RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 2;
-		if (gKeysState[SDL_SCANCODE_LALT] || gKeysState[SDL_SCANCODE_RALT])
-			RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 4;
+	
+	if (!gConsoleOpen) {
+		// Handle modifier keys and key scrolling
+		RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
+		if (RCT2_GLOBAL(0x009E2B64, uint32) != 1) {
+			if (gKeysState[SDL_SCANCODE_LSHIFT] || gKeysState[SDL_SCANCODE_RSHIFT])
+				RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 1;
+			if (gKeysState[SDL_SCANCODE_LCTRL] || gKeysState[SDL_SCANCODE_RCTRL])
+				RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 2;
+			if (gKeysState[SDL_SCANCODE_LALT] || gKeysState[SDL_SCANCODE_RALT])
+				RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 4;
+		}
 	}
 
 	while ((key = get_next_key()) != 0) {
 		if (key == 255)
 			continue;
+		
+		// Reserve backtick for console
+		if (key == SDL_SCANCODE_GRAVE) {
+			if (gConfigGeneral.debugging_tools || gConsoleOpen) {
+				window_cancel_textbox();
+				console_toggle();
+			}
+			continue;
+		} else if (gConsoleOpen) {
+			console_input(key);
+			continue;
+		}
 
 		key |= RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) << 8;
 

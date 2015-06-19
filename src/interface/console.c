@@ -56,6 +56,8 @@ static int cc_variables(const char **argv, int argc);
 static int cc_windows(const char **argv, int argc);
 static int cc_help(const char **argv, int argc);
 
+static bool invalidArguments(bool *invalid, bool arguments);
+
 #define SET_FLAG(variable, flag, value) {if (value) variable |= flag; else variable &= ~flag;}
 
 void console_open()
@@ -533,134 +535,147 @@ static int cc_get(const char **argv, int argc)
 }
 static int cc_set(const char **argv, int argc)
 {
+	int i;
 	if (argc > 1) {
-		bool int_valid = true, double_valid = true;
-		bool int_valid2 = true, double_valid2 = true;
+		int int_val[4];
+		bool int_valid[4];
+		double double_val[4];
+		bool double_valid[4];
+		bool invalidArgs = false;
 
-		int int_val = console_parse_int(argv[1], &int_valid);
-		double double_val = console_parse_double(argv[1], &double_valid);
-		int int_val2 = console_parse_int(argv[2], &int_valid2);
-		double double_val2 = console_parse_double(argv[2], &double_valid2);
+		for (i = 0; i < 4; i++) {
+			if (i + 1 < argc) {
+				int_val[i] = console_parse_int(argv[i + 1], &int_valid[i]);
+				double_val[i] = console_parse_double(argv[i + 1], &double_valid[i]);
+			}
+			else {
+				int_val[i] = 0; int_valid[i] = false;
+				double_val[i] = 0; double_valid[i] = false;
+			}
+		}
 
-		if (strcmp(argv[0], "money") == 0 && double_valid) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(MONEY((int)double_val, ((int)(double_val * 100)) % 100));
+		if (strcmp(argv[0], "money") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
+			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100));
 			console_execute_silent("get money");
 		}
-		else if (strcmp(argv[0], "current_loan") == 0 && int_valid) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = clamp(MONEY(int_val - (int_val % 1000), 0), MONEY(0, 0), RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
+		else if (strcmp(argv[0], "current_loan") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
 			console_execute_silent("get current_loan");
 		}
-		else if (strcmp(argv[0], "max_loan") == 0 && int_valid) {
-			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = clamp(MONEY(int_val - (int_val % 1000), 0), MONEY(0, 0), MONEY(5000000, 0));
+		else if (strcmp(argv[0], "max_loan") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), MONEY(5000000, 0));
 			console_execute_silent("get max_loan");
 		}
-		else if (strcmp(argv[0], "guest_initial_cash") == 0 && double_valid) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) = clamp(MONEY((int)double_val, ((int)(double_val * 100)) % 100), MONEY(0, 0), MONEY(15000, 0));
+		else if (strcmp(argv[0], "guest_initial_cash") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(15000, 0));
 			console_execute_silent("get guest_initial_cash");
 		}
-		else if (strcmp(argv[0], "guest_initial_happiness") == 0 && int_valid) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) = calculate_guest_initial_happiness((uint8)int_val);
+		else if (strcmp(argv[0], "guest_initial_happiness") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) = calculate_guest_initial_happiness((uint8)int_val[0]);
 			console_execute_silent("get guest_initial_happiness");
 		}
-		else if (strcmp(argv[0], "guest_initial_hunger") == 0 && int_valid) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8) = (clamp(int_val, 1, 84) * 255 / 100 - 255) * -1;
+		else if (strcmp(argv[0], "guest_initial_hunger") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8) = (clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1;
 			console_execute_silent("get guest_initial_hunger");
 		}
-		else if (strcmp(argv[0], "guest_initial_thirst") == 0 && int_valid) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8) = (clamp(int_val, 1, 84) * 255 / 100 - 255) * -1;
+		else if (strcmp(argv[0], "guest_initial_thirst") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8) = (clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1;
 			console_execute_silent("get guest_initial_thirst");
 		}
-		else if (strcmp(argv[0], "guest_prefer_less_intense_rides") == 0 && int_valid) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_PREF_LESS_INTENSE_RIDES, int_val);
+		else if (strcmp(argv[0], "guest_prefer_less_intense_rides") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_PREF_LESS_INTENSE_RIDES, int_val[0]);
 			console_execute_silent("get guest_prefer_less_intense_rides");
 		}
-		else if (strcmp(argv[0], "guest_prefer_more_intense_rides") == 0 && int_valid) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_PREF_MORE_INTENSE_RIDES, int_val);
+		else if (strcmp(argv[0], "guest_prefer_more_intense_rides") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_PREF_MORE_INTENSE_RIDES, int_val[0]);
 			console_execute_silent("get guest_prefer_more_intense_rides");
 		}
-		else if (strcmp(argv[0], "forbid_marketing_campagns") == 0 && int_valid) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_FORBID_MARKETING_CAMPAIGN, int_val);
+		else if (strcmp(argv[0], "forbid_marketing_campagns") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_FORBID_MARKETING_CAMPAIGN, int_val[0]);
 			console_execute_silent("get forbid_marketing_campagns");
 		}
-		else if (strcmp(argv[0], "forbid_landscape_changes") == 0 && int_valid) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_FORBID_LANDSCAPE_CHANGES, int_val);
+		else if (strcmp(argv[0], "forbid_landscape_changes") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_FORBID_LANDSCAPE_CHANGES, int_val[0]);
 			console_execute_silent("get forbid_landscape_changes");
 		}
-		else if (strcmp(argv[0], "forbid_tree_removal") == 0 && int_valid) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_FORBID_TREE_REMOVAL, int_val);
+		else if (strcmp(argv[0], "forbid_tree_removal") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_FORBID_TREE_REMOVAL, int_val[0]);
 			console_execute_silent("get forbid_tree_removal");
 		}
-		else if (strcmp(argv[0], "forbid_high_construction") == 0 && int_valid) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_FORBID_HIGH_CONSTRUCTION, int_val);
+		else if (strcmp(argv[0], "forbid_high_construction") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_FORBID_HIGH_CONSTRUCTION, int_val[0]);
 			console_execute_silent("get forbid_high_construction");
 		}
-		else if (strcmp(argv[0], "pay_for_rides") == 0 && int_valid) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_PARK_FREE_ENTRY, int_val);
+		else if (strcmp(argv[0], "pay_for_rides") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_PARK_FREE_ENTRY, int_val[0]);
 			console_execute_silent("get pay_for_rides");
 		}
-		else if (strcmp(argv[0], "no_money") == 0 && int_valid) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_NO_MONEY, int_val);
+		else if (strcmp(argv[0], "no_money") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_NO_MONEY, int_val[0]);
 			console_execute_silent("get no_money");
 		}
-		else if (strcmp(argv[0], "difficult_park_rating") == 0 && int_valid) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_DIFFICULT_PARK_RATING, int_val);
+		else if (strcmp(argv[0], "difficult_park_rating") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_DIFFICULT_PARK_RATING, int_val[0]);
 			console_execute_silent("get difficult_park_rating");
 		}
-		else if (strcmp(argv[0], "difficult_guest_generation") == 0 && int_valid) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_DIFFICULT_GUEST_GENERATION, int_val);
+		else if (strcmp(argv[0], "difficult_guest_generation") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_DIFFICULT_GUEST_GENERATION, int_val[0]);
 			console_execute_silent("get difficult_guest_generation");
 		}
-		else if (strcmp(argv[0], "park_open") == 0 && int_valid) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_PARK_OPEN, int_val);
+		else if (strcmp(argv[0], "park_open") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_PARK_OPEN, int_val[0]);
 			console_execute_silent("get park_open");
 		}
-		else if (strcmp(argv[0], "land_rights_cost") == 0 && double_valid) {
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) = clamp(MONEY((int)double_val, ((int)(double_val * 100)) % 100), MONEY(0, 0), MONEY(15000, 0));
+		else if (strcmp(argv[0], "land_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(15000, 0));
 			console_execute_silent("get land_rights_cost");
 		}
-		else if (strcmp(argv[0], "construction_rights_cost") == 0 && double_valid) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) = clamp(MONEY((int)double_val, ((int)(double_val * 100)) % 100), MONEY(0, 0), MONEY(15000, 0));
+		else if (strcmp(argv[0], "construction_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
+			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(15000, 0));
 			console_execute_silent("get construction_rights_cost");
 		}
 		else if (strcmp(argv[0], "climate") == 0) {
-			if (int_valid) {
-				RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8) = clamp(int_val, 0, 3);
+			if (int_valid[0]) {
+				RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8) = clamp(int_val[0], 0, 3);
 			}
 			else {
 				char* climate_names[] = { "cool_and_wet", "warm", "hot_and_dry", "cold" };
-				for (int i = 0; i < 4; i++) {
+				for (i = 0; i < 4; i++) {
 					if (strcmp(argv[1], climate_names[i]) == 0) {
 						RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8) = i;
 						break;
 					}
 				}
 			}
+			if (i == 4)
+				invalidArgs = true;
+			else
 			console_execute_silent("get climate");
 		}
-		else if (strcmp(argv[0], "game_speed") == 0 && int_valid) {
-			gGameSpeed = clamp(int_val, 1, 8);
+		else if (strcmp(argv[0], "game_speed") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			gGameSpeed = clamp(int_val[0], 1, 8);
 			console_execute_silent("get game_speed");
 		}
-		else if (strcmp(argv[0], "console_small_font") == 0 && int_valid) {
-			gConfigInterface.console_small_font = (int_val != 0);
+		else if (strcmp(argv[0], "console_small_font") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			gConfigInterface.console_small_font = (int_val[0] != 0);
 			config_save_default();
 			console_execute_silent("get console_small_font");
 		}
-		else if (strcmp(argv[0], "test_unfinished_tracks") == 0 && int_valid) {
-			gConfigGeneral.test_unfinished_tracks = (int_val != 0);
+		else if (strcmp(argv[0], "test_unfinished_tracks") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			gConfigGeneral.test_unfinished_tracks = (int_val[0] != 0);
 			config_save_default();
 			console_execute_silent("get test_unfinished_tracks");
 		}
-		else if (strcmp(argv[0], "no_test_crashes") == 0 && int_valid) {
-			gConfigGeneral.no_test_crashes = (int_val != 0);
+		else if (strcmp(argv[0], "no_test_crashes") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			gConfigGeneral.no_test_crashes = (int_val[0] != 0);
 			config_save_default();
 			console_execute_silent("get no_test_crashes");
 		}
-		else if (strcmp(argv[0], "location") == 0 && int_valid && int_valid2) {
+		else if (strcmp(argv[0], "location") == 0 && invalidArguments(&invalidArgs, int_valid[0] && int_valid[1])) {
 			rct_window *w = window_get_main();
 			if (w != NULL) {
-				int x = (sint16)(int_val * 32 + 16);
-				int y = (sint16)(int_val2 * 32 + 16);
+				int x = (sint16)(int_val[0] * 32 + 16);
+				int y = (sint16)(int_val[1] * 32 + 16);
 				int z = map_element_height(x, y);
 				window_scroll_to_location(w, x, y, z);
 				w->flags &= ~WF_SCROLLING_TO_LOCATION;
@@ -668,11 +683,17 @@ static int cc_set(const char **argv, int argc)
 				console_execute_silent("get location");
 			}
 		}
+		else if (invalidArgs) {
+			console_writeline_error("Invalid arguments.");
+		}
 		else {
-			console_writeline_error("Invalid variable or value.");
+			console_writeline_error("Invalid variable.");
 		}
 
 		gfx_invalidate_screen();
+	}
+	else {
+		console_writeline_error("Value required.");
 	}
 	return 0;
 }
@@ -811,20 +832,23 @@ static int cc_object_count(const char **argv, int argc) {
 }
 static int cc_open(const char **argv, int argc) {
 	if (argc > 0) {
-		if (strcmp(argv[0], "object_selection") == 0) {
+		bool title = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) != 0;
+		bool invalidTitle = false;
+		if (strcmp(argv[0], "object_selection") == 0 && invalidArguments(&invalidTitle, !title)) {
 			// Only this window should be open for safety reasons
 			window_close_all();
 			window_editor_object_selection_open();
-		} else if (strcmp(argv[0], "inventions_list") == 0) {
+		} else if (strcmp(argv[0], "inventions_list") == 0 && invalidArguments(&invalidTitle, !title)) {
 			window_editor_inventions_list_open();
-		} else if (strcmp(argv[0], "scenario_options") == 0) {
+		} else if (strcmp(argv[0], "scenario_options") == 0 && invalidArguments(&invalidTitle, !title)) {
 			window_editor_scenario_options_open();
 		} else if (strcmp(argv[0], "options") == 0) {
 			window_options_open();
 		} else if (strcmp(argv[0], "themes") == 0) {
 			window_themes_open();
-		}
-		else {
+		} else if (invalidTitle) {
+			console_writeline_error("Cannot open this window in the title screen.");
+		} else {
 			console_writeline_error("Invalid window.");
 		}
 	}
@@ -872,6 +896,7 @@ char* console_variable_table[] = {
 char* console_window_table[] = {
 	"object_selection",
 	"inventions_list",
+	"scenario_options",
 	"options",
 	"themes"
 };
@@ -1001,4 +1026,11 @@ void console_execute_silent(const char *src)
 		char output[] = { FORMAT_RED, "Unknown command. Type help to list available commands." };
 		console_writeline(output);
 	}
+}
+
+static bool invalidArguments(bool *invalid, bool arguments)
+{
+	if (!arguments)
+		*invalid = true;
+	return !invalid;
 }
