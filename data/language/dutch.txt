@@ -2682,7 +2682,7 @@ STR_2680    :Alle onderzoeken zijn voltooid
 STR_2681    :{MEDIUMFONT}{BLACK}Krijg 5.000 extra geld
 STR_2682    :{MEDIUMFONT}{BLACK}Wissel tussen betaalde en gratis entree
 STR_2683    :{MEDIUMFONT}{BLACK}Alle bezoekers hebben een maximale tevredenheid
-STR_2684    :{MEDIUMFONT}{BLACK}Er arriveert een grote groep bezoekers
+STR_2684    :{SMALLFONT}{BLACK}Er arriveert een grote groep bezoekers
 STR_2685    :Parameters voor Simplex noise
 STR_2686    :Minimum:
 STR_2687    :Maximum:
@@ -2754,7 +2754,7 @@ STR_2752    :Onkruid weg
 STR_2753    :Gras maaien
 STR_2754    :Bloemen water geven
 STR_2755    :Vandalisme repareren
-STR_2756    :Afval op paden weghalen
+STR_2756    :Afval verwijderen
 STR_2757    :Mooi weer
 STR_2758    :Regen
 STR_2759    :Hoogtes op nul
@@ -3615,7 +3615,7 @@ STR_5282    :Attracties openen/sluiten via RCT1-stoplichten
 STR_5283    :Park openen/sluiten via RCT1-stoplichten
 STR_5284    :Scenarioselectie-lettertype in RCT1-stijl
 STR_5285    :KABOEM!
-STR_5286    :{MEDIUMFONT}{BLACK}Laat sommige gasten exploderen
+STR_5286    :{SMALLFONT}{BLACK}Laat sommige gasten exploderen
 STR_5287    :Attractie is al defect
 STR_5288    :Attractie is gesloten
 STR_5289    :Deze attractie kan niet defect raken
@@ -3679,3 +3679,22 @@ STR_5346    :Cheats voor bezoekers
 STR_5347    :Cheats voor attracties
 STR_5348    :Cheats voor het park
 STR_5349    :{SMALLFONT}{BLACK}Alle attracties
+STR_5350    :Max
+STR_5351    :Min
+STR_5352    :{BLACK}Stemming:
+STR_5353    :{BLACK}Energie:
+STR_5354    :{BLACK}Honger:
+STR_5355    :{BLACK}Dorst:
+STR_5356    :{BLACK}Misselijkh.:
+STR_5357    :{BLACK}Misselijkheidstol.:
+STR_5358    :{BLACK}WC:
+STR_5359    :Bez. verwijderen
+STR_5360    :{SMALLFONT}{BLACK}Verwijdert alle bezoekers van de kaart
+STR_5361    :{BLACK}Geef alle bez.:
+STR_5362    :{BLACK}Voorkeursintensiteit:
+STR_5363    :> 1
+STR_5364    :< 15
+STR_5365    :{BLACK}Snelheid werknemers:
+STR_5366    :Normaal
+STR_5367    :Snel
+STR_5368    :Crashstatus weg

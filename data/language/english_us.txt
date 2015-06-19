@@ -2686,7 +2686,7 @@ STR_2680    :All research complete
 STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by 5,000
 STR_2682    :{MEDIUMFONT}{BLACK}Toggle between Free and Paid Entry
 STR_2683    :{MEDIUMFONT}{BLACK}Increases every peeps happiness to max
-STR_2684    :{MEDIUMFONT}{BLACK}Large group of peeps arrive
+STR_2684    :{SMALLFONT}{BLACK}Large group of peeps arrive
 STR_2685    :Simplex Noise Parameters
 STR_2686    :{WINDOW_COLOUR_2}Low:
 STR_2687    :{WINDOW_COLOUR_2}High:
@@ -3624,7 +3624,7 @@ STR_5282    :RCT1 Ride Open/Close Lights
 STR_5283    :RCT1 Park Open/Close Lights
 STR_5284    :RCT1 Scenario Selection Font
 STR_5285    :EXPLODE!!!
-STR_5286    :{MEDIUMFONT}{BLACK}Makes some guests explode
+STR_5286    :{SMALLFONT}{BLACK}Makes some guests explode
 STR_5287    :Ride is already broken down
 STR_5288    :Ride is closed
 STR_5289    :No breakdowns available for this ride
@@ -3688,3 +3688,22 @@ STR_5346    :Guest cheats
 STR_5347    :Ride cheats
 STR_5348    :Park cheats
 STR_5349    :{SMALLFONT}{BLACK}All Rides
+STR_5350    :Max
+STR_5351    :Min
+STR_5352    :{BLACK}Happiness:
+STR_5353    :{BLACK}Energy:
+STR_5354    :{BLACK}Hunger:
+STR_5355    :{BLACK}Thirst:
+STR_5356    :{BLACK}Nausea:
+STR_5357    :{BLACK}Nausea tolerance:
+STR_5358    :{BLACK}Bathroom:
+STR_5359    :Remove guests
+STR_5360    :{SMALLFONT}{BLACK}Removes all guests from the map
+STR_5361    :{BLACK}Give all guests:
+STR_5362    :{BLACK}Preferred intensity:
+STR_5363    :> 1
+STR_5364    :< 15
+STR_5365    :{BLACK}Staff speed:
+STR_5366    :Normal
+STR_5367    :Fast
+STR_5368    :Reset crash status
