@@ -817,6 +817,8 @@ static int cc_open(const char **argv, int argc) {
 			window_editor_object_selection_open();
 		} else if (strcmp(argv[0], "inventions_list") == 0) {
 			window_editor_inventions_list_open();
+		} else if (strcmp(argv[0], "scenario_options") == 0) {
+			window_editor_scenario_options_open();
 		} else if (strcmp(argv[0], "options") == 0) {
 			window_options_open();
 		} else if (strcmp(argv[0], "themes") == 0) {

@@ -57,7 +57,6 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_TAB_3,
 	WIDX_TAB_4,
 	WIDX_HIGH_MONEY,
-	WIDX_PARK_ENTRANCE_FEE,
 	WIDX_CLEAR_LOAN,
 	WIDX_GUEST_HAPPINESS_MAX = 8, //Same as HIGH_MONEY as it is also the 8th widget but on a different page
 	WIDX_GUEST_HAPPINESS_MIN,
@@ -96,6 +95,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_SANDBOX_MODE,
 	WIDX_FAST_STAFF,
 	WIDX_NORMAL_STAFF,
+	WIDX_PARK_PARAMETERS,
 	WIDX_RENEW_RIDES = 8,
 	WIDX_REMOVE_SIX_FLAGS,
 	WIDX_MAKE_DESTRUCTIBLE,
@@ -164,7 +164,6 @@ enum {
 static rct_widget window_cheats_money_widgets[] = {
 	MAIN_CHEATS_WIDGETS,
 	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(1),	HPL(1),		STR_CHEAT_5K_MONEY,			STR_NONE},					// high money
-	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0),	YPL(3),	HPL(3),		STR_CHEAT_PAY_ENTRANCE,		STR_NONE},					// Park Entrance Fee Toggle	
 	{ WWT_CLOSEBOX,			1,	XPL(0),		WPL(0), YPL(5), HPL(5),		STR_CHEAT_CLEAR_LOAN,		STR_NONE },					// Clear loan
 	{ WIDGETS_END },
 };
@@ -214,6 +213,7 @@ static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_CLOSEBOX,	1, XPL(1),	WPL(1), YPL(5), HPL(5),		STR_CHEAT_SANDBOX_MODE,			STR_CHEAT_SANDBOX_MODE_TIP},		// Sandbox mode (edit land ownership in-game)
 	{ WWT_CLOSEBOX,	1, MAX_BTN_LEFT,	MAX_BTN_RIGHT,	YPL(6),		HPL(6),		STR_FAST,	STR_NONE },							// fast staff
 	{ WWT_CLOSEBOX,	1, MIN_BTN_LEFT,	MIN_BTN_RIGHT,	YPL(6),		HPL(6),		STR_NORMAL,	STR_NONE },							// normal staff
+	{ WWT_CLOSEBOX,	1, XPL(0),	WPL(0), YPL(7), HPL(7),		STR_CHEAT_PARK_PARAMETERS,		STR_CHEAT_TIP_PARK_PARAMETERS},		// Park parameters
 	{ WIDGETS_END },
 };
 static rct_widget window_cheats_rides_widgets[] = {
@@ -382,9 +382,9 @@ static void* window_cheats_page_events[] = {
 };
 
 static uint32 window_cheats_page_enabled_widgets[] = {
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_PARK_ENTRANCE_FEE) | (1 << WIDX_CLEAR_LOAN),
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_CLEAR_LOAN),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_GUEST_HAPPINESS_MAX)  | (1 << WIDX_GUEST_HAPPINESS_MIN) | (1 << WIDX_GUEST_ENERGY_MAX) | (1 << WIDX_GUEST_ENERGY_MIN) | (1 << WIDX_GUEST_HUNGER_MAX) | (1 << WIDX_GUEST_HUNGER_MIN) | (1 << WIDX_GUEST_THIRST_MAX) | (1 << WIDX_GUEST_THIRST_MIN) | (1 << WIDX_GUEST_NAUSEA_MAX) | (1 << WIDX_GUEST_NAUSEA_MIN) | (1 << WIDX_GUEST_NAUSEA_TOLERANCE_MAX) | (1 << WIDX_GUEST_NAUSEA_TOLERANCE_MIN) | (1 << WIDX_GUEST_BATHROOM_MAX) | (1 << WIDX_GUEST_BATHROOM_MIN) | (1 << WIDX_GUEST_RIDE_INTENSITY_MORE_THAN_1) | (1 << WIDX_GUEST_RIDE_INTENSITY_LESS_THAN_15) | (1 << WIDX_TRAM_GUESTS) | (1 << WIDX_REMOVE_ALL_GUESTS) | (1 << WIDX_EXPLODE_GUESTS) | (1 << WIDX_GIVE_GUESTS_PARK_MAPS) | (1 << WIDX_GIVE_GUESTS_BALLOONS) | (1 << WIDX_GIVE_GUESTS_UMBRELLAS),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO) | (1 << WIDX_UNLOCK_ALL_PRICES) | (1 << WIDX_SANDBOX_MODE) | (1 << WIDX_FAST_STAFF) | (1 << WIDX_NORMAL_STAFF),
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO) | (1 << WIDX_UNLOCK_ALL_PRICES) | (1 << WIDX_SANDBOX_MODE) | (1 << WIDX_FAST_STAFF) | (1 << WIDX_NORMAL_STAFF) | (1 << WIDX_PARK_PARAMETERS),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_RENEW_RIDES) | (1 << WIDX_REMOVE_SIX_FLAGS) | (1 << WIDX_MAKE_DESTRUCTIBLE) | (1 << WIDX_FIX_ALL) | (1 << WIDX_FAST_LIFT_HILL) | (1 << WIDX_DISABLE_BRAKES_FAILURE) | (1 << WIDX_DISABLE_ALL_BREAKDOWNS) | (1 << WIDX_BUILD_IN_PAUSE_MODE) | (1 << WIDX_RESET_CRASH_STATUS)
 };
 
@@ -752,11 +752,6 @@ static void window_cheats_money_mouseup()
 	case WIDX_CLEAR_LOAN:
 		cheat_clear_loan();
 		break;
-	case WIDX_PARK_ENTRANCE_FEE:
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_PARK_FREE_ENTRY;
-		window_invalidate_by_class(WC_PARK_INFORMATION);
-		window_invalidate_by_class(WC_RIDE);
-		break;
 	}
 }
 
@@ -920,6 +915,9 @@ static void window_cheats_misc_mouseup()
 	case WIDX_NORMAL_STAFF:
 		cheat_set_staff_speed(0x60);
 		break;
+	case WIDX_PARK_PARAMETERS:
+		window_editor_scenario_options_open();
+		break;
 	}
 }
 
@@ -1001,10 +999,6 @@ static void window_cheats_invalidate()
 	w->pressed_widgets = 0;
 
 	switch (w->page) {
-	case WINDOW_CHEATS_PAGE_MONEY:
-		w->widgets[WIDX_PARK_ENTRANCE_FEE].image = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY ?
-			STR_CHEAT_PAY_ENTRANCE : STR_CHEAT_PAY_RIDES;
-		break;
 	case WINDOW_CHEATS_PAGE_MISC:
 		w->widgets[WIDX_OPEN_CLOSE_PARK].image = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN ?
 			STR_CHEAT_CLOSE_PARK : STR_CHEAT_OPEN_PARK;
@@ -1040,7 +1034,6 @@ static void window_cheats_paint()
 
 	if (w->page == WINDOW_CHEATS_PAGE_MONEY){
 		gfx_draw_string_left(dpi, STR_CHEAT_TIP_5K_MONEY,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
-		gfx_draw_string_left(dpi, STR_CHEAT_TIP_PAY_ENTRY,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 		gfx_draw_string_left(dpi, STR_CHEAT_TIP_CLEAR_LOAN,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(4) + TXTO);
 	}
 	else if(w->page == WINDOW_CHEATS_PAGE_MISC){
