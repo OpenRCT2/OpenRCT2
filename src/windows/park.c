@@ -1296,7 +1296,6 @@ static void window_park_rating_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 	rct_widget *widget;
-	uint8 *history;
 
 	window_paint_get_registers(w, dpi);
 
@@ -1317,8 +1316,7 @@ static void window_park_rating_paint()
 	x += widget->left + 22;
 	y += widget->top + 26;
 
-	history = RCT2_ADDRESS(RCT2_ADDRESS_PARK_RATING_HISTORY, uint8);
-	graph_draw_uint8(dpi, history, 32, x, y);
+	graph_draw_uint8(dpi, gParkRatingHistory, 32, x, y);
 }
 
 #pragma endregion
@@ -1430,7 +1428,6 @@ static void window_park_guests_paint()
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
 	rct_widget *widget;
-	uint8 *history;
 
 	window_paint_get_registers(w, dpi);
 
@@ -1451,8 +1448,7 @@ static void window_park_guests_paint()
 	x += widget->left + 22;
 	y += widget->top + 26;
 
-	history = RCT2_ADDRESS(RCT2_ADDRESS_GUESTS_IN_PARK_HISTORY, uint8);
-	graph_draw_uint8(dpi, history, 32, x, y);
+	graph_draw_uint8(dpi, gGuestsInParkHistory, 32, x, y);
 }
 
 #pragma endregion

@@ -45,6 +45,9 @@ enum {
 	PARK_FLAGS_SIX_FLAGS = (1 << 19)
 };
 
+extern uint8 *gParkRatingHistory;
+extern uint8 *gGuestsInParkHistory;
+
 int park_is_open();
 void park_init();
 void park_reset_history();

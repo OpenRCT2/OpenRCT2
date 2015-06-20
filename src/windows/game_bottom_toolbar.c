@@ -411,7 +411,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 	// Draw guests
 	gfx_draw_string_centred(
 		dpi,
-		STR_NUM_GUESTS + RCT2_GLOBAL(0x013573FE, uint8),
+		STR_NUM_GUESTS + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint8),
 		x, y,
 		(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) == 2 && RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, sint32) == WIDX_GUESTS ? 2 : w->colours[0] & 0x7F),
 		(void*)RCT2_ADDRESS_GUESTS_IN_PARK
