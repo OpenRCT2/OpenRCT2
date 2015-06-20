@@ -38,6 +38,17 @@ typedef enum{
 	OBJECT_TYPE_SCENARIO_TEXT
 }OBJECT_TYPE;
 
+typedef enum{
+	OBJECT_SELECTION_FLAG_SELECTED = (1 << 0),
+	OBJECT_SELECTION_FLAG_2 = (1 << 1),
+	OBJECT_SELECTION_FLAG_IN_USE = (1 << 2),
+	OBJECT_SELECTION_FLAG_REQUIRED = (1 << 3),
+	OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED = (1 << 4),
+	OBJECT_SELECTION_FLAG_6 = (1 << 5),
+	OBJECT_SELECTION_FLAG_7 = (1 << 6),
+	OBJECT_SELECTION_FLAG_8 = (1 << 7),
+}OBJECT_SELECTION_FLAGS;
+
 /**
  * Object entry structure.
  * size: 0x10
@@ -101,6 +112,7 @@ rct_object_entry *object_get_next(rct_object_entry *entry);
 int write_object_file(FILE *file, rct_object_entry* entry);
 void reset_loaded_objects();
 int find_object_in_entry_group(rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
+void object_create_identifier_name(uint8* string_buffer, rct_object_entry* object);
 
 rct_object_entry *object_list_find(rct_object_entry *entry);
 

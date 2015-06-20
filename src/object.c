@@ -1619,7 +1619,7 @@ rct_object_entry *object_get_next(rct_object_entry *entry)
 	// Skip size of chunk
 	pos += 4;
 
-	// Skip 
+	// Skip required objects
 	pos += *pos * 16 + 1;
 
 	// Skip theme objects

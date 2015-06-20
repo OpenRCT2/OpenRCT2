@@ -3176,7 +3176,7 @@ STR_3168    :{WINDOW_COLOUR_2}Text: {BLACK}{STRINGID}
 STR_3169    :Data for the following object not found: 
 STR_3170    :Not enough space for graphics
 STR_3171    :Too many objects of this type selected
-STR_3172    :The following object must be selected first: 
+STR_3172    :The following object must be selected first: {STRING}
 STR_3173    :This object is currently in use
 STR_3174    :This object is required by another object
 STR_3175    :This object is always required
