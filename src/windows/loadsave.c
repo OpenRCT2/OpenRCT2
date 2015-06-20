@@ -78,7 +78,7 @@ static void* window_loadsave_events[] = {
 	window_loadsave_emptysub,
 	window_loadsave_emptysub,
 	window_loadsave_emptysub,
-	window_loadsave_update,
+	window_loadsave_emptysub,
 	window_loadsave_emptysub,
 	window_loadsave_emptysub,
 	window_loadsave_emptysub,
@@ -112,6 +112,7 @@ typedef struct {
 int _listItemsCount = 0;
 loadsave_list_item *_listItems = NULL;
 char _directory[MAX_PATH];
+char _shortenedDirectory[MAX_PATH];
 char _extension[32];
 char *_defaultName = NULL;
 int _loadsaveType;
@@ -121,6 +122,8 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 static void window_loadsave_select(rct_window *w, const char *path);
 
 static int has_extension(char *path, char *extension);
+
+static void shorten_path(char* path, char* buffer, int available_width);
 
 static rct_window *window_overwrite_prompt_open(const char *name, const char *path);
 
@@ -307,11 +310,6 @@ static int has_extension(char *path, char *extension)
 	return 1;
 }
 
-static void window_loadsave_update(rct_window *w)
-{
-
-}
-
 static void window_loadsave_scrollgetsize()
 {
 	rct_window *w;
@@ -442,12 +440,50 @@ static void window_loadsave_paint()
 
 	window_draw_widgets(w, dpi);
 
+	if (_shortenedDirectory[0] == '\0')
+		shorten_path(_directory, _shortenedDirectory, w->width - 8);
+
 	char buffer[256];
 	// Format text
-	sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, _directory);
+	sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, _shortenedDirectory);
 	// Draw shadow
 	gfx_draw_string(dpi, buffer, 0, w->x + 4, w->y + 20);
 
+}
+
+static void shorten_path(char* path, char* buffer, int available_width){
+	int length = strlen(path);
+
+	// Return full string if it fits
+	if (gfx_get_string_width(path) <= available_width){
+		strcpy(buffer, path);
+		return;
+	}
+
+	// Count path seperators
+	int path_seperators = 0;
+	for (int x = 0; x < length; x++)
+		if (path[x] == platform_get_path_separator())
+			path_seperators++;
+
+	// TODO: Replace with unicode ellipsis when supported
+	strcpy(buffer, "...");
+
+	// Abreviate beginning with xth seperator
+
+	int begin = -1;
+	for (int x = 0; x < path_seperators; x++){
+		do {
+			begin++;
+		} while (path[begin] != platform_get_path_separator());
+
+		strcpy(buffer + 3, path + begin);
+		if (gfx_get_string_width(buffer) <= available_width)
+			return;
+	}
+
+	strcpy(buffer, path);
+	return;
 }
 
 static void window_loadsave_scrollpaint()
@@ -509,6 +545,7 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 
 	strncpy(_directory, directory, sizeof(_directory));
 	strncpy(_extension, extension, sizeof(_extension));
+	_shortenedDirectory[0] = '\0';
 
 	strncpy(filter, directory, sizeof(filter));
 	strncat(filter, "*", sizeof(filter));
