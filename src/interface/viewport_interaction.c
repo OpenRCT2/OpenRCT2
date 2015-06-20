@@ -36,7 +36,6 @@
 static void viewport_interaction_remove_scenery(rct_map_element *mapElement, int x, int y);
 static void viewport_interaction_remove_footpath(rct_map_element *mapElement, int x, int y);
 static void viewport_interaction_remove_footpath_item(rct_map_element *mapElement, int x, int y);
-static void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int x, int y);
 static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, int x, int y);
 static void viewport_interaction_remove_large_scenery(rct_map_element *mapElement, int x, int y);
 static rct_peep *viewport_interaction_get_closest_peep(int x, int y, int maxDistance);
@@ -456,7 +455,7 @@ static void viewport_interaction_remove_footpath_item(rct_map_element *mapElemen
  * 
  *  rct2: 0x00666C0E
  */
-static void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int x, int y)
+void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int x, int y)
 {
 	int rotation = (mapElement->type + 1) & 3;
 	switch (mapElement->properties.entrance.index & 0x0F) {

@@ -123,4 +123,6 @@ int viewport_interaction_right_over(int x, int y);
 int viewport_interaction_right_click(int x, int y);
 void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rct_map_element **mapElement);
 
+void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int x, int y);
+
 #endif

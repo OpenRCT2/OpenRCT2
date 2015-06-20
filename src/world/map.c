@@ -62,6 +62,8 @@ static void tiles_init();
 static void sub_6A87BB(int x, int y);
 static void map_update_grass_length(int x, int y, rct_map_element *mapElement);
 static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int length);
+static void sub_68ADBC();
+static void sub_68AE2A(int x, int y);
 
 void rotate_map_coordinates(sint16* x, sint16* y, uint8 rotation){
 	int temp;
@@ -261,8 +263,7 @@ void map_init(int size)
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, sint16) = size * 32 - 33;
 	RCT2_GLOBAL(0x01359208, sint16) = 7;
 	map_update_tile_pointers();
-	RCT2_CALLPROC_EBPSAFE(0x0068ADBC);
-
+	sub_68ADBC();
 	climate_reset(CLIMATE_WARM);
 }
 
@@ -2701,4 +2702,91 @@ void map_element_remove_banner_entry(rct_map_element *mapElement)
 		banner->type = BANNER_NULL;
 		user_string_free(banner->string_idx);
 	}
+}
+
+static void sub_68ADBC()
+{
+	int mapMaxXY = RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16);
+
+	for (int y = 0; y < (256 * 32); y += 32) {
+		for (int x = 0; x < (256 * 32); x += 32) {
+			if (x == 0 || y == 0 || x >= mapMaxXY || y >= mapMaxXY) {
+				sub_68AE2A(x, y);
+			} else if (x >= mapMaxXY - 32 || y >= mapMaxXY - 32) {
+				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) += 32;
+				map_buy_land_rights(x, y, x, y, 6, GAME_COMMAND_FLAG_APPLY);
+				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) -= 32;
+			}
+		}
+	}
+}
+
+static void sub_68AE2A(int x, int y)
+{
+	for (;;) {
+		rct2_peep_spawn *peepSpawns = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_SPAWNS, rct2_peep_spawn);
+		for (int i = 0; i < 2; i++) {
+			if ((peepSpawns[i].x & 0xFFE0) == x && (peepSpawns[i].y & 0xFFE0) == y) {
+				peepSpawns[i].x = 0xFFFF;
+			}
+		}
+
+		rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	next_element:
+		switch (map_element_get_type(mapElement)) {
+		case MAP_ELEMENT_TYPE_SURFACE:
+			mapElement->base_height = 2;
+			mapElement->clearance_height = 2;
+			mapElement->properties.surface.slope = 0;
+			mapElement->properties.surface.terrain = 0;
+			mapElement->properties.surface.grass_length = 1;
+			mapElement->properties.surface.ownership = 0;
+			if (!map_element_is_last_for_tile(mapElement++))
+				goto next_element;
+
+			return;
+		case MAP_ELEMENT_TYPE_ENTRANCE:
+			viewport_interaction_remove_park_entrance(mapElement, x, y);
+			break;
+		case MAP_ELEMENT_TYPE_FENCE:
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_REMOVE_THIS;
+			game_do_command(
+				x,
+				GAME_COMMAND_FLAG_APPLY,
+				y,
+				(mapElement->type & MAP_ELEMENT_DIRECTION_MASK) | (mapElement->base_height << 8),
+				GAME_COMMAND_REMOVE_FENCE,
+				0,
+				0
+			);
+			break;
+		case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_REMOVE_THIS;
+			game_do_command(
+				x,
+				(GAME_COMMAND_FLAG_APPLY) | (mapElement->type & MAP_ELEMENT_DIRECTION_MASK),
+				y,
+				(mapElement->base_height) | (((mapElement->properties.scenerymultiple.type >> 8) >> 2) << 8),
+				GAME_COMMAND_REMOVE_LARGE_SCENERY,
+				0,
+				0
+			);
+			break;
+		case MAP_ELEMENT_TYPE_BANNER:
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_REMOVE_THIS;
+			game_do_command(
+				x,
+				GAME_COMMAND_FLAG_APPLY,
+				y,
+				(mapElement->base_height) | ((mapElement->properties.banner.position & 3) << 8),
+				GAME_COMMAND_REMOVE_BANNER,
+				0,
+				0
+			);
+			break;
+		default:
+			map_element_remove(mapElement);
+			break;
+		}
+	} 
 }

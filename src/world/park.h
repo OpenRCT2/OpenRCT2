@@ -66,6 +66,8 @@ int park_get_entrance_index(int x, int y, int z);
 void park_set_name(const char *name);
 void park_set_entrance_fee(money32 value);
 
+int map_buy_land_rights(int x0, int y0, int x1, int y1, int setting, int flags);
+
 void game_command_set_park_entrance_fee(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_park_open(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_remove_park_entrance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
