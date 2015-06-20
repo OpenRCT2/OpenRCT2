@@ -144,6 +144,7 @@ typedef struct {
 	uint8 auto_staff_placement;
 	utf8string last_run_version;
 	uint8 title_sequence;
+	uint8 invert_viewport_drag;
 } general_configuration;
 
 typedef struct {
