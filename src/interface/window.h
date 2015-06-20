@@ -580,6 +580,7 @@ void window_publisher_credits_open();
 void window_track_manage_open();
 void window_viewport_open();
 void window_themes_open();
+void window_title_editor_open();
 void window_tile_inspector_open();
 void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uint32 existing_args, int maxLength);
 void window_text_input_raw_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, int maxLength);

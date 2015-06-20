@@ -90,7 +90,7 @@
     <ClCompile Include="..\src\scenario.c" />
     <ClCompile Include="..\src\scenario_list.c" />
     <ClCompile Include="..\src\windows\changelog.c" />
-    <ClCompile Include="..\src\windows\title_editor.c" />
+    <ClCompile Include="..\src\windows\title_sequence_editor.c" />
     <ClCompile Include="..\test\management\finance_test.c" />
     <ClCompile Include="..\test\ride\ride_ratings_test.c" />
     <ClCompile Include="..\test\tests.c" />

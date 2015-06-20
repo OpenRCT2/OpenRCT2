@@ -3704,3 +3704,15 @@ STR_5367    :Fast
 STR_5368    :Reset crash status
 STR_5369    :Park parameters...
 STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
+STR_5371    :{SMALLFONT}{BLACK}Saves
+STR_5372    :{SMALLFONT}{BLACK}Script
+STR_5373    :Add
+STR_5374    :Remove
+STR_5375    :Load
+STR_5376    :Insert
+STR_5377    :Edit
+STR_5378    :Disable
+STR_5379    :Enable
+STR_5380    :Skip to
+STR_5381    :{UP}
+STR_5382    :{DOWN}

@@ -47,16 +47,6 @@ static const int gRandomShowcase = 0;
 
 #pragma region Showcase script
 
-enum {
-	TITLE_SCRIPT_WAIT,
-	TITLE_SCRIPT_LOADMM,
-	TITLE_SCRIPT_LOCATION,
-	TITLE_SCRIPT_ROTATE,
-	TITLE_SCRIPT_ZOOM,
-	TITLE_SCRIPT_RESTART,
-	TITLE_SCRIPT_LOAD
-};
-
 #define WAIT(t)				TITLE_SCRIPT_WAIT, t
 #define LOADMM()			TITLE_SCRIPT_LOADMM
 #define LOCATION(x, y)		TITLE_SCRIPT_LOCATION, x, y
