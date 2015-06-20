@@ -1817,7 +1817,7 @@ STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Verschiedene Objekte
 STR_1814    :Aktionen
 STR_1815    :Gedanken
-STR_1816    :{SMALLFONT}{BLACK}Informationsart auswählen, die in Besucherliste angezeigt werden soll
+STR_1816    :{SMALLFONT}{BLACK}Informationsart auswählen,{NEWLINE}die in Besucherliste angezeigt{NEWLINE}werden soll
 STR_1817    :({COMMA16})
 STR_1818    :{WINDOW_COLOUR_2}Alle Besucher
 STR_1819    :{WINDOW_COLOUR_2}Alle Besucher (zusammengefasst)
@@ -1845,7 +1845,7 @@ STR_1840    :Ausfallzeit: {COMMA16}%
 STR_1841    :Gewinn: {CURRENCY2DP} pro Stunde
 STR_1842    :Favorit von: {COMMA16} Besucher
 STR_1843    :Favorit von: {COMMA16} Besuchern
-STR_1844    :{SMALLFONT}{BLACK}Informationsart auswählen, die in Attraktionsliste angezeigt werden soll
+STR_1844    :{SMALLFONT}{BLACK}Informationsart auswählen,{NEWLINE}die in Attraktionsliste angezeigt{NEWLINE}werden soll
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA16} Besucher
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} Besucher
@@ -1948,7 +1948,7 @@ STR_1943    :{SMALLFONT}{BLACK}Aktuelle Gedanken dieses Besuchers anzeigen
 STR_1944    :{SMALLFONT}{BLACK}Objekte anzeigen, die der Besucher bei sich trägt
 STR_1945    :{SMALLFONT}{BLACK}Anweisungen und Optionen für diesen Mitarbeiter anzeigen
 STR_1946    :{SMALLFONT}{BLACK}Kostüm für diesen Animateur auswählen
-STR_1947    :{SMALLFONT}{BLACK}Vom Mitarbeitertyp abgelaufene Bereiche anzeigen und den nächsten Mitarbeiter suchen
+STR_1947    :{SMALLFONT}{BLACK}Vom Mitarbeitertyp abgelaufene{NEWLINE}Bereiche anzeigen und den nächsten{NEWLINE}Mitarbeiter suchen
 STR_1948    :{SMALLFONT}{BLACK}Neuen Mitarbeiter für den ausgewählten Typ einstellen
 STR_1949    :Finanzübersicht
 STR_1950    :Finanzdiagramm
@@ -2988,12 +2988,12 @@ STR_2979    :Dieser Mitarbeiter kann nicht benannt werden...
 STR_2980    :Zu viele Banner im Spiel
 STR_2981    :{RED}Kein Zutritt - -
 STR_2982    :Bannertext
-STR_2983    :Neuen Text für diesen Banner eingeben:
-STR_2984    :Neuer Text für den Banner kann nicht erstellt werden...
+STR_2983    :Neuen Text für dieses Banner eingeben:
+STR_2984    :Neuer Text für das Banner kann nicht erstellt werden...
 STR_2985    :Banner
 STR_2986    :{SMALLFONT}{BLACK}Text auf Banner ändern
-STR_2987    :{SMALLFONT}{BLACK}Legen Sie diesen Banner als `Kein Zutritt'-Schild für Besucher fest
-STR_2988    :{SMALLFONT}{BLACK}Diesen Banner abreißen
+STR_2987    :{SMALLFONT}{BLACK}Legen Sie dieses Banner als{NEWLINE}`Kein Zutritt'-Schild für{NEWLINE}Besucher fest
+STR_2988    :{SMALLFONT}{BLACK}Dieses Banner abreißen
 STR_2989    :{SMALLFONT}{BLACK}Hauptfarbe auswählen
 STR_2990    :{SMALLFONT}{BLACK}Textfarbe auswählen
 STR_2991    :Schild
@@ -3077,7 +3077,7 @@ STR_3068    :Andere Parks
 STR_3069    :Oberster Abschnitt
 STR_3070    :Neigung auf Ebene
 STR_3071    :{WINDOW_COLOUR_2}Gleicher Preis im ganzen Park
-STR_3072    :{SMALLFONT}{BLACK}Bestimmen Sie, ob dieser Preis im gesamten Park gilt
+STR_3072    :{SMALLFONT}{BLACK}Bestimmen Sie, ob dieser Preis{NEWLINE}im gesamten Park gilt
 STR_3073    :{RED}WARNUNG: Ihre Parkbewertung ist unter den Wert 700 gefallen!{NEWLINE}Wenn Sie die Parkbewertung innerhalb 4 Wochen nicht erhöhen, wird der Park geschlossen
 STR_3074    :{RED}WARNUNG: Ihre Parkbewertung liegt immer noch unter dem Wert 700!{NEWLINE}Sie haben noch 3 Wochen Zeit, um die Parkbewertung zu erhöhen
 STR_3075    :{RED}WARNUNG: Ihre Parkbewertung liegt immer noch unter dem Wert 700!{NEWLINE}Sie haben noch 2 Wochen Zeit, um die Parkbewertung zu erhöhen, oder Ihr Park wird geschlossen
@@ -3111,7 +3111,7 @@ STR_3102    :{SMALLFONT}{BLACK}Farbige Szenerie auf Gelände neu streichen
 STR_3103    :Dies kann nicht neu gestrichen werden...
 STR_3104    :{SMALLFONT}{BLACK}Bahnen auflisten
 STR_3105    :{SMALLFONT}{BLACK}Läden und Stände auflisten
-STR_3106    :{SMALLFONT}{BLACK}Informationskiosks und andere Besuchereinrichtungen auflisten
+STR_3106    :{SMALLFONT}{BLACK}Informationsstände und andere Besuchereinrichtungen auflisten
 STR_3107    :Schließen
 STR_3108    :Testen
 STR_3109    :Öffnen
@@ -3125,7 +3125,7 @@ STR_3116    :{SMALLFONT}{BLACK}Streckenentwurf speichern (erst möglich, wenn di
 STR_3117    :{BLACK}Mechaniker rufen...
 STR_3118    :{BLACK}{STRINGID} geht zur Bahn
 STR_3119    :{BLACK}{STRINGID} repariert die Bahn
-STR_3120    :{SMALLFONT}{BLACK}Nächsten verfügbaren Mechaniker oder Mechaniker bei einer Bahnreparatur suchen
+STR_3120    :{SMALLFONT}{BLACK}Nächsten verfügbaren Mechaniker{NEWLINE}oder Mechaniker bei einer{NEWLINE}Bahnreparatur suchen
 STR_3121    :Örtlicher Mechaniker kann nicht gefunden werden, oder alle Mechaniker sind gerade beschäftigt
 STR_3122    :{WINDOW_COLOUR_2}Lieblingsbahn von: {BLACK}{COMMA16} Besucher
 STR_3123    :{WINDOW_COLOUR_2}Lieblingsbahn von: {BLACK}{COMMA16} Besuchern
@@ -3230,7 +3230,7 @@ STR_3221    :{SMALLFONT}{BLACK}Legen Sie das Gelände fest, das dem Park gehöre
 STR_3222    :{SMALLFONT}{BLACK}Wählen Sie die Baurechte aus, die exklusiv dem Park gehören sollen
 STR_3223    :{SMALLFONT}{BLACK}Legen Sie das Gelände fest, das vom Park gekauft werden kann
 STR_3224    :{SMALLFONT}{BLACK}Legen Sie die Baurechte fest, die vom Park erworben werden können
-STR_3225    :{SMALLFONT}{BLACK}Bau einer zufälligen Objektgruppe um ausgewählte Position herum ein-/ausschalten
+STR_3225    :{SMALLFONT}{BLACK}Bau einer zufälligen Objektgruppe{NEWLINE}um ausgewählte Position herum ein-/ausschalten
 STR_3226    :{SMALLFONT}{BLACK}Parkeingang bauen
 STR_3227    :Zu viele Parkeingänge!
 STR_3228    :{SMALLFONT}{BLACK}Legen Sie die Startpositionen für Personen fest
@@ -3491,8 +3491,8 @@ STR_5154    :Anzeige über Hardware durchführen
 STR_5155    :Testen unfertiger Bahnen erlauben
 STR_5156    :{SMALLFONT}{BLACK}Erlaubt das Testen der meisten Bahnarten, selbst wenn die Strecke nicht fertiggestellt ist, das gilt nicht für den Streckenmodus mit Blockbereichen
 STR_5157    :Alle Preise freischalten
-STR_5158    :Spiel Beenden
-STR_5159    :OpenRCT2 Beenden
+STR_5158    :Spiel beenden
+STR_5159    :OpenRCT2 beenden
 STR_5160    :{MONTH} {STRINGID}, Jahr {COMMA16}
 STR_5161    :Datumsformat:
 STR_5162    :Tag/Monat/Jahr
@@ -3702,3 +3702,5 @@ STR_5365    :{BLACK}Personalgeschw.:
 STR_5366    :Normal
 STR_5367    :Schnell
 STR_5368    :Unfallstatus entf.
+STR_5369    :Parkparameter...
+STR_5370    :{SMALLFONT}{BLACK}Klicken Sie diese Schaltfläche um Parkparameter, wie Einschränkungen, Besuchergenerierung und Geld,{NEWLINE}zu bearbeiten
