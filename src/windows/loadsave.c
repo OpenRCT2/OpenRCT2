@@ -452,7 +452,6 @@ static void window_loadsave_paint()
 }
 
 static void shorten_path(char* path, char* buffer, int available_width){
-	puts("Shortening");
 	int length = strlen(path);
 
 	// Return full string if it fits
