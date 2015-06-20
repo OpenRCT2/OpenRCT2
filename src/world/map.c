@@ -2256,7 +2256,7 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 							*ebx = MONEY32_UNDEFINED;
 							return;
 						}
-						if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && map_is_location_owned(x2, y2, zLow * 8) || gSandboxMode){
+						if((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || map_is_location_owned(x2, y2, zLow * 8) || gSandboxMode){
 							if(*ebx & GAME_COMMAND_FLAG_APPLY){
 								if(!(*ebx & 0x40)){
 									footpath_remove_litter(x2, y2, zLow * 8);
