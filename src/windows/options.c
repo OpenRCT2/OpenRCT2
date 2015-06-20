@@ -108,6 +108,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 
 	// Controls
 	WIDX_SCREEN_EDGE_SCROLLING = WIDX_PAGE_START,
+	WIDX_INVERT_DRAG,
 	WIDX_HOTKEY_DROPDOWN,
 	WIDX_TOOLBAR_SHOW_FINANCES,
 	WIDX_TOOLBAR_SHOW_RESEARCH,
@@ -199,10 +200,11 @@ static rct_widget window_options_audio_widgets[] = {
 static rct_widget window_options_controls_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
 	{ WWT_CHECKBOX,			2,	10,		299,	54,		65,		STR_SCREEN_EDGE_SCROLLING,	STR_SCREEN_EDGE_SCROLLING_TIP },
-	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	69,		80,		STR_HOTKEY,					STR_HOTKEY_TIP },
-	{ WWT_CHECKBOX,			2,	10,		299,	84,		95,		5120,						STR_NONE },
-	{ WWT_CHECKBOX,			2,	10,		299,	99,		110,	5121,						STR_NONE },
-	{ WWT_CHECKBOX,			2,	10,		299,	114,	125,	5147,						STR_NONE },
+	{ WWT_CHECKBOX,			2,	10,		299,	69,		80,		STR_INVERT_RIGHT_MOUSE_DRAG,STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	84,		95,		STR_HOTKEY,					STR_HOTKEY_TIP },
+	{ WWT_CHECKBOX,			2,	10,		299,	99,		110,	5120,						STR_NONE },
+	{ WWT_CHECKBOX,			2,	10,		299,	114,	125,	5121,						STR_NONE },
+	{ WWT_CHECKBOX,			2,	10,		299,	129,	140,	5147,						STR_NONE },
 	{ WIDGETS_END },
 };
 
@@ -349,6 +351,7 @@ static uint32 window_options_page_enabled_widgets[] = {
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_SCREEN_EDGE_SCROLLING) |
+	(1 << WIDX_INVERT_DRAG) |
 	(1 << WIDX_HOTKEY_DROPDOWN) |
 	(1 << WIDX_TOOLBAR_SHOW_FINANCES) |
 	(1 << WIDX_TOOLBAR_SHOW_RESEARCH) |
@@ -508,6 +511,11 @@ static void window_options_mouseup()
 			config_save_default();
 			window_invalidate(w);
 			window_invalidate_by_class(WC_TOP_TOOLBAR);
+			break;
+		case WIDX_INVERT_DRAG:
+			gConfigGeneral.invert_viewport_drag ^= 1;
+			config_save_default();
+			window_invalidate(w);
 			break;
 		}
 		break;
@@ -1105,6 +1113,7 @@ static void window_options_invalidate()
 
 	case WINDOW_OPTIONS_PAGE_CONTROLS:
 		widget_set_checkbox_value(w, WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
+		widget_set_checkbox_value(w, WIDX_INVERT_DRAG, gConfigGeneral.invert_viewport_drag);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);

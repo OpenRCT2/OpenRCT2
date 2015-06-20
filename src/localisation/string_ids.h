@@ -1537,6 +1537,8 @@ enum {
 	STR_NORMAL = 5366,
 	STR_FAST = 5367,
 
+	STR_INVERT_RIGHT_MOUSE_DRAG = 5372,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
