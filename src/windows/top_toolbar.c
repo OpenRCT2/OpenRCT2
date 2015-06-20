@@ -97,7 +97,8 @@ typedef enum {
 
 typedef enum {
 	DDIDX_CONSOLE = 0,
-	DDIDX_TILE_INSPECTOR = 1
+	DDIDX_TILE_INSPECTOR = 1,
+	DDIDX_OBJECT_SELECTION = 2
 } TOP_TOOLBAR_DEBUG_DDIDX;
 
 #pragma region Toolbar_widget_ordering
@@ -2779,6 +2780,7 @@ void top_toolbar_fastforward_menu_dropdown(short dropdownIndex) {
 void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget) {
 	gDropdownItemsFormat[0] = STR_DEBUG_DROPDOWN_CONSOLE;
 	gDropdownItemsFormat[1] = STR_DEBUG_DROPDOWN_TILE_INSPECTOR;
+	gDropdownItemsFormat[2] = STR_DEBUG_DROPDOWN_OBJECT_SELECTION;
 
 	window_dropdown_show_text(
 		w->x + widget->left,
@@ -2786,7 +2788,7 @@ void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget) {
 		widget->bottom - widget->top + 1,
 		w->colours[1] | 0x80,
 		0,
-		2
+		3
 	);
 
 	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
@@ -2802,6 +2804,10 @@ void top_toolbar_debug_menu_dropdown(short dropdownIndex) {
 			break;
 		case DDIDX_TILE_INSPECTOR:
 			window_tile_inspector_open();
+			break;
+		case DDIDX_OBJECT_SELECTION:
+			window_close_all();
+			window_editor_object_selection_open();
 			break;
 		}
 	}
