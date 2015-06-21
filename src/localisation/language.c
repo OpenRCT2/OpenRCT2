@@ -270,7 +270,7 @@ static void language_close(language_data *language)
 }
 
 const int OpenRCT2LangIdToObjectLangId[] = {
-	0, 0, 1, 3, 6, 2, 0, 0, 4, 7, 5, 11
+	0, 0, 1, 3, 6, 2, 0, 0, 4, 7, 5, 13
 };
 
 /* rct2: 0x0098DA16 */

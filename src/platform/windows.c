@@ -635,6 +635,9 @@ uint16 platform_get_locale_language(){
 	else if (strcmp(langCode, "ITA") == 0){
 		return LANGUAGE_ITALIAN;
 	}
+	else if (strcmp(langCode, "POR") == 0){
+		return LANGUAGE_PORTUGUESE_BR;
+	}
 	return LANGUAGE_UNDEFINED;
 }
 
