@@ -118,14 +118,18 @@ enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
 	WIDX_TITLE_EDITOR_DELETE,
 	WIDX_TITLE_EDITOR_DISABLE,
 	WIDX_TITLE_EDITOR_SKIP_TO,
-	WIDX_TITLE_EDITOR_MOVE_UP,
+	
 	WIDX_TITLE_EDITOR_MOVE_DOWN,
+	WIDX_TITLE_EDITOR_MOVE_UP,
+
 	WIDX_TITLE_EDITOR_REPLAY,
 	WIDX_TITLE_EDITOR_PLAY,
 	WIDX_TITLE_EDITOR_PAUSE,
 	WIDX_TITLE_EDITOR_SKIP,
 };
 
+// Increase BW if certain launguages do not fit
+// BW should be a multiple of 4
 #define WW 320
 #define WH 270
 #define BX 8
@@ -136,17 +140,17 @@ enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
 #define ROW_HEIGHT 11
 
 static rct_widget window_title_editor_widgets[] = {
-	{ WWT_FRAME,			0,	0,		WW-1,	0,		WH-1,	0x0FFFFFFFF,					STR_NONE },							// panel / background
-	{ WWT_CAPTION,			0,	1,		WW-2,	1,		14,		STR_STAFF,						STR_WINDOW_TITLE_TIP },				// title bar
-	{ WWT_CLOSEBOX,			0,	WW-13,	WW-3,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },				// close button
-	{ WWT_RESIZE,			1,	0,		WW-1,	43,		WH-1,	0x0FFFFFFFF,					STR_NONE },							// tab content panel
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x02000144E,					5235 },		// handymen tab
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x02000144E,					5371 },		// mechanics tab
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x02000144E,					5372 },		// security guards tab
-	{ WWT_SCROLL,			1,	BW+9,	WW-4,	48,		WH-4,	3,								STR_NONE },							// staff list
+	{ WWT_FRAME,			0,	0,		WW-1,	0,		WH-1,	0x0FFFFFFFF,					STR_NONE },						// panel / background
+	{ WWT_CAPTION,			0,	1,		WW-2,	1,		14,		STR_STAFF,						STR_WINDOW_TITLE_TIP },			// title bar
+	{ WWT_CLOSEBOX,			0,	WW-13,	WW-3,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },			// close button
+	{ WWT_RESIZE,			1,	0,		WW-1,	43,		WH-1,	0x0FFFFFFFF,					STR_NONE },						// tab content panel
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x02000144E,					5235 },							// presets tab
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x02000144E,					5371 },							// saves tab
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x02000144E,					5372 },							// script tab
+	{ WWT_SCROLL,			1,	BW+9,	WW-4,	48,		WH-4,	3,								STR_NONE },						// command/save list
 	
 	// Presets Tab
-	{ WWT_DROPDOWN,			1,	125,	299,	60,		71,		STR_NONE,						STR_NONE },					// Preset colour schemes
+	{ WWT_DROPDOWN,			1,	125,	299,	60,		71,		STR_NONE,						STR_NONE },						// Preset title sequences
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	61,		70,		876,							STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	10,		100,	82,		93,		5239,							STR_NONE },						// Duplicate button
 	{ WWT_DROPDOWN_BUTTON,	1,	110,	200,	82,		93,		3349,							STR_NONE },						// Delete button
@@ -164,8 +168,10 @@ static rct_widget window_title_editor_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*2),	BH+(BS*2),	3349,					STR_NONE }, // Delete
 	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*3),	BH+(BS*3),	5378,					STR_NONE }, // Disable
 	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*4),	BH+(BS*4),	5380,					STR_NONE }, // Skip to
-	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*6),	BH+(BS*6),	5381,					STR_NONE }, // Move up
-	{ WWT_DROPDOWN_BUTTON,	1,	BX+30,	BX+BW-1,BY+(BS*6),	BH+(BS*6),	5382,					STR_NONE }, // Move down
+
+	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*6),	BH+(BS*6),	5382,					STR_NONE }, // Move down
+	{ WWT_DROPDOWN_BUTTON,	1,	BX+30,	BX+BW-1,BY+(BS*6),	BH+(BS*6),	5381,					STR_NONE }, // Move up
+
 	{ WWT_IMGBTN,			1,	BX,		BX+BW/4-1,	WH-31,	WH-15,		5382,					STR_NONE }, // Replay
 	{ WWT_IMGBTN,			1,	BX+BW/4,BX+BW/2-1,	WH-31,	WH-15,		5382,					STR_NONE }, // Pause
 	{ WWT_IMGBTN,			1,	BX+BW/2,BX+BW*3/4-1,WH-31,	WH-15,		5382,					STR_NONE }, // Play
@@ -234,22 +240,26 @@ void window_title_editor_open()
 		(1 << WIDX_TITLE_EDITOR_PRESETS_TAB) |
 		(1 << WIDX_TITLE_EDITOR_SAVES_TAB) |
 		(1 << WIDX_TITLE_EDITOR_SCRIPT_TAB) |
+
 		(1 << WIDX_TITLE_EDITOR_PRESETS) |
 		(1 << WIDX_TITLE_EDITOR_PRESETS_DROPDOWN) |
 		(1 << WIDX_TITLE_EDITOR_DUPLICATE_BUTTON) |
 		(1 << WIDX_TITLE_EDITOR_DELETE_BUTTON) |
 		(1 << WIDX_TITLE_EDITOR_RENAME_BUTTON) |
+
 		(1 << WIDX_TITLE_EDITOR_ADD) |
 		(1 << WIDX_TITLE_EDITOR_REMOVE) |
 		(1 << WIDX_TITLE_EDITOR_RENAME) |
 		(1 << WIDX_TITLE_EDITOR_LOAD) |
+
 		(1 << WIDX_TITLE_EDITOR_INSERT) |
 		(1 << WIDX_TITLE_EDITOR_EDIT) |
 		(1 << WIDX_TITLE_EDITOR_DELETE) |
 		(1 << WIDX_TITLE_EDITOR_DISABLE) |
 		(1 << WIDX_TITLE_EDITOR_SKIP_TO) |
-		(1 << WIDX_TITLE_EDITOR_MOVE_UP) |
 		(1 << WIDX_TITLE_EDITOR_MOVE_DOWN) |
+		(1 << WIDX_TITLE_EDITOR_MOVE_UP) |
+
 		(1 << WIDX_TITLE_EDITOR_PLAY) |
 		(1 << WIDX_TITLE_EDITOR_PAUSE) |
 		(1 << WIDX_TITLE_EDITOR_REPLAY) |
@@ -269,7 +279,8 @@ void window_title_editor_open()
 	if (_title_sequence_script == NULL) {
 		_title_sequence_script = malloc(1);
 		_title_sequence_script[0] = TITLE_RESTART();
-		_title_sequence_saves = malloc(0);
+		_title_sequence_saves = malloc(1);
+		_title_sequence_saves[0] = "Dusty Greens7.sv6";
 		_title_sequence_num_saves = 0;
 		_title_sequence_num_commands = 1;
 	}
