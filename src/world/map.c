@@ -2140,14 +2140,14 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 		RCT2_GLOBAL(0x009DEA62, sint16) = map_element_height(position.x, position.y) & 0xFFFF;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0){
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode){
 		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 2214;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) &&
-		!(flags & (1 << 7))){
+		!(flags & (1 << 7)) && !gSandboxMode){
 		
 		if (position.z == 0){
 			if (!map_is_location_in_park(position.x, position.y)){
