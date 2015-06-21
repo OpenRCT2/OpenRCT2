@@ -69,7 +69,7 @@ void gfx_load_character_widths(){
 					val |= 0x80;
 				}
 			}
-			RCT2_ADDRESS(0xF4393C, uint8)[i * 8 + x] = val;
+			RCT2_ADDRESS(RCT2_ADDRESS_CHARACTER_BITMAP, uint8)[i * 8 + x] = val;
 		}
 
 	}

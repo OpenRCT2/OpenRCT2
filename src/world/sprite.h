@@ -79,7 +79,7 @@ typedef struct {
 
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
-	uint8 var_01;					// 0x01
+	uint8 type;						// 0x01
 	uint16 next_in_quadrant;		// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06

@@ -1270,6 +1270,12 @@ void window_scroll_to_viewport(rct_window *w)
 */
 void window_scroll_to_location(rct_window *w, int x, int y, int z)
 {
+	rct_xyz16 location_3d = {
+		.x = x,
+		.y = y,
+		.z = z
+	};
+
 	if (w->viewport) {
 		sint16 height = map_element_height(x, y);
 		if (z < height - 16) {
@@ -1283,26 +1289,9 @@ void window_scroll_to_location(rct_window *w, int x, int y, int z)
 				window_invalidate(w);
 			}
 		}
-		sint16 sx;
-		sint16 sy;
-		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) {
-			case 0:
-				sx = y - x;
-				sy = ((x + y) / 2) - z;
-				break;
-			case 1:
-				sx = -y - x;
-				sy = ((-x + y) / 2) - z;
-				break;
-			case 2:
-				sx = -y + x;
-				sy = ((-x - y) / 2) - z;
-				break;
-			case 3:
-				sx = y + x;
-				sy = ((x - y) / 2) - z;
-				break;
-		}
+
+		rct_xy16 map_coordinate = coordinate_3d_to_2d(&location_3d, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8));
+
 		int i = 0;
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)) {
 			int found = 0;
@@ -1336,8 +1325,8 @@ void window_scroll_to_location(rct_window *w, int x, int y, int z)
 		// rct2: 0x006E7C76
 		if (w->viewport_target_sprite == -1) {
 			if (!(w->flags & WF_2)) {
-				w->saved_view_x = sx - (sint16)(w->viewport->view_width * window_scroll_locations[i][0]);
-				w->saved_view_y = sy - (sint16)(w->viewport->view_height * window_scroll_locations[i][1]);
+				w->saved_view_x = map_coordinate.x - (sint16)(w->viewport->view_width * window_scroll_locations[i][0]);
+				w->saved_view_y = map_coordinate.y - (sint16)(w->viewport->view_height * window_scroll_locations[i][1]);
 				w->flags |= WF_SCROLLING_TO_LOCATION;
 			}
 		}

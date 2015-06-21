@@ -115,7 +115,7 @@ typedef struct {
 } rct_path_bit_scenery_entry;
 
 typedef struct {
-	uint8 var_06;
+	uint8 scrolling_mode;	// 0x06
 	uint8 flags;			// 0x07
 	sint16 price;			// 0x08
 	uint8 scenery_tab_id;	// 0x0A
