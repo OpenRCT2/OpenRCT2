@@ -290,7 +290,7 @@ static int award_is_deserved_best_food(int awardType, int activeAwardTypes)
 	FOR_ALL_RIDES(i, ride) {
 		if (ride->status != RIDE_STATUS_OPEN)
 			continue;
-		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_23))
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_SELLS_FOOD))
 			continue;
 
 		shops++;
@@ -336,7 +336,7 @@ static int award_is_deserved_worst_food(int awardType, int activeAwardTypes)
 	FOR_ALL_RIDES(i, ride) {
 		if (ride->status != RIDE_STATUS_OPEN)
 			continue;
-		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_23))
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_SELLS_FOOD))
 			continue;
 
 		shops++;

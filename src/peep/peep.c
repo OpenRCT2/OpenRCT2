@@ -4386,7 +4386,7 @@ void peep_problem_warnings_update()
 				break;
 			}
 			ride = &g_ride_list[peep->guest_heading_to_ride_id];
-			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_SELLS_FOOD))
+			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
 				hunger_counter++;
 			break;
 
