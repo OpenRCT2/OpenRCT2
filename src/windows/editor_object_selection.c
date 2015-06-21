@@ -601,12 +601,12 @@ void remove_selected_objects_from_research(rct_object_entry* installedObject){
 }
 
 /* rct2: 0x006ABB66 */
-void unload_selected_objects(){
+void unload_unselected_objects(){
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 	rct_object_entry* installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
 
 	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
-		if (*selection_flags & OBJECT_SELECTION_FLAG_SELECTED){
+		if (!(*selection_flags & OBJECT_SELECTION_FLAG_SELECTED)){
 			remove_selected_objects_from_research(installedObject);
 			object_unload(0, (rct_object_entry_extended*)installedObject);
 		}
@@ -627,7 +627,7 @@ static void window_editor_object_selection_close()
 	//if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR))
 	//	return;
 
-	unload_selected_objects();
+	unload_unselected_objects();
 	editor_load_selected_objects();
 	reset_loaded_objects();
 	object_free_scenario_text();
