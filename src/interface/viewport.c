@@ -721,26 +721,27 @@ void sub_688485(){
 
 }
 
-int sub_0x686806(int eax, int image_id, int ecx, int edx, sint16 si, sint16 di);
+int sub_0x686806(sint8 al, sint8 ah, int image_id, sint8 cl, sint16 edx, sint16 si, sint16 di);
+int sub_0x6869B2(sint8 al, sint8 ah, int image_id, sint8 cl, sint16 edx, sint16 si, sint16 di);
 
-int sub_98197C(int eax, int image_id, int ecx, int edx, sint16 si, sint16 di, uint32 rotation){
+int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int edx, sint16 si, sint16 di, uint32 rotation){
 	switch (rotation){
 	case 0:
-		return sub_0x686806(eax, image_id, ecx, edx, si, di);
+		return sub_0x686806(al, ah, image_id, cl, edx, si, di);
+	case 1:
+		return sub_0x6869B2(al, ah, image_id, cl, edx, si, di);
 	default:
 		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-			eax, image_id, ecx, edx, si, di, 0);
+			al | (ah << 8), image_id, cl, edx, si, di, 0);
 		return 1;
 	}
 }
 
-int sub_0x686806(int eax, int image_id, int ecx, int edx, sint16 si, sint16 di){
-	int ebp = (sint8)((eax >> 8) & 0xFF);
-	edx <<= 16;
-	ebp += RCT2_GLOBAL(0x9DEA56, uint16);
+int sub_0x686806(sint8 al, sint8 ah, int image_id, sint8 cl, sint16 edx, sint16 si, sint16 di){
+	int ebp = ah + RCT2_GLOBAL(0x9DEA56, uint16);
+
 	RCT2_GLOBAL(0xF1AD28, paint_struct*) = 0;
 	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
-	edx = (edx >> 16) | (ebp << 16);
 
 	//Not a paint struct but something similar
 	paint_struct* ps = RCT2_GLOBAL(0xEE7888, paint_struct*);
@@ -759,11 +760,11 @@ int sub_0x686806(int eax, int image_id, int ecx, int edx, sint16 si, sint16 di){
 		g1Element = &g2.elements[image_element - SPR_G2_BEGIN];
 	}
 
-	eax = (eax & 0xFF) + RCT2_GLOBAL(0x9DE568, uint16);
-	ecx = (ecx & 0xFF) + RCT2_GLOBAL(0x9DE56C, uint16);
+	int eax = al + RCT2_GLOBAL(0x9DE568, sint16);
+	int ecx = cl + RCT2_GLOBAL(0x9DE56C, sint16);
 
 	int x = ecx - eax;
-	int y = (ecx + eax) / 2 - (edx & 0xFFFF);
+	int y = (ecx + eax) / 2 - edx;
 
 	ps->x = x;
 	ps->y = y;
@@ -784,10 +785,9 @@ int sub_0x686806(int eax, int image_id, int ecx, int edx, sint16 si, sint16 di){
 	if (left > dpi->x + dpi->width) return 1;
 	if (bottom > dpi->y + dpi->height) return 1;
 
-	//686918 not finished
 	ps->other_x = di - 1 + RCT2_GLOBAL(0x9DEA52, sint16) + RCT2_GLOBAL(0x9DE568, sint16);
 	ps->some_x = RCT2_GLOBAL(0x009DEA56, sint16);
-	ps->some_y = edx >> 16;
+	ps->some_y = ebp;
 	ps->other_y = si - 1 + RCT2_GLOBAL(0x9DEA54, sint16) + RCT2_GLOBAL(0x009DE56C, sint16);
 	ps->var_1A = 0;
 	ps->attached_x = RCT2_GLOBAL(0x9DEA52, sint16) + RCT2_GLOBAL(0x9DE568, sint16);
@@ -827,6 +827,95 @@ int sub_0x686806(int eax, int image_id, int ecx, int edx, sint16 si, sint16 di){
 	return 0;
 }
 
+int sub_0x6869B2(sint8 al, sint8 ah, int image_id, sint8 cl, sint16 edx, sint16 si, sint16 di){
+	int ebp = ah + RCT2_GLOBAL(0x9DEA56, uint16);
+
+	RCT2_GLOBAL(0xF1AD28, paint_struct*) = 0;
+	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
+
+	//Not a paint struct but something similar
+	paint_struct* ps = RCT2_GLOBAL(0xEE7888, paint_struct*);
+
+	if ((uint32)ps >= RCT2_GLOBAL(0xEE7880, uint32)) return 1;
+
+	ps->image_id = image_id;
+
+	rct_g1_element *g1Element;
+	uint32 image_element = image_id & 0x7FFFF;
+
+	if (image_element < SPR_G2_BEGIN) {
+		g1Element = &g1Elements[image_element];
+	}
+	else {
+		g1Element = &g2.elements[image_element - SPR_G2_BEGIN];
+	}
+
+	int eax = cl + RCT2_GLOBAL(0x9DE568, sint16);
+	int ecx = -al + RCT2_GLOBAL(0x9DE56C, sint16);
+
+	int x = -eax - ecx;
+	int y = (ecx - eax) / 2 - edx;
+
+	ps->x = x;
+	ps->y = y;
+
+	int left = x + g1Element->x_offset;
+	int bottom = y + g1Element->y_offset;
+
+	int right = left + g1Element->width;
+	int top = bottom + g1Element->height;
+
+	RCT2_GLOBAL(0xF1AD1C, uint16) = left;
+	RCT2_GLOBAL(0xF1AD1E, uint16) = bottom;
+
+	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+
+	if (right <= dpi->x)return 1;
+	if (top <= dpi->y)return 1;
+	if (left > dpi->x + dpi->width) return 1;
+	if (bottom > dpi->y + dpi->height) return 1;
+
+	ps->other_x = -si - RCT2_GLOBAL(0x9DEA54, sint16) + RCT2_GLOBAL(0x9DE568, sint16);
+	ps->some_x = RCT2_GLOBAL(0x009DEA56, sint16);
+	ps->some_y = ebp;
+	ps->other_y = di - 1 + RCT2_GLOBAL(0x9DEA52, sint16) + RCT2_GLOBAL(0x009DE56C, sint16);
+	ps->var_1A = 0;
+	ps->attached_x = -RCT2_GLOBAL(0x9DEA54, sint16) + RCT2_GLOBAL(0x9DE568, sint16);
+	ps->attached_y = RCT2_GLOBAL(0x9DEA52, sint16) + RCT2_GLOBAL(0x009DE56C, sint16);
+	ps->attached_ps = NULL;
+	ps->var_20 = NULL;
+	ps->sprite_type = RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8);
+	ps->var_29 = RCT2_GLOBAL(0x9DE571, uint8);
+	ps->map_x = RCT2_GLOBAL(0x9DE574, uint16);
+	ps->map_y = RCT2_GLOBAL(0x9DE576, uint16);
+	ps->mapElement = RCT2_GLOBAL(0x9DE578, rct_map_element*);
+
+	RCT2_GLOBAL(0xF1AD28, paint_struct*) = ps;
+
+	di = ps->attached_y - ps->attached_x + 0x2000;
+	if (di < 0)
+		di = 0;
+
+	di /= 32;
+	if (di > 511)
+		di = 511;
+
+	ps->var_18 = di;
+	paint_struct* old_ps = RCT2_ADDRESS(0x00F1A50C, paint_struct*)[di];
+	RCT2_ADDRESS(0x00F1A50C, paint_struct*)[di] = ps;
+	ps->next_quadrant_ps = old_ps;
+
+	if (di < RCT2_GLOBAL(0x00F1AD0C, sint32)){
+		RCT2_GLOBAL(0x00F1AD0C, sint32) = di;
+	}
+
+	if (di > RCT2_GLOBAL(0x00F1AD10, sint32)){
+		RCT2_GLOBAL(0x00F1AD10, sint32) = di;
+	}
+
+	RCT2_GLOBAL(0xEE7888, paint_struct*) += sizeof(paint_struct);
+	return 0;
+}
 
 /**
 *  Litter Paint Setup
@@ -850,7 +939,7 @@ void viewport_litter_paint_setup(rct_litter* litter, int image_direction, int he
 	RCT2_GLOBAL(0x9DEA54, uint16) = 0xFFFC;
 	RCT2_GLOBAL(0x9DEA56, uint16) = height + 2;
 
-	sub_98197C(0xFF00, image_id, 0, height, 4, 4, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	sub_98197C(0, 0xFF, image_id, 0, height, 4, 4, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 }
 
 
@@ -896,9 +985,9 @@ void sprite_paint_setup(uint16 eax, uint16 ecx){
 		RCT2_GLOBAL(0x9DE578, uint32) = (uint32)spr;
 		int ebp = spr->unknown.sprite_identifier;
 
-		RCT2_GLOBAL(0x9DE568, uint16) = spr->unknown.x;
+		RCT2_GLOBAL(0x9DE568, sint16) = spr->unknown.x;
 		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_SPRITE;
-		RCT2_GLOBAL(0x9DE56C, uint16) = spr->unknown.y;
+		RCT2_GLOBAL(0x9DE56C, sint16) = spr->unknown.y;
 
 		switch (spr->unknown.sprite_identifier){
 		case SPRITE_IDENTIFIER_VEHICLE:
@@ -1113,9 +1202,9 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 	RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 	RCT2_GLOBAL(0x009DEA56, uint16) = height;
 
-	uint16 ax = is_exit ? 0x2300 : 0x3300;
+	sint8 ah = is_exit ? 0x23 : 0x33;
 
-	sub_98197C(ax, image_id, 0, height, 2, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	sub_98197C(0, ah, image_id, 0, height, 2, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 
 	if (transparant_image_id){
 		if (is_exit){
@@ -1128,7 +1217,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height;
 
-		sub_98197C(ax, transparant_image_id, 0, height, 2, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+		sub_98197C(0, ah, transparant_image_id, 0, height, 2, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 	}
 
 	image_id += 4;
@@ -1137,7 +1226,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 	RCT2_GLOBAL(0x009DEA54, uint16) = 28;
 	RCT2_GLOBAL(0x009DEA56, uint16) = height;
 
-	sub_98197C(ax, image_id, 0, height, 2, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	sub_98197C(0, ah, image_id, 0, height, 2, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 
 	if (transparant_image_id){
 		transparant_image_id += 4;
@@ -1145,7 +1234,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 		RCT2_GLOBAL(0x009DEA54, uint16) = 28;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height;
 
-		sub_98197C(ax, transparant_image_id, 0, height, 2, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+		sub_98197C(0, ah, transparant_image_id, 0, height, 2, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 	}
 
 	uint32 eax = 0xFFFF0600 | ((height / 16) & 0xFF);
@@ -1249,7 +1338,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height;
 
-		sub_98197C(0, image_id, 0, height, 0x1C, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+		sub_98197C(0, 0, image_id, 0, height, 0x1C, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 
 		entrance = (rct_entrance_type*)object_entry_groups[OBJECT_TYPE_PARK_ENTRANCE].chunks[0];
 		image_id = (entrance->image_id + direction * 3) | ghost_id;
@@ -1258,7 +1347,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height + 32;
 
-		sub_98197C(0x2F00, image_id, 0, height, 0x1C, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+		sub_98197C(0, 0x2F, image_id, 0, height, 0x1C, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 
 		if ((direction + 1) & (1 << 1))
 			break;
@@ -1302,7 +1391,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 		RCT2_GLOBAL(0x009DEA54, uint16) = 3;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height;
 
-		sub_98197C(0x4F00, image_id, 0, height, di, 0x1A, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+		sub_98197C(0, 0x4F, image_id, 0, height, di, 0x1A, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 		break;
 	}
 
@@ -1362,7 +1451,7 @@ void viewport_entrance_paint_setup(uint8 direction, int height, rct_map_element*
 			RCT2_GLOBAL(0x009DEA56, sint16) = z;
 			RCT2_GLOBAL(0x009DEA56, uint16) += 64;
 
-			sub_98197C(16, image_id, 16, height, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+			sub_98197C(16, 0, image_id, 16, height, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 		}
 	}
 
@@ -1413,11 +1502,11 @@ void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* m
 			0x20000000;
 	}
 
-	sub_98197C(0x1500, image_id, 0, height, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	sub_98197C(0, 0x15, image_id, 0, height, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 	RCT2_GLOBAL(0x9DEA52, uint32) = RCT2_ADDRESS(0x98D888, uint32)[direction * 2];
 
 	image_id++;
-	sub_98197C(0x1500, image_id, 0, height, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	sub_98197C(0, 0x15, image_id, 0, height, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 
 	// Opposite direction
 	direction ^= 2;
@@ -1516,14 +1605,14 @@ void map_element_paint_setup(int x, int y)
 
 			int arrowZ = RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16);
 
-			RCT2_GLOBAL(0x9DE568, uint16) = x;
-			RCT2_GLOBAL(0x9DE56C, uint16) = y;
+			RCT2_GLOBAL(0x9DE568, sint16) = x;
+			RCT2_GLOBAL(0x9DE56C, sint16) = y;
 			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
 			RCT2_GLOBAL(0x9DEA52, uint16) = 0;
 			RCT2_GLOBAL(0x9DEA54, uint16) = 0;
 			RCT2_GLOBAL(0x9DEA56, uint16) = arrowZ + 18;
 
-			sub_98197C(0xFF00, imageId, y & 0xFF00, arrowZ, 32, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32));
+			sub_98197C(0, 0xFF, imageId, y & 0xFF00, arrowZ, 32, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32));
 		}
 		int bx = dx + 52;
 
@@ -1553,9 +1642,9 @@ void map_element_paint_setup(int x, int y)
 		if (dx >= dpi->y)
 			return;
 		
-		RCT2_GLOBAL(0x9DE568, uint16_t) = x;
-		RCT2_GLOBAL(0x9DE56C, uint16_t) = y;
-		RCT2_GLOBAL(0x9DE57C, uint16_t) = 0;
+		RCT2_GLOBAL(0x9DE568, sint16) = x;
+		RCT2_GLOBAL(0x9DE56C, sint16) = y;
+		RCT2_GLOBAL(0x9DE57C, uint16) = 0;
 		do{
 			int direction = (map_element->type + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)) & MAP_ELEMENT_DIRECTION_MASK;
 			int height = map_element->base_height * 8;
@@ -1631,8 +1720,8 @@ void map_element_paint_setup(int x, int y)
 		dx -= 20;
 		dx -= dpi->height;
 		if (dx >= dpi->y) return;
-		RCT2_GLOBAL(0x9DE568, uint16_t) = x;
-		RCT2_GLOBAL(0x9DE56C, uint16_t) = y;
+		RCT2_GLOBAL(0x9DE568, sint16) = x;
+		RCT2_GLOBAL(0x9DE56C, sint16) = y;
 		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_NONE;
 		RCT2_CALLPROC_X((int)RCT2_ADDRESS(0x98196C, uint32_t*)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
 			0xFF00, 3123, y & 0xFF00, 16, 32, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
