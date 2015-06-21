@@ -232,10 +232,10 @@ void theme_rename_preset(int preset, const char *newName)
 		strcat(dest, ".ini");
 		platform_file_move(src, dest);
 
-		strcpy(gConfigThemes.presets[gCurrentTheme].name, newName);
+		strcpy(gConfigThemes.presets[preset].name, newName);
 
 		if (preset == gCurrentTheme) {
-			gConfigInterface.current_theme_preset = gConfigThemes.presets[gCurrentTheme].name;
+			gConfigInterface.current_theme_preset = gConfigThemes.presets[preset].name;
 		}
 	}
 }

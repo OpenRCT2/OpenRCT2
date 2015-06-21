@@ -51,6 +51,7 @@
     <ClCompile Include="..\src\interface\graph.c" />
     <ClCompile Include="..\src\interface\keyboard_shortcut.c" />
     <ClCompile Include="..\src\interface\screenshot.c" />
+    <ClCompile Include="..\src\interface\title_sequences.c" />
     <ClCompile Include="..\src\interface\viewport.c" />
     <ClCompile Include="..\src\interface\viewport_interaction.c" />
     <ClCompile Include="..\src\interface\widget.c" />
@@ -199,6 +200,7 @@
     <ClInclude Include="..\src\interface\graph.h" />
     <ClInclude Include="..\src\interface\keyboard_shortcut.h" />
     <ClInclude Include="..\src\interface\screenshot.h" />
+    <ClInclude Include="..\src\interface\title_sequences.h" />
     <ClInclude Include="..\src\interface\viewport.h" />
     <ClInclude Include="..\src\interface\widget.h" />
     <ClInclude Include="..\src\interface\window.h" />

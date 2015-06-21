@@ -42,6 +42,7 @@
 #include "world/park.h"
 #include "world/scenery.h"
 #include "world/sprite.h"
+#include "title.h"
 
 static const int gRandomShowcase = 0;
 

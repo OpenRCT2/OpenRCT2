@@ -483,6 +483,9 @@
     <ClCompile Include="..\src\windows\title_editor.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\interface\title_sequences.c">
+      <Filter>Source\Interface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">
@@ -706,6 +709,9 @@
     </ClInclude>
     <ClInclude Include="..\test\ride\ride_ratings_test.h">
       <Filter>Test\Ride</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\interface\title_sequences.h">
+      <Filter>Source\Interface</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

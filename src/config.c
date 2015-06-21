@@ -231,6 +231,7 @@ sound_configuration gConfigSound;
 cheat_configuration gConfigCheat;
 twitch_configuration gConfigTwitch;
 themes_configuration gConfigThemes;
+title_sequences_configuration gConfigTitleSequences;
 
 bool config_open(const utf8string path);
 bool config_save(const utf8string path);
