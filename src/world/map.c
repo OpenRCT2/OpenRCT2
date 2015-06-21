@@ -711,7 +711,7 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 	RCT2_GLOBAL(0x009DEA5E, uint16) = x + 16;
 	RCT2_GLOBAL(0x009DEA60, uint16) = y + 16;
 	RCT2_GLOBAL(0x009DEA62, uint16) = z;
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 	
 	if (!(*ebx & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
@@ -833,7 +833,7 @@ void game_command_remove_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	uint8 base_height = *edx;
 	uint8 banner_position = *edx >> 8;
 	int z = base_height * 8;
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
  	RCT2_GLOBAL(0x009DEA5E, uint16) = x + 16;
 	RCT2_GLOBAL(0x009DEA60, uint16) = y + 16;
 	RCT2_GLOBAL(0x009DEA62, uint16) = z;
@@ -875,7 +875,7 @@ void game_command_remove_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi
  */
 void game_command_set_scenery_colour(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 	int x = *eax;
 	int y = *ecx;
 	uint8 base_height = *edx;
@@ -925,7 +925,7 @@ void game_command_set_scenery_colour(int* eax, int* ebx, int* ecx, int* edx, int
  */
 void game_command_set_fence_colour(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 	int x = *eax;
 	int y = *ecx;
 	uint8 map_element_direction = *edx;
@@ -980,7 +980,7 @@ void game_command_set_fence_colour(int* eax, int* ebx, int* ecx, int* edx, int* 
  */
 void game_command_set_large_scenery_colour(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 	int x = *eax;
 	int y = *ecx;
 	uint8 map_element_direction = *ebx >> 8;
@@ -1097,7 +1097,7 @@ void game_command_set_large_scenery_colour(int* eax, int* ebx, int* ecx, int* ed
  */
 void game_command_set_banner_colour(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 	int x = *eax;
 	int y = *ecx;
 	uint8 base_height = *edx;
@@ -1290,7 +1290,7 @@ void game_command_clear_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 /* rct2: 0x00663CCD */
 money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surfaceStyle, uint8 edgeStyle, uint8 flags)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 
 	x0 = max(x0, 32);
 	y0 = max(y0, 32);
@@ -1521,7 +1521,7 @@ money32 raise_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 		}
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 	RCT2_GLOBAL(0x009DEA5E, uint32) = x;
 	RCT2_GLOBAL(0x009DEA60, uint32) = y;
 	RCT2_GLOBAL(0x009DEA62, uint32) = z;
@@ -1585,7 +1585,7 @@ money32 lower_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 		}
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 	RCT2_GLOBAL(0x009DEA5E, uint32) = x;
 	RCT2_GLOBAL(0x009DEA60, uint32) = y;
 	RCT2_GLOBAL(0x009DEA62, uint32) = z;
@@ -1800,7 +1800,7 @@ void game_command_remove_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 	uint8 base_height = (*edx >> 8);
 	uint8 direction = *edx;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 	if(!(*ebx & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode){
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
@@ -1848,7 +1848,7 @@ void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 	RCT2_GLOBAL(0x009DEA5E, uint32) = x + 16;
 	RCT2_GLOBAL(0x009DEA60, uint32) = y + 16;
 	RCT2_GLOBAL(0x009DEA62, uint32) = base_height * 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 	if(RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gConfigCheat.build_in_pause_mode){
 		if(sub_68B044() && x < 8192 && y < 8192){
 			rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
@@ -1923,7 +1923,7 @@ void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi,
  */
 void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 	int x = (uint16)*eax;
 	int y = (uint16)*ecx;
 	uint8 color2 = *edi >> 16;
@@ -2124,17 +2124,16 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	uint8 secondary_colour = *ebp & 0xFF;
 	uint8 tertiary_colour = (*ebp >> 8) & 0xFF;
 	uint8 edge = *edx & 0xFF;
-	//*parameter_1 = (selected_scenery & 0xFF) << 8;
-	//*parameter_2 = cl | (window_scenery_primary_colour << 8);
-	//*parameter_3 = 0;
+
+	// *not used*
 	RCT2_GLOBAL(0x00141F726, uint8) = secondary_colour;
+	// *not used*
 	RCT2_GLOBAL(0x00141F727, uint8) = tertiary_colour;
-	RCT2_GLOBAL(0x00141F56C, uint8) = 0xC;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
+	// Banner index *not used*
 	RCT2_GLOBAL(0x00141F728, uint8) = 0xFF;
-	RCT2_GLOBAL(0x009DEA5E, sint16) = position.x;
-	RCT2_GLOBAL(0x009DEA60, sint16) = position.y;
-	RCT2_GLOBAL(0x009DEA5E, uint16) += 16;
-	RCT2_GLOBAL(0x009DEA60, uint16) += 16;
+	RCT2_GLOBAL(0x009DEA5E, sint16) = position.x + 16;
+	RCT2_GLOBAL(0x009DEA60, sint16) = position.y + 16;
 	RCT2_GLOBAL(0x009DEA62, sint16) = position.z;
 
 	if (position.z == 0){
@@ -2259,11 +2258,12 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 			}
 		}
 	}
-
+	int banner_index = 0xFF;
 	rct_scenery_entry* fence = g_wallSceneryEntries[fence_type];
 	if (fence->wall.var_0D != 0xFF){
-		int banner_index = create_new_banner(fence->wall.var_0D);
+		banner_index = create_new_banner(fence->wall.var_0D);
 
+		RCT2_GLOBAL(0x00141F728, uint8) = banner_index;
 		if (banner_index == 0xFF){
 			*ebx = MONEY32_UNDEFINED;
 			return;
@@ -2330,8 +2330,8 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 		}
 
 		map_element->properties.fence.type = fence_type;
-		if (RCT2_GLOBAL(0x00141F728, uint8) != 0xFF){
-			map_element->properties.fence.item[0] = RCT2_GLOBAL(0x00141F728, uint8);
+		if (banner_index != 0xFF){
+			map_element->properties.fence.item[0] = banner_index;
 		}
 
 		if (fence->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR){
@@ -2360,7 +2360,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
  */
 void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 12;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 	int x = (sint16)*eax;
 	int y = (sint16)*ecx;
 	int z = (sint16)*ebp; 
