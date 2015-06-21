@@ -141,12 +141,13 @@ typedef struct {
 } rct_ride_music;
 
 typedef struct {
-	uint32 var_0;
-	uint32 var_4;
+	uint32 length;
+	uint32 offset;
 	uint8 pathid;	//0x8
 	uint8 var_9;
 } rct_ride_music_info;
 
+extern rct_ride_music_info* ride_music_info_list[];
 extern rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 extern rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
 extern rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
@@ -218,12 +219,9 @@ void audio_init1();
 void audio_init2(int device);
 void audio_close();
 void pause_sounds();
+void toggle_all_sounds();
 void unpause_sounds();
 void stop_vehicle_sounds();
-
-// 0x009AF59C probably does the same job
-// once it's confirmed and calls in pause_sounds() are reversed, it can be used instead of this
-int g_sounds_disabled;
 
 typedef enum {
 	SOUND_LIFT_1 = 0,

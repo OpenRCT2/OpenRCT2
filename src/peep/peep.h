@@ -202,14 +202,16 @@ enum PEEP_STATE {
 	PEEP_STATE_BUYING = 17,
 	PEEP_STATE_WATCHING = 18,
 	PEEP_STATE_EMPTYING_BIN = 19,
-	PEEP_STATE_20 = 20,
+	PEEP_STATE_USING_BIN = 20,
 	PEEP_STATE_WATERING = 21,
 	PEEP_STATE_HEADING_TO_INSPECTION = 22,
 	PEEP_STATE_INSPECTING = 23
 };
 
 enum PEEP_ACTION_EVENTS {	
-	PEEP_ACTION_CHECK_WATCH = 1,
+	PEEP_ACTION_CHECK_TIME = 0,
+	// If no food then check watch
+	PEEP_ACTION_EAT_FOOD = 1,
 	PEEP_ACTION_SHAKE_HEAD = 2,
 	PEEP_ACTION_EMPTY_POCKETS = 3,	
 	PEEP_ACTION_SITTING_EAT_FOOD = 4,
@@ -230,8 +232,13 @@ enum PEEP_ACTION_EVENTS {
 	PEEP_ACTION_STAFF_WATERING = 19,
 	PEEP_ACTION_WAVE = 22,
 	PEEP_ACTION_STAFF_EMPTY_BIN = 23,
+	PEEP_ACTION_WAVE_2 = 24,
 	PEEP_ACTION_TAKE_PHOTO = 25,
 	PEEP_ACTION_CLAP = 26,
+
+	PEEP_ACTION_DRAW_PICTURE = 28,
+
+	PEEP_ACTION_WITHDRAW_MONEY = 30,
 
 	PEEP_ACTION_NONE_1 = 254,
 	PEEP_ACTION_NONE_2 = 255
@@ -258,9 +265,13 @@ enum PEEP_FLAGS {
 	PEEP_FLAGS_EATING = (1 << 17), // Reduces hunger
 	PEEP_FLAGS_EXPLODE = (1 << 18),
 
+	PEEP_FLAGS_21 = (1<<21),
+
 	PEEP_FLAGS_JOY = (1 << 23), // Makes the peep jump in joy
 	PEEP_FLAGS_ANGRY = (1 << 24),
-	PEEP_FLAGS_ICE_CREAM = (1 << 25) // Unconfirmed
+	PEEP_FLAGS_ICE_CREAM = (1 << 25), // Unconfirmed
+
+	PEEP_FLAGS_TWITCH = (1 << 31)		// Added for twitch integration
 };
 
 enum PEEP_NAUSEA_TOLERANCE {
@@ -336,18 +347,21 @@ typedef struct {
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
 	uint8 var_01;
-	uint16 var_02;					// 0x02
+	uint16 next_in_quadrant;		// 0x02
 	uint16 next;					// 0x04
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-	uint8 var_09;					// 0x09
+	// Height from center of sprite to bottom
+	uint8 sprite_height_negative;	// 0x09
 	uint16 sprite_index;			// 0x0A
 	uint16 var_0C;
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
-	uint8 var_14;					// 0x14
-	uint8 var_15;					// 0x15
+	// Width from center of sprite to edge
+	uint8 sprite_width;				// 0x14
+	// Height from center of sprite to top
+	uint8 sprite_height_positive;	// 0x15
 	sint16 sprite_left;				// 0x16
 	sint16 sprite_top;				// 0x18
 	sint16 sprite_right;			// 0x1A
@@ -357,10 +371,11 @@ typedef struct {
 	uint16 name_string_idx;			// 0x22
 	uint16 next_x;					// 0x24
 	uint16 next_y;					// 0x26
-	uint16 next_z;					// 0x28 possibly split into two uint8s
+	uint8 next_z;					// 0x28
+	uint8 next_var_29;				// 0x29
 	uint8 var_2A;
 	uint8 state;					// 0x2B
-	uint8 var_2C;
+	uint8 sub_state;				// 0x2C
 	uint8 sprite_type;				// 0x2D
 	uint8 type;						// 0x2E
 	union{							
@@ -376,18 +391,19 @@ typedef struct {
 	uint8 energy;					// 0x38
 	uint8 energy_growth_rate;		// 0x39
 	uint8 happiness;				// 0x3A
-	sint8 happiness_growth_rate;	// 0x3B
+	uint8 happiness_growth_rate;	// 0x3B
 	uint8 nausea;					// 0x3C
 	uint8 nausea_growth_rate;		// 0x3D
 	uint8 hunger;					// 0x3E
 	uint8 thirst;					// 0x3F
 	uint8 bathroom;					// 0x40
-	uint8 pad_41[0x2];
+	uint8 var_41;
+	uint8 var_42;
 	uint8 intensity;				// 0x43
 	uint8 nausea_tolerance;			// 0x44
 	uint8 var_45;					//		Some sort of flags?
 	money16 paid_on_drink;			// 0x46
-	uint8 pad_48[0x10];
+	uint8 var_48[16];
 	uint32 item_extra_flags;		// 0x58
 	uint8 photo2_ride_ref;			// 0x5C
 	uint8 photo3_ride_ref;			// 0x5D
@@ -398,28 +414,34 @@ typedef struct {
 	uint8 current_train;   	        // 0x6A
 	union{
 		struct{
-			uint8 current_car;				// 0x6B
-			uint8 current_seat;				// 0x6C
+			uint8 current_car;		// 0x6B
+			uint8 current_seat;		// 0x6C
 		};
-		uint16 time_to_sitdown; //0x6B
+		uint16 time_to_sitdown;		//0x6B
 		struct{
 			uint8 time_to_stand;	//0x6B
 			uint8 standing_flags;	//0x6C
 		};
 	};
 	uint8 var_6D;					// 0x6D
-	uint8 var_6E;					// 0x6E
+	uint8 action_sprite_type;		// 0x6E
 	uint8 var_6F;
-	uint8 var_70;
+	uint8 action_sprite_image_offset; // 0x70
 	uint8 action;					// 0x71
 	uint8 action_frame;				// 0x72
 	uint8 var_73;
-	uint16 var_74;
+	union {
+		uint16 var_74; // time getting to ride to fix
+		uint16 next_in_queue;		// 0x74
+	};
 	uint8 var_76;
 	uint8 pad_77;
-	uint8 var_78;
-	uint8 pad_79;
-	uint16 var_7A; // time waiting in line possibly
+	union{
+		uint8 maze_last_edge;			// 0x78
+		uint8 var_78;
+	};
+	uint8 var_79;
+	uint16 time_in_queue;			// 0x7A
 	uint8 rides_been_on[32];		// 0x7C 
 	// 255 bit bitmap of every ride the peep has been on see
 	// window_peep_rides_update for how to use.
@@ -427,9 +449,9 @@ typedef struct {
 	money32 cash_in_pocket;			// 0xA0
 	money32 cash_spent;				// 0xA4
 	sint32 time_in_park;			// 0xA8
-	uint8 var_AC;					// 0xAC
-	uint8 var_AD;					// creation/hire time?
-	uint16 var_AE;
+	sint8 var_AC;					// 0xAC
+	uint8 previous_ride;			// 0xAD
+	uint16 previous_ride_time_out;	// 0xAE
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
 	uint8 var_C4;					// 0xC4
 	union							// 0xC5
@@ -445,10 +467,10 @@ typedef struct {
 	uint32 flags;					// 0xC8
 	uint32 var_CC;
 	uint8 pad_D0[0x10];
-	uint8 var_E0;					// 0xE0
-	uint8 pad_E1;
+	uint8 no_action_frame_no;		// 0xE0
+	uint8 var_E1;
 	uint8 var_E2;					// 0xE2
-	uint8 pad_E3;
+	uint8 var_E3;
 	union{
 		money16 paid_to_enter;			// 0xE4
 		uint16 staff_lawns_mown;		// 0xE4
@@ -470,17 +492,19 @@ typedef struct {
 	uint8 no_of_food;				// 0xEC
 	uint8 no_of_drinks;				// 0xED
 	uint8 no_of_souvenirs;			// 0xEE
-	uint8 pad_EF;
+	uint8 var_EF;
 	uint8 voucher_type;				// 0xF0
 	uint8 voucher_arguments;		// 0xF1 ride_id or string_offset_id
-	uint8 pad_F2;
+	uint8 var_F2;
 	uint8 var_F3;
-	uint8 pad_F4[0x02];
+	uint8 var_F4;
+	uint8 days_in_queue;			// 0xF5
 	uint8 balloon_colour;			// 0xF6
 	uint8 umbrella_colour;			// 0xF7
 	uint8 hat_colour;				// 0xF8
 	uint8 favourite_ride;			// 0xF9
-	uint16 pad_FA;
+	uint8 var_FA;
+	uint8 pad_FB;
 	uint32 item_standard_flags;		// 0xFC
 } rct_peep;
 
@@ -537,6 +561,7 @@ int peep_can_be_picked_up(rct_peep* peep);
 void peep_update_all();
 void peep_problem_warnings_update();
 void peep_update_crowd_noise();
+void peep_update_days_in_queue();
 void peep_applause();
 rct_peep *peep_generate(int x, int y, int z);
 void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argument_2);
@@ -547,6 +572,8 @@ int peep_check_easteregg_name(int index, rct_peep *peep);
 int peep_get_easteregg_name_id(rct_peep *peep);
 int peep_is_mechanic(rct_peep *peep);
 int peep_has_food(rct_peep* peep);
+void peep_sprite_remove(rct_peep* peep);
+void peep_remove(rct_peep* peep);
 
 void peep_window_state_update(rct_peep* peep);
 void peep_decrement_num_riders(rct_peep* peep);
@@ -560,5 +587,7 @@ void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_a
 
 void peep_set_map_tooltip(rct_peep *peep);
 void sub_693B58(rct_peep* peep);
+void remove_peep_from_ride(rct_peep* peep);
+void remove_peep_from_queue(rct_peep* peep);
 
 #endif

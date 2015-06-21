@@ -27,6 +27,7 @@
 #include "../peep/staff.h"
 #include "../sprites.h"
 #include "../world/sprite.h"
+#include "../interface/themes.h"
 
 #define WW 200
 #define WH 100
@@ -51,6 +52,7 @@ static rct_widget window_ride_demolish_widgets[] = {
 
 static void window_ride_demolish_emptysub(){}
 static void window_ride_demolish_mouseup();
+static void window_ride_demolish_invalidate();
 static void window_ride_demolish_paint();
 
 //0x0098E2E4
@@ -80,7 +82,7 @@ static void* window_ride_demolish_events[] = {
 	window_ride_demolish_emptysub,
 	window_ride_demolish_emptysub,
 	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
+	window_ride_demolish_invalidate,
 	window_ride_demolish_paint,
 	window_ride_demolish_emptysub
 };
@@ -93,19 +95,11 @@ void window_ride_demolish_prompt_open(int rideIndex){
 	if (w != NULL)
 		return;
 
-	// Find center of the screen.
-	int screen_height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16);
-	int screen_width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
-	int x = screen_width / 2 - WW / 2;
-	int y = screen_height / 2 - WH / 2;
-
-	w = window_create(x, y, WW, WH, (uint32*)window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, 0);
+	w = window_create_centred(WW, WH, (uint32*)window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
 	w->widgets = window_ride_demolish_widgets;
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_CANCEL) | (1 << WIDX_DEMOLISH);
 	window_init_scroll_widgets(w);
-	w->flags |= WF_TRANSPARENT;
 	w->number = rideIndex;
-	w->colours[0] = 154;
 }
 
 
@@ -128,6 +122,14 @@ static void window_ride_demolish_mouseup(){
 	case WIDX_CLOSE:
 		window_close(w);
 	}
+}
+
+static void window_ride_demolish_invalidate()
+{
+	rct_window *w;
+
+	window_get_register(w);
+	colour_scheme_update(w);
 }
 
 /**

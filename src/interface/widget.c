@@ -24,6 +24,8 @@
 #include "../sprites.h"
 #include "widget.h"
 #include "window.h"
+#include "../platform/platform.h"
+#include "../localisation/localisation.h"
 
 static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
@@ -35,6 +37,7 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widge
 static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_text_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
+static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
@@ -160,6 +163,9 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 		break;
 	case WWT_25:
 		break;
+	case WWT_TEXT_BOX:
+		widget_text_box_draw(dpi, w, widgetIndex);
+		break;
 	}
 }
 
@@ -200,7 +206,7 @@ static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	// Draw the resize sprite at the bottom right corner
 	l = w->x + widget->right - 18;
 	t = w->y + widget->bottom - 18;
-	gfx_draw_sprite(dpi, SPR_RESIZE | 0x20000000 | (colour << 19), l, t, 0);
+	gfx_draw_sprite(dpi, SPR_RESIZE | 0x20000000 | ((colour & 0x7F) << 19), l, t, 0);
 }
 
 /**
@@ -237,7 +243,7 @@ static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 	// Draw the resize sprite at the bottom right corner
 	l = w->x + widget->right - 18;
 	t = w->y + widget->bottom - 18;
-	gfx_draw_sprite(dpi, SPR_RESIZE | 0x20000000 | (colour << 19), l, t, 0);
+	gfx_draw_sprite(dpi, SPR_RESIZE | 0x20000000 | ((colour & 0x7F) << 19), l, t, 0);
 }
 
 /**
@@ -316,7 +322,7 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetInd
 	b = w->y + widget->bottom;
 
 	// Get the colour and image
-	colour = w->colours[widget->colour];
+	colour = w->colours[widget->colour] & 0x7F;
 	image = widget->image + 2;
 
 	// Draw coloured image
@@ -570,7 +576,7 @@ static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 		if (widget_is_disabled(w, widgetIndex))
 			colour |= 0x40;
 		gfx_draw_string_left(dpi, widget->image, (void*)0x013CE952, colour, l, t);
-		textRight = gLastDrawStringX + 1;
+		textRight = l + gfx_get_string_width((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER) + 1;
 	}
 
 	// Border
@@ -651,7 +657,12 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 			press |= 0x80;
 
 		gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
-		gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, 0x2000000 | 47);
+
+		// Black caption bars look slightly green, this fixes that
+		if (colour == 0)
+			gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, *((char*)(0x0141FC46 + (colour * 8))));
+		else
+			gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, 0x2000000 | 47);
 	}
 
 	// Draw text
@@ -793,13 +804,15 @@ static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 	r--;
 	b--;
 
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = 0xE0;
+
 	// Horizontal scrollbar
 	if (scroll->flags & HSCROLLBAR_VISIBLE)
-		widget_hscrollbar_draw(dpi, scroll, l, b - 10, (scroll->flags & VSCROLLBAR_VISIBLE ? r - 10 : r), b, colour);
+		widget_hscrollbar_draw(dpi, scroll, l, b - 10, (scroll->flags & VSCROLLBAR_VISIBLE ? r - 11 : r), b, colour);
 
 	// Vertical scrollbar
 	if (scroll->flags & VSCROLLBAR_VISIBLE)
-		widget_vscrollbar_draw(dpi, scroll, r - 10, t, r, (scroll->flags & HSCROLLBAR_VISIBLE ? b - 10 : b), colour);
+		widget_vscrollbar_draw(dpi, scroll, r - 10, t, r, (scroll->flags & HSCROLLBAR_VISIBLE ? b - 11 : b), colour);
 
 	// Contents
 	if (scroll->flags & HSCROLLBAR_VISIBLE)
@@ -830,11 +843,12 @@ static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 
 	// Draw the scroll contents
 	if (scroll_dpi.width > 0 && scroll_dpi.height > 0)
-		RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_PAINT], 0, 0, 0, 0, (int)w, (int)&scroll_dpi, 0);
+		window_event_scroll_paint_call(w, &scroll_dpi, scrollIndex);
 }
 
 static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, int l, int t, int r, int b, int colour)
 {
+	colour &= 0x7F;
 	// Trough
 	gfx_fill_rect(dpi, l + 10, t, r - 10, b, *((char*)(0x0141FC4B + (colour * 8))));
 	gfx_fill_rect(dpi, l + 10, t, r - 10, b, 0x1000000 | *((char*)(0x0141FC47 + (colour * 8))));
@@ -860,6 +874,7 @@ static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 
 static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, int l, int t, int r, int b, int colour)
 {
+	colour &= 0x7F;
 	// Trough
 	gfx_fill_rect(dpi, l, t + 10, r, b - 10, *((char*)(0x0141FC4B + (colour * 8))));
 	gfx_fill_rect(dpi, l, t + 10, r, b - 10, 0x1000000 | *((char*)(0x0141FC47 + (colour * 8))));
@@ -880,7 +895,7 @@ static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 
 	// Down button
 	gfx_fill_rect_inset(dpi, l, b - 9, r, b, colour, (scroll->flags & VSCROLLBAR_DOWN_PRESSED ? 0x20 : 0));
-	gfx_draw_string(dpi, (char*)0x009DED69, 0, l + 1, b - 8);
+	gfx_draw_string(dpi, (char*)0x009DED69, 0, l + 1, b - 9);
 }
 
 /**
@@ -907,7 +922,7 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	b = w->y + widget->bottom;
 
 	// Get the colour
-	colour = w->colours[widget->colour];
+	colour = w->colours[widget->colour] & 0x7F;
 
 	if (widget->type == WWT_4 || widget->type == WWT_COLORBTN || widget->type == WWT_TRNBTN || widget->type == WWT_TAB)
 		if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
@@ -1111,5 +1126,88 @@ void widget_scroll_get_part(rct_window *w, rct_widget* widget, int x, int y, int
 			*output_x += w->scrolls[*scroll_id].h_left;
 			*output_y += w->scrolls[*scroll_id].v_top;
 		}
+	}
+}
+
+void widget_set_checkbox_value(rct_window *w, int widgetIndex, int value)
+{
+	if (value)
+		w->pressed_widgets |= (1ULL << widgetIndex);
+	else
+		w->pressed_widgets &= ~(1ULL << widgetIndex);
+}
+
+static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
+{
+	rct_widget* widget;
+	int l, t, r, b;
+	uint8 colour;
+	int no_lines = 0;
+	int font_height = 0;
+	char wrapped_string[512];
+
+	// Get the widget
+	widget = &w->widgets[widgetIndex];
+
+	// Resolve the absolute ltrb
+	l = w->x + widget->left;
+	t = w->y + widget->top;
+	r = w->x + widget->right;
+	b = w->y + widget->bottom;
+
+	// Get the colour
+	colour = w->colours[widget->colour];
+
+
+	bool active = w->classification == gCurrentTextBox.window.classification &&
+		w->number == gCurrentTextBox.window.number &&
+		widgetIndex == gCurrentTextBox.widget_index;
+
+	//gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
+	gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x60);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
+
+	if (!active) {
+
+		if (w->widgets[widgetIndex].image != 0) {
+			strcpy(wrapped_string, (char*)w->widgets[widgetIndex].image);
+			gfx_wrap_string(wrapped_string, r - l - 5, &no_lines, &font_height);
+			gfx_draw_string(dpi, wrapped_string, w->colours[1], l + 2, t);
+		}
+		return;
+	}
+
+
+	strcpy(wrapped_string, gTextBoxInput);
+
+	// String length needs to add 12 either side of box
+	// +13 for cursor when max length.
+	gfx_wrap_string(wrapped_string, r - l - 5 - 6, &no_lines, &font_height);
+
+
+	gfx_draw_string(dpi, wrapped_string, w->colours[1], l + 2, t);
+
+
+	int string_length = get_string_length(wrapped_string);
+
+	// Make a copy of the string for measuring the width.
+	char temp_string[512] = { 0 };
+	memcpy(temp_string, wrapped_string, min(string_length, gTextInputCursorPosition));
+	int cur_x = l + gfx_get_string_width(temp_string) + 3;
+
+	int width = 6;
+	if ((uint32)gTextInputCursorPosition < strlen(gTextBoxInput)){
+		// Make a new 1 character wide string for measuring the width
+		// of the character that the cursor is under.
+		temp_string[1] = '\0';
+		temp_string[0] = gTextBoxInput[gTextInputCursorPosition];
+		width = max(gfx_get_string_width(temp_string) - 2, 4);
+	}
+
+	if (gTextBoxFrameNo <= 15){
+		uint8 colour = RCT2_ADDRESS(0x0141FC48, uint8)[w->colours[1] * 8];
+		gfx_fill_rect(dpi, cur_x, t + 9, cur_x + width, t + 9, colour + 5);
 	}
 }

@@ -5,26 +5,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Libraries">
-      <UniqueIdentifier>{29bd2abb-0a50-4c58-9031-bee3f966b249}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Libraries\lodepng">
-      <UniqueIdentifier>{e9219aff-1bb5-4065-8204-427a97344a43}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Libraries\libspeex">
-      <UniqueIdentifier>{3c824fc4-8242-4127-a4b4-248435ff9058}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source">
       <UniqueIdentifier>{4c8348c7-dfe9-4368-9d87-29733fe5950a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Audio">
       <UniqueIdentifier>{8e15cd5b-d7a7-4bda-a58a-e1158ad6ffb4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Data">
-      <UniqueIdentifier>{ee2e3a6f-1209-407b-8000-a6a4b88d28d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Data\Language">
-      <UniqueIdentifier>{b344ca0f-b412-4924-be08-54bb6f83c3dd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Drawing">
       <UniqueIdentifier>{8a9b8831-4ba9-4104-b13f-949981e10c22}</UniqueIdentifier>
@@ -53,49 +38,29 @@
     <Filter Include="Source\Windows">
       <UniqueIdentifier>{81716f5d-b396-4a82-a450-76fee56d982b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Libraries\libspeex\speex">
-      <UniqueIdentifier>{209155b8-2f61-4e25-ab86-c8aa36357abd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Peep">
       <UniqueIdentifier>{51e38783-5334-464c-8f90-61d725dc8013}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Libraries\argparse">
-      <UniqueIdentifier>{7e9587b2-333f-42ca-8a56-b77070828b17}</UniqueIdentifier>
+    <Filter Include="Source\Network">
+      <UniqueIdentifier>{ae88ed08-902b-4167-a78c-9b521ce67749}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test">
+      <UniqueIdentifier>{9b842d7a-225e-4ba9-807d-1cb6ebacbdd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test\Management">
+      <UniqueIdentifier>{73238872-312d-437f-8497-7cb66466d835}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test\Ride">
+      <UniqueIdentifier>{c6b9c169-ff2a-41df-9b1c-47d15763c3e2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">
       <Filter>Resource Files</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\data\language\dutch.txt">
-      <Filter>Source\Data\Language</Filter>
-    </Text>
-    <Text Include="..\data\language\english_uk.txt">
-      <Filter>Source\Data\Language</Filter>
-    </Text>
-    <Text Include="..\data\language\english_us.txt">
-      <Filter>Source\Data\Language</Filter>
-    </Text>
-    <Text Include="..\data\language\german.txt">
-      <Filter>Source\Data\Language</Filter>
-    </Text>
-    <Text Include="..\data\language\french.txt">
-      <Filter>Source\Data\Language</Filter>
-    </Text>
-    <Text Include="..\data\language\hungarian.txt">
-      <Filter>Source\Data\Language</Filter>
-    </Text>
-    <Text Include="..\data\language\polish.txt">
-      <Filter>Source\Data\Language</Filter>
-    </Text>
-    <Text Include="..\data\language\spanish_sp.txt">
-      <Filter>Source\Data\Language</Filter>
-    </Text>
-    <Text Include="..\data\language\swedish.txt">
-      <Filter>Source\Data\Language</Filter>
-    </Text>
+    <None Include="..\curl-ca-bundle.crt">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\management\award.c">
@@ -168,9 +133,6 @@
       <Filter>Source\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\src\windows\game_bottom_toolbar.c">
-      <Filter>Source\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\windows\game_top_toolbar.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\src\windows\guest_list.c">
@@ -254,9 +216,6 @@
     <ClCompile Include="..\src\localisation\language.c">
       <Filter>Source\Localisation</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\osinterface.c">
-      <Filter>Source\Platform</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ride\ride.c">
       <Filter>Source\Ride</Filter>
     </ClCompile>
@@ -277,9 +236,6 @@
     </ClCompile>
     <ClCompile Include="..\src\util\util.c">
       <Filter>Source\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\config.c">
-      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\src\editor.c">
       <Filter>Source</Filter>
@@ -380,77 +336,52 @@
     <ClCompile Include="..\src\drawing\rain.c">
       <Filter>Source\Drawing</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\cmdline.c">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\src\openrct2.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\argparse\argparse.c">
-      <Filter>Libraries\argparse</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\world\fountain.c">
       <Filter>Source\World</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\world\banner.c">
       <Filter>Source\World</Filter>
     </ClCompile>
     <ClCompile Include="..\src\windows\staff_fire_prompt.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\viewport.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\src\windows\text_input.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\map_tooltip.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\demolish_ride_prompt.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\src\windows\sign.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\ride\station.c">
       <Filter>Source\Ride</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\ride_construction.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\interface\keyboard_shortcut.c">
       <Filter>Source\Interface</Filter>
     </ClCompile>
     <ClCompile Include="..\src\interface\viewport_interaction.c">
       <Filter>Source\Interface</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\world\footpath.c">
       <Filter>Source\World</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\diagnostic.c">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
-    <ClCompile Include="..\src\toolbar.c">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\src\windows\editor_bottom_toolbar.c">
@@ -462,14 +393,9 @@
     <ClCompile Include="..\src\windows\editor_object_selection.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\windows\editor_top_toolbar.c">
-      <Filter>Source\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\localisation\user.c">
       <Filter>Source\Localisation</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\libspeex\resample.c;..\lib\lodepng\lodepng.c" />
     <ClCompile Include="..\src\windows\editor_inventions_list.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -477,6 +403,81 @@
       <Filter>Source\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\src\windows\editor_scenario_options.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\world\map_helpers.c">
+      <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\world\mapgen.c">
+      <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\mapgen.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\top_toolbar.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ride\track_data.c">
+      <Filter>Source\Ride</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cursors.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\loadsave.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\config.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\title_options.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\world\map_animation.c">
+      <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\world\scenery.c">
+      <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\rct1.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\install_track.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cmdline_sprite.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\land_rights.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interface\console.c">
+      <Filter>Source\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\network\twitch.cpp">
+      <Filter>Source\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\network\http.cpp">
+      <Filter>Source\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interface\themes.c">
+      <Filter>Source\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\themes.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\test\tests.c">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\test\management\finance_test.c">
+      <Filter>Test\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="..\test\ride\ride_ratings_test.c">
+      <Filter>Test\Ride</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\tile_inspector.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\changelog.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
   </ItemGroup>
@@ -535,9 +536,6 @@
     <ClInclude Include="..\src\windows\error.h">
       <Filter>Source\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\windows\scenery.h">
-      <Filter>Source\Windows</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\windows\tooltip.h">
       <Filter>Source\Windows</Filter>
     </ClInclude>
@@ -549,9 +547,6 @@
     </ClInclude>
     <ClInclude Include="..\src\localisation\string_ids.h">
       <Filter>Source\Localisation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\platform\osinterface.h">
-      <Filter>Source\Platform</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ride\ride.h">
       <Filter>Source\Ride</Filter>
@@ -634,27 +629,6 @@
     <ClInclude Include="..\src\localisation\format_codes.h">
       <Filter>Source\Localisation</Filter>
     </ClInclude>
-    <ClInclude Include="..\lib\lodepng\lodepng.h">
-      <Filter>Libraries\lodepng</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\libspeex\arch.h">
-      <Filter>Libraries\libspeex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\libspeex\config.h">
-      <Filter>Libraries\libspeex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\libspeex\os_support.h">
-      <Filter>Libraries\libspeex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\libspeex\stack_alloc.h">
-      <Filter>Libraries\libspeex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\libspeex\speex\speex_resampler.h">
-      <Filter>Libraries\libspeex\speex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\libspeex\speex\speex_types.h">
-      <Filter>Libraries\libspeex\speex</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\peep\peep.h">
       <Filter>Source\Peep</Filter>
     </ClInclude>
@@ -669,9 +643,6 @@
     </ClInclude>
     <ClInclude Include="..\src\openrct2.h">
       <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\argparse\argparse.h">
-      <Filter>Libraries\argparse</Filter>
     </ClInclude>
     <ClInclude Include="..\src\world\banner.h">
       <Filter>Source\World</Filter>
@@ -688,8 +659,50 @@
     <ClInclude Include="..\src\diagnostic.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\toolbar.h">
+    <ClInclude Include="..\src\rct1.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\world\mapgen.h">
+      <Filter>Source\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\world\map_helpers.h">
+      <Filter>Source\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ride\track_data.h">
+      <Filter>Source\Ride</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\world\entrance.h">
+      <Filter>Source\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\world\water.h">
+      <Filter>Source\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\world\map_animation.h">
+      <Filter>Source\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\world\fountain.h">
+      <Filter>Source\World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\interface\console.h">
+      <Filter>Source\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\network\http.h">
+      <Filter>Source\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\network\twitch.h">
+      <Filter>Source\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\interface\themes.h">
+      <Filter>Source\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\test\tests.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\test\management\finance_test.h">
+      <Filter>Test\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="..\test\ride\ride_ratings_test.h">
+      <Filter>Test\Ride</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

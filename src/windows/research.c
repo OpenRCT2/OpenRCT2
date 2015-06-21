@@ -30,6 +30,7 @@
 #include "../sprites.h"
 #include "../world/scenery.h"
 #include "dropdown.h"
+#include "../interface/themes.h"
 
 enum {
 	WINDOW_RESEARCH_PAGE_DEVELOPMENT,
@@ -235,9 +236,6 @@ void window_research_open()
 		w->page = 0;
 		w->frame_no = 0;
 		w->disabled_widgets = 0;
-		w->colours[0] = 1;
-		w->colours[1] = 19;
-		w->colours[2] = 19;
 		research_update_uncompleted_types();
 	}
 
@@ -249,7 +247,7 @@ void window_research_open()
 
 	w->widgets = window_research_page_widgets[0];
 	w->enabled_widgets = window_research_page_enabled_widgets[0];
-	w->var_020 = RCT2_GLOBAL(0x00988E3C, uint32);
+	w->hold_down_widgets = 0;
 	w->event_handlers = window_research_page_events[0];
 	w->pressed_widgets = 0;
 	w->disabled_widgets = 0;
@@ -304,6 +302,7 @@ static void window_research_development_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	if (w->widgets != window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT]) {
 		w->widgets = window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT];
@@ -339,42 +338,56 @@ static void window_research_development_paint()
 	x = w->x + 10;
 	y = w->y + window_research_development_widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].top + 12;
 
-	// Research type
-	stringId = STR_RESEARCH_UNKNOWN;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) != 0) {
-		stringId = STR_TRANSPORT_RIDE + RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_CATEGORY, uint8);
-		if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) != 1) {
-			uint32 typeId = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, uint32);
-			if (typeId >= 0x10000) {
-				rct_ride_type *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, rct_ride_type*);
-				stringId = rideEntry->var_008 & 0x1000 ?
-					rideEntry->name :
-					((typeId >> 8) & 0xFF) + 2;
-			} else {
-				stringId = g_scenerySetEntries[typeId]->name;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) == RESEARCH_STAGE_FINISHED_ALL){
+		stringId = STR_RESEARCH_UNKNOWN;
+		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, 0);
+		y += 25;
+		// Progress
+		stringId = 2680;
+		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, 0);
+		y += 15;
+
+		RCT2_GLOBAL(0x013CE952, uint16) = STR_UNKNOWN;
+		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, (void*)0x013CE952, 0, x, y);
+	}
+	else{
+		// Research type
+		stringId = STR_RESEARCH_UNKNOWN;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) != 0) {
+			stringId = STR_TRANSPORT_RIDE + RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_CATEGORY, uint8);
+			if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) != 1) {
+				uint32 typeId = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, uint32);
+				if (typeId >= 0x10000) {
+					rct_ride_type *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, rct_ride_type*);
+					stringId = rideEntry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME ?
+						rideEntry->name :
+						((typeId >> 8) & 0xFF) + 2;
+				}
+				else {
+					stringId = g_scenerySetEntries[typeId]->name;
+				}
 			}
 		}
-	}
-	gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, 0);
-	y += 25;
+		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, 0);
+		y += 25;
 
-	// Progress
-	stringId = 2285 + RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8);
-	gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, 0);
-	y += 15;
+		// Progress
+		stringId = 2285 + RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8);
+		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, 0);
+		y += 15;
 
-	// Expected
-	RCT2_GLOBAL(0x013CE952, uint16) = STR_UNKNOWN;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) != 0) {
-		uint16 expectedDay = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_DAY, uint8);
-		if (expectedDay != 255) {
-			RCT2_GLOBAL(0x013CE952 + 2, uint16) = STR_DATE_DAY_1 + expectedDay;
-			RCT2_GLOBAL(0x013CE952 + 4, uint16) = STR_MONTH_MARCH + RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_MONTH, uint8);
-			RCT2_GLOBAL(0x013CE952, uint16) = 2289;
+		// Expected
+		RCT2_GLOBAL(0x013CE952, uint16) = STR_UNKNOWN;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) != 0) {
+			uint16 expectedDay = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_DAY, uint8);
+			if (expectedDay != 255) {
+				RCT2_GLOBAL(0x013CE952 + 2, uint16) = STR_DATE_DAY_1 + expectedDay;
+				RCT2_GLOBAL(0x013CE952 + 4, uint16) = STR_MONTH_MARCH + RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_MONTH, uint8);
+				RCT2_GLOBAL(0x013CE952, uint16) = 2289;
+			}
 		}
+		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, (void*)0x013CE952, 0, x, y);
 	}
-	gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, (void*)0x013CE952, 0, x, y);
-
 	// Last development
 	x = w->x + 10;
 	y = w->y + window_research_development_widgets[WIDX_LAST_DEVELOPMENT_GROUP].top + 12;
@@ -384,7 +397,7 @@ static void window_research_development_paint()
 	if (typeId != 0xFFFFFFFF) {
 		if (typeId >= 0x10000) {
 			rct_ride_type *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, rct_ride_type*);
-			stringId = rideEntry->var_008 & 0x1000 ?
+			stringId = rideEntry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME ?
 				rideEntry->name :
 				((typeId >> 8) & 0xFF) + 2;
 
@@ -430,7 +443,7 @@ static void window_research_funding_mouseup()
 	case WIDX_SCENERY_AND_THEMING:
 		activeResearchTypes = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16);
 		activeResearchTypes ^= 1 << (widgetIndex - WIDX_TRANSPORT_RIDES);
-		game_do_command(0, (1 << 8) | 1, 0, activeResearchTypes, GAME_COMMAND_SET_RESEARCH_FUNDING, 0, 0);
+		research_set_priority(activeResearchTypes);
 		break;
 	}
 }
@@ -458,7 +471,7 @@ static void window_research_funding_mousedown(int widgetIndex, rct_window *w, rc
 		w->y + dropdownWidget->top,
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
-		0x80,
+		DROPDOWN_FLAG_STAY_OPEN,
 		4,
 		dropdownWidget->right - dropdownWidget->left - 3
 	);
@@ -482,7 +495,7 @@ static void window_research_funding_dropdown()
 	if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON || dropdownIndex == -1)
 		return;
 
-	game_do_command(0, 1, 0, dropdownIndex, GAME_COMMAND_SET_RESEARCH_FUNDING, 0, 0);
+	research_set_funding(dropdownIndex);
 	window_invalidate(w);
 }
 
@@ -507,6 +520,7 @@ static void window_research_funding_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	if (w->widgets != window_research_page_widgets[WINDOW_RESEARCH_PAGE_FUNDING]) {
 		w->widgets = window_research_page_widgets[WINDOW_RESEARCH_PAGE_FUNDING];
@@ -515,8 +529,9 @@ static void window_research_funding_invalidate()
 
 	window_research_set_pressed_tab(w);
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
-		window_research_funding_widgets[WIDX_FUNDING_GROUP].type = WWT_EMPTY;
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) || 
+		(RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) == RESEARCH_STAGE_FINISHED_ALL)) {
+		//window_research_funding_widgets[WIDX_FUNDING_GROUP].type = WWT_EMPTY;
 		window_research_funding_widgets[WIDX_RESEARCH_FUNDING].type = WWT_EMPTY;
 		window_research_funding_widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WWT_EMPTY;
 	} else {
@@ -591,7 +606,7 @@ static void window_research_set_page(rct_window *w, int page)
 	}
 
 	w->enabled_widgets = window_research_page_enabled_widgets[page];
-	w->var_020 = RCT2_ADDRESS(0x00988E3C, uint32)[page];
+	w->hold_down_widgets = 0;
 	w->event_handlers = window_research_page_events[page];
 	w->widgets = window_research_page_widgets[page];
 	w->disabled_widgets = 0;
@@ -605,8 +620,8 @@ static void window_research_set_page(rct_window *w, int page)
 		w->width = 320;
 		w->height = 207;
 	}
-	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
-	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	window_event_resize_call(w);
+	window_event_invalidate_call(w);
 
 	window_init_scroll_widgets(w);
 	window_invalidate(w);

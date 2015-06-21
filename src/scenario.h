@@ -21,8 +21,16 @@
 #ifndef _SCENARIO_H_
 #define _SCENARIO_H_
 
-#include "rct2.h"
+#include "common.h"
+#include "management/award.h"
+#include "management/news_item.h"
+#include "management/research.h"
+#include "ride/ride.h"
 #include "object.h"
+#include "platform/platform.h"
+#include "world/banner.h"
+#include "world/map.h"
+#include "world/sprite.h"
 
 /**
  * SV6/SC6 header chunk
@@ -83,7 +91,16 @@ typedef struct {
 	char completed_by[64];		// 0x0270
 } rct_scenario_basic;
 
-/* This will be useful for backwards compatibility
+typedef struct {
+	rct_string_id scenario_name;	// 0x00
+	rct_string_id park_name;		// 0x02
+	rct_string_id details;			// 0x04
+	uint8 var_06;
+} rct_stex_entry;
+
+#define g_stexEntries ((rct_stex_entry**)object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].chunks)
+
+// This will be useful for backwards compatibility
 typedef struct {
 	// SC6[0]
 	rct_s6_header header;
@@ -121,21 +138,21 @@ typedef struct {
 	uint16 word_013573CE;
 	uint16 word_013573D0;
 	uint8 pad_013573D2[2];
-	uint16 word_013573D4;
-	uint8 pad_013573D6[4];
-	uint32 dword_013573D8;
-	uint32 dword_013573DC;
+	rct_string_id park_name;
+	uint8 pad_013573D6[2];
+	uint32 park_name_args;
+	money32 initial_cash;
 	money32 current_loan;
 	uint32 park_flags;
 	money16 park_entrance_fee;
 	uint16 word_013573EA;
 	uint16 word_013573EC;
-	uint8 pad_013573EE[16];
+	uint8 pad_013573EE[2];
 	uint8 byte_013573F0;
-	uint8 pad_013573F1[2];
+	uint8 pad_013573F1;
 	rct2_peep_spawn peep_spawns[2];
 	uint8 guest_count_change_modifier;
-	uint8 byte_013573FF;
+	uint8 current_research_level;
 	uint8 pad_01357400[4];
 	uint32 dword_01357404;
 	uint32 dword_01357408;
@@ -180,22 +197,22 @@ typedef struct {
 	uint8 research_progress_stage;
 	uint32 dword_01357CF4;
 	uint8 byte_01357CF8[1000];
-	uint32 dword_013580E0;
+	uint32 next_research_item;
 	uint16 research_progress;
 	uint8 next_research_category;
 	uint8 next_research_expected_day;
 	uint8 next_research_expected_month;
-	uint8 byte_013580E9;
+	uint8 guest_initial_happiness;
 	uint16 park_size;
 	uint16 guest_generation_probability;
 	uint16 total_ride_value;
-	uint32 dword_013580F0;
-	uint16 dword_013580F4;
-	uint8 dword_013580F6;
-	uint8 dword_013580F7;
+	money32 maximum_loan;
+	money16 guest_initial_cash;
+	uint8 guest_initial_hunger;
+	uint8 guest_initial_thirst;
 	uint8 objective_type;
 	uint8 objective_year;
-	uint8 pad_013580FA[4];
+	uint8 pad_013580FA[2];
 	money32 objective_currency;
 	uint16 objective_guests;
 	uint8 campaign_weeks_left[20];
@@ -212,71 +229,62 @@ typedef struct {
 	uint8 pad_0135833A[2];
 
 	// Ignored in scenario
-	uint8 pad_0135833C[2];
-	money32 park_value;
-	money32 park_value_history[128];
+	money32 weekly_profit_history[128];
 
 	// SC6[12]
+	money32 park_value;
+
+	// Ignored in scenario
+	money32 park_value_history[128];
+
+	// SC6[13]
 	money32 completed_company_value;
 	uint32 total_admissions;
 	money32 income_from_admissions;
 	money32 company_value;
 	uint8 byte_01358750[16];
 	rct_award awards[4];
-	uint16 word_01358770;
-	uint16 word_01358772;
+	money16 land_price;
+	money16 construction_rights_price;
 	uint16 word_01358774;
-	uint8 pad_01358776[4];
+	uint8 pad_01358776[2];
 	uint32 dword_01358778[17];
 	uint32 dword_013587BC;
 	uint32 dword_013587C0;
 	uint32 dword_013587C4;
 	uint16 dword_013587C8;
-	uint8 pad_013587CA[16];
+	uint8 pad_013587CA[6];
 	uint32 dword_013587D0;
-	uint8 pad_013587D4[8];
-	uint16 word_013587D8[16];
+	uint8 pad_013587D4[4];
+	char scenario_completed_name[32];
 	money32 cash;
 	uint8 pad_013587FC[50];
 	uint16 word_0135882E;
-	uint16 word_01358830;
-	uint16 word_01358832;
+	uint16 map_size_units;
+	uint16 map_size_minus_2;
 	uint16 map_size;
-	uint16 word_01358836;
+	uint16 map_max_xy;
 	uint32 word_01358838;
 	uint16 suggested_max_guests;
-	uint16 word_0135883E;
+	uint16 park_rating_warning_days;
 	uint8 word_01358840;
-	uint8 word_01358841;
-	uint8 pad_01358842[4];
-	uint32 dword_01358844;
-	uint8 pad_01358848;
-	uint32 dword_01358849;
-	uint8 pad_0135884D[2];
-	uint8 dword_0135884E[622];
-	uint8 pad_01359206[2];
+	uint8 rct1_water_colour;
+	uint8 pad_01358842[2];
+	rct_research_item research_items[500];
 	uint16 word_01359208;
 	char scenario_name[64];
 	char scenario_description[255];
 	uint8 byte_01359349;
-	uint8 byte_0135934A;
-	uint8 pad_0135934B[3];
+	uint8 current_interest_rate;
+	uint8 pad_0135934B;
 	uint32 dword_0135934C;
 	uint16 park_entrance_x[4];
 	uint16 park_entrance_y[4];
 	uint16 park_entrance_z[4];
-	uint8 byte_01359368;
-	uint8 pad_01359369[3];
-	uint8 byte_0135936C[256];
-	uint8 byte_0135946C[3256];
-	uint8 byte_0135A124;
-	uint8 byte_0135A125;
-	uint16 word_0135A126;
-	uint8 byte_0135A128;
-	uint8 byte_0135A129;
-	uint8 byte_0135A12A;
-	uint8 byte_0135A12B[793];
-	uint8 byte_0135A444[1200];
+	uint8 park_entrance_direction[4];
+	uint8 scenario_filename[256];
+	uint8 saved_expansion_pack_names[3256];
+	rct_banner banners[250];
 	char custom_strings[0x8000];
 	uint32 game_ticks_1;
 	rct_ride rides[255];
@@ -284,18 +292,18 @@ typedef struct {
 	uint16 saved_view_x;
 	uint16 saved_view_y;
 	uint16 saved_view_zoom_and_rotation;
-	uint8 byte_013886A0[6000];
+	uint8 map_animations[6000];
 	uint8 byte_01389E10[6000];
-	uint16 word_0138B580;
-	uint8 pad_0138B580[2];
+	uint16 num_map_animations;
+	uint8 pad_0138B582[2];
 	uint16 word_0138B584;
 	uint16 word_0138B586;
 	uint16 word_0138B588;
 	uint16 word_0138B58A;
 	uint16 word_0138B58C;
 	uint16 word_0138B58E;
-	uint8 byte_0138B590;
-	uint8 byte_0138B591;
+	uint8 ride_ratings_current_ride;
+	uint8 ride_ratings_state;
 	uint8 byte_0138B592;
 	uint8 byte_0138B593;
 	uint16 word_0138B594;
@@ -329,17 +337,17 @@ typedef struct {
 	uint16 word_0138B5CC;
 	uint16 word_0138B5CE[31];
 	uint8 ride_measurements[0x25860];
-	uint32 dword_13B0E6C;
-	uint16 word_13B0E70;
-	uint32 dword_13B0E72[0x6600]; // 512 bytes per staff peep
+	uint32 next_guest_index;
+	uint16 grass_and_scenery_tilepos;
+	uint32 patrol_areas[0x6600]; // 512 bytes per staff peep
 	uint8 byte_13CA672[116];
 	uint8 byte_13CA6E6[84];
 	uint8 byte_13CA73A[4];
 	uint8 unk_13CA73E;
-	uint8 pad_13CA73E;
+	uint8 pad_13CA73F;
 	uint8 byte_13CA740;
 	uint8 byte_13CA741;
-	uint8 byte_13CA7424[4];
+	uint8 byte_13CA742[4];
 	uint8 climate;
 	uint8 pad_013CA747;
 	uint16 climate_update_timer;
@@ -357,9 +365,9 @@ typedef struct {
 	uint8 byte_13CE730[64];
 	uint32 dword_13CE770;
 	uint16 word_13CE774;
-	uint16 word_13CE776[217];
+	uint16 word_13CE776;
+	uint8 pad_13CE778[434];
 } rct_s6_data;
-*/
 
 enum {
 	SCENARIO_FLAGS_VISIBLE = (1 << 0),
@@ -403,8 +411,11 @@ extern int gScenarioListCount;
 extern int gScenarioListCapacity;
 extern rct_scenario_basic *gScenarioList;
 
+extern char gScenarioSaveName[MAX_PATH];
+
 int scenario_scores_save();
 void scenario_load_list();
+rct_scenario_basic *get_scenario_by_filename(const char *filename);
 int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info);
 int scenario_load(const char *path);
 int scenario_load_and_play(const rct_scenario_basic *scenario);
@@ -413,6 +424,10 @@ void scenario_update();
 unsigned int scenario_rand();
 int scenario_prepare_for_save();
 int scenario_save(char *path, int flags);
+bool scenario_save_s6(char *path, rct_s6_data *s6);
+void scenario_set_filename(const char *value);
+void scenario_failure();
+void scenario_success();
 void scenario_success_submit_name(const char *name);
 
 #endif

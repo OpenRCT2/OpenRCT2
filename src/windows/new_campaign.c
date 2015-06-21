@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
@@ -26,6 +27,7 @@
 #include "../management/marketing.h"
 #include "../ride/ride.h"
 #include "dropdown.h"
+#include "../interface/themes.h"
 
 #define SELECTED_RIDE_UNDEFINED ((uint16)0xFFFF)
 
@@ -100,13 +102,13 @@ static void* window_new_campaign_events[] = {
 uint8 window_new_campaign_rides[MAX_RIDES];
 uint8 window_new_campaign_shop_items[64];
 
-int ride_reliability_compare(const void *a, const void *b)
+int ride_value_compare(const void *a, const void *b)
 {
 	rct_ride *rideA, *rideB;
 
 	rideA = GET_RIDE(*((uint8*)a));
 	rideB = GET_RIDE(*((uint8*)b));
-	return rideB->reliability - rideA->reliability;
+	return rideB->value - rideA->value;
 }
 
 int ride_name_compare(const void *a, const void *b)
@@ -129,8 +131,6 @@ int ride_name_compare(const void *a, const void *b)
  */
 void window_new_campaign_open(sint16 campaignType)
 {
-	// RCT2_CALLPROC_X(0x0069E16F, campaignType, 0, 0, 0, 0, 0, 0);
-
 	rct_window *w;
 	rct_ride *ride;
 	int i, numApplicableRides;
@@ -152,11 +152,10 @@ void window_new_campaign_open(sint16 campaignType)
 		(1 << WIDX_WEEKS_INCREASE_BUTTON) |
 		(1 << WIDX_WEEKS_DECREASE_BUTTON) |
 		(1 << WIDX_START_BUTTON);
-	w->var_020 = 0x300;
+	w->hold_down_widgets =
+		(1 << WIDX_WEEKS_INCREASE_BUTTON) |
+		(1 << WIDX_WEEKS_DECREASE_BUTTON);
 	window_init_scroll_widgets(w);
-	w->colours[0] = 19;
-	w->colours[1] = 19;
-	w->colours[2] = 19;
 
 	window_new_campaign_widgets[WIDX_TITLE].image = STR_MARKETING_VOUCHERS_FOR_FREE_ENTRY_TO_THE_PARK + campaignType;
 
@@ -173,19 +172,20 @@ void window_new_campaign_open(sint16 campaignType)
 	numApplicableRides = 0;
 	window_new_campaign_rides[0] = 255;
 	FOR_ALL_RIDES(i, ride) {
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x03820000))
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_23 | RIDE_TYPE_FLAG_SELLS_DRINKS | RIDE_TYPE_FLAG_IS_BATHROOM))
 			window_new_campaign_rides[numApplicableRides++] = i;
 	}
-	window_new_campaign_rides[numApplicableRides] = 255;
 
 	// Take top 40 most reliable rides
 	if (numApplicableRides > 40) {
-		qsort(window_new_campaign_rides, countof(window_new_campaign_rides), sizeof(uint8), ride_reliability_compare);
+		qsort(window_new_campaign_rides, countof(window_new_campaign_rides), sizeof(uint8), ride_value_compare);
 		numApplicableRides = 40;
 	}
 
 	// Sort rides by name
 	qsort(window_new_campaign_rides, numApplicableRides, sizeof(uint8), ride_name_compare);
+
+	window_new_campaign_rides[numApplicableRides] = 255;
 }
 
 /**
@@ -232,8 +232,7 @@ static void window_new_campaign_mouseup()
 		window_close(w);
 		break;
 	case WIDX_START_BUTTON:
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_START_MARKETING_CAMPAIGN;
-		game_do_command(0, (w->campaign.no_weeks << 8) | 1, 0, (w->campaign.ride_id << 8) | w->campaign.campaign_type, GAME_COMMAND_START_MARKETING_CAMPAIGN, 0, 0);
+		marketing_start_campaign(w->campaign.campaign_type, w->campaign.ride_id, w->campaign.no_weeks);
 		window_close(w);
 		break;
 	}
@@ -273,34 +272,32 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
 					w->y + dropdownWidget->top,
 					dropdownWidget->bottom - dropdownWidget->top + 1,
 					w->colours[1],
-					0x80,
+					DROPDOWN_FLAG_STAY_OPEN,
 					numItems,
 					dropdownWidget->right - dropdownWidget->left - 3
 				);
 			}
 		} else {
-			if (window_new_campaign_rides[0] != 255) {
-				int numItems = 0;
-				for (int i = 0; i < 40; i++) {
-					if (window_new_campaign_rides[i] == 255)
-						break;
+			int numItems = 0;
+			for (int i = 0; i < 40; i++) {
+				if (window_new_campaign_rides[i] == 255)
+					break;
 
-					rct_ride *ride = GET_RIDE(window_new_campaign_rides[i]);
-					gDropdownItemsFormat[i] = 1142;
-					gDropdownItemsArgs[i] = (ride->name_arguments << 16) | ride->name;
-					numItems++;
-				}
-
-				window_dropdown_show_text_custom_width(
-					w->x + dropdownWidget->left,
-					w->y + dropdownWidget->top,
-					dropdownWidget->bottom - dropdownWidget->top + 1,
-					w->colours[1],
-					0x80,
-					numItems,
-					dropdownWidget->right - dropdownWidget->left - 3
-				);
+				rct_ride *ride = GET_RIDE(window_new_campaign_rides[i]);
+				gDropdownItemsFormat[i] = 1142;
+				gDropdownItemsArgs[i] = ((uint64)ride->name_arguments << 16ULL) | ride->name;
+				numItems++;
 			}
+
+			window_dropdown_show_text_custom_width(
+				w->x + dropdownWidget->left,
+				w->y + dropdownWidget->top,
+				dropdownWidget->bottom - dropdownWidget->top + 1,
+				w->colours[1],
+				DROPDOWN_FLAG_STAY_OPEN,
+				numItems,
+				dropdownWidget->right - dropdownWidget->left - 3
+			);
 		}
 		break;
 	case WIDX_WEEKS_INCREASE_BUTTON:
@@ -349,6 +346,7 @@ static void window_new_campaign_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	window_new_campaign_widgets[WIDX_RIDE_LABEL].type = WWT_EMPTY;
 	window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WWT_EMPTY;

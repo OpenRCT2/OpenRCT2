@@ -35,13 +35,14 @@ enum {
 	PARK_FLAGS_FORBID_HIGH_CONSTRUCTION = (1 << 5), // below tree height
 	PARK_FLAGS_PREF_LESS_INTENSE_RIDES = (1 << 6),
 	PARK_FLAGS_FORBID_MARKETING_CAMPAIGN = (1 << 7),
-	PARK_FLAGS_PREF_MORE_INTENSE_RIDES = (1 << 8),
+	PARK_FLAGS_PREF_MORE_INTENSE_RIDES = (1 << 9),
 	PARK_FLAGS_NO_MONEY = (1 << 11),
 	PARK_FLAGS_DIFFICULT_GUEST_GENERATION = (1 << 12),
 	PARK_FLAGS_PARK_FREE_ENTRY = (1 << 13),
 	PARK_FLAGS_DIFFICULT_PARK_RATING = (1 << 14),
 	PARK_FLAGS_NO_MONEY_SCENARIO = (1 << 17),  // equivalent to PARK_FLAGS_NO_MONEY, but used in scenario editor
-	PARK_FLAGS_18 = (1 << 18)
+	PARK_FLAGS_18 = (1 << 18),
+	PARK_FLAGS_SIX_FLAGS = (1 << 19)
 };
 
 int park_is_open();
@@ -60,6 +61,17 @@ void park_update_histories();
 
 uint8 calculate_guest_initial_happiness(uint8 percentage);
 
-void game_command_set_park_entrance_fee();
+void park_set_open(int open);
+int park_get_entrance_index(int x, int y, int z);
+void park_set_name(const char *name);
+void park_set_entrance_fee(money32 value);
+
+void game_command_set_park_entrance_fee(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_set_park_open(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_remove_park_entrance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_buy_land_rights(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+
+void gfx_invalidate_viewport_tile(int x, int y, int z0, int z1);
 
 #endif

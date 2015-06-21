@@ -25,6 +25,7 @@
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "../world/map.h"
+#include "../interface/themes.h"
 
 enum WINDOW_WATER_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -53,6 +54,8 @@ static void window_water_mouseup();
 static void window_water_update();
 static void window_water_invalidate();
 static void window_water_paint();
+static void window_water_textinput();
+static void window_water_inputsize(rct_window *w);
 
 static void* window_water_events[] = {
 	window_water_close,
@@ -74,7 +77,7 @@ static void* window_water_events[] = {
 	window_water_emptysub,
 	window_water_emptysub,
 	window_water_emptysub,
-	window_water_emptysub,
+	window_water_textinput,
 	window_water_emptysub,
 	window_water_emptysub,
 	window_water_emptysub,
@@ -97,17 +100,22 @@ void window_water_open()
 	if (window_find_by_class(WC_WATER) != NULL)
 		return;
 
-	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 76, 29, 76, 77, (uint32*)window_water_events, WC_WATER, 0);
+	window = window_create(
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 76,
+		29,
+		76,
+		77,
+		(uint32*)window_water_events,
+		WC_WATER,
+		0
+	);
 	window->widgets = window_water_widgets;
-	window->enabled_widgets = 0x04 | 0x10 | 0x20;
+	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW);
 	window_init_scroll_widgets(window);
 	window_push_others_below(window);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) = MONEY32_UNDEFINED;
 	RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) = MONEY32_UNDEFINED;
-	window->colours[0] = 24;
-	window->colours[1] = 24;
-	window->colours[2] = 24;
 }
 
 /**
@@ -162,7 +170,40 @@ static void window_water_mouseup()
 		// Invalidate the window
 		window_invalidate(w);
 		break;
+	case WIDX_PREVIEW:
+		window_water_inputsize(w);
+		break;
 	}
+}
+
+static void window_water_textinput()
+{
+	uint8 result;
+	short widgetIndex;
+	rct_window *w;
+	char *text;
+	int size;
+	char* end;
+
+	window_textinput_get_registers(w, widgetIndex, result, text);
+
+	if (widgetIndex != WIDX_PREVIEW || !result)
+		return;
+
+	size = strtol(text, &end, 10);
+	if (*end == '\0') {
+		if (size < 1) size = 1;
+		if (size > 64) size = 64;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
+		window_invalidate(w);
+	}
+}
+
+static void window_water_inputsize(rct_window *w)
+{
+	((uint16*)TextInputDescriptionArgs)[0] = 1;
+	((uint16*)TextInputDescriptionArgs)[1] = 64;
+	window_text_input_open(w, WIDX_PREVIEW, 5128, 5129, STR_NONE, STR_NONE, 3);
 }
 
 /**
@@ -185,6 +226,7 @@ static void window_water_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	// Set the preview image button to be pressed down
 	w->pressed_widgets |= (1 << WIDX_PREVIEW);

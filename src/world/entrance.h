@@ -1,5 +1,5 @@
 /*****************************************************************************
-* Copyright (c) 2014 Dániel Tar
+* Copyright (c) 2014 Ted John
 * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
 *
 * This file is part of OpenRCT2.
@@ -18,22 +18,16 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#ifndef _WINDOW_SCENERY_H_
-#define _WINDOW_SCENERY_H_
+#ifndef _ENTRANCE_H_
+#define _ENTRANCE_H_
 
-#define WINDOW_SCENERY_WIDTH 0x27A
-#define WINDOW_SCENERY_HEIGHT 0x8E
-#define SCENERY_BUTTON_WIDTH 66
-#define SCENERY_BUTTON_HEIGHT 80
-#define SCENERY_ENTRIES_BY_TAB 128
+#include "../common.h"
 
-#define window_scenery_active_tab_index RCT2_GLOBAL(0x00F64EDC, uint8)
-#define window_scenery_selected_scenery_by_tab RCT2_ADDRESS(0x00F64EDD, sint16)
-#define window_scenery_is_build_cluster_tool_on RCT2_GLOBAL(0x00F64F1A, uint8)
-#define window_scenery_is_repaint_scenery_tool_on RCT2_GLOBAL(0x00F64F19, uint8)
-#define window_scenery_rotation RCT2_GLOBAL(0x00F64F05, uint8)
-#define window_scenery_primary_colour RCT2_GLOBAL(0x00F64F06, uint8)
-#define window_scenery_secondary_colour RCT2_GLOBAL(0x00F64F07, uint8)
-#define window_scenery_tertiary_colour RCT2_GLOBAL(0x00F64F08, uint8)
+typedef struct {
+	rct_string_id string_idx;	// 0x00
+	uint32 image_id;			// 0x02
+	uint8 var_06;
+	uint8 var_07;
+} rct_entrance_type;
 
 #endif

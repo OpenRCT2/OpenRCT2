@@ -79,7 +79,7 @@ void window_tooltip_reset(int x, int y)
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~(1 << 4);
 }
 
-extern uint8* gTooltip_text_buffer = RCT2_ADDRESS(RCT2_ADDRESS_TOOLTIP_TEXT_BUFFER, uint8);
+uint8* gTooltip_text_buffer = RCT2_ADDRESS(RCT2_ADDRESS_TOOLTIP_TEXT_BUFFER, uint8);
 /**
  * 
  *  rct2: 0x006EA10D
@@ -94,7 +94,7 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 		return;
 
 	widget = &widgetWindow->widgets[widgetIndex];
-	RCT2_CALLPROC_X(widgetWindow->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)widgetWindow, 0, 0);
+	window_event_invalidate_call(widgetWindow);
 	if (widget->tooltip == 0xFFFF)
 		return;
 
@@ -102,11 +102,7 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = widgetWindow->number;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = widgetIndex;
 
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = widgetIndex;
-	esi = (int)widgetWindow;
-	RCT2_CALLFUNC_X(widgetWindow->event_handlers[WE_TOOLTIP], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	if ((eax & 0xFFFF) == 0xFFFF)
+	if (window_event_tooltip_call(widgetWindow, widgetIndex) == (rct_string_id)STR_NONE)
 		return;
 
 	w = window_find_by_class(WC_ERROR);
@@ -128,7 +124,9 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 		tooltip_text_width = 196;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
-	tooltip_text_width = gfx_wrap_string(buffer, tooltip_text_width + 1, &tooltip_text_height, &ebx);
+
+	int fontHeight;
+	tooltip_text_width = gfx_wrap_string(buffer, tooltip_text_width + 1, &tooltip_text_height, &fontHeight);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TEXT_HEIGHT, sint16) = tooltip_text_height;
 	width = tooltip_text_width + 3;
@@ -139,9 +137,24 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 	memcpy(gTooltip_text_buffer, buffer, 512);
 	
 	x = clamp(0, x - (width / 2), RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - width);
-	y = clamp(22, y + 26, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height - 40);
 
-	w = window_create(x, y, width, height, (uint32*)window_tooltip_events, WC_TOOLTIP, WF_TRANSPARENT | WF_STICK_TO_FRONT);
+	int max_y = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height;
+	y += 26; // Normally, we'd display the tooltip 26 lower
+	if (y > max_y)
+		// If y is too large, the tooltip could be forced below the cursor if we'd just clamped y,
+		// so we'll subtract a bit more
+		y -= height + 40;
+	y = clamp(22, y, max_y);
+
+	w = window_create(
+		x,
+		y,
+		width,
+		height,
+		(uint32*)window_tooltip_events,
+		WC_TOOLTIP,
+		WF_TRANSPARENT | WF_STICK_TO_FRONT
+	);
 	w->widgets = window_tooltip_widgets;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, uint16) = 0;

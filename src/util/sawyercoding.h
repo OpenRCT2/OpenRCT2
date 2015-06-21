@@ -35,6 +35,18 @@ enum {
 	CHUNK_ENCODING_ROTATE
 };
 
+enum {
+	FILE_VERSION_MASK = (3 << 0),
+	FILE_VERSION_RCT1 = (0 << 0),
+	FILE_VERSION_RCT1_AA = (1 << 0),
+	FILE_VERSION_RCT1_LL = (2 << 0),
+
+	FILE_TYPE_MASK = (3 << 2),
+	FILE_TYPE_TD4 = (0 << 2),
+	FILE_TYPE_SV4 = (1 << 2),
+	FILE_TYPE_SC4 = (2 << 2)
+};
+
 int sawyercoding_validate_checksum(FILE *file);
 uint32 sawyercoding_calculate_checksum(uint8* buffer, uint32 length);
 int sawyercoding_read_chunk(FILE *file, uint8 *buffer);
@@ -43,5 +55,9 @@ int sawyercoding_decode_sv4(char *src, char *dst, int length);
 int sawyercoding_decode_sc4(char *src, char *dst, int length);
 int sawyercoding_encode_sv4(char *src, char *dst, int length);
 int sawyercoding_decode_td6(char *src, char *dst, int length);
+int sawyercoding_encode_td6(char* src, char* dst, int length);
+int sawyercoding_validate_track_checksum(char* src, int length);
+
+int sawyercoding_detect_file_type(char *src, int length);
 
 #endif

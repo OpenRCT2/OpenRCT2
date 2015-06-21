@@ -23,9 +23,11 @@
 #include "../management/news_item.h"
 #include "../localisation/localisation.h"
 #include "../world/sprite.h"
+#include "../peep/staff.h"
 #include "../sprites.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../interface/themes.h"
 
 enum WINDOW_NEWS_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -48,6 +50,7 @@ static void window_news_update(rct_window *w);
 static void window_news_scrollgetsize();
 static void window_news_scrollmousedown();
 static void window_news_tooltip();
+static void window_news_invalidate();
 static void window_news_paint();
 static void window_news_scrollpaint();
 
@@ -77,7 +80,7 @@ static void* window_news_events[] = {
 	window_news_tooltip,
 	window_news_emptysub,
 	window_news_emptysub,
-	window_news_emptysub,
+	window_news_invalidate,
 	window_news_paint,
 	window_news_scrollpaint
 };
@@ -103,9 +106,6 @@ void window_news_open()
 		window->widgets = window_news_widgets;
 		window->enabled_widgets = (1 << WIDX_CLOSE);
 		window_init_scroll_widgets(window);
-		window->colours[0] = 1;
-		window->colours[1] = 1;
-		window->colours[2] = 0;
 		window->news.var_480 = -1;
 	}
 
@@ -117,6 +117,7 @@ void window_news_open()
 	widget = &window_news_widgets[WIDX_SCROLL];
 	window->scrolls[0].v_top = max(0, height - (widget->bottom - widget->top - 1));
 	widget_scroll_update_thumbs(window, WIDX_SCROLL);
+
 }
 
 /**
@@ -183,9 +184,10 @@ static void window_news_update(rct_window *w)
  */
 static void window_news_scrollgetsize()
 {
-	int i, height;
+	int i, width, height;
 	rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 
+	width = 0;
 	height = 0;
 	for (i = 11; i < 61; i++) {
 		if (newsItems[i].type == NEWS_ITEM_NULL)
@@ -194,12 +196,7 @@ static void window_news_scrollgetsize()
 		height += 42;
 	}
 
-	#ifdef _MSC_VER
-	__asm mov edx, height
-	#else
-	__asm__ ( "mov edx, %[height] " : [height] "+m" (height) );
-	#endif
-
+	window_scrollsize_set_registers(width, height);
 }
 
 /**
@@ -209,11 +206,11 @@ static void window_news_scrollgetsize()
 static void window_news_scrollmousedown()
 {
 	int i, buttonIndex;
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 	rct_news_item *newsItems;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	buttonIndex = 0;
 	newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
@@ -281,6 +278,14 @@ static void window_news_paint()
 	window_draw_widgets(w, dpi);
 }
 
+static void window_news_invalidate()
+{
+	rct_window *w;
+
+	window_get_register(w);
+	colour_scheme_update(w);
+}
+
 /**
  * 
  *  rct2: 0x0066E4EE
@@ -339,12 +344,34 @@ static void window_news_scrollpaint()
 			case NEWS_ITEM_RIDE:
 				gfx_draw_sprite(dpi, SPR_RIDE, x, yy, 0);
 				break;
-			case NEWS_ITEM_PEEP_ON_RIDE:
-				// TODO
-				break;
 			case NEWS_ITEM_PEEP:
-				// TODO
-				break;
+			case NEWS_ITEM_PEEP_ON_RIDE:
+			{
+				rct_drawpixelinfo* cliped_dpi = clip_drawpixelinfo(dpi, x + 1, 22, yy + 1, 22);
+				if (!cliped_dpi) break;
+
+				rct_peep* peep = GET_PEEP(newsItem->assoc);
+				int clip_x = 10, clip_y = 19;
+
+				// If normal peep set sprite to normal (no food)
+				// If staff set sprite to staff sprite
+				int sprite_type = 0;
+				if (peep->type == PEEP_TYPE_STAFF){
+					sprite_type = peep->sprite_type;
+					if (peep->staff_type == STAFF_TYPE_ENTERTAINER){
+						clip_y += 3;
+					}
+				}
+
+				uint32 image_id = *RCT2_ADDRESS(0x00982708, uint32*)[sprite_type * 2];
+				image_id += 0xA0000001;
+				image_id |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24);
+
+				gfx_draw_sprite(cliped_dpi, image_id, clip_x, clip_y, 0);
+
+				rct2_free(cliped_dpi);
+				break; 
+			}
 			case NEWS_ITEM_MONEY:
 				gfx_draw_sprite(dpi, SPR_FINANCE, x, yy, 0);
 				break;

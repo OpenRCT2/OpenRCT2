@@ -88,15 +88,13 @@ void window_publisher_credits_open()
 	if (window != NULL)
 		return;
 
-	window = window_create(
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2 - 210,
-		max(28, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) / 2 - 192),
+	window = window_create_centred(
 		420,
 		384,
 		(uint32*)window_publisher_credits_events,
 		WC_PUBLISHER_CREDITS,
 		0
-		);
+	);
 
 	window->widgets = window_publisher_credits_widgets;
 	window->enabled_widgets = 1 << WIDX_CLOSE;
@@ -132,13 +130,11 @@ static void window_publisher_credits_mouseup()
 */
 static void window_publisher_credits_scrollgetsize()
 {
-	int y = 820;
+	int width, height;
 
-#ifdef _MSC_VER
-	__asm mov edx, y
-#else
-	__asm__("mov edx, %[y] " : [y] "+m" (y));
-#endif
+	width = 0;
+	height = 820;
+	window_scrollsize_set_registers(width, height);
 }
 
 /**

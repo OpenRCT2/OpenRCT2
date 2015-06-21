@@ -28,6 +28,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "dropdown.h"
+#include "../interface/themes.h"
 
 #define INITIAL_WIDTH 500
 #define INITIAL_HEIGHT 350
@@ -44,15 +45,15 @@ enum {
 };
 
 static rct_widget window_viewport_widgets[] = {
-	{ WWT_FRAME,			0,	0,	0,	0,	0,	0xFFFFFFFF,		STR_NONE				},	// panel / background
-	{ WWT_CAPTION,			0,	1,	0,	1,	14,	2779,			STR_WINDOW_TITLE_TIP	},	// title bar
-	{ WWT_CLOSEBOX,			0,	0,	0,	2,	13,	0x338,			STR_CLOSE_WINDOW_TIP	},	// close x button
-	{ WWT_RESIZE,			1,	0,	0,	14,	0,	0xFFFFFFFF,		STR_NONE				},	// resize
-	{ WWT_VIEWPORT,			0,	3,	0,	17,	0,	0xFFFFFFFF,		STR_NONE				},	// viewport
+	{ WWT_FRAME,			0,	0,	0,	0,	0,	0xFFFFFFFF,			STR_NONE				},	// panel / background
+	{ WWT_CAPTION,			0,	1,	0,	1,	14,	2779,				STR_WINDOW_TITLE_TIP	},	// title bar
+	{ WWT_CLOSEBOX,			0,	0,	0,	2,	13,	0x338,				STR_CLOSE_WINDOW_TIP	},	// close x button
+	{ WWT_RESIZE,			1,	0,	0,	14,	0,	0xFFFFFFFF,			STR_NONE				},	// resize
+	{ WWT_VIEWPORT,			0,	3,	0,	17,	0,	0xFFFFFFFF,			STR_NONE				},	// viewport
 
-	{ WWT_FLATBTN,			0,	0,	0,	17,	40,	0xFFFFFFFF,		STR_ZOOM_IN_TIP			},	// zoom in
-	{ WWT_FLATBTN,			0,	0,	0,	41,	64,	0xFFFFFFFF,		STR_ZOOM_OUT_TIP		},	// zoom out
-	{ WWT_FLATBTN,			0,	0,	0,	65,	88,	SPR_LOCATE,		STR_LOCATE_SUBJECT_TIP	},	// locate
+	{ WWT_FLATBTN,			0,	0,	0,	17,	40,	SPR_G2_ZOOM_IN,		STR_ZOOM_IN_TIP			},	// zoom in
+	{ WWT_FLATBTN,			0,	0,	0,	41,	64,	SPR_G2_ZOOM_OUT,	STR_ZOOM_OUT_TIP		},	// zoom out
+	{ WWT_FLATBTN,			0,	0,	0,	65,	88,	SPR_LOCATE,			STR_LOCATE_SUBJECT_TIP	},	// locate
 	{ WIDGETS_END },
 };
 
@@ -118,9 +119,6 @@ void window_viewport_open()
 		(1 << WIDX_ZOOM_OUT) |
 		(1 << WIDX_LOCATE);
 	w->number = _viewportNumber++;
-	w->colours[0] = 24;
-	w->colours[1] = 24;
-	w->colours[2] = 24;
 
 	rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32);
 
@@ -153,7 +151,7 @@ static void window_viewport_mouseup()
 {
 	short widgetIndex;
 	rct_window *w, *mainWindow;
-	int x, y;
+	sint16 x, y;
 
 	window_widget_get_registers(w, widgetIndex);
 
@@ -176,7 +174,7 @@ static void window_viewport_mouseup()
 	case WIDX_LOCATE:
 		mainWindow = window_get_main();
 		if (mainWindow != NULL) {
-			get_map_coordinates_from_pos(w->x + (w->width / 2), w->y + (w->height / 2), 0, &x, &y, NULL, NULL);
+			get_map_coordinates_from_pos(w->x + (w->width / 2), w->y + (w->height / 2), VIEWPORT_INTERACTION_MASK_NONE, &x, &y, NULL, NULL, NULL);
 			window_scroll_to_location(mainWindow, x, y, map_element_height(x, y));
 		}
 		break;
@@ -218,6 +216,7 @@ static void window_viewport_invalidate()
 	int i;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	viewportWidget = &window_viewport_widgets[WIDX_VIEWPORT];
 	viewport = w->viewport;

@@ -14,7 +14,7 @@ An open source clone of RollerCoaster Tycoon 2 built by decompiling the original
   - 1.1 - [Background](#11-background)
   - 1.2 - [Decompiling the game](#12-decompiling-the-game)
   - 1.3 - [Progress](#13-progress)
-  - 1.4 - [Aim](#14-aim) 
+  - 1.4 - [Aim](#14-aim)
 - 2 - [Downloading the game / Building the source code](#2-building-the-source-code)
   - 2.1 - [Prerequisites](#21-prerequisites)
   - 2.2 - [Compiling and running](#22-compiling-and-running)
@@ -23,12 +23,13 @@ An open source clone of RollerCoaster Tycoon 2 built by decompiling the original
   - 3.2 - [Naming of procedures and variables](#32-naming-of-procedures-and-variables)
   - 3.3 - [Cleaning and documenting the source code](#33-cleaning-and-documenting-the-source-code)
   - 3.4 - [Implementing new features / fixing bugs](#34-implementing-new-features--fixing-bugs)
+  - 3.5 - [Translation](#35-translation)
 - 4 - [Licence](#4-license)
 
 # 1 Introduction
 
 ## 1.1 Background
-**OpenRCT2** is an attempt to decompile RollerCoaster Tycoon 2 into C. RollerCoaster Tycoon 2 was originally written in MASM and Visual C++ where functions related to interfacing with the operating system were written in C (supposedly 1%), with the rest of the game being written in pure x86 assembly. For an example of this method, OpenTTD was formed through a similar procedure; the original game, Transport Tycoon Deluxe, was decompiled into C which allowed for the addition of thousands of features to the game. RollerCoaster Tycoon 2 uses the third version of Chris Sawyer's engine, which shares some code with Transport Tycoon. This is reflected in the usage of OpenTTD 0.1 code such as the windowing system and graphics rendering. While the version of the engine used in Chris Sawyer's Locomotion is newer, OpenRCT2 is currently targeting the RollerCoaster Tycoon 2 engine to ease the decompilation process. 
+**OpenRCT2** is an attempt to decompile RollerCoaster Tycoon 2 into C. RollerCoaster Tycoon 2 was originally written in MASM and Visual C++ where functions related to interfacing with the operating system were written in C (supposedly 1%), with the rest of the game being written in pure x86 assembly. For an example of this method, OpenTTD was formed through a similar procedure; the original game, Transport Tycoon Deluxe, was decompiled into C which allowed for the addition of thousands of features to the game. RollerCoaster Tycoon 2 uses the third version of Chris Sawyer's engine, which shares some code with Transport Tycoon. This is reflected in the usage of OpenTTD 0.1 code such as the windowing system and graphics rendering. While the version of the engine used in Chris Sawyer's Locomotion is newer, OpenRCT2 is currently targeting the RollerCoaster Tycoon 2 engine to ease the decompilation process.
 
 ## 1.2 Decompiling the game
 In order to decompile the game gradually without introducing new bugs, each procedure in RollerCoaster Tycoon 2 is to be re-written in C on an individual basis. To test the accuracy of the re-written procedures, the decompiled C procedures are compiled into a DLL (*openrct2.dll*) which exports an entry procedure mimicking the WinMain function in RollerCoaster Tycoon 2. The original executable *rct2.exe* has been patched so that *openrct2.dll* and WinMain are in the DLL import table and the WinMain export procedure in *openrct2.dll* is called at the start of the WinMain procedure in *rct2.exe* before returning. With this system implemented, starting rct2.exe calls the new DLL as part of its initialization; the DLL can then run all the decompiled code whilst still being able to read / write to the *rct2.exe* memory model and run *rct2.exe* procedures.
@@ -41,27 +42,34 @@ Currently, the windowing system, graphics rendering and basic game loop are bein
 As of 16th August 2014, various UI improvements have already been made, settings are now stored in a local INI file. More drawing functions have now been decompiled but still remain cryptic C, much of the game management have been decompiled (e.g. peep generation, awards, cash out) and almost half of the windows. A rough estimate based on number of functions in the original game and number of functions now in C tells us that the project is approximately 25% complete of its target goal of having the game run on 100% C code. More information can be found in [changes to original game](https://github.com/IntelOrca/OpenRCT2/wiki/Changes-to-original-game) and [window progress](https://github.com/IntelOrca/OpenRCT2/wiki/Window-progress).
 
 ## 1.4 Aim
-The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-platform support, new features, and new gameplay can be added in a similar fashion to OpenTTD. With the addition of SDL2, the game can already be run in a resizeable window (which was not possible originally). Once the game has been fully decompiled, additional gameplay features, gameplay tweaks, and improvements can be introduced. The following is only a brief, non-exhaustive list of the possibilities - there is much more possible:
+The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-platform support, new features, and new gameplay can be added in a similar fashion to OpenTTD. With the addition of SDL2, the game can already be run in a resizeable window (which was not possible originally). Once the game has been fully decompiled, additional gameplay features, gameplay tweaks, and improvements can be introduced. The following is only a brief, non-exhaustive list of the possibilities - there are many more:
+
 - Improved peep path-finding
 - Increased window / ride / object / map / construction limits
 - More sandbox-friendly gameplay
 - Editing available objects
 - Improved title sequence
-- Re-introduction of RollerCoaster Tycoon 1 mechanics
-  - Shuttle Loop compatibility
-  - Have Fun! objective
-  - Finish building five coasters objective
-  - Using the mountain tool during the game
+- Translation into more languages
+- Re-introduction of RollerCoaster Tycoon 1 mechanics:
+    - Shuttle Loop compatibility
+    - Have Fun! objective
+    - Finish building five coasters objective
+    - Using the mountain tool during the game
 
 # 2 Downloading the game / Building the source code
 
-A third-party offers [downloadable precompiled builds](https://openrct2.com/download). However, building the project is always recommended.
+A couple of third parties offer downloadable precompiled builds. However, building the project is always recommended
+
+[OpenRCT2.com](https://openrct2.com/download)  
+[OpenRCT.net](https://openrct.net/builds.php)
+
+There is also a Launcher available from [OpenRCT.net](https://openrct.net/download) that will automatically update your build so that you always have the current version as they are released.
 
 ## 2.1 Prerequisites
 ### Windows:
-- Windows XP / Vista / 7 / 8
+- Windows XP / Vista / 7 / 8 / 10
 - RollerCoaster Tycoon 2
-- Visual Studio 2013 (paid) / [Visual Studio Express 2013](http://www.visualstudio.com/downloads/download-visual-studio-vs#d-express-windows-desktop) (free)
+- Visual Studio 2013 (Professional / [Community](http://www.visualstudio.com/en-us/products/visual-studio-community-vs.aspx) / [Express for Windows Desktop](http://www.visualstudio.com/downloads/download-visual-studio-vs#d-express-windows-desktop))
 - [SDL2 development library for Visual C++](http://www.libsdl.org/release/SDL2-devel-2.0.3-VC.zip).
 
 ### Max OS X:
@@ -120,5 +128,17 @@ In general, small changes that improve code quality and make it easier to reason
 ## 3.4 Implementing new features / fixing bugs
 While decompilation is an ongoing process, this does not prohibit changes being made to the game. New features or bugfixes can be added, with caution, if the underlying code has been decompiled. When implementing these changes, ensure that comments are added to clearly identify where code has been intentionally changed so that it functions differently to the original game; this is essential to ensuring all research from reverse-engineering can still be applied.
 
+## 3.5 Translation
+Translations are in progress for German, Dutch, French, Hungarian, Polish, Spanish, Swedish, Italian, and more. You can translate the game into other languages by editing the language files in the data directory. Please join discussions and submit pull requests to https://github.com/OpenRCT2/Localisation.
+
 # 4 License
 **OpenRCT2** is licensed under the GNU General Public License version 3.
+
+# 5 More information
+- [GitHub](https://github.com/IntelOrca/OpenRCT2)
+- [Facebook](https://www.facebook.com/OpenRCT2)
+- [Automated builds](https://openrct2.com/download)
+- [Secondary site for automated builds](https://openrct.net/builds.php)  
+- [Launcher that keeps your copy up-to-date](https://openrct.net/download)  
+- [rct2 subreddit](http://www.reddit.com/r/rct/)
+- [openrct2 subreddit](http://www.reddit.com/r/openrct2)

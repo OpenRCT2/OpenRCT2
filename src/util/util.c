@@ -41,17 +41,64 @@ int mph_to_kmph(int mph)
 	return (mph * 1648) / 1024;
 }
 
-void path_set_extension(char *path, const char *extension)
+const char *path_get_filename(const char *path)
 {
-	char *ch = path;
-	while (*ch != '.' && *ch != 0) {
-		ch++;
+	const char *result, *ch;
+
+	result = path;
+	for (ch = path; *ch != 0; ch++) {
+		if (*ch == '/' || *ch == '\\') {
+			if (*(ch + 1) != 0)
+				result = ch + 1;
+		}
 	}
 
-	if (extension[0] != '.')
-		*ch++ = '.';
+	return result;
+}
 
-	strcpy(ch, extension);
+const char *path_get_extension(const char *path)
+{
+	const char *extension = NULL;
+	const char *ch = path;
+	while (*ch != 0) {
+		if (*ch == '.')
+			extension = ch;
+
+		ch++;
+	}
+	if (extension == NULL)
+		extension = ch;
+	return extension;
+}
+
+void path_set_extension(char *path, const char *newExtension)
+{
+	char *extension = NULL;
+	char *ch = path;
+	while (*ch != 0) {
+		if (*ch == '.')
+			extension = ch;
+
+		ch++;
+	}
+	if (extension == NULL)
+		extension = ch;
+
+	if (newExtension[0] != '.')
+		*extension++ = '.';
+
+	strcpy(extension, newExtension);
+}
+
+void path_remove_extension(char *path)
+{
+	char *ch = path + strlen(path);
+	for (--ch; ch >= path; --ch) {
+		if (*ch == '.') {
+			*ch = '\0';
+			break;
+		}
+	}
 }
 
 long fsize(FILE *fp)
@@ -66,6 +113,32 @@ long fsize(FILE *fp)
 	return size;
 }
 
+bool readentirefile(const char *path, void **outBuffer, long *outLength)
+{
+	FILE *fp;
+	long fpLength;
+	void *fpBuffer;
+
+	// Open file
+	fp = fopen(path, "rb");
+	if (fp == NULL)
+		return 0;
+
+	// Get length
+	fseek(fp, 0, SEEK_END);
+	fpLength = ftell(fp);
+	rewind(fp);
+
+	// Read whole file into a buffer
+	fpBuffer = malloc(fpLength);
+	fread(fpBuffer, fpLength, 1, fp);
+	fclose(fp);
+
+	*outBuffer = fpBuffer;
+	*outLength = fpLength;
+	return 1;
+}
+
 int bitscanforward(int source)
 {
 	int i;
@@ -75,4 +148,31 @@ int bitscanforward(int source)
 			return i;
 
 	return -1;
+}
+
+bool strequals(const char *a, const char *b, int length, bool caseInsensitive)
+{
+	return caseInsensitive ?
+		_strnicmp(a, b, length) == 0 :
+		strncmp(a, b, length) == 0;
+}
+
+/* case insensitve compare */
+int strcicmp(char const *a, char const *b)
+{
+	for (;; a++, b++) {
+		int d = tolower(*a) - tolower(*b);
+		if (d != 0 || !*a)
+			return d;
+	}
+}
+
+bool utf8_is_bom(const char *str)
+{
+	return str[0] == 0xEF && str[1] == 0xBB && str[2] == 0xBF;
+}
+
+bool str_is_null_or_empty(const char *str)
+{
+	return str == NULL || str[0] == 0;
 }

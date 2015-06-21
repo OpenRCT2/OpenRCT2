@@ -29,8 +29,17 @@ typedef struct {
 	uint8 category;
 } rct_research_item;
 
+enum{	
+	RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED = (1 << 29),
+	RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED = (1 << 30),
+};
+
+// Everything before this point has been researched
 #define RESEARCHED_ITEMS_SEPERATOR -1
+// Everything before this point and after seperator still requires research
 #define RESEARCHED_ITEMS_END -2
+// Extra end of list entry. Unsure why?
+#define RESEARCHED_ITEMS_END_2 -3
 
 enum {
 	RESEARCH_FUNDING_NONE,
@@ -43,15 +52,36 @@ enum {
 	RESEARCH_STAGE_INITIAL_RESEARCH,
 	RESEARCH_STAGE_DESIGNING,
 	RESEARCH_STAGE_COMPLETING_DESIGN,
-	RESEARCH_STAGE_UNKNOWN
+	RESEARCH_STAGE_UNKNOWN,
+	RESEARCH_STAGE_FINISHED_ALL
+};
+
+enum {
+	RESEARCH_CATEGORY_TRANSPORT,
+	RESEARCH_CATEGORY_GENTLE,
+	RESEARCH_CATEGORY_ROLLERCOASTER,
+	RESEARCH_CATEGORY_THRILL,
+	RESEARCH_CATEGORY_WATER,
+	RESEARCH_CATEGORY_SHOP,
+	RESEARCH_CATEGORY_SCENERYSET
 };
 
 extern rct_research_item *gResearchItems;
 extern uint8 gResearchUncompletedCategories;
+extern bool gSilentResearch;
 
 void research_reset_items();
 void research_update_uncompleted_types();
 void research_update();
 void sub_684AC3();
+void research_remove_non_separate_vehicle_types();
+void research_populate_list_random();
+void research_populate_list_researched();
+
+void research_set_funding(int amount);
+void research_set_priority(int activeCategories);
+void game_command_set_research_funding(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void research_finish_item(sint32 entryIndex);
+void research_insert(int researched, int entryIndex, int category);
 
 #endif

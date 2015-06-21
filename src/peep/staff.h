@@ -40,12 +40,25 @@ enum STAFF_TYPE {
 	STAFF_TYPE_ENTERTAINER
 };
 
-void game_command_update_staff_colour();
-void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+enum STAFF_ORDERS{
+	STAFF_ORDERS_SWEEPING = (1 << 0),
+	STAFF_ORDERS_WATER_FLOWERS = (1 << 1),
+	STAFF_ORDERS_EMPTY_BINS = (1 << 2),
+	STAFF_ORDERS_MOWING = (1 << 3),
+	STAFF_ORDERS_INSPECT_RIDES = (1 << 0),
+	STAFF_ORDERS_FIX_RIDES = (1 << 1)
+};
 
-void update_staff_colour(uint8 staff_type, uint16 color);
-uint16 hire_new_staff_member(uint8 staff_type);
-void sub_6C0C3F();
+void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_hire_new_staff_member(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_set_staff_order(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_set_staff_patrol(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_fire_staff_member(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+
+void update_staff_colour(uint8 staffType, uint16 color);
+uint16 hire_new_staff_member(uint8 staffType);
+void staff_update_greyed_patrol_areas();
 int mechanic_is_location_in_patrol(rct_peep *mechanic, int x, int y);
+void staff_reset_stats();
 
 #endif

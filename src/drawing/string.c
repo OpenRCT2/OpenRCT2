@@ -32,7 +32,7 @@ void gfx_load_character_widths(){
 	uint8* char_width_pointer = RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8);
 	for (int char_set_offset = 0; char_set_offset < 4*0xE0; char_set_offset+=0xE0){
 		for (uint8 c = 0; c < 0xE0; c++, char_width_pointer++){
-			rct_g1_element g1 = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[c + SPR_CHAR_START + char_set_offset];
+			rct_g1_element g1 = g1Elements[c + SPR_CHAR_START + char_set_offset];
 			int width;
 
 			if (char_set_offset == 0xE0*3) width = g1.width + 1;
@@ -75,7 +75,7 @@ void gfx_load_character_widths(){
 	}
 
 	for (int i = 0; i < 0x20; ++i){
-		rct_g1_element* g1 = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[0x606 + i]);
+		rct_g1_element* g1 = &g1Elements[0x606 + i];
 		uint8* unknown_pointer = RCT2_ADDRESS(0x9C3852, uint8) + 0xa12 * i;
 		g1->offset = unknown_pointer;
 		g1->width = 0x40;
@@ -138,7 +138,7 @@ int gfx_get_string_width_new_lined(char* buffer){
 		case 0x10:
 			continue;
 		case FORMAT_INLINE_SPRITE:
-			g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[*((uint32*)(curr_char + 1)) & 0x7FFFF];
+			g1_element = g1Elements[*((uint32*)(curr_char + 1)) & 0x7FFFF];
 			width += g1_element.width;
 			curr_char += 4;
 			break;
@@ -214,7 +214,7 @@ int gfx_get_string_width(char* buffer)
 		case 0x10:
 			continue;
 		case FORMAT_INLINE_SPRITE:
-			g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[*((uint32*)(curr_char+1))&0x7FFFF];
+			g1_element = g1Elements[*((uint32*)(curr_char + 1)) & 0x7FFFF];
 			width += g1_element.width;
 			curr_char += 4;
 			break;
@@ -297,7 +297,7 @@ int gfx_clip_string(char* buffer, int width)
 			case 0x10:
 				continue;
 			case FORMAT_INLINE_SPRITE:
-				g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[*((uint32*)(curr_char+1))&0x7FFFF];
+				g1_element = g1Elements[*((uint32*)(curr_char + 1)) & 0x7FFFF];
 				clipped_width += g1_element.width;
 				curr_char += 4;
 				continue;
@@ -396,7 +396,7 @@ int gfx_wrap_string(char* buffer, int width, int* num_lines, int* font_height)
 				case 0x10:
 					continue;
 				case FORMAT_INLINE_SPRITE:
-					g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[*((uint32*)(curr_char + 1)) & 0x7FFFF];
+					g1_element = g1Elements[*((uint32*)(curr_char + 1)) & 0x7FFFF];
 					line_width += g1_element.width;
 					curr_char += 4;
 					break;
@@ -718,7 +718,7 @@ void colour_char(uint8 colour, uint16* current_font_flags, uint8* palette_pointe
 
 	int eax;
 
-	rct_g1_element g1_element = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[0x1332];
+	rct_g1_element g1_element = g1Elements[0x1332];
 	eax = ((uint32*)g1_element.offset)[colour & 0xFF];
 
 	if (!(*current_font_flags & 2)) {
@@ -773,8 +773,8 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 	int max_y = y;
 
 	// 
-	uint16* current_font_flags = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16);
-	uint16* current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+	uint16 *current_font_flags = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16);
+	sint16 *current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16);
 
 	uint8* palette_pointer = text_palette;
 
@@ -802,10 +802,10 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 			*current_font_flags = 0;
 			if (*current_font_sprite_base < 0) {
 				*current_font_flags |= 4;
-				if (*current_font_sprite_base != 0xFFFF) {
+				if (*current_font_sprite_base != -1) {
 					*current_font_flags |= 8;
 				}
-				*current_font_sprite_base = 0xE0;
+				*current_font_sprite_base = 224;
 			}
 			if (colour & (1 << 5)) {
 				*current_font_flags |= 2;
@@ -896,7 +896,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 			}
 
 			eax = palette_to_g1_offset[al]; //RCT2_ADDRESS(0x097FCBC, uint32)[al * 4];
-			g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
+			g1_element = &g1Elements[eax];
 			ebx = g1_element->offset[0xF9] + (1 << 8);
 			if (!(*current_font_flags & 2)) {
 				ebx = ebx & 0xFF;
@@ -917,11 +917,11 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 			break;
 		case FORMAT_NEWLINE://Start New Line at set y lower
 			max_x = x;
-			if (*current_font_sprite_base <= 0xE0) {
+			if (*current_font_sprite_base <= 224) {
 				max_y += 10;
 				break;
 			}
-			else if (*current_font_sprite_base == 0x1C0) {
+			else if (*current_font_sprite_base == 448) {
 				max_y += 6;
 				break;
 			}
@@ -929,24 +929,24 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 			break;
 		case FORMAT_NEWLINE_SMALLER://Start New Line at set y lower
 			max_x = x;
-			if (*current_font_sprite_base <= 0xE0) {
+			if (*current_font_sprite_base <= 224) {
 				max_y += 5;
 				break;
 			}
-			else if (*current_font_sprite_base == 0x1C0) {
+			else if (*current_font_sprite_base == 448) {
 				max_y += 3;
 				break;
 			}
 			max_y += 9;
 			break;
 		case FORMAT_TINYFONT:
-			*current_font_sprite_base = 0x1C0;
+			*current_font_sprite_base = 448;
 			break;
 		case FORMAT_BIGFONT:
-			*current_font_sprite_base = 0x2A0;
+			*current_font_sprite_base = 672;
 			break;
 		case FORMAT_MEDIUMFONT:
-			*current_font_sprite_base = 0xE0;
+			*current_font_sprite_base = 224;
 			break;
 		case FORMAT_SMALLFONT:
 			*current_font_sprite_base = 0;
@@ -1006,11 +1006,11 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 				skip_char = 1;
 				break;
 			}
-			ebx = *((uint16*)(buffer - 3));
-			eax = ebx & 0x7FFFF;
-			g1_element = &(RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[eax]);
+			uint32 image_id = *((uint32*)(buffer - 3));
+			uint32 image_offset = image_id & 0x7FFFF;
+			g1_element = &g1Elements[image_offset];
 
-			gfx_draw_sprite(dpi, ebx, max_x, max_y, 0);
+			gfx_draw_sprite(dpi, image_id, max_x, max_y, 0);
 
 			max_x = max_x + g1_element->width;
 			break;
@@ -1044,7 +1044,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 			uint32 char_offset = al - 0x20 + *current_font_sprite_base;
 			RCT2_GLOBAL(0x00EDF81C, uint32) = (IMAGE_TYPE_USE_PALETTE << 28);
 				
-			gfx_draw_sprite_palette_set(dpi, (IMAGE_TYPE_USE_PALETTE << 28) | char_offset + SPR_CHAR_START, max_x, max_y, palette_pointer, NULL);
+			gfx_draw_sprite_palette_set(dpi, ((IMAGE_TYPE_USE_PALETTE << 28) | char_offset) + SPR_CHAR_START, max_x, max_y, palette_pointer, NULL);
 			max_x += (RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8)[char_offset] & 0xFF);
 			continue;
 		} 
@@ -1110,5 +1110,35 @@ void draw_string_centred_underline(rct_drawpixelinfo *dpi, int format, void *arg
  */
 void draw_string_centred_raw(rct_drawpixelinfo *dpi, int x, int y, int numLines, char *text)
 {
-	RCT2_CALLPROC_X(0x006C1DB7, 0, 0, x, y, (int)text, (int)dpi, numLines);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	gfx_draw_string(dpi, (char*)0x009C383D, 0, dpi->x, dpi->y);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
+
+	for (int i = 0; i <= numLines; i++) {
+		int width = gfx_get_string_width(text);
+		gfx_draw_string(dpi, text, 254, x - (width / 2), y);
+
+		char c;
+		while ((c = *text++) != 0) {
+			if (c >= 32) continue;
+			if (c <= 4) {
+				text++;
+				continue;
+			}
+			if (c <= 16) continue;
+			text += 2;
+			if (c <= 22) continue;
+			text += 2;
+		}
+
+		y += 10;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) <= 224)
+			continue;
+		
+		y -= 4;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) <= 448)
+			continue;
+
+		y += 12;
+	}
 }

@@ -19,16 +19,19 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../management/news_item.h"
 #include "../peep/peep.h"
+#include "../peep/staff.h"
 #include "../sprites.h"
 #include "../world/climate.h"
 #include "../world/park.h"
 #include "../world/sprite.h"
+#include "../interface/themes.h"
 
 enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
 	WIDX_LEFT_OUTSET,
@@ -47,21 +50,26 @@ enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
 	WIDX_DATE
 };
 
+
+// Right panel needs to be a bit bigger than original so dates like "22nd September, Year 126" can fit.
+// Left panel size was also increased for symmetry.
+#define WIDTH_MOD 22
+
 rct_widget window_game_bottom_toolbar_widgets[] = {
-	{ WWT_IMGBTN,	0,	0x0000,	0x0077,	0,		33,		0xFFFFFFFF,	STR_NONE },	// Left outset panel
-	{ WWT_IMGBTN,	0,	0x0002,	0x0075,	2,		31,		0xFFFFFFFF,	STR_NONE },	// Left inset panel
-	{ WWT_FLATBTN,	0,	0x0002,	0x0075,	1,		12,		0xFFFFFFFF,	STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP },	// Money window
-	{ WWT_FLATBTN,	0,	0x0002,	0x0075,	11,		22,		0xFFFFFFFF,	STR_NONE },	// Guests window
-	{ WWT_FLATBTN,	0,	0x0002,	0x0075,	21,		31,		0xFFFFFFFF,	STR_PARK_RATING_TIP },	// Park rating window
+	{ WWT_IMGBTN,	0,	0x0000,	0x0077+WIDTH_MOD,	0,		33,		0xFFFFFFFF,	STR_NONE },	// Left outset panel
+	{ WWT_IMGBTN,	0,	0x0002,	0x0075+WIDTH_MOD,	2,		31,		0xFFFFFFFF,	STR_NONE },	// Left inset panel
+	{ WWT_FLATBTN,	0,	0x0002,	0x0075+WIDTH_MOD,	1,		12,		0xFFFFFFFF,	STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP },	// Money window
+	{ WWT_FLATBTN,	0,	0x0002,	0x0075+WIDTH_MOD,	11,		22,		0xFFFFFFFF,	STR_NONE },	// Guests window
+	{ WWT_FLATBTN,	0,	0x0002,	0x0075+WIDTH_MOD,	21,		31,		0xFFFFFFFF,	STR_PARK_RATING_TIP },	// Park rating window
 
-	{ WWT_IMGBTN,	2,	0x0078,	0x0207,	0,		33,		0xFFFFFFFF,	STR_NONE },	// Middle outset panel
-	{ WWT_25,		2,	0x007A,	0x0205,	2,		31,		0xFFFFFFFF,	STR_NONE },	// Middle inset panel
-	{ WWT_FLATBTN,	2,	0x007D,	0x0094,	5,		28,		0xFFFFFFFF,	STR_SHOW_SUBJECT_TIP },	// Associated news item window
-	{ WWT_FLATBTN,	2,	0x01EB,	0x0202,	5,		28,		SPR_LOCATE,	STR_LOCATE_SUBJECT_TIP },	// Scroll to news item target
+	{ WWT_IMGBTN,	2,	0x0078+WIDTH_MOD,	0x0207-WIDTH_MOD,	0,		33,		0xFFFFFFFF,	STR_NONE },	// Middle outset panel
+	{ WWT_25,		2,	0x007A+WIDTH_MOD,	0x0205-WIDTH_MOD,	2,		31,		0xFFFFFFFF,	STR_NONE },	// Middle inset panel
+	{ WWT_FLATBTN,	2,	0x007D+WIDTH_MOD,	0x0094+WIDTH_MOD,	5,		28,		0xFFFFFFFF,	STR_SHOW_SUBJECT_TIP },	// Associated news item window
+	{ WWT_FLATBTN,	2,	0x01EB-WIDTH_MOD,	0x0202-WIDTH_MOD,	5,		28,		SPR_LOCATE,	STR_LOCATE_SUBJECT_TIP },	// Scroll to news item target
 
-	{ WWT_IMGBTN,	0,	0x0208,	0x027F,	0,		33,		0xFFFFFFFF,	STR_NONE },	// Right outset panel
-	{ WWT_IMGBTN,	0,	0x020A,	0x027D,	2,		31,		0xFFFFFFFF,	STR_NONE },	// Right inset panel
-	{ WWT_FLATBTN,	0,	0x020A,	0x027D,	2,		13,		0xFFFFFFFF,	2290 },	// Date
+	{ WWT_IMGBTN,	0,	0x0208-WIDTH_MOD,	0x027F,	0,		33,		0xFFFFFFFF,	STR_NONE },	// Right outset panel
+	{ WWT_IMGBTN,	0,	0x020A-WIDTH_MOD,	0x027D,	2,		31,		0xFFFFFFFF,	STR_NONE },	// Right inset panel
+	{ WWT_FLATBTN,	0,	0x020A-WIDTH_MOD,	0x027D,	2,		13,		0xFFFFFFFF,	2290 },	// Date
 	{ WIDGETS_END },
 };
 
@@ -70,6 +78,9 @@ static void window_game_bottom_toolbar_mouseup();
 static void window_game_bottom_toolbar_tooltip();
 static void window_game_bottom_toolbar_invalidate();
 static void window_game_bottom_toolbar_paint();
+static void window_game_bottom_toolbar_update(rct_window* w);
+static void window_game_bottom_toolbar_cursor();
+static void window_game_bottom_toolbar_unknown05();
 
 static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, rct_window *w, int colour, int x, int y, uint8 factor);
@@ -77,14 +88,15 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_tutorial_text(rct_drawpixelinfo *dpi, rct_window *w);
 
+/* rct2: 0x0097BFDC */
 static void* window_game_bottom_toolbar_events[] = {
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_mouseup,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
+	window_game_bottom_toolbar_unknown05,
+	window_game_bottom_toolbar_update,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
@@ -101,7 +113,7 @@ static void* window_game_bottom_toolbar_events[] = {
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_tooltip,
-	window_game_bottom_toolbar_emptysub,
+	window_game_bottom_toolbar_cursor,
 	window_game_bottom_toolbar_emptysub,
 	window_game_bottom_toolbar_invalidate,
 	window_game_bottom_toolbar_paint,
@@ -138,9 +150,10 @@ void window_game_bottom_toolbar_open()
 
 	window->frame_no = 0;
 	window_init_scroll_widgets(window);
-	window->colours[0] = 140;
-	window->colours[1] = 140;
-	window->colours[2] = 0;
+
+	// Reset the middle widget to not show by default.
+	// If it is required to be shown news_update will reshow it.
+	window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_EMPTY;
 }
 
 /**
@@ -202,31 +215,20 @@ static void window_game_bottom_toolbar_mouseup()
 static void window_game_bottom_toolbar_tooltip()
 {
 	int month, day;
-	short tool_tip_index;
+	short widgetIndex, result;
 	rct_window *w;
 
-	#ifdef _MSC_VER
-	__asm mov tool_tip_index, ax
-	#else
-	__asm__ ( "mov %[tool_tip_index], ax " : [tool_tip_index] "+m" (tool_tip_index) );
-	#endif
+	window_tooltip_get_registers(w, widgetIndex);
 
-	#ifdef _MSC_VER
-	__asm mov w, esi
-	#else
-	__asm__ ( "mov %[w], esi " : [w] "+m" (w) );
-	#endif
-
-
-	switch (tool_tip_index) {
+	switch (widgetIndex) {
 	case WIDX_MONEY:
 		RCT2_GLOBAL(0x013CE952, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, sint32);
 		RCT2_GLOBAL(0x013CE956, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
-		tool_tip_index = 0;
+		result = 0;
 		break;
 	case WIDX_PARK_RATING:
 		RCT2_GLOBAL(0x013CE952, short) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16);
-		tool_tip_index = 0;
+		result = 0;
 		break;
 	case WIDX_DATE:
 		month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
@@ -234,15 +236,11 @@ static void window_game_bottom_toolbar_tooltip()
 		
 		RCT2_GLOBAL(0x013CE952, short) = STR_DATE_DAY_1 + day;
 		RCT2_GLOBAL(0x013CE954, short) = STR_MONTH_MARCH + month;
-		tool_tip_index = 0;
+		result = 0;
 		break;
 	}
 
-#ifdef _MSC_VER
-	__asm mov  ax, tool_tip_index
-#else
-	__asm__("mov ax, %[tool_tip_index] " :[tool_tip_index] "+m" (tool_tip_index));
-#endif
+	window_tooltip_set_registers(result);
 }
 
 /**
@@ -256,6 +254,7 @@ static void window_game_bottom_toolbar_invalidate()
 	rct_news_item *newsItem;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	// Anchor the middle and right panel to the right
 	x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
@@ -264,7 +263,7 @@ static void window_game_bottom_toolbar_invalidate()
 	window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right = x;
 	x -= 2;
 	window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].right = x;
-	x -= 115;
+	x -= (115 + WIDTH_MOD);
 	window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].left = x;
 	x -= 2;
 	window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left = x;
@@ -422,7 +421,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 	window_game_bottom_toolbar_draw_park_rating(
 		dpi,
 		w,
-		14,
+		w->colours[3],
 		w->x + window_game_bottom_toolbar_widgets[WIDX_PARK_RATING].left + 11,
 		w->y + window_game_bottom_toolbar_widgets[WIDX_PARK_RATING].top,
 		max(10, ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16) / 4) * 263) / 256)
@@ -437,16 +436,16 @@ static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, 
 {
 	short bar_width;
 
-	bar_width = (factor * 90) / 256;
-	gfx_fill_rect_inset(dpi, x, y + 1, x + 93, y + 9, w->colours[1], 48);
-	if (!(colour & 0x80000000) || RCT2_GLOBAL(0x009DEA6E, uint8) != 0 || (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint8) & 8)) {
+	bar_width = (factor * (90 + WIDTH_MOD)) / 256;
+	gfx_fill_rect_inset(dpi, x, y + 1, x + (93 + WIDTH_MOD), y + 9, w->colours[1], 48);
+	if (!(colour & 0x80000000) || RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 || (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint8) & 8)) {
 		if (bar_width > 2)
 			gfx_fill_rect_inset(dpi, x + 2, y + 2, x + bar_width - 1, y + 8, colour & 0x7FFFFFFF, 0);
 	}
 
 	// Draw thumbs on the sides
 	gfx_draw_sprite(dpi, SPR_RATING_LOW, x - 14, y, 0);
-	gfx_draw_sprite(dpi, SPR_RATING_HIGH, x + 92, y, 0);
+	gfx_draw_sprite(dpi, SPR_RATING_HIGH, x + (92 + WIDTH_MOD), y, 0);
 }
 
 static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, rct_window *w)
@@ -468,20 +467,22 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	y = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + w->y + 2;
 
 	// Date
-	char *freeStr = (char*)0x009BC677;
-	freeStr[0] = FORMAT_STRINGID;
-	freeStr[1] = ' ';
-	freeStr[2] = FORMAT_MONTHYEAR;
-	freeStr[3] = 0;
-
-	int month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
+	int year = date_get_year(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)) + 1;
+	int month = date_get_month(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7);
 	int day = ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) * days_in_month[month]) >> 16) & 0xFF;
-		
-	RCT2_GLOBAL(0x013CE952, short) = STR_DATE_DAY_1 + day;
-	RCT2_GLOBAL(0x013CE954, short) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
+	if (gConfigGeneral.date_format) {
+		RCT2_GLOBAL(0x013CE952, short) = month;
+		RCT2_GLOBAL(0x013CE954, short) = STR_DATE_DAY_1 + day;
+	}
+	else {
+		RCT2_GLOBAL(0x013CE952, short) = STR_DATE_DAY_1 + day;
+		RCT2_GLOBAL(0x013CE954, short) = month;
+	}
+	
+	RCT2_GLOBAL(0x013CE956, short) = year;
 	gfx_draw_string_centred(
 		dpi,
-		3165,
+		(gConfigGeneral.date_format ? 5160 : 2737),
 		x,
 		y,
 		(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) == 2 && RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, sint32) == WIDX_DATE ? 2 : w->colours[0] & 0x7F),
@@ -560,105 +561,60 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 		if (newsItem->flags & 1)
 			break;
 
-		/*
-		_edi = (int)e->paint.dpi;
-		_cx = x;
-		_dx = y;
-		#ifdef _MSC_VER
-	__asm {
-		mov cx, _cx
-		mov dx, _dx
-		mov esi, w
-		mov edi, _edi
-		push ebp
-		mov ebp, 0066C3B8h
-		push after
-		push esi
-		jmp ebp
-		after:
-		pop ebp
+		rct_drawpixelinfo* cliped_dpi = clip_drawpixelinfo(dpi, x + 1, 22, y + 1, 22);
+		if (!cliped_dpi) break;
+
+		rct_peep* peep = GET_PEEP(newsItem->assoc);
+		int clip_x = 10, clip_y = 19;
+
+		if (peep->type == PEEP_TYPE_STAFF){
+			if (peep->staff_type == STAFF_TYPE_ENTERTAINER){
+				clip_y += 3;
+			}
 		}
-	#else
-	__asm__ ( "\
-	\n\
-		mov cx, %[_cx] 	\n\
-		mov dx, %[_dx] 	\n\
-		mov esi, %[w] 	\n\
-		mov edi, %[_edi] 	\n\
-		push ebp 	\n\
-		mov ebp, 0x0066C3B8 	\n\
-		push %[after] 	\n\
-		push esi 	\n\
-		jmp ebp 	\n\
-		%[after]: 	\n\
-		pop ebp 	\n\
-		 " : [_cx] "+m" (_cx), [_dx] "+m" (_dx), [w] "+m" (w), [_edi] "+m" (_edi), [after] "+m" (after) );
-	#endif
-		break;
-		*/
 
-		//_ax = x + 1;
-		//_cx = y + 1;
-		//_edi = (int)dpi;
-		//__asm {
-		//	mov edi, _edi
-		//		mov ax, _ax
-		//		mov cx, _cx
-		//		mov bx, 22
-		//		mov dx, 22
-		//		push ebp
-		//}
-		//sub_6EE53B();
-		//__asm {
-		//	pop ebp
-		//		mov dpi, edi
-		//}
-		//if (dpi == NULL)
-		//	break;
+		uint32 image_id_base = *RCT2_ADDRESS(0x00982708, uint32*)[peep->sprite_type * 2];
+		image_id_base += w->frame_no & 0xFFFFFFFC;
+		image_id_base++;
 
-		//x = 10;
-		//y = 19;
+		uint32 image_id = image_id_base;
+		image_id |= 0xA0000000 | (peep->tshirt_colour << 19) | (peep->trousers_colour << 24);
 
-		//peep = &rctmem->sprites[*((short*)&newsItem->assoc)].peep;
-		//if (peep->type == PEEP_TYPE_STAFF && peep->var_2F == 3)
-		//	y += 3;
+		gfx_draw_sprite(cliped_dpi, image_id, clip_x, clip_y, 0);
 
-		//_eax = *((int*)(0x00982708 + (peep->sprite_type * 8)));
-		//_ebx = w->frame_no & 0xFFFFFFFC;
-		//_ebx += *((int*)_eax);
-		//_ebx++;
+		if (image_id_base >= 0x2A1D && image_id_base < 0x2A3D){
+			image_id_base += 32;
+			image_id_base |= 0x20000000 | (peep->balloon_colour << 19);
 
-		//gfx_draw_sprite(dpi, _ebx | (peep->var_30 << 19) | (peep->var_31 << 24) | 0xA0000000, x, y);
+			gfx_draw_sprite(cliped_dpi, image_id_base, clip_x, clip_y, 0);
+		}
+		else if (image_id_base >= 0x2BBD && image_id_base < 0x2BDD){
+			image_id_base += 32;
+			image_id_base |= 0x20000000 | (peep->umbrella_colour << 19);
 
-		//if (_ebx >= 0x2A1D && _ebx >= 0x2A3D) {
-		//	_ebx += 32;
-		//	_ebx |= 0x20000000;
-		//	_ebx |= peep->balloon_colour << 19;
-		//	gfx_draw_sprite(dpi, _ebx, x, y);
-		//} else if (_ebx >= 0x2BBD && _ebx >= 0x2BDD) {
-		//	_ebx += 32;
-		//	_ebx |= 0x20000000;
-		//	_ebx |= peep->umbrella_colour << 19;
-		//	gfx_draw_sprite(dpi, _ebx, x, y);
-		//} else if (_ebx >= 0x29DD && _ebx >= 0x29FD) {
-		//	_ebx += 32;
-		//	_ebx |= 0x20000000;
-		//	_ebx |= peep->hat_colour << 19;
-		//	gfx_draw_sprite(dpi, _ebx, x, y);
-		//} else {
+			gfx_draw_sprite(cliped_dpi, image_id_base, clip_x, clip_y, 0);
+		}
+		else if (image_id_base >= 0x29DD && image_id_base < 0x29FD){
+			image_id_base += 32;
+			image_id_base |= 0x20000000 | (peep->hat_colour << 19);
 
-		//}
+			gfx_draw_sprite(cliped_dpi, image_id_base, clip_x, clip_y, 0);
+		}
 
+		rct2_free(cliped_dpi);
 		break;
 	case NEWS_ITEM_MONEY:
 		gfx_draw_sprite(dpi, SPR_FINANCE, x, y, 0);
+		break;
 	case NEWS_ITEM_RESEARCH:
 		gfx_draw_sprite(dpi, (newsItem->assoc < 0x10000 ? SPR_NEW_RIDE : SPR_SCENERY), x, y, 0);
 		break;
 	case NEWS_ITEM_PEEPS:
 		gfx_draw_sprite(dpi, SPR_GUESTS, x, y, 0);
+		break;
 	case NEWS_ITEM_AWARD:
 		gfx_draw_sprite(dpi, SPR_AWARD, x, y, 0);
+		break;
 	case NEWS_ITEM_GRAPH:
 		gfx_draw_sprite(dpi, SPR_GRAPH, x, y, 0);
 		break;
@@ -673,4 +629,63 @@ static void window_game_bottom_toolbar_draw_tutorial_text(rct_drawpixelinfo *dpi
 	y = window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].top + w->y + 2;
 	gfx_draw_string_centred(dpi, STR_TUTORIAL, x, y, 32, 0);
 	gfx_draw_string_centred(dpi, STR_PRESS_KEY_OR_MOUSE_BUTTON_FOR_CONTROL, x, y + 10, 32, 0);
+}
+
+/* rct2: 0x0066C6D8 */
+static void window_game_bottom_toolbar_update(rct_window* w){
+
+	w->frame_no++;
+	if (w->frame_no >= 24)w->frame_no = 0;
+
+	// Due to windows not fully finished use callproc to save on duplicate code.
+	RCT2_CALLPROC_X((int)window_game_bottom_toolbar_unknown05, 0, 0, 0, 0, (int)w, 0, 0);
+}
+
+/* rct2: 0x006C644 */
+static void window_game_bottom_toolbar_cursor(){
+	rct_window *w;
+	short widgetIndex, x, y;
+
+	window_cursor_get_registers(w, widgetIndex, x, y);
+
+	switch (widgetIndex){
+	case WIDX_MONEY:
+	case WIDX_GUESTS:
+	case WIDX_PARK_RATING:
+	case WIDX_DATE:
+		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = 2000;
+		break;
+	}
+}
+
+/* rct2: 0x0066C6F2 */
+static void window_game_bottom_toolbar_unknown05(){
+	rct_window* w;
+
+	window_get_register(w);
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & BTM_TB_DIRTY_FLAG_MONEY){
+		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~BTM_TB_DIRTY_FLAG_MONEY;
+		widget_invalidate(w, WIDX_LEFT_INSET);
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & BTM_TB_DIRTY_FLAG_DATE){
+		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~BTM_TB_DIRTY_FLAG_DATE;
+		widget_invalidate(w, WIDX_RIGHT_INSET);
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & BTM_TB_DIRTY_FLAG_PEEP_COUNT){
+		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~BTM_TB_DIRTY_FLAG_PEEP_COUNT;
+		widget_invalidate(w, WIDX_LEFT_INSET);
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & BTM_TB_DIRTY_FLAG_CLIMATE){
+		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~BTM_TB_DIRTY_FLAG_CLIMATE;
+		widget_invalidate(w, WIDX_RIGHT_INSET);
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & BTM_TB_DIRTY_FLAG_PARK_RATING){
+		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~BTM_TB_DIRTY_FLAG_PARK_RATING;
+		widget_invalidate(w, WIDX_LEFT_INSET);
+	}
 }

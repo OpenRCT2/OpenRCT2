@@ -50,6 +50,7 @@ typedef enum {
 	WWT_CHECKBOX = 23,
 	WWT_24,
 	WWT_25,
+	WWT_TEXT_BOX = 27,
 	WWT_LAST = 26,
 } WINDOW_WIDGET_TYPES;
 #define WIDGETS_END		WWT_LAST, 0, 0, 0, 0, 0, 0, 0
@@ -63,4 +64,7 @@ int widget_is_pressed(rct_window *w, int widgetIndex);
 int widget_is_highlighted(rct_window *w, int widgetIndex);
 int widget_is_active_tool(rct_window *w, int widgetIndex);
 void widget_scroll_get_part(rct_window *w, rct_widget* widget, int x, int y, int *output_x, int *output_y, int *output_scroll_area, int *scroll_id);
+
+void widget_set_checkbox_value(rct_window *w, int widgetIndex, int value);
+
 #endif

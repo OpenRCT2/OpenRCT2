@@ -25,6 +25,7 @@
 #include "keyboard_shortcut.h"
 #include "viewport.h"
 #include "window.h"
+#include "widget.h"
 
 typedef void (*shortcut_action)();
 
@@ -50,7 +51,7 @@ void keyboard_shortcut_set(int key)
 	gShortcutKeys[RCT2_GLOBAL(0x009DE511, uint8)] = key;
 	window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
 	window_invalidate_by_class(WC_KEYBOARD_SHORTCUT_LIST);
-	config_save();
+	config_shortcut_keys_save();
 }
 
 /**
@@ -171,7 +172,45 @@ static void shortcut_rotate_view()
 
 static void shortcut_rotate_construction_object()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006E4182);
+	rct_window *w;
+
+	// Rotate scenery
+	w = window_find_by_class(WC_SCENERY);
+	if (w != NULL && !widget_is_disabled(w, 25) && w->widgets[25].type != WWT_EMPTY) {
+		window_event_mouse_up_call(w, 25);
+		return;
+	}
+
+	// Rotate construction track piece
+	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w != NULL && !widget_is_disabled(w, 32) && w->widgets[32].type != WWT_EMPTY) {
+		// Check if building a maze...
+		if (w->widgets[32].tooltip != 1761) {
+			window_event_mouse_up_call(w, 32);
+			return;
+		}
+	}
+
+	// Rotate track design preview
+	w = window_find_by_class(WC_TRACK_DESIGN_LIST);
+	if (w != NULL && !widget_is_disabled(w, 5) && w->widgets[5].type != WWT_EMPTY) {
+		window_event_mouse_up_call(w, 5);
+		return;
+	}
+
+	// Rotate track design placement
+	w = window_find_by_class(WC_TRACK_DESIGN_PLACE);
+	if (w != NULL && !widget_is_disabled(w, 3) && w->widgets[3].type != WWT_EMPTY) {
+		window_event_mouse_up_call(w, 3);
+		return;
+	}
+
+	// Rotate park entrance
+	w = window_find_by_class(WC_MAP);
+	if (w != NULL && !widget_is_disabled(w, 20) && w->widgets[20].type != WWT_EMPTY) {
+		window_event_mouse_up_call(w, 20);
+		return;
+	}
 }
 
 static void shortcut_underground_view_toggle()
@@ -308,14 +347,11 @@ static void shortcut_show_financial_information()
 
 static void shortcut_show_research_information()
 {
-	rct_window *window;
-
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
-		// Open new ride window
-		RCT2_CALLPROC_EBPSAFE(0x006B3CFF);
-		window = window_find_by_class(WC_CONSTRUCT_RIDE);
-		if (window != NULL)
-			window_event_mouse_up_call(window, 10);
+		if (gConfigInterface.toolbar_show_research)
+			window_research_open();
+		else
+			window_new_ride_open_research();
 	}
 }
 
@@ -386,7 +422,7 @@ static void shortcut_show_map()
 
 static void shortcut_screenshot()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006E4034); // set screenshot countdown to 2
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8) = 2;
 }
 
 static void shortcut_reduce_game_speed()
@@ -402,6 +438,9 @@ static void shortcut_increase_game_speed()
 static void shortcut_open_cheat_window()
 {
 	rct_window *window;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) != SCREEN_FLAGS_PLAYING)
+		return;
 
 	// Check if window is already open
 	window = window_find_by_class(WC_CHEATS);

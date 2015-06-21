@@ -36,7 +36,9 @@
 #include "../util/util.h"
 #include "../world/park.h"
 #include "../world/sprite.h"
+#include "../management/finance.h"
 #include "dropdown.h"
+#include "../interface/themes.h"
 
 enum WINDOW_PARK_PAGE {
 	WINDOW_PARK_PAGE_ENTRANCE,
@@ -65,9 +67,11 @@ enum WINDOW_PARK_WIDGET_IDX {
 	WIDX_STATUS,
 	WIDX_OPEN_OR_CLOSE,
 	WIDX_BUY_LAND_RIGHTS,
-	WIDX_BUY_CONSTRUCTION_RIGHTS,
+	//WIDX_BUY_CONSTRUCTION_RIGHTS,
 	WIDX_LOCATE,
 	WIDX_RENAME,
+	WIDX_CLOSE_LIGHT,
+	WIDX_OPEN_LIGHT,
 
 	WIDX__ = 11,
 	WIDX_PRICE,
@@ -79,73 +83,45 @@ enum WINDOW_PARK_WIDGET_IDX {
 
 #pragma region Widgets
 
-static rct_widget window_park_entrance_widgets[] = {
-	{ WWT_FRAME,			0,	0,		229,	0,		223,	0x0FFFFFFFF,					STR_NONE },							// panel / background
-	{ WWT_CAPTION,			0,	1,		228,	1,		14,		0x361,							STR_WINDOW_TITLE_TIP },				// title bar
-	{ WWT_CLOSEBOX,			0,	217,	227,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },				// close x button
-	{ WWT_RESIZE,			1,	0,		229,	43,		173,	0x0FFFFFFFF,					STR_NONE },							// tab content panel
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,						STR_PARK_ENTRANCE_TAB_TIP },		// tab 1
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,						STR_PARK_RATING_TAB_TIP },			// tab 2
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,						STR_PARK_GUESTS_TAB_TIP },			// tab 3
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,						STR_PARK_PRICE_TAB_TIP },			// tab 4
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,						STR_PARK_STATS_TAB_TIP },			// tab 5
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,						STR_PARK_OBJECTIVE_TAB_TIP },		// tab 6
-	{ WWT_TAB,				1,	189,	219,	17,		43,		0x2000144E,						STR_PARK_AWARDS_TAB_TIP },			// tab 7
+#define MAIN_PARK_WIDGETS \
+	{ WWT_FRAME,			0,	0,		229,	0,		223,	0x0FFFFFFFF,					STR_NONE },						/* panel / background */	\
+	{ WWT_CAPTION,			0,	1,		228,	1,		14,		0x361,							STR_WINDOW_TITLE_TIP },			/* title bar		  */	\
+	{ WWT_CLOSEBOX,			0,	217,	227,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },			/* close x button	  */	\
+	{ WWT_RESIZE,			1,	0,		229,	43,		173,	0x0FFFFFFFF,					STR_NONE },						/* tab content panel  */	\
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,						STR_PARK_ENTRANCE_TAB_TIP },	/* tab 1			  */	\
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,						STR_PARK_RATING_TAB_TIP },		/* tab 2			  */	\
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,						STR_PARK_GUESTS_TAB_TIP },		/* tab 3			  */	\
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,						STR_PARK_PRICE_TAB_TIP },		/* tab 4			  */	\
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,						STR_PARK_STATS_TAB_TIP },		/* tab 5			  */	\
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,						STR_PARK_OBJECTIVE_TAB_TIP },	/* tab 6			  */	\
+	{ WWT_TAB,				1,	189,	219,	17,		43,		0x2000144E,						STR_PARK_AWARDS_TAB_TIP }		/* tab 7			  */
 
+static rct_widget window_park_entrance_widgets[] = {
+	MAIN_PARK_WIDGETS,
 	{ WWT_VIEWPORT,			1,	3,		204,	46,		160,	0x0FFFFFFFF,					STR_NONE },							// viewport
 	{ WWT_12,				1,	3,		204,	161,	171,	0x0FFFFFFFF,					STR_NONE },							// status
 	{ WWT_FLATBTN,			1,	205,	228,	49,		72,		0x0FFFFFFFF,					STR_OPEN_OR_CLOSE_PARK_TIP },		// open / close
-	{ WWT_FLATBTN,			1,	205,	228,	73,		96,		SPR_BUY_LAND_RIGHTS,			SPR_BUY_LAND_RIGHTS_TIP },			// buy land rights
-	{ WWT_FLATBTN,			1,	205,	228,	97,		120,	SPR_BUY_CONSTRUCTION_RIGHTS,	SPR_BUY_CONSTRUCTION_RIGHTS_TIP },	// buy construction rights
-	{ WWT_FLATBTN,			1,	205,	228,	121,	144,	SPR_LOCATE,						STR_LOCATE_SUBJECT_TIP },			// locate
-	{ WWT_FLATBTN,			1,	205,	228,	145,	168,	SPR_RENAME,						STR_NAME_PARK_TIP },				// rename
+	{ WWT_FLATBTN,			1,	205,	228,	73,		96,		SPR_BUY_LAND_RIGHTS,			5135 },			// buy land rights
+	//{ WWT_FLATBTN,			1,	205,	228,	97,		120,	SPR_BUY_CONSTRUCTION_RIGHTS,	SPR_BUY_CONSTRUCTION_RIGHTS_TIP },	// buy construction rights
+	{ WWT_FLATBTN,			1,	205,	228,	97,		120,	SPR_LOCATE,						STR_LOCATE_SUBJECT_TIP },			// locate
+	{ WWT_FLATBTN,			1,	205,	228,	121,	144,	SPR_RENAME,						STR_NAME_PARK_TIP },				// rename
+	{ WWT_IMGBTN,			1,	210,	223,	51,		65,		SPR_G2_RCT1_CLOSE_BUTTON_0,		5296 },
+	{ WWT_IMGBTN,			1,	210,	223,	66,		79,		SPR_G2_RCT1_OPEN_BUTTON_0,		5297 },
 	{ WIDGETS_END },
 };
 
 static rct_widget window_park_rating_widgets[] = {
-	{ WWT_FRAME,			0,	0,		229,	0,		223,	0x0FFFFFFFF,					STR_NONE },							// panel / background
-	{ WWT_CAPTION,			0,	1,		228,	1,		14,		0x361,							STR_WINDOW_TITLE_TIP },				// title bar
-	{ WWT_CLOSEBOX,			0,	217,	227,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },				// close x button
-	{ WWT_IMGBTN,			1,	0,		229,	43,		173,	0x0FFFFFFFF,					STR_NONE },							// tab content panel
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,						STR_PARK_ENTRANCE_TAB_TIP },		// tab 1
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,						STR_PARK_RATING_TAB_TIP },			// tab 2
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,						STR_PARK_GUESTS_TAB_TIP },			// tab 3
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,						STR_PARK_PRICE_TAB_TIP },			// tab 4
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,						STR_PARK_STATS_TAB_TIP },			// tab 5
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,						STR_PARK_OBJECTIVE_TAB_TIP },		// tab 6
-	{ WWT_TAB,				1,	189,	219,	17,		43,		0x2000144E,						STR_PARK_AWARDS_TAB_TIP },			// tab 7
+	MAIN_PARK_WIDGETS,
 	{ WIDGETS_END },
 };
 
 static rct_widget window_park_guests_widgets[] = {
-	{ WWT_FRAME,			0,	0,		229,	0,		223,	0x0FFFFFFFF,					STR_NONE },							// panel / background
-	{ WWT_CAPTION,			0,	1,		228,	1,		14,		0x361,							STR_WINDOW_TITLE_TIP },				// title bar
-	{ WWT_CLOSEBOX,			0,	217,	227,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },				// close x button
-	{ WWT_IMGBTN,			1,	0,		229,	43,		173,	0x0FFFFFFFF,					STR_NONE },							// tab content panel
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,						STR_PARK_ENTRANCE_TAB_TIP },		// tab 1
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,						STR_PARK_RATING_TAB_TIP },			// tab 2
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,						STR_PARK_GUESTS_TAB_TIP },			// tab 3
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,						STR_PARK_PRICE_TAB_TIP },			// tab 4
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,						STR_PARK_STATS_TAB_TIP },			// tab 5
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,						STR_PARK_OBJECTIVE_TAB_TIP },		// tab 6
-	{ WWT_TAB,				1,	189,	219,	17,		43,		0x2000144E,						STR_PARK_AWARDS_TAB_TIP },			// tab 7
+	MAIN_PARK_WIDGETS,
 	{ WIDGETS_END },
 };
 
 static rct_widget window_park_price_widgets[] = {
-	{ WWT_FRAME,			0,	0,		229,	0,		223,	0x0FFFFFFFF,					STR_NONE },							// panel / background
-	{ WWT_CAPTION,			0,	1,		228,	1,		14,		0x361,							STR_WINDOW_TITLE_TIP },				// title bar
-	{ WWT_CLOSEBOX,			0,	217,	227,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },				// close x button
-	{ WWT_IMGBTN,			1,	0,		229,	43,		173,	0x0FFFFFFFF,					STR_NONE },							// tab content panel
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,						STR_PARK_ENTRANCE_TAB_TIP },		// tab 1
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,						STR_PARK_RATING_TAB_TIP },			// tab 2
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,						STR_PARK_GUESTS_TAB_TIP },			// tab 3
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,						STR_PARK_PRICE_TAB_TIP },			// tab 4
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,						STR_PARK_STATS_TAB_TIP },			// tab 5
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,						STR_PARK_OBJECTIVE_TAB_TIP },		// tab 6
-	{ WWT_TAB,				1,	189,	219,	17,		43,		0x2000144E,						STR_PARK_AWARDS_TAB_TIP },			// tab 7
-
-
+	MAIN_PARK_WIDGETS,
 	{ WWT_24,				1,	7,		146,	50,		61,		STR_ADMISSION_PRICE,			STR_NONE },							// 
 	{ WWT_SPINNER,			1,	147,	222,	50,		61,		0x595,							STR_NONE },							// price
 	{ WWT_DROPDOWN_BUTTON,	1,	211,	221,	51,		55,		STR_NUMERIC_UP,					STR_NONE },							// increase price
@@ -154,49 +130,18 @@ static rct_widget window_park_price_widgets[] = {
 };
 
 static rct_widget window_park_stats_widgets[] = {
-	{ WWT_FRAME,			0,	0,		229,	0,		223,	0x0FFFFFFFF,					STR_NONE },							// panel / background
-	{ WWT_CAPTION,			0,	1,		228,	1,		14,		0x361,							STR_WINDOW_TITLE_TIP },				// title bar
-	{ WWT_CLOSEBOX,			0,	217,	227,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },				// close x button
-	{ WWT_IMGBTN,			1,	0,		229,	43,		173,	0x0FFFFFFFF,					STR_NONE },							// tab content panel
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,						STR_PARK_ENTRANCE_TAB_TIP },		// tab 1
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,						STR_PARK_RATING_TAB_TIP },			// tab 2
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,						STR_PARK_GUESTS_TAB_TIP },			// tab 3
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,						STR_PARK_PRICE_TAB_TIP },			// tab 4
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,						STR_PARK_STATS_TAB_TIP },			// tab 5
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,						STR_PARK_OBJECTIVE_TAB_TIP },		// tab 6
-	{ WWT_TAB,				1,	189,	219,	17,		43,		0x2000144E,						STR_PARK_AWARDS_TAB_TIP },			// tab 7
+	MAIN_PARK_WIDGETS,
 	{ WIDGETS_END },
 };
 
 static rct_widget window_park_objective_widgets[] = {
-	{ WWT_FRAME,			0,	0,		229,	0,		223,	0x0FFFFFFFF,					STR_NONE },							// panel / background
-	{ WWT_CAPTION,			0,	1,		228,	1,		14,		0x361,							STR_WINDOW_TITLE_TIP },				// title bar
-	{ WWT_CLOSEBOX,			0,	217,	227,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },				// close x button
-	{ WWT_IMGBTN,			1,	0,		229,	43,		173,	0x0FFFFFFFF,					STR_NONE },							// tab content panel
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,						STR_PARK_ENTRANCE_TAB_TIP },		// tab 1
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,						STR_PARK_RATING_TAB_TIP },			// tab 2
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,						STR_PARK_GUESTS_TAB_TIP },			// tab 3
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,						STR_PARK_PRICE_TAB_TIP },			// tab 4
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,						STR_PARK_STATS_TAB_TIP },			// tab 5
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,						STR_PARK_OBJECTIVE_TAB_TIP },		// tab 6
-	{ WWT_TAB,				1,	189,	219,	17,		43,		0x2000144E,						STR_PARK_AWARDS_TAB_TIP },			// tab 7
-
+	MAIN_PARK_WIDGETS,
 	{ WWT_DROPDOWN_BUTTON,	1,	7,		222,	209,	220,	STR_ENTER_NAME_INTO_SCENARIO_CHART,			STR_NONE },				// enter name
 	{ WIDGETS_END },
 };
 
 static rct_widget window_park_awards_widgets[] = {
-	{ WWT_FRAME,			0,	0,		229,	0,		223,	0x0FFFFFFFF,					STR_NONE },							// panel / background
-	{ WWT_CAPTION,			0,	1,		228,	1,		14,		0x361,							STR_WINDOW_TITLE_TIP },				// title bar
-	{ WWT_CLOSEBOX,			0,	217,	227,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },				// close x button
-	{ WWT_IMGBTN,			1,	0,		229,	43,		173,	0x0FFFFFFFF,					STR_NONE },							// tab content panel
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,						STR_PARK_ENTRANCE_TAB_TIP },		// tab 1
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,						STR_PARK_RATING_TAB_TIP },			// tab 2
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,						STR_PARK_GUESTS_TAB_TIP },			// tab 3
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,						STR_PARK_PRICE_TAB_TIP },			// tab 4
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,						STR_PARK_STATS_TAB_TIP },			// tab 5
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,						STR_PARK_OBJECTIVE_TAB_TIP },		// tab 6
-	{ WWT_TAB,				1,	189,	219,	17,		43,		0x2000144E,						STR_PARK_AWARDS_TAB_TIP },			// tab 7
+	MAIN_PARK_WIDGETS,
 	{ WIDGETS_END },
 };
 
@@ -229,6 +174,7 @@ static void window_park_entrance_toolabort();
 static void window_park_entrance_textinput();
 static void window_park_entrance_invalidate();
 static void window_park_entrance_paint();
+void toggle_land_rights_window(rct_window *parkWindow, int widgetIndex);
 
 static void window_park_rating_mouseup();
 static void window_park_rating_resize();
@@ -510,9 +456,11 @@ static uint32 window_park_page_enabled_widgets[] = {
 	(1 << WIDX_TAB_7) |
 	(1 << WIDX_OPEN_OR_CLOSE) |
 	(1 << WIDX_BUY_LAND_RIGHTS) |
-	(1 << WIDX_BUY_CONSTRUCTION_RIGHTS) |
+	//(1 << WIDX_BUY_CONSTRUCTION_RIGHTS) |
 	(1 << WIDX_LOCATE) |
-	(1 << WIDX_RENAME),
+	(1 << WIDX_RENAME) |
+	(1 << WIDX_CLOSE_LIGHT) |
+	(1 << WIDX_OPEN_LIGHT),
 
 	(1 << WIDX_CLOSE) |
 	(1 << WIDX_TAB_1) |
@@ -572,6 +520,19 @@ static uint32 window_park_page_enabled_widgets[] = {
 	(1 << WIDX_TAB_7)
 };
 
+static uint32 window_park_page_hold_down_widgets[] = {
+	0,
+	0,
+	0,
+
+	(1 << WIDX_INCREASE_PRICE) |
+	(1 << WIDX_DECREASE_PRICE),
+
+	0,
+	0,
+	0
+};
+
 #pragma endregion
 
 static void window_park_init_viewport(rct_window *w);
@@ -589,7 +550,7 @@ rct_window *window_park_open()
 {
 	rct_window* w;
 
-	w = window_create_auto_pos(230, 174, (uint32*)window_park_entrance_events, WC_PARK_INFORMATION, 0x0400);
+	w = window_create_auto_pos(230, 174 + 9, (uint32*)window_park_entrance_events, WC_PARK_INFORMATION, WF_10);
 	w->widgets = window_park_entrance_widgets;
 	w->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_ENTRANCE];
 	w->number = 0;
@@ -600,9 +561,6 @@ rct_window *window_park_open()
 	w->var_48C = -1;
 	w->var_492 = 0;
 	window_park_set_disabled_tabs(w);
-	w->colours[0] = 1;
-	w->colours[1] = 19;
-	w->colours[2] = 19;
 
 	return w;
 }
@@ -611,10 +569,16 @@ rct_window *window_park_open()
  *
  *  rct2: 0x00667F8B
  */
-void window_park_set_disabled_tabs(rct_window *w)
+static void window_park_set_disabled_tabs(rct_window *w)
 {
 	// Disable price tab if money is disabled
 	w->disabled_widgets = (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) ? (1 << WIDX_TAB_4) : 0;
+}
+
+static void window_park_prepare_window_title_text()
+{
+	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
+	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
 }
 
 #pragma region Entrance page
@@ -684,17 +648,22 @@ static void window_park_entrance_mouseup()
 		window_park_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_BUY_LAND_RIGHTS:
-		RCT2_CALLPROC_X(0x006682F7, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+		toggle_land_rights_window(w, WIDX_BUY_LAND_RIGHTS);
 		break;
-	case WIDX_BUY_CONSTRUCTION_RIGHTS:
-		RCT2_CALLPROC_X(0x00668393, 0, 0, 0, widgetIndex, (int)w, 0, 0);
-		break;
+	// case WIDX_BUY_CONSTRUCTION_RIGHTS:
+	//	break;
 	case WIDX_LOCATE:
 		window_scroll_to_viewport(w);
 		break;
 	case WIDX_RENAME:
 		RCT2_GLOBAL(0x013CE962, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
-		window_text_input_open(w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, RCT2_GLOBAL(0x013573D4, rct_string_id), 0);
+		window_text_input_open(w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), 0, 32);
+		break;
+	case WIDX_CLOSE_LIGHT:
+		park_set_open(0);
+		break;
+	case WIDX_OPEN_LIGHT:
+		park_set_open(1);
 		break;
 	}
 }
@@ -755,19 +724,17 @@ static void window_park_entrance_dropdown()
 
 	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
-
 	if (widgetIndex == WIDX_OPEN_OR_CLOSE) {
 		if (dropdownIndex == -1)
 			dropdownIndex = RCT2_GLOBAL(0x009DEBA2, sint16);
+
 		if (dropdownIndex != 0) {
-			dropdownIndex &= 0x00FF;
-			dropdownIndex |= 0x0100;
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1724;
+			park_set_open(1);
 		} else {
-			dropdownIndex &= 0x00FF;
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1723;
+			park_set_open(0);
 		}
-		game_do_command(0, 1, 0, dropdownIndex, GAME_COMMAND_SET_PARK_OPEN, 0, 0);
 	}
 }
 
@@ -781,6 +748,84 @@ static void window_park_entrance_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_1);
 }
 
+
+void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y){
+	map_invalidate_selection_rect();
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
+
+	rct_xy16 mapTile = { 0 };
+	sub_688972(x, y, &mapTile.x, &mapTile.y, NULL);
+
+	if (mapTile.x == (sint16)0x8000){
+		if (RCT2_GLOBAL(0x00F1AD62, money32) != MONEY32_UNDEFINED){
+			RCT2_GLOBAL(0x00F1AD62, money32) = MONEY32_UNDEFINED;
+			window_invalidate_by_class(WC_CLEAR_SCENERY);
+		}
+		return;
+	}
+
+	uint8 state_changed = 0;
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0))){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
+		state_changed++;
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) != 4){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
+		state_changed++;
+	}
+
+	sint16 tool_size = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+	if (tool_size == 0)
+		tool_size = 1;
+
+	sint16 tool_length = (tool_size - 1) * 32;
+
+	// Move to tool bottom left
+	mapTile.x -= (tool_size - 1) * 16;
+	mapTile.y -= (tool_size - 1) * 16;
+	mapTile.x &= 0xFFE0;
+	mapTile.y &= 0xFFE0;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) != mapTile.x){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) = mapTile.x;
+		state_changed++;
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) != mapTile.y){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) = mapTile.y;
+		state_changed++;
+	}
+
+	mapTile.x += tool_length;
+	mapTile.y += tool_length;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) != mapTile.x){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) = mapTile.x;
+		state_changed++;
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) != mapTile.y){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) = mapTile.y;
+		state_changed++;
+	}
+
+	map_invalidate_selection_rect();
+	if (!state_changed)
+		return;
+
+	RCT2_GLOBAL(0x00F1AD62, uint32) = game_do_command(
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
+		0x4,
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
+		LandRightsMode ? 0x00E : 0x20F,
+		35,
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
+		);
+}
+
 /**
  * 
  *  rct2: 0x006681D1
@@ -792,19 +837,10 @@ static void window_park_entrance_toolupdate()
 
 	window_tool_get_registers(w, widgetIndex, x, y);
 
-	if (widgetIndex == WIDX_BUY_LAND_RIGHTS) {
-		RCT2_CALLPROC_X(0x0068AAE1, x, y, 0, 0, (int)w, 0, 0);
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= 0xFFFE;
-		screen_pos_to_map_pos(&x, &y);
-		if (x != SPRITE_LOCATION_NULL) {
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 1;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = x;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = x;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = y;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = y;
-			RCT2_CALLPROC_X(0x0068AAE1, x, y, 0, 0, (int)w, 0, 0);
-		}
+	switch (widgetIndex){
+	case WIDX_BUY_LAND_RIGHTS:
+		window_park_entrance_tool_update_land_rights(x, y);
+		break;
 	}
 }
 
@@ -819,7 +855,38 @@ static void window_park_entrance_tooldown()
 
 	window_tool_get_registers(w, widgetIndex, x, y);
 
-	RCT2_CALLPROC_X(0x006681E6, x, y, 0, widgetIndex, (int)w, 0, 0);
+	switch (widgetIndex){
+	case WIDX_BUY_LAND_RIGHTS:
+		if (LandRightsMode) {
+			if (x != (sint16)0x8000) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6BD; // Can't buy land...
+				game_do_command(
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
+					1,
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
+					0x00E,
+					GAME_COMMAND_BUY_LAND_RIGHTS,
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
+					);
+			}
+		}
+		else {
+			if (x != (sint16)0x8000) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6C0; // Can't buy construction rights here...
+				game_do_command(
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
+					1,
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
+					0x20F,
+					GAME_COMMAND_BUY_LAND_RIGHTS,
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
+					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
+					);
+			}
+		}
+		break;
+	}
 }
 
 /**
@@ -833,7 +900,42 @@ static void window_park_entrance_tooldrag()
 
 	window_tool_get_registers(w, widgetIndex, x, y);
 
-	RCT2_CALLPROC_X(0x006681FB, x, y, 0, widgetIndex, (int)w, 0, 0);
+	rct_window* w2 = window_find_by_number(0xB, 0);
+	
+	if (!w2) {
+		switch (widgetIndex){
+		case WIDX_BUY_LAND_RIGHTS:
+			if (LandRightsMode) {
+				if (x != (sint16)0x8000) {
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6BD; // Can't buy land...
+					game_do_command(
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
+						1,
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
+						0x00E,
+						GAME_COMMAND_BUY_LAND_RIGHTS,
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
+						);
+				}
+			}
+			else {
+				if (x != (sint16)0x8000) {
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6C0; // Can't buy construction rights here...
+					game_do_command(
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
+						1,
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
+						0x20F,
+						GAME_COMMAND_BUY_LAND_RIGHTS,
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
+						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
+						);
+				}
+			}
+			break;
+		}
+	}
 }
 
 /**
@@ -849,11 +951,15 @@ static void window_park_entrance_toolabort()
 
 	if (widgetIndex == WIDX_BUY_LAND_RIGHTS) {
 		hide_gridlines();
-		hide_land_rights();
-	} else if (widgetIndex == WIDX_BUY_CONSTRUCTION_RIGHTS) {
-		hide_gridlines();
-		hide_construction_rights();
-	}
+		if (LandRightsMode)
+			hide_land_rights();
+		else
+			hide_construction_rights();
+	} 
+	//else if (widgetIndex == WIDX_BUY_CONSTRUCTION_RIGHTS) {
+	//	hide_gridlines();
+	//	hide_construction_rights();
+	//}
 }
 
 /**
@@ -869,14 +975,8 @@ static void window_park_entrance_textinput()
 
 	window_textinput_get_registers(w, widgetIndex, result, text);
 
-	if (widgetIndex == WIDX_RENAME) {
-		if (result) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_PARK;
-			game_do_command(1, 1, 0, *((int*)(text + 0)), GAME_COMMAND_33, *((int*)(text + 8)), *((int*)(text + 4)));
-			game_do_command(2, 1, 0, *((int*)(text + 12)), GAME_COMMAND_33, *((int*)(text + 20)), *((int*)(text + 16)));
-			game_do_command(0, 1, 0, *((int*)(text + 24)), GAME_COMMAND_33, *((int*)(text + 32)), *((int*)(text + 28)));
-		}
-	}
+	if (widgetIndex == WIDX_RENAME && result)
+		park_set_name(text);
 }
 
 /**
@@ -885,10 +985,11 @@ static void window_park_entrance_textinput()
  */
 static void window_park_entrance_invalidate()
 {
-	int i;
+	int i, height;
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	w->widgets = window_park_page_widgets[w->page];
 	window_init_scroll_widgets(w);
@@ -896,13 +997,25 @@ static void window_park_entrance_invalidate()
 	window_park_set_pressed_tab(w);
 
 	// Set open / close park button state
-	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
-	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
+	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
+	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
 	window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].image = park_is_open() ? SPR_OPEN : SPR_CLOSED;
+	window_park_entrance_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !park_is_open() * 2 + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
+	window_park_entrance_widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + park_is_open() * 2 + widget_is_pressed(w, WIDX_OPEN_LIGHT);
 
 	// Only allow closing of park for guest / rating objective
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_GUESTS_AND_RATING)
-		w->disabled_widgets |= (1 << WIDX_OPEN_OR_CLOSE);
+	// Only allow closing of park when there is money
+	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_GUESTS_AND_RATING ||
+		(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
+		w->disabled_widgets |= (1 << WIDX_OPEN_OR_CLOSE) | (1 << WIDX_CLOSE_LIGHT) | (1 << WIDX_OPEN_LIGHT);
+	else
+		w->disabled_widgets &= ~((1 << WIDX_OPEN_OR_CLOSE) | (1 << WIDX_CLOSE_LIGHT) | (1 << WIDX_OPEN_LIGHT));
+	
+	// Only allow purchase of land when there is money
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+		window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WWT_EMPTY;
+	else
+		window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WWT_FLATBTN;
 
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 	window_park_anchor_border_widgets(w);
@@ -913,20 +1026,39 @@ static void window_park_entrance_invalidate()
 	window_park_entrance_widgets[WIDX_STATUS].right = w->width - 26;
 	window_park_entrance_widgets[WIDX_STATUS].top = w->height - 13;
 	window_park_entrance_widgets[WIDX_STATUS].bottom = w->height - 3;
-	for (i = WIDX_OPEN_OR_CLOSE; i <= WIDX_RENAME; i++) {
-		window_park_entrance_widgets[i].left = w->width - 25;
-		window_park_entrance_widgets[i].right = w->width - 2;
+	
+	if (theme_get_preset()->features.rct1_park_lights) {
+		window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WWT_EMPTY;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_GUESTS_AND_RATING) {
+			window_park_entrance_widgets[WIDX_CLOSE_LIGHT].type = WWT_FLATBTN;
+			window_park_entrance_widgets[WIDX_OPEN_LIGHT].type = WWT_FLATBTN;
+		}
+		else {
+			window_park_entrance_widgets[WIDX_CLOSE_LIGHT].type = WWT_IMGBTN;
+			window_park_entrance_widgets[WIDX_OPEN_LIGHT].type = WWT_IMGBTN;
+		}
+		height = window_park_entrance_widgets[WIDX_OPEN_LIGHT].bottom + 5;
+	}
+	else {
+		window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WWT_FLATBTN;
+		window_park_entrance_widgets[WIDX_CLOSE_LIGHT].type = WWT_EMPTY;
+		window_park_entrance_widgets[WIDX_OPEN_LIGHT].type = WWT_EMPTY;
+		height = 49;
 	}
 
-	// Only allow closing of park and purchase of land when there is money
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
-		window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WWT_EMPTY;
-		window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WWT_EMPTY;
-		window_park_entrance_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].type = WWT_EMPTY;
-	} else {
-		window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WWT_FLATBTN;
-		window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WWT_FLATBTN;
-		window_park_entrance_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].type = WWT_FLATBTN;
+	for (i = WIDX_CLOSE_LIGHT; i <= WIDX_OPEN_LIGHT; i++) {
+		window_park_entrance_widgets[i].left = w->width - 20;
+		window_park_entrance_widgets[i].right = w->width - 7;
+	}
+	for (i = WIDX_OPEN_OR_CLOSE; i <= WIDX_RENAME; i++) {
+		if (window_park_entrance_widgets[i].type == WWT_EMPTY)
+			continue;
+
+		window_park_entrance_widgets[i].left = w->width - 25;
+		window_park_entrance_widgets[i].right = w->width - 2;
+		window_park_entrance_widgets[i].top = height;
+		window_park_entrance_widgets[i].bottom = height + 23;
+		height += 24;
 	}
 }
 
@@ -1007,7 +1139,7 @@ static void window_park_init_viewport(rct_window *w)
 	}
 
 	// Call invalidate event
-	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	window_event_invalidate_call(w);
 
 	w->viewport_focus_coordinates.x = x;
 	w->viewport_focus_coordinates.y = y;
@@ -1042,6 +1174,20 @@ static void window_park_init_viewport(rct_window *w)
 	window_invalidate(w);
 }
 
+void toggle_land_rights_window(rct_window *parkWindow, int widgetIndex)
+{
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 14) {
+		tool_cancel();
+	}
+	else {
+		show_gridlines();
+		tool_set(parkWindow, widgetIndex, 2);
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
+		window_land_rights_open();
+	}
+}
+
 #pragma endregion
 
 #pragma region Rating page
@@ -1070,7 +1216,7 @@ void window_park_rating_open()
 	window_invalidate(window);
 	window->widgets = window_park_rating_widgets;
 	window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_RATING];
-	window->var_020 = 0;
+	window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_RATING];
 	window->event_handlers = (uint32*)window_park_rating_events;
 	window_init_scroll_widgets(window);
 }
@@ -1125,6 +1271,7 @@ static void window_park_rating_invalidate()
 	rct_widget *widgets;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1133,9 +1280,7 @@ static void window_park_rating_invalidate()
 	}
 
 	window_park_set_pressed_tab(w);
-
-	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
-	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
+	window_park_prepare_window_title_text();
 
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 	window_park_anchor_border_widgets(w);
@@ -1204,7 +1349,7 @@ void window_park_guests_open()
 	window_invalidate(window);
 	window->widgets = window_park_guests_widgets;
 	window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_GUESTS];
-	window->var_020 = 0;
+	window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_GUESTS];
 	window->event_handlers = (uint32*)window_park_guests_events;
 	window_init_scroll_widgets(window);
 }
@@ -1260,6 +1405,7 @@ static void window_park_guests_invalidate()
 	rct_widget *widgets;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1268,9 +1414,7 @@ static void window_park_guests_invalidate()
 	}
 
 	window_park_set_pressed_tab(w);
-
-	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
-	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
+	window_park_prepare_window_title_text();
 
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 	window_park_anchor_border_widgets(w);
@@ -1367,12 +1511,12 @@ static void window_park_price_mousedown(int widgetIndex, rct_window*w, rct_widge
 		window_park_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_INCREASE_PRICE:
-		newFee = min(1000, RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) + 10);
-		game_do_command(0, 1, 0, 0, GAME_COMMAND_SET_PARK_ENTRANCE_FEE, newFee, 0);
+		newFee = min(MONEY(100,00), RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) + MONEY(1,00));
+		park_set_entrance_fee(newFee);
 		break;
 	case WIDX_DECREASE_PRICE:
-		newFee = max(0, RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) - 10);
-		game_do_command(0, 1, 0, 0, GAME_COMMAND_SET_PARK_ENTRANCE_FEE, newFee, 0);
+		newFee = max(MONEY(0,00), RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) - MONEY(1,00));
+		park_set_entrance_fee(newFee);
 		break;
 	}
 }
@@ -1397,6 +1541,7 @@ static void window_park_price_invalidate()
 	rct_widget *widgets;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1405,11 +1550,11 @@ static void window_park_price_invalidate()
 	}
 
 	window_park_set_pressed_tab(w);
+	window_park_prepare_window_title_text();
 
-	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
-	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) {
+	// If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY)
+		&& (!gConfigCheat.unlock_all_prices)) {
 		window_park_price_widgets[WIDX_PRICE].type = WWT_12;
 		window_park_price_widgets[WIDX_INCREASE_PRICE].type = WWT_EMPTY;
 		window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_EMPTY;
@@ -1519,6 +1664,7 @@ static void window_park_stats_invalidate()
 	rct_widget *widgets;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1527,9 +1673,7 @@ static void window_park_stats_invalidate()
 	}
 
 	window_park_set_pressed_tab(w);
-
-	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
-	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
+	window_park_prepare_window_title_text();
 
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 	window_park_anchor_border_widgets(w);
@@ -1554,7 +1698,7 @@ static void window_park_stats_paint()
 	y = w->y + window_park_awards_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
 	// Draw park size
-	parkSize = RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, sint16) * 10;
+	parkSize = RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, uint16) * 10;
 	stringIndex = STR_PARK_SIZE_METRIC_LABEL;
 	if (!RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8)) {
 		stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
@@ -1565,7 +1709,7 @@ static void window_park_stats_paint()
 	y += 10;
 
 	// Draw number of rides / attractions
-	if (w->list_information_type != -1) {
+	if (w->list_information_type != (uint16)-1) {
 		RCT2_GLOBAL(0x013CE952, uint32) = w->list_information_type;
 		gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, (void*)0x013CE952, 0, x, y);
 	}
@@ -1610,7 +1754,7 @@ void window_park_objective_open()
 	window_invalidate(window);
 	window->widgets = window_park_objective_widgets;
 	window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_OBJECTIVE];
-	window->var_020 = 0;
+	window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_OBJECTIVE];
 	window->event_handlers = (uint32*)window_park_objective_events;
 	window_init_scroll_widgets(window);
 	window->x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) / 2 - 115;
@@ -1649,7 +1793,8 @@ static void window_park_objective_mouseup()
 			STR_ENTER_NAME,
 			STR_PLEASE_ENTER_YOUR_NAME_FOR_THE_SCENARIO_CHART,
 			0,
-			0
+			0,
+			32
 		);
 		break;
 	}
@@ -1706,12 +1851,10 @@ static void window_park_objective_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	window_park_set_pressed_tab(w);
-
-	// Set window title arguments
-	*((uint16*)0x013CE952) = RCT2_GLOBAL(0x013573D4, uint16);
-	*((uint32*)0x013CE954) = RCT2_GLOBAL(0x013573D8, uint32);
+	window_park_prepare_window_title_text();
 
 	// 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
@@ -1799,7 +1942,7 @@ void window_park_awards_open()
 	window_invalidate(window);
 	window->widgets = window_park_awards_widgets;
 	window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_AWARDS];
-	window->var_020 = 0;
+	window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_AWARDS];
 	window->event_handlers = (uint32*)window_park_awards_events;
 	window_init_scroll_widgets(window);
 }
@@ -1854,6 +1997,7 @@ static void window_park_awards_invalidate()
 	rct_widget *widgets;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	widgets = window_park_page_widgets[w->page];
 	if (w->widgets != widgets) {
@@ -1862,9 +2006,7 @@ static void window_park_awards_invalidate()
 	}
 
 	window_park_set_pressed_tab(w);
-
-	RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(0x013573D4, uint16);
-	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x013573D8, uint32);
+	window_park_prepare_window_title_text();
 
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 	window_park_anchor_border_widgets(w);
@@ -1891,7 +2033,7 @@ static void window_park_awards_paint()
 
 	count = 0;
 	for (i = 0; i < MAX_AWARDS; i++) {
-		award = &RCT2_ADDRESS(RCT2_ADDRESS_AWARD_LIST, rct_award)[i];
+		award = &gCurrentAwards[i];
 		if (award->time == 0)
 			continue;
 
@@ -1936,14 +2078,15 @@ static void window_park_set_page(rct_window *w, int page)
 	}
 
 	w->enabled_widgets = window_park_page_enabled_widgets[page];
-	w->var_020 = RCT2_GLOBAL(0x0097BAE0 + (page * 4), uint32);
+	w->hold_down_widgets = window_park_page_hold_down_widgets[page];
 	w->event_handlers = window_park_page_events[page];
 	w->widgets = window_park_page_widgets[page];
 	window_park_set_disabled_tabs(w);
 	window_invalidate(w);
 
-	RCT2_CALLPROC_X(w->event_handlers[WE_RESIZE], 0, 0, 0, 0, (int)w, 0, 0);
-	RCT2_CALLPROC_X(w->event_handlers[WE_INVALIDATE], 0, 0, 0, 0, (int)w, 0, 0);
+	window_event_resize_call(w);
+	window_event_invalidate_call(w);
+	window_event_update_call(w);
 	if (listen != 0 && w->viewport != NULL)
 		w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
 }

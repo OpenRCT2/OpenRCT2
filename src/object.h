@@ -67,6 +67,17 @@ typedef struct {
 	rct_object_entry_extended *entries;
 } rct_object_entry_group;
 
+typedef struct {
+	uint8 category[2];
+
+} rct_ride_filters;
+
+typedef struct {
+	union {
+		rct_ride_filters ride;
+	};
+} rct_object_filters;
+
 extern rct_object_entry_group object_entry_groups[];
 
 int object_load_entry(const char *path, rct_object_entry *outEntry);
@@ -76,6 +87,7 @@ int object_read_and_load_entries(FILE *file);
 int object_load_packed(FILE *file);
 void object_unload_all();
 
+int check_object_entry(rct_object_entry *entry);
 int object_load(int groupIndex, rct_object_entry *entry, int* chunk_size);
 int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSize, const rct_object_entry *installedObject);
 void object_unload(int groupIndex, rct_object_entry_extended *entry);
@@ -86,8 +98,14 @@ int object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
 int object_calculate_checksum(const rct_object_entry *entry, const char *data, int dataLength);
 int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
 rct_object_entry *object_get_next(rct_object_entry *entry);
-int sub_6A9F42(FILE *file, rct_object_entry* entry);
+int write_object_file(FILE *file, rct_object_entry* entry);
+void reset_loaded_objects();
+int find_object_in_entry_group(rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
 
 rct_object_entry *object_list_find(rct_object_entry *entry);
+
+char *object_get_name(rct_object_entry *entry);
+
+rct_object_filters *get_object_filter(int index);
 
 #endif

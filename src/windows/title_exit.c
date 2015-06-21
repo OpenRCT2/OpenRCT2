@@ -19,11 +19,13 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
 #include "../sprites.h"
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../interface/themes.h"
 
 static rct_widget window_title_exit_widgets[] = {
 	{ WWT_IMGBTN, 2, 0, 39, 0, 63, SPR_MENU_EXIT, STR_EXIT },
@@ -33,6 +35,7 @@ static rct_widget window_title_exit_widgets[] = {
 static void window_title_exit_emptysub() {}
 static void window_title_exit_paint();
 static void window_title_exit_mouseup();
+static void window_title_exit_invalidate();
 
 static void* window_title_exit_events[] = {
 	window_title_exit_emptysub,
@@ -60,7 +63,7 @@ static void* window_title_exit_events[] = {
 	window_title_exit_emptysub,
 	window_title_exit_emptysub,
 	window_title_exit_emptysub,
-	window_title_exit_emptysub,
+	window_title_exit_invalidate,
 	window_title_exit_paint,
 	window_title_exit_emptysub
 };
@@ -78,15 +81,11 @@ void window_title_exit_open()
 		40, 64,
 		(uint32*)window_title_exit_events,
 		WC_TITLE_EXIT,
-		WF_STICK_TO_FRONT
+		WF_STICK_TO_BACK | WF_TRANSPARENT
 	);
 	window->widgets = window_title_exit_widgets;
 	window->enabled_widgets |= 1;
 	window_init_scroll_widgets(window);
-	window->flags |= 16;
-	window->colours[0] = 140;
-	window->colours[1] = 140;
-	window->colours[2] = 140;
 }
 
 /**
@@ -120,4 +119,11 @@ static void window_title_exit_paint()
 	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
+}
+
+static void window_title_exit_invalidate()
+{
+	rct_window *w;
+	window_get_register(w);
+	colour_scheme_update(w);
 }

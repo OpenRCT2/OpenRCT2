@@ -3,97 +3,97 @@
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
-STR_0002    :Ride
-STR_0003    :Ride
+STR_0002    :Attraction
+STR_0003    :Attraction
 STR_0004    :Suspended Swinging Coaster
-STR_0005    :Ride
+STR_0005    :Attraction
 STR_0006    :Junior Roller Coaster
 STR_0007    :Miniature Railway
 STR_0008    :Monorail
 STR_0009    :Mini Suspended Coaster
-STR_0010    :Ride
-STR_0011    :Ride
-STR_0012    :Ride
+STR_0010    :Attraction
+STR_0011    :Attraction
+STR_0012    :Attraction
 STR_0013    :Car Ride
-STR_0014    :Ride
-STR_0015    :Ride
-STR_0016    :Ride
+STR_0014    :Attraction
+STR_0015    :Attraction
+STR_0016    :Attraction
 STR_0017    :Looping Roller Coaster
-STR_0018    :Ride
-STR_0019    :Ride
+STR_0018    :Attraction
+STR_0019    :Attraction
 STR_0020    :Chairlift
-STR_0021    :Ride
-STR_0022    :Ride
-STR_0023    :Ride
-STR_0024    :Ride
-STR_0025    :Ride
-STR_0026    :Ride
-STR_0027    :Ride
-STR_0028    :Ride
-STR_0029    :Ride
+STR_0021    :Attraction
+STR_0022    :Attraction
+STR_0023    :Attraction
+STR_0024    :Attraction
+STR_0025    :Attraction
+STR_0026    :Attraction
+STR_0027    :Attraction
+STR_0028    :Attraction
+STR_0029    :Attraction
 STR_0030    :Stall
 STR_0031    :Stall
 STR_0032    :Stall
 STR_0033    :Stall
 STR_0034    :Stall
-STR_0035    :Ride
+STR_0035    :Attraction
 STR_0036    :Stall
 STR_0037    :Kiosk
-STR_0038    :Restroom
-STR_0039    :Ride
-STR_0040    :Ride
-STR_0041    :Ride
-STR_0042    :Ride
-STR_0043    :Ride
+STR_0038    :Toilettes
+STR_0039    :Attraction
+STR_0040    :Attraction
+STR_0041    :Attraction
+STR_0042    :Attraction
+STR_0043    :Attraction
 STR_0044    :Reverse Freefall Coaster
 STR_0045    :Lift
-STR_0046    :Ride
-STR_0047    :Ride
-STR_0048    :Ride
-STR_0049    :Ride
-STR_0050    :Ride
-STR_0051    :Ride
-STR_0052    :Ride
+STR_0046    :Attraction
+STR_0047    :Attraction
+STR_0048    :Attraction
+STR_0049    :Attraction
+STR_0050    :Attraction
+STR_0051    :Attraction
+STR_0052    :Attraction
 STR_0053    :Hyper-Twister Roller Coaster
 STR_0054    :Wooden Roller Coaster
 STR_0055    :Side-Friction Roller Coaster
 STR_0056    :Wild Mouse
 STR_0057    :Multi-Dimension Roller Coaster
-STR_0058    :Ride
+STR_0058    :Attraction
 STR_0059    :Aerial Inverted Roller Coaster
-STR_0060    :Ride
-STR_0061    :Ride
-STR_0062    :Ride
-STR_0063    :Ride
-STR_0064    :Ride
+STR_0060    :Attraction
+STR_0061    :Attraction
+STR_0062    :Attraction
+STR_0063    :Attraction
+STR_0064    :Attraction
 STR_0065    :Suspended Monorail
-STR_0066    :Ride
-STR_0067    :Ride
+STR_0066    :Attraction
+STR_0067    :Attraction
 STR_0068    :Heartline Twister Coaster
-STR_0069    :Ride
-STR_0070    :Ride
-STR_0071    :Ride
-STR_0072    :Ride
-STR_0073    :Ride
-STR_0074    :Ride
-STR_0075    :Ride
+STR_0069    :Attraction
+STR_0070    :Attraction
+STR_0071    :Attraction
+STR_0072    :Attraction
+STR_0073    :Attraction
+STR_0074    :Attraction
+STR_0075    :Attraction
 STR_0076    :Water Coaster
-STR_0077    :Ride
-STR_0078    :Ride
-STR_0079    :Ride
-STR_0080    :Ride
-STR_0081    :Ride
-STR_0082    :Ride
-STR_0083    :Ride
-STR_0084    :Ride
-STR_0085    :Ride
-STR_0086    :Ride
-STR_0087    :Ride
-STR_0088    :Ride
+STR_0077    :Attraction
+STR_0078    :Attraction
+STR_0079    :Attraction
+STR_0080    :Attraction
+STR_0081    :Attraction
+STR_0082    :Attraction
+STR_0083    :Attraction
+STR_0084    :Attraction
+STR_0085    :Attraction
+STR_0086    :Attraction
+STR_0087    :Attraction
+STR_0088    :Attraction
 STR_0089    :Mini Roller Coaster
-STR_0090    :Ride
-STR_0091    :Ride
-STR_0092    :Ride
+STR_0090    :Attraction
+STR_0091    :Attraction
+STR_0092    :Attraction
 STR_0093    :
 STR_0094    :
 STR_0095    :
@@ -842,7 +842,7 @@ STR_0837    :Unable to initialize graphics system
 STR_0838    :CD key code {INT32} is not valid for your RollerCoaster Tycoon 2 CD !{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Please un-install RollerCoaster Tycoon 2% and re-install with the correct CD Key Code
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-STR_0841    :Desktop window
+STR_0841    :En une fenêtre
 STR_0842    :640x480 plein écran
 STR_0843    :800x600 plein écran
 STR_0844    :1024x768 plein écran
@@ -973,7 +973,7 @@ STR_0968    :+360{DEGREE}
 STR_0969    :+405{DEGREE}
 STR_0970    :+450{DEGREE}
 STR_0971    :+495{DEGREE}
-STR_0972    :Cancel
+STR_0972    :Annuler
 STR_0973    :OK
 STR_0974    :Rides
 STR_0975    :Shops and Stalls
@@ -1065,7 +1065,7 @@ STR_1060    :Invalid ride/attraction name
 STR_1061    :Normal mode
 STR_1062    :Continuous circuit mode
 STR_1063    :Reverse-Incline launched shuttle mode
-STR_1064    :Powered launch
+STR_1064    :Lancement (avec passage de la station)
 STR_1065    :Shuttle mode
 STR_1066    :Boat hire mode
 STR_1067    :Upward launch
@@ -1097,7 +1097,7 @@ STR_1092    :Downward launch
 STR_1093    :Crooked house mode
 STR_1094    :Freefall drop mode
 STR_1095    :Continuous circuit block sectioned mode
-STR_1096    :Powered launch
+STR_1096    :Lancement (sans passage de la station)
 STR_1097    :Powered launch block sectioned mode
 STR_1098    :Moving to end of {POP16}{STRINGID}
 STR_1099    :Waiting for passengers at {POP16}{STRINGID}
@@ -1272,13 +1272,13 @@ STR_1267    :Cars
 STR_1268    :{COMMA16} car
 STR_1269    :{COMMA16} cars
 STR_1270    :Car {COMMA16}
-STR_1271    :building
-STR_1272    :buildings
-STR_1273    :Building
-STR_1274    :Buildings
-STR_1275    :{COMMA16} building
-STR_1276    :{COMMA16} buildings
-STR_1277    :Building {COMMA16}
+STR_1271    :bâtiment
+STR_1272    :bâtiments
+STR_1273    :Bâtiment
+STR_1274    :Bâtiment
+STR_1275    :{COMMA16} bâtiment
+STR_1276    :{COMMA16} bâtiments
+STR_1277    :Bâtiment {COMMA16}
 STR_1278    :structure
 STR_1279    :structures
 STR_1280    :Structure
@@ -1336,10 +1336,10 @@ STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VEL
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1335    :{STRINGID} - Entrance{POP16}{POP16}
-STR_1336    :{STRINGID} - Station {POP16}{COMMA16} Entrance
-STR_1337    :{STRINGID} - Exit{POP16}{POP16}
-STR_1338    :{STRINGID} - Station {POP16}{COMMA16} Exit
+STR_1335    :{STRINGID} - Entrée{POP16}{POP16}
+STR_1336    :{STRINGID} - Entrée de station {POP16}{COMMA16}
+STR_1337    :{STRINGID} - Sortie{POP16}{POP16}
+STR_1338    :{STRINGID} - Sortie de station {POP16}{COMMA16}
 STR_1339    :{BLACK}No test results yet...
 STR_1340    :{WINDOW_COLOUR_2}Max. speed: {BLACK}{VELOCITY}
 STR_1341    :{WINDOW_COLOUR_2}Ride time: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
@@ -1416,7 +1416,7 @@ STR_1411    :{STRINGID} in the way
 STR_1412    :{WINDOW_COLOUR_3}Data logging not available for this type of ride
 STR_1413    :{WINDOW_COLOUR_3}Data logging will start when next {STRINGID} leaves {STRINGID}
 STR_1414    :{SMALLFONT}{BLACK}{DURATION}
-STR_1415    :{WINDOW_COLOUR_2}Velocity
+STR_1415    :{WINDOW_COLOUR_2}Vitesse
 STR_1416    :{WINDOW_COLOUR_2}Altitude
 STR_1417    :{WINDOW_COLOUR_2}Vert.G's
 STR_1418    :{WINDOW_COLOUR_2}Lat.G's
@@ -1431,14 +1431,14 @@ STR_1426    :Queue Line
 STR_1427    :{WINDOW_COLOUR_2}Clients: {BLACK}{COMMA32} par heure
 STR_1428    :{WINDOW_COLOUR_2}Admission price:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
-STR_1430    :Free
+STR_1430    :Gratuit
 STR_1431    :Marche
 STR_1432    :Heading for {STRINGID}
 STR_1433    :Queuing for {STRINGID}
 STR_1434    :Drowning
-STR_1435    :On {STRINGID}
-STR_1436    :In {STRINGID}
-STR_1437    :At {STRINGID}
+STR_1435    :En {STRINGID}
+STR_1436    :Dans {STRINGID}
+STR_1437    :A {STRINGID}
 STR_1438    :Sitting
 STR_1439    :(select location)
 STR_1440    :Mowing grass
@@ -1453,7 +1453,7 @@ STR_1448    :Watching new ride being constructed
 STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
-STR_1452    :Guest's name
+STR_1452    :Nom du visiteur
 STR_1453    :Enter name for this guest:
 STR_1454    :Can't name guest...
 STR_1455    :Invalid name for guest
@@ -1464,15 +1464,15 @@ STR_1459    :Track style
 STR_1460    :{SMALLFONT}{BLACK}'U' shaped open track
 STR_1461    :{SMALLFONT}{BLACK}'O' shaped enclosed track
 STR_1462    :Too steep for lift hill
-STR_1463    :Guests
+STR_1463    :Visiteurs
 STR_1464    :Helix up (small)
 STR_1465    :Helix up (large)
 STR_1466    :Helix down (small)
 STR_1467    :Helix down (large)
-STR_1468    :Staff
+STR_1468    :Personnel
 STR_1469    :Ride must start and end with stations
 STR_1470    :Station not long enough
-STR_1471    :{WINDOW_COLOUR_2}Speed:
+STR_1471    :{WINDOW_COLOUR_2}Vitesse:
 STR_1472    :{SMALLFONT}{BLACK}Speed of this ride
 STR_1473    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1474    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}Not yet available
@@ -1673,7 +1673,7 @@ STR_1668    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}Unknown
 STR_1669    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}Total customers: {BLACK}{COMMA32}
 STR_1671    :{WINDOW_COLOUR_2}Total profit: {BLACK}{CURRENCY2DP}
-STR_1672    :Brakes
+STR_1672    :Freins
 STR_1673    :Spinning Control Toggle Track
 STR_1674    :Brake speed
 STR_1675    :{POP16}{VELOCITY}
@@ -1694,7 +1694,7 @@ STR_1689    :Block brakes
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Cost: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Cost: {BLACK}from {CURRENCY}
-STR_1693    :{SMALLFONT}{BLACK}Guests
+STR_1693    :{SMALLFONT}{BLACK}Visiteurs
 STR_1694    :{SMALLFONT}{BLACK}Staff
 STR_1695    :{SMALLFONT}{BLACK}Income and costs
 STR_1696    :{SMALLFONT}{BLACK}Customer information
@@ -1711,7 +1711,7 @@ STR_1706    :{SMALLFONT}{BLACK}Move this person to a new location
 STR_1707    :Too many staff in game
 STR_1708    :{SMALLFONT}{BLACK}Set patrol area for this staff member
 STR_1709    :Sack staff
-STR_1710    :Yes
+STR_1710    :Oui
 STR_1711    :{WINDOW_COLOUR_1}Are you sure you want to sack {STRINGID}?
 STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Sweep footpaths
 STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Water gardens
@@ -1778,7 +1778,7 @@ STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
 STR_1775    :Off
 STR_1776    :On
-STR_1777    :{WINDOW_COLOUR_2}Music:
+STR_1777    :{WINDOW_COLOUR_2}Music
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigre costume
@@ -2334,7 +2334,7 @@ STR_2329    :{WINDOW_COLOUR_2}Distance and Speed:
 STR_2330    :{WINDOW_COLOUR_2}Temperature:
 STR_2331    :{WINDOW_COLOUR_2}Height Labels:
 STR_2332    :Units
-STR_2333    :Sound
+STR_2333    :Son
 STR_2334    :Pounds ({POUND})
 STR_2335    :Dollars ($)
 STR_2336    :Franc (F)
@@ -2342,7 +2342,7 @@ STR_2337    :Deutschmark (DM)
 STR_2338    :Yen ({YEN})
 STR_2339    :Peseta (Pts)
 STR_2340    :Lira (L)
-STR_2341    :Guilders (Dfl.)
+STR_2341    :Florins (fl.)
 STR_2342    :Krona (kr)
 STR_2343    :Euros ({EURO})
 STR_2344    :Imperial
@@ -2386,7 +2386,7 @@ STR_2381    :{SMALLFONT}{BLACK}Adjust larger area of water
 STR_2382    :Land
 STR_2383    :Water
 STR_2384    :{WINDOW_COLOUR_2}Votre objectif:
-STR_2385    :{BLACK}None
+STR_2385    :{BLACK}Aucun
 STR_2386    :{BLACK}To have at least {COMMA16} guests in your park at the end of {MONTHYEAR}, with a park rating of at least 600
 STR_2387    :{BLACK}To achieve a park value of at least {POP16}{POP16}{CURRENCY} at the end of {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Have Fun!
@@ -2398,7 +2398,7 @@ STR_2393    :{BLACK}To have 10 different types of roller coasters operating in y
 STR_2394    :{BLACK}To finish building all 5 of the partially built roller coasters in this park, designing them to achieve excitement ratings of at least {POP16}{POP16}{COMMA2DP32} each
 STR_2395    :{BLACK}To repay your loan and achieve a park value of at least {POP16}{POP16}{CURRENCY}
 STR_2396    :{BLACK}To achieve a monthly profit from food, drink and merchandise sales of at least {POP16}{POP16}{CURRENCY}
-STR_2397    :None
+STR_2397    :Aucun
 STR_2398    :Number of guests at a given date
 STR_2399    :Park value at a given date
 STR_2400    :Have fun
@@ -2412,7 +2412,7 @@ STR_2407    :Repay loan and achieve a given park value
 STR_2408    :Monthly profit from food/merchandise
 STR_2409    :{WINDOW_COLOUR_2}Campagnes marketing en cours
 STR_2410    :{BLACK}Aucune
-STR_2411    :{WINDOW_COLOUR_2}Campagnes marrketing disponibles
+STR_2411    :{WINDOW_COLOUR_2}Campagnes marketing disponibles
 STR_2412    :{SMALLFONT}{BLACK}Commencer campagne marketing
 STR_2413    :{BLACK}({CURRENCY2DP} per week)
 STR_2414    :(Not Selected)
@@ -2681,37 +2681,37 @@ STR_2676    :???
 STR_2677    :???
 STR_2678    :???
 STR_2679    :???
-STR_2680    :???
-STR_2681    :???
-STR_2682    :???
-STR_2683    :???
-STR_2684    :???
-STR_2685    :???
-STR_2686    :???
-STR_2687    :???
-STR_2688    :???
-STR_2689    :???
-STR_2690    :???
-STR_2691    :???
-STR_2692    :???
-STR_2693    :???
-STR_2694    :???
-STR_2695    :???
-STR_2696    :???
+STR_2680    :All research complete
+STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by 5,000
+STR_2682    :{MEDIUMFONT}{BLACK}Toggle between Free and Paid Entry
+STR_2683    :{MEDIUMFONT}{BLACK}Increases every peeps happiness to max
+STR_2684    :{MEDIUMFONT}{BLACK}Large group of peeps arrive
+STR_2685    :Simplex Noise Parameters
+STR_2686    :{WINDOW_COLOUR_2}Low:
+STR_2687    :{WINDOW_COLOUR_2}High:
+STR_2688    :{WINDOW_COLOUR_2}Base Frequency:
+STR_2689    :{WINDOW_COLOUR_2}Octaves:
+STR_2690    :Map Generation
+STR_2691    :{WINDOW_COLOUR_2}Base height:
+STR_2692    :{WINDOW_COLOUR_2}Water level:
+STR_2693    :{WINDOW_COLOUR_2}Terrain:
+STR_2694    :Generate
+STR_2695    :Random terrain
+STR_2696    :Place trees
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
-STR_2700    :???
-STR_2701    :???
-STR_2702    :???
-STR_2703    :???
-STR_2704    :???
-STR_2705    :???
-STR_2706    :???
-STR_2707    :???
-STR_2708    :???
-STR_2709    :???
-STR_2710    :???
+STR_2700    :Autosave frequency:
+STR_2701    :Every week
+STR_2702    :Every 2 weeks
+STR_2703    :Every month
+STR_2704    :Every 4 months
+STR_2705    :Every year
+STR_2706    :Jamais
+STR_2707    :Open new window
+STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
+STR_2709    :Overwrite
+STR_2710    :Type the name of the file.
 STR_2711    :;
 STR_2712    :=
 STR_2713    :,
@@ -2719,71 +2719,71 @@ STR_2714    :-
 STR_2715    :.
 STR_2716    :/
 STR_2717    :'
-STR_2718    :???
-STR_2719    :???
-STR_2720    :???
-STR_2721    :???
-STR_2722    :???
-STR_2723    :???
-STR_2724    :???
-STR_2725    :???
-STR_2726    :???
-STR_2727    :???
-STR_2728    :???
-STR_2729    :???
-STR_2730    :???
-STR_2731    :???
-STR_2732    :???
-STR_2733    :???
-STR_2734    :???
-STR_2735    :???
-STR_2736    :???
-STR_2737    :???
-STR_2738    :???
-STR_2739    :???
-STR_2740    :???
-STR_2741    :???
-STR_2742    :???
-STR_2743    :???
+STR_2718    :(up)
+STR_2719    :(nouveau fichier)
+STR_2720    :{UINT16}s
+STR_2721    :{UINT16}s
+STR_2722    :{UINT16}m {UINT16}s
+STR_2723    :{UINT16}m {UINT16}s
+STR_2724    :{UINT16}mins:{UINT16}s
+STR_2725    :{UINT16}m {UINT16}s
+STR_2726    :{UINT16}m
+STR_2727    :{UINT16}m
+STR_2728    :{UINT16}h {UINT16}m
+STR_2729    :{UINT16}h {UINT16}m
+STR_2730    :{UINT16}h {UINT16}m
+STR_2731    :{UINT16}h {UINT16}m
+STR_2732    :{COMMA16}ft
+STR_2733    :{COMMA16}m
+STR_2734    :{COMMA16}mph
+STR_2735    :{COMMA16}km/h
+STR_2736    :{MONTH}, an {COMMA16}
+STR_2737    :{STRINGID} {MONTH}, an {COMMA16}
+STR_2738    :Title screen music:
+STR_2739    :Aucun
+STR_2740    :RollerCoaster Tycoon 1
+STR_2741    :RollerCoaster Tycoon 2
+STR_2742    :css50.dat n'est pas trouvé
+STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat in your RCT2 installation.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
 STR_2747    :{ENDQUOTES}
 STR_2748    :Bar
-STR_2749    :???
-STR_2750    :???
-STR_2751    :???
-STR_2752    :???
-STR_2753    :???
-STR_2754    :???
-STR_2755    :???
-STR_2756    :???
-STR_2757    :???
-STR_2758    :???
-STR_2759    :???
+STR_2749    :Mon nouveau scénario
+STR_2750    :Move all items to top
+STR_2751    :Move all items to bottom
+STR_2752    :Clear grass
+STR_2753    :Mowed grass
+STR_2754    :Water plants
+STR_2755    :Fix vandalism
+STR_2756    :Remove litter
+STR_2757    :Force Sun
+STR_2758    :Force Thunder
+STR_2759    :Zero Clearance
 # New strings used in the cheats window previously these were ???
-STR_2760    :+5K Money
+STR_2760    :+5000 d'argent
 STR_2761    :Pay For Entrance
 STR_2762    :Pay For Rides
 STR_2763    :???
 STR_2764    :Happy Guests
 STR_2765    :Large Tram
-STR_2766    :???
+STR_2766    :Win scenario
 STR_2767    :Freeze Climate
 STR_2768    :Unfreeze Climate
-STR_2769    :Open Park
-STR_2770    :Close Park
+STR_2769    :Ouvrir le parc
+STR_2770    :Fermer le parc
 STR_2771    :Slower Gamespeed
 STR_2772    :Faster Gamespeed
-STR_2773    :Windowed
-STR_2774    :Fullscreen
-STR_2775    :Fullscreen (desktop)
-STR_2776    :Language
+STR_2773    :En une fenêtre
+STR_2774    :Plein écran
+STR_2775    :Plein écran (desktop)
+STR_2776    :Langue:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 # End of new strings
-STR_2779    :???
-STR_2780    :???
+STR_2779    :Viewport #{COMMA16}
+STR_2780    :Extra viewport
 STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
@@ -2798,14 +2798,14 @@ STR_2791    :Enter name
 STR_2792    :Please enter your name for the scenario chart:
 STR_2793    :{SMALLFONT}(Completed by {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} with a company value of: {BLACK}{CURRENCY}
-STR_2795    :Sort
+STR_2795    :Trier
 STR_2796    :{SMALLFONT}{BLACK}Sort the ride list into order using the information type displayed
 STR_2797    :Scroll view when pointer at screen edge
 STR_2798    :{SMALLFONT}{BLACK}Select whether to scroll the view when the mouse pointer is at the screen edge
 STR_2799    :{SMALLFONT}{BLACK}View or change control key assignments
 STR_2800    :{WINDOW_COLOUR_2}Total admissions: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Income from admissions: {BLACK}{CURRENCY2DP}
-STR_2802    :Map
+STR_2802    :Plan
 STR_2803    :{SMALLFONT}{BLACK}Show these guests highlighted on map
 STR_2804    :{SMALLFONT}{BLACK}Show these staff members highlighted on map
 STR_2805    :{SMALLFONT}{BLACK}Show map of park
@@ -2984,7 +2984,7 @@ STR_2977    :Staff member name
 STR_2978    :Enter new name for this member of staff:
 STR_2979    :Can't name staff member...
 STR_2980    :Too many banners in game
-STR_2981    :{RED}No entry - - 
+STR_2981    :{RED}Accès interdit - - 
 STR_2982    :Banner text
 STR_2983    :Enter new text for this banner:
 STR_2984    :Can't set new text for banner...
@@ -3058,8 +3058,8 @@ STR_3051    :Golf hole C
 STR_3052    :Golf hole D
 STR_3053    :Golf hole E
 STR_3054    :Loading...
-STR_3055    :White
-STR_3056    :Translucent
+STR_3055    :Blanc
+STR_3056    :Transparent
 STR_3057    :{WINDOW_COLOUR_2}Construction Marker:
 STR_3058    :Brick walls
 STR_3059    :Hedges
@@ -3133,8 +3133,8 @@ STR_3126    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}+{COMMA16}%
 STR_3127    :{WINDOW_COLOUR_2}Nausea Factor: {BLACK}+{COMMA16}%
 STR_3128    :Save Track Design
 STR_3129    :Save Track Design with Scenery
-STR_3130    :Save
-STR_3131    :Cancel
+STR_3130    :Sauvegarder
+STR_3131    :Annuler
 STR_3132    :{BLACK}Click items of scenery to select them to be saved with track design...
 STR_3133    :Unable to build this on a slope
 STR_3134    :{RED}(Design includes scenery which is unavailable)
@@ -3160,9 +3160,9 @@ STR_3153    :{SMALLFONT}{BLACK}Scroll {STRINGID} down fast
 STR_3154    :{SMALLFONT}{BLACK}Scroll {STRINGID} up/down
 STR_3155    :
 STR_3156    :
-STR_3157    :map
-STR_3158    :graph
-STR_3159    :list
+STR_3157    :plan
+STR_3158    :graphique
+STR_3159    :liste
 STR_3160    :RollerCoaster Tycoon 2: Première visite...
 STR_3161    :RollerCoaster Tycoon 2: Checking object files...
 STR_3162    :Unable to allocate enough memory
@@ -3170,8 +3170,8 @@ STR_3163    :Installing new data:
 STR_3164    :{BLACK}{COMMA16} selected (maximum {COMMA16})
 STR_3165    :
 STR_3166    :{BLACK}(ID: 
-STR_3167    :{WINDOW_COLOUR_2}Includes: {BLACK}{COMMA16} objects
-STR_3168    :{WINDOW_COLOUR_2}Text: {BLACK}{STRINGID}
+STR_3167    :{WINDOW_COLOUR_2}Inclut: {BLACK}{COMMA16} objets
+STR_3168    :{WINDOW_COLOUR_2}Texte: {BLACK}{STRINGID}
 STR_3169    :Data for the following object not found: 
 STR_3170    :Not enough space for graphics
 STR_3171    :Too many objects of this type selected
@@ -3208,7 +3208,7 @@ STR_3201    :Sélection des objets
 STR_3202    :Editeur de paysage
 STR_3203    :Liste d'inventions
 STR_3204    :Sélection des options
-STR_3205    :Objective Selection
+STR_3205    :Selection d'objectif
 STR_3206    :Sauvegarder scénario
 STR_3207    :Roller Coaster Designer
 STR_3208    :Track Designs Manager
@@ -3289,9 +3289,9 @@ STR_3282    :{SMALLFONT}{BLACK}Choisir objectif et nom du parc
 STR_3283    :{SMALLFONT}{BLACK}Select rides to be preserved
 STR_3284    :Sélection des objectifs
 STR_3285    :Preserved Rides
-STR_3286    :{SMALLFONT}{BLACK}Select objective for this scenario
+STR_3286    :{SMALLFONT}{BLACK}Selecter un objectif pour ce scénario
 STR_3287    :{WINDOW_COLOUR_2}Objectif:
-STR_3288    :{SMALLFONT}{BLACK}Select climate
+STR_3288    :{SMALLFONT}{BLACK}Selecter climat
 STR_3289    :{WINDOW_COLOUR_2}Climat:
 STR_3290    :Frais et humide
 STR_3291    :Chaud
@@ -3316,7 +3316,7 @@ STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Rides/attractions under a preservation order:
-STR_3313    :Scenario Name
+STR_3313    :Nom du scénario:
 STR_3314    :Enter name for scenario:
 STR_3315    :Park/Scenario Details
 STR_3316    :Décrire ce scénario:
@@ -3325,11 +3325,11 @@ STR_3318    :{SMALLFONT}{BLACK}Select which group this scenario appears in
 STR_3319    :{WINDOW_COLOUR_2}Scenario Group:
 STR_3320    :Unable to save scenario file...
 STR_3321    :New objects installed successfully
-STR_3322    :{WINDOW_COLOUR_2}Objective: {BLACK}{STRINGID}
+STR_3322    :{WINDOW_COLOUR_2}Objectif: {BLACK}{STRINGID}
 STR_3323    :Missing object data, ID: 
 STR_3324    :Requires Add-On Pack: 
 STR_3325    :Requires an Add-On Pack
-STR_3326    :{WINDOW_COLOUR_2}(no image)
+STR_3326    :{WINDOW_COLOUR_2}(aucune image)
 STR_3327    :Starting positions for people not set
 STR_3328    :Can't advance to next editor stage...
 STR_3329    :Park entrance not yet built
@@ -3340,63 +3340,63 @@ STR_3333    :Export plug-in objects with saved games
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
 STR_3335    :Roller Coaster Designer - Select Ride Types & Vehicles
 STR_3336    :Track Designs Manager - Select Ride Type
-STR_3337    :Six Flags Park
-STR_3338    :{BLACK}Custom-designed layout
-STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
-STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
+STR_3337    :Parc Six Flags
+STR_3338    :{BLACK}Dispositions personnalisées
+STR_3339    :{BLACK}{COMMA16} design disponible, ou disposition personnalisée
+STR_3340    :{BLACK}{COMMA16} designs disponibles, ou dispositions personnalisées
 STR_3341    :{SMALLFONT}{BLACK}Outils
 STR_3342    :Editeur de scénario
 STR_3343    :Convertir partie sauvegardée en scénario
 STR_3344    :Concepteur de montages russes
 STR_3345    :Gestionnaire de voies
-STR_3346    :Can't save track design...
-STR_3347    :Ride is too large, contains too many elements, or scenery is too spread out
-STR_3348    :Rename
-STR_3349    :Delete
-STR_3350    :Track design name
-STR_3351    :Enter new name for this track design:
-STR_3352    :Can't rename track design...
-STR_3353    :New name contains invalid characters
-STR_3354    :Another file exists with this name, or file is write-protected
-STR_3355    :File is write-protected or locked
-STR_3356    :Delete File
-STR_3357    :{WINDOW_COLOUR_2}Are you sure you want to permanently delete {STRINGID} ?
-STR_3358    :Can't delete track design...
-STR_3359    :{BLACK}No track designs of this type
-STR_3360    :Warning!
-STR_3361    :Too many track designs of this type - Some will not be listed.
-STR_3362    :Forced Software Buffer Mixing
-STR_3363    :{SMALLFONT}{BLACK}Select this option to improve performance if the game pauses slightly when sounds start or interference is heard
-STR_3364    :Advanced
-STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of scenery in addition to scenery groups
-STR_3366    :{BLACK}= Ride
-STR_3367    :{BLACK}= Food Stall
-STR_3368    :{BLACK}= Drink Stall
-STR_3369    :{BLACK}= Souvenir Stall
-STR_3370    :{BLACK}= Info. Kiosk
-STR_3371    :{BLACK}= First Aid
-STR_3372    :{BLACK}= A.T.M.
-STR_3373    :{BLACK}= Restroom
-STR_3374    :Warning: Too many objects selected!
-STR_3375    :Not all objects in this scenery group could be selected
-STR_3376    :Install new track design...
-STR_3377    :{SMALLFONT}{BLACK}Install a new track design file
-STR_3378    :Install
-STR_3379    :Cancel
-STR_3380    :Unable to install this track design...
-STR_3381    :File is not compatible or contains invalid data
-STR_3382    :File copy failed
-STR_3383    :Select new name for track design
-STR_3384    :An existing track design already has this name - Please select a new name for this design:
+STR_3346    :Impossible de sauvegarder le modèle du circuit...
+STR_3347    :L'attraction est trop large, contient trop d'éléments, ou le décor est trop éloigné
+STR_3348    :Renommer
+STR_3349    :Supprimer
+STR_3350    :Nom du modèle de circuit
+STR_3351    :Entrez le nouveau nom du modèle du circuit :
+STR_3352    :Impossible de renommer le modèle du circuit...
+STR_3353    :Le nouveau nom contient des caractères invalides
+STR_3354    :Un autre fichier existe avec ce nom, ou il est en lecture seule
+STR_3355    :Le fichier est verrouillé ou est en lecture seule
+STR_3356    :Supprimer fichier
+STR_3357    :{WINDOW_COLOUR_2}Etes-vous sûr(e) de vouloir supprimer de manière permanente {STRINGID} ?
+STR_3358    :Impossible de supprimer le modèle du circuit...
+STR_3359    :{BLACK}Pas de modèle de circuit pour ce type
+STR_3360    :Attention !
+STR_3361    :Trop de modèles de circuit pour ce type - Certains ne seront pas listés.
+STR_3362    :Forcé mixage tampon logiciel
+STR_3363    :{SMALLFONT}{BLACK}Selectionnez cette option pour améliorer les performances si le jeu se met légèrement en pause slightly quand les sons démarrent ou de l'interférence est entendue
+STR_3364    :Avancé
+STR_3365    :{SMALLFONT}{BLACK}Autorise la sélection d'objets individuels du décor en plus des groupes de décor
+STR_3366    :{BLACK}= Attraction
+STR_3367    :{BLACK}= Stand de nourriture
+STR_3368    :{BLACK}= Stand de boissons
+STR_3369    :{BLACK}= Stand de souvenirs
+STR_3370    :{BLACK}= Kiosque aux informations
+STR_3371    :{BLACK}= Infirmerie
+STR_3372    :{BLACK}= D.A.B.
+STR_3373    :{BLACK}= Toilettes
+STR_3374    :Attention : Trop d'objets sélectionnés !
+STR_3375    :Certains objets dans ce groupe de décor n'ont pas pu être sélectionnés
+STR_3376    :Installer un nouveau modèle de circuit...
+STR_3377    :{SMALLFONT}{BLACK}Installe un fichier qui contient un nouveau modèle de circuit
+STR_3378    :Installer
+STR_3379    :Annuler
+STR_3380    :Impossible d'installer ce modèle de circuit...
+STR_3381    :Le fichier n'est pas compatible ou contient des données invalides
+STR_3382    :Copie du fichier échouée
+STR_3383    :Sélectionnez le nouveau nom pour le modèle de circuit
+STR_3384    :Un modèle de circuit possède déjà ce nom - Veuillez en choisir un autre pour celui ci :
 STR_3385    :Didacticiel pour débutants
 STR_3386    :Didacticiel attractions personnalisées
 STR_3387    :Didacticiel construction des montagnes russes
-STR_3388    :Unable to switch to selected mode
-STR_3389    :Unable to select additional item of scenery...
-STR_3390    :Too many items selected
+STR_3388    :Impossible de changer au mode sélectionné
+STR_3389    :Impossible de choisir plus d'objets du décor...
+STR_3390    :Trop d'objets sélectionnés
 STR_3391    :{SMALLFONT}{BLACK}Voici notre parc. Voyons ça d'un peu plus près...
-STR_3392    :{SMALLFONT}{BLACK}Pour déplacer la vue, maintenir le bouton DROIT de la souris enfoncé puis bouger la souris...
-STR_3393    :{SMALLFONT}{BLACK}Pour élargir la vue, faites un zomm arrière à l'aide de l'icone placé en haut de l'écran...
+STR_3392    :{SMALLFONT}{BLACK}Pour déplacer la vue, maintenez le bouton DROIT de la souris enfoncé puis bouger la souris...
+STR_3393    :{SMALLFONT}{BLACK}Pour élargir la vue, faites un zoom arrière à l'aide de l'icone placé en haut de l'écran...
 STR_3394    :{SMALLFONT}{BLACK}Vous pouvez aussi faire pivoter la vue par tranches de 90 degrés...
 STR_3395    :{SMALLFONT}{BLACK}Difficile d'entamer une construction avec une vue aussi large. Faites un zoom avant...
 STR_3396    :{SMALLFONT}{BLACK}Construisons d'abord une simple attraction...
@@ -3409,44 +3409,205 @@ STR_3402    :{SMALLFONT}{BLACK}Bien, et si on ouvrait l'attraction maintenant ? 
 STR_3403    :{SMALLFONT}{BLACK}Mais où sont passés les visiteurs ?
 STR_3404    :{SMALLFONT}{BLACK}Zut. Nous avons oublié d'ouvrir le parc. Bon il est temps d'y remédier...
 STR_3405    :{SMALLFONT}{BLACK}En attendant vos premiers visiteurs, occupons-nous du décor...
-STR_3406    :{SMALLFONT}{BLACK}Here's our empty park. We're going to build a simple custom-designed ride...
-STR_3407    :{SMALLFONT}{BLACK}First we need to choose a starting position...
-STR_3408    :{SMALLFONT}{BLACK}The section of track we've just built is a 'station platform', to allow guests to get on and off the ride...
-STR_3409    :{SMALLFONT}{BLACK}We'll extend the platform a bit by adding a couple more station platform sections...
-STR_3410    :{SMALLFONT}{BLACK}The icons at the top of the construction window let you choose different track pieces to add...
-STR_3411    :{SMALLFONT}{BLACK}We'll select a left-hand curve...
-STR_3412    :{SMALLFONT}{BLACK}The curve hasn't been built yet, but the white ghost image shows where it will be built. Clicking the large 'build this' icon actually builds the track...
-STR_3413    :{SMALLFONT}{BLACK}Now we want to build straight track, so we click the straight track icon...
-STR_3414    :{SMALLFONT}{BLACK}Now that the circuit is complete, we need to build the ride entrance and exit...
-STR_3415    :{SMALLFONT}{BLACK}Let's test our ride to check it works...
-STR_3416    :{SMALLFONT}{BLACK}White it's being tested, we'll build the queue line and exit path...
-STR_3417    :{SMALLFONT}{BLACK}OK - Let's open the park and the ride...
-STR_3418    :{SMALLFONT}{BLACK}Our new ride isn't very exciting - Perhaps we should add some scenery?
-STR_3419    :{SMALLFONT}{BLACK}To build scenery above other scenery or in mid-air, hold down the SHIFT key and move the mouse to select the height...
-STR_3420    :{SMALLFONT}{BLACK}Some types of scenery can be re-painted after it's built...
-STR_3421    :{SMALLFONT}{BLACK}Let's add some music to the ride...
-STR_3422    :{SMALLFONT}{BLACK}Let's build a roller coaster !
-STR_3423    :{SMALLFONT}{BLACK}There are loads of pre-designed coasters, but we're going to build our own custom design...
-STR_3424    :{SMALLFONT}{BLACK}That's the station platform built. Now we need a lift hill...
-STR_3425    :{SMALLFONT}{BLACK}Roller coaster trains aren't powered, so a 'chain lift' is needed to pull the train up the first hill...
-STR_3426    :{SMALLFONT}{BLACK}That's the lift hill complete - Now for the first drop...
-STR_3427    :{SMALLFONT}{BLACK}Those curves are a bad idea - The riders will be flung to the sides by the lateral G forces as the train hurtles around...
-STR_3428    :{SMALLFONT}{BLACK}Banking the curves will improve the ride - Riders will be pushed down into their seats instead of flung to the sides...
-STR_3429    :{SMALLFONT}{BLACK}No - That won't work! Look at the height marks - The second hill is taller than the lift hill...
-STR_3430    :{SMALLFONT}{BLACK}To ensure the train makes it around, each hill should be slightly smaller than the previous one...
-STR_3431    :{SMALLFONT}{BLACK}That's better - Our train should make it up that hill now! Let's try some more twisted track...
-STR_3432    :{SMALLFONT}{BLACK}We need to slow the train before the final curve and station, so let's add some brakes...
-STR_3433    :{SMALLFONT}{BLACK}And finally we'll add 'block brakes', which allow two trains to operate more safely on the circuit...
-STR_3434    :{SMALLFONT}{BLACK}Let's test the ride and see if it works!
-STR_3435    :{SMALLFONT}{BLACK}Great - It worked! Let's add the footpaths and let guests onto our new roller coaster...
-STR_3436    :{SMALLFONT}{BLACK}While waiting for our first riders, we could customize the ride a bit...
-STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
-STR_3438    :Unable to remove all scenery from here...
+STR_3406    :{SMALLFONT}{BLACK}Voici notre parc vide. Nous allons construire une attraction simple et personnalisée...
+STR_3407    :{SMALLFONT}{BLACK}Tout d'abord on doit choisir le point de départ...
+STR_3408    :{SMALLFONT}{BLACK}La section du circuit que nous venons de construire est la 'station', cela permet aux visiteurs de monter et descendre de l'attraction...
+STR_3409    :{SMALLFONT}{BLACK}Nous allons étendre cette station en ajoutant quelques blocs...
+STR_3410    :{SMALLFONT}{BLACK}Les icônes en haut de la fenêtre de construction vous permet les différentes parties du circuit à ajouter...
+STR_3411    :{SMALLFONT}{BLACK}Nous choissions une courbe vers la gauche...
+STR_3412    :{SMALLFONT}{BLACK}La courbe n'est pas encore construite, mais l'image fantôme blanche indique où elle le sera. Cliquez sur l'icône 'construire ceci' pour construire le bloc...
+STR_3413    :{SMALLFONT}{BLACK}Maintenant nous voulons construire un tracé droit, donc on clique sur l'icône 'tracé droit'...
+STR_3414    :{SMALLFONT}{BLACK}Maintenant que le circuit est terminé, nous devons construire l'entrée et la sortie...
+STR_3415    :{SMALLFONT}{BLACK}Testons notre attraction pour voir si tout va bien...
+STR_3416    :{SMALLFONT}{BLACK}Pendant son test, on va construire la zone d'attente et l'allée de sortie...
+STR_3417    :{SMALLFONT}{BLACK}OK - Ouvrons le parc et l'attraction...
+STR_3418    :{SMALLFONT}{BLACK}Notre nouvelle attraction n'est pas très attractive - Peut-être que nous devons rajouter du décor ?
+STR_3419    :{SMALLFONT}{BLACK}Pour construire du décor l'un au-dessus de l'autre ou en plein vol, maintenez la touche MAJ key et déplacez la souris pour choisir l'hauteur...
+STR_3420    :{SMALLFONT}{BLACK}Certains éléments du décor peuvent être repeints après leur construction...
+STR_3421    :{SMALLFONT}{BLACK}Ajoutons un peu de musique à notre attraction...
+STR_3422    :{SMALLFONT}{BLACK}Construisons un montagne russe !
+STR_3423    :{SMALLFONT}{BLACK}Il y a plein de modèles pré-définis, mais nous allons construire notre propre circuit...
+STR_3424    :{SMALLFONT}{BLACK}Voilà la station construite. Maintenant la montée...
+STR_3425    :{SMALLFONT}{BLACK}Les trains des montagnes russes ne sont pas propulsés, une 'échelle' est nécessaire pour tirer le train lors de la première montée...
+STR_3426    :{SMALLFONT}{BLACK}La montée est terminée - Maintenant la descente...
+STR_3427    :{SMALLFONT}{BLACK}Ces courbes sont une mauvaise idée - Les visiteurs vont être projetés sur le côté de leur siège par les forces G latérales pendant que le train tourne...
+STR_3428    :{SMALLFONT}{BLACK}Pencher les courbes améliorera l'attraction - Les visiteurs auront leur dos collé aux sièges plutôt que d'être projetés sur les côtés...
+STR_3429    :{SMALLFONT}{BLACK}Non - Ca ne fonctionnera pas ! Regardez les marques de hauteur - La deuxième montée est plus grande que la première...
+STR_3430    :{SMALLFONT}{BLACK}Pour être sûr que le train réussise le circuit, chaque montée doit être légèrement plus petite que la précédente...
+STR_3431    :{SMALLFONT}{BLACK}C'est mieux - Notre train pourra passer cette montée ! Ajoutons des voies plus tordues...
+STR_3432    :{SMALLFONT}{BLACK}Nous devons freiner le train avant la courbe finale et la station, ajoutons quelques freins...
+STR_3433    :{SMALLFONT}{BLACK}Et finalement nous rajouterons des 'freins de blocs', cela permettra à 2 trains de parcourir le circuit en sécurité...
+STR_3434    :{SMALLFONT}{BLACK}Testons l'attraction et regardons si tout fonctionne !
+STR_3435    :{SMALLFONT}{BLACK}Génial - Tout fonctionne ! Ajoutons la zone d'attente et l'allée de sortie pour que les visiteurs puissent y accéder...
+STR_3436    :{SMALLFONT}{BLACK}En attendant les premiers passagers, on va personnaliser un peu l'attraction...
+STR_3437    :{SMALLFONT}{BLACK}Nettoyer grande zone de décor du paysage
+STR_3438    :Impossible d'effacer tout le décor d'içi...
 STR_3439    :Effacer décor
 STR_3440    :Page 1
 STR_3441    :Page 2
 STR_3442    :Page 3
 STR_3443    :Page 4
 STR_3444    :Page 5
-STR_3445    :Set Patrol Area
-STR_3446    :Cancel Patrol Area
+STR_3445    :Définir Zone de Patrouille
+STR_3446    :Annuler Zone de Patrouille
+# New strings, cleaner
+STR_5120    :Show finances button on toolbar
+STR_5121    :Show research button on toolbar
+STR_5122    :Show all vehicles sharing a track/ride type
+STR_5123    :Renouveler attr.
+STR_5124    :Pas de Six Flags
+STR_5125    :All destructable
+STR_5126    :Random title music
+STR_5127    :{SMALLFONT}{BLACK}Disable land elevation
+STR_5128    :Selection size
+STR_5129    :Enter selection size between {COMMA16} and {COMMA16}
+STR_5130    :Map size
+STR_5131    :Enter map size between {COMMA16} and {COMMA16}
+STR_5132    :Fix all rides
+STR_5133    :{SMALLFONT}{BLACK}Adjust smaller area of land rights
+STR_5134    :{SMALLFONT}{BLACK}Adjust larger area of land rights
+STR_5135    :{SMALLFONT}{BLACK}Buy land rights and construction rights
+STR_5136    :Land rights
+STR_5137    :Allow lift hill and launch speeds{NEWLINE}up to {VELOCITY}
+STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5139    :{WHITE}{STRINGID}
+STR_5140    :Disable brakes failure
+STR_5141    :Disable all breakdowns
+STR_5142    :Normal Speed
+STR_5143    :Quick Speed
+STR_5144    :Fast Speed
+STR_5145    :Turbo Speed
+STR_5146    :Hyper Speed
+STR_5147    :Show cheats button on toolbar
+STR_5148    :{SMALLFONT}{BLACK}Change the game speed
+STR_5149    :{SMALLFONT}{BLACK}Open the cheats window
+STR_5150    :Enable debugging tools
+#Thousands separator
+STR_5151    :.
+#Decimal separator
+STR_5152    :,
+STR_5153    :Colour schemes...
+STR_5154    :Hardware display
+STR_5155    :Allow testing of unfinished tracks
+STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
+STR_5157    :Unlock all prices
+STR_5158    :Quit to menu
+STR_5159    :Exit OpenRCT2
+STR_5160    :{MONTH} {STRINGID}, Year {COMMA16}
+STR_5161    :Date Format:
+STR_5162    :Day/Month/Year
+STR_5163    :Month/Day/Year
+STR_5164    :Twitch Channel name
+STR_5165    :Name peeps after followers
+STR_5166    :{SMALLFONT}{BLACK}Will name peeps after channel's Twitch followers
+STR_5167    :Track follower peeps
+STR_5168    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after channel's Twitch followers
+STR_5169    :Name peeps after people in Twitch chat
+STR_5170    :{SMALLFONT}{BLACK}Will name peeps after people in Twitch chat
+STR_5171    :Track chat peeps
+STR_5172    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after Twitch chat participants
+STR_5173    :Pull Twitch chat as news
+STR_5174    :{SMALLFONT}{BLACK}Will use Twitch chat messages preceded by !news for in game notifications
+STR_5175    :Input the name of your Twitch channel
+STR_5176    :Enable Twitch integration
+STR_5177    :Fullscreen mode:
+STR_5178    :{SMALLFONT}{BLACK}Show financial cheats
+STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
+STR_5180    :{SMALLFONT}{BLACK}Show park cheats
+STR_5181    :{SMALLFONT}{BLACK}Show ride cheats
+STR_5182    :{INT32}
+STR_5183    :Base height
+STR_5184    :Enter base height between {COMMA16} and {COMMA16}
+STR_5185    :Water level
+STR_5186    :Enter water level between {COMMA16} and {COMMA16} 
+STR_5187    :Finances
+STR_5188    :New Campaign
+STR_5189    :Research
+STR_5190    :Map
+STR_5191    :Viewport
+STR_5192    :Recent News
+STR_5193    :Land
+STR_5194    :Water
+STR_5195    :Clear Scenery
+STR_5196    :Land Rights
+STR_5197    :Scenery
+STR_5198    :Footpath
+STR_5199    :Ride Construction
+STR_5200    :Track Design Place
+STR_5201    :New Ride
+STR_5202    :Track Design Selection
+STR_5203    :Ride
+STR_5204    :Ride List
+STR_5205    :Guest
+STR_5206    :Guest List
+STR_5207    :Staff
+STR_5208    :Staff List
+STR_5209    :Banner
+STR_5210    :Object Selection
+STR_5211    :Invention List
+STR_5212    :Scenario Options
+STR_5213    :Objective Options
+STR_5214    :Map Generation
+STR_5215    :Track Design Manager
+STR_5216    :Track Design Manager List
+STR_5217    :Cheats
+STR_5218    :Themes
+STR_5219    :Options
+STR_5220    :Keyboard Shortcuts
+STR_5221    :Change Keyboard Shortcut
+STR_5222    :Load/Save
+STR_5223    :Save Prompt
+STR_5224    :Demolish Ride Prompt
+STR_5225    :Fire Staff Prompt
+STR_5226    :Track Delete Prompt
+STR_5227    :Save Overwrite Prompt
+STR_5228    :{SMALLFONT}{BLACK}Main UI
+STR_5229    :{SMALLFONT}{BLACK}Park
+STR_5230    :{SMALLFONT}{BLACK}Tools
+STR_5231    :{SMALLFONT}{BLACK}Rides and Peeps
+STR_5232    :{SMALLFONT}{BLACK}Editors
+STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
+STR_5234    :{SMALLFONT}{BLACK}Prompts
+STR_5235    :{SMALLFONT}{BLACK}Settings
+STR_5236    :Window:
+STR_5237    :Palette:
+STR_5238    :Current Theme:
+STR_5239    :Duplicate
+STR_5240    :Enter a name for the theme
+STR_5241    :Can't change this theme
+STR_5242    :Theme name already exists
+STR_5243    :Invalid characters used
+STR_5244    :Themes
+STR_5245    :Top Toolbar
+STR_5246    :Bottom Toolbar
+STR_5247    :Track Editor Bottom Toolbar
+STR_5248    :Scenario Editor Bottom Toolbar
+STR_5249    :Title Menu Buttons
+STR_5250    :Title Exit Button
+STR_5251    :Title Options Button
+STR_5252    :Title Scenario Selection
+STR_5253    :Park Information
+STR_5254    :Add nausea
+STR_5255    :{MEDIUMFONT}{BLACK}All peeps become nauseous
+STR_5256    :Create a new theme to make changes to
+STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
+STR_5258    :{SMALLFONT}{BLACK}Delete the current theme
+STR_5259    :{SMALLFONT}{BLACK}Rename the current theme
+STR_5260    :Giant Screenshot
+STR_5261    :Filter
+STR_5262    :Wacky Worlds
+STR_5263    :Time Twister
+STR_5264    :Custom
+STR_5265    :{SMALLFONT}{BLACK}Select which content sources are visible
+STR_5266    :{SMALLFONT}{BLACK}Display
+STR_5267    :{SMALLFONT}{BLACK}Culture and Units
+STR_5268    :{SMALLFONT}{BLACK}Audio
+STR_5269    :{SMALLFONT}{BLACK}Controls
+STR_5270    :{SMALLFONT}{BLACK}Miscellaneous
+STR_5271    :{SMALLFONT}{BLACK}Twitch
+STR_5272    :{SMALLFONT}{BLACK}Small Scenery
+STR_5273    :{SMALLFONT}{BLACK}Large Scenery
+STR_5274    :{SMALLFONT}{BLACK}Footpaths
+STR_5275    :Search for Objects
+STR_5276    :Enter the name of an object to search for
+STR_5277    :Clear

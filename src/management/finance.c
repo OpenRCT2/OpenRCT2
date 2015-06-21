@@ -19,7 +19,9 @@
 *****************************************************************************/
 
 #include "../addresses.h"
+#include "../game.h"
 #include "../interface/window.h"
+#include "../localisation/localisation.h"
 #include "../peep/peep.h"
 #include "../ride/ride.h"
 #include "../world/park.h"
@@ -42,6 +44,8 @@ const money32 research_cost_table[4] = {
 	MONEY(400,00)		// Maximum funding
 };
 
+int dword_988E60[] = { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0 };
+
 /**
  * Pay an amount of money.
  * rct2: 0x069C674
@@ -56,13 +60,12 @@ void finance_payment(money32 amount, rct_expenditure_type type)
 	//overflow check
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(new_money);
 	RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[type] -= amount;
-	if (RCT2_ADDRESS(0x00988E60, uint32)[type] & 1)
+	if (dword_988E60[type] & 1)
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32) -= amount; // Cumulative amount of money spent this day
 	
 
-	RCT2_GLOBAL(0x009A9804, uint32) |= 1; // money dirty flag
+	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_MONEY;
 	window_invalidate_by_class(WC_FINANCES);
-	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 }
 
 /**
@@ -124,15 +127,15 @@ void finance_pay_ride_upkeep()
 	FOR_ALL_RIDES(i, ride) {
 		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)) {
 			ride->build_date = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
-			ride->var_196 = 25855; // durability?
+			ride->reliability = RIDE_INITIAL_RELIABILITY;
 
 		}
 		if (ride->status != RIDE_STATUS_CLOSED && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
 			sint16 upkeep = ride->upkeep_cost;
 			if (upkeep != -1) {
 				ride->total_profit -= upkeep;
-				ride->var_14D |= 2;
-				finance_payment(upkeep, RCT2_EXPENDITURE_TYPE_RIDE_UPKEEP);
+				ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+				finance_payment(upkeep, RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS);
 			}
 		}
 	}
@@ -154,7 +157,8 @@ void finance_reset_history()
 */
 void finance_init() {
 
-	for (short i = 0; i < 56; i++) {
+	// It only initializes the first month
+	for (uint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++) {
 		RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i] = 0;
 	}
 
@@ -240,11 +244,107 @@ void sub_69E869()
 {
 	// This subroutine is loan related and is used for cheat detection
 	sint32 value = 0x70093A;
-	value -= RCT2_GLOBAL(0x013573DC, money32); // Cheat detection
+	value -= RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32);
 	value = ror32(value, 5);
 	value -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
 	value = ror32(value, 7);
 	value += RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32);
 	value = ror32(value, 3);
 	RCT2_GLOBAL(0x013587C4, sint32) = value;
+}
+
+void finance_set_loan(money32 loan)
+{
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, loan, GAME_COMMAND_SET_CURRENT_LOAN, 0, 0);
+}
+
+money32 finance_get_initial_cash()
+{
+	return RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32);
+}
+
+money32 finance_get_current_loan()
+{
+	return RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+}
+
+money32 finance_get_maximum_loan()
+{
+	return RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32);
+}
+
+money32 finance_get_current_cash()
+{
+	return DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32));
+}
+
+/**
+ *
+ *  rct2: 0x0069DFB3
+ */
+void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	money32 money, loanDifference, currentLoan;
+	money32 newLoan = *edx;
+
+	currentLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	money = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32));
+	loanDifference = currentLoan - newLoan;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_INTEREST * 4;
+	if (newLoan > currentLoan) {
+		if (newLoan > RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BANK_REFUSES_TO_INCREASE_LOAN;
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+	} else {
+		if (loanDifference > money) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_NOT_ENOUGH_CASH_AVAILABLE;
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+	}
+
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		money -= loanDifference;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = newLoan;
+		RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = money;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(money);
+		sub_69E869();
+
+		window_invalidate_by_class(WC_FINANCES);
+		RCT2_GLOBAL(0x009A9804, uint16) |= 1;
+	}
+
+	*ebx = 0;
+}
+
+/**
+* Shift the expenditure table history one month to the left
+* If the table is full, acumulate the sum of the oldest month first
+* rct2: 0x0069DEAD
+*/
+
+void finance_shift_expenditure_table() {
+
+	// If EXPENDITURE_TABLE_MONTH_COUNT months have passed then is full, sum the oldest month
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) >= EXPENDITURE_TABLE_MONTH_COUNT) {
+		money32 sum = 0;
+		for (uint32 i = EXPENDITURE_TABLE_TOTAL_COUNT - RCT_EXPENDITURE_TYPE_COUNT; i < EXPENDITURE_TABLE_TOTAL_COUNT; i++) {
+			sum += RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i];
+		}
+		RCT2_GLOBAL(0x013587D0, money32) += sum;
+	}
+	// Shift the table
+	for (uint32 i = EXPENDITURE_TABLE_TOTAL_COUNT - 1; i >= RCT_EXPENDITURE_TYPE_COUNT; i--) {
+		RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i] =
+			RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i - RCT_EXPENDITURE_TYPE_COUNT];
+	}
+	// Zero the beggining of the table, which is the new month
+	for (uint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++) {
+		RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i] = 0;
+	}
+	// Invalidate the expenditure table window
+	window_invalidate_by_number(0x1C, 0);
 }

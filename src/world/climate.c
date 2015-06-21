@@ -24,6 +24,7 @@
 #include "../drawing/drawing.h"
 #include "../localisation/date.h"
 #include "../scenario.h"
+#include "../interface/window.h"
 #include "climate.h"
 
 enum {
@@ -39,14 +40,22 @@ typedef struct {
 	sint8 distribution[24];
 } rct_weather_transition;
 
-int gClimateNextWeather;
+// These still need to be read / written when loading and saving
+// int gClimateNextWeather;
+// 
+// static int _climateCurrentWeatherEffect;
+// 
+// static int _climateNextTemperature;
+// static int _climateNextWeatherEffect;
+// static int _climateNextWeatherGloom;
+// static int _climateNextRainLevel;
 
-static int _climateCurrentWeatherEffect;
+#define _climateCurrentWeatherEffect	RCT2_GLOBAL(0x013CA74E, uint8)
 
-static int _climateNextTemperature;
-static int _climateNextWeatherEffect;
-static int _climateNextWeatherGloom;
-static int _climateNextRainLevel;
+#define _climateNextTemperature			RCT2_GLOBAL(0x013CA74D, uint8)
+#define _climateNextWeatherEffect		RCT2_GLOBAL(0x013CA74F, uint8)
+#define _climateNextWeatherGloom		RCT2_GLOBAL(0x013CA751, uint8)
+#define _climateNextRainLevel			RCT2_GLOBAL(0x013CA753, uint8)
 
 static const rct_weather_transition* climate_transitions[4];
 
@@ -75,6 +84,10 @@ int climate_celsius_to_fahrenheit(int celsius)
 	return (celsius * 29) / 16 + 32;
 }
 
+// cheats
+extern int g_climate_locked;
+extern void toggle_climate_lock();
+
 /**
  *  Set climate and determine start weather.
  *  rct2: 0x006C45ED
@@ -92,6 +105,20 @@ void climate_reset(int climate)
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, sint8) = climate_weather_data[weather].effect_level;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8) = climate_weather_data[weather].gloom_level;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = climate_weather_data[weather].rain_level;
+	
+	_lightningTimer = 0;
+	_thunderTimer = 0;
+	if (_rainVolume != 1){
+#ifdef USE_MIXER
+		if (_rainSoundChannel) {
+			Mixer_Stop_Channel(_rainSoundChannel);
+			_rainSoundChannel = 0;
+		}
+#else
+		sound_stop(&_rainSoundInstance);
+#endif
+		_rainVolume = 1;
+	}
 
 	climate_determine_future_weather();
 }
@@ -136,7 +163,7 @@ void climate_update()
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16))	{
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) == 960)
-			RCT2_GLOBAL(0x009A9804, uint32) |= 8; // climate dirty flag?
+			RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_CLIMATE;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16)--;
 
@@ -145,11 +172,13 @@ void climate_update()
 		if (temperature == target_temperature) {
 			if (cur_gloom == next_gloom) {
 				_climateCurrentWeatherEffect = _climateNextWeatherEffect;
+				_thunderTimer = 0;
+				_lightningTimer = 0;
 
 				if (cur_rain == next_rain) {
 					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = gClimateNextWeather;
 					climate_determine_future_weather();
-					RCT2_GLOBAL(0x009A9804, uint32) |= 8; // climate dirty flag?
+					RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_CLIMATE;
 				} else if (next_rain <= 2) { // Safe-guard
 					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = step_weather_level(cur_rain, next_rain);
 				}
@@ -160,14 +189,12 @@ void climate_update()
 
 		} else {
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8) = step_weather_level(temperature, target_temperature);
-			RCT2_GLOBAL(0x009A9804, uint32) |= 8; // climate dirty flag?
+			RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_CLIMATE;
 		}
 	}
 }
 
 void climate_force_weather(uint8 weather){
-	gClimateNextWeather = 0;
-
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = weather;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8) = climate_weather_data[weather].gloom_level;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = climate_weather_data[weather].rain_level;
@@ -175,6 +202,9 @@ void climate_force_weather(uint8 weather){
 	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) = 1920;
 
 	climate_update();
+	
+	// Incase of change in gloom level force a complete redraw
+	gfx_invalidate_screen();
 }
 
 /**
@@ -216,7 +246,7 @@ void climate_update_sound()
 		return;
 	if (!(RCT2_GLOBAL(0x009AF59D, uint8) & 1))
 		return;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)
 		return;
 
 	climate_update_rain_sound();

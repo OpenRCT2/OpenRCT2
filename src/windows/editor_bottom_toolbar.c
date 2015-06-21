@@ -28,12 +28,14 @@
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../platform/osinterface.h"
+#include "../platform/platform.h"
 #include "../title.h"
 #include "../util/util.h"
+#include "../world/scenery.h"
 #include "error.h"
+#include "../interface/themes.h"
 
-enum WINDOW_EDITOR_TOP_TOOLBAR_WIDGET_IDX {
+enum {
 	WIDX_PREVIOUS_IMAGE,		// 1
 	WIDX_PREVIOUS_STEP_BUTTON,	// 2
 	WIDX_NEXT_IMAGE,			// 4
@@ -139,15 +141,6 @@ void window_editor_bottom_toolbar_open()
 		(1 << WIDX_NEXT_IMAGE);
 
 	window_init_scroll_widgets(window);
-	window->colours[0] = 150;
-	window->colours[1] = 150;
-	window->colours[2] = 141;
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
-		window->colours[0] = 135;
-		window->colours[1] = 135;
-		window->colours[2] = 135;
-	}
 }
 
 /**
@@ -166,8 +159,8 @@ void window_editor_bottom_toolbar_jump_back_to_object_selection() {
 */
 void window_editor_bottom_toolbar_jump_back_to_landscape_editor() {
 	window_close_all();
-	RCT2_CALLPROC(0x006DFED0);
-	RCT2_CALLPROC(0x006DFEE4);
+	RCT2_CALLPROC_EBPSAFE(0x006DFED0);
+	scenery_set_default_placement_configuration();
 	g_editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 	window_map_open();
 	gfx_invalidate_screen();
@@ -179,7 +172,7 @@ void window_editor_bottom_toolbar_jump_back_to_landscape_editor() {
 */
 void window_editor_bottom_toolbar_jump_back_to_invention_list_set_up() {
 	window_close_all();
-	RCT2_CALLPROC_EBPSAFE(0x00684E04); // open invention list window
+	window_editor_inventions_list_open();
 	g_editor_step = EDITOR_STEP_INVENTIONS_LIST_SET_UP;
 	gfx_invalidate_screen();
 }
@@ -190,7 +183,7 @@ void window_editor_bottom_toolbar_jump_back_to_invention_list_set_up() {
 */
 void window_editor_bottom_toolbar_jump_back_to_scenario_options() {
 	window_close_all();
-	RCT2_CALLPROC_EBPSAFE(0x00670138); // open scenario options
+	window_editor_scenario_options_open();
 	g_editor_step = EDITOR_STEP_OPTIONS_SELECTION;
 	gfx_invalidate_screen();
 }
@@ -201,17 +194,38 @@ void window_editor_bottom_toolbar_jump_back_to_scenario_options() {
 */
 void window_editor_bottom_toolbar_jump_back_to_options_selection() {
 	window_close_all();
-	RCT2_CALLPROC_EBPSAFE(0x00670138); // open options selection window
+	window_editor_scenario_options_open();
 	g_editor_step = EDITOR_STEP_OPTIONS_SELECTION;
 	gfx_invalidate_screen();
 }
 
 /**
-*
-*  rct2: 0x0066F6B0
-*/
-void window_editor_bottom_toolbar_jump_forward_from_object_selection() {
-	RCT2_CALLPROC_EBPSAFE(0x0066f6b0);
+ *
+ *  rct2: 0x006AB1CE
+ */
+int window_editor_bottom_toolbar_check_object_selection()
+{
+	return RCT2_CALLPROC_EBPSAFE(0x006AB1CE) & 0x100;
+}
+
+/**
+ *
+ *  rct2: 0x0066F6B0
+ */
+void window_editor_bottom_toolbar_jump_forward_from_object_selection()
+{
+	if (window_editor_bottom_toolbar_check_object_selection())
+		return;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) {
+		RCT2_CALLPROC_EBPSAFE(0x0066F6E3);
+	} else {
+		RCT2_CALLPROC_EBPSAFE(0x006DFED0);
+		scenery_set_default_placement_configuration();
+		RCT2_GLOBAL(0x00141F570, uint8) = 1;
+		window_map_open();
+		gfx_invalidate_screen();
+	}
 }
 
 /**
@@ -223,7 +237,7 @@ void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up() {
 
 	if (!(flags & 0x100)) {
 		window_close_all();
-		RCT2_CALLPROC_EBPSAFE(0x00684E04);
+		window_editor_inventions_list_open();
 		g_editor_step = EDITOR_STEP_INVENTIONS_LIST_SET_UP;
 	} else {
 		window_error_open(STR_CANT_ADVANCE_TO_NEXT_EDITOR_STAGE, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16));
@@ -238,7 +252,7 @@ void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up() {
 */
 void window_editor_bottom_toolbar_jump_forward_to_options_selection() {
 	window_close_all();
-	RCT2_CALLPROC_EBPSAFE(0x00670138);
+	window_editor_scenario_options_open();
 	g_editor_step = EDITOR_STEP_OPTIONS_SELECTION;
 	gfx_invalidate_screen();
 }
@@ -249,7 +263,7 @@ void window_editor_bottom_toolbar_jump_forward_to_options_selection() {
 */
 void window_editor_bottom_toolbar_jump_forward_to_objective_selection() {
 	window_close_all();
-	RCT2_CALLPROC_EBPSAFE(0x0067137D);
+	window_editor_objective_options_open();
 	g_editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
 	gfx_invalidate_screen();
 }
@@ -274,7 +288,7 @@ static int show_save_scenario_dialog(char *resultPath)
 	format_string(filterName, STR_RCT2_SCENARIO_FILE, NULL);
 
 	pause_sounds();
-	result = osinterface_open_common_file_dialog(0, title, filename, "*.SC6", filterName);
+	result = platform_open_common_file_dialog(0, title, filename, "*.SC6", filterName);
 	unpause_sounds();
 
 	if (result)
@@ -299,6 +313,10 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 	}
 
 	window_close_all();
+
+	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO, s6Info->name);
+	return;
+
 	if (!show_save_scenario_dialog(path)) {
 		gfx_invalidate_screen();
 		return;
@@ -313,11 +331,10 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 	// Save the scenario
 	parkFlagsBackup = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_18;
-	success = scenario_save(path, gGeneral_config.save_plugin_data ? 3 : 2);
+	success = scenario_save(path, gConfigGeneral.save_plugin_data ? 3 : 2);
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = parkFlagsBackup;
 
 	if (success) {
-		// RCT2_CALLPROC_EBPSAFE(0x0066DC83);
 		title_load();
 	} else {
 		window_error_open(STR_SCENARIO_SAVE_FAILED, -1);
@@ -338,7 +355,7 @@ static void window_editor_bottom_toolbar_mouseup()
 
 	if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON) {
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) ||
-			RCT2_GLOBAL(0x13573C8, uint16) == 0x2710 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY_SCENARIO)) {
+			RCT2_GLOBAL(0x13573C8, uint16) == 0x2710 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_18)) {
 			previous_button_mouseup_events[g_editor_step]();
 		}
 	} else if (widgetIndex == WIDX_NEXT_STEP_BUTTON) {
@@ -365,11 +382,13 @@ void window_editor_bottom_toolbar_invalidate() {
 
 	window_get_register(w);
 
+	colour_scheme_update_by_class(w, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) ? WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR : WC_EDITOR_TRACK_BOTTOM_TOOLBAR);
+
 	sint16 screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
-	window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left = screenWidth - 198;
-	window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right = screenWidth - 3;
-	window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].left = screenWidth - 200;
-	window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].right = screenWidth - 1;
+	window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left = screenWidth - 200;
+	window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right = screenWidth - 1;
+	window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].left = screenWidth - 198;
+	window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].right = screenWidth - 3;
 
 	window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_STEP_BUTTON].type = WWT_FLATBTN;
 	window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].type = WWT_FLATBTN;
@@ -385,7 +404,7 @@ void window_editor_bottom_toolbar_invalidate() {
 		} else if (g_editor_step == EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
 			hide_next_step_button();
 		} else if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)) {
-			if (RCT2_GLOBAL(0x13573C8, uint16) != 0x2710 || RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY_SCENARIO) {
+			if (RCT2_GLOBAL(0x13573C8, uint16) != 0x2710 || RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_18) {
 				hide_previous_step_button();
 			}
 		}
@@ -407,13 +426,17 @@ void window_editor_bottom_toolbar_paint() {
 
 	if (g_editor_step == EDITOR_STEP_OBJECT_SELECTION) {
 		drawNextButton = true;
-	} else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) {
+	} 
+	else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) {
 		drawPreviousButton = true;
-	} else if (RCT2_GLOBAL(0x13573C8, uint16) != 0x2710) {
+	} 
+	else if (RCT2_GLOBAL(0x13573C8, uint16) != 0x2710) {
 		drawNextButton = true;
-	} else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY_SCENARIO) {
+	}
+	else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_18) {
 		drawNextButton = true;
-	} else {
+	} 
+	else {
 		drawPreviousButton = true;
 	}
 

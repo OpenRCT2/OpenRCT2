@@ -89,7 +89,7 @@ int sawyercoding_read_chunk(FILE *file, uint8 *buffer)
 
 	// Read chunk header
 	if (fread(&chunkHeader, sizeof(sawyercoding_chunk_header), 1, file) != 1) {
-		RCT2_ERROR("Unable to read chunk header!");
+		log_error("Unable to read chunk header!");
 		return -1;
 	}
 
@@ -98,7 +98,7 @@ int sawyercoding_read_chunk(FILE *file, uint8 *buffer)
 	// Read chunk data
 	if (fread(src_buffer, chunkHeader.length, 1, file) != 1) {
 		free(src_buffer);
-		RCT2_ERROR("Unable to read chunk data!");
+		log_error("Unable to read chunk data!");
 		return -1;
 	}
 
@@ -163,10 +163,14 @@ int sawyercoding_write_chunk_buffer(uint8 *dst_file, uint8* buffer, sawyercoding
 		free(encode_buffer);
 		break;
 	case CHUNK_ENCODING_ROTATE:
-		encode_chunk_rotate(buffer, chunkHeader.length);
+		encode_buffer = malloc(chunkHeader.length);
+		memcpy(encode_buffer, buffer, chunkHeader.length);
+		encode_chunk_rotate(encode_buffer, chunkHeader.length);
 		memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
 		dst_file += sizeof(sawyercoding_chunk_header);
-		memcpy(dst_file, buffer, chunkHeader.length);
+		memcpy(dst_file, encode_buffer, chunkHeader.length);
+
+		free(encode_buffer);
 		break;
 	}
 
@@ -219,6 +223,43 @@ int sawyercoding_encode_sv4(char *src, char *dst, int length)
 int sawyercoding_decode_td6(char *src, char *dst, int length)
 {
 	return decode_chunk_rle(src, dst, length - 4);
+}
+
+int sawyercoding_encode_td6(char* src, char* dst, int length){
+	int output_length = encode_chunk_rle(src, dst, length);
+
+	uint32 checksum = 0;
+	for (int i = 0; i < output_length; i++){
+		uint8 new_byte = ((checksum & 0xFF) + dst[i]) & 0xFF;
+		checksum = (checksum & 0xFFFFFF00) + new_byte;
+		checksum = rol32(checksum, 3);
+	}
+	checksum -= 0x1D4C1;
+
+	*((uint32*)&dst[output_length]) = checksum;
+	output_length += 4;
+	return output_length;
+}
+
+/* Based off of rct2: 0x006770C1 */
+int sawyercoding_validate_track_checksum(char* src, int length){
+	uint32 file_checksum = *((uint32*)&src[length - 4]);
+
+	uint32 checksum = 0;
+	for (int i = 0; i < length - 4; i++){
+		uint8 new_byte = ((checksum & 0xFF) + src[i]) & 0xFF;
+		checksum = (checksum & 0xFFFFFF00) + new_byte;
+		checksum = rol32(checksum, 3);
+	}
+
+	if (checksum - 0x1D4C1 == file_checksum)
+		return 1;	// .TD6
+	else if (checksum - 0x1A67C == file_checksum)
+		return 1;	// .TD4
+	else if (checksum - 0x1A650 == file_checksum)
+		return 1;	// .TD4 
+	else
+		return 0;
 }
 
 #pragma region Decoding
@@ -314,14 +355,14 @@ static int encode_chunk_rle(char *src_buffer, char *dst_buffer, int length)
 
 	while (src < end_src - 1){
 
-		if ((count && *src == src[1]) || count > 120){
+		if ((count && *src == src[1]) || count > 125){
 			*dst++ = count - 1;
 			for (; count != 0; --count){
 				*dst++ = *src_norm_start++;
 			}
 		}
 		if (*src == src[1]){
-			for (; (count < 120) && ((src + count) < end_src); count++){
+			for (; (count < 125) && ((src + count) < end_src); count++){
 				if (*src != src[count]) break;
 			}
 			*dst++ = 257 - count;
@@ -412,3 +453,28 @@ static void encode_chunk_rotate(char *buffer, int length)
 }
 
 #pragma endregion
+
+int sawyercoding_detect_file_type(char *src, int length)
+{
+	int i;
+
+	// Currently can't detect TD4, as the checksum is the same as SC4 (need alternative method)
+
+	uint32 checksum = *((uint32*)&src[length - 4]);
+	uint32 actualChecksum = 0;
+	for (i = 0; i < length - 4; i++) {
+		actualChecksum = (actualChecksum & 0xFFFFFF00) | (((actualChecksum & 0xFF) + (uint8)src[i]) & 0xFF);
+		actualChecksum = rol32(actualChecksum, 3);
+	}
+
+	switch (checksum - actualChecksum) {
+	case +108156:	return FILE_VERSION_RCT1 | FILE_TYPE_SV4;
+	case -108156:	return FILE_VERSION_RCT1 | FILE_TYPE_SC4;
+	case +110001:	return FILE_VERSION_RCT1_AA | FILE_TYPE_SV4;
+	case -110001:	return FILE_VERSION_RCT1_AA | FILE_TYPE_SC4;
+	case +120001:	return FILE_VERSION_RCT1_LL | FILE_TYPE_SV4;
+	case -120001:	return FILE_VERSION_RCT1_LL | FILE_TYPE_SC4;
+	}
+
+	return -1;
+}

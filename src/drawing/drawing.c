@@ -22,7 +22,9 @@
 #include "../common.h"
 #include "../localisation/localisation.h"
 #include "../interface/window.h"
-#include "../platform/osinterface.h"
+#include "../platform/platform.h"
+#include "../object.h"
+#include "../world/water.h"
 #include "drawing.h"
 
 // HACK These were originally passed back through registers
@@ -31,7 +33,7 @@ int gLastDrawStringY;
 
 uint8 _screenDirtyBlocks[5120];
 
-#define MAX_RAIN_PIXELS 0x9000
+#define MAX_RAIN_PIXELS 0xFFFE
 uint32 rainPixels[MAX_RAIN_PIXELS];
 
 //Originally 0x9ABE0C, 12 elements from 0xF3 are the peep top colour, 12 elements from 0xCA are peep trouser colour
@@ -133,10 +135,10 @@ void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour)
  */
 void gfx_transpose_palette(int pal, unsigned char product)
 {
-	rct_g1_element g1 = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[pal];
+	rct_g1_element g1 = g1Elements[pal];
 	int width = g1.width;
 	int x = g1.x_offset;  
-	uint8* dest_pointer = (uint8*)&(RCT2_ADDRESS(0x014124680,uint8)[x]);
+	uint8* dest_pointer = (uint8*)&(RCT2_ADDRESS(0x01424680, uint8)[x * 4]);
 	uint8* source_pointer = g1.offset;
 
 	for (; width > 0; width--) {
@@ -146,7 +148,33 @@ void gfx_transpose_palette(int pal, unsigned char product)
 		source_pointer += 3;
 		dest_pointer += 4;
 	}
-	osinterface_update_palette((char*)0x01424680, 10, 236);//Odd would have expected dest_pointer
+	platform_update_palette((char*)0x01424680, 10, 236);
+}
+
+/* rct2: 0x006837E3 */
+void load_palette(){
+	rct_water_type* water_type = (rct_water_type*)object_entry_groups[OBJECT_TYPE_WATER].chunks[0];
+
+	uint32 palette = 0x5FC;
+
+	if ((sint32)water_type != -1){
+		palette = water_type->image_id;
+	}
+
+	rct_g1_element g1 = g1Elements[palette];
+	int width = g1.width;
+	int x = g1.x_offset;
+	uint8* dest_pointer = (uint8*)&(RCT2_ADDRESS(0x01424680, uint8)[x * 4]);
+	uint8* source_pointer = g1.offset;
+
+	for (; width > 0; width--) {
+		dest_pointer[0] = source_pointer[0];
+		dest_pointer[1] = source_pointer[1];
+		dest_pointer[2] = source_pointer[2];
+		source_pointer += 3;
+		dest_pointer += 4;
+	}
+	platform_update_palette((char*)0x01424680, 10, 236);
 }
 
 /**
@@ -157,7 +185,7 @@ void gfx_transpose_palette(int pal, unsigned char product)
 * @param base_height (di)
 * @param clearance_height (si)
 */
-void gfx_invalidate_scrollingtext(int x, int y, int base_height, int clearance_height)
+void gfx_invalidate_tile_if_zoomed(int x, int y, int base_height, int clearance_height)
 {
 	x += 16;
 	y += 16;
@@ -486,7 +514,7 @@ void redraw_peep_and_rain()
 		if (sprite != -1) {
 			sprite = sprite & 0x7FFFF;
 			
-			rct_g1_element *g1_elements = &RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element)[sprite];
+			rct_g1_element *g1_elements = &g1Elements[sprite];
 			int left = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, sint16) + g1_elements->x_offset;
 			int top = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16) + g1_elements->y_offset;
 			int right = left + g1_elements->width;

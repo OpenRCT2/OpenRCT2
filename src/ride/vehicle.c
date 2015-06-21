@@ -35,9 +35,9 @@ static void vehicle_update(rct_vehicle *vehicle);
 */
 void vehicle_update_sound_params(rct_vehicle* vehicle)
 {
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2) && (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 4) || RCT2_GLOBAL(0x0141F570, uint8) == 6)) {
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) || RCT2_GLOBAL(0x0141F570, uint8) == 6)) {
 		if (vehicle->sound1_id != (uint8)-1 || vehicle->sound2_id != (uint8)-1) {
-			if (vehicle->sprite_left != 0x8000) {
+			if (vehicle->sprite_left != (sint16)0x8000) {
 				RCT2_GLOBAL(0x009AF5A0, sint16) = vehicle->sprite_left;
 				RCT2_GLOBAL(0x009AF5A2, sint16) = vehicle->sprite_top;
 				RCT2_GLOBAL(0x009AF5A4, sint16) = vehicle->sprite_right;
@@ -99,9 +99,8 @@ void vehicle_update_sound_params(rct_vehicle* vehicle)
 
 							sint32 v19 = vehicle->velocity;
 
-							int testaddr = (vehicle->var_31 * 0x65);
-							testaddr += (int)RCT2_ADDRESS(0x009ACFA4, rct_ride_type*)[vehicle->var_D6];
-							uint8 test = ((uint8*)testaddr)[0x74];
+							rct_ride_type* ride_type = GET_RIDE_ENTRY(vehicle->ride_subtype);
+							uint8 test = ride_type->vehicles[vehicle->vehicle_type].var_5A;
 
 							if (test & 1) {
 								v19 *= 2;
@@ -117,7 +116,7 @@ void vehicle_update_sound_params(rct_vehicle* vehicle)
 							i->frequency = (uint16)v19;
 							i->id = vehicle->sprite_index;
 							i->volume = 0;
-							if (vehicle->x != 0x8000) {
+							if (vehicle->x != (sint16)0x8000) {
 								int tile_idx = (((vehicle->y & 0xFFE0) * 256) + (vehicle->x & 0xFFE0)) / 32;
 								rct_map_element* map_element;
 								for (map_element = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx]; map_element->type & MAP_ELEMENT_TYPE_MASK; map_element++);
@@ -230,7 +229,7 @@ void vehicle_sounds_update()
 					vehicle_sound->id = (uint16)-1;
 				}
 			label26:
-				1;
+				;
 			}
 
 			//for (rct_vehicle_sound_params* vehicle_sound_params = &RCT2_GLOBAL(0x00F438B4, rct_vehicle_sound_params); ; vehicle_sound_params++) {
@@ -305,7 +304,7 @@ void vehicle_sounds_update()
 						while (vehicle_sound->id != (uint16)-1) {
 							vehicle_sound++;
 							i++;
-							if (i >= countof(gVehicleSoundList)/*i >= RCT2_GLOBAL(0x009AAC75, uint8)*/) {
+							if (i >= countof(gVehicleSoundList)/*i >= RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MAX_VEHICLE_SOUNDS, uint8)*/) {
 								vehicle_sound_params = (rct_vehicle_sound_params*)((int)vehicle_sound_params + 10);
 								goto label28;
 							}
@@ -535,7 +534,7 @@ void vehicle_sounds_update()
 					}
 				}
 			label114:
-				1;
+				;
 			}
 		}
 	}
@@ -550,10 +549,10 @@ void vehicle_update_all()
 	uint16 sprite_index;
 	rct_vehicle *vehicle;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
 		return;
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 4) && RCT2_GLOBAL(0x0141F570, uint8) != 6)
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && RCT2_GLOBAL(0x0141F570, uint8) != 6)
 		return;
 
 
@@ -633,4 +632,9 @@ rct_vehicle *vehicle_get_head(rct_vehicle *vehicle)
 	}
 
 	return vehicle;
+}
+
+int vehicle_is_used_in_pairs(rct_vehicle *vehicle)
+{
+	return vehicle->num_seats & VEHICLE_SEAT_PAIR_FLAG;
 }

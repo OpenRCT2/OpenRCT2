@@ -23,6 +23,7 @@
 #include "../interface/window.h"
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
+#include "../interface/themes.h"
 
 #define WW 250
 #define WH 60
@@ -43,6 +44,7 @@ static rct_widget window_shortcut_change_widgets[] = {
 
 static void window_shortcut_change_emptysub(){}
 static void window_shortcut_change_mouseup();
+static void window_shortcut_change_invalidate();
 static void window_shortcut_change_paint();
 
 //0x9A3F7C
@@ -72,7 +74,7 @@ static void* window_shortcut_change_events[] = {
 	window_shortcut_change_emptysub,
 	window_shortcut_change_emptysub,
 	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
+	window_shortcut_change_invalidate,
 	window_shortcut_change_paint,
 	window_shortcut_change_emptysub
 };
@@ -87,9 +89,6 @@ void window_shortcut_change_open(int selected_key){
 	w->widgets = window_shortcut_change_widgets;
 	w->enabled_widgets = (1 << 2);
 	window_init_scroll_widgets(w);
-	w->colours[0] = 7;
-	w->colours[1] = 7;
-	w->colours[2] = 7;
 }
 
 /**
@@ -106,6 +105,14 @@ static void window_shortcut_change_mouseup(){
 	case WIDX_CLOSE:
 		window_close(w);
 	}
+}
+
+static void window_shortcut_change_invalidate()
+{
+	rct_window *w;
+
+	window_get_register(w);
+	colour_scheme_update(w);
 }
 
 /**

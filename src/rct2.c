@@ -28,14 +28,15 @@
 #include "drawing/drawing.h"
 #include "editor.h"
 #include "game.h"
+#include "interface/console.h"
 #include "interface/viewport.h"
 #include "intro.h"
 #include "localisation/date.h"
 #include "localisation/localisation.h"
 #include "management/news_item.h"
+#include "network/twitch.h"
 #include "object.h"
 #include "openrct2.h"
-#include "platform/osinterface.h"
 #include "platform/platform.h"
 #include "ride/ride.h"
 #include "ride/track.h"
@@ -44,6 +45,7 @@
 #include "world/map.h"
 #include "world/park.h"
 #include "world/climate.h"
+#include "world/scenery.h"
 #include "world/sprite.h"
 
 typedef struct tm tm_t;
@@ -57,12 +59,10 @@ static void rct2_update_2();
 
 static jmp_buf _end_update_jump;
 
-void rct2_quit() {
-	if (gGeneral_config.confirmation_prompt) {
-		RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = PM_QUIT;
-		window_save_prompt_open();
-	} else
-		openrct2_finish();
+void rct2_quit()
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = PM_QUIT;
+	window_save_prompt_open();
 }
 
 int rct2_init()
@@ -72,8 +72,9 @@ int rct2_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) = 0;
 	RCT2_GLOBAL(0x009AC310, char*) = RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, char*);
 	get_system_time();
+	srand((unsigned int)time(0));
 	RCT2_GLOBAL(0x009DEA69, short) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, short);
-	RCT2_GLOBAL(0x009DEA6B, short) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, short);
+	RCT2_GLOBAL(0x009DEA6B, short) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, short);
 	if (!rct2_init_directories())
 		return 0;
 
@@ -81,9 +82,9 @@ int rct2_init()
 		return 0;
 
 	config_reset_shortcut_keys();
+	config_shortcut_keys_load();
 	RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
 	// config_load();
-	// RCT2_CALLPROC_EBPSAFE(0x00674B81); // pointless expansion pack crap
 
 	object_list_load();
 	scenario_load_list();
@@ -92,9 +93,12 @@ int rct2_init()
 	track_load_list(item);
 
 	gfx_load_g1();
+	gfx_load_g2();
 	gfx_load_character_widths();
-	osinterface_init();
-	audio_init1();//RCT2_CALLPROC_EBPSAFE(0x006BA8E0); // init_audio();
+	if (!gOpenRCT2Headless) {
+		platform_init();
+		audio_init1();
+	}
 	viewport_init_all();
 	news_item_init_queue();
 	get_local_time();
@@ -103,22 +107,25 @@ int rct2_init()
 	reset_sprite_list();
 	ride_init_all();
 	window_guest_list_init_vars_a();
-	sub_6BD3A4();// RCT2_CALLPROC_EBPSAFE(0x006BD3A4); //Peep?
-	map_init();
+	sub_6BD3A4();
+	map_init(150);
 	park_init();
-	RCT2_CALLPROC_EBPSAFE(0x0066B5C0); // 0x0066B5C0 (part of 0x0066B3E8) screen_game_create_windows()
+	if (!gOpenRCT2Headless)
+		window_title_menu_open();
 	date_reset();
 	climate_reset(CLIMATE_COOL_AND_WET);
-	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+	scenery_set_default_placement_configuration();
 	window_new_ride_init_vars();
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
 
-	title_load();
+	if (!gOpenRCT2Headless) {
+		title_load();
 
-	gfx_clear(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 10);
-	RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = gGeneral_config.play_intro ? 8 : 255;
+		gfx_clear(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 10);
+	}
 
+	log_verbose("initialising game finished");
 	return 1;
 }
 
@@ -128,16 +135,18 @@ int rct2_init()
  */
 int rct2_init_directories()
 {
+	// windows_get_registry_install_info((rct2_install_info*)0x009AA10C, "RollerCoaster Tycoon 2 Setup", "MS Sans Serif", 0);
+
 	// check install directory
-	if (!platform_directory_exists(gGeneral_config.game_path)) {
-		log_verbose("install directory does not exist, %s", gGeneral_config.game_path);
+	if (!platform_directory_exists(gConfigGeneral.game_path)) {
+		log_verbose("install directory does not exist, %s", gConfigGeneral.game_path);
 		if (!config_find_or_browse_install_directory()) {
 			log_fatal("Invalid RCT2 installation path. Please correct in config.ini.");
 			return 0;
-		}
+	}
 	}
 
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), gGeneral_config.game_path);
+	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), gConfigGeneral.game_path);
 
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
 	strcat(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), "\\");
@@ -222,7 +231,10 @@ int rct2_open_file(const char *path)
 		strcpy(scenarioBasic.path, path);
 		scenario_load_and_play_from_path(scenarioBasic.path);
 	} else if (_stricmp(extension, "td6") == 0 || _stricmp(extension, "td4") == 0) {
+		return 1;
+	} else if (!_stricmp(extension, "td6") || !_stricmp(extension, "td4")) {
 		// TODO track design install
+		return 1;
 	}
 
 	return 0;
@@ -233,10 +245,10 @@ int rct2_open_file(const char *path)
  *  rct2: 0x00674C95
  */
 int check_file_paths()
-{
+	{
 	for (int pathId = 0; pathId < PATH_ID_END; pathId++)
 		if (!check_file_path(pathId))
-			return 0;
+	return 0;
 
 	return 1;
 }
@@ -251,24 +263,7 @@ int check_file_path(int pathId)
 	HANDLE file = CreateFile(path, FILE_GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS, NULL);
 
 	switch (pathId) {
-	case PATH_ID_GAMECFG:
-	case PATH_ID_SCORES:
-	case PATH_ID_TRACKSIDX:
-	case PATH_ID_PLUGIN:
-		// Do nothing; these will be created later if they do not exist yet
-		break;
-
-	case PATH_ID_CUSTOM1:
-		if (file != INVALID_HANDLE_VALUE)
-			RCT2_GLOBAL(0x009AF164, unsigned int) = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom1_size @ 0x009AF164
-		break;
-
-	case PATH_ID_CUSTOM2:
-		if (file != INVALID_HANDLE_VALUE)
-			RCT2_GLOBAL(0x009AF16E, unsigned int) = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom2_size @ 0x009AF16E
-		break;
-
-	default:
+	case PATH_ID_G1:
 		if (file == INVALID_HANDLE_VALUE) {
 			// A data file is missing from the installation directory. The original implementation
 			// asks for a CD-ROM path at this point and stores it in cdrom_path @ 0x9AA318.
@@ -280,6 +275,16 @@ int check_file_path(int pathId)
 			log_fatal("Could not find file %s", path);
 			return 0;
 		}
+		break;
+
+	case PATH_ID_CUSTOM1:
+		if (file != INVALID_HANDLE_VALUE)
+			ride_music_info_list[36]->length = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom1_size @ 0x009AF164
+		break;
+
+	case PATH_ID_CUSTOM2:
+		if (file != INVALID_HANDLE_VALUE)
+			ride_music_info_list[37]->length = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom2_size @ 0x009AF16E
 		break;
 	}
 
@@ -294,11 +299,11 @@ int check_file_path(int pathId)
  *  rct2: 0x00674C0B
  */
 int check_files_integrity()
-{
+	{
 	int i;
 	const char *path;
 	HANDLE file;
-	WIN32_FIND_DATA find_data;
+		WIN32_FIND_DATA find_data;
 
 	for (i = 0; files_to_check[i].pathId != PATH_ID_END; i++) {
 		path = get_file_path(files_to_check[i].pathId);
@@ -324,16 +329,12 @@ void rct2_update_2()
 
 	tick = timeGetTime();
 
-	RCT2_GLOBAL(0x009DE588, sint16) = tick2 = tick - RCT2_GLOBAL(0x009DE580, sint32);
-	if (RCT2_GLOBAL(0x009DE588, sint16) > 500)
-		RCT2_GLOBAL(0x009DE588, sint16) = 500;
+	tick2 = tick - RCT2_GLOBAL(0x009DE580, sint32);
+	RCT2_GLOBAL(0x009DE588, sint16) = tick2 = min(tick2, 500);
 
 	RCT2_GLOBAL(0x009DE580, sint32) = tick;
-	if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0)
-		RCT2_GLOBAL(0x009DE584, sint32) += tick2;
-
-	if (RCT2_GLOBAL(0x009DEA6E, uint8) == 0)
-		RCT2_GLOBAL(0x009DE584, sint32) += tick2;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0)
+		RCT2_GLOBAL(RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO, sint32) += tick2;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 0)
 		RCT2_GLOBAL(0x009DE588, sint16) = 31;
@@ -348,6 +349,10 @@ void rct2_update_2()
 		title_update();
 	else
 		game_update();
+
+	twitch_update();
+	console_update();
+	console_draw(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo));
 }
 
 void rct2_endupdate()
@@ -366,14 +371,14 @@ const char *get_file_path(int pathId)
 	// The original implementation checks if the file is on CD-ROM here (file_on_cdrom[pathId] @ 0x009AA0B1).
 	// If so, the CD-ROM path (cdrom_path @ 0x9AA318) is used instead. This has been removed for now for
 	// the sake of simplicity.
-	strcpy(path, gGeneral_config.game_path);
+	strcpy(path, gConfigGeneral.game_path);
 
 	// Make sure base path is terminated with a slash
 	if (strlen(path) == 0 || path[strlen(path) - 1] != '\\')
 	{
 		if (strlen(path) >= MAX_PATH - 1)
 		{
-			RCT2_ERROR("Path for %s too long", file_paths[pathId]);
+			log_error("Path for %s too long", file_paths[pathId]);
 			path[0] = '\0';
 			return path;
 		}
@@ -382,9 +387,8 @@ const char *get_file_path(int pathId)
 	}
 
 	// Concatenate file path
-	if (strlen(path) + strlen(file_paths[pathId]) > MAX_PATH)
-	{
-		RCT2_ERROR("Path for %s too long", file_paths[pathId]);
+	if (strlen(path) + strlen(file_paths[pathId]) > MAX_PATH) {
+		log_error("Path for %s too long", file_paths[pathId]);
 		path[0] = '\0';
 		return path;
 	}

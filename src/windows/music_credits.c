@@ -88,15 +88,13 @@ void window_music_credits_open()
 	if (window != NULL)
 		return;
 
-	window = window_create(
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2 - 255,
-		max(28, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) / 2 - 157),
+	window = window_create_centred(
 		510,
 		314,
 		(uint32*)window_music_credits_events,
 		WC_MUSIC_CREDITS,
 		0
-		);
+	);
 
 	window->widgets = window_music_credits_widgets;
 	window->enabled_widgets = 1 << WIDX_CLOSE;
@@ -132,13 +130,11 @@ static void window_music_credits_mouseup()
  */
 static void window_music_credits_scrollgetsize()
 {
-	int y = 560;
+	int width, height;
 
-	#ifdef _MSC_VER
-	__asm mov edx, y
-	#else
-	__asm__("mov edx, %[y] " : [y] "+m" (y));
-	#endif
+	width = 0;
+	height = 560;
+	window_scrollsize_set_registers(width, height);
 }
 
 /**

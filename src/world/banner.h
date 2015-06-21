@@ -23,6 +23,7 @@
 
 #include "../common.h"
 
+#define BANNER_NULL 255
 #define MAX_BANNERS 250
 
 typedef struct {
@@ -37,9 +38,13 @@ typedef struct {
 
 enum{
 	BANNER_FLAG_NO_ENTRY = (1 << 0),
+	BANNER_FLAG_1 = (1 << 1),
 	BANNER_FLAG_2 = (1 << 2)
 } BANNER_FLAGS;
 
 extern rct_banner *gBanners;
+
+void banner_init();
+int create_new_banner(uint8 flags);
 
 #endif

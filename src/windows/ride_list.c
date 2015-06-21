@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
 #include "../ride/ride.h"
 #include "../localisation/localisation.h"
@@ -27,6 +28,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "dropdown.h"
+#include "../interface/themes.h"
 
 enum {
 	PAGE_RIDES,
@@ -46,7 +48,9 @@ enum WINDOW_RIDE_LIST_WIDGET_IDX {
 	WIDX_TAB_1,
 	WIDX_TAB_2,
 	WIDX_TAB_3,
-	WIDX_LIST
+	WIDX_LIST,
+	WIDX_CLOSE_LIGHT,
+	WIDX_OPEN_LIGHT
 };
 
 static rct_widget window_ride_list_widgets[] = {
@@ -62,6 +66,8 @@ static rct_widget window_ride_list_widgets[] = {
 	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,					STR_LIST_SHOPS_AND_STALLS_TIP },			// tab 2
 	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,					STR_LIST_KIOSKS_AND_FACILITIES_TIP },		// tab 3
 	{ WWT_SCROLL,			1,	3,		336,	60,		236,	2,							65535 },									// list
+	{ WWT_IMGBTN,			1,	320,	333,	62,		75,		SPR_G2_RCT1_CLOSE_BUTTON_0,	STR_NONE },
+	{ WWT_IMGBTN,			1,	320,	333,	76,		89,		SPR_G2_RCT1_OPEN_BUTTON_0,	STR_NONE },
 	{ WIDGETS_END },
 };
 
@@ -140,7 +146,7 @@ void window_ride_list_open()
 	// Check if window is already open
 	window = window_bring_to_front_by_class(WC_RIDE_LIST);
 	if (window == NULL) {
-		window = window_create_auto_pos(340, 240, (uint32*)window_ride_list_events, WC_RIDE_LIST, 0x0400);
+		window = window_create_auto_pos(340, 240, (uint32*)window_ride_list_events, WC_RIDE_LIST, WF_10 | WF_RESIZABLE);
 		window->widgets = window_ride_list_widgets;
 		window->enabled_widgets =
 			(1 << WIDX_CLOSE) |
@@ -150,7 +156,9 @@ void window_ride_list_open()
 			(1 << WIDX_SORT) |
 			(1 << WIDX_TAB_1) |
 			(1 << WIDX_TAB_2) |
-			(1 << WIDX_TAB_3);
+			(1 << WIDX_TAB_3) |
+			(1 << WIDX_CLOSE_LIGHT) |
+			(1 << WIDX_OPEN_LIGHT);
 		window_init_scroll_widgets(window);
 		window->page = PAGE_RIDES;
 		window->no_list_items = 0;
@@ -160,10 +168,6 @@ void window_ride_list_open()
 		window->min_height = 240;
 		window->max_width = 400;
 		window->max_height = 450;
-		window->flags |= WF_RESIZABLE;
-		window->colours[0] = 1;
-		window->colours[1] = 26;
-		window->colours[2] = 26;
 	}
 	_window_ride_list_information_type = INFORMATION_TYPE_STATUS;
 	window->list_information_type = 0;
@@ -195,11 +199,18 @@ static void window_ride_list_mouseup()
 		if (w->page != widgetIndex - WIDX_TAB_1) {
 			w->page = widgetIndex - WIDX_TAB_1;
 			w->no_list_items = 0;
+			w->frame_no = 0;
 			w->selected_list_item = -1;
 			if (w->page != PAGE_RIDES && _window_ride_list_information_type > INFORMATION_TYPE_PROFIT)
 				_window_ride_list_information_type = INFORMATION_TYPE_PROFIT;
 			window_invalidate(w);
 		}
+		break;
+	case WIDX_CLOSE_LIGHT:
+		window_ride_list_close_all(w);
+		break;
+	case WIDX_OPEN_LIGHT:
+		window_ride_list_open_all(w);
 		break;
 	}
 }
@@ -253,7 +264,15 @@ static void window_ride_list_mousedown(int widgetIndex, rct_window*w, rct_widget
 			gDropdownItemsFormat[i] = 1142;
 			gDropdownItemsArgs[i] = STR_STATUS + i;
 		}		
-		window_dropdown_show_text_custom_width(w->x + widget->left, w->y + widget->top, widget->bottom - widget->top, w->colours[1], 0x80, numItems, widget->right - widget->left - 3);
+		window_dropdown_show_text_custom_width(
+			w->x + widget->left,
+			w->y + widget->top,
+			widget->bottom - widget->top,
+			w->colours[1],
+			DROPDOWN_FLAG_STAY_OPEN,
+			numItems,
+			widget->right - widget->left - 3
+		);
 		gDropdownItemsChecked |= (1 << _window_ride_list_information_type);
 	}
 }
@@ -301,7 +320,7 @@ static void window_ride_list_update(rct_window *w)
  */
 static void window_ride_list_scrollgetsize()
 {
-	int top, height;
+	int top, width, height;
 	rct_window *w;
 	
 	window_get_register(w);
@@ -320,18 +339,8 @@ static void window_ride_list_scrollgetsize()
 		window_invalidate(w);
 	}
 
-	#ifdef _MSC_VER
-	__asm mov ecx, 0
-	#else
-	__asm__ ( "mov ecx, 0 "  );
-	#endif
-
-	#ifdef _MSC_VER
-	__asm mov edx, height
-	#else
-	__asm__ ( "mov edx, %[height] " : [height] "+m" (height) );
-	#endif
-
+	width = 0;
+	window_scrollsize_set_registers(width, height);
 }
 
 /**
@@ -341,10 +350,10 @@ static void window_ride_list_scrollgetsize()
 static void window_ride_list_scrollmousedown()
 {
 	int index;
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	index = y / 10;
 	if (index >= w->no_list_items)
@@ -361,10 +370,10 @@ static void window_ride_list_scrollmousedown()
 static void window_ride_list_scrollmouseover()
 {
 	int index;
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	index = y / 10;
 	if (index >= w->no_list_items)
@@ -391,8 +400,10 @@ static void window_ride_list_invalidate()
 {
 	int i;
 	rct_window *w;
+	rct_ride *ride;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	window_ride_list_widgets[WIDX_CURRENT_INFORMATION_TYPE].image = STR_STATUS + _window_ride_list_information_type;
 
@@ -414,6 +425,38 @@ static void window_ride_list_invalidate()
 	w->widgets[WIDX_LIST].bottom = w->height - 4;
 	w->widgets[WIDX_OPEN_CLOSE_ALL].right = w->width - 2;
 	w->widgets[WIDX_OPEN_CLOSE_ALL].left = w->width - 25;
+	w->widgets[WIDX_CLOSE_LIGHT].right = w->width - 7;
+	w->widgets[WIDX_CLOSE_LIGHT].left = w->width - 20;
+	w->widgets[WIDX_OPEN_LIGHT].right = w->width - 7;
+	w->widgets[WIDX_OPEN_LIGHT].left = w->width - 20;
+
+	if (theme_get_preset()->features.rct1_ride_lights) {
+		w->widgets[WIDX_OPEN_CLOSE_ALL].type = WWT_EMPTY;
+		w->widgets[WIDX_CLOSE_LIGHT].type = WWT_IMGBTN;
+		w->widgets[WIDX_OPEN_LIGHT].type = WWT_IMGBTN;
+		
+		sint8 allClosed = -1;
+		sint8 allOpen = -1;
+		FOR_ALL_RIDES(i, ride) {
+			if (w->page != gRideClassifications[ride->type])
+				continue;
+			if (ride->status == RIDE_STATUS_OPEN) {
+				if (allOpen == -1) allOpen = true;
+				allClosed = false;
+			}
+			else {
+				if (allClosed == -1) allClosed = true;
+				allOpen = false;
+			}
+		}
+		w->widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (allClosed == 1) * 2 + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
+		w->widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + (allOpen == 1) * 2 + widget_is_pressed(w, WIDX_OPEN_LIGHT);
+	}
+	else {
+		w->widgets[WIDX_OPEN_CLOSE_ALL].type = WWT_FLATBTN;
+		w->widgets[WIDX_CLOSE_LIGHT].type = WWT_EMPTY;
+		w->widgets[WIDX_OPEN_LIGHT].type = WWT_EMPTY;
+	}
 }
 
 /**
@@ -471,16 +514,16 @@ static void window_ride_list_scrollpaint()
 			break;
 		case INFORMATION_TYPE_POPULARITY:
 			formatSecondary = STR_POPULARITY_UNKNOWN_LABEL;
-			if ((ride->var_158 & 0xFF) != 255) {
+			if (ride->popularity != 255) {
 				formatSecondary = STR_POPULARITY_LABEL;
-				RCT2_GLOBAL(0x013CE952 + 2, uint16) = (ride->var_158 & 0xFF) * 4;
+				RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->popularity * 4;
 			}
 			break;
 		case INFORMATION_TYPE_SATISFACTION:
 			formatSecondary = STR_SATISFACTION_UNKNOWN_LABEL;
-			if ((ride->var_14A & 0xFF) != 255) {
+			if (ride->satisfaction != 255) {
 				formatSecondary = STR_SATISFACTION_LABEL;
-				RCT2_GLOBAL(0x013CE952 + 2, uint16) = (ride->var_14A & 0xFF) * 5;
+				RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->satisfaction * 5;
 			}
 			break;
 		case INFORMATION_TYPE_PROFIT:
@@ -507,13 +550,13 @@ static void window_ride_list_scrollpaint()
 		case INFORMATION_TYPE_RELIABILITY:
 			// edx = RCT2_GLOBAL(0x009ACFA4 + (ride->var_001 * 4), uint32);
 
-			RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->var_196 >> 8;
+			RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->reliability >> 8;
 			formatSecondary = STR_RELIABILITY_LABEL;
 			break;
 		case INFORMATION_TYPE_DOWN_TIME:
 			// edx = RCT2_GLOBAL(0x009ACFA4 + (ride->var_001 * 4), uint32);
 
-			RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->var_199;
+			RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->downtime;
 			formatSecondary = STR_DOWN_TIME_LABEL;
 			break;
 		case INFORMATION_TYPE_GUESTS_FAVOURITE:
@@ -579,8 +622,8 @@ static void window_ride_list_refresh_list(rct_window *w)
 			continue;
 
 		countA++;
-		if (ride->var_14D & 8) {
-			ride->var_14D &= ~8;
+		if (ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_LIST) {
+			ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_LIST;
 			countB++;
 		}
 	}
@@ -616,7 +659,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 		case INFORMATION_TYPE_POPULARITY:
 			while (--current_list_position >= 0) {
 				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
-				if ((ride->var_158 & 0xFF) * 4 <= (otherRide->var_158 & 0xFF) * 4)
+				if (ride->popularity * 4 <= otherRide->popularity * 4)
 					break;
 
 				window_bubble_list_item(w, current_list_position);
@@ -625,7 +668,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 		case INFORMATION_TYPE_SATISFACTION:
 			while (--current_list_position >= 0) {
 				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
-				if ((ride->var_14A & 0xFF) * 5 <= (otherRide->var_14A & 0xFF) * 5)
+				if (ride->satisfaction * 5 <= otherRide->satisfaction * 5)
 					break;
 
 				window_bubble_list_item(w, current_list_position);
@@ -661,7 +704,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 		case INFORMATION_TYPE_RELIABILITY:
 			while (--current_list_position >= 0) {
 				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
-				if (ride->var_196 >> 8 <= otherRide->var_196 >> 8)
+				if (ride->reliability >> 8 <= otherRide->reliability >> 8)
 					break;
 
 				window_bubble_list_item(w, current_list_position);
@@ -670,7 +713,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 		case INFORMATION_TYPE_DOWN_TIME:
 			while (--current_list_position >= 0) {
 				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
-				if (ride->var_199 <= otherRide->var_199)
+				if (ride->downtime <= otherRide->downtime)
 					break;
 
 				window_bubble_list_item(w, current_list_position);
@@ -707,7 +750,7 @@ static void window_ride_list_close_all(rct_window *w)
 		RCT2_GLOBAL(0x013CE952 + 6, uint16) = w->scrolls[0].v_top;
 		RCT2_GLOBAL(0x013CE952 + 8, uint32) = w->scrolls[0].v_bottom;
 
-		game_do_command(0, 1, 0, i, GAME_COMMAND_SET_RIDE_OPEN, 0, 0);
+		ride_set_status(i, RIDE_STATUS_CLOSED);
 	}
 }
 
@@ -724,6 +767,6 @@ static void window_ride_list_open_all(rct_window *w)
 		RCT2_GLOBAL(0x013CE952 + 6, uint16) = w->scrolls[0].v_top;
 		RCT2_GLOBAL(0x013CE952 + 8, uint32) = w->scrolls[0].v_bottom;
 
-		game_do_command(0, 1, 0, (1 << 8) | i, GAME_COMMAND_SET_RIDE_OPEN, 0, 0);
+		ride_set_status(i, RIDE_STATUS_OPEN);
 	}
 }

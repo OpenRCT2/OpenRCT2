@@ -46,10 +46,11 @@ enum {
 
 enum {
 	VIEWPORT_INTERACTION_ITEM_NONE,
-	
-	VIEWPORT_INTERACTION_ITEM_SPRITE = 2,
+	VIEWPORT_INTERACTION_ITEM_TERRAIN,
+	VIEWPORT_INTERACTION_ITEM_SPRITE,
 	VIEWPORT_INTERACTION_ITEM_RIDE,
-	VIEWPORT_INTERACTION_ITEM_SCENERY = 5,
+	VIEWPORT_INTERACTION_ITEM_WATER,
+	VIEWPORT_INTERACTION_ITEM_SCENERY,
 	VIEWPORT_INTERACTION_ITEM_FOOTPATH,
 	VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM,
 	VIEWPORT_INTERACTION_ITEM_PARK,
@@ -57,6 +58,21 @@ enum {
 	VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY,
 	VIEWPORT_INTERACTION_ITEM_BANNER = 12,
 
+};
+
+enum {
+	VIEWPORT_INTERACTION_MASK_NONE = 0,
+	VIEWPORT_INTERACTION_MASK_TERRAIN = ~(1 << (VIEWPORT_INTERACTION_ITEM_TERRAIN - 1)),
+	VIEWPORT_INTERACTION_MASK_SPRITE = ~(1 << (VIEWPORT_INTERACTION_ITEM_SPRITE - 1)),
+	VIEWPORT_INTERACTION_MASK_RIDE = ~(1 << (VIEWPORT_INTERACTION_ITEM_RIDE - 1)),
+	VIEWPORT_INTERACTION_MASK_WATER = ~(1 << (VIEWPORT_INTERACTION_ITEM_WATER - 1)),
+	VIEWPORT_INTERACTION_MASK_SCENERY = ~(1 << (VIEWPORT_INTERACTION_ITEM_SCENERY - 1)),
+	VIEWPORT_INTERACTION_MASK_FOOTPATH = ~(1 << (VIEWPORT_INTERACTION_ITEM_FOOTPATH - 1)),
+	VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM = ~(1 << (VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM - 1)),
+	VIEWPORT_INTERACTION_MASK_PARK = ~(1 << (VIEWPORT_INTERACTION_ITEM_PARK - 1)),
+	VIEWPORT_INTERACTION_MASK_WALL = ~(1 << (VIEWPORT_INTERACTION_ITEM_WALL - 1)),
+	VIEWPORT_INTERACTION_MASK_LARGE_SCENERY = ~(1 << (VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY - 1)),
+	VIEWPORT_INTERACTION_MASK_BANNER = ~(1 << (VIEWPORT_INTERACTION_ITEM_BANNER - 2)), // Note the -2 for BANNER
 };
 
 typedef struct {
@@ -80,10 +96,14 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
 void viewport_update_pointers();
 void viewport_update_position(rct_window *window);
 void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, int top, int right, int bottom);
+void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom);
 
-void sub_689174(sint16* x, sint16* y, sint16 *z, uint8 curr_rotation);
+void sub_689174(sint16* x, sint16* y, sint16 *z);
 
-void screen_pos_to_map_pos(short *x, short *y);
+rct_xy16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, uint16 y);
+rct_xy16 viewport_coord_to_map_coord(int x, int y, int z);
+void sub_688972(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **viewport);
+void screen_pos_to_map_pos(sint16 *x, sint16 *y, int *direction);
 
 void show_gridlines();
 void hide_gridlines();
@@ -93,7 +113,7 @@ void show_construction_rights();
 void hide_construction_rights();
 void viewport_set_visibility(uint8 mode);
 
-void get_map_coordinates_from_pos(int screenX, int screenY, int flags, int *x, int *y, int *z, rct_map_element **mapElement);
+void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x, sint16 *y, int *interactionType, rct_map_element **mapElement, rct_viewport **viewport);
 
 int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *info);
 int viewport_interaction_left_over(int x, int y);
@@ -101,5 +121,6 @@ int viewport_interaction_left_click(int x, int y);
 int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info *info);
 int viewport_interaction_right_over(int x, int y);
 int viewport_interaction_right_click(int x, int y);
+void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rct_map_element **mapElement);
 
 #endif

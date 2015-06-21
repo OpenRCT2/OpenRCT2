@@ -43,6 +43,12 @@ typedef unsigned short uint16;
 typedef unsigned long uint32;
 typedef unsigned long long uint64;
 
+typedef char utf8;
+typedef utf8* utf8string;
+typedef const utf8* const_utf8string;
+typedef wchar_t utf16;
+typedef utf16* utf16string;
+
 #define rol8(x, shift)		(((uint8)(x) << (shift)) | ((uint8)(x) >> (8 - (shift))))
 #define ror8(x, shift)		(((uint8)(x) >> (shift)) | ((uint8)(x) << (8 - (shift))))
 #define rol16(x, shift)		(((uint16)(x) << (shift)) | ((uint16)(x) >> (16 - (shift))))
@@ -62,22 +68,22 @@ typedef unsigned long long uint64;
 
 #define countof(x)			((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
 
-#ifdef _MSC_VER
-#define RCT2_ERROR(format,...) fprintf(stderr, "ERROR %s:%s():%d: " format "\n", __FILE__, __FUNCTION__, __LINE__, __VA_ARGS__);
-#else
-#define RCT2_ERROR(format,...) fprintf(stderr, "ERROR %s:%s():%d: " format "\n", __FILE__, __func__, __LINE__, ## __VA_ARGS__);
-#endif
-
 #ifndef _MSC_VER
 // use similar struct packing as MSVC for our structs
 #pragma pack(1)
 #endif
 
 #define OPENRCT2_NAME				"OpenRCT2"
-#define OPENRCT2_VERSION			"0.0.1"
+#define OPENRCT2_VERSION			"0.0.2"
 #define OPENRCT2_ARCHITECTURE		"x86"
 #define OPENRCT2_PLATFORM			"Windows"
 #define OPENRCT2_TIMESTAMP			__DATE__ " " __TIME__
+
+// The following constants are for automated build servers
+#define OPENRCT2_BUILD_SERVER		""
+#define OPENRCT2_BRANCH				""
+#define OPENRCT2_COMMIT_SHA1		""
+#define OPENRCT2_COMMIT_SHA1_SHORT	""
 
 // Represent fixed point numbers. dp = decimal point
 typedef sint16 fixed16_1dp;
@@ -98,12 +104,28 @@ typedef fixed32_1dp money32;
 // Construct a money value in the format MONEY(10,70) to represent 10.70. Fractional part must be two digits.
 #define MONEY(whole, fraction)			((whole) * 10 + ((fraction) / 10))
 
+#define MONEY_FREE						MONEY(0,00)
 #define MONEY32_UNDEFINED				((money32)0x80000000)
+#ifndef MAX_PATH
+#define MAX_PATH 260
+#endif
 
 typedef void (EMPTY_ARGS_VOID_POINTER)();
 typedef unsigned short rct_string_id;
 
+typedef struct {
+	uint32 installLevel;
+	char title[260];
+	char path[260];
+	uint32 var_20C;
+	uint8 pad_210[256];
+	char expansionPackNames[16][128];
+	uint32 activeExpansionPacks;		//0xB10
+} rct2_install_info;
+
 enum {
+	// Although this is labeled a flag it actually means when
+	// zero the screen is in playing mode.
 	SCREEN_FLAGS_PLAYING = 0,
 	SCREEN_FLAGS_TITLE_DEMO = 1,
 	SCREEN_FLAGS_SCENARIO_EDITOR = 2,
@@ -176,6 +198,7 @@ enum {
 	PATH_ID_CSS44,
 	PATH_ID_CSS45,
 	PATH_ID_CSS46,
+	PATH_ID_CSS50,
 	PATH_ID_END
 };
 
@@ -243,7 +266,8 @@ static const char * const file_paths[] =
 	"Data\\CSS43.DAT",
 	"Data\\CSS44.DAT",
 	"Data\\CSS45.DAT",
-	"Data\\CSS46.DAT"
+	"Data\\CSS46.DAT",
+	"Data\\CSS50.DAT"
 };
 
 // Files to check (rct2 @ 0x0097FB5A)

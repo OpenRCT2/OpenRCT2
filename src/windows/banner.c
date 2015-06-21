@@ -31,6 +31,7 @@
 #include "error.h"
 #include "dropdown.h"
 #include "../drawing/drawing.h"
+#include "../interface/themes.h"
 
 #define WW 113
 #define WH 96
@@ -117,7 +118,7 @@ void window_banner_open(rct_windownumber number)
 	if (w != NULL)
 		return;
 
-	w = window_create_auto_pos(WW, WH, (uint32*)window_banner_events, WC_BANNER, 0);
+	w = window_create_auto_pos(WW, WH, (uint32*)window_banner_events, WC_BANNER, WF_2);
 	w->widgets = window_banner_widgets;
 	w->enabled_widgets =
 		(1 << WIDX_CLOSE) |
@@ -130,19 +131,18 @@ void window_banner_open(rct_windownumber number)
 
 	w->number = number;
 	window_init_scroll_widgets(w);
-	w->colours[0] = 24;
-	w->colours[1] = 24;
-	w->colours[2] = 24;
 
 	int view_x = gBanners[w->number].x << 5;
 	int view_y = gBanners[w->number].y << 5;
-	int ebp = ((view_y << 8) | view_x) >> 5;
 	
-	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(ebp);
-
-	while(1){
-		if (((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_BANNER) &&
-			(map_element->properties.banner.index == w->number)) break;
+	rct_map_element* map_element = map_get_first_element_at(view_x / 32, view_y / 32);
+	while(1) {
+		if (
+			(map_element_get_type(map_element) == MAP_ELEMENT_TYPE_BANNER) &&
+			(map_element->properties.banner.index == w->number)
+		) {
+			break;
+		}
 
 		map_element++;
 	}
@@ -170,7 +170,6 @@ void window_banner_open(rct_windownumber number)
 	);
 
 	w->viewport->flags = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES) ? VIEWPORT_FLAG_GRIDLINES : 0;
-	w->flags |= WF_2;
 	window_invalidate(w);
 }
 
@@ -186,10 +185,10 @@ static void window_banner_mouseup()
 	int x = banner->x << 5;
 	int y = banner->y << 5;
 
-	rct_map_element* map_element = TILE_MAP_ELEMENT_POINTER(((y << 8) | x) >> 5);
+	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 
 	while (1){
-		if (((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_BANNER) &&
+		if ((map_element_get_type(map_element) == MAP_ELEMENT_TYPE_BANNER) &&
 			(map_element->properties.banner.index == w->number)) break;
 		map_element++;
 	}
@@ -199,13 +198,13 @@ static void window_banner_mouseup()
 		window_close(w);
 		break;
 	case WIDX_BANNER_DEMOLISH:
-		game_do_command(x, 1, y, map_element->base_height | (map_element->properties.banner.position << 8), GAME_COMMAND_51, 0, 0);
+		game_do_command(x, 1, y, map_element->base_height | (map_element->properties.banner.position << 8), GAME_COMMAND_REMOVE_BANNER, 0, 0);
 		break;
 	case WIDX_BANNER_TEXT:
-		window_text_input_open(w, WIDX_BANNER_TEXT, 2982, 2983, gBanners[w->number].string_idx, 0);
+		window_text_input_open(w, WIDX_BANNER_TEXT, 2982, 2983, gBanners[w->number].string_idx, 0, 32);
 		break;
 	case WIDX_BANNER_NO_ENTRY:
-		RCT2_CALLPROC_EBPSAFE(0x006EE3C3);
+		textinput_cancel();
 		banner->flags ^= BANNER_FLAG_NO_ENTRY;
 		window_invalidate(w);
 
@@ -242,7 +241,7 @@ static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* w
 			widget->top + w->y, 
 			widget->bottom - widget->top + 1,
 			w->colours[1], 
-			0x80, 
+			DROPDOWN_FLAG_STAY_OPEN,
 			13, 
 			widget->right - widget->left - 3);
 		
@@ -285,17 +284,13 @@ static void window_banner_dropdown()
 
 		text_buffer[0] = banner->text_colour + FORMAT_COLOUR_CODE_START;
 
-		int string_id = 0, ebx = 0, ecx = 128, edx = 0, ebp = 0, esi = 0;
-		// Allocate text_buffer to a new string_id?
-		RCT2_CALLFUNC_X(0x6C421D, &string_id, &ebx, &ecx, &edx, &esi, (int*)&text_buffer, &ebp);
-
-		if (string_id){
+		rct_string_id stringId = user_string_allocate(128, text_buffer);
+		if (stringId != 0) {
 			rct_string_id prev_string_id = banner->string_idx;
-			banner->string_idx = string_id;
+			banner->string_idx = stringId;
 			user_string_free(prev_string_id);
 			window_invalidate(w);
-		}
-		else{
+		} else {
 			window_error_open(2984, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
 		}
 		break;
@@ -322,16 +317,13 @@ static void window_banner_textinput()
 		text_buffer[0] = banner->text_colour + FORMAT_COLOUR_CODE_START;
 		strncpy(text_buffer + 1, text, 32);
 
-		int string_id = 0, ebx = 0, ecx = 128, edx = 0, ebp = 0, esi = 0;
-		RCT2_CALLFUNC_X(0x6C421D, &string_id, &ebx, &ecx, &edx, &esi, (int*)&text_buffer, &ebp);
-
-		if (string_id){
+		rct_string_id stringId = user_string_allocate(128, text_buffer);
+		if (stringId) {
 			rct_string_id prev_string_id = banner->string_idx;
-			banner->string_idx = string_id;
+			banner->string_idx = stringId;
 			user_string_free(prev_string_id);
 			window_invalidate(w);
-		}
-		else{
+		} else {
 			window_error_open(2984, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
 		}
 	}
@@ -343,6 +335,7 @@ static void window_banner_invalidate()
 	rct_window* w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	rct_banner* banner = &gBanners[w->number];
 	rct_widget* colour_btn = &window_banner_widgets[WIDX_MAIN_COLOR];

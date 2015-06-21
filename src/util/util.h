@@ -27,9 +27,18 @@ int squaredmetres_to_squaredfeet(int squaredMetres);
 int metres_to_feet(int metres);
 int mph_to_kmph(int mph);
 
-void path_set_extension(char *path, const char *extension);
+const char *path_get_filename(const char *path);
+const char *path_get_extension(const char *path);
+void path_set_extension(char *path, const char *newExtension);
+void path_remove_extension(char *path);
 long fsize(FILE *fp);
+bool readentirefile(const char *path, void **outBuffer, long *outLength);
 
 int bitscanforward(int source);
+bool strequals(const char *a, const char *b, int length, bool caseInsensitive);
+int strcicmp(char const *a, char const *b);
+
+bool utf8_is_bom(const char *str);
+bool str_is_null_or_empty(const char *str);
 
 #endif

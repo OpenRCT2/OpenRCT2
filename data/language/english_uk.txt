@@ -3,97 +3,97 @@
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
-STR_0002    :Ride
-STR_0003    :Ride
+STR_0002    :Spiral Roller Coaster
+STR_0003    :Stand-up Roller Coaster
 STR_0004    :Suspended Swinging Coaster
-STR_0005    :Ride
+STR_0005    :Inverted Roller Coaster
 STR_0006    :Junior Roller Coaster
 STR_0007    :Miniature Railway
 STR_0008    :Monorail
 STR_0009    :Mini Suspended Coaster
-STR_0010    :Ride
-STR_0011    :Ride
-STR_0012    :Ride
+STR_0010    :Boat Ride
+STR_0011    :Wooden Wild Mouse
+STR_0012    :Steeplechase
 STR_0013    :Car Ride
-STR_0014    :Ride
-STR_0015    :Ride
-STR_0016    :Ride
+STR_0014    :Launched Freefall
+STR_0015    :Bobsleigh Coaster
+STR_0016    :Observation Tower
 STR_0017    :Looping Roller Coaster
-STR_0018    :Ride
-STR_0019    :Ride
+STR_0018    :Dinghy Slide
+STR_0019    :Mine Train Coaster
 STR_0020    :Chairlift
-STR_0021    :Ride
-STR_0022    :Ride
-STR_0023    :Ride
-STR_0024    :Ride
-STR_0025    :Ride
-STR_0026    :Ride
-STR_0027    :Ride
-STR_0028    :Ride
-STR_0029    :Ride
-STR_0030    :Stall
-STR_0031    :Stall
-STR_0032    :Stall
-STR_0033    :Stall
-STR_0034    :Stall
-STR_0035    :Ride
-STR_0036    :Stall
-STR_0037    :Kiosk
-STR_0038    :Restroom
-STR_0039    :Ride
-STR_0040    :Ride
-STR_0041    :Ride
-STR_0042    :Ride
-STR_0043    :Ride
+STR_0021    :Corkscrew Roller Coaster
+STR_0022    :Maze
+STR_0023    :Spiral Slide
+STR_0024    :Go Karts
+STR_0025    :Log Flume
+STR_0026    :River Rapids
+STR_0027    :Dodgems
+STR_0028    :Pirate Ship
+STR_0029    :Swinging Inverter Ship
+STR_0030    :Food Stall
+STR_0031    :Unknown Stall (1D)
+STR_0032    :Drink Stall
+STR_0033    :Unknown Stall (1F)
+STR_0034    :Shop
+STR_0035    :Merry-Go-Round
+STR_0036    :Unknown Stall (22)
+STR_0037    :Information Kiosk
+STR_0038    :Toilets
+STR_0039    :Ferris Wheel
+STR_0040    :Motion Simulator
+STR_0041    :3D Cinema
+STR_0042    :Top Spin
+STR_0043    :Space Rings
 STR_0044    :Reverse Freefall Coaster
 STR_0045    :Lift
-STR_0046    :Ride
-STR_0047    :Ride
-STR_0048    :Ride
-STR_0049    :Ride
-STR_0050    :Ride
-STR_0051    :Ride
-STR_0052    :Ride
-STR_0053    :Hyper-Twister Roller Coaster
+STR_0046    :Vertical Drop Roller Coaster
+STR_0047    :Cash Machine
+STR_0048    :Twist
+STR_0049    :Haunted House
+STR_0050    :First Aid Room
+STR_0051    :Circus Show
+STR_0052    :Ghost Train
+STR_0053    :Twister Roller Coaster
 STR_0054    :Wooden Roller Coaster
 STR_0055    :Side-Friction Roller Coaster
 STR_0056    :Wild Mouse
 STR_0057    :Multi-Dimension Roller Coaster
-STR_0058    :Ride
-STR_0059    :Aerial Inverted Roller Coaster
-STR_0060    :Ride
-STR_0061    :Ride
-STR_0062    :Ride
-STR_0063    :Ride
-STR_0064    :Ride
+STR_0058    :Unknown Ride (38)
+STR_0059    :Flying Roller Coaster
+STR_0060    :Unknown Ride (3A)
+STR_0061    :Virginia Reel
+STR_0062    :Splash Boats
+STR_0063    :Mini Helicopters
+STR_0064    :Lay-down Roller Coaster
 STR_0065    :Suspended Monorail
-STR_0066    :Ride
-STR_0067    :Ride
+STR_0066    :Unknown Ride (40)
+STR_0067    :Reverser Roller Coaster
 STR_0068    :Heartline Twister Coaster
-STR_0069    :Ride
-STR_0070    :Ride
-STR_0071    :Ride
-STR_0072    :Ride
-STR_0073    :Ride
-STR_0074    :Ride
-STR_0075    :Ride
+STR_0069    :Mini Golf
+STR_0070    :Giga Coaster
+STR_0071    :Roto-Drop
+STR_0072    :Flying Saucers
+STR_0073    :Crooked House
+STR_0074    :Monorail Cycles
+STR_0075    :Compact Inverted Coaster
 STR_0076    :Water Coaster
-STR_0077    :Ride
-STR_0078    :Ride
-STR_0079    :Ride
-STR_0080    :Ride
-STR_0081    :Ride
-STR_0082    :Ride
-STR_0083    :Ride
-STR_0084    :Ride
-STR_0085    :Ride
-STR_0086    :Ride
-STR_0087    :Ride
-STR_0088    :Ride
+STR_0077    :Air Powered Vertical Coaster
+STR_0078    :Inverted Hairpin Coaster
+STR_0079    :Magic Carpet
+STR_0080    :Submarine Ride
+STR_0081    :River Rafts
+STR_0082    :Unknown Ride (50)
+STR_0083    :Enterprise
+STR_0084    :Unknown Ride (52)
+STR_0085    :Unknown Ride (53)
+STR_0086    :Unknown Ride (54)
+STR_0087    :Unknown Ride (55)
+STR_0088    :Inverted Impulse Coaster
 STR_0089    :Mini Roller Coaster
-STR_0090    :Ride
-STR_0091    :Ride
-STR_0092    :Ride
+STR_0090    :Mine Ride
+STR_0091    :Unknown Ride (59)
+STR_0092    :LIM Launched Roller Coaster
 STR_0093    :
 STR_0094    :
 STR_0095    :
@@ -977,7 +977,7 @@ STR_0972    :Cancel
 STR_0973    :OK
 STR_0974    :Rides
 STR_0975    :Shops and Stalls
-STR_0976    :Restrooms and Information Kiosks
+STR_0976    :Toilets and Information Kiosks
 STR_0977    :New Transport Rides
 STR_0978    :New Gentle Rides
 STR_0979    :New Roller Coasters
@@ -1065,7 +1065,7 @@ STR_1060    :Invalid ride/attraction name
 STR_1061    :Normal mode
 STR_1062    :Continuous circuit mode
 STR_1063    :Reverse-Incline launched shuttle mode
-STR_1064    :Powered launch
+STR_1064    :Powered launch (passing station)
 STR_1065    :Shuttle mode
 STR_1066    :Boat hire mode
 STR_1067    :Upward launch
@@ -1097,7 +1097,7 @@ STR_1092    :Downward launch
 STR_1093    :Crooked house mode
 STR_1094    :Freefall drop mode
 STR_1095    :Continuous circuit block sectioned mode
-STR_1096    :Powered launch
+STR_1096    :Powered launch (without passing station)
 STR_1097    :Powered launch block sectioned mode
 STR_1098    :Moving to end of {POP16}{STRINGID}
 STR_1099    :Waiting for passengers at {POP16}{STRINGID}
@@ -1526,9 +1526,9 @@ STR_1521    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really
 STR_1522    :{SMALLFONT}{OPENQUOTES}This umbrella from {STRINGID} is really good value{ENDQUOTES}
 STR_1523    :{SMALLFONT}{OPENQUOTES}This drink from {STRINGID} is really good value{ENDQUOTES}
 STR_1524    :{SMALLFONT}{OPENQUOTES}This burger from {STRINGID} is really good value{ENDQUOTES}
-STR_1525    :{SMALLFONT}{OPENQUOTES}These fries from {STRINGID} are really good value{ENDQUOTES}
+STR_1525    :{SMALLFONT}{OPENQUOTES}These chips from {STRINGID} are really good value{ENDQUOTES}
 STR_1526    :{SMALLFONT}{OPENQUOTES}This ice cream from {STRINGID} is really good value{ENDQUOTES}
-STR_1527    :{SMALLFONT}{OPENQUOTES}This cotton candy from {STRINGID} is really good value{ENDQUOTES}
+STR_1527    :{SMALLFONT}{OPENQUOTES}This candyfloss from {STRINGID} is really good value{ENDQUOTES}
 STR_1528    :
 STR_1529    :
 STR_1530    :
@@ -1538,7 +1538,7 @@ STR_1533    :{SMALLFONT}{OPENQUOTES}This popcorn from {STRINGID} is really good 
 STR_1534    :{SMALLFONT}{OPENQUOTES}This hot dog from {STRINGID} is really good value{ENDQUOTES}
 STR_1535    :{SMALLFONT}{OPENQUOTES}This tentacle from {STRINGID} is really good value{ENDQUOTES}
 STR_1536    :{SMALLFONT}{OPENQUOTES}This hat from {STRINGID} is really good value{ENDQUOTES}
-STR_1537    :{SMALLFONT}{OPENQUOTES}This candy apple from {STRINGID} is really good value{ENDQUOTES}
+STR_1537    :{SMALLFONT}{OPENQUOTES}This toffee apple from {STRINGID} is really good value{ENDQUOTES}
 STR_1538    :{SMALLFONT}{OPENQUOTES}This T-shirt from {STRINGID} is really good value{ENDQUOTES}
 STR_1539    :{SMALLFONT}{OPENQUOTES}This doughnut from {STRINGID} is really good value{ENDQUOTES}
 STR_1540    :{SMALLFONT}{OPENQUOTES}This coffee from {STRINGID} is really good value{ENDQUOTES}
@@ -1560,9 +1560,9 @@ STR_1555    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride phot
 STR_1556    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an umbrella from {STRINGID}{ENDQUOTES}
 STR_1557    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a drink from {STRINGID}{ENDQUOTES}
 STR_1558    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a burger from {STRINGID}{ENDQUOTES}
-STR_1559    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fries from {STRINGID}{ENDQUOTES}
+STR_1559    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for chips from {STRINGID}{ENDQUOTES}
 STR_1560    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an ice cream from {STRINGID}{ENDQUOTES}
-STR_1561    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for cotton candy from {STRINGID}{ENDQUOTES}
+STR_1561    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for candyfloss from {STRINGID}{ENDQUOTES}
 STR_1562    :
 STR_1563    :
 STR_1564    :
@@ -1572,7 +1572,7 @@ STR_1567    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for popcorn from {S
 STR_1568    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a hot dog from {STRINGID}{ENDQUOTES}
 STR_1569    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for tentacle from {STRINGID}{ENDQUOTES}
 STR_1570    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a hat from {STRINGID}{ENDQUOTES}
-STR_1571    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a candy apple from {STRINGID}{ENDQUOTES}
+STR_1571    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a toffee apple from {STRINGID}{ENDQUOTES}
 STR_1572    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a T-shirt from {STRINGID}{ENDQUOTES}
 STR_1573    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a doughnut from {STRINGID}{ENDQUOTES}
 STR_1574    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for coffee from {STRINGID}{ENDQUOTES}
@@ -1778,7 +1778,7 @@ STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
 STR_1775    :Off
 STR_1776    :On
-STR_1777    :{WINDOW_COLOUR_2}Music:
+STR_1777    :{WINDOW_COLOUR_2}Music
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigre costume
@@ -1842,7 +1842,7 @@ STR_1837    :Satisfaction: Unknown
 STR_1838    :Satisfaction: {COMMA16}%
 STR_1839    :Reliability: {COMMA16}%
 STR_1840    :Down-time: {COMMA16}%
-STR_1841    :Profit: {CURRENCY} per hour
+STR_1841    :Profit: {CURRENCY2DP} per hour
 STR_1842    :Favourite of: {COMMA16} guest
 STR_1843    :Favourite of: {COMMA16} guests
 STR_1844    :{SMALLFONT}{BLACK}Select information type to show in ride/attraction list
@@ -1859,7 +1859,7 @@ STR_1854    :{WINDOW_COLOUR_2}Built: {BLACK}Last Year
 STR_1855    :{WINDOW_COLOUR_2}Built: {BLACK}{COMMA16} Years Ago
 STR_1856    :{WINDOW_COLOUR_2}Profit per item sold: {BLACK}{CURRENCY2DP}
 STR_1857    :{WINDOW_COLOUR_2}Loss per item sold: {BLACK}{CURRENCY2DP}
-STR_1858    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY} per month
+STR_1858    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY2DP} per month
 STR_1859    :Handymen
 STR_1860    :Mechanics
 STR_1861    :Security Guards
@@ -1874,8 +1874,8 @@ STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
 STR_1870    :{SMALLFONT}{BLACK}Number of complete rotations
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1872    :{COMMA16}
-STR_1873    :{WINDOW_COLOUR_2}Income: {BLACK}{CURRENCY} per hour
-STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY} per hour
+STR_1873    :{WINDOW_COLOUR_2}Income: {BLACK}{CURRENCY2DP} per hour
+STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY2DP} per hour
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect Rides
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix Rides
@@ -1968,9 +1968,9 @@ STR_1963    :{WINDOW_COLOUR_2}On-Ride Photo price:
 STR_1964    :{WINDOW_COLOUR_2}Umbrella price:
 STR_1965    :{WINDOW_COLOUR_2}Drink price:
 STR_1966    :{WINDOW_COLOUR_2}Burger price:
-STR_1967    :{WINDOW_COLOUR_2}Fries price:
+STR_1967    :{WINDOW_COLOUR_2}Chips price:
 STR_1968    :{WINDOW_COLOUR_2}Ice Cream price:
-STR_1969    :{WINDOW_COLOUR_2}Cotton Candy price:
+STR_1969    :{WINDOW_COLOUR_2}Candyfloss price:
 STR_1970    :{WINDOW_COLOUR_2}
 STR_1971    :{WINDOW_COLOUR_2}
 STR_1972    :{WINDOW_COLOUR_2}
@@ -1980,7 +1980,7 @@ STR_1975    :{WINDOW_COLOUR_2}Popcorn price:
 STR_1976    :{WINDOW_COLOUR_2}Hot Dog price:
 STR_1977    :{WINDOW_COLOUR_2}Tentacle price:
 STR_1978    :{WINDOW_COLOUR_2}Hat price:
-STR_1979    :{WINDOW_COLOUR_2}Candy Apple price:
+STR_1979    :{WINDOW_COLOUR_2}Toffee Apple price:
 STR_1980    :{WINDOW_COLOUR_2}T-Shirt price:
 STR_1981    :{WINDOW_COLOUR_2}Doughnut price:
 STR_1982    :{WINDOW_COLOUR_2}Coffee price:
@@ -1996,9 +1996,9 @@ STR_1991    :On-Ride Photo
 STR_1992    :Umbrella
 STR_1993    :Drink
 STR_1994    :Burger
-STR_1995    :Fries
+STR_1995    :Chips
 STR_1996    :Ice Cream
-STR_1997    :Cotton Candy
+STR_1997    :Candyfloss
 STR_1998    :Empty Can
 STR_1999    :Rubbish
 STR_2000    :Empty Burger Box
@@ -2008,7 +2008,7 @@ STR_2003    :Popcorn
 STR_2004    :Hot Dog
 STR_2005    :Tentacle
 STR_2006    :Hat
-STR_2007    :Candy Apple
+STR_2007    :Toffee Apple
 STR_2008    :T-Shirt
 STR_2009    :Doughnut
 STR_2010    :Coffee
@@ -2024,9 +2024,9 @@ STR_2019    :On-Ride Photos
 STR_2020    :Umbrellas
 STR_2021    :Drinks
 STR_2022    :Burgers
-STR_2023    :Fries
+STR_2023    :Chips
 STR_2024    :Ice Creams
-STR_2025    :Cotton Candy
+STR_2025    :Candyfloss
 STR_2026    :Empty Cans
 STR_2027    :Rubbish
 STR_2028    :Empty Burger Boxes
@@ -2036,7 +2036,7 @@ STR_2031    :Popcorn
 STR_2032    :Hot Dogs
 STR_2033    :Tentacles
 STR_2034    :Hats
-STR_2035    :Candy Apples
+STR_2035    :Toffee Apples
 STR_2036    :T-Shirts
 STR_2037    :Doughnuts
 STR_2038    :Coffees
@@ -2052,9 +2052,9 @@ STR_2047    :an On-Ride Photo
 STR_2048    :an Umbrella
 STR_2049    :a Drink
 STR_2050    :a Burger
-STR_2051    :some Fries
+STR_2051    :some Chips
 STR_2052    :an Ice Cream
-STR_2053    :some Cotton Candy
+STR_2053    :some Candyfloss
 STR_2054    :an Empty Can
 STR_2055    :some Rubbish
 STR_2056    :an Empty Burger Box
@@ -2064,7 +2064,7 @@ STR_2059    :some Popcorn
 STR_2060    :a Hot Dog
 STR_2061    :a Tentacle
 STR_2062    :a Hat
-STR_2063    :a Candy Apple
+STR_2063    :a Toffee Apple
 STR_2064    :a T-Shirt
 STR_2065    :a Doughnut
 STR_2066    :a Coffee
@@ -2080,9 +2080,9 @@ STR_2075    :On-Ride Photo of {STRINGID}
 STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Umbrella
 STR_2077    :Drink
 STR_2078    :Burger
-STR_2079    :Fries
+STR_2079    :Chips
 STR_2080    :Ice Cream
-STR_2081    :Cotton Candy
+STR_2081    :Candyfloss
 STR_2082    :Empty Can
 STR_2083    :Rubbish
 STR_2084    :Empty Burger Box
@@ -2092,7 +2092,7 @@ STR_2087    :Popcorn
 STR_2088    :Hot Dog
 STR_2089    :Tentacle
 STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Hat
-STR_2091    :Candy Apple
+STR_2091    :Toffee Apple
 STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES} T-Shirt
 STR_2093    :Doughnut
 STR_2094    :Coffee
@@ -2342,7 +2342,7 @@ STR_2337    :Deutschmark (DM)
 STR_2338    :Yen ({YEN})
 STR_2339    :Peseta (Pts)
 STR_2340    :Lira (L)
-STR_2341    :Guilders (Dfl.)
+STR_2341    :Guilders (fl.)
 STR_2342    :Krona (kr)
 STR_2343    :Euros ({EURO})
 STR_2344    :Imperial
@@ -2682,37 +2682,37 @@ STR_2676    :???
 STR_2677    :???
 STR_2678    :???
 STR_2679    :???
-STR_2680    :???
-STR_2681    :???
-STR_2682    :???
-STR_2683    :???
-STR_2684    :???
-STR_2685    :???
-STR_2686    :???
-STR_2687    :???
-STR_2688    :???
-STR_2689    :???
-STR_2690    :???
-STR_2691    :???
-STR_2692    :???
-STR_2693    :???
-STR_2694    :???
-STR_2695    :???
-STR_2696    :???
+STR_2680    :All research complete
+STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by 5,000
+STR_2682    :{MEDIUMFONT}{BLACK}Toggle between Free and Paid Entry
+STR_2683    :{MEDIUMFONT}{BLACK}Increases every peeps happiness to max
+STR_2684    :{MEDIUMFONT}{BLACK}Large group of peeps arrive
+STR_2685    :Simplex Noise Parameters
+STR_2686    :{WINDOW_COLOUR_2}Low:
+STR_2687    :{WINDOW_COLOUR_2}High:
+STR_2688    :{WINDOW_COLOUR_2}Base Frequency:
+STR_2689    :{WINDOW_COLOUR_2}Octaves:
+STR_2690    :Map Generation
+STR_2691    :{WINDOW_COLOUR_2}Base height:
+STR_2692    :{WINDOW_COLOUR_2}Water level:
+STR_2693    :{WINDOW_COLOUR_2}Terrain:
+STR_2694    :Generate
+STR_2695    :Random terrain
+STR_2696    :Place trees
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
-STR_2700    :???
-STR_2701    :???
-STR_2702    :???
-STR_2703    :???
-STR_2704    :???
-STR_2705    :???
-STR_2706    :???
-STR_2707    :???
-STR_2708    :???
-STR_2709    :???
-STR_2710    :???
+STR_2700    :Autosave frequency:
+STR_2701    :Every week
+STR_2702    :Every 2 weeks
+STR_2703    :Every month
+STR_2704    :Every 4 months
+STR_2705    :Every year
+STR_2706    :Never
+STR_2707    :Open new window
+STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
+STR_2709    :Overwrite
+STR_2710    :Type the name of the file.
 STR_2711    :;
 STR_2712    :=
 STR_2713    :,
@@ -2720,46 +2720,46 @@ STR_2714    :-
 STR_2715    :.
 STR_2716    :/
 STR_2717    :'
-STR_2718    :???
-STR_2719    :???
-STR_2720    :???
-STR_2721    :???
-STR_2722    :???
-STR_2723    :???
-STR_2724    :???
-STR_2725    :???
-STR_2726    :???
-STR_2727    :???
-STR_2728    :???
-STR_2729    :???
-STR_2730    :???
-STR_2731    :???
-STR_2732    :???
-STR_2733    :???
-STR_2734    :???
-STR_2735    :???
-STR_2736    :???
-STR_2737    :???
-STR_2738    :???
-STR_2739    :???
-STR_2740    :???
-STR_2741    :???
-STR_2742    :???
-STR_2743    :???
+STR_2718    :(up)
+STR_2719    :(new file)
+STR_2720    :{UINT16}sec
+STR_2721    :{UINT16}secs
+STR_2722    :{UINT16}min:{UINT16}sec
+STR_2723    :{UINT16}min:{UINT16}secs
+STR_2724    :{UINT16}mins:{UINT16}sec
+STR_2725    :{UINT16}mins:{UINT16}secs
+STR_2726    :{UINT16}min
+STR_2727    :{UINT16}mins
+STR_2728    :{UINT16}hour:{UINT16}min
+STR_2729    :{UINT16}hour:{UINT16}mins
+STR_2730    :{UINT16}hours:{UINT16}min
+STR_2731    :{UINT16}hours:{UINT16}mins
+STR_2732    :{COMMA16}ft
+STR_2733    :{COMMA16}m
+STR_2734    :{COMMA16}mph
+STR_2735    :{COMMA16}km/h
+STR_2736    :{MONTH}, Year {COMMA16}
+STR_2737    :{STRINGID} {MONTH}, Year {COMMA16}
+STR_2738    :Title screen music:
+STR_2739    :None
+STR_2740    :RollerCoaster Tycoon 1
+STR_2741    :RollerCoaster Tycoon 2
+STR_2742    :css50.dat not found
+STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat in your RCT2 installation.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
 STR_2747    :{ENDQUOTES}
 STR_2748    :Bar
-STR_2749    :???
-STR_2750    :???
-STR_2751    :???
-STR_2752    :???
-STR_2753    :???
-STR_2754    :???
-STR_2755    :???
-STR_2756    :???
+STR_2749    :My new scenario
 # New strings used in the cheats window previously these were ???
+STR_2750    :Move all items to top
+STR_2751    :Move all items to bottom
+STR_2752    :Clear grass
+STR_2753    :Mowed grass
+STR_2754    :Water plants
+STR_2755    :Fix vandalism
+STR_2756    :Remove litter
 STR_2757    :Force Sun
 STR_2758    :Force Thunder
 STR_2759    :Zero Clearance
@@ -2769,7 +2769,7 @@ STR_2762    :Pay For Rides
 STR_2763    :???
 STR_2764    :Happy Guests
 STR_2765    :Large Tram
-STR_2766    :???
+STR_2766    :Win scenario
 STR_2767    :Freeze Climate
 STR_2768    :Unfreeze Climate
 STR_2769    :Open Park
@@ -2779,7 +2779,7 @@ STR_2772    :Faster Gamespeed
 STR_2773    :Windowed
 STR_2774    :Fullscreen
 STR_2775    :Fullscreen (desktop)
-STR_2776    :Language
+STR_2776    :Language:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Viewport #{COMMA16}
@@ -2815,7 +2815,7 @@ STR_2807    :{RED}Guests are complaining about the amount of litter in your park
 STR_2808    :{RED}Guests are complaining about the vandalism in your park{NEWLINE}Check where your security guards are and consider organizing them better
 STR_2809    :{RED}Guests are hungry and can't find anywhere to buy food
 STR_2810    :{RED}Guests are thirsty and can't find anywhere to buy drinks
-STR_2811    :{RED}Guests are complaining because they can't find the restrooms in your park
+STR_2811    :{RED}Guests are complaining because they can't find the toilets in your park
 STR_2812    :{RED}Guests are getting lost or stuck{NEWLINE}Check whether the layout of your footpaths needs improving to help the guests find their way around
 STR_2813    :{RED}Your park entrance fee is too high!{NEWLINE}Reduce your entrance fee or improve the value of the park to attract more guests
 STR_2814    :{WINDOW_COLOUR_2}Most untidy park award
@@ -2828,7 +2828,7 @@ STR_2820    :{WINDOW_COLOUR_2}Safest park award
 STR_2821    :{WINDOW_COLOUR_2}Best staff award
 STR_2822    :{WINDOW_COLOUR_2}Best park food award
 STR_2823    :{WINDOW_COLOUR_2}Worst park food award
-STR_2824    :{WINDOW_COLOUR_2}Best park restrooms award
+STR_2824    :{WINDOW_COLOUR_2}Best park toilets award
 STR_2825    :{WINDOW_COLOUR_2}Most disappointing park award
 STR_2826    :{WINDOW_COLOUR_2}Best water rides award
 STR_2827    :{WINDOW_COLOUR_2}Best custom-designed rides award
@@ -2845,7 +2845,7 @@ STR_2837    :{TOPAZ}Your park has received an award for being 'The safest park i
 STR_2838    :{TOPAZ}Your park has received an award for being 'The park with the best staff'!
 STR_2839    :{TOPAZ}Your park has received an award for being 'The park with the best food in the country'!
 STR_2840    :{TOPAZ}Your park has received an award for being 'The park with the worst food in the country'!
-STR_2841    :{TOPAZ}Your park has received an award for being 'The park with the best restroom facilities in the country'!
+STR_2841    :{TOPAZ}Your park has received an award for being 'The park with the best toilet facilities in the country'!
 STR_2842    :{TOPAZ}Your park has received an award for being 'The most disappointing park in the country'!
 STR_2843    :{TOPAZ}Your park has received an award for being 'The park with the best water rides in the country'!
 STR_2844    :{TOPAZ}Your park has received an award for being 'The park with the best custom-designed rides'!
@@ -3376,8 +3376,8 @@ STR_3368    :{BLACK}= Drink Stall
 STR_3369    :{BLACK}= Souvenir Stall
 STR_3370    :{BLACK}= Info. Kiosk
 STR_3371    :{BLACK}= First Aid
-STR_3372    :{BLACK}= A.T.M.
-STR_3373    :{BLACK}= Restroom
+STR_3372    :{BLACK}= Cash Machine
+STR_3373    :{BLACK}= Toilet
 STR_3374    :Warning: Too many objects selected!
 STR_3375    :Not all objects in this scenery group could be selected
 STR_3376    :Install new track design...
@@ -3451,3 +3451,235 @@ STR_3443    :Page 4
 STR_3444    :Page 5
 STR_3445    :Set Patrol Area
 STR_3446    :Cancel Patrol Area
+
+# New strings, cleaner
+STR_5120    :Show finances button on toolbar
+STR_5121    :Show research button on toolbar
+STR_5122    :Show all vehicles sharing a track/ride type
+STR_5123    :Renew rides
+STR_5124    :No Six Flags
+STR_5125    :All destructable
+STR_5126    :Random title music
+STR_5127    :{SMALLFONT}{BLACK}Disable land elevation
+STR_5128    :Selection size
+STR_5129    :Enter selection size between {COMMA16} and {COMMA16}
+STR_5130    :Map size
+STR_5131    :Enter map size between {COMMA16} and {COMMA16}
+STR_5132    :Fix all rides
+STR_5133    :{SMALLFONT}{BLACK}Adjust smaller area of land rights
+STR_5134    :{SMALLFONT}{BLACK}Adjust larger area of land rights
+STR_5135    :{SMALLFONT}{BLACK}Buy land rights and construction rights
+STR_5136    :Land rights
+STR_5137    :Allow lift hill and launch speeds{NEWLINE}up to {VELOCITY}
+STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5139    :{WHITE}{STRINGID}
+STR_5140    :Disable brakes failure
+STR_5141    :Disable all breakdowns
+STR_5142    :Normal Speed
+STR_5143    :Quick Speed
+STR_5144    :Fast Speed
+STR_5145    :Turbo Speed
+STR_5146    :Hyper Speed
+STR_5147    :Show cheats button on toolbar
+STR_5148    :{SMALLFONT}{BLACK}Change the game speed
+STR_5149    :{SMALLFONT}{BLACK}Open the cheats window
+STR_5150    :Enable debugging tools
+STR_5151    :,
+STR_5152    :.
+STR_5153    :Edit Themes...
+STR_5154    :Hardware display
+STR_5155    :Allow testing of unfinished tracks
+STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
+STR_5157    :Unlock all prices
+STR_5158    :Quit to menu
+STR_5159    :Exit OpenRCT2
+STR_5160    :{MONTH} {STRINGID}, Year {COMMA16}
+STR_5161    :Date Format:
+STR_5162    :Day/Month/Year
+STR_5163    :Month/Day/Year
+STR_5164    :Twitch Channel name
+STR_5165    :Name peeps after followers
+STR_5166    :{SMALLFONT}{BLACK}Will name peeps after channel's Twitch followers
+STR_5167    :Track follower peeps
+STR_5168    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after channel's Twitch followers
+STR_5169    :Name peeps after people in Twitch chat
+STR_5170    :{SMALLFONT}{BLACK}Will name peeps after people in Twitch chat
+STR_5171    :Track chat peeps
+STR_5172    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after Twitch chat participants
+STR_5173    :Pull Twitch chat as news
+STR_5174    :{SMALLFONT}{BLACK}Will use Twitch chat messages preceded by !news for in game notifications
+STR_5175    :Input the name of your Twitch channel
+STR_5176    :Enable Twitch integration
+STR_5177    :Fullscreen mode:
+STR_5178    :{SMALLFONT}{BLACK}Show financial cheats
+STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
+STR_5180    :{SMALLFONT}{BLACK}Show park cheats
+STR_5181    :{SMALLFONT}{BLACK}Show ride cheats
+STR_5182    :{INT32}
+STR_5183    :Base height
+STR_5184    :Enter base height between {COMMA16} and {COMMA16}
+STR_5185    :Water level
+STR_5186    :Enter water level between {COMMA16} and {COMMA16} 
+STR_5187    :Finances
+STR_5188    :New Campaign
+STR_5189    :Research
+STR_5190    :Map
+STR_5191    :Viewport
+STR_5192    :Recent News
+STR_5193    :Land
+STR_5194    :Water
+STR_5195    :Clear Scenery
+STR_5196    :Land Rights
+STR_5197    :Scenery
+STR_5198    :Footpath
+STR_5199    :Ride Construction
+STR_5200    :Track Design Place
+STR_5201    :New Ride
+STR_5202    :Track Design Selection
+STR_5203    :Ride
+STR_5204    :Ride List
+STR_5205    :Guest
+STR_5206    :Guest List
+STR_5207    :Staff
+STR_5208    :Staff List
+STR_5209    :Banner
+STR_5210    :Object Selection
+STR_5211    :Invention List
+STR_5212    :Scenario Options
+STR_5213    :Objective Options
+STR_5214    :Map Generation
+STR_5215    :Track Design Manager
+STR_5216    :Track Design Manager List
+STR_5217    :Cheats
+STR_5218    :Themes
+STR_5219    :Options
+STR_5220    :Keyboard Shortcuts
+STR_5221    :Change Keyboard Shortcut
+STR_5222    :Load/Save
+STR_5223    :Save Prompt
+STR_5224    :Demolish Ride Prompt
+STR_5225    :Fire Staff Prompt
+STR_5226    :Track Delete Prompt
+STR_5227    :Save Overwrite Prompt
+STR_5228    :{SMALLFONT}{BLACK}Main UI
+STR_5229    :{SMALLFONT}{BLACK}Park
+STR_5230    :{SMALLFONT}{BLACK}Tools
+STR_5231    :{SMALLFONT}{BLACK}Rides and Peeps
+STR_5232    :{SMALLFONT}{BLACK}Editors
+STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
+STR_5234    :{SMALLFONT}{BLACK}Prompts
+STR_5235    :{SMALLFONT}{BLACK}Settings
+STR_5236    :Window:
+STR_5237    :Palette:
+STR_5238    :Current Theme:
+STR_5239    :Duplicate
+STR_5240    :Enter a name for the theme
+STR_5241    :Can't change this theme
+STR_5242    :Theme name already exists
+STR_5243    :Invalid characters used
+STR_5244    :Themes
+STR_5245    :Top Toolbar
+STR_5246    :Bottom Toolbar
+STR_5247    :Track Editor Bottom Toolbar
+STR_5248    :Scenario Editor Bottom Toolbar
+STR_5249    :Title Menu Buttons
+STR_5250    :Title Exit Button
+STR_5251    :Title Options Button
+STR_5252    :Title Scenario Selection
+STR_5253    :Park Information
+STR_5254    :Add nausea
+STR_5255    :{MEDIUMFONT}{BLACK}All peeps become nauseous
+STR_5256    :Create a new theme to make changes to
+STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
+STR_5258    :{SMALLFONT}{BLACK}Delete the current theme
+STR_5259    :{SMALLFONT}{BLACK}Rename the current theme
+STR_5260    :Giant Screenshot
+STR_5261    :Filter
+STR_5262    :Wacky Worlds
+STR_5263    :Time Twister
+STR_5264    :Custom
+STR_5265    :{SMALLFONT}{BLACK}Select which content sources are visible
+STR_5266    :{SMALLFONT}{BLACK}Display
+STR_5267    :{SMALLFONT}{BLACK}Culture and Units
+STR_5268    :{SMALLFONT}{BLACK}Audio
+STR_5269    :{SMALLFONT}{BLACK}Controls
+STR_5270    :{SMALLFONT}{BLACK}Miscellaneous
+STR_5271    :{SMALLFONT}{BLACK}Twitch
+STR_5272    :{SMALLFONT}{BLACK}Small Scenery
+STR_5273    :{SMALLFONT}{BLACK}Large Scenery
+STR_5274    :{SMALLFONT}{BLACK}Footpath
+STR_5275    :Search for Objects
+STR_5276    :Enter the name of an object to search for
+STR_5277    :Clear
+STR_5278    :Sandbox mode
+STR_5279    :Sandbox mode off
+STR_5280    :{SMALLFONT}{BLACK}Allow editing land ownership settings through the Map window and other options that are normally restricted to the Scenario Editor
+STR_5281    :{SMALLFONT}{BLACK}Features
+STR_5282    :RCT1 Ride Open/Close Lights
+STR_5283    :RCT1 Park Open/Close Lights
+STR_5284    :RCT1 Scenario Selection Font
+STR_5285    :EXPLODE!!!
+STR_5286    :{MEDIUMFONT}{BLACK}Makes guests explode
+STR_5287    :Ride is already broken down
+STR_5288    :Ride is closed
+STR_5289    :No breakdowns available for this ride
+STR_5290    :Fix ride
+STR_5291    :Can't force breakdown
+STR_5292    :{SMALLFONT}{BLACK}Force a breakdown
+STR_5293    :{SMALLFONT}{BLACK}Close ride/attraction
+STR_5294    :{SMALLFONT}{BLACK}Test ride/attraction
+STR_5295    :{SMALLFONT}{BLACK}Open ride/attraction
+STR_5296    :{SMALLFONT}{BLACK}Close park
+STR_5297    :{SMALLFONT}{BLACK}Open park
+STR_5298    :{RED}{STRINGID}
+STR_5299    :{LIGHTPINK}{STRINGID}
+STR_5300    :{SMALLFONT}{BLACK}Quick fire staff
+STR_5301    :{MEDIUMFONT}{BLACK}Clear your loan
+STR_5302    :Clear loan
+STR_5303    :Allow building in pause mode
+STR_5304    :Title Sequence:
+STR_5305    :RollerCoaster Tycoon 1
+STR_5306    :RollerCoaster Tycoon 1 (AA)
+STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
+STR_5308    :RollerCoaster Tycoon 2
+STR_5309    :OpenRCT2
+STR_5310    :Random
+STR_5311    :{SMALLFONT}{BLACK}Debug tools
+STR_5312    :Show console
+STR_5313    :Show tile inspector
+STR_5314    :Tile inspector
+STR_5315    :Grass
+STR_5316    :Sand
+STR_5317    :Dirt
+STR_5318    :Rock
+STR_5319    :Martian
+STR_5320    :Checkerboard
+STR_5321    :Grass clumps
+STR_5322    :Ice
+STR_5323    :Grid (red)
+STR_5324    :Grid (yellow)
+STR_5325    :Grid (blue)
+STR_5326    :Grid (green)
+STR_5327    :Sand (dark)
+STR_5328    :Sand (light)
+STR_5329    :Checkerboard (inverted)
+STR_5330    :Underground view
+STR_5331    :Rock
+STR_5332    :Wood (red)
+STR_5333    :Wood (black)
+STR_5334    :Ice
+STR_5335    :Ride entrance
+STR_5336    :Ride exit
+STR_5337    :Park entrance
+STR_5338    :Element type
+STR_5339    :Base height
+STR_5340    :Clearance height
+STR_5341    :Flags
+STR_5342    :Choose a map tile
+STR_5343    :Automatically place staff
+STR_5344    :Changelog
+STR_5345    :Financial cheats
+STR_5346    :Guest cheats
+STR_5347    :Ride cheats
+STR_5348    :Park cheats
+STR_5349    :{SMALLFONT}{BLACK}All Rides

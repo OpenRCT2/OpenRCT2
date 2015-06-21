@@ -1,5 +1,5 @@
 /*****************************************************************************
-* Copyright (c) 2014 Ted John
+* Copyright (c) 2015 Marco Costa
 * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
 *
 * This file is part of OpenRCT2.
@@ -18,30 +18,26 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#ifndef _TOOLBAR_H_
-#define _TOOLBAR_H_
+#ifndef _TESTS_H_
+#define _TESTS_H_
 
-#include "interface/window.h"
-#include "interface/widget.h"
+#include <stdio.h>
+#include <CuTest.h>
+#include "../src/common.h"
 
-typedef enum {
-	DDIDX_UNDERGROUND_INSIDE = 0,
-	DDIDX_HIDE_BASE = 1,
-	DDIDX_HIDE_VERTICAL = 2,
-	DDIDX_SEETHROUGH_RIDES = 4,
-	DDIDX_SEETHROUGH_SCENARY = 5,
-	DDIDX_INVISIBLE_SUPPORTS = 6,
-	DDIDX_INVISIBLE_PEEPS = 7,
-	DDIDX_LAND_HEIGHTS = 9,
-	DDIDX_TRACK_HEIGHTS = 10,
-	DDIDX_PATH_HEIGHTS = 11,
-} TOP_TOOLBAR_VIEW_MENU_DDIDX;
+int cmdline_for_test(const char **argv, int argc);
+int run_all_tests();
 
-void top_toolbar_init_view_menu(rct_window* window, rct_widget* widget);
-void top_toolbar_view_menu_dropdown(short dropdownIndex);
+// Test utilities
 
-void toggle_footpath_window();
-void toggle_land_window(rct_window* topToolbar, int widgetIndex);
-void toggle_clear_scenery_window(rct_window* topToolbar, int widgetIndex);
-void toggle_water_window(rct_window* topToolbar, int widgetIndex);
+#include "../src/scenario.h"
+
+static void test_load_scenario(CuTest* tc, const char* file_name) {
+	const rct_scenario_basic* scenario = get_scenario_by_filename(file_name);
+	if (scenario == NULL) {
+		CuFail(tc, "Could not load scenario");
+	}
+	scenario_load_and_play(scenario);
+}
+
 #endif

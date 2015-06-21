@@ -24,6 +24,7 @@
 #include "../common.h"
 #include "../peep/peep.h"
 #include "../world/map.h"
+#include "vehicle.h"
 
 typedef fixed16_2dp ride_rating;
 
@@ -46,33 +47,84 @@ typedef struct {
 	uint8 entry_index;
 } ride_list_item;
 
+/** 
+ * Ride type vehicle structure.
+ * size: 0x65
+ */
+typedef struct{
+	uint16 var_00;				// 0x00 , 0x1A
+	uint8 var_02;				// 0x02 , 0x1C
+	uint8 var_03;				// 0x03 , 0x1D
+	uint32 var_04;				// 0x04 , 0x1E
+	uint16 var_08;				// 0x08 , 0x22
+	sint8 var_0A;				// 0x0A , 0x24
+	uint8 pad_0B;
+	uint16 var_0C;				// 0x0C , 0x26
+	uint8 var_0E;				// 0x0E , 0x28
+	uint8 var_0F;				// 0x0F , 0x29
+	uint8 var_10;				// 0x10 , 0x2A
+	uint8 var_11;				// 0x11 , 0x2B
+	uint16 var_12;				// 0x12 , 0x2C
+	uint16 var_14;				// 0x14 , 0x2E
+	uint16 var_16;				// 0x16 , 0x30
+	uint32 base_image_id;		// 0x18 , 0x32
+	uint32 var_1C;				// 0x1C , 0x36
+	uint32 var_20;				// 0x20 , 0x3A
+	uint32 var_24;				// 0x24 , 0x3E
+	uint32 var_28;				// 0x28 , 0x42
+	uint32 var_2C;				// 0x2C , 0x46
+	uint32 var_30;				// 0x30 , 0x4A
+	uint32 var_34;				// 0x34 , 0x4E
+	uint32 var_38;				// 0x38 , 0x52
+	uint32 var_3C;				// 0x3C , 0x56
+	uint32 var_40;				// 0x40 , 0x5A
+	uint32 var_44;				// 0x44 , 0x5E
+	uint32 var_48;				// 0x48 , 0x62
+	uint32 var_4C;				// 0x4C , 0x66
+	uint32 no_vehicle_images;	// 0x50 , 0x6A
+	uint8 no_seating_rows;		// 0x54 , 0x6E
+	uint8 pad_55[0x5];
+	uint8 var_5A;				// 0x5A , 0x74
+	uint8 pad_5B;				// 0x5B , 0x75
+	uint8 var_5C;				// 0x5C , 0x76
+	uint8 var_5D;				// 0x5D , 0x77
+	uint8 pad_5E[0x2];
+	uint8 var_60;				// 0x60 , 0x7A
+	sint8* peep_loading_positions;	// 0x61 , 0x7B
+} rct_ride_type_vehicle;
+
 /**
  * Ride type structure.
  * size: unknown
  */
 typedef struct {
-	rct_string_id name;				// 0x000
-	rct_string_id description;		// 0x002
-	uint32 var_004;
-	uint32 var_008;
-	uint8 var_00C;
-	uint8 var_00D;
-	uint8 var_00E;
-	uint8 var_00F;
-	uint8 var_010;
-	uint8 var_011;
-	uint8 var_012;
-	uint8 var_013;
-	uint8 pad_014[0x19E];
-	sint8 excitement_multipler;		// 0x1B2
-	sint8 intensity_multipler;		// 0x1B3
-	sint8 nausea_multipler;			// 0x1B4
-	uint8 pad_1B5;
-	uint32 var_1B6;
-	uint8 pad_1BA[0x04];
-	uint8 category[2];				// 0x1BE
-	uint8 shop_item;				// 0x1C0
-	uint8 shop_item_secondary;		// 0x1C1
+	rct_string_id name;						// 0x000
+	rct_string_id description;				// 0x002
+	uint32 images_offset;					// 0x004
+	uint32 flags;							// 0x008
+	uint8 ride_type[3];						// 0x00C
+	uint8 min_cars_in_train;				// 0x00F
+	uint8 max_cars_in_train;				// 0x010
+	uint8 cars_per_flat_ride;				// 0x011
+	uint8 zero_cars;						// 0x012
+	uint8 tab_vehicle;						// 0x013
+	uint8 default_vehicle;					// 0x014
+	uint8 front_vehicle;					// 0x015
+	uint8 second_vehicle;					// 0x016
+	uint8 rear_vehicle;						// 0x017
+	uint8 third_vehicle;					// 0x018
+	uint8 pad_019;
+	rct_ride_type_vehicle vehicles[4];		// 0x1A
+	uint32 var_1AE;
+	sint8 excitement_multipler;				// 0x1B2
+	sint8 intensity_multipler;				// 0x1B3
+	sint8 nausea_multipler;					// 0x1B4
+	uint8 max_height;						// 0x1B5
+	uint32 enabledTrackPieces;				// 0x1B6
+	uint32 enabledTrackPiecesAdditional;	// 0x1BA
+	uint8 category[2];						// 0x1BE
+	uint8 shop_item;						// 0x1C0
+	uint8 shop_item_secondary;				// 0x1C1
 } rct_ride_type;
 
 /**
@@ -87,7 +139,7 @@ typedef struct {
 	uint16 pad_002;
 	uint8 mode;						// 0x004
 	uint8 colour_scheme_type;		// 0x005
-	uint16 vehicle_colours[32];		// 0x006
+	rct_vehicle_colour vehicle_colours[32];		// 0x006
 	uint8 pad_046[0x03];
 	// 0 = closed, 1 = open, 2 = test
 	uint8 status;					// 0x049
@@ -101,7 +153,8 @@ typedef struct {
 	uint8 var_066[4];
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
-	uint8 pad_07A[0x0C];
+	uint16 first_peep_in_queue[4];	// 0x07A
+	uint8 pad_082[4];
 	uint16 vehicles[32];			// 0x086 Points to the first car in the train
 	uint8 depart_flags;				// 0x0C6
 
@@ -115,17 +168,26 @@ typedef struct {
 	uint8 min_waiting_time;			// 0x0CE
 	uint8 max_waiting_time;			// 0x0CF
 	union {
-		uint8 var_0D0;
+		uint8 operation_option;		// 0x0D0
 		uint8 time_limit;			// 0x0D0
 		uint8 num_laps;				// 0x0D0
+		uint8 launch_speed;			// 0x0D0
+		uint8 speed;				// 0x0D0
+		uint8 rotations;			// 0x0D0
 	};
 	uint8 pad_0D1[0x3];
 	uint8 measurement_index;		// 0x0D4
-	uint8 var_0D5;
-	uint8 pad_0D6[0x2];
+    // bits 0 through 4 are the number of helix sections
+    // bit 5: spinning tunnel, water splash, or rapids
+    // bit 6: log reverser, waterfall
+    // bit 7: whirlpool
+	uint8 special_track_elements;   // 0x0D5
+	uint8 pad_0D6[2];
+	// Divide this value by 29127 to get the human-readable max speed 
+	// (in RCT2, display_speed = (max_speed * 9) >> 18)
 	sint32 max_speed;				// 0x0D8
 	sint32 average_speed;			// 0x0DC
-	uint8 pad_0E0[0x4];
+	uint8 pad_0E0[4];
 	sint32 length[4];				// 0x0E4
 	uint16 time[4];					// 0x0F4
 	fixed16_2dp max_positive_vertical_g;	// 0x0FC
@@ -142,9 +204,9 @@ typedef struct {
 	uint8 drops;					// 0x115 (??XX XXXX)
 	uint8 pad_116;
 	uint8 highest_drop_height;		// 0x117
-	uint32 var_118;
-	uint8 pad_11C[0x02];
-	uint8 var_11E;
+	sint32 sheltered_length;		// 0x118
+	uint8 pad_11C[0x2];
+	uint8 num_sheltered_sections;   // 0x11E
 	uint8 var_11F;
 	sint16 var_120;
 	sint16 var_122;
@@ -171,16 +233,19 @@ typedef struct {
 			ride_rating nausea;		// 0x144
 		};
 	};
-	uint16 reliability;				// 0x146
+	uint16 value;					// 0x146
 	uint16 var_148;
-	uint16 var_14A;
-	uint8 pad_14C;
-	uint8 var_14D;
+	uint8 satisfaction;				// 0x14A
+	uint8 satisfaction_time_out;	// 0x14B
+	uint8 satisfaction_next;		// 0x14C
+	// Various flags stating whether a window needs to be refreshed
+	uint8 window_invalidate_flags;	// 0x14D
 	uint8 pad_14E[0x02];
 	uint32 total_customers;			// 0x150
 	money32 total_profit;			// 0x154
-	uint16 var_158;
-	uint8 pad_15A;
+	uint8 popularity;				// 0x158
+	uint8 popularity_time_out;		// 0x159 Updated every purchase and ?possibly by time?
+	uint8 popularity_next;			// 0x15A When timeout reached this will be the next popularity
 	uint8 num_riders;				// 0x15B
 	uint8 music_tune_id;			// 0x15C
 	uint8 var_15D;
@@ -188,7 +253,9 @@ typedef struct {
 		uint16 slide_peep;			// 0x15E
 		uint16 maze_tiles;			// 0x15E
 	};
-	uint8 pad_160[0x16];
+	uint8 pad_160[0xE];
+	uint8 slide_peep_t_shirt_colour;// 0x16E
+	uint8 pad_16F[0x7];
 	uint8 var_176;
 	uint8 pad_177[0x9];
 	sint16 build_date;				// 0x180
@@ -204,10 +271,14 @@ typedef struct {
 	uint8 broken_car;				// 0x192
 	uint8 breakdown_reason;			// 0x193
 	money16 price_secondary;		// 0x194
-	uint16 var_196;
-	// used in computing excitement, nausea, etc
-	uint8 var_198;
-	uint8 var_199;
+	// Starts at RIDE_INITIAL_RELIABILITY and decreases from there. Right shift
+	// this number by 8 to get a reliability percentage 0-100
+	uint16 reliability;				// 0x196
+	// Small constant used to increase the unreliability as the game continues,
+	// making breakdowns more and more likely.
+	uint8 unreliability_factor;		// 0x198
+	// Range from [0, 100]
+	uint8 downtime;                 // 0x199
 	uint8 inspection_interval;		// 0x19A
 	uint8 last_inspection;			// 0x19B
 	uint8 var_19C;
@@ -218,8 +289,8 @@ typedef struct {
 	uint8 var_1A1;
 	uint8 var_1A2;
 	uint8 var_1A3;
-	uint32 var_1A4;
-	uint8 pad_1A8[4];
+	uint32 no_primary_items_sold;	// 0x1A4
+	uint32 no_secondary_items_sold; // 0x1A8
 	uint8 var_1AC;
 	uint8 var_1AD;
 	uint8 var_1AE;
@@ -260,7 +331,7 @@ typedef struct {
 	uint16 num_items;							// 0x0006
 	uint16 current_item;						// 0x0008
 	uint8 vehicle_index;						// 0x000A
-	uint8 var_0B;
+	uint8 current_station;						// 0x000B
 	sint8 vertical[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x000C
 	sint8 lateral[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x12CC
 	uint8 velocity[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x258C
@@ -291,9 +362,49 @@ enum {
 	RIDE_LIFECYCLE_MUSIC = 1 << 13,
 	RIDE_LIFECYCLE_INDESTRUCTIBLE = 1 << 14,
 	RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK = 1 << 15,
-
+	RIDE_LIFECYCLE_16 = 1 << 16,
 	RIDE_LIFECYCLE_CABLE_LIFT = 1 << 17,
-	RIDE_LIFECYCLE_19 = 1 << 19
+	RIDE_LIFECYCLE_18 = 1 << 18,
+	RIDE_LIFECYCLE_SIX_FLAGS = 1 << 19,
+
+	// Used to bring up the "real" ride window after a crash. Can be removed once vehicle_update is decompiled
+	RIDE_LIFECYCLE_CRASHED_WINDOW_OPENED = 1 << 20
+};
+
+// Constants used by the ride_type->flags property at 0x008
+enum {
+	RIDE_ENTRY_FLAG_0 = 1 << 0, // 0x1
+	RIDE_ENTRY_FLAG_1 = 1 << 1, // 0x2
+	RIDE_ENTRY_FLAG_2 = 1 << 2, // 0x4
+	RIDE_ENTRY_FLAG_3 = 1 << 3, // 0x8
+	RIDE_ENTRY_FLAG_4 = 1 << 4, // 0x10
+	RIDE_ENTRY_FLAG_5 = 1 << 5, // 0x20
+	RIDE_ENTRY_FLAG_6 = 1 << 6, // 0x40
+	RIDE_ENTRY_FLAG_7 = 1 << 7, // 0x80
+	RIDE_ENTRY_FLAG_8 = 1 << 8, // 0x100
+	RIDE_ENTRY_FLAG_9 = 1 << 9, // 0x200
+	RIDE_ENTRY_FLAG_COVERED_RIDE = 1 << 10, // 0x400
+	RIDE_ENTRY_FLAG_11 = 1 << 11, // 0x800
+	RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME = 1 << 12, // 0x1000
+	RIDE_ENTRY_FLAG_SEPERATE_RIDE = 1 << 13, // 0x2000
+	RIDE_ENTRY_FLAG_14 = 1 << 14, // 0x4000
+	RIDE_ENTRY_FLAG_15 = 1 << 15, // 0x8000
+	RIDE_ENTRY_FLAG_16 = 1 << 16, // 0x10000
+	RIDE_ENTRY_FLAG_17 = 1 << 17, // 0x20000
+	RIDE_ENTRY_FLAG_18 = 1 << 18, // 0x40000
+	RIDE_ENTRY_FLAG_19 = 1 << 19, // 0x80000
+	RIDE_ENTRY_FLAG_20 = 1 << 20, // 0x100000
+	RIDE_ENTRY_FLAG_21 = 1 << 21, // 0x200000
+	RIDE_ENTRY_FLAG_22 = 1 << 22, // 0x400000
+	RIDE_ENTRY_FLAG_23 = 1 << 23, // 0x800000
+	RIDE_ENTRY_FLAG_24 = 1 << 24, // 0x1000000
+	RIDE_ENTRY_FLAG_25 = 1 << 25, // 0x2000000
+	RIDE_ENTRY_FLAG_26 = 1 << 26, // 0x4000000
+	RIDE_ENTRY_FLAG_27 = 1 << 27, // 0x8000000
+	RIDE_ENTRY_FLAG_28 = 1 << 28, // 0x10000000
+	RIDE_ENTRY_FLAG_29 = 1 << 29, // 0x20000000
+	RIDE_ENTRY_FLAG_30 = 1 << 30, // 0x40000000
+	RIDE_ENTRY_FLAG_31 = 1 << 31, // 0x80000000
 };
 
 enum {
@@ -306,9 +417,9 @@ enum {
 	RIDE_TYPE_MINIATURE_RAILWAY,
 	RIDE_TYPE_MONORAIL,
 	RIDE_TYPE_MINI_SUSPENDED_COASTER,
-	RIDE_TYPE_BUMPER_BOATS,
+	RIDE_TYPE_BOAT_RIDE,
 	RIDE_TYPE_WOODEN_WILD_MOUSE,
-	RIDE_TYPE_STEEPLECHASE,
+	RIDE_TYPE_STEEPLECHASE = 10,
 	RIDE_TYPE_CAR_RIDE,
 	RIDE_TYPE_LAUNCHED_FREEFALL,
 	RIDE_TYPE_BOBSLEIGH_COASTER,
@@ -318,37 +429,37 @@ enum {
 	RIDE_TYPE_MINE_TRAIN_COASTER,
 	RIDE_TYPE_CHAIRLIFT,
 	RIDE_TYPE_CORKSCREW_ROLLER_COASTER,
-	RIDE_TYPE_MAZE,
+	RIDE_TYPE_MAZE = 20,
 	RIDE_TYPE_SPIRAL_SLIDE,
 	RIDE_TYPE_GO_KARTS,
 	RIDE_TYPE_LOG_FLUME,
 	RIDE_TYPE_RIVER_RAPIDS,
-	RIDE_TYPE_BUMPER_CARS,
+	RIDE_TYPE_DODGEMS,
 	RIDE_TYPE_PIRATE_SHIP,
 	RIDE_TYPE_SWINGING_INVERTER_SHIP,
 	RIDE_TYPE_FOOD_STALL,
 	RIDE_TYPE_1D,
-	RIDE_TYPE_DRINK_STALL,
+	RIDE_TYPE_DRINK_STALL = 30,
 	RIDE_TYPE_1F,
 	RIDE_TYPE_SHOP,
 	RIDE_TYPE_MERRY_GO_ROUND,
 	RIDE_TYPE_22,
 	RIDE_TYPE_INFORMATION_KIOSK,
-	RIDE_TYPE_BATHROOM,
+	RIDE_TYPE_TOILETS,
 	RIDE_TYPE_FERRIS_WHEEL,
 	RIDE_TYPE_MOTION_SIMULATOR,
 	RIDE_TYPE_3D_CINEMA,
-	RIDE_TYPE_TOP_SPIN,
+	RIDE_TYPE_TOP_SPIN = 40,
 	RIDE_TYPE_SPACE_RINGS,
 	RIDE_TYPE_REVERSE_FREEFALL_COASTER,
-	RIDE_TYPE_ELEVATOR,
+	RIDE_TYPE_LIFT,
 	RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER,
-	RIDE_TYPE_ATM,
+	RIDE_TYPE_CASH_MACHINE,
 	RIDE_TYPE_TWIST,
 	RIDE_TYPE_HAUNTED_HOUSE,
 	RIDE_TYPE_FIRST_AID,
 	RIDE_TYPE_CIRCUS_SHOW,
-	RIDE_TYPE_GHOST_TRAIN,
+	RIDE_TYPE_GHOST_TRAIN = 50,
 	RIDE_TYPE_TWISTER_ROLLER_COASTER,
 	RIDE_TYPE_WOODEN_ROLLER_COASTER,
 	RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER,
@@ -358,7 +469,7 @@ enum {
 	RIDE_TYPE_FLYING_ROLLER_COASTER,
 	RIDE_TYPE_3A,
 	RIDE_TYPE_VIRGINIA_REEL,
-	RIDE_TYPE_SPLASH_BOATS,
+	RIDE_TYPE_SPLASH_BOATS = 60,
 	RIDE_TYPE_MINI_HELICOPTERS,
 	RIDE_TYPE_LAY_DOWN_ROLLER_COASTER,
 	RIDE_TYPE_SUSPENDED_MONORAIL,
@@ -368,7 +479,7 @@ enum {
 	RIDE_TYPE_MINI_GOLF,
 	RIDE_TYPE_GIGA_COASTER,
 	RIDE_TYPE_ROTO_DROP,
-	RIDE_TYPE_FLYING_SAUCERS,
+	RIDE_TYPE_FLYING_SAUCERS = 70,
 	RIDE_TYPE_CROOKED_HOUSE,
 	RIDE_TYPE_MONORAIL_CYCLES,
 	RIDE_TYPE_COMPACT_INVERTED_COASTER,
@@ -378,7 +489,7 @@ enum {
 	RIDE_TYPE_MAGIC_CARPET,
 	RIDE_TYPE_SUBMARINE_RIDE,
 	RIDE_TYPE_RIVER_RAFTS,
-	RIDE_TYPE_50,
+	RIDE_TYPE_50 = 80,
 	RIDE_TYPE_ENTERPRISE,
 	RIDE_TYPE_52,
 	RIDE_TYPE_53,
@@ -387,8 +498,8 @@ enum {
 	RIDE_TYPE_INVERTED_IMPULSE_COASTER,
 	RIDE_TYPE_MINI_ROLLER_COASTER,
 	RIDE_TYPE_MINE_RIDE,
-	RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER,
-	RIDE_TYPE_90
+	RIDE_TYPE_59,
+	RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER = 90
 };
 
 enum {
@@ -401,7 +512,7 @@ enum {
 	RIDE_MODE_NORMAL,
 	RIDE_MODE_CONTINUOUS_CIRCUIT,
 	RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE,
-	RIDE_MODE_POWERED_LAUNCH,						// RCT1 style?
+	RIDE_MODE_POWERED_LAUNCH_PASSTROUGH,						// RCT2 style, pass through station
 	RIDE_MODE_SHUTTLE,
 	RIDE_MODE_BOAT_HIRE,
 	RIDE_MODE_UPWARD_LAUNCH,
@@ -433,7 +544,7 @@ enum {
 	RIDE_MODE_CROOKED_HOUSE,
 	RIDE_MODE_FREEFALL_DROP,
 	RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED,
-	RIDE_MODE_POWERED_LAUNCH_35,					// RCT2 style?
+	RIDE_MODE_POWERED_LAUNCH,					// RCT1 style, don't pass through station
 	RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
 };
 
@@ -555,6 +666,16 @@ enum {
 	RIDE_INSPECTION_NEVER
 };
 
+// Flags used by ride->window_invalidate_flags
+enum {
+	RIDE_INVALIDATE_RIDE_CUSTOMER    = 1,
+	RIDE_INVALIDATE_RIDE_INCOME      = 1 << 1,
+	RIDE_INVALIDATE_RIDE_MAIN        = 1 << 2,
+	RIDE_INVALIDATE_RIDE_LIST        = 1 << 3,
+	RIDE_INVALIDATE_RIDE_OPERATING   = 1 << 4,
+	RIDE_INVALIDATE_RIDE_MAINTENANCE = 1 << 5,
+};
+
 typedef struct {
 	uint8 main;
 	uint8 additional;
@@ -573,10 +694,53 @@ enum {
 	RIDE_MEASUREMENT_FLAG_G_FORCES = 1 << 2
 };
 
+// Constants for ride->special_track_elements
+enum {
+    RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS = 1 << 5,
+    RIDE_ELEMENT_REVERSER_OR_WATERFALL   = 1 << 6,
+    RIDE_ELEMENT_WHIRLPOOL               = 1 << 7
+};
+
+enum {
+	RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN = 1 << 0,
+	RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL = 1 << 1,
+	RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS = 1 << 2,
+	RIDE_TYPE_FLAG_3 = 1 << 3,
+	RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION = 1 << 4,
+	RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS = 1 << 5,
+	RIDE_TYPE_FLAG_6 = 1 << 6,
+	RIDE_TYPE_FLAG_HAS_G_FORCES = 1 << 7,
+	RIDE_TYPE_FLAG_8 = 1 << 8,									// something to do with track, maybe whether it can have gaps
+	RIDE_TYPE_FLAG_HAS_DATA_LOGGING = 1 << 9,
+	RIDE_TYPE_FLAG_HAS_DROPS = 1 << 10,
+	RIDE_TYPE_FLAG_NO_TEST_MODE = 1 << 11,
+	RIDE_TYPE_FLAG_12 = 1 << 12,
+	RIDE_TYPE_FLAG_13 = 1 << 13,								// something to do with stations or vehicles
+	RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS = 1 << 14,
+	RIDE_TYPE_FLAG_15 = 1 << 15,								// something to do with station, price and viewport zoom
+	RIDE_TYPE_FLAG_16 = 1 << 16,								// something to do with vehicle colour scheme
+	RIDE_TYPE_FLAG_IS_SHOP = 1 << 17,
+	RIDE_TYPE_FLAG_18 = 1 << 18,
+	RIDE_TYPE_FLAG_SELLS_FOOD = 1 << 19,
+	RIDE_TYPE_FLAG_20 = 1 << 20,
+	RIDE_TYPE_FLAG_21 = 1 << 21,
+	RIDE_TYPE_FLAG_IN_RIDE = 1 << 22,							// peeps are "IN" (ride) rather than "ON" (ride)
+	RIDE_TYPE_FLAG_23 = 1 << 23,								// sells food?, seems to be used for food awards...
+	RIDE_TYPE_FLAG_SELLS_DRINKS = 1 << 24,
+	RIDE_TYPE_FLAG_IS_BATHROOM = 1 << 25,
+	RIDE_TYPE_FLAG_26 = 1 << 26,								// something to do with vehicle colours
+	RIDE_TYPE_FLAG_27 = 1 << 27,
+	RIDE_TYPE_FLAG_HAS_TRACK = 1 << 28,
+	RIDE_TYPE_FLAG_29 = 1 << 29,
+	RIDE_TYPE_FLAG_30 = 1 << 30,
+	RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = 1 << 31,
+};
+
 #define MAX_RIDES 255
 
 #define MAX_RIDE_MEASUREMENTS 8
-#define RIDE_RELIABILITY_UNDEFINED 0xFFFF
+#define RIDE_VALUE_UNDEFINED 0xFFFF
+#define RIDE_INITIAL_RELIABILITY ((100 << 8) - 1)
 
 #define STATION_DEPART_FLAG (1 << 7)
 #define STATION_DEPART_MASK (~STATION_DEPART_FLAG)
@@ -609,26 +773,71 @@ void reset_all_ride_build_dates();
 void ride_update_favourited_stat();
 void ride_update_all();
 void ride_check_all_reachable();
-rct_map_element *sub_6CAF80(int rideIndex, int *outX, int *outY);
-rct_map_element *ride_find_track_gap(rct_map_element *startTrackElement, int *outX, int *outY);
+void ride_update_satisfaction(rct_ride* ride, uint8 happiness);
+void ride_update_popularity(rct_ride* ride, uint8 pop_amount);
+int sub_6CAF80(int rideIndex, rct_xy_element *output);
+int track_get_next(rct_xy_element *input, rct_xy_element *output);
+int ride_find_track_gap(rct_xy_element *input, rct_xy_element *output);
 void ride_construct_new(ride_list_item listItem);
-int ride_modify(rct_map_element *trackMapElement, int x, int y);
+void ride_construct(int rideIndex);
+int ride_modify(rct_xy_element *input);
 void ride_get_status(int rideIndex, int *formatSecondary, int *argument);
 rct_peep *ride_get_assigned_mechanic(rct_ride *ride);
 int ride_get_total_length(rct_ride *ride);
+int ride_get_total_time(rct_ride *ride);
 int ride_can_have_multiple_circuits(rct_ride *ride);
 track_colour ride_get_track_colour(rct_ride *ride, int colourScheme);
 vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex);
 rct_ride_type *ride_get_entry(rct_ride *ride);
 uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType);
+void reset_type_to_ride_entry_index_map();
 void ride_measurement_clear(rct_ride *ride);
 void ride_measurements_update();
 rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message);
 void ride_breakdown_add_news_item(int rideIndex);
 rct_peep *ride_find_closest_mechanic(rct_ride *ride, int forInspection);
 int sub_6CC3FB(int rideIndex);
+void sub_6C9627();
+int sub_6C683D(int* x, int* y, int* z, int direction, int type, uint16 extra_params, rct_map_element** output_element, uint16 flags);
 void ride_set_map_tooltip(rct_map_element *mapElement);
 int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId);
 void ride_music_update_final();
+void ride_prepare_breakdown(int rideIndex, int breakdownReason);
+rct_map_element *ride_get_station_start_track_element(rct_ride *ride, int stationIndex);
+rct_map_element *ride_get_station_exit_element(rct_ride *ride, int x, int y, int z);
+void ride_set_status(int rideIndex, int status);
+void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void ride_set_name(int rideIndex, const char *name);
+void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+int ride_get_refund_price(int ride_id);
+void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+
+
+int get_var_10E_unk_1(rct_ride* ride);
+int get_var_10E_unk_2(rct_ride* ride);
+int get_var_10E_unk_3(rct_ride* ride);
+int get_var_110_unk_1(rct_ride* ride);
+int get_var_110_unk_2(rct_ride* ride);
+int get_var_110_unk_3(rct_ride* ride);
+int get_var_112_unk_1(rct_ride* ride);
+int get_var_112_unk_2(rct_ride* ride);
+int get_var_112_unk_3(rct_ride* ride);
+int get_var_112_unk_4(rct_ride* ride);
+
+uint8 ride_get_helix_sections(rct_ride *ride);
+bool ride_has_spinning_tunnel(rct_ride *ride);
+bool ride_has_water_splash(rct_ride *ride);
+bool ride_has_rapids(rct_ride *ride);
+bool ride_has_log_reverser(rct_ride *ride);
+bool ride_has_waterfall(rct_ride *ride);
+bool ride_has_whirlpool(rct_ride *ride);
+
+bool ride_type_has_flag(int rideType, int flag);
+bool ride_is_powered_launched(rct_ride *ride);
+bool ride_has_any_track_elements(int rideIndex);
+void ride_all_has_any_track_elements(bool *rideIndexArray);
 
 #endif

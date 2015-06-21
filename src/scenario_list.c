@@ -32,7 +32,7 @@ static void scenario_list_sort();
 static int scenario_list_sort_compare(const void *a, const void *b);
 static int scenario_scores_load();
 
-static rct_scenario_basic *get_scenario_by_filename(const char *filename)
+rct_scenario_basic *get_scenario_by_filename(const char *filename)
 {
 	int i;
 	for (i = 0; i < gScenarioListCount; i++)
@@ -143,12 +143,21 @@ static void scenario_list_sort()
 }
 
 /**
-* Basic scenario information compare function for sorting.
-*  rct2: 0x00677C08
-*/
+ * Basic scenario information compare function for sorting.
+ *  rct2: 0x00677C08
+ */
 static int scenario_list_sort_compare(const void *a, const void *b)
 {
 	return strcmp(((rct_scenario_basic*)a)->name, ((rct_scenario_basic*)b)->name);
+}
+
+/**
+ * Gets the path for the scenario scores path.
+ */
+static void scenario_scores_get_path(char *outPath)
+{
+	platform_get_user_directory(outPath, NULL);
+	strcat(outPath, "scores.dat");
 }
 
 /**
@@ -158,6 +167,9 @@ static int scenario_list_sort_compare(const void *a, const void *b)
 static int scenario_scores_load()
 {
 	FILE *file;
+	char scoresPath[MAX_PATH];
+
+	scenario_scores_get_path(scoresPath);
 
 	// Free scenario list if already allocated
 	if (gScenarioList != NULL) {
@@ -166,17 +178,22 @@ static int scenario_scores_load()
 	}
 
 	// Try and load the scores file
-	file = fopen(get_file_path(PATH_ID_SCORES), "rb");
+
+	// First check user folder and then fallback to install directory
+	file = fopen(scoresPath, "rb");
 	if (file == NULL) {
-		RCT2_ERROR("Unable to load scenario scores.");
-		return 0;
+		file = fopen(get_file_path(PATH_ID_SCORES), "rb");
+		if (file == NULL) {
+			log_error("Unable to load scenario scores.");
+			return 0;
+		}
 	}
 
 	// Load header
 	rct_scenario_scores_header header;
 	if (fread(&header, 16, 1, file) != 1) {
 		fclose(file);
-		RCT2_ERROR("Invalid header in scenario scores file.");
+		log_error("Invalid header in scenario scores file.");
 		return 0;
 	}
 	gScenarioListCount = header.scenario_count;
@@ -206,10 +223,13 @@ static int scenario_scores_load()
 int scenario_scores_save()
 {
 	FILE *file;
-	
-	file = fopen(get_file_path(PATH_ID_SCORES), "wb");
+	char scoresPath[MAX_PATH];
+
+	scenario_scores_get_path(scoresPath);
+
+	file = fopen(scoresPath, "wb");
 	if (file == NULL) {
-		RCT2_ERROR("Unable to save scenario scores.");
+		log_error("Unable to save scenario scores.");
 		return 0;
 	}
 

@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -28,6 +29,7 @@
 #include "../sprites.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
+#include "../interface/themes.h"
 
 enum {
 	PAGE_INDIVIDUAL,
@@ -115,13 +117,13 @@ static void* window_guest_list_events[] = {
 	window_guest_list_scrollpaint
 };
 
-static int _window_guest_list_highlighted_index;
-static int _window_guest_list_selected_tab;
-static int _window_guest_list_selected_filter;
-static int _window_guest_list_selected_page;
-static int _window_guest_list_selected_view;
-static int _window_guest_list_num_pages;
-static int _window_guest_list_num_groups;
+static int _window_guest_list_highlighted_index; // 0x00F1EE10
+static int _window_guest_list_selected_tab;      // 0x00F1EE12
+static int _window_guest_list_selected_filter;   // 0x00F1EE06
+static int _window_guest_list_selected_page;     // 0x00F1EE07
+static int _window_guest_list_selected_view;     // 0x00F1EE13
+static int _window_guest_list_num_pages;         // 0x00F1EE08
+static int _window_guest_list_num_groups;        // 0x00F1AF22
 
 static uint16 _window_guest_list_groups_num_guests[240];
 static uint32 _window_guest_list_groups_argument_1[240];
@@ -146,7 +148,7 @@ void window_guest_list_open()
 	if (window != NULL)
 		return;
 
-	window = window_create_auto_pos(350, 330, (uint32*)window_guest_list_events, WC_GUEST_LIST, 0x0400);
+	window = window_create_auto_pos(350, 330, (uint32*)window_guest_list_events, WC_GUEST_LIST, WF_10 | WF_RESIZABLE);
 	window->widgets = window_guest_list_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_CLOSE) |
@@ -172,10 +174,91 @@ void window_guest_list_open()
 	window->min_height = 330;
 	window->max_width = 500;
 	window->max_height = 450;
-	window->flags |= WF_RESIZABLE;
-	window->colours[0] = 1;
-	window->colours[1] = 15;
-	window->colours[2] = 15;
+}
+
+/**
+* type == 0 -> guests on ride
+* type == 1 -> guests in queue
+* type == 2 -> guests thinking about ride
+* type == 3 -> guests thinking X, opened from news item
+* index is number of the ride or index of the thought
+* values of eax and edx probably determine the filter name string
+*
+*  rct2: 0x006993BA
+*/
+void window_guest_list_open_with_filter(int type, int index)
+{
+	uint32 eax, edx;
+
+	window_guest_list_open();
+
+	_window_guest_list_selected_page = 0;
+	_window_guest_list_num_pages = 1;
+
+	RCT2_GLOBAL(0x009AC7E0, uint8) = 0;
+	RCT2_GLOBAL(0x009AC7F0, uint8) = 0;
+
+	rct_ride *ride;
+	if (type != 3) {	// common for cases 0, 1, 2
+		ride = GET_RIDE(index & 0x000000FF);
+		eax = ride->name;
+		edx = ride->name_arguments;
+	}
+
+	switch(type)
+	{
+	case 0:
+		_window_guest_list_selected_filter = 0;
+
+		eax = (eax << 16) + 1435;
+
+		if ((RCT2_GLOBAL(0x97CF40 + ride->type * 8, uint32) & 0x400000) != 0)
+			eax++;
+
+		RCT2_GLOBAL(0x00F1EDF6, uint32) = eax;
+		RCT2_GLOBAL(0x00F1EDFA, uint32) = edx;
+
+		_window_guest_list_highlighted_index = 0xFFFF;
+		_window_guest_list_selected_tab = 0;
+		_window_guest_list_selected_view = 0;
+		break;
+	case 1:
+		_window_guest_list_selected_filter = 0;
+
+		eax = (eax << 16) + 1433;
+
+		RCT2_GLOBAL(0x00F1EDF6, uint32) = eax;
+		RCT2_GLOBAL(0x00F1EDFA, uint32) = edx;
+
+		_window_guest_list_highlighted_index = 0xFFFF;
+		_window_guest_list_selected_tab = 0;
+		_window_guest_list_selected_view = 0;
+		break;
+	case 2:
+		_window_guest_list_selected_filter = 1;
+
+		eax = (eax << 16) + 0xFFFF;
+
+		RCT2_GLOBAL(0x00F1EDF6, uint32) = eax;
+		RCT2_GLOBAL(0x00F1EDFA, uint32) = edx;
+
+		_window_guest_list_highlighted_index = 0xFFFF;
+		_window_guest_list_selected_tab = 0;
+		_window_guest_list_selected_view = 1;
+		break;
+	case 3:
+		_window_guest_list_selected_filter = 1;
+
+		index = (index & 0x000000FF) + 1480;
+
+		RCT2_GLOBAL(0x00F1EDF6, uint32) = index;
+		RCT2_GLOBAL(0x00F1EDFA, uint32) = 0;
+
+		_window_guest_list_highlighted_index = 0xFFFF;
+		_window_guest_list_selected_tab = 0;
+		_window_guest_list_selected_view = 1;
+		break;
+	}
 }
 
 /**
@@ -252,7 +335,7 @@ static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widge
 			w->y + widget->top,
 			widget->bottom - widget->top + 1,
 			w->colours[1],
-			0x80,
+			DROPDOWN_FLAG_STAY_OPEN,
 			_window_guest_list_num_pages,
 			widget->right - widget->left - 3
 		);
@@ -276,7 +359,7 @@ static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widge
 			w->y + widget->top,
 			widget->bottom - widget->top + 1,
 			w->colours[1],
-			0x80,
+			DROPDOWN_FLAG_STAY_OPEN,
 			2,
 			widget->right - widget->left - 3
 		);
@@ -333,7 +416,7 @@ static void window_guest_list_update(rct_window *w)
  */
 static void window_guest_list_scrollgetsize()
 {
-	int i, y, numGuests, spriteIndex;
+	int i, y, numGuests, spriteIndex, width, height;
 	rct_window *w;
 	rct_peep *peep;
 
@@ -384,18 +467,10 @@ static void window_guest_list_scrollgetsize()
 		window_invalidate(w);
 	}
 
-	#ifdef _MSC_VER
-	__asm mov ecx, 447
-	#else
-	__asm__ ( "mov ecx, 447 "  );
-	#endif
+	width = 447;
+	height = y;
 
-	#ifdef _MSC_VER
-	__asm mov edx, y
-	#else
-	__asm__ ( "mov edx, %[y] " : [y] "+m" (y) );
-	#endif
-
+	window_scrollsize_set_registers(width, height);
 }
 
 /**
@@ -405,11 +480,11 @@ static void window_guest_list_scrollgetsize()
 static void window_guest_list_scrollmousedown()
 {
 	int i, spriteIndex;
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 	rct_peep *peep;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	switch (_window_guest_list_selected_tab) {
 	case PAGE_INDIVIDUAL:
@@ -453,10 +528,10 @@ static void window_guest_list_scrollmousedown()
 static void window_guest_list_scrollmouseover()
 {
 	int i;
-	short x, y;
+	short x, y, scrollIndex;
 	rct_window *w;
 
-	window_scrollmouse_get_registers(w, x, y);
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	i = y / (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? 10 : 21);
 	i += _window_guest_list_selected_page * 3173;
@@ -484,6 +559,7 @@ static void window_guest_list_invalidate()
 	rct_window *w;
 
 	window_get_register(w);
+	colour_scheme_update(w);
 
 	w->pressed_widgets &= ~(1 << WIDX_TAB_1);
 	w->pressed_widgets &= ~(1 << WIDX_TAB_2);
@@ -598,7 +674,7 @@ static void window_guest_list_scrollpaint()
 			if (_window_guest_list_selected_filter != -1) {
 				if (window_guest_list_is_peep_in_filter(peep))
 					continue;
-				RCT2_GLOBAL(0x009AC861, uint16) |= 1;
+				RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) |= (1 << 0);
 				peep->var_0C |= 0x200;
 			}
 
@@ -719,7 +795,7 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep)
 
 	_window_guest_list_selected_view = temp;
 
-	if (((RCT2_GLOBAL(0x00F1EDF6, uint32) >> 16) & 0xFFFF) == 0xFFFF && _window_guest_list_selected_filter == 1)
+	if (RCT2_GLOBAL(0x00F1EDF6, uint16) == 0xFFFF && _window_guest_list_selected_filter == 1)
 		argument1 |= 0xFFFF;
 
 	if (argument1 == RCT2_GLOBAL(0x00F1EDF6, uint32) && argument2 == RCT2_GLOBAL(0x00F1EDFA, uint32))

@@ -30,6 +30,12 @@ typedef struct {
 	rct_string_id unk_name;
 } rct_ride_name_convention;
 
+typedef struct {
+	uint32 spriteIndex;
+	uint16 height;
+	uint16 var_06;
+} rct_ride_entrance_definition;
+
 extern const bool hasRunningTrack[0x60];
 extern const uint8 initialUpkeepCosts[0x60];
 extern const uint8 costPerTrackPiece[0x60];
@@ -41,5 +47,8 @@ extern const uint8 rideUnknownData3[0x60];
 extern const rct_ride_name_convention RideNameConvention[96];
 extern const uint8 RideAvailableModes[];
 extern const uint8 RideAvailableBreakdowns[];
+
+extern const rct_ride_entrance_definition RideEntranceDefinitions[12];
+extern const uint8 RideLiftHillAdjustments[0x60];
 
 #endif

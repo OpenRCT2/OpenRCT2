@@ -1,0 +1,45 @@
+0.0.2-beta (2015-06-21)
+------------------------------------------------------------------------
+- Feature: Intro sequence does not show by default.
+- Feature: New title screen logo.
+- Feature: New title sequence (RCT2 version also still available).
+- Feature: Title sequence music can now be disabled or changed to the RollerCoaster Tycoon 1 theme music.
+- Feature: In-game console.
+- Feature: Improved settings window with tab interface.
+- Feature: Ability to change language while in game.
+- Feature: Text input is now an in-game window.
+- Feature: Toggle between software and hardware video mode.
+- Feature: Toggle between resizeable window and fullscreen.
+- Feature: Windows now snap to the borders of other windows when dragging (snap radius configurable).
+- Feature: Interface colour themes. (Presets for RCT1 and RCT2 are included by default).
+- Feature: Re-introduce traffic lights for close / test / open as a theme option.
+- Feature: Show day as well as the month and year.
+- Feature: Show month before day (e.g. March 14th, year 15)
+- Feature: Exit OpenRCT2 to desktop.
+- Feature: Game configuration, cache, scores and screenshots now saved in user documents directory under OpenRCT2.
+- Feature: Auto-saving with frequency option.
+- Feature: Ability to change game speed via toolbar or (+ and - keys).
+- Feature: Finance window accessible from toolbar (enabled in settings).
+- Feature: Research and development / research funding now accessible as a stand alone window without the requirement of the finances window.
+- Feature: Extra viewport windows.
+- Feature: Park window viewport is resizable.
+- Feature: Land, water and ownership tool sizes can now be increased to 64x64.
+- Feature: Mountain tool available in play mode.
+- Feature: Buy land and construction rights land tool window. (Currently only in-game).
+- Feature: Place scenery as a random cluster available in play mode.
+- Feature: Increased limits for maximum of circuits per roller coaster to 20 and people on mazes to 64
+- Feature: Allow both types of powered launch (with and without passing the station) for every roller coaster that supported one type in RCT2.
+- Feature: Allow testing of incomplete tracks.
+- Feature: Cheats window (Ctrl-Alt-C) or by toolbar button (configurable).
+- Feature: Cheats for almost every guest aspect (happiness, hunger, nausea tolerance, etc.)
+- Feature: Cheat to allow maximum operating settings and lift hill speeds (410 km/h).
+- Feature: Cheat to disable all breakdowns.
+- Feature: Cheat to disable brakes failure.
+- Feature: Cheat to fix all rides.
+- Feature: Change available objects in-game (only available from console).
+- Feature: Change research settings in-game (only available from console).
+- Feature: (Random) map generator available in scenario editor, accessible via the view menu.
+- Feature: RollerCoaster Tycoon 1 scenarios can now be opened in the scenario editor or by using the 'edit' command line action.
+- Feature: The "have fun" objective can now be selected in the scenario editor.
+- Feature: Twitch integration
+- Fix: Litter bins now get full and require emptying by handymen.

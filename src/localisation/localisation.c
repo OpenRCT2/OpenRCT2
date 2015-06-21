@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <windows.h>
 #include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
@@ -175,6 +176,8 @@ void format_comma_separated_integer(char **dest, long long value)
 	char *dst = *dest;
 	char *finish;
 	char tmp;
+	const char *commaMark = language_get_string(5151);
+	const char *ch;
 
 	// Negative sign
 	if (value < 0) {
@@ -193,7 +196,11 @@ void format_comma_separated_integer(char **dest, long long value)
 			// Append group seperator
 			if (groupIndex == 3) {
 				groupIndex = 0;
-				*dst++ = ',';
+				
+				ch = commaMark;
+				while (*ch != 0) {
+					*dst++ = *ch++;
+				}
 			}
 
 			digit = value % 10;
@@ -223,6 +230,9 @@ void format_comma_separated_fixed_2dp(char **dest, long long value)
 	char *dst = *dest;
 	char *finish;
 	char tmp;
+	const char *commaMark = language_get_string(5151);
+	const char *decimalMark = language_get_string(5152);
+	const char *ch;
 
 	// Negative sign
 	if (value < 0) {
@@ -239,7 +249,11 @@ void format_comma_separated_fixed_2dp(char **dest, long long value)
 	digit = value % 10;
 	value /= 10;
 	*dst++ = '0' + digit;
-	*dst++ = '.';
+
+	ch = decimalMark;
+	while (*ch != 0) {
+		*dst++ = *ch++;
+	}
 
 	if (value == 0) {
 		*dst++ = '0';
@@ -250,7 +264,11 @@ void format_comma_separated_fixed_2dp(char **dest, long long value)
 			// Append group seperator
 			if (groupIndex == 3) {
 				groupIndex = 0;
-				*dst++ = ',';
+				
+				ch = commaMark;
+				while (*ch != 0) {
+					*dst++ = *ch++;
+				}
 			}
 
 			digit = value % 10;
@@ -276,15 +294,21 @@ void format_comma_separated_fixed_2dp(char **dest, long long value)
 
 void format_currency(char **dest, long long value)
 {
-	const rct_currency_spec *currencySpec = &g_currency_specs[gGeneral_config.currency_format];
+	const rct_currency_spec *currencySpec = &g_currency_specs[gConfigGeneral.currency_format];
 
 	int rate = currencySpec->rate;
 	value *= rate;
 
 	// Negative sign
 	if (value < 0) {
+		// Round the value away from zero
+		value = (value - 99) / 100;
 		*(*dest)++ = '-';
 		value = -value;
+	}
+	else{
+		//Round the value away from zero
+		value = (value + 99) / 100;
 	}
 
 	// Currency symbol
@@ -296,8 +320,7 @@ void format_currency(char **dest, long long value)
 		*dest += strlen(*dest);
 	}
 
-	// Divide by 100 to get rid of the pennies
-	format_comma_separated_integer(dest, value / 100);
+	format_comma_separated_integer(dest, value);
 
 	// Currency symbol suffix
 	if (currencySpec->affix == CURRENCY_SUFFIX) {
@@ -308,7 +331,7 @@ void format_currency(char **dest, long long value)
 
 void format_currency_2dp(char **dest, long long value)
 {
-	const rct_currency_spec *currencySpec = &g_currency_specs[gGeneral_config.currency_format];
+	const rct_currency_spec *currencySpec = &g_currency_specs[gConfigGeneral.currency_format];
 
 	int rate = currencySpec->rate;
 	value *= rate;
@@ -340,6 +363,88 @@ void format_currency_2dp(char **dest, long long value)
 		strcpy(*dest, symbol);
 		*dest += strlen(*dest);
 	}
+}
+
+void format_date(char **dest, uint16 value)
+{
+	uint16 args[] = { date_get_month(value), date_get_year(value) + 1 };
+	uint16 *argsRef = args;
+	format_string_part(dest, 2736, (char**)&argsRef);
+	(*dest)--;
+}
+
+void format_length(char **dest, sint16 value)
+{
+	rct_string_id stringId = 2733;
+
+	if (gConfigGeneral.measurement_format == MEASUREMENT_FORMAT_IMPERIAL) {
+		value = metres_to_feet(value);
+		stringId--;
+	}
+
+	uint16 *argRef = &value;
+	format_string_part(dest, stringId, (char**)&argRef);
+	(*dest)--;
+}
+
+void format_velocity(char **dest, uint16 value)
+{
+	rct_string_id stringId = 2734;
+
+	if (gConfigGeneral.measurement_format == MEASUREMENT_FORMAT_METRIC) {
+		value = mph_to_kmph(value);
+		stringId++;
+	}
+
+	uint16 *argRef = &value;
+	format_string_part(dest, stringId, (char**)&argRef);
+	(*dest)--;
+}
+
+void format_duration(char **dest, uint16 value)
+{
+	uint16 minutes = value / 60;
+	uint16 seconds = value % 60;
+	uint16 args[] = { minutes, seconds };
+	uint16 *argsRef = &args[1];
+	rct_string_id stringId = 2720;
+
+	if (minutes > 0) {
+		stringId += 2;
+		if (minutes != 1)
+			stringId += 2;
+
+		argsRef--;
+	}
+
+	if (seconds != 1)
+		stringId++;
+
+	format_string_part(dest, stringId, (char**)&argsRef);
+	(*dest)--;
+}
+
+void format_realtime(char **dest, uint16 value)
+{
+	uint16 hours = value / 60;
+	uint16 minutes = value % 60;
+	uint16 args[] = { hours, minutes };
+	uint16 *argsRef = &args[1];
+	rct_string_id stringId = 2726;
+
+	if (hours > 0) {
+		stringId += 2;
+		if (hours != 1)
+			stringId += 2;
+
+		argsRef--;
+	}
+
+	if (minutes != 1)
+		stringId++;
+
+	format_string_part(dest, stringId, (char**)&argsRef);
+	(*dest)--;
 }
 
 void format_string_code(unsigned char format_code, char **dest, char **args)
@@ -418,13 +523,7 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		value = *((uint16*)*args);
 		*args += 2;
 
-		uint16 dateArgs[] = { date_get_month(value), date_get_year(value) + 1 };
-		uint16 *dateArgs2 = dateArgs;
-		char formatString[] = "?, Year ?";
-		formatString[0] = FORMAT_MONTH;
-		formatString[8] = FORMAT_COMMA16;
-		format_string_part_from_raw(dest, formatString, (char**)&dateArgs2);
-		(*dest)--;
+		format_date(dest, value);
 		break;
 	case FORMAT_MONTH:
 		// Pop argument
@@ -439,15 +538,7 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		value = *((sint16*)*args);
 		*args += 2;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8)) {
-			format_comma_separated_integer(dest, mph_to_kmph(value));
-			strcpy(*dest, "kmh");
-			*dest += strlen(*dest);
-		} else {
-			format_comma_separated_integer(dest, value);
-			strcpy(*dest, "mph");
-			*dest += strlen(*dest);
-		}
+		format_velocity(dest, value);
 		break;
 	case FORMAT_POP16:
 		*args += 2;
@@ -460,45 +551,21 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		value = *((uint16*)*args);
 		*args += 2;
 
-		if (value / 60 > 0) {
-			format_integer(dest, value / 60);
-			strcpy(*dest, value / 60 == 1 ? "min:" : "mins:");
-			*dest += strlen(*dest);
-		}
-
-		format_integer(dest, value % 60);
-		strcpy(*dest, value % 60 == 1 ? "sec" : "secs");
-		*dest += strlen(*dest);
+		format_duration(dest, value);
 		break;
 	case FORMAT_REALTIME:
 		// Pop argument
 		value = *((uint16*)*args);
 		*args += 2;
 
-		if (value / 60 > 0) {
-			format_integer(dest, value / 60);
-			strcpy(*dest, value / 60 == 1 ? "hour:" : "hours:");
-			*dest += strlen(*dest);
-		}
-
-		format_integer(dest, value % 60);
-		strcpy(*dest, value % 60 == 1 ? "min" : "mins");
-		*dest += strlen(*dest);
+		format_realtime(dest, value);
 		break;
 	case FORMAT_LENGTH:
 		// Pop argument
 		value = *((sint16*)*args);
 		*args += 2;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8)) {
-			format_comma_separated_integer(dest, value);
-			strcpy(*dest, "m");
-			*dest += strlen(*dest);
-		} else {
-			format_comma_separated_integer(dest, metres_to_feet(value));
-			strcpy(*dest, "ft");
-			*dest += strlen(*dest);
-		}
+		format_length(dest, value);
 		break;
 	case FORMAT_SPRITE:
 		// Pop argument
@@ -549,7 +616,9 @@ void format_string_part_from_raw(char **dest, const char *src, char **args)
 
 void format_string_part(char **dest, rct_string_id format, char **args)
 {
-	if (format < 0x8000) {
+	if (format == (rct_string_id)STR_NONE) {
+		**dest = 0;
+	} else if (format < 0x8000) {
 		// Language string
 		format_string_part_from_raw(dest, language_get_string(format), args);
 	} else if (format < 0x9000) {
@@ -587,8 +656,12 @@ void format_string_part(char **dest, rct_string_id format, char **args)
  */
 void format_string(char *dest, rct_string_id format, void *args)
 {
-	// RCT2_CALLPROC_X(0x006C2555, format, 0, (int)args, 0, 0, (int)dest, 0);
 	format_string_part(&dest, format, (char**)&args);
+}
+
+void format_string_raw(char *dest, char *src, void *args)
+{
+	format_string_part_from_raw(&dest, src, (char**)&args);
 }
 
 /**
@@ -597,7 +670,6 @@ void format_string(char *dest, rct_string_id format, void *args)
  *  format (bx)
  */
 void error_string_quit(int error, rct_string_id format){
-	//RCT2_CALLPROC_X(0x006E37F7, error, format, 0, 0, 0, 0, 0);
 	RCT2_GLOBAL(0x14241A0, uint32) = error;
 	RCT2_GLOBAL(0x9E2DA0, uint32) = 1;
 
@@ -700,4 +772,13 @@ int get_string_length(char* buffer)
 		}
 	}
 	return length;
+}
+
+int win1252_to_utf8(utf8string dst, const char *src, int maxBufferLength)
+{
+	utf16 intermediateBuffer[512];
+
+	// TODO this supports only a maximum of 512 characters
+	MultiByteToWideChar(CP_ACP, 0, src, -1, intermediateBuffer, 512);
+	return WideCharToMultiByte(CP_UTF8, 0, intermediateBuffer, -1, dst, maxBufferLength, NULL, NULL);
 }

@@ -1,0 +1,11 @@
+Release version: 0.0.2-beta
+------------------------------------------------------------------------
+* Some sounds play at their maximum volume irrespective of the sound volume control.
+* Sandbox mode does not support all map modifications.
+* Zero clearance cheat results in drawing glitches.
+* Build while paused mode does not support all game commands.
+* Some text shown in the map is not translated to selected language.
+* Scenario editor object selection window will show object names in the selected language at the time of building the object cache. (Deleting plugin.dat in Documents/OpenRCT2 will fix this)
+* The game will run slower at high resolutions, particularly if there are many moving objects visible.
+
+Most bugs or limitations present in the original game have not yet been fixed or lifted.

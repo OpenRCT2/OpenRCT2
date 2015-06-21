@@ -51,6 +51,8 @@ int _awardPositiveMap[] = {
 	POSITIVE, // PARK_AWARD_BEST_GENTLE_RIDES
 };
 
+rct_award *gCurrentAwards = (rct_award*)RCT2_ADDRESS_AWARD_LIST;
+
 int award_is_positive(int type)
 {
 	return _awardPositiveMap[type];
@@ -288,7 +290,7 @@ static int award_is_deserved_best_food(int awardType, int activeAwardTypes)
 	FOR_ALL_RIDES(i, ride) {
 		if (ride->status != RIDE_STATUS_OPEN)
 			continue;
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x800000))
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_23))
 			continue;
 
 		shops++;
@@ -334,7 +336,7 @@ static int award_is_deserved_worst_food(int awardType, int activeAwardTypes)
 	FOR_ALL_RIDES(i, ride) {
 		if (ride->status != RIDE_STATUS_OPEN)
 			continue;
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x800000))
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_23))
 			continue;
 
 		shops++;
@@ -372,7 +374,7 @@ static int award_is_deserved_best_restrooms(int awardType, int activeAwardTypes)
 	// Count open restrooms
 	numRestrooms = 0;
 	FOR_ALL_RIDES(i, ride)
-		if (ride->type == RIDE_TYPE_BATHROOM && ride->status == RIDE_STATUS_OPEN)
+		if (ride->type == RIDE_TYPE_TOILETS && ride->status == RIDE_STATUS_OPEN)
 			numRestrooms++;
 
 	// At least 4 open restrooms
@@ -412,13 +414,13 @@ static int award_is_deserved_most_disappointing(int awardType, int activeAwardTy
 	disappointingRides = 0;
 
 	FOR_ALL_RIDES(i, ride) {
-		if (ride->excitement == 0xFFFF || ride->var_158 == 0xFF)
+		if (ride->excitement == 0xFFFF || ride->popularity == 0xFF)
 			continue;
 		
 		countedRides++;
 
-		// Satification maybe?
-		if (ride->var_158 <= 6)
+		// Unpopular
+		if (ride->popularity <= 6)
 			disappointingRides++;
 	}
 
@@ -459,9 +461,9 @@ static int award_is_deserved_best_custom_designed_rides(int awardType, int activ
 
 	customDesignedRides = 0;
 	FOR_ALL_RIDES(i, ride) {
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x10000000))
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
 			continue;
-		if (ride->lifecycle_flags & 0x40000)
+		if (ride->lifecycle_flags & RIDE_LIFECYCLE_18)
 			continue;
 		if (ride->excitement < RIDE_RATING(5, 50))
 			continue;
@@ -488,7 +490,7 @@ static int award_is_deserved_most_dazzling_ride_colours(int awardType, int activ
 	countedRides = 0;
 	colourfulRides = 0;
 	FOR_ALL_RIDES(i, ride) {
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x10000000))
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
 			continue;
 
 		countedRides++;
@@ -519,7 +521,7 @@ static int award_is_deserved_most_confusing_layout(int awardType, int activeAwar
 			continue;
 
 		peepsCounted++;
-		if (peep->thoughts[0].var_2 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_LOST || peep->thoughts[0].type == PEEP_THOUGHT_TYPE_CANT_FIND)
+		if (peep->thoughts[0].var_2 <= 5 && (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_LOST || peep->thoughts[0].type == PEEP_THOUGHT_TYPE_CANT_FIND))
 			peepsLost++;
 	}
 
@@ -581,7 +583,7 @@ void award_reset()
 {
 	int i;
 	for (i = 0; i < MAX_AWARDS; i++)
-		RCT2_ADDRESS(RCT2_ADDRESS_AWARD_LIST, rct_award)[i].time = 0;
+		gCurrentAwards[i].time = 0;
 }
 
 /**
@@ -591,9 +593,6 @@ void award_reset()
 void award_update_all()
 {
 	int i, activeAwardTypes, freeAwardEntryIndex;
-	rct_award *awards;
-
-	awards = RCT2_ADDRESS(RCT2_ADDRESS_AWARD_LIST, rct_award);
 
 	// Only add new awards if park is open
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN) {
@@ -601,8 +600,8 @@ void award_update_all()
 		activeAwardTypes = 0;
 		freeAwardEntryIndex = -1;
 		for (i = 0; i < MAX_AWARDS; i++) {
-			if (awards[i].time != 0)
-				activeAwardTypes |= (1 << awards[i].type);
+			if (gCurrentAwards[i].time != 0)
+				activeAwardTypes |= (1 << gCurrentAwards[i].type);
 			else if (freeAwardEntryIndex == -1)
 				freeAwardEntryIndex = i;
 		}
@@ -618,8 +617,8 @@ void award_update_all()
 			// Check if award is deserved
 			if (award_is_deserved(awardType, activeAwardTypes)) {
 				// Add award
-				awards[freeAwardEntryIndex].type = awardType;
-				awards[freeAwardEntryIndex].time = 5;
+				gCurrentAwards[freeAwardEntryIndex].type = awardType;
+				gCurrentAwards[freeAwardEntryIndex].time = 5;
 				news_item_add_to_queue(NEWS_ITEM_AWARD, STR_NEWS_ITEM_AWARD_MOST_UNTIDY + awardType, 0);
 				window_invalidate_by_class(WC_PARK_INFORMATION);
 			}
@@ -628,7 +627,7 @@ void award_update_all()
 
 	// Decrease award times
 	for (i = 0; i < MAX_AWARDS; i++)
-		if (awards[i].time != 0)
-			if (--awards[i].time == 0)
+		if (gCurrentAwards[i].time != 0)
+			if (--gCurrentAwards[i].time == 0)
 				window_invalidate_by_class(WC_PARK_INFORMATION);
 }

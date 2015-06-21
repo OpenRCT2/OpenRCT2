@@ -27,6 +27,7 @@
 #include "../peep/staff.h"
 #include "../sprites.h"
 #include "../world/sprite.h"
+#include "../interface/themes.h"
 
 #define WW 200
 #define WH 100
@@ -51,6 +52,7 @@ static rct_widget window_staff_fire_widgets[] = {
 
 static void window_staff_fire_emptysub(){}
 static void window_staff_fire_mouseup();
+static void window_staff_fire_invalidate();
 static void window_staff_fire_paint();
 
 //0x9A3F7C
@@ -80,7 +82,7 @@ static void* window_staff_fire_events[] = {
 	window_staff_fire_emptysub,
 	window_staff_fire_emptysub,
 	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
+	window_staff_fire_invalidate,
 	window_staff_fire_paint,
 	window_staff_fire_emptysub
 };
@@ -91,21 +93,15 @@ void window_staff_fire_prompt_open(rct_peep* peep){
 		return;
 	}
 
-	// Find center of the screen.
-	int screen_height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16);
-	int screen_width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
-	int x = screen_width / 2 - WW / 2;
-	int y = screen_height / 2 - WH / 2;
-
-	rct_window* w = window_create(x, y, WW, WH, (uint32*)0x992C3C, 0x1A, 0);
+	rct_window* w = window_create_centred(WW, WH, (uint32*)0x992C3C, 0x1A, WF_TRANSPARENT);
 	w->widgets = window_staff_fire_widgets;
 	w->enabled_widgets |= (1 << WIDX_CLOSE) | (1 << WIDX_YES) | (1 << WIDX_CANCEL);
 
 	window_init_scroll_widgets(w);
 
-	w->flags |= WF_TRANSPARENT;
+	colour_scheme_update(w);
+
 	w->number = peep->sprite_index;
-	w->colours[0] = 0x9A;
 }
 
 
@@ -129,6 +125,14 @@ static void window_staff_fire_mouseup(){
 	case WIDX_CLOSE:
 		window_close(w);
 	}
+}
+
+static void window_staff_fire_invalidate()
+{
+	rct_window *w;
+
+	window_get_register(w);
+	colour_scheme_update(w);
 }
 
 /**

@@ -89,37 +89,34 @@ enum {
 	MEASUREMENT_FORMAT_METRIC
 };
 
-enum{
-	SOUND_QUALITY_LOW,
-	SOUND_QUALITY_MEDIUM,
-	SOUND_QUALITY_HIGH
-
+enum {
+	AUTOSAVE_EVERY_WEEK,
+	AUTOSAVE_EVERY_2_WEEKS,
+	AUTOSAVE_EVERY_MONTH,
+	AUTOSAVE_EVERY_4_MONTHS,
+	AUTOSAVE_EVERY_YEAR,
+	AUTOSAVE_NEVER
 };
 
-extern uint16 gShortcutKeys[SHORTCUT_COUNT];
+enum {
+	DATE_FORMAT_DMY,
+	DATE_FORMAT_MDY
+};
 
-void config_reset_shortcut_keys();
-void config_load();
-void config_save();
-int config_find_or_browse_install_directory();
+enum {
+	TITLE_SEQUENCE_RCT1,
+	TITLE_SEQUENCE_RCT1_AA,
+	TITLE_SEQUENCE_RCT1_AA_LL,
+	TITLE_SEQUENCE_RCT2,
+	TITLE_SEQUENCE_OPENRCT2,
+	TITLE_SEQUENCE_RANDOM
+};
 
-
-// New config format
-#define MAX_CONFIG_LENGTH 256
-
-typedef struct sound_configuration {
-
-	sint8 sound_quality;
-	sint8 forced_software_buffering;
-} sound_configuration_t;
-
-
-
-typedef struct general_configuration {
+typedef struct {
 	uint8 play_intro;
 	uint8 confirmation_prompt;
 	uint8 screenshot_format;
-	char game_path[MAX_PATH];
+	utf8string game_path;
 	sint8 measurement_format;
 	sint8 temperature_format;
 	sint8 currency_format;
@@ -129,44 +126,117 @@ typedef struct general_configuration {
 	sint8 landscape_smoothing;
 	sint8 show_height_as_units;
 	sint8 save_plugin_data;
+	uint8 debugging_tools;
 
 	//new
 	uint8 fullscreen_mode;
-	sint16 window_width;
-	sint16 window_height;
+	sint32 fullscreen_width;
+	sint32 fullscreen_height;
+	sint32 window_width;
+	sint32 window_height;
 	uint16 language;
 	uint8 window_snap_proximity;
-} general_configuration_t;
+	uint8 autosave_frequency;
+	uint8 hardware_display;
+	uint8 test_unfinished_tracks;
+	uint8 no_test_crashes;
+	uint8 date_format;
+	uint8 auto_staff_placement;
+	utf8string last_run_version;
+	uint8 title_sequence;
+} general_configuration;
 
-static const struct { const char *key; int value; } _currencyLookupTable[] = {
-	{ "GBP", CURRENCY_POUNDS },
-	{ "USD", CURRENCY_DOLLARS },
-	{ "FRF", CURRENCY_FRANC },
-	{ "DEM", CURRENCY_DEUTSCHMARK },
-	{ "YEN", CURRENCY_YEN },
-	{ "ESP", CURRENCY_PESETA },
-	{ "ITL", CURRENCY_LIRA },
-	{ "NLG", CURRENCY_GUILDERS },
-	{ "NOK", CURRENCY_KRONA },
-	{ "SEK", CURRENCY_KRONA },
-	{ "DEK", CURRENCY_KRONA },
-	{ "EUR", CURRENCY_EUROS },
+typedef struct {
+	uint8 toolbar_show_finances;
+	uint8 toolbar_show_research;
+	uint8 toolbar_show_cheats;
+	uint8 allow_subtype_switching;
+	uint8 console_small_font;
+	utf8string current_theme_preset;
+} interface_configuration;
 
-	{ "\xA3", CURRENCY_POUNDS },
-	{ "\x24", CURRENCY_DOLLARS },
-	{ "\xA5", CURRENCY_YEN },
-	{ "\xB5", CURRENCY_EUROS }
-};
+typedef struct {
+	uint8 title_music;
+	uint8 sound;
+	uint8 ride_music;
+	uint8 master_volume;
+	uint8 music_volume;
+} sound_configuration;
 
-typedef struct shortcut_entry{
+typedef struct {
+	uint8 fast_lift_hill;
+	uint8 disable_brakes_failure;
+	uint8 disable_all_breakdowns;
+	uint8 unlock_all_prices;
+	uint8 build_in_pause_mode;
+} cheat_configuration;
+
+typedef struct {
+	utf8string channel;
+	uint8 enable_follower_peep_names;
+	uint8 enable_follower_peep_tracking;
+	uint8 enable_chat_peep_names;
+	uint8 enable_chat_peep_tracking;
+	uint8 enable_news;
+} twitch_configuration;
+
+typedef struct theme_window {
+	uint8 colours[6];
+
+	// Define any other settings for all windows here
+
+} theme_window;
+
+// Define structures for any other settings here
+typedef struct {
+	uint8 rct1_ride_lights;
+	uint8 rct1_park_lights;
+	uint8 rct1_scenario_font;
+} theme_features;
+
+
+typedef struct theme_preset {
+	char name[256];
+	theme_window *windows;
+
+	// Add structures for any other settings here
+	theme_features features;
+
+} theme_preset;
+
+typedef struct {
+	theme_preset *presets;
+	uint16 num_presets;
+} themes_configuration;
+
+typedef struct {
 	uint8 key;
 	uint8 modifier;
-}shortcut_entry;
+} shortcut_entry;
 
-//typedef struct hotkey_configuration{
+extern general_configuration gConfigGeneral;
+extern interface_configuration gConfigInterface;
+extern sound_configuration gConfigSound;
+extern cheat_configuration gConfigCheat;
+extern twitch_configuration gConfigTwitch;
+extern themes_configuration gConfigThemes;
 
-//};
-extern general_configuration_t gGeneral_config;
-extern sound_configuration_t gSound_config;
+extern uint16 gShortcutKeys[SHORTCUT_COUNT];
+
+void config_set_defaults();
+bool config_open_default();
+bool config_save_default();
+
+uint16 getLanguage();
+
+void config_reset_shortcut_keys();
+bool config_shortcut_keys_load();
+bool config_shortcut_keys_save();
+
+bool config_find_or_browse_install_directory();
+
+void themes_set_default();
+void themes_load_presets();
+bool themes_save_preset(int preset);
 
 #endif

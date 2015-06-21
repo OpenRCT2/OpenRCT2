@@ -55,7 +55,7 @@ if [[ `uname` == "Darwin" ]]; then
     if [[ ! -f $cachedir/$mingw_tar ]]; then
         wget "https://downloads.sourceforge.net/project/mingw-w64/Toolchains targetting Win32/Automated Builds/$mingw_tar" --output-document $cachedir/$mingw_tar
     fi
-    if [[ ! -d $ming_path ]]; then
+    if [[ ! -d "$mingw_path" ]]; then
 
         pushd /usr/local/
             sudo mkdir $mingw_name
@@ -84,6 +84,14 @@ if [[ ! -d $cachedir/SDL2-${SDL2_PV} ]]; then
         tar -xzf SDL2-devel-${SDL2_PV}-mingw.tar.gz 
     popd
 fi
+if [[ ! -f $cachedir/orcalibs.zip ]]; then 
+    wget http://misozmiric.com/ted/openrct2/orcalibs-unix.zip --output-document $cachedir/orcalibs.zip; 
+fi
+if [[ ! -d $cachedir/orcalibs ]]; then
+    pushd $cachedir 
+        unzip -uaq orcalibs.zip 
+    popd
+fi
 
 # Apply platform patch
 mingw_patch=libsdl2-mingw-2.0.3-fix-platform-detection-for-mingw.patch
@@ -102,6 +110,9 @@ if [[ ! -d /usr/local/cross-tools ]]; then
 fi
 if [[ ! -d /usr/local/cross-tools/i686-w64-mingw32 ]]; then
     sudo cp -r $cachedir/SDL2-${SDL2_PV}/i686-w64-mingw32 /usr/local/cross-tools/
+fi
+if [[ ! -d /usr/local/cross-tools/orcalibs ]]; then
+    sudo cp -r $cachedir/orcalibs /usr/local/cross-tools/
 fi
 
 if [[ ! -f $cachedir/i686-w64-mingw32-pkg-config ]]; then
