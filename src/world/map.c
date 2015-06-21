@@ -937,11 +937,7 @@ void game_command_set_fence_colour(int* eax, int* ebx, int* ecx, int* edx, int* 
 	RCT2_GLOBAL(0x009DEA5E, uint16) = x + 16;
 	RCT2_GLOBAL(0x009DEA60, uint16) = y + 16;
 	RCT2_GLOBAL(0x009DEA62, uint16) = z;
-	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gSandboxMode){
-		if(!map_is_location_in_park(x, y)){
-			*ebx = MONEY32_UNDEFINED;
-			return;
-		}
+	if((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || map_is_location_in_park(x, y) || gSandboxMode){
 		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 		while(map_element_get_type(map_element) != MAP_ELEMENT_TYPE_FENCE ||
 			map_element->base_height != base_height ||
@@ -970,8 +966,10 @@ void game_command_set_fence_colour(int* eax, int* ebx, int* ecx, int* edx, int* 
 			}
 			map_invalidate_tile(x, y, z, z + 0x48);
 		}
+		*ebx = 0;
+	} else {
+		*ebx = MONEY32_UNDEFINED;
 	}
-	*ebx = 0;
 }
 
 /**

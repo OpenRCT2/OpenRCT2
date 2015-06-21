@@ -1,4 +1,4 @@
-Last updated:    2015-02-06
+Last updated:    2015-06-21
 Release version: 0.0.2-beta
 ------------------------------------------------------------------------
 
@@ -29,8 +29,8 @@ includes some 3rd party software under different licenses. See the section
 2.0) Contacting
 ---- ----------
 The easiest way to contact the OpenRCT2 team is by submitting issues on GitHub
-(https://github.com/IntelOrca/OpenRCT2) in the form of questions or bug reports.
-You can also chat with us on gitter (https://gitter.im/IntelOrca/OpenRCT2).
+(https://github.com/OpenRCT2/OpenRCT2) in the form of questions or bug reports.
+You can also chat with us on gitter (https://gitter.im/OpenRCT2/OpenRCT2).
 
 2.1) Reporting bugs
 ---- --------------
@@ -113,18 +113,24 @@ or the OpenRCT2 shortcut either in your start menu or on your desktop and then
 select properties. Select the compatibility tab, check
 "Disable display scaling on high DPI settings" and then click OK.
 
+If you wish to use Steam Overlay or capture game for video recording or
+streaming, you might have to enable hardware display in the options window.
+This will still render the graphics on the CPU but the pixel data will be
+displayed using either DirectX or OpenGL. This might slow down the game but can
+also make the game look smoother.
+
 5.0) Development
 ---- -----------
 OpenRCT2 is an open-source collaborative project. It is developed voluntarily
 and hosted on GitHub. If you would like to contribute to the development of
 OpenRCT2, please read the readme file in the OpenRCT2 repository or on the main
-GitHub page at (https://github.com/IntelOrca/OpenRCT2). This gives more detailed
+GitHub page at (https://github.com/OpenRCT2/OpenRCT2). This gives more detailed
 information about the project, its roadmap and how to compile the source code.
 
 6.0) Translation
 ---- -----------
 For more information about the game's translation and how to contribute, please
-visit the GitHub page and wiki at (https://github.com/IntelOrca/OpenRCT2).
+visit the GitHub page and wiki at (https://github.com/OpenRCT2/OpenRCT2).
 
 7.0) Troubleshooting
 ---- ---------------
@@ -137,11 +143,19 @@ you wish to ask online for help.
 
 8.0) Licensing
 ---- ---------
-OpenRCT2 is licensed under the GNU General Public License version 3.0. For
-the complete license text, see the file 'licence.txt'. This license applies
+OpenRCT2 is licensed under the GNU General Public Licence version 3.0. For
+the complete licence text, see the file 'licence.txt'. This licence applies
 to all files in this distribution, except as noted below.
 
-The Simple DirectMedia Layer (SDL2) library is licensed under the zlib licence.
+argparse | MIT licence.
+CuTest   | zlib licence.
+Jansson  | MIT licence.
+libcURL  | MIT (or Modified BSD-style) licence.
+libspeex | BSD-style license.
+LodePNG  | zlib licence.
+SDL2     | zlib licence.
+
+Licences for sub-libraries used by the above may vary. For more information, visit the libraries' respective official websites.
 
 9.0) Credits
 ---- -------

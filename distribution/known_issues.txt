@@ -7,3 +7,5 @@ Release version: 0.0.2-beta
 * Some text shown in the map is not translated to selected language.
 * Scenario editor object selection window will show object names in the selected language at the time of building the object cache. (Deleting plugin.dat in Documents/OpenRCT2 will fix this)
 * The game will run slower at high resolutions, particularly if there are many moving objects visible.
+
+Most bugs or limitations present in the original game have not yet been fixed or lifted.
