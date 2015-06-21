@@ -10,7 +10,7 @@
 !define APPVERSIONINTERNAL "${APPV_MAJOR}.${APPV_MINOR}.${APPV_MAINT}.${APPV_BUILD}" ; Define application version in X.X.X.X
 !include ${VERSION_INCLUDE}
 
-!define /ifndef APPURLLINK "https://github.com/IntelOrca/OpenRCT2"
+!define /ifndef APPURLLINK "https://github.com/OpenRCT2/OpenRCT2"
 !define APPNAMEANDVERSION "${APPNAME} ${APPVERSION}"
 
 ; Define root variable relative to installer
