@@ -1545,6 +1545,11 @@ enum {
 
 	STR_INVERT_RIGHT_MOUSE_DRAG = 5372,
 
+	STR_NAME = 5373,
+	STR_DATE = 5374,
+	STR_UP = 5375,
+	STR_DOWN = 5376,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

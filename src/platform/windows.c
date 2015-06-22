@@ -23,6 +23,7 @@
 #include <windows.h>
 #include <shlobj.h>
 #include <SDL_syswm.h>
+#include <sys/stat.h>
 #include "../addresses.h"
 #include "../cmdline.h"
 #include "../openrct2.h"
@@ -639,6 +640,12 @@ uint16 platform_get_locale_language(){
 		return LANGUAGE_PORTUGUESE_BR;
 	}
 	return LANGUAGE_UNDEFINED;
+}
+
+time_t platform_file_get_modified_time(char* path){
+	struct _stat stat;
+	_stat(path, &stat);
+	return stat.st_mtime;
 }
 
 uint8 platform_get_locale_currency(){

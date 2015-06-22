@@ -18,6 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
+#include <time.h>  
 #include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
@@ -40,17 +41,21 @@ enum {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
+	WIDX_SORT_NAME,
+	WIDX_SORT_DATE,
 	WIDX_SCROLL,
 	WIDX_BROWSE,
 };
 
 // 0x9DE48C
 static rct_widget window_loadsave_widgets[] = {
-	{ WWT_FRAME,		0,		0,			WW - 1,			0,			WH - 1,		STR_NONE,			STR_NONE },
-	{ WWT_CAPTION,		0,		1,			WW - 2,			1,			14,			STR_NONE,			STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX,		0,		WW - 13,	WW - 3,			2,			13,			STR_CLOSE_X,		STR_CLOSE_WINDOW_TIP },
-	{ WWT_SCROLL,		0,		4,			WW - 5,			36,			WH - 40,	2,					STR_NONE },
-	{ WWT_CLOSEBOX,		0,		4,			200,			WH - 36,	WH - 18,	2707,				STR_NONE }, // Use native browser
+	{ WWT_FRAME,		0,		0,					WW - 1,			0,			WH - 1,		STR_NONE,			STR_NONE },
+	{ WWT_CAPTION,		0,		1,					WW - 2,			1,			14,			STR_NONE,			STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX,		0,		WW - 13,			WW - 3,			2,			13,			STR_CLOSE_X,		STR_CLOSE_WINDOW_TIP },
+	{ WWT_CLOSEBOX,		0,		4,					(WW - 5) / 2,	36,			47,			STR_NONE,			STR_NONE },
+	{ WWT_CLOSEBOX,		0,		(WW - 5) / 2 + 1,	WW - 5 - 1,		36,			47,			STR_NONE,			STR_NONE },
+	{ WWT_SCROLL,		0,		4,					WW - 5,			47,			WH - 40,	2,					STR_NONE },
+	{ WWT_CLOSEBOX,		0,		4,					200,			WH - 36,	WH - 18,	2707,				STR_NONE }, // Use native browser
 	{ WIDGETS_END }
 };
 
@@ -104,9 +109,18 @@ static void* window_loadsave_events[] = {
 
 #pragma endregion
 
+enum {
+	TYPE_UP,
+	TYPE_NEW_FILE,
+	TYPE_DIRECTORY,
+	TYPE_FILE,
+};
+
 typedef struct {
 	char name[256];
 	char path[MAX_PATH];
+	time_t date_modified;
+	uint8 type;
 } loadsave_list_item;
 
 int _listItemsCount = 0;
@@ -120,6 +134,7 @@ int _type;
 
 static void window_loadsave_populate_list(int includeNewItem, bool browsable, const char *directory, const char *extension);
 static void window_loadsave_select(rct_window *w, const char *path);
+static void window_loadsave_sort_list(int index, int endIndex);
 
 static int has_extension(char *path, char *extension);
 
@@ -139,7 +154,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	if (w == NULL) {
 		w = window_create_centred(WW, WH, (uint32*)window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT);
 		w->widgets = window_loadsave_widgets;
-		w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_BROWSE);
+		w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SORT_NAME) | (1 << WIDX_SORT_DATE) | (1 << WIDX_BROWSE);
 		w->colours[0] = 7;
 		w->colours[1] = 7;
 		w->colours[2] = 7;
@@ -296,6 +311,26 @@ static void window_loadsave_mouseup()
 			window_loadsave_select(w, filename);
 		}
 		break;
+	case WIDX_SORT_NAME:
+		if (gConfigGeneral.load_save_sort == SORT_NAME_ASCENDING){
+			gConfigGeneral.load_save_sort = SORT_NAME_DESCENDING;
+		} else {
+			gConfigGeneral.load_save_sort = SORT_NAME_ASCENDING;
+		}
+		config_save_default();
+		window_loadsave_sort_list(0, _listItemsCount - 1);
+		window_invalidate(w);
+		break;
+	case WIDX_SORT_DATE:
+		if (gConfigGeneral.load_save_sort == SORT_DATE_DESCENDING){
+			gConfigGeneral.load_save_sort = SORT_DATE_ASCENDING;
+		} else {
+			gConfigGeneral.load_save_sort = SORT_DATE_DESCENDING;
+		}
+		config_save_default();
+		window_loadsave_sort_list(0, _listItemsCount - 1);
+		window_invalidate(w);
+		break;
 	}
 }
 
@@ -448,7 +483,19 @@ static void window_loadsave_paint()
 	sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, _shortenedDirectory);
 	// Draw shadow
 	gfx_draw_string(dpi, buffer, 0, w->x + 4, w->y + 20);
-
+	rct_string_id id = STR_NONE;
+	if (gConfigGeneral.load_save_sort == SORT_NAME_ASCENDING)
+		id = STR_UP;
+	else if (gConfigGeneral.load_save_sort == SORT_NAME_DESCENDING)
+		id = STR_DOWN;
+	gfx_draw_string_centred_clipped(dpi, STR_NAME, &id, 1, w->x + 4 + (w->width - 8) / 4, w->y + 36, (w->width - 8) / 2);
+	if (gConfigGeneral.load_save_sort == SORT_DATE_ASCENDING)
+		id = STR_UP;
+	else if (gConfigGeneral.load_save_sort == SORT_DATE_DESCENDING)
+		id = STR_DOWN;
+	else
+		id = STR_NONE;
+	gfx_draw_string_centred_clipped(dpi, STR_DATE, &id, 1, w->x + 4 + (w->width - 8) * 3 / 4, w->y + 36, (w->width - 8) / 2);
 }
 
 static void shorten_path(char* path, char* buffer, int available_width){
@@ -523,7 +570,21 @@ static int list_item_sort(const void *a, const void *b)
 	const loadsave_list_item *itemA = (loadsave_list_item*)a;
 	const loadsave_list_item *itemB = (loadsave_list_item*)b;
 
-	return strcmp(itemA->name, itemB->name);
+	if (itemA->type != itemB->type)
+		return itemA->type - itemB->type;
+
+	switch (gConfigGeneral.load_save_sort){
+	case SORT_NAME_ASCENDING:
+		return strcmp(itemA->name, itemB->name);
+	case SORT_NAME_DESCENDING:
+		return -strcmp(itemA->name, itemB->name);
+	case SORT_DATE_DESCENDING:
+		return (int) -difftime(itemA->date_modified, itemB->date_modified);
+	case SORT_DATE_ASCENDING:
+		return (int) difftime(itemA->date_modified, itemB->date_modified);
+	default:
+		return strcmp(itemA->name, itemB->name);
+	}
 }
 
 static void window_loadsave_sort_list(int index, int endIndex)
@@ -580,6 +641,7 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 			strncpy(listItem->name, language_get_string(2718), sizeof(listItem->name));
 			memset(listItem->path, '\0', MAX_PATH);
 			strncpy(listItem->path, directory, lastSlash + 1);
+			listItem->type = TYPE_UP;
 			_listItemsCount++;
 		}
 	}
@@ -587,7 +649,8 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 	if (includeNewItem) {
 		listItem = &_listItems[_listItemsCount];
 		strncpy(listItem->name, language_get_string(2719), sizeof(listItem->name));
-		listItem->path[0] = 0;
+		listItem->path[0] = '\0';
+		listItem->type = TYPE_NEW_FILE;
 		_listItemsCount++;
 	}
 
@@ -604,7 +667,7 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 		strncpy(listItem->path, directory, MAX_PATH);
 		strncat(listItem->path, subDir, MAX_PATH);
 		strncpy(listItem->name, subDir, sizeof(listItem->name));
-
+		listItem->type = TYPE_DIRECTORY;
 		_listItemsCount++;
 	}
 	platform_enumerate_files_end(fileEnumHandle);
@@ -621,7 +684,9 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 		listItem = &_listItems[_listItemsCount];
 		strncpy(listItem->path, directory, sizeof(listItem->path));
 		strncat(listItem->path, fileInfo.path, sizeof(listItem->path));
-		
+		listItem->type = TYPE_FILE;
+		listItem->date_modified = platform_file_get_modified_time(listItem->path);
+
 		src = fileInfo.path;
 		dst = listItem->name;
 		i = 0;
@@ -634,6 +699,7 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 		_listItemsCount++;
 	}
 	platform_enumerate_files_end(fileEnumHandle);
+
 	window_loadsave_sort_list(sortStartIndex, _listItemsCount - 1);
 }
 

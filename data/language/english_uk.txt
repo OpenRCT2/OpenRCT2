@@ -3706,3 +3706,7 @@ STR_5369    :Park parameters...
 STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
 STR_5371    :Object Selection
 STR_5372    :Invert right mouse dragging
+STR_5373    :Name {STRINGID}
+STR_5374    :Date {STRINGID}
+STR_5375    :{UP}
+STR_5376    :{DOWN}
