@@ -112,6 +112,13 @@ enum {
 	TITLE_SEQUENCE_RANDOM
 };
 
+enum {
+	SORT_NAME_ASCENDING,
+	SORT_NAME_DESCENDING,
+	SORT_DATE_ASCENDING,
+	SORT_DATE_DESCENDING,
+};
+
 typedef struct {
 	uint8 play_intro;
 	uint8 confirmation_prompt;
@@ -145,6 +152,7 @@ typedef struct {
 	utf8string last_run_version;
 	uint8 title_sequence;
 	uint8 invert_viewport_drag;
+	uint8 load_save_sort;
 } general_configuration;
 
 typedef struct {

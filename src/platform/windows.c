@@ -23,6 +23,7 @@
 #include <windows.h>
 #include <shlobj.h>
 #include <SDL_syswm.h>
+#include <sys/stat.h>
 #include "../addresses.h"
 #include "../cmdline.h"
 #include "../openrct2.h"
@@ -263,6 +264,10 @@ void platform_enumerate_directories_end(int handle)
 		enumFileInfo->handle = NULL;
 	}
 	enumFileInfo->active = 0;
+}
+
+int platform_get_drives(){
+	return GetLogicalDrives();
 }
 
 int platform_file_copy(const char *srcPath, const char *dstPath)
@@ -639,6 +644,12 @@ uint16 platform_get_locale_language(){
 		return LANGUAGE_PORTUGUESE_BR;
 	}
 	return LANGUAGE_UNDEFINED;
+}
+
+time_t platform_file_get_modified_time(char* path){
+	struct _stat stat;
+	_stat(path, &stat);
+	return stat.st_mtime;
 }
 
 uint8 platform_get_locale_currency(){
