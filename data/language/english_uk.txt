@@ -3710,4 +3710,4 @@ STR_5373    :Name {STRINGID}
 STR_5374    :Date {STRINGID}
 STR_5375    :{UP}
 STR_5376    :{DOWN}
-#Strings 5377-5426 Reserved
+#Strings 5377-5440 Reserved
