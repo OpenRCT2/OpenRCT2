@@ -615,13 +615,15 @@ rct_track_td6* load_track_design(const char *path)
 			track_design->type = RIDE_TYPE_WOODEN_ROLLER_COASTER;
 
 		if (track_design->type == RIDE_TYPE_CORKSCREW_ROLLER_COASTER) {
-			if (track_design->ride_mode == RCT1_RIDE_MODE_POWERED_LAUNCH)
-				track_design->ride_mode = RIDE_MODE_POWERED_LAUNCH;
 			if (track_design->vehicle_type == 79) {
 				if (track_design->ride_mode == 2)
 					track_design->ride_mode = 1;
 			}
 		}
+
+		// All TD4s that use powered launch use the type that doesn't pass the station.
+		if (track_design->ride_mode == RCT1_RIDE_MODE_POWERED_LAUNCH)
+				track_design->ride_mode = RIDE_MODE_POWERED_LAUNCH;
 
 		rct_object_entry* vehicle_object;
 		if (track_design->type == RIDE_TYPE_MAZE) {
