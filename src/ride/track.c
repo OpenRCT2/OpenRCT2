@@ -3290,7 +3290,7 @@ void game_command_place_track(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 		ride->entrance_style = track_design->entrance_style;
 	}
 
-	if (version > 1){
+	if (version >= 1){
 		for (int i = 0; i < 4; ++i){
 			ride->track_colour_main[i] = track_design->track_spine_colour[i];
 			ride->track_colour_additional[i] = track_design->track_rail_colour[i];
