@@ -41,6 +41,8 @@
 #include "dropdown.h"
 #include "error.h"
 #include "../interface/themes.h"
+#include "../interface/title_sequences.h"
+#include "../title.h"
 
 enum WINDOW_OPTIONS_PAGE {
 	WINDOW_OPTIONS_PAGE_DISPLAY,
@@ -785,7 +787,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			gDropdownItemsChecked = 1 << gConfigGeneral.autosave_frequency;
 			break;
 		case WIDX_TITLE_SEQUENCE_DROPDOWN:
-			gDropdownItemsFormat[0] = 1142;
+		/*	gDropdownItemsFormat[0] = 1142;
 			gDropdownItemsArgs[0] = STR_TITLE_SEQUENCE_RCT2;
 			gDropdownItemsFormat[1] = 1142;
 			gDropdownItemsArgs[1] = STR_TITLE_SEQUENCE_OPENRCT2;
@@ -794,6 +796,26 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 				gDropdownItemsChecked = 1 << 0;
 			else if (gConfigGeneral.title_sequence == TITLE_SEQUENCE_OPENRCT2)
 				gDropdownItemsChecked = 1 << 1;
+			break;
+		case WIDX_THEMES_DROPDOWN:*/
+			num_items = gConfigTitleSequences.num_presets;
+
+			for (i = 0; i < num_items; i++) {
+				gDropdownItemsFormat[i] = 2777;
+				gDropdownItemsArgs[i] = (uint64)&gConfigTitleSequences.presets[i].name;
+			}
+
+			window_dropdown_show_text_custom_width(
+				w->x + widget->left,
+				w->y + widget->top,
+				widget->bottom - widget->top + 1,
+				w->colours[1],
+				DROPDOWN_FLAG_STAY_OPEN,
+				num_items,
+				widget->right - widget->left - 3
+				);
+
+			gDropdownItemsChecked = 1 << (gCurrentPreviewTitleSequence);
 			break;
 		}
 		break;
@@ -966,9 +988,9 @@ static void window_options_dropdown()
 			}
 			break;
 		case WIDX_TITLE_SEQUENCE_DROPDOWN:
-			if (dropdownIndex != gConfigGeneral.title_sequence) {
-				if (dropdownIndex == 0) gConfigGeneral.title_sequence = TITLE_SEQUENCE_RCT2;
-				else if (dropdownIndex == 1) gConfigGeneral.title_sequence = TITLE_SEQUENCE_OPENRCT2;
+			if (dropdownIndex != gCurrentPreviewTitleSequence) {
+				title_sequence_change_preset(dropdownIndex);
+				title_refresh_sequence();
 				config_save_default();
 				window_invalidate(w);
 			}
@@ -1267,12 +1289,13 @@ static void window_options_paint()
 			w->x + window_options_misc_widgets[WIDX_AUTOSAVE].left + 1,
 			w->y + window_options_misc_widgets[WIDX_AUTOSAVE].top
 		);
-
+		
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&gConfigTitleSequences.presets[gCurrentPreviewTitleSequence].name;
 		gfx_draw_string_left(dpi, STR_TITLE_SEQUENCE, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1);
 		gfx_draw_string_left(
 			dpi,
-			STR_TITLE_SEQUENCE_RCT1 + gConfigGeneral.title_sequence,
-			NULL,
+			1170,
+			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
 			w->colours[1],
 			w->x + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].left + 1,
 			w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top

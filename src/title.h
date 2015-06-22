@@ -28,18 +28,15 @@ enum {
 	TITLE_SCRIPT_ROTATE,
 	TITLE_SCRIPT_ZOOM,
 	TITLE_SCRIPT_RESTART,
-	TITLE_SCRIPT_LOAD
+	TITLE_SCRIPT_LOAD,
+	TITLE_SCRIPT_END,
+	TITLE_SCRIPT_LOOP,
+	TITLE_SCRIPT_ENDLOOP
 } TITLE_SCRIPT_COMMANDS;
-
-#define TITLE_WAIT(t)			TITLE_SCRIPT_WAIT, t
-#define TITLE_LOADMM()			TITLE_SCRIPT_LOADMM
-#define TITLE_LOCATION(x, y)	TITLE_SCRIPT_LOCATION, x, y
-#define TITLE_ROTATE(n)			TITLE_SCRIPT_ROTATE, n
-#define TITLE_ZOOM(d)			TITLE_SCRIPT_ZOOM, d
-#define TITLE_RESTART()			TITLE_SCRIPT_RESTART
-#define TITLE_LOAD(i)			TITLE_SCRIPT_LOAD, i
 
 void title_load();
 void title_update();
+void title_script_get_line(FILE *file, char *parts);
+bool title_refresh_sequence();
 
 #endif

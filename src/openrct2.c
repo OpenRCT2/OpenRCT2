@@ -174,6 +174,8 @@ bool openrct2_initialise()
 
 	themes_set_default();
 	themes_load_presets();
+	title_sequences_set_default();
+	title_sequences_load_presets();
 
 	if (!rct2_init())
 		return false;

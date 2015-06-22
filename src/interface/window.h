@@ -414,6 +414,7 @@ enum {
 	WC_THEMES = 119,
 	WC_TILE_INSPECTOR = 120,
 	WC_CHANGELOG = 121,
+	WC_TITLE_EDITOR = 122,
 
 	// Only used for colour schemes
 	WC_STAFF = 220,
@@ -444,8 +445,10 @@ enum {
 	LOADSAVETYPE_GAME = 0 << 1,
 	LOADSAVETYPE_LANDSCAPE = 1 << 1,
 	LOADSAVETYPE_SCENARIO = 2 << 1,
-	LOADSAVETYPE_TRACK = 3 << 1,
+	LOADSAVETYPE_TRACK = 3 << 1
 };
+
+extern bool gLoadSaveTitleSequenceSave;
 
 
 // rct2: 0x01420078

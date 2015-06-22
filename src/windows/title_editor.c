@@ -34,6 +34,10 @@
 #include "../interface/themes.h"
 #include "../sprites.h"
 #include "../title.h"
+#include "../interface/title_sequences.h"
+#include "error.h"
+#include "../scenario.h"
+#include "../util/util.h"
 
 enum {
 	WINDOW_TITLE_EDITOR_TAB_PRESETS,
@@ -52,6 +56,7 @@ static void window_title_editor_update(rct_window *w);
 static void window_title_editor_scrollgetsize();
 static void window_title_editor_scrollmousedown();
 static void window_title_editor_scrollmouseover();
+static void window_title_editor_textinput();
 static void window_title_editor_tooltip();
 static void window_title_editor_invalidate();
 static void window_title_editor_paint();
@@ -78,7 +83,7 @@ static void* window_title_editor_events[] = {
 	window_title_editor_scrollmousedown,
 	window_title_editor_emptysub,
 	window_title_editor_scrollmouseover,
-	window_title_editor_emptysub,
+	window_title_editor_textinput,
 	window_title_editor_emptysub,
 	window_title_editor_emptysub,
 	window_title_editor_tooltip,
@@ -135,9 +140,10 @@ enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
 #define BX 8
 #define BW 72
 #define BY 52
-#define BH 75
+#define BH 63
 #define BS 18
 #define ROW_HEIGHT 11
+#define SCROLL_WIDTH 300
 
 static rct_widget window_title_editor_widgets[] = {
 	{ WWT_FRAME,			0,	0,		WW-1,	0,		WH-1,	0x0FFFFFFFF,					STR_NONE },						// panel / background
@@ -147,7 +153,7 @@ static rct_widget window_title_editor_widgets[] = {
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x02000144E,					5235 },							// presets tab
 	{ WWT_TAB,				1,	34,		64,		17,		43,		0x02000144E,					5371 },							// saves tab
 	{ WWT_TAB,				1,	65,		95,		17,		43,		0x02000144E,					5372 },							// script tab
-	{ WWT_SCROLL,			1,	BW+9,	WW-4,	48,		WH-4,	3,								STR_NONE },						// command/save list
+	{ WWT_SCROLL,			1,	BX+BW+9,WW-4,	48,		WH-4,	3,								STR_NONE },						// command/save list
 	
 	// Presets Tab
 	{ WWT_DROPDOWN,			1,	125,	299,	60,		71,		STR_NONE,						STR_NONE },						// Preset title sequences
@@ -169,24 +175,18 @@ static rct_widget window_title_editor_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*3),	BH+(BS*3),	5378,					STR_NONE }, // Disable
 	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*4),	BH+(BS*4),	5380,					STR_NONE }, // Skip to
 
-	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*6),	BH+(BS*6),	5382,					STR_NONE }, // Move down
-	{ WWT_DROPDOWN_BUTTON,	1,	BX+30,	BX+BW-1,BY+(BS*6),	BH+(BS*6),	5381,					STR_NONE }, // Move up
+	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW/2-1,BY+(BS*6),BH+(BS*6),	5382,					STR_NONE }, // Move down
+	{ WWT_DROPDOWN_BUTTON,	1,	BX+BW/2,BX+BW-1,BY+(BS*6),	BH+(BS*6),	5381,					STR_NONE }, // Move up
 
-	{ WWT_IMGBTN,			1,	BX,		BX+BW/4-1,	WH-31,	WH-15,		5382,					STR_NONE }, // Replay
-	{ WWT_IMGBTN,			1,	BX+BW/4,BX+BW/2-1,	WH-31,	WH-15,		5382,					STR_NONE }, // Pause
-	{ WWT_IMGBTN,			1,	BX+BW/2,BX+BW*3/4-1,WH-31,	WH-15,		5382,					STR_NONE }, // Play
-	{ WWT_IMGBTN,			1,	BX+BW*3/4,BX+BW,	WH-31,	WH-15,		5382,					STR_NONE }, // Skip
+	{ WWT_IMGBTN,			1,	BX,		BX+BW/4-1,	WH-32,	WH-16,		STR_NONE,				STR_NONE }, // Replay
+	{ WWT_IMGBTN,			1,	BX+BW/4,BX+BW/2-1,	WH-32,	WH-16,		STR_NONE,				STR_NONE }, // Pause
+	{ WWT_IMGBTN,			1,	BX+BW/2,BX+BW*3/4-1,WH-32,	WH-16,		STR_NONE,				STR_NONE }, // Play
+	{ WWT_IMGBTN,			1,	BX+BW*3/4,BX+BW,	WH-32,	WH-16,		STR_NONE,				STR_NONE }, // Skip
 
 	{ WIDGETS_END },
 };
 
 static sint16 _window_title_editor_highlighted_index;
-
-static uint16 _title_sequence_num_saves;
-static uint16 _title_sequence_num_commands;
-static char ** _title_sequence_saves;
-static uint8* _title_sequence_script;
-static uint16 gCurrentTitleSequence = 3;
 
 
 static int window_title_editor_tab_animation_loops[] = {
@@ -217,8 +217,8 @@ static void window_title_editor_draw_tab_images(rct_drawpixelinfo *dpi, rct_wind
 		if (w->selected_tab == i)
 			sprite_idx += w->frame_no / window_title_editor_tab_animation_divisor[w->selected_tab];
 		if (i == 1) {
-			x = 6;
-			y = 3;
+			x = 4;
+			y = 1;
 		}
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TITLE_EDITOR_PRESETS_TAB + i].left + x, w->y + w->widgets[WIDX_TITLE_EDITOR_PRESETS_TAB + i].top + y, 0);
 	}
@@ -229,11 +229,11 @@ void window_title_editor_open()
 	rct_window* window;
 
 	// Check if window is already open
-	window = window_bring_to_front_by_class(WC_STAFF_LIST);
+	window = window_bring_to_front_by_class(WC_TITLE_EDITOR);
 	if (window != NULL)
 		return;
 
-	window = window_create_auto_pos(WW, WH, (uint32*)window_title_editor_events, WC_STAFF_LIST, WF_10 | WF_RESIZABLE);
+	window = window_create_auto_pos(WW, WH, (uint32*)window_title_editor_events, WC_TITLE_EDITOR, WF_10 | WF_RESIZABLE);
 	window->widgets = window_title_editor_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_TITLE_EDITOR_CLOSE) |
@@ -270,20 +270,13 @@ void window_title_editor_open()
 
 	window->selected_tab = WINDOW_TITLE_EDITOR_TAB_PRESETS;
 	window->selected_list_item = -1;
+	_window_title_editor_highlighted_index = -1;
 
 	window->min_width = WW;
 	window->min_height = WH;
 	window->max_width = 500;
 	window->max_height = 450;
 
-	if (_title_sequence_script == NULL) {
-		_title_sequence_script = malloc(1);
-		_title_sequence_script[0] = TITLE_RESTART();
-		_title_sequence_saves = malloc(1);
-		_title_sequence_saves[0] = "Dusty Greens7.sv6";
-		_title_sequence_num_saves = 0;
-		_title_sequence_num_commands = 1;
-	}
 }
 
 void window_title_editor_close() {
@@ -297,6 +290,8 @@ static void window_title_editor_mouseup()
 	short widgetIndex;
 	rct_window *w;
 	uint16 newStaffId;
+	char path[MAX_PATH];
+	char separator = platform_get_path_separator();
 
 	window_widget_get_registers(w, widgetIndex);
 
@@ -305,22 +300,51 @@ static void window_title_editor_mouseup()
 		window_close(w);
 		break;
 	case WIDX_TITLE_EDITOR_DUPLICATE_BUTTON:
-		//window_text_input_open(w, widgetIndex, 5239, 5240, 1170, (uint32)&gConfigThemes.presets[gCurrentTheme].name, 64);
+		window_text_input_open(w, widgetIndex, 5239, 5240, 1170, (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].name, 64);
 		break;
 	case WIDX_TITLE_EDITOR_DELETE_BUTTON:
-		if (gCurrentTitleSequence >= 2) {
-			//theme_delete_preset(gCurrentTheme);
+		if (gCurrentTitleSequence >= TITLE_SEQUENCE_DEFAULT_PRESETS) {
+			title_sequence_delete_preset(gCurrentTitleSequence);
 		}
 		else {
 			window_error_open(5241, STR_NONE);
 		}
 		break;
 	case WIDX_TITLE_EDITOR_RENAME_BUTTON:
-		if (gCurrentTitleSequence >= 2) {
-			//window_text_input_open(w, widgetIndex, 3348, 5240, 1170, (uint32)&gConfigThemes.presets[gCurrentTheme].name, 64);
+		if (gCurrentTitleSequence >= TITLE_SEQUENCE_DEFAULT_PRESETS) {
+			window_text_input_open(w, widgetIndex, 3348, 5240, 1170, (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].name, 64);
 		}
 		else {
 			window_error_open(5241, STR_NONE);
+		}
+		break;
+	case WIDX_TITLE_EDITOR_ADD:
+		window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
+		gLoadSaveTitleSequenceSave = true;
+		break;
+	case WIDX_TITLE_EDITOR_REMOVE:
+		if (w->selected_list_item != -1) {
+			title_sequence_remove_save(gCurrentTitleSequence, w->selected_list_item);
+		}
+		break;
+	case WIDX_TITLE_EDITOR_RENAME:
+		if (w->selected_list_item != -1) {
+			
+		}
+		break;
+	case WIDX_TITLE_EDITOR_LOAD:
+		if (w->selected_list_item != -1) {
+			if (gConfigTitleSequences.presets[gCurrentTitleSequence].path[0]) {
+				strcpy(path, gConfigTitleSequences.presets[gCurrentTitleSequence].path);
+			}
+			else {
+				platform_get_user_directory(path, "title sequences");
+				strcat(path, gConfigTitleSequences.presets[gCurrentTitleSequence].name);
+				strncat(path, &separator, 1);
+			}
+
+			strcat(path, gConfigTitleSequences.presets[gCurrentTitleSequence].saves[w->selected_list_item]);
+			game_load_save(path);
 		}
 		break;
 	}
@@ -393,21 +417,18 @@ static void window_title_editor_mousedown(int widgetIndex, rct_window* w, rct_wi
 		if (w->selected_tab == newSelectedTab)
 			break;
 		w->selected_tab = newSelectedTab;
+		w->selected_list_item = -1;
+		_window_title_editor_highlighted_index = -1;
 		window_invalidate(w);
 		w->scrolls[0].v_top = 0;
 		break;
 	case WIDX_TITLE_EDITOR_PRESETS_DROPDOWN:
-		/*num_items = gConfigThemes.num_presets;
+		num_items = gConfigTitleSequences.num_presets;
 
 		widget--;
-		gDropdownItemsFormat[0] = 2777;
-		gDropdownItemsArgs[0] = (uint64)&gConfigThemes.presets[1].name;
-		gDropdownItemsFormat[1] = 2777;
-		gDropdownItemsArgs[1] = (uint64)&gConfigThemes.presets[0].name;
-
-		for (i = 2; i < num_items; i++) {
+		for (i = 0; i < num_items; i++) {
 			gDropdownItemsFormat[i] = 2777;
-			gDropdownItemsArgs[i] = (uint64)&gConfigThemes.presets[i].name;
+			gDropdownItemsArgs[i] = (uint64)&gConfigTitleSequences.presets[i].name;
 		}
 
 		window_dropdown_show_text_custom_width(
@@ -420,7 +441,7 @@ static void window_title_editor_mousedown(int widgetIndex, rct_window* w, rct_wi
 			widget->right - widget->left - 3
 			);
 
-		gDropdownItemsChecked = 1 << (gCurrentTitleSequence);*/
+		gDropdownItemsChecked = 1 << (gCurrentTitleSequence);
 		break;
 	}
 }
@@ -432,7 +453,9 @@ static void window_title_editor_dropdown()
 	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 	
 	switch (widgetIndex) {
-	case WIDX_TITLE_EDITOR_PRESETS:
+	case WIDX_TITLE_EDITOR_PRESETS_DROPDOWN:
+		gCurrentTitleSequence = dropdownIndex;
+		window_invalidate(w);
 		break;
 	}
 }
@@ -456,9 +479,9 @@ void window_title_editor_scrollgetsize()
 
 	lineCount = 1;
 	if (w->selected_tab == WINDOW_TITLE_EDITOR_TAB_SAVES)
-		lineCount = _title_sequence_num_saves;
+		lineCount = gConfigTitleSequences.presets[gCurrentTitleSequence].num_saves;
 	else if (w->selected_tab == WINDOW_TITLE_EDITOR_TAB_SCRIPT)
-		lineCount = _title_sequence_num_commands;
+		lineCount = gConfigTitleSequences.presets[gCurrentTitleSequence].num_commands;
 	
 	height = lineCount * ROW_HEIGHT;
 	i = height - window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].bottom + window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].top + 21;
@@ -469,7 +492,7 @@ void window_title_editor_scrollgetsize()
 		window_invalidate(w);
 	}
 
-	width = 420;
+	width = SCROLL_WIDTH;
 	window_scrollsize_set_registers(width, height);
 }
 
@@ -484,14 +507,16 @@ void window_title_editor_scrollmousedown() {
 	w->selected_list_item = -1;
 	switch (w->selected_tab) {
 	case WINDOW_TITLE_EDITOR_TAB_SAVES:
-		if (index < _title_sequence_num_saves)
+		if (index < gConfigTitleSequences.presets[gCurrentTitleSequence].num_saves) {
 			w->selected_list_item = index;
-
+			widget_invalidate(w, WIDX_TITLE_EDITOR_LIST);
+		}
 		break;
 	case WINDOW_TITLE_EDITOR_TAB_SCRIPT:
-		if (index < _title_sequence_num_commands)
+		if (index < gConfigTitleSequences.presets[gCurrentTitleSequence].num_commands) {
 			w->selected_list_item = index;
-
+			widget_invalidate(w, WIDX_TITLE_EDITOR_LIST);
+		}
 		break;
 	}
 }
@@ -507,14 +532,69 @@ void window_title_editor_scrollmouseover() {
 	_window_title_editor_highlighted_index = -1;
 	switch (w->selected_tab) {
 	case WINDOW_TITLE_EDITOR_TAB_SAVES:
-		if (index < _title_sequence_num_saves)
+		if (index < gConfigTitleSequences.presets[gCurrentTitleSequence].num_saves) {
 			_window_title_editor_highlighted_index = index;
-
+			widget_invalidate(w, WIDX_TITLE_EDITOR_LIST);
+		}
 		break;
 	case WINDOW_TITLE_EDITOR_TAB_SCRIPT:
-		if (index < _title_sequence_num_commands)
+		if (index < gConfigTitleSequences.presets[gCurrentTitleSequence].num_commands) {
 			_window_title_editor_highlighted_index = index;
+			widget_invalidate(w, WIDX_TITLE_EDITOR_LIST);
+		}
+		break;
+	}
+}
 
+static void window_title_editor_textinput()
+{
+	
+	rct_window *w;
+	short widgetIndex;
+	uint8 result;
+	char *text;
+
+	window_textinput_get_registers(w, widgetIndex, result, text);
+
+	if (!result || text[0] == 0)
+		return;
+
+	switch (widgetIndex) {
+	case WIDX_TITLE_EDITOR_DUPLICATE_BUTTON:
+	case WIDX_TITLE_EDITOR_RENAME_BUTTON:
+		if (filename_valid_characters(text)) {
+			if (!title_sequence_name_exists(text)) {
+				if (widgetIndex == WIDX_TITLE_EDITOR_DUPLICATE_BUTTON) {
+					title_sequence_create_preset(gCurrentTitleSequence, text);
+				}
+				else {
+					title_sequence_rename_preset(gCurrentTitleSequence, text);
+				}
+				config_save_default();
+				window_invalidate(w);
+			}
+			else {
+				window_error_open(5243, STR_NONE);
+			}
+		}
+		else {
+			window_error_open(5243, STR_NONE);
+		}
+		break;
+	case WIDX_TITLE_EDITOR_RENAME:
+		if (filename_valid_characters(text)) {
+			if (!title_sequence_save_exists(gCurrentTitleSequence, text)) {
+				title_sequence_rename_save(gCurrentTitleSequence, w->selected_list_item, text);
+				title_sequence_save_preset_script(gCurrentTitleSequence);
+				window_invalidate(w);
+			}
+			else {
+				window_error_open(5243, STR_NONE);
+			}
+		}
+		else {
+			window_error_open(5243, STR_NONE);
+		}
 		break;
 	}
 }
@@ -619,7 +699,7 @@ void window_title_editor_paint() {
 	switch (w->selected_tab) {
 	case WINDOW_TITLE_EDITOR_TAB_PRESETS:
 
-		/*RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&gConfigThemes.presets[gCurrentTheme].name;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].name;
 		gfx_draw_string_left(dpi, 5238, NULL, w->colours[1], w->x + 10, w->y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1);
 		gfx_draw_string_left_clipped(
 			dpi,
@@ -629,7 +709,7 @@ void window_title_editor_paint() {
 			w->x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left + 1,
 			w->y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top,
 			w->x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].left - window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left - 4
-			);*/
+			);
 
 		break;
 	case WINDOW_TITLE_EDITOR_TAB_SAVES:
@@ -643,68 +723,117 @@ void window_title_editor_paint() {
 
 void window_title_editor_scrollpaint()
 {
-	int spriteIndex, y, i, staffOrderIcon_x, staffOrders, staffOrderSprite;
-	uint32 argument_1, argument_2;
-	uint8 selectedTab;
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
-	rct_peep *peep;
+	char buffer[256];
+	bool selected, hover, error;
+	int y, x, x2, width;
 
 	window_paint_get_registers(w, dpi);
 
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ((char*)0x0141FC48)[w->colours[1] * 8]);
 
-	y = 0;
-	i = 0;
-	selectedTab = RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8);
-	FOR_ALL_PEEPS(spriteIndex, peep) {
-		if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == selectedTab) {
-			if (y > dpi->y + dpi->height) {
+	title_sequence *title = &gConfigTitleSequences.presets[gCurrentTitleSequence];
+
+	y = 0; x = 0; x2 = 0; width = 0;
+	width = w->widgets[WIDX_TITLE_EDITOR_LIST].right - w->widgets[WIDX_TITLE_EDITOR_LIST].left;
+	if (w->selected_tab == WINDOW_TITLE_EDITOR_TAB_SAVES) {
+
+		for (int i = 0; i < title->num_saves; i++, y += ROW_HEIGHT) {
+			selected = false;
+			hover = false;
+			if (i == w->selected_list_item) {
+				selected = true;
+				gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH, y + ROW_HEIGHT - 1, RCT2_GLOBAL(0x0141FC46 + (w->colours[1] * 8), uint8));
+			}
+			else if (i == _window_title_editor_highlighted_index) {
+				hover = true;
+				gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH, y + ROW_HEIGHT - 1, RCT2_GLOBAL(0x0141FC47 + (w->colours[1] * 8), uint8));
+			}
+			else if (i & 1) {
+				gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH, y + ROW_HEIGHT - 1, RCT2_GLOBAL(0x0141FC4A + (w->colours[1] * 8), uint8) | 0x1000000);
+			}
+			
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&title->saves[i];
+			if (selected || hover) {
+				format_string(buffer, 1170, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+			}
+			else {
+				format_string(buffer + 1, 1170, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+				buffer[0] = FORMAT_BLACK;
+			}
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = &buffer;
+			gfx_draw_string_left(dpi, 1170, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], x + 5, y);
+		}
+	}
+	else if (w->selected_tab == WINDOW_TITLE_EDITOR_TAB_SCRIPT) {
+
+		x2 = 92;
+		for (int i = 0; i < title->num_commands; i++, y += ROW_HEIGHT) {
+			title_command *command = &title->commands[i];
+			selected = false;
+			hover = false;
+			error = false;
+			if (i == w->selected_list_item) {
+				selected = true;
+				gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH, y + ROW_HEIGHT - 1, RCT2_GLOBAL(0x0141FC46 + (w->colours[1] * 8), uint8));
+			}
+			else if (i == _window_title_editor_highlighted_index) {
+				hover = true;
+				gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH, y + ROW_HEIGHT - 1, RCT2_GLOBAL(0x0141FC47 + (w->colours[1] * 8), uint8));
+			}
+			else if (i & 1) {
+				gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH, y + ROW_HEIGHT - 1, RCT2_GLOBAL(0x0141FC4A + (w->colours[1] * 8), uint8) | 0x1000000);
+			}
+
+			rct_string_id commandName;
+			switch (command->command) {
+			case TITLE_SCRIPT_WAIT:
+				commandName = 5385;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = command->seconds;
+				break;
+			case TITLE_SCRIPT_LOADMM:
+				commandName = 5386;
+				break;
+			case TITLE_SCRIPT_LOCATION:
+				commandName = 5387;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = command->x;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = command->y;
+				break;
+			case TITLE_SCRIPT_ROTATE:
+				commandName = 5388;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = command->rotations;
+				break;
+			case TITLE_SCRIPT_ZOOM:
+				commandName = 5389;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = command->zoom;
+				break;
+			case TITLE_SCRIPT_RESTART:
+				commandName = 5390;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = command->zoom;
+				break;
+			case TITLE_SCRIPT_LOAD:
+				commandName = 5391;
+				if (command->saveIndex == 0xFF) {
+					commandName = 5384;
+					error = true;
+				}
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&title->saves[command->saveIndex];
+				break;
+			case TITLE_SCRIPT_END:
+				commandName = 5392;
 				break;
 			}
-
-			if (y + 11 >= dpi->y) {
-				int format = (_quick_fire_mode ? 5298 : 1191);
-
-				if (i == RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short)) {
-					gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
-					format = (_quick_fire_mode ? 5299 : 1193);
-				}
-
-				RCT2_GLOBAL(0x013CE952, uint16) = peep->name_string_idx;
-				RCT2_GLOBAL(0x013CE952 + 2, uint32) = peep->id;
-				gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 0, y - 1, 107);
-
-				get_arguments_from_action(peep, &argument_1, &argument_2);
-				RCT2_GLOBAL(0x013CE952, uint32) = argument_1;
-				RCT2_GLOBAL(0x013CE952 + 4, uint32) = argument_2;
-				gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 175, y - 1, 305);
-
-				// True if a patrol path is set for the worker
-				if (RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] & 2) {
-					gfx_draw_sprite(dpi, 0x13FD, 110, y - 1, 0);
-				}
-
-				staffOrderIcon_x = 0x7D;
-				if (peep->staff_type != 3) {
-					staffOrders = peep->var_C6;
-					staffOrderSprite = RCT2_ADDRESS(0x00992A08, uint32)[selectedTab];
-
-					while (staffOrders != 0) {
-						if (staffOrders & 1) {
-							gfx_draw_sprite(dpi, staffOrderSprite, staffOrderIcon_x, y - 1, 0);
-						}
-						staffOrders = staffOrders >> 1;
-						staffOrderIcon_x += 9;
-						staffOrderSprite++;
-					}
-				} else {
-					gfx_draw_sprite(dpi, peep->sprite_type - 4 + 0x13FE, staffOrderIcon_x, y - 1, 0);
-				}
+			
+			if ((selected || hover) && !error) {
+				format_string(buffer, commandName, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
 			}
-
-			y += 10;
-			i++;
+			else {
+				format_string(buffer + 1, commandName, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+				buffer[0] = (error ? ((selected || hover) ? FORMAT_LIGHTPINK : FORMAT_RED) : FORMAT_BLACK);
+			}
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = &buffer;
+			gfx_draw_string_left(dpi, 1170, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], x + 5, y);
 		}
 	}
 }

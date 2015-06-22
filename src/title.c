@@ -43,6 +43,8 @@
 #include "world/scenery.h"
 #include "world/sprite.h"
 #include "title.h"
+#include "interface/title_sequences.h"
+#include "windows/error.h"
 
 static const int gRandomShowcase = 0;
 
@@ -73,6 +75,7 @@ static uint8* _loadedScript;
 static const uint8* _currentScript;
 static int _scriptNoLoadsSinceRestart;
 static int _scriptWaitCounter;
+static int _scriptCurrentPreset;
 
 static void title_init_showcase();
 static void title_update_showcase();
@@ -153,7 +156,7 @@ static void title_create_windows()
  */
 static void title_init_showcase()
 {
-	_scriptNoLoadsSinceRestart = 1;
+	/*_scriptNoLoadsSinceRestart = 1;
 
 	SafeFree(_loadedScript);
 
@@ -170,7 +173,8 @@ static void title_init_showcase()
 		break;
 	}
 
-	_scriptWaitCounter = 0;
+	_scriptWaitCounter = 0;*/
+	title_refresh_sequence();
 	title_update_showcase();
 }
 
@@ -260,6 +264,10 @@ static void title_do_next_script_opcode()
 	
 	script_opcode = *_currentScript++;
 	switch (script_opcode) {
+	case TITLE_SCRIPT_END:
+		_currentScript--;
+		_scriptWaitCounter = 1;
+		break;
 	case TITLE_SCRIPT_WAIT:
 		_scriptWaitCounter = (*_currentScript++) * 32;
 		break;
@@ -308,6 +316,7 @@ static void title_do_next_script_opcode()
 		{
 			const uint8 *loadPtr;
 			char *ch, filename[32], path[MAX_PATH];
+			char separator = platform_get_path_separator();
 			
 			loadPtr = _currentScript - 1;
 
@@ -318,7 +327,16 @@ static void title_do_next_script_opcode()
 			} while (*(_currentScript - 1) != 0);
 
 			// Construct full relative path
-			sprintf(path, "%s%cData%ctitle%c%s", gExePath, platform_get_path_separator(), platform_get_path_separator(), platform_get_path_separator(), filename);
+			if (gConfigTitleSequences.presets[_scriptCurrentPreset].path[0]) {
+				strcpy(path, gConfigTitleSequences.presets[_scriptCurrentPreset].path);
+			}
+			else {
+				platform_get_user_directory(path, "title sequences");
+				strcat(path, gConfigTitleSequences.presets[_scriptCurrentPreset].name);
+				strncat(path, &separator, 1);
+			}
+
+			strcat(path, filename);
 			if (title_load_park(path)) {
 				_scriptNoLoadsSinceRestart = 0;
 			} else {
@@ -446,7 +464,7 @@ static uint8 *generate_random_script()
 
 #pragma region Load script.txt
 
-static void title_script_get_line(FILE *file, char *parts)
+void title_script_get_line(FILE *file, char *parts)
 {
 	int i, c, part, cindex, whitespace, comment;
 
@@ -552,6 +570,82 @@ static uint8 *title_script_load()
 	}
 
 	return binaryScript;
+}
+
+
+bool title_refresh_sequence()
+{
+	_scriptCurrentPreset = gCurrentPreviewTitleSequence;
+	title_sequence *title = &gConfigTitleSequences.presets[_scriptCurrentPreset];
+
+	bool hasLoad = false, hasWait = false, hasInvalidSave = false;
+	for (int i = 0; i < title->num_commands && (!hasLoad || !hasWait) && !hasInvalidSave; i++) {
+		if (title->commands[i].command == TITLE_SCRIPT_LOAD) {
+			if (title->commands[i].saveIndex == 0xFF)
+				hasInvalidSave = true;
+			hasLoad = true;
+		}
+		else if (title->commands[i].command == TITLE_SCRIPT_LOADMM)
+			hasLoad = true;
+		else if (title->commands[i].command == TITLE_SCRIPT_WAIT)
+			hasWait = true;
+		else if (title->commands[i].command == TITLE_SCRIPT_RESTART || title->commands[i].command == TITLE_SCRIPT_END)
+			break;
+	}
+	if (hasLoad && hasWait && !hasInvalidSave) {
+		uint8 *src, *scriptPtr, *binaryScript;
+		binaryScript = malloc(1024 * 8);
+		scriptPtr = binaryScript;
+
+		for (int i = 0; i < title->num_commands; i++) {
+			*scriptPtr++ = title->commands[i].command;
+			switch (title->commands[i].command) {
+			case TITLE_SCRIPT_LOAD:
+				src = title->saves[title->commands[i].saveIndex];
+				do {
+					*scriptPtr++ = *src++;
+				} while (*(src - 1) != 0);
+				break;
+			case TITLE_SCRIPT_LOCATION:
+				*scriptPtr++ = title->commands[i].x;
+				*scriptPtr++ = title->commands[i].y;
+				break;
+			case TITLE_SCRIPT_ROTATE:
+				*scriptPtr++ = title->commands[i].rotations;
+				break;
+			case TITLE_SCRIPT_ZOOM:
+				*scriptPtr++ = title->commands[i].zoom;
+				break;
+			case TITLE_SCRIPT_WAIT:
+				*scriptPtr++ = title->commands[i].seconds;
+				break;
+			}
+		}
+
+		*scriptPtr++ = TITLE_SCRIPT_END;
+
+		int scriptLength = (int)(scriptPtr - binaryScript);
+		binaryScript = realloc(binaryScript, scriptLength);
+
+		_scriptNoLoadsSinceRestart = 1;
+		SafeFree(_loadedScript);
+		_loadedScript = binaryScript;
+		_currentScript = binaryScript;
+		_scriptWaitCounter = 0;
+		title_update_showcase();
+		gfx_invalidate_screen();
+
+		return true;
+	}
+	window_error_open(5383, STR_NONE);
+	_scriptNoLoadsSinceRestart = 1;
+	SafeFree(_loadedScript);
+	_scriptCurrentPreset = 0;
+	_currentScript = _magicMountainScript;
+	_scriptWaitCounter = 0;
+	title_update_showcase();
+	gfx_invalidate_screen();
+	return false;
 }
 
 #pragma endregion

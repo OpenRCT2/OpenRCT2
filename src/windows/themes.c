@@ -34,6 +34,7 @@
 #include "dropdown.h"
 #include "../interface/themes.h"
 #include "error.h"
+#include "../util/util.h"
 
 enum {
 	WINDOW_THEMES_TAB_SETTINGS,
@@ -728,15 +729,6 @@ void window_themes_scrollmouseover() {
 	//	return;
 }
 
-static bool valid_characters(const char *name)
-{
-	for (int i = 0; name[i] != '\0'; i++) {
-		if (name[i] == '\\' || name[i] == '/' || name[i] == ':' || name[i] == '?' || name[i] == '*' || name[i] == '<' || name[i] == '>' || name[i] == '|')
-			return false;
-	}
-	return true;
-}
-
 static void window_themes_textinput()
 {
 	rct_window *w;
@@ -752,7 +744,7 @@ static void window_themes_textinput()
 	switch (widgetIndex) {
 	case WIDX_THEMES_DUPLICATE_BUTTON:
 	case WIDX_THEMES_RENAME_BUTTON:
-		if (valid_characters(text)) {
+		if (filename_valid_characters(text)) {
 			bool nameTaken = false;
 			for (int i = 0; i < gConfigThemes.num_presets; i++) {
 				if (strcmp(gConfigThemes.presets[i].name, text) == 0) {

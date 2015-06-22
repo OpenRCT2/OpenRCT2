@@ -21,12 +21,14 @@
 #include "../localisation/string_ids.h"
 #include "window.h"
 #include "title_sequences.h"
+#include "../title.h"
 #include "../util/util.h"
 
 
 uint16 gCurrentTitleSequence;
+uint16 gCurrentPreviewTitleSequence;
 
-title_command MakeCommand(int command, int parameter1, int parameter2)
+title_command TitleScriptMakeCommand(int command, int parameter1, int parameter2)
 {
 	title_command titleCommand = { (uint8)command, (uint8)parameter1, (uint8)parameter2 };
 	return titleCommand;
@@ -43,8 +45,13 @@ bool title_sequence_name_exists(const char *name)
 
 bool title_sequence_save_exists(int preset, const char *name)
 {
+	utf8 newName[MAX_PATH];
+	char *extension = path_get_extension(name);
+	strcpy(newName, name);
+	if (stricmp(extension, ".sv6") != 0 && stricmp(extension, ".sc6") != 0)
+		strcat(newName, ".sv6");
 	for (int i = 0; i < gConfigTitleSequences.presets[preset].num_saves; i++) {
-		if (stricmp(gConfigTitleSequences.presets[preset].saves[i], name) == 0)
+		if (stricmp(gConfigTitleSequences.presets[preset].saves[i], newName) == 0)
 			return true;
 	}
 	return false;
@@ -59,15 +66,18 @@ void title_sequence_change_preset(int preset)
 			gConfigInterface.current_title_sequence_preset = "*RCT2";
 			break;
 		case 1:
-			gConfigInterface.current_title_sequence_preset = "*RCT1";
+			gConfigInterface.current_title_sequence_preset = "*OPENRCT2";
 			break;
 		default:
 			gConfigInterface.current_title_sequence_preset = gConfigTitleSequences.presets[preset].name;
 			break;
 		}
-		gCurrentTitleSequence = preset;
+		gCurrentPreviewTitleSequence = preset;
 	}
 	window_invalidate_all();
+
+	// Switch to (and restart) this title sequence if it's valid
+	title_refresh_sequence();
 }
 
 void title_sequence_create_preset(const char *name)
@@ -79,18 +89,18 @@ void title_sequence_create_preset(const char *name)
 		strcpy(gConfigTitleSequences.presets[preset].name, name);
 
 		gConfigTitleSequences.presets[preset].saves = malloc(0);
-		gConfigTitleSequences.presets[preset].commands = malloc(sizeof(title_command));
-		gConfigTitleSequences.presets[preset].commands[0] = TITLE_RESTART();
+		gConfigTitleSequences.presets[preset].commands = malloc(0);
 		gConfigTitleSequences.presets[preset].num_saves = 0;
-		gConfigTitleSequences.presets[preset].num_commands = 1;
+		gConfigTitleSequences.presets[preset].num_commands = 0;
 
 		// Create the folder
 		utf8 path[MAX_PATH];
 		platform_get_user_directory(path, "title sequences");
 		strcat(path, gConfigTitleSequences.presets[preset].name);
-		platform_directory_delete(path);
+		platform_file_delete(path);
 		platform_ensure_directory_exists(path);
 		
+		title_sequence_save_preset_script(preset);
 		title_sequence_change_preset(preset);
 	}
 }
@@ -116,7 +126,7 @@ void title_sequence_duplicate_preset(int duplicate, const char *name)
 		utf8 path[MAX_PATH], srcPath[MAX_PATH];
 		platform_get_user_directory(path, "title sequences");
 		strcat(path, gConfigTitleSequences.presets[preset].name);
-		platform_directory_delete(path);
+		platform_file_delete(path);
 		platform_ensure_directory_exists(path);
 
 		// Copy the saves
@@ -130,14 +140,15 @@ void title_sequence_duplicate_preset(int duplicate, const char *name)
 
 			platform_file_copy(srcPath, path);
 		}
-		
+
+		title_sequence_save_preset_script(preset);
 		title_sequence_change_preset(preset);
 	}
 }
 
 void title_sequence_delete_preset(int preset)
 {
-	if (preset >= 2 && preset < gConfigTitleSequences.num_presets) {
+	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets) {
 		// Delete the folder
 		utf8 path[MAX_PATH];
 		platform_get_user_directory(path, "title sequences");
@@ -159,7 +170,7 @@ void title_sequence_delete_preset(int preset)
 
 void title_sequence_rename_preset(int preset, const char *newName)
 {
-	if (preset >= 2 && preset < gConfigTitleSequences.num_presets && filename_valid_characters(newName) && !title_sequence_name_exists(newName)) {
+	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets && filename_valid_characters(newName) && !title_sequence_name_exists(newName)) {
 		// Rename the folder
 		utf8 src[MAX_PATH], dest[MAX_PATH];
 		platform_get_user_directory(src, "title sequences");
@@ -171,7 +182,7 @@ void title_sequence_rename_preset(int preset, const char *newName)
 		strcpy(gConfigTitleSequences.presets[preset].name, newName);
 
 		// Rename the config preset name if needed
-		if (preset == gCurrentTitleSequence) {
+		if (preset == gCurrentPreviewTitleSequence) {
 			gConfigInterface.current_title_sequence_preset = gConfigTitleSequences.presets[preset].name;
 		}
 	}
@@ -180,15 +191,20 @@ void title_sequence_rename_preset(int preset, const char *newName)
 
 void title_sequence_add_save(int preset, const char *path, const char *newName)
 {
-	if (preset >= 2 && preset < gConfigTitleSequences.num_presets && filename_valid_characters(newName) && title_sequence_save_exists(preset, newName) && platform_file_exists(path)) {
+	utf8 newPath[MAX_PATH];
+	char *extension = path_get_extension(newName);
+	strcpy(newPath, newName);
+	if (stricmp(extension, ".sv6") != 0 && stricmp(extension, ".sc6") != 0)
+		strcat(newPath, ".sv6");
+	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets && filename_valid_characters(newPath) && !title_sequence_save_exists(preset, newPath) && platform_file_exists(path)) {
 		// Copy the save file
-		utf8 newPath[MAX_PATH];
+		char separator = platform_get_path_separator();
 		platform_get_user_directory(newPath, "title sequences");
 		strcat(newPath, gConfigTitleSequences.presets[preset].name);
+		strncat(newPath, &separator, 1);
 		strcat(newPath, newName);
 		// Add the appropriate extension if needed
-		char *extension = path_get_extension(newName);
-		if (strcmp(extension, ".sv6") != 0 && strcmp(extension, ".sc6") != 0)
+		if (stricmp(extension, ".sv6") != 0 && stricmp(extension, ".sc6") != 0)
 			strcat(newPath, ".sv6");
 		platform_file_copy(path, newPath);
 
@@ -197,18 +213,20 @@ void title_sequence_add_save(int preset, const char *path, const char *newName)
 		
 		strcpy(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], newName);
 		// Add the appropriate extension if needed
-		if (strcmp(extension, ".sv6") != 0 && strcmp(extension, ".sc6") != 0)
+		if (stricmp(extension, ".sv6") != 0 && stricmp(extension, ".sc6") != 0)
 			strcat(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], ".sv6");
 	}
 }
 
 void title_sequence_remove_save(int preset, int index)
 {
-	if (preset >= 2 && preset < gConfigTitleSequences.num_presets && index >= 0 && index < gConfigTitleSequences.presets[preset].num_saves) {
+	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets && index >= 0 && index < gConfigTitleSequences.presets[preset].num_saves) {
 		// Delete the save file
+		char separator = platform_get_path_separator();
 		utf8 path[MAX_PATH];
 		platform_get_user_directory(path, "title sequences");
 		strcat(path, gConfigTitleSequences.presets[preset].name);
+		strncat(path, &separator, 1);
 		strcat(path, gConfigTitleSequences.presets[preset].saves[index]);
 		platform_file_delete(path);
 		
@@ -227,20 +245,24 @@ void title_sequence_remove_save(int preset, int index)
 		}
 		gConfigTitleSequences.presets[preset].num_saves--;
 		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * gConfigTitleSequences.presets[preset].num_saves);
+		title_sequence_save_preset_script(preset);
 	}
 }
 
 void title_sequence_rename_save(int preset, int index, const char *newName)
 {
-	if (preset >= 2 && preset < gConfigTitleSequences.num_presets && index >= 0 && index < gConfigTitleSequences.presets[preset].num_saves &&
-		filename_valid_characters(newName) && title_sequence_save_exists(preset, newName)) {
+	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets && index >= 0 && index < gConfigTitleSequences.presets[preset].num_saves &&
+		filename_valid_characters(newName) && !title_sequence_save_exists(preset, newName)) {
 
 		// Rename the save file
+		char separator = platform_get_path_separator();
 		utf8 src[MAX_PATH], dest[MAX_PATH];
 		platform_get_user_directory(src, "title sequences");
 		platform_get_user_directory(dest, "title sequences");
 		strcat(src, gConfigTitleSequences.presets[preset].name);
 		strcat(dest, gConfigTitleSequences.presets[preset].name);
+		strncat(src, &separator, 1);
+		strncat(dest, &separator, 1);
 		strcat(src, gConfigTitleSequences.presets[preset].saves[index]);
 		strcat(dest, newName);
 		// Add the appropriate extension if needed
@@ -253,23 +275,25 @@ void title_sequence_rename_save(int preset, int index, const char *newName)
 		// Add the appropriate extension if needed
 		if (strcmp(extension, ".sv6") != 0 && strcmp(extension, ".sc6") != 0)
 			strcat(gConfigTitleSequences.presets[preset].saves[index], ".sv6");
+		title_sequence_save_preset_script(preset);
 	}
 }
 
 
 void title_sequence_add_command(int preset, title_command command)
 {
-	if (preset >= 2 && preset < gConfigTitleSequences.num_presets && command.command != TITLE_SCRIPT_RESTART) {
+	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets && command.command != TITLE_SCRIPT_RESTART) {
 		// No need to add restart, that's already handled
 		gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(title_command) * gConfigTitleSequences.presets[preset].num_commands + 1);
 		gConfigTitleSequences.presets[preset].commands[gConfigTitleSequences.presets[preset].num_commands - 1] = command;
 		gConfigTitleSequences.presets[preset].commands[gConfigTitleSequences.presets[preset].num_commands] = TITLE_RESTART();
 		gConfigTitleSequences.presets[preset].num_commands++;
+		title_sequence_save_preset_script(preset);
 	}
 }
 void title_sequence_insert_command(int preset, int index, title_command command)
 {
-	if (preset >= 2 && preset < gConfigTitleSequences.num_presets && index >= 0 && index < gConfigTitleSequences.presets[preset].num_commands &&
+	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets && index >= 0 && index < gConfigTitleSequences.presets[preset].num_commands &&
 		command.command != TITLE_SCRIPT_RESTART) {
 		// No need to add restart, that's already handled
 		gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(title_command) * gConfigTitleSequences.presets[preset].num_commands + 1);
@@ -278,17 +302,19 @@ void title_sequence_insert_command(int preset, int index, title_command command)
 		}
 		gConfigTitleSequences.presets[preset].commands[index] = command;
 		gConfigTitleSequences.presets[preset].num_commands++;
+		title_sequence_save_preset_script(preset);
 	}
 }
 
 void title_sequence_delete_command(int preset, int index)
 {
-	if (preset >= 2 && preset < gConfigTitleSequences.num_presets && index >= 0 && index < gConfigTitleSequences.presets[preset].num_commands - 1) {
+	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets && index >= 0 && index < gConfigTitleSequences.presets[preset].num_commands - 1) {
 		// Don't allow deleting of last command, it's always restart
 		for (int i = index; i < gConfigTitleSequences.presets[preset].num_commands - 1; i++) {
 			gConfigTitleSequences.presets[preset].commands[i] = gConfigTitleSequences.presets[preset].commands[i + 1];
 		}
 		gConfigTitleSequences.presets[preset].num_commands--;
 		gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(title_command) * gConfigTitleSequences.presets[preset].num_commands);
+		title_sequence_save_preset_script(preset);
 	}
 }

@@ -3704,15 +3704,49 @@ STR_5367    :Fast
 STR_5368    :Reset crash status
 STR_5369    :Park parameters...
 STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
-STR_5371    :{SMALLFONT}{BLACK}Saves
-STR_5372    :{SMALLFONT}{BLACK}Script
-STR_5373    :Add
-STR_5374    :Remove
-STR_5375    :Load
+STR_5371    :Object Selection
+STR_5372    :Invert right mouse dragging
+STR_5373    :Name {STRINGID}
+STR_5374    :Date {STRINGID}
+STR_5375    :{UP}
+STR_5376    :{DOWN}
+
+STR_5377    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
+STR_5378    :{SMALLFONT}{BLACK}Saves
+STR_5379    :{SMALLFONT}{BLACK}Script
+STR_5380    :Add
+STR_5381    :Remove
+STR_5382    :Load
 STR_5376    :Insert
 STR_5377    :Edit
 STR_5378    :Disable
 STR_5379    :Enable
 STR_5380    :Skip to
-STR_5381    :{UP}
-STR_5382    :{DOWN}
+STR_5383    :Failed to load title sequence
+STR_5384    :Load{MOVE_X}{87}No save selected
+STR_5385    :Wait{MOVE_X}{87}{COMMA16}
+STR_5386    :Load{MOVE_X}{87}"Six Flags Magic Mountain.SC6"
+STR_5387    :Location{MOVE_X}{87}{COMMA16}   {COMMA16}
+STR_5388    :Rotate{MOVE_X}{87}{COMMA16}
+STR_5389    :Zoom{MOVE_X}{87}{COMMA16}
+STR_5390    :Restart
+STR_5391    :Load{MOVE_X}{87}{STRING}
+STR_5392    :End
+STR_0000    :Seconds
+STR_0000    :Coordinates
+STR_0000    :Counter-clockwise rotations
+STR_0000    :Zoom level
+STR_0000    :Save name already exists
+STR_0000    :Cannot edit title sequence while playing
+STR_0000    :Press the stop button to coninue editing
+STR_0000    :Can't change this title sequence
+STR_0000    :Enter a name for the title sequence
+STR_0000    :Zoom
+STR_0000    :Rotate
+STR_0000    :Wait
+STR_0000    :Location
+STR_0000    :
+STR_0000    :
+STR_0000    :
+STR_0000    :
+STR_0000    :

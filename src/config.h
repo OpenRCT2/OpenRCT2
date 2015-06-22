@@ -143,7 +143,6 @@ typedef struct {
 	uint8 date_format;
 	uint8 auto_staff_placement;
 	utf8string last_run_version;
-	uint8 title_sequence;
 } general_configuration;
 
 typedef struct {
@@ -226,6 +225,7 @@ typedef struct {
 
 typedef struct {
 	char name[256];
+	char path[MAX_PATH]; // Needed for non-modifiable presets
 	char (*saves)[TITLE_SEQUENCE_MAX_SAVE_LENGTH];
 	title_command *commands;
 	uint8 num_saves;
@@ -269,5 +269,9 @@ bool config_find_or_browse_install_directory();
 void themes_set_default();
 void themes_load_presets();
 bool themes_save_preset(int preset);
+
+void title_sequences_set_default();
+void title_sequences_load_presets();
+void title_sequence_save_preset_script(int preset);
 
 #endif

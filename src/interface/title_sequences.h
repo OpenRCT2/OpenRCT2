@@ -24,29 +24,24 @@
 #include "../common.h"
 #include "window.h"
 #include "../config.h"
+#include "../title.h"
 
-enum {
-	TITLE_SCRIPT_WAIT,
-	TITLE_SCRIPT_LOADMM,
-	TITLE_SCRIPT_LOCATION,
-	TITLE_SCRIPT_ROTATE,
-	TITLE_SCRIPT_ZOOM,
-	TITLE_SCRIPT_RESTART,
-	TITLE_SCRIPT_LOAD
-} TITLE_SCRIPT_COMMANDS;
+#define TITLE_SEQUENCE_DEFAULT_PRESETS 2
 
-title_command MakeCommand(int command, int parameter1, int parameter2);
+title_command TitleScriptMakeCommand(int command, int parameter1, int parameter2);
 
-#define TITLE_WAIT(t)			MakeCommand(TITLE_SCRIPT_WAIT,		t, 0)
-#define TITLE_LOADMM()			MakeCommand(TITLE_SCRIPT_LOADMM,	0, 0)
-#define TITLE_LOCATION(x, y)	MakeCommand(TITLE_SCRIPT_LOCATION,	x, y)
-#define TITLE_ROTATE(n)			MakeCommand(TITLE_SCRIPT_ROTATE,	n, 0)
-#define TITLE_ZOOM(d)			MakeCommand(TITLE_SCRIPT_ZOOM,		d, 0)
-#define TITLE_RESTART()			MakeCommand(TITLE_SCRIPT_RESTART,	0, 0)
-#define TITLE_LOAD(i)			MakeCommand(TITLE_SCRIPT_LOAD,		i, 0)
+#define TITLE_WAIT(t)			TitleScriptMakeCommand(TITLE_SCRIPT_WAIT,		t, 0)
+#define TITLE_LOADMM()			TitleScriptMakeCommand(TITLE_SCRIPT_LOADMM,		0, 0)
+#define TITLE_LOCATION(x, y)	TitleScriptMakeCommand(TITLE_SCRIPT_LOCATION,	x, y)
+#define TITLE_ROTATE(n)			TitleScriptMakeCommand(TITLE_SCRIPT_ROTATE,		n, 0)
+#define TITLE_ZOOM(d)			TitleScriptMakeCommand(TITLE_SCRIPT_ZOOM,		d, 0)
+#define TITLE_RESTART()			TitleScriptMakeCommand(TITLE_SCRIPT_RESTART,	0, 0)
+#define TITLE_LOAD(i)			TitleScriptMakeCommand(TITLE_SCRIPT_LOAD,		i, 0)
 
-// The index of the current title sequence
+// The index of the current title sequence being edited
 extern uint16 gCurrentTitleSequence;
+// The index of the current title sequence being shown
+extern uint16 gCurrentPreviewTitleSequence;
 
 bool title_sequence_name_exists(const char *name);
 bool title_sequence_save_exists(int preset, const char *name);
