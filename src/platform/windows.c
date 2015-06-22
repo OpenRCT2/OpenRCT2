@@ -266,6 +266,10 @@ void platform_enumerate_directories_end(int handle)
 	enumFileInfo->active = 0;
 }
 
+int platform_get_drives(){
+	return GetLogicalDrives();
+}
+
 int platform_file_copy(const char *srcPath, const char *dstPath)
 {
 	return CopyFileA(srcPath, dstPath, TRUE);

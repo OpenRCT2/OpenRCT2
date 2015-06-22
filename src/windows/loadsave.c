@@ -370,8 +370,7 @@ static void window_loadsave_scrollmousedown()
 	if (selectedItem >= w->no_list_items)
 		return;
 
-	// Load or overwrite
-	if (_listItems[selectedItem].path[0] == 0) {
+	if (_listItems[selectedItem].type == TYPE_NEW_FILE) {
 		rct_string_id templateStringId = 3165;
 		char *templateString;
 
@@ -380,7 +379,7 @@ static void window_loadsave_scrollmousedown()
 
 		window_text_input_open(w, WIDX_SCROLL, STR_NONE, 2710, templateStringId, 0, 64);
 	} else {
-		if (_listItems[selectedItem].path[strlen(_listItems[selectedItem].path) - 1] == platform_get_path_separator()){
+		if (_listItems[selectedItem].type == TYPE_DIRECTORY || _listItems[selectedItem].type == TYPE_UP){
 			// The selected item is a folder
 			int includeNewItem;
 
@@ -397,6 +396,8 @@ static void window_loadsave_scrollmousedown()
 
 			w->no_list_items = _listItemsCount;
 		} else {
+			// TYPE_FILE
+			// Load or overwrite
 			if ((_loadsaveType & 1) == LOADSAVETYPE_SAVE)
 				window_overwrite_prompt_open(_listItems[selectedItem].name, _listItems[selectedItem].path);
 			else
@@ -628,6 +629,8 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 	_listItems = (loadsave_list_item*)malloc(listItemCapacity * sizeof(loadsave_list_item));
 	_listItemsCount = 0;
 
+	bool drivesList = false;
+
 	if (browsable) {
 		int directoryLength = strlen(directory);
 		int topLevel = 1;
@@ -652,6 +655,13 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 			strncpy(listItem->path, directory, lastSlash + 1);
 			listItem->type = TYPE_UP;
 			_listItemsCount++;
+		} else if (platform_get_drives() != 0 && directory[0] != '\0'){
+			includeNewItem = false;
+			listItem = &_listItems[_listItemsCount];
+			strncpy(listItem->name, language_get_string(2718), sizeof(listItem->name));
+			memset(listItem->path, '\0', MAX_PATH);
+			listItem->type = TYPE_UP;
+			_listItemsCount++;
 		}
 	}
 
@@ -664,50 +674,71 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 	}
 
 	int sortStartIndex = _listItemsCount;
-	fileEnumHandle = platform_enumerate_directories_begin(directory);
-	while (platform_enumerate_directories_next(fileEnumHandle, subDir)){
-		if (listItemCapacity <= _listItemsCount) {
-			listItemCapacity *= 2;
-			_listItems = realloc(_listItems, listItemCapacity * sizeof(loadsave_list_item));
-		}
 
-		listItem = &_listItems[_listItemsCount];
-		memset(listItem->path, '\0', MAX_PATH);
-		strncpy(listItem->path, directory, MAX_PATH);
-		strncat(listItem->path, subDir, MAX_PATH);
-		strncpy(listItem->name, subDir, sizeof(listItem->name));
-		listItem->type = TYPE_DIRECTORY;
-		_listItemsCount++;
+	if (directory[0] != '\0'){
+		fileEnumHandle = platform_enumerate_directories_begin(directory);
+		while (platform_enumerate_directories_next(fileEnumHandle, subDir)){
+			if (listItemCapacity <= _listItemsCount) {
+				listItemCapacity *= 2;
+				_listItems = realloc(_listItems, listItemCapacity * sizeof(loadsave_list_item));
+			}
+
+			listItem = &_listItems[_listItemsCount];
+			memset(listItem->path, '\0', MAX_PATH);
+			strncpy(listItem->path, directory, MAX_PATH);
+			strncat(listItem->path, subDir, MAX_PATH);
+			strncpy(listItem->name, subDir, sizeof(listItem->name));
+			listItem->type = TYPE_DIRECTORY;
+			_listItemsCount++;
+		}
+		platform_enumerate_files_end(fileEnumHandle);
+		window_loadsave_sort_list(sortStartIndex, _listItemsCount - 1);
+
+		sortStartIndex = _listItemsCount;
+		fileEnumHandle = platform_enumerate_files_begin(filter);
+		while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
+			if (listItemCapacity <= _listItemsCount) {
+				listItemCapacity *= 2;
+				_listItems = realloc(_listItems, listItemCapacity * sizeof(loadsave_list_item));
+			}
+
+			listItem = &_listItems[_listItemsCount];
+			strncpy(listItem->path, directory, sizeof(listItem->path));
+			strncat(listItem->path, fileInfo.path, sizeof(listItem->path));
+			listItem->type = TYPE_FILE;
+			listItem->date_modified = platform_file_get_modified_time(listItem->path);
+
+			src = fileInfo.path;
+			dst = listItem->name;
+			i = 0;
+			while (*src != 0 && *src != '.' && i < sizeof(listItem->name) - 1) {
+				*dst++ = *src++;
+				i++;
+			}
+			*dst = 0;
+
+			_listItemsCount++;
+		}
+		platform_enumerate_files_end(fileEnumHandle);
+	} else {
+		for (int x = 0; x < 32; x++){
+			if (listItemCapacity <= _listItemsCount) {
+				listItemCapacity *= 2;
+				_listItems = realloc(_listItems, listItemCapacity * sizeof(loadsave_list_item));
+			}
+
+			if (platform_get_drives() & (1 << (x))){
+				listItem = &_listItems[_listItemsCount];
+				memset(listItem->path, '\0', MAX_PATH);
+				listItem->path[0] = 'A' + x;
+				listItem->path[1] = ':';
+				listItem->path[2] = platform_get_path_separator();
+				strcpy(listItem->name, listItem->path);
+				listItem->type = TYPE_DIRECTORY;
+				_listItemsCount++;
+			}
+		}
 	}
-	platform_enumerate_files_end(fileEnumHandle);
-	window_loadsave_sort_list(sortStartIndex, _listItemsCount - 1);
-
-	sortStartIndex = _listItemsCount;
-	fileEnumHandle = platform_enumerate_files_begin(filter);
-	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
-		if (listItemCapacity <= _listItemsCount) {
-			listItemCapacity *= 2;
-			_listItems = realloc(_listItems, listItemCapacity * sizeof(loadsave_list_item));
-		}
-
-		listItem = &_listItems[_listItemsCount];
-		strncpy(listItem->path, directory, sizeof(listItem->path));
-		strncat(listItem->path, fileInfo.path, sizeof(listItem->path));
-		listItem->type = TYPE_FILE;
-		listItem->date_modified = platform_file_get_modified_time(listItem->path);
-
-		src = fileInfo.path;
-		dst = listItem->name;
-		i = 0;
-		while (*src != 0 && *src != '.' && i < sizeof(listItem->name) - 1) {
-			*dst++ = *src++;
-			i++;
-		}
-		*dst = 0;
-
-		_listItemsCount++;
-	}
-	platform_enumerate_files_end(fileEnumHandle);
 
 	window_loadsave_sort_list(sortStartIndex, _listItemsCount - 1);
 }
