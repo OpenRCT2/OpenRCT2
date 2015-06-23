@@ -310,8 +310,8 @@ void console_printf(const char *format, ...)
 {
 	va_list list;
 	va_start(list, format);
-	
 	vsprintf(_consolePrintfBuffer, format, list);
+	va_end(list);
 	console_writeline(_consolePrintfBuffer);
 }
 
