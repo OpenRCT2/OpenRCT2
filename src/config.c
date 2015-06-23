@@ -1486,7 +1486,7 @@ static void title_sequence_open(const char *path, const char *customName)
 	// Otherwise allocate one
 	if (preset == gConfigTitleSequences.num_presets) {
 		gConfigTitleSequences.num_presets++;
-		gConfigTitleSequences.presets = realloc(gConfigTitleSequences.presets, sizeof(title_sequence) * gConfigTitleSequences.num_presets);
+		gConfigTitleSequences.presets = realloc(gConfigTitleSequences.presets, sizeof(title_sequence) * (size_t)gConfigTitleSequences.num_presets);
 		
 		if (customName == NULL) {
 			char nameBuffer[MAX_PATH], *name;
@@ -1519,7 +1519,7 @@ static void title_sequence_open(const char *path, const char *customName)
 	fileEnumHandle = platform_enumerate_files_begin(titlePath);
 	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
 		gConfigTitleSequences.presets[preset].num_saves++;
-		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * gConfigTitleSequences.presets[preset].num_saves);
+		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * (size_t)gConfigTitleSequences.presets[preset].num_saves);
 		strcpy(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], fileInfo.path);
 	}
 	platform_enumerate_files_end(fileEnumHandle);
@@ -1528,7 +1528,7 @@ static void title_sequence_open(const char *path, const char *customName)
 	fileEnumHandle = platform_enumerate_files_begin(titlePath);
 	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
 		gConfigTitleSequences.presets[preset].num_saves++;
-		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * gConfigTitleSequences.presets[preset].num_saves);
+		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * (size_t)gConfigTitleSequences.presets[preset].num_saves);
 		strcpy(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], fileInfo.path);
 	}
 	platform_enumerate_files_end(fileEnumHandle);
@@ -1576,7 +1576,7 @@ static void title_sequence_open(const char *path, const char *customName)
 		}
 		if (command.command != 0xFF) {
 			gConfigTitleSequences.presets[preset].num_commands++;
-			gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(title_command) * gConfigTitleSequences.presets[preset].num_commands);
+			gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(title_command) * (size_t)gConfigTitleSequences.presets[preset].num_commands);
 			gConfigTitleSequences.presets[preset].commands[gConfigTitleSequences.presets[preset].num_commands - 1] = command;
 		}
 	} while (!feof(file));

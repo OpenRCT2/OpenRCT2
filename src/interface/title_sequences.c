@@ -85,7 +85,7 @@ void title_sequence_create_preset(const char *name)
 	if (filename_valid_characters(name) && !title_sequence_name_exists(name)) {
 		int preset = gConfigTitleSequences.num_presets;
 		gConfigTitleSequences.num_presets++;
-		gConfigTitleSequences.presets = realloc(gConfigTitleSequences.presets, sizeof(title_sequence) * gConfigTitleSequences.num_presets);
+		gConfigTitleSequences.presets = realloc(gConfigTitleSequences.presets, sizeof(title_sequence) * (size_t)gConfigTitleSequences.num_presets);
 		strcpy(gConfigTitleSequences.presets[preset].name, name);
 		gConfigTitleSequences.presets[preset].path[0] = 0;
 
@@ -111,7 +111,7 @@ void title_sequence_duplicate_preset(int duplicate, const char *name)
 	if (duplicate >= 0 && duplicate < gConfigTitleSequences.num_presets && filename_valid_characters(name) && !title_sequence_name_exists(name)) {
 		int preset = gConfigTitleSequences.num_presets;
 		gConfigTitleSequences.num_presets++;
-		gConfigTitleSequences.presets = realloc(gConfigTitleSequences.presets, sizeof(title_sequence) * gConfigTitleSequences.num_presets);
+		gConfigTitleSequences.presets = realloc(gConfigTitleSequences.presets, sizeof(title_sequence) * (size_t)gConfigTitleSequences.num_presets);
 		strcpy(gConfigTitleSequences.presets[preset].name, name);
 		gConfigTitleSequences.presets[preset].path[0] = 0;
 
@@ -187,7 +187,7 @@ void title_sequence_delete_preset(int preset)
 			gConfigTitleSequences.presets[i] = gConfigTitleSequences.presets[i + 1];
 		}
 		gConfigTitleSequences.num_presets--;
-		gConfigTitleSequences.presets = realloc(gConfigTitleSequences.presets, sizeof(title_sequence) * gConfigTitleSequences.num_presets);
+		gConfigTitleSequences.presets = realloc(gConfigTitleSequences.presets, sizeof(title_sequence) * (size_t)gConfigTitleSequences.num_presets);
 
 		title_sequence_change_preset(0);
 	}
@@ -234,7 +234,7 @@ void title_sequence_add_save(int preset, const char *path, const char *newName)
 		platform_file_copy(path, newPath);
 
 		gConfigTitleSequences.presets[preset].num_saves++;
-		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * gConfigTitleSequences.presets[preset].num_saves);
+		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * (size_t)gConfigTitleSequences.presets[preset].num_saves);
 		
 		strcpy(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], newName);
 		// Add the appropriate extension if needed
@@ -269,7 +269,7 @@ void title_sequence_remove_save(int preset, int index)
 			strcpy(gConfigTitleSequences.presets[preset].saves[i], gConfigTitleSequences.presets[preset].saves[i + 1]);
 		}
 		gConfigTitleSequences.presets[preset].num_saves--;
-		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * gConfigTitleSequences.presets[preset].num_saves);
+		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * (size_t)gConfigTitleSequences.presets[preset].num_saves);
 		title_sequence_save_preset_script(preset);
 	}
 }
@@ -308,7 +308,7 @@ void title_sequence_rename_save(int preset, int index, const char *newName)
 void title_sequence_add_command(int preset, title_command command)
 {
 	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets) {
-		gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(title_command) * gConfigTitleSequences.presets[preset].num_commands + 1);
+		gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(title_command) * (size_t)(gConfigTitleSequences.presets[preset].num_commands + 1));
 		gConfigTitleSequences.presets[preset].commands[gConfigTitleSequences.presets[preset].num_commands] = command;
 		gConfigTitleSequences.presets[preset].num_commands++;
 		title_sequence_save_preset_script(preset);
@@ -317,8 +317,8 @@ void title_sequence_add_command(int preset, title_command command)
 void title_sequence_insert_command(int preset, int index, title_command command)
 {
 	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets && index >= 0 && index <= gConfigTitleSequences.presets[preset].num_commands) {
-		gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(title_command) * gConfigTitleSequences.presets[preset].num_commands + 1);
-		printf("%i\n", gConfigTitleSequences.presets[preset].commands);
+		printf("%i, %i\n", gConfigTitleSequences.presets[preset].num_commands, sizeof(title_command) * (size_t)gConfigTitleSequences.presets[preset].num_commands + 1);
+		gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(title_command) * (size_t)(gConfigTitleSequences.presets[preset].num_commands + 1));
 		for (int i = gConfigTitleSequences.presets[preset].num_commands; i > index; i--) {
 			gConfigTitleSequences.presets[preset].commands[i] = gConfigTitleSequences.presets[preset].commands[i - 1];
 		}
@@ -335,7 +335,8 @@ void title_sequence_delete_command(int preset, int index)
 			gConfigTitleSequences.presets[preset].commands[i] = gConfigTitleSequences.presets[preset].commands[i + 1];
 		}
 		gConfigTitleSequences.presets[preset].num_commands--;
-		gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(title_command) * gConfigTitleSequences.presets[preset].num_commands);
+		printf("%i, %i\n", gConfigTitleSequences.presets[preset].num_commands, sizeof(title_command) * (size_t)gConfigTitleSequences.presets[preset].num_commands);
+		gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(title_command) * (size_t)gConfigTitleSequences.presets[preset].num_commands);
 		title_sequence_save_preset_script(preset);
 	}
 }

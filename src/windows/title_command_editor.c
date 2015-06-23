@@ -262,6 +262,7 @@ static void window_title_command_editor_mouseup()
 		}
 		else {
 			gConfigTitleSequences.presets[gCurrentTitleSequence].commands[_window_title_command_editor_index] = command;
+			title_sequence_save_preset_script(gCurrentTitleSequence);
 		}
 		window_close(w);
 		break;
