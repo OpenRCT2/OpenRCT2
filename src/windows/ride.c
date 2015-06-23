@@ -2362,7 +2362,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 			rideEntryIndex = *currentRideEntryIndex;
 			currentRideEntry = GET_RIDE_ENTRY(rideEntryIndex);
 			// Skip if vehicle has the same track type, but not same subtype, unless subtype switching is enabled
-			if ((currentRideEntry->flags & (RIDE_ENTRY_FLAG_SEPERATE_RIDE | RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME)) && !gConfigInterface.allow_subtype_switching)
+			if ((currentRideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) && !gConfigInterface.allow_subtype_switching)
 				continue;
 
 			quadIndex = rideEntryIndex >> 5;
@@ -2523,7 +2523,7 @@ static void window_ride_vehicle_invalidate()
 	// Vehicle type
 	window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].image = rideEntry->name;
 	// Always show a dropdown button when changing subtypes is allowed
-	if ((var_496(w) <= 1 || (rideEntry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE)) && !gConfigInterface.allow_subtype_switching) {
+	if ((var_496(w) <= 1 || (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) && !gConfigInterface.allow_subtype_switching) {
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].type = WWT_14;
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE_DROPDOWN].type = WWT_EMPTY;
 		w->enabled_widgets &= ~(1 << WIDX_VEHICLE_TYPE);
@@ -2597,7 +2597,7 @@ static void window_ride_vehicle_paint()
 	gfx_draw_string_left(dpi, 3142, &stringId, 0, x, y);
 	y += 15;
 
-	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE) && var_496(w) > 1) {
+	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && var_496(w) > 1) {
 		// Excitement Factor
 		factor = rideEntry->excitement_multipler;
 		if (factor > 0) {
