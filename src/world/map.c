@@ -65,7 +65,7 @@ static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int 
 static void sub_68ADBC();
 static void sub_68AE2A(int x, int y);
 
-void rotate_map_coordinates(sint16* x, sint16* y, uint8 rotation){
+void rotate_map_coordinates(sint16* x, sint16* y, int rotation){
 	int temp;
 	switch (rotation){
 	case MAP_ELEMENT_DIRECTION_WEST:
@@ -87,7 +87,7 @@ void rotate_map_coordinates(sint16* x, sint16* y, uint8 rotation){
 	}
 }
 
-rct_xy16 coordinate_3d_to_2d(const rct_xyz16* coordinate_3d, uint8 rotation){
+rct_xy16 coordinate_3d_to_2d(const rct_xyz16* coordinate_3d, int rotation){
 	rct_xy16 coordinate_2d;
 
 	switch (rotation){
