@@ -2324,7 +2324,17 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	RCT2_GLOBAL(0x00141F722, uint8) += fence->wall.height;
 
 	if (!(flags & (1 << 7))){
-		if (0x100 & RCT2_CALLPROC_X(0x006E5C1A, position.x, flags | (fence_type << 8), position.y, 0, 0, 0, 0)){
+		if (
+			RCT2_CALLPROC_X(0x006E5C1A,
+				position.x,
+				edge,
+				position.y,
+				RCT2_GLOBAL(0x00141F721, uint8) | (RCT2_GLOBAL(0x00141F722, uint8) << 8),
+				0,
+				(int)fence,
+				0
+			) & 0x100
+		) {
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
