@@ -62,5 +62,7 @@ void title_sequence_rename_save(int preset, int index, const char *newName);
 void title_sequence_add_command(int preset, title_command command);
 void title_sequence_insert_command(int preset, int index, title_command command);
 void title_sequence_delete_command(int preset, int index);
+void title_sequence_move_down_command(int preset, int index);
+void title_sequence_move_up_command(int preset, int index);
 
 #endif

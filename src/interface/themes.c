@@ -83,7 +83,7 @@ theme_window_definition gThemeWindowDefinitions[] = {
 	{ WC_STAFF,								"staff",							5207,	COLOURS_3(1, 4, 4)				},
 	{ WC_EDITOR_TRACK_BOTTOM_TOOLBAR,		"editor_track_bottom_toolbar",		5247,	COLOURS_3(135, 135, 135)		},
 	{ WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR,	"editor_scenario_bottom_toolbar",	5248,	COLOURS_3(150, 150, 141)		},
-	{ WC_TITLE_EDITOR,						"title_sequences",					5248,	COLOURS_3(1, 15, 15)			},
+	{ WC_TITLE_EDITOR,						"title_sequences",					5433,	COLOURS_3(1, 15, 15)			},
 };
 
 #define COLOURS_RCT1(c0, c1, c2, c3, c4, c5) { { (c0), (c1), (c2), (c3), (c4), (c5) } }

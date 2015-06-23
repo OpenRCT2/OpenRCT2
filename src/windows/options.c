@@ -126,6 +126,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_DEBUGGING_TOOLS,
 	WIDX_TITLE_SEQUENCE,
 	WIDX_TITLE_SEQUENCE_DROPDOWN,
+	WIDX_TITLE_SEQUENCE_BUTTON,
 
 	// Twitch
 	WIDX_CHANNEL_BUTTON = WIDX_PAGE_START,
@@ -137,7 +138,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 };
 
 #define WW 310
-#define WH 183
+#define WH 194
 
 #define MAIN_OPTIONS_WIDGETS \
 	{ WWT_FRAME,			0,	0,		WW-1,	0,		WH-1,	STR_NONE,			STR_NONE }, \
@@ -220,6 +221,7 @@ static rct_widget window_options_misc_widgets[] = {
 	{ WWT_CHECKBOX,			2,	10,		299,	144,	155,	5150,					STR_NONE },	// enabled debugging tools
 	{ WWT_DROPDOWN,			1,	155,	299,	158,	169,	STR_NONE,				STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	159,	168,	876,					STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	174,	185,	5153,					STR_NONE },	// Title sequences button
 	{ WIDGETS_END },
 };
 
@@ -366,7 +368,8 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_AUTO_STAFF_PLACEMENT) |
 	(1 << WIDX_DEBUGGING_TOOLS) |
 	(1 << WIDX_TITLE_SEQUENCE) |
-	(1 << WIDX_TITLE_SEQUENCE_DROPDOWN),
+	(1 << WIDX_TITLE_SEQUENCE_DROPDOWN) |
+	(1 << WIDX_TITLE_SEQUENCE_BUTTON),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_CHANNEL_BUTTON) |
@@ -547,6 +550,8 @@ static void window_options_mouseup()
 			config_save_default();
 			window_invalidate(w);
 			break;
+		case WIDX_TITLE_SEQUENCE_BUTTON:
+			window_title_editor_open(0);
 		}
 		break;
 
@@ -1166,6 +1171,7 @@ static void window_options_invalidate()
 		window_options_misc_widgets[WIDX_DEBUGGING_TOOLS].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_TITLE_SEQUENCE].type = WWT_DROPDOWN;
 		window_options_misc_widgets[WIDX_TITLE_SEQUENCE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+		window_options_misc_widgets[WIDX_TITLE_SEQUENCE_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		break;
 
 	case WINDOW_OPTIONS_PAGE_TWITCH:

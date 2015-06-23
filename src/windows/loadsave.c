@@ -410,11 +410,11 @@ static void window_loadsave_textinput()
 				title_sequence_add_save(gCurrentTitleSequence, path, text);
 			}
 			else {
-				window_error_open(STR_NONE, STR_NONE);
+				window_error_open(5404, STR_NONE);
 			}
 		}
 		else {
-			window_error_open(STR_NONE, STR_NONE);
+			window_error_open(5243, STR_NONE);
 		}
 		return;
 	}
@@ -623,13 +623,13 @@ static void window_loadsave_select(rct_window *w, const char *path)
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
 			if (gLoadSaveTitleSequenceSave) {
 				utf8 newName[MAX_PATH];
-				char *extension = path_get_extension(path_get_filename(path));
+				char *extension = (char*)path_get_extension(path_get_filename(path));
 				strcpy(newName, path_get_filename(path));
-				if (stricmp(extension, ".sv6") != 0 && stricmp(extension, ".sc6") != 0)
+				if (_stricmp(extension, ".sv6") != 0 && _stricmp(extension, ".sc6") != 0)
 					strcat(newName, ".sv6");
 				if (title_sequence_save_exists(gCurrentTitleSequence, newName)) {
 					RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&_listItems[w->selected_list_item].name;
-					window_text_input_open(w, WIDX_SCROLL, STR_NONE, STR_NONE, 1170, (uint32)_listItems[w->selected_list_item].name, TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1);
+					window_text_input_open(w, WIDX_SCROLL, 5435, 5404, 1170, (uint32)_listItems[w->selected_list_item].name, TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1);
 				}
 				else {
 					title_sequence_add_save(gCurrentTitleSequence, path, newName);

@@ -34,8 +34,14 @@ enum {
 	TITLE_SCRIPT_ENDLOOP
 } TITLE_SCRIPT_COMMANDS;
 
+extern sint32 gTitleScriptCommand;
+extern uint8 gTitleScriptSave;
+extern sint32 gTitleScriptSkipTo;
+extern sint32 gTitleScriptSkipLoad;
+
 void title_load();
 void title_update();
+void title_skip_from_beginning();
 void title_script_get_line(FILE *file, char *parts);
 bool title_refresh_sequence();
 

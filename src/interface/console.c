@@ -847,7 +847,7 @@ static int cc_open(const char **argv, int argc) {
 		} else if (strcmp(argv[0], "themes") == 0) {
 			window_themes_open();
 		} else if (strcmp(argv[0], "title_sequences") == 0) {
-			window_title_editor_open();
+			window_title_editor_open(0);
 		} else if (invalidTitle) {
 			console_writeline_error("Cannot open this window in the title screen.");
 		} else {

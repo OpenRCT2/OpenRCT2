@@ -30,6 +30,7 @@
 #include "platform/platform.h"
 #include "util/sawyercoding.h"
 #include "world/mapgen.h"
+#include "title.h"
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 char gOpenRCT2StartupActionPath[512] = { 0 };

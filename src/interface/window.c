@@ -2498,6 +2498,7 @@ void window_cancel_textbox()
 			gCurrentTextBox.window.classification,
 			gCurrentTextBox.window.number
 			);
+		window_event_textinput_call(w, gCurrentTextBox.widget_index, NULL);
 		gCurrentTextBox.window.classification = 255;
 		gCurrentTextBox.window.number = 0;
 		platform_stop_text_input();

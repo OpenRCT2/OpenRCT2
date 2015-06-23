@@ -1401,7 +1401,7 @@ static theme_property_definition *themes_get_property_def(theme_section_definiti
 
 #pragma region Title Sequences
 
-static void title_sequence_open(const char *path);
+static void title_sequence_open(const char *path, const char *customName);
 
 void title_sequences_set_default()
 {
@@ -1465,7 +1465,7 @@ static void title_sequence_open(const char *path, const char *customName)
 	file_info fileInfo;
 	FILE *file;
 	int fileEnumHandle, i, preset;
-	char parts[3 * 32], *token, *part1, *part2, *src;
+	char parts[3 * 32], *token, *part1, *part2;
 	char separator = platform_get_path_separator();
 
 	// Check for the script file
@@ -1479,7 +1479,7 @@ static void title_sequence_open(const char *path, const char *customName)
 	// Check if the preset is already loaded
 	// No nead to read the first two presets as they're hardcoded in
 	for (preset = 0; preset < gConfigTitleSequences.num_presets; preset++) {
-		if (stricmp(path, gConfigTitleSequences.presets[preset].name) == 0) {
+		if (_stricmp(path, gConfigTitleSequences.presets[preset].name) == 0) {
 			return;
 		}
 	}
@@ -1539,9 +1539,9 @@ static void title_sequence_open(const char *path, const char *customName)
 	do {
 		title_script_get_line(file, parts);
 
-		token = &parts[0 * 32];
-		part1 = &parts[1 * 32];
-		part2 = &parts[2 * 32];
+		token = &parts[0 * 64];
+		part1 = &parts[1 * 64];
+		part2 = &parts[2 * 64];
 		title_command command;
 		command.command = 0xFF;
 
@@ -1568,6 +1568,8 @@ static void title_sequence_open(const char *path, const char *customName)
 				command.seconds = atoi(part1) & 0xFF;
 			} else if (_stricmp(token, "RESTART") == 0) {
 				command.command = TITLE_SCRIPT_RESTART;
+			} else if (_stricmp(token, "END") == 0) {
+				command.command = TITLE_SCRIPT_END;
 			} else if (_stricmp(token, "LOADMM") == 0) {
 				command.command = TITLE_SCRIPT_LOADMM;
 			}
@@ -1585,8 +1587,7 @@ void title_sequence_save_preset_script(int preset)
 {
 	utf8 path[MAX_PATH];
 	FILE *file;
-	int i, j;
-	value_union *value;
+	int i;
 	char separator = platform_get_path_separator();
 
 	
@@ -1606,24 +1607,27 @@ void title_sequence_save_preset_script(int preset)
 		switch (command->command) {
 		case TITLE_SCRIPT_LOAD:
 			if (command->saveIndex == 0xFF)
-				fprintf(file, "LOAD <No save file>\n");
+				fprintf(file, "LOAD <No save file>\n\r");
 			else
-				fprintf(file, "LOAD %s\n", gConfigTitleSequences.presets[preset].saves[command->saveIndex]);
+				fprintf(file, "LOAD %s\n\r", gConfigTitleSequences.presets[preset].saves[command->saveIndex]);
 			break;
 		case TITLE_SCRIPT_LOCATION:
-			fprintf(file, "LOCATION %i %i\n", command->x, command->y);
+			fprintf(file, "LOCATION %i %i\n\r", command->x, command->y);
 			break;
 		case TITLE_SCRIPT_ROTATE:
-			fprintf(file, "ROTATE %i\n", command->rotations);
+			fprintf(file, "ROTATE %i\n\r", command->rotations);
 			break;
 		case TITLE_SCRIPT_ZOOM:
-			fprintf(file, "ZOOM %i\n", command->zoom);
+			fprintf(file, "ZOOM %i\n\r", command->zoom);
 			break;
 		case TITLE_SCRIPT_WAIT:
-			fprintf(file, "WAIT %i\n\n", command->seconds);
+			fprintf(file, "WAIT %i\n\r\n\r", command->seconds);
 			break;
 		case TITLE_SCRIPT_RESTART:
-			fprintf(file, "RESTART\n");
+			fprintf(file, "RESTART\n\r");
+			break;
+		case TITLE_SCRIPT_END:
+			fprintf(file, "END\n\r");
 			break;
 
 		}
