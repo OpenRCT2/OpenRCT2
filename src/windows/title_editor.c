@@ -354,6 +354,7 @@ static void window_title_editor_mouseup()
 	case WIDX_TITLE_EDITOR_INSERT:
 		defaultPreset *= 2; playing *= 2;
 		if (!defaultPreset && !playing) {
+			printf("%i\n", w->selected_list_item);
 			if (w->selected_list_item != -1)
 				window_title_command_editor_open(w->selected_list_item + 1, true);
 			else
@@ -374,6 +375,8 @@ static void window_title_editor_mouseup()
 				title_sequence_delete_command(gCurrentTitleSequence, w->selected_list_item);
 				if (w->selected_list_item > 0)
 					w->selected_list_item--;
+				else if (w->selected_list_item > gConfigTitleSequences.presets[gCurrentTitleSequence].num_commands)
+					w->selected_list_item = gConfigTitleSequences.presets[gCurrentTitleSequence].num_commands - 1;
 			}
 		}
 		break;

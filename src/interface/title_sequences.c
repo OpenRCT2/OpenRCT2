@@ -317,7 +317,6 @@ void title_sequence_add_command(int preset, title_command command)
 void title_sequence_insert_command(int preset, int index, title_command command)
 {
 	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets && index >= 0 && index <= gConfigTitleSequences.presets[preset].num_commands) {
-		printf("%i, %i\n", gConfigTitleSequences.presets[preset].num_commands, sizeof(title_command) * (size_t)gConfigTitleSequences.presets[preset].num_commands + 1);
 		gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(title_command) * (size_t)(gConfigTitleSequences.presets[preset].num_commands + 1));
 		for (int i = gConfigTitleSequences.presets[preset].num_commands; i > index; i--) {
 			gConfigTitleSequences.presets[preset].commands[i] = gConfigTitleSequences.presets[preset].commands[i - 1];
@@ -335,7 +334,6 @@ void title_sequence_delete_command(int preset, int index)
 			gConfigTitleSequences.presets[preset].commands[i] = gConfigTitleSequences.presets[preset].commands[i + 1];
 		}
 		gConfigTitleSequences.presets[preset].num_commands--;
-		printf("%i, %i\n", gConfigTitleSequences.presets[preset].num_commands, sizeof(title_command) * (size_t)gConfigTitleSequences.presets[preset].num_commands);
 		gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(title_command) * (size_t)gConfigTitleSequences.presets[preset].num_commands);
 		title_sequence_save_preset_script(preset);
 	}
