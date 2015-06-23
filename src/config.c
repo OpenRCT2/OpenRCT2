@@ -1607,27 +1607,27 @@ void title_sequence_save_preset_script(int preset)
 		switch (command->command) {
 		case TITLE_SCRIPT_LOAD:
 			if (command->saveIndex == 0xFF)
-				fprintf(file, "LOAD <No save file>\n\r");
+				fprintf(file, "LOAD <No save file>\r\n");
 			else
-				fprintf(file, "LOAD %s\n\r", gConfigTitleSequences.presets[preset].saves[command->saveIndex]);
+				fprintf(file, "LOAD %s\r\n", gConfigTitleSequences.presets[preset].saves[command->saveIndex]);
 			break;
 		case TITLE_SCRIPT_LOCATION:
-			fprintf(file, "LOCATION %i %i\n\r", command->x, command->y);
+			fprintf(file, "LOCATION %i %i\r\n", command->x, command->y);
 			break;
 		case TITLE_SCRIPT_ROTATE:
-			fprintf(file, "ROTATE %i\n\r", command->rotations);
+			fprintf(file, "ROTATE %i\r\n", command->rotations);
 			break;
 		case TITLE_SCRIPT_ZOOM:
-			fprintf(file, "ZOOM %i\n\r", command->zoom);
+			fprintf(file, "ZOOM %i\r\n", command->zoom);
 			break;
 		case TITLE_SCRIPT_WAIT:
-			fprintf(file, "WAIT %i\n\r\n\r", command->seconds);
+			fprintf(file, "WAIT %i\r\n\r\n", command->seconds);
 			break;
 		case TITLE_SCRIPT_RESTART:
-			fprintf(file, "RESTART\n\r");
+			fprintf(file, "RESTART\r\n");
 			break;
 		case TITLE_SCRIPT_END:
-			fprintf(file, "END\n\r");
+			fprintf(file, "END\r\n");
 			break;
 
 		}

@@ -3774,7 +3774,4 @@ STR_5433    :Title Sequences
 STR_5434    :Command Editor
 STR_5435    :Rename save
 STR_5436    :Edit Title Sequences...
-
-#STR_3130    :Save
-#STR_3349    :Delete
-#STR_5243    :Invalid characters used
+STR_5437    :No save selected

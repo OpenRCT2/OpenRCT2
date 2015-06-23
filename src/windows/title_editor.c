@@ -563,8 +563,12 @@ static void window_title_editor_dropdown()
 {
 	rct_window* w;
 	short widgetIndex, dropdownIndex;
+
 	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 	
+	if (dropdownIndex == -1)
+		return;
+
 	switch (widgetIndex) {
 	case WIDX_TITLE_EDITOR_PRESETS_DROPDOWN:
 		gCurrentTitleSequence = dropdownIndex;

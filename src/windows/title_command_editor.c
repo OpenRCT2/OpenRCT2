@@ -485,15 +485,28 @@ static void window_title_command_editor_paint()
 		);
 
 	if (command.command == TITLE_SCRIPT_LOAD) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].saves[command.saveIndex];
-		gfx_draw_string_left_clipped(
-			dpi,
-			1170,
-			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
-			w->colours[1],
-			w->x + w->widgets[WIDX_SAVE].left + 1,
-			w->y + w->widgets[WIDX_SAVE].top,
-			w->widgets[WIDX_SAVE_DROPDOWN].left - w->widgets[WIDX_SAVE].left - 4
-			);
+		if (command.saveIndex == 0xFF) {
+			gfx_draw_string_left_clipped(
+				dpi,
+				5437,
+				NULL,
+				w->colours[1],
+				w->x + w->widgets[WIDX_SAVE].left + 1,
+				w->y + w->widgets[WIDX_SAVE].top,
+				w->widgets[WIDX_SAVE_DROPDOWN].left - w->widgets[WIDX_SAVE].left - 4
+				);
+		}
+		else {
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].saves[command.saveIndex];
+			gfx_draw_string_left_clipped(
+				dpi,
+				1170,
+				(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
+				w->colours[1],
+				w->x + w->widgets[WIDX_SAVE].left + 1,
+				w->y + w->widgets[WIDX_SAVE].top,
+				w->widgets[WIDX_SAVE_DROPDOWN].left - w->widgets[WIDX_SAVE].left - 4
+				);
+		}
 	}
 }

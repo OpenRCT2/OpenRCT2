@@ -87,6 +87,7 @@ void title_sequence_create_preset(const char *name)
 		gConfigTitleSequences.num_presets++;
 		gConfigTitleSequences.presets = realloc(gConfigTitleSequences.presets, sizeof(title_sequence) * gConfigTitleSequences.num_presets);
 		strcpy(gConfigTitleSequences.presets[preset].name, name);
+		gConfigTitleSequences.presets[preset].path[0] = 0;
 
 		gConfigTitleSequences.presets[preset].saves = malloc(0);
 		gConfigTitleSequences.presets[preset].commands = malloc(0);
@@ -112,6 +113,7 @@ void title_sequence_duplicate_preset(int duplicate, const char *name)
 		gConfigTitleSequences.num_presets++;
 		gConfigTitleSequences.presets = realloc(gConfigTitleSequences.presets, sizeof(title_sequence) * gConfigTitleSequences.num_presets);
 		strcpy(gConfigTitleSequences.presets[preset].name, name);
+		gConfigTitleSequences.presets[preset].path[0] = 0;
 
 		size_t savesSize = sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * gConfigTitleSequences.presets[duplicate].num_saves;
 		size_t commandsSize = sizeof(title_command) * gConfigTitleSequences.presets[duplicate].num_commands;
@@ -122,6 +124,15 @@ void title_sequence_duplicate_preset(int duplicate, const char *name)
 		gConfigTitleSequences.presets[preset].num_saves = gConfigTitleSequences.presets[duplicate].num_saves;
 		gConfigTitleSequences.presets[preset].num_commands = gConfigTitleSequences.presets[duplicate].num_commands;
 
+		bool loadmm = false;
+		for (int i = 0; i < gConfigTitleSequences.presets[preset].num_commands; i++) {
+			if (gConfigTitleSequences.presets[preset].commands[i].command == TITLE_SCRIPT_LOADMM) {
+				loadmm = true;
+				gConfigTitleSequences.presets[preset].commands[i].command = TITLE_SCRIPT_LOAD;
+				gConfigTitleSequences.presets[preset].commands[i].saveIndex = gConfigTitleSequences.presets[duplicate].num_saves;
+			}
+		}
+
 		// Create the folder
 		utf8 path[MAX_PATH], srcPath[MAX_PATH];
 		platform_get_user_directory(path, "title sequences");
@@ -130,19 +141,33 @@ void title_sequence_duplicate_preset(int duplicate, const char *name)
 		platform_ensure_directory_exists(path);
 
 		// Copy the saves
+		char separator = platform_get_path_separator();
 		for (int i = 0; i < gConfigTitleSequences.presets[preset].num_saves; i++) {
+			if (gConfigTitleSequences.presets[duplicate].path[0]) {
+				strcpy(srcPath, gConfigTitleSequences.presets[duplicate].path);
+				strcat(srcPath, gConfigTitleSequences.presets[duplicate].saves[i]);
+			}
+			else {
+				platform_get_user_directory(srcPath, "title sequences");
+				strcat(srcPath, gConfigTitleSequences.presets[duplicate].name);
+				strncat(srcPath, &separator, 1);
+				strcat(srcPath, gConfigTitleSequences.presets[duplicate].saves[i]);
+			}
 			platform_get_user_directory(path, "title sequences");
-			platform_get_user_directory(srcPath, "title sequences");
 			strcat(path, gConfigTitleSequences.presets[preset].name);
-			strcat(srcPath, gConfigTitleSequences.presets[duplicate].name);
+			strncat(path, &separator, 1);
 			strcat(path, gConfigTitleSequences.presets[preset].saves[i]);
-			strcat(srcPath, gConfigTitleSequences.presets[duplicate].saves[i]);
 
 			platform_file_copy(srcPath, path);
 		}
 
+		if (loadmm) {
+			title_sequence_add_save(preset, get_file_path(PATH_ID_SIXFLAGS_MAGICMOUNTAIN), "Six Flags Magic Mountain.SC6");
+		}
+		
 		title_sequence_save_preset_script(preset);
-		title_sequence_change_preset(preset);
+		//title_sequence_change_preset(preset);
+		gCurrentTitleSequence = preset;
 	}
 }
 
@@ -240,7 +265,7 @@ void title_sequence_remove_save(int preset, int index)
 			}
 		}
 		
-		for (int i = index; i < gConfigTitleSequences.presets[i].num_saves - 1; i++) {
+		for (int i = index; i < gConfigTitleSequences.presets[preset].num_saves - 1; i++) {
 			strcpy(gConfigTitleSequences.presets[preset].saves[i], gConfigTitleSequences.presets[preset].saves[i + 1]);
 		}
 		gConfigTitleSequences.presets[preset].num_saves--;

@@ -523,7 +523,7 @@ void title_script_get_line(FILE *file, char *parts)
 	whitespace = 1;
 	comment = 0;
 	load = 0;
-	for (;;) {
+	for (; part < 3;) {
 		c = fgetc(file);
 		if (c == '\n' || c == '\r' || c == EOF) {
 			parts[part * 64 + cindex] = 0;
@@ -544,6 +544,11 @@ void title_script_get_line(FILE *file, char *parts)
 			if (cindex < 63) {
 				parts[part * 64 + cindex] = c;
 				cindex++;
+			}
+			else {
+				parts[part * 64 + cindex] = 0;
+				part++;
+				cindex = 0;
 			}
 		}
 	}

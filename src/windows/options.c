@@ -221,7 +221,7 @@ static rct_widget window_options_misc_widgets[] = {
 	{ WWT_CHECKBOX,			2,	10,		299,	144,	155,	5150,					STR_NONE },	// enabled debugging tools
 	{ WWT_DROPDOWN,			1,	155,	299,	158,	169,	STR_NONE,				STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	159,	168,	876,					STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	174,	185,	5153,					STR_NONE },	// Title sequences button
+	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	174,	185,	5436,					STR_NONE },	// Title sequences button
 	{ WIDGETS_END },
 };
 
@@ -1298,13 +1298,14 @@ static void window_options_paint()
 		
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&gConfigTitleSequences.presets[gCurrentPreviewTitleSequence].name;
 		gfx_draw_string_left(dpi, STR_TITLE_SEQUENCE, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1);
-		gfx_draw_string_left(
+		gfx_draw_string_left_clipped(
 			dpi,
 			1170,
 			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
 			w->colours[1],
 			w->x + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].left + 1,
-			w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top
+			w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top,
+			window_options_misc_widgets[WIDX_TITLE_SEQUENCE_DROPDOWN].left - window_options_misc_widgets[WIDX_TITLE_SEQUENCE].left - 4
 		);
 		break;
 	}
