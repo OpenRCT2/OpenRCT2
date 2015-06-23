@@ -356,6 +356,8 @@ static void window_title_editor_mouseup()
 		if (!defaultPreset && !playing) {
 			if (w->selected_list_item != -1)
 				window_title_command_editor_open(w->selected_list_item + 1, true);
+			else
+				window_title_command_editor_open(gConfigTitleSequences.presets[gCurrentTitleSequence].num_commands, true);
 		}
 		break;
 	case WIDX_TITLE_EDITOR_EDIT:
@@ -368,8 +370,11 @@ static void window_title_editor_mouseup()
 	case WIDX_TITLE_EDITOR_DELETE:
 		defaultPreset *= 2; playing *= 2;
 		if (!defaultPreset && !playing) {
-			if (w->selected_list_item != -1)
+			if (w->selected_list_item != -1) {
 				title_sequence_delete_command(gCurrentTitleSequence, w->selected_list_item);
+				if (w->selected_list_item > 0)
+					w->selected_list_item--;
+			}
 		}
 		break;
 	case WIDX_TITLE_EDITOR_RELOAD:
