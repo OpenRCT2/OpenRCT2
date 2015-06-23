@@ -3698,3 +3698,11 @@ STR_5365    :{BLACK}Snelheid werknemers:
 STR_5366    :Normaal
 STR_5367    :Snel
 STR_5368    :Crashstatus weg
+STR_5369    :Parkparameters...
+STR_5370    :{SMALLFONT}{BLACK}Klik op deze knop om park-{NEWLINE}parameters zoals verboden,{NEWLINE}bezoekersgenerering en geld aan te passen.
+STR_5371    :Objectselectie
+STR_5372    :Sleeprichting van rechtermuisknop omkeren
+STR_5373    :Naam {STRINGID}
+STR_5374    :Datum {STRINGID}
+STR_5375    :{UP}
+STR_5376    :{DOWN}

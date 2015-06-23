@@ -3707,3 +3707,7 @@ STR_5365    :{BLACK}Staff speed:
 STR_5366    :Normal
 STR_5367    :Fast
 STR_5368    :Reset crash status
+STR_5369    :Park parameters...
+STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
+STR_5371    :Object Selection
+STR_5372    :Invert right mouse dragging

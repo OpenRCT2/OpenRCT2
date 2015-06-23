@@ -3704,3 +3704,9 @@ STR_5367    :Schnell
 STR_5368    :Unfallstatus entf.
 STR_5369    :Parkparameter...
 STR_5370    :{SMALLFONT}{BLACK}Klicken Sie diese Schaltfläche um Parkparameter, wie Einschränkungen, Besuchergenerierung und Geld,{NEWLINE}zu bearbeiten
+STR_5371    :Objektauswahl
+STR_5372    :Ziehen mit rechter Maustaste umkehren
+STR_5373    :Name {STRINGID}
+STR_5374    :Datum {STRINGID}
+STR_5375    :{UP}
+STR_5376    :{DOWN}
