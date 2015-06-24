@@ -1109,8 +1109,8 @@ static void window_cheats_set_page(rct_window *w, int page)
 
 	window_invalidate(w);
 	w->height = maxY;
-	w->widgets[WIDX_BACKGROUND].bottom = maxY;
-	w->widgets[WIDX_PAGE_BACKGROUND].bottom = maxY;
+	w->widgets[WIDX_BACKGROUND].bottom = maxY - 1;
+	w->widgets[WIDX_PAGE_BACKGROUND].bottom = maxY - 1;
 	window_invalidate(w);
 }
 

@@ -821,7 +821,7 @@ int sub_6C683D(int* x, int* y, int* z, int direction, int type, uint16 extra_par
 	rct_ride* ride = GET_RIDE(map_element->properties.track.ride_index);
 	rct_preview_track *trackBlock;
 
-	if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_SELLS_FOOD){
+	if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_FLAT_RIDE){
 		trackBlock = RCT2_ADDRESS(0x00994A38, rct_preview_track*)[type];
 	}
 	else{
@@ -2467,7 +2467,7 @@ static void ride_shop_connected(rct_ride* ride, int ride_idx)
 	uint16 entrance_directions = 0;
 	uint8 track_type = mapElement->properties.track.type;
 	ride = &g_ride_list[mapElement->properties.track.ride_index];
-	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_SELLS_FOOD)) {
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 		entrance_directions = RCT2_ADDRESS(0x0099CA64, uint8)[track_type * 16];
 	} else {
 		entrance_directions = RCT2_ADDRESS(0x0099BA64, uint8)[track_type * 16];

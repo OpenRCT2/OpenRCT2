@@ -398,7 +398,7 @@ static int editor_read_s6(const char *path)
 			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_GUESTS_IN_PARK);
 
 			// Read ?
-			sawyercoding_read_chunk(file, (uint8*)0x01357BC8);
+			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_LAST_GUESTS_IN_PARK);
 
 			// Read park rating
 			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_PARK_RATING);
@@ -449,8 +449,8 @@ static int editor_read_s6(const char *path)
 		sub_6BD3A4();
 		RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
-		RCT2_GLOBAL(0x01357BC8, uint16) = 0;
-		RCT2_GLOBAL(0x013573FE, uint16) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint16) = 0;
 		if (s6Header->type != S6_TYPE_SCENARIO) {
 			research_populate_list_random();
 			research_remove_non_separate_vehicle_types();

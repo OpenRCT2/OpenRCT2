@@ -45,6 +45,9 @@ enum {
 	PARK_FLAGS_SIX_FLAGS = (1 << 19)
 };
 
+extern uint8 *gParkRatingHistory;
+extern uint8 *gGuestsInParkHistory;
+
 int park_is_open();
 void park_init();
 void park_reset_history();
@@ -65,6 +68,8 @@ void park_set_open(int open);
 int park_get_entrance_index(int x, int y, int z);
 void park_set_name(const char *name);
 void park_set_entrance_fee(money32 value);
+
+int map_buy_land_rights(int x0, int y0, int x1, int y1, int setting, int flags);
 
 void game_command_set_park_entrance_fee(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_park_open(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);

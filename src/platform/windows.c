@@ -23,6 +23,7 @@
 #include <windows.h>
 #include <shlobj.h>
 #include <SDL_syswm.h>
+#include <sys/stat.h>
 #include "../addresses.h"
 #include "../cmdline.h"
 #include "../openrct2.h"
@@ -287,6 +288,10 @@ void platform_enumerate_directories_end(int handle)
 	enumFileInfo->active = 0;
 }
 
+int platform_get_drives(){
+	return GetLogicalDrives();
+}
+
 int platform_file_copy(const char *srcPath, const char *dstPath)
 {
 	return CopyFileA(srcPath, dstPath, TRUE);
@@ -337,15 +342,15 @@ unsigned int platform_get_ticks()
 
 void platform_get_user_directory(char *outPath, const char *subDirectory)
 {
-	char seperator[2] = { platform_get_path_separator(), 0 };
+	char separator[2] = { platform_get_path_separator(), 0 };
 
 	if (SUCCEEDED(SHGetFolderPathA(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, outPath))) {
-		strcat(outPath, seperator);
+		strcat(outPath, separator);
 		strcat(outPath, "OpenRCT2");
-		strcat(outPath, seperator);
+		strcat(outPath, separator);
 		if (subDirectory != NULL && subDirectory[0] != 0) {
 			strcat(outPath, subDirectory);
-			strcat(outPath, seperator);
+			strcat(outPath, separator);
 		}
 	} else {
 		outPath[0] = 0;
@@ -657,7 +662,16 @@ uint16 platform_get_locale_language(){
 	else if (strcmp(langCode, "ITA") == 0){
 		return LANGUAGE_ITALIAN;
 	}
+	else if (strcmp(langCode, "POR") == 0){
+		return LANGUAGE_PORTUGUESE_BR;
+	}
 	return LANGUAGE_UNDEFINED;
+}
+
+time_t platform_file_get_modified_time(char* path){
+	struct _stat stat;
+	_stat(path, &stat);
+	return stat.st_mtime;
 }
 
 uint8 platform_get_locale_currency(){

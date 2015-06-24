@@ -945,7 +945,7 @@ static uint32 game_do_command_table[58] = {
 	0x006CD8CE,
 	0,
 	0, // 40
-	0x006E519A,
+	0,
 	0,
 	0,
 	0,
@@ -1008,7 +1008,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub,
 	game_command_set_park_entrance_fee,
 	game_command_update_staff_colour, // 40
-	game_command_emptysub,
+	game_command_place_fence,
 	game_command_remove_fence,
 	game_command_place_large_scenery,
 	game_command_remove_large_scenery,

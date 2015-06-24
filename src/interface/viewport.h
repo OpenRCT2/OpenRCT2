@@ -56,7 +56,8 @@ enum {
 	VIEWPORT_INTERACTION_ITEM_PARK,
 	VIEWPORT_INTERACTION_ITEM_WALL,
 	VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY,
-	VIEWPORT_INTERACTION_ITEM_BANNER = 12,
+	VIEWPORT_INTERACTION_ITEM_LABEL,
+	VIEWPORT_INTERACTION_ITEM_BANNER,
 
 };
 
@@ -122,5 +123,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 int viewport_interaction_right_over(int x, int y);
 int viewport_interaction_right_click(int x, int y);
 void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rct_map_element **mapElement);
+
+void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int x, int y);
 
 #endif

@@ -112,6 +112,13 @@ enum {
 	TITLE_SEQUENCE_RANDOM
 };
 
+enum {
+	SORT_NAME_ASCENDING,
+	SORT_NAME_DESCENDING,
+	SORT_DATE_ASCENDING,
+	SORT_DATE_DESCENDING,
+};
+
 typedef struct {
 	uint8 play_intro;
 	uint8 confirmation_prompt;
@@ -143,13 +150,15 @@ typedef struct {
 	uint8 date_format;
 	uint8 auto_staff_placement;
 	utf8string last_run_version;
+	uint8 invert_viewport_drag;
+	uint8 load_save_sort;
 } general_configuration;
 
 typedef struct {
 	uint8 toolbar_show_finances;
 	uint8 toolbar_show_research;
 	uint8 toolbar_show_cheats;
-	uint8 allow_subtype_switching;
+	uint8 select_by_track_type;
 	uint8 console_small_font;
 	utf8string current_theme_preset;
 	utf8string current_title_sequence_preset;

@@ -310,22 +310,22 @@ void console_printf(const char *format, ...)
 {
 	va_list list;
 	va_start(list, format);
-	
 	vsprintf(_consolePrintfBuffer, format, list);
+	va_end(list);
 	console_writeline(_consolePrintfBuffer);
 }
 
 int console_parse_int(const char *src, bool *valid) {
 	char *end;
 	int value;
-	value = strtol(src, &end, 10); *valid &= (*end == '\0');
+	value = strtol(src, &end, 10); *valid = (*end == '\0');
 	return value;
 }
 
 double console_parse_double(const char *src, bool *valid) {
 	char *end;
 	double value;
-	value = strtod(src, &end); *valid &= (*end == '\0');
+	value = strtod(src, &end); *valid = (*end == '\0');
 	return value;
 }
 
@@ -1033,7 +1033,9 @@ void console_execute_silent(const char *src)
 
 static bool invalidArguments(bool *invalid, bool arguments)
 {
-	if (!arguments)
+	if (!arguments) {
 		*invalid = true;
-	return !invalid;
+		return false;
+	}
+	return true;
 }

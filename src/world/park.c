@@ -35,6 +35,9 @@
 #include "sprite.h"
 #include "../config.h"
 
+uint8 *gParkRatingHistory = RCT2_ADDRESS(RCT2_ADDRESS_PARK_RATING_HISTORY, uint8);
+uint8 *gGuestsInParkHistory = RCT2_ADDRESS(RCT2_ADDRESS_GUESTS_IN_PARK_HISTORY, uint8);
+
 /**
  * In a difficult guest generation scenario, no guests will be generated if over this value.
  */
@@ -67,9 +70,9 @@ void park_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) = 28;
 	RCT2_GLOBAL(RCT2_ADDRESS_SECURITY_COLOUR, uint8) = 28;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) = 0;
-	RCT2_GLOBAL(0x01357BC8, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
-	RCT2_GLOBAL(0x013573FE, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) = 0;
 	_guestGenerationProbability = 0;
 	RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, uint16) = 0;
@@ -119,10 +122,9 @@ void park_init()
  */
 void park_reset_history()
 {
-	int i;
-	for (i = 0; i < 32; i++) {
-		RCT2_ADDRESS(RCT2_ADDRESS_PARK_RATING_HISTORY, uint8)[i] = 255;
-		RCT2_ADDRESS(RCT2_ADDRESS_GUESTS_IN_PARK_HISTORY, uint8)[i] = 255;
+	for (int i = 0; i < 32; i++) {
+		gParkRatingHistory[i] = 255;
+		gGuestsInParkHistory[i] = 255;
 	}
 }
 
@@ -575,7 +577,55 @@ uint8 calculate_guest_initial_happiness(uint8 percentage) {
  */
 void park_update_histories()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0066A231);
+	int guestsInPark = RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16);
+	int lastGuestsInPark = RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16);
+	RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = guestsInPark;
+	RCT2_GLOBAL(0x009A9804, uint16) |= 4;
+
+	int changeInGuestsInPark = guestsInPark - lastGuestsInPark;
+	int guestChangeModifier = 1;
+	if (changeInGuestsInPark > -20) {
+		guestChangeModifier++;
+		if (changeInGuestsInPark < 20)
+			guestChangeModifier = 0;
+	}
+	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint8) = guestChangeModifier;
+
+	// Update park rating history
+	for (int i = 31; i > 0; i--)
+		gParkRatingHistory[i] = gParkRatingHistory[i - 1];
+	gParkRatingHistory[0] = calculate_park_rating() / 4;
+	window_invalidate_by_class(WC_PARK_INFORMATION);
+
+	// Update guests in park history
+	for (int i = 31; i > 0; i--)
+		gGuestsInParkHistory[i] = gGuestsInParkHistory[i - 1];
+	gGuestsInParkHistory[0] = min(guestsInPark, 5000) / 20;
+	window_invalidate_by_class(WC_PARK_INFORMATION);
+
+	// Update current cash history
+	for (int i = 127; i > 0; i--)
+		gCashHistory[i] = gCashHistory[i - 1];
+	gCashHistory[0] = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32)) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	window_invalidate_by_class(WC_FINANCES);
+
+	// Update weekly profit history
+	money32 currentWeeklyProfit = RCT2_GLOBAL(0x01358334, money32);
+	if (RCT2_GLOBAL(0x01358338, uint16) != 0)
+		currentWeeklyProfit /= RCT2_GLOBAL(0x01358338, uint16);
+
+	for (int i = 127; i > 0; i--)
+		gWeeklyProfitHistory[i] = gWeeklyProfitHistory[i - 1];
+	gWeeklyProfitHistory[0] = currentWeeklyProfit;
+
+	RCT2_GLOBAL(0x01358334, money32) = 0;
+	RCT2_GLOBAL(0x01358338, uint16) = 0;
+	window_invalidate_by_class(WC_FINANCES);
+
+	// Update park value history
+	for (int i = 127; i > 0; i--)
+		gParkValueHistory[i] = gParkValueHistory[i - 1];
+	gParkValueHistory[0] = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32);
 }
 
 void park_set_entrance_fee(money32 value)

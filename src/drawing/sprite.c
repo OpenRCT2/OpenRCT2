@@ -25,18 +25,7 @@
 #include "../platform/platform.h"
 #include "../openrct2.h"
 
-typedef struct {
-	uint32 num_entries;
-	uint32 total_size;
-} rct_g1_header;
-
 void *_g1Buffer = NULL;
-
-typedef struct {
-	rct_g1_header header;
-	rct_g1_element *elements;
-	void *data;
-} rct_gx;
 
 rct_gx g2;
 
@@ -506,7 +495,7 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 		return;
 	}
 
-	//Its used super often so we will define it to a seperate variable.
+	//Its used super often so we will define it to a separate variable.
 	int zoom_level = dpi->zoom_level;
 	int zoom_amount = 1 << zoom_level;
 	int zoom_mask = 0xFFFFFFFF << zoom_level;

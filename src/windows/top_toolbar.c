@@ -70,15 +70,15 @@ enum {
 typedef enum {
 	DDIDX_LOAD_GAME = 0,
 	DDIDX_SAVE_GAME = 1,
-	// seperator
+	// separator
 	DDIDX_ABOUT = 3,
 	DDIDX_OPTIONS = 4,
 	DDIDX_SCREENSHOT = 5,
 	DDIDX_GIANT_SCREENSHOT = 6,
-	// seperator
+	// separator
 	DDIDX_QUIT_TO_MENU = 8,
 	DDIDX_EXIT_OPENRCT2 = 9,
-	// seperator
+	// separator
 	DDIDX_ENABLE_TWITCH = 11
 } FILE_MENU_DDIDX;
 
@@ -97,7 +97,8 @@ typedef enum {
 
 typedef enum {
 	DDIDX_CONSOLE = 0,
-	DDIDX_TILE_INSPECTOR = 1
+	DDIDX_TILE_INSPECTOR = 1,
+	DDIDX_OBJECT_SELECTION = 2
 } TOP_TOOLBAR_DEBUG_DDIDX;
 
 #pragma region Toolbar_widget_ordering
@@ -1470,7 +1471,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 
 			int ebx = (parameter_1 & 0xFF00) | 1;
 
-			int cost = game_do_command(grid_x, ebx, grid_y, parameter_2, GAME_COMMAND_41, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16), RCT2_GLOBAL(0x00F64F15, uint16));
+			int cost = game_do_command(grid_x, ebx, grid_y, parameter_2, GAME_COMMAND_PLACE_FENCE, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16), RCT2_GLOBAL(0x00F64F15, uint16));
 
 			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
 
@@ -2086,7 +2087,7 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 			parameter_1 | 0x69,
 			map_tile.y,
 			parameter_2,
-			GAME_COMMAND_41,
+			GAME_COMMAND_PLACE_FENCE,
 			RCT2_GLOBAL(0x00F64ED4, uint16),
 			RCT2_GLOBAL(0x00F64F15, uint16));
 
@@ -2779,6 +2780,7 @@ void top_toolbar_fastforward_menu_dropdown(short dropdownIndex) {
 void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget) {
 	gDropdownItemsFormat[0] = STR_DEBUG_DROPDOWN_CONSOLE;
 	gDropdownItemsFormat[1] = STR_DEBUG_DROPDOWN_TILE_INSPECTOR;
+	gDropdownItemsFormat[2] = STR_DEBUG_DROPDOWN_OBJECT_SELECTION;
 
 	window_dropdown_show_text(
 		w->x + widget->left,
@@ -2786,7 +2788,7 @@ void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget) {
 		widget->bottom - widget->top + 1,
 		w->colours[1] | 0x80,
 		0,
-		2
+		3
 	);
 
 	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
@@ -2802,6 +2804,10 @@ void top_toolbar_debug_menu_dropdown(short dropdownIndex) {
 			break;
 		case DDIDX_TILE_INSPECTOR:
 			window_tile_inspector_open();
+			break;
+		case DDIDX_OBJECT_SELECTION:
+			window_close_all();
+			window_editor_object_selection_open();
 			break;
 		}
 	}

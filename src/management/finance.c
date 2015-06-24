@@ -46,6 +46,10 @@ const money32 research_cost_table[4] = {
 
 int dword_988E60[] = { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0 };
 
+money32 *gCashHistory = RCT2_ADDRESS(RCT2_ADDRESS_BALANCE_HISTORY, money32);
+money32 *gWeeklyProfitHistory = RCT2_ADDRESS(RCT2_ADDRESS_WEEKLY_PROFIT_HISTORY, money32);
+money32 *gParkValueHistory = RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, money32);
+
 /**
  * Pay an amount of money.
  * rct2: 0x069C674
@@ -143,11 +147,10 @@ void finance_pay_ride_upkeep()
 
 void finance_reset_history()
 {
-	int i;
-	for (i = 0; i < 128; i++) {
-		RCT2_ADDRESS(RCT2_ADDRESS_BALANCE_HISTORY, money32)[i] = MONEY32_UNDEFINED;
-		RCT2_ADDRESS(RCT2_ADDRESS_WEEKLY_PROFIT_HISTORY, money32)[i] = MONEY32_UNDEFINED;
-		RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, money32)[i] = MONEY32_UNDEFINED;
+	for (int i = 0; i < 128; i++) {
+		gCashHistory[i] = MONEY32_UNDEFINED;
+		gWeeklyProfitHistory[i] = MONEY32_UNDEFINED;
+		gParkValueHistory[i] = MONEY32_UNDEFINED;
 	}
 }
 

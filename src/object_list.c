@@ -451,6 +451,30 @@ int check_object_entry(rct_object_entry *entry)
 	return (0xFFFFFFFF & dwords[0] & dwords[1] & dwords[2] & dwords[3]) + 1 != 0;
 }
 
+/* rct2: 0x006AB344 */
+void object_create_identifier_name(uint8* string_buffer, rct_object_entry* object){
+	for (uint8 i = 0; i < 8; ++i){
+		if (object->name[i] != ' '){
+			*string_buffer++ = object->name[i];
+		}
+	}
+
+	*string_buffer++ = '/';
+
+	for (uint8 i = 0; i < 4; ++i){
+		uint8 flag_part = (object->flags >> (i * 8)) & 0xFF;
+		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, uint8)[flag_part >> 4];
+		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, uint8)[flag_part & 0xF];
+	}
+
+	for (uint8 i = 0; i < 4; ++i){
+		uint8 checksum_part = (object->checksum >> (i * 8)) & 0xFF;
+		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, uint8)[checksum_part >> 4];
+		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, uint8)[checksum_part & 0xF];
+	}
+	*string_buffer++ = '\0';
+}
+
 /* rct2: 0x675827 */
 void set_load_objects_fail_reason(){
 	rct_object_entry* object = RCT2_ADDRESS(0x13CE952, rct_object_entry);
@@ -463,7 +487,7 @@ void set_load_objects_fail_reason(){
 
 		format_string(string_buffer, 3323, 0); //Missing object data, ID:
 
-		RCT2_CALLPROC_X(0x6AB344, 0, 0, 0, 0, 0, (int)string_buffer, 0x13CE952);
+		object_create_identifier_name(string_buffer, object);
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 0xFF;
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3165;
 		return;
@@ -711,7 +735,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 
 	// When made of two parts i.e Wooden Roller Coaster (Dream Woodie Cars)
-	if ((objectType == OBJECT_TYPE_RIDE) && !((((rct_ride_type*)chunk)->flags) & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME)) {
+	if ((objectType == OBJECT_TYPE_RIDE) && !((((rct_ride_type*)chunk)->flags) & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) {
 		rct_ride_type* ride_type = (rct_ride_type*)chunk;
 		rct_string_id obj_string = ride_type->ride_type[0];
 		if (obj_string == 0xFF){

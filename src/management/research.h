@@ -35,8 +35,8 @@ enum{
 };
 
 // Everything before this point has been researched
-#define RESEARCHED_ITEMS_SEPERATOR -1
-// Everything before this point and after seperator still requires research
+#define RESEARCHED_ITEMS_SEPARATOR -1
+// Everything before this point and after separator still requires research
 #define RESEARCHED_ITEMS_END -2
 // Extra end of list entry. Unsure why?
 #define RESEARCHED_ITEMS_END_2 -3
@@ -83,5 +83,6 @@ void research_set_priority(int activeCategories);
 void game_command_set_research_funding(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void research_finish_item(sint32 entryIndex);
 void research_insert(int researched, int entryIndex, int category);
+void research_remove(sint32 entryIndex);
 
 #endif

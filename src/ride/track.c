@@ -346,8 +346,8 @@ void track_list_populate(ride_list_item item, uint8* track_list_cache){
 		else{
 			if (find_object_in_entry_group(track_object, &entry_type, &entry_index)){
 				if (GET_RIDE_ENTRY(entry_index)->flags & 
-					(RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME | 
-					RIDE_ENTRY_FLAG_SEPERATE_RIDE))
+					(RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME | 
+					RIDE_ENTRY_FLAG_SEPARATE_RIDE))
 					continue;
 			}
 			else{
@@ -397,7 +397,7 @@ void track_load_list(ride_list_item item)
 
 	if (item.type < 0x80){
 		rct_ride_type* ride_type = gRideTypeList[item.entry_index];
-		if (!(ride_type->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE)){
+		if (!(ride_type->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)){
 			item.entry_index = 0xFF;
 		}
 	}
@@ -615,13 +615,15 @@ rct_track_td6* load_track_design(const char *path)
 			track_design->type = RIDE_TYPE_WOODEN_ROLLER_COASTER;
 
 		if (track_design->type == RIDE_TYPE_CORKSCREW_ROLLER_COASTER) {
-			if (track_design->ride_mode == RCT1_RIDE_MODE_POWERED_LAUNCH)
-				track_design->ride_mode = RIDE_MODE_POWERED_LAUNCH;
 			if (track_design->vehicle_type == 79) {
 				if (track_design->ride_mode == 2)
 					track_design->ride_mode = 1;
 			}
 		}
+
+		// All TD4s that use powered launch use the type that doesn't pass the station.
+		if (track_design->ride_mode == RCT1_RIDE_MODE_POWERED_LAUNCH)
+				track_design->ride_mode = RIDE_MODE_POWERED_LAUNCH;
 
 		rct_object_entry* vehicle_object;
 		if (track_design->type == RIDE_TYPE_MAZE) {
@@ -1235,7 +1237,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 						bl | (entry_index << 8), 
 						mapCoord.y, 
 						rotation | (scenery->primary_colour << 8), 
-						GAME_COMMAND_41, 
+						GAME_COMMAND_PLACE_FENCE, 
 						z, 
 						scenery->secondary_colour | ((scenery->flags & 0xFC) << 6)
 						);
@@ -3288,7 +3290,7 @@ void game_command_place_track(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 		ride->entrance_style = track_design->entrance_style;
 	}
 
-	if (version > 1){
+	if (version >= 1){
 		for (int i = 0; i < 4; ++i){
 			ride->track_colour_main[i] = track_design->track_spine_colour[i];
 			ride->track_colour_additional[i] = track_design->track_rail_colour[i];

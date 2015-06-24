@@ -436,8 +436,13 @@ static void input_viewport_drag_continue()
 			RCT2_GLOBAL(0x009DE540, sint16) = 1000;
 			dx <<= viewport->zoom + 1;
 			dy <<= viewport->zoom + 1;
-			w->saved_view_x += dx;
-			w->saved_view_y += dy;
+			if (gConfigGeneral.invert_viewport_drag){
+				w->saved_view_x -= dx;
+				w->saved_view_y -= dy;
+			} else {
+				w->saved_view_x += dx;
+				w->saved_view_y += dy;
+			}
 		}
 	}
 

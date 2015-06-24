@@ -172,7 +172,7 @@ void window_new_campaign_open(sint16 campaignType)
 	numApplicableRides = 0;
 	window_new_campaign_rides[0] = 255;
 	FOR_ALL_RIDES(i, ride) {
-		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_23 | RIDE_TYPE_FLAG_SELLS_DRINKS | RIDE_TYPE_FLAG_IS_BATHROOM))
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_SELLS_DRINKS | RIDE_TYPE_FLAG_IS_BATHROOM))
 			window_new_campaign_rides[numApplicableRides++] = i;
 	}
 

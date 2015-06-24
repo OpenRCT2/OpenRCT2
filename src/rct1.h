@@ -352,10 +352,13 @@ typedef struct{
 	uint16 start_track_data_AA_CF;					// 0xC4
 }rct_track_td4; // Information based off RCTTechDepot
 
+char **gVehicleHierarchies[0x60];
+const uint8 gRideCategories[0x60];
+
 bool rct1_read_sc4(const char *path, rct1_s4 *s4);
 bool rct1_read_sv4(const char *path, rct1_s4 *s4);
 void rct1_import_s4(rct1_s4 *s4);
 void rct1_fix_landscape();
+bool vehicleIsHigherInHierarchy(int track_type, char *currentVehicleName, char *comparedVehicleName);
 
 #endif
- 

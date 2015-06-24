@@ -48,6 +48,10 @@ enum {
 
 extern const money32 research_cost_table[4];
 
+extern money32 *gCashHistory;
+extern money32 *gWeeklyProfitHistory;
+extern money32 *gParkValueHistory;
+
 void finance_payment(money32 amount, rct_expenditure_type type);
 void finance_pay_wages();
 void finance_pay_research();

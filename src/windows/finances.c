@@ -866,9 +866,8 @@ static void window_finances_financial_graph_paint()
 
 	// Calculate the Y axis scale (log2 of highest [+/-]balance)
 	int yAxisScale = 0;
-	money32 *balanceHistory = RCT2_ADDRESS(RCT2_ADDRESS_BALANCE_HISTORY, money32);
 	for (i = 0; i < 64; i++) {
-		money32 balance = balanceHistory[i];
+		money32 balance = gCashHistory[i];
 		if (balance == MONEY32_UNDEFINED)
 			continue;
 
@@ -893,7 +892,7 @@ static void window_finances_financial_graph_paint()
 	// X axis labels and values
 	x = graphLeft + 98;
 	y = graphTop + 17;
-	graph_draw_money32(dpi, balanceHistory, 64, x, y, yAxisScale, 128);
+	graph_draw_money32(dpi, gCashHistory, 64, x, y, yAxisScale, 128);
 }
 
 #pragma endregion
@@ -985,9 +984,8 @@ static void window_finances_park_value_graph_paint()
 
 	// Calculate the Y axis scale (log2 of highest [+/-]balance)
 	int yAxisScale = 0;
-	money32 *parkValueHistory = RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, money32);
 	for (i = 0; i < 64; i++) {
-		money32 balance = parkValueHistory[i];
+		money32 balance = gParkValueHistory[i];
 		if (balance == MONEY32_UNDEFINED)
 			continue;
 
@@ -1012,7 +1010,7 @@ static void window_finances_park_value_graph_paint()
 	// X axis labels and values
 	x = graphLeft + 98;
 	y = graphTop + 17;
-	graph_draw_money32(dpi, parkValueHistory, 64, x, y, yAxisScale, 0);
+	graph_draw_money32(dpi, gParkValueHistory, 64, x, y, yAxisScale, 0);
 }
 
 #pragma endregion
@@ -1104,9 +1102,8 @@ static void window_finances_profit_graph_paint()
 
 	// Calculate the Y axis scale (log2 of highest [+/-]balance)
 	int yAxisScale = 0;
-	money32 *weeklyProfitHistory = RCT2_ADDRESS(RCT2_ADDRESS_WEEKLY_PROFIT_HISTORY, money32);
 	for (i = 0; i < 64; i++) {
-		money32 balance = weeklyProfitHistory[i];
+		money32 balance = gWeeklyProfitHistory[i];
 		if (balance == MONEY32_UNDEFINED)
 			continue;
 
@@ -1131,7 +1128,7 @@ static void window_finances_profit_graph_paint()
 	// X axis labels and values
 	x = graphLeft + 98;
 	y = graphTop + 17;
-	graph_draw_money32(dpi, weeklyProfitHistory, 64, x, y, yAxisScale, 128);
+	graph_draw_money32(dpi, gWeeklyProfitHistory, 64, x, y, yAxisScale, 128);
 }
 
 #pragma endregion
