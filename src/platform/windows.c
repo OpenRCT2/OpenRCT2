@@ -92,7 +92,7 @@ char platform_get_path_separator()
 
 int platform_file_exists(const char *path)
 {
-	return !(GetFileAttributes(path) == INVALID_FILE_ATTRIBUTES && GetLastError() == ERROR_FILE_NOT_FOUND);
+	return !(GetFileAttributes(path) == INVALID_FILE_ATTRIBUTES && (GetLastError() == ERROR_FILE_NOT_FOUND || GetLastError() == ERROR_PATH_NOT_FOUND));
 }
 
 int platform_directory_exists(const char *path)
