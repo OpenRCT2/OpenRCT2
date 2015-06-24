@@ -5,9 +5,9 @@ An open source clone of RollerCoaster Tycoon 2 built by decompiling the original
 - [Screenshot 3, high resolution](http://i.imgur.com/yFzNyVu.jpg)
 - [Screenshot 4, resizable window](http://imgur.com/a/3GDuT)
 
-[![Build Status](https://travis-ci.org/IntelOrca/OpenRCT2.svg)](https://travis-ci.org/IntelOrca/OpenRCT2)
+[![Build Status](https://travis-ci.org/OpenRCT2/OpenRCT2.svg)](https://travis-ci.org/OpenRCT2/OpenRCT2)
 
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/IntelOrca/OpenRCT2?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/OpenRCT2/OpenRCT2?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # Contents
 - 1 - [Introduction](#1-introduction)
@@ -39,7 +39,7 @@ The project therefore acts as a patch to RollerCoaster Tycoon 2, allowing each p
 ## 1.3 Progress
 Currently, the windowing system, graphics rendering and basic game loop are being decompiled. Decompiling all of the game's procedures is a convenient way of identifying the game's memory structure. SDL2 has been used as a replacement for the operating system calls, allowing for cross-platform support after the dependency on the original game's executable has been removed.
 
-As of 16th August 2014, various UI improvements have already been made, settings are now stored in a local INI file. More drawing functions have now been decompiled but still remain cryptic C, much of the game management have been decompiled (e.g. peep generation, awards, cash out) and almost half of the windows. A rough estimate based on number of functions in the original game and number of functions now in C tells us that the project is approximately 25% complete of its target goal of having the game run on 100% C code. More information can be found in [changes to original game](https://github.com/IntelOrca/OpenRCT2/wiki/Changes-to-original-game) and [window progress](https://github.com/IntelOrca/OpenRCT2/wiki/Window-progress).
+As of 16th August 2014, various UI improvements have already been made, settings are now stored in a local INI file. More drawing functions have now been decompiled but still remain cryptic C, much of the game management have been decompiled (e.g. peep generation, awards, cash out) and almost half of the windows. A rough estimate based on number of functions in the original game and number of functions now in C tells us that the project is approximately 25% complete of its target goal of having the game run on 100% C code. More information can be found in [changes to original game](https://github.com/OpenRCT2/OpenRCT2/wiki/Changes-to-original-game) and [window progress](https://github.com/OpenRCT2/OpenRCT2/wiki/Window-progress).
 
 ## 1.4 Aim
 The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-platform support, new features, and new gameplay can be added in a similar fashion to OpenTTD. With the addition of SDL2, the game can already be run in a resizeable window (which was not possible originally). Once the game has been fully decompiled, additional gameplay features, gameplay tweaks, and improvements can be introduced. The following is only a brief, non-exhaustive list of the possibilities - there are many more:
@@ -102,7 +102,7 @@ wine openrct2.exe
 ```
 
 ### Linux:
-As the easiest approach depends on your distribution, please take a look at the [wiki](https://github.com/IntelOrca/OpenRCT2/wiki).
+As the easiest approach depends on your distribution, please take a look at the [wiki](https://github.com/OpenRCT2/OpenRCT2/wiki).
 
 
 # 3 Contributing
@@ -136,7 +136,7 @@ Translations are in progress for German, Dutch, French, Hungarian, Polish, Spani
 **OpenRCT2** is licensed under the GNU General Public License version 3.
 
 # 5 More information
-- [GitHub](https://github.com/IntelOrca/OpenRCT2)
+- [GitHub](https://github.com/OpenRCT2/OpenRCT2)
 - [Facebook](https://www.facebook.com/OpenRCT2)
 - [Automated builds](https://openrct2.com/download)
 - [Secondary site for automated builds](https://openrct.net/builds.php)  
