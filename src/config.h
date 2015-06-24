@@ -152,6 +152,7 @@ typedef struct {
 	utf8string last_run_version;
 	uint8 invert_viewport_drag;
 	uint8 load_save_sort;
+	uint8 minimize_fullscreen_focus_loss;
 } general_configuration;
 
 typedef struct {

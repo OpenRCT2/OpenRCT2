@@ -78,6 +78,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_TILE_SMOOTHING_CHECKBOX,
 	WIDX_GRIDLINES_CHECKBOX,
 	WIDX_HARDWARE_DISPLAY_CHECKBOX,
+	WIDX_MINIMIZE_FOCUS_LOSS,
 	WIDX_CONSTRUCTION_MARKER,
 	WIDX_CONSTRUCTION_MARKER_DROPDOWN,
 	WIDX_THEMES,
@@ -162,11 +163,12 @@ static rct_widget window_options_display_widgets[] = {
 	{ WWT_CHECKBOX,			1,	10,		290,	84,		95,		STR_TILE_SMOOTHING, STR_TILE_SMOOTHING_TIP },	// landscape smoothing
 	{ WWT_CHECKBOX,			1,	10,		290,	99,		110,	STR_GRIDLINES,		STR_GRIDLINES_TIP },		// gridlines
 	{ WWT_CHECKBOX,			1,	10,		290,	114,	125,	5154,				STR_NONE },					// hardware display
-	{ WWT_DROPDOWN,			1,	155,	299,	128,	139,	STR_NONE,			STR_NONE },					// construction marker
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	129,	138,	876,				STR_NONE },
-	{ WWT_DROPDOWN,			1,	155,	299,	143,	154,	STR_NONE,			STR_NONE },					// colour schemes
+	{ WWT_CHECKBOX,			1,	10,		290,	129,	140,	5440,				STR_NONE },					// minimize fullscreen focus loss
+	{ WWT_DROPDOWN,			1,	155,	299,	143,	154,	STR_NONE,			STR_NONE },					// construction marker
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	144,	153,	876,				STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	159,	170,	5153,				STR_NONE },					// colour schemes button
+	{ WWT_DROPDOWN,			1,	155,	299,	158,	169,	STR_NONE,			STR_NONE },					// colour schemes
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	159,	168,	876,				STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	174,	185,	5153,				STR_NONE },					// colour schemes button
 	{ WIDGETS_END },
 };
 
@@ -325,6 +327,7 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_TILE_SMOOTHING_CHECKBOX) |
 	(1 << WIDX_GRIDLINES_CHECKBOX) |
 	(1 << WIDX_HARDWARE_DISPLAY_CHECKBOX) |
+	(1 << WIDX_MINIMIZE_FOCUS_LOSS) |
 	(1 << WIDX_CONSTRUCTION_MARKER) |
 	(1 << WIDX_CONSTRUCTION_MARKER_DROPDOWN) |
 	(1 << WIDX_THEMES) |
@@ -456,6 +459,12 @@ static void window_options_mouseup()
 			break;
 		case WIDX_HARDWARE_DISPLAY_CHECKBOX:
 			gConfigGeneral.hardware_display ^= 1;
+			platform_refresh_video();
+			config_save_default();
+			window_invalidate(w);
+			break;
+		case WIDX_MINIMIZE_FOCUS_LOSS:
+			gConfigGeneral.minimize_fullscreen_focus_loss ^= 1;
 			platform_refresh_video();
 			config_save_default();
 			window_invalidate(w);
@@ -1055,6 +1064,7 @@ static void window_options_invalidate()
 		widget_set_checkbox_value(w, WIDX_TILE_SMOOTHING_CHECKBOX, (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE) == 0);
 		widget_set_checkbox_value(w, WIDX_GRIDLINES_CHECKBOX, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES);
 		widget_set_checkbox_value(w, WIDX_HARDWARE_DISPLAY_CHECKBOX, gConfigGeneral.hardware_display);
+		widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
 
 		// construction marker: celsius/fahrenheit
 		window_options_display_widgets[WIDX_CONSTRUCTION_MARKER].image = STR_WHITE + RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8);
@@ -1068,6 +1078,7 @@ static void window_options_invalidate()
 		window_options_display_widgets[WIDX_CONSTRUCTION_MARKER].type = WWT_DROPDOWN;
 		window_options_display_widgets[WIDX_CONSTRUCTION_MARKER_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_display_widgets[WIDX_HARDWARE_DISPLAY_CHECKBOX].type = WWT_CHECKBOX;
+		window_options_display_widgets[WIDX_MINIMIZE_FOCUS_LOSS].type = WWT_CHECKBOX;
 		window_options_display_widgets[WIDX_THEMES].type = WWT_DROPDOWN;
 		window_options_display_widgets[WIDX_THEMES_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_display_widgets[WIDX_THEMES_BUTTON].type = WWT_DROPDOWN_BUTTON;
