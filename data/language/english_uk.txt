@@ -3711,3 +3711,4 @@ STR_5374    :Date {STRINGID}
 STR_5375    :{UP}
 STR_5376    :{DOWN}
 #Strings 5377-5440 Reserved
+STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type,{NEWLINE}so vehicles can be changed{NEWLINE}afterwards, like in RCT1. Only{NEWLINE}toggleable in the title screen.
