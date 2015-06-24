@@ -713,7 +713,7 @@ static bool config_find_rct2_path(char *resultPath)
 	};
 
 	for (i = 0; i < countof(searchLocations); i++) {
-		if (platform_directory_exists(searchLocations[i]) ) {
+		if (platform_original_game_data_exists(searchLocations[i])) {
 			strcpy(resultPath, searchLocations[i]);
 			return true;
 		}

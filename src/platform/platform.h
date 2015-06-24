@@ -87,6 +87,7 @@ void platform_stop_text_input();
 char platform_get_path_separator();
 int platform_file_exists(const char *path);
 int platform_directory_exists(const char *path);
+int platform_original_game_data_exists(const char *path);
 time_t platform_file_get_modified_time(char* path);
 int platform_ensure_directory_exists(const char *path);
 int platform_lock_single_instance();
