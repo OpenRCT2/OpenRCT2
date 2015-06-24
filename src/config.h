@@ -150,7 +150,6 @@ typedef struct {
 	uint8 date_format;
 	uint8 auto_staff_placement;
 	utf8string last_run_version;
-	uint8 title_sequence;
 	uint8 invert_viewport_drag;
 	uint8 load_save_sort;
 } general_configuration;
@@ -162,6 +161,7 @@ typedef struct {
 	uint8 select_by_track_type;
 	uint8 console_small_font;
 	utf8string current_theme_preset;
+	utf8string current_title_sequence_preset;
 } interface_configuration;
 
 typedef struct {
@@ -218,6 +218,36 @@ typedef struct {
 	uint16 num_presets;
 } themes_configuration;
 
+#define TITLE_SEQUENCE_MAX_SAVE_LENGTH 51
+
+typedef struct {
+	uint8 command;
+	union {
+		uint8 saveIndex;	// LOAD (this index is internal only)
+		uint8 x;			// LOCATION
+		uint8 rotations;	// ROTATE (counter-clockwise)
+		uint8 zoom;			// ZOOM
+		uint8 seconds;		// WAIT
+	};
+	uint8 y;				// LOCATION
+} title_command;
+
+typedef struct {
+	char name[256];
+	char path[MAX_PATH]; // Needed for non-modifiable presets
+	char (*saves)[TITLE_SEQUENCE_MAX_SAVE_LENGTH];
+	title_command *commands;
+	uint8 num_saves;
+	uint16 num_commands;
+
+} title_sequence;
+
+typedef struct {
+	title_sequence *presets;
+	uint16 num_presets;
+
+} title_sequences_configuration;
+
 typedef struct {
 	uint8 key;
 	uint8 modifier;
@@ -229,6 +259,7 @@ extern sound_configuration gConfigSound;
 extern cheat_configuration gConfigCheat;
 extern twitch_configuration gConfigTwitch;
 extern themes_configuration gConfigThemes;
+extern title_sequences_configuration gConfigTitleSequences;
 
 extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 
@@ -247,5 +278,9 @@ bool config_find_or_browse_install_directory();
 void themes_set_default();
 void themes_load_presets();
 bool themes_save_preset(int preset);
+
+void title_sequences_set_default();
+void title_sequences_load_presets();
+void title_sequence_save_preset_script(int preset);
 
 #endif
