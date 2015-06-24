@@ -428,8 +428,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 		ride_type->description = object_get_localised_text(&chunk, ecx, ebx, 1);
 
 		if(gConfigInterface.select_by_track_type) {
-			ride_type->enabledTrackPieces=0xFFFFFFFF;
-			ride_type->enabledTrackPiecesAdditional=0xFFFFFFFF;
+			ride_type->enabledTrackPieces = 0xFFFFFFFFFFFFFFFF;
 
 			bool remove_flag=true;
 			for(int j=0;j<3;j++)
