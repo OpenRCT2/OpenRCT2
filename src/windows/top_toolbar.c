@@ -70,15 +70,15 @@ enum {
 typedef enum {
 	DDIDX_LOAD_GAME = 0,
 	DDIDX_SAVE_GAME = 1,
-	// seperator
+	// separator
 	DDIDX_ABOUT = 3,
 	DDIDX_OPTIONS = 4,
 	DDIDX_SCREENSHOT = 5,
 	DDIDX_GIANT_SCREENSHOT = 6,
-	// seperator
+	// separator
 	DDIDX_QUIT_TO_MENU = 8,
 	DDIDX_EXIT_OPENRCT2 = 9,
-	// seperator
+	// separator
 	DDIDX_ENABLE_TWITCH = 11
 } FILE_MENU_DDIDX;
 

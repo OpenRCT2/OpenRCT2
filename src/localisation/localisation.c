@@ -193,7 +193,7 @@ void format_comma_separated_integer(char **dest, long long value)
 		// Groups of three digits, right to left
 		groupIndex = 0;
 		while (value > 0) {
-			// Append group seperator
+			// Append group separator
 			if (groupIndex == 3) {
 				groupIndex = 0;
 				
@@ -261,7 +261,7 @@ void format_comma_separated_fixed_2dp(char **dest, long long value)
 		// Groups of three digits, right to left
 		groupIndex = 0;
 		while (value > 0) {
-			// Append group seperator
+			// Append group separator
 			if (groupIndex == 3) {
 				groupIndex = 0;
 				

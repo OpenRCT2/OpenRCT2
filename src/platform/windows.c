@@ -320,15 +320,15 @@ unsigned int platform_get_ticks()
 
 void platform_get_user_directory(char *outPath, const char *subDirectory)
 {
-	char seperator[2] = { platform_get_path_separator(), 0 };
+	char separator[2] = { platform_get_path_separator(), 0 };
 
 	if (SUCCEEDED(SHGetFolderPathA(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, outPath))) {
-		strcat(outPath, seperator);
+		strcat(outPath, separator);
 		strcat(outPath, "OpenRCT2");
-		strcat(outPath, seperator);
+		strcat(outPath, separator);
 		if (subDirectory != NULL && subDirectory[0] != 0) {
 			strcat(outPath, subDirectory);
-			strcat(outPath, seperator);
+			strcat(outPath, separator);
 		}
 	} else {
 		outPath[0] = 0;

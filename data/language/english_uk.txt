@@ -513,31 +513,31 @@ STR_0508    :
 STR_0509    :
 STR_0510    :
 STR_0511    :
-STR_0512    :
-STR_0513    :
+STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
+STR_0513    :A looping roller coaster where the riders ride in a standing position
 STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
-STR_0515    :
+STR_0515    :A steel roller coaster with trains that are held beneath the track, with many complex and twisting track elements
 STR_0516    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
 STR_0517    :Passengers ride in miniature trains along a narrow-gauge railway track
 STR_0518    :Passengers travel in electric trains along a monorail track
 STR_0519    :Passengers ride in small cars hanging beneath the single-rail track, swinging freely from side to side around corners
-STR_0520    :
-STR_0521    :
-STR_0522    :
+STR_0520    :A dock platform where guests can drive/row personal watercraft on a body of water
+STR_0521    :A fast and twisting roller coaster with tight turns and steep drops. Intensity is bound to be high.
+STR_0522    :A smaller roller coaster where the riders sit above the track with no car around them
 STR_0523    :Riders travel slowly in powered vehicles along a track-based route
 STR_0524    :
-STR_0525    :
-STR_0526    :
+STR_0525    :Riders career down a twisting track guided only by the curvature and banking of the semi-circular track
+STR_0526    :Freefall car is pneumatically launched up a tall steel tower and then allowed to freefall down
 STR_0527    :A smooth steel-tracked roller coaster capable of vertical loops
-STR_0528    :
-STR_0529    :
+STR_0528    :Riders travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
+STR_0529    :Mine train themes roller coaster trains career along steel roller coaster track made to look like old railway track
 STR_0530    :Cars hang from a steel cable which runs continuously from one end of the ride to the other and back again
-STR_0531    :
+STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
 STR_0532    :
 STR_0533    :
-STR_0534    :
-STR_0535    :
-STR_0536    :
+STR_0534    :Self-drive petrol-engined go karts
+STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
+STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
 STR_0537    :
 STR_0538    :
 STR_0539    :
@@ -556,14 +556,14 @@ STR_0551    :
 STR_0552    :
 STR_0553    :
 STR_0554    :The car is accelerated out of the station along a long level track using Linear Induction Motors, then heads straight up a vertical spike of track, freefalling back down to return to the station
-STR_0555    :
-STR_0556    :
+STR_0555    :Guests ride in an elevator up or down a vertical tower to get from one level to another
+STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
 STR_0557    :
 STR_0558    :
 STR_0559    :
 STR_0560    :
 STR_0561    :
-STR_0562    :
+STR_0562    :Powered cars travel along a multi-level track past spooky scenery and special effects
 STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
 STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
 STR_0565    :A simple wooden roller coaster capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
@@ -572,38 +572,38 @@ STR_0567    :Sitting in seats suspended either side of the track, riders are pit
 STR_0568    :
 STR_0569    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air
 STR_0570    :
-STR_0571    :
-STR_0572    :
-STR_0573    :
-STR_0574    :
+STR_0571    :Circular cars spin around as they travel along the zig-zagging wooden track
+STR_0572    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyer belt, accelerating down steep slopes to soak the riders with a gaint splash
+STR_0573    :Powered helicoper shaped cars running on a steel track, controlled by the pedalling of the riders
+STR_0574    :Riders are held in special harnesses in a lying-down position, travlling through twisted track and inversions either on their backs or facing the ground
 STR_0575    :Powered trains hanging from a single rail transport people around the park
 STR_0576    :
-STR_0577    :
+STR_0577    :Bogied cars run on wooden tracks, turning around on special reversing sections
 STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
 STR_0579    :
-STR_0580    :
-STR_0581    :
+STR_0580    :A giant steel roller coaster capable of smooth drops and hills of over 300ft
+STR_0581    :A ring of seats is pulled to the top of a tall tower while gently rotating, then allowed to free-fall down, stopping gently at the bottom using magnetic brakes
 STR_0582    :
 STR_0583    :
-STR_0584    :
-STR_0585    :
+STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
+STR_0585    :Riders sit in pairs of seats suspended beneath the track as they loop and twist through tight inversions
 STR_0586    :Boat shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
-STR_0587    :
-STR_0588    :
+STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
+STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
 STR_0589    :
-STR_0590    :
-STR_0591    :
+STR_0590    :Riders ride in a submerged submarine through an underwater course
+STR_0591    :Raft-shaped boats gently meander around a river track
 STR_0592    :
 STR_0593    :
 STR_0594    :
 STR_0595    :
 STR_0596    :
 STR_0597    :
-STR_0598    :
+STR_0598    :Inverted roller coaster trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
 STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
-STR_0600    :
+STR_0600    :Powered mine trains career along a smooth and twisted track layout
 STR_0601    :
-STR_0602    :
+STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
 STR_0603    :Guest {INT32}
 STR_0604    :Guest {INT32}
 STR_0605    :Guest {INT32}

@@ -438,7 +438,7 @@ static void rct1_reset_research()
 	rct_research_item *researchItem;
 
 	researchItem = gResearchItems;
-	researchItem->entryIndex = RESEARCHED_ITEMS_SEPERATOR;
+	researchItem->entryIndex = RESEARCHED_ITEMS_SEPARATOR;
 	researchItem++;
 	researchItem->entryIndex = RESEARCHED_ITEMS_END;
 	researchItem++;
@@ -1101,5 +1101,185 @@ static const RCT1DefaultObjectsGroup RCT1DefaultObjects[10] = {
 	{ RCT1DefaultObjectsParkEntrance,	countof(RCT1DefaultObjectsParkEntrance)		},
 	{ RCT1DefaultObjectsWater,			countof(RCT1DefaultObjectsWater)			}
 };
+
+// Keep these in the same order as gVehicleHierarchies
+char *SpiralRCObjectOrder[] 		= { "SPDRCR  "};
+char *StandupRCObjectOrder[] 		= { "TOGST   "};
+char *SuspendedSWRCObjectOrder[]	= { "ARRSW1  ", "VEKVAMP ", "ARRSW2 "};
+char *InvertedRCObjectOrder[] 		= { "NEMT    "};
+char *JuniorCoasterObjectOrder[] 	= { "ZLDB    ", "ZLOG    "};
+char *MiniatureRailwayObjectOrder[] = { "NRL     ", "NRL2    ", "AML1    ", "TRAM1   "};
+char *MonorailObjectOrder[] 		= { "MONO1   ", "MONO2   ", "MONO3   "};
+char *MiniSuspendedRCObjectOrder[] 	= { "BATFL   ", "SKYTR   "};
+char *BoatRideObjectOrder[] 		= { "RBOAT   ", "BBOAT   ", "CBOAT   ", "SWANS   ", "TRIKE   ","JSKI    "};
+char *WoodenWMObjectOrder[] 		= { "WMOUSE  ", "WMMINE  "};
+char *SteeplechaseObjectOrder[] 	= { "STEEP1  ", "STEEP2  ", "SBOX    "};
+char *CarRideObjectOrder[] 			= { "RCR     ", "SPCAR   ", "TRUCK1  ", "VCR     ", "CTCAR   "};
+char *LaunchedFFObjectOrder[] 		= { "SSC1    "};
+char *BobsleighRCObjectOrder[] 		= { "BOB1    ", "INTBOB  "};
+char *ObservationTowerObjectOrder[] = { "OBS1    ", "OBS2    "};
+char *LoopingRCObjectOrder[] 		= { "SCHT1   "};
+char *DinghySlideObjectOrder[] 		= { "DING1   "};
+char *MineTrainRCObjectOrder[] 		= { "AMT1    "};
+char *ChairliftObjectOrder[] 		= { "CLIFT1  ", "CLIFT2  "};
+char *CorkscrewRCObjectOrder[] 		= { "ARRT1   ", "ARRT2   "};
+char *GoKartsObjectOrder[]	 		= { "KART1   "};
+char *LogFlumeObjectOrder[]	 		= { "LFB1    "};
+char *RiverRapidsObjectOrder[]		= { "RAPBOAT "};
+char *ReverseFreefallRCObjectOrder[]= { "REVF1   "};
+char *LiftObjectOrder[]	 			= { "LIFT1   "};
+char *VerticalDropRCObjectOrder[]	= { "BMVD    "};
+char *GhostTrainObjectOrder[] 		= { "GTC     ", "HMCAR   "};
+char *TwisterRCObjectOrder[]		= { "BMSD    ", "BMSU    ", "BMFL    ", "BMRB    ", "GOLTR   "};
+char *WoodenRCObjectOrder[] 		= { "PTCT1   ", "MFT     ", "PTCT2   "};
+char *SideFrictionRCObjectOrder[]	= { "SFRIC1  "};
+char *SteelWildMouseObjectOrder[] 	= { "SMC1    ", "SMC2    ", "WMSPIN  "};
+char *MultiDimensionRCObjectOrder[]	= { "ARRX    "};
+char *FlyingRCObjectOrder[]			= { "BMAIR   "};
+char *VirginiaReelRCObjectOrder[]	= { "VREEL   "};
+char *SplashBoatsObjectOrder[]		= { "SPBOAT  "};
+char *MiniHelicoptersObjectOrder[]	= { "HELICAR "};
+char *LayDownRCObjectOrder[]		= { "VEKST   "};
+char *SuspendedMonorailObjectOrder[]= { "SMONO   "};
+char *ReverserRCObjectOrder[]		= { "REVCAR  "};
+char *HeartlineTwisterObjectOrder[] = { "UTCAR   ", "UTCARR  "};
+char *GigaRCObjectOrder[]			= { "INTST   "};
+char *RotoDropObjectOrder[]			= { "GDROP1  "};
+char *MonorailCyclesObjectOrder[]	= { "MONBK   "};
+char *CompactInvertedRCObjectOrder[]= { "SLCT    ", "SLCFO    ", "VEKDV   "};
+char *WaterRCObjectOrder[]			= { "CSTBOAT "};
+char *AirPoweredRCObjectOrder[]		= { "THCAR   "};
+char *InvertedHairpinRCObjectOrder[]= { "IVMC1   "};
+char *SubmarineRideObjectOrder[]	= { "SUBMAR  "};
+char *RiverRaftsObjectOrder[]		= { "RFTBOAT "};
+char *InvertedImpulseRCObjectOrder[]= { "INTINV  "};
+char *MiniRCObjectOrder[]			= { "WCATC   ", "RCKC     ", "JSTAR1  "};
+char *MineRideRCObjectOrder[]		= { "PMT1    "};
+char *LIMLaunchedRCObjectOrder[]	= { "PREMT1  "};
+
+char **gVehicleHierarchies[0x60] = {
+	SpiralRCObjectOrder,			// 0 Spiral Roller coaster
+	StandupRCObjectOrder,			// 1 Stand Up Coaster
+	SuspendedSWRCObjectOrder,		// 2 Suspended Swinging
+	InvertedRCObjectOrder,			// 3 Inverted
+	JuniorCoasterObjectOrder,		// 4 Junior RC / Steel Mini Coaster
+	MiniatureRailwayObjectOrder,	// 5 Mini Railroad
+	MonorailObjectOrder,			// 6 Monorail
+	MiniSuspendedRCObjectOrder,		// 7 Mini Suspended Coaster
+	BoatRideObjectOrder,			// 8 Boat ride
+	WoodenWMObjectOrder,			// 9 Wooden Wild Mine/Mouse
+	SteeplechaseObjectOrder,		// a Steeplechase/Motorbike/Soap Box Derby
+	CarRideObjectOrder,				// b Car Ride
+	LaunchedFFObjectOrder,			// c Launched Freefall
+	BobsleighRCObjectOrder,			// d Bobsleigh Coaster
+	ObservationTowerObjectOrder,	// e Observation Tower
+	LoopingRCObjectOrder,			// f Looping Roller Coaster
+	DinghySlideObjectOrder,			// 10 Dinghy Slide
+	MineTrainRCObjectOrder,			// 11 Mine Train Coaster
+	ChairliftObjectOrder,			// 12 Chairlift
+	CorkscrewRCObjectOrder,			// 13 Corkscrew Roller Coaster
+	NULL,							// 14 Maze, N/A
+	NULL,							// 15 Spiral Slide, N/A
+	GoKartsObjectOrder,				// 16 Go Karts
+	LogFlumeObjectOrder,			// 17 Log Flume
+	RiverRapidsObjectOrder,			// 18 River Rapids
+	NULL,							// 19 Dodgems, N/A
+	NULL,							// 1a Pirate Ship, N/A
+	NULL,							// 1b Swinging Inverter Ship, N/A
+	NULL,							// 1c Food Stall, N/A
+	NULL,							// 1d (none), N/A
+	NULL,							// 1e Drink Stall, N/A
+	NULL,							// 1f (none), N/A
+	NULL,							// 20 Shop (all types), N/A
+	NULL,							// 21 Merry Go Round, N/A
+	NULL,							// 22 Balloon Stall (maybe), N/A
+	NULL,							// 23 Information Kiosk, N/A
+	NULL,							// 24 Bathroom, N/A
+	NULL,							// 25 Ferris Wheel, N/A
+	NULL,							// 26 Motion Simulator, N/A
+	NULL,							// 27 3D Cinema, N/A
+	NULL,							// 28 Top Spin, N/A
+	NULL,							// 29 Space Rings, N/A
+	ReverseFreefallRCObjectOrder,	// 2a Reverse Freefall Coaster
+	LiftObjectOrder,				// 2b Lift
+	VerticalDropRCObjectOrder,		// 2c Vertical Drop Roller Coaster
+	NULL,							// 2d ATM, N/A
+	NULL,							// 2e Twist, N/A
+	NULL,							// 2f Haunted House, N/A
+	NULL,							// 30 First Aid, N/A
+	NULL,							// 31 Circus Show, N/A
+	GhostTrainObjectOrder,			// 32 Ghost Train
+	TwisterRCObjectOrder,			// 33 Twister Roller Coaster
+	WoodenRCObjectOrder,			// 34 Wooden Roller Coaster
+	SideFrictionRCObjectOrder,		// 35 Side-Friction Roller Coaster
+	SteelWildMouseObjectOrder,		// 36 Steel Wild Mouse
+	MultiDimensionRCObjectOrder,	// 37 Multi Dimension Coaster
+	NULL,							// 38 (none), N/A
+	FlyingRCObjectOrder,			// 39 Flying Roller Coaster
+	NULL,							// 3a (none), N/A
+	VirginiaReelRCObjectOrder,		// 3b Virginia Reel
+	SplashBoatsObjectOrder,			// 3c Splash Boats
+	MiniHelicoptersObjectOrder,		// 3d Mini Helicopters
+	LayDownRCObjectOrder,			// 3e Lay-down Roller Coaster
+	SuspendedMonorailObjectOrder,	// 3f Suspended Monorail
+	NULL,							// 40 (none), N/A
+	ReverserRCObjectOrder,			// 41 Reverser Roller Coaster
+	HeartlineTwisterObjectOrder,	// 42 Heartline Twister Roller Coaster
+	NULL,							// 43 Mini Golf, N/A
+	GigaRCObjectOrder,				// 44 Giga Coaster
+	RotoDropObjectOrder,			// 45 Roto-Drop
+	NULL,							// 46 Flying Saucers, N/A
+	NULL,							// 47 Crooked House, N/A
+	MonorailCyclesObjectOrder,		// 48 Monorail Cycles
+	CompactInvertedRCObjectOrder,	// 49 Compact Inverted Coaster
+	WaterRCObjectOrder,				// 4a Water Coaster
+	AirPoweredRCObjectOrder,		// 4b Air Powered Vertical Coaster
+	InvertedHairpinRCObjectOrder,	// 4c Inverted Hairpin Coaster
+	NULL,							// 4d Magic Carpet, N/A
+	SubmarineRideObjectOrder,		// 4e Submarine Ride
+	RiverRaftsObjectOrder,			// 4f River Rafts
+	NULL,							// 50 (none), N/A
+	NULL,							// 51 Enterprise, N/A
+	NULL,							// 52 (none), N/A
+	NULL,							// 53 (none), N/A
+	NULL,							// 54 (none), N/A
+	NULL,							// 55 (none), N/A
+	InvertedImpulseRCObjectOrder,	// 56 Inverted Impulse Coaster
+	MiniRCObjectOrder,				// 57 Mini Roller Coaster
+	MineRideRCObjectOrder,			// 58 Mine Ride
+	NULL,							// 59 Unknown Ride
+	LIMLaunchedRCObjectOrder,		// 60 LIM Launched Roller Coaster
+};
+
+/*  This function keeps a list of the preferred vehicle for every generic track type, out of the available vehicle types in the current game.
+	It determines which picture is shown on the new ride tab and which train type is selected by default.*/
+bool vehicleIsHigherInHierarchy(int track_type, char *currentVehicleName, char *comparedVehicleName)
+{
+	if(currentVehicleName==NULL || comparedVehicleName==NULL || gVehicleHierarchies[track_type]==NULL) {
+		return NULL;
+	}
+
+	int currentVehicleHierarchy;
+	int comparedVehicleHierarchy;
+
+	currentVehicleHierarchy=255;
+	comparedVehicleHierarchy=255;
+
+	for(int i=0;i<countof(gVehicleHierarchies[track_type]);i++) {
+		if(gVehicleHierarchies[track_type][i]==NULL)
+			continue;
+
+		if(strcmp(comparedVehicleName,gVehicleHierarchies[track_type][i])==0)
+			comparedVehicleHierarchy=i;
+
+		if(strcmp(currentVehicleName,gVehicleHierarchies[track_type][i])==0)
+			currentVehicleHierarchy=i;
+	}
+
+	if(comparedVehicleHierarchy<currentVehicleHierarchy) {
+		return true;
+	}
+	return false;
+}
 
 #pragma endregion
