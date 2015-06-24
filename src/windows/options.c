@@ -41,6 +41,8 @@
 #include "dropdown.h"
 #include "error.h"
 #include "../interface/themes.h"
+#include "../interface/title_sequences.h"
+#include "../title.h"
 
 enum WINDOW_OPTIONS_PAGE {
 	WINDOW_OPTIONS_PAGE_DISPLAY,
@@ -125,6 +127,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_DEBUGGING_TOOLS,
 	WIDX_TITLE_SEQUENCE,
 	WIDX_TITLE_SEQUENCE_DROPDOWN,
+	WIDX_TITLE_SEQUENCE_BUTTON,
 
 	// Twitch
 	WIDX_CHANNEL_BUTTON = WIDX_PAGE_START,
@@ -136,7 +139,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 };
 
 #define WW 310
-#define WH 183
+#define WH 194
 
 #define MAIN_OPTIONS_WIDGETS \
 	{ WWT_FRAME,			0,	0,		WW-1,	0,		WH-1,	STR_NONE,			STR_NONE }, \
@@ -220,6 +223,7 @@ static rct_widget window_options_misc_widgets[] = {
 	{ WWT_CHECKBOX,			2,	10,		299,	144,	155,	5150,					STR_NONE },	// enabled debugging tools
 	{ WWT_DROPDOWN,			1,	155,	299,	158,	169,	STR_NONE,				STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	159,	168,	876,					STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	174,	185,	5436,					STR_NONE },	// Title sequences button
 	{ WIDGETS_END },
 };
 
@@ -367,7 +371,8 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_AUTO_STAFF_PLACEMENT) |
 	(1 << WIDX_DEBUGGING_TOOLS) |
 	(1 << WIDX_TITLE_SEQUENCE) |
-	(1 << WIDX_TITLE_SEQUENCE_DROPDOWN),
+	(1 << WIDX_TITLE_SEQUENCE_DROPDOWN) |
+	(1 << WIDX_TITLE_SEQUENCE_BUTTON),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_CHANNEL_BUTTON) |
@@ -553,6 +558,8 @@ static void window_options_mouseup()
 			config_save_default();
 			window_invalidate(w);
 			break;
+		case WIDX_TITLE_SEQUENCE_BUTTON:
+			window_title_editor_open(0);
 		}
 		break;
 
@@ -793,7 +800,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			gDropdownItemsChecked = 1 << gConfigGeneral.autosave_frequency;
 			break;
 		case WIDX_TITLE_SEQUENCE_DROPDOWN:
-			gDropdownItemsFormat[0] = 1142;
+		/*	gDropdownItemsFormat[0] = 1142;
 			gDropdownItemsArgs[0] = STR_TITLE_SEQUENCE_RCT2;
 			gDropdownItemsFormat[1] = 1142;
 			gDropdownItemsArgs[1] = STR_TITLE_SEQUENCE_OPENRCT2;
@@ -802,6 +809,26 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 				gDropdownItemsChecked = 1 << 0;
 			else if (gConfigGeneral.title_sequence == TITLE_SEQUENCE_OPENRCT2)
 				gDropdownItemsChecked = 1 << 1;
+			break;
+		case WIDX_THEMES_DROPDOWN:*/
+			num_items = gConfigTitleSequences.num_presets;
+
+			for (i = 0; i < num_items; i++) {
+				gDropdownItemsFormat[i] = 2777;
+				gDropdownItemsArgs[i] = (uint64)&gConfigTitleSequences.presets[i].name;
+			}
+
+			window_dropdown_show_text_custom_width(
+				w->x + widget->left,
+				w->y + widget->top,
+				widget->bottom - widget->top + 1,
+				w->colours[1],
+				DROPDOWN_FLAG_STAY_OPEN,
+				num_items,
+				widget->right - widget->left - 3
+				);
+
+			gDropdownItemsChecked = 1 << (gCurrentPreviewTitleSequence);
 			break;
 		}
 		break;
@@ -974,9 +1001,9 @@ static void window_options_dropdown()
 			}
 			break;
 		case WIDX_TITLE_SEQUENCE_DROPDOWN:
-			if (dropdownIndex != gConfigGeneral.title_sequence) {
-				if (dropdownIndex == 0) gConfigGeneral.title_sequence = TITLE_SEQUENCE_RCT2;
-				else if (dropdownIndex == 1) gConfigGeneral.title_sequence = TITLE_SEQUENCE_OPENRCT2;
+			if (dropdownIndex != gCurrentPreviewTitleSequence) {
+				title_sequence_change_preset(dropdownIndex);
+				title_refresh_sequence();
 				config_save_default();
 				window_invalidate(w);
 			}
@@ -1157,6 +1184,7 @@ static void window_options_invalidate()
 		window_options_misc_widgets[WIDX_DEBUGGING_TOOLS].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_TITLE_SEQUENCE].type = WWT_DROPDOWN;
 		window_options_misc_widgets[WIDX_TITLE_SEQUENCE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+		window_options_misc_widgets[WIDX_TITLE_SEQUENCE_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		break;
 
 	case WINDOW_OPTIONS_PAGE_TWITCH:
@@ -1280,15 +1308,17 @@ static void window_options_paint()
 			w->x + window_options_misc_widgets[WIDX_AUTOSAVE].left + 1,
 			w->y + window_options_misc_widgets[WIDX_AUTOSAVE].top
 		);
-
+		
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&gConfigTitleSequences.presets[gCurrentPreviewTitleSequence].name;
 		gfx_draw_string_left(dpi, STR_TITLE_SEQUENCE, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1);
-		gfx_draw_string_left(
+		gfx_draw_string_left_clipped(
 			dpi,
-			STR_TITLE_SEQUENCE_RCT1 + gConfigGeneral.title_sequence,
-			NULL,
+			1170,
+			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
 			w->colours[1],
 			w->x + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].left + 1,
-			w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top
+			w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top,
+			window_options_misc_widgets[WIDX_TITLE_SEQUENCE_DROPDOWN].left - window_options_misc_widgets[WIDX_TITLE_SEQUENCE].left - 4
 		);
 		break;
 	}

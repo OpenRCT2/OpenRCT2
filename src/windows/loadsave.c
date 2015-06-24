@@ -30,6 +30,7 @@
 #include "../title.h"
 #include "../windows/error.h"
 #include "../interface/themes.h"
+#include "../interface/title_sequences.h"
 #include "../util/util.h"
 
 #pragma region Widgets
@@ -144,6 +145,7 @@ static rct_window *window_overwrite_prompt_open(const char *name, const char *pa
 
 rct_window *window_loadsave_open(int type, char *defaultName)
 {
+	gLoadSaveTitleSequenceSave = false;
 	char path[MAX_PATH], *ch;
 	int includeNewItem;
 	rct_window* w;
@@ -432,9 +434,24 @@ static void window_loadsave_textinput()
 	int i, overwrite;
 
 	window_textinput_get_registers(w, widgetIndex, result, text);
-
+	
 	if (!result || text[0] == 0)
 		return;
+
+	if (gLoadSaveTitleSequenceSave) {
+		if (filename_valid_characters(text)) {
+			if (!title_sequence_save_exists(gCurrentTitleSequence, text)) {
+				title_sequence_add_save(gCurrentTitleSequence, path, text);
+			}
+			else {
+				window_error_open(5404, STR_NONE);
+			}
+		}
+		else {
+			window_error_open(5243, STR_NONE);
+		}
+		return;
+	}
 
 	strncpy(path, _directory, sizeof(path));
 	strncat(path, text, sizeof(path));
@@ -747,7 +764,22 @@ static void window_loadsave_select(rct_window *w, const char *path)
 {
 	switch (_loadsaveType) {
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
-			if (game_load_save(path)) {
+			if (gLoadSaveTitleSequenceSave) {
+				utf8 newName[MAX_PATH];
+				char *extension = (char*)path_get_extension(path_get_filename(path));
+				strcpy(newName, path_get_filename(path));
+				if (_stricmp(extension, ".sv6") != 0 && _stricmp(extension, ".sc6") != 0)
+					strcat(newName, ".sv6");
+				if (title_sequence_save_exists(gCurrentTitleSequence, newName)) {
+					RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&_listItems[w->selected_list_item].name;
+					window_text_input_open(w, WIDX_SCROLL, 5435, 5404, 1170, (uint32)_listItems[w->selected_list_item].name, TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1);
+				}
+				else {
+					title_sequence_add_save(gCurrentTitleSequence, path, newName);
+					window_close(w);
+				}
+			}
+			else if (game_load_save(path)) {
 				window_close(w);
 				gfx_invalidate_screen();
 				rct2_endupdate();

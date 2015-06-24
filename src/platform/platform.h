@@ -90,6 +90,7 @@ int platform_directory_exists(const char *path);
 int platform_original_game_data_exists(const char *path);
 time_t platform_file_get_modified_time(char* path);
 int platform_ensure_directory_exists(const char *path);
+int platform_directory_delete(const char *path);
 int platform_lock_single_instance();
 int platform_enumerate_files_begin(const char *pattern);
 int platform_enumerate_files_next(int handle, file_info *outFileInfo);

@@ -42,20 +42,17 @@
 #include "world/park.h"
 #include "world/scenery.h"
 #include "world/sprite.h"
+#include "title.h"
+#include "interface/title_sequences.h"
+#include "windows/error.h"
 
 static const int gRandomShowcase = 0;
+sint32 gTitleScriptCommand = -1;
+uint8 gTitleScriptSave = 0xFF;
+sint32 gTitleScriptSkipTo = -1;
+sint32 gTitleScriptSkipLoad = -1;
 
 #pragma region Showcase script
-
-enum {
-	TITLE_SCRIPT_WAIT,
-	TITLE_SCRIPT_LOADMM,
-	TITLE_SCRIPT_LOCATION,
-	TITLE_SCRIPT_ROTATE,
-	TITLE_SCRIPT_ZOOM,
-	TITLE_SCRIPT_RESTART,
-	TITLE_SCRIPT_LOAD
-};
 
 #define WAIT(t)				TITLE_SCRIPT_WAIT, t
 #define LOADMM()			TITLE_SCRIPT_LOADMM
@@ -82,6 +79,7 @@ static uint8* _loadedScript;
 static const uint8* _currentScript;
 static int _scriptNoLoadsSinceRestart;
 static int _scriptWaitCounter;
+static int _scriptCurrentPreset;
 
 static void title_init_showcase();
 static void title_update_showcase();
@@ -162,7 +160,7 @@ static void title_create_windows()
  */
 static void title_init_showcase()
 {
-	_scriptNoLoadsSinceRestart = 1;
+	/*_scriptNoLoadsSinceRestart = 1;
 
 	SafeFree(_loadedScript);
 
@@ -179,7 +177,8 @@ static void title_init_showcase()
 		break;
 	}
 
-	_scriptWaitCounter = 0;
+	_scriptWaitCounter = 0;*/
+	title_refresh_sequence();
 	title_update_showcase();
 }
 
@@ -236,6 +235,7 @@ static void title_skip_opcode()
 	uint8 script_opcode;
 
 	script_opcode = *_currentScript++;
+	gTitleScriptCommand++;
 	switch (script_opcode) {
 	case TITLE_SCRIPT_WAIT:
 		_currentScript++;
@@ -266,9 +266,30 @@ static void title_do_next_script_opcode()
 	short x, y, z;
 	uint8 script_opcode, script_operand;
 	rct_window* w;
-	
-	script_opcode = *_currentScript++;
+	gTitleScriptCommand++;
+	if (*(_currentScript - 1) != TITLE_SCRIPT_END)
+		script_opcode = *_currentScript++;
+	else
+		script_opcode = *_currentScript;
+	if (gTitleScriptSkipTo != -1) {
+		if (gTitleScriptSkipTo == gTitleScriptCommand) {
+			gTitleScriptSkipTo = -1;
+			gTitleScriptSkipLoad = -1;
+		}
+		else if (gTitleScriptSkipLoad == gTitleScriptCommand) {
+			gTitleScriptSkipLoad = -1;
+		}
+		else if (gTitleScriptSkipLoad != -1) {
+			gTitleScriptCommand--;
+			_currentScript--;
+			title_skip_opcode();
+			return;
+		}
+	}
 	switch (script_opcode) {
+	case TITLE_SCRIPT_END:
+		_scriptWaitCounter = 1;
+		break;
 	case TITLE_SCRIPT_WAIT:
 		_scriptWaitCounter = (*_currentScript++) * 32;
 		break;
@@ -277,6 +298,7 @@ static void title_do_next_script_opcode()
 			log_fatal("OpenRCT2 can not currently cope when unable to load title screen scenario.");
 			exit(-1);
 		}
+		gTitleScriptSave = 0xFF;
 		break;
 	case TITLE_SCRIPT_LOCATION:
 		x = (*_currentScript++) * 32 + 16;
@@ -306,6 +328,8 @@ static void title_do_next_script_opcode()
 		break;
 	case TITLE_SCRIPT_RESTART:
 		_scriptNoLoadsSinceRestart = 1;
+		gTitleScriptCommand = -1;
+		gTitleScriptSave = 0xFF;
 		_currentScript = _loadedScript;
 		if (gRandomShowcase) {
 			if (_currentScript != NULL)
@@ -317,6 +341,7 @@ static void title_do_next_script_opcode()
 		{
 			const uint8 *loadPtr;
 			char *ch, filename[32], path[MAX_PATH];
+			char separator = platform_get_path_separator();
 			
 			loadPtr = _currentScript - 1;
 
@@ -327,19 +352,38 @@ static void title_do_next_script_opcode()
 			} while (*(_currentScript - 1) != 0);
 
 			// Construct full relative path
-			sprintf(path, "%s%cData%ctitle%c%s", gExePath, platform_get_path_separator(), platform_get_path_separator(), platform_get_path_separator(), filename);
+			if (gConfigTitleSequences.presets[_scriptCurrentPreset].path[0]) {
+				strcpy(path, gConfigTitleSequences.presets[_scriptCurrentPreset].path);
+			}
+			else {
+				platform_get_user_directory(path, "title sequences");
+				strcat(path, gConfigTitleSequences.presets[_scriptCurrentPreset].name);
+				strncat(path, &separator, 1);
+			}
+
+			strcat(path, filename);
 			if (title_load_park(path)) {
 				_scriptNoLoadsSinceRestart = 0;
+				gTitleScriptSave = gConfigTitleSequences.presets[gCurrentPreviewTitleSequence].commands[gTitleScriptCommand].saveIndex;
 			} else {
+				log_error("Failed to load: \"%s\" for the title sequence.", path);
 				script_opcode = *_currentScript;
-				while (script_opcode != TITLE_SCRIPT_LOADMM && script_opcode != TITLE_SCRIPT_LOAD && script_opcode != TITLE_SCRIPT_RESTART) {
+				while (script_opcode != TITLE_SCRIPT_LOADMM && script_opcode != TITLE_SCRIPT_LOAD && script_opcode != TITLE_SCRIPT_RESTART && script_opcode != TITLE_SCRIPT_END) {
 					title_skip_opcode();
 					script_opcode = *_currentScript;
 				}
 
-				if (script_opcode == TITLE_SCRIPT_RESTART && _scriptNoLoadsSinceRestart) {
+				if ((script_opcode == TITLE_SCRIPT_RESTART || script_opcode == TITLE_SCRIPT_END) && _scriptNoLoadsSinceRestart) {
 					if (_currentScript != _magicMountainScript) {
+						_scriptNoLoadsSinceRestart = 1;
+						gTitleScriptCommand = -1;
+						gTitleScriptSave = 0xFF;
 						_currentScript = _magicMountainScript;
+						gCurrentPreviewTitleSequence = 0;
+						gTitleScriptSkipTo = -1;
+						gTitleScriptSkipLoad = -1;
+						_scriptCurrentPreset = 0;
+						//window_invalidate_by_class(WC_TITLE_EDITOR);
 					} else {
 						log_fatal("OpenRCT2 can not currently cope when unable to load title screen scenario.");
 						exit(-1);
@@ -349,6 +393,7 @@ static void title_do_next_script_opcode()
 		}
 		break;
 	}
+	window_invalidate_by_class(WC_TITLE_EDITOR);
 }
 
 /**
@@ -357,13 +402,28 @@ static void title_do_next_script_opcode()
  */
 static void title_update_showcase()
 {
-	if (_scriptWaitCounter <= 0) {
+	// Loop used for scene skip functionality
+	// Only loop here when the appropriate save hasn't been loaded yet since no game updates are required
+	do {
 		do {
-			title_do_next_script_opcode();
-		} while (_scriptWaitCounter == 0);
-	}
+			if (_scriptWaitCounter <= 0) {
+				do {
+					title_do_next_script_opcode();
+				} while (_scriptWaitCounter == 0);
+			}
 
-	_scriptWaitCounter--;
+			if (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad != -1)
+				_scriptWaitCounter = 0;
+			else if (*(_currentScript - 1) != TITLE_SCRIPT_END)
+				_scriptWaitCounter--;
+		} while (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad != -1);
+
+		if (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad == -1) {
+			game_logic_update();
+			update_palette_effects();
+			update_rain_animation();
+		}
+	} while (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad == -1);
 }
 
 static void DrawOpenRCT2(int x, int y)
@@ -455,36 +515,44 @@ static uint8 *generate_random_script()
 
 #pragma region Load script.txt
 
-static void title_script_get_line(FILE *file, char *parts)
+void title_script_get_line(FILE *file, char *parts)
 {
-	int i, c, part, cindex, whitespace, comment;
+	int i, c, part, cindex, whitespace, comment, load;
 
 	for (i = 0; i < 3; i++)
-		parts[i * 32] = 0;
+		parts[i * 128] = 0;
 
 	part = 0;
 	cindex = 0;
 	whitespace = 1;
 	comment = 0;
-	for (;;) {
+	load = 0;
+	for (; part < 3;) {
 		c = fgetc(file);
 		if (c == '\n' || c == '\r' || c == EOF) {
-			parts[part * 32 + cindex] = 0;
+			parts[part * 128 + cindex] = 0;
 			return;
 		} else if (c == '#') {
-			parts[part * 32 + cindex] = 0;
+			parts[part * 128 + cindex] = 0;
 			comment = 1;
-		} else if (c == ' ' && !comment) {
+		} else if (c == ' ' && !comment && !load) {
 			if (!whitespace) {
-				parts[part * 32 + cindex] = 0;
+				if (part == 0 && cindex == 4 && _strnicmp(parts, "LOAD", 4) == 0)
+					load = true;
+				parts[part * 128 + cindex] = 0;
 				part++;
 				cindex = 0;
 			}
 		} else if (!comment) {
 			whitespace = 0;
-			if (cindex < 31) {
-				parts[part * 32 + cindex] = c;
+			if (cindex < 127) {
+				parts[part * 128 + cindex] = c;
 				cindex++;
+			}
+			else {
+				parts[part * 128 + cindex] = 0;
+				part++;
+				cindex = 0;
 			}
 		}
 	}
@@ -493,7 +561,7 @@ static void title_script_get_line(FILE *file, char *parts)
 static uint8 *title_script_load()
 {
 	FILE *file;
-	char parts[3 * 32], *token, *part1, *part2, *src;
+	char parts[3 * 128], *token, *part1, *part2, *src;
 
 	char path[MAX_PATH];
 	char filePath[] = "data/title/script.txt";
@@ -519,9 +587,9 @@ static uint8 *title_script_load()
 	do {
 		title_script_get_line(file, parts);
 
-		token = &parts[0 * 32];
-		part1 = &parts[1 * 32];
-		part2 = &parts[2 * 32];
+		token = &parts[0 * 128];
+		part1 = &parts[1 * 128];
+		part2 = &parts[2 * 128];
 
 		if (token[0] != 0) {
 			if (_stricmp(token, "LOAD") == 0) {
@@ -564,3 +632,103 @@ static uint8 *title_script_load()
 }
 
 #pragma endregion
+
+bool title_refresh_sequence()
+{
+	_scriptCurrentPreset = gCurrentPreviewTitleSequence;
+	title_sequence *title = &gConfigTitleSequences.presets[_scriptCurrentPreset];
+
+	bool hasLoad = false, hasInvalidSave = false, hasWait = false, hasRestart = false;
+	for (int i = 0; i < title->num_commands && !hasInvalidSave; i++) {
+		if (title->commands[i].command == TITLE_SCRIPT_LOAD) {
+			if (title->commands[i].saveIndex == 0xFF)
+				hasInvalidSave = true;
+			hasLoad = true;
+		}
+		else if (title->commands[i].command == TITLE_SCRIPT_LOADMM) {
+			hasLoad = true;
+		}
+		else if (title->commands[i].command == TITLE_SCRIPT_WAIT) {
+			hasWait = true;
+		}
+		else if (title->commands[i].command == TITLE_SCRIPT_RESTART) {
+			hasRestart = true;
+			break;
+		}
+		else if (title->commands[i].command == TITLE_SCRIPT_END) {
+			break;
+		}
+	}
+	if (hasLoad && (hasWait || !hasRestart) && !hasInvalidSave) {
+		uint8 *src, *scriptPtr, *binaryScript;
+		binaryScript = malloc(1024 * 8);
+		scriptPtr = binaryScript;
+
+		for (int i = 0; i < title->num_commands; i++) {
+			*scriptPtr++ = title->commands[i].command;
+			switch (title->commands[i].command) {
+			case TITLE_SCRIPT_LOAD:
+				src = title->saves[title->commands[i].saveIndex];
+				do {
+					*scriptPtr++ = *src++;
+				} while (*(src - 1) != 0);
+				break;
+			case TITLE_SCRIPT_LOCATION:
+				*scriptPtr++ = title->commands[i].x;
+				*scriptPtr++ = title->commands[i].y;
+				break;
+			case TITLE_SCRIPT_ROTATE:
+				*scriptPtr++ = title->commands[i].rotations;
+				break;
+			case TITLE_SCRIPT_ZOOM:
+				*scriptPtr++ = title->commands[i].zoom;
+				break;
+			case TITLE_SCRIPT_WAIT:
+				*scriptPtr++ = title->commands[i].seconds;
+				break;
+			}
+		}
+
+		*scriptPtr++ = TITLE_SCRIPT_END;
+
+		int scriptLength = (int)(scriptPtr - binaryScript);
+		binaryScript = realloc(binaryScript, scriptLength);
+
+		_scriptNoLoadsSinceRestart = 1;
+		if (_loadedScript != _magicMountainScript)
+			SafeFree(_loadedScript);
+		_loadedScript = binaryScript;
+		_currentScript = binaryScript;
+		_scriptWaitCounter = 0;
+		gTitleScriptCommand = -1;
+		gTitleScriptSave = 0xFF;
+		title_update_showcase();
+		gfx_invalidate_screen();
+
+		return true;
+	}
+	log_error("Failed to load title sequence, hasLoad: %i, hasWait: %i, hasRestart: %i, hasInvalidSave: %i", hasLoad, hasWait, hasRestart, hasInvalidSave);
+	window_error_open(5402, (!hasWait && hasRestart) ? 5439 : STR_NONE);
+	_scriptNoLoadsSinceRestart = 1;
+	if (_loadedScript != _magicMountainScript)
+		SafeFree(_loadedScript);
+	_scriptCurrentPreset = 0;
+	_currentScript = _magicMountainScript;
+	_scriptWaitCounter = 0;
+	gTitleScriptCommand = -1;
+	gTitleScriptSave = 0xFF;
+	gCurrentPreviewTitleSequence = 0;
+	window_invalidate_by_class(WC_OPTIONS);
+	window_invalidate_by_class(WC_TITLE_EDITOR);
+	title_update_showcase();
+	gfx_invalidate_screen();
+	return false;
+}
+
+void title_skip_from_beginning()
+{
+	_scriptNoLoadsSinceRestart = 1;
+	gTitleScriptCommand = -1;
+	gTitleScriptSave = 0xFF;
+	_currentScript = _loadedScript;
+}

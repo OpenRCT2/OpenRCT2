@@ -46,6 +46,7 @@ char gTextBoxInput[512] = { 0 };
 int gMaxTextBoxInputLength = 0;
 int gTextBoxFrameNo = 0;
 bool gUsingWidgetTextBox = 0;
+bool gLoadSaveTitleSequenceSave = 0;
 
 // converted from uint16 values at 0x009A41EC - 0x009A4230
 // these are percentage coordinates of the viewport to center to, if a window is obscuring a location, the next is tried
@@ -2486,6 +2487,7 @@ void window_cancel_textbox()
 			gCurrentTextBox.window.classification,
 			gCurrentTextBox.window.number
 			);
+		window_event_textinput_call(w, gCurrentTextBox.widget_index, NULL);
 		gCurrentTextBox.window.classification = 255;
 		gCurrentTextBox.window.number = 0;
 		platform_stop_text_input();
