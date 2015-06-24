@@ -3775,3 +3775,6 @@ STR_5434    :Command Editor
 STR_5435    :Rename save
 STR_5436    :Edit Title Sequences...
 STR_5437    :No save selected
+
+STR_5438    :Can't make changes while command editor is open
+STR_5439    :A restart is used without a wait command

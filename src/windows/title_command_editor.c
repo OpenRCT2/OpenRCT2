@@ -216,6 +216,10 @@ void window_title_command_editor_open(int index, bool insert)
 	}
 
 	switch (command.command) {
+	case TITLE_SCRIPT_LOAD:
+		if (command.saveIndex >= gConfigTitleSequences.presets[gCurrentTitleSequence].num_commands)
+			command.saveIndex = 0xFF;
+		break;
 	case TITLE_SCRIPT_LOCATION:
 		_itoa(command.x, textbox1Buffer, 10);
 		_itoa(command.y, textbox2Buffer, 10);
@@ -237,7 +241,7 @@ static void window_title_command_editor_close()
 
 static void window_title_command_editor_mouseup()
 {
-	rct_window *w;
+	rct_window *w, *title_editor_w;
 	short widgetIndex;
 
 	window_widget_get_registers(w, widgetIndex);
@@ -264,6 +268,9 @@ static void window_title_command_editor_mouseup()
 			gConfigTitleSequences.presets[gCurrentTitleSequence].commands[_window_title_command_editor_index] = command;
 			title_sequence_save_preset_script(gCurrentTitleSequence);
 		}
+		title_editor_w = window_find_by_class(WC_TITLE_EDITOR);
+		if (title_editor_w != NULL)
+			title_editor_w->selected_list_item = _window_title_command_editor_index;
 		window_close(w);
 		break;
 	}
@@ -355,6 +362,8 @@ static void window_title_command_editor_dropdown()
 			break;
 		case TITLE_SCRIPT_LOAD:
 			command.saveIndex = 0;
+			if (command.saveIndex >= gConfigTitleSequences.presets[gCurrentTitleSequence].num_commands)
+				command.saveIndex = 0xFF;
 			break;
 		}
 		window_invalidate(w);
@@ -393,7 +402,7 @@ static void window_title_command_editor_textinput()
 				}
 				command.rotations = (uint8)value;
 			}
-			_itoa(command.rotations, textbox2Buffer, 10);
+			_itoa(command.rotations, textbox1Buffer, 10);
 			window_invalidate(w);
 		}
 		else {
@@ -404,7 +413,7 @@ static void window_title_command_editor_textinput()
 		if (!result) {
 			if (*end == '\0')
 				command.x = (uint8)value;
-			_itoa(command.x, textbox2Buffer, 10);
+			_itoa(command.x, textbox1Buffer, 10);
 			window_invalidate(w);
 		}
 		else {

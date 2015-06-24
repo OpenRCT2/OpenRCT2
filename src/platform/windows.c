@@ -112,6 +112,8 @@ int platform_directory_delete(const char *path)
 {
 	char pszFrom[MAX_PATH];
 	strcpy(pszFrom, path);
+	// Needs to be double-null terminated for some weird reason
+	pszFrom[strlen(path) + 1] = 0;
   
 	SHFILEOPSTRUCTA fileop;
 	fileop.hwnd   = NULL;    // no status display
@@ -124,7 +126,7 @@ int platform_directory_delete(const char *path)
 	fileop.lpszProgressTitle     = NULL;
 	fileop.hNameMappings         = NULL;
 
-	int ret = SHFileOperationA(&fileop); 
+	int ret = SHFileOperationA(&fileop);
 	return (ret == 0);
 }
 

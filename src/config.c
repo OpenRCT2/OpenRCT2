@@ -1439,15 +1439,15 @@ void title_sequences_load_presets()
 	platform_enumerate_directories_end(dirEnumHandle);
 
 	// Check which title sequence is the current one
-	if (strcmp(gConfigInterface.current_title_sequence_preset, "*RCT2") == 0) {
+	if (_stricmp(gConfigInterface.current_title_sequence_preset, "*RCT2") == 0) {
 		gCurrentTitleSequence = 0;
 	}
-	else if (strcmp(gConfigInterface.current_title_sequence_preset, "*OPENRCT2") == 0) {
+	else if (_stricmp(gConfigInterface.current_title_sequence_preset, "*OPENRCT2") == 0) {
 		gCurrentTitleSequence = 1;
 	}
 	else {
-		for (i = 2; i < gConfigThemes.num_presets; i++) {
-			if (strcmp(gConfigInterface.current_title_sequence_preset, gConfigTitleSequences.presets[i].name) == 0) {
+		for (i = TITLE_SEQUENCE_DEFAULT_PRESETS; i < gConfigTitleSequences.num_presets; i++) {
+			if (_stricmp(gConfigInterface.current_title_sequence_preset, gConfigTitleSequences.presets[i].name) == 0) {
 				gCurrentTitleSequence = i;
 				break;
 			}
@@ -1465,7 +1465,7 @@ static void title_sequence_open(const char *path, const char *customName)
 	file_info fileInfo;
 	FILE *file;
 	int fileEnumHandle, i, preset;
-	char parts[3 * 32], *token, *part1, *part2;
+	char parts[3 * 128], *token, *part1, *part2;
 	char separator = platform_get_path_separator();
 
 	// Check for the script file
@@ -1539,9 +1539,9 @@ static void title_sequence_open(const char *path, const char *customName)
 	do {
 		title_script_get_line(file, parts);
 
-		token = &parts[0 * 64];
-		part1 = &parts[1 * 64];
-		part2 = &parts[2 * 64];
+		token = &parts[0 * 128];
+		part1 = &parts[1 * 128];
+		part2 = &parts[2 * 128];
 		title_command command;
 		command.command = 0xFF;
 

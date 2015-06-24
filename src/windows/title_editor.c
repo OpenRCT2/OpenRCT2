@@ -121,7 +121,7 @@ enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
 	WIDX_TITLE_EDITOR_INSERT,
 	WIDX_TITLE_EDITOR_EDIT,
 	WIDX_TITLE_EDITOR_DELETE,
-	WIDX_TITLE_EDITOR_RELOAD,
+	//WIDX_TITLE_EDITOR_RELOAD,
 	WIDX_TITLE_EDITOR_SKIP_TO,
 	
 	WIDX_TITLE_EDITOR_MOVE_UP,
@@ -172,11 +172,11 @@ static rct_widget window_title_editor_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY,			BH,			5409,					5386 }, // Insert
 	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*1),	BH+(BS*1),	5410,					5387 }, // Edit
 	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*2),	BH+(BS*2),	3349,					5388 }, // Delete
-	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*3),	BH+(BS*3),	5411,					5396 }, // Reload
-	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*4),	BH+(BS*4),	5412,					5389 }, // Skip to
+	//{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*3),	BH+(BS*3),	5411,					5396 }, // Reload
+	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*3),	BH+(BS*3),	5412,					5389 }, // Skip to
 
-	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW/2-1,BY+(BS*6),BH+(BS*6),	5375,					5390 }, // Move down
-	{ WWT_DROPDOWN_BUTTON,	1,	BX+BW/2,BX+BW-1,BY+(BS*6),	BH+(BS*6),	5376,					5391 }, // Move up
+	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW/2-1,BY+(BS*5),BH+(BS*5),	5375,					5390 }, // Move down
+	{ WWT_DROPDOWN_BUTTON,	1,	BX+BW/2,BX+BW-1,BY+(BS*5),	BH+(BS*5),	5376,					5391 }, // Move up
 
 	{ WWT_IMGBTN,			1,	BX,		BX+BW/4-1,	WH-32,	WH-16,		SPR_G2_TITLE_RESTART,	5382 }, // Replay
 	{ WWT_IMGBTN,			1,	BX+BW/4,BX+BW/2-1,	WH-32,	WH-16,		SPR_G2_TITLE_STOP,		5381 }, // Stop
@@ -255,7 +255,7 @@ void window_title_editor_open(int tab)
 		(1 << WIDX_TITLE_EDITOR_INSERT) |
 		(1 << WIDX_TITLE_EDITOR_EDIT) |
 		(1 << WIDX_TITLE_EDITOR_DELETE) |
-		(1 << WIDX_TITLE_EDITOR_RELOAD) |
+		//(1 << WIDX_TITLE_EDITOR_RELOAD) |
 		(1 << WIDX_TITLE_EDITOR_SKIP_TO) |
 		(1 << WIDX_TITLE_EDITOR_MOVE_DOWN) |
 		(1 << WIDX_TITLE_EDITOR_MOVE_UP) |
@@ -282,9 +282,17 @@ void window_title_editor_open(int tab)
 }
 
 void window_title_editor_close() {
-	rct_window *w;
+	rct_window *w, *command_editor_w, *load_save_w;
 
 	window_get_register(w);
+
+	// Close the related windows
+	command_editor_w = window_find_by_class(WC_TITLE_COMMAND_EDITOR);
+	load_save_w = window_find_by_class(WC_LOADSAVE);
+	if (command_editor_w)
+		window_close(command_editor_w);
+	if (load_save_w && gLoadSaveTitleSequenceSave)
+		window_close(load_save_w);
 }
 
 static void window_title_editor_mouseup()
@@ -293,39 +301,42 @@ static void window_title_editor_mouseup()
 	rct_window *w;
 	char path[MAX_PATH];
 	char separator = platform_get_path_separator();
-	int defaultPreset, playing, inTitle, i;
+	int defaultPreset, playing, inTitle, i, commandEditorOpen;
 	window_widget_get_registers(w, widgetIndex);
 
 	defaultPreset = (gCurrentTitleSequence < TITLE_SEQUENCE_DEFAULT_PRESETS);
 	playing = (gCurrentTitleSequence == gCurrentPreviewTitleSequence) && ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
 	inTitle = ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
+	commandEditorOpen = (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != NULL);
 	switch (widgetIndex) {
 	case WIDX_TITLE_EDITOR_CLOSE:
 		window_close(w);
 		break;
 	case WIDX_TITLE_EDITOR_DUPLICATE_BUTTON:
-		window_text_input_open(w, widgetIndex, 5239, 5406, 1170, (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].name, 64);
+		commandEditorOpen *= 2;
+		if (!commandEditorOpen)
+			window_text_input_open(w, widgetIndex, 5239, 5406, 1170, (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].name, 64);
 		break;
 	case WIDX_TITLE_EDITOR_DELETE_BUTTON:
-		defaultPreset *= 2;
-		if (!defaultPreset)
+		defaultPreset *= 2; commandEditorOpen *= 2;
+		if (!defaultPreset && !commandEditorOpen)
 			title_sequence_delete_preset(gCurrentTitleSequence);
 		break;
 	case WIDX_TITLE_EDITOR_RENAME_BUTTON:
-		defaultPreset *= 2;
-		if (!defaultPreset)
+		defaultPreset *= 2; commandEditorOpen *= 2;
+		if (!defaultPreset && !commandEditorOpen)
 			window_text_input_open(w, widgetIndex, 3348, 5406, 1170, (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].name, 64);
 		break;
 	case WIDX_TITLE_EDITOR_ADD:
-		defaultPreset *= 2; playing *= 2;
-		if (!defaultPreset && !playing) {
+		defaultPreset *= 2; playing *= 2; commandEditorOpen *= 2;
+		if (!defaultPreset && !playing && !commandEditorOpen) {
 			window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
 			gLoadSaveTitleSequenceSave = true;
 		}
 		break;
 	case WIDX_TITLE_EDITOR_REMOVE:
-		defaultPreset *= 2; playing *= 2;
-		if (!defaultPreset && !playing) {
+		defaultPreset *= 2; playing *= 2; commandEditorOpen *= 2;
+		if (!defaultPreset && !playing && !commandEditorOpen) {
 			if (w->selected_list_item != -1) {
 				title_sequence_remove_save(gCurrentTitleSequence, w->selected_list_item);
 				if (w->selected_list_item > 0)
@@ -336,8 +347,8 @@ static void window_title_editor_mouseup()
 		}
 		break;
 	case WIDX_TITLE_EDITOR_RENAME:
-		defaultPreset *= 2; playing *= 2;
-		if (!defaultPreset && !playing) {
+		defaultPreset *= 2; playing *= 2; commandEditorOpen *= 2;
+		if (!defaultPreset && !playing && !commandEditorOpen) {
 			if (w->selected_list_item != -1)
 				window_text_input_open(w, widgetIndex, 5435, 5405, 1170, (uint32)gConfigTitleSequences.presets[gCurrentTitleSequence].saves[w->selected_list_item], TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1);
 		}
@@ -359,9 +370,8 @@ static void window_title_editor_mouseup()
 		}
 		break;
 	case WIDX_TITLE_EDITOR_INSERT:
-		defaultPreset *= 2; playing *= 2;
-		if (!defaultPreset && !playing) {
-			printf("%i\n", w->selected_list_item);
+		defaultPreset *= 2; playing *= 2; commandEditorOpen *= 2;
+		if (!defaultPreset && !playing && !commandEditorOpen) {
 			if (w->selected_list_item != -1)
 				window_title_command_editor_open(w->selected_list_item + 1, true);
 			else
@@ -369,15 +379,15 @@ static void window_title_editor_mouseup()
 		}
 		break;
 	case WIDX_TITLE_EDITOR_EDIT:
-		defaultPreset *= 2; playing *= 2;
-		if (!defaultPreset && !playing) {
+		defaultPreset *= 2; playing *= 2; commandEditorOpen *= 2;
+		if (!defaultPreset && !playing && !commandEditorOpen) {
 			if (w->selected_list_item != -1)
 				window_title_command_editor_open(w->selected_list_item, false);
 		}
 		break;
 	case WIDX_TITLE_EDITOR_DELETE:
-		defaultPreset *= 2; playing *= 2;
-		if (!defaultPreset && !playing) {
+		defaultPreset *= 2; playing *= 2; commandEditorOpen *= 2;
+		if (!defaultPreset && !playing && !commandEditorOpen) {
 			if (w->selected_list_item != -1) {
 				title_sequence_delete_command(gCurrentTitleSequence, w->selected_list_item);
 				if (w->selected_list_item > 0)
@@ -387,12 +397,12 @@ static void window_title_editor_mouseup()
 			}
 		}
 		break;
-	case WIDX_TITLE_EDITOR_RELOAD:
-		playing *= 2;
-		if (!playing) {
+	/*case WIDX_TITLE_EDITOR_RELOAD:
+		playing *= 2; commandEditorOpen *= 2;
+		if (!playing && !commandEditorOpen) {
 			//title_sequence_open
 		}
-		break;
+		break;*/
 	case WIDX_TITLE_EDITOR_SKIP_TO:
 		if (playing && w->selected_list_item != -1) {
 			if (gTitleScriptCommand > w->selected_list_item) {
@@ -413,8 +423,8 @@ static void window_title_editor_mouseup()
 		}
 		break;
 	case WIDX_TITLE_EDITOR_MOVE_DOWN:
-		defaultPreset *= 2; playing *= 2;
-		if (!defaultPreset && !playing) {
+		defaultPreset *= 2; playing *= 2; commandEditorOpen *= 2;
+		if (!defaultPreset && !playing && !commandEditorOpen) {
 			if (w->selected_list_item != -1 && w->selected_list_item < gConfigTitleSequences.presets[gCurrentTitleSequence].num_commands - 1) {
 				title_sequence_move_down_command(gCurrentTitleSequence, w->selected_list_item);
 				w->selected_list_item++;
@@ -422,8 +432,8 @@ static void window_title_editor_mouseup()
 		}
 		break;
 	case WIDX_TITLE_EDITOR_MOVE_UP:
-		defaultPreset *= 2; playing *= 2;
-		if (!defaultPreset && !playing) {
+		defaultPreset *= 2; playing *= 2; commandEditorOpen *= 2;
+		if (!defaultPreset && !playing && !commandEditorOpen) {
 			if (w->selected_list_item != -1 && w->selected_list_item > 0) {
 				title_sequence_move_up_command(gCurrentTitleSequence, w->selected_list_item);
 				w->selected_list_item--;
@@ -474,6 +484,8 @@ static void window_title_editor_mouseup()
 	}
 	if (defaultPreset == 2)
 		window_error_open(5400, STR_NONE);
+	else if (commandEditorOpen == 2)
+		window_error_open(5438, STR_NONE);
 	else if (playing == 2)
 		window_error_open(5398, 5399);
 }
@@ -553,25 +565,30 @@ static void window_title_editor_mousedown(int widgetIndex, rct_window* w, rct_wi
 		window_invalidate(w);
 		break;
 	case WIDX_TITLE_EDITOR_PRESETS_DROPDOWN:
-		num_items = gConfigTitleSequences.num_presets;
-
-		widget--;
-		for (i = 0; i < num_items; i++) {
-			gDropdownItemsFormat[i] = 2777;
-			gDropdownItemsArgs[i] = (uint64)&gConfigTitleSequences.presets[i].name;
+		if (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != NULL) {
+			window_error_open(5438, STR_NONE);
 		}
+		else {
+			num_items = gConfigTitleSequences.num_presets;
 
-		window_dropdown_show_text_custom_width(
-			w->x + widget->left,
-			w->y + widget->top,
-			widget->bottom - widget->top + 1,
-			w->colours[1],
-			DROPDOWN_FLAG_STAY_OPEN,
-			num_items,
-			widget->right - widget->left - 3
-			);
+			widget--;
+			for (i = 0; i < num_items; i++) {
+				gDropdownItemsFormat[i] = 2777;
+				gDropdownItemsArgs[i] = (uint64)&gConfigTitleSequences.presets[i].name;
+			}
 
-		gDropdownItemsChecked = 1 << (gCurrentTitleSequence);
+			window_dropdown_show_text_custom_width(
+				w->x + widget->left,
+				w->y + widget->top,
+				widget->bottom - widget->top + 1,
+				w->colours[1],
+				DROPDOWN_FLAG_STAY_OPEN,
+				num_items,
+				widget->right - widget->left - 3
+				);
+
+			gDropdownItemsChecked = 1 << (gCurrentTitleSequence);
+		}
 		break;
 	}
 }
@@ -772,7 +789,7 @@ void window_title_editor_invalidate()
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_INSERT].type = WWT_EMPTY;
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_EDIT].type = WWT_EMPTY;
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE].type = WWT_EMPTY;
-	window_title_editor_widgets[WIDX_TITLE_EDITOR_RELOAD].type = WWT_EMPTY;
+	//window_title_editor_widgets[WIDX_TITLE_EDITOR_RELOAD].type = WWT_EMPTY;
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP_TO].type = WWT_EMPTY;
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_UP].type = WWT_EMPTY;
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_DOWN].type = WWT_EMPTY;
@@ -805,7 +822,7 @@ void window_title_editor_invalidate()
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_INSERT].type = WWT_DROPDOWN_BUTTON;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_EDIT].type = WWT_DROPDOWN_BUTTON;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE].type = WWT_DROPDOWN_BUTTON;
-		window_title_editor_widgets[WIDX_TITLE_EDITOR_RELOAD].type = WWT_DROPDOWN_BUTTON;
+		//window_title_editor_widgets[WIDX_TITLE_EDITOR_RELOAD].type = WWT_DROPDOWN_BUTTON;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP_TO].type = WWT_DROPDOWN_BUTTON;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_UP].type = WWT_DROPDOWN_BUTTON;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_DOWN].type = WWT_DROPDOWN_BUTTON;

@@ -176,9 +176,12 @@ void title_sequence_delete_preset(int preset)
 	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets) {
 		// Delete the folder
 		utf8 path[MAX_PATH];
+		char separator = platform_get_path_separator();
 		platform_get_user_directory(path, "title sequences");
 		strcat(path, gConfigTitleSequences.presets[preset].name);
-		platform_directory_delete(path);
+		if (!platform_directory_delete(path)) {
+			log_error("Failed to delete directory: \"%s\"", path);
+		}
 
 		free(gConfigTitleSequences.presets[preset].saves);
 		free(gConfigTitleSequences.presets[preset].commands);
@@ -264,7 +267,7 @@ void title_sequence_remove_save(int preset, int index)
 			if (gConfigTitleSequences.presets[preset].commands[i].command == TITLE_SCRIPT_LOAD) {
 				if (gConfigTitleSequences.presets[preset].commands[i].saveIndex == index)
 					gConfigTitleSequences.presets[preset].commands[i].saveIndex = 0xFF;
-				else if (gConfigTitleSequences.presets[preset].commands[i].saveIndex > index)
+				else if (gConfigTitleSequences.presets[preset].commands[i].saveIndex > index && gConfigTitleSequences.presets[preset].commands[i].saveIndex != 0xFF)
 					gConfigTitleSequences.presets[preset].commands[i].saveIndex--;
 			}
 		}

@@ -267,7 +267,10 @@ static void title_do_next_script_opcode()
 	uint8 script_opcode, script_operand;
 	rct_window* w;
 	gTitleScriptCommand++;
-	script_opcode = *_currentScript++;
+	if (*(_currentScript - 1) != TITLE_SCRIPT_END)
+		script_opcode = *_currentScript++;
+	else
+		script_opcode = *_currentScript;
 	if (gTitleScriptSkipTo != -1) {
 		if (gTitleScriptSkipTo == gTitleScriptCommand) {
 			gTitleScriptSkipTo = -1;
@@ -363,6 +366,7 @@ static void title_do_next_script_opcode()
 				_scriptNoLoadsSinceRestart = 0;
 				gTitleScriptSave = gConfigTitleSequences.presets[gCurrentPreviewTitleSequence].commands[gTitleScriptCommand].saveIndex;
 			} else {
+				log_error("Failed to load: \"%s\" for the title sequence.", path);
 				script_opcode = *_currentScript;
 				while (script_opcode != TITLE_SCRIPT_LOADMM && script_opcode != TITLE_SCRIPT_LOAD && script_opcode != TITLE_SCRIPT_RESTART && script_opcode != TITLE_SCRIPT_END) {
 					title_skip_opcode();
@@ -410,7 +414,7 @@ static void title_update_showcase()
 
 			if (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad != -1)
 				_scriptWaitCounter = 0;
-			else if (*_currentScript != TITLE_SCRIPT_END)
+			else if (*(_currentScript - 1) != TITLE_SCRIPT_END)
 				_scriptWaitCounter--;
 		} while (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad != -1);
 
@@ -516,7 +520,7 @@ void title_script_get_line(FILE *file, char *parts)
 	int i, c, part, cindex, whitespace, comment, load;
 
 	for (i = 0; i < 3; i++)
-		parts[i * 64] = 0;
+		parts[i * 128] = 0;
 
 	part = 0;
 	cindex = 0;
@@ -526,27 +530,27 @@ void title_script_get_line(FILE *file, char *parts)
 	for (; part < 3;) {
 		c = fgetc(file);
 		if (c == '\n' || c == '\r' || c == EOF) {
-			parts[part * 64 + cindex] = 0;
+			parts[part * 128 + cindex] = 0;
 			return;
 		} else if (c == '#') {
-			parts[part * 64 + cindex] = 0;
+			parts[part * 128 + cindex] = 0;
 			comment = 1;
 		} else if (c == ' ' && !comment && !load) {
 			if (!whitespace) {
-				if (part == 0 && _stricmp(parts, "LOAD") == 0)
+				if (part == 0 && cindex == 4 && _strnicmp(parts, "LOAD", 4) == 0)
 					load = true;
-				parts[part * 64 + cindex] = 0;
+				parts[part * 128 + cindex] = 0;
 				part++;
 				cindex = 0;
 			}
 		} else if (!comment) {
 			whitespace = 0;
-			if (cindex < 63) {
-				parts[part * 64 + cindex] = c;
+			if (cindex < 127) {
+				parts[part * 128 + cindex] = c;
 				cindex++;
 			}
 			else {
-				parts[part * 64 + cindex] = 0;
+				parts[part * 128 + cindex] = 0;
 				part++;
 				cindex = 0;
 			}
@@ -557,7 +561,7 @@ void title_script_get_line(FILE *file, char *parts)
 static uint8 *title_script_load()
 {
 	FILE *file;
-	char parts[3 * 64], *token, *part1, *part2, *src;
+	char parts[3 * 128], *token, *part1, *part2, *src;
 
 	char path[MAX_PATH];
 	char filePath[] = "data/title/script.txt";
@@ -583,9 +587,9 @@ static uint8 *title_script_load()
 	do {
 		title_script_get_line(file, parts);
 
-		token = &parts[0 * 64];
-		part1 = &parts[1 * 64];
-		part2 = &parts[2 * 64];
+		token = &parts[0 * 128];
+		part1 = &parts[1 * 128];
+		part2 = &parts[2 * 128];
 
 		if (token[0] != 0) {
 			if (_stricmp(token, "LOAD") == 0) {
@@ -634,21 +638,28 @@ bool title_refresh_sequence()
 	_scriptCurrentPreset = gCurrentPreviewTitleSequence;
 	title_sequence *title = &gConfigTitleSequences.presets[_scriptCurrentPreset];
 
-	bool hasLoad = false, hasInvalidSave = false;// , hasWait = false;
+	bool hasLoad = false, hasInvalidSave = false, hasWait = false, hasRestart = false;
 	for (int i = 0; i < title->num_commands && !hasInvalidSave; i++) {
 		if (title->commands[i].command == TITLE_SCRIPT_LOAD) {
 			if (title->commands[i].saveIndex == 0xFF)
 				hasInvalidSave = true;
 			hasLoad = true;
 		}
-		else if (title->commands[i].command == TITLE_SCRIPT_LOADMM)
+		else if (title->commands[i].command == TITLE_SCRIPT_LOADMM) {
 			hasLoad = true;
-		//else if (title->commands[i].command == TITLE_SCRIPT_WAIT)
-		//	hasWait = true;
-		else if (title->commands[i].command == TITLE_SCRIPT_RESTART || title->commands[i].command == TITLE_SCRIPT_END)
+		}
+		else if (title->commands[i].command == TITLE_SCRIPT_WAIT) {
+			hasWait = true;
+		}
+		else if (title->commands[i].command == TITLE_SCRIPT_RESTART) {
+			hasRestart = true;
 			break;
+		}
+		else if (title->commands[i].command == TITLE_SCRIPT_END) {
+			break;
+		}
 	}
-	if (hasLoad && /*hasWait &&*/ !hasInvalidSave) {
+	if (hasLoad && (hasWait || !hasRestart) && !hasInvalidSave) {
 		uint8 *src, *scriptPtr, *binaryScript;
 		binaryScript = malloc(1024 * 8);
 		scriptPtr = binaryScript;
@@ -696,7 +707,8 @@ bool title_refresh_sequence()
 
 		return true;
 	}
-	window_error_open(5402, STR_NONE);
+	log_error("Failed to load title sequence, hasLoad: %i, hasWait: %i, hasRestart: %i, hasInvalidSave: %i", hasLoad, hasWait, hasRestart, hasInvalidSave);
+	window_error_open(5402, (!hasWait && hasRestart) ? 5439 : STR_NONE);
 	_scriptNoLoadsSinceRestart = 1;
 	if (_loadedScript != _magicMountainScript)
 		SafeFree(_loadedScript);
