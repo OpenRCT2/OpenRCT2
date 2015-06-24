@@ -381,18 +381,18 @@ static void window_title_editor_mouseup()
 	case WIDX_TITLE_EDITOR_EDIT:
 		defaultPreset *= 2; playing *= 2; commandEditorOpen *= 2;
 		if (!defaultPreset && !playing && !commandEditorOpen) {
-			if (w->selected_list_item != -1)
+			if (w->selected_list_item != -1 && w->selected_list_item < gConfigTitleSequences.presets[gCurrentTitleSequence].num_commands)
 				window_title_command_editor_open(w->selected_list_item, false);
 		}
 		break;
 	case WIDX_TITLE_EDITOR_DELETE:
 		defaultPreset *= 2; playing *= 2; commandEditorOpen *= 2;
 		if (!defaultPreset && !playing && !commandEditorOpen) {
-			if (w->selected_list_item != -1) {
+			if (w->selected_list_item != -1 && w->selected_list_item < gConfigTitleSequences.presets[gCurrentTitleSequence].num_commands) {
 				title_sequence_delete_command(gCurrentTitleSequence, w->selected_list_item);
 				if (w->selected_list_item > 0)
 					w->selected_list_item--;
-				else if (w->selected_list_item > gConfigTitleSequences.presets[gCurrentTitleSequence].num_commands)
+				else if (w->selected_list_item >= gConfigTitleSequences.presets[gCurrentTitleSequence].num_commands)
 					w->selected_list_item = gConfigTitleSequences.presets[gCurrentTitleSequence].num_commands - 1;
 			}
 		}
