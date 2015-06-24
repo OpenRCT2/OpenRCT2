@@ -264,13 +264,15 @@ void window_title_editor_open(int tab)
 		(1 << WIDX_TITLE_EDITOR_STOP) |
 		(1 << WIDX_TITLE_EDITOR_REPLAY) |
 		(1 << WIDX_TITLE_EDITOR_SKIP);
-
+	
 	window_init_scroll_widgets(window);
 	window->list_information_type = 0;
 
 	window->selected_tab = tab;
 	window->selected_list_item = -1;
 	_window_title_editor_highlighted_index = -1;
+	window->scrolls[0].v_top = 0;
+	window->scrolls[0].h_left = 0;
 
 	window->min_width = WW;
 	window->min_height = WH;
@@ -545,8 +547,10 @@ static void window_title_editor_mousedown(int widgetIndex, rct_window* w, rct_wi
 		w->selected_tab = newSelectedTab;
 		w->selected_list_item = -1;
 		_window_title_editor_highlighted_index = -1;
-		window_invalidate(w);
 		w->scrolls[0].v_top = 0;
+		w->frame_no = 0;
+		window_event_resize_call(w);
+		window_invalidate(w);
 		break;
 	case WIDX_TITLE_EDITOR_PRESETS_DROPDOWN:
 		num_items = gConfigTitleSequences.num_presets;

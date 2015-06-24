@@ -241,6 +241,7 @@ static rct_windowclass window_themes_tab_5_classes[] = {
 static rct_windowclass window_themes_tab_6_classes[] = {
 	WC_CHEATS,
 	WC_THEMES,
+	WC_TITLE_EDITOR,
 	WC_OPTIONS,
 	WC_KEYBOARD_SHORTCUT_LIST,
 	WC_CHANGE_KEYBOARD_SHORTCUT,
