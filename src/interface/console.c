@@ -846,6 +846,8 @@ static int cc_open(const char **argv, int argc) {
 			window_options_open();
 		} else if (strcmp(argv[0], "themes") == 0) {
 			window_themes_open();
+		} else if (strcmp(argv[0], "title_sequences") == 0) {
+			window_title_editor_open(0);
 		} else if (invalidTitle) {
 			console_writeline_error("Cannot open this window in the title screen.");
 		} else {
@@ -898,7 +900,8 @@ char* console_window_table[] = {
 	"inventions_list",
 	"scenario_options",
 	"options",
-	"themes"
+	"themes",
+	"title_sequences"
 };
 
 console_command console_command_table[] = {

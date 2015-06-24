@@ -533,6 +533,7 @@ static void input_scroll_continue(rct_window *w, int widgetIndex, int state, int
 {
 	rct_widget *widget;
 	int scroll_part, scroll_id;
+	int x2, y2;
 
 	widget = &w->widgets[widgetIndex];
 	if (widgetIndex != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32)){
@@ -548,7 +549,7 @@ static void input_scroll_continue(rct_window *w, int widgetIndex, int state, int
 		return;
 	}
 	
-	widget_scroll_get_part(w, widget, x, y, &x, &y, &scroll_part, &scroll_id);
+	widget_scroll_get_part(w, widget, x, y, &x2, &y2, &scroll_part, &scroll_id);
 	
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_AREA, uint16) == SCROLL_PART_HSCROLLBAR_THUMB){
 		int temp_x = x;
@@ -565,6 +566,9 @@ static void input_scroll_continue(rct_window *w, int widgetIndex, int state, int
 		input_scroll_part_update_vthumb(w, widgetIndex, y, scroll_id);
 		return;
 	}
+
+	x = x2;
+	y = y2;
 
 	if (scroll_part != RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_AREA, uint16)){
 		invalidate_scroll();

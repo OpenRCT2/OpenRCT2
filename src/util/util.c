@@ -41,6 +41,16 @@ int mph_to_kmph(int mph)
 	return (mph * 1648) / 1024;
 }
 
+bool filename_valid_characters(const char *filename)
+{
+	for (int i = 0; filename[i] != '\0'; i++) {
+		if (filename[i] == '\\' || filename[i] == '/' || filename[i] == ':' || filename[i] == '?' ||
+			filename[i] == '*' || filename[i] == '<' || filename[i] == '>' || filename[i] == '|')
+			return false;
+	}
+	return true;
+}
+
 const char *path_get_filename(const char *path)
 {
 	const char *result, *ch;

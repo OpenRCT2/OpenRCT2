@@ -25,6 +25,7 @@
 #include "util/util.h"
 #include "interface/themes.h"
 #include "openrct2.h"
+#include "interface/title_sequences.h"
 
 // Magic number for original game cfg file
 static const int MagicNumber = 0x0003113A;
@@ -179,7 +180,6 @@ config_property_definition _generalDefinitions[] = {
 	{ offsetof(general_configuration, date_format),						"date_format",					CONFIG_VALUE_TYPE_UINT8,		DATE_FORMAT_DMY,				_dateFormatEnum			},
 	{ offsetof(general_configuration, auto_staff_placement),			"auto_staff",					CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(general_configuration, last_run_version),				"last_run_version",				CONFIG_VALUE_TYPE_STRING,		{ .value_string = NULL },		NULL					},
-	{ offsetof(general_configuration, title_sequence),					"title_sequence",				CONFIG_VALUE_TYPE_UINT8,		TITLE_SEQUENCE_OPENRCT2,		NULL					},
 	{ offsetof(general_configuration, invert_viewport_drag),			"invert_viewport_drag",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(general_configuration, load_save_sort),					"load_save_sort",				CONFIG_VALUE_TYPE_UINT8,		SORT_NAME_ASCENDING,			NULL					},
 };
@@ -190,7 +190,8 @@ config_property_definition _interfaceDefinitions[] = {
 	{ offsetof(interface_configuration, toolbar_show_cheats),			"toolbar_show_cheats",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(interface_configuration, select_by_track_type),		"select_by_track_type",		CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(interface_configuration, console_small_font),			"console_small_font",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
-	{ offsetof(interface_configuration, current_theme_preset),			"current_theme",				CONFIG_VALUE_TYPE_STRING, { .value_string = "*RCT2" }, NULL },
+	{ offsetof(interface_configuration, current_theme_preset),			"current_theme",				CONFIG_VALUE_TYPE_STRING,		{ .value_string = "*RCT2" },	NULL					},
+	{ offsetof(interface_configuration, current_title_sequence_preset),	"current_title_sequence",		CONFIG_VALUE_TYPE_STRING,		{ .value_string = "*OPENRCT2" },NULL					},
 };
 
 config_property_definition _soundDefinitions[] = {
@@ -234,6 +235,7 @@ sound_configuration gConfigSound;
 cheat_configuration gConfigCheat;
 twitch_configuration gConfigTwitch;
 themes_configuration gConfigThemes;
+title_sequences_configuration gConfigTitleSequences;
 
 bool config_open(const utf8string path);
 bool config_save(const utf8string path);
@@ -1397,5 +1399,245 @@ static theme_property_definition *themes_get_property_def(theme_section_definiti
 
 	return NULL;
 }
+
+#pragma endregion
+
+#pragma region Title Sequences
+
+static void title_sequence_open(const char *path, const char *customName);
+
+void title_sequences_set_default()
+{
+	char path[MAX_PATH];
+	char sep = platform_get_path_separator();
+
+	platform_get_user_directory(path, "title sequences");
+	platform_ensure_directory_exists(path);
+
+	gConfigTitleSequences.presets = malloc(0);
+	gConfigTitleSequences.num_presets = 0;
+	
+	// Load OpenRCT2 title sequence
+	sprintf(path, "%s%c%s%c%s%c%s%c", gExePath, sep, "data", sep, "title", sep, "rct2", sep);
+	title_sequence_open(path, language_get_string(5308));
+
+	// Load OpenRCT2 title sequence
+	sprintf(path, "%s%c%s%c%s%c%s%c", gExePath, sep, "data", sep, "title", sep, "openrct2", sep);
+	title_sequence_open(path, language_get_string(5309));
+}
+
+void title_sequences_load_presets()
+{
+	utf8 path[MAX_PATH], titleDir[MAX_PATH];
+	int dirEnumHandle, i;
+
+	// Find all directories in the title sequences folder
+	platform_get_user_directory(path, "title sequences");
+	dirEnumHandle = platform_enumerate_directories_begin(path);
+	while (platform_enumerate_directories_next(dirEnumHandle, titleDir)) {
+		platform_get_user_directory(path, "title sequences");
+		strcat(path, titleDir);
+		title_sequence_open(path, NULL);
+	}
+	platform_enumerate_directories_end(dirEnumHandle);
+
+	// Check which title sequence is the current one
+	if (_stricmp(gConfigInterface.current_title_sequence_preset, "*RCT2") == 0) {
+		gCurrentTitleSequence = 0;
+	}
+	else if (_stricmp(gConfigInterface.current_title_sequence_preset, "*OPENRCT2") == 0) {
+		gCurrentTitleSequence = 1;
+	}
+	else {
+		for (i = TITLE_SEQUENCE_DEFAULT_PRESETS; i < gConfigTitleSequences.num_presets; i++) {
+			if (_stricmp(gConfigInterface.current_title_sequence_preset, gConfigTitleSequences.presets[i].name) == 0) {
+				gCurrentTitleSequence = i;
+				break;
+			}
+		}
+		if (i == gConfigTitleSequences.num_presets) {
+			gCurrentTitleSequence = 0;
+		}
+	}
+	gCurrentPreviewTitleSequence = gCurrentTitleSequence;
+}
+
+static void title_sequence_open(const char *path, const char *customName)
+{
+	utf8 titlePath[MAX_PATH], scriptPath[MAX_PATH];
+	file_info fileInfo;
+	FILE *file;
+	int fileEnumHandle, i, preset;
+	char parts[3 * 128], *token, *part1, *part2;
+	char separator = platform_get_path_separator();
+
+	// Check for the script file
+	strcpy(scriptPath, path);
+	strcat(scriptPath, "script.txt");
+	if (!platform_file_exists(scriptPath)) {
+		// No script file, title sequence is invalid
+		return;
+	}
+
+	// Check if the preset is already loaded
+	// No nead to read the first two presets as they're hardcoded in
+	for (preset = 0; preset < gConfigTitleSequences.num_presets; preset++) {
+		if (_stricmp(path, gConfigTitleSequences.presets[preset].name) == 0) {
+			return;
+		}
+	}
+	// Otherwise allocate one
+	if (preset == gConfigTitleSequences.num_presets) {
+		gConfigTitleSequences.num_presets++;
+		gConfigTitleSequences.presets = realloc(gConfigTitleSequences.presets, sizeof(title_sequence) * (size_t)gConfigTitleSequences.num_presets);
+		
+		if (customName == NULL) {
+			char nameBuffer[MAX_PATH], *name;
+			strcpy(nameBuffer, path);
+			name = nameBuffer + strlen(nameBuffer) - 1;
+			while (*name == '\\' || *name == '/') {
+				*name = 0;
+				name--;
+			}
+			while (*(name - 1) != '\\' && *(name - 1) != '/') {
+				name--;
+			}
+			strcpy(gConfigTitleSequences.presets[preset].name, name);
+			gConfigTitleSequences.presets[preset].path[0] = 0;
+		}
+		else {
+			strcpy(gConfigTitleSequences.presets[preset].name, customName);
+			strcpy(gConfigTitleSequences.presets[preset].path, path);
+		}
+		
+		gConfigTitleSequences.presets[preset].saves = malloc(0);
+		gConfigTitleSequences.presets[preset].commands = malloc(0);
+		gConfigTitleSequences.presets[preset].num_saves = 0;
+		gConfigTitleSequences.presets[preset].num_commands = 0;
+	}
+
+	// Get the save file list
+	strcpy(titlePath, path);
+	strcat(titlePath, "*.sv6");
+	fileEnumHandle = platform_enumerate_files_begin(titlePath);
+	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
+		gConfigTitleSequences.presets[preset].num_saves++;
+		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * (size_t)gConfigTitleSequences.presets[preset].num_saves);
+		strcpy(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], fileInfo.path);
+	}
+	platform_enumerate_files_end(fileEnumHandle);
+	strcpy(titlePath, path);
+	strcat(titlePath, "*.sc6");
+	fileEnumHandle = platform_enumerate_files_begin(titlePath);
+	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
+		gConfigTitleSequences.presets[preset].num_saves++;
+		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * (size_t)gConfigTitleSequences.presets[preset].num_saves);
+		strcpy(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], fileInfo.path);
+	}
+	platform_enumerate_files_end(fileEnumHandle);
+	
+	// Load the script file
+	file = fopen(scriptPath, "r");
+
+	do {
+		title_script_get_line(file, parts);
+
+		token = &parts[0 * 128];
+		part1 = &parts[1 * 128];
+		part2 = &parts[2 * 128];
+		title_command command;
+		command.command = 0xFF;
+
+		if (token[0] != 0) {
+			if (_stricmp(token, "LOAD") == 0) {
+				command.command = TITLE_SCRIPT_LOAD;
+				command.saveIndex = 0xFF;
+				for (i = 0; i < gConfigTitleSequences.presets[preset].num_saves && command.saveIndex == 0xFF; i++) {
+					if (_stricmp(part1, gConfigTitleSequences.presets[preset].saves[i]) == 0)
+						command.saveIndex = i;
+				}
+			} else if (_stricmp(token, "LOCATION") == 0) {
+				command.command = TITLE_SCRIPT_LOCATION;
+				command.x = atoi(part1) & 0xFF;
+				command.y = atoi(part2) & 0xFF;
+			} else if (_stricmp(token, "ROTATE") == 0) {
+				command.command = TITLE_SCRIPT_ROTATE;
+				command.rotations = atoi(part1) & 0xFF;
+			} else if (_stricmp(token, "ZOOM") == 0) {
+				command.command = TITLE_SCRIPT_ZOOM;
+				command.zoom = atoi(part1) & 0xFF;
+			} else if (_stricmp(token, "WAIT") == 0) {
+				command.command = TITLE_SCRIPT_WAIT;
+				command.seconds = atoi(part1) & 0xFF;
+			} else if (_stricmp(token, "RESTART") == 0) {
+				command.command = TITLE_SCRIPT_RESTART;
+			} else if (_stricmp(token, "END") == 0) {
+				command.command = TITLE_SCRIPT_END;
+			} else if (_stricmp(token, "LOADMM") == 0) {
+				command.command = TITLE_SCRIPT_LOADMM;
+			}
+		}
+		if (command.command != 0xFF) {
+			gConfigTitleSequences.presets[preset].num_commands++;
+			gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(title_command) * (size_t)gConfigTitleSequences.presets[preset].num_commands);
+			gConfigTitleSequences.presets[preset].commands[gConfigTitleSequences.presets[preset].num_commands - 1] = command;
+		}
+	} while (!feof(file));
+	fclose(file);
+}
+
+void title_sequence_save_preset_script(int preset)
+{
+	utf8 path[MAX_PATH];
+	FILE *file;
+	int i;
+	char separator = platform_get_path_separator();
+
+	
+	platform_get_user_directory(path, "title sequences");
+	strcat(path, path_get_filename(gConfigTitleSequences.presets[preset].name));
+	strncat(path, &separator, 1);
+	strcat(path, "script.txt");
+
+	file = fopen(path, "wb");
+	if (file == NULL) {
+		log_error("Unable to write to script file.");
+		return;
+	}
+	
+	for (i = 0; i < gConfigTitleSequences.presets[preset].num_commands; i++) {
+		title_command *command = &gConfigTitleSequences.presets[preset].commands[i];
+		switch (command->command) {
+		case TITLE_SCRIPT_LOAD:
+			if (command->saveIndex == 0xFF)
+				fprintf(file, "LOAD <No save file>\r\n");
+			else
+				fprintf(file, "LOAD %s\r\n", gConfigTitleSequences.presets[preset].saves[command->saveIndex]);
+			break;
+		case TITLE_SCRIPT_LOCATION:
+			fprintf(file, "LOCATION %i %i\r\n", command->x, command->y);
+			break;
+		case TITLE_SCRIPT_ROTATE:
+			fprintf(file, "ROTATE %i\r\n", command->rotations);
+			break;
+		case TITLE_SCRIPT_ZOOM:
+			fprintf(file, "ZOOM %i\r\n", command->zoom);
+			break;
+		case TITLE_SCRIPT_WAIT:
+			fprintf(file, "WAIT %i\r\n\r\n", command->seconds);
+			break;
+		case TITLE_SCRIPT_RESTART:
+			fprintf(file, "RESTART\r\n");
+			break;
+		case TITLE_SCRIPT_END:
+			fprintf(file, "END\r\n");
+			break;
+
+		}
+	}
+
+	fclose(file);
+}
+
 
 #pragma endregion
