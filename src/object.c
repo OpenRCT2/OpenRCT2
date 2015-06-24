@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "config.h"
 #include "localisation/localisation.h"
 #include "object.h"
 #include "platform/platform.h"
@@ -425,6 +426,25 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 		uint8_t* chunk = (uint8*)(ride_type + 1);
 		ride_type->name = object_get_localised_text(&chunk, ecx, ebx, 0);
 		ride_type->description = object_get_localised_text(&chunk, ecx, ebx, 1);
+
+		if(gConfigInterface.select_by_track_type) {
+			ride_type->enabledTrackPieces=0xFFFFFFFF;
+			ride_type->enabledTrackPiecesAdditional=0xFFFFFFFF;
+
+			bool remove_flag=true;
+			for(int j=0;j<3;j++)
+			{
+				if(ride_type_has_flag(ride_type->ride_type[j], RIDE_TYPE_FLAG_FLAT_RIDE))
+					remove_flag=false;
+				if(ride_type->ride_type[j]==RIDE_TYPE_MAZE || ride_type->ride_type[j]==RIDE_TYPE_MINI_GOLF)
+					remove_flag=false;
+			}
+ 			if (remove_flag) {
+				ride_type->flags &=~RIDE_ENTRY_FLAG_SEPARATE_RIDE;
+				ride_type->flags &=~RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME;
+			}
+		}
+
 		object_get_localised_text(&chunk, ecx, ebx, 2);
 		// Offset to Unknown struct
 		ride_type->var_1AE = (uint32_t)chunk;
@@ -677,7 +697,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 
 		int di = ride_type->ride_type[0] | (ride_type->ride_type[1] << 8) | (ride_type->ride_type[2] << 16);
 
-		if (ride_type->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME) di |= 0x1000000;
+		if (ride_type->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) di |= 0x1000000;
 
 		RCT2_GLOBAL(0xF433DD, uint32) = di;
 		return 0;// flags;
@@ -755,7 +775,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 			int width = w->x + w->width - x - 4;
 
 			int format_args = ride_type->description;
-			if (!(ride_type->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME))
+			if (!(ride_type->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME))
 			{
 				format_args = ride_type->ride_type[0];
 				if ((format_args & 0xFF) == 0xFF)

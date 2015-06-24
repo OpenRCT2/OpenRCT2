@@ -508,19 +508,19 @@ static void shorten_path(char* path, char* buffer, int available_width){
 		return;
 	}
 
-	// Count path seperators
-	int path_seperators = 0;
+	// Count path separators
+	int path_separators = 0;
 	for (int x = 0; x < length; x++)
 		if (path[x] == platform_get_path_separator())
-			path_seperators++;
+			path_separators++;
 
 	// TODO: Replace with unicode ellipsis when supported
 	strcpy(buffer, "...");
 
-	// Abreviate beginning with xth seperator
+	// Abreviate beginning with xth separator
 
 	int begin = -1;
-	for (int x = 0; x < path_seperators; x++){
+	for (int x = 0; x < path_separators; x++){
 		do {
 			begin++;
 		} while (path[begin] != platform_get_path_separator());

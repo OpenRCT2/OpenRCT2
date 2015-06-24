@@ -119,7 +119,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_SAVE_PLUGIN_DATA_CHECKBOX,
 	WIDX_AUTOSAVE,
 	WIDX_AUTOSAVE_DROPDOWN,
-	WIDX_ALLOW_SUBTYPE_SWITCHING,
+	WIDX_SELECT_BY_TRACK_TYPE,
 	WIDX_TEST_UNFINISHED_TRACKS,
 	WIDX_AUTO_STAFF_PLACEMENT,
 	WIDX_DEBUGGING_TOOLS,
@@ -214,7 +214,7 @@ static rct_widget window_options_misc_widgets[] = {
 	{ WWT_CHECKBOX,			2,	10,		299,	69,		80,		STR_SAVE_PLUGIN_DATA,	STR_SAVE_PLUGIN_DATA_TIP },
 	{ WWT_DROPDOWN,			1,	155,	299,	83,		94,		STR_NONE,				STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	84,		93,		876,					STR_NONE },
-	{ WWT_CHECKBOX,			2,	10,		299,	99,		110,	5122,					STR_NONE },	// allow subtype 
+	{ WWT_CHECKBOX,			2,	10,		299,	99,		110,	5122,					5441 },		// select by track type
 	{ WWT_CHECKBOX,			2,	10,		299,	114,	125,	5155,					5156 },		// test unfinished tracks
 	{ WWT_CHECKBOX,			2,	10,		299,	129,	140,	5343,					STR_NONE }, // auto staff placement
 	{ WWT_CHECKBOX,			2,	10,		299,	144,	155,	5150,					STR_NONE },	// enabled debugging tools
@@ -362,7 +362,7 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_SAVE_PLUGIN_DATA_CHECKBOX) |
 	(1 << WIDX_AUTOSAVE) |
 	(1 << WIDX_AUTOSAVE_DROPDOWN) |
-	(1 << WIDX_ALLOW_SUBTYPE_SWITCHING) |
+	(1 << WIDX_SELECT_BY_TRACK_TYPE) |
 	(1 << WIDX_TEST_UNFINISHED_TRACKS) |
 	(1 << WIDX_AUTO_STAFF_PLACEMENT) |
 	(1 << WIDX_DEBUGGING_TOOLS) |
@@ -522,8 +522,8 @@ static void window_options_mouseup()
 
 	case WINDOW_OPTIONS_PAGE_MISC:
 		switch (widgetIndex) {
-		case WIDX_ALLOW_SUBTYPE_SWITCHING:
-			gConfigInterface.allow_subtype_switching ^= 1;
+		case WIDX_SELECT_BY_TRACK_TYPE:
+			gConfigInterface.select_by_track_type ^= 1;
 			config_save_default();
 			window_invalidate(w);
 			window_invalidate_by_class(WC_RIDE);
@@ -1136,7 +1136,11 @@ static void window_options_invalidate()
 		else
 			window_options_misc_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
 
-		widget_set_checkbox_value(w, WIDX_ALLOW_SUBTYPE_SWITCHING, gConfigInterface.allow_subtype_switching);
+		// This option sets several flags on object load, only make it changeable in the titles to prevent strange New Ride list behaviour
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO))
+			w->disabled_widgets |= (1ULL << WIDX_SELECT_BY_TRACK_TYPE);
+
+		widget_set_checkbox_value(w, WIDX_SELECT_BY_TRACK_TYPE, gConfigInterface.select_by_track_type);
 		widget_set_checkbox_value(w, WIDX_REAL_NAME_CHECKBOX, RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SHOW_REAL_GUEST_NAMES);
 		widget_set_checkbox_value(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
 		widget_set_checkbox_value(w, WIDX_TEST_UNFINISHED_TRACKS, gConfigGeneral.test_unfinished_tracks);
@@ -1147,7 +1151,7 @@ static void window_options_invalidate()
 		window_options_misc_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_AUTOSAVE].type = WWT_DROPDOWN;
 		window_options_misc_widgets[WIDX_AUTOSAVE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
-		window_options_misc_widgets[WIDX_ALLOW_SUBTYPE_SWITCHING].type = WWT_CHECKBOX;
+		window_options_misc_widgets[WIDX_SELECT_BY_TRACK_TYPE].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_TEST_UNFINISHED_TRACKS].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_AUTO_STAFF_PLACEMENT].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_DEBUGGING_TOOLS].type = WWT_CHECKBOX;
