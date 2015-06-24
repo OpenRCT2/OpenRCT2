@@ -404,7 +404,7 @@ static void window_title_editor_mouseup()
 		}
 		break;*/
 	case WIDX_TITLE_EDITOR_SKIP_TO:
-		if (playing && w->selected_list_item != -1) {
+		if (playing && w->selected_list_item != -1 && w->selected_list_item < gConfigTitleSequences.presets[gCurrentTitleSequence].num_commands) {
 			if (gTitleScriptCommand > w->selected_list_item) {
 				title_skip_from_beginning();
 			}
