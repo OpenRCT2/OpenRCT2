@@ -495,7 +495,7 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 		return;
 	}
 
-	//Its used super often so we will define it to a seperate variable.
+	//Its used super often so we will define it to a separate variable.
 	int zoom_level = dpi->zoom_level;
 	int zoom_amount = 1 << zoom_level;
 	int zoom_mask = 0xFFFFFFFF << zoom_level;

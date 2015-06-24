@@ -24,6 +24,8 @@
 #include "../game.h"
 #include "../management/news_item.h"
 #include "../management/research.h"
+#include "../object.h"
+#include "../rct1.h"
 #include "../ride/ride.h"
 #include "../localisation/localisation.h"
 #include "../world/scenery.h"
@@ -279,8 +281,9 @@ void window_new_ride_init_vars() {
 }
 
 /**
+ *	rct2: 0x006B6F3E
  *
- *  rct2: 0x006B6F3E
+ *  Note: When the user has selection by track type enabled, the categories are determined by the track type, not those in the rct_ride_type.
  */
 static void window_new_ride_populate_list()
 {
@@ -296,6 +299,14 @@ static void window_new_ride_populate_list()
 		if (rideType == RIDE_TYPE_NULL)
 			continue;
 
+		if(gConfigInterface.select_by_track_type) {
+			if(gRideCategories[rideType]!=currentCategory)
+				continue;
+		}
+
+		char preferredVehicleName[9];
+		strcpy(preferredVehicleName,"        ");
+
 		quadIndex = rideType >> 5;
 		bitIndex = rideType & 0x1F;
 		if (RCT2_ADDRESS(0x01357404, uint32)[quadIndex] & (1 << bitIndex)) {
@@ -305,6 +316,9 @@ static void window_new_ride_populate_list()
 			// For each ride entry for this ride type
 			while (*rideEntryIndexPtr != 255) {
 				uint8 rideEntryIndex = *rideEntryIndexPtr++;
+				char rideEntryName[9];
+				memcpy(rideEntryName,object_entry_groups[OBJECT_TYPE_RIDE].entries[rideEntryIndex].name,8);
+				rideEntryName[8]=0;
 
 				quadIndex = rideEntryIndex >> 5;
 				bitIndex = rideEntryIndex & 0x1F;
@@ -315,10 +329,27 @@ static void window_new_ride_populate_list()
 				rct_ride_type *rideEntry = rideEntries[rideEntryIndex];
 
 				// Check if ride is in this category
-				if (currentCategory != rideEntry->category[0] && currentCategory != rideEntry->category[1])
+				if (!gConfigInterface.select_by_track_type && (currentCategory != rideEntry->category[0] && currentCategory != rideEntry->category[1]))
 					continue;
 
-				if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE) {
+				// Skip if the vehicle isn't the preferred vehicle for this generic track type
+				if(gConfigInterface.select_by_track_type && !(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) {
+					if(strcmp(preferredVehicleName,"        \0")==0) {
+						strcpy(preferredVehicleName,rideEntryName);
+						preferredVehicleName[8]=0;
+					}
+					else {
+						if(vehicleIsHigherInHierarchy(rideType,preferredVehicleName,rideEntryName)) {
+							strcpy(preferredVehicleName,rideEntryName);
+							preferredVehicleName[8]=0;
+						}
+						else {
+							continue;
+						}
+					}
+				}
+
+				if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) {
 					dh &= ~4;
 					nextListItem->type = rideType;
 					nextListItem->entry_index = rideEntryIndex;
@@ -862,7 +893,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 	// Ride name and description
 	rct_string_id rideName = rideEntry->name;
 	rct_string_id rideDescription = rideEntry->description;
-	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME)) {
+	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) {
 		rideName = item.type + 2;
 		rideDescription = item.type + 512;
 	}
