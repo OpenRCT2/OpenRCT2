@@ -178,7 +178,7 @@ void title_sequence_delete_preset(int preset)
 		utf8 path[MAX_PATH];
 		platform_get_user_directory(path, "title sequences");
 		strcat(path, gConfigTitleSequences.presets[preset].name);
-		platform_file_delete(path);
+		platform_directory_delete(path);
 
 		free(gConfigTitleSequences.presets[preset].saves);
 		free(gConfigTitleSequences.presets[preset].commands);
@@ -189,7 +189,11 @@ void title_sequence_delete_preset(int preset)
 		gConfigTitleSequences.num_presets--;
 		gConfigTitleSequences.presets = realloc(gConfigTitleSequences.presets, sizeof(title_sequence) * (size_t)gConfigTitleSequences.num_presets);
 
-		title_sequence_change_preset(0);
+		gCurrentTitleSequence--;
+		if (gCurrentPreviewTitleSequence > preset)
+			title_sequence_change_preset(gCurrentPreviewTitleSequence - 1);
+		else if (gCurrentPreviewTitleSequence == preset)
+			title_sequence_change_preset(0);
 	}
 }
 

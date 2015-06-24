@@ -146,10 +146,10 @@ enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
 #define SCROLL_WIDTH 350
 
 static rct_widget window_title_editor_widgets[] = {
-	{ WWT_FRAME,			0,	0,		WW-1,	0,		WH-1,	0x0FFFFFFFF,					STR_NONE },						// panel / background
+	{ WWT_FRAME,			0,	0,		WW-1,	0,		106,	0x0FFFFFFFF,					STR_NONE },						// panel / background
 	{ WWT_CAPTION,			0,	1,		WW-2,	1,		14,		5433,							STR_WINDOW_TITLE_TIP },			// title bar
 	{ WWT_CLOSEBOX,			0,	WW-13,	WW-3,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },			// close button
-	{ WWT_RESIZE,			1,	0,		WW-1,	43,		WH-1,	0x0FFFFFFFF,					STR_NONE },						// tab content panel
+	{ WWT_RESIZE,			1,	0,		WW-1,	43,		106,	0x0FFFFFFFF,					STR_NONE },						// tab content panel
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x02000144E,					5235 },							// presets tab
 	{ WWT_TAB,				1,	34,		64,		17,		43,		0x02000144E,					5377 },							// saves tab
 	{ WWT_TAB,				1,	65,		95,		17,		43,		0x02000144E,					5378 },							// script tab
@@ -233,7 +233,7 @@ void window_title_editor_open(int tab)
 	if (window != NULL)
 		return;
 
-	window = window_create_auto_pos(WW, WH, (uint32*)window_title_editor_events, WC_TITLE_EDITOR, WF_10 | WF_RESIZABLE);
+	window = window_create_auto_pos(WW, 107, (uint32*)window_title_editor_events, WC_TITLE_EDITOR, WF_10 | WF_RESIZABLE);
 	window->widgets = window_title_editor_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_TITLE_EDITOR_CLOSE) |
@@ -324,8 +324,13 @@ static void window_title_editor_mouseup()
 	case WIDX_TITLE_EDITOR_REMOVE:
 		defaultPreset *= 2; playing *= 2;
 		if (!defaultPreset && !playing) {
-			if (w->selected_list_item != -1)
+			if (w->selected_list_item != -1) {
 				title_sequence_remove_save(gCurrentTitleSequence, w->selected_list_item);
+				if (w->selected_list_item > 0)
+					w->selected_list_item--;
+				else if (w->selected_list_item > gConfigTitleSequences.presets[gCurrentTitleSequence].num_saves)
+					w->selected_list_item = gConfigTitleSequences.presets[gCurrentTitleSequence].num_saves - 1;
+			}
 		}
 		break;
 	case WIDX_TITLE_EDITOR_RENAME:

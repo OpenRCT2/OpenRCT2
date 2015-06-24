@@ -634,7 +634,7 @@ bool title_refresh_sequence()
 	_scriptCurrentPreset = gCurrentPreviewTitleSequence;
 	title_sequence *title = &gConfigTitleSequences.presets[_scriptCurrentPreset];
 
-	bool hasLoad = false, hasWait = false, hasInvalidSave = false;
+	bool hasLoad = false, hasInvalidSave = false;// , hasWait = false;
 	for (int i = 0; i < title->num_commands && !hasInvalidSave; i++) {
 		if (title->commands[i].command == TITLE_SCRIPT_LOAD) {
 			if (title->commands[i].saveIndex == 0xFF)
@@ -643,12 +643,12 @@ bool title_refresh_sequence()
 		}
 		else if (title->commands[i].command == TITLE_SCRIPT_LOADMM)
 			hasLoad = true;
-		else if (title->commands[i].command == TITLE_SCRIPT_WAIT)
-			hasWait = true;
+		//else if (title->commands[i].command == TITLE_SCRIPT_WAIT)
+		//	hasWait = true;
 		else if (title->commands[i].command == TITLE_SCRIPT_RESTART || title->commands[i].command == TITLE_SCRIPT_END)
 			break;
 	}
-	if (hasLoad && hasWait && !hasInvalidSave) {
+	if (hasLoad && /*hasWait &&*/ !hasInvalidSave) {
 		uint8 *src, *scriptPtr, *binaryScript;
 		binaryScript = malloc(1024 * 8);
 		scriptPtr = binaryScript;
@@ -684,7 +684,8 @@ bool title_refresh_sequence()
 		binaryScript = realloc(binaryScript, scriptLength);
 
 		_scriptNoLoadsSinceRestart = 1;
-		SafeFree(_loadedScript);
+		if (_loadedScript != _magicMountainScript)
+			SafeFree(_loadedScript);
 		_loadedScript = binaryScript;
 		_currentScript = binaryScript;
 		_scriptWaitCounter = 0;
@@ -697,7 +698,8 @@ bool title_refresh_sequence()
 	}
 	window_error_open(5402, STR_NONE);
 	_scriptNoLoadsSinceRestart = 1;
-	SafeFree(_loadedScript);
+	if (_loadedScript != _magicMountainScript)
+		SafeFree(_loadedScript);
 	_scriptCurrentPreset = 0;
 	_currentScript = _magicMountainScript;
 	_scriptWaitCounter = 0;

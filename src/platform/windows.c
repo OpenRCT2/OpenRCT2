@@ -108,6 +108,26 @@ int platform_ensure_directory_exists(const char *path)
 	return CreateDirectory(path, NULL);
 }
 
+int platform_directory_delete(const char *path)
+{
+	char pszFrom[MAX_PATH];
+	strcpy(pszFrom, path);
+  
+	SHFILEOPSTRUCTA fileop;
+	fileop.hwnd   = NULL;    // no status display
+	fileop.wFunc  = FO_DELETE;  // delete operation
+	fileop.pFrom  = pszFrom;  // source file name as double null terminated string
+	fileop.pTo    = NULL;    // no destination needed
+	fileop.fFlags = FOF_NOCONFIRMATION|FOF_SILENT;  // do not prompt the user
+
+	fileop.fAnyOperationsAborted = FALSE;
+	fileop.lpszProgressTitle     = NULL;
+	fileop.hNameMappings         = NULL;
+
+	int ret = SHFileOperationA(&fileop); 
+	return (ret == 0);
+}
+
 int platform_lock_single_instance()
 {
 	HANDLE mutex, status;
