@@ -101,6 +101,14 @@ int platform_directory_exists(const char *path)
 	return dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
 }
 
+int platform_original_game_data_exists(const char *path)
+{
+	char checkPath[MAX_PATH];
+	sprintf(checkPath, "%s%c%s%c%s", path, platform_get_path_separator(), "data", platform_get_path_separator(), "g1.dat");
+	DWORD dwAttrib = GetFileAttributes(checkPath);
+	return dwAttrib != INVALID_FILE_ATTRIBUTES;
+}
+
 int platform_ensure_directory_exists(const char *path)
 {
 	if (platform_directory_exists(path))
