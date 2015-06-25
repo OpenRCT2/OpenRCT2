@@ -37,6 +37,7 @@
 #include "../world/map.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
+#include "../rct1.h"
 
 #define var_496(w)	RCT2_GLOBAL((int)w + 0x496, uint16)
 
@@ -2597,7 +2598,7 @@ static void window_ride_vehicle_paint()
 	gfx_draw_string_left(dpi, 3142, &stringId, 0, x, y);
 	y += 15;
 
-	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && var_496(w) > 1) {
+	if ((!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) && var_496(w) > 1) {
 		// Excitement Factor
 		factor = rideEntry->excitement_multipler;
 		if (factor > 0) {

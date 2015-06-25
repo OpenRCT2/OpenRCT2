@@ -28,6 +28,7 @@
 #include "../object.h"
 #include "../world/scenery.h"
 #include "../interface/themes.h"
+#include "../rct1.h"
 
 #pragma region Widgets
 
@@ -198,14 +199,14 @@ static void research_rides_setup(){
 		rct_ride_type* ride_entry = GET_RIDE_ENTRY(object_index);
 
 		uint8 master_found = 0;
-		if (!(ride_entry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)){
+		if (!(ride_entry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(ride_entry)){
 
 			for (uint8 rideType = 0; rideType < object_entry_group_counts[OBJECT_TYPE_RIDE]; rideType++){
 				rct_ride_type* master_ride = GET_RIDE_ENTRY(rideType);
 				if (master_ride == NULL || (uint32)master_ride == 0xFFFFFFFF)
 					continue;
 
-				if (master_ride->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)
+				if (master_ride->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE && !rideTypeShouldLoseSeparateFlag(master_ride))
 					continue;
 
 				// If master ride not in use
@@ -318,7 +319,7 @@ static rct_string_id research_item_get_name(uint32 researchItem)
 	if (rideEntry == NULL || rideEntry == (rct_ride_type*)0xFFFFFFFF)
 		return 0;
 
-	if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)
+	if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME && !rideTypeShouldLoseSeparateFlag(rideEntry))
 		return rideEntry->name;
 
 	return ((researchItem >> 8) & 0xFF) + 2;

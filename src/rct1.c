@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "config.h"
 #include "interface/viewport.h"
 #include "interface/window.h"
 #include "localisation/localisation.h"
@@ -1375,6 +1376,22 @@ bool vehicleIsHigherInHierarchy(int track_type, char *currentVehicleName, char *
 		return true;
 	}
 	return false;
+}
+
+bool rideTypeShouldLoseSeparateFlag(rct_ride_type *ride)
+{
+	if(!gConfigInterface.select_by_track_type)
+		return false;
+
+	bool remove_flag=true;
+	for(int j=0;j<3;j++)
+	{
+		if(ride_type_has_flag(ride->ride_type[j], RIDE_TYPE_FLAG_FLAT_RIDE))
+			remove_flag=false;
+		if(ride->ride_type[j]==RIDE_TYPE_MAZE || ride->ride_type[j]==RIDE_TYPE_MINI_GOLF)
+			remove_flag=false;
+	}
+	return remove_flag;
 }
 
 #pragma endregion

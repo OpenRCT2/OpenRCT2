@@ -29,6 +29,7 @@
 #include "../sprites.h"
 #include "error.h"
 #include "../interface/themes.h"
+#include "../rct1.h"
 
 enum {
 	WIDX_BACKGROUND,
@@ -358,7 +359,7 @@ static void window_track_list_invalidate()
 	entry = GET_RIDE_ENTRY(_window_track_list_item.entry_index);
 
 	stringId = entry->name;
-	if (!(entry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME))
+	if (!(entry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(entry))
 		stringId = _window_track_list_item.type + 2;
 
 	RCT2_GLOBAL(0x013CE952, uint16) = stringId;
