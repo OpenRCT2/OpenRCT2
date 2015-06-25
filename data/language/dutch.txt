@@ -3668,8 +3668,8 @@ STR_5335    :Attractie-ingang
 STR_5336    :Attractie-uitgang
 STR_5337    :Parkingang
 STR_5338    :Elementtype
-STR_5339    :Hoogte onderkant
-STR_5340    :Hoogte bovenkant
+STR_5339    :Hoogte onderk.
+STR_5340    :Hoogte bovenk.
 STR_5341    :Eigenschappen
 STR_5342    :Kies een vakje op de kaart
 STR_5343    :Werknemers automatisch plaatsen
