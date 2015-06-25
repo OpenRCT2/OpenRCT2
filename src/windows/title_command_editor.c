@@ -62,6 +62,7 @@ enum WINDOW_WATER_WIDGET_IDX {
 	WIDX_TEXTBOX_Y,
 	WIDX_INPUT,
 	WIDX_INPUT_DROPDOWN,
+	WIDX_GET,
 	WIDX_OKAY,
 	WIDX_CANCEL
 };
@@ -92,6 +93,8 @@ static rct_widget window_title_command_editor_widgets[] = {
 
 	{ WWT_DROPDOWN,				1,	16,			WW-17,		BY2,	BY2+11,	STR_NONE,					STR_NONE }, // Save dropdown
 	{ WWT_DROPDOWN_BUTTON,		1,	WW-28,		WW-18,		BY2+1,	BY2+10,	876,						STR_NONE },
+
+	{ WWT_DROPDOWN_BUTTON,		1,	WS+WHA+3,	WW-WS-1,	BY2-14,	BY2-3,	5446,						STR_NONE }, // Get location/zoom/etc
 	
 	{ WWT_DROPDOWN_BUTTON,		1,	10,			80,			WH-21,	WH-10,	STR_OK,						STR_NONE }, // OKAY
 	{ WWT_DROPDOWN_BUTTON,		1,	WW-80,		WW-10,		WH-21,	WH-10,	STR_CANCEL,					STR_NONE }, // Cancel
@@ -112,6 +115,7 @@ static void window_title_command_editor_inputsize(rct_window *w);
 static int get_command_info_index(int index);
 static TITLE_COMMAND_ORDER get_command_info(int index);
 static rct_xy16 get_location();
+static uint8 get_zoom();
 
 static void* window_title_command_editor_events[] = {
 	window_title_command_editor_close,
@@ -181,6 +185,16 @@ static rct_xy16 get_location()
 	return mapCoord;
 }
 
+static uint8 get_zoom()
+{
+	uint8 zoom = 0;
+	rct_window *w = window_get_main();
+	if (w != NULL) {
+		zoom = w->viewport->zoom;
+	}
+	return zoom;
+}
+
 void window_title_command_editor_open(int index, bool insert)
 {
 	rct_window* window;
@@ -206,6 +220,7 @@ void window_title_command_editor_open(int index, bool insert)
 		(1 << WIDX_TEXTBOX_Y) |
 		(1 << WIDX_INPUT) |
 		(1 << WIDX_INPUT_DROPDOWN) |
+		(1 << WIDX_GET) |
 		(1 << WIDX_OKAY) |
 		(1 << WIDX_CANCEL);
 	window_init_scroll_widgets(window);
@@ -244,6 +259,8 @@ static void window_title_command_editor_mouseup()
 {
 	rct_window *w, *title_editor_w;
 	short widgetIndex;
+	rct_xy16 mapCoord;
+	uint8 zoom;
 
 	window_widget_get_registers(w, widgetIndex);
 
@@ -260,6 +277,21 @@ static void window_title_command_editor_mouseup()
 		break;
 	case WIDX_TEXTBOX_Y:
 		window_start_textbox(w, widgetIndex, 1170, (uint32)textbox2Buffer, 4);
+		break;
+	case WIDX_GET:
+		if (command.command == TITLE_SCRIPT_LOCATION) {
+			mapCoord = get_location();
+			command.x = (uint8)mapCoord.x;
+			command.y = (uint8)mapCoord.y;
+			_itoa(command.x, textbox1Buffer, 10);
+			_itoa(command.y, textbox2Buffer, 10);
+		}
+		else if (command.command == TITLE_SCRIPT_ZOOM) {
+			zoom = get_zoom();
+			command.zoom = zoom;
+			_itoa(command.zoom, textbox1Buffer, 10);
+		}
+		window_invalidate(w);
 		break;
 	case WIDX_OKAY:
 		if (_window_title_command_editor_insert) {
@@ -487,6 +519,7 @@ static void window_title_command_editor_invalidate()
 	window_title_command_editor_widgets[WIDX_TEXTBOX_Y].type = WWT_EMPTY;
 	window_title_command_editor_widgets[WIDX_INPUT].type = WWT_EMPTY;
 	window_title_command_editor_widgets[WIDX_INPUT_DROPDOWN].type = WWT_EMPTY;
+	window_title_command_editor_widgets[WIDX_GET].type = WWT_EMPTY;
 	switch (command.command) {
 	case TITLE_SCRIPT_LOAD:
 	case TITLE_SCRIPT_SPEED:
@@ -496,13 +529,22 @@ static void window_title_command_editor_invalidate()
 	case TITLE_SCRIPT_LOCATION:
 		window_title_command_editor_widgets[WIDX_TEXTBOX_X].type = WWT_TEXT_BOX;
 		window_title_command_editor_widgets[WIDX_TEXTBOX_Y].type = WWT_TEXT_BOX;
+		window_title_command_editor_widgets[WIDX_GET].type = WWT_DROPDOWN_BUTTON;
 		break;
 	case TITLE_SCRIPT_ROTATE:
-	case TITLE_SCRIPT_ZOOM:
 	case TITLE_SCRIPT_WAIT:
 		window_title_command_editor_widgets[WIDX_TEXTBOX_FULL].type = WWT_TEXT_BOX;
 		break;
+	case TITLE_SCRIPT_ZOOM:
+		window_title_command_editor_widgets[WIDX_GET].type = WWT_DROPDOWN_BUTTON;
+		window_title_command_editor_widgets[WIDX_TEXTBOX_FULL].type = WWT_TEXT_BOX;
+		break;
 	}
+
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO)
+		w->disabled_widgets |= (1 << WIDX_GET);
+	else
+		w->disabled_widgets &= ~(1 << WIDX_GET);
 }
 
 static void window_title_command_editor_paint()
