@@ -516,7 +516,6 @@ static int cc_get(const char **argv, int argc)
 				int interactionType;
 				rct_map_element *mapElement;
 				rct_xy16 mapCoord = { 0 };
-
 				get_map_coordinates_from_pos(w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
 				mapCoord.x -= 16;
 				mapCoord.x /= 32;
