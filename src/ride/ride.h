@@ -826,6 +826,7 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void ride_clear_for_construction(int rideIndex);
+void set_vehicle_type_image_max_sizes(rct_ride_type_vehicle* vehicle_type, int num_images);
 
 int get_var_10E_unk_1(rct_ride* ride);
 int get_var_10E_unk_2(rct_ride* ride);

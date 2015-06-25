@@ -4508,3 +4508,86 @@ void ride_all_has_any_track_elements(bool *rideIndexArray)
 		rideIndexArray[it.element->properties.track.ride_index] = true;
 	}
 }
+
+
+/* rct2: 0x006847BA */
+void set_vehicle_type_image_max_sizes(rct_ride_type_vehicle* vehicle_type, int num_images){
+	char bitmap[200][200] = { 0 };
+
+	rct_drawpixelinfo dpi = {
+		.bits = (char*)bitmap,
+		.x = -100,
+		.y = -100,
+		.width = 200,
+		.height = 200,
+		.pitch = 0,
+		.zoom_level = 0
+	};
+
+	for (int i = 0; i < num_images; ++i){
+		gfx_draw_sprite(&dpi, vehicle_type->base_image_id + i, 0, 0, 0);
+	}
+	int al = -1;
+	for (int i = 99; i != 0; --i){
+		for (int j = 0; j < 200; j++){
+			if (bitmap[j][100 - i] != 0){
+				al = i;
+				break;
+			}
+		}
+
+		if (al != -1)
+			break;
+
+		for (int j = 0; j < 200; j++){
+			if (bitmap[j][100 + i] != 0){
+				al = i;
+				break;
+			}
+		}
+
+		if (al != -1)
+			break;
+	}
+
+	al++;
+	int bl = -1;
+
+	for (int i = 99; i != 0; --i){
+		for (int j = 0; j < 200; j++){
+			if (bitmap[100 - i][j] != 0){
+				bl = i;
+				break;
+			}
+		}
+
+		if (bl != -1)
+			break;
+	}
+	bl++;
+
+	int bh = -1;
+
+	for (int i = 99; i != 0; --i){
+		for (int j = 0; j < 200; j++){
+			if (bitmap[100 + i][j] != 0){
+				bh = i;
+				break;
+			}
+		}
+
+		if (bh != -1)
+			break;
+	}
+	bh++;
+
+	// Moved from object paint
+
+	if (vehicle_type->var_12 & 0x2000){
+		bl += 16;
+	}
+
+	vehicle_type->var_0E = al;
+	vehicle_type->var_0F = bl;
+	vehicle_type->var_10 = bh;
+}
