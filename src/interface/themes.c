@@ -198,6 +198,7 @@ void theme_create_preset(int duplicate, const char *name)
 	for (int i = 0; i < (int)gNumThemeWindows; i++) {
 		gConfigThemes.presets[preset].windows[i] = gConfigThemes.presets[duplicate].windows[i];
 	}
+	gConfigThemes.presets[preset].features = gConfigThemes.presets[duplicate].features;
 	themes_save_preset(preset);
 	theme_change_preset(preset);
 }
