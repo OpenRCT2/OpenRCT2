@@ -135,7 +135,7 @@ static rct_widget window_editor_object_selection_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	0,	350,	463,	23,		34,		5261,							5265 },
 	{ WWT_TEXT_BOX,			1,	4,		214,	46,		57,		(uint32)_filter_string,			STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	218,	287,	46,		57,		5277,							STR_NONE },
-	{ WWT_RESIZE,			1,	3,		287,	73,		76,		0xFFFFFFFF,						STR_NONE },
+	{ WWT_IMGBTN,			1,	3,		287,	73,		76,		0xFFFFFFFF,						STR_NONE },
 	{ WWT_TAB,				1,	3,		33,		47,		73,		0x2000144E,						5349 },
 	{ WWT_TAB,				1,	34,		64,		47,		73,		0x2000144E,						1223 },
 	{ WWT_TAB,				1,	65,		95,		47,		73,		0x2000144E,						1224 },
@@ -154,6 +154,7 @@ static void window_editor_object_selection_emptysub() { }
 
 static void window_editor_object_selection_close();
 static void window_editor_object_selection_mouseup();
+static void window_editor_object_selection_resize();
 static void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_editor_object_selection_dropdown();
 static void window_editor_object_selection_update(rct_window *w);
@@ -169,7 +170,7 @@ static void window_editor_object_selection_textinput();
 static void* window_editor_object_selection_events[] = {
 	window_editor_object_selection_close,
 	(void*)window_editor_object_selection_mouseup,
-	(void*)window_editor_object_selection_emptysub,
+	(void*)window_editor_object_selection_resize,
 	(void*)window_editor_object_selection_mousedown,
 	(void*)window_editor_object_selection_dropdown,
 	(void*)window_editor_object_selection_emptysub,
@@ -259,6 +260,72 @@ static rct_object_entry DefaultSelectedObjects[] = {
 	{ 0x00000087, { "SCGWATER" }, 0 }		// Water Feature Themeing
 };
 
+
+typedef struct {
+	rct_object_entry *entry;
+	rct_object_filters *filter;
+	uint8 *flags;
+} list_item;
+
+static int _numListItems = 0;
+static list_item *_listItems = NULL;
+
+static void visible_list_dispose()
+{
+	SafeFree(_listItems);
+	_numListItems = 0;
+}
+
+static int visible_list_sort_ride_type(const  void *rawA, const void *rawB)
+{
+	list_item *a = (list_item*)rawA;
+	list_item *b = (list_item*)rawB;
+
+	const char *rideTypeA = language_get_string(2 + a->filter->ride.ride_type);
+	const char *rideTypeB = language_get_string(2 + b->filter->ride.ride_type);
+	int result = strcmp(rideTypeA, rideTypeB);
+	if (result != 0)
+		return result;
+
+	const char *nameA = object_get_name(a->entry);
+	const char *nameB = object_get_name(b->entry);
+	return strcmp(nameA, nameB);
+}
+
+static void visible_list_refresh(rct_window *w)
+{
+	int numObjects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32);
+
+	visible_list_dispose();
+	_listItems = malloc(numObjects * sizeof(list_item));
+	_numListItems = 0;
+
+	list_item *currentListItem = &_listItems[0];
+	rct_object_entry *entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	uint8 *itemFlags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
+	for (int i = 0; i < numObjects; i++) {
+		rct_object_filters *filter = get_object_filter(i);
+		int type = entry->flags & 0x0F;
+		int source = (entry->flags & 0xF0) >> 4;
+		if (type == w->selected_tab && !(*itemFlags & OBJECT_SELECTION_FLAG_6) && filter_source(entry) && filter_string(entry) && filter_chunks(entry, filter)) {
+			currentListItem->entry = entry;
+			currentListItem->filter = filter;
+			currentListItem->flags = itemFlags;
+			currentListItem++;
+			_numListItems++;
+		}
+
+		entry = object_get_next(entry);
+		itemFlags++;
+	}
+
+	_listItems = realloc(_listItems, _numListItems * sizeof(list_item));
+
+	qsort(_listItems, _numListItems, sizeof(list_item), visible_list_sort_ride_type);
+}
+
+
+
 /**
  *
  *  rct2: 0x006AA64E
@@ -280,7 +347,7 @@ void window_editor_object_selection_open()
 		400,
 		(uint32*)window_editor_object_selection_events,
 		WC_EDITOR_OBJECT_SELECTION,
-		WF_10
+		WF_10 | WF_RESIZABLE
 	);
 	window->widgets = window_editor_object_selection_widgets;
 
@@ -303,6 +370,12 @@ void window_editor_object_selection_open()
 	window->selected_tab = 0;
 	window->selected_list_item = -1;
 	window->var_494 = 0xFFFFFFFF;
+	window->min_width = 600;
+	window->min_height = 400;
+	window->max_width = 1200;
+	window->max_height = 1000;
+
+	visible_list_refresh(window);
 }
 
 /* rct2: 0x006ABCD1 */
@@ -646,6 +719,8 @@ static void window_editor_object_selection_close()
 		gSilentResearch = false;
 	}
 	window_new_ride_init_vars();
+
+	visible_list_dispose();
 }
 
 /**
@@ -703,6 +778,7 @@ static void window_editor_object_selection_mouseup()
 		_filter_flags |= (1 << (widgetIndex - WIDX_FILTER_RIDE_TAB_TRANSPORT + 5));
 
 		filter_update_counts();
+		visible_list_refresh(w);
 
 		w->selected_list_item = -1;
 		w->var_494 = 0xFFFFFFFF;
@@ -737,6 +813,15 @@ static void window_editor_object_selection_mouseup()
 		window_invalidate(w);
 		break;
 	}
+}
+
+static void window_editor_object_selection_resize()
+{
+	rct_window *w;
+
+	window_get_register(w);
+
+	window_set_resize(w, 600, 400, 1200, 1000);
 }
 
 void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
@@ -803,18 +888,13 @@ static void window_editor_object_selection_scrollgetsize()
 {
 	rct_window *w;
 	short scrollIndex;
-	int numItems, width, height;
+	int width, height;
 
 	window_scroll_get_registers(w, scrollIndex);
 
-	numItems = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER) ?
-		RCT2_GLOBAL(0x00F43412, uint16) :
-		((_FILTER_ALL && _filter_string[0] == 0) ? 
-		RCT2_ADDRESS(0x00F433E1, uint16)[w->selected_tab] :
-		_filter_object_counts[w->selected_tab]);
-
 	width = 0;
-	height = numItems * 12;
+	height = _numListItems * 12;
+
 	window_scrollsize_set_registers(width, height);
 }
 
@@ -953,7 +1033,27 @@ static void window_editor_object_selection_invalidate()
 	rct_widget *widget;
 
 	window_get_register(w);
+
 	colour_scheme_update(w);
+
+	// Resize widgets
+	w->widgets[WIDX_BACKGROUND].right = w->width - 1;
+	w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+	w->widgets[WIDX_TITLE].right = w->width - 2;
+	w->widgets[WIDX_CLOSE].left = w->width - 13;
+	w->widgets[WIDX_CLOSE].right = w->width - 3;
+	w->widgets[WIDX_TAB_CONTENT_PANEL].right = w->width - 1;
+	w->widgets[WIDX_TAB_CONTENT_PANEL].bottom = w->height - 1;
+	w->widgets[WIDX_DROPDOWN1].left = w->width - 130;
+	w->widgets[WIDX_DROPDOWN1].right = w->width - 9;
+	w->widgets[WIDX_LIST].right = w->width - 309;
+	w->widgets[WIDX_LIST].bottom = w->height - 14;
+	w->widgets[WIDX_PREVIEW].left = w->width - 209;
+	w->widgets[WIDX_PREVIEW].right = w->width - 96;
+	w->widgets[WIDX_DROPDOWN2].left = w->width - 216;
+	w->widgets[WIDX_DROPDOWN2].right = w->width - 130;
+	w->widgets[WIDX_FILTER_DROPDOWN].left = w->width - 250;
+	w->widgets[WIDX_FILTER_DROPDOWN].right = w->width - 137;
 
 	// Set pressed widgets
 	w->pressed_widgets |= 1 << WIDX_PREVIEW;
@@ -1006,8 +1106,8 @@ static void window_editor_object_selection_invalidate()
 		x = 300;
 	}
 
-	w->widgets[WIDX_LIST].right = 587 - x;
-	w->widgets[WIDX_PREVIEW].left = 537 - (x >> 1);
+	w->widgets[WIDX_LIST].right = w->width - (600 - 587) - x;
+	w->widgets[WIDX_PREVIEW].left = w->width - (600 - 537) - (x / 2);
 	w->widgets[WIDX_PREVIEW].right = w->widgets[WIDX_PREVIEW].left + 113;
 
 	bool ridePage = (w->selected_tab == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS);
@@ -1031,7 +1131,7 @@ static void window_editor_object_selection_invalidate()
 					w->pressed_widgets |= (uint64)(1 << (WIDX_FILTER_RIDE_TAB_TRANSPORT + i));
 			}
 		}
-		w->widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WWT_RESIZE;
+		w->widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WWT_IMGBTN;
 		for (int i = WIDX_FILTER_RIDE_TAB_ALL; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
 			w->widgets[i].type = WWT_TAB;
 	}
@@ -1249,14 +1349,10 @@ static void window_editor_object_selection_paint()
  */
 static void window_editor_object_selection_scrollpaint()
 {
-	int x, y, i, colour, colour2, numObjects, type;
+	int x, y, i, colour, colour2;
 	short scrollIndex;
-	rct_object_entry *entry;
-	rct_object_filters *filter;
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
-	uint8 *itemFlags;
-	uint8 source;
 
 	window_scrollpaint_get_registers(w, dpi, scrollIndex);
 
@@ -1264,65 +1360,64 @@ static void window_editor_object_selection_scrollpaint()
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
 	gfx_clear(dpi, colour);
 
-	numObjects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32);
-	entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
-	itemFlags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 	y = 0;
-	for (i = 0; i < numObjects; i++) {
-		filter = get_object_filter(i);
-		type = entry->flags & 0x0F;
-		source = (entry->flags & 0xF0) >> 4;
-		if (type == w->selected_tab && !(*itemFlags & OBJECT_SELECTION_FLAG_6) && filter_source(entry) && filter_string(entry) && filter_chunks(entry, filter)) {
-			if (y + 12 >= dpi->y && y <= dpi->y + dpi->height) {
-				// Draw checkbox
-				if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && !(*itemFlags & 0x20))
-					gfx_fill_rect_inset(dpi, 2, y, 11, y + 10, w->colours[1], 0xE0);
+	for (i = 0; i < _numListItems; i++) {
+		list_item *listItem = &_listItems[i];
 
-				// Highlight background
-				colour = 142;
-				if (entry == (rct_object_entry*)w->var_494 && !(*itemFlags & OBJECT_SELECTION_FLAG_6)) {
-					gfx_fill_rect(dpi, 0, y, w->width, y + 11, 0x2000031);
-					colour = 14;
-				}
+		if (y + 12 >= dpi->y && y <= dpi->y + dpi->height) {
+			// Draw checkbox
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem->flags & 0x20))
+				gfx_fill_rect_inset(dpi, 2, y, 11, y + 10, w->colours[1], 0xE0);
 
-				// Draw checkmark
-				if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && (*itemFlags & OBJECT_SELECTION_FLAG_SELECTED)) {
-					x = 2;
-					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = colour == 14 ? -2 : -1;
-					colour2 = w->colours[1] & 0x7F;
-					if (*itemFlags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_REQUIRED | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
-						colour2 |= 0x40;
-
-					gfx_draw_string(dpi, (char*)0x009DED72, colour2, x, y);
-				}
-
-				// Draw text
-				char *buffer = (char*)0x0141ED68;
-				*buffer = colour;
-				strcpy(buffer + 1, object_get_name(entry));
-				if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
-					while (*buffer != 0 && *buffer != 9)
-						buffer++;
-
-					*buffer = 0;
-				}
-
-				if (*itemFlags & OBJECT_SELECTION_FLAG_6) {
-					colour = w->colours[1] & 0x7F;
-					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = -1;
-				}
-				else {
-					colour = 0;
-					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = 224;
-				}
-				x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
-				gfx_draw_string(dpi, (char*)0x0141ED68, colour, x, y);
+			// Highlight background
+			colour = 142;
+			if (listItem->entry == (rct_object_entry*)w->var_494 && !(*listItem->flags & OBJECT_SELECTION_FLAG_6)) {
+				gfx_fill_rect(dpi, 0, y, w->width, y + 11, 0x2000031);
+				colour = 14;
 			}
-			y += 12;
-		}
 
-		entry = object_get_next(entry);
-		itemFlags++;
+			// Draw checkmark
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem->flags & OBJECT_SELECTION_FLAG_SELECTED)) {
+				x = 2;
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = colour == 14 ? -2 : -1;
+				colour2 = w->colours[1] & 0x7F;
+				if (*listItem->flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_REQUIRED | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
+					colour2 |= 0x40;
+
+				gfx_draw_string(dpi, (char*)0x009DED72, colour2, x, y);
+			}
+
+			x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
+
+			char *bufferWithColour = (char*)0x0141ED68;
+			char *buffer = bufferWithColour + 1;
+			bufferWithColour[0] = colour;
+			if (*listItem->flags & OBJECT_SELECTION_FLAG_6) {
+				colour = w->colours[1] & 0x7F;
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = -1;
+			}
+			else {
+				colour = 0;
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = 224;
+			}
+
+			// Draw ride type
+			strcpy(buffer, language_get_string(2 + listItem->filter->ride.ride_type));
+			gfx_draw_string(dpi, bufferWithColour, colour, x, y);
+
+			x += 200;
+
+			// Draw text
+			strcpy(buffer, object_get_name(listItem->entry));
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+				while (*buffer != 0 && *buffer != 9)
+					buffer++;
+
+				*buffer = 0;
+			}
+			gfx_draw_string(dpi, bufferWithColour, colour, x, y);
+		}
+		y += 12;
 	}
 }
 
@@ -1715,27 +1810,14 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
  */
 static int get_object_from_object_selection(uint8 object_type, int y, uint8 *object_selection_flags, rct_object_entry **installed_entry)
 {
-	rct_object_filters *filter;
-	*installed_entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
-	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	uint8 source;
-	int object_count = 0;
-	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
-		filter = get_object_filter(RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) - i);
-		source = ((*installed_entry)->flags & 0xF0) >> 4;
-		if (((*installed_entry)->flags & 0xF) == object_type && filter_source(*installed_entry) && filter_string(*installed_entry) && filter_chunks(*installed_entry, filter)){
-			if (!(*selection_flags & OBJECT_SELECTION_FLAG_6)){
-				y -= 12;
-				*object_selection_flags = *selection_flags;
-				if (y < 0)return object_count;
-				object_count++;
-			}
-		}
+	int listItemIndex = y / 12;
+	if (listItemIndex < 0 || listItemIndex >= _numListItems)
+		return -1;
 
-		*installed_entry = object_get_next(*installed_entry);
-		selection_flags++;
-	}
-	return -1;
+	list_item *listItem = &_listItems[listItemIndex];
+	*object_selection_flags = *listItem->flags;
+	*installed_entry = listItem->entry;
+	return listItemIndex;
 }
 
 /**
