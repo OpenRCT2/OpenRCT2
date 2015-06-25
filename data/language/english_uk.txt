@@ -530,7 +530,7 @@ STR_0525    :Riders career down a twisting track guided only by the curvature an
 STR_0526    :Freefall car is pneumatically launched up a tall steel tower and then allowed to freefall down
 STR_0527    :A smooth steel-tracked roller coaster capable of vertical loops
 STR_0528    :Riders travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
-STR_0529    :Mine train themes roller coaster trains career along steel roller coaster track made to look like old railway track
+STR_0529    :Mine train themed roller coaster trains career along steel roller coaster track made to look like old railway track
 STR_0530    :Cars hang from a steel cable which runs continuously from one end of the ride to the other and back again
 STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
 STR_0532    :
@@ -3732,7 +3732,7 @@ STR_5395    :{SMALLFONT}{BLACK}Load the selected save in game
 STR_5396    :{SMALLFONT}{BLACK}Reload the title sequence if changes have been made to it outside of the game
 STR_5397    :Can only be used on the title screen
 STR_5398    :Cannot edit title sequence while it's playing
-STR_5399    :Press the stop button to coninue editing
+STR_5399    :Press the stop button to continue editing
 STR_5400    :Can't change this title sequence
 STR_5401    :Create a new title sequence to make changes to
 STR_5402    :Failed to load title sequence
@@ -3761,7 +3761,7 @@ STR_5424    :Wait{MOVE_X}{87}{COMMA16}
 STR_5425    :Restart
 STR_5426    :End
 STR_5427    :Coordinates:
-STR_5428    :Counter-clockwise rotations:
+STR_5428    :Anticlockwise rotations:
 STR_5429    :Zoom level:
 STR_5430    :Seconds to wait:
 STR_5431    :Save to load:
@@ -3773,5 +3773,5 @@ STR_5436    :Edit Title Sequences...
 STR_5437    :No save selected
 STR_5438    :Can't make changes while command editor is open
 STR_5439    :A restart is used without a wait command
-STR_5440    :Minimize fullscreen on focus loss
+STR_5440    :Minimise fullscreen on focus loss
 STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type,{NEWLINE}so vehicles can be changed{NEWLINE}afterwards, like in RCT1.
