@@ -31,6 +31,7 @@
 #include "world/entrance.h"
 #include "world/scenery.h"
 #include "scenario.h"
+#include "rct1.h"
 
 int object_load_entry(const char *path, rct_object_entry *outEntry)
 {
@@ -427,21 +428,9 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 		ride_type->name = object_get_localised_text(&chunk, ecx, ebx, 0);
 		ride_type->description = object_get_localised_text(&chunk, ecx, ebx, 1);
 
+		//TODO: Move to its own function when ride construction window is merged.
 		if(gConfigInterface.select_by_track_type) {
 			ride_type->enabledTrackPieces = 0xFFFFFFFFFFFFFFFF;
-
-			bool remove_flag=true;
-			for(int j=0;j<3;j++)
-			{
-				if(ride_type_has_flag(ride_type->ride_type[j], RIDE_TYPE_FLAG_FLAT_RIDE))
-					remove_flag=false;
-				if(ride_type->ride_type[j]==RIDE_TYPE_MAZE || ride_type->ride_type[j]==RIDE_TYPE_MINI_GOLF)
-					remove_flag=false;
-			}
- 			if (remove_flag) {
-				ride_type->flags &=~RIDE_ENTRY_FLAG_SEPARATE_RIDE;
-				ride_type->flags &=~RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME;
-			}
 		}
 
 		object_get_localised_text(&chunk, ecx, ebx, 2);
@@ -696,7 +685,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 
 		int di = ride_type->ride_type[0] | (ride_type->ride_type[1] << 8) | (ride_type->ride_type[2] << 16);
 
-		if (ride_type->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) di |= 0x1000000;
+		if ((ride_type->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) && !rideTypeShouldLoseSeparateFlag(ride_type)) di |= 0x1000000;
 
 		RCT2_GLOBAL(0xF433DD, uint32) = di;
 		return 0;// flags;
@@ -774,7 +763,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 			int width = w->x + w->width - x - 4;
 
 			int format_args = ride_type->description;
-			if (!(ride_type->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME))
+			if (!(ride_type->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(ride_type))
 			{
 				format_args = ride_type->ride_type[0];
 				if ((format_args & 0xFF) == 0xFF)
