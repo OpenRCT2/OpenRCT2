@@ -394,11 +394,11 @@ static void window_title_command_editor_textinput()
 	case WIDX_TEXTBOX_FULL:
 		if (!result) {
 			if (*end == '\0') {
-				if (command.command == TITLE_SCRIPT_ROTATE) {
+				if (command.command == TITLE_SCRIPT_ROTATE || command.command == TITLE_SCRIPT_ZOOM) {
 					if (value > 3) value = 3;
 				}
-				else if (command.command == TITLE_SCRIPT_ZOOM) {
-					if (value > 3) value = 3;
+				else if (command.command == TITLE_SCRIPT_WAIT) {
+					if (value < 1) value = 1;
 				}
 				command.rotations = (uint8)value;
 			}
