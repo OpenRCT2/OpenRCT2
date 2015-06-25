@@ -664,16 +664,6 @@ static void cheat_give_all_guests(int object)
 
 static void cheat_remove_all_guests()
 {
-	int i;
-	rct_ride *ride;
-
-	FOR_ALL_RIDES(i, ride)
-	{
-		ride_clear_for_construction(i);
-		ride_set_status(i, RIDE_STATUS_CLOSED);
-	}
-	window_invalidate_by_class(WC_RIDE);
-
 	rct_peep *peep;
 	uint16 spriteIndex, nextSpriteIndex;
 
@@ -685,6 +675,19 @@ static void cheat_remove_all_guests()
 		}
 	}
 
+	int i;
+	rct_ride *ride;
+
+	FOR_ALL_RIDES(i, ride)
+	{
+		ride_clear_for_construction(i);
+		ride_set_status(i, RIDE_STATUS_CLOSED);
+
+		for(int i=0;i<4;i++) {
+			ride->first_peep_in_queue[i]=0xFFFF;
+		}
+	}
+	window_invalidate_by_class(WC_RIDE);
 	gfx_invalidate_screen();
 }
 
