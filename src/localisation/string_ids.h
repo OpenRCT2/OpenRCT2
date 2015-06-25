@@ -1550,6 +1550,8 @@ enum {
 	STR_UP = 5375,
 	STR_DOWN = 5376,
 
+	STR_FORCE_PARK_RATING = 5442,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
