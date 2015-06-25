@@ -737,7 +737,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 	// When made of two parts i.e Wooden Roller Coaster (Dream Woodie Cars)
 	if ((objectType == OBJECT_TYPE_RIDE) && (!((((rct_ride_type*)chunk)->flags) & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || 
-			!rideTypeShouldLoseSeparateFlag((rct_ride_type*)chunk))) {
+			rideTypeShouldLoseSeparateFlag((rct_ride_type*)chunk))) {
 		rct_ride_type* ride_type = (rct_ride_type*)chunk;
 		rct_string_id obj_string = ride_type->ride_type[0];
 		if (obj_string == 0xFF){
