@@ -4511,7 +4511,7 @@ void ride_all_has_any_track_elements(bool *rideIndexArray)
 
 
 /* rct2: 0x006847BA */
-void sub_6847BA(int base_image_id, int ecx){
+void set_vehicle_type_image_max_sizes(rct_ride_type_vehicle* vehicle_type, int num_images){
 	char bitmap[200][200] = { 0 };
 
 	rct_drawpixelinfo dpi = {
@@ -4524,8 +4524,8 @@ void sub_6847BA(int base_image_id, int ecx){
 		.zoom_level = 0
 	};
 
-	for (int i = 0; i < ecx; ++i){
-		gfx_draw_sprite(&dpi, base_image_id + i, 0, 0, 0);
+	for (int i = 0; i < num_images; ++i){
+		gfx_draw_sprite(&dpi, vehicle_type->base_image_id + i, 0, 0, 0);
 	}
 	int al = -1;
 	for (int i = 99; i != 0; --i){
@@ -4580,4 +4580,14 @@ void sub_6847BA(int base_image_id, int ecx){
 			break;
 	}
 	bh++;
+
+	// Moved from object paint
+
+	if (vehicle_type->var_12 & 0x2000){
+		bl += 16;
+	}
+
+	vehicle_type->var_0E = al;
+	vehicle_type->var_0F = bl;
+	vehicle_type->var_10 = bh;
 }

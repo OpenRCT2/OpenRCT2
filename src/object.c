@@ -623,27 +623,12 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 				// 0x6DEB0D
 
 				if (!(rideVehicleEntry->var_12 & 0x400)){
-					int ecx = cur_vehicle_images_offset - rideVehicleEntry->base_image_id;
+					int num_images = cur_vehicle_images_offset - rideVehicleEntry->base_image_id;
 					if (rideVehicleEntry->var_12 & 0x2000){
-						ecx *= 2;
+						num_images *= 2;
 					}
 
-					int bl, bh, eax = 0;
-					{
-						int ebx = rideVehicleEntry->base_image_id;
-						int edx = 0, esi = 0, ebp = 0, edi = 0;
-						RCT2_CALLFUNC_X(0x6847BA, &eax, &ebx, &ecx, &edx, &esi, &ebp, &edi);
-						bl = ebx & 0xFF;
-						bh = (ebx >> 8) & 0xFF;
-					}
-
-					if (rideVehicleEntry->var_12 & 0x2000){
-						bl += 16;
-					}
-
-					rideVehicleEntry->var_0E = eax & 0xFF;
-					rideVehicleEntry->var_0F = bl;
-					rideVehicleEntry->var_10 = bh;
+					set_vehicle_type_image_max_sizes(rideVehicleEntry, num_images);
 				}
 
 				uint8 no_positions = *peep_loading_positions++;
