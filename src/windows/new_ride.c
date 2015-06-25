@@ -333,7 +333,7 @@ static void window_new_ride_populate_list()
 					continue;
 
 				// Skip if the vehicle isn't the preferred vehicle for this generic track type
-				if(gConfigInterface.select_by_track_type && !(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) {
+				if(gConfigInterface.select_by_track_type && (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry))) {
 					if(strcmp(preferredVehicleName,"        \0")==0) {
 						strcpy(preferredVehicleName,rideEntryName);
 						preferredVehicleName[8]=0;
@@ -349,7 +349,7 @@ static void window_new_ride_populate_list()
 					}
 				}
 
-				if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) {
+				if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && !rideTypeShouldLoseSeparateFlag(rideEntry)) {
 					dh &= ~4;
 					nextListItem->type = rideType;
 					nextListItem->entry_index = rideEntryIndex;
@@ -893,7 +893,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 	// Ride name and description
 	rct_string_id rideName = rideEntry->name;
 	rct_string_id rideDescription = rideEntry->description;
-	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) {
+	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
 		rideName = item.type + 2;
 		rideDescription = item.type + 512;
 	}

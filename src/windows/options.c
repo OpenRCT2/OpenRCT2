@@ -541,6 +541,7 @@ static void window_options_mouseup()
 			config_save_default();
 			window_invalidate(w);
 			window_invalidate_by_class(WC_RIDE);
+			window_invalidate_by_class(WC_CONSTRUCT_RIDE);
 			break;
 		case WIDX_DEBUGGING_TOOLS:
 			gConfigGeneral.debugging_tools ^= 1;
@@ -1173,10 +1174,6 @@ static void window_options_invalidate()
 			window_options_misc_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_EMPTY;
 		else
 			window_options_misc_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
-
-		// This option sets several flags on object load, only make it changeable in the titles to prevent strange New Ride list behaviour
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO))
-			w->disabled_widgets |= (1ULL << WIDX_SELECT_BY_TRACK_TYPE);
 
 		widget_set_checkbox_value(w, WIDX_SELECT_BY_TRACK_TYPE, gConfigInterface.select_by_track_type);
 		widget_set_checkbox_value(w, WIDX_REAL_NAME_CHECKBOX, RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SHOW_REAL_GUEST_NAMES);
