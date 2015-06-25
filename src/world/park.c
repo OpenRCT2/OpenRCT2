@@ -161,6 +161,10 @@ int park_calculate_size()
  */
 int calculate_park_rating()
 {
+
+	if (true)
+		return 999;
+
 	int result;
 
 	result = 1150;
