@@ -277,6 +277,7 @@ void object_list_load()
 	uint32 fileCount = 0;
 	uint32 objectCount = 0;
 	uint32 current_item_offset = 0;
+	uint32 next_offset = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_ORIGINAL_RCT2_OBJECT_COUNT, uint32) = 0;
 
 	log_verbose("building cache of available objects...");
@@ -318,10 +319,13 @@ void object_list_load()
 			rct_object_entry* installed_entry = (rct_object_entry*)(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, uint8*) + current_item_offset);
 			rct_object_filters filter;
 
-			current_item_offset += install_object_entry(&entry, installed_entry, enumFileInfo.path, &filter);
-			_installedObjectFilters[objectCount] = filter;
+			next_offset = install_object_entry(&entry, installed_entry, enumFileInfo.path, &filter);
+			if (next_offset) {
+				current_item_offset += next_offset;
 
-			objectCount++;
+				_installedObjectFilters[objectCount] = filter;
+				objectCount++;
+			}
 		}
 		platform_enumerate_files_end(enumFileHandle);
 	}
