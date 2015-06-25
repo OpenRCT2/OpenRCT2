@@ -910,7 +910,7 @@ char* console_window_table[] = {
 };
 
 console_command console_command_table[] = {
-	{ "close", cc_cose, "Closes teh console.", "close"},
+	{ "close", cc_cose, "Closes the console.", "close"},
 	{ "clear", cc_clear, "Clears the console.", "clear"},
 	{ "hide", cc_hide, "Hides the console.", "hide"},
 	{ "echo", cc_echo, "Echos the text to the console.", "echo <text>" },
