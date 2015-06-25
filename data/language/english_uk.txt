@@ -3780,3 +3780,4 @@ STR_5443    :Speed{MOVE_X}{87}{STRINGID}
 STR_5444    :Speed:
 STR_5445    :Speed
 STR_5446    :Get
+STR_5447	:{SMALLFONT}{BLACK}Select an other ride/attraction

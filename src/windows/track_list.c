@@ -38,7 +38,8 @@ enum {
 	WIDX_TRACK_LIST,
 	WIDX_TRACK_PREVIEW,
 	WIDX_ROTATE,
-	WIDX_TOGGLE_SCENERY
+	WIDX_TOGGLE_SCENERY,
+	WIDX_BACK,
 };
 
 static rct_widget window_track_list_widgets[] = {
@@ -49,6 +50,7 @@ static rct_widget window_track_list_widgets[] = {
 	{ WWT_FLATBTN,			0,	224,	595,	18,		236,	0xFFFFFFFF,				STR_NONE								},
 	{ WWT_FLATBTN,			0,	574,	597,	374,	397,	5169,					STR_ROTATE_90_TIP						},
 	{ WWT_FLATBTN,			0,	574,	597,	350,	373,	5171,					STR_TOGGLE_SCENERY_TIP					},
+	{ WWT_FLATBTN,			0,	574,	597,	326,	349,	SPR_PREVIOUS,			STR_SELECT_OTHER_RIDE					},
 	{ WIDGETS_END },
 };
 
@@ -136,7 +138,7 @@ void window_track_list_open(ride_list_item item)
 		0
 	);
 	w->widgets = window_track_list_widgets;
-	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY);
+	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY) | (1 << WIDX_BACK);
 	window_init_scroll_widgets(w);
 	w->track_list.var_480 = 0xFFFF;
 	w->track_list.var_482 = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 1;
@@ -266,6 +268,10 @@ static void window_track_list_mouseup()
 		reset_track_list_cache();
 		window_invalidate(w);
 		break;
+	case WIDX_BACK:
+		window_close(w);
+		window_new_ride_open();
+		break;
 	}
 }
 
@@ -376,6 +382,7 @@ static void window_track_list_invalidate()
 		w->disabled_widgets &= ~(1 << WIDX_TRACK_PREVIEW);
 		window_track_list_widgets[WIDX_ROTATE].type = WWT_FLATBTN;
 		window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WWT_FLATBTN;
+		window_track_list_widgets[WIDX_BACK].type = WWT_FLATBTN;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) == 0)
 			w->pressed_widgets |= (1 << WIDX_TOGGLE_SCENERY);
 		else
@@ -385,6 +392,7 @@ static void window_track_list_invalidate()
 		w->disabled_widgets |= (1 << WIDX_TRACK_PREVIEW);
 		window_track_list_widgets[WIDX_ROTATE].type = WWT_EMPTY;
 		window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WWT_EMPTY;
+		window_track_list_widgets[WIDX_BACK].type = WWT_EMPTY;
 	}
 }
 
