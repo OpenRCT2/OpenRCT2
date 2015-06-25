@@ -3587,8 +3587,8 @@ STR_5250    :Title Exit Button
 STR_5251    :Title Options Button
 STR_5252    :Title Scenario Selection
 STR_5253    :Park Information
-STR_5254    :<not used anymore>
-STR_5255    :<not used anymore>
+STR_5254    :Create
+STR_5255    :{SMALLFONT}{BLACK}Create a new title sequence from scratch
 STR_5256    :Create a new theme to make changes to
 STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
 STR_5258    :{SMALLFONT}{BLACK}Delete the current theme
@@ -3772,6 +3772,10 @@ STR_5435    :Rename save
 STR_5436    :Edit Title Sequences...
 STR_5437    :No save selected
 STR_5438    :Can't make changes while command editor is open
-STR_5439    :A restart is used without a wait command
+STR_5439    :A wait command with at least 4 seconds is required with a restart command
 STR_5440    :Minimize fullscreen on focus loss
 STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type,{NEWLINE}so vehicles can be changed{NEWLINE}afterwards, like in RCT1.
+STR_5442    :reserved
+STR_5443    :Speed{MOVE_X}{87}{STRINGID}
+STR_5444    :Speed:
+STR_5445    :Speed

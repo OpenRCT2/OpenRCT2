@@ -43,12 +43,13 @@ TITLE_COMMAND_ORDER window_title_command_editor_orders[] = {
 	{ TITLE_SCRIPT_LOCATION,	5417, 5427 },
 	{ TITLE_SCRIPT_ROTATE,		5419, 5428 },
 	{ TITLE_SCRIPT_ZOOM,		5421, 5429 },
+	{ TITLE_SCRIPT_SPEED,		5445, 5444 },
 	{ TITLE_SCRIPT_WAIT,		5423, 5430 },
 	{ TITLE_SCRIPT_RESTART,		5425, STR_NONE },
 	{ TITLE_SCRIPT_END,			5426, STR_NONE },
 };
 
-#define NUM_COMMANDS 7
+#define NUM_COMMANDS 8
 
 enum WINDOW_WATER_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -59,8 +60,8 @@ enum WINDOW_WATER_WIDGET_IDX {
 	WIDX_TEXTBOX_FULL,
 	WIDX_TEXTBOX_X,
 	WIDX_TEXTBOX_Y,
-	WIDX_SAVE,
-	WIDX_SAVE_DROPDOWN,
+	WIDX_INPUT,
+	WIDX_INPUT_DROPDOWN,
 	WIDX_OKAY,
 	WIDX_CANCEL
 };
@@ -203,8 +204,8 @@ void window_title_command_editor_open(int index, bool insert)
 		(1 << WIDX_TEXTBOX_FULL) |
 		(1 << WIDX_TEXTBOX_X) |
 		(1 << WIDX_TEXTBOX_Y) |
-		(1 << WIDX_SAVE) |
-		(1 << WIDX_SAVE_DROPDOWN) |
+		(1 << WIDX_INPUT) |
+		(1 << WIDX_INPUT_DROPDOWN) |
 		(1 << WIDX_OKAY) |
 		(1 << WIDX_CANCEL);
 	window_init_scroll_widgets(window);
@@ -302,24 +303,45 @@ static void window_title_command_editor_mousedown(int widgetIndex, rct_window* w
 
 		gDropdownItemsChecked = 1 << get_command_info_index(command.command);
 		break;
-	case WIDX_SAVE_DROPDOWN:
-		num_items = gConfigTitleSequences.presets[gCurrentTitleSequence].num_saves;
-		for (i = 0; i < num_items; i++) {
-			gDropdownItemsFormat[i] = 2777;
-			gDropdownItemsArgs[i] = (uint64)&gConfigTitleSequences.presets[gCurrentTitleSequence].saves[i];
-		}
-		
-		window_dropdown_show_text_custom_width(
-			w->x + widget->left,
-			w->y + widget->top,
-			widget->bottom - widget->top + 1,
-			w->colours[1],
-			DROPDOWN_FLAG_STAY_OPEN,
-			num_items,
-			widget->right - widget->left - 3
-			);
+	case WIDX_INPUT_DROPDOWN:
+		if (command.command == TITLE_SCRIPT_SPEED) {
+			num_items = 4;
+			for (i = 0; i < num_items; i++) {
+				gDropdownItemsFormat[i] = 1142;
+				gDropdownItemsArgs[i] = 5142 + i;
+			}
 
-		gDropdownItemsChecked = 1 << (command.saveIndex);
+			window_dropdown_show_text_custom_width(
+				w->x + widget->left,
+				w->y + widget->top,
+				widget->bottom - widget->top + 1,
+				w->colours[1],
+				DROPDOWN_FLAG_STAY_OPEN,
+				num_items,
+				widget->right - widget->left - 3
+				);
+
+			gDropdownItemsChecked = 1 << (command.speed - 1);
+		}
+		else if (command.command == TITLE_SCRIPT_LOAD) {
+			num_items = gConfigTitleSequences.presets[gCurrentTitleSequence].num_saves;
+			for (i = 0; i < num_items; i++) {
+				gDropdownItemsFormat[i] = 2777;
+				gDropdownItemsArgs[i] = (uint64)&gConfigTitleSequences.presets[gCurrentTitleSequence].saves[i];
+			}
+
+			window_dropdown_show_text_custom_width(
+				w->x + widget->left,
+				w->y + widget->top,
+				widget->bottom - widget->top + 1,
+				w->colours[1],
+				DROPDOWN_FLAG_STAY_OPEN,
+				num_items,
+				widget->right - widget->left - 3
+				);
+
+			gDropdownItemsChecked = 1 << (command.saveIndex);
+		}
 		break;
 	}
 }
@@ -356,6 +378,9 @@ static void window_title_command_editor_dropdown()
 			command.zoom = 0;
 			_itoa(command.zoom, textbox1Buffer, 10);
 			break;
+		case TITLE_SCRIPT_SPEED:
+			command.speed = 1;
+			break;
 		case TITLE_SCRIPT_WAIT:
 			command.seconds = 10;
 			_itoa(command.seconds, textbox1Buffer, 10);
@@ -368,10 +393,17 @@ static void window_title_command_editor_dropdown()
 		}
 		window_invalidate(w);
 		break;
-	case WIDX_SAVE_DROPDOWN:
-		if (dropdownIndex == command.saveIndex)
-			break;
-		command.saveIndex = (uint8)dropdownIndex;
+	case WIDX_INPUT_DROPDOWN:
+		if (command.command == TITLE_SCRIPT_SPEED) {
+			if (dropdownIndex == command.speed - 1)
+				break;
+			command.speed = (uint8)(dropdownIndex + 1);
+		}
+		else if (command.command == TITLE_SCRIPT_LOAD) {
+			if (dropdownIndex == command.saveIndex)
+				break;
+			command.saveIndex = (uint8)dropdownIndex;
+		}
 		window_invalidate(w);
 		break;
 	}
@@ -394,11 +426,11 @@ static void window_title_command_editor_textinput()
 	case WIDX_TEXTBOX_FULL:
 		if (!result) {
 			if (*end == '\0') {
-				if (command.command == TITLE_SCRIPT_ROTATE) {
+				if (command.command == TITLE_SCRIPT_ROTATE || command.command == TITLE_SCRIPT_ZOOM) {
 					if (value > 3) value = 3;
 				}
-				else if (command.command == TITLE_SCRIPT_ZOOM) {
-					if (value > 3) value = 3;
+				else if (command.command == TITLE_SCRIPT_WAIT) {
+					if (value < 1) value = 1;
 				}
 				command.rotations = (uint8)value;
 			}
@@ -453,12 +485,13 @@ static void window_title_command_editor_invalidate()
 	window_title_command_editor_widgets[WIDX_TEXTBOX_FULL].type = WWT_EMPTY;
 	window_title_command_editor_widgets[WIDX_TEXTBOX_X].type = WWT_EMPTY;
 	window_title_command_editor_widgets[WIDX_TEXTBOX_Y].type = WWT_EMPTY;
-	window_title_command_editor_widgets[WIDX_SAVE].type = WWT_EMPTY;
-	window_title_command_editor_widgets[WIDX_SAVE_DROPDOWN].type = WWT_EMPTY;
+	window_title_command_editor_widgets[WIDX_INPUT].type = WWT_EMPTY;
+	window_title_command_editor_widgets[WIDX_INPUT_DROPDOWN].type = WWT_EMPTY;
 	switch (command.command) {
 	case TITLE_SCRIPT_LOAD:
-		window_title_command_editor_widgets[WIDX_SAVE].type = WWT_DROPDOWN;
-		window_title_command_editor_widgets[WIDX_SAVE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+	case TITLE_SCRIPT_SPEED:
+		window_title_command_editor_widgets[WIDX_INPUT].type = WWT_DROPDOWN;
+		window_title_command_editor_widgets[WIDX_INPUT_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		break;
 	case TITLE_SCRIPT_LOCATION:
 		window_title_command_editor_widgets[WIDX_TEXTBOX_X].type = WWT_TEXT_BOX;
@@ -494,16 +527,27 @@ static void window_title_command_editor_paint()
 		w->widgets[WIDX_COMMAND_DROPDOWN].left - w->widgets[WIDX_COMMAND].left - 4
 		);
 
-	if (command.command == TITLE_SCRIPT_LOAD) {
+	if (command.command == TITLE_SCRIPT_SPEED) {
+		gfx_draw_string_left_clipped(
+			dpi,
+			5142 + command.speed - 1,
+			NULL,
+			w->colours[1],
+			w->x + w->widgets[WIDX_INPUT].left + 1,
+			w->y + w->widgets[WIDX_INPUT].top,
+			w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4
+			);
+	}
+	else if (command.command == TITLE_SCRIPT_LOAD) {
 		if (command.saveIndex == 0xFF) {
 			gfx_draw_string_left_clipped(
 				dpi,
 				5437,
 				NULL,
 				w->colours[1],
-				w->x + w->widgets[WIDX_SAVE].left + 1,
-				w->y + w->widgets[WIDX_SAVE].top,
-				w->widgets[WIDX_SAVE_DROPDOWN].left - w->widgets[WIDX_SAVE].left - 4
+				w->x + w->widgets[WIDX_INPUT].left + 1,
+				w->y + w->widgets[WIDX_INPUT].top,
+				w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4
 				);
 		}
 		else {
@@ -513,9 +557,9 @@ static void window_title_command_editor_paint()
 				1170,
 				(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
 				w->colours[1],
-				w->x + w->widgets[WIDX_SAVE].left + 1,
-				w->y + w->widgets[WIDX_SAVE].top,
-				w->widgets[WIDX_SAVE_DROPDOWN].left - w->widgets[WIDX_SAVE].left - 4
+				w->x + w->widgets[WIDX_INPUT].left + 1,
+				w->y + w->widgets[WIDX_INPUT].top,
+				w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4
 				);
 		}
 	}

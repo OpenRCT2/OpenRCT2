@@ -228,6 +228,7 @@ typedef struct {
 		uint8 x;			// LOCATION
 		uint8 rotations;	// ROTATE (counter-clockwise)
 		uint8 zoom;			// ZOOM
+		uint8 speed;		// SPEED
 		uint8 seconds;		// WAIT
 	};
 	uint8 y;				// LOCATION

@@ -107,6 +107,7 @@ enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
 	// Presets Tab
 	WIDX_TITLE_EDITOR_PRESETS,
 	WIDX_TITLE_EDITOR_PRESETS_DROPDOWN,
+	WIDX_TITLE_EDITOR_NEW_BUTTON,
 	WIDX_TITLE_EDITOR_DUPLICATE_BUTTON,
 	WIDX_TITLE_EDITOR_DELETE_BUTTON,
 	WIDX_TITLE_EDITOR_RENAME_BUTTON,
@@ -144,12 +145,13 @@ enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
 #define BS 18
 #define ROW_HEIGHT 11
 #define SCROLL_WIDTH 350
+#define WH2 127
 
 static rct_widget window_title_editor_widgets[] = {
-	{ WWT_FRAME,			0,	0,		WW-1,	0,		106,	0x0FFFFFFFF,					STR_NONE },						// panel / background
+	{ WWT_FRAME,			0,	0,		WW-1,	0,		WH2-1,	0x0FFFFFFFF,					STR_NONE },						// panel / background
 	{ WWT_CAPTION,			0,	1,		WW-2,	1,		14,		5433,							STR_WINDOW_TITLE_TIP },			// title bar
 	{ WWT_CLOSEBOX,			0,	WW-13,	WW-3,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },			// close button
-	{ WWT_RESIZE,			1,	0,		WW-1,	43,		106,	0x0FFFFFFFF,					STR_NONE },						// tab content panel
+	{ WWT_RESIZE,			1,	0,		WW-1,	43,		WH2-1,	0x0FFFFFFFF,					STR_NONE },						// tab content panel
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x02000144E,					5235 },							// presets tab
 	{ WWT_TAB,				1,	34,		64,		17,		43,		0x02000144E,					5377 },							// saves tab
 	{ WWT_TAB,				1,	65,		95,		17,		43,		0x02000144E,					5378 },							// script tab
@@ -158,7 +160,8 @@ static rct_widget window_title_editor_widgets[] = {
 	// Presets Tab
 	{ WWT_DROPDOWN,			1,	125,	299,	60,		71,		STR_NONE,						STR_NONE },						// Preset title sequences
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	61,		70,		876,							STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	10,		100,	82,		93,		5239,							5383 },						// Duplicate button
+	{ WWT_DROPDOWN_BUTTON,	1,	10,		100,	82,		93,		5254,							5255 },						// Create button
+	{ WWT_DROPDOWN_BUTTON,	1,	10,		100,	82+20,	93+20,	5239,							5383 },						// Duplicate button
 	{ WWT_DROPDOWN_BUTTON,	1,	110,	200,	82,		93,		3349,							5384 },						// Delete button
 	{ WWT_DROPDOWN_BUTTON,	1,	210,	300,	82,		93,		3348,							5385 },						// Rename button
 	
@@ -233,7 +236,7 @@ void window_title_editor_open(int tab)
 	if (window != NULL)
 		return;
 
-	window = window_create_auto_pos(WW, 107, (uint32*)window_title_editor_events, WC_TITLE_EDITOR, WF_10 | WF_RESIZABLE);
+	window = window_create_auto_pos(WW, WH2, (uint32*)window_title_editor_events, WC_TITLE_EDITOR, WF_10 | WF_RESIZABLE);
 	window->widgets = window_title_editor_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_TITLE_EDITOR_CLOSE) |
@@ -243,6 +246,7 @@ void window_title_editor_open(int tab)
 
 		(1 << WIDX_TITLE_EDITOR_PRESETS) |
 		(1 << WIDX_TITLE_EDITOR_PRESETS_DROPDOWN) |
+		(1 << WIDX_TITLE_EDITOR_NEW_BUTTON) |
 		(1 << WIDX_TITLE_EDITOR_DUPLICATE_BUTTON) |
 		(1 << WIDX_TITLE_EDITOR_DELETE_BUTTON) |
 		(1 << WIDX_TITLE_EDITOR_RENAME_BUTTON) |
@@ -311,6 +315,11 @@ static void window_title_editor_mouseup()
 	switch (widgetIndex) {
 	case WIDX_TITLE_EDITOR_CLOSE:
 		window_close(w);
+		break;
+	case WIDX_TITLE_EDITOR_NEW_BUTTON:
+		commandEditorOpen *= 2;
+		if (!commandEditorOpen)
+			window_text_input_open(w, widgetIndex, 5239, 5406, STR_NONE, NULL, 64);
 		break;
 	case WIDX_TITLE_EDITOR_DUPLICATE_BUTTON:
 		commandEditorOpen *= 2;
@@ -498,9 +507,9 @@ static void window_title_editor_resize()
 	
 	if (w->selected_tab == WINDOW_TITLE_EDITOR_TAB_PRESETS) {
 		w->min_width = WW;
-		w->min_height = 107;
+		w->min_height = WH2;
 		w->max_width = WW;
-		w->max_height = 107;
+		w->max_height = WH2;
 
 		if (w->width < w->min_width) {
 			w->width = w->min_width;
@@ -717,11 +726,15 @@ static void window_title_editor_textinput()
 		return;
 
 	switch (widgetIndex) {
+	case WIDX_TITLE_EDITOR_NEW_BUTTON:
 	case WIDX_TITLE_EDITOR_DUPLICATE_BUTTON:
 	case WIDX_TITLE_EDITOR_RENAME_BUTTON:
 		if (filename_valid_characters(text)) {
 			if (!title_sequence_name_exists(text)) {
-				if (widgetIndex == WIDX_TITLE_EDITOR_DUPLICATE_BUTTON) {
+				if (widgetIndex == WIDX_TITLE_EDITOR_NEW_BUTTON) {
+					title_sequence_create_preset(text);
+				}
+				else if (widgetIndex == WIDX_TITLE_EDITOR_DUPLICATE_BUTTON) {
 					title_sequence_duplicate_preset(gCurrentTitleSequence, text);
 				}
 				else {
@@ -777,6 +790,7 @@ void window_title_editor_invalidate()
 
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].type = WWT_EMPTY;
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].type = WWT_EMPTY;
+	window_title_editor_widgets[WIDX_TITLE_EDITOR_NEW_BUTTON].type = WWT_EMPTY;
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_DUPLICATE_BUTTON].type = WWT_EMPTY;
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE_BUTTON].type = WWT_EMPTY;
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_BUTTON].type = WWT_EMPTY;
@@ -802,6 +816,7 @@ void window_title_editor_invalidate()
 	case WINDOW_TITLE_EDITOR_TAB_PRESETS:
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].type = WWT_DROPDOWN;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+		window_title_editor_widgets[WIDX_TITLE_EDITOR_NEW_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_DUPLICATE_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_BUTTON].type = WWT_DROPDOWN_BUTTON;
@@ -995,6 +1010,10 @@ void window_title_editor_scrollpaint()
 			case TITLE_SCRIPT_ZOOM:
 				commandName = 5422;
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = command->zoom;
+				break;
+			case TITLE_SCRIPT_SPEED:
+				commandName = 5443;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = (uint16)(5142 + command->speed - 1);
 				break;
 			case TITLE_SCRIPT_WAIT:
 				commandName = 5424;

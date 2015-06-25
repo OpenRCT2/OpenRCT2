@@ -102,7 +102,7 @@ void title_sequence_create_preset(const char *name)
 		platform_ensure_directory_exists(path);
 		
 		title_sequence_save_preset_script(preset);
-		title_sequence_change_preset(preset);
+		gCurrentTitleSequence = preset;
 	}
 }
 
@@ -166,7 +166,6 @@ void title_sequence_duplicate_preset(int duplicate, const char *name)
 		}
 		
 		title_sequence_save_preset_script(preset);
-		//title_sequence_change_preset(preset);
 		gCurrentTitleSequence = preset;
 	}
 }

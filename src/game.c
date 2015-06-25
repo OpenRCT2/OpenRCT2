@@ -731,6 +731,8 @@ int game_load_save(const char *path)
 	load_palette();
 	gfx_invalidate_screen();
 
+	gGameSpeed = 1;
+
 	scenario_set_filename((char*)0x0135936C);
 	return 1;
 }

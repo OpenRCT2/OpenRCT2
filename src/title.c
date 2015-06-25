@@ -160,26 +160,7 @@ static void title_create_windows()
  */
 static void title_init_showcase()
 {
-	/*_scriptNoLoadsSinceRestart = 1;
-
-	SafeFree(_loadedScript);
-
-	_currentScript = _magicMountainScript;
-	switch (gConfigGeneral.title_sequence) {
-	case TITLE_SEQUENCE_OPENRCT2:
-		_loadedScript = title_script_load();
-		if (_loadedScript != NULL)
-			_currentScript = _loadedScript;
-		break;
-	case TITLE_SEQUENCE_RANDOM:
-		_loadedScript = generate_random_script();
-		_currentScript = _loadedScript;
-		break;
-	}
-
-	_scriptWaitCounter = 0;*/
 	title_refresh_sequence();
-	title_update_showcase();
 }
 
 static int title_load_park(const char *path)
@@ -227,6 +208,7 @@ static int title_load_park(const char *path)
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
 	RCT2_GLOBAL(0x009DEA5C, sint16) = 0x0D6D8;
+	gGameSpeed = 1;
 	return 1;
 }
 
@@ -267,7 +249,7 @@ static void title_do_next_script_opcode()
 	uint8 script_opcode, script_operand;
 	rct_window* w;
 	gTitleScriptCommand++;
-	if (*(_currentScript - 1) != TITLE_SCRIPT_END)
+	if (gTitleScriptCommand <= 1 || *(_currentScript - 1) != TITLE_SCRIPT_END)
 		script_opcode = *_currentScript++;
 	else
 		script_opcode = *_currentScript;
@@ -325,6 +307,10 @@ static void title_do_next_script_opcode()
 		w = window_get_main();
 		if (w != NULL && w->viewport != NULL)
 			window_zoom_set(w, script_operand);
+		break;
+	case TITLE_SCRIPT_SPEED:
+		script_operand = (*_currentScript++);
+		gGameSpeed = max(1, min(4, script_operand));
 		break;
 	case TITLE_SCRIPT_RESTART:
 		_scriptNoLoadsSinceRestart = 1;
@@ -402,6 +388,7 @@ static void title_do_next_script_opcode()
  */
 static void title_update_showcase()
 {
+	int i, numUpdates;
 	// Loop used for scene skip functionality
 	// Only loop here when the appropriate save hasn't been loaded yet since no game updates are required
 	do {
@@ -419,7 +406,14 @@ static void title_update_showcase()
 		} while (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad != -1);
 
 		if (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad == -1) {
-			game_logic_update();
+			if (gGameSpeed > 1) {
+				numUpdates = 1 << (gGameSpeed - 1);
+			} else {
+				numUpdates = 1;
+			}
+			for (i = 0; i < numUpdates; i++) {
+				game_logic_update();
+			}
 			update_palette_effects();
 			update_rain_animation();
 		}
@@ -453,12 +447,22 @@ static void DrawOpenRCT2(int x, int y)
 void game_handle_input();
 void title_update()
 {
+	int i, numUpdates;
 	screenshot_check();
 	title_handle_keyboard_input();
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
 		title_update_showcase();
-		game_logic_update();
+
+		if (gGameSpeed > 1) {
+			numUpdates = 1 << (gGameSpeed - 1);
+		} else {
+			numUpdates = 1;
+		}
+
+		for (i = 0; i < numUpdates; i++) {
+			game_logic_update();
+		}
 		start_title_music();
 	}
 
@@ -648,7 +652,7 @@ bool title_refresh_sequence()
 		else if (title->commands[i].command == TITLE_SCRIPT_LOADMM) {
 			hasLoad = true;
 		}
-		else if (title->commands[i].command == TITLE_SCRIPT_WAIT) {
+		else if (title->commands[i].command == TITLE_SCRIPT_WAIT && title->commands[i].seconds >= 4) {
 			hasWait = true;
 		}
 		else if (title->commands[i].command == TITLE_SCRIPT_RESTART) {
@@ -683,6 +687,9 @@ bool title_refresh_sequence()
 			case TITLE_SCRIPT_ZOOM:
 				*scriptPtr++ = title->commands[i].zoom;
 				break;
+			case TITLE_SCRIPT_SPEED:
+				*scriptPtr++ = title->commands[i].speed;
+				break;
 			case TITLE_SCRIPT_WAIT:
 				*scriptPtr++ = title->commands[i].seconds;
 				break;
@@ -707,12 +714,13 @@ bool title_refresh_sequence()
 
 		return true;
 	}
-	log_error("Failed to load title sequence, hasLoad: %i, hasWait: %i, hasRestart: %i, hasInvalidSave: %i", hasLoad, hasWait, hasRestart, hasInvalidSave);
+	log_error("Failed to load title sequence, hasLoad: %i, hasWait4seconds: %i, hasRestart: %i, hasInvalidSave: %i", hasLoad, hasWait, hasRestart, hasInvalidSave);
 	window_error_open(5402, (!hasWait && hasRestart) ? 5439 : STR_NONE);
 	_scriptNoLoadsSinceRestart = 1;
 	if (_loadedScript != _magicMountainScript)
 		SafeFree(_loadedScript);
 	_scriptCurrentPreset = 0;
+	_loadedScript = _magicMountainScript;
 	_currentScript = _magicMountainScript;
 	_scriptWaitCounter = 0;
 	gTitleScriptCommand = -1;
