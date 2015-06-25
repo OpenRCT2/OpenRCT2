@@ -1567,6 +1567,9 @@ static void title_sequence_open(const char *path, const char *customName)
 			} else if (_stricmp(token, "ZOOM") == 0) {
 				command.command = TITLE_SCRIPT_ZOOM;
 				command.zoom = atoi(part1) & 0xFF;
+			} else if (_stricmp(token, "SPEED") == 0) {
+				command.command = TITLE_SCRIPT_SPEED;
+				command.speed = max(1, min(4, atoi(part1) & 0xFF));
 			} else if (_stricmp(token, "WAIT") == 0) {
 				command.command = TITLE_SCRIPT_WAIT;
 				command.seconds = atoi(part1) & 0xFF;
@@ -1623,6 +1626,9 @@ void title_sequence_save_preset_script(int preset)
 			break;
 		case TITLE_SCRIPT_ZOOM:
 			fprintf(file, "ZOOM %i\r\n", command->zoom);
+			break;
+		case TITLE_SCRIPT_SPEED:
+			fprintf(file, "SPEED %i\r\n", command->speed);
 			break;
 		case TITLE_SCRIPT_WAIT:
 			fprintf(file, "WAIT %i\r\n\r\n", command->seconds);

@@ -3772,6 +3772,9 @@ STR_5435    :Rename save
 STR_5436    :Edit Title Sequences...
 STR_5437    :No save selected
 STR_5438    :Can't make changes while command editor is open
-STR_5439    :A wait with at least 4 seconds is required with a restart
+STR_5439    :A wait command with at least 4 seconds is required with a restart command
 STR_5440    :Minimize fullscreen on focus loss
 STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type,{NEWLINE}so vehicles can be changed{NEWLINE}afterwards, like in RCT1. Only{NEWLINE}toggleable in the title screen.
+STR_5442    :Speed
+STR_5443    :Speed{MOVE_X}{87}{STRINGID}
+STR_5444    :Speed:

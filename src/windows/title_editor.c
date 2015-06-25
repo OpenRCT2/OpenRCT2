@@ -160,7 +160,7 @@ static rct_widget window_title_editor_widgets[] = {
 	// Presets Tab
 	{ WWT_DROPDOWN,			1,	125,	299,	60,		71,		STR_NONE,						STR_NONE },						// Preset title sequences
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	61,		70,		876,							STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	10,		100,	82,		93,		5254,							5255 },						// New button
+	{ WWT_DROPDOWN_BUTTON,	1,	10,		100,	82,		93,		5254,							5255 },						// Create button
 	{ WWT_DROPDOWN_BUTTON,	1,	10,		100,	82+20,	93+20,	5239,							5383 },						// Duplicate button
 	{ WWT_DROPDOWN_BUTTON,	1,	110,	200,	82,		93,		3349,							5384 },						// Delete button
 	{ WWT_DROPDOWN_BUTTON,	1,	210,	300,	82,		93,		3348,							5385 },						// Rename button
@@ -1010,6 +1010,10 @@ void window_title_editor_scrollpaint()
 			case TITLE_SCRIPT_ZOOM:
 				commandName = 5422;
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = command->zoom;
+				break;
+			case TITLE_SCRIPT_SPEED:
+				commandName = 5443;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = (uint16)(5142 + command->speed - 1);
 				break;
 			case TITLE_SCRIPT_WAIT:
 				commandName = 5424;

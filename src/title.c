@@ -308,6 +308,10 @@ static void title_do_next_script_opcode()
 		if (w != NULL && w->viewport != NULL)
 			window_zoom_set(w, script_operand);
 		break;
+	case TITLE_SCRIPT_SPEED:
+		script_operand = (*_currentScript++);
+		gGameSpeed = max(1, min(4, script_operand));
+		break;
 	case TITLE_SCRIPT_RESTART:
 		_scriptNoLoadsSinceRestart = 1;
 		gTitleScriptCommand = -1;
@@ -384,6 +388,7 @@ static void title_do_next_script_opcode()
  */
 static void title_update_showcase()
 {
+	int i, numUpdates;
 	// Loop used for scene skip functionality
 	// Only loop here when the appropriate save hasn't been loaded yet since no game updates are required
 	do {
@@ -401,7 +406,14 @@ static void title_update_showcase()
 		} while (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad != -1);
 
 		if (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad == -1) {
-			game_logic_update();
+			if (gGameSpeed > 1) {
+				numUpdates = 1 << (gGameSpeed - 1);
+			} else {
+				numUpdates = 1;
+			}
+			for (i = 0; i < numUpdates; i++) {
+				game_logic_update();
+			}
 			update_palette_effects();
 			update_rain_animation();
 		}
@@ -435,12 +447,22 @@ static void DrawOpenRCT2(int x, int y)
 void game_handle_input();
 void title_update()
 {
+	int i, numUpdates;
 	screenshot_check();
 	title_handle_keyboard_input();
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
 		title_update_showcase();
-		game_logic_update();
+
+		if (gGameSpeed > 1) {
+			numUpdates = 1 << (gGameSpeed - 1);
+		} else {
+			numUpdates = 1;
+		}
+
+		for (i = 0; i < numUpdates; i++) {
+			game_logic_update();
+		}
 		start_title_music();
 	}
 
@@ -664,6 +686,9 @@ bool title_refresh_sequence()
 				break;
 			case TITLE_SCRIPT_ZOOM:
 				*scriptPtr++ = title->commands[i].zoom;
+				break;
+			case TITLE_SCRIPT_SPEED:
+				*scriptPtr++ = title->commands[i].speed;
 				break;
 			case TITLE_SCRIPT_WAIT:
 				*scriptPtr++ = title->commands[i].seconds;
