@@ -38,6 +38,9 @@
 uint8 *gParkRatingHistory = RCT2_ADDRESS(RCT2_ADDRESS_PARK_RATING_HISTORY, uint8);
 uint8 *gGuestsInParkHistory = RCT2_ADDRESS(RCT2_ADDRESS_GUESTS_IN_PARK_HISTORY, uint8);
 
+// If this value is more than or equal to 0, the park rating is forced to this value. Used for cheat
+int forcedParkRating = -1;
+
 /**
  * In a difficult guest generation scenario, no guests will be generated if over this value.
  */
@@ -161,9 +164,8 @@ int park_calculate_size()
  */
 int calculate_park_rating()
 {
-
-	if (true)
-		return 999;
+	if (forcedParkRating >= 0)
+		return forcedParkRating;
 
 	int result;
 
@@ -1405,4 +1407,15 @@ void game_command_buy_land_rights(int *eax, int *ebx, int *ecx, int *edx, int *e
 		}
 		*ebx = RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, uint16);
 	}*/
+}
+
+
+void set_forced_park_rating(int rating){
+	forcedParkRating = rating;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) = calculate_park_rating();
+	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PARK_RATING;
+}
+
+int get_forced_park_rating(){
+	return forcedParkRating;
 }

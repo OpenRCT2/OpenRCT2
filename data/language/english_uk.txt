@@ -3775,3 +3775,4 @@ STR_5438    :Can't make changes while command editor is open
 STR_5439    :A restart is used without a wait command
 STR_5440    :Minimize fullscreen on focus loss
 STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type,{NEWLINE}so vehicles can be changed{NEWLINE}afterwards, like in RCT1. Only{NEWLINE}toggleable in the title screen.
+STR_5442    :Force park rating:
