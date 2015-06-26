@@ -228,6 +228,20 @@ static void shortcut_remove_vertical_land_toggle()
 	toggle_view_flag(VIEWPORT_FLAG_HIDE_VERTICAL);
 }
 
+static void shortcut_remove_top_bottom_toolbar_toggle()
+{
+	toggle_view_flag(VIEWPORT_FLAG_HIDE_TOP_BOTTOM_TOOLBAR);
+
+	if (window_get_main()->viewport->flags & VIEWPORT_FLAG_HIDE_TOP_BOTTOM_TOOLBAR){
+		window_close(window_find_by_class(WC_TOP_TOOLBAR));
+		window_close(window_find_by_class(WC_BOTTOM_TOOLBAR));
+	}
+	else {
+		window_top_toolbar_open();
+		window_game_bottom_toolbar_open();
+	}
+}
+
 static void shortcut_see_through_rides_toggle()
 {
 	toggle_view_flag(VIEWPORT_FLAG_SEETHROUGH_RIDES);
@@ -484,9 +498,12 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_show_recent_messages,
 	shortcut_show_map,
 	shortcut_screenshot,
+
+	//new
 	shortcut_reduce_game_speed,
 	shortcut_increase_game_speed,
-	shortcut_open_cheat_window
+	shortcut_open_cheat_window,
+	shortcut_remove_top_bottom_toolbar_toggle,
 };
 
 #pragma endregion
