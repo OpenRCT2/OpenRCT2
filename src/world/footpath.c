@@ -337,7 +337,7 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 		return MONEY32_UNDEFINED;
 	}
 
-	if (!((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gSandboxMode) && !map_is_location_owned(x, y, z * 8))
+	if (!((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
 		return MONEY32_UNDEFINED;
 
 	if (slope & 8) {
@@ -391,7 +391,7 @@ money32 footpath_remove_real(int x, int y, int z, int flags)
 		footpath_remove_litter(x, y, z * 8);
 	}
 
-	if (!((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gSandboxMode) && !map_is_location_owned(x, y, z * 8))
+	if (!((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
 		return MONEY32_UNDEFINED;
 
 	mapElement = map_get_footpath_element(x / 32, y / 32, z);

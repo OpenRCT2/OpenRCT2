@@ -209,7 +209,7 @@ void window_footpath_open()
 	// If a restricted path was selected when the game is no longer in Sandbox mode, reset it
 	pathId = RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16);
 	pathType = g_pathTypeEntries[pathId];
-	if((pathType->flags & 4) && !gSandboxMode) {
+	if((pathType->flags & 4) && !gCheatsSandboxMode) {
 		RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = 0;
 	}
 
@@ -343,7 +343,7 @@ static void window_footpath_dropdown(rct_window *w, int widgetIndex, int dropdow
 		pathId = RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16);
 	} else {
 		int flags = 4;
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gSandboxMode)
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
 			flags = 0;
 
 		j = 0;
@@ -581,7 +581,7 @@ static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget
 	numPathTypes = 0;
 	flags = 4;
 	// If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor, but not their queues (since these usually shouldn't have one)
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || (gSandboxMode && !showQueues))
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || (gCheatsSandboxMode && !showQueues))
 		flags = 0;
 
 	for (i = 0; i < 16; i++) {

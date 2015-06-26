@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../cheats.h"
 #include "../config.h"
 #include "../editor.h"
 #include "../game.h"
@@ -100,6 +101,12 @@ typedef enum {
 	DDIDX_TILE_INSPECTOR = 1,
 	DDIDX_OBJECT_SELECTION = 2
 } TOP_TOOLBAR_DEBUG_DDIDX;
+
+enum {
+	DDIDX_CHEATS,
+	DDIDX_DISABLE_CLEARANCE_CHECKS = 2,
+	DDIDX_DISABLE_SUPPORT_LIMITS
+};
 
 #pragma region Toolbar_widget_ordering
 
@@ -311,9 +318,6 @@ static void window_top_toolbar_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_RESEARCH:
 		window_research_open();
 		break;
-	case WIDX_CHEATS:
-		window_cheats_open();
-		break;
 	}
 }
 
@@ -390,6 +394,28 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			gDropdownItemsChecked |= (1 << 11);
 #endif
 		break;
+	case WIDX_CHEATS:
+		gDropdownItemsFormat[0] = 1156;
+		gDropdownItemsFormat[1] = 0;
+		gDropdownItemsFormat[2] = 1156;
+		gDropdownItemsFormat[3] = 1156;
+		gDropdownItemsArgs[0] = 5217;
+		gDropdownItemsArgs[2] = STR_DISABLE_CLEARANCE_CHECKS;
+		gDropdownItemsArgs[3] = STR_DISABLE_SUPPORT_LIMITS;
+		window_dropdown_show_text(
+			w->x + widget->left,
+			w->y + widget->top,
+			widget->bottom - widget->top + 1,
+			w->colours[0] | 0x80,
+			0,
+			4
+		);
+		if (gCheatsDisableClearanceChecks)
+			gDropdownItemsChecked |= (1 << DDIDX_DISABLE_CLEARANCE_CHECKS);
+		if (gCheatsDisableSupportLimits)
+			gDropdownItemsChecked |= (1 << DDIDX_DISABLE_SUPPORT_LIMITS);
+		RCT2_GLOBAL(0x009DEBA2, uint16) = 0;
+		break;
 	case WIDX_VIEW_MENU:
 		top_toolbar_init_view_menu(w, widget);
 		break;
@@ -410,7 +436,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			w->colours[1] | 0x80,
 			0,
 			numItems
-		);
+			);
 		RCT2_GLOBAL(0x009DEBA2, uint16) = 0;
 		break;
 	case WIDX_FASTFORWARD:
@@ -426,7 +452,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066C9EA
  */
 static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
@@ -474,6 +500,20 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 			gTwitchEnable = !gTwitchEnable;
 			break;
 #endif
+		}
+		break;
+	case WIDX_CHEATS:
+		if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x009DEBA2, uint16);
+		switch (dropdownIndex) {
+		case DDIDX_CHEATS:
+			window_cheats_open();
+			break;
+		case DDIDX_DISABLE_CLEARANCE_CHECKS:
+			gCheatsDisableClearanceChecks = !gCheatsDisableClearanceChecks;
+			break;
+		case DDIDX_DISABLE_SUPPORT_LIMITS:
+			gCheatsDisableSupportLimits = !gCheatsDisableSupportLimits;
+			break;
 		}
 		break;
 	case WIDX_VIEW_MENU:

@@ -1783,6 +1783,9 @@ enum {
 
 	STR_SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE = 5460,
 
+	STR_DISABLE_CLEARANCE_CHECKS = 5455,
+	STR_DISABLE_SUPPORT_LIMITS = 5456,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
