@@ -333,9 +333,19 @@ int object_load_packed(FILE *file)
  *
  *  rct2: 0x006A9CAF
  */
-void object_unload(int groupIndex, rct_object_entry_extended *entry)
+void object_unload(rct_object_entry *entry)
 {
-	RCT2_CALLPROC_X(0x006A9CAF, 0, groupIndex, 0, 0, 0, 0, (int)entry);
+	uint8 object_type, object_index;
+	if (!find_object_in_entry_group(entry, &object_type, &object_index)){
+		return;
+	}
+
+	uint8* chunk = object_entry_groups[object_type].chunks[object_index];
+
+	object_paint(object_type, 1, 0, 0, 0, (int)chunk, 0, 0);
+
+	rct2_free(chunk);
+	object_entry_groups[object_type].chunks[object_index] = (char*)-1;
 }
 
 int object_entry_compare(const rct_object_entry *a, const rct_object_entry *b)

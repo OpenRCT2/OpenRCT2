@@ -608,7 +608,7 @@ void unload_unselected_objects(){
 	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
 		if (!(*selection_flags & OBJECT_SELECTION_FLAG_SELECTED)){
 			remove_selected_objects_from_research(installedObject);
-			object_unload(0, (rct_object_entry_extended*)installedObject);
+			object_unload(installedObject);
 		}
 		selection_flags++;
 		installedObject = object_get_next(installedObject);
