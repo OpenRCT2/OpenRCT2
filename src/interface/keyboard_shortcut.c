@@ -477,7 +477,6 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_underground_view_toggle,
 	shortcut_remove_base_land_toggle,
 	shortcut_remove_vertical_land_toggle,
-	shortcut_remove_top_bottom_toolbar_toggle,
 	shortcut_see_through_rides_toggle,
 	shortcut_see_through_scenery_toggle,
 	shortcut_invisible_supports_toggle,
@@ -499,9 +498,12 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_show_recent_messages,
 	shortcut_show_map,
 	shortcut_screenshot,
+
+	//new
 	shortcut_reduce_game_speed,
 	shortcut_increase_game_speed,
-	shortcut_open_cheat_window
+	shortcut_open_cheat_window,
+	shortcut_remove_top_bottom_toolbar_toggle,
 };
 
 #pragma endregion
