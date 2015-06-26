@@ -178,6 +178,8 @@ static void window_top_toolbar_dropdown();
 static void window_top_toolbar_tool_update();
 static void window_top_toolbar_tool_down();
 static void window_top_toolbar_tool_drag();
+static void window_top_toolbar_tool_up();
+static void window_top_toolbar_tool_abort();
 static void window_top_toolbar_invalidate();
 static void window_top_toolbar_paint();
 
@@ -194,8 +196,8 @@ static void* window_top_toolbar_events[] = {
 	window_top_toolbar_tool_update,					// editor: 0x0066fB0E
 	window_top_toolbar_tool_down,					// editor: 0x0066fB5C
 	window_top_toolbar_tool_drag,					// editor: 0x0066fB37
-	(void*)0x0066CC5B,								// editor: 0x0066fC44
-	(void*)0x0066CA58,								// editor: 0x0066fA74
+	window_top_toolbar_tool_up,						// editor: 0x0066fC44 (Exactly the same)
+	window_top_toolbar_tool_abort,					// editor: 0x0066fA74 (Exactly the same)
 	window_top_toolbar_emptysub,
 	window_top_toolbar_emptysub,
 	window_top_toolbar_emptysub,
@@ -2723,6 +2725,55 @@ static void window_top_toolbar_tool_drag()
 	}
 }
 
+/**
+ * 
+ *  rct2: 0x0066CC5B
+ */
+static void window_top_toolbar_tool_up()
+{
+	short widgetIndex, x, y;
+	rct_window *w;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+	
+	switch (widgetIndex) {
+	case WIDX_LAND:
+		map_invalidate_selection_rect();
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= 0xFFFE;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x12;
+		break;
+	case WIDX_WATER:
+		map_invalidate_selection_rect();
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= 0xFFFE;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x13;
+		break;
+	case WIDX_CLEAR_SCENERY:
+		map_invalidate_selection_rect();
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= 0xFFFE;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x0C;
+		break;
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x0066CA58
+ */
+static void window_top_toolbar_tool_abort()
+{
+	short widgetIndex, x, y;
+	rct_window* w;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+
+	switch (widgetIndex) {
+	case WIDX_LAND:
+	case WIDX_WATER:
+	case WIDX_CLEAR_SCENERY:
+		hide_gridlines();
+		break;
+	}
+}
 
 void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget) {
 	int num_items = 4;
