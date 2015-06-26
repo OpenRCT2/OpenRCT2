@@ -513,31 +513,31 @@ STR_0508    :
 STR_0509    :
 STR_0510    :
 STR_0511    :
-STR_0512    :
-STR_0513    :
+STR_0512    :Eine kompakte Stahlachterbahn mit einem Spirallifthügel und Wagen mit Sitzen in einer Reihe
+STR_0513    :Eine Looping-Achterbahn, bei der sich die Fahrgäste in einer stehenden Position befinden
 STR_0514    :Die unterhalb der Schiene aufgehängten Züge schwingen in Kurven seitlich aus.
-STR_0515    :
+STR_0515    :Die Fahrgäste sind in Sitzen, die unter den Schienen hängen und durch riesige Schleifen, Kurven und große Gefälle rasen
 STR_0516    :Eine gemäßigte Achterbahn für Leute, die noch nicht den Mut für längere Bahnen haben
 STR_0517    :Die Fahrgäste sitzen in Miniaturzügen, die auf einer schmalen Schienenstrecke fahren
 STR_0518    :Die Passagiere fahren in elektrischen Zügen auf einer Einschienenstrecke
 STR_0519    :Die Fahrgäste sitzen in kleinen, an einer Einschienenstrecke aufgehängten Wagen, die in Kurven seitlich frei schwingen
-STR_0520    :
-STR_0521    :
-STR_0522    :
+STR_0520    :Die Fahrgäste können ihr persönliches Wasserfahrzeug über das Wasser steuern
+STR_0521    :Kleine mausförmige Wagen fahren auf einer Holzstrecke, wobei sich die Wagen in Haarnadelkurven und steilen Senken neigen
+STR_0522    :Eine kleinere Achterbahn, auf der die Passagiere über der Strecke sitzen, ohne von einem Wagen umgeben zu sein
 STR_0523    :Die Passagiere sitzen in langsam angetriebenen Wagen auf einer Schienenstrecke
-STR_0524    :
-STR_0525    :
-STR_0526    :
+STR_0524    :Der Freefall-Wagen wird mit Druckluft einen hohen Stahlturm hochgeschossen, von wo er dann im freien Fall nach unten saust
+STR_0525    :Die Passagiere fahren, nur von der Krümmung und der seitlichen Neigung der halbkreisförmigen Strecke geführt, auf einer verdrehten Strecke
+STR_0526    :Rotierende Aussichtskabine, die sich an einem hohen Turm hinauf bewegt
 STR_0527    :Eine gemäßigte Stahlachterbahn, bei der vertikale Schleifen möglich sind
-STR_0528    :
-STR_0529    :
+STR_0528    :Die Passagiere fahren in Schlauchbooten eine sich windende, halbkreisförmige oder komplett in sich geschlossene Rohrstrecke herunter
+STR_0529    :Minenachterbahnzüge fahren auf Stahlschienen, die so aussehen wie alte Zugschienen
 STR_0530    :Die Wagen hängen an einem Stahlseil, das durchgängig von einem Streckenende zum anderen und wieder zurück führt
-STR_0531    :
+STR_0531    :Eine kompakte Stahlachterbahn, bei der der Zug durch Schrauben und Schleifen fährt
 STR_0532    :
 STR_0533    :
-STR_0534    :
-STR_0535    :
-STR_0536    :
+STR_0534    :Selbstbetriebene Benzin-Go-Karts
+STR_0535    :Baumstammförmige Boote fahren in einem Wasserkanal und rutschen steile Gefälle herunter, damit die Fahrgäste unten nass werden
+STR_0536    :Runde Boote gleiten durch einen breiten Wasserkanal, zischen durch Wasserfälle und schäumende Stromschnellen
 STR_0537    :
 STR_0538    :
 STR_0539    :
@@ -556,14 +556,14 @@ STR_0551    :
 STR_0552    :
 STR_0553    :
 STR_0554    :Der Wagen wird mit Hilfe von linearen Induktionsmotoren aus der Station entlang einer langen, ebenen Bahn beschleunigt und dann vertikal nach oben geschossen, von wo er wieder im freien Fall zur Station zurückzukehrt
-STR_0555    :
-STR_0556    :
+STR_0555    :Die Besucher fahren in einem Aufzug einen Turm hinauf oder hinab, um in ein anderes Stockwerk zu gelangen
+STR_0556    :Besonders breite Wagen fallen eine vollständige Vertikale herunter - das ultimative Erlebnis des freien Falls
 STR_0557    :
 STR_0558    :
 STR_0559    :
 STR_0560    :
 STR_0561    :
-STR_0562    :
+STR_0562    :Angetriebene Wagen fahren auf einer mehrstöckigen Strecke mit gruseliger Landschaft und Spezialeffekten
 STR_0563    :Die Fahrgäste sitzen in komfortablen Wagen mit einfachen Beckenhalterungen, in denen sie gigantische, gemäßigte Gefälle erleben, aber auch viel Zeit oben `in der Luft' verbringen
 STR_0564    :Diese Holzachterbahn ist schnell, rauh, laut und gibt einem das Gefühl, außer Kontrolle zu sein, wobei man häufig `in der Luft' ist
 STR_0565    :Eine einfache Holzachterbahn mit nur leichten Gefällen und Kurven, bei der die Wagen nur mit Hilfe von seitlichen Führungsrollen und der Schwerkraft auf der Strecke gehalten werden
@@ -572,38 +572,38 @@ STR_0567    :Die Passagiere befinden sich in Sitzen, die an beiden Seiten der Ba
 STR_0568    :
 STR_0569    :Die Passagiere, die in speziellen Vorrichtungen unter der Schiene fahren, haben das Gefühl zu fliegen, während sie durch die Lüfte sausen
 STR_0570    :
-STR_0571    :
-STR_0572    :
-STR_0573    :
-STR_0574    :
+STR_0571    :Runde Wagen drehen sich auf der Zickzack-Holzstrecke
+STR_0572    :Große Boote bewegen sich in einem breiten Wasserkanal, fahren von einem Fließband befördert Anstiege hoch und sausen steile Gefälle hinunter, damit die Fahrgäste mit einem gigantischen Platscher durchnässt werden
+STR_0573    :Helikopterförmige Wagen fahren auf einer Stahlstrecke und werden von den Pedaltritten der Fahrer angetrieben
+STR_0574    :Die Passagiere befinden sich in speziellen Haltevorrichtungen in liegender Position (entweder auf dem Rücken oder dem Bauch) und fahren auf einer gewundenen Strecke mit Überkopfteilen
 STR_0575    :Angetriebene Züge, die von einem einzelnen Gleis hängen, befördern die Fahrgäste durch den Park
 STR_0576    :
-STR_0577    :
+STR_0577    :Wagen mit Drehgestell fahren auf einer Holzstrecke und rotieren dabei auf speziellen Umkehrabschnitten
 STR_0578    :Die Wagen fahren auf einer Strecke mit kreisförmigen Reifen, steilen Gefällen und Heartline-Twists
 STR_0579    :
-STR_0580    :
-STR_0581    :
+STR_0580    :Eine gigantische Stahlachterbahn mit gemäßigten Gefällen und Anstiegen von über 90 Meter
+STR_0581    :Ein Ring mit Sitzen, der zur Spitze eines hohen Turms gezogen wird, während er sich leicht dreht, und dann im freien Fall heruntersaust, wobei er unten sanft von Magnetbremsen angehalten wird
 STR_0582    :
 STR_0583    :
-STR_0584    :
-STR_0585    :
+STR_0584    :Spezielle Fahrräder fahren auf einer einschienigen Stahlstrecke und werden von den Passagieren angetrieben, indem sie in die Pedale treten
+STR_0585    :Die Fahrgäste hängen in Sitzpaaren unter der Strecke und fahren Schleifen und Wendungen durch enge Kurven
 STR_0586    :Wagen in Bootsform laufen auf einer gewundenen Achterbahn mit steilen Gefällen, wobei sie in Wasserabschnitte klatschen, die in gemäßigtere Flussbereiche führen
-STR_0587    :
-STR_0588    :
+STR_0587    :Nach einem atemberaubenden luftbetriebenen Start schnellt der Zug eine vertikale Strecke hoch, über die Spitze und auf der anderen Seite vertikal nach unten zurück zur Station
+STR_0588    :Einzelne Wagen fahren unter einer Zickzack-Strecke mit Haarnadelkurven und steilen Gefällen
 STR_0589    :
-STR_0590    :
-STR_0591    :
+STR_0590    :Die Fahrgäste fahren in einem U-Boot auf einer Unterwasserstrecke
+STR_0591    :Floßförmige Boote winden sich sanft durch eine Flussstrecke
 STR_0592    :
 STR_0593    :
 STR_0594    :
 STR_0595    :
 STR_0596    :
 STR_0597    :
-STR_0598    :
+STR_0598    :Umgekehrte Achterbahnzüge werden aus der Station beschleunigt und rasen ein vertikales Streckenstück hinauf, sausen wieder hinab durch die Station und fahren einen anderen vertikalen Streckenabschnitt hinauf
 STR_0599    :Eine kompakte Achterbahn mit unabhängigen Wagen und gemäßigten, sich windenden Gefällen
-STR_0600    :
+STR_0600    :Angetriebene Minenzüge fahren auf einer gemäßigten und verwundenen Strecke
 STR_0601    :
-STR_0602    :
+STR_0602    :Achterbahnzüge werden aus der Station mit Hilfe von linearen Induktionsmotoren beschleunigt und rasen durch gewundene Überkopfteile
 STR_0603    :Besucher {INT32}
 STR_0604    :Besucher {INT32}
 STR_0605    :Besucher {INT32}
@@ -3455,7 +3455,7 @@ STR_3446    :Patrouillenbereich verwerfen
 # New strings, cleaner
 STR_5120    :Finanzen in der Symbolleiste anzeigen
 STR_5121    :Forschung in der Symbolleiste anzeigen
-STR_5122    :Fahrzeuge gleicher Strecke/Bahnart anzeigen
+STR_5122    :Bahnen nach Streckentyp auswählen (wie in RCT1)
 STR_5123    :Bahnen erneuern
 STR_5124    :Keine Six Flags
 STR_5125    :Alles zerstörbar
@@ -3508,7 +3508,7 @@ STR_5171    :Überwache Chat-Parkbesucher
 STR_5172    :{SMALLFONT}{BLACK}Überwachungsinformationen zu Parkbesuchern, die nach Twitch-Chatbenutzern benannt sind, einschalten - (Bei eingeschalteter Überwachung werden Besucheraktivitäten im Nachrichtenbereich angezeigt)
 STR_5173    :Erhalte Twitch-Chat als Spielnachrichten
 STR_5174    :{SMALLFONT}{BLACK}Benutzt Twitch-Chatnachrichten, welchen !news vorangestellt ist, für Spielbenachrichtigungen
-STR_5175    :Name Ihres Twitch-Kanals eingeben:
+STR_5175    :Namen Ihres Twitch-Kanals eingeben:
 STR_5176    :Twitch-Integration aktivieren
 STR_5177    :Vollbildmodus:
 STR_5178    :{SMALLFONT}{BLACK}Cheats für Finanzen anzeigen
@@ -3573,7 +3573,7 @@ STR_5236    :Fenster:
 STR_5237    :Farbpalette:
 STR_5238    :Aktuelles Thema:
 STR_5239    :Duplizieren
-STR_5240    :Name für Thema eingeben:
+STR_5240    :Namen für Thema eingeben:
 STR_5241    :Dieses Thema kann nicht geändert werden
 STR_5242    :Dieser Themenname existiert bereits
 STR_5243    :Unzulässige Zeichen benutzt
@@ -3710,3 +3710,68 @@ STR_5373    :Name {STRINGID}
 STR_5374    :Datum {STRINGID}
 STR_5375    :{UP}
 STR_5376    :{DOWN}
+STR_5377    :{SMALLFONT}{BLACK}Gespeicherte Spiele
+STR_5378    :{SMALLFONT}{BLACK}Skript
+STR_5379    :{SMALLFONT}{BLACK}Zum nächsten `Warten'-Befehl springen
+STR_5380    :{SMALLFONT}{BLACK}Titelsequenz abspielen
+STR_5381    :{SMALLFONT}{BLACK}Titelsequenz stoppen
+STR_5382    :{SMALLFONT}{BLACK}Titelsequenz neu starten
+STR_5383    :{SMALLFONT}{BLACK}Neue Titelsequenz durch duplizieren der aktuellen Titelsequenz erstellen
+STR_5384    :{SMALLFONT}{BLACK}Aktuelle Titelsequenz löschen
+STR_5385    :{SMALLFONT}{BLACK}Aktuelle Titelsequenz umbenennen
+STR_5386    :{SMALLFONT}{BLACK}Neuen Befehl einfügen
+STR_5387    :{SMALLFONT}{BLACK}Ausgewählten Befehl bearbeiten
+STR_5388    :{SMALLFONT}{BLACK}Ausgewählten Befehl löschen
+STR_5389    :{SMALLFONT}{BLACK}Zum ausgewählten Befehl in{NEWLINE}der Titelsequenz springen
+STR_5390    :{SMALLFONT}{BLACK}Ausgewählten Befehl nach oben verschieben
+STR_5391    :{SMALLFONT}{BLACK}Ausgewählten Befehl nach unten verschieben
+STR_5392    :{SMALLFONT}{BLACK}Einen Spielstand zur Titelsequenz hinzufügen
+STR_5393    :{SMALLFONT}{BLACK}Ausgewählten Spielstand von{NEWLINE}Titelsequenz entfernen
+STR_5394    :{SMALLFONT}{BLACK}Ausgewählten Spielstand umbenennen
+STR_5395    :{SMALLFONT}{BLACK}Ausgewählten Spielstand laden
+STR_5396    :{SMALLFONT}{BLACK}Titelsequenz neu laden, falls sie außerhalb des Spiels geändert wurde
+STR_5397    :Kann nur im Titelbildschirm verwendet werden
+STR_5398    :Titelsequenz kann, während sie läuft, nicht geändert werden
+STR_5399    :Titelsequenz stoppen, um das Bearbeiten fortzusetzen
+STR_5400    :Diese Titelsequenz kann nicht geändert werden
+STR_5401    :Erstellen Sie eine neue Titelsequenz, um sie zu bearbeiten
+STR_5402    :Titelsequenz konnte nicht geladen werden
+STR_5403    :Möglicherweise kein `Laden'-Befehl, `Warten'-Befehl oder ein ungültiger Spielstand vorhanden
+STR_5404    :Dieser Name existiert bereits
+STR_5405    :Namen für Spielstand eingeben:
+STR_5406    :Namen für Titelsequenz eingeben:
+STR_5407    :Hinzufügen
+STR_5408    :Entfernen
+STR_5409    :Einfügen
+STR_5410    :Bearbeiten
+STR_5411    :Neu laden
+STR_5412    :Springen zu
+STR_5413    :Laden
+STR_5414    :Laden{MOVE_X}{87}Six Flags Magic Mountain.SC6
+STR_5415    :Laden{MOVE_X}{87}{STRING}
+STR_5416    :Laden{MOVE_X}{87}Kein Spielstand ausgewählt
+STR_5417    :Position
+STR_5418    :Position{MOVE_X}{87}{COMMA16}   {COMMA16}
+STR_5419    :Drehen
+STR_5420    :Drehen{MOVE_X}{87}{COMMA16}
+STR_5421    :Zoom
+STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
+STR_5423    :Warten
+STR_5424    :Warten{MOVE_X}{87}{COMMA16}
+STR_5425    :Neu starten
+STR_5426    :Ende
+STR_5427    :Koordinaten:
+STR_5428    :Drehungen gegen Uhrzeigersinn:
+STR_5429    :Zoomstufe:
+STR_5430    :Zu wartende Sekunden:
+STR_5431    :Zu ladender Spielstand:
+STR_5432    :Befehl:
+STR_5433    :Titelsequenzen
+STR_5434    :Befehlseditor
+STR_5435    :Spielstand umbenennen
+STR_5436    :Titelsequenzen bearbeiten...
+STR_5437    :Kein Spielstand ausgewählt
+STR_5438    :Es können keine Änderungen vorgenommen werden, solange der Befehlseditor geöffnet ist
+STR_5439    :Ein Neustart wird ohne `Warten'-Befehl verwendet
+STR_5440    :Vollbild minimieren, wenn Spiel nicht im Vordergrund
+STR_5441    :{SMALLFONT}{BLACK}Identifiziert Bahnen durch Streckentyp, sodass wie in RCT1 Fahrzeuge anschließend geändert werden können. Nur im Titelbildschirm auswählbar
