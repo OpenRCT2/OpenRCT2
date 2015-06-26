@@ -576,7 +576,7 @@ void object_unload_all()
 	for (i = 0; i < OBJECT_ENTRY_GROUP_COUNT; i++)
 		for (j = 0; j < object_entry_group_counts[i]; j++)
 			if (object_entry_groups[i].chunks[j] != (uint8*)0xFFFFFFFF)
-				object_unload(j, &object_entry_groups[i].entries[j]);
+				object_unload((rct_object_entry*)&object_entry_groups[i].entries[j]);
 
 	reset_loaded_objects();
 }
@@ -727,7 +727,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 			log_error("Incorrect number of vanilla RCT2 objects.");
 			RCT2_GLOBAL(RCT2_ADDRESS_ORIGINAL_RCT2_OBJECT_COUNT, uint32)--;
 			RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32)--;
-			object_unload(objectType, (rct_object_entry_extended*)entry);
+			object_unload(entry);
 			return 0;
 		}
 	}
@@ -788,7 +788,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 	uint32 size_of_object = installed_entry_pointer - (uint8*)installed_entry;
 
-	object_unload(objectType, (rct_object_entry_extended*)entry);
+	object_unload(entry);
 
 	return size_of_object;
 }
