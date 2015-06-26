@@ -2170,7 +2170,6 @@ void show_gridlines()
 		}
 	}
 	RCT2_GLOBAL(0x009E32B0, uint8)++;
-	printf("gridline_state: %i\n", RCT2_GLOBAL(0x009E32B0, uint8));
 }
 
 /**
@@ -2182,7 +2181,6 @@ void hide_gridlines()
 	rct_window *mainWindow;
 
 	RCT2_GLOBAL(0x009E32B0, uint8)--;
-	printf("gridline_state: %i\n", RCT2_GLOBAL(0x009E32B0, uint8));
 	if (RCT2_GLOBAL(0x009E32B0, uint8) == 0) {
 		if ((mainWindow = window_get_main()) != NULL) {
 			if (!gConfigGeneral.always_show_gridlines) {
