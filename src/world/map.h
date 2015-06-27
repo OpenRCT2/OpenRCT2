@@ -122,6 +122,10 @@ enum {
 };
 
 enum {
+	MAP_ELEMENT_TYPE_FLAG_HIGHLIGHT = (1 << 6)
+};
+
+enum {
 	MAP_ELEMENT_DIRECTION_WEST,
 	MAP_ELEMENT_DIRECTION_NORTH,
 	MAP_ELEMENT_DIRECTION_EAST,
@@ -254,8 +258,10 @@ extern bool gClearFootpath;
 void map_init(int size);
 void map_update_tile_pointers();
 rct_map_element *map_get_first_element_at(int x, int y);
+void map_set_tile_elements(int x, int y, rct_map_element *elements);
 int map_element_is_last_for_tile(rct_map_element *element);
 int map_element_get_type(rct_map_element *element);
+int map_element_get_direction(rct_map_element *element);
 int map_element_get_terrain(rct_map_element *element);
 int map_element_get_terrain_edge(rct_map_element *element);
 void map_element_set_terrain(rct_map_element *element, int terrain);
@@ -322,6 +328,7 @@ void map_element_iterator_restart_for_tile(map_element_iterator *it);
 
 void map_remove_intersecting_walls(int x, int y, int z0, int z1, int direction);
 void map_update_tiles();
+int map_get_highest_z(int tileX, int tileY);
 
 void sub_6A7594();
 int map_element_get_banner_index(rct_map_element *mapElement);

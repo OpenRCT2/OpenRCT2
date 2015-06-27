@@ -25,6 +25,5 @@
 #include "ride.h"
 
 void ride_ratings_update_all();
-int sub_6C6402(rct_map_element **mapElement, int *x, int *y, int *z);
 
 #endif
