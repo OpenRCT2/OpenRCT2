@@ -765,16 +765,15 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 		if ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) != map_element_direction)
 			continue;
 
+		// If we are removing ghost elements
+		if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST))
+			continue;
+		
 		element_found = 1;
 		break;
 	} while (!map_element_is_last_for_tile(map_element++));
 
 	if (!element_found){
-		*ebx = 0;
-		return;
-	}
-
-	if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST)){
 		*ebx = 0;
 		return;
 	}
@@ -833,6 +832,10 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 				continue;
 
 			if (sceneryElement->base_height != currentTile.z / 8)
+				continue;
+
+			// If we are removing ghost elements
+			if ((*ebx & 0x40) && !(sceneryElement->flags & MAP_ELEMENT_FLAG_GHOST))
 				continue;
 
 			map_invalidate_tile_full(currentTile.x, currentTile.y);
