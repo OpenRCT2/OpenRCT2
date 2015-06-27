@@ -375,84 +375,86 @@ const uint64 RideTypePossibleTrackConfigurations[91] = {
 	/* RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER		*/	TRACK_STRAIGHT | TRACK_STATION_END | TRACK_FLAT_ROLL_BANKING | TRACK_VERTICAL_LOOP | TRACK_SLOPE | TRACK_SLOPE_STEEP | TRACK_SLOPE_CURVE | TRACK_SLOPE_CURVE_STEEP | TRACK_S_BEND | TRACK_CURVE_SMALL | TRACK_CURVE | TRACK_TWIST | TRACK_CORKSCREW | TRACK_HELIX_SMALL | TRACK_BRAKES | TRACK_ON_RIDE_PHOTO | TRACK_SLOPE_VERTICAL
 };
 
+#define TRACK_BLOCK_END { 255, 255, 255, 255, 255, 255, 255 }
+
 static const rct_preview_track TrackBlocks000[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks001[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks002[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks003[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks004[] = {
 	{ 0, 0, 0, 0, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 64, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks005[] = {
 	{ 0, 0, 0, 0, 64, 207, 0 },
-	{ 255, 0, 0, 0, 0, 16, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks006[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks007[] = {
 	{ 0, 0, 0, 0, 32, 207, 0 },
-	{ 255, 0, 0, 0, 0, 32, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks008[] = {
 	{ 0, 0, 0, 0, 32, 207, 0 },
-	{ 255, 0, 0, 0, 0, 32, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks009[] = {
 	{ 0, 0, 0, 0, 8, 207, 0 },
-	{ 255, 0, 0, 0, 0, 8, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks010[] = {
 	{ 0, 0, 0, 0, 16, 63, 0 },
-	{ 255, 0, 0, 0, 0, 64, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks011[] = {
 	{ 0, 0, 0, 0, 64, 63, 0 },
-	{ 255, 0, 0, 0, 0, 8, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks012[] = {
 	{ 0, 0, 0, 0, 8, 63, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks013[] = {
 	{ 0, 0, 0, 0, 32, 63, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks014[] = {
 	{ 0, 0, 0, 0, 32, 63, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks015[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks016[] = {
@@ -463,7 +465,7 @@ static const rct_preview_track TrackBlocks016[] = {
 	{ 4, -32, -64, 0, 0, 8, 1 },
 	{ 5, -64, -32, 0, 0, 7, 0 },
 	{ 6, -64, -64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks017[] = {
@@ -474,27 +476,27 @@ static const rct_preview_track TrackBlocks017[] = {
 	{ 4, -32, 64, 0, 0, 4, 1 },
 	{ 5, -64, 32, 0, 0, 11, 0 },
 	{ 6, -64, 64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks018[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks019[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks020[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks021[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks022[] = {
@@ -505,7 +507,7 @@ static const rct_preview_track TrackBlocks022[] = {
 	{ 4, -32, -64, 0, 0, 8, 1 },
 	{ 5, -64, -32, 0, 0, 7, 0 },
 	{ 6, -64, -64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks023[] = {
@@ -516,57 +518,57 @@ static const rct_preview_track TrackBlocks023[] = {
 	{ 4, -32, 64, 0, 0, 4, 1 },
 	{ 5, -64, 32, 0, 0, 11, 0 },
 	{ 6, -64, 64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks024[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks025[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks026[] = {
 	{ 0, 0, 0, 0, 8, 207, 0 },
-	{ 255, 0, 0, 0, 0, 8, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks027[] = {
 	{ 0, 0, 0, 0, 8, 207, 0 },
-	{ 255, 0, 0, 0, 0, 8, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks028[] = {
 	{ 0, 0, 0, 0, 8, 63, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks029[] = {
 	{ 0, 0, 0, 0, 8, 63, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks030[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks031[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks032[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks033[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks034[] = {
@@ -577,7 +579,7 @@ static const rct_preview_track TrackBlocks034[] = {
 	{ 4, -32, -64, 48, 0, 8, 1 },
 	{ 5, -64, -32, 32, 16, 71, 0 },
 	{ 6, -64, -64, 48, 16, 111, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks035[] = {
@@ -588,7 +590,7 @@ static const rct_preview_track TrackBlocks035[] = {
 	{ 4, -32, 64, 48, 0, 4, 1 },
 	{ 5, -64, 32, 32, 16, 139, 0 },
 	{ 6, -64, 64, 48, 16, 159, 0 },
-	{ 255, 0, 0, 12288, 0, 16, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks036[] = {
@@ -599,7 +601,7 @@ static const rct_preview_track TrackBlocks036[] = {
 	{ 4, -32, -64, 16, 0, 8, 1 },
 	{ 5, -64, -32, 16, 16, 23, 0 },
 	{ 6, -64, -64, 0, 16, 159, 0 },
-	{ 255, 0, 0, 12288, 0, 16, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks037[] = {
@@ -610,7 +612,7 @@ static const rct_preview_track TrackBlocks037[] = {
 	{ 4, -32, 64, 16, 0, 4, 1 },
 	{ 5, -64, 32, 16, 16, 43, 0 },
 	{ 6, -64, 64, 0, 16, 111, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks038[] = {
@@ -618,7 +620,7 @@ static const rct_preview_track TrackBlocks038[] = {
 	{ 1, -32, 0, 0, 0, 7, 0 },
 	{ 2, -32, -32, 0, 0, 13, 0 },
 	{ 3, -64, -32, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks039[] = {
@@ -626,7 +628,7 @@ static const rct_preview_track TrackBlocks039[] = {
 	{ 1, -32, 0, 0, 0, 11, 0 },
 	{ 2, -32, 32, 0, 0, 14, 0 },
 	{ 3, -64, 32, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks040[] = {
@@ -640,7 +642,7 @@ static const rct_preview_track TrackBlocks040[] = {
 	{ 7, 32, -32, 32, 96, 8, 0 },
 	{ 8, 0, -32, 16, 16, 63, 0 },
 	{ 9, -32, -32, 0, 16, 63, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks041[] = {
@@ -654,7 +656,7 @@ static const rct_preview_track TrackBlocks041[] = {
 	{ 7, 32, 32, 32, 96, 4, 0 },
 	{ 8, 0, 32, 16, 16, 63, 0 },
 	{ 9, -32, 32, 0, 16, 63, 0 },
-	{ 255, 0, 0, 0, 0, 0, 7 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks042[] = {
@@ -662,7 +664,7 @@ static const rct_preview_track TrackBlocks042[] = {
 	{ 1, 0, -32, 0, 0, 8, 1 },
 	{ 2, -32, 0, 0, 0, 2, 0 },
 	{ 3, -32, -32, 0, 0, 7, 0 },
-	{ 255, 0, 0, 0, 0, 0, 11 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks043[] = {
@@ -670,7 +672,7 @@ static const rct_preview_track TrackBlocks043[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 0 },
 	{ 3, -32, 32, 0, 0, 11, 0 },
-	{ 255, 0, 0, 0, 0, 16, 71 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks044[] = {
@@ -678,7 +680,7 @@ static const rct_preview_track TrackBlocks044[] = {
 	{ 1, 0, -32, 0, 0, 8, 1 },
 	{ 2, -32, 0, 0, 0, 2, 0 },
 	{ 3, -32, -32, 0, 0, 7, 0 },
-	{ 255, 0, 0, 0, 0, 0, 11 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks045[] = {
@@ -686,7 +688,7 @@ static const rct_preview_track TrackBlocks045[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 0 },
 	{ 3, -32, 32, 0, 0, 11, 0 },
-	{ 255, 0, 0, 0, 0, 16, 71 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks046[] = {
@@ -694,7 +696,7 @@ static const rct_preview_track TrackBlocks046[] = {
 	{ 1, 0, -32, 16, 0, 8, 1 },
 	{ 2, -32, 0, 16, 0, 2, 0 },
 	{ 3, -32, -32, 16, 16, 103, 0 },
-	{ 255, 0, 0, 0, 0, 16, 139 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks047[] = {
@@ -702,7 +704,7 @@ static const rct_preview_track TrackBlocks047[] = {
 	{ 1, 0, 32, 16, 0, 4, 1 },
 	{ 2, -32, 0, 16, 0, 1, 0 },
 	{ 3, -32, 32, 16, 16, 155, 0 },
-	{ 255, 0, 0, 4096, 0, 16, 55 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks048[] = {
@@ -710,7 +712,7 @@ static const rct_preview_track TrackBlocks048[] = {
 	{ 1, 0, -32, 16, 0, 8, 1 },
 	{ 2, -32, 0, 16, 0, 2, 0 },
 	{ 3, -32, -32, 0, 16, 23, 0 },
-	{ 255, 0, 0, 4096, 0, 16, 59 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks049[] = {
@@ -718,45 +720,45 @@ static const rct_preview_track TrackBlocks049[] = {
 	{ 1, 0, 32, 16, 0, 4, 1 },
 	{ 2, -32, 0, 16, 0, 1, 0 },
 	{ 3, -32, 32, 0, 16, 43, 0 },
-	{ 255, 0, 0, 0, 0, 0, 7 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks050[] = {
 	{ 0, 0, 0, 0, 0, 7, 0 },
-	{ 255, 0, 0, 0, 0, 0, 11 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks051[] = {
 	{ 0, 0, 0, 0, 0, 11, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks052[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, 0, 16, 15, 0 },
 	{ 2, -64, 0, 16, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks053[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, 0, 16, 15, 0 },
 	{ 2, -64, 0, 16, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks054[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, -16, 16, 15, 0 },
 	{ 2, -64, 0, -16, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks055[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, -16, 16, 15, 0 },
 	{ 2, -64, 0, -16, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks056[] = {
@@ -764,7 +766,7 @@ static const rct_preview_track TrackBlocks056[] = {
 	{ 1, -32, 0, 16, 16, 207, 0 },
 	{ 2, -64, 0, 32, 96, 3, 0 },
 	{ 3, -32, 0, 120, 16, 15, 0 },
-	{ 255, 0, 0, -8192, 255, 32, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks057[] = {
@@ -772,55 +774,55 @@ static const rct_preview_track TrackBlocks057[] = {
 	{ 1, -32, 0, -120, 96, 3, 0 },
 	{ 2, 0, 0, -136, 16, 207, 0 },
 	{ 3, 32, 0, -152, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks058[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
 	{ 1, -32, 0, 24, 32, 7, 0 },
 	{ 2, -32, -32, 48, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks059[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
 	{ 1, -32, 0, 24, 32, 11, 0 },
 	{ 2, -32, 32, 48, 16, 15, 0 },
-	{ 255, 0, 0, -8192, 255, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks060[] = {
 	{ 0, 0, 0, -32, 16, 15, 0 },
 	{ 1, -32, 0, -56, 32, 7, 0 },
 	{ 2, -32, -32, -80, 16, 15, 0 },
-	{ 255, 0, 0, -8192, 255, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks061[] = {
 	{ 0, 0, 0, -32, 16, 15, 0 },
 	{ 1, -32, 0, -56, 32, 11, 0 },
 	{ 2, -32, 32, -80, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 24, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks062[] = {
 	{ 0, 0, 0, 0, 24, 15, 0 },
-	{ 255, 0, 0, 0, 0, 24, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks063[] = {
 	{ 0, 0, 0, 0, 24, 207, 0 },
-	{ 255, 0, 0, 0, 0, 24, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks064[] = {
 	{ 0, 0, 0, 0, 24, 63, 0 },
-	{ 255, 0, 0, 0, 0, 24, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks065[] = {
 	{ 0, 0, 0, 0, 24, 15, 0 },
-	{ 255, 0, 0, 0, 0, 64, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks066[] = {
@@ -833,78 +835,78 @@ static const rct_preview_track TrackBlocks066[] = {
 	{ 6, 32, -32, 0, 0, 15, 0 },
 	{ 7, 32, 32, 0, 0, 15, 0 },
 	{ 8, 32, 0, 0, 0, 15, 2 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks067[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, 32, 0, 0, 0, 0, 3 },
-	{ 255, 0, 0, 0, 0, 0, 7 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks068[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks069[] = {
 	{ 0, 0, 0, 0, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 64, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks070[] = {
 	{ 0, 0, 0, 0, 64, 207, 0 },
-	{ 255, 0, 0, 0, 0, 16, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks071[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks072[] = {
 	{ 0, 0, 0, 0, 32, 207, 0 },
-	{ 255, 0, 0, 0, 0, 32, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks073[] = {
 	{ 0, 0, 0, 0, 32, 207, 0 },
-	{ 255, 0, 0, 0, 0, 32, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks074[] = {
 	{ 0, 0, 0, 0, 8, 207, 0 },
-	{ 255, 0, 0, 0, 0, 8, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks075[] = {
 	{ 0, 0, 0, 0, 16, 63, 0 },
-	{ 255, 0, 0, 0, 0, 64, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks076[] = {
 	{ 0, 0, 0, 0, 64, 63, 0 },
-	{ 255, 0, 0, 0, 0, 8, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks077[] = {
 	{ 0, 0, 0, 0, 8, 63, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks078[] = {
 	{ 0, 0, 0, 0, 32, 63, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks079[] = {
 	{ 0, 0, 0, 0, 32, 63, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks080[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks081[] = {
@@ -915,7 +917,7 @@ static const rct_preview_track TrackBlocks081[] = {
 	{ 4, -32, -64, 0, 0, 8, 1 },
 	{ 5, -64, -32, 0, 0, 7, 0 },
 	{ 6, -64, -64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks082[] = {
@@ -926,7 +928,7 @@ static const rct_preview_track TrackBlocks082[] = {
 	{ 4, -32, 64, 0, 0, 4, 1 },
 	{ 5, -64, 32, 0, 0, 11, 0 },
 	{ 6, -64, 64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks083[] = {
@@ -934,7 +936,7 @@ static const rct_preview_track TrackBlocks083[] = {
 	{ 1, -32, 0, 0, 0, 7, 0 },
 	{ 2, -32, -32, 0, 0, 13, 0 },
 	{ 3, -64, -32, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks084[] = {
@@ -942,7 +944,7 @@ static const rct_preview_track TrackBlocks084[] = {
 	{ 1, -32, 0, 0, 0, 11, 0 },
 	{ 2, -32, 32, 0, 0, 14, 0 },
 	{ 3, -64, 32, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks085[] = {
@@ -950,7 +952,7 @@ static const rct_preview_track TrackBlocks085[] = {
 	{ 1, 0, -32, 0, 0, 8, 1 },
 	{ 2, -32, 0, 0, 0, 2, 0 },
 	{ 3, -32, -32, 0, 0, 7, 0 },
-	{ 255, 0, 0, 0, 0, 0, 11 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks086[] = {
@@ -958,7 +960,7 @@ static const rct_preview_track TrackBlocks086[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 0 },
 	{ 3, -32, 32, 0, 0, 11, 0 },
-	{ 255, 0, 0, 0, 0, 16, 71 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks087[] = {
@@ -970,7 +972,7 @@ static const rct_preview_track TrackBlocks087[] = {
 	{ 5, 0, -64, 8, 0, 4, 1 },
 	{ 6, -32, -96, 8, 4, 1, 0 },
 	{ 7, 0, -96, 8, 4, 11, 0 },
-	{ 255, 0, 0, 0, 0, 0, 11 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks088[] = {
@@ -982,7 +984,7 @@ static const rct_preview_track TrackBlocks088[] = {
 	{ 5, 0, 64, 8, 0, 8, 1 },
 	{ 6, -32, 96, 8, 4, 2, 0 },
 	{ 7, 0, 96, 8, 4, 7, 0 },
-	{ 255, 0, 0, 2048, 0, 4, 7 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks089[] = {
@@ -994,7 +996,7 @@ static const rct_preview_track TrackBlocks089[] = {
 	{ 5, 0, -64, 0, 4, 4, 1 },
 	{ 6, -32, -96, 0, 0, 1, 0 },
 	{ 7, 0, -96, 0, 0, 11, 0 },
-	{ 255, 0, 0, 2048, 0, 4, 11 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks090[] = {
@@ -1006,7 +1008,7 @@ static const rct_preview_track TrackBlocks090[] = {
 	{ 5, 0, 64, 0, 4, 8, 1 },
 	{ 6, -32, 96, 0, 0, 2, 0 },
 	{ 7, 0, 96, 0, 0, 7, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks091[] = {
@@ -1024,7 +1026,7 @@ static const rct_preview_track TrackBlocks091[] = {
 	{ 11, 0, -128, 8, 4, 4, 1 },
 	{ 12, -32, -160, 8, 4, 11, 0 },
 	{ 13, 0, -160, 8, 4, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks092[] = {
@@ -1042,7 +1044,7 @@ static const rct_preview_track TrackBlocks092[] = {
 	{ 11, 0, 128, 8, 4, 8, 1 },
 	{ 12, -32, 160, 8, 4, 7, 0 },
 	{ 13, 0, 160, 8, 4, 15, 0 },
-	{ 255, 0, 0, 2048, 0, 4, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks093[] = {
@@ -1060,7 +1062,7 @@ static const rct_preview_track TrackBlocks093[] = {
 	{ 11, 0, -128, 0, 0, 4, 1 },
 	{ 12, -32, -160, 0, 0, 11, 0 },
 	{ 13, 0, -160, 0, 0, 15, 0 },
-	{ 255, 0, 0, 2048, 0, 4, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks094[] = {
@@ -1078,42 +1080,42 @@ static const rct_preview_track TrackBlocks094[] = {
 	{ 11, 0, 128, 0, 0, 8, 1 },
 	{ 12, -32, 160, 0, 0, 7, 0 },
 	{ 13, 0, 160, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 64, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks095[] = {
 	{ 0, 0, 0, 0, 64, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks096[] = {
 	{ 0, 0, 0, 0, 64, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks097[] = {
 	{ 0, 0, 0, 0, 64, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks098[] = {
 	{ 0, 0, 0, 0, 64, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks099[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks100[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks101[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks102[] = {
@@ -1124,7 +1126,7 @@ static const rct_preview_track TrackBlocks102[] = {
 	{ 4, -32, -64, 0, 12, 8, 1 },
 	{ 5, -64, -32, 0, 12, 7, 0 },
 	{ 6, -64, -64, 0, 12, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks103[] = {
@@ -1135,7 +1137,7 @@ static const rct_preview_track TrackBlocks103[] = {
 	{ 4, -32, 64, 0, 12, 4, 1 },
 	{ 5, -64, 32, 0, 12, 11, 0 },
 	{ 6, -64, 64, 0, 12, 15, 0 },
-	{ 255, 0, 0, 0, 0, 12, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks104[] = {
@@ -1146,7 +1148,7 @@ static const rct_preview_track TrackBlocks104[] = {
 	{ 4, -32, -64, 0, 0, 8, 1 },
 	{ 5, -64, -32, 0, 0, 7, 0 },
 	{ 6, -64, -64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 12, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks105[] = {
@@ -1157,7 +1159,7 @@ static const rct_preview_track TrackBlocks105[] = {
 	{ 4, -32, 64, 0, 0, 4, 1 },
 	{ 5, -64, 32, 0, 0, 11, 0 },
 	{ 6, -64, 64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks106[] = {
@@ -1168,7 +1170,7 @@ static const rct_preview_track TrackBlocks106[] = {
 	{ 4, -32, -64, 0, 12, 8, 1 },
 	{ 5, -64, -32, 0, 12, 7, 0 },
 	{ 6, -64, -64, 0, 12, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks107[] = {
@@ -1179,7 +1181,7 @@ static const rct_preview_track TrackBlocks107[] = {
 	{ 4, -32, 64, 0, 12, 4, 1 },
 	{ 5, -64, 32, 0, 12, 11, 0 },
 	{ 6, -64, 64, 0, 12, 15, 0 },
-	{ 255, 0, 0, 0, 0, 12, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks108[] = {
@@ -1190,7 +1192,7 @@ static const rct_preview_track TrackBlocks108[] = {
 	{ 4, -32, -64, 0, 0, 8, 1 },
 	{ 5, -64, -32, 0, 0, 7, 0 },
 	{ 6, -64, -64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 12, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks109[] = {
@@ -1201,42 +1203,42 @@ static const rct_preview_track TrackBlocks109[] = {
 	{ 4, -32, 64, 0, 0, 4, 1 },
 	{ 5, -64, 32, 0, 0, 11, 0 },
 	{ 6, -64, 64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks110[] = {
 	{ 0, 0, 0, 0, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 64, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks111[] = {
 	{ 0, 0, 0, 0, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 64, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks112[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks113[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks114[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks115[] = {
 	{ 0, 0, 0, 0, 16, 63, 0 },
-	{ 255, 0, 0, 0, 0, 64, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks116[] = {
 	{ 0, 0, 0, 0, 16, 63, 0 },
-	{ 255, 0, 0, 0, 0, 64, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks117[] = {
@@ -1245,7 +1247,7 @@ static const rct_preview_track TrackBlocks117[] = {
 	{ 2, -64, 0, 0, 16, 15, 0 },
 	{ 3, -96, 0, 0, 16, 15, 0 },
 	{ 4, -128, 0, 0, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks118[] = {
@@ -1253,7 +1255,7 @@ static const rct_preview_track TrackBlocks118[] = {
 	{ 1, -32, 0, 0, 16, 15, 0 },
 	{ 2, -64, 0, 16, 24, 15, 0 },
 	{ 3, -96, 0, 40, 48, 15, 0 },
-	{ 255, 0, 0, 0, 0, 48, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks119[] = {
@@ -1261,12 +1263,12 @@ static const rct_preview_track TrackBlocks119[] = {
 	{ 1, -32, 0, 40, 48, 15, 0 },
 	{ 2, -64, 0, 64, 24, 15, 0 },
 	{ 3, -96, 0, 80, 8, 15, 0 },
-	{ 255, 0, 0, 10240, 0, 48, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks120[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks121[] = {
@@ -1274,7 +1276,7 @@ static const rct_preview_track TrackBlocks121[] = {
 	{ 1, -32, 0, 16, 24, 15, 0 },
 	{ 2, -64, 0, 0, 16, 15, 0 },
 	{ 3, -96, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 20480, 0, 8, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks122[] = {
@@ -1282,7 +1284,7 @@ static const rct_preview_track TrackBlocks122[] = {
 	{ 1, -32, 0, 64, 24, 15, 0 },
 	{ 2, -64, 0, 40, 48, 15, 0 },
 	{ 3, -96, 0, 0, 48, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks123[] = {
@@ -1290,7 +1292,7 @@ static const rct_preview_track TrackBlocks123[] = {
 	{ 1, -32, 0, 0, 8, 63, 0 },
 	{ 2, -64, 0, -32, 32, 63, 0 },
 	{ 3, -96, 0, -96, 64, 63, 0 },
-	{ 255, 0, 0, 0, 0, 0, 7 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks124[] = {
@@ -1301,52 +1303,52 @@ static const rct_preview_track TrackBlocks124[] = {
 	{ 4, -128, 0, 0, 160, 15, 0 },
 	{ 5, -192, 0, 0, 208, 15, 0 },
 	{ 6, -160, 0, 0, 208, 15, 0 },
-	{ 255, 0, 0, 0, 0, 48, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks125[] = {
 	{ 0, 0, 0, 0, 48, 15, 0 },
 	{ 1, 32, 0, 0, 48, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks126[] = {
 	{ 0, 0, 0, 0, 8, 15, 4 },
 	{ 1, 32, 0, 0, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 8, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks127[] = {
 	{ 0, 0, 0, 0, 8, 15, 4 },
 	{ 1, 32, 0, 0, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks128[] = {
 	{ 0, 0, 0, 0, 32, 207, 4 },
 	{ 1, 32, 0, 0, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 32, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks129[] = {
 	{ 0, 0, 0, 0, 32, 63, 4 },
-	{ 255, 0, 0, 0, 0, 56, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks130[] = {
 	{ 0, 0, 0, 0, 56, 15, 4 },
-	{ 255, 0, 0, 0, 0, 56, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks131[] = {
 	{ 0, 0, 0, 0, 56, 15, 4 },
 	{ 1, 32, 0, 0, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks132[] = {
 	{ 0, 0, 0, 0, 24, 63, 0 },
-	{ 255, 0, 0, 0, 0, 24, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks133[] = {
@@ -1355,7 +1357,7 @@ static const rct_preview_track TrackBlocks133[] = {
 	{ 2, -32, -32, 0, 0, 8, 0 },
 	{ 3, -64, 0, 0, 0, 2, 1 },
 	{ 4, -64, -32, 0, 0, 1, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks134[] = {
@@ -1364,7 +1366,7 @@ static const rct_preview_track TrackBlocks134[] = {
 	{ 2, -32, 32, 0, 0, 4, 0 },
 	{ 3, -64, 0, 0, 0, 1, 1 },
 	{ 4, -64, 32, 0, 0, 2, 0 },
-	{ 255, 0, 0, 0, 0, 0, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks135[] = {
@@ -1373,7 +1375,7 @@ static const rct_preview_track TrackBlocks135[] = {
 	{ 2, 0, 32, 0, 0, 4, 1 },
 	{ 3, -32, 32, 0, 0, 15, 0 },
 	{ 4, -64, 32, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks136[] = {
@@ -1382,7 +1384,7 @@ static const rct_preview_track TrackBlocks136[] = {
 	{ 2, -32, 0, 0, 0, 1, 1 },
 	{ 3, -32, 32, 0, 0, 15, 0 },
 	{ 4, -32, 64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks137[] = {
@@ -1391,7 +1393,7 @@ static const rct_preview_track TrackBlocks137[] = {
 	{ 2, -32, -32, 0, 0, 8, 0 },
 	{ 3, -64, 0, 0, 0, 2, 1 },
 	{ 4, -64, -32, 0, 0, 1, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks138[] = {
@@ -1400,7 +1402,7 @@ static const rct_preview_track TrackBlocks138[] = {
 	{ 2, -32, 32, 0, 0, 4, 0 },
 	{ 3, -64, 0, 0, 0, 1, 1 },
 	{ 4, -64, 32, 0, 0, 2, 0 },
-	{ 255, 0, 0, 0, 0, 0, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks139[] = {
@@ -1409,7 +1411,7 @@ static const rct_preview_track TrackBlocks139[] = {
 	{ 2, 0, 32, 0, 0, 4, 1 },
 	{ 3, -32, 32, 0, 0, 15, 0 },
 	{ 4, -64, 32, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks140[] = {
@@ -1418,7 +1420,7 @@ static const rct_preview_track TrackBlocks140[] = {
 	{ 2, -32, 0, 0, 0, 1, 1 },
 	{ 3, -32, 32, 0, 0, 15, 0 },
 	{ 4, -32, 64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks141[] = {
@@ -1426,7 +1428,7 @@ static const rct_preview_track TrackBlocks141[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 1 },
 	{ 3, -32, 32, 0, 0, 2, 0 },
-	{ 255, 0, 0, 0, 0, 16, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks142[] = {
@@ -1434,7 +1436,7 @@ static const rct_preview_track TrackBlocks142[] = {
 	{ 1, 0, 32, 0, 16, 4, 1 },
 	{ 2, -32, 0, 0, 16, 1, 1 },
 	{ 3, -32, 32, 0, 16, 2, 0 },
-	{ 255, 0, 0, 0, 0, 64, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks143[] = {
@@ -1442,7 +1444,7 @@ static const rct_preview_track TrackBlocks143[] = {
 	{ 1, 0, 32, 0, 64, 4, 1 },
 	{ 2, -32, 0, 0, 64, 1, 1 },
 	{ 3, -32, 32, 0, 64, 2, 0 },
-	{ 255, 0, 0, 0, 0, 8, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks144[] = {
@@ -1450,7 +1452,7 @@ static const rct_preview_track TrackBlocks144[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 32, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks145[] = {
@@ -1458,7 +1460,7 @@ static const rct_preview_track TrackBlocks145[] = {
 	{ 1, 0, 32, 0, 32, 4, 1 },
 	{ 2, -32, 0, 0, 32, 1, 1 },
 	{ 3, -32, 32, 0, 32, 2, 0 },
-	{ 255, 0, 0, 0, 0, 32, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks146[] = {
@@ -1466,7 +1468,7 @@ static const rct_preview_track TrackBlocks146[] = {
 	{ 1, 0, 32, 0, 32, 4, 1 },
 	{ 2, -32, 0, 0, 32, 1, 1 },
 	{ 3, -32, 32, 0, 32, 2, 0 },
-	{ 255, 0, 0, 0, 0, 8, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks147[] = {
@@ -1474,7 +1476,7 @@ static const rct_preview_track TrackBlocks147[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 16, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks148[] = {
@@ -1482,7 +1484,7 @@ static const rct_preview_track TrackBlocks148[] = {
 	{ 1, 0, 32, 0, 16, 4, 1 },
 	{ 2, -32, 0, 0, 16, 1, 1 },
 	{ 3, -32, 32, 0, 16, 2, 0 },
-	{ 255, 0, 0, 0, 0, 64, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks149[] = {
@@ -1490,7 +1492,7 @@ static const rct_preview_track TrackBlocks149[] = {
 	{ 1, 0, 32, 0, 64, 4, 1 },
 	{ 2, -32, 0, 0, 64, 1, 1 },
 	{ 3, -32, 32, 0, 64, 2, 0 },
-	{ 255, 0, 0, 0, 0, 8, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks150[] = {
@@ -1498,7 +1500,7 @@ static const rct_preview_track TrackBlocks150[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 32, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks151[] = {
@@ -1506,7 +1508,7 @@ static const rct_preview_track TrackBlocks151[] = {
 	{ 1, 0, 32, 0, 32, 4, 1 },
 	{ 2, -32, 0, 0, 32, 1, 1 },
 	{ 3, -32, 32, 0, 32, 2, 0 },
-	{ 255, 0, 0, 0, 0, 32, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks152[] = {
@@ -1514,7 +1516,7 @@ static const rct_preview_track TrackBlocks152[] = {
 	{ 1, 0, 32, 0, 32, 4, 1 },
 	{ 2, -32, 0, 0, 32, 1, 1 },
 	{ 3, -32, 32, 0, 32, 2, 0 },
-	{ 255, 0, 0, 0, 0, 8, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks153[] = {
@@ -1522,7 +1524,7 @@ static const rct_preview_track TrackBlocks153[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 24, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks154[] = {
@@ -1530,7 +1532,7 @@ static const rct_preview_track TrackBlocks154[] = {
 	{ 1, 0, 32, 0, 24, 4, 1 },
 	{ 2, -32, 0, 0, 24, 1, 1 },
 	{ 3, -32, 32, 0, 24, 2, 0 },
-	{ 255, 0, 0, 0, 0, 24, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks155[] = {
@@ -1538,7 +1540,7 @@ static const rct_preview_track TrackBlocks155[] = {
 	{ 1, 0, 32, 0, 24, 4, 1 },
 	{ 2, -32, 0, 0, 24, 1, 1 },
 	{ 3, -32, 32, 0, 24, 2, 0 },
-	{ 255, 0, 0, 0, 0, 24, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks156[] = {
@@ -1546,7 +1548,7 @@ static const rct_preview_track TrackBlocks156[] = {
 	{ 1, 0, 32, 0, 24, 4, 1 },
 	{ 2, -32, 0, 0, 24, 1, 1 },
 	{ 3, -32, 32, 0, 24, 2, 0 },
-	{ 255, 0, 0, 0, 0, 24, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks157[] = {
@@ -1554,7 +1556,7 @@ static const rct_preview_track TrackBlocks157[] = {
 	{ 1, 0, 32, 0, 24, 4, 1 },
 	{ 2, -32, 0, 0, 24, 1, 1 },
 	{ 3, -32, 32, 0, 24, 2, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks158[] = {
@@ -1562,7 +1564,7 @@ static const rct_preview_track TrackBlocks158[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 1 },
 	{ 3, -32, 32, 0, 0, 2, 0 },
-	{ 255, 0, 0, 0, 0, 16, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks159[] = {
@@ -1570,7 +1572,7 @@ static const rct_preview_track TrackBlocks159[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 1 },
 	{ 3, -32, 32, 0, 0, 2, 0 },
-	{ 255, 0, 0, 0, 0, 16, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks160[] = {
@@ -1578,7 +1580,7 @@ static const rct_preview_track TrackBlocks160[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 1 },
 	{ 3, -32, 32, 0, 0, 2, 0 },
-	{ 255, 0, 0, 0, 0, 0, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks161[] = {
@@ -1586,7 +1588,7 @@ static const rct_preview_track TrackBlocks161[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 1 },
 	{ 3, -32, 32, 0, 0, 2, 0 },
-	{ 255, 0, 0, 0, 0, 0, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks162[] = {
@@ -1594,7 +1596,7 @@ static const rct_preview_track TrackBlocks162[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 32, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks163[] = {
@@ -1602,7 +1604,7 @@ static const rct_preview_track TrackBlocks163[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 32, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks164[] = {
@@ -1610,7 +1612,7 @@ static const rct_preview_track TrackBlocks164[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 16, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks165[] = {
@@ -1618,7 +1620,7 @@ static const rct_preview_track TrackBlocks165[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 16, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks166[] = {
@@ -1626,7 +1628,7 @@ static const rct_preview_track TrackBlocks166[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 32, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks167[] = {
@@ -1634,7 +1636,7 @@ static const rct_preview_track TrackBlocks167[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 32, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks168[] = {
@@ -1642,7 +1644,7 @@ static const rct_preview_track TrackBlocks168[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 24, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks169[] = {
@@ -1650,7 +1652,7 @@ static const rct_preview_track TrackBlocks169[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 24, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks170[] = {
@@ -1658,7 +1660,7 @@ static const rct_preview_track TrackBlocks170[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 1 },
 	{ 3, -32, 32, 0, 0, 2, 0 },
-	{ 255, 0, 0, 0, 0, 0, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks171[] = {
@@ -1666,45 +1668,45 @@ static const rct_preview_track TrackBlocks171[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 1 },
 	{ 3, -32, 32, 0, 0, 2, 0 },
-	{ 255, 0, 0, 0, 0, 0, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks172[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks173[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks174[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, 0, 16, 15, 0 },
 	{ 2, -64, 0, 0, 16, 15, 0 },
-	{ 255, 0, 0, -8192, 255, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks175[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, 0, 16, 15, 0 },
 	{ 2, -64, 0, 0, 16, 15, 0 },
-	{ 255, 0, 0, -8192, 255, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks176[] = {
 	{ 0, 0, 0, -32, 16, 15, 0 },
 	{ 1, -32, 0, -32, 16, 15, 0 },
 	{ 2, -64, 0, -32, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 71 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks177[] = {
 	{ 0, 0, 0, -32, 16, 15, 0 },
 	{ 1, -32, 0, -32, 16, 15, 0 },
 	{ 2, -64, 0, -32, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 71 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks178[] = {
@@ -1712,7 +1714,7 @@ static const rct_preview_track TrackBlocks178[] = {
 	{ 1, 0, -32, 0, 16, 8, 1 },
 	{ 2, -32, 0, 0, 16, 2, 0 },
 	{ 3, -32, -32, 16, 16, 103, 0 },
-	{ 255, 0, 0, 0, 0, 16, 139 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks179[] = {
@@ -1720,7 +1722,7 @@ static const rct_preview_track TrackBlocks179[] = {
 	{ 1, 0, 32, 0, 16, 4, 1 },
 	{ 2, -32, 0, 0, 16, 1, 0 },
 	{ 3, -32, 32, 16, 16, 155, 0 },
-	{ 255, 0, 0, 4096, 0, 16, 55 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks180[] = {
@@ -1728,7 +1730,7 @@ static const rct_preview_track TrackBlocks180[] = {
 	{ 1, 0, -32, 0, 16, 8, 1 },
 	{ 2, -32, 0, 0, 16, 2, 0 },
 	{ 3, -32, -32, 0, 0, 23, 0 },
-	{ 255, 0, 0, 4096, 0, 16, 59 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks181[] = {
@@ -1736,12 +1738,12 @@ static const rct_preview_track TrackBlocks181[] = {
 	{ 1, 0, 32, 0, 16, 4, 1 },
 	{ 2, -32, 0, 0, 16, 1, 0 },
 	{ 3, -32, 32, 0, 0, 43, 0 },
-	{ 255, 0, 0, 0, 0, 24, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks182[] = {
 	{ 0, 0, 0, 0, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 64, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks183[] = {
@@ -1752,7 +1754,7 @@ static const rct_preview_track TrackBlocks183[] = {
 	{ 4, -128, -32, 120, 96, 15, 0 },
 	{ 5, -96, -32, 64, 192, 15, 0 },
 	{ 6, -64, -32, 248, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 24, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks184[] = {
@@ -1763,7 +1765,7 @@ static const rct_preview_track TrackBlocks184[] = {
 	{ 4, -128, 32, 120, 96, 15, 0 },
 	{ 5, -96, 32, 64, 192, 15, 0 },
 	{ 6, -64, 32, 248, 16, 15, 0 },
-	{ 255, 0, 0, -8192, 255, 24, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks185[] = {
@@ -1774,7 +1776,7 @@ static const rct_preview_track TrackBlocks185[] = {
 	{ 4, 0, -32, -248, 56, 15, 0 },
 	{ 5, 32, -32, -264, 40, 207, 0 },
 	{ 6, 64, -32, -280, 24, 207, 0 },
-	{ 255, 0, 0, -8192, 255, 24, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks186[] = {
@@ -1785,35 +1787,35 @@ static const rct_preview_track TrackBlocks186[] = {
 	{ 4, 0, 32, -248, 56, 15, 0 },
 	{ 5, 32, 32, -264, 40, 207, 0 },
 	{ 6, 64, 32, -280, 24, 207, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks187[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, -16, 16, 15, 0 },
 	{ 2, -64, 0, -16, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks188[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, -16, 16, 15, 0 },
 	{ 2, -64, 0, -16, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks189[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
 	{ 1, -32, 0, 0, 16, 15, 0 },
 	{ 2, -64, 0, 16, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks190[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
 	{ 1, -32, 0, 0, 16, 15, 0 },
 	{ 2, -64, 0, 16, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks191[] = {
@@ -1821,7 +1823,7 @@ static const rct_preview_track TrackBlocks191[] = {
 	{ 1, -32, 0, 16, 16, 207, 0 },
 	{ 2, -64, 0, 32, 96, 3, 0 },
 	{ 3, -32, 0, 120, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 32, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks192[] = {
@@ -1829,35 +1831,35 @@ static const rct_preview_track TrackBlocks192[] = {
 	{ 1, -32, 0, -88, 96, 3, 0 },
 	{ 2, 0, 0, -104, 16, 207, 0 },
 	{ 3, 32, 0, -120, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks193[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
 	{ 1, -32, 0, 24, 32, 7, 0 },
 	{ 2, -32, -32, 48, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks194[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
 	{ 1, -32, 0, 24, 32, 11, 0 },
 	{ 2, -32, 32, 48, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks195[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
 	{ 1, -32, 0, -24, 32, 7, 0 },
 	{ 2, -32, -32, -48, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks196[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
 	{ 1, -32, 0, -24, 32, 11, 0 },
 	{ 2, -32, 32, -48, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks197[] = {
@@ -1865,7 +1867,7 @@ static const rct_preview_track TrackBlocks197[] = {
 	{ 1, -32, 0, 0, 32, 15, 0 },
 	{ 2, -64, 0, 16, 0, 15, 0 },
 	{ 3, 0, 0, 32, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks198[] = {
@@ -1873,7 +1875,7 @@ static const rct_preview_track TrackBlocks198[] = {
 	{ 1, -32, 0, -32, 32, 15, 0 },
 	{ 2, -64, 0, -16, 0, 15, 0 },
 	{ 3, 0, 0, -32, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks199[] = {
@@ -1883,7 +1885,7 @@ static const rct_preview_track TrackBlocks199[] = {
 	{ 3, -96, 0, 0, 0, 15, 0 },
 	{ 4, -128, 0, 0, 0, 15, 0 },
 	{ 5, -160, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks200[] = {
@@ -1893,39 +1895,39 @@ static const rct_preview_track TrackBlocks200[] = {
 	{ 3, -96, 0, 0, 0, 15, 0 },
 	{ 4, -128, 0, 0, 0, 15, 0 },
 	{ 5, -160, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks201[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks202[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks203[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks204[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, 0, 0, 15, 0 },
 	{ 2, -32, 32, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks205[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, 0, 0, 15, 0 },
 	{ 2, -32, -32, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks206[] = {
@@ -1933,14 +1935,14 @@ static const rct_preview_track TrackBlocks206[] = {
 	{ 1, -32, 0, -40, 32, 15, 4 },
 	{ 2, -64, 0, -96, 56, 15, 4 },
 	{ 3, -96, 0, -96, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 0, 0 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks207[] = {
 	{ 0, 0, 0, 0, 56, 15, 4 },
 	{ 1, 32, 0, 56, 32, 15, 4 },
 	{ 2, 64, 0, 96, 16, 15, 4 },
-	{ 255, 0, 0, -8192, 255, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks208[] = {
@@ -1948,7 +1950,7 @@ static const rct_preview_track TrackBlocks208[] = {
 	{ 1, -32, 0, -72, 32, 15, 4 },
 	{ 2, -64, 0, -128, 56, 15, 4 },
 	{ 3, -96, 0, -128, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 56, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks209[] = {
@@ -1956,7 +1958,7 @@ static const rct_preview_track TrackBlocks209[] = {
 	{ 1, 0, -32, 0, 0, 8, 1 },
 	{ 2, -32, 0, 0, 8, 2, 0 },
 	{ 3, -32, -32, 0, 8, 7, 0 },
-	{ 255, 0, 0, 0, 0, 0, 11 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks210[] = {
@@ -1964,7 +1966,7 @@ static const rct_preview_track TrackBlocks210[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 0 },
 	{ 3, -32, 32, 0, 8, 11, 0 },
-	{ 255, 0, 0, 0, 0, 56, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks211[] = {
@@ -1974,7 +1976,7 @@ static const rct_preview_track TrackBlocks211[] = {
 	{ 3, -64, -32, 0, 0, 15, 0 },
 	{ 4, -32, 0, 0, 0, 15, 0 },
 	{ 5, -64, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks212[] = {
@@ -1984,7 +1986,7 @@ static const rct_preview_track TrackBlocks212[] = {
 	{ 3, -64, 32, 0, 0, 15, 0 },
 	{ 4, -32, 0, 0, 0, 15, 0 },
 	{ 5, -64, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 32, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks213[] = {
@@ -1992,13 +1994,13 @@ static const rct_preview_track TrackBlocks213[] = {
 	{ 1, 32, 0, 0, 32, 15, 0 },
 	{ 2, -64, 0, 0, 32, 15, 0 },
 	{ 3, -32, 0, 0, 32, 15, 0 },
-	{ 255, 0, 0, 0, 0, 48, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks214[] = {
 	{ 0, 0, 0, 0, 48, 15, 0 },
 	{ 1, 32, 0, 0, 48, 15, 0 },
-	{ 255, 0, 0, 0, 0, 208, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks215[] = {
@@ -2009,12 +2011,12 @@ static const rct_preview_track TrackBlocks215[] = {
 	{ 4, -96, 0, 0, 48, 15, 0 },
 	{ 5, -128, 0, 0, 32, 15, 0 },
 	{ 6, -160, 0, 0, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 72, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks216[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks217[] = {
@@ -2022,7 +2024,7 @@ static const rct_preview_track TrackBlocks217[] = {
 	{ 1, 0, -32, 16, 0, 8, 1 },
 	{ 2, -32, 0, 16, 0, 2, 0 },
 	{ 3, -32, -32, 16, 16, 103, 0 },
-	{ 255, 0, 0, 0, 0, 16, 139 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks218[] = {
@@ -2030,7 +2032,7 @@ static const rct_preview_track TrackBlocks218[] = {
 	{ 1, 0, 32, 16, 0, 4, 1 },
 	{ 2, -32, 0, 16, 0, 1, 0 },
 	{ 3, -32, 32, 16, 16, 155, 0 },
-	{ 255, 0, 0, 4096, 0, 16, 55 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks219[] = {
@@ -2038,7 +2040,7 @@ static const rct_preview_track TrackBlocks219[] = {
 	{ 1, 0, -32, 16, 0, 8, 1 },
 	{ 2, -32, 0, 16, 0, 2, 0 },
 	{ 3, -32, -32, 0, 16, 23, 0 },
-	{ 255, 0, 0, 4096, 0, 16, 59 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks220[] = {
@@ -2046,7 +2048,7 @@ static const rct_preview_track TrackBlocks220[] = {
 	{ 1, 0, 32, 16, 0, 4, 1 },
 	{ 2, -32, 0, 16, 0, 1, 0 },
 	{ 3, -32, 32, 0, 16, 43, 0 },
-	{ 255, 0, 0, 0, 0, 0, 7 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks221[] = {
@@ -2057,7 +2059,7 @@ static const rct_preview_track TrackBlocks221[] = {
 	{ 4, -32, -64, 48, 0, 8, 1 },
 	{ 5, -64, -32, 32, 16, 71, 0 },
 	{ 6, -64, -64, 48, 16, 111, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks222[] = {
@@ -2068,7 +2070,7 @@ static const rct_preview_track TrackBlocks222[] = {
 	{ 4, -32, 64, 48, 0, 4, 1 },
 	{ 5, -64, 32, 32, 16, 139, 0 },
 	{ 6, -64, 64, 48, 16, 159, 0 },
-	{ 255, 0, 0, 12288, 0, 16, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks223[] = {
@@ -2079,7 +2081,7 @@ static const rct_preview_track TrackBlocks223[] = {
 	{ 4, -32, -64, 16, 0, 8, 1 },
 	{ 5, -64, -32, 16, 16, 23, 0 },
 	{ 6, -64, -64, 0, 16, 159, 0 },
-	{ 255, 0, 0, 12288, 0, 16, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks224[] = {
@@ -2090,158 +2092,158 @@ static const rct_preview_track TrackBlocks224[] = {
 	{ 4, -32, 64, 16, 0, 4, 1 },
 	{ 5, -64, 32, 16, 16, 43, 0 },
 	{ 6, -64, 64, 0, 16, 111, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks225[] = {
 	{ 0, 0, 0, 0, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 64, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks226[] = {
 	{ 0, 0, 0, 0, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 64, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks227[] = {
 	{ 0, 0, 0, 0, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 64, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks228[] = {
 	{ 0, 0, 0, 0, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 64, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks229[] = {
 	{ 0, 0, 0, 0, 16, 63, 0 },
-	{ 255, 0, 0, 0, 0, 64, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks230[] = {
 	{ 0, 0, 0, 0, 16, 63, 0 },
-	{ 255, 0, 0, 0, 0, 64, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks231[] = {
 	{ 0, 0, 0, 0, 16, 63, 0 },
-	{ 255, 0, 0, 0, 0, 64, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks232[] = {
 	{ 0, 0, 0, 0, 16, 63, 0 },
-	{ 255, 0, 0, 0, 0, 64, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks233[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks234[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks235[] = {
 	{ 0, 0, 0, 0, 8, 207, 0 },
-	{ 255, 0, 0, 0, 0, 8, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks236[] = {
 	{ 0, 0, 0, 0, 8, 207, 0 },
-	{ 255, 0, 0, 0, 0, 8, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks237[] = {
 	{ 0, 0, 0, 0, 8, 63, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks238[] = {
 	{ 0, 0, 0, 0, 8, 63, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks239[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks240[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks241[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks242[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks243[] = {
 	{ 0, 0, 0, 0, 8, 207, 0 },
-	{ 255, 0, 0, 0, 0, 8, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks244[] = {
 	{ 0, 0, 0, 0, 8, 207, 0 },
-	{ 255, 0, 0, 0, 0, 8, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks245[] = {
 	{ 0, 0, 0, 0, 8, 63, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks246[] = {
 	{ 0, 0, 0, 0, 8, 63, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks247[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks248[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks249[] = {
 	{ 0, 0, 0, 0, 72, 15, 4 },
 	{ 1, 0, 32, 0, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 72, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks250[] = {
 	{ 0, 0, 0, 0, 72, 15, 4 },
 	{ 1, 0, -32, 0, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 72, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks251[] = {
 	{ 0, 0, 0, 0, 72, 15, 4 },
 	{ 1, 0, 32, 0, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 72, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks252[] = {
 	{ 0, 0, 0, 0, 72, 15, 4 },
 	{ 1, 0, -32, 0, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 8, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks253[] = {
 	{ 0, 0, 0, 0, 56, 15, 4 },
 	{ 1, 32, 0, 56, 32, 15, 4 },
 	{ 2, 64, 0, 96, 16, 15, 4 },
-	{ 255, 0, 0, -8192, 255, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks254[] = {
@@ -2249,14 +2251,14 @@ static const rct_preview_track TrackBlocks254[] = {
 	{ 1, -32, 0, -72, 32, 15, 4 },
 	{ 2, -64, 0, -128, 56, 15, 4 },
 	{ 3, -96, 0, -128, 0, 0, 5 },
-	{ 255, 0, 0, 8192, 0, 56, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track TrackBlocks255[] = {
 	{ 0, 0, 0, 32, 56, 15, 4 },
 	{ 1, 32, 0, 88, 32, 15, 4 },
 	{ 2, 64, 0, 128, 16, 15, 4 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 // rct2: 0x00994638
@@ -2521,82 +2523,82 @@ const rct_preview_track *TrackBlocks[256] = {
 
 static const rct_preview_track FlatRideTrackBlocks000[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks001[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks002[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks003[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks004[] = {
 	{ 0, 0, 0, 0, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 64, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks005[] = {
 	{ 0, 0, 0, 0, 64, 207, 0 },
-	{ 255, 0, 0, 0, 0, 16, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks006[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks007[] = {
 	{ 0, 0, 0, 0, 32, 207, 0 },
-	{ 255, 0, 0, 0, 0, 32, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks008[] = {
 	{ 0, 0, 0, 0, 32, 207, 0 },
-	{ 255, 0, 0, 0, 0, 32, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks009[] = {
 	{ 0, 0, 0, 0, 8, 207, 0 },
-	{ 255, 0, 0, 0, 0, 8, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks010[] = {
 	{ 0, 0, 0, 0, 16, 63, 0 },
-	{ 255, 0, 0, 0, 0, 64, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks011[] = {
 	{ 0, 0, 0, 0, 64, 63, 0 },
-	{ 255, 0, 0, 0, 0, 8, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks012[] = {
 	{ 0, 0, 0, 0, 8, 63, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks013[] = {
 	{ 0, 0, 0, 0, 32, 63, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks014[] = {
 	{ 0, 0, 0, 0, 32, 63, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks015[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks016[] = {
@@ -2607,7 +2609,7 @@ static const rct_preview_track FlatRideTrackBlocks016[] = {
 	{ 4, -32, -64, 0, 0, 8, 1 },
 	{ 5, -64, -32, 0, 0, 7, 0 },
 	{ 6, -64, -64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks017[] = {
@@ -2618,27 +2620,27 @@ static const rct_preview_track FlatRideTrackBlocks017[] = {
 	{ 4, -32, 64, 0, 0, 4, 1 },
 	{ 5, -64, 32, 0, 0, 11, 0 },
 	{ 6, -64, 64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks018[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks019[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks020[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks021[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks022[] = {
@@ -2649,7 +2651,7 @@ static const rct_preview_track FlatRideTrackBlocks022[] = {
 	{ 4, -32, -64, 0, 0, 8, 1 },
 	{ 5, -64, -32, 0, 0, 7, 0 },
 	{ 6, -64, -64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks023[] = {
@@ -2660,57 +2662,57 @@ static const rct_preview_track FlatRideTrackBlocks023[] = {
 	{ 4, -32, 64, 0, 0, 4, 1 },
 	{ 5, -64, 32, 0, 0, 11, 0 },
 	{ 6, -64, 64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks024[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks025[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks026[] = {
 	{ 0, 0, 0, 0, 8, 207, 0 },
-	{ 255, 0, 0, 0, 0, 8, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks027[] = {
 	{ 0, 0, 0, 0, 8, 207, 0 },
-	{ 255, 0, 0, 0, 0, 8, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks028[] = {
 	{ 0, 0, 0, 0, 8, 63, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks029[] = {
 	{ 0, 0, 0, 0, 8, 63, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks030[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks031[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks032[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks033[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks034[] = {
@@ -2721,7 +2723,7 @@ static const rct_preview_track FlatRideTrackBlocks034[] = {
 	{ 4, -32, -64, 48, 0, 8, 1 },
 	{ 5, -64, -32, 32, 16, 71, 0 },
 	{ 6, -64, -64, 48, 16, 111, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks035[] = {
@@ -2732,7 +2734,7 @@ static const rct_preview_track FlatRideTrackBlocks035[] = {
 	{ 4, -32, 64, 48, 0, 4, 1 },
 	{ 5, -64, 32, 32, 16, 139, 0 },
 	{ 6, -64, 64, 48, 16, 159, 0 },
-	{ 255, 0, 0, 12288, 0, 16, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks036[] = {
@@ -2743,7 +2745,7 @@ static const rct_preview_track FlatRideTrackBlocks036[] = {
 	{ 4, -32, -64, 16, 0, 8, 1 },
 	{ 5, -64, -32, 16, 16, 23, 0 },
 	{ 6, -64, -64, 0, 16, 159, 0 },
-	{ 255, 0, 0, 12288, 0, 16, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks037[] = {
@@ -2754,7 +2756,7 @@ static const rct_preview_track FlatRideTrackBlocks037[] = {
 	{ 4, -32, 64, 16, 0, 4, 1 },
 	{ 5, -64, 32, 16, 16, 43, 0 },
 	{ 6, -64, 64, 0, 16, 111, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks038[] = {
@@ -2762,7 +2764,7 @@ static const rct_preview_track FlatRideTrackBlocks038[] = {
 	{ 1, -32, 0, 0, 0, 7, 0 },
 	{ 2, -32, -32, 0, 0, 13, 0 },
 	{ 3, -64, -32, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks039[] = {
@@ -2770,7 +2772,7 @@ static const rct_preview_track FlatRideTrackBlocks039[] = {
 	{ 1, -32, 0, 0, 0, 11, 0 },
 	{ 2, -32, 32, 0, 0, 14, 0 },
 	{ 3, -64, 32, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks040[] = {
@@ -2784,7 +2786,7 @@ static const rct_preview_track FlatRideTrackBlocks040[] = {
 	{ 7, 32, -32, 32, 96, 8, 0 },
 	{ 8, 0, -32, 16, 16, 63, 0 },
 	{ 9, -32, -32, 0, 16, 63, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks041[] = {
@@ -2798,7 +2800,7 @@ static const rct_preview_track FlatRideTrackBlocks041[] = {
 	{ 7, 32, 32, 32, 96, 4, 0 },
 	{ 8, 0, 32, 16, 16, 63, 0 },
 	{ 9, -32, 32, 0, 16, 63, 0 },
-	{ 255, 0, 0, 0, 0, 0, 7 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks042[] = {
@@ -2806,7 +2808,7 @@ static const rct_preview_track FlatRideTrackBlocks042[] = {
 	{ 1, 0, -32, 0, 0, 8, 1 },
 	{ 2, -32, 0, 0, 0, 2, 0 },
 	{ 3, -32, -32, 0, 0, 7, 0 },
-	{ 255, 0, 0, 0, 0, 0, 11 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks043[] = {
@@ -2814,7 +2816,7 @@ static const rct_preview_track FlatRideTrackBlocks043[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 0 },
 	{ 3, -32, 32, 0, 0, 11, 0 },
-	{ 255, 0, 0, 0, 0, 16, 71 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks044[] = {
@@ -2822,7 +2824,7 @@ static const rct_preview_track FlatRideTrackBlocks044[] = {
 	{ 1, 0, -32, 0, 0, 8, 1 },
 	{ 2, -32, 0, 0, 0, 2, 0 },
 	{ 3, -32, -32, 0, 0, 7, 0 },
-	{ 255, 0, 0, 0, 0, 0, 11 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks045[] = {
@@ -2830,7 +2832,7 @@ static const rct_preview_track FlatRideTrackBlocks045[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 0 },
 	{ 3, -32, 32, 0, 0, 11, 0 },
-	{ 255, 0, 0, 0, 0, 16, 71 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks046[] = {
@@ -2838,7 +2840,7 @@ static const rct_preview_track FlatRideTrackBlocks046[] = {
 	{ 1, 0, -32, 16, 0, 8, 1 },
 	{ 2, -32, 0, 16, 0, 2, 0 },
 	{ 3, -32, -32, 16, 16, 103, 0 },
-	{ 255, 0, 0, 0, 0, 16, 139 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks047[] = {
@@ -2846,7 +2848,7 @@ static const rct_preview_track FlatRideTrackBlocks047[] = {
 	{ 1, 0, 32, 16, 0, 4, 1 },
 	{ 2, -32, 0, 16, 0, 1, 0 },
 	{ 3, -32, 32, 16, 16, 155, 0 },
-	{ 255, 0, 0, 4096, 0, 16, 55 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks048[] = {
@@ -2854,7 +2856,7 @@ static const rct_preview_track FlatRideTrackBlocks048[] = {
 	{ 1, 0, -32, 16, 0, 8, 1 },
 	{ 2, -32, 0, 16, 0, 2, 0 },
 	{ 3, -32, -32, 0, 16, 23, 0 },
-	{ 255, 0, 0, 4096, 0, 16, 59 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks049[] = {
@@ -2862,45 +2864,45 @@ static const rct_preview_track FlatRideTrackBlocks049[] = {
 	{ 1, 0, 32, 16, 0, 4, 1 },
 	{ 2, -32, 0, 16, 0, 1, 0 },
 	{ 3, -32, 32, 0, 16, 43, 0 },
-	{ 255, 0, 0, 0, 0, 0, 7 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks050[] = {
 	{ 0, 0, 0, 0, 0, 7, 0 },
-	{ 255, 0, 0, 0, 0, 0, 11 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks051[] = {
 	{ 0, 0, 0, 0, 0, 11, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks052[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, 0, 16, 15, 0 },
 	{ 2, -64, 0, 16, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks053[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, 0, 16, 15, 0 },
 	{ 2, -64, 0, 16, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks054[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, -16, 16, 15, 0 },
 	{ 2, -64, 0, -16, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks055[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, -16, 16, 15, 0 },
 	{ 2, -64, 0, -16, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks056[] = {
@@ -2908,7 +2910,7 @@ static const rct_preview_track FlatRideTrackBlocks056[] = {
 	{ 1, -32, 0, 16, 16, 207, 0 },
 	{ 2, -64, 0, 32, 96, 3, 0 },
 	{ 3, -32, 0, 120, 16, 15, 0 },
-	{ 255, 0, 0, -8192, 255, 32, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks057[] = {
@@ -2916,55 +2918,55 @@ static const rct_preview_track FlatRideTrackBlocks057[] = {
 	{ 1, -32, 0, -120, 96, 3, 0 },
 	{ 2, 0, 0, -136, 16, 207, 0 },
 	{ 3, 32, 0, -152, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks058[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
 	{ 1, -32, 0, 24, 32, 7, 0 },
 	{ 2, -32, -32, 48, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks059[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
 	{ 1, -32, 0, 24, 32, 11, 0 },
 	{ 2, -32, 32, 48, 16, 15, 0 },
-	{ 255, 0, 0, -8192, 255, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks060[] = {
 	{ 0, 0, 0, -32, 16, 15, 0 },
 	{ 1, -32, 0, -56, 32, 7, 0 },
 	{ 2, -32, -32, -80, 16, 15, 0 },
-	{ 255, 0, 0, -8192, 255, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks061[] = {
 	{ 0, 0, 0, -32, 16, 15, 0 },
 	{ 1, -32, 0, -56, 32, 11, 0 },
 	{ 2, -32, 32, -80, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 24, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks062[] = {
 	{ 0, 0, 0, 0, 24, 15, 0 },
-	{ 255, 0, 0, 0, 0, 24, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks063[] = {
 	{ 0, 0, 0, 0, 24, 207, 0 },
-	{ 255, 0, 0, 0, 0, 24, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks064[] = {
 	{ 0, 0, 0, 0, 24, 63, 0 },
-	{ 255, 0, 0, 0, 0, 24, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks065[] = {
 	{ 0, 0, 0, 0, 24, 15, 0 },
-	{ 255, 0, 0, 0, 0, 64, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks066[] = {
@@ -2977,78 +2979,78 @@ static const rct_preview_track FlatRideTrackBlocks066[] = {
 	{ 6, 32, -32, 0, 0, 15, 0 },
 	{ 7, 32, 32, 0, 0, 15, 0 },
 	{ 8, 32, 0, 0, 0, 15, 2 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks067[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, 32, 0, 0, 0, 0, 3 },
-	{ 255, 0, 0, 0, 0, 0, 7 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks068[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks069[] = {
 	{ 0, 0, 0, 0, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 64, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks070[] = {
 	{ 0, 0, 0, 0, 64, 207, 0 },
-	{ 255, 0, 0, 0, 0, 16, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks071[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks072[] = {
 	{ 0, 0, 0, 0, 32, 207, 0 },
-	{ 255, 0, 0, 0, 0, 32, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks073[] = {
 	{ 0, 0, 0, 0, 32, 207, 0 },
-	{ 255, 0, 0, 0, 0, 32, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks074[] = {
 	{ 0, 0, 0, 0, 8, 207, 0 },
-	{ 255, 0, 0, 0, 0, 8, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks075[] = {
 	{ 0, 0, 0, 0, 16, 63, 0 },
-	{ 255, 0, 0, 0, 0, 64, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks076[] = {
 	{ 0, 0, 0, 0, 64, 63, 0 },
-	{ 255, 0, 0, 0, 0, 8, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks077[] = {
 	{ 0, 0, 0, 0, 8, 63, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks078[] = {
 	{ 0, 0, 0, 0, 32, 63, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks079[] = {
 	{ 0, 0, 0, 0, 32, 63, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks080[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks081[] = {
@@ -3059,7 +3061,7 @@ static const rct_preview_track FlatRideTrackBlocks081[] = {
 	{ 4, -32, -64, 0, 0, 8, 1 },
 	{ 5, -64, -32, 0, 0, 7, 0 },
 	{ 6, -64, -64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks082[] = {
@@ -3070,7 +3072,7 @@ static const rct_preview_track FlatRideTrackBlocks082[] = {
 	{ 4, -32, 64, 0, 0, 4, 1 },
 	{ 5, -64, 32, 0, 0, 11, 0 },
 	{ 6, -64, 64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks083[] = {
@@ -3078,7 +3080,7 @@ static const rct_preview_track FlatRideTrackBlocks083[] = {
 	{ 1, -32, 0, 0, 0, 7, 0 },
 	{ 2, -32, -32, 0, 0, 13, 0 },
 	{ 3, -64, -32, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks084[] = {
@@ -3086,7 +3088,7 @@ static const rct_preview_track FlatRideTrackBlocks084[] = {
 	{ 1, -32, 0, 0, 0, 11, 0 },
 	{ 2, -32, 32, 0, 0, 14, 0 },
 	{ 3, -64, 32, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks085[] = {
@@ -3094,7 +3096,7 @@ static const rct_preview_track FlatRideTrackBlocks085[] = {
 	{ 1, 0, -32, 0, 0, 8, 1 },
 	{ 2, -32, 0, 0, 0, 2, 0 },
 	{ 3, -32, -32, 0, 0, 7, 0 },
-	{ 255, 0, 0, 0, 0, 0, 11 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks086[] = {
@@ -3102,7 +3104,7 @@ static const rct_preview_track FlatRideTrackBlocks086[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 0 },
 	{ 3, -32, 32, 0, 0, 11, 0 },
-	{ 255, 0, 0, 0, 0, 16, 71 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks087[] = {
@@ -3114,7 +3116,7 @@ static const rct_preview_track FlatRideTrackBlocks087[] = {
 	{ 5, 0, -64, 8, 0, 4, 1 },
 	{ 6, -32, -96, 8, 4, 1, 0 },
 	{ 7, 0, -96, 8, 4, 11, 0 },
-	{ 255, 0, 0, 0, 0, 0, 11 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks088[] = {
@@ -3126,7 +3128,7 @@ static const rct_preview_track FlatRideTrackBlocks088[] = {
 	{ 5, 0, 64, 8, 0, 8, 1 },
 	{ 6, -32, 96, 8, 4, 2, 0 },
 	{ 7, 0, 96, 8, 4, 7, 0 },
-	{ 255, 0, 0, 2048, 0, 4, 7 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks089[] = {
@@ -3138,7 +3140,7 @@ static const rct_preview_track FlatRideTrackBlocks089[] = {
 	{ 5, 0, -64, 0, 4, 4, 1 },
 	{ 6, -32, -96, 0, 0, 1, 0 },
 	{ 7, 0, -96, 0, 0, 11, 0 },
-	{ 255, 0, 0, 2048, 0, 4, 11 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks090[] = {
@@ -3150,7 +3152,7 @@ static const rct_preview_track FlatRideTrackBlocks090[] = {
 	{ 5, 0, 64, 0, 4, 8, 1 },
 	{ 6, -32, 96, 0, 0, 2, 0 },
 	{ 7, 0, 96, 0, 0, 7, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks091[] = {
@@ -3168,7 +3170,7 @@ static const rct_preview_track FlatRideTrackBlocks091[] = {
 	{ 11, 0, -128, 8, 4, 4, 1 },
 	{ 12, -32, -160, 8, 4, 11, 0 },
 	{ 13, 0, -160, 8, 4, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks092[] = {
@@ -3186,7 +3188,7 @@ static const rct_preview_track FlatRideTrackBlocks092[] = {
 	{ 11, 0, 128, 8, 4, 8, 1 },
 	{ 12, -32, 160, 8, 4, 7, 0 },
 	{ 13, 0, 160, 8, 4, 15, 0 },
-	{ 255, 0, 0, 2048, 0, 4, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks093[] = {
@@ -3204,7 +3206,7 @@ static const rct_preview_track FlatRideTrackBlocks093[] = {
 	{ 11, 0, -128, 0, 0, 4, 1 },
 	{ 12, -32, -160, 0, 0, 11, 0 },
 	{ 13, 0, -160, 0, 0, 15, 0 },
-	{ 255, 0, 0, 2048, 0, 4, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks094[] = {
@@ -3222,7 +3224,7 @@ static const rct_preview_track FlatRideTrackBlocks094[] = {
 	{ 11, 0, 128, 0, 0, 8, 1 },
 	{ 12, -32, 160, 0, 0, 7, 0 },
 	{ 13, 0, 160, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 64, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks095[] = {
@@ -3230,37 +3232,37 @@ static const rct_preview_track FlatRideTrackBlocks095[] = {
 	{ 1, -64, 0, 0, 0, 15, 0 },
 	{ 2, -32, 0, 0, 0, 15, 0 },
 	{ 3, 32, 0, 0, 0, 15, 2 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks096[] = {
 	{ 0, 0, 0, 0, 64, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks097[] = {
 	{ 0, 0, 0, 0, 64, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks098[] = {
 	{ 0, 0, 0, 0, 64, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks099[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks100[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks101[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks102[] = {
@@ -3271,7 +3273,7 @@ static const rct_preview_track FlatRideTrackBlocks102[] = {
 	{ 4, -32, -64, 0, 12, 8, 1 },
 	{ 5, -64, -32, 0, 12, 7, 0 },
 	{ 6, -64, -64, 0, 12, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks103[] = {
@@ -3282,7 +3284,7 @@ static const rct_preview_track FlatRideTrackBlocks103[] = {
 	{ 4, -32, 64, 0, 12, 4, 1 },
 	{ 5, -64, 32, 0, 12, 11, 0 },
 	{ 6, -64, 64, 0, 12, 15, 0 },
-	{ 255, 0, 0, 0, 0, 12, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks104[] = {
@@ -3293,7 +3295,7 @@ static const rct_preview_track FlatRideTrackBlocks104[] = {
 	{ 4, -32, -64, 0, 0, 8, 1 },
 	{ 5, -64, -32, 0, 0, 7, 0 },
 	{ 6, -64, -64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 12, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks105[] = {
@@ -3304,7 +3306,7 @@ static const rct_preview_track FlatRideTrackBlocks105[] = {
 	{ 4, -32, 64, 0, 0, 4, 1 },
 	{ 5, -64, 32, 0, 0, 11, 0 },
 	{ 6, -64, 64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks106[] = {
@@ -3315,7 +3317,7 @@ static const rct_preview_track FlatRideTrackBlocks106[] = {
 	{ 4, -32, -64, 0, 12, 8, 1 },
 	{ 5, -64, -32, 0, 12, 7, 0 },
 	{ 6, -64, -64, 0, 12, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks107[] = {
@@ -3326,7 +3328,7 @@ static const rct_preview_track FlatRideTrackBlocks107[] = {
 	{ 4, -32, 64, 0, 12, 4, 1 },
 	{ 5, -64, 32, 0, 12, 11, 0 },
 	{ 6, -64, 64, 0, 12, 15, 0 },
-	{ 255, 0, 0, 0, 0, 12, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks108[] = {
@@ -3337,7 +3339,7 @@ static const rct_preview_track FlatRideTrackBlocks108[] = {
 	{ 4, -32, -64, 0, 0, 8, 1 },
 	{ 5, -64, -32, 0, 0, 7, 0 },
 	{ 6, -64, -64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 12, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks109[] = {
@@ -3348,7 +3350,7 @@ static const rct_preview_track FlatRideTrackBlocks109[] = {
 	{ 4, -32, 64, 0, 0, 4, 1 },
 	{ 5, -64, 32, 0, 0, 11, 0 },
 	{ 6, -64, 64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks110[] = {
@@ -3356,7 +3358,7 @@ static const rct_preview_track FlatRideTrackBlocks110[] = {
 	{ 1, 0, 32, 0, 0, 15, 0 },
 	{ 2, 32, 0, 0, 0, 15, 0 },
 	{ 3, 32, 32, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks111[] = {
@@ -3376,22 +3378,22 @@ static const rct_preview_track FlatRideTrackBlocks111[] = {
 	{ 13, 96, 32, 0, 0, 15, 0 },
 	{ 14, 96, 64, 0, 0, 15, 0 },
 	{ 15, 96, 96, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks112[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks113[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks114[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks115[] = {
@@ -3403,7 +3405,7 @@ static const rct_preview_track FlatRideTrackBlocks115[] = {
 	{ 5, 32, 32, 0, 0, 15, 0 },
 	{ 6, 32, 64, 0, 0, 15, 0 },
 	{ 7, 32, 96, 0, 0, 15, 2 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks116[] = {
@@ -3412,7 +3414,7 @@ static const rct_preview_track FlatRideTrackBlocks116[] = {
 	{ 2, -32, 0, 0, 0, 15, 0 },
 	{ 3, 32, 0, 0, 0, 15, 0 },
 	{ 4, 64, 0, 0, 0, 15, 2 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks117[] = {
@@ -3421,12 +3423,12 @@ static const rct_preview_track FlatRideTrackBlocks117[] = {
 	{ 2, -64, 0, 0, 16, 15, 0 },
 	{ 3, -96, 0, 0, 16, 15, 0 },
 	{ 4, -128, 0, 0, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks118[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks119[] = {
@@ -3434,17 +3436,17 @@ static const rct_preview_track FlatRideTrackBlocks119[] = {
 	{ 1, -64, 0, 0, 0, 15, 0 },
 	{ 2, -32, 0, 0, 0, 15, 0 },
 	{ 3, 32, 0, 0, 0, 15, 2 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks120[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks121[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks122[] = {
@@ -3452,7 +3454,7 @@ static const rct_preview_track FlatRideTrackBlocks122[] = {
 	{ 1, -64, 0, 0, 0, 15, 0 },
 	{ 2, -32, 0, 0, 0, 15, 0 },
 	{ 3, 32, 0, 0, 0, 15, 2 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks123[] = {
@@ -3465,7 +3467,7 @@ static const rct_preview_track FlatRideTrackBlocks123[] = {
 	{ 6, 32, -32, 0, 0, 15, 0 },
 	{ 7, 32, 32, 0, 0, 15, 0 },
 	{ 8, 32, 0, 0, 0, 15, 2 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks124[] = {
@@ -3476,52 +3478,52 @@ static const rct_preview_track FlatRideTrackBlocks124[] = {
 	{ 4, -128, 0, 0, 160, 15, 0 },
 	{ 5, -192, 0, 0, 208, 15, 0 },
 	{ 6, -160, 0, 0, 208, 15, 0 },
-	{ 255, 0, 0, 0, 0, 48, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks125[] = {
 	{ 0, 0, 0, 0, 48, 15, 0 },
 	{ 1, 32, 0, 0, 48, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks126[] = {
 	{ 0, 0, 0, 0, 8, 15, 4 },
 	{ 1, 32, 0, 0, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 8, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks127[] = {
 	{ 0, 0, 0, 0, 8, 15, 4 },
 	{ 1, 32, 0, 0, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks128[] = {
 	{ 0, 0, 0, 0, 32, 207, 4 },
 	{ 1, 32, 0, 0, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 32, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks129[] = {
 	{ 0, 0, 0, 0, 32, 63, 4 },
-	{ 255, 0, 0, 0, 0, 56, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks130[] = {
 	{ 0, 0, 0, 0, 56, 15, 4 },
-	{ 255, 0, 0, 0, 0, 56, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks131[] = {
 	{ 0, 0, 0, 0, 56, 15, 4 },
 	{ 1, 32, 0, 0, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks132[] = {
 	{ 0, 0, 0, 0, 24, 63, 0 },
-	{ 255, 0, 0, 0, 0, 24, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks133[] = {
@@ -3530,7 +3532,7 @@ static const rct_preview_track FlatRideTrackBlocks133[] = {
 	{ 2, -32, -32, 0, 0, 8, 0 },
 	{ 3, -64, 0, 0, 0, 2, 1 },
 	{ 4, -64, -32, 0, 0, 1, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks134[] = {
@@ -3539,7 +3541,7 @@ static const rct_preview_track FlatRideTrackBlocks134[] = {
 	{ 2, -32, 32, 0, 0, 4, 0 },
 	{ 3, -64, 0, 0, 0, 1, 1 },
 	{ 4, -64, 32, 0, 0, 2, 0 },
-	{ 255, 0, 0, 0, 0, 0, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks135[] = {
@@ -3548,7 +3550,7 @@ static const rct_preview_track FlatRideTrackBlocks135[] = {
 	{ 2, 0, 32, 0, 0, 4, 1 },
 	{ 3, -32, 32, 0, 0, 15, 0 },
 	{ 4, -64, 32, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks136[] = {
@@ -3557,7 +3559,7 @@ static const rct_preview_track FlatRideTrackBlocks136[] = {
 	{ 2, -32, 0, 0, 0, 1, 1 },
 	{ 3, -32, 32, 0, 0, 15, 0 },
 	{ 4, -32, 64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks137[] = {
@@ -3566,7 +3568,7 @@ static const rct_preview_track FlatRideTrackBlocks137[] = {
 	{ 2, -32, -32, 0, 0, 8, 0 },
 	{ 3, -64, 0, 0, 0, 2, 1 },
 	{ 4, -64, -32, 0, 0, 1, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks138[] = {
@@ -3575,7 +3577,7 @@ static const rct_preview_track FlatRideTrackBlocks138[] = {
 	{ 2, -32, 32, 0, 0, 4, 0 },
 	{ 3, -64, 0, 0, 0, 1, 1 },
 	{ 4, -64, 32, 0, 0, 2, 0 },
-	{ 255, 0, 0, 0, 0, 0, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks139[] = {
@@ -3584,7 +3586,7 @@ static const rct_preview_track FlatRideTrackBlocks139[] = {
 	{ 2, 0, 32, 0, 0, 4, 1 },
 	{ 3, -32, 32, 0, 0, 15, 0 },
 	{ 4, -64, 32, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks140[] = {
@@ -3593,7 +3595,7 @@ static const rct_preview_track FlatRideTrackBlocks140[] = {
 	{ 2, -32, 0, 0, 0, 1, 1 },
 	{ 3, -32, 32, 0, 0, 15, 0 },
 	{ 4, -32, 64, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks141[] = {
@@ -3601,7 +3603,7 @@ static const rct_preview_track FlatRideTrackBlocks141[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 1 },
 	{ 3, -32, 32, 0, 0, 2, 0 },
-	{ 255, 0, 0, 0, 0, 16, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks142[] = {
@@ -3609,7 +3611,7 @@ static const rct_preview_track FlatRideTrackBlocks142[] = {
 	{ 1, 0, 32, 0, 16, 4, 1 },
 	{ 2, -32, 0, 0, 16, 1, 1 },
 	{ 3, -32, 32, 0, 16, 2, 0 },
-	{ 255, 0, 0, 0, 0, 64, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks143[] = {
@@ -3617,7 +3619,7 @@ static const rct_preview_track FlatRideTrackBlocks143[] = {
 	{ 1, 0, 32, 0, 64, 4, 1 },
 	{ 2, -32, 0, 0, 64, 1, 1 },
 	{ 3, -32, 32, 0, 64, 2, 0 },
-	{ 255, 0, 0, 0, 0, 8, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks144[] = {
@@ -3625,7 +3627,7 @@ static const rct_preview_track FlatRideTrackBlocks144[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 32, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks145[] = {
@@ -3633,7 +3635,7 @@ static const rct_preview_track FlatRideTrackBlocks145[] = {
 	{ 1, 0, 32, 0, 32, 4, 1 },
 	{ 2, -32, 0, 0, 32, 1, 1 },
 	{ 3, -32, 32, 0, 32, 2, 0 },
-	{ 255, 0, 0, 0, 0, 32, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks146[] = {
@@ -3641,7 +3643,7 @@ static const rct_preview_track FlatRideTrackBlocks146[] = {
 	{ 1, 0, 32, 0, 32, 4, 1 },
 	{ 2, -32, 0, 0, 32, 1, 1 },
 	{ 3, -32, 32, 0, 32, 2, 0 },
-	{ 255, 0, 0, 0, 0, 8, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks147[] = {
@@ -3649,7 +3651,7 @@ static const rct_preview_track FlatRideTrackBlocks147[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 16, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks148[] = {
@@ -3657,7 +3659,7 @@ static const rct_preview_track FlatRideTrackBlocks148[] = {
 	{ 1, 0, 32, 0, 16, 4, 1 },
 	{ 2, -32, 0, 0, 16, 1, 1 },
 	{ 3, -32, 32, 0, 16, 2, 0 },
-	{ 255, 0, 0, 0, 0, 64, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks149[] = {
@@ -3665,7 +3667,7 @@ static const rct_preview_track FlatRideTrackBlocks149[] = {
 	{ 1, 0, 32, 0, 64, 4, 1 },
 	{ 2, -32, 0, 0, 64, 1, 1 },
 	{ 3, -32, 32, 0, 64, 2, 0 },
-	{ 255, 0, 0, 0, 0, 8, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks150[] = {
@@ -3673,7 +3675,7 @@ static const rct_preview_track FlatRideTrackBlocks150[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 32, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks151[] = {
@@ -3681,7 +3683,7 @@ static const rct_preview_track FlatRideTrackBlocks151[] = {
 	{ 1, 0, 32, 0, 32, 4, 1 },
 	{ 2, -32, 0, 0, 32, 1, 1 },
 	{ 3, -32, 32, 0, 32, 2, 0 },
-	{ 255, 0, 0, 0, 0, 32, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks152[] = {
@@ -3689,7 +3691,7 @@ static const rct_preview_track FlatRideTrackBlocks152[] = {
 	{ 1, 0, 32, 0, 32, 4, 1 },
 	{ 2, -32, 0, 0, 32, 1, 1 },
 	{ 3, -32, 32, 0, 32, 2, 0 },
-	{ 255, 0, 0, 0, 0, 8, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks153[] = {
@@ -3697,7 +3699,7 @@ static const rct_preview_track FlatRideTrackBlocks153[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 24, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks154[] = {
@@ -3705,7 +3707,7 @@ static const rct_preview_track FlatRideTrackBlocks154[] = {
 	{ 1, 0, 32, 0, 24, 4, 1 },
 	{ 2, -32, 0, 0, 24, 1, 1 },
 	{ 3, -32, 32, 0, 24, 2, 0 },
-	{ 255, 0, 0, 0, 0, 24, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks155[] = {
@@ -3713,7 +3715,7 @@ static const rct_preview_track FlatRideTrackBlocks155[] = {
 	{ 1, 0, 32, 0, 24, 4, 1 },
 	{ 2, -32, 0, 0, 24, 1, 1 },
 	{ 3, -32, 32, 0, 24, 2, 0 },
-	{ 255, 0, 0, 0, 0, 24, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks156[] = {
@@ -3721,7 +3723,7 @@ static const rct_preview_track FlatRideTrackBlocks156[] = {
 	{ 1, 0, 32, 0, 24, 4, 1 },
 	{ 2, -32, 0, 0, 24, 1, 1 },
 	{ 3, -32, 32, 0, 24, 2, 0 },
-	{ 255, 0, 0, 0, 0, 24, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks157[] = {
@@ -3729,7 +3731,7 @@ static const rct_preview_track FlatRideTrackBlocks157[] = {
 	{ 1, 0, 32, 0, 24, 4, 1 },
 	{ 2, -32, 0, 0, 24, 1, 1 },
 	{ 3, -32, 32, 0, 24, 2, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks158[] = {
@@ -3737,7 +3739,7 @@ static const rct_preview_track FlatRideTrackBlocks158[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 1 },
 	{ 3, -32, 32, 0, 0, 2, 0 },
-	{ 255, 0, 0, 0, 0, 16, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks159[] = {
@@ -3745,7 +3747,7 @@ static const rct_preview_track FlatRideTrackBlocks159[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 1 },
 	{ 3, -32, 32, 0, 0, 2, 0 },
-	{ 255, 0, 0, 0, 0, 16, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks160[] = {
@@ -3753,7 +3755,7 @@ static const rct_preview_track FlatRideTrackBlocks160[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 1 },
 	{ 3, -32, 32, 0, 0, 2, 0 },
-	{ 255, 0, 0, 0, 0, 0, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks161[] = {
@@ -3761,7 +3763,7 @@ static const rct_preview_track FlatRideTrackBlocks161[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 1 },
 	{ 3, -32, 32, 0, 0, 2, 0 },
-	{ 255, 0, 0, 0, 0, 0, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks162[] = {
@@ -3769,7 +3771,7 @@ static const rct_preview_track FlatRideTrackBlocks162[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 32, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks163[] = {
@@ -3777,7 +3779,7 @@ static const rct_preview_track FlatRideTrackBlocks163[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 32, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks164[] = {
@@ -3785,7 +3787,7 @@ static const rct_preview_track FlatRideTrackBlocks164[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 16, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks165[] = {
@@ -3793,7 +3795,7 @@ static const rct_preview_track FlatRideTrackBlocks165[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 16, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks166[] = {
@@ -3801,7 +3803,7 @@ static const rct_preview_track FlatRideTrackBlocks166[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 32, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks167[] = {
@@ -3809,7 +3811,7 @@ static const rct_preview_track FlatRideTrackBlocks167[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 32, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks168[] = {
@@ -3817,7 +3819,7 @@ static const rct_preview_track FlatRideTrackBlocks168[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 24, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks169[] = {
@@ -3825,7 +3827,7 @@ static const rct_preview_track FlatRideTrackBlocks169[] = {
 	{ 1, 0, 32, 0, 8, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 1 },
 	{ 3, -32, 32, 0, 8, 2, 0 },
-	{ 255, 0, 0, 0, 0, 24, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks170[] = {
@@ -3833,7 +3835,7 @@ static const rct_preview_track FlatRideTrackBlocks170[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 1 },
 	{ 3, -32, 32, 0, 0, 2, 0 },
-	{ 255, 0, 0, 0, 0, 0, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks171[] = {
@@ -3841,45 +3843,45 @@ static const rct_preview_track FlatRideTrackBlocks171[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 0, 1, 1 },
 	{ 3, -32, 32, 0, 0, 2, 0 },
-	{ 255, 0, 0, 0, 0, 0, 13 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks172[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks173[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks174[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, 0, 16, 15, 0 },
 	{ 2, -64, 0, 0, 16, 15, 0 },
-	{ 255, 0, 0, -8192, 255, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks175[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, 0, 16, 15, 0 },
 	{ 2, -64, 0, 0, 16, 15, 0 },
-	{ 255, 0, 0, -8192, 255, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks176[] = {
 	{ 0, 0, 0, -32, 16, 15, 0 },
 	{ 1, -32, 0, -32, 16, 15, 0 },
 	{ 2, -64, 0, -32, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 71 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks177[] = {
 	{ 0, 0, 0, -32, 16, 15, 0 },
 	{ 1, -32, 0, -32, 16, 15, 0 },
 	{ 2, -64, 0, -32, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 71 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks178[] = {
@@ -3887,7 +3889,7 @@ static const rct_preview_track FlatRideTrackBlocks178[] = {
 	{ 1, 0, -32, 0, 16, 8, 1 },
 	{ 2, -32, 0, 0, 16, 2, 0 },
 	{ 3, -32, -32, 16, 16, 103, 0 },
-	{ 255, 0, 0, 0, 0, 16, 139 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks179[] = {
@@ -3895,7 +3897,7 @@ static const rct_preview_track FlatRideTrackBlocks179[] = {
 	{ 1, 0, 32, 0, 16, 4, 1 },
 	{ 2, -32, 0, 0, 16, 1, 0 },
 	{ 3, -32, 32, 16, 16, 155, 0 },
-	{ 255, 0, 0, 4096, 0, 16, 55 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks180[] = {
@@ -3903,7 +3905,7 @@ static const rct_preview_track FlatRideTrackBlocks180[] = {
 	{ 1, 0, -32, 0, 16, 8, 1 },
 	{ 2, -32, 0, 0, 16, 2, 0 },
 	{ 3, -32, -32, 0, 0, 23, 0 },
-	{ 255, 0, 0, 4096, 0, 16, 59 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks181[] = {
@@ -3911,12 +3913,12 @@ static const rct_preview_track FlatRideTrackBlocks181[] = {
 	{ 1, 0, 32, 0, 16, 4, 1 },
 	{ 2, -32, 0, 0, 16, 1, 0 },
 	{ 3, -32, 32, 0, 0, 43, 0 },
-	{ 255, 0, 0, 0, 0, 24, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks182[] = {
 	{ 0, 0, 0, 0, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 64, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks183[] = {
@@ -3927,7 +3929,7 @@ static const rct_preview_track FlatRideTrackBlocks183[] = {
 	{ 4, -128, -32, 120, 96, 15, 0 },
 	{ 5, -96, -32, 64, 192, 15, 0 },
 	{ 6, -64, -32, 248, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 24, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks184[] = {
@@ -3938,7 +3940,7 @@ static const rct_preview_track FlatRideTrackBlocks184[] = {
 	{ 4, -128, 32, 120, 96, 15, 0 },
 	{ 5, -96, 32, 64, 192, 15, 0 },
 	{ 6, -64, 32, 248, 16, 15, 0 },
-	{ 255, 0, 0, -8192, 255, 24, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks185[] = {
@@ -3949,7 +3951,7 @@ static const rct_preview_track FlatRideTrackBlocks185[] = {
 	{ 4, 0, -32, -248, 56, 15, 0 },
 	{ 5, 32, -32, -264, 40, 207, 0 },
 	{ 6, 64, -32, -280, 24, 207, 0 },
-	{ 255, 0, 0, -8192, 255, 24, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks186[] = {
@@ -3960,35 +3962,35 @@ static const rct_preview_track FlatRideTrackBlocks186[] = {
 	{ 4, 0, 32, -248, 56, 15, 0 },
 	{ 5, 32, 32, -264, 40, 207, 0 },
 	{ 6, 64, 32, -280, 24, 207, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks187[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, -16, 16, 15, 0 },
 	{ 2, -64, 0, -16, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks188[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, -16, 16, 15, 0 },
 	{ 2, -64, 0, -16, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks189[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
 	{ 1, -32, 0, 0, 16, 15, 0 },
 	{ 2, -64, 0, 16, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks190[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
 	{ 1, -32, 0, 0, 16, 15, 0 },
 	{ 2, -64, 0, 16, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks191[] = {
@@ -3996,7 +3998,7 @@ static const rct_preview_track FlatRideTrackBlocks191[] = {
 	{ 1, -32, 0, 16, 16, 207, 0 },
 	{ 2, -64, 0, 32, 96, 3, 0 },
 	{ 3, -32, 0, 120, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 32, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks192[] = {
@@ -4004,35 +4006,35 @@ static const rct_preview_track FlatRideTrackBlocks192[] = {
 	{ 1, -32, 0, -88, 96, 3, 0 },
 	{ 2, 0, 0, -104, 16, 207, 0 },
 	{ 3, 32, 0, -120, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks193[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
 	{ 1, -32, 0, 24, 32, 7, 0 },
 	{ 2, -32, -32, 48, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks194[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
 	{ 1, -32, 0, 24, 32, 11, 0 },
 	{ 2, -32, 32, 48, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks195[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
 	{ 1, -32, 0, -24, 32, 7, 0 },
 	{ 2, -32, -32, -48, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks196[] = {
 	{ 0, 0, 0, 0, 16, 15, 0 },
 	{ 1, -32, 0, -24, 32, 11, 0 },
 	{ 2, -32, 32, -48, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks197[] = {
@@ -4040,7 +4042,7 @@ static const rct_preview_track FlatRideTrackBlocks197[] = {
 	{ 1, -32, 0, 0, 32, 15, 0 },
 	{ 2, -64, 0, 16, 0, 15, 0 },
 	{ 3, 0, 0, 32, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks198[] = {
@@ -4048,7 +4050,7 @@ static const rct_preview_track FlatRideTrackBlocks198[] = {
 	{ 1, -32, 0, -32, 32, 15, 0 },
 	{ 2, -64, 0, -16, 0, 15, 0 },
 	{ 3, 0, 0, -32, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks199[] = {
@@ -4058,7 +4060,7 @@ static const rct_preview_track FlatRideTrackBlocks199[] = {
 	{ 3, -96, 0, 0, 0, 15, 0 },
 	{ 4, -128, 0, 0, 0, 15, 0 },
 	{ 5, -160, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks200[] = {
@@ -4068,39 +4070,39 @@ static const rct_preview_track FlatRideTrackBlocks200[] = {
 	{ 3, -96, 0, 0, 0, 15, 0 },
 	{ 4, -128, 0, 0, 0, 15, 0 },
 	{ 5, -160, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks201[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks202[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks203[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks204[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, 0, 0, 15, 0 },
 	{ 2, -32, 32, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks205[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
 	{ 1, -32, 0, 0, 0, 15, 0 },
 	{ 2, -32, -32, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks206[] = {
@@ -4108,14 +4110,14 @@ static const rct_preview_track FlatRideTrackBlocks206[] = {
 	{ 1, -32, 0, -40, 32, 15, 4 },
 	{ 2, -64, 0, -96, 56, 15, 4 },
 	{ 3, -96, 0, -96, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 0, 0 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks207[] = {
 	{ 0, 0, 0, 0, 56, 15, 4 },
 	{ 1, 32, 0, 56, 32, 15, 4 },
 	{ 2, 64, 0, 96, 16, 15, 4 },
-	{ 255, 0, 0, -8192, 255, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks208[] = {
@@ -4123,7 +4125,7 @@ static const rct_preview_track FlatRideTrackBlocks208[] = {
 	{ 1, -32, 0, -72, 32, 15, 4 },
 	{ 2, -64, 0, -128, 56, 15, 4 },
 	{ 3, -96, 0, -128, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 56, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks209[] = {
@@ -4131,7 +4133,7 @@ static const rct_preview_track FlatRideTrackBlocks209[] = {
 	{ 1, 0, -32, 0, 0, 8, 1 },
 	{ 2, -32, 0, 0, 8, 2, 0 },
 	{ 3, -32, -32, 0, 8, 7, 0 },
-	{ 255, 0, 0, 0, 0, 0, 11 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks210[] = {
@@ -4139,7 +4141,7 @@ static const rct_preview_track FlatRideTrackBlocks210[] = {
 	{ 1, 0, 32, 0, 0, 4, 1 },
 	{ 2, -32, 0, 0, 8, 1, 0 },
 	{ 3, -32, 32, 0, 8, 11, 0 },
-	{ 255, 0, 0, 0, 0, 56, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks211[] = {
@@ -4149,7 +4151,7 @@ static const rct_preview_track FlatRideTrackBlocks211[] = {
 	{ 3, -64, -32, 0, 0, 15, 0 },
 	{ 4, -32, 0, 0, 0, 15, 0 },
 	{ 5, -64, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks212[] = {
@@ -4159,7 +4161,7 @@ static const rct_preview_track FlatRideTrackBlocks212[] = {
 	{ 3, -64, 32, 0, 0, 15, 0 },
 	{ 4, -32, 0, 0, 0, 15, 0 },
 	{ 5, -64, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 32, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks213[] = {
@@ -4167,13 +4169,13 @@ static const rct_preview_track FlatRideTrackBlocks213[] = {
 	{ 1, 32, 0, 0, 32, 15, 0 },
 	{ 2, -64, 0, 0, 32, 15, 0 },
 	{ 3, -32, 0, 0, 32, 15, 0 },
-	{ 255, 0, 0, 0, 0, 48, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks214[] = {
 	{ 0, 0, 0, 0, 48, 15, 0 },
 	{ 1, 32, 0, 0, 48, 15, 0 },
-	{ 255, 0, 0, 0, 0, 208, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks215[] = {
@@ -4184,12 +4186,12 @@ static const rct_preview_track FlatRideTrackBlocks215[] = {
 	{ 4, -96, 0, 0, 48, 15, 0 },
 	{ 5, -128, 0, 0, 32, 15, 0 },
 	{ 6, -160, 0, 0, 16, 15, 0 },
-	{ 255, 0, 0, 0, 0, 72, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks216[] = {
 	{ 0, 0, 0, 0, 0, 15, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks217[] = {
@@ -4197,7 +4199,7 @@ static const rct_preview_track FlatRideTrackBlocks217[] = {
 	{ 1, 0, -32, 16, 0, 8, 1 },
 	{ 2, -32, 0, 16, 0, 2, 0 },
 	{ 3, -32, -32, 16, 16, 103, 0 },
-	{ 255, 0, 0, 0, 0, 16, 139 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks218[] = {
@@ -4205,7 +4207,7 @@ static const rct_preview_track FlatRideTrackBlocks218[] = {
 	{ 1, 0, 32, 16, 0, 4, 1 },
 	{ 2, -32, 0, 16, 0, 1, 0 },
 	{ 3, -32, 32, 16, 16, 155, 0 },
-	{ 255, 0, 0, 4096, 0, 16, 55 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks219[] = {
@@ -4213,7 +4215,7 @@ static const rct_preview_track FlatRideTrackBlocks219[] = {
 	{ 1, 0, -32, 16, 0, 8, 1 },
 	{ 2, -32, 0, 16, 0, 2, 0 },
 	{ 3, -32, -32, 0, 16, 23, 0 },
-	{ 255, 0, 0, 4096, 0, 16, 59 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks220[] = {
@@ -4221,7 +4223,7 @@ static const rct_preview_track FlatRideTrackBlocks220[] = {
 	{ 1, 0, 32, 16, 0, 4, 1 },
 	{ 2, -32, 0, 16, 0, 1, 0 },
 	{ 3, -32, 32, 0, 16, 43, 0 },
-	{ 255, 0, 0, 0, 0, 0, 7 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks221[] = {
@@ -4232,7 +4234,7 @@ static const rct_preview_track FlatRideTrackBlocks221[] = {
 	{ 4, -32, -64, 48, 0, 8, 1 },
 	{ 5, -64, -32, 32, 16, 71, 0 },
 	{ 6, -64, -64, 48, 16, 111, 0 },
-	{ 255, 0, 0, 0, 0, 16, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks222[] = {
@@ -4243,7 +4245,7 @@ static const rct_preview_track FlatRideTrackBlocks222[] = {
 	{ 4, -32, 64, 48, 0, 4, 1 },
 	{ 5, -64, 32, 32, 16, 139, 0 },
 	{ 6, -64, 64, 48, 16, 159, 0 },
-	{ 255, 0, 0, 12288, 0, 16, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks223[] = {
@@ -4254,7 +4256,7 @@ static const rct_preview_track FlatRideTrackBlocks223[] = {
 	{ 4, -32, -64, 16, 0, 8, 1 },
 	{ 5, -64, -32, 16, 16, 23, 0 },
 	{ 6, -64, -64, 0, 16, 159, 0 },
-	{ 255, 0, 0, 12288, 0, 16, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks224[] = {
@@ -4265,158 +4267,158 @@ static const rct_preview_track FlatRideTrackBlocks224[] = {
 	{ 4, -32, 64, 16, 0, 4, 1 },
 	{ 5, -64, 32, 16, 16, 43, 0 },
 	{ 6, -64, 64, 0, 16, 111, 0 },
-	{ 255, 0, 0, 0, 0, 0, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks225[] = {
 	{ 0, 0, 0, 0, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 64, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks226[] = {
 	{ 0, 0, 0, 0, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 64, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks227[] = {
 	{ 0, 0, 0, 0, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 64, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks228[] = {
 	{ 0, 0, 0, 0, 16, 207, 0 },
-	{ 255, 0, 0, 0, 0, 64, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks229[] = {
 	{ 0, 0, 0, 0, 16, 63, 0 },
-	{ 255, 0, 0, 0, 0, 64, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks230[] = {
 	{ 0, 0, 0, 0, 16, 63, 0 },
-	{ 255, 0, 0, 0, 0, 64, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks231[] = {
 	{ 0, 0, 0, 0, 16, 63, 0 },
-	{ 255, 0, 0, 0, 0, 64, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks232[] = {
 	{ 0, 0, 0, 0, 16, 63, 0 },
-	{ 255, 0, 0, 0, 0, 64, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks233[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks234[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks235[] = {
 	{ 0, 0, 0, 0, 8, 207, 0 },
-	{ 255, 0, 0, 0, 0, 8, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks236[] = {
 	{ 0, 0, 0, 0, 8, 207, 0 },
-	{ 255, 0, 0, 0, 0, 8, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks237[] = {
 	{ 0, 0, 0, 0, 8, 63, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks238[] = {
 	{ 0, 0, 0, 0, 8, 63, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks239[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks240[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks241[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks242[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks243[] = {
 	{ 0, 0, 0, 0, 8, 207, 0 },
-	{ 255, 0, 0, 0, 0, 8, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks244[] = {
 	{ 0, 0, 0, 0, 8, 207, 0 },
-	{ 255, 0, 0, 0, 0, 8, 63 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks245[] = {
 	{ 0, 0, 0, 0, 8, 63, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks246[] = {
 	{ 0, 0, 0, 0, 8, 63, 0 },
-	{ 255, 0, 0, 0, 0, 32, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks247[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks248[] = {
 	{ 0, 0, 0, 0, 8, 15, 0 },
-	{ 255, 0, 0, 0, 0, 8, 207 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks249[] = {
 	{ 0, 0, 0, 0, 72, 15, 4 },
 	{ 1, 0, 32, 0, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 72, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks250[] = {
 	{ 0, 0, 0, 0, 72, 15, 4 },
 	{ 1, 0, -32, 0, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 72, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks251[] = {
 	{ 0, 0, 0, 0, 72, 15, 4 },
 	{ 1, 0, 32, 0, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 72, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks252[] = {
 	{ 0, 0, 0, 0, 72, 15, 4 },
 	{ 1, 0, -32, 0, 0, 0, 5 },
-	{ 255, 0, 0, 0, 0, 8, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks253[] = {
 	{ 0, 0, 0, 0, 56, 15, 4 },
 	{ 1, 32, 0, 56, 32, 15, 4 },
 	{ 2, 64, 0, 96, 16, 15, 4 },
-	{ 255, 0, 0, -8192, 255, 16, 15 }
+	TRACK_BLOCK_END
 };
 
 static const rct_preview_track FlatRideTrackBlocks254[] = {
@@ -4424,7 +4426,7 @@ static const rct_preview_track FlatRideTrackBlocks254[] = {
 	{ 1, -32, 0, -72, 32, 15, 4 },
 	{ 2, -64, 0, -128, 56, 15, 4 },
 	{ 3, -96, 0, -128, 0, 0, 5 },
-	{ 255, 0, 0, 8192, 0, 56, 15 }
+	TRACK_BLOCK_END
 };
 
 // rct2: 0x00994A38
