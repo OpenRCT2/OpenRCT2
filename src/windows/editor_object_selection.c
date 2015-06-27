@@ -31,6 +31,7 @@
 #include "error.h"
 #include "../interface/themes.h"
 #include "dropdown.h"
+#include "../rct1.h"
 
 enum {
 	FILTER_RCT2 = (1 << 0),
@@ -2085,11 +2086,16 @@ static bool filter_chunks(rct_object_entry *entry, rct_object_filters *filter)
 {
 	switch (entry->flags & 0x0F) {
 	case OBJECT_TYPE_RIDE:
-		if (_filter_flags & (1 << (filter->ride.category[0] + 5)))
-			return true;
-		if (_filter_flags & (1 << (filter->ride.category[1] + 5)))
-			return true;
-
+		if(!gConfigInterface.select_by_track_type) {
+			if (_filter_flags & (1 << (filter->ride.category[0] + 5)))
+				return true;
+			if (_filter_flags & (1 << (filter->ride.category[1] + 5)))
+				return true;
+		}
+		else {
+			if (_filter_flags & (1 << (gRideCategories[filter->ride.ride_type] + 5)))
+				return true;
+		}
 		return false;
 	}
 	return true;

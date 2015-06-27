@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "config.h"
 #include "localisation/localisation.h"
 #include "object.h"
 #include "platform/platform.h"
@@ -738,29 +739,9 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 	load_object_filter(entry, chunk, filter);
 
-
-	// When made of two parts i.e Wooden Roller Coaster (Dream Woodie Cars)
-	if ((objectType == OBJECT_TYPE_RIDE) && (!((((rct_ride_type*)chunk)->flags) & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || 
-			rideTypeShouldLoseSeparateFlag((rct_ride_type*)chunk))) {
-		rct_ride_type* ride_type = (rct_ride_type*)chunk;
-		rct_string_id obj_string = ride_type->ride_type[0];
-		if (obj_string == 0xFF){
-			obj_string = ride_type->ride_type[1];
-			if (obj_string == 0xFF) {
-				obj_string = ride_type->ride_type[2];
-			}
-		}
-
-		format_string(installed_entry_pointer, obj_string + 2, 0);
-		strcat(installed_entry_pointer, "\t (");
-		strcat(installed_entry_pointer, language_get_string((rct_string_id)RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32)));
-		strcat(installed_entry_pointer, ")");
-		while (*installed_entry_pointer++);
-	}
-	else{
-		strcpy(installed_entry_pointer, language_get_string((rct_string_id)RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32)));
-		while (*installed_entry_pointer++);
-	}
+	// Always extract only the vehicle type, since the track type is always displayed in the left column, to prevent duplicate track names.
+	strcpy(installed_entry_pointer, language_get_string((rct_string_id)RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32)));
+	while (*installed_entry_pointer++);
 
 	// This is deceptive. Due to setting the total no images earlier to 0xF26E
 	// this is actually the no_images in this entry.
@@ -805,6 +786,7 @@ static void load_object_filter(rct_object_entry* entry, uint8* chunk, rct_object
 
 		rideFilter->category[0] = rideType->category[0];
 		rideFilter->category[1] = rideType->category[1];
+
 		for (int i = 0; i < 3; i++) {
 			rideFilter->ride_type = rideType->ride_type[i];
 			if (rideFilter->ride_type != 255)
