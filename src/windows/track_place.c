@@ -357,7 +357,7 @@ static void window_track_place_attempt_placement(int x, int y, int z, int bl, mo
 	ebx = bl;
 	ecx = y;
 	edi = z;
-	result = game_do_command_p(GAME_COMMAND_PLACE_TRACK, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	result = game_do_command_p(GAME_COMMAND_PLACE_TRACK_DESIGN, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
 	if (cost != NULL) *cost = result;
 	if (rideIndex != NULL) *rideIndex = edi & 0xFF;

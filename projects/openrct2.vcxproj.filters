@@ -489,6 +489,9 @@
     <ClCompile Include="..\src\windows\title_command_editor.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\windows\maze_construction.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">
