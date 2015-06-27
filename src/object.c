@@ -1593,7 +1593,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 void object_free_scenario_text()
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, void*) != NULL) {
-		rct2_free(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, void*));
+		free(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, void*));
 		RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, void*) = NULL;
 	}
 }
