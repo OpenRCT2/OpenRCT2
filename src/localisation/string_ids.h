@@ -1550,6 +1550,9 @@ enum {
 	STR_UP = 5375,
 	STR_DOWN = 5376,
 
+	STR_OBJECTS_SORT_TYPE = 5447,
+	STR_OBJECTS_SORT_RIDE = 5448,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

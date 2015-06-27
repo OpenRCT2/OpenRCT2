@@ -80,7 +80,7 @@ typedef struct {
 
 typedef struct {
 	uint8 category[2];
-
+	uint8 ride_type;
 } rct_ride_filters;
 
 typedef struct {

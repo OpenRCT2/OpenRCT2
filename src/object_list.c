@@ -795,10 +795,21 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 static void load_object_filter(rct_object_entry* entry, uint8* chunk, rct_object_filters* filter)
 {
+	rct_ride_type *rideType;
+	rct_ride_filters *rideFilter;
+
 	switch (entry->flags & 0xF) {
 	case OBJECT_TYPE_RIDE:
-		filter->ride.category[0] = ((rct_ride_type*)chunk)->category[0];
-		filter->ride.category[1] = ((rct_ride_type*)chunk)->category[1];
+		rideType = ((rct_ride_type*)chunk);
+		rideFilter = &(filter->ride);
+
+		rideFilter->category[0] = rideType->category[0];
+		rideFilter->category[1] = rideType->category[1];
+		for (int i = 0; i < 3; i++) {
+			rideFilter->ride_type = rideType->ride_type[i];
+			if (rideFilter->ride_type != 255)
+				break;
+		}
 		break;
 	case OBJECT_TYPE_SMALL_SCENERY:
 	case OBJECT_TYPE_LARGE_SCENERY:
