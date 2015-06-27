@@ -319,7 +319,7 @@ static void window_title_editor_mouseup()
 	case WIDX_TITLE_EDITOR_NEW_BUTTON:
 		commandEditorOpen *= 2;
 		if (!commandEditorOpen)
-			window_text_input_open(w, widgetIndex, 5239, 5406, STR_NONE, NULL, 64);
+			window_text_input_open(w, widgetIndex, 5239, 5406, STR_NONE, 0, 64);
 		break;
 	case WIDX_TITLE_EDITOR_DUPLICATE_BUTTON:
 		commandEditorOpen *= 2;

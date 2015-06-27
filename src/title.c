@@ -720,7 +720,7 @@ bool title_refresh_sequence()
 	if (_loadedScript != _magicMountainScript)
 		SafeFree(_loadedScript);
 	_scriptCurrentPreset = 0;
-	_loadedScript = _magicMountainScript;
+	_loadedScript = (uint8*)_magicMountainScript;
 	_currentScript = _magicMountainScript;
 	_scriptWaitCounter = 0;
 	gTitleScriptCommand = -1;
