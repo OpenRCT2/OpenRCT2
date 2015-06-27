@@ -1727,7 +1727,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 			return;
 		}
 
-		rct_preview_track *trackBlock = get_track_def_from_ride_index(_currentRideIndex, mapElement->properties.track.type);
+		const rct_preview_track *trackBlock = get_track_def_from_ride_index(_currentRideIndex, mapElement->properties.track.type);
 		z = (mapElement->base_height * 8) - trackBlock->z;
 		gotoStartPlacementMode = true;
 	}
@@ -2066,13 +2066,13 @@ static void window_ride_construction_draw_track_piece(
 	int rideIndex, int trackType, int trackDirection, int unknown,
 	int width, int height
 ) {
-	rct_preview_track *trackBlock;
+	const rct_preview_track *trackBlock;
 	rct_ride *ride;
 
 	ride = GET_RIDE(rideIndex);
 
 	trackBlock = get_track_def_from_ride(ride, trackType);
-	while ((trackBlock + 1)->var_00 != 0xFF)
+	while ((trackBlock + 1)->index != 0xFF)
 		trackBlock++;
 
 	short x = trackBlock->x;
@@ -2157,7 +2157,7 @@ static void sub_6CBCE2(
 	int originX, int originY, int originZ
 ) {
 	rct_ride *ride;
-	rct_preview_track *trackBlock;
+	const rct_preview_track *trackBlock;
 	int preserve_word_141E9E4;
 	int x, y, baseZ, clearanceZ, offsetX, offsetY;
 	uint64 preserve_map_size_vars;
@@ -2179,7 +2179,7 @@ static void sub_6CBCE2(
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16) = (256 * 32) - 1;
 
 	trackBlock = get_track_def_from_ride(ride, trackType);
-	while (trackBlock->var_00 != 255) {
+	while (trackBlock->index != 255) {
 		int bl = trackBlock->var_08;
 		int bh;
 		switch (trackDirection) {
@@ -2244,7 +2244,7 @@ static void sub_6CBCE2(
 		_tempTrackMapElement.base_height = baseZ;
 		_tempTrackMapElement.clearance_height = clearanceZ;
 		_tempTrackMapElement.properties.track.type = trackType;
-		_tempTrackMapElement.properties.track.sequence = trackBlock->var_00;
+		_tempTrackMapElement.properties.track.sequence = trackBlock->index;
 		_tempTrackMapElement.properties.track.colour = (edx & 0x20000 ? 4 : 0);
 		_tempTrackMapElement.properties.track.ride_index = rideIndex;
 
@@ -3072,13 +3072,13 @@ static void window_ride_construction_update_widgets(rct_window *w)
 
 static void window_ride_construction_select_map_tiles(rct_ride *ride, int trackType, int trackDirection, int x, int y)
 {
-	rct_preview_track *trackBlock;
+	const rct_preview_track *trackBlock;
 	int offsetX, offsetY;
 
 	trackBlock = get_track_def_from_ride(ride, trackType);
 	trackDirection &= 3;
 	int selectionTileIndex = 0;
-	while (trackBlock->var_00 != 255) {
+	while (trackBlock->index != 255) {
 		switch (trackDirection) {
 		case 0:
 			offsetX = trackBlock->x;
@@ -3202,7 +3202,7 @@ static void ride_construction_toolupdate_construct(int screenX, int screenY)
 {
 	int x, y, z, highestZ;
 	rct_ride *ride;
-	rct_preview_track *trackBlock;
+	const rct_preview_track *trackBlock;
 
 	map_invalidate_map_selection_tiles();
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 | 2 | 4);
@@ -3268,7 +3268,7 @@ static void ride_construction_toolupdate_construct(int screenX, int screenY)
 	do {
 		bx = min(bx, trackBlock->z);
 		trackBlock++;
-	} while (trackBlock->var_00 != 255);
+	} while (trackBlock->index != 255);
 	z -= bx;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16) = z;
@@ -3407,12 +3407,12 @@ static void ride_construction_tooldown_construct(int screenX, int screenY)
 
 	rct_ride *ride = GET_RIDE(_currentRideIndex);
 	if (RCT2_GLOBAL(0x00F44163, uint16) == 0) {
-		rct_preview_track *trackBlock = get_track_def_from_ride(ride, _currentTrackPieceType);
+		const rct_preview_track *trackBlock = get_track_def_from_ride(ride, _currentTrackPieceType);
 		int bx = 0;
 		do {
 			bx = min(bx, trackBlock->z);
 			trackBlock++;
-		} while (trackBlock->var_00 != 255);
+		} while (trackBlock->index != 255);
 		z -= bx;
 		z -= 16;
 	} else {

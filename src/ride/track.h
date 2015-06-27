@@ -39,10 +39,10 @@ typedef struct {
 * Size: 0x0A
 */
 typedef struct {
-	uint8 var_00;
+	uint8 index;	// 0x00
 	sint16 x;		// 0x01
 	sint16 y;		// 0x03
-	sint16 z;
+	sint16 z;		// 0x05
 	uint8 var_07;
 	uint8 var_08;
 	uint8 var_09;
@@ -491,8 +491,8 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 void track_save_reset_scenery();
 void track_save_select_nearby_scenery(int rideIndex);
 
-rct_preview_track *get_track_def_from_ride(rct_ride *ride, int trackType);
-rct_preview_track *get_track_def_from_ride_index(int rideIndex, int trackType);
+const rct_preview_track *get_track_def_from_ride(rct_ride *ride, int trackType);
+const rct_preview_track *get_track_def_from_ride_index(int rideIndex, int trackType);
 
 void game_command_place_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_remove_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);

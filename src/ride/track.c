@@ -1530,8 +1530,8 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 		track_update_max_min_coordinates(x, y, z);
 
 		if (RCT2_GLOBAL(0x00F440D4, uint8) == 0){
-			for (rct_preview_track* trackBlock = RCT2_ADDRESS(0x00994638, rct_preview_track*)[track_type];
-				trackBlock->var_00 != 0xFF;
+			for (const rct_preview_track* trackBlock = TrackBlocks[track_type];
+				trackBlock->index != 0xFF;
 				trackBlock++){
 				rct_xy16 tile;
 				tile.x = x;
@@ -1585,7 +1585,7 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 			//di
 			int temp_z = z;
 			temp_z -= track_coordinates->z_negative;
-			rct_preview_track* trackBlock = RCT2_ADDRESS(0x00994638, rct_preview_track*)[track_type];
+			const rct_preview_track* trackBlock = TrackBlocks[track_type];
 
 			temp_z += trackBlock->z;
 			// rotation in bh
@@ -1628,8 +1628,8 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 		}
 
 		if (RCT2_GLOBAL(0x00F440D4, uint8) == 3){
-			for (rct_preview_track* trackBlock = RCT2_ADDRESS(0x00994638, rct_preview_track*)[track_type];
-				trackBlock->var_00 != 0xFF;
+			for (const rct_preview_track* trackBlock = TrackBlocks[track_type];
+				trackBlock->index != 0xFF;
 				trackBlock++){
 				rct_xy16 tile;
 				tile.x = x;
@@ -3430,14 +3430,14 @@ static void track_save_add_map_element(int mapElementSelectType, int x, int y, r
 	RCT2_CALLPROC_X(0x006D2B3C, x, mapElementSelectType, y, (int)mapElement, 0, 0, 0);
 }
 
-rct_preview_track *get_track_def_from_ride(rct_ride *ride, int trackType)
+const rct_preview_track *get_track_def_from_ride(rct_ride *ride, int trackType)
 {
 	return ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
-		RCT2_ADDRESS(0x00994A38, rct_preview_track*)[trackType] :
-		RCT2_ADDRESS(0x00994638, rct_preview_track*)[trackType];
+		FlatRideTrackBlocks[trackType] :
+		TrackBlocks[trackType];
 }
 
-rct_preview_track *get_track_def_from_ride_index(int rideIndex, int trackType)
+const rct_preview_track *get_track_def_from_ride_index(int rideIndex, int trackType)
 {
 	return get_track_def_from_ride(GET_RIDE(rideIndex), trackType);
 }

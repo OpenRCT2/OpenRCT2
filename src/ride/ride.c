@@ -836,7 +836,7 @@ int sub_6C683D(int* x, int* y, int* z, int direction, int type, uint16 extra_par
 		return 1;
 
 	// Possibly z should be & 0xF8
-	rct_preview_track *trackBlock = get_track_def_from_ride_index(mapElement->properties.track.ride_index, type);
+	const rct_preview_track *trackBlock = get_track_def_from_ride_index(mapElement->properties.track.ride_index, type);
 
 	int sequence = mapElement->properties.track.sequence & 0x0F;
 	uint8 mapDirection = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
@@ -863,7 +863,7 @@ int sub_6C683D(int* x, int* y, int* z, int direction, int type, uint16 extra_par
 
 	int start_x = *x, start_y = *y, start_z = *z;
 	*z += trackBlock[0].z;
-	for (int i = 0; trackBlock[i].var_00 != 0xFF; ++i){
+	for (int i = 0; trackBlock[i].index != 0xFF; ++i){
 		int cur_x = start_x, cur_y = start_y, cur_z = start_z;
 		switch (mapDirection){
 		case MAP_ELEMENT_DIRECTION_WEST:
@@ -899,7 +899,7 @@ int sub_6C683D(int* x, int* y, int* z, int direction, int type, uint16 extra_par
 			if ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) != direction)
 				continue;
 
-			if ((mapElement->properties.track.sequence & 0xF) != trackBlock[i].var_00)
+			if ((mapElement->properties.track.sequence & 0xF) != trackBlock[i].index)
 				continue;
 
 			if (type == mapElement->properties.track.type) {

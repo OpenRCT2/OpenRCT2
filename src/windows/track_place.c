@@ -130,7 +130,7 @@ static void window_track_place_draw_mini_preview()
 	int i, rotation, pass, x, y, pixelX, pixelY, originX, originY, minX, minY, maxX, maxY;
 	rct_maze_element *mazeElement;
 	rct_track_element *trackElement;
-	rct_preview_track *trackBlock;
+	const rct_preview_track *trackBlock;
 
 	window_track_place_clear_mini_preview();
 
@@ -163,8 +163,8 @@ static void window_track_place_draw_mini_preview()
 				colour = RCT2_ADDRESS(0x0099BA64, uint8)[trackType * 16] & 0x10 ? 222 : 218;
 
 				// Follow a single track piece shape
-				trackBlock = RCT2_ADDRESS(0x00994638, rct_preview_track*)[trackType];
-				while (trackBlock->var_00 != 255) {
+				trackBlock = TrackBlocks[trackType];
+				while (trackBlock->index != 255) {
 					x = originX;
 					y = originY;
 					
