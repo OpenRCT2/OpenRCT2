@@ -20,23 +20,25 @@
 
 #include "../addresses.h"
 #include "../audio/audio.h"
+#include "../cheats.h"
 #include "../config.h"
 #include "../game.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
+#include "../management/finance.h"
 #include "../platform/platform.h"
 #include "../rct1.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
+#include "../world/map_animation.h"
 #include "../world/park.h"
 #include "../world/scenery.h"
 #include "../world/footpath.h"
 #include "../windows/error.h"
-#include "ride_ratings.h"
 #include "ride.h"
+#include "ride_ratings.h"
 #include "track.h"
 #include "track_data.h"
-#include "../rct1.h"
 
 /**
  *
@@ -3170,7 +3172,7 @@ int install_track(char* source_path, char* dest_name){
 }
 
 /* rct2: 0x006D13FE */
-void game_command_place_track(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp){
+void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp){
 	int x = *eax;
 	int y = *ecx;
 	int z = *edi;
@@ -3438,4 +3440,22 @@ rct_preview_track *get_track_def_from_ride(rct_ride *ride, int trackType)
 rct_preview_track *get_track_def_from_ride_index(int rideIndex, int trackType)
 {
 	return get_track_def_from_ride(GET_RIDE(rideIndex), trackType);
+}
+
+/**
+ *
+ *  rct2: 0x006C511D
+ */
+void game_command_place_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	RCT2_CALLFUNC_X(0x006C511D, eax, ebx, ecx, edx, esi, edi, ebp);
+}
+
+/**
+ *
+ *  rct2: 0x006C5B69
+ */
+void game_command_remove_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	RCT2_CALLFUNC_X(0x006C5B69, eax, ebx, ecx, edx, esi, edi, ebp);
 }
