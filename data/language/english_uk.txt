@@ -525,9 +525,9 @@ STR_0520    :A dock platform where guests can drive/row personal watercraft on a
 STR_0521    :A fast and twisting roller coaster with tight turns and steep drops. Intensity is bound to be high.
 STR_0522    :A smaller roller coaster where the riders sit above the track with no car around them
 STR_0523    :Riders travel slowly in powered vehicles along a track-based route
-STR_0524    :
+STR_0524    :Freefall car is pneumatically launched up a tall steel tower and then allowed to freefall down
 STR_0525    :Riders career down a twisting track guided only by the curvature and banking of the semi-circular track
-STR_0526    :Freefall car is pneumatically launched up a tall steel tower and then allowed to freefall down
+STR_0526    :Passengers travel in a rotating observation cabin which travels up a tall tower
 STR_0527    :A smooth steel-tracked roller coaster capable of vertical loops
 STR_0528    :Riders travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
 STR_0529    :Mine train themed roller coaster trains career along steel roller coaster track made to look like old railway track
