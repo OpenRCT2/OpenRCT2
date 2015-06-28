@@ -2747,13 +2747,13 @@ void map_reorganise_elements()
 	}
 
 	rct_map_element **tile = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*);
-	for (int i = 0; i < 0x10000;){
-		for (int j = 0; j < 256; ++j, ++i){
-			rct_map_element* startElement = tile[i];
-			rct_map_element* endElement = startElement;
+	for (int y = 0; y < 256; y++) {
+		for (int x = 0; x < 256; x++) {
+			rct_map_element *startElement = map_get_first_element_at(x, y);
+			rct_map_element *endElement = startElement;
 			while (!map_element_is_last_for_tile(endElement++));
 
-			uint8 num_bytes = endElement - startElement;
+			uint8 num_bytes = (endElement - startElement) * sizeof(rct_map_element);
 			memcpy(new_elements_pointer, startElement, num_bytes);
 			new_elements_pointer += num_bytes / sizeof(rct_map_element);
 		}
