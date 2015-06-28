@@ -131,6 +131,7 @@ void draw_string_centred_raw(rct_drawpixelinfo *dpi, int x, int y, int numLines,
 void gfx_draw_string_right(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
 void draw_string_right_underline(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
 int string_get_height_raw(char *buffer);
+void sub_6C1F57(rct_drawpixelinfo *dpi, int x, int y, int width, int colour, rct_string_id format, void *args, int ticks);
 
 // rain
 void update_rain_animation();
