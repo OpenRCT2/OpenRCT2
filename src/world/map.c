@@ -2637,7 +2637,17 @@ int map_get_station(rct_map_element *mapElement)
  */
 void map_element_remove(rct_map_element *mapElement)
 {
-	RCT2_CALLPROC_X(0x0068B280, 0, 0, 0, 0, (int)mapElement, 0, 0);
+	if (!map_element_is_last_for_tile(mapElement)){
+		do{
+			*mapElement = *(mapElement + 1);
+		} while (!map_element_is_last_for_tile(++mapElement));
+	}
+	(mapElement - 1)->flags |= MAP_ELEMENT_FLAG_LAST_TILE;
+	mapElement->base_height = 0xFF;
+
+	if ((mapElement + 1) == RCT2_GLOBAL(0x00140E9A4, rct_map_element*)){
+		RCT2_GLOBAL(0x00140E9A4, rct_map_element*)--;
+	}
 }
 
 /**
