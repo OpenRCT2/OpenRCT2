@@ -46,11 +46,11 @@ static rct_widget window_track_list_widgets[] = {
 	{ WWT_FRAME,			0,	0,		599,	0,		399,	0xFFFFFFFF,				STR_NONE								},
 	{ WWT_CAPTION,			0,	1,		598,	1,		14,		STR_SELECT_DESIGN,		STR_WINDOW_TITLE_TIP					},
 	{ WWT_CLOSEBOX,			0,	587,	597,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP					},
-	{ WWT_SCROLL,			0,	4,		221,	18,		395,	2,						STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP		},
+	{ WWT_SCROLL,			0,	4,		221,	33,		395,	2,						STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP		},
 	{ WWT_FLATBTN,			0,	224,	595,	18,		236,	0xFFFFFFFF,				STR_NONE								},
 	{ WWT_FLATBTN,			0,	574,	597,	374,	397,	5169,					STR_ROTATE_90_TIP						},
 	{ WWT_FLATBTN,			0,	574,	597,	350,	373,	5171,					STR_TOGGLE_SCENERY_TIP					},
-	{ WWT_FLATBTN,			0,	574,	597,	326,	349,	SPR_PREVIOUS,			STR_SELECT_OTHER_RIDE					},
+	{ WWT_13,				0,	4,		221,	18,		29,		STR_SELECT_OTHER_RIDE,	STR_NONE								},
 	{ WIDGETS_END },
 };
 
@@ -382,7 +382,6 @@ static void window_track_list_invalidate()
 		w->disabled_widgets &= ~(1 << WIDX_TRACK_PREVIEW);
 		window_track_list_widgets[WIDX_ROTATE].type = WWT_FLATBTN;
 		window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WWT_FLATBTN;
-		window_track_list_widgets[WIDX_BACK].type = WWT_FLATBTN;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) == 0)
 			w->pressed_widgets |= (1 << WIDX_TOGGLE_SCENERY);
 		else
@@ -392,7 +391,6 @@ static void window_track_list_invalidate()
 		w->disabled_widgets |= (1 << WIDX_TRACK_PREVIEW);
 		window_track_list_widgets[WIDX_ROTATE].type = WWT_EMPTY;
 		window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WWT_EMPTY;
-		window_track_list_widgets[WIDX_BACK].type = WWT_EMPTY;
 	}
 }
 
