@@ -278,6 +278,10 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
 				);
 			}
 		} else {
+			//When no rides available, don't show the list
+			if (window_new_campaign_rides[0] == 255)
+				break;
+
 			int numItems = 0;
 			for (int i = 0; i < 40; i++) {
 				if (window_new_campaign_rides[i] == 255)
