@@ -902,3 +902,77 @@ void sprite_remove(rct_sprite *sprite)
 {
 	RCT2_CALLPROC_X(0x0069EDB6, 0, 0, 0, 0, (int)sprite, 0, 0);
 }
+
+static bool litter_can_be_at(int x, int y, int z)
+{
+	rct_map_element *mapElement;
+
+	if (!map_is_location_owned(x & 0xFFE0, y & 0xFFE0, z))
+		return false;
+
+	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+			continue;
+
+		int pathZ = mapElement->base_height * 8;
+		if (pathZ < z || pathZ >= z + 32)
+			continue;
+
+		if (map_element_is_underground(mapElement))
+			return false;
+
+		return true;
+	} while (!map_element_is_last_for_tile(mapElement++));
+	return false;
+}
+
+/**
+ *
+ *  rct2: 0x0067375D
+ */
+void litter_create(int x, int y, int z, int direction, int type)
+{
+	rct_litter *litter, *newestLitter;
+	uint16 spriteIndex, nextSpriteIndex;
+	uint32 newestLitterCreationTick;
+
+	x += TileDirectionDelta[direction].x / 8;
+	y += TileDirectionDelta[direction].y / 8;
+
+	if (!litter_can_be_at(x, y, z))
+		return;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_LITTER, uint16) >= 500) {
+		newestLitter = NULL;
+		newestLitterCreationTick = 0;
+		for (spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_LITTER, uint16); spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
+			litter = &(g_sprite_list[spriteIndex].litter);
+			nextSpriteIndex = litter->next;
+			if (newestLitterCreationTick <= litter->creationTick) {
+				newestLitterCreationTick = litter->creationTick;
+				newestLitter = litter;
+			}
+		}
+
+		if (newestLitter != NULL) {
+			sub_6EC60B((rct_sprite*)newestLitter);
+			sprite_remove((rct_sprite*)newestLitter);
+		}
+	}
+
+	litter = (rct_litter*)create_sprite(1);
+	if (litter == NULL)
+		return;
+
+	move_sprite_to_list((rct_sprite*)litter, SPRITE_LINKEDLIST_OFFSET_LITTER);
+	litter->sprite_direction = direction;
+	litter->sprite_width = 6;
+	litter->sprite_height_negative = 6;
+	litter->sprite_height_positive = 3;
+	litter->sprite_identifier = SPRITE_IDENTIFIER_LITTER;
+	litter->type = type;
+	sprite_move(x, y, z, (rct_sprite*)litter);
+	sub_6EC60B((rct_sprite*)litter);
+	litter->creationTick = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
+}

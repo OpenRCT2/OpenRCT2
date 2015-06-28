@@ -344,10 +344,9 @@ int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep
 	peep->var_45 |= (1 << 2);
 
 	// Create sick at location
-	RCT2_CALLPROC_X(0x67375D, peep->x, peep->sprite_direction, peep->y, peep->z, 0, 0, peep->sprite_index & 1);
+	litter_create(peep->x, peep->y, peep->z, peep->sprite_direction, peep->sprite_index & 1);
 
-	int sound_id = (scenario_rand() & 3) + 24;
-
+	int sound_id = SOUND_COUGH_1 + (scenario_rand() & 3);
 	sound_play_panned(sound_id, 0x8001, peep->x, peep->y, peep->z);
 
 	invalidate_sprite((rct_sprite*)peep);
@@ -3485,7 +3484,7 @@ static void peep_update_using_bin(rct_peep* peep){
 			x = peep->x + (scenario_rand() & 7) - 3;
 			y = peep->y + (scenario_rand() & 7) - 3;
 
-			RCT2_CALLPROC_X(0x67375D, x, scenario_rand() & 3, y, peep->z, 0, 0, bp);
+			litter_create(x, y, peep->z, scenario_rand() & 3, bp);
 			peep->item_standard_flags &= ~(1 << cur_container);
 			peep->var_45 |= 8;
 
@@ -3516,7 +3515,7 @@ static void peep_update_using_bin(rct_peep* peep){
 			x = peep->x + (scenario_rand() & 7) - 3;
 			y = peep->y + (scenario_rand() & 7) - 3;
 
-			RCT2_CALLPROC_X(0x67375D, x, scenario_rand() & 3, y, peep->z, 0, 0, bp);
+			litter_create(x, y, peep->z, scenario_rand() & 3, bp);
 			peep->item_extra_flags &= ~(1 << cur_container);
 			peep->var_45 |= 8;
 
@@ -4021,7 +4020,7 @@ static void peep_update_walking(rct_peep* peep){
 				int y = peep->y + (scenario_rand() & 0x7) - 3;
 				int direction = (scenario_rand() & 0x3);
 
-				RCT2_CALLPROC_X(0x67375D, x, direction, y, peep->z, 0, 0, ebp);
+				litter_create(x, y, peep->z, direction, ebp);
 			}
 		}
 	}
@@ -4053,7 +4052,7 @@ static void peep_update_walking(rct_peep* peep){
 			int y = peep->y + (scenario_rand() & 0x7) - 3;
 			int direction = (scenario_rand() & 0x3);
 
-			RCT2_CALLPROC_X(0x67375D, x, direction, y, peep->z, 0, 0, bp);
+			litter_create(x, y, peep->z, direction, bp);
 		}
 	}
 

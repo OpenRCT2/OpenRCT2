@@ -615,6 +615,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 {
 	int i, countA, countB;
 	rct_ride *ride, *otherRide;
+	char *bufferA, *bufferB;
 
 	countA = countB = 0;
 	FOR_ALL_RIDES(i, ride) {
@@ -644,13 +645,13 @@ static void window_ride_list_refresh_list(rct_window *w)
 		int current_list_position = list_index;
 		switch (w->list_information_type) {
 		case INFORMATION_TYPE_STATUS:
-			RCT2_GLOBAL(0x013CE952, uint32) = ride->name_arguments;
-			RCT2_CALLPROC_X(0x006C2538, ride->name, 0, 0x013CE952, 0, 0, RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, 0);
+			bufferA = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
+			bufferB = (char*)0x0141EF68;
+			format_string_to_upper(bufferA, ride->name, &ride->name_arguments);
 			while (--current_list_position >= 0) {
 				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
-				RCT2_GLOBAL(0x013CE952, uint32) = otherRide->name_arguments;
-				RCT2_CALLPROC_X(0x006C2538, otherRide->name, 0, 0x013CE952, 0, 0, 0x0141EF68, 0);
-				if (strcmp((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68) >= 0)
+				format_string_to_upper(bufferB, otherRide->name, &otherRide->name_arguments);
+				if (strcmp(bufferA, bufferB) >= 0)
 					break;
 
 				window_bubble_list_item(w, current_list_position);

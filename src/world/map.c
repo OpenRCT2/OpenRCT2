@@ -3095,3 +3095,13 @@ int map_get_highest_z(int tileX, int tileY)
 	z = max(z, (mapElement->properties.surface.terrain & 0x1F) * 16);
 	return z;
 }
+
+bool map_element_is_underground(rct_map_element *mapElement)
+{
+	do {
+		mapElement++;
+		if (map_element_is_last_for_tile(mapElement - 1))
+			return false;
+	} while (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SURFACE);
+	return true;
+}

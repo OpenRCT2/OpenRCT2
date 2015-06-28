@@ -267,8 +267,8 @@ int calculate_park_rating()
 		for (sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_LITTER, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = litter->next) {
 			litter = &(g_sprite_list[sprite_idx].litter);
 
-			// Guessing this eliminates recently dropped litter
-			if (litter->var_24 - RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) >= 7680)
+			// Ignore recently dropped litter
+			if (litter->creationTick - RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) >= 7680)
 				num_litter++;
 		}
 		result -= 600 - (4 * (150 - min(150, num_litter)));

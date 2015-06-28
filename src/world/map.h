@@ -334,4 +334,6 @@ void sub_6A7594();
 int map_element_get_banner_index(rct_map_element *mapElement);
 void map_element_remove_banner_entry(rct_map_element *mapElement);
 
+bool map_element_is_underground(rct_map_element *mapElement);
+
 #endif
