@@ -586,7 +586,7 @@ static void window_ride_construction_close()
 		int eax = RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8);
 
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = 0;
-		game_do_command(0, 9, 0, rideIndex, GAME_COMMAND_7, 0, 0);
+		game_do_command(0, 9, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
 
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = eax;
 	}

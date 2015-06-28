@@ -1491,7 +1491,7 @@ int track_place_maze(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 	}
 
 	if (RCT2_GLOBAL(0x00F440D4, uint8) == 6){
-		game_do_command(0, 0x69, 0, rideIndex, GAME_COMMAND_7, 0, 0);
+		game_do_command(0, 0x69, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
 	}
 
 	RCT2_GLOBAL(0x00F44142, sint16) = x;
@@ -3242,7 +3242,7 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 	if (cost == MONEY32_UNDEFINED || 
 		!(flags & GAME_COMMAND_FLAG_APPLY)){
 		rct_string_id error_reason = RCT2_GLOBAL(0x00141E9AC, rct_string_id);
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, rideIndex, GAME_COMMAND_7, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
 		*ebx = cost;
 		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = error_reason;
 		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 0;

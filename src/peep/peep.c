@@ -163,7 +163,7 @@ void sub_693B58(rct_peep* peep){
 }
 
 /* 0x00693BE5 */
-static void sub_693BE5(rct_peep* peep, uint8 al){
+void sub_693BE5(rct_peep* peep, uint8 al){
 	if (al == peep->var_6D)return;
 
 	peep->var_6D = al;
