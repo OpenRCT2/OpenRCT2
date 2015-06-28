@@ -2759,7 +2759,7 @@ void map_reorganise_elements()
 		}
 	}
 
-	uint32 num_elements = (new_elements_pointer - new_map_elements) / sizeof(rct_map_element);
+	uint32 num_elements = (new_elements_pointer - new_map_elements);
 	memcpy(RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element), new_map_elements, num_elements * sizeof(rct_map_element));
 	memset(new_map_elements + num_elements, 0, (0x30000 - num_elements) * sizeof(rct_map_element));
 
