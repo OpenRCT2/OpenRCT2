@@ -44,6 +44,7 @@ static int peep_should_find_bench(rct_peep* peep);
 static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type);
 static void sub_693BAB(rct_peep* peep);
 static void peep_spend_money(rct_peep *peep, money32 amount);
+static void peep_give_real_name(rct_peep *peep);
 
 const char *gPeepEasterEggNames[] = {
 	"MICHAEL SCHUMACHER",
@@ -4783,9 +4784,9 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->energy_growth_rate = energy;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SHOW_REAL_GUEST_NAMES){
-		RCT2_CALLPROC_X(0x0069C483, 0, 0, 0, 0, (int)peep, 0, 0);
+		peep_give_real_name(peep);
 	}
-	RCT2_CALLPROC_X(0x00699115, 0, 0, 0, 0, (int)peep, 0, 0);
+	peep_update_name_sort(peep);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)++;
 
@@ -5331,4 +5332,64 @@ static void peep_spend_money(rct_peep *peep, money32 amount)
 	finance_payment(-amount, RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint32));
 
 	sound_play_panned(SOUND_PURCHASE, 0x8001, peep->x, peep->y, peep->z);
+}
+
+/**
+ * 
+ *  rct2: 0x0069C483
+ */
+static void peep_give_real_name(rct_peep *peep)
+{
+	RCT2_CALLPROC_X(0x0069C483, 0, 0, 0, 0, (int)peep, 0, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x00699115
+ */
+void peep_update_name_sort(rct_peep *peep)
+{
+	RCT2_CALLPROC_X(0x00699115, 0, 0, 0, 0, (int)peep, 0, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x0069926C
+ */
+void peep_update_names(bool realNames)
+{
+	rct_peep *peep;
+	uint16 spriteIndex;
+	bool restart;
+
+	if (realNames) {
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+		do {
+			restart = false;
+			FOR_ALL_GUESTS(spriteIndex, peep) {
+				if (peep->name_string_idx == 767) {
+					peep_give_real_name(peep);
+					peep_update_name_sort(peep);
+					restart = true;
+				}
+			}
+		} while (restart);
+		gfx_invalidate_screen();
+	} else {
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+		do {
+			restart = false;
+			FOR_ALL_GUESTS(spriteIndex, peep) {
+				if (peep->name_string_idx < 0xA000)
+					continue;
+				if (peep->name_string_idx >= 0xE000)
+					continue;
+
+				peep->name_string_idx = 767;
+				peep_update_name_sort(peep);
+				restart = true;
+			}
+		} while (restart);
+		gfx_invalidate_screen();
+	}
 }
