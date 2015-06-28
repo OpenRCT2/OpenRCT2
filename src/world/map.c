@@ -35,6 +35,7 @@
 #include "scenery.h"
 #include "../cheats.h"
 #include "../config.h"
+#include "../cursors.h"
 
 const rct_xy16 TileDirectionDelta[] = {
 	{ -32,   0 },
@@ -2637,7 +2638,17 @@ int map_get_station(rct_map_element *mapElement)
  */
 void map_element_remove(rct_map_element *mapElement)
 {
-	RCT2_CALLPROC_X(0x0068B280, 0, 0, 0, 0, (int)mapElement, 0, 0);
+	if (!map_element_is_last_for_tile(mapElement)){
+		do{
+			*mapElement = *(mapElement + 1);
+		} while (!map_element_is_last_for_tile(++mapElement));
+	}
+	(mapElement - 1)->flags |= MAP_ELEMENT_FLAG_LAST_TILE;
+	mapElement->base_height = 0xFF;
+
+	if ((mapElement + 1) == RCT2_GLOBAL(0x00140E9A4, rct_map_element*)){
+		RCT2_GLOBAL(0x00140E9A4, rct_map_element*)--;
+	}
 }
 
 /**
@@ -2725,7 +2736,36 @@ void map_invalidate_selection_rect()
  */
 void map_reorganise_elements()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0068B111);
+	platform_set_cursor(CURSOR_ZZZ);
+
+	rct_map_element* new_map_elements = rct2_malloc(0x30000 * sizeof(rct_map_element));
+	rct_map_element* new_elements_pointer = new_map_elements;
+
+	if (new_map_elements == NULL || new_map_elements == (rct_map_element*)-1){
+		error_string_quit(4370, 0xFFFF);
+		return;
+	}
+
+	rct_map_element **tile = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*);
+	for (int i = 0; i < 0x10000;){
+		for (int j = 0; j < 256; ++j, ++i){
+			rct_map_element* startElement = tile[i];
+			rct_map_element* endElement = startElement;
+			while (!map_element_is_last_for_tile(endElement++));
+
+			uint8 num_bytes = endElement - startElement;
+			memcpy(new_elements_pointer, startElement, num_bytes);
+			new_elements_pointer += num_bytes / sizeof(rct_map_element);
+		}
+	}
+
+	uint32 num_elements = (new_elements_pointer - new_map_elements) / sizeof(rct_map_element);
+	memcpy(RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element), new_map_elements, num_elements * sizeof(rct_map_element));
+	memset(new_map_elements + num_elements, 0, (0x30000 - num_elements) * sizeof(rct_map_element));
+
+	rct2_free(new_map_elements);
+
+	map_update_tile_pointers();
 }
 
 /**
@@ -2734,7 +2774,23 @@ void map_reorganise_elements()
  */
 int sub_68B044()
 {
-	return (RCT2_CALLPROC_X(0x0068B044, 0, 0, 0, 0, 0, 0, 0) & 0x100) == 0;
+	if (RCT2_GLOBAL(0x00140E9A4, rct_map_element*) <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
+		return 1;
+
+	for (int i = 1000; i != 0; --i)
+		sub_68B089();
+
+	if (RCT2_GLOBAL(0x00140E9A4, rct_map_element*) <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
+		return 1;
+
+	map_reorganise_elements();
+
+	if (RCT2_GLOBAL(0x00140E9A4, rct_map_element*) <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
+		return 1;
+	else{
+		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 894;
+		return 0;
+	}
 }
 
 /**

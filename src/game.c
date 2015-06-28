@@ -870,7 +870,7 @@ void rct2_exit_reason(rct_string_id title, rct_string_id body){
  */
 void rct2_exit()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006E3879);
+	audio_close();
 	//Post quit message does not work in 0x6e3879 as its windows only.
 	openrct2_finish();
 }
@@ -892,7 +892,7 @@ void game_load_or_quit_no_save_prompt()
 		game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 		tool_cancel();
 		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_5) {
-			RCT2_CALLPROC_EBPSAFE(0x0040705E);
+			// RCT2_CALLPROC_EBPSAFE(0x0040705E); Function not required resets cursor position.
 			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_5;
 		}
 		gGameSpeed = 1;
