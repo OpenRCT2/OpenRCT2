@@ -230,13 +230,13 @@ static void shortcut_remove_vertical_land_toggle()
 
 static void shortcut_remove_top_bottom_toolbar_toggle()
 {
-	toggle_view_flag(VIEWPORT_FLAG_HIDE_TOP_BOTTOM_TOOLBAR);
-
-	if (window_get_main()->viewport->flags & VIEWPORT_FLAG_HIDE_TOP_BOTTOM_TOOLBAR){
+	if (window_find_by_class(WC_TOP_TOOLBAR) != NULL)
+	{
 		window_close(window_find_by_class(WC_TOP_TOOLBAR));
 		window_close(window_find_by_class(WC_BOTTOM_TOOLBAR));
 	}
-	else {
+	else
+	{
 		window_top_toolbar_open();
 		window_game_bottom_toolbar_open();
 	}
