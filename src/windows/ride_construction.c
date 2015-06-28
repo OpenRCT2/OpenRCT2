@@ -458,7 +458,7 @@ static void window_ride_construction_draw_track_piece(
 );
 static void window_ride_construction_update_enabled_track_pieces();
 void sub_6C94D8();
-static bool sub_6CA2DF(int *trackType, int *trackDirection, int *rideIndex, int *edxRS16, int *x, int *y, int *z, int *seatRotation);
+static bool sub_6CA2DF(int *trackType, int *trackDirection, int *rideIndex, int *edxRS16, int *x, int *y, int *z, int *properties);
 static void sub_6CBCE2(
 	int rideIndex, int trackType, int trackDirection, int edx,
 	int originX, int originY, int originZ
@@ -1561,13 +1561,13 @@ static void window_ride_construction_dropdown()
  */
 static void window_ride_construction_construct(rct_window *w)
 {
-	int trackType, trackDirection, rideIndex, edxRS16, x, y, z, seatRotation;
+	int trackType, trackDirection, rideIndex, edxRS16, x, y, z, properties;
 	track_begin_end trackBeginEnd;
 
 	_currentTrackPrice = MONEY32_UNDEFINED;
 	RCT2_GLOBAL(0x00F44074, money32) = MONEY32_UNDEFINED;
 	sub_6C9627();
-	if (sub_6CA2DF(&trackType, &trackDirection, &rideIndex, &edxRS16, &x, &y, &z, &seatRotation)) {
+	if (sub_6CA2DF(&trackType, &trackDirection, &rideIndex, &edxRS16, &x, &y, &z, &properties)) {
 		sub_6C84CE();
 		return;
 	}
@@ -1579,7 +1579,7 @@ static void window_ride_construction_construct(rct_window *w)
 		y,
 		rideIndex | (trackType << 8) | (edxRS16 << 16),
 		GAME_COMMAND_PLACE_TRACK,
-		z | (seatRotation << 28),
+		z | (properties << 16),
 		0
 	);
 	if (RCT2_GLOBAL(0x00F44074, money32) == MONEY32_UNDEFINED) {
@@ -2310,7 +2310,7 @@ void sub_6C84CE()
  * dh: trackType (out)
  * edx >> 16: ??? (out)
  */
-static bool sub_6CA2DF(int *trackType, int *trackDirection, int *rideIndex, int *edxRS16, int *x, int *y, int *z, int *seatRotation)
+static bool sub_6CA2DF(int *trackType, int *trackDirection, int *rideIndex, int *edxRS16, int *x, int *y, int *z, int *properties)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	if (RCT2_CALLFUNC_X(0x006CA2DF, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp) & 0x100)
@@ -2323,7 +2323,7 @@ static bool sub_6CA2DF(int *trackType, int *trackDirection, int *rideIndex, int 
 	if (x != NULL) *x = eax & 0xFFFF;
 	if (y != NULL) *y = ecx & 0xFFFF;
 	if (z != NULL) *z = edi & 0xFFFF;
-	if (seatRotation != NULL) *seatRotation = (edi >> 28) & 0xF;
+	if (properties != NULL) *properties = (edi >> 16) & 0xFFFF;
 	return false;
 }
 
@@ -3367,13 +3367,13 @@ static void ride_construction_toolupdate_entrance_exit(int screenX, int screenY)
  */
 static void ride_construction_tooldown_construct(int screenX, int screenY)
 {
-	int trackType, trackDirection, rideIndex, edxRS16, x, y, z, seatRotation, highestZ;
+	int trackType, trackDirection, rideIndex, edxRS16, x, y, z, properties, highestZ;
 	rct_window *w;
 
 	map_invalidate_map_selection_tiles();
 	sub_6C9627();
 
-	if (sub_6CA2DF(&trackType, &trackDirection, &rideIndex, &edxRS16, &x, &y, &z, &seatRotation))
+	if (sub_6CA2DF(&trackType, &trackDirection, &rideIndex, &edxRS16, &x, &y, &z, &properties))
 		return;
 
 	_currentTrackPieceType = trackType;
