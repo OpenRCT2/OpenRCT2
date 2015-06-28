@@ -515,7 +515,7 @@ static void cheat_fix_rides()
 				remove_peep_from_ride(mechanic);
 			}
 
-			RCT2_CALLPROC_X(0x006B7481, 0, 0, 0, rideIndex, 0, 0, 0);
+			ride_fix_breakdown(rideIndex, 0);
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 		}
 	}

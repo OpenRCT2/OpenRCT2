@@ -23,6 +23,7 @@
 #include "../audio/mixer.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../management/finance.h"
 #include "../management/news_item.h"
 #include "../ride/ride.h"
 #include "../scenario.h"
@@ -42,6 +43,7 @@ static int peep_empty_container_extra_flag(rct_peep* peep);
 static int peep_should_find_bench(rct_peep* peep);
 static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type);
 static void sub_693BAB(rct_peep* peep);
+static void peep_spend_money(rct_peep *peep, money32 amount);
 
 const char *gPeepEasterEggNames[] = {
 	"MICHAEL SCHUMACHER",
@@ -1368,8 +1370,7 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ri
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 20;
 			RCT2_GLOBAL(0xF1AEC0, uint32) = 230;
-
-			RCT2_CALLPROC_X(0x0069926C, 0, ride->price, 0, 0, (int)peep, 0, 0);
+			peep_spend_money(peep, ride->price);
 		}
 	}
 
@@ -5310,3 +5311,24 @@ void sub_693BAB(rct_peep* peep) {
 	}
 }
 
+/**
+ * 
+ *  rct2: 0x0069926C
+ */
+static void peep_spend_money(rct_peep *peep, money32 amount)
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+		return;
+
+	peep->cash_in_pocket = max(0, peep->cash_in_pocket - amount);
+	peep->cash_spent += amount;
+	if (RCT2_GLOBAL(0x00F1AEC0, uint32) == 0xFFFFFFFF) {
+		RCT2_GLOBAL(peep + RCT2_GLOBAL(0x00F1AEC0, uint32), money16) += (money16)amount;
+	}
+	window_invalidate_by_number(WC_PEEP, peep->sprite_index);
+
+	RCT2_GLOBAL(0x00141F568, uint8) = RCT2_GLOBAL(0x0013CA740, uint8);
+	finance_payment(-amount, RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint32));
+
+	sound_play_panned(SOUND_PURCHASE, 0x8001, peep->x, peep->y, peep->z);
+}

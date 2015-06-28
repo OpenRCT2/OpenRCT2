@@ -935,5 +935,6 @@ bool ride_select_forwards_from_back();
 money32 ride_remove_track_piece(int x, int y, int z, int direction, int type);
 
 bool ride_are_all_possible_entrances_and_exits_built(rct_ride *ride);
+void ride_fix_breakdown(int rideIndex, int reliabilityIncreaseFactor);
 
 #endif

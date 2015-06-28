@@ -4974,3 +4974,36 @@ static void sub_6B59C6(int rideIndex)
 	}
 	window_invalidate_by_number(WC_RIDE, rideIndex);
 }
+
+/**
+ *
+ * rct2: 0x006B7481
+ */
+void ride_fix_breakdown(int rideIndex, int reliabilityIncreaseFactor)
+{
+	rct_ride *ride = GET_RIDE(rideIndex);
+
+	ride->lifecycle_flags &= ~RIDE_LIFECYCLE_BREAKDOWN_PENDING;
+	ride->lifecycle_flags &= ~RIDE_LIFECYCLE_BROKEN_DOWN;
+	ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) {
+		rct_vehicle *vehicle;
+		uint16 spriteIndex;
+
+		for (int i = 0; i < ride->num_vehicles; i++) {
+			spriteIndex = ride->vehicles[i];
+			while (spriteIndex != SPRITE_INDEX_NULL) {
+				vehicle = &(g_sprite_list[spriteIndex].vehicle);
+				vehicle->var_48 &= ~(1 << 7);
+				vehicle->var_48 &= ~(1 << 8);
+				vehicle->var_48 &= ~(1 << 9);
+				spriteIndex = vehicle->next_vehicle_on_train;
+			}
+		}
+	}
+
+	uint8 unreliability = 100 - ((ride->reliability >> 8) & 0xFF);
+	ride->reliability += reliabilityIncreaseFactor * (unreliability / 2);
+}
