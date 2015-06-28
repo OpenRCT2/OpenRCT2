@@ -179,6 +179,26 @@ int ride_get_count()
 	return count;
 }
 
+int ride_get_count_by_classification(uint8 rideClassification)
+{
+
+	rct_ride *ride;
+	int i, count = 0;
+
+	FOR_ALL_RIDES(i, ride)
+	{
+		if (rideClassification == RIDE_CLASS_RIDE &&
+			!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_SELLS_DRINKS | RIDE_TYPE_FLAG_IS_BATHROOM))
+			count++;
+
+		if (rideClassification == RIDE_CLASS_SHOP_OR_STALL &&
+			ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_SELLS_DRINKS))
+			count++;
+	}
+
+	return count;
+}
+
 int ride_get_total_queue_length(rct_ride *ride)
 {
 	int i, queueLength = 0;

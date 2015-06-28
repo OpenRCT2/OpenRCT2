@@ -1217,6 +1217,15 @@ static void window_finances_marketing_invalidate()
 		if (gMarketingCampaignDaysLeft[i] != 0)
 			continue;
 
+		//Don't show campaign when no items (rides or stalls) available
+		if ((i == ADVERTISING_CAMPAIGN_RIDE || i == ADVERTISING_CAMPAIGN_RIDE_FREE) &&
+			ride_get_count_by_classification(RIDE_CLASS_RIDE) == 0)
+			continue;
+
+		if (i == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE &&
+			ride_get_count_by_classification(RIDE_CLASS_SHOP_OR_STALL) == 0)
+			continue;
+
 		campaginButton->type = WWT_DROPDOWN_BUTTON;
 		campaginButton->top = y;
 		campaginButton->bottom = y + 11;
@@ -1302,6 +1311,15 @@ static void window_finances_marketing_paint()
 		}
 
 		if (gMarketingCampaignDaysLeft[i] != 0)
+			continue;
+
+		//Don't show campaign when no items (rides or stalls) available
+		if ((i == ADVERTISING_CAMPAIGN_RIDE || i == ADVERTISING_CAMPAIGN_RIDE_FREE) &&
+			ride_get_count_by_classification(RIDE_CLASS_RIDE) == 0)
+			continue;
+
+		if (i == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE &&
+			ride_get_count_by_classification(RIDE_CLASS_SHOP_OR_STALL) == 0)
 			continue;
 
 		money32 pricePerWeek = AdvertisingCampaignPricePerWeek[i];

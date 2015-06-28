@@ -839,6 +839,7 @@ extern const uint8 gRideClassifications[255];
 #define _currentSeatRotationAngle					RCT2_GLOBAL(0x00F440CF, uint8)
 
 int ride_get_count();
+int ride_get_count_by_classification(uint8 rideClassification);
 int ride_get_total_queue_length(rct_ride *ride);
 int ride_get_max_queue_time(rct_ride *ride);
 void ride_init_all();
