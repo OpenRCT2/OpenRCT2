@@ -42,7 +42,7 @@ STR_0040    :Bewegingssimulator
 STR_0041    :3D-bioscoop
 STR_0042    :Topspin
 STR_0043    :Ruimteringen
-STR_0044    :Omgekeerde vrijevalachtbaan
+STR_0044    :Achterwaartsevrijevalachtbaan
 STR_0045    :Lift
 STR_0046    :Verticale achtbaan
 STR_0047    :Geldautomaat
@@ -51,7 +51,7 @@ STR_0049    :Spookhuis
 STR_0050    :Eerste hulp
 STR_0051    :Circus
 STR_0052    :Spooktrein
-STR_0053    :Hyper-twisterachtbaan
+STR_0053    :Twisterachtbaan
 STR_0054    :Houten achtbaan
 STR_0055    :Zijfrictie-achtbaan
 STR_0056    :Wilde muis
@@ -522,9 +522,9 @@ STR_0520    :Een aanlegsteiger waar bezoekers in een bootje kunnen gaan om over 
 STR_0521    :Een intense, snelle en kronkelende achtbaan met scherpe bochten en afdalingen.
 STR_0522    :Een kleinere achtbaan waar de passagiers boven de baan en op het karretje zitten.
 STR_0523    :Bezoekers rijden langzaam over een baan in aangedreven karretjes.
-STR_0524    :
+STR_0524    :Een vrijevalwagen wordt pneumatisch langs een hoge stalen toren gelanceerd en gaat daarna in een vrije val weer naar beneden.
 STR_0525    :Passagiers rijden over een kronkelende baan, waarbij ze enkel worden geleid door de ronding en banking van de halfronde baan.
-STR_0526    :Een vrijvalwagen wordt pneumatisch langs een hoge stalen toren gelanceerd en gaat daarna in een vrije val weer naar beneden.
+STR_0526    :Bezoekers gaan in een roterende observatiecabine langs een toren omhoog
 STR_0527    :Een soepele stalen achtbaan die verticale loopings kan maken.
 STR_0528    :Passagiers varen in opblaasboten door een kronkelende halfopen of compleet gesloten glijbaan.
 STR_0529    :Achtbaantreinen in de vorm van een mijntrein razen over stalen achtbaanrails die er uitziet als een oude spoorbaan.
@@ -894,7 +894,7 @@ STR_0892    :Screenshot opgeslagen als '{STRINGID}'
 STR_0893    :Screenshot maken mislukt!
 STR_0894    :"Landscape data area" zit vol!
 STR_0895    :Kan niet gedeeltelijk onder en boven de grond bouwen
-STR_0896    :{POP16}{POP16}{STRINGID} Constructie
+STR_0896    :{POP16}{POP16}Constructie {STRINGID} 
 STR_0897    :Richting
 STR_0898    :{SMALLFONT}{BLACK}Bocht naar links
 STR_0899    :{SMALLFONT}{BLACK}Bocht naar rechts
@@ -903,7 +903,7 @@ STR_0901    :{SMALLFONT}{BLACK}Bocht naar rechts (kleine straal)
 STR_0902    :{SMALLFONT}{BLACK}Bocht naar links (zeer kleine straal)
 STR_0903    :{SMALLFONT}{BLACK}Bocht naar rechts (zeer kleine straal)
 STR_0904    :{SMALLFONT}{BLACK}Bocht naar links (grote straal)
-STR_0905    :{SMALLFONT}{BLACK}Bocht naar rechts (straal)
+STR_0905    :{SMALLFONT}{BLACK}Bocht naar rechts (grote straal)
 STR_0906    :{SMALLFONT}{BLACK}Recht stuk
 STR_0907    :Helling
 STR_0908    :Roll/Banking

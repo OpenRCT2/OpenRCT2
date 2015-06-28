@@ -153,12 +153,20 @@ void map_element_iterator_restart_for_tile(map_element_iterator *it)
 
 rct_map_element *map_get_first_element_at(int x, int y)
 {
-	if (x < 0 || y < 0 || x > 255 || y > 255)
-	{ 
-		log_error("Trying to access element outside of range"); 
+	if (x < 0 || y < 0 || x > 255 || y > 255) { 
+		log_error("Trying to access element outside of range");
 		return NULL;
 	}
 	return TILE_MAP_ELEMENT_POINTER(x + y * 256);
+}
+
+void map_set_tile_elements(int x, int y, rct_map_element *elements)
+{
+	if (x < 0 || y < 0 || x > 255 || y > 255) { 
+		log_error("Trying to access element outside of range");
+		return;
+	}
+	TILE_MAP_ELEMENT_POINTER(x + y * 256) = elements;
 }
 
 int map_element_is_last_for_tile(rct_map_element *element)
@@ -169,6 +177,11 @@ int map_element_is_last_for_tile(rct_map_element *element)
 int map_element_get_type(rct_map_element *element)
 {
 	return element->type & MAP_ELEMENT_TYPE_MASK;
+}
+
+int map_element_get_direction(rct_map_element *element)
+{
+	return element->type & MAP_ELEMENT_DIRECTION_MASK;
 }
 
 int map_element_get_terrain(rct_map_element *element)
@@ -3060,4 +3073,25 @@ static void sub_68AE2A(int x, int y)
 			break;
 		}
 	} 
+}
+
+int map_get_highest_z(int tileX, int tileY)
+{
+	rct_map_element *mapElement;
+	int z;
+
+	mapElement = map_get_surface_element_at(tileX, tileY);
+	if (mapElement == NULL)
+		return -1;
+
+	z = mapElement->base_height * 8;
+
+	// Raise z so that is above highest point of land and water on tile
+	if ((mapElement->properties.surface.slope & 0x0F) != 0)
+		z += 16;
+	if ((mapElement->properties.surface.slope & 0x10) != 0)
+		z += 16;
+
+	z = max(z, (mapElement->properties.surface.terrain & 0x1F) * 16);
+	return z;
 }

@@ -17,6 +17,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
+
 #include "../common.h"
 
 /* size 0x0A */
@@ -31,3 +32,7 @@ typedef struct{
 
 // 0x009968BB, 0x009968BC, 0x009968BD, 0x009968BF, 0x009968C1, 0x009968C3
 extern const rct_track_coordinates TrackCoordinates[256];
+
+extern const uint64 RideTypePossibleTrackConfigurations[91];
+extern const rct_preview_track *TrackBlocks[256];
+extern const rct_preview_track *FlatRideTrackBlocks[255];

@@ -1219,3 +1219,30 @@ int string_get_height_raw(char *buffer)
 
 	return height;
 }
+
+/**
+ *
+ * rct2: 0x006C1F57
+ *
+ * colour   : al
+ * format   : bx
+ * x        : cx
+ * y        : dx
+ * text     : esi
+ * dpi      : edi
+ * width    : bp
+ * ticks    : ebp >> 16
+ */
+void sub_6C1F57(rct_drawpixelinfo *dpi, int x, int y, int width, int colour, rct_string_id format, void *args, int ticks)
+{
+	RCT2_CALLPROC_X(
+		0x006C1F57,
+		colour,
+		format,
+		x,
+		y,
+		(int)args,
+		(int)dpi,
+		(width & 0xFFFF) | (ticks << 16)
+	);
+}

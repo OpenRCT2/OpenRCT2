@@ -3780,3 +3780,5 @@ STR_5443    :Speed{MOVE_X}{87}{STRINGID}
 STR_5444    :Speed:
 STR_5445    :Speed
 STR_5446    :Get
+STR_5447    :Type {STRINGID}
+STR_5448    :Ride / Vehicle {STRINGID}

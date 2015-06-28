@@ -243,6 +243,8 @@ static uint64 window_editor_objective_options_page_hold_down_widgets[] = {
 
 #pragma endregion
 
+static void window_editor_objective_options_update_disabled_widgets(rct_window *w);
+
 /**
  *
  *  rct2: 0x0067137D
@@ -271,7 +273,7 @@ void window_editor_objective_options_open()
 	w->selected_tab = WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN;
 	w->no_list_items = 0;
 	w->selected_list_item = -1;
-	RCT2_CALLPROC_X(0x00672609, 0, 0, 0, 0, (int)w, 0, 0);
+	window_editor_objective_options_update_disabled_widgets(w);
 }
 
 static void window_editor_objective_options_set_pressed_tab(rct_window *w)
@@ -337,7 +339,7 @@ static void window_editor_objective_options_set_page(rct_window *w, int page)
 	w->event_handlers = window_editor_objective_options_page_events[page];
 	w->widgets = window_editor_objective_options_widgets[page];
 	window_invalidate(w);
-	RCT2_CALLPROC_X(0x00672609, 0, 0, 0, 0, (int)w, 0, 0);
+	window_editor_objective_options_update_disabled_widgets(w);
 	window_event_resize_call(w);
 	window_event_invalidate_call(w);
 	window_init_scroll_widgets(w);
@@ -1283,5 +1285,29 @@ static void window_editor_objective_options_rides_scrollpaint()
 
 		// Ride name
 		gfx_draw_string_left(dpi, stringId, &ride->name, 0, 15, y);
+	}
+}
+
+/**
+ *
+ *  rct2: 0x00672609
+ */
+static void window_editor_objective_options_update_disabled_widgets(rct_window *w)
+{
+	rct_ride *ride;
+	int i, numRides;
+
+	// Check if there are any rides (not shops or facilities)
+	numRides = 0;
+	FOR_ALL_RIDES(i, ride) {
+		if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE) {
+			numRides++;
+		}
+	}
+	
+	if (numRides == 0) {
+		w->disabled_widgets &= ~(1 << WIDX_TAB_2);
+	} else {
+		w->disabled_widgets |= (1 << WIDX_TAB_2);
 	}
 }

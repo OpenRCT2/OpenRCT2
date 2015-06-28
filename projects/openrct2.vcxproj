@@ -96,6 +96,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release with Tests|Win32'">
       </ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\src\windows\maze_construction.c" />
     <ClCompile Include="..\test\management\finance_test.c" />
     <ClCompile Include="..\test\ride\ride_ratings_test.c" />
     <ClCompile Include="..\test\tests.c" />

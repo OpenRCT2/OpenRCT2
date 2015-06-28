@@ -65,9 +65,11 @@ Includes all git commit authors. Aliases are GitHub user names.
 
 ## Translation
 * English (UK) - Ted John (IntelOrca), (Tinytimrob)
-* French - (fbourigault)
-* German - (atmaxinger), (Yepoleb)
+* English (US) - Ted John (IntelOrca), Michael Steenbeek (Gymnasiast)
+* French - (fbourigault), Michael Steenbeek (Gymnasiast)
+* German - (danidoedel), (atmaxinger), (Yepoleb)
 * Dutch - Michael Steenbeek (Gymnasiast), (hostbrute), (mrtnptrs), (xzbobzx)
+* Portuguese (BR) - (kaudy)
 * Spanish - (mdtrooper)
 * Swedish - (Jinxit), (mharrys)
 
