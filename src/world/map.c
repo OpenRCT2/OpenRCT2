@@ -2744,7 +2744,23 @@ void map_reorganise_elements()
  */
 int sub_68B044()
 {
-	return (RCT2_CALLPROC_X(0x0068B044, 0, 0, 0, 0, 0, 0, 0) & 0x100) == 0;
+	if (RCT2_GLOBAL(0x00140E9A4, rct_map_element*) <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
+		return 1;
+
+	for (int i = 1000; i != 0; --i)
+		sub_68B089();
+
+	if (RCT2_GLOBAL(0x00140E9A4, rct_map_element*) <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
+		return 1;
+
+	map_reorganise_elements();
+
+	if (RCT2_GLOBAL(0x00140E9A4, rct_map_element*) <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
+		return 1;
+	else{
+		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 894;
+		return 0;
+	}
 }
 
 /**
