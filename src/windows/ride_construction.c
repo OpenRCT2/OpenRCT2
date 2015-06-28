@@ -1094,7 +1094,11 @@ static void window_ride_construction_resize()
 	} else if (
 		(
 			is_track_enabled(TRACK_HELIX_SMALL) ||
-			(_currentTrackCurve != TRACK_CURVE_LEFT_SMALL && _currentTrackCurve != TRACK_CURVE_RIGHT_SMALL && !is_track_enabled(TRACK_HELIX_LARGE))
+			(
+				is_track_enabled(TRACK_HELIX_LARGE) &&
+				_currentTrackCurve != TRACK_CURVE_LEFT_SMALL &&
+				_currentTrackCurve != TRACK_CURVE_RIGHT_SMALL
+			)
 		) &&
 		(
 			_currentTrackCurve == TRACK_CURVE_LEFT ||
@@ -2580,11 +2584,11 @@ static void window_ride_construction_update_possible_ride_configurations()
 
 		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 			if (
-				RCT2_GLOBAL(0x00997C9D + (trackType * 8), uint8) == 21 ||
-				RCT2_GLOBAL(0x00997C9D + (trackType * 8), uint8) != 22
+				RCT2_GLOBAL(0x00997C9D + (trackType * 8), uint8) == TRACK_HELIX_SMALL ||
+				RCT2_GLOBAL(0x00997C9D + (trackType * 8), uint8) == TRACK_HELIX_LARGE
 			) {
 				if (bank != _previousTrackBankEnd) {
-					if (_previousTrackBankEnd != 0)
+					if (_previousTrackBankEnd != TRACK_BANK_NONE)
 						continue;
 
 					if (bank != TRACK_BANK_LEFT)
@@ -2602,7 +2606,7 @@ static void window_ride_construction_update_possible_ride_configurations()
 			_currentTrackPieceDirection < 4 &&
 			slope == _previousTrackSlopeEnd &&
 			bank == _previousTrackBankEnd &&
-			(trackType != 66 || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_29))
+			(trackType != TRACK_ELEM_TOWER_BASE || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_29))
 		) {
 			RCT2_GLOBAL(0x00F4409C, uint32) &= ~(1 << currentPossibleRideConfigurationIndex);
 			_numCurrentPossibleSpecialTrackPieces++;
