@@ -3782,3 +3782,7 @@ STR_5445    :Speed
 STR_5446    :Get
 STR_5447    :Type {STRINGID}
 STR_5448    :Ride / Vehicle {STRINGID}
+STR_5449    :Reduce game speed
+STR_5450    :Increase game speed
+STR_5451    :Open cheats window
+STR_5452    :Toggle visibility of toolbars

@@ -230,15 +230,20 @@ static void shortcut_remove_vertical_land_toggle()
 
 static void shortcut_remove_top_bottom_toolbar_toggle()
 {
-	if (window_find_by_class(WC_TOP_TOOLBAR) != NULL)
-	{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
+	if (window_find_by_class(WC_TOP_TOOLBAR) != NULL) {
 		window_close(window_find_by_class(WC_TOP_TOOLBAR));
 		window_close(window_find_by_class(WC_BOTTOM_TOOLBAR));
-	}
-	else
-	{
-		window_top_toolbar_open();
-		window_game_bottom_toolbar_open();
+	} else {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == 0) {
+			window_top_toolbar_open();
+			window_game_bottom_toolbar_open();
+		} else {
+			window_top_toolbar_open();
+			window_editor_bottom_toolbar_open();
+		}
 	}
 }
 
