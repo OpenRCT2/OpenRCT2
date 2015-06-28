@@ -333,9 +333,19 @@ int object_load_packed(FILE *file)
  *
  *  rct2: 0x006A9CAF
  */
-void object_unload(int groupIndex, rct_object_entry_extended *entry)
+void object_unload(rct_object_entry *entry)
 {
-	RCT2_CALLPROC_X(0x006A9CAF, 0, groupIndex, 0, 0, 0, 0, (int)entry);
+	uint8 object_type, object_index;
+	if (!find_object_in_entry_group(entry, &object_type, &object_index)){
+		return;
+	}
+
+	uint8* chunk = object_entry_groups[object_type].chunks[object_index];
+
+	object_paint(object_type, 1, 0, 0, 0, (int)chunk, 0, 0);
+
+	rct2_free(chunk);
+	object_entry_groups[object_type].chunks[object_index] = (char*)-1;
 }
 
 int object_entry_compare(const rct_object_entry *a, const rct_object_entry *b)
@@ -623,27 +633,12 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 				// 0x6DEB0D
 
 				if (!(rideVehicleEntry->var_12 & 0x400)){
-					int ecx = cur_vehicle_images_offset - rideVehicleEntry->base_image_id;
+					int num_images = cur_vehicle_images_offset - rideVehicleEntry->base_image_id;
 					if (rideVehicleEntry->var_12 & 0x2000){
-						ecx *= 2;
+						num_images *= 2;
 					}
 
-					int bl, bh, eax = 0;
-					{
-						int ebx = rideVehicleEntry->base_image_id;
-						int edx = 0, esi = 0, ebp = 0, edi = 0;
-						RCT2_CALLFUNC_X(0x6847BA, &eax, &ebx, &ecx, &edx, &esi, &ebp, &edi);
-						bl = ebx & 0xFF;
-						bh = (ebx >> 8) & 0xFF;
-					}
-
-					if (rideVehicleEntry->var_12 & 0x2000){
-						bl += 16;
-					}
-
-					rideVehicleEntry->var_0E = eax & 0xFF;
-					rideVehicleEntry->var_0F = bl;
-					rideVehicleEntry->var_10 = bh;
+					set_vehicle_type_image_max_sizes(rideVehicleEntry, num_images);
 				}
 
 				uint8 no_positions = *peep_loading_positions++;
@@ -1598,7 +1593,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 void object_free_scenario_text()
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, void*) != NULL) {
-		rct2_free(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, void*));
+		free(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, void*));
 		RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, void*) = NULL;
 	}
 }

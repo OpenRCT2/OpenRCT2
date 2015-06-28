@@ -870,7 +870,7 @@ void rct2_exit_reason(rct_string_id title, rct_string_id body){
  */
 void rct2_exit()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006E3879);
+	audio_close();
 	//Post quit message does not work in 0x6e3879 as its windows only.
 	openrct2_finish();
 }
@@ -892,7 +892,7 @@ void game_load_or_quit_no_save_prompt()
 		game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 		tool_cancel();
 		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_5) {
-			RCT2_CALLPROC_EBPSAFE(0x0040705E);
+			// RCT2_CALLPROC_EBPSAFE(0x0040705E); Function not required resets cursor position.
 			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_5;
 		}
 		gGameSpeed = 1;
@@ -909,8 +909,8 @@ static uint32 game_do_command_table[58] = {
 	0,
 	0x0066397F,
 	0,
-	0x006C511D,
-	0x006C5B69,
+	0,
+	0,
 	0,
 	0x006B3F0F,
 	0,
@@ -934,7 +934,7 @@ static uint32 game_do_command_table[58] = {
 	0x0068BC01,
 	0,
 	0,
-	0x006C5AE9,
+	0,
 	0, // use new_game_command_table, original: 0x006BEFA1, 29
 	0, // 30
 	0,
@@ -972,8 +972,8 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_set_ride_appearance,
 	game_command_emptysub,
 	game_pause_toggle,
-	game_command_emptysub,
-	game_command_emptysub,
+	game_command_place_track,
+	game_command_remove_track,
 	game_load_or_quit,
 	game_command_emptysub,
 	game_command_demolish_ride,
@@ -997,7 +997,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub,
 	game_command_raise_water,
 	game_command_lower_water,
-	game_command_emptysub,
+	game_command_set_brakes_speed,
 	game_command_hire_new_staff_member, //game_command_emptysub,
 	game_command_set_staff_patrol, // 30
 	game_command_fire_staff_member,
@@ -1016,7 +1016,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_remove_large_scenery,
 	game_command_set_current_loan,
 	game_command_set_research_funding,
-	game_command_place_track,
+	game_command_place_track_design,
 	game_command_start_campaign,
 	game_command_emptysub,
 	game_command_place_banner, // 50

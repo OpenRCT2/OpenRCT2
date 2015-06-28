@@ -591,4 +591,6 @@ void sub_693B58(rct_peep* peep);
 void remove_peep_from_ride(rct_peep* peep);
 void remove_peep_from_queue(rct_peep* peep);
 
+void sub_693BE5(rct_peep* peep, uint8 al);
+
 #endif

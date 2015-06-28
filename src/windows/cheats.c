@@ -40,6 +40,8 @@
 #define CHEATS_MONEY_INCREMENT MONEY(5000,00)
 #define CHEATS_TRAM_INCREMENT 250
 
+#define CHEATS_PARK_RATING_SPINNER_PAUSE 20
+
 enum {
 	WINDOW_CHEATS_PAGE_MONEY,
 	WINDOW_CHEATS_PAGE_GUESTS,
@@ -96,6 +98,10 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_FAST_STAFF,
 	WIDX_NORMAL_STAFF,
 	WIDX_PARK_PARAMETERS,
+	WIDX_FORCE_PARK_RATING,
+	WIDX_PARK_RATING_SPINNER,
+	WIDX_INCREASE_PARK_RATING,
+	WIDX_DECREASE_PARK_RATING,
 	WIDX_RENEW_RIDES = 8,
 	WIDX_REMOVE_SIX_FLAGS,
 	WIDX_MAKE_DESTRUCTIBLE,
@@ -214,6 +220,10 @@ static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_CLOSEBOX,	1, MAX_BTN_LEFT,	MAX_BTN_RIGHT,	YPL(6),		HPL(6),		STR_FAST,	STR_NONE },							// fast staff
 	{ WWT_CLOSEBOX,	1, MIN_BTN_LEFT,	MIN_BTN_RIGHT,	YPL(6),		HPL(6),		STR_NORMAL,	STR_NONE },							// normal staff
 	{ WWT_CLOSEBOX,	1, XPL(0),	WPL(0), YPL(7), HPL(7),		STR_CHEAT_PARK_PARAMETERS,		STR_CHEAT_TIP_PARK_PARAMETERS},		// Park parameters
+	{ WWT_CHECKBOX,	1, XPL(0),	WPL(0), YPL(8), HPL(8),		STR_FORCE_PARK_RATING,			STR_NONE},							// Force park rating
+	{ WWT_SPINNER,			1,	XPL(1),			WPL(1) - 10,	YPL(8) + 2,	HPL(8) - 3,			STR_NONE,				STR_NONE },							// park rating
+	{ WWT_DROPDOWN_BUTTON,	1,	WPL(1) - 10,	WPL(1),			YPL(8) + 3,	YPL(8) + 7,			STR_NUMERIC_UP,			STR_NONE },							// increase rating
+	{ WWT_DROPDOWN_BUTTON,	1,	WPL(1) - 10,	WPL(1),			YPL(8) + 8,	YPL(8) + 12,		STR_NUMERIC_DOWN,		STR_NONE },							// decrease rating
 	{ WIDGETS_END },
 };
 static rct_widget window_cheats_rides_widgets[] = {
@@ -384,7 +394,7 @@ static void* window_cheats_page_events[] = {
 static uint32 window_cheats_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_HIGH_MONEY) | (1 << WIDX_CLEAR_LOAN),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_GUEST_HAPPINESS_MAX)  | (1 << WIDX_GUEST_HAPPINESS_MIN) | (1 << WIDX_GUEST_ENERGY_MAX) | (1 << WIDX_GUEST_ENERGY_MIN) | (1 << WIDX_GUEST_HUNGER_MAX) | (1 << WIDX_GUEST_HUNGER_MIN) | (1 << WIDX_GUEST_THIRST_MAX) | (1 << WIDX_GUEST_THIRST_MIN) | (1 << WIDX_GUEST_NAUSEA_MAX) | (1 << WIDX_GUEST_NAUSEA_MIN) | (1 << WIDX_GUEST_NAUSEA_TOLERANCE_MAX) | (1 << WIDX_GUEST_NAUSEA_TOLERANCE_MIN) | (1 << WIDX_GUEST_BATHROOM_MAX) | (1 << WIDX_GUEST_BATHROOM_MIN) | (1 << WIDX_GUEST_RIDE_INTENSITY_MORE_THAN_1) | (1 << WIDX_GUEST_RIDE_INTENSITY_LESS_THAN_15) | (1 << WIDX_TRAM_GUESTS) | (1 << WIDX_REMOVE_ALL_GUESTS) | (1 << WIDX_EXPLODE_GUESTS) | (1 << WIDX_GIVE_GUESTS_PARK_MAPS) | (1 << WIDX_GIVE_GUESTS_BALLOONS) | (1 << WIDX_GIVE_GUESTS_UMBRELLAS),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO) | (1 << WIDX_UNLOCK_ALL_PRICES) | (1 << WIDX_SANDBOX_MODE) | (1 << WIDX_FAST_STAFF) | (1 << WIDX_NORMAL_STAFF) | (1 << WIDX_PARK_PARAMETERS),
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_FREEZE_CLIMATE) | (1 << WIDX_OPEN_CLOSE_PARK) | (1 << WIDX_ZERO_CLEARANCE) | (1 << WIDX_WEATHER_SUN) | (1 << WIDX_WEATHER_THUNDER) | (1 << WIDX_CLEAR_GRASS) | (1 << WIDX_MOWED_GRASS) | (1 << WIDX_WATER_PLANTS) | (1 << WIDX_FIX_VANDALISM) | (1 << WIDX_REMOVE_LITTER) | (1 << WIDX_WIN_SCENARIO) | (1 << WIDX_UNLOCK_ALL_PRICES) | (1 << WIDX_SANDBOX_MODE) | (1 << WIDX_FAST_STAFF) | (1 << WIDX_NORMAL_STAFF) | (1 << WIDX_PARK_PARAMETERS) | (1 << WIDX_FORCE_PARK_RATING) | (1 << WIDX_INCREASE_PARK_RATING) | (1 << WIDX_DECREASE_PARK_RATING),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4) | (1 << WIDX_RENEW_RIDES) | (1 << WIDX_REMOVE_SIX_FLAGS) | (1 << WIDX_MAKE_DESTRUCTIBLE) | (1 << WIDX_FIX_ALL) | (1 << WIDX_FAST_LIFT_HILL) | (1 << WIDX_DISABLE_BRAKES_FAILURE) | (1 << WIDX_DISABLE_ALL_BREAKDOWNS) | (1 << WIDX_BUILD_IN_PAUSE_MODE) | (1 << WIDX_RESET_CRASH_STATUS)
 };
 
@@ -396,6 +406,9 @@ static rct_string_id window_cheats_page_titles[] = {
 };
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
+
+int park_rating_spinner_value;
+int park_rating_spinner_pressed_for = 0;
 
 #pragma region Cheat functions
 
@@ -502,7 +515,7 @@ static void cheat_fix_rides()
 				remove_peep_from_ride(mechanic);
 			}
 
-			RCT2_CALLPROC_X(0x006B7481, 0, 0, 0, rideIndex, 0, 0, 0);
+			ride_fix_breakdown(rideIndex, 0);
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 		}
 	}
@@ -730,6 +743,7 @@ void window_cheats_open()
 	window->enabled_widgets = window_cheats_page_enabled_widgets[0];
 	window_init_scroll_widgets(window);
 	window_cheats_set_page(window, WINDOW_CHEATS_PAGE_MONEY);
+	park_rating_spinner_value = get_forced_park_rating() >= 0 ? get_forced_park_rating() : 999;
 }
 
 static void window_cheats_money_mouseup()
@@ -921,6 +935,25 @@ static void window_cheats_misc_mouseup()
 	case WIDX_PARK_PARAMETERS:
 		window_editor_scenario_options_open();
 		break;
+	case WIDX_FORCE_PARK_RATING:
+		if (get_forced_park_rating() >= 0){
+			set_forced_park_rating(-1);
+		} else {
+			set_forced_park_rating(park_rating_spinner_value);
+		}
+		break;
+	case WIDX_INCREASE_PARK_RATING:
+		park_rating_spinner_value = min(999, 10 * (park_rating_spinner_value / 10 + 1));
+		widget_invalidate_by_class(WC_CHEATS, WIDX_PARK_RATING_SPINNER);
+		if (get_forced_park_rating() >= 0)
+			set_forced_park_rating(park_rating_spinner_value);
+		break;
+	case WIDX_DECREASE_PARK_RATING:
+		park_rating_spinner_value = max(0, 10 * (park_rating_spinner_value / 10 - 1));
+		widget_invalidate_by_class(WC_CHEATS, WIDX_PARK_RATING_SPINNER);
+		if (get_forced_park_rating() >= 0)
+			set_forced_park_rating(park_rating_spinner_value);
+		break;
 	}
 }
 
@@ -983,6 +1016,25 @@ static void window_cheats_update(rct_window *w)
 {
 	w->frame_no++;
 	widget_invalidate(w, WIDX_TAB_1 + w->page);
+
+	if (widget_is_pressed(w, WIDX_INCREASE_PARK_RATING) || widget_is_pressed(w, WIDX_DECREASE_PARK_RATING))
+		park_rating_spinner_pressed_for++;
+	else
+		park_rating_spinner_pressed_for = 0;
+	if (park_rating_spinner_pressed_for >= CHEATS_PARK_RATING_SPINNER_PAUSE)
+		if (!(w->frame_no % 3)){
+			if (widget_is_pressed(w, WIDX_INCREASE_PARK_RATING)){
+				park_rating_spinner_value = min(999, 10 * (park_rating_spinner_value / 10 + 1));
+				widget_invalidate_by_class(WC_CHEATS, WIDX_PARK_RATING_SPINNER);
+				if (get_forced_park_rating() >= 0)
+					set_forced_park_rating(park_rating_spinner_value);
+			} else if (widget_is_pressed(w, WIDX_DECREASE_PARK_RATING)){
+				park_rating_spinner_value = max(0, 10 * (park_rating_spinner_value / 10 - 1));
+				widget_invalidate_by_class(WC_CHEATS, WIDX_PARK_RATING_SPINNER);
+				if (get_forced_park_rating() >= 0)
+					set_forced_park_rating(park_rating_spinner_value);
+			}
+		}
 }
 
 static void window_cheats_invalidate()
@@ -1006,6 +1058,7 @@ static void window_cheats_invalidate()
 		w->widgets[WIDX_OPEN_CLOSE_PARK].image = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN ?
 			STR_CHEAT_CLOSE_PARK : STR_CHEAT_OPEN_PARK;
 		widget_set_checkbox_value(w, WIDX_UNLOCK_ALL_PRICES, gConfigCheat.unlock_all_prices);
+		widget_set_checkbox_value(w, WIDX_FORCE_PARK_RATING, get_forced_park_rating() >= 0);
 		break;
 	case WINDOW_CHEATS_PAGE_RIDES:
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = 255;
@@ -1041,6 +1094,7 @@ static void window_cheats_paint()
 	}
 	else if(w->page == WINDOW_CHEATS_PAGE_MISC){
 		gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(6) + TXTO);
+		gfx_draw_string_right(dpi, 5182,		&park_rating_spinner_value,	w->colours[2], w->x + WPL(1) - 10 - TXTO, w->y + YPL(8) + TXTO);
 	}
 	else if (w->page == WINDOW_CHEATS_PAGE_GUESTS){
 		gfx_draw_string_left(dpi, STR_CHEAT_GUEST_HAPPINESS,		NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);

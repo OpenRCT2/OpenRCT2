@@ -42,7 +42,7 @@ STR_0040    :Bewegingssimulator
 STR_0041    :3D-bioscoop
 STR_0042    :Topspin
 STR_0043    :Ruimteringen
-STR_0044    :Omgekeerde vrijevalachtbaan
+STR_0044    :Achterwaartsevrijevalachtbaan
 STR_0045    :Lift
 STR_0046    :Verticale achtbaan
 STR_0047    :Geldautomaat
@@ -51,7 +51,7 @@ STR_0049    :Spookhuis
 STR_0050    :Eerste hulp
 STR_0051    :Circus
 STR_0052    :Spooktrein
-STR_0053    :Hyper-twisterachtbaan
+STR_0053    :Twisterachtbaan
 STR_0054    :Houten achtbaan
 STR_0055    :Zijfrictie-achtbaan
 STR_0056    :Wilde muis
@@ -510,31 +510,31 @@ STR_0508    :
 STR_0509    :
 STR_0510    :
 STR_0511    :
-STR_0512    :
-STR_0513    :
-STR_0514    :Treinen hangen onder de baan en zwaaien naar buiten in de bochten
-STR_0515    :
-STR_0516    :Een rustige achtbaan voor bezoekers die nog niet in engere attracties durven
-STR_0517    :Passagiers rijden in miniatuurtreinen over een smalspoorweg
-STR_0518    :Passagiers rijden in elektrische treinen over een monorailbaan
-STR_0519    :Passagiers zitten in kleine karretjes die onder een enkele rail hangen en naar buiten zwaaien in de bochten
-STR_0520    :
-STR_0521    :
-STR_0522    :
-STR_0523    :Bezoekers rijden langzaam over een baan in aangedreven karretjes
-STR_0524    :
-STR_0525    :
-STR_0526    :
-STR_0527    :Een soepele stalen achtbaan die verticale loopings kan maken
-STR_0528    :
-STR_0529    :
-STR_0530    :Stoeltjes hangen aan een continu draaiende stalen kabel die van het ene uiteinde van de baan naar het andere loopt, en daarna weer terug
-STR_0531    :
+STR_0512    :Een compacte achtbaan met een spiraalvormige kettingheuvel en soepele, kronkelende afdalingen.
+STR_0513    :Een achtbaan met loopings waar de passagiers in de karretjes staan.
+STR_0514    :Treinen hangen onder de baan en zwaaien naar buiten in de bochten.
+STR_0515    :Een stalen achtbaan met treinen die onder de baan hangen, met veel complexe en kronkelende baanelementen.
+STR_0516    :Een rustige achtbaan voor bezoekers die nog niet in engere attracties durven.
+STR_0517    :Passagiers rijden in miniatuurtreinen over een smalspoorweg.
+STR_0518    :Passagiers rijden in elektrische treinen over een monorailbaan.
+STR_0519    :Passagiers zitten in kleine karretjes die onder een enkele rail hangen en naar buiten zwaaien in de bochten.
+STR_0520    :Een aanlegsteiger waar bezoekers in een bootje kunnen gaan om over het water te varen.
+STR_0521    :Een intense, snelle en kronkelende achtbaan met scherpe bochten en afdalingen.
+STR_0522    :Een kleinere achtbaan waar de passagiers boven de baan en op het karretje zitten.
+STR_0523    :Bezoekers rijden langzaam over een baan in aangedreven karretjes.
+STR_0524    :Een vrijevalwagen wordt pneumatisch langs een hoge stalen toren gelanceerd en gaat daarna in een vrije val weer naar beneden.
+STR_0525    :Passagiers rijden over een kronkelende baan, waarbij ze enkel worden geleid door de ronding en banking van de halfronde baan.
+STR_0526    :Bezoekers gaan in een roterende observatiecabine langs een toren omhoog
+STR_0527    :Een soepele stalen achtbaan die verticale loopings kan maken.
+STR_0528    :Passagiers varen in opblaasboten door een kronkelende halfopen of compleet gesloten glijbaan.
+STR_0529    :Achtbaantreinen in de vorm van een mijntrein razen over stalen achtbaanrails die er uitziet als een oude spoorbaan.
+STR_0530    :Stoeltjes hangen aan een continu draaiende stalen kabel die van het ene uiteinde van de baan naar het andere loopt, en daarna weer terug.
+STR_0531    :Een compacte stalen achtbaan waar de trein door schroeven en loopings gaat.
 STR_0532    :
 STR_0533    :
-STR_0534    :
-STR_0535    :
-STR_0536    :
+STR_0534    :Go-karts met benzinemotor die de passagiers zelf besturen
+STR_0535    :Boten in de vorm van een boomstam varen door een waterbak, waarbij ze van steile hellingen afdalen om de passagiers te doorweken.
+STR_0536    :Ronde boten varen door een brede waterbak, waarbij ze de passagiers opwinden door watervallen en schuimende stroomversnellingen.
 STR_0537    :
 STR_0538    :
 STR_0539    :
@@ -552,55 +552,55 @@ STR_0550    :
 STR_0551    :
 STR_0552    :
 STR_0553    :
-STR_0554    :Het karretje wordt het station uitgelanceerd over een lange rechte baan door middel van lineaire inductiemotoren, om daarna recht omhoog te gaan en weer terug te vallen richting het station
-STR_0555    :
-STR_0556    :
+STR_0554    :Het karretje wordt het station uitgelanceerd over een lange rechte baan door middel van lineaire inductiemotoren, om daarna recht omhoog te gaan en weer terug te vallen richting het station.
+STR_0555    :Bezoekers gaan in een lift in een toren omhoog of omlaag om naar een ander hoogteniveau te komen.
+STR_0556    :Extra brede karretjes gaan door over compleet verticale baan voor een ultimate vrijevalbeleving.
 STR_0557    :
 STR_0558    :
 STR_0559    :
 STR_0560    :
 STR_0561    :
-STR_0562    :
-STR_0563    :Bezoekers zitten in comfortabele treinen met enkel een schootbeugel en gaan soepel door grote afdalingen en kronkelende stukken baan, met veel 'airtime' in de heuvels
-STR_0564    :Deze over een houten baan lopende achtbaan is snel, ruw, luidruchting en geeft het gevoel van controleverlies met veel 'airtime'
-STR_0565    :Een simpele houten achtbaan die enkel in staat is rustige hellingen en bochten te bedwingen, de karretjes worden enkel op de baan gehouden door middel van zijfrictiewielen en zwaartekracht
-STR_0566    :Losse karretjes rijden over een kronkelende baan met scherpe bochten en korte felle afdalingen
-STR_0567    :Bezoekers zitten in stoelen aan beide kanten van de baan, en draaien alle kanten op terwijl ze door diepe afdalingen en diverse omkeringen gaan 
+STR_0562    :Aangedreven karretjes rijden langs eng decor en special effects over een baan met hoogteverschillen.
+STR_0563    :Bezoekers zitten in comfortabele treinen met enkel een schootbeugel en gaan soepel door grote afdalingen en kronkelende stukken baan, met veel 'airtime' in de heuvels.
+STR_0564    :Deze over een houten baan lopende achtbaan is snel, ruw, luidruchting en geeft het gevoel van controleverlies met veel 'airtime'.
+STR_0565    :Een simpele houten achtbaan die enkel in staat is rustige hellingen en bochten te bedwingen, de karretjes worden enkel op de baan gehouden door middel van zijfrictiewielen en zwaartekracht.
+STR_0566    :Losse karretjes rijden over een kronkelende baan met scherpe bochten en korte felle afdalingen.
+STR_0567    :Bezoekers zitten in stoelen aan beide kanten van de baan, en draaien alle kanten op terwijl ze door diepe afdalingen en diverse omkeringen gaan.
 STR_0568    :
-STR_0569    :Bezoekers hangen in treinen onder de baan met enkel schouderbeugels en krijgen zo de ervaring dat ze vliegen
+STR_0569    :Bezoekers hangen in treinen onder de baan met enkel schouderbeugels en krijgen zo de ervaring dat ze vliegen.
 STR_0570    :
-STR_0571    :
-STR_0572    :
-STR_0573    :
-STR_0574    :
-STR_0575    :Aangedreven treinen hangen aan een enkele rail en vervoeren mensen door het park heen
+STR_0571    :Ronde karretjes gaan over een zigzaggende houten baan en draaien daarbij rond.
+STR_0572    :Boten met een hoge capaciteit varen door een brede waterbak, worden naar boven vervoerd door een lopende band, en gaan met hoge snelheid steile heuvels af om met een grote plons de passagiers te doorweken.
+STR_0573    :Aangedreven karretjes in de vorm van een helicopter rijden over een stalen baan, bestuurd door het trappen van de passagiers.
+STR_0574    :Passagiers worden door middel van een speciale beugel in een liggende positie vastgehouden, waarna ze op hun rug of met hun gezicht naar de grond door kronkelende stukken baan en omkeringen heen gaan.
+STR_0575    :Aangedreven treinen hangen aan een enkele rail en vervoeren mensen door het park heen.
 STR_0576    :
-STR_0577    :
-STR_0578    :Karretjes rijden in een baan omgeven door hoepels en gaan door steile afdalingen en heartline-twists
+STR_0577    :Karrtjes met draaistellen rijden op een houten baan en kunnen omkeren op speciale stukken baan.
+STR_0578    :Karretjes rijden in een baan omgeven door hoepels en gaan door steile afdalingen en heartline-twists.
 STR_0579    :
-STR_0580    :
-STR_0581    :
+STR_0580    :Een gigantische stalen achtbaan die in staat is tot soepele afdalingen en heuvels die hoger zijn dan 90 meter.
+STR_0581    :Een ring van stoelen wordt naar de bovenkant van een hoge toren getrokken terwijl hij rustig ronddraait, waarna hij losgelaten wordt in een vrije val, waarna hij beneden rustig wordt afgeremd door middel van magnetische remmen.
 STR_0582    :
 STR_0583    :
-STR_0584    :
-STR_0585    :
-STR_0586    :Bootvormige karretjes rijden over achtbaanrails, waardoor ze hellende bochten en diepe afdalingen kunnen maken, waarna ze in bakken water neerplonzen en rustig een stukje kunnen varen
-STR_0587    :
-STR_0588    :
+STR_0584    :Speciale fietsen rijden over een stalen monorail, voortbewogen door het trappen van de passagiers.
+STR_0585    :Passagiers zitten in stoelparen die onder de baan hangen terwijl ze door kronkelende en scherpe omkeringen gaan.
+STR_0586    :Bootvormige karretjes rijden over achtbaanrails, waardoor ze hellende bochten en diepe afdalingen kunnen maken, waarna ze in bakken water neerplonzen en rustig een stukje kunnen varen.
+STR_0587    :Na een enerverende pneumatische lancering rijdt de trein met hogere snelheid over een verticale baan, over de top, en vervolgens over de andere kant weer naar beneden om terug te keren naar het station.
+STR_0588    :Losse karretjes hangen onder een zigzaggende baan met haarspeldbochten en scherpe afdalingen.
 STR_0589    :
-STR_0590    :
-STR_0591    :
+STR_0590    :Passagiers rijden over een onderwaterparcours in onderzeeërs.
+STR_0591    :Boten in de vorm van een vlot varen rustig door een waterbak.
 STR_0592    :
 STR_0593    :
 STR_0594    :
 STR_0595    :
 STR_0596    :
 STR_0597    :
-STR_0598    :
-STR_0599    :Een compacte achtbaan met individuele karretjes en steile, kronkelende afdalingen
-STR_0600    :
+STR_0598    :Omgekeerde achtbaantrein worden het station uit gelanceerd en gaan een verticale kronkelende baan op, waarna ze terugzakken, door het station heengaan en achteruit een ander stuk verticale baan opgaan.
+STR_0599    :Een compacte achtbaan met individuele karretjes en steile, kronkelende afdalingen.
+STR_0600    :Aangedreven mijntreinen rijden over een soepele en kronkelende baan.
 STR_0601    :
-STR_0602    :
+STR_0602    :Achtbaantreinen worden door lineaire inductiemotoren het station uit gelanceerd en razen door een kronkelende baan die vaak over de kop gaat.
 STR_0603    :Bezoeker {INT32}
 STR_0604    :Bezoeker {INT32}
 STR_0605    :Bezoeker {INT32}
@@ -894,7 +894,7 @@ STR_0892    :Screenshot opgeslagen als '{STRINGID}'
 STR_0893    :Screenshot maken mislukt!
 STR_0894    :"Landscape data area" zit vol!
 STR_0895    :Kan niet gedeeltelijk onder en boven de grond bouwen
-STR_0896    :{POP16}{POP16}{STRINGID} Constructie
+STR_0896    :{POP16}{POP16}Constructie {STRINGID} 
 STR_0897    :Richting
 STR_0898    :{SMALLFONT}{BLACK}Bocht naar links
 STR_0899    :{SMALLFONT}{BLACK}Bocht naar rechts
@@ -903,7 +903,7 @@ STR_0901    :{SMALLFONT}{BLACK}Bocht naar rechts (kleine straal)
 STR_0902    :{SMALLFONT}{BLACK}Bocht naar links (zeer kleine straal)
 STR_0903    :{SMALLFONT}{BLACK}Bocht naar rechts (zeer kleine straal)
 STR_0904    :{SMALLFONT}{BLACK}Bocht naar links (grote straal)
-STR_0905    :{SMALLFONT}{BLACK}Bocht naar rechts (straal)
+STR_0905    :{SMALLFONT}{BLACK}Bocht naar rechts (grote straal)
 STR_0906    :{SMALLFONT}{BLACK}Recht stuk
 STR_0907    :Helling
 STR_0908    :Roll/Banking
@@ -3449,7 +3449,7 @@ STR_3446    :Werkgebied wissen
 #Start van OpenRCT2-indices
 STR_5120    :'Financiën'-knop in de werkbalk tonen
 STR_5121    :'Onderzoek'-knop in de werkbalk tonen
-STR_5122    :Alle voertuigen met hetzelfde baan-/attractietype tonen
+STR_5122    :Attracties op baantype sorteren
 STR_5123    :Attr. vernieuwen
 STR_5124    :Six Flags weg
 STR_5125    :Afbreekbaar maken
@@ -3496,7 +3496,7 @@ STR_5163    :Maand/dag/jaar
 STR_5164    :Twitch-kanaalnaam
 STR_5165    :Bezoekers namen van volgers geven
 STR_5166    :Geeft bezoekers namen van gebruikers die het Twitch-kanaal volgen.
-STR_5167    :Bez. met Twitch-volgersnamen volgen in berichtengebied
+STR_5167    :Bez. met Twitch-volgersnamen volgen in berichtengeb.
 STR_5168    :Zet het bezoekersvolgsysteem aan voor bezoekers die naar Twitch-volgers zijn genoemd.
 STR_5169    :Bez. namen van gebruikers in de Twitch-chat geven
 STR_5170    :Geeft bezoekers namen van gebruikers in de Twitch-chat.
@@ -3507,15 +3507,15 @@ STR_5174    :Zal chatberichten op Twitch die beginnen met !news in het berichten
 STR_5175    :Voer de naam van je Twitch-kanaal in
 STR_5176    :Twitch-integratie inschakelen
 STR_5177    :Schermmodus:
-STR_5178    :{SMALLFONT}{BLACK}Show financial cheats
-STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
-STR_5180    :{SMALLFONT}{BLACK}Show park cheats
-STR_5181    :{SMALLFONT}{BLACK}Show ride cheats
+STR_5178    :{SMALLFONT}{BLACK}Cheats voor financiën
+STR_5179    :{SMALLFONT}{BLACK}Cheats voor gasten
+STR_5180    :{SMALLFONT}{BLACK}Cheats voor park
+STR_5181    :{SMALLFONT}{BLACK}Cheats voor attracties
 STR_5182    :{INT32}
 STR_5183    :Basishoogte
-STR_5184    :Enter base height between {COMMA16} and {COMMA16}
+STR_5184    :Voer een basishoogte tussen {COMMA16} en {COMMA16} in
 STR_5185    :Waterniveau
-STR_5186    :Enter water level between {COMMA16} and {COMMA16} 
+STR_5186    :Voer een waterniveau tussen {COMMA16} en {COMMA16} in
 STR_5187    :Financiën
 STR_5188    :Nieuwe advertentiecampagne
 STR_5189    :Onderzoek
@@ -3706,3 +3706,68 @@ STR_5373    :Naam {STRINGID}
 STR_5374    :Datum {STRINGID}
 STR_5375    :{UP}
 STR_5376    :{DOWN}
+STR_5377    :{SMALLFONT}{BLACK}Opgeslagen spellen
+STR_5378    :{SMALLFONT}{BLACK}Script
+STR_5379    :{SMALLFONT}{BLACK}Ga naar volgend Wacht-commando
+STR_5380    :{SMALLFONT}{BLACK}Start het afspelen van de titelpresentatie
+STR_5381    :{SMALLFONT}{BLACK}Stopt het afspelen van de titelpresentatie
+STR_5382    :{SMALLFONT}{BLACK}Titelpresentatie herstarten
+STR_5383    :{SMALLFONT}{BLACK}Een nieuwe titelpresentatie aanmaken die is gebaseerd op de huidige
+STR_5384    :{SMALLFONT}{BLACK}Huidige titelpresentatie verwijderen
+STR_5385    :{SMALLFONT}{BLACK}Huidige titelpresentatie hernoemen
+STR_5386    :{SMALLFONT}{BLACK}Nieuw commando invoegen
+STR_5387    :{SMALLFONT}{BLACK}Geselecteerd commando bewerken
+STR_5388    :{SMALLFONT}{BLACK}Geselecteerd commando verwijderen
+STR_5389    :{SMALLFONT}{BLACK}Naar geselecteerd commando titelpresentatie springen
+STR_5390    :{SMALLFONT}{BLACK}Geselecteerd commando naar beneden verplaatsen
+STR_5391    :{SMALLFONT}{BLACK}Geselecteerd commando naar boven verplaatsen
+STR_5392    :{SMALLFONT}{BLACK}Opgeslagen spel aan titelpresentatie toevoegen
+STR_5393    :{SMALLFONT}{BLACK}Geselecteerd opgeslagen spel uit titelpresentatie verwijderen
+STR_5394    :{SMALLFONT}{BLACK}Opgeslagen spel hernoemen
+STR_5395    :{SMALLFONT}{BLACK}Opgeslagen spel laden
+STR_5396    :{SMALLFONT}{BLACK}Titelpresentatie herladen als ze buiten het spel om is aangepast
+STR_5397    :Kan enkel in het titelscherm worden gebruikt
+STR_5398    :Kan de titelpresentatie niet aanpassen wanneer deze wordt afgespeeld
+STR_5399    :Klik op Stop om verder te gaan met aanpassen
+STR_5400    :Kan deze titelpresentatie niet aanpassen
+STR_5401    :Een nieuwe titelpresentatie aanmaken om wijzigingen aan te brengen
+STR_5402    :Kan titelpresentatie niet laden
+STR_5403    :Er is mogelijk geen Laad- or Wacht-commando of één van de opgeslagen spellen is mogelijk beschadigd
+STR_5404    :Naam bestaat al
+STR_5405    :Voer een naam in voor het opgeslagen spel
+STR_5406    :Voer een naam in voor de titelpresentatie
+STR_5407    :Toevoegen
+STR_5408    :Verwijderen
+STR_5409    :Invoegen
+STR_5410    :Bewerken
+STR_5411    :Herladen
+STR_5412    :Spring naar
+STR_5413    :Laad
+STR_5414    :Laad{MOVE_X}{87}Six Flags Magic Mountain.SC6
+STR_5415    :Laad{MOVE_X}{87}{STRING}
+STR_5416    :Laad{MOVE_X}{87}Geen opgeslagen spel geselecteerd
+STR_5417    :Locatie
+STR_5418    :Locatie{MOVE_X}{87}{COMMA16}   {COMMA16}
+STR_5419    :Draai
+STR_5420    :Draai{MOVE_X}{87}{COMMA16}
+STR_5421    :Zoom
+STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
+STR_5423    :Wacht
+STR_5424    :Wacht{MOVE_X}{87}{COMMA16}
+STR_5425    :Herstarten
+STR_5426    :Einde
+STR_5427    :Coördinaten:
+STR_5428    :Aant. draaiingen tegen de klok:
+STR_5429    :Zoomniveau:
+STR_5430    :Te wachten seconden:
+STR_5431    :Te laden opgeslagen spel:
+STR_5432    :Commando:
+STR_5433    :Titlepresentaties
+STR_5434    :Commandobewerker
+STR_5435    :Opgeslagen spel hernoemen
+STR_5436    :Titelpresentaties bewerekn...
+STR_5437    :Geen opgeslagen spel geselecteerd
+STR_5438    :Kan geen wijzigingen aanbrengen wanneer de commandobewerker open is
+STR_5439    :Er is een herstart gebruikt zonder Wacht-commando
+STR_5440    :Volledig scherm minimaliseren bij focusverlies
+STR_5441    :{SMALLFONT}{BLACK}Sorteert attracties per baantype,{NEWLINE}zodat achteraf wisselen van treintypes mogelijk{NEWLINE}wordt, zoals in RCT1.

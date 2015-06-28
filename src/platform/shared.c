@@ -646,6 +646,7 @@ void platform_set_fullscreen_mode(int mode)
  */
 void platform_set_cursor(char cursor)
 {
+	RCT2_GLOBAL(RCT2_ADDRESS_CURENT_CURSOR, uint8) = cursor;
 	SDL_SetCursor(_cursors[cursor]);
 }
 /**

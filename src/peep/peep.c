@@ -23,6 +23,7 @@
 #include "../audio/mixer.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../management/finance.h"
 #include "../management/news_item.h"
 #include "../ride/ride.h"
 #include "../scenario.h"
@@ -42,6 +43,7 @@ static int peep_empty_container_extra_flag(rct_peep* peep);
 static int peep_should_find_bench(rct_peep* peep);
 static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type);
 static void sub_693BAB(rct_peep* peep);
+static void peep_spend_money(rct_peep *peep, money32 amount);
 
 const char *gPeepEasterEggNames[] = {
 	"MICHAEL SCHUMACHER",
@@ -163,7 +165,7 @@ void sub_693B58(rct_peep* peep){
 }
 
 /* 0x00693BE5 */
-static void sub_693BE5(rct_peep* peep, uint8 al){
+void sub_693BE5(rct_peep* peep, uint8 al){
 	if (al == peep->var_6D)return;
 
 	peep->var_6D = al;
@@ -344,10 +346,9 @@ int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep
 	peep->var_45 |= (1 << 2);
 
 	// Create sick at location
-	RCT2_CALLPROC_X(0x67375D, peep->x, peep->sprite_direction, peep->y, peep->z, 0, 0, peep->sprite_index & 1);
+	litter_create(peep->x, peep->y, peep->z, peep->sprite_direction, peep->sprite_index & 1);
 
-	int sound_id = (scenario_rand() & 3) + 24;
-
+	int sound_id = SOUND_COUGH_1 + (scenario_rand() & 3);
 	sound_play_panned(sound_id, 0x8001, peep->x, peep->y, peep->z);
 
 	invalidate_sprite((rct_sprite*)peep);
@@ -1369,8 +1370,7 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ri
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 20;
 			RCT2_GLOBAL(0xF1AEC0, uint32) = 230;
-
-			RCT2_CALLPROC_X(0x0069926C, 0, ride->price, 0, 0, (int)peep, 0, 0);
+			peep_spend_money(peep, ride->price);
 		}
 	}
 
@@ -3485,7 +3485,7 @@ static void peep_update_using_bin(rct_peep* peep){
 			x = peep->x + (scenario_rand() & 7) - 3;
 			y = peep->y + (scenario_rand() & 7) - 3;
 
-			RCT2_CALLPROC_X(0x67375D, x, scenario_rand() & 3, y, peep->z, 0, 0, bp);
+			litter_create(x, y, peep->z, scenario_rand() & 3, bp);
 			peep->item_standard_flags &= ~(1 << cur_container);
 			peep->var_45 |= 8;
 
@@ -3516,7 +3516,7 @@ static void peep_update_using_bin(rct_peep* peep){
 			x = peep->x + (scenario_rand() & 7) - 3;
 			y = peep->y + (scenario_rand() & 7) - 3;
 
-			RCT2_CALLPROC_X(0x67375D, x, scenario_rand() & 3, y, peep->z, 0, 0, bp);
+			litter_create(x, y, peep->z, scenario_rand() & 3, bp);
 			peep->item_extra_flags &= ~(1 << cur_container);
 			peep->var_45 |= 8;
 
@@ -4021,7 +4021,7 @@ static void peep_update_walking(rct_peep* peep){
 				int y = peep->y + (scenario_rand() & 0x7) - 3;
 				int direction = (scenario_rand() & 0x3);
 
-				RCT2_CALLPROC_X(0x67375D, x, direction, y, peep->z, 0, 0, ebp);
+				litter_create(x, y, peep->z, direction, ebp);
 			}
 		}
 	}
@@ -4053,7 +4053,7 @@ static void peep_update_walking(rct_peep* peep){
 			int y = peep->y + (scenario_rand() & 0x7) - 3;
 			int direction = (scenario_rand() & 0x3);
 
-			RCT2_CALLPROC_X(0x67375D, x, direction, y, peep->z, 0, 0, bp);
+			litter_create(x, y, peep->z, direction, bp);
 		}
 	}
 
@@ -5311,3 +5311,24 @@ void sub_693BAB(rct_peep* peep) {
 	}
 }
 
+/**
+ * 
+ *  rct2: 0x0069926C
+ */
+static void peep_spend_money(rct_peep *peep, money32 amount)
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+		return;
+
+	peep->cash_in_pocket = max(0, peep->cash_in_pocket - amount);
+	peep->cash_spent += amount;
+	if (RCT2_GLOBAL(0x00F1AEC0, uint32) == 0xFFFFFFFF) {
+		RCT2_GLOBAL(peep + RCT2_GLOBAL(0x00F1AEC0, uint32), money16) += (money16)amount;
+	}
+	window_invalidate_by_number(WC_PEEP, peep->sprite_index);
+
+	RCT2_GLOBAL(0x00141F568, uint8) = RCT2_GLOBAL(0x0013CA740, uint8);
+	finance_payment(-amount, RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint32));
+
+	sound_play_panned(SOUND_PURCHASE, 0x8001, peep->x, peep->y, peep->z);
+}

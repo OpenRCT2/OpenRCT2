@@ -676,9 +676,13 @@ uint16 platform_get_locale_language(){
 }
 
 time_t platform_file_get_modified_time(char* path){
-	struct _stat stat;
-	_stat(path, &stat);
-	return stat.st_mtime;
+	WIN32_FILE_ATTRIBUTE_DATA data;
+	if (!GetFileAttributesEx(path, GetFileExInfoStandard, &data))
+		return 0;
+	ULARGE_INTEGER ull;
+	ull.LowPart = data.ftLastWriteTime.dwLowDateTime;
+	ull.HighPart = data.ftLastWriteTime.dwHighDateTime;
+	return ull.QuadPart / 10000000ULL - 11644473600ULL;
 }
 
 uint8 platform_get_locale_currency(){

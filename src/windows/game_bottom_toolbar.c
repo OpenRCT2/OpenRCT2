@@ -120,6 +120,8 @@ static void* window_game_bottom_toolbar_events[] = {
 	window_game_bottom_toolbar_emptysub
 };
 
+static void window_game_bottom_toolbar_invalidate_dirty_widgets(rct_window *w);
+
 /**
  * Creates the main game bottom toolbar window.
  *  rct2: 0x0066B52F (part of 0x0066B3E8)
@@ -521,34 +523,33 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
  */
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rct_window *w)
 {
-	int x, y;
+	int x, y, width;
+	rct_string_id stringId;
 	rct_news_item *newsItem;
+	rct_widget *middleOutsetWidget;
 
+	middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
 	newsItem = &(RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item)[0]);
 
 	// Current news item
 	gfx_fill_rect_inset(
 		dpi,
-		w->x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].left + 1,
-		w->y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].top + 1,
-		w->x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right - 1,
-		w->y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].bottom - 1,
+		w->x + middleOutsetWidget->left + 1,
+		w->y + middleOutsetWidget->top + 1,
+		w->x + middleOutsetWidget->right - 1,
+		w->y + middleOutsetWidget->bottom - 1,
 		w->colours[2],
 		48
 	);
 
 	// Text
+	stringId = 1926;
+	// memcpy((char*)language_get_string(1926), &newsItem->colour, 256);
 	memcpy((void*)0x009B5F2C, &newsItem->colour, 256);
-	RCT2_CALLPROC_X(
-		0x006C1F57,
-		14,
-		1926,
-		(window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].left + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right) / 2 + w->x,
-		w->y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].top + 11,
-		0,
-		(int)dpi,
-		(newsItem->ticks << 16) | (window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right - window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].left - 62)
-	);
+	x = w->x + (middleOutsetWidget->left + middleOutsetWidget->right) / 2;
+	y = w->y + middleOutsetWidget->top + 11;
+	width = middleOutsetWidget->right - middleOutsetWidget->left - 62;
+	sub_6C1F57(dpi, x, y, width, 14, stringId, NULL, newsItem->ticks);
 
 	x = w->x + window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].left;
 	y = w->y + window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].top;
@@ -635,10 +636,10 @@ static void window_game_bottom_toolbar_draw_tutorial_text(rct_drawpixelinfo *dpi
 static void window_game_bottom_toolbar_update(rct_window* w){
 
 	w->frame_no++;
-	if (w->frame_no >= 24)w->frame_no = 0;
+	if (w->frame_no >= 24)
+		w->frame_no = 0;
 
-	// Due to windows not fully finished use callproc to save on duplicate code.
-	RCT2_CALLPROC_X((int)window_game_bottom_toolbar_unknown05, 0, 0, 0, 0, (int)w, 0, 0);
+	window_game_bottom_toolbar_invalidate_dirty_widgets(w);
 }
 
 /* rct2: 0x006C644 */
@@ -664,6 +665,12 @@ static void window_game_bottom_toolbar_unknown05(){
 
 	window_get_register(w);
 
+	window_game_bottom_toolbar_invalidate_dirty_widgets(w);
+}
+
+/* rct2: 0x0066C6F2 */
+static void window_game_bottom_toolbar_invalidate_dirty_widgets(rct_window *w)
+{
 	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & BTM_TB_DIRTY_FLAG_MONEY){
 		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~BTM_TB_DIRTY_FLAG_MONEY;
 		widget_invalidate(w, WIDX_LEFT_INSET);

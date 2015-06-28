@@ -21,6 +21,7 @@
 #ifndef _RIDE_H_
 #define _RIDE_H_
 
+#include "../addresses.h"
 #include "../common.h"
 #include "../peep/peep.h"
 #include "../world/map.h"
@@ -342,6 +343,18 @@ typedef struct {
 	uint8 velocity[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x258C
 	uint8 altitude[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x384C
 } rct_ride_measurement;
+
+typedef struct {
+	int begin_x;
+	int begin_y;
+	int begin_z;
+	int begin_direction;
+	rct_map_element *begin_element;
+	int end_x;
+	int end_y;
+	int end_direction;
+	rct_map_element *end_element;
+} track_begin_end;
 
 enum {
 	RIDE_CLASS_RIDE,
@@ -747,6 +760,18 @@ enum {
 	RIDE_CRASH_TYPE_FATALITIES = 8
 };
 
+enum {
+	RIDE_CONSTRUCTION_STATE_0,
+	RIDE_CONSTRUCTION_STATE_FRONT,
+	RIDE_CONSTRUCTION_STATE_BACK,
+	RIDE_CONSTRUCTION_STATE_SELECTED,
+	RIDE_CONSTRUCTION_STATE_PLACE,
+	RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT,
+	RIDE_CONSTRUCTION_STATE_6,
+	RIDE_CONSTRUCTION_STATE_7,
+	RIDE_CONSTRUCTION_STATE_8
+};
+
 #define MAX_RIDES 255
 
 #define MAX_RIDE_MEASUREMENTS 8
@@ -776,6 +801,43 @@ extern rct_ride* g_ride_list;
 
 extern const uint8 gRideClassifications[255];
 
+
+// Macros for very commonly used varaibles, eventually will be changed to locals or globals
+#define _enabledRidePieces							RCT2_GLOBAL(0x00F44048, uint64)
+#define _enabledRidePiecesA							RCT2_GLOBAL(0x00F44048, uint32)
+#define _enabledRidePiecesB							RCT2_GLOBAL(0x00F4404C, uint32)
+
+#define _currentTrackPrice							RCT2_GLOBAL(0x00F44070, money32)
+
+#define _numCurrentPossibleRideConfigurations		RCT2_GLOBAL(0x00F44078, uint16)
+#define _numCurrentPossibleSpecialTrackPieces		RCT2_GLOBAL(0x00F4407A, uint16)
+
+#define _currentTrackCurve							RCT2_GLOBAL(0x00F440A0, uint16)
+#define _currentTrackEndX							RCT2_GLOBAL(0x00F440A2, uint16)
+#define _currentTrackEndY							RCT2_GLOBAL(0x00F440A4, uint16)
+#define _rideConstructionState						RCT2_GLOBAL(0x00F440A6, uint8)
+#define _currentRideIndex							RCT2_GLOBAL(0x00F440A7, uint8)
+#define _currentTrackBeginX							RCT2_GLOBAL(0x00F440A8, uint16)
+#define _currentTrackBeginY							RCT2_GLOBAL(0x00F440AA, uint16)
+#define _currentTrackBeginZ							RCT2_GLOBAL(0x00F440AC, uint16)
+#define _currentTrackPieceDirection					RCT2_GLOBAL(0x00F440AE, uint8)
+#define _currentTrackPieceType						RCT2_GLOBAL(0x00F440AF, uint8)
+#define _currentTrackSelectionFlags					RCT2_GLOBAL(0x00F440B0, uint8)
+#define _rideConstructionArrowPulseTime				RCT2_GLOBAL(0x00F440B1, sint8)
+#define _currentTrackSlopeEnd						RCT2_GLOBAL(0x00F440B2, uint8)
+#define _currentTrackBankEnd						RCT2_GLOBAL(0x00F440B3, uint8)
+#define _currentTrackLiftHill						RCT2_GLOBAL(0x00F440B4, uint8)
+#define _currentTrackCovered						RCT2_GLOBAL(0x00F440B5, uint8)
+
+#define _previousTrackBankEnd						RCT2_GLOBAL(0x00F440B6, uint8)
+#define _previousTrackSlopeEnd						RCT2_GLOBAL(0x00F440B7, uint8)
+
+#define _previousTrackPieceX						RCT2_GLOBAL(0x00F440B9, uint16)
+#define _previousTrackPieceY						RCT2_GLOBAL(0x00F440BB, uint16)
+#define _previousTrackPieceZ						RCT2_GLOBAL(0x00F440BD, uint16)
+
+#define _currentSeatRotationAngle					RCT2_GLOBAL(0x00F440CF, uint8)
+
 int ride_get_count();
 int ride_get_total_queue_length(rct_ride *ride);
 int ride_get_max_queue_time(rct_ride *ride);
@@ -787,7 +849,6 @@ void ride_check_all_reachable();
 void ride_update_satisfaction(rct_ride* ride, uint8 happiness);
 void ride_update_popularity(rct_ride* ride, uint8 pop_amount);
 int sub_6CAF80(int rideIndex, rct_xy_element *output);
-int track_get_next(rct_xy_element *input, rct_xy_element *output);
 int ride_find_track_gap(rct_xy_element *input, rct_xy_element *output);
 void ride_construct_new(ride_list_item listItem);
 void ride_construct(int rideIndex);
@@ -826,6 +887,10 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void ride_clear_for_construction(int rideIndex);
+void set_vehicle_type_image_max_sizes(rct_ride_type_vehicle* vehicle_type, int num_images);
+
+void ride_select_next_section();
+void ride_select_previous_section();
 
 int get_var_10E_unk_1(rct_ride* ride);
 int get_var_10E_unk_2(rct_ride* ride);
@@ -850,5 +915,26 @@ bool ride_type_has_flag(int rideType, int flag);
 bool ride_is_powered_launched(rct_ride *ride);
 bool ride_has_any_track_elements(int rideIndex);
 void ride_all_has_any_track_elements(bool *rideIndexArray);
+
+void sub_6C9800();
+
+bool track_get_next(rct_xy_element *input, rct_xy_element *output, int *z, int *direction);
+bool track_get_previous(int x, int y, rct_map_element *mapElement, track_begin_end *outTrackBeginEnd);
+
+rct_map_element *sub_6C6096(int *x, int *y, int *z, int *direction, int *direction2);
+bool sub_6C63D6(int inX, int inY, int inZ, int inDirection, track_begin_end *outTrackBeginEnd);
+
+void sub_6C84CE();
+void sub_6C96C0();
+money32 ride_get_entrance_or_exit_price(int rideIndex, int x, int y, int direction, int dh, int di);
+void ride_get_entrance_or_exit_position_from_screen_position(int x, int y, int *outX, int *outY, int *outDirection);
+
+bool ride_select_backwards_from_front();
+bool ride_select_forwards_from_back();
+
+money32 ride_remove_track_piece(int x, int y, int z, int direction, int type);
+
+bool ride_are_all_possible_entrances_and_exits_built(rct_ride *ride);
+void ride_fix_breakdown(int rideIndex, int reliabilityIncreaseFactor);
 
 #endif

@@ -512,9 +512,9 @@ void *rct2_realloc(void *block, size_t numBytes)
 
 /**
  * RCT2 and this DLL can not free each other's allocated memory blocks. Use this to free memory that was allocated by RCT2.
- *  rct2: 0x004068DE
+ *  rct2: 0x004068CD
  */
 void rct2_free(void *block)
 {
-	RCT2_CALLPROC_1(0x004068DE, void*, block);
+	RCT2_CALLPROC_1(0x004068CD, void*, block);
 }

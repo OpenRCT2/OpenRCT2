@@ -116,7 +116,7 @@ static void window_ride_demolish_mouseup(){
 	switch (widgetIndex){
 	case WIDX_DEMOLISH:
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_DEMOLISH_RIDE;
-		game_do_command(0, 1, 0, w->number, GAME_COMMAND_7, 0, 0);
+		game_do_command(0, 1, 0, w->number, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
 		break;
 	case WIDX_CANCEL:
 	case WIDX_CLOSE:

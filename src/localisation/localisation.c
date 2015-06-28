@@ -665,6 +665,24 @@ void format_string_raw(char *dest, char *src, void *args)
 }
 
 /**
+ * Writes a formatted string to a buffer and converts it to upper case.
+ *  rct2: 0x006C2538
+ * dest (edi)
+ * format (ax)
+ * args (ecx)
+ */
+void format_string_to_upper(char *dest, rct_string_id format, void *args)
+{
+	format_string(dest, format, args);
+
+	char *ch = dest;
+	while (*ch != 0) {
+		*ch = toupper(*ch);
+		ch++;
+	}
+}
+
+/**
  *  rct2: 0x006E37F7
  *  error  (eax)
  *  format (bx)

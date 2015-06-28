@@ -38,6 +38,9 @@
 uint8 *gParkRatingHistory = RCT2_ADDRESS(RCT2_ADDRESS_PARK_RATING_HISTORY, uint8);
 uint8 *gGuestsInParkHistory = RCT2_ADDRESS(RCT2_ADDRESS_GUESTS_IN_PARK_HISTORY, uint8);
 
+// If this value is more than or equal to 0, the park rating is forced to this value. Used for cheat
+int gForcedParkRating = -1;
+
 /**
  * In a difficult guest generation scenario, no guests will be generated if over this value.
  */
@@ -161,6 +164,9 @@ int park_calculate_size()
  */
 int calculate_park_rating()
 {
+	if (gForcedParkRating >= 0)
+		return gForcedParkRating;
+
 	int result;
 
 	result = 1150;
@@ -261,8 +267,8 @@ int calculate_park_rating()
 		for (sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_LITTER, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = litter->next) {
 			litter = &(g_sprite_list[sprite_idx].litter);
 
-			// Guessing this eliminates recently dropped litter
-			if (litter->var_24 - RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) >= 7680)
+			// Ignore recently dropped litter
+			if (litter->creationTick - RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) >= 7680)
 				num_litter++;
 		}
 		result -= 600 - (4 * (150 - min(150, num_litter)));
@@ -1401,4 +1407,16 @@ void game_command_buy_land_rights(int *eax, int *ebx, int *ecx, int *edx, int *e
 		}
 		*ebx = RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, uint16);
 	}*/
+}
+
+
+void set_forced_park_rating(int rating){
+	gForcedParkRating = rating;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) = calculate_park_rating();
+	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PARK_RATING;
+	window_invalidate_by_class(WC_PARK_INFORMATION);
+}
+
+int get_forced_park_rating(){
+	return gForcedParkRating;
 }
