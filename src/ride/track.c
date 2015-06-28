@@ -3459,3 +3459,47 @@ void game_command_remove_track(int *eax, int *ebx, int *ecx, int *edx, int *esi,
 {
 	RCT2_CALLFUNC_X(0x006C5B69, eax, ebx, ecx, edx, esi, edi, ebp);
 }
+
+/**
+ *
+ *  rct2: 0x006C5AE9
+ */
+void game_command_set_brakes_speed(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	rct_map_element *mapElement;
+	int x, y, z, trackType, brakesSpeed;
+
+	x = (*eax & 0xFFFF);
+	y = (*ecx & 0xFFFF);
+	z = (*edi & 0xFFFF);
+	trackType = (*edx & 0xFF);
+	brakesSpeed = ((*ebx >> 8) & 0xFF);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 0;
+	RCT2_GLOBAL(0x009DEA5E, uint8) = x + 16;
+	RCT2_GLOBAL(0x009DEA60, uint8) = y + 16;
+	RCT2_GLOBAL(0x009DEA62, uint8) = z;
+
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		*ebx = 0;
+		return;
+	}
+
+	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (mapElement->base_height * 8 != z)
+			continue;
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
+		if (mapElement->properties.track.type != trackType)
+			continue;
+
+		mapElement->properties.track.sequence =
+			(mapElement->properties.track.sequence & 0x0F) |
+			((brakesSpeed >> 1) << 4);
+
+		break;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	*ebx = 0;
+}

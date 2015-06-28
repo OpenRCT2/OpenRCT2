@@ -471,7 +471,7 @@ money32 sub_6CA162(int rideIndex, int trackType, int trackDirection, int edxRS16
 static void window_ride_construction_show_special_track_dropdown(rct_window *w, rct_widget *widget);
 static void ride_selected_track_set_seat_rotation(int seatRotation);
 static void loc_6C7502(int al);
-static void loc_6C76E9();
+static void ride_construction_set_brakes_speed(int brakesSpeed);
 
 static void ride_construction_toolupdate_construct(int screenX, int screenY);
 static void ride_construction_toolupdate_entrance_exit(int screenX, int screenY);
@@ -1442,18 +1442,18 @@ static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, r
 			_currentTrackPrice = MONEY32_UNDEFINED;
 			sub_6C84CE();
 		} else {
-			uint8 *ebp = (uint8*)0x00F440CD;
-			uint8 bl = 30;
+			uint8 *brakesSpeedPtr = (uint8*)0x00F440CD;
+			uint8 maxBrakesSpeed = 30;
 			if (RCT2_GLOBAL(0x00F440D3, uint8) != 1) {
-				ebp = (uint8*)0x00F440CE;
-				bl = RCT2_GLOBAL(0x0097CF40 + 6 + (ride->type * 8), uint8);
+				brakesSpeedPtr = (uint8*)0x00F440CE;
+				maxBrakesSpeed = RCT2_GLOBAL(0x0097CF40 + 6 + (ride->type * 8), uint8);
 			}
-			uint8 bh = *ebp + 2;
-			if (bh <= bl) {
+			uint8 brakesSpeed = *brakesSpeedPtr + 2;
+			if (brakesSpeed <= maxBrakesSpeed) {
 				if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED) {
-					loc_6C76E9();
+					ride_construction_set_brakes_speed(brakesSpeed);
 				} else {
-					*ebp = bh;
+					*brakesSpeedPtr = brakesSpeed;
 					sub_6C84CE();
 				}
 			}
@@ -1466,16 +1466,16 @@ static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, r
 			_currentTrackPrice = MONEY32_UNDEFINED;
 			sub_6C84CE();
 		} else {
-			uint8 *ebp = (uint8*)0x00F440CD;
+			uint8 *brakesSpeedPtr = (uint8*)0x00F440CD;
 			if (RCT2_GLOBAL(0x00F440D3, uint8) != 1) {
-				ebp = (uint8*)0x00F440CE;
+				brakesSpeedPtr = (uint8*)0x00F440CE;
 			}
-			uint8 bh = *ebp - 2;
-			if (bh >= 2) {
+			uint8 brakesSpeed = *brakesSpeedPtr - 2;
+			if (brakesSpeed >= 2) {
 				if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED) {
-					loc_6C76E9();
+					ride_construction_set_brakes_speed(brakesSpeed);
 				} else {
-					*ebp = bh;
+					*brakesSpeedPtr = brakesSpeed;
 					sub_6C84CE();
 				}
 			}
@@ -3172,7 +3172,7 @@ static void loc_6C7502(int al)
  * 
  * rct2: 0x006C76E9
  */
-static void loc_6C76E9()
+static void ride_construction_set_brakes_speed(int brakesSpeed)
 {
 	rct_map_element *mapElement;
 	int x, y, z;
@@ -3180,13 +3180,13 @@ static void loc_6C76E9()
 	x = _currentTrackBeginX;
 	y = _currentTrackBeginY;
 	z = _currentTrackBeginZ;
-	if (sub_6C683D(&x, &y, &z, _currentTrackPieceDirection & 3, _currentTrackPieceType, 0, &mapElement, 0)) {
+	if (!sub_6C683D(&x, &y, &z, _currentTrackPieceDirection & 3, _currentTrackPieceType, 0, &mapElement, 0)) {
 		game_do_command(
 			_currentTrackBeginX,
-			GAME_COMMAND_FLAG_APPLY | ((_currentTrackPieceDirection & 3) << 8),
+			GAME_COMMAND_FLAG_APPLY | ((brakesSpeed) << 8),
 			_currentTrackBeginY,
 			mapElement->properties.track.type,
-			GAME_COMMAND_28,
+			GAME_COMMAND_SET_BRAKES_SPEED,
 			_currentTrackBeginZ,
 			0
 		);

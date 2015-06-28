@@ -548,6 +548,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 	memcpy((void*)0x009B5F2C, &newsItem->colour, 256);
 	x = w->x + (middleOutsetWidget->left + middleOutsetWidget->right) / 2;
 	y = w->y + middleOutsetWidget->top + 11;
+	width = middleOutsetWidget->right - middleOutsetWidget->left - 62;
 	sub_6C1F57(dpi, x, y, width, 14, stringId, NULL, newsItem->ticks);
 
 	x = w->x + window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].left;
