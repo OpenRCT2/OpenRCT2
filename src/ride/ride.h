@@ -154,7 +154,7 @@ typedef struct {
 	uint16 overall_view;			// 0x050 00XX = X, XX00 = Y (* 32 + 16)
 	uint16 station_starts[4];		// 0x052
 	uint8 station_heights[4];		// 0x05A
-	uint8 pad_05E[0x4];
+	uint8 station_length[4];		// 0x05E
 	uint8 station_depart[4];		// 0x062
 	uint8 var_066[4];
 	uint16 entrances[4];			// 0x06A
@@ -168,9 +168,10 @@ typedef struct {
 	uint8 num_stations;				// 0x0C7
 	uint8 num_vehicles;				// 0x0C8
 	uint8 num_cars_per_train;		// 0x0C9
-	uint8 pad_0CA[0x2];
-	uint8 var_0CC;
-	uint8 var_0CD;
+	uint8 var_0CA;
+	uint8 var_0CB;
+	uint8 max_trains;				// 0x0CC
+	uint8 min_max_cars_per_train;	// 0x0CD
 	uint8 min_waiting_time;			// 0x0CE
 	uint8 max_waiting_time;			// 0x0CF
 	union {
@@ -938,5 +939,6 @@ bool ride_are_all_possible_entrances_and_exits_built(rct_ride *ride);
 void ride_fix_breakdown(int rideIndex, int reliabilityIncreaseFactor);
 
 void ride_entry_get_train_layout(int rideEntryIndex, int numCarsPerTrain, uint8 *trainLayout);
+void ride_update_max_vehicles(int rideIndex);
 
 #endif

@@ -3363,7 +3363,7 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 		}
 
 		ride->mode = new_value;
-		RCT2_CALLPROC_X(0x6DD57D, 0, 0, 0, ride_id, 0, 0, 0);
+		ride_update_max_vehicles(ride_id);
 		break;
 	case 1:
 		ride->depart_flags = new_value;
@@ -5066,19 +5066,169 @@ void ride_entry_get_train_layout(int rideEntryIndex, int numCarsPerTrain, uint8 
 	
 	for (int i = 0; i < numCarsPerTrain; i++) {
 		uint8 vehicleType = rideEntry->default_vehicle;
-		if (i == 0) {
-			if (rideEntry->front_vehicle != 255)
-				vehicleType = rideEntry->front_vehicle;
-		} else if (i == 1) {
-			if (rideEntry->second_vehicle != 255)
-				vehicleType = rideEntry->second_vehicle;
-		} else if (i == 2) {
-			if (rideEntry->third_vehicle != 255)
-				vehicleType = rideEntry->third_vehicle;
-		} else if (i == numCarsPerTrain - 1) {
-			if (rideEntry->rear_vehicle != 255)
-				vehicleType = rideEntry->rear_vehicle;
+		if (i == 0 && rideEntry->front_vehicle != 255) {
+			vehicleType = rideEntry->front_vehicle;
+		} else if (i == 1 && rideEntry->second_vehicle != 255) {
+			vehicleType = rideEntry->second_vehicle;
+		} else if (i == 2 && rideEntry->third_vehicle != 255) {
+			vehicleType = rideEntry->third_vehicle;
+		} else if (i == numCarsPerTrain - 1 && rideEntry->rear_vehicle != 255) {
+			vehicleType = rideEntry->rear_vehicle;
 		}
 		trainLayout[i] = vehicleType;
+	}
+}
+
+int ride_get_smallest_station_length(rct_ride *ride)
+{
+	uint32 result = -1;
+	for (int i = 0; i < 4; i++) {
+		if (ride->station_starts[i] != 0xFFFF) {
+			result = min(result, (uint32)(ride->station_length[i] & 0x0F));
+		}
+	}
+	return (int)result;
+}
+
+static int sub_6CB3AA(rct_ride *ride)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+
+	edi = (int)ride;
+	RCT2_CALLFUNC_X(0x006CB3AA, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return eax;
+}
+
+/**
+ *
+ *  rct2: 0x006DD57D
+ */
+void ride_update_max_vehicles(int rideIndex)
+{
+	rct_ride *ride;
+	rct_ride_type *rideEntry;
+	rct_ride_type_vehicle *vehicleEntry;
+	uint8 trainLayout[16], numCarsPerTrain, numVehicles;
+	int trainLength, maxNumTrains;
+
+	ride = GET_RIDE(rideIndex);
+	if (ride->subtype == 0xFF)
+		return;
+
+	rideEntry = GET_RIDE_ENTRY(ride->subtype);
+	if (rideEntry->cars_per_flat_ride == 0xFF) {
+		ride->num_cars_per_train = max(rideEntry->min_cars_in_train, ride->num_cars_per_train);
+		ride->min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
+
+		// Calculate maximum train length based on smallest station length
+		int stationLength = ride_get_smallest_station_length(ride);
+		if (stationLength == -1)
+			return;
+
+		stationLength = (stationLength * 0x44180) - 0x16B2A;
+		int maxFriction = RCT2_GLOBAL(0x0097D21B + (ride->type * 8), uint8) << 8;
+		int maxCarsPerTrain = 1;
+		for (int numCars = rideEntry->max_cars_in_train; numCars > 0; numCars--) {
+			ride_entry_get_train_layout(ride->subtype, numCars, trainLayout);
+			trainLength = 0;
+			int totalFriction = 0;
+			for (int i = 0; i < numCars; i++) {
+				vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
+				trainLength += vehicleEntry->var_04;
+				totalFriction += vehicleEntry->var_08;
+			}
+
+			if (trainLength <= stationLength && totalFriction <= maxFriction) {
+				maxCarsPerTrain = numCars;
+				break;
+			}
+		}
+		maxCarsPerTrain = max(maxCarsPerTrain, rideEntry->min_cars_in_train);
+		ride->min_max_cars_per_train = maxCarsPerTrain | (rideEntry->min_cars_in_train << 4);
+
+		switch (ride->mode) {
+		case RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED:
+		case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
+			maxNumTrains = clamp(1, ride->num_stations + ride->num_block_brakes - 1, 31);
+			break;
+		case RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE:
+		case RIDE_MODE_POWERED_LAUNCH_PASSTROUGH:
+		case RIDE_MODE_SHUTTLE:
+		case RIDE_MODE_LIM_POWERED_LAUNCH:
+		case RIDE_MODE_POWERED_LAUNCH:
+			maxNumTrains = 1;
+			break;
+		default:
+			// Calculate maximum number of trains
+			ride_entry_get_train_layout(ride->subtype, maxCarsPerTrain, trainLayout);
+			trainLength = 0;
+			for (int i = 0; i < maxCarsPerTrain; i++) {
+				vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
+				trainLength += vehicleEntry->var_04;
+			}
+
+			int totalLength = trainLength / 2;
+			if (maxCarsPerTrain != 1)
+				totalLength /= 2;
+
+			maxNumTrains = 0;
+			do {
+				maxNumTrains++;
+				totalLength += trainLength;
+			} while (totalLength <= stationLength);
+
+			if (
+				(ride->mode != RIDE_MODE_STATION_TO_STATION && ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT) ||
+				!(RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x40)
+			) {
+				maxNumTrains = min(maxNumTrains, 31);
+			} else {
+				ride_entry_get_train_layout(ride->subtype, maxCarsPerTrain, trainLayout);
+				vehicleEntry = &rideEntry->vehicles[trainLayout[0]];
+				int unk = vehicleEntry->var_5C;
+
+				int totalSpacing = 0;
+				for (int i = 0; i < maxCarsPerTrain; i++) {
+					vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
+					totalSpacing += vehicleEntry->var_04;
+				}
+
+				totalSpacing >>= 13;
+				int unk2 = sub_6CB3AA(ride) / 4;
+				if (unk > 10) {
+					unk2 = (unk2 * 3) / 4;
+				}
+				if (unk > 25) {
+					unk2 = (unk2 * 3) / 4;
+				}
+				if (unk > 40) {
+					unk2 = (unk2 * 3) / 4;
+				}
+
+				maxNumTrains = 0;
+				int unk3 = 0;
+				do {
+					maxNumTrains++;
+					unk3 += totalSpacing;
+				} while (maxNumTrains < 31 && unk3 < unk2);
+			}
+			break;
+		}
+		ride->max_trains = maxNumTrains;
+
+		numCarsPerTrain = min(ride->var_0CB, maxCarsPerTrain);
+		numVehicles = min(ride->var_0CA, maxNumTrains);
+	} else {
+		ride->max_trains = rideEntry->cars_per_flat_ride;
+		ride->min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
+		numCarsPerTrain = rideEntry->max_cars_in_train;
+		numVehicles = min(ride->var_0CA, rideEntry->cars_per_flat_ride);
+	}
+
+	// Refresh new current num vehicles / num cars per vehicle
+	if (numVehicles != ride->num_vehicles || numCarsPerTrain != ride->num_cars_per_train) {
+		ride->num_cars_per_train = numCarsPerTrain;
+		ride->num_vehicles = numVehicles;
+		window_invalidate_by_number(WC_RIDE, rideIndex);
 	}
 }

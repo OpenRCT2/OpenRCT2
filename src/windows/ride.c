@@ -1419,9 +1419,8 @@ static void window_ride_set_page(rct_window *w, int page)
 	w->frame_no = 0;
 	w->var_492 = 0;
 
-	if (page == WINDOW_RIDE_PAGE_VEHICLE){
-		// Reload the vehicle settings
-		RCT2_CALLPROC_X(0x006DD57D, 0, 0, 0, w->number, 0, 0, 0);
+	if (page == WINDOW_RIDE_PAGE_VEHICLE) {
+		ride_update_max_vehicles(w->number);
 	}
 
 	if (w->viewport != NULL) {
@@ -2401,7 +2400,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 			dropdownWidget->bottom - dropdownWidget->top + 1,
 			w->colours[1],
 			DROPDOWN_FLAG_STAY_OPEN,
-			ride->var_0CC,
+			ride->max_trains,
 			widget->right - dropdownWidget->left
 		);
 
@@ -2414,8 +2413,8 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 		gDropdownItemsChecked = (1 << (ride->num_vehicles - 1));
 		break;
 	case WIDX_VEHICLE_CARS_PER_TRAIN_DROPDOWN:
-		minCars = (ride->var_0CD >> 4);
-		maxCars = (ride->var_0CD & 0x0F);
+		minCars = (ride->min_max_cars_per_train >> 4);
+		maxCars = (ride->min_max_cars_per_train & 0x0F);
 
 		window_dropdown_show_text_custom_width(
 			w->x + dropdownWidget->left,
@@ -2466,15 +2465,15 @@ static void window_ride_vehicle_dropdown()
 		dropdownIndex = (gDropdownItemsArgs[dropdownIndex] >> 16) & 0xFFFF;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1018;
-		game_do_command(0, (2 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_9, 0, 0);
+		game_do_command(0, (2 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
 		break;
 	case WIDX_VEHICLE_TRAINS_DROPDOWN:
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1020;
-		game_do_command(0, (0 << 8) | 1, 0, ((dropdownIndex + 1) << 8) | w->number, GAME_COMMAND_9, 0, 0);
+		game_do_command(0, (0 << 8) | 1, 0, ((dropdownIndex + 1) << 8) | w->number, GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
 		break;
 	case WIDX_VEHICLE_CARS_PER_TRAIN_DROPDOWN:
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1019;
-		game_do_command(0, (1 << 8) | 1, 0, ((rideEntry->min_cars_in_train + dropdownIndex) << 8) | w->number, GAME_COMMAND_9, 0, 0);
+		game_do_command(0, (1 << 8) | 1, 0, ((rideEntry->min_cars_in_train + dropdownIndex) << 8) | w->number, GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
 		break;
 	}
 }
