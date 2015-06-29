@@ -3676,8 +3676,8 @@ STR_5343    :Werknemers automatisch plaatsen
 STR_5344    :Wijzigingsoverzicht
 STR_5345    :Cheats voor geld
 STR_5346    :Cheats voor bezoekers
-STR_5347    :Cheats voor attracties
-STR_5348    :Cheats voor het park
+STR_5347    :Cheats voor het park
+STR_5348    :Cheats voor attracties
 STR_5349    :{SMALLFONT}{BLACK}Alle attracties
 STR_5350    :Max
 STR_5351    :Min
@@ -3699,7 +3699,7 @@ STR_5366    :Normaal
 STR_5367    :Snel
 STR_5368    :Crashstatus weg
 STR_5369    :Parkparameters...
-STR_5370    :{SMALLFONT}{BLACK}Klik op deze knop om park-{NEWLINE}parameters zoals verboden,{NEWLINE}bezoekersgenerering en geld aan te passen.
+STR_5370    :{SMALLFONT}{BLACK}Klik op deze knop om park-{NEWLINE}parameters zoals verboden,{NEWLINE}bezoekersgenerering en geld{NEWLINE}aan te passen.
 STR_5371    :Objectselectie
 STR_5372    :Sleeprichting van rechtermuisknop omkeren
 STR_5373    :Naam {STRINGID}

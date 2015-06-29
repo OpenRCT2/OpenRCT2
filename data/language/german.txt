@@ -929,11 +929,11 @@ STR_0924    :{SMALLFONT}{BLACK}Spirale nach unten
 STR_0925    :{SMALLFONT}{BLACK}Spirale nach oben
 STR_0926    :Dies kann nicht entfernt werden...
 STR_0927    :Dies kann hier nicht gebaut werden...
-STR_0928    :{SMALLFONT}{BLACK}Kettenlift, um Wagen einen Anstieg hinaufzuziehen
+STR_0928    :{SMALLFONT}{BLACK}Kettenlift, um Wagen einen{NEWLINE}Anstieg hinaufzuziehen
 STR_0929    :S-Kurve (links)
 STR_0930    :S-Kurve (rechts)
-STR_0931    :Vert. Schleife (l.)
-STR_0932    :Vert. Schleife (r.)
+STR_0931    :Vertikale Schleife (l.)
+STR_0932    :Vertikale Schleife (r.)
 STR_0933    :Gelände zuerst höher bzw. niedriger machen
 STR_0934    :Attraktionseingang im Weg
 STR_0935    :Attraktionsausgang im Weg
@@ -1382,8 +1382,8 @@ STR_1377    :Heartline-Roll (links)
 STR_1378    :Heartline-Roll (rechts)
 STR_1379    :Umdreher (links)
 STR_1380    :Umdreher (rechts)
-STR_1381    :Gebog. Lifthügel (l.)
-STR_1382    :Gebog. Lifthügel (r.)
+STR_1381    :Gebogener Lifthügel (l.)
+STR_1382    :Gebogener Lifthügel (r.)
 STR_1383    :Viertelschleife
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :{SMALLFONT}{BLACK}Andere Streckenkonfigurationen
@@ -1407,7 +1407,7 @@ STR_1402    :{SMALLFONT}{BLACK}Eingang zur Attraktion bauen oder verlegen
 STR_1403    :{SMALLFONT}{BLACK}Ausgang von Attraktion bauen oder verlegen
 STR_1404    :{SMALLFONT}{BLACK}Um 90{DEGREE} drehen
 STR_1405    :{SMALLFONT}{BLACK}Spiegelbild
-STR_1406    :{SMALLFONT}{BLACK}Szenerie ein-/ausschalten (falls für diesen Entwurf verfügbar)
+STR_1406    :{SMALLFONT}{BLACK}Szenerie ein-/ausschalten (falls{NEWLINE}für diesen Entwurf verfügbar)
 STR_1407    :{WINDOW_COLOUR_2}Dies bauen...
 STR_1408    :{WINDOW_COLOUR_2}Kosten: {BLACK}{CURRENCY}
 STR_1409    :Ein-/Ausgangsplattform
@@ -1467,8 +1467,8 @@ STR_1462    :Zu steil für Lifthügel
 STR_1463    :Besucher
 STR_1464    :Spirale n. oben (klein)
 STR_1465    :Spirale n. oben (groß)
-STR_1466    :Spirale n. unt. (klein)
-STR_1467    :Spirale n. unt. (groß)
+STR_1466    :Spirale n. unten (klein)
+STR_1467    :Spirale n. unten (groß)
 STR_1468    :Personal
 STR_1469    :Fahrt muss mit Stationen anfangen und enden
 STR_1470    :Station nicht lang genug
@@ -1674,16 +1674,16 @@ STR_1669    :{WINDOW_COLOUR_2}Zufriedenheit: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}Besucher gesamt: {BLACK}{COMMA32}
 STR_1671    :{WINDOW_COLOUR_2}Gesamtgewinn: {BLACK}{CURRENCY2DP}
 STR_1672    :Bremsen
-STR_1673    :Drehkontrolle umschalten
+STR_1673    :Drehkontrolle umschalt.
 STR_1674    :Bremsgeschwindigkeit
 STR_1675    :{POP16}{VELOCITY}
-STR_1676    :{SMALLFONT}{BLACK}Geschwindigkeitsgrenze für Bremsen einstellen
+STR_1676    :{SMALLFONT}{BLACK}Geschwindigkeitsgrenze{NEWLINE}für Bremsen einstellen
 STR_1677    :{WINDOW_COLOUR_2}Popularität: {BLACK}Unbekannt
 STR_1678    :{WINDOW_COLOUR_2}Popularität: {BLACK}{COMMA16}%
 STR_1679    :Spirale n. oben (links)
-STR_1680    :Spirale n. oben (r.)
-STR_1681    :Spirale n. unt. (links)
-STR_1682    :Spirale n. unt. (r.)
+STR_1680    :Spirale n. oben (rechts)
+STR_1681    :Spirale n. unten (links)
+STR_1682    :Spirale n. unten (rechts)
 STR_1683    :Grundflächengröße 2 x 2
 STR_1684    :Grundflächengröße 4 x 4
 STR_1685    :Grundflächengröße 2 x 4
@@ -2275,7 +2275,7 @@ STR_2270    :{WINDOW_COLOUR_2}Fortschritt: {BLACK}{STRINGID}
 STR_2271    :{WINDOW_COLOUR_2}Erwartet: {BLACK}{STRINGID}
 STR_2272    :{WINDOW_COLOUR_2}Attraktion:{NEWLINE}{BLACK}{STRINGID}
 STR_2273    :{WINDOW_COLOUR_2}Szenerie/Thema:{NEWLINE}{BLACK}{STRINGID}
-STR_2274    :{SMALLFONT}{BLACK}Details zu dieser Erfindung bzw. Entwicklung anzeigen
+STR_2274    :{SMALLFONT}{BLACK}Details zu dieser Erfindung bzw.{NEWLINE}Entwicklung anzeigen
 STR_2275    :{SMALLFONT}{BLACK}Finanzierung und Optionen für Forschung & Entwicklung anzeigen
 STR_2276    :{SMALLFONT}{BLACK}Forschungs- & Entwicklungsstatus anzeigen
 STR_2277    :Unbekannt
@@ -3598,7 +3598,7 @@ STR_5261    :Filter
 STR_5262    :Wacky Worlds
 STR_5263    :Time Twister
 STR_5264    :Eigene
-STR_5265    :{SMALLFONT}{BLACK}Auswählen, welche Inhaltsquellen angezeigt werden sollen
+STR_5265    :{SMALLFONT}{BLACK}Auswählen, welche Inhaltsquellen{NEWLINE}angezeigt werden sollen
 STR_5266    :{SMALLFONT}{BLACK}Anzeige
 STR_5267    :{SMALLFONT}{BLACK}Sprache und Einheiten
 STR_5268    :{SMALLFONT}{BLACK}Audio
@@ -3680,8 +3680,8 @@ STR_5343    :Personal automatisch platzieren
 STR_5344    :Changelog
 STR_5345    :Cheats für Finanzen
 STR_5346    :Cheats für Parkbesucher
-STR_5347    :Cheats für Attraktionen
-STR_5348    :Cheats für Park
+STR_5347    :Cheats für Park
+STR_5348    :Cheats für Attraktionen
 STR_5349    :{SMALLFONT}{BLACK}Alle Attraktionen
 STR_5350    :Max
 STR_5351    :Min
@@ -3775,10 +3775,14 @@ STR_5438    :Es können keine Änderungen vorgenommen werden, solange der Befehl
 STR_5439    :Zusammen mit einem `Neustart'-Befehl muss ein mindestens 4 Sekunden langer `Warten'-Befehl verwendet werden
 STR_5440    :Vollbild minimieren, wenn Spiel nicht im Vordergrund
 STR_5441    :{SMALLFONT}{BLACK}Identifiziert Bahnen durch Streckentyp, sodass wie in RCT1 Fahrzeuge anschließend geändert werden können
-STR_5442    :reserviert
+STR_5442    :Parkbewertung:
 STR_5443    :Geschwind.{MOVE_X}{87}{STRINGID}
 STR_5444    :Geschwindigkeit:
 STR_5445    :Geschwindigkeit
 STR_5446    :Erhalten
 STR_5447    :Typ {STRINGID}
 STR_5448    :Bahn / Fahrzeug {STRINGID}
+STR_5449    :Spielgeschwindigkeit verringern
+STR_5450    :Spielgeschwindigkeit erhöhen
+STR_5451    :Cheatfenster anzeigen
+STR_5452    :Symbolleiste ein-/ausblenden
