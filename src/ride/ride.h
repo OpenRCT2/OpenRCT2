@@ -773,6 +773,12 @@ enum {
 	RIDE_CONSTRUCTION_STATE_8
 };
 
+enum {
+	RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_TRAINS,
+	RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_CARS_PER_TRAIN,
+	RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY
+};
+
 #define MAX_RIDES 255
 
 #define MAX_RIDE_MEASUREMENTS 8
@@ -940,5 +946,10 @@ void ride_fix_breakdown(int rideIndex, int reliabilityIncreaseFactor);
 
 void ride_entry_get_train_layout(int rideEntryIndex, int numCarsPerTrain, uint8 *trainLayout);
 void ride_update_max_vehicles(int rideIndex);
+
+void ride_set_ride_entry(int rideIndex, int rideEntry);
+void ride_set_num_vehicles(int rideIndex, int numVehicles);
+void ride_set_num_cars_per_vehicle(int rideIndex, int numCarsPerVehicle);
+void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
 #endif

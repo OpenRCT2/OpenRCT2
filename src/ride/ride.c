@@ -5219,10 +5219,10 @@ void ride_update_max_vehicles(int rideIndex)
 		numCarsPerTrain = min(ride->var_0CB, maxCarsPerTrain);
 		numVehicles = min(ride->var_0CA, maxNumTrains);
 	} else {
-		ride->max_trains = rideEntry->cars_per_flat_ride;
-		ride->min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
-		numCarsPerTrain = rideEntry->max_cars_in_train;
-		numVehicles = min(ride->var_0CA, rideEntry->cars_per_flat_ride);
+	ride->max_trains = rideEntry->cars_per_flat_ride;
+	ride->min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
+	numCarsPerTrain = rideEntry->max_cars_in_train;
+	numVehicles = min(ride->var_0CA, rideEntry->cars_per_flat_ride);
 	}
 
 	// Refresh new current num vehicles / num cars per vehicle
@@ -5231,4 +5231,126 @@ void ride_update_max_vehicles(int rideIndex)
 		ride->num_vehicles = numVehicles;
 		window_invalidate_by_number(WC_RIDE, rideIndex);
 	}
+}
+
+static void sub_6DE52C(rct_ride *ride)
+{
+	RCT2_CALLPROC_X(0x006DE52C, 0, 0, 0, 0, (int)ride, 0, 0);
+}
+
+void ride_set_ride_entry(int rideIndex, int rideEntry)
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_SET_VEHICLE_TYPE_FAIL;
+	game_do_command(
+		0,
+		GAME_COMMAND_FLAG_APPLY | (RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY << 8),
+		0,
+		(rideEntry << 8) | rideIndex,
+		GAME_COMMAND_SET_RIDE_VEHICLES,
+		0,
+		0
+	);
+}
+
+void ride_set_num_vehicles(int rideIndex, int numVehicles)
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL;
+	game_do_command(
+		0,
+		GAME_COMMAND_FLAG_APPLY | (RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_TRAINS << 8),
+		0,
+		(numVehicles << 8) | rideIndex,
+		GAME_COMMAND_SET_RIDE_VEHICLES,
+		0,
+		0
+	);
+}
+
+void ride_set_num_cars_per_vehicle(int rideIndex, int numCarsPerVehicle)
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL;
+	game_do_command(
+		0,
+		GAME_COMMAND_FLAG_APPLY | (RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_CARS_PER_TRAIN << 8),
+		0,
+		(numCarsPerVehicle << 8) | rideIndex,
+		GAME_COMMAND_SET_RIDE_VEHICLES,
+		0,
+		0
+	);
+}
+
+/**
+ *
+ *  rct2: 0x006B52D4
+ */
+void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	rct_ride *ride;
+	rct_ride_type *rideEntry;
+	rct_window *w;
+	int rideIndex, commandType, value;
+
+	commandType = (*ebx >> 8) & 0xFF;
+	rideIndex = *edx & 0xFF;
+	value = (*edx >> 8) & 0xFF;
+
+	ride = GET_RIDE(rideIndex);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS;
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING;
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+
+	if (ride->status != RIDE_STATUS_CLOSED) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_MUST_BE_CLOSED_FIRST;
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+
+	if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
+		*ebx = 0;
+		return;
+	}
+
+	sub_6B59C6(rideIndex);
+	ride_clear_for_construction(rideIndex);
+	ride_remove_peeps(rideIndex);
+	ride->var_1CA = 100;
+	if (ride->type != RIDE_TYPE_ENTERPRISE) {
+		gfx_invalidate_screen();
+	}
+
+	switch (commandType) {
+	case RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_TRAINS:
+		ride->var_0CA = value;
+		if (ride->type != RIDE_TYPE_SPACE_RINGS) {
+			gfx_invalidate_screen();
+		}
+		break;
+	case RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_CARS_PER_TRAIN:
+		rideEntry = GET_RIDE_ENTRY(ride->subtype);
+		value = clamp(rideEntry->min_cars_in_train, value, rideEntry->max_cars_in_train);
+		ride->var_0CB = value;
+		break;
+	case RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY:
+		ride->subtype = value;
+		sub_6DE52C(ride);
+		break;
+	}
+
+	ride->num_circuits = 1;
+	ride_update_max_vehicles(rideIndex);
+
+	w = window_find_by_number(WC_RIDE, rideIndex);
+	if (w != NULL) {
+		if (w->page == 4) {
+			w->var_48C = 0;
+		}
+		window_invalidate(w);
+	}
+	*ebx = 0;
 }

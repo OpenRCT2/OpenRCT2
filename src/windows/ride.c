@@ -2463,17 +2463,13 @@ static void window_ride_vehicle_dropdown()
 	switch (widgetIndex) {
 	case WIDX_VEHICLE_TYPE_DROPDOWN:
 		dropdownIndex = (gDropdownItemsArgs[dropdownIndex] >> 16) & 0xFFFF;
-
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1018;
-		game_do_command(0, (2 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
+		ride_set_ride_entry(w->number, dropdownIndex);
 		break;
 	case WIDX_VEHICLE_TRAINS_DROPDOWN:
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1020;
-		game_do_command(0, (0 << 8) | 1, 0, ((dropdownIndex + 1) << 8) | w->number, GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
+		ride_set_num_vehicles(w->number, dropdownIndex + 1);
 		break;
 	case WIDX_VEHICLE_CARS_PER_TRAIN_DROPDOWN:
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1019;
-		game_do_command(0, (1 << 8) | 1, 0, ((rideEntry->min_cars_in_train + dropdownIndex) << 8) | w->number, GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
+		ride_set_num_cars_per_vehicle(w->number, rideEntry->min_cars_in_train + dropdownIndex);
 		break;
 	}
 }
