@@ -257,5 +257,6 @@ void invalidate_sprite(rct_sprite *sprite);
 void sub_6EC60B(rct_sprite* sprite);
 void sprite_remove(rct_sprite *sprite);
 void litter_create(int x, int y, int z, int direction, int type);
+void sub_6EC53F(rct_sprite *sprite);
 
 #endif

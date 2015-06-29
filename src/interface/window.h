@@ -566,6 +566,7 @@ void window_ride_construct(rct_window *w);
 void window_ride_list_open();
 rct_window *window_ride_construction_open();
 rct_window *window_maze_construction_open();
+void window_maze_construction_update_pressed_widgets();
 void window_track_place_open();
 rct_window *window_new_ride_open();
 rct_window *window_new_ride_open_research();

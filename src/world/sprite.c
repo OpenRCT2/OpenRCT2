@@ -766,28 +766,73 @@ void move_sprite_to_list(rct_sprite *sprite, uint8 cl)
 
 /**
  *
+ *  rct: 0x00673200
+ */
+static void sub_673200(rct_sprite *sprite)
+{
+	RCT2_CALLPROC_X(0x00673200, 0, 0, 0, 0, (int)sprite, 0, 0);
+}
+
+/**
+ *
+ *  rct: 0x00673298
+ */
+static void sub_673298(rct_sprite *sprite)
+{
+	RCT2_CALLPROC_X(0x00673298, 0, 0, 0, 0, (int)sprite, 0, 0);
+}
+
+/**
+ *
+ *  rct: 0x00673385
+ */
+static void sub_673385(rct_sprite *sprite)
+{
+	RCT2_CALLPROC_X(0x00673385, 0, 0, 0, 0, (int)sprite, 0, 0);
+}
+
+/**
+ *
+ *  rct: 0x0067339D
+ */
+static void sub_67339D(rct_sprite *sprite)
+{
+	RCT2_CALLPROC_X(0x0067339D, 0, 0, 0, 0, (int)sprite, 0, 0);
+}
+
+/**
+ *
+ *  rct: 0x006733B4
+ */
+static void sub_6733B4(rct_sprite *sprite)
+{
+	RCT2_CALLPROC_X(0x006733B4, 0, 0, 0, 0, (int)sprite, 0, 0);
+}
+
+/**
+ *
  *  rct: 0x006731CD
  */
 void sprite_misc_update(rct_sprite *sprite)
 {
 	switch (sprite->unknown.misc_identifier) {
 	case SPRITE_MISC_0:
-		RCT2_CALLPROC_X(0x00673200, 0, 0, 0, 0, (int)sprite, 0, 0);
+		sub_673200(sprite);
 		break;
 	case SPRITE_MISC_MONEY_EFFECT:
 		money_effect_update(&sprite->money_effect);
 		break;
 	case SPRITE_MISC_2:
-		RCT2_CALLPROC_X(0x00673298, 0, 0, 0, 0, (int)sprite, 0, 0);
+		sub_673298(sprite);
 		break;
 	case SPRITE_MISC_3:
-		RCT2_CALLPROC_X(0x00673385, 0, 0, 0, 0, (int)sprite, 0, 0);
+		sub_673385(sprite);
 		break;
 	case SPRITE_MISC_4:
-		RCT2_CALLPROC_X(0x0067339D, 0, 0, 0, 0, (int)sprite, 0, 0);
+		sub_67339D(sprite);
 		break;
 	case SPRITE_MISC_5:
-		RCT2_CALLPROC_X(0x006733B4, 0, 0, 0, 0, (int)sprite, 0, 0);
+		sub_6733B4(sprite);
 		break;
 	case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
 	case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
@@ -975,4 +1020,13 @@ void litter_create(int x, int y, int z, int direction, int type)
 	sprite_move(x, y, z, (rct_sprite*)litter);
 	sub_6EC60B((rct_sprite*)litter);
 	litter->creationTick = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
+}
+
+/**
+ *
+ *  rct2: 0x006EC53F
+ */
+void sub_6EC53F(rct_sprite *sprite)
+{
+	RCT2_CALLPROC_X(0x006EC53F, 0, 0, 0, 0, (int)sprite, 0, 0);
 }

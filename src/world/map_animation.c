@@ -212,7 +212,7 @@ static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ)
 					peep->action_frame = 0;
 					peep->action_sprite_image_offset = 0;
 					sub_693B58(peep);
-					RCT2_CALLPROC_X(0x006EC53F, 0, 0, 0, 0, (int)peep, 0, 0);
+					sub_6EC53F((rct_sprite*)peep);
 					break;
 				}
 			}

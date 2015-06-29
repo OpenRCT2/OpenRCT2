@@ -1285,7 +1285,7 @@ int ride_modify_maze(rct_map_element *mapElement, int x, int y)
 	_currentTrackBeginZ = mapElement->base_height * 8;
 	_currentTrackSelectionFlags = 0;
 	_rideConstructionArrowPulseTime = 0;
-	RCT2_CALLPROC_X(0x006CD887, 0, 0, 0, 0, 0, 0, 0);
+	window_maze_construction_update_pressed_widgets();
 	return 1;
 }
 
@@ -4398,7 +4398,7 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 			ride_stop_peeps_queuing(ride_id);
 			*ebx = ride_get_refund_price(ride_id);
 
-			RCT2_CALLPROC_X(0x006CB945, 0, 0, 0, ride_id, 0, 0, 0);
+			sub_6CB945(ride_id);
 			news_item_disable_news(NEWS_ITEM_RIDE, ride_id);
 			
 			for(int i = 0; i < MAX_BANNERS; i++){
@@ -5353,4 +5353,13 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 		window_invalidate(w);
 	}
 	*ebx = 0;
+}
+
+/**
+ *
+ *  rct2: 0x006CB945
+ */
+void sub_6CB945(int rideIndex)
+{
+	RCT2_CALLPROC_X(0x006CB945, 0, 0, 0, rideIndex, 0, 0, 0);
 }

@@ -1387,7 +1387,7 @@ money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surfaceSt
 						mapElement->type |= (surfaceStyle >> 3) & MAP_ELEMENT_DIRECTION_MASK;
 
 						map_invalidate_tile_full(x, y);
-						RCT2_CALLPROC_X(0x00673883, x, 0, y, map_element_height(x, y), 0, 0, 0);
+						footpath_remove_litter(x, y, map_element_height(x, y));
 					}
 				}
 			}

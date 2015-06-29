@@ -209,3 +209,36 @@ static void window_maze_construction_paint()
 	
 	window_draw_widgets(w, dpi);
 }
+
+/**
+ * 
+ * rct2: 0x006CD887
+ */
+void window_maze_construction_update_pressed_widgets()
+{
+	rct_window *w;
+	
+	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w == NULL)
+		return;
+
+	uint64 pressedWidgets = w->pressed_widgets;
+	pressedWidgets &= ~(1ULL << WIDX_MAZE_BUILD_MODE);
+	pressedWidgets &= ~(1ULL << WIDX_MAZE_MOVE_MODE);
+	pressedWidgets &= ~(1ULL << WIDX_MAZE_FILL_MODE);
+
+	switch (_rideConstructionState) {
+	case RIDE_CONSTRUCTION_STATE_6:
+		pressedWidgets |= (1ULL << WIDX_MAZE_BUILD_MODE);
+		break;
+	case RIDE_CONSTRUCTION_STATE_7:
+		pressedWidgets |= (1ULL << WIDX_MAZE_MOVE_MODE);
+		break;
+	case RIDE_CONSTRUCTION_STATE_8:
+		pressedWidgets |= (1ULL << WIDX_MAZE_FILL_MODE);
+		break;
+	}
+
+	w->pressed_widgets = pressedWidgets;
+	window_invalidate(w);
+}

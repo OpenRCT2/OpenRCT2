@@ -1856,7 +1856,7 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 	}
 
 	if (RCT2_GLOBAL(0x00F440D4, uint8) == 6){
-		RCT2_CALLPROC_X(0x006CB945, 0, 0, 0, RCT2_GLOBAL(0x00F440A7, uint8), 0, 0, 0);
+		sub_6CB945(RCT2_GLOBAL(0x00F440A7, uint8));
 		rct_ride* ride = GET_RIDE(RCT2_GLOBAL(0x00F440A7, uint8));
 		user_string_free(ride->name);
 		ride->type = RIDE_TYPE_NULL;
