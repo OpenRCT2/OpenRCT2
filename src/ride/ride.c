@@ -5054,3 +5054,31 @@ static void ride_update_vehicle_colours(int rideIndex)
 		}
 	}
 }
+
+/**
+ * 
+ * rct2: 0x006DE4CD
+ * trainLayout: Originally fixed to 0x00F64E38. This no longer postfixes with 255.
+ */
+void ride_entry_get_train_layout(int rideEntryIndex, int numCarsPerTrain, uint8 *trainLayout)
+{
+	rct_ride_type *rideEntry = GET_RIDE_ENTRY(rideEntryIndex);
+	
+	for (int i = 0; i < numCarsPerTrain; i++) {
+		uint8 vehicleType = rideEntry->default_vehicle;
+		if (i == 0) {
+			if (rideEntry->front_vehicle != 255)
+				vehicleType = rideEntry->front_vehicle;
+		} else if (i == 1) {
+			if (rideEntry->second_vehicle != 255)
+				vehicleType = rideEntry->second_vehicle;
+		} else if (i == 2) {
+			if (rideEntry->third_vehicle != 255)
+				vehicleType = rideEntry->third_vehicle;
+		} else if (i == numCarsPerTrain - 1) {
+			if (rideEntry->rear_vehicle != 255)
+				vehicleType = rideEntry->rear_vehicle;
+		}
+		trainLayout[i] = vehicleType;
+	}
+}
