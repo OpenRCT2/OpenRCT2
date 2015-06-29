@@ -596,7 +596,7 @@ int ride_create_ride(ride_list_item listItem)
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 0x3DC;
 
-	esi = GAME_COMMAND_6;
+	esi = GAME_COMMAND_CREATE_RIDE;
 	game_do_command_p(esi, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	return ebx == MONEY32_UNDEFINED ? -1 : edi;
 }
@@ -1029,10 +1029,10 @@ void sub_6C96C0()
 
 		ride = GET_RIDE(rideIndex);
 		if (ride->type == RIDE_TYPE_MAZE) {
-			game_do_command(x     , 41 | (0 << 8), y     , rideIndex | (2 << 8), GAME_COMMAND_38, z, 0);
-			game_do_command(x     , 41 | (1 << 8), y + 16, rideIndex | (2 << 8), GAME_COMMAND_38, z, 0);
-			game_do_command(x + 16, 41 | (2 << 8), y + 16, rideIndex | (2 << 8), GAME_COMMAND_38, z, 0);
-			game_do_command(x + 16, 41 | (3 << 8), y     , rideIndex | (2 << 8), GAME_COMMAND_38, z, 0);
+			game_do_command(x     , 41 | (0 << 8), y     , rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
+			game_do_command(x     , 41 | (1 << 8), y + 16, rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
+			game_do_command(x + 16, 41 | (2 << 8), y + 16, rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
+			game_do_command(x + 16, 41 | (3 << 8), y     , rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
 		} else {
 			direction = RCT2_GLOBAL(0x00F440CB, uint8);
 			if (!(direction & 4)) {
@@ -4289,14 +4289,14 @@ int ride_get_refund_price(int ride_id)
 
 						ebx = oldebx;
 						ebx |= 0 << 0;
-						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_38, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_SET_MAZE_TRACK, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 						
 						ebx = oldebx;
 						ebx |= 1 << 8;
 						ecx = oldecx;
 						ecx += 16;
 						edx = oldedx;
-						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_38, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_SET_MAZE_TRACK, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
 						ebx = oldebx;
 						ebx |= 2 << 8;
@@ -4305,7 +4305,7 @@ int ride_get_refund_price(int ride_id)
 						ecx = oldecx;
 						ecx += 16;
 						edx = oldedx;
-						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_38, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_SET_MAZE_TRACK, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
 						ebx = oldebx;
 						ebx |= 3 << 8;
@@ -4313,7 +4313,7 @@ int ride_get_refund_price(int ride_id)
 						eax += 16;
 						ecx = oldecx;
 						edx = oldedx;
-						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_38, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_SET_MAZE_TRACK, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 					}else{
 						edx |= 0xFF << 8;
 						edx &= ((map_element->properties.track.sequence & 0xF) << 8) | 0xFF;

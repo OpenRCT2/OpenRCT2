@@ -1668,7 +1668,7 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 						height = map_element->base_height + 2;
 					}
 	
-					money32 tileCost = game_do_command(xi, flags, yi, (max_height << 8) + height, GAME_COMMAND_16, 0, 0);
+					money32 tileCost = game_do_command(xi, flags, yi, (max_height << 8) + height, GAME_COMMAND_SET_WATER_HEIGHT, 0, 0);
 					if (tileCost == MONEY32_UNDEFINED)
 						return MONEY32_UNDEFINED;
 					
@@ -1731,7 +1731,7 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 					if (height < min_height)
 						continue;
 					height -= 2;
-					int tileCost = game_do_command(xi, flags, yi, (min_height << 8) + height, GAME_COMMAND_16, 0, 0);
+					int tileCost = game_do_command(xi, flags, yi, (min_height << 8) + height, GAME_COMMAND_SET_WATER_HEIGHT, 0, 0);
 					if (tileCost == MONEY32_UNDEFINED)
 						return MONEY32_UNDEFINED;
 					cost += tileCost;

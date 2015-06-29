@@ -1444,7 +1444,7 @@ int track_place_maze(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 
 				RCT2_GLOBAL(0x00141E9AE, rct_string_id) = 927;
 
-				cost = game_do_command(mapCoord.x, bl | (maze_entry & 0xFF) << 8, mapCoord.y, rideIndex | (maze_entry & 0xFF00), GAME_COMMAND_49, z, 0);
+				cost = game_do_command(mapCoord.x, bl | (maze_entry & 0xFF) << 8, mapCoord.y, rideIndex | (maze_entry & 0xFF00), GAME_COMMAND_PLACE_MAZE_DESIGN, z, 0);
 				break;
 			}
 
@@ -1962,9 +1962,9 @@ int sub_6D2189(int* cost, uint8* ride_id){
 	int eax = 0, ebx, ecx = 0, edx, esi, edi = 0, ebp = 0;
 	ebx = 41;
 	edx = track_design->type | (entry_index << 8);
-	esi = GAME_COMMAND_6;
+	esi = GAME_COMMAND_CREATE_RIDE;
 
-	if (MONEY32_UNDEFINED == game_do_command_p(GAME_COMMAND_6, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp)) return 1;
+	if (MONEY32_UNDEFINED == game_do_command_p(GAME_COMMAND_CREATE_RIDE, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp)) return 1;
 
 	// bh
 	*ride_id = edi & 0xFF;
@@ -3204,10 +3204,10 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 			_ebx = GAME_COMMAND_FLAG_APPLY, 
 			_ecx = 0, 
 			_edx = track_design->type | (entry_index << 8), 
-			_esi = GAME_COMMAND_6,
+			_esi = GAME_COMMAND_CREATE_RIDE,
 			_edi = 0, 
 			_ebp = 0;
-		game_do_command_p(GAME_COMMAND_6, &_eax, &_ebx, &_ecx, &_edx, &_esi, &_edi, &_ebp);
+		game_do_command_p(GAME_COMMAND_CREATE_RIDE, &_eax, &_ebx, &_ecx, &_edx, &_esi, &_edi, &_ebp);
 		if (_ebx == MONEY32_UNDEFINED){
 			*ebx = MONEY32_UNDEFINED;
 			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 0;
