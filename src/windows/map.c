@@ -19,16 +19,22 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../cheats.h"
+#include "../game.h"
 #include "../localisation/localisation.h"
 #include "../input.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
 #include "../sprites.h"
+#include "../world/footpath.h"
 #include "../world/scenery.h"
-#include "../interface/themes.h"
-#include "../cheats.h"
 
+enum {
+	PAGE_PEEPS,
+	PAGE_RIDES
+};
 
 enum WINDOW_MAP_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -55,35 +61,38 @@ enum WINDOW_MAP_WIDGET_IDX {
 };
 
 static rct_widget window_map_widgets[] = {
-	{ WWT_FRAME,			0,	0,		244,	0,		258,	STR_NONE,		STR_NONE },
-	{ WWT_CAPTION,			0,	1,		243,	1,		14,		STR_MAP,		STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX,			0,	232,	242,	2,		13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP },
-	{ WWT_RESIZE,			1,	0,		244,	43,		257,	STR_NONE,		STR_NONE },
-	{ WWT_COLORBTN,			1,	3,		33,		17,		43,		0x02000144E,	STR_SHOW_PEOPLE_ON_MAP_TIP },
-	{ WWT_COLORBTN,			1,	34,		64,		17,		43,		0x02000144E,	STR_SHOW_RIDES_STALLS_ON_MAP_TIP },
-	{ WWT_SCROLL,			1,	3,		241,	46,		225,	0x3,			STR_NONE },
-	{ WWT_SPINNER,			1,	104,	198,	229,	240,	0xC8C,			STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	187,	197,	230,	234,	STR_NUMERIC_UP,	STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	187,	197,	235,	239,	STR_NUMERIC_DOWN, STR_NONE },
-	{ WWT_FLATBTN,			1,	4,		27,		1,		24,		SPR_BUY_LAND_RIGHTS, STR_SELECT_PARK_OWNED_LAND_TIP },
-	{ WWT_FLATBTN,			1,	4,		27,		1,		24,		SPR_PARK_ENTRANCE, STR_BUILD_PARK_ENTRANCE_TIP },
-	{ WWT_FLATBTN,			1,	28,		51,		1,		24,		STR_NONE,		STR_SET_STARTING_POSITIONS_TIP },
-	{ WWT_IMGBTN,			1,	4,		47,		17,		48,		SPR_LAND_TOOL_SIZE_0, STR_NONE },
-	{ WWT_TRNBTN,			1,	5,		20,		18,		33,		0x02000157B,	STR_ADJUST_SMALLER_LAND_TIP },
-	{ WWT_TRNBTN,			1,	31,		46,		32,		47,		0x02000157D,	STR_ADJUST_LARGER_LAND_TIP },
-	{ WWT_CHECKBOX,			1,	58,		241,	197,	208,	STR_LAND_OWNED,	STR_SET_LAND_TO_BE_OWNED_TIP },
-	{ WWT_CHECKBOX,			1,	58,		241,	197,	208,	STR_CONSTRUCTION_RIGHTS_OWNED, STR_SET_CONSTRUCTION_RIGHTS_TO_BE_OWNED_TIP },
-	{ WWT_CHECKBOX,			1,	58,		241,	197,	208,	STR_LAND_SALE,	STR_SET_LAND_TO_BE_AVAILABLE_TIP },
-	{ WWT_CHECKBOX,			1,	58,		231,	197,	208,	STR_CONSTRUCTION_RIGHTS_SALE, STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP },
-	{ WWT_FLATBTN,			1,	218,	241,	45,		68,		SPR_ROTATE_ARROW, STR_ROTATE_OBJECTS_90 },
+	{ WWT_FRAME,			0,	0,		244,	0,		258,	STR_NONE,							STR_NONE },
+	{ WWT_CAPTION,			0,	1,		243,	1,		14,		STR_MAP,							STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX,			0,	232,	242,	2,		13,		STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },
+	{ WWT_RESIZE,			1,	0,		244,	43,		257,	STR_NONE,							STR_NONE },
+	{ WWT_COLORBTN,			1,	3,		33,		17,		43,		0x02000144E,						STR_SHOW_PEOPLE_ON_MAP_TIP },
+	{ WWT_COLORBTN,			1,	34,		64,		17,		43,		0x02000144E,						STR_SHOW_RIDES_STALLS_ON_MAP_TIP },
+	{ WWT_SCROLL,			1,	3,		241,	46,		225,	0x3,								STR_NONE },
+	{ WWT_SPINNER,			1,	104,	198,	229,	240,	0xC8C,								STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	187,	197,	230,	234,	STR_NUMERIC_UP,						STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	187,	197,	235,	239,	STR_NUMERIC_DOWN,					STR_NONE },
+	{ WWT_FLATBTN,			1,	4,		27,		1,		24,		SPR_BUY_LAND_RIGHTS,				STR_SELECT_PARK_OWNED_LAND_TIP },
+	{ WWT_FLATBTN,			1,	4,		27,		1,		24,		SPR_PARK_ENTRANCE,					STR_BUILD_PARK_ENTRANCE_TIP },
+	{ WWT_FLATBTN,			1,	28,		51,		1,		24,		STR_NONE,							STR_SET_STARTING_POSITIONS_TIP },
+	{ WWT_IMGBTN,			1,	4,		47,		17,		48,		SPR_LAND_TOOL_SIZE_0,				STR_NONE },
+	{ WWT_TRNBTN,			1,	5,		20,		18,		33,		0x02000157B,						STR_ADJUST_SMALLER_LAND_TIP },
+	{ WWT_TRNBTN,			1,	31,		46,		32,		47,		0x02000157D,						STR_ADJUST_LARGER_LAND_TIP },
+	{ WWT_CHECKBOX,			1,	58,		241,	197,	208,	STR_LAND_OWNED,						STR_SET_LAND_TO_BE_OWNED_TIP },
+	{ WWT_CHECKBOX,			1,	58,		241,	197,	208,	STR_CONSTRUCTION_RIGHTS_OWNED,		STR_SET_CONSTRUCTION_RIGHTS_TO_BE_OWNED_TIP },
+	{ WWT_CHECKBOX,			1,	58,		241,	197,	208,	STR_LAND_SALE,						STR_SET_LAND_TO_BE_AVAILABLE_TIP },
+	{ WWT_CHECKBOX,			1,	58,		231,	197,	208,	STR_CONSTRUCTION_RIGHTS_SALE,		STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP },
+	{ WWT_FLATBTN,			1,	218,	241,	45,		68,		SPR_ROTATE_ARROW,					STR_ROTATE_OBJECTS_90 },
 	{ WIDGETS_END },
 };
 
 // used in transforming viewport view coordinates to minimap coordinates
-// rct2: 0x00981BBC (these two tables are interspersed)
-static const sint16 _minimap_offsets_x[4] = { 0xF8, 0x1F8, 0xF8, 0xFFF8 };
-// rct2: 0x00981BBE
-static const sint16 _minimap_offsets_y[4] = { 0, 0x100, 0x200, 0x100 };
+// rct2: 0x00981BBC
+const rct_xy16 MiniMapOffsets[] = {
+	{ 256 - 8,   0 },
+	{ 512 - 8, 256 },
+	{ 256 - 8, 512 },
+	{   0 - 8, 256 }
+};
 
 static void window_map_emptysub() { }
 static void window_map_close();
@@ -91,20 +100,17 @@ static void window_map_resize();
 static void window_map_mouseup();
 static void window_map_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_map_update(rct_window *w);
+static void window_map_toolupdate();
+static void window_map_tooldown();
+static void window_map_tooldrag();
+static void window_map_toolabort();
 static void window_map_scrollgetsize();
 static void window_map_scrollmousedown();
+static void window_map_textinput();
+static void window_map_tooltip();
 static void window_map_invalidate();
 static void window_map_paint();
 static void window_map_scrollpaint();
-static void window_map_tooltip();
-static void window_map_textinput();
-static void window_map_inputsize_land(rct_window *w);
-static void window_map_inputsize_map(rct_window *w);
-
-static void window_map_set_bounds(rct_window* w);
-
-static void window_map_init_map();
-static void window_map_center_on_view_point();
 
 static void* window_map_events[] = {
 	window_map_close,
@@ -116,11 +122,11 @@ static void* window_map_events[] = {
 	window_map_update,
 	window_map_emptysub,
 	window_map_emptysub,
-	(void*)0x0068D093,
-	(void*)0x0068D074,
-	(void*)0x0068D088,
+	window_map_toolupdate,
+	window_map_tooldown,
+	window_map_tooldrag,
 	window_map_emptysub,
-	(void*)0x0068D055,
+	window_map_toolabort,
 	window_map_emptysub,
 	window_map_scrollgetsize,
 	window_map_scrollmousedown,
@@ -137,14 +143,30 @@ static void* window_map_events[] = {
 	window_map_scrollpaint
 };
 
+
+static void window_map_init_map();
+static void window_map_center_on_view_point();
+static void window_map_show_default_scenario_editor_buttons(rct_window *w);
+static void window_map_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_map_paint_peep_overlay(rct_drawpixelinfo *dpi);
+static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi);
+static void window_map_paint_hud_rectangle(rct_drawpixelinfo *dpi);
+static void window_map_inputsize_land(rct_window *w);
+static void window_map_inputsize_map(rct_window *w);
+static void window_map_set_bounds(rct_window* w);
+
+static void window_map_set_land_rights_tool_update(int x, int y);
+static void window_map_place_park_entrance_tool_update(int x, int y);
+static void window_map_set_peep_spawn_tool_update(int x, int y);
+
 /**
 *
 *  rct2: 0x0068C88A
 */
 void window_map_open()
 {
-	rct_window* w;
-	uint32* map_image_data;
+	rct_window *w;
+	uint32 *map_image_data;
 
 	// Check if window is already open
 	w = window_bring_to_front_by_class(WC_MAP);
@@ -154,7 +176,7 @@ void window_map_open()
 		return;
 	}
 
-	map_image_data = rct2_malloc(256 * 256 * sizeof(uint32));
+	map_image_data = malloc(256 * 256 * sizeof(uint32));
 	if (map_image_data == NULL)
 		return;
 
@@ -179,9 +201,11 @@ void window_map_open()
 		(1 << WIDX_BUILD_PARK_ENTRANCE) |
 		(1 << WIDX_ROTATE_90) |
 		(1 << WIDX_PEOPLE_STARTING_POSITION);
+
 	w->hold_down_widgets =
 		(1 << WIDX_MAP_SIZE_SPINNER_UP) |
 		(1 << WIDX_MAP_SIZE_SPINNER_DOWN);
+
 	window_init_scroll_widgets(w);
 
 	w->map.rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint16);
@@ -201,55 +225,38 @@ static void window_map_close()
 
 	window_get_register(w);
 
-	rct2_free(RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32*));
+	free(RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32*));
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == w->classification &&
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, uint16) == w->number) {
 		tool_cancel();
 	}
-	//Reset land tool size
+
+	// Reset land tool size
 	RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 0;
 }
 
 /**
-*
-*  rct2: 0x0068D7DC
-*/
-void window_map_resize()
-{
-	rct_window *w;
-
-	window_get_register(w);
-
-	w->flags |= WF_RESIZABLE; // (1 << 8)
-	w->min_width = 245;
-	w->max_width = 800;
-	w->min_height = 259;
-	w->max_height = 560;
-}
-
-/**
-*
-*  rct2: 0x0068CFC1
-*/
+ *
+ *  rct2: 0x0068CFC1
+ */
 static void window_map_mouseup()
 {
-	sint16 var_idx;
-	rct_window* var_w;
-	//Maximum land ownership tool size
-	int land_tool_limit;
+	rct_window *w;
+	short widgetIndex;
 
-	window_widget_get_registers(var_w, var_idx);
+	// Maximum land ownership tool size
+	int landToolSizeLimit;
 
-	switch (var_idx)
-	{
+	window_widget_get_registers(w, widgetIndex);
+
+	switch (widgetIndex) {
 	case WIDX_CLOSE:
-		window_close(var_w);
+		window_close(w);
 		break;
-
 	case WIDX_SET_LAND_RIGHTS:
-		window_invalidate(var_w);
-		if (tool_set(var_w, var_idx, 2)) // jb nullsub_52
+		window_invalidate(w);
+		if (tool_set(w, widgetIndex, 2))
 			break;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
@@ -258,89 +265,76 @@ static void window_map_mouseup()
 		show_land_rights();
 		show_construction_rights();
 		break;
-
 	case WIDX_LAND_OWNED_CHECKBOX:
 		RCT2_GLOBAL(0xF1AD61, sint8) ^= 2;
 
 		if (RCT2_GLOBAL(0xF1AD61, sint8) & 2)
 			RCT2_GLOBAL(0xF1AD61, sint8) &= 0xF2;
 
-		window_invalidate(var_w);
+		window_invalidate(w);
 		break;
-
 	case WIDX_LAND_SALE_CHECKBOX:
 		RCT2_GLOBAL(0xF1AD61, sint8) ^= 8;
 
 		if (RCT2_GLOBAL(0xF1AD61, sint8) & 8)
 			RCT2_GLOBAL(0xF1AD61, sint8) &= 0xF8;
 
-		window_invalidate(var_w);
+		window_invalidate(w);
 		break;
-
 	case WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX:
 		RCT2_GLOBAL(0xF1AD61, sint8) ^= 1;
 
 		if (RCT2_GLOBAL(0xF1AD61, sint8) & 1)
 			RCT2_GLOBAL(0xF1AD61, sint8) &= 0xF1;
 
-		window_invalidate(var_w);
+		window_invalidate(w);
 		break;
-
 	case WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX:
 		RCT2_GLOBAL(0xF1AD61, sint8) ^= 4;
 
 		if (RCT2_GLOBAL(0xF1AD61, sint8) & 4)
 			RCT2_GLOBAL(0xF1AD61, sint8) &= 0xF4;
 
-		window_invalidate(var_w);
+		window_invalidate(w);
 		break;
-
 	case WIDX_LAND_TOOL_SMALLER:
-		--RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
-		land_tool_limit=1;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)--;
+		landToolSizeLimit = 1;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) < land_tool_limit)
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = land_tool_limit;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) < landToolSizeLimit)
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = landToolSizeLimit;
 
-		window_invalidate(var_w);
+		window_invalidate(w);
 		break;
-
 	case WIDX_LAND_TOOL_LARGER:
-		++RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
-		land_tool_limit=64;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)++;
+		landToolSizeLimit = 64;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > land_tool_limit)
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = land_tool_limit;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > landToolSizeLimit)
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = landToolSizeLimit;
 
-		window_invalidate(var_w);
+		window_invalidate(w);
 		break;
-
 	case WIDX_BUILD_PARK_ENTRANCE:
-		window_invalidate(var_w);
-		if (tool_set(var_w, var_idx, 2)) // jb nullsub_52
+		window_invalidate(w);
+		if (tool_set(w, widgetIndex, 2))
 			break;
 
 		RCT2_GLOBAL(0x9E32D2, sint8) = 0;
-		
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, sint32) & INPUT_FLAG_6)) // Remove?
-			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, sint32) |= INPUT_FLAG_6;
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
 
 		show_gridlines();
 		show_land_rights();
 		show_construction_rights();
 		break;
-
 	case WIDX_ROTATE_90:
-		++window_scenery_rotation;
-		window_scenery_rotation &= 3;
+		window_scenery_rotation = (window_scenery_rotation + 1) & 3;
 		break;
-
 	case WIDX_PEOPLE_STARTING_POSITION:
-		if (tool_set(var_w, var_idx, 2)) // jb nullsub_52
+		if (tool_set(w, widgetIndex, 2))
 			break;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 0;
-
 		if (RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS, sint16) != -1 && RCT2_GLOBAL(0x13573F8, sint16) != -1)
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 
@@ -349,48 +343,212 @@ static void window_map_mouseup()
 		show_construction_rights();
 		break;
 	case WIDX_LAND_TOOL:
-		window_map_inputsize_land(var_w);
+		window_map_inputsize_land(w);
 		break;
 	case WIDX_MAP_SIZE_SPINNER:
-		window_map_inputsize_map(var_w);
+		window_map_inputsize_map(w);
 		break;
-
 	default:
-		if (var_idx >= WIDX_PEOPLE_TAB && var_idx <= WIDX_RIDES_TAB)
-		{
-			var_idx -= WIDX_PEOPLE_TAB;
-			if (var_idx == var_w->selected_tab)
+		if (widgetIndex >= WIDX_PEOPLE_TAB && widgetIndex <= WIDX_RIDES_TAB) {
+			widgetIndex -= WIDX_PEOPLE_TAB;
+			if (widgetIndex == w->selected_tab)
 				break;
 
-			var_w->selected_tab = var_idx;
-			var_w->list_information_type = 0;
+			w->selected_tab = widgetIndex;
+			w->list_information_type = 0;
 		}
 		break;
-
 	}
-	
-	return;
 }
 
 /**
 *
-*  rct2: 0x0068D040
+*  rct2: 0x0068D7DC
 */
-static void window_map_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
+static void window_map_resize()
 {
-	// These widgets all refer to the Scenario Editor's map window.
-	if (widgetIndex == WIDX_MAP_SIZE_SPINNER_UP) {
+	rct_window *w;
+
+	window_get_register(w);
+
+	w->flags |= WF_RESIZABLE;
+	w->min_width = 245;
+	w->max_width = 800;
+	w->min_height = 259;
+	w->max_height = 560;
+}
+
+/**
+ *
+ *  rct2: 0x0068D040
+ */
+static void window_map_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
+{
+	switch (widgetIndex) {
+	case WIDX_MAP_SIZE_SPINNER_UP:
 		RCT2_CALLPROC_X(0x0068D641, 0, 0, 0, widgetIndex, (int)w, 0, 0);
-	}
-	else if (widgetIndex == WIDX_MAP_SIZE_SPINNER_DOWN) {
+		break;
+	case WIDX_MAP_SIZE_SPINNER_DOWN:
 		RCT2_CALLPROC_X(0x0068D6B4, 0, 0, 0, widgetIndex, (int)w, 0, 0);
-	}
-	else if (widgetIndex == WIDX_SET_LAND_RIGHTS)
-	{
+		break;
+	case WIDX_SET_LAND_RIGHTS:
 		// When unselecting the land rights tool, reset the size so the number doesn't
 		// stay in the map window.
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
+		break;
 	}
+}
+
+/**
+ *
+ *  rct2: 0x0068D7FB
+ */
+static void window_map_update(rct_window *w)
+{
+	RCT2_CALLPROC_X(0x0068D7FB, 0, 0, 0, 0, (int)w, 0, 0);
+}
+
+
+/**
+ *
+ *  rct2: 0x0068D093
+ */
+static void window_map_toolupdate()
+{
+	rct_window *w;
+	short widgetIndex;
+	short x, y;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+
+	switch (widgetIndex) {
+	case WIDX_SET_LAND_RIGHTS:
+		window_map_set_land_rights_tool_update(x, y);
+		break;
+	case WIDX_BUILD_PARK_ENTRANCE:
+		window_map_place_park_entrance_tool_update(x, y);
+		break;
+	case WIDX_PEOPLE_STARTING_POSITION:
+		window_map_set_peep_spawn_tool_update(x, y);
+		break;
+	}
+}
+
+
+/**
+ *
+ *  rct2: 0x0068D074
+ */
+static void window_map_tooldown()
+{
+	rct_window *w;
+	short widgetIndex;
+	short x, y;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+
+	switch (widgetIndex) {
+	case WIDX_BUILD_PARK_ENTRANCE:
+		// sub_6670A4();
+		break;
+	case WIDX_PEOPLE_STARTING_POSITION:
+		// sub_68D573();
+		break;
+	}
+}
+
+/**
+ *
+ *  rct2: 0x0068D088
+ */
+static void window_map_tooldrag()
+{
+	rct_window *w;
+	short widgetIndex;
+	short x, y;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+
+	switch (widgetIndex) {
+	case WIDX_SET_LAND_RIGHTS:
+		if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0;
+			game_do_command(
+				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
+				GAME_COMMAND_FLAG_APPLY,
+				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
+				RCT2_GLOBAL(0x00F1AD61, uint8),
+				GAME_COMMAND_SET_LAND_OWNERSHIP,
+				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
+				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+			);
+		}
+		break;
+	}
+}
+
+/**
+ *
+ *  rct2: 0x0068D055
+ */
+static void window_map_toolabort()
+{
+	rct_window *w;
+	short widgetIndex;
+	short x, y;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+
+	switch (widgetIndex) {
+	case WIDX_SET_LAND_RIGHTS:
+		window_invalidate(w);
+		hide_gridlines();
+		hide_land_rights();
+		hide_construction_rights();
+		break;
+	case WIDX_BUILD_PARK_ENTRANCE:
+		sub_666F9E();
+		window_invalidate(w);
+		hide_gridlines();
+		hide_land_rights();
+		hide_construction_rights();
+		break;
+	case WIDX_PEOPLE_STARTING_POSITION:
+		window_invalidate(w);
+		hide_gridlines();
+		hide_land_rights();
+		hide_construction_rights();
+		break;
+	}
+}
+
+/**
+ *
+ *  rct2: 0x0068D7CC
+ */
+static void window_map_scrollgetsize()
+{
+	int width, height;
+
+	window_map_invalidate();
+
+	width = 512;
+	height = 512;
+	window_scrollsize_set_registers(width, height);
+}
+
+/**
+ *
+ *  rct2: 0x0068D726
+ */
+static void window_map_scrollmousedown()
+{
+	short x, y, scrollIndex;
+	rct_window *w;
+
+	window_scrollmouse_get_registers(w, scrollIndex, x, y);
+
+	RCT2_CALLPROC_X(0x0068D726, scrollIndex, 0, x, y, (int)w, 0, 0);
 }
 
 static void window_map_textinput()
@@ -405,7 +563,8 @@ static void window_map_textinput()
 	window_textinput_get_registers(w, widgetIndex, result, text);
 
 	if (result) {
-		if (widgetIndex == WIDX_LAND_TOOL) {
+		switch (widgetIndex) {
+		case WIDX_LAND_TOOL:
 			size = strtol(text, &end, 10);
 			if (*end == '\0') {
 				if (size < 1) size = 1;
@@ -413,8 +572,8 @@ static void window_map_textinput()
 				RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
 				window_invalidate(w);
 			}
-		}
-		else if (widgetIndex == WIDX_MAP_SIZE_SPINNER) {
+			break;
+		case WIDX_MAP_SIZE_SPINNER:
 			size = strtol(text, &end, 10);
 			if (*end == '\0') {
 				if (size < 50) size = 50;
@@ -430,109 +589,61 @@ static void window_map_textinput()
 				}
 				window_invalidate(w);
 			}
+			break;
 		}
 	}
 }
 
-static void window_map_inputsize_land(rct_window *w)
+/*
+ *
+ *  rct2: 0x0068D140
+ */
+static void window_map_tooltip()
 {
-	((uint16*)TextInputDescriptionArgs)[0] = 1;
-	((uint16*)TextInputDescriptionArgs)[1] = 64;
-	window_text_input_open(w, WIDX_LAND_TOOL, 5128, 5129, STR_NONE, STR_NONE, 3);
-}
-
-static void window_map_inputsize_map(rct_window *w)
-{
-	((uint16*)TextInputDescriptionArgs)[0] = 50;
-	((uint16*)TextInputDescriptionArgs)[1] = 256;
-	window_text_input_open(w, WIDX_MAP_SIZE_SPINNER, 5130, 5131, STR_NONE, STR_NONE, 4);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 3157;
 }
 
 /**
-*
-*  rct2: 0x0068D7FB
-*/
-static void window_map_update(rct_window *w)
-{
-	RCT2_CALLPROC_X(0x0068D7FB, 0, 0, 0, 0, (int)w, 0, 0);
-}
-
-/**
-*
-*  rct2: 0x0068D7CC
-*/
-static void window_map_scrollgetsize()
-{
-	int width, height;
-
-	window_map_invalidate();
-
-	width = 512;
-	height = 512;
-	window_scrollsize_set_registers(width, height);
-}
-
-/**
-*
-*  rct2: 0x0068D726
-*/
-static void window_map_scrollmousedown()
-{
-	short x, y, scrollIndex;
-	rct_window *w;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
-	RCT2_CALLPROC_X(0x0068D726, scrollIndex, 0, x, y, (int)w, 0, 0);
-}
-
-/**
-*
-*  rct2: 0x0068CD35 (part of 0x0068CA8F)
-*/
-static void window_map_show_default_scenario_editor_buttons(rct_window *mapWindow) {
-	mapWindow->widgets[WIDX_BUILD_PARK_ENTRANCE].type = WWT_FLATBTN;
-	mapWindow->widgets[WIDX_PEOPLE_STARTING_POSITION].type = WWT_FLATBTN;
-	mapWindow->widgets[WIDX_MAP_SIZE_SPINNER].type = WWT_SPINNER;
-	mapWindow->widgets[WIDX_MAP_SIZE_SPINNER_UP].type = WWT_DROPDOWN_BUTTON;
-	mapWindow->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].type = WWT_DROPDOWN_BUTTON;
-	RCT2_GLOBAL(0x013CE952 + 2, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
-}
-
-/**
-*
-*  rct2: 0x0068CA8F
-*/
+ *
+ *  rct2: 0x0068CA8F
+ */
 static void window_map_invalidate()
 {
 	rct_window *w;
-	uint32 pressed_widgets;
+	uint64 pressedWidgets;
 	int i, height;
 
 	window_get_register(w);
 	colour_scheme_update(w);
 
-	// set the pressed widgets
-	pressed_widgets = (uint32)w->pressed_widgets;
-	pressed_widgets &= 0xFFFFFF8F;						// both tabs and the map
-	pressed_widgets |= (1 << (w->selected_tab + 4));	// people tab or rides tab
-	pressed_widgets |= (1 << WIDX_LAND_TOOL);			// land tool
-	pressed_widgets &= 0xFFF0FFFF;						// the land option checkboxes
+	// Set the pressed widgets
+	pressedWidgets = w->pressed_widgets;
+	pressedWidgets &= (1ULL << WIDX_PEOPLE_TAB);
+	pressedWidgets &= (1ULL << WIDX_RIDES_TAB);
+	pressedWidgets &= (1ULL << WIDX_MAP);
+	pressedWidgets &= (1ULL << WIDX_LAND_OWNED_CHECKBOX);
+	pressedWidgets &= (1ULL << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
+	pressedWidgets &= (1ULL << WIDX_LAND_SALE_CHECKBOX);
+	pressedWidgets &= (1ULL << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX);
 
-	if (RCT2_GLOBAL(0x0F1AD61, uint8) & 8)
-		pressed_widgets |= (1 << WIDX_LAND_SALE_CHECKBOX);
+	pressedWidgets |= (1ULL << (WIDX_PEOPLE_TAB + w->selected_tab));
+	pressedWidgets |= (1ULL << WIDX_LAND_TOOL);
 
-	if (RCT2_GLOBAL(0x0F1AD61, uint8) & 4)
-		pressed_widgets |= (1 << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX);
+	if (RCT2_GLOBAL(0x00F1AD61, uint8) & (1 << 3))
+		pressedWidgets |= (1 << WIDX_LAND_SALE_CHECKBOX);
 
-	if (RCT2_GLOBAL(0x0F1AD61, uint8) & 2)
-		pressed_widgets |= (1 << WIDX_LAND_OWNED_CHECKBOX);
+	if (RCT2_GLOBAL(0x00F1AD61, uint8) & (1 << 2))
+		pressedWidgets |= (1 << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX);
 
-	if (RCT2_GLOBAL(0x0F1AD61, uint8) & 1)
-		pressed_widgets |= (1 << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
+	if (RCT2_GLOBAL(0x00F1AD61, uint8) & (1 << 1))
+		pressedWidgets |= (1 << WIDX_LAND_OWNED_CHECKBOX);
 
-	w->pressed_widgets = pressed_widgets;
+	if (RCT2_GLOBAL(0x00F1AD61, uint8) & (1 << 0))
+		pressedWidgets |= (1 << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
 
-	// resizing changes some widget coordinates
+	w->pressed_widgets = pressedWidgets;
+
+	// Resize widgets to window size
 	w->widgets[WIDX_BACKGROUND].right = w->width - 1;
 	w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 	w->widgets[WIDX_RESIZE].right = w->width - 1;
@@ -542,10 +653,9 @@ static void window_map_invalidate()
 	w->widgets[WIDX_CLOSE].right = w->width - 2 - 11 + 10;
 	w->widgets[WIDX_MAP].right = w->width - 4;
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) ||
-		gSandboxMode)
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gSandboxMode)
 		w->widgets[WIDX_MAP].bottom = w->height - 1 - 72;
-	else if (w->selected_tab == 1)
+	else if (w->selected_tab == PAGE_RIDES)
 		w->widgets[WIDX_MAP].bottom = w->height - 1 - 44;
 	else
 		w->widgets[WIDX_MAP].bottom = w->height - 1 - 14;
@@ -573,7 +683,7 @@ static void window_map_invalidate()
 	w->widgets[WIDX_LAND_TOOL_LARGER].top = w->height - 27;
 	w->widgets[WIDX_LAND_TOOL_LARGER].bottom = w->height - 27 + 15;
 
-	// land tool mode (4 checkboxes)
+	// Land tool mode (4 checkboxes)
 	height = w->height - 55;
 	for (i = 0; i < 4; i++) {
 		w->widgets[WIDX_LAND_OWNED_CHECKBOX + i].top = height;
@@ -582,29 +692,29 @@ static void window_map_invalidate()
 		height += 2;
 	}
 
-	// disable all scenario editor related widgets
+	// Disable all scenario editor related widgets
 	for (i = WIDX_MAP_SIZE_SPINNER; i <= WIDX_ROTATE_90; i++) {
 		w->widgets[i].type = WWT_EMPTY;
 	}
 
-
-
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) ||
-		gSandboxMode) {
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gSandboxMode) {
 		// scenario editor: build park entrance selected, show rotate button
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
+		if (
+			(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == WC_MAP &&
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint8) == WIDX_BUILD_PARK_ENTRANCE) {
+			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint8) == WIDX_BUILD_PARK_ENTRANCE
+		) {
 			w->widgets[WIDX_ROTATE_90].type = WWT_FLATBTN;
 		}
 
-		// always show set land rights button
+		// Always show set land rights button
 		w->widgets[WIDX_SET_LAND_RIGHTS].type = WWT_FLATBTN;
 
-		// if any tool is active
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == WC_MAP) {
-
+		// If any tool is active
+		if (
+			(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
+			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == WC_MAP
+		) {
 			// if not in set land rights mode: show the default scenario editor buttons
 			if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint8) != WIDX_SET_LAND_RIGHTS) {
 				window_map_show_default_scenario_editor_buttons(w);
@@ -612,41 +722,41 @@ static void window_map_invalidate()
 				w->widgets[WIDX_LAND_TOOL].type = WWT_IMGBTN;
 				w->widgets[WIDX_LAND_TOOL_SMALLER].type = WWT_TRNBTN;
 				w->widgets[WIDX_LAND_TOOL_LARGER].type = WWT_TRNBTN;
+
 				for (i = 0; i < 4; i++)
 					w->widgets[WIDX_LAND_OWNED_CHECKBOX + i].type = WWT_CHECKBOX;
-				w->widgets[WIDX_LAND_TOOL].image = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint16) <= 7 ? SPR_LAND_TOOL_SIZE_0 +
-					RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint16) : 0xFFFFFFFF;
+
+				w->widgets[WIDX_LAND_TOOL].image = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint16) <= 7 ?
+					SPR_LAND_TOOL_SIZE_0 + RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint16) :
+					0xFFFFFFFF;
 			}
-		// if no tool is active: show the default scenario editor buttons
 		} else {
+			// if no tool is active: show the default scenario editor buttons
 			window_map_show_default_scenario_editor_buttons(w);
 		}
 	}
 }
 
 /**
-*
-*  rct2: 0x0068CDA9
-*/
+ *
+ *  rct2: 0x0068CDA9
+ */
 static void window_map_paint()
 {
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
-	int image_id;
 	int i, x, y;
 
 	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
+	window_map_draw_tab_images(w, dpi);
 
 	x = w->x + (window_map_widgets[WIDX_LAND_TOOL].left + window_map_widgets[WIDX_LAND_TOOL].right) / 2;
 	y = w->y + (window_map_widgets[WIDX_LAND_TOOL].top + window_map_widgets[WIDX_LAND_TOOL].bottom) / 2;
 
-	// FEATURE larger land tool size support
-	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE &&
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint8) == WIDX_SET_LAND_RIGHTS &&
-		(RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > 7) &&
-		(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == WC_MAP)) {
+	// Draw land tool size
+	if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS) && RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > 7) {
 		RCT2_GLOBAL(0x009BC677, char) = FORMAT_BLACK;
 		RCT2_GLOBAL(0x009BC678, char) = FORMAT_COMMA16;
 		RCT2_GLOBAL(0x009BC679, char) = 0;
@@ -655,40 +765,21 @@ static void window_map_paint()
 	}
 	y = w->y + window_map_widgets[WIDX_LAND_TOOL].bottom + 5;
 
-	// guest tab image (animated)
-	image_id = SPR_TAB_GUESTS_0;
-	if (w->selected_tab == 0)
-		image_id += w->list_information_type / 4;
-
-	gfx_draw_sprite(dpi, image_id, 
-		w->x + w->widgets[WIDX_PEOPLE_TAB].left, 
-		w->y + w->widgets[WIDX_PEOPLE_TAB].top, 0);
-
-	// ride/stall tab image (animated)
-	image_id = SPR_TAB_RIDE_0;
-	if (w->selected_tab == 1)
-		image_id += w->list_information_type / 4;
-
-	gfx_draw_sprite(dpi, image_id,
-		w->x + w->widgets[WIDX_RIDES_TAB].left,
-		w->y + w->widgets[WIDX_RIDES_TAB].top, 0);
-
-	// people starting position (scenario editor only)
+	// People starting position (scenario editor only)
 	if (w->widgets[WIDX_PEOPLE_STARTING_POSITION].type != 0) {
-		gfx_draw_sprite(dpi, 0x0B6E0190A,
-			w->x + w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
-			w->y + w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18, 0);
+		x = w->x + w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12;
+		y = w->y + w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18;
+		gfx_draw_sprite(dpi, 0x0B6E0190A, x, y, 0);
 	}
 
-	if (!((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
-		|| gSandboxMode)) {
-		// render the map legend
-		if (w->selected_tab != 0) {
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gSandboxMode) {
+		// Render the map legend
+		if (w->selected_tab == PAGE_RIDES) {
 			x = w->x + 4;
 			y = w->y + w->widgets[WIDX_MAP].bottom + 2;
 
 			for (i = 0; i < 8; i++) {
-				gfx_fill_rect(dpi, x, y + 2, x + 6, y + 8, RCT2_GLOBAL(0x00981BCC+ 2 * i, uint8));
+				gfx_fill_rect(dpi, x, y + 2, x + 6, y + 8, RCT2_GLOBAL(0x00981BCC + (i * 2), uint8));
 				gfx_draw_string_left(dpi, STR_MAP_RIDE + i, w, 0, x + 10, y);
 				y += 10;
 				if (i == 3) {
@@ -697,29 +788,160 @@ static void window_map_paint()
 				}
 			}
 		}
-	} else {
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
-			(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == WC_MAP) &&
-			(RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint8) == WIDX_SET_LAND_RIGHTS))
-			return;
-
+	} else if (!widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS)) {
 		gfx_draw_string_left(dpi, STR_MAP_SIZE, 0, 0, w->x + 4, w->y + w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1);
 	}
 }
 
-/*
-*
-*  rct2: 0x0068D140
-*/
-static void window_map_tooltip()
+/**
+ *
+ *  rct2: 0x0068CF23
+ */
+static void window_map_scrollpaint()
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 0xC55;
+	rct_window *w;
+	rct_drawpixelinfo *dpi;
+	rct_g1_element *g1_element, pushed_g1_element;
+
+	window_paint_get_registers(w, dpi);
+
+	gfx_clear(dpi, 0x0A0A0A0A);
+
+	g1_element = &g1Elements[0];
+	pushed_g1_element = *g1_element;
+
+	g1_element->offset = RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint8*);
+	g1_element->width = 0x200;
+	g1_element->height = 0x200;
+	g1_element->x_offset = 0xFFF8;
+	g1_element->y_offset = 0xFFF8;
+	g1_element->flags = 0;
+
+	gfx_draw_sprite(dpi, 0, 0, 0, 0);
+
+	*g1_element = pushed_g1_element;
+
+	if (w->selected_tab == PAGE_PEEPS)
+		window_map_paint_peep_overlay(dpi);
+	else
+		window_map_paint_train_overlay(dpi);
+	
+	window_map_paint_hud_rectangle(dpi);
 }
 
 /**
-*
-*  part of window_map_paint_peep_overlay and window_map_paint_train_overlay
-*/
+ *
+ *  rct2: 0x0068CA6C
+ */
+static void window_map_init_map() 
+{
+	memset(RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, void*), 0x0A0A0A0A, 256 * 256 * sizeof(uint32));
+	RCT2_GLOBAL(0x00F1AD6C, uint32) = 0;
+}
+
+/**
+ *
+ *  rct2: 0x0068C990
+ */
+static void window_map_center_on_view_point()
+{
+	rct_window *w = window_get_main();
+	rct_window *w_map;
+	sint16 ax, bx, cx, dx;
+	sint16 bp, di;
+
+	if (w == NULL || w->viewport == NULL)
+		return;
+
+	w_map = window_find_by_class(WC_MAP);
+	if (w_map == NULL)
+		return;
+
+	rct_xy16 offset = MiniMapOffsets[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) & 3];
+
+	// calculate center view point of viewport and transform it to minimap coordinates
+
+	cx = ((w->viewport->view_width >> 1) + w->viewport->view_x) >> 5;
+	dx = ((w->viewport->view_height >> 1) + w->viewport->view_y) >> 4;
+	cx += offset.x;
+	dx += offset.y;
+	
+	// calculate width and height of minimap
+
+	ax = w_map->widgets[WIDX_MAP].right - w_map->widgets[WIDX_MAP].left - 11;
+	bx = w_map->widgets[WIDX_MAP].bottom - w_map->widgets[WIDX_MAP].top - 11;
+	bp = ax;
+	di = bx;
+
+	ax >>= 1;
+	bx >>= 1;
+	cx = max(cx - ax, 0);
+	dx = max(dx - bx, 0);
+
+	bp = w_map->scrolls[0].h_right - bp;
+	di = w_map->scrolls[0].v_bottom - di;
+
+	if (bp < 0 && (bp - cx) < 0)
+		cx = 0;
+
+	if (di < 0 && (di - dx) < 0)
+		dx = 0;
+
+	w_map->scrolls[0].h_left = cx;
+	w_map->scrolls[0].v_top = dx;
+	widget_scroll_update_thumbs(w_map, WIDX_MAP);
+}
+
+/**
+ *
+ *  rct2: 0x0068CD35 (part of 0x0068CA8F)
+ */
+static void window_map_show_default_scenario_editor_buttons(rct_window *w) {
+	w->widgets[WIDX_BUILD_PARK_ENTRANCE].type = WWT_FLATBTN;
+	w->widgets[WIDX_PEOPLE_STARTING_POSITION].type = WWT_FLATBTN;
+	w->widgets[WIDX_MAP_SIZE_SPINNER].type = WWT_SPINNER;
+	w->widgets[WIDX_MAP_SIZE_SPINNER_UP].type = WWT_DROPDOWN_BUTTON;
+	w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].type = WWT_DROPDOWN_BUTTON;
+	RCT2_GLOBAL(0x013CE952 + 2, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
+}
+
+static void window_map_inputsize_land(rct_window *w)
+{
+	((uint16*)TextInputDescriptionArgs)[0] = 1;
+	((uint16*)TextInputDescriptionArgs)[1] = 64;
+	window_text_input_open(w, WIDX_LAND_TOOL, 5128, 5129, STR_NONE, STR_NONE, 3);
+}
+
+static void window_map_inputsize_map(rct_window *w)
+{
+	((uint16*)TextInputDescriptionArgs)[0] = 50;
+	((uint16*)TextInputDescriptionArgs)[1] = 256;
+	window_text_input_open(w, WIDX_MAP_SIZE_SPINNER, 5130, 5131, STR_NONE, STR_NONE, 4);
+}
+
+static void window_map_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi)
+{
+	uint32 image;
+
+	// Guest tab image (animated)
+	image = SPR_TAB_GUESTS_0;
+	if (w->selected_tab == PAGE_PEEPS)
+		image += w->list_information_type / 4;
+
+	gfx_draw_sprite(dpi, image, w->x + w->widgets[WIDX_PEOPLE_TAB].left, w->y + w->widgets[WIDX_PEOPLE_TAB].top, 0);
+
+	// Ride/stall tab image (animated)
+	image = SPR_TAB_RIDE_0;
+	if (w->selected_tab == PAGE_RIDES)
+		image += w->list_information_type / 4;
+
+	gfx_draw_sprite(dpi, image, w->x + w->widgets[WIDX_RIDES_TAB].left, w->y + w->widgets[WIDX_RIDES_TAB].top, 0);
+}
+
+/**
+ *
+ *  part of window_map_paint_peep_overlay and window_map_paint_train_overlay
+ */
 static void window_map_transform_to_map_coords(sint16 *left, sint16 *top)
 {
 	sint16 x = *left, y = *top;
@@ -753,9 +975,9 @@ static void window_map_transform_to_map_coords(sint16 *left, sint16 *top)
 }
 
 /**
-*
-*  rct2: 0x0068DADA
-*/
+ *
+ *  rct2: 0x0068DADA
+ */
 static void window_map_paint_peep_overlay(rct_drawpixelinfo *dpi)
 {
 	rct_peep *peep;
@@ -800,9 +1022,9 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo *dpi)
 }
 
 /**
-*
-*  rct2: 0x0068DBC1
-*/
+ *
+ *  rct2: 0x0068DBC1
+ */
 static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi)
 {
 	rct_vehicle *train, *vehicle;
@@ -832,28 +1054,26 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi)
 }
 
 /**
-*  The call to gfx_fill_rect was originally wrapped in sub_68DABD which made sure that arguments were ordered correctly,
-*  but it doesn't look like it's ever necessary here so the call was removed.
-* 
-*  rct2: 0x0068D8CE
-*/
+ *  The call to gfx_fill_rect was originally wrapped in sub_68DABD which made sure that arguments were ordered correctly,
+ *  but it doesn't look like it's ever necessary here so the call was removed.
+ * 
+ *  rct2: 0x0068D8CE
+ */
 static void window_map_paint_hud_rectangle(rct_drawpixelinfo *dpi)
 {
 	rct_window *main_window = window_get_main();
 	if (main_window == NULL)
 		return;
+
 	rct_viewport *viewport = main_window->viewport;
 	if (viewport == NULL)
 		return;
 
-	int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
-	sint16 offset_x = _minimap_offsets_x[rotation];
-	sint16 offset_y = _minimap_offsets_y[rotation];
-
-	sint16 left = (viewport->view_x >> 5) + offset_x;
-	sint16 right = ((viewport->view_x + viewport->view_width) >> 5) + offset_x;
-	sint16 top = (viewport->view_y >> 4) + offset_y;
-	sint16 bottom = ((viewport->view_y + viewport->view_height) >> 4) + offset_y;
+	rct_xy16 offset = MiniMapOffsets[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) & 3];
+	sint16 left = (viewport->view_x >> 5) + offset.x;
+	sint16 right = ((viewport->view_x + viewport->view_width) >> 5) + offset.x;
+	sint16 top = (viewport->view_y >> 4) + offset.y;
+	sint16 bottom = ((viewport->view_y + viewport->view_height) >> 4) + offset.y;
 
 	// top horizontal lines
 	gfx_fill_rect(dpi, left, top, left + 3, top, 0x38);
@@ -873,100 +1093,160 @@ static void window_map_paint_hud_rectangle(rct_drawpixelinfo *dpi)
 }
 
 /**
-*
-*  rct2: 0x0068CF23
-*/
-static void window_map_scrollpaint()
+ * 
+ *  rct2: 0x0068D24E
+ */
+static void window_map_set_land_rights_tool_update(int x, int y)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-	rct_g1_element *g1_element, pushed_g1_element;
+	sint16 mapX, mapY;
+	rct_viewport *viewport;
 
-	window_paint_get_registers(w, dpi);
+	map_invalidate_selection_rect();
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
+	sub_688972(x, y, &mapX, &mapY, &viewport);
+	if (mapX == (sint16)0x8000)
+		return;
 
-	gfx_clear(dpi, 0x0A0A0A0A);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
 
-	g1_element = &g1Elements[0];
-	pushed_g1_element = *g1_element;
+	int landToolSize = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint16);
+	if (landToolSize == 0)
+		landToolSize = 1;
 
-	g1_element->offset = RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint8*);
-	g1_element->width = 0x200;
-	g1_element->height = 0x200;
-	g1_element->x_offset = 0xFFF8;
-	g1_element->y_offset = 0xFFF8;
-	g1_element->flags = 0;
-
-	gfx_draw_sprite(dpi, 0, 0, 0, 0);
-
-	*g1_element = pushed_g1_element;
-
-	if (w->selected_tab == 0)
-		window_map_paint_peep_overlay(dpi);
-	else
-		window_map_paint_train_overlay(dpi);
-	
-	window_map_paint_hud_rectangle(dpi);
+	int size = (landToolSize * 32) - 32;
+	int radius = (landToolSize * 16) - 16;
+	mapX = (mapX - radius) & 0xFFE0;
+	mapY = (mapY - radius) & 0xFFE0;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = mapX;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = mapY;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = mapX + size;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = mapY + size;
+	map_invalidate_selection_rect();
 }
 
 /**
-*
-*  rct2: 0x0068CA6C
-*/
-static void window_map_init_map() 
+ * 
+ *  rct2: 0x00666EEF
+ */
+void sub_666EEF(int x, int y, sint16 *mapX, sint16 *mapY, sint16 *mapZ, int *direction)
 {
-	memset(RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, void*), 0x0A0A0A0A, 256 * 256 * sizeof(uint32));
-	RCT2_GLOBAL(0x00F1AD6C, uint32) = 0;
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = x;
+	ebx = y;
+	RCT2_CALLFUNC_X(0x00666EEF, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	*mapX = (eax & 0xFFFF);
+	*mapY = (ecx & 0xFFFF);
+	*mapZ = (edx & 0xFF);
+	*direction = ((ebx >> 8) & 0xFF);
 }
 
 /**
-*
-*  rct2: 0x0068C990
-*/
-static void window_map_center_on_view_point()
+ * 
+ *  rct2: 0x00666F4E
+ */
+money32 sub_666F4E(int x, int y, int z, int direction)
 {
-	rct_window *w = window_get_main();
-	rct_window *w_map;
-	sint16 ax, bx, cx, dx;
-	sint16 bp, di;
+	money32 result;
 
-	if (w == NULL || w->viewport == NULL)
+	sub_666F9E();
+	result = game_do_command(
+		x,
+		104 | GAME_COMMAND_FLAG_APPLY | (direction << 8),
+		y,
+		z,
+		GAME_COMMAND_PLACE_PARK_ENTRANCE,
+		0,
+		0
+	);
+	if (result != MONEY32_UNDEFINED) {
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_X, uint16) = x;
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_Y, uint16) = y;
+		RCT2_GLOBAL(0x009E32D0, uint8) = z;
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_DIRECTION, uint8) = direction;
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_EXISTS, uint8) |= (1 << 0);
+	}
+	return result;
+}
+
+/**
+ * 
+ *  rct2: 0x00666FD0
+ */
+static void window_map_place_park_entrance_tool_update(int x, int y)
+{
+	sint16 mapX, mapY, mapZ;
+	int direction, sideDirection;
+
+	map_invalidate_selection_rect();
+	map_invalidate_map_selection_tiles();
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 1);
+	sub_666EEF(x, y, &mapX, &mapY, &mapZ, &direction);
+	if (mapX == (sint16)-1) {
+		sub_666F9E();
+		return;
+	}
+
+	sideDirection = (direction + 1) & 3;
+	gMapSelectionTiles[0].x = mapX;
+	gMapSelectionTiles[0].y = mapY;
+	gMapSelectionTiles[1].x = mapX + TileDirectionDelta[sideDirection].x;
+	gMapSelectionTiles[1].y = mapY + TileDirectionDelta[sideDirection].y;
+	gMapSelectionTiles[2].x = mapX - TileDirectionDelta[sideDirection].x;
+	gMapSelectionTiles[2].y = mapY - TileDirectionDelta[sideDirection].y;
+	gMapSelectionTiles[3].x = -1;
+	gMapSelectionTiles[3].y = -1;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 1);
+	map_invalidate_map_selection_tiles();
+	if (
+		(RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_EXISTS, uint8) & (1 << 0)) &&
+		mapX == RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_X, uint16) &&
+		mapY == RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_Y, uint16) &&
+		direction == RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_DIRECTION, uint8)
+	) {
+		return;
+	}
+
+	sub_666F9E();
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_PRICE, uint32) = sub_666F4E(mapX, mapY, mapZ, direction);
+}
+
+/**
+ * 
+ *  rct2: 0x0068D4E9
+ */
+static void window_map_set_peep_spawn_tool_update(int x, int y)
+{
+	int mapX, mapY, mapZ, direction;
+	rct_map_element *mapElement;
+
+	map_invalidate_selection_rect();
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 2);
+	footpath_bridge_get_info_from_pos(x, y, &mapX, &mapY, &direction, &mapElement);
+	if (mapX == -1)
 		return;
 
-	w_map = window_find_by_class(WC_MAP);
-	if (w_map == NULL)
-		return;
+	mapZ = mapElement->base_height * 8;
+	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) {
+		if ((mapElement->properties.surface.slope & 0x0F) != 0)
+			mapZ += 16;
+		if (mapElement->properties.surface.slope & 0x10)
+			mapZ += 16;
+	}
 
-	uint8 rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
-
-	// calculate center view point of viewport and transform it to minimap coordinates
-
-	cx = ((w->viewport->view_width >> 1) + w->viewport->view_x) >> 5;
-	dx = ((w->viewport->view_height >> 1) + w->viewport->view_y) >> 4;
-	cx += _minimap_offsets_x[rotation];
-	dx += _minimap_offsets_y[rotation];
-	
-	// calculate width and height of minimap
-
-	ax = w_map->widgets[WIDX_MAP].right - w_map->widgets[WIDX_MAP].left - 11;
-	bx = w_map->widgets[WIDX_MAP].bottom - w_map->widgets[WIDX_MAP].top - 11;
-	bp = ax;
-	di = bx;
-
-	ax >>= 1;
-	bx >>= 1;
-	cx = max(cx - ax, 0);
-	dx = max(dx - bx, 0);
-
-	bp = w_map->scrolls[0].h_right - bp;
-	di = w_map->scrolls[0].v_bottom - di;
-
-	if (bp < 0 && (bp - cx) < 0)
-		cx = 0;
-
-	if (di < 0 && (di - dx) < 0)
-		dx = 0;
-
-	w_map->scrolls[0].h_left = cx;
-	w_map->scrolls[0].v_top = dx;
-	widget_scroll_update_thumbs(w_map, WIDX_MAP);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 2);
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = mapX;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = mapY;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = mapX;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = mapY;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = direction ^ 2;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, uint16) = mapX;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, uint16) = mapY;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16) = mapZ;
+	map_invalidate_selection_rect();
 }

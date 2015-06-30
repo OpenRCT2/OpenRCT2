@@ -82,4 +82,6 @@ void game_command_buy_land_rights(int *eax, int *ebx, int *ecx, int *edx, int *e
 
 void gfx_invalidate_viewport_tile(int x, int y, int z0, int z1);
 
+void sub_666F9E();
+
 #endif

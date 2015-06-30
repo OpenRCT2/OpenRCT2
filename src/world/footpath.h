@@ -53,4 +53,6 @@ void sub_6A6C66(int x, int y, rct_map_element *mapElement, int flags);
 void sub_6A759F();
 void sub_6A742F(int rideIndex, int entranceIndex, int x, int y, rct_map_element *mapElement, int direction);
 
+void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement);
+
 #endif

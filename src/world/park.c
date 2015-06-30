@@ -1420,3 +1420,23 @@ void set_forced_park_rating(int rating){
 int get_forced_park_rating(){
 	return gForcedParkRating;
 }
+
+/**
+ *
+ *  rct2: 0x00666F9E
+ */
+void sub_666F9E()
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_EXISTS, uint8) & (1 << 0)) {
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_EXISTS, uint8) &= ~(1 << 0);
+		game_do_command(
+			RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_X, uint16),
+			40 | GAME_COMMAND_FLAG_APPLY,
+			RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_Y, uint16),
+			RCT2_GLOBAL(0x009E32D0, uint8),
+			GAME_COMMAND_REMOVE_PARK_ENTRANCE,
+			0,
+			0
+		);
+	}
+}
