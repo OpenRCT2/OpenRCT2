@@ -2834,22 +2834,23 @@ void map_reorganise_elements()
 		return;
 	}
 
-	rct_map_element **tile = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*);
+	uint32 num_elements;
+
 	for (int y = 0; y < 256; y++) {
 		for (int x = 0; x < 256; x++) {
 			rct_map_element *startElement = map_get_first_element_at(x, y);
 			rct_map_element *endElement = startElement;
 			while (!map_element_is_last_for_tile(endElement++));
 
-			uint8 num_bytes = (endElement - startElement) * sizeof(rct_map_element);
-			memcpy(new_elements_pointer, startElement, num_bytes);
-			new_elements_pointer += num_bytes / sizeof(rct_map_element);
+			num_elements = endElement - startElement;
+			memcpy(new_elements_pointer, startElement, num_elements * sizeof(rct_map_element));
+			new_elements_pointer += num_elements;
 		}
 	}
 
-	uint32 num_elements = (new_elements_pointer - new_map_elements);
+	num_elements = (new_elements_pointer - new_map_elements);
 	memcpy(RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element), new_map_elements, num_elements * sizeof(rct_map_element));
-	memset(new_map_elements + num_elements, 0, (0x30000 - num_elements) * sizeof(rct_map_element));
+	memset(RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element) + num_elements, 0, (0x30000 - num_elements) * sizeof(rct_map_element));
 
 	rct2_free(new_map_elements);
 
