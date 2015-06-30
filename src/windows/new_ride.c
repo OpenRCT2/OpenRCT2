@@ -824,7 +824,7 @@ static void window_new_ride_scrollpaint()
 			if (listItem->type != rideEntry->ride_type[1])
 				image_id++;
 		}
-		RCT2_CALLPROC_X(0x00681DE2, 0, 29013, x + 2, y + 2, 0xA0, (int)dpi, image_id);
+		sub_681DE2(dpi, x + 2, y + 2, 29013, image_id);
 
 		// Next position
 		x += 116;

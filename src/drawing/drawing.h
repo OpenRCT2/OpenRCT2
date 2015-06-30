@@ -137,4 +137,7 @@ void sub_6C1F57(rct_drawpixelinfo *dpi, int x, int y, int width, int colour, rct
 void update_rain_animation();
 void redraw_peep_and_rain();
 
+// unknown
+void sub_681DE2(rct_drawpixelinfo *dpi, int x, int y, int image1, int image2);
+
 #endif
