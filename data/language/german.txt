@@ -3786,3 +3786,4 @@ STR_5449    :Spielgeschwindigkeit verringern
 STR_5450    :Spielgeschwindigkeit erhöhen
 STR_5451    :Cheatfenster anzeigen
 STR_5452    :Symbolleiste ein-/ausblenden
+STR_5453    :Andere Attraktion auswählen
