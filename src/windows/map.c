@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../audio/audio.h"
 #include "../cheats.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
@@ -158,6 +159,8 @@ static void window_map_set_bounds(rct_window* w);
 static void window_map_set_land_rights_tool_update(int x, int y);
 static void window_map_place_park_entrance_tool_update(int x, int y);
 static void window_map_set_peep_spawn_tool_update(int x, int y);
+static void window_map_place_park_entrance_tool_down(int x, int y);
+static void window_map_set_peep_spawn_tool_down(int x, int y);
 
 /**
 *
@@ -449,10 +452,10 @@ static void window_map_tooldown()
 
 	switch (widgetIndex) {
 	case WIDX_BUILD_PARK_ENTRANCE:
-		// sub_6670A4();
+		window_map_place_park_entrance_tool_down(x, y);
 		break;
 	case WIDX_PEOPLE_STARTING_POSITION:
-		// sub_68D573();
+		window_map_set_peep_spawn_tool_down(x, y);
 		break;
 	}
 }
@@ -1226,7 +1229,7 @@ static void window_map_set_peep_spawn_tool_update(int x, int y)
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 2);
 	footpath_bridge_get_info_from_pos(x, y, &mapX, &mapY, &direction, &mapElement);
-	if (mapX == -1)
+	if ((mapX & 0xFFFF) == 0x8000)
 		return;
 
 	mapZ = mapElement->base_height * 8;
@@ -1249,4 +1252,75 @@ static void window_map_set_peep_spawn_tool_update(int x, int y)
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, uint16) = mapY;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16) = mapZ;
 	map_invalidate_selection_rect();
+}
+
+/**
+ * 
+ *  rct2: 0x006670A4
+ */
+static void window_map_place_park_entrance_tool_down(int x, int y)
+{
+	sint16 mapX, mapY, mapZ;
+	int direction;
+	money32 price;
+
+	sub_666F9E();
+	sub_666EEF(x, y, &mapX, &mapY, &mapZ, &direction);
+	if (mapX == (sint16)0x8000)
+		return;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
+	price = game_do_command(
+		mapX,
+		GAME_COMMAND_FLAG_APPLY | (direction << 8),
+		mapY,
+		mapZ,
+		GAME_COMMAND_PLACE_PARK_ENTRANCE,
+		0,
+		0
+	);
+	if (price == MONEY32_UNDEFINED)
+		return;
+
+	sound_play_panned(
+		SOUND_PLACE_ITEM,
+		0x8001,
+		RCT2_GLOBAL(0x009DEA62, uint16),
+		RCT2_GLOBAL(0x009DEA64, uint16),
+		RCT2_GLOBAL(0x009DEA66, uint16)
+	);
+}
+
+/**
+ * 
+ *  rct2: 0x0068D573
+ */
+static void window_map_set_peep_spawn_tool_down(int x, int y)
+{
+	rct_map_element *mapElement, *surfaceMapElement;
+	int mapX, mapY, mapZ, direction;
+
+	footpath_get_coordinates_from_pos(x, y, &mapX, &mapY, &direction, &mapElement);
+	if (mapX == 0x8000)
+		return;
+
+	surfaceMapElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
+	if (surfaceMapElement->properties.surface.ownership & 0xF0) {
+		return;
+	}
+
+	mapX = mapX + 16 + (word_981D6C[direction].x * 15);
+	mapY = mapY + 16 + (word_981D6C[direction].y * 15);
+	mapZ = mapElement->base_height / 2;
+
+	int peepSpawnIndex = 0;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint16) != 1 && gPeepSpawns[0].x != 0xFFFF)
+		peepSpawnIndex = 1;
+
+	gPeepSpawns[peepSpawnIndex].x = mapX;
+	gPeepSpawns[peepSpawnIndex].y = mapY;
+	gPeepSpawns[peepSpawnIndex].z = mapZ;
+	gPeepSpawns[peepSpawnIndex].direction = direction;
+	gfx_invalidate_screen();
+	RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint16) = peepSpawnIndex;
 }

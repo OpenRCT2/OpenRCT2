@@ -49,6 +49,7 @@ const rct_xy16 TileDirectionDelta[] = {
 };
 
 rct_xy16 *gMapSelectionTiles = (rct_xy16*)0x009DE596;
+rct2_peep_spawn *gPeepSpawns = (rct2_peep_spawn*)RCT2_ADDRESS_PEEP_SPAWNS;
 
 bool LandPaintMode;
 bool LandRightsMode;

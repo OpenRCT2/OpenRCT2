@@ -35,7 +35,7 @@ enum {
 	FOOTPATH_CONSTRUCTION_FLAG_ALLOW_DURING_PAUSED = 1 << 3
 };
 
-const rct_xy16 word_981D6C[] = {
+const rct_xy16 word_981D6C[4] = {
 	{ -1,  0 },
 	{  0,  1 },
 	{  1,  0 },
