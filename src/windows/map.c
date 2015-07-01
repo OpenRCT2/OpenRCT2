@@ -510,7 +510,7 @@ static void window_map_toolabort()
 		hide_construction_rights();
 		break;
 	case WIDX_BUILD_PARK_ENTRANCE:
-		sub_666F9E();
+		park_remove_ghost_entrance();
 		window_invalidate(w);
 		hide_gridlines();
 		hide_land_rights();
@@ -1134,42 +1134,24 @@ static void window_map_set_land_rights_tool_update(int x, int y)
  */
 void sub_666EEF(int x, int y, sint16 *mapX, sint16 *mapY, sint16 *mapZ, int *direction)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = x;
-	ebx = y;
-	RCT2_CALLFUNC_X(0x00666EEF, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	*mapX = (eax & 0xFFFF);
-	*mapY = (ecx & 0xFFFF);
-	*mapZ = (edx & 0xFF);
-	*direction = ((ebx >> 8) & 0xFF);
-}
+	rct_map_element *mapElement;
 
-/**
- * 
- *  rct2: 0x00666F4E
- */
-money32 sub_666F4E(int x, int y, int z, int direction)
-{
-	money32 result;
+	sub_68A15E(x, y, mapX, mapY, direction, &mapElement);
+	if (*mapX == (sint16)0x8000)
+		return;
 
-	sub_666F9E();
-	result = game_do_command(
-		x,
-		104 | GAME_COMMAND_FLAG_APPLY | (direction << 8),
-		y,
-		z,
-		GAME_COMMAND_PLACE_PARK_ENTRANCE,
-		0,
-		0
-	);
-	if (result != MONEY32_UNDEFINED) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_X, uint16) = x;
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_Y, uint16) = y;
-		RCT2_GLOBAL(0x009E32D0, uint8) = z;
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_DIRECTION, uint8) = direction;
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_EXISTS, uint8) |= (1 << 0);
+	mapElement = map_get_surface_element_at(*mapX >> 5, *mapY >> 5);
+	*mapZ = mapElement->properties.surface.slope & 0x1F;
+	if (*mapZ == 0) {
+		*mapZ = mapElement->base_height / 2;
+		if ((mapElement->properties.surface.slope & 0x0F) != 0) {
+			(*mapZ)++;
+			if (mapElement->properties.surface.slope & 0x10) {
+				(*mapZ)++;
+			}
+		}
 	}
-	return result;
+	*direction = (window_scenery_rotation - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) & 3;
 }
 
 /**
@@ -1187,7 +1169,7 @@ static void window_map_place_park_entrance_tool_update(int x, int y)
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 1);
 	sub_666EEF(x, y, &mapX, &mapY, &mapZ, &direction);
 	if (mapX == (sint16)-1) {
-		sub_666F9E();
+		park_remove_ghost_entrance();
 		return;
 	}
 
@@ -1212,8 +1194,8 @@ static void window_map_place_park_entrance_tool_update(int x, int y)
 		return;
 	}
 
-	sub_666F9E();
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_PRICE, uint32) = sub_666F4E(mapX, mapY, mapZ, direction);
+	park_remove_ghost_entrance();
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_PRICE, uint32) = park_place_ghost_entrance(mapX, mapY, mapZ, direction);
 }
 
 /**
@@ -1264,7 +1246,7 @@ static void window_map_place_park_entrance_tool_down(int x, int y)
 	int direction;
 	money32 price;
 
-	sub_666F9E();
+	park_remove_ghost_entrance();
 	sub_666EEF(x, y, &mapX, &mapY, &mapZ, &direction);
 	if (mapX == (sint16)0x8000)
 		return;

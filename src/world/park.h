@@ -82,6 +82,7 @@ void game_command_buy_land_rights(int *eax, int *ebx, int *ecx, int *edx, int *e
 
 void gfx_invalidate_viewport_tile(int x, int y, int z0, int z1);
 
-void sub_666F9E();
+void park_remove_ghost_entrance();
+money32 park_place_ghost_entrance(int x, int y, int z, int direction);
 
 #endif
