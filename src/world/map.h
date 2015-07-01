@@ -338,4 +338,7 @@ void map_element_remove_banner_entry(rct_map_element *mapElement);
 
 bool map_element_is_underground(rct_map_element *mapElement);
 
+void map_remove_out_of_range_elements();
+void map_extend_boundary_surface();
+
 #endif

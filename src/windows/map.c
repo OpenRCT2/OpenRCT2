@@ -31,6 +31,7 @@
 #include "../sprites.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"
+#include "error.h"
 
 enum {
 	PAGE_PEEPS,
@@ -161,6 +162,9 @@ static void window_map_place_park_entrance_tool_update(int x, int y);
 static void window_map_set_peep_spawn_tool_update(int x, int y);
 static void window_map_place_park_entrance_tool_down(int x, int y);
 static void window_map_set_peep_spawn_tool_down(int x, int y);
+static void map_window_increase_map_size();
+static void map_window_decrease_map_size();
+static void map_window_set_pixels(rct_window *w);
 
 /**
 *
@@ -389,10 +393,10 @@ static void window_map_mousedown(int widgetIndex, rct_window *w, rct_widget *wid
 {
 	switch (widgetIndex) {
 	case WIDX_MAP_SIZE_SPINNER_UP:
-		RCT2_CALLPROC_X(0x0068D641, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+		map_window_increase_map_size();
 		break;
 	case WIDX_MAP_SIZE_SPINNER_DOWN:
-		RCT2_CALLPROC_X(0x0068D6B4, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+		map_window_decrease_map_size();
 		break;
 	case WIDX_SET_LAND_RIGHTS:
 		// When unselecting the land rights tool, reset the size so the number doesn't
@@ -408,7 +412,31 @@ static void window_map_mousedown(int widgetIndex, rct_window *w, rct_widget *wid
  */
 static void window_map_update(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x0068D7FB, 0, 0, 0, 0, (int)w, 0, 0);
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) != w->map.rotation) {
+		w->map.rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		window_map_init_map();
+		window_map_center_on_view_point();
+	}
+
+	for (int i = 0; i < 16; i++)
+		map_window_set_pixels(w);
+
+	window_invalidate(w);
+
+	// Update tab animations
+	w->list_information_type++;
+	switch (w->selected_tab) {
+	case PAGE_PEEPS:
+		if (w->list_information_type >= 32) {
+			w->list_information_type = 0;
+		}
+		break;
+	case PAGE_RIDES:
+		if (w->list_information_type >= 64) {
+			w->list_information_type = 0;
+		}
+		break;
+	}
 }
 
 
@@ -583,11 +611,11 @@ static void window_map_textinput()
 				if (size > 256) size = 256;
 				int currentSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
 				while (size < currentSize) {
-					RCT2_CALLPROC_X(0x0068D6B4, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+					map_window_decrease_map_size();
 					currentSize--;
 				}
 				while (size > currentSize) {
-					RCT2_CALLPROC_X(0x0068D641, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+					map_window_increase_map_size();
 					currentSize++;
 				}
 				window_invalidate(w);
@@ -1305,4 +1333,51 @@ static void window_map_set_peep_spawn_tool_down(int x, int y)
 	gPeepSpawns[peepSpawnIndex].direction = direction;
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint16) = peepSpawnIndex;
+}
+
+/**
+ * 
+ *  rct2: 0x0068D641
+ */
+static void map_window_increase_map_size()
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) >= 256) {
+		window_error_open(STR_CANT_INCREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
+		return;
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16)++;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 1) * 32;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, uint16) = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) * 32) + 254;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16) = ((RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 1) * 32) - 1;
+	map_extend_boundary_surface();
+	window_map_init_map();
+	window_map_center_on_view_point();
+	gfx_invalidate_screen();
+}
+
+/**
+ * 
+ *  rct2: 0x0068D6B4
+ */
+static void map_window_decrease_map_size()
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) < 16) {
+		window_error_open(STR_CANT_DECREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
+		return;
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16)--;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 1) * 32;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, uint16) = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) * 32) + 254;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16) = ((RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 1) * 32) - 1;
+	map_remove_out_of_range_elements();
+	window_map_init_map();
+	window_map_center_on_view_point();
+	gfx_invalidate_screen();
+}
+
+static void map_window_set_pixels(rct_window *w)
+{
+	RCT2_CALLPROC_X(0x0068DC71, 0, 0, 0, 0, (int)w, 0, 0);
 }
