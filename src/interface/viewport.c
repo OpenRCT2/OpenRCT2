@@ -267,7 +267,10 @@ void sub_689174(sint16* x, sint16* y, sint16 *z)
 	*z = height;
 }
 
-//void sub_6E7FF3(rct_window* w, rct_viewport* viewport, int x, int y){
+void sub_6E7FF3(rct_window *w, rct_viewport *viewport, int x, int y)
+{
+	RCT2_CALLPROC_X(0x006E7FF3, 0, 0, 0, x, (int)viewport, (int)w, y);
+
 //	int zoom = 1 << viewport->zoom;
 //	if (w >= RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*)){
 //		if (viewport != w->viewport){
@@ -298,7 +301,7 @@ void sub_689174(sint16* x, sint16* y, sint16 *z)
 //		} // 0x6e824a
 //	}//x6e8255
 //
-//}
+}
 
 void sub_6E7F34(rct_window* w, rct_viewport* viewport, sint16 x_diff, sint16 y_diff){
 	rct_window* orignal_w = w;
@@ -332,7 +335,7 @@ void sub_6E7F34(rct_window* w, rct_viewport* viewport, sint16 x_diff, sint16 y_d
 	}
 
 	w = orignal_w;
-	RCT2_CALLPROC_X(0x6E7FF3, 0, 0, 0, x_diff, (int)viewport, (int)w, y_diff);
+	sub_6E7FF3(w, viewport, x_diff, y_diff);
 }
 
 void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
@@ -641,11 +644,10 @@ void paint_attached_ps(paint_struct* ps, paint_struct* attached_ps, rct_drawpixe
 			}
 		}
 
-		if (!(attached_ps->var_0C & 1)){
+		if (attached_ps->var_0C & 1) {
+			sub_681DE2(dpi, x, y, image_id, attached_ps->var_04);
+		} else {
 			gfx_draw_sprite(dpi, image_id, x, y, ps->var_04);
-		}
-		else{
-			RCT2_CALLPROC_X(0x00681DE2, 0, image_id, x, y, 0, (int)dpi, attached_ps->var_04);
 		}
 	}
 }
@@ -694,11 +696,11 @@ void sub_688485(){
 			}
 		}
 
-		if (!(ps->var_1A & 1))
-			gfx_draw_sprite(dpi, image_id, x, y, ps->var_04);
+		if (ps->var_1A & 1)
+			sub_681DE2(dpi, x, y, image_id, ps->var_04);
 		else
-			RCT2_CALLPROC_X(0x00681DE2, 0, image_id, x, y, 0, (int)dpi, ps->var_04);
-
+			gfx_draw_sprite(dpi, image_id, x, y, ps->var_04);
+		
 		if (ps->var_20 != 0){
 			ps = ps->var_20;
 			continue;
@@ -863,28 +865,56 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int edx, sint16 si, s
 }
 
 /**
+ * 
+ *  rct2: 0x006D4244
+ */
+void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
+{
+	RCT2_CALLPROC_X(0x006D4244, vehicle->x, imageDirection, vehicle->y, vehicle->z, (int)vehicle, 0, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x0068F0FB
+ */
+void viewport_peep_paint_setup(rct_peep *peep, int imageDirection)
+{
+	RCT2_CALLPROC_X(0x0068F0FB, peep->x, imageDirection, peep->y, peep->z, (int)peep, 0, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x00672AC9
+ */
+void viewport_misc_paint_setup(rct_sprite *misc, int imageDirection)
+{
+	RCT2_CALLPROC_X(0x00672AC9, misc->unknown.x, imageDirection, misc->unknown.y, misc->unknown.z, (int)misc, 0, 0);
+}
+
+/**
 *  Litter Paint Setup
 *  rct2: 0x006736FC
 */
-void viewport_litter_paint_setup(rct_litter* litter, int image_direction, int height){
-	rct_drawpixelinfo* dpi;
+void viewport_litter_paint_setup(rct_litter *litter, int imageDirection)
+{
+	rct_drawpixelinfo *dpi;
 
 	dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
-	if (dpi->zoom_level != 0)return; //If zoomed at all no litter drawn
+	if (dpi->zoom_level != 0) return; // If zoomed at all no litter drawn
 
 	// litter has no sprite direction so remove that
-	image_direction >>= 3;
+	imageDirection >>= 3;
 	// Some litter types have only 1 direction so remove
 	// anything that isn't required.
-	image_direction &= RCT2_ADDRESS(0x97EF6C, uint32)[litter->type * 2 + 1];
+	imageDirection &= RCT2_ADDRESS(0x97EF6C, uint32)[litter->type * 2 + 1];
 
-	uint32 image_id = image_direction + RCT2_ADDRESS(0x97EF6C, uint32)[litter->type * 2];
+	uint32 image_id = imageDirection + RCT2_ADDRESS(0x97EF6C, uint32)[litter->type * 2];
 
 	RCT2_GLOBAL(0x9DEA52, uint16) = 0xFFFC;
 	RCT2_GLOBAL(0x9DEA54, uint16) = 0xFFFC;
-	RCT2_GLOBAL(0x9DEA56, uint16) = height + 2;
+	RCT2_GLOBAL(0x9DEA56, uint16) = litter->z + 2;
 
-	sub_98197C(0, 0xFF, image_id, 0, height, 4, 4, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	sub_98197C(0, 0xFF, image_id, 0, litter->z, 4, 4, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32));
 }
 
 
@@ -936,16 +966,16 @@ void sprite_paint_setup(uint16 eax, uint16 ecx){
 
 		switch (spr->unknown.sprite_identifier){
 		case SPRITE_IDENTIFIER_VEHICLE:
-			RCT2_CALLPROC_X(0x6D4244, spr->unknown.x, image_direction, spr->unknown.y, spr->unknown.z, (int)spr, (int)dpi, ebp);
+			viewport_vehicle_paint_setup((rct_vehicle*)spr, image_direction);
 			break;
 		case SPRITE_IDENTIFIER_PEEP:
-			RCT2_CALLPROC_X(0x68F0FB, spr->unknown.x, image_direction, spr->unknown.y, spr->unknown.z, (int)spr, (int)dpi, ebp);
+			viewport_peep_paint_setup((rct_peep*)spr, image_direction);
 			break;
 		case SPRITE_IDENTIFIER_MISC:
-			RCT2_CALLPROC_X(0x672AC9, spr->unknown.x, image_direction, spr->unknown.y, spr->unknown.z, (int)spr, (int)dpi, ebp);
+			viewport_misc_paint_setup(spr, image_direction);
 			break;
 		case SPRITE_IDENTIFIER_LITTER:
-			viewport_litter_paint_setup((rct_litter*)spr, image_direction, spr->unknown.z);
+			viewport_litter_paint_setup((rct_litter*)spr, image_direction);
 			break;
 		default:
 			assert(false);

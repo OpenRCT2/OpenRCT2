@@ -555,8 +555,9 @@ static void window_options_mouseup()
 			window_invalidate(w);
 			break;
 		case WIDX_REAL_NAME_CHECKBOX:
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-			RCT2_CALLPROC_X(0x0069C52F, RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? 0 : 1, 0, 0, 0, 0, 0, 0);
+			peep_update_names(
+				!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
+			);
 			break;
 		case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
 			gConfigGeneral.save_plugin_data ^= 1;

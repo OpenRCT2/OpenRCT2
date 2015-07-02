@@ -2357,7 +2357,7 @@ money32 sub_6CA162(int rideIndex, int trackType, int trackDirection, int edxRS16
 	sub_6C96C0();
 	ride = GET_RIDE(rideIndex);
 	if (ride->type == RIDE_TYPE_MAZE) {
-		result = game_do_command(x, 105 | (4 << 8), y, rideIndex | (trackType << 8) | (edxRS16 << 16), GAME_COMMAND_38, z, 0);
+		result = game_do_command(x, 105 | (4 << 8), y, rideIndex | (trackType << 8) | (edxRS16 << 16), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
 		if (result == MONEY32_UNDEFINED)
 			return result;
 

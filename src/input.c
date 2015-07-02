@@ -577,7 +577,7 @@ static void input_scroll_continue(rct_window *w, int widgetIndex, int state, int
 
 	switch (scroll_part){
 	case SCROLL_PART_VIEW:
-		window_event_tool_drag_call(w, widgetIndex, w->number / 18, y);
+		window_event_scroll_mousedrag_call(w, scroll_id, x, y);
 		break;
 	case SCROLL_PART_HSCROLLBAR_LEFT:
 		input_scroll_part_update_hleft(w, widgetIndex, scroll_id);

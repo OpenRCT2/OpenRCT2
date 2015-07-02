@@ -52,6 +52,13 @@ static void rct1_reset_research();
 
 static void sub_69F06A();
 static void sub_666DFD();
+static void sub_69F007();
+static void sub_69F44B();
+static void sub_69F143();
+static void sub_69F2D0();
+static void sub_69F3AB();
+static void sub_6A2730();
+static void sub_69E891();
 
 static void read(void *dst, void *src, int length)
 {
@@ -182,7 +189,7 @@ void rct1_fix_landscape()
 	rct_sprite *sprite;
 	rct_ride *ride;
 
-	RCT2_CALLPROC_EBPSAFE(0x0069F007);
+	sub_69F007();
 
 	// Free sprite user strings
 	for (i = 0; i < MAX_SPRITES; i++) {
@@ -202,16 +209,16 @@ void rct1_fix_landscape()
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint8) = 0;
-	RCT2_CALLPROC_EBPSAFE(0x0069F44B);
+	sub_69F44B();
 	sub_69F06A();
-	RCT2_CALLPROC_EBPSAFE(0x0069F143);
-	RCT2_CALLPROC_EBPSAFE(0x0069F2D0);
-	RCT2_CALLPROC_EBPSAFE(0x0069F3AB);
+	sub_69F143();
+	sub_69F2D0();
+	sub_69F3AB();
 	rct1_remove_rides();
 	object_unload_all();
 	rct1_load_default_objects();
 	reset_loaded_objects();
-	RCT2_CALLPROC_EBPSAFE(0x006A2730);
+	sub_6A2730();
 	rct1_fix_scenery();
 	rct1_fix_terrain();
 	rct1_fix_entrance_positions();
@@ -252,7 +259,7 @@ void rct1_fix_landscape()
 		MONEY(10000,00),
 		RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32)
 	);
-	RCT2_CALLPROC_EBPSAFE(0x0069E89B);
+	finance_reset_cash_to_initial();
 	sub_69E869();
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = clamp(
@@ -466,7 +473,7 @@ static void sub_69F06A()
 	}
 	if (!(RCT2_GLOBAL(0x013CE770, uint32) & (1 << 6))) {
 		RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 6);
-		RCT2_CALLPROC_EBPSAFE(0x0069E891);
+		sub_69E891();
 	}
 	RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 7);
 	if (!(RCT2_GLOBAL(0x013CE770, uint32) & (1 << 8))) {
@@ -475,7 +482,7 @@ static void sub_69F06A()
 	}
 	if (!(RCT2_GLOBAL(0x013CE770, uint32) & (1 << 9))) {
 		RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 9);
-		RCT2_CALLPROC_EBPSAFE(0x0069E89B);
+		finance_reset_cash_to_initial();
 	}
 	if (!(RCT2_GLOBAL(0x013CE770, uint32) & (1 << 13))) {
 		RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 13);
@@ -516,6 +523,69 @@ static void sub_666DFD()
 			}
 		}
 	} while (!map_element_is_last_for_tile(mapElement++));
+}
+
+/**
+ *
+ *  rct2: 0x0069F007
+ */
+static void sub_69F007()
+{
+	RCT2_CALLPROC_EBPSAFE(0x0069F007);
+}
+
+/**
+ *
+ *  rct2: 0x0069F44B
+ */
+static void sub_69F44B()
+{
+	RCT2_CALLPROC_EBPSAFE(0x0069F44B);
+}
+
+/**
+ *
+ *  rct2: 0x0069F143
+ */
+static void sub_69F143()
+{
+	RCT2_CALLPROC_EBPSAFE(0x0069F143);
+}
+
+/**
+ *
+ *  rct2: 0x0069F2D0
+ */
+static void sub_69F2D0()
+{
+	RCT2_CALLPROC_EBPSAFE(0x0069F2D0);
+}
+
+/**
+ *
+ *  rct2: 0x0069F3AB
+ */
+static void sub_69F3AB()
+{
+	RCT2_CALLPROC_EBPSAFE(0x0069F3AB);
+}
+
+/**
+ *
+ *  rct2: 0x006A2730
+ */
+static void sub_6A2730()
+{
+	RCT2_CALLPROC_EBPSAFE(0x006A2730);
+}
+
+/**
+ *
+ *  rct2: 0x0069E891
+ */
+static void sub_69E891()
+{
+	RCT2_CALLPROC_EBPSAFE(0x0069E891);
 }
 
 #pragma region Tables

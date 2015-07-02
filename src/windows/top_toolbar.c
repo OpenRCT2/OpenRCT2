@@ -785,7 +785,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			1 | (map_element->type << 8),
 			grid_y,
 			map_element->base_height | (map_element->properties.scenery.type << 8),
-			GAME_COMMAND_52,
+			GAME_COMMAND_SET_SCENERY_COLOUR,
 			0,
 			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
 		break;
@@ -806,7 +806,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			1 | (window_scenery_primary_colour << 8),
 			grid_y,
 			(map_element->type & MAP_ELEMENT_DIRECTION_MASK) | (map_element->base_height << 8),
-			GAME_COMMAND_53,
+			GAME_COMMAND_SET_FENCE_COLOUR,
 			0,
 			window_scenery_secondary_colour | (window_scenery_tertiary_colour << 8));
 		break;
@@ -826,7 +826,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			1 | ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) << 8),
 			grid_y,
 			map_element->base_height | ((map_element->properties.scenerymultiple.type >> 10) << 8),
-			GAME_COMMAND_54,
+			GAME_COMMAND_SET_LARGE_SCENERY_COLOUR,
 			0,
 			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
 		break;
@@ -847,7 +847,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			1,
 			grid_y,
 			map_element->base_height | ((map_element->properties.banner.position & 0x3) << 8),
-			GAME_COMMAND_55,
+			GAME_COMMAND_SET_BANNER_COLOUR,
 			0,
 			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
 		break;
@@ -3037,4 +3037,19 @@ void toggle_water_window(rct_window *topToolbar, int widgetIndex)
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 		window_water_open();
 	}
+}
+
+/**
+ *
+ *  rct2: 0x0066D104
+ */
+bool land_tool_is_active()
+{
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE))
+		return false;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_TOP_TOOLBAR)
+		return false;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, sint16) != WIDX_LAND)
+		return false;
+	return true;
 }

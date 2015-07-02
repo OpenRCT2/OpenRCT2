@@ -140,6 +140,7 @@ static void ride_shop_connected(rct_ride* ride, int ride_idx);
 static void ride_spiral_slide_update(rct_ride *ride);
 static void ride_update(int rideIndex);
 static void sub_6B59C6(int rideIndex);
+static void ride_update_vehicle_colours(int rideIndex);
 
 rct_ride_type *ride_get_entry(rct_ride *ride)
 {
@@ -595,7 +596,7 @@ int ride_create_ride(ride_list_item listItem)
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 0x3DC;
 
-	esi = GAME_COMMAND_6;
+	esi = GAME_COMMAND_CREATE_RIDE;
 	game_do_command_p(esi, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	return ebx == MONEY32_UNDEFINED ? -1 : edi;
 }
@@ -1028,10 +1029,10 @@ void sub_6C96C0()
 
 		ride = GET_RIDE(rideIndex);
 		if (ride->type == RIDE_TYPE_MAZE) {
-			game_do_command(x     , 41 | (0 << 8), y     , rideIndex | (2 << 8), GAME_COMMAND_38, z, 0);
-			game_do_command(x     , 41 | (1 << 8), y + 16, rideIndex | (2 << 8), GAME_COMMAND_38, z, 0);
-			game_do_command(x + 16, 41 | (2 << 8), y + 16, rideIndex | (2 << 8), GAME_COMMAND_38, z, 0);
-			game_do_command(x + 16, 41 | (3 << 8), y     , rideIndex | (2 << 8), GAME_COMMAND_38, z, 0);
+			game_do_command(x     , 41 | (0 << 8), y     , rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
+			game_do_command(x     , 41 | (1 << 8), y + 16, rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
+			game_do_command(x + 16, 41 | (2 << 8), y + 16, rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
+			game_do_command(x + 16, 41 | (3 << 8), y     , rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
 		} else {
 			direction = RCT2_GLOBAL(0x00F440CB, uint8);
 			if (!(direction & 4)) {
@@ -1284,7 +1285,7 @@ int ride_modify_maze(rct_map_element *mapElement, int x, int y)
 	_currentTrackBeginZ = mapElement->base_height * 8;
 	_currentTrackSelectionFlags = 0;
 	_rideConstructionArrowPulseTime = 0;
-	RCT2_CALLPROC_X(0x006CD887, 0, 0, 0, 0, 0, 0, 0);
+	window_maze_construction_update_pressed_widgets();
 	return 1;
 }
 
@@ -3362,7 +3363,7 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 		}
 
 		ride->mode = new_value;
-		RCT2_CALLPROC_X(0x6DD57D, 0, 0, 0, ride_id, 0, 0, 0);
+		ride_update_max_vehicles(ride_id);
 		break;
 	case 1:
 		ride->depart_flags = new_value;
@@ -4288,14 +4289,14 @@ int ride_get_refund_price(int ride_id)
 
 						ebx = oldebx;
 						ebx |= 0 << 0;
-						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_38, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_SET_MAZE_TRACK, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 						
 						ebx = oldebx;
 						ebx |= 1 << 8;
 						ecx = oldecx;
 						ecx += 16;
 						edx = oldedx;
-						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_38, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_SET_MAZE_TRACK, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
 						ebx = oldebx;
 						ebx |= 2 << 8;
@@ -4304,7 +4305,7 @@ int ride_get_refund_price(int ride_id)
 						ecx = oldecx;
 						ecx += 16;
 						edx = oldedx;
-						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_38, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_SET_MAZE_TRACK, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
 						ebx = oldebx;
 						ebx |= 3 << 8;
@@ -4312,7 +4313,7 @@ int ride_get_refund_price(int ride_id)
 						eax += 16;
 						ecx = oldecx;
 						edx = oldedx;
-						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_38, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_SET_MAZE_TRACK, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 					}else{
 						edx |= 0xFF << 8;
 						edx &= ((map_element->properties.track.sequence & 0xF) << 8) | 0xFF;
@@ -4397,7 +4398,7 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 			ride_stop_peeps_queuing(ride_id);
 			*ebx = ride_get_refund_price(ride_id);
 
-			RCT2_CALLPROC_X(0x006CB945, 0, 0, 0, ride_id, 0, 0, 0);
+			sub_6CB945(ride_id);
 			news_item_disable_news(NEWS_ITEM_RIDE, ride_id);
 			
 			for(int i = 0; i < MAX_BANNERS; i++){
@@ -4504,11 +4505,11 @@ void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, in
 				break;
 			case 2:
 				*((uint8*)(&ride->vehicle_colours[index])) = value;
-				RCT2_CALLPROC_X(0x006DE102, 0, 0, 0, ride_id, 0, 0, 0);
+				ride_update_vehicle_colours(ride_id);
 				break;
 			case 3:
 				*((uint8*)(&ride->vehicle_colours[index]) + 1) = value;
-				RCT2_CALLPROC_X(0x006DE102, 0, 0, 0, ride_id, 0, 0, 0);
+				ride_update_vehicle_colours(ride_id);
 				break;
 			case 4:
 				ride->track_colour_supports[index] = value;
@@ -4521,7 +4522,7 @@ void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, in
 					ride->vehicle_colours[i] = ride->vehicle_colours[0];
 					ride->vehicle_colours_extended[i] = ride->vehicle_colours_extended[0];
 				}
-				RCT2_CALLPROC_X(0x006DE102, 0, 0, 0, ride_id, 0, 0, 0);
+				ride_update_vehicle_colours(ride_id);
 				break;
 			case 6:
 				ride->entrance_style = value;
@@ -4530,7 +4531,7 @@ void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, in
 				break;
 			case 7:
 				ride->vehicle_colours_extended[index] = value;
-				RCT2_CALLPROC_X(0x006DE102, 0, 0, 0, ride_id, 0, 0, 0);
+				ride_update_vehicle_colours(ride_id);
 				break;
 		}
 		window_invalidate_by_number(WC_RIDE, ride_id);
@@ -5006,6 +5007,361 @@ void ride_fix_breakdown(int rideIndex, int reliabilityIncreaseFactor)
 
 	uint8 unreliability = 100 - ((ride->reliability >> 8) & 0xFF);
 	ride->reliability += reliabilityIncreaseFactor * (unreliability / 2);
+}
+
+/**
+ *
+ * rct2: 0x006DE102
+ */
+static void ride_update_vehicle_colours(int rideIndex)
+{
+	rct_ride *ride;
+	rct_vehicle *vehicle;
+	rct_vehicle_colour colours;
+	uint16 spriteIndex;
+	uint8 coloursExtended;
+
+	ride = GET_RIDE(rideIndex);
+	if (ride->type == RIDE_TYPE_SPACE_RINGS || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_16)) {
+		gfx_invalidate_screen();
+	}
+
+	for (int i = 0; i < 32; i++) {
+		int carIndex = 0;
+		spriteIndex = ride->vehicles[i];
+		while (spriteIndex != SPRITE_INDEX_NULL) {
+			vehicle = &(g_sprite_list[spriteIndex].vehicle);
+			switch (ride->colour_scheme_type & 3) {
+			case RIDE_COLOUR_SCHEME_ALL_SAME:
+				colours = ride->vehicle_colours[0];
+				coloursExtended = ride->vehicle_colours_extended[0];
+				break;
+			case RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN:
+				colours = ride->vehicle_colours[i];
+				coloursExtended = ride->vehicle_colours_extended[i];
+				break;
+			case RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR:
+				colours = ride->vehicle_colours[carIndex];
+				coloursExtended = ride->vehicle_colours_extended[carIndex];
+				break;
+			}
+
+			vehicle->colours = colours;
+			vehicle->colours_extended = coloursExtended;
+			invalidate_sprite((rct_sprite*)vehicle);
+			spriteIndex = vehicle->next_vehicle_on_train;
+			carIndex++;
+		}
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006DE4CD
+ * trainLayout: Originally fixed to 0x00F64E38. This no longer postfixes with 255.
+ */
+void ride_entry_get_train_layout(int rideEntryIndex, int numCarsPerTrain, uint8 *trainLayout)
+{
+	rct_ride_type *rideEntry = GET_RIDE_ENTRY(rideEntryIndex);
+	
+	for (int i = 0; i < numCarsPerTrain; i++) {
+		uint8 vehicleType = rideEntry->default_vehicle;
+		if (i == 0 && rideEntry->front_vehicle != 255) {
+			vehicleType = rideEntry->front_vehicle;
+		} else if (i == 1 && rideEntry->second_vehicle != 255) {
+			vehicleType = rideEntry->second_vehicle;
+		} else if (i == 2 && rideEntry->third_vehicle != 255) {
+			vehicleType = rideEntry->third_vehicle;
+		} else if (i == numCarsPerTrain - 1 && rideEntry->rear_vehicle != 255) {
+			vehicleType = rideEntry->rear_vehicle;
+		}
+		trainLayout[i] = vehicleType;
+	}
+}
+
+int ride_get_smallest_station_length(rct_ride *ride)
+{
+	uint32 result = -1;
+	for (int i = 0; i < 4; i++) {
+		if (ride->station_starts[i] != 0xFFFF) {
+			result = min(result, (uint32)(ride->station_length[i] & 0x0F));
+		}
+	}
+	return (int)result;
+}
+
+static int sub_6CB3AA(rct_ride *ride)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+
+	edi = (int)ride;
+	RCT2_CALLFUNC_X(0x006CB3AA, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return eax;
+}
+
+/**
+ *
+ *  rct2: 0x006DD57D
+ */
+void ride_update_max_vehicles(int rideIndex)
+{
+	rct_ride *ride;
+	rct_ride_type *rideEntry;
+	rct_ride_type_vehicle *vehicleEntry;
+	uint8 trainLayout[16], numCarsPerTrain, numVehicles;
+	int trainLength, maxNumTrains;
+
+	ride = GET_RIDE(rideIndex);
+	if (ride->subtype == 0xFF)
+		return;
+
+	rideEntry = GET_RIDE_ENTRY(ride->subtype);
+	if (rideEntry->cars_per_flat_ride == 0xFF) {
+		ride->num_cars_per_train = max(rideEntry->min_cars_in_train, ride->num_cars_per_train);
+		ride->min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
+
+		// Calculate maximum train length based on smallest station length
+		int stationLength = ride_get_smallest_station_length(ride);
+		if (stationLength == -1)
+			return;
+
+		stationLength = (stationLength * 0x44180) - 0x16B2A;
+		int maxFriction = RCT2_GLOBAL(0x0097D21B + (ride->type * 8), uint8) << 8;
+		int maxCarsPerTrain = 1;
+		for (int numCars = rideEntry->max_cars_in_train; numCars > 0; numCars--) {
+			ride_entry_get_train_layout(ride->subtype, numCars, trainLayout);
+			trainLength = 0;
+			int totalFriction = 0;
+			for (int i = 0; i < numCars; i++) {
+				vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
+				trainLength += vehicleEntry->var_04;
+				totalFriction += vehicleEntry->var_08;
+			}
+
+			if (trainLength <= stationLength && totalFriction <= maxFriction) {
+				maxCarsPerTrain = numCars;
+				break;
+			}
+		}
+		maxCarsPerTrain = max(maxCarsPerTrain, rideEntry->min_cars_in_train);
+		ride->min_max_cars_per_train = maxCarsPerTrain | (rideEntry->min_cars_in_train << 4);
+
+		switch (ride->mode) {
+		case RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED:
+		case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
+			maxNumTrains = clamp(1, ride->num_stations + ride->num_block_brakes - 1, 31);
+			break;
+		case RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE:
+		case RIDE_MODE_POWERED_LAUNCH_PASSTROUGH:
+		case RIDE_MODE_SHUTTLE:
+		case RIDE_MODE_LIM_POWERED_LAUNCH:
+		case RIDE_MODE_POWERED_LAUNCH:
+			maxNumTrains = 1;
+			break;
+		default:
+			// Calculate maximum number of trains
+			ride_entry_get_train_layout(ride->subtype, maxCarsPerTrain, trainLayout);
+			trainLength = 0;
+			for (int i = 0; i < maxCarsPerTrain; i++) {
+				vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
+				trainLength += vehicleEntry->var_04;
+			}
+
+			int totalLength = trainLength / 2;
+			if (maxCarsPerTrain != 1)
+				totalLength /= 2;
+
+			maxNumTrains = 0;
+			do {
+				maxNumTrains++;
+				totalLength += trainLength;
+			} while (totalLength <= stationLength);
+
+			if (
+				(ride->mode != RIDE_MODE_STATION_TO_STATION && ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT) ||
+				!(RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x40)
+			) {
+				maxNumTrains = min(maxNumTrains, 31);
+			} else {
+				ride_entry_get_train_layout(ride->subtype, maxCarsPerTrain, trainLayout);
+				vehicleEntry = &rideEntry->vehicles[trainLayout[0]];
+				int unk = vehicleEntry->var_5C;
+
+				int totalSpacing = 0;
+				for (int i = 0; i < maxCarsPerTrain; i++) {
+					vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
+					totalSpacing += vehicleEntry->var_04;
+				}
+
+				totalSpacing >>= 13;
+				int unk2 = sub_6CB3AA(ride) / 4;
+				if (unk > 10) {
+					unk2 = (unk2 * 3) / 4;
+				}
+				if (unk > 25) {
+					unk2 = (unk2 * 3) / 4;
+				}
+				if (unk > 40) {
+					unk2 = (unk2 * 3) / 4;
+				}
+
+				maxNumTrains = 0;
+				int unk3 = 0;
+				do {
+					maxNumTrains++;
+					unk3 += totalSpacing;
+				} while (maxNumTrains < 31 && unk3 < unk2);
+			}
+			break;
+		}
+		ride->max_trains = maxNumTrains;
+
+		numCarsPerTrain = min(ride->var_0CB, maxCarsPerTrain);
+		numVehicles = min(ride->var_0CA, maxNumTrains);
+	} else {
+	ride->max_trains = rideEntry->cars_per_flat_ride;
+	ride->min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
+	numCarsPerTrain = rideEntry->max_cars_in_train;
+	numVehicles = min(ride->var_0CA, rideEntry->cars_per_flat_ride);
+	}
+
+	// Refresh new current num vehicles / num cars per vehicle
+	if (numVehicles != ride->num_vehicles || numCarsPerTrain != ride->num_cars_per_train) {
+		ride->num_cars_per_train = numCarsPerTrain;
+		ride->num_vehicles = numVehicles;
+		window_invalidate_by_number(WC_RIDE, rideIndex);
+	}
+}
+
+static void sub_6DE52C(rct_ride *ride)
+{
+	RCT2_CALLPROC_X(0x006DE52C, 0, 0, 0, 0, (int)ride, 0, 0);
+}
+
+void ride_set_ride_entry(int rideIndex, int rideEntry)
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_SET_VEHICLE_TYPE_FAIL;
+	game_do_command(
+		0,
+		GAME_COMMAND_FLAG_APPLY | (RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY << 8),
+		0,
+		(rideEntry << 8) | rideIndex,
+		GAME_COMMAND_SET_RIDE_VEHICLES,
+		0,
+		0
+	);
+}
+
+void ride_set_num_vehicles(int rideIndex, int numVehicles)
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL;
+	game_do_command(
+		0,
+		GAME_COMMAND_FLAG_APPLY | (RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_TRAINS << 8),
+		0,
+		(numVehicles << 8) | rideIndex,
+		GAME_COMMAND_SET_RIDE_VEHICLES,
+		0,
+		0
+	);
+}
+
+void ride_set_num_cars_per_vehicle(int rideIndex, int numCarsPerVehicle)
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL;
+	game_do_command(
+		0,
+		GAME_COMMAND_FLAG_APPLY | (RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_CARS_PER_TRAIN << 8),
+		0,
+		(numCarsPerVehicle << 8) | rideIndex,
+		GAME_COMMAND_SET_RIDE_VEHICLES,
+		0,
+		0
+	);
+}
+
+/**
+ *
+ *  rct2: 0x006B52D4
+ */
+void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	rct_ride *ride;
+	rct_ride_type *rideEntry;
+	rct_window *w;
+	int rideIndex, commandType, value;
+
+	commandType = (*ebx >> 8) & 0xFF;
+	rideIndex = *edx & 0xFF;
+	value = (*edx >> 8) & 0xFF;
+
+	ride = GET_RIDE(rideIndex);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS;
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING;
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+
+	if (ride->status != RIDE_STATUS_CLOSED) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_MUST_BE_CLOSED_FIRST;
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+
+	if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
+		*ebx = 0;
+		return;
+	}
+
+	sub_6B59C6(rideIndex);
+	ride_clear_for_construction(rideIndex);
+	ride_remove_peeps(rideIndex);
+	ride->var_1CA = 100;
+	if (ride->type != RIDE_TYPE_ENTERPRISE) {
+		gfx_invalidate_screen();
+	}
+
+	switch (commandType) {
+	case RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_TRAINS:
+		ride->var_0CA = value;
+		if (ride->type != RIDE_TYPE_SPACE_RINGS) {
+			gfx_invalidate_screen();
+		}
+		break;
+	case RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_CARS_PER_TRAIN:
+		rideEntry = GET_RIDE_ENTRY(ride->subtype);
+		value = clamp(rideEntry->min_cars_in_train, value, rideEntry->max_cars_in_train);
+		ride->var_0CB = value;
+		break;
+	case RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY:
+		ride->subtype = value;
+		sub_6DE52C(ride);
+		break;
+	}
+
+	ride->num_circuits = 1;
+	ride_update_max_vehicles(rideIndex);
+
+	w = window_find_by_number(WC_RIDE, rideIndex);
+	if (w != NULL) {
+		if (w->page == 4) {
+			w->var_48C = 0;
+		}
+		window_invalidate(w);
+	}
+	*ebx = 0;
+}
+
+/**
+ *
+ *  rct2: 0x006CB945
+ */
+void sub_6CB945(int rideIndex)
+{
+	RCT2_CALLPROC_X(0x006CB945, 0, 0, 0, rideIndex, 0, 0, 0);
 }
 
 /**

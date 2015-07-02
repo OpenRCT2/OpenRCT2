@@ -203,7 +203,7 @@ static int title_load_park(const char *path)
 	window_new_ride_init_vars();
 	if (_strcmpi(path_get_extension(path), ".sv6") != 0)
 		sub_684AC3();
-	RCT2_CALLPROC_EBPSAFE(0x006DFEE4);
+	scenery_set_default_placement_configuration();
 	news_item_init_queue();
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, sint16) = 0;

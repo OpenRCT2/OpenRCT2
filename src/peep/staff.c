@@ -241,8 +241,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		newPeep->energy_growth_rate = 0x60;
 		newPeep->var_E2 = 0;
 
-		RCT2_CALLPROC_X(0x00699115, (uint32)ebp & 0xFFFFFF3F, 0, 0, 0, (int)newPeep, 0,
-			(*ebp << 25) | (*ebp >> 6));
+		peep_update_name_sort(newPeep);
 
 		newPeep->staff_id = newStaffId;
 

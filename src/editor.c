@@ -250,7 +250,7 @@ static void set_all_land_owned()
 {
 	int mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16);
 
-	game_do_command(64, 1, 64, 2, GAME_COMMAND_56, (mapSize - 2) * 32, (mapSize - 2) * 32);
+	game_do_command(64, 1, 64, 2, GAME_COMMAND_SET_LAND_OWNERSHIP, (mapSize - 2) * 32, (mapSize - 2) * 32);
 }
 
 /**
@@ -475,7 +475,7 @@ static int editor_read_s6(const char *path)
 			);
 
 			RCT2_GLOBAL(0x013573DC, uint32) = min(RCT2_GLOBAL(0x013573DC, uint32), 100000);
-			RCT2_CALLPROC_EBPSAFE(0x0069E89B);
+			finance_reset_cash_to_initial();
 			sub_69E869();
 
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = clamp(

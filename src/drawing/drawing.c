@@ -547,3 +547,8 @@ void redraw_peep_and_rain()
 	}
 	RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32) = 0;
 }
+
+void sub_681DE2(rct_drawpixelinfo *dpi, int x, int y, int image1, int image2)
+{
+	RCT2_CALLPROC_X(0x00681DE2, 0, image1, x, y, 0, (int)dpi, image2);
+}

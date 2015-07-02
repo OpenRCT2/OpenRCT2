@@ -1444,7 +1444,7 @@ int track_place_maze(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 
 				RCT2_GLOBAL(0x00141E9AE, rct_string_id) = 927;
 
-				cost = game_do_command(mapCoord.x, bl | (maze_entry & 0xFF) << 8, mapCoord.y, rideIndex | (maze_entry & 0xFF00), GAME_COMMAND_49, z, 0);
+				cost = game_do_command(mapCoord.x, bl | (maze_entry & 0xFF) << 8, mapCoord.y, rideIndex | (maze_entry & 0xFF00), GAME_COMMAND_PLACE_MAZE_DESIGN, z, 0);
 				break;
 			}
 
@@ -1856,7 +1856,7 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 	}
 
 	if (RCT2_GLOBAL(0x00F440D4, uint8) == 6){
-		RCT2_CALLPROC_X(0x006CB945, 0, 0, 0, RCT2_GLOBAL(0x00F440A7, uint8), 0, 0, 0);
+		sub_6CB945(RCT2_GLOBAL(0x00F440A7, uint8));
 		rct_ride* ride = GET_RIDE(RCT2_GLOBAL(0x00F440A7, uint8));
 		user_string_free(ride->name);
 		ride->type = RIDE_TYPE_NULL;
@@ -1962,9 +1962,9 @@ int sub_6D2189(int* cost, uint8* ride_id){
 	int eax = 0, ebx, ecx = 0, edx, esi, edi = 0, ebp = 0;
 	ebx = 41;
 	edx = track_design->type | (entry_index << 8);
-	esi = GAME_COMMAND_6;
+	esi = GAME_COMMAND_CREATE_RIDE;
 
-	if (MONEY32_UNDEFINED == game_do_command_p(GAME_COMMAND_6, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp)) return 1;
+	if (MONEY32_UNDEFINED == game_do_command_p(GAME_COMMAND_CREATE_RIDE, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp)) return 1;
 
 	// bh
 	*ride_id = edi & 0xFF;
@@ -3204,10 +3204,10 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 			_ebx = GAME_COMMAND_FLAG_APPLY, 
 			_ecx = 0, 
 			_edx = track_design->type | (entry_index << 8), 
-			_esi = GAME_COMMAND_6,
+			_esi = GAME_COMMAND_CREATE_RIDE,
 			_edi = 0, 
 			_ebp = 0;
-		game_do_command_p(GAME_COMMAND_6, &_eax, &_ebx, &_ecx, &_edx, &_esi, &_edi, &_ebp);
+		game_do_command_p(GAME_COMMAND_CREATE_RIDE, &_eax, &_ebx, &_ecx, &_edx, &_esi, &_edi, &_ebp);
 		if (_ebx == MONEY32_UNDEFINED){
 			*ebx = MONEY32_UNDEFINED;
 			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 0;
@@ -3250,14 +3250,14 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 	}
 
 	if (entry_index != 0xFF){
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY | (2 << 8), 0, rideIndex | (entry_index << 8), GAME_COMMAND_9, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY | (2 << 8), 0, rideIndex | (entry_index << 8), GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
 	}
 
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (track_design->ride_mode << 8), 0, rideIndex | (0 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (0 << 8), 0, rideIndex | (track_design->number_of_trains << 8), GAME_COMMAND_9, 0, 0);
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (0 << 8), 0, rideIndex | (track_design->number_of_trains << 8), GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
 
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (1 << 8), 0, rideIndex | (track_design->number_of_cars_per_train << 8), GAME_COMMAND_9, 0, 0);
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (1 << 8), 0, rideIndex | (track_design->number_of_cars_per_train << 8), GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
 
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (track_design->depart_flags << 8), 0, rideIndex | (1 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 

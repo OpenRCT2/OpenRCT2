@@ -246,6 +246,7 @@ typedef struct {
 
 extern const rct_xy16 TileDirectionDelta[];
 extern rct_xy16 *gMapSelectionTiles;
+extern rct2_peep_spawn *gPeepSpawns;
 // Used in the land tool window to allow dragging and changing land styles
 extern bool LandPaintMode;
 // Used in the land rights tool window to either buy land rights or construction rights
@@ -307,6 +308,7 @@ void game_command_raise_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, i
 void game_command_lower_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void game_command_raise_water(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void game_command_lower_water(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void game_command_set_water_height(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void game_command_remove_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
@@ -335,5 +337,8 @@ int map_element_get_banner_index(rct_map_element *mapElement);
 void map_element_remove_banner_entry(rct_map_element *mapElement);
 
 bool map_element_is_underground(rct_map_element *mapElement);
+
+void map_remove_out_of_range_elements();
+void map_extend_boundary_surface();
 
 #endif

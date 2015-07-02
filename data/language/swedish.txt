@@ -883,8 +883,8 @@ STR_0878    :För högt !
 STR_0879    :Kan inte sänka landnivån här...
 STR_0880    :Kan inte höja landnivån här...
 STR_0881    :Ett objekt är i vägen
-STR_0882    :Spara Spel
-STR_0883    :Ladda Spel
+STR_0882    :Ladda Spel
+STR_0883    :Spara Spel
 STR_0884    :Ladda Landskap
 STR_0885    :Spara Landskap
 STR_0886    :Avsluta Spel
