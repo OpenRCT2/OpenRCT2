@@ -104,7 +104,8 @@ typedef enum {
 
 enum {
 	DDIDX_CHEATS,
-	DDIDX_DISABLE_CLEARANCE_CHECKS = 2,
+	DDIDX_ENABLE_SANDBOX_MODE = 2,
+	DDIDX_DISABLE_CLEARANCE_CHECKS,
 	DDIDX_DISABLE_SUPPORT_LIMITS
 };
 
@@ -399,17 +400,21 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 		gDropdownItemsFormat[1] = 0;
 		gDropdownItemsFormat[2] = 1156;
 		gDropdownItemsFormat[3] = 1156;
+		gDropdownItemsFormat[4] = 1156;
 		gDropdownItemsArgs[0] = 5217;
-		gDropdownItemsArgs[2] = STR_DISABLE_CLEARANCE_CHECKS;
-		gDropdownItemsArgs[3] = STR_DISABLE_SUPPORT_LIMITS;
+		gDropdownItemsArgs[2] = STR_ENABLE_SANDBOX_MODE;
+		gDropdownItemsArgs[3] = STR_DISABLE_CLEARANCE_CHECKS;
+		gDropdownItemsArgs[4] = STR_DISABLE_SUPPORT_LIMITS;
 		window_dropdown_show_text(
 			w->x + widget->left,
 			w->y + widget->top,
 			widget->bottom - widget->top + 1,
 			w->colours[0] | 0x80,
 			0,
-			4
+			5
 		);
+		if (gCheatsSandboxMode)
+			gDropdownItemsChecked |= (1 << DDIDX_ENABLE_SANDBOX_MODE);
 		if (gCheatsDisableClearanceChecks)
 			gDropdownItemsChecked |= (1 << DDIDX_DISABLE_CLEARANCE_CHECKS);
 		if (gCheatsDisableSupportLimits)
@@ -507,6 +512,9 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 		switch (dropdownIndex) {
 		case DDIDX_CHEATS:
 			window_cheats_open();
+			break;
+		case DDIDX_ENABLE_SANDBOX_MODE:
+			gCheatsSandboxMode = !gCheatsSandboxMode;
 			break;
 		case DDIDX_DISABLE_CLEARANCE_CHECKS:
 			gCheatsDisableClearanceChecks = !gCheatsDisableClearanceChecks;
