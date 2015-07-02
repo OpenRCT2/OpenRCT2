@@ -1277,7 +1277,7 @@ static void window_editor_object_selection_paint()
 
 			int spriteIndex = ride_tabs[i];
 			int frame = 0;
-			if (w->pressed_widgets & (1ULL << (WIDX_FILTER_RIDE_TAB_ALL + i))) {
+			if (i != 0 && w->pressed_widgets & (1ULL << (WIDX_FILTER_RIDE_TAB_ALL + i))) {
 				frame = w->frame_no / window_editor_object_selection_animation_divisor[i - 1];
 			}
 			spriteIndex += (i == 4 ? ThrillRidesTabAnimationSequence[frame] : frame);
