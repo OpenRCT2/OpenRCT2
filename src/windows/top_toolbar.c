@@ -171,7 +171,7 @@ static rct_widget window_top_toolbar_widgets[] = {
 
 	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						5148 },								// Fast forward
 	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						5149 },								// Cheats
-	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_DEBUG_TIP },								// Debug
+	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_DEBUG_TIP },					// Debug
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B, 0,						27,		0x20000000 | 0x15F9,						3235 },								// Finances
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						2275 },								// Research
 	
@@ -752,7 +752,7 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		y = w->y + window_top_toolbar_widgets[WIDX_CHEATS].top - 1;
 		if (widget_is_pressed(w, WIDX_CHEATS))
 			y++;
-		imgId = SPR_TAB_OBJECTIVE_0;
+		imgId = SPR_G2_SANDBOX;
 		gfx_draw_sprite(dpi, imgId, x, y, 3);
 	}
 
