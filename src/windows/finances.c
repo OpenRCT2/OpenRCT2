@@ -229,6 +229,8 @@ static void window_finances_marketing_mouseup();
 static void window_finances_marketing_update(rct_window *w);
 static void window_finances_marketing_invalidate();
 static void window_finances_marketing_paint();
+static void window_draw_available_campaigns(rct_drawpixelinfo *dpi, int *x, int *y);
+static void window_draw_active_campaigns(rct_drawpixelinfo *dpi, int *x, int *y);
 
 static void window_finances_research_mouseup();
 static void window_finances_research_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
@@ -561,6 +563,10 @@ void window_finances_open()
 	w->pressed_widgets = 0;
 	w->disabled_widgets = 0;
 	window_init_scroll_widgets(w);
+
+	//Load list of rides & shop items
+	ride_load_list_of_rides();
+	ride_load_list_of_shop_items();
 }
 
 /**
@@ -1186,6 +1192,10 @@ static void window_finances_marketing_invalidate()
 
 	window_finances_set_pressed_tab(w);
 
+	//Reload list of rides and shop items
+	ride_load_list_of_rides();
+	ride_load_list_of_shop_items();
+
 	// Count number of active campaigns
 	int numActiveCampaigns = 0;
 	for (i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
@@ -1200,35 +1210,34 @@ static void window_finances_marketing_invalidate()
 
 	// Update new campagin button visibility
 	for (i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++) {
-		rct_widget *campaginButton = &window_finances_marketing_widgets[WIDX_CAMPAIGN_1 + i];
+		rct_widget *campaignButton = &window_finances_marketing_widgets[WIDX_CAMPAIGN_1 + i];
 
-		campaginButton->type = 0;
+		campaignButton->type = 0;
 
-		// Do not allow park entry campaigns if park entry is free
-		if (
-			(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) && (
-				i == ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE ||
-				i == ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE
-			)
-		) {
-			continue;
-		}
-
+		//Don't show campaign when active
 		if (gMarketingCampaignDaysLeft[i] != 0)
 			continue;
 
-		//Don't show campaign when no items (rides or stalls) available
+		// Do not allow park entry campaigns if park entry is free
+		if ((i == ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE || i == ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE) &&
+			(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY))
+			continue;
+				
+		//Don't show campaign when no items (rides) available
 		if ((i == ADVERTISING_CAMPAIGN_RIDE || i == ADVERTISING_CAMPAIGN_RIDE_FREE) &&
-			ride_get_count_by_classification(RIDE_CLASS_RIDE) == 0)
+			ride_list_of_rides[0] == 255)
 			continue;
+			//ride_get_count_by_classification(RIDE_CLASS_RIDE) == 0)
 
+		//Don't show campaign when no food or drink available
 		if (i == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE &&
-			ride_get_count_by_classification(RIDE_CLASS_SHOP_OR_STALL) == 0)
+			ride_list_of_shop_items[0] == 255)
 			continue;
+		//ride_get_count_by_classification(RIDE_CLASS_SHOP_OR_STALL) == 0)
 
-		campaginButton->type = WWT_DROPDOWN_BUTTON;
-		campaginButton->top = y;
-		campaginButton->bottom = y + 11;
+		campaignButton->type = WWT_DROPDOWN_BUTTON;
+		campaignButton->top = y;
+		campaignButton->bottom = y + 11;
 		y += 12;
 	}
 }
@@ -1241,9 +1250,7 @@ static void window_finances_marketing_paint()
 {
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
-	int i, x, y;
-	rct_ride *ride;
-	rct_string_id shopString, weeksRemainingStringId;
+	int x, y;
 
 	window_paint_get_registers(w, dpi);
 
@@ -1253,82 +1260,96 @@ static void window_finances_marketing_paint()
 	x = w->x + 8;
 	y = w->y + 62;
 
-	int noCampaignsActive = 1;
-	for (i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++) {
+	//Print all actives campaigns
+	window_draw_active_campaigns(dpi, &x, &y);
+
+	//Print all available campaigns
+	window_draw_available_campaigns(dpi, &x, &y);
+}
+
+static void window_draw_active_campaigns(rct_drawpixelinfo *dpi, int *x, int *y)
+{
+	bool noCampaignsActive = true;
+	rct_ride *ride;
+	rct_string_id weeksRemainingStringId;
+
+	//Loop through all possible campaigns
+	for (int i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++) {
+
+		//Skip not-used campaigns
 		if (gMarketingCampaignDaysLeft[i] == 0)
 			continue;
 
-		noCampaignsActive = 0;
+		noCampaignsActive = false;
 		RCT2_GLOBAL(0x013CE952, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
 		RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
 
 		// Set special parameters
 		switch (i) {
-		case ADVERTISING_CAMPAIGN_RIDE_FREE:
-		case ADVERTISING_CAMPAIGN_RIDE:
-			ride = GET_RIDE(gMarketingCampaignRideIndex[i]);
-			RCT2_GLOBAL(0x013CE952, uint16) = ride->name;
-			RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->name_arguments;
-			break;
-		case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-			shopString = gMarketingCampaignRideIndex[i] + 2016; // STR_BALLOONS+
-			if (shopString >= 2048) // STR_AN_UMBRELLA
-				shopString += 96; // STR_ON_RIDE_PHOTOS+
-			RCT2_GLOBAL(0x013CE952, uint16) = shopString;
-			break;
+			case ADVERTISING_CAMPAIGN_RIDE_FREE:
+			case ADVERTISING_CAMPAIGN_RIDE:
+				ride = GET_RIDE(gMarketingCampaignRideIndex[i]);
+				RCT2_GLOBAL(0x013CE952, uint16) = ride->name;
+				RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->name_arguments;
+				break;
+			case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
+				RCT2_GLOBAL(0x013CE952, uint16) = convert_RideID_to_RCTStringID(gMarketingCampaignRideIndex[i]);
+				break;
 		}
 
 		// Advertisement
-		gfx_draw_string_left_clipped(dpi, STR_VOUCHERS_FOR_FREE_ENTRY_TO + i, (void*)0x013CE952, 0, x + 4, y, 296);
+		gfx_draw_string_left_clipped(dpi, STR_VOUCHERS_FOR_FREE_ENTRY_TO + i, (void*)0x013CE952, 0, *x + 4, *y, 296);
 
 		// Duration
 		weeksRemainingStringId = (STR_MARKETING_1_WEEK - 1) + (gMarketingCampaignDaysLeft[i] % 128);
-		gfx_draw_string_left(dpi, STR_MARKETING_WEEKS_REMAINING, &weeksRemainingStringId, 0, x + 304, y);
+		gfx_draw_string_left(dpi, STR_MARKETING_WEEKS_REMAINING, &weeksRemainingStringId, 0, *x + 304, *y);
 
-		y += 10;
+		*y += 10;
 	}
 
 	if (noCampaignsActive) {
-		gfx_draw_string_left(dpi, STR_MARKETING_CAMPAGINS_NONE, NULL, 0, x + 4, y);
-		y += 10;
+		gfx_draw_string_left(dpi, STR_MARKETING_CAMPAGINS_NONE, NULL, 0, *x + 4, *y);
+		*y += 10;
 	}
-	y += 31;
 
-	// Draw campaign button text
-	for (i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++) {
-		rct_widget *campaginButton = &window_finances_marketing_widgets[WIDX_CAMPAIGN_1 + i];
+	*y += 31;
+}
 
-		campaginButton->type = 0;
+static void window_draw_available_campaigns(rct_drawpixelinfo *dpi, int *x, int *y)
+{
+	for (int i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++) {
 
-		// Do not allow park entry campaigns if park entry is free
-		if (
-			(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) && (
-				i == ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE ||
-				i == ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE
-			)
-		) {
-			continue;
-		}
+		rct_widget *campaignButton = &window_finances_marketing_widgets[WIDX_CAMPAIGN_1 + i];
+		campaignButton->type = 0;
 
+		//Don't show if campaign is already active
 		if (gMarketingCampaignDaysLeft[i] != 0)
 			continue;
 
-		//Don't show campaign when no items (rides or stalls) available
-		if ((i == ADVERTISING_CAMPAIGN_RIDE || i == ADVERTISING_CAMPAIGN_RIDE_FREE) &&
-			ride_get_count_by_classification(RIDE_CLASS_RIDE) == 0)
+		// Do not allow park entry campaigns if park entry is free
+		if ((i == ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE || i == ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE) &&
+			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY)
 			continue;
 
-		if (i == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE &&
-			ride_get_count_by_classification(RIDE_CLASS_SHOP_OR_STALL) == 0)
+		//Don't show campaign when no items (rides) available
+		if ((i == ADVERTISING_CAMPAIGN_RIDE || i == ADVERTISING_CAMPAIGN_RIDE_FREE) &&
+			ride_list_of_rides[0] == 255)
 			continue;
+		//ride_get_count_by_classification(RIDE_CLASS_RIDE) == 0)
+
+		//Don't show campaign when no food or drink available
+		if (i == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE &&
+			ride_list_of_shop_items[0] == 255)
+			continue;
+		//ride_get_count_by_classification(RIDE_CLASS_SHOP_OR_STALL) == 0)
 
 		money32 pricePerWeek = AdvertisingCampaignPricePerWeek[i];
 
 		// Draw button text
-		gfx_draw_string_left(dpi, STR_MARKETING_VOUCHERS_FOR_FREE_ENTRY_TO_THE_PARK + i, NULL, 0, x + 4, y - 1);
-		gfx_draw_string_left(dpi, STR_MARKETING_PER_WEEK, &pricePerWeek, 0, x + 310, y - 1);
+		gfx_draw_string_left(dpi, STR_MARKETING_VOUCHERS_FOR_FREE_ENTRY_TO_THE_PARK + i, NULL, 0, *x + 4, *y - 1);
+		gfx_draw_string_left(dpi, STR_MARKETING_PER_WEEK, &pricePerWeek, 0, *x + 310, *y - 1);
 
-		y += 12;
+		*y += 12;
 	}
 }
 

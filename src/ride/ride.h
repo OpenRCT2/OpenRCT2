@@ -839,7 +839,6 @@ extern const uint8 gRideClassifications[255];
 #define _currentSeatRotationAngle					RCT2_GLOBAL(0x00F440CF, uint8)
 
 int ride_get_count();
-int ride_get_count_by_classification(uint8 rideClassification);
 int ride_get_total_queue_length(rct_ride *ride);
 int ride_get_max_queue_time(rct_ride *ride);
 void ride_init_all();
@@ -937,5 +936,10 @@ money32 ride_remove_track_piece(int x, int y, int z, int direction, int type);
 
 bool ride_are_all_possible_entrances_and_exits_built(rct_ride *ride);
 void ride_fix_breakdown(int rideIndex, int reliabilityIncreaseFactor);
+
+uint8 ride_list_of_rides[MAX_RIDES]; //List of rides with type ride
+uint8 ride_list_of_shop_items[64];	 //List of shop items (E.g. Coffee, Cookie)
+void ride_load_list_of_rides();
+void ride_load_list_of_shop_items();
 
 #endif

@@ -99,41 +99,13 @@ static void* window_new_campaign_events[] = {
 	window_new_campaign_emptysub
 };
 
-uint8 window_new_campaign_rides[MAX_RIDES];
-uint8 window_new_campaign_shop_items[64];
-
-int ride_value_compare(const void *a, const void *b)
-{
-	rct_ride *rideA, *rideB;
-
-	rideA = GET_RIDE(*((uint8*)a));
-	rideB = GET_RIDE(*((uint8*)b));
-	return rideB->value - rideA->value;
-}
-
-int ride_name_compare(const void *a, const void *b)
-{
-	char rideAName[256], rideBName[256];
-	rct_ride *rideA, *rideB;
-
-	rideA = GET_RIDE(*((uint8*)a));
-	rideB = GET_RIDE(*((uint8*)b));
-
-	format_string(rideAName, rideA->name, &rideA->name_arguments);
-	format_string(rideBName, rideB->name, &rideB->name_arguments);
-
-	return _strcmpi(rideAName, rideBName);
-}
-
 /**
- * 
+ *  Open new_campaign window
  *  rct2: 0x0069E16F
  */
 void window_new_campaign_open(sint16 campaignType)
 {
 	rct_window *w;
-	rct_ride *ride;
-	int i, numApplicableRides;
 	
 	w = window_bring_to_front_by_class(WC_NEW_CAMPAIGN);
 	if (w != NULL) {
@@ -167,53 +139,6 @@ void window_new_campaign_open(sint16 campaignType)
 
 	// Currently selected ride
 	w->campaign.ride_id = SELECTED_RIDE_UNDEFINED;
-
-	// Get all applicable rides
-	numApplicableRides = 0;
-	window_new_campaign_rides[0] = 255;
-	FOR_ALL_RIDES(i, ride) {
-		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_SELLS_DRINKS | RIDE_TYPE_FLAG_IS_BATHROOM))
-			window_new_campaign_rides[numApplicableRides++] = i;
-	}
-
-	// Take top 40 most reliable rides
-	if (numApplicableRides > 40) {
-		qsort(window_new_campaign_rides, countof(window_new_campaign_rides), sizeof(uint8), ride_value_compare);
-		numApplicableRides = 40;
-	}
-
-	// Sort rides by name
-	qsort(window_new_campaign_rides, numApplicableRides, sizeof(uint8), ride_name_compare);
-
-	window_new_campaign_rides[numApplicableRides] = 255;
-}
-
-/**
- * 
- *  rct2: 0x0069E320
- */
-static void window_new_campaign_get_shop_items()
-{
-	int i, numItems;
-	rct_ride *ride;
-
-	uint64 items = 0;
-	FOR_ALL_RIDES(i, ride) {
-		rct_ride_type *rideType = gRideTypeList[ride->subtype];
-		uint8 itemType = rideType->shop_item;
-		if (itemType != 255)
-			items |= 1LL << itemType;
-	}
-
-	// Remove certain items?
-	items &= 0x0011FF78036BA3E0;
-
-	// 
-	numItems = 0;
-	for (i = 0; i < 64; i++)
-		if (items & (1LL << i))
-			window_new_campaign_shop_items[numItems++] = i;
-	window_new_campaign_shop_items[numItems] = 255;
 }
 
 /**
@@ -244,71 +169,71 @@ static void window_new_campaign_mouseup()
  */
 static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_widget* widget)
 {
-	rct_widget *dropdownWidget;
+	rct_ride *ride;
+	int numItems;
+	rct_widget *dropdownWidget = widget - 1;
 
 	switch (widgetIndex) {
+
 	case WIDX_RIDE_DROPDOWN_BUTTON:
-		dropdownWidget = widget - 1;
+		
+		if (w->campaign.campaign_type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
+		{
+			//Generate list of available (unique) shop items
+			ride_load_list_of_shop_items();
 
-		if (w->campaign.campaign_type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE) {
-			window_new_campaign_get_shop_items();
-			if (window_new_campaign_shop_items[0] != 255) {
-				int numItems = 0;
-				for (int i = 0; i < 40; i++) {
-					if (window_new_campaign_shop_items[i] == 255)
-						break;
-
-					rct_string_id itemStringId = window_new_campaign_shop_items[i] + 2016;
-					if (itemStringId >= 2048)
-						itemStringId += 96;
-
-					gDropdownItemsFormat[i] = 1142;
-					gDropdownItemsArgs[i] = itemStringId;
-					numItems++;
-				}
-
-				window_dropdown_show_text_custom_width(
-					w->x + dropdownWidget->left,
-					w->y + dropdownWidget->top,
-					dropdownWidget->bottom - dropdownWidget->top + 1,
-					w->colours[1],
-					DROPDOWN_FLAG_STAY_OPEN,
-					numItems,
-					dropdownWidget->right - dropdownWidget->left - 3
-				);
-			}
-		} else {
-			//When no rides available, don't show the list
-			if (window_new_campaign_rides[0] == 255)
-				break;
-
-			int numItems = 0;
-			for (int i = 0; i < 40; i++) {
-				if (window_new_campaign_rides[i] == 255)
+			for (numItems = 0; numItems < 40; numItems++) {
+				//Stop when this isn't a shop item
+				if (ride_list_of_shop_items[numItems] == 255)
 					break;
 
-				rct_ride *ride = GET_RIDE(window_new_campaign_rides[i]);
-				gDropdownItemsFormat[i] = 1142;
-				gDropdownItemsArgs[i] = ((uint64)ride->name_arguments << 16ULL) | ride->name;
-				numItems++;
-			}
+				//Set name
+				gDropdownItemsArgs[numItems] = convert_RideID_to_RCTStringID(ride_list_of_shop_items[numItems]);
 
-			window_dropdown_show_text_custom_width(
-				w->x + dropdownWidget->left,
-				w->y + dropdownWidget->top,
-				dropdownWidget->bottom - dropdownWidget->top + 1,
-				w->colours[1],
-				DROPDOWN_FLAG_STAY_OPEN,
-				numItems,
-				dropdownWidget->right - dropdownWidget->left - 3
-			);
+				//Set 1142? as Format
+				gDropdownItemsFormat[numItems] = 1142;
+			}
+		} 
+		else
+		{
+			//Generate list of available rides
+			ride_load_list_of_rides();
+
+			for (numItems = 0; numItems < 40; numItems++) {
+				//Stop when this isn't ride
+				if (ride_list_of_rides[numItems] == 255)
+					break;
+
+				ride = GET_RIDE(ride_list_of_rides[numItems]);
+
+				//Set name
+				gDropdownItemsArgs[numItems] = ((uint64)ride->name_arguments << 16ULL) | ride->name;
+
+				//Set 1142? as Format
+				gDropdownItemsFormat[numItems] = 1142;
+			}
 		}
+
+		//Show the dropdown box
+		window_dropdown_show_text_custom_width(
+			w->x + dropdownWidget->left,
+			w->y + dropdownWidget->top,
+			dropdownWidget->bottom - dropdownWidget->top + 1,
+			w->colours[1],
+			DROPDOWN_FLAG_STAY_OPEN,
+			numItems,
+			dropdownWidget->right - dropdownWidget->left - 3
+			);
+
 		break;
+
 	case WIDX_WEEKS_INCREASE_BUTTON:
+		//Increase amount of weeks (Maximum of 6)
 		w->campaign.no_weeks = min(w->campaign.no_weeks + 1, 6);
 		window_invalidate(w);
 		break;
 	case WIDX_WEEKS_DECREASE_BUTTON:
+		//Decrease amoun of weeks (Minimum of 2)
 		w->campaign.no_weeks = max(w->campaign.no_weeks - 1, 2);
 		window_invalidate(w);
 		break;
@@ -316,7 +241,7 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
 }
 
 /**
- * 
+ *  Closing the dropdown list
  *  rct2: 0x0069E537
  */
 static void window_new_campaign_dropdown()
@@ -329,13 +254,20 @@ static void window_new_campaign_dropdown()
 	if (widgetIndex != WIDX_RIDE_DROPDOWN_BUTTON)
 		return;
 
+	//When user didn't choose one, select the first
+	if (dropdownIndex == -1 && w->campaign.ride_id == SELECTED_RIDE_UNDEFINED)
+		dropdownIndex = 0;
+
+	//When user didn't choose one and has already a selected ride
+	if (dropdownIndex == -1 && w->campaign.ride_id != SELECTED_RIDE_UNDEFINED)
+		return;
+
 	if (w->campaign.campaign_type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE) {
-		rct_string_id itemStringId = (uint16)gDropdownItemsArgs[dropdownIndex] - 2016;
-		if (itemStringId >= 32)
-			itemStringId -= 96;
-		w->campaign.ride_id = itemStringId;
+		//Get stringid of choosen shopitem
+		w->campaign.ride_id = convert_RCTStringID_to_RideID((uint16)gDropdownItemsArgs[dropdownIndex]);
 	} else {
-		w->campaign.ride_id = window_new_campaign_rides[dropdownIndex];
+		//Get id of ride
+		w->campaign.ride_id = ride_list_of_rides[dropdownIndex];
 	}
 
 	window_invalidate(w);
@@ -356,6 +288,7 @@ static void window_new_campaign_invalidate()
 	window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WWT_EMPTY;
 	window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WWT_EMPTY;
 	window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].image = STR_MARKETING_NOT_SELECTED;
+
 	switch (w->campaign.campaign_type) {
 	case ADVERTISING_CAMPAIGN_RIDE_FREE:
 	case ADVERTISING_CAMPAIGN_RIDE:
@@ -363,7 +296,9 @@ static void window_new_campaign_invalidate()
 		window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WWT_DROPDOWN;
 		window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		window_new_campaign_widgets[WIDX_RIDE_LABEL].image = STR_MARKETING_RIDE;
+
 		if (w->campaign.ride_id != SELECTED_RIDE_UNDEFINED) {
+			//Show name when a shopitem is selected
 			rct_ride *ride = GET_RIDE(w->campaign.ride_id);
 			window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].image = ride->name;
 			RCT2_GLOBAL(0x013CE952, uint32) = ride->name_arguments;
@@ -375,10 +310,8 @@ static void window_new_campaign_invalidate()
 		window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		window_new_campaign_widgets[WIDX_RIDE_LABEL].image = STR_MARKETING_ITEM;
 		if (w->campaign.ride_id != SELECTED_RIDE_UNDEFINED) {
-			rct_string_id itemStringId = w->campaign.ride_id + 2016;
-			if (itemStringId >= 2048)
-				itemStringId += 96;
-			window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].image = itemStringId;
+			//Show name when a ride is selected
+			window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].image = convert_RideID_to_RCTStringID(w->campaign.ride_id);
 		}
 		break;
 	}
