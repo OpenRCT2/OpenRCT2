@@ -62,6 +62,7 @@ void finance_init();
 void finance_update_daily_profit();
 void finance_shift_expenditure_table();
 void sub_69E869();
+void finance_reset_cash_to_initial();
 
 void finance_set_loan(money32 loan);
 money32 finance_get_initial_cash();
