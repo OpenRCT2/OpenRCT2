@@ -1420,3 +1420,51 @@ void set_forced_park_rating(int rating){
 int get_forced_park_rating(){
 	return gForcedParkRating;
 }
+
+/**
+ *
+ *  rct2: 0x00666F9E
+ */
+void park_remove_ghost_entrance()
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_EXISTS, uint8) & (1 << 0)) {
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_EXISTS, uint8) &= ~(1 << 0);
+		game_do_command(
+			RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_X, uint16),
+			40 | GAME_COMMAND_FLAG_APPLY,
+			RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_Y, uint16),
+			RCT2_GLOBAL(0x009E32D0, uint8),
+			GAME_COMMAND_REMOVE_PARK_ENTRANCE,
+			0,
+			0
+		);
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x00666F4E
+ */
+money32 park_place_ghost_entrance(int x, int y, int z, int direction)
+{
+	money32 result;
+
+	park_remove_ghost_entrance();
+	result = game_do_command(
+		x,
+		104 | GAME_COMMAND_FLAG_APPLY | (direction << 8),
+		y,
+		z,
+		GAME_COMMAND_PLACE_PARK_ENTRANCE,
+		0,
+		0
+	);
+	if (result != MONEY32_UNDEFINED) {
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_X, uint16) = x;
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_Y, uint16) = y;
+		RCT2_GLOBAL(0x009E32D0, uint8) = z;
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_DIRECTION, uint8) = direction;
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_EXISTS, uint8) |= (1 << 0);
+	}
+	return result;
+}

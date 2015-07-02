@@ -39,6 +39,8 @@ typedef struct {
 
 #define g_pathTypeEntries ((rct_path_type**)object_entry_groups[OBJECT_TYPE_PATHS].chunks)
 
+extern const rct_xy16 word_981D6C[4];
+
 void game_command_place_footpath(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_remove_footpath(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 money32 footpath_place(int type, int x, int y, int z, int slope, int flags);
@@ -52,5 +54,7 @@ void footpath_remove_litter(int x, int y, int z);
 void sub_6A6C66(int x, int y, rct_map_element *mapElement, int flags);
 void sub_6A759F();
 void sub_6A742F(int rideIndex, int entranceIndex, int x, int y, rct_map_element *mapElement, int direction);
+
+void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement);
 
 #endif

@@ -3038,3 +3038,18 @@ void toggle_water_window(rct_window *topToolbar, int widgetIndex)
 		window_water_open();
 	}
 }
+
+/**
+ *
+ *  rct2: 0x0066D104
+ */
+bool land_tool_is_active()
+{
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE))
+		return false;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_TOP_TOOLBAR)
+		return false;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, sint16) != WIDX_LAND)
+		return false;
+	return true;
+}

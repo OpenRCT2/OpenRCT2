@@ -1952,9 +1952,9 @@ void window_event_scroll_mousedown_call(rct_window* w, int scrollIndex, int x, i
 	RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_MOUSEDOWN], scrollIndex, 0, x, y, (int)w, (int)window_get_scroll_widget(w, scrollIndex), 0);
 }
 
-void window_event_unknown_11_call(rct_window* w)
+void window_event_scroll_mousedrag_call(rct_window* w, int scrollIndex, int x, int y)
 {
-	window_event_call_address(w->event_handlers[WE_UNKNOWN_11], w);
+	RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_MOUSEDRAG], scrollIndex, 0, x, y, (int)w, (int)window_get_scroll_widget(w, scrollIndex), 0);
 }
 
 void window_event_scroll_mouseover_call(rct_window* w, int scrollIndex, int x, int y)

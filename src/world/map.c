@@ -49,6 +49,7 @@ const rct_xy16 TileDirectionDelta[] = {
 };
 
 rct_xy16 *gMapSelectionTiles = (rct_xy16*)0x009DE596;
+rct2_peep_spawn *gPeepSpawns = (rct2_peep_spawn*)RCT2_ADDRESS_PEEP_SPAWNS;
 
 bool LandPaintMode;
 bool LandRightsMode;
@@ -63,7 +64,6 @@ static void tiles_init();
 static void sub_6A87BB(int x, int y);
 static void map_update_grass_length(int x, int y, rct_map_element *mapElement);
 static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int length);
-static void sub_68ADBC();
 static void sub_68AE2A(int x, int y);
 
 void rotate_map_coordinates(sint16* x, sint16* y, int rotation){
@@ -301,7 +301,7 @@ void map_init(int size)
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, sint16) = size * 32 - 33;
 	RCT2_GLOBAL(0x01359208, sint16) = 7;
 	map_update_tile_pointers();
-	sub_68ADBC();
+	map_remove_out_of_range_elements();
 	climate_reset(CLIMATE_WARM);
 }
 
@@ -3133,7 +3133,11 @@ void map_element_remove_banner_entry(rct_map_element *mapElement)
 	}
 }
 
-static void sub_68ADBC()
+/**
+ * Removes elements that are out of the map size range and crops the park perimeter.
+ *  rct2: 0x0068ADBC
+ */
+void map_remove_out_of_range_elements()
 {
 	int mapMaxXY = RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16);
 
@@ -3148,6 +3152,85 @@ static void sub_68ADBC()
 			}
 		}
 	}
+}
+
+/**
+ * Copies the terrain and slope from the edge of the map to the new tiles. Used when increasing the size of the map.
+ *  rct2: 0x0068AC15
+ */
+void map_extend_boundary_surface()
+{
+	rct_map_element *existingMapElement, *newMapElement;
+	int x, y, z, slope;
+
+	y = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 2;
+	for (x = 0; x < 256; x++) {
+		existingMapElement = map_get_surface_element_at(x, y - 1);
+		newMapElement = map_get_surface_element_at(x, y);
+		
+		newMapElement->type = (newMapElement->type & 0x7C) | (existingMapElement->type & 0x83);
+		newMapElement->properties.surface.slope = existingMapElement->properties.surface.slope & 0xE0;
+		newMapElement->properties.surface.terrain = existingMapElement->properties.surface.terrain;
+		newMapElement->properties.surface.grass_length = existingMapElement->properties.surface.grass_length;
+		newMapElement->properties.surface.ownership = 0;
+
+		z = existingMapElement->base_height;
+		slope = existingMapElement->properties.surface.slope & 9;
+		if (slope == 9) {
+			z += 2;
+			slope = 0;
+			if (existingMapElement->properties.surface.slope & 0x10) {
+				slope = 1;
+				if (existingMapElement->properties.surface.slope & 0x04) {
+					slope = 8;
+					if (existingMapElement->properties.surface.slope & 0x02) {
+						slope = 0;
+					}
+				}
+			}
+		}
+		if (slope & 1) slope |= 2;
+		if (slope & 8) slope |= 4;
+
+		newMapElement->properties.surface.slope |= slope;
+		newMapElement->base_height = z;
+		newMapElement->clearance_height = z;
+	}
+
+	x = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 2;
+	for (y = 0; y < 256; y++) {
+		existingMapElement = map_get_surface_element_at(x - 1, y);
+		newMapElement = map_get_surface_element_at(x, y);
+		
+		newMapElement->type = (newMapElement->type & 0x7C) | (existingMapElement->type & 0x83);
+		newMapElement->properties.surface.slope = existingMapElement->properties.surface.slope & 0xE0;
+		newMapElement->properties.surface.terrain = existingMapElement->properties.surface.terrain;
+		newMapElement->properties.surface.grass_length = existingMapElement->properties.surface.grass_length;
+		newMapElement->properties.surface.ownership = 0;
+
+		z = existingMapElement->base_height;
+		slope = existingMapElement->properties.surface.slope & 3;
+		if (slope == 3) {
+			z += 2;
+			slope = 0;
+			if (existingMapElement->properties.surface.slope & 0x10) {
+				slope = 1;
+				if (existingMapElement->properties.surface.slope & 0x04) {
+					slope = 2;
+					if (existingMapElement->properties.surface.slope & 0x08) {
+						slope = 0;
+					}
+				}
+			}
+		}
+		if (slope & 1) slope |= 8;
+		if (slope & 2) slope |= 4;
+
+		newMapElement->properties.surface.slope |= slope;
+		newMapElement->base_height = z;
+		newMapElement->clearance_height = z;
+	}
+
 }
 
 static void sub_68AE2A(int x, int y)
