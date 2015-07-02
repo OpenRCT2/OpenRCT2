@@ -3346,7 +3346,7 @@ STR_3344    :Achtbaanontwerper
 STR_3345    :Baanontwerpbeheer
 STR_3346    :Kan baanontwerp niet opslaan
 STR_3347    :Attractie is te groot, bevat teveel elementen of het decor is te ver verspreid
-STR_3348    :Naam wijzigen
+STR_3348    :Hernoemen
 STR_3349    :Verwijderen
 STR_3350    :Naam baanontwerp
 STR_3351    :Voer een nieuwe naam in voor dit baanontwerp:
@@ -3583,8 +3583,8 @@ STR_5250    :Afsluitknop titelscherm
 STR_5251    :Optiesknop titelscherm
 STR_5252    :Scenarioselectie titelscherm
 STR_5253    :Parkinformatie
-STR_5254    :Misselijk maken
-STR_5255    :{MEDIUMFONT}{BLACK}Zal alle bezoekers misselijk maken
+STR_5254    :Aanmaken
+STR_5255    :{SMALLFONT}{BLACK}Begint een nieuwe, lege titelpresentatie
 STR_5256    :Een nieuw thema aanmaken om wijzigingen aan te brengen
 STR_5257    :{SMALLFONT}{BLACK}Een nieuw thema aanmaken dat is gebaseerd op het huidige
 STR_5258    :{SMALLFONT}{BLACK}Het huidige thema verwijderen
@@ -3762,12 +3762,23 @@ STR_5429    :Zoomniveau:
 STR_5430    :Te wachten seconden:
 STR_5431    :Te laden opgeslagen spel:
 STR_5432    :Commando:
-STR_5433    :Titlepresentaties
+STR_5433    :Titelpresentaties
 STR_5434    :Commandobewerker
 STR_5435    :Opgeslagen spel hernoemen
-STR_5436    :Titelpresentaties bewerekn...
+STR_5436    :Titelpresentaties bewerken...
 STR_5437    :Geen opgeslagen spel geselecteerd
 STR_5438    :Kan geen wijzigingen aanbrengen wanneer de commandobewerker open is
-STR_5439    :Er is een herstart gebruikt zonder Wacht-commando
+STR_5439    :Een Herstart-commando moet worden voorafgegaan door een Wacht-commando van minstens vier seconden.
 STR_5440    :Volledig scherm minimaliseren bij focusverlies
 STR_5441    :{SMALLFONT}{BLACK}Sorteert attracties per baantype,{NEWLINE}zodat achteraf wisselen van treintypes mogelijk{NEWLINE}wordt, zoals in RCT1.
+STR_5442    :Parkwaardering forc.:
+STR_5443    :Snelheid{MOVE_X}{87}{STRINGID}
+STR_5444    :Snelheid:
+STR_5445    :Snelheid
+STR_5446    :Ophalen
+STR_5447    :Type {STRINGID}
+STR_5448    :Attractie/voertuig {STRINGID}
+STR_5449    :Spelsnelheid verlagen
+STR_5450    :Spelsnelheid verhogen
+STR_5451    :Cheatsvenster openen
+STR_5452    :Zichtbaarheid werkbalken schakelen
