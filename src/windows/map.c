@@ -1377,7 +1377,285 @@ static void map_window_decrease_map_size()
 	gfx_invalidate_screen();
 }
 
+static const uint16 WaterColour = 0xC3C3;
+static const uint16 TerrainColour[] = {
+	0x4949,			// TERRAIN_GRASS
+	0x2828,			// TERRAIN_SAND
+	0x6C6C,			// TERRAIN_DIRT
+	0x0C0C,			// TERRAIN_ROCK
+	0x3E3E,			// TERRAIN_MARTIAN
+	0x0A10,			// TERRAIN_CHECKERBOARD
+	0x496C,			// TERRAIN_GRASS_CLUMPS
+	0x8D8D,			// TERRAIN_ICE
+	0xAC0A,			// TERRAIN_GRID_RED
+	0x360A,			// TERRAIN_GRID_YELLOW
+	0xA20A,			// TERRAIN_GRID_BLUE
+	0x660A,			// TERRAIN_GRID_GREEN
+	0x6F6F,			// TERRAIN_SAND_DARK
+	0xDEDE,			// TERRAIN_SAND_LIGHT
+};
+
+static const uint16 ElementTypeMaskColour[] = {
+	0xFFFF,			// MAP_ELEMENT_TYPE_SURFACE
+	0x0000,			// MAP_ELEMENT_TYPE_PATH
+	0x00FF,			// MAP_ELEMENT_TYPE_TRACK
+	0xFF00,			// MAP_ELEMENT_TYPE_SCENERY
+	0x0000,			// MAP_ELEMENT_TYPE_ENTRANCE
+	0xFFFF,			// MAP_ELEMENT_TYPE_FENCE
+	0x0000,			// MAP_ELEMENT_TYPE_SCENERY_MULTIPLE
+	0xFFFF			// MAP_ELEMENT_TYPE_BANNER
+};
+
+static const uint16 ElementTypeAddColour[] = {
+	0x0000,			// MAP_ELEMENT_TYPE_SURFACE
+	0x1111,			// MAP_ELEMENT_TYPE_PATH
+	0xB700,			// MAP_ELEMENT_TYPE_TRACK
+	0x0063,			// MAP_ELEMENT_TYPE_SCENERY
+	0xBABA,			// MAP_ELEMENT_TYPE_ENTRANCE
+	0x0000,			// MAP_ELEMENT_TYPE_FENCE
+	0x6363,			// MAP_ELEMENT_TYPE_SCENERY_MULTIPLE
+	0x0000			// MAP_ELEMENT_TYPE_BANNER
+};
+
+enum {
+	COLOUR_KEY_RIDE,
+	COLOUR_KEY_FOOD,
+	COLOUR_KEY_DRINK,
+	COLOUR_KEY_SOUVENIR,
+	COLOUR_KEY_KIOSK,
+	COLOUR_KEY_FIRST_AID,
+	COLOUR_KEY_CASH_MACHINE,
+	COLOUR_KEY_TOILETS
+};
+
+static const uint8 RideColourKey[] = {
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_SPIRAL_ROLLER_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_STAND_UP_ROLLER_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_SUSPENDED_SWINGING_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_INVERTED_ROLLER_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_JUNIOR_ROLLER_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_MINIATURE_RAILWAY
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_MONORAIL
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_MINI_SUSPENDED_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_BOAT_RIDE
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_WOODEN_WILD_MOUSE
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_STEEPLECHASE
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_CAR_RIDE
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_LAUNCHED_FREEFALL
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_BOBSLEIGH_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_OBSERVATION_TOWER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_LOOPING_ROLLER_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_DINGHY_SLIDE
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_MINE_TRAIN_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_CHAIRLIFT
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_CORKSCREW_ROLLER_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_MAZE = 20
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_SPIRAL_SLIDE
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_GO_KARTS
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_LOG_FLUME
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_RIVER_RAPIDS
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_DODGEMS
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_PIRATE_SHIP
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_SWINGING_INVERTER_SHIP
+	COLOUR_KEY_FOOD,				// RIDE_TYPE_FOOD_STALL
+	COLOUR_KEY_FOOD,				// RIDE_TYPE_1D
+	COLOUR_KEY_DRINK,				// RIDE_TYPE_DRINK_STALL
+	COLOUR_KEY_DRINK,				// RIDE_TYPE_1F
+	COLOUR_KEY_SOUVENIR,			// RIDE_TYPE_SHOP
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_MERRY_GO_ROUND
+	COLOUR_KEY_SOUVENIR,			// RIDE_TYPE_22
+	COLOUR_KEY_KIOSK,				// RIDE_TYPE_INFORMATION_KIOSK
+	COLOUR_KEY_TOILETS,				// RIDE_TYPE_TOILETS
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_FERRIS_WHEEL
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_MOTION_SIMULATOR
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_3D_CINEMA
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_TOP_SPIN
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_SPACE_RINGS
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_REVERSE_FREEFALL_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_LIFT
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
+	COLOUR_KEY_CASH_MACHINE,		// RIDE_TYPE_CASH_MACHINE
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_TWIST
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_HAUNTED_HOUSE
+	COLOUR_KEY_FIRST_AID,			// RIDE_TYPE_FIRST_AID
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_CIRCUS_SHOW
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_GHOST_TRAIN
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_TWISTER_ROLLER_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_WOODEN_ROLLER_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_WILD_MOUSE
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_38
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_FLYING_ROLLER_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_3A
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_VIRGINIA_REEL
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_SPLASH_BOATS
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_MINI_HELICOPTERS
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_LAY_DOWN_ROLLER_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_SUSPENDED_MONORAIL
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_40
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_REVERSER_ROLLER_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_HEARTLINE_TWISTER_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_MINI_GOLF
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_GIGA_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_ROTO_DROP
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_FLYING_SAUCERS
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_CROOKED_HOUSE
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_MONORAIL_CYCLES
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_COMPACT_INVERTED_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_WATER_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_INVERTED_HAIRPIN_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_MAGIC_CARPET
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_SUBMARINE_RIDE
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_RIVER_RAFTS
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_50
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_ENTERPRISE
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_52
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_53
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_54
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_55
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_INVERTED_IMPULSE_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_MINI_ROLLER_COASTER
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_MINE_RIDE
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_59
+	COLOUR_KEY_RIDE,				// RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
+	COLOUR_KEY_RIDE,				//
+	COLOUR_KEY_RIDE,				//
+	COLOUR_KEY_RIDE,				//
+};
+
+static const uint16 RideKeyColours[] = {
+	0x3D3D,			// COLOUR_KEY_RIDE
+	0x2A2A,			// COLOUR_KEY_FOOD
+	0x1414,			// COLOUR_KEY_DRINK
+	0x0D1D,			// COLOUR_KEY_SOUVENIR
+	0x8888,			// COLOUR_KEY_KIOSK
+	0x6666,			// COLOUR_KEY_FIRST_AID
+	0x3737,			// COLOUR_KEY_CASH_MACHINE
+	0xA1A1,			// COLOUR_KEY_TOILETS
+};
+
+static uint16 map_window_get_pixel_colour_peep(int x, int y)
+{
+	rct_map_element *mapElement;
+	uint16 colour;
+
+	mapElement = map_get_surface_element_at(x >> 5, y >> 5);
+	colour = TerrainColour[map_element_get_terrain(mapElement)];
+	if (mapElement->properties.surface.terrain & 0x1F)
+		colour = WaterColour;
+
+	if (!(mapElement->properties.surface.ownership & OWNERSHIP_OWNED))
+		colour = 10 | (colour & 0xFF00);
+
+	if (!(mapElement->flags & (1 << 5)))
+		colour = 10 | (colour & 0xFF00);
+
+	while (!map_element_is_last_for_tile(mapElement++)) {
+		int mapElementType = map_element_get_type(mapElement);
+		colour &= ElementTypeMaskColour[mapElementType >> 2];
+		colour |= ElementTypeAddColour[mapElementType >> 2];
+	}
+
+	return colour;
+}
+
+static uint16 map_window_get_pixel_colour_ride(int x, int y)
+{
+	rct_map_element *mapElement;
+	rct_ride *ride;
+	uint32 colour;
+
+	colour = 0x0D0D0000;
+	mapElement = map_get_surface_element_at(x >> 5, y >> 5);
+	do {
+		switch (map_element_get_type(mapElement)) {
+		case MAP_ELEMENT_TYPE_SURFACE:
+			if (mapElement->properties.surface.terrain & 0x1F) {
+				colour &= 0xFFFF;
+				colour |= 0xC2C20000;
+			}
+			if (!(mapElement->properties.surface.ownership & OWNERSHIP_OWNED)) {
+				colour &= 0xFF00FFFF;
+				colour |= 0x000A0000;
+			}
+			break;
+		case MAP_ELEMENT_TYPE_PATH:
+			colour = 0x0E0E;
+			break;
+		case MAP_ELEMENT_TYPE_ENTRANCE:
+			if (mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE)
+				break;
+			// fall-through
+		case MAP_ELEMENT_TYPE_TRACK:
+			ride = GET_RIDE(mapElement->properties.track.ride_index);
+			colour = RideKeyColours[RideColourKey[ride->type]];
+			break;
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	if ((colour & 0xFFFF) == 0)
+		colour >>= 16;
+
+	return colour & 0xFFFF;
+}
+
 static void map_window_set_pixels(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x0068DC71, 0, 0, 0, 0, (int)w, 0, 0);
+	uint16 colour, *destination;
+	int x, y, dx, dy;
+	
+	destination = (uint16*)((RCT2_GLOBAL(0x00F1AD6C, uint32) * 511) + RCT2_GLOBAL(0x00F1AD68, uint32) + 255);
+	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) {
+	case 0:
+		x = RCT2_GLOBAL(0x00F1AD6C, uint32) * 32;
+		y = 0;
+		dx = 0;
+		dy = 32;
+		break;
+	case 1:
+		x = 8192 - 32;
+		y = RCT2_GLOBAL(0x00F1AD6C, uint32) * 32;
+		dx = -32;
+		dy = 0;
+		break;
+	case 2:
+		x = (255 - RCT2_GLOBAL(0x00F1AD6C, uint32)) * 32;
+		y = 8192 - 32;
+		dx = 0;
+		dy = -32;
+		break;
+	case 3:
+		x = 0;
+		y = (255 - RCT2_GLOBAL(0x00F1AD6C, uint32)) * 32;
+		dx = 32;
+		dy = 0;
+		break;
+	}
+
+	for (int i = 0; i < 256; i++) {
+		if (
+			x > 0 &&
+			y > 0 &&
+			x < RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) &&
+			y < RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)
+		) {
+			switch (w->selected_tab) {
+			case PAGE_PEEPS:
+				colour = map_window_get_pixel_colour_peep(x, y);
+				break;
+			case PAGE_RIDES:
+				colour = map_window_get_pixel_colour_ride(x, y);
+				break;
+			}
+			*destination = colour;
+		}
+		x += dx;
+		y += dy;
+		destination = (uint16*)((int)destination + 513);
+	}
+	RCT2_GLOBAL(0x00F1AD6C, uint32)++;
+	if (RCT2_GLOBAL(0x00F1AD6C, uint32) >= 256)
+		RCT2_GLOBAL(0x00F1AD6C, uint32) = 0;
 }
