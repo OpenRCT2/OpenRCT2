@@ -3791,6 +3791,7 @@ STR_5454    :Uncap FPS
 STR_5455    :Enable sandbox mode
 STR_5456    :Disable clearance checks
 STR_5457    :Disable support limits
+<<<<<<< HEAD
 STR_5458    :Rotate clockwise
 STR_5459    :Rotate anti-clockwise
 STR_5460    :Rotate view anti-clockwise
@@ -3800,3 +3801,5 @@ STR_5463    :Goal: Have fun!
 STR_5464    :General
 STR_5465    :Climate
 STR_5466    :Staff
+=======
+>>>>>>> allow disable clearance checks for footpaths
