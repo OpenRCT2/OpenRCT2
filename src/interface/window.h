@@ -273,7 +273,7 @@ typedef enum {
 	WE_UNKNOWN_0E = 14,
 	WE_SCROLL_GETSIZE = 15,
 	WE_SCROLL_MOUSEDOWN = 16,
-	WE_UNKNOWN_11 = 17,
+	WE_SCROLL_MOUSEDRAG = 17,
 	WE_SCROLL_MOUSEOVER = 18,
 	WE_TEXT_INPUT = 19,
 	WE_UNKNOWN_14 = 20,
@@ -632,7 +632,7 @@ void window_event_tool_abort_call(rct_window* w, int widgetIndex);
 void window_event_unknown_0E_call(rct_window* w);
 int window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *height);
 void window_event_scroll_mousedown_call(rct_window* w, int scrollIndex, int x, int y);
-void window_event_unknown_11_call(rct_window* w);
+void window_event_scroll_mousedrag_call(rct_window* w, int scrollIndex, int x, int y);
 void window_event_scroll_mouseover_call(rct_window* w, int scrollIndex, int x, int y);
 void window_event_textinput_call(rct_window *w, int widgetIndex, char *text);
 void window_event_unknown_14_call(rct_window* w);
@@ -654,6 +654,8 @@ void window_start_textbox(rct_window *call_w, int call_widget, rct_string_id exi
 void window_cancel_textbox();
 void window_update_textbox_caret();
 void window_update_textbox();
+
+bool land_tool_is_active();
 
 //Cheat: in-game land ownership editor
 void toggle_ingame_land_ownership_editor();

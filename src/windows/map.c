@@ -166,6 +166,8 @@ static void map_window_increase_map_size();
 static void map_window_decrease_map_size();
 static void map_window_set_pixels(rct_window *w);
 
+static void map_window_screen_to_map(int screenX, int screenY, int *mapX, int *mapY);
+
 /**
 *
 *  rct2: 0x0068C88A
@@ -439,7 +441,6 @@ static void window_map_update(rct_window *w)
 	}
 }
 
-
 /**
  *
  *  rct2: 0x0068D093
@@ -464,7 +465,6 @@ static void window_map_toolupdate()
 		break;
 	}
 }
-
 
 /**
  *
@@ -574,12 +574,77 @@ static void window_map_scrollgetsize()
  */
 static void window_map_scrollmousedown()
 {
+	int mapX, mapY, mapZ;
 	short x, y, scrollIndex;
-	rct_window *w;
+	rct_window *w, *mainWindow;
 
 	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
-	RCT2_CALLPROC_X(0x0068D726, scrollIndex, 0, x, y, (int)w, 0, 0);
+	map_window_screen_to_map(x, y, &mapX, &mapY);
+	mapX = clamp(0, mapX, 8191);
+	mapY = clamp(0, mapY, 8191);
+	mapZ = map_element_height(x, y);
+
+	mainWindow = window_get_main();
+	if (mainWindow != NULL) {
+		window_scroll_to_location(mainWindow, mapX, mapY, mapZ);
+	}
+
+	if (land_tool_is_active()) {
+		// Set land terrain
+		int landToolSize = max(1, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint16));
+		int size = (landToolSize * 32) - 32;
+		int radius = (landToolSize * 16) - 16;
+		mapX = (mapX - radius) & 0xFFE0;
+		mapY = (mapY - radius) & 0xFFE0;
+
+		map_invalidate_selection_rect();
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = mapX;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = mapY;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = mapX + size;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = mapY + size;
+		map_invalidate_selection_rect();
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1387;
+		game_do_command(
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
+			GAME_COMMAND_FLAG_APPLY,
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
+			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) | (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) << 8),
+			GAME_COMMAND_CHANGE_SURFACE_STYLE,
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
+		);
+	} else if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS)) {
+		// Set land rights
+		int landToolSize = max(1, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, uint16));
+		int size = (landToolSize * 32) - 32;
+		int radius = (landToolSize * 16) - 16;
+		mapX = (mapX - radius) & 0xFFE0;
+		mapY = (mapY - radius) & 0xFFE0;
+
+		map_invalidate_selection_rect();
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = mapX;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = mapY;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = mapX + size;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = mapY + size;
+		map_invalidate_selection_rect();
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0;
+		game_do_command(
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
+			GAME_COMMAND_FLAG_APPLY,
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
+			RCT2_GLOBAL(0x00F1AD61, uint8),
+			GAME_COMMAND_SET_LAND_OWNERSHIP,
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
+			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+		);
+	}
 }
 
 static void window_map_textinput()
@@ -1658,4 +1723,32 @@ static void map_window_set_pixels(rct_window *w)
 	RCT2_GLOBAL(0x00F1AD6C, uint32)++;
 	if (RCT2_GLOBAL(0x00F1AD6C, uint32) >= 256)
 		RCT2_GLOBAL(0x00F1AD6C, uint32) = 0;
+}
+
+static void map_window_screen_to_map(int screenX, int screenY, int *mapX, int *mapY)
+{
+	int x, y;
+
+	screenX = ((screenX + 8) - 256) / 2;
+	screenY = ((screenY + 8)      ) / 2;
+	x = (screenY - screenX) * 32;
+	y = (screenX + screenY) * 32;
+	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) & 3) {
+	case 0:
+		*mapX = x;
+		*mapY = y;
+		break;
+	case 1:
+		*mapX = 8191 - y;
+		*mapY = x;
+		break;
+	case 2:
+		*mapX = 8191 - x;
+		*mapY = 8191 - y;
+		break;
+	case 3:
+		*mapX = y;
+		*mapY = 8191 - x;
+		break;
+	}
 }
