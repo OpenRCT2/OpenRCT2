@@ -1762,6 +1762,8 @@ enum {
 	STR_SHORTCUT_OPEN_CHEATS_WINDOW = 5451,
 	STR_SHORTCUT_TOGGLE_VISIBILITY_OF_TOOLBARS = 5452,
 
+	STR_SELECT_OTHER_RIDE = 5453,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
