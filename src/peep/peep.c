@@ -46,6 +46,11 @@ static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type);
 static void sub_693BAB(rct_peep* peep);
 static void sub_693C9E(rct_peep *peep);
 static void peep_spend_money(rct_peep *peep, money32 amount);
+static void sub_695444(rct_peep *peep, int rideIndex, int flags);
+static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 price);
+static bool sub_69AEB7(rct_peep *peep, int rideIndex);
+static void sub_69A98C(rct_peep *peep);
+static void sub_68FD3A(rct_peep *peep);
 static void peep_give_real_name(rct_peep *peep);
 
 const char *gPeepEasterEggNames[] = {
@@ -1200,7 +1205,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 			peep->destination_tolerence = 3;
 
 			ride->var_120++;
-			RCT2_CALLPROC_X(0x00695444, 0, 0, 0, peep->current_ride, (int)peep, 0, 0);
+			sub_695444(peep, peep->current_ride, 0);
 			peep->sub_state = 17;
 			return;
 		}
@@ -1227,7 +1232,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 		peep->current_car = 0;
 
 		ride->var_120++;
-		RCT2_CALLPROC_X(0x00695444, 0, 0, 0, peep->current_ride, (int)peep, 0, 0);
+		sub_695444(peep, peep->current_ride, 0);
 		peep->sub_state = 14;
 		return;
 	}
@@ -1581,7 +1586,7 @@ static void peep_update_ride_sub_state_5(rct_peep* peep){
 		peep_window_state_update(seated_peep);
 		seated_peep->var_E2 = 0;
 		seated_peep->sub_state = 6;
-		RCT2_CALLPROC_X(0x00695444, 0, 0, 0, seated_peep->current_ride, (int)seated_peep, 0, 0);
+		sub_695444(seated_peep, peep->current_ride, 0);
 	}
 
 	vehicle->num_peeps++;
@@ -1600,7 +1605,7 @@ static void peep_update_ride_sub_state_5(rct_peep* peep){
 	peep->var_E2 = 0;
 	peep->sub_state = 6;
 
-	RCT2_CALLPROC_X(0x00695444, 0, 0, 0, peep->current_ride, (int)peep, 0, 0);
+	sub_695444(peep, peep->current_ride, 0);
 }
 
 /* rct2: 0x00693028*/
@@ -1866,7 +1871,7 @@ static void peep_update_ride_sub_state_9(rct_peep* peep){
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO){
 		uint8 secondaryItem = RCT2_ADDRESS(0x0097D7CB, uint8)[ride->type * 4];
-		if (!(RCT2_CALLPROC_X(0x0069AF1E, secondaryItem | (peep->current_ride << 8), 0, ride->price_secondary, 0, (int)peep, 0, 0) & 0x100)){
+		if (sub_69AF1E(peep, peep->current_ride, secondaryItem, ride->price_secondary)) {
 			ride->no_secondary_items_sold++;
 		}
 	}
@@ -2403,7 +2408,7 @@ static void peep_update_ride_sub_state_18(rct_peep* peep){
 		return;
 	}
 
-	RCT2_CALLPROC_X(0x00695444, 0, 0, 0, peep->current_ride | (1 << 8), (int)peep, 0, 0);
+	sub_695444(peep, peep->current_ride, 1);
 
 	if (peep->flags & PEEP_FLAGS_TRACKING){
 		RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
@@ -2907,8 +2912,8 @@ static void peep_update_sweeping(rct_peep* peep){
 	invalidate_sprite((rct_sprite*)peep);
 
 	if (peep->action == PEEP_ACTION_STAFF_SWEEP && peep->action_frame == 8){
-		//Remove sick at this location		
-		RCT2_CALLPROC_X(0x6738E1, peep->x, 0, peep->y, peep->z, 0, 0, 0);
+		// Remove sick at this location
+		sub_6738E1(peep->x, peep->y, peep->z);
 		peep->staff_litter_swept++;
 		peep->var_45 |= (1 << 4);
 	}
@@ -3363,13 +3368,11 @@ static void peep_update_buying(rct_peep* peep)
 
 	if (peep->current_ride != peep->previous_ride){
 		if (ride->type == RIDE_TYPE_CASH_MACHINE){
-			item_bought = !(RCT2_CALLPROC_X(0x0069AEB7, peep->current_ride << 8, 0, 0, 0, (int)peep, 0, 0) & 0x100);
-
-			if (!item_bought){
+			item_bought = sub_69AEB7(peep, peep->current_ride);
+			if (!item_bought) {
 				peep->previous_ride = peep->current_ride;
 				peep->previous_ride_time_out = 0;
-			}
-			else{
+			} else {
 				peep->action = PEEP_ACTION_WITHDRAW_MONEY;
 				peep->action_frame = 0;
 				peep->action_sprite_image_offset = 0;
@@ -3385,9 +3388,8 @@ static void peep_update_buying(rct_peep* peep)
 			if (ride_type->shop_item_secondary != 0xFF){
 				money16 price = ride->price_secondary;
 
-				item_bought = !(RCT2_CALLPROC_X(0x0069AF1E, ride_type->shop_item_secondary | (peep->current_ride << 8), 0, price, 0, (int)peep, 0, 0) & 0x100);
-
-				if (item_bought){
+				item_bought = sub_69AF1E(peep, peep->current_ride, ride_type->shop_item_secondary, price);
+				if (item_bought) {
 					ride->no_secondary_items_sold++;
 				}
 			}
@@ -3395,9 +3397,8 @@ static void peep_update_buying(rct_peep* peep)
 			if (!item_bought && ride_type->shop_item != 0xFF){
 				money16 price = ride->price;
 
-				item_bought = !(RCT2_CALLPROC_X(0x0069AF1E, ride_type->shop_item | (peep->current_ride << 8), 0, price, 0, (int)peep, 0, 0) & 0x100);
-
-				if (item_bought){
+				item_bought = sub_69AF1E(peep, peep->current_ride, ride_type->shop_item, price);
+				if (item_bought) {
 					ride->no_primary_items_sold++;
 				}
 			}
@@ -3574,7 +3575,7 @@ static void peep_update_heading_to_inspect(rct_peep* peep){
 
 	if (peep->sub_state == 0){
 		peep->var_74 = 0;
-		RCT2_CALLPROC_X(0x0069A98C, 0, 0, 0, 0, (int)peep, 0, 0);
+		sub_69A98C(peep);
 		peep->sub_state = 2;
 	}
 	
@@ -3681,7 +3682,7 @@ static void peep_update_answering(rct_peep* peep){
 			peep->sub_state = 2;
 			peep_window_state_update(peep);
 			peep->var_74 = 0;
-			RCT2_CALLPROC_X(0x0069A98C, 0, 0, 0, 0, (int)peep, 0, 0);
+			sub_69A98C(peep);
 			return;
 		}
 		sint16 x, y, xy_distance;
@@ -4282,7 +4283,7 @@ static void peep_update(rct_peep *peep)
 	peep->var_73 = carryCheck;
 	if (carryCheck <= 255) {
 		// loc_68FD3A
-		RCT2_CALLPROC_X(0x0068FD3A, 0, 0, 0, 0, (int)peep, 0, 0);
+		sub_68FD3A(peep);
 	} else {
 		// loc_68FD2F
 		switch (peep->state) {
@@ -5352,6 +5353,31 @@ static void peep_spend_money(rct_peep *peep, money32 amount)
 	finance_payment(-amount, RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint32));
 
 	sound_play_panned(SOUND_PURCHASE, 0x8001, peep->x, peep->y, peep->z);
+}
+
+static void sub_695444(rct_peep *peep, int rideIndex, int flags)
+{
+	RCT2_CALLPROC_X(0x00695444, 0, 0, 0, (rideIndex & 0xFF) | (flags << 8), (int)peep, 0, 0);
+}
+
+static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 price)
+{
+	return !(RCT2_CALLPROC_X(0x0069AF1E, shopItem | (rideIndex << 8), 0, price, 0, (int)peep, 0, 0) & 0x100);
+}
+
+static bool sub_69AEB7(rct_peep *peep, int rideIndex)
+{
+	return !(RCT2_CALLPROC_X(0x0069AEB7, rideIndex << 8, 0, 0, 0, (int)peep, 0, 0) & 0x100);
+}
+
+static void sub_69A98C(rct_peep *peep)
+{
+	RCT2_CALLPROC_X(0x0069A98C, 0, 0, 0, 0, (int)peep, 0, 0);
+}
+
+static void sub_68FD3A(rct_peep *peep)
+{
+	RCT2_CALLPROC_X(0x0068FD3A, 0, 0, 0, 0, (int)peep, 0, 0);
 }
 
 /**

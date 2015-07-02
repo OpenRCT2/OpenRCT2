@@ -1030,3 +1030,12 @@ void sub_6EC53F(rct_sprite *sprite)
 {
 	RCT2_CALLPROC_X(0x006EC53F, 0, 0, 0, 0, (int)sprite, 0, 0);
 }
+
+/**
+ *
+ *  rct2: 0x006738E1
+ */
+void sub_6738E1(int x, int y, int z)
+{
+	RCT2_CALLPROC_X(0x006738E1, x, 0, y, z, 0, 0, 0);
+}
