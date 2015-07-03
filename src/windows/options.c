@@ -675,13 +675,13 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			num_items = gConfigThemes.num_presets;
 
 			gDropdownItemsFormat[0] = 2777;
-			gDropdownItemsArgs[0] = (uint64)&gConfigThemes.presets[1].name;
+			gDropdownItemsArgs[0] = (uint32)&gConfigThemes.presets[1].name;
 			gDropdownItemsFormat[1] = 2777;
-			gDropdownItemsArgs[1] = (uint64)&gConfigThemes.presets[0].name;
+			gDropdownItemsArgs[1] = (uint32)&gConfigThemes.presets[0].name;
 
 			for (i = 2; i < num_items; i++) {
 				gDropdownItemsFormat[i] = 2777;
-				gDropdownItemsArgs[i] = (uint64)&gConfigThemes.presets[i].name;
+				gDropdownItemsArgs[i] = (uint32)&gConfigThemes.presets[i].name;
 			}
 
 			window_dropdown_show_text_custom_width(
@@ -749,7 +749,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		case WIDX_LANGUAGE_DROPDOWN:
 			for (i = 1; i < LANGUAGE_COUNT; i++) {
 				gDropdownItemsFormat[i - 1] = 2777;
-				gDropdownItemsArgs[i - 1] = (sint64)language_names[i];
+				gDropdownItemsArgs[i - 1] = (sint32)language_names[i];
 			}
 			window_options_show_dropdown(w, widget, LANGUAGE_COUNT - 1);
 			gDropdownItemsChecked = 1 << (gCurrentLanguage - 1);
@@ -827,7 +827,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			for (i = 0; i < num_items; i++) {
 				gDropdownItemsFormat[i] = 2777;
-				gDropdownItemsArgs[i] = (uint64)&gConfigTitleSequences.presets[i].name;
+				gDropdownItemsArgs[i] = (uint32)&gConfigTitleSequences.presets[i].name;
 			}
 
 			window_dropdown_show_text_custom_width(
