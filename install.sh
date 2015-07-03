@@ -85,7 +85,7 @@ if [[ ! -d $cachedir/SDL2-${SDL2_PV} ]]; then
     popd
 fi
 if [[ ! -f $cachedir/orctlibs.zip ]]; then 
-    wget https://download.openrct2.website/dev/lib/mingw --secure-protocol=tlsv1_2 --output-document $cachedir/orctlibs.zip; 
+    wget https://download.openrct2.website/dev/lib/mingw --secure-protocol=TLSv1 --output-document $cachedir/orctlibs.zip; 
 fi
 if [[ ! -d $cachedir/orctlibs ]]; then
     mkdir -p $cachedir/orctlibs
