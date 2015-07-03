@@ -11,10 +11,8 @@ distribution/windows/*.exe
 # Build artifacts
 .cache
 
-#libcurl
-lib/libcurl/
-#libjansson
-lib/jansson/
+#lib
+lib
 
 #################
 ## Eclipse

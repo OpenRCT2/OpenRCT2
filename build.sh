@@ -11,13 +11,13 @@ pushd build
 	make
 popd
 
+if [[ ! -h openrct2.dll ]]; then 
+    ln -s build/openrct2.dll openrct2.dll
+fi
+
 if [[ -z "$DISABLE_G2_BUILD" ]]; then
     echo Building: data/g2.dat
     ./build_g2.sh > /dev/null 2>&1
-fi
-
-if [[ ! -h openrct2.dll ]]; then 
-    ln -s build/openrct2.dll openrct2.dll
 fi
 
 if [[ -t 1 ]]; then
