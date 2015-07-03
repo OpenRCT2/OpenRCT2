@@ -480,7 +480,11 @@ void window_new_ride_focus(ride_list_item rideItem)
 		return;
 
 	rideType = GET_RIDE_ENTRY(rideItem.entry_index);
-	window_new_ride_set_page(w, rideType->category[0]);
+
+	if(!gConfigInterface.select_by_track_type)
+		window_new_ride_set_page(w, rideType->category[0]);
+	else
+		window_new_ride_set_page(w, gRideCategories[rideType->ride_type[0]]);
 
 	ride_list_item *listItem = (ride_list_item*)0x00F43523;
 	while (listItem->type != RIDE_TYPE_NULL) {
