@@ -139,7 +139,6 @@ void ride_prepare_breakdown(int rideIndex, int breakdownReason);
 static void ride_shop_connected(rct_ride* ride, int ride_idx);
 static void ride_spiral_slide_update(rct_ride *ride);
 static void ride_update(int rideIndex);
-static void sub_6B59C6(int rideIndex);
 static void ride_update_vehicle_colours(int rideIndex);
 
 rct_ride_type *ride_get_entry(rct_ride *ride)
@@ -4956,7 +4955,7 @@ bool ride_are_all_possible_entrances_and_exits_built(rct_ride *ride)
  *
  * rct2: 0x006B59C6
  */
-static void sub_6B59C6(int rideIndex)
+void sub_6B59C6(int rideIndex)
 {
 	rct_ride *ride = GET_RIDE(rideIndex);
 

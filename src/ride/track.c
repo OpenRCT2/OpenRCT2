@@ -3441,13 +3441,486 @@ const rct_preview_track *get_track_def_from_ride_index(int rideIndex, int trackT
 	return get_track_def_from_ride(GET_RIDE(rideIndex), trackType);
 }
 
+static money32 track_place(int rideIndex, int type, int originX, int originY, int originZ, int direction, int properties_1, int properties_2, int properties_3, int edx_flags, int flags)
+{
+	rct_ride *ride = GET_RIDE(rideIndex);
+	rct_ride_type *rideEntry = GET_RIDE_ENTRY(ride->subtype);
+	rct_map_element *mapElement;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+	RCT2_GLOBAL(0x009DEA5E, uint16) = originX + 16;
+	RCT2_GLOBAL(0x009DEA60, uint16) = originY + 16;
+	RCT2_GLOBAL(0x009DEA62, uint16) = originZ;
+	direction &= 3;
+	RCT2_GLOBAL(0x00F441D5, uint32) = properties_1;
+	RCT2_GLOBAL(0x00F441D9, uint32) = properties_2;
+	RCT2_GLOBAL(0x00F441DD, uint32) = properties_3;
+	RCT2_GLOBAL(0x00F441D4, uint8) = 0;
+
+	uint64 enabledTrackPieces = 0;
+	enabledTrackPieces |= rideEntry->enabledTrackPiecesB & RCT2_ADDRESS(0x01357644, uint32)[ride->type];
+	enabledTrackPieces <<= 32;
+	enabledTrackPieces |= rideEntry->enabledTrackPiecesA & RCT2_ADDRESS(0x01357444, uint32)[ride->type];
+	uint32 rideTypeFlags = RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32);
+	RCT2_GLOBAL(0x00F44068, uint32) = rideTypeFlags;
+
+	if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && type == 1) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NOT_ALLOWED_TO_MODIFY_STATION;
+		return MONEY32_UNDEFINED;
+	}
+	if (!sub_68B044()) {
+		return MONEY32_UNDEFINED;
+	}
+	if (!(flags & (1 << 3))) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+			return MONEY32_UNDEFINED;
+		}
+	}
+
+	uint16 *hmm = (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ?
+		(uint16*)0x0099443C :
+		(uint16*)0x0099423C;
+	if (hmm[type] & 0x100) {
+		if ((originZ & 0x0F) != 8) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = 954;
+			return MONEY32_UNDEFINED;
+		}
+	}
+	else {
+		if ((originZ & 0x0F) != 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = 954;
+			return MONEY32_UNDEFINED;
+		}
+	}
+
+	if (type == TRACK_ELEM_ON_RIDE_PHOTO) {
+		if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_ONLY_ONE_ON_RIDE_PHOTO_PER_RIDE;
+			return MONEY32_UNDEFINED;
+		}
+	}
+	else if (type == TRACK_ELEM_CABLE_LIFT_HILL) {
+		if (ride->lifecycle_flags & RIDE_LIFECYCLE_16) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_ONLY_ONE_CABLE_LIFT_HILL_PER_RIDE;
+			return MONEY32_UNDEFINED;
+		}
+	}
+
+	if ((edx_flags & (1 << 0)) && !(enabledTrackPieces & TRACK_LIFT_HILL_STEEP)) {
+		if (RCT2_ADDRESS(0x0099423C, uint16)[type] & 0x400) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_STEEP_FOR_LIFT_HILL;
+			return MONEY32_UNDEFINED;
+		}
+	}
+
+	if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE){
+		RCT2_GLOBAL(0x00F44054, uint8*) = &RCT2_ADDRESS(0x0099AA94, uint8)[type * 16];
+	}
+	else{
+		RCT2_GLOBAL(0x00F44054, uint8*) = &RCT2_ADDRESS(0x00999A94, uint8)[type * 16];
+	}
+
+	money32 cost = 0;
+	const rct_preview_track *trackBlock = get_track_def_from_ride(ride, type);
+	for (; trackBlock->index != 0xFF; trackBlock++, RCT2_GLOBAL(0x00F44054, uint8*)++) {
+		int x, y, z, offsetX, offsetY;
+		int bl = trackBlock->var_08;
+		int bh;
+		switch (direction) {
+		case 0:
+			offsetX = trackBlock->x;
+			offsetY = trackBlock->y;
+			break;
+		case 1:
+			offsetX = trackBlock->y;
+			offsetY = -trackBlock->x;
+			bl = rol8(bl, 1);
+			bh = bl;
+			bh = ror8(bh, 4);
+			bl &= 0xEE;
+			bh &= 0x11;
+			bl |= bh;
+			break;
+		case 2:
+			offsetX = -trackBlock->x;
+			offsetY = -trackBlock->y;
+			bl = rol8(bl, 2);
+			bh = bl;
+			bh = ror8(bh, 4);
+			bl &= 0xCC;
+			bh &= 0x33;
+			bl |= bh;
+			break;
+		case 3:
+			offsetX = -trackBlock->y;
+			offsetY = trackBlock->x;
+			bl = rol8(bl, 3);
+			bh |= bl;
+			bh = ror8(bh, 4);
+			bl &= 0x88;
+			bh &= 0x77;
+			bl |= bh;
+			break;
+		}
+		x = originX + offsetX;
+		y = originY + offsetY;
+		z = originZ + trackBlock->z;
+
+		if (z < 16) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_LOW;
+			return MONEY32_UNDEFINED;
+		}
+
+		int baseZ = (originZ + trackBlock->z) / 8;
+
+		int clearanceZ = trackBlock->var_07;
+		if (trackBlock->var_09 & (1 << 2) && RCT2_GLOBAL(0x0097D219 + (ride->type * 8), uint8) > 24){
+			clearanceZ += 24;
+		}
+		else{
+			clearanceZ += RCT2_GLOBAL(0x0097D219 + (ride->type * 8), uint8);
+		}
+
+		clearanceZ = (clearanceZ / 8) + baseZ;
+
+		if (clearanceZ >= 255) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH;
+			return MONEY32_UNDEFINED;
+		}
+
+		_currentTrackEndX = x;
+		_currentTrackEndY = y;
+
+		// Until 0x006C5A5F is implemented use this hacky struct.
+		struct{
+			money32 cost; //0
+			uint8 pad[0x10];//4
+			uint8 flags;//14
+		} clearance_struct;
+		clearance_struct.cost = cost;
+		clearance_struct.flags = flags;
+
+		RCT2_GLOBAL(0x00F44060, void*) = &clearance_struct;
+
+		if (!map_can_construct_with_clear_at(x, y, baseZ, clearanceZ, (void*)0x006C5A5F, bl)) {
+			return MONEY32_UNDEFINED;
+		}
+		// Again when 0x006C5A5F implemented remove this.
+		cost = clearance_struct.cost;
+
+		//6c53dc
+		// push baseZ and clearanceZ
+		int cur_z = baseZ * 8;
+
+		if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & (1 << 3))) {
+			footpath_remove_litter(x, y, z);
+			// push bl bh??
+			if (rideTypeFlags & RIDE_TYPE_FLAG_18) {
+				RCT2_CALLPROC_X(0x006E588E, x, (clearanceZ - baseZ) * 8, y, cur_z, 0, 0, 0);
+			}
+			else {
+				uint8 _bl = *RCT2_GLOBAL(0x00F44054, uint8*);
+				_bl ^= 0x0F;
+
+				for (int dl = bitscanforward(_bl); dl != -1; dl = bitscanforward(_bl)){
+					_bl &= ~(1 << dl);
+					map_remove_intersecting_walls(x, y, baseZ, clearanceZ, direction & 3);
+				}
+			}
+		}
+
+		if (!map_is_location_owned(x, y, z)) {
+			return MONEY32_UNDEFINED;
+		}
+
+		bh = RCT2_GLOBAL(0x00F1AD60, uint8) & 3;
+		if (RCT2_GLOBAL(0x00F441D4, uint8) != 0 && (RCT2_GLOBAL(0x00F441D4, uint8) & bh) == 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND;
+			return MONEY32_UNDEFINED;
+		}
+
+		RCT2_GLOBAL(0x00F441D4, uint8) = bh;
+		if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) {
+			if (RCT2_ADDRESS(0x0099443C, uint16)[type] & 0x200) {
+				if (RCT2_GLOBAL(0x00F441D4, uint8) & 2) {
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
+					return MONEY32_UNDEFINED;
+				}
+			}
+		}
+		else {
+			if (RCT2_ADDRESS(0x0099423C, uint16)[type] & 0x200) {
+				if (RCT2_GLOBAL(0x00F441D4, uint8) & 2) {
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
+					return MONEY32_UNDEFINED;
+				}
+			}
+		}
+
+		if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) {
+			if (RCT2_ADDRESS(0x0099443C, uint16)[type] & 1) {
+				if (!(RCT2_GLOBAL(0x00F1AD60, uint8) & 4)) {
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_UNDERWATER;
+					return MONEY32_UNDEFINED;
+				}
+			}
+		}
+		else {
+			if (RCT2_ADDRESS(0x0099423C, uint16)[type] & 1) {
+				if (RCT2_GLOBAL(0x00F1AD60, uint8) & 4) {
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_UNDERWATER;
+					return MONEY32_UNDEFINED;
+				}
+			}
+		}
+
+		if (RCT2_GLOBAL(0x00F1AD60, uint8) & 4) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
+			return MONEY32_UNDEFINED;
+		}
+
+		if ((rideTypeFlags & RIDE_TYPE_FLAG_6) && !(RCT2_GLOBAL(0x009D8150, uint8) & 1)) {
+			mapElement = map_get_surface_element_at(x / 32, y / 32);
+
+			uint8 water_height = 2 * (mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK);
+			if (water_height == 0) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ON_WATER;
+				return MONEY32_UNDEFINED;
+			}
+
+			if (water_height != baseZ) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ON_WATER;
+				return MONEY32_UNDEFINED;
+			}
+			water_height -= 2;
+			if (water_height == mapElement->base_height) {
+				bh = mapElement->properties.surface.slope & 0x0F;
+				if (bh == 7 || bh == 11 || bh == 13 || bh == 14) {
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ON_WATER;
+					return MONEY32_UNDEFINED;
+				}
+			}
+		}
+
+		int entranceDirections;
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
+			entranceDirections = RCT2_ADDRESS(0x0099CA64, uint8)[type * 16];
+		}
+		else {
+			entranceDirections = RCT2_ADDRESS(0x0099BA64, uint8)[type * 16];
+		}
+		if ((entranceDirections & 0x10) && trackBlock->index == 0) {
+			if (RCT2_CALLPROC_X(0x006C4D89, x, rideIndex << 8, y, baseZ | (direction << 8), 0, 0, 0) & 0x100) {
+				return MONEY32_UNDEFINED;
+			}
+		}
+		//6c55be
+		if (entranceDirections & 0x20) {
+			entranceDirections &= 0x0F;
+			if (entranceDirections != 0) {
+				if (!(flags & GAME_COMMAND_FLAG_APPLY) && !(flags & 0x40)) {
+					uint8 _bl = entranceDirections;
+					for (int dl = bitscanforward(_bl); dl != -1; dl = bitscanforward(_bl)){
+						_bl &= ~(1 << dl);
+						int temp_x = x, temp_y = y;
+						int temp_direction = (direction + dl) & 3;
+						temp_x += RCT2_ADDRESS(0x00993CCC, sint16)[temp_direction * 2];
+						temp_y += RCT2_ADDRESS(0x00993CCE, sint16)[temp_direction * 2];
+						temp_direction ^= (1 << 1);
+						map_remove_intersecting_walls(temp_x, temp_y, baseZ, clearanceZ, temp_direction & 3);
+					}
+				}
+			}
+		}
+		//6c5648 12 push
+		mapElement = map_get_surface_element_at(x / 32, y / 32);
+		int ride_height = clearanceZ - mapElement->base_height;
+		if (ride_height >= 0) {
+			int maxHeight = rideEntry->max_height;
+			if (maxHeight == 0) {
+				maxHeight = RCT2_GLOBAL(0x0097D218 + (ride->type * 8), uint8);
+			}
+			ride_height /= 2;
+			if (ride_height > maxHeight && !(RCT2_GLOBAL(0x009D8150, uint8) & 1)) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH_FOR_SUPPORTS;
+				return MONEY32_UNDEFINED;
+			}
+		}
+
+		int support_height = baseZ - mapElement->base_height;
+		if (support_height < 0) {
+			support_height = 10;
+		}
+
+		cost += (support_height / 2) * RCT2_ADDRESS(0x0097DD7A, uint16)[ride->type * 2];
+		//6c56d3
+
+		if (!(flags & GAME_COMMAND_FLAG_APPLY))
+			continue;
+
+		sub_6B59C6(rideIndex);
+		switch (type){
+		case TRACK_ELEM_ON_RIDE_PHOTO:
+			ride->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
+			break;
+		case TRACK_ELEM_CABLE_LIFT_HILL:
+			if (trackBlock->index != 0)
+				break;
+			ride->lifecycle_flags |= RIDE_LIFECYCLE_16;
+			ride->var_1F8 = x;
+			ride->var_1FA = y;
+			ride->var_1FC = baseZ;
+			break;
+		case 0xD8:
+			ride->num_block_brakes++;
+			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
+			ride->mode = RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED;
+			if (ride->type == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER)
+				ride->mode = RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED;
+			break;
+		}
+
+		if (trackBlock->index == 0){
+			switch (type){
+			case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+			case TRACK_ELEM_60_DEG_UP_TO_FLAT:
+			case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
+			case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+				if (!(edx_flags & 1))
+					break;
+				//Fall Through
+			case TRACK_ELEM_CABLE_LIFT_HILL:
+				ride->num_block_brakes++;
+				break;
+			}
+		}
+
+		entranceDirections = 0;
+		if (ride->overall_view != 0xFFFF){
+			if (!(flags & (1 << 5))){
+				if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
+					entranceDirections = RCT2_ADDRESS(0x0099CA64, uint8)[type * 16];
+				}
+				else {
+					entranceDirections = RCT2_ADDRESS(0x0099BA64, uint8)[type * 16];
+				}
+			}
+		}
+		if (entranceDirections & (1 << 4) || ride->overall_view == 0xFFFF){
+			ride->overall_view = (x >> 5) | (y << 3);
+		}
+
+		mapElement = map_element_insert(x / 32, y / 32, baseZ, bl & 0xF);
+		mapElement->clearance_height = clearanceZ;
+
+		uint8 map_type = direction;
+		map_type |= MAP_ELEMENT_TYPE_TRACK;
+		if (edx_flags & 1){
+			map_type |= (1 << 7);
+		}
+		mapElement->type = map_type;
+
+		mapElement->properties.track.sequence = trackBlock->index;
+		mapElement->properties.track.ride_index = rideIndex;
+		mapElement->properties.track.type = type;
+		mapElement->properties.track.colour = 0;
+		if (flags & (1 << 6)){
+			mapElement->flags |= MAP_ELEMENT_FLAG_GHOST;
+		}
+
+		switch (type) {
+		case TRACK_ELEM_WATERFALL:
+			map_animation_create(MAP_ANIMATION_TYPE_TRACK_WATERFALL, x, y, mapElement->base_height);
+			break;
+		case TRACK_ELEM_RAPIDS:
+			map_animation_create(MAP_ANIMATION_TYPE_TRACK_RAPIDS, x, y, mapElement->base_height);
+			break;
+		case TRACK_ELEM_WHIRLPOOL:
+			map_animation_create(MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL, x, y, mapElement->base_height);
+			break;
+		case TRACK_ELEM_SPINNING_TUNNEL:
+			map_animation_create(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, x, y, mapElement->base_height);
+			break;
+		}
+		if (type == TRACK_ELEM_BRAKES) {
+			mapElement->properties.track.sequence = (properties_1 >> 1) << 4;
+		}
+		else {
+			mapElement->properties.track.colour = properties_3 << 4;
+		}
+
+		uint8 colour = properties_2;
+		if (edx_flags & (1 << 1)){
+			colour |= (1 << 2);
+		}
+		mapElement->properties.track.colour |= colour;
+
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
+			entranceDirections = RCT2_ADDRESS(0x0099CA64, uint8)[type * 16];
+		}
+		else {
+			entranceDirections = RCT2_ADDRESS(0x0099BA64, uint8)[type * 16];
+		}
+
+		if (entranceDirections & (1 << 4)){
+			if (trackBlock->index == 0){
+				RCT2_CALLPROC_X(0x006C4D89,
+					x,
+					(rideIndex << 8) | GAME_COMMAND_FLAG_APPLY,
+					y,
+					baseZ | (direction << 8),
+					0, 0, 0);
+			}
+			sub_6CB945(rideIndex);
+			ride_update_max_vehicles(rideIndex);
+		}
+
+		if (rideTypeFlags & RIDE_TYPE_FLAG_6){
+			rct_map_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+			surfaceElement->type |= (1 << 6);
+			mapElement = surfaceElement;
+		}
+
+		sub_6A6C66(x, y, mapElement, flags);
+		map_invalidate_tile_full(x, y);
+	}
+
+	money32 price = RCT2_ADDRESS(0x0097DD78, money16)[ride->type * 2];
+	price *= (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ?
+		RCT2_ADDRESS(0x0099DE34, money32)[type] :
+		RCT2_ADDRESS(0x0099DA34, money32)[type];
+
+	price >>= 16;
+	price = ((cost + price) / 2) * 10;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
+		return 0;
+	}
+	else {
+		return price;
+	}
+}
+ 
 /**
  *
  *  rct2: 0x006C511D
  */
 void game_command_place_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	RCT2_CALLFUNC_X(0x006C511D, eax, ebx, ecx, edx, esi, edi, ebp);
+	*ebx = track_place(
+		*edx & 0xFF,
+		(*edx >> 8) & 0xFF,
+		*eax & 0xFFFF,
+		*ecx & 0xFFFF,
+		*edi & 0xFFFF,
+		(*ebx >> 8) & 0xFF,
+		(*edi >> 16) & 0xFF,
+		(*edi >> 24) & 0x0F,
+		(*edi >> 28) & 0x0F,
+		(*edx >> 16),
+		*ebx & 0xFF
+		);
 }
 
 /**

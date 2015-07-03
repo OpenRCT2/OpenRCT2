@@ -319,7 +319,10 @@ typedef struct {
 	uint16 total_air_time;			// 0x1F4
 	uint8 pad_1F6;
 	uint8 num_circuits;				// 0x1F7
-	uint8 pad_1F8[6];
+	sint16 var_1F8;
+	sint16 var_1FA;
+	uint8 var_1FC;
+	uint8 pad_1FD;
 	uint16 cable_lift;				// 0x1FE
 	uint16 queue_length[4];			// 0x200
 	uint8 pad_208[0x58];
@@ -895,6 +898,7 @@ void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, in
 void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void ride_clear_for_construction(int rideIndex);
 void set_vehicle_type_image_max_sizes(rct_ride_type_vehicle* vehicle_type, int num_images);
+void sub_6B59C6(int rideIndex);
 
 void ride_select_next_section();
 void ride_select_previous_section();
