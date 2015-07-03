@@ -1,7 +1,7 @@
 $path = Split-Path $Script:MyInvocation.MyCommand.Path
 $zip = $path+'\orctlibs.zip'
 $libs = $path+'\lib'
-$libsTest = Test_path $libs
+$libsTest = Test-Path $libs
 if (!$libsTest) {
 	mkdir $libs
 	Invoke-WebRequest https://download.openrct2.website/dev/lib/vs -OutFile $path\orctlibs.zip
