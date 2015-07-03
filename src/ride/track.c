@@ -3831,16 +3831,16 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 
 		switch (type) {
 		case TRACK_ELEM_WATERFALL:
-			map_animation_create(MAP_ANIMATION_TYPE_TRACK_WATERFALL, x, y, z);
+			map_animation_create(MAP_ANIMATION_TYPE_TRACK_WATERFALL, x, y, mapElement->base_height);
 			break;
 		case TRACK_ELEM_RAPIDS:
-			map_animation_create(MAP_ANIMATION_TYPE_TRACK_RAPIDS, x, y, z);
+			map_animation_create(MAP_ANIMATION_TYPE_TRACK_RAPIDS, x, y, mapElement->base_height);
 			break;
 		case TRACK_ELEM_WHIRLPOOL:
-			map_animation_create(MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL, x, y, z);
+			map_animation_create(MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL, x, y, mapElement->base_height);
 			break;
 		case TRACK_ELEM_SPINNING_TUNNEL:
-			map_animation_create(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, x, y, z);
+			map_animation_create(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, x, y, mapElement->base_height);
 			break;
 		}
 		if (type == TRACK_ELEM_BRAKES) {
