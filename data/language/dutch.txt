@@ -3782,3 +3782,4 @@ STR_5449    :Spelsnelheid verlagen
 STR_5450    :Spelsnelheid verhogen
 STR_5451    :Cheatsvenster openen
 STR_5452    :Zichtbaarheid werkbalken schakelen
+STR_5453    :Andere attractie selecteren
