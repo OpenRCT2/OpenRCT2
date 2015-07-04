@@ -929,11 +929,11 @@ void ride_all_has_any_track_elements(bool *rideIndexArray);
 
 void sub_6C9800();
 
-bool track_get_next(rct_xy_element *input, rct_xy_element *output, int *z, int *direction);
-bool track_get_previous(int x, int y, rct_map_element *mapElement, track_begin_end *outTrackBeginEnd);
+bool track_block_get_next(rct_xy_element *input, rct_xy_element *output, int *z, int *direction);
+bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 rideIndex, uint8 direction_start, rct_xy_element *output, int *z, int *direction);
 
-rct_map_element *sub_6C6096(int *x, int *y, int *z, int *direction, int *direction2);
-bool sub_6C63D6(int inX, int inY, int inZ, int inDirection, track_begin_end *outTrackBeginEnd);
+bool track_block_get_previous(int x, int y, rct_map_element *mapElement, track_begin_end *outTrackBeginEnd);
+bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8 direction, track_begin_end *outTrackBeginEnd);
 
 void sub_6C84CE();
 void sub_6C96C0();

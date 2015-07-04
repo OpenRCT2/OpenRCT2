@@ -48,6 +48,16 @@ typedef struct {
 	uint8 var_09;
 } rct_preview_track;
 
+/* size 0x0A */
+typedef struct{
+	sint8 rotation_begin;	// 0x00
+	sint8 rotation_end;		// 0x01
+	sint16 z_begin;			// 0x02
+	sint16 z_end;			// 0x04
+	sint16 x;				// 0x06
+	sint16 y;				// 0x08
+}rct_track_coordinates;
+
 /**
 * Size: 0x04
 */
@@ -493,6 +503,7 @@ void track_save_select_nearby_scenery(int rideIndex);
 
 const rct_preview_track *get_track_def_from_ride(rct_ride *ride, int trackType);
 const rct_preview_track *get_track_def_from_ride_index(int rideIndex, int trackType);
+const rct_track_coordinates *get_track_coord_from_ride(rct_ride *ride, int trackType);
 
 void game_command_place_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_remove_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);

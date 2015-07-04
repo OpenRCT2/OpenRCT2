@@ -1616,7 +1616,7 @@ static void window_ride_construction_construct(rct_window *w)
 			y += TileDirectionDelta[trackDirection].y;
 		}
 
-		if (sub_6C63D6(x, y, z, trackDirection, &trackBeginEnd)) {
+		if (track_block_get_previous_from_zero(x, y, z, _currentRideIndex, trackDirection, &trackBeginEnd)) {
 			_currentTrackBeginX = trackBeginEnd.begin_x;
 			_currentTrackBeginY = trackBeginEnd.begin_y;
 			_currentTrackBeginZ = trackBeginEnd.begin_z;
@@ -1640,14 +1640,13 @@ static void window_ride_construction_construct(rct_window *w)
 			y -= TileDirectionDelta[trackDirection].y;
 		}
 
-		int dir2;
-		rct_map_element *mapElement = sub_6C6096(&x, &y, &z, &trackDirection, &dir2);
-		if (mapElement != NULL) {
-			_currentTrackBeginX = x;
-			_currentTrackBeginY = y;
+		rct_xy_element next_track;
+		if (track_block_get_next_from_zero(x, y, z, _currentRideIndex, trackDirection, &next_track, &z, &trackDirection)) {
+			_currentTrackBeginX = next_track.x;
+			_currentTrackBeginY = next_track.y;
 			_currentTrackBeginZ = z;
-			_currentTrackPieceDirection = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
-			_currentTrackPieceType = mapElement->properties.track.type;
+			_currentTrackPieceDirection = next_track.element->type & MAP_ELEMENT_DIRECTION_MASK;
+			_currentTrackPieceType = next_track.element->properties.track.type;
 			_currentTrackSelectionFlags = 0;
 			_rideConstructionArrowPulseTime = 0;
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
@@ -1706,14 +1705,15 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 	inputElement.x = x;
 	inputElement.y = y;
 	inputElement.element = mapElement;
-	if (track_get_previous(x, y, mapElement, &trackBeginEnd)) {
+	if (track_block_get_previous(x, y, mapElement, &trackBeginEnd)) {
 		x = trackBeginEnd.begin_x;
 		y = trackBeginEnd.begin_y;
 		z = trackBeginEnd.begin_z;
 		direction = trackBeginEnd.begin_direction;
 		type = trackBeginEnd.begin_element->properties.track.type;
 		gotoStartPlacementMode = false;
-	} else if (track_get_next(&inputElement, &outputElement, &z, &direction)) {
+	}
+	else if (track_block_get_next(&inputElement, &outputElement, &z, &direction)) {
 		x = outputElement.x;
 		y = outputElement.y;
 		direction = outputElement.element->type & MAP_ELEMENT_DIRECTION_MASK;
