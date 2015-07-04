@@ -737,7 +737,7 @@ void platform_refresh_video()
 
 	if (gConfigGeneral.hardware_display) {
 		if (gRenderer == NULL)
-			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
+			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 		if (gBufferTexture != NULL)
 			SDL_DestroyTexture(gBufferTexture);

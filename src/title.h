@@ -45,5 +45,6 @@ void title_update();
 void title_skip_from_beginning();
 void title_script_get_line(FILE *file, char *parts);
 bool title_refresh_sequence();
+void DrawOpenRCT2(int x, int y);
 
 #endif

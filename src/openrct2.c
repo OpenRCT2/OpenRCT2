@@ -24,6 +24,7 @@
 #include "cmdline.h"
 #include "config.h"
 #include "editor.h"
+#include "interface/window.h"
 #include "localisation/localisation.h"
 #include "network/http.h"
 #include "openrct2.h"
@@ -236,24 +237,80 @@ void openrct2_dispose()
 static void openrct2_loop()
 {
 	uint32 currentTick, ticksElapsed, lastTick = 0;
+	static uint32 uncapTick;
+	static int fps = 0;
+	static uint32 secondTick = 0;
+	static int uncappedinitialized = 0;
+	static struct { sint16 x, y, z; } spritelocations1[MAX_SPRITES], spritelocations2[MAX_SPRITES];
 
 	log_verbose("begin openrct2 loop");
 
 	_finished = 0;
 	do {
-		currentTick = SDL_GetTicks();
-		ticksElapsed = currentTick - lastTick;
-		if (ticksElapsed < 25) {
-			if (ticksElapsed < 15)
-				SDL_Delay(15 - ticksElapsed);
-			continue;
+		if (gConfigGeneral.uncap_fps) {
+			currentTick = SDL_GetTicks();
+			if (!uncappedinitialized) {
+				uncapTick = SDL_GetTicks();
+				for (uint16 i = 0; i < MAX_SPRITES; i++) {
+					spritelocations1[i].x = spritelocations2[i].x = g_sprite_list[i].unknown.x;
+					spritelocations1[i].y = spritelocations2[i].y = g_sprite_list[i].unknown.y;
+					spritelocations1[i].z = spritelocations2[i].z = g_sprite_list[i].unknown.z;
+				}
+				uncappedinitialized = 1;
+			}
+			while (uncapTick <= currentTick && currentTick - uncapTick > 25) {
+				for (uint16 i = 0; i < MAX_SPRITES; i++) {
+					spritelocations1[i].x = g_sprite_list[i].unknown.x;
+					spritelocations1[i].y = g_sprite_list[i].unknown.y;
+					spritelocations1[i].z = g_sprite_list[i].unknown.z;
+				}
+				rct2_update();
+				for (uint16 i = 0; i < MAX_SPRITES; i++) {
+					spritelocations2[i].x = g_sprite_list[i].unknown.x;
+					spritelocations2[i].y = g_sprite_list[i].unknown.y;
+					spritelocations2[i].z = g_sprite_list[i].unknown.z;
+				}
+				uncapTick += 25;
+			}
+			float nudge = 1 - ((float)(currentTick - uncapTick) / 25);
+			for (uint16 i = 0; i < MAX_SPRITES; i++) {
+				if (!(g_sprite_list[i].unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_VEHICLE || g_sprite_list[i].unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_PEEP || g_sprite_list[i].unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_UNKNOWN)) {
+					continue;
+				}
+				sprite_move(spritelocations2[i].x + (sint16)((spritelocations1[i].x - spritelocations2[i].x) * nudge), spritelocations2[i].y + (sint16)((spritelocations1[i].y - spritelocations2[i].y) * nudge), spritelocations2[i].z + (sint16)((spritelocations1[i].z - spritelocations2[i].z) * nudge), &g_sprite_list[i]);
+				invalidate_sprite(&g_sprite_list[i]);
+			}
+			platform_process_messages();
+			rct2_draw();
+			platform_draw();
+			fps++;
+			if (SDL_GetTicks() - secondTick >= 1000) {
+				fps = 0;
+				secondTick = SDL_GetTicks();
+			}
+			for (uint16 i = 0; i < MAX_SPRITES; i++) {
+				if (!(g_sprite_list[i].unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_VEHICLE || g_sprite_list[i].unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_PEEP || g_sprite_list[i].unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_UNKNOWN)) {
+					continue;
+				}
+				sprite_move(spritelocations2[i].x, spritelocations2[i].y, spritelocations2[i].z, &g_sprite_list[i]);
+			}
+		} else {
+			uncappedinitialized = 0;
+			currentTick = SDL_GetTicks();
+			ticksElapsed = currentTick - lastTick;
+			if (ticksElapsed < 25) {
+				if (ticksElapsed < 15)
+					SDL_Delay(15 - ticksElapsed);
+				continue;
+			}
+
+			lastTick = currentTick;
+
+			platform_process_messages();
+			rct2_update();
+			rct2_draw();
+			platform_draw();
 		}
-
-		lastTick = currentTick;
-
-		platform_process_messages();
-		rct2_update();
-		platform_draw();
 	} while (!_finished);
 }
 

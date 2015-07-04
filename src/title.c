@@ -420,7 +420,7 @@ static void title_update_showcase()
 	} while (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad == -1);
 }
 
-static void DrawOpenRCT2(int x, int y)
+void DrawOpenRCT2(int x, int y)
 {
 	char buffer[256];
 	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
@@ -470,16 +470,11 @@ void title_update()
 
 	window_map_tooltip_update_visibility();
 	window_dispatch_update_all();
-	window_update_all();
-	DrawOpenRCT2(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 20);
 
 	RCT2_GLOBAL(0x01388698, uint16)++;
 
 	// Input
 	game_handle_input();
-
-	update_palette_effects();
-	update_rain_animation();
 
 	if (RCT2_GLOBAL(0x009AAC73, uint8) != 255) {
 		RCT2_GLOBAL(0x009AAC73, uint8)++;

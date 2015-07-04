@@ -214,6 +214,29 @@ void rct2_update()
 		rct2_update_2();
 }
 
+void rct2_draw()
+{
+	// Handles picked-up peep and rain redraw
+	redraw_peep_and_rain();
+
+	gfx_draw_all_dirty_blocks();
+
+	console_draw(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo));
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0) {
+		//intro
+	} else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
+		//title
+		DrawOpenRCT2(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 20);
+	} else {
+		//game
+	}
+
+	window_update_all();
+	update_rain_animation();
+	update_palette_effects();
+}
+
 int rct2_open_file(const char *path)
 {
 	char *extension = strrchr(path, '.');
@@ -350,9 +373,10 @@ void rct2_update_2()
 	else
 		game_update();
 
+	stop_completed_sounds(); // removes other sounds that are no longer playing in directsound
+
 	twitch_update();
 	console_update();
-	console_draw(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo));
 }
 
 void rct2_endupdate()

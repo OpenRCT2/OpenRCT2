@@ -219,9 +219,6 @@ void game_update()
 {
 	int i, numUpdates;
 
-	// Handles picked-up peep and rain redraw
-	redraw_peep_and_rain();
-
 	// 0x006E3AEC // screen_game_process_mouse_input();
 	screenshot_check();
 	game_handle_keyboard_input();
@@ -288,18 +285,12 @@ void game_update()
 	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) &= ~(1 << 2);
 
 	window_map_tooltip_update_visibility();
-	window_update_all();
 
 	RCT2_GLOBAL(0x01388698, uint16)++;
 
 	// Input
 	RCT2_GLOBAL(0x0141F568, uint8) = RCT2_GLOBAL(0x0013CA740, uint8);
 	game_handle_input();
-
-	update_palette_effects();
-	update_rain_animation();
-
-	stop_completed_sounds(); // removes other sounds that are no longer playing, this is normally called somewhere in rct2_init
 
 	if (RCT2_GLOBAL(0x009AAC73, uint8) != 255) {
 		RCT2_GLOBAL(0x009AAC73, uint8)++;
