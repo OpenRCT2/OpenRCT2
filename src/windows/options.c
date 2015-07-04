@@ -78,6 +78,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_TILE_SMOOTHING_CHECKBOX,
 	WIDX_GRIDLINES_CHECKBOX,
 	WIDX_HARDWARE_DISPLAY_CHECKBOX,
+	WIDX_UNCAP_FPS_CHECKBOX,
 	WIDX_MINIMIZE_FOCUS_LOSS,
 	WIDX_CONSTRUCTION_MARKER,
 	WIDX_CONSTRUCTION_MARKER_DROPDOWN,
@@ -163,6 +164,7 @@ static rct_widget window_options_display_widgets[] = {
 	{ WWT_CHECKBOX,			1,	10,		290,	84,		95,		STR_TILE_SMOOTHING, STR_TILE_SMOOTHING_TIP },	// landscape smoothing
 	{ WWT_CHECKBOX,			1,	10,		290,	99,		110,	STR_GRIDLINES,		STR_GRIDLINES_TIP },		// gridlines
 	{ WWT_CHECKBOX,			1,	10,		290,	114,	125,	5154,				STR_NONE },					// hardware display
+	{ WWT_CHECKBOX,			1,	155,	290,	114,	125,	5454,				STR_NONE },					// uncap fps
 	{ WWT_CHECKBOX,			1,	10,		290,	129,	140,	5440,				STR_NONE },					// minimize fullscreen focus loss
 	{ WWT_DROPDOWN,			1,	155,	299,	143,	154,	STR_NONE,			STR_NONE },					// construction marker
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	144,	153,	876,				STR_NONE },
@@ -327,6 +329,7 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_TILE_SMOOTHING_CHECKBOX) |
 	(1 << WIDX_GRIDLINES_CHECKBOX) |
 	(1 << WIDX_HARDWARE_DISPLAY_CHECKBOX) |
+	(1 << WIDX_UNCAP_FPS_CHECKBOX) |
 	(1 << WIDX_MINIMIZE_FOCUS_LOSS) |
 	(1 << WIDX_CONSTRUCTION_MARKER) |
 	(1 << WIDX_CONSTRUCTION_MARKER_DROPDOWN) |
@@ -460,6 +463,11 @@ static void window_options_mouseup()
 		case WIDX_HARDWARE_DISPLAY_CHECKBOX:
 			gConfigGeneral.hardware_display ^= 1;
 			platform_refresh_video();
+			config_save_default();
+			window_invalidate(w);
+			break;
+		case WIDX_UNCAP_FPS_CHECKBOX:
+			gConfigGeneral.uncap_fps ^= 1;
 			config_save_default();
 			window_invalidate(w);
 			break;
@@ -1066,6 +1074,7 @@ static void window_options_invalidate()
 		widget_set_checkbox_value(w, WIDX_TILE_SMOOTHING_CHECKBOX, (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE) == 0);
 		widget_set_checkbox_value(w, WIDX_GRIDLINES_CHECKBOX, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES);
 		widget_set_checkbox_value(w, WIDX_HARDWARE_DISPLAY_CHECKBOX, gConfigGeneral.hardware_display);
+		widget_set_checkbox_value(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
 		widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
 
 		// construction marker: celsius/fahrenheit
@@ -1080,6 +1089,7 @@ static void window_options_invalidate()
 		window_options_display_widgets[WIDX_CONSTRUCTION_MARKER].type = WWT_DROPDOWN;
 		window_options_display_widgets[WIDX_CONSTRUCTION_MARKER_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_display_widgets[WIDX_HARDWARE_DISPLAY_CHECKBOX].type = WWT_CHECKBOX;
+		window_options_display_widgets[WIDX_UNCAP_FPS_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_display_widgets[WIDX_MINIMIZE_FOCUS_LOSS].type = WWT_CHECKBOX;
 		window_options_display_widgets[WIDX_THEMES].type = WWT_DROPDOWN;
 		window_options_display_widgets[WIDX_THEMES_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
