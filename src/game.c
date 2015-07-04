@@ -670,6 +670,7 @@ int game_load_sv6(const char *path)
 	reset_loaded_objects();
 	map_update_tile_pointers();
 	reset_0x69EBE4();
+	gOpenRCT2ResetFrameSmoothing = true;
 	return 1;
 }
 

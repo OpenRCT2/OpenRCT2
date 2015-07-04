@@ -42,6 +42,10 @@ bool gOpenRCT2Headless = false;
 
 bool gOpenRCT2ShowChangelog;
 
+// This needs to be set when a park is loaded. It could also be used to reset other important states, it should then be renamed
+// to something more general.
+bool gOpenRCT2ResetFrameSmoothing = false;
+
 /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to 0. */
 int _finished;
 
@@ -232,6 +236,21 @@ void openrct2_dispose()
 }
 
 /**
+ * Determines whether its worth tweening a sprite or not when frame smoothing is on.
+ */
+static bool sprite_should_tween(rct_sprite *sprite)
+{
+	if (sprite->unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_VEHICLE)
+		return true;
+	if (sprite->unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_PEEP)
+		return true;
+	if (sprite->unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_UNKNOWN)
+		return true;
+
+	return false;
+}
+
+/**
  * Run the main game loop until the finished flag is set at 40fps (25ms interval).
  */
 static void openrct2_loop()
@@ -250,6 +269,7 @@ static void openrct2_loop()
 		if (gConfigGeneral.uncap_fps) {
 			currentTick = SDL_GetTicks();
 			if (!uncappedinitialized) {
+				// Reset sprite locations
 				uncapTick = SDL_GetTicks();
 				for (uint16 i = 0; i < MAX_SPRITES; i++) {
 					spritelocations1[i].x = spritelocations2[i].x = g_sprite_list[i].unknown.x;
@@ -258,28 +278,51 @@ static void openrct2_loop()
 				}
 				uncappedinitialized = 1;
 			}
+
 			while (uncapTick <= currentTick && currentTick - uncapTick > 25) {
+				// Get the original position of each sprite
 				for (uint16 i = 0; i < MAX_SPRITES; i++) {
 					spritelocations1[i].x = g_sprite_list[i].unknown.x;
 					spritelocations1[i].y = g_sprite_list[i].unknown.y;
 					spritelocations1[i].z = g_sprite_list[i].unknown.z;
 				}
+				
+				// Update the game so the sprite positions update
 				rct2_update();
+				if (gOpenRCT2ResetFrameSmoothing) {
+					gOpenRCT2ResetFrameSmoothing = false;
+					continue;
+				}
+
+				// Get the next position of each sprite
 				for (uint16 i = 0; i < MAX_SPRITES; i++) {
 					spritelocations2[i].x = g_sprite_list[i].unknown.x;
 					spritelocations2[i].y = g_sprite_list[i].unknown.y;
 					spritelocations2[i].z = g_sprite_list[i].unknown.z;
 				}
+
 				uncapTick += 25;
 			}
+
+			// Tween the position of each sprite from the last position to the new position based on the time between the last
+			// tick and the next tick.
 			float nudge = 1 - ((float)(currentTick - uncapTick) / 25);
 			for (uint16 i = 0; i < MAX_SPRITES; i++) {
-				if (!(g_sprite_list[i].unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_VEHICLE || g_sprite_list[i].unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_PEEP || g_sprite_list[i].unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_UNKNOWN)) {
+				if (!sprite_should_tween(&g_sprite_list[i]))
 					continue;
-				}
-				sprite_move(spritelocations2[i].x + (sint16)((spritelocations1[i].x - spritelocations2[i].x) * nudge), spritelocations2[i].y + (sint16)((spritelocations1[i].y - spritelocations2[i].y) * nudge), spritelocations2[i].z + (sint16)((spritelocations1[i].z - spritelocations2[i].z) * nudge), &g_sprite_list[i]);
+
+				sprite_move(
+					spritelocations2[i].x + (sint16)((spritelocations1[i].x - spritelocations2[i].x) * nudge),
+					spritelocations2[i].y + (sint16)((spritelocations1[i].y - spritelocations2[i].y) * nudge),
+					spritelocations2[i].z + (sint16)((spritelocations1[i].z - spritelocations2[i].z) * nudge),
+					&g_sprite_list[i]
+				);
 				invalidate_sprite(&g_sprite_list[i]);
 			}
+
+			// Viewports need to be updated to reduce chopiness of those which follow sprites
+			window_update_all_viewports();
+
 			platform_process_messages();
 			rct2_draw();
 			platform_draw();
@@ -288,10 +331,12 @@ static void openrct2_loop()
 				fps = 0;
 				secondTick = SDL_GetTicks();
 			}
+
+			// Restore the real positions of the sprites so they aren't left at the mid-tween positions
 			for (uint16 i = 0; i < MAX_SPRITES; i++) {
-				if (!(g_sprite_list[i].unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_VEHICLE || g_sprite_list[i].unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_PEEP || g_sprite_list[i].unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_UNKNOWN)) {
+				if (!sprite_should_tween(&g_sprite_list[i]))
 					continue;
-				}
+
 				sprite_move(spritelocations2[i].x, spritelocations2[i].y, spritelocations2[i].z, &g_sprite_list[i]);
 			}
 		} else {
@@ -307,7 +352,10 @@ static void openrct2_loop()
 			lastTick = currentTick;
 
 			platform_process_messages();
+
 			rct2_update();
+			gOpenRCT2ResetFrameSmoothing = false;
+
 			rct2_draw();
 			platform_draw();
 		}

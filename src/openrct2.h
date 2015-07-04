@@ -35,6 +35,7 @@ extern char gOpenRCT2StartupActionPath[512];
 extern char gExePath[MAX_PATH];
 extern bool gOpenRCT2Headless;
 extern bool gOpenRCT2ShowChangelog;
+extern bool gOpenRCT2ResetFrameSmoothing;
 
 bool openrct2_initialise();
 void openrct2_launch();

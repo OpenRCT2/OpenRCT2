@@ -156,6 +156,13 @@ void window_dispatch_update_all()
 	RCT2_CALLPROC_EBPSAFE(0x006EE411);	// handle_text_input
 }
 
+void window_update_all_viewports()
+{
+	for (rct_window *w = g_window_list; w < RCT2_NEW_WINDOW; w++)
+		if (w->viewport != NULL)
+			viewport_update_position(w);
+}
+
 /**
  * 
  *  rct2: 0x006E77A1
@@ -169,10 +176,7 @@ void window_update_all()
 		return;
 
 	gfx_draw_all_dirty_blocks();
-
-	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
-		if (w->viewport != NULL)
-			viewport_update_position(w);
+	window_update_all_viewports();
 
 	// 1000 tick update
 	RCT2_GLOBAL(0x009DEB7C, sint16) += RCT2_GLOBAL(0x009DE588, sint16);

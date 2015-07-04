@@ -30,6 +30,7 @@
 #include "management/research.h"
 #include "management/news_item.h"
 #include "object.h"
+#include "openrct2.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
 #include "ride/ride.h"
@@ -178,6 +179,7 @@ int scenario_load(const char *path)
 			reset_loaded_objects();
 			map_update_tile_pointers();
 			reset_0x69EBE4();
+			gOpenRCT2ResetFrameSmoothing = true;
 			return 1;
 		}
 
