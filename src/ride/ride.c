@@ -43,6 +43,7 @@
 #include "ride.h"
 #include "ride_data.h"
 #include "track.h"
+#include "track_data.h"
 #include "station.h"
 
 #pragma region Ride classification table
@@ -327,49 +328,273 @@ int sub_6CAF80(int rideIndex, rct_xy_element *output)
 }
 
 /**
+*
+* rct2: 0x006C6096
+* Gets the next track block coordinates from the
+* coordinates of the first of element of a track block.
+* Use track_block_get_next if you are unsure if you are
+* on the first element of a track block
+*/
+bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 rideIndex, uint8 direction_start, rct_xy_element *output, int *z, int *direction)
+{
+	rct_ride* ride = GET_RIDE(rideIndex);
+	RCT2_GLOBAL(0x00F441D3, uint8) = direction_start;
+
+	if (!(direction_start & (1 << 2))){
+		x += RCT2_ADDRESS(0x00993CCC, sint16)[RCT2_GLOBAL(0x00F441D3, uint8) * 2];
+		y += RCT2_ADDRESS(0x00993CCE, sint16)[RCT2_GLOBAL(0x00F441D3, uint8) * 2];
+	}
+
+	rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+	if (mapElement == NULL){
+		output->element = NULL;
+		output->x = (sint16)0x8000;
+		return 0;
+	}
+
+	do{
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
+
+		if (mapElement->properties.track.ride_index != rideIndex)
+			continue;
+
+		if ((mapElement->properties.track.sequence & 0xF) != 0)
+			continue;
+
+		const rct_preview_track* nextTrackBlock = get_track_def_from_ride(ride, mapElement->properties.track.type);
+		const rct_track_coordinates* nextTrackCoordinate = get_track_coord_from_ride(ride, mapElement->properties.track.type);
+
+		uint8 nextRotation =
+			((nextTrackCoordinate->rotation_begin +
+			(mapElement->type & MAP_ELEMENT_DIRECTION_MASK)) & MAP_ELEMENT_DIRECTION_MASK) |
+			(nextTrackCoordinate->rotation_begin & (1 << 2));
+
+		if (nextRotation != RCT2_GLOBAL(0x00F441D3, uint8))
+			continue;
+
+		sint16 nextZ = nextTrackCoordinate->z_begin - nextTrackBlock->z + mapElement->base_height * 8;
+		if (nextZ != z_start)
+			continue;
+
+		if (z != NULL) *z = mapElement->base_height * 8;
+		if (direction != NULL) *direction = nextRotation;
+		output->x = x;
+		output->y = y;
+		output->element = mapElement;
+		return 1;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	if (direction != NULL) *direction = RCT2_GLOBAL(0x00F441D3, uint8);
+	if (z != NULL) *z = z_start;
+	output->x = x;
+	output->y = y;
+	output->element = --mapElement;
+	return 0;
+}
+
+/**
  * 
  * rct2: 0x006C60C2
  */
-bool track_get_next(rct_xy_element *input, rct_xy_element *output, int *z, int *direction)
+bool track_block_get_next(rct_xy_element *input, rct_xy_element *output, int *z, int *direction)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp, result;
+	uint8 rideIndex = input->element->properties.track.ride_index;
+	RCT2_GLOBAL(0x00F441D2, uint8) = rideIndex;
+	rct_ride* ride = GET_RIDE(rideIndex);
 
-	eax = input->x;
-	ecx = input->y;
-	esi = (int)input->element;
-	result = RCT2_CALLFUNC_X(0x006C60C2, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	output->x = *((uint16*)&eax);
-	output->y = *((uint16*)&ecx);
-	output->element = (rct_map_element*)esi;
-	if (z != NULL) *z = (edx & 0xFFFF);
-	if (direction != NULL) *direction = (ebx & 0xFF);
+	const rct_preview_track* trackBlock = get_track_def_from_ride(ride, input->element->properties.track.type);
+	uint8 sequence = input->element->properties.track.sequence & 0xF;
+	trackBlock += sequence;
 
-	return (result & 0x100) == 0;
+	const rct_track_coordinates* trackCoordinate = get_track_coord_from_ride(ride, input->element->properties.track.type);
+
+	int x = input->x;
+	int y = input->y;
+	int OriginZ = input->element->base_height * 8;
+
+	uint8 rotation = input->element->type & MAP_ELEMENT_DIRECTION_MASK;
+	switch (rotation){
+	case 0:
+		x += trackCoordinate->x;
+		x -= trackBlock->x;
+		y += trackCoordinate->y;
+		y -= trackBlock->y;
+		break;
+	case 1:
+		x += trackCoordinate->y;
+		x -= trackBlock->y;
+		y -= trackCoordinate->x;
+		y += trackBlock->x;
+		break;
+	case 2:
+		x -= trackCoordinate->x;
+		x += trackBlock->x;
+		y -= trackCoordinate->y;
+		y += trackBlock->y;
+		break;
+	case 3:
+		x -= trackCoordinate->y;
+		x += trackBlock->y;
+		y += trackCoordinate->x;
+		y -= trackBlock->x;
+		break;
+	}
+
+	OriginZ -= trackBlock->z;
+	OriginZ += trackCoordinate->z_end;
+
+	uint8 directionStart = ((trackCoordinate->rotation_end + rotation) & MAP_ELEMENT_DIRECTION_MASK) |
+		(trackCoordinate->rotation_end & (1 << 2));
+
+	return track_block_get_next_from_zero(x, y, OriginZ, rideIndex, directionStart, output, z, direction);
+}
+
+/* rct2: 0x006C63D6 
+ * Returns the begin position / direction and end position / direction of the track piece that procedes the given location.
+ * Gets the previous track block coordinates from the 
+ * coordinates of the first of element of a track block.
+ * Use track_block_get_previous if you are unsure if you are
+ * on the first element of a track block
+ */
+bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8 direction, track_begin_end *outTrackBeginEnd){
+	rct_ride* ride = GET_RIDE(rideIndex);
+
+	RCT2_GLOBAL(0x00F441D3, uint8) = direction;
+	direction ^= (1 << 1);
+
+	if (!(direction & (1 << 2))){
+		x += RCT2_ADDRESS(0x00993CCC, sint16)[direction * 2];
+		y += RCT2_ADDRESS(0x00993CCE, sint16)[direction * 2];
+	}
+
+	rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+	if (mapElement == NULL){
+		outTrackBeginEnd->end_x = x;
+		outTrackBeginEnd->end_y = y;
+		outTrackBeginEnd->begin_element = NULL;
+		outTrackBeginEnd->begin_direction = RCT2_GLOBAL(0x00F441D3, uint8) ^ (1 << 1);
+		return 0;
+	}
+
+	do{
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
+
+		if (mapElement->properties.track.ride_index != rideIndex)
+			continue;
+
+		const rct_preview_track* nextTrackBlock = get_track_def_from_ride(ride, mapElement->properties.track.type);
+		const rct_track_coordinates* nextTrackCoordinate = get_track_coord_from_ride(ride, mapElement->properties.track.type);
+
+		nextTrackBlock += mapElement->properties.track.sequence & 0xF;
+		if ((nextTrackBlock + 1)->index != 255)
+			continue;
+
+		uint8 nextRotation =
+			((nextTrackCoordinate->rotation_end +
+			(mapElement->type & MAP_ELEMENT_DIRECTION_MASK)) & MAP_ELEMENT_DIRECTION_MASK) |
+			(nextTrackCoordinate->rotation_end & (1 << 2));
+
+		if (nextRotation != RCT2_GLOBAL(0x00F441D3, uint8))
+			continue;
+
+		sint16 nextZ = nextTrackCoordinate->z_end - nextTrackBlock->z + mapElement->base_height * 8;
+		if (nextZ != z)
+			continue;
+
+		nextRotation =
+			((nextTrackCoordinate->rotation_begin +
+			(mapElement->type & MAP_ELEMENT_DIRECTION_MASK)) & MAP_ELEMENT_DIRECTION_MASK) |
+			(nextTrackCoordinate->rotation_begin & (1 << 2));
+		outTrackBeginEnd->begin_element = mapElement;
+		outTrackBeginEnd->begin_x = x;
+		outTrackBeginEnd->begin_y = y;
+		outTrackBeginEnd->end_x = x;
+		outTrackBeginEnd->end_y = y;
+		switch (nextRotation & 3){
+		case 0:
+			outTrackBeginEnd->begin_x -= nextTrackCoordinate->x;
+			outTrackBeginEnd->begin_y -= nextTrackCoordinate->y;
+			break;
+		case 1:
+			outTrackBeginEnd->begin_x -= nextTrackCoordinate->y;
+			outTrackBeginEnd->begin_y += nextTrackCoordinate->x;
+			break;
+		case 2:
+			outTrackBeginEnd->begin_x += nextTrackCoordinate->x;
+			outTrackBeginEnd->begin_y += nextTrackCoordinate->y;
+			break;
+		case 3:
+			outTrackBeginEnd->begin_x += nextTrackCoordinate->y;
+			outTrackBeginEnd->begin_y -= nextTrackCoordinate->x;
+			break;
+		}
+
+		outTrackBeginEnd->begin_z = mapElement->base_height * 8;
+		outTrackBeginEnd->begin_z +=
+			nextTrackBlock->z -
+			get_track_def_from_ride(ride, mapElement->properties.track.type)->z;
+
+		outTrackBeginEnd->begin_direction = nextRotation;
+		outTrackBeginEnd->end_direction = RCT2_GLOBAL(0x00F441D3, uint8) ^ (1 << 1);
+		return 1;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	outTrackBeginEnd->end_x = x;
+	outTrackBeginEnd->end_y = y;
+	outTrackBeginEnd->begin_z = z;
+	outTrackBeginEnd->begin_element = NULL;
+	outTrackBeginEnd->end_direction = RCT2_GLOBAL(0x00F441D3, uint8) ^ (1 << 1);
+	return 0;
 }
 
 /**
  * 
  * rct2: 0x006C6402
  */
-bool track_get_previous(int x, int y, rct_map_element *mapElement, track_begin_end *outTrackBeginEnd)
+bool track_block_get_previous(int x, int y, rct_map_element *mapElement, track_begin_end *outTrackBeginEnd)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
+	uint8 rideIndex = mapElement->properties.track.ride_index;
+	RCT2_GLOBAL(0x00F441D2, uint8) = rideIndex;
+	rct_ride* ride = GET_RIDE(rideIndex);
 
-	eax = x;
-	ecx = y;
-	esi = (int)mapElement;
-	int result = RCT2_CALLFUNC_X(0x006C6402, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	if (outTrackBeginEnd != NULL) {
-		outTrackBeginEnd->begin_x = ((eax >> 16) & 0xFFFF);
-		outTrackBeginEnd->begin_y = ((ecx >> 16) & 0xFFFF);
-		outTrackBeginEnd->begin_z = (edx & 0xFFFF);
-		outTrackBeginEnd->begin_direction = ((ebx >> 8) & 0xFF);
-		outTrackBeginEnd->begin_element = (rct_map_element*)esi;
-		outTrackBeginEnd->end_x = (eax & 0xFFFF);
-		outTrackBeginEnd->end_y = (ecx & 0xFFFF);
-		outTrackBeginEnd->end_direction = (ebx & 0xFF);
+	const rct_preview_track* trackBlock = get_track_def_from_ride(ride, mapElement->properties.track.type);
+	uint8 sequence = mapElement->properties.track.sequence & 0xF;
+	trackBlock += sequence;
+
+	const rct_track_coordinates* trackCoordinate = get_track_coord_from_ride(ride, mapElement->properties.track.type);
+
+	int z = mapElement->base_height * 8;
+
+	uint8 rotation = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+	switch (rotation){
+	case 0:
+		x -= trackBlock->x;
+		y -= trackBlock->y;
+		break;
+	case 1:
+		x -= trackBlock->y;
+		y += trackBlock->x;
+		break;
+	case 2:
+		x += trackBlock->x;
+		y += trackBlock->y;
+		break;
+	case 3:
+		x += trackBlock->y;
+		y -= trackBlock->x;
+		break;
 	}
-	return (result & 0x100) == 0;
+
+	z -= trackBlock->z;
+	z += trackCoordinate->z_begin;
+
+	rotation =
+		((trackCoordinate->rotation_begin + rotation) & MAP_ELEMENT_DIRECTION_MASK) |
+		(trackCoordinate->rotation_begin & (1 << 2));
+
+	return track_block_get_previous_from_zero(x, y, z, rideIndex, rotation, outTrackBeginEnd);
 }
 
 /**
@@ -401,7 +626,7 @@ int ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
 
 	loopTrackElement = NULL;
 	while (1) {
-		if (!track_get_next(&trackElement, &nextTrackElement, NULL, NULL)) {
+		if (!track_block_get_next(&trackElement, &nextTrackElement, NULL, NULL)) {
 			*output = trackElement;
 			return 1;
 		}
@@ -946,62 +1171,11 @@ int sub_6C683D(int* x, int* y, int* z, int direction, int type, uint16 extra_par
 
 /**
  * 
- * rct2: 0x006C6096
- */
-rct_map_element *sub_6C6096(int *x, int *y, int *z, int *direction, int *direction2)
-{
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = *x;
-	ecx = *y;
-	edx = *z;
-	ebx = *direction;
-	if (RCT2_CALLFUNC_X(0x006C6096, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp) & 0x100)
-		return NULL;
-
-	*x = (eax & 0xFFFF);
-	*y = (ecx & 0xFFFF);
-	*z = (edx & 0xFFFF);
-	*direction = (ebx & 0xFF);
-	if (direction2 != NULL) *direction2 = ((ebx >> 8) & 0xFF);
-
-	return (rct_map_element*)esi;
-}
-
-/**
- * Returns the begin position / direction and end position / direction of the track piece that procedes the given location.
- * rct2: 0x006C63D6
- */
-bool sub_6C63D6(int inX, int inY, int inZ, int inDirection, track_begin_end *outTrackBeginEnd)
-{
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = inX;
-	ecx = inY;
-	edx = inZ;
-	ebx = inDirection;
-	if (RCT2_CALLFUNC_X(0x006C63D6, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp) & 0x100)
-		return false;
-
-	if (outTrackBeginEnd != NULL) {
-		outTrackBeginEnd->begin_x = ((eax >> 16) & 0xFFFF);
-		outTrackBeginEnd->begin_y = ((ecx >> 16) & 0xFFFF);
-		outTrackBeginEnd->begin_z = (edx & 0xFFFF);
-		outTrackBeginEnd->begin_direction = ((ebx >> 8) & 0xFF);
-		outTrackBeginEnd->begin_element = (rct_map_element*)esi;
-		outTrackBeginEnd->end_x = (eax & 0xFFFF);
-		outTrackBeginEnd->end_y = (ecx & 0xFFFF);
-		outTrackBeginEnd->end_direction = (ebx & 0xFF);
-	}
-	return true;
-}
-
-/**
- * 
  * rct2: 0x006C96C0
  */
 void sub_6C96C0()
 {
 	rct_ride *ride;
-	rct_map_element *trackElement;
 	int rideIndex, x, y, z, direction;
 
 	if (_currentTrackSelectionFlags & 4) {
@@ -1038,13 +1212,14 @@ void sub_6C96C0()
 				x -= TileDirectionDelta[direction].x;
 				y -= TileDirectionDelta[direction].y;
 			}
-			trackElement = sub_6C6096(&x, &y, &z, &direction, NULL);
-			if (trackElement != NULL) {
+			rct_xy_element next_track;
+			
+			if (track_block_get_next_from_zero(x, y, z, rideIndex, direction, &next_track, &z, &direction)) {
 				game_do_command(
-					x,
+					next_track.x,
 					105 | ((direction & 3) << 8),
-					y,
-					trackElement->properties.track.type | ((trackElement->properties.track.sequence & 0x0F) << 8),
+					next_track.y,
+					next_track.element->properties.track.type | ((next_track.element->properties.track.sequence & 0x0F) << 8),
 					GAME_COMMAND_REMOVE_TRACK,
 					z,
 					0
@@ -1130,7 +1305,7 @@ void ride_select_next_section()
 		inputElement.x = x;
 		inputElement.y = y;
 		inputElement.element = mapElement;
-		if (track_get_next(&inputElement, &outputElement, &z, &direction)) {
+		if (track_block_get_next(&inputElement, &outputElement, &z, &direction)) {
 			x = outputElement.x;
 			y = outputElement.y;
 			mapElement = outputElement.element;
@@ -1185,7 +1360,7 @@ void ride_select_previous_section()
 			sub_6C84CE();
 			return;
 		}
-		if (track_get_previous(x, y, mapElement, &trackBeginEnd)) {
+		if (track_block_get_previous(x, y, mapElement, &trackBeginEnd)) {
 			_currentTrackBeginX = trackBeginEnd.begin_x;
 			_currentTrackBeginY = trackBeginEnd.begin_y;
 			_currentTrackBeginZ = trackBeginEnd.begin_z;
@@ -3569,7 +3744,7 @@ int ride_check_block_brakes(rct_xy_element *input, rct_xy_element *output)
 
 	loopTrackElement = NULL;
 	while (1) {
-		if (!track_get_next(&trackElement, &nextTrackElement, NULL, NULL)) {
+		if (!track_block_get_next(&trackElement, &nextTrackElement, NULL, NULL)) {
 			// Not sure why this is the case...
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION;
 			*output = trackElement;
@@ -3649,22 +3824,47 @@ int ride_check_track_suitability_b(rct_xy_element *input, rct_xy_element *output
  */
 int ride_check_station_length(rct_xy_element *input, rct_xy_element *output)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp, result;
+	rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w != 0 && 
+		_rideConstructionState != RIDE_CONSTRUCTION_STATE_0 &&
+		_currentRideIndex == input->element->properties.track.ride_index){
+		sub_6C9627();
+	}
 
-	// This function has a bug. If the station length is too short and it is
-	// the last station of a ride it will return a pointer to the map_element
-	// where the station piece should go. Instead it should pass the map_element
-	// of the last good station piece. This can cause null pointer dereferences
-	// and cause the map to move to the top left hand corner.
-	eax = input->x;
-	ecx = input->y;
-	esi = (int)input->element;
-	result = RCT2_CALLFUNC_X(0x006CB25D, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	output->x = (uint16)eax;
-	output->y = (uint16)ecx;
-	output->element = (rct_map_element*)esi;
+	output->x = input->x;
+	output->y = input->y;
+	output->element = input->element;
+	track_begin_end trackBeginEnd;
+	while (track_block_get_previous(output->x, output->y, output->element, &trackBeginEnd)){
+		output->x = trackBeginEnd.begin_x;
+		output->y = trackBeginEnd.begin_y;
+		output->element = trackBeginEnd.begin_element;
+	}
 
-	return (result & 0x100) != 0;
+	int num_station_elements = 0;
+	rct_xy_element last_good_station = *output;
+
+	do{
+		if (RCT2_ADDRESS(0x0099BA64, uint8)[output->element->properties.track.type * 16] & 0x10){
+			num_station_elements++;
+			last_good_station = *output;
+		}
+		else{
+			if (num_station_elements == 0)
+				continue;
+			if (num_station_elements == 1){
+				return 0;
+			}
+			num_station_elements = 0;
+		}
+	} while (track_block_get_next(output, output, NULL, NULL));
+
+	// Prevent returning a pointer to a map element with no track.
+	*output = last_good_station;
+	if (num_station_elements == 1)
+		return 0;
+
+	return 1;
 }
 
 /**
@@ -3717,17 +3917,17 @@ void sub_6B4D26(int rideIndex, rct_xy_element *startElement)
 		do {
 			trackType = currentElement.element->properties.track.type;
 			switch (trackType) {
-			case 1:			// end of station
-			case 123:		// cable lift hill
-			case 9:			// 25deg up to flat
-			case 63:		// 60deg up to flat
-			case 147:		// diag 25deg up to flat
-			case 155:		// diag 60deg up to flat
+			case TRACK_ELEM_END_STATION:
+			case TRACK_ELEM_CABLE_LIFT_HILL:
+			case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+			case TRACK_ELEM_60_DEG_UP_TO_FLAT:
+			case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:	
+			case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:	
 			case 216:		// block brakes
 				currentElement.element->flags &= ~(1 << 5);
 				break;
 			}
-		} while (track_get_next(&currentElement, &currentElement, NULL, NULL) && currentElement.element != startElement->element);
+		} while (track_block_get_next(&currentElement, &currentElement, NULL, NULL) && currentElement.element != startElement->element);
 	}
 }
 
@@ -3940,14 +4140,8 @@ int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplying)
 		}
 
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_STATION_NOT_LONG_ENOUGH;
-		if (ride_check_station_length(&trackElement, &problematicTrackElement)) {
-
-			// This is to prevent a bug in the check_station_length function
-			// remove when check_station_length is reveresed and fixed. Prevents
-			// null dereference. Does not prevent moving screen to top left corner.
-			if (map_element_get_type(problematicTrackElement.element) != MAP_ELEMENT_TYPE_TRACK)
-				loc_6B528A(&trackElement);
-			else loc_6B528A(&problematicTrackElement);
+		if (!ride_check_station_length(&trackElement, &problematicTrackElement)) {
+			loc_6B528A(&problematicTrackElement);
 			return 0;
 		}
 
@@ -4879,7 +5073,7 @@ bool ride_select_backwards_from_front()
 
 	sub_6C9627();
 	RCT2_GLOBAL(0x00F441D2, uint8) = _currentRideIndex;
-	if (sub_6C63D6(_currentTrackBeginX, _currentTrackBeginY, _currentTrackBeginZ, _currentTrackPieceDirection, &trackBeginEnd)) {
+	if (track_block_get_previous_from_zero(_currentTrackBeginX, _currentTrackBeginY, _currentTrackBeginZ, _currentRideIndex, _currentTrackPieceDirection, &trackBeginEnd)) {
 		_rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
 		_currentTrackBeginX = trackBeginEnd.begin_x;
 		_currentTrackBeginY = trackBeginEnd.begin_y;
@@ -4896,7 +5090,6 @@ bool ride_select_backwards_from_front()
 
 bool ride_select_forwards_from_back()
 {
-	rct_map_element *mapElement;
 	int x, y, z, direction;
 
 	sub_6C9627();
@@ -4906,14 +5099,15 @@ bool ride_select_forwards_from_back()
 	y = _currentTrackBeginY;
 	z = _currentTrackBeginZ;
 	direction = _currentTrackPieceDirection ^ 2;
-	mapElement = sub_6C6096(&x, &y, &z, &direction, NULL);
-	if (mapElement != NULL) {
+	rct_xy_element next_track;
+
+	if (track_block_get_next_from_zero(x, y, z, _currentRideIndex, direction, &next_track, &z, &direction)) {
 		_rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
-		_currentTrackBeginX = x;
-		_currentTrackBeginY = y;
+		_currentTrackBeginX = next_track.x;
+		_currentTrackBeginY = next_track.y;
 		_currentTrackBeginZ = z;
-		_currentTrackPieceDirection = (mapElement->type & MAP_ELEMENT_DIRECTION_MASK);
-		_currentTrackPieceType = mapElement->properties.track.type;
+		_currentTrackPieceDirection = (next_track.element->type & MAP_ELEMENT_DIRECTION_MASK);
+		_currentTrackPieceType = next_track.element->properties.track.type;
 		_currentTrackSelectionFlags = 0;
 		_rideConstructionArrowPulseTime = 0;
 		return true;

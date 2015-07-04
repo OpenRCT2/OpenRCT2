@@ -1584,7 +1584,7 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 
 			//di
 			int temp_z = z;
-			temp_z -= track_coordinates->z_negative;
+			temp_z -= track_coordinates->z_begin;
 			const rct_preview_track* trackBlock = TrackBlocks[track_type];
 
 			temp_z += trackBlock->z;
@@ -1601,7 +1601,7 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 
 			//di
 			int temp_z = z;
-			temp_z -= track_coordinates->z_negative;
+			temp_z -= track_coordinates->z_begin;
 			uint32 edi = ((track->flags & 0xF) << 17) |
 				((track->flags & 0xF) << 28) |
 				(((track->flags >> 4) & 0x3) << 24) |
@@ -1715,12 +1715,12 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 			break;
 		}
 
-		z -= track_coordinates->z_negative;
-		z += track_coordinates->z_positive;
+		z -= track_coordinates->z_begin;
+		z += track_coordinates->z_end;
 
-		rotation += track_coordinates->rotation_positive - track_coordinates->rotation_negative;
+		rotation += track_coordinates->rotation_end - track_coordinates->rotation_begin;
 		rotation &= 3;
-		if (track_coordinates->rotation_positive & (1 << 2))
+		if (track_coordinates->rotation_end & (1 << 2))
 			rotation |= (1 << 2);
 
 		if (!(rotation & (1 << 2))){
@@ -2631,10 +2631,10 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 
 	int z = 0;
 	//6ce69e
-	if (track_get_previous(trackElement.x, trackElement.y, trackElement.element, &trackBeginEnd)) {
+	if (track_block_get_previous(trackElement.x, trackElement.y, trackElement.element, &trackBeginEnd)) {
 		rct_map_element* initial_map = trackElement.element;
 		do {
-			if (!track_get_previous(trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_element, &trackBeginEnd)) {
+			if (!track_block_get_previous(trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_element, &trackBeginEnd)) {
 				break;
 			}
 		} while (initial_map != trackElement.element);
@@ -2658,7 +2658,7 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 
 	sint16 start_x = trackElement.x;
 	sint16 start_y = trackElement.y;
-	sint16 start_z = z + trackCoordinates->z_negative;
+	sint16 start_z = z + trackCoordinates->z_begin;
 	RCT2_GLOBAL(0x00F44142, sint16) = start_x;
 	RCT2_GLOBAL(0x00F44144, sint16) = start_y;
 	RCT2_GLOBAL(0x00F44146, sint16) = start_z;
@@ -2729,7 +2729,7 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 		track->flags = flags;
 		track++;
 
-		if (!track_get_next(&trackElement, &trackElement, NULL, NULL))
+		if (!track_block_get_next(&trackElement, &trackElement, NULL, NULL))
 			break;
 
 		z = trackElement.element->base_height * 8;
@@ -3434,6 +3434,12 @@ const rct_preview_track *get_track_def_from_ride(rct_ride *ride, int trackType)
 	return ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
 		FlatRideTrackBlocks[trackType] :
 		TrackBlocks[trackType];
+}
+
+const rct_track_coordinates *get_track_coord_from_ride(rct_ride *ride, int trackType){
+	return ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
+		&FlatTrackCoordinates[trackType] :
+		&TrackCoordinates[trackType];
 }
 
 const rct_preview_track *get_track_def_from_ride_index(int rideIndex, int trackType)

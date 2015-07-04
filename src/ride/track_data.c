@@ -21,6 +21,8 @@
 #include "track.h"
 #include "track_data.h"
 
+const rct_track_coordinates* FlatTrackCoordinates = RCT2_ADDRESS(0x009972BB, const rct_track_coordinates);
+
 const rct_track_coordinates TrackCoordinates[256] = {
 		{ 0, 0, 0, 0, 0, 0 },
 		{ 0, 0, 0, 0, 0, 0 },

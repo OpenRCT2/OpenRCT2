@@ -235,9 +235,9 @@ static void window_track_place_draw_mini_preview()
 					originY += track_coordinate->x;
 					break;
 				}
-				rotation += track_coordinate->rotation_positive - track_coordinate->rotation_negative;
+				rotation += track_coordinate->rotation_end - track_coordinate->rotation_begin;
 				rotation &= 3;
-				if (track_coordinate->rotation_positive & 4)
+				if (track_coordinate->rotation_end & 4)
 					rotation |= 4;
 				if (!(rotation & 4)) {
 					originX += RCT2_GLOBAL(0x00993CCC + (rotation * 4), sint16);
