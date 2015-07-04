@@ -1183,11 +1183,9 @@ static void scenario_objective_check_guests_and_rating()
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) = 0;
 	}
 
-	// Not sure why this was checked here...
-	//if (RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32) != MONEY32_UNDEFINED)
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) >= 700)
-			if (RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) >= RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16))
-				scenario_success();
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) >= 700)
+		if (RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) >= RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16))
+			scenario_success();
 }
 
 static void scenario_objective_check_monthly_ride_income()
