@@ -46,7 +46,7 @@ static int peep_should_find_bench(rct_peep* peep);
 static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type);
 static void sub_693BAB(rct_peep* peep);
 static void sub_693C9E(rct_peep *peep);
-static void peep_spend_money(rct_peep *peep, money32 amount);
+static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 amount);
 static void sub_695444(rct_peep *peep, int rideIndex, int flags);
 static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 price);
 static bool sub_69AEB7(rct_peep *peep, int rideIndex);
@@ -1387,8 +1387,7 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ri
 			ride->total_profit += ride->price;
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 20;
-			RCT2_GLOBAL(0xF1AEC0, uint32) = 230;
-			peep_spend_money(peep, ride->price);
+			peep_spend_money(peep, &peep->paid_on_rides, ride->price);
 		}
 	}
 
@@ -5337,16 +5336,17 @@ static void sub_693C9E(rct_peep *peep)
 /**
  * 
  *  rct2: 0x0069926C
+ *  Expend type was previously an offset saved in 0x00F1AEC0
  */
-static void peep_spend_money(rct_peep *peep, money32 amount)
+static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 amount)
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
 		return;
 
 	peep->cash_in_pocket = max(0, peep->cash_in_pocket - amount);
 	peep->cash_spent += amount;
-	if (RCT2_GLOBAL(0x00F1AEC0, uint32) == 0xFFFFFFFF) {
-		RCT2_GLOBAL(peep + RCT2_GLOBAL(0x00F1AEC0, uint32), money16) += (money16)amount;
+	if (peep_expend_type != NULL) {
+		*peep_expend_type += (money16)amount;
 	}
 	window_invalidate_by_number(WC_PEEP, peep->sprite_index);
 
