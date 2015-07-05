@@ -3929,13 +3929,275 @@ void game_command_place_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, 
 		);
 }
 
+money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY, sint16 originZ, uint8 rotation, uint8 flags){
+	RCT2_GLOBAL(0x00141F56C, uint8) = 0;
+	RCT2_GLOBAL(0x009DEA5E, sint16) = originX + 16;
+	RCT2_GLOBAL(0x009DEA60, sint16) = originY + 16;
+	RCT2_GLOBAL(0x009DEA62, sint16) = originZ;
+	RCT2_GLOBAL(0x00F440E1, uint8) = sequence;
+
+	switch (type){
+	case TRACK_ELEM_BEGIN_STATION:
+	case TRACK_ELEM_MIDDLE_STATION:
+		type = TRACK_ELEM_END_STATION;
+		break;
+	}
+
+	if (!(flags & (1 << 3)) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0){
+		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 2214;
+		return MONEY32_UNDEFINED;
+	}
+
+	uint8 found = 0;
+	rct_map_element* mapElement = map_get_first_element_at(originX / 32, originY / 32);
+	do{
+		if (mapElement->base_height * 8 != originZ)
+			continue;
+
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
+
+		if ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) != rotation)
+			continue;
+
+		if ((mapElement->properties.track.sequence & 0xF) != sequence)
+			continue;
+
+		// Probably should add a check for ghost here as well!
+
+		uint8 track_type = mapElement->properties.track.type;
+		switch (track_type){
+		case TRACK_ELEM_BEGIN_STATION:
+		case TRACK_ELEM_MIDDLE_STATION:
+			track_type = TRACK_ELEM_END_STATION;
+			break;
+		}
+
+		if (track_type != type)
+			continue;
+
+		found = 1;
+		break;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	if (!found){
+		return MONEY32_UNDEFINED;
+	}
+
+	if (mapElement->flags & (1 << 6)){
+		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 3091;
+		return MONEY32_UNDEFINED;
+	}
+
+	uint8 rideIndex = mapElement->properties.track.ride_index;
+	type = mapElement->properties.track.type;
+	RCT2_GLOBAL(0x00F44139, uint8) = type;
+	RCT2_GLOBAL(0x00F44138, uint8) = rideIndex;
+	RCT2_GLOBAL(0x00F4414C, uint8) = mapElement->type;
+
+	rct_ride* ride = GET_RIDE(rideIndex);
+	const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
+	trackBlock += mapElement->properties.track.sequence & 0xF;
+
+	
+	switch (mapElement->type & MAP_ELEMENT_DIRECTION_MASK){
+	case 0:
+		originX -= trackBlock->x;
+		originY -= trackBlock->y;
+		break;
+	case 1:
+		originX -= trackBlock->y;
+		originY += trackBlock->x;
+		break;
+	case 2:
+		originX += trackBlock->x;
+		originY += trackBlock->y;
+		break;
+	case 3:
+		originX += trackBlock->y;
+		originY -= trackBlock->x;
+		break;
+	}
+
+	originZ -= trackBlock->z;
+
+	money32 cost = 0;
+
+	trackBlock = get_track_def_from_ride(ride, type);
+	for (; trackBlock->index != 255; trackBlock++){
+		sint16 x = originX, y = originY, z = originZ;
+
+		switch (mapElement->type & MAP_ELEMENT_DIRECTION_MASK){
+		case 0:
+			x += trackBlock->x;
+			y += trackBlock->y;
+			break;
+		case 1:
+			x += trackBlock->y;
+			y -= trackBlock->x;
+			break;
+		case 2:
+			x -= trackBlock->x;
+			y -= trackBlock->y;
+			break;
+		case 3:
+			x -= trackBlock->y;
+			y += trackBlock->x;
+			break;
+		}
+
+		z += trackBlock->z;
+
+		map_invalidate_tile_full(x, y);
+		RCT2_GLOBAL(0x00F441C4, sint16) = x;
+		RCT2_GLOBAL(0x00F441C6, sint16) = y;
+
+		found = 0;
+		mapElement = map_get_first_element_at(x / 32, y / 32);
+		do{
+			if (mapElement->base_height != z / 8)
+				continue;
+
+			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+				continue;
+
+			if ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) != rotation)
+				continue;
+
+			if ((mapElement->properties.track.sequence & 0xF) != trackBlock->index)
+				continue;
+
+			if (mapElement->properties.track.type != type)
+				continue;
+
+			found = 1;
+			break;
+		} while (!map_element_is_last_for_tile(mapElement++));
+
+		if (!found){
+			log_error("Track map element part not found!");
+			return MONEY32_UNDEFINED;
+		}
+
+		int entranceDirections;
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
+			entranceDirections = RCT2_ADDRESS(0x0099CA64, uint8)[type * 16];
+		}
+		else {
+			entranceDirections = RCT2_ADDRESS(0x0099BA64, uint8)[type * 16];
+		}
+
+		if (entranceDirections & (1 << 4) && (mapElement->properties.track.sequence == 0)){
+			if (RCT2_CALLPROC_X(0x006C494B, x, (rideIndex << 8), y, (z / 8) | (rotation << 8), 0, 0, 0) & 0x100){
+				return MONEY32_UNDEFINED;
+			}
+		}
+
+		rct_map_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+		if (surfaceElement == NULL){
+			return MONEY32_UNDEFINED;
+		}
+
+		uint8 support_height = mapElement->base_height - surfaceElement->base_height;
+		if (support_height < 0){
+			support_height = 10;
+		}
+
+		cost += (support_height / 2) * RCT2_ADDRESS(0x0097DD7A, uint16)[ride->type * 2];
+
+		if (!(flags & GAME_COMMAND_FLAG_APPLY))
+			continue;
+
+		if (entranceDirections & (1 << 4) && (mapElement->properties.track.sequence == 0)){
+			if (RCT2_CALLPROC_X(0x006C494B, x, GAME_COMMAND_FLAG_APPLY | (rideIndex << 8), y, (z / 8) | (rotation << 8), 0, 0, 0) & 0x100){
+				return MONEY32_UNDEFINED;
+			}
+		}
+
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_6)){
+			surfaceElement->type &= ~(1 << 6);
+		}
+
+		sub_6B59C6(rideIndex);
+		sub_6A7594();
+		sub_6A6AA7(x, y, mapElement);
+		map_element_remove(mapElement);
+		sub_6CB945(rideIndex);
+		if (!(flags & (1 << 6))){
+			ride_update_max_vehicles(rideIndex);
+		}
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY){
+		switch (type){
+		case TRACK_ELEM_ON_RIDE_PHOTO:
+			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_ON_RIDE_PHOTO;
+			break;
+		case TRACK_ELEM_CABLE_LIFT_HILL:
+			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_16;
+			break;
+		case 216:
+			ride->num_block_brakes--;
+			if (ride->num_block_brakes == 0){
+				ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
+				ride->mode = RIDE_MODE_CONTINUOUS_CIRCUIT;
+				if (ride->type == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER){
+					ride->mode = RIDE_MODE_POWERED_LAUNCH;
+				}
+			}
+			break;
+		}
+
+		switch (type){
+		case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+		case TRACK_ELEM_60_DEG_UP_TO_FLAT:
+		case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
+		case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+			if (!(RCT2_GLOBAL(0x00F4414C, uint8) & (1 << 7)))
+				break;
+			// Fall through
+		case TRACK_ELEM_CABLE_LIFT_HILL:
+			ride->num_block_brakes--;
+			break;
+		}
+	}
+
+	money32 price = RCT2_ADDRESS(0x0097DD78, money16)[ride->type * 2];;
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
+		price *= RCT2_ADDRESS(0x0099DA34, money32)[type];
+	}
+	else {
+		price *= RCT2_ADDRESS(0x0099DE34, money32)[type];
+	}
+	price >>= 16;
+	price = (price + cost) / 2;
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
+		price *= -7;
+	else
+		price *= -10;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+		return 0;
+	else
+		return price;
+}
+
 /**
  *
  *  rct2: 0x006C5B69
  */
 void game_command_remove_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	RCT2_CALLFUNC_X(0x006C5B69, eax, ebx, ecx, edx, esi, edi, ebp);
+	*ebx = track_remove(
+		*edx & 0xFF,
+		(*edx >> 8) & 0xFF,
+		*eax & 0xFFFF,
+		*ecx & 0xFFFF,
+		*edi & 0xFFFF,
+		(*ebx >> 8) & 0xFF,
+		*ebx & 0xFF
+		);
+	return;
 }
 
 /**
