@@ -54,7 +54,7 @@ STR_0049    :Haunted House
 STR_0050    :First Aid Room
 STR_0051    :Circus Show
 STR_0052    :Ghost Train
-STR_0053    :Twister Roller Coaster
+STR_0053    :Steel Twister Roller Coaster
 STR_0054    :Wooden Roller Coaster
 STR_0055    :Side-Friction Roller Coaster
 STR_0056    :Wild Mouse
