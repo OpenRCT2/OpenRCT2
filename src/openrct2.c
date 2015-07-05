@@ -24,6 +24,7 @@
 #include "cmdline.h"
 #include "config.h"
 #include "editor.h"
+#include "game.h"
 #include "interface/window.h"
 #include "localisation/localisation.h"
 #include "network/http.h"
@@ -259,14 +260,14 @@ static void openrct2_loop()
 	static uint32 uncapTick;
 	static int fps = 0;
 	static uint32 secondTick = 0;
-	static int uncappedinitialized = 0;
+	static bool uncappedinitialized = false;
 	static struct { sint16 x, y, z; } spritelocations1[MAX_SPRITES], spritelocations2[MAX_SPRITES];
 
 	log_verbose("begin openrct2 loop");
 
 	_finished = 0;
 	do {
-		if (gConfigGeneral.uncap_fps) {
+		if (gConfigGeneral.uncap_fps && gGameSpeed <= 4) {
 			currentTick = SDL_GetTicks();
 			if (!uncappedinitialized) {
 				// Reset sprite locations
@@ -276,7 +277,7 @@ static void openrct2_loop()
 					spritelocations1[i].y = spritelocations2[i].y = g_sprite_list[i].unknown.y;
 					spritelocations1[i].z = spritelocations2[i].z = g_sprite_list[i].unknown.z;
 				}
-				uncappedinitialized = 1;
+				uncappedinitialized = true;
 			}
 
 			while (uncapTick <= currentTick && currentTick - uncapTick > 25) {
@@ -291,6 +292,7 @@ static void openrct2_loop()
 				rct2_update();
 				if (gOpenRCT2ResetFrameSmoothing) {
 					gOpenRCT2ResetFrameSmoothing = false;
+					uncappedinitialized = false;
 					continue;
 				}
 
@@ -337,10 +339,11 @@ static void openrct2_loop()
 				if (!sprite_should_tween(&g_sprite_list[i]))
 					continue;
 
+				invalidate_sprite(&g_sprite_list[i]);
 				sprite_move(spritelocations2[i].x, spritelocations2[i].y, spritelocations2[i].z, &g_sprite_list[i]);
 			}
 		} else {
-			uncappedinitialized = 0;
+			uncappedinitialized = false;
 			currentTick = SDL_GetTicks();
 			ticksElapsed = currentTick - lastTick;
 			if (ticksElapsed < 25) {
