@@ -4164,10 +4164,10 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 
 	money32 price = RCT2_ADDRESS(0x0097DD78, money16)[ride->type * 2];;
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
-		price *= RCT2_ADDRESS(0x0099DA34, money32)[type];
+		price *= RCT2_ADDRESS(0x0099DE34, money32)[type];
 	}
 	else {
-		price *= RCT2_ADDRESS(0x0099DE34, money32)[type];
+		price *= RCT2_ADDRESS(0x0099DA34, money32)[type];
 	}
 	price >>= 16;
 	price = (price + cost) / 2;
