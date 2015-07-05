@@ -55,19 +55,19 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 	uint8 objectType;
 	rct_object_entry openedEntry;
 	char path[260];
-	FILE *file;
+	SDL_RWops* rw;
 
 	subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), (char*)installedObject + 16);
 
 	log_verbose("loading object, %s", path);
 
-	file = fopen(path, "rb");
-	if (file == NULL)
+	rw = platform_sdl_rwfromfile(path, "rb");
+	if (rw == NULL)
 		return 0;
 
-	fread(&openedEntry, sizeof(rct_object_entry), 1, file);
+	SDL_RWread(rw, &openedEntry, sizeof(rct_object_entry), 1);
 	if (!object_entry_compare(&openedEntry, entry)) {
-		fclose(file);
+		SDL_RWclose(rw);
 		return 0;
 	}
 
@@ -82,14 +82,14 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 
 	if (*chunkSize == 0xFFFFFFFF) {
 		chunk = rct2_malloc(0x600000);
-		*chunkSize = sawyercoding_read_chunk(file, chunk);
+		*chunkSize = sawyercoding_read_chunk(rw, chunk);
 		chunk = rct2_realloc(chunk, *chunkSize);
 	}
 	else {
 		chunk = rct2_malloc(*chunkSize);
-		*chunkSize = sawyercoding_read_chunk(file, chunk);
+		*chunkSize = sawyercoding_read_chunk(rw, chunk);
 	}
-	fclose(file);
+	SDL_RWclose(rw);
 
 
 
@@ -177,7 +177,7 @@ int object_load(int groupIndex, rct_object_entry *entry, int* chunkSize)
  *  ebx : file
  *  ebp : entry
  */
-int write_object_file(FILE *file, rct_object_entry* entry){
+int write_object_file(SDL_RWops *rw, rct_object_entry* entry){
 	uint8 entryGroupIndex = 0, type = 0;
 	uint8* chunk = 0;
 
@@ -201,7 +201,7 @@ int write_object_file(FILE *file, rct_object_entry* entry){
 	chunkHeader.length = installed_entry->chunk_size;
 
 	size_dst += sawyercoding_write_chunk_buffer(dst_buffer + sizeof(rct_object_entry), chunk, chunkHeader);
-	fwrite(dst_buffer, 1, size_dst, file);
+	SDL_RWwrite(rw, dst_buffer, 1, size_dst);
 
 	free(dst_buffer);
 	return 1;
@@ -211,16 +211,16 @@ int write_object_file(FILE *file, rct_object_entry* entry){
 *
 *  rct2: 0x006AA2B7
 */
-int object_load_packed(FILE *file)
+int object_load_packed(SDL_RWops* rw)
 {
 	object_unload_all();
 
 	rct_object_entry entry;
 
-	fread(&entry, 16, 1, file);
+	SDL_RWread(rw, &entry, 16, 1);
 
 	uint8* chunk = rct2_malloc(0x600000);
-	uint32 chunkSize = sawyercoding_read_chunk(file, chunk);
+	uint32 chunkSize = sawyercoding_read_chunk(rw, chunk);
 	chunk = rct2_realloc(chunk, chunkSize);
 
 	if (chunk == NULL){
@@ -315,11 +315,11 @@ int object_load_packed(FILE *file)
 	}
 
 	// Actually write the object to the file
-	FILE* obj_file = fopen(path, "wb");
-	if (obj_file){
-		uint8 result = write_object_file(obj_file, &entry);
+	SDL_RWops* rw_out = platform_sdl_rwfromfile(path, "wb");
+	if (rw_out != NULL){
+		uint8 result = write_object_file(rw_out, &entry);
 
-		fclose(obj_file);
+		SDL_RWclose(rw_out);
 		object_unload_all();
 
 		return result;
@@ -1514,9 +1514,9 @@ int object_get_scenario_text(rct_object_entry *entry)
 	subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), objectPath);
 
 	rct_object_entry openedEntry;
-	FILE *file = fopen(path, "rb");
-	if (file != NULL) {
-		fread(&openedEntry, sizeof(rct_object_entry), 1, file);
+	SDL_RWops* rw = platform_sdl_rwfromfile(path, "rb");
+	if (rw != NULL) {
+		SDL_RWread(rw, &openedEntry, sizeof(rct_object_entry), 1);
 		if (object_entry_compare(&openedEntry, entry)) {
 
 			// Skip over the object entry
@@ -1530,14 +1530,14 @@ int object_get_scenario_text(rct_object_entry *entry)
 			char *chunk;
 			if (chunkSize == 0xFFFFFFFF) {
 				chunk = malloc(0x600000);
-				chunkSize = sawyercoding_read_chunk(file, chunk);
+				chunkSize = sawyercoding_read_chunk(rw, chunk);
 				chunk = realloc(chunk, chunkSize);
 			}
 			else {
 				chunk = malloc(chunkSize);
-				sawyercoding_read_chunk(file, chunk);
+				sawyercoding_read_chunk(rw, chunk);
 			}
-			fclose(file);
+			SDL_RWclose(rw);
 
 			// Calculate and check checksum
 			if (object_calculate_checksum(&openedEntry, chunk, chunkSize) != openedEntry.checksum) {
@@ -1578,7 +1578,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 			return 1;
 		}
 		log_error("Opened object didn't match.");
-		fclose(file);
+		SDL_RWclose(rw);
 		return 0;
 	}
 	log_error("File failed to open.");

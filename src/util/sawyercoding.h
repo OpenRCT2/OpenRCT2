@@ -47,9 +47,9 @@ enum {
 	FILE_TYPE_SC4 = (2 << 2)
 };
 
-int sawyercoding_validate_checksum(FILE *file);
+int sawyercoding_validate_checksum(SDL_RWops* rw);
 uint32 sawyercoding_calculate_checksum(uint8* buffer, uint32 length);
-int sawyercoding_read_chunk(FILE *file, uint8 *buffer);
+int sawyercoding_read_chunk(SDL_RWops* rw, uint8 *buffer);
 int sawyercoding_write_chunk_buffer(uint8 *dst_file, uint8* buffer, sawyercoding_chunk_header chunkHeader);
 int sawyercoding_decode_sv4(char *src, char *dst, int length);
 int sawyercoding_decode_sc4(char *src, char *dst, int length);

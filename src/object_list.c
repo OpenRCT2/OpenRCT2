@@ -518,7 +518,7 @@ void set_load_objects_fail_reason(){
  * 
  *  rct2: 0x006AA0C6
  */
-int object_read_and_load_entries(FILE *file)
+int object_read_and_load_entries(SDL_RWops* rw)
 {
 	object_unload_all();
 
@@ -529,7 +529,7 @@ int object_read_and_load_entries(FILE *file)
 
 	// Read all the object entries
 	entries = malloc(OBJECT_ENTRY_COUNT * sizeof(rct_object_entry));
-	sawyercoding_read_chunk(file, (uint8*)entries);
+	sawyercoding_read_chunk(rw, (uint8*)entries);
 
 	uint8 load_fail = 0;
 	// Load each object

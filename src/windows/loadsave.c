@@ -762,6 +762,7 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 
 static void window_loadsave_select(rct_window *w, const char *path)
 {
+	SDL_RWops* rw;
 	switch (_loadsaveType) {
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
 			if (gLoadSaveTitleSequenceSave) {
@@ -790,13 +791,19 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			}
 			break;
 		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
-			if (scenario_save((char*)path, gConfigGeneral.save_plugin_data ? 1 : 0)) {
-				window_close(w);
+			rw = platform_sdl_rwfromfile(path, "wb+");
+			if (rw != NULL) {
+				int success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 1 : 0);
+				SDL_RWclose(rw);
+				if (success) {
+					window_close(w);
 
-				game_do_command(0, 1047, 0, -1, GAME_COMMAND_SET_RIDE_APPEARANCE, 0, 0);
-				gfx_invalidate_screen();
-			}
-			else {
+					game_do_command(0, 1047, 0, -1, GAME_COMMAND_SET_RIDE_APPEARANCE, 0, 0);
+					gfx_invalidate_screen();
+				} else {
+					window_error_open(STR_SAVE_GAME, 1047);
+				}
+			} else {
 				window_error_open(STR_SAVE_GAME, 1047);
 			}
 			break;
@@ -812,11 +819,17 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			}
 			break;
 		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
-			if (scenario_save((char*)path, gConfigGeneral.save_plugin_data ? 3 : 2)) {
-				window_close(w);
-				gfx_invalidate_screen();
-			}
-			else {
+			rw = platform_sdl_rwfromfile(path, "wb+");
+			if (rw != NULL) {
+				int success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2);
+				SDL_RWclose(rw);
+				if (success) {
+					window_close(w);
+					gfx_invalidate_screen();
+				} else {
+					window_error_open(STR_SAVE_LANDSCAPE, 1049);
+				}
+			} else {
 				window_error_open(STR_SAVE_LANDSCAPE, 1049);
 			}
 			break;
@@ -826,14 +839,18 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			int parkFlagsBackup = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
 			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_18;
 			s6Info->var_000 = 255;
-			int success = scenario_save((char*)path, gConfigGeneral.save_plugin_data ? 3 : 2);
+			rw = platform_sdl_rwfromfile(path, "wb+");
+			int success = 0;
+			if (rw != NULL) {
+				success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2);
+				SDL_RWclose(rw);
+			}
 			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = parkFlagsBackup;
 
 			if (success) {
 				window_close(w);
 				title_load();
-			}
-			else {
+			} else {
 				window_error_open(STR_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED);
 				s6Info->var_000 = 4;
 			}

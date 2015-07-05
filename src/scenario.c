@@ -58,18 +58,18 @@ static void scenario_objective_check();
  */
 int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info)
 {
-	FILE *file;
+	SDL_RWops* rw;
 
 	log_verbose("loading scenario details, %s", path);
 
-	file = fopen(path, "rb");
-	if (file != NULL) {
+	rw = platform_sdl_rwfromfile(path, "rb");
+	if (rw != NULL) {
 		// Read first chunk
-		sawyercoding_read_chunk(file, (uint8*)header);
+		sawyercoding_read_chunk(rw, (uint8*)header);
 		if (header->type == S6_TYPE_SCENARIO) {
 			// Read second chunk
-			sawyercoding_read_chunk(file, (uint8*)info);
-			fclose(file);
+			sawyercoding_read_chunk(rw, (uint8*)info);
+			SDL_RWclose(rw);
 			RCT2_GLOBAL(0x009AA00C, uint8) = 0;
 
 			// Checks for a scenario string object (possibly for localisation)
@@ -84,7 +84,7 @@ int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *in
 			}
 			return 1;
 		}
-		fclose(file);
+		SDL_RWclose(rw);
 	}
 
 	log_error("invalid scenario, %s", path);
@@ -102,15 +102,15 @@ int scenario_load(const char *path)
 {
 	log_verbose("loading scenario, %s", path);
 
-	FILE *file;
+	SDL_RWops* rw;
 	int i, j;
 	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
-	file = fopen(path, "rb");
-	if (file != NULL) {
-		if (!sawyercoding_validate_checksum(file)) {
-			fclose(file);
+	rw = platform_sdl_rwfromfile(path, "rb");
+	if (rw != NULL) {
+		if (!sawyercoding_validate_checksum(rw)) {
+			SDL_RWclose(rw);
 			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
 			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 
@@ -119,57 +119,57 @@ int scenario_load(const char *path)
 		}
 
 		// Read first chunk
-		sawyercoding_read_chunk(file, (uint8*)s6Header);
+		sawyercoding_read_chunk(rw, (uint8*)s6Header);
 		if (s6Header->type == S6_TYPE_SCENARIO) {
 			// Read second chunk
-			sawyercoding_read_chunk(file, (uint8*)s6Info);
+			sawyercoding_read_chunk(rw, (uint8*)s6Info);
 
 			// Read packed objects
 			if (s6Header->num_packed_objects > 0) {
 				j = 0;
 				for (i = 0; i < s6Header->num_packed_objects; i++)
-					j += object_load_packed(file);
+					j += object_load_packed(rw);
 				if (j > 0)
 					object_list_load();
 			}
 
-			uint8 load_success = object_read_and_load_entries(file);
+			uint8 load_success = object_read_and_load_entries(rw);
 
 			// Read flags (16 bytes). Loads:
 			//	RCT2_ADDRESS_CURRENT_MONTH_YEAR
 			//	RCT2_ADDRESS_CURRENT_MONTH_TICKS
 			//	RCT2_ADDRESS_SCENARIO_TICKS
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
 
 			// Read map elements
 			memset((void*)RCT2_ADDRESS_MAP_ELEMENTS, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
 
 			// Read game data, including sprites
-			sawyercoding_read_chunk(file, (uint8*)0x010E63B8);
+			sawyercoding_read_chunk(rw, (uint8*)0x010E63B8);
 
 			// Read number of guests in park and something else
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_GUESTS_IN_PARK);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_GUESTS_IN_PARK);
 
 			// Read ?
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_LAST_GUESTS_IN_PARK);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_LAST_GUESTS_IN_PARK);
 
 			// Read park rating
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_PARK_RATING);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_PARK_RATING);
 
 			// Read ?
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES);
 
 			// Read ?
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_EXPENDITURE);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_EXPENDITURE);
 
 			// Read ?
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_PARK_VALUE);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_PARK_VALUE);
 
 			// Read more game data, including research items and rides
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_COMPLETED_COMPANY_VALUE);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_COMPLETED_COMPANY_VALUE);
 
-			fclose(file);
+			SDL_RWclose(rw);
 			if (!load_success){
 				log_error("failed to load all entries.");
 				set_load_objects_fail_reason();
@@ -183,7 +183,7 @@ int scenario_load(const char *path)
 			return 1;
 		}
 
-		fclose(file);
+		SDL_RWclose(rw);
 	}
 
 	log_error("failed to find scenario file.");
@@ -745,7 +745,7 @@ int scenario_get_num_packed_objects_to_write()
  *
  *  rct2: 0x006AA26E
  */
-int scenario_write_packed_objects(FILE *file)
+int scenario_write_packed_objects(SDL_RWops* rw)
 {
 	int i;
 	rct_object_entry_extended *entry = (rct_object_entry_extended*)0x00F3F03C;
@@ -753,7 +753,7 @@ int scenario_write_packed_objects(FILE *file)
 		if (RCT2_ADDRESS(0x009ACFA4, uint32)[i] == 0xFFFFFFFF || (entry->flags & 0xF0))
 			continue;
 
-		if (!write_object_file(file, (rct_object_entry*)entry))
+		if (!write_object_file(rw, (rct_object_entry*)entry))
 			return 0;
 	}
 
@@ -878,21 +878,16 @@ static scenario_fix_ghosts(rct_s6_data *s6)
  *  rct2: 0x006754F5
  * @param flags bit 0: pack objects, 1: save as scenario
  */
-int scenario_save(char *path, int flags)
+int scenario_save(SDL_RWops* rw, int flags)
 {
 	rct_window *w;
 	rct_viewport *viewport;
 	int viewX, viewY, viewZoom, viewRotation;
 
-	if (strcmp(path_get_filename(path), "autosave.sv6")) {
-		strcpy(gScenarioSaveName, path_get_filename(path));
-		path_remove_extension(gScenarioSaveName);
-	}
-
 	if (flags & 2)
-		log_verbose("saving scenario, %s", path);
+		log_verbose("saving scenario");
 	else
-		log_verbose("saving game, %s", path);
+		log_verbose("saving game");
 
 
 	if (!(flags & 0x80000000))
@@ -949,7 +944,7 @@ int scenario_save(char *path, int flags)
 	memcpy(&s6->dword_010E63B8, (void*)0x010E63B8, 0x2E8570);
 
 	scenario_fix_ghosts(s6);
-	scenario_save_s6(path, s6);
+	scenario_save_s6(rw, s6);
 
 	free(s6);
 
@@ -961,25 +956,17 @@ int scenario_save(char *path, int flags)
 	return 1;
 }
 
-bool scenario_save_s6(char *path, rct_s6_data *s6)
+bool scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6)
 {
-	FILE *file;
 	char *buffer;
 	sawyercoding_chunk_header chunkHeader;
 	int encodedLength;
 	long fileSize;
 	uint32 checksum;
 
-	file = fopen(path, "wb+");
-	if (file == NULL) {
-		log_error("Unable to write to %s", path);
-		return false;
-	}
-
 	buffer = malloc(0x600000);
 	if (buffer == NULL) {
 		log_error("Unable to allocate enough space for a write buffer.");
-		fclose(file);
 		return false;
 	}
 
@@ -987,21 +974,20 @@ bool scenario_save_s6(char *path, rct_s6_data *s6)
 	chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
 	chunkHeader.length = sizeof(rct_s6_header);
 	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->header, chunkHeader);
-	fwrite(buffer, encodedLength, 1, file);
+	SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 	// 1: Write scenario info chunk
 	if (s6->header.type == S6_TYPE_SCENARIO) {
 		chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
 		chunkHeader.length = sizeof(rct_s6_info);
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->info, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 	}
 
 	// 2: Write packed objects
 	if (s6->header.num_packed_objects > 0) {
-		if (!scenario_write_packed_objects(file)) {
+		if (!scenario_write_packed_objects(rw)) {
 			free(buffer);
-			fclose(file);
 			return false;
 		}
 	}
@@ -1010,92 +996,91 @@ bool scenario_save_s6(char *path, rct_s6_data *s6)
 	chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
 	chunkHeader.length = 721 * sizeof(rct_object_entry);
 	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)s6->objects, chunkHeader);
-	fwrite(buffer, encodedLength, 1, file);
+	SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 	// 4: Misc fields (data, rand...) chunk
 	chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 	chunkHeader.length = 16;
 	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->elapsed_months, chunkHeader);
-	fwrite(buffer, encodedLength, 1, file);
+	SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 	// 5: Map elements + sprites and other fields chunk
 	chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 	chunkHeader.length = 0x180000;
 	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)s6->map_elements, chunkHeader);
-	fwrite(buffer, encodedLength, 1, file);
+	SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 	if (s6->header.type == S6_TYPE_SCENARIO) {
 		// 6:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 0x27104C;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->dword_010E63B8, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 7:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 4;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->guests_in_park, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 8:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 8;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->last_guests_in_park, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 9:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 2;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->park_rating, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 10:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 1082;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->active_research_types, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 11:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 16;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->current_expenditure, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 12:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 4;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->park_value, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 13:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 0x761E8;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->completed_company_value, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 	} else {
 		// 6: Everything else...
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 0x2E8570;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->dword_010E63B8, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 	}
 
 	free(buffer);
 
 	// Determine number of bytes written
-	fileSize = ftell(file);
-	fseek(file, 0, SEEK_SET);
+	fileSize = (long)SDL_RWtell(rw);
+	SDL_RWseek(rw, 0, RW_SEEK_SET);
 
 	// Read all written bytes back into a single buffer
 	buffer = malloc(fileSize);
-	fread(buffer, fileSize, 1, file);
+	SDL_RWread(rw, buffer, fileSize, 1);
 	checksum = sawyercoding_calculate_checksum(buffer, fileSize);
 	free(buffer);
 
 	// Append the checksum
-	fseek(file, fileSize, SEEK_SET);
-	fwrite(&checksum, sizeof(uint32), 1, file);
-	fclose(file);
+	SDL_RWseek(rw, fileSize, RW_SEEK_SET);
+	SDL_RWwrite(rw, &checksum, sizeof(uint32), 1);
 	return true;
 }
 
