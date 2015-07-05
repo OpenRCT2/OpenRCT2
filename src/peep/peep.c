@@ -25,6 +25,7 @@
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
 #include "../management/news_item.h"
+#include "../openrct2.h"
 #include "../ride/ride.h"
 #include "../scenario.h"
 #include "../sprites.h"
@@ -5396,6 +5397,9 @@ static void peep_give_real_name(rct_peep *peep)
 void peep_update_name_sort(rct_peep *peep)
 {
 	RCT2_CALLPROC_X(0x00699115, 0, 0, 0, 0, (int)peep, 0, 0);
+
+	// This is required at the moment because this function reorders peeps in the sprite list
+	gOpenRCT2ResetFrameSmoothing = true;
 }
 
 /**
