@@ -70,8 +70,8 @@ void window_main_open()
 {
 	rct_window* window;
 
-	window_main_widgets[0].right = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
-	window_main_widgets[0].bottom = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16);
+	window_main_widgets[0].right = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+	window_main_widgets[0].bottom = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
 	window = window_create(
 		0, 0,
 		window_main_widgets[0].right, window_main_widgets[0].bottom,

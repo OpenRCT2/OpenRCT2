@@ -241,7 +241,7 @@ void window_top_toolbar_open()
 
 	window = window_create(
 		0, 0,
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16), 28,
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16), 28,
 		(uint32*)window_top_toolbar_events,
 		WC_TOP_TOOLBAR,
 		WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_5
@@ -618,7 +618,7 @@ static void window_top_toolbar_invalidate()
 
 	// Align right hand side toolbar buttons
 	firstAlignment = 1;
-	x = max(640, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16));
+	x = max(640, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
 	for (int i = 0; i < countof(right_aligned_widgets_order); ++i) {
 		widgetIndex = right_aligned_widgets_order[i];
 		widget = &window_top_toolbar_widgets[widgetIndex];

@@ -151,7 +151,7 @@ static void title_create_windows()
 	window_title_exit_open();
 	window_title_options_open();
 	window_title_logo_open();
-	window_resize_gui(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16), RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16));
+	window_resize_gui(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16), RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16));
 }
 
 /**
