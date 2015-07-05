@@ -128,8 +128,8 @@ void game_handle_input()
 			game_handle_input_mouse(x, y, state);
 		}
 		else if (x != 0x80000000) {
-			x = clamp(0, x, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 1);
-			y = clamp(0, y, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - 1);
+			x = clamp(0, x, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 1);
+			y = clamp(0, y, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 1);
 
 			game_handle_input_mouse(x, y, state);
 			process_mouse_over(x, y);

@@ -101,7 +101,7 @@ void window_water_open()
 		return;
 
 	window = window_create(
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 76,
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 76,
 		29,
 		76,
 		77,

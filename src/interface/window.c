@@ -1202,7 +1202,7 @@ void window_push_others_below(rct_window *w1)
 			continue;
 
 		// Check if there is room to push it down
-		if (w1->y + w1->height + 80 >= RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16))
+		if (w1->y + w1->height + 80 >= RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16))
 			continue;
 
 		// Invalidate the window's current area

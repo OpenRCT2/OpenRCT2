@@ -356,8 +356,8 @@ void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 	if (w->flags & WF_7){
 		int left = max(viewport->x, 0);
 		int top = max(viewport->y, 0);
-		int right = min(viewport->x + viewport->width, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16));
-		int bottom = min(viewport->y + viewport->height, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16));
+		int right = min(viewport->x + viewport->width, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
+		int bottom = min(viewport->y + viewport->height, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16));
 
 		if (left >= right) return;
 		if (top >= bottom) return;
@@ -376,7 +376,7 @@ void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 		viewport->x = 0;
 	}
 
-	int eax = viewport->x + viewport->width - RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
+	int eax = viewport->x + viewport->width - RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
 	if (eax > 0){
 		viewport->width -= eax;
 		viewport->view_width -= eax * zoom;
@@ -394,7 +394,7 @@ void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 		viewport->y = 0;
 	}
 
-	eax = viewport->y + viewport->height - RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16);
+	eax = viewport->y + viewport->height - RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
 	if (eax > 0){
 		viewport->height -= eax;
 		viewport->view_height -= eax * zoom;

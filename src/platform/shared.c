@@ -175,8 +175,8 @@ void platform_get_closest_resolution(int inWidth, int inHeight, int *outWidth, i
 
 void platform_draw()
 {
-	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
-	int height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16);
+	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+	int height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
 
 	if (gConfigGeneral.hardware_display) {
 		void *pixels;
@@ -239,8 +239,8 @@ static void platform_resize(int width, int height)
 {
 	uint32 flags;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) = width;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) = height;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) = width;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) = height;
 
 	platform_refresh_video();
 
@@ -457,7 +457,7 @@ void platform_process_messages()
 
 				// Zoom gesture
 				const int tolerance = 128;
-				int gesturePixels = (int)(_gestureRadius * RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16));
+				int gesturePixels = (int)(_gestureRadius * RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
 				if (gesturePixels > tolerance) {
 					_gestureRadius = 0;
 					keyboard_shortcut_handle_command(SHORTCUT_ZOOM_VIEW_IN);
@@ -730,8 +730,8 @@ int platform_get_cursor_pos(int* x, int* y)
 
 void platform_refresh_video()
 {
-	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
-	int height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16);
+	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+	int height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
 	
 	SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss ? "1" : "0");
 
@@ -830,8 +830,8 @@ static void platform_refresh_screenbuffer(int width, int height, int pitch)
 	RCT2_GLOBAL(0x009ABDF0, uint8) = 6;
 	RCT2_GLOBAL(0x009ABDF1, uint8) = 3;
 	RCT2_GLOBAL(0x009ABDF2, uint8) = 1;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, sint16) = 64;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, sint16) = 8;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) = (width >> 6) + 1;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, sint32) = (height >> 3) + 1;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, uint16) = 64;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, uint16) = 8;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) = (width >> 6) + 1;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, uint32) = (height >> 3) + 1;
 }

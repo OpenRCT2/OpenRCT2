@@ -131,8 +131,8 @@ void window_game_bottom_toolbar_open()
 	rct_window* window;
 
 	window = window_create(
-		0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - 32,
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16), 32,
+		0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 32,
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16), 32,
 		(uint32*)window_game_bottom_toolbar_events,
 		WC_BOTTOM_TOOLBAR,
 		WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_5
@@ -259,7 +259,7 @@ static void window_game_bottom_toolbar_invalidate()
 	colour_scheme_update(w);
 
 	// Anchor the middle and right panel to the right
-	x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
+	x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
 	w->width = x;
 	x--;
 	window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right = x;
