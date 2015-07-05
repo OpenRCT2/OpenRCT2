@@ -4460,64 +4460,74 @@ int ride_get_refund_price(int ride_id)
 {
 	uint8 oldpaused = RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8);
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = 0;
-	RCT2_GLOBAL(0x00F4413A, int) = 0;
-	for(int x = 0; x < 8192; x += 32){
-		for(int y = 0; y < 8192; y += 32){
-			int tile_idx = ((y * 256) + x) / 32;
-			rct_map_element* map_element = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx];
-			do{
-				if((map_element->type & MAP_ELEMENT_TYPE_MASK) == MAP_ELEMENT_TYPE_TRACK && map_element->properties.track.ride_index == ride_id){
-					int eax, ebx, ecx, edx, esi, edi, ebp;
-					eax = x;
-					ebx = ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) << 8) | 0x01;
-					ecx = y;
-					edx = map_element->properties.track.type;
-					edi = map_element->base_height * 8;
-					if(map_element->properties.track.type == 101){
-						edx = 2 << 8 | map_element->properties.track.ride_index;
-						int oldeax = eax;
-						int oldebx = ebx;
-						int oldecx = ecx;
-						int oldedx = edx;
+	RCT2_GLOBAL(0x00F4413A, money32) = 0;
 
-						ebx = oldebx;
-						ebx |= 0 << 0;
-						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_SET_MAZE_TRACK, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-						
-						ebx = oldebx;
-						ebx |= 1 << 8;
-						ecx = oldecx;
-						ecx += 16;
-						edx = oldedx;
-						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_SET_MAZE_TRACK, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	map_element_iterator it;
 
-						ebx = oldebx;
-						ebx |= 2 << 8;
-						eax = oldeax;
-						eax += 16;
-						ecx = oldecx;
-						ecx += 16;
-						edx = oldedx;
-						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_SET_MAZE_TRACK, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	map_element_iterator_begin(&it);
+	while (map_element_iterator_next(&it)) {
+		if (map_element_get_type(it.element) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
 
-						ebx = oldebx;
-						ebx |= 3 << 8;
-						eax = oldeax;
-						eax += 16;
-						ecx = oldecx;
-						edx = oldedx;
-						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_SET_MAZE_TRACK, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-					}else{
-						edx |= 0xFF << 8;
-						edx &= ((map_element->properties.track.sequence & 0xF) << 8) | 0xFF;
-						RCT2_GLOBAL(0x00F4413A, int) += game_do_command_p(GAME_COMMAND_REMOVE_TRACK, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-					}
-					y -= 32;
-					break;
-				}
-				map_element++;
-			}while(!((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
+		if (it.element->properties.track.ride_index != ride_id)
+			continue;
+
+		int x = it.x * 32, y = it.y * 32;
+		int z = it.element->base_height * 8;
+
+		uint8 rotation = it.element->type & MAP_ELEMENT_DIRECTION_MASK;
+		uint8 type = it.element->properties.track.type;
+
+		if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP){
+			RCT2_GLOBAL(0x00F4413A, money32) += game_do_command(
+				x,
+				GAME_COMMAND_FLAG_APPLY | (rotation << 8),
+				y,
+				type | ((it.element->properties.track.sequence & 0xF) << 8),
+				GAME_COMMAND_REMOVE_TRACK,
+				z,
+				0);
+			map_element_iterator_restart_for_tile(&it);
+			break;
 		}
+
+		RCT2_GLOBAL(0x00F4413A, money32) += game_do_command(
+			x,
+			GAME_COMMAND_FLAG_APPLY | (0 << 8),
+			y,
+			ride_id | (2 << 8),
+			GAME_COMMAND_SET_MAZE_TRACK,
+			z,
+			0);
+
+		RCT2_GLOBAL(0x00F4413A, money32) += game_do_command(
+			x,
+			GAME_COMMAND_FLAG_APPLY | (1 << 8),
+			y + 16,
+			ride_id | (2 << 8),
+			GAME_COMMAND_SET_MAZE_TRACK,
+			z,
+			0);
+
+		RCT2_GLOBAL(0x00F4413A, money32) += game_do_command(
+			x + 16,
+			GAME_COMMAND_FLAG_APPLY | (2 << 8),
+			y + 16,
+			ride_id | (2 << 8),
+			GAME_COMMAND_SET_MAZE_TRACK,
+			z,
+			0);
+
+		RCT2_GLOBAL(0x00F4413A, money32) += game_do_command(
+			x + 16,
+			GAME_COMMAND_FLAG_APPLY | (3 << 8),
+			y,
+			ride_id | (2 << 8),
+			GAME_COMMAND_SET_MAZE_TRACK,
+			z,
+			0);
+		map_element_iterator_restart_for_tile(&it);
+		break;
 	}
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = oldpaused;
 	return RCT2_GLOBAL(0x00F4413A, int);
