@@ -25,6 +25,7 @@
 #include "config.h"
 #include "editor.h"
 #include "game.h"
+#include "hook.h"
 #include "interface/window.h"
 #include "localisation/localisation.h"
 #include "network/http.h"
@@ -188,6 +189,8 @@ bool openrct2_initialise()
 		return false;
 
 	openrct2_copy_original_user_files_over();
+
+	addhook(0x006E732D, (int)gfx_set_dirty_blocks, 0, (int[]){EAX, EBX, EDX, EBP, END}, 0); // remove after all drawing is decompiled
 
 	Mixer_Init(NULL);
 	return true;
