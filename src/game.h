@@ -110,6 +110,7 @@ void game_reduce_game_speed();
 void game_load_or_quit_no_save_prompt();
 int game_load_sv6(SDL_RWops* rw);
 int game_load_save(const char *path);
+void game_load_init();
 void game_pause_toggle(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void pause_toggle();
 int save_game();
