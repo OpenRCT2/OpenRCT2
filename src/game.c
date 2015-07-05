@@ -233,6 +233,13 @@ void game_update()
 		numUpdates = clamp(1, numUpdates, 4);
 	}
 
+	if (gNetworkStatus == NETWORK_CLIENT) {
+		if (gNetworkServerTick - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >= 10) {
+			// make sure client doesn't fall behind the server too much
+			numUpdates += 10;
+		}
+	}
+
 	// Update the game one or more times
 	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
 		for (i = 0; i < numUpdates; i++) {
@@ -271,7 +278,7 @@ void game_update()
 	// the flickering frequency is reduced by 4, compared to the original
 	// it was done due to inability to reproduce original frequency
 	// and decision that the original one looks too fast
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, sint32) % 4 == 0)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) % 4 == 0)
 		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) ^= (1 << 15);
 
 	// Handle guest map flashing
@@ -303,8 +310,14 @@ void game_update()
 
 void game_logic_update()
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, sint32)++;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, sint32)++;
+	if (gNetworkStatus == NETWORK_CLIENT) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) == gNetworkServerTick) {
+			return;
+		}
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)++;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32)++;
 	RCT2_GLOBAL(0x009DEA66, sint16)++;
 	if (RCT2_GLOBAL(0x009DEA66, sint16) == 0)
 		RCT2_GLOBAL(0x009DEA66, sint16)--;
@@ -402,18 +415,18 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	}
 
 	if (sendPacket) {
-		network_packet packet;
-		packet.size = 8 * 4;
-		uint32 *args = (uint32*)&packet.data;
-		args[0] = command;
-		args[1] = *eax;
-		args[2] = *ebx;
-		args[3] = *ecx;
-		args[4] = *edx;
-		args[5] = *esi;
-		args[6] = *edi;
-		args[7] = *ebp;
-		network_send_packet(&packet);
+		network_packet* packet = network_alloc_packet(9 * 4);
+		uint32 *args = (uint32*)packet->data;
+		args[0] = NETWORK_COMMAND_GAMECMD;
+		args[1] = command;
+		args[2] = *eax;
+		args[3] = *ebx;
+		args[4] = *ecx;
+		args[5] = *edx;
+		args[6] = *esi;
+		args[7] = *edi;
+		args[8] = *ebp;
+		network_queue_packet(packet);
 
 		if (gNetworkStatus == NETWORK_CLIENT)
 			return MONEY32_UNDEFINED;
@@ -741,6 +754,9 @@ int game_load_sv6(SDL_RWops* rw)
 	reset_0x69EBE4();
 	openrct2_reset_object_tween_locations();
 	game_convert_strings_to_utf8();
+	if (gNetworkStatus == NETWORK_SERVER) {
+		network_send_map();
+	}
 	return 1;
 }
 
@@ -750,8 +766,6 @@ int game_load_sv6(SDL_RWops* rw)
  */
 int game_load_save(const char *path)
 {
-	rct_window *mainWindow;
-
 	log_verbose("loading saved game, %s", path);
 
 	strcpy((char*)0x0141EF68, path);
@@ -775,6 +789,14 @@ int game_load_save(const char *path)
 		return 0;
 	}
 	SDL_RWclose(rw);
+
+	game_load_init();
+	return 1;
+}
+
+void game_load_init()
+{
+	rct_window *mainWindow;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
 	viewport_init_all();
@@ -814,7 +836,6 @@ int game_load_save(const char *path)
 	gGameSpeed = 1;
 
 	scenario_set_filename((char*)0x0135936C);
-	return 1;
 }
 
 /*
