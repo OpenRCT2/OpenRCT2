@@ -42,7 +42,6 @@
       <UniqueIdentifier>{51e38783-5334-464c-8f90-61d725dc8013}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Network">
-<<<<<<< HEAD
       <UniqueIdentifier>{ae88ed08-902b-4167-a78c-9b521ce67749}</UniqueIdentifier>
     </Filter>
     <Filter Include="Test">
@@ -53,9 +52,6 @@
     </Filter>
     <Filter Include="Test\Ride">
       <UniqueIdentifier>{c6b9c169-ff2a-41df-9b1c-47d15763c3e2}</UniqueIdentifier>
-=======
-      <UniqueIdentifier>{80a7676f-85a7-4e46-80d8-305c86d35576}</UniqueIdentifier>
->>>>>>> add basic server connection functions
     </Filter>
   </ItemGroup>
   <ItemGroup>
