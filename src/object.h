@@ -22,6 +22,7 @@
 #define _OBJECT_H_
 
 #include "common.h"
+#include "platform/platform.h"
 
 // First 0xF of rct_object_entry->flags
 typedef enum{
@@ -94,8 +95,8 @@ extern rct_object_entry_group object_entry_groups[];
 int object_load_entry(const char *path, rct_object_entry *outEntry);
 void object_list_load();
 void set_load_objects_fail_reason();
-int object_read_and_load_entries(FILE *file);
-int object_load_packed(FILE *file);
+int object_read_and_load_entries(SDL_RWops* rw);
+int object_load_packed(SDL_RWops* rw);
 void object_unload_all();
 
 int check_object_entry(rct_object_entry *entry);
@@ -109,7 +110,7 @@ int object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
 int object_calculate_checksum(const rct_object_entry *entry, const char *data, int dataLength);
 int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
 rct_object_entry *object_get_next(rct_object_entry *entry);
-int write_object_file(FILE *file, rct_object_entry* entry);
+int write_object_file(SDL_RWops* rw, rct_object_entry* entry);
 void reset_loaded_objects();
 int find_object_in_entry_group(rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
 void object_create_identifier_name(uint8* string_buffer, rct_object_entry* object);

@@ -377,7 +377,11 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 	// Save the scenario
 	parkFlagsBackup = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_18;
-	success = scenario_save(path, gConfigGeneral.save_plugin_data ? 3 : 2);
+	SDL_RWops* rw = platform_sdl_rwfromfile(path, "wb+");
+	if (rw != NULL) {
+		success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2);
+		SDL_RWclose(rw);
+	}
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = parkFlagsBackup;
 
 	if (success) {

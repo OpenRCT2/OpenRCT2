@@ -593,32 +593,12 @@ static void load_landscape()
  * 
  *  rct2: 0x00675E1B
  */
-int game_load_sv6(const char *path)
+int game_load_sv6(SDL_RWops* rw)
 {
-	FILE *file;
 	int i, j;
 
-	log_verbose("loading saved game, %s", path);
-
-	strcpy((char*)0x0141EF68, path);
-	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, path);
-
-	strcpy(gScenarioSaveName, path_get_filename(path));
-	path_remove_extension(gScenarioSaveName);
-
-	file = fopen(path, "rb");
-	if (file == NULL) {
-		log_error("unable to open %s", path);
-
-		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
-		return 0;
-	}
-
-	if (!sawyercoding_validate_checksum(file)) {
-		fclose(file);
-
-		log_error("invalid checksum, %s", path);
+	if (!sawyercoding_validate_checksum(rw)) {
+		log_error("invalid checksum");
 
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
@@ -629,31 +609,29 @@ int game_load_sv6(const char *path)
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
 	// Read first chunk
-	sawyercoding_read_chunk(file, (uint8*)s6Header);
+	sawyercoding_read_chunk(rw, (uint8*)s6Header);
 	if (s6Header->type == S6_TYPE_SAVEDGAME) {
 		// Read packed objects
 		if (s6Header->num_packed_objects > 0) {
 			j = 0;
 			for (i = 0; i < s6Header->num_packed_objects; i++)
-				j += object_load_packed(file);
+				j += object_load_packed(rw);
 			if (j > 0)
 				object_list_load();
 		}
 	}
 
-	uint8 load_success = object_read_and_load_entries(file);
+	uint8 load_success = object_read_and_load_entries(rw);
 
 	// Read flags (16 bytes)
-	sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
+	sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
 
 	// Read map elements
 	memset((void*)RCT2_ADDRESS_MAP_ELEMENTS, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
-	sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
+	sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
 
 	// Read game data, including sprites
-	sawyercoding_read_chunk(file, (uint8*)0x010E63B8);
-
-	fclose(file);
+	sawyercoding_read_chunk(rw, (uint8*)0x010E63B8);
 
 	if (!load_success){
 		set_load_objects_fail_reason();
@@ -683,11 +661,29 @@ int game_load_save(const char *path)
 {
 	rct_window *mainWindow;
 
-	if (!game_load_sv6(path)) {
-		title_load();
-		rct2_endupdate();
+	log_verbose("loading saved game, %s", path);
+
+	strcpy((char*)0x0141EF68, path);
+	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, path);
+
+	strcpy(gScenarioSaveName, path_get_filename(path));
+	path_remove_extension(gScenarioSaveName);
+
+	SDL_RWops* rw = platform_sdl_rwfromfile(path, "rb");
+	if (rw == NULL) {
+		log_error("unable to open %s", path);
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
 	}
+
+	if (!game_load_sv6(rw)) {
+		title_load();
+		rct2_endupdate();
+		SDL_RWclose(rw);
+		return 0;
+	}
+	SDL_RWclose(rw);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
 	viewport_init_all();
@@ -803,7 +799,7 @@ static int show_save_game_dialog(char *resultPath)
 	return result;
 }
 
-char save_game()
+int save_game()
 {
 	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, gScenarioSaveName);
 	return 0;
@@ -818,13 +814,17 @@ char save_game()
 	// Ensure path has .SV6 extension
 	path_set_extension(path, ".SV6");
 	
-	if (scenario_save(path, gConfigGeneral.save_plugin_data ? 1 : 0)) {
-		game_do_command(0, 1047, 0, -1, GAME_COMMAND_SET_RIDE_APPEARANCE, 0, 0);
-		gfx_invalidate_screen();
-		return 1;
-	} else {
-		return 0;
+	SDL_RWops* rw = platform_sdl_rwfromfile(path, "wb+");
+	if (rw != NULL) {
+		int success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 1 : 0);
+		SDL_RWclose(rw);
+		if (success) {
+			game_do_command(0, 1047, 0, -1, GAME_COMMAND_SET_RIDE_APPEARANCE, 0, 0);
+			gfx_invalidate_screen();
+			return 1;
+		}
 	}
+	return 0;
 }
 
 void game_autosave()
@@ -834,7 +834,14 @@ void game_autosave()
 	platform_get_user_directory(path, "save");
 	strcat(path, "autosave.sv6");
 
-	scenario_save(path, 0x80000000);
+	strcpy(gScenarioSaveName, path_get_filename(path));
+	path_remove_extension(gScenarioSaveName);
+
+	SDL_RWops* rw = platform_sdl_rwfromfile(path, "wb+");
+	if (rw != NULL) {
+		scenario_save(rw, 0x80000000);
+		SDL_RWclose(rw);
+	}
 }
 
 /**
