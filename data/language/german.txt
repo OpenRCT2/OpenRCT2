@@ -3487,7 +3487,7 @@ STR_5150    :Aktiviere Debugging-Tools
 STR_5151    :.
 STR_5152    :,
 STR_5153    :Themen bearbeiten...
-STR_5154    :Anzeige über Hardware durchführen
+STR_5154    :Anzeige durch Hardware
 STR_5155    :Testen unfertiger Bahnen erlauben
 STR_5156    :{SMALLFONT}{BLACK}Erlaubt das Testen der meisten Bahnarten, selbst wenn die Strecke nicht fertiggestellt ist, das gilt nicht für den Streckenmodus mit Blockbereichen
 STR_5157    :Alle Preise freischalten
@@ -3787,3 +3787,4 @@ STR_5450    :Spielgeschwindigkeit erhöhen
 STR_5451    :Cheatfenster anzeigen
 STR_5452    :Symbolleiste ein-/ausblenden
 STR_5453    :Andere Attraktion auswählen
+STR_5454    :FPS-Limit aufheben
