@@ -3708,11 +3708,11 @@ void sub_6B5952(int rideIndex)
 		if (xy == 0xFFFF)
 			continue;
 
-		int x = xy & 0xFF;
-		int y = xy >> 8;
+		int x = (xy & 0xFF) * 32;
+		int y = (xy >> 8) * 32;
 		int z = ride->station_heights[i];
 
-		rct_map_element *mapElement = map_get_first_element_at(x, y);
+		rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
 		do {
 			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
 				continue;
@@ -3721,7 +3721,7 @@ void sub_6B5952(int rideIndex)
 
 			int direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 			sub_6A742F(rideIndex, i, x, y, mapElement, direction ^ 2);
-		} while (map_element_is_last_for_tile(mapElement++));
+		} while (!map_element_is_last_for_tile(mapElement++));
 	}
 }
 
