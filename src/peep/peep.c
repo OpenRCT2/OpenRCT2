@@ -1386,7 +1386,7 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ri
 		else{
 			ride->total_profit += ride->price;
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
-			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 20;
+			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS * 4;
 			peep_spend_money(peep, &peep->paid_on_rides, ride->price);
 		}
 	}
@@ -5351,7 +5351,7 @@ static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 
 	window_invalidate_by_number(WC_PEEP, peep->sprite_index);
 
 	RCT2_GLOBAL(0x00141F568, uint8) = RCT2_GLOBAL(0x0013CA740, uint8);
-	finance_payment(-amount, RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint32));
+	finance_payment(-amount, RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) / 4);
 
 	sound_play_panned(SOUND_PURCHASE, 0x8001, peep->x, peep->y, peep->z);
 }
