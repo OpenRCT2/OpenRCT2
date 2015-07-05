@@ -3999,8 +3999,8 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 	const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
 	trackBlock += mapElement->properties.track.sequence & 0xF;
 
-	
-	switch (mapElement->type & MAP_ELEMENT_DIRECTION_MASK){
+	uint8 originDirection = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+	switch (originDirection){
 	case 0:
 		originX -= trackBlock->x;
 		originY -= trackBlock->y;
@@ -4027,7 +4027,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 	for (; trackBlock->index != 255; trackBlock++){
 		sint16 x = originX, y = originY, z = originZ;
 
-		switch (mapElement->type & MAP_ELEMENT_DIRECTION_MASK){
+		switch (originDirection){
 		case 0:
 			x += trackBlock->x;
 			y += trackBlock->y;
