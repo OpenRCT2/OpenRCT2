@@ -124,11 +124,11 @@ void window_error_open(rct_string_id title, rct_string_id message)
 	window_error_widgets[WIDX_BACKGROUND].bottom = height;
 
 	x = RCT2_GLOBAL(0x0142406C, sint32) - (width / 2);
-	x = clamp(0, x, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16));
+	x = clamp(0, x, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
 
 	y = RCT2_GLOBAL(0x01424070, sint32) + 26;
 	y = max(22, y);
-	maxY = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - height;
+	maxY = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height;
 	if (y > maxY) {
 		y = y - height - 40;
 		y = min(y, maxY);

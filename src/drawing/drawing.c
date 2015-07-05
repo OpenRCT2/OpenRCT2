@@ -31,7 +31,8 @@
 int gLastDrawStringX;
 int gLastDrawStringY;
 
-uint8 _screenDirtyBlocks[5120];
+uint8* _screenDirtyBlocks = NULL;
+int _screenDirtyBlocksSize = 0;
 
 #define MAX_RAIN_PIXELS 0xFFFE
 uint32 rainPixels[MAX_RAIN_PIXELS];
@@ -251,9 +252,22 @@ void gfx_invalidate_tile_if_zoomed(int x, int y, int base_height, int clearance_
  */
 void gfx_invalidate_screen()
 {
-	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
-	int height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16);
+	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+	int height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
 	gfx_set_dirty_blocks(0, 0, width, height);
+}
+
+uint8* gfx_get_dirty_blocks()
+{
+	int size = RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, uint32);
+	if (_screenDirtyBlocksSize != size) {
+		if (_screenDirtyBlocks) {
+			_screenDirtyBlocks = realloc(_screenDirtyBlocks, size);
+		} else {
+			_screenDirtyBlocks = malloc(size);
+		}
+	}
+	return _screenDirtyBlocks;
 }
 
 /**
@@ -267,12 +281,12 @@ void gfx_invalidate_screen()
 void gfx_set_dirty_blocks(int left, int top, int right, int bottom)
 {
 	int x, y;
-	uint8 *screenDirtyBlocks = RCT2_ADDRESS(0x00EDE408, uint8);
+	uint8 *screenDirtyBlocks = gfx_get_dirty_blocks();
 
 	left = max(left, 0);
 	top = max(top, 0);
-	right = min(right, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16));
-	bottom = min(bottom, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16));
+	right = min(right, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
+	bottom = min(bottom, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16));
 
 	if (left >= right)
 		return;
@@ -289,7 +303,7 @@ void gfx_set_dirty_blocks(int left, int top, int right, int bottom)
 
 	for (y = top; y <= bottom; y++)
 		for (x = left; x <= right; x++)
-			screenDirtyBlocks[y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) + x] = 0xFF;
+			screenDirtyBlocks[y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) + x] = 0xFF;
 }
 
 /**
@@ -298,24 +312,24 @@ void gfx_set_dirty_blocks(int left, int top, int right, int bottom)
  */
 void gfx_draw_all_dirty_blocks()
 {
-	int x, y, xx, yy, columns, rows;
-	uint8 *screenDirtyBlocks = RCT2_ADDRESS(0x00EDE408, uint8);
+	unsigned int x, y, xx, yy, columns, rows;
+	uint8 *screenDirtyBlocks = gfx_get_dirty_blocks();
 
-	for (x = 0; x < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32); x++) {
-		for (y = 0; y < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, sint32); y++) {
-			if (screenDirtyBlocks[y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) + x] == 0)
+	for (x = 0; x < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32); x++) {
+		for (y = 0; y < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, uint32); y++) {
+			if (screenDirtyBlocks[y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) + x] == 0)
 				continue;
 
 			// Determine columns
-			for (xx = x; xx < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32); xx++)
-				if (screenDirtyBlocks[y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) + xx] == 0)
+			for (xx = x; xx < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32); xx++)
+				if (screenDirtyBlocks[y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) + xx] == 0)
 					break;
 			columns = xx - x;
 
 			// Check rows
-			for (yy = y; yy < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, sint32); yy++)
+			for (yy = y; yy < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, uint32); yy++)
 				for (xx = x; xx < x + columns; xx++)
-					if (screenDirtyBlocks[yy * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) + xx] == 0)
+					if (screenDirtyBlocks[yy * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) + xx] == 0)
 						goto endRowCheck;
 			
 		endRowCheck:
@@ -328,18 +342,18 @@ void gfx_draw_all_dirty_blocks()
 static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows)
 {
 	int left, top, right, bottom;
-	uint8 *screenDirtyBlocks = RCT2_ADDRESS(0x00EDE408, uint8);
+	uint8 *screenDirtyBlocks = gfx_get_dirty_blocks();
 
 	// Unset dirty blocks
 	for (top = y; top < y + rows; top++)
 		for (left = x; left < x + columns; left++)
-			screenDirtyBlocks[top * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) + left] = 0;
+			screenDirtyBlocks[top * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) + left] = 0;
 
 	// Determine region in pixels
-	left = max(0, x * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, sint16));
-	top = max(0, y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, sint16));
-	right = min(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16), left + (columns * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, sint16)));
-	bottom = min(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16), top + (rows * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, sint16)));
+	left = max(0, x * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, uint16));
+	top = max(0, y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, uint16));
+	right = min(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16), left + (columns * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, uint16)));
+	bottom = min(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16), top + (rows * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, uint16)));
 	if (right <= left || bottom <= top)
 		return;
 

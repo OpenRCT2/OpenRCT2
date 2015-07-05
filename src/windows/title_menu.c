@@ -93,7 +93,7 @@ void window_title_menu_open()
 	rct_window* window;
 
 	window = window_create(
-		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 328) / 2, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - 142,
+		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 328) / 2, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 142,
 		328, 82,
 		(uint32*)window_title_menu_events,
 		WC_TITLE_MENU,

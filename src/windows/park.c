@@ -1754,8 +1754,8 @@ void window_park_objective_open()
 	window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_OBJECTIVE];
 	window->event_handlers = (uint32*)window_park_objective_events;
 	window_init_scroll_widgets(window);
-	window->x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) / 2 - 115;
-	window->y = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) / 2 - 87;
+	window->x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2 - 115;
+	window->y = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) / 2 - 87;
 	window_invalidate(window);
 }
 
