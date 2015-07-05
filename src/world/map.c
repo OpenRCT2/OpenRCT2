@@ -60,7 +60,6 @@ static void map_clear_scenery_table_reset()
 	for(int i = 0; i < RCT2_MAP_CLEAR_SCENERY_TABLE_SIZE; ++i){
 		gMapClearSceneryTable[i].top = -1;
 	}
-	gMapClearSceneryEnableMemos = 1;
 	gMapClearSceneryNodeCount = 0;
 }
 
