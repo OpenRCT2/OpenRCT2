@@ -3478,7 +3478,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		return MONEY32_UNDEFINED;
 	}
 	if (!(flags & (1 << 3))) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 			return MONEY32_UNDEFINED;
 		}
@@ -3637,7 +3637,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			}
 		}
 
-		if (!map_is_location_owned(x, y, z)) {
+		if (!map_is_location_owned(x, y, z) && !gCheatsSandboxMode) {
 			return MONEY32_UNDEFINED;
 		}
 
@@ -3946,7 +3946,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 		break;
 	}
 
-	if (!(flags & (1 << 3)) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0){
+	if (!(flags & (1 << 3)) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode){
 		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 2214;
 		return MONEY32_UNDEFINED;
 	}
