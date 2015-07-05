@@ -168,9 +168,15 @@ static int title_load_park(const char *path)
 	rct_window* w;
 	int successfulLoad;
 
-	successfulLoad = _strcmpi(path_get_extension(path), ".sv6") == 0 ?
-		game_load_sv6(path) :
-		scenario_load(path);
+	if (_strcmpi(path_get_extension(path), ".sv6") == 0) {
+		SDL_RWops* rw = platform_sdl_rwfromfile(path, "rb");
+		if (rw != NULL) {
+			successfulLoad = game_load_sv6(rw);
+			SDL_RWclose(rw);
+		}
+	} else {
+		successfulLoad = scenario_load(path);
+	}
 
 	if (!successfulLoad)
 		return 0;

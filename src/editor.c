@@ -339,16 +339,16 @@ static int editor_load_landscape_from_sc4(const char *path)
 static int editor_read_s6(const char *path)
 {
 	int i, j;
-	FILE *file;
+	SDL_RWops* rw;
 	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
 	log_verbose("loading landscape, %s", path);
 
-	file = fopen(path, "rb");
-	if (file != NULL) {
-		if (!sawyercoding_validate_checksum(file)) {
-			fclose(file);
+	rw = platform_sdl_rwfromfile(path, "rb");
+	if (rw != NULL) {
+		if (!sawyercoding_validate_checksum(rw)) {
+			SDL_RWclose(rw);
 			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
 			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 
@@ -357,10 +357,10 @@ static int editor_read_s6(const char *path)
 		}
 
 		// Read first chunk
-		sawyercoding_read_chunk(file, (uint8*)s6Header);
+		sawyercoding_read_chunk(rw, (uint8*)s6Header);
 		if (s6Header->type == S6_TYPE_SCENARIO) {
 			// Read second chunk
-			sawyercoding_read_chunk(file, (uint8*)s6Info);
+			sawyercoding_read_chunk(rw, (uint8*)s6Info);
 
 			if (s6Info->var_000 == 255)
 				s6Info->var_000 = 1;
@@ -374,50 +374,50 @@ static int editor_read_s6(const char *path)
 		if (s6Header->num_packed_objects > 0) {
 			j = 0;
 			for (i = 0; i < s6Header->num_packed_objects; i++)
-				j += object_load_packed(file);
+				j += object_load_packed(rw);
 			if (j > 0)
 				object_list_load();
 		}
 
-		uint8 load_success = object_read_and_load_entries(file);
+		uint8 load_success = object_read_and_load_entries(rw);
 
 		// Read flags (16 bytes). Loads:
 		//	RCT2_ADDRESS_CURRENT_MONTH_YEAR
 		//	RCT2_ADDRESS_CURRENT_MONTH_TICKS
 		//	RCT2_ADDRESS_SCENARIO_TICKS
-		sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
+		sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
 
 		// Read map elements
 		memset((void*)RCT2_ADDRESS_MAP_ELEMENTS, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
-		sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
+		sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
 
 		// Read game data, including sprites
-		sawyercoding_read_chunk(file, (uint8*)0x010E63B8);
+		sawyercoding_read_chunk(rw, (uint8*)0x010E63B8);
 
 		if (s6Header->type == S6_TYPE_SCENARIO) {
 			// Read number of guests in park and something else
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_GUESTS_IN_PARK);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_GUESTS_IN_PARK);
 
 			// Read ?
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_LAST_GUESTS_IN_PARK);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_LAST_GUESTS_IN_PARK);
 
 			// Read park rating
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_PARK_RATING);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_PARK_RATING);
 
 			// Read ?
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES);
 
 			// Read ?
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_EXPENDITURE);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_EXPENDITURE);
 
 			// Read ?
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_PARK_VALUE);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_PARK_VALUE);
 
 			// Read more game data, including research items and rides
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_COMPLETED_COMPANY_VALUE);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_COMPLETED_COMPANY_VALUE);
 		}
 
-		fclose(file);
+		SDL_RWclose(rw);
 		if (!load_success){
 			log_error("failed to load all entries.");
 			set_load_objects_fail_reason();
