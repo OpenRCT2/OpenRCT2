@@ -57,4 +57,8 @@ void sub_6A742F(int rideIndex, int entranceIndex, int x, int y, rct_map_element 
 
 void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement);
 
+bool footpath_is_connected_to_map_edge(int x, int y, int z, int direction, int flags);
+bool footpath_element_is_sloped(rct_map_element *mapElement);
+int footpath_element_get_slope_direction(rct_map_element *mapElement);
+
 #endif

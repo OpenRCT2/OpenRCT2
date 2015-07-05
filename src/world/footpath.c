@@ -731,3 +731,156 @@ void sub_6A759F()
 		}
 	}
 }
+
+static void loc_69ADBD(int x, int y, rct_map_element *pathElement)
+{
+	int ownershipUnk = 0;
+	int z = pathElement->base_height;
+	rct_map_element *surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
+	if (surfaceElement->base_height |= z) {
+		z -= 2;
+		if (surfaceElement->base_height |= z) {
+			ownershipUnk = (surfaceElement->properties.surface.ownership & 0xCF) >> 4;
+		}
+	}
+	map_buy_land_rights(x, y, x, y, 6, 1);
+}
+
+bool get_next_direction(int edges, int *direction)
+{
+	int index = bitscanforward(edges);
+	if (index == -1)
+		return false;
+
+	*direction = index;
+	return true;
+}
+
+/**
+ *
+ *  rct2: 0x0069AC1A
+ */
+bool footpath_is_connected_to_map_edge_recurse(
+	int x, int y, int z, int direction, int flags,
+	int level, int distanceFromJunction, int junctionTolerance
+) {
+	// int eax, ebx, ecx, edx, esi, edi, ebp;
+	// RCT2_GLOBAL(0x00F1AEDC, uint8) = 16;
+	// RCT2_GLOBAL(0x00F1AEDD, uint8) = 0;
+	// RCT2_GLOBAL(0x00F1AEDE, uint16) = 0;
+	// RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
+	// dh
+	// di
+	// edx = 0;
+	// edi = 0xFFFF;
+	// RCT2_CALLFUNC_X(0x0069AC1A, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	// return edi & 0xFFFF;
+
+	rct_map_element *mapElement;
+	int edges, slopeDirection;
+
+	x += TileDirectionDelta[direction].x;
+	y += TileDirectionDelta[direction].y;
+	if (++level > 250)
+		return false;
+
+	// Check if we are at edge of map
+	if (x < 32 || y < 32)
+		return true;
+	if (x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16))
+		return true;
+
+	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+			continue;
+
+		if (footpath_element_is_sloped(mapElement)) {
+			// loc_69AD78
+			slopeDirection = footpath_element_get_slope_direction(mapElement);
+			if (slopeDirection != direction) {
+				if ((slopeDirection ^ 2) != direction) continue;
+				if (mapElement->base_height + 2 != z) continue;
+
+				goto loc_69AD9F;
+			}
+		}
+
+		if (mapElement->base_height != z)
+			continue;
+
+		loc_69AD9F:
+			if (mapElement->type & RCT2_GLOBAL(0x00F1AEE0, uint8)) continue;
+
+			flags |= 0x40;
+			if (flags & 0x20) {
+				loc_69ADBD(x, y, mapElement);
+			}
+			edges = mapElement->properties.path.edges & 0x0F;
+			direction ^= 2;
+			if ((mapElement + 1)->type == 28) {
+				// goto loc_69AC9C;
+			}
+			if ((mapElement + 1)->base_height == 28) {
+				// goto loc_69AD00;
+			}
+			goto loc_69AE22;
+	} while (!map_element_is_last_for_tile(mapElement++));
+	return false;
+
+loc_69AE22:
+	// Exclude direction we came from
+	z = mapElement->base_height;
+	edges &= ~(1 << direction);
+
+	// Find next direction to go
+	if (!get_next_direction(edges, &direction))
+		return false;
+
+	edges &= ~(1 << direction);
+	if (edges == 0) {
+		// Only possible direction to go
+		if (footpath_element_is_sloped(mapElement) && footpath_element_get_slope_direction(mapElement) == direction) {
+			z += 2;
+		}
+		return footpath_is_connected_to_map_edge_recurse(
+			x, y, z, direction, flags,
+			level, distanceFromJunction + 1, junctionTolerance
+		);
+	} else {
+		// We have reached a junction
+		if (distanceFromJunction != 0) {
+			junctionTolerance--;
+		}
+		junctionTolerance--;
+		if (junctionTolerance < 0)
+			return false;
+
+		do {
+			edges &= ~(1 << direction);
+			if (footpath_element_is_sloped(mapElement) && footpath_element_get_slope_direction(mapElement) == direction) {
+				z += 2;
+			}
+			if (footpath_is_connected_to_map_edge_recurse(x, y, z, direction, flags, level, 0, junctionTolerance)) {
+				return true;
+			}
+		} while (get_next_direction(edges, &direction));
+
+		return false;
+	}
+}
+
+bool footpath_is_connected_to_map_edge(int x, int y, int z, int direction, int flags)
+{
+	footpath_is_connected_to_map_edge_recurse(x, y, z, direction, flags, 0, 0, 12);
+}
+
+bool footpath_element_is_sloped(rct_map_element *mapElement)
+{
+	return mapElement->properties.path.type & 4;
+}
+
+int footpath_element_get_slope_direction(rct_map_element *mapElement)
+{
+	return mapElement->properties.path.type & 3;
+}
