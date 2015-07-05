@@ -533,8 +533,8 @@ bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 ride
 
 		outTrackBeginEnd->begin_z = mapElement->base_height * 8;
 		outTrackBeginEnd->begin_z +=
-			nextTrackBlock->z -
-			get_track_def_from_ride(ride, mapElement->properties.track.type)->z;
+			get_track_def_from_ride(ride, mapElement->properties.track.type)->z -
+			nextTrackBlock->z;
 
 		outTrackBeginEnd->begin_direction = nextRotation;
 		outTrackBeginEnd->end_direction = RCT2_GLOBAL(0x00F441D3, uint8) ^ (1 << 1);
