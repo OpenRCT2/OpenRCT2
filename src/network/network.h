@@ -27,9 +27,13 @@
 
 #include "../common.h"
 
-typedef struct {
+typedef struct network_packet network_packet;
+
+typedef struct network_packet {
 	uint16 size;
-	uint8 data[128];
+	uint8* data;
+	int read;
+	network_packet* next;
 } network_packet;
 
 #define NETWORK_DEFAULT_PORT 11753
@@ -43,13 +47,23 @@ enum {
 enum {
 	NETWORK_SUCCESS,
 	NETWORK_NO_DATA,
+	NETWORK_MORE_DATA,
 	NETWORK_DISCONNECTED
+};
+
+enum {
+	NETWORK_COMMAND_AUTH,
+	NETWORK_COMMAND_MAP,
+	NETWORK_COMMAND_CHAT,
+	NETWORK_COMMAND_GAMECMD,
+	NETWORK_COMMAND_TICK
 };
 
 extern int gNetworkStart;
 extern char gNetworkStartHost[128];
 extern int gNetworkStartPort;
 extern int gNetworkStatus;
+extern uint32 gNetworkServerTick;
 
 int network_init();
 void network_close();
@@ -59,7 +73,11 @@ int network_begin_server(int port);
 void network_end_server();
 
 void network_update();
-void network_send_packet(network_packet *packet);
+network_packet* network_alloc_packet(int size);
+void network_queue_packet(network_packet *packet);
+
+void network_send_tick();
+void network_send_map();
 
 void network_open_chat_box();
 

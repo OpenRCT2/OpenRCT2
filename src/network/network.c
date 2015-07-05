@@ -26,6 +26,7 @@
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../management/news_item.h"
+#include "../scenario.h"
 #include "network.h"
 
 #pragma comment(lib, "Ws2_32.lib")
@@ -34,14 +35,22 @@ int gNetworkStart = NETWORK_NONE;
 char gNetworkStartHost[128];
 int gNetworkStartPort = NETWORK_DEFAULT_PORT;
 int gNetworkStatus = NETWORK_NONE;
+uint32 gNetworkServerTick = 0;
 
+static network_packet* _packetQueue = NULL;
 static int _wsaInitialised = 0;
 static WSADATA _wsaData;
 static SOCKET _serverSocket;
 static SOCKET _clientSocket;
+static network_packet _inboundPacket;
+static char* _chunkBuffer = NULL;
 
-static int network_get_next_packet(network_packet *outPacket);
+static int network_read_next_packet(network_packet *outPacket);
 static void network_process_packet(network_packet *packet);
+static void network_init_packet(network_packet* packet, int size);
+static void network_close_packet(network_packet *packet);
+static int network_send_packet(network_packet *packet);
+static void network_send_queued_packets();
 
 int network_init()
 {
@@ -53,6 +62,8 @@ int network_init()
 		}
 		_wsaInitialised = 1;
 	}
+
+	network_init_packet(&_inboundPacket, 0);
 
 	return 1;
 }
@@ -93,6 +104,8 @@ int network_begin_client(const char *host, int port)
 	if (connect(_serverSocket, (SOCKADDR*)&serverAddress, sizeof(SOCKADDR_IN)) != 0) {
 		log_error("Unable to connect to host.");
 		return 0;
+	} else {
+		printf("Connected to server!\n");
 	}
 
 	iMode = 1;
@@ -174,7 +187,7 @@ void network_update()
 {
 	SOCKET socket;
 	int packetStatus;
-	network_packet packet;
+	static uint32 lastTickUpdate = 0;
 
 	if (gNetworkStatus == NETWORK_NONE)
 		return;
@@ -182,8 +195,9 @@ void network_update()
 	socket = gNetworkStatus == NETWORK_CLIENT ? _serverSocket : _clientSocket;
 
 	do {
-		packetStatus = network_get_next_packet(&packet);
-		if (packetStatus == NETWORK_DISCONNECTED) {
+		packetStatus = network_read_next_packet(&_inboundPacket);
+		switch(packetStatus) {
+		case NETWORK_DISCONNECTED:
 			network_print_error();
 			if (gNetworkStatus == NETWORK_CLIENT) {
 				network_end_client();
@@ -194,31 +208,69 @@ void network_update()
 				printf("client disconnected...\n");
 				return;
 			}
-		} else if (packetStatus == NETWORK_SUCCESS) {
-			network_process_packet(&packet);
+			break;
+		case NETWORK_SUCCESS:
+			// done reading in packet
+			network_process_packet(&_inboundPacket);
+			network_close_packet(&_inboundPacket);
+			network_init_packet(&_inboundPacket, 0); // initialize the packet struct to be used again
+			break;
+		case NETWORK_MORE_DATA:
+			// more data required to be read
+			break;
+		case NETWORK_NO_DATA:
+			break;
 		}
-	} while (packetStatus == NETWORK_SUCCESS);
+	} while (packetStatus == NETWORK_MORE_DATA || packetStatus == NETWORK_SUCCESS);
+
+	if (gNetworkStatus == NETWORK_SERVER) {
+		if (SDL_GetTicks() - lastTickUpdate >= 100) {
+			lastTickUpdate = SDL_GetTicks();
+			network_send_tick();
+		}
+	}
+
+	network_send_queued_packets();
 }
 
-static int network_get_next_packet(network_packet *outPacket)
+static int network_read_next_packet(network_packet *packet)
 {
 	SOCKET socket;
-	int readBytes;
 
 	socket = gNetworkStatus == NETWORK_CLIENT ? _serverSocket : _clientSocket;
 
-	readBytes = recv(socket, (char*)&outPacket->size, sizeof(outPacket->size), 0);
-	if (readBytes == SOCKET_ERROR && WSAGetLastError() != WSAEWOULDBLOCK)
-		return NETWORK_DISCONNECTED;
-	
-	if (readBytes != sizeof(outPacket->size))
-		return NETWORK_NO_DATA;
-
-	readBytes = recv(socket, (char*)&outPacket->data, outPacket->size, 0);
-	if (readBytes != outPacket->size)
-		return NETWORK_NO_DATA;
-
-	return NETWORK_SUCCESS;
+ 	if (packet->read < sizeof(packet->size)) {
+		// read packet size
+		int readBytes = recv(socket, &((char*)&packet->size)[packet->read], sizeof(packet->size) - packet->read, 0);
+		if (readBytes == SOCKET_ERROR || readBytes == 0) {
+			if (WSAGetLastError() != WSAEWOULDBLOCK) {
+				return NETWORK_DISCONNECTED;
+			} else {
+				return NETWORK_NO_DATA; 
+			}
+		}
+		packet->read += readBytes;
+	} else {
+		// read packet data
+		if (!packet->data) {
+			packet->size = ntohs(packet->size);
+			packet->data = malloc(packet->size);
+		}
+		int dataread = packet->read - sizeof(packet->size);
+		int readBytes = recv(socket, &packet->data[dataread], packet->size - dataread, 0);
+		if (readBytes == SOCKET_ERROR || readBytes == 0) {
+			if (WSAGetLastError() != WSAEWOULDBLOCK) {
+				return NETWORK_DISCONNECTED;
+			} else {
+				return NETWORK_NO_DATA;
+			}
+		}
+		packet->read += readBytes;
+		if (packet->read == packet->size + sizeof(packet->size)) {
+			return NETWORK_SUCCESS;
+		}
+	}
+	return NETWORK_MORE_DATA;
 }
 
 static void network_process_packet(network_packet *packet)
@@ -227,39 +279,169 @@ static void network_process_packet(network_packet *packet)
 	int command;
 	rct_news_item newsItem;
 
-	args = (uint32*)&packet->data;
+	args = (uint32*)packet->data;
 	command = args[0];
-
 	switch (command) {
-	case 700:
-		newsItem.type = NEWS_ITEM_BLANK;
-		newsItem.flags = 1;
-		newsItem.assoc = 0;
-		newsItem.ticks = 0;
-		newsItem.month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
-		newsItem.day = ((days_in_month[(newsItem.month_year & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16) + 1;
-		newsItem.colour = FORMAT_TOPAZ;
-		strcpy(newsItem.text, packet->data + 4);
-		news_item_add_to_queue_custom(&newsItem);
-		break;
-	default:
-		if (gNetworkStatus == NETWORK_CLIENT)
-			command |= (1 << 31);
+		case NETWORK_COMMAND_AUTH:{
 
-		game_do_command_p(command, &args[1], &args[2], &args[3], &args[4], &args[5], &args[6], &args[7]);
-		break;
+		}break;
+		case NETWORK_COMMAND_MAP:{
+			uint32 size = args[1];
+			uint32 offset = args[2];
+			if (!_chunkBuffer) {
+				_chunkBuffer = malloc(0x600000);
+			}
+			if (_chunkBuffer) {
+				int chunksize = packet->size - 4 - 4 - 4;
+				if (offset + chunksize <= 0x600000) {
+					memcpy(&_chunkBuffer[offset], packet->data + 4 + 4 + 4, chunksize);
+				}
+				if (offset + chunksize == size) {
+					SDL_RWops* rw = SDL_RWFromMem(_chunkBuffer, size);
+					if (game_load_sv6(rw)) {
+						game_load_init();
+					}
+					SDL_RWclose(rw);
+				}
+			}
+		}break;
+		case NETWORK_COMMAND_CHAT:{
+			newsItem.type = NEWS_ITEM_BLANK;
+			newsItem.flags = 1;
+			newsItem.assoc = 0;
+			newsItem.ticks = 0;
+			newsItem.month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+			newsItem.day = ((days_in_month[(newsItem.month_year & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16) + 1;
+			newsItem.colour = FORMAT_TOPAZ;
+			strcpy(newsItem.text, packet->data + 4);
+			news_item_add_to_queue_custom(&newsItem);
+		}break;
+		case NETWORK_COMMAND_GAMECMD:{
+			if (gNetworkStatus == NETWORK_CLIENT)
+				args[1] |= (1 << 31);
+
+			game_do_command_p(args[1], &args[2], &args[3], &args[4], &args[5], &args[6], &args[7], &args[8]);
+		}break;
+		case NETWORK_COMMAND_TICK:{
+			gNetworkServerTick = args[1];
+		}break;
 	}
 }
 
-void network_send_packet(network_packet *packet)
+network_packet* network_alloc_packet(int size)
 {
+	network_packet* packet = malloc(sizeof(network_packet));
+	network_init_packet(packet, size);
+	return packet;
+}
+
+void network_init_packet(network_packet* packet, int size)
+{
+	packet->read = 0;
+	packet->size = size;
+	packet->data = NULL;
+	packet->next = NULL;
+	if (size) {
+		packet->data = malloc(size);
+	}
+}
+
+void network_queue_packet(network_packet *packet)
+{
+	if (!_packetQueue) {
+		_packetQueue = packet;
+		return;
+	}
+	network_packet* end_packet = _packetQueue;
+	while (end_packet->next) {
+		end_packet = end_packet->next;
+	}
+	end_packet->next = packet;
+}
+
+void network_send_queued_packets()
+{
+	while (network_send_packet(_packetQueue)) {
+		network_packet* sentPacket = _packetQueue;
+		_packetQueue = _packetQueue->next;
+		network_close_packet(sentPacket);
+		free(sentPacket);
+	}
+}
+
+void network_close_packet(network_packet *packet)
+{
+	free(packet->data);
+}
+
+int network_send_packet(network_packet *packet)
+{
+	if (!packet) {
+		return 0;
+	}
+
 	SOCKET socket;
 
 	if (gNetworkStatus == NETWORK_NONE)
-		return;
+		return 0;
 
 	socket = gNetworkStatus == NETWORK_CLIENT ? _serverSocket : _clientSocket;
-	send(socket, (char*)packet, 2 + packet->size, 0);
+
+	while (1) {
+		if (packet->read < sizeof(packet->size)) {
+			// send packet size
+			uint16 size = htons(packet->size);
+			int sentBytes = send(socket, &((char*)&size)[packet->read], sizeof(size) - packet->read, 0);
+			if (sentBytes == SOCKET_ERROR) {
+				return 0;
+			}
+			packet->read += sentBytes;
+		} else {
+			// send packet data
+			int datasent = packet->read - sizeof(packet->size);
+			int sentBytes = send(socket, &packet->data[datasent], packet->size - datasent, 0);
+			if (sentBytes == SOCKET_ERROR) {
+				return 0;
+			}
+			packet->read += sentBytes;
+			if (packet->read == packet->size + sizeof(packet->size)) {
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+
+void network_send_tick()
+{
+	network_packet* packet = network_alloc_packet(4 + sizeof(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)));
+	*((uint32*)packet->data) = NETWORK_COMMAND_TICK;
+	memcpy(packet->data + 4, (char*)&RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32), sizeof(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)));
+	network_queue_packet(packet);
+}
+
+void network_send_map()
+{
+	int buffersize = 0x600000;
+	char* buffer = malloc(buffersize);
+	if (!buffer) {
+		return;
+	}
+	SDL_RWops* rw = SDL_RWFromMem(buffer, buffersize);
+	scenario_save(rw, 0);
+	int size = (int)SDL_RWtell(rw);
+	int chunksize = 1000;
+	for (int i = 0; i < size; i += chunksize) {
+		int datasize = min(chunksize, size - i);
+		network_packet* packet = network_alloc_packet(4 + 4 + 4 + datasize);
+		*((uint32*)packet->data) = NETWORK_COMMAND_MAP;
+		*((uint32*)packet->data + 1) = size;
+		*((uint32*)packet->data + 1 + 1) = i;
+		memcpy(packet->data + 4 + 4 + 4, &buffer[i], datasize);
+		network_queue_packet(packet);
+	}
+	SDL_RWclose(rw);
+	free(buffer);
 }
 
 void network_print_error()
@@ -284,12 +466,10 @@ static void window_chat_host_textinput()
 	if (!result)
 		return;
 
-	network_packet packet;
-	packet.size = 4 + strlen(text) + 1;
-	*((uint32*)packet.data) = 700;
-	strcpy(packet.data + 4, text);
-
-	network_send_packet(&packet);
+	network_packet* packet = network_alloc_packet(4 + strlen(text) + 1);
+	*((uint32*)packet->data) = NETWORK_COMMAND_CHAT;
+	strcpy(packet->data + 4, text);
+	network_queue_packet(packet);
 
 	window_close(w);
 }
