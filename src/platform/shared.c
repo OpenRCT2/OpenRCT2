@@ -28,6 +28,7 @@
 #include "../interface/keyboard_shortcut.h"
 #include "../interface/window.h"
 #include "../input.h"
+#include "../localisation/localisation.h"
 #include "../openrct2.h"
 #include "platform.h"
 
@@ -603,6 +604,13 @@ void platform_stop_text_input()
 {
 	SDL_StopTextInput();
 	gTextInput = NULL;
+}
+
+SDL_RWops* platform_sdl_rwfromfile(const char* filename, const char* mode)
+{
+	utf8 utf8filename[512];
+	win1252_to_utf8(utf8filename, filename, sizeof(utf8filename));
+	return SDL_RWFromFile(utf8filename, mode);
 }
 
 static void platform_unload_cursors()

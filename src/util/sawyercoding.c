@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../platform/platform.h"
 #include "sawyercoding.h"
 
 static int decode_chunk_rle(uint8* src_buffer, uint8* dst_buffer, int length);
@@ -42,24 +43,24 @@ uint32 sawyercoding_calculate_checksum(uint8* buffer, uint32 length)
  * 
  *  rct2: 0x00676FD2
  */
-int sawyercoding_validate_checksum(FILE *file)
+int sawyercoding_validate_checksum(SDL_RWops* rw)
 {
 	uint32 i, checksum, fileChecksum, dataSize, bufferSize;
 	uint8 buffer[1024];
 
 	// Get data size
-	fseek(file, 0, SEEK_END);
-	dataSize = ftell(file);
+	SDL_RWseek(rw, 0, RW_SEEK_END);
+	dataSize = (uint32)SDL_RWtell(rw);
 	if (dataSize < 8)
 		return 0;
 	dataSize -= 4;
 	
 	// Calculate checksum
-	fseek(file, 0, SEEK_SET);
+	SDL_RWseek(rw, 0, RW_SEEK_SET);
 	checksum = 0;
 	do {
 		bufferSize = min(dataSize, 1024);
-		if (fread(buffer, bufferSize, 1, file) != 1)
+		if (SDL_RWread(rw, buffer, bufferSize, 1) != 1)
 			return 0;
 
 		for (i = 0; i < bufferSize; i++)
@@ -68,11 +69,11 @@ int sawyercoding_validate_checksum(FILE *file)
 	} while (dataSize != 0);
 
 	// Read file checksum
-	if (fread(&fileChecksum, sizeof(fileChecksum), 1, file) != 1)
+	if (SDL_RWread(rw, &fileChecksum, sizeof(fileChecksum), 1) != 1)
 		return 0;
 
 	// Reset file position
-	fseek(file, 0, SEEK_SET);
+	SDL_RWseek(rw, 0, RW_SEEK_SET);
 
 	// Validate
 	return checksum == fileChecksum;
@@ -83,12 +84,12 @@ int sawyercoding_validate_checksum(FILE *file)
  *  rct2: 0x0067685F
  * buffer (esi)
  */
-int sawyercoding_read_chunk(FILE *file, uint8 *buffer)
+int sawyercoding_read_chunk(SDL_RWops* rw, uint8 *buffer)
 {
 	sawyercoding_chunk_header chunkHeader;
 
 	// Read chunk header
-	if (fread(&chunkHeader, sizeof(sawyercoding_chunk_header), 1, file) != 1) {
+	if (SDL_RWread(rw, &chunkHeader, sizeof(sawyercoding_chunk_header), 1) != 1) {
 		log_error("Unable to read chunk header!");
 		return -1;
 	}
@@ -96,7 +97,7 @@ int sawyercoding_read_chunk(FILE *file, uint8 *buffer)
 	uint8* src_buffer = malloc(chunkHeader.length);
 
 	// Read chunk data
-	if (fread(src_buffer, chunkHeader.length, 1, file) != 1) {
+	if (SDL_RWread(rw, src_buffer, chunkHeader.length, 1) != 1) {
 		free(src_buffer);
 		log_error("Unable to read chunk data!");
 		return -1;
