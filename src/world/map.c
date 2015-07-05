@@ -80,6 +80,7 @@ static bool map_clear_scenery_table_add_memo(rct_map_element *element_0)
 			if(itr->collision < 0){
 				break;
 			}
+			itr = &gMapClearSceneryTable[itr->collision];
 		}while(true);
 	}
 
