@@ -25,15 +25,16 @@
 #include "../scenario.h"
 #include "../sprites.h"
 #include "../localisation/localisation.h"
+#include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../platform/platform.h"
 #include "../title.h"
 #include "../util/util.h"
+#include "../world/footpath.h"
 #include "../world/scenery.h"
 #include "error.h"
-#include "../interface/themes.h"
 
 enum {
 	WIDX_PREVIOUS_IMAGE,		// 1
@@ -154,12 +155,22 @@ void window_editor_bottom_toolbar_jump_back_to_object_selection() {
 }
 
 /**
+ *
+ *  rct2: 0x006DFED0
+ */
+static void sub_6DFED0()
+{
+	for (int i = 0; i < 56; i++)
+		RCT2_ADDRESS(0x01357BD0, sint32)[i] = -1;
+}
+
+/**
 *
 *  rct2: 0x0066F62C
 */
 void window_editor_bottom_toolbar_jump_back_to_landscape_editor() {
 	window_close_all();
-	RCT2_CALLPROC_EBPSAFE(0x006DFED0);
+	sub_6DFED0();
 	scenery_set_default_placement_configuration();
 	g_editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 	window_map_open();
@@ -203,9 +214,47 @@ void window_editor_bottom_toolbar_jump_back_to_options_selection() {
  *
  *  rct2: 0x006AB1CE
  */
-int window_editor_bottom_toolbar_check_object_selection()
+bool window_editor_bottom_toolbar_check_object_selection()
 {
-	return RCT2_CALLPROC_EBPSAFE(0x006AB1CE) & 0x100;
+	rct_window *w;
+
+	if (editor_check_object_selection()) {
+		window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
+		return true;
+	}
+
+	window_error_open(STR_INVALID_SELECTION_OF_OBJECTS, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
+	w = window_find_by_class(WC_EDITOR_OBJECT_SELECTION);
+	if (w != NULL) {
+		// Click first tab (rides)
+		window_event_mouse_up_call(w, 4);
+	}
+	return false;
+}
+
+/**
+ *
+ *  rct2: 0x0066F6E3
+ */
+static void sub_66F6E3()
+{
+	RCT2_GLOBAL(0x01357404, uint32) = 0xFFFFFFFF;
+	RCT2_GLOBAL(0x01357408, uint32) = 0xFFFFFFFF;
+	RCT2_GLOBAL(0x0135740C, uint32) = 0xFFFFFFFF;
+	RCT2_GLOBAL(0x01357410, uint32) = 0xFFFFFFFF;
+
+	for (int i = 0; i < 128; i++) {
+		RCT2_ADDRESS(0x01357444, uint32)[i] = RCT2_ADDRESS(0x0097C468, uint32)[i];
+		RCT2_ADDRESS(0x01357644, uint32)[i] = RCT2_ADDRESS(0x0097C5D4, uint32)[i];
+	}
+
+	for (int i = 0; i < 8; i++) {
+		RCT2_ADDRESS(0x01357424, uint32)[i] = 0xFFFFFFFF;
+	}
+
+	window_new_ride_open();
+	RCT2_GLOBAL(0x0141F570, uint8) = 6;
+	gfx_invalidate_screen();
 }
 
 /**
@@ -214,13 +263,13 @@ int window_editor_bottom_toolbar_check_object_selection()
  */
 void window_editor_bottom_toolbar_jump_forward_from_object_selection()
 {
-	if (window_editor_bottom_toolbar_check_object_selection())
+	if (!window_editor_bottom_toolbar_check_object_selection())
 		return;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) {
-		RCT2_CALLPROC_EBPSAFE(0x0066F6E3);
+		sub_66F6E3();
 	} else {
-		RCT2_CALLPROC_EBPSAFE(0x006DFED0);
+		sub_6DFED0();
 		scenery_set_default_placement_configuration();
 		RCT2_GLOBAL(0x00141F570, uint8) = 1;
 		window_map_open();
@@ -230,12 +279,10 @@ void window_editor_bottom_toolbar_jump_forward_from_object_selection()
 
 /**
 *
-*  rct2: 0x0066f758
+*  rct2: 0x0066F758
 */
 void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up() {
-	uint32 flags = RCT2_CALLPROC_X(0x0066FEAC, 0, 0, 0, 0, 0, 0, 0);
-
-	if (!(flags & 0x100)) {
+	if (editor_check_park()) {
 		window_close_all();
 		window_editor_inventions_list_open();
 		g_editor_step = EDITOR_STEP_INVENTIONS_LIST_SET_UP;

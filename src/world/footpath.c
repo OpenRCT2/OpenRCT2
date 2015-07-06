@@ -731,3 +731,156 @@ void sub_6A759F()
 		}
 	}
 }
+
+/**
+ *
+ *  rct2: 0x0069ADBD
+ */
+static void footpath_unown(int x, int y, rct_map_element *pathElement)
+{
+	int ownershipUnk = 0;
+	int z = pathElement->base_height;
+	rct_map_element *surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
+	if (surfaceElement->base_height |= z) {
+		z -= 2;
+		if (surfaceElement->base_height |= z) {
+			ownershipUnk = (surfaceElement->properties.surface.ownership & 0xCF) >> 4;
+		}
+	}
+	map_buy_land_rights(x, y, x, y, 6, 1);
+}
+
+bool get_next_direction(int edges, int *direction)
+{
+	int index = bitscanforward(edges);
+	if (index == -1)
+		return false;
+
+	*direction = index;
+	return true;
+}
+
+/**
+ *
+ *  rct2: 0x0069AC1A
+ */
+int footpath_is_connected_to_map_edge_recurse(
+	int x, int y, int z, int direction, int flags,
+	int level, int distanceFromJunction, int junctionTolerance
+) {
+	rct_map_element *mapElement;
+	int edges, slopeDirection;
+
+	x += TileDirectionDelta[direction].x;
+	y += TileDirectionDelta[direction].y;
+	if (++level > 250)
+		return FOOTPATH_SEARCH_TOO_COMPLEX;
+
+	// Check if we are at edge of map
+	if (x < 32 || y < 32)
+		return FOOTPATH_SEARCH_SUCCESS;
+	if (x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16))
+		return FOOTPATH_SEARCH_SUCCESS;
+
+	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+			continue;
+
+		if (
+			footpath_element_is_sloped(mapElement) &&
+			(slopeDirection = footpath_element_get_slope_direction(mapElement)) != direction
+		) {
+			if ((slopeDirection ^ 2) != direction) continue;
+			if (mapElement->base_height + 2 != z) continue;
+		} else if (mapElement->base_height != z) {
+			continue;
+		}
+
+		if (mapElement->type & RCT2_GLOBAL(0x00F1AEE0, uint8)) continue;
+
+		if (flags & 0x20) {
+			footpath_unown(x, y, mapElement);
+		}
+		edges = mapElement->properties.path.edges & 0x0F;
+		direction ^= 2;
+		if (!(flags & 0x80)) {
+			if (mapElement[1].type == MAP_ELEMENT_TYPE_BANNER) {
+				for (int i = 1; i < 4; i++) {
+					if (map_element_is_last_for_tile(&mapElement[i - 1])) break;
+					if (mapElement[i].type != MAP_ELEMENT_TYPE_BANNER) break;
+					edges &= mapElement[i].properties.banner.flags;
+				}
+			}
+			if (mapElement[2].type == MAP_ELEMENT_TYPE_BANNER && mapElement[1].type != MAP_ELEMENT_TYPE_PATH) {
+				for (int i = 1; i < 6; i++) {
+					if (map_element_is_last_for_tile(&mapElement[i - 1])) break;
+					if (mapElement[i].type != MAP_ELEMENT_TYPE_BANNER) break;
+					edges &= mapElement[i].properties.banner.flags;
+				}
+			}
+		}
+		goto searchFromFootpath;
+	} while (!map_element_is_last_for_tile(mapElement++));
+	return level == 1 ? FOOTPATH_SEARCH_NOT_FOUND : FOOTPATH_SEARCH_INCOMPLETE;
+
+searchFromFootpath:
+	// Exclude direction we came from
+	z = mapElement->base_height;
+	edges &= ~(1 << direction);
+
+	// Find next direction to go
+	if (!get_next_direction(edges, &direction)) {
+		return FOOTPATH_SEARCH_INCOMPLETE;
+	}
+
+	edges &= ~(1 << direction);
+	if (edges == 0) {
+		// Only possible direction to go
+		if (footpath_element_is_sloped(mapElement) && footpath_element_get_slope_direction(mapElement) == direction) {
+			z += 2;
+		}
+		return footpath_is_connected_to_map_edge_recurse(
+			x, y, z, direction, flags,
+			level, distanceFromJunction + 1, junctionTolerance
+		);
+	} else {
+		// We have reached a junction
+		if (distanceFromJunction != 0) {
+			junctionTolerance--;
+		}
+		junctionTolerance--;
+		if (junctionTolerance < 0) {
+			return FOOTPATH_SEARCH_TOO_COMPLEX;
+		}
+
+		do {
+			edges &= ~(1 << direction);
+			if (footpath_element_is_sloped(mapElement) && footpath_element_get_slope_direction(mapElement) == direction) {
+				z += 2;
+			}
+			int result = footpath_is_connected_to_map_edge_recurse(x, y, z, direction, flags, level, 0, junctionTolerance);
+			if (result == FOOTPATH_SEARCH_SUCCESS) {
+				return result;
+			}
+		} while (get_next_direction(edges, &direction));
+
+		return FOOTPATH_SEARCH_INCOMPLETE;
+	}
+}
+
+int footpath_is_connected_to_map_edge(int x, int y, int z, int direction, int flags)
+{
+	RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
+	return footpath_is_connected_to_map_edge_recurse(x, y, z, direction, flags, 0, 0, 16);
+}
+
+bool footpath_element_is_sloped(rct_map_element *mapElement)
+{
+	return mapElement->properties.path.type & 4;
+}
+
+int footpath_element_get_slope_direction(rct_map_element *mapElement)
+{
+	return mapElement->properties.path.type & 3;
+}
