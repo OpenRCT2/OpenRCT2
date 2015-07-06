@@ -3562,7 +3562,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			offsetX = -trackBlock->y;
 			offsetY = trackBlock->x;
 			bl = rol8(bl, 3);
-			bh |= bl;
+			bh = bl;
 			bh = ror8(bh, 4);
 			bl &= 0x88;
 			bh &= 0x77;
