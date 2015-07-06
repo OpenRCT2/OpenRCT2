@@ -45,12 +45,11 @@ bool gOpenRCT2Headless = false;
 
 bool gOpenRCT2ShowChangelog;
 
-// This needs to be set when a park is loaded. It could also be used to reset other important states, it should then be renamed
-// to something more general.
-bool gOpenRCT2ResetFrameSmoothing = false;
-
 /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to 0. */
 int _finished;
+
+// Used for object movement tweening
+static struct { sint16 x, y, z; } _spritelocations1[MAX_SPRITES], _spritelocations2[MAX_SPRITES];
 
 static void openrct2_loop();
 
@@ -269,11 +268,9 @@ static bool sprite_should_tween(rct_sprite *sprite)
 static void openrct2_loop()
 {
 	uint32 currentTick, ticksElapsed, lastTick = 0;
-	static uint32 uncapTick;
+	static uint32 uncapTick = 0;
 	static int fps = 0;
 	static uint32 secondTick = 0;
-	static bool uncappedinitialized = false;
-	static struct { sint16 x, y, z; } spritelocations1[MAX_SPRITES], spritelocations2[MAX_SPRITES];
 
 	log_verbose("begin openrct2 loop");
 
@@ -281,38 +278,28 @@ static void openrct2_loop()
 	do {
 		if (gConfigGeneral.uncap_fps && gGameSpeed <= 4) {
 			currentTick = SDL_GetTicks();
-			if (!uncappedinitialized) {
+			if (uncapTick == 0) {
 				// Reset sprite locations
 				uncapTick = SDL_GetTicks();
-				for (uint16 i = 0; i < MAX_SPRITES; i++) {
-					spritelocations1[i].x = spritelocations2[i].x = g_sprite_list[i].unknown.x;
-					spritelocations1[i].y = spritelocations2[i].y = g_sprite_list[i].unknown.y;
-					spritelocations1[i].z = spritelocations2[i].z = g_sprite_list[i].unknown.z;
-				}
-				uncappedinitialized = true;
+				openrct2_reset_object_tween_locations();
 			}
 
 			while (uncapTick <= currentTick && currentTick - uncapTick > 25) {
 				// Get the original position of each sprite
 				for (uint16 i = 0; i < MAX_SPRITES; i++) {
-					spritelocations1[i].x = g_sprite_list[i].unknown.x;
-					spritelocations1[i].y = g_sprite_list[i].unknown.y;
-					spritelocations1[i].z = g_sprite_list[i].unknown.z;
+					_spritelocations1[i].x = g_sprite_list[i].unknown.x;
+					_spritelocations1[i].y = g_sprite_list[i].unknown.y;
+					_spritelocations1[i].z = g_sprite_list[i].unknown.z;
 				}
 				
 				// Update the game so the sprite positions update
 				rct2_update();
-				if (gOpenRCT2ResetFrameSmoothing) {
-					gOpenRCT2ResetFrameSmoothing = false;
-					uncappedinitialized = false;
-					continue;
-				}
 
 				// Get the next position of each sprite
 				for (uint16 i = 0; i < MAX_SPRITES; i++) {
-					spritelocations2[i].x = g_sprite_list[i].unknown.x;
-					spritelocations2[i].y = g_sprite_list[i].unknown.y;
-					spritelocations2[i].z = g_sprite_list[i].unknown.z;
+					_spritelocations2[i].x = g_sprite_list[i].unknown.x;
+					_spritelocations2[i].y = g_sprite_list[i].unknown.y;
+					_spritelocations2[i].z = g_sprite_list[i].unknown.z;
 				}
 
 				uncapTick += 25;
@@ -326,9 +313,9 @@ static void openrct2_loop()
 					continue;
 
 				sprite_move(
-					spritelocations2[i].x + (sint16)((spritelocations1[i].x - spritelocations2[i].x) * nudge),
-					spritelocations2[i].y + (sint16)((spritelocations1[i].y - spritelocations2[i].y) * nudge),
-					spritelocations2[i].z + (sint16)((spritelocations1[i].z - spritelocations2[i].z) * nudge),
+					_spritelocations2[i].x + (sint16)((_spritelocations1[i].x - _spritelocations2[i].x) * nudge),
+					_spritelocations2[i].y + (sint16)((_spritelocations1[i].y - _spritelocations2[i].y) * nudge),
+					_spritelocations2[i].z + (sint16)((_spritelocations1[i].z - _spritelocations2[i].z) * nudge),
 					&g_sprite_list[i]
 				);
 				invalidate_sprite(&g_sprite_list[i]);
@@ -353,10 +340,10 @@ static void openrct2_loop()
 					continue;
 
 				invalidate_sprite(&g_sprite_list[i]);
-				sprite_move(spritelocations2[i].x, spritelocations2[i].y, spritelocations2[i].z, &g_sprite_list[i]);
+				sprite_move(_spritelocations2[i].x, _spritelocations2[i].y, _spritelocations2[i].z, &g_sprite_list[i]);
 			}
 		} else {
-			uncappedinitialized = false;
+			uncapTick = 0;
 			currentTick = SDL_GetTicks();
 			ticksElapsed = currentTick - lastTick;
 			if (ticksElapsed < 25) {
@@ -371,7 +358,6 @@ static void openrct2_loop()
 			network_update();
 
 			rct2_update();
-			gOpenRCT2ResetFrameSmoothing = false;
 
 			rct2_draw();
 			platform_draw();
@@ -385,4 +371,13 @@ static void openrct2_loop()
 void openrct2_finish()
 {
 	_finished = 1;
+}
+
+void openrct2_reset_object_tween_locations()
+{
+	for (uint16 i = 0; i < MAX_SPRITES; i++) {
+		_spritelocations1[i].x = _spritelocations2[i].x = g_sprite_list[i].unknown.x;
+		_spritelocations1[i].y = _spritelocations2[i].y = g_sprite_list[i].unknown.y;
+		_spritelocations1[i].z = _spritelocations2[i].z = g_sprite_list[i].unknown.z;
+	}
 }
