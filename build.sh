@@ -39,7 +39,14 @@ if [[ "$needsdownload" = "true" ]]; then
     if [[ -d /usr/local/cross-tools/orctlibs ]]; then
         sudo rm -rf /usr/local/cross-tools/orctlibs
     fi
-    curl https://download.openrct2.website/dev/lib/mingw -o $cachedir/orctlibs.zip;
+     if [[ -d $cachedir/orctlibs ]]; then
+        rm -rf $cachedir/orctlibs
+    fi
+    curl https://download.openrct2.website/dev/lib/mingw -o $cachedir/orctlibs.zip
+    mkdir -p $cachedir/orctlibs
+    pushd $cachedir/orctlibs
+        unzip -uaq ../orctlibs.zip 
+    popd
     sudo mkdir -p /usr/local/cross-tools/orctlibs
     mkdir -p lib
     sudo cp -rf $cachedir/orctlibs/glob/* /usr/local/cross-tools/orctlibs/.
