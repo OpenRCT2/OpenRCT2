@@ -3446,6 +3446,7 @@ static void ride_construction_tooldown_construct(int screenX, int screenY)
 
 		if (RCT2_GLOBAL(0x00F44074, money32) == MONEY32_UNDEFINED) {
 			rct_string_id errorText = RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id);
+			z -= 8;
 			if (
 				errorText == STR_NOT_ENOUGH_CASH_REQUIRES ||
 				errorText == STR_CAN_ONLY_BUILD_THIS_UNDERWATER ||
@@ -3453,7 +3454,7 @@ static void ride_construction_tooldown_construct(int screenX, int screenY)
 				errorText == STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND ||
 				errorText == STR_TOO_HIGH_FOR_SUPPORTS ||
 				zAttempts == 0 ||
-				z - 8 < 0
+				z < 0
 			) {
 				int saveTrackDirection = _currentTrackPieceDirection;
 				int saveCurrentTrackCurve = _currentTrackCurve;
