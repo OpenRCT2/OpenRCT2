@@ -212,15 +212,6 @@ void window_editor_bottom_toolbar_jump_back_to_options_selection() {
 
 /**
  *
- *  rct2: 0x006AB9B8
- */
-static bool editor_check_object_selection()
-{
-	return !(RCT2_CALLPROC_EBPSAFE(0x006AB9B8) & 0x100);
-}
-
-/**
- *
  *  rct2: 0x006AB1CE
  */
 bool window_editor_bottom_toolbar_check_object_selection()
@@ -284,70 +275,6 @@ void window_editor_bottom_toolbar_jump_forward_from_object_selection()
 		window_map_open();
 		gfx_invalidate_screen();
 	}
-}
-
-/**
- *
- *  rct2: 0x0066FEAC
- */
-bool editor_check_park()
-{
-	// return !(RCT2_CALLPROC_EBPSAFE(0x0066FEAC) & 0x100);
-
-	int parkSize = park_calculate_size();
-	if (parkSize == 0) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PARK_MUST_OWN_SOME_LAND;
-		return false;
-	}
-
-	for (int i = 0; i < 4; i++) {
-		if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] != 0x8000)
-			break;
-
-		if (i == 3) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NO_PARK_ENTRANCES;
-			return false;
-		}
-	}
-
-	for (int i = 0; i < 4; i++) {
-		if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] == 0x8000)
-			continue;
-
-		int x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i];
-		int y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, uint16)[i];
-		int z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, uint16)[i] / 8;
-		int direction = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[i] ^ 2;
-
-		// dh = 0;
-		// di = 0xFFFF;
-		RCT2_GLOBAL(0x00F1AEDC, uint8) = 16;
-		RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
-		RCT2_GLOBAL(0x00F1AEDE, uint16) = 0;
-		RCT2_GLOBAL(0x00F1AEDD, uint8) = 0;
-		if (!footpath_is_connected_to_map_edge(x, y, z, direction, 0)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PARK_ENTRANCE_WRONG_DIRECTION_OR_NO_PATH;
-			if (RCT2_GLOBAL(0x00F1AEDD, uint8) & (1 << 6)) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PARK_ENTRANCE_PATH_INCOMPLETE_OR_COMPLEX;
-			}
-			return false;
-		}
-
-		// dh = 0;
-		// di = 0xFFFF;
-		RCT2_GLOBAL(0x00F1AEDC, uint8) = 16;
-		RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
-		RCT2_GLOBAL(0x00F1AEDE, uint16) = 0;
-		RCT2_GLOBAL(0x00F1AEDD, uint8) = 0x20;
-		footpath_is_connected_to_map_edge(x, y, z, direction, 0x20);
-	}
-
-	if (gPeepSpawns[0].x == 0xFFFF && gPeepSpawns[1].x == 0xFFFF) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PEEP_SPAWNS_NOT_SET;
-		return false;
-	}
-
-	return true;
 }
 
 /**
