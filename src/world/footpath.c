@@ -175,7 +175,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 		RCT2_GLOBAL(0x00F3EFF4, uint32) = 0x00F3EFF8;
 
 		if (!(flags & (1 << 7)))
-			sub_6A6AA7(x, y, mapElement);
+			footpath_remove_edges_at(x, y, mapElement);
 
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !(flags & (1 << 6)))
 			automatically_set_peep_spawn(x, y, mapElement->base_height / 2);
@@ -276,7 +276,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		RCT2_GLOBAL(0x00F3EFF4, uint32) = 0x00F3EFF8;
 
 		if (!(flags & (1 << 7)))
-			sub_6A6AA7(x, y, mapElement);
+			footpath_remove_edges_at(x, y, mapElement);
 
 		mapElement->properties.path.type = (mapElement->properties.path.type & 0x0F) | (type << 4);
 		mapElement->type = (mapElement->type & 0xFE) | (type >> 7);
@@ -376,7 +376,7 @@ money32 footpath_remove_real(int x, int y, int z, int flags)
 	if (mapElement != NULL && (flags & GAME_COMMAND_FLAG_APPLY)) {
 		RCT2_GLOBAL(0x00F3EFF4, uint32) = 0x00F3EFF8;
 		remove_banners_at_element(x, y, mapElement);
-		sub_6A6AA7(x, y, mapElement);
+		footpath_remove_edges_at(x, y, mapElement);
 		map_invalidate_tile_full(x, y);
 		map_element_remove(mapElement);
 		sub_6A759F();
@@ -883,4 +883,143 @@ bool footpath_element_is_sloped(rct_map_element *mapElement)
 int footpath_element_get_slope_direction(rct_map_element *mapElement)
 {
 	return mapElement->properties.path.type & 3;
+}
+
+/**
+ *
+ *  rct2: 0x006A7642
+ */
+void sub_6A7642(int x, int y, rct_map_element *mapElement)
+{
+	RCT2_CALLPROC_X(0x006A7642, x, 0, y, 0, (int)mapElement, 0, 0);
+}
+
+/**
+ *
+ *  rct2: 0x006A76E9
+ */
+void sub_6A76E9(int rideIndex)
+{
+	if (rideIndex == 255)
+		return;
+
+	*(RCT2_GLOBAL(0x00F3EFF4, uint8*)) = rideIndex;
+	RCT2_GLOBAL(0x00F3EFF4, uint8*)++;
+}
+
+/**
+ *
+ *  rct2: 0x006A6B7F
+ */
+static void footpath_remove_edges_towards_here(int x, int y, int z, int direction, rct_map_element *mapElement)
+{
+	int d;
+
+	if (mapElement->type & 1) {
+		sub_6A76E9(mapElement->properties.path.addition_status);
+	}
+
+	d = direction ^ 2;
+	mapElement->properties.path.edges &= ~(1 << d);
+	d = ((d - 1) & 3) + 4;
+	mapElement->properties.path.edges &= ~(1 << d);
+	d = (((d - 4) + 1) & 3) + 4;
+	mapElement->properties.path.edges &= ~(1 << d);
+	map_invalidate_tile(x, y, mapElement->base_height, mapElement->clearance_height);
+
+	direction = (direction + 1) & 3;
+	x += TileDirectionDelta[direction].x;
+	y += TileDirectionDelta[direction].y;
+
+	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+			continue;
+		if (mapElement->base_height != z)
+			continue;
+
+		if (footpath_element_is_sloped(mapElement))
+			break;
+
+		d = ((direction + 1) & 3) + 4;
+		mapElement->properties.path.edges &= ~(1 << d);
+		map_invalidate_tile(x, y, mapElement->base_height, mapElement->clearance_height);
+		break;
+	} while (!map_element_is_last_for_tile(mapElement++));
+}
+
+/**
+ *
+ *  rct2: 0x006A6B14
+ */
+void footpath_remove_edges_towards(int x, int y, int z0, int z1, int direction)
+{
+	rct_map_element *mapElement;
+	int slope;
+
+	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+			continue;
+
+		if (z1 == mapElement->base_height) {
+			if (footpath_element_is_sloped(mapElement)) {
+				slope = footpath_element_get_slope_direction(mapElement);
+				if (slope != direction)
+					break;
+			}
+			footpath_remove_edges_towards_here(x, y, z1, direction, mapElement);
+			break;
+		}
+		if (z0 == mapElement->base_height) {
+			if (!footpath_element_is_sloped(mapElement))
+				break;
+
+			slope = footpath_element_get_slope_direction(mapElement) ^ 2;
+			if (slope != direction)
+				break;
+
+			footpath_remove_edges_towards_here(x, y, z1, direction, mapElement);
+			break;
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
+}
+
+/**
+ *
+ *  rct2: 0x006A6AA7
+ * @param x x-coordinate in units (not tiles)
+ * @param y y-coordinate in units (not tiles)
+ */
+void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement)
+{
+	rct_ride *ride;
+	int z0, z1, slope;
+
+	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
+		int rideIndex = mapElement->properties.track.ride_index;
+		ride = GET_RIDE(rideIndex);
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+			return;
+	}
+
+	sub_6A7642(x, y, mapElement);
+
+	for (int direction = 0; direction < 4; direction++) {
+		z1 = mapElement->base_height;
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
+			if (footpath_element_is_sloped(mapElement)) {
+				slope = footpath_element_get_slope_direction(mapElement);
+				if ((slope - direction) & 1)
+					continue;
+
+				z1 += slope == direction ? 2 : 0;
+			}
+		}
+		z0 = z1 - 2;
+		footpath_remove_edges_towards(x + TileDirectionDelta[direction].x, y + TileDirectionDelta[direction].y, z0, z1, direction);
+	}
+
+	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH)
+		mapElement->properties.path.edges = 0;
 }

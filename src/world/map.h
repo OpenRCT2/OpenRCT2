@@ -278,7 +278,6 @@ int map_is_location_owned(int x, int y, int z);
 int map_is_location_in_park(int x, int y);
 int map_get_station(rct_map_element *mapElement);
 void map_element_remove(rct_map_element *mapElement);
-void sub_6A6AA7(int x, int y, rct_map_element *mapElement);
 void map_remove_all_rides();
 void map_invalidate_map_selection_tiles();
 void map_invalidate_selection_rect();

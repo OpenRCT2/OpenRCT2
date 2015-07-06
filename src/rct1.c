@@ -31,6 +31,7 @@
 #include "util/sawyercoding.h"
 #include "util/util.h"
 #include "world/climate.h"
+#include "world/footpath.h"
 #include "world/map.h"
 #include "world/scenery.h"
 
@@ -309,7 +310,7 @@ static void rct1_remove_rides()
 
 		case MAP_ELEMENT_TYPE_TRACK:
 			sub_6A7594();
-			sub_6A6AA7(it.x * 32, it.y * 32, it.element);
+			footpath_remove_edges_at(it.x * 32, it.y * 32, it.element);
 			map_element_remove(it.element);
 			map_element_iterator_restart_for_tile(&it);
 			break;
@@ -317,7 +318,7 @@ static void rct1_remove_rides()
 		case MAP_ELEMENT_TYPE_ENTRANCE:
 			if (it.element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) {
 				sub_6A7594();
-				sub_6A6AA7(it.x * 32, it.y * 32, it.element);
+				footpath_remove_edges_at(it.x * 32, it.y * 32, it.element);
 				map_element_remove(it.element);
 				map_element_iterator_restart_for_tile(&it);
 			}
