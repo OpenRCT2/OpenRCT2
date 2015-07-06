@@ -4488,7 +4488,7 @@ int ride_get_refund_price(int ride_id)
 				z,
 				0);
 			map_element_iterator_restart_for_tile(&it);
-			break;
+			continue;
 		}
 
 		RCT2_GLOBAL(0x00F4413A, money32) += game_do_command(
@@ -4527,7 +4527,6 @@ int ride_get_refund_price(int ride_id)
 			z,
 			0);
 		map_element_iterator_restart_for_tile(&it);
-		break;
 	}
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = oldpaused;
 	return RCT2_GLOBAL(0x00F4413A, int);
