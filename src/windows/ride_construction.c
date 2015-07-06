@@ -1767,7 +1767,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 		if (!sub_6CAF80(_currentRideIndex, &outputElement)) {
 			sub_6CC3FB(_currentRideIndex);
 			_currentTrackPieceDirection = _currentTrackPieceDirection;
-			if (slope & 0x100) {
+			if (!(slope & 0x100)) {
 				_currentTrackCurve = slope;
 				_previousTrackSlopeEnd = slopeEnd;
 				_currentTrackSlopeEnd = b2;
