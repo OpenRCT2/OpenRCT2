@@ -715,66 +715,61 @@ int park_get_entrance_index(int x, int y, int z)
 	return -1;
 }
 
+static void translate_3d_to_2d(int rotation, int *x, int *y)
+{
+	int rx, ry;
+
+	switch (rotation & 3) {
+	case 0:
+		rx = (*y) - (*x);
+		ry = (*x) + (*y);
+		break;
+	case 1:
+		rx = -(*x) - (*y);
+		ry = (*y) - (*x);
+		break;
+	case 2:
+		rx = (*x) - (*y);
+		ry = -(*x) - (*y);
+		break;
+	case 3:
+		rx = (*x) + (*y);
+		ry = (*x) - (*y);
+		break;
+	}
+	ry /= 2;
+
+	*x = rx;
+	*y = ry;
+}
+
 /**
-*
-*  rct2: 0x006EC847
-*/
+ *
+ *  rct2: 0x006EC847
+ */
 void gfx_invalidate_viewport_tile(int x, int y, int z0, int z1)
 {
 	int x1, y1, x2, y2;
-	int tempx;
+	rct_viewport *viewport;
+
 	x += 16;
 	y += 16;
-	int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
-	switch (rotation) {
-	case 0:
-		tempx = x;
-		x = -x + y;
-		y += tempx;
-		break;
-	case 1:
-		x = -x;
-		tempx = x;
-		x -= y;
-		y += tempx;
-		break;
-	case 2:
-		tempx = x;
-		x -= y;
-		y = -y - tempx;
-		break;
-	case 3:
-		tempx = x;
-		x += y;
-		y = -y + tempx;
-		break;
-	}
-	y /= 2;
-	x2 = x;
-	y2 = y;
+	translate_3d_to_2d(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32), &x, &y);
 
-	x -= 32;
-	y -= 32;
-	y -= z0;
-	x2 += 32;
-	y2 += 32;
-	y2 += z1;
+	x1 = x - 32;
+	y1 = y - 32 - z1;
+	x2 = x + 32;
+	y2 = y + 32 - z0;
 
-	x1 = x;
-	y1 = y;
-	rct_viewport* viewport = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*);
+	viewport = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*);
 	while (viewport->width != 0) {
 		int viewport_x2 = viewport->view_x + viewport->view_width;
 		int viewport_y2 = viewport->view_y + viewport->view_height;
-		if (x2 > viewport_x2 && y2 > viewport_y2) {
-			if (x1 < viewport->view_x)
-				x1 = viewport->view_x;
-			if (x2 > viewport_x2)
-				x2 = viewport_x2;
-			if (y1 < viewport->view_y)
-				y1 = viewport->view_y;
-			if (y2 > viewport_y2)
-				y2 = viewport_y2;
+		if (x2 > viewport->view_x && y2 > viewport->view_y) {
+			x1 = max(x1, viewport->view_x);
+			y1 = max(y1, viewport->view_y);
+			x2 = min(x2, viewport_x2);
+			y2 = min(y2, viewport_y2);
 
 			uint8 zoom = 1 << viewport->zoom;
 			x1 -= viewport->view_x;

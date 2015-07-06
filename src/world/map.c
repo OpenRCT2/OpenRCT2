@@ -3333,3 +3333,124 @@ bool map_element_is_underground(rct_map_element *mapElement)
 	} while (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SURFACE);
 	return true;
 }
+
+void map_rotate_position(int direction, int *x, int *y)
+{
+	int offsetX, offsetY;
+
+	switch (direction) {
+	case 0:
+		offsetX = (*x);
+		offsetY = (*y);
+		break;
+	case 1:
+		offsetX = (*y);
+		offsetY = -(*x);
+		break;
+	case 2:
+		offsetX = -(*x);
+		offsetY = -(*y);
+		break;
+	case 3:
+		offsetX = -(*y);
+		offsetY = (*x);
+		break;
+	}
+	*x = offsetX;
+	*y = offsetY;
+}
+
+rct_map_element *map_get_large_scenery_segment(int x, int y, int z, int direction, int sequence)
+{
+	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
+			continue;
+		if (mapElement->base_height != z)
+			continue;
+		if ((mapElement->properties.scenerymultiple.type >> 10) != sequence)
+			continue;
+		if ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) != direction)
+			continue;
+
+		return mapElement;
+	} while (!map_element_is_last_for_tile(mapElement++));
+	return NULL;
+}
+
+bool map_large_scenery_get_origin(
+	int x, int y, int z, int direction, int sequence,
+	int *outX, int *outY, int *outZ
+) {
+	rct_map_element *mapElement;
+	rct_scenery_entry *sceneryEntry;
+	rct_large_scenery_tile *tile;
+	int offsetX, offsetY;
+
+	mapElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
+	if (mapElement == NULL)
+		return false;
+
+	sceneryEntry = g_largeSceneryEntries[(mapElement->properties.scenerymultiple.type) & 0x3FF];
+	tile = &sceneryEntry->large_scenery.tiles[sequence];
+
+	offsetX = tile->x_offset;
+	offsetY = tile->y_offset;
+	map_rotate_position(direction, &offsetX, &offsetY);
+
+	*outX = x - offsetX;
+	*outY = y - offsetY;
+	*outZ = (z * 8) - tile->z_offset;
+	return true;
+}
+
+/**
+ * 
+ *  rct2: 0x006B9B05
+ */
+void sign_set_colour(int x, int y, int z, int direction, int sequence, uint8 mainColour, uint8 textColour)
+{
+	// RCT2_CALLPROC_X(0x006B9B05, x, direction << 8, y, z | (type << 8), 0, 0, 0);
+
+	rct_map_element *mapElement;
+	rct_scenery_entry *sceneryEntry;
+	rct_large_scenery_tile *sceneryTiles, *tile;
+	int x0, y0, z0, offsetX, offsetY;
+
+	// Get the given segment of the large scenery element
+	mapElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
+	if (mapElement == NULL)
+		return;
+
+	// Get the origin position of the large scenery element
+	sceneryEntry = g_largeSceneryEntries[(mapElement->properties.scenerymultiple.type) & 0x3FF];
+	sceneryTiles = sceneryEntry->large_scenery.tiles;
+	tile = &sceneryTiles[sequence];
+	offsetX = tile->x_offset;
+	offsetY = tile->y_offset;
+	map_rotate_position(direction, &offsetX, &offsetY);
+	x0 = x - offsetX;
+	y0 = y - offsetY;
+	z0 = (z * 8) - tile->z_offset;
+
+	// Iterate through each tile of the large scenery element
+	sequence = 0;
+	for (tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++) {
+		offsetX = tile->x_offset;
+		offsetY = tile->y_offset;
+		map_rotate_position(direction, &offsetX, &offsetY);
+
+		x = x0 + offsetX;
+		y = y0 + offsetY;
+		z = (z0 + tile->z_offset) / 8;
+		mapElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
+		if (mapElement != NULL) {
+			mapElement->properties.scenerymultiple.colour[0] &= 0xE0;
+			mapElement->properties.scenerymultiple.colour[1] &= 0xE0;
+			mapElement->properties.scenerymultiple.colour[0] |= mainColour;
+			mapElement->properties.scenerymultiple.colour[1] |= textColour;
+
+			gfx_invalidate_viewport_tile(x, y, mapElement->base_height * 8 , mapElement->clearance_height * 8);
+		}
+	}
+}
