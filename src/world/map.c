@@ -1868,7 +1868,7 @@ void game_command_set_water_height(int* eax, int* ebx, int* ecx, int* edx, int* 
 	if(*ebx & GAME_COMMAND_FLAG_APPLY){
 		int element_height = map_element_height(x, y);
 		footpath_remove_litter(x, y, element_height);
-		RCT2_CALLPROC_X(0x006E57E6, x, 0, y, element_height, 0, 0, 0);
+		map_remove_walls_at_z(x, y, element_height);
 	}
 
 	rct_map_element* map_element = map_get_surface_element_at(x / 32, y / 32);
@@ -2099,7 +2099,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 				if(*ebx & GAME_COMMAND_FLAG_APPLY && !(*ebx & 0x40)){
 					footpath_remove_litter(x, y, F64EC8);
 					if(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG19){
-						RCT2_CALLPROC_X(0x006E588E, x, scenery_entry->small_scenery.height, y, F64EC8, 0, 0, 0);
+						map_remove_walls_at(x, y, F64EC8, F64EC8 + scenery_entry->small_scenery.height);
 					}
 				}
 				rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
@@ -2225,9 +2225,26 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 }
 
 /**
-*
-*  rct2: 0x006E519A
-*/
+ *
+ *  rct2: 0x006E5C1A
+ */
+bool sub_6E5C1A(rct_scenery_entry *wall, int x, int y, int edge, int dl, int dh)
+{
+	return !(RCT2_CALLPROC_X(0x006E5C1A,
+		x,
+		edge,
+		y,
+		dl | (dh << 8),
+		0,
+		(int)wall,
+		0
+	) & 0x100);
+}
+
+/**
+ *
+ *  rct2: 0x006E519A
+ */
 void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp){
 	rct_xyz16 position = {
 		.x = *eax & 0xFFFF,
@@ -2418,17 +2435,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	RCT2_GLOBAL(0x00141F722, uint8) += fence->wall.height;
 
 	if (!(flags & (1 << 7))){
-		if (
-			RCT2_CALLPROC_X(0x006E5C1A,
-				position.x,
-				edge,
-				position.y,
-				RCT2_GLOBAL(0x00141F721, uint8) | (RCT2_GLOBAL(0x00141F722, uint8) << 8),
-				0,
-				(int)fence,
-				0
-			) & 0x100
-		) {
+		if (!sub_6E5C1A(fence, position.x, position.y, edge, RCT2_GLOBAL(0x00141F721, uint8), RCT2_GLOBAL(0x00141F722, uint8))) {
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
@@ -2635,8 +2642,7 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 							if(*ebx & GAME_COMMAND_FLAG_APPLY){
 								if(!(*ebx & 0x40)){
 									footpath_remove_litter(x2, y2, zLow * 8);
-									int bh = (zHigh - zLow) * 8;
-									RCT2_CALLPROC_X(0x006E588E, x2, bh << 8 | flags, y2, zLow * 8, 0, 0, 0);
+									map_remove_walls_at(x2, y2, zLow * 8, zHigh * 8);
 								}
 								rct_map_element *new_map_element = map_element_insert(x2 / 32, y2 / 32, zLow, F43887);
 								map_animation_create(0xB, x2, y2, zLow);
@@ -3409,6 +3415,42 @@ void sign_set_colour(int x, int y, int z, int direction, int sequence, uint8 mai
 			map_invalidate_tile(x, y, mapElement->base_height * 8 , mapElement->clearance_height * 8);
 		}
 	}
+}
+
+/**
+ * 
+ *  rct2: 0x006E588E
+ */
+void map_remove_walls_at(int x, int y, int z0, int z1)
+{
+	rct_map_element *mapElement;
+
+	z0 /= 8;
+	z1 /= 8;
+repeat:
+	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE)
+			continue;
+		if (z0 >= mapElement->clearance_height)
+			continue;
+		if (z1 <= mapElement->base_height)
+			continue;
+
+		map_element_remove_banner_entry(mapElement);
+		map_invalidate_tile_zoom1(x, y, mapElement->base_height, mapElement->base_height + 72);
+		map_element_remove(mapElement);
+		goto repeat;
+	} while (!map_element_is_last_for_tile(mapElement++));
+}
+
+/**
+ * 
+ *  rct2: 0x006E57E6
+ */
+void map_remove_walls_at_z(int x, int y, int z)
+{
+	map_remove_walls_at(x, y, z, z + 48);
 }
 
 static void translate_3d_to_2d(int rotation, int *x, int *y)

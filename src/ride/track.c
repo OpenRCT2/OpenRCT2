@@ -3623,7 +3623,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			footpath_remove_litter(x, y, z);
 			// push bl bh??
 			if (rideTypeFlags & RIDE_TYPE_FLAG_18) {
-				RCT2_CALLPROC_X(0x006E588E, x, (clearanceZ - baseZ) * 8, y, cur_z, 0, 0, 0);
+				map_remove_walls_at(x, y, baseZ * 8, clearanceZ * 8);
 			}
 			else {
 				uint8 _bl = *RCT2_GLOBAL(0x00F44054, uint8*);
