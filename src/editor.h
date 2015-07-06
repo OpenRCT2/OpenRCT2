@@ -48,6 +48,6 @@ void sub_6BD3A4();
 void editor_open_windows_for_current_step();
 
 bool editor_check_park();
-bool editor_check_object_selection();
+int editor_check_object_selection();
 
 #endif

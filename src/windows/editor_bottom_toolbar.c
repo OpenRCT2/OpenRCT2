@@ -218,7 +218,8 @@ bool window_editor_bottom_toolbar_check_object_selection()
 {
 	rct_window *w;
 
-	if (editor_check_object_selection()) {
+	int missingObjectType = editor_check_object_selection();
+	if (missingObjectType < 0) {
 		window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
 		return true;
 	}
@@ -226,8 +227,8 @@ bool window_editor_bottom_toolbar_check_object_selection()
 	window_error_open(STR_INVALID_SELECTION_OF_OBJECTS, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
 	w = window_find_by_class(WC_EDITOR_OBJECT_SELECTION);
 	if (w != NULL) {
-		// Click first tab (rides)
-		window_event_mouse_up_call(w, 4);
+		// Click tab with missing object
+		window_event_mouse_up_call(w, 4 + missingObjectType);
 	}
 	return false;
 }
