@@ -124,7 +124,7 @@ static bool map_animation_invalidate_ride_entrance(int x, int y, int baseZ)
 		entranceDefinition = &RideEntranceDefinitions[ride->entrance_style];
 
 		int height = (mapElement->base_height * 8) + entranceDefinition->height + 8;
-		map_invalidate_tile(x, y, height, height + 16);
+		map_invalidate_tile_zoom1(x, y, height, height + 16);
 		return false;
 	} while (!map_element_is_last_for_tile(mapElement++));
 
@@ -153,7 +153,7 @@ static bool map_animation_invalidate_queue_banner(int x, int y, int baseZ)
 		int direction = ((mapElement->type >> 6) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) & 3;
 		if (direction == MAP_ELEMENT_DIRECTION_NORTH || direction == MAP_ELEMENT_DIRECTION_EAST) {
 			baseZ = mapElement->base_height * 8;
-			map_invalidate_tile(x, y, baseZ + 16, baseZ + 30);
+			map_invalidate_tile_zoom1(x, y, baseZ + 16, baseZ + 30);
 		}
 		return false;
 	} while (!map_element_is_last_for_tile(mapElement++));
@@ -183,7 +183,7 @@ static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ)
 
 		sceneryEntry = g_smallSceneryEntries[mapElement->properties.scenery.type];
 		if (sceneryEntry->small_scenery.flags & 0xD800) {
-			map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+			map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 			return false;
 		}
 
@@ -216,7 +216,7 @@ static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ)
 					break;
 				}
 			}
-			map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+			map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 			return false;
 		}
 	} while (!map_element_is_last_for_tile(mapElement++));
@@ -243,7 +243,7 @@ static bool map_animation_invalidate_park_entrance(int x, int y, int baseZ)
 			continue;
 
 		baseZ = mapElement->base_height * 8;
-		map_invalidate_tile(x, y, baseZ + 32, baseZ + 64);
+		map_invalidate_tile_zoom1(x, y, baseZ + 32, baseZ + 64);
 		return false;
 	} while (!map_element_is_last_for_tile(mapElement++));
 
@@ -267,7 +267,7 @@ static bool map_animation_invalidate_track_waterfall(int x, int y, int baseZ)
 
 		if (mapElement->properties.track.type == TRACK_ELEM_WATERFALL) {
 			int z = mapElement->base_height * 8;
-			map_invalidate_tile(x, y, z + 14, z + 46);
+			map_invalidate_tile_zoom1(x, y, z + 14, z + 46);
 			return false;
 		}
 	} while (!map_element_is_last_for_tile(mapElement++));
@@ -292,7 +292,7 @@ static bool map_animation_invalidate_track_rapids(int x, int y, int baseZ)
 
 		if (mapElement->properties.track.type == TRACK_ELEM_RAPIDS) {
 			int z = mapElement->base_height * 8;
-			map_invalidate_tile(x, y, z + 14, z + 18);
+			map_invalidate_tile_zoom1(x, y, z + 14, z + 18);
 			return false;
 		}
 	} while (!map_element_is_last_for_tile(mapElement++));
@@ -318,7 +318,7 @@ static bool map_animation_invalidate_track_onridephoto(int x, int y, int baseZ)
 
 		if (mapElement->properties.track.type == TRACK_ELEM_ON_RIDE_PHOTO) {
 			int z = mapElement->base_height * 8;
-			map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+			map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 			if (mapElement->properties.track.sequence & 0xF0) {
 				mapElement->properties.track.sequence -= 0x10;
 				return false;
@@ -348,7 +348,7 @@ static bool map_animation_invalidate_track_whirlpool(int x, int y, int baseZ)
 
 		if (mapElement->properties.track.type == TRACK_ELEM_WHIRLPOOL) {
 			int z = mapElement->base_height * 8;
-			map_invalidate_tile(x, y, z + 14, z + 18);
+			map_invalidate_tile_zoom1(x, y, z + 14, z + 18);
 			return false;
 		}
 	} while (!map_element_is_last_for_tile(mapElement++));
@@ -373,7 +373,7 @@ static bool map_animation_invalidate_track_spinningtunnel(int x, int y, int base
 
 		if (mapElement->properties.track.type == TRACK_ELEM_SPINNING_TUNNEL) {
 			int z = mapElement->base_height * 8;
-			map_invalidate_tile(x, y, z + 14, z + 32);
+			map_invalidate_tile_zoom1(x, y, z + 14, z + 32);
 			return false;
 		}
 	} while (!map_element_is_last_for_tile(mapElement++));
@@ -406,7 +406,7 @@ static bool map_animation_invalidate_banner(int x, int y, int baseZ)
 			continue;
 		
 		baseZ = mapElement->base_height * 8;
-		map_invalidate_tile(x, y, baseZ, baseZ + 16);
+		map_invalidate_tile_zoom1(x, y, baseZ, baseZ + 16);
 		return false;
 	} while (!map_element_is_last_for_tile(mapElement++));
 
@@ -433,7 +433,7 @@ static bool map_animation_invalidate_large_scenery(int x, int y, int baseZ)
 		sceneryEntry = g_largeSceneryEntries[mapElement->properties.scenery.type & 0x3FF];
 		if (sceneryEntry->large_scenery.flags & (1 << 3)) {
 			int z = mapElement->base_height * 8;
-			map_invalidate_tile(x, y, z, z + 16);
+			map_invalidate_tile_zoom1(x, y, z, z + 16);
 			wasInvalidated = true;
 		}
 	} while (!map_element_is_last_for_tile(mapElement++));
@@ -488,7 +488,7 @@ static bool map_animation_invalidate_wall_unknown(int x, int y, int baseZ)
 		mapElement->properties.fence.item[2] = bl;
 		if (di & 1) {
 			int z = mapElement->base_height * 8;
-			map_invalidate_tile(x, y, z, z + 32);
+			map_invalidate_tile_zoom1(x, y, z, z + 32);
 		}
 		if (di & 2)
 			wasInvalidated = true;
@@ -519,7 +519,7 @@ static bool map_animation_invalidate_wall(int x, int y, int baseZ)
 			continue;
 
 		int z = mapElement->base_height * 8;
-		map_invalidate_tile(x, y, z, z + 16);
+		map_invalidate_tile_zoom1(x, y, z, z + 16);
 		wasInvalidated = true;
 	} while (!map_element_is_last_for_tile(mapElement++));
 

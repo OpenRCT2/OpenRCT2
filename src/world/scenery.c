@@ -82,7 +82,7 @@ void scenery_update_age(int x, int y, rct_map_element *mapElement)
 		case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
 		case MAP_ELEMENT_TYPE_ENTRANCE:
 		case MAP_ELEMENT_TYPE_PATH:
-			map_invalidate_tile(x, y, mapElementAbove->base_height * 8, mapElementAbove->clearance_height * 8);
+			map_invalidate_tile_zoom1(x, y, mapElementAbove->base_height * 8, mapElementAbove->clearance_height * 8);
 			scenery_increase_age(x, y, mapElement);
 			return;
 		case MAP_ELEMENT_TYPE_SCENERY:
@@ -97,7 +97,7 @@ void scenery_update_age(int x, int y, rct_map_element *mapElement)
 	
 	// Reset age / water plant
 	mapElement->properties.scenery.age = 0;
-	map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+	map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 }
 
 void scenery_increase_age(int x, int y, rct_map_element *mapElement)
@@ -107,7 +107,7 @@ void scenery_increase_age(int x, int y, rct_map_element *mapElement)
 
 	if (mapElement->properties.scenery.age < 255) {
 		mapElement->properties.scenery.age++;
-		map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+		map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 	}
 }
 

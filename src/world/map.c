@@ -66,9 +66,11 @@ static void map_update_grass_length(int x, int y, rct_map_element *mapElement);
 static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int length);
 static void sub_68AE2A(int x, int y);
 
-void rotate_map_coordinates(sint16* x, sint16* y, int rotation){
+void rotate_map_coordinates(sint16 *x, sint16 *y, int rotation)
+{
 	int temp;
-	switch (rotation){
+
+	switch (rotation) {
 	case MAP_ELEMENT_DIRECTION_WEST:
 		break;
 	case MAP_ELEMENT_DIRECTION_NORTH:
@@ -662,16 +664,6 @@ int map_is_location_in_park(int x, int y)
 
 /**
  *
- *  rct2: 0x006ECB60
- * NOTE: x, y and z are in pixels, not tile units
- */
-void map_invalidate_tile(int x, int y, int zLow, int zHigh)
-{
-	RCT2_CALLPROC_X(0x006ECB60, x, 0, y, 0, zHigh, zLow, 0);
-}
-
-/**
- *
  *  rct2: 0x006E0E01
  */
 void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
@@ -897,7 +889,7 @@ void game_command_remove_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	uint8 bannerType = banner->type;
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		map_element_remove_banner_entry(map_element);
-		map_invalidate_tile(x, y, z, z + 32);
+		map_invalidate_tile_zoom1(x, y, z, z + 32);
 		map_element_remove(map_element);
 	}
 	rct_scenery_entry *scenery_entry = (rct_scenery_entry*)object_entry_groups[OBJECT_TYPE_BANNERS].chunks[bannerType];
@@ -1003,7 +995,7 @@ void game_command_set_fence_colour(int* eax, int* ebx, int* ecx, int* edx, int* 
 			if(scenery_entry->wall.flags & 0x80){
 				map_element->properties.fence.item[0] = color3;
 			}
-			map_invalidate_tile(x, y, z, z + 0x48);
+			map_invalidate_tile_zoom1(x, y, z, z + 0x48);
 		}
 		*ebx = 0;
 	} else {
@@ -1167,7 +1159,7 @@ void game_command_set_banner_colour(int* eax, int* ebx, int* ecx, int* edx, int*
 			window_invalidate(window);
 		}
 		gBanners[map_element->properties.banner.index].colour = color;
-		map_invalidate_tile(x, y, z, z + 32);
+		map_invalidate_tile_zoom1(x, y, z, z + 32);
 	}
 	
 	*ebx = 0;
@@ -1953,7 +1945,7 @@ void game_command_remove_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 	}
 
 	map_element_remove_banner_entry(map_element);
-	map_invalidate_tile(x, y, map_element->base_height * 8, (map_element->base_height * 8) + 72);
+	map_invalidate_tile_zoom1(x, y, map_element->base_height * 8, (map_element->base_height * 8) + 72);
 	map_element_remove(map_element);
 	*ebx = 0;
 }
@@ -2478,7 +2470,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 		}
 
 		RCT2_GLOBAL(0x00F64EBC, rct_map_element*) = map_element;
-		map_invalidate_tile(position.x, position.y, map_element->base_height * 8, map_element->base_height * 8 + 72);
+		map_invalidate_tile_zoom1(position.x, position.y, map_element->base_height * 8, map_element->base_height * 8 + 72);
 	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
@@ -2704,15 +2696,6 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 	}
 	*ebx = MONEY32_UNDEFINED;
-}
-
-/**
- *
- *  rct2: 0x006EC6D7
- */
-void map_invalidate_tile_full(int x, int y)
-{
-	RCT2_CALLPROC_X(0x006EC6D7, x, 0, y, 0, 0, 0, 0);
 }
 
 int map_get_station(rct_map_element *mapElement)
@@ -2975,7 +2958,7 @@ void map_remove_intersecting_walls(int x, int y, int z0, int z1, int direction)
 			continue;
 
 		map_element_remove_banner_entry(mapElement);
-		map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->base_height * 8 + 72);
+		map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->base_height * 8 + 72);
 		map_element_remove(mapElement);
 		mapElement--;
 	} while (!map_element_is_last_for_tile(mapElement++));
@@ -3084,7 +3067,7 @@ static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int 
 	mapElement->properties.surface.grass_length = length;
 	z0 = mapElement->base_height * 8;
 	z1 = z0 + 16;
-	gfx_invalidate_viewport_tile(x, y, z0, z1);
+	map_invalidate_tile(x, y, z0, z1);
 }
 
 void sub_6A7594()
@@ -3334,32 +3317,6 @@ bool map_element_is_underground(rct_map_element *mapElement)
 	return true;
 }
 
-void map_rotate_position(int direction, int *x, int *y)
-{
-	int offsetX, offsetY;
-
-	switch (direction) {
-	case 0:
-		offsetX = (*x);
-		offsetY = (*y);
-		break;
-	case 1:
-		offsetX = (*y);
-		offsetY = -(*x);
-		break;
-	case 2:
-		offsetX = -(*x);
-		offsetY = -(*y);
-		break;
-	case 3:
-		offsetX = -(*y);
-		offsetY = (*x);
-		break;
-	}
-	*x = offsetX;
-	*y = offsetY;
-}
-
 rct_map_element *map_get_large_scenery_segment(int x, int y, int z, int direction, int sequence)
 {
 	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
@@ -3385,7 +3342,7 @@ bool map_large_scenery_get_origin(
 	rct_map_element *mapElement;
 	rct_scenery_entry *sceneryEntry;
 	rct_large_scenery_tile *tile;
-	int offsetX, offsetY;
+	sint16 offsetX, offsetY;
 
 	mapElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
 	if (mapElement == NULL)
@@ -3396,7 +3353,7 @@ bool map_large_scenery_get_origin(
 
 	offsetX = tile->x_offset;
 	offsetY = tile->y_offset;
-	map_rotate_position(direction, &offsetX, &offsetY);
+	rotate_map_coordinates(&offsetX, &offsetY, direction);
 
 	*outX = x - offsetX;
 	*outY = y - offsetY;
@@ -3410,12 +3367,11 @@ bool map_large_scenery_get_origin(
  */
 void sign_set_colour(int x, int y, int z, int direction, int sequence, uint8 mainColour, uint8 textColour)
 {
-	// RCT2_CALLPROC_X(0x006B9B05, x, direction << 8, y, z | (type << 8), 0, 0, 0);
-
 	rct_map_element *mapElement;
 	rct_scenery_entry *sceneryEntry;
 	rct_large_scenery_tile *sceneryTiles, *tile;
-	int x0, y0, z0, offsetX, offsetY;
+	sint16 offsetX, offsetY;
+	int x0, y0, z0;
 
 	// Get the given segment of the large scenery element
 	mapElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
@@ -3428,7 +3384,7 @@ void sign_set_colour(int x, int y, int z, int direction, int sequence, uint8 mai
 	tile = &sceneryTiles[sequence];
 	offsetX = tile->x_offset;
 	offsetY = tile->y_offset;
-	map_rotate_position(direction, &offsetX, &offsetY);
+	rotate_map_coordinates(&offsetX, &offsetY, direction);
 	x0 = x - offsetX;
 	y0 = y - offsetY;
 	z0 = (z * 8) - tile->z_offset;
@@ -3438,7 +3394,7 @@ void sign_set_colour(int x, int y, int z, int direction, int sequence, uint8 mai
 	for (tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++) {
 		offsetX = tile->x_offset;
 		offsetY = tile->y_offset;
-		map_rotate_position(direction, &offsetX, &offsetY);
+		rotate_map_coordinates(&offsetX, &offsetY, direction);
 
 		x = x0 + offsetX;
 		y = y0 + offsetY;
@@ -3450,7 +3406,94 @@ void sign_set_colour(int x, int y, int z, int direction, int sequence, uint8 mai
 			mapElement->properties.scenerymultiple.colour[0] |= mainColour;
 			mapElement->properties.scenerymultiple.colour[1] |= textColour;
 
-			gfx_invalidate_viewport_tile(x, y, mapElement->base_height * 8 , mapElement->clearance_height * 8);
+			map_invalidate_tile(x, y, mapElement->base_height * 8 , mapElement->clearance_height * 8);
 		}
 	}
+}
+
+static void translate_3d_to_2d(int rotation, int *x, int *y)
+{
+	int rx, ry;
+
+	switch (rotation & 3) {
+	case 0:
+		rx = (*y) - (*x);
+		ry = (*x) + (*y);
+		break;
+	case 1:
+		rx = -(*x) - (*y);
+		ry = (*y) - (*x);
+		break;
+	case 2:
+		rx = (*x) - (*y);
+		ry = -(*x) - (*y);
+		break;
+	case 3:
+		rx = (*x) + (*y);
+		ry = (*x) - (*y);
+		break;
+	}
+	ry /= 2;
+
+	*x = rx;
+	*y = ry;
+}
+
+void map_invalidate_tile_under_zoom(int x, int y, int z0, int z1, int maxZoom)
+{
+	int x1, y1, x2, y2;
+	rct_viewport *viewport;
+
+	x += 16;
+	y += 16;
+	translate_3d_to_2d(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32), &x, &y);
+
+	x1 = x - 32;
+	y1 = y - 32 - z1;
+	x2 = x + 32;
+	y2 = y + 32 - z0;
+
+	viewport = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*);
+	while (viewport->width != 0) {
+		if (maxZoom == -1 || viewport->zoom <= maxZoom) {
+			viewport_invalidate(viewport, x1, y1, x2, y2);
+		}
+		viewport++;
+	}
+}
+
+/**
+ *
+ *  rct2: 0x006EC847
+ */
+void map_invalidate_tile(int x, int y, int z0, int z1)
+{
+	map_invalidate_tile_under_zoom(x, y, z0, z1, -1);
+}
+
+/**
+ *
+ *  rct2: 0x006ECB60
+ */
+void map_invalidate_tile_zoom1(int x, int y, int z0, int z1)
+{
+	map_invalidate_tile_under_zoom(x, y, z0, z1, 1);
+}
+
+/**
+ *
+ *  rct2: 0x006EC9CE
+ */
+void map_invalidate_tile_zoom0(int x, int y, int z0, int z1)
+{
+	map_invalidate_tile_under_zoom(x, y, z0, z1, 0);
+}
+
+/**
+ *
+ *  rct2: 0x006EC6D7
+ */
+void map_invalidate_tile_full(int x, int y)
+{
+	map_invalidate_tile(x, y, 0, 2080);
 }

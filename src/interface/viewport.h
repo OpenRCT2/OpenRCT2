@@ -130,4 +130,6 @@ void sub_0x68615B(int ebp);
 void sub_688485();
 void sub_688217();
 
+void viewport_invalidate(rct_viewport *viewport, int left, int top, int right, int bottom);
+
 #endif
