@@ -37,6 +37,13 @@ typedef struct {
 	uint8 flags;				// 0x0B
 } rct_path_type;
 
+enum {
+	FOOTPATH_SEARCH_SUCCESS,
+	FOOTPATH_SEARCH_NOT_FOUND,
+	FOOTPATH_SEARCH_INCOMPLETE,
+	FOOTPATH_SEARCH_TOO_COMPLEX
+};
+
 #define g_pathTypeEntries ((rct_path_type**)object_entry_groups[OBJECT_TYPE_PATHS].chunks)
 
 extern const rct_xy16 word_981D6C[4];
@@ -57,7 +64,7 @@ void sub_6A742F(int rideIndex, int entranceIndex, int x, int y, rct_map_element 
 
 void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement);
 
-bool footpath_is_connected_to_map_edge(int x, int y, int z, int direction, int flags);
+int footpath_is_connected_to_map_edge(int x, int y, int z, int direction, int flags);
 bool footpath_element_is_sloped(rct_map_element *mapElement);
 int footpath_element_get_slope_direction(rct_map_element *mapElement);
 

@@ -39,6 +39,7 @@
 #include "util/util.h"
 #include "world/banner.h"
 #include "world/climate.h"
+#include "world/footpath.h"
 #include "world/map.h"
 #include "world/park.h"
 #include "world/scenery.h"
@@ -599,4 +600,67 @@ static void editor_finalise_main_view()
 	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
 	load_palette();
 	gfx_invalidate_screen();
+}
+
+/**
+ *
+ *  rct2: 0x006AB9B8
+ */
+bool editor_check_object_selection()
+{
+	return !(RCT2_CALLPROC_EBPSAFE(0x006AB9B8) & 0x100);
+}
+
+/**
+ *
+ *  rct2: 0x0066FEAC
+ */
+bool editor_check_park()
+{
+	int parkSize = park_calculate_size();
+	if (parkSize == 0) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PARK_MUST_OWN_SOME_LAND;
+		return false;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] != 0x8000)
+			break;
+
+		if (i == 3) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NO_PARK_ENTRANCES;
+			return false;
+		}
+	}
+
+	for (int i = 0; i < 4; i++) {
+		if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] == 0x8000)
+			continue;
+
+		int x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i];
+		int y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, uint16)[i];
+		int z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, uint16)[i] / 8;
+		int direction = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[i] ^ 2;
+
+		switch (footpath_is_connected_to_map_edge(x, y, z, direction, 0)) {
+		case FOOTPATH_SEARCH_NOT_FOUND:
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PARK_ENTRANCE_WRONG_DIRECTION_OR_NO_PATH;
+			return false;
+		case FOOTPATH_SEARCH_INCOMPLETE:
+		case FOOTPATH_SEARCH_TOO_COMPLEX:
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PARK_ENTRANCE_PATH_INCOMPLETE_OR_COMPLEX;
+			return false;
+		case FOOTPATH_SEARCH_SUCCESS:
+			// Run the search again and unown the path
+			footpath_is_connected_to_map_edge(x, y, z, direction, 0x20);
+			break;
+		}
+	}
+
+	if (gPeepSpawns[0].x == 0xFFFF && gPeepSpawns[1].x == 0xFFFF) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PEEP_SPAWNS_NOT_SET;
+		return false;
+	}
+
+	return true;
 }
