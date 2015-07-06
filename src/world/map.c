@@ -2730,17 +2730,6 @@ void map_element_remove(rct_map_element *mapElement)
 
 /**
  *
- *  rct2: 0x006A6AA7
- * @param x x-coordinate in units (not tiles)
- * @param y y-coordinate in units (not tiles)
- */
-void sub_6A6AA7(int x, int y, rct_map_element *mapElement)
-{
-	RCT2_CALLPROC_X(0x006A6AA7, x, 0, y, 0, (int)mapElement, 0, 0);
-}
-
-/**
- *
  *  rct2: 0x00675A8E
  */
 void map_remove_all_rides()
@@ -2763,7 +2752,7 @@ void map_remove_all_rides()
 			// fall-through
 		case MAP_ELEMENT_TYPE_TRACK:
 			sub_6A7594();
-			sub_6A6AA7(it.x * 32, it.y * 32, it.element);
+			footpath_remove_edges_at(it.x * 32, it.y * 32, it.element);
 			map_element_remove(it.element);
 			map_element_iterator_restart_for_tile(&it);
 			break;

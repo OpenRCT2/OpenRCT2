@@ -1285,7 +1285,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 							continue;
 
 						sub_6A7594();
-						sub_6A6AA7(mapCoord.x, mapCoord.y, map_element);
+						footpath_remove_edges_at(mapCoord.x, mapCoord.y, map_element);
 
 						bl = 1;
 						if (RCT2_GLOBAL(0x00F440D4, uint8) == 5)bl = 41;
@@ -4120,7 +4120,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 
 		sub_6B59C6(rideIndex);
 		sub_6A7594();
-		sub_6A6AA7(x, y, mapElement);
+		footpath_remove_edges_at(x, y, mapElement);
 		map_element_remove(mapElement);
 		sub_6CB945(rideIndex);
 		if (!(flags & (1 << 6))){
