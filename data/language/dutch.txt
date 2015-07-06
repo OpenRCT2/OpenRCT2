@@ -51,7 +51,7 @@ STR_0049    :Spookhuis
 STR_0050    :Eerste hulp
 STR_0051    :Circus
 STR_0052    :Spooktrein
-STR_0053    :Twisterachtbaan
+STR_0053    :Stalen twisterachtbaan
 STR_0054    :Houten achtbaan
 STR_0055    :Zijfrictie-achtbaan
 STR_0056    :Wilde muis
