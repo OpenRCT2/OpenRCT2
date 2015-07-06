@@ -341,4 +341,6 @@ bool map_element_is_underground(rct_map_element *mapElement);
 void map_remove_out_of_range_elements();
 void map_extend_boundary_surface();
 
+void sign_set_colour(int x, int y, int z, int direction, int sequence, uint8 mainColour, uint8 textColour);
+
 #endif
