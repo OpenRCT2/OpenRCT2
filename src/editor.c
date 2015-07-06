@@ -602,13 +602,55 @@ static void editor_finalise_main_view()
 	gfx_invalidate_screen();
 }
 
+static bool editor_check_object_group_at_least_one_selected(int objectType)
+{
+	uint32 numObjects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32);
+	rct_object_entry *entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	uint8 *objectFlag = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
+	for (uint32 i = 0; i < numObjects; i++) {
+		if ((entry->flags & 0x0F) == objectType && (*objectFlag & 1)) {
+			return true;
+		}
+		entry = object_get_next(entry);
+		objectFlag++;
+	}
+	return false;
+}
+
 /**
  *
  *  rct2: 0x006AB9B8
  */
-bool editor_check_object_selection()
+int editor_check_object_selection()
 {
-	return !(RCT2_CALLPROC_EBPSAFE(0x006AB9B8) & 0x100);
+	bool isTrackDesignerManager =
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
+
+	if (!isTrackDesignerManager) {
+		if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_PATHS)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_AT_LEAST_ONE_PATH_OBJECT_MUST_BE_SELECTED;
+			return OBJECT_TYPE_PATHS;
+		}
+	}
+
+	if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_RIDE)) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_AT_LEAST_ONE_RIDE_OBJECT_MUST_BE_SELECTED;
+		return OBJECT_TYPE_RIDE;
+	}
+
+	if (!isTrackDesignerManager) {
+		if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_PARK_ENTRANCE)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PARK_ENTRANCE_TYPE_MUST_BE_SELECTED;
+			return OBJECT_TYPE_PARK_ENTRANCE;
+		}
+
+		if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_WATER)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_WATER_TYPE_MUST_BE_SELECTED;
+			return OBJECT_TYPE_WATER;
+		}
+	}
+
+	return -1;
 }
 
 /**
