@@ -139,10 +139,8 @@ void hookfunc(int address, int newaddress, int stacksize, int registerargs[], in
 	data[i++] = 0xEC;
 	data[i++] = 4 + (stacksize * 4) + rargssize;
 
-	data[i++] = 0xEA; // jmp
-	*((int *)&data[i]) = newaddress; i += 4;
-	data[i++] = 0x23;
-	data[i++] = 0x00;
+	data[i++] = 0xE9; // jmp
+	*((int *)&data[i]) = (newaddress - address - i - 4); i += 4;
 
 	data[sizeoffset] = i - sizec;
 
@@ -190,10 +188,8 @@ void addhook(int address, int newaddress, int stacksize, int registerargs[], int
 	unsigned int hookaddress = (unsigned int)g_hooktableaddress + (g_hooktableoffset * 100);
 	char data[9];
 	int i = 0;
-	data[i++] = 0xEA; // jmp
-	*((int *)&data[i]) = hookaddress; i += 4;
-	data[i++] = 0x23;
-	data[i++] = 0x00;
+	data[i++] = 0xE9; // jmp
+	*((int *)&data[i]) = hookaddress - address - i - 4; i += 4;
 	data[i++] = 0xC3; // retn
 	WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
 	hookfunc(hookaddress, newaddress, stacksize, registerargs, registersreturned);
