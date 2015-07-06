@@ -649,7 +649,7 @@ int game_load_sv6(SDL_RWops* rw)
 	reset_loaded_objects();
 	map_update_tile_pointers();
 	reset_0x69EBE4();
-	gOpenRCT2ResetFrameSmoothing = true;
+	openrct2_reset_object_tween_locations();
 	return 1;
 }
 

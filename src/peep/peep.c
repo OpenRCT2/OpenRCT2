@@ -5399,7 +5399,7 @@ void peep_update_name_sort(rct_peep *peep)
 	RCT2_CALLPROC_X(0x00699115, 0, 0, 0, 0, (int)peep, 0, 0);
 
 	// This is required at the moment because this function reorders peeps in the sprite list
-	gOpenRCT2ResetFrameSmoothing = true;
+	openrct2_reset_object_tween_locations();
 }
 
 /**
