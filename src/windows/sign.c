@@ -623,7 +623,7 @@ static void window_sign_small_dropdown()
 		((w->var_492 & 0x7) << 5);
 	map_element->flags |= ((w->var_492 & 0x18) << 2);
 
-	gfx_invalidate_viewport_tile(x, y, map_element->base_height * 8, map_element->clearance_height * 8);
+	map_invalidate_tile(x, y, map_element->base_height * 8, map_element->clearance_height * 8);
 	window_invalidate(w);
 }
 

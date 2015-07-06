@@ -715,81 +715,6 @@ int park_get_entrance_index(int x, int y, int z)
 	return -1;
 }
 
-static void translate_3d_to_2d(int rotation, int *x, int *y)
-{
-	int rx, ry;
-
-	switch (rotation & 3) {
-	case 0:
-		rx = (*y) - (*x);
-		ry = (*x) + (*y);
-		break;
-	case 1:
-		rx = -(*x) - (*y);
-		ry = (*y) - (*x);
-		break;
-	case 2:
-		rx = (*x) - (*y);
-		ry = -(*x) - (*y);
-		break;
-	case 3:
-		rx = (*x) + (*y);
-		ry = (*x) - (*y);
-		break;
-	}
-	ry /= 2;
-
-	*x = rx;
-	*y = ry;
-}
-
-/**
- *
- *  rct2: 0x006EC847
- */
-void gfx_invalidate_viewport_tile(int x, int y, int z0, int z1)
-{
-	int x1, y1, x2, y2;
-	rct_viewport *viewport;
-
-	x += 16;
-	y += 16;
-	translate_3d_to_2d(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32), &x, &y);
-
-	x1 = x - 32;
-	y1 = y - 32 - z1;
-	x2 = x + 32;
-	y2 = y + 32 - z0;
-
-	viewport = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*);
-	while (viewport->width != 0) {
-		int viewport_x2 = viewport->view_x + viewport->view_width;
-		int viewport_y2 = viewport->view_y + viewport->view_height;
-		if (x2 > viewport->view_x && y2 > viewport->view_y) {
-			x1 = max(x1, viewport->view_x);
-			y1 = max(y1, viewport->view_y);
-			x2 = min(x2, viewport_x2);
-			y2 = min(y2, viewport_y2);
-
-			uint8 zoom = 1 << viewport->zoom;
-			x1 -= viewport->view_x;
-			y1 -= viewport->view_y;
-			x2 -= viewport->view_x;
-			y2 -= viewport->view_y;
-			x1 /= zoom;
-			y1 /= zoom;
-			x2 /= zoom;
-			y2 /= zoom;
-			x1 += viewport->x;
-			y1 += viewport->y;
-			x2 += viewport->x;
-			y2 += viewport->y;
-			gfx_set_dirty_blocks(x1, y1, x2, y2);
-		}
-		viewport++;
-	}
-}
-
 /**
 *
 *  rct2: 0x00664D05
@@ -850,7 +775,7 @@ void update_park_fences(int x, int y)
 	if (sufaceElement->properties.surface.ownership != newOwnership) {
 		int z0 = sufaceElement->base_height * 8;
 		int z1 = z0 + 16;
-		gfx_invalidate_viewport_tile(x, y, z0, z1);	
+		map_invalidate_tile(x, y, z0, z1);	
 		sufaceElement->properties.surface.ownership = newOwnership;
 	}
 }
@@ -868,7 +793,7 @@ void park_remove_entrance_segment(int x, int y, int z)
 		if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
 			continue;
 
-		gfx_invalidate_viewport_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+		map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 		map_element_remove(mapElement);
 		update_park_fences(x, y);
 	} while (!map_element_is_last_for_tile(mapElement++));
@@ -1057,7 +982,7 @@ int map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 				TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
 				uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
 				baseHeight *= 8;
-				gfx_invalidate_viewport_tile(x, y, baseHeight, baseHeight + 16);
+				map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
 			}
 			cost = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, uint16);
 			return cost;
@@ -1068,7 +993,7 @@ int map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 			TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership &= 0xEF;
 			uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
 			baseHeight *= 8;
-			gfx_invalidate_viewport_tile(x, y, baseHeight, baseHeight + 16);
+			map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
 		}
 		cost = 0;
 		break;
@@ -1078,7 +1003,7 @@ int map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 			TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
 			uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
 			baseHeight *= 8;
-			gfx_invalidate_viewport_tile(x, y, baseHeight, baseHeight + 16);
+			map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
 		}
 		cost = 0;
 		break;
@@ -1087,7 +1012,7 @@ int map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 			TILE_MAP_ELEMENT_POINTER(tile_idx)->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE;
 			uint16 baseHeight = TILE_MAP_ELEMENT_POINTER(tile_idx)->base_height;
 			baseHeight *= 8;
-			gfx_invalidate_viewport_tile(x, y, baseHeight, baseHeight + 16);
+			map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
 		}
 		cost = 0;
 		break;

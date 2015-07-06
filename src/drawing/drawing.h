@@ -83,7 +83,6 @@ rct_drawpixelinfo* clip_drawpixelinfo(rct_drawpixelinfo* dpi, int left, int widt
 void gfx_set_dirty_blocks(uint16 left, uint16 top, uint16 right, uint16 bottom);
 void gfx_draw_all_dirty_blocks();
 void gfx_redraw_screen_rect(short left, short top, short right, short bottom);
-void gfx_invalidate_tile_if_zoomed(int x, int y, int base_height, int clearance_height);
 void gfx_invalidate_screen();
 
 // palette

@@ -1756,12 +1756,12 @@ static void ride_chairlift_update(rct_ride *ride)
 	x = (ride->var_13A & 0xFF) * 32;
 	y = (ride->var_13A >> 8) * 32;
 	z = ride->var_13E * 8;
-	map_invalidate_tile(x, y, z, z + (4 * 8));
+	map_invalidate_tile_zoom1(x, y, z, z + (4 * 8));
 
 	x = (ride->var_13C & 0xFF) * 32;
 	y = (ride->var_13C >> 8) * 32;
 	z = ride->var_13F * 8;
-	map_invalidate_tile(x, y, z, z + (4 * 8));
+	map_invalidate_tile_zoom1(x, y, z, z + (4 * 8));
 }
 
 /**
@@ -1837,7 +1837,7 @@ static void ride_spiral_slide_update(rct_ride *ride)
 		x += RCT2_GLOBAL(0x0098DDB8 + (rotation * 4), sint16);
 		y += RCT2_GLOBAL(0x0098DDBA + (rotation * 4), sint16);
 
-		gfx_invalidate_tile_if_zoomed(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+		map_invalidate_tile_zoom0(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 	}
 }
 

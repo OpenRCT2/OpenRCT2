@@ -2472,3 +2472,35 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x
 	if (y != NULL) *y = RCT2_GLOBAL(0x9AC14E, int16_t);
 	if (mapElement != NULL) *mapElement = RCT2_GLOBAL(0x9AC150, rct_map_element*);
 }
+
+/**
+ * Left, top, right and bottom represent 2D map coordinates at zoom 0.
+ */
+void viewport_invalidate(rct_viewport *viewport, int left, int top, int right, int bottom)
+{
+	int viewportLeft = viewport->view_x;
+	int viewportTop = viewport->view_y;
+	int viewportRight = viewport->view_x + viewport->view_width;
+	int viewportBottom = viewport->view_y + viewport->view_height;
+	if (right > viewportLeft && bottom > viewportTop) {
+		left = max(left, viewportLeft);
+		top = max(top, viewportTop);
+		right = min(right, viewportRight);
+		bottom = min(bottom, viewportBottom);
+
+		uint8 zoom = 1 << viewport->zoom;
+		left -= viewportLeft;
+		top -= viewportTop;
+		right -= viewportLeft;
+		bottom -= viewportTop;
+		left /= zoom;
+		top /= zoom;
+		right /= zoom;
+		bottom /= zoom;
+		left += viewport->x;
+		top += viewport->y;
+		right += viewport->x;
+		bottom += viewport->y;
+		gfx_set_dirty_blocks(left, top, right, bottom);
+	}
+}

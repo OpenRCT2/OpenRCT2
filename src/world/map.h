@@ -276,8 +276,6 @@ int map_coord_is_connected(int x, int y, int z, uint8 faceDirection);
 void sub_6A876D();
 int map_is_location_owned(int x, int y, int z);
 int map_is_location_in_park(int x, int y);
-void map_invalidate_tile(int x, int y, int zLow, int zHigh);
-void map_invalidate_tile_full(int x, int y);
 int map_get_station(rct_map_element *mapElement);
 void map_element_remove(rct_map_element *mapElement);
 void sub_6A6AA7(int x, int y, rct_map_element *mapElement);
@@ -289,7 +287,7 @@ int sub_68B044();
 rct_map_element *map_element_insert(int x, int y, int z, int flags);
 int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *clearFunc, uint8 bl);
 int map_can_construct_at(int x, int y, int zLow, int zHigh, uint8 bl);
-void rotate_map_coordinates(sint16* x, sint16* y, int rotation);
+void rotate_map_coordinates(sint16 *x, sint16 *y, int rotation);
 rct_xy16 coordinate_3d_to_2d(const rct_xyz16* coordinate_3d, int rotation);
 money32 map_clear_scenery(int x0, int y0, int x1, int y1, int flags);
 money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags);
@@ -342,5 +340,10 @@ void map_remove_out_of_range_elements();
 void map_extend_boundary_surface();
 
 void sign_set_colour(int x, int y, int z, int direction, int sequence, uint8 mainColour, uint8 textColour);
+
+void map_invalidate_tile(int x, int y, int z0, int z1);
+void map_invalidate_tile_zoom1(int x, int y, int z0, int z1);
+void map_invalidate_tile_zoom0(int x, int y, int z0, int z1);
+void map_invalidate_tile_full(int x, int y);
 
 #endif
