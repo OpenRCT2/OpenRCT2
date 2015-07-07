@@ -22,7 +22,6 @@
 #include "../config.h"
 #include "../game.h"
 #include "../input.h"
-#include "../network/network.h"
 #include "keyboard_shortcut.h"
 #include "viewport.h"
 #include "window.h"
@@ -473,7 +472,7 @@ static void shortcut_open_cheat_window()
 
 static void shortcut_open_chat_window()
 {
-	network_open_chat_box();
+	window_chat_open();
 }
 
 static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {

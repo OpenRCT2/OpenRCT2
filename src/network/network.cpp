@@ -23,8 +23,8 @@
 #include <math.h>
 extern "C" {
 #include "../addresses.h"
+#include "../common.h"
 #include "../game.h"
-#include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../management/news_item.h"
@@ -418,6 +418,15 @@ void network_send_map()
 	SDL_RWclose(rw);
 }
 
+void network_send_chat(const char* text)
+{
+	NetworkConnection& networkconnection = gNetworkStatus == NETWORK_CLIENT ? _serverConnection : _clientConnection;
+	std::unique_ptr<NetworkPacket> packet = networkconnection.AllocatePacket();
+	packet->Write((uint32)NETWORK_COMMAND_CHAT);
+	packet->Write((uint8*)text, strlen(text) + 1);
+	networkconnection.QueuePacket(std::move(packet));
+}
+
 void network_send_gamecmd(uint32 command, uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp)
 {
 	NetworkConnection& networkconnection = gNetworkStatus == NETWORK_CLIENT ? _serverConnection : _clientConnection;
@@ -440,70 +449,6 @@ void network_print_error()
 	FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, WSAGetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&s, 0, NULL);
 	fprintf(stderr, "%S\n", s);
 	LocalFree(s);
-}
-
-static void window_chat_host_emptysub() { }
-
-static void window_chat_host_textinput()
-{
-	rct_window *w;
-	short widgetIndex;
-	uint8 result;
-	char *text;
-
-	window_textinput_get_registers(w, widgetIndex, result, text);
-
-	if (!result)
-		return;
-
-	std::unique_ptr<NetworkPacket> packet = _clientConnection.AllocatePacket();
-	packet->Write((uint32)NETWORK_COMMAND_CHAT);
-	packet->Write((uint8*)text, strlen(text) + 1);
-	_clientConnection.QueuePacket(std::move(packet));
-
-	window_close(w);
-}
-
-static void* window_chat_host_events[] = {
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_textinput,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub
-};
-
-void network_open_chat_box()
-{
-	rct_window *w;
-	w = window_create(0, 0, 0, 0, (uint32*)window_chat_host_events, WC_CHAT_HOST, 0);
-	w->colours[0] = 1;
-	w->colours[1] = 1;
-	w->colours[2] = 0;
-	w->number = 0;
-	window_text_input_open(w, 0, 6000, 6001, STR_NONE, 0, 64);
 }
 
 #endif /* DISABLE_NETWORK */
