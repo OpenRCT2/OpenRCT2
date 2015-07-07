@@ -23,9 +23,46 @@
 
 #ifndef DISABLE_NETWORK
 
-#include <winsock.h>
-
 #include "../common.h"
+
+#ifdef __cplusplus
+
+#include <list>
+#include <memory>
+#include <vector>
+
+class NetworkPacket
+{
+public:
+	NetworkPacket();
+	uint8* GetData();
+	template <class T>
+	void Write(T value) { uint8* bytes = (uint8*)&value; data->insert(data->end(), bytes, bytes + sizeof(value)); }
+	void Write(uint8* bytes, unsigned int size) { data->insert(data->end(), bytes, bytes + size); }
+
+	uint16 size;
+	std::shared_ptr<std::vector<uint8>> data;
+	int read;
+};
+
+class NetworkConnection
+{
+public:
+	int ReadPacket();
+	void QueuePacket(std::unique_ptr<NetworkPacket> packet);
+	std::unique_ptr<NetworkPacket> AllocatePacket();
+	void SendQueuedPackets();
+
+	SOCKET socket;
+	NetworkPacket inboundpacket;
+
+private:
+	int SendPacket(NetworkPacket& packet);
+	std::list<std::unique_ptr<NetworkPacket>> outboundpackets;
+};
+
+extern "C" {
+#endif
 
 typedef struct network_packet network_packet;
 
@@ -73,15 +110,18 @@ int network_begin_server(int port);
 void network_end_server();
 
 void network_update();
-network_packet* network_alloc_packet(int size);
-void network_queue_packet(network_packet *packet);
 
 void network_send_tick();
 void network_send_map();
+void network_send_gamecmd(uint32 command, uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
 
 void network_open_chat_box();
 
 void network_print_error();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* DISABLE_NETWORK */
 
