@@ -113,9 +113,8 @@ void network_update();
 
 void network_send_tick();
 void network_send_map();
+void network_send_chat(const char* text);
 void network_send_gamecmd(uint32 command, uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
-
-void network_open_chat_box();
 
 void network_print_error();
 

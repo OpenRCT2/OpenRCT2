@@ -499,7 +499,11 @@
       <Filter>Source\Localisation</Filter>
     </ClCompile>
     <ClCompile Include="..\src\network\network.c">
+    <ClCompile Include="..\src\network\network.cpp">
       <Filter>Source\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\network.c">
+      <Filter>Source\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\src\drawing\scrolling_text.c">
       <Filter>Source\Drawing</Filter>
