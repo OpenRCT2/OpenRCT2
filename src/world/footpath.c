@@ -19,15 +19,16 @@
  *****************************************************************************/
 
 #include "../addresses.h"
-#include "../game.h"
-#include "../localisation/localisation.h"
-#include "../util/util.h"
-#include "footpath.h"
-#include "../management/finance.h"
-#include "map.h"
-#include "scenery.h"
 #include "../cheats.h"
 #include "../config.h"
+#include "../game.h"
+#include "../localisation/localisation.h"
+#include "../management/finance.h"
+#include "../util/util.h"
+#include "footpath.h"
+#include "map.h"
+#include "map_animation.h"
+#include "scenery.h"
 
 void footpath_interrupt_peeps(int x, int y, int z);
 
@@ -210,7 +211,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 				return MONEY32_UNDEFINED;
 			}
 
-			if ((unk6 & 0x40) && (mapElement->type & 1)) {
+			if ((unk6 & 0x40) && footpath_element_is_queue(mapElement)) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CANNOT_PLACE_THESE_ON_QUEUE_LINE_AREA;
 				return MONEY32_UNDEFINED;
 			}
@@ -220,7 +221,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 				return MONEY32_UNDEFINED;
 			}
 
-			if ((unk6 & 0x100) && !(mapElement->type & 1)) {
+			if ((unk6 & 0x100) && !footpath_element_is_queue(mapElement)) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA;
 				return MONEY32_UNDEFINED;
 			}
@@ -686,9 +687,95 @@ void sub_6A6C66(int x, int y, rct_map_element *mapElement, int flags)
  * 
  *  rct2: 0x006A742F
  */
-void sub_6A742F(int rideIndex, int entranceIndex, int x, int y, rct_map_element *mapElement, int direction)
+void footpath_chain_ride_queue(int rideIndex, int entranceIndex, int x, int y, rct_map_element *mapElement, int direction)
 {
-	RCT2_CALLPROC_X(0x006A742F, x, direction, y, (entranceIndex << 8) | rideIndex, (int)mapElement, 0, 0);
+	rct_map_element *lastPathElement, *lastQueuePathElement;
+	int lastPathX, lastPathY, lastPathDirection;
+
+	lastPathElement = NULL;
+	lastQueuePathElement = NULL;
+	int z = mapElement->base_height;
+	for (;;) {
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
+			lastPathElement = mapElement;
+			lastPathX = x;
+			lastPathY = y;
+			lastPathDirection = direction;
+			if (footpath_element_is_sloped(mapElement)) {
+				if (footpath_element_get_slope_direction(mapElement) == direction) {
+					z += 2;
+				}
+			}
+		}
+		
+		x += TileDirectionDelta[direction].x;
+		y += TileDirectionDelta[direction].y;
+		mapElement = map_get_first_element_at(x >> 5, y >> 5);
+		do {
+			if (lastQueuePathElement == mapElement)
+				continue;
+			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+				continue;
+			if (mapElement->base_height == z) {
+				if (footpath_element_is_sloped(mapElement)) {
+					if (footpath_element_get_slope_direction(mapElement) != direction)
+						break;
+				}
+				goto foundNextPath;
+			}
+			if (mapElement->base_height == z - 2) {
+				if (!footpath_element_is_sloped(mapElement))
+					break;
+
+				if ((footpath_element_get_slope_direction(mapElement) ^ 2) != direction)
+					break;
+
+				z -= 2;
+				goto foundNextPath;
+			}
+		} while (!map_element_is_last_for_tile(mapElement++));
+		break;
+
+	foundNextPath:
+		if (footpath_element_is_queue(mapElement)) {
+			mapElement->properties.path.type &= ~(1 << 3);
+			mapElement->properties.path.edges |= (1 << (direction ^ 2));
+			mapElement->properties.path.ride_index = rideIndex;
+			mapElement->properties.path.additions &= 0x8F;
+			mapElement->properties.path.additions |= (entranceIndex & 7) << 4;
+			if (lastQueuePathElement == NULL) {
+				lastQueuePathElement = mapElement;
+			}
+
+			if (mapElement->properties.path.edges & (1 << direction))
+				continue;
+
+			direction = (direction + 1) & 3;
+			if (mapElement->properties.path.edges & (1 << direction))
+				continue;
+
+			direction ^= 2;
+			if (mapElement->properties.path.edges & (1 << direction))
+				continue;
+		}
+		break;
+	}
+
+	if (rideIndex != 255 && lastPathElement != NULL) {
+		if (footpath_element_is_queue(lastPathElement)) {
+			lastPathElement->properties.path.type |= (1 << 3);
+			lastPathElement->type &= 0x3F;
+			lastPathElement->type |= lastPathDirection << 6;
+
+			map_animation_create(
+				MAP_ANIMATION_TYPE_QUEUE_BANNER,
+				lastPathX,
+				lastPathY,
+				lastPathElement->base_height
+			);
+		}
+	}
+
 }
 
 /**
@@ -726,7 +813,7 @@ void sub_6A759F()
 					continue;
 
 				direction = (mapElement->type & 3) ^ 2;
-				sub_6A742F(rideIndex, i, x << 5, y << 5, mapElement, direction);
+				footpath_chain_ride_queue(rideIndex, i, x << 5, y << 5, mapElement, direction);
 			} while (!map_element_is_last_for_tile(mapElement++));
 		}
 	}
@@ -885,13 +972,9 @@ int footpath_element_get_slope_direction(rct_map_element *mapElement)
 	return mapElement->properties.path.type & 3;
 }
 
-/**
- *
- *  rct2: 0x006A7642
- */
-void sub_6A7642(int x, int y, rct_map_element *mapElement)
+bool footpath_element_is_queue(rct_map_element *mapElement)
 {
-	RCT2_CALLPROC_X(0x006A7642, x, 0, y, 0, (int)mapElement, 0, 0);
+	return mapElement->type & 1;
 }
 
 /**
@@ -909,14 +992,42 @@ void sub_6A76E9(int rideIndex)
 
 /**
  *
+ *  rct2: 0x006A7642
+ */
+void sub_6A7642(int x, int y, rct_map_element *mapElement)
+{
+	int elementType = map_element_get_type(mapElement);
+	switch (elementType) {
+	case MAP_ELEMENT_TYPE_PATH:
+		if (footpath_element_is_queue(mapElement)) {
+			sub_6A76E9(mapElement->properties.path.ride_index);
+			for (int direction = 0; direction < 4; direction++) {
+				if (mapElement->properties.path.edges & (1 << direction)) {
+					footpath_chain_ride_queue(255, 0, x, y, mapElement, direction);
+				}
+			}
+			mapElement->properties.path.ride_index = 255;
+		}
+		break;
+	case MAP_ELEMENT_TYPE_ENTRANCE:
+		if (mapElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE) {
+			sub_6A76E9(mapElement->properties.entrance.ride_index);
+			footpath_chain_ride_queue(255, 0, x, y, mapElement, (mapElement->type & MAP_ELEMENT_DIRECTION_MASK) ^ 2);
+		}
+		break;
+	}
+}
+
+/**
+ *
  *  rct2: 0x006A6B7F
  */
 static void footpath_remove_edges_towards_here(int x, int y, int z, int direction, rct_map_element *mapElement)
 {
 	int d;
 
-	if (mapElement->type & 1) {
-		sub_6A76E9(mapElement->properties.path.addition_status);
+	if (footpath_element_is_queue(mapElement)) {
+		sub_6A76E9(mapElement->properties.path.ride_index);
 	}
 
 	d = direction ^ 2;

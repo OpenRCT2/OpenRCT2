@@ -34,7 +34,10 @@ typedef struct {
 	uint8 type; //4
 	uint8 additions; //5
 	uint8 edges; //6
-	uint8 addition_status; //7
+	union {
+		uint8 addition_status; //7
+		uint8 ride_index;
+	};
 } rct_map_element_path_properties;
 
 typedef struct {

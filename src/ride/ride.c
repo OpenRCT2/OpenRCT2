@@ -3720,7 +3720,7 @@ void sub_6B5952(int rideIndex)
 				continue;
 
 			int direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
-			sub_6A742F(rideIndex, i, x, y, mapElement, direction ^ 2);
+			footpath_chain_ride_queue(rideIndex, i, x, y, mapElement, direction ^ 2);
 		} while (!map_element_is_last_for_tile(mapElement++));
 	}
 }
