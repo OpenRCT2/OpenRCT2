@@ -800,7 +800,7 @@ enum {
 #define STATION_DEPART_MASK (~STATION_DEPART_FLAG)
 
 // rct2: 0x009ACFA4
-rct_ride_type **gRideTypeList;
+extern rct_ride_type **gRideTypeList;
 
 // rct2: 0x013628F8
 extern rct_ride* g_ride_list;

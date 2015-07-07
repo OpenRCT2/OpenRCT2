@@ -20,6 +20,8 @@
 
 #ifndef DISABLE_NETWORK
 
+#include <math.h>
+extern "C" {
 #include "../addresses.h"
 #include "../game.h"
 #include "../interface/window.h"
@@ -27,6 +29,7 @@
 #include "../localisation/localisation.h"
 #include "../management/news_item.h"
 #include "../scenario.h"
+}
 #include "network.h"
 
 #pragma comment(lib, "Ws2_32.lib")
@@ -43,14 +46,110 @@ static WSADATA _wsaData;
 static SOCKET _serverSocket;
 static SOCKET _clientSocket;
 static network_packet _inboundPacket;
-static char* _chunkBuffer = NULL;
+static std::vector<uint8> _chunkBuffer;
+static NetworkConnection _serverConnection;
+static NetworkConnection _clientConnection;
 
-static int network_read_next_packet(network_packet *outPacket);
-static void network_process_packet(network_packet *packet);
-static void network_init_packet(network_packet* packet, int size);
-static void network_close_packet(network_packet *packet);
+static void network_process_packet(NetworkPacket& packet);
 static int network_send_packet(network_packet *packet);
 static void network_send_queued_packets();
+
+NetworkPacket::NetworkPacket()
+{
+	read = 0;
+	size = 0;
+	data = std::make_shared<std::vector<uint8>>();
+}
+
+uint8* NetworkPacket::GetData()
+{
+	return &(*data)[0];
+}
+
+int NetworkConnection::ReadPacket()
+{
+ 	if (inboundpacket.read < sizeof(inboundpacket.size)) {
+		// read packet size
+		int readBytes = recv(socket, &((char*)&inboundpacket.size)[inboundpacket.read], sizeof(inboundpacket.size) - inboundpacket.read, 0);
+		if (readBytes == SOCKET_ERROR || readBytes == 0) {
+			if (WSAGetLastError() != WSAEWOULDBLOCK) {
+				return NETWORK_DISCONNECTED;
+			} else {
+				return NETWORK_NO_DATA; 
+			}
+		}
+		inboundpacket.read += readBytes;
+		if (inboundpacket.read == sizeof(inboundpacket.size)) {
+			inboundpacket.size = ntohs(inboundpacket.size);
+			inboundpacket.data->resize(inboundpacket.size);
+		}
+	} else {
+		// read packet data
+		if (inboundpacket.data->capacity() > 0) {
+			int readBytes = recv(socket, (char*)&inboundpacket.GetData()[inboundpacket.read - sizeof(inboundpacket.size)], sizeof(inboundpacket.size) + inboundpacket.size - inboundpacket.read, 0);
+			if (readBytes == SOCKET_ERROR || readBytes == 0) {
+				if (WSAGetLastError() != WSAEWOULDBLOCK) {
+					return NETWORK_DISCONNECTED;
+				} else {
+					return NETWORK_NO_DATA;
+				}
+			}
+			inboundpacket.read += readBytes;
+		}
+		if (inboundpacket.read == sizeof(inboundpacket.size) + inboundpacket.size) {
+			return NETWORK_SUCCESS;
+		}
+	}
+	return NETWORK_MORE_DATA;
+}
+
+int NetworkConnection::SendPacket(NetworkPacket& packet)
+{
+	if (gNetworkStatus == NETWORK_NONE) {
+		return 0;
+	}
+
+	while (1) {
+		if (packet.read < sizeof(packet.size)) {
+			// send packet size
+			uint16 size = htons(packet.size);
+			int sentBytes = send(socket, &((char*)&size)[packet.read], sizeof(size) - packet.read, 0);
+			if (sentBytes == SOCKET_ERROR) {
+				return 0;
+			}
+			packet.read += sentBytes;
+		} else {
+			// send packet data
+			int sentBytes = send(socket, (const char*)&packet.GetData()[packet.read - sizeof(packet.size)], packet.data->size(), 0);
+			if (sentBytes == SOCKET_ERROR) {
+				return 0;
+			}
+			packet.read += sentBytes;
+			if (packet.read == sizeof(packet.size) + packet.data->size()) {
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+
+void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet)
+{
+	packet->size = packet->data->size();
+	outboundpackets.push_back(std::move(packet));
+}
+
+std::unique_ptr<NetworkPacket> NetworkConnection::AllocatePacket()
+{
+	return std::move(std::unique_ptr<NetworkPacket>(new NetworkPacket)); // can be converted to make_unique in C++14
+}
+
+void NetworkConnection::SendQueuedPackets()
+{
+	while (outboundpackets.size() > 0 && SendPacket(*(outboundpackets.front()).get())) {
+		outboundpackets.remove(outboundpackets.front());
+	}
+}
 
 int network_init()
 {
@@ -62,8 +161,6 @@ int network_init()
 		}
 		_wsaInitialised = 1;
 	}
-
-	network_init_packet(&_inboundPacket, 0);
 
 	return 1;
 }
@@ -113,6 +210,8 @@ int network_begin_client(const char *host, int port)
 		closesocket(_serverSocket);
 		log_error("Failed to set non-blocking mode.");
 	}
+
+	_serverConnection.socket = _serverSocket;
 
 	gNetworkStatus = NETWORK_CLIENT;
 	return 1;
@@ -173,6 +272,9 @@ int network_begin_server(int port)
 	}
 	
 	printf("Connected to client!\n");
+
+	_clientConnection.socket = _clientSocket;
+
 	gNetworkStatus = NETWORK_SERVER;
 	return 1;
 }
@@ -185,17 +287,16 @@ void network_end_server()
 
 void network_update()
 {
-	SOCKET socket;
 	int packetStatus;
 	static uint32 lastTickUpdate = 0;
 
 	if (gNetworkStatus == NETWORK_NONE)
 		return;
 
-	socket = gNetworkStatus == NETWORK_CLIENT ? _serverSocket : _clientSocket;
+	NetworkConnection& networkconnection = gNetworkStatus == NETWORK_CLIENT ? _serverConnection : _clientConnection;
 
 	do {
-		packetStatus = network_read_next_packet(&_inboundPacket);
+		packetStatus = networkconnection.ReadPacket();
 		switch(packetStatus) {
 		case NETWORK_DISCONNECTED:
 			network_print_error();
@@ -205,15 +306,13 @@ void network_update()
 				return;
 			} else if (gNetworkStatus == NETWORK_SERVER) {
 				network_end_server();
-				printf("client disconnected...\n");
+				printf("Client disconnected...\n");
 				return;
 			}
 			break;
 		case NETWORK_SUCCESS:
 			// done reading in packet
-			network_process_packet(&_inboundPacket);
-			network_close_packet(&_inboundPacket);
-			network_init_packet(&_inboundPacket, 0); // initialize the packet struct to be used again
+			network_process_packet(networkconnection.inboundpacket);
 			break;
 		case NETWORK_MORE_DATA:
 			// more data required to be read
@@ -230,56 +329,16 @@ void network_update()
 		}
 	}
 
-	network_send_queued_packets();
+	networkconnection.SendQueuedPackets();
 }
 
-static int network_read_next_packet(network_packet *packet)
-{
-	SOCKET socket;
-
-	socket = gNetworkStatus == NETWORK_CLIENT ? _serverSocket : _clientSocket;
-
- 	if (packet->read < sizeof(packet->size)) {
-		// read packet size
-		int readBytes = recv(socket, &((char*)&packet->size)[packet->read], sizeof(packet->size) - packet->read, 0);
-		if (readBytes == SOCKET_ERROR || readBytes == 0) {
-			if (WSAGetLastError() != WSAEWOULDBLOCK) {
-				return NETWORK_DISCONNECTED;
-			} else {
-				return NETWORK_NO_DATA; 
-			}
-		}
-		packet->read += readBytes;
-	} else {
-		// read packet data
-		if (!packet->data) {
-			packet->size = ntohs(packet->size);
-			packet->data = malloc(packet->size);
-		}
-		int dataread = packet->read - sizeof(packet->size);
-		int readBytes = recv(socket, &packet->data[dataread], packet->size - dataread, 0);
-		if (readBytes == SOCKET_ERROR || readBytes == 0) {
-			if (WSAGetLastError() != WSAEWOULDBLOCK) {
-				return NETWORK_DISCONNECTED;
-			} else {
-				return NETWORK_NO_DATA;
-			}
-		}
-		packet->read += readBytes;
-		if (packet->read == packet->size + sizeof(packet->size)) {
-			return NETWORK_SUCCESS;
-		}
-	}
-	return NETWORK_MORE_DATA;
-}
-
-static void network_process_packet(network_packet *packet)
+static void network_process_packet(NetworkPacket& packet)
 {
 	uint32 *args;
 	int command;
 	rct_news_item newsItem;
 
-	args = (uint32*)packet->data;
+	args = (uint32*)packet.GetData();
 	command = args[0];
 	switch (command) {
 		case NETWORK_COMMAND_AUTH:{
@@ -288,16 +347,17 @@ static void network_process_packet(network_packet *packet)
 		case NETWORK_COMMAND_MAP:{
 			uint32 size = args[1];
 			uint32 offset = args[2];
-			if (!_chunkBuffer) {
-				_chunkBuffer = malloc(0x600000);
-			}
-			if (_chunkBuffer) {
-				int chunksize = packet->size - 4 - 4 - 4;
-				if (offset + chunksize <= 0x600000) {
-					memcpy(&_chunkBuffer[offset], packet->data + 4 + 4 + 4, chunksize);
+			if (offset > 0x600000) {
+				// too big
+			} else {
+				int chunksize = packet.size - 4 - 4 - 4;
+				if (offset + chunksize > _chunkBuffer.size()) {
+					_chunkBuffer.resize(offset + chunksize);
 				}
+				memcpy(&_chunkBuffer[offset], (void*)&packet.GetData()[4 + 4 + 4], chunksize);
 				if (offset + chunksize == size) {
-					SDL_RWops* rw = SDL_RWFromMem(_chunkBuffer, size);
+					printf("Loading new map from network...\n");
+					SDL_RWops* rw = SDL_RWFromMem(&_chunkBuffer[0], size);
 					if (game_load_sv6(rw)) {
 						game_load_init();
 					}
@@ -313,135 +373,65 @@ static void network_process_packet(network_packet *packet)
 			newsItem.month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
 			newsItem.day = ((days_in_month[(newsItem.month_year & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16) + 1;
 			newsItem.colour = FORMAT_TOPAZ;
-			strcpy(newsItem.text, packet->data + 4);
+			strcpy(newsItem.text, (char*)&packet.GetData()[4]);
 			news_item_add_to_queue_custom(&newsItem);
 		}break;
 		case NETWORK_COMMAND_GAMECMD:{
 			if (gNetworkStatus == NETWORK_CLIENT)
 				args[1] |= (1 << 31);
 
-			game_do_command_p(args[1], &args[2], &args[3], &args[4], &args[5], &args[6], &args[7], &args[8]);
+			game_do_command_p(args[1], (int*)&args[2], (int*)&args[3], (int*)&args[4], (int*)&args[5], (int*)&args[6], (int*)&args[7], (int*)&args[8]);
 		}break;
 		case NETWORK_COMMAND_TICK:{
 			gNetworkServerTick = args[1];
 		}break;
 	}
-}
-
-network_packet* network_alloc_packet(int size)
-{
-	network_packet* packet = malloc(sizeof(network_packet));
-	network_init_packet(packet, size);
-	return packet;
-}
-
-void network_init_packet(network_packet* packet, int size)
-{
-	packet->read = 0;
-	packet->size = size;
-	packet->data = NULL;
-	packet->next = NULL;
-	if (size) {
-		packet->data = malloc(size);
-	}
-}
-
-void network_queue_packet(network_packet *packet)
-{
-	if (!_packetQueue) {
-		_packetQueue = packet;
-		return;
-	}
-	network_packet* end_packet = _packetQueue;
-	while (end_packet->next) {
-		end_packet = end_packet->next;
-	}
-	end_packet->next = packet;
-}
-
-void network_send_queued_packets()
-{
-	while (network_send_packet(_packetQueue)) {
-		network_packet* sentPacket = _packetQueue;
-		_packetQueue = _packetQueue->next;
-		network_close_packet(sentPacket);
-		free(sentPacket);
-	}
-}
-
-void network_close_packet(network_packet *packet)
-{
-	free(packet->data);
-}
-
-int network_send_packet(network_packet *packet)
-{
-	if (!packet) {
-		return 0;
-	}
-
-	SOCKET socket;
-
-	if (gNetworkStatus == NETWORK_NONE)
-		return 0;
-
-	socket = gNetworkStatus == NETWORK_CLIENT ? _serverSocket : _clientSocket;
-
-	while (1) {
-		if (packet->read < sizeof(packet->size)) {
-			// send packet size
-			uint16 size = htons(packet->size);
-			int sentBytes = send(socket, &((char*)&size)[packet->read], sizeof(size) - packet->read, 0);
-			if (sentBytes == SOCKET_ERROR) {
-				return 0;
-			}
-			packet->read += sentBytes;
-		} else {
-			// send packet data
-			int datasent = packet->read - sizeof(packet->size);
-			int sentBytes = send(socket, &packet->data[datasent], packet->size - datasent, 0);
-			if (sentBytes == SOCKET_ERROR) {
-				return 0;
-			}
-			packet->read += sentBytes;
-			if (packet->read == packet->size + sizeof(packet->size)) {
-				return 1;
-			}
-		}
-	}
-	return 0;
+	packet.read = 0;
+	packet.data->clear();
 }
 
 void network_send_tick()
 {
-	network_packet* packet = network_alloc_packet(4 + sizeof(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)));
-	*((uint32*)packet->data) = NETWORK_COMMAND_TICK;
-	memcpy(packet->data + 4, (char*)&RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32), sizeof(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)));
-	network_queue_packet(packet);
+	std::unique_ptr<NetworkPacket> packet = _clientConnection.AllocatePacket();
+	packet->Write((uint32)NETWORK_COMMAND_TICK);
+	packet->Write((uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32));
+	_clientConnection.QueuePacket(std::move(packet));
 }
 
 void network_send_map()
 {
 	int buffersize = 0x600000;
-	char* buffer = malloc(buffersize);
-	if (!buffer) {
-		return;
-	}
-	SDL_RWops* rw = SDL_RWFromMem(buffer, buffersize);
+	std::vector<uint8> buffer(buffersize);
+	SDL_RWops* rw = SDL_RWFromMem(&buffer[0], buffersize);
 	scenario_save(rw, 0);
 	int size = (int)SDL_RWtell(rw);
 	int chunksize = 1000;
 	for (int i = 0; i < size; i += chunksize) {
 		int datasize = min(chunksize, size - i);
-		network_packet* packet = network_alloc_packet(4 + 4 + 4 + datasize);
-		*((uint32*)packet->data) = NETWORK_COMMAND_MAP;
-		*((uint32*)packet->data + 1) = size;
-		*((uint32*)packet->data + 1 + 1) = i;
-		memcpy(packet->data + 4 + 4 + 4, &buffer[i], datasize);
-		network_queue_packet(packet);
+		std::unique_ptr<NetworkPacket> packet = _clientConnection.AllocatePacket();
+		packet->Write((uint32)NETWORK_COMMAND_MAP);
+		packet->Write((uint32)size);
+		packet->Write((uint32)i);
+		packet->Write(&buffer[i], datasize);
+		_clientConnection.QueuePacket(std::move(packet));
 	}
 	SDL_RWclose(rw);
-	free(buffer);
+}
+
+void network_send_gamecmd(uint32 command, uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp)
+{
+	NetworkConnection& networkconnection = gNetworkStatus == NETWORK_CLIENT ? _serverConnection : _clientConnection;
+	std::unique_ptr<NetworkPacket> packet = networkconnection.AllocatePacket();
+	packet->Write((uint32)NETWORK_COMMAND_GAMECMD);
+	packet->Write((uint32)command);
+	packet->Write((uint32)eax);
+	packet->Write((uint32)ebx);
+	packet->Write((uint32)ecx);
+	packet->Write((uint32)edx);
+	packet->Write((uint32)esi);
+	packet->Write((uint32)edi);
+	packet->Write((uint32)ebp);
+	networkconnection.QueuePacket(std::move(packet));
 }
 
 void network_print_error()
@@ -466,10 +456,10 @@ static void window_chat_host_textinput()
 	if (!result)
 		return;
 
-	network_packet* packet = network_alloc_packet(4 + strlen(text) + 1);
-	*((uint32*)packet->data) = NETWORK_COMMAND_CHAT;
-	strcpy(packet->data + 4, text);
-	network_queue_packet(packet);
+	std::unique_ptr<NetworkPacket> packet = _clientConnection.AllocatePacket();
+	packet->Write((uint32)NETWORK_COMMAND_CHAT);
+	packet->Write((uint8*)text, strlen(text) + 1);
+	_clientConnection.QueuePacket(std::move(packet));
 
 	window_close(w);
 }
