@@ -414,18 +414,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	}
 
 	if (sendPacket) {
-		network_packet* packet = network_alloc_packet(9 * 4);
-		uint32 *args = (uint32*)packet->data;
-		args[0] = NETWORK_COMMAND_GAMECMD;
-		args[1] = command;
-		args[2] = *eax;
-		args[3] = *ebx;
-		args[4] = *ecx;
-		args[5] = *edx;
-		args[6] = *esi;
-		args[7] = *edi;
-		args[8] = *ebp;
-		network_queue_packet(packet);
+		network_send_gamecmd((uint32)command, (uint32)*eax, (uint32)*ebx, (uint32)*ecx, (uint32)*edx, (uint32)*esi, (uint32)*edi, (uint32)*ebp);
 
 		if (gNetworkStatus == NETWORK_CLIENT)
 			return MONEY32_UNDEFINED;
