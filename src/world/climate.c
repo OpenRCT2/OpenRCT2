@@ -223,7 +223,7 @@ static void climate_determine_future_weather()
 	rct_weather_transition transition = climate_table[month];
 	
 	// Generate a random variable with values 0 upto distribution_size-1 and chose weather from the distribution table accordingly
-	sint8 next_weather = transition.distribution[ ((rand() & 0xFF) * transition.distribution_size) >> 8 ];
+	sint8 next_weather = transition.distribution[ ((scenario_rand() & 0xFF) * transition.distribution_size) >> 8 ];
 	gClimateNextWeather = next_weather;
 
 	_climateNextTemperature = transition.base_temperature + climate_weather_data[next_weather].temp_delta;

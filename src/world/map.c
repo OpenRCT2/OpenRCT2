@@ -57,9 +57,6 @@ bool gClearSmallScenery;
 bool gClearLargeScenery;
 bool gClearFootpath;
 
-int _sub_6A876D_save_x;
-int _sub_6A876D_save_y;
-
 static void tiles_init();
 static void sub_6A87BB(int x, int y);
 static void map_update_grass_length(int x, int y, rct_map_element *mapElement);
@@ -296,8 +293,8 @@ void map_init(int size)
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GRASS_SCENERY_TILEPOS, sint16) = 0;
-	_sub_6A876D_save_x = 0;
-	_sub_6A876D_save_y = 0;
+	RCT2_GLOBAL(0x013CE774, sint16) = 0;
+	RCT2_GLOBAL(0x013CE776, sint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16) = size * 32 - 32;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16) = size * 32 - 2;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16) = size;
@@ -572,8 +569,8 @@ void sub_6A876D()
 	// Presumebly sub_6A87BB is too computationally expensive to call for every
 	// tile every update, so word_13CE774 and word_13CE776 store the x and y
 	// progress. A maximum of 128 calls is done per update.
-	x = _sub_6A876D_save_x;
-	y = _sub_6A876D_save_y;
+	x = RCT2_GLOBAL(0x013CE774, sint16);
+	y = RCT2_GLOBAL(0x013CE776, sint16);
 	for (i = 0; i < 128; i++) {
 		sub_6A87BB(x, y);
 
@@ -586,8 +583,8 @@ void sub_6A876D()
 				y = 0;
 		}
 	}
-	_sub_6A876D_save_x = x;
-	_sub_6A876D_save_y = y;
+	RCT2_GLOBAL(0x013CE774, sint16) = x;
+	RCT2_GLOBAL(0x013CE776, sint16) = y;
 }
 
 /**
