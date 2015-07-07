@@ -40,6 +40,9 @@ bool is_user_string_id(rct_string_id stringId);
 
 int win1252_to_utf8(utf8string dst, const char *src, int maxBufferLength);
 
+rct_string_id convert_RideID_to_RCTStringID(uint16 ride_id);
+uint8 convert_RCTStringID_to_RideID(rct_string_id id);
+
 #define MAX_USER_STRINGS 1024
 #define USER_STRING_MAX_LENGTH 32
 

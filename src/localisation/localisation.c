@@ -800,3 +800,27 @@ int win1252_to_utf8(utf8string dst, const char *src, int maxBufferLength)
 	MultiByteToWideChar(CP_ACP, 0, src, -1, intermediateBuffer, 512);
 	return WideCharToMultiByte(CP_UTF8, 0, intermediateBuffer, -1, dst, maxBufferLength, NULL, NULL);
 }
+
+
+/**
+* Convert ride_id to rct_string_id
+*/
+rct_string_id convert_RideID_to_RCTStringID(uint16 ride_id)
+{
+	rct_string_id itemStringId = ride_id + 2016;
+	if (itemStringId >= 2048)
+		itemStringId += 96;
+
+	return itemStringId;
+}
+
+/**
+* Convert rct_string_id to ride_id
+*/
+uint8 convert_RCTStringID_to_RideID(rct_string_id id)
+{
+	uint8 ride_id = id - 2016;
+	if (ride_id > 32)
+		ride_id -= 96;
+	return ride_id;
+}

@@ -958,4 +958,9 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 
 void sub_6CB945(int rideIndex);
 
+uint8 ride_list_of_rides[MAX_RIDES]; //List of rides with type ride
+uint8 ride_list_of_shop_items[64];	 //List of shop items (E.g. Coffee, Cookie)
+void ride_load_list_of_rides();
+void ride_load_list_of_shop_items();
+
 #endif
