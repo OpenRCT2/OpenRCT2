@@ -1291,7 +1291,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 						if (RCT2_GLOBAL(0x00F440D4, uint8) == 5)bl = 41;
 						if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 105;
 
-						sub_6A6C66(mapCoord.x, mapCoord.y, map_element, bl);
+						footpath_connect_edges(mapCoord.x, mapCoord.y, map_element, bl);
 						sub_6A759F();
 						continue;
 					}
@@ -3888,7 +3888,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			mapElement = surfaceElement;
 		}
 
-		sub_6A6C66(x, y, mapElement, flags);
+		footpath_connect_edges(x, y, mapElement, flags);
 		map_invalidate_tile_full(x, y);
 	}
 

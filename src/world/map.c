@@ -3528,3 +3528,8 @@ void map_invalidate_tile_full(int x, int y)
 {
 	map_invalidate_tile(x, y, 0, 2080);
 }
+
+void map_invalidate_element(int x, int y, rct_map_element *mapElement)
+{
+	map_invalidate_tile(x, y, mapElement->base_height, mapElement->clearance_height);
+}

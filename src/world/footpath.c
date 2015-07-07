@@ -31,6 +31,8 @@
 #include "scenery.h"
 
 void footpath_interrupt_peeps(int x, int y, int z);
+void sub_6A7642(int x, int y, rct_map_element *mapElement);
+void sub_6A76E9(int rideIndex);
 
 enum {
 	FOOTPATH_CONSTRUCTION_FLAG_ALLOW_DURING_PAUSED = 1 << 3
@@ -113,7 +115,7 @@ static void loc_6A6620(int flags, int x, int y, rct_map_element *mapElement)
 	}
 
 	if (!(flags & (1 << 7)))
-		sub_6A6C66(x, y, mapElement, flags);
+		footpath_connect_edges(x, y, mapElement, flags);
 
 	sub_6A759F();
 	map_invalidate_tile_full(x, y);
@@ -392,10 +394,15 @@ money32 footpath_remove_real(int x, int y, int z, int flags)
  */
 void game_command_place_footpath(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	if (*ebx & (1 << 5))
-		RCT2_CALLFUNC_X(0x006A61DE, eax, ebx, ecx, edx, esi, edi, ebp);
-	else
-		*ebx = footpath_place_real((*edx >> 8) & 0xFF, *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, (*ebx >> 8) & 0xFF, *ebx & 0xFF, *edi & 0xFF);
+	*ebx = footpath_place_real(
+		(*edx >> 8) & 0xFF,
+		*eax & 0xFFFF,
+		*ecx & 0xFFFF,
+		*edx & 0xFF,
+		(*ebx >> 8) & 0xFF,
+		*ebx & 0xFF,
+		*edi & 0xFF
+	);
 }
 
 /**
@@ -674,13 +681,352 @@ void footpath_interrupt_peeps(int x, int y, int z)
 	}
 }
 
+bool sub_6E59DC(int x, int y, int z0, int z1, int direction)
+{
+	rct_map_element *mapElement;
+
+	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE)
+			continue;
+		if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST)
+			continue;
+		if (z0 >= mapElement->clearance_height)
+			continue;
+		if (z1 <= mapElement->base_height)
+			continue;
+		if ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) != direction)
+			continue;
+
+		return true;
+	} while (!map_element_is_last_for_tile(mapElement++));
+	return false;
+}
+
+bool map_is_edge(int x, int y)
+{
+	return (
+		x < 32 ||
+		y < 32 ||
+		x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) ||
+		y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)
+	);
+}
+
+static rct_map_element *footpath_connect_corners_get_neighbour(int x, int y, int z, int requireEdges)
+{
+	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+			continue;
+		if (footpath_element_is_queue(mapElement))
+			continue;
+		if (mapElement->base_height != z)
+			continue;
+		if (!(mapElement->properties.path.edges & requireEdges))
+			continue;
+
+		return mapElement;
+	} while (!map_element_is_last_for_tile(mapElement++));
+	return NULL;
+}
+
+/**
+ * Sets the corner edges of four path tiles.
+ * The function will search for a path in the direction given, then check clockwise to see if it there is a path and again until
+ * it reaches the initial path. In other words, checks if there are four paths together so that it can set the inner corners of
+ * each one.
+ *
+ *  rct2: 0x006A70EB
+ */
+static void footpath_connect_corners(int initialX, int initialY, rct_map_element *initialMapElement)
+{
+	rct_map_element *mapElement[4];
+	
+	if (footpath_element_is_queue(initialMapElement))
+		return;
+	if (footpath_element_is_sloped(initialMapElement))
+		return;
+	
+	mapElement[0] = initialMapElement;
+	int z = initialMapElement->base_height;
+	for (int initialDirection = 0; initialDirection < 4; initialDirection++) {		
+		int x = initialX;
+		int y = initialY;
+		int direction = initialDirection;
+
+		x += TileDirectionDelta[direction].x;
+		y += TileDirectionDelta[direction].y;
+		mapElement[1] = footpath_connect_corners_get_neighbour(x, y, z, (1 << (direction ^ 2)));
+		if (mapElement[1] == NULL)
+			continue;
+
+		direction = (direction + 1) & 3;
+		x += TileDirectionDelta[direction].x;
+		y += TileDirectionDelta[direction].y;
+		mapElement[2] = footpath_connect_corners_get_neighbour(x, y, z, (1 << (direction ^ 2)));
+		if (mapElement[2] == NULL)
+			continue;
+
+		direction = (direction + 1) & 3;
+		x += TileDirectionDelta[direction].x;
+		y += TileDirectionDelta[direction].y;
+		mapElement[3] = footpath_connect_corners_get_neighbour(x, y, z, (1 << (direction ^ 2)) | (1 << (((direction ^ 2) - 1) & 3)));
+		if (mapElement[3] == NULL)
+			continue;
+
+		direction = (direction + 1) & 3;
+		mapElement[3]->properties.path.edges |= (1 << (direction + 4));
+		map_invalidate_element(x, y, mapElement[3]);
+
+		direction = (direction - 1) & 3;
+		mapElement[2]->properties.path.edges |= (1 << (direction + 4));
+		map_invalidate_element(x, y, mapElement[2]);
+
+		direction = (direction - 1) & 3;
+		mapElement[1]->properties.path.edges |= (1 << (direction + 4));
+		map_invalidate_element(x, y, mapElement[1]);
+
+		direction = (direction - 1) & 3;
+		mapElement[0]->properties.path.edges |= (1 << (direction + 4));
+		map_invalidate_element(x, y, mapElement[0]);
+	}
+}
+
+typedef struct {
+	uint8 order;
+	uint8 direction;
+} rct_neighbour;
+
+typedef struct {
+	rct_neighbour items[8];
+	int count;
+} rct_neighbour_list;
+
+static int rct_neighbour_compare(const void *a, const void *b)
+{
+	uint8 va = ((rct_neighbour*)a)->order;
+	uint8 vb = ((rct_neighbour*)b)->order;
+	if (va < vb) return 1;
+	else if (va == vb) return 0;
+	else return -1;
+}
+
+static void neighbour_list_init(rct_neighbour_list *neighbourList)
+{
+	neighbourList->count = 0;
+}
+
+static void neighbour_list_push(rct_neighbour_list *neighbourList, int order, int direction)
+{
+	neighbourList->items[neighbourList->count].order = order;
+	neighbourList->items[neighbourList->count].direction = direction;
+	neighbourList->count++;
+}
+
+static bool neighbour_list_pop(rct_neighbour_list *neighbourList, rct_neighbour *outNeighbour)
+{
+	if (neighbourList->count == 0)
+		return false;
+
+	*outNeighbour = neighbourList->items[0];
+	for (int i = 0; i < neighbourList->count - 1; i++)
+		neighbourList->items[i] = neighbourList->items[i + 1];
+	neighbourList->count--;
+	return true;
+}
+
+static void neighbour_list_sort(rct_neighbour_list *neighbourList)
+{
+	qsort(neighbourList->items, neighbourList->count, sizeof(rct_neighbour), rct_neighbour_compare);
+}
+
+/**
+ * 
+ *  rct2: 0x006A6D7E
+ */
+static void loc_6A6D7E(
+	int initialX, int initialY, int z, int direction, rct_map_element *initialMapElement,
+	int flags, bool query, rct_neighbour_list *neighbourList
+) {
+	int x = initialX + TileDirectionDelta[direction].x;
+	int y = initialY + TileDirectionDelta[direction].y;
+	if (((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gSandboxMode) && map_is_edge(x, y)) {
+		if (query) {
+			neighbour_list_push(neighbourList, 7, direction);
+		}
+	} else {
+		rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+		do {
+			switch (map_element_get_type(mapElement)) {
+			case MAP_ELEMENT_TYPE_PATH:
+				if (z == mapElement->base_height) {
+					if (footpath_element_is_sloped(mapElement) && footpath_element_get_slope_direction(mapElement) != direction) {
+						return;
+					} else {
+						goto loc_6A6F1F;
+					}
+				}
+				if (z + 2 == mapElement->base_height) {
+					if (footpath_element_is_sloped(mapElement)) {
+						if (footpath_element_get_slope_direction(mapElement) != (direction ^ 2)) {
+							return;
+						}
+					} else {
+						goto loc_6A6F1F;
+					}
+				}
+				break;
+			case MAP_ELEMENT_TYPE_TRACK:
+				if (z == mapElement->base_height) {
+					rct_ride *ride = GET_RIDE(mapElement->properties.track.ride_index);
+					if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
+						continue;
+					}
+					uint16 di = (mapElement->properties.track.sequence & 0x0F) | (mapElement->properties.track.type << 4);
+					if (!(RCT2_ADDRESS(0x0099CA64, uint8)[di] & (1 << 5))) {
+						return;
+					}
+					uint16 dx = (direction - mapElement->type) & 3;
+					if (!(RCT2_ADDRESS(0x0099CA64, uint16)[di / 2] & (1 << dx))) {
+						return;
+					}
+					if (query) {
+						neighbour_list_push(neighbourList, 1, direction);
+					}
+					goto loc_6A6FD2;
+				}
+				break;
+			case MAP_ELEMENT_TYPE_ENTRANCE:
+				if (z == mapElement->base_height) {
+					uint8 cl = (mapElement->properties.entrance.index & 0x0F) | (mapElement->properties.entrance.type << 4);
+					uint8 al = ((direction - mapElement->type) & 3) ^ 2;
+					if (!(RCT2_ADDRESS(0x0097B974, uint16)[cl / 2] & (1 << al))) {
+						return;
+					}
+					if (query) {
+						neighbour_list_push(neighbourList, 8, direction);
+					} else {
+						if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) {
+							sub_6A76E9(mapElement->properties.entrance.ride_index);
+						}
+					}
+					goto loc_6A6FD2;
+				}
+				break;
+			}
+		} while (!map_element_is_last_for_tile(mapElement++));
+		return;
+
+	loc_6A6F1F:
+		if (query) {
+			if (sub_6E59DC(x, y, mapElement->base_height, mapElement->clearance_height, direction & 2)) {
+				return;
+			}
+			if (footpath_element_is_queue(mapElement)) {
+				if (RCT2_ADDRESS(0x0098D7F0, uint8)[mapElement->properties.path.edges & 0x0F] < 2) {
+					neighbour_list_push(neighbourList, 3, direction);
+				}
+			} else {
+				neighbour_list_push(neighbourList, 2, direction);
+			}
+		} else {
+			mapElement->properties.path.edges |= (1 << (direction ^ 2));
+			if (footpath_element_is_queue(mapElement)) {
+				sub_6A76E9(mapElement->properties.path.ride_index);
+			}
+		}
+		if (!(flags & 0x48)) {
+			footpath_interrupt_peeps(x, y, mapElement->base_height * 8);
+		}
+		map_invalidate_element(x, y, mapElement);
+	}
+
+loc_6A6FD2:
+	if (map_element_get_type(initialMapElement) == MAP_ELEMENT_TYPE_PATH) {
+		if (!query) {
+			initialMapElement->properties.path.edges |= (1 << direction);
+			map_invalidate_element(initialX, initialY, initialMapElement);
+		}
+	}
+}
+
+static void loc_6A6C85(
+	int x, int y, int direction, rct_map_element *mapElement,
+	int flags, bool query, rct_neighbour_list *neighbourList
+) {
+	if (query && sub_6E59DC(x, y, mapElement->base_height, mapElement->clearance_height, direction))
+		return;
+
+	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
+		uint16 di = (mapElement->properties.entrance.index & 0x0F) | (mapElement->properties.entrance.type << 4);
+		uint16 dx = (direction - mapElement->type) & 3;
+		if (RCT2_ADDRESS(0x0097B974, uint16)[di / 2] & (1 << dx)) {
+			return;
+		}
+	}
+
+	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
+		rct_ride *ride = GET_RIDE(mapElement->properties.track.ride_index);
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
+			return;
+		}
+		uint16 di = (mapElement->properties.track.sequence & 0x0F) | (mapElement->properties.track.type << 4);
+		if (!(RCT2_ADDRESS(0x0099CA64, uint8)[di] & (1 << 5))) {
+			return;
+		}
+		uint16 dx = (direction - mapElement->type) & 3;
+		if (!(RCT2_ADDRESS(0x0099CA64, uint16)[di / 2] & (1 << dx))) {
+			return;
+		}
+	}
+
+	int z = mapElement->base_height;
+	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
+		if (footpath_element_is_sloped(mapElement)) {
+			if ((footpath_element_get_slope_direction(mapElement) - direction) & 1) {
+				return;
+			}
+			if (footpath_element_get_slope_direction(mapElement) == direction) {
+				z += 2;
+			}
+		}
+	}
+
+	loc_6A6D7E(x, y, z, direction, mapElement, flags, query, neighbourList);
+}
+
 /**
  * 
  *  rct2: 0x006A6C66
  */
-void sub_6A6C66(int x, int y, rct_map_element *mapElement, int flags)
+void footpath_connect_edges(int x, int y, rct_map_element *mapElement, int flags)
 {
-	RCT2_CALLPROC_X(0x006A6C66, x, flags, y, 0, (int)mapElement, 0, 0);
+	rct_neighbour_list neighbourList;
+	rct_neighbour neighbour;
+
+	neighbour_list_init(&neighbourList);
+
+	sub_6A7642(x, y, mapElement);
+	for (int direction = 0; direction < 4; direction++) {
+		loc_6A6C85(x, y, direction, mapElement, flags, true, &neighbourList);
+	}
+
+	neighbour_list_sort(&neighbourList);
+
+	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
+		if (footpath_element_is_queue(mapElement)) {
+			neighbourList.count = min(neighbourList.count, 2);
+		}
+	}
+
+	while (neighbour_list_pop(&neighbourList, &neighbour)) {
+		loc_6A6C85(x, y, neighbour.direction, mapElement, flags, false, NULL);
+	}
+
+	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
+		footpath_connect_corners(x, y, mapElement);
+	}
 }
 
 /**
