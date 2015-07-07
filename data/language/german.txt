@@ -54,7 +54,7 @@ STR_0049    :Spukhaus
 STR_0050    :Erste Hilfe
 STR_0051    :Zirkus
 STR_0052    :Geisterbahn
-STR_0053    :Twister-Achterbahn
+STR_0053    :Stahl-Twister-Achterbahn
 STR_0054    :Holzachterbahn
 STR_0055    :Achterbahn mit seitlicher Führung
 STR_0056    :Wilde Maus
