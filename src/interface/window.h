@@ -607,6 +607,7 @@ void window_banner_open(rct_windownumber number);
 void window_sign_open(rct_windownumber number);
 void window_sign_small_open(rct_windownumber number);
 void window_cheats_open();
+void window_chat_open();
 
 void window_research_open();
 void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dpi, int baseWidgetIndex);

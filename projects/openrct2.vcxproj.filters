@@ -495,8 +495,11 @@
     <ClCompile Include="..\src\cheats.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\network\network.c">
+    <ClCompile Include="..\src\network\network.cpp">
       <Filter>Source\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\network.c">
+      <Filter>Source\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
