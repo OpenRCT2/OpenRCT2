@@ -192,7 +192,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 		mapElement->properties.path.addition_status = 255;
 		mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
 		if (flags & (1 << 6))
-			mapElement->flags |= 1 << 4;
+			mapElement->flags |= MAP_ELEMENT_FLAG_GHOST;
 
 		RCT2_GLOBAL(0x00F3EFF4, uint32) = 0x00F3EFF8;
 
@@ -937,6 +937,8 @@ static void loc_6A6D7E(
 			if (footpath_element_is_queue(mapElement)) {
 				if (RCT2_ADDRESS(0x0098D7F0, uint8)[mapElement->properties.path.edges & 0x0F] < 2) {
 					neighbour_list_push(neighbourList, 3, direction);
+				} else {
+					// Check if both neighbors are queues and, if not, push neighbour
 				}
 			} else {
 				neighbour_list_push(neighbourList, 2, direction);
@@ -944,6 +946,7 @@ static void loc_6A6D7E(
 		} else {
 			mapElement->properties.path.edges |= (1 << (direction ^ 2));
 			if (footpath_element_is_queue(mapElement)) {
+				// If queue with 2 neighbours, fix
 				sub_6A76E9(mapElement->properties.path.ride_index);
 			}
 		}
@@ -1023,10 +1026,9 @@ void footpath_connect_edges(int x, int y, rct_map_element *mapElement, int flags
 
 	neighbour_list_sort(&neighbourList);
 
-	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
-		if (footpath_element_is_queue(mapElement)) {
-			neighbourList.count = min(neighbourList.count, 2);
-		}
+	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH
+			&& footpath_element_is_queue(mapElement)) {
+		neighbourList.count = min(neighbourList.count, 2);
 	}
 
 	while (neighbour_list_pop(&neighbourList, &neighbour)) {
