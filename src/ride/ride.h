@@ -956,6 +956,9 @@ void ride_set_num_vehicles(int rideIndex, int numVehicles);
 void ride_set_num_cars_per_vehicle(int rideIndex, int numCarsPerVehicle);
 void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
+void game_command_place_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_remove_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+
 void sub_6CB945(int rideIndex);
 
 #endif

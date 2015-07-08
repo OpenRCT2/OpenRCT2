@@ -39,6 +39,7 @@
 #include "../world/banner.h"
 #include "../world/footpath.h"
 #include "../world/map.h"
+#include "../world/map_animation.h"
 #include "../world/sprite.h"
 #include "ride.h"
 #include "ride_data.h"
@@ -5564,4 +5565,270 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 void sub_6CB945(int rideIndex)
 {
 	RCT2_CALLPROC_X(0x006CB945, 0, 0, 0, rideIndex, 0, 0, 0);
+}
+
+money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 direction, uint8 flags, uint8 rideIndex, uint8 station_num, uint8 is_exit){
+	// Remember when in Unknown station num mode rideIndex is unknown and z is set
+	// When in known station num mode rideIndex is known and z is unknown
+
+	RCT2_GLOBAL(0x009E32B8, uint32) = 0;
+	RCT2_GLOBAL(0x009DEA5E, sint16) = x;
+	RCT2_GLOBAL(0x009DEA60, sint16) = y;
+
+	if (!sub_68B044()) {
+		return MONEY32_UNDEFINED;
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0){
+		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 2214;
+		return MONEY32_UNDEFINED;
+	}
+
+	if (station_num == 0xFF){
+		z *= 16;
+		if (flags & GAME_COMMAND_FLAG_APPLY)
+			return MONEY32_UNDEFINED;
+
+		if (!map_is_location_owned(x, y, z)){
+			return MONEY32_UNDEFINED;
+		}
+
+		sint16 clear_z = z / 8 + (is_exit ? 5 : 7);
+		RCT2_GLOBAL(0x009E32C4, sint16) = x;
+		RCT2_GLOBAL(0x009E32C6, sint16) = y;
+
+		// Horrible hack until map_can_construct_with_clear_at is implemented.
+		RCT2_GLOBAL(0x009E32C8, uint8*) = (&flags) - 4;
+
+		if (!map_can_construct_with_clear_at(x, y, z / 8, clear_z, (void*)0x0066637E, 0xF)){
+			return MONEY32_UNDEFINED;
+		}
+
+		if (RCT2_GLOBAL(0x00F1AD60, uint8) & (1 << 2)){
+			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 1031;
+			return MONEY32_UNDEFINED;
+		}
+
+		if (z > 1952){
+			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 878;
+			return MONEY32_UNDEFINED;
+		}
+
+	}
+	else{
+		rct_ride* ride = GET_RIDE(rideIndex);
+		if (ride->status != RIDE_STATUS_CLOSED){
+			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 1006;
+			return MONEY32_UNDEFINED;
+		}
+
+		if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK){
+			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 3092;
+			return MONEY32_UNDEFINED;
+		}
+
+		ride_clear_for_construction(rideIndex);
+		ride_remove_peeps(rideIndex);
+
+		uint8 requires_remove = 0;
+		sint16 remove_x = 0;
+		sint16 remove_y = 0;
+
+		if (is_exit){
+			if (ride->exits[station_num] != 0xFFFF){
+				if (flags & (1 << 6)){
+					RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 0;
+					return MONEY32_UNDEFINED;
+				}
+
+				remove_x = (ride->exits[station_num] & 0xFF) * 32;
+				remove_y = ((ride->exits[station_num] >> 8) & 0xFF) * 32;
+				requires_remove = 1;
+			}
+		}
+		else{
+			if (ride->entrances[station_num] != 0xFFFF){
+				if (flags & (1 << 6)){
+					RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 0;
+					return MONEY32_UNDEFINED;
+				}
+
+				remove_x = (ride->entrances[station_num] & 0xFF) * 32;
+				remove_y = ((ride->entrances[station_num] >> 8) & 0xFF) * 32;
+				requires_remove = 1;
+			}
+		}
+
+		if (requires_remove){
+			money32 success = game_do_command(
+				remove_x,
+				flags,
+				remove_y,
+				rideIndex,
+				GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT,
+				station_num,
+				0
+				);
+
+			if (success == MONEY32_UNDEFINED){
+				return MONEY32_UNDEFINED;
+			}
+		}
+
+		z = ride->station_heights[station_num] * 8;
+		RCT2_GLOBAL(0x009DEA62, sint16) = z;
+
+		if (flags & GAME_COMMAND_FLAG_APPLY && !(flags & 0x48)){
+			footpath_remove_litter(x, y, z);
+			map_remove_walls_at_z(x, y, z);
+		}
+
+		if (!map_is_location_owned(x, y, z)){
+			return MONEY32_UNDEFINED;
+		}
+
+		sint8 clear_z = (z / 8) + (is_exit ? 5 : 7);
+		RCT2_GLOBAL(0x009E32C4, sint16) = x;
+		RCT2_GLOBAL(0x009E32C6, sint16) = y;
+
+		// Horrible hack until map_can_construct_with_clear_at is implemented.
+		RCT2_GLOBAL(0x009E32C8, uint8*) = (&flags) - 4;
+
+		if (!map_can_construct_with_clear_at(x, y, z / 8, clear_z, (void*)0x0066637E, 0xF)){
+			return MONEY32_UNDEFINED;
+		}
+
+		if (RCT2_GLOBAL(0x00F1AD60, uint8) & (1 << 2)){
+			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 1031;
+			return MONEY32_UNDEFINED;
+		}
+
+		if (z / 8 > 244){
+			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 878;
+			return MONEY32_UNDEFINED;
+		}
+
+		if (flags & GAME_COMMAND_FLAG_APPLY){
+
+			rct_map_element* mapElement = map_element_insert(x / 32, y / 32, z / 8, 0xF);
+			mapElement->clearance_height = clear_z;
+			mapElement->properties.entrance.type = is_exit;
+			mapElement->properties.entrance.index = station_num << 4;
+			mapElement->properties.entrance.ride_index = rideIndex;
+			mapElement->type = MAP_ELEMENT_TYPE_ENTRANCE | direction;
+
+			if (flags & (1 << 6)){
+				mapElement->flags |= MAP_ELEMENT_FLAG_GHOST;
+			}
+
+			if (is_exit){
+				ride->exits[station_num] = (x / 32) | (y / 32 << 8);
+			}
+			else{
+				ride->entrances[station_num] = (x / 32) | (y / 32 << 8);
+				ride->first_peep_in_queue[station_num] = 0xFFFF;
+				ride->queue_length[station_num] = 0;
+
+				map_animation_create(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, x, y, z / 8);
+			}
+
+			sub_6A7594();
+			if (!(flags & (1 << 6))){
+				RCT2_CALLPROC_X(0x00666CBE, x, 0, y, 0, (int)mapElement, 0, 0);
+			}
+			footpath_connect_edges(x, y, mapElement, flags);
+			sub_6A759F();
+
+			map_invalidate_tile_full(x, y);
+		}
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
+	return RCT2_GLOBAL(0x009E32B8, money32);
+}
+
+/* rct2: 0x006660A8 */
+void game_command_place_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp){
+	*ebx = place_ride_entrance_or_exit(
+		*eax & 0xFFFF,
+		*ecx & 0xFFFF,
+		*edx & 0xFF,
+		(*ebx >> 8) & 0xFF,
+		*ebx & 0xFF,
+		*edx & 0xFF,
+		*edi & 0xFF,
+		(*edx >> 8) & 0xFF
+		);
+}
+
+money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex, uint8 station_num, uint8 flags){
+	rct_ride* ride = GET_RIDE(rideIndex);
+
+	if (!(flags & (1 << 6))){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0){
+			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 2214;
+			return MONEY32_UNDEFINED;
+		}
+	}
+
+	if (ride->status != RIDE_STATUS_CLOSED){
+		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 1006;
+		return MONEY32_UNDEFINED;
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY){
+		ride_clear_for_construction(rideIndex);
+		ride_remove_peeps(rideIndex);
+		sub_6B59C6(rideIndex);
+
+		uint8 found = 0;
+		rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+		do{
+			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
+				continue;
+
+			if (mapElement->base_height != ride->station_heights[station_num])
+				continue;
+
+			found = 1;
+			break;
+		} while (!map_element_is_last_for_tile(mapElement++));
+
+		if (!found){
+			return MONEY32_UNDEFINED;
+		}
+
+		sub_6A7594();
+		RCT2_CALLPROC_X(0x00666D6F, x, 0, y, 0, (int)mapElement, 0, 0);
+		footpath_remove_edges_at(x, y, mapElement);
+
+		uint8 is_exit = mapElement->properties.entrance.type;
+
+		map_element_remove(mapElement);
+
+		if (is_exit){
+			ride->exits[station_num] = 0xFFFF;
+		}
+		else{
+			ride->entrances[station_num] = 0xFFFF;
+		}
+
+		sub_6A759F();
+
+		map_invalidate_tile_full(x, y);
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
+	return 0;
+}
+
+/* rct2: 0x0066640B */
+void game_command_remove_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp){
+	*ebx = remove_ride_entrance_or_exit(
+		*eax & 0xFFFF,
+		*ecx & 0xFFFF,
+		*edx & 0xFF,
+		*edi & 0xFF,
+		*ebx & 0xFF
+		);
 }
