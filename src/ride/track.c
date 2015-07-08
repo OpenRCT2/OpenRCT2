@@ -4087,7 +4087,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 			entranceDirections = RCT2_ADDRESS(0x0099BA64, uint8)[type * 16];
 		}
 
-		if (entranceDirections & (1 << 4) && (mapElement->properties.track.sequence == 0)){
+		if (entranceDirections & (1 << 4) && ((mapElement->properties.track.sequence & 0xF) == 0)){
 			if (RCT2_CALLPROC_X(0x006C494B, x, (rideIndex << 8), y, (z / 8) | (rotation << 8), 0, 0, 0) & 0x100){
 				return MONEY32_UNDEFINED;
 			}
@@ -4108,7 +4108,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 		if (!(flags & GAME_COMMAND_FLAG_APPLY))
 			continue;
 
-		if (entranceDirections & (1 << 4) && (mapElement->properties.track.sequence == 0)){
+		if (entranceDirections & (1 << 4) && ((mapElement->properties.track.sequence & 0xF) == 0)){
 			if (RCT2_CALLPROC_X(0x006C494B, x, GAME_COMMAND_FLAG_APPLY | (rideIndex << 8), y, (z / 8) | (rotation << 8), 0, 0, 0) & 0x100){
 				return MONEY32_UNDEFINED;
 			}
