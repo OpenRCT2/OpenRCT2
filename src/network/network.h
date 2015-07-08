@@ -35,6 +35,8 @@ class NetworkPacket
 {
 public:
 	NetworkPacket();
+	static std::unique_ptr<NetworkPacket> AllocatePacket();
+	static std::unique_ptr<NetworkPacket> DuplicatePacket(NetworkPacket& packet);
 	uint8* GetData();
 	template <class T>
 	void Write(T value) { uint8* bytes = (uint8*)&value; data->insert(data->end(), bytes, bytes + sizeof(value)); }
@@ -50,7 +52,6 @@ class NetworkConnection
 public:
 	int ReadPacket();
 	void QueuePacket(std::unique_ptr<NetworkPacket> packet);
-	std::unique_ptr<NetworkPacket> AllocatePacket();
 	void SendQueuedPackets();
 
 	SOCKET socket;
