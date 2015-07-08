@@ -5670,7 +5670,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 				0
 				);
 
-			if (success = MONEY32_UNDEFINED){
+			if (success == MONEY32_UNDEFINED){
 				return MONEY32_UNDEFINED;
 			}
 		}
@@ -5758,5 +5758,77 @@ void game_command_place_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int 
 		*edx & 0xFF,
 		*edi & 0xFF,
 		(*edx >> 8) & 0xFF
+		);
+}
+
+money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex, uint8 station_num, uint8 flags){
+	rct_ride* ride = GET_RIDE(rideIndex);
+
+	if (!(flags & (1 << 6))){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0){
+			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 2214;
+			return MONEY32_UNDEFINED;
+		}
+	}
+
+	if (ride->status != RIDE_STATUS_CLOSED){
+		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 1006;
+		return MONEY32_UNDEFINED;
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY){
+		ride_clear_for_construction(rideIndex);
+		ride_remove_peeps(rideIndex);
+		sub_6B59C6(rideIndex);
+
+		uint8 found = 0;
+		rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+		do{
+			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
+				continue;
+
+			if (mapElement->base_height != ride->station_heights[station_num])
+				continue;
+
+			found = 1;
+			break;
+		} while (!map_element_is_last_for_tile(mapElement++));
+
+		if (!found){
+			return MONEY32_UNDEFINED;
+		}
+
+		sub_6A7594();
+		RCT2_CALLPROC_X(0x00666D6F, x, 0, y, 0, (int)mapElement, 0, 0);
+		footpath_remove_edges_at(x, y, mapElement);
+
+		uint8 is_exit = mapElement->properties.entrance.type;
+
+		map_element_remove(mapElement);
+
+		if (is_exit){
+			ride->exits[station_num] = 0xFFFF;
+		}
+		else{
+			ride->entrances[station_num] = 0xFFFF;
+		}
+
+		sub_6A759F();
+
+		map_invalidate_tile_full(x, y);
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
+	return 0;
+}
+
+/* rct2: 0x0066640B */
+void game_command_remove_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp){
+	*ebx = remove_ride_entrance_or_exit(
+		*eax & 0xFFFF,
+		*ecx & 0xFFFF,
+		*edx & 0xFF,
+		*edi & 0xFF,
+		*ebx & 0xFF
 		);
 }

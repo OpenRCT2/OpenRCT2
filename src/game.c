@@ -911,7 +911,7 @@ static uint32 game_do_command_table[58] = {
 	0, // 10
 	0,
 	0,
-	0x0066640B,
+	0,
 	0,
 	0,
 	0,
@@ -974,7 +974,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_set_ride_name, // 10
 	game_command_set_ride_setting,
 	game_command_place_ride_entrance_or_exit,
-	game_command_emptysub,
+	game_command_remove_ride_entrance_or_exit,
 	game_command_remove_scenery,
 	game_command_place_scenery,
 	game_command_set_water_height,
