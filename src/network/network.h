@@ -29,8 +29,10 @@
 #include <memory>
 #include <vector>
 #include <SDL.h>
+extern "C" {
 #include "../common.h"
 #include "../platform/platform.h"
+}
 
 class NetworkPacket
 {
