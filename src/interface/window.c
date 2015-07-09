@@ -1354,7 +1354,7 @@ void sub_688956()
  * 
  *  rct2: 0x0068881A
  */
-void window_rotate_camera(rct_window *w)
+void window_rotate_camera(rct_window *w, int wise)
 {
 	rct_viewport *viewport = w->viewport;
 	if (viewport == NULL)
@@ -1375,11 +1375,12 @@ void window_rotate_camera(rct_window *w)
 		y = (viewport->view_height >> 1) + viewport->view_y;
 
 		sub_689174(&x, &y, &z);
-	} else {
+	}
+	else {
 		z = map_element_height(x, y);
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) + 1) % 4;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) + wise) % 4;
 
 	int new_x, new_y;
 	center_2d_coordinates(x, y, z, &new_x, &new_y, viewport);
