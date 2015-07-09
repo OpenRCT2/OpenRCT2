@@ -867,14 +867,11 @@ static void loc_6A6D7E(
 						goto loc_6A6F1F;
 					}
 				}
-				if (z + 2 == mapElement->base_height) {
-					if (footpath_element_is_sloped(mapElement)) {
-						if (footpath_element_get_slope_direction(mapElement) != (direction ^ 2)) {
-							return;
-						}
-					} else {
-						goto loc_6A6F1F;
+				if (z - 2 == mapElement->base_height) {
+					if (footpath_element_is_sloped(mapElement) && footpath_element_get_slope_direction(mapElement) != (direction ^ 2)) {
+						return;
 					}
+					goto loc_6A6F1F;
 				}
 				break;
 			case MAP_ELEMENT_TYPE_TRACK:
