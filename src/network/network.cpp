@@ -20,17 +20,18 @@
 
 #ifndef DISABLE_NETWORK
 
-#include <math.h>
 extern "C" {
 #include "../addresses.h"
+#include "../common.h"
 #include "../game.h"
-#include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../management/news_item.h"
 #include "../scenario.h"
 }
 #include "network.h"
+#include <math.h>
+#include <set>
 
 #pragma comment(lib, "Ws2_32.lib")
 
@@ -40,19 +41,27 @@ int gNetworkStartPort = NETWORK_DEFAULT_PORT;
 int gNetworkStatus = NETWORK_NONE;
 uint32 gNetworkServerTick = 0;
 
-static network_packet* _packetQueue = NULL;
+struct GameCommand
+{
+	GameCommand(uint32 args[8]) { tick = args[0], eax = args[1], ebx = args[2], ecx = args[3], edx = args[4], esi = args[5], edi = args[6], ebp = args[7]; };
+	uint32 tick;
+	uint32 eax, ebx, ecx, edx, esi, edi, ebp;
+	bool operator<(const GameCommand& comp) const {
+		return tick < comp.tick;
+	}
+};
+
 static int _wsaInitialised = 0;
 static WSADATA _wsaData;
-static SOCKET _serverSocket;
-static SOCKET _clientSocket;
-static network_packet _inboundPacket;
+static SOCKET _listeningSocket = INVALID_SOCKET;
+static SOCKET _serverSocket = INVALID_SOCKET;
+static SOCKET _clientSocket = INVALID_SOCKET;
 static std::vector<uint8> _chunkBuffer;
 static NetworkConnection _serverConnection;
-static NetworkConnection _clientConnection;
+static std::list<std::unique_ptr<NetworkConnection>> _clientConnectionList;
+static std::multiset<GameCommand> _gameCommandQueue;
 
 static void network_process_packet(NetworkPacket& packet);
-static int network_send_packet(network_packet *packet);
-static void network_send_queued_packets();
 
 NetworkPacket::NetworkPacket()
 {
@@ -61,9 +70,25 @@ NetworkPacket::NetworkPacket()
 	data = std::make_shared<std::vector<uint8>>();
 }
 
+std::unique_ptr<NetworkPacket> NetworkPacket::AllocatePacket()
+{
+	return std::move(std::unique_ptr<NetworkPacket>(new NetworkPacket)); // change to make_unique in c++14
+}
+
+std::unique_ptr<NetworkPacket> NetworkPacket::DuplicatePacket(NetworkPacket& packet)
+{
+	return std::move(std::unique_ptr<NetworkPacket>(new NetworkPacket(packet))); // change to make_unique in c++14
+}
+
 uint8* NetworkPacket::GetData()
 {
 	return &(*data)[0];
+}
+
+void NetworkPacket::Clear()
+{
+	read = 0;
+	data->clear();
 }
 
 int NetworkConnection::ReadPacket()
@@ -137,11 +162,6 @@ void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet)
 {
 	packet->size = packet->data->size();
 	outboundpackets.push_back(std::move(packet));
-}
-
-std::unique_ptr<NetworkPacket> NetworkConnection::AllocatePacket()
-{
-	return std::move(std::unique_ptr<NetworkPacket>(new NetworkPacket)); // can be converted to make_unique in C++14
 }
 
 void NetworkConnection::SendQueuedPackets()
@@ -225,7 +245,6 @@ void network_end_client()
 
 int network_begin_server(int port)
 {
-	SOCKET listeningSocket;
 	SOCKADDR_IN localAddress;
 	u_long iMode;
 
@@ -233,47 +252,36 @@ int network_begin_server(int port)
 		return 0;
 
 	log_verbose("Begin listening for clients");
-	listeningSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (listeningSocket == INVALID_SOCKET) {
+	_listeningSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (_listeningSocket == INVALID_SOCKET) {
 		log_error("Unable to create socket.");
 		return 0;
 	}
-
+	 
 	localAddress.sin_family = AF_INET;
 	localAddress.sin_addr.S_un.S_addr = INADDR_ANY;
 	localAddress.sin_port = htons(port);
 
-	if (bind(listeningSocket, (SOCKADDR*)&localAddress, sizeof(SOCKADDR_IN)) != 0) {
-		closesocket(listeningSocket);
+	if (bind(_listeningSocket, (SOCKADDR*)&localAddress, sizeof(SOCKADDR_IN)) != 0) {
+		closesocket(_listeningSocket);
 		log_error("Unable to bind to socket.");
 		return 0;
 	}
 
-	if (listen(listeningSocket, SOMAXCONN) != 0) {
-		closesocket(listeningSocket);
+	if (listen(_listeningSocket, SOMAXCONN) != 0) {
+		closesocket(_listeningSocket);
 		log_error("Unable to listen on socket.");
 		return 0;
 	}
 
-	printf("Waiting for client...\n");
-	_clientSocket = accept(listeningSocket, NULL, NULL);
-	if (_clientSocket == INVALID_SOCKET) {
-		closesocket(listeningSocket);
-		log_error("Failed to accept client.");
+	iMode = 1;
+	if (ioctlsocket(_listeningSocket, FIONBIO, &iMode) != NO_ERROR) {
+		closesocket(_listeningSocket);
+		log_error("Failed to set non-blocking mode.");
 		return 0;
 	}
 
-	closesocket(listeningSocket);
-
-	iMode = 1;
-	if (ioctlsocket(_clientSocket, FIONBIO, &iMode) != NO_ERROR) {
-		closesocket(_clientSocket);
-		log_error("Failed to set non-blocking mode.");
-	}
-	
-	printf("Connected to client!\n");
-
-	_clientConnection.socket = _clientSocket;
+	printf("Ready for clients...\n");
 
 	gNetworkStatus = NETWORK_SERVER;
 	return 1;
@@ -285,16 +293,23 @@ void network_end_server()
 	closesocket(_clientSocket);
 }
 
-void network_update()
+void network_add_client(SOCKET socket)
+{
+	printf("New client connection\n");
+	auto networkconnection = std::unique_ptr<NetworkConnection>(new NetworkConnection);  // change to make_unique in c++14
+	networkconnection->socket = socket;
+	_clientConnectionList.push_back(std::move(networkconnection));
+}
+
+void network_remove_client(std::unique_ptr<NetworkConnection>& networkconnection)
+{
+	printf("Client removed\n");
+	_clientConnectionList.remove(networkconnection);
+}
+
+int network_process_connection(NetworkConnection& networkconnection)
 {
 	int packetStatus;
-	static uint32 lastTickUpdate = 0;
-
-	if (gNetworkStatus == NETWORK_NONE)
-		return;
-
-	NetworkConnection& networkconnection = gNetworkStatus == NETWORK_CLIENT ? _serverConnection : _clientConnection;
-
 	do {
 		packetStatus = networkconnection.ReadPacket();
 		switch(packetStatus) {
@@ -303,11 +318,10 @@ void network_update()
 			if (gNetworkStatus == NETWORK_CLIENT) {
 				network_end_client();
 				printf("Server disconnected...\n");
-				return;
+				return 0;
 			} else if (gNetworkStatus == NETWORK_SERVER) {
-				network_end_server();
 				printf("Client disconnected...\n");
-				return;
+				return 0;
 			}
 			break;
 		case NETWORK_SUCCESS:
@@ -321,15 +335,64 @@ void network_update()
 			break;
 		}
 	} while (packetStatus == NETWORK_MORE_DATA || packetStatus == NETWORK_SUCCESS);
+	networkconnection.SendQueuedPackets();
+	return 1;
+}
 
-	if (gNetworkStatus == NETWORK_SERVER) {
-		if (SDL_GetTicks() - lastTickUpdate >= 100) {
+void network_process_gamecmdqueue()
+{
+	while (_gameCommandQueue.begin() != _gameCommandQueue.end() && _gameCommandQueue.begin()->tick < RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)) {
+		_gameCommandQueue.erase(_gameCommandQueue.begin());
+	}
+	while (_gameCommandQueue.begin() != _gameCommandQueue.end() && _gameCommandQueue.begin()->tick == RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)) {
+		const GameCommand& gc = (*_gameCommandQueue.begin());
+		game_do_command(gc.eax, gc.ebx, gc.ecx, gc.edx, gc.esi, gc.edi, gc.ebp);
+		_gameCommandQueue.erase(_gameCommandQueue.begin());
+	}
+}
+
+void network_update()
+{
+	static uint32 lastTickUpdate = 0;
+	u_long iMode;
+
+	if (gNetworkStatus == NETWORK_NONE)
+		return;
+
+	if (gNetworkStatus == NETWORK_CLIENT) {
+		network_process_connection(_serverConnection);
+		network_process_gamecmdqueue();
+	} else {
+		auto it = _clientConnectionList.begin();
+		while(it != _clientConnectionList.end()) {
+			if (!network_process_connection(*(*it))) {
+				network_remove_client((*it));
+				it = _clientConnectionList.begin();
+			} else {
+				it++;
+			}
+		}
+		if (SDL_GetTicks() - lastTickUpdate >= 25) {
 			lastTickUpdate = SDL_GetTicks();
 			network_send_tick();
 		}
+		SOCKET socket = accept(_listeningSocket, NULL, NULL);
+		if (socket == INVALID_SOCKET) {
+			if (WSAGetLastError() != WSAEWOULDBLOCK) {
+				network_print_error();
+				closesocket(_listeningSocket);
+				log_error("Failed to accept client.");
+			}
+		} else {
+			iMode = 1;
+			if (ioctlsocket(socket, FIONBIO, &iMode) != NO_ERROR) {
+				closesocket(socket);
+				log_error("Failed to set non-blocking mode.");
+			} else {
+				network_add_client(socket);
+			}
+		}
 	}
-
-	networkconnection.SendQueuedPackets();
 }
 
 static void network_process_packet(NetworkPacket& packet)
@@ -377,61 +440,89 @@ static void network_process_packet(NetworkPacket& packet)
 			news_item_add_to_queue_custom(&newsItem);
 		}break;
 		case NETWORK_COMMAND_GAMECMD:{
-			if (gNetworkStatus == NETWORK_CLIENT)
-				args[1] |= (1 << 31);
-
-			game_do_command_p(args[1], (int*)&args[2], (int*)&args[3], (int*)&args[4], (int*)&args[5], (int*)&args[6], (int*)&args[7], (int*)&args[8]);
+			if (gNetworkStatus == NETWORK_SERVER) {
+				network_send_gamecmd(args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
+				game_do_command(args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
+			} else {
+				GameCommand gc = GameCommand(&args[1]);
+				_gameCommandQueue.insert(gc);
+			}
 		}break;
 		case NETWORK_COMMAND_TICK:{
 			gNetworkServerTick = args[1];
 		}break;
 	}
-	packet.read = 0;
-	packet.data->clear();
+	packet.Clear();
 }
 
 void network_send_tick()
 {
-	std::unique_ptr<NetworkPacket> packet = _clientConnection.AllocatePacket();
+	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
 	packet->Write((uint32)NETWORK_COMMAND_TICK);
 	packet->Write((uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32));
-	_clientConnection.QueuePacket(std::move(packet));
+	for(auto it = _clientConnectionList.begin(); it != _clientConnectionList.end(); it++) {
+		(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
+	}
+	
 }
 
 void network_send_map()
 {
-	int buffersize = 0x600000;
-	std::vector<uint8> buffer(buffersize);
-	SDL_RWops* rw = SDL_RWFromMem(&buffer[0], buffersize);
-	scenario_save(rw, 0);
-	int size = (int)SDL_RWtell(rw);
-	int chunksize = 1000;
-	for (int i = 0; i < size; i += chunksize) {
-		int datasize = min(chunksize, size - i);
-		std::unique_ptr<NetworkPacket> packet = _clientConnection.AllocatePacket();
-		packet->Write((uint32)NETWORK_COMMAND_MAP);
-		packet->Write((uint32)size);
-		packet->Write((uint32)i);
-		packet->Write(&buffer[i], datasize);
-		_clientConnection.QueuePacket(std::move(packet));
+	if (gNetworkStatus == NETWORK_SERVER) {
+		int buffersize = 0x600000;
+		std::vector<uint8> buffer(buffersize);
+		SDL_RWops* rw = SDL_RWFromMem(&buffer[0], buffersize);
+		scenario_save(rw, 0);
+		int size = (int)SDL_RWtell(rw);
+		int chunksize = 1000;
+		for (int i = 0; i < size; i += chunksize) {
+			int datasize = min(chunksize, size - i);
+			std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
+			packet->Write((uint32)NETWORK_COMMAND_MAP);
+			packet->Write((uint32)size);
+			packet->Write((uint32)i);
+			packet->Write(&buffer[i], datasize);
+			for(auto it = _clientConnectionList.begin(); it != _clientConnectionList.end(); it++) {
+				(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
+			}
+		}
+		SDL_RWclose(rw);
 	}
-	SDL_RWclose(rw);
 }
 
-void network_send_gamecmd(uint32 command, uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp)
+void network_send_chat(const char* text)
 {
-	NetworkConnection& networkconnection = gNetworkStatus == NETWORK_CLIENT ? _serverConnection : _clientConnection;
-	std::unique_ptr<NetworkPacket> packet = networkconnection.AllocatePacket();
+	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
+	packet->Write((uint32)NETWORK_COMMAND_CHAT);
+	packet->Write((uint8*)text, strlen(text) + 1);
+	if (gNetworkStatus == NETWORK_SERVER) {
+		for(auto it = _clientConnectionList.begin(); it != _clientConnectionList.end(); it++) {
+			(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
+		}
+	} else {
+		_serverConnection.QueuePacket(std::move(packet));
+	}
+}
+
+void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp)
+{
+	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
 	packet->Write((uint32)NETWORK_COMMAND_GAMECMD);
-	packet->Write((uint32)command);
+	packet->Write((uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32));
 	packet->Write((uint32)eax);
-	packet->Write((uint32)ebx);
+	packet->Write((uint32)ebx | (1 << 31));
 	packet->Write((uint32)ecx);
 	packet->Write((uint32)edx);
 	packet->Write((uint32)esi);
 	packet->Write((uint32)edi);
 	packet->Write((uint32)ebp);
-	networkconnection.QueuePacket(std::move(packet));
+	if (gNetworkStatus == NETWORK_SERVER) {
+		for(auto it = _clientConnectionList.begin(); it != _clientConnectionList.end(); it++) {
+			(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
+		}
+	} else {
+		_serverConnection.QueuePacket(std::move(packet));
+	}
 }
 
 void network_print_error()
@@ -440,70 +531,6 @@ void network_print_error()
 	FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, WSAGetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&s, 0, NULL);
 	fprintf(stderr, "%S\n", s);
 	LocalFree(s);
-}
-
-static void window_chat_host_emptysub() { }
-
-static void window_chat_host_textinput()
-{
-	rct_window *w;
-	short widgetIndex;
-	uint8 result;
-	char *text;
-
-	window_textinput_get_registers(w, widgetIndex, result, text);
-
-	if (!result)
-		return;
-
-	std::unique_ptr<NetworkPacket> packet = _clientConnection.AllocatePacket();
-	packet->Write((uint32)NETWORK_COMMAND_CHAT);
-	packet->Write((uint8*)text, strlen(text) + 1);
-	_clientConnection.QueuePacket(std::move(packet));
-
-	window_close(w);
-}
-
-static void* window_chat_host_events[] = {
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_textinput,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub
-};
-
-void network_open_chat_box()
-{
-	rct_window *w;
-	w = window_create(0, 0, 0, 0, (uint32*)window_chat_host_events, WC_CHAT_HOST, 0);
-	w->colours[0] = 1;
-	w->colours[1] = 1;
-	w->colours[2] = 0;
-	w->number = 0;
-	window_text_input_open(w, 0, 6000, 6001, STR_NONE, 0, 64);
 }
 
 #endif /* DISABLE_NETWORK */
