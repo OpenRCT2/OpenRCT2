@@ -58,7 +58,7 @@ typedef struct {
 	uint8 pad_2C[0x04];
 	uint8 ride;						// 0x30
 	uint8 vehicle_type;				// 0x31
-	uint8 pad_32[0x02];
+	rct_vehicle_colour colours;		// 0x32
 	uint16 var_34;
 	sint16 var_36;
 	//x related
@@ -101,6 +101,7 @@ typedef struct {
 	uint8 pad_CF[0x06];
 	uint8 var_D5;
 	uint8 ride_subtype;				// 0xD6
+	uint8 colours_extended;			// 0xD7
 } rct_vehicle;
 
 enum {

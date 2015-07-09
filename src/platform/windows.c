@@ -23,6 +23,7 @@
 #include <windows.h>
 #include <shlobj.h>
 #include <SDL_syswm.h>
+#include <sys/stat.h>
 #include "../addresses.h"
 #include "../cmdline.h"
 #include "../openrct2.h"
@@ -91,7 +92,7 @@ char platform_get_path_separator()
 
 int platform_file_exists(const char *path)
 {
-	return !(GetFileAttributes(path) == INVALID_FILE_ATTRIBUTES && GetLastError() == ERROR_FILE_NOT_FOUND);
+	return !(GetFileAttributes(path) == INVALID_FILE_ATTRIBUTES && (GetLastError() == ERROR_FILE_NOT_FOUND || GetLastError() == ERROR_PATH_NOT_FOUND));
 }
 
 int platform_directory_exists(const char *path)
@@ -100,12 +101,41 @@ int platform_directory_exists(const char *path)
 	return dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
 }
 
+int platform_original_game_data_exists(const char *path)
+{
+	char checkPath[MAX_PATH];
+	sprintf(checkPath, "%s%c%s%c%s", path, platform_get_path_separator(), "data", platform_get_path_separator(), "g1.dat");
+	return platform_file_exists(checkPath);
+}
+
 int platform_ensure_directory_exists(const char *path)
 {
 	if (platform_directory_exists(path))
 		return 1;
 
 	return CreateDirectory(path, NULL);
+}
+
+int platform_directory_delete(const char *path)
+{
+	char pszFrom[MAX_PATH];
+	strcpy(pszFrom, path);
+	// Needs to be double-null terminated for some weird reason
+	pszFrom[strlen(path) + 1] = 0;
+  
+	SHFILEOPSTRUCTA fileop;
+	fileop.hwnd   = NULL;    // no status display
+	fileop.wFunc  = FO_DELETE;  // delete operation
+	fileop.pFrom  = pszFrom;  // source file name as double null terminated string
+	fileop.pTo    = NULL;    // no destination needed
+	fileop.fFlags = FOF_NOCONFIRMATION|FOF_SILENT;  // do not prompt the user
+
+	fileop.fAnyOperationsAborted = FALSE;
+	fileop.lpszProgressTitle     = NULL;
+	fileop.hNameMappings         = NULL;
+
+	int ret = SHFileOperationA(&fileop);
+	return (ret == 0);
 }
 
 int platform_lock_single_instance()
@@ -265,6 +295,10 @@ void platform_enumerate_directories_end(int handle)
 	enumFileInfo->active = 0;
 }
 
+int platform_get_drives(){
+	return GetLogicalDrives();
+}
+
 int platform_file_copy(const char *srcPath, const char *dstPath)
 {
 	return CopyFileA(srcPath, dstPath, TRUE);
@@ -315,15 +349,15 @@ unsigned int platform_get_ticks()
 
 void platform_get_user_directory(char *outPath, const char *subDirectory)
 {
-	char seperator[2] = { platform_get_path_separator(), 0 };
+	char separator[2] = { platform_get_path_separator(), 0 };
 
 	if (SUCCEEDED(SHGetFolderPathA(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, outPath))) {
-		strcat(outPath, seperator);
+		strcat(outPath, separator);
 		strcat(outPath, "OpenRCT2");
-		strcat(outPath, seperator);
+		strcat(outPath, separator);
 		if (subDirectory != NULL && subDirectory[0] != 0) {
 			strcat(outPath, subDirectory);
-			strcat(outPath, seperator);
+			strcat(outPath, separator);
 		}
 	} else {
 		outPath[0] = 0;
@@ -639,6 +673,16 @@ uint16 platform_get_locale_language(){
 		return LANGUAGE_PORTUGUESE_BR;
 	}
 	return LANGUAGE_UNDEFINED;
+}
+
+time_t platform_file_get_modified_time(char* path){
+	WIN32_FILE_ATTRIBUTE_DATA data;
+	if (!GetFileAttributesEx(path, GetFileExInfoStandard, &data))
+		return 0;
+	ULARGE_INTEGER ull;
+	ull.LowPart = data.ftLastWriteTime.dwLowDateTime;
+	ull.HighPart = data.ftLastWriteTime.dwHighDateTime;
+	return ull.QuadPart / 10000000ULL - 11644473600ULL;
 }
 
 uint8 platform_get_locale_currency(){

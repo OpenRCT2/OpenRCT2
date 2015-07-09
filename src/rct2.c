@@ -138,8 +138,8 @@ int rct2_init_directories()
 	// windows_get_registry_install_info((rct2_install_info*)0x009AA10C, "RollerCoaster Tycoon 2 Setup", "MS Sans Serif", 0);
 
 	// check install directory
-	if (!platform_directory_exists(gConfigGeneral.game_path)) {
-		log_verbose("install directory does not exist, %s", gConfigGeneral.game_path);
+	if (!platform_original_game_data_exists(gConfigGeneral.game_path)) {
+		log_verbose("install directory does not exist or invalid directory selected, %s", gConfigGeneral.game_path);
 		if (!config_find_or_browse_install_directory()) {
 			log_fatal("Invalid RCT2 installation path. Please correct in config.ini.");
 			return 0;
@@ -212,6 +212,29 @@ void rct2_update()
 
 	if (!setjmp(_end_update_jump))
 		rct2_update_2();
+}
+
+void rct2_draw()
+{
+	// Handles picked-up peep and rain redraw
+	redraw_peep_and_rain();
+
+	gfx_draw_all_dirty_blocks();
+
+	console_draw(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo));
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0) {
+		//intro
+	} else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
+		//title
+		DrawOpenRCT2(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 20);
+	} else {
+		//game
+	}
+
+	window_update_all();
+	update_rain_animation();
+	update_palette_effects();
 }
 
 int rct2_open_file(const char *path)
@@ -345,14 +368,15 @@ void rct2_update_2()
 	// Screens
 	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0)
 		intro_update();
-	else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)
+	else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)
 		title_update();
 	else
 		game_update();
 
+	stop_completed_sounds(); // removes other sounds that are no longer playing in directsound
+
 	twitch_update();
 	console_update();
-	console_draw(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo));
 }
 
 void rct2_endupdate()
@@ -512,9 +536,9 @@ void *rct2_realloc(void *block, size_t numBytes)
 
 /**
  * RCT2 and this DLL can not free each other's allocated memory blocks. Use this to free memory that was allocated by RCT2.
- *  rct2: 0x004068DE
+ *  rct2: 0x004068CD
  */
 void rct2_free(void *block)
 {
-	RCT2_CALLPROC_1(0x004068DE, void*, block);
+	RCT2_CALLPROC_1(0x004068CD, void*, block);
 }

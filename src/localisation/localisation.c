@@ -193,7 +193,7 @@ void format_comma_separated_integer(char **dest, long long value)
 		// Groups of three digits, right to left
 		groupIndex = 0;
 		while (value > 0) {
-			// Append group seperator
+			// Append group separator
 			if (groupIndex == 3) {
 				groupIndex = 0;
 				
@@ -261,7 +261,7 @@ void format_comma_separated_fixed_2dp(char **dest, long long value)
 		// Groups of three digits, right to left
 		groupIndex = 0;
 		while (value > 0) {
-			// Append group seperator
+			// Append group separator
 			if (groupIndex == 3) {
 				groupIndex = 0;
 				
@@ -662,6 +662,24 @@ void format_string(char *dest, rct_string_id format, void *args)
 void format_string_raw(char *dest, char *src, void *args)
 {
 	format_string_part_from_raw(&dest, src, (char**)&args);
+}
+
+/**
+ * Writes a formatted string to a buffer and converts it to upper case.
+ *  rct2: 0x006C2538
+ * dest (edi)
+ * format (ax)
+ * args (ecx)
+ */
+void format_string_to_upper(char *dest, rct_string_id format, void *args)
+{
+	format_string(dest, format, args);
+
+	char *ch = dest;
+	while (*ch != 0) {
+		*ch = toupper(*ch);
+		ch++;
+	}
 }
 
 /**

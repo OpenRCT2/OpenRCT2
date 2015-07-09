@@ -300,7 +300,7 @@ static void ride_invalidate_station_start(rct_ride *ride, int stationIndex, int 
 		mapElement->properties.track.sequence |= 0x80;
 
 	// Invalidate map tile
-	map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+	map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 }
 
 rct_map_element *ride_get_station_start_track_element(rct_ride *ride, int stationIndex)

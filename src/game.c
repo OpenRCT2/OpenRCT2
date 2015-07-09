@@ -219,9 +219,6 @@ void game_update()
 {
 	int i, numUpdates;
 
-	// Handles picked-up peep and rain redraw
-	redraw_peep_and_rain();
-
 	// 0x006E3AEC // screen_game_process_mouse_input();
 	screenshot_check();
 	game_handle_keyboard_input();
@@ -288,18 +285,12 @@ void game_update()
 	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) &= ~(1 << 2);
 
 	window_map_tooltip_update_visibility();
-	window_update_all();
 
 	RCT2_GLOBAL(0x01388698, uint16)++;
 
 	// Input
 	RCT2_GLOBAL(0x0141F568, uint8) = RCT2_GLOBAL(0x0013CA740, uint8);
 	game_handle_input();
-
-	update_palette_effects();
-	update_rain_animation();
-
-	stop_completed_sounds(); // removes other sounds that are no longer playing, this is normally called somewhere in rct2_init
 
 	if (RCT2_GLOBAL(0x009AAC73, uint8) != 255) {
 		RCT2_GLOBAL(0x009AAC73, uint8)++;
@@ -679,6 +670,7 @@ int game_load_sv6(const char *path)
 	reset_loaded_objects();
 	map_update_tile_pointers();
 	reset_0x69EBE4();
+	gOpenRCT2ResetFrameSmoothing = true;
 	return 1;
 }
 
@@ -730,6 +722,8 @@ int game_load_save(const char *path)
 
 	load_palette();
 	gfx_invalidate_screen();
+
+	gGameSpeed = 1;
 
 	scenario_set_filename((char*)0x0135936C);
 	return 1;
@@ -868,7 +862,7 @@ void rct2_exit_reason(rct_string_id title, rct_string_id body){
  */
 void rct2_exit()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006E3879);
+	audio_close();
 	//Post quit message does not work in 0x6e3879 as its windows only.
 	openrct2_finish();
 }
@@ -890,7 +884,7 @@ void game_load_or_quit_no_save_prompt()
 		game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 		tool_cancel();
 		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_5) {
-			RCT2_CALLPROC_EBPSAFE(0x0040705E);
+			// RCT2_CALLPROC_EBPSAFE(0x0040705E); Function not required resets cursor position.
 			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_5;
 		}
 		gGameSpeed = 1;
@@ -907,20 +901,20 @@ static uint32 game_do_command_table[58] = {
 	0,
 	0x0066397F,
 	0,
-	0x006C511D,
-	0x006C5B69,
+	0,
+	0,
 	0,
 	0x006B3F0F,
 	0,
 	0,
-	0x006B52D4,
+	0,
 	0, // 10
 	0,
-	0x006660A8,
-	0x0066640B,
 	0,
 	0,
-	0x006E650F,
+	0,
+	0,
+	0,
 	0,
 	0x006A68AE,
 	0,
@@ -932,7 +926,7 @@ static uint32 game_do_command_table[58] = {
 	0x0068BC01,
 	0,
 	0,
-	0x006C5AE9,
+	0,
 	0, // use new_game_command_table, original: 0x006BEFA1, 29
 	0, // 30
 	0,
@@ -970,20 +964,20 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_set_ride_appearance,
 	game_command_emptysub,
 	game_pause_toggle,
-	game_command_emptysub,
-	game_command_emptysub,
+	game_command_place_track,
+	game_command_remove_track,
 	game_load_or_quit,
 	game_command_emptysub,
 	game_command_demolish_ride,
 	game_command_set_ride_status,
-	game_command_emptysub,
+	game_command_set_ride_vehicles,
 	game_command_set_ride_name, // 10
 	game_command_set_ride_setting,
-	game_command_emptysub,
-	game_command_emptysub,
+	game_command_place_ride_entrance_or_exit,
+	game_command_remove_ride_entrance_or_exit,
 	game_command_remove_scenery,
 	game_command_place_scenery,
-	game_command_emptysub,
+	game_command_set_water_height,
 	game_command_place_footpath,
 	game_command_emptysub,
 	game_command_remove_footpath,
@@ -995,7 +989,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_emptysub,
 	game_command_raise_water,
 	game_command_lower_water,
-	game_command_emptysub,
+	game_command_set_brakes_speed,
 	game_command_hire_new_staff_member, //game_command_emptysub,
 	game_command_set_staff_patrol, // 30
 	game_command_fire_staff_member,
@@ -1014,7 +1008,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_remove_large_scenery,
 	game_command_set_current_loan,
 	game_command_set_research_funding,
-	game_command_place_track,
+	game_command_place_track_design,
 	game_command_start_campaign,
 	game_command_emptysub,
 	game_command_place_banner, // 50

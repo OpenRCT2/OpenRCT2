@@ -22,6 +22,7 @@
 #define _BANNER_H_
 
 #include "../common.h"
+#include "../world/map.h"
 
 #define BANNER_NULL 255
 #define MAX_BANNERS 250
@@ -46,5 +47,6 @@ extern rct_banner *gBanners;
 
 void banner_init();
 int create_new_banner(uint8 flags);
+rct_map_element *banner_get_map_element(int bannerIndex);
 
 #endif

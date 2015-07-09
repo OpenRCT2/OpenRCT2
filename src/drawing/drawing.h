@@ -80,10 +80,9 @@ extern rct_gx g2;
 
 // 
 rct_drawpixelinfo* clip_drawpixelinfo(rct_drawpixelinfo* dpi, int left, int width, int top, int height);
-void gfx_set_dirty_blocks(int left, int top, int right, int bottom);
+void gfx_set_dirty_blocks(uint16 left, uint16 top, uint16 right, uint16 bottom);
 void gfx_draw_all_dirty_blocks();
 void gfx_redraw_screen_rect(short left, short top, short right, short bottom);
-void gfx_invalidate_tile_if_zoomed(int x, int y, int base_height, int clearance_height);
 void gfx_invalidate_screen();
 
 // palette
@@ -131,9 +130,13 @@ void draw_string_centred_raw(rct_drawpixelinfo *dpi, int x, int y, int numLines,
 void gfx_draw_string_right(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
 void draw_string_right_underline(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
 int string_get_height_raw(char *buffer);
+void sub_6C1F57(rct_drawpixelinfo *dpi, int x, int y, int width, int colour, rct_string_id format, void *args, int ticks);
 
 // rain
 void update_rain_animation();
 void redraw_peep_and_rain();
+
+// unknown
+void sub_681DE2(rct_drawpixelinfo *dpi, int x, int y, int image1, int image2);
 
 #endif

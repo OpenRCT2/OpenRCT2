@@ -39,6 +39,7 @@
 #include "util/util.h"
 #include "world/banner.h"
 #include "world/climate.h"
+#include "world/footpath.h"
 #include "world/map.h"
 #include "world/park.h"
 #include "world/scenery.h"
@@ -151,7 +152,7 @@ void editor_convert_save_to_scenario()
 
 	rct_stex_entry* stex = g_stexEntries[0];
 	if ((int)stex != 0xFFFFFFFF) {
-		object_unload(0, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
+		object_unload((rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
 		reset_loaded_objects();
 
 		format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
@@ -250,7 +251,7 @@ static void set_all_land_owned()
 {
 	int mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16);
 
-	game_do_command(64, 1, 64, 2, GAME_COMMAND_56, (mapSize - 2) * 32, (mapSize - 2) * 32);
+	game_do_command(64, 1, 64, 2, GAME_COMMAND_SET_LAND_OWNERSHIP, (mapSize - 2) * 32, (mapSize - 2) * 32);
 }
 
 /**
@@ -475,7 +476,7 @@ static int editor_read_s6(const char *path)
 			);
 
 			RCT2_GLOBAL(0x013573DC, uint32) = min(RCT2_GLOBAL(0x013573DC, uint32), 100000);
-			RCT2_CALLPROC_EBPSAFE(0x0069E89B);
+			finance_reset_cash_to_initial();
 			sub_69E869();
 
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = clamp(
@@ -501,7 +502,7 @@ static int editor_read_s6(const char *path)
 
 		rct_stex_entry* stex = g_stexEntries[0];
 		if ((int)stex != 0xFFFFFFFF) {
-			object_unload(0, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
+			object_unload((rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
 			reset_loaded_objects();
 
 			format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
@@ -599,4 +600,109 @@ static void editor_finalise_main_view()
 	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
 	load_palette();
 	gfx_invalidate_screen();
+}
+
+static bool editor_check_object_group_at_least_one_selected(int objectType)
+{
+	uint32 numObjects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32);
+	rct_object_entry *entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	uint8 *objectFlag = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
+	for (uint32 i = 0; i < numObjects; i++) {
+		if ((entry->flags & 0x0F) == objectType && (*objectFlag & 1)) {
+			return true;
+		}
+		entry = object_get_next(entry);
+		objectFlag++;
+	}
+	return false;
+}
+
+/**
+ *
+ *  rct2: 0x006AB9B8
+ */
+int editor_check_object_selection()
+{
+	bool isTrackDesignerManager =
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
+
+	if (!isTrackDesignerManager) {
+		if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_PATHS)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_AT_LEAST_ONE_PATH_OBJECT_MUST_BE_SELECTED;
+			return OBJECT_TYPE_PATHS;
+		}
+	}
+
+	if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_RIDE)) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_AT_LEAST_ONE_RIDE_OBJECT_MUST_BE_SELECTED;
+		return OBJECT_TYPE_RIDE;
+	}
+
+	if (!isTrackDesignerManager) {
+		if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_PARK_ENTRANCE)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PARK_ENTRANCE_TYPE_MUST_BE_SELECTED;
+			return OBJECT_TYPE_PARK_ENTRANCE;
+		}
+
+		if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_WATER)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_WATER_TYPE_MUST_BE_SELECTED;
+			return OBJECT_TYPE_WATER;
+		}
+	}
+
+	return -1;
+}
+
+/**
+ *
+ *  rct2: 0x0066FEAC
+ */
+bool editor_check_park()
+{
+	int parkSize = park_calculate_size();
+	if (parkSize == 0) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PARK_MUST_OWN_SOME_LAND;
+		return false;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] != 0x8000)
+			break;
+
+		if (i == 3) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NO_PARK_ENTRANCES;
+			return false;
+		}
+	}
+
+	for (int i = 0; i < 4; i++) {
+		if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] == 0x8000)
+			continue;
+
+		int x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i];
+		int y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, uint16)[i];
+		int z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, uint16)[i] / 8;
+		int direction = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[i] ^ 2;
+
+		switch (footpath_is_connected_to_map_edge(x, y, z, direction, 0)) {
+		case FOOTPATH_SEARCH_NOT_FOUND:
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PARK_ENTRANCE_WRONG_DIRECTION_OR_NO_PATH;
+			return false;
+		case FOOTPATH_SEARCH_INCOMPLETE:
+		case FOOTPATH_SEARCH_TOO_COMPLEX:
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PARK_ENTRANCE_PATH_INCOMPLETE_OR_COMPLEX;
+			return false;
+		case FOOTPATH_SEARCH_SUCCESS:
+			// Run the search again and unown the path
+			footpath_is_connected_to_map_edge(x, y, z, direction, 0x20);
+			break;
+		}
+	}
+
+	if (gPeepSpawns[0].x == 0xFFFF && gPeepSpawns[1].x == 0xFFFF) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PEEP_SPAWNS_NOT_SET;
+		return false;
+	}
+
+	return true;
 }

@@ -351,3 +351,12 @@ void finance_shift_expenditure_table() {
 	// Invalidate the expenditure table window
 	window_invalidate_by_number(0x1C, 0);
 }
+
+/**
+ * 
+ *  rct2: 0x0069E89B
+ */
+void finance_reset_cash_to_initial()
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32));
+}

@@ -27,6 +27,7 @@
 #include "../world/scenery.h"
 #include "news_item.h"
 #include "research.h"
+#include "../rct1.h"
 
 const int _researchRate[] = { 0, 160, 250, 400 };
 
@@ -44,7 +45,7 @@ bool gSilentResearch = false;
  */
 void research_reset_items()
 {
-	gResearchItems[0].entryIndex = RESEARCHED_ITEMS_SEPERATOR;
+	gResearchItems[0].entryIndex = RESEARCHED_ITEMS_SEPARATOR;
 	gResearchItems[1].entryIndex = RESEARCHED_ITEMS_END;
 	gResearchItems[2].entryIndex = RESEARCHED_ITEMS_END_2;
 }
@@ -57,7 +58,7 @@ void research_update_uncompleted_types()
 {
 	int uncompletedResearchTypes = 0;
 	rct_research_item *researchItem = gResearchItems;
-	while (researchItem++->entryIndex != RESEARCHED_ITEMS_SEPERATOR);
+	while (researchItem++->entryIndex != RESEARCHED_ITEMS_SEPARATOR);
 
 	for (; researchItem->entryIndex != RESEARCHED_ITEMS_END; researchItem++)
 		uncompletedResearchTypes |= (1 << researchItem->category);
@@ -115,7 +116,7 @@ static void research_next_design()
 
 	// Skip already researched items
 	firstUnresearchedItem = gResearchItems;
-	while (firstUnresearchedItem->entryIndex != RESEARCHED_ITEMS_SEPERATOR)
+	while (firstUnresearchedItem->entryIndex != RESEARCHED_ITEMS_SEPARATOR)
 		firstUnresearchedItem++;
 
 	ignoreActiveResearchTypes = 0;
@@ -145,13 +146,13 @@ static void research_next_design()
 	RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = RESEARCH_STAGE_DESIGNING;
 
-	// Bubble research item up until it is above the researched items seperator
+	// Bubble research item up until it is above the researched items separator
 	do {
 		tmp = *researchItem;
 		*researchItem = *(researchItem - 1);
 		*(researchItem - 1) = tmp;
 		researchItem--;
-	} while ((researchItem + 1)->entryIndex != RESEARCHED_ITEMS_SEPERATOR);
+	} while ((researchItem + 1)->entryIndex != RESEARCHED_ITEMS_SEPARATOR);
 
 	research_invalidate_related_windows();
 }
@@ -182,12 +183,12 @@ void research_finish_item(sint32 entryIndex)
 			RCT2_ADDRESS(0x01357644, uint32)[ebx] = RCT2_ADDRESS(0x0097C5D4, uint32)[ebx];
 		}
 		RCT2_ADDRESS(0x001357424, uint32)[rideEntryIndex >> 5] |= 1 << (rideEntryIndex & 0x1F);
-		if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE)) {
+		if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
 			for (i = 0; i < 128; i++) {
 				rideEntry2 = GET_RIDE_ENTRY(i);
 				if (rideEntry2 == (rct_ride_type*)-1)
 					continue;
-				if (rideEntry2->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE)
+				if ((rideEntry2->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && !rideTypeShouldLoseSeparateFlag(rideEntry2))
 					continue;
 
 				if (rideEntry2->ride_type[0] == base_ride_type || rideEntry2->ride_type[1] == base_ride_type || rideEntry2->ride_type[2] == base_ride_type)
@@ -197,7 +198,7 @@ void research_finish_item(sint32 entryIndex)
 
 		// I don't think 0x009AC06C is ever not 0, so probably redundant
 		if (RCT2_GLOBAL(0x009AC06C, uint8) == 0) {
-			RCT2_GLOBAL(0x013CE952, rct_string_id) = rideEntry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME ?
+			RCT2_GLOBAL(0x013CE952, rct_string_id) = ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) && !rideTypeShouldLoseSeparateFlag(rideEntry)) ?
 				rideEntry->name : base_ride_type + 2;
 			if (!gSilentResearch)
 				news_item_add_to_queue(NEWS_ITEM_RESEARCH, 2249, entryIndex);
@@ -320,7 +321,7 @@ void sub_684AC3(){
 	}
 
 	
-	for (research = gResearchItems; research->entryIndex != RESEARCHED_ITEMS_SEPERATOR; research++){
+	for (research = gResearchItems; research->entryIndex != RESEARCHED_ITEMS_SEPARATOR; research++){
 		research_finish_item(research->entryIndex);
 	}
 
@@ -346,25 +347,21 @@ void research_remove_non_separate_vehicle_types()
 		loopBeginning:
 		if (
 			researchItem != gResearchItems &&
-			researchItem->entryIndex != RESEARCHED_ITEMS_SEPERATOR &&
+			researchItem->entryIndex != RESEARCHED_ITEMS_SEPARATOR &&
 			researchItem->entryIndex != RESEARCHED_ITEMS_END &&
 			researchItem->entryIndex >= 0x10000			
 		) {
 			rct_ride_type *rideEntry = GET_RIDE_ENTRY(researchItem->entryIndex & 0xFF);
-			if (!(rideEntry->flags & 
-				(RIDE_ENTRY_FLAG_SEPERATE_RIDE | 
-				RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME))) {
+			if (!(rideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
 				// Check if ride type already exists further up for a vehicle type that isn't displayed as a ride
 				researchItem2 = researchItem - 1;
 				do {
 					if (
-						researchItem2->entryIndex != RESEARCHED_ITEMS_SEPERATOR &&
+						researchItem2->entryIndex != RESEARCHED_ITEMS_SEPARATOR &&
 						researchItem2->entryIndex >= 0x10000
 					) {
 						rideEntry = GET_RIDE_ENTRY(researchItem2->entryIndex & 0xFF);
-						if (!(rideEntry->flags & 
-							(RIDE_ENTRY_FLAG_SEPERATE_RIDE |
-							RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME))) {
+						if (!(rideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
 
 							if (((researchItem->entryIndex >> 8) & 0xFF) == ((researchItem2->entryIndex >> 8) & 0xFF)) {
 								// Remove item
@@ -418,7 +415,7 @@ static void research_insert_researched(int entryIndex, int category)
 
 	researchItem = gResearchItems;
 	do {
-		if (researchItem->entryIndex == RESEARCHED_ITEMS_SEPERATOR) {
+		if (researchItem->entryIndex == RESEARCHED_ITEMS_SEPARATOR) {
 			// Insert slot
 			researchItem2 = researchItem;
 			while (researchItem2->entryIndex != RESEARCHED_ITEMS_END_2) {

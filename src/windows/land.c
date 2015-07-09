@@ -96,8 +96,6 @@ static void* window_land_events[] = {
 	window_land_emptysub
 };
 
-static int window_land_should_close();
-
 static char window_land_floor_texture_order[] = {
 	TERRAIN_SAND_DARK, TERRAIN_SAND_LIGHT,  TERRAIN_DIRT,      TERRAIN_GRASS_CLUMPS, TERRAIN_GRASS,
 	TERRAIN_ROCK,      TERRAIN_SAND,        TERRAIN_MARTIAN,   TERRAIN_CHECKERBOARD, TERRAIN_ICE,
@@ -129,7 +127,7 @@ void window_land_open()
 	if (window_find_by_class(WC_LAND) != NULL)
 		return;
 
-	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 98, 29, 98, 126, (uint32*)window_land_events, WC_LAND, 0);
+	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 98, 29, 98, 126, (uint32*)window_land_events, WC_LAND, 0);
 	window->widgets = window_land_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_CLOSE) |
@@ -158,7 +156,7 @@ void window_land_open()
 static void window_land_close()
 {
 	// If the tool wasn't changed, turn tool off
-	if (!window_land_should_close())
+	if (land_tool_is_active())
 		tool_cancel();
 }
 
@@ -349,8 +347,7 @@ static void window_land_inputsize(rct_window *w)
  */
 static void window_land_update(rct_window *w)
 {
-	// Close window if another tool is open
-	if (window_land_should_close())
+	if (!land_tool_is_active())
 		window_close(w);
 }
 
@@ -432,19 +429,4 @@ static void window_land_paint()
 		RCT2_GLOBAL(0x013CE952, sint32) = price;
 		gfx_draw_string_centred(dpi, 986, x, y, 0, (void*)0x013CE952);
 	}
-}
-
-/**
- *
- *  rct2: 0x0066D104
- */
-static int window_land_should_close()
-{
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE))
-		return 1;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_TOP_TOOLBAR)
-		return 1;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, sint16) != 7)
-		return 1;
-	return 0;
 }

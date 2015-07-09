@@ -46,6 +46,7 @@ char gTextBoxInput[512] = { 0 };
 int gMaxTextBoxInputLength = 0;
 int gTextBoxFrameNo = 0;
 bool gUsingWidgetTextBox = 0;
+bool gLoadSaveTitleSequenceSave = 0;
 
 // converted from uint16 values at 0x009A41EC - 0x009A4230
 // these are percentage coordinates of the viewport to center to, if a window is obscuring a location, the next is tried
@@ -155,6 +156,13 @@ void window_dispatch_update_all()
 	RCT2_CALLPROC_EBPSAFE(0x006EE411);	// handle_text_input
 }
 
+void window_update_all_viewports()
+{
+	for (rct_window *w = g_window_list; w < RCT2_NEW_WINDOW; w++)
+		if (w->viewport != NULL)
+			viewport_update_position(w);
+}
+
 /**
  * 
  *  rct2: 0x006E77A1
@@ -168,10 +176,7 @@ void window_update_all()
 		return;
 
 	gfx_draw_all_dirty_blocks();
-
-	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
-		if (w->viewport != NULL)
-			viewport_update_position(w);
+	window_update_all_viewports();
 
 	// 1000 tick update
 	RCT2_GLOBAL(0x009DEB7C, sint16) += RCT2_GLOBAL(0x009DE588, sint16);
@@ -1197,7 +1202,7 @@ void window_push_others_below(rct_window *w1)
 			continue;
 
 		// Check if there is room to push it down
-		if (w1->y + w1->height + 80 >= RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16))
+		if (w1->y + w1->height + 80 >= RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16))
 			continue;
 
 		// Invalidate the window's current area
@@ -1951,9 +1956,9 @@ void window_event_scroll_mousedown_call(rct_window* w, int scrollIndex, int x, i
 	RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_MOUSEDOWN], scrollIndex, 0, x, y, (int)w, (int)window_get_scroll_widget(w, scrollIndex), 0);
 }
 
-void window_event_unknown_11_call(rct_window* w)
+void window_event_scroll_mousedrag_call(rct_window* w, int scrollIndex, int x, int y)
 {
-	window_event_call_address(w->event_handlers[WE_UNKNOWN_11], w);
+	RCT2_CALLPROC_X(w->event_handlers[WE_SCROLL_MOUSEDRAG], scrollIndex, 0, x, y, (int)w, (int)window_get_scroll_widget(w, scrollIndex), 0);
 }
 
 void window_event_scroll_mouseover_call(rct_window* w, int scrollIndex, int x, int y)
@@ -2486,6 +2491,7 @@ void window_cancel_textbox()
 			gCurrentTextBox.window.classification,
 			gCurrentTextBox.window.number
 			);
+		window_event_textinput_call(w, gCurrentTextBox.widget_index, NULL);
 		gCurrentTextBox.window.classification = 255;
 		gCurrentTextBox.window.number = 0;
 		platform_stop_text_input();

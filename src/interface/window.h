@@ -273,7 +273,7 @@ typedef enum {
 	WE_UNKNOWN_0E = 14,
 	WE_SCROLL_GETSIZE = 15,
 	WE_SCROLL_MOUSEDOWN = 16,
-	WE_UNKNOWN_11 = 17,
+	WE_SCROLL_MOUSEDRAG = 17,
 	WE_SCROLL_MOUSEOVER = 18,
 	WE_TEXT_INPUT = 19,
 	WE_UNKNOWN_14 = 20,
@@ -414,6 +414,8 @@ enum {
 	WC_THEMES = 119,
 	WC_TILE_INSPECTOR = 120,
 	WC_CHANGELOG = 121,
+	WC_TITLE_EDITOR = 122,
+	WC_TITLE_COMMAND_EDITOR = 123,
 
 	// Only used for colour schemes
 	WC_STAFF = 220,
@@ -444,8 +446,10 @@ enum {
 	LOADSAVETYPE_GAME = 0 << 1,
 	LOADSAVETYPE_LANDSCAPE = 1 << 1,
 	LOADSAVETYPE_SCENARIO = 2 << 1,
-	LOADSAVETYPE_TRACK = 3 << 1,
+	LOADSAVETYPE_TRACK = 3 << 1
 };
+
+extern bool gLoadSaveTitleSequenceSave;
 
 
 // rct2: 0x01420078
@@ -455,6 +459,7 @@ extern rct_window* g_window_list;
 extern ride_list_item _window_track_list_item;
 
 void window_dispatch_update_all();
+void window_update_all_viewports();
 void window_update_all();
 rct_window *window_create(int x, int y, int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags);
 rct_window *window_create_auto_pos(int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags);
@@ -560,7 +565,9 @@ rct_window *window_ride_open_vehicle(rct_vehicle *vehicle);
 void window_ride_demolish_prompt_open(int rideIndex);
 void window_ride_construct(rct_window *w);
 void window_ride_list_open();
-rct_window * window_construction_open();
+rct_window *window_ride_construction_open();
+rct_window *window_maze_construction_open();
+void window_maze_construction_update_pressed_widgets();
 void window_track_place_open();
 rct_window *window_new_ride_open();
 rct_window *window_new_ride_open_research();
@@ -580,6 +587,8 @@ void window_publisher_credits_open();
 void window_track_manage_open();
 void window_viewport_open();
 void window_themes_open();
+void window_title_editor_open(int tab);
+void window_title_command_editor_open(int command, bool insert);
 void window_tile_inspector_open();
 void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uint32 existing_args, int maxLength);
 void window_text_input_raw_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, int maxLength);
@@ -624,7 +633,7 @@ void window_event_tool_abort_call(rct_window* w, int widgetIndex);
 void window_event_unknown_0E_call(rct_window* w);
 int window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *height);
 void window_event_scroll_mousedown_call(rct_window* w, int scrollIndex, int x, int y);
-void window_event_unknown_11_call(rct_window* w);
+void window_event_scroll_mousedrag_call(rct_window* w, int scrollIndex, int x, int y);
 void window_event_scroll_mouseover_call(rct_window* w, int scrollIndex, int x, int y);
 void window_event_textinput_call(rct_window *w, int widgetIndex, char *text);
 void window_event_unknown_14_call(rct_window* w);
@@ -646,6 +655,8 @@ void window_start_textbox(rct_window *call_w, int call_widget, rct_string_id exi
 void window_cancel_textbox();
 void window_update_textbox_caret();
 void window_update_textbox();
+
+bool land_tool_is_active();
 
 //Cheat: in-game land ownership editor
 void toggle_ingame_land_ownership_editor();

@@ -130,7 +130,7 @@ static void window_track_place_draw_mini_preview()
 	int i, rotation, pass, x, y, pixelX, pixelY, originX, originY, minX, minY, maxX, maxY;
 	rct_maze_element *mazeElement;
 	rct_track_element *trackElement;
-	rct_preview_track *trackBlock;
+	const rct_preview_track *trackBlock;
 
 	window_track_place_clear_mini_preview();
 
@@ -163,8 +163,8 @@ static void window_track_place_draw_mini_preview()
 				colour = RCT2_ADDRESS(0x0099BA64, uint8)[trackType * 16] & 0x10 ? 222 : 218;
 
 				// Follow a single track piece shape
-				trackBlock = RCT2_ADDRESS(0x00994638, rct_preview_track*)[trackType];
-				while (trackBlock->var_00 != 255) {
+				trackBlock = TrackBlocks[trackType];
+				while (trackBlock->index != 255) {
 					x = originX;
 					y = originY;
 					
@@ -235,9 +235,9 @@ static void window_track_place_draw_mini_preview()
 					originY += track_coordinate->x;
 					break;
 				}
-				rotation += track_coordinate->rotation_positive - track_coordinate->rotation_negative;
+				rotation += track_coordinate->rotation_end - track_coordinate->rotation_begin;
 				rotation &= 3;
-				if (track_coordinate->rotation_positive & 4)
+				if (track_coordinate->rotation_end & 4)
 					rotation |= 4;
 				if (!(rotation & 4)) {
 					originX += RCT2_GLOBAL(0x00993CCC + (rotation * 4), sint16);
@@ -357,7 +357,7 @@ static void window_track_place_attempt_placement(int x, int y, int z, int bl, mo
 	ebx = bl;
 	ecx = y;
 	edi = z;
-	result = game_do_command_p(GAME_COMMAND_PLACE_TRACK, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	result = game_do_command_p(GAME_COMMAND_PLACE_TRACK_DESIGN, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
 	if (cost != NULL) *cost = result;
 	if (rideIndex != NULL) *rideIndex = edi & 0xFF;

@@ -24,12 +24,16 @@
 #include "cmdline.h"
 #include "config.h"
 #include "editor.h"
+#include "game.h"
+#include "hook.h"
+#include "interface/window.h"
 #include "localisation/localisation.h"
 #include "network/http.h"
 #include "openrct2.h"
 #include "platform/platform.h"
 #include "util/sawyercoding.h"
 #include "world/mapgen.h"
+#include "title.h"
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 char gOpenRCT2StartupActionPath[512] = { 0 };
@@ -39,6 +43,10 @@ char gExePath[MAX_PATH];
 bool gOpenRCT2Headless = false;
 
 bool gOpenRCT2ShowChangelog;
+
+// This needs to be set when a park is loaded. It could also be used to reset other important states, it should then be renamed
+// to something more general.
+bool gOpenRCT2ResetFrameSmoothing = false;
 
 /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to 0. */
 int _finished;
@@ -174,11 +182,15 @@ bool openrct2_initialise()
 
 	themes_set_default();
 	themes_load_presets();
+	title_sequences_set_default();
+	title_sequences_load_presets();
 
 	if (!rct2_init())
 		return false;
 
 	openrct2_copy_original_user_files_over();
+
+	addhook(0x006E732D, (int)gfx_set_dirty_blocks, 0, (int[]){EAX, EBX, EDX, EBP, END}, 0); // remove after all drawing is decompiled
 
 	Mixer_Init(NULL);
 	return true;
@@ -228,29 +240,131 @@ void openrct2_dispose()
 }
 
 /**
+ * Determines whether its worth tweening a sprite or not when frame smoothing is on.
+ */
+static bool sprite_should_tween(rct_sprite *sprite)
+{
+	if (sprite->unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_VEHICLE)
+		return true;
+	if (sprite->unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_PEEP)
+		return true;
+	if (sprite->unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_UNKNOWN)
+		return true;
+
+	return false;
+}
+
+/**
  * Run the main game loop until the finished flag is set at 40fps (25ms interval).
  */
 static void openrct2_loop()
 {
 	uint32 currentTick, ticksElapsed, lastTick = 0;
+	static uint32 uncapTick;
+	static int fps = 0;
+	static uint32 secondTick = 0;
+	static bool uncappedinitialized = false;
+	static struct { sint16 x, y, z; } spritelocations1[MAX_SPRITES], spritelocations2[MAX_SPRITES];
 
 	log_verbose("begin openrct2 loop");
 
 	_finished = 0;
 	do {
-		currentTick = SDL_GetTicks();
-		ticksElapsed = currentTick - lastTick;
-		if (ticksElapsed < 25) {
-			if (ticksElapsed < 15)
-				SDL_Delay(15 - ticksElapsed);
-			continue;
+		if (gConfigGeneral.uncap_fps && gGameSpeed <= 4) {
+			currentTick = SDL_GetTicks();
+			if (!uncappedinitialized) {
+				// Reset sprite locations
+				uncapTick = SDL_GetTicks();
+				for (uint16 i = 0; i < MAX_SPRITES; i++) {
+					spritelocations1[i].x = spritelocations2[i].x = g_sprite_list[i].unknown.x;
+					spritelocations1[i].y = spritelocations2[i].y = g_sprite_list[i].unknown.y;
+					spritelocations1[i].z = spritelocations2[i].z = g_sprite_list[i].unknown.z;
+				}
+				uncappedinitialized = true;
+			}
+
+			while (uncapTick <= currentTick && currentTick - uncapTick > 25) {
+				// Get the original position of each sprite
+				for (uint16 i = 0; i < MAX_SPRITES; i++) {
+					spritelocations1[i].x = g_sprite_list[i].unknown.x;
+					spritelocations1[i].y = g_sprite_list[i].unknown.y;
+					spritelocations1[i].z = g_sprite_list[i].unknown.z;
+				}
+				
+				// Update the game so the sprite positions update
+				rct2_update();
+				if (gOpenRCT2ResetFrameSmoothing) {
+					gOpenRCT2ResetFrameSmoothing = false;
+					uncappedinitialized = false;
+					continue;
+				}
+
+				// Get the next position of each sprite
+				for (uint16 i = 0; i < MAX_SPRITES; i++) {
+					spritelocations2[i].x = g_sprite_list[i].unknown.x;
+					spritelocations2[i].y = g_sprite_list[i].unknown.y;
+					spritelocations2[i].z = g_sprite_list[i].unknown.z;
+				}
+
+				uncapTick += 25;
+			}
+
+			// Tween the position of each sprite from the last position to the new position based on the time between the last
+			// tick and the next tick.
+			float nudge = 1 - ((float)(currentTick - uncapTick) / 25);
+			for (uint16 i = 0; i < MAX_SPRITES; i++) {
+				if (!sprite_should_tween(&g_sprite_list[i]))
+					continue;
+
+				sprite_move(
+					spritelocations2[i].x + (sint16)((spritelocations1[i].x - spritelocations2[i].x) * nudge),
+					spritelocations2[i].y + (sint16)((spritelocations1[i].y - spritelocations2[i].y) * nudge),
+					spritelocations2[i].z + (sint16)((spritelocations1[i].z - spritelocations2[i].z) * nudge),
+					&g_sprite_list[i]
+				);
+				invalidate_sprite(&g_sprite_list[i]);
+			}
+
+			// Viewports need to be updated to reduce chopiness of those which follow sprites
+			window_update_all_viewports();
+
+			platform_process_messages();
+			rct2_draw();
+			platform_draw();
+			fps++;
+			if (SDL_GetTicks() - secondTick >= 1000) {
+				fps = 0;
+				secondTick = SDL_GetTicks();
+			}
+
+			// Restore the real positions of the sprites so they aren't left at the mid-tween positions
+			for (uint16 i = 0; i < MAX_SPRITES; i++) {
+				if (!sprite_should_tween(&g_sprite_list[i]))
+					continue;
+
+				invalidate_sprite(&g_sprite_list[i]);
+				sprite_move(spritelocations2[i].x, spritelocations2[i].y, spritelocations2[i].z, &g_sprite_list[i]);
+			}
+		} else {
+			uncappedinitialized = false;
+			currentTick = SDL_GetTicks();
+			ticksElapsed = currentTick - lastTick;
+			if (ticksElapsed < 25) {
+				if (ticksElapsed < 15)
+					SDL_Delay(15 - ticksElapsed);
+				continue;
+			}
+
+			lastTick = currentTick;
+
+			platform_process_messages();
+
+			rct2_update();
+			gOpenRCT2ResetFrameSmoothing = false;
+
+			rct2_draw();
+			platform_draw();
 		}
-
-		lastTick = currentTick;
-
-		platform_process_messages();
-		rct2_update();
-		platform_draw();
 	} while (!_finished);
 }
 

@@ -87,7 +87,10 @@ void platform_stop_text_input();
 char platform_get_path_separator();
 int platform_file_exists(const char *path);
 int platform_directory_exists(const char *path);
+int platform_original_game_data_exists(const char *path);
+time_t platform_file_get_modified_time(char* path);
 int platform_ensure_directory_exists(const char *path);
+int platform_directory_delete(const char *path);
 int platform_lock_single_instance();
 int platform_enumerate_files_begin(const char *pattern);
 int platform_enumerate_files_next(int handle, file_info *outFileInfo);
@@ -95,6 +98,10 @@ void platform_enumerate_files_end(int handle);
 int platform_enumerate_directories_begin(const char *directory);
 int platform_enumerate_directories_next(int handle, char *path);
 void platform_enumerate_directories_end(int handle);
+
+// Returns the bitmask of the GetLogicalDrives function for windows, 0 for other systems
+int platform_get_drives();
+
 int platform_file_copy(const char *srcPath, const char *dstPath);
 int platform_file_move(const char *srcPath, const char *dstPath);
 int platform_file_delete(const char *path);

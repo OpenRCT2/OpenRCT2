@@ -48,6 +48,9 @@ enum {
 extern uint8 *gParkRatingHistory;
 extern uint8 *gGuestsInParkHistory;
 
+void set_forced_park_rating();
+int get_forced_park_rating();
+
 int park_is_open();
 void park_init();
 void park_reset_history();
@@ -77,6 +80,9 @@ void game_command_remove_park_entrance(int *eax, int *ebx, int *ecx, int *edx, i
 void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_buy_land_rights(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
-void gfx_invalidate_viewport_tile(int x, int y, int z0, int z1);
+void map_invalidate_tile(int x, int y, int z0, int z1);
+
+void park_remove_ghost_entrance();
+money32 park_place_ghost_entrance(int x, int y, int z, int direction);
 
 #endif

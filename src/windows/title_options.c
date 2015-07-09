@@ -75,7 +75,7 @@ void window_title_options_open()
 	rct_window* window;
 
 	window = window_create(
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 80, 0,
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 80, 0,
 		80, 12,
 		(uint32*)window_title_options_events,
 		WC_TITLE_OPTIONS,

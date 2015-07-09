@@ -291,7 +291,7 @@ static void window_sign_mousedown(int widgetIndex, rct_window*w, rct_widget* wid
 static void window_sign_dropdown()
 {
 	short widgetIndex, dropdownIndex;
-	rct_window* w;
+	rct_window *w;
 
 	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
@@ -308,30 +308,20 @@ static void window_sign_dropdown()
 		return;
 	}
 
-	rct_banner* banner = &gBanners[w->number];
-	int x = banner->x << 5;
-	int y = banner->y << 5;
+	rct_banner *banner = &gBanners[w->number];
+	rct_map_element *mapElement = banner_get_map_element(w->number);
+	if (mapElement == NULL || map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
+		return;
 
-	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
-
-	while (1){
-		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
-			rct_scenery_entry* scenery_entry = g_largeSceneryEntries[map_element->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK];
-			if (scenery_entry->large_scenery.var_11 != 0xFF){
-				int id = (map_element->type & 0xC0) |
-					((map_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
-					((map_element->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
-				if (id == w->number)
-					break;
-			}
-		}
-		map_element++;
-	}
-
-	int edx = map_element->base_height | ((map_element->properties.scenerymultiple.type >> 10) << 8);
-	int ebp = w->list_information_type | (w->var_492 << 8);
-	int ebx = (map_element->type & 0x3) << 8;
-	RCT2_CALLPROC_X(0x6B9B05, x, ebx, y, edx, 0, w->number, ebp);
+	sign_set_colour(
+		banner->x * 32,
+		banner->y * 32,
+		mapElement->base_height,
+		mapElement->type & 3,
+		mapElement->properties.scenerymultiple.type >> 10,
+		w->list_information_type & 0xFF,
+		w->var_492 & 0xFF
+	);
 	window_invalidate(w);
 }
 
@@ -633,7 +623,7 @@ static void window_sign_small_dropdown()
 		((w->var_492 & 0x7) << 5);
 	map_element->flags |= ((w->var_492 & 0x18) << 2);
 
-	gfx_invalidate_viewport_tile(x, y, map_element->base_height * 8, map_element->clearance_height * 8);
+	map_invalidate_tile(x, y, map_element->base_height * 8, map_element->clearance_height * 8);
 	window_invalidate(w);
 }
 

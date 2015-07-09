@@ -34,6 +34,7 @@
 #include "dropdown.h"
 #include "../interface/themes.h"
 #include "error.h"
+#include "../util/util.h"
 
 enum {
 	WINDOW_THEMES_TAB_SETTINGS,
@@ -240,6 +241,7 @@ static rct_windowclass window_themes_tab_5_classes[] = {
 static rct_windowclass window_themes_tab_6_classes[] = {
 	WC_CHEATS,
 	WC_THEMES,
+	WC_TITLE_EDITOR,
 	WC_OPTIONS,
 	WC_KEYBOARD_SHORTCUT_LIST,
 	WC_CHANGE_KEYBOARD_SHORTCUT,
@@ -728,15 +730,6 @@ void window_themes_scrollmouseover() {
 	//	return;
 }
 
-static bool valid_characters(const char *name)
-{
-	for (int i = 0; name[i] != '\0'; i++) {
-		if (name[i] == '\\' || name[i] == '/' || name[i] == ':' || name[i] == '?' || name[i] == '*' || name[i] == '<' || name[i] == '>' || name[i] == '|')
-			return false;
-	}
-	return true;
-}
-
 static void window_themes_textinput()
 {
 	rct_window *w;
@@ -752,7 +745,7 @@ static void window_themes_textinput()
 	switch (widgetIndex) {
 	case WIDX_THEMES_DUPLICATE_BUTTON:
 	case WIDX_THEMES_RENAME_BUTTON:
-		if (valid_characters(text)) {
+		if (filename_valid_characters(text)) {
 			bool nameTaken = false;
 			for (int i = 0; i < gConfigThemes.num_presets; i++) {
 				if (strcmp(gConfigThemes.presets[i].name, text) == 0) {

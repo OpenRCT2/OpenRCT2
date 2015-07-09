@@ -17,17 +17,14 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
-#include "../common.h"
 
-/* size 0x0A */
-typedef struct{
-	sint8 rotation_negative;	// 0x00
-	sint8 rotation_positive;	// 0x01
-	sint16 z_negative;			// 0x02
-	sint16 z_positive;			// 0x04
-	sint16 x;					// 0x06
-	sint16 y;					// 0x08
-}rct_track_coordinates;
+#include "../common.h"
 
 // 0x009968BB, 0x009968BC, 0x009968BD, 0x009968BF, 0x009968C1, 0x009968C3
 extern const rct_track_coordinates TrackCoordinates[256];
+// 0x009972BB, 0x009972BC, 0x009972BD, 0x009972BF, 0x009972C1, 0x009972C3
+extern const rct_track_coordinates* FlatTrackCoordinates;
+
+extern const uint64 RideTypePossibleTrackConfigurations[91];
+extern const rct_preview_track *TrackBlocks[256];
+extern const rct_preview_track *FlatRideTrackBlocks[255];

@@ -31,7 +31,7 @@
 #include "error.h"
 #include "../interface/themes.h"
 #include "dropdown.h"
-
+#include "../rct1.h"
 
 enum {
 	FILTER_RCT2 = (1 << 0),
@@ -95,10 +95,10 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
 	WIDX_TAB_9,					// 12, 1000
 	WIDX_TAB_10,				// 13, 2000
 	WIDX_TAB_11,				// 14, 4000
-	WIDX_DROPDOWN1,				// 15, 8000
+	WIDX_ADVANCED,				// 15, 8000
 	WIDX_LIST,					// 16, 10000
 	WIDX_PREVIEW,				// 17, 20000
-	WIDX_DROPDOWN2,				// 18, 40000
+	WIDX_INSTALL_TRACK,			// 18, 40000
 	WIDX_FILTER_DROPDOWN,		// 19, 80000
 	WIDX_FILTER_STRING_BUTTON,	// 20, 100000
 	WIDX_FILTER_CLEAR_BUTTON,	// 21, 200000
@@ -109,7 +109,9 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
 	WIDX_FILTER_RIDE_TAB_COASTER,
 	WIDX_FILTER_RIDE_TAB_THRILL,
 	WIDX_FILTER_RIDE_TAB_WATER,
-	WIDX_FILTER_RIDE_TAB_STALL
+	WIDX_FILTER_RIDE_TAB_STALL,
+	WIDX_LIST_SORT_TYPE,
+	WIDX_LIST_SORT_RIDE,
 };
 
 static rct_widget window_editor_object_selection_widgets[] = {
@@ -135,7 +137,7 @@ static rct_widget window_editor_object_selection_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	0,	350,	463,	23,		34,		5261,							5265 },
 	{ WWT_TEXT_BOX,			1,	4,		214,	46,		57,		(uint32)_filter_string,			STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	218,	287,	46,		57,		5277,							STR_NONE },
-	{ WWT_RESIZE,			1,	3,		287,	73,		76,		0xFFFFFFFF,						STR_NONE },
+	{ WWT_IMGBTN,			1,	3,		287,	73,		76,		0xFFFFFFFF,						STR_NONE },
 	{ WWT_TAB,				1,	3,		33,		47,		73,		0x2000144E,						5349 },
 	{ WWT_TAB,				1,	34,		64,		47,		73,		0x2000144E,						1223 },
 	{ WWT_TAB,				1,	65,		95,		47,		73,		0x2000144E,						1224 },
@@ -143,6 +145,8 @@ static rct_widget window_editor_object_selection_widgets[] = {
 	{ WWT_TAB,				1,	127,	157,	47,		73,		0x2000144E,						1226 },
 	{ WWT_TAB,				1,	158,	188,	47,		73,		0x2000144E,						1227 },
 	{ WWT_TAB,				1,	189,	219,	47,		73,		0x2000144E,						1228 },
+	{ WWT_13,				1,	4,		204,	80,		93,		STR_NONE,						STR_NONE },
+	{ WWT_13,				1,	205,	291,	80,		93,		STR_NONE,						STR_NONE },
 	{ WIDGETS_END }
 };
 
@@ -154,6 +158,7 @@ static void window_editor_object_selection_emptysub() { }
 
 static void window_editor_object_selection_close();
 static void window_editor_object_selection_mouseup();
+static void window_editor_object_selection_resize();
 static void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_editor_object_selection_dropdown();
 static void window_editor_object_selection_update(rct_window *w);
@@ -169,7 +174,7 @@ static void window_editor_object_selection_textinput();
 static void* window_editor_object_selection_events[] = {
 	window_editor_object_selection_close,
 	(void*)window_editor_object_selection_mouseup,
-	(void*)window_editor_object_selection_emptysub,
+	(void*)window_editor_object_selection_resize,
 	(void*)window_editor_object_selection_mousedown,
 	(void*)window_editor_object_selection_dropdown,
 	(void*)window_editor_object_selection_emptysub,
@@ -199,6 +204,9 @@ static void* window_editor_object_selection_events[] = {
 
 #pragma endregion
 
+const int window_editor_object_selection_animation_loops[] = { 20, 32, 10, 72, 24, 28, 16 };
+const int window_editor_object_selection_animation_divisor[] = { 4, 8, 2, 4, 4, 4, 2 };
+
 static void window_editor_object_set_page(rct_window *w, int page);
 static void window_editor_object_selection_set_pressed_tab(rct_window *w);
 static void window_editor_object_selection_select_default_objects();
@@ -218,13 +226,13 @@ static int sub_6AB211();
 
 static rct_object_entry RequiredSelectedObjects[] = {
 	// Objects that are always required
-		{ 0x00000087, { "SCGTREES" }, 0 },		// Scenery: Trees
-		{ 0x00000087, { "SCGSHRUB" }, 0 },		// Scenery: Shrubs and Ornaments
-		{ 0x00000087, { "SCGGARDN" }, 0 },		// Scenery: Gardens
-		{ 0x00000087, { "SCGFENCE" }, 0 },		// Scenery: Fences and Walls
-		{ 0x00000087, { "SCGWALLS" }, 0 },		// Scenery: Walls and Roofs
-		{ 0x00000087, { "SCGPATHX" }, 0 },		// Scenery: Signs and Items for Footpaths
-		{ 0x00000085, { "TARMAC  " }, 0 },		// Footpath: Tarmac
+	{ 0x00000087, { "SCGTREES" }, 0 },		// Scenery: Trees
+	{ 0x00000087, { "SCGSHRUB" }, 0 },		// Scenery: Shrubs and Ornaments
+	{ 0x00000087, { "SCGGARDN" }, 0 },		// Scenery: Gardens
+	{ 0x00000087, { "SCGFENCE" }, 0 },		// Scenery: Fences and Walls
+	{ 0x00000087, { "SCGWALLS" }, 0 },		// Scenery: Walls and Roofs
+	{ 0x00000087, { "SCGPATHX" }, 0 },		// Scenery: Signs and Items for Footpaths
+	{ 0x00000085, { "TARMAC  " }, 0 },		// Footpath: Tarmac
 };
 
 static rct_object_entry DefaultSelectedObjects[] = {
@@ -259,6 +267,106 @@ static rct_object_entry DefaultSelectedObjects[] = {
 	{ 0x00000087, { "SCGWATER" }, 0 }		// Water Feature Themeing
 };
 
+enum {
+	RIDE_SORT_TYPE,
+	RIDE_SORT_RIDE
+};
+
+typedef struct {
+	rct_object_entry *entry;
+	rct_object_filters *filter;
+	uint8 *flags;
+} list_item;
+
+typedef int (*sortFunc)(const void *, const void *);
+
+static int _numListItems = 0;
+static list_item *_listItems = NULL;
+static int _listSortType = RIDE_SORT_TYPE;
+static bool _listSortDescending = false;
+
+static void visible_list_dispose()
+{
+	SafeFree(_listItems);
+	_numListItems = 0;
+}
+
+static int visible_list_sort_ride_name(const void *rawA, const void *rawB)
+{
+	list_item *a = (list_item*)rawA;
+	list_item *b = (list_item*)rawB;
+
+	const char *nameA = object_get_name(a->entry);
+	const char *nameB = object_get_name(b->entry);
+	return strcmp(nameA, nameB);
+}
+
+static int visible_list_sort_ride_type(const void *rawA, const void *rawB)
+{
+	list_item *a = (list_item*)rawA;
+	list_item *b = (list_item*)rawB;
+
+	const char *rideTypeA = language_get_string(2 + a->filter->ride.ride_type);
+	const char *rideTypeB = language_get_string(2 + b->filter->ride.ride_type);
+	int result = strcmp(rideTypeA, rideTypeB);
+	if (result != 0)
+		return result;
+
+	return visible_list_sort_ride_name(rawA, rawB);
+}
+
+static void visible_list_refresh(rct_window *w)
+{
+	int numObjects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32);
+
+	visible_list_dispose();
+	_listItems = malloc(numObjects * sizeof(list_item));
+	_numListItems = 0;
+
+	list_item *currentListItem = &_listItems[0];
+	rct_object_entry *entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	uint8 *itemFlags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
+	for (int i = 0; i < numObjects; i++) {
+		rct_object_filters *filter = get_object_filter(i);
+		int type = entry->flags & 0x0F;
+		int source = (entry->flags & 0xF0) >> 4;
+		if (type == w->selected_tab && !(*itemFlags & OBJECT_SELECTION_FLAG_6) && filter_source(entry) && filter_string(entry) && filter_chunks(entry, filter)) {
+			currentListItem->entry = entry;
+			currentListItem->filter = filter;
+			currentListItem->flags = itemFlags;
+			currentListItem++;
+			_numListItems++;
+		}
+
+		entry = object_get_next(entry);
+		itemFlags++;
+	}
+
+	_listItems = realloc(_listItems, _numListItems * sizeof(list_item));
+
+	sortFunc sortFunc;
+	switch (_listSortType) {
+	case RIDE_SORT_TYPE:
+		sortFunc = visible_list_sort_ride_type;
+		break;
+	case RIDE_SORT_RIDE:
+		sortFunc = visible_list_sort_ride_name;
+		break;
+	}
+	qsort(_listItems, _numListItems, sizeof(list_item), sortFunc);
+
+	if (_listSortDescending) {
+		for (int i = 0; i < _numListItems / 2; i++) {
+			int ri = _numListItems - i - 1;
+			list_item temp = _listItems[i];
+			_listItems[i] = _listItems[ri];
+			_listItems[ri] = temp;
+		}
+	}
+
+	window_invalidate(w);
+}
+
 /**
  *
  *  rct2: 0x006AA64E
@@ -280,17 +388,19 @@ void window_editor_object_selection_open()
 		400,
 		(uint32*)window_editor_object_selection_events,
 		WC_EDITOR_OBJECT_SELECTION,
-		WF_10
+		WF_10 | WF_RESIZABLE
 	);
 	window->widgets = window_editor_object_selection_widgets;
 
 	window->enabled_widgets =
-		(1 << WIDX_DROPDOWN1) |
-		(1 << WIDX_DROPDOWN2) |
+		(1 << WIDX_ADVANCED) |
+		(1 << WIDX_INSTALL_TRACK) |
 		(1 << WIDX_FILTER_DROPDOWN) |
 		(1 << WIDX_FILTER_STRING_BUTTON) |
 		(1 << WIDX_FILTER_CLEAR_BUTTON) |
-		(1 << WIDX_CLOSE);
+		(1 << WIDX_CLOSE) |
+		(1 << WIDX_LIST_SORT_TYPE) |
+		(1 << WIDX_LIST_SORT_RIDE);
 
 	_filter_flags = FILTER_ALL;
 	memset(_filter_string, 0, sizeof(_filter_string));
@@ -303,6 +413,12 @@ void window_editor_object_selection_open()
 	window->selected_tab = 0;
 	window->selected_list_item = -1;
 	window->var_494 = 0xFFFFFFFF;
+	window->min_width = 600;
+	window->min_height = 400;
+	window->max_width = 1200;
+	window->max_height = 1000;
+
+	visible_list_refresh(window);
 }
 
 /* rct2: 0x006ABCD1 */
@@ -608,7 +724,7 @@ void unload_unselected_objects(){
 	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
 		if (!(*selection_flags & OBJECT_SELECTION_FLAG_SELECTED)){
 			remove_selected_objects_from_research(installedObject);
-			object_unload(0, (rct_object_entry_extended*)installedObject);
+			object_unload(installedObject);
 		}
 		selection_flags++;
 		installedObject = object_get_next(installedObject);
@@ -646,6 +762,8 @@ static void window_editor_object_selection_close()
 		gSilentResearch = false;
 	}
 	window_new_ride_init_vars();
+
+	visible_list_dispose();
 }
 
 /**
@@ -686,6 +804,7 @@ static void window_editor_object_selection_mouseup()
 	case WIDX_FILTER_RIDE_TAB_ALL:
 		_filter_flags |= 0x7E0;
 		filter_update_counts();
+		visible_list_refresh(w);
 
 		w->selected_list_item = -1;
 		w->var_494 = 0xFFFFFFFF;
@@ -703,6 +822,7 @@ static void window_editor_object_selection_mouseup()
 		_filter_flags |= (1 << (widgetIndex - WIDX_FILTER_RIDE_TAB_TRANSPORT + 5));
 
 		filter_update_counts();
+		visible_list_refresh(w);
 
 		w->selected_list_item = -1;
 		w->var_494 = 0xFFFFFFFF;
@@ -711,12 +831,12 @@ static void window_editor_object_selection_mouseup()
 		window_invalidate(w);
 		break;
 
-	case WIDX_DROPDOWN1:
+	case WIDX_ADVANCED:
 		w->list_information_type ^= 1;
 		window_invalidate(w);
 		break;
 
-	case WIDX_DROPDOWN2:
+	case WIDX_INSTALL_TRACK:
 		if (w->selected_list_item != -1) {
 			w->selected_list_item = -1;
 			object_free_scenario_text();
@@ -736,7 +856,34 @@ static void window_editor_object_selection_mouseup()
 
 		window_invalidate(w);
 		break;
+	case WIDX_LIST_SORT_TYPE:
+		if (_listSortType == RIDE_SORT_TYPE) {
+			_listSortDescending = !_listSortDescending;
+		} else {
+			_listSortType = RIDE_SORT_TYPE;
+			_listSortDescending = false;
+		}
+		visible_list_refresh(w);
+		break;
+	case WIDX_LIST_SORT_RIDE:
+		if (_listSortType == RIDE_SORT_RIDE) {
+			_listSortDescending = !_listSortDescending;
+		} else {
+			_listSortType = RIDE_SORT_RIDE;
+			_listSortDescending = false;
+		}
+		visible_list_refresh(w);
+		break;
 	}
+}
+
+static void window_editor_object_selection_resize()
+{
+	rct_window *w;
+
+	window_get_register(w);
+
+	window_set_resize(w, 600, 400, 1200, 1000);
 }
 
 void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
@@ -790,6 +937,7 @@ static void window_editor_object_selection_dropdown()
 		filter_update_counts();
 		w->scrolls->v_top = 0;
 
+		visible_list_refresh(w);
 		window_invalidate(w);
 		break;
 	}
@@ -803,18 +951,13 @@ static void window_editor_object_selection_scrollgetsize()
 {
 	rct_window *w;
 	short scrollIndex;
-	int numItems, width, height;
+	int width, height;
 
 	window_scroll_get_registers(w, scrollIndex);
 
-	numItems = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER) ?
-		RCT2_GLOBAL(0x00F43412, uint16) :
-		((_FILTER_ALL && _filter_string[0] == 0) ? 
-		RCT2_ADDRESS(0x00F433E1, uint16)[w->selected_tab] :
-		_filter_object_counts[w->selected_tab]);
-
 	width = 0;
-	height = numItems * 12;
+	height = _numListItems * 12;
+
 	window_scrollsize_set_registers(width, height);
 }
 
@@ -953,30 +1096,50 @@ static void window_editor_object_selection_invalidate()
 	rct_widget *widget;
 
 	window_get_register(w);
+
 	colour_scheme_update(w);
+
+	// Resize widgets
+	w->widgets[WIDX_BACKGROUND].right = w->width - 1;
+	w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+	w->widgets[WIDX_TITLE].right = w->width - 2;
+	w->widgets[WIDX_CLOSE].left = w->width - 13;
+	w->widgets[WIDX_CLOSE].right = w->width - 3;
+	w->widgets[WIDX_TAB_CONTENT_PANEL].right = w->width - 1;
+	w->widgets[WIDX_TAB_CONTENT_PANEL].bottom = w->height - 1;
+	w->widgets[WIDX_ADVANCED].left = w->width - 130;
+	w->widgets[WIDX_ADVANCED].right = w->width - 9;
+	w->widgets[WIDX_LIST].right = w->width - 309;
+	w->widgets[WIDX_LIST].bottom = w->height - 14;
+	w->widgets[WIDX_PREVIEW].left = w->width - 209;
+	w->widgets[WIDX_PREVIEW].right = w->width - 96;
+	w->widgets[WIDX_INSTALL_TRACK].left = w->width - 216;
+	w->widgets[WIDX_INSTALL_TRACK].right = w->width - 130;
+	w->widgets[WIDX_FILTER_DROPDOWN].left = w->width - 250;
+	w->widgets[WIDX_FILTER_DROPDOWN].right = w->width - 137;
 
 	// Set pressed widgets
 	w->pressed_widgets |= 1 << WIDX_PREVIEW;
 	window_editor_object_selection_set_pressed_tab(w);
 	if (w->list_information_type & 1)
-		w->pressed_widgets |= (1 << WIDX_DROPDOWN1);
+		w->pressed_widgets |= (1 << WIDX_ADVANCED);
 	else
-		w->pressed_widgets &= ~(1 << WIDX_DROPDOWN1);
+		w->pressed_widgets &= ~(1 << WIDX_ADVANCED);
 
 	// Set window title and buttons
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS + w->selected_tab;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
 		w->widgets[WIDX_TITLE].image = STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE;
 		w->widgets[WIDX_CLOSE].type = WWT_EMPTY;
-		w->widgets[WIDX_DROPDOWN2].type = WWT_DROPDOWN_BUTTON;
+		w->widgets[WIDX_INSTALL_TRACK].type = WWT_DROPDOWN_BUTTON;
 	} else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) {
 		w->widgets[WIDX_TITLE].image = STR_ROLLER_COASTER_DESIGNER_SELECT_RIDE_TYPES_VEHICLES;
 		w->widgets[WIDX_CLOSE].type = WWT_CLOSEBOX;
-		w->widgets[WIDX_DROPDOWN2].type = WWT_EMPTY;
+		w->widgets[WIDX_INSTALL_TRACK].type = WWT_EMPTY;
 	} else {
 		w->widgets[WIDX_TITLE].image = STR_OBJECT_SELECTION;
 		w->widgets[WIDX_CLOSE].type = WWT_CLOSEBOX;
-		w->widgets[WIDX_DROPDOWN2].type = WWT_EMPTY;
+		w->widgets[WIDX_INSTALL_TRACK].type = WWT_EMPTY;
 	}
 
 	// Align tabs, hide advanced ones
@@ -995,25 +1158,29 @@ static void window_editor_object_selection_invalidate()
 	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TRACK_DESIGNER)) {
-		w->widgets[WIDX_DROPDOWN1].type = WWT_EMPTY;
+		w->widgets[WIDX_ADVANCED].type = WWT_EMPTY;
 		w->widgets[WIDX_FILTER_DROPDOWN].type = WWT_EMPTY;
 		for (i = 1; i < WINDOW_OBJECT_SELECTION_PAGE_COUNT; i++)
 			w->widgets[WIDX_TAB_1 + i].type = WWT_EMPTY;
 		x = 150;
 	} else {
-		w->widgets[WIDX_DROPDOWN1].type = WWT_DROPDOWN_BUTTON;
+		w->widgets[WIDX_ADVANCED].type = WWT_DROPDOWN_BUTTON;
 		w->widgets[WIDX_FILTER_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		x = 300;
 	}
 
-	w->widgets[WIDX_LIST].right = 587 - x;
-	w->widgets[WIDX_PREVIEW].left = 537 - (x >> 1);
+	w->widgets[WIDX_LIST].right = w->width - (600 - 587) - x;
+	w->widgets[WIDX_PREVIEW].left = w->width - (600 - 537) - (x / 2);
 	w->widgets[WIDX_PREVIEW].right = w->widgets[WIDX_PREVIEW].left + 113;
+	w->widgets[WIDX_FILTER_RIDE_TAB_FRAME].right = w->widgets[WIDX_LIST].right;
 
 	bool ridePage = (w->selected_tab == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS);
-	w->widgets[WIDX_LIST].top = (ridePage ? 94 : 60);
+	w->widgets[WIDX_LIST].top = (ridePage ? 118 : 60);
+	w->widgets[WIDX_FILTER_STRING_BUTTON].right = w->widgets[WIDX_LIST].right - 77;
 	w->widgets[WIDX_FILTER_STRING_BUTTON].top = (ridePage ? 80 : 46);
 	w->widgets[WIDX_FILTER_STRING_BUTTON].bottom = (ridePage ? 91 : 57);
+	w->widgets[WIDX_FILTER_CLEAR_BUTTON].left = w->widgets[WIDX_LIST].right - 73;
+	w->widgets[WIDX_FILTER_CLEAR_BUTTON].right = w->widgets[WIDX_LIST].right;
 	w->widgets[WIDX_FILTER_CLEAR_BUTTON].top = (ridePage ? 80 : 46);
 	w->widgets[WIDX_FILTER_CLEAR_BUTTON].bottom = (ridePage ? 91 : 57);
 
@@ -1031,16 +1198,27 @@ static void window_editor_object_selection_invalidate()
 					w->pressed_widgets |= (uint64)(1 << (WIDX_FILTER_RIDE_TAB_TRANSPORT + i));
 			}
 		}
-		w->widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WWT_RESIZE;
+		w->widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WWT_IMGBTN;
 		for (int i = WIDX_FILTER_RIDE_TAB_ALL; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
 			w->widgets[i].type = WWT_TAB;
-	}
-	else {
+
+		w->widgets[WIDX_LIST_SORT_TYPE].type = WWT_13;
+		w->widgets[WIDX_LIST_SORT_TYPE].top = w->widgets[WIDX_FILTER_STRING_BUTTON].bottom + 3;
+		w->widgets[WIDX_LIST_SORT_TYPE].bottom = w->widgets[WIDX_LIST_SORT_TYPE].top + 13;
+		w->widgets[WIDX_LIST_SORT_RIDE].type = WWT_13;
+		w->widgets[WIDX_LIST_SORT_RIDE].top = w->widgets[WIDX_LIST_SORT_TYPE].top;
+		w->widgets[WIDX_LIST_SORT_RIDE].bottom = w->widgets[WIDX_LIST_SORT_TYPE].bottom;
+		w->widgets[WIDX_LIST_SORT_RIDE].right = w->widgets[WIDX_LIST].right;
+		w->widgets[WIDX_LIST].top = w->widgets[WIDX_LIST_SORT_TYPE].bottom + 2;
+	} else {
 		w->enabled_widgets &= ~((1 << WIDX_FILTER_RIDE_TAB_ALL) | (1 << WIDX_FILTER_RIDE_TAB_TRANSPORT) |
 			(1 << WIDX_FILTER_RIDE_TAB_GENTLE) | (1 << WIDX_FILTER_RIDE_TAB_COASTER) | (1 << WIDX_FILTER_RIDE_TAB_THRILL) |
 			(1 << WIDX_FILTER_RIDE_TAB_WATER) | (1 << WIDX_FILTER_RIDE_TAB_STALL));
 		for (int i = WIDX_FILTER_RIDE_TAB_FRAME; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
 			w->widgets[i].type = WWT_EMPTY;
+		
+		w->widgets[WIDX_LIST_SORT_TYPE].type = WWT_EMPTY;
+		w->widgets[WIDX_LIST_SORT_RIDE].type = WWT_EMPTY;
 	}
 }
 
@@ -1085,18 +1263,28 @@ static void window_editor_object_selection_paint()
 		gfx_draw_sprite(dpi, 5458 + i, x, y, 0);
 	}
 
-	const int ride_tabs[] = { 5458, 0x200015A1, 5542, 0x200015AA, 5557 + 5, 5551, 5530, 5327 };
+	const int ride_tabs[] = { 5458, 0x200015A1, 5542, 0x200015AA, 5557, 5551, 5530, 5327 };
+	const int ThrillRidesTabAnimationSequence[] = {
+		5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 0, 0
+	};
 
 	// Draw ride tabs
 	if (w->selected_tab == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS) {
 		for (i = 0; i < 7; i++) {
-		widget = &w->widgets[WIDX_FILTER_RIDE_TAB_ALL + i];
+			widget = &w->widgets[WIDX_FILTER_RIDE_TAB_ALL + i];
 			if (widget->type == WWT_EMPTY)
 				continue;
 
+			int spriteIndex = ride_tabs[i];
+			int frame = 0;
+			if (i != 0 && w->pressed_widgets & (1ULL << (WIDX_FILTER_RIDE_TAB_ALL + i))) {
+				frame = w->frame_no / window_editor_object_selection_animation_divisor[i - 1];
+			}
+			spriteIndex += (i == 4 ? ThrillRidesTabAnimationSequence[frame] : frame);
+
 			x = w->x + widget->left;
 			y = w->y + widget->top;
-			gfx_draw_sprite(dpi, ride_tabs[i] | (w->colours[1] << 19), x, y, 0);
+			gfx_draw_sprite(dpi, spriteIndex | (w->colours[1] << 19), x, y, 0);
 		}
 
 	}
@@ -1148,6 +1336,18 @@ static void window_editor_object_selection_paint()
 		w->y + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].top,
 		w->x + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].right
 		);*/
+
+	// Draw sort button text
+	widget = &w->widgets[WIDX_LIST_SORT_TYPE];
+	if (widget->type != WWT_EMPTY) {
+		stringId = _listSortType == RIDE_SORT_TYPE ? (_listSortDescending ? STR_DOWN : STR_UP) : STR_NONE;
+		gfx_draw_string_left_clipped(dpi, STR_OBJECTS_SORT_TYPE, &stringId, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+	}
+	widget = &w->widgets[WIDX_LIST_SORT_RIDE];
+	if (widget->type != WWT_EMPTY) {
+		stringId = _listSortType == RIDE_SORT_RIDE ? (_listSortDescending ? STR_DOWN : STR_UP) : STR_NONE;
+		gfx_draw_string_left_clipped(dpi, STR_OBJECTS_SORT_RIDE, &stringId, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+	}
 
 	if (w->selected_list_item == -1 || stex_entry == NULL)
 		return;
@@ -1249,80 +1449,78 @@ static void window_editor_object_selection_paint()
  */
 static void window_editor_object_selection_scrollpaint()
 {
-	int x, y, i, colour, colour2, numObjects, type;
+	int x, y, i, colour, colour2;
 	short scrollIndex;
-	rct_object_entry *entry;
-	rct_object_filters *filter;
 	rct_window *w;
 	rct_drawpixelinfo *dpi;
-	uint8 *itemFlags;
-	uint8 source;
 
 	window_scrollpaint_get_registers(w, dpi, scrollIndex);
+
+	bool ridePage = (w->selected_tab == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS);
 
 	colour = RCT2_ADDRESS(0x0141FC48, uint8)[w->colours[1] * 8];
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
 	gfx_clear(dpi, colour);
 
-	numObjects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32);
-	entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
-	itemFlags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 	y = 0;
-	for (i = 0; i < numObjects; i++) {
-		filter = get_object_filter(i);
-		type = entry->flags & 0x0F;
-		source = (entry->flags & 0xF0) >> 4;
-		if (type == w->selected_tab && !(*itemFlags & OBJECT_SELECTION_FLAG_6) && filter_source(entry) && filter_string(entry) && filter_chunks(entry, filter)) {
-			if (y + 12 >= dpi->y && y <= dpi->y + dpi->height) {
-				// Draw checkbox
-				if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && !(*itemFlags & 0x20))
-					gfx_fill_rect_inset(dpi, 2, y, 11, y + 10, w->colours[1], 0xE0);
+	for (i = 0; i < _numListItems; i++) {
+		list_item *listItem = &_listItems[i];
 
-				// Highlight background
-				colour = 142;
-				if (entry == (rct_object_entry*)w->var_494 && !(*itemFlags & OBJECT_SELECTION_FLAG_6)) {
-					gfx_fill_rect(dpi, 0, y, w->width, y + 11, 0x2000031);
-					colour = 14;
-				}
+		if (y + 12 >= dpi->y && y <= dpi->y + dpi->height) {
+			// Draw checkbox
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem->flags & 0x20))
+				gfx_fill_rect_inset(dpi, 2, y, 11, y + 10, w->colours[1], 0xE0);
 
-				// Draw checkmark
-				if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && (*itemFlags & OBJECT_SELECTION_FLAG_SELECTED)) {
-					x = 2;
-					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = colour == 14 ? -2 : -1;
-					colour2 = w->colours[1] & 0x7F;
-					if (*itemFlags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_REQUIRED | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
-						colour2 |= 0x40;
-
-					gfx_draw_string(dpi, (char*)0x009DED72, colour2, x, y);
-				}
-
-				// Draw text
-				char *buffer = (char*)0x0141ED68;
-				*buffer = colour;
-				strcpy(buffer + 1, object_get_name(entry));
-				if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
-					while (*buffer != 0 && *buffer != 9)
-						buffer++;
-
-					*buffer = 0;
-				}
-
-				if (*itemFlags & OBJECT_SELECTION_FLAG_6) {
-					colour = w->colours[1] & 0x7F;
-					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = -1;
-				}
-				else {
-					colour = 0;
-					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = 224;
-				}
-				x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
-				gfx_draw_string(dpi, (char*)0x0141ED68, colour, x, y);
+			// Highlight background
+			colour = 142;
+			if (listItem->entry == (rct_object_entry*)w->var_494 && !(*listItem->flags & OBJECT_SELECTION_FLAG_6)) {
+				gfx_fill_rect(dpi, 0, y, w->width, y + 11, 0x2000031);
+				colour = 14;
 			}
-			y += 12;
-		}
 
-		entry = object_get_next(entry);
-		itemFlags++;
+			// Draw checkmark
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem->flags & OBJECT_SELECTION_FLAG_SELECTED)) {
+				x = 2;
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = colour == 14 ? -2 : -1;
+				colour2 = w->colours[1] & 0x7F;
+				if (*listItem->flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_REQUIRED | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
+					colour2 |= 0x40;
+
+				gfx_draw_string(dpi, (char*)0x009DED72, colour2, x, y);
+			}
+
+			x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
+
+			char *bufferWithColour = (char*)0x0141ED68;
+			char *buffer = bufferWithColour + 1;
+			bufferWithColour[0] = colour;
+			if (*listItem->flags & OBJECT_SELECTION_FLAG_6) {
+				colour = w->colours[1] & 0x7F;
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = -1;
+			}
+			else {
+				colour = 0;
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = 224;
+			}
+
+			if (ridePage) {
+				// Draw ride type
+				strcpy(buffer, language_get_string(2 + listItem->filter->ride.ride_type));
+				gfx_draw_string(dpi, bufferWithColour, colour, x, y);
+				x = w->widgets[WIDX_LIST_SORT_RIDE].left - w->widgets[WIDX_LIST].left;
+			}
+
+			// Draw text
+			strcpy(buffer, object_get_name(listItem->entry));
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+				while (*buffer != 0 && *buffer != 9)
+					buffer++;
+
+				*buffer = 0;
+			}
+			gfx_draw_string(dpi, bufferWithColour, colour, x, y);
+		}
+		y += 12;
 	}
 }
 
@@ -1336,6 +1534,16 @@ static void window_editor_object_set_page(rct_window *w, int page)
 	w->var_494 = 0xFFFFFFFF;
 	w->scrolls[0].v_top = 0;
 	object_free_scenario_text();
+
+	if (page == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS) {
+		_listSortType = RIDE_SORT_TYPE;
+		_listSortDescending = false;
+	} else {
+		_listSortType = RIDE_SORT_RIDE;
+		_listSortDescending = false;
+	}
+
+	visible_list_refresh(w);
 	window_invalidate(w);
 }
 
@@ -1715,27 +1923,14 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
  */
 static int get_object_from_object_selection(uint8 object_type, int y, uint8 *object_selection_flags, rct_object_entry **installed_entry)
 {
-	rct_object_filters *filter;
-	*installed_entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
-	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	uint8 source;
-	int object_count = 0;
-	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
-		filter = get_object_filter(RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) - i);
-		source = ((*installed_entry)->flags & 0xF0) >> 4;
-		if (((*installed_entry)->flags & 0xF) == object_type && filter_source(*installed_entry) && filter_string(*installed_entry) && filter_chunks(*installed_entry, filter)){
-			if (!(*selection_flags & OBJECT_SELECTION_FLAG_6)){
-				y -= 12;
-				*object_selection_flags = *selection_flags;
-				if (y < 0)return object_count;
-				object_count++;
-			}
-		}
+	int listItemIndex = y / 12;
+	if (listItemIndex < 0 || listItemIndex >= _numListItems)
+		return -1;
 
-		*installed_entry = object_get_next(*installed_entry);
-		selection_flags++;
-	}
-	return -1;
+	list_item *listItem = &_listItems[listItemIndex];
+	*object_selection_flags = *listItem->flags;
+	*installed_entry = listItem->entry;
+	return listItemIndex;
 }
 
 /**
@@ -1811,6 +2006,18 @@ static void window_editor_object_selection_update(rct_window *w)
 		window_update_textbox_caret();
 		widget_invalidate(w, WIDX_FILTER_STRING_BUTTON);
 	}
+
+	for (int i = WIDX_FILTER_RIDE_TAB_TRANSPORT; i <= WIDX_FILTER_RIDE_TAB_STALL; i++) {
+		if (!(w->pressed_widgets & (1ULL << i)))
+			continue;
+
+		w->frame_no++;
+		if (w->frame_no >= window_editor_object_selection_animation_loops[i - WIDX_FILTER_RIDE_TAB_TRANSPORT])
+			w->frame_no = 0;
+
+		widget_invalidate(w, i);
+		break;
+	}
 }
 
 static void window_editor_object_selection_textinput()
@@ -1840,6 +2047,7 @@ static void window_editor_object_selection_textinput()
 
 	w->scrolls->v_top = 0;
 
+	visible_list_refresh(w);
 	window_invalidate(w);
 }
 
@@ -1878,11 +2086,16 @@ static bool filter_chunks(rct_object_entry *entry, rct_object_filters *filter)
 {
 	switch (entry->flags & 0x0F) {
 	case OBJECT_TYPE_RIDE:
-		if (_filter_flags & (1 << (filter->ride.category[0] + 5)))
-			return true;
-		if (_filter_flags & (1 << (filter->ride.category[1] + 5)))
-			return true;
-
+		if(!gConfigInterface.select_by_track_type) {
+			if (_filter_flags & (1 << (filter->ride.category[0] + 5)))
+				return true;
+			if (_filter_flags & (1 << (filter->ride.category[1] + 5)))
+				return true;
+		}
+		else {
+			if (_filter_flags & (1 << (gRideCategories[filter->ride.ride_type] + 5)))
+				return true;
+		}
 		return false;
 	}
 	return true;

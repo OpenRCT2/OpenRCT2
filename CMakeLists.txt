@@ -29,10 +29,10 @@ add_definitions(-DCURL_STATICLIB)
 #uncomment the line bellow if you don't want to build openrct2 with twitch integration
 #add_definitions(-DDISABLE_HTTP -DDISABLE_TWITCH)
 
-set(ORCALIBS_INCLUDE /usr/local/cross-tools/orcalibs/include) 
-set(JANSSON_INCLUDE /usr/local/cross-tools/orcalibs/include/jansson) 
-set(ORCALIBS_LIB_DIR /usr/local/cross-tools/orcalibs/lib)
-set(ORCALIBS_LIB jansson curl ssl crypto ws2_32)
+set(ORCTLIBS_INCLUDE /usr/local/cross-tools/orctlibs/include) 
+set(JANSSON_INCLUDE /usr/local/cross-tools/orctlibs/include/jansson) 
+set(ORCTLIBS_LIB_DIR /usr/local/cross-tools/orctlibs/lib)
+set(ORCTLIBS_LIB jansson curl ssl crypto ws2_32)
 
 # include lib
 include_directories("lib/")
@@ -52,8 +52,8 @@ if (UNIX)
 	INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS})
 endif (UNIX)
 
-INCLUDE_DIRECTORIES(${ORCALIBS_INCLUDE} ${JANSSON_INCLUDE})
-LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${ORCALIBS_LIB_DIR})
+INCLUDE_DIRECTORIES(${ORCTLIBS_INCLUDE} ${JANSSON_INCLUDE})
+LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${ORCTLIBS_LIB_DIR})
 
 # build as library for now, replace with add_executable
 add_library(${PROJECT} SHARED ${ORCT2_SOURCES})
@@ -64,7 +64,7 @@ add_library(${PROJECT} SHARED ${ORCT2_SOURCES})
 # libopenrct2.dll -> openrct2.dll
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 
-TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCALIBS_LIB})
+TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCTLIBS_LIB})
 
 if (WIN32)
 	target_link_libraries(${PROJECT} winmm.lib -limm32 -lversion -ldsound)

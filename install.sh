@@ -84,12 +84,13 @@ if [[ ! -d $cachedir/SDL2-${SDL2_PV} ]]; then
         tar -xzf SDL2-devel-${SDL2_PV}-mingw.tar.gz 
     popd
 fi
-if [[ ! -f $cachedir/orcalibs.zip ]]; then 
-    wget http://misozmiric.com/ted/openrct2/orcalibs-unix.zip --output-document $cachedir/orcalibs.zip; 
+if [[ ! -f $cachedir/orctlibs.zip ]]; then 
+    curl https://download.openrct2.website/dev/lib/mingw -o $cachedir/orctlibs.zip; 
 fi
-if [[ ! -d $cachedir/orcalibs ]]; then
-    pushd $cachedir 
-        unzip -uaq orcalibs.zip 
+if [[ ! -d $cachedir/orctlibs ]]; then
+    mkdir -p $cachedir/orctlibs
+    pushd $cachedir/orctlibs
+        unzip -uaq ../orctlibs.zip 
     popd
 fi
 
@@ -111,8 +112,11 @@ fi
 if [[ ! -d /usr/local/cross-tools/i686-w64-mingw32 ]]; then
     sudo cp -r $cachedir/SDL2-${SDL2_PV}/i686-w64-mingw32 /usr/local/cross-tools/
 fi
-if [[ ! -d /usr/local/cross-tools/orcalibs ]]; then
-    sudo cp -r $cachedir/orcalibs /usr/local/cross-tools/
+if [[ ! -d /usr/local/cross-tools/orctlibs ]]; then
+    sudo mkdir -p /usr/local/cross-tools/orctlibs
+    mkdir -p lib
+    sudo cp -rf $cachedir/orctlibs/glob/* /usr/local/cross-tools/orctlibs/.
+    cp -rf $cachedir/orctlibs/local/* ./lib/. 
 fi
 
 if [[ ! -f $cachedir/i686-w64-mingw32-pkg-config ]]; then

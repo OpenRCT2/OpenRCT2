@@ -1139,11 +1139,7 @@ void window_staff_overview_tool_down(){
 			return;
 		}
 
-		int _edx;
-		_edx = (dest_z / 8) | (((dest_z / 8) + 1) << 8);
-		int flags = RCT2_CALLPROC_X(0x68B93A, tile_x, 0xF, tile_y, _edx, (int)w, 0, 0);
-
-		if (flags & 0x100){
+		if (!map_can_construct_at(tile_x, tile_y, dest_z / 8, (dest_z / 8) + 1, 15)){
 			if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) != 0x3A5){
 				if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) != 0x49B){
 					window_error_open(0x785, -1);
@@ -1227,9 +1223,9 @@ void window_staff_overview_text_input(){
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = 2979;
 
-	game_do_command(1, 1, w->number, *text, GAME_COMMAND_22, *(text + 2), *(text + 1));
-	game_do_command(2, 1, 0, *(text + 3), GAME_COMMAND_22, *(text + 5), *(text + 4));
-	game_do_command(0, 1, 0, *(text + 6), GAME_COMMAND_22, *(text + 8), *(text + 7));
+	game_do_command(1, 1, w->number, *text, GAME_COMMAND_SET_PEEP_NAME, *(text + 2), *(text + 1));
+	game_do_command(2, 1, 0, *(text + 3), GAME_COMMAND_SET_PEEP_NAME, *(text + 5), *(text + 4));
+	game_do_command(0, 1, 0, *(text + 6), GAME_COMMAND_SET_PEEP_NAME, *(text + 8), *(text + 7));
 }
 
 /* rct2: 0x006BE5FC */

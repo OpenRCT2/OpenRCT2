@@ -134,9 +134,10 @@ typedef struct {
 	uint16 sprites_start_litter;
 	uint8 pad_013573C6[2];
 	uint16 word_013573C8;
-	uint8 pad_013573CA[4];
-	uint16 word_013573CE;
-	uint16 word_013573D0;
+	uint16 sprites_count_vehicle;
+	uint16 sprites_count_peep;
+	uint16 sprites_count_misc;
+	uint16 sprites_count_litter;
 	uint8 pad_013573D2[2];
 	rct_string_id park_name;
 	uint8 pad_013573D6[2];

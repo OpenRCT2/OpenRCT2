@@ -70,15 +70,15 @@ enum {
 typedef enum {
 	DDIDX_LOAD_GAME = 0,
 	DDIDX_SAVE_GAME = 1,
-	// seperator
+	// separator
 	DDIDX_ABOUT = 3,
 	DDIDX_OPTIONS = 4,
 	DDIDX_SCREENSHOT = 5,
 	DDIDX_GIANT_SCREENSHOT = 6,
-	// seperator
+	// separator
 	DDIDX_QUIT_TO_MENU = 8,
 	DDIDX_EXIT_OPENRCT2 = 9,
-	// seperator
+	// separator
 	DDIDX_ENABLE_TWITCH = 11
 } FILE_MENU_DDIDX;
 
@@ -178,6 +178,8 @@ static void window_top_toolbar_dropdown();
 static void window_top_toolbar_tool_update();
 static void window_top_toolbar_tool_down();
 static void window_top_toolbar_tool_drag();
+static void window_top_toolbar_tool_up();
+static void window_top_toolbar_tool_abort();
 static void window_top_toolbar_invalidate();
 static void window_top_toolbar_paint();
 
@@ -194,8 +196,8 @@ static void* window_top_toolbar_events[] = {
 	window_top_toolbar_tool_update,					// editor: 0x0066fB0E
 	window_top_toolbar_tool_down,					// editor: 0x0066fB5C
 	window_top_toolbar_tool_drag,					// editor: 0x0066fB37
-	(void*)0x0066CC5B,								// editor: 0x0066fC44
-	(void*)0x0066CA58,								// editor: 0x0066fA74
+	window_top_toolbar_tool_up,						// editor: 0x0066fC44 (Exactly the same)
+	window_top_toolbar_tool_abort,					// editor: 0x0066fA74 (Exactly the same)
 	window_top_toolbar_emptysub,
 	window_top_toolbar_emptysub,
 	window_top_toolbar_emptysub,
@@ -239,7 +241,7 @@ void window_top_toolbar_open()
 
 	window = window_create(
 		0, 0,
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16), 28,
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16), 28,
 		(uint32*)window_top_toolbar_events,
 		WC_TOP_TOOLBAR,
 		WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_5
@@ -616,7 +618,7 @@ static void window_top_toolbar_invalidate()
 
 	// Align right hand side toolbar buttons
 	firstAlignment = 1;
-	x = max(640, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16));
+	x = max(640, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
 	for (int i = 0; i < countof(right_aligned_widgets_order); ++i) {
 		widgetIndex = right_aligned_widgets_order[i];
 		widget = &window_top_toolbar_widgets[widgetIndex];
@@ -783,7 +785,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			1 | (map_element->type << 8),
 			grid_y,
 			map_element->base_height | (map_element->properties.scenery.type << 8),
-			GAME_COMMAND_52,
+			GAME_COMMAND_SET_SCENERY_COLOUR,
 			0,
 			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
 		break;
@@ -804,7 +806,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			1 | (window_scenery_primary_colour << 8),
 			grid_y,
 			(map_element->type & MAP_ELEMENT_DIRECTION_MASK) | (map_element->base_height << 8),
-			GAME_COMMAND_53,
+			GAME_COMMAND_SET_FENCE_COLOUR,
 			0,
 			window_scenery_secondary_colour | (window_scenery_tertiary_colour << 8));
 		break;
@@ -824,7 +826,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			1 | ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) << 8),
 			grid_y,
 			map_element->base_height | ((map_element->properties.scenerymultiple.type >> 10) << 8),
-			GAME_COMMAND_54,
+			GAME_COMMAND_SET_LARGE_SCENERY_COLOUR,
 			0,
 			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
 		break;
@@ -845,7 +847,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			1,
 			grid_y,
 			map_element->base_height | ((map_element->properties.banner.position & 0x3) << 8),
-			GAME_COMMAND_55,
+			GAME_COMMAND_SET_BANNER_COLOUR,
 			0,
 			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
 		break;
@@ -2723,6 +2725,55 @@ static void window_top_toolbar_tool_drag()
 	}
 }
 
+/**
+ * 
+ *  rct2: 0x0066CC5B
+ */
+static void window_top_toolbar_tool_up()
+{
+	short widgetIndex, x, y;
+	rct_window *w;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+	
+	switch (widgetIndex) {
+	case WIDX_LAND:
+		map_invalidate_selection_rect();
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= 0xFFFE;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x12;
+		break;
+	case WIDX_WATER:
+		map_invalidate_selection_rect();
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= 0xFFFE;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x13;
+		break;
+	case WIDX_CLEAR_SCENERY:
+		map_invalidate_selection_rect();
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= 0xFFFE;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x0C;
+		break;
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x0066CA58
+ */
+static void window_top_toolbar_tool_abort()
+{
+	short widgetIndex, x, y;
+	rct_window* w;
+
+	window_tool_get_registers(w, widgetIndex, x, y);
+
+	switch (widgetIndex) {
+	case WIDX_LAND:
+	case WIDX_WATER:
+	case WIDX_CLEAR_SCENERY:
+		hide_gridlines();
+		break;
+	}
+}
 
 void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget) {
 	int num_items = 4;
@@ -2986,4 +3037,19 @@ void toggle_water_window(rct_window *topToolbar, int widgetIndex)
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 		window_water_open();
 	}
+}
+
+/**
+ *
+ *  rct2: 0x0066D104
+ */
+bool land_tool_is_active()
+{
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE))
+		return false;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_TOP_TOOLBAR)
+		return false;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, sint16) != WIDX_LAND)
+		return false;
+	return true;
 }

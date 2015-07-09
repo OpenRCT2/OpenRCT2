@@ -99,7 +99,7 @@ void console_update()
 
 	_consoleLeft = 0;
 	_consoleTop = 0;
-	_consoleRight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
+	_consoleRight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
 	_consoleBottom = 322;
 
 	if (gConsoleOpen) {
@@ -310,8 +310,8 @@ void console_printf(const char *format, ...)
 {
 	va_list list;
 	va_start(list, format);
-	
 	vsprintf(_consolePrintfBuffer, format, list);
+	va_end(list);
 	console_writeline(_consolePrintfBuffer);
 }
 
@@ -516,7 +516,6 @@ static int cc_get(const char **argv, int argc)
 				int interactionType;
 				rct_map_element *mapElement;
 				rct_xy16 mapCoord = { 0 };
-
 				get_map_coordinates_from_pos(w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
 				mapCoord.x -= 16;
 				mapCoord.x /= 32;
@@ -846,6 +845,8 @@ static int cc_open(const char **argv, int argc) {
 			window_options_open();
 		} else if (strcmp(argv[0], "themes") == 0) {
 			window_themes_open();
+		} else if (strcmp(argv[0], "title_sequences") == 0) {
+			window_title_editor_open(0);
 		} else if (invalidTitle) {
 			console_writeline_error("Cannot open this window in the title screen.");
 		} else {
@@ -898,7 +899,8 @@ char* console_window_table[] = {
 	"inventions_list",
 	"scenario_options",
 	"options",
-	"themes"
+	"themes",
+	"title_sequences"
 };
 
 console_command console_command_table[] = {

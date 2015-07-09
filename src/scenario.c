@@ -30,6 +30,7 @@
 #include "management/research.h"
 #include "management/news_item.h"
 #include "object.h"
+#include "openrct2.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
 #include "ride/ride.h"
@@ -178,6 +179,7 @@ int scenario_load(const char *path)
 			reset_loaded_objects();
 			map_update_tile_pointers();
 			reset_0x69EBE4();
+			gOpenRCT2ResetFrameSmoothing = true;
 			return 1;
 		}
 
@@ -337,6 +339,8 @@ int scenario_load_and_play_from_path(const char *path)
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA5C, uint16) = 62000; // (doesn't appear to ever be read)
+	gGameSpeed = 1;
+
 	return 1;
 }
 
@@ -1181,10 +1185,9 @@ static void scenario_objective_check_guests_and_rating()
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) = 0;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32) != MONEY32_UNDEFINED)
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) >= 700)
-			if (RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) >= RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16))
-				scenario_success();
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) >= 700)
+		if (RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) >= RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16))
+			scenario_success();
 }
 
 static void scenario_objective_check_monthly_ride_income()

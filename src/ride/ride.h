@@ -21,6 +21,7 @@
 #ifndef _RIDE_H_
 #define _RIDE_H_
 
+#include "../addresses.h"
 #include "../common.h"
 #include "../peep/peep.h"
 #include "../world/map.h"
@@ -120,8 +121,13 @@ typedef struct {
 	sint8 intensity_multipler;				// 0x1B3
 	sint8 nausea_multipler;					// 0x1B4
 	uint8 max_height;						// 0x1B5
-	uint32 enabledTrackPieces;				// 0x1B6
-	uint32 enabledTrackPiecesAdditional;	// 0x1BA
+	union {
+		uint64 enabledTrackPieces;			// 0x1B6
+		struct {
+			uint32 enabledTrackPiecesA;		// 0x1B6
+			uint32 enabledTrackPiecesB;		// 0x1BA
+		};
+	};
 	uint8 category[2];						// 0x1BE
 	uint8 shop_item;						// 0x1C0
 	uint8 shop_item_secondary;				// 0x1C1
@@ -148,7 +154,7 @@ typedef struct {
 	uint16 overall_view;			// 0x050 00XX = X, XX00 = Y (* 32 + 16)
 	uint16 station_starts[4];		// 0x052
 	uint8 station_heights[4];		// 0x05A
-	uint8 pad_05E[0x4];
+	uint8 station_length[4];		// 0x05E
 	uint8 station_depart[4];		// 0x062
 	uint8 var_066[4];
 	uint16 entrances[4];			// 0x06A
@@ -162,9 +168,10 @@ typedef struct {
 	uint8 num_stations;				// 0x0C7
 	uint8 num_vehicles;				// 0x0C8
 	uint8 num_cars_per_train;		// 0x0C9
-	uint8 pad_0CA[0x2];
-	uint8 var_0CC;
-	uint8 var_0CD;
+	uint8 var_0CA;
+	uint8 var_0CB;
+	uint8 max_trains;				// 0x0CC
+	uint8 min_max_cars_per_train;	// 0x0CD
 	uint8 min_waiting_time;			// 0x0CE
 	uint8 max_waiting_time;			// 0x0CF
 	union {
@@ -312,7 +319,10 @@ typedef struct {
 	uint16 total_air_time;			// 0x1F4
 	uint8 pad_1F6;
 	uint8 num_circuits;				// 0x1F7
-	uint8 pad_1F8[6];
+	sint16 var_1F8;
+	sint16 var_1FA;
+	uint8 var_1FC;
+	uint8 pad_1FD;
 	uint16 cable_lift;				// 0x1FE
 	uint16 queue_length[4];			// 0x200
 	uint8 pad_208[0x58];
@@ -337,6 +347,18 @@ typedef struct {
 	uint8 velocity[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x258C
 	uint8 altitude[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x384C
 } rct_ride_measurement;
+
+typedef struct {
+	int begin_x;
+	int begin_y;
+	int begin_z;
+	int begin_direction;
+	rct_map_element *begin_element;
+	int end_x;
+	int end_y;
+	int end_direction;
+	rct_map_element *end_element;
+} track_begin_end;
 
 enum {
 	RIDE_CLASS_RIDE,
@@ -385,8 +407,8 @@ enum {
 	RIDE_ENTRY_FLAG_9 = 1 << 9, // 0x200
 	RIDE_ENTRY_FLAG_COVERED_RIDE = 1 << 10, // 0x400
 	RIDE_ENTRY_FLAG_11 = 1 << 11, // 0x800
-	RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME = 1 << 12, // 0x1000
-	RIDE_ENTRY_FLAG_SEPERATE_RIDE = 1 << 13, // 0x2000
+	RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME = 1 << 12, // 0x1000
+	RIDE_ENTRY_FLAG_SEPARATE_RIDE = 1 << 13, // 0x2000
 	RIDE_ENTRY_FLAG_14 = 1 << 14, // 0x4000
 	RIDE_ENTRY_FLAG_15 = 1 << 15, // 0x8000
 	RIDE_ENTRY_FLAG_16 = 1 << 16, // 0x10000
@@ -742,6 +764,24 @@ enum {
 	RIDE_CRASH_TYPE_FATALITIES = 8
 };
 
+enum {
+	RIDE_CONSTRUCTION_STATE_0,
+	RIDE_CONSTRUCTION_STATE_FRONT,
+	RIDE_CONSTRUCTION_STATE_BACK,
+	RIDE_CONSTRUCTION_STATE_SELECTED,
+	RIDE_CONSTRUCTION_STATE_PLACE,
+	RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT,
+	RIDE_CONSTRUCTION_STATE_6,
+	RIDE_CONSTRUCTION_STATE_7,
+	RIDE_CONSTRUCTION_STATE_8
+};
+
+enum {
+	RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_TRAINS,
+	RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_CARS_PER_TRAIN,
+	RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY
+};
+
 #define MAX_RIDES 255
 
 #define MAX_RIDE_MEASUREMENTS 8
@@ -771,6 +811,43 @@ extern rct_ride* g_ride_list;
 
 extern const uint8 gRideClassifications[255];
 
+
+// Macros for very commonly used varaibles, eventually will be changed to locals or globals
+#define _enabledRidePieces							RCT2_GLOBAL(0x00F44048, uint64)
+#define _enabledRidePiecesA							RCT2_GLOBAL(0x00F44048, uint32)
+#define _enabledRidePiecesB							RCT2_GLOBAL(0x00F4404C, uint32)
+
+#define _currentTrackPrice							RCT2_GLOBAL(0x00F44070, money32)
+
+#define _numCurrentPossibleRideConfigurations		RCT2_GLOBAL(0x00F44078, uint16)
+#define _numCurrentPossibleSpecialTrackPieces		RCT2_GLOBAL(0x00F4407A, uint16)
+
+#define _currentTrackCurve							RCT2_GLOBAL(0x00F440A0, uint16)
+#define _currentTrackEndX							RCT2_GLOBAL(0x00F440A2, uint16)
+#define _currentTrackEndY							RCT2_GLOBAL(0x00F440A4, uint16)
+#define _rideConstructionState						RCT2_GLOBAL(0x00F440A6, uint8)
+#define _currentRideIndex							RCT2_GLOBAL(0x00F440A7, uint8)
+#define _currentTrackBeginX							RCT2_GLOBAL(0x00F440A8, uint16)
+#define _currentTrackBeginY							RCT2_GLOBAL(0x00F440AA, uint16)
+#define _currentTrackBeginZ							RCT2_GLOBAL(0x00F440AC, uint16)
+#define _currentTrackPieceDirection					RCT2_GLOBAL(0x00F440AE, uint8)
+#define _currentTrackPieceType						RCT2_GLOBAL(0x00F440AF, uint8)
+#define _currentTrackSelectionFlags					RCT2_GLOBAL(0x00F440B0, uint8)
+#define _rideConstructionArrowPulseTime				RCT2_GLOBAL(0x00F440B1, sint8)
+#define _currentTrackSlopeEnd						RCT2_GLOBAL(0x00F440B2, uint8)
+#define _currentTrackBankEnd						RCT2_GLOBAL(0x00F440B3, uint8)
+#define _currentTrackLiftHill						RCT2_GLOBAL(0x00F440B4, uint8)
+#define _currentTrackCovered						RCT2_GLOBAL(0x00F440B5, uint8)
+
+#define _previousTrackBankEnd						RCT2_GLOBAL(0x00F440B6, uint8)
+#define _previousTrackSlopeEnd						RCT2_GLOBAL(0x00F440B7, uint8)
+
+#define _previousTrackPieceX						RCT2_GLOBAL(0x00F440B9, uint16)
+#define _previousTrackPieceY						RCT2_GLOBAL(0x00F440BB, uint16)
+#define _previousTrackPieceZ						RCT2_GLOBAL(0x00F440BD, uint16)
+
+#define _currentSeatRotationAngle					RCT2_GLOBAL(0x00F440CF, uint8)
+
 int ride_get_count();
 int ride_get_total_queue_length(rct_ride *ride);
 int ride_get_max_queue_time(rct_ride *ride);
@@ -782,7 +859,6 @@ void ride_check_all_reachable();
 void ride_update_satisfaction(rct_ride* ride, uint8 happiness);
 void ride_update_popularity(rct_ride* ride, uint8 pop_amount);
 int sub_6CAF80(int rideIndex, rct_xy_element *output);
-int track_get_next(rct_xy_element *input, rct_xy_element *output);
 int ride_find_track_gap(rct_xy_element *input, rct_xy_element *output);
 void ride_construct_new(ride_list_item listItem);
 void ride_construct(int rideIndex);
@@ -821,6 +897,11 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void ride_clear_for_construction(int rideIndex);
+void set_vehicle_type_image_max_sizes(rct_ride_type_vehicle* vehicle_type, int num_images);
+void sub_6B59C6(int rideIndex);
+
+void ride_select_next_section();
+void ride_select_previous_section();
 
 int get_var_10E_unk_1(rct_ride* ride);
 int get_var_10E_unk_2(rct_ride* ride);
@@ -845,5 +926,39 @@ bool ride_type_has_flag(int rideType, int flag);
 bool ride_is_powered_launched(rct_ride *ride);
 bool ride_has_any_track_elements(int rideIndex);
 void ride_all_has_any_track_elements(bool *rideIndexArray);
+
+void sub_6C9800();
+
+bool track_block_get_next(rct_xy_element *input, rct_xy_element *output, int *z, int *direction);
+bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 rideIndex, uint8 direction_start, rct_xy_element *output, int *z, int *direction);
+
+bool track_block_get_previous(int x, int y, rct_map_element *mapElement, track_begin_end *outTrackBeginEnd);
+bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8 direction, track_begin_end *outTrackBeginEnd);
+
+void sub_6C84CE();
+void sub_6C96C0();
+money32 ride_get_entrance_or_exit_price(int rideIndex, int x, int y, int direction, int dh, int di);
+void ride_get_entrance_or_exit_position_from_screen_position(int x, int y, int *outX, int *outY, int *outDirection);
+
+bool ride_select_backwards_from_front();
+bool ride_select_forwards_from_back();
+
+money32 ride_remove_track_piece(int x, int y, int z, int direction, int type);
+
+bool ride_are_all_possible_entrances_and_exits_built(rct_ride *ride);
+void ride_fix_breakdown(int rideIndex, int reliabilityIncreaseFactor);
+
+void ride_entry_get_train_layout(int rideEntryIndex, int numCarsPerTrain, uint8 *trainLayout);
+void ride_update_max_vehicles(int rideIndex);
+
+void ride_set_ride_entry(int rideIndex, int rideEntry);
+void ride_set_num_vehicles(int rideIndex, int numVehicles);
+void ride_set_num_cars_per_vehicle(int rideIndex, int numCarsPerVehicle);
+void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+
+void game_command_place_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_remove_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+
+void sub_6CB945(int rideIndex);
 
 #endif
