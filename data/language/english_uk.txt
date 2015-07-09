@@ -2500,7 +2500,7 @@ STR_2495    :Cancel construction mode
 STR_2496    :Pause game
 STR_2497    :Zoom view out
 STR_2498    :Zoom view in
-STR_2499    :Rotate view
+STR_2499    :Rotate view clockwise
 STR_2500    :Rotate construction object
 STR_2501    :Underground view toggle
 STR_2502    :Remove base land toggle
@@ -3790,3 +3790,4 @@ STR_5453    :Select another ride
 STR_5454    :Uncap FPS
 STR_5458    :Rotate clockwise
 STR_5459    :Rotate anti-clockwise
+STR_5460    :Rotate view anti-clockwise
