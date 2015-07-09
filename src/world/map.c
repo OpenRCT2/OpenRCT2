@@ -62,6 +62,7 @@ static void sub_6A87BB(int x, int y);
 static void map_update_grass_length(int x, int y, rct_map_element *mapElement);
 static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int length);
 static void sub_68AE2A(int x, int y);
+static void translate_3d_to_2d(int rotation, int *x, int *y);
 
 void rotate_map_coordinates(sint16 *x, sint16 *y, int rotation)
 {
@@ -2772,25 +2773,66 @@ void map_invalidate_map_selection_tiles()
 		map_invalidate_tile_full(position->x, position->y);
 }
 
+void map_get_bounding_box(int ax, int ay, int bx, int by, int *left, int *top, int *right, int *bottom)
+{
+	int x, y;
+	x = ax;
+	y = ay;
+	translate_3d_to_2d(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32), &x, &y);
+	*left = x;
+	*right = x;
+	*top = y;
+	*bottom = y;
+	x = bx;
+	y = ay;
+	translate_3d_to_2d(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32), &x, &y);
+	if (x < *left) *left = x;
+	if (x > *right) *right = x;
+	if (y > *bottom) *bottom = y;
+	if (y < *top) *top = y;
+	x = bx;
+	y = by;
+	translate_3d_to_2d(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32), &x, &y);
+	if (x < *left) *left = x;
+	if (x > *right) *right = x;
+	if (y > *bottom) *bottom = y;
+	if (y < *top) *top = y;
+	x = ax;
+	y = by;
+	translate_3d_to_2d(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32), &x, &y);
+	if (x < *left) *left = x;
+	if (x > *right) *right = x;
+	if (y > *bottom) *bottom = y;
+	if (y < *top) *top = y;
+}
+
 /**
  *
  *  rct2: 0x0068AAE1
  */
 void map_invalidate_selection_rect()
 {
-	int x, y, x0, y0, x1, y1;
+	int x0, y0, x1, y1, left, right, top, bottom;
+	rct_viewport *viewport;
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0)))
 		return;
 
-	x0 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16);
-	y0 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16);
-	x1 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16);
-	y1 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16);
+	x0 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) + 16;
+	y0 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) + 16;
+	x1 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) + 16;
+	y1 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) + 16;
+	map_get_bounding_box(x0, y0, x1, y1, &left, &top, &right, &bottom);
+	left -= 32;
+	right += 32;
+	bottom += 32;
+	top -= 32 + 2080;
 
-	for (x = x0; x <= x1; x++)
-		for (y = y0; y <= y1; y++)
-			map_invalidate_tile_full(x, y);
+	viewport = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*);
+	while (viewport->width != 0) {
+		viewport_invalidate(viewport, left, top, right, bottom);
+		viewport++;
+	}
 }
 
 /**
