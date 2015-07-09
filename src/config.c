@@ -914,18 +914,23 @@ void config_dat_save()
 
 #pragma region Shortcuts
 
+#define SHIFT 0x100
+#define CTRL 0x200
+#define ALT 0x400
+
 // Current keyboard shortcuts
 uint16 gShortcutKeys[SHORTCUT_COUNT];
 
 // Default keyboard shortcuts
 static const uint16 _defaultShortcutKeys[SHORTCUT_COUNT] = {
 	SDL_SCANCODE_BACKSPACE,				// SHORTCUT_CLOSE_TOP_MOST_WINDOW
-	0x0100 | SDL_SCANCODE_BACKSPACE,	// SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS
+	SHIFT | SDL_SCANCODE_BACKSPACE,		// SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS
 	SDL_SCANCODE_ESCAPE,				// SHORTCUT_CANCEL_CONSTRUCTION_MODE
 	SDL_SCANCODE_PAUSE,					// SHORTCUT_PAUSE_GAME
 	SDL_SCANCODE_PAGEUP,				// SHORTCUT_ZOOM_VIEW_OUT
 	SDL_SCANCODE_PAGEDOWN,				// SHORTCUT_ZOOM_VIEW_IN
-	SDL_SCANCODE_RETURN,				// SHORTCUT_ROTATE_VIEW
+	SDL_SCANCODE_RETURN,				// SHORTCUT_ROTATE_VIEW_CLOCKWISE
+	SHIFT | SDL_SCANCODE_RETURN,		// SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE
 	SDL_SCANCODE_Z,						// SHORTCUT_ROTATE_CONSTRUCTION_OBJECT
 	SDL_SCANCODE_1,						// SHORTCUT_UNDERGROUND_VIEW_TOGGLE
 	SDL_SCANCODE_H,						// SHORTCUT_REMOVE_BASE_LAND_TOGGLE
@@ -950,15 +955,17 @@ static const uint16 _defaultShortcutKeys[SHORTCUT_COUNT] = {
 	SDL_SCANCODE_S,						// SHORTCUT_SHOW_STAFF_LIST
 	SDL_SCANCODE_M,						// SHORTCUT_SHOW_RECENT_MESSAGES
 	SDL_SCANCODE_TAB,					// SHORTCUT_SHOW_MAP
-	0x0200 | SDL_SCANCODE_S,			// SHORTCUT_SCREENSHOT
+	CTRL | SDL_SCANCODE_S,				// SHORTCUT_SCREENSHOT
 
 	// New
 	SDL_SCANCODE_MINUS,					// SHORTCUT_REDUCE_GAME_SPEED,
 	SDL_SCANCODE_EQUALS,				// SHORTCUT_INCREASE_GAME_SPEED,
-	0x0200 | 0x0400 | SDL_SCANCODE_C, 	// SHORTCUT_OPEN_CHEAT_WINDOW,
+	CTRL | ALT | SDL_SCANCODE_C,		// SHORTCUT_OPEN_CHEAT_WINDOW,
 	SDL_SCANCODE_T,						// SHORTCUT_REMOVE_TOP_BOTTOM_TOOLBAR_TOGGLE,
 	SDL_SCANCODE_C						// SHORTCUT_OPEN_CHAT_WINDOW
 };
+
+#define SHORTCUT_FILE_VERSION 1
 
 /**
  * 
@@ -979,13 +986,19 @@ bool config_shortcut_keys_load()
 {
 	char path[MAX_PATH];
 	FILE *file;
-	int result;
+	bool result;
+	uint16 version;
 
 	config_shortcut_keys_get_path(path);
 
 	file = fopen(path, "rb");
 	if (file != NULL) {
-		result = fread(gShortcutKeys, sizeof(gShortcutKeys), 1, file) == 1;
+		result = fread(&version, sizeof(version), 1, file) == 1;
+		if (result && version == SHORTCUT_FILE_VERSION) {
+			result = fread(gShortcutKeys, sizeof(gShortcutKeys), 1, file) == 1;
+		} else {
+			result = false;
+		}
 		fclose(file);
 	} else {
 		result = false;
@@ -996,15 +1009,20 @@ bool config_shortcut_keys_load()
 
 bool config_shortcut_keys_save()
 {
+	const uint16 version = SHORTCUT_FILE_VERSION;
+
 	char path[MAX_PATH];
 	FILE *file;
-	int result;
+	bool result;
 
 	config_shortcut_keys_get_path(path);
 
 	file = fopen(path, "wb");
 	if (file != NULL) {
-		result = fwrite(gShortcutKeys, sizeof(gShortcutKeys), 1, file) == 1;
+		result = fwrite(&version, sizeof(version), 1, file) == 1;
+		if (result) {
+			result = fwrite(gShortcutKeys, sizeof(gShortcutKeys), 1, file) == 1;
+		}
 		fclose(file);
 	} else {
 		result = false;

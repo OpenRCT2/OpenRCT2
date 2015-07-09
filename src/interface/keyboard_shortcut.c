@@ -155,10 +155,16 @@ static void shortcut_zoom_view_in()
 	}
 }
 
-static void shortcut_rotate_view()
+static void shortcut_rotate_view_clockwise()
 {
 	rct_window* w = window_get_main();
 	window_rotate_camera(w, 1);
+}
+
+static void shortcut_rotate_view_anticlockwise()
+{
+	rct_window* w = window_get_main();
+	window_rotate_camera(w, -1);
 }
 
 static void shortcut_rotate_construction_object()
@@ -473,7 +479,8 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_pause_game,
 	shortcut_zoom_view_out,
 	shortcut_zoom_view_in,
-	shortcut_rotate_view,
+	shortcut_rotate_view_clockwise,
+	shortcut_rotate_view_anticlockwise,
 	shortcut_rotate_construction_object,
 	shortcut_underground_view_toggle,
 	shortcut_remove_base_land_toggle,
