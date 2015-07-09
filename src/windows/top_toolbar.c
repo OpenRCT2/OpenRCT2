@@ -218,6 +218,8 @@ void top_toolbar_init_view_menu(rct_window *window, rct_widget *widget);
 void top_toolbar_view_menu_dropdown(short dropdownIndex);
 void top_toolbar_init_fastforward_menu(rct_window *window, rct_widget *widget);
 void top_toolbar_fastforward_menu_dropdown(short dropdownIndex);
+void top_toolbar_init_rotate_menu(rct_window *window, rct_widget *widget);
+void top_toolbar_rotate_menu_dropdown(short dropdownIndex);
 void top_toolbar_init_debug_menu(rct_window *window, rct_widget *widget);
 void top_toolbar_debug_menu_dropdown(short dropdownIndex);
 
@@ -273,10 +275,6 @@ static void window_top_toolbar_mouseup()
 	case WIDX_ZOOM_IN:
 		if ((mainWindow = window_get_main()) != NULL)
 			window_zoom_in(mainWindow);
-		break;
-	case WIDX_ROTATE:
-		if ((mainWindow = window_get_main()) != NULL)
-			window_rotate_camera(mainWindow);
 		break;
 	case WIDX_CLEAR_SCENERY:
 		toggle_clear_scenery_window(w, WIDX_CLEAR_SCENERY);
@@ -422,6 +420,9 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 	case WIDX_FASTFORWARD:
 		top_toolbar_init_fastforward_menu(w, widget);
 		break;
+	case WIDX_ROTATE:
+		top_toolbar_init_rotate_menu(w, widget);
+		break;
 	case WIDX_DEBUG:
 		top_toolbar_init_debug_menu(w, widget);
 		break;
@@ -505,6 +506,9 @@ static void window_top_toolbar_dropdown()
 		break;
 	case WIDX_FASTFORWARD:
 		top_toolbar_fastforward_menu_dropdown(dropdownIndex);
+		break;
+	case WIDX_ROTATE:
+		top_toolbar_rotate_menu_dropdown(dropdownIndex);
 		break;
 	case WIDX_DEBUG:
 		top_toolbar_debug_menu_dropdown(dropdownIndex);
@@ -2792,7 +2796,7 @@ void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget) {
 	gDropdownItemsArgs[1] = 5143;
 	gDropdownItemsArgs[2] = 5144;
 	gDropdownItemsArgs[3] = 5145;
-	
+
 
 	window_dropdown_show_text(
 		w->x + widget->left,
@@ -2823,6 +2827,37 @@ void top_toolbar_fastforward_menu_dropdown(short dropdownIndex) {
 			gGameSpeed = dropdownIndex + 1;
 			if (gGameSpeed >= 5)
 				gGameSpeed = 8;
+			window_invalidate(w);
+		}
+	}
+}
+
+void top_toolbar_init_rotate_menu(rct_window* w, rct_widget* widget) {
+	gDropdownItemsFormat[0] = STR_ROTATE_CLOCKWISE;
+	gDropdownItemsFormat[1] = STR_ROTATE_ANTI_CLOCKWISE;
+
+	window_dropdown_show_text(
+		w->x + widget->left,
+		w->y + widget->top,
+		widget->bottom - widget->top + 1,
+		w->colours[1] | 0x80,
+		0,
+		2
+		);
+
+	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
+}
+
+void top_toolbar_rotate_menu_dropdown(short dropdownIndex) {
+	if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+	rct_window* w = window_get_main();
+	if (w) {
+		if (dropdownIndex == 0) {
+			window_rotate_camera(w, 1);
+			window_invalidate(w);
+		}
+		else if (dropdownIndex == 1){
+			window_rotate_camera(w, -1);
 			window_invalidate(w);
 		}
 	}

@@ -300,7 +300,7 @@ static void title_do_next_script_opcode()
 		w = window_get_main();
 		if (w != NULL)
 			for (i = 0; i < script_operand; i++)
-				window_rotate_camera(w);
+				window_rotate_camera(w, 1);
 		break;
 	case TITLE_SCRIPT_ZOOM:
 		script_operand = (*_currentScript++);
