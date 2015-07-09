@@ -28,7 +28,7 @@ const rct_currency_spec g_currency_specs[CURRENCY_END] = {
 	{ 1000	, "\xA5"	, CURRENCY_PREFIX },	// Japanese Yen
 	{ 10	, "Pts"		, CURRENCY_SUFFIX },	// Spanish Peseta
 	{ 1000	, "L"		, CURRENCY_PREFIX },	// Italian Lira
-	{ 10	, "fl."		, CURRENCY_PREFIX },	// Dutch Guilder
+	{ 10	, "fl. "	, CURRENCY_PREFIX },	// Dutch Guilder
 	{ 10	, "kr."		, CURRENCY_SUFFIX },	// Swedish Krona
 	{ 10	, "\xb5"	, CURRENCY_PREFIX },	// Euro
 };
