@@ -276,10 +276,6 @@ static void window_top_toolbar_mouseup()
 		if ((mainWindow = window_get_main()) != NULL)
 			window_zoom_in(mainWindow);
 		break;
-	/*case WIDX_ROTATE:
-		if ((mainWindow = window_get_main()) != NULL)
-			window_rotate_camera(mainWindow);
-		break;*/
 	case WIDX_CLEAR_SCENERY:
 		toggle_clear_scenery_window(w, WIDX_CLEAR_SCENERY);
 		break;
