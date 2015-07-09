@@ -157,17 +157,8 @@ static void shortcut_zoom_view_in()
 
 static void shortcut_rotate_view()
 {
-	rct_window *window;
-
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || RCT2_GLOBAL(0x0141F570, uint8) == 1) {
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER)) {
-			window = window_find_by_class(WC_TOP_TOOLBAR);
-			if (window != NULL) {
-				window_invalidate(window);
-				window_event_mouse_up_call(window, 4);
-			}
-		}
-	}
+	rct_window* w = window_get_main();
+	window_rotate_camera(w, 1);
 }
 
 static void shortcut_rotate_construction_object()
