@@ -21,6 +21,7 @@
 #ifndef DISABLE_NETWORK
 
 #include <math.h>
+#include <set>
 extern "C" {
 #include "../addresses.h"
 #include "../common.h"
@@ -40,6 +41,16 @@ int gNetworkStartPort = NETWORK_DEFAULT_PORT;
 int gNetworkStatus = NETWORK_NONE;
 uint32 gNetworkServerTick = 0;
 
+struct GameCommand
+{
+	GameCommand(uint32 args[8]) { tick = args[0], eax = args[1], ebx = args[2], ecx = args[3], edx = args[4], esi = args[5], edi = args[6], ebp = args[7]; };
+	uint32 tick;
+	uint32 eax, ebx, ecx, edx, esi, edi, ebp;
+	bool operator<(const GameCommand& comp) const {
+		return tick < comp.tick;
+	}
+};
+
 static network_packet* _packetQueue = NULL;
 static int _wsaInitialised = 0;
 static WSADATA _wsaData;
@@ -50,6 +61,7 @@ static network_packet _inboundPacket;
 static std::vector<uint8> _chunkBuffer;
 static NetworkConnection _serverConnection;
 static std::list<std::unique_ptr<NetworkConnection>> _clientConnectionList;
+static std::multiset<GameCommand> _gameCommandQueue;
 
 static void network_process_packet(NetworkPacket& packet);
 static int network_send_packet(network_packet *packet);
@@ -75,6 +87,12 @@ std::unique_ptr<NetworkPacket> NetworkPacket::DuplicatePacket(NetworkPacket& pac
 uint8* NetworkPacket::GetData()
 {
 	return &(*data)[0];
+}
+
+void NetworkPacket::Clear()
+{
+	read = 0;
+	data->clear();
 }
 
 int NetworkConnection::ReadPacket()
@@ -325,6 +343,18 @@ int network_process_connection(NetworkConnection& networkconnection)
 	return 1;
 }
 
+void network_process_gamecmdqueue()
+{
+	while (_gameCommandQueue.begin() != _gameCommandQueue.end() && _gameCommandQueue.begin()->tick < RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)) {
+		_gameCommandQueue.erase(_gameCommandQueue.begin());
+	}
+	while (_gameCommandQueue.begin() != _gameCommandQueue.end() && _gameCommandQueue.begin()->tick == RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)) {
+		const GameCommand& gc = (*_gameCommandQueue.begin());
+		game_do_command(gc.eax, gc.ebx, gc.ecx, gc.edx, gc.esi, gc.edi, gc.ebp);
+		_gameCommandQueue.erase(_gameCommandQueue.begin());
+	}
+}
+
 void network_update()
 {
 	static uint32 lastTickUpdate = 0;
@@ -335,14 +365,18 @@ void network_update()
 
 	if (gNetworkStatus == NETWORK_CLIENT) {
 		network_process_connection(_serverConnection);
+		network_process_gamecmdqueue();
 	} else {
-		for(auto it = _clientConnectionList.begin(); it != _clientConnectionList.end(); it++) {
+		auto it = _clientConnectionList.begin();
+		while(it != _clientConnectionList.end()) {
 			if (!network_process_connection(*(*it))) {
 				network_remove_client((*it));
 				it = _clientConnectionList.begin();
+			} else {
+				it++;
 			}
 		}
-		if (SDL_GetTicks() - lastTickUpdate >= 100) {
+		if (SDL_GetTicks() - lastTickUpdate >= 25) {
 			lastTickUpdate = SDL_GetTicks();
 			network_send_tick();
 		}
@@ -410,17 +444,19 @@ static void network_process_packet(NetworkPacket& packet)
 			news_item_add_to_queue_custom(&newsItem);
 		}break;
 		case NETWORK_COMMAND_GAMECMD:{
-			if (gNetworkStatus == NETWORK_CLIENT)
-				args[1] |= (1 << 31);
-
-			game_do_command_p(args[1], (int*)&args[2], (int*)&args[3], (int*)&args[4], (int*)&args[5], (int*)&args[6], (int*)&args[7], (int*)&args[8]);
+			if (gNetworkStatus == NETWORK_SERVER) {
+				network_send_gamecmd(args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
+				game_do_command(args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
+			} else {
+				GameCommand gc = GameCommand(&args[1]);
+				_gameCommandQueue.insert(gc);
+			}
 		}break;
 		case NETWORK_COMMAND_TICK:{
 			gNetworkServerTick = args[1];
 		}break;
 	}
-	packet.read = 0;
-	packet.data->clear();
+	packet.Clear();
 }
 
 void network_send_tick()
@@ -472,13 +508,13 @@ void network_send_chat(const char* text)
 	}
 }
 
-void network_send_gamecmd(uint32 command, uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp)
+void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp)
 {
 	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
 	packet->Write((uint32)NETWORK_COMMAND_GAMECMD);
-	packet->Write((uint32)command);
+	packet->Write((uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32));
 	packet->Write((uint32)eax);
-	packet->Write((uint32)ebx);
+	packet->Write((uint32)ebx | (1 << 31));
 	packet->Write((uint32)ecx);
 	packet->Write((uint32)edx);
 	packet->Write((uint32)esi);

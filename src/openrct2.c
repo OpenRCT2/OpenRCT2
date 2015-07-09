@@ -383,7 +383,6 @@ static void openrct2_loop()
 			lastTick = currentTick;
 
 			platform_process_messages();
-			network_update();
 
 			rct2_update();
 
