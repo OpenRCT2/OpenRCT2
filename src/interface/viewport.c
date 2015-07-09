@@ -442,21 +442,10 @@ void viewport_update_position(rct_window *window)
 	rct_viewport* viewport = window->viewport;
 	if (!viewport)return;
 
-	if (window->viewport_target_sprite != -1){
-		rct_sprite* sprite = &g_sprite_list[window->viewport_target_sprite];
-
-		int height = (map_element_height(0xFFFF & sprite->unknown.x, 0xFFFF & sprite->unknown.y) & 0xFFFF) - 16;
-		int underground = sprite->unknown.z < height;
-
-		viewport_set_underground_flag(underground, window, viewport);
-
-		int center_x, center_y;
-		center_2d_coordinates(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, &center_x, &center_y, window->viewport);
-
-		sub_6E7DE1(center_x, center_y, window, viewport);
+	if (window->viewport_target_sprite != -1) {
+		viewport_update_sprite_follow(window);
 		return;
 	}
-
 
 	sint16 x = viewport->view_width / 2 + window->saved_view_x;
 	sint16 y = viewport->view_height / 2 + window->saved_view_y;
@@ -545,6 +534,23 @@ void viewport_update_position(rct_window *window)
 	}
 
 	sub_6E7DE1(x, y, window, viewport);
+}
+
+void viewport_update_sprite_follow(rct_window *window)
+{
+	if (window->viewport_target_sprite != -1 && window->viewport){
+		rct_sprite* sprite = &g_sprite_list[window->viewport_target_sprite];
+
+		int height = (map_element_height(0xFFFF & sprite->unknown.x, 0xFFFF & sprite->unknown.y) & 0xFFFF) - 16;
+		int underground = sprite->unknown.z < height;
+
+		viewport_set_underground_flag(underground, window, window->viewport);
+
+		int center_x, center_y;
+		center_2d_coordinates(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, &center_x, &center_y, window->viewport);
+
+		sub_6E7DE1(center_x, center_y, window, window->viewport);
+	}
 }
 
 /**
