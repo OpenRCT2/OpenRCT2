@@ -27,6 +27,7 @@
 #include "game.h"
 #include "hook.h"
 #include "interface/window.h"
+#include "interface/viewport.h"
 #include "localisation/localisation.h"
 #include "network/http.h"
 #include "openrct2.h"
@@ -326,7 +327,9 @@ static void openrct2_loop()
 			}
 
 			// Viewports need to be updated to reduce chopiness of those which follow sprites
-			window_update_all_viewports();
+			for (rct_window *w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++) {
+				viewport_update_sprite_follow(w);
+			}
 
 			platform_process_messages();
 			rct2_draw();

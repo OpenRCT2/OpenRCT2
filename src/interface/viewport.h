@@ -96,6 +96,7 @@ void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_view
 void viewport_create(rct_window *w, int x, int y, int width, int height, int zoom, int center_x, int center_y, int center_z, char flags, sint16 sprite);
 void viewport_update_pointers();
 void viewport_update_position(rct_window *window);
+void viewport_update_sprite_follow(rct_window *window);
 void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, int top, int right, int bottom);
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom);
 
