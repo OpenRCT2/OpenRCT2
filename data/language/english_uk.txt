@@ -2683,7 +2683,7 @@ STR_2677    :???
 STR_2678    :???
 STR_2679    :???
 STR_2680    :All research complete
-STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by 5,000
+STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by {CURRENCY}
 STR_2682    :<not used anymore>
 STR_2683    :<not used anymore>
 STR_2684    :{SMALLFONT}{BLACK}Large group of peeps arrive
@@ -2763,7 +2763,7 @@ STR_2756    :Remove litter
 STR_2757    :Force Sun
 STR_2758    :Force Thunder
 STR_2759    :Zero Clearance
-STR_2760    :+5K Money
+STR_2760    :+{CURRENCY}
 STR_2761    :<not used anymore>
 STR_2762    :<not used anymore>
 STR_2763    :???
@@ -3694,10 +3694,10 @@ STR_5357    :{BLACK}Nausea tolerance:
 STR_5358    :{BLACK}Bathroom:
 STR_5359    :Remove guests
 STR_5360    :{SMALLFONT}{BLACK}Removes all guests from the map
-STR_5361    :{BLACK}Give all guests:
-STR_5362    :{BLACK}Preferred intensity:
-STR_5363    :> 1
-STR_5364    :< 15
+STR_5361    :Give all guests:
+STR_5362    :{BLACK}Set all guests' preferred ride intensity to:
+STR_5363    :More than 1
+STR_5364    :Less than 15
 STR_5365    :{BLACK}Staff speed:
 STR_5366    :Normal
 STR_5367    :Fast
@@ -3791,6 +3791,12 @@ STR_5454    :Uncap FPS
 STR_5458    :Rotate clockwise
 STR_5459    :Rotate anti-clockwise
 STR_5460    :Rotate view anti-clockwise
+STR_5461    :Set guests' parameters
+STR_5462    :{CURRENCY}
+STR_5463    :Goal: Have fun!
+STR_5464    :General
+STR_5465    :Climate
+STR_5466    :Staff
 
 STR_6000    :Send Message
 STR_6001    :Type the message you would like to send.
