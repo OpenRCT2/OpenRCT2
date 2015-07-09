@@ -2853,13 +2853,11 @@ void top_toolbar_rotate_menu_dropdown(short dropdownIndex) {
 	rct_window* w = window_get_main();
 	if (w) {
 		if (dropdownIndex == 0) {
-			window_rotate_camera(w);
+			window_rotate_camera(w, 1);
 			window_invalidate(w);
 		}
 		else if (dropdownIndex == 1){
-			window_rotate_camera(w);
-			window_rotate_camera(w);
-			window_rotate_camera(w);
+			window_rotate_camera(w, -1);
 			window_invalidate(w);
 		}
 	}
