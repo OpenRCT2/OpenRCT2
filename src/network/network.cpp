@@ -20,8 +20,6 @@
 
 #ifndef DISABLE_NETWORK
 
-#include <math.h>
-#include <set>
 extern "C" {
 #include "../addresses.h"
 #include "../common.h"
@@ -32,6 +30,8 @@ extern "C" {
 #include "../scenario.h"
 }
 #include "network.h"
+#include <math.h>
+#include <set>
 
 #pragma comment(lib, "Ws2_32.lib")
 
@@ -51,21 +51,17 @@ struct GameCommand
 	}
 };
 
-static network_packet* _packetQueue = NULL;
 static int _wsaInitialised = 0;
 static WSADATA _wsaData;
 static SOCKET _listeningSocket = INVALID_SOCKET;
 static SOCKET _serverSocket = INVALID_SOCKET;
 static SOCKET _clientSocket = INVALID_SOCKET;
-static network_packet _inboundPacket;
 static std::vector<uint8> _chunkBuffer;
 static NetworkConnection _serverConnection;
 static std::list<std::unique_ptr<NetworkConnection>> _clientConnectionList;
 static std::multiset<GameCommand> _gameCommandQueue;
 
 static void network_process_packet(NetworkPacket& packet);
-static int network_send_packet(network_packet *packet);
-static void network_send_queued_packets();
 
 NetworkPacket::NetworkPacket()
 {
@@ -76,12 +72,12 @@ NetworkPacket::NetworkPacket()
 
 std::unique_ptr<NetworkPacket> NetworkPacket::AllocatePacket()
 {
-	return std::move(std::make_unique<NetworkPacket>());
+	return std::move(std::unique_ptr<NetworkPacket>(new NetworkPacket)); // change to make_unique in c++14
 }
 
 std::unique_ptr<NetworkPacket> NetworkPacket::DuplicatePacket(NetworkPacket& packet)
 {
-	return std::move(std::make_unique<NetworkPacket>(packet));
+	return std::move(std::unique_ptr<NetworkPacket>(new NetworkPacket(packet))); // change to make_unique in c++14
 }
 
 uint8* NetworkPacket::GetData()
@@ -300,7 +296,7 @@ void network_end_server()
 void network_add_client(SOCKET socket)
 {
 	printf("New client connection\n");
-	auto networkconnection = std::make_unique<NetworkConnection>();
+	auto networkconnection = std::unique_ptr<NetworkConnection>(new NetworkConnection);  // change to make_unique in c++14
 	networkconnection->socket = socket;
 	_clientConnectionList.push_back(std::move(networkconnection));
 }
