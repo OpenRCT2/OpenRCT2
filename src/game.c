@@ -309,6 +309,7 @@ void game_update()
 
 void game_logic_update()
 {
+	network_update();
 	if (gNetworkStatus == NETWORK_CLIENT) {
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) == gNetworkServerTick) {
 			return;
@@ -402,24 +403,6 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	int cost, flags, insufficientFunds;
 	int original_ebx, original_edx, original_esi, original_edi, original_ebp;
 
-	int sendPacket = 0;
-	if (gNetworkStatus == NETWORK_CLIENT) {
-		if (command & (1 << 31)) {
-			command &= ~(1 << 31);
-		} else {
-			sendPacket = 1;
-		}
-	} else if (gNetworkStatus == NETWORK_SERVER) {
-		sendPacket = 1;
-	}
-
-	if (sendPacket) {
-		network_send_gamecmd((uint32)command, (uint32)*eax, (uint32)*ebx, (uint32)*ecx, (uint32)*edx, (uint32)*esi, (uint32)*edi, (uint32)*ebp);
-
-		if (gNetworkStatus == NETWORK_CLIENT)
-			return MONEY32_UNDEFINED;
-	}
-
 	*esi = command;
 	original_ebx = *ebx;
 	original_edx = *edx;
@@ -456,10 +439,19 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 			*edi = original_edi;
 			*ebp = original_ebp;
 
-			if (!(flags & 1)) {
+			if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
 				// Decrement nest count
 				RCT2_GLOBAL(0x009A8C28, uint8)--;
 				return cost;
+			}
+
+			if (gNetworkStatus != NETWORK_NONE && !(flags & (1 << 31)) && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
+				network_send_gamecmd(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp);
+				if (gNetworkStatus == NETWORK_CLIENT) {
+					// Decrement nest count
+					RCT2_GLOBAL(0x009A8C28, uint8)--;
+					return cost;
+				}
 			}
 
 			// Secondary command
