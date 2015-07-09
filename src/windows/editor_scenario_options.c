@@ -604,7 +604,8 @@ static void window_editor_scenario_options_financial_invalidate()
 
 	window_editor_scenario_options_set_pressed_tab(w);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY_SCENARIO) {
+	if (((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY_SCENARIO)) ||
+		(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))) {
 		w->pressed_widgets |= (1 << WIDX_NO_MONEY);
 		for (i = WIDX_INITIAL_CASH; i <= WIDX_FORBID_MARKETING; i++)
 			w->widgets[i].type = WWT_EMPTY;
@@ -845,7 +846,8 @@ static void window_editor_scenario_options_guests_invalidate()
 
 	window_editor_scenario_options_set_pressed_tab(w);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY_SCENARIO) {
+	if (((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY_SCENARIO)) ||
+		(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))) {
 		w->widgets[WIDX_CASH_PER_GUEST].type = WWT_EMPTY;
 		w->widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WWT_EMPTY;
 		w->widgets[WIDX_CASH_PER_GUEST_DECREASE].type = WWT_EMPTY;
@@ -1150,7 +1152,8 @@ static void window_editor_scenario_options_park_invalidate()
 
 	window_editor_scenario_options_set_pressed_tab(w);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY_SCENARIO) {
+	if (((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY_SCENARIO)) ||
+		(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))) {
 		for (i = WIDX_LAND_COST; i <= WIDX_ENTRY_PRICE_DECREASE; i++)
 			w->widgets[i].type = WWT_EMPTY;
 	} else {
