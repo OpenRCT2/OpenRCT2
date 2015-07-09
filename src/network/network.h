@@ -23,13 +23,16 @@
 
 #ifndef DISABLE_NETWORK
 
-#include "../common.h"
-
 #ifdef __cplusplus
 
 #include <list>
 #include <memory>
 #include <vector>
+#include <SDL.h>
+extern "C" {
+#include "../common.h"
+#include "../platform/platform.h"
+}
 
 class NetworkPacket
 {
@@ -65,15 +68,6 @@ private:
 
 extern "C" {
 #endif
-
-typedef struct network_packet network_packet;
-
-typedef struct network_packet {
-	uint16 size;
-	uint8* data;
-	int read;
-	network_packet* next;
-} network_packet;
 
 #define NETWORK_DEFAULT_PORT 11753
 
