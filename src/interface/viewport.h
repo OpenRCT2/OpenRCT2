@@ -133,4 +133,6 @@ void sub_688217();
 
 void viewport_invalidate(rct_viewport *viewport, int left, int top, int right, int bottom);
 
+void sub_6894D4(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY);
+
 #endif

@@ -441,6 +441,14 @@ rct_string_id RideConfigurationStringIds[] = {
 
 #pragma endregion
 
+#define		_trackPlaceCtrlState				RCT2_GLOBAL(0x00F44159, uint8)
+static int	_trackPlaceCtrlZ;
+#define		_trackPlaceShiftState				RCT2_GLOBAL(0x00F4415C, uint8)
+static int	_trackPlaceShiftStartScreenX;
+static int	_trackPlaceShiftStartScreenY;
+static int	_trackPlaceShiftZ;
+#define		_trackPlaceZ						RCT2_GLOBAL(0x00F44163, sint16)
+
 static void window_ride_construction_next_section(rct_window *w);
 static void window_ride_construction_previous_section(rct_window *w);
 static void window_ride_construction_construct(rct_window *w);
@@ -1897,15 +1905,70 @@ static void window_ride_construction_update(rct_window *w)
  */
 static bool ride_get_place_position_from_screen_position(int screenX, int screenY, int *outX, int *outY)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = screenX;
-	ebx = screenY;
-	RCT2_CALLFUNC_X(0x006CC538, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	short mapX, mapY, mapZ;
+	int interactionType, direction;
+	rct_map_element *mapElement;
+	rct_viewport *viewport;
 
-	if (outX != NULL) *outX = eax & 0xFFFF;
-	if (outY != NULL) *outY = ebx & 0xFFFF;
+	if (!_trackPlaceCtrlState) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 2) {
+			get_map_coordinates_from_pos(screenX, screenY, 0xFCCA, &mapX, &mapY, &interactionType, &mapElement, &viewport);
+			if (interactionType != 0) {
+				_trackPlaceCtrlZ = mapElement->base_height * 8;
+				_trackPlaceCtrlState = true;
+			}
+		}
+	} else {
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 2)) {
+			_trackPlaceCtrlState = false;
+		}
+	}
 
-	return (eax & 0xFFFF) != 0x8000;
+	if (!_trackPlaceShiftState) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 1) {
+			_trackPlaceShiftState = true;
+			_trackPlaceShiftStartScreenX = screenX;
+			_trackPlaceShiftStartScreenY = screenY;
+			_trackPlaceShiftZ = 0;
+		}
+	} else {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 1) {
+			_trackPlaceShiftZ = floor2(_trackPlaceShiftStartScreenY - screenY + 4, 8);
+			screenX = _trackPlaceShiftStartScreenX;
+			screenY = _trackPlaceShiftStartScreenY;
+		} else {
+			_trackPlaceShiftState = false;
+		}
+	}
+
+	if (!_trackPlaceCtrlState) {
+		sub_68A15E(screenX, screenY, &mapX, &mapY, &direction, &mapElement);
+		if (mapX == (short)0x8000)
+			return false;
+
+		_trackPlaceZ = 0;
+		if (_trackPlaceShiftState) {
+			mapElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
+			mapZ = floor2(mapElement->base_height * 8, 16);
+			mapZ += _trackPlaceShiftZ;
+			mapZ = max(mapZ, 16);
+			_trackPlaceZ = mapZ;
+		}
+	} else {
+		mapZ = _trackPlaceCtrlZ;
+		sub_6894D4(screenX, screenY, mapZ, &mapX, &mapY);
+		if (_trackPlaceShiftState != 0) {
+			mapZ += _trackPlaceShiftZ;
+		}
+		_trackPlaceZ = max(mapZ, 16);
+	}
+
+	if (mapX == (short)0x8000)
+		return false;
+
+	*outX = floor2(mapX, 32);
+	*outY = floor2(mapY, 32);
+	return true;
 }
 
 /**
@@ -3218,13 +3281,11 @@ static void ride_construction_toolupdate_construct(int screenX, int screenY)
 		if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & 2) {
 			rct_xy16 *selectedTile = gMapSelectionTiles;
 			while (selectedTile->x != -1) {
-				if (selectedTile->x >= (256 * 32) || selectedTile->y >= (256 * 32))
-					continue;
-
-				z = map_get_highest_z(selectedTile->x >> 5, selectedTile->y >> 5);
-				if (z > highestZ)
-					highestZ = z;
-
+				if (selectedTile->x < (256 * 32) && selectedTile->y < (256 * 32)) {
+					z = map_get_highest_z(selectedTile->x >> 5, selectedTile->y >> 5);
+					if (z > highestZ)
+						highestZ = z;
+				}
 				selectedTile++;
 			}
 		}
