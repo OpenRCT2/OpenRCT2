@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
+#include "../cheats.h"
 #include "../common.h"
 #include "../config.h"
 #include "../game.h"
@@ -5750,7 +5751,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 		if (flags & GAME_COMMAND_FLAG_APPLY)
 			return MONEY32_UNDEFINED;
 
-		if (!map_is_location_owned(x, y, z)){
+		if (!gCheatsSandboxMode && !map_is_location_owned(x, y, z)){
 			return MONEY32_UNDEFINED;
 		}
 
@@ -5761,7 +5762,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 		// Horrible hack until map_can_construct_with_clear_at is implemented.
 		RCT2_GLOBAL(0x009E32C8, uint8*) = (&flags) - 4;
 
-		if (!map_can_construct_with_clear_at(x, y, z / 8, clear_z, (void*)0x0066637E, 0xF)){
+		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z / 8, clear_z, (void*)0x0066637E, 0xF)){
 			return MONEY32_UNDEFINED;
 		}
 
@@ -5844,7 +5845,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 			map_remove_walls_at_z(x, y, z);
 		}
 
-		if (!map_is_location_owned(x, y, z)){
+		if (!gCheatsSandboxMode && !map_is_location_owned(x, y, z)){
 			return MONEY32_UNDEFINED;
 		}
 
@@ -5855,7 +5856,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 		// Horrible hack until map_can_construct_with_clear_at is implemented.
 		RCT2_GLOBAL(0x009E32C8, uint8*) = (&flags) - 4;
 
-		if (!map_can_construct_with_clear_at(x, y, z / 8, clear_z, (void*)0x0066637E, 0xF)){
+		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z / 8, clear_z, (void*)0x0066637E, 0xF)){
 			return MONEY32_UNDEFINED;
 		}
 
