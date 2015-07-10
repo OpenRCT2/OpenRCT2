@@ -23,6 +23,14 @@
 
 #ifndef DISABLE_NETWORK
 
+#define NETWORK_DEFAULT_PORT 11753
+
+enum {
+	NETWORK_MODE_NONE,
+	NETWORK_MODE_CLIENT,
+	NETWORK_MODE_SERVER
+};
+
 #ifdef __cplusplus
 
 #include <list>
@@ -66,48 +74,73 @@ private:
 	std::list<std::unique_ptr<NetworkPacket>> outboundpackets;
 };
 
+class NetworkPlayer
+{
+public:
+	uint8 name[16 + 1];
+	uint16 ping;
+};
+
+class Network
+{
+public:
+	Network();
+	~Network();
+	bool Init();
+	void Close();
+	bool BeginClient(const char* host, unsigned short port);
+	bool BeginServer(unsigned short port);
+	int GetMode();
+	uint32 GetServerTick();
+	void Update();
+
+	void Send_TICK();
+	void Send_MAP();
+	void Send_CHAT(const char* text);
+	void Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
+
+private:
+	bool ProcessConnection(NetworkConnection& connection);
+	void ProcessPacket(NetworkPacket& packet);
+	void ProcessGameCommandQueue();
+	void AddClient(SOCKET socket);
+	void RemoveClient(std::unique_ptr<NetworkConnection>& connection);
+	void PrintError();
+
+	struct GameCommand
+	{
+		GameCommand(uint32 args[8]) { tick = args[0], eax = args[1], ebx = args[2], ecx = args[3], edx = args[4], esi = args[5], edi = args[6], ebp = args[7]; };
+		uint32 tick;
+		uint32 eax, ebx, ecx, edx, esi, edi, ebp;
+		bool operator<(const GameCommand& comp) const {
+			return tick < comp.tick;
+		}
+	};
+
+	int mode;
+	bool wsa_initialized;
+	SOCKET server_socket;
+	SOCKET listening_socket;
+	NetworkConnection server_connection;
+	uint32 last_tick_sent_time;
+	uint32 server_tick;
+	std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
+	std::multiset<GameCommand> game_command_queue;
+	std::vector<uint8> chunk_buffer;
+};
+
 extern "C" {
 #endif
-
-#define NETWORK_DEFAULT_PORT 11753
-
-enum {
-	NETWORK_NONE,
-	NETWORK_CLIENT,
-	NETWORK_SERVER
-};
-
-enum {
-	NETWORK_SUCCESS,
-	NETWORK_NO_DATA,
-	NETWORK_MORE_DATA,
-	NETWORK_DISCONNECTED
-};
-
-enum {
-	NETWORK_COMMAND_AUTH,
-	NETWORK_COMMAND_MAP,
-	NETWORK_COMMAND_CHAT,
-	NETWORK_COMMAND_GAMECMD,
-	NETWORK_COMMAND_TICK
-};
-
-extern int gNetworkStart;
-extern char gNetworkStartHost[128];
-extern int gNetworkStartPort;
-extern int gNetworkStatus;
-extern uint32 gNetworkServerTick;
 
 int network_init();
 void network_close();
 int network_begin_client(const char *host, int port);
-void network_end_client();
 int network_begin_server(int port);
-void network_end_server();
 
 void network_update();
+int network_get_mode();
+uint32 network_get_server_tick();
 
-void network_send_tick();
 void network_send_map();
 void network_send_chat(const char* text);
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);

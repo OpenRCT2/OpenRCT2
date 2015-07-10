@@ -232,8 +232,8 @@ void game_update()
 		numUpdates = clamp(1, numUpdates, 4);
 	}
 
-	if (gNetworkStatus == NETWORK_CLIENT) {
-		if (gNetworkServerTick - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >= 10) {
+	if (network_get_mode() == NETWORK_MODE_CLIENT) {
+		if (network_get_server_tick() - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >= 10) {
 			// make sure client doesn't fall behind the server too much
 			numUpdates += 10;
 		}
@@ -310,8 +310,9 @@ void game_update()
 void game_logic_update()
 {
 	network_update();
-	if (gNetworkStatus == NETWORK_CLIENT) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) == gNetworkServerTick) {
+	if (network_get_mode() == NETWORK_MODE_CLIENT) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) == network_get_server_tick()) {
+			// dont run past the server
 			return;
 		}
 	}
@@ -445,9 +446,9 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 				return cost;
 			}
 
-			if (gNetworkStatus != NETWORK_NONE && !(flags & (1 << 31)) && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
+			if (network_get_mode() != NETWORK_MODE_NONE && !(flags & (1 << 31)) && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
 				network_send_gamecmd(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp);
-				if (gNetworkStatus == NETWORK_CLIENT) {
+				if (network_get_mode() == NETWORK_MODE_CLIENT) {
 					// Decrement nest count
 					RCT2_GLOBAL(0x009A8C28, uint8)--;
 					return cost;
@@ -673,7 +674,7 @@ int game_load_sv6(SDL_RWops* rw)
 	map_update_tile_pointers();
 	reset_0x69EBE4();
 	openrct2_reset_object_tween_locations();
-	if (gNetworkStatus == NETWORK_SERVER) {
+	if (network_get_mode() == NETWORK_MODE_SERVER) {
 		network_send_map();
 	}
 	return 1;

@@ -245,9 +245,9 @@ void openrct2_launch()
 			break;
 		}
 
-		if (gNetworkStart == NETWORK_CLIENT) {
+		if (gNetworkStart == NETWORK_MODE_CLIENT) {
 			network_begin_client(gNetworkStartHost, gNetworkStartPort);
-		} else if (gNetworkStart == NETWORK_SERVER) {
+		} else if (gNetworkStart == NETWORK_MODE_SERVER) {
 			network_begin_server(gNetworkStartPort);
 		}
 
