@@ -3478,7 +3478,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		return MONEY32_UNDEFINED;
 	}
 	if (!(flags & (1 << 3))) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 			return MONEY32_UNDEFINED;
 		}
@@ -3609,8 +3609,9 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 
 		RCT2_GLOBAL(0x00F44060, void*) = &clearance_struct;
 
-		if (!map_can_construct_with_clear_at(x, y, baseZ, clearanceZ, (void*)0x006C5A5F, bl)) {
-			return MONEY32_UNDEFINED;
+		if (!gCheatsDisableClearanceChecks || flags & (1 << 6)){
+			if (!map_can_construct_with_clear_at(x, y, baseZ, clearanceZ, (void*)0x006C5A5F, bl))
+				return MONEY32_UNDEFINED;
 		}
 		// Again when 0x006C5A5F implemented remove this.
 		cost = clearance_struct.cost;
@@ -3636,7 +3637,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			}
 		}
 
-		if (!map_is_location_owned(x, y, z)) {
+		if (!map_is_location_owned(x, y, z) && !gCheatsSandboxMode) {
 			return MONEY32_UNDEFINED;
 		}
 
@@ -3741,16 +3742,18 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		}
 		//6c5648 12 push
 		mapElement = map_get_surface_element_at(x / 32, y / 32);
-		int ride_height = clearanceZ - mapElement->base_height;
-		if (ride_height >= 0) {
-			int maxHeight = rideEntry->max_height;
-			if (maxHeight == 0) {
-				maxHeight = RCT2_GLOBAL(0x0097D218 + (ride->type * 8), uint8);
-			}
-			ride_height /= 2;
-			if (ride_height > maxHeight && !(RCT2_GLOBAL(0x009D8150, uint8) & 1)) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH_FOR_SUPPORTS;
-				return MONEY32_UNDEFINED;
+		if (!gCheatsDisableSupportLimits){
+			int ride_height = clearanceZ - mapElement->base_height;
+			if (ride_height >= 0) {
+				int maxHeight = rideEntry->max_height;
+				if (maxHeight == 0) {
+					maxHeight = RCT2_GLOBAL(0x0097D218 + (ride->type * 8), uint8);
+				}
+				ride_height /= 2;
+				if (ride_height > maxHeight && !(RCT2_GLOBAL(0x009D8150, uint8) & 1)) {
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH_FOR_SUPPORTS;
+					return MONEY32_UNDEFINED;
+				}
 			}
 		}
 
@@ -3943,7 +3946,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 		break;
 	}
 
-	if (!(flags & (1 << 3)) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0){
+	if (!(flags & (1 << 3)) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode){
 		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 2214;
 		return MONEY32_UNDEFINED;
 	}

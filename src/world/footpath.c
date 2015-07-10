@@ -168,11 +168,11 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 	// 0x006A6733 expects the flags to be at (*0xF3EF7C) + 8
 	RCT2_GLOBAL(0x00F3EF7C, uint32) = (uint32)(&flags - 2);
 
-	if (!map_can_construct_with_clear_at(x, y, z, zHigh, (void*)0x006A6733, bl))
+	if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, (void*)0x006A6733, bl))
 		return MONEY32_UNDEFINED;
 
 	RCT2_GLOBAL(0x00F3EFA4, uint8) = RCT2_GLOBAL(0x00F1AD60, uint8);
-	if (RCT2_GLOBAL(0x00F1AD60, uint8) & 4) {
+	if (!gCheatsDisableClearanceChecks && (RCT2_GLOBAL(0x00F1AD60, uint8) & 4)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CANT_BUILD_THIS_UNDERWATER;
 		return MONEY32_UNDEFINED;
 	}
@@ -337,7 +337,7 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 		return MONEY32_UNDEFINED;
 	}
 
-	if (!((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gSandboxMode) && !map_is_location_owned(x, y, z * 8))
+	if (!((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
 		return MONEY32_UNDEFINED;
 
 	if (slope & 8) {
@@ -391,7 +391,7 @@ money32 footpath_remove_real(int x, int y, int z, int flags)
 		footpath_remove_litter(x, y, z * 8);
 	}
 
-	if (!((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gSandboxMode) && !map_is_location_owned(x, y, z * 8))
+	if (!((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
 		return MONEY32_UNDEFINED;
 
 	mapElement = map_get_footpath_element(x / 32, y / 32, z);
@@ -868,7 +868,7 @@ static void loc_6A6D7E(
 ) {
 	int x = initialX + TileDirectionDelta[direction].x;
 	int y = initialY + TileDirectionDelta[direction].y;
-	if (((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gSandboxMode) && map_is_edge(x, y)) {
+	if (((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && map_is_edge(x, y)) {
 		if (query) {
 			neighbour_list_push(neighbourList, 7, direction);
 		}

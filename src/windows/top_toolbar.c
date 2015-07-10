@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../cheats.h"
 #include "../config.h"
 #include "../editor.h"
 #include "../game.h"
@@ -101,6 +102,13 @@ typedef enum {
 	DDIDX_OBJECT_SELECTION = 2
 } TOP_TOOLBAR_DEBUG_DDIDX;
 
+enum {
+	DDIDX_CHEATS,
+	DDIDX_ENABLE_SANDBOX_MODE = 2,
+	DDIDX_DISABLE_CLEARANCE_CHECKS,
+	DDIDX_DISABLE_SUPPORT_LIMITS
+};
+
 #pragma region Toolbar_widget_ordering
 
 // from left to right
@@ -163,7 +171,7 @@ static rct_widget window_top_toolbar_widgets[] = {
 
 	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						5148 },								// Fast forward
 	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						5149 },								// Cheats
-	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_DEBUG_TIP },								// Debug
+	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_DEBUG_TIP },					// Debug
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B, 0,						27,		0x20000000 | 0x15F9,						3235 },								// Finances
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						2275 },								// Research
 	
@@ -311,9 +319,6 @@ static void window_top_toolbar_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_RESEARCH:
 		window_research_open();
 		break;
-	case WIDX_CHEATS:
-		window_cheats_open();
-		break;
 	}
 }
 
@@ -390,6 +395,32 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			gDropdownItemsChecked |= (1 << 11);
 #endif
 		break;
+	case WIDX_CHEATS:
+		gDropdownItemsFormat[0] = 1156;
+		gDropdownItemsFormat[1] = 0;
+		gDropdownItemsFormat[2] = 1156;
+		gDropdownItemsFormat[3] = 1156;
+		gDropdownItemsFormat[4] = 1156;
+		gDropdownItemsArgs[0] = 5217;
+		gDropdownItemsArgs[2] = STR_ENABLE_SANDBOX_MODE;
+		gDropdownItemsArgs[3] = STR_DISABLE_CLEARANCE_CHECKS;
+		gDropdownItemsArgs[4] = STR_DISABLE_SUPPORT_LIMITS;
+		window_dropdown_show_text(
+			w->x + widget->left,
+			w->y + widget->top,
+			widget->bottom - widget->top + 1,
+			w->colours[0] | 0x80,
+			0,
+			5
+		);
+		if (gCheatsSandboxMode)
+			gDropdownItemsChecked |= (1 << DDIDX_ENABLE_SANDBOX_MODE);
+		if (gCheatsDisableClearanceChecks)
+			gDropdownItemsChecked |= (1 << DDIDX_DISABLE_CLEARANCE_CHECKS);
+		if (gCheatsDisableSupportLimits)
+			gDropdownItemsChecked |= (1 << DDIDX_DISABLE_SUPPORT_LIMITS);
+		RCT2_GLOBAL(0x009DEBA2, uint16) = 0;
+		break;
 	case WIDX_VIEW_MENU:
 		top_toolbar_init_view_menu(w, widget);
 		break;
@@ -410,7 +441,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			w->colours[1] | 0x80,
 			0,
 			numItems
-		);
+			);
 		RCT2_GLOBAL(0x009DEBA2, uint16) = 0;
 		break;
 	case WIDX_FASTFORWARD:
@@ -426,7 +457,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066C9EA
  */
 static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
@@ -474,6 +505,23 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 			gTwitchEnable = !gTwitchEnable;
 			break;
 #endif
+		}
+		break;
+	case WIDX_CHEATS:
+		if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x009DEBA2, uint16);
+		switch (dropdownIndex) {
+		case DDIDX_CHEATS:
+			window_cheats_open();
+			break;
+		case DDIDX_ENABLE_SANDBOX_MODE:
+			gCheatsSandboxMode = !gCheatsSandboxMode;
+			break;
+		case DDIDX_DISABLE_CLEARANCE_CHECKS:
+			gCheatsDisableClearanceChecks = !gCheatsDisableClearanceChecks;
+			break;
+		case DDIDX_DISABLE_SUPPORT_LIMITS:
+			gCheatsDisableSupportLimits = !gCheatsDisableSupportLimits;
+			break;
 		}
 		break;
 	case WIDX_VIEW_MENU:
@@ -704,7 +752,7 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		y = w->y + window_top_toolbar_widgets[WIDX_CHEATS].top - 1;
 		if (widget_is_pressed(w, WIDX_CHEATS))
 			y++;
-		imgId = SPR_TAB_OBJECTIVE_0;
+		imgId = SPR_G2_SANDBOX;
 		gfx_draw_sprite(dpi, imgId, x, y, 3);
 	}
 

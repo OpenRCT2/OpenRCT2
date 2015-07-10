@@ -492,6 +492,9 @@
     <ClCompile Include="..\src\windows\maze_construction.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\cheats.c">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">
@@ -718,6 +721,9 @@
     </ClInclude>
     <ClInclude Include="..\src\interface\title_sequences.h">
       <Filter>Source\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cheats.h">
+      <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

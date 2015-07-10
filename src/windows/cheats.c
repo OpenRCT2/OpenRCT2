@@ -933,7 +933,7 @@ static void window_cheats_misc_mouseup(rct_window *w, int widgetIndex)
 		window_invalidate_by_class(WC_PARK_INFORMATION);
 		break;
 	case WIDX_SANDBOX_MODE:
-		gSandboxMode = !gSandboxMode;
+		gCheatsSandboxMode = !gCheatsSandboxMode;
 		w->widgets[widgetIndex].image = w->widgets[widgetIndex].image == STR_CHEAT_SANDBOX_MODE ? STR_CHEAT_SANDBOX_MODE_DISABLE : STR_CHEAT_SANDBOX_MODE;
 		// To prevent tools from staying active after disabling cheat
 		tool_cancel();
