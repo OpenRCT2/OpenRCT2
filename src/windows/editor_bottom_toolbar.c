@@ -51,11 +51,9 @@ static rct_widget window_editor_bottom_toolbar_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_editor_bottom_toolbar_emptysub() { }
-
-static void window_editor_bottom_toolbar_mouseup();
-static void window_editor_bottom_toolbar_invalidate();
-static void window_editor_bottom_toolbar_paint();
+static void window_editor_bottom_toolbar_mouseup(rct_window *w, int widgetIndex);
+static void window_editor_bottom_toolbar_invalidate(rct_window *w);
+static void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static void window_editor_bottom_toolbar_jump_back_to_object_selection();
 static void window_editor_bottom_toolbar_jump_back_to_landscape_editor();
@@ -68,57 +66,57 @@ static void window_editor_bottom_toolbar_jump_forward_to_options_selection();
 static void window_editor_bottom_toolbar_jump_forward_to_objective_selection();
 static void window_editor_bottom_toolbar_jump_forward_to_save_scenario();
 
-static void* window_editor_bottom_toolbar_events[] = {
-	window_editor_bottom_toolbar_emptysub,
+static rct_window_event_list window_editor_bottom_toolbar_events = {
+	NULL,
 	window_editor_bottom_toolbar_mouseup,	//0x0066f5ae,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_editor_bottom_toolbar_invalidate, //0x0066f1c9,
 	window_editor_bottom_toolbar_paint, //0x0066f25c,
-	window_editor_bottom_toolbar_emptysub
+	NULL
 };
 
-static EMPTY_ARGS_VOID_POINTER* previous_button_mouseup_events[] = {
-	window_editor_bottom_toolbar_emptysub,
+static EMPTY_ARGS_VOID_POINTER *previous_button_mouseup_events[] = {
+	NULL,
 	window_editor_bottom_toolbar_jump_back_to_object_selection,
 	window_editor_bottom_toolbar_jump_back_to_landscape_editor,
 	window_editor_bottom_toolbar_jump_back_to_invention_list_set_up,
 	window_editor_bottom_toolbar_jump_back_to_options_selection,
-	window_editor_bottom_toolbar_emptysub,
+	NULL,
 	window_editor_bottom_toolbar_jump_back_to_object_selection,
-	window_editor_bottom_toolbar_emptysub
+	NULL
 };
 
-static EMPTY_ARGS_VOID_POINTER* next_button_mouseup_events[] = {
+static EMPTY_ARGS_VOID_POINTER *next_button_mouseup_events[] = {
 	window_editor_bottom_toolbar_jump_forward_from_object_selection, 
 	window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up,
 	window_editor_bottom_toolbar_jump_forward_to_options_selection,
 	window_editor_bottom_toolbar_jump_forward_to_objective_selection,
 	window_editor_bottom_toolbar_jump_forward_to_save_scenario,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub
+	NULL,
+	NULL,
+	NULL
 };
 
 /**
@@ -131,7 +129,7 @@ void window_editor_bottom_toolbar_open()
 
 	window = window_create(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 32,
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16), 32,
-		(uint32*)window_editor_bottom_toolbar_events,
+		&window_editor_bottom_toolbar_events,
 		WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_5);
 	window->widgets = window_editor_bottom_toolbar_widgets;
 
@@ -394,13 +392,8 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 *
 *  rct2: 0x0066F5AE
 */
-static void window_editor_bottom_toolbar_mouseup()
+static void window_editor_bottom_toolbar_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON) {
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) ||
 			RCT2_GLOBAL(0x13573C8, uint16) == 0x2710 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_18)) {
@@ -425,11 +418,8 @@ void hide_next_step_button() {
 *
 *  rct2: 0x0066F1C9
 */
-void window_editor_bottom_toolbar_invalidate() {
-	rct_window* w;
-
-	window_get_register(w);
-
+void window_editor_bottom_toolbar_invalidate(rct_window *w)
+{
 	colour_scheme_update_by_class(w, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) ? WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR : WC_EDITOR_TRACK_BOTTOM_TOOLBAR);
 
 	uint16 screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
@@ -463,12 +453,8 @@ void window_editor_bottom_toolbar_invalidate() {
 *
 *  rct2: 0x0066F25C
 */
-void window_editor_bottom_toolbar_paint() {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
+void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
+{
 	bool drawPreviousButton = false;
 	bool drawNextButton = false;
 

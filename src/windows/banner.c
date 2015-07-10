@@ -63,44 +63,43 @@ rct_widget window_banner_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_banner_emptysub() { }
-static void window_banner_mouseup();
+static void window_banner_mouseup(rct_window *w, int widgetIndex);
 static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_banner_dropdown();
-static void window_banner_textinput();
-static void window_banner_invalidate();
-static void window_banner_paint();
-static void window_banner_unknown_14();
+static void window_banner_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_banner_textinput(rct_window *w, int widgetIndex, char *text);
+static void window_banner_unknown_14(rct_window *w);
+static void window_banner_invalidate(rct_window *w);
+static void window_banner_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void* window_banner_events[] = {
-	window_banner_emptysub,
+static rct_window_event_list window_banner_events = {
+	NULL,
 	window_banner_mouseup,
-	window_banner_emptysub,
+	NULL,
 	window_banner_mousedown, 
 	window_banner_dropdown, 
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_banner_textinput,
 	window_banner_unknown_14,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_banner_invalidate,
-	window_banner_paint, 
-	window_banner_emptysub
+	window_banner_paint,
+	NULL
 };
 
 /**
@@ -118,7 +117,7 @@ void window_banner_open(rct_windownumber number)
 	if (w != NULL)
 		return;
 
-	w = window_create_auto_pos(WW, WH, (uint32*)window_banner_events, WC_BANNER, WF_2);
+	w = window_create_auto_pos(WW, WH, &window_banner_events, WC_BANNER, WF_2);
 	w->widgets = window_banner_widgets;
 	w->enabled_widgets =
 		(1 << WIDX_CLOSE) |
@@ -174,13 +173,8 @@ void window_banner_open(rct_windownumber number)
 }
 
 /* rct2: 0x6ba4d6*/
-static void window_banner_mouseup()
+static void window_banner_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	rct_banner* banner = &gBanners[w->number];
 	int x = banner->x << 5;
 	int y = banner->y << 5;
@@ -251,26 +245,25 @@ static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* w
 }
 
 /* rct2: 0x6ba517 */
-static void window_banner_dropdown()
-{
-	short widgetIndex, dropdownIndex;
-	rct_window* w;
-
-	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
-	
+static void window_banner_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+{	
 	rct_banner* banner = &gBanners[w->number];
 
 	switch(widgetIndex){
 	case WIDX_MAIN_COLOR:
-		if ( dropdownIndex == 0xFFFF) return;
+		if (dropdownIndex == -1)
+			break;
+
 		banner->colour = (uint8)dropdownIndex;
 		window_invalidate(w);
 		break;
 	case WIDX_TEXT_COLOR_DROPDOWN_BUTTON:
-		if ( dropdownIndex == 0xFFFF) return;
+		if (dropdownIndex == -1)
+			break;
+
 		banner->text_colour = dropdownIndex + 1;
 
-		//Can be replaced with a buffer 34 chars wide ( 32 character + 1 colour_format + 1 '\0')
+		// Can be replaced with a buffer 34 chars wide ( 32 character + 1 colour_format + 1 '\0')
 		uint8* text_buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, uint8);
 		
 		format_string(text_buffer, banner->string_idx, 0);
@@ -298,18 +291,9 @@ static void window_banner_dropdown()
 }
 
 /* rct2: 0x6ba50c */
-static void window_banner_textinput()
+static void window_banner_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	short widgetIndex;
-	rct_window *w;
-	uint8 result;
-	uint8* text;
-
-	window_text_input_get_registers(w, widgetIndex, result, text);
-
-
-	if (widgetIndex == WIDX_BANNER_TEXT && result) {
-
+	if (widgetIndex == WIDX_BANNER_TEXT && text != NULL) {
 		rct_banner* banner = &gBanners[w->number];
 
 		uint8* text_buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, uint8);
@@ -330,11 +314,8 @@ static void window_banner_textinput()
 }
 
 /* rct2: 0x006BA44D */
-static void window_banner_invalidate()
+static void window_banner_invalidate(rct_window *w)
 {
-	rct_window* w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	rct_banner* banner = &gBanners[w->number];
@@ -367,13 +348,8 @@ static void window_banner_invalidate()
 }
 
 /* rct2:0x006BA4C5 */
-static void window_banner_paint()
+static void window_banner_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 
 	// Draw viewport
@@ -383,11 +359,8 @@ static void window_banner_paint()
 }
 
 /* rct2: 0x6BA7B5 */
-static void window_banner_unknown_14()
+static void window_banner_unknown_14(rct_window *w)
 {
-	rct_window* w;
-	window_get_register(w);
-	
 	rct_viewport* view = w->viewport;
 	w->viewport = 0;
 

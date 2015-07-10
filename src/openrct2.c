@@ -186,12 +186,14 @@ bool openrct2_initialise()
 	title_sequences_set_default();
 	title_sequences_load_presets();
 
+	// Hooks to allow RCT2 to call OpenRCT2 functions instead
+	addhook(0x006E732D, (int)gfx_set_dirty_blocks, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0);	// remove after all drawing is decompiled
+	addhook(0x006E7499, (int)gfx_redraw_screen_rect, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0);	// remove when 0x6E7FF3 is decompiled
+
 	if (!rct2_init())
 		return false;
 
 	openrct2_copy_original_user_files_over();
-
-	addhook(0x006E732D, (int)gfx_set_dirty_blocks, 0, (int[]){EAX, EBX, EDX, EBP, END}, 0); // remove after all drawing is decompiled
 
 	Mixer_Init(NULL);
 	return true;

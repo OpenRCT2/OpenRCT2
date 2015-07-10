@@ -72,46 +72,45 @@ static rct_widget window_guest_list_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_guest_list_emptysub() { }
-static void window_guest_list_mouseup();
-static void window_guest_list_resize();
+static void window_guest_list_mouseup(rct_window *w, int widgetIndex);
+static void window_guest_list_resize(rct_window *w);
 static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_guest_list_dropdown();
+static void window_guest_list_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
 static void window_guest_list_update(rct_window *w);
-static void window_guest_list_scrollgetsize();
-static void window_guest_list_scrollmousedown();
-static void window_guest_list_scrollmouseover();
-static void window_guest_list_tooltip();
-static void window_guest_list_invalidate();
-static void window_guest_list_paint();
-static void window_guest_list_scrollpaint();
+static void window_guest_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_guest_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
+static void window_guest_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
+static void window_guest_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_guest_list_invalidate(rct_window *w);
+static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 
-static void* window_guest_list_events[] = {
-	window_guest_list_emptysub,
+static rct_window_event_list window_guest_list_events = {
+	NULL,
 	window_guest_list_mouseup,
 	window_guest_list_resize,
 	window_guest_list_mousedown,
 	window_guest_list_dropdown,
-	window_guest_list_emptysub,
+	NULL,
 	window_guest_list_update,
-	window_guest_list_emptysub,
-	window_guest_list_emptysub,
-	window_guest_list_emptysub,
-	window_guest_list_emptysub,
-	window_guest_list_emptysub,
-	window_guest_list_emptysub,
-	window_guest_list_emptysub,
-	window_guest_list_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_guest_list_scrollgetsize,
 	window_guest_list_scrollmousedown,
-	window_guest_list_emptysub,
+	NULL,
 	window_guest_list_scrollmouseover,
-	window_guest_list_emptysub,
-	window_guest_list_emptysub,
-	window_guest_list_emptysub,
+	NULL,
+	NULL,
+	NULL,
 	window_guest_list_tooltip,
-	window_guest_list_emptysub,
-	window_guest_list_emptysub,
+	NULL,
+	NULL,
 	window_guest_list_invalidate,
 	window_guest_list_paint,
 	window_guest_list_scrollpaint
@@ -148,7 +147,7 @@ void window_guest_list_open()
 	if (window != NULL)
 		return;
 
-	window = window_create_auto_pos(350, 330, (uint32*)window_guest_list_events, WC_GUEST_LIST, WF_10 | WF_RESIZABLE);
+	window = window_create_auto_pos(350, 330, &window_guest_list_events, WC_GUEST_LIST, WF_10 | WF_RESIZABLE);
 	window->widgets = window_guest_list_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_CLOSE) |
@@ -265,13 +264,8 @@ void window_guest_list_open_with_filter(int type, int index)
  * 
  *  rct2: 0x00699AAF
  */
-static void window_guest_list_mouseup()
+static void window_guest_list_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
@@ -286,12 +280,8 @@ static void window_guest_list_mouseup()
  * 
  *  rct2: 0x00699EA3
  */
-static void window_guest_list_resize()
+static void window_guest_list_resize(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
-
 	w->min_width = 350;
 	w->min_height = 330;
 	if (w->width < w->min_width) {
@@ -373,13 +363,8 @@ static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widge
  * 
  *  rct2: 0x00699AE1
  */
-static void window_guest_list_dropdown()
+static void window_guest_list_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	short dropdownIndex, widgetIndex;
-	rct_window *w;
-
-	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
-
 	switch (widgetIndex) {
 	case WIDX_PAGE_DROPDOWN_BUTTON:
 		if (dropdownIndex == -1)
@@ -414,13 +399,10 @@ static void window_guest_list_update(rct_window *w)
  * 
  *  rct2: 0x00699C55
  */
-static void window_guest_list_scrollgetsize()
+static void window_guest_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
-	int i, y, numGuests, spriteIndex, width, height;
-	rct_window *w;
+	int i, y, numGuests, spriteIndex;
 	rct_peep *peep;
-
-	window_get_register(w);
 
 	switch (_window_guest_list_selected_tab) {
 	case PAGE_INDIVIDUAL:
@@ -467,24 +449,18 @@ static void window_guest_list_scrollgetsize()
 		window_invalidate(w);
 	}
 
-	width = 447;
-	height = y;
-
-	window_scrollsize_set_registers(width, height);
+	*width = 447;
+	*height = y;
 }
 
 /**
  * 
  *  rct2: 0x00699D7D
  */
-static void window_guest_list_scrollmousedown()
+static void window_guest_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 {
 	int i, spriteIndex;
-	short x, y, scrollIndex;
-	rct_window *w;
 	rct_peep *peep;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	switch (_window_guest_list_selected_tab) {
 	case PAGE_INDIVIDUAL:
@@ -525,13 +501,9 @@ static void window_guest_list_scrollmousedown()
  * 
  *  rct2: 0x00699D3B
  */
-static void window_guest_list_scrollmouseover()
+static void window_guest_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
 {
 	int i;
-	short x, y, scrollIndex;
-	rct_window *w;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	i = y / (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? 10 : 21);
 	i += _window_guest_list_selected_page * 3173;
@@ -545,7 +517,7 @@ static void window_guest_list_scrollmouseover()
  * 
  *  rct2: 0x00699E4A
  */
-static void window_guest_list_tooltip()
+static void window_guest_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
 	RCT2_GLOBAL(0x013CE952, uint16) = STR_LIST;
 }
@@ -554,11 +526,8 @@ static void window_guest_list_tooltip()
  * 
  *  rct2: 0x00699511
  */
-static void window_guest_list_invalidate()
+static void window_guest_list_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	w->pressed_widgets &= ~(1 << WIDX_TAB_1);
@@ -587,13 +556,9 @@ static void window_guest_list_invalidate()
  * 
  *  rct2: 0x006995CC
  */
-static void window_guest_list_paint()
+static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	int i, x, y, format;
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
 
 	// Widgets
 	window_draw_widgets(w, dpi);
@@ -647,16 +612,12 @@ static void window_guest_list_paint()
  * 
  *  rct2: 0x00699701
  */
-static void window_guest_list_scrollpaint()
+static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
 	int spriteIndex, format, numGuests, i, j, y;
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	rct_peep *peep;
 	rct_peep_thought *thought;
 	uint32 argument_1, argument_2;
-
-	window_paint_get_registers(w, dpi);
 
 	// Background fill
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ((char*)0x0141FC48)[w->colours[1] * 8]);

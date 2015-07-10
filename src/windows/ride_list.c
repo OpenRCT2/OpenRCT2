@@ -71,46 +71,45 @@ static rct_widget window_ride_list_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_ride_list_emptysub() { }
-static void window_ride_list_mouseup();
-static void window_ride_list_resize();
+static void window_ride_list_mouseup(rct_window *w, int widgetIndex);
+static void window_ride_list_resize(rct_window *w);
 static void window_ride_list_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_ride_list_dropdown();
+static void window_ride_list_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
 static void window_ride_list_update(rct_window *w);
-static void window_ride_list_scrollgetsize();
-static void window_ride_list_scrollmousedown();
-static void window_ride_list_scrollmouseover();
-static void window_ride_list_tooltip();
-static void window_ride_list_invalidate();
-static void window_ride_list_paint();
-static void window_ride_list_scrollpaint();
+static void window_ride_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_ride_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
+static void window_ride_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
+static void window_ride_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_ride_list_invalidate(rct_window *w);
+static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 
-static void* window_ride_list_events[] = {
-	window_ride_list_emptysub,
+static rct_window_event_list window_ride_list_events = {
+	NULL,
 	window_ride_list_mouseup,
 	window_ride_list_resize,
 	window_ride_list_mousedown,
 	window_ride_list_dropdown,
-	window_ride_list_emptysub,
+	NULL,
 	window_ride_list_update,
-	window_ride_list_emptysub,
-	window_ride_list_emptysub,
-	window_ride_list_emptysub,
-	window_ride_list_emptysub,
-	window_ride_list_emptysub,
-	window_ride_list_emptysub,
-	window_ride_list_emptysub,
-	window_ride_list_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_ride_list_scrollgetsize,
 	window_ride_list_scrollmousedown,
-	window_ride_list_emptysub,
+	NULL,
 	window_ride_list_scrollmouseover,
-	window_ride_list_emptysub,
-	window_ride_list_emptysub,
-	window_ride_list_emptysub,
+	NULL,
+	NULL,
+	NULL,
 	window_ride_list_tooltip,
-	window_ride_list_emptysub,
-	window_ride_list_emptysub,
+	NULL,
+	NULL,
 	window_ride_list_invalidate,
 	window_ride_list_paint,
 	window_ride_list_scrollpaint
@@ -146,7 +145,7 @@ void window_ride_list_open()
 	// Check if window is already open
 	window = window_bring_to_front_by_class(WC_RIDE_LIST);
 	if (window == NULL) {
-		window = window_create_auto_pos(340, 240, (uint32*)window_ride_list_events, WC_RIDE_LIST, WF_10 | WF_RESIZABLE);
+		window = window_create_auto_pos(340, 240, &window_ride_list_events, WC_RIDE_LIST, WF_10 | WF_RESIZABLE);
 		window->widgets = window_ride_list_widgets;
 		window->enabled_widgets =
 			(1 << WIDX_CLOSE) |
@@ -177,13 +176,8 @@ void window_ride_list_open()
  * 
  *  rct2: 0x006B3511
  */
-static void window_ride_list_mouseup()
+static void window_ride_list_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
@@ -219,12 +213,8 @@ static void window_ride_list_mouseup()
  * 
  *  rct2: 0x006B38A7
  */
-static void window_ride_list_resize()
+static void window_ride_list_resize(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
-
 	w->min_width = 340;
 	w->min_height = 124;
 	if (w->width < w->min_width) {
@@ -281,13 +271,8 @@ static void window_ride_list_mousedown(int widgetIndex, rct_window*w, rct_widget
  * 
  *  rct2: 0x006B3547
  */
-static void window_ride_list_dropdown()
+static void window_ride_list_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	short dropdownIndex, widgetIndex;
-	rct_window *w;
-
-	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
-
 	if (widgetIndex == WIDX_OPEN_CLOSE_ALL) {
 		if (dropdownIndex == 0)
 			window_ride_list_close_all(w);
@@ -318,42 +303,32 @@ static void window_ride_list_update(rct_window *w)
  * 
  *  rct2: 0x006B35A1
  */
-static void window_ride_list_scrollgetsize()
+static void window_ride_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
-	int top, width, height;
-	rct_window *w;
-	
-	window_get_register(w);
+	int top;
 
-	height = w->no_list_items * 10;
+	*height = w->no_list_items * 10;
 	if (w->selected_list_item != -1) {
 		w->selected_list_item = -1;
 		window_invalidate(w);
 	}
 
-	top = height - window_ride_list_widgets[WIDX_LIST].bottom + window_ride_list_widgets[WIDX_LIST].top + 21;
+	top = *height - window_ride_list_widgets[WIDX_LIST].bottom + window_ride_list_widgets[WIDX_LIST].top + 21;
 	if (top < 0)
 		top = 0;
 	if (top < w->scrolls[0].v_top) {
 		w->scrolls[0].v_top = top;
 		window_invalidate(w);
 	}
-
-	width = 0;
-	window_scrollsize_set_registers(width, height);
 }
 
 /**
  * 
  *  rct2: 0x006B361F
  */
-static void window_ride_list_scrollmousedown()
+static void window_ride_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 {
 	int index;
-	short x, y, scrollIndex;
-	rct_window *w;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	index = y / 10;
 	if (index >= w->no_list_items)
@@ -367,13 +342,9 @@ static void window_ride_list_scrollmousedown()
  * 
  *  rct2: 0x006B35EF
  */
-static void window_ride_list_scrollmouseover()
+static void window_ride_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
 {
 	int index;
-	short x, y, scrollIndex;
-	rct_window *w;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	index = y / 10;
 	if (index >= w->no_list_items)
@@ -387,7 +358,7 @@ static void window_ride_list_scrollmouseover()
  * 
  *  rct2: 0x006B3861
  */
-static void window_ride_list_tooltip()
+static void window_ride_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
 	RCT2_GLOBAL(0x013CE952, uint16) = STR_LIST;
 }
@@ -396,13 +367,11 @@ static void window_ride_list_tooltip()
  * 
  *  rct2: 0x006B3182
  */
-static void window_ride_list_invalidate()
+static void window_ride_list_invalidate(rct_window *w)
 {
 	int i;
-	rct_window *w;
 	rct_ride *ride;
 
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	window_ride_list_widgets[WIDX_CURRENT_INFORMATION_TYPE].image = STR_STATUS + _window_ride_list_information_type;
@@ -463,13 +432,8 @@ static void window_ride_list_invalidate()
  * 
  *  rct2: 0x006B3235
  */
-static void window_ride_list_paint()
+static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 	window_ride_list_draw_tab_images(dpi, w);
 }
@@ -478,14 +442,10 @@ static void window_ride_list_paint()
  * 
  *  rct2: 0x006B3240
  */
-static void window_ride_list_scrollpaint()
+static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
 	int i, y, format, formatSecondary, argument;
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	rct_ride *ride;
-
-	window_paint_get_registers(w, dpi);
 
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, RCT2_GLOBAL(0x0141FC48 + (w->colours[1] * 8), uint8));
 

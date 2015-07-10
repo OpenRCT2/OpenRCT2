@@ -47,42 +47,41 @@ static rct_widget window_shortcut_widgets[] = {
 	{ WIDGETS_END }
 };
 
-void window_shortcut_emptysub() { }
-static void window_shortcut_mouseup();
-static void window_shortcut_invalidate();
-static void window_shortcut_paint();
-static void window_shortcut_tooltip();
-static void window_shortcut_scrollgetsize();
-static void window_shortcut_scrollmousedown();
-static void window_shortcut_scrollmouseover();
-static void window_shortcut_scrollpaint();
+static void window_shortcut_mouseup(rct_window *w, int widgetIndex);
+static void window_shortcut_invalidate(rct_window *w);
+static void window_shortcut_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_shortcut_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_shortcut_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_shortcut_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
+static void window_shortcut_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
+static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 
-static void* window_shortcut_events[] = {
-	window_shortcut_emptysub,
+static rct_window_event_list window_shortcut_events = {
+	NULL,
 	window_shortcut_mouseup,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_shortcut_scrollgetsize,
 	window_shortcut_scrollmousedown,
-	window_shortcut_emptysub,
+	NULL,
 	window_shortcut_scrollmouseover,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
+	NULL,
+	NULL,
+	NULL,
 	window_shortcut_tooltip,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
+	NULL,
+	NULL,
 	window_shortcut_invalidate,
 	window_shortcut_paint,
 	window_shortcut_scrollpaint
@@ -140,7 +139,7 @@ void window_shortcut_keys_open()
 
 	if (w) return;
 
-	w = window_create_auto_pos(WW, WH, (uint32*)window_shortcut_events, WC_KEYBOARD_SHORTCUT_LIST, 0);
+	w = window_create_auto_pos(WW, WH, &window_shortcut_events, WC_KEYBOARD_SHORTCUT_LIST, 0);
 
 	w->widgets = window_shortcut_widgets;
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RESET);
@@ -154,13 +153,8 @@ void window_shortcut_keys_open()
 *
 *  rct2: 0x006E39E4
 */
-static void window_shortcut_mouseup()
+static void window_shortcut_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex){
 	case WIDX_CLOSE:
 		window_close(w);
@@ -173,11 +167,8 @@ static void window_shortcut_mouseup()
 	}
 }
 
-static void window_shortcut_invalidate()
+static void window_shortcut_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 }
 
@@ -185,13 +176,8 @@ static void window_shortcut_invalidate()
 *
 *  rct2: 0x006E38E0
 */
-static void window_shortcut_paint()
+static void window_shortcut_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 }
 
@@ -199,7 +185,7 @@ static void window_shortcut_paint()
 *
 *  rct2: 0x006E3A0C
 */
-static void window_shortcut_tooltip()
+static void window_shortcut_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
 	RCT2_GLOBAL(0x013CE952, uint16) = STR_LIST;
 }
@@ -208,30 +194,17 @@ static void window_shortcut_tooltip()
 *
 *  rct2: 0x006E3A07
 */
-static void window_shortcut_scrollgetsize()
+static void window_shortcut_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
-	rct_window *w;
-	int width, height;
-
-	window_get_register(w);
-
-	width = 0;
-	height = w->no_list_items * 10;
-
-	window_scrollsize_set_registers(width, height);
+	*height = w->no_list_items * 10;
 }
 
 /**
 *
 *  rct2: 0x006E3A3E
 */
-static void window_shortcut_scrollmousedown()
+static void window_shortcut_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 {
-	short x, y, scrollIndex;
-	rct_window *w;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
-
 	int selected_item = y / 10;
 	if (selected_item >= w->no_list_items)
 		return;
@@ -243,13 +216,8 @@ static void window_shortcut_scrollmousedown()
 *
 *  rct2: 0x006E3A16
 */
-static void window_shortcut_scrollmouseover()
+static void window_shortcut_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
 {
-	short x, y, scrollIndex;
-	rct_window *w;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
-
 	int selected_item = y / 10;
 	if (selected_item >= w->no_list_items)
 		return;
@@ -263,13 +231,8 @@ static void window_shortcut_scrollmouseover()
  * 
  *  rct2: 0x006E38E6
  */
-static void window_shortcut_scrollpaint()
+static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, RCT2_ADDRESS(0x0141FC48,uint8)[w->colours[1] * 8]);
 	
 	for (int i = 0; i < w->no_list_items; ++i) {

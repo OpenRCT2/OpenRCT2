@@ -61,81 +61,81 @@ rct_widget window_sign_widgets[] = {
 		{ WIDGETS_END },
 };
 
-static void window_sign_emptysub() { }
-static void window_sign_mouseup();
+static void window_sign_mouseup(rct_window *w, int widgetIndex);
 static void window_sign_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_sign_dropdown();
-static void window_sign_textinput();
-static void window_sign_invalidate();
-static void window_sign_paint();
-static void window_sign_unknown_14();
+static void window_sign_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_sign_textinput(rct_window *w, int widgetIndex, char *text);
+static void window_sign_unknown_14(rct_window *w);
+static void window_sign_invalidate(rct_window *w);
+static void window_sign_paint(rct_window *w, rct_drawpixelinfo *dpi);
+
 
 // 0x98E44C
-static void* window_sign_events[] = {
-	window_sign_emptysub,
+static rct_window_event_list window_sign_events = {
+	NULL,
 	window_sign_mouseup,
-	window_sign_emptysub,
+	NULL,
 	window_sign_mousedown,
 	window_sign_dropdown,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_sign_textinput,
 	window_sign_unknown_14,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_sign_invalidate,
 	window_sign_paint,
-	window_sign_emptysub
+	NULL
 };
 
-static void window_sign_small_mouseup();
-static void window_sign_small_dropdown();
-static void window_sign_small_invalidate();
+static void window_sign_small_mouseup(rct_window *w, int widgetIndex);
+static void window_sign_small_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_sign_small_invalidate(rct_window *w);
 
 // 0x9A410C
-static void* window_sign_small_events[] = {
-	window_sign_emptysub,
+static rct_window_event_list window_sign_small_events = {
+	NULL,
 	window_sign_small_mouseup,
-	window_sign_emptysub,
+	NULL,
 	window_sign_mousedown,
 	window_sign_small_dropdown,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_sign_textinput,
 	window_sign_unknown_14,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
-	window_sign_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_sign_small_invalidate,
 	window_sign_paint,
-	window_sign_emptysub
+	NULL
 };
 
 /**
@@ -153,7 +153,7 @@ void window_sign_open(rct_windownumber number)
 	if (w != NULL)
 		return;
 
-	w = window_create_auto_pos(WW, WH, (uint32*)window_sign_events, WC_BANNER, WF_2);
+	w = window_create_auto_pos(WW, WH, &window_sign_events, WC_BANNER, WF_2);
 	w->widgets = window_sign_widgets;
 	w->enabled_widgets =
 		(1 << WIDX_CLOSE) |
@@ -215,13 +215,8 @@ void window_sign_open(rct_windownumber number)
 }
 
 /* rct2: 0x6B9765*/
-static void window_sign_mouseup()
+static void window_sign_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	rct_banner* banner = &gBanners[w->number];
 	int x = banner->x << 5;
 	int y = banner->y << 5;
@@ -288,13 +283,8 @@ static void window_sign_mousedown(int widgetIndex, rct_window*w, rct_widget* wid
 }
 
 /* rct2: 0x6B979C */
-static void window_sign_dropdown()
+static void window_sign_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	short widgetIndex, dropdownIndex;
-	rct_window *w;
-
-	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
-
 	switch (widgetIndex){
 	case WIDX_MAIN_COLOR:
 		if (dropdownIndex == -1) return;
@@ -326,21 +316,14 @@ static void window_sign_dropdown()
 }
 
 /* rct2: 0x6B9791 & 0x6E6171*/
-static void window_sign_textinput()
+static void window_sign_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	short widgetIndex;
-	rct_window *w;
-	uint8 result;
-	uint8* text;
-
-	window_text_input_get_registers(w, widgetIndex, result, text);
 	rct_banner* banner = &gBanners[w->number];
 	int x = banner->x << 5;
 	int y = banner->y << 5;
 
-	if (widgetIndex == WIDX_SIGN_TEXT && result) {
-
-		if (*text != 0){
+	if (widgetIndex == WIDX_SIGN_TEXT && text != NULL) {
+		if (*text != 0) {
 			rct_string_id string_id = user_string_allocate(128, text);
 			if (string_id != 0) {
 				rct_string_id prev_string_id = banner->string_idx;
@@ -369,11 +352,8 @@ static void window_sign_textinput()
 }
 
 /* rct2: 0x006B96F5 */
-static void window_sign_invalidate()
+static void window_sign_invalidate(rct_window *w)
 {
-	rct_window* w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOR];
@@ -396,13 +376,8 @@ static void window_sign_invalidate()
 }
 
 /* rct2: 0x006B9754 & 0x006E6134 */
-static void window_sign_paint()
+static void window_sign_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 
 	// Draw viewport
@@ -412,11 +387,8 @@ static void window_sign_paint()
 }
 
 /* rct2: 0x6B9A6C & 0x6E6424 */
-static void window_sign_unknown_14()
+static void window_sign_unknown_14(rct_window *w)
 {
-	rct_window* w;
-	window_get_register(w);
-
 	rct_viewport* view = w->viewport;
 	w->viewport = 0;
 
@@ -461,7 +433,7 @@ void window_sign_small_open(rct_windownumber number){
 	if (w != NULL)
 		return;
 
-	w = window_create_auto_pos(WW, WH, (uint32*)window_sign_small_events, WC_BANNER, 0);
+	w = window_create_auto_pos(WW, WH, &window_sign_small_events, WC_BANNER, 0);
 	w->widgets = window_sign_widgets;
 	w->enabled_widgets =
 		(1 << WIDX_CLOSE) |
@@ -524,13 +496,8 @@ void window_sign_small_open(rct_windownumber number){
 }
 
 /* rct2: 0x6E6145 */
-static void window_sign_small_mouseup()
+static void window_sign_small_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	rct_banner* banner = &gBanners[w->number];
 	int x = banner->x << 5;
 	int y = banner->y << 5;
@@ -580,13 +547,8 @@ static void window_sign_small_mouseup()
 }
 
 /* rct2: 0x6E617C */
-static void window_sign_small_dropdown()
+static void window_sign_small_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	short widgetIndex, dropdownIndex;
-	rct_window* w;
-
-	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
-
 	switch (widgetIndex){
 	case WIDX_MAIN_COLOR:
 		if (dropdownIndex == -1) return;
@@ -628,11 +590,8 @@ static void window_sign_small_dropdown()
 }
 
 /* rct2: 0x006E60D5 */
-static void window_sign_small_invalidate()
+static void window_sign_small_invalidate(rct_window *w)
 {
-	rct_window* w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOR];

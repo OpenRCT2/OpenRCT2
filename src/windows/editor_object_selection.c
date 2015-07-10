@@ -154,52 +154,50 @@ static rct_widget window_editor_object_selection_widgets[] = {
 
 #pragma region Events
 
-static void window_editor_object_selection_emptysub() { }
-
-static void window_editor_object_selection_close();
-static void window_editor_object_selection_mouseup();
-static void window_editor_object_selection_resize();
+static void window_editor_object_selection_close(rct_window *w);
+static void window_editor_object_selection_mouseup(rct_window *w, int widgetIndex);
+static void window_editor_object_selection_resize(rct_window *w);
 static void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_editor_object_selection_dropdown();
+static void window_editor_object_selection_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
 static void window_editor_object_selection_update(rct_window *w);
-static void window_editor_object_selection_scrollgetsize();
-static void window_editor_object_selection_scroll_mousedown();
-static void window_editor_object_selection_scroll_mouseover();
-static void window_editor_object_selection_tooltip();
-static void window_editor_object_selection_invalidate();
-static void window_editor_object_selection_paint();
-static void window_editor_object_selection_scrollpaint();
-static void window_editor_object_selection_textinput();
+static void window_editor_object_selection_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_editor_object_selection_scroll_mousedown(rct_window *w, int scrollIndex, int x, int y);
+static void window_editor_object_selection_scroll_mouseover(rct_window *w, int scrollIndex, int x, int y);
+static void window_editor_object_selection_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_editor_object_selection_invalidate(rct_window *w);
+static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
+static void window_editor_object_selection_textinput(rct_window *w, int widgetIndex, char *text);
 
-static void* window_editor_object_selection_events[] = {
+static rct_window_event_list window_editor_object_selection_events = {
 	window_editor_object_selection_close,
-	(void*)window_editor_object_selection_mouseup,
-	(void*)window_editor_object_selection_resize,
-	(void*)window_editor_object_selection_mousedown,
-	(void*)window_editor_object_selection_dropdown,
-	(void*)window_editor_object_selection_emptysub,
-	(void*)window_editor_object_selection_update,
-	(void*)window_editor_object_selection_emptysub,
-	(void*)window_editor_object_selection_emptysub,
-	(void*)window_editor_object_selection_emptysub,
-	(void*)window_editor_object_selection_emptysub,
-	(void*)window_editor_object_selection_emptysub,
-	(void*)window_editor_object_selection_emptysub,
-	(void*)window_editor_object_selection_emptysub,
-	(void*)window_editor_object_selection_emptysub,
-	(void*)window_editor_object_selection_scrollgetsize,
-	(void*)window_editor_object_selection_scroll_mousedown,
-	(void*)window_editor_object_selection_emptysub,
-	(void*)window_editor_object_selection_scroll_mouseover,
-	(void*)window_editor_object_selection_textinput,
-	(void*)window_editor_object_selection_emptysub,
-	(void*)window_editor_object_selection_emptysub,
-	(void*)window_editor_object_selection_tooltip,
-	(void*)window_editor_object_selection_emptysub,
-	(void*)window_editor_object_selection_emptysub,
-	(void*)window_editor_object_selection_invalidate,
-	(void*)window_editor_object_selection_paint,
-	(void*)window_editor_object_selection_scrollpaint
+	window_editor_object_selection_mouseup,
+	window_editor_object_selection_resize,
+	window_editor_object_selection_mousedown,
+	window_editor_object_selection_dropdown,
+	NULL,
+	window_editor_object_selection_update,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	window_editor_object_selection_scrollgetsize,
+	window_editor_object_selection_scroll_mousedown,
+	NULL,
+	window_editor_object_selection_scroll_mouseover,
+	window_editor_object_selection_textinput,
+	NULL,
+	NULL,
+	window_editor_object_selection_tooltip,
+	NULL,
+	NULL,
+	window_editor_object_selection_invalidate,
+	window_editor_object_selection_paint,
+	window_editor_object_selection_scrollpaint
 };
 
 #pragma endregion
@@ -386,7 +384,7 @@ void window_editor_object_selection_open()
 	window = window_create_centred(
 		600,
 		400,
-		(uint32*)window_editor_object_selection_events,
+		&window_editor_object_selection_events,
 		WC_EDITOR_OBJECT_SELECTION,
 		WF_10 | WF_RESIZABLE
 	);
@@ -735,11 +733,8 @@ void unload_unselected_objects(){
  * 
  *  rct2: 0x006AB199
  */
-static void window_editor_object_selection_close()
+static void window_editor_object_selection_close(rct_window *w)
 {
-	rct_window* w;
-	window_get_register(w);
-
 	//if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR))
 	//	return;
 
@@ -770,13 +765,8 @@ static void window_editor_object_selection_close()
  * 
  *  rct2: 0x006AAFAB
  */
-static void window_editor_object_selection_mouseup()
+static void window_editor_object_selection_mouseup(rct_window *w, int widgetIndex)
 {
-	rct_window *w;
-	short widgetIndex;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR) {
@@ -877,12 +867,8 @@ static void window_editor_object_selection_mouseup()
 	}
 }
 
-static void window_editor_object_selection_resize()
+static void window_editor_object_selection_resize(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
-
 	window_set_resize(w, 600, 400, 1200, 1000);
 }
 
@@ -920,16 +906,11 @@ void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct
 	}
 }
 
-static void window_editor_object_selection_dropdown()
+static void window_editor_object_selection_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	short dropdownIndex;
-	short widgetIndex;
-	rct_window *w;
-
-	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
-
 	if (dropdownIndex == -1)
 		return;
+
 	switch (widgetIndex) {
 	case WIDX_FILTER_DROPDOWN:
 		_filter_flags ^= (1 << dropdownIndex);
@@ -947,31 +928,17 @@ static void window_editor_object_selection_dropdown()
  * 
  *  rct2: 0x006AB031
  */
-static void window_editor_object_selection_scrollgetsize()
+static void window_editor_object_selection_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
-	rct_window *w;
-	short scrollIndex;
-	int width, height;
-
-	window_scroll_get_registers(w, scrollIndex);
-
-	width = 0;
-	height = _numListItems * 12;
-
-	window_scrollsize_set_registers(width, height);
+	*height = _numListItems * 12;
 }
 
 /**
  * 
  *  rct2: 0x006AB0B6
  */
-static void window_editor_object_selection_scroll_mousedown()
+static void window_editor_object_selection_scroll_mousedown(rct_window *w, int scrollIndex, int x, int y)
 {
-	short x, y, scrollIndex;
-	rct_window *w;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
-
 	// Used for in-game object selection cheat to prevent crashing the game
 	// when windows attempt to draw objects that don't exist any more
 	window_close_all_except_class(WC_EDITOR_OBJECT_SELECTION);
@@ -1025,15 +992,11 @@ static void window_editor_object_selection_scroll_mousedown()
  * 
  *  rct2: 0x006AB079
  */
-static void window_editor_object_selection_scroll_mouseover()
+static void window_editor_object_selection_scroll_mouseover(rct_window *w, int scrollIndex, int x, int y)
 {
-	rct_window *w;
 	rct_object_entry *installedEntry;
 	int selectedObject;
-	short x, y, scrollIndex;
 	uint8 objectSelectionFlags;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	selectedObject = get_object_from_object_selection(
 		w->selected_tab & 0xFF, y, &objectSelectionFlags, &installedEntry
@@ -1057,13 +1020,8 @@ static void window_editor_object_selection_scroll_mouseover()
  * 
  *  rct2: 0x006AB058
  */
-static void window_editor_object_selection_tooltip()
+static void window_editor_object_selection_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	rct_window *w;
-	short widgetIndex;
-
-	window_scroll_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_TAB_1:
 	case WIDX_TAB_2:
@@ -1089,13 +1047,10 @@ static void window_editor_object_selection_tooltip()
  * 
  *  rct2: 0x006AA9FD
  */
-static void window_editor_object_selection_invalidate()
+static void window_editor_object_selection_invalidate(rct_window *w)
 {
 	int i, x;
-	rct_window *w;
 	rct_widget *widget;
-
-	window_get_register(w);
 
 	colour_scheme_update(w);
 
@@ -1226,18 +1181,14 @@ static void window_editor_object_selection_invalidate()
  * 
  *  rct2: 0x006AAB56
  */
-static void window_editor_object_selection_paint()
+static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	int i, x, y, width, numSelected, totalSelectable, type;
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	rct_widget *widget;
 	rct_object_entry *highlightedEntry;
 	rct_string_id stringId;
 	uint8 *text, source;
 	char *datName, *name, *stringBuffer;
-
-	window_paint_get_registers(w, dpi);
 
 	/*if (w->selected_tab == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS) {
 		gfx_fill_rect_inset(dpi,
@@ -1447,14 +1398,9 @@ static void window_editor_object_selection_paint()
  * 
  *  rct2: 0x006AADA3
  */
-static void window_editor_object_selection_scrollpaint()
+static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
 	int x, y, i, colour, colour2;
-	short scrollIndex;
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_scrollpaint_get_registers(w, dpi, scrollIndex);
 
 	bool ridePage = (w->selected_tab == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS);
 
@@ -2020,16 +1966,9 @@ static void window_editor_object_selection_update(rct_window *w)
 	}
 }
 
-static void window_editor_object_selection_textinput()
+static void window_editor_object_selection_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	uint8 result;
-	short widgetIndex;
-	rct_window *w;
-	char *text;
-
-	window_textinput_get_registers(w, widgetIndex, result, text);
-
-	if (widgetIndex != WIDX_FILTER_STRING_BUTTON || !result)
+	if (widgetIndex != WIDX_FILTER_STRING_BUTTON || text == NULL)
 		return;
 
 	if (strcmp(_filter_string, text) == 0)

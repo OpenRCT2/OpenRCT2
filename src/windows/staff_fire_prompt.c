@@ -50,50 +50,50 @@ static rct_widget window_staff_fire_widgets[] = {
 	{ WIDGETS_END }
 };
 
-static void window_staff_fire_emptysub(){}
-static void window_staff_fire_mouseup();
-static void window_staff_fire_invalidate();
-static void window_staff_fire_paint();
+static void window_staff_fire_mouseup(rct_window *w, int widgetIndex);
+static void window_staff_fire_invalidate(rct_window *w);
+static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //0x9A3F7C
-static void* window_staff_fire_events[] = {
-	window_staff_fire_emptysub,
+static rct_window_event_list window_staff_fire_events = {
+	NULL,
 	window_staff_fire_mouseup,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
-	window_staff_fire_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_staff_fire_invalidate,
 	window_staff_fire_paint,
-	window_staff_fire_emptysub
+	NULL
 };
 /** Based off of rct2: 0x6C0A77 */
-void window_staff_fire_prompt_open(rct_peep* peep){
+void window_staff_fire_prompt_open(rct_peep* peep)
+{
 	// Check if the confirm window already exists.
 	if (window_bring_to_front_by_number(WC_FIRE_PROMPT, peep->sprite_index)) {
 		return;
 	}
 
-	rct_window* w = window_create_centred(WW, WH, (uint32*)0x992C3C, 0x1A, WF_TRANSPARENT);
+	rct_window* w = window_create_centred(WW, WH, &window_staff_fire_events, WC_FIRE_PROMPT, WF_TRANSPARENT);
 	w->widgets = window_staff_fire_widgets;
 	w->enabled_widgets |= (1 << WIDX_CLOSE) | (1 << WIDX_YES) | (1 << WIDX_CANCEL);
 
@@ -109,12 +109,8 @@ void window_staff_fire_prompt_open(rct_peep* peep){
 *
 *  rct2: 0x006C0B40
 */
-static void window_staff_fire_mouseup(){
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
+static void window_staff_fire_mouseup(rct_window *w, int widgetIndex)
+{
 	rct_peep* peep = &g_sprite_list[w->number].peep;
 	
 	switch (widgetIndex){
@@ -127,11 +123,8 @@ static void window_staff_fire_mouseup(){
 	}
 }
 
-static void window_staff_fire_invalidate()
+static void window_staff_fire_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 }
 
@@ -139,12 +132,8 @@ static void window_staff_fire_invalidate()
 *
 *  rct2: 0x006C0AF2
 */
-static void window_staff_fire_paint(){
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
+static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi)
+{
 	window_draw_widgets(w, dpi);
 
 	rct_peep* peep = &g_sprite_list[w->number].peep;

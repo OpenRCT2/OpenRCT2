@@ -32,40 +32,39 @@ static rct_widget window_title_exit_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_title_exit_emptysub() {}
-static void window_title_exit_paint();
-static void window_title_exit_mouseup();
-static void window_title_exit_invalidate();
+static void window_title_exit_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_title_exit_mouseup(rct_window *w, int widgetIndex);
+static void window_title_exit_invalidate(rct_window *w);
 
-static void* window_title_exit_events[] = {
-	window_title_exit_emptysub,
+static rct_window_event_list window_title_exit_events = {
+	NULL,
 	window_title_exit_mouseup,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
-	window_title_exit_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_title_exit_invalidate,
 	window_title_exit_paint,
-	window_title_exit_emptysub
+	NULL
 };
 
 /**
@@ -79,7 +78,7 @@ void window_title_exit_open()
 	window = window_create(
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 40, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 64,
 		40, 64,
-		(uint32*)window_title_exit_events,
+		&window_title_exit_events,
 		WC_TITLE_EXIT,
 		WF_STICK_TO_BACK | WF_TRANSPARENT
 	);
@@ -92,13 +91,8 @@ void window_title_exit_open()
 *
 *  rct2: 0x0066B83C
 */
-static void window_title_exit_mouseup()
+static void window_title_exit_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0)
 		return;
 
@@ -111,19 +105,12 @@ static void window_title_exit_mouseup()
 * 
 *  rct2: 0x0066B836
 */
-static void window_title_exit_paint()
+static void window_title_exit_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 }
 
-static void window_title_exit_invalidate()
+static void window_title_exit_invalidate(rct_window *w)
 {
-	rct_window *w;
-	window_get_register(w);
 	colour_scheme_update(w);
 }

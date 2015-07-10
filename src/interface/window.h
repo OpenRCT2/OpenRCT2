@@ -134,6 +134,36 @@ enum{
 };
 #define VIEWPORT_FOCUS_Y_MASK 0x3FFF
 
+typedef struct {
+	void (*close)(struct rct_window*);
+	void (*mouse_up)(struct rct_window*, int);
+	void (*resize)(struct rct_window*);
+	void (*mouse_down)(int, struct rct_window*, rct_widget*);
+	void (*dropdown)(struct rct_window*, int, int);
+	void (*unknown_05)(struct rct_window*);
+	void (*update)(struct rct_window*);
+	void (*unknown_07)(struct rct_window*);
+	void (*unknown_08)(struct rct_window*);
+	void (*tool_update)(struct rct_window*, int, int, int);
+	void (*tool_down)(struct rct_window*, int, int, int);
+	void (*tool_drag)(struct rct_window*, int, int, int);
+	void (*tool_up)(struct rct_window*, int, int, int);
+	void (*tool_abort)(struct rct_window*, int);
+	void (*unknown_0E)(struct rct_window*);
+	void (*get_scroll_size)(struct rct_window*, int, int*, int*);
+	void (*scroll_mousedown)(struct rct_window*, int, int, int);
+	void (*scroll_mousedrag)(struct rct_window*, int, int, int);
+	void (*scroll_mouseover)(struct rct_window*, int, int, int);
+	void (*text_input)(struct rct_window*, int, char*);
+	void (*unknown_14)(struct rct_window*);
+	void (*unknown_15)(struct rct_window*, int, int);
+	void (*tooltip)(struct rct_window*, int, rct_string_id*);
+	void (*cursor)(struct rct_window*, int, int, int, int*);
+	void (*moved)(struct rct_window*, int, int);
+	void (*invalidate)(struct rct_window*);
+	void (*paint)(struct rct_window*, rct_drawpixelinfo*);
+	void (*scroll_paint)(struct rct_window*, rct_drawpixelinfo*, int);
+} rct_window_event_list;
 
 typedef struct{
 	sint16 campaign_type;
@@ -192,7 +222,7 @@ typedef struct {
  * size: 0x4C0
  */
 typedef struct rct_window {
-	uint32* event_handlers;		// 0x000
+	rct_window_event_list* event_handlers;		// 0x000
 	rct_viewport* viewport;		// 0x004
 	uint64 enabled_widgets;		// 0x008
 	uint64 disabled_widgets;	// 0x010
@@ -461,9 +491,9 @@ extern ride_list_item _window_track_list_item;
 void window_dispatch_update_all();
 void window_update_all_viewports();
 void window_update_all();
-rct_window *window_create(int x, int y, int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags);
-rct_window *window_create_auto_pos(int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags);
-rct_window *window_create_centred(int width, int height, uint32 *event_handlers, rct_windowclass cls, uint16 flags);
+rct_window *window_create(int x, int y, int width, int height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags);
+rct_window *window_create_auto_pos(int width, int height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags);
+rct_window *window_create_centred(int width, int height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags);
 void window_close(rct_window *window);
 void window_close_by_class(rct_windowclass cls);
 void window_close_by_number(rct_windowclass cls, rct_windownumber number);
@@ -502,6 +532,7 @@ void window_zoom_in(rct_window *w);
 void window_zoom_out(rct_window *w);
 
 void window_show_textinput(rct_window *w, int widgetIndex, uint16 title, uint16 text, int value);
+void window_text_input_key(rct_window* w, int key);
 
 void window_draw(rct_window *w, int left, int top, int right, int bottom);
 void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi);
@@ -631,7 +662,7 @@ void window_event_tool_drag_call(rct_window* w, int widgetIndex, int x, int y);
 void window_event_tool_up_call(rct_window* w, int widgetIndex, int x, int y);
 void window_event_tool_abort_call(rct_window* w, int widgetIndex);
 void window_event_unknown_0E_call(rct_window* w);
-int window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *height);
+void window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *height);
 void window_event_scroll_mousedown_call(rct_window* w, int scrollIndex, int x, int y);
 void window_event_scroll_mousedrag_call(rct_window* w, int scrollIndex, int x, int y);
 void window_event_scroll_mouseover_call(rct_window* w, int scrollIndex, int x, int y);
@@ -660,146 +691,5 @@ bool land_tool_is_active();
 
 //Cheat: in-game land ownership editor
 void toggle_ingame_land_ownership_editor();
-
-#ifdef _MSC_VER
-	#define window_get_register(w)														\
-		__asm mov w, esi
-
-	#define window_widget_get_registers(w, widgetIndex)									\
-		__asm mov widgetIndex, dx														\
-		__asm mov w, esi
-
-	#define window_dropdown_get_registers(w, widgetIndex, dropdownIndex)				\
-		__asm mov dropdownIndex, ax														\
-		__asm mov widgetIndex, dx														\
-		__asm mov w, esi
-	
-	#define window_text_input_get_registers(w, widgetIndex, result, text)				\
-		__asm mov widgetIndex, dx														\
-		__asm mov result, cl															\
-		__asm mov w, esi																\
-		__asm mov text, edi
-
-	#define window_scroll_get_registers(w, i)											\
-		__asm mov i, ax																	\
-		__asm mov w, esi
-
-	#define window_scrollmouse_get_registers(w, i, x, y)								\
-		__asm mov i, ax																	\
-		__asm mov x, cx																	\
-		__asm mov y, dx																	\
-		__asm mov w, esi
-
-	#define window_tool_get_registers(w, widgetIndex, x, y)								\
-		__asm mov x, ax																	\
-		__asm mov y, bx																	\
-		__asm mov widgetIndex, dx														\
-		__asm mov w, esi
-
-	#define window_textinput_get_registers(w, widgetIndex, result, text)				\
-		__asm mov result, cl															\
-		__asm mov widgetIndex, dx														\
-		__asm mov w, esi																\
-		__asm mov text, edi
-
-	#define window_paint_get_registers(w, dpi)											\
-		__asm mov w, esi																\
-		__asm mov dpi, edi
-
-	#define window_scrollpaint_get_registers(w, dpi, i)									\
-		__asm mov i, ax																	\
-		__asm mov w, esi																\
-		__asm mov dpi, edi
-
-	#define window_scrollsize_set_registers(width, height)								\
-		__asm mov ecx, width															\
-		__asm mov edx, height
-
-	#define window_cursor_get_registers(w, widgetIndex, x, y)							\
-		__asm mov widgetIndex, ax														\
-		__asm mov x, cx																	\
-		__asm mov y, dx																	\
-		__asm mov w, esi
-
-	#define window_cursor_set_registers(cursorId)										\
-		__asm mov ebx, cursorId
-
-	#define window_tooltip_get_registers(w, widgetIndex)								\
-		__asm mov widgetIndex, ax														\
-		__asm mov w, esi
-
-	#define window_tooltip_set_registers(value)											\
-		__asm mov ax, value
-
-#else
-	#define window_get_register(w)														\
-		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
-
-	#define window_widget_get_registers(w, widgetIndex)									\
-		__asm__ ( "mov %["#widgetIndex"], dx " : [widgetIndex] "+m" (widgetIndex) );	\
-		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
-
-	#define window_dropdown_get_registers(w, widgetIndex, dropdownIndex)				\
-		__asm__ ( "mov %["#dropdownIndex"], ax " : [dropdownIndex] "+m" (dropdownIndex) );	\
-		__asm__ ( "mov %["#widgetIndex"], dx " : [widgetIndex] "+m" (widgetIndex) );	\
-		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
-
-	#define window_text_input_get_registers(w, widgetIndex, result, text)				\
-		__asm__ ( "mov %[_cl], cl " : [_cl] "+m" (result) );							\
-		__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );		\
-		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );									\
-		__asm__ ( "mov %[text], edi " : [text] "+m" (text) );
-
-	#define window_scroll_get_registers(w, i)											\
-		__asm__ ( "mov %["#i"], ax " : [i] "+m" (i) );									\
-		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
-
-	#define window_scrollmouse_get_registers(w, i, x, y)								\
-		__asm__ ( "mov %["#i"], ax " : [i] "+m" (i) );									\
-		__asm__ ( "mov %["#x"], cx " : [x] "+m" (x) );									\
-		__asm__ ( "mov %["#y"], dx " : [y] "+m" (y) );									\
-		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
-
-	#define window_tool_get_registers(w, widgetIndex, x, y)								\
-		__asm__ ( "mov %["#x"], ax " : [x] "+m" (x) );									\
-		__asm__ ( "mov %["#y"], bx " : [y] "+m" (y) );									\
-		__asm__ ( "mov %["#widgetIndex"], dx " : [widgetIndex] "+m" (widgetIndex) );	\
-		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
-
-	#define window_textinput_get_registers(w, widgetIndex, result, text)				\
-		__asm__ ( "mov %[result], cl " : [result] "+m" (result) );						\
-		__asm__ ( "mov %[widgetIndex], dx " : [widgetIndex] "+m" (widgetIndex) );		\
-		__asm__ ( "mov %[w], esi " : [w] "+m" (w) );									\
-		__asm__ ( "mov %[text], edi " : [text] "+m" (text) );
-
-	#define window_paint_get_registers(w, dpi)											\
-		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );									\
-		__asm__ ( "mov %["#dpi"], edi " : [dpi] "+m" (dpi) );
-
-	#define window_scrollpaint_get_registers(w, dpi, i)									\
-		__asm__ ( "mov %["#i"], ax " : [i] "+m" (i) );									\
-		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );									\
-		__asm__ ( "mov %["#dpi"], edi " : [dpi] "+m" (dpi) );
-
-	#define window_scrollsize_set_registers(width, height)								\
-		__asm__ ( "mov ecx, %[width] " : [width] "+m" (width) );						\
-		__asm__ ( "mov edx, %[height] " : [height] "+m" (height) );
-
-	#define window_cursor_get_registers(w, widgetIndex, x, y)							\
-		__asm__ ( "mov %["#widgetIndex"], ax " : [widgetIndex] "+m" (widgetIndex) );	\
-		__asm__ ( "mov %["#x"], cx " : [x] "+m" (x) );									\
-		__asm__ ( "mov %["#y"], dx " : [y] "+m" (y) );									\
-		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
-
-	#define window_cursor_set_registers(cursorId)										\
-		__asm__ ( "mov ebx, %[cursorId] " : [cursorId] "+m" (cursorId) );
-
-	#define window_tooltip_get_registers(w, widgetIndex)								\
-		__asm__ ( "mov %["#widgetIndex"], ax " : [widgetIndex] "+m" (widgetIndex) );	\
-		__asm__ ( "mov %["#w"], esi " : [w] "+m" (w) );
-
-	#define window_tooltip_set_registers(value)											\
-		__asm__ ( "mov ax, %["#value"] " : [value] "+m" (value) );
-#endif
 
 #endif

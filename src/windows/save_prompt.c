@@ -68,41 +68,40 @@ static rct_widget window_quit_prompt_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_save_prompt_emptysub() { }
-static void window_save_prompt_close();
-static void window_save_prompt_mouseup();
-static void window_save_prompt_invalidate();
-static void window_save_prompt_paint();
+static void window_save_prompt_close(rct_window *w);
+static void window_save_prompt_mouseup(rct_window *w, int widgetIndex);
+static void window_save_prompt_invalidate(rct_window *w);
+static void window_save_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void* window_save_prompt_events[] = {
+static rct_window_event_list window_save_prompt_events = {
 	window_save_prompt_close,
 	window_save_prompt_mouseup,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_save_prompt_invalidate,
 	window_save_prompt_paint,
-	window_save_prompt_emptysub
+	NULL
 };
 
 /**
@@ -181,7 +180,7 @@ void window_save_prompt_open()
 	window = window_create_centred(
 		width,
 		height,
-		(uint32*)window_save_prompt_events,
+		&window_save_prompt_events,
 		WC_SAVE_PROMPT,
 		WF_TRANSPARENT | WF_STICK_TO_FRONT
 	);
@@ -208,7 +207,7 @@ void window_save_prompt_open()
  *
  *  rct2: 0x0066DF17
  */
-static void window_save_prompt_close()
+static void window_save_prompt_close(rct_window *w)
 {
 	// Unpause the game
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) &= ~2;
@@ -220,13 +219,8 @@ static void window_save_prompt_close()
  *
  *  rct2: 0x0066DDF2
  */
-static void window_save_prompt_mouseup()
+static void window_save_prompt_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		switch (widgetIndex) {
 		case WQIDX_OK:
@@ -275,20 +269,12 @@ static void window_save_prompt_mouseup()
 	}
 }
 
-static void window_save_prompt_invalidate()
+static void window_save_prompt_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 }
 
-static void window_save_prompt_paint()
+static void window_save_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 }

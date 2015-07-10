@@ -265,46 +265,44 @@ static void window_options_update_height_markers();
 
 #pragma region Events
 
-static void window_options_emptysub() { }
-
-static void window_options_mouseup();
+static void window_options_mouseup(rct_window *w, int widgetIndex);
 static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_options_dropdown();
+static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
 static void window_options_update(rct_window *w);
-static void window_options_invalidate();
-static void window_options_paint();
-static void window_options_scrollgetsize();
-static void window_options_text_input();
+static void window_options_invalidate(rct_window *w);
+static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_options_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_options_text_input(rct_window *w, int widgetIndex, char *text);
 
-static void* window_options_events[] = {
-	window_options_emptysub,
+static rct_window_event_list window_options_events = {
+	NULL,
 	window_options_mouseup,
-	window_options_emptysub,
+	NULL,
 	window_options_mousedown,
 	window_options_dropdown,
-	window_options_emptysub,
+	NULL,
 	window_options_update,
-	window_options_emptysub,
-	window_options_emptysub,
-	window_options_emptysub,
-	window_options_emptysub,
-	window_options_emptysub,
-	window_options_emptysub,
-	window_options_emptysub,
-	window_options_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_options_scrollgetsize,
-	window_options_emptysub,
-	window_options_emptysub,
-	window_options_emptysub,
+	NULL,
+	NULL,
+	NULL,
 	window_options_text_input,
-	window_options_emptysub,
-	window_options_emptysub,
-	window_options_emptysub,
-	window_options_emptysub,
-	window_options_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_options_invalidate,
 	window_options_paint,
-	window_options_emptysub
+	NULL
 };
 
 #pragma endregion
@@ -404,7 +402,7 @@ void window_options_open()
 	if (w != NULL)
 		return;
 
-	w = window_create_centred(WW, WH, (uint32*)window_options_events, WC_OPTIONS, WF_RESIZABLE);
+	w = window_create_centred(WW, WH, &window_options_events, WC_OPTIONS, WF_RESIZABLE);
 	w->widgets = window_options_display_widgets;
 	w->enabled_widgets = window_options_page_enabled_widgets[WINDOW_OPTIONS_PAGE_DISPLAY];
 	w->page = WINDOW_OPTIONS_PAGE_DISPLAY;
@@ -420,13 +418,8 @@ void window_options_open()
 *
 *  rct2: 0x006BAFCA
 */
-static void window_options_mouseup()
+static void window_options_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
@@ -861,14 +854,8 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 *
 *  rct2: 0x006BB076
 */
-static void window_options_dropdown()
+static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	short dropdownIndex;
-	short widgetIndex;
-	rct_window *w;
-
-	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
-
 	if (dropdownIndex == -1)
 		return;
 
@@ -1039,13 +1026,11 @@ static void window_options_dropdown()
 *  
 *  rct2: 0x006BAD48
 */
-static void window_options_invalidate()
+static void window_options_invalidate(rct_window *w)
 {
-	rct_window *w;
 	rct_widget* widget;
 	sint32 currentSoundDevice;
 
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	if (window_options_page_widgets[w->page] != w->widgets) {
@@ -1252,13 +1237,8 @@ static void window_options_update(rct_window *w)
 *
 *  rct2: 0x006BAEB4
 */
-static void window_options_paint()
+static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 	window_options_draw_tab_images(dpi, w);
 
@@ -1365,33 +1345,19 @@ static void window_options_update_height_markers()
 	gfx_invalidate_screen();
 }
 
-static void window_options_scrollgetsize()
+static void window_options_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
-	rct_window *w;
-	short scrollIndex;
-
-	window_scroll_get_registers(w, scrollIndex);
-
 	if (w->page == WINDOW_OPTIONS_PAGE_AUDIO) {
-		int width = 1000;
-		int height = 0;
-		window_scrollsize_set_registers(width, height);
+		*width = 1000;
 	}
 }
 
-static void window_options_text_input(){
-	short widgetIndex;
-	rct_window *w;
-	char _cl;
-	char* text;
-
-	window_text_input_get_registers(w, widgetIndex, _cl, text);
-	if (_cl == 0)
-	{
+static void window_options_text_input(rct_window *w, int widgetIndex, char *text)
+{
+	if (text == NULL)
 		return;
-	}
 
-	if (widgetIndex == WIDX_CHANNEL_BUTTON){
+	if (widgetIndex == WIDX_CHANNEL_BUTTON) {
 		if (gConfigTwitch.channel != NULL)
 			free(gConfigTwitch.channel);
 		gConfigTwitch.channel = _strdup(text);

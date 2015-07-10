@@ -64,45 +64,44 @@ static rct_widget window_loadsave_widgets[] = {
 
 #pragma region Events
 
-void window_loadsave_emptysub() { }
-static void window_loadsave_close();
-static void window_loadsave_mouseup();
+static void window_loadsave_close(rct_window *w);
+static void window_loadsave_mouseup(rct_window *w, int widgetIndex);
 static void window_loadsave_update(rct_window *w);
-static void window_loadsave_scrollgetsize();
-static void window_loadsave_scrollmousedown();
-static void window_loadsave_scrollmouseover();
-static void window_loadsave_textinput();
-static void window_loadsave_tooltip();
-static void window_loadsave_invalidate();
-static void window_loadsave_paint();
-static void window_loadsave_scrollpaint();
+static void window_loadsave_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_loadsave_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
+static void window_loadsave_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
+static void window_loadsave_textinput(rct_window *w, int widgetIndex, char *text);
+static void window_loadsave_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_loadsave_invalidate(rct_window *w);
+static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 
-static void* window_loadsave_events[] = {
+static rct_window_event_list window_loadsave_events = {
 	window_loadsave_close,
 	window_loadsave_mouseup,
-	window_loadsave_emptysub,
-	window_loadsave_emptysub,
-	window_loadsave_emptysub,
-	window_loadsave_emptysub,
-	window_loadsave_emptysub,
-	window_loadsave_emptysub,
-	window_loadsave_emptysub,
-	window_loadsave_emptysub,
-	window_loadsave_emptysub,
-	window_loadsave_emptysub,
-	window_loadsave_emptysub,
-	window_loadsave_emptysub,
-	window_loadsave_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_loadsave_scrollgetsize,
 	window_loadsave_scrollmousedown,
-	window_loadsave_emptysub,
+	NULL,
 	window_loadsave_scrollmouseover,
 	window_loadsave_textinput,
-	window_loadsave_emptysub,
-	window_loadsave_emptysub,
+	NULL,
+	NULL,
 	window_loadsave_tooltip,
-	window_loadsave_emptysub,
-	window_loadsave_emptysub,
+	NULL,
+	NULL,
 	window_loadsave_invalidate,
 	window_loadsave_paint,
 	window_loadsave_scrollpaint
@@ -154,7 +153,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 
 	w = window_bring_to_front_by_class(WC_LOADSAVE);
 	if (w == NULL) {
-		w = window_create_centred(WW, WH, (uint32*)window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT);
+		w = window_create_centred(WW, WH, &window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT);
 		w->widgets = window_loadsave_widgets;
 		w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SORT_NAME) | (1 << WIDX_SORT_DATE) | (1 << WIDX_BROWSE);
 		w->colours[0] = 7;
@@ -253,7 +252,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	return w;
 }
 
-static void window_loadsave_close()
+static void window_loadsave_close(rct_window *w)
 {
 	if (_listItems != NULL) {
 		free(_listItems);
@@ -263,14 +262,10 @@ static void window_loadsave_close()
 	window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
 }
 
-static void window_loadsave_mouseup()
+static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 {
-	rct_window *w;
-	short widgetIndex;
 	int result;
 	char filename[MAX_PATH], filter[MAX_PATH];
-
-	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex){
 	case WIDX_CLOSE:
@@ -347,26 +342,14 @@ static int has_extension(char *path, char *extension)
 	return 1;
 }
 
-static void window_loadsave_scrollgetsize()
+static void window_loadsave_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
-	rct_window *w;
-	int width, height;
-
-	window_get_register(w);
-
-	width = 0;
-	height = w->no_list_items * 10;
-
-	window_scrollsize_set_registers(width, height);
+	*height = w->no_list_items * 10;
 }
 
-static void window_loadsave_scrollmousedown()
+static void window_loadsave_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 {
 	int selectedItem;
-	short x, y, scrollIndex;
-	rct_window *w;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	selectedItem = y / 10;
 	if (selectedItem >= w->no_list_items)
@@ -408,13 +391,9 @@ static void window_loadsave_scrollmousedown()
 	}
 }
 
-static void window_loadsave_scrollmouseover()
+static void window_loadsave_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
 {
 	int selectedItem;
-	short x, y, scrollIndex;
-	rct_window *w;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	selectedItem = y / 10;
 	if (selectedItem >= w->no_list_items)
@@ -425,17 +404,12 @@ static void window_loadsave_scrollmouseover()
 	window_invalidate(w);
 }
 
-static void window_loadsave_textinput()
+static void window_loadsave_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	rct_window *w;
-	short widgetIndex;
-	uint8 result;
-	char *text, path[MAX_PATH];
+	char path[MAX_PATH];
 	int i, overwrite;
 
-	window_textinput_get_registers(w, widgetIndex, result, text);
-	
-	if (!result || text[0] == 0)
+	if (text == NULL || text[0] == 0)
 		return;
 
 	if (gLoadSaveTitleSequenceSave) {
@@ -471,26 +445,18 @@ static void window_loadsave_textinput()
 		window_loadsave_select(w, path);
 }
 
-static void window_loadsave_tooltip()
+static void window_loadsave_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
 	RCT2_GLOBAL(0x013CE952, uint16) = STR_LIST;
 }
 
-static void window_loadsave_invalidate()
+static void window_loadsave_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 }
 
-static void window_loadsave_paint()
+static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 
 	if (_shortenedDirectory[0] == '\0')
@@ -551,15 +517,11 @@ static void shorten_path(char* path, char* buffer, int available_width){
 	return;
 }
 
-static void window_loadsave_scrollpaint()
+static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
 	int i, y;
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	rct_string_id stringId, templateStringId = 3165;
 	char *templateString;
-
-	window_paint_get_registers(w, dpi);
 
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, RCT2_ADDRESS(0x0141FC48,uint8)[w->colours[1] * 8]);
 	
@@ -868,40 +830,39 @@ static rct_widget window_overwrite_prompt_widgets[] = {
 	{ WIDGETS_END }
 };
 
-static void window_overwrite_prompt_emptysub(){}
-static void window_overwrite_prompt_mouseup();
-static void window_overwrite_prompt_invalidate();
-static void window_overwrite_prompt_paint();
+static void window_overwrite_prompt_mouseup(rct_window *w, int widgetIndex);
+static void window_overwrite_prompt_invalidate(rct_window *w);
+static void window_overwrite_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void* window_overwrite_prompt_events[] = {
-	window_overwrite_prompt_emptysub,
+static rct_window_event_list window_overwrite_prompt_events = {
+	NULL,
 	window_overwrite_prompt_mouseup,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
-	window_overwrite_prompt_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_overwrite_prompt_invalidate,
 	window_overwrite_prompt_paint,
-	window_overwrite_prompt_emptysub
+	NULL
 };
 
 static char _window_overwrite_prompt_name[256];
@@ -913,7 +874,7 @@ static rct_window *window_overwrite_prompt_open(const char *name, const char *pa
 
 	window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
 
-	w = window_create_centred(OVERWRITE_WW, OVERWRITE_WH, (uint32*)window_overwrite_prompt_events, WC_LOADSAVE_OVERWRITE_PROMPT, WF_STICK_TO_FRONT);
+	w = window_create_centred(OVERWRITE_WW, OVERWRITE_WH, &window_overwrite_prompt_events, WC_LOADSAVE_OVERWRITE_PROMPT, WF_STICK_TO_FRONT);
 	w->widgets = window_overwrite_prompt_widgets;
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_OVERWRITE_CANCEL) | (1 << WIDX_OVERWRITE_OVERWRITE);
 	window_init_scroll_widgets(w);
@@ -926,14 +887,11 @@ static rct_window *window_overwrite_prompt_open(const char *name, const char *pa
 	return w;
 }
 
-static void window_overwrite_prompt_mouseup()
+static void window_overwrite_prompt_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w, *loadsaveWindow;
+	rct_window *loadsaveWindow;
 
-	window_widget_get_registers(w, widgetIndex);
-
-	switch (widgetIndex){
+	switch (widgetIndex) {
 	case WIDX_OVERWRITE_OVERWRITE:
 		loadsaveWindow = window_find_by_class(WC_LOADSAVE);
 		if (loadsaveWindow != NULL)
@@ -943,24 +901,17 @@ static void window_overwrite_prompt_mouseup()
 	case WIDX_OVERWRITE_CANCEL:
 	case WIDX_OVERWRITE_CLOSE:
 		window_close(w);
+		break;
 	}
 }
 
-static void window_overwrite_prompt_invalidate()
+static void window_overwrite_prompt_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 }
 
-static void window_overwrite_prompt_paint()
+static void window_overwrite_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 
 	rct_string_id templateStringId = 3165;

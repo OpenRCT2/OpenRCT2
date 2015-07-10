@@ -70,8 +70,6 @@ enum WINDOW_STAFF_WIDGET_IDX {
 	WIDX_COSTUME_BTN,
 };
 
-void window_staff_emptysub(){};
-
 rct_widget window_staff_overview_widgets[] = { 
 	{ WWT_FRAME,	0, 0,		WW - 1,		0,			WH - 1,	0x0FFFFFFFF,	STR_NONE },				// Panel / Background
 	{ WWT_CAPTION,	0, 1,		WW - 2,		1,			14,		0x361,			STR_WINDOW_TITLE_TIP }, // Title
@@ -131,141 +129,141 @@ rct_widget *window_staff_page_widgets[] = {
 
 void window_staff_set_page(rct_window* w, int page);
 void window_staff_disable_widgets(rct_window* w);
-void window_staff_unknown_05();
+void window_staff_unknown_05(rct_window *w);
 void window_staff_viewport_init(rct_window* w);
 
-void window_staff_overview_close();
-void window_staff_overview_mouseup();
-void window_staff_overview_resize();
+void window_staff_overview_close(rct_window *w);
+void window_staff_overview_mouseup(rct_window *w, int widgetIndex);
+void window_staff_overview_resize(rct_window *w);
 void window_staff_overview_mousedown(int widgetIndex, rct_window* w, rct_widget* widget);
-void window_staff_overview_dropdown();
+void window_staff_overview_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
 void window_staff_overview_update(rct_window* w);
-void window_staff_overview_invalidate();
-void window_staff_overview_paint();
+void window_staff_overview_invalidate(rct_window *w);
+void window_staff_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
 void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
-void window_staff_overview_tool_update();
-void window_staff_overview_tool_down();
-void window_staff_overview_tool_abort();
-void window_staff_overview_text_input();
-void window_staff_overview_viewport_init_wrapper();
+void window_staff_overview_tool_update(rct_window* w, int widgetIndex, int x, int y);
+void window_staff_overview_tool_down(rct_window* w, int widgetIndex, int x, int y);
+void window_staff_overview_tool_abort(rct_window *w, int widgetIndex);
+void window_staff_overview_text_input(rct_window *w, int widgetIndex, char *text);
+void window_staff_overview_unknown_14(rct_window *w);
 
-void window_staff_options_mouseup();
+void window_staff_options_mouseup(rct_window *w, int widgetIndex);
 void window_staff_options_update(rct_window* w);
-void window_staff_options_invalidate();
-void window_staff_options_paint();
+void window_staff_options_invalidate(rct_window *w);
+void window_staff_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
 void window_staff_options_mousedown(int widgetIndex, rct_window* w, rct_widget* widget);
-void window_staff_options_dropdown();
+void window_staff_options_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
 
-void window_staff_stats_mouseup();
-void window_staff_stats_resize();
+void window_staff_stats_mouseup(rct_window *w, int widgetIndex);
+void window_staff_stats_resize(rct_window *w);
 void window_staff_stats_update(rct_window* w);
-void window_staff_stats_invalidate();
-void window_staff_stats_paint();
+void window_staff_stats_invalidate(rct_window *w);
+void window_staff_stats_paint(rct_window *w, rct_drawpixelinfo *dpi);
 void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
 void window_staff_set_colours();
 
 // 0x992AEC
-static void* window_staff_overview_events[] = {
+static rct_window_event_list window_staff_overview_events = {
 	window_staff_overview_close,
 	window_staff_overview_mouseup,
 	window_staff_overview_resize,
 	window_staff_overview_mousedown,
 	window_staff_overview_dropdown,
-	window_staff_emptysub,
+	NULL,
 	window_staff_overview_update,
-	window_staff_emptysub,
-	window_staff_emptysub,
+	NULL,
+	NULL,
 	window_staff_overview_tool_update,
 	window_staff_overview_tool_down,
-	window_staff_emptysub,
-	window_staff_emptysub,
+	NULL,
+	NULL,
 	window_staff_overview_tool_abort,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_staff_overview_text_input,
-	window_staff_overview_viewport_init_wrapper,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
+	window_staff_overview_unknown_14,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_staff_overview_invalidate, //Invalidate
 	window_staff_overview_paint, //Paint
-	window_staff_emptysub
+	NULL
 };
 
 // 0x992B5C
-static void* window_staff_options_events[] = {
-	window_staff_emptysub,
+static rct_window_event_list window_staff_options_events = {
+	NULL,
 	window_staff_options_mouseup,
 	window_staff_stats_resize,
 	window_staff_options_mousedown,
 	window_staff_options_dropdown,
 	window_staff_unknown_05,
 	window_staff_options_update,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_staff_options_invalidate, //Invalidate
 	window_staff_options_paint, //Paint
-	window_staff_emptysub
+	NULL
 };
 
 // 0x992BCC
-static void* window_staff_stats_events[] = {
-	window_staff_emptysub,
+static rct_window_event_list window_staff_stats_events = {
+	NULL,
 	window_staff_stats_mouseup,
 	window_staff_stats_resize,
-	window_staff_emptysub,
-	window_staff_emptysub,
+	NULL,
+	NULL,
 	window_staff_unknown_05,
 	window_staff_stats_update,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
-	window_staff_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_staff_stats_invalidate, //Invalidate
 	window_staff_stats_paint, //Paint
-	window_staff_emptysub
+	NULL
 };
 
-void* window_staff_page_events[] = {
-	window_staff_overview_events,
-	window_staff_options_events,
-	window_staff_stats_events
+static rct_window_event_list *window_staff_page_events[] = {
+	&window_staff_overview_events,
+	&window_staff_options_events,
+	&window_staff_stats_events
 };
 
 uint32 window_staff_page_enabled_widgets[] = {
@@ -303,7 +301,7 @@ void window_staff_open(rct_peep* peep)
 {
 	rct_window* w = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index);
 	if (w == NULL) {
-		w = window_create_auto_pos(WW, WH, (uint32*)window_staff_overview_events, WC_PEEP, WF_10 | WF_RESIZABLE);
+		w = window_create_auto_pos(WW, WH, &window_staff_overview_events, WC_PEEP, WF_10 | WF_RESIZABLE);
 
 		w->widgets = RCT2_GLOBAL(0x9AF81C, rct_widget*);
 		w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
@@ -369,12 +367,8 @@ void window_staff_disable_widgets(rct_window* w)
  * Same as window_peep_overview_close.
  * rct2: 0x006BDFF8
  */
-void window_staff_overview_close()
+void window_staff_overview_close(rct_window *w)
 {
-	rct_window* w;
-
-	window_get_register(w);
-
 	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE){
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) &&
 			w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
@@ -431,11 +425,8 @@ void window_staff_set_page(rct_window* w, int page)
 }
 
 /** rct2: 0x006BDF55 */
-void window_staff_overview_mouseup()
+void window_staff_overview_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window* w;
-	window_widget_get_registers(w, widgetIndex);
 	rct_peep* peep = GET_PEEP(w->number);
 
 	switch (widgetIndex) {
@@ -475,11 +466,8 @@ void window_staff_overview_mouseup()
 }
 
 /** rct2: 0x006BE558 */
-void window_staff_overview_resize()
+void window_staff_overview_resize(rct_window *w)
 {
-	rct_window* w;
-	window_get_register(w);
-
 	window_staff_disable_widgets(w);
 
 	w->min_width = WW;
@@ -554,13 +542,8 @@ void window_staff_overview_mousedown(int widgetIndex, rct_window* w, rct_widget*
 }
 
 /** rct2: 0x006BDFA3 */
-void window_staff_overview_dropdown()
+void window_staff_overview_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	short widgetIndex, dropdownIndex;
-	rct_window* w;
-
-	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
-
 	if (widgetIndex != WIDX_PATROL) {
 		return;
 	}
@@ -616,12 +599,8 @@ void window_staff_set_order(rct_window* w, int order_id)
 }
 
 /** rct2: 0x006BE7DB */
-void window_staff_options_mouseup()
+void window_staff_options_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window* w;
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
@@ -648,12 +627,8 @@ void window_staff_options_update(rct_window* w)
 }
 
 /** rct2: 0x006BEBCF */
-void window_staff_stats_mouseup()
+void window_staff_stats_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window* w;
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
@@ -667,11 +642,8 @@ void window_staff_stats_mouseup()
 }
 
 /** rct2: 0x006BEC1B and rct2: 0x006BE975 */
-void window_staff_stats_resize()
+void window_staff_stats_resize(rct_window *w)
 {
-	rct_window* w;
-	window_get_register(w);
-
 	w->min_width = 190;
 	w->max_width = 190; 
 	w->min_height = 119;
@@ -712,17 +684,14 @@ void window_staff_stats_update(rct_window* w)
 }
 
 /* rct2: 0x6BEC80, 0x6BE9DA */
-void window_staff_unknown_05(){
-	rct_window* w;
-	window_get_register(w);
-
+void window_staff_unknown_05(rct_window *w)
+{
 	widget_invalidate(w, WIDX_TAB_1);
 }
 
 /* rct2: 0x006BE9E9 */
-void window_staff_stats_invalidate(){
-	rct_window* w;
-	window_get_register(w);
+void window_staff_stats_invalidate(rct_window *w)
+{
 	colour_scheme_update_by_class(w, (rct_windowclass)WC_STAFF);
 
 	if (window_staff_page_widgets[w->page] != w->widgets){
@@ -753,9 +722,8 @@ void window_staff_stats_invalidate(){
 
 
 /* rct2: 0x006BE62B */
-void window_staff_options_invalidate(){
-	rct_window* w;
-	window_get_register(w);
+void window_staff_options_invalidate(rct_window *w)
+{
 	colour_scheme_update_by_class(w, (rct_windowclass)WC_STAFF);
 
 	if (window_staff_page_widgets[w->page] != w->widgets){
@@ -826,9 +794,8 @@ void window_staff_options_invalidate(){
 }
 
 /* rct2: 0x006BDD91 */
-void window_staff_overview_invalidate(){
-	rct_window* w;
-	window_get_register(w);
+void window_staff_overview_invalidate(rct_window *w)
+{
 	colour_scheme_update_by_class(w, (rct_windowclass)WC_STAFF);
 
 	if (window_staff_page_widgets[w->page] != w->widgets){
@@ -880,12 +847,8 @@ void window_staff_overview_invalidate(){
 }
 
 /* rct2: 0x6BDEAF */
-void window_staff_overview_paint(){
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
+void window_staff_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
+{
 	window_draw_widgets(w, dpi);
 	window_staff_overview_tab_paint(w, dpi);
 	window_staff_options_tab_paint(w, dpi);
@@ -915,7 +878,8 @@ void window_staff_overview_paint(){
 }
 
 /* rct2: 0x6BEC8F */
-void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
+void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
+{
 	if (w->disabled_widgets & (1 << WIDX_TAB_2)) return;
 
 	rct_widget* widget = &w->widgets[WIDX_TAB_2];
@@ -932,7 +896,8 @@ void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 }
 
 /* rct2: 0x6BECD3 */
-void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
+void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
+{
 	if (w->disabled_widgets & (1 << WIDX_TAB_3)) return;
 
 	rct_widget* widget = &w->widgets[WIDX_TAB_3];
@@ -951,7 +916,8 @@ void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 /**
 * Based on rct2: 0x6983dd in window_guest to be remerged into one when peep file added.
 */
-void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
+void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
+{
 	if (w->disabled_widgets & (1 << WIDX_TAB_1))
 		return;
 
@@ -1011,12 +977,8 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 }
 
 /* rct2: 0x6BE7C6 */
-void window_staff_options_paint(){
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
+void window_staff_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
+{
 	window_draw_widgets(w, dpi);
 	window_staff_overview_tab_paint(w, dpi);
 	window_staff_options_tab_paint(w, dpi);
@@ -1024,12 +986,8 @@ void window_staff_options_paint(){
 }
 
 /* rct2: 0x6BEA86 */
-void window_staff_stats_paint(){
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
+void window_staff_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
+{
 	window_draw_widgets(w, dpi);
 	window_staff_overview_tab_paint(w, dpi);
 	window_staff_options_tab_paint(w, dpi);
@@ -1076,14 +1034,10 @@ void window_staff_stats_paint(){
 }
 
 /* rct2: 0x006BDFD8 */
-void window_staff_overview_tool_update(){
-	short widgetIndex;
-	rct_window* w;
-	short x, y;
-
-	window_tool_get_registers(w, widgetIndex, x, y);
-
-	if (widgetIndex != WIDX_PICKUP) return;
+void window_staff_overview_tool_update(rct_window* w, int widgetIndex, int x, int y)
+{
+	if (widgetIndex != WIDX_PICKUP)
+		return;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
 
@@ -1109,15 +1063,9 @@ void window_staff_overview_tool_update(){
 }
 
 /* rct2: 0x006BDFC3 */
-void window_staff_overview_tool_down(){
-	short widgetIndex;
-	rct_window* w;
-	short x, y;
-
-	window_tool_get_registers(w, widgetIndex, x, y);
-
-	if (widgetIndex == WIDX_PICKUP){
-		
+void window_staff_overview_tool_down(rct_window* w, int widgetIndex, int x, int y)
+{
+	if (widgetIndex == WIDX_PICKUP) {
 		int dest_x, dest_y;
 		rct_map_element *mapElement;
 		footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, NULL, &mapElement);
@@ -1174,14 +1122,9 @@ void window_staff_overview_tool_down(){
 }
 
 /* rct2: 0x6BDFAE */
-void window_staff_overview_tool_abort(){
-	short widgetIndex;
-	rct_window* w;
-	short x, y;
-
-	window_tool_get_registers(w, widgetIndex, x, y);
-	if (widgetIndex == WIDX_PICKUP){
-
+void window_staff_overview_tool_abort(rct_window *w, int widgetIndex)
+{
+	if (widgetIndex == WIDX_PICKUP) {
 		rct_peep* peep = GET_PEEP(w->number);
 		if (peep->state != PEEP_STATE_PICKED) return;
 
@@ -1209,17 +1152,13 @@ void window_staff_overview_tool_abort(){
 }
 
 /* rct2:0x6BDFED */
-void window_staff_overview_text_input(){
-	short widgetIndex;
-	rct_window *w;
-	char _cl;
-	uint32* text;
+void window_staff_overview_text_input(rct_window *w, int widgetIndex, char *text)
+{
+	if (widgetIndex != WIDX_RENAME)
+		return;
 
-	window_text_input_get_registers(w, widgetIndex, _cl, text);
-
-	if (widgetIndex != WIDX_RENAME)return;
-
-	if (!_cl) return;
+	if (text == NULL)
+		return;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = 2979;
 
@@ -1229,10 +1168,8 @@ void window_staff_overview_text_input(){
 }
 
 /* rct2: 0x006BE5FC */
-void window_staff_overview_viewport_init_wrapper(){
-	rct_window* w;
-	window_get_register(w);
-
+void window_staff_overview_unknown_14(rct_window *w)
+{
 	window_staff_viewport_init(w);
 }
 
@@ -1360,22 +1297,16 @@ void window_staff_options_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 }
 
 /** rct2: 0x6BE809 */
-void window_staff_options_dropdown()
+void window_staff_options_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	short widgetIndex, dropdownIndex;
-	rct_window* w;
-
-	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
-
 	if (widgetIndex != WIDX_COSTUME_BTN) {
 		return;
 	}
 
-	if (dropdownIndex == -1)return;
+	if (dropdownIndex == -1)
+		return;
 
 	rct_peep* peep = GET_PEEP(w->number);
-	
 	int costume = (RCT2_ADDRESS(0xF4391B, uint8)[dropdownIndex] - 4) | 0x80;
-
 	game_do_command(peep->x, (costume << 8) | 1, peep->y, w->number, GAME_COMMAND_SET_STAFF_ORDER, (int)peep, 0);
 }

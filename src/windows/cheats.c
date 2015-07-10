@@ -267,148 +267,147 @@ static rct_widget *window_cheats_page_widgets[] = {
 	window_cheats_rides_widgets,
 };
 
-static void window_cheats_emptysub() { }
-static void window_cheats_money_mouseup();
-static void window_cheats_guests_mouseup();
-static void window_cheats_misc_mouseup();
-static void window_cheats_rides_mouseup();
-static void window_cheats_misc_tool_update();
-static void window_cheats_misc_tool_down();
+static void window_cheats_money_mouseup(rct_window *w, int widgetIndex);
+static void window_cheats_guests_mouseup(rct_window *w, int widgetIndex);
+static void window_cheats_misc_mouseup(rct_window *w, int widgetIndex);
+static void window_cheats_rides_mouseup(rct_window *w, int widgetIndex);
+static void window_cheats_misc_tool_update(rct_window* w, int widgetIndex, int x, int y);
+static void window_cheats_misc_tool_down(rct_window* w, int widgetIndex, int x, int y);
 static void window_cheats_update(rct_window *w);
-static void window_cheats_invalidate();
-static void window_cheats_paint();
+static void window_cheats_invalidate(rct_window *w);
+static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_cheats_set_page(rct_window *w, int page);
 
-static void* window_cheats_money_events[] = {
-	window_cheats_emptysub,
+static rct_window_event_list window_cheats_money_events = {
+	NULL,
 	window_cheats_money_mouseup,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_cheats_update,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_cheats_invalidate,
 	window_cheats_paint,
-	window_cheats_emptysub
+	NULL
 };
 
-static void* window_cheats_guests_events[] = {
-	window_cheats_emptysub,
+static rct_window_event_list window_cheats_guests_events = {
+	NULL,
 	window_cheats_guests_mouseup,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_cheats_update,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_cheats_invalidate,
 	window_cheats_paint,
-	window_cheats_emptysub
+	NULL
 };
 
-static void* window_cheats_misc_events[] = {
-	window_cheats_emptysub,
+static rct_window_event_list window_cheats_misc_events = {
+	NULL,
 	window_cheats_misc_mouseup,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_cheats_update,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
+	NULL,
+	NULL,
 	window_cheats_misc_tool_update,
 	window_cheats_misc_tool_down,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_cheats_invalidate,
 	window_cheats_paint,
-	window_cheats_emptysub
+	NULL
 };
 
-static void* window_cheats_rides_events[] = {
-	window_cheats_emptysub,
+static rct_window_event_list window_cheats_rides_events = {
+	NULL,
 	window_cheats_rides_mouseup,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_cheats_update,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
-	window_cheats_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_cheats_invalidate,
 	window_cheats_paint,
-	window_cheats_emptysub
+	NULL
 };
 
 
-static void* window_cheats_page_events[] = {
-	window_cheats_money_events,
-	window_cheats_guests_events,
-	window_cheats_misc_events,
-	window_cheats_rides_events,
+static rct_window_event_list *window_cheats_page_events[] = {
+	&window_cheats_money_events,
+	&window_cheats_guests_events,
+	&window_cheats_misc_events,
+	&window_cheats_rides_events,
 };
 
 static uint64 window_cheats_page_enabled_widgets[] = {
@@ -762,7 +761,7 @@ void window_cheats_open()
 	if (window != NULL)
 		return;
 
-	window = window_create(32, 32, WW, WH, (uint32*)window_cheats_money_events, WC_CHEATS, 0);
+	window = window_create(32, 32, WW, WH, &window_cheats_money_events, WC_CHEATS, 0);
 	window->widgets = window_cheats_money_widgets;
 	window->enabled_widgets = window_cheats_page_enabled_widgets[0];
 	window_init_scroll_widgets(window);
@@ -770,13 +769,8 @@ void window_cheats_open()
 	park_rating_spinner_value = get_forced_park_rating() >= 0 ? get_forced_park_rating() : 999;
 }
 
-static void window_cheats_money_mouseup()
+static void window_cheats_money_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
@@ -796,13 +790,8 @@ static void window_cheats_money_mouseup()
 	}
 }
 
-static void window_cheats_guests_mouseup()
+static void window_cheats_guests_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-	
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
@@ -885,13 +874,8 @@ static void window_cheats_guests_mouseup()
 	}
 }
 
-static void window_cheats_misc_mouseup()
+static void window_cheats_misc_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
@@ -987,13 +971,8 @@ static void window_cheats_misc_mouseup()
 	}
 }
 
-static void window_cheats_rides_mouseup()
+static void window_cheats_rides_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
@@ -1067,12 +1046,10 @@ static void window_cheats_update(rct_window *w)
 		}
 }
 
-static void window_cheats_invalidate()
+static void window_cheats_invalidate(rct_window *w)
 {
 	int i;
-	rct_window *w;
 
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	rct_widget *widgets = window_cheats_page_widgets[w->page];
@@ -1114,13 +1091,8 @@ static void window_cheats_invalidate()
 	w->widgets[WIDX_TITLE].image = window_cheats_page_titles[w->page];
 }
 
-static void window_cheats_paint()
+static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 	window_cheats_draw_tab_images(dpi, w);
 
@@ -1207,15 +1179,10 @@ static void window_cheats_set_page(rct_window *w, int page)
 	window_invalidate(w);
 }
 
-static void window_cheats_misc_tool_update()
+static void window_cheats_misc_tool_update(rct_window* w, int widgetIndex, int x, int y)
 {
-	short widgetIndex;
-	rct_window* w;
-	short x, y;
-
-	window_tool_get_registers(w, widgetIndex, x, y);
-
-	if (widgetIndex != WIDX_ZERO_CLEARANCE) return;
+	if (widgetIndex != WIDX_ZERO_CLEARANCE)
+		return;
 
 	map_invalidate_selection_rect();
 
@@ -1236,15 +1203,10 @@ static void window_cheats_misc_tool_update()
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
 }
 
-static void window_cheats_misc_tool_down()
+static void window_cheats_misc_tool_down(rct_window* w, int widgetIndex, int x, int y)
 {
-	short widgetIndex;
-	rct_window* w;
-	short x, y;
-
-	window_tool_get_registers(w, widgetIndex, x, y);
-
-	if (widgetIndex != WIDX_ZERO_CLEARANCE) return;
+	if (widgetIndex != WIDX_ZERO_CLEARANCE)
+		return;
 
 	int dest_x, dest_y;
 	footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, NULL, NULL);

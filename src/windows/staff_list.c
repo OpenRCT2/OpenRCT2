@@ -43,49 +43,48 @@ enum {
 
 bool _quick_fire_mode = false;
 
-static void window_staff_list_emptysub() { }
-static void window_staff_list_close();
-static void window_staff_list_mouseup();
-static void window_staff_list_resize();
+static void window_staff_list_close(rct_window *w);
+static void window_staff_list_mouseup(rct_window *w, int widgetIndex);
+static void window_staff_list_resize(rct_window *w);
 static void window_staff_list_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_staff_list_dropdown();
+static void window_staff_list_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
 static void window_staff_list_update(rct_window *w);
-static void window_staff_list_tooldown();
-static void window_staff_list_toolabort();
-static void window_staff_list_scrollgetsize();
-static void window_staff_list_scrollmousedown();
-static void window_staff_list_scrollmouseover();
-static void window_staff_list_tooltip();
-static void window_staff_list_invalidate();
-static void window_staff_list_paint();
-static void window_staff_list_scrollpaint();
+static void window_staff_list_tooldown(rct_window *w, int widgetIndex, int x, int y);
+static void window_staff_list_toolabort(rct_window *w, int widgetIndex);
+static void window_staff_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_staff_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
+static void window_staff_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
+static void window_staff_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_staff_list_invalidate(rct_window *w);
+static void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 
-static void* window_staff_list_events[] = {
+static rct_window_event_list window_staff_list_events = {
 	window_staff_list_close,
 	window_staff_list_mouseup,
 	window_staff_list_resize,
 	window_staff_list_mousedown,
 	window_staff_list_dropdown,
-	window_staff_list_emptysub,
+	NULL,
 	window_staff_list_update,
-	window_staff_list_emptysub,
-	window_staff_list_emptysub,
-	window_staff_list_emptysub,
-	(void*)0x006BD990,			   // window_staff_list_tooldown
-	window_staff_list_emptysub,
-	window_staff_list_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	window_staff_list_tooldown,
+	NULL,
+	NULL,
 	window_staff_list_toolabort,
-	window_staff_list_emptysub,
+	NULL,
 	window_staff_list_scrollgetsize,
 	window_staff_list_scrollmousedown,
-	window_staff_list_emptysub,
+	NULL,
 	window_staff_list_scrollmouseover,
-	window_staff_list_emptysub,
-	window_staff_list_emptysub,
-	window_staff_list_emptysub,
+	NULL,
+	NULL,
+	NULL,
 	window_staff_list_tooltip,
-	window_staff_list_emptysub,
-	window_staff_list_emptysub,
+	NULL,
+	NULL,
 	window_staff_list_invalidate,
 	window_staff_list_paint,
 	window_staff_list_scrollpaint,
@@ -151,7 +150,7 @@ void window_staff_list_open()
 	if (window != NULL)
 		return;
 
-	window = window_create_auto_pos(320, 270, (uint32*)window_staff_list_events, WC_STAFF_LIST, WF_10 | WF_RESIZABLE);
+	window = window_create_auto_pos(320, 270, &window_staff_list_events, WC_STAFF_LIST, WF_10 | WF_RESIZABLE);
 	window->widgets = window_staff_list_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_STAFF_LIST_CLOSE) |
@@ -188,11 +187,8 @@ void window_staff_list_cancel_tools(rct_window *w) {
 /*
 * rct2: 0x006BD9B1
 **/
-void window_staff_list_close() {
-	rct_window *w;
-
-	window_get_register(w);
-
+void window_staff_list_close(rct_window *w)
+{
 	window_staff_list_cancel_tools(w);
 }
 
@@ -200,13 +196,9 @@ void window_staff_list_close() {
 *
 *  rct2: 0x006BD94C
 */
-static void window_staff_list_mouseup()
+static void window_staff_list_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
 	uint16 newStaffId;
-
-	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_STAFF_LIST_CLOSE:
@@ -247,12 +239,8 @@ static void window_staff_list_mouseup()
 *
 *  rct2: 0x006BDD5D
 */
-static void window_staff_list_resize()
+static void window_staff_list_resize(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
-
 	w->min_width = 320;
 	w->min_height = 270;
 	if (w->width < w->min_width) {
@@ -299,12 +287,8 @@ static void window_staff_list_mousedown(int widgetIndex, rct_window* w, rct_widg
 *
 *  rct2: 0x006BD9A6
 */
-static void window_staff_list_dropdown()
+static void window_staff_list_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	rct_window* w;
-	short widgetIndex, dropdownIndex;
-	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
-
 	if (widgetIndex == WIDX_STAFF_LIST_UNIFORM_COLOR_PICKER && dropdownIndex != -1) {
 		update_staff_colour(RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8), dropdownIndex);
 	}
@@ -338,15 +322,20 @@ void window_staff_list_update(rct_window *w)
 }
 
 /**
+ *
+ *  rct2: 0x006BD990
+ */
+static void window_staff_list_tooldown(rct_window *w, int widgetIndex, int x, int y)
+{
+	RCT2_CALLPROC_X(0x006BD990, x, y, 0, widgetIndex, (int)w, 0, 0);
+}
+
+/**
 *
 *  rct2: 0x006BD99B
 */
-void window_staff_list_toolabort() {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
+void window_staff_list_toolabort(rct_window *w, int widgetIndex)
+{
 	if (widgetIndex == WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON) {
 		hide_gridlines();
 		tool_cancel();
@@ -359,13 +348,10 @@ void window_staff_list_toolabort() {
 *
 *  rct2: 0x006BDBE6
 */
-void window_staff_list_scrollgetsize()
+void window_staff_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
-	int i, width, height, spriteIndex;
+	int i, spriteIndex;
 	rct_peep *peep;
-	rct_window *w;
-
-	window_get_register(w);
 
 	uint16 staffCount = 0;
 	FOR_ALL_PEEPS(spriteIndex, peep) {
@@ -380,8 +366,8 @@ void window_staff_list_scrollgetsize()
 		window_invalidate(w);
 	}
 	
-	height = staffCount * 10;
-	i = height - window_staff_list_widgets[WIDX_STAFF_LIST_LIST].bottom + window_staff_list_widgets[WIDX_STAFF_LIST_LIST].top + 21;
+	*height = staffCount * 10;
+	i = *height - window_staff_list_widgets[WIDX_STAFF_LIST_LIST].bottom + window_staff_list_widgets[WIDX_STAFF_LIST_LIST].top + 21;
 	if (i < 0)
 		i = 0;
 	if (i < w->scrolls[0].v_top) {
@@ -389,21 +375,17 @@ void window_staff_list_scrollgetsize()
 		window_invalidate(w);
 	}
 
-	width = 420;
-	window_scrollsize_set_registers(width, height);
+	*width = 420;
 }
 
 /**
 *
 *  rct2: 0x006BDC9A
 */
-void window_staff_list_scrollmousedown() {
+void window_staff_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
+{
 	int i, spriteIndex;
-	short x, y, scrollIndex;
-	rct_window *w;
 	rct_peep *peep;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	i = y / 10;
 	FOR_ALL_PEEPS(spriteIndex, peep) {
@@ -429,12 +411,9 @@ void window_staff_list_scrollmousedown() {
 *
 *  rct2: 0x006BDC6B
 */
-void window_staff_list_scrollmouseover() {
+void window_staff_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
+{
 	int i;
-	short x, y, scrollIndex;
-	rct_window *w;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	i = y / 10;
 	if (i != RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short)) {
@@ -447,7 +426,7 @@ void window_staff_list_scrollmouseover() {
 *
 *  rct2: 0x006BDC90
 */
-void window_staff_list_tooltip()
+void window_staff_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
 	RCT2_GLOBAL(0x013CE952, uint16) = STR_LIST;
 }
@@ -456,11 +435,8 @@ void window_staff_list_tooltip()
 *
 *  rct2: 0x006BD477
 */
-void window_staff_list_invalidate()
+void window_staff_list_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	int pressed_widgets = w->pressed_widgets & 0xFFFFFF0F;
@@ -497,13 +473,10 @@ void window_staff_list_invalidate()
 *
 *  rct2: 0x006BD533
 */
-void window_staff_list_paint() {
+void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
+{
 	int i;
 	uint8 selectedTab;
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
 
 	// Widgets
 	window_draw_widgets(w, dpi);
@@ -594,16 +567,12 @@ void window_staff_list_paint() {
 *
 *  rct2: 0x006BD785
 */
-void window_staff_list_scrollpaint()
+void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
 	int spriteIndex, y, i, staffOrderIcon_x, staffOrders, staffOrderSprite;
 	uint32 argument_1, argument_2;
 	uint8 selectedTab;
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	rct_peep *peep;
-
-	window_paint_get_registers(w, dpi);
 
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ((char*)0x0141FC48)[w->colours[1] * 8]);
 

@@ -34,39 +34,38 @@ static rct_widget window_error_widgets[] = {
 	{ WIDGETS_END }
 };
 
-static void window_error_emptysub() { }
-static void window_error_unknown5();
-static void window_error_paint();
+static void window_error_unknown5(rct_window *w);
+static void window_error_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void* window_error_events[] = {
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_unknown5,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_paint,
-	(uint32*)window_error_emptysub
+static rct_window_event_list window_error_events = {
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	window_error_unknown5,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	window_error_paint,
+	NULL
 };
 
 static char _window_error_text[512];
@@ -134,7 +133,7 @@ void window_error_open(rct_string_id title, rct_string_id message)
 		y = min(y, maxY);
 	}
 		
-	w = window_create(x, y, width, height, (uint32*)window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
+	w = window_create(x, y, width, height, &window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
 	w->widgets = window_error_widgets;
 	w->error.var_480 = 0;
 	if (!(RCT2_GLOBAL(0x009A8C29, uint8) & 1))
@@ -145,12 +144,8 @@ void window_error_open(rct_string_id title, rct_string_id message)
  * 
  *  rct2: 0x00667BFE
  */
-static void window_error_unknown5()
+static void window_error_unknown5(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
-
 	w->error.var_480++;
 	if (w->error.var_480 >= 8)
 		window_close(w);
@@ -160,13 +155,9 @@ static void window_error_unknown5()
  * 
  *  rct2: 0x00667AA3
  */
-static void window_error_paint()
+static void window_error_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	int t, l, r, b;
-
-	window_paint_get_registers(w, dpi);
 
 	l = w->x;
 	t = w->y;

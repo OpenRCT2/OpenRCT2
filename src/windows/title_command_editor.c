@@ -102,50 +102,48 @@ static rct_widget window_title_command_editor_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_title_command_editor_emptysub() { }
-static void window_title_command_editor_close();
-static void window_title_command_editor_mouseup();
+static void window_title_command_editor_mouseup(rct_window *w, int widgetIndex);
 static void window_title_command_editor_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_title_command_editor_dropdown();
-static void window_title_command_editor_update();
-static void window_title_command_editor_invalidate();
-static void window_title_command_editor_paint();
-static void window_title_command_editor_textinput();
+static void window_title_command_editor_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_title_command_editor_update(rct_window *w);
+static void window_title_command_editor_invalidate(rct_window *w);
+static void window_title_command_editor_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_title_command_editor_textinput(rct_window *w, int widgetIndex, char *text);
 static void window_title_command_editor_inputsize(rct_window *w);
 static int get_command_info_index(int index);
 static TITLE_COMMAND_ORDER get_command_info(int index);
 static rct_xy16 get_location();
 static uint8 get_zoom();
 
-static void* window_title_command_editor_events[] = {
-	window_title_command_editor_close,
+static rct_window_event_list window_title_command_editor_events = {
+	NULL,
 	window_title_command_editor_mouseup,
-	window_title_command_editor_emptysub,
+	NULL,
 	window_title_command_editor_mousedown,
 	window_title_command_editor_dropdown,
-	window_title_command_editor_emptysub,
+	NULL,
 	window_title_command_editor_update,
-	window_title_command_editor_emptysub,
-	window_title_command_editor_emptysub,
-	window_title_command_editor_emptysub,
-	window_title_command_editor_emptysub,
-	window_title_command_editor_emptysub,
-	window_title_command_editor_emptysub,
-	window_title_command_editor_emptysub,
-	window_title_command_editor_emptysub,
-	window_title_command_editor_emptysub,
-	window_title_command_editor_emptysub,
-	window_title_command_editor_emptysub,
-	window_title_command_editor_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_title_command_editor_textinput,
-	window_title_command_editor_emptysub,
-	window_title_command_editor_emptysub,
-	window_title_command_editor_emptysub,
-	window_title_command_editor_emptysub,
-	window_title_command_editor_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_title_command_editor_invalidate,
 	window_title_command_editor_paint,
-	window_title_command_editor_emptysub
+	NULL
 };
 
 static int get_command_info_index(int index)
@@ -206,7 +204,7 @@ void window_title_command_editor_open(int index, bool insert)
 	window = window_create_centred(
 		WW, 
 		WH,
-		(uint32*)window_title_command_editor_events, 
+		&window_title_command_editor_events, 
 		WC_TITLE_COMMAND_EDITOR,
 		WF_STICK_TO_FRONT
 	);
@@ -248,21 +246,11 @@ void window_title_command_editor_open(int index, bool insert)
 	}
 }
 
-static void window_title_command_editor_close()
+static void window_title_command_editor_mouseup(rct_window *w, int widgetIndex)
 {
-	rct_window *w;
-
-	window_get_register(w);
-}
-
-static void window_title_command_editor_mouseup()
-{
-	rct_window *w, *title_editor_w;
-	short widgetIndex;
+	rct_window *title_editor_w;
 	rct_xy16 mapCoord;
 	uint8 zoom;
-
-	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -378,13 +366,9 @@ static void window_title_command_editor_mousedown(int widgetIndex, rct_window* w
 	}
 }
 
-static void window_title_command_editor_dropdown()
+static void window_title_command_editor_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	rct_window* w;
-	short widgetIndex, dropdownIndex;
 	rct_xy16 mapCoord;
-
-	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 	
 	if (dropdownIndex == -1)
 		return;
@@ -441,22 +425,17 @@ static void window_title_command_editor_dropdown()
 	}
 }
 
-static void window_title_command_editor_textinput()
+static void window_title_command_editor_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	uint8 result;
-	short widgetIndex;
-	rct_window *w;
-	char *text, * end;
+	char *end;
 	int value;
 
-	window_textinput_get_registers(w, widgetIndex, result, text);
-	
 	value = strtol(widgetIndex != WIDX_TEXTBOX_Y ? textbox1Buffer : textbox2Buffer, &end, 10);
 	if (value < 0) value = 0;
 	if (value > 255) value = 255;
 	switch (widgetIndex) {
 	case WIDX_TEXTBOX_FULL:
-		if (!result) {
+		if (text == NULL) {
 			if (*end == '\0') {
 				if (command.command == TITLE_SCRIPT_ROTATE || command.command == TITLE_SCRIPT_ZOOM) {
 					if (value > 3) value = 3;
@@ -474,7 +453,7 @@ static void window_title_command_editor_textinput()
 		}
 		break;
 	case WIDX_TEXTBOX_X:
-		if (!result) {
+		if (text == NULL) {
 			if (*end == '\0')
 				command.x = (uint8)value;
 			_itoa(command.x, textbox1Buffer, 10);
@@ -485,7 +464,7 @@ static void window_title_command_editor_textinput()
 		}
 		break;
 	case WIDX_TEXTBOX_Y:
-		if (!result) {
+		if (text == NULL) {
 			if (*end == '\0')
 				command.y = (uint8)value;
 			_itoa(command.y, textbox2Buffer, 10);
@@ -507,11 +486,8 @@ static void window_title_command_editor_update(rct_window *w)
 	}
 }
 
-static void window_title_command_editor_invalidate()
+static void window_title_command_editor_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update_by_class(w, WC_TITLE_EDITOR);
 
 	window_title_command_editor_widgets[WIDX_TEXTBOX_FULL].type = WWT_EMPTY;
@@ -547,13 +523,8 @@ static void window_title_command_editor_invalidate()
 		w->disabled_widgets &= ~(1 << WIDX_GET);
 }
 
-static void window_title_command_editor_paint()
+static void window_title_command_editor_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 
 	gfx_draw_string_left(dpi, 5432, NULL, w->colours[1], w->x + WS, w->y + BY - 14);

@@ -42,60 +42,60 @@ enum WINDOW_RIDE_DEMOLISH_WIDGET_IDX {
 
 // 0x009AEBA0
 static rct_widget window_ride_demolish_widgets[] = {
-		{ WWT_FRAME,			0, 0,		WW - 1,		0,			WH - 1, STR_NONE,				STR_NONE },
-		{ WWT_CAPTION,			0, 1,		WW - 2,		1,			14,		STR_DEMOLISH_RIDE,		STR_WINDOW_TITLE_TIP },
-		{ WWT_CLOSEBOX,			0, WW - 13, WW - 3,		2,			13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },
-		{ WWT_DROPDOWN_BUTTON,	0, 10,		94,			WH - 20,	WH - 9, STR_DEMOLISH,			STR_NONE },
-		{ WWT_DROPDOWN_BUTTON,	0, WW - 95, WW - 11,	WH - 20,	WH - 9, STR_SAVE_PROMPT_CANCEL, STR_NONE },
-		{ WIDGETS_END }
+	{ WWT_FRAME,			0, 0,		WW - 1,		0,			WH - 1, STR_NONE,				STR_NONE },
+	{ WWT_CAPTION,			0, 1,		WW - 2,		1,			14,		STR_DEMOLISH_RIDE,		STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX,			0, WW - 13, WW - 3,		2,			13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },
+	{ WWT_DROPDOWN_BUTTON,	0, 10,		94,			WH - 20,	WH - 9, STR_DEMOLISH,			STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	0, WW - 95, WW - 11,	WH - 20,	WH - 9, STR_SAVE_PROMPT_CANCEL, STR_NONE },
+	{ WIDGETS_END }
 };
 
-static void window_ride_demolish_emptysub(){}
-static void window_ride_demolish_mouseup();
-static void window_ride_demolish_invalidate();
-static void window_ride_demolish_paint();
+static void window_ride_demolish_mouseup(rct_window *w, int widgetIndex);
+static void window_ride_demolish_invalidate(rct_window *w);
+static void window_ride_demolish_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //0x0098E2E4
-static void* window_ride_demolish_events[] = {
-	window_ride_demolish_emptysub,
+static rct_window_event_list window_ride_demolish_events = {
+	NULL,
 	window_ride_demolish_mouseup,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
-	window_ride_demolish_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_ride_demolish_invalidate,
 	window_ride_demolish_paint,
-	window_ride_demolish_emptysub
+	NULL
 };
 
 /** Based off of rct2: 0x006B486A */
-void window_ride_demolish_prompt_open(int rideIndex){
+void window_ride_demolish_prompt_open(int rideIndex)
+{
 	rct_window *w;
 
 	w = window_bring_to_front_by_number(WC_DEMOLISH_RIDE_PROMPT, rideIndex);
 	if (w != NULL)
 		return;
 
-	w = window_create_centred(WW, WH, (uint32*)window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
+	w = window_create_centred(WW, WH, &window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
 	w->widgets = window_ride_demolish_widgets;
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_CANCEL) | (1 << WIDX_DEMOLISH);
 	window_init_scroll_widgets(w);
@@ -107,13 +107,9 @@ void window_ride_demolish_prompt_open(int rideIndex){
 *
 *  rct2: 0x006B4933
 */
-static void window_ride_demolish_mouseup(){
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
-	switch (widgetIndex){
+static void window_ride_demolish_mouseup(rct_window *w, int widgetIndex)
+{
+	switch (widgetIndex) {
 	case WIDX_DEMOLISH:
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_DEMOLISH_RIDE;
 		game_do_command(0, 1, 0, w->number, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
@@ -121,14 +117,12 @@ static void window_ride_demolish_mouseup(){
 	case WIDX_CANCEL:
 	case WIDX_CLOSE:
 		window_close(w);
+		break;
 	}
 }
 
-static void window_ride_demolish_invalidate()
+static void window_ride_demolish_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 }
 
@@ -136,12 +130,8 @@ static void window_ride_demolish_invalidate()
 *
 *  rct2: 0x006B48E5
 */
-static void window_ride_demolish_paint(){
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
+static void window_ride_demolish_paint(rct_window *w, rct_drawpixelinfo *dpi)
+{
 	window_draw_widgets(w, dpi);
 
 	rct_ride* ride = GET_RIDE(w->number);

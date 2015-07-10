@@ -45,43 +45,42 @@ static rct_widget window_title_menu_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_title_menu_emptysub() { }
-static void window_title_menu_mouseup();
+static void window_title_menu_mouseup(rct_window *w, int widgetIndex);
 static void window_title_menu_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_title_menu_dropdown();
-static void window_title_menu_unknown17();
-static void window_title_menu_paint();
-static void window_title_menu_invalidate();
+static void window_title_menu_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_title_menu_cursor(rct_window *w, int widgetIndex, int x, int y, int *cursorId);
+static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_title_menu_invalidate(rct_window *w);
 
-static void* window_title_menu_events[] = {
-	window_title_menu_emptysub,
+static rct_window_event_list window_title_menu_events = {
+	NULL,
 	window_title_menu_mouseup,
-	window_title_menu_emptysub,
+	NULL,
 	window_title_menu_mousedown,
 	window_title_menu_dropdown,
-	window_title_menu_emptysub,
-	window_title_menu_emptysub,
-	window_title_menu_emptysub,
-	window_title_menu_emptysub,
-	window_title_menu_emptysub,
-	window_title_menu_emptysub,
-	window_title_menu_emptysub,
-	window_title_menu_emptysub,
-	window_title_menu_emptysub,
-	window_title_menu_emptysub,
-	window_title_menu_emptysub,
-	window_title_menu_emptysub,
-	window_title_menu_emptysub,
-	window_title_menu_emptysub,
-	window_title_menu_emptysub,
-	window_title_menu_emptysub,
-	window_title_menu_emptysub,
-	window_title_menu_emptysub,
-	window_title_menu_unknown17,
-	window_title_menu_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	window_title_menu_cursor,
+	NULL,
 	window_title_menu_invalidate,
 	window_title_menu_paint,
-	window_title_menu_emptysub
+	NULL
 };
 
 /**
@@ -95,7 +94,7 @@ void window_title_menu_open()
 	window = window_create(
 		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 328) / 2, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 142,
 		328, 82,
-		(uint32*)window_title_menu_events,
+		&window_title_menu_events,
 		WC_TITLE_MENU,
 		WF_STICK_TO_BACK | WF_TRANSPARENT
 	);
@@ -104,17 +103,15 @@ void window_title_menu_open()
 	window_init_scroll_widgets(window);
 }
 
-static void window_title_menu_mouseup()
+static void window_title_menu_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window* w;
-
-	window_widget_get_registers(w, widgetIndex);
-
-	if (widgetIndex == WIDX_START_NEW_GAME) {
+	switch (widgetIndex) {
+	case WIDX_START_NEW_GAME:
 		window_scenarioselect_open();
-	} else if (widgetIndex == WIDX_CONTINUE_SAVED_GAME) {
+		break;
+	case WIDX_CONTINUE_SAVED_GAME:
 		game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
+		break;
 	}
 }
 
@@ -148,13 +145,8 @@ static void window_title_menu_mousedown(int widgetIndex, rct_window*w, rct_widge
 	}
 }
 
-static void window_title_menu_dropdown()
+static void window_title_menu_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	short widgetIndex, dropdownIndex;
-	rct_window *w;
-
-	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
-
 	if (widgetIndex == WIDX_SHOW_TUTORIAL) {
 		tutorial_start(dropdownIndex);
 	} else if (widgetIndex == WIDX_GAME_TOOLS) {
@@ -175,24 +167,17 @@ static void window_title_menu_dropdown()
 	}
 }
 
-static void window_title_menu_unknown17()
+static void window_title_menu_cursor(rct_window *w, int widgetIndex, int x, int y, int *cursorId)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, sint16) = 2000;
 }
 
-static void window_title_menu_paint()
+static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 }
 
-static void window_title_menu_invalidate()
+static void window_title_menu_invalidate(rct_window *w)
 {
-	rct_window *w;
-	window_get_register(w);
 	colour_scheme_update(w);
 }

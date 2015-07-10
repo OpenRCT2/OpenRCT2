@@ -23,39 +23,37 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 
-static void window_editor_main_emptysub() { }
+static void window_editor_main_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void window_editor_main_paint();
-
-static void* window_editor_main_events[] = {
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
-	window_editor_main_emptysub,
+static rct_window_event_list window_editor_main_events = {
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_editor_main_paint,// 0x0066FC97, //window_editor_main_paint,
-	window_editor_main_emptysub,
+	NULL,
 };
 
 static rct_widget window_editor_main_widgets[] = {
@@ -75,7 +73,7 @@ void window_editor_main_open()
 	window_editor_main_widgets[0].right = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
 	window_editor_main_widgets[0].bottom = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
 	window = window_create(0, 0, window_editor_main_widgets[0].right, window_editor_main_widgets[0].bottom,
-		(uint32*)window_editor_main_events, WC_MAIN_WINDOW, WF_STICK_TO_BACK);
+		&window_editor_main_events, WC_MAIN_WINDOW, WF_STICK_TO_BACK);
 	window->widgets = window_editor_main_widgets;
 
 	viewport_create(window, window->x, window->y, window->width, window->height, 0, 0x0FFF, 0x0FFF, 0, 0x1, -1);
@@ -96,11 +94,7 @@ void window_editor_main_open()
 * rct2: 0x0066FC97
 * This function immediately jumps to 0x00685BE1
 */
-static void window_editor_main_paint() {
-	rct_window* w;
-	rct_drawpixelinfo* dpi;
-
-	window_paint_get_registers(w, dpi);
-
+static void window_editor_main_paint(rct_window *w, rct_drawpixelinfo *dpi)
+{
 	viewport_render(dpi, w->viewport, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height);
 }

@@ -29,38 +29,37 @@ static rct_widget window_title_logo_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_title_logo_emptysub() {}
-static void window_title_logo_paint();
+static void window_title_logo_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void* window_title_logo_events[] = {
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
-	window_title_logo_emptysub,
+static rct_window_event_list window_title_logo_events = {
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_title_logo_paint,
-	window_title_logo_emptysub
+	NULL
 };
 
 static void window_title_logo_draw_expansion_packs(rct_drawpixelinfo *dpi);
@@ -86,7 +85,7 @@ void window_title_logo_open()
 		0,
 		200,
 		106 + (10 * packs),
-		(uint32*)window_title_logo_events,
+		&window_title_logo_events,
 		WC_TITLE_LOGO,
 		WF_STICK_TO_BACK | WF_TRANSPARENT
 	);
@@ -101,13 +100,8 @@ void window_title_logo_open()
 *
 *  rct2: 0x0066B872
 */
-static void window_title_logo_paint()
+static void window_title_logo_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	// gfx_draw_sprite(dpi, SPR_MENU_LOGO, w->x, w->y, 0);
 	int x = 2, y = 2;
 	gfx_draw_sprite(dpi, SPR_G2_LOGO, w->x + x, w->y + y, 0);
