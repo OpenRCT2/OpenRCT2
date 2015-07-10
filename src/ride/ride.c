@@ -5050,31 +5050,203 @@ void set_vehicle_type_image_max_sizes(rct_ride_type_vehicle* vehicle_type, int n
  */
 money32 ride_get_entrance_or_exit_price(int rideIndex, int x, int y, int direction, int dh, int di)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = x;
-	ebx = direction << 8;
-	ecx = y;
-	edx = rideIndex | (dh << 8);
-	edi = di;
-	RCT2_CALLFUNC_X(0x006CA28C, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return ebx;
+	sub_6C96C0();
+	money32 result = game_do_command(
+		x,
+		105 | (direction << 8),
+		y,
+		rideIndex | (dh << 8),
+		GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
+		di,
+		0
+	);
+	if (result != MONEY32_UNDEFINED) {
+		_currentTrackSelectionFlags |= (1 << 2);
+		RCT2_GLOBAL(0x00F440BF, uint16) = x;
+		RCT2_GLOBAL(0x00F440C1, uint16) = y;
+		RCT2_GLOBAL(0x00F440C3, uint8) = direction;
+		RCT2_GLOBAL(0x00F440C4, uint8) = di & 0xFF;
+	}
+	return result;
+}
 
+int loc_6CD18E(short mapX, short mapY, short entranceMinX, short entranceMinY, short entranceMaxX, short entranceMaxY)
+{
+	int direction = 0;
+	if (mapX == entranceMinX) {
+		if (mapY > entranceMinY && mapY < entranceMaxY) {
+			return direction;
+		}
+	}
+	direction = 1;
+	if (mapY == entranceMaxY) {
+		if (mapX > entranceMinX && mapX < entranceMaxX) {
+			return direction;
+		}
+	}
+	direction = 2;
+	if (mapX == entranceMaxX) {
+		if (mapY > entranceMinY && mapY < entranceMaxY) {
+			return direction;
+		}
+	}
+	direction = 3;
+	if (mapY == entranceMinY) {
+		if (mapX > entranceMinX && mapX < entranceMaxX) {
+			return direction;
+		}
+	}
+	return -1;
 }
 
 /**
  * 
  * rct2: 0x006CCF70
  */
-void ride_get_entrance_or_exit_position_from_screen_position(int x, int y, int *outX, int *outY, int *outDirection)
+void ride_get_entrance_or_exit_position_from_screen_position(int screenX, int screenY, int *outX, int *outY, int *outDirection)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = x;
-	ebx = y;
-	RCT2_CALLFUNC_X(0x006CCF70, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	
-	if (outX != NULL) *outX = eax & 0xFFFF;
-	if (outY != NULL) *outY = ecx & 0xFFFF;
-	if (outDirection != NULL) *outDirection = ebx & 0xFF;
+	short mapX, mapY;
+	short entranceMinX, entranceMinY, entranceMaxX, entranceMaxY, word_F4418C, word_F4418E;
+	int interactionType, direction, stationHeight, stationDirection;
+	rct_map_element *mapElement;
+	rct_viewport *viewport;
+	rct_ride *ride;
+
+	RCT2_GLOBAL(0x00F44194, uint8) = 255;
+	get_map_coordinates_from_pos(screenX, screenY, 0xFFFB, &mapX, &mapY, &interactionType, &mapElement, &viewport);
+	if (interactionType != 0) {
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
+			if (mapElement->properties.track.ride_index == RCT2_GLOBAL(0x00F44192, uint8)) {
+				if (RCT2_ADDRESS(0x0099BA64, uint8)[mapElement->properties.track.type << 4] & 0x10) {
+					if (mapElement->properties.track.type == 101) {
+						RCT2_GLOBAL(0x00F44193, uint8) = 0;
+					} else {
+						RCT2_GLOBAL(0x00F44193, uint8) = (mapElement->properties.track.sequence & 0x70) >> 4;
+					}
+				}
+			}
+		}
+	}
+
+	ride = GET_RIDE(RCT2_GLOBAL(0x00F44192, uint8));
+	stationHeight = ride->station_heights[RCT2_GLOBAL(0x00F44193, uint8)];
+
+	sub_6894D4(screenX, screenY, stationHeight * 8, &mapX, &mapY);
+	if (mapX == (short)0x8000) {
+		*outX = 0x8000;
+		return;
+	}
+
+	word_F4418C = mapX;
+	word_F4418E = mapY;
+	RCT2_GLOBAL(0x00F44188, uint16) = floor2(mapX, 32);
+	RCT2_GLOBAL(0x00F4418A, uint16) = floor2(mapY, 32);
+
+	if (ride->type == RIDE_TYPE_NULL)
+		return;
+
+	uint16 stationStartXY = ride->station_starts[RCT2_GLOBAL(0x00F44193, uint8)];
+	if (stationStartXY == 0xFFFF)
+		return;
+
+	RCT2_GLOBAL(0x00F44190, uint8) = stationHeight;
+
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3)) {
+		mapX = (word_F4418C & 0x1F) - 16;
+		mapY = (word_F4418E & 0x1F) - 16;
+		if (abs(mapX) < abs(mapY)) {
+			direction = mapY < 0 ? 3 : 1;
+		} else {
+			direction = mapX < 0 ? 0 : 2;
+		}
+
+		for (int i = 0; i < 4; i++) {
+			mapX = word_F4418C + TileDirectionDelta[direction].x;
+			mapY = word_F4418E + TileDirectionDelta[direction].y;
+			if (mapX >= 0 && mapY >= 0 && mapX < (256 * 32) && mapY < (256 * 32)) {
+				mapElement = map_get_first_element_at(mapX >> 5, mapY >> 5);
+				do {
+					if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+						continue;
+					if (mapElement->base_height != stationHeight)
+						continue;
+					if (mapElement->properties.track.ride_index != RCT2_GLOBAL(0x00F44192, uint8))
+						continue;
+					if (mapElement->properties.track.type == 101) {
+						RCT2_GLOBAL(0x00F44194, uint8) = direction ^ 2;
+						*outX = mapX;
+						*outY = mapY;
+						return;
+					}
+					if (map_get_station(mapElement) != RCT2_GLOBAL(0x00F44193, uint8))
+						continue;
+					
+					int ebx = (mapElement->properties.track.type << 4) + (mapElement->properties.track.sequence & 0x0F);
+					int eax = (direction + 2 - mapElement->type) & MAP_ELEMENT_DIRECTION_MASK;
+					if (RCT2_ADDRESS(0x0099CA64, uint8)[ebx] & eax) {
+						RCT2_GLOBAL(0x00F44194, uint8) = direction ^ 2;
+						*outX = mapX;
+						*outY = mapY;
+						return;
+					}
+				} while (!map_element_is_last_for_tile(mapElement++));
+			}
+			direction = (direction + 1) & 3;
+		}
+	} else {
+		mapX = (stationStartXY & 0xFF) * 32;
+		mapY = (stationStartXY >> 8) * 32;
+		entranceMinX = mapX;
+		entranceMinY = mapY;
+
+		mapElement = ride_get_station_start_track_element(ride, RCT2_GLOBAL(0x00F44193, uint8));
+		direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+		stationDirection = direction;
+
+	nextTile:
+		entranceMaxX = mapX;
+		entranceMaxY = mapY;
+		mapX -= TileDirectionDelta[direction].x;
+		mapY -= TileDirectionDelta[direction].y;
+		mapElement = map_get_first_element_at(mapX >> 5, mapY >> 5);
+		do {
+			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+				continue;
+			if (mapElement->properties.track.ride_index != RCT2_GLOBAL(0x00F44192, uint8))
+				continue;
+			if (map_get_station(mapElement) != RCT2_GLOBAL(0x00F44193, uint8))
+				continue;
+
+			switch (mapElement->properties.track.type) {
+			case TRACK_ELEM_END_STATION:
+			case TRACK_ELEM_BEGIN_STATION:
+			case TRACK_ELEM_MIDDLE_STATION:
+				goto nextTile;
+			}
+		} while (!map_element_is_last_for_tile(mapElement++));
+
+		mapX = entranceMinX;
+		if (mapX > entranceMaxX) {
+			entranceMinX = entranceMaxX;
+			entranceMaxX = mapX;
+		}
+
+		mapY = entranceMinY;
+		if (mapY > entranceMaxY) {
+			entranceMinY = entranceMaxY;
+			entranceMaxY = mapY;
+		}
+
+		mapX = RCT2_GLOBAL(0x00F44188, uint16);
+		mapY = RCT2_GLOBAL(0x00F4418A, uint16);
+		direction = loc_6CD18E(mapX, mapY, entranceMinX - 32, entranceMinY - 32, entranceMaxX + 32, entranceMaxY + 32);
+		if (direction != -1 && direction != stationDirection && direction != (stationDirection ^ 2)) {
+			RCT2_GLOBAL(0x00F44194, uint8) = direction;
+			*outX = mapX;
+			*outY = mapY;
+			return;
+		}
+	}
 }
 
 bool ride_select_backwards_from_front()
