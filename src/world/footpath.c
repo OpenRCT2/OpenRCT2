@@ -45,6 +45,25 @@ const rct_xy16 word_981D6C[4] = {
 	{  0, -1 }
 };
 
+// rct2: 0x0097B974
+static const uint16 EntranceDirections[] = {
+	(4    ), 0, 0, 0, 0, 0, 0, 0,	// ENTRANCE_TYPE_RIDE_ENTRANCE,
+	(4    ), 0, 0, 0, 0, 0, 0, 0,	// ENTRANCE_TYPE_RIDE_EXIT,
+	(4 | 1), 0, 0, 0, 0, 0, 0, 0,	// ENTRANCE_TYPE_PARK_ENTRANCE
+};
+
+static int entrance_get_directions(rct_map_element *mapElement)
+{
+	uint8 entranceType = mapElement->properties.entrance.type;
+	uint8 sequence = mapElement->properties.entrance.index & 0x0F;
+	return EntranceDirections[(entranceType * 8) + sequence];
+}
+
+static bool entrance_has_direction(rct_map_element *mapElement, int direction)
+{
+	return entrance_get_directions(mapElement) & (1 << direction);
+}
+
 /**
  *
  *  rct2: 0x006A65AD
@@ -591,11 +610,11 @@ void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y,
 
 	if (interactionType == VIEWPORT_INTERACTION_ITEM_RIDE
 		&& viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
-		&& map_element_get_type(*mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
-		int ebp = (*mapElement)->properties.entrance.type << 4;
-		int bl = (*mapElement)->properties.entrance.index & 0xF;
-		if (RCT2_GLOBAL(0x0097B974 + ebp + bl, uint16) & 0xF) {
-			int bx = bitscanforward(RCT2_GLOBAL(0x0097B974 + ebp + bl, uint16));
+		&& map_element_get_type(*mapElement) == MAP_ELEMENT_TYPE_ENTRANCE
+	) {
+		int directions = entrance_get_directions(*mapElement);
+		if (directions & 0x0F) {
+			int bx = bitscanforward(directions);
 			bx += (*mapElement)->type;
 			bx &= 3;
 			if (direction != NULL) *direction = bx;
@@ -607,11 +626,9 @@ void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y,
 	*x = map_pos.x;
 	*y = map_pos.y;
 	if (interactionType == VIEWPORT_INTERACTION_ITEM_RIDE && map_element_get_type(*mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
-		int ebp = (*mapElement)->properties.entrance.type << 4;
-		int bl = (*mapElement)->properties.entrance.index & 0xF; // Seems to be always 0?
-		// The table at 0x0097B974 is only 48 bytes big
-		if (RCT2_GLOBAL(0x0097B974 + ebp + bl, uint16) & 0xF) {
-			int bx = bitscanforward(RCT2_GLOBAL(0x0097B974 + ebp + bl, uint16));
+		int directions = entrance_get_directions(*mapElement);
+		if (directions & 0x0F) {
+			int bx = bitscanforward(directions);
 			bx += (*mapElement)->type; // First two bits seem to contain the direction of entrance/exit
 			bx &= 3;
 			if (direction != NULL) *direction = bx;
@@ -896,19 +913,16 @@ static void loc_6A6D7E(
 				break;
 			case MAP_ELEMENT_TYPE_ENTRANCE:
 				if (z == mapElement->base_height) {
-					uint8 cl = (mapElement->properties.entrance.index & 0x0F) | (mapElement->properties.entrance.type << 4);
-					uint8 al = ((direction - mapElement->type) & 3) ^ 2;
-					if (!(RCT2_ADDRESS(0x0097B974, uint16)[cl / 2] & (1 << al))) {
-						return;
-					}
-					if (query) {
-						neighbour_list_push(neighbourList, 8, direction);
-					} else {
-						if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) {
-							sub_6A76E9(mapElement->properties.entrance.ride_index);
+					if (entrance_has_direction(mapElement, ((direction - mapElement->type) & 3) ^ 2)) {
+						if (query) {
+							neighbour_list_push(neighbourList, 8, direction);
+						} else {
+							if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) {
+								sub_6A76E9(mapElement->properties.entrance.ride_index);
+							}
 						}
+						goto loc_6A6FD2;
 					}
-					goto loc_6A6FD2;
 				}
 				break;
 			}
@@ -956,9 +970,7 @@ static void loc_6A6C85(
 		return;
 
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
-		uint16 di = (mapElement->properties.entrance.index & 0x0F) | (mapElement->properties.entrance.type << 4);
-		uint16 dx = (direction - mapElement->type) & 3;
-		if (RCT2_ADDRESS(0x0097B974, uint16)[di / 2] & (1 << dx)) {
+		if (entrance_has_direction(mapElement, (direction - mapElement->type) & 3)) {
 			return;
 		}
 	}
