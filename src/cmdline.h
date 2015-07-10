@@ -28,6 +28,10 @@ extern int gExitCode;
 
 int sprite_mode;
 
+extern int gNetworkStart;
+extern char gNetworkStartHost[128];
+extern int gNetworkStartPort;
+
 int cmdline_run(const char **argv, int argc);
 int cmdline_for_sprite(const char **argv, int argc);
 

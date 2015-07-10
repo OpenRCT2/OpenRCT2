@@ -34,33 +34,24 @@ extern "C" {
 
 #pragma comment(lib, "Ws2_32.lib")
 
-int gNetworkStart = NETWORK_NONE;
-char gNetworkStartHost[128];
-int gNetworkStartPort = NETWORK_DEFAULT_PORT;
-int gNetworkStatus = NETWORK_NONE;
-uint32 gNetworkServerTick = 0;
+Network gNetwork;
 
-struct GameCommand
-{
-	GameCommand(uint32 args[8]) { tick = args[0], eax = args[1], ebx = args[2], ecx = args[3], edx = args[4], esi = args[5], edi = args[6], ebp = args[7]; };
-	uint32 tick;
-	uint32 eax, ebx, ecx, edx, esi, edi, ebp;
-	bool operator<(const GameCommand& comp) const {
-		return tick < comp.tick;
-	}
+enum {
+	NETWORK_SUCCESS,
+	NETWORK_NO_DATA,
+	NETWORK_MORE_DATA,
+	NETWORK_DISCONNECTED
 };
 
-static int _wsaInitialised = 0;
-static WSADATA _wsaData;
-static SOCKET _listeningSocket = INVALID_SOCKET;
-static SOCKET _serverSocket = INVALID_SOCKET;
-static SOCKET _clientSocket = INVALID_SOCKET;
-static std::vector<uint8> _chunkBuffer;
-static NetworkConnection _serverConnection;
-static std::list<std::unique_ptr<NetworkConnection>> _clientConnectionList;
-static std::multiset<GameCommand> _gameCommandQueue;
-
-static void network_process_packet(NetworkPacket& packet);
+enum {
+	NETWORK_COMMAND_AUTH,
+	NETWORK_COMMAND_MAP,
+	NETWORK_COMMAND_CHAT,
+	NETWORK_COMMAND_GAMECMD,
+	NETWORK_COMMAND_TICK,
+	NETWORK_COMMAND_PLAYER,
+	NETWORK_COMMAND_MAX
+};
 
 NetworkPacket::NetworkPacket()
 {
@@ -129,10 +120,6 @@ int NetworkConnection::ReadPacket()
 
 int NetworkConnection::SendPacket(NetworkPacket& packet)
 {
-	if (gNetworkStatus == NETWORK_NONE) {
-		return 0;
-	}
-
 	while (1) {
 		if (packet.read < sizeof(packet.size)) {
 			// send packet size
@@ -170,231 +157,289 @@ void NetworkConnection::SendQueuedPackets()
 	}
 }
 
-int network_init()
+Network::Network()
 {
-	if (!_wsaInitialised) {
+	wsa_initialized = false;
+	mode = NETWORK_MODE_NONE;
+	last_tick_sent_time = 0;
+}
+
+Network::~Network()
+{
+	Close();
+}
+
+bool Network::Init()
+{
+	if (!wsa_initialized) {
 		log_verbose("Initialising WSA");
-		if (WSAStartup(MAKEWORD(2, 2), &_wsaData) != 0) {
+		WSADATA wsa_data;
+		if (WSAStartup(MAKEWORD(2, 2), &wsa_data) != 0) {
 			log_error("Unable to initialise winsock.");
-			return 0;
+			return false;
 		}
-		_wsaInitialised = 1;
+		wsa_initialized = true;
+	}
+	return true;
+}
+
+void Network::Close()
+{
+	if (mode == NETWORK_MODE_CLIENT) {
+		mode = NETWORK_MODE_NONE;
+		closesocket(server_socket);
+	} else
+	if (mode == NETWORK_MODE_SERVER) {
+		mode = NETWORK_MODE_NONE;
+		closesocket(listening_socket);
+		for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
+			closesocket((*it)->socket);
+		}
+		client_connection_list.clear();
 	}
 
-	return 1;
+	if (wsa_initialized) {
+		WSACleanup();
+		wsa_initialized = false;
+	}
 }
 
-void network_close()
+bool Network::BeginClient(const char* host, unsigned short port)
 {
-	if (!_wsaInitialised)
-		return;
+	if (!Init())
+		return false;
 
-	if (gNetworkStatus == NETWORK_CLIENT)
-		network_end_client();
-	else if (gNetworkStatus == NETWORK_SERVER)
-		network_end_server();
-
-	log_verbose("Closing WSA");
-	WSACleanup();
-	_wsaInitialised = 0;
-}
-
-int network_begin_client(const char *host, int port)
-{
-	SOCKADDR_IN serverAddress;
-	u_long iMode;
-
-	if (!network_init())
-		return 0;
-
-	_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (_serverSocket == INVALID_SOCKET) {
+	server_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (server_socket == INVALID_SOCKET) {
 		log_error("Unable to create socket.");
 		return 0;
 	}
 
-	serverAddress.sin_family = AF_INET;
-	serverAddress.sin_addr.S_un.S_addr = inet_addr(host);
-	serverAddress.sin_port = htons(port);
+	SOCKADDR_IN server_address;
+	server_address.sin_family = AF_INET;
+	server_address.sin_addr.S_un.S_addr = inet_addr(host);
+	server_address.sin_port = htons(port);
 
-	if (connect(_serverSocket, (SOCKADDR*)&serverAddress, sizeof(SOCKADDR_IN)) != 0) {
+	if (connect(server_socket, (SOCKADDR*)&server_address, sizeof(SOCKADDR_IN)) != 0) {
 		log_error("Unable to connect to host.");
-		return 0;
+		return false;
 	} else {
 		printf("Connected to server!\n");
 	}
 
-	iMode = 1;
-	if (ioctlsocket(_serverSocket, FIONBIO, &iMode) != NO_ERROR) {
-		closesocket(_serverSocket);
+	u_long nonblocking = 1;
+	if (ioctlsocket(server_socket, FIONBIO, &nonblocking) != NO_ERROR) {
+		closesocket(server_socket);
 		log_error("Failed to set non-blocking mode.");
 	}
 
-	_serverConnection.socket = _serverSocket;
+	server_connection.socket = server_socket;
 
-	gNetworkStatus = NETWORK_CLIENT;
-	return 1;
+	mode = NETWORK_MODE_CLIENT;
+	return true;
 }
 
-void network_end_client()
+bool Network::BeginServer(unsigned short port)
 {
-	gNetworkStatus = NETWORK_NONE;
-	closesocket(_serverSocket);
-}
-
-int network_begin_server(int port)
-{
-	SOCKADDR_IN localAddress;
-	u_long iMode;
-
-	if (!network_init())
-		return 0;
+	if (!Init())
+		return false;
 
 	log_verbose("Begin listening for clients");
-	_listeningSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (_listeningSocket == INVALID_SOCKET) {
+	listening_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (listening_socket == INVALID_SOCKET) {
 		log_error("Unable to create socket.");
-		return 0;
+		return false;
 	}
-	 
-	localAddress.sin_family = AF_INET;
-	localAddress.sin_addr.S_un.S_addr = INADDR_ANY;
-	localAddress.sin_port = htons(port);
 
-	if (bind(_listeningSocket, (SOCKADDR*)&localAddress, sizeof(SOCKADDR_IN)) != 0) {
-		closesocket(_listeningSocket);
+	SOCKADDR_IN local_address;
+	local_address.sin_family = AF_INET;
+	local_address.sin_addr.S_un.S_addr = INADDR_ANY;
+	local_address.sin_port = htons(port);
+
+	if (bind(listening_socket, (SOCKADDR*)&local_address, sizeof(SOCKADDR_IN)) != 0) {
+		closesocket(listening_socket);
 		log_error("Unable to bind to socket.");
-		return 0;
+		return false;
 	}
 
-	if (listen(_listeningSocket, SOMAXCONN) != 0) {
-		closesocket(_listeningSocket);
+	if (listen(listening_socket, SOMAXCONN) != 0) {
+		closesocket(listening_socket);
 		log_error("Unable to listen on socket.");
-		return 0;
+		return false;
 	}
 
-	iMode = 1;
-	if (ioctlsocket(_listeningSocket, FIONBIO, &iMode) != NO_ERROR) {
-		closesocket(_listeningSocket);
+	u_long nonblocking = 1;
+	if (ioctlsocket(listening_socket, FIONBIO, &nonblocking) != NO_ERROR) {
+		closesocket(listening_socket);
 		log_error("Failed to set non-blocking mode.");
-		return 0;
+		return false;
 	}
 
 	printf("Ready for clients...\n");
 
-	gNetworkStatus = NETWORK_SERVER;
-	return 1;
+	mode = NETWORK_MODE_SERVER;
+	return true;
 }
 
-void network_end_server()
+int Network::GetMode()
 {
-	gNetworkStatus = NETWORK_NONE;
-	closesocket(_clientSocket);
+	return mode;
 }
 
-void network_add_client(SOCKET socket)
+uint32 Network::GetServerTick()
 {
-	printf("New client connection\n");
-	auto networkconnection = std::unique_ptr<NetworkConnection>(new NetworkConnection);  // change to make_unique in c++14
-	networkconnection->socket = socket;
-	_clientConnectionList.push_back(std::move(networkconnection));
+	return server_tick;
 }
 
-void network_remove_client(std::unique_ptr<NetworkConnection>& networkconnection)
+void Network::Update()
 {
-	printf("Client removed\n");
-	_clientConnectionList.remove(networkconnection);
+	if (GetMode() == NETWORK_MODE_NONE)
+		return;
+
+	if (GetMode() == NETWORK_MODE_CLIENT) {
+		if (!ProcessConnection(server_connection)) {
+			Close();
+		} else {
+			ProcessGameCommandQueue();
+		}
+	} else 
+	if (GetMode() == NETWORK_MODE_SERVER) {
+		auto it = client_connection_list.begin();
+		while(it != client_connection_list.end()) {
+			if (!ProcessConnection(*(*it))) {
+				RemoveClient((*it));
+				it = client_connection_list.begin();
+			} else {
+				it++;
+			}
+		}
+		if (SDL_GetTicks() - last_tick_sent_time >= 25) {
+			last_tick_sent_time = SDL_GetTicks();
+			Send_TICK();
+		}
+		SOCKET socket = accept(listening_socket, NULL, NULL);
+		if (socket == INVALID_SOCKET) {
+			if (WSAGetLastError() != WSAEWOULDBLOCK) {
+				PrintError();
+				log_error("Failed to accept client.");
+			}
+		} else {
+			u_long nonblocking = 1;
+			if (ioctlsocket(socket, FIONBIO, &nonblocking) != NO_ERROR) {
+				closesocket(socket);
+				log_error("Failed to set non-blocking mode.");
+			} else {
+				AddClient(socket);
+			}
+		}
+	}
 }
 
-int network_process_connection(NetworkConnection& networkconnection)
+void Network::Send_TICK()
+{
+	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
+	packet->Write((uint32)NETWORK_COMMAND_TICK);
+	packet->Write((uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32));
+	for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
+		(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
+	}
+	
+}
+
+void Network::Send_MAP()
+{
+	if (GetMode() == NETWORK_MODE_SERVER) {
+		int buffersize = 0x600000;
+		std::vector<uint8> buffer(buffersize);
+		SDL_RWops* rw = SDL_RWFromMem(&buffer[0], buffersize);
+		scenario_save(rw, 0);
+		int size = (int)SDL_RWtell(rw);
+		int chunksize = 1000;
+		for (int i = 0; i < size; i += chunksize) {
+			int datasize = min(chunksize, size - i);
+			std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
+			packet->Write((uint32)NETWORK_COMMAND_MAP);
+			packet->Write((uint32)size);
+			packet->Write((uint32)i);
+			packet->Write(&buffer[i], datasize);
+			for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
+				(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
+			}
+		}
+		SDL_RWclose(rw);
+	}
+}
+
+void Network::Send_CHAT(const char* text)
+{
+	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
+	packet->Write((uint32)NETWORK_COMMAND_CHAT);
+	packet->Write((uint8*)text, strlen(text) + 1);
+	if (GetMode() == NETWORK_MODE_SERVER) {
+		for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
+			(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
+		}
+	} else {
+		server_connection.QueuePacket(std::move(packet));
+	}
+}
+
+void Network::Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp)
+{
+	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
+	packet->Write((uint32)NETWORK_COMMAND_GAMECMD);
+	packet->Write((uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32));
+	packet->Write((uint32)eax);
+	packet->Write((uint32)ebx | (1 << 31));
+	packet->Write((uint32)ecx);
+	packet->Write((uint32)edx);
+	packet->Write((uint32)esi);
+	packet->Write((uint32)edi);
+	packet->Write((uint32)ebp);
+	if (GetMode() == NETWORK_MODE_SERVER) {
+		for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
+			(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
+		}
+	} else {
+		server_connection.QueuePacket(std::move(packet));
+	}
+}
+
+bool Network::ProcessConnection(NetworkConnection& connection)
 {
 	int packetStatus;
 	do {
-		packetStatus = networkconnection.ReadPacket();
+		packetStatus = connection.ReadPacket();
 		switch(packetStatus) {
 		case NETWORK_DISCONNECTED:
-			network_print_error();
-			if (gNetworkStatus == NETWORK_CLIENT) {
-				network_end_client();
+			// closed connection or network error
+			PrintError();
+			if (GetMode() == NETWORK_MODE_CLIENT) {
 				printf("Server disconnected...\n");
-				return 0;
-			} else if (gNetworkStatus == NETWORK_SERVER) {
+				return false;
+			} else
+			if (GetMode() == NETWORK_MODE_SERVER) {
 				printf("Client disconnected...\n");
-				return 0;
+				return false;
 			}
 			break;
 		case NETWORK_SUCCESS:
 			// done reading in packet
-			network_process_packet(networkconnection.inboundpacket);
+			ProcessPacket(connection.inboundpacket);
 			break;
 		case NETWORK_MORE_DATA:
 			// more data required to be read
 			break;
 		case NETWORK_NO_DATA:
+			// could not read anything from socket
 			break;
 		}
 	} while (packetStatus == NETWORK_MORE_DATA || packetStatus == NETWORK_SUCCESS);
-	networkconnection.SendQueuedPackets();
-	return 1;
+	connection.SendQueuedPackets();
+	return true;
 }
 
-void network_process_gamecmdqueue()
-{
-	while (_gameCommandQueue.begin() != _gameCommandQueue.end() && _gameCommandQueue.begin()->tick < RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)) {
-		_gameCommandQueue.erase(_gameCommandQueue.begin());
-	}
-	while (_gameCommandQueue.begin() != _gameCommandQueue.end() && _gameCommandQueue.begin()->tick == RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)) {
-		const GameCommand& gc = (*_gameCommandQueue.begin());
-		game_do_command(gc.eax, gc.ebx, gc.ecx, gc.edx, gc.esi, gc.edi, gc.ebp);
-		_gameCommandQueue.erase(_gameCommandQueue.begin());
-	}
-}
-
-void network_update()
-{
-	static uint32 lastTickUpdate = 0;
-	u_long iMode;
-
-	if (gNetworkStatus == NETWORK_NONE)
-		return;
-
-	if (gNetworkStatus == NETWORK_CLIENT) {
-		network_process_connection(_serverConnection);
-		network_process_gamecmdqueue();
-	} else {
-		auto it = _clientConnectionList.begin();
-		while(it != _clientConnectionList.end()) {
-			if (!network_process_connection(*(*it))) {
-				network_remove_client((*it));
-				it = _clientConnectionList.begin();
-			} else {
-				it++;
-			}
-		}
-		if (SDL_GetTicks() - lastTickUpdate >= 25) {
-			lastTickUpdate = SDL_GetTicks();
-			network_send_tick();
-		}
-		SOCKET socket = accept(_listeningSocket, NULL, NULL);
-		if (socket == INVALID_SOCKET) {
-			if (WSAGetLastError() != WSAEWOULDBLOCK) {
-				network_print_error();
-				closesocket(_listeningSocket);
-				log_error("Failed to accept client.");
-			}
-		} else {
-			iMode = 1;
-			if (ioctlsocket(socket, FIONBIO, &iMode) != NO_ERROR) {
-				closesocket(socket);
-				log_error("Failed to set non-blocking mode.");
-			} else {
-				network_add_client(socket);
-			}
-		}
-	}
-}
-
-static void network_process_packet(NetworkPacket& packet)
+void Network::ProcessPacket(NetworkPacket& packet)
 {
 	uint32 *args;
 	int command;
@@ -413,13 +458,13 @@ static void network_process_packet(NetworkPacket& packet)
 				// too big
 			} else {
 				int chunksize = packet.size - 4 - 4 - 4;
-				if (offset + chunksize > _chunkBuffer.size()) {
-					_chunkBuffer.resize(offset + chunksize);
+				if (offset + chunksize > chunk_buffer.size()) {
+					chunk_buffer.resize(offset + chunksize);
 				}
-				memcpy(&_chunkBuffer[offset], (void*)&packet.GetData()[4 + 4 + 4], chunksize);
+				memcpy(&chunk_buffer[offset], (void*)&packet.GetData()[4 + 4 + 4], chunksize);
 				if (offset + chunksize == size) {
 					printf("Loading new map from network...\n");
-					SDL_RWops* rw = SDL_RWFromMem(&_chunkBuffer[0], size);
+					SDL_RWops* rw = SDL_RWFromMem(&chunk_buffer[0], size);
 					if (game_load_sv6(rw)) {
 						game_load_init();
 					}
@@ -439,97 +484,101 @@ static void network_process_packet(NetworkPacket& packet)
 			news_item_add_to_queue_custom(&newsItem);
 		}break;
 		case NETWORK_COMMAND_GAMECMD:{
-			if (gNetworkStatus == NETWORK_SERVER) {
-				network_send_gamecmd(args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
+			if (GetMode() == NETWORK_MODE_SERVER) {
+				Send_GAMECMD(args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
 				game_do_command(args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
 			} else {
 				GameCommand gc = GameCommand(&args[1]);
-				_gameCommandQueue.insert(gc);
+				game_command_queue.insert(gc);
 			}
 		}break;
 		case NETWORK_COMMAND_TICK:{
-			gNetworkServerTick = args[1];
+			server_tick = args[1];
 		}break;
 	}
 	packet.Clear();
 }
 
-void network_send_tick()
+void Network::ProcessGameCommandQueue()
 {
-	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
-	packet->Write((uint32)NETWORK_COMMAND_TICK);
-	packet->Write((uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32));
-	for(auto it = _clientConnectionList.begin(); it != _clientConnectionList.end(); it++) {
-		(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
-	}
-	
-}
-
-void network_send_map()
-{
-	if (gNetworkStatus == NETWORK_SERVER) {
-		int buffersize = 0x600000;
-		std::vector<uint8> buffer(buffersize);
-		SDL_RWops* rw = SDL_RWFromMem(&buffer[0], buffersize);
-		scenario_save(rw, 0);
-		int size = (int)SDL_RWtell(rw);
-		int chunksize = 1000;
-		for (int i = 0; i < size; i += chunksize) {
-			int datasize = min(chunksize, size - i);
-			std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
-			packet->Write((uint32)NETWORK_COMMAND_MAP);
-			packet->Write((uint32)size);
-			packet->Write((uint32)i);
-			packet->Write(&buffer[i], datasize);
-			for(auto it = _clientConnectionList.begin(); it != _clientConnectionList.end(); it++) {
-				(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
-			}
-		}
-		SDL_RWclose(rw);
+	while (game_command_queue.begin() != game_command_queue.end() && game_command_queue.begin()->tick == RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)) {
+		// run all the game commands at the current tick
+		const GameCommand& gc = (*game_command_queue.begin());
+		game_do_command(gc.eax, gc.ebx, gc.ecx, gc.edx, gc.esi, gc.edi, gc.ebp);
+		game_command_queue.erase(game_command_queue.begin());
 	}
 }
 
-void network_send_chat(const char* text)
+void Network::AddClient(SOCKET socket)
 {
-	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
-	packet->Write((uint32)NETWORK_COMMAND_CHAT);
-	packet->Write((uint8*)text, strlen(text) + 1);
-	if (gNetworkStatus == NETWORK_SERVER) {
-		for(auto it = _clientConnectionList.begin(); it != _clientConnectionList.end(); it++) {
-			(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
-		}
-	} else {
-		_serverConnection.QueuePacket(std::move(packet));
-	}
+	printf("New client connection\n");
+	auto networkconnection = std::unique_ptr<NetworkConnection>(new NetworkConnection);  // change to make_unique in c++14
+	networkconnection->socket = socket;
+	client_connection_list.push_back(std::move(networkconnection));
 }
 
-void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp)
+void Network::RemoveClient(std::unique_ptr<NetworkConnection>& networkconnection)
 {
-	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
-	packet->Write((uint32)NETWORK_COMMAND_GAMECMD);
-	packet->Write((uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32));
-	packet->Write((uint32)eax);
-	packet->Write((uint32)ebx | (1 << 31));
-	packet->Write((uint32)ecx);
-	packet->Write((uint32)edx);
-	packet->Write((uint32)esi);
-	packet->Write((uint32)edi);
-	packet->Write((uint32)ebp);
-	if (gNetworkStatus == NETWORK_SERVER) {
-		for(auto it = _clientConnectionList.begin(); it != _clientConnectionList.end(); it++) {
-			(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
-		}
-	} else {
-		_serverConnection.QueuePacket(std::move(packet));
-	}
+	printf("Client removed\n");
+	client_connection_list.remove(networkconnection);
 }
 
-void network_print_error()
+void Network::PrintError()
 {
 	wchar_t *s = NULL;
 	FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, WSAGetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&s, 0, NULL);
 	fprintf(stderr, "%S\n", s);
 	LocalFree(s);
+}
+
+int network_init()
+{
+	return gNetwork.Init();
+}
+
+void network_close()
+{
+	gNetwork.Close();
+}
+
+int network_begin_client(const char *host, int port)
+{
+	return gNetwork.BeginClient(host, port);
+}
+
+int network_begin_server(int port)
+{
+	return gNetwork.BeginServer(port);
+}
+
+void network_update()
+{
+	gNetwork.Update();
+}
+
+int network_get_mode()
+{
+	return gNetwork.GetMode();
+}
+
+uint32 network_get_server_tick()
+{
+	return gNetwork.GetServerTick();
+}
+
+void network_send_map()
+{
+	gNetwork.Send_MAP();
+}
+
+void network_send_chat(const char* text)
+{
+	gNetwork.Send_CHAT(text);
+}
+
+void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp)
+{
+	gNetwork.Send_GAMECMD(eax, ebx, ecx, edx, esi, edi, ebp);
 }
 
 #endif /* DISABLE_NETWORK */
