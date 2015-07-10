@@ -24,58 +24,48 @@
 
 static void window_chat_host_emptysub() { }
 
-static void window_chat_host_textinput()
+static void window_chat_host_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	rct_window *w;
-	short widgetIndex;
-	uint8 result;
-	char *text;
-
-	window_textinput_get_registers(w, widgetIndex, result, text);
-
-	if (!result)
-		return;
-
 	network_send_chat(text);
 
 	window_close(w);
 }
 
-static void* window_chat_host_events[] = {
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
+static rct_window_event_list window_chat_host_events = {
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_chat_host_textinput,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub,
-	window_chat_host_emptysub
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL
 };
 
 void window_chat_open()
 {
 	rct_window *w;
-	w = window_create(0, 0, 0, 0, (uint32*)window_chat_host_events, WC_CHAT_HOST, 0);
+	w = window_create(0, 0, 0, 0, &window_chat_host_events, WC_CHAT_HOST, 0);
 	w->colours[0] = 1;
 	w->colours[1] = 1;
 	w->colours[2] = 0;
