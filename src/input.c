@@ -956,7 +956,7 @@ void process_mouse_over(int x, int y)
 
 	int widgetId;
 	int cursorId;
-	int eax, ebx, ecx, edx, esi, edi, ebp;
+	int ebx, esi, edi, ebp;
 
 	cursorId = CURSOR_ARROW;
 	RCT2_GLOBAL(0x9A9808, sint16) = -1;
@@ -988,7 +988,8 @@ void process_mouse_over(int x, int y)
 				ebx = ebx & 0xFFFFFF00;
 				edi = cursorId;
 				esi = (int)subWindow;
-				RCT2_CALLFUNC_X(subWindow->event_handlers[WE_UNKNOWN_0E], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+				// Not sure what this is for, no windows actually implement a handler
+				// RCT2_CALLFUNC_X(subWindow->event_handlers[WE_UNKNOWN_0E], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 				cursorId = edi;
 				if ((ebx & 0xFF) != 0)
 				{
@@ -1354,10 +1355,9 @@ void game_handle_keyboard_input()
 		}
 		else {
 			w = window_find_by_class(WC_TEXTINPUT);
-			if (w != NULL){
-				((void(*)(int, rct_window*))w->event_handlers[WE_TEXT_INPUT])(key, w);
-			}
-			else if (!gUsingWidgetTextBox) {
+			if (w != NULL) {
+				window_text_input_key(w, key);
+			} else if (!gUsingWidgetTextBox) {
 				keyboard_shortcut_handle(key);
 			}
 		}

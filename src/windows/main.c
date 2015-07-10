@@ -28,38 +28,37 @@ rct_widget window_main_widgets[] = {
 	{ WIDGETS_END },
 };
 
-void window_main_empty(){}
-void window_main_paint();
+void window_main_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-void* window_main_events[] = {
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
-	window_main_empty,
+static rct_window_event_list window_main_events = {
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_main_paint,
-	window_main_empty
+	NULL
 };
 
 /**
@@ -75,7 +74,7 @@ void window_main_open()
 	window = window_create(
 		0, 0,
 		window_main_widgets[0].right, window_main_widgets[0].bottom,
-		(uint32*)window_main_events,
+		&window_main_events,
 		WC_MAIN_WINDOW,
 		WF_STICK_TO_BACK
 	);
@@ -97,12 +96,7 @@ void window_main_open()
  * This function immediately jumps to 0x00685BE1 this is the second function
  * decompiled.
  */
-void window_main_paint()
+void window_main_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window* w;
-	rct_drawpixelinfo* dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	viewport_render(dpi, w->viewport, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height);
 }

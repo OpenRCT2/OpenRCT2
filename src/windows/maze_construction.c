@@ -89,42 +89,46 @@ static rct_widget window_maze_construction_widgets[] = {
 
 #pragma region Events
 
-static void window_maze_construction_emptysub() {}
-
-static void window_maze_construction_close();
-static void window_maze_construction_invalidate();
-static void window_maze_construction_paint();
+static void window_maze_construction_close(rct_window *w);
+static void window_maze_construction_mouseup(rct_window *w, int widgetIndex);
+static void window_maze_construction_resize(rct_window *w);
+static void window_maze_construction_mousedown(int widgetIndex, rct_window *w, rct_widget *widget);
+static void window_maze_construction_update(rct_window *w);
+static void window_ride_construction_toolupdate(rct_window* w, int widgetIndex, int x, int y);
+static void window_ride_construction_tooldown(rct_window* w, int widgetIndex, int x, int y);
+static void window_maze_construction_invalidate(rct_window *w);
+static void window_maze_construction_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x993F6C
-static void* window_maze_construction_events[] = {
+static rct_window_event_list window_maze_construction_events = {
 	window_maze_construction_close,
-	(void*)0x006CD461,
-	(void*)0x006CD623,
-	(void*)0x006CD48C,
-	window_maze_construction_emptysub,
-	window_maze_construction_emptysub,
-	(void*)0x006CD767,
-	window_maze_construction_emptysub,
-	window_maze_construction_emptysub,
-	(void*)0x006CD63E,
-	(void*)0x006CD65D,
-	window_maze_construction_emptysub,
-	window_maze_construction_emptysub,
-	window_maze_construction_emptysub,
-	window_maze_construction_emptysub,
-	window_maze_construction_emptysub,
-	window_maze_construction_emptysub,
-	window_maze_construction_emptysub,
-	window_maze_construction_emptysub,
-	window_maze_construction_emptysub,
-	window_maze_construction_emptysub,
-	window_maze_construction_emptysub,
-	window_maze_construction_emptysub,
-	window_maze_construction_emptysub,
-	window_maze_construction_emptysub,
+	window_maze_construction_mouseup,
+	window_maze_construction_resize,
+	window_maze_construction_mousedown,
+	NULL,
+	NULL,
+	window_maze_construction_update,
+	NULL,
+	NULL,
+	window_ride_construction_toolupdate,
+	window_ride_construction_tooldown,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_maze_construction_invalidate,
 	window_maze_construction_paint,
-	window_maze_construction_emptysub
+	NULL
 };
 
 #pragma endregion
@@ -135,7 +139,7 @@ static void* window_maze_construction_events[] = {
  */
 rct_window *window_maze_construction_open()
 {
-	rct_window *w = window_create(0, 29, 166, 200, (uint32*)window_maze_construction_events, WC_RIDE_CONSTRUCTION, WF_9);
+	rct_window *w = window_create(0, 29, 166, 200, &window_maze_construction_events, WC_RIDE_CONSTRUCTION, WF_9);
 	w->widgets = window_maze_construction_widgets;
 	w->enabled_widgets = 0x6F0001C4;
 
@@ -153,12 +157,8 @@ rct_window *window_maze_construction_open()
  *
  * rct2: 0x006CD811
  */
-static void window_maze_construction_close()
+static void window_maze_construction_close(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
-
 	sub_6C9627();
 	viewport_set_visibility(0);
 
@@ -185,9 +185,63 @@ static void window_maze_construction_close()
 
 /**
  *
+ * rct2: 0x006CD461
+ */
+static void window_maze_construction_mouseup(rct_window *w, int widgetIndex)
+{
+	RCT2_CALLPROC_X(0x006CD461, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+}
+
+/**
+ *
+ * rct2: 0x006CD623
+ */
+static void window_maze_construction_resize(rct_window *w)
+{
+	RCT2_CALLPROC_X(0x006CD623, 0, 0, 0, 0, (int)w, 0, 0);
+}
+
+/**
+ *
+ * rct2: 0x006CD48C
+ */
+static void window_maze_construction_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
+{
+	RCT2_CALLPROC_X(0x006CD48C, 0, 0, 0, widgetIndex, (int)w, (int)widget, 0);
+}
+
+/**
+ *
+ * rct2: 0x006CD767
+ */
+static void window_maze_construction_update(rct_window *w)
+{
+	RCT2_CALLPROC_X(0x006CD767, 0, 0, 0, 0, (int)w, 0, 0);
+}
+
+/**
+ *
+ * rct2: 0x006CD63E
+ */
+static void window_ride_construction_toolupdate(rct_window* w, int widgetIndex, int x, int y)
+{
+	RCT2_CALLPROC_X(0x006CD63E, x, y, 0, widgetIndex, (int)w, 0, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x006CD65D
+ */
+static void window_ride_construction_tooldown(rct_window* w, int widgetIndex, int x, int y)
+{
+	RCT2_CALLPROC_X(0x006CD65D, x, y, 0, widgetIndex, (int)w, 0, 0);
+}
+
+/**
+ *
  * rct2: 0x006CD435
  */
-static void window_maze_construction_invalidate()
+static void window_maze_construction_invalidate(rct_window *w)
 {
 	rct_ride *ride = GET_RIDE(_currentRideIndex);
 
@@ -200,13 +254,8 @@ static void window_maze_construction_invalidate()
  *
  * rct2: 0x006CD45B
  */
-static void window_maze_construction_paint()
+static void window_maze_construction_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-	
 	window_draw_widgets(w, dpi);
 }
 

@@ -53,47 +53,46 @@ static rct_widget window_land_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_land_emptysub() { }
-static void window_land_close();
-static void window_land_mouseup();
+static void window_land_close(rct_window *w);
+static void window_land_mouseup(rct_window *w, int widgetIndex);
 static void window_land_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_land_dropdown();
+static void window_land_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
 static void window_land_update(rct_window *w);
-static void window_land_invalidate();
-static void window_land_paint();
-static void window_land_textinput();
+static void window_land_invalidate(rct_window *w);
+static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_land_textinput(rct_window *w, int widgetIndex, char *text);
 static void window_land_inputsize(rct_window *w);
 
 
-static void* window_land_events[] = {
+static rct_window_event_list window_land_events = {
 	window_land_close,
 	window_land_mouseup,
-	window_land_emptysub,
+	NULL,
 	window_land_mousedown,
 	window_land_dropdown,
-	window_land_emptysub,
+	NULL,
 	window_land_update,
-	window_land_emptysub,
-	window_land_emptysub,
-	window_land_emptysub,
-	window_land_emptysub,
-	window_land_emptysub,
-	window_land_emptysub,
-	window_land_emptysub,
-	window_land_emptysub,
-	window_land_emptysub,
-	window_land_emptysub,
-	window_land_emptysub,
-	window_land_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_land_textinput,
-	window_land_emptysub,
-	window_land_emptysub,
-	window_land_emptysub,
-	window_land_emptysub,
-	window_land_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_land_invalidate,
 	window_land_paint,
-	window_land_emptysub
+	NULL
 };
 
 static char window_land_floor_texture_order[] = {
@@ -127,7 +126,7 @@ void window_land_open()
 	if (window_find_by_class(WC_LAND) != NULL)
 		return;
 
-	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 98, 29, 98, 126, (uint32*)window_land_events, WC_LAND, 0);
+	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 98, 29, 98, 126, &window_land_events, WC_LAND, 0);
 	window->widgets = window_land_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_CLOSE) |
@@ -153,7 +152,7 @@ void window_land_open()
  *
  *  rct2: 0x006640A5
  */
-static void window_land_close()
+static void window_land_close(rct_window *w)
 {
 	// If the tool wasn't changed, turn tool off
 	if (land_tool_is_active())
@@ -164,13 +163,9 @@ static void window_land_close()
  *
  *  rct2: 0x00664064
  */
-static void window_land_mouseup()
+static void window_land_mouseup(rct_window *w, int widgetIndex)
 {
 	int limit;
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -267,13 +262,9 @@ static void window_land_mousedown(int widgetIndex, rct_window*w, rct_widget* wid
  *
  *  rct2: 0x00664090
  */
-static void window_land_dropdown()
+static void window_land_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
 	int type;
-	short dropdownIndex, widgetIndex;
-	rct_window *w;
-
-	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
 	switch (widgetIndex) {
 	case WIDX_FLOOR:
@@ -311,18 +302,12 @@ static void window_land_dropdown()
 	}
 }
 
-static void window_land_textinput()
+static void window_land_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	uint8 result;
-	short widgetIndex;
-	rct_window *w;
-	char *text;
 	int size;
 	char* end;
 
-	window_textinput_get_registers(w, widgetIndex, result, text);
-
-	if (widgetIndex != WIDX_PREVIEW || !result)
+	if (widgetIndex != WIDX_PREVIEW || text == NULL)
 		return;
 
 	size = strtol(text, &end, 10);
@@ -355,11 +340,8 @@ static void window_land_update(rct_window *w)
  *
  *  rct2: 0x00663F20
  */
-static void window_land_invalidate()
+static void window_land_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	w->pressed_widgets = (1 << WIDX_PREVIEW);
@@ -381,14 +363,10 @@ static void window_land_invalidate()
  *
  *  rct2: 0x00663F7C
  */
-static void window_land_paint()
+static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	int x, y, numTiles;
 	money32 price;
-
-	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 

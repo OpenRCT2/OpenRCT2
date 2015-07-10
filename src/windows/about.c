@@ -42,39 +42,38 @@ rct_widget window_about_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_about_emptysub() { }
-static void window_about_mouseup();
-static void window_about_paint();
+static void window_about_mouseup(rct_window *w, int widgetIndex);
+static void window_about_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void* window_about_events[] = {
-	window_about_emptysub,
+static rct_window_event_list window_about_events = {
+	NULL,
 	window_about_mouseup,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
-	window_about_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_about_paint,
-	window_about_emptysub
+	NULL
 };
 
 /**
@@ -93,7 +92,7 @@ void window_about_open()
 	window = window_create_centred(
 		400,
 		330,
-		(uint32*)window_about_events,
+		&window_about_events,
 		WC_ABOUT,
 		0
 	);
@@ -110,13 +109,8 @@ void window_about_open()
  * 
  *  rct2: 0x0066D4D5
  */
-static void window_about_mouseup()
+static void window_about_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
@@ -134,13 +128,9 @@ static void window_about_mouseup()
  * 
  *  rct2: 0x0066D321
  */
-static void window_about_paint()
+static void window_about_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	int x, y;
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 

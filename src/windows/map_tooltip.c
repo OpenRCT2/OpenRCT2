@@ -29,39 +29,38 @@ static rct_widget window_map_tooltip_widgets[] = {
 	{ WIDGETS_END }
 };
 
-static void window_map_tooltip_emptysub() { }
 static void window_map_tooltip_update(rct_window *w);
-static void window_map_tooltip_paint();
+static void window_map_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void* window_map_tooltip_events[] = {
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
+static rct_window_event_list window_map_tooltip_events = {
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_map_tooltip_update,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_map_tooltip_paint,
-	window_map_tooltip_emptysub
+	NULL
 };
 
 #define MAP_TOOLTIP_ARGS 
@@ -122,7 +121,7 @@ static void window_map_tooltip_open()
 	w = window_find_by_class(WC_MAP_TOOLTIP);
 	if (w == NULL) {
 		w = window_create(
-			x, y, width, height, (uint32*)window_map_tooltip_events, WC_MAP_TOOLTIP, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_5
+			x, y, width, height, &window_map_tooltip_events, WC_MAP_TOOLTIP, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_5
 		);
 		w->widgets = window_map_tooltip_widgets;
 	} else {
@@ -147,13 +146,8 @@ static void window_map_tooltip_update(rct_window *w)
  * 
  *  rct2: 0x006EE894
  */
-static void window_map_tooltip_paint()
+static void window_map_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS, rct_string_id) == (rct_string_id)STR_NONE)
 		return;
 

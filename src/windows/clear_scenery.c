@@ -55,44 +55,43 @@ rct_widget window_clear_scenery_widgets[] = {
 
 static int window_clear_scenery_should_close();
 
-static void window_clear_scenery_emptysub() { }
-static void window_clear_scenery_close();
-static void window_clear_scenery_mouseup();
+static void window_clear_scenery_close(rct_window *w);
+static void window_clear_scenery_mouseup(rct_window *w, int widgetIndex);
 static void window_clear_scenery_update(rct_window *w);
-static void window_clear_scenery_invalidate();
-static void window_clear_scenery_paint();
-static void window_clear_scenery_textinput();
+static void window_clear_scenery_invalidate(rct_window *w);
+static void window_clear_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_clear_scenery_textinput(rct_window *w, int widgetIndex, char *text);
 static void window_clear_scenery_inputsize(rct_window *w);
 
-static void* window_clear_scenery_events[] = {
+static rct_window_event_list window_clear_scenery_events = {
 	window_clear_scenery_close,
 	window_clear_scenery_mouseup,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_clear_scenery_update,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_clear_scenery_textinput,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_clear_scenery_invalidate,
 	window_clear_scenery_paint,
-	window_clear_scenery_emptysub
+	NULL
 };
 
 /**
@@ -107,7 +106,7 @@ void window_clear_scenery_open()
 	if (window_find_by_class(WC_CLEAR_SCENERY) != NULL)
 		return;
 
-	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 98, 29, 98, 94, (uint32*)window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
+	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 98, 29, 98, 94, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
 	window->widgets = window_clear_scenery_widgets;
 	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_PREVIEW) |
 		(1 << WIDX_SMALL_SCENERY) | (1 << WIDX_LARGE_SCENERY) | (1 << WIDX_FOOTPATH);
@@ -125,7 +124,7 @@ void window_clear_scenery_open()
  *
  *  rct2: 0x006E6B65
  */
-static void window_clear_scenery_close()
+static void window_clear_scenery_close(rct_window *w)
 {
 	// If the tool wasn't changed, turn tool off
 	if (!window_clear_scenery_should_close())
@@ -136,13 +135,9 @@ static void window_clear_scenery_close()
  *
  *  rct2: 0x0068E185
  */
-static void window_clear_scenery_mouseup()
+static void window_clear_scenery_mouseup(rct_window *w, int widgetIndex)
 {
-	rct_window *w;
 	int limit;
-	short widgetIndex;
-
-	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -191,18 +186,12 @@ static void window_clear_scenery_mouseup()
 	}
 }
 
-static void window_clear_scenery_textinput()
+static void window_clear_scenery_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	uint8 result;
-	short widgetIndex;
-	rct_window *w;
-	char *text;
 	int size;
 	char* end;
 
-	window_textinput_get_registers(w, widgetIndex, result, text);
-
-	if (widgetIndex != WIDX_PREVIEW || !result)
+	if (widgetIndex != WIDX_PREVIEW || text == NULL)
 		return;
 
 	size = strtol(text, &end, 10);
@@ -236,11 +225,8 @@ static void window_clear_scenery_update(rct_window *w)
  *
  *  rct2: 0x0068E115
  */
-static void window_clear_scenery_invalidate()
+static void window_clear_scenery_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	// Set the preview image button to be pressed down
@@ -257,13 +243,9 @@ static void window_clear_scenery_invalidate()
  *
  *  rct2: 0x0068E130
  */
-static void window_clear_scenery_paint()
+static void window_clear_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	int x, y;
-
-	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 

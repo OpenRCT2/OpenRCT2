@@ -61,82 +61,78 @@ static rct_widget window_track_delete_prompt_widgets[] = {
 
 #pragma region Events
 
-static void window_track_manage_emptysub() { }
+static void window_track_manage_close(rct_window *w);
+static void window_track_manage_mouseup(rct_window *w, int widgetIndex);
+static void window_track_manage_textinput(rct_window *w, int widgetIndex, char *text);
+static void window_track_manage_invalidate(rct_window *w);
+static void window_track_manage_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void window_track_manage_close();
-static void window_track_manage_mouseup();
-static void window_track_manage_textinput();
-static void window_track_manage_invalidate();
-static void window_track_manage_paint();
-
-static void window_track_delete_prompt_emptysub() { }
-
-static void window_track_delete_prompt_mouseup();
-static void window_track_delete_prompt_invalidate();
-static void window_track_delete_prompt_paint();
+static void window_track_delete_prompt_mouseup(rct_window *w, int widgetIndex);
+static void window_track_delete_prompt_invalidate(rct_window *w);
+static void window_track_delete_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x009940EC
-static void* window_track_manage_events[] = {
+static rct_window_event_list window_track_manage_events = {
 	window_track_manage_close,
 	window_track_manage_mouseup,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_track_manage_textinput,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
-	window_track_manage_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_track_manage_invalidate,
 	window_track_manage_paint,
-	window_track_manage_emptysub
+	NULL
 };
 
 // 0x0099415C
-static void* window_track_delete_prompt_events[] = {
-	window_track_delete_prompt_emptysub,
+static rct_window_event_list window_track_delete_prompt_events = {
+	NULL,
 	window_track_delete_prompt_mouseup,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
-	window_track_delete_prompt_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_track_delete_prompt_invalidate,
 	window_track_delete_prompt_paint,
-	window_track_delete_prompt_emptysub
+	NULL
 };
 
 #pragma endregion
@@ -156,7 +152,7 @@ void window_track_manage_open()
 	w = window_create_centred(
 		250,
 		44,
-		(uint32*)window_track_manage_events,
+		&window_track_manage_events,
 		WC_MANAGE_TRACK_DESIGN,
 		WF_STICK_TO_FRONT | WF_TRANSPARENT
 	);
@@ -176,27 +172,22 @@ void window_track_manage_open()
  *
  *  rct2: 0x006D364C
  */
-static void window_track_manage_close()
+static void window_track_manage_close(rct_window *w)
 {
-	rct_window *w;
-
-	w = window_find_by_class(WC_TRACK_DESIGN_LIST);
-	if (w != NULL)
-		w->track_list.var_484 &= ~1;
+	rct_window *trackDesignListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
+	if (trackDesignListWindow != NULL)
+		trackDesignListWindow->track_list.var_484 &= ~1;
 }
 
 /**
  *
  *  rct2: 0x006D3523
  */
-static void window_track_manage_mouseup()
+static void window_track_manage_mouseup(rct_window *w, int widgetIndex)
 {
 	uint8 *trackDesignList = (uint8*)0x00F441EC;
-	rct_window *w, *trackDesignListWindow;
-	short widgetIndex;
+	rct_window *trackDesignListWindow;
 	char *dst, *src;
-
-	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -223,16 +214,9 @@ static void window_track_manage_mouseup()
  *
  *  rct2: 0x006D3523
  */
-static void window_track_manage_textinput()
+static void window_track_manage_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	rct_window *w;
-	short widgetIndex;
-	uint8 result;
-	char *text;
-
-	window_textinput_get_registers(w, widgetIndex, result, text);
-
-	if (widgetIndex != WIDX_RENAME || !result)
+	if (widgetIndex != WIDX_RENAME || text == NULL)
 		return;
 
 	if (track_rename(text)) {
@@ -243,11 +227,8 @@ static void window_track_manage_textinput()
 	}
 }
 
-static void window_track_manage_invalidate()
+static void window_track_manage_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 }
 
@@ -255,13 +236,8 @@ static void window_track_manage_invalidate()
  *
  *  rct2: 0x006D3523
  */
-static void window_track_manage_paint()
+static void window_track_manage_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 }
 
@@ -280,7 +256,7 @@ static void window_track_delete_prompt_open()
 		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 44) / 2,
 		250,
 		74,
-		(uint32*)window_track_delete_prompt_events,
+		&window_track_delete_prompt_events,
 		WC_TRACK_DELETE_PROMPT,
 		WF_STICK_TO_FRONT
 	);
@@ -297,13 +273,8 @@ static void window_track_delete_prompt_open()
  *
  *  rct2: 0x006D3823
  */
-static void window_track_delete_prompt_mouseup()
+static void window_track_delete_prompt_mouseup(rct_window *w, int widgetIndex)
 {
-	rct_window *w;
-	short widgetIndex;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 	case WIDX_PROMPT_CANCEL:
@@ -319,11 +290,8 @@ static void window_track_delete_prompt_mouseup()
 	}
 }
 
-static void window_track_delete_prompt_invalidate()
+static void window_track_delete_prompt_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 }
 
@@ -331,13 +299,9 @@ static void window_track_delete_prompt_invalidate()
  *
  *  rct2: 0x006D37EE
  */
-static void window_track_delete_prompt_paint()
+static void window_track_delete_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	rct_string_id stringId;
-
-	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 

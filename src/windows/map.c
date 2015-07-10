@@ -96,50 +96,49 @@ const rct_xy16 MiniMapOffsets[] = {
 	{   0 - 8, 256 }
 };
 
-static void window_map_emptysub() { }
-static void window_map_close();
-static void window_map_resize();
-static void window_map_mouseup();
+static void window_map_close(rct_window *w);
+static void window_map_resize(rct_window *w);
+static void window_map_mouseup(rct_window *w, int widgetIndex);
 static void window_map_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_map_update(rct_window *w);
-static void window_map_toolupdate();
-static void window_map_tooldown();
-static void window_map_tooldrag();
-static void window_map_toolabort();
-static void window_map_scrollgetsize();
-static void window_map_scrollmousedown();
-static void window_map_textinput();
-static void window_map_tooltip();
-static void window_map_invalidate();
-static void window_map_paint();
-static void window_map_scrollpaint();
+static void window_map_toolupdate(rct_window* w, int widgetIndex, int x, int y);
+static void window_map_tooldown(rct_window* w, int widgetIndex, int x, int y);
+static void window_map_tooldrag(rct_window* w, int widgetIndex, int x, int y);
+static void window_map_toolabort(rct_window *w, int widgetIndex);
+static void window_map_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_map_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
+static void window_map_textinput(rct_window *w, int widgetIndex, char *text);
+static void window_map_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_map_invalidate(rct_window *w);
+static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 
-static void* window_map_events[] = {
+static rct_window_event_list window_map_events = {
 	window_map_close,
 	window_map_mouseup,
 	window_map_resize,
 	window_map_mousedown,
-	window_map_emptysub,
-	window_map_emptysub,
+	NULL,
+	NULL,
 	window_map_update,
-	window_map_emptysub,
-	window_map_emptysub,
+	NULL,
+	NULL,
 	window_map_toolupdate,
 	window_map_tooldown,
 	window_map_tooldrag,
-	window_map_emptysub,
+	NULL,
 	window_map_toolabort,
-	window_map_emptysub,
+	NULL,
 	window_map_scrollgetsize,
 	window_map_scrollmousedown,
 	window_map_scrollmousedown,
-	window_map_emptysub,
+	NULL,
 	window_map_textinput,
-	window_map_emptysub,
-	window_map_emptysub,
+	NULL,
+	NULL,
 	window_map_tooltip,
-	window_map_emptysub,
-	window_map_emptysub,
+	NULL,
+	NULL,
 	window_map_invalidate,
 	window_map_paint,
 	window_map_scrollpaint
@@ -190,7 +189,7 @@ void window_map_open()
 		return;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32*) = map_image_data;
-	w = window_create_auto_pos(245, 259, (uint32*)window_map_events, WC_MAP, WF_10);
+	w = window_create_auto_pos(245, 259, &window_map_events, WC_MAP, WF_10);
 	w->widgets = window_map_widgets;
 	w->enabled_widgets =
 		(1 << WIDX_CLOSE) |
@@ -228,12 +227,8 @@ void window_map_open()
 *
 *  rct2: 0x0068D0F1
 */
-static void window_map_close()
+static void window_map_close(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
-
 	free(RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32*));
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == w->classification &&
@@ -249,15 +244,10 @@ static void window_map_close()
  *
  *  rct2: 0x0068CFC1
  */
-static void window_map_mouseup()
+static void window_map_mouseup(rct_window *w, int widgetIndex)
 {
-	rct_window *w;
-	short widgetIndex;
-
 	// Maximum land ownership tool size
 	int landToolSizeLimit;
-
-	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -374,12 +364,8 @@ static void window_map_mouseup()
 *
 *  rct2: 0x0068D7DC
 */
-static void window_map_resize()
+static void window_map_resize(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
-
 	w->flags |= WF_RESIZABLE;
 	w->min_width = 245;
 	w->max_width = 800;
@@ -445,14 +431,8 @@ static void window_map_update(rct_window *w)
  *
  *  rct2: 0x0068D093
  */
-static void window_map_toolupdate()
+static void window_map_toolupdate(rct_window* w, int widgetIndex, int x, int y)
 {
-	rct_window *w;
-	short widgetIndex;
-	short x, y;
-
-	window_tool_get_registers(w, widgetIndex, x, y);
-
 	switch (widgetIndex) {
 	case WIDX_SET_LAND_RIGHTS:
 		window_map_set_land_rights_tool_update(x, y);
@@ -470,14 +450,8 @@ static void window_map_toolupdate()
  *
  *  rct2: 0x0068D074
  */
-static void window_map_tooldown()
+static void window_map_tooldown(rct_window* w, int widgetIndex, int x, int y)
 {
-	rct_window *w;
-	short widgetIndex;
-	short x, y;
-
-	window_tool_get_registers(w, widgetIndex, x, y);
-
 	switch (widgetIndex) {
 	case WIDX_BUILD_PARK_ENTRANCE:
 		window_map_place_park_entrance_tool_down(x, y);
@@ -492,14 +466,8 @@ static void window_map_tooldown()
  *
  *  rct2: 0x0068D088
  */
-static void window_map_tooldrag()
+static void window_map_tooldrag(rct_window* w, int widgetIndex, int x, int y)
 {
-	rct_window *w;
-	short widgetIndex;
-	short x, y;
-
-	window_tool_get_registers(w, widgetIndex, x, y);
-
 	switch (widgetIndex) {
 	case WIDX_SET_LAND_RIGHTS:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0)) {
@@ -522,14 +490,8 @@ static void window_map_tooldrag()
  *
  *  rct2: 0x0068D055
  */
-static void window_map_toolabort()
+static void window_map_toolabort(rct_window *w, int widgetIndex)
 {
-	rct_window *w;
-	short widgetIndex;
-	short x, y;
-
-	window_tool_get_registers(w, widgetIndex, x, y);
-
 	switch (widgetIndex) {
 	case WIDX_SET_LAND_RIGHTS:
 		window_invalidate(w);
@@ -557,28 +519,22 @@ static void window_map_toolabort()
  *
  *  rct2: 0x0068D7CC
  */
-static void window_map_scrollgetsize()
+static void window_map_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
-	int width, height;
+	window_map_invalidate(w);
 
-	window_map_invalidate();
-
-	width = 512;
-	height = 512;
-	window_scrollsize_set_registers(width, height);
+	*width = 512;
+	*height = 512;
 }
 
 /**
  *
  *  rct2: 0x0068D726
  */
-static void window_map_scrollmousedown()
+static void window_map_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 {
 	int mapX, mapY, mapZ;
-	short x, y, scrollIndex;
-	rct_window *w, *mainWindow;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
+	rct_window *mainWindow;
 
 	map_window_screen_to_map(x, y, &mapX, &mapY);
 	mapX = clamp(0, mapX, 8191);
@@ -647,46 +603,41 @@ static void window_map_scrollmousedown()
 	}
 }
 
-static void window_map_textinput()
+static void window_map_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	uint8 result;
-	short widgetIndex;
-	rct_window *w;
-	char *text;
 	int size;
 	char* end;
 
-	window_textinput_get_registers(w, widgetIndex, result, text);
+	if (text == NULL)
+		return;
 
-	if (result) {
-		switch (widgetIndex) {
-		case WIDX_LAND_TOOL:
-			size = strtol(text, &end, 10);
-			if (*end == '\0') {
-				if (size < 1) size = 1;
-				if (size > 64) size = 64;
-				RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
-				window_invalidate(w);
-			}
-			break;
-		case WIDX_MAP_SIZE_SPINNER:
-			size = strtol(text, &end, 10);
-			if (*end == '\0') {
-				if (size < 50) size = 50;
-				if (size > 256) size = 256;
-				int currentSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
-				while (size < currentSize) {
-					map_window_decrease_map_size();
-					currentSize--;
-				}
-				while (size > currentSize) {
-					map_window_increase_map_size();
-					currentSize++;
-				}
-				window_invalidate(w);
-			}
-			break;
+	switch (widgetIndex) {
+	case WIDX_LAND_TOOL:
+		size = strtol(text, &end, 10);
+		if (*end == '\0') {
+			if (size < 1) size = 1;
+			if (size > 64) size = 64;
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
+			window_invalidate(w);
 		}
+		break;
+	case WIDX_MAP_SIZE_SPINNER:
+		size = strtol(text, &end, 10);
+		if (*end == '\0') {
+			if (size < 50) size = 50;
+			if (size > 256) size = 256;
+			int currentSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
+			while (size < currentSize) {
+				map_window_decrease_map_size();
+				currentSize--;
+			}
+			while (size > currentSize) {
+				map_window_increase_map_size();
+				currentSize++;
+			}
+			window_invalidate(w);
+		}
+		break;
 	}
 }
 
@@ -694,7 +645,7 @@ static void window_map_textinput()
  *
  *  rct2: 0x0068D140
  */
-static void window_map_tooltip()
+static void window_map_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 3157;
 }
@@ -703,13 +654,11 @@ static void window_map_tooltip()
  *
  *  rct2: 0x0068CA8F
  */
-static void window_map_invalidate()
+static void window_map_invalidate(rct_window *w)
 {
-	rct_window *w;
 	uint64 pressedWidgets;
 	int i, height;
 
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	// Set the pressed widgets
@@ -837,13 +786,9 @@ static void window_map_invalidate()
  *
  *  rct2: 0x0068CDA9
  */
-static void window_map_paint()
+static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	int i, x, y;
-
-	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 	window_map_draw_tab_images(w, dpi);
@@ -893,13 +838,9 @@ static void window_map_paint()
  *
  *  rct2: 0x0068CF23
  */
-static void window_map_scrollpaint()
+static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	rct_g1_element *g1_element, pushed_g1_element;
-
-	window_paint_get_registers(w, dpi);
 
 	gfx_clear(dpi, 0x0A0A0A0A);
 

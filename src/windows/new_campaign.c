@@ -61,42 +61,41 @@ static rct_widget window_new_campaign_widgets[] = {
 };
 
 
-static void window_new_campaign_emptysub() { }
-static void window_new_campaign_mouseup();
+static void window_new_campaign_mouseup(rct_window *w, int widgetIndex);
 static void window_new_campaign_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_new_campaign_dropdown();
-static void window_new_campaign_invalidate();
-static void window_new_campaign_paint();
+static void window_new_campaign_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_new_campaign_invalidate(rct_window *w);
+static void window_new_campaign_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void* window_new_campaign_events[] = {
-	window_new_campaign_emptysub,
+static rct_window_event_list window_new_campaign_events = {
+	NULL,
 	window_new_campaign_mouseup,
-	window_new_campaign_emptysub,
+	NULL,
 	window_new_campaign_mousedown,
 	window_new_campaign_dropdown,
-	window_new_campaign_emptysub,
-	window_new_campaign_emptysub,
-	window_new_campaign_emptysub,
-	window_new_campaign_emptysub,
-	window_new_campaign_emptysub,
-	window_new_campaign_emptysub,
-	window_new_campaign_emptysub,
-	window_new_campaign_emptysub,
-	window_new_campaign_emptysub,
-	window_new_campaign_emptysub,
-	window_new_campaign_emptysub,
-	window_new_campaign_emptysub,
-	window_new_campaign_emptysub,
-	window_new_campaign_emptysub,
-	window_new_campaign_emptysub,
-	window_new_campaign_emptysub,
-	window_new_campaign_emptysub,
-	window_new_campaign_emptysub,
-	window_new_campaign_emptysub,
-	window_new_campaign_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_new_campaign_invalidate,
 	window_new_campaign_paint,
-	window_new_campaign_emptysub
+	NULL
 };
 
 uint8 window_new_campaign_rides[MAX_RIDES];
@@ -143,7 +142,7 @@ void window_new_campaign_open(sint16 campaignType)
 		window_close(w);
 	}
 
-	w = window_create_auto_pos(350, 107, (uint32*)window_new_campaign_events, WC_NEW_CAMPAIGN, 0);
+	w = window_create_auto_pos(350, 107, &window_new_campaign_events, WC_NEW_CAMPAIGN, 0);
 	w->widgets = window_new_campaign_widgets;
 	w->enabled_widgets =
 		(1 << WIDX_CLOSE) |
@@ -220,13 +219,8 @@ static void window_new_campaign_get_shop_items()
  * 
  *  rct2: 0x0069E50B
  */
-static void window_new_campaign_mouseup()
+static void window_new_campaign_mouseup(rct_window *w, int widgetIndex)
 {
-	rct_window *w;
-	short widgetIndex;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
@@ -315,13 +309,8 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
  * 
  *  rct2: 0x0069E537
  */
-static void window_new_campaign_dropdown()
+static void window_new_campaign_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	rct_window *w;
-	short widgetIndex, dropdownIndex;
-
-	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
-
 	if (widgetIndex != WIDX_RIDE_DROPDOWN_BUTTON)
 		return;
 
@@ -341,11 +330,8 @@ static void window_new_campaign_dropdown()
  * 
  *  rct2: 0x0069E397
  */
-static void window_new_campaign_invalidate()
+static void window_new_campaign_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	window_new_campaign_widgets[WIDX_RIDE_LABEL].type = WWT_EMPTY;
@@ -392,13 +378,9 @@ static void window_new_campaign_invalidate()
  * 
  *  rct2: 0x0069E493
  */
-static void window_new_campaign_paint()
+static void window_new_campaign_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	int x, y;
-
-	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 

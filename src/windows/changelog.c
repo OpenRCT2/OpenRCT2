@@ -32,41 +32,40 @@ rct_widget window_changelog_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_changelog_emptysub() { }
-static void window_changelog_close();
-static void window_changelog_mouseup();
-static void window_changelog_resize();
-static void window_changelog_scrollgetsize();
-static void window_changelog_invalidate();
-static void window_changelog_paint();
-static void window_changelog_scrollpaint();
+static void window_changelog_close(rct_window *w);
+static void window_changelog_mouseup(rct_window *w, int widgetIndex);
+static void window_changelog_resize(rct_window *w);
+static void window_changelog_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_changelog_invalidate(rct_window *w);
+static void window_changelog_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_changelog_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 
-static void* window_changelog_events[] = {
+static rct_window_event_list window_changelog_events = {
 	window_changelog_close,
 	window_changelog_mouseup,
 	window_changelog_resize,
-	window_changelog_emptysub,
-	window_changelog_emptysub,
-	window_changelog_emptysub,
-	window_changelog_emptysub,
-	window_changelog_emptysub,
-	window_changelog_emptysub,
-	window_changelog_emptysub,
-	window_changelog_emptysub,
-	window_changelog_emptysub,
-	window_changelog_emptysub,
-	window_changelog_emptysub,
-	window_changelog_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_changelog_scrollgetsize,
-	window_changelog_emptysub,
-	window_changelog_emptysub,
-	window_changelog_emptysub,
-	window_changelog_emptysub,
-	window_changelog_emptysub,
-	window_changelog_emptysub,
-	window_changelog_emptysub,
-	window_changelog_emptysub,
-	window_changelog_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_changelog_invalidate,
 	window_changelog_paint,
 	window_changelog_scrollpaint
@@ -98,7 +97,7 @@ rct_window *window_changelog_open()
 	window = window_create_centred(
 		screenWidth * 4 / 5,
 		screenHeight * 4 / 5,
-		(uint32*)window_changelog_events,
+		&window_changelog_events,
 		WC_CHANGELOG,
 		WF_RESIZABLE
 	);
@@ -116,18 +115,13 @@ rct_window *window_changelog_open()
 	return window;
 }
 
-static void window_changelog_close()
+static void window_changelog_close(rct_window *w)
 {
 	window_changelog_dispose_file();
 }
 
-static void window_changelog_mouseup()
+static void window_changelog_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
@@ -135,12 +129,8 @@ static void window_changelog_mouseup()
 	}
 }
 
-static void window_changelog_resize()
+static void window_changelog_resize(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
-
 	int screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
 	int screenHeight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
 
@@ -159,24 +149,14 @@ static void window_changelog_resize()
 	}
 }
 
-static void window_changelog_scrollgetsize()
+static void window_changelog_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
-	rct_window *w;
-	int width, height;
-	window_get_register(w);
-
-	width = _changelogLongestLineWidth + 4;
-	height = _changelogNumLines * 11;
-
-	window_scrollsize_set_registers(width, height);
+	*width = _changelogLongestLineWidth + 4;
+	*height = _changelogNumLines * 11;
 }
 
-static void window_changelog_invalidate()
+static void window_changelog_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
-
 	window_changelog_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_changelog_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 	window_changelog_widgets[WIDX_TITLE].right = w->width - 2;
@@ -188,23 +168,13 @@ static void window_changelog_invalidate()
 	window_changelog_widgets[WIDX_SCROLL].bottom = w->height - 15;
 }
 
-static void window_changelog_paint()
+static void window_changelog_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 }
 
-static void window_changelog_scrollpaint()
+static void window_changelog_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	uint16 *currentFontFlags = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16);
 	sint16 *currentFontSpriteBase = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16);
 	*currentFontFlags = 0;

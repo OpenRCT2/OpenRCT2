@@ -44,42 +44,41 @@ static rct_widget window_news_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_news_emptysub() { }
-static void window_news_mouseup();
+static void window_news_mouseup(rct_window *w, int widgetIndex);
 static void window_news_update(rct_window *w);
-static void window_news_scrollgetsize();
-static void window_news_scrollmousedown();
-static void window_news_tooltip();
-static void window_news_invalidate();
-static void window_news_paint();
-static void window_news_scrollpaint();
+static void window_news_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_news_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
+static void window_news_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_news_invalidate(rct_window *w);
+static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 
-static void* window_news_events[] = {
-	window_news_emptysub,
+static rct_window_event_list window_news_events = {
+	NULL,
 	window_news_mouseup,
-	window_news_emptysub,
-	window_news_emptysub,
-	window_news_emptysub,
-	window_news_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_news_update,
-	window_news_emptysub,
-	window_news_emptysub,
-	window_news_emptysub,
-	window_news_emptysub,
-	window_news_emptysub,
-	window_news_emptysub,
-	window_news_emptysub,
-	window_news_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_news_scrollgetsize,
 	window_news_scrollmousedown,
-	window_news_emptysub,
-	window_news_emptysub,
-	window_news_emptysub,
-	window_news_emptysub,
-	window_news_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_news_tooltip,
-	window_news_emptysub,
-	window_news_emptysub,
+	NULL,
+	NULL,
 	window_news_invalidate,
 	window_news_paint,
 	window_news_scrollpaint
@@ -99,7 +98,7 @@ void window_news_open()
 		window = window_create_auto_pos(
 			400,
 			300,
-			(uint32*)window_news_events,
+			&window_news_events,
 			WC_RECENT_NEWS,
 			0
 		);
@@ -110,9 +109,10 @@ void window_news_open()
 	}
 
 // sub_66E4BA:
-	int width, height;
 	rct_widget *widget;
 
+	int width = 0;
+	int height = 0;
 	window_get_scroll_size(window, 0, &width, &height);
 	widget = &window_news_widgets[WIDX_SCROLL];
 	window->scrolls[0].v_top = max(0, height - (widget->bottom - widget->top - 1));
@@ -124,15 +124,13 @@ void window_news_open()
  * 
  *  rct2: 0x0066D4D5
  */
-static void window_news_mouseup()
+static void window_news_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
-	if (widgetIndex == WIDX_CLOSE)
+	switch (widgetIndex) {
+	case WIDX_CLOSE:
 		window_close(w);
+		break;
+	}
 }
 
 /**
@@ -182,35 +180,28 @@ static void window_news_update(rct_window *w)
  * 
  *  rct2: 0x0066EA3C
  */
-static void window_news_scrollgetsize()
+static void window_news_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
-	int i, width, height;
+	int i;
 	rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 
-	width = 0;
-	height = 0;
+	*height = 0;
 	for (i = 11; i < 61; i++) {
 		if (newsItems[i].type == NEWS_ITEM_NULL)
 			break;
 
-		height += 42;
+		*height += 42;
 	}
-
-	window_scrollsize_set_registers(width, height);
 }
 
 /**
  * 
  *  rct2: 0x0066EA5C
  */
-static void window_news_scrollmousedown()
+static void window_news_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 {
 	int i, buttonIndex;
-	short x, y, scrollIndex;
-	rct_window *w;
 	rct_news_item *newsItems;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	buttonIndex = 0;
 	newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
@@ -259,7 +250,7 @@ static void window_news_scrollmousedown()
  * 
  *  rct2: 0x0066EAAE
  */
-static void window_news_tooltip()
+static void window_news_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
 	RCT2_GLOBAL(0x013CE952, uint16) = 3159;
 }
@@ -268,21 +259,13 @@ static void window_news_tooltip()
  * 
  *  rct2: 0x0066E4E8
  */
-static void window_news_paint()
+static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 }
 
-static void window_news_invalidate()
+static void window_news_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 }
 
@@ -290,14 +273,10 @@ static void window_news_invalidate()
  * 
  *  rct2: 0x0066E4EE
  */
-static void window_news_scrollpaint()
+static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
 	int i, x, y, yy, press;
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	rct_news_item *newsItems, *newsItem, *newsItem2;
-
-	window_paint_get_registers(w, dpi);
 
 	y = 0;
 	newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);

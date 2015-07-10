@@ -56,44 +56,43 @@ static rct_widget window_land_rights_widgets[] = {
 
 static int window_land_rights_should_close();
 
-static void window_land_rights_emptysub() { }
-static void window_land_rights_close();
-static void window_land_rights_mouseup();
-static void window_land_rights_update();
-static void window_land_rights_invalidate();
-static void window_land_rights_paint();
-static void window_land_rights_textinput();
+static void window_land_rights_close(rct_window *w);
+static void window_land_rights_mouseup(rct_window *w, int widgetIndex);
+static void window_land_rights_update(rct_window *w);
+static void window_land_rights_invalidate(rct_window *w);
+static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_land_rights_textinput(rct_window *w, int widgetIndex, char *text);
 static void window_land_rights_inputsize(rct_window *w);
 
-static void* window_land_rights_events[] = {
+static rct_window_event_list window_land_rights_events = {
 	window_land_rights_close,
 	window_land_rights_mouseup,
-	window_land_rights_emptysub,
-	window_land_rights_emptysub,
-	window_land_rights_emptysub,
-	window_land_rights_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_land_rights_update,
-	window_land_rights_emptysub,
-	window_land_rights_emptysub,
-	window_land_rights_emptysub,
-	window_land_rights_emptysub,
-	window_land_rights_emptysub,
-	window_land_rights_emptysub,
-	window_land_rights_emptysub,
-	window_land_rights_emptysub,
-	window_land_rights_emptysub,
-	window_land_rights_emptysub,
-	window_land_rights_emptysub,
-	window_land_rights_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_land_rights_textinput,
-	window_land_rights_emptysub,
-	window_land_rights_emptysub,
-	window_land_rights_emptysub,
-	window_land_rights_emptysub,
-	window_land_rights_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_land_rights_invalidate,
 	window_land_rights_paint,
-	window_land_rights_emptysub
+	NULL
 };
 
 void window_land_rights_open()
@@ -104,7 +103,7 @@ void window_land_rights_open()
 	if (window_find_by_class(WC_LAND_RIGHTS) != NULL)
 		return;
 
-	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 98, 29, 98, 94, (uint32*)window_land_rights_events, WC_LAND_RIGHTS, 0);
+	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 98, 29, 98, 94, &window_land_rights_events, WC_LAND_RIGHTS, 0);
 	window->widgets = window_land_rights_widgets;
 	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW) |
 		(1 << WIDX_BUY_LAND_RIGHTS) | (1 << WIDX_BUY_CONSTRUCTION_RIGHTS);
@@ -120,7 +119,7 @@ void window_land_rights_open()
 	show_land_rights();
 }
 
-static void window_land_rights_close()
+static void window_land_rights_close(rct_window *w)
 {
 	//if (LandRightsMode)
 	//	hide_land_rights();
@@ -131,13 +130,9 @@ static void window_land_rights_close()
 		tool_cancel();
 }
 
-static void window_land_rights_mouseup()
+static void window_land_rights_mouseup(rct_window *w, int widgetIndex)
 {
-	rct_window *w;
 	int limit;
-	short widgetIndex;
-
-	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -187,18 +182,12 @@ static void window_land_rights_mouseup()
 	}
 }
 
-static void window_land_rights_textinput()
+static void window_land_rights_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	uint8 result;
-	short widgetIndex;
-	rct_window *w;
-	char *text;
 	int size;
 	char* end;
 
-	window_textinput_get_registers(w, widgetIndex, result, text);
-
-	if (widgetIndex != WIDX_PREVIEW || !result)
+	if (widgetIndex != WIDX_PREVIEW || text == NULL)
 		return;
 
 	size = strtol(text, &end, 10);
@@ -224,11 +213,8 @@ static void window_land_rights_update(rct_window *w)
 		window_close(w);
 }
 
-static void window_land_rights_invalidate()
+static void window_land_rights_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	// Set the preview image button to be pressed down
@@ -241,13 +227,9 @@ static void window_land_rights_invalidate()
 		0xFFFFFFFF;
 }
 
-static void window_land_rights_paint()
+static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	int x, y;
-
-	window_paint_get_registers(w, dpi);
 
 	x = w->x + (window_land_rights_widgets[WIDX_PREVIEW].left + window_land_rights_widgets[WIDX_PREVIEW].right) / 2;
 	y = w->y + (window_land_rights_widgets[WIDX_PREVIEW].top + window_land_rights_widgets[WIDX_PREVIEW].bottom) / 2;

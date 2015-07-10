@@ -33,40 +33,39 @@ static rct_widget window_tooltip_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_tooltip_emptysub() { }
-static void window_tooltip_onclose();
+static void window_tooltip_onclose(rct_window *w);
 static void window_tooltip_update(rct_window *w);
-static void window_tooltip_paint();
+static void window_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void* window_tooltip_events[] = {
+static rct_window_event_list window_tooltip_events = {
 	window_tooltip_onclose,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_tooltip_update,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
-	window_tooltip_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_tooltip_paint,
-	window_tooltip_emptysub
+	NULL
 };
 
 void window_tooltip_reset(int x, int y)
@@ -151,7 +150,7 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 		y,
 		width,
 		height,
-		(uint32*)window_tooltip_events,
+		&window_tooltip_events,
 		WC_TOOLTIP,
 		WF_TRANSPARENT | WF_STICK_TO_FRONT
 	);
@@ -177,7 +176,7 @@ void window_tooltip_close()
  * 
  *  rct2: 0x006EA578
  */
-static void window_tooltip_onclose()
+static void window_tooltip_onclose(rct_window *w)
 {
 	RCT2_GLOBAL(0x009BC3B0, uint8) = 0;
 }
@@ -196,13 +195,8 @@ static void window_tooltip_update(rct_window *w)
  * 
  *  rct2: 0x006EA41D
  */
-static void window_tooltip_paint()
+static void window_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	int left = w->x;
 	int top = w->y;
 	int right = w->x + w->width - 1;

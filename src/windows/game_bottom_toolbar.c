@@ -73,14 +73,13 @@ rct_widget window_game_bottom_toolbar_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_game_bottom_toolbar_emptysub() { }
-static void window_game_bottom_toolbar_mouseup();
-static void window_game_bottom_toolbar_tooltip();
-static void window_game_bottom_toolbar_invalidate();
-static void window_game_bottom_toolbar_paint();
+static void window_game_bottom_toolbar_mouseup(rct_window *w, int widgetIndex);
+static void window_game_bottom_toolbar_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_game_bottom_toolbar_invalidate(rct_window *w);
+static void window_game_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_game_bottom_toolbar_update(rct_window* w);
-static void window_game_bottom_toolbar_cursor();
-static void window_game_bottom_toolbar_unknown05();
+static void window_game_bottom_toolbar_cursor(rct_window *w, int widgetIndex, int x, int y, int *cursorId);
+static void window_game_bottom_toolbar_unknown05(rct_window *w);
 
 static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, rct_window *w, int colour, int x, int y, uint8 factor);
@@ -89,35 +88,35 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 static void window_game_bottom_toolbar_draw_tutorial_text(rct_drawpixelinfo *dpi, rct_window *w);
 
 /* rct2: 0x0097BFDC */
-static void* window_game_bottom_toolbar_events[] = {
-	window_game_bottom_toolbar_emptysub,
+static rct_window_event_list window_game_bottom_toolbar_events = {
+	NULL,
 	window_game_bottom_toolbar_mouseup,
-	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
+	NULL,
+	NULL,
+	NULL,
 	window_game_bottom_toolbar_unknown05,
 	window_game_bottom_toolbar_update,
-	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
-	window_game_bottom_toolbar_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_game_bottom_toolbar_tooltip,
 	window_game_bottom_toolbar_cursor,
-	window_game_bottom_toolbar_emptysub,
+	NULL,
 	window_game_bottom_toolbar_invalidate,
 	window_game_bottom_toolbar_paint,
-	window_game_bottom_toolbar_emptysub
+	NULL
 };
 
 static void window_game_bottom_toolbar_invalidate_dirty_widgets(rct_window *w);
@@ -133,7 +132,7 @@ void window_game_bottom_toolbar_open()
 	window = window_create(
 		0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 32,
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16), 32,
-		(uint32*)window_game_bottom_toolbar_events,
+		&window_game_bottom_toolbar_events,
 		WC_BOTTOM_TOOLBAR,
 		WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_5
 	);
@@ -162,13 +161,10 @@ void window_game_bottom_toolbar_open()
  * 
  *  rct2: 0x0066C588
  */
-static void window_game_bottom_toolbar_mouseup()
+static void window_game_bottom_toolbar_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w, *mainWindow;
+	rct_window *mainWindow;
 	rct_news_item *newsItem;
-
-	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_LEFT_OUTSET:
@@ -214,23 +210,17 @@ static void window_game_bottom_toolbar_mouseup()
 	}
 }
 
-static void window_game_bottom_toolbar_tooltip()
+static void window_game_bottom_toolbar_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
 	int month, day;
-	short widgetIndex, result;
-	rct_window *w;
-
-	window_tooltip_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_MONEY:
 		RCT2_GLOBAL(0x013CE952, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, sint32);
 		RCT2_GLOBAL(0x013CE956, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
-		result = 0;
 		break;
 	case WIDX_PARK_RATING:
 		RCT2_GLOBAL(0x013CE952, short) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16);
-		result = 0;
 		break;
 	case WIDX_DATE:
 		month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
@@ -238,24 +228,19 @@ static void window_game_bottom_toolbar_tooltip()
 		
 		RCT2_GLOBAL(0x013CE952, short) = STR_DATE_DAY_1 + day;
 		RCT2_GLOBAL(0x013CE954, short) = STR_MONTH_MARCH + month;
-		result = 0;
 		break;
 	}
-
-	window_tooltip_set_registers(result);
 }
 
 /**
  * 
  *  rct2: 0x0066BBA0
  */
-static void window_game_bottom_toolbar_invalidate()
+static void window_game_bottom_toolbar_invalidate(rct_window *w)
 {
 	int x;
-	rct_window *w;
 	rct_news_item *newsItem;
 
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	// Anchor the middle and right panel to the right
@@ -343,13 +328,8 @@ void window_game_bottom_toolbar_invalidate_news_item()
  * 
  *  rct2: 0x0066BC87
  */
-static void window_game_bottom_toolbar_paint()
+static void window_game_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	// Draw panel grey backgrounds
 	gfx_fill_rect(
 		dpi,
@@ -643,13 +623,9 @@ static void window_game_bottom_toolbar_update(rct_window* w){
 }
 
 /* rct2: 0x006C644 */
-static void window_game_bottom_toolbar_cursor(){
-	rct_window *w;
-	short widgetIndex, x, y;
-
-	window_cursor_get_registers(w, widgetIndex, x, y);
-
-	switch (widgetIndex){
+static void window_game_bottom_toolbar_cursor(rct_window *w, int widgetIndex, int x, int y, int *cursorId)
+{
+	switch (widgetIndex) {
 	case WIDX_MONEY:
 	case WIDX_GUESTS:
 	case WIDX_PARK_RATING:
@@ -660,11 +636,8 @@ static void window_game_bottom_toolbar_cursor(){
 }
 
 /* rct2: 0x0066C6F2 */
-static void window_game_bottom_toolbar_unknown05(){
-	rct_window* w;
-
-	window_get_register(w);
-
+static void window_game_bottom_toolbar_unknown05(rct_window *w)
+{
 	window_game_bottom_toolbar_invalidate_dirty_widgets(w);
 }
 

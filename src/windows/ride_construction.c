@@ -132,49 +132,47 @@ static rct_widget window_ride_construction_widgets[] = {
 
 #pragma region Events
 
-static void window_ride_construction_emptysub() {}
-
-static void window_ride_construction_close();
-static void window_ride_construction_mouseup();
-static void window_ride_construction_resize();
+static void window_ride_construction_close(rct_window *w);
+static void window_ride_construction_mouseup(rct_window *w, int widgetIndex);
+static void window_ride_construction_resize(rct_window *w);
 static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, rct_widget *widget);
-static void window_ride_construction_dropdown();
+static void window_ride_construction_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
 static void window_ride_construction_update(rct_window *w);
-static void window_ride_construction_toolupdate();
-static void window_ride_construction_tooldown();
-static void window_ride_construction_invalidate();
-static void window_ride_construction_paint();
+static void window_ride_construction_toolupdate(rct_window* w, int widgetIndex, int x, int y);
+static void window_ride_construction_tooldown(rct_window* w, int widgetIndex, int x, int y);
+static void window_ride_construction_invalidate(rct_window *w);
+static void window_ride_construction_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //0x993EEC
-static void* window_ride_construction_events[] = {
+static rct_window_event_list window_ride_construction_events = {
 	window_ride_construction_close,
 	window_ride_construction_mouseup,
 	window_ride_construction_resize,
 	window_ride_construction_mousedown,
 	window_ride_construction_dropdown,
-	window_ride_construction_emptysub,
+	NULL,
 	window_ride_construction_update,
-	window_ride_construction_emptysub,
-	window_ride_construction_emptysub,
+	NULL,
+	NULL,
 	window_ride_construction_toolupdate,
 	window_ride_construction_tooldown,
-	window_ride_construction_emptysub,
-	window_ride_construction_emptysub,
-	window_ride_construction_emptysub,
-	window_ride_construction_emptysub,
-	window_ride_construction_emptysub,
-	window_ride_construction_emptysub,
-	window_ride_construction_emptysub,
-	window_ride_construction_emptysub,
-	window_ride_construction_emptysub,
-	window_ride_construction_emptysub,
-	window_ride_construction_emptysub,
-	window_ride_construction_emptysub,
-	window_ride_construction_emptysub,
-	window_ride_construction_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_ride_construction_invalidate,
 	window_ride_construction_paint,
-	window_ride_construction_emptysub
+	NULL
 };
 
 #pragma endregion
@@ -507,7 +505,7 @@ rct_window *window_ride_construction_open()
 	if (ride->type == RIDE_TYPE_MAZE)
 		return window_maze_construction_open();
 
-	w = window_create(0, 29, 166, 394, (uint32*)window_ride_construction_events, WC_RIDE_CONSTRUCTION, WF_9);
+	w = window_create(0, 29, 166, 394, &window_ride_construction_events, WC_RIDE_CONSTRUCTION, WF_9);
 
 	w->widgets = window_ride_construction_widgets;
 	w->enabled_widgets = 0x67EFFFFFC4;
@@ -560,12 +558,9 @@ rct_window *window_ride_construction_open()
  *
  * rct2: 0x006C845D
  */
-static void window_ride_construction_close()
+static void window_ride_construction_close(rct_window *w)
 {
-	rct_window *w;
 	rct_xy_element mapElement;
-
-	window_get_register(w);
 
 	sub_6C9627();
 	viewport_set_visibility(0);
@@ -596,13 +591,8 @@ static void window_ride_construction_close()
  *
  * rct2: 0x006C6E14
  */
-static void window_ride_construction_mouseup()
+static void window_ride_construction_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	window_ride_construction_update_enabled_track_pieces();
 	switch (widgetIndex){
 	case WIDX_CLOSE:
@@ -636,12 +626,8 @@ static void window_ride_construction_mouseup()
  *
  * rct2: 0x006C7934
  */
-static void window_ride_construction_resize()
+static void window_ride_construction_resize(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
-
 	window_ride_construction_update_enabled_track_pieces();
 	w->enabled_widgets &= ~(1 << WIDX_CONSTRUCT);
 	if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_PLACE) {
@@ -1528,13 +1514,8 @@ static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, r
  *
  * rct2: 0x006C78CD
  */
-static void window_ride_construction_dropdown()
+static void window_ride_construction_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	short dropdownIndex, widgetIndex;
-	rct_window *w;
-
-	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
-
 	if (widgetIndex != WIDX_SPECIAL_TRACK_DROPDOWN)
 		return;
 	if (dropdownIndex == -1)
@@ -1931,20 +1912,15 @@ static bool ride_get_place_position_from_screen_position(int screenX, int screen
  *
  * rct2: 0x006C8229
  */
-static void window_ride_construction_toolupdate()
+static void window_ride_construction_toolupdate(rct_window* w, int widgetIndex, int x, int y)
 {
-	rct_window *w;
-	short screenX, screenY, widgetIndex;
-
-	window_tool_get_registers(w, widgetIndex, screenX, screenY);
-
 	switch (widgetIndex) {
 	case WIDX_CONSTRUCT:
-		ride_construction_toolupdate_construct(screenX, screenY);
+		ride_construction_toolupdate_construct(x, y);
 		break;
 	case WIDX_ENTRANCE:
 	case WIDX_EXIT:
-		ride_construction_toolupdate_entrance_exit(screenX, screenY);
+		ride_construction_toolupdate_entrance_exit(x, y);
 		break;
 	}
 }
@@ -1953,20 +1929,15 @@ static void window_ride_construction_toolupdate()
  * 
  *  rct2: 0x006C8248
  */
-static void window_ride_construction_tooldown()
+static void window_ride_construction_tooldown(rct_window* w, int widgetIndex, int x, int y)
 {
-	rct_window *w;
-	short screenX, screenY, widgetIndex;
-
-	window_tool_get_registers(w, widgetIndex, screenX, screenY);
-
 	switch (widgetIndex) {
 	case WIDX_CONSTRUCT:
-		ride_construction_tooldown_construct(screenX, screenY);
+		ride_construction_tooldown_construct(x, y);
 		break;
 	case WIDX_ENTRANCE:
 	case WIDX_EXIT:
-		ride_construction_tooldown_entrance_exit(screenX, screenY);
+		ride_construction_tooldown_entrance_exit(x, y);
 		break;
 	}
 }
@@ -1975,13 +1946,10 @@ static void window_ride_construction_tooldown()
  *
  * rct2: 0x006C6AD5
  */
-static void window_ride_construction_invalidate()
+static void window_ride_construction_invalidate(rct_window *w)
 {
-	rct_window *w;
 	rct_ride *ride;
 	rct_string_id stringId;
-
-	window_get_register(w);
 
 	ride = GET_RIDE(_currentRideIndex);
 
@@ -2011,14 +1979,11 @@ static void window_ride_construction_invalidate()
  *
  * rct2: 0x006C6B86
  */
-static void window_ride_construction_paint()
+static void window_ride_construction_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi, *clipdpi;
+	rct_drawpixelinfo *clipdpi;
 	rct_widget *widget;
 	int x, y, width, height;
-
-	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 	

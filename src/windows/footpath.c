@@ -103,48 +103,47 @@ static rct_widget window_footpath_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_footpath_emptysub() { }
-static void window_footpath_close();
-static void window_footpath_mouseup();
+static void window_footpath_close(rct_window *w);
+static void window_footpath_mouseup(rct_window *w, int widgetIndex);
 static void window_footpath_mousedown(int widgetIndex, rct_window *w, rct_widget *widget);
-static void window_footpath_dropdown();
+static void window_footpath_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
 static void window_footpath_update(rct_window *w);
-static void window_footpath_toolupdate();
-static void window_footpath_tooldown();
-static void window_footpath_tooldrag();
-static void window_footpath_toolup();
-static void window_footpath_invalidate();
-static void window_footpath_paint();
+static void window_footpath_toolupdate(rct_window* w, int widgetIndex, int x, int y);
+static void window_footpath_tooldown(rct_window* w, int widgetIndex, int x, int y);
+static void window_footpath_tooldrag(rct_window* w, int widgetIndex, int x, int y);
+static void window_footpath_toolup(rct_window* w, int widgetIndex, int x, int y);
+static void window_footpath_invalidate(rct_window *w);
+static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void* window_footpath_events[] = {
+static rct_window_event_list window_footpath_events = {
 	window_footpath_close,
 	window_footpath_mouseup,
-	window_footpath_emptysub,
+	NULL,
 	window_footpath_mousedown,
 	window_footpath_dropdown,
-	window_footpath_emptysub,
+	NULL,
 	window_footpath_update,
-	window_footpath_emptysub,
-	window_footpath_emptysub,
+	NULL,
+	NULL,
 	window_footpath_toolupdate,
 	window_footpath_tooldown,
 	window_footpath_tooldrag,
 	window_footpath_toolup,
-	window_footpath_emptysub,
-	window_footpath_emptysub,
-	window_footpath_emptysub,
-	window_footpath_emptysub,
-	window_footpath_emptysub,
-	window_footpath_emptysub,
-	window_footpath_emptysub,
-	window_footpath_emptysub,
-	window_footpath_emptysub,
-	window_footpath_emptysub,
-	window_footpath_emptysub,
-	window_footpath_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_footpath_invalidate,
 	window_footpath_paint,
-	window_footpath_emptysub
+	NULL
 };
 
 money32 _window_footpath_cost;
@@ -182,7 +181,7 @@ void window_footpath_open()
 		29,
 		106,
 		381,
-		(uint32*)window_footpath_events,
+		&window_footpath_events,
 		WC_FOOTPATH,
 		0
 	);
@@ -226,12 +225,8 @@ void window_footpath_open()
  * 
  *  rct2: 0x006A852F
  */
-static void window_footpath_close()
+static void window_footpath_close(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
-
 	footpath_provisional_update();
 	viewport_set_visibility(0);
 	map_invalidate_map_selection_tiles();
@@ -244,13 +239,8 @@ static void window_footpath_close()
  * 
  *  rct2: 0x006A7E92
  */
-static void window_footpath_mouseup()
+static void window_footpath_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
@@ -335,15 +325,10 @@ static void window_footpath_mousedown(int widgetIndex, rct_window*w, rct_widget*
  * 
  *  rct2: 0x006A7F18
  */
-static void window_footpath_dropdown()
+static void window_footpath_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
 	int i, j, pathId;
-	short dropdownIndex;
-	short widgetIndex;
-	rct_window *w;
 	rct_path_type *pathType;
-
-	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
 
 	if (widgetIndex == WIDX_FOOTPATH_TYPE)
 		RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_TYPE, uint8) = SELECTED_PATH_TYPE_NORMAL;
@@ -390,14 +375,8 @@ static void window_footpath_dropdown()
  * 
  *  rct2: 0x006A8032
  */
-static void window_footpath_toolupdate()
+static void window_footpath_toolupdate(rct_window* w, int widgetIndex, int x, int y)
 {
-	short x, y;
-	short widgetIndex;
-	rct_window *w;
-
-	window_tool_get_registers(w, widgetIndex, x, y);
-
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
 		window_footpath_set_provisional_path_at_point(x, y);
 	} else if (widgetIndex == WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL) {
@@ -409,14 +388,8 @@ static void window_footpath_toolupdate()
  * 
  *  rct2: 0x006A8047
  */
-static void window_footpath_tooldown()
+static void window_footpath_tooldown(rct_window* w, int widgetIndex, int x, int y)
 {
-	short x, y;
-	short widgetIndex;
-	rct_window *w;
-
-	window_tool_get_registers(w, widgetIndex, x, y);
-
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
 		window_footpath_place_path_at_point(x, y);
 	else if (widgetIndex == WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL)
@@ -427,14 +400,8 @@ static void window_footpath_tooldown()
  * 
  *  rct2: 0x006A8067
  */
-static void window_footpath_tooldrag()
+static void window_footpath_tooldrag(rct_window* w, int widgetIndex, int x, int y)
 {
-	short x, y;
-	short widgetIndex;
-	rct_window *w;
-
-	window_tool_get_registers(w, widgetIndex, x, y);
-
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
 		window_footpath_place_path_at_point(x, y);
 	}
@@ -444,14 +411,8 @@ static void window_footpath_tooldrag()
  * 
  *  rct2: 0x006A8066
  */
-static void window_footpath_toolup()
+static void window_footpath_toolup(rct_window* w, int widgetIndex, int x, int y)
 {
-	short x, y;
-	short widgetIndex;
-	rct_window *w;
-
-	window_tool_get_registers(w, widgetIndex, x, y);
-
 	if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
 		// The function at 0x006A8380 in rct2 is just the following:
 		RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) = 0;
@@ -524,13 +485,11 @@ static void window_footpath_update(rct_window *w)
  * 
  *  rct2: 0x006A7D1C
  */
-static void window_footpath_invalidate()
+static void window_footpath_invalidate(rct_window *w)
 {
 	int selectedPath;
 	rct_path_type *pathType;
-	rct_window *w;
 
-	window_get_register(w);
 	colour_scheme_update(w);
 	
 	// Press / unpress footpath and queue type buttons
@@ -569,14 +528,10 @@ static void window_footpath_invalidate()
  * 
  *  rct2: 0x006A7D8B
  */
-static void window_footpath_paint()
+static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	int x, y, image, selectedPath;
 	rct_path_type *pathType;
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 

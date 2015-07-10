@@ -54,46 +54,45 @@ static rct_widget window_track_list_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_track_list_emptysub() { }
-static void window_track_list_close();
-static void window_track_list_mouseup();
-static void window_track_list_scrollgetsize();
-static void window_track_list_scrollmousedown();
-static void window_track_list_scrollmouseover();
-static void window_track_list_tooltip();
-static void window_track_list_invalidate();
-static void window_track_list_paint();
-static void window_track_list_scrollpaint();
+static void window_track_list_close(rct_window *w);
+static void window_track_list_mouseup(rct_window *w, int widgetIndex);
+static void window_track_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_track_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
+static void window_track_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
+static void window_track_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_track_list_invalidate(rct_window *w);
+static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 
-static void* window_track_list_events[] = {
-	(uint32*)window_track_list_close,
-	(uint32*)window_track_list_mouseup,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_scrollgetsize,
-	(uint32*)window_track_list_scrollmousedown,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_scrollmouseover,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_tooltip,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_invalidate,
-	(uint32*)window_track_list_paint,
-	(uint32*)window_track_list_scrollpaint
+static rct_window_event_list window_track_list_events = {
+	window_track_list_close,
+	window_track_list_mouseup,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	window_track_list_scrollgetsize,
+	window_track_list_scrollmousedown,
+	NULL,
+	window_track_list_scrollmouseover,
+	NULL,
+	NULL,
+	NULL,
+	window_track_list_tooltip,
+	NULL,
+	NULL,
+	window_track_list_invalidate,
+	window_track_list_paint,
+	window_track_list_scrollpaint
 };
 
 ride_list_item _window_track_list_item;
@@ -133,7 +132,7 @@ void window_track_list_open(ride_list_item item)
 		y,
 		600,
 		400,
-		(uint32*)window_track_list_events,
+		&window_track_list_events,
 		WC_TRACK_DESIGN_LIST,
 		0
 	);
@@ -233,7 +232,7 @@ static int window_track_list_get_list_item_index_from_position(int x, int y)
  *
  *  rct2: 0x006CFD76
  */
-static void window_track_list_close()
+static void window_track_list_close(rct_window *w)
 {
 	free(RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_CACHE, void*));
 }
@@ -242,13 +241,8 @@ static void window_track_list_close()
  *
  *  rct2: 0x006CFA31
  */
-static void window_track_list_mouseup()
+static void window_track_list_mouseup(rct_window *w, int widgetIndex)
 {
-	rct_window *w;
-	short widgetIndex;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
@@ -279,32 +273,22 @@ static void window_track_list_mouseup()
  *
  *  rct2: 0x006CFAB0
  */
-static void window_track_list_scrollgetsize()
+static void window_track_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
-	rct_window *w;
-	int width, height;
 	uint8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
 
-	window_get_register(w);
-
-	width = 0;
-	height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 10;
+	*height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 10;
 	for (trackDesignItem = trackDesignList; *trackDesignItem != 0; trackDesignItem += 128)
-		height += 10;
-
-	window_scrollsize_set_registers(width, height);
+		*height += 10;
 }
 
 /**
  *
  *  rct2: 0x006CFB39
  */
-static void window_track_list_scrollmousedown()
+static void window_track_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 {
-	rct_window *w;
-	short i, x, y, scrollIndex;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
+	int i;
 
 	if (w->track_list.var_484 & 1)
 		return;
@@ -321,12 +305,9 @@ static void window_track_list_scrollmousedown()
  *
  *  rct2: 0x006CFAD7
  */
-static void window_track_list_scrollmouseover()
+static void window_track_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
 {
-	rct_window *w;
-	short i, x, y, scrollIndex;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
+	int i;
 
 	if (w->track_list.var_484 & 1)
 		return;
@@ -344,7 +325,7 @@ static void window_track_list_scrollmouseover()
  *
  *  rct2: 0x006CFD6C
  */
-static void window_track_list_tooltip()
+static void window_track_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
 	RCT2_GLOBAL(0x013CE952, uint16) = STR_LIST;
 }
@@ -353,13 +334,11 @@ static void window_track_list_tooltip()
  *
  *  rct2: 0x006CF2D6
  */
-static void window_track_list_invalidate()
+static void window_track_list_invalidate(rct_window *w)
 {
-	rct_window *w;
 	rct_ride_type *entry;
 	rct_string_id stringId;
 
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	entry = GET_RIDE_ENTRY(_window_track_list_item.entry_index);
@@ -398,10 +377,8 @@ static void window_track_list_invalidate()
  *
  *  rct2: 0x006CF387
  */
-static void window_track_list_paint()
+static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	rct_widget *widget;
 	rct_track_design *trackDesign = NULL;
 	uint8 *image, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
@@ -409,8 +386,6 @@ static void window_track_list_paint()
 	fixed32_2dp rating;
 	int trackIndex, x, y, colour, gForces, airTime;
 	rct_g1_element tmpElement, *subsituteElement;
-
-	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 
@@ -584,15 +559,11 @@ static void window_track_list_paint()
  *
  *  rct2: 0x006CF8CD
  */
-static void window_track_list_scrollpaint()
+static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	rct_string_id stringId, stringId2;
 	int i, x, y, colour;
 	uint8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
-
-	window_paint_get_registers(w, dpi);
 
 	colour = RCT2_GLOBAL(0x00141FC48 + (w->colours[0] * 8), uint8);
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
