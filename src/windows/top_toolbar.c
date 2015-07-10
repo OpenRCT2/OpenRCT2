@@ -886,15 +886,6 @@ void sub_6896DC(sint16 x, sint16 y, sint16 z, sint16* grid_x, sint16* grid_y, ui
 	*cl = ecx;
 }
 
-void sub_6894D4(sint16 x, sint16 y, sint16 z, sint16* grid_x, sint16* grid_y){
-	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = z;
-
-	RCT2_CALLFUNC_X(0x006894D4, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-
-	*grid_x = eax;
-	*grid_y = ebx;
-}
-
 /* rct2: 0x006E1F34 
  * Outputs
  * eax : grid_x

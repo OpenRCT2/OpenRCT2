@@ -2431,7 +2431,7 @@ void sub_68862C()
  * flags: edx
  * x: ax
  * y: cx
- * z: bl
+ * interactionType: bl
  * mapElement: edx
  * viewport: edi
  */
@@ -2509,4 +2509,50 @@ void viewport_invalidate(rct_viewport *viewport, int left, int top, int right, i
 		bottom += viewport->y;
 		gfx_set_dirty_blocks(left, top, right, bottom);
 	}
+}
+
+rct_viewport *viewport_find_from_point(int screenX, int screenY)
+{
+	rct_window *w;
+	rct_viewport *viewport;
+	
+	w = window_find_from_point(screenX, screenY);
+	if (w == NULL)
+		return NULL;
+
+	viewport = w->viewport;
+	if (viewport == NULL)
+		return NULL;
+
+	if (screenX < viewport->x || screenY < viewport->y)
+		return NULL;
+	if (screenX >= viewport->x + viewport->width || screenY >= viewport->y + viewport->height)
+		return NULL;
+
+	return viewport;
+}
+
+/**
+ *
+ *  rct2: 0x006894D4
+ */
+void sub_6894D4(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY)
+{
+	rct_viewport *viewport = viewport_find_from_point(screenX, screenY);
+	if (viewport == NULL) {
+		*mapX = 0x8000;
+		return;
+	}
+
+	screenX = viewport->view_x + ((screenX - viewport->x) << viewport->zoom);
+	screenY = viewport->view_y + ((screenY - viewport->y) << viewport->zoom);
+
+	rct_xy16 mapPosition = viewport_coord_to_map_coord(screenX, screenY + z, 0);
+	if (mapPosition.x < 0 || mapPosition.x >= (256 * 32) || mapPosition.y < 0 || mapPosition.y >(256 * 32)) {
+		*mapX = 0x8000;
+		return;
+	}
+
+	*mapX = mapPosition.x;
+	*mapY = mapPosition.y;
 }

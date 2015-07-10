@@ -66,6 +66,9 @@ typedef utf16* utf16string;
 #define sgn(x)				((x > 0) ? 1 : ((x < 0) ? -1 : 0))
 #define clamp(l, x, h)		(min(h, max(l, x)))
 
+// Rounds an integer down to the given power of 2. y must be a power of 2.
+#define floor2(x, y)		((x) & (~((y) - 1)))
+
 #define countof(x)			((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
 
 #ifndef _MSC_VER
