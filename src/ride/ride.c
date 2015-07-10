@@ -1707,17 +1707,6 @@ static void ride_update(int rideIndex)
 
 	ride_inspection_update(ride);
 
-	// Used to bring up the "real" ride window after a crash. Can be removed once vehicle_update is decompiled
-	if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED) {
-		if ((ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED_WINDOW_OPENED) == 0) {
-			ride->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED_WINDOW_OPENED;
-			window_ride_main_open(rideIndex);
-		}
-	}
-	else if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED_WINDOW_OPENED) {
-		ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED_WINDOW_OPENED;
-	}
-
 	if (ride->status == RIDE_STATUS_TESTING && gConfigGeneral.no_test_crashes) {
 		for (int i = 0; i < ride->num_vehicles; i++) {
 			rct_vehicle *vehicle = &(g_sprite_list[ride->vehicles[i]].vehicle);
@@ -6003,4 +5992,31 @@ void game_command_remove_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int
 		*edi & 0xFF,
 		*ebx & 0xFF
 		);
+}
+
+/**
+ *
+ *  rct2: 0x006B752C
+ */
+void ride_crash(int rideIndex, int vehicleIndex)
+{
+	rct_ride *ride;
+	rct_vehicle *vehicle;
+	rct_window *w;
+
+	// TODO Remove these when hook is no longer used
+	rideIndex &= 0xFF;
+	vehicleIndex &= 0xFF;
+
+	ride = GET_RIDE(rideIndex);
+	vehicle = &(g_sprite_list[ride->vehicles[vehicleIndex]]).vehicle;
+
+	w = window_ride_open_vehicle(vehicle);
+	if (w->viewport != NULL) {
+		w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, rct_string_id) = ride->name;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
+	news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_HAS_CRASHED, rideIndex);
 }
