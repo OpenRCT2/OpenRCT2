@@ -216,8 +216,7 @@ void rct2_update()
 
 void rct2_draw()
 {
-	// Handles picked-up peep and rain redraw
-	redraw_peep_and_rain();
+	redraw_rain();
 	window_update_all();
 	update_rain_animation();
 	update_palette_effects();

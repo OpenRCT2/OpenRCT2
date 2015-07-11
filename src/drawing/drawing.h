@@ -93,6 +93,7 @@ void load_palette();
 void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sint32 y_start);
 void gfx_clear(rct_drawpixelinfo *dpi, int colour);
 void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour);
+void gfx_invalidate_pickedup_peep();
 
 // line
 void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int colour);
@@ -134,7 +135,7 @@ void sub_6C1F57(rct_drawpixelinfo *dpi, int x, int y, int width, int colour, rct
 
 // rain
 void update_rain_animation();
-void redraw_peep_and_rain();
+void redraw_rain();
 
 // unknown
 void sub_681DE2(rct_drawpixelinfo *dpi, int x, int y, int image1, int image2);
