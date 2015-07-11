@@ -2411,12 +2411,9 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 			banner->x = position.x / 32;
 			banner->y = position.y / 32;
 
-			*eax = position.x;
-			*ecx = position.y;
-			*edx = position.z;
-			RCT2_CALLFUNC_X(0x6B7D86, eax, ebx, ecx, edx, esi, edi, ebp);
-			if ((*eax & 0xFF) != 0xFF){
-				banner->colour = *eax & 0xFF;
+			int rideIndex = banner_get_closest_ride_index(position.x, position.y, position.z);
+			if (rideIndex != -1) {
+				banner->colour = rideIndex & 0xFF;
 				banner->flags |= BANNER_FLAG_2;
 			}
 		}
@@ -2516,20 +2513,20 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 			rct_scenery_entry* scenery_entry = RCT2_ADDRESS(RCT2_ADDRESS_LARGE_SCENERY_ENTRIES, rct_scenery_entry*)[entry_index];
 			if(scenery_entry->large_scenery.var_11 != 0xFF){
 				banner_id = create_new_banner(flags);
-				if(banner_id == MAX_BANNERS){
+				if (banner_id == MAX_BANNERS) {
 					*ebx = MONEY32_UNDEFINED;
 					return;
 				}
-				if(flags & GAME_COMMAND_FLAG_APPLY){
+				if (flags & GAME_COMMAND_FLAG_APPLY) {
 					rct_banner* banner = &gBanners[banner_id];
 					banner->flags |= BANNER_FLAG_1;
 					banner->type = 0;
 					banner->x = x / 32;
 					banner->y = y / 32;
-					int eax2 = x, ebx2 = *ebx, ecx2 = y, edx2 = z, esi2 = *esi, edi2 = *edi, ebp2 = *ebp;
-					RCT2_CALLFUNC_X(0x006B7D86, &eax2, &ebx2, &ecx2, &edx2, &esi2, &edi2, &ebp2);
-					if((uint8)eax2 != 0xFF){
-						banner->colour = eax2;
+
+					int rideIndex = banner_get_closest_ride_index(x, y, z);
+					if (rideIndex != -1) {
+						banner->colour = rideIndex;
 						banner->flags |= BANNER_FLAG_2;
 					}
 				}

@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
+#include "../ride/ride.h"
 #include "banner.h"
 #include "map.h"
 
@@ -81,4 +82,84 @@ rct_map_element *banner_get_map_element(int bannerIndex)
 		}
 	} while (!map_element_is_last_for_tile(mapElement++));
 	return NULL;
+}
+
+/**
+ *
+ *  rct2: 0x006B7EAB
+ */
+static int banner_get_ride_index_at(int x, int y, int z)
+{
+	rct_map_element *mapElement;
+	rct_ride *ride;
+	int rideIndex, resultRideIndex;
+
+	resultRideIndex = -1;
+	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
+
+		rideIndex = mapElement->properties.track.ride_index;
+		ride = GET_RIDE(rideIndex);
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+			continue;
+
+		if ((mapElement->clearance_height * 8) + 32 <= z)
+			continue;
+
+		resultRideIndex = rideIndex;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	return resultRideIndex;
+}
+
+/**
+ *
+ *  rct2: 0x006B7D86
+ */
+int banner_get_closest_ride_index(int x, int y, int z)
+{
+	int i, rideIndex;
+	rct_ride *ride;
+
+	static const rct_xy16 NeighbourCheckOrder[] = {
+		{  32,   0 },
+		{ -32,   0 },
+		{   0,  32 },
+		{   0, -32 },
+		{ -32, +32 },
+		{ +32, -32 },
+		{ +32, +32 },
+		{ -32, +32 },
+		{   0,   0 }
+	};
+
+	for (i = 0; i < countof(NeighbourCheckOrder); i++) {
+		rideIndex = banner_get_ride_index_at(x + NeighbourCheckOrder[i].x, y + NeighbourCheckOrder[i].y, z);
+		if (rideIndex != -1) {
+			return rideIndex;
+		}
+	}
+
+	rideIndex = -1;
+	int resultDistance = INT_MAX;
+	FOR_ALL_RIDES(i, ride) {
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+			continue;
+
+		uint16 xy = ride->overall_view;
+		if (xy == 0xFFFF)
+			continue;
+
+		int rideX = (xy & 0xFF) * 32;
+		int rideY = (xy >> 8) * 32;
+		int distance = abs(x - rideX) + abs(y - rideY);
+		if (distance < resultDistance) {
+			resultDistance = distance;
+			rideIndex = i;
+		}
+	}
+
+	return rideIndex;
 }

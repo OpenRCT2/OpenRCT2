@@ -337,10 +337,11 @@ static void window_sign_textinput(rct_window *w, int widgetIndex, char *text)
 			}
 		}
 		else{
-			int eax = x, ebx = 0, ecx = y, edx = 16, ebp = 0, edi = 0, esi = 0;
-			RCT2_CALLFUNC_X(0x6B7D86, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-			if ((eax & 0xFF) == 0xFF)return;
-			banner->colour = eax & 0xFF;
+			int rideIndex = banner_get_closest_ride_index(x, y, 16);
+			if (rideIndex == -1)
+				return;
+
+			banner->colour = rideIndex;
 			banner->flags |= BANNER_FLAG_2;
 
 			rct_string_id prev_string_id = banner->string_idx;
