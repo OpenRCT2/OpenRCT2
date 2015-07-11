@@ -52,6 +52,8 @@ static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 pric
 static bool sub_69AEB7(rct_peep *peep, int rideIndex);
 static void sub_69A98C(rct_peep *peep);
 static void sub_68FD3A(rct_peep *peep);
+static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideSeatToView);
+static int sub_694921(rct_peep *peep, int x, int y);
 static void peep_give_real_name(rct_peep *peep);
 
 const char *gPeepEasterEggNames[] = {
@@ -2743,13 +2745,9 @@ static void peep_update_mowing(rct_peep* peep){
 
 	invalidate_sprite((rct_sprite*)peep);
 	while (1){
-		sint16 x = 0, y = 0, xy_distance;
+		sint16 x = 0, y = 0, z, xy_distance;
 		if (peep_update_action(&x, &y, &xy_distance, peep)){
-			int eax = x, ebx, ecx = y, z, ebp, edi;
-
-			RCT2_CALLFUNC_X(0x662783, &eax, &ebx, &ecx, &z, (int*)&peep, &edi, &ebp);
-			x = eax;
-			y = ecx;
+			z = map_element_height(x, y) & 0xFFFF;
 			sprite_move(x, y, z, (rct_sprite*)peep);
 			invalidate_sprite((rct_sprite*)peep);
 			return;
@@ -2917,13 +2915,9 @@ static void peep_update_sweeping(rct_peep* peep){
 		peep->staff_litter_swept++;
 		peep->var_45 |= (1 << 4);
 	}
-	sint16 x = 0, y = 0, xy_distance;
+	sint16 x = 0, y = 0, z, xy_distance;
 	if (peep_update_action(&x, &y, &xy_distance, peep)){
-		int eax = x, ebx, ecx = y, z, ebp, edi;
-
-		RCT2_CALLFUNC_X(0x694921, &eax, &ebx, &ecx, &z, (int*)&peep, &edi, &ebp);
-		x = eax;
-		y = ecx;
+		z = sub_694921(peep, x, y);
 		sprite_move(x, y, z, (rct_sprite*)peep);
 		invalidate_sprite((rct_sprite*)peep);
 		return;
@@ -4146,16 +4140,9 @@ static void peep_update_walking(rct_peep* peep){
 
 	for (; !(edges & (1 << chosen_edge));)chosen_edge = (chosen_edge + 1) & 3;
 
-	uint8 ride_to_view;
-	uint8 ride_seat_to_view;
-	{
-		int eax = chosen_edge, _ebx = 0, ecx, edx = 0, esi = (int)peep, _ebp = 0, edi = 0;
-		// Work out what to look at
-		if (RCT2_CALLFUNC_X(0x00690B99, &eax, &_ebx, &ecx, &edx, &esi, &edi, &_ebp) & 0x100)return;
-
-		ride_to_view = ecx & 0xFF;
-		ride_seat_to_view = (ecx & 0xFF00) >> 8;
-	}
+	uint8 ride_to_view, ride_seat_to_view;
+	if (!sub_690B99(peep, chosen_edge, &ride_to_view, &ride_seat_to_view))
+		return;
 
 	uint16 sprite_id = RCT2_ADDRESS(0xF1EF60, uint16)[((peep->x & 0x1FE0) << 3) | (peep->y >> 5)];
 	for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.next_in_quadrant){
@@ -5356,29 +5343,80 @@ static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 
 	sound_play_panned(SOUND_PURCHASE, 0x8001, peep->x, peep->y, peep->z);
 }
 
+/**
+ * 
+ *  rct2: 0x00695444
+ */
 static void sub_695444(rct_peep *peep, int rideIndex, int flags)
 {
 	RCT2_CALLPROC_X(0x00695444, 0, 0, 0, (rideIndex & 0xFF) | (flags << 8), (int)peep, 0, 0);
 }
 
+/**
+ * 
+ *  rct2: 0x0069AF1E
+ */
 static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 price)
 {
 	return !(RCT2_CALLPROC_X(0x0069AF1E, shopItem | (rideIndex << 8), 0, price, 0, (int)peep, 0, 0) & 0x100);
 }
 
+/**
+ * 
+ *  rct2: 0x0069AEB7
+ */
 static bool sub_69AEB7(rct_peep *peep, int rideIndex)
 {
 	return !(RCT2_CALLPROC_X(0x0069AEB7, rideIndex << 8, 0, 0, 0, (int)peep, 0, 0) & 0x100);
 }
 
+/**
+ * 
+ *  rct2: 0x0069A98C
+ */
 static void sub_69A98C(rct_peep *peep)
 {
 	RCT2_CALLPROC_X(0x0069A98C, 0, 0, 0, 0, (int)peep, 0, 0);
 }
 
+/**
+ * 
+ *  rct2: 0x0068FD3A
+ */
 static void sub_68FD3A(rct_peep *peep)
 {
 	RCT2_CALLPROC_X(0x0068FD3A, 0, 0, 0, 0, (int)peep, 0, 0);
+}
+
+/**
+ * 
+ *  rct2: 0x00690B99
+ */
+static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideSeatToView)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = edge;
+	esi = (int)peep;
+	if (RCT2_CALLFUNC_X(0x00690B99, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp) & 0x100)
+		return false;
+
+	*rideToView = ecx & 0xFF;
+	*rideSeatToView = (ecx >> 8) & 0xFF;
+	return true;
+}
+
+/**
+ * 
+ *  rct2: 0x00694921
+ */
+static int sub_694921(rct_peep *peep, int x, int y)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = x;
+	ecx = y;
+	esi = (int)peep;
+	RCT2_CALLFUNC_X(0x00694921, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return edx & 0xFFFF;
 }
 
 /**
