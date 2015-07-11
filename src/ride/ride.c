@@ -5121,7 +5121,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(int screenX, int sc
 	ride = GET_RIDE(RCT2_GLOBAL(0x00F44192, uint8));
 	stationHeight = ride->station_heights[RCT2_GLOBAL(0x00F44193, uint8)];
 
-	sub_6894D4(screenX, screenY, stationHeight * 8, &mapX, &mapY);
+	screen_get_map_xy_with_z(screenX, screenY, stationHeight * 8, &mapX, &mapY);
 	if (mapX == (short)0x8000) {
 		*outX = 0x8000;
 		return;

@@ -894,46 +894,6 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	}
 }
 
-void sub_689604(sint16 x, sint16 y, sint16* grid_x, sint16* grid_y, uint8* cl){
-	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
-
-	RCT2_CALLFUNC_X(0x00689604, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-
-	*grid_x = eax;
-	*grid_y = ebx;
-	*cl = ecx;
-}
-
-void sub_68964B(sint16 x, sint16 y, sint16 z, sint16* grid_x, sint16* grid_y, uint8* cl){
-	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = z;
-
-	RCT2_CALLFUNC_X(0x0068964B, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-
-	*grid_x = eax;
-	*grid_y = ebx;
-	*cl = ecx;
-}
-
-void sub_689692(sint16 x, sint16 y, sint16* grid_x, sint16* grid_y, uint8* cl){
-	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
-
-	RCT2_CALLFUNC_X(0x00689692, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-
-	*grid_x = eax;
-	*grid_y = ebx;
-	*cl = ecx;
-}
-
-void sub_6896DC(sint16 x, sint16 y, sint16 z, sint16* grid_x, sint16* grid_y, uint8* cl){
-	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = z;
-
-	RCT2_CALLFUNC_X(0x006896DC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-
-	*grid_x = eax;
-	*grid_y = ebx;
-	*cl = ecx;
-}
-
 /* rct2: 0x006E1F34 
  * Outputs
  * eax : grid_x
@@ -1033,7 +993,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 
 			// If CTRL not pressed
 			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
-				sub_689604(x, y, grid_x, grid_y, &cl);
+				screen_get_map_xy_quadrant(x, y, grid_x, grid_y, &cl);
 
 				if (*grid_x == (sint16)0x8000)
 					return;
@@ -1063,7 +1023,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			else{
 				sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
 
-				sub_68964B(x, y, z, grid_x, grid_y, &cl);
+				screen_get_map_xy_quadrant_with_z(x, y, z, grid_x, grid_y, &cl);
 
 				// If SHIFT pressed
 				if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
@@ -1139,7 +1099,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		}
 		else{
 			sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
-			sub_6894D4(x, y, z, grid_x, grid_y);
+			screen_get_map_xy_with_z(x, y, z, grid_x, grid_y);
 
 			// If SHIFT pressed
 			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
@@ -1205,7 +1165,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		uint8 cl;
 		// If CTRL not pressed
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
-			sub_689692(x, y, grid_x, grid_y, &cl);
+			screen_get_map_xy_side(x, y, grid_x, grid_y, &cl);
 
 			if (*grid_x == (sint16)0x8000)
 				return;
@@ -1233,7 +1193,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		}
 		else{
 			sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
-			sub_6896DC(x, y, z, grid_x, grid_y, &cl);
+			screen_get_map_xy_side_with_z(x, y, z, grid_x, grid_y, &cl);
 
 			// If SHIFT pressed
 			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
@@ -1292,7 +1252,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		}
 		else{
 			sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
-			sub_6894D4(x, y, z, grid_x, grid_y);
+			screen_get_map_xy_with_z(x, y, z, grid_x, grid_y);
 
 			// If SHIFT pressed
 			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
@@ -1593,7 +1553,7 @@ void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
 
 	rct_xy16 mapTile = { 0 };
-	sub_688972(x, y, &mapTile.x, &mapTile.y, NULL);
+	screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
 
 	if (mapTile.x == (sint16)0x8000){
 		if (RCT2_GLOBAL(0x00F1AD62, money32) != MONEY32_UNDEFINED){
@@ -1674,7 +1634,7 @@ void top_toolbar_tool_update_land_paint(sint16 x, sint16 y){
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
 
 	rct_xy16 mapTile = { 0 };
-	sub_688972(x, y, &mapTile.x, &mapTile.y, NULL);
+	screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
 
 	if (mapTile.x == (sint16)0x8000){
 		if (RCT2_GLOBAL(0x00F1AD62, money32) != MONEY32_UNDEFINED){
@@ -1829,7 +1789,7 @@ void top_toolbar_tool_update_land(sint16 x, sint16 y){
 		return;
 	}
 
-	sub_688972(x, y, &mapTile.x, &mapTile.y, NULL);
+	screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
 
 	if (mapTile.x == (sint16)0x8000){
 		money32 lower_cost = MONEY32_UNDEFINED;

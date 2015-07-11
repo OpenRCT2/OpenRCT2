@@ -104,7 +104,6 @@ void sub_689174(sint16* x, sint16* y, sint16 *z);
 
 rct_xy16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, uint16 y);
 rct_xy16 viewport_coord_to_map_coord(int x, int y, int z);
-void sub_688972(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **viewport);
 void screen_pos_to_map_pos(sint16 *x, sint16 *y, int *direction);
 
 void show_gridlines();
@@ -133,6 +132,11 @@ void sub_688217();
 
 void viewport_invalidate(rct_viewport *viewport, int left, int top, int right, int bottom);
 
-void sub_6894D4(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY);
+void screen_get_map_xy(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **viewport);
+void screen_get_map_xy_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY);
+void screen_get_map_xy_quadrant(sint16 screenX, sint16 screenY, sint16 *mapX, sint16 *mapY, uint8 *quadrant);
+void screen_get_map_xy_quadrant_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY, uint8 *quadrant);
+void screen_get_map_xy_side(sint16 screenX, sint16 screenY, sint16 *mapX, sint16 *mapY, uint8 *side);
+void screen_get_map_xy_side_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY, uint8 *side);
 
 #endif

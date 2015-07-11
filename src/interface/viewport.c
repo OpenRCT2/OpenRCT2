@@ -2077,54 +2077,11 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 
 /**
  *
- *  rct2: 0x00688972
- *  In:
- *		screen_x: eax
- *		screen_y: ebx
- *  Out:
- *		x: ax
- *		y: bx
- *		map_element: edx ?
- *		viewport: edi
- */
-void sub_688972(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **viewport) {
-	sint16 my_x, my_y;
-	int z, interactionType;
-	rct_viewport *myViewport;
-	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN, &my_x, &my_y, &interactionType, NULL, &myViewport);
-	if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
-		*x = 0x8000;
-		return;
-	}
-
-	RCT2_GLOBAL(0x00F1AD34, sint16) = my_x;
-	RCT2_GLOBAL(0x00F1AD36, sint16) = my_y;
-	RCT2_GLOBAL(0x00F1AD38, sint16) = my_x + 31;
-	RCT2_GLOBAL(0x00F1AD3A, sint16) = my_y + 31;
-
-	rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(myViewport, screenX, screenY);
-	rct_xy16 map_pos = { my_x + 16, my_y + 16 };
-
-	for (int i = 0; i < 5; i++) {
-		z = map_element_height(map_pos.x, map_pos.y);
-		map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-		map_pos.x = clamp(RCT2_GLOBAL(0x00F1AD34, sint16), map_pos.x, RCT2_GLOBAL(0x00F1AD38, sint16));
-		map_pos.y = clamp(RCT2_GLOBAL(0x00F1AD36, sint16), map_pos.y, RCT2_GLOBAL(0x00F1AD3A, sint16));
-	}
-
-	*x = map_pos.x;
-	*y = map_pos.y;
-
-	if (viewport != NULL) *viewport = myViewport;
-}
-
-/**
- *
  *  rct2: 0x0068958D
  */
 void screen_pos_to_map_pos(sint16 *x, sint16 *y, int *direction)
 {
-	sub_688972(*x, *y, x, y, NULL);
+	screen_get_map_xy(*x, *y, x, y, NULL);
 	if (*x == (sint16)0x8000)
 		return;
 
@@ -2534,9 +2491,52 @@ rct_viewport *viewport_find_from_point(int screenX, int screenY)
 
 /**
  *
+ *  rct2: 0x00688972
+ *  In:
+ *		screen_x: eax
+ *		screen_y: ebx
+ *  Out:
+ *		x: ax
+ *		y: bx
+ *		map_element: edx ?
+ *		viewport: edi
+ */
+void screen_get_map_xy(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **viewport) {
+	sint16 my_x, my_y;
+	int z, interactionType;
+	rct_viewport *myViewport;
+	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN, &my_x, &my_y, &interactionType, NULL, &myViewport);
+	if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
+		*x = 0x8000;
+		return;
+	}
+
+	RCT2_GLOBAL(0x00F1AD34, sint16) = my_x;
+	RCT2_GLOBAL(0x00F1AD36, sint16) = my_y;
+	RCT2_GLOBAL(0x00F1AD38, sint16) = my_x + 31;
+	RCT2_GLOBAL(0x00F1AD3A, sint16) = my_y + 31;
+
+	rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(myViewport, screenX, screenY);
+	rct_xy16 map_pos = { my_x + 16, my_y + 16 };
+
+	for (int i = 0; i < 5; i++) {
+		z = map_element_height(map_pos.x, map_pos.y);
+		map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
+		map_pos.x = clamp(RCT2_GLOBAL(0x00F1AD34, sint16), map_pos.x, RCT2_GLOBAL(0x00F1AD38, sint16));
+		map_pos.y = clamp(RCT2_GLOBAL(0x00F1AD36, sint16), map_pos.y, RCT2_GLOBAL(0x00F1AD3A, sint16));
+	}
+
+	*x = map_pos.x;
+	*y = map_pos.y;
+
+	if (viewport != NULL) *viewport = myViewport;
+}
+
+/**
+ *
  *  rct2: 0x006894D4
  */
-void sub_6894D4(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY)
+void screen_get_map_xy_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY)
 {
 	rct_viewport *viewport = viewport_find_from_point(screenX, screenY);
 	if (viewport == NULL) {
@@ -2555,4 +2555,68 @@ void sub_6894D4(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *
 
 	*mapX = mapPosition.x;
 	*mapY = mapPosition.y;
+}
+
+/**
+ *
+ *  rct2: 0x00689604
+ */
+void screen_get_map_xy_quadrant(sint16 screenX, sint16 screenY, sint16 *mapX, sint16 *mapY, uint8 *quadrant)
+{
+	rct_viewport *viewport;
+
+	screen_get_map_xy(screenX, screenY, mapX, mapY, &viewport);
+	if (*mapX == (sint16)0x8000)
+		return;
+
+	*quadrant = map_get_tile_quadrant(*mapX, *mapY);
+	*mapX = floor2(*mapX, 32);
+	*mapY = floor2(*mapY, 32);
+}
+
+/**
+ *
+ *  rct2: 0x0068964B
+ */
+void screen_get_map_xy_quadrant_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY, uint8 *quadrant)
+{
+	screen_get_map_xy_with_z(screenX, screenY, z, mapX, mapY);
+	if (*mapX == (sint16)0x8000)
+		return;
+
+	*quadrant = map_get_tile_quadrant(*mapX, *mapY);
+	*mapX = floor2(*mapX, 32);
+	*mapY = floor2(*mapY, 32);
+}
+
+/**
+ *
+ *  rct2: 0x00689692
+ */
+void screen_get_map_xy_side(sint16 screenX, sint16 screenY, sint16 *mapX, sint16 *mapY, uint8 *side)
+{
+	rct_viewport *viewport;
+
+	screen_get_map_xy(screenX, screenY, mapX, mapY, &viewport);
+	if (*mapX == (sint16)0x8000)
+		return;
+
+	*side = map_get_tile_side(*mapX, *mapY);
+	*mapX = floor2(*mapX, 32);
+	*mapY = floor2(*mapY, 32);
+}
+
+/**
+ *
+ *  rct2: 0x006896DC
+ */
+void screen_get_map_xy_side_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY, uint8 *side)
+{
+	screen_get_map_xy_with_z(screenX, screenY, z, mapX, mapY);
+	if (*mapX == (sint16)0x8000)
+		return;
+
+	*side = map_get_tile_side(*mapX, *mapY);
+	*mapX = floor2(*mapX, 32);
+	*mapY = floor2(*mapY, 32);
 }

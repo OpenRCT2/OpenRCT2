@@ -351,4 +351,7 @@ void map_invalidate_tile_zoom0(int x, int y, int z0, int z1);
 void map_invalidate_tile_full(int x, int y);
 void map_invalidate_element(int x, int y, rct_map_element *mapElement);
 
+int map_get_tile_side(int mapX, int mapY);
+int map_get_tile_quadrant(int mapX, int mapY);
+
 #endif

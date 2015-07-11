@@ -1140,7 +1140,7 @@ static void window_map_set_land_rights_tool_update(int x, int y)
 
 	map_invalidate_selection_rect();
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
-	sub_688972(x, y, &mapX, &mapY, &viewport);
+	screen_get_map_xy(x, y, &mapX, &mapY, &viewport);
 	if (mapX == (sint16)0x8000)
 		return;
 

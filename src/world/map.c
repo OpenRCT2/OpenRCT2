@@ -3577,3 +3577,22 @@ void map_invalidate_element(int x, int y, rct_map_element *mapElement)
 {
 	map_invalidate_tile(x, y, mapElement->base_height, mapElement->clearance_height);
 }
+
+int map_get_tile_side(int mapX, int mapY)
+{
+	int subMapX = mapX & (32 - 1);
+	int subMapY = mapY & (32 - 1);
+	return (subMapX < subMapY) ?
+		((subMapX + subMapY) < 32 ? 0 : 1):
+		((subMapX + subMapY) < 32 ? 3 : 2);
+}
+
+int map_get_tile_quadrant(int mapX, int mapY)
+{
+	int subMapX = mapX & (32 - 1);
+	int subMapY = mapY & (32 - 1);
+	return (subMapX > 16) ?
+		(subMapY < 16 ? 1 : 0):
+		(subMapY < 16 ? 2 : 3);
+}
+

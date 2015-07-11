@@ -734,7 +734,7 @@ void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y){
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
 
 	rct_xy16 mapTile = { 0 };
-	sub_688972(x, y, &mapTile.x, &mapTile.y, NULL);
+	screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
 
 	if (mapTile.x == (sint16)0x8000){
 		if (RCT2_GLOBAL(0x00F1AD62, money32) != MONEY32_UNDEFINED){

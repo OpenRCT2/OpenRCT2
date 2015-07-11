@@ -1956,7 +1956,7 @@ static bool ride_get_place_position_from_screen_position(int screenX, int screen
 		}
 	} else {
 		mapZ = _trackPlaceCtrlZ;
-		sub_6894D4(screenX, screenY, mapZ, &mapX, &mapY);
+		screen_get_map_xy_with_z(screenX, screenY, mapZ, &mapX, &mapY);
 		if (_trackPlaceShiftState != 0) {
 			mapZ += _trackPlaceShiftZ;
 		}
