@@ -2501,7 +2501,7 @@ STR_2495    :Baumodus abbrechen
 STR_2496    :Spielpause
 STR_2497    :Ansicht wegzoomen
 STR_2498    :Ansicht heranzoomen
-STR_2499    :Ansicht drehen
+STR_2499    :Ansicht im Uhrzeigersinn drehen
 STR_2500    :Bauobjekt drehen
 STR_2501    :Sicht auf Untergrund ein/aus
 STR_2502    :Grundfläche ein/aus
@@ -2684,7 +2684,7 @@ STR_2677    :???
 STR_2678    :???
 STR_2679    :???
 STR_2680    :Alle Forschungen beendet
-STR_2681    :{MEDIUMFONT}{BLACK}Erhöht Ihr Geld um 5.000
+STR_2681    :{MEDIUMFONT}{BLACK}Erhöht Ihr Geld um {CURRENCY}
 STR_2682    :{MEDIUMFONT}{BLACK}Zw. freiem und kostenpfl. Eintritt umsch.
 STR_2683    :{MEDIUMFONT}{BLACK}Erhöht das Vergnügen der Besucher maximal
 STR_2684    :{SMALLFONT}{BLACK}Eine große Gruppe von Besuchern tritt ein
@@ -2764,14 +2764,14 @@ STR_2756    :Müll beseitigen
 STR_2757    :Schönes Wetter
 STR_2758    :Gewitter
 STR_2759    :Höhen auf Null
-STR_2760    :+5.000 Geld
+STR_2760    :+{CURRENCY}
 STR_2761    :Bezahlen für Eintritt
 STR_2762    :Bezahlen für Bahnen
 STR_2763    :???
 STR_2764    :Glückliche Gäste
 STR_2765    :Große Straßenbahn
 STR_2766    :Szenario gewinnen
-STR_2767    :Wetter stoppen
+STR_2767    :Wetter einfrieren
 STR_2768    :Wetter fortsetzen
 STR_2769    :Park öffnen
 STR_2770    :Park schließen
@@ -3694,10 +3694,10 @@ STR_5357    :{BLACK}Übelkeitstoleranz:
 STR_5358    :{BLACK}Toilette:
 STR_5359    :Besucher entfernen
 STR_5360    :{SMALLFONT}{BLACK}Alle Besucher von der Karte entfernen
-STR_5361    :{BLACK}Für alle Besucher:
-STR_5362    :{BLACK}Bevorz. Intensität:
-STR_5363    :> 1
-STR_5364    :< 15
+STR_5361    :Gib allen Besuchern:
+STR_5362    :{BLACK}Bevorzugte Bahnintensität aller Besucher:
+STR_5363    :Mehr als 1
+STR_5364    :Weniger als 15
 STR_5365    :{BLACK}Personalgeschw.:
 STR_5366    :Normal
 STR_5367    :Schnell
@@ -3788,3 +3788,12 @@ STR_5451    :Cheatfenster anzeigen
 STR_5452    :Symbolleiste ein-/ausblenden
 STR_5453    :Andere Attraktion auswählen
 STR_5454    :FPS-Limit aufheben
+STR_5458    :Im Uhrzeigersinn drehen
+STR_5459    :Gegen den Uhrzeigersinn drehen
+STR_5460    :Ansicht gegen den Uhrzeigers. drehen
+STR_5461    :Besucherparameter festlegen
+STR_5462    :{CURRENCY}
+STR_5463    :Ziel: Viel Spaß!
+STR_5464    :Allgemein
+STR_5465    :Klima
+STR_5466    :Personal
