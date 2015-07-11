@@ -211,7 +211,7 @@ uint8* gfx_get_dirty_blocks()
  * right (dx)
  * bottom (bp)
  */
-void gfx_set_dirty_blocks(uint16 left, uint16 top, uint16 right, uint16 bottom)
+void gfx_set_dirty_blocks(sint16 left, sint16 top, sint16 right, sint16 bottom)
 {
 	int x, y;
 	uint8 *screenDirtyBlocks = gfx_get_dirty_blocks();

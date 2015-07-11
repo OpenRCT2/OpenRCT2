@@ -80,7 +80,7 @@ extern rct_gx g2;
 
 // 
 rct_drawpixelinfo* clip_drawpixelinfo(rct_drawpixelinfo* dpi, int left, int width, int top, int height);
-void gfx_set_dirty_blocks(uint16 left, uint16 top, uint16 right, uint16 bottom);
+void gfx_set_dirty_blocks(sint16 left, sint16 top, sint16 right, sint16 bottom);
 void gfx_draw_all_dirty_blocks();
 void gfx_redraw_screen_rect(short left, short top, short right, short bottom);
 void gfx_invalidate_screen();
