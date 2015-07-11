@@ -2353,9 +2353,6 @@ void sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
 	RCT2_GLOBAL(0x00141F569, uint8) = 0;
 	imageId &= 0xBFFFFFFF;
 	if (imageId & 0x20000000) {
-		RCT2_GLOBAL(0x00EDF81C, uint32) = 0;
-		sub_679074(dpi, imageId, x, y);
-	} else {
 		RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
 		int index = (imageId >> 19) & 0x7F;
 		if (imageId & 0x80000000) {
@@ -2363,6 +2360,9 @@ void sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
 		}
 		int g1Index = RCT2_ADDRESS(0x0097FCBC, uint32)[index] << 4;
 		RCT2_GLOBAL(0x009ABDA4, uint8*) = g1Elements[g1Index].offset;
+	} else {
+		RCT2_GLOBAL(0x00EDF81C, uint32) = 0;
+		sub_679074(dpi, imageId, x, y);
 	}
 }
 
