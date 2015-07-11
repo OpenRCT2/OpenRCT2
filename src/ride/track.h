@@ -480,6 +480,16 @@ enum {
 	TRACK_ELEM_LEFT_LARGE_HALF_LOOP_DOWN
 };
 
+typedef struct {
+	rct_xy_element last;
+	rct_xy_element current;
+	int currentZ;
+	int currentDirection;
+	rct_map_element *first;
+	bool firstIteration;
+	bool looped;
+} track_circuit_iterator;
+
 extern const rct_trackdefinition *gTrackDefinitions;
 
 void track_load_list(ride_list_item item);
@@ -508,5 +518,8 @@ const rct_track_coordinates *get_track_coord_from_ride(rct_ride *ride, int track
 void game_command_place_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_remove_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_brakes_speed(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+
+void track_circuit_iterator_begin(track_circuit_iterator *it, rct_xy_element first);
+bool track_circuit_iterator_next(track_circuit_iterator *it);
 
 #endif

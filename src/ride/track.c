@@ -4246,3 +4246,31 @@ void game_command_set_brakes_speed(int *eax, int *ebx, int *ecx, int *edx, int *
 
 	*ebx = 0;
 }
+
+void track_circuit_iterator_begin(track_circuit_iterator *it, rct_xy_element first)
+{
+	it->last = first;
+	it->first = NULL;
+	it->firstIteration = true;
+	it->looped = false;
+}
+
+bool track_circuit_iterator_next(track_circuit_iterator *it)
+{
+	if (it->first == NULL) {
+		if (!track_block_get_next(&it->last, &it->current, &it->currentZ, &it->currentDirection))
+			return false;
+
+		it->first = it->current.element;
+		return true;
+	} else {
+		if (!it->firstIteration && it->first == it->current.element) {
+			it->looped = true;
+			return false;
+		}
+
+		it->firstIteration = false;
+		it->last = it->current;
+		return track_block_get_next(&it->last, &it->current, &it->currentZ, &it->currentDirection);
+	}
+}

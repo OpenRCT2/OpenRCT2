@@ -393,8 +393,8 @@ enum {
 // Constants used by the ride_type->flags property at 0x008
 enum {
 	RIDE_ENTRY_FLAG_0 = 1 << 0, // 0x1
-	RIDE_ENTRY_FLAG_1 = 1 << 1, // 0x2
-	RIDE_ENTRY_FLAG_2 = 1 << 2, // 0x4
+	RIDE_ENTRY_FLAG_NO_INVERSIONS = 1 << 1, // 0x2
+	RIDE_ENTRY_FLAG_NO_BANKED_TRACK = 1 << 2, // 0x4
 	RIDE_ENTRY_FLAG_3 = 1 << 3, // 0x8
 	RIDE_ENTRY_FLAG_4 = 1 << 4, // 0x10
 	RIDE_ENTRY_FLAG_5 = 1 << 5, // 0x20

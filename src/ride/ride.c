@@ -609,14 +609,12 @@ bool track_block_get_previous(int x, int y, rct_map_element *mapElement, track_b
  */
 int ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
 {
-	int rideIndex;
-	rct_xy_element trackElement, nextTrackElement;
-	rct_map_element *loopTrackElement;
-	rct_ride *ride;
 	rct_window *w;
+	rct_ride *ride;
+	track_circuit_iterator it;
+	int rideIndex;
 
-	trackElement = *input;
-	rideIndex = trackElement.element->properties.track.ride_index;
+	rideIndex = input->element->properties.track.ride_index;
 	ride = GET_RIDE(rideIndex);
 
 	if (ride->type == RIDE_TYPE_MAZE)
@@ -626,23 +624,16 @@ int ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
 	if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex)
 		sub_6C9627();
 
-	loopTrackElement = NULL;
-	while (1) {
-		if (!track_block_get_next(&trackElement, &nextTrackElement, NULL, NULL)) {
-			*output = trackElement;
+	track_circuit_iterator_begin(&it, *input);
+	while (track_circuit_iterator_next(&it)) {
+		if (!track_is_connected_by_shape(it.last.element, it.current.element)) {
+			*output = it.current;
 			return 1;
 		}
-
-		if (!track_is_connected_by_shape(trackElement.element, nextTrackElement.element)) {
-			*output = nextTrackElement;
-			return 1;
-		}
-
-		trackElement = nextTrackElement;
-		if (loopTrackElement == NULL)
-			loopTrackElement = trackElement.element;
-		else if (loopTrackElement == trackElement.element)
-			break;
+	}
+	if (!it.looped) {
+		*output = it.last;
+		return 1;
 	}
 
 	return 0;
@@ -3722,91 +3713,114 @@ void sub_6B5952(int rideIndex)
  */
 int ride_check_block_brakes(rct_xy_element *input, rct_xy_element *output)
 {
-	int rideIndex, type;
-	rct_xy_element trackElement, nextTrackElement;
-	rct_map_element *loopTrackElement;
 	rct_window *w;
+	track_circuit_iterator it;
+	int rideIndex, type;
 
-	trackElement = *input;
-	rideIndex = trackElement.element->properties.track.ride_index;
+	rideIndex = input->element->properties.track.ride_index;
 	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 	if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex)
 		sub_6C9627();
 
-	loopTrackElement = NULL;
-	while (1) {
-		if (!track_block_get_next(&trackElement, &nextTrackElement, NULL, NULL)) {
-			// Not sure why this is the case...
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION;
-			*output = trackElement;
-			return 0;
-		}
-
-		if (nextTrackElement.element->properties.track.type == 216) {
-			type = trackElement.element->properties.track.type;
+	track_circuit_iterator_begin(&it, *input);
+	while (track_circuit_iterator_next(&it)) {
+		if (it.current.element->properties.track.type == 216) {
+			type = it.last.element->properties.track.type;
 			if (type == 1) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION;
-				*output = nextTrackElement;
+				*output = it.current;
 				return 0;
 			}
 			if (type == 216) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_EACH_OTHER;
-				*output = nextTrackElement;
+				*output = it.current;
 				return 0;
 			}
-			if ((trackElement.element->type & 0x80) && type != 209 && type != 210) {
+			if ((it.last.element->type & 0x80) && type != 209 && type != 210) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_THE_TOP_OF_THIS_LIFT_HILL;
-				*output = nextTrackElement;
+				*output = it.current;
 				return 0;
 			}
 		}
-
-		trackElement = nextTrackElement;
-		if (loopTrackElement == NULL)
-			loopTrackElement = trackElement.element;
-		else if (loopTrackElement == trackElement.element)
-			break;
+	}
+	if (!it.looped) {
+		// Not sure why this is the case...
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION;
+		*output = it.last;
+		return 0;
 	}
 
 	return 1;
 }
 
 /**
- * 
+ * Iterates along the track until an inversion (loop, corkscrew, barrel roll etc.) track piece is reached.
+ * @param input The start track element and position.
+ * @param output The first track element and position which is classified as an inversion.
+ * @returns true if an inversion track piece is found, otherwise false.
  *  rct2: 0x006CB149
  */
-int ride_check_track_suitability_a(rct_xy_element *input, rct_xy_element *output)
+bool ride_check_track_contains_inversions(rct_xy_element *input, rct_xy_element *output)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp, result;
+	rct_window *w;
+	rct_ride *ride;
+	int rideIndex, trackType;
+	track_circuit_iterator it;
 
-	eax = input->x;
-	ecx = input->y;
-	esi = (int)input->element;
-	result = RCT2_CALLFUNC_X(0x006CB149, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	output->x = (uint16)eax;
-	output->y = (uint16)ecx;
-	output->element = (rct_map_element*)esi;
+	rideIndex = input->element->properties.track.ride_index;
+	ride = GET_RIDE(rideIndex);
+	if (ride->type == RIDE_TYPE_MAZE)
+		return true;
 
-	return (result & 0x100) != 0;
+	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && rideIndex == _currentRideIndex) {
+		sub_6C9627();
+	}
+
+	track_circuit_iterator_begin(&it, *input);
+	while (track_circuit_iterator_next(&it)) {
+		trackType = output->element->properties.track.type;
+		if (RCT2_ADDRESS(0x0099423C, uint16)[trackType] & 0x4000) {
+			*output = it.current;
+			return true;
+		}
+	}
+	return false;
 }
 
 /**
- * 
+ * Iterates along the track until a banked track piece is reached.
+ * @param input The start track element and position.
+ * @param output The first track element and position which is banked.
+ * @returns true if a banked track piece is found, otherwise false.
  *  rct2: 0x006CB1D3
  */
-int ride_check_track_suitability_b(rct_xy_element *input, rct_xy_element *output)
+bool ride_check_track_contains_banked(rct_xy_element *input, rct_xy_element *output)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp, result;
+	rct_window *w;
+	rct_ride *ride;
+	int rideIndex, trackType;
+	track_circuit_iterator it;
 
-	eax = input->x;
-	ecx = input->y;
-	esi = (int)input->element;
-	result = RCT2_CALLFUNC_X(0x006CB1D3, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	output->x = (uint16)eax;
-	output->y = (uint16)ecx;
-	output->element = (rct_map_element*)esi;
+	rideIndex = input->element->properties.track.ride_index;
+	ride = GET_RIDE(rideIndex);
+	if (ride->type == RIDE_TYPE_MAZE)
+		return true;
 
-	return (result & 0x100) != 0;
+	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && rideIndex == _currentRideIndex) {
+		sub_6C9627();
+	}
+
+	track_circuit_iterator_begin(&it, *input);
+	while (track_circuit_iterator_next(&it)) {
+		trackType = output->element->properties.track.type;
+		if (RCT2_ADDRESS(0x0099423C, uint16)[trackType] & 0x8000) {
+			*output = it.current;
+			return true;
+		}
+	}
+	return false;
 }
 
 /**
@@ -4108,16 +4122,16 @@ int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplying)
 
 	if (ride->subtype != 255) {
 		rct_ride_type *rideType = GET_RIDE_ENTRY(ride->subtype);
-		if (rideType->flags & RIDE_ENTRY_FLAG_1) {
+		if (rideType->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
-			if (ride_check_track_suitability_a(&trackElement, &problematicTrackElement)) {
+			if (ride_check_track_contains_inversions(&trackElement, &problematicTrackElement)) {
 				loc_6B528A(&problematicTrackElement);
 				return 0;
 			}
 		}
-		if (rideType->flags & RIDE_ENTRY_FLAG_2) {
+		if (rideType->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
-			if (ride_check_track_suitability_b(&trackElement, &problematicTrackElement)) {
+			if (ride_check_track_contains_banked(&trackElement, &problematicTrackElement)) {
 				loc_6B528A(&problematicTrackElement);
 				return 0;
 			}
@@ -4231,16 +4245,16 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 
 	if (ride->subtype != 255) {
 		rct_ride_type *rideType = GET_RIDE_ENTRY(ride->subtype);
-		if (rideType->flags & RIDE_ENTRY_FLAG_1) {
+		if (rideType->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
-			if (ride_check_track_suitability_a(&trackElement, &problematicTrackElement)) {
+			if (ride_check_track_contains_inversions(&trackElement, &problematicTrackElement)) {
 				loc_6B528A(&problematicTrackElement);
 				return 0;
 			}
 		}
-		if (rideType->flags & RIDE_ENTRY_FLAG_2) {
+		if (rideType->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
-			if (ride_check_track_suitability_b(&trackElement, &problematicTrackElement)) {
+			if (ride_check_track_contains_banked(&trackElement, &problematicTrackElement)) {
 				loc_6B528A(&problematicTrackElement);
 				return 0;
 			}
