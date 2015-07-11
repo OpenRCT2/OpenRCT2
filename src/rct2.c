@@ -216,9 +216,10 @@ void rct2_update()
 
 void rct2_draw()
 {
-	// Handles picked-up peep and rain redraw
-	redraw_peep_and_rain();
-
+	redraw_rain();
+	window_update_all();
+	update_rain_animation();
+	update_palette_effects();
 	gfx_draw_all_dirty_blocks();
 
 	console_draw(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo));
@@ -231,10 +232,6 @@ void rct2_draw()
 	} else {
 		//game
 	}
-
-	window_update_all();
-	update_rain_animation();
-	update_palette_effects();
 }
 
 int rct2_open_file(const char *path)

@@ -330,11 +330,6 @@ static void openrct2_loop()
 				invalidate_sprite(&g_sprite_list[i]);
 			}
 
-			// Viewports need to be updated to reduce chopiness of those which follow sprites
-			for (rct_window *w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++) {
-				viewport_update_sprite_follow(w);
-			}
-
 			platform_process_messages();
 			rct2_draw();
 			platform_draw();

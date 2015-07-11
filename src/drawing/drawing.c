@@ -211,7 +211,7 @@ uint8* gfx_get_dirty_blocks()
  * right (dx)
  * bottom (bp)
  */
-void gfx_set_dirty_blocks(uint16 left, uint16 top, uint16 right, uint16 bottom)
+void gfx_set_dirty_blocks(sint16 left, sint16 top, sint16 right, sint16 bottom)
 {
 	int x, y;
 	uint8 *screenDirtyBlocks = gfx_get_dirty_blocks();
@@ -454,22 +454,9 @@ void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sin
 *
 *  rct2: 0x006843DC
 */
-void redraw_peep_and_rain()
+void redraw_rain()
 {
 	if (RCT2_GLOBAL(0x009ABDF2, uint32) != 0) {
-		int sprite = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32);
-		if (sprite != -1) {
-			sprite = sprite & 0x7FFFF;
-			
-			rct_g1_element *g1_elements = &g1Elements[sprite];
-			int left = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, sint16) + g1_elements->x_offset;
-			int top = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16) + g1_elements->y_offset;
-			int right = left + g1_elements->width;
-			int bottom = top + g1_elements->height;
-			
-			gfx_set_dirty_blocks(left, top, right, bottom);
-		}
-
 		int rain_no_pixels = RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32);
 		if (rain_no_pixels == 0) {
 			return;
@@ -493,6 +480,24 @@ void redraw_peep_and_rain()
 		}
 	}
 	RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32) = 0;
+}
+
+void gfx_invalidate_pickedup_peep()
+{
+	if (RCT2_GLOBAL(0x009ABDF2, uint32) != 0) {
+		int sprite = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32);
+		if (sprite != -1) {
+			sprite = sprite & 0x7FFFF;
+			
+			rct_g1_element *g1_elements = &g1Elements[sprite];
+			int left = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, sint16) + g1_elements->x_offset;
+			int top = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16) + g1_elements->y_offset;
+			int right = left + g1_elements->width;
+			int bottom = top + g1_elements->height;
+			
+			gfx_set_dirty_blocks(left, top, right, bottom);
+		}
+	}
 }
 
 void sub_681DE2(rct_drawpixelinfo *dpi, int x, int y, int image1, int image2)

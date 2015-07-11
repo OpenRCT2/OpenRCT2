@@ -66,7 +66,7 @@ void screenshot_check()
 			}
 
 			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
-			redraw_peep_and_rain();
+			redraw_rain();
 		}
 	}
 }
