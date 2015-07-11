@@ -2336,13 +2336,44 @@ void store_interaction_info(paint_struct *ps)
 }
 
 /**
- * rct2: 0x0068862C
+ *
+ *  rct2: 0x00679074
+ */
+void sub_679074(rct_drawpixelinfo *dpi, int imageId, int x, int y)
+{
+	RCT2_CALLPROC_X(0x00679074, 0, imageId, x, y, 0, (int)dpi, 0);
+}
+
+/**
+ *
+ *  rct2: 0x00679023
+ */
+void sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
+{
+	RCT2_GLOBAL(0x00141F569, uint8) = 0;
+	imageId &= 0xBFFFFFFF;
+	if (imageId & 0x20000000) {
+		RCT2_GLOBAL(0x00EDF81C, uint32) = 0;
+		sub_679074(dpi, imageId, x, y);
+	} else {
+		RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
+		int index = (imageId >> 19) & 0x7F;
+		if (imageId & 0x80000000) {
+			index &= 0x1F;
+		}
+		int g1Index = RCT2_ADDRESS(0x0097FCBC, uint32)[index] << 4;
+		RCT2_GLOBAL(0x009ABDA4, uint8*) = g1Elements[g1Index].offset;
+	}
+}
+
+/**
+ *
+ *  rct2: 0x0068862C
  */
 void sub_68862C()
 {
 	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
 	paint_struct *ps = RCT2_GLOBAL(0x00EE7884, paint_struct*), *old_ps, *next_ps, *attached_ps;
-	uint32 eax = 0xBBBBBBBB, ebx = 0xBBBBBBBB, ecx = 0xBBBBBBBB, edx = 0xBBBBBBBB, esi = 0xBBBBBBBB, edi = 0xBBBBBBBB, ebp = 0xBBBBBBBB;
 
 	while ((ps = ps->next_quadrant_ps) != NULL) {
 		old_ps = ps;
@@ -2350,13 +2381,7 @@ void sub_68862C()
 		next_ps = ps;
 		while (next_ps != NULL) {
 			ps = next_ps;
-			ebx = ps->image_id;
-			ecx = ps->x;
-			edx = ps->y;
-			edi = (uint32)dpi;
-			ebp = (uint32)ps;
-			//sub_679023(ps->image_id, ps->x, ps->y, dpi);
-			RCT2_CALLFUNC_X(0x00679023, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+			sub_679023(dpi, ps->image_id, ps->x, ps->y);
 			store_interaction_info(ps);
 
 			next_ps = ps->var_20;
@@ -2364,13 +2389,12 @@ void sub_68862C()
 
 		attached_ps = ps->attached_ps;
 		while (attached_ps != NULL) {
-			esi = (uint32)attached_ps;
-			ebp = (uint32)ps;
-			ecx = (attached_ps->attached_x + ps->x) & 0xFFFF;
-			edx = (attached_ps->attached_y + ps->y) & 0xFFFF;
-			ebx = attached_ps->image_id;
-			//sub_679023(ebx, ecx, edx, dpi);
-			RCT2_CALLFUNC_X(0x00679023, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+			sub_679023(
+				dpi,
+				attached_ps->image_id,
+				(attached_ps->attached_x + ps->x) & 0xFFFF,
+				(attached_ps->attached_y + ps->y) & 0xFFFF
+			);
 			store_interaction_info(ps);
 
 			attached_ps = attached_ps->next_attached_ps;
