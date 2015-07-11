@@ -554,6 +554,9 @@ bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 ride
 /**
  * 
  * rct2: 0x006C6402
+ *
+ * @remarks outTrackBeginEnd.begin_x and outTrackBeginEnd.begin_y will be in the higher two bytes of ecx and edx where as
+            outTrackBeginEnd.end_x and outTrackBeginEnd.end_y will be in the lower two bytes (cx and dx).
  */
 bool track_block_get_previous(int x, int y, rct_map_element *mapElement, track_begin_end *outTrackBeginEnd)
 {

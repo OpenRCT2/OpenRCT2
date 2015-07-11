@@ -50,6 +50,8 @@ static void ride_ratings_update_state_5();
 static void loc_6B5BB2();
 static void ride_ratings_calculate(rct_ride *ride);
 static void ride_ratings_calculate_value(rct_ride *ride);
+static void sub_6B5F9D(rct_map_element *mapElement);
+static void ride_ratings_check_valid_configuration(int rideIndex);
 
 /**
  *
@@ -189,10 +191,6 @@ static void loc_6B5BB2()
  */
 static void ride_ratings_update_state_2()
 {
-	// TODO test this function
-	RCT2_CALLPROC_EBPSAFE(0x006B5C66);
-	return;
-
 	rct_ride *ride;
 	rct_map_element *mapElement;
 	rct_xy_element trackElement, nextTrackElement;
@@ -225,7 +223,7 @@ static void ride_ratings_update_state_2()
 					RCT2_GLOBAL(0x0138B5CE, uint16) |= 1;
 			}
 			
-			RCT2_CALLPROC_X(0x006B5F9D, 0, 0, 0, 0, (int)mapElement, 0, 0);
+			sub_6B5F9D(mapElement);
 
 			trackElement.x = RCT2_GLOBAL(0x0138B584, uint16);
 			trackElement.y = RCT2_GLOBAL(0x0138B586, uint16);
@@ -268,7 +266,7 @@ static void ride_ratings_update_state_3()
 	}
 
 	ride_ratings_calculate(ride);
-	RCT2_CALLPROC_X(0x00655F64, 0, 0, 0, 0, 0, (int)ride, 0);
+	ride_ratings_check_valid_configuration(_rideRatingsCurrentRide);
 	ride_ratings_calculate_value(ride);
 
 	window_invalidate_by_number(WC_RIDE, _rideRatingsCurrentRide);
@@ -291,13 +289,9 @@ static void ride_ratings_update_state_4()
  */
 static void ride_ratings_update_state_5()
 {
-	// sub_6C6402 returns a carry, CALLFUNC doesn't support this
-	// so have to wait for sub_6C6402 to be decompiled
-	RCT2_CALLPROC_EBPSAFE(0x006B5D72);
-	return;
-
 	rct_ride *ride;
 	rct_map_element *mapElement;
+	track_begin_end trackBeginEnd;
 	int x, y, z, trackType;
 
 	ride = GET_RIDE(_rideRatingsCurrentRide);
@@ -320,17 +314,17 @@ static void ride_ratings_update_state_5()
 			continue;
 
 		if (trackType == 255 || trackType == mapElement->properties.track.type) {
-			RCT2_CALLPROC_X(0x006B5F9D, 0, 0, 0, 0, (int)mapElement, 0, 0);
+			sub_6B5F9D(mapElement);
 
 			x = RCT2_GLOBAL(0x0138B584, uint16);
 			y = RCT2_GLOBAL(0x0138B586, uint16);
-			if (!track_block_get_previous(x, y, mapElement, NULL)) {
+			if (!track_block_get_previous(x, y, mapElement, &trackBeginEnd)) {
 				_rideRatingsState = RIDE_RATINGS_STATE_CALCULATE;
 				return;
 			}
 
-			x >>= 16;
-			y >>= 16;
+			x = trackBeginEnd.begin_x;
+			y = trackBeginEnd.begin_y;
 			if (x == RCT2_GLOBAL(0x0138B58A, uint16) && y == RCT2_GLOBAL(0x0138B58C, uint16) && z == RCT2_GLOBAL(0x0138B58E, uint16)) {
 				_rideRatingsState = RIDE_RATINGS_STATE_CALCULATE;
 				return;
@@ -343,6 +337,61 @@ static void ride_ratings_update_state_5()
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 	_rideRatingsState = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
+}
+
+/**
+ *
+ *  rct2: 0x006B5F9D
+ */
+static void sub_6B5F9D(rct_map_element *mapElement)
+{
+	RCT2_CALLPROC_X(0x006B5F9D, 0, 0, 0, 0, (int)mapElement, 0, 0);
+}
+
+/**
+ *
+ *  rct2: 0x00655F64
+ */
+static void ride_ratings_check_valid_configuration(int rideIndex)
+{
+	rct_ride *ride = GET_RIDE(rideIndex);
+
+	// Check if launch speed is valid
+	switch (ride->mode) {
+	case RIDE_MODE_POWERED_LAUNCH_PASSTROUGH:
+	case RIDE_MODE_UPWARD_LAUNCH:
+	case RIDE_MODE_LIM_POWERED_LAUNCH:
+	case RIDE_MODE_POWERED_LAUNCH:
+	case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
+		if (ride->launch_speed > RCT2_GLOBAL(0x0097CF40 + (ride->type * 8) + 5, uint8)) {
+			ride->unreliability_factor = 255;
+			ride->reliability /= 8;
+		}
+		break;
+	}
+
+	// Check if number of vehicles is valid
+	ride_update_max_vehicles(rideIndex);
+	if (ride->num_vehicles > ride->max_trains) {
+		ride->unreliability_factor = 255;
+		ride->reliability /= 8;
+	}
+
+	// Check if ride entry is valid
+	uint8 *availableRideEntries = (uint8*)0x009E32F8;
+	for (int i = 0; i < ride->type; i++) {
+		while (*availableRideEntries != 255) availableRideEntries++;
+		*availableRideEntries++;
+	}
+
+	do {
+		if (ride->subtype == *availableRideEntries) {
+			return;
+		}
+	} while (*++availableRideEntries != 255);
+
+	ride->unreliability_factor = 255;
+	ride->reliability /= 8;
 }
 
 static void ride_ratings_calculate(rct_ride *ride)
