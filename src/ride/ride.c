@@ -5472,13 +5472,58 @@ int ride_get_smallest_station_length(rct_ride *ride)
 	return (int)result;
 }
 
-static int sub_6CB3AA(rct_ride *ride)
+/**
+ *
+ *  rct2: 0x006CB3AA
+ */
+static int ride_get_track_length(rct_ride *ride)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
+	rct_window *w;
+	rct_map_element *mapElement;
+	track_circuit_iterator it;
+	int x, y, z, trackType, rideIndex, result;
 
-	edi = (int)ride;
-	RCT2_CALLFUNC_X(0x006CB3AA, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return eax;
+	for (int i = 0; i < 4; i++) {
+		uint16 xy = ride->station_starts[i];
+		if (xy == 0xFFFF)
+			continue;
+
+		x = (xy & 0xFF) * 32;
+		y = (xy >> 8) * 32;
+		z = ride->station_heights[i];
+
+		mapElement = map_get_first_element_at(x >> 5, y >> 5);
+		do {
+			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+				continue;
+
+			trackType = mapElement->properties.track.type;
+			if (!RCT2_GLOBAL(0x0099BA64 + (trackType * 16), uint32) & 0x10)
+				continue;
+
+			if (mapElement->base_height != z)
+				continue;
+
+			goto foundTrack;
+		} while (!map_element_is_last_for_tile(mapElement++));
+	}
+	return 0;
+
+foundTrack:
+	rideIndex = mapElement->properties.track.ride_index;
+
+	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex) {
+		sub_6C9627();
+	}
+
+	result = 0;
+	track_circuit_iterator_begin(&it, (rct_xy_element){ x, y, mapElement });
+	while (track_circuit_iterator_next(&it)) {
+		trackType = it.current.element->properties.track.type;
+		result += TrackPieceLengths[trackType];
+	}
+	return result;
 }
 
 /**
@@ -5576,23 +5621,17 @@ void ride_update_max_vehicles(int rideIndex)
 				}
 
 				totalSpacing >>= 13;
-				int unk2 = sub_6CB3AA(ride) / 4;
-				if (unk > 10) {
-					unk2 = (unk2 * 3) / 4;
-				}
-				if (unk > 25) {
-					unk2 = (unk2 * 3) / 4;
-				}
-				if (unk > 40) {
-					unk2 = (unk2 * 3) / 4;
-				}
+				int trackLength = ride_get_track_length(ride) / 4;
+				if (unk > 10) trackLength = (trackLength * 3) / 4;
+				if (unk > 25) trackLength = (trackLength * 3) / 4;
+				if (unk > 40) trackLength = (trackLength * 3) / 4;
 
 				maxNumTrains = 0;
-				int unk3 = 0;
+				int length = 0;
 				do {
 					maxNumTrains++;
-					unk3 += totalSpacing;
-				} while (maxNumTrains < 31 && unk3 < unk2);
+					length += totalSpacing;
+				} while (maxNumTrains < 31 && length < trackLength);
 			}
 			break;
 		}
@@ -5601,10 +5640,10 @@ void ride_update_max_vehicles(int rideIndex)
 		numCarsPerTrain = min(ride->var_0CB, maxCarsPerTrain);
 		numVehicles = min(ride->var_0CA, maxNumTrains);
 	} else {
-	ride->max_trains = rideEntry->cars_per_flat_ride;
-	ride->min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
-	numCarsPerTrain = rideEntry->max_cars_in_train;
-	numVehicles = min(ride->var_0CA, rideEntry->cars_per_flat_ride);
+		ride->max_trains = rideEntry->cars_per_flat_ride;
+		ride->min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
+		numCarsPerTrain = rideEntry->max_cars_in_train;
+		numVehicles = min(ride->var_0CA, rideEntry->cars_per_flat_ride);
 	}
 
 	// Refresh new current num vehicles / num cars per vehicle
