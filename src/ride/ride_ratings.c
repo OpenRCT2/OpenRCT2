@@ -51,29 +51,30 @@ enum {
 	PROXIMITY_OWN_TRACK_ABOVE_OR_BELOW,			// 0x0138B5AE
 	PROXIMITY_OWN_TRACK_TOUCH_ABOVE,			// 0x0138B5B0
 	PROXIMITY_OWN_TRACK_CLOSE_ABOVE,			// 0x0138B5B2
-	PROXIMITY_138B5B4,							// 0x0138B5B4
-	PROXIMITY_138B5B6,							// 0x0138B5B6
+	PROXIMITY_SCENERY_SIDE_BELOW,				// 0x0138B5B4
+	PROXIMITY_SCENERY_SIDE_ABOVE,				// 0x0138B5B6
 	PROXIMITY_FOREIGN_STATION_TOUCH_ABOVE,		// 0x0138B5B8
 	PROXIMITY_FOREIGN_STATION_CLOSE_ABOVE,		// 0x0138B5BA
 	PROXIMITY_138B5BC,							// 0x0138B5BC
 	PROXIMITY_138B5BE,							// 0x0138B5BE
 	PROXIMITY_138B5C0,							// 0x0138B5C0
 	PROXIMITY_THROUGH_VERTICAL_LOOP,			// 0x0138B5C2
-	PROXIMITY_138B5C4,							// 0x0138B5C4
-	PROXIMITY_138B5C6,							// 0x0138B5C6
-	PROXIMITY_138B5C8,							// 0x0138B5C8
+	PROXIMITY_PATH_SIDE_CLOSE,					// 0x0138B5C4
+	PROXIMITY_FOREIGN_TRACK_SIDE_CLOSE,			// 0x0138B5C6
+	PROXIMITY_SURFACE_SIDE_CLOSE,				// 0x0138B5C8
 	PROXIMITY_COUNT
 };
 
 typedef void (*ride_ratings_calculation)(rct_ride *ride);
 
-#define _rideRatingsProximityX			RCT2_GLOBAL(0x0138B584, uint16)
-#define _rideRatingsProximityY			RCT2_GLOBAL(0x0138B586, uint16)
-#define _rideRatingsProximityZ			RCT2_GLOBAL(0x0138B588, uint16)
-#define _rideRatingsCurrentRide			RCT2_GLOBAL(0x0138B590, uint8)
-#define _rideRatingsState				RCT2_GLOBAL(0x0138B591, uint8)
-#define _rideRatingsProximityTrackType	RCT2_GLOBAL(0x0138B592, uint8)
-#define _rideRatingsProximityTotal		RCT2_GLOBAL(0x0138B594, uint16)
+#define _rideRatingsProximityX				RCT2_GLOBAL(0x0138B584, uint16)
+#define _rideRatingsProximityY				RCT2_GLOBAL(0x0138B586, uint16)
+#define _rideRatingsProximityZ				RCT2_GLOBAL(0x0138B588, uint16)
+#define _rideRatingsCurrentRide				RCT2_GLOBAL(0x0138B590, uint8)
+#define _rideRatingsState					RCT2_GLOBAL(0x0138B591, uint8)
+#define _rideRatingsProximityTrackType		RCT2_GLOBAL(0x0138B592, uint8)
+#define _rideRatingsProximityBaseHeight		RCT2_GLOBAL(0x0138B593, uint8)
+#define _rideRatingsProximityTotal			RCT2_GLOBAL(0x0138B594, uint16)
 
 static uint16 *_proximityScores = (uint16*)0x0138B596;
 
@@ -361,9 +362,51 @@ static void proximity_score_increment(int type)
  *
  *  rct2: 0x006B6207
  */
-static void sub_6B6207(rct_map_element *inputMapElement, int direction)
+static void ride_ratings_score_close_proximity_in_direction(rct_map_element *inputMapElement, int direction)
 {
-	RCT2_CALLPROC_X(0x006B6207, 0, direction, 0, 0, (int)inputMapElement, 0, 0);
+	rct_map_element *mapElement;
+	int x, y;
+
+	x = _rideRatingsProximityX + TileDirectionDelta[direction].x;
+	y = _rideRatingsProximityY + TileDirectionDelta[direction].y;
+	if (x < 0 || y < 0 || x >= (32 * 256) || y >= (32 * 256))
+		return;
+
+	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		switch (map_element_get_type(mapElement)) {
+		case MAP_ELEMENT_TYPE_SURFACE:
+			if (_rideRatingsProximityBaseHeight <= inputMapElement->base_height) {
+				if (inputMapElement->clearance_height <= mapElement->base_height) {
+					proximity_score_increment(PROXIMITY_SURFACE_SIDE_CLOSE);
+				}
+			}
+			break;
+		case MAP_ELEMENT_TYPE_PATH:
+			if (abs((int)inputMapElement->base_height - (int)mapElement->base_height) <= 2) {
+				proximity_score_increment(PROXIMITY_PATH_SIDE_CLOSE);
+			}
+			break;
+		case MAP_ELEMENT_TYPE_TRACK:
+			if (inputMapElement->properties.track.ride_index != mapElement->properties.track.ride_index) {
+				if (abs((int)inputMapElement->base_height - (int)mapElement->base_height) <= 2) {
+					proximity_score_increment(PROXIMITY_FOREIGN_TRACK_SIDE_CLOSE);
+				}
+			}
+			break;
+		case MAP_ELEMENT_TYPE_SCENERY:
+		case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
+			if (mapElement->base_height < inputMapElement->clearance_height) {
+				if (inputMapElement->base_height > mapElement->clearance_height) {
+					proximity_score_increment(PROXIMITY_SCENERY_SIDE_ABOVE);
+				} else {
+					proximity_score_increment(PROXIMITY_SCENERY_SIDE_BELOW);
+				}
+			}
+			break;
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
+
 }
 
 /**
@@ -395,7 +438,7 @@ static void ride_ratings_score_close_proximity(rct_map_element *inputMapElement)
 	do {
 		switch (map_element_get_type(mapElement)) {
 		case MAP_ELEMENT_TYPE_SURFACE:
-			RCT2_GLOBAL(0x0138B593, uint8) = mapElement->base_height;
+			_rideRatingsProximityBaseHeight = mapElement->base_height;
 			if (mapElement->base_height * 8 != _rideRatingsProximityZ) {
 				RCT2_GLOBAL(0x0138B59E, uint16)++;
 			}
@@ -508,8 +551,8 @@ static void ride_ratings_score_close_proximity(rct_map_element *inputMapElement)
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 	direction = inputMapElement->type & MAP_ELEMENT_DIRECTION_MASK;
-	sub_6B6207(inputMapElement, (direction + 1) & 3);
-	sub_6B6207(inputMapElement, (direction - 1) & 3);
+	ride_ratings_score_close_proximity_in_direction(inputMapElement, (direction + 1) & 3);
+	ride_ratings_score_close_proximity_in_direction(inputMapElement, (direction - 1) & 3);
 	loc_6B62DA(inputMapElement);
 }
 
@@ -815,17 +858,17 @@ static uint32 ride_ratings_get_proximity_score()
 	result += get_proximity_score_helper_2(_proximityScores[PROXIMITY_OWN_TRACK_ABOVE_OR_BELOW   ]    ,  10, 15, 0x02AAAA);
 	result += get_proximity_score_helper_2(_proximityScores[PROXIMITY_OWN_TRACK_TOUCH_ABOVE      ]    ,  10, 15, 0x04AAAA);
 	result += get_proximity_score_helper_1(_proximityScores[PROXIMITY_OWN_TRACK_CLOSE_ABOVE      ]    ,       5, 0x090000);
-	result += get_proximity_score_helper_1(_proximityScores[PROXIMITY_138B5B4                    ]    ,      35, 0x016DB6);
-	result += get_proximity_score_helper_1(_proximityScores[PROXIMITY_138B5B6                    ]    ,      35, 0x00DB6D);
+	result += get_proximity_score_helper_1(_proximityScores[PROXIMITY_SCENERY_SIDE_BELOW         ]    ,      35, 0x016DB6);
+	result += get_proximity_score_helper_1(_proximityScores[PROXIMITY_SCENERY_SIDE_ABOVE         ]    ,      35, 0x00DB6D);
 	result += get_proximity_score_helper_3(_proximityScores[PROXIMITY_FOREIGN_STATION_TOUCH_ABOVE]    ,  55              );
 	result += get_proximity_score_helper_3(_proximityScores[PROXIMITY_FOREIGN_STATION_CLOSE_ABOVE]    ,  25              );
 	result += get_proximity_score_helper_2(_proximityScores[PROXIMITY_138B5BC                    ]    ,   4,  6, 0x140000);
 	result += get_proximity_score_helper_2(_proximityScores[PROXIMITY_138B5BE                    ]    ,   4,  6, 0x0F0000);
 	result += get_proximity_score_helper_3(_proximityScores[PROXIMITY_138B5C0                    ]    , 100              );
 	result += get_proximity_score_helper_2(_proximityScores[PROXIMITY_THROUGH_VERTICAL_LOOP      ]    ,   4,  6, 0x0A0000);
-	result += get_proximity_score_helper_2(_proximityScores[PROXIMITY_138B5C4                    ]    ,  10, 20, 0x01C000);
-	result += get_proximity_score_helper_2(_proximityScores[PROXIMITY_138B5C6                    ]    ,  10, 20, 0x024000);
-	result += get_proximity_score_helper_2(_proximityScores[PROXIMITY_138B5C8                    ]    ,  10, 20, 0x028000);
+	result += get_proximity_score_helper_2(_proximityScores[PROXIMITY_PATH_SIDE_CLOSE            ]    ,  10, 20, 0x01C000);
+	result += get_proximity_score_helper_2(_proximityScores[PROXIMITY_FOREIGN_TRACK_SIDE_CLOSE   ]    ,  10, 20, 0x024000);
+	result += get_proximity_score_helper_2(_proximityScores[PROXIMITY_SURFACE_SIDE_CLOSE         ]    ,  10, 20, 0x028000);
 	return result;
 }
 
