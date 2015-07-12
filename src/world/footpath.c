@@ -825,8 +825,14 @@ static int rct_neighbour_compare(const void *a, const void *b)
 	uint8 va = ((rct_neighbour*)a)->order;
 	uint8 vb = ((rct_neighbour*)b)->order;
 	if (va < vb) return 1;
-	else if (va == vb) return 0;
-	else return -1;
+	else if (va > vb) return -1;
+	else {
+		uint8 da = ((rct_neighbour*)a)->direction;
+		uint8 db = ((rct_neighbour*)b)->direction;
+		if (va < vb) return -1;
+		else if (va > vb) return 1;
+		else return 0;
+	}
 }
 
 static void neighbour_list_init(rct_neighbour_list *neighbourList)
@@ -856,6 +862,82 @@ static bool neighbour_list_pop(rct_neighbour_list *neighbourList, rct_neighbour 
 static void neighbour_list_sort(rct_neighbour_list *neighbourList)
 {
 	qsort(neighbourList->items, neighbourList->count, sizeof(rct_neighbour), rct_neighbour_compare);
+}
+
+static rct_map_element *footpath_get_element(int x, int y, int z0, int z1, int direction)
+{
+	rct_map_element *mapElement;
+	int slope;
+
+	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+			continue;
+
+		if (z1 == mapElement->base_height) {
+			if (footpath_element_is_sloped(mapElement)) {
+				slope = footpath_element_get_slope_direction(mapElement);
+				if (slope != direction)
+					break;
+			}
+			return mapElement;
+		}
+		if (z0 == mapElement->base_height) {
+			if (!footpath_element_is_sloped(mapElement))
+				break;
+
+			slope = footpath_element_get_slope_direction(mapElement) ^ 2;
+			if (slope != direction)
+				break;
+
+			return mapElement;
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
+	return NULL;
+}
+
+static bool footpath_disconnect_queue_from_path(int x, int y, rct_map_element *mapElement, int action) {
+	rct_ride *ride;
+	int z0, z1, slope;
+
+	if (!footpath_element_is_queue(mapElement)) return false;
+
+	uint8 c = RCT2_ADDRESS(0x0098D7F0, uint8)[mapElement->properties.path.edges & 0x0F];
+	if ((action < 0) ? (c >= 2) : (c < 2)) return false;
+
+	for (int direction = (action < 0) ? 3 : 0; (action < 0) ? (direction >= 0) : (direction < 4); direction += (action < 0) ? -1 : 1) {
+		if (((mapElement->properties.path.edges & (1 << direction)) == 0) ^ (action < 0))
+			continue;
+		if ((action < 0) && sub_6E59DC(x, y, mapElement->base_height, mapElement->clearance_height, direction))
+			continue;
+
+		z1 = mapElement->base_height;
+		if (footpath_element_is_sloped(mapElement)) {
+			slope = footpath_element_get_slope_direction(mapElement);
+			if ((slope - direction) & 1)
+				continue;
+
+			z1 += slope == direction ? 2 : 0;
+		}
+		z0 = z1 - 2;
+
+		int x1 = x + TileDirectionDelta[direction].x;
+		int y1 = y + TileDirectionDelta[direction].y;
+		rct_map_element *otherMapElement = footpath_get_element(x1, y1, z0, z1, direction);
+		if (otherMapElement != NULL && !footpath_element_is_queue(otherMapElement)) {
+			if (action > 0) {
+				mapElement->properties.path.edges &= ~(1 << direction);
+				otherMapElement->properties.path.edges &= ~(1 << ((direction + 2) & 3));
+			} else if (action < 0) {
+				mapElement->properties.path.edges |= (1 << direction);
+				otherMapElement->properties.path.edges |= (1 << ((direction + 2) & 3));
+			}
+			if (action != 0) map_invalidate_tile_full(x1, y1);
+			return true;
+		}
+	}
+
+	return false;
 }
 
 /**
@@ -938,15 +1020,17 @@ static void loc_6A6D7E(
 				if (RCT2_ADDRESS(0x0098D7F0, uint8)[mapElement->properties.path.edges & 0x0F] < 2) {
 					neighbour_list_push(neighbourList, 3, direction);
 				} else {
-					// Check if both neighbors are queues and, if not, push neighbour
+					if (footpath_disconnect_queue_from_path(x, y, mapElement, 0)) {
+						neighbour_list_push(neighbourList, 3, direction);
+					}
 				}
 			} else {
 				neighbour_list_push(neighbourList, 2, direction);
 			}
 		} else {
+			footpath_disconnect_queue_from_path(x, y, mapElement, 1);
 			mapElement->properties.path.edges |= (1 << (direction ^ 2));
 			if (footpath_element_is_queue(mapElement)) {
-				// If queue with 2 neighbours, fix
 				sub_6A76E9(mapElement->properties.path.ride_index);
 			}
 		}
@@ -1394,6 +1478,8 @@ static void footpath_remove_edges_towards_here(int x, int y, int z, int directio
 	d = (((d - 4) + 1) & 3) + 4;
 	mapElement->properties.path.edges &= ~(1 << d);
 	map_invalidate_tile(x, y, mapElement->base_height, mapElement->clearance_height);
+
+	footpath_disconnect_queue_from_path(x, y, mapElement, -1);
 
 	direction = (direction + 1) & 3;
 	x += TileDirectionDelta[direction].x;
