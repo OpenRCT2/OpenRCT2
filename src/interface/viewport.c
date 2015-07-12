@@ -2587,9 +2587,7 @@ void screen_get_map_xy_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *
  */
 void screen_get_map_xy_quadrant(sint16 screenX, sint16 screenY, sint16 *mapX, sint16 *mapY, uint8 *quadrant)
 {
-	rct_viewport *viewport;
-
-	screen_get_map_xy(screenX, screenY, mapX, mapY, &viewport);
+	screen_get_map_xy(screenX, screenY, mapX, mapY, NULL);
 	if (*mapX == (sint16)0x8000)
 		return;
 
@@ -2619,9 +2617,7 @@ void screen_get_map_xy_quadrant_with_z(sint16 screenX, sint16 screenY, sint16 z,
  */
 void screen_get_map_xy_side(sint16 screenX, sint16 screenY, sint16 *mapX, sint16 *mapY, uint8 *side)
 {
-	rct_viewport *viewport;
-
-	screen_get_map_xy(screenX, screenY, mapX, mapY, &viewport);
+	screen_get_map_xy(screenX, screenY, mapX, mapY, NULL);
 	if (*mapX == (sint16)0x8000)
 		return;
 

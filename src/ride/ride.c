@@ -3000,20 +3000,6 @@ void ride_set_map_tooltip(rct_map_element *mapElement)
  */
 int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId)
 {
-	/*{
-		int a_eax, a_ebx, a_ecx, a_edx, a_esi, a_edi, a_ebp;
-
-		a_eax = x;
-		a_ebx = (*tuneId << 8) | rideIndex;
-		a_ecx = y;
-		a_edx = z;
-		a_edi = sampleRate;
-		a_ebp = position;
-		RCT2_CALLFUNC_X(0x006BC3AC, &a_eax, &a_ebx, &a_ecx, &a_edx, &a_esi, &a_edi, &a_ebp);
-
-		*tuneId = (a_ebx >> 8) & 0xFF;
-		return a_ebp;
-	}*/
 	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !RCT2_GLOBAL(0x009AF59C, uint8) && RCT2_GLOBAL(0x00F438A4, rct_viewport*) != (rct_viewport*)-1) {
 		RCT2_GLOBAL(0x009AF47C, uint16) = sampleRate;
 		sint16 v11;

@@ -476,14 +476,13 @@ void money_effect_create(money32 value)
 			return;
 
 		mainViewport = mainWindow->viewport;
-		mapPosition.x = mainViewport->x + (mainViewport->width / 2);
-		mapPosition.y = mainViewport->y + (mainViewport->height / 2);
-
-		int eax = mapPosition.x, ebx = mapPosition.y, ecx, edx, esi, edi, ebp;
-		RCT2_CALLFUNC_X(0x00688972, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-		mapPosition.x = eax;
-		mapPosition.y = ebx;
-
+		screen_get_map_xy(
+			mainViewport->x + (mainViewport->width / 2),
+			mainViewport->y + (mainViewport->height / 2),
+			&mapPosition.x,
+			&mapPosition.y,
+			NULL
+		);
 		if (mapPosition.x == (sint16)0x8000)
 			return;
 

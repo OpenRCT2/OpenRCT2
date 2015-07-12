@@ -20,6 +20,9 @@
 
 #include "../addresses.h"
 #include "../audio/audio.h"
+#include "../cheats.h"
+#include "../config.h"
+#include "../cursors.h"
 #include "../game.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
@@ -33,9 +36,7 @@
 #include "map_animation.h"
 #include "park.h"
 #include "scenery.h"
-#include "../cheats.h"
-#include "../config.h"
-#include "../cursors.h"
+
 
 const rct_xy16 TileDirectionDelta[] = {
 	{ -32,   0 },
@@ -1166,17 +1167,6 @@ void game_command_set_banner_colour(int* eax, int* ebx, int* ecx, int* edx, int*
 	*ebx = 0;
 }
 
-money32 sub_6A67C0(int x, int y, int z, int flags)
-{
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = x * 32;
-	ecx = y * 32;
-	ebx = flags & 0xFF;
-	edx = z & 0xFF;
-	RCT2_CALLFUNC_X(0x006A67C0, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return ebx;
-}
-
 // This will cause clear scenery to remove paths
 // This should be a flag for the game command which can be set via a checkbox on the clear scenery window.
 // #define CLEAR_SCENERY_REMOVES_PATHS
@@ -1200,7 +1190,7 @@ restart_from_beginning:
 		switch (type) {
 		case MAP_ELEMENT_TYPE_PATH:
 			if (gClearFootpath) {
-				cost = sub_6A67C0(x, y, mapElement->base_height, flags);
+				cost = footpath_remove_real(x * 32, y * 32, mapElement->base_height, flags);
 				if (cost == MONEY32_UNDEFINED)
 					return MONEY32_UNDEFINED;
 
@@ -1457,7 +1447,7 @@ const uint8 map_element_lower_styles[5][32] = {
 	{ 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x0B, 0x00, 0x0D, 0x0E, 0x00 },
 };
 
-static money32 sub_66397F(int flags, int x, int y, int height, int style, int selectionType)
+static money32 map_set_land_height(int flags, int x, int y, int height, int style, int selectionType)
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
@@ -1505,6 +1495,18 @@ static money32 sub_66397F(int flags, int x, int y, int height, int style, int se
 	return ebx;
 }
 
+void game_command_set_land_height(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	*ebx = map_set_land_height(
+		*ebx & 0xFF,
+		*eax & 0xFFFF,
+		*ecx & 0xFFFF,
+		*edx & 0xFF,
+		(*edx >> 8) & 0xFF,
+		*edi >> 5
+	);
+}
+
 money32 raise_land(int flags, int x, int y, int z, int ax, int ay, int bx, int by, int selectionType)
 {
 	money32 cost = 0;
@@ -1541,7 +1543,7 @@ money32 raise_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 						height += 2;
 						newStyle &= ~0x20;
 					}
-					money32 tileCost = sub_66397F(flags, xi, yi, height, newStyle, selectionType);
+					money32 tileCost = map_set_land_height(flags, xi, yi, height, newStyle, selectionType);
 					if (tileCost == MONEY32_UNDEFINED)
 						return MONEY32_UNDEFINED;
 					
@@ -1605,7 +1607,7 @@ money32 lower_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 						height -= 2;
 						newStyle &= ~0x20;
 					}
-					money32 tileCost = sub_66397F(flags, xi, yi, height, newStyle, selectionType);
+					money32 tileCost = map_set_land_height(flags, xi, yi, height, newStyle, selectionType);
 					if (tileCost == MONEY32_UNDEFINED)
 						return MONEY32_UNDEFINED;
 					

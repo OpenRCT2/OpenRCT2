@@ -48,6 +48,7 @@ enum {
 
 extern const rct_xy16 word_981D6C[4];
 
+money32 footpath_remove_real(int x, int y, int z, int flags);
 void game_command_place_footpath(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_remove_footpath(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 money32 footpath_place(int type, int x, int y, int z, int slope, int flags);

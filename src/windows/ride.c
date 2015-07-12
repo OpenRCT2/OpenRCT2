@@ -3674,24 +3674,14 @@ static void window_ride_set_track_colour_scheme(rct_window *w, int x, int y)
 {
 	rct_map_element *mapElement;
 	uint8 newColourScheme;
+	int interactionType, z, direction;
 
 	newColourScheme = (uint8)(*((uint16*)&w->var_494));
-
-	int interactionType;
 
 	rct_xy16 mapCoord = { 0 };
 	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_RIDE, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
 	x = mapCoord.x;
 	y = mapCoord.y;
-	// Get map coordinates from point
-	/*int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = x;
-	ebx = y;
-	edx = -5;
-	RCT2_CALLFUNC_X(0x00685ADC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	x = eax & 0xFFFF;
-	y = ecx & 0xFFFF;
-	mapElement = (rct_map_element*)edx;*/
 
 	if (interactionType != VIEWPORT_INTERACTION_ITEM_RIDE)
 		return;
@@ -3700,16 +3690,9 @@ static void window_ride_set_track_colour_scheme(rct_window *w, int x, int y)
 	if ((mapElement->properties.track.colour & 3) == newColourScheme)
 		return;
 
-	RCT2_CALLPROC_X(
-		0x006C683D,
-		x,
-		((mapElement->type & 3) << 8) | mapElement->properties.track.type,
-		y,
-		mapElement->base_height << 3,
-		newColourScheme,
-		0,
-		4
-	);
+	z = mapElement->base_height * 8;
+	direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+	sub_6C683D(&x, &y, &z, direction, mapElement->properties.track.type, newColourScheme, NULL, 4);
 }
 
 /**
