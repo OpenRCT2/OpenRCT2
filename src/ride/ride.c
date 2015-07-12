@@ -3865,19 +3865,39 @@ int ride_check_station_length(rct_xy_element *input, rct_xy_element *output)
  * 
  *  rct2: 0x006CB2DA
  */
-int ride_check_start_and_end_is_station(rct_xy_element *input, rct_xy_element *output)
+bool ride_check_start_and_end_is_station(rct_xy_element *input, rct_xy_element *output)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp, result;
+	rct_window *w;
+	rct_ride *ride;
+	int rideIndex, trackType;
+	rct_xy_element trackBack, trackFront;
 
-	eax = input->x;
-	ecx = input->y;
-	esi = (int)input->element;
-	result = RCT2_CALLFUNC_X(0x006CB2DA, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	output->x = (uint16)eax;
-	output->y = (uint16)ecx;
-	output->element = (rct_map_element*)esi;
+	rideIndex = input->element->properties.track.ride_index;
+	ride = GET_RIDE(rideIndex);
 
-	return (result & 0x100) != 0;
+	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && rideIndex == _currentRideIndex) {
+		sub_6C9627();
+	}
+
+	// Check back of the track
+	track_get_back(input, &trackBack);
+	trackType = trackBack.element->properties.track.type;
+	if (!(RCT2_GLOBAL(0x0099BA64 + (trackType * 16), uint32) & 0x10)) {
+		return false;
+	}
+	ride->var_13A = (trackBack.x >> 5) | ((trackBack.y >> 5) << 8);
+	ride->var_13E = trackBack.element->base_height;
+
+	// Check front of the track
+	track_get_front(input, &trackFront);
+	trackType = trackFront.element->properties.track.type;
+	if (!(RCT2_GLOBAL(0x0099BA64 + (trackType * 16), uint32) & 0x10)) {
+		return false;
+	}
+	ride->var_13C = (trackFront.x >> 5) | ((trackFront.y >> 5) << 8);
+	ride->var_13F = trackFront.element->base_height;
+	return true;
 }
 
 /**
@@ -4140,7 +4160,7 @@ int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplying)
 		}
 
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
-		if (ride_check_start_and_end_is_station(&trackElement, &problematicTrackElement)) {
+		if (!ride_check_start_and_end_is_station(&trackElement, &problematicTrackElement)) {
 			loc_6B528A(&problematicTrackElement);
 			return 0;
 		}
@@ -4257,19 +4277,13 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 		}
 
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_STATION_NOT_LONG_ENOUGH;
-		if (ride_check_station_length(&trackElement, &problematicTrackElement)) {
-
-			// This is to prevent a bug in the check_station_length function
-			// remove when check_station_length is reveresed and fixed. Prevents
-			// null dereference. Does not prevent moving screen to top left corner.
-			if (map_element_get_type(problematicTrackElement.element) != MAP_ELEMENT_TYPE_TRACK)
-				loc_6B528A(&trackElement);
-			else loc_6B528A(&problematicTrackElement);
+		if (!ride_check_station_length(&trackElement, &problematicTrackElement)) {
+			loc_6B528A(&problematicTrackElement);
 			return 0;
 		}
 
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
-		if (ride_check_start_and_end_is_station(&trackElement, &problematicTrackElement)) {
+		if (!ride_check_start_and_end_is_station(&trackElement, &problematicTrackElement)) {
 			loc_6B528A(&problematicTrackElement);
 			return 0;
 		}

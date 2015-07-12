@@ -522,4 +522,7 @@ void game_command_set_brakes_speed(int *eax, int *ebx, int *ecx, int *edx, int *
 void track_circuit_iterator_begin(track_circuit_iterator *it, rct_xy_element first);
 bool track_circuit_iterator_next(track_circuit_iterator *it);
 
+void track_get_back(rct_xy_element *input, rct_xy_element *output);
+void track_get_front(rct_xy_element *input, rct_xy_element *output);
+
 #endif

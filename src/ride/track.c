@@ -4274,3 +4274,37 @@ bool track_circuit_iterator_next(track_circuit_iterator *it)
 		return track_block_get_next(&it->last, &it->current, &it->currentZ, &it->currentDirection);
 	}
 }
+
+void track_get_back(rct_xy_element *input, rct_xy_element *output)
+{
+	rct_xy_element lastTrack;
+	track_begin_end currentTrack;
+	bool result;
+
+	lastTrack = *input;
+	do {
+		result = track_block_get_previous(lastTrack.x, lastTrack.y, lastTrack.element, &currentTrack);
+		if (result) {
+			lastTrack.x = currentTrack.begin_x;
+			lastTrack.y = currentTrack.begin_y;
+			lastTrack.element = currentTrack.begin_element;
+		}
+	} while (result);
+	*output = lastTrack;
+}
+
+void track_get_front(rct_xy_element *input, rct_xy_element *output)
+{
+	rct_xy_element lastTrack, currentTrack;
+	int z, direction;
+	bool result;
+
+	lastTrack = *input;
+	do {
+		result = track_block_get_next(&lastTrack, &currentTrack, &z, &direction);
+		if (result) {
+			lastTrack = currentTrack;
+		}
+	} while (result);
+	*output = lastTrack;
+}
