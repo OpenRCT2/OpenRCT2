@@ -1,3 +1,14 @@
+0.0.3-beta (not yet released)
+------------------------------------------------------------------------
+- Feature: Adding extra title sequences.
+- Feature: Title sequences can be edited in-game.
+- Feature: Uncapped FPS.
+- Feature: Ride selection in the Editor can now be sorted on track type or vehicle type.
+- Feature: Load/save window can be sorted on date.
+- Feature: Cheats for guest parameters like hunger, energy, nausea etc.
+- Feature: Cheats for park parameters like guest generation, loan settings and switching to and from not using money.
+- Fix: Launched TD4 rides will now always use the RCT1 launch mode (that doesn't pass the station).
+
 0.0.2-beta (2015-06-21)
 ------------------------------------------------------------------------
 - Feature: Intro sequence does not show by default.
