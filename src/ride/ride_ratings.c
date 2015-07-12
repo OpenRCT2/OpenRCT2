@@ -611,15 +611,57 @@ static void set_unreliability_factor(rct_ride *ride)
     ride->unreliability_factor += (ride->lift_hill_speed - lift_speed_adjustment) * 2;
 }
 
+static uint32 sub_65E277_helper_1(uint16 x, uint16 max, uint32 multiplier)
+{
+	return (min(x, max) * multiplier) >> 16;
+}
+
+static uint32 sub_65E277_helper_2(uint16 x, uint16 additionIfNotZero, uint16 max, uint32 multiplier)
+{
+	uint32 result = x;
+	if (result != 0) result += additionIfNotZero;
+	return (max(result, max) * multiplier) >> 16;
+}
+
+static uint32 sub_65E277_helper_3(uint16 x, uint16 resultIfNotZero)
+{
+	return x == 0 ? 0 : resultIfNotZero;
+}
+
 /**
  *
  *  rct2: 0x0065E277
  */
-static int sub_65E277()
+static uint32 sub_65E277()
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	RCT2_CALLFUNC_X(0x0065E277, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return ebx;
+	uint32 result = 0;
+	result += sub_65E277_helper_1(RCT2_GLOBAL(0x0138B596, uint16)    ,      60, 0x00AAAA);
+	result += sub_65E277_helper_1(RCT2_GLOBAL(0x0138B598, uint16)    ,      22, 0x0245D1);
+	result += sub_65E277_helper_1(RCT2_GLOBAL(0x0138B59A, uint16)    ,      10, 0x020000);
+	result += sub_65E277_helper_1(RCT2_GLOBAL(0x0138B59C, uint16)    ,      40, 0x00A000);
+	result += sub_65E277_helper_1(RCT2_GLOBAL(0x0138B59E, uint16)    ,      70, 0x01B6DB);
+	result += sub_65E277_helper_1(RCT2_GLOBAL(0x0138B5A0, uint16) + 8,      12, 0x064000);
+	result += sub_65E277_helper_3(RCT2_GLOBAL(0x0138B5A2, uint16)    ,  40              );
+	result += sub_65E277_helper_3(RCT2_GLOBAL(0x0138B5A4, uint16)    ,  45              );
+	result += sub_65E277_helper_2(RCT2_GLOBAL(0x0138B5A6, uint16)    ,  10, 20, 0x03C000);
+	result += sub_65E277_helper_2(RCT2_GLOBAL(0x0138B5A6, uint16)    ,  10, 20, 0x044000);
+	result += sub_65E277_helper_2(RCT2_GLOBAL(0x0138B5AA, uint16)    ,  10, 15, 0x035555);
+	result += sub_65E277_helper_1(RCT2_GLOBAL(0x0138B5AC, uint16)    ,       5, 0x060000);
+	result += sub_65E277_helper_2(RCT2_GLOBAL(0x0138B5AE, uint16)    ,  10, 15, 0x02AAAA);
+	result += sub_65E277_helper_2(RCT2_GLOBAL(0x0138B5B0, uint16)    ,  10, 15, 0x04AAAA);
+	result += sub_65E277_helper_1(RCT2_GLOBAL(0x0138B5B2, uint16)    ,       5, 0x090000);
+	result += sub_65E277_helper_1(RCT2_GLOBAL(0x0138B5B4, uint16)    ,      35, 0x016DB6);
+	result += sub_65E277_helper_1(RCT2_GLOBAL(0x0138B5B6, uint16)    ,      35, 0x00DB6D);
+	result += sub_65E277_helper_3(RCT2_GLOBAL(0x0138B5B8, uint16)    ,  55              );
+	result += sub_65E277_helper_3(RCT2_GLOBAL(0x0138B5BA, uint16)    ,  25              );
+	result += sub_65E277_helper_2(RCT2_GLOBAL(0x0138B5BC, uint16)    ,   4,  6, 0x140000);
+	result += sub_65E277_helper_2(RCT2_GLOBAL(0x0138B5BE, uint16)    ,   4,  6, 0x0F0000);
+	result += sub_65E277_helper_3(RCT2_GLOBAL(0x0138B5C0, uint16)    , 100              );
+	result += sub_65E277_helper_2(RCT2_GLOBAL(0x0138B5C2, uint16)    ,   4,  6, 0x0A0000);
+	result += sub_65E277_helper_2(RCT2_GLOBAL(0x0138B5C4, uint16)    ,  10, 20, 0x01C000);
+	result += sub_65E277_helper_2(RCT2_GLOBAL(0x0138B5C6, uint16)    ,  10, 20, 0x024000);
+	result += sub_65E277_helper_2(RCT2_GLOBAL(0x0138B5C8, uint16)    ,  10, 20, 0x028000);
+	return result;
 }
 
 /**
