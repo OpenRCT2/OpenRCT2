@@ -1578,8 +1578,8 @@ void map_element_paint_setup(int x, int y)
 			RCT2_GLOBAL(0x9DE56A, uint16) == RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, uint16) &&
 			RCT2_GLOBAL(0x9DE56E, uint16) == RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, uint16)){
 			uint8 arrowRotation = 
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)
-				+ (RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) & 3) & 3;
+				(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)
+				+ (RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) & 3)) & 3;
 
 			uint32 imageId = 
 				arrowRotation + 

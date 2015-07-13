@@ -1328,11 +1328,11 @@ int track_place_maze(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 {
 	if (RCT2_GLOBAL(0x00F440D4, uint8) == 0){
 		gMapSelectionTiles->x = -1;
-		RCT2_GLOBAL(0x009DEA48, sint16) = x;
-		RCT2_GLOBAL(0x009DEA4A, sint16) = y;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, sint16) = x;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, sint16) = y;
 
-		RCT2_GLOBAL(0x009DEA4C, sint16) = map_element_height(x, y) & 0xFFFF;
-		RCT2_GLOBAL(0x009DEA4E, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, sint16) = map_element_height(x, y) & 0xFFFF;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
 	}
 
 	RCT2_GLOBAL(0x00F440D5, uint32) = 0;
@@ -1513,11 +1513,11 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 
 	if (RCT2_GLOBAL(0x00F440D4, uint8) == 0){
 		gMapSelectionTiles->x = -1;
-		RCT2_GLOBAL(0x009DEA48, sint16) = x;
-		RCT2_GLOBAL(0x009DEA4A, sint16) = y;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, sint16) = x;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, sint16) = y;
 
-		RCT2_GLOBAL(0x009DEA4C, sint16) = map_element_height(x, y) & 0xFFFF;
-		RCT2_GLOBAL(0x009DEA4E, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, sint16) = map_element_height(x, y) & 0xFFFF;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
 	}
 
 	RCT2_GLOBAL(0x00F440D5, uint32) = 0;
