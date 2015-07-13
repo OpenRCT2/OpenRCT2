@@ -325,7 +325,6 @@ void game_logic_update()
 	peep_update_crowd_noise();
 	climate_update_sound();
 	editor_open_windows_for_current_step();
-	gfx_invalidate_pickedup_peep();
 
 	// Update windows
 	//window_dispatch_update_all();

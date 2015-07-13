@@ -500,6 +500,22 @@ void gfx_invalidate_pickedup_peep()
 	}
 }
 
+void gfx_draw_pickedup_peep()
+{
+	if (RCT2_GLOBAL(0x009ABDF2, uint8) == 0)
+		return;
+
+	// Draw picked-up peep
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32) != 0xFFFFFFFF) {
+		gfx_draw_sprite(
+			(rct_drawpixelinfo*)RCT2_ADDRESS_SCREEN_DPI,
+			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32),
+			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, sint16),
+			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16), 0
+		);
+	}
+}
+
 void sub_681DE2(rct_drawpixelinfo *dpi, int x, int y, int image1, int image2)
 {
 	RCT2_CALLPROC_X(0x00681DE2, 0, image1, x, y, 0, (int)dpi, image2);

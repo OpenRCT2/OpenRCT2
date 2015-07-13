@@ -94,6 +94,7 @@ void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sin
 void gfx_clear(rct_drawpixelinfo *dpi, int colour);
 void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour);
 void gfx_invalidate_pickedup_peep();
+void gfx_draw_pickedup_peep();
 
 // line
 void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int colour);

@@ -178,6 +178,7 @@ void window_update_all()
 
 	gfx_draw_all_dirty_blocks();
 	window_update_all_viewports();
+	gfx_draw_all_dirty_blocks();
 
 	// 1000 tick update
 	RCT2_GLOBAL(0x009DEB7C, sint16) += RCT2_GLOBAL(0x009DE588, sint16);

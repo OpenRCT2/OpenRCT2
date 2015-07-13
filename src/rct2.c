@@ -218,9 +218,10 @@ void rct2_draw()
 {
 	redraw_rain();
 	window_update_all();
+	gfx_invalidate_pickedup_peep();
+	gfx_draw_pickedup_peep();
 	update_rain_animation();
 	update_palette_effects();
-	gfx_draw_all_dirty_blocks();
 
 	console_draw(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo));
 
