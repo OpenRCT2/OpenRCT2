@@ -4539,7 +4539,7 @@ static void setup_scenery_selection(rct_window* w){
 	RCT2_GLOBAL(0x00F64DE8, uint8) = (uint8)w->number;
 	RCT2_GLOBAL(0x009DA193, uint8) = 0xFF;
 
-	RCT2_GLOBAL(0x00F63674, sint32) = -1;
+	gTrackSavedMapElements[0] = (rct_map_element*)-1;
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) |= (1 << 2);
 	RCT2_GLOBAL(0x009DEA6F, uint8) |= 1;
 
@@ -4706,11 +4706,23 @@ static void window_ride_measurements_update(rct_window *w)
 
 /**
  * 
- * rct2: 0x006AD4EB
+ * rct2: 0x006D2AE7
  */
 static void window_ride_measurements_tooldown(rct_window *w, int widgetIndex, int x, int y)
 {
-	RCT2_CALLPROC_X(0x006D2AE7, x, y, 0, widgetIndex, (int)w, 0, 0);
+	rct_map_element *mapElement;
+	sint16 mapX, mapY;
+	int interactionType;
+
+	get_map_coordinates_from_pos(x, y, 0xFCCF, &mapX, &mapY, &interactionType, &mapElement, NULL);
+	switch (interactionType) {
+	case VIEWPORT_INTERACTION_ITEM_SCENERY:
+	case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
+	case VIEWPORT_INTERACTION_ITEM_WALL:
+	case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
+		track_save_toggle_map_element(interactionType, mapX, mapY, mapElement);
+		break;
+	}
 }
 
 /**

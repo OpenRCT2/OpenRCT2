@@ -493,6 +493,8 @@ typedef struct {
 extern const rct_trackdefinition *gFlatRideTrackDefinitions;
 extern const rct_trackdefinition *gTrackDefinitions;
 
+extern rct_map_element **gTrackSavedMapElements;
+
 void track_load_list(ride_list_item item);
 int sub_67726A(const char *path);
 rct_track_design *track_get_info(int index, uint8** preview);
@@ -511,6 +513,7 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 
 void track_save_reset_scenery();
 void track_save_select_nearby_scenery(int rideIndex);
+void track_save_toggle_map_element(int interactionType, int x, int y, rct_map_element *mapElement);
 
 const rct_preview_track *get_track_def_from_ride(rct_ride *ride, int trackType);
 const rct_preview_track *get_track_def_from_ride_index(int rideIndex, int trackType);
