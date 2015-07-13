@@ -490,6 +490,7 @@ typedef struct {
 	bool looped;
 } track_circuit_iterator;
 
+extern const rct_trackdefinition *gFlatRideTrackDefinitions;
 extern const rct_trackdefinition *gTrackDefinitions;
 
 void track_load_list(ride_list_item item);

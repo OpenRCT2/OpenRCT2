@@ -924,7 +924,7 @@ bool ride_is_powered_launched(rct_ride *ride);
 bool ride_has_any_track_elements(int rideIndex);
 void ride_all_has_any_track_elements(bool *rideIndexArray);
 
-void sub_6C9800();
+void ride_construction_set_default_next_piece();
 
 bool track_block_get_next(rct_xy_element *input, rct_xy_element *output, int *z, int *direction);
 bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 rideIndex, uint8 direction_start, rct_xy_element *output, int *z, int *direction);

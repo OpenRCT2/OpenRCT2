@@ -45,6 +45,7 @@
  *  rct2: 0x00997C9D
  */
 const rct_trackdefinition *gTrackDefinitions = (rct_trackdefinition*)0x00997C9D;
+const rct_trackdefinition *gFlatRideTrackDefinitions = (rct_trackdefinition*)0x0099849D;
 
 // TODO This table is incorrect or at least missing 69 elements. There should be 256 in total!
 const rct_trackdefinition gTrackDefinitions_INCORRECT[] = {

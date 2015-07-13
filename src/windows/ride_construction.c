@@ -1751,7 +1751,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 		bankStart = _currentTrackBankEnd;
 		b5 = _currentTrackCovered;
 		b4 = _currentTrackLiftHill;
-		sub_6C9800();
+		ride_construction_set_default_next_piece();
 		sub_6C84CE();
 		if (!sub_6CAF80(_currentRideIndex, &outputElement)) {
 			sub_6CC3FB(_currentRideIndex);
@@ -2575,8 +2575,8 @@ static void window_ride_construction_update_possible_ride_configurations()
 	_numCurrentPossibleSpecialTrackPieces = 0;
 	for (trackType = 0; trackType < 256; trackType++) {
 		edx = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
-			RCT2_GLOBAL(0x0099849D + (trackType * 8), uint8) :
-			RCT2_GLOBAL(0x00997C9D + (trackType * 8), uint8);
+			gFlatRideTrackDefinitions[trackType].type :
+			gTrackDefinitions[trackType].type;
 
 		if (edx == 0)
 			continue;
@@ -2592,19 +2592,19 @@ static void window_ride_construction_update_possible_ride_configurations()
 		int slope, bank;
 		if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT || _rideConstructionState == RIDE_CONSTRUCTION_STATE_PLACE) {
 			if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
-				slope = RCT2_GLOBAL(0x0099849F + (trackType * 8), uint8);
-				bank = RCT2_GLOBAL(0x009984A1 + (trackType * 8), uint8);
+				slope = gFlatRideTrackDefinitions[trackType].vangle_start;
+				bank = gFlatRideTrackDefinitions[trackType].bank_start;
 			} else {
-				slope = RCT2_GLOBAL(0x00997C9F + (trackType * 8), uint8);
-				bank = RCT2_GLOBAL(0x00997CA1 + (trackType * 8), uint8);
+				slope = gTrackDefinitions[trackType].vangle_start;
+				bank = gTrackDefinitions[trackType].bank_start;
 			}
 		} else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK) {
 			if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
-				slope = RCT2_GLOBAL(0x0099849E + (trackType * 8), uint8);
-				bank = RCT2_GLOBAL(0x009984A0 + (trackType * 8), uint8);
+				slope = gFlatRideTrackDefinitions[trackType].vangle_end;
+				bank = gFlatRideTrackDefinitions[trackType].bank_end;
 			} else {
-				slope = RCT2_GLOBAL(0x00997C9E + (trackType * 8), uint8);
-				bank = RCT2_GLOBAL(0x00997CA0 + (trackType * 8), uint8);
+				slope = gTrackDefinitions[trackType].vangle_end;
+				bank = gTrackDefinitions[trackType].bank_end;
 			}
 		} else {
 			continue;
@@ -2612,8 +2612,8 @@ static void window_ride_construction_update_possible_ride_configurations()
 
 		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 			if (
-				RCT2_GLOBAL(0x00997C9D + (trackType * 8), uint8) == TRACK_HELIX_SMALL ||
-				RCT2_GLOBAL(0x00997C9D + (trackType * 8), uint8) == TRACK_HELIX_LARGE
+				gTrackDefinitions[trackType].type == TRACK_HELIX_SMALL ||
+				gTrackDefinitions[trackType].type == TRACK_HELIX_LARGE
 			) {
 				if (bank != _previousTrackBankEnd) {
 					if (_previousTrackBankEnd != TRACK_BANK_NONE)

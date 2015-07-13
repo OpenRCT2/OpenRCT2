@@ -794,9 +794,26 @@ int get_string_length(char* buffer)
 
 int win1252_to_utf8(utf8string dst, const char *src, int maxBufferLength)
 {
-	utf16 intermediateBuffer[512];
+	utf16 stackBuffer[256];
+	utf16 *heapBuffer = NULL;
+	utf16 *intermediateBuffer = stackBuffer;
+	int bufferCount = countof(stackBuffer);
 
-	// TODO this supports only a maximum of 512 characters
-	MultiByteToWideChar(CP_ACP, 0, src, -1, intermediateBuffer, 512);
-	return WideCharToMultiByte(CP_UTF8, 0, intermediateBuffer, -1, dst, maxBufferLength, NULL, NULL);
+	if (maxBufferLength > bufferCount) {
+		int srcLength = strlen(src);
+		if (srcLength > bufferCount) {
+			bufferCount = srcLength + 4;
+			heapBuffer = malloc(bufferCount * sizeof(utf16));
+			intermediateBuffer = heapBuffer;
+		}
+	}
+
+	MultiByteToWideChar(CP_ACP, 0, src, -1, intermediateBuffer, bufferCount);
+	int result = WideCharToMultiByte(CP_UTF8, 0, intermediateBuffer, -1, dst, maxBufferLength, NULL, NULL);
+
+	if (heapBuffer != NULL) {
+		free(heapBuffer);
+	}
+
+	return result;
 }

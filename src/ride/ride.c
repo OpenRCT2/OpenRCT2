@@ -1269,11 +1269,154 @@ void sub_6C9627()
 
 /**
  * 
+ * rct2: 0x006C9B19
+ */
+static void ride_construction_reset_current_piece()
+{
+	rct_ride *ride;
+
+	ride = GET_RIDE(_currentRideIndex);
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_15) || ride->num_stations != 0) {
+		_currentTrackCurve = RCT2_GLOBAL(0x0097CC68 + (ride->type * 2), uint8) | 0x100;
+		_currentTrackSlopeEnd = 0;
+		_currentTrackBankEnd = 0;
+		_currentTrackLiftHill = 0;
+		_currentTrackCovered = 0;
+		if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x8000) {
+			_currentTrackCovered |= 2;
+		}
+		_previousTrackSlopeEnd = 0;
+		_previousTrackBankEnd = 0;
+	} else {
+		_currentTrackCurve = 0xFFFF;
+		_rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
+	}
+}
+
+/**
+ * 
  * rct2: 0x006C9800
  */
-void sub_6C9800()
+void ride_construction_set_default_next_piece()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006C9800);
+	int x, y, z, direction, rideIndex, trackType, curve, bank, slope;
+	rct_ride *ride;
+	track_begin_end trackBeginEnd;
+	rct_xy_element xyElement;
+	rct_map_element *mapElement;
+
+	_currentTrackPrice = MONEY32_UNDEFINED;
+	switch (_rideConstructionState) {
+	case RIDE_CONSTRUCTION_STATE_FRONT:
+		rideIndex = _currentRideIndex;
+		ride = GET_RIDE(rideIndex);
+
+		RCT2_GLOBAL(0x00F441D2, uint8) = rideIndex;
+		x = _currentTrackBeginX;
+		y = _currentTrackBeginY;
+		z = _currentTrackBeginZ;
+		direction = _currentTrackPieceDirection;
+		if (!track_block_get_previous_from_zero(x, y, z, rideIndex, direction, &trackBeginEnd)) {
+			ride_construction_reset_current_piece();
+			return;
+		}
+		mapElement = trackBeginEnd.begin_element;
+		trackType = mapElement->properties.track.type;
+
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_15)) {
+			ride_construction_reset_current_piece();
+			return;
+		}
+
+		// Set whether track is covered
+		_currentTrackCovered &= ~2;
+		if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 8) {
+			if (mapElement->properties.track.colour & 4) {
+				_currentTrackCovered |= 2;
+			}
+		}
+
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
+			curve = gFlatRideTrackCurveChain[trackType].next;
+			bank = gFlatRideTrackDefinitions[trackType].bank_end;
+			slope = gFlatRideTrackDefinitions[trackType].vangle_end;
+		} else {
+			curve = gTrackCurveChain[trackType].next;
+			bank = gTrackDefinitions[trackType].bank_end;
+			slope = gTrackDefinitions[trackType].vangle_end;
+		}
+
+		// Set track curve
+		_currentTrackCurve = curve;
+
+		// Set track banking
+		if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 8) {
+			if (bank == TRACK_BANK_UPSIDE_DOWN) {
+				bank = TRACK_BANK_NONE;
+				_currentTrackCovered ^= 2;
+			}
+		}
+		_currentTrackBankEnd = bank;
+		_previousTrackBankEnd = bank;
+
+		// Set track slope and lift hill
+		_currentTrackSlopeEnd = slope;
+		_previousTrackSlopeEnd = slope;
+		_currentTrackLiftHill = ((mapElement->type & 0x80) && slope != TRACK_SLOPE_DOWN_25 && slope != TRACK_SLOPE_DOWN_60);
+		break;
+	case RIDE_CONSTRUCTION_STATE_BACK:
+		rideIndex = _currentRideIndex;
+		ride = GET_RIDE(rideIndex);
+
+		RCT2_GLOBAL(0x00F441D2, uint8) = rideIndex;
+		x = _currentTrackBeginX;
+		y = _currentTrackBeginY;
+		z = _currentTrackBeginZ;
+		direction = _currentTrackPieceDirection ^ 2;
+		if (!track_block_get_next_from_zero(x, y, z, rideIndex, direction, &xyElement, &z, &direction)) {
+			ride_construction_reset_current_piece();
+			return;
+		}
+		mapElement = xyElement.element;
+		trackType = mapElement->properties.track.type;
+
+		// Set whether track is covered
+		_currentTrackCovered &= ~2;
+		if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 8) {
+			if (mapElement->properties.track.colour & 4) {
+				_currentTrackCovered |= 2;
+			}
+		}
+
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
+			curve = gFlatRideTrackCurveChain[trackType].previous;
+			bank = gFlatRideTrackDefinitions[trackType].bank_start;
+			slope = gFlatRideTrackDefinitions[trackType].vangle_start;
+		} else {
+			curve = gTrackCurveChain[trackType].previous;
+			bank = gTrackDefinitions[trackType].bank_start;
+			slope = gTrackDefinitions[trackType].vangle_start;
+		}
+
+		// Set track curve
+		_currentTrackCurve = curve;
+
+		// Set track banking
+		if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 8) {
+			if (bank == TRACK_BANK_UPSIDE_DOWN) {
+				bank = TRACK_BANK_NONE;
+				_currentTrackCovered ^= 2;
+			}
+		}
+		_currentTrackBankEnd = bank;
+		_previousTrackBankEnd = bank;
+
+		// Set track slope and lift hill
+		_currentTrackSlopeEnd = slope;
+		_previousTrackSlopeEnd = slope;
+		_currentTrackLiftHill = (mapElement->type & 0x80);
+		break;
+	}
 }
 
 /**
@@ -1314,7 +1457,7 @@ void ride_select_next_section()
 			_currentTrackPieceType = mapElement->properties.track.type;
 			_currentTrackSelectionFlags = 0;
 			_rideConstructionArrowPulseTime = 0;
-			sub_6C9800();
+			ride_construction_set_default_next_piece();
 			sub_6C84CE();
 			return;
 		}
@@ -1374,7 +1517,7 @@ void ride_select_previous_section()
 			_currentTrackPieceType = mapElement->properties.track.type;
 			_currentTrackSelectionFlags = 0;
 			_rideConstructionArrowPulseTime = 0;
-			sub_6C9800();
+			ride_construction_set_default_next_piece();
 			sub_6C84CE();
 		}
 	} else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT) {

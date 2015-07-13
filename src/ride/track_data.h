@@ -30,3 +30,11 @@ extern const rct_preview_track *TrackBlocks[256];
 extern const rct_preview_track *FlatRideTrackBlocks[255];
 
 extern const uint8 TrackPieceLengths[256];
+
+typedef struct {
+	uint16 next;
+	uint16 previous;
+} track_curve_chain;
+
+extern const track_curve_chain gTrackCurveChain[256];
+extern const track_curve_chain gFlatRideTrackCurveChain[256];
