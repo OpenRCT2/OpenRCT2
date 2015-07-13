@@ -347,7 +347,7 @@ static void window_title_command_editor_mousedown(int widgetIndex, rct_window* w
 			num_items = gConfigTitleSequences.presets[gCurrentTitleSequence].num_saves;
 			for (i = 0; i < num_items; i++) {
 				gDropdownItemsFormat[i] = 2777;
-				gDropdownItemsArgs[i] = (uint64)&gConfigTitleSequences.presets[gCurrentTitleSequence].saves[i];
+				gDropdownItemsArgs[i] = (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].saves[i];
 			}
 
 			window_dropdown_show_text_custom_width(

@@ -533,13 +533,13 @@ static void window_themes_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 
 		widget--;
 		gDropdownItemsFormat[0] = 2777;
-		gDropdownItemsArgs[0] = (uint64)&gConfigThemes.presets[1].name;
+		gDropdownItemsArgs[0] = (uint32)&gConfigThemes.presets[1].name;
 		gDropdownItemsFormat[1] = 2777;
-		gDropdownItemsArgs[1] = (uint64)&gConfigThemes.presets[0].name;
+		gDropdownItemsArgs[1] = (uint32)&gConfigThemes.presets[0].name;
 
 		for (i = 2; i < num_items; i++) {
 			gDropdownItemsFormat[i] = 2777;
-			gDropdownItemsArgs[i] = (uint64)&gConfigThemes.presets[i].name;
+			gDropdownItemsArgs[i] = (uint32)&gConfigThemes.presets[i].name;
 		}
 
 		window_dropdown_show_text_custom_width(
