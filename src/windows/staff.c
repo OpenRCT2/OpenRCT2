@@ -297,7 +297,7 @@ uint32 window_staff_page_enabled_widgets[] = {
 *
 *  rct2: 0x006BEE98
 */
-void window_staff_open(rct_peep* peep)
+rct_window *window_staff_open(rct_peep* peep)
 {
 	rct_window* w = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index);
 	if (w == NULL) {
@@ -318,7 +318,6 @@ void window_staff_open(rct_peep* peep)
 		w->min_height = WH;
 		w->max_width = 500;
 		w->max_height = 450;
-
 	}
 	w->page = 0;
 	window_invalidate(w);
@@ -333,6 +332,8 @@ void window_staff_open(rct_peep* peep)
 	window_staff_viewport_init(w);
 	if (g_sprite_list[w->number].peep.state == PEEP_STATE_PICKED)
 		window_event_mouse_up_call(w, WIDX_CHECKBOX_3);
+
+	return w;
 }
 
 /**

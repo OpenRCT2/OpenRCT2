@@ -23,16 +23,18 @@
 #include "../game.h"
 #include "../drawing/drawing.h"
 #include "../input.h"
+#include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
+#include "../sprites.h"
+#include "../world/footpath.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
-#include "../interface/themes.h"
-#include "../sprites.h"
+#include "error.h"
 
 enum {
 	WINDOW_STAFF_LIST_TAB_HANDYMEN,
@@ -216,14 +218,11 @@ static void window_staff_list_mouseup(rct_window *w, int widgetIndex)
 
 		break;
 	case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
-		RCT2_CALLPROC_X(0x006BD9FF, 0, 0, 0, widgetIndex, (int)w, 0, 0);
-
-		// TODO: The code below works, but due to some funny things, when clicking again on the show patrol area button to disable the tool,
-		// the mouseup event is getting called when it should not be
-		//tool_set(w, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, 0x0C);
-		//show_gridlines();
-		//RCT2_GLOBAL(0x009DEA50, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8) | 0x8000;
-		//gfx_invalidate_screen();
+		if (!tool_set(w, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, 12)) {
+			show_gridlines();
+			RCT2_GLOBAL(0x009DEA50, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8) | 0x8000;
+			gfx_invalidate_screen();
+		}
 		break;
 	case WIDX_STAFF_LIST_MAP:
 		window_map_open();
@@ -327,7 +326,55 @@ void window_staff_list_update(rct_window *w)
  */
 static void window_staff_list_tooldown(rct_window *w, int widgetIndex, int x, int y)
 {
-	RCT2_CALLPROC_X(0x006BD990, x, y, 0, widgetIndex, (int)w, 0, 0);
+	int direction, distance, closestPeepDistance, selectedPeepType;
+	rct_map_element *mapElement;
+	rct_peep *peep, *closestPeep;
+	uint16 spriteIndex;
+
+	if (widgetIndex == WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON) {
+		selectedPeepType = RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8);
+
+		footpath_get_coordinates_from_pos(x, y, &x, &y, &direction, &mapElement);
+		if (x == 0x8000)
+			return;
+
+		bool isPatrolAreaSet = staff_is_patrol_area_set(200 + selectedPeepType, x, y);
+
+		closestPeep = NULL;
+		closestPeepDistance = INT_MAX;
+		FOR_ALL_STAFF(spriteIndex, peep) {
+			if (peep->staff_type != selectedPeepType)
+				continue;
+
+			if (isPatrolAreaSet) {
+				if (!(gStaffModes[peep->staff_id] & 2)) {
+					continue;
+				}
+				if (!mechanic_is_location_in_patrol(peep, x, y)) {
+					continue;
+				}
+			}
+
+			if (peep->x == (sint16)0x8000) {
+				continue;
+			}
+
+			distance = abs(x - peep->x) + abs(y - peep->y);
+			if (distance < closestPeepDistance) {
+				closestPeepDistance = distance;
+				closestPeep = peep;
+			}
+		}
+
+		if (closestPeep != NULL) {
+			tool_cancel();
+			rct_window *staffWindow = window_staff_open(closestPeep);
+			window_event_dropdown_call(staffWindow, 11, 0);
+		} else {
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = STR_HANDYMAN_PLURAL + selectedPeepType;
+			window_error_open(STR_NO_THING_IN_PARK_YET, STR_NONE);
+		}
+	}
 }
 
 /**

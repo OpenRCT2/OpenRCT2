@@ -29,6 +29,9 @@
 #include "peep.h"
 #include "staff.h"
 
+uint32 *gStaffPatrolAreas = (uint32*)0x013B0E72;
+uint8 *gStaffModes = (uint8*)0x013CA672;
+
 /**
  *
  *  rct2: 0x00669E55
@@ -450,4 +453,15 @@ void staff_reset_stats()
 		peep->staff_litter_swept = 0;
 		peep->staff_bins_emptied = 0;
 	}
+}
+
+bool staff_is_patrol_area_set(int staffIndex, int x, int y)
+{
+	x = (x & 0x1F80) >> 7;
+	y = (y & 0x1F80) >> 1;
+
+	int peepOffset = staffIndex * 128;
+	int offset = (x | y) >> 5;
+	int bitIndex = (x | y) & 0x1F;
+	return gStaffPatrolAreas[peepOffset + offset] & (1 << bitIndex);
 }

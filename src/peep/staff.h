@@ -49,6 +49,9 @@ enum STAFF_ORDERS{
 	STAFF_ORDERS_FIX_RIDES = (1 << 1)
 };
 
+extern uint32 *gStaffPatrolAreas;
+extern uint8 *gStaffModes;
+
 void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_hire_new_staff_member(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_staff_order(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
@@ -60,5 +63,6 @@ uint16 hire_new_staff_member(uint8 staffType);
 void staff_update_greyed_patrol_areas();
 int mechanic_is_location_in_patrol(rct_peep *mechanic, int x, int y);
 void staff_reset_stats();
+bool staff_is_patrol_area_set(int staffIndex, int x, int y);
 
 #endif
