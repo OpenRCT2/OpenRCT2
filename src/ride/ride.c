@@ -1276,7 +1276,7 @@ static void ride_construction_reset_current_piece()
 	rct_ride *ride;
 
 	ride = GET_RIDE(_currentRideIndex);
-	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_15) || ride->num_stations != 0) {
+	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_15) || ride->num_stations == 0) {
 		_currentTrackCurve = RCT2_GLOBAL(0x0097CC68 + (ride->type * 2), uint8) | 0x100;
 		_currentTrackSlopeEnd = 0;
 		_currentTrackBankEnd = 0;
