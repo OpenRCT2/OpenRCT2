@@ -6149,6 +6149,9 @@ money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex, uint8 
 			if (mapElement->base_height != ride->station_heights[station_num])
 				continue;
 
+			if (flags & (1 << 5) && !(mapElement->flags & MAP_ELEMENT_FLAG_GHOST))
+				continue;
+
 			found = 1;
 			break;
 		} while (!map_element_is_last_for_tile(mapElement++));
