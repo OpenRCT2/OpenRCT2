@@ -209,7 +209,7 @@ typedef struct {
 		uint8 holes;				// 0x114 (???X XXXX)
 	};
 	uint8 drops;					// 0x115 (??XX XXXX)
-	uint8 pad_116;
+	uint8 var_116;
 	uint8 highest_drop_height;		// 0x117
 	sint32 sheltered_length;		// 0x118
 	uint8 pad_11C[0x2];

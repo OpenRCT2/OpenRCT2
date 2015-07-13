@@ -33,6 +33,7 @@
 #include "world/climate.h"
 #include "world/footpath.h"
 #include "world/map.h"
+#include "world/map_animation.h"
 #include "world/scenery.h"
 
 typedef struct {
@@ -56,7 +57,7 @@ static void sub_666DFD();
 static void rct1_clear_extra_sprite_entries();
 static void rct1_clear_extra_tile_entries();
 static void sub_69F143();
-static void sub_69F2D0();
+static void rct1_fix_z();
 static void sub_69F3AB();
 static void sub_6A2730();
 static void sub_69E891();
@@ -213,7 +214,7 @@ void rct1_fix_landscape()
 	rct1_clear_extra_tile_entries();
 	sub_69F06A();
 	sub_69F143();
-	sub_69F2D0();
+	rct1_fix_z();
 	sub_69F3AB();
 	rct1_remove_rides();
 	object_unload_all();
@@ -625,9 +626,60 @@ static void sub_69F143()
  *
  *  rct2: 0x0069F2D0
  */
-static void sub_69F2D0()
+static void rct1_fix_z()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0069F2D0);
+	int i;
+	rct_ride *ride;
+	rct_unk_sprite *sprite;
+	rct_peep *peep;
+	rct_ride_measurement *rideMeasurement;
+	rct_map_element *mapElement;
+
+	FOR_ALL_RIDES(i, ride) {
+		for (int i = 0; i < 4; i++) {
+			ride->station_heights[i] /= 2;
+		}
+		ride->var_116 /= 2;
+		ride->highest_drop_height = 1;
+		if (ride->var_11F != 255) {
+			ride->var_11F /= 2;
+		}
+		ride->var_13E /= 2;
+		ride->var_13F /= 2;
+	}
+
+	for (int i = 0; i < RCT2_GLOBAL(0x0138B580, uint16); i++) {
+		gAnimatedObjects[i].baseZ /= 2;
+	}
+
+	for (int i = 0; i < MAX_SPRITES; i++) {
+		sprite = &(g_sprite_list[i].unknown);
+		if (sprite->sprite_identifier == SPRITE_IDENTIFIER_PEEP) {
+			peep = (rct_peep*)sprite;
+			peep->next_z /= 2;
+			RCT2_GLOBAL((int)peep + 0xCE, uint8) /= 2;
+		}
+	}
+
+	for (int i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
+		rideMeasurement = GET_RIDE_MEASUREMENT(i);
+		if (rideMeasurement->ride_index == 255)
+			continue;
+
+		for (int i = 0; i < RIDE_MEASUREMENT_MAX_ITEMS; i++) {
+			rideMeasurement->altitude[i] /= 2;
+		}
+	}
+
+	mapElement = gMapElements;
+	while (mapElement < RCT2_GLOBAL(0x0140E9A4, rct_map_element*)) {
+		if (mapElement->base_height != 255) {
+			mapElement->base_height /= 2;
+			mapElement->clearance_height /= 2;
+		}
+		mapElement++;
+	}
+	RCT2_GLOBAL(0x01359208, uint16) = 7;
 }
 
 /**
