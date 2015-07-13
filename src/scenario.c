@@ -828,7 +828,7 @@ static void sub_674BCF()
 /**
  * Modifys the given S6 data so that ghost elements, rides with no track elements or unused banners / user strings are saved.
  */
-static scenario_fix_ghosts(rct_s6_data *s6)
+static void scenario_fix_ghosts(rct_s6_data *s6)
 {
 	// Remove all ghost elements
 	size_t mapElementTotalSize = MAX_MAP_ELEMENTS * sizeof(rct_map_element);

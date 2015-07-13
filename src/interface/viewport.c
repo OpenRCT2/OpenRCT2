@@ -1118,7 +1118,7 @@ int scrolling_text_setup(rct_string_id string_id, uint16 scroll, uint16 scrollin
  * dx : height
  * edi : unknown
  */
-int sub_6629BC(int height, uint16 ax, uint32 image_id, uint32 edi){
+int sub_6629BC(int height, uint16 ax, uint32 image_id, int edi){
 	int eax = ax, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = edi, ebp = image_id;
 
 	RCT2_CALLFUNC_X(0x006629BC, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
