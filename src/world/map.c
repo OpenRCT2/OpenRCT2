@@ -49,6 +49,8 @@ const rct_xy16 TileDirectionDelta[] = {
 	{ -32, -32 }
 };
 
+rct_map_element *gMapElements = (rct_map_element*)RCT2_ADDRESS_MAP_ELEMENTS;
+rct_map_element **gMapElementTilePointers = (rct_map_element**)RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS;
 rct_xy16 *gMapSelectionTiles = (rct_xy16*)0x009DE596;
 rct2_peep_spawn *gPeepSpawns = (rct2_peep_spawn*)RCT2_ADDRESS_PEEP_SPAWNS;
 

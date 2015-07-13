@@ -248,6 +248,10 @@ typedef struct {
 } rct2_peep_spawn;
 
 extern const rct_xy16 TileDirectionDelta[];
+
+extern rct_map_element *gMapElements;
+extern rct_map_element **gMapElementTilePointers;
+
 extern rct_xy16 *gMapSelectionTiles;
 extern rct2_peep_spawn *gPeepSpawns;
 // Used in the land tool window to allow dragging and changing land styles

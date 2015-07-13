@@ -53,8 +53,8 @@ static void rct1_reset_research();
 
 static void sub_69F06A();
 static void sub_666DFD();
-static void sub_69F007();
-static void sub_69F44B();
+static void rct1_clear_extra_sprite_entries();
+static void rct1_clear_extra_tile_entries();
 static void sub_69F143();
 static void sub_69F2D0();
 static void sub_69F3AB();
@@ -190,7 +190,7 @@ void rct1_fix_landscape()
 	rct_sprite *sprite;
 	rct_ride *ride;
 
-	sub_69F007();
+	rct1_clear_extra_sprite_entries();
 
 	// Free sprite user strings
 	for (i = 0; i < MAX_SPRITES; i++) {
@@ -210,7 +210,7 @@ void rct1_fix_landscape()
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint8) = 0;
-	sub_69F44B();
+	rct1_clear_extra_tile_entries();
 	sub_69F06A();
 	sub_69F143();
 	sub_69F2D0();
@@ -304,7 +304,7 @@ static void rct1_remove_rides()
 		case MAP_ELEMENT_TYPE_PATH:
 			if (it.element->type & 1) {
 				it.element->properties.path.type &= 0xF7;
-				it.element->properties.path.addition_status = 255;
+				it.element->properties.path.ride_index = 255;
 			}
 			break;
 
@@ -513,9 +513,7 @@ static void sub_666DFD()
 	if (x == (sint16)0x8000)
 		return;
 
-	x /= 32;
-	y /= 32;
-	mapElement = map_get_first_element_at(x, y);
+	mapElement = map_get_first_element_at(x >> 5, y >> 5);
 	do {
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
 			if (mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE) {
@@ -530,18 +528,88 @@ static void sub_666DFD()
  *
  *  rct2: 0x0069F007
  */
-static void sub_69F007()
+static void rct1_clear_extra_sprite_entries()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0069F007);
+	rct_unk_sprite *sprite;
+	
+	for (int i = 5000; i < MAX_SPRITES; i++) {
+		sprite = &(g_sprite_list[i].unknown);
+		
+		memset(&g_sprite_list[i], 0, sizeof(rct_sprite));
+
+		sprite->sprite_identifier = 255;
+		sprite->sprite_index = i;
+		sprite->linked_list_type_offset = SPRITE_LINKEDLIST_OFFSET_NULL;
+		sprite->previous = SPRITE_INDEX_NULL;
+		sprite->next = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16);
+		RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16) = i;
+
+		sprite = &(g_sprite_list[sprite->next].unknown);
+		sprite->previous = i;
+	}
+	RCT2_GLOBAL(0x013573C8, uint16) += 5000;
 }
 
 /**
  *
  *  rct2: 0x0069F44B
  */
-static void sub_69F44B()
+static void rct1_clear_extra_tile_entries()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0069F44B);
+	// Reset the map tile pointers
+	for (int i = 0; i < 0x10000; i++) {
+		gMapElementTilePointers[i] = (rct_map_element*)-1;
+	}
+	
+	// Get the first free map element
+	rct_map_element *nextFreeMapElement = gMapElements;
+	for (int i = 0; i < 128 * 128; i++) {
+		do {
+
+		} while (!map_element_is_last_for_tile(nextFreeMapElement++));
+	}
+
+	rct_map_element *mapElement = gMapElements;
+	rct_map_element **tilePointer = gMapElementTilePointers;
+
+	// 128 rows of map data from RCT1 map
+	for (int x = 0; x < 128; x++) {
+		// Assign the first half of this row
+		for (int y = 0; y < 128; y++) {
+			*tilePointer++ = mapElement;
+			do {
+
+			} while (!map_element_is_last_for_tile(mapElement++));
+		}
+
+		// Fill the rest of the row with blank tiles
+		for (int y = 0; y < 128; y++) {
+			nextFreeMapElement->type = MAP_ELEMENT_TYPE_SURFACE;
+			nextFreeMapElement->flags = MAP_ELEMENT_FLAG_LAST_TILE;
+			nextFreeMapElement->base_height = 2;
+			nextFreeMapElement->clearance_height = 0;
+			nextFreeMapElement->properties.surface.slope = 0;
+			nextFreeMapElement->properties.surface.terrain = 0;
+			nextFreeMapElement->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
+			nextFreeMapElement->properties.surface.ownership = 0;
+			*tilePointer++ = nextFreeMapElement++;
+		}
+	}
+
+	// 128 extra rows left to fill with blank tiles
+	for (int y = 0; y < 128 * 256; y++) {
+		nextFreeMapElement->type = MAP_ELEMENT_TYPE_SURFACE;
+		nextFreeMapElement->flags = MAP_ELEMENT_FLAG_LAST_TILE;
+		nextFreeMapElement->base_height = 2;
+		nextFreeMapElement->clearance_height = 0;
+		nextFreeMapElement->properties.surface.slope = 0;
+		nextFreeMapElement->properties.surface.terrain = 0;
+		nextFreeMapElement->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
+		nextFreeMapElement->properties.surface.ownership = 0;
+		*tilePointer++ = nextFreeMapElement++;
+	}
+
+	RCT2_GLOBAL(0x0140E9A4, rct_map_element*) = nextFreeMapElement;
 }
 
 /**
@@ -586,7 +654,7 @@ static void sub_6A2730()
  */
 static void sub_69E891()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0069E891);
+	RCT2_GLOBAL(0x013587D8, uint16) = 63;
 }
 
 #pragma region Tables
