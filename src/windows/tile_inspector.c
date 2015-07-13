@@ -167,17 +167,19 @@ static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, in
 
 	map_invalidate_selection_rect();
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
-	screen_pos_to_map_pos(&mapX, &mapY, &direction);
 
-	if (x == (short)0x8000) {
+	mapX = x;
+	mapY = y;
+	screen_pos_to_map_pos(&mapX, &mapY, &direction);
+	if (mapX == (short)0x8000) {
 		return;
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) = y;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) = y;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) = mapX;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) = mapY;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) = mapX;
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) = mapY;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
 
 	map_invalidate_selection_rect();
@@ -189,14 +191,15 @@ static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int 
 	int direction;
 	short mapX, mapY;
 
+	mapX = x;
+	mapY = y;
 	screen_pos_to_map_pos(&mapX, &mapY, &direction);
-
-	if (x == (short)0x8000) {
+	if (mapX == (short)0x8000) {
 		return;
 	}
 
-	window_tile_inspector_tile_x = x >> 5;
-	window_tile_inspector_tile_y = y >> 5;
+	window_tile_inspector_tile_x = mapX >> 5;
+	window_tile_inspector_tile_y = mapY >> 5;
 
 	rct_map_element *element = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
 	int numItems = 0;
