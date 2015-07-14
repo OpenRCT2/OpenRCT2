@@ -197,7 +197,16 @@ bool openrct2_initialise()
 
 	openrct2_copy_original_user_files_over();
 
-	Mixer_Init(NULL);
+	char* devicename = gConfigSound.device;
+	if (strlen(devicename) == 0) {
+		devicename = NULL;
+	}
+	Mixer_Init(devicename);
+	for (int i = 0; i < gAudioDeviceCount; i++) {
+		if (strcmp(gAudioDevices[i].name, gConfigSound.device) == 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) = i;
+		}
+	}
 	return true;
 }
 
