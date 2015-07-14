@@ -913,7 +913,7 @@ static void loc_6A6D7E(
 				break;
 			case MAP_ELEMENT_TYPE_ENTRANCE:
 				if (z == mapElement->base_height) {
-					if (entrance_has_direction(mapElement, (direction - mapElement->type) & 3)) {
+					if (entrance_has_direction(mapElement, ((direction - mapElement->type) & 3) ^ 2)) {
 						if (query) {
 							neighbour_list_push(neighbourList, 8, direction);
 						} else {

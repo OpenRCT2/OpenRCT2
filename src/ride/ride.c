@@ -5325,7 +5325,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(int screenX, int sc
 					if (mapElement->properties.track.ride_index != RCT2_GLOBAL(0x00F44192, uint8))
 						continue;
 					if (mapElement->properties.track.type == 101) {
-						RCT2_GLOBAL(0x00F44194, uint8) = direction;
+						RCT2_GLOBAL(0x00F44194, uint8) = direction ^ 2;
 						*outDirection = direction ^ 2;
 						return;
 					}
@@ -5335,7 +5335,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(int screenX, int sc
 					int ebx = (mapElement->properties.track.type << 4) + (mapElement->properties.track.sequence & 0x0F);
 					int eax = (direction + 2 - mapElement->type) & MAP_ELEMENT_DIRECTION_MASK;
 					if (RCT2_ADDRESS(0x0099CA64, uint8)[ebx] & (1 << eax)) {
-						RCT2_GLOBAL(0x00F44194, uint8) = direction;
+						RCT2_GLOBAL(0x00F44194, uint8) = direction ^ 2;
 						*outDirection = direction ^ 2;
 						return;
 					}
