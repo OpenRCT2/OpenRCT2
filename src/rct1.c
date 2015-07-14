@@ -743,6 +743,7 @@ static void rct1_fix_paths()
 	rct_map_element *mapElement;
 	int pathType, secondaryType, additions;
 
+	mapElement = gMapElements;
 	while (mapElement < RCT2_GLOBAL(0x0140E9A4, rct_map_element*)) {
 		switch (map_element_get_type(mapElement)) {
 		case MAP_ELEMENT_TYPE_PATH:
@@ -779,6 +780,7 @@ static void rct1_fix_paths()
 			}
 			break;
 		}
+		mapElement++;
 	}
 }
 
