@@ -41,8 +41,10 @@ typedef struct {
 	int count;
 } RCT1DefaultObjectsGroup;
 
-const uint8 RCT1TerrainConvertTable[16];
-const uint8 RCT1TerrainEdgeConvertTable[16];
+static const uint8 RCT1TerrainConvertTable[16];
+static const uint8 RCT1TerrainEdgeConvertTable[16];
+static const uint8 RCT1PathTypeConversionTable[96];
+static const uint8 RCT1PathAdditionConversionTable[15];
 static const RCT1DefaultObjectsGroup RCT1DefaultObjects[10];
 
 static void rct1_remove_rides();
@@ -56,7 +58,7 @@ static void sub_69F06A();
 static void sub_666DFD();
 static void rct1_clear_extra_sprite_entries();
 static void rct1_clear_extra_tile_entries();
-static void sub_69F143();
+static void rct1_fix_colours();
 static void rct1_fix_z();
 static void rct1_fix_paths();
 static void sub_6A2730();
@@ -213,7 +215,7 @@ void rct1_fix_landscape()
 	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint8) = 0;
 	rct1_clear_extra_tile_entries();
 	sub_69F06A();
-	sub_69F143();
+	rct1_fix_colours();
 	rct1_fix_z();
 	rct1_fix_paths();
 	rct1_remove_rides();
@@ -631,9 +633,80 @@ static void rct1_clear_extra_tile_entries()
  *
  *  rct2: 0x0069F143
  */
-static void sub_69F143()
+static void rct1_fix_colours()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0069F143);
+	int rideIndex, colour;
+	rct_ride *ride;
+	rct_unk_sprite *sprite;
+	rct_peep *peep;
+	rct_balloon *balloon;
+	rct_map_element *mapElement;
+
+	FOR_ALL_RIDES(rideIndex, ride) {
+		for (int i = 0; i < 4; i++) {
+			ride->track_colour_main[i] = RCT1ColourConversionTable[ride->track_colour_main[i]];
+			ride->track_colour_additional[i] = RCT1ColourConversionTable[ride->track_colour_additional[i]];
+			ride->track_colour_supports[i] = RCT1ColourConversionTable[ride->track_colour_supports[i]];
+		}
+
+		for (int i = 0; i < 32; i++) {
+			ride->vehicle_colours[i].body_colour = RCT1ColourConversionTable[ride->vehicle_colours[i].body_colour];
+			ride->vehicle_colours[i].trim_colour = RCT1ColourConversionTable[ride->vehicle_colours[i].trim_colour];
+		}
+	}
+
+	for (int i = 0; i < MAX_SPRITES; i++) {
+		sprite = &(g_sprite_list[i].unknown);
+		switch (sprite->sprite_identifier) {
+		case SPRITE_IDENTIFIER_PEEP:
+			peep = (rct_peep*)sprite;
+			peep->tshirt_colour = RCT1ColourConversionTable[peep->tshirt_colour];
+			peep->trousers_colour = RCT1ColourConversionTable[peep->trousers_colour];
+			peep->balloon_colour = RCT1ColourConversionTable[peep->balloon_colour];
+			peep->umbrella_colour = RCT1ColourConversionTable[peep->umbrella_colour];
+			peep->hat_colour = RCT1ColourConversionTable[peep->hat_colour];
+			break;
+		case SPRITE_IDENTIFIER_MISC:
+			balloon = (rct_balloon*)sprite;
+			balloon->colour = RCT1ColourConversionTable[balloon->colour];
+			balloon->var_2D = RCT1ColourConversionTable[balloon->var_2D];
+			break;
+		}
+	}
+
+	mapElement = gMapElements;
+	while (mapElement < RCT2_GLOBAL(0x0140E9A4, rct_map_element*)) {
+		if (mapElement->base_height != 255) {
+			switch (map_element_get_type(mapElement)) {
+			case MAP_ELEMENT_TYPE_SCENERY:
+				colour = RCT1ColourConversionTable[mapElement->properties.scenery.colour_1 & 0x1F];
+				mapElement->properties.scenery.colour_1 &= 0xE0;
+				mapElement->properties.scenery.colour_1 |= colour;
+				break;
+			case MAP_ELEMENT_TYPE_FENCE:
+				colour = RCT1ColourConversionTable[
+					((mapElement->type & 0xC0) >> 3) |
+					((mapElement->properties.fence.type & 0xE0) >> 5)
+				];
+
+				mapElement->type &= 0x3F;
+				mapElement->properties.fence.type &= 0x1F;
+				mapElement->type |= (colour & 0x18) << 3;
+				mapElement->properties.fence.type |= (colour & 7) << 5;
+				break;
+			case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
+				colour = RCT1ColourConversionTable[mapElement->properties.scenerymultiple.colour[0] & 0x1F];
+				mapElement->properties.scenerymultiple.colour[0] &= 0xE0;
+				mapElement->properties.scenerymultiple.colour[0] |= colour;
+
+				colour = RCT1ColourConversionTable[mapElement->properties.scenerymultiple.colour[1] & 0x1F];
+				mapElement->properties.scenerymultiple.colour[1] &= 0xE0;
+				mapElement->properties.scenerymultiple.colour[1] |= colour;
+				break;
+			}
+		}
+		mapElement++;
+	}
 }
 
 /**
@@ -696,44 +769,6 @@ static void rct1_fix_z()
 	RCT2_GLOBAL(0x01359208, uint16) = 7;
 }
 
-// rct2: 0x0098BC9F
-uint8 RCT1PathTypeConversionTable[] = {
-	0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,
-	0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,
-	0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,
-	0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,
-	0, 0, 0, 0,
-	2, 2, 2, 2,
-	1, 1, 1, 1,
-	0, 0, 0, 0,
-	3, 3, 3, 3,
-	6, 6, 6, 6,
-	0, 0, 0, 0,
-	0, 0, 0, 0,
-	5, 5, 5, 5,
-	5, 5, 5, 5,
-	5, 5, 5, 5,
-	5, 5, 5, 5,
-	4, 4, 4, 4,
-	4, 4, 4, 4,
-	4, 4, 4, 4,
-	4, 4, 4, 4,
-	0, 0, 0, 0,
-	0, 0, 0, 0,
-	0, 0, 0, 0,
-	0, 0, 0, 0,
-};
-
-
-// rct2: 0x0098BCFF
-uint8 RCT1PathAdditionConversionTable[] = {
-	0,
-	1, 2, 3, 4, 5, 6, 7,
-	0x80 | 1, 0x80 | 2, 0x80 | 3, 0x80 | 4, 0x80 | 6, 0x80 | 7,
-	8,
-};
-
-
 /**
  *
  *  rct2: 0x0069F3AB
@@ -748,7 +783,7 @@ static void rct1_fix_paths()
 		switch (map_element_get_type(mapElement)) {
 		case MAP_ELEMENT_TYPE_PATH:
 			// Type
-			pathType = (mapElement->properties.path.type & 0xF0 >> 2) | (mapElement->type & 3);
+			pathType = ((mapElement->properties.path.type & 0xF0) >> 2) | (mapElement->type & 3);
 			secondaryType = (mapElement->flags & 0x60) >> 5;
 			pathType = RCT1PathTypeConversionTable[pathType * 4 + secondaryType];
 
@@ -804,7 +839,15 @@ static void sub_69E891()
 
 #pragma region Tables
 
-const uint8 RCT1TerrainConvertTable[16] = {
+// rct2: 0x0097F0BC & 0x0098BC60
+const uint8 RCT1ColourConversionTable[32] = {
+	 0,  1,  2,  4,  5,  6,  7,  9,
+	11, 12, 13, 14, 15, 16, 18, 19,
+	20, 21, 22, 23, 24, 25, 26, 27,
+	28, 30, 31, 29,  3, 10, 17,  8
+};
+
+static const uint8 RCT1TerrainConvertTable[16] = {
 	TERRAIN_GRASS,
 	TERRAIN_SAND,
 	TERRAIN_DIRT,
@@ -823,7 +866,7 @@ const uint8 RCT1TerrainConvertTable[16] = {
 	TERRAIN_GRID_GREEN
 };
 
-const uint8 RCT1TerrainEdgeConvertTable[16] = {
+static const uint8 RCT1TerrainEdgeConvertTable[16] = {
 	TERRAIN_EDGE_ROCK,
 	TERRAIN_EDGE_ROCK,			// Originally TERRAIN_EDGE_BRICK
 	TERRAIN_EDGE_ROCK,			// Originally TERRAIN_EDGE_IRON
@@ -840,6 +883,42 @@ const uint8 RCT1TerrainEdgeConvertTable[16] = {
 	TERRAIN_EDGE_ROCK,			// Originally TERRAIN_EDGE_SKYSCRAPER_A
 	TERRAIN_EDGE_ROCK,			// Originally TERRAIN_EDGE_SKYSCRAPER_B
 	TERRAIN_EDGE_ROCK			// Unused
+};
+
+// rct2: 0x0098BC9F
+static const uint8 RCT1PathTypeConversionTable[96] = {
+	0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,
+	0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,
+	0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,
+	0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,
+	0, 0, 0, 0,
+	2, 2, 2, 2,
+	1, 1, 1, 1,
+	0, 0, 0, 0,
+	3, 3, 3, 3,
+	6, 6, 6, 6,
+	0, 0, 0, 0,
+	0, 0, 0, 0,
+	5, 5, 5, 5,
+	5, 5, 5, 5,
+	5, 5, 5, 5,
+	5, 5, 5, 5,
+	4, 4, 4, 4,
+	4, 4, 4, 4,
+	4, 4, 4, 4,
+	4, 4, 4, 4,
+	0, 0, 0, 0,
+	0, 0, 0, 0,
+	0, 0, 0, 0,
+	0, 0, 0, 0,
+};
+
+// rct2: 0x0098BCFF
+static const uint8 RCT1PathAdditionConversionTable[15] = {
+	0,
+	1, 2, 3, 4, 5, 6, 7,
+	0x80 | 1, 0x80 | 2, 0x80 | 3, 0x80 | 4, 0x80 | 6, 0x80 | 7,
+	8,
 };
 
 #pragma endregion

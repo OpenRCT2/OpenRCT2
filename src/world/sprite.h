@@ -124,6 +124,7 @@ typedef struct {
 	};
 	uint8 pad_28[4];
 	uint8 colour;					// 0x2C
+	uint8 var_2D;
 } rct_balloon;
 
 typedef struct {

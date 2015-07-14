@@ -477,6 +477,8 @@ typedef struct{
 	uint16 start_track_data_AA_CF;					// 0xC4
 }rct_track_td4; // Information based off RCTTechDepot
 
+extern const uint8 RCT1ColourConversionTable[32];
+
 char **gVehicleHierarchies[0x60];
 const uint8 gRideCategories[0x60];
 

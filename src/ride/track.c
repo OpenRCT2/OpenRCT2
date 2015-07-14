@@ -597,12 +597,12 @@ rct_track_td6* load_track_design(const char *path)
 		// Unsure why it is 67
 		edi = (uint8*)&track_design->vehicle_colours;
 		for (i = 0; i < 67; i++, edi++)
-			*edi = RCT2_ADDRESS(0x0097F0BC, uint8)[*edi];
+			*edi = RCT1ColourConversionTable[*edi];
 
 		// Edit the colours to use the new versions
 		edi = (uint8*)&track_design->track_spine_colour;
 		for (i = 0; i < 12; i++, edi++)
-			*edi = RCT2_ADDRESS(0x0097F0BC, uint8)[*edi];
+			*edi = RCT1ColourConversionTable[*edi];
 
 		// Highest drop height is 1bit = 3/4 a meter in td6
 		// Highest drop height is 1bit = 1/3 a meter in td4
