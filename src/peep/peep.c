@@ -129,12 +129,144 @@ void peep_update_all()
 	}
 }
 
+/* rct2: 0x0069BC9A */
+static uint8 sub_69BC9A(sint16 x, sint16 y, sint16 z){
+	int eax = x, ebx = 0, ecx = y, edx = z, esi, edi, ebp;
+	RCT2_CALLFUNC_X(0x0069BC9A, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return ebx & 0xFF;
+}
+
 /**
  *
  *  rct2: 0x0068F41A
  */
 static void sub_68F41A(rct_peep *peep, int index)
 {
+	if (peep->type == PEEP_TYPE_STAFF){
+		if (peep->staff_type != STAFF_TYPE_SECURITY)
+			return;
+
+		uint8 sprite_type = 23;
+		if (peep->state != PEEP_STATE_PATROLLING)
+			sprite_type = 3;
+
+		if (peep->sprite_type == sprite_type)
+			return;
+
+		peep->sprite_type = sprite_type;
+		peep->action_sprite_image_offset = 0;
+		peep->no_action_frame_no = 0;
+		if (peep->action < PEEP_ACTION_NONE_1)
+			peep->action = PEEP_ACTION_NONE_2;
+
+		peep->flags &= ~PEEP_FLAGS_SLOW_WALK;
+		if (RCT2_ADDRESS(0x00982134, uint8)[sprite_type] & 1){
+			peep->flags |= PEEP_FLAGS_SLOW_WALK;
+		}
+
+		peep->action_sprite_type = 0xFF;
+		sub_693B58(peep);
+		return;
+	}
+
+	if ((index & 0x1FF) == (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x1FF)){
+		RCT2_GLOBAL(0x00F1EDFE, uint32) = index;
+
+		if (peep->flags & PEEP_FLAGS_CROWDED){
+			uint8 thought_type = RCT2_ADDRESS(0x009823AC, uint8)[scenario_rand() & 0xF];
+			if (thought_type != PEEP_THOUGHT_TYPE_NONE){
+				peep_insert_new_thought(peep, thought_type, 0xFF);
+			}
+		}
+
+		if (peep->flags & PEEP_FLAGS_EXPLODE && peep->x != (sint16)0x8000){
+			sound_play_panned(SOUND_CRASH, 0x8001, peep->x, peep->y, peep->z);
+
+			RCT2_CALLPROC_X(0x0067363D, peep->x, 0, peep->y, peep->z + 16, (int)peep, 0, 0);
+			RCT2_CALLPROC_X(0x0067366B, peep->x, 0, peep->y, peep->z + 16, (int)peep, 0, 0);
+
+			peep_remove(peep);
+			return;
+		}
+
+		if (peep->flags & PEEP_FLAGS_HUNGER){
+			if (peep->hunger >= 15)peep->hunger -= 15;
+		}
+
+		if (peep->flags & PEEP_FLAGS_BATHROOM){
+			if (peep->bathroom <= 180)peep->bathroom += 50;
+		}
+
+		if (peep->flags & PEEP_FLAGS_HAPPINESS){
+			peep->happiness_growth_rate = 5;
+		}
+
+		if (peep->flags & PEEP_FLAGS_NAUSEA){
+			peep->nausea_growth_rate = 200;
+			if (peep->nausea <= 130)peep->nausea = 130;
+		}
+
+		if (peep->var_F3 != 0)
+			peep->var_F3--;
+
+		if (peep->state == PEEP_STATE_WALKING || peep->state == PEEP_STATE_SITTING){
+			peep->var_F2++;
+			if (peep->var_F2 >= 18){
+				peep->var_F2 = 0;
+				if (peep->x != (sint16)0x8000){
+
+					uint8 bl = sub_69BC9A(peep->x & 0xFFE0, peep->y & 0xFFE0, peep->z);
+
+					if (bl != 0){
+						peep->happiness_growth_rate = min(255, peep->happiness_growth_rate + 45);
+
+						switch (bl){
+						case 1:
+							peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SCENERY, 0xFF);
+							break;
+						case 2:
+							peep_insert_new_thought(peep, PEEP_THOUGHT_VERY_CLEAN, 0xFF);
+							break;
+						case 3:
+							peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_FOUNTAINS, 0xFF);
+							break;
+						default:
+							peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_MUSIC, 0xFF);
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		peep_update_sprite_type(peep);
+
+		if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE){
+			peep->time_on_ride = min(255, peep->time_on_ride + 1);
+
+			if (peep->flags & PEEP_FLAGS_WOW){
+				peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WOW2, 0xFF);
+			}
+
+			if (peep->time_on_ride > 15){
+				peep->happiness_growth_rate = min(0, peep->happiness_growth_rate - 5);
+
+				if (peep->time_on_ride > 22){
+					rct_ride* ride = GET_RIDE(peep->current_ride);
+
+					uint8 thought_type = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ?
+						PEEP_THOUGHT_TYPE_GET_OUT :
+						PEEP_THOUGHT_TYPE_GET_OFF;
+
+					peep_insert_new_thought(peep, thought_type, peep->current_ride);
+				}
+			}
+		}
+
+		//68F64D
+	}
+	// 68FA89
+
 	RCT2_CALLPROC_X(0x0068F41A, 0, 0, 0, index, (int)peep, 0, 0);
 }
 
@@ -969,7 +1101,7 @@ static void peep_go_to_ride_entrance(rct_peep* peep, rct_ride* ride){
 	peep_window_state_update(peep);
 
 	peep->var_AC = 0;
-	peep->var_E2 = 0;
+	peep->time_on_ride = 0;
 
 	remove_peep_from_queue(peep);
 }
@@ -1587,7 +1719,7 @@ static void peep_update_ride_sub_state_5(rct_peep* peep){
 		peep_decrement_num_riders(seated_peep);
 		seated_peep->state = PEEP_STATE_ON_RIDE;
 		peep_window_state_update(seated_peep);
-		seated_peep->var_E2 = 0;
+		seated_peep->time_on_ride = 0;
 		seated_peep->sub_state = 6;
 		sub_695444(seated_peep, peep->current_ride, 0);
 	}
@@ -1605,7 +1737,7 @@ static void peep_update_ride_sub_state_5(rct_peep* peep){
 	peep->state = PEEP_STATE_ON_RIDE;
 	peep_window_state_update(peep);
 
-	peep->var_E2 = 0;
+	peep->time_on_ride = 0;
 	peep->sub_state = 6;
 
 	sub_695444(peep, peep->current_ride, 0);

@@ -252,14 +252,14 @@ enum PEEP_FLAGS {
 	PEEP_FLAGS_WAVING = (1 << 4), // Makes the peep wave
 
 	PEEP_FLAGS_PHOTO = (1 << 6), // Makes the peep take a picture
-	PEEP_FLAGS_PAINTING = (1 << 7), 
-
+	PEEP_FLAGS_PAINTING = (1 << 7),
+	PEEP_FLAGS_WOW = (1 << 8), // Makes a peep WOW2
 	PEEP_FLAGS_LITTER = (1 << 9), // Makes the peep throw litter
 	PEEP_FLAGS_LOST = (1 << 10), // Makes the peep feel lost (animation trigerred)
 	PEEP_FLAGS_HUNGER = (1 << 11), // Makes the peep become hungry quicker
 	PEEP_FLAGS_BATHROOM = (1 << 12), // Makes the peep want to go to the bathroom
 	PEEP_FLAGS_CROWDED = (1 << 13), // The peep will start feeling crowded
-
+	PEEP_FLAGS_HAPPINESS = (1 << 14), // The peep will start increasing happiness
 	PEEP_FLAGS_NAUSEA = (1 << 15), // Makes the peep feel sick (e.g. after an extreme ride)
 
 	PEEP_FLAGS_EATING = (1 << 17), // Reduces hunger
@@ -469,7 +469,10 @@ typedef struct {
 	uint8 pad_D0[0x10];
 	uint8 no_action_frame_no;		// 0xE0
 	uint8 var_E1;
-	uint8 var_E2;					// 0xE2
+	union{
+		uint8 time_on_ride;			// 0xE2
+		uint8 var_E2;				// 0xE2
+	};
 	uint8 var_E3;
 	union{
 		money16 paid_to_enter;			// 0xE4
