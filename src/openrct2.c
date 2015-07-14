@@ -33,9 +33,10 @@
 #include "openrct2.h"
 #include "platform/platform.h"
 #include "ride/ride.h"
-#include "util/sawyercoding.h"
-#include "world/mapgen.h"
 #include "title.h"
+#include "util/sawyercoding.h"
+#include "util/util.h"
+#include "world/mapgen.h"
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 char gOpenRCT2StartupActionPath[512] = { 0 };
@@ -198,16 +199,19 @@ bool openrct2_initialise()
 
 	openrct2_copy_original_user_files_over();
 
-	char* devicename = gConfigSound.device;
-	if (strlen(devicename) == 0) {
-		devicename = NULL;
-	}
-	Mixer_Init(devicename);
-	for (int i = 0; i < gAudioDeviceCount; i++) {
-		if (strcmp(gAudioDevices[i].name, gConfigSound.device) == 0) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) = i;
+	// TODO move to audio initialise function
+	if (str_is_null_or_empty(gConfigSound.device)) {
+		Mixer_Init(NULL);
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) = 0;
+	} else {
+		Mixer_Init(gConfigSound.device);
+		for (int i = 0; i < gAudioDeviceCount; i++) {
+			if (strcmp(gAudioDevices[i].name, gConfigSound.device) == 0) {
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) = i;
+			}
 		}
 	}
+
 	return true;
 }
 
