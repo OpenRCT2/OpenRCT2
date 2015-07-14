@@ -190,7 +190,7 @@ bool openrct2_initialise()
 	addhook(0x006E732D, (int)gfx_set_dirty_blocks, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0);	// remove when all callers are decompiled
 	addhook(0x006E7499, (int)gfx_redraw_screen_rect, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0);	// remove when 0x6E7FF3 is decompiled
 	addhook(0x006B752C, (int)ride_crash, 0, (int[]){ EDX, EBX, END }, 0);						// remove when all callers are decompiled
-	addhook(0x0069A42F, (int)peep_window_state_update, 0, (int[]){ ESI }, 0);					// remove when all callers are decompiled
+	addhook(0x0069A42F, (int)peep_window_state_update, 0, (int[]){ ESI, END }, 0);					// remove when all callers are decompiled
 
 	if (!rct2_init())
 		return false;
