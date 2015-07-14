@@ -568,7 +568,7 @@ void SDLCALL Mixer::Callback(void* arg, uint8* stream, int length)
 
 void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 {
-	if (channel.source && channel.source->Length() > 0 && !channel.done) {
+	if (channel.source && channel.source->Length() > 0 && !channel.done && gConfigSound.sound) {
 		AudioFormat streamformat = channel.source->Format();
 		int loaded = 0;
 		SDL_AudioCVT cvt;

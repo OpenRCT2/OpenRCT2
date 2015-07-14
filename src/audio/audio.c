@@ -39,6 +39,7 @@ rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
 rct_ride_music_params *gRideMusicParamsListEnd;
 void *gCrowdSoundChannel = 0;
 void *gTitleMusicChannel = 0;
+bool gGameSoundsOff = false;
 
 void audio_init(int i)
 {
@@ -1423,7 +1424,7 @@ int get_dsound_devices()
 int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z)
 {
 	int result = 0;
-	if (RCT2_GLOBAL(0x009AF59D, uint8) & 1) {
+	if (gConfigSound.sound) {
 		RCT2_GLOBAL(0x00F438AD, uint8) = 0;
 		int volume = 0;
 		if (ebx == 0x8001) {
@@ -1557,7 +1558,7 @@ void start_title_music()
 		break;
 	}
 
-	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) && RCT2_GLOBAL(0x009AF59D, uint8) & 1
+	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) && gConfigSound.sound
 			&& RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
 		if (!RCT2_GLOBAL(0x009AF600, uint8)) {
 #ifdef USE_MIXER
@@ -1809,13 +1810,11 @@ void audio_close()
 
 /* rct2: 0x006BAB8A */
 void toggle_all_sounds(){
-	// When all sound code is reversed replace with gConfigSound.sound
-	RCT2_GLOBAL(0x009AF59D, uint8) ^= 1;
-	if (RCT2_GLOBAL(0x009AF59D, uint8) == 0) {
+	gConfigSound.sound = !gConfigSound.sound;
+	if (!gConfigSound.sound) {
 		stop_title_music();
 		pause_sounds();
-	}
-	else{
+	} else {
 		unpause_sounds();
 	}
 }
@@ -1826,15 +1825,11 @@ void toggle_all_sounds(){
 */
 void pause_sounds()
 {
-	// When all sound code is reversed replace with gConfigSound.sound
-	RCT2_GLOBAL(0x009AF59C, uint8) = 1;
-	if (RCT2_GLOBAL(0x009AF59C, uint8) == 1) {
-		stop_other_sounds();
-		stop_vehicle_sounds();
-		stop_ride_music();
-		stop_crowd_sound();
-	}
-	gConfigSound.sound = 0;
+	gGameSoundsOff = 1;
+	stop_other_sounds();
+	stop_vehicle_sounds();
+	stop_ride_music();
+	stop_crowd_sound();
 }
 
 /**
@@ -1843,9 +1838,7 @@ void pause_sounds()
 */
 void unpause_sounds()
 {
-	// When all sound code is reversed replace with gConfigSound.sound
-	RCT2_GLOBAL(0x009AF59C, uint8) = 0;
-	gConfigSound.sound = 1;
+	gGameSoundsOff = 0;
 }
 
 /**

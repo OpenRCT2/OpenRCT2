@@ -156,6 +156,7 @@ extern rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
 extern rct_ride_music_params *gRideMusicParamsListEnd;
 extern void *gCrowdSoundChannel;
 extern void *gTitleMusicChannel;
+extern bool gGameSoundsOff;
 
 void audio_timefunc(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2, int channel);
 int CALLBACK audio_timer_callback(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2);

@@ -3143,7 +3143,7 @@ void ride_set_map_tooltip(rct_map_element *mapElement)
  */
 int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId)
 {
-	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !RCT2_GLOBAL(0x009AF59C, uint8) && RCT2_GLOBAL(0x00F438A4, rct_viewport*) != (rct_viewport*)-1) {
+	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && RCT2_GLOBAL(0x00F438A4, rct_viewport*) != (rct_viewport*)-1) {
 		RCT2_GLOBAL(0x009AF47C, uint16) = sampleRate;
 		sint16 v11;
 		sint16 v12;
@@ -3373,7 +3373,7 @@ void ride_music_update_final()
 	int ebx;
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)) {
 		if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0))) {
-			if (!RCT2_GLOBAL(0x009AF59C, uint8) && RCT2_GLOBAL(0x009AF59D, uint8) & 1 && RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)) {
+			if (!gGameSoundsOff && gConfigSound.sound && RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)) {
 				// set to stop music if volume <= 1 ?
 				while (1) {
 					int v8 = 0;
