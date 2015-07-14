@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
+#include "../config.h"
 #include "../drawing/drawing.h"
 #include "../localisation/date.h"
 #include "../scenario.h"
@@ -242,9 +243,9 @@ void climate_update_sound()
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) == 0xFFFFFFFF)
 		return;
-	if (RCT2_GLOBAL(0x009AF59C, uint8) != 0)
+	if (gGameSoundsOff)
 		return;
-	if (!(RCT2_GLOBAL(0x009AF59D, uint8) & 1))
+	if (!gConfigSound.sound)
 		return;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)
 		return;

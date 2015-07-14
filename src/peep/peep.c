@@ -25,6 +25,7 @@
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
 #include "../management/news_item.h"
+#include "../config.h"
 #include "../openrct2.h"
 #include "../ride/ride.h"
 #include "../scenario.h"
@@ -4494,10 +4495,10 @@ void peep_update_crowd_noise()
 	if (!(RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)))
 		return;
 
-	if (RCT2_GLOBAL(0x009AF59C, uint8) != 0)
+	if (gGameSoundsOff)
 		return;
 
-	if (!(RCT2_GLOBAL(0x009AF59D, uint8) & (1 << 0)))
+	if (!gConfigSound.sound)
 		return;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)

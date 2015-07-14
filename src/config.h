@@ -175,6 +175,7 @@ typedef struct {
 	uint8 ride_music;
 	uint8 master_volume;
 	uint8 music_volume;
+	utf8string device;
 } sound_configuration;
 
 typedef struct {

@@ -961,10 +961,16 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 #ifdef USE_MIXER
 				if (dropdownIndex == 0) {
 					Mixer_Init(NULL);
+					gConfigSound.device = NULL;
 				}
 				else {
-					Mixer_Init(gAudioDevices[dropdownIndex].name);
+					char* devicename = gAudioDevices[dropdownIndex].name;
+					Mixer_Init(devicename);
+					SafeFree(gConfigSound.device);
+					gConfigSound.device = malloc(strlen(devicename) + 1);
+					strcpy(gConfigSound.device, devicename);
 				}
+				config_save_default();
 #endif
 			}
 			/*#ifdef _MSC_VER

@@ -191,13 +191,23 @@ bool openrct2_initialise()
 	addhook(0x006E7499, (int)gfx_redraw_screen_rect, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0);	// remove when 0x6E7FF3 is decompiled
 	addhook(0x006B752C, (int)ride_crash, 0, (int[]){ EDX, EBX, END }, 0);						// remove when all callers are decompiled
 	addhook(0x0069A42F, (int)peep_window_state_update, 0, (int[]){ ESI, END }, 0);					// remove when all callers are decompiled
+	addhook(0x006BB76E, (int)sound_play_panned, 0, (int[]){EAX, EBX, ECX, EDX, EBP, END}, EAX); // remove when all callers are decompiled
 
 	if (!rct2_init())
 		return false;
 
 	openrct2_copy_original_user_files_over();
 
-	Mixer_Init(NULL);
+	char* devicename = gConfigSound.device;
+	if (strlen(devicename) == 0) {
+		devicename = NULL;
+	}
+	Mixer_Init(devicename);
+	for (int i = 0; i < gAudioDeviceCount; i++) {
+		if (strcmp(gAudioDevices[i].name, gConfigSound.device) == 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) = i;
+		}
+	}
 	return true;
 }
 
