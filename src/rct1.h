@@ -512,4 +512,7 @@ void rct1_fix_landscape();
 bool vehicleIsHigherInHierarchy(int track_type, char *currentVehicleName, char *comparedVehicleName);
 bool rideTypeShouldLoseSeparateFlag(rct_ride_type *ride);
 
+bool rct1_load_saved_game(const char *path);
+bool rct1_load_scenario(const char *path);
+
 #endif
