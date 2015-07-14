@@ -3611,8 +3611,8 @@ STR_5274    :{SMALLFONT}{BLACK}Fußwege
 STR_5275    :Nach Objekten suchen
 STR_5276    :Zu suchenden Objektnamen eingeben:
 STR_5277    :Entfernen
-STR_5278    :Sandkasten-Modus
-STR_5279    :Sandk.-Modus aus
+STR_5278    :Sandkastenmodus
+STR_5279    :Sandkastenmod. aus
 STR_5280    :{SMALLFONT}{BLACK}Erlaubt das Bearbeiten der Landrechte im Kartenfenster sowie andere Optionen welche normalerweise nur im Szenario-Editor verfügbar sind
 STR_5281    :{SMALLFONT}{BLACK}Features
 STR_5282    :RCT1-Ampel Bahn öffnen/schließen
@@ -3788,6 +3788,9 @@ STR_5451    :Cheatfenster anzeigen
 STR_5452    :Symbolleiste ein-/ausblenden
 STR_5453    :Andere Attraktion auswählen
 STR_5454    :FPS-Limit aufheben
+STR_5455    :Sandkastenmodus aktivieren
+STR_5456    :Höhenüberprüfung deaktivieren
+STR_5457    :Stützenlimit deaktivieren
 STR_5458    :Im Uhrzeigersinn drehen
 STR_5459    :Gegen den Uhrzeigersinn drehen
 STR_5460    :Ansicht gegen den Uhrzeigers. drehen
