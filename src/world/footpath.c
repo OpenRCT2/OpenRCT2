@@ -901,7 +901,7 @@ static void loc_6A6D7E(
 					if (!(RCT2_ADDRESS(0x0099CA64, uint8)[di] & (1 << 5))) {
 						return;
 					}
-					uint16 dx = (direction - mapElement->type) & 3;
+					uint16 dx = ((direction - mapElement->type) & 3) ^ 2;
 					if (!(RCT2_ADDRESS(0x0099CA64, uint16)[di / 2] & (1 << dx))) {
 						return;
 					}
@@ -913,7 +913,7 @@ static void loc_6A6D7E(
 				break;
 			case MAP_ELEMENT_TYPE_ENTRANCE:
 				if (z == mapElement->base_height) {
-					if (entrance_has_direction(mapElement, ((direction - mapElement->type) & 3) ^ 2)) {
+					if (entrance_has_direction(mapElement, (direction - mapElement->type) & 3)) {
 						if (query) {
 							neighbour_list_push(neighbourList, 8, direction);
 						} else {
