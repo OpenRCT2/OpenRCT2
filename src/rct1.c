@@ -54,8 +54,8 @@ static void rct1_fix_scenery();
 static void rct1_fix_entrance_positions();
 static void rct1_reset_research();
 
-static void sub_69F06A();
-static void sub_666DFD();
+static void rct1_process_scenario_flags();
+static void rct1_reset_park_entrance_path_type();
 static void rct1_clear_extra_sprite_entries();
 static void rct1_clear_extra_tile_entries();
 static void rct1_fix_colours();
@@ -214,7 +214,7 @@ void rct1_fix_landscape()
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint8) = 0;
 	rct1_clear_extra_tile_entries();
-	sub_69F06A();
+	rct1_process_scenario_flags();
 	rct1_fix_colours();
 	rct1_fix_z();
 	rct1_fix_paths();
@@ -479,48 +479,38 @@ static void rct1_reset_research()
  *
  *  rct2: 0x0069F06A
  */
-static void sub_69F06A()
+static void rct1_process_scenario_flags()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0069F06A); return;
+	uint32 scenarioFlags = RCT2_GLOBAL(0x013CE770, uint32);
 
-	// TODO, bug with the following code
-	RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 0) | (1 << 1) | (1 << 14) | (1 << 2) | (1 << 3);
-	if (!(RCT2_GLOBAL(0x013CE770, uint32) & (1 << 4))) {
-		RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 4);
-		banner_init(); // 6B9CB0
+	if (!(scenarioFlags & RCT1_SCENARIO_FLAG_ENABLE_BANNERS)) {
+		banner_init();
 	}
-	if (!(RCT2_GLOBAL(0x013CE770, uint32) & (1 << 6))) {
-		RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 6);
+	if (!(scenarioFlags & (1 << 6))) {
 		sub_69E891();
 	}
-	RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 7);
-	if (!(RCT2_GLOBAL(0x013CE770, uint32) & (1 << 8))) {
-		RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 8);
-		sub_666DFD();
+	if (!(scenarioFlags & RCT1_SCENARIO_FLAG_CUSTOM_PARK_ENTRANCE_PATH)) {
+		rct1_reset_park_entrance_path_type();
 	}
-	if (!(RCT2_GLOBAL(0x013CE770, uint32) & (1 << 9))) {
-		RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 9);
+	if (!(scenarioFlags & RCT1_SCENARIO_FLAG_NO_CASH_RESET)) {
 		finance_reset_cash_to_initial();
 	}
-	if (!(RCT2_GLOBAL(0x013CE770, uint32) & (1 << 13))) {
-		RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 13);
+	if (!(scenarioFlags & RCT1_SCENARIO_FLAG_CUSTOM_MAP_SIZE)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) = 127 * 32;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, uint16) = 4350;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) = 128;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) = 128;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16) = 4095;
 	}
-	if (!(RCT2_GLOBAL(0x013CE770, uint32) & (1 << 15))) {
-		RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 15);
+	if (!(scenarioFlags & (1 << 15))) {
 		RCT2_GLOBAL(0x01358838, uint32) = 0;
 	}
-	RCT2_GLOBAL(0x013CE770, uint32) |= (1 << 16) | (1 << 18) | (1 << 19);
 }
 
 /**
  *
  *  rct2: 0x00666DFD
  */
-static void sub_666DFD()
+static void rct1_reset_park_entrance_path_type()
 {
 	int x, y;
 	rct_map_element *mapElement;
