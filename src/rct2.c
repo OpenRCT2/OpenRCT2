@@ -259,6 +259,10 @@ int rct2_open_file(const char *path)
 	} else if (!_stricmp(extension, "td6") || !_stricmp(extension, "td4")) {
 		// TODO track design install
 		return 1;
+	} else if (_stricmp(extension, "sv4") == 0) {
+		rct1_load_saved_game(path);
+	} else if (_stricmp(extension, "sc4") == 0) {
+		rct1_load_scenario(path);
 	}
 
 	return 0;
