@@ -58,7 +58,7 @@ static void rct1_clear_extra_sprite_entries();
 static void rct1_clear_extra_tile_entries();
 static void sub_69F143();
 static void rct1_fix_z();
-static void sub_69F3AB();
+static void rct1_fix_paths();
 static void sub_6A2730();
 static void sub_69E891();
 
@@ -215,7 +215,7 @@ void rct1_fix_landscape()
 	sub_69F06A();
 	sub_69F143();
 	rct1_fix_z();
-	sub_69F3AB();
+	rct1_fix_paths();
 	rct1_remove_rides();
 	object_unload_all();
 	rct1_load_default_objects();
@@ -696,13 +696,90 @@ static void rct1_fix_z()
 	RCT2_GLOBAL(0x01359208, uint16) = 7;
 }
 
+// rct2: 0x0098BC9F
+uint8 RCT1PathTypeConversionTable[] = {
+	0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,
+	0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,
+	0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,
+	0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,
+	0, 0, 0, 0,
+	2, 2, 2, 2,
+	1, 1, 1, 1,
+	0, 0, 0, 0,
+	3, 3, 3, 3,
+	6, 6, 6, 6,
+	0, 0, 0, 0,
+	0, 0, 0, 0,
+	5, 5, 5, 5,
+	5, 5, 5, 5,
+	5, 5, 5, 5,
+	5, 5, 5, 5,
+	4, 4, 4, 4,
+	4, 4, 4, 4,
+	4, 4, 4, 4,
+	4, 4, 4, 4,
+	0, 0, 0, 0,
+	0, 0, 0, 0,
+	0, 0, 0, 0,
+	0, 0, 0, 0,
+};
+
+
+// rct2: 0x0098BCFF
+uint8 RCT1PathAdditionConversionTable[] = {
+	0,
+	1, 2, 3, 4, 5, 6, 7,
+	0x80 | 1, 0x80 | 2, 0x80 | 3, 0x80 | 4, 0x80 | 6, 0x80 | 7,
+	8,
+};
+
+
 /**
  *
  *  rct2: 0x0069F3AB
  */
-static void sub_69F3AB()
+static void rct1_fix_paths()
 {
-	RCT2_CALLPROC_EBPSAFE(0x0069F3AB);
+	rct_map_element *mapElement;
+	int pathType, secondaryType, additions;
+
+	while (mapElement < RCT2_GLOBAL(0x0140E9A4, rct_map_element*)) {
+		switch (map_element_get_type(mapElement)) {
+		case MAP_ELEMENT_TYPE_PATH:
+			// Type
+			pathType = (mapElement->properties.path.type & 0xF0 >> 2) | (mapElement->type & 3);
+			secondaryType = (mapElement->flags & 0x60) >> 5;
+			pathType = RCT1PathTypeConversionTable[pathType * 4 + secondaryType];
+
+			mapElement->type &= 0xFC;
+			mapElement->flags &= ~0x60;
+			mapElement->properties.path.type &= 0x0F;
+			mapElement->properties.path.additions &= 0x7F;
+			if (pathType & 0x80) {
+				mapElement->type |= 1;
+			}
+			mapElement->properties.path.type |= pathType << 4;
+
+			// Additions
+			additions = mapElement->properties.path.additions & 0x0F;
+			additions = RCT1PathAdditionConversionTable[additions];
+			if (additions & 0x80) {
+				additions &= ~0x80;
+				mapElement->flags |= MAP_ELEMENT_FLAG_BROKEN;
+			} else {
+				mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
+			}
+			mapElement->properties.path.additions &= 0xF0;
+			mapElement->properties.path.additions |= additions;
+			break;
+		case MAP_ELEMENT_TYPE_ENTRANCE:
+			if (mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE) {
+				pathType = mapElement->properties.entrance.path_type;
+				mapElement->properties.entrance.path_type = RCT1PathTypeConversionTable[pathType * 4] & 0x7F;
+			}
+			break;
+		}
+	}
 }
 
 /**
