@@ -34,6 +34,21 @@ uint8 *gStaffModes = (uint8*)0x013CA672;
 
 /**
  *
+ *  rct2: 0x006BD3A4
+ */
+void staff_reset_modes()
+{
+	for (int i = 0; i < 200; i++)
+		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[i] = STAFF_MODE_NONE;
+
+	for (int i = 200; i < 204; i++)
+		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[i] = STAFF_MODE_WALK;
+
+	staff_update_greyed_patrol_areas();
+}
+
+/**
+ *
  *  rct2: 0x00669E55
  */
 void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)

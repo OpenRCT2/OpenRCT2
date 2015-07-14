@@ -34,6 +34,7 @@
 #include "management/news_item.h"
 #include "management/research.h"
 #include "openrct2.h"
+#include "peep/staff.h"
 #include "ride/ride.h"
 #include "scenario.h"
 #include "util/util.h"
@@ -110,7 +111,7 @@ void title_load()
 	reset_sprite_list();
 	ride_init_all();
 	window_guest_list_init_vars_a();
-	sub_6BD3A4();
+	staff_reset_modes();
 	map_init(150);
 	park_init();
 	date_reset();

@@ -421,6 +421,7 @@ int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *in
 int scenario_load(const char *path);
 int scenario_load_and_play(const rct_scenario_basic *scenario);
 int scenario_load_and_play_from_path(const char *path);
+void scenario_begin();
 void scenario_update();
 unsigned int scenario_rand();
 unsigned int scenario_rand_max(unsigned int max);

@@ -69,7 +69,7 @@ void editor_load()
 	reset_sprite_list();
 	ride_init_all();
 	window_guest_list_init_vars_a();
-	sub_6BD3A4();
+	staff_reset_modes();
 	park_init();
 	finance_init();
 	date_reset();
@@ -186,7 +186,7 @@ void trackdesigner_load()
 	reset_sprite_list(); 
 	ride_init_all();
 	window_guest_list_init_vars_a();
-	sub_6BD3A4();
+	staff_reset_modes();
 	park_init();
 	finance_init();
 	date_reset();
@@ -223,7 +223,7 @@ void trackmanager_load()
 	reset_sprite_list();
 	ride_init_all();
 	window_guest_list_init_vars_a();
-	sub_6BD3A4();
+	staff_reset_modes();
 	park_init();
 	finance_init();
 	date_reset();
@@ -252,21 +252,6 @@ static void set_all_land_owned()
 	int mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16);
 
 	game_do_command(64, 1, 64, 2, GAME_COMMAND_SET_LAND_OWNERSHIP, (mapSize - 2) * 32, (mapSize - 2) * 32);
-}
-
-/**
- *
- *  rct2: 0x006BD3A4
- */
-void sub_6BD3A4()
-{
-	for (int i = 0; i < 200; i++)
-		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[i] = STAFF_MODE_NONE;
-
-	for (int i = 200; i < 204; i++)
-		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[i] = STAFF_MODE_WALK;
-
-	staff_update_greyed_patrol_areas();
 }
 
 /**
@@ -447,7 +432,7 @@ static int editor_read_s6(const char *path)
 		}
 
 		reset_sprite_list();
-		sub_6BD3A4();
+		staff_reset_modes();
 		RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = 0;

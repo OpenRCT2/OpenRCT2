@@ -43,8 +43,6 @@ void trackdesigner_load();
 void trackmanager_load();
 void editor_load_landscape(const char *path);
 
-void sub_6BD3A4();
-
 void editor_open_windows_for_current_step();
 
 bool editor_check_park();

@@ -328,6 +328,16 @@ static void rct1_remove_rides()
 	} while (map_element_iterator_next(&it));
 }
 
+static bool is_object_name_blank(rct_object_entry *entry)
+{
+	for (int i = 0; i < 8; i++) {
+		if (entry->name[i] != ' ') {
+			return false;
+		}
+	}
+	return true;
+}
+
 /**
  *
  *  rct2: 0x0069F53D
@@ -337,6 +347,10 @@ static void rct1_load_default_objects()
 	for (int i = 0; i < 9; i++) {
 		rct_object_entry *entries = (rct_object_entry*)RCT1DefaultObjects[i].entries;
 		for (int j = 0; j < RCT1DefaultObjects[i].count; j++) {
+			if (is_object_name_blank(&entries[j])) {
+				continue;
+			}
+
 			if (!object_load(j, &entries[j], NULL)) {
 				error_string_quit(0x99990000 + (i * 0x100) + j, -1);
 				return;
@@ -1283,7 +1297,7 @@ static const rct_object_entry RCT1DefaultObjectsWater[] = {
 };
 
 static const RCT1DefaultObjectsGroup RCT1DefaultObjects[10] = {
-	{ NULL,								0											},
+	{ RCT1DefaultObjectsRides,			countof(RCT1DefaultObjectsRides)			},
 	{ RCT1DefaultObjectsSmallScenery,	countof(RCT1DefaultObjectsSmallScenery)		},
 	{ RCT1DefaultObjectsLargeScenery,	countof(RCT1DefaultObjectsLargeScenery)		},
 	{ RCT1DefaultObjectsWall,			countof(RCT1DefaultObjectsWall)				},

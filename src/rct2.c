@@ -38,7 +38,9 @@
 #include "network/twitch.h"
 #include "object.h"
 #include "openrct2.h"
+#include "peep/staff.h"
 #include "platform/platform.h"
+#include "rct1.h"
 #include "ride/ride.h"
 #include "ride/track.h"
 #include "scenario.h"
@@ -108,7 +110,7 @@ int rct2_init()
 	reset_sprite_list();
 	ride_init_all();
 	window_guest_list_init_vars_a();
-	sub_6BD3A4();
+	staff_reset_modes();
 	map_init(150);
 	park_init();
 	if (!gOpenRCT2Headless)

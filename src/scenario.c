@@ -207,14 +207,6 @@ int scenario_load_and_play(const rct_scenario_basic *scenario)
 
 int scenario_load_and_play_from_path(const char *path)
 {
-	rct_window *mainWindow;
-	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
-
-	// Create the scenario pseduo-random seeds using the current time
-	uint32 srand0, srand1;
-	srand0 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) ^ platform_get_ticks();
-	srand1 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) ^ platform_get_ticks();
-
 	window_close_construction_windows();
 
 	if (!scenario_load(path))
@@ -224,6 +216,15 @@ int scenario_load_and_play_from_path(const char *path)
 	_scenarioFileName = path_get_filename(_scenarioPath);
 
 	log_verbose("starting scenario, %s", path);
+	scenario_begin();
+
+	return 1;
+}
+
+void scenario_begin()
+{
+	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+	rct_window *mainWindow;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
 	viewport_init_all();
@@ -234,9 +235,9 @@ int scenario_load_and_play_from_path(const char *path)
 	mainWindow->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
 	mainWindow->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
 
-	uint8 _cl = (RCT2_GLOBAL(0x0138869E, sint16) & 0xFF) - mainWindow->viewport->zoom;
-	mainWindow->viewport->zoom = RCT2_GLOBAL(0x0138869E, sint16) & 0xFF;
-	*((char*)(&RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32))) = RCT2_GLOBAL(0x0138869E, sint16) >> 8;
+	uint8 _cl = (RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) & 0xFF) - mainWindow->viewport->zoom;
+	mainWindow->viewport->zoom = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) & 0xFF;
+	*((char*)(&RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32))) = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) >> 8;
 	if (_cl != 0) {
 		if (_cl < 0) {
 			_cl = -_cl;
@@ -255,8 +256,8 @@ int scenario_load_and_play_from_path(const char *path)
 	window_new_ride_init_vars();
 
 	// Set the scenario pseduo-random seeds
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, sint32) = srand0;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, sint32) = srand1;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, sint32) ^= platform_get_ticks();
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, sint32) ^= platform_get_ticks();
 
 	RCT2_GLOBAL(0x009DEB7C, sint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) &= 0xFFFFF7FF;
@@ -340,8 +341,6 @@ int scenario_load_and_play_from_path(const char *path)
 	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA5C, uint16) = 62000; // (doesn't appear to ever be read)
 	gGameSpeed = 1;
-
-	return 1;
 }
 
 void scenario_end()
