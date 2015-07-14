@@ -61,7 +61,7 @@ static void rct1_clear_extra_tile_entries();
 static void rct1_fix_colours();
 static void rct1_fix_z();
 static void rct1_fix_paths();
-static void sub_6A2730();
+static void rct1_fix_walls();
 static void sub_69E891();
 
 static void read(void *dst, void *src, int length)
@@ -222,7 +222,7 @@ void rct1_fix_landscape()
 	object_unload_all();
 	rct1_load_default_objects();
 	reset_loaded_objects();
-	sub_6A2730();
+	rct1_fix_walls();
 	rct1_fix_scenery();
 	rct1_fix_terrain();
 	rct1_fix_entrance_positions();
@@ -821,11 +821,85 @@ static void rct1_fix_paths()
 
 /**
  *
+ *  rct2: 0x006A28F5
+ */
+static void rct1_convert_wall(int *type, int *colourA, int *colourB, int *colourC)
+{
+	switch (*type) {
+	case 12:	// creepy gate
+		*colourA = 24;
+		break;
+	case 26:	// medium brown castle wall
+		*type = 12;
+		*colourA = 25;
+		break;
+	case 27:	// tall castle wall with grey window
+		*type = 12;
+		*colourA = 2;
+	case 50:	// plate glass
+		*colourA = 24;
+		break;
+	case 13:
+		*colourB = *colourA;
+		*colourA = 24;
+		break;
+	case 11:	// tall castle wall with grey gate
+	case 22:	// brick wall with gate
+		*colourB = 2;
+		break;
+	case 35:	// wood post fence
+	case 42:	// tall grey castle wall
+	case 43:	// wooden fence with snow
+	case 44:
+	case 45:
+	case 46:
+		*colourA = 1;
+		break;
+	}
+}
+
+/**
+ *
  *  rct2: 0x006A2730
  */
-static void sub_6A2730()
+static void rct1_fix_walls()
 {
-	RCT2_CALLPROC_EBPSAFE(0x006A2730);
+	rct_map_element *mapElement, originalMapElement;
+
+	for (int x = 0; x < 128; x++) {
+		for (int y = 0; y < 128; y++) {
+			mapElement = map_get_first_element_at(x, y);
+			do {
+				if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE) {
+					originalMapElement = *mapElement;
+					map_element_remove(mapElement);
+
+					uint8 var_05 = originalMapElement.properties.fence.item[0];
+					uint16 var_06 = (
+						originalMapElement.properties.fence.item[1] |
+						(originalMapElement.properties.fence.item[2] << 8)
+					);
+
+					for (int edge = 0; edge < 4; edge++) {
+						int typeA = (var_05 >> (edge * 2)) & 3;
+						int typeB = (var_06 >> (edge * 4)) & 0x0F;
+						if (typeB != 0x0F) {
+							int type = typeA | (typeB << 2);
+							int colourA = (
+								((originalMapElement.type & 0xC0) >> 3) |
+								(originalMapElement.properties.fence.type >> 5)
+							);
+							int colourB = 0;
+							int colourC = 0;
+							rct1_convert_wall(&type, &colourA, &colourB, &colourC);
+							map_place_fence(type, x * 32, y * 32, 0, edge, colourA, colourB, colourC, 169);
+						}
+					}
+					break;
+				}
+			} while (!map_element_is_last_for_tile(mapElement++));
+		}
+	}
 }
 
 /**

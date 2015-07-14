@@ -2490,6 +2490,21 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	}
 }
 
+money32 map_place_fence(
+	int type, int x, int y, int z, int edge, int primaryColour, int secondaryColour, int tertiaryColour, int flags
+) {
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+
+	eax = x;
+	ebx = flags | (type << 8);
+	ecx = y;
+	edx = edge | (primaryColour << 8);
+	edi = z;
+	ebp = secondaryColour | (tertiaryColour << 8);
+	game_command_place_fence(&eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return ebx;
+}
+
 /**
  *
  *  rct2: 0x006B893C
