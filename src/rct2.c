@@ -365,10 +365,12 @@ bool rct2_open_file(const char *path)
 		scenario_load_and_play_from_path(scenarioBasic.path);
 		return true;
 	} else if (_stricmp(extension, "td6") == 0 || _stricmp(extension, "td4") == 0) {
-		return true;
-	} else if (!_stricmp(extension, "td6") || !_stricmp(extension, "td4")) {
 		// TODO track design install
 		return true;
+	} else if (_stricmp(extension, "sv4") == 0) {
+		rct1_load_saved_game(path);
+	} else if (_stricmp(extension, "sc4") == 0) {
+		rct1_load_scenario(path);
 	}
 
 	return false;
