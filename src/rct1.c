@@ -1919,14 +1919,6 @@ static const uint8 RCT1RideTypeConversionTable[] = {
 	RIDE_TYPE_DRINK_STALL
 };
 
-// rct2: 0x0097F0BC
-static const uint8 RCT1ColourConversionTable[] = {
-	 0,  1,  2,  4,  5,  6,  7,  9,
-	11, 12, 13, 14, 15, 16, 18, 19,
-	20, 21, 22, 23, 24, 25, 26, 27,
-	28, 30, 31, 29,  3, 10, 17,  8
-};
-
 bool rct1_load_saved_game(const char *path)
 {
 	rct1_s4 *s4;
@@ -1961,10 +1953,10 @@ static void rct1_import_map_elements(rct1_s4 *s4)
 {
 	memcpy(gMapElements, s4->map_elements, 0xC000 * sizeof(rct_map_element));
 	rct1_clear_extra_tile_entries();
-	// sub_69F143();
+	rct1_fix_colours();
 	rct1_fix_z();
-	sub_69F3AB();
-	sub_6A2730();
+	rct1_fix_paths();
+	rct1_fix_walls();
 	rct1_fix_scenery();
 	rct1_fix_terrain();
 	rct1_fix_entrance_positions();
@@ -2097,14 +2089,14 @@ static void rct1_import_s4_properly(rct1_s4 *s4)
 	rct1_load_default_objects();
 	reset_loaded_objects();
 
+	// Map elements
+	rct1_import_map_elements(s4);
+
 	for (int i = 0; i < MAX_RIDES; i++) {
 		if (s4->rides[i].type != RIDE_TYPE_NULL) {
 			rct1_import_ride(s4, GET_RIDE(i), &s4->rides[i]);
 		}
 	}
-
-	// Map elements
-	rct1_import_map_elements(s4);
 
 	// Finance
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, uint32) = ENCRYPT_MONEY(s4->cash);
