@@ -931,7 +931,7 @@ static void loc_6A6D7E(
 
 	loc_6A6F1F:
 		if (query) {
-			if (sub_6E59DC(x, y, mapElement->base_height, mapElement->clearance_height, direction & 2)) {
+			if (sub_6E59DC(x, y, mapElement->base_height, mapElement->clearance_height, direction ^ 2)) {
 				return;
 			}
 			if (footpath_element_is_queue(mapElement)) {
