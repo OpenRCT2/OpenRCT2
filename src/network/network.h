@@ -42,6 +42,15 @@ extern "C" {
 #include "../platform/platform.h"
 }
 
+template <std::size_t size>
+struct ByteSwapT { };
+template <>
+struct ByteSwapT<2> { static uint16 SwapBE(uint16 value) { return SDL_SwapBE16(value); } };
+template <>
+struct ByteSwapT<4> { static uint32 SwapBE(uint32 value) { return SDL_SwapBE32(value); } };
+template <typename T>
+T ByteSwapBE(const T& value) { return ByteSwapT<sizeof(T)>::SwapBE(value); }
+
 class NetworkPacket
 {
 public:
@@ -49,13 +58,17 @@ public:
 	static std::unique_ptr<NetworkPacket> AllocatePacket();
 	static std::unique_ptr<NetworkPacket> DuplicatePacket(NetworkPacket& packet);
 	uint8* GetData();
-	template <class T>
-	void Write(T value) { uint8* bytes = (uint8*)&value; data->insert(data->end(), bytes, bytes + sizeof(value)); }
+	template <typename T>
+	NetworkPacket& operator<<(T value) { T swapped = ByteSwapBE(value); uint8* bytes = (uint8*)&swapped; data->insert(data->end(), bytes, bytes + sizeof(value)); return *this; }
 	void Write(uint8* bytes, unsigned int size) { data->insert(data->end(), bytes, bytes + size); }
+	template <typename T>
+	NetworkPacket& operator>>(T& value) { value = ByteSwapBE(*((T*)&GetData()[read])); read += sizeof(value); return *this; };
+	uint8* Read(unsigned int size) { uint8* data = &GetData()[read]; read += size; return data; };
 	void Clear();
 
 	uint16 size;
 	std::shared_ptr<std::vector<uint8>> data;
+	int transferred;
 	int read;
 };
 
@@ -94,10 +107,10 @@ public:
 	uint32 GetServerTick();
 	void Update();
 
-	void Send_TICK();
 	void Send_MAP();
 	void Send_CHAT(const char* text);
 	void Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
+	void Send_TICK();
 
 private:
 	bool ProcessConnection(NetworkConnection& connection);
@@ -109,7 +122,7 @@ private:
 
 	struct GameCommand
 	{
-		GameCommand(uint32 args[8]) { tick = args[0], eax = args[1], ebx = args[2], ecx = args[3], edx = args[4], esi = args[5], edi = args[6], ebp = args[7]; };
+		GameCommand(uint32 t, uint32* args) { tick = t, eax = args[0], ebx = args[1], ecx = args[2], edx = args[3], esi = args[4], edi = args[5], ebp = args[6]; };
 		uint32 tick;
 		uint32 eax, ebx, ecx, edx, esi, edi, ebp;
 		bool operator<(const GameCommand& comp) const {
@@ -127,6 +140,15 @@ private:
 	std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
 	std::multiset<GameCommand> game_command_queue;
 	std::vector<uint8> chunk_buffer;
+
+private:
+	std::vector<int (Network::*)(NetworkPacket& packet)> command_handlers;
+	int CommandHandler_AUTH(NetworkPacket& packet);
+	int CommandHandler_MAP(NetworkPacket& packet);
+	int CommandHandler_CHAT(NetworkPacket& packet);
+	int CommandHandler_GAMECMD(NetworkPacket& packet);
+	int CommandHandler_TICK(NetworkPacket& packet);
+	int CommandHandler_PLAYER(NetworkPacket& packet);
 };
 
 extern "C" {

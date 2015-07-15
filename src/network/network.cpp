@@ -55,6 +55,7 @@ enum {
 
 NetworkPacket::NetworkPacket()
 {
+	transferred = 0;
 	read = 0;
 	size = 0;
 	data = std::make_shared<std::vector<uint8>>();
@@ -77,15 +78,16 @@ uint8* NetworkPacket::GetData()
 
 void NetworkPacket::Clear()
 {
+	transferred = 0;
 	read = 0;
 	data->clear();
 }
 
 int NetworkConnection::ReadPacket()
 {
- 	if (inboundpacket.read < sizeof(inboundpacket.size)) {
+ 	if (inboundpacket.transferred < sizeof(inboundpacket.size)) {
 		// read packet size
-		int readBytes = recv(socket, &((char*)&inboundpacket.size)[inboundpacket.read], sizeof(inboundpacket.size) - inboundpacket.read, 0);
+		int readBytes = recv(socket, &((char*)&inboundpacket.size)[inboundpacket.transferred], sizeof(inboundpacket.size) - inboundpacket.transferred, 0);
 		if (readBytes == SOCKET_ERROR || readBytes == 0) {
 			if (WSAGetLastError() != WSAEWOULDBLOCK) {
 				return NETWORK_DISCONNECTED;
@@ -93,15 +95,15 @@ int NetworkConnection::ReadPacket()
 				return NETWORK_NO_DATA; 
 			}
 		}
-		inboundpacket.read += readBytes;
-		if (inboundpacket.read == sizeof(inboundpacket.size)) {
+		inboundpacket.transferred += readBytes;
+		if (inboundpacket.transferred == sizeof(inboundpacket.size)) {
 			inboundpacket.size = ntohs(inboundpacket.size);
 			inboundpacket.data->resize(inboundpacket.size);
 		}
 	} else {
 		// read packet data
 		if (inboundpacket.data->capacity() > 0) {
-			int readBytes = recv(socket, (char*)&inboundpacket.GetData()[inboundpacket.read - sizeof(inboundpacket.size)], sizeof(inboundpacket.size) + inboundpacket.size - inboundpacket.read, 0);
+			int readBytes = recv(socket, (char*)&inboundpacket.GetData()[inboundpacket.transferred - sizeof(inboundpacket.size)], sizeof(inboundpacket.size) + inboundpacket.size - inboundpacket.transferred, 0);
 			if (readBytes == SOCKET_ERROR || readBytes == 0) {
 				if (WSAGetLastError() != WSAEWOULDBLOCK) {
 					return NETWORK_DISCONNECTED;
@@ -109,9 +111,9 @@ int NetworkConnection::ReadPacket()
 					return NETWORK_NO_DATA;
 				}
 			}
-			inboundpacket.read += readBytes;
+			inboundpacket.transferred += readBytes;
 		}
-		if (inboundpacket.read == sizeof(inboundpacket.size) + inboundpacket.size) {
+		if (inboundpacket.transferred == sizeof(inboundpacket.size) + inboundpacket.size) {
 			return NETWORK_SUCCESS;
 		}
 	}
@@ -121,22 +123,22 @@ int NetworkConnection::ReadPacket()
 int NetworkConnection::SendPacket(NetworkPacket& packet)
 {
 	while (1) {
-		if (packet.read < sizeof(packet.size)) {
+		if (packet.transferred < sizeof(packet.size)) {
 			// send packet size
 			uint16 size = htons(packet.size);
-			int sentBytes = send(socket, &((char*)&size)[packet.read], sizeof(size) - packet.read, 0);
+			int sentBytes = send(socket, &((char*)&size)[packet.transferred], sizeof(size) - packet.transferred, 0);
 			if (sentBytes == SOCKET_ERROR) {
 				return 0;
 			}
-			packet.read += sentBytes;
+			packet.transferred += sentBytes;
 		} else {
 			// send packet data
-			int sentBytes = send(socket, (const char*)&packet.GetData()[packet.read - sizeof(packet.size)], packet.data->size(), 0);
+			int sentBytes = send(socket, (const char*)&packet.GetData()[packet.transferred - sizeof(packet.size)], packet.data->size(), 0);
 			if (sentBytes == SOCKET_ERROR) {
 				return 0;
 			}
-			packet.read += sentBytes;
-			if (packet.read == sizeof(packet.size) + packet.data->size()) {
+			packet.transferred += sentBytes;
+			if (packet.transferred == sizeof(packet.size) + packet.data->size()) {
 				return 1;
 			}
 		}
@@ -162,6 +164,13 @@ Network::Network()
 	wsa_initialized = false;
 	mode = NETWORK_MODE_NONE;
 	last_tick_sent_time = 0;
+	command_handlers.resize(NETWORK_COMMAND_MAX, 0);
+	command_handlers[NETWORK_COMMAND_AUTH] = &Network::CommandHandler_AUTH;
+	command_handlers[NETWORK_COMMAND_MAP] = &Network::CommandHandler_MAP;
+	command_handlers[NETWORK_COMMAND_CHAT] = &Network::CommandHandler_CHAT;
+	command_handlers[NETWORK_COMMAND_GAMECMD] = &Network::CommandHandler_GAMECMD;
+	command_handlers[NETWORK_COMMAND_TICK] = &Network::CommandHandler_TICK;
+	command_handlers[NETWORK_COMMAND_PLAYER] = &Network::CommandHandler_PLAYER;
 }
 
 Network::~Network()
@@ -335,17 +344,6 @@ void Network::Update()
 	}
 }
 
-void Network::Send_TICK()
-{
-	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
-	packet->Write((uint32)NETWORK_COMMAND_TICK);
-	packet->Write((uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32));
-	for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
-		(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
-	}
-	
-}
-
 void Network::Send_MAP()
 {
 	if (GetMode() == NETWORK_MODE_SERVER) {
@@ -358,9 +356,7 @@ void Network::Send_MAP()
 		for (int i = 0; i < size; i += chunksize) {
 			int datasize = min(chunksize, size - i);
 			std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
-			packet->Write((uint32)NETWORK_COMMAND_MAP);
-			packet->Write((uint32)size);
-			packet->Write((uint32)i);
+			*packet << (uint32)NETWORK_COMMAND_MAP << (uint32)size << (uint32)i;
 			packet->Write(&buffer[i], datasize);
 			for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
 				(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
@@ -373,7 +369,7 @@ void Network::Send_MAP()
 void Network::Send_CHAT(const char* text)
 {
 	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
-	packet->Write((uint32)NETWORK_COMMAND_CHAT);
+	*packet << (uint32)NETWORK_COMMAND_CHAT;
 	packet->Write((uint8*)text, strlen(text) + 1);
 	if (GetMode() == NETWORK_MODE_SERVER) {
 		for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
@@ -387,15 +383,7 @@ void Network::Send_CHAT(const char* text)
 void Network::Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp)
 {
 	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
-	packet->Write((uint32)NETWORK_COMMAND_GAMECMD);
-	packet->Write((uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32));
-	packet->Write((uint32)eax);
-	packet->Write((uint32)ebx | (1 << 31));
-	packet->Write((uint32)ecx);
-	packet->Write((uint32)edx);
-	packet->Write((uint32)esi);
-	packet->Write((uint32)edi);
-	packet->Write((uint32)ebp);
+	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) << eax << (ebx | (1 << 31)) << ecx << edx << esi << edi << ebp; 
 	if (GetMode() == NETWORK_MODE_SERVER) {
 		for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
 			(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
@@ -403,6 +391,16 @@ void Network::Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint3
 	} else {
 		server_connection.QueuePacket(std::move(packet));
 	}
+}
+
+void Network::Send_TICK()
+{
+	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
+	*packet << (uint32)NETWORK_COMMAND_TICK << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32);
+	for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
+		(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
+	}
+	
 }
 
 bool Network::ProcessConnection(NetworkConnection& connection)
@@ -441,60 +439,10 @@ bool Network::ProcessConnection(NetworkConnection& connection)
 
 void Network::ProcessPacket(NetworkPacket& packet)
 {
-	uint32 *args;
-	int command;
-	rct_news_item newsItem;
-
-	args = (uint32*)packet.GetData();
-	command = args[0];
-	switch (command) {
-		case NETWORK_COMMAND_AUTH:{
-
-		}break;
-		case NETWORK_COMMAND_MAP:{
-			uint32 size = args[1];
-			uint32 offset = args[2];
-			if (offset > 0x600000) {
-				// too big
-			} else {
-				int chunksize = packet.size - 4 - 4 - 4;
-				if (offset + chunksize > chunk_buffer.size()) {
-					chunk_buffer.resize(offset + chunksize);
-				}
-				memcpy(&chunk_buffer[offset], (void*)&packet.GetData()[4 + 4 + 4], chunksize);
-				if (offset + chunksize == size) {
-					printf("Loading new map from network...\n");
-					SDL_RWops* rw = SDL_RWFromMem(&chunk_buffer[0], size);
-					if (game_load_sv6(rw)) {
-						game_load_init();
-					}
-					SDL_RWclose(rw);
-				}
-			}
-		}break;
-		case NETWORK_COMMAND_CHAT:{
-			newsItem.type = NEWS_ITEM_BLANK;
-			newsItem.flags = 1;
-			newsItem.assoc = 0;
-			newsItem.ticks = 0;
-			newsItem.month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
-			newsItem.day = ((days_in_month[(newsItem.month_year & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16) + 1;
-			newsItem.colour = FORMAT_TOPAZ;
-			strcpy(newsItem.text, (char*)&packet.GetData()[4]);
-			news_item_add_to_queue_custom(&newsItem);
-		}break;
-		case NETWORK_COMMAND_GAMECMD:{
-			if (GetMode() == NETWORK_MODE_SERVER) {
-				Send_GAMECMD(args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
-				game_do_command(args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
-			} else {
-				GameCommand gc = GameCommand(&args[1]);
-				game_command_queue.insert(gc);
-			}
-		}break;
-		case NETWORK_COMMAND_TICK:{
-			server_tick = args[1];
-		}break;
+	uint32 command;
+	packet >> command;
+	if (command < NETWORK_COMMAND_MAX && command_handlers[command]) {
+		(this->*command_handlers[command])(packet);
 	}
 	packet.Clear();
 }
@@ -529,6 +477,77 @@ void Network::PrintError()
 	FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, WSAGetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&s, 0, NULL);
 	fprintf(stderr, "%S\n", s);
 	LocalFree(s);
+}
+
+int Network::CommandHandler_AUTH(NetworkPacket& packet)
+{
+	return 1;
+}
+
+int Network::CommandHandler_MAP(NetworkPacket& packet)
+{
+	uint32 size, offset;
+	packet >> size >> offset;
+	if (offset > 0x600000) {
+		// too big
+		return 0;
+	} else {
+		int chunksize = packet.size - packet.read;
+		if (offset + chunksize > chunk_buffer.size()) {
+			chunk_buffer.resize(offset + chunksize);
+		}
+		memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
+		if (offset + chunksize == size) {
+			printf("Loading new map from network...\n");
+			SDL_RWops* rw = SDL_RWFromMem(&chunk_buffer[0], size);
+			if (game_load_sv6(rw)) {
+				game_load_init();
+			}
+			SDL_RWclose(rw);
+		}
+	}
+	return 1;
+}
+
+int Network::CommandHandler_CHAT(NetworkPacket& packet)
+{
+	rct_news_item newsItem;
+	newsItem.type = NEWS_ITEM_BLANK;
+	newsItem.flags = 1;
+	newsItem.assoc = 0;
+	newsItem.ticks = 0;
+	newsItem.month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+	newsItem.day = ((days_in_month[(newsItem.month_year & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16) + 1;
+	newsItem.colour = FORMAT_TOPAZ;
+	strcpy(newsItem.text, (char*)packet.Read(packet.size - packet.read));
+	news_item_add_to_queue_custom(&newsItem);
+	return 1;
+}
+
+int Network::CommandHandler_GAMECMD(NetworkPacket& packet)
+{
+	uint32 tick;
+	uint32 args[7];
+	packet >> tick >> args[0] >> args[1] >> args[2] >> args[3] >> args[4] >> args[5] >> args[6];
+	if (GetMode() == NETWORK_MODE_SERVER) {
+		Send_GAMECMD(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
+		game_do_command(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
+	} else {
+		GameCommand gc = GameCommand(tick, args);
+		game_command_queue.insert(gc);
+	}
+	return 1;
+}
+
+int Network::CommandHandler_TICK(NetworkPacket& packet)
+{
+	packet >> server_tick;
+	return 1;
+}
+
+int Network::CommandHandler_PLAYER(NetworkPacket& packet)
+{
+	return 1;
 }
 
 int network_init()
