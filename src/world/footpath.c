@@ -970,7 +970,7 @@ static void loc_6A6C85(
 		return;
 
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
-		if (entrance_has_direction(mapElement, (direction - mapElement->type) & 3)) {
+		if (!entrance_has_direction(mapElement, (direction - mapElement->type) & 3)) {
 			return;
 		}
 	}
