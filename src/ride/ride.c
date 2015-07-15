@@ -3373,7 +3373,7 @@ void ride_music_update_final()
 	int ebx;
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)) {
 		if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0))) {
-			if (!gGameSoundsOff && gConfigSound.sound && RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)) {
+			if (!gGameSoundsOff && gConfigSound.sound && gConfigSound.ride_music && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)) {
 				// set to stop music if volume <= 1 ?
 				while (1) {
 					int v8 = 0;
