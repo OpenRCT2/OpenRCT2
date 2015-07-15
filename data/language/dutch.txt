@@ -3784,6 +3784,9 @@ STR_5451    :Cheatsvenster openen
 STR_5452    :Zichtbaarheid werkbalken schakelen
 STR_5453    :Andere attractie selecteren
 STR_5454    :FPS-limiet opheffen
+STR_5455    :Zandboxmodus inschakelen
+STR_5456    :Hoogtecontroles uitschakelen
+STR_5457    :Ondersteuningslimieten uitschakelen
 STR_5458    :Met de klok mee draaien
 STR_5459    :Tegen de klok in draaien
 STR_5460    :Beeld tegen de klok in draaien

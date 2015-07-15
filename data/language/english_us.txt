@@ -2683,7 +2683,7 @@ STR_2677    :???
 STR_2678    :???
 STR_2679    :???
 STR_2680    :All research complete
-STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by 5,000
+STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by {CURRENCY}
 STR_2682    :{MEDIUMFONT}{BLACK}Toggle between Free and Paid Entry
 STR_2683    :{MEDIUMFONT}{BLACK}Increases every peeps happiness to max
 STR_2684    :{SMALLFONT}{BLACK}Large group of peeps arrive
@@ -2764,7 +2764,7 @@ STR_2756    :Remove litter
 STR_2757    :Force Sun
 STR_2758    :Force Thunder
 STR_2759    :Zero Clearance
-STR_2760    :+5K Money
+STR_2760    :+{CURRENCY}
 STR_2761    :Pay For Entrance
 STR_2762    :Pay For Rides
 STR_2763    :???
@@ -3179,7 +3179,7 @@ STR_3168    :{WINDOW_COLOUR_2}Text: {BLACK}{STRINGID}
 STR_3169    :Data for the following object not found: 
 STR_3170    :Not enough space for graphics
 STR_3171    :Too many objects of this type selected
-STR_3172    :The following object must be selected first: 
+STR_3172    :The following object must be selected first: {STRING}
 STR_3173    :This object is currently in use
 STR_3174    :This object is required by another object
 STR_3175    :This object is always required
@@ -3700,9 +3700,9 @@ STR_5358    :{BLACK}Bathroom:
 STR_5359    :Remove guests
 STR_5360    :{SMALLFONT}{BLACK}Removes all guests from the map
 STR_5361    :{BLACK}Give all guests:
-STR_5362    :{BLACK}Preferred intensity:
-STR_5363    :> 1
-STR_5364    :< 15
+STR_5362    :{BLACK}Set all guests' preferred ride intensity to:
+STR_5363    :More than 1
+STR_5364    :Less than 15
 STR_5365    :{BLACK}Staff speed:
 STR_5366    :Normal
 STR_5367    :Fast
@@ -3791,3 +3791,17 @@ STR_5449    :Reduce game speed
 STR_5450    :Increase game speed
 STR_5451    :Open cheats window
 STR_5452    :Toggle visibility of toolbars
+STR_5453    :Select another ride
+STR_5454    :Uncap FPS
+STR_5455    :Enable sandbox mode
+STR_5456    :Disable clearance checks
+STR_5457    :Disable support limits
+STR_5458    :Rotate clockwise
+STR_5459    :Rotate counterclockwise
+STR_5460    :Rotate view counterclockwise
+STR_5461    :Set guests' parameters
+STR_5462    :{CURRENCY}
+STR_5463    :Goal: Have fun!
+STR_5464    :General
+STR_5465    :Climate
+STR_5466    :Staff
