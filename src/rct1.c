@@ -1019,7 +1019,7 @@ static const rct_object_entry RCT1DefaultObjectsRides[] = {
 	{ 0x00008000, { "SWSH1   " }, 0 },
 	{ 0x00008000, { "SWSH2   " }, 0 },
 	{ 0x00008000, { "ICECR1  " }, 0 },
-	{ 0x00008000, { "CHPSH2  " }, 0 },
+	{ 0x00008000, { "CHPSH   " }, 0 },
 	{ 0x00008000, { "DRNKS   " }, 0 },
 	{ 0x00008000, { "CNDYF   " }, 0 },
 	{ 0x00008000, { "BURGB   " }, 0 },
