@@ -31,6 +31,15 @@ enum {
 	NETWORK_MODE_SERVER
 };
 
+enum {
+	NETWORK_AUTH_NONE,
+	NETWORK_AUTH_REQUESTED,
+	NETWORK_AUTH_OK,
+	NETWORK_AUTH_BADVERSION,
+	NETWORK_AUTH_BADNAME,
+	NETWORK_AUTH_BADPASSWORD
+};
+
 #ifdef __cplusplus
 
 #include <list>
@@ -60,10 +69,12 @@ public:
 	uint8* GetData();
 	template <typename T>
 	NetworkPacket& operator<<(T value) { T swapped = ByteSwapBE(value); uint8* bytes = (uint8*)&swapped; data->insert(data->end(), bytes, bytes + sizeof(value)); return *this; }
-	void Write(uint8* bytes, unsigned int size) { data->insert(data->end(), bytes, bytes + size); }
+	void Write(uint8* bytes, unsigned int size);
+	void WriteString(const char* string);
 	template <typename T>
-	NetworkPacket& operator>>(T& value) { value = ByteSwapBE(*((T*)&GetData()[read])); read += sizeof(value); return *this; };
-	uint8* Read(unsigned int size) { uint8* data = &GetData()[read]; read += size; return data; };
+	NetworkPacket& operator>>(T& value) { if (read + sizeof(value) > size) { value = 0; } else { value = ByteSwapBE(*((T*)&GetData()[read])); read += sizeof(value); } return *this; };
+	const uint8* Read(unsigned int size);
+	const char* ReadString();
 	void Clear();
 
 	uint16 size;
@@ -75,12 +86,14 @@ public:
 class NetworkConnection
 {
 public:
+	NetworkConnection();
 	int ReadPacket();
 	void QueuePacket(std::unique_ptr<NetworkPacket> packet);
 	void SendQueuedPackets();
 
 	SOCKET socket;
 	NetworkPacket inboundpacket;
+	int authstatus;
 
 private:
 	int SendPacket(NetworkPacket& packet);
@@ -107,14 +120,17 @@ public:
 	uint32 GetServerTick();
 	void Update();
 
-	void Send_MAP();
-	void Send_CHAT(const char* text);
-	void Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
-	void Send_TICK();
+	void Client_Send_AUTH(const char* gameversion, const char* name, const char* password);
+	void Server_Send_MAP();
+	void Client_Send_CHAT(const char* text);
+	void Server_Send_CHAT(const char* text);
+	void Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
+	void Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
+	void Server_Send_TICK();
 
 private:
 	bool ProcessConnection(NetworkConnection& connection);
-	void ProcessPacket(NetworkPacket& packet);
+	void ProcessPacket(NetworkConnection& connection, NetworkPacket& packet);
 	void ProcessGameCommandQueue();
 	void AddClient(SOCKET socket);
 	void RemoveClient(std::unique_ptr<NetworkConnection>& connection);
@@ -140,15 +156,19 @@ private:
 	std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
 	std::multiset<GameCommand> game_command_queue;
 	std::vector<uint8> chunk_buffer;
+	char password[33];
 
 private:
-	std::vector<int (Network::*)(NetworkPacket& packet)> command_handlers;
-	int CommandHandler_AUTH(NetworkPacket& packet);
-	int CommandHandler_MAP(NetworkPacket& packet);
-	int CommandHandler_CHAT(NetworkPacket& packet);
-	int CommandHandler_GAMECMD(NetworkPacket& packet);
-	int CommandHandler_TICK(NetworkPacket& packet);
-	int CommandHandler_PLAYER(NetworkPacket& packet);
+	std::vector<int (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> client_command_handlers;
+	std::vector<int (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> server_command_handlers;
+	int Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
+	int Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
+	int Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& packet);
+	int Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
+	int Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
+	int Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
+	int Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
+	int Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet);
 };
 
 extern "C" {
