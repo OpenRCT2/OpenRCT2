@@ -143,6 +143,7 @@ static void ride_shop_connected(rct_ride* ride, int ride_idx);
 static void ride_spiral_slide_update(rct_ride *ride);
 static void ride_update(int rideIndex);
 static void ride_update_vehicle_colours(int rideIndex);
+static void sub_6DE52C(rct_ride *ride);
 
 rct_ride_type *ride_get_entry(rct_ride *ride)
 {
@@ -4705,6 +4706,383 @@ static void ride_stop_peeps_queuing(int rideIndex)
 
 		peep_window_state_update(peep);
 	}
+}
+
+static int ride_get_empty_slot()
+{
+	rct_ride *ride;
+	for (int i = 0; i < MAX_RIDES; i++) {
+		ride = GET_RIDE(i);
+		if (ride->type == RIDE_TYPE_NULL) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+static int ride_get_default_mode(rct_ride *ride)
+{
+	const rct_ride_type *rideEntry = GET_RIDE_ENTRY(ride->subtype);
+	const uint8 *availableModes = RideAvailableModes;
+
+	for (int i = 0; i < ride->type; i++) {
+		while (*(availableModes++) != 255) {}
+	}
+	if (rideEntry->flags & RIDE_ENTRY_FLAG_17) {
+		availableModes += 2;
+	}
+	return availableModes[0];
+}
+
+static bool ride_with_colour_config_exists(int rideType, const track_colour *colours)
+{
+	rct_ride *ride;
+	int i;
+
+	FOR_ALL_RIDES(i, ride) {
+		if (ride->type != rideType) continue;
+		if (ride->track_colour_main[0] != colours->main) continue;
+		if (ride->track_colour_additional[0] != colours->additional) continue;
+		if (ride->track_colour_supports[0] != colours->supports) continue;
+
+		return true;
+	}
+	return false;
+}
+
+static bool ride_name_exists(char *name)
+{
+	char buffer[256];
+	rct_ride *ride;
+	int i;
+
+	FOR_ALL_RIDES(i, ride) {
+		format_string(buffer, ride->name, &ride->name_arguments);
+		if (strcmp(buffer, name) == 0) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * 
+ *  rct2: 0x006B4776
+ */
+static void ride_set_to_random_colour_preset(rct_ride *ride)
+{
+	const track_colour_preset_list *colourPresets;
+	const track_colour *colours;
+
+	colourPresets = RCT2_ADDRESS(0x0097D934, track_colour_preset_list*)[ride->type];
+
+	// 200 attempts to find a colour preset that hasn't already been used in the park for this ride type
+	for (int i = 0; i < 200; i++) {
+		int listIndex = scenario_rand() % colourPresets->count;
+		colours = &colourPresets->list[listIndex];
+
+		if (!ride_with_colour_config_exists(ride->type, colours)) {
+			break;
+		}
+	}
+
+	for (int i = 0; i < 4; i++) {
+		ride->track_colour_main[i] = colours->main;
+		ride->track_colour_additional[i] = colours->additional;
+		ride->track_colour_supports[i] = colours->supports;
+	}
+	ride->colour_scheme_type = 0;
+}
+
+static money32 ride_get_common_price(rct_ride *forRide)
+{
+	rct_ride *ride;
+	int i;
+
+	FOR_ALL_RIDES(i, ride) {
+		if (ride->type == forRide->type && ride != forRide) {
+			return ride->price;
+		}
+	}
+
+	return MONEY32_UNDEFINED;
+}
+
+static money32 shop_item_get_common_price(rct_ride *forRide, int shopItem)
+{
+	rct_ride_type *rideEntry;
+	rct_ride *ride;
+	int i;
+
+	FOR_ALL_RIDES(i, ride) {
+		if (ride != forRide) {
+			rideEntry = GET_RIDE_ENTRY(ride->subtype);
+			if (rideEntry->shop_item == shopItem) {
+				return ride->price;
+			}
+			if (rideEntry->shop_item_secondary == shopItem) {
+				return ride->price_secondary;
+			}
+		}
+	}
+
+	return MONEY32_UNDEFINED;
+}
+
+static bool shop_item_has_common_price(int shopItem)
+{
+	if (shopItem < 32) {
+		return RCT2_GLOBAL(0x01358838, uint32) & (1 << shopItem);
+	} else {
+		return RCT2_GLOBAL(0x0135934C, uint32) & (1 << (shopItem - 32));
+	}
+}
+
+/**
+ * 
+ *  rct2: 0x006B3F0F
+ */
+money32 ride_create(int type, int subType, int flags, int *outRideIndex)
+{
+	char rideNameBuffer[256];
+	rct_ride *ride;
+	rct_ride_type *rideEntry;
+	int rideIndex, rideEntryIndex;
+
+	if (subType == 255) {
+		uint8 *availableRideEntries = get_ride_entry_indices_for_ride_type(type);
+		for (uint8 *rei = availableRideEntries; *rei != 255; rei++) {
+			rideEntry = GET_RIDE_ENTRY(*rei);
+			if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) {
+				subType = *rei;
+				goto foundRideEntry;
+			}
+		}
+		subType = availableRideEntries[0];
+	}
+
+foundRideEntry:
+	rideEntryIndex = subType;
+	rideIndex = ride_get_empty_slot();
+	if (rideIndex == -1) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_MANY_RIDES;
+		return MONEY32_UNDEFINED;
+	}
+	*outRideIndex = rideIndex;
+
+	if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
+		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+		RCT2_GLOBAL(0x009DEA5E, uint16) = 0x8000;
+		return 0;
+	}
+
+	ride = GET_RIDE(rideIndex);
+	rideEntry = GET_RIDE_ENTRY(rideEntryIndex);
+	ride->type = type;
+	ride->subtype = rideEntryIndex;
+	ride_set_to_random_colour_preset(ride);
+	ride->overall_view = 0xFFFF;
+
+	// Ride name
+	if (rideEntryIndex == 255) {
+	useDefaultName:
+		ride->name = STR_NONE;
+
+		struct {
+			uint16 type_name;
+			uint16 number;
+		} name_args;
+		name_args.type_name = 2 + ride->type;
+		name_args.number = 0;
+		do {
+			name_args.number++;
+			format_string(rideNameBuffer, 1, &name_args);
+		} while (ride_name_exists(rideNameBuffer));
+		ride->name = 1;
+		ride->name_arguments_type_name = name_args.type_name;
+		ride->name_arguments_number = name_args.number;
+	} else {
+		if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) {
+			goto useDefaultName;
+		}
+		ride->name = 1;
+		ride->name_arguments_type_name = rideEntry->name;
+		ride->name_arguments_number = 0;
+
+		rct_string_id rideNameStringId = 0;
+		for (int i = 0; i < 100; i++) {
+			ride->name_arguments_number++;
+			format_string(rideNameBuffer, ride->name, &ride->name_arguments);
+
+			rideNameStringId = user_string_allocate(4, rideNameBuffer);
+			if (rideNameStringId != 0) {
+				ride->name = rideNameStringId;
+				break;
+			}
+		}
+		if (rideNameStringId == 0) {
+			goto useDefaultName;
+		}
+	}
+
+	for (int i = 0; i < 4; i++) {
+		ride->station_starts[i] = 0xFFFF;
+		ride->entrances[i] = 0xFFFF;
+		ride->exits[i] = 0xFFFF;
+		ride->var_066[i] = 255;
+		ride->queue_time[i] = 0;
+	}
+
+	for (int i = 0; i < 32; i++) {
+		ride->vehicles[i] = 0xFFFF;
+	}
+
+	ride->status = RIDE_STATUS_CLOSED;
+	ride->lifecycle_flags = 0;
+	ride->var_1CA = 0;
+	ride->num_stations = 0;
+	ride->num_vehicles = 1;
+	ride->var_0CA = 32;
+	ride->var_0CB = 32;
+	ride->num_cars_per_train = 1;
+	ride->var_0CB = 12;
+	ride->min_waiting_time = 10;
+	ride->max_waiting_time = 60;
+	ride->depart_flags = RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH | 3;
+	if (RCT2_ADDRESS(0x0097D4F2, uint16)[ride->type * 4] & 2) {
+		ride->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
+	}
+	ride->music = RCT2_ADDRESS(0x0097D4F4, uint8)[ride->type * 8];
+
+	ride->operation_option = (
+		RCT2_GLOBAL(0x0097CF40 + 4 + (ride->type * 8), uint8) +
+		RCT2_GLOBAL(0x0097CF40 + 4 + (ride->type * 8), uint8) +
+		RCT2_GLOBAL(0x0097CF40 + 4 + (ride->type * 8), uint8) +
+		RCT2_GLOBAL(0x0097CF40 + 5 + (ride->type * 8), uint8)
+	) / 4;
+
+	ride->lift_hill_speed = RCT2_ADDRESS(0x0097D7C9, uint8)[ride->type * 4];
+
+	ride->measurement_index = 255;
+	ride->excitement = (ride_rating)-1;
+	ride->var_120 = 0;
+	ride->var_122 = 0;
+	ride->var_148 = 0;
+	
+	ride->price = 0;
+	ride->price_secondary = 0;
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+		ride->price = RCT2_GLOBAL(0x0097D4F0 + 0 + (ride->type * 8), uint8);
+		ride->price_secondary = RCT2_GLOBAL(0x0097D4F0 + 1 + (ride->type * 8), uint8);
+
+		if (rideEntry->shop_item != 255) {
+			ride->price = RCT2_ADDRESS(0x00982358, money8)[rideEntry->shop_item];
+		}
+		if (rideEntry->shop_item_secondary != 255) {
+			ride->price = RCT2_ADDRESS(0x00982358, money8)[rideEntry->shop_item_secondary];
+		}
+		if (rideEntry->shop_item == 255 && (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY)) {
+			ride->price = 0;
+		}
+		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_BUILD_THE_BEST) {
+			ride->price = 0;
+		}
+
+		if (ride->type == RIDE_TYPE_TOILETS) {
+			if (RCT2_GLOBAL(0x01358838, uint32) & (1 << 31)) {
+				money32 price = ride_get_common_price(ride);
+				if (price != MONEY32_UNDEFINED) {
+					ride->price = (money16)price;
+				}
+			}
+		}
+
+		if (rideEntry->shop_item != 255) {
+			if (shop_item_has_common_price(rideEntry->shop_item)) {
+				money32 price = shop_item_get_common_price(ride, rideEntry->shop_item);
+				if (price != MONEY32_UNDEFINED) {
+					ride->price = (money16)price;
+				}
+			}
+		}
+
+		if (rideEntry->shop_item_secondary != 255) {
+			if (shop_item_has_common_price(rideEntry->shop_item_secondary)) {
+				money32 price = shop_item_get_common_price(ride, rideEntry->shop_item_secondary);
+				if (price != MONEY32_UNDEFINED) {
+					ride->price_secondary = (money16)price;
+				}
+			}
+		}
+	}
+
+	// The next 10 variables are treated like an array of 10 items
+	ride->var_124 = 0;
+	ride->var_124 = 0;
+	ride->var_126 = 0;
+	ride->var_128 = 0;
+	ride->var_12A = 0;
+	ride->var_12C = 0;
+	ride->var_12E = 0;
+	ride->age = 0;
+	ride->running_cost = 0;
+	ride->var_134 = 0;
+	ride->var_136 = 0;
+	
+	ride->value = 0xFFFF;
+	ride->satisfaction = 255;
+	ride->satisfaction_time_out = 0;
+	ride->satisfaction_next = 0;
+	ride->popularity = 255;
+	ride->popularity_time_out = 0;
+	ride->popularity_next = 0;
+	ride->window_invalidate_flags = 0;
+	ride->total_customers = 0;
+	ride->total_profit = 0;
+	ride->num_riders = 0;
+	ride->var_15D = 0;
+	ride->maze_tiles = 0;
+	ride->build_date = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+	ride->music_tune_id = 255;
+
+	ride->breakdown_reason = 255;
+	ride->upkeep_cost = (money16)-1;
+	ride->reliability = 0x64FF;
+	ride->unreliability_factor = 1;
+	ride->inspection_interval = RIDE_INSPECTION_EVERY_30_MINUTES;
+	ride->last_inspection = 0;
+	ride->downtime = 0;
+	ride->var_19C = 0;
+	ride->var_1A0 = 0;
+	ride->no_primary_items_sold = 0;
+	ride->no_secondary_items_sold = 0;
+	ride->last_crash_type = RIDE_CRASH_TYPE_NONE;
+	ride->income_per_hour = MONEY32_UNDEFINED;
+	ride->profit = MONEY32_UNDEFINED;
+	ride->connected_message_throttle = 0;
+	ride->entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
+	ride->num_block_brakes = 0;
+	ride->guests_favourite = 0;
+
+	ride->num_circuits = 1;
+	ride->mode = ride_get_default_mode(ride);
+	ride->min_max_cars_per_train = (rideEntry->min_cars_in_train << 4) | rideEntry->max_cars_in_train;
+	sub_6DE52C(ride);
+	window_invalidate_by_class(WC_RIDE_LIST);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+	RCT2_GLOBAL(0x009DEA5E, uint16) = 0x8000;
+	return 0;
+}
+
+/**
+ * 
+ *  rct2: 0x006B3F0F
+ */
+void game_command_create_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	*ebx = ride_create(*edx & 0xFF, (*edx >> 8) & 0xFF, *ebx & 0xFF, edi);
 }
 
 /**

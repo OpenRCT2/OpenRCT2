@@ -90,12 +90,15 @@ typedef utf16* utf16string;
 #define OPENRCT2_COMMIT_SHA1_SHORT	""
 
 // Represent fixed point numbers. dp = decimal point
+typedef uint8 fixed8_1dp;
+typedef uint8 fixed8_2dp;
 typedef sint16 fixed16_1dp;
 typedef sint16 fixed16_2dp;
 typedef sint32 fixed32_1dp;
 typedef sint32 fixed32_2dp;
 
 // Money is stored as a multiple of 0.10.
+typedef fixed8_1dp money8;
 typedef fixed16_1dp money16;
 typedef fixed32_1dp money32;
 

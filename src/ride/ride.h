@@ -150,7 +150,13 @@ typedef struct {
 	// 0 = closed, 1 = open, 2 = test
 	uint8 status;					// 0x049
 	rct_string_id name;				// 0x04A
-	uint32 name_arguments;			// 0x04C probably just for when a ride hasn't been named (e.g. Crooked House 1)
+	union {
+		uint32 name_arguments;		// 0x04C
+		struct {
+			rct_string_id name_arguments_type_name;		// 0x04C
+			uint16 name_arguments_number;				// 0x04E
+		};
+	};
 	uint16 overall_view;			// 0x050 00XX = X, XX00 = Y (* 32 + 16)
 	uint16 station_starts[4];		// 0x052
 	uint8 station_heights[4];		// 0x05A
@@ -300,7 +306,7 @@ typedef struct {
 	uint32 no_secondary_items_sold; // 0x1A8
 	uint8 var_1AC;
 	uint8 var_1AD;
-	uint8 last_crash_type;
+	uint8 last_crash_type;			// 0x1AE
 	uint8 connected_message_throttle;	// 0x1AF
 	money32 income_per_hour;		// 0x1B0
 	money32 profit;					// 0x1B4
@@ -707,6 +713,11 @@ typedef struct {
 	uint8 additional_2;
 } vehicle_colour;
 
+typedef struct {
+	uint8 count;
+	track_colour list[256];
+} track_colour_preset_list;
+
 enum {
 	RIDE_MEASUREMENT_FLAG_RUNNING = 1 << 0,
 	RIDE_MEASUREMENT_FLAG_UNLOADING = 1 << 1,
@@ -890,6 +901,7 @@ void ride_set_name(int rideIndex, const char *name);
 void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 int ride_get_refund_price(int ride_id);
+void game_command_create_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
