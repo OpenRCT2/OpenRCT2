@@ -2030,6 +2030,8 @@ enum {
 	STR_DEBUG_DROPDOWN_INVENTIONS_LIST = 5491,
 	STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS = 5492,
 
+	STR_PLAYER_LIST = 6002,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
