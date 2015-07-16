@@ -24,6 +24,7 @@
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
+#include "../interface/keyboard_shortcut.h"
 #include "../interface/themes.h"
 
 #define WW 340
@@ -247,27 +248,13 @@ static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
 		}
 
-		RCT2_GLOBAL(0x13CE954, uint16) = ShortcutStringIds[i];
-		RCT2_GLOBAL(0x13CE956, uint16) = 0;
-		RCT2_GLOBAL(0x13CE958, uint16) = 0;
-
-		uint16 shortcut_entry = gShortcutKeys[i];
-		if (shortcut_entry != 0xFFFF) {
-			rct_string_id templateStringId = 2525;
-			const char *scanCodeName = SDL_GetScancodeName(shortcut_entry & 0xFF);
-			char *templateString = (char*)language_get_string(templateStringId);
-			strcpy(templateString, scanCodeName);
-
-			RCT2_GLOBAL(0x13CE958, uint16) = templateStringId;
-			
-			// Display the modifer
-			if (shortcut_entry & 0x100)
-				RCT2_GLOBAL(0x13CE956, uint16) = STR_SHIFT_PLUS;
-			else if (shortcut_entry & 0x200)
-				RCT2_GLOBAL(0x13CE956, uint16) = STR_CTRL_PLUS;
-		}
+		rct_string_id templateStringId = 2525;
+		char *templateString = (char*)language_get_string(templateStringId);
+		keyboard_shortcut_format_string(templateString, gShortcutKeys[i]);
 
 		RCT2_GLOBAL(0x13CE952, uint16) = STR_SHORTCUT_ENTRY_FORMAT;
+		RCT2_GLOBAL(0x13CE954, uint16) = ShortcutStringIds[i];
+		RCT2_GLOBAL(0x13CE956, uint16) = templateStringId;
 		gfx_draw_string_left(dpi, format, (void*)0x13CE952, 0, 0, y - 1);
 	}
 }

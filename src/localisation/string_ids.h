@@ -1795,6 +1795,8 @@ enum {
 	STR_CHEAT_CLIMATE_GROUP = 5465,
 	STR_CHEAT_STAFF_GROUP = 5466,
 
+	STR_ALT_PLUS = 5467,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

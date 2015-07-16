@@ -22,6 +22,7 @@
 #include "../config.h"
 #include "../game.h"
 #include "../input.h"
+#include "../localisation/localisation.h"
 #include "keyboard_shortcut.h"
 #include "viewport.h"
 #include "window.h"
@@ -73,6 +74,26 @@ void keyboard_shortcut_handle_command(int shortcutIndex)
 {
 	if (shortcutIndex >= 0 && shortcutIndex < countof(shortcut_table))
 		shortcut_table[shortcutIndex]();
+}
+
+void keyboard_shortcut_format_string(char *buffer, uint16 shortcutKey)
+{
+	char *formatBuffer[256];
+
+	*buffer = 0;
+	if (shortcutKey & 0x100) {
+		format_string(formatBuffer, STR_SHIFT_PLUS, NULL);
+		strcat(buffer, formatBuffer);
+	}
+	if (shortcutKey & 0x200) {
+		format_string(formatBuffer, STR_CTRL_PLUS, NULL);
+		strcat(buffer, formatBuffer);
+	}
+	if (shortcutKey & 0x400) {
+		format_string(formatBuffer, STR_ALT_PLUS, NULL);
+		strcat(buffer, formatBuffer);
+	}
+	strcat(buffer, SDL_GetScancodeName(shortcutKey & 0xFF));
 }
 
 #pragma region Shortcut Commands

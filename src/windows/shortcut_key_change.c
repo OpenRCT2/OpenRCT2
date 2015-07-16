@@ -25,6 +25,8 @@
 #include "../localisation/localisation.h"
 #include "../interface/themes.h"
 
+extern const rct_string_id ShortcutStringIds[];
+
 #define WW 250
 #define WH 60
 
@@ -119,6 +121,6 @@ static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int x = w->x + 125;
 	int y = w->y + 30;
 
-	RCT2_GLOBAL(0x13CE952, uint16) = 2493 + RCT2_GLOBAL(0x9DE511, uint8);
-	gfx_draw_string_centred_wrapped(dpi, (void*)0x13CE952, x, y, 242, 2785, RCT2_GLOBAL(0x9DEB8D, uint8));
+	RCT2_GLOBAL(0x13CE952, uint16) = ShortcutStringIds[RCT2_GLOBAL(0x009DE511, uint8)];
+	gfx_draw_string_centred_wrapped(dpi, (void*)0x013CE952, x, y, 242, 2785, RCT2_GLOBAL(0x9DEB8D, uint8));
 }
