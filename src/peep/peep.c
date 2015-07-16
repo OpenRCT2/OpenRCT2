@@ -170,7 +170,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 	}
 
 	if ((index & 0x1FF) == (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x1FF)){
-		RCT2_GLOBAL(0x00F1EDFE, uint32) = index;
+		//RCT2_GLOBAL(0x00F1EDFE, uint32) = index; not needed all cases accounted for
 
 		if (peep->flags & PEEP_FLAGS_CROWDED){
 			uint8 thought_type = RCT2_ADDRESS(0x009823AC, uint8)[scenario_rand() & 0xF];
@@ -182,8 +182,8 @@ static void sub_68F41A(rct_peep *peep, int index)
 		if (peep->flags & PEEP_FLAGS_EXPLODE && peep->x != (sint16)0x8000){
 			sound_play_panned(SOUND_CRASH, 0x8001, peep->x, peep->y, peep->z);
 
-			RCT2_CALLPROC_X(0x0067363D, peep->x, 0, peep->y, peep->z + 16, (int)peep, 0, 0);
-			RCT2_CALLPROC_X(0x0067366B, peep->x, 0, peep->y, peep->z + 16, (int)peep, 0, 0);
+			sprite_misc_3_create(peep->x, peep->y, peep->z + 16);
+			sprite_misc_5_create(peep->x, peep->y, peep->z + 16);
 
 			peep_remove(peep);
 			return;
@@ -262,8 +262,103 @@ static void sub_68F41A(rct_peep *peep, int index)
 				}
 			}
 		}
+		
+		if (peep->state == PEEP_STATE_WALKING &&
+			peep->var_2A == 0 &&
+			!(peep->flags & PEEP_FLAGS_LEAVING_PARK) &&
+			peep->no_of_rides == 0 &&
+			peep->guest_heading_to_ride_id == 0xFF){
 
-		//68F64D
+			uint32 time_duration = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) - peep->time_in_park;
+			time_duration /= 2048;
+
+			if (time_duration >= 5){
+				RCT2_CALLPROC_X(0x00695DD2, 0, 0, 0, 0, (int)peep, 0, 0);
+
+				if (peep->guest_heading_to_ride_id == 0xFF){
+					peep->happiness_growth_rate = max(peep->happiness_growth_rate - 128, 0);
+					//goto 0x0068F93E
+				}
+			}
+		}
+		
+		if ((scenario_rand() & 0xFFFF) <= (peep->item_standard_flags & PEEP_ITEM_MAP ? 8192 : 2184)){
+			RCT2_CALLPROC_X(0x00695DD2, 0, 0, 0, 0, (int)peep, 0, 0);
+		}
+
+		if ((index & 0x3FF) == (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x3FF)){
+
+			if (peep->var_2A == 0 && 
+				(peep->state == PEEP_STATE_WALKING || peep->state == PEEP_STATE_SITTING)){
+
+				uint8 num_thoughts = 0;
+				uint8 possible_thoughts[5] = { 0 };
+
+				if (peep->flags & PEEP_FLAGS_LEAVING_PARK){
+					possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_GO_HOME;
+				}
+				else{
+					if (peep->energy <= 70 &&
+						peep->happiness < 128){
+						possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_TIRED;
+					}
+
+					if (peep->hunger <= 10 &&
+						!peep_has_food(peep)){
+						possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_HUNGRY;
+					}
+
+					if (peep->thirst <= 25 &&
+						!peep_has_food(peep)){
+						possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_THIRSTY;
+					}
+
+					if (peep->bathroom >= 160){
+						possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_BATHROOM;
+					}
+
+					// Not sure why the happiness check is like that seems wrong to me
+					if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) &&
+						peep->cash_in_pocket <= MONEY(9,00) &&
+						peep->happiness >= 105 &&
+						peep->happiness >= 70){
+						possible_thoughts[num_thoughts++] = PEEP_THOUGHT_RUNNING_OUT;
+					}
+				}
+
+				if (num_thoughts != 0){
+					uint8 chosen_thought = possible_thoughts[scenario_rand() % num_thoughts];
+
+					peep_insert_new_thought(peep, chosen_thought, 0xFF);
+
+					switch (chosen_thought){
+					case PEEP_THOUGHT_TYPE_HUNGRY:
+						RCT2_CALLPROC_X(0x006958D0, 0x00800000, 0, 0, 0, (int)peep, 0, 0);
+						break;
+					case PEEP_THOUGHT_TYPE_THIRSTY:
+						RCT2_CALLPROC_X(0x006958D0, 0x01000000, 0, 0, 0, (int)peep, 0, 0);
+						break;
+					case PEEP_THOUGHT_TYPE_BATHROOM:
+						RCT2_CALLPROC_X(0x006958D0, 0x0200000, 0, 0, 0, (int)peep, 0, 0);
+						break;
+					case PEEP_THOUGHT_RUNNING_OUT:
+						RCT2_CALLPROC_X(0x00695B70, RIDE_TYPE_CASH_MACHINE, 0, 0, 0, (int)peep, 0, 0);
+						break;
+					}
+				}
+			}
+		}
+		else{
+			if (peep->nausea >= 140){
+				uint8 thought = PEEP_THOUGHT_TYPE_SICK;
+				if (peep->nausea >= 200){
+					thought = PEEP_THOUGHT_TYPE_VERY_SICK;
+					RCT2_CALLPROC_X(0x00695B70, RIDE_TYPE_FIRST_AID, 0, 0, 0, (int)peep, 0, 0);
+				}
+				peep_insert_new_thought(peep, thought, 0xFF);
+			}
+		}
+		//68F807
 	}
 	// 68FA89
 
