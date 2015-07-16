@@ -40,6 +40,10 @@ enum {
 	NETWORK_AUTH_BADPASSWORD
 };
 
+enum {
+	NETWORK_PLAYER_FLAG_ISSERVER = 1 << 0,
+};
+
 #ifdef __cplusplus
 
 #include <list>
@@ -53,6 +57,8 @@ extern "C" {
 
 template <std::size_t size>
 struct ByteSwapT { };
+template <>
+struct ByteSwapT<1> { static uint8 SwapBE(uint8 value) { return value; } };
 template <>
 struct ByteSwapT<2> { static uint16 SwapBE(uint16 value) { return SDL_SwapBE16(value); } };
 template <>
@@ -83,6 +89,16 @@ public:
 	int read;
 };
 
+class NetworkPlayer
+{
+public:
+	NetworkPlayer(const char* name);
+	uint8 id;
+	uint8 name[32 + 1];
+	uint16 ping;
+	uint32 flags;
+};
+
 class NetworkConnection
 {
 public:
@@ -94,17 +110,11 @@ public:
 	SOCKET socket;
 	NetworkPacket inboundpacket;
 	int authstatus;
+	NetworkPlayer* player;
 
 private:
 	int SendPacket(NetworkPacket& packet);
 	std::list<std::unique_ptr<NetworkPacket>> outboundpackets;
-};
-
-class NetworkPlayer
-{
-public:
-	uint8 name[16 + 1];
-	uint16 ping;
 };
 
 class Network
@@ -117,6 +127,7 @@ public:
 	bool BeginClient(const char* host, unsigned short port);
 	bool BeginServer(unsigned short port);
 	int GetMode();
+	int GetAuthStatus();
 	uint32 GetServerTick();
 	void Update();
 
@@ -127,6 +138,9 @@ public:
 	void Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
 	void Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
 	void Server_Send_TICK();
+	void Server_Send_PLAYERLIST();
+
+	std::vector<std::unique_ptr<NetworkPlayer>> player_list;
 
 private:
 	bool ProcessConnection(NetworkConnection& connection);
@@ -169,6 +183,7 @@ private:
 	int Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
 	int Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
 	int Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet);
+	int Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPacket& packet);
 };
 
 extern "C" {
@@ -181,7 +196,10 @@ int network_begin_server(int port);
 
 void network_update();
 int network_get_mode();
+int network_get_authstatus();
 uint32 network_get_server_tick();
+int network_get_num_players();
+const char* network_get_player_name(unsigned int index);
 
 void network_send_map();
 void network_send_chat(const char* text);

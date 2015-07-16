@@ -447,6 +447,7 @@ enum {
 	WC_TITLE_EDITOR = 122,
 	WC_TITLE_COMMAND_EDITOR = 123,
 	WC_CHAT_HOST = 124,
+	WC_PLAYER_LIST = 125,
 
 	// Only used for colour schemes
 	WC_STAFF = 220,
@@ -608,6 +609,7 @@ void window_sign_open(rct_windownumber number);
 void window_sign_small_open(rct_windownumber number);
 void window_cheats_open();
 void window_chat_open();
+void window_player_list_open();
 
 void window_research_open();
 void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dpi, int baseWidgetIndex);
