@@ -488,11 +488,10 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 			window_invalidate(w);
 			break;
 		case WIDX_MUSIC_CHECKBOX:
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) ^= 1;
-			if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) == 0)
+			gConfigSound.ride_music = !gConfigSound.ride_music;
+			if (!gConfigSound.ride_music) {
 				stop_ride_music();
-
-			gConfigSound.ride_music ^= 1;
+			}
 			config_save_default();
 			window_invalidate(w);
 			break;
@@ -1127,10 +1126,10 @@ static void window_options_invalidate(rct_window *w)
 		}
 
 		// music: on/off
-		RCT2_GLOBAL(0x013CE952 + 8, uint16) = STR_OFF + RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8);
+		RCT2_GLOBAL(0x013CE952 + 8, uint16) = STR_OFF + gConfigSound.ride_music;
 
 		widget_set_checkbox_value(w, WIDX_SOUND_CHECKBOX, gConfigSound.sound);
-		widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8));
+		widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music);
 
 		if(w->frame_no == 0){ // initialize only on first frame, otherwise the scrollbars wont be able to be modified
 			widget = &window_options_audio_widgets[WIDX_MASTER_VOLUME];

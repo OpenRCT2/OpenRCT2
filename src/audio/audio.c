@@ -1770,18 +1770,6 @@ void audio_init2(int device)
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 1 << 4)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= 1 << 4;
 	}
-
-	// When all sound code is reversed this can be removed.
-	if (!gConfigSound.sound){
-		toggle_all_sounds();
-	}
-
-	// When all sound code is reversed this can be removed.
-	if (!gConfigSound.ride_music){
-		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) ^= 1;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) == 0)
-			stop_ride_music();
-	}
 }
 
 /**
