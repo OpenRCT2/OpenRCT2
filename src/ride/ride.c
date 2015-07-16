@@ -4983,7 +4983,7 @@ foundRideEntry:
 		if (rideEntry->shop_item_secondary != 255) {
 			ride->price = RCT2_ADDRESS(0x00982358, money8)[rideEntry->shop_item_secondary];
 		}
-		if (rideEntry->shop_item == 255 && (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY)) {
+		if (rideEntry->shop_item == 255 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY)) {
 			ride->price = 0;
 		}
 		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_BUILD_THE_BEST) {
