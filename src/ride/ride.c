@@ -34,6 +34,7 @@
 #include "../management/news_item.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
+#include "../rct1.h"
 #include "../scenario.h"
 #include "../util/util.h"
 #include "../windows/error.h"
@@ -4854,7 +4855,7 @@ money32 ride_create(int type, int subType, int flags, int *outRideIndex)
 		uint8 *availableRideEntries = get_ride_entry_indices_for_ride_type(type);
 		for (uint8 *rei = availableRideEntries; *rei != 255; rei++) {
 			rideEntry = GET_RIDE_ENTRY(*rei);
-			if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) {
+			if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) && !rideTypeShouldLoseSeparateFlag(rideEntry)) {
 				subType = *rei;
 				goto foundRideEntry;
 			}
@@ -4903,7 +4904,7 @@ foundRideEntry:
 		ride->name_arguments_type_name = name_args.type_name;
 		ride->name_arguments_number = name_args.number;
 	} else {
-		if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) {
+		if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
 			goto useDefaultName;
 		}
 		ride->name = 1;
