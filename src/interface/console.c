@@ -88,6 +88,7 @@ void console_init()
 {
 	_consoleInitialised = true;
 	console_writeline(OPENRCT2_NAME " " OPENRCT2_VERSION);
+	console_writeline("Type 'help' for a list of available commands. Type 'hide' to hide the console.");
 	console_writeline("");
 	console_write_prompt();
 }
@@ -1010,6 +1011,10 @@ void console_execute_silent(const char *src)
 
 	if (argc == 0)
 		return;
+
+	// Aliases for hiding the console
+	if(strcmp(argv[0],"quit") == 0 || strcmp(argv[0],"exit") == 0)
+		argv[0]="hide";
 
 	bool validCommand = false;
 	for (int i = 0; i < countof(console_command_table); i++) {
