@@ -111,6 +111,7 @@ public:
 	NetworkPacket inboundpacket;
 	int authstatus;
 	NetworkPlayer* player;
+	uint32 ping_time;
 
 private:
 	int SendPacket(NetworkPacket& packet);
@@ -130,6 +131,7 @@ public:
 	int GetAuthStatus();
 	uint32 GetServerTick();
 	void Update();
+	NetworkPlayer* GetPlayerByID(int id);
 
 	void Client_Send_AUTH(const char* gameversion, const char* name, const char* password);
 	void Server_Send_MAP();
@@ -139,6 +141,9 @@ public:
 	void Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
 	void Server_Send_TICK();
 	void Server_Send_PLAYERLIST();
+	void Client_Send_PING();
+	void Server_Send_PING();
+	void Server_Send_PINGLIST();
 
 	std::vector<std::unique_ptr<NetworkPlayer>> player_list;
 
@@ -148,6 +153,7 @@ private:
 	void ProcessGameCommandQueue();
 	void AddClient(SOCKET socket);
 	void RemoveClient(std::unique_ptr<NetworkConnection>& connection);
+	NetworkPlayer* AddPlayer(const char* name);
 	void PrintError();
 
 	struct GameCommand
@@ -166,6 +172,7 @@ private:
 	SOCKET listening_socket;
 	NetworkConnection server_connection;
 	uint32 last_tick_sent_time;
+	uint32 last_ping_sent_time;
 	uint32 server_tick;
 	std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
 	std::multiset<GameCommand> game_command_queue;
@@ -184,6 +191,9 @@ private:
 	int Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
 	int Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet);
 	int Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPacket& packet);
+	int Client_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
+	int Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
+	int Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket& packet);
 };
 
 extern "C" {
@@ -200,6 +210,8 @@ int network_get_authstatus();
 uint32 network_get_server_tick();
 int network_get_num_players();
 const char* network_get_player_name(unsigned int index);
+uint32 network_get_player_flags(unsigned int index);
+int network_get_player_ping(unsigned int index);
 
 void network_send_map();
 void network_send_chat(const char* text);

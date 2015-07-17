@@ -3804,4 +3804,6 @@ STR_5467    :ALT +
 
 STR_6000    :Send Message
 STR_6001    :Type the message you would like to send.
-STR_6002	:Player List
+STR_6002    :Player List
+STR_6003    :Player:
+STR_6004    :Ping:

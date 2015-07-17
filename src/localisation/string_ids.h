@@ -1797,6 +1797,8 @@ enum {
 
 	STR_ALT_PLUS = 5467,
 	STR_PLAYER_LIST = 6002,
+	STR_PLAYER = 6003,
+	STR_PING = 6004,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

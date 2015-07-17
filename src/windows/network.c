@@ -83,12 +83,12 @@ enum WINDOW_PLAYER_LIST_WIDGET_IDX {
 };
 
 static rct_widget window_player_list_widgets[] = {
-	{ WWT_FRAME,			0,	0,		319,	0,		269,	0x0FFFFFFFF,				65535 },									// panel / background
-	{ WWT_CAPTION,			0,	1,		318,	1,		14,		STR_PLAYER_LIST,			STR_WINDOW_TITLE_TIP },						// title bar
-	{ WWT_CLOSEBOX,			0,	307,	317,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },						// close x button
-	{ WWT_RESIZE,			1,	0,		319,	43,		269,	0x0FFFFFFFF,				STR_NONE },									// content panel
+	{ WWT_FRAME,			0,	0,		339,	0,		239,	0x0FFFFFFFF,				STR_NONE },									// panel / background
+	{ WWT_CAPTION,			0,	1,		338,	1,		14,		STR_PLAYER_LIST,			STR_WINDOW_TITLE_TIP },						// title bar
+	{ WWT_CLOSEBOX,			0,	327,	337,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },						// close x button
+	{ WWT_RESIZE,			1,	0,		339,	43,		239,	0x0FFFFFFFF,				STR_NONE },									// content panel
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x02000144E,				STR_NONE },									// tab
-	{ WWT_SCROLL,			1,	3,		316,	72,		266,	3,							65535 },									// list
+	{ WWT_SCROLL,			1,	3,		336,	60,		236,	2,							STR_NONE },									// list
 	{ WIDGETS_END },
 };
 
@@ -97,6 +97,7 @@ static void window_player_list_resize(rct_window *w);
 static void window_player_list_mousedown(int widgetIndex, rct_window* w, rct_widget* widget);
 static void window_player_list_update(rct_window *w);
 static void window_player_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_player_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
 static void window_player_list_invalidate(rct_window *w);
 static void window_player_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_player_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
@@ -120,7 +121,7 @@ static rct_window_event_list window_player_list_events = {
 	window_player_list_scrollgetsize,
 	NULL,
 	NULL,
-	NULL,
+	window_player_list_scrollmouseover,
 	NULL,
 	NULL,
 	NULL,
@@ -143,7 +144,7 @@ void window_player_list_open()
 	if (window != NULL)
 		return;
 
-	window = window_create_auto_pos(320, 270, &window_player_list_events, WC_PLAYER_LIST, WF_10 | WF_RESIZABLE);
+	window = window_create_auto_pos(320, 144, &window_player_list_events, WC_PLAYER_LIST, WF_10 | WF_RESIZABLE);
 
 	window->widgets = window_player_list_widgets;
 	window->enabled_widgets = 1 << WIDX_CLOSE;
@@ -151,7 +152,7 @@ void window_player_list_open()
 	window->selected_list_item = -1;
 	window->frame_no = 0;
 	window->min_width = 320;
-	window->min_height = 270;
+	window->min_height = 124;
 	window->max_width = 500;
 	window->max_height = 450;
 
@@ -229,6 +230,18 @@ static void window_player_list_scrollgetsize(rct_window *w, int scrollIndex, int
 	*width = 420;
 }
 
+static void window_player_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
+{
+	int index;
+
+	index = y / 10;
+	if (index >= w->no_list_items)
+		return;
+
+	w->selected_list_item = index;
+	window_invalidate(w);
+}
+
 static void window_player_list_invalidate(rct_window *w)
 {
 	for (int i = 0; i < 1; i++)
@@ -248,6 +261,8 @@ static void window_player_list_invalidate(rct_window *w)
 static void window_player_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
+	gfx_draw_string_left(dpi, STR_PLAYER, w, w->colours[2], w->x + 6, 58 - 12 + w->y + 1);
+	gfx_draw_string_left(dpi, STR_PING, w, w->colours[2], w->x + 246, 58 - 12 + w->y + 1);
 }
 
 static void window_player_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
@@ -262,10 +277,32 @@ static void window_player_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 			break;
 		}
 
-		int format = 1191;
-
 		if (y + 11 >= dpi->y) {
-			gfx_draw_string(dpi, (char*)network_get_player_name(i), 255, 0, y - 1);
+			char buffer[300];
+			int colour = 0;
+			if (i == w->selected_list_item) {
+				gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x02000031);
+				strcpy(&buffer[0], network_get_player_name(i));
+				colour = w->colours[2];
+			} else {
+				buffer[0] = FORMAT_BLACK;
+				if (network_get_player_flags(i) & NETWORK_PLAYER_FLAG_ISSERVER) {
+					buffer[0] = FORMAT_BABYBLUE;
+				}
+				strcpy(&buffer[1], network_get_player_name(i));
+			}
+			gfx_clip_string(buffer, 230);
+			gfx_draw_string(dpi, buffer, colour, 0, y - 1);
+			buffer[0] = FORMAT_RED;
+			int ping = network_get_player_ping(i);
+			if (ping <= 250) {
+				buffer[0] = FORMAT_YELLOW;
+			}
+			if (ping <= 100) {
+				buffer[0] = FORMAT_GREEN;
+			}
+			sprintf(&buffer[1], "%d ms", ping);
+			gfx_draw_string(dpi, buffer, colour, 240, y - 1);
 		}
 		y += 10;
 	}
@@ -275,7 +312,7 @@ static void window_player_list_refresh_list(rct_window *w)
 {
 	window_invalidate(w);
 
-	w->no_list_items = 1;
+	w->no_list_items = network_get_num_players();
 	w->list_item_positions[0] = 0;
 
 	w->selected_list_item = -1;
