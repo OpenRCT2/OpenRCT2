@@ -12,7 +12,7 @@
     <LocalDebuggerWorkingDirectory>$(TargetDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerCommand>$(TargetDir)\openrct2.exe</LocalDebuggerCommand>
-    <LocalDebuggerCommandArguments>"C:\Users\Ted\Desktop\rct1ll\Scenarios\sc15.sc4"</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>C:\Users\Ted\Desktop\rct1ll\Scenarios\sc1.sc4</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release with Tests|Win32'">
     <LocalDebuggerWorkingDirectory>$(TargetDir)</LocalDebuggerWorkingDirectory>
