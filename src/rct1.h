@@ -47,7 +47,10 @@ typedef struct {
 	uint16 lifecycle_flags;
 	uint8 operating_mode;
 	uint8 colour_scheme;
-	uint16 vehicle_colours[12];
+	struct {
+		uint8 body;
+		uint8 trim;
+	} vehicle_colours[12];
 	uint8 track_primary_colour;
 	uint8 track_secondary_colour;
 	uint8 track_support_colour;
@@ -511,5 +514,8 @@ void rct1_import_s4(rct1_s4 *s4);
 void rct1_fix_landscape();
 bool vehicleIsHigherInHierarchy(int track_type, char *currentVehicleName, char *comparedVehicleName);
 bool rideTypeShouldLoseSeparateFlag(rct_ride_type *ride);
+
+bool rct1_load_saved_game(const char *path);
+bool rct1_load_scenario(const char *path);
 
 #endif

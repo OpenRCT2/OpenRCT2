@@ -1467,7 +1467,27 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 			RCT2_GLOBAL(0x00F441A4, uint32) = meh;
 		}
 
-		uint32 **trackTypeList = (uint32**)RideTypeTrackPaintFunctions[ride->type];
+		int rideType = ride->type;
+		if (rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER) {
+			switch (trackType) {
+			case TRACK_ELEM_60_DEG_UP:
+			case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP:
+			case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP:
+			case TRACK_ELEM_60_DEG_DOWN:
+			case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN:
+			case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN:
+				rideType = RIDE_TYPE_WATER_COASTER;
+				break;
+
+			case TRACK_ELEM_FLAT_TO_60_DEG_UP:
+			case TRACK_ELEM_60_DEG_UP_TO_FLAT:
+			case TRACK_ELEM_FLAT_TO_60_DEG_DOWN:
+			case TRACK_ELEM_60_DEG_DOWN_TO_FLAT:
+				return;
+			}
+		}
+
+		uint32 **trackTypeList = (uint32**)RideTypeTrackPaintFunctions[rideType];
 		uint32 *trackDirectionList = trackTypeList[trackType];
 
 		// Have to call from this point as it pushes esi and expects callee to pop it

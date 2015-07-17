@@ -1822,3 +1822,420 @@ bool rideTypeShouldLoseSeparateFlag(rct_ride_type *ride)
 }
 
 #pragma endregion
+
+#pragma region RCT1 Scenario / Saved Game Import
+
+#include "audio/audio.h"
+#include "localisation/date.h"
+#include "peep/staff.h"
+
+static void rct1_import_s4_properly(rct1_s4 *s4);
+
+static const uint8 RCT1RideTypeConversionTable[] = {
+	RIDE_TYPE_WOODEN_ROLLER_COASTER,
+	RIDE_TYPE_STAND_UP_ROLLER_COASTER,
+	RIDE_TYPE_SUSPENDED_SWINGING_COASTER,
+	RIDE_TYPE_INVERTED_ROLLER_COASTER,
+	RIDE_TYPE_JUNIOR_ROLLER_COASTER,
+	RIDE_TYPE_MINIATURE_RAILWAY,
+	RIDE_TYPE_MONORAIL,
+	RIDE_TYPE_MINI_SUSPENDED_COASTER,
+	RIDE_TYPE_BOAT_RIDE,
+	RIDE_TYPE_WOODEN_WILD_MOUSE,
+	RIDE_TYPE_STEEPLECHASE,
+	RIDE_TYPE_CAR_RIDE,
+	RIDE_TYPE_LAUNCHED_FREEFALL,
+	RIDE_TYPE_BOBSLEIGH_COASTER,
+	RIDE_TYPE_OBSERVATION_TOWER,
+	RIDE_TYPE_LOOPING_ROLLER_COASTER,
+	RIDE_TYPE_DINGHY_SLIDE,
+	RIDE_TYPE_MINE_TRAIN_COASTER,
+	RIDE_TYPE_CHAIRLIFT,
+	RIDE_TYPE_CORKSCREW_ROLLER_COASTER,
+	RIDE_TYPE_MAZE,
+	RIDE_TYPE_SPIRAL_SLIDE,
+	RIDE_TYPE_GO_KARTS,
+	RIDE_TYPE_LOG_FLUME,
+	RIDE_TYPE_RIVER_RAPIDS,
+	RIDE_TYPE_DODGEMS,
+	RIDE_TYPE_PIRATE_SHIP,
+	RIDE_TYPE_SWINGING_INVERTER_SHIP,
+	RIDE_TYPE_FOOD_STALL,
+	RIDE_TYPE_FOOD_STALL,
+	RIDE_TYPE_DRINK_STALL,
+	RIDE_TYPE_FOOD_STALL,
+	RIDE_TYPE_SHOP,
+	RIDE_TYPE_MERRY_GO_ROUND,
+	RIDE_TYPE_SHOP,
+	RIDE_TYPE_INFORMATION_KIOSK,
+	RIDE_TYPE_TOILETS,
+	RIDE_TYPE_FERRIS_WHEEL,
+	RIDE_TYPE_MOTION_SIMULATOR,
+	RIDE_TYPE_3D_CINEMA,
+	RIDE_TYPE_TOP_SPIN,
+	RIDE_TYPE_SPACE_RINGS,
+	RIDE_TYPE_REVERSE_FREEFALL_COASTER,
+	RIDE_TYPE_SHOP,
+	RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER,
+	RIDE_TYPE_FOOD_STALL,
+	RIDE_TYPE_TWIST,
+	RIDE_TYPE_HAUNTED_HOUSE,
+	RIDE_TYPE_FOOD_STALL,
+	RIDE_TYPE_CIRCUS_SHOW,
+	RIDE_TYPE_GHOST_TRAIN,
+	RIDE_TYPE_TWISTER_ROLLER_COASTER,
+	RIDE_TYPE_WOODEN_ROLLER_COASTER,
+	RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER,
+	RIDE_TYPE_WILD_MOUSE,
+	RIDE_TYPE_FOOD_STALL,
+	RIDE_TYPE_FOOD_STALL,
+	RIDE_TYPE_SHOP,
+	RIDE_TYPE_FOOD_STALL,
+	RIDE_TYPE_VIRGINIA_REEL,
+	RIDE_TYPE_SPLASH_BOATS,
+	RIDE_TYPE_MINI_HELICOPTERS,
+	RIDE_TYPE_LAY_DOWN_ROLLER_COASTER,
+	RIDE_TYPE_SUSPENDED_MONORAIL,
+	RIDE_TYPE_NULL,
+	RIDE_TYPE_REVERSER_ROLLER_COASTER,
+	RIDE_TYPE_HEARTLINE_TWISTER_COASTER,
+	RIDE_TYPE_MINI_GOLF,
+	RIDE_TYPE_NULL,
+	RIDE_TYPE_ROTO_DROP,
+	RIDE_TYPE_FLYING_SAUCERS,
+	RIDE_TYPE_CROOKED_HOUSE,
+	RIDE_TYPE_MONORAIL_CYCLES,
+	RIDE_TYPE_COMPACT_INVERTED_COASTER,
+	RIDE_TYPE_WATER_COASTER,
+	RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER,
+	RIDE_TYPE_INVERTED_HAIRPIN_COASTER,
+	RIDE_TYPE_BOAT_RIDE,
+	RIDE_TYPE_SHOP,
+	RIDE_TYPE_RIVER_RAFTS,
+	RIDE_TYPE_FOOD_STALL,
+	RIDE_TYPE_ENTERPRISE,
+	RIDE_TYPE_DRINK_STALL,
+	RIDE_TYPE_FOOD_STALL,
+	RIDE_TYPE_DRINK_STALL
+};
+
+static char *RCT1ScenarioDetails[] = {
+	"Deep in the forest, build a thriving theme park in a large cleared area",
+	"Built in the middle of the desert, this theme park contains just one roller coaster but has space for expansion",
+	"Starting from scratch, build a theme park around a large lake",
+	"Diamond Heights is already a successful theme park with great rides - develop it to double it's value",
+	"Convert the beautiful Evergreen Gardens into a thriving theme park",
+	"Develop Bumbly Beach's small amusement park into a thriving theme park",
+	"Several islands form the basis for this new park",
+	"A small theme park with a few rides and room for expansion - Your aim is to double the park value",
+	"A small, cramped amusement park which requires major expansion",
+	"A park with some excellent water-based rides requires expansion",
+	"Convert a large abandoned mine from a tourist attraction into a theme park",
+	"A large park hidden in the forest, with only go-kart tracks and wooden roller coasters",
+	"This theme park has some well-designed modern rides, but plenty of space for expansion",
+	"In the hilly forests of Mystic Mountain, build a theme park from scratch",
+	"Convert the Egyptian Ruins tourist attraction into a thriving theme park",
+	"A large park with well-designed but rather old rides - Replace the old rides or add new rides to make the park more popular",
+	"Convert this sleepy town's pier into a thriving attraction",
+	"The beautiful mountains of Lightning Peaks are popular with walkers and sightseers - Use the available land to attract a new thrill-seeking clientele",
+	"A well-established park, which has a few problems",
+	"Rainbow Valley's local authority won't allow any landscape changes or large tree removal, but you must develop the area into a large theme park",
+	"Thunder Rock stands in the middle of a desert and attracts many tourists - Use the available space to build rides to attract more people",
+	"Just for fun!",
+};
+
+static int rct1_get_sc_number(const char *path)
+{
+	const char *filename = path_get_filename(path);
+	if (tolower(filename[0]) == 's' && tolower(filename[1]) == 'c') {
+		char digitBuffer[8];
+		char *dst = digitBuffer;
+		const char *src = filename + 2;
+		for (int i = 0; i < 7 && *src != '.'; i++) {
+			*dst++ = *src++;
+		}
+		*dst++ = 0;
+		if (digitBuffer[0] == '0' && digitBuffer[1] == 0) {
+			return 0;
+		} else {
+			int digits = atoi(digitBuffer);
+			return digits == 0 ? -1 : digits;
+		}
+	} else {
+		return -1;
+	}
+}
+
+bool rct1_load_saved_game(const char *path)
+{
+	rct1_s4 *s4;
+
+	s4 = malloc(sizeof(rct1_s4));
+	if (!rct1_read_sv4(path, s4)) {
+		free(s4);
+		return false;
+	}
+	rct1_import_s4_properly(s4);
+	free(s4);
+	return true;
+}
+
+bool rct1_load_scenario(const char *path)
+{
+	rct1_s4 *s4;
+
+	s4 = malloc(sizeof(rct1_s4));
+	if (!rct1_read_sc4(path, s4)) {
+		free(s4);
+		return false;
+	}
+	rct1_import_s4_properly(s4);
+
+	int scNumber = rct1_get_sc_number(path);
+	if (scNumber != -1) {
+		if (scNumber >= 0 && scNumber < countof(RCT1ScenarioDetails)) {
+			rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+			strcpy(s6Info->details, RCT1ScenarioDetails[scNumber]);
+		}
+	}
+
+	free(s4);
+
+	scenario_begin();
+	return true;
+}
+
+static void rct1_import_map_elements(rct1_s4 *s4)
+{
+	memcpy(gMapElements, s4->map_elements, 0xC000 * sizeof(rct_map_element));
+	rct1_clear_extra_tile_entries();
+	rct1_fix_colours();
+	rct1_fix_z();
+	rct1_fix_paths();
+	rct1_fix_walls();
+	rct1_fix_scenery();
+	rct1_fix_terrain();
+	rct1_fix_entrance_positions();
+
+	rct1_ride *ride;
+	rct_map_element *mapElement;
+	for (int y = 0; y < 256; y++) {
+		for (int x = 0; x < 256; x++) {
+		// restartTile:
+			mapElement = map_get_first_element_at(x, y);
+			do {
+				switch (map_element_get_type(mapElement)) {
+				case MAP_ELEMENT_TYPE_TRACK:
+					ride = &s4->rides[mapElement->properties.track.ride_index];
+					break;
+				case MAP_ELEMENT_TYPE_ENTRANCE:
+					break;
+				}
+			} while (!map_element_is_last_for_tile(mapElement++));
+		}
+	}
+}
+
+static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
+{
+	rct_ride_type *rideEntry;
+
+	memset(dst, 0, sizeof(rct_ride));
+
+	dst->type = RCT1RideTypeConversionTable[src->type];
+	dst->subtype = src->type;
+
+	rideEntry = GET_RIDE_ENTRY(dst->subtype);
+
+	// Ride name
+	dst->name = 0;
+	if (is_user_string_id(src->name)) {
+		const char *rideName = s4->string_table[(src->name - 0x8000) % 1024];
+		if (rideName[0] != 0) {
+			rct_string_id rideNameStringId = user_string_allocate(4, rideName);
+			if (rideNameStringId != 0) {
+				dst->name = rideNameStringId;
+			}
+		}
+	}
+	if (dst->name == 0) {
+		dst->name = 1;
+
+		uint16 *args = (uint16*)&dst->name_arguments;
+		args[0] = 2 + dst->type;
+		args[1] = src->name_argument_number;
+	}
+
+	// 
+	dst->status = RIDE_STATUS_CLOSED;
+
+	// Station
+	dst->overall_view = src->overall_view;
+	for (int i = 0; i < 4; i++) {
+		dst->station_starts[i] = src->station_starts[i];
+		dst->station_heights[i] = src->station_height[i] / 2;
+		dst->station_length[i] = src->station_length[i];
+		dst->station_depart[i] = src->station_light[i];
+		dst->var_066[i] = src->station_depart[i];
+		dst->entrances[i] = src->entrance[i];
+		dst->exits[i] = src->exit[i];
+		dst->queue_time[i] = src->queue_time[i];
+		dst->first_peep_in_queue[i] = 0xFFFF;
+	}
+	dst->num_stations = src->num_stations;
+
+	for (int i = 0; i < 32; i++) {
+		dst->vehicles[i] = 0xFFFF;
+	}
+	dst->num_vehicles = src->num_trains;
+	dst->num_cars_per_train = src->num_cars_per_train;
+	dst->var_0CA = 32;
+	dst->max_trains = 32;
+	dst->var_0CB = 12;
+
+	// Operation
+	dst->mode = src->operating_mode;
+	dst->depart_flags = src->depart_flags;
+	dst->min_waiting_time = src->min_waiting_time;
+	dst->max_waiting_time = src->max_waiting_time;
+	dst->operation_option = src->operation_option;
+	dst->music = RCT2_ADDRESS(0x0097D4F4, uint8)[dst->type * 8];
+	dst->num_circuits = 1;
+	dst->min_max_cars_per_train = (rideEntry->min_cars_in_train << 4) | rideEntry->max_cars_in_train;
+	dst->lift_hill_speed = RCT2_ADDRESS(0x0097D7C9, uint8)[dst->type * 4];
+
+	// Colours
+	dst->colour_scheme_type = src->colour_scheme;
+	if (s4->game_version == 108166) {
+		dst->track_colour_main[0] = RCT1ColourConversionTable[src->track_primary_colour];
+		dst->track_colour_additional[0] = RCT1ColourConversionTable[src->track_secondary_colour];
+		dst->track_colour_supports[0] = RCT1ColourConversionTable[src->track_support_colour];
+	} else {
+		for (int i = 0; i < 4; i++) {
+			dst->track_colour_main[i] = RCT1ColourConversionTable[src->track_colour_main[i]];
+			dst->track_colour_additional[i] = RCT1ColourConversionTable[src->track_colour_additional[i]];
+			dst->track_colour_supports[i] = RCT1ColourConversionTable[src->track_colour_supports[i]];
+		}
+	}
+	for (int i = 0; i < 12; i++) {
+		dst->vehicle_colours[i].body_colour = RCT1ColourConversionTable[src->vehicle_colours[i].body];
+		dst->vehicle_colours[i].trim_colour = RCT1ColourConversionTable[src->vehicle_colours[i].trim];
+	}
+
+	// Maintenance
+	dst->build_date = src->build_date;
+	dst->inspection_interval = src->inspection_interval;
+	dst->last_inspection = src->last_inspection;
+	dst->reliability = src->reliability;
+	dst->unreliability_factor = src->unreliability_factor;
+	dst->breakdown_reason = src->breakdown_reason;
+
+	// Finance
+	dst->upkeep_cost = src->upkeep_cost;
+	dst->price = src->price;
+	dst->income_per_hour = src->income_per_hour;
+
+	dst->value = src->value;
+	dst->satisfaction = 255;
+	dst->satisfaction_time_out = 0;
+	dst->satisfaction_next = 0;
+	dst->popularity = src->popularity;
+	dst->popularity_next = src->popularity_next;
+	dst->popularity_time_out = src->popularity_time_out;
+
+	dst->music_tune_id = 255;
+	dst->measurement_index = 255;
+	dst->excitement = (ride_rating)-1;
+}
+
+static void rct1_import_s4_properly(rct1_s4 *s4)
+{
+	int mapSize = s4->map_size == 0 ? 128 : s4->map_size;
+
+	pause_sounds();
+	unpause_sounds();
+	object_unload_all();
+	map_init(mapSize);
+	banner_init();
+	reset_park_entrances();
+	user_string_clear_all();
+	reset_sprite_list();
+	ride_init_all();
+	window_guest_list_init_vars_a();
+	staff_reset_modes();
+	park_init();
+	finance_init();
+	date_reset();
+	window_guest_list_init_vars_b();
+	window_staff_list_init_vars();
+	RCT2_GLOBAL(0x0141F570, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+	window_new_ride_init_vars();
+	RCT2_GLOBAL(0x0141F571, uint8) = 4;
+	news_item_init_queue();
+
+	rct_string_id stringId;
+
+	rct1_load_default_objects();
+	reset_loaded_objects();
+
+	// Map elements
+	rct1_import_map_elements(s4);
+
+	// Rides
+	for (int i = 0; i < MAX_RIDES; i++) {
+		if (s4->rides[i].type != RIDE_TYPE_NULL) {
+			rct1_import_ride(s4, GET_RIDE(i), &s4->rides[i]);
+		}
+	}
+
+	// Peep spawns
+	for (int i = 0; i < 2; i++) {
+		gPeepSpawns[i] = s4->peep_spawn[i];
+	}
+
+	// Map animations
+	rct_map_animation *s4Animations = (rct_map_animation*)s4->map_animations;
+	for (int i = 0; i < 1000; i++) {
+		gAnimatedObjects[i] = s4Animations[i];
+		gAnimatedObjects[i].baseZ /= 2;
+	}
+	RCT2_GLOBAL(0x0138B580, uint16) = s4->num_map_animations;
+
+	// Finance
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, uint32) = ENCRYPT_MONEY(s4->cash);
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) = s4->park_entrance_fee;
+
+	// Park name
+	const char *parkName = s4->scenario_name;
+	if (is_user_string_id((rct_string_id)s4->park_name_string_index)) {
+		const char *userString = s4->string_table[(s4->park_name_string_index - 0x8000) % 1024];
+		if (userString[0] != 0) {
+			parkName = userString;
+		}
+	}
+	stringId = user_string_allocate(4, parkName);
+	if (stringId != 0) {
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id) = stringId;
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32) = 0;
+	}
+
+	// Scenario name
+	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+	strcpy(s6Info->name, s4->scenario_name);
+	strcpy(s6Info->details, "");
+
+	// Scenario objective
+	RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) = s4->scenario_objective_type;
+	RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8) = s4->scenario_objective_years;
+	RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, uint32) = s4->scenario_objective_currency;
+	RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) = s4->scenario_objective_num_guests;
+
+	// Restore view
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, uint16) = s4->view_x;
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, uint16) = s4->view_y;
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint8) = s4->view_zoom;
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION + 1, uint8) = s4->view_rotation;
+}
+
+#pragma endregion
