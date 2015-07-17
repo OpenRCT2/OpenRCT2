@@ -22,6 +22,7 @@
 #include "../config.h"
 #include "../drawing/drawing.h"
 #include "../localisation/localisation.h"
+#include "../ride/track_data.h"
 #include "../sprites.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
@@ -1407,6 +1408,73 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 	}
 }
 
+/**
+ *
+ *  rct2: 0x006C4794
+ */
+void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *mapElement)
+{
+	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
+	rct_ride *ride;
+	int trackType, trackColourScheme, trackSequence;
+
+	if (!(RCT2_GLOBAL(0x009DEA6F, uint8) & 1) || mapElement->properties.track.ride_index == RCT2_GLOBAL(0x00F64DE8, uint8)) {
+		ride = GET_RIDE(mapElement->properties.track.ride_index);
+		trackType = mapElement->properties.track.type;
+		trackSequence = mapElement->properties.track.sequence & 0x0F;
+		trackColourScheme = mapElement->properties.track.colour & 3;
+		
+		if ((RCT2_GLOBAL(0x0141E9E4, uint16) & 0x20) && dpi->zoom_level == 0) {
+			RCT2_GLOBAL(0x009DE570, uint8) = 0;
+			if (RCT2_ADDRESS(0x00999694, uint32)[trackType] & (1 << trackSequence)) {
+				uint16 ax = RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
+				uint32 ebx = 0x20381689 + (height + 8) / 16;
+				ebx += RCT2_GLOBAL(0x009AACBD, uint16);
+				ebx -= RCT2_GLOBAL(0x01359208, uint16);
+				RCT2_GLOBAL(0x009DEA52, uint16) = 1000;
+				RCT2_GLOBAL(0x009DEA54, uint16) = 1000;
+				RCT2_GLOBAL(0x009DEA56, uint16) = 2047;
+				RCT2_CALLPROC_X(
+					RCT2_ADDRESS(0x0098197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)],
+					16,
+					ebx,
+					16,
+					height + ax + 3,
+					1,
+					1,
+					0
+				);
+			}
+		}
+
+		RCT2_GLOBAL(0x009DE570, uint8) = 3;
+		RCT2_GLOBAL(0x00F44198, uint32) = (ride->track_colour_main[trackColourScheme] << 19) | (ride->track_colour_additional[trackColourScheme] << 24) | 0xA0000000;
+		RCT2_GLOBAL(0x00F441A0, uint32) = 0x20000000;
+		RCT2_GLOBAL(0x00F441A4, uint32) = 0x20C00000;
+		RCT2_GLOBAL(0x00F4419C, uint32) = (ride->track_colour_supports[trackColourScheme] << 19) | 0x20000000;
+		if (mapElement->type & 0x40) {
+			RCT2_GLOBAL(0x00F44198, uint32) = 0x21600000;
+			RCT2_GLOBAL(0x00F4419C, uint32) = 0x21600000;
+			RCT2_GLOBAL(0x00F441A0, uint32) = 0x21600000;
+			RCT2_GLOBAL(0x00F441A4, uint32) = 0x21600000;
+		}
+		if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
+			uint32 meh = RCT2_ADDRESS(0x00993CC4, uint32)[RCT2_GLOBAL(0x009AACBF, uint8)];
+			RCT2_GLOBAL(0x009DE570, uint8) = 0;
+			RCT2_GLOBAL(0x00F44198, uint32) = meh;
+			RCT2_GLOBAL(0x00F4419C, uint32) = meh;
+			RCT2_GLOBAL(0x00F441A0, uint32) = meh;
+			RCT2_GLOBAL(0x00F441A4, uint32) = meh;
+		}
+
+		uint32 **trackTypeList = (uint32**)RideTypeTrackPaintFunctions[ride->type];
+		uint32 *trackDirectionList = trackTypeList[trackType];
+
+		// Have to call from this point as it pushes esi and expects callee to pop it
+		RCT2_CALLPROC_X(0x006C4934, 0, (int)trackDirectionList, direction, height, (int)mapElement, 0, trackSequence);
+	}
+}
+
 /* rct2: 0x00664FD4 */
 void viewport_entrance_paint_setup(uint8 direction, int height, rct_map_element* map_element){
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_LABEL;
@@ -1630,7 +1698,7 @@ static void sub_68B3FB(int x, int y)
 			RCT2_CALLPROC_X(0x6A3590, 0, 0, direction, height, (int)map_element, 0, 0);
 			break;
 		case MAP_ELEMENT_TYPE_TRACK:
-			RCT2_CALLPROC_X(0x6C4794, 0, 0, direction, height, (int)map_element, 0, 0);
+			viewport_track_paint_setup(direction, height, map_element);
 			break;
 		case MAP_ELEMENT_TYPE_SCENERY:
 			RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, height, (int)map_element, 0, 0);
@@ -1663,7 +1731,7 @@ static void sub_68B3FB(int x, int y)
  *
  *  rct2: 0x0068B60E
  */
-static void sub_68B60E(int x, int y)
+static void viewport_blank_tiles_paint_setup(int x, int y)
 {
 	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
 
@@ -1735,7 +1803,7 @@ void sub_68B2B7(int x, int y)
 
 		sub_68B3FB(x, y);
 	} else {
-		sub_68B60E(x, y);
+		viewport_blank_tiles_paint_setup(x, y);
 	}
 }
 
@@ -1766,7 +1834,7 @@ void map_element_paint_setup(int x, int y)
 		
 		sub_68B3FB(x, y);
 	} else {
-		sub_68B60E(x, y);
+		viewport_blank_tiles_paint_setup(x, y);
 	}
 }
 
