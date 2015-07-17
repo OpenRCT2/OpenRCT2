@@ -3625,7 +3625,7 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 
 	switch (setting){
 	case 0:
-		sub_6B59C6(ride_id);
+		invalidate_test_results(ride_id);
 		ride_clear_for_construction(ride_id);
 		ride_remove_peeps(ride_id);
 
@@ -3667,7 +3667,7 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 		ride->min_waiting_time = min(new_value, ride->min_waiting_time);
 		break;
 	case 4:
-		sub_6B59C6(ride_id);
+		invalidate_test_results(ride_id);
 		ride->time_limit = new_value;
 		break;
 	case 5:
@@ -3688,13 +3688,13 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 	case 8:
 		if (new_value != ride->lift_hill_speed){
 			ride->lift_hill_speed = new_value;
-			sub_6B59C6(ride_id);
+			invalidate_test_results(ride_id);
 		}
 		break;
 	case 9:
 		if (new_value != ride->num_circuits){
 			ride->num_circuits = new_value;
-			sub_6B59C6(ride_id);
+			invalidate_test_results(ride_id);
 		}
 		break;
 	}
@@ -5858,7 +5858,7 @@ bool ride_are_all_possible_entrances_and_exits_built(rct_ride *ride)
  *
  * rct2: 0x006B59C6
  */
-void sub_6B59C6(int rideIndex)
+void invalidate_test_results(int rideIndex)
 {
 	rct_ride *ride = GET_RIDE(rideIndex);
 
@@ -6257,7 +6257,7 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 		return;
 	}
 
-	sub_6B59C6(rideIndex);
+	invalidate_test_results(rideIndex);
 	ride_clear_for_construction(rideIndex);
 	ride_remove_peeps(rideIndex);
 	ride->var_1CA = 100;
@@ -6517,7 +6517,7 @@ money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex, uint8 
 	if (flags & GAME_COMMAND_FLAG_APPLY){
 		ride_clear_for_construction(rideIndex);
 		ride_remove_peeps(rideIndex);
-		sub_6B59C6(rideIndex);
+		invalidate_test_results(rideIndex);
 
 		uint8 found = 0;
 		rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
