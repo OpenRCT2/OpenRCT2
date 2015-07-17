@@ -4945,7 +4945,7 @@ foundRideEntry:
 	ride->num_stations = 0;
 	ride->num_vehicles = 1;
 	ride->var_0CA = 32;
-	ride->var_0CB = 32;
+	ride->max_trains = 32;
 	ride->num_cars_per_train = 1;
 	ride->var_0CB = 12;
 	ride->min_waiting_time = 10;
