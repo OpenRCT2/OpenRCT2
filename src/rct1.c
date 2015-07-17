@@ -1848,7 +1848,7 @@ static const uint8 RCT1RideTypeConversionTable[] = {
 	RIDE_TYPE_CHAIRLIFT,
 	RIDE_TYPE_CORKSCREW_ROLLER_COASTER,
 	RIDE_TYPE_MAZE,
-	RIDE_TYPE_SPIRAL_ROLLER_COASTER,
+	RIDE_TYPE_SPIRAL_SLIDE,
 	RIDE_TYPE_GO_KARTS,
 	RIDE_TYPE_LOG_FLUME,
 	RIDE_TYPE_RIVER_RAPIDS,
@@ -1914,6 +1914,53 @@ static const uint8 RCT1RideTypeConversionTable[] = {
 	RIDE_TYPE_DRINK_STALL
 };
 
+static char *RCT1ScenarioDetails[] = {
+	"Deep in the forest, build a thriving theme park in a large cleared area",
+	"Built in the middle of the desert, this theme park contains just one roller coaster but has space for expansion",
+	"Starting from scratch, build a theme park around a large lake",
+	"Diamond Heights is already a successful theme park with great rides - develop it to double it's value",
+	"Convert the beautiful Evergreen Gardens into a thriving theme park",
+	"Develop Bumbly Beach's small amusement park into a thriving theme park",
+	"Several islands form the basis for this new park",
+	"A small theme park with a few rides and room for expansion - Your aim is to double the park value",
+	"A small, cramped amusement park which requires major expansion",
+	"A park with some excellent water-based rides requires expansion",
+	"Convert a large abandoned mine from a tourist attraction into a theme park",
+	"A large park hidden in the forest, with only go-kart tracks and wooden roller coasters",
+	"This theme park has some well-designed modern rides, but plenty of space for expansion",
+	"In the hilly forests of Mystic Mountain, build a theme park from scratch",
+	"Convert the Egyptian Ruins tourist attraction into a thriving theme park",
+	"A large park with well-designed but rather old rides - Replace the old rides or add new rides to make the park more popular",
+	"Convert this sleepy town's pier into a thriving attraction",
+	"The beautiful mountains of Lightning Peaks are popular with walkers and sightseers - Use the available land to attract a new thrill-seeking clientele",
+	"A well-established park, which has a few problems",
+	"Rainbow Valley's local authority won't allow any landscape changes or large tree removal, but you must develop the area into a large theme park",
+	"Thunder Rock stands in the middle of a desert and attracts many tourists - Use the available space to build rides to attract more people",
+	"Just for fun!",
+};
+
+static int rct1_get_sc_number(const char *path)
+{
+	const char *filename = path_get_filename(path);
+	if (tolower(filename[0]) == 's' && tolower(filename[1]) == 'c') {
+		char digitBuffer[8];
+		char *dst = digitBuffer;
+		const char *src = filename + 2;
+		for (int i = 0; i < 7 && *src != '.'; i++) {
+			*dst++ = *src++;
+		}
+		*dst++ = 0;
+		if (digitBuffer[0] == '0' && digitBuffer[1] == 0) {
+			return 0;
+		} else {
+			int digits = atoi(digitBuffer);
+			return digits == 0 ? -1 : digits;
+		}
+	} else {
+		return -1;
+	}
+}
+
 bool rct1_load_saved_game(const char *path)
 {
 	rct1_s4 *s4;
@@ -1938,6 +1985,15 @@ bool rct1_load_scenario(const char *path)
 		return false;
 	}
 	rct1_import_s4_properly(s4);
+
+	int scNumber = rct1_get_sc_number(path);
+	if (scNumber != -1) {
+		if (scNumber >= 0 && scNumber < countof(RCT1ScenarioDetails)) {
+			rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+			strcpy(s6Info->details, RCT1ScenarioDetails[scNumber]);
+		}
+	}
+
 	free(s4);
 
 	scenario_begin();
@@ -1956,23 +2012,18 @@ static void rct1_import_map_elements(rct1_s4 *s4)
 	rct1_fix_terrain();
 	rct1_fix_entrance_positions();
 
+	rct1_ride *ride;
 	rct_map_element *mapElement;
 	for (int y = 0; y < 256; y++) {
 		for (int x = 0; x < 256; x++) {
-		restartTile:
+		// restartTile:
 			mapElement = map_get_first_element_at(x, y);
 			do {
 				switch (map_element_get_type(mapElement)) {
 				case MAP_ELEMENT_TYPE_TRACK:
-					x = x;
-					// map_element_remove(mapElement);
-					// goto restartTile;
+					ride = &s4->rides[mapElement->properties.track.ride_index];
 					break;
 				case MAP_ELEMENT_TYPE_ENTRANCE:
-					// if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) {
-					// 	map_element_remove(mapElement);
-					// 	goto restartTile;
-					// }
 					break;
 				}
 			} while (!map_element_is_last_for_tile(mapElement++));
@@ -2043,7 +2094,7 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 	dst->min_waiting_time = src->min_waiting_time;
 	dst->max_waiting_time = src->max_waiting_time;
 	dst->operation_option = src->operation_option;
-	dst->music = src->music;
+	dst->music = RCT2_ADDRESS(0x0097D4F4, uint8)[dst->type * 8];
 	dst->num_circuits = 1;
 	dst->min_max_cars_per_train = (rideEntry->min_cars_in_train << 4) | rideEntry->max_cars_in_train;
 	dst->lift_hill_speed = RCT2_ADDRESS(0x0097D7C9, uint8)[dst->type * 4];
@@ -2060,6 +2111,10 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 			dst->track_colour_additional[i] = RCT1ColourConversionTable[src->track_colour_additional[i]];
 			dst->track_colour_supports[i] = RCT1ColourConversionTable[src->track_colour_supports[i]];
 		}
+	}
+	for (int i = 0; i < 12; i++) {
+		dst->vehicle_colours[i].body_colour = RCT1ColourConversionTable[src->vehicle_colours[i].body];
+		dst->vehicle_colours[i].trim_colour = RCT1ColourConversionTable[src->vehicle_colours[i].trim];
 	}
 
 	// Maintenance
@@ -2122,15 +2177,25 @@ static void rct1_import_s4_properly(rct1_s4 *s4)
 	// Map elements
 	rct1_import_map_elements(s4);
 
+	// Rides
 	for (int i = 0; i < MAX_RIDES; i++) {
 		if (s4->rides[i].type != RIDE_TYPE_NULL) {
 			rct1_import_ride(s4, GET_RIDE(i), &s4->rides[i]);
 		}
 	}
 
+	// Peep spawns
 	for (int i = 0; i < 2; i++) {
 		gPeepSpawns[i] = s4->peep_spawn[i];
 	}
+
+	// Map animations
+	rct_map_animation *s4Animations = (rct_map_animation*)s4->map_animations;
+	for (int i = 0; i < 1000; i++) {
+		gAnimatedObjects[i] = s4Animations[i];
+		gAnimatedObjects[i].baseZ /= 2;
+	}
+	RCT2_GLOBAL(0x0138B580, uint16) = s4->num_map_animations;
 
 	// Finance
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, uint32) = ENCRYPT_MONEY(s4->cash);
@@ -2151,7 +2216,9 @@ static void rct1_import_s4_properly(rct1_s4 *s4)
 	}
 
 	// Scenario name
-	strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, s4->scenario_name);
+	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+	strcpy(s6Info->name, s4->scenario_name);
+	strcpy(s6Info->details, "");
 
 	// Scenario objective
 	RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) = s4->scenario_objective_type;
