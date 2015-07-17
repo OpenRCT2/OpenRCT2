@@ -1781,7 +1781,7 @@ STR_1776    :On
 STR_1777    :{WINDOW_COLOUR_2}Music
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigre costume
+STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger costume
 STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elephant costume
 STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Roman costume
 STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilla costume
