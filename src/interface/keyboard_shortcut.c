@@ -78,7 +78,7 @@ void keyboard_shortcut_handle_command(int shortcutIndex)
 
 void keyboard_shortcut_format_string(char *buffer, uint16 shortcutKey)
 {
-	char *formatBuffer[256];
+	char formatBuffer[256];
 
 	*buffer = 0;
 	if (shortcutKey & 0x100) {
