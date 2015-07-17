@@ -126,6 +126,7 @@ void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rc
 
 void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int x, int y);
 
+void sub_68B2B7(int x, int y);
 void sub_0x68615B(int ebp);
 void sub_688485();
 void sub_688217();

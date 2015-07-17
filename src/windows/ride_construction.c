@@ -2084,15 +2084,6 @@ static void window_ride_construction_paint(rct_window *w, rct_drawpixelinfo *dpi
 	}
 }
 
-/**
- *
- * rct2: 0x0068B2B7
- */
-static void sub_68B2B7(int x, int y)
-{
-	RCT2_CALLPROC_X(0x0068B2B7, x, 0, y, 0, 0, 0, 0);
-}
-
 static void window_ride_construction_draw_track_piece(
 	rct_window *w, rct_drawpixelinfo *dpi,
 	int rideIndex, int trackType, int trackDirection, int unknown,
