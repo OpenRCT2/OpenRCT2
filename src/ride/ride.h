@@ -907,7 +907,7 @@ void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, in
 void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void ride_clear_for_construction(int rideIndex);
 void set_vehicle_type_image_max_sizes(rct_ride_type_vehicle* vehicle_type, int num_images);
-void sub_6B59C6(int rideIndex);
+void invalidate_test_results(int rideIndex);
 
 void ride_select_next_section();
 void ride_select_previous_section();

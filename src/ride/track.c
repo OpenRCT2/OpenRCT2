@@ -3800,7 +3800,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		if (!(flags & GAME_COMMAND_FLAG_APPLY))
 			continue;
 
-		sub_6B59C6(rideIndex);
+		invalidate_test_results(rideIndex);
 		switch (type){
 		case TRACK_ELEM_ON_RIDE_PHOTO:
 			ride->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
@@ -4153,7 +4153,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 			surfaceElement->type &= ~(1 << 6);
 		}
 
-		sub_6B59C6(rideIndex);
+		invalidate_test_results(rideIndex);
 		sub_6A7594();
 		footpath_remove_edges_at(x, y, mapElement);
 		map_element_remove(mapElement);
