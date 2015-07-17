@@ -2029,6 +2029,7 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 		dst->entrances[i] = src->entrance[i];
 		dst->exits[i] = src->exit[i];
 		dst->queue_time[i] = src->queue_time[i];
+		dst->first_peep_in_queue[i] = 0xFFFF;
 	}
 	dst->num_stations = src->num_stations;
 
