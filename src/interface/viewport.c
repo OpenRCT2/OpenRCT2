@@ -1416,10 +1416,11 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 {
 	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
 	rct_ride *ride;
-	int trackType, trackColourScheme, trackSequence;
+	int rideIndex, trackType, trackColourScheme, trackSequence;
 
 	if (!(RCT2_GLOBAL(0x009DEA6F, uint8) & 1) || mapElement->properties.track.ride_index == RCT2_GLOBAL(0x00F64DE8, uint8)) {
-		ride = GET_RIDE(mapElement->properties.track.ride_index);
+		rideIndex = mapElement->properties.track.ride_index;
+		ride = GET_RIDE(rideIndex);
 		trackType = mapElement->properties.track.type;
 		trackSequence = mapElement->properties.track.sequence & 0x0F;
 		trackColourScheme = mapElement->properties.track.colour & 3;
@@ -1471,7 +1472,16 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 		uint32 *trackDirectionList = trackTypeList[trackType];
 
 		// Have to call from this point as it pushes esi and expects callee to pop it
-		RCT2_CALLPROC_X(0x006C4934, 0, (int)trackDirectionList, direction, height, (int)mapElement, 0, trackSequence);
+		RCT2_CALLPROC_X(
+			0x006C4934,
+			ride->type,
+			(int)trackDirectionList,
+			direction,
+			height,
+			(int)mapElement,
+			rideIndex * sizeof(rct_ride),
+			trackSequence
+		);
 	}
 }
 
