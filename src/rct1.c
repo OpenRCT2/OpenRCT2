@@ -1987,10 +1987,14 @@ static void rct1_import_map_elements(rct1_s4 *s4)
 
 static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 {
+	rct_ride_type *rideEntry;
+
 	memset(dst, 0, sizeof(rct_ride));
 
 	dst->type = RCT1RideTypeConversionTable[src->type];
 	dst->subtype = src->type;
+
+	rideEntry = GET_RIDE_ENTRY(dst->subtype);
 
 	// Ride name
 	dst->name = 0;
@@ -2018,12 +2022,24 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 	dst->overall_view = src->overall_view;
 	for (int i = 0; i < 4; i++) {
 		dst->station_starts[i] = src->station_starts[i];
-		dst->station_heights[i] = src->station_height[i];
+		dst->station_heights[i] = src->station_height[i] / 2;
 		dst->station_length[i] = src->station_length[i];
-		dst->station_depart[i] = src->station_depart[i];
+		dst->station_depart[i] = src->station_light[i];
+		dst->var_066[i] = src->station_depart[i];
 		dst->entrances[i] = src->entrance[i];
 		dst->exits[i] = src->exit[i];
+		dst->queue_time[i] = src->queue_time[i];
 	}
+	dst->num_stations = src->num_stations;
+
+	for (int i = 0; i < 32; i++) {
+		dst->vehicles[i] = 0xFFFF;
+	}
+	dst->num_vehicles = src->num_trains;
+	dst->num_cars_per_train = src->num_cars_per_train;
+	dst->var_0CA = 32;
+	dst->max_trains = 32;
+	dst->var_0CB = 12;
 
 	// Operation
 	dst->mode = src->operating_mode;
@@ -2032,6 +2048,9 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 	dst->max_waiting_time = src->max_waiting_time;
 	dst->operation_option = src->operation_option;
 	dst->music = src->music;
+	dst->num_circuits = 1;
+	dst->min_max_cars_per_train = (rideEntry->min_cars_in_train << 4) | rideEntry->max_cars_in_train;
+	dst->lift_hill_speed = RCT2_ADDRESS(0x0097D7C9, uint8)[dst->type * 4];
 
 	// Colours
 	dst->colour_scheme_type = src->colour_scheme;
@@ -2048,6 +2067,7 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 	}
 
 	// Maintenance
+	dst->build_date = src->build_date;
 	dst->inspection_interval = src->inspection_interval;
 	dst->last_inspection = src->last_inspection;
 	dst->reliability = src->reliability;
@@ -2055,7 +2075,21 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 	dst->breakdown_reason = src->breakdown_reason;
 
 	// Finance
+	dst->upkeep_cost = src->upkeep_cost;
 	dst->price = src->price;
+	dst->income_per_hour = src->income_per_hour;
+
+	dst->value = src->value;
+	dst->satisfaction = 255;
+	dst->satisfaction_time_out = 0;
+	dst->satisfaction_next = 0;
+	dst->popularity = src->popularity;
+	dst->popularity_next = src->popularity_next;
+	dst->popularity_time_out = src->popularity_time_out;
+
+	dst->music_tune_id = 255;
+	dst->measurement_index = 255;
+	dst->excitement = (ride_rating)-1;
 }
 
 static void rct1_import_s4_properly(rct1_s4 *s4)
@@ -2096,6 +2130,10 @@ static void rct1_import_s4_properly(rct1_s4 *s4)
 		if (s4->rides[i].type != RIDE_TYPE_NULL) {
 			rct1_import_ride(s4, GET_RIDE(i), &s4->rides[i]);
 		}
+	}
+
+	for (int i = 0; i < 2; i++) {
+		gPeepSpawns[i] = s4->peep_spawn[i];
 	}
 
 	// Finance
