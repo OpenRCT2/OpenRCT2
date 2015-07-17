@@ -1923,7 +1923,7 @@ static char *RCT1ScenarioDetails[] = {
 	"Deep in the forest, build a thriving theme park in a large cleared area",
 	"Built in the middle of the desert, this theme park contains just one roller coaster but has space for expansion",
 	"Starting from scratch, build a theme park around a large lake",
-	"Diamond Heights is already a successful theme park with great rides - develop it to double it's value",
+	"Diamond Heights is already a successful theme park with great rides - develop it to double its value",
 	"Convert the beautiful Evergreen Gardens into a thriving theme park",
 	"Develop Bumbly Beach's small amusement park into a thriving theme park",
 	"Several islands form the basis for this new park",
