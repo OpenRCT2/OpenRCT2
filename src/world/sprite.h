@@ -71,7 +71,9 @@ typedef struct {
 	uint8  sprite_direction; //direction of sprite? 0x1e
 	uint8 pad_1F[3]; // 0x1f
 	uint16 name_string_idx;			// 0x22
-	uint8 pad_24[7];
+	uint8 pad_24[2];
+	uint16 var_26;
+	uint8 var_28[3];
 	uint8 var_2B;
 	uint8 pad_2C[0x45];
 	uint8 var_71;
@@ -260,5 +262,7 @@ void sprite_remove(rct_sprite *sprite);
 void litter_create(int x, int y, int z, int direction, int type);
 void sub_6EC53F(rct_sprite *sprite);
 void sub_6738E1(int x, int y, int z);
+void sprite_misc_3_create(int x, int y, int z);
+void sprite_misc_5_create(int x, int y, int z);
 
 #endif

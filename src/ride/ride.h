@@ -213,6 +213,7 @@ typedef struct {
 	union {
 		uint8 inversions;			// 0x114 (???X XXXX)
 		uint8 holes;				// 0x114 (???X XXXX)
+		uint8 var_114;
 	};
 	uint8 drops;					// 0x115 (??XX XXXX)
 	uint8 var_116;
@@ -383,7 +384,7 @@ enum {
 	RIDE_LIFECYCLE_BREAKDOWN_PENDING = 1 << 6,
 	RIDE_LIFECYCLE_BROKEN_DOWN = 1 << 7,
 	RIDE_LIFECYCLE_DUE_INSPECTION = 1 << 8,
-
+	RIDE_LIFECYCLE_9 = 1 << 9,
 	RIDE_LIFECYCLE_CRASHED = 1 << 10,
 	RIDE_LIFECYCLE_11 = 1 << 11,
 	RIDE_LIFECYCLE_EVER_BEEN_OPENED = 1 << 12,
@@ -970,5 +971,7 @@ void game_command_remove_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int
 
 void sub_6CB945(int rideIndex);
 void ride_crash(int rideIndex, int vehicleIndex);
+
+bool ride_type_is_intamin(int rideType);
 
 #endif

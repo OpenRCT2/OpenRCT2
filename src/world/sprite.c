@@ -1038,3 +1038,39 @@ void sub_6738E1(int x, int y, int z)
 {
 	RCT2_CALLPROC_X(0x006738E1, x, 0, y, z, 0, 0, 0);
 }
+
+/**
+ *
+ *  rct2: 0x0067363D
+ */
+void sprite_misc_3_create(int x, int y, int z)
+{
+	rct_unk_sprite *sprite = (rct_unk_sprite*)create_sprite(2);
+	if (sprite != NULL) {
+		sprite->sprite_width = 44;
+		sprite->sprite_height_negative = 32;
+		sprite->sprite_height_positive = 34;
+		sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
+		sprite_move(x, y, z + 4, (rct_sprite*)sprite);
+		sprite->misc_identifier = SPRITE_MISC_3;
+		sprite->var_26 = 0;
+	}
+}
+
+/**
+ *
+ *  rct2: 0x0067366B
+ */
+void sprite_misc_5_create(int x, int y, int z)
+{
+	rct_unk_sprite *sprite = (rct_unk_sprite*)create_sprite(2);
+	if (sprite != NULL) {
+		sprite->sprite_width = 25;
+		sprite->sprite_height_negative = 85;
+		sprite->sprite_height_positive = 8;
+		sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
+		sprite_move(x, y, z + 4, (rct_sprite*)sprite);
+		sprite->misc_identifier = SPRITE_MISC_5;
+		sprite->var_26 = 0;
+	}
+}

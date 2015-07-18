@@ -40,6 +40,7 @@ enum PEEP_TYPE {
 };
 
 enum PEEP_THOUGHT_TYPE {
+	PEEP_THOUGHT_TYPE_CANT_AFFORD_0 = 0, // "I can't afford"
 	PEEP_THOUGHT_TYPE_SPENT_MONEY = 1, // "I've spent all my money"
 	PEEP_THOUGHT_TYPE_SICK = 2, // "I feel sick"
 	PEEP_THOUGHT_TYPE_VERY_SICK = 3, // "I feel very sick"
@@ -230,6 +231,7 @@ enum PEEP_ACTION_EVENTS {
 	PEEP_ACTION_STAFF_FIX_2 = 16,
 	PEEP_ACTION_STAFF_FIX_GROUND = 17,
 	PEEP_ACTION_STAFF_WATERING = 19,
+	PEEP_ACTION_READ_MAP = 21,
 	PEEP_ACTION_WAVE = 22,
 	PEEP_ACTION_STAFF_EMPTY_BIN = 23,
 	PEEP_ACTION_WAVE_2 = 24,
@@ -250,27 +252,27 @@ enum PEEP_FLAGS {
 
 	PEEP_FLAGS_TRACKING = (1 << 3),
 	PEEP_FLAGS_WAVING = (1 << 4), // Makes the peep wave
-
+	PEEP_FLAGS_5 = (1 << 5),
 	PEEP_FLAGS_PHOTO = (1 << 6), // Makes the peep take a picture
-	PEEP_FLAGS_PAINTING = (1 << 7), 
-
+	PEEP_FLAGS_PAINTING = (1 << 7),
+	PEEP_FLAGS_WOW = (1 << 8), // Makes a peep WOW2
 	PEEP_FLAGS_LITTER = (1 << 9), // Makes the peep throw litter
 	PEEP_FLAGS_LOST = (1 << 10), // Makes the peep feel lost (animation trigerred)
 	PEEP_FLAGS_HUNGER = (1 << 11), // Makes the peep become hungry quicker
 	PEEP_FLAGS_BATHROOM = (1 << 12), // Makes the peep want to go to the bathroom
 	PEEP_FLAGS_CROWDED = (1 << 13), // The peep will start feeling crowded
-
+	PEEP_FLAGS_HAPPINESS = (1 << 14), // The peep will start increasing happiness
 	PEEP_FLAGS_NAUSEA = (1 << 15), // Makes the peep feel sick (e.g. after an extreme ride)
 
 	PEEP_FLAGS_EATING = (1 << 17), // Reduces hunger
 	PEEP_FLAGS_EXPLODE = (1 << 18),
-
-	PEEP_FLAGS_21 = (1<<21),
+	PEEP_FLAGS_20 = (1 << 20),
+	PEEP_FLAGS_21 = (1 << 21),
 
 	PEEP_FLAGS_JOY = (1 << 23), // Makes the peep jump in joy
 	PEEP_FLAGS_ANGRY = (1 << 24),
 	PEEP_FLAGS_ICE_CREAM = (1 << 25), // Unconfirmed
-
+	PEEP_FLAGS_27 = (1 << 27),
 	PEEP_FLAGS_TWITCH = (1 << 31)		// Added for twitch integration
 };
 
@@ -337,6 +339,15 @@ enum PEEP_ITEM {
 	PEEP_ITEM_EMPTY_BOWL_BLUE = (1 << 21)
 };
 
+// Flags used by peep->window_invalidate_flags
+enum {
+	PEEP_INVALIDATE_PEEP_THOUGHTS = 1,
+	PEEP_INVALIDATE_PEEP_STATS = 1 << 1,
+	PEEP_INVALIDATE_PEEP_2 = 1 << 2,
+	PEEP_INVALIDATE_PEEP_INVENTORY = 1 << 3,
+	PEEP_INVALIDATE_STAFF_STATS = 1 << 4,
+};
+
 typedef struct {
 	uint8 type;		//0
 	uint8 item;		//1
@@ -401,7 +412,7 @@ typedef struct {
 	uint8 var_42;
 	uint8 intensity;				// 0x43
 	uint8 nausea_tolerance;			// 0x44
-	uint8 var_45;					//		Some sort of flags?
+	uint8 window_invalidate_flags;	// 0x45
 	money16 paid_on_drink;			// 0x46
 	uint8 var_48[16];
 	uint32 item_extra_flags;		// 0x58
@@ -469,7 +480,10 @@ typedef struct {
 	uint8 pad_D0[0x10];
 	uint8 no_action_frame_no;		// 0xE0
 	uint8 var_E1;
-	uint8 var_E2;					// 0xE2
+	union{
+		uint8 time_on_ride;			// 0xE2
+		uint8 var_E2;				// 0xE2
+	};
 	uint8 var_E3;
 	union{
 		money16 paid_to_enter;			// 0xE4
