@@ -56,6 +56,7 @@ static void sub_68FD3A(rct_peep *peep);
 static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideSeatToView);
 static int sub_694921(rct_peep *peep, int x, int y);
 static void peep_pick_ride_to_go_on(rct_peep *peep);
+static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType);
 static void peep_give_real_name(rct_peep *peep);
 
 const char *gPeepEasterEggNames[] = {
@@ -135,6 +136,28 @@ static uint8 sub_69BC9A(sint16 x, sint16 y, sint16 z){
 	int eax = x, ebx = 0, ecx = y, edx = z, esi, edi, ebp;
 	RCT2_CALLFUNC_X(0x0069BC9A, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	return ebx & 0xFF;
+}
+
+/* rct2: 0x0068F93E */
+static void peep_leave_park(rct_peep* peep){
+	peep->guest_heading_to_ride_id = 0xFF;
+	if (peep->flags & PEEP_FLAGS_LEAVING_PARK){
+		if (peep->var_C6 < 60){
+			return;
+		}
+	}
+	else{
+		peep->var_C6 = 254;
+		peep->flags |= PEEP_FLAGS_LEAVING_PARK;
+		peep->flags &= ~PEEP_FLAGS_20;
+	}
+
+	peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_GO_HOME, 0xFF);
+
+	rct_window* w = window_find_by_number(WC_PEEP, peep->sprite_index);
+	window_event_invalidate_call(w);
+	window_invalidate_by_number(WC_PEEP, peep->sprite_index);
+	// At end of this go to 68f9a9
 }
 
 /**
@@ -278,7 +301,8 @@ static void sub_68F41A(rct_peep *peep, int index)
 
 				if (peep->guest_heading_to_ride_id == 0xFF){
 					peep->happiness_growth_rate = max(peep->happiness_growth_rate - 128, 0);
-					//goto 0x0068F93E
+					peep_leave_park(peep);
+					//goto 69f9a9
 				}
 			}
 		}
@@ -289,7 +313,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 
 		if ((index & 0x3FF) == (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x3FF)){
 
-			if (peep->var_2A == 0 && 
+			if (peep->var_2A == 0 &&
 				(peep->state == PEEP_STATE_WALKING || peep->state == PEEP_STATE_SITTING)){
 
 				uint8 num_thoughts = 0;
@@ -320,7 +344,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 
 					// Not sure why the happiness check is like that seems wrong to me
 					if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) &&
-						peep->cash_in_pocket <= MONEY(9,00) &&
+						peep->cash_in_pocket <= MONEY(9, 00) &&
 						peep->happiness >= 105 &&
 						peep->happiness >= 70){
 						possible_thoughts[num_thoughts++] = PEEP_THOUGHT_RUNNING_OUT;
@@ -343,7 +367,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 						RCT2_CALLPROC_X(0x006958D0, 0x0200000, 0, 0, 0, (int)peep, 0, 0);
 						break;
 					case PEEP_THOUGHT_RUNNING_OUT:
-						RCT2_CALLPROC_X(0x00695B70, RIDE_TYPE_CASH_MACHINE, 0, 0, 0, (int)peep, 0, 0);
+						peep_head_for_nearest_ride_type(peep, RIDE_TYPE_CASH_MACHINE);
 						break;
 					}
 				}
@@ -354,10 +378,70 @@ static void sub_68F41A(rct_peep *peep, int index)
 				uint8 thought = PEEP_THOUGHT_TYPE_SICK;
 				if (peep->nausea >= 200){
 					thought = PEEP_THOUGHT_TYPE_VERY_SICK;
-					RCT2_CALLPROC_X(0x00695B70, RIDE_TYPE_FIRST_AID, 0, 0, 0, (int)peep, 0, 0);
+					peep_head_for_nearest_ride_type(peep, RIDE_TYPE_FIRST_AID);
 				}
 				peep_insert_new_thought(peep, thought, 0xFF);
 			}
+		}
+
+		if (peep->state == PEEP_STATE_WALKING ||
+			peep->state == PEEP_STATE_LEAVING_PARK ||
+			peep->state == PEEP_STATE_ENTERING_PARK){
+			//68f8CD
+
+			if (peep->energy_growth_rate >= 33)
+				peep->energy_growth_rate -= 2;
+
+			if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, uint8) >= 15){
+				if (peep->thirst >= 5)
+					peep->thirst--;
+			}
+
+			if (peep->var_2A == 0){
+				if (!(peep->flags & PEEP_FLAGS_LEAVING_PARK)){
+					if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)){
+						if (peep->energy < 55 ||
+							peep->happiness < 45 ||
+							peep->cash_in_pocket < MONEY(5, 00)){
+
+							if ((scenario_rand() & 0xFFFF) <= 3276){
+								peep_leave_park(peep);
+							}
+						}
+					}
+					else{
+						if (peep->energy < 70 ||
+							peep->happiness < 60){
+
+							if ((scenario_rand() & 0xFFFF) <= 3276){
+								peep_leave_park(peep);
+							}
+						}
+					}
+				}
+				else{
+					peep_leave_park(peep);
+				}
+			}
+		}//68f9a9
+
+		if (peep->state == PEEP_STATE_SITTING){
+			//68f9c9
+		}
+
+		if (peep->state == PEEP_STATE_QUEUING){
+			//68f84c
+		}//68f9a9
+
+		if (peep->state == PEEP_STATE_ENTERING_RIDE){
+			if (peep->sub_state == 17 ||
+				peep->sub_state == 15){
+				//68f8cd
+			}//69f9a9
+		}
+
+		if (/*not the above*/1){
+			//68f9f3
 		}
 		//68F807
 	}
@@ -5773,6 +5857,114 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 			invalidate_sprite((rct_sprite*)peep);
 		}
 	}
+}
+
+/**
+ * 
+ *  rct2: 0x00695B70
+ */
+static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
+{
+	rct_ride *ride;
+
+	if (peep->state != PEEP_STATE_SITTING && peep->state != PEEP_STATE_WATCHING && peep->state != PEEP_STATE_WALKING) {
+		return;
+	}
+	if (peep->flags & PEEP_FLAGS_LEAVING_PARK) return;
+	if (peep->x == (sint16)0x8000) return;
+	if (peep->guest_heading_to_ride_id != 255) {
+		ride = GET_RIDE(peep->guest_heading_to_ride_id);
+		if (ride->type == rideType) {
+			return;
+		}
+	}
+
+	RCT2_GLOBAL(0x00F1AD98, uint32) = 0;
+	RCT2_GLOBAL(0x00F1AD9C, uint32) = 0;
+	RCT2_GLOBAL(0x00F1ADA0, uint32) = 0;
+	RCT2_GLOBAL(0x00F1ADA4, uint32) = 0;
+	RCT2_GLOBAL(0x00F1ADA8, uint32) = 0;
+	RCT2_GLOBAL(0x00F1ADAC, uint32) = 0;
+	RCT2_GLOBAL(0x00F1ADB0, uint32) = 0;
+	RCT2_GLOBAL(0x00F1ADB4, uint32) = 0;
+
+	// TODO Check for a toy is likely a mistake and should be a map
+	if ((peep->item_standard_flags & PEEP_ITEM_TOY) && rideType != RIDE_TYPE_FIRST_AID) {
+		// Consider all rides in the park
+		int i;
+		FOR_ALL_RIDES(i, ride) {
+			if (ride->type == rideType) {
+				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= i & 0x1F;
+			}
+		}
+	} else {
+		// Take nearby rides into consideration
+		int cx = floor2(peep->x, 32);
+		int cy = floor2(peep->y, 32);
+		for (int x = cx - 320; x <= cx + 320; x++) {
+			for (int y = cy - 320; y <= cy + 320; y++) {
+				if (x >= 0 && y >= 0 && x < (256 * 32) && y < (256 * 32)) {
+					rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+					do {
+						if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
+
+						int rideIndex = mapElement->properties.track.ride_index;
+						ride = GET_RIDE(rideIndex);
+						if (ride->type == rideType) {
+							RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (rideIndex & 0x1F);
+						}
+					} while (!map_element_is_last_for_tile(mapElement++));
+				}
+			}
+		}
+	}
+
+	// Filter the considered rides
+	uint8 *potentialRides = (uint8*)0x00F1ADBC;
+	uint8 *nextPotentialRide = potentialRides;
+	int numPotentialRides = 0;
+	for (int i = 0; i < MAX_RIDES; i++) {
+		if (!(RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] & (i & 0x1F)))
+			continue;
+
+		rct_ride *ride = GET_RIDE(i);
+		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_9)) {
+			if (sub_6960AB(peep, i, 0, 6)) {
+				*nextPotentialRide++ = i;
+				numPotentialRides++;
+			}
+		}
+	}
+
+	// Pick the closest ride
+	int closestRideIndex = -1;
+	int closestRideDistance = INT_MAX;
+	for (int i = 0; i < numPotentialRides; i++) {
+		ride = GET_RIDE(potentialRides[i]);
+		int rideX = (ride->station_starts[0] & 0xFF) * 32;
+		int rideY = (ride->station_starts[0] >> 8) * 32;
+		int distance = abs(rideX - peep->x) + abs(rideY - peep->y);
+		if (distance < closestRideDistance) {
+			closestRideIndex = potentialRides[i];
+			closestRideDistance = distance;
+		}
+	}
+	if (closestRideIndex == -1)
+		return;
+
+	// Head to that ride
+	peep->guest_heading_to_ride_id = closestRideIndex;
+	peep->var_C6 = 200;
+	sub_69A98C(peep);
+
+	// Invalidate windows
+	rct_window *w = window_find_by_number(WC_PEEP, peep->sprite_index);
+	if (w != NULL) {
+		window_event_invalidate_call(w);
+	}
+	widget_invalidate_by_number(WC_RIDE, closestRideIndex, 23);
+
+	peep->var_F4 = 0;
 }
 
 /**
