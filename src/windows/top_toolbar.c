@@ -1653,13 +1653,11 @@ void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
 	if (!state_changed)
 		return;
 
-	money32 cost = map_clear_scenery(
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16),
-		0
-	);
+	int eax = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16);
+	int ecx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16);
+	int edi = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16);
+	int ebp = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16);
+	money32 cost = game_do_command(eax, 0, ecx, 0, GAME_COMMAND_CLEAR_SCENERY, edi, ebp);
 
 	if (RCT2_GLOBAL(0x00F1AD62, money32) != cost){
 		RCT2_GLOBAL(0x00F1AD62, money32) = cost;
@@ -2488,7 +2486,7 @@ static void window_top_toolbar_tool_down(rct_window* w, int widgetIndex, int x, 
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 			1,
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
-			0,
+			(gClearSmallScenery | gClearLargeScenery << 1 | gClearFootpath << 2),
 			GAME_COMMAND_CLEAR_SCENERY,
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
@@ -2697,7 +2695,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, int widgetIndex, int x, 
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 			1,
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
-			0,
+			(gClearSmallScenery | gClearLargeScenery << 1 | gClearFootpath << 2),
 			GAME_COMMAND_CLEAR_SCENERY,
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)

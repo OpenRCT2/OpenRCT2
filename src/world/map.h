@@ -301,7 +301,7 @@ int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *cle
 int map_can_construct_at(int x, int y, int zLow, int zHigh, uint8 bl);
 void rotate_map_coordinates(sint16 *x, sint16 *y, int rotation);
 rct_xy16 coordinate_3d_to_2d(const rct_xyz16* coordinate_3d, int rotation);
-money32 map_clear_scenery(int x0, int y0, int x1, int y1, int flags);
+money32 map_clear_scenery(int x0, int y0, int x1, int y1, int clear, int flags);
 money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags);
 money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags);
 money32 map_place_fence(int type, int x, int y, int z, int edge, int primaryColour, int secondaryColour, int tertiaryColour, int flags);
