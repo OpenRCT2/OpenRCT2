@@ -213,6 +213,7 @@ typedef struct {
 	union {
 		uint8 inversions;			// 0x114 (???X XXXX)
 		uint8 holes;				// 0x114 (???X XXXX)
+		uint8 var_114;
 	};
 	uint8 drops;					// 0x115 (??XX XXXX)
 	uint8 var_116;
@@ -970,5 +971,7 @@ void game_command_remove_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int
 
 void sub_6CB945(int rideIndex);
 void ride_crash(int rideIndex, int vehicleIndex);
+
+bool ride_type_is_intamin(int rideType);
 
 #endif

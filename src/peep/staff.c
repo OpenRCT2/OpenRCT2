@@ -127,7 +127,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		move_sprite_to_list((rct_sprite *)newPeep, SPRITE_LINKEDLIST_OFFSET_PEEP);
 		
 		newPeep->sprite_identifier = 1;
-		newPeep->var_45 = 0;
+		newPeep->window_invalidate_flags = 0;
 		newPeep->action = PEEP_ACTION_NONE_2;
 		newPeep->var_6D = 0;
 		newPeep->action_sprite_image_offset = 0;

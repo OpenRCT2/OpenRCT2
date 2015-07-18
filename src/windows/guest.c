@@ -1277,7 +1277,7 @@ void window_guest_stats_update(rct_window *w)
 {
 	w->frame_no++;
 	rct_peep* peep = GET_PEEP(w->number);
-	peep->var_45 &= ~(1<<1);
+	peep->window_invalidate_flags &= ~PEEP_INVALIDATE_PEEP_STATS;
 
 	window_invalidate(w);
 }
@@ -1808,8 +1808,8 @@ void window_guest_finance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 void window_guest_thoughts_resize(rct_window *w)
 {
 	rct_peep* peep = GET_PEEP(w->number);
-	if (peep->var_45 & 1){
-		peep->var_45 &=~(1 << 0);
+	if (peep->window_invalidate_flags & PEEP_INVALIDATE_PEEP_THOUGHTS){
+		peep->window_invalidate_flags &= ~PEEP_INVALIDATE_PEEP_THOUGHTS;
 		window_invalidate(w);
 	}
 
@@ -1902,8 +1902,8 @@ void window_guest_thoughts_paint(rct_window *w, rct_drawpixelinfo *dpi)
 void window_guest_inventory_resize(rct_window *w)
 {
 	rct_peep* peep = GET_PEEP(w->number);
-	if (peep->var_45 & (1<<3)){
-		peep->var_45 &= ~(1 << 3);
+	if (peep->window_invalidate_flags & PEEP_INVALIDATE_PEEP_INVENTORY){
+		peep->window_invalidate_flags &= ~PEEP_INVALIDATE_PEEP_INVENTORY;
 		window_invalidate(w);
 	}
 
