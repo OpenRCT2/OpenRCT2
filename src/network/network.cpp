@@ -494,14 +494,14 @@ void Network::Server_Send_CHAT(const char* text)
 void Network::Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp)
 {
 	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
-	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) << eax << (ebx | (1 << 31)) << ecx << edx << esi << edi << ebp; 
+	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED) << ecx << edx << esi << edi << ebp; 
 	server_connection.QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp)
 {
 	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
-	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) << eax << (ebx | (1 << 31)) << ecx << edx << esi << edi << ebp; 
+	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED) << ecx << edx << esi << edi << ebp; 
 	for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
 		(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
 	}

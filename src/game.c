@@ -418,6 +418,16 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	// Increment nest count
 	RCT2_GLOBAL(0x009A8C28, uint8)++;
 
+	// Remove ghost scenery so it doesn't interfere with incoming network command
+	if ((flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & 0x40) &&
+		(command == GAME_COMMAND_PLACE_FENCE ||
+		command == GAME_COMMAND_PLACE_SCENERY ||
+		command == GAME_COMMAND_PLACE_LARGE_SCENERY ||
+		command == GAME_COMMAND_PLACE_BANNER || 
+		command == GAME_COMMAND_PLACE_PATH)) {
+		scenery_remove_ghost_tool_placement();
+	}
+
 	*ebx &= ~GAME_COMMAND_FLAG_APPLY;
 	
 	// Primary command
@@ -447,7 +457,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 				return cost;
 			}
 
-			if (network_get_mode() != NETWORK_MODE_NONE && !(flags & (1 << 31)) && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
+			if (network_get_mode() != NETWORK_MODE_NONE && !(flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & 0x40) && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
 				network_send_gamecmd(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp);
 				if (network_get_mode() == NETWORK_MODE_CLIENT) {
 					// Decrement nest count
