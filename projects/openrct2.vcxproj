@@ -44,6 +44,7 @@
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\hook.c" />
     <ClCompile Include="..\src\input.c" />
+    <ClCompile Include="..\src\interface\chat.c" />
     <ClCompile Include="..\src\interface\themes.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </ExcludedFromBuild>
@@ -204,6 +205,7 @@
     <ClInclude Include="..\src\game.h" />
     <ClInclude Include="..\src\hook.h" />
     <ClInclude Include="..\src\input.h" />
+    <ClInclude Include="..\src\interface\chat.h" />
     <ClInclude Include="..\src\interface\themes.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </ExcludedFromBuild>

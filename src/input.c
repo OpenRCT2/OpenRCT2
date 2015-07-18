@@ -25,6 +25,7 @@
 #include "cursors.h"
 #include "game.h"
 #include "input.h"
+#include "interface/chat.h"
 #include "interface/console.h"
 #include "interface/keyboard_shortcut.h"
 #include "interface/viewport.h"
@@ -1343,6 +1344,9 @@ void game_handle_keyboard_input()
 			continue;
 		} else if (gConsoleOpen) {
 			console_input(key);
+			continue;
+		} else if (gChatOpen) {
+			chat_input(key);
 			continue;
 		}
 

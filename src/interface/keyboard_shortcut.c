@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
+#include "../interface/chat.h"
 #include "../input.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
@@ -496,7 +497,7 @@ static void shortcut_open_cheat_window()
 
 static void shortcut_open_chat_window()
 {
-	window_chat_open();
+	chat_toggle();
 }
 
 static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {

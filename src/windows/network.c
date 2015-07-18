@@ -24,55 +24,6 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 
-static void window_chat_host_textinput(rct_window *w, int widgetIndex, char *text)
-{
-	network_send_chat(text);
-
-	window_close(w);
-}
-
-static rct_window_event_list window_chat_host_events = {
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	window_chat_host_textinput,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL
-};
-
-void window_chat_open()
-{
-	rct_window *w;
-	w = window_create(0, 0, 0, 0, &window_chat_host_events, WC_CHAT_HOST, 0);
-	w->colours[0] = 1;
-	w->colours[1] = 1;
-	w->colours[2] = 0;
-	w->number = 0;
-	window_text_input_open(w, 0, 6000, 6001, STR_NONE, 0, 64);
-}
-
 enum WINDOW_PLAYER_LIST_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
@@ -148,6 +99,7 @@ void window_player_list_open()
 
 	window->widgets = window_player_list_widgets;
 	window->enabled_widgets = 1 << WIDX_CLOSE;
+	window_init_scroll_widgets(window);
 	window->no_list_items = 0;
 	window->selected_list_item = -1;
 	window->frame_no = 0;
@@ -156,7 +108,6 @@ void window_player_list_open()
 	window->max_width = 500;
 	window->max_height = 450;
 
-	window_init_scroll_widgets(window);
 	window->page = 0;
 	window->list_information_type = 0;
 	window->colours[0] = 7;
@@ -211,14 +162,12 @@ static void window_player_list_scrollgetsize(rct_window *w, int scrollIndex, int
 {
 	int i;
 
-	uint16 playerCount = 0;
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short) != -1) {
-		RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short) = -1;
+	if (w->selected_list_item != -1) {
+		w->selected_list_item = -1;
 		window_invalidate(w);
 	}
-	
-	*height = playerCount * 10;
+
+	*height = network_get_num_players() * 10;
 	i = *height - window_player_list_widgets[WIDX_LIST].bottom + window_player_list_widgets[WIDX_LIST].top + 21;
 	if (i < 0)
 		i = 0;
@@ -226,8 +175,6 @@ static void window_player_list_scrollgetsize(rct_window *w, int scrollIndex, int
 		w->scrolls[0].v_top = i;
 		window_invalidate(w);
 	}
-
-	*width = 420;
 }
 
 static void window_player_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
@@ -310,8 +257,6 @@ static void window_player_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 
 static void window_player_list_refresh_list(rct_window *w)
 {
-	window_invalidate(w);
-
 	w->no_list_items = network_get_num_players();
 	w->list_item_positions[0] = 0;
 

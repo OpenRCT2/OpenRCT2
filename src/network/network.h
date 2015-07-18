@@ -70,8 +70,8 @@ class NetworkPacket
 {
 public:
 	NetworkPacket();
-	static std::unique_ptr<NetworkPacket> AllocatePacket();
-	static std::unique_ptr<NetworkPacket> DuplicatePacket(NetworkPacket& packet);
+	static std::unique_ptr<NetworkPacket> Allocate();
+	static std::unique_ptr<NetworkPacket> Duplicate(NetworkPacket& packet);
 	uint8* GetData();
 	template <typename T>
 	NetworkPacket& operator<<(T value) { T swapped = ByteSwapBE(value); uint8* bytes = (uint8*)&swapped; data->insert(data->end(), bytes, bytes + sizeof(value)); return *this; }
@@ -132,6 +132,8 @@ public:
 	uint32 GetServerTick();
 	void Update();
 	NetworkPlayer* GetPlayerByID(int id);
+	const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
+	void SendPacketToClients(NetworkPacket& packet);
 
 	void Client_Send_AUTH(const char* gameversion, const char* name, const char* password);
 	void Server_Send_MAP();

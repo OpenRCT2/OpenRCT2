@@ -26,6 +26,7 @@
 #include "editor.h"
 #include "game.h"
 #include "hook.h"
+#include "interface/chat.h"
 #include "interface/window.h"
 #include "interface/viewport.h"
 #include "localisation/localisation.h"
@@ -200,6 +201,8 @@ bool openrct2_initialise()
 
 	if (!rct2_init())
 		return false;
+
+	chat_init();
 
 	openrct2_copy_original_user_files_over();
 

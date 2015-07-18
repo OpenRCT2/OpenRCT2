@@ -27,9 +27,9 @@
 extern "C" {
 #include "../addresses.h"
 #include "../game.h"
+#include "../interface/chat.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
-#include "../management/news_item.h"
 #include "../scenario.h"
 }
 
@@ -64,14 +64,14 @@ NetworkPacket::NetworkPacket()
 	data = std::make_shared<std::vector<uint8>>();
 }
 
-std::unique_ptr<NetworkPacket> NetworkPacket::AllocatePacket()
+std::unique_ptr<NetworkPacket> NetworkPacket::Allocate()
 {
-	return std::move(std::unique_ptr<NetworkPacket>(new NetworkPacket)); // change to make_unique in c++14
+	return std::unique_ptr<NetworkPacket>(new NetworkPacket); // change to make_unique in c++14
 }
 
-std::unique_ptr<NetworkPacket> NetworkPacket::DuplicatePacket(NetworkPacket& packet)
+std::unique_ptr<NetworkPacket> NetworkPacket::Duplicate(NetworkPacket& packet)
 {
-	return std::move(std::unique_ptr<NetworkPacket>(new NetworkPacket(packet))); // change to make_unique in c++14
+	return std::unique_ptr<NetworkPacket>(new NetworkPacket(packet)); // change to make_unique in c++14
 }
 
 uint8* NetworkPacket::GetData()
@@ -442,9 +442,29 @@ NetworkPlayer* Network::GetPlayerByID(int id) {
 	return 0;
 }
 
+const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
+{
+	static char formatted[1024];
+	formatted[0] = (char)FORMAT_OUTLINE;
+	formatted[1] = (char)FORMAT_BABYBLUE;
+	if (fromplayer) {
+		strcpy(&formatted[2], (const char*)fromplayer->name);
+	}
+	strcat(formatted, ": ");
+	strcat(formatted, text);
+	return formatted;
+}
+
+void Network::SendPacketToClients(NetworkPacket& packet)
+{
+	for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
+		(*it)->QueuePacket(std::move(NetworkPacket::Duplicate(packet)));
+	}
+}
+
 void Network::Client_Send_AUTH(const char* gameversion, const char* name, const char* password)
 {
-	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
+	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_AUTH;
 	packet->WriteString(gameversion);
 	packet->WriteString(name);
@@ -463,19 +483,17 @@ void Network::Server_Send_MAP()
 	int chunksize = 1000;
 	for (int i = 0; i < size; i += chunksize) {
 		int datasize = min(chunksize, size - i);
-		std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
+		std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 		*packet << (uint32)NETWORK_COMMAND_MAP << (uint32)size << (uint32)i;
 		packet->Write(&buffer[i], datasize);
-		for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
-			(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
-		}
+		SendPacketToClients(*packet);
 	}
 	SDL_RWclose(rw);
 }
 
 void Network::Client_Send_CHAT(const char* text)
 {
-	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
+	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_CHAT;
 	packet->Write((uint8*)text, strlen(text) + 1);
 	server_connection.QueuePacket(std::move(packet));
@@ -483,79 +501,69 @@ void Network::Client_Send_CHAT(const char* text)
 
 void Network::Server_Send_CHAT(const char* text)
 {
-	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
+	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_CHAT;
 	packet->Write((uint8*)text, strlen(text) + 1);
-	for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
-		(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
-	}
+	SendPacketToClients(*packet);
 }
 
 void Network::Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp)
 {
-	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
+	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED) << ecx << edx << esi << edi << ebp; 
 	server_connection.QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp)
 {
-	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
+	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED) << ecx << edx << esi << edi << ebp; 
-	for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
-		(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
-	}
+	SendPacketToClients(*packet);
 }
 
 void Network::Server_Send_TICK()
 {
-	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
+	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_TICK << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32);
-	for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
-		(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
-	}
+	SendPacketToClients(*packet);
 }
 
 void Network::Server_Send_PLAYERLIST()
 {
-	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
+	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_PLAYERLIST << (uint32)player_list.size();
 	for (unsigned int i = 0; i < player_list.size(); i++) {
 		packet->WriteString((const char*)player_list[i]->name);
 		*packet << player_list[i]->id << player_list[i]->flags;
 	}
-	for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
-		(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
-	}
+	SendPacketToClients(*packet);
 }
 
 void Network::Client_Send_PING()
 {
-	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
+	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_PING;
 	server_connection.QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_PING()
 {
-	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
+	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_PING;
 	for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
 		(*it)->ping_time = SDL_GetTicks();
-		(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
 	}
+	SendPacketToClients(*packet);
 }
 
 void Network::Server_Send_PINGLIST()
 {
-	std::unique_ptr<NetworkPacket> packet = NetworkPacket::AllocatePacket();
+	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_PINGLIST << (uint32)player_list.size();
 	for (unsigned int i = 0; i < player_list.size(); i++) {
 		*packet << player_list[i]->id << player_list[i]->ping;
 	}
-	for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
-		(*it)->QueuePacket(NetworkPacket::DuplicatePacket(*packet));
-	}
+	SendPacketToClients(*packet);
 }
 
 bool Network::ProcessConnection(NetworkConnection& connection)
@@ -625,7 +633,6 @@ void Network::ProcessGameCommandQueue()
 
 void Network::AddClient(SOCKET socket)
 {
-	printf("New client connection\n");
 	auto connection = std::unique_ptr<NetworkConnection>(new NetworkConnection);  // change to make_unique in c++14
 	connection->socket = socket;
 	client_connection_list.push_back(std::move(connection));
@@ -633,8 +640,15 @@ void Network::AddClient(SOCKET socket)
 
 void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
 {
-	printf("Client removed\n");
 	NetworkPlayer* connection_player = connection->player;
+	if (connection_player) {
+		char text[256];
+		text[0] = (char)FORMAT_OUTLINE;
+		text[1] = (char)FORMAT_RED;
+		sprintf(&text[2], "%s has disconnected", connection_player->name);
+		chat_history_add(text);
+		gNetwork.Server_Send_CHAT(text);
+	}
 	player_list.erase(std::remove_if(player_list.begin(), player_list.end(), [connection_player](std::unique_ptr<NetworkPlayer>& player){ return player.get() == connection_player; }), player_list.end());
 	client_connection_list.remove(connection);
 	Server_Send_PLAYERLIST();
@@ -699,8 +713,14 @@ int Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& pa
 			connection.authstatus = NETWORK_AUTH_OK;
 			NetworkPlayer* player = AddPlayer(name);
 			connection.player = player;
+			char text[256];
+			text[0] = (char)FORMAT_OUTLINE;
+			text[1] = (char)FORMAT_GREEN;
+			sprintf(&text[2], "%s has joined the game", player->name);
+			chat_history_add(text);
+			gNetwork.Server_Send_CHAT(text);
 		}
-		std::unique_ptr<NetworkPacket> responsepacket = NetworkPacket::AllocatePacket();
+		std::unique_ptr<NetworkPacket> responsepacket = std::move(NetworkPacket::Allocate());
 		*responsepacket << (uint32)NETWORK_COMMAND_AUTH << (uint32)connection.authstatus;
 		connection.QueuePacket(std::move(responsepacket));
 	}
@@ -716,6 +736,9 @@ int Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pac
 		return 0;
 	} else {
 		int chunksize = packet.size - packet.read;
+		if (chunksize <= 0) {
+			return 0;
+		}
 		if (offset + chunksize > chunk_buffer.size()) {
 			chunk_buffer.resize(offset + chunksize);
 		}
@@ -737,31 +760,21 @@ int Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pac
 
 int Network::Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet)
 {
-	rct_news_item newsItem;
-	newsItem.type = NEWS_ITEM_BLANK;
-	newsItem.flags = 1;
-	newsItem.assoc = 0;
-	newsItem.ticks = 0;
-	newsItem.month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
-	newsItem.day = ((days_in_month[(newsItem.month_year & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16) + 1;
-	newsItem.colour = FORMAT_TOPAZ;
-	strcpy(newsItem.text, (char*)packet.Read(packet.size - packet.read));
-	news_item_add_to_queue_custom(&newsItem);
+	const char* text = (char*)packet.Read(packet.size - packet.read);
+	if (text) {
+		chat_history_add(text);
+	}
 	return 1;
 }
 
 int Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet)
 {
-	rct_news_item newsItem;
-	newsItem.type = NEWS_ITEM_BLANK;
-	newsItem.flags = 1;
-	newsItem.assoc = 0;
-	newsItem.ticks = 0;
-	newsItem.month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
-	newsItem.day = ((days_in_month[(newsItem.month_year & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16) + 1;
-	newsItem.colour = FORMAT_TOPAZ;
-	strcpy(newsItem.text, (char*)packet.Read(packet.size - packet.read));
-	news_item_add_to_queue_custom(&newsItem);
+	const char* text = (const char*)packet.Read(packet.size - packet.read);
+	if (text) {
+		const char* formatted = FormatChat(connection.player, text);
+		chat_history_add(formatted);
+		Server_Send_CHAT(formatted);
+	}
 	return 1;
 }
 
@@ -914,7 +927,10 @@ void network_send_chat(const char* text)
 		gNetwork.Client_Send_CHAT(text);
 	} else
 	if (gNetwork.GetMode() == NETWORK_MODE_SERVER) {
-		gNetwork.Server_Send_CHAT(text);
+		NetworkPlayer* player = gNetwork.GetPlayerByID(0);
+		const char* formatted = gNetwork.FormatChat(player, text);
+		chat_history_add(formatted);
+		gNetwork.Server_Send_CHAT(formatted);
 	}
 }
 
