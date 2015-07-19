@@ -46,6 +46,8 @@ enum {
 	WIDX_MAZE_DIRECTION_NE,
 	WIDX_MAZE_DIRECTION_SW,
 	WIDX_MAZE_DIRECTION_SE,
+	WIDX_MAZE_ENTRANCE = 29,
+	WIDX_MAZE_EXIT,
 };
 
 static rct_widget window_maze_construction_widgets[] = {
@@ -225,7 +227,15 @@ static void window_maze_construction_update(rct_window *w)
  */
 static void window_ride_construction_toolupdate(rct_window* w, int widgetIndex, int x, int y)
 {
-	RCT2_CALLPROC_X(0x006CD63E, x, y, 0, widgetIndex, (int)w, 0, 0);
+	switch (widgetIndex){
+	case WIDX_MAZE_DIRECTION_GROUPBOX:
+		ride_construction_toolupdate_construct(x, y);
+		break;
+	case WIDX_MAZE_ENTRANCE:
+	case WIDX_MAZE_EXIT:
+		ride_construction_toolupdate_entrance_exit(x, y);
+		break;
+	}
 }
 
 /**
@@ -234,7 +244,15 @@ static void window_ride_construction_toolupdate(rct_window* w, int widgetIndex, 
  */
 static void window_ride_construction_tooldown(rct_window* w, int widgetIndex, int x, int y)
 {
-	RCT2_CALLPROC_X(0x006CD65D, x, y, 0, widgetIndex, (int)w, 0, 0);
+	switch (widgetIndex){
+	case WIDX_MAZE_DIRECTION_GROUPBOX:
+		ride_construction_tooldown_construct(x, y);
+		break;
+	case WIDX_MAZE_ENTRANCE:
+	case WIDX_MAZE_EXIT:
+		RCT2_CALLPROC_X(0x006C825F, x, 0, y, widgetIndex, (int)w, 0, 0);
+		break;
+	}
 }
 
 /**

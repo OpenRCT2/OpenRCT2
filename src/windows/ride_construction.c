@@ -478,10 +478,6 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
 static void ride_selected_track_set_seat_rotation(int seatRotation);
 static void loc_6C7502(int al);
 static void ride_construction_set_brakes_speed(int brakesSpeed);
-
-static void ride_construction_toolupdate_construct(int screenX, int screenY);
-static void ride_construction_toolupdate_entrance_exit(int screenX, int screenY);
-static void ride_construction_tooldown_construct(int screenX, int screenY);
 static void ride_construction_tooldown_entrance_exit(int screenX, int screenY);
 
 uint8 *_currentPossibleRideConfigurations = (uint8*)0x00F4407C;
@@ -3221,7 +3217,7 @@ static void ride_construction_set_brakes_speed(int brakesSpeed)
  * 
  * rct2: 0x006CC6A8
  */
-static void ride_construction_toolupdate_construct(int screenX, int screenY)
+void ride_construction_toolupdate_construct(int screenX, int screenY)
 {
 	int x, y, z, highestZ;
 	rct_ride *ride;
@@ -3311,7 +3307,26 @@ static void ride_construction_toolupdate_construct(int screenX, int screenY)
 	_previousTrackPieceY = y;
 	_previousTrackPieceZ = z;
 	if (ride->type == RIDE_TYPE_MAZE) {
-		// goto loc_6CCA31
+		for (;;) {
+			sub_6CA2DF(&trackType, &trackDirection, &rideIndex, &edxRS16, &x, &y, &z, NULL);
+			_currentTrackPrice = sub_6CA162(rideIndex, trackType, trackDirection, edxRS16, x, y, z);
+			if (_currentTrackPrice != MONEY32_UNDEFINED)
+				break;
+
+			bx--;
+			if (bx == 0)
+				break;
+
+			_currentTrackBeginZ -= 8;
+			if (_currentTrackBeginZ & 0x8000)
+				break;
+
+			if (bx >= 0)
+				_currentTrackBeginZ += 16;
+		}
+
+		window_maze_construction_update_pressed_widgets();
+		map_invalidate_map_selection_tiles();
 		return;
 	}
 
@@ -3341,7 +3356,7 @@ static void ride_construction_toolupdate_construct(int screenX, int screenY)
  * 
  * rct2: 0x006CD354
  */
-static void ride_construction_toolupdate_entrance_exit(int screenX, int screenY)
+void ride_construction_toolupdate_entrance_exit(int screenX, int screenY)
 {
 	int x, y, direction;
 	uint8 unk;
@@ -3386,7 +3401,7 @@ static void ride_construction_toolupdate_entrance_exit(int screenX, int screenY)
  * 
  * rct2: 0x006CCA73
  */
-static void ride_construction_tooldown_construct(int screenX, int screenY)
+void ride_construction_tooldown_construct(int screenX, int screenY)
 {
 	int trackType, trackDirection, rideIndex, edxRS16, x, y, z, properties, highestZ;
 	rct_window *w;
@@ -3441,7 +3456,66 @@ static void ride_construction_tooldown_construct(int screenX, int screenY)
 	}
 
 	if (ride->type == RIDE_TYPE_MAZE) {
-		// goto loc_6CCDE4
+		for (int zAttempts = 41; zAttempts >= 0; zAttempts--) {
+			_rideConstructionState = RIDE_CONSTRUCTION_STATE_6;
+			_currentTrackBeginX = x;
+			_currentTrackBeginY = y;
+			_currentTrackBeginZ = z;
+			_currentTrackSelectionFlags = 0;
+			_rideConstructionArrowPulseTime = 0;
+			window_maze_construction_update_pressed_widgets();
+			w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+			if (w == NULL)
+				break;
+
+			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+			
+			RCT2_GLOBAL(0x00141E9AE, rct_string_id) = 927;
+			RCT2_GLOBAL(0x00F44074, money32) = game_do_command(
+				_currentTrackBeginX, 
+				GAME_COMMAND_FLAG_APPLY | (4 << 8), 
+				_currentTrackBeginY, 
+				_currentRideIndex, 
+				GAME_COMMAND_SET_MAZE_TRACK, 
+				_currentTrackBeginZ, 
+				0);
+
+			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+
+			if (RCT2_GLOBAL(0x00F44074, money32) == MONEY32_UNDEFINED) {
+				rct_string_id errorText = RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id);
+				z -= 8;
+				if (
+					errorText == STR_NOT_ENOUGH_CASH_REQUIRES ||
+					errorText == STR_CAN_ONLY_BUILD_THIS_UNDERWATER ||
+					errorText == STR_CAN_ONLY_BUILD_THIS_ON_WATER ||
+					errorText == STR_RIDE_CANT_BUILD_THIS_UNDERWATER ||
+					errorText == STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND ||
+					errorText == STR_TOO_HIGH_FOR_SUPPORTS ||
+					zAttempts == 0 ||
+					z < 0
+					) {
+					sound_play_panned(SOUND_ERROR, RCT2_GLOBAL(0x0142406C, sint32), x, y, z);
+					w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+					if (w != NULL){
+						tool_set(w, 23, 12);
+						RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
+						RCT2_GLOBAL(0x00F44159, uint8) = 0;
+						RCT2_GLOBAL(0x00F4415C, uint8) = 0;
+					}
+					window_maze_construction_update_pressed_widgets();
+					break;
+				}
+				else if (zAttempts >= 0) {
+					z += 16;
+				}
+			}
+			else {
+				window_close_by_class(WC_ERROR);
+				sound_play_panned(SOUND_PLACE_ITEM, 0x8001, _currentTrackBeginX, _currentTrackBeginY, _currentTrackBeginZ);
+				break;
+			}
+		}
 		return;
 	}
 

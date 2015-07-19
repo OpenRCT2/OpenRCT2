@@ -598,6 +598,10 @@ void window_ride_construct(rct_window *w);
 void window_ride_list_open();
 rct_window *window_ride_construction_open();
 rct_window *window_maze_construction_open();
+void ride_construction_toolupdate_entrance_exit(int screenX, int screenY);
+void ride_construction_toolupdate_construct(int screenX, int screenY);
+void ride_construction_tooldown_construct(int screenX, int screenY);
+
 void window_maze_construction_update_pressed_widgets();
 void window_track_place_open();
 rct_window *window_new_ride_open();
