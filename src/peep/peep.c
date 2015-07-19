@@ -56,7 +56,7 @@ static bool sub_69AEB7(rct_peep *peep, int rideIndex);
 static void sub_69A98C(rct_peep *peep);
 static void sub_68FD3A(rct_peep *peep);
 static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideSeatToView);
-static int sub_694921(rct_peep *peep, int x, int y);
+static int peep_get_height_on_slope(rct_peep *peep, int x, int y);
 static void peep_pick_ride_to_go_on(rct_peep *peep);
 static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType);
 static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFlags);
@@ -135,10 +135,109 @@ void peep_update_all()
 }
 
 /* rct2: 0x0069BC9A */
-static uint8 sub_69BC9A(sint16 x, sint16 y, sint16 z){
-	int eax = x, ebx = 0, ecx = y, edx = z, esi, edi, ebp;
-	RCT2_CALLFUNC_X(0x0069BC9A, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return ebx & 0xFF;
+static uint8 peep_assess_surroundings(sint16 center_x, sint16 center_y, sint16 center_z){
+	if ((map_element_height(center_x, center_y) & 0xFFFF) > center_z)
+		return 0;
+
+	uint16 num_scenery = 0;
+	uint16 num_fountains = 0;
+	uint16 nearby_music = 0;
+	uint16 num_rubbish = 0;
+
+	sint16 initial_x = max(center_x - 160, 0);
+	sint16 initial_y = max(center_y - 160, 0);
+	sint16 final_x = min(center_x + 160, 8192);
+	sint16 final_y = min(center_y + 160, 8192);
+
+	for (sint16 x = initial_x; x < final_x; x += 32){
+		for (sint16 y = initial_y; y < final_y; y += 32){
+			rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+
+			do{
+				rct_ride* ride;
+				rct_scenery_entry* scenery;
+
+				switch (map_element_get_type(mapElement)){
+				case MAP_ELEMENT_TYPE_PATH:	
+					if ((mapElement->properties.path.additions & 0xF) == 0)
+						break;
+
+					scenery = g_pathBitSceneryEntries[mapElement->properties.path.additions - 1];
+					if (mapElement->properties.path.additions & (1 << 7))
+						break;
+
+					if (scenery->path_bit.var_06 & 
+						(PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER | 
+						PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW)){
+						num_fountains++;
+						break;
+					}
+					if (mapElement->flags & MAP_ELEMENT_FLAG_BROKEN){
+						num_rubbish++;
+					}
+					break;
+				case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
+				case MAP_ELEMENT_TYPE_SCENERY:
+					num_scenery++;
+					break;
+				case MAP_ELEMENT_TYPE_TRACK:
+					ride = GET_RIDE(mapElement->properties.track.ride_index);
+					if (ride->type == RIDE_TYPE_MERRY_GO_ROUND &&
+						ride->music_tune_id != 0xFF){
+						nearby_music |= 1;
+						break;
+					}
+
+					if (ride->music_tune_id == MUSIC_STYLE_ORGAN){
+						nearby_music |= 1;
+						break;
+					}
+
+					if (ride->type == RIDE_TYPE_DODGEMS &&
+						ride->music_tune_id != 0xFF){
+						// Dodgems drown out music?
+						nearby_music |= 2;
+					}
+					break;
+				}
+			} while (!map_element_is_last_for_tile(mapElement++));
+		}
+	}
+
+
+	short num_litter;
+
+	num_litter = 0;
+	rct_litter* litter;
+	for (uint16 sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_LITTER, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = litter->next) {
+		litter = &(g_sprite_list[sprite_idx].litter);
+
+		sint16 dist_x = abs(litter->x - center_x);
+		sint16 dist_y = abs(litter->y - center_y);
+		if (max(dist_x, dist_y) <= 160){
+			num_rubbish++;
+		}
+	}
+
+	if (num_fountains >= 5){
+		if (num_rubbish < 20)
+			return 3;
+	}
+
+	if (num_scenery >= 40){
+		if (num_rubbish < 8)
+			return 1;
+	}
+
+	if (nearby_music == 1){
+		if (num_rubbish < 20)
+			return 4;
+	}
+
+	if (num_rubbish < 2)
+		return 2;
+
+	return 0;
 }
 
 /* rct2: 0x0068F9A9*/
@@ -287,7 +386,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 				peep->var_F2 = 0;
 				if (peep->x != (sint16)0x8000){
 
-					uint8 bl = sub_69BC9A(peep->x & 0xFFE0, peep->y & 0xFFE0, peep->z);
+					uint8 bl = peep_assess_surroundings(peep->x & 0xFFE0, peep->y & 0xFFE0, peep->z);
 
 					if (bl != 0){
 						peep->happiness_growth_rate = min(255, peep->happiness_growth_rate + 45);
@@ -3433,7 +3532,7 @@ static void peep_update_sweeping(rct_peep* peep){
 	}
 	sint16 x = 0, y = 0, z, xy_distance;
 	if (peep_update_action(&x, &y, &xy_distance, peep)){
-		z = sub_694921(peep, x, y);
+		z = peep_get_height_on_slope(peep, x, y);
 		sprite_move(x, y, z, (rct_sprite*)peep);
 		invalidate_sprite((rct_sprite*)peep);
 		return;
@@ -5949,15 +6048,21 @@ static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideS
 /**
  * 
  *  rct2: 0x00694921
+ *  Gets the height including the bit depending
+ *  on how far up the slope the peep is.
  */
-static int sub_694921(rct_peep *peep, int x, int y)
+static int peep_get_height_on_slope(rct_peep *peep, int x, int y)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = x;
-	ecx = y;
-	esi = (int)peep;
-	RCT2_CALLFUNC_X(0x00694921, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return edx & 0xFFFF;
+	if (x == (sint16)0x8000)
+		return 0;
+
+	if (peep->next_var_29 & 0x18){
+		return map_element_height(x, y) & 0xFFFF;
+	}
+
+	int z = peep->next_z * 8;
+
+	return z + map_height_from_slope(x, y, peep->next_var_29);
 }
 
 static bool peep_has_voucher_for_free_ride(rct_peep *peep, int rideIndex)
