@@ -1741,7 +1741,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 		z &= 0xFFF0;
 		_currentTrackBeginZ = z;
 		_rideConstructionState = RIDE_CONSTRUCTION_STATE_FRONT;
-		_currentTrackSlopeEnd = 0;
+		_currentTrackSelectionFlags = 0;
 		_rideConstructionArrowPulseTime = 0;
 		direction = _currentTrackPieceDirection;
 		slope = _currentTrackCurve;
