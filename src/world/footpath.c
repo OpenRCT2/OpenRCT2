@@ -972,7 +972,7 @@ static void loc_6A6D7E(
 					}
 				}
 				if (z - 2 == mapElement->base_height) {
-					if (footpath_element_is_sloped(mapElement) && footpath_element_get_slope_direction(mapElement) != (direction ^ 2)) {
+					if (!footpath_element_is_sloped(mapElement) && footpath_element_get_slope_direction(mapElement) != (direction ^ 2)) {
 						return;
 					}
 					goto loc_6A6F1F;
