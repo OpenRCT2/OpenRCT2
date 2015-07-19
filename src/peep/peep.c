@@ -56,7 +56,7 @@ static bool sub_69AEB7(rct_peep *peep, int rideIndex);
 static void sub_69A98C(rct_peep *peep);
 static void sub_68FD3A(rct_peep *peep);
 static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideSeatToView);
-static int sub_694921(rct_peep *peep, int x, int y);
+static int peep_get_height_on_slope(rct_peep *peep, int x, int y);
 static void peep_pick_ride_to_go_on(rct_peep *peep);
 static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType);
 static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFlags);
@@ -3433,7 +3433,7 @@ static void peep_update_sweeping(rct_peep* peep){
 	}
 	sint16 x = 0, y = 0, z, xy_distance;
 	if (peep_update_action(&x, &y, &xy_distance, peep)){
-		z = sub_694921(peep, x, y);
+		z = peep_get_height_on_slope(peep, x, y);
 		sprite_move(x, y, z, (rct_sprite*)peep);
 		invalidate_sprite((rct_sprite*)peep);
 		return;
@@ -5949,15 +5949,21 @@ static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideS
 /**
  * 
  *  rct2: 0x00694921
+ *  Gets the height including the bit depending
+ *  on how far up the slope the peep is.
  */
-static int sub_694921(rct_peep *peep, int x, int y)
+static int peep_get_height_on_slope(rct_peep *peep, int x, int y)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = x;
-	ecx = y;
-	esi = (int)peep;
-	RCT2_CALLFUNC_X(0x00694921, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return edx & 0xFFFF;
+	if (x == (sint16)0x8000)
+		return 0;
+
+	if (peep->next_var_29 & 0x18){
+		return map_element_height(x, y);
+	}
+
+	int z = peep->next_z * 8;
+
+	return z + map_height_from_slope(x, y, peep->next_var_29);
 }
 
 static bool peep_has_voucher_for_free_ride(rct_peep *peep, int rideIndex)
