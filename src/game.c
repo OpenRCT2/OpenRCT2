@@ -833,9 +833,6 @@ void game_autosave()
 	platform_get_user_directory(path, "save");
 	strcat(path, "autosave.sv6");
 
-	strcpy(gScenarioSaveName, path_get_filename(path));
-	path_remove_extension(gScenarioSaveName);
-
 	SDL_RWops* rw = platform_sdl_rwfromfile(path, "wb+");
 	if (rw != NULL) {
 		scenario_save(rw, 0x80000000);
