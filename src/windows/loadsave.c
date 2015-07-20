@@ -758,8 +758,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 				int success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 1 : 0);
 				SDL_RWclose(rw);
 				if (success) {
-					window_close(w);
-
+					window_close_by_class(WC_LOADSAVE);
 					game_do_command(0, 1047, 0, -1, GAME_COMMAND_SET_RIDE_APPEARANCE, 0, 0);
 					gfx_invalidate_screen();
 				} else {
@@ -786,7 +785,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 				int success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2);
 				SDL_RWclose(rw);
 				if (success) {
-					window_close(w);
+					window_close_by_class(WC_LOADSAVE);
 					gfx_invalidate_screen();
 				} else {
 					window_error_open(STR_SAVE_LANDSCAPE, 1049);
@@ -810,7 +809,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = parkFlagsBackup;
 
 			if (success) {
-				window_close(w);
+				window_close_by_class(WC_LOADSAVE);
 				title_load();
 			} else {
 				window_error_open(STR_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED);
@@ -913,7 +912,9 @@ static void window_overwrite_prompt_mouseup(rct_window *w, int widgetIndex)
 		loadsaveWindow = window_find_by_class(WC_LOADSAVE);
 		if (loadsaveWindow != NULL)
 			window_loadsave_select(loadsaveWindow, _window_overwrite_prompt_path);
-		window_close(w);
+		// As the window_loadsave_select function can change the order of the
+		// windows we can't use window_close(w).
+		window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
 		break;
 	case WIDX_OVERWRITE_CANCEL:
 	case WIDX_OVERWRITE_CLOSE:
