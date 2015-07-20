@@ -4133,7 +4133,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 			return MONEY32_UNDEFINED;
 		}
 
-		uint8 support_height = mapElement->base_height - surfaceElement->base_height;
+		sint8 support_height = mapElement->base_height - surfaceElement->base_height;
 		if (support_height < 0){
 			support_height = 10;
 		}
