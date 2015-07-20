@@ -3913,7 +3913,7 @@ bool ride_check_track_contains_inversions(rct_xy_element *input, rct_xy_element 
 
 	track_circuit_iterator_begin(&it, *input);
 	while (track_circuit_iterator_next(&it)) {
-		trackType = output->element->properties.track.type;
+		trackType = it.current.element->properties.track.type;
 		if (RCT2_ADDRESS(0x0099423C, uint16)[trackType] & 0x4000) {
 			*output = it.current;
 			return true;
