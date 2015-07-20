@@ -678,7 +678,7 @@ static void window_ride_construction_resize(rct_window *w)
 		if (is_track_enabled(TRACK_CURVE_VERTICAL)) {
 			// Disable all curves only on vertical track
 			if (_previousTrackSlopeEnd != TRACK_SLOPE_UP_90 || _currentTrackSlopeEnd != TRACK_SLOPE_UP_90) {
-				if (_previousTrackSlopeEnd == TRACK_SLOPE_DOWN_90 && _currentTrackSlopeEnd != TRACK_SLOPE_DOWN_90) {
+				if (_previousTrackSlopeEnd != TRACK_SLOPE_DOWN_90 || _currentTrackSlopeEnd != TRACK_SLOPE_DOWN_90) {
 					disabledWidgets |=
 						(1ULL << WIDX_LEFT_CURVE_VERY_SMALL) |
 						(1ULL << WIDX_LEFT_CURVE_SMALL) |
@@ -2684,7 +2684,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
 	window_ride_construction_widgets[WIDX_RIGHT_CURVE_SMALL].right = 137;
 	window_ride_construction_widgets[WIDX_LEFT_CURVE_SMALL].image = 5138;
 	window_ride_construction_widgets[WIDX_RIGHT_CURVE_SMALL].image = 5139;
-	if (is_track_enabled(TRACK_SLOPE_STEEP_LONG)) {
+	if (is_track_enabled(TRACK_CURVE_VERTICAL)) {
 		window_ride_construction_widgets[WIDX_LEFT_CURVE_SMALL].type = WWT_FLATBTN;
 		window_ride_construction_widgets[WIDX_LEFT_CURVE_SMALL].left = 6;
 		window_ride_construction_widgets[WIDX_LEFT_CURVE_SMALL].right = 27;
