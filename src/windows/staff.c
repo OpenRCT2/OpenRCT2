@@ -1162,10 +1162,9 @@ void window_staff_overview_text_input(rct_window *w, int widgetIndex, char *text
 		return;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = 2979;
-
-	game_do_command(1, 1, w->number, *text, GAME_COMMAND_SET_PEEP_NAME, *(text + 2), *(text + 1));
-	game_do_command(2, 1, 0, *(text + 3), GAME_COMMAND_SET_PEEP_NAME, *(text + 5), *(text + 4));
-	game_do_command(0, 1, 0, *(text + 6), GAME_COMMAND_SET_PEEP_NAME, *(text + 8), *(text + 7));
+	game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 0)), GAME_COMMAND_SET_PEEP_NAME, *((int*)(text + 8)), *((int*)(text + 4)));
+	game_do_command(2, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 12)), GAME_COMMAND_SET_PEEP_NAME, *((int*)(text + 20)), *((int*)(text + 16)));
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 24)), GAME_COMMAND_SET_PEEP_NAME, *((int*)(text + 32)), *((int*)(text + 28)));
 }
 
 /* rct2: 0x006BE5FC */
