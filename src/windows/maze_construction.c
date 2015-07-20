@@ -46,6 +46,8 @@ enum {
 	WIDX_MAZE_DIRECTION_NE,
 	WIDX_MAZE_DIRECTION_SW,
 	WIDX_MAZE_DIRECTION_SE,
+	WIDX_MAZE_ENTRANCE = 29,
+	WIDX_MAZE_EXIT,
 };
 
 static rct_widget window_maze_construction_widgets[] = {
@@ -94,8 +96,8 @@ static void window_maze_construction_mouseup(rct_window *w, int widgetIndex);
 static void window_maze_construction_resize(rct_window *w);
 static void window_maze_construction_mousedown(int widgetIndex, rct_window *w, rct_widget *widget);
 static void window_maze_construction_update(rct_window *w);
-static void window_ride_construction_toolupdate(rct_window* w, int widgetIndex, int x, int y);
-static void window_ride_construction_tooldown(rct_window* w, int widgetIndex, int x, int y);
+static void window_maze_construction_toolupdate(rct_window* w, int widgetIndex, int x, int y);
+static void window_maze_construction_tooldown(rct_window* w, int widgetIndex, int x, int y);
 static void window_maze_construction_invalidate(rct_window *w);
 static void window_maze_construction_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -110,8 +112,8 @@ static rct_window_event_list window_maze_construction_events = {
 	window_maze_construction_update,
 	NULL,
 	NULL,
-	window_ride_construction_toolupdate,
-	window_ride_construction_tooldown,
+	window_maze_construction_toolupdate,
+	window_maze_construction_tooldown,
 	NULL,
 	NULL,
 	NULL,
@@ -183,13 +185,46 @@ static void window_maze_construction_close(rct_window *w)
 	}
 }
 
+static void window_maze_construction_entrance_mouseup(rct_window *w, int widgetIndex){
+	if (tool_set(w, widgetIndex, 12))
+		return;
+
+	RCT2_GLOBAL(0x00F44191, uint8) = widgetIndex == WIDX_MAZE_ENTRANCE ? 0 : 1;
+	RCT2_GLOBAL(0x00F44192, uint8) = w->number;
+	RCT2_GLOBAL(0x00F44193, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+
+	sub_6C9627();
+
+	// ???
+	uint8 old_state = _rideConstructionState;
+	_rideConstructionState = 5;
+	if (old_state != 5)
+		_rideConstructionState = old_state;
+	window_maze_construction_update_pressed_widgets();
+}
+
 /**
  *
  * rct2: 0x006CD461
  */
 static void window_maze_construction_mouseup(rct_window *w, int widgetIndex)
 {
-	RCT2_CALLPROC_X(0x006CD461, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+	switch (widgetIndex){
+	case WIDX_CLOSE:
+		window_close(w);
+		break;
+	case WIDX_MAZE_ENTRANCE:
+	case WIDX_MAZE_EXIT:
+		window_maze_construction_entrance_mouseup(w, widgetIndex);
+		break;
+	case WIDX_MAZE_DIRECTION_NW:
+	case WIDX_MAZE_DIRECTION_NE:
+	case WIDX_MAZE_DIRECTION_SE:
+	case WIDX_MAZE_DIRECTION_SW:
+		RCT2_CALLPROC_X(0x006CD4AB, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+		break;
+	}
 }
 
 /**
@@ -223,18 +258,84 @@ static void window_maze_construction_update(rct_window *w)
  *
  * rct2: 0x006CD63E
  */
-static void window_ride_construction_toolupdate(rct_window* w, int widgetIndex, int x, int y)
+static void window_maze_construction_toolupdate(rct_window* w, int widgetIndex, int x, int y)
 {
-	RCT2_CALLPROC_X(0x006CD63E, x, y, 0, widgetIndex, (int)w, 0, 0);
+	switch (widgetIndex){
+	case WIDX_MAZE_DIRECTION_GROUPBOX:
+		ride_construction_toolupdate_construct(x, y);
+		break;
+	case WIDX_MAZE_ENTRANCE:
+	case WIDX_MAZE_EXIT:
+		ride_construction_toolupdate_entrance_exit(x, y);
+		break;
+	}
+}
+
+/* rct2: 0x006C825F */
+static void window_maze_construction_entrance_tooldown(int x, int y, rct_window* w){
+	sub_6C9627();
+
+	map_invalidate_selection_rect();
+
+	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~((1 << 0) | (1 << 2));
+
+	int direction = 0;
+	ride_get_entrance_or_exit_position_from_screen_position(x, y, &x, &y, &direction);
+
+	if (RCT2_GLOBAL(0x00F44194, uint8) == 0xFF)
+		return;
+
+	uint8 rideIndex = RCT2_GLOBAL(0x00F44192, uint8);
+	uint8 is_exit = RCT2_GLOBAL(0x00F44191, uint8);
+	RCT2_GLOBAL(0x00141E9AE, rct_string_id) = is_exit ? 1144 : 1145;
+
+	money32 cost = game_do_command(
+		x, 
+		GAME_COMMAND_FLAG_APPLY | ((direction ^ 2) << 8), 
+		y, 
+		rideIndex | (is_exit << 8),
+		GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, 
+		RCT2_GLOBAL(0x00F44193, uint8), 
+		0);
+
+	if (cost == MONEY32_UNDEFINED)
+		return;
+
+	sound_play_panned(
+		SOUND_PLACE_ITEM,
+		0x8001,
+		RCT2_GLOBAL(0x009DEA5E, sint16),
+		RCT2_GLOBAL(0x009DEA60, sint16),
+		RCT2_GLOBAL(0x009DEA62, uint16));
+
+	rct_ride* ride = GET_RIDE(rideIndex);
+	if (ride_are_all_possible_entrances_and_exits_built(ride)){
+		tool_cancel();
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_15))
+			window_close(w);
+	}
+	else{
+		RCT2_GLOBAL(0x00F44191, uint8) = is_exit ^ 1;
+		window_invalidate_by_class(WC_RIDE_CONSTRUCTION);
+		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint8) = is_exit ? WIDX_MAZE_ENTRANCE : WIDX_MAZE_EXIT;
+	}
 }
 
 /**
  * 
  *  rct2: 0x006CD65D
  */
-static void window_ride_construction_tooldown(rct_window* w, int widgetIndex, int x, int y)
+static void window_maze_construction_tooldown(rct_window* w, int widgetIndex, int x, int y)
 {
-	RCT2_CALLPROC_X(0x006CD65D, x, y, 0, widgetIndex, (int)w, 0, 0);
+	switch (widgetIndex){
+	case WIDX_MAZE_DIRECTION_GROUPBOX:
+		ride_construction_tooldown_construct(x, y);
+		break;
+	case WIDX_MAZE_ENTRANCE:
+	case WIDX_MAZE_EXIT:
+		window_maze_construction_entrance_tooldown(x, y, w);
+		break;
+	}
 }
 
 /**
