@@ -52,7 +52,7 @@ static void sub_693C9E(rct_peep *peep);
 static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 amount);
 static void sub_695444(rct_peep *peep, int rideIndex, int flags);
 static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 price);
-static bool sub_69AEB7(rct_peep *peep, int rideIndex);
+static bool peep_should_use_cash_machine(rct_peep *peep, int rideIndex);
 static void sub_69A98C(rct_peep *peep);
 static void sub_68FD3A(rct_peep *peep);
 static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideSeatToView);
@@ -3977,7 +3977,7 @@ static void peep_update_buying(rct_peep* peep)
 
 	if (peep->current_ride != peep->previous_ride){
 		if (ride->type == RIDE_TYPE_CASH_MACHINE){
-			item_bought = sub_69AEB7(peep, peep->current_ride);
+			item_bought = peep_should_use_cash_machine(peep, peep->current_ride);
 			if (!item_bought) {
 				peep->previous_ride = peep->current_ride;
 				peep->previous_ride_time_out = 0;
@@ -6005,9 +6005,20 @@ static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 pric
  * 
  *  rct2: 0x0069AEB7
  */
-static bool sub_69AEB7(rct_peep *peep, int rideIndex)
+static bool peep_should_use_cash_machine(rct_peep *peep, int rideIndex)
 {
-	return !(RCT2_CALLPROC_X(0x0069AEB7, rideIndex << 8, 0, 0, 0, (int)peep, 0, 0) & 0x100);
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) return false;
+	if (peep->flags & PEEP_FLAGS_LEAVING_PARK) return false;
+	if (peep->cash_in_pocket > MONEY(20,00)) return false;
+	if (115 + (scenario_rand() % 128) > peep->happiness) return false;
+	if (peep->energy < 80) return false;
+
+	rct_ride *ride = GET_RIDE(rideIndex);
+	ride_update_satisfaction(ride, peep->happiness >> 6);
+	ride->var_120++;
+	ride->total_customers++;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+	return true;
 }
 
 /**
@@ -6016,7 +6027,7 @@ static bool sub_69AEB7(rct_peep *peep, int rideIndex)
  */
 static void sub_69A98C(rct_peep *peep)
 {
-	RCT2_CALLPROC_X(0x0069A98C, 0, 0, 0, 0, (int)peep, 0, 0);
+	peep->var_CC = 0xFFFFFFFF;
 }
 
 /**
