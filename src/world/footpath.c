@@ -926,7 +926,7 @@ static bool sub_footpath_disconnect_queue_from_path(int x, int y, rct_map_elemen
 static bool footpath_disconnect_queue_from_path(int x, int y, rct_map_element *mapElement, int action) {
 	if (!footpath_element_is_queue(mapElement)) return false;
 
-	if (mapElement->properties.path.type & 4) return false;
+	if (footpath_element_is_sloped(mapElement)) return false;
 
 	uint8 c = RCT2_ADDRESS(0x0098D7F0, uint8)[mapElement->properties.path.edges & 0x0F];
 	if ((action < 0) ? (c >= 2) : (c < 2)) return false;
@@ -972,7 +972,7 @@ static void loc_6A6D7E(
 					}
 				}
 				if (z - 2 == mapElement->base_height) {
-					if (!footpath_element_is_sloped(mapElement) && footpath_element_get_slope_direction(mapElement) != (direction ^ 2)) {
+					if (!footpath_element_is_sloped(mapElement) || footpath_element_get_slope_direction(mapElement) != (direction ^ 2)) {
 						return;
 					}
 					goto loc_6A6F1F;
