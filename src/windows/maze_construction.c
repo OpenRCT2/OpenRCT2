@@ -251,7 +251,34 @@ static void window_maze_construction_mousedown(int widgetIndex, rct_window *w, r
  */
 static void window_maze_construction_update(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x006CD767, 0, 0, 0, 0, (int)w, 0, 0);
+	switch (_rideConstructionState) {
+	case RIDE_CONSTRUCTION_STATE_PLACE:
+		if (!widget_is_active_tool(w, WIDX_MAZE_DIRECTION_GROUPBOX)) {
+			window_close(w);
+			return;
+		}
+		break;
+	case RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT:
+		if (!widget_is_active_tool(w, WIDX_MAZE_ENTRANCE) && !widget_is_active_tool(w, WIDX_MAZE_EXIT)) {
+			_rideConstructionState = RCT2_GLOBAL(0x00F440CC, uint8);
+			window_maze_construction_update_pressed_widgets();
+		}
+		break;
+	}
+
+	switch (_rideConstructionState) {
+	case RIDE_CONSTRUCTION_STATE_FRONT:
+	case RIDE_CONSTRUCTION_STATE_BACK:
+	case RIDE_CONSTRUCTION_STATE_SELECTED:
+		if (
+			(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint8) & INPUT_FLAG_TOOL_ACTIVE) &&
+			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == WC_RIDE_CONSTRUCTION
+		) {
+			tool_cancel();
+		}
+		break;
+	}
+	sub_6C94D8();
 }
 
 /**

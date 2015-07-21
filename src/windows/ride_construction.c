@@ -463,7 +463,6 @@ static void window_ride_construction_draw_track_piece(
 	int width, int height
 );
 static void window_ride_construction_update_enabled_track_pieces();
-void sub_6C94D8();
 static bool sub_6CA2DF(int *trackType, int *trackDirection, int *rideIndex, int *edxRS16, int *x, int *y, int *z, int *properties);
 static void sub_6CBCE2(
 	int rideIndex, int trackType, int trackDirection, int edx,

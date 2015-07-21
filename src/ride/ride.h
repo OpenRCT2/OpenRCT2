@@ -973,5 +973,6 @@ void sub_6CB945(int rideIndex);
 void ride_crash(int rideIndex, int vehicleIndex);
 
 bool ride_type_is_intamin(int rideType);
+void sub_6C94D8();
 
 #endif
