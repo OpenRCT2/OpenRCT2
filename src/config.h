@@ -163,6 +163,7 @@ typedef struct {
 	uint8 toolbar_show_finances;
 	uint8 toolbar_show_research;
 	uint8 toolbar_show_cheats;
+	uint8 toolbar_show_news;
 	uint8 select_by_track_type;
 	uint8 console_small_font;
 	utf8string current_theme_preset;

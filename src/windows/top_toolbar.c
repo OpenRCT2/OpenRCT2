@@ -64,6 +64,7 @@ enum {
 	WIDX_DEBUG,
 	WIDX_FINANCES,
 	WIDX_RESEARCH,
+	WIDX_NEWS,
 
 	WIDX_SEPARATOR,
 };
@@ -130,6 +131,7 @@ static const int left_aligned_widgets_order[] = {
 
 // from right to left
 static const int right_aligned_widgets_order[] = {
+	WIDX_NEWS,
 	WIDX_GUESTS,
 	WIDX_STAFF,
 	WIDX_PARK,
@@ -144,7 +146,7 @@ static const int right_aligned_widgets_order[] = {
 	WIDX_SCENERY,
 	WIDX_WATER,
 	WIDX_LAND,
-	WIDX_CLEAR_SCENERY,
+	WIDX_CLEAR_SCENERY
 };
 
 #pragma endregion
@@ -174,6 +176,7 @@ static rct_widget window_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_DEBUG_TIP },					// Debug
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B, 0,						27,		0x20000000 | 0x15F9,						3235 },								// Finances
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						2275 },								// Research
+	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						2522 },								// News
 	
 	{ WWT_EMPTY,	0,	0,		10-1,	0,						0,		0xFFFFFFFF,									STR_NONE },							// Artificial widget separator
 	{ WIDGETS_END },
@@ -318,6 +321,9 @@ static void window_top_toolbar_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_RESEARCH:
 		window_research_open();
+		break;
+	case WIDX_NEWS:
+		window_news_open();
 		break;
 	}
 }
@@ -589,6 +595,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 	window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_DEBUG].type = gConfigGeneral.debugging_tools ? WWT_TRNBTN : WWT_EMPTY;
+	window_top_toolbar_widgets[WIDX_NEWS].type = WWT_TRNBTN;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
@@ -599,6 +606,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 		window_top_toolbar_widgets[WIDX_FINANCES].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_EMPTY;
+		window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
 
 		if (g_editor_step != EDITOR_STEP_LANDSCAPE_EDITOR) {
 			window_top_toolbar_widgets[WIDX_MAP].type = WWT_EMPTY;
@@ -629,10 +637,13 @@ static void window_top_toolbar_invalidate(rct_window *w)
 
 		if (!gConfigInterface.toolbar_show_cheats)
 			window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_EMPTY;
+
+		if (!gConfigInterface.toolbar_show_news)
+			window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
 	}
 
 	enabledWidgets = 0;
-	for (i = WIDX_PAUSE; i <= WIDX_RESEARCH; i++)
+	for (i = WIDX_PAUSE; i <= WIDX_NEWS; i++)
 		if (window_top_toolbar_widgets[i].type != WWT_EMPTY)
 			enabledWidgets |= (1 << i);
 	w->enabled_widgets = enabledWidgets;
@@ -783,6 +794,16 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (widget_is_pressed(w, WIDX_FINANCES))
 			y++;
 		imgId = SPR_FINANCE;
+		gfx_draw_sprite(dpi, imgId, x, y, 0);
+	}
+
+	// Draw news button
+	if (window_top_toolbar_widgets[WIDX_NEWS].type != WWT_EMPTY) {
+		x = w->x + window_top_toolbar_widgets[WIDX_NEWS].left + 3;
+		y = w->y + window_top_toolbar_widgets[WIDX_NEWS].top + 0;
+		if (widget_is_pressed(w, WIDX_NEWS))
+			y++;
+		imgId = SPR_G2_TAB_NEWS;
 		gfx_draw_sprite(dpi, imgId, x, y, 0);
 	}
 }

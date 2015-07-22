@@ -117,6 +117,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_TOOLBAR_SHOW_FINANCES,
 	WIDX_TOOLBAR_SHOW_RESEARCH,
 	WIDX_TOOLBAR_SHOW_CHEATS,
+	WIDX_TOOLBAR_SHOW_NEWS,
 
 	// Misc
 	WIDX_REAL_NAME_CHECKBOX = WIDX_PAGE_START,
@@ -206,12 +207,13 @@ static rct_widget window_options_audio_widgets[] = {
 
 static rct_widget window_options_controls_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
-	{ WWT_CHECKBOX,			2,	10,		299,	54,		65,		STR_SCREEN_EDGE_SCROLLING,	STR_SCREEN_EDGE_SCROLLING_TIP },
-	{ WWT_CHECKBOX,			2,	10,		299,	69,		80,		STR_INVERT_RIGHT_MOUSE_DRAG,STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	84,		95,		STR_HOTKEY,					STR_HOTKEY_TIP },
-	{ WWT_CHECKBOX,			2,	10,		299,	99,		110,	5120,						STR_NONE },
-	{ WWT_CHECKBOX,			2,	10,		299,	114,	125,	5121,						STR_NONE },
-	{ WWT_CHECKBOX,			2,	10,		299,	129,	140,	5147,						STR_NONE },
+	{ WWT_CHECKBOX,			2,	10,		299,	54,		65,		STR_SCREEN_EDGE_SCROLLING,				STR_SCREEN_EDGE_SCROLLING_TIP },
+	{ WWT_CHECKBOX,			2,	10,		299,	69,		80,		STR_INVERT_RIGHT_MOUSE_DRAG,			STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	84,		95,		STR_HOTKEY,								STR_HOTKEY_TIP },
+	{ WWT_CHECKBOX,			2,	10,		299,	99,		110,	5120,									STR_NONE },
+	{ WWT_CHECKBOX,			2,	10,		299,	114,	125,	5121,									STR_NONE },
+	{ WWT_CHECKBOX,			2,	10,		299,	129,	140,	5147,									STR_NONE },
+	{ WWT_CHECKBOX,			2,	10,		299,	144,	155,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,	STR_NONE },
 	{ WIDGETS_END },
 };
 
@@ -363,7 +365,8 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_HOTKEY_DROPDOWN) |
 	(1 << WIDX_TOOLBAR_SHOW_FINANCES) |
 	(1 << WIDX_TOOLBAR_SHOW_RESEARCH) |
-	(1 << WIDX_TOOLBAR_SHOW_CHEATS),
+	(1 << WIDX_TOOLBAR_SHOW_CHEATS) |
+	(1 << WIDX_TOOLBAR_SHOW_NEWS),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_REAL_NAME_CHECKBOX) |
@@ -522,6 +525,12 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 			break;
 		case WIDX_TOOLBAR_SHOW_CHEATS:
 			gConfigInterface.toolbar_show_cheats ^= 1;
+			config_save_default();
+			window_invalidate(w);
+			window_invalidate_by_class(WC_TOP_TOOLBAR);
+			break;
+		case WIDX_TOOLBAR_SHOW_NEWS:
+			gConfigInterface.toolbar_show_news ^= 1;
 			config_save_default();
 			window_invalidate(w);
 			window_invalidate_by_class(WC_TOP_TOOLBAR);
@@ -1157,12 +1166,14 @@ static void window_options_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
+		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
 
 		window_options_controls_widgets[WIDX_SCREEN_EDGE_SCROLLING].type = WWT_CHECKBOX;
 		window_options_controls_widgets[WIDX_HOTKEY_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_controls_widgets[WIDX_TOOLBAR_SHOW_FINANCES].type = WWT_CHECKBOX;
 		window_options_controls_widgets[WIDX_TOOLBAR_SHOW_RESEARCH].type = WWT_CHECKBOX;
 		window_options_controls_widgets[WIDX_TOOLBAR_SHOW_CHEATS].type = WWT_CHECKBOX;
+		window_options_controls_widgets[WIDX_TOOLBAR_SHOW_NEWS].type = WWT_CHECKBOX;
 		break;
 
 	case WINDOW_OPTIONS_PAGE_MISC:
