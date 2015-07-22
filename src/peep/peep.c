@@ -162,7 +162,7 @@ static uint8 peep_assess_surroundings(sint16 center_x, sint16 center_y, sint16 c
 					if ((mapElement->properties.path.additions & 0xF) == 0)
 						break;
 
-					scenery = g_pathBitSceneryEntries[mapElement->properties.path.additions - 1];
+					scenery = g_pathBitSceneryEntries[(mapElement->properties.path.additions & 0x0F) - 1];
 					if (mapElement->properties.path.additions & (1 << 7))
 						break;
 
