@@ -98,7 +98,8 @@
     <ClCompile Include="..\src\scenario.c" />
     <ClCompile Include="..\src\scenario_list.c" />
     <ClCompile Include="..\src\windows\changelog.c" />
-    <ClCompile Include="..\src\windows\network.c" />
+    <ClCompile Include="..\src\windows\network_status.c" />
+    <ClCompile Include="..\src\windows\player_list.c" />
     <ClCompile Include="..\src\windows\title_command_editor.c" />
     <ClCompile Include="..\src\windows\title_editor.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release with Tests|Win32'">

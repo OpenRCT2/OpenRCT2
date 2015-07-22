@@ -28,6 +28,7 @@ extern "C" {
 #include "../addresses.h"
 #include "../game.h"
 #include "../interface/chat.h"
+#include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../scenario.h"
@@ -742,15 +743,18 @@ int Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pac
 		if (offset + chunksize > chunk_buffer.size()) {
 			chunk_buffer.resize(offset + chunksize);
 		}
+		char status[256];
+		sprintf(status, "Downloading map ... (%d / %d)", (offset + chunksize) / 1000, size / 1000);
+		window_network_status_open(status);
 		memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
 		if (offset + chunksize == size) {
-			printf("Loading new map from network...\n");
 			SDL_RWops* rw = SDL_RWFromMem(&chunk_buffer[0], size);
 			if (game_load_sv6(rw)) {
 				game_load_init();
 				if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) & 1)
 					pause_toggle();
 				game_command_queue.clear();
+				window_network_status_open("Loaded new map from network");
 			}
 			SDL_RWclose(rw);
 		}
