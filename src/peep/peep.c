@@ -3913,9 +3913,9 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
 	uint16 sprite_index;
 
 	FOR_ALL_STAFF(sprite_index, inner_peep){
-		if (inner_peep->staff_type != STAFF_TYPE_SECURITY)continue;
+		if (inner_peep->staff_type != STAFF_TYPE_SECURITY) continue;
 
-		if (inner_peep->x == (sint16)SPRITE_LOCATION_NULL)continue;
+		if (inner_peep->x == SPRITE_LOCATION_NULL) continue;
 
 		int x_diff = abs(inner_peep->x - peep->x);
 		int y_diff = abs(inner_peep->y - peep->y);

@@ -201,13 +201,13 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 				count = 0;
 				uint8 i;
 				for (i = 0; i < 4; ++i) {
-					if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] != SPRITE_LOCATION_NULL) ++count;
+					if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[i] != SPRITE_LOCATION_NULL) ++count;
 				}
 
 				if (count > 0) {
 					uint32 rand = scenario_rand_max(count);
 					for (i = 0; i < 4; ++i) {
-						if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] != SPRITE_LOCATION_NULL) {
+						if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[i] != SPRITE_LOCATION_NULL) {
 							if (rand == 0) break;
 							--rand;
 						}

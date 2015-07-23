@@ -199,7 +199,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		*x = peep->x;
 		*y = peep->y;
 		*z = peep->z;
-		if (*((uint16*)x) != SPRITE_LOCATION_NULL)
+		if (*x != SPRITE_LOCATION_NULL)
 			break;
 
 		if (peep->state != 3 && peep->state != 7) {

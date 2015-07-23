@@ -626,10 +626,9 @@ void reset_0x69EBE4(){
 
 		if (spr->unknown.sprite_identifier != 0xFF){
 			uint32 edi = spr->unknown.x;
-			if ((uint16)(spr->unknown.x) == SPRITE_LOCATION_NULL){
+			if (spr->unknown.x == SPRITE_LOCATION_NULL){
 				edi = 0x10000;
-			}
-			else{
+			} else {
 				int ecx = spr->unknown.y;
 				ecx >>= 5;
 				edi &= 0x1FE0;

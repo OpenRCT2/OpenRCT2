@@ -1379,7 +1379,7 @@ void window_rotate_camera(rct_window *w, int direction)
 
 	// other != viewport probably triggers on viewports in ride or guest window?
 	// x is 0x8000 if middle of viewport is obstructed by another window?
-	if (x == (sint16)SPRITE_LOCATION_NULL || other != viewport){
+	if (x == SPRITE_LOCATION_NULL || other != viewport) {
 		x = (viewport->view_width >> 1) + viewport->view_x;
 		y = (viewport->view_height >> 1) + viewport->view_y;
 
