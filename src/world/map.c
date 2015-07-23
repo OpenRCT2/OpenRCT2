@@ -2134,7 +2134,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 					}
 				}
 				if(gCheatsDisableClearanceChecks || !(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE) || z != 0 || F64F1D != 0 || !(map_element->properties.surface.slope & 0x1F)){
-					if(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG18 || z == 0){
+					if(gCheatsDisableSupportLimits || scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG18 || z == 0){
 					l_6E0B78: ;
 						int bp = quadrant;
 						int zLow = F64EC8 / 8;
