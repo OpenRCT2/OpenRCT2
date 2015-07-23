@@ -481,12 +481,14 @@ typedef struct {
 	uint32 var_CC;
 	uint8 pad_D0[0x10];
 	uint8 no_action_frame_no;		// 0xE0
-	uint8 var_E1;
+	// 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
+	uint8 litter_count;				// 0xE1
 	union{
 		uint8 time_on_ride;			// 0xE2
 		uint8 var_E2;				// 0xE2
 	};
-	uint8 var_E3;
+	// 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
+	uint8 disgusting_count;			// 0xE3
 	union{
 		money16 paid_to_enter;			// 0xE4
 		uint16 staff_lawns_mown;		// 0xE4
