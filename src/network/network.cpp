@@ -358,6 +358,7 @@ bool Network::BeginServer(unsigned short port)
 
 	NetworkPlayer* player = AddPlayer("Server Player");
 	player->flags |= NETWORK_PLAYER_FLAG_ISSERVER;
+	player_id = player->id;
 
 	printf("Ready for clients...\n");
 
@@ -384,6 +385,11 @@ int Network::GetAuthStatus()
 uint32 Network::GetServerTick()
 {
 	return server_tick;
+}
+
+uint8 Network::GetPlayerID()
+{
+	return player_id;
 }
 
 void Network::Update()
@@ -446,12 +452,13 @@ NetworkPlayer* Network::GetPlayerByID(int id) {
 const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
 {
 	static char formatted[1024];
-	formatted[0] = (char)FORMAT_OUTLINE;
-	formatted[1] = (char)FORMAT_BABYBLUE;
+	formatted[0] = 0;
 	if (fromplayer) {
+		formatted[0] = (char)FORMAT_OUTLINE;
+		formatted[1] = (char)FORMAT_BABYBLUE;
 		strcpy(&formatted[2], (const char*)fromplayer->name);
+		strcat(formatted, ": ");
 	}
-	strcat(formatted, ": ");
 	strcat(formatted, text);
 	return formatted;
 }
@@ -508,17 +515,17 @@ void Network::Server_Send_CHAT(const char* text)
 	SendPacketToClients(*packet);
 }
 
-void Network::Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp)
+void Network::Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback)
 {
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
-	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED) << ecx << edx << esi << edi << ebp; 
+	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED) << ecx << edx << esi << edi << ebp << callback; 
 	server_connection.QueuePacket(std::move(packet));
 }
 
-void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp)
+void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 playerid, uint8 callback)
 {
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
-	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED) << ecx << edx << esi << edi << ebp; 
+	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED) << ecx << edx << esi << edi << ebp << playerid << callback; 
 	SendPacketToClients(*packet);
 }
 
@@ -627,7 +634,10 @@ void Network::ProcessGameCommandQueue()
 	while (game_command_queue.begin() != game_command_queue.end() && game_command_queue.begin()->tick == RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)) {
 		// run all the game commands at the current tick
 		const GameCommand& gc = (*game_command_queue.begin());
-		game_do_command(gc.eax, gc.ebx, gc.ecx, gc.edx, gc.esi, gc.edi, gc.ebp);
+		if (GetPlayerID() == gc.playerid) {
+			game_command_callback = game_command_callback_get_callback(gc.callback);
+		}
+		game_do_command_p(gc.esi, (int*)&gc.eax, (int*)&gc.ebx, (int*)&gc.ecx, (int*)&gc.edx, (int*)&gc.esi, (int*)&gc.edi, (int*)&gc.ebp);
 		game_command_queue.erase(game_command_queue.begin());
 	}
 }
@@ -692,7 +702,7 @@ void Network::PrintError()
 
 int Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet)
 {
-	packet >> (uint32&)connection.authstatus;
+	packet >> (uint32&)connection.authstatus >> (uint8&)player_id;
 	return 1;
 }
 
@@ -702,6 +712,7 @@ int Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& pa
 		const char* gameversion = packet.ReadString();
 		const char* name = packet.ReadString();
 		const char* password = packet.ReadString();
+		uint8 playerid = 0;
 		if (!gameversion || strcmp(gameversion, OPENRCT2_VERSION) != 0) {
 			connection.authstatus = NETWORK_AUTH_BADVERSION;
 		} else
@@ -714,15 +725,18 @@ int Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& pa
 			connection.authstatus = NETWORK_AUTH_OK;
 			NetworkPlayer* player = AddPlayer(name);
 			connection.player = player;
-			char text[256];
-			text[0] = (char)FORMAT_OUTLINE;
-			text[1] = (char)FORMAT_GREEN;
-			sprintf(&text[2], "%s has joined the game", player->name);
-			chat_history_add(text);
-			gNetwork.Server_Send_CHAT(text);
+			if (player) {
+				playerid = player->id;
+				char text[256];
+				text[0] = (char)FORMAT_OUTLINE;
+				text[1] = (char)FORMAT_GREEN;
+				sprintf(&text[2], "%s has joined the game", player->name);
+				chat_history_add(text);
+				gNetwork.Server_Send_CHAT(text);
+			}
 		}
 		std::unique_ptr<NetworkPacket> responsepacket = std::move(NetworkPacket::Allocate());
-		*responsepacket << (uint32)NETWORK_COMMAND_AUTH << (uint32)connection.authstatus;
+		*responsepacket << (uint32)NETWORK_COMMAND_AUTH << (uint32)connection.authstatus << (uint8)playerid;
 		connection.QueuePacket(std::move(responsepacket));
 	}
 	return 1;
@@ -786,8 +800,10 @@ int Network::Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket&
 {
 	uint32 tick;
 	uint32 args[7];
-	packet >> tick >> args[0] >> args[1] >> args[2] >> args[3] >> args[4] >> args[5] >> args[6];
-	GameCommand gc = GameCommand(tick, args);
+	uint8 playerid;
+	uint8 callback;
+	packet >> tick >> args[0] >> args[1] >> args[2] >> args[3] >> args[4] >> args[5] >> args[6] >> playerid >> callback;
+	GameCommand gc = GameCommand(tick, args, playerid, callback);
 	game_command_queue.insert(gc);
 	return 1;
 }
@@ -796,8 +812,13 @@ int Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket&
 {
 	uint32 tick;
 	uint32 args[7];
-	packet >> tick >> args[0] >> args[1] >> args[2] >> args[3] >> args[4] >> args[5] >> args[6];
-	Server_Send_GAMECMD(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
+	uint8 playerid;
+	uint8 callback;
+	if (connection.player) {
+		playerid = connection.player->id;
+	}
+	packet >> tick >> args[0] >> args[1] >> args[2] >> args[3] >> args[4] >> args[5] >> args[6] >> callback;
+	Server_Send_GAMECMD(args[0], args[1], args[2], args[3], args[4], args[5], args[6], playerid, callback);
 	game_do_command(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
 	return 1;
 }
@@ -900,6 +921,11 @@ uint32 network_get_server_tick()
 	return gNetwork.GetServerTick();
 }
 
+uint8 network_get_player_id()
+{
+	return gNetwork.GetPlayerID();
+}
+
 int network_get_num_players()
 {
 	return gNetwork.player_list.size();
@@ -931,20 +957,20 @@ void network_send_chat(const char* text)
 		gNetwork.Client_Send_CHAT(text);
 	} else
 	if (gNetwork.GetMode() == NETWORK_MODE_SERVER) {
-		NetworkPlayer* player = gNetwork.GetPlayerByID(0);
+		NetworkPlayer* player = gNetwork.GetPlayerByID(gNetwork.GetPlayerID());
 		const char* formatted = gNetwork.FormatChat(player, text);
 		chat_history_add(formatted);
 		gNetwork.Server_Send_CHAT(formatted);
 	}
 }
 
-void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp)
+void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback)
 {
 	if (gNetwork.GetMode() == NETWORK_MODE_CLIENT) {
-		gNetwork.Client_Send_GAMECMD(eax, ebx, ecx, edx, esi, edi, ebp);
+		gNetwork.Client_Send_GAMECMD(eax, ebx, ecx, edx, esi, edi, ebp, callback);
 	} else
 	if (gNetwork.GetMode() == NETWORK_MODE_SERVER) {
-		gNetwork.Server_Send_GAMECMD(eax, ebx, ecx, edx, esi, edi, ebp);
+		gNetwork.Server_Send_GAMECMD(eax, ebx, ecx, edx, esi, edi, ebp, gNetwork.GetPlayerID(), callback);
 	}
 }
 

@@ -61,6 +61,30 @@
 int gGameSpeed = 1;
 float gDayNightCycle = 0;
 
+GAME_COMMAND_CALLBACK_POINTER* game_command_callback = 0;
+GAME_COMMAND_CALLBACK_POINTER* game_command_callback_table[] = {
+	0,
+	game_command_callback_ride_construct_new,
+};
+
+int game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback)
+{
+	for (int i = 0; i < countof(game_command_callback_table); i++ ) {
+		if (game_command_callback_table[i] == callback) {
+			return i;
+		}
+	}
+	return 0;
+}
+
+GAME_COMMAND_CALLBACK_POINTER* game_command_callback_get_callback(int index)
+{
+	if (index < countof(game_command_callback_table)) {
+		return game_command_callback_table[index];
+	}
+	return 0;
+}
+
 void game_increase_game_speed()
 {
 	gGameSpeed = min(gConfigGeneral.debugging_tools ? 5 : 4, gGameSpeed + 1);
@@ -419,7 +443,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	RCT2_GLOBAL(0x009A8C28, uint8)++;
 
 	// Remove ghost scenery so it doesn't interfere with incoming network command
-	if ((flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & 0x40) &&
+	if ((flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST) &&
 		(command == GAME_COMMAND_PLACE_FENCE ||
 		command == GAME_COMMAND_PLACE_SCENERY ||
 		command == GAME_COMMAND_PLACE_LARGE_SCENERY ||
@@ -441,7 +465,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	if (cost != MONEY32_UNDEFINED) {
 		// Check funds
 		insufficientFunds = 0;
-		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & 4) && !(flags & 0x20) && cost != 0)
+		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & GAME_COMMAND_FLAG_2) && !(flags & GAME_COMMAND_FLAG_5) && cost != 0)
 			insufficientFunds = game_check_affordability(cost);
 
 		if (insufficientFunds != MONEY32_UNDEFINED) {
@@ -457,9 +481,10 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 				return cost;
 			}
 
-			if (network_get_mode() != NETWORK_MODE_NONE && !(flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & 0x40) && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
-				network_send_gamecmd(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp);
+			if (network_get_mode() != NETWORK_MODE_NONE && !(flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_5) && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
+				network_send_gamecmd(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp, game_command_callback_get_index(game_command_callback));
 				if (network_get_mode() == NETWORK_MODE_CLIENT) {
+					game_command_callback = 0;
 					// Decrement nest count
 					RCT2_GLOBAL(0x009A8C28, uint8)--;
 					return cost;
@@ -472,6 +497,12 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 			} else {
 				RCT2_CALLFUNC_X(game_do_command_table[command], eax, ebx, ecx, edx, esi, edi, ebp);
 			}
+
+			if (game_command_callback) {
+				game_command_callback(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp);
+				game_command_callback = 0;
+			}
+
 			*edx = *ebx;
 
 			if (*edx != MONEY32_UNDEFINED && *edx < cost)
@@ -503,7 +534,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	RCT2_GLOBAL(0x009A8C28, uint8)--;
 
 	// Show error window
-	if (RCT2_GLOBAL(0x009A8C28, uint8) == 0 && (flags & 1) && RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8) && !(flags & 8))
+	if (RCT2_GLOBAL(0x009A8C28, uint8) == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8) && !(flags & GAME_COMMAND_FLAG_3))
 		window_error_open(RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16), RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16));
 
 	return MONEY32_UNDEFINED;

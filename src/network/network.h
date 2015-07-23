@@ -130,6 +130,7 @@ public:
 	int GetMode();
 	int GetAuthStatus();
 	uint32 GetServerTick();
+	uint8 GetPlayerID();
 	void Update();
 	NetworkPlayer* GetPlayerByID(int id);
 	const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
@@ -139,8 +140,8 @@ public:
 	void Server_Send_MAP();
 	void Client_Send_CHAT(const char* text);
 	void Server_Send_CHAT(const char* text);
-	void Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
-	void Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
+	void Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
+	void Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 playerid, uint8 callback);
 	void Server_Send_TICK();
 	void Server_Send_PLAYERLIST();
 	void Client_Send_PING();
@@ -160,9 +161,11 @@ private:
 
 	struct GameCommand
 	{
-		GameCommand(uint32 t, uint32* args) { tick = t, eax = args[0], ebx = args[1], ecx = args[2], edx = args[3], esi = args[4], edi = args[5], ebp = args[6]; };
+		GameCommand(uint32 t, uint32* args, uint8 p, uint8 cb) { tick = t, eax = args[0], ebx = args[1], ecx = args[2], edx = args[3], esi = args[4], edi = args[5], ebp = args[6]; playerid = p; callback = cb; };
 		uint32 tick;
 		uint32 eax, ebx, ecx, edx, esi, edi, ebp;
+		uint8 playerid;
+		uint8 callback;
 		bool operator<(const GameCommand& comp) const {
 			return tick < comp.tick;
 		}
@@ -176,6 +179,7 @@ private:
 	uint32 last_tick_sent_time;
 	uint32 last_ping_sent_time;
 	uint32 server_tick;
+	uint8 player_id;
 	std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
 	std::multiset<GameCommand> game_command_queue;
 	std::vector<uint8> chunk_buffer;
@@ -210,6 +214,7 @@ void network_update();
 int network_get_mode();
 int network_get_authstatus();
 uint32 network_get_server_tick();
+uint8 network_get_player_id();
 int network_get_num_players();
 const char* network_get_player_name(unsigned int index);
 uint32 network_get_player_flags(unsigned int index);
@@ -217,7 +222,7 @@ int network_get_player_ping(unsigned int index);
 
 void network_send_map();
 void network_send_chat(const char* text);
-void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
+void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
 
 void network_print_error();
 

@@ -29,6 +29,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../network/network.h"
 #include "../ride/track.h"
 #include "dropdown.h"
 
@@ -579,7 +580,7 @@ static void window_ride_construction_close(rct_window *w)
 	hide_gridlines();
 
 	uint8 rideIndex = _currentRideIndex;
-	if (sub_6CAF80(rideIndex, &mapElement)) {
+	if (sub_6CAF80(rideIndex, &mapElement) || network_get_mode() == NETWORK_MODE_CLIENT) {
 		window_ride_main_open(rideIndex);
 	} else {
 		int eax = RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8);

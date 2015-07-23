@@ -1963,7 +1963,7 @@ int sub_6D2189(int* cost, uint8* ride_id){
 		entry_index = 0xFF;
 
 	int eax = 0, ebx, ecx = 0, edx, esi, edi = 0, ebp = 0;
-	ebx = 41;
+	ebx = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_3 | GAME_COMMAND_FLAG_5;
 	edx = track_design->type | (entry_index << 8);
 	esi = GAME_COMMAND_CREATE_RIDE;
 
@@ -3185,7 +3185,7 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 	RCT2_GLOBAL(0x009DEA60, sint16) = y + 16;
 	RCT2_GLOBAL(0x009DEA62, sint16) = z;
 
-	if (!(flags & (1 << 3))){
+	if (!(flags & GAME_COMMAND_FLAG_3)){
 		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode){
 			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 			*ebx = MONEY32_UNDEFINED;
@@ -3232,7 +3232,7 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 	}
 	else{
 		uint8 bl = 0;
-		if (flags & (1 << 6)){
+		if (flags & GAME_COMMAND_FLAG_GHOST){
 			bl = 4;
 		}
 		else{
@@ -3506,7 +3506,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	if (!sub_68B044()) {
 		return MONEY32_UNDEFINED;
 	}
-	if (!(flags & (1 << 3))) {
+	if (!(flags & GAME_COMMAND_FLAG_3)) {
 		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 			return MONEY32_UNDEFINED;
@@ -3638,7 +3638,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 
 		RCT2_GLOBAL(0x00F44060, void*) = &clearance_struct;
 
-		if (!gCheatsDisableClearanceChecks) {
+		if (!gCheatsDisableClearanceChecks || flags & GAME_COMMAND_FLAG_GHOST){
 			if (!map_can_construct_with_clear_at(x, y, baseZ, clearanceZ, (void*)0x006C5A5F, bl))
 				return MONEY32_UNDEFINED;
 		}
@@ -3649,7 +3649,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		// push baseZ and clearanceZ
 		int cur_z = baseZ * 8;
 
-		if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & (1 << 3))) {
+		if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_3)) {
 			footpath_remove_litter(x, y, z);
 			// push bl bh??
 			if (rideTypeFlags & RIDE_TYPE_FLAG_18) {
@@ -3755,7 +3755,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		if (entranceDirections & 0x20) {
 			entranceDirections &= 0x0F;
 			if (entranceDirections != 0) {
-				if (!(flags & GAME_COMMAND_FLAG_APPLY) && !(flags & 0x40)) {
+				if (!(flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 					uint8 _bl = entranceDirections;
 					for (int dl = bitscanforward(_bl); dl != -1; dl = bitscanforward(_bl)){
 						_bl &= ~(1 << dl);
@@ -3836,7 +3836,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 
 		entranceDirections = 0;
 		if (ride->overall_view != 0xFFFF){
-			if (!(flags & (1 << 5))){
+			if (!(flags & GAME_COMMAND_FLAG_5)){
 				if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 					entranceDirections = RCT2_ADDRESS(0x0099CA64, uint8)[type * 16];
 				}
@@ -3863,7 +3863,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		mapElement->properties.track.ride_index = rideIndex;
 		mapElement->properties.track.type = type;
 		mapElement->properties.track.colour = 0;
-		if (flags & (1 << 6)){
+		if (flags & GAME_COMMAND_FLAG_GHOST){
 			mapElement->flags |= MAP_ELEMENT_FLAG_GHOST;
 		}
 
