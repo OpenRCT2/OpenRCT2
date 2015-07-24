@@ -182,15 +182,15 @@ static void window_game_bottom_toolbar_mouseup(rct_window *w, int widgetIndex)
 		news_item_close_current();
 		break;
 	case WIDX_NEWS_SUBJECT:
-		newsItem = &(RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item)[0]);
+		newsItem = news_item_get(0);
 		news_item_open_subject(newsItem->type, newsItem->assoc);
 		break;
 	case WIDX_NEWS_LOCATE:
-		newsItem = &(RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item)[0]);
-		if (newsItem->type == NEWS_ITEM_NULL)
+		if (news_item_is_queue_empty())
 			break;
 
 		{
+			newsItem = news_item_get(0);
 			int x, y, z;
 			int subject = newsItem->assoc;
 
@@ -268,12 +268,12 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
 	window_game_bottom_toolbar_widgets[WIDX_LEFT_INSET].type = WWT_EMPTY;
 	window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].type = WWT_EMPTY;
 
-	newsItem = &(RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item)[0]);
-	if (newsItem->type == 0) {
+	if (news_item_is_queue_empty()) {
 		window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_EMPTY;
 		window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
 		window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WWT_EMPTY;
 	} else {
+		newsItem = news_item_get(0);
 		window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_25;
 		window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_FLATBTN;
 		window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WWT_FLATBTN;
@@ -320,7 +320,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
 void window_game_bottom_toolbar_invalidate_news_item()
 {
 	window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type =
-		RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item)[0].type == NEWS_ITEM_NULL ? WWT_EMPTY : WWT_IMGBTN;
+		news_item_is_queue_empty() ? WWT_EMPTY : WWT_IMGBTN;
 	widget_invalidate_by_class(WC_BOTTOM_TOOLBAR, WIDX_MIDDLE_OUTSET);
 }
 
@@ -353,7 +353,7 @@ static void window_game_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *d
 	window_game_bottom_toolbar_draw_left_panel(dpi, w);
 	window_game_bottom_toolbar_draw_right_panel(dpi, w);
 
-	if (RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item)[0].type != 0)
+	if (!news_item_is_queue_empty())
 		window_game_bottom_toolbar_draw_news_item(dpi, w);
 	else if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8))
 		window_game_bottom_toolbar_draw_tutorial_text(dpi, w);
@@ -509,7 +509,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 	rct_widget *middleOutsetWidget;
 
 	middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
-	newsItem = &(RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item)[0]);
+	newsItem = news_item_get(0);
 
 	// Current news item
 	gfx_fill_rect_inset(
