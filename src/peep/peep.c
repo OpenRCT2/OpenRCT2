@@ -6261,7 +6261,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 }
 
 /* rct2: 0x006946D8 */
-static int peep_queue_move_forward(rct_peep* peep, sint16 x, sint16 y, rct_map_element* map_element, bool vandalism){
+static int peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct_map_element* map_element, bool vandalism){
 	peep->next_x = (x & 0xFFE0);
 	peep->next_y = (y & 0xFFE0);
 	peep->next_z = map_element->base_height;
@@ -6421,22 +6421,22 @@ static int peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 
 		if (rideIndex == 0xFF){
 			peep->var_79 = 0xFF;
-			return peep_queue_move_forward(peep, x, y, map_element, vandalism_present);
+			return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
 		}
 
 		if (peep->state == PEEP_STATE_QUEUING){
 			if (peep->current_ride == rideIndex){
-				return peep_queue_move_forward(peep, x, y, map_element, vandalism_present);
+				return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
 			}
 			remove_peep_from_queue(peep);
 			peep_decrement_num_riders(peep);
 			peep->state = PEEP_STATE_1;
 			peep_window_state_update(peep);
-			return peep_queue_move_forward(peep, x, y, map_element, vandalism_present);
+			return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
 		}
 
 		if (peep->var_79 == rideIndex){
-			return peep_queue_move_forward(peep, x, y, map_element, vandalism_present);
+			return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
 		}
 
 		peep->var_F4 = 0;
@@ -6472,7 +6472,7 @@ static int peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 			news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, 1931, peep->sprite_index);
 		}
 
-		return peep_queue_move_forward(peep, x, y, map_element, vandalism_present);
+		return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
 	}
 	else{
 		peep->var_79 = 0xFF;
@@ -6482,7 +6482,7 @@ static int peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 			peep->state = PEEP_STATE_1;
 			peep_window_state_update(peep);
 		}
-		return peep_queue_move_forward(peep, x, y, map_element, vandalism_present);
+		return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
 	}
 }
 
