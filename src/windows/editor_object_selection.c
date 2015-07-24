@@ -400,7 +400,7 @@ void window_editor_object_selection_open()
 		(1 << WIDX_LIST_SORT_TYPE) |
 		(1 << WIDX_LIST_SORT_RIDE);
 
-	_filter_flags = FILTER_ALL;
+	_filter_flags = gConfigInterface.object_selection_filter_flags;
 	memset(_filter_string, 0, sizeof(_filter_string));
 
 	for (int i = WIDX_TAB_1; i <= WIDX_TAB_11; i++)
@@ -793,6 +793,9 @@ static void window_editor_object_selection_mouseup(rct_window *w, int widgetInde
 		break;
 	case WIDX_FILTER_RIDE_TAB_ALL:
 		_filter_flags |= 0x7E0;
+		gConfigInterface.object_selection_filter_flags = _filter_flags;
+		config_save_default();
+
 		filter_update_counts();
 		visible_list_refresh(w);
 
@@ -810,6 +813,8 @@ static void window_editor_object_selection_mouseup(rct_window *w, int widgetInde
 	case WIDX_FILTER_RIDE_TAB_STALL:
 		_filter_flags &= ~0x7E0;
 		_filter_flags |= (1 << (widgetIndex - WIDX_FILTER_RIDE_TAB_TRANSPORT + 5));
+		gConfigInterface.object_selection_filter_flags = _filter_flags;
+		config_save_default();
 
 		filter_update_counts();
 		visible_list_refresh(w);
@@ -914,6 +919,8 @@ static void window_editor_object_selection_dropdown(rct_window *w, int widgetInd
 	switch (widgetIndex) {
 	case WIDX_FILTER_DROPDOWN:
 		_filter_flags ^= (1 << dropdownIndex);
+		gConfigInterface.object_selection_filter_flags = _filter_flags;
+		config_save_default();
 
 		filter_update_counts();
 		w->scrolls->v_top = 0;

@@ -171,6 +171,7 @@ typedef struct {
 	uint8 console_small_font;
 	utf8string current_theme_preset;
 	utf8string current_title_sequence_preset;
+	uint32 object_selection_filter_flags;
 } interface_configuration;
 
 typedef struct {
