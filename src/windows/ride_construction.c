@@ -2185,7 +2185,7 @@ static void sub_6CBCE2(
 	trackDirection &= 3;
 
 	RCT2_GLOBAL(0x00EE7880, uint32) = 0x00F1A4CC;
-	sub_0x68615B(0x00EE788C);
+	painter_setup();
 
 	ride = GET_RIDE(rideIndex);
 
