@@ -85,6 +85,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_THEMES,
 	WIDX_THEMES_DROPDOWN,
 	WIDX_THEMES_BUTTON,
+	WIDX_DAY_NIGHT_CHECKBOX,
 	
 	// Culture / Units
 	WIDX_LANGUAGE = WIDX_PAGE_START,
@@ -142,7 +143,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 };
 
 #define WW 310
-#define WH 194
+#define WH 208
 
 #define MAIN_OPTIONS_WIDGETS \
 	{ WWT_FRAME,			0,	0,		WW-1,	0,		WH-1,	STR_NONE,			STR_NONE }, \
@@ -172,6 +173,7 @@ static rct_widget window_options_display_widgets[] = {
 	{ WWT_DROPDOWN,			1,	155,	299,	158,	169,	STR_NONE,			STR_NONE },					// colour schemes
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	159,	168,	876,				STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	174,	185,	5153,				STR_NONE },					// colour schemes button
+	{ WWT_CHECKBOX,			1,	10,		290,	190,	201,	STR_CYCLE_DAY_NIGHT,STR_NONE },					// cycle day-night
 	{ WIDGETS_END },
 };
 
@@ -335,7 +337,8 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_CONSTRUCTION_MARKER_DROPDOWN) |
 	(1 << WIDX_THEMES) |
 	(1 << WIDX_THEMES_DROPDOWN) |
-	(1 << WIDX_THEMES_BUTTON),
+	(1 << WIDX_THEMES_BUTTON) |
+	(1 << WIDX_DAY_NIGHT_CHECKBOX),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_LANGUAGE) |
@@ -475,6 +478,11 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 			break;
 		case WIDX_THEMES_BUTTON:
 			window_themes_open();
+			window_invalidate(w);
+			break;
+		case WIDX_DAY_NIGHT_CHECKBOX:
+			gConfigGeneral.day_night_cycle ^= 1;
+			config_save_default();
 			window_invalidate(w);
 			break;
 		}
@@ -1075,6 +1083,7 @@ static void window_options_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_HARDWARE_DISPLAY_CHECKBOX, gConfigGeneral.hardware_display);
 		widget_set_checkbox_value(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
 		widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
+		widget_set_checkbox_value(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
 
 		// construction marker: celsius/fahrenheit
 		window_options_display_widgets[WIDX_CONSTRUCTION_MARKER].image = STR_WHITE + RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8);
@@ -1093,6 +1102,7 @@ static void window_options_invalidate(rct_window *w)
 		window_options_display_widgets[WIDX_THEMES].type = WWT_DROPDOWN;
 		window_options_display_widgets[WIDX_THEMES_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_display_widgets[WIDX_THEMES_BUTTON].type = WWT_DROPDOWN_BUTTON;
+		window_options_display_widgets[WIDX_DAY_NIGHT_CHECKBOX].type = WWT_CHECKBOX;
 		break;
 
 	case WINDOW_OPTIONS_PAGE_CULTURE:

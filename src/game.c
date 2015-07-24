@@ -58,6 +58,7 @@
 #include "world/water.h"
 
 int gGameSpeed = 1;
+float gDayNightCycle = 0;
 
 void game_increase_game_speed()
 {

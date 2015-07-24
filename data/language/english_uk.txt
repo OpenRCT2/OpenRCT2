@@ -3806,3 +3806,4 @@ STR_5469    :Scroll map up
 STR_5470    :Scroll map left
 STR_5471    :Scroll map down
 STR_5472    :Scroll map right
+STR_5473    :Cycle day / night

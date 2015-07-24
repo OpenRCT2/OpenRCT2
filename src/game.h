@@ -91,6 +91,7 @@ enum GAME_COMMAND {
 typedef void (GAME_COMMAND_POINTER)(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
 extern int gGameSpeed;
+extern float gDayNightCycle;
 
 void game_increase_game_speed();
 void game_reduce_game_speed();

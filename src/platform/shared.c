@@ -24,6 +24,7 @@
 #include "../config.h"
 #include "../cursors.h"
 #include "../drawing/drawing.h"
+#include "../game.h"
 #include "../interface/console.h"
 #include "../interface/keyboard_shortcut.h"
 #include "../interface/window.h"
@@ -266,6 +267,29 @@ static void platform_resize(int width, int height)
 	}
 }
 
+static uint8 soft_light(uint8 a, uint8 b)
+{
+	float fa = a / 255.0f;
+	float fb = b / 255.0f;
+	float fr;
+	if (fb < 0.5f) {
+		fr = (2 * fa * fb) + ((fa * fa) * (1 - (2 * fb)));
+	} else {
+		fr = (2 * fa * (1 - fb)) + (sqrtf(fa) * ((2 * fb) - 1));
+	}
+	return (uint8)(clamp(0.0f, fr, 1.0f) * 255.0f);
+}
+
+static uint8 lerp(uint8 a, uint8 b, float t)
+{
+	if (t <= 0) return a;
+	if (t >= 1) return b;
+
+	int range = b - a;
+	int amount = (int)(range * t);
+	return (uint8)(a + amount);
+}
+
 void platform_update_palette(char* colours, int start_index, int num_colours)
 {
 	SDL_Surface *surface;
@@ -276,6 +300,14 @@ void platform_update_palette(char* colours, int start_index, int num_colours)
 		gPalette[i].g = colours[1];
 		gPalette[i].b = colours[0];
 		gPalette[i].a = 0;
+
+		float night = gDayNightCycle;
+		if (night >= 0 && RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 0) {
+			gPalette[i].r = lerp(gPalette[i].r, soft_light(gPalette[i].r, 8), night);
+			gPalette[i].g = lerp(gPalette[i].g, soft_light(gPalette[i].g, 8), night);
+			gPalette[i].b = lerp(gPalette[i].b, soft_light(gPalette[i].b, 128), night);
+		}
+
 		colours += 4;
 		if (gBufferTextureFormat != NULL) {
 			gPaletteHWMapped[i] = SDL_MapRGB(gBufferTextureFormat, gPalette[i].r, gPalette[i].g, gPalette[i].b);

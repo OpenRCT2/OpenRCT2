@@ -160,6 +160,7 @@ typedef struct {
 	uint8 invert_viewport_drag;
 	uint8 load_save_sort;
 	uint8 minimize_fullscreen_focus_loss;
+	uint8 day_night_cycle;
 } general_configuration;
 
 typedef struct {
