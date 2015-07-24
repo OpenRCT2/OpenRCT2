@@ -312,11 +312,11 @@ void init_scenery()
 	for (int widgetIndex = WIDX_SCENERY_TAB_1; widgetIndex < WIDX_SCENERY_LIST; widgetIndex++)
 		window_scenery_widgets[widgetIndex].type = 0;
 
-	uint8 tabIndexes[0x13];
-	uint8 order[0x13];
+	uint8 tabIndexes[20];
+	uint8 order[20];
 	int usedValues = 0;
 
-	for (int scenerySetId = 0; scenerySetId < 0x13; scenerySetId++) {
+	for (int scenerySetId = 0; scenerySetId < 19; scenerySetId++) {
 		rct_scenery_set_entry* sceneryEntry = g_scenerySetEntries[scenerySetId];
 		if ((uint32)sceneryEntry == 0xFFFFFFFF)
 			continue;
@@ -345,7 +345,7 @@ void init_scenery()
 			break;
 	}
 
-	tabIndexes[usedValues] = 0x13;
+	tabIndexes[usedValues] = 19;
 	usedValues++;
 
 	uint16 left = 3;
@@ -353,7 +353,7 @@ void init_scenery()
 		uint32 tabIndex = tabIndexes[i];
 		rct_widget* tabWidget = &window_scenery_widgets[tabIndex + WIDX_SCENERY_TAB_1];
 
-		if (left != 3 || tabIndex != 0x13) {
+		if (left != 3 || tabIndex != 19) {
 			if (window_scenery_tab_entries[tabIndex][0] == -1)
 				continue;
 
@@ -366,7 +366,7 @@ void init_scenery()
 		tabWidget->right = left + 0x1E;
 		left += 0x1F;
 
-		if (tabIndex >= 0x13)
+		if (tabIndex >= 19)
 			continue;
 
 		tabWidget->image = g_scenerySetEntries[tabIndex]->image | 0x20000000;

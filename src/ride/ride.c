@@ -2437,7 +2437,7 @@ rct_peep *find_closest_mechanic(int x, int y, int forInspection)
 {
 	unsigned int closestDistance, distance;
 	uint16 spriteIndex;
-	rct_peep *peep, *closestMechanic;
+	rct_peep *peep, *closestMechanic = NULL;
 		
 	closestDistance = -1;
 	FOR_ALL_STAFF(spriteIndex, peep) {
@@ -3371,7 +3371,7 @@ rct_ride_music_info* ride_music_info_list[] = {
 */
 void ride_music_update_final()
 {
-	rct_ride_music_params* edi;
+	rct_ride_music_params* edi = NULL;
 	int ebx;
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)) {
 		if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0))) {

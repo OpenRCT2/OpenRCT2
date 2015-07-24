@@ -102,8 +102,8 @@ static void get_plugin_path(char *outPath)
 
 static void object_list_sort()
 {
-	rct_object_entry **objectBuffer, *newBuffer, *entry, *destEntry, *lowestEntry;
-	rct_object_filters *newFilters, *destFilter;
+	rct_object_entry **objectBuffer, *newBuffer, *entry, *destEntry, *lowestEntry = NULL;
+	rct_object_filters *newFilters = NULL, *destFilter = NULL;
 	int numObjects, i, j, bufferSize, entrySize, lowestIndex;
 	char *objectName, *lowestString;
 	uint8 *copied;

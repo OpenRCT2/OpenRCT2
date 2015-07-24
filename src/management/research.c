@@ -282,10 +282,10 @@ void sub_684AC3(){
 	for (; research->entryIndex != RESEARCHED_ITEMS_END_2; research += 2){
 		if (scenario_rand() & 1) continue;
 
-		rct_research_item* edx;
-		rct_research_item* ebp;
+		rct_research_item* edx = NULL;
+		rct_research_item* ebp = NULL;
 		rct_research_item* inner_research = gResearchItems;
-		do{
+		do {
 			if (research->entryIndex == inner_research->entryIndex){
 				edx = inner_research;
 			}

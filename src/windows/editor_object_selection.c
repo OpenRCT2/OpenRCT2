@@ -342,7 +342,7 @@ static void visible_list_refresh(rct_window *w)
 
 	_listItems = realloc(_listItems, _numListItems * sizeof(list_item));
 
-	sortFunc sortFunc;
+	sortFunc sortFunc = NULL;
 	switch (_listSortType) {
 	case RIDE_SORT_TYPE:
 		sortFunc = visible_list_sort_ride_type;

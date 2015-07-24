@@ -2461,7 +2461,7 @@ int copy_scenery_to_track(uint8** track_pointer){
 
 /* rct2: 0x006CEAAE */
 int maze_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* track_elements){
-	rct_map_element* map_element;
+	rct_map_element* map_element = NULL;
 	uint8 map_found = 0;
 
 	sint16 start_x, start_y;

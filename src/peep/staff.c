@@ -192,7 +192,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 			sint16 x, y, z;
 			uint32 count = 0;
 			uint16 sprite_index;
-			rct_peep *guest;
+			rct_peep *guest = NULL;
 
 			FOR_ALL_GUESTS(sprite_index, guest)
 				if (guest->state == PEEP_STATE_WALKING) ++count;
