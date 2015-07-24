@@ -1798,6 +1798,11 @@ enum {
 	STR_ALT_PLUS = 5467,
 	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR = 5468,
 
+	STR_SHORTCUT_SCROLL_MAP_UP = 5469,
+	STR_SHORTCUT_SCROLL_MAP_LEFT = 5470,
+	STR_SHORTCUT_SCROLL_MAP_DOWN = 5471,
+	STR_SHORTCUT_SCROLL_MAP_RIGHT = 5472,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

@@ -1583,17 +1583,42 @@ void game_handle_key_scroll()
 	scrollX = 0;
 	scrollY = 0;
 
-	// Scroll left / right
-	if (gKeysState[SDL_SCANCODE_LEFT])
-		scrollX = -1;
-	else if (gKeysState[SDL_SCANCODE_RIGHT])
-		scrollX = 1;
+	for (int shortcutId = SHORTCUT_SCROLL_MAP_UP; shortcutId <= SHORTCUT_SCROLL_MAP_RIGHT; shortcutId++) {
+		const int SHIFT = 0x100;
+		const int CTRL = 0x200;
+		const int ALT = 0x400;
 
-	// Scroll up / down
-	if (gKeysState[SDL_SCANCODE_UP])
-		scrollY = -1;
-	else if (gKeysState[SDL_SCANCODE_DOWN])
-		scrollY = 1;
+		uint16 shortcutKey = gShortcutKeys[shortcutId];
+		uint8 scancode = shortcutKey & 0xFF;
+
+		if (shortcutKey == 0xFFFF) continue;
+		if (!gKeysState[scancode]) continue;
+
+		if (shortcutKey & SHIFT) {
+			if (!gKeysState[SDL_SCANCODE_LSHIFT] && !gKeysState[SDL_SCANCODE_RSHIFT]) continue;
+		}
+		if (shortcutKey & CTRL) {
+			if (!gKeysState[SDL_SCANCODE_LCTRL] && !gKeysState[SDL_SCANCODE_RCTRL]) continue;
+		}
+		if (shortcutKey & ALT) {
+			if (!gKeysState[SDL_SCANCODE_LALT] && !gKeysState[SDL_SCANCODE_RALT]) continue;
+		}
+
+		switch (shortcutId) {
+		case SHORTCUT_SCROLL_MAP_UP:
+			scrollY = -1;
+			break;
+		case SHORTCUT_SCROLL_MAP_LEFT:
+			scrollX = -1;
+			break;
+		case SHORTCUT_SCROLL_MAP_DOWN:
+			scrollY = 1;
+			break;
+		case SHORTCUT_SCROLL_MAP_RIGHT:
+			scrollX = 1;
+			break;
+		}
+	}
 
 	// Scroll viewport
 	if (scrollX != 0) {

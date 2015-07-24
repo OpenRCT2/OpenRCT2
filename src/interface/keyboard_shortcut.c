@@ -72,8 +72,12 @@ void keyboard_shortcut_handle(int key)
 
 void keyboard_shortcut_handle_command(int shortcutIndex)
 {
-	if (shortcutIndex >= 0 && shortcutIndex < countof(shortcut_table))
-		shortcut_table[shortcutIndex]();
+	if (shortcutIndex >= 0 && shortcutIndex < countof(shortcut_table)) {
+		shortcut_action action = shortcut_table[shortcutIndex];
+		if (action != NULL) {
+			action();
+		}
+	}
 }
 
 void keyboard_shortcut_format_string(char *buffer, uint16 shortcutKey)
@@ -81,6 +85,7 @@ void keyboard_shortcut_format_string(char *buffer, uint16 shortcutKey)
 	char formatBuffer[256];
 
 	*buffer = 0;
+	if (shortcutKey == 0xFFFF) return;
 	if (shortcutKey & 0x100) {
 		format_string(formatBuffer, STR_SHIFT_PLUS, NULL);
 		strcat(buffer, formatBuffer);
@@ -528,6 +533,10 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_increase_game_speed,
 	shortcut_open_cheat_window,
 	shortcut_remove_top_bottom_toolbar_toggle,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 };
 
 #pragma endregion
