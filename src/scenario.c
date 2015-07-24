@@ -571,29 +571,28 @@ static void scenario_update_daynight_cycle()
  **/
 void scenario_update()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & ~SCREEN_FLAGS_PLAYING)
-		return;
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & ~SCREEN_FLAGS_PLAYING)) {
+		uint32 currentMonthTick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16);
+		uint32 nextMonthTick = currentMonthTick + 4;
+		uint8 currentMonth = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
+		uint8 currentDaysInMonth = (uint8)days_in_month[currentMonth];
 
-	uint32 currentMonthTick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16);
-	uint32 nextMonthTick = currentMonthTick + 4;
-	uint8 currentMonth = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
-	uint8 currentDaysInMonth = (uint8)days_in_month[currentMonth];
+		scenario_autosave_check();
+		if ((currentDaysInMonth * nextMonthTick) >> 16 != (currentDaysInMonth * currentMonthTick) >> 16) {
+			scenario_day_update();
+		}
+		if (nextMonthTick % 0x4000 == 0) {
+			scenario_week_update();
+		}
+		if (nextMonthTick % 0x8000 == 0) {
+			scenario_fortnight_update();
+		}
 
-	scenario_autosave_check();
-	if ((currentDaysInMonth * nextMonthTick) >> 16 != (currentDaysInMonth * currentMonthTick) >> 16) {
-		scenario_day_update();
-	}
-	if (nextMonthTick % 0x4000 == 0) {
-		scenario_week_update();
-	}
-	if (nextMonthTick % 0x8000 == 0) {
-		scenario_fortnight_update();
-	}
-
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = (uint16)nextMonthTick;
-	if (nextMonthTick >= 0x10000) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)++;
-		scenario_month_update();
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = (uint16)nextMonthTick;
+		if (nextMonthTick >= 0x10000) {
+			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)++;
+			scenario_month_update();
+		}
 	}
 
 	scenario_update_daynight_cycle();
