@@ -266,12 +266,14 @@ enum PEEP_FLAGS {
 
 	PEEP_FLAGS_EATING = (1 << 17), // Reduces hunger
 	PEEP_FLAGS_EXPLODE = (1 << 18),
+	PEEP_FLAGS_19 = (1 << 19),
 	PEEP_FLAGS_20 = (1 << 20),
 	PEEP_FLAGS_21 = (1 << 21),
 
 	PEEP_FLAGS_JOY = (1 << 23), // Makes the peep jump in joy
 	PEEP_FLAGS_ANGRY = (1 << 24),
 	PEEP_FLAGS_ICE_CREAM = (1 << 25), // Unconfirmed
+	PEEP_FLAGS_26 = (1 << 26),
 	PEEP_FLAGS_27 = (1 << 27),
 	PEEP_FLAGS_TWITCH = (1 << 31)		// Added for twitch integration
 };
@@ -414,7 +416,7 @@ typedef struct {
 	uint8 nausea_tolerance;			// 0x44
 	uint8 window_invalidate_flags;	// 0x45
 	money16 paid_on_drink;			// 0x46
-	uint8 var_48[16];
+	uint8 ride_types_been_on[16];	// 0x48
 	uint32 item_extra_flags;		// 0x58
 	uint8 photo2_ride_ref;			// 0x5C
 	uint8 photo3_ride_ref;			// 0x5D

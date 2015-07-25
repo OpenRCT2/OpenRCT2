@@ -50,7 +50,11 @@ static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type);
 static void sub_693BAB(rct_peep* peep);
 static void sub_693C9E(rct_peep *peep);
 static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 amount);
-static void sub_695444(rct_peep *peep, int rideIndex, int flags);
+static void peep_set_has_ridden(rct_peep *peep, int rideIndex);
+static bool peep_has_ridden(rct_peep *peep, int rideIndex);
+static void peep_set_has_ridden_ride_type(rct_peep *peep, int rideType);
+static bool peep_has_ridden_ride_type(rct_peep *peep, int rideType);
+static void peep_on_enter_or_exit_ride(rct_peep *peep, int rideIndex, int flags);
 static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 price);
 static bool peep_should_use_cash_machine(rct_peep *peep, int rideIndex);
 static void sub_69A98C(rct_peep *peep);
@@ -1823,7 +1827,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 			peep->destination_tolerence = 3;
 
 			ride->var_120++;
-			sub_695444(peep, peep->current_ride, 0);
+			peep_on_enter_or_exit_ride(peep, peep->current_ride, 0);
 			peep->sub_state = 17;
 			return;
 		}
@@ -1850,7 +1854,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 		peep->current_car = 0;
 
 		ride->var_120++;
-		sub_695444(peep, peep->current_ride, 0);
+		peep_on_enter_or_exit_ride(peep, peep->current_ride, 0);
 		peep->sub_state = 14;
 		return;
 	}
@@ -2203,7 +2207,7 @@ static void peep_update_ride_sub_state_5(rct_peep* peep){
 		peep_window_state_update(seated_peep);
 		seated_peep->time_on_ride = 0;
 		seated_peep->sub_state = 6;
-		sub_695444(seated_peep, peep->current_ride, 0);
+		peep_on_enter_or_exit_ride(seated_peep, peep->current_ride, 0);
 	}
 
 	vehicle->num_peeps++;
@@ -2222,7 +2226,7 @@ static void peep_update_ride_sub_state_5(rct_peep* peep){
 	peep->time_on_ride = 0;
 	peep->sub_state = 6;
 
-	sub_695444(peep, peep->current_ride, 0);
+	peep_on_enter_or_exit_ride(peep, peep->current_ride, 0);
 }
 
 /* rct2: 0x00693028*/
@@ -3025,7 +3029,7 @@ static void peep_update_ride_sub_state_18(rct_peep* peep){
 		return;
 	}
 
-	sub_695444(peep, peep->current_ride, 1);
+	peep_on_enter_or_exit_ride(peep, peep->current_ride, 1);
 
 	if (peep->flags & PEEP_FLAGS_TRACKING){
 		RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
@@ -5346,7 +5350,7 @@ rct_peep *peep_generate(int x, int y, int z)
 	memset(&peep->rides_been_on, 0, 32);
 
 	peep->no_of_rides = 0;
-	memset(&peep->var_48, 0, 16);
+	memset(&peep->ride_types_been_on, 0, 16);
 	peep->id = RCT2_GLOBAL(0x013B0E6C, uint32)++;
 	peep->name_string_idx = 767;
 
@@ -5983,13 +5987,259 @@ static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 
 	sound_play_panned(SOUND_PURCHASE, 0x8001, peep->x, peep->y, peep->z);
 }
 
+static void peep_set_has_ridden(rct_peep *peep, int rideIndex)
+{
+	peep->rides_been_on[rideIndex >> 5] |= 1 << (rideIndex & 0x1F);
+}
+
+static bool peep_has_ridden(rct_peep *peep, int rideIndex)
+{
+	return peep->rides_been_on[rideIndex >> 5] & (1 << (rideIndex & 0x1F));
+}
+
+static void peep_set_has_ridden_ride_type(rct_peep *peep, int rideType)
+{
+	peep->rides_been_on[rideType >> 5] |= 1 << (rideType & 0x1F);
+}
+
+static bool peep_has_ridden_ride_type(rct_peep *peep, int rideType)
+{
+	return peep->rides_been_on[rideType >> 5] & (1 << (rideType & 0x1F));
+}
+
+/**
+ * 
+ *  rct2: 0x0069545B
+ */
+static void peep_on_enter_ride(rct_peep *peep, int rideIndex)
+{
+	rct_ride *ride;
+	ride_rating minIntensity, maxIntensity;
+	ride_rating minNausea, maxNausea;
+	uint16 satisfactionFlags;
+
+	ride = GET_RIDE(rideIndex);
+	peep->flags &= ~PEEP_FLAGS_19;
+	if (ride->excitement == (ride_rating)0xFFFF) {
+		satisfactionFlags = 0x1FF;
+	} else {
+		satisfactionFlags = 0;
+		maxIntensity = (peep->intensity & 0x0F) * 100;
+		minIntensity = (peep->intensity / 16) * 100;
+		if (maxIntensity <= ride->intensity || minIntensity >= ride->intensity) {
+			satisfactionFlags |= (1 << 1);
+		}
+		maxIntensity -= peep->happiness * 2;
+		minIntensity += peep->happiness;
+		if (maxIntensity <= ride->intensity || minIntensity >= ride->intensity) {
+			satisfactionFlags |= (1 << 4);
+		}
+		maxIntensity -= peep->happiness * 2;
+		minIntensity += peep->happiness;
+		if (maxIntensity <= ride->intensity || minIntensity >= ride->intensity) {
+			satisfactionFlags |= (1 << 7);
+		}
+
+		minNausea = RCT2_ADDRESS(0x00982390, uint16)[(peep->nausea_tolerance & 3) * 2];
+		maxNausea = RCT2_ADDRESS(0x00982392, uint16)[(peep->nausea_tolerance & 3) * 2];
+		if (maxNausea <= ride->nausea || minNausea >= ride->nausea) {
+			satisfactionFlags |= (1 << 2);
+		}
+		maxNausea -= peep->happiness * 2;
+		minNausea += peep->happiness;
+		if (maxNausea <= ride->nausea || minNausea >= ride->nausea) {
+			satisfactionFlags |= (1 << 5);
+		}
+		maxNausea -= peep->happiness * 2;
+		minNausea += peep->happiness;
+		if (maxNausea <= ride->nausea || minNausea >= ride->nausea) {
+			satisfactionFlags |= (1 << 8);
+		}
+		satisfactionFlags |= (1 << 9);
+	}
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+		if (ride->value != 0xFFFF) {
+			satisfactionFlags &= ~(1 << 9);
+			satisfactionFlags |= (1 << 10);
+			if ((money16)ride->value < ride->price) {
+				satisfactionFlags &= ~(1 << 10);
+				satisfactionFlags |= (1 << 9);
+				if ((ride->value + ((ride->value * peep->happiness) / 256)) < ride->price) {
+					satisfactionFlags &= ~(1 << 9);
+				}
+			}
+		}
+	}
+
+	uint8 satisfactionVar = 0;
+	if (satisfactionFlags & (1 << 9)) satisfactionVar += 15;
+	if (satisfactionFlags & (1 << 10)) satisfactionVar += 40;
+	if ((satisfactionFlags & (1 << 9)) && (satisfactionFlags & (1 << 10))) satisfactionVar -= 45;
+	if ((satisfactionFlags & 6) == 6) {
+		satisfactionVar += 70;
+	} else {
+		if (satisfactionFlags & 6) satisfactionVar += 15;
+		if ((satisfactionFlags & 0x30) == 0x30) {
+			satisfactionVar += 35;
+		} else {
+			if (satisfactionFlags & 0x30) satisfactionVar += 10;
+			if ((satisfactionFlags & 0x180) == 0x180) {
+				satisfactionVar += 10;
+			} else {
+				satisfactionVar -= 60;
+			}
+		}
+	}
+
+	if (peep->time_in_queue <= 750) {
+		satisfactionVar += 10;
+	} else if (peep->time_in_queue >= 2250) {
+		satisfactionVar -= 10;
+		if (peep->time_in_queue >= 4500) {
+			satisfactionVar -= 25;
+		}
+	}
+
+	if (peep_has_ridden(peep, peep->current_ride)) satisfactionVar += 10;
+	peep_set_has_ridden(peep, peep->current_ride);
+	if (peep->no_of_rides < 255) peep->no_of_rides++;
+
+	if (peep_has_ridden_ride_type(peep, ride->type)) satisfactionVar += 10;
+	peep_set_has_ridden_ride_type(peep, ride->type);
+
+	uint8 unkExcitementValue = clamp(0, (ride->excitement / 4) + peep->happiness, 255);
+	if (unkExcitementValue >= peep->var_FA) {
+		if (peep->happiness >= 160 && peep->happiness_growth_rate >= 160) {
+			peep->var_FA = unkExcitementValue;
+			peep->flags |= PEEP_FLAGS_19;
+		}
+	}
+
+	uint8 satisfaction = 0;
+	if (satisfactionVar >= 0) {
+		satisfaction++;
+		if (satisfactionVar >= 20) {
+			satisfaction++;
+			if (satisfactionVar >= 40) {
+				satisfaction++;
+			}
+		}
+	}
+	ride_update_satisfaction(ride, satisfaction);
+	peep->happiness_growth_rate = clamp(0, satisfactionVar + peep->happiness_growth_rate, 255);
+
+	uint32 nauseaMultiplier = clamp(64, 256 - peep->happiness_growth_rate, 200);
+	uint32 nauseaGrowthRateChange = (ride->nausea * nauseaMultiplier) / 512;
+	nauseaGrowthRateChange *= max(128, peep->hunger);
+	nauseaGrowthRateChange /= 128;
+	nauseaGrowthRateChange *= 2;
+	nauseaGrowthRateChange >>= (peep->nausea_tolerance & 3);
+	peep->nausea_growth_rate = (uint8)clamp(0, peep->nausea_growth_rate + nauseaGrowthRateChange, 255);
+}
+
+static bool peep_should_go_on_ride_again(rct_peep *peep, rct_ride *ride)
+{
+	if (!(RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x100000)) return false;
+	if (ride->excitement == (ride_rating)0xFFFF) return false;
+	if (ride->intensity > RIDE_RATING(10,00)) return false;
+	if (peep->happiness < 180) return false;
+	if (peep->energy < 100) return false;
+	if (peep->nausea > 160) return false;
+	if (peep->hunger < 30) return false;
+	if (peep->thirst < 20) return false;
+	if (peep->balloon_colour > 170) return false;
+	
+	uint8 r = (scenario_rand() & 0xFF);
+	if (r <= 128) {
+		if (peep->no_of_rides > 7) return false;
+		if (r > 64) return false;
+	}
+
+	return true;
+}
+
+static bool peep_should_preferred_intensity_increase(rct_peep *peep)
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) return false;
+	if (peep->happiness < 200) return false;
+
+	return (scenario_rand() & 0xFF) >= peep->intensity;
+}
+
+static bool peep_really_liked_ride(rct_peep *peep, rct_ride *ride)
+{
+	return
+		peep->happiness >= 215 &&
+		peep->nausea <= 120 &&
+		ride->excitement != (ride_rating)0xFFFF &&
+		ride->intensity <= RIDE_RATING(10,00);
+}
+
+/**
+ * 
+ *  rct2: 0x0069576E
+ */
+static void peep_on_exit_ride(rct_peep *peep, int rideIndex)
+{
+	rct_ride *ride = GET_RIDE(rideIndex);
+
+	if (peep->flags & PEEP_FLAGS_19) {
+		peep->flags &= ~PEEP_FLAGS_19;
+		peep->favourite_ride = rideIndex;
+		// TODO fix this flag name or add another one
+		peep->window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
+	}
+	peep->happiness = peep->happiness_growth_rate;
+	peep->nausea = peep->nausea_growth_rate;
+	peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_STATS;
+
+	if (peep_should_go_on_ride_again(peep, ride)) {
+		peep->guest_heading_to_ride_id = rideIndex;
+		peep->var_C6 = 200;
+		sub_69A98C(peep);
+
+		rct_window *w = window_find_by_number(WC_PEEP, peep->sprite_index);
+		if (w != NULL) {
+			window_event_invalidate_call(w);
+			widget_invalidate(w, 12);
+		}
+	}
+
+	if (peep_should_preferred_intensity_increase(peep)) {
+		if (peep->intensity <= 255 - 16) {
+			peep->intensity += 16;
+		}
+	}
+
+	if (peep->flags & PEEP_FLAGS_26) {
+		peep_insert_new_thought(peep, PEEP_THOUGHT_NICE_RIDE, 255);
+	}
+
+	if (peep_really_liked_ride(peep, ride)) {
+		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WAS_GREAT, rideIndex);
+
+		int laugh = scenario_rand() & 7;
+		if (laugh < 3) {
+			sound_play_panned(SOUND_LAUGH_1 + laugh, 0x8001, peep->x, peep->y, peep->z);
+		}
+	}
+
+	ride->total_customers++;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+}
+
 /**
  * 
  *  rct2: 0x00695444
  */
-static void sub_695444(rct_peep *peep, int rideIndex, int flags)
+static void peep_on_enter_or_exit_ride(rct_peep *peep, int rideIndex, int flags)
 {
-	RCT2_CALLPROC_X(0x00695444, 0, 0, 0, (rideIndex & 0xFF) | (flags << 8), (int)peep, 0, 0);
+	if (flags & 1) {
+		peep_on_exit_ride(peep, rideIndex);
+	} else {
+		peep_on_enter_ride(peep, rideIndex);
+	}
 }
 
 /**
@@ -6364,7 +6614,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 		// Consider rides that peep hasn't been on yet
 		int i;
 		FOR_ALL_RIDES(i, ride) {
-			if (!(peep->rides_been_on[i >> 5] & (i & 0x1F))) {
+			if (!peep_has_ridden(peep, i)) {
 				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= i & 0x1F;
 			}
 		}
