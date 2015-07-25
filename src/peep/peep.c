@@ -6641,13 +6641,153 @@ static int guest_surface_path_finding(rct_peep* peep){
 	return peep_move_one_tile(randDirection, peep);
 }
 
+rct_map_element* get_banner_on_path(rct_map_element *path_element){
+	// This is an improved version of original.
+	// That only checked for one fence in the way.
+	if (map_element_is_last_for_tile(path_element))
+		return NULL;
+
+	rct_map_element *bannerElement = path_element + 1;
+	do {
+		// Path on top, so no banners
+		if (map_element_get_type(bannerElement) == MAP_ELEMENT_TYPE_PATH)
+			return NULL;
+		// Found a banner
+		if (map_element_get_type(bannerElement) == MAP_ELEMENT_TYPE_BANNER)
+			return bannerElement;
+		// Last element so there cant be any other banners
+		if (map_element_is_last_for_tile(bannerElement))
+			return NULL;
+
+	} while (bannerElement++);
+	
+	return NULL;
+}
+
+/* rct2: 0x00694BAE */
+static uint8 sub_694BAE(sint16 x, sint16 y, sint16 z, rct_map_element *map_element, uint8 chosen_direction){
+	uint32 eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = x;
+	ecx = y;
+	edx = z;
+	edi = (int)map_element;
+	ebp = chosen_direction;
+	RCT2_CALLFUNC_X(0x00694BAE, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return eax & 0xFF;
+}
+
+/* rct2: 0x006949A4 */
+static uint8 sub_6949A4(sint16 x, sint16 y, sint16 z, rct_map_element *map_element, uint8 chosen_direction){
+	uint32 eax, ebx, ecx, edx, esi, edi, ebp;
+	eax = x;
+	ecx = y;
+	edx = z;
+	edi = (int)map_element;
+	ebp = chosen_direction;
+	RCT2_CALLFUNC_X(0x006949A4, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return eax & 0xFF;
+}
+
 /* rct2: 0x00694C35 */
 static int guest_path_finding(rct_peep* peep){		
 	sint16 x, y, z;
 	if (peep->next_var_29 & 0x18){
 		return guest_surface_path_finding(peep);
 	}
-	//694DA8
+	
+
+	x = peep->next_x;
+	y = peep->next_y;
+	z = peep->next_z;
+
+	bool found = false;
+	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
+	do{
+		if (z != mapElement->base_height)
+			continue;
+
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+			continue;
+
+		found = true;
+		break;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	if (!found){
+		return 1;
+	}
+
+	uint8 edges = mapElement->properties.path.edges;
+	rct_map_element *bannerElement = get_banner_on_path(mapElement);
+	if (bannerElement != NULL){
+		do{
+			edges &= bannerElement->properties.banner.flags;
+		} while ((bannerElement = get_banner_on_path(bannerElement)) != NULL);
+	}
+	edges &= 0xF;
+
+	if (peep->var_2A == 0 && 
+		(peep->guest_heading_to_ride_id == 0xFF || 
+		peep->flags & PEEP_FLAGS_LEAVING_PARK)){
+
+		uint8 adjustedEdges = edges;
+		uint8 chosenDirection = 0;
+		for (; chosenDirection < 4; ++chosenDirection){
+			// If there is no path in that direction try another
+			if (!(adjustedEdges & (1 << chosenDirection)))
+				continue;
+
+			if (sub_694BAE(peep->next_x, peep->next_y, peep->next_z, mapElement, chosenDirection) == 6){
+				adjustedEdges &= ~(1 << chosenDirection);
+			}
+		}
+		if (adjustedEdges != 0)
+			edges = adjustedEdges;
+	}
+
+	if (edges == 0)
+		return guest_surface_path_finding(peep);
+
+	uint8 direction = peep->var_78 ^ (1 << 1);
+	if (!(edges & ~(1 << direction))){
+		peep_check_if_lost(peep);
+		peep_check_cant_find_ride(peep);
+		peep_check_cant_find_exit(peep);
+	}
+	else{
+		edges &= ~(1 << direction);
+	}
+
+	direction = bitscanforward(edges);
+	// IF only one edge to choose from
+	if ((edges & ~(1 << direction)) == 0){
+		return peep_move_one_tile(direction, peep);
+	}
+
+	//694F19
+	if (peep->var_2A == 0){
+		if (!peep_has_food(peep) && 
+			(scenario_rand()&0xFFFF) >= 2184){
+
+			uint8 adjustedEdges = edges;
+			uint8 chosenDirection = 0;
+			for (; chosenDirection < 4; ++chosenDirection){
+				// If there is no path in that direction try another
+				if (!(adjustedEdges & (1 << chosenDirection)))
+					continue;
+				
+				uint8 al = sub_6949A4(peep->next_x, peep->next_y, peep->next_z, mapElement, chosenDirection);
+				if (al == 6 || al <= 1){
+					adjustedEdges &= ~(1 << chosenDirection);
+				}
+			}
+			if (adjustedEdges != 0)
+				edges = adjustedEdges;
+		}
+		//694f7f
+	}
+	//6952AB
+
 }
 
 /**
