@@ -1805,6 +1805,8 @@ enum {
 
 	STR_CYCLE_DAY_NIGHT = 5473,
 
+	STR_TIME_SINCE_LAST_INSPECTION_MINUTE = 5474,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

@@ -3584,9 +3584,16 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Last inspection
 	lastInspection = ride->last_inspection;
-	stringId = lastInspection <= 240 ?
-		STR_TIME_SINCE_LAST_INSPECTION_MINUTES :
-		STR_TIME_SINCE_LAST_INSPECTION_MORE_THAN_4_HOURS;
+
+	// Use correct, singular form for 1 minute of time or less
+	// https://github.com/OpenRCT2/OpenRCT2/issues/1513
+	if (lastInspection <= 1)
+		stringId = STR_TIME_SINCE_LAST_INSPECTION_MINUTE;
+	else if (lastInspection <= 240)
+		stringId = STR_TIME_SINCE_LAST_INSPECTION_MINUTES;
+	else
+		stringId = STR_TIME_SINCE_LAST_INSPECTION_MORE_THAN_4_HOURS;
+
 	gfx_draw_string_left(dpi, stringId, &lastInspection, 0, x, y);
 	y += 12;
 

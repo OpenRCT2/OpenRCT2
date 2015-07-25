@@ -3807,3 +3807,4 @@ STR_5470    :Scroll map left
 STR_5471    :Scroll map down
 STR_5472    :Scroll map right
 STR_5473    :Cycle day / night
+STR_5474    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}1 minute
