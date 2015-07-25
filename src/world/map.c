@@ -2999,9 +2999,9 @@ int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *cle
 			continue;
 		}
 		int water_height = ((map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) * 2);
-		if (water_height && water_height >= zLow && map_element->base_height < zHigh) {
+		if (water_height && water_height > zLow && map_element->base_height < zHigh) {
 			RCT2_GLOBAL(0x00F1AD60, uint8) |= 4;
-			if (water_height > zHigh) {
+			if (water_height < zHigh) {
 				goto loc_68BAE6;
 			}
 		}
@@ -3025,7 +3025,7 @@ int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *cle
 				int ah = al;
 				int cl = al;
 				int ch = al;
-				uint8 slope = map_element->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK; //F
+				uint8 slope = map_element->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
 				if (slope & 1) {
 					al += 2;
 					if (slope == 0x1B)

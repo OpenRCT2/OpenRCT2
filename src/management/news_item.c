@@ -112,7 +112,7 @@ static bool news_item_is_current_old()
  */
 void news_item_update_current()
 {
-	short ax, bx, remove_time;
+	short ax, bx;
 
 	get_system_time();
 
@@ -415,7 +415,7 @@ void news_item_disable_news(uint8 type, uint32 assoc) {
 		{
 			if (!news_item_is_empty(i))
 			{
-				rct_news_item * const newsItem;
+				rct_news_item * const newsItem = news_item_get(i);
                 if (type == newsItem->type && assoc == newsItem->assoc) {
                         newsItem->flags |= 0x1;
                         if (i == 0) {
