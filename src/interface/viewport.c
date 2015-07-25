@@ -1051,7 +1051,10 @@ int scrolling_text_setup(rct_string_id string_id, uint16 scroll, uint16 scrollin
 
 	// Convert string id back into a string for processing
 	uint8 scroll_string[MAX_PATH];
-	format_string(scroll_string, string_id, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+	if(gConfigGeneral.upper_case_banners)
+		format_string_to_upper(scroll_string, string_id, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+	else
+		format_string(scroll_string, string_id, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
 
 	// Setup character colour from ???
 	uint8 character = RCT2_GLOBAL(0x13CE959, uint8);
