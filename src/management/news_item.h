@@ -60,5 +60,9 @@ void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc);
 void news_item_add_to_queue_raw(uint8 type, const char *text, uint32 assoc);
 void news_item_open_subject(int type, int subject);
 void news_item_disable_news(uint8 type, uint32 assoc);
+rct_news_item *news_item_get(const uint8 idx);
+bool news_item_is_empty(const uint8 idx);
+bool news_item_is_queue_empty();
+bool news_item_is_valid_idx(const uint8 idx);
 
 #endif

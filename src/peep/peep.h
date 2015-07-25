@@ -557,7 +557,7 @@ enum {
 #define GET_PEEP(sprite_index) &(g_sprite_list[sprite_index].peep)
 
 /**
- * Helper macro loop for enumerating through all the non null rides. To avoid needing a end loop counterpart, statements are
+ * Helper macro loop for enumerating through all the peeps. To avoid needing a end loop counterpart, statements are
  * applied in tautology if statements.
  */
 #define FOR_ALL_PEEPS(sprite_index, peep) \

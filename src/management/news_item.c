@@ -28,10 +28,41 @@
 #include "../world/sprite.h"
 #include "news_item.h"
 
-rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
-
+rct_news_item *gNewsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 void window_game_bottom_toolbar_invalidate_news_item();
 static int news_item_get_new_history_slot();
+
+#define MAX_NEWS 60
+
+bool news_item_is_valid_idx(const uint8 idx)
+{
+	if (idx > MAX_NEWS)
+	{
+		log_error("Tried to get news item past MAX_NEWS.");
+		return false;
+	}
+	return true;
+}
+
+rct_news_item *news_item_get(const uint8 idx)
+{
+	if (news_item_is_valid_idx(idx))
+	{
+		return &gNewsItems[idx];
+	} else {
+		return NULL;
+	}
+}
+
+bool news_item_is_empty(const uint8 idx)
+{
+	return news_item_get(idx)->type == NEWS_ITEM_NULL;
+}
+
+bool news_item_is_queue_empty()
+{
+	return news_item_is_empty(0);
+}
 
 /**
  *
@@ -40,14 +71,39 @@ static int news_item_get_new_history_slot();
 void news_item_init_queue()
 {
 	int i;
-	rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 
-	newsItems[0].type = NEWS_ITEM_NULL;
-	newsItems[11].type = NEWS_ITEM_NULL;
+	news_item_get(0)->type = NEWS_ITEM_NULL;
+	news_item_get(11)->type = NEWS_ITEM_NULL;
+	// Throttles for warning types (PEEP_*_WARNING)
 	for (i = 0; i < 16; i++)
 		RCT2_ADDRESS(0x01358750, uint8)[i] = 0;
 
 	window_game_bottom_toolbar_invalidate_news_item();
+}
+
+static void news_item_tick_current()
+{
+	int ticks;
+	ticks = news_item_get(0)->ticks++;
+	if (ticks == 1 && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)) {
+		// Play sound
+		sound_play_panned(SOUND_NEWS_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2, 0, 0, 0);
+	}
+}
+
+static bool news_item_is_current_old()
+{
+	int remove_time = 320;
+	if (!news_item_is_empty(5) &&
+		!news_item_is_empty(4) &&
+		!news_item_is_empty(3) &&
+		!news_item_is_empty(2))
+		remove_time = 256;
+
+	if (news_item_get(0)->ticks >= remove_time)
+		return true;
+
+	return false;
 }
 
 /**
@@ -57,7 +113,6 @@ void news_item_init_queue()
 void news_item_update_current()
 {
 	short ax, bx, remove_time;
-	rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 
 	get_system_time();
 
@@ -91,27 +146,16 @@ void news_item_update_current()
 	RCT2_GLOBAL(0x009DEA6B, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, sint16);
 
 	// Check if there is a current news item
-	if (newsItems[0].type == 0)
+	if (news_item_is_queue_empty())
 		return;
 
 	window_game_bottom_toolbar_invalidate_news_item();
 
 	// Update the current news item
-	newsItems[0].ticks++;
-	if (newsItems[0].ticks == 1 && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)) {
-		// Play sound
-		sound_play_panned(SOUND_NEWS_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2, 0, 0, 0);
-	}
+	news_item_tick_current();
 
 	// Removal of current news item
-	remove_time = 320;
-	if (newsItems[2].type != 0 &&
-		newsItems[3].type != 0 &&
-		newsItems[4].type != 0 &&
-		newsItems[5].type != 0)
-		remove_time = 256;
-
-	if (newsItems[0].ticks >= remove_time)
+	if (news_item_is_current_old())
 		news_item_close_current();
 }
 
@@ -125,7 +169,7 @@ void news_item_close_current()
 	rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 
 	// Check if there is a current message
-	if (newsItems[0].type == NEWS_ITEM_NULL)
+	if (news_item_is_queue_empty())
 		return;
 
 	// Find an available history news item slot for current message
@@ -135,7 +179,7 @@ void news_item_close_current()
 	newsItems[i] = newsItems[0];
 
 	// Set the end of the end of the history list
-	if (i < 60)
+	if (i < MAX_NEWS)
 		newsItems[i + 1].type = NEWS_ITEM_NULL;
 
 	// Invalidate the news window
@@ -150,6 +194,15 @@ void news_item_close_current()
 	window_game_bottom_toolbar_invalidate_news_item();
 }
 
+static void news_item_shift_history_up()
+{
+	const int history_idx = 11;
+	rct_news_item *history_start = news_item_get(history_idx);
+	const size_t count = sizeof(rct_news_item) * (MAX_NEWS - 1 - history_idx);
+	memmove(history_start, history_start + 1, count);
+}
+
+
 /**
  * Finds a spare history slot or replaces an existing one if there are no spare
  * slots available.
@@ -157,17 +210,15 @@ void news_item_close_current()
 static int news_item_get_new_history_slot()
 {
 	int i;
-	rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 
 	// Find an available history news item slot
-	for (i = 11; i < 61; i++)
-		if (newsItems[i].type == NEWS_ITEM_NULL)
+	for (i = 11; i <= MAX_NEWS; i++)
+		if (news_item_is_empty(i))
 			return i;
 
 	// Dequeue the first history news item, shift history up
-	for (i = 11; i < 60; i++)
-		newsItems[i] = newsItems[i + 1];
-	return 60;
+	news_item_shift_history_up();
+	return MAX_NEWS;
 }
 
 /**
@@ -264,7 +315,7 @@ void news_item_add_to_queue_raw(uint8 type, const char *text, uint32 assoc)
 
 	// find first open slot
 	while (newsItem->type != NEWS_ITEM_NULL) {
-		if (newsItem + 1 >= (rct_news_item*)0x13CB1CC)
+		if (newsItem + 1 >= (rct_news_item*)0x13CB1CC) // &news_list[10]
 			news_item_close_current();
 		else
 			newsItem++;
@@ -358,24 +409,36 @@ void news_item_open_subject(int type, int subject)
  * rct2: 0x0066E407
  */
 void news_item_disable_news(uint8 type, uint32 assoc) {
-        rct_news_item* newsItem = newsItems;
-        while (newsItem->type != NEWS_ITEM_NULL) {
+		// TODO: write test invalidating windows
+		int i;
+		for (i = 0; i < 11; i++)
+		{
+			if (!news_item_is_empty(i))
+			{
+				rct_news_item * const newsItem;
                 if (type == newsItem->type && assoc == newsItem->assoc) {
                         newsItem->flags |= 0x1;
-                        if (newsItem == RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item)) {
+                        if (i == 0) {
                                 window_game_bottom_toolbar_invalidate_news_item();
                         }
                 }
-                newsItem++;
+			} else {
+				break;
+			}
         }
 
-        newsItem = &newsItems[11]; //0x13CB2D8
-        while (newsItem->type != NEWS_ITEM_NULL) {
+		for (i = 11; i <= MAX_NEWS; i++)
+		{
+			if (!news_item_is_empty(i))
+			{
+				rct_news_item * const newsItem = news_item_get(i);
                 if (type == newsItem->type && assoc == newsItem->assoc) {
                         newsItem->flags |= 0x1;
                         window_invalidate_by_class(WC_RECENT_NEWS);
                 }
-		newsItem++;
+			} else {
+				break;
+			}
         }
 }
 
