@@ -6029,8 +6029,8 @@ static int peep_update_queue_position(rct_peep* peep){
 /* rct2: 0x00693EF2 */
 static int peep_return_to_center_of_tile(rct_peep* peep){
 	peep->var_78 ^= (1 << 1);
-	peep->destination_x = peep->x & 0xFFE0 + 16;
-	peep->destination_y = peep->y & 0xFFE0 + 16;
+	peep->destination_x = (peep->x & 0xFFE0) + 16;
+	peep->destination_y = (peep->y & 0xFFE0) + 16;
 	peep->destination_tolerence = 5;
 	return 1;
 }
@@ -6275,7 +6275,7 @@ static int peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct_ma
 		invalidate_sprite((rct_sprite*)peep);
 		return 1;
 	}
-	//6946FB
+
 	uint8 var_EF = (peep->var_EF * 2) & 0x3F;
 	peep->var_EF &= 0xC0;
 	peep->var_EF |= var_EF;
@@ -6416,7 +6416,7 @@ static int peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 
 	if (peep->type == PEEP_TYPE_GUEST &&
 		footpath_element_is_queue(map_element)){
-		//6945d8
+
 		uint8 rideIndex = map_element->properties.path.ride_index;
 
 		if (rideIndex == 0xFF){
@@ -6572,7 +6572,6 @@ static int sub_693C9E(rct_peep *peep)
 			return 1;
 	}
 
-	//693dc1
 	sint16 x, y, xy_dist;
 	if (!peep_update_action(&x, &y, &xy_dist, peep)){
 		RCT2_GLOBAL(0x00F1EE18, uint16) |= 1;
@@ -6599,7 +6598,6 @@ static int sub_693C9E(rct_peep *peep)
 		return 1;
 	}
 
-	//693e16
 	if (x < 32 || y < 32 || x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)){
 		if (peep->type == PEEP_TYPE_STAFF){
 			RCT2_GLOBAL(0x00F1EE18, uint16) |= (1 << 1);
