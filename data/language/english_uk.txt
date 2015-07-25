@@ -839,16 +839,17 @@ STR_0834    :{SMALLFONT}{BLACK}Disk and game options
 STR_0835    :Game initialization failed
 STR_0836    :Unable to start game in a minimised state
 STR_0837    :Unable to initialise graphics system
-STR_0838    :CD key code {INT32} is not valid for your RollerCoaster Tycoon 2 CD !{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Please un-install RollerCoaster Tycoon 2% and re-install with the correct CD Key Code
+STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-STR_0841    :Desktop window
-STR_0842    :640x480 full screen
-STR_0843    :800x600 full screen
-STR_0844    :1024x768 full screen
-STR_0845    :1152x864 full screen
-STR_0846    :1280x1024 full screen
-STR_0847    :About 'RollerCoaster Tycoon 2'
+# The follwing six strings were used for display resolutions, but have been replaced.
+STR_0841    :<not used anymore>
+STR_0842    :<not used anymore>
+STR_0843    :<not used anymore>
+STR_0844    :<not used anymore>
+STR_0845    :<not used anymore>
+STR_0846    :<not used anymore>
+STR_0847    :About 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, all rights reserved
@@ -1044,10 +1045,10 @@ STR_1039    :Install new track design
 STR_1040    :Save Game
 STR_1041    :Save Scenario
 STR_1042    :Save Landscape
-STR_1043    :RollerCoaster Tycoon 2 Saved Game
-STR_1044    :RollerCoaster Tycoon 2 Scenario File
-STR_1045    :RollerCoaster Tycoon 2 Landscape File
-STR_1046    :RollerCoaster Tycoon 2 Track Design File
+STR_1043    :OpenRCT2 Saved Game
+STR_1044    :OpenRCT2 Scenario File
+STR_1045    :OpenRCT2 Landscape File
+STR_1046    :OpenRCT2 Track Design File
 STR_1047    :Game save failed!
 STR_1048    :Scenario save failed!
 STR_1049    :Landscape save failed!
@@ -1893,8 +1894,10 @@ STR_1888    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}more than 4 hou
 STR_1889    :{WINDOW_COLOUR_2}Down-Time: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Select how often a mechanic should check this ride
 STR_1891    :No {STRINGID} in park yet!
-STR_1892    :RollerCoaster Tycoon 2
-STR_1893    :Please insert your RollerCoaster Tycoon 2 CD in the following drive:
+# The following two strings were used to display an error when the disc was missing.
+# This has been replaced in OpenRCT2.
+STR_1892    :<not used anymore>
+STR_1893    :<not used anymore>
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sold: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Build new ride/attraction
 STR_1896    :{WINDOW_COLOUR_2}Expenditure/Income
@@ -2863,7 +2866,7 @@ STR_2855    :{RED}{STRINGID} has no path leading from its exit !{NEWLINE}Constru
 STR_2856    :{WINDOW_COLOUR_2}Tutorial
 STR_2857    :{WINDOW_COLOUR_2}(Press a key or mouse button to take control)
 STR_2858    :Can't start marketing campaign...
-STR_2859    :Another instance of RollerCoaster Tycoon 2 is already running
+STR_2859    :Another instance of OpenRCT2 is already running
 STR_2860    :Infogrames Interactive credits...
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
 STR_2862    :Music acknowledgements...
@@ -3164,8 +3167,8 @@ STR_3156    :
 STR_3157    :map
 STR_3158    :graph
 STR_3159    :list
-STR_3160    :RollerCoaster Tycoon 2: Starting for the first time...
-STR_3161    :RollerCoaster Tycoon 2: Checking object files...
+STR_3160    :<not used anymore>
+STR_3161    :<not used anymore>
 STR_3162    :Unable to allocate enough memory
 STR_3163    :Installing new data: 
 STR_3164    :{BLACK}{COMMA16} selected (maximum {COMMA16})
