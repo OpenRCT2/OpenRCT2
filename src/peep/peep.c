@@ -6664,16 +6664,45 @@ rct_map_element* get_banner_on_path(rct_map_element *path_element){
 	return NULL;
 }
 
-/* rct2: 0x00694BAE */
-static uint8 sub_694BAE(sint16 x, sint16 y, sint16 z, rct_map_element *map_element, uint8 chosen_direction){
-	uint32 eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = x;
-	ecx = y;
-	edx = z;
-	edi = (int)map_element;
-	ebp = chosen_direction;
-	RCT2_CALLFUNC_X(0x00694BAE, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return eax & 0xFF;
+/**
+ * 
+ *  rct2: 0x00694BAE
+ */
+static uint8 sub_694BAE(sint16 x, sint16 y, sint16 z, rct_map_element *mapElement, uint8 chosenDirection)
+{
+	rct_map_element *nextMapElement;
+
+	if (footpath_element_is_sloped(mapElement)) {
+		if (footpath_element_get_slope_direction(mapElement) == chosenDirection) {
+			z += 2;
+		}
+	}
+
+	x += TileDirectionDelta[chosenDirection].x;
+	y += TileDirectionDelta[chosenDirection].y;
+	nextMapElement = map_get_first_element_at(x, y);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH) continue;
+		
+		if (footpath_element_is_sloped(nextMapElement)) {
+			int slopeDirection = footpath_element_get_slope_direction(nextMapElement);
+			if (slopeDirection == chosenDirection) {
+				if (z != nextMapElement->base_height) continue;
+			} else {
+				slopeDirection ^= 2;
+				if (slopeDirection != chosenDirection) continue;
+				if (z != nextMapElement->base_height + 2) continue;
+			}
+		} else {
+			if (z != nextMapElement->base_height) continue;
+		}
+
+		if (!(nextMapElement->type & 2)) return 6;
+
+		return 0;
+	} while (!map_element_is_last_for_tile(nextMapElement++));
+
+	return 0;
 }
 
 /* rct2: 0x006949A4 */
