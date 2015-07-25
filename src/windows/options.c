@@ -86,6 +86,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_THEMES_DROPDOWN,
 	WIDX_THEMES_BUTTON,
 	WIDX_DAY_NIGHT_CHECKBOX,
+	WIDX_UPPER_CASE_BANNERS_CHECKBOX,
 	
 	// Culture / Units
 	WIDX_LANGUAGE = WIDX_PAGE_START,
@@ -143,7 +144,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 };
 
 #define WW 310
-#define WH 208
+#define WH 238
 
 #define MAIN_OPTIONS_WIDGETS \
 	{ WWT_FRAME,			0,	0,		WW-1,	0,		WH-1,	STR_NONE,			STR_NONE }, \
@@ -166,14 +167,15 @@ static rct_widget window_options_display_widgets[] = {
 	{ WWT_CHECKBOX,			1,	10,		290,	84,		95,		STR_TILE_SMOOTHING, STR_TILE_SMOOTHING_TIP },	// landscape smoothing
 	{ WWT_CHECKBOX,			1,	10,		290,	99,		110,	STR_GRIDLINES,		STR_GRIDLINES_TIP },		// gridlines
 	{ WWT_CHECKBOX,			1,	10,		290,	114,	125,	5154,				STR_NONE },					// hardware display
-	{ WWT_CHECKBOX,			1,	155,	290,	114,	125,	5454,				STR_NONE },					// uncap fps
-	{ WWT_CHECKBOX,			1,	10,		290,	129,	140,	5440,				STR_NONE },					// minimize fullscreen focus loss
-	{ WWT_DROPDOWN,			1,	155,	299,	143,	154,	STR_NONE,			STR_NONE },					// construction marker
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	144,	153,	876,				STR_NONE },
-	{ WWT_DROPDOWN,			1,	155,	299,	158,	169,	STR_NONE,			STR_NONE },					// colour schemes
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	159,	168,	876,				STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	174,	185,	5153,				STR_NONE },					// colour schemes button
-	{ WWT_CHECKBOX,			1,	10,		290,	190,	201,	STR_CYCLE_DAY_NIGHT,STR_NONE },					// cycle day-night
+	{ WWT_CHECKBOX,			1,	10,		290,	129,	140,	5454,				STR_NONE },					// uncap fps
+	{ WWT_CHECKBOX,			1,	10,		290,	144,	155,	5440,				STR_NONE },					// minimize fullscreen focus loss
+	{ WWT_DROPDOWN,			1,	155,	299,	158,	169,	STR_NONE,			STR_NONE },					// construction marker
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	159,	178,	876,				STR_NONE },
+	{ WWT_DROPDOWN,			1,	155,	299,	173,	184,	STR_NONE,			STR_NONE },					// colour schemes
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	174,	183,	876,				STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	189,	200,	5153,				STR_NONE },					// colour schemes button
+	{ WWT_CHECKBOX,			1,	10,		290,	204,	216,	STR_CYCLE_DAY_NIGHT,STR_NONE },					// cycle day-night
+	{ WWT_CHECKBOX,			1,	10,		290,	219,	231,	STR_UPPER_CASE_BANNERS,STR_NONE },				// upper case banners
 	{ WIDGETS_END },
 };
 
@@ -338,7 +340,8 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_THEMES) |
 	(1 << WIDX_THEMES_DROPDOWN) |
 	(1 << WIDX_THEMES_BUTTON) |
-	(1 << WIDX_DAY_NIGHT_CHECKBOX),
+	(1 << WIDX_DAY_NIGHT_CHECKBOX) |
+	(1 << WIDX_UPPER_CASE_BANNERS_CHECKBOX),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_LANGUAGE) |
@@ -482,6 +485,11 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 			break;
 		case WIDX_DAY_NIGHT_CHECKBOX:
 			gConfigGeneral.day_night_cycle ^= 1;
+			config_save_default();
+			window_invalidate(w);
+			break;
+		case WIDX_UPPER_CASE_BANNERS_CHECKBOX:
+			gConfigGeneral.upper_case_banners ^= 1;
 			config_save_default();
 			window_invalidate(w);
 			break;
@@ -1084,6 +1092,7 @@ static void window_options_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
 		widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
 		widget_set_checkbox_value(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
+		widget_set_checkbox_value(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
 
 		// construction marker: celsius/fahrenheit
 		window_options_display_widgets[WIDX_CONSTRUCTION_MARKER].image = STR_WHITE + RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8);
@@ -1103,6 +1112,7 @@ static void window_options_invalidate(rct_window *w)
 		window_options_display_widgets[WIDX_THEMES_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_display_widgets[WIDX_THEMES_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		window_options_display_widgets[WIDX_DAY_NIGHT_CHECKBOX].type = WWT_CHECKBOX;
+		window_options_display_widgets[WIDX_UPPER_CASE_BANNERS_CHECKBOX].type = WWT_CHECKBOX;
 		break;
 
 	case WINDOW_OPTIONS_PAGE_CULTURE:

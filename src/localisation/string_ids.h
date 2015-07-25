@@ -1804,6 +1804,7 @@ enum {
 	STR_SHORTCUT_SCROLL_MAP_RIGHT = 5472,
 
 	STR_CYCLE_DAY_NIGHT = 5473,
+	STR_UPPER_CASE_BANNERS = 5474,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

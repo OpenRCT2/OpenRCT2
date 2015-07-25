@@ -3810,3 +3810,4 @@ STR_5470    :Scroll map left
 STR_5471    :Scroll map down
 STR_5472    :Scroll map right
 STR_5473    :Cycle day / night
+STR_5474    :Display text on banners in upper case
