@@ -267,7 +267,7 @@ enum PEEP_FLAGS {
 	PEEP_FLAGS_EATING = (1 << 17), // Reduces hunger
 	PEEP_FLAGS_EXPLODE = (1 << 18),
 	PEEP_FLAGS_19 = (1 << 19),
-	PEEP_FLAGS_20 = (1 << 20),
+	PEEP_FLAGS_PARK_ENTRANCE_CHOSEN = (1 << 20), //Set when the nearest park entrance has been chosen
 	PEEP_FLAGS_21 = (1 << 21),
 
 	PEEP_FLAGS_JOY = (1 << 23), // Makes the peep jump in joy
