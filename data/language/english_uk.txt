@@ -1046,7 +1046,7 @@ STR_1040    :Save Game
 STR_1041    :Save Scenario
 STR_1042    :Save Landscape
 STR_1043    :OpenRCT2 Saved Game
-STR_1044    :OpenRCT2 2 Scenario File
+STR_1044    :OpenRCT2 Scenario File
 STR_1045    :OpenRCT2 Landscape File
 STR_1046    :OpenRCT2 Track Design File
 STR_1047    :Game save failed!
