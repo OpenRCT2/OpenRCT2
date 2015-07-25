@@ -3709,3 +3709,42 @@ int map_get_tile_quadrant(int mapX, int mapY)
 		(subMapY < 16 ? 2 : 3);
 }
 
+/* rct2: 0x00693BFF */
+bool map_surface_is_blocked(sint16 x, sint16 y){
+	rct_map_element *mapElement;
+	if (x >= 8192 || y >= 8192)
+		return true;
+
+	mapElement = map_get_surface_element_at(x / 32, y / 32);
+
+	sint16 water_height = mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+	water_height *= 2;
+	if (water_height > mapElement->base_height)
+		return true;
+
+	sint16 base_z = mapElement->base_height;
+	sint16 clear_z = mapElement->base_height + 2;
+	if (mapElement->properties.surface.slope & (1 << 4))
+		clear_z += 2;
+
+	while (!map_element_is_last_for_tile(mapElement++)){
+		if (clear_z >= mapElement->clearance_height)
+			continue;
+
+		if (base_z < mapElement->base_height)
+			continue;
+
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH ||
+			map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE)
+			continue;
+
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
+			return true;
+
+		rct_scenery_entry* scenery = g_smallSceneryEntries[mapElement->properties.scenery.type];
+		if (scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)
+			return true;
+	}
+	return false;
+}
+

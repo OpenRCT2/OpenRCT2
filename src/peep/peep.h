@@ -252,7 +252,7 @@ enum PEEP_FLAGS {
 
 	PEEP_FLAGS_TRACKING = (1 << 3),
 	PEEP_FLAGS_WAVING = (1 << 4), // Makes the peep wave
-	PEEP_FLAGS_5 = (1 << 5),
+	PEEP_FLAGS_5 = (1 << 5), // Set on paying to enter park?
 	PEEP_FLAGS_PHOTO = (1 << 6), // Makes the peep take a picture
 	PEEP_FLAGS_PAINTING = (1 << 7),
 	PEEP_FLAGS_WOW = (1 << 8), // Makes a peep WOW2
@@ -451,7 +451,7 @@ typedef struct {
 	uint8 pad_77;
 	union{
 		uint8 maze_last_edge;			// 0x78
-		uint8 var_78;
+		uint8 var_78;	//Direction ?
 	};
 	uint8 var_79;
 	uint16 time_in_queue;			// 0x7A
@@ -481,12 +481,14 @@ typedef struct {
 	uint32 var_CC;
 	uint8 pad_D0[0x10];
 	uint8 no_action_frame_no;		// 0xE0
-	uint8 var_E1;
+	// 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
+	uint8 litter_count;				// 0xE1
 	union{
 		uint8 time_on_ride;			// 0xE2
 		uint8 var_E2;				// 0xE2
 	};
-	uint8 var_E3;
+	// 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
+	uint8 disgusting_count;			// 0xE3
 	union{
 		money16 paid_to_enter;			// 0xE4
 		uint16 staff_lawns_mown;		// 0xE4
