@@ -436,7 +436,15 @@ void DrawOpenRCT2(int x, int y)
 	gfx_fill_rect_inset(dpi, x, y, x + 128, y + 20, 0x80 | 12, 0x8);
 
 	// Format text (name and version)
-	sprintf(buffer, "%c%c%c%s, v%s", FORMAT_MEDIUMFONT, FORMAT_OUTLINE, FORMAT_WHITE, OPENRCT2_NAME, OPENRCT2_VERSION);
+	char *ch = buffer;;
+	ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
+	ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
+	ch = utf8_write_codepoint(ch, FORMAT_WHITE);
+	strcpy(ch, OPENRCT2_NAME);
+	strcat(buffer, ", v");
+	strcat(buffer, OPENRCT2_VERSION);
+
+	// sprintf(buffer, "%c%c%c%s, v%s", FORMAT_MEDIUMFONT, FORMAT_OUTLINE, FORMAT_WHITE, OPENRCT2_NAME, OPENRCT2_VERSION);
 	if (!str_is_null_or_empty(OPENRCT2_BRANCH))
 		sprintf(strchr(buffer, 0), "-%s", OPENRCT2_BRANCH);
 	if (!str_is_null_or_empty(OPENRCT2_BUILD_NUMBER))

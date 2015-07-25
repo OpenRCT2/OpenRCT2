@@ -134,6 +134,9 @@ void draw_string_right_underline(rct_drawpixelinfo *dpi, int format, void *args,
 int string_get_height_raw(char *buffer);
 void sub_6C1F57(rct_drawpixelinfo *dpi, int x, int y, int width, int colour, rct_string_id format, void *args, int ticks);
 
+bool ttf_initialise();
+void ttf_dispose();
+
 // rain
 void update_rain_animation();
 void redraw_rain();

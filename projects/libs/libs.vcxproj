@@ -55,20 +55,20 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)\</IntDir>
-    <IncludePath>..\..\lib\libcurl\include;..\..\lib\jansson;..\..\lib\cutest\CuTest.h;$(IncludePath)</IncludePath>
-    <LibraryPath>..\..\lib\libcurl\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\..\lib\libcurl\include;..\..\lib\jansson;..\..\lib\cutest\CuTest.h;..\..\lib\SDL2_ttf\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\lib\libcurl\lib;..\..\lib\SDL2_ttf\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)\</IntDir>
-    <IncludePath>..\..\lib\libcurl\include;..\..\lib\jansson;..\..\lib\cutest\CuTest.h;$(IncludePath)</IncludePath>
-    <LibraryPath>..\..\lib\libcurl\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\..\lib\libcurl\include;..\..\lib\jansson;..\..\lib\cutest\CuTest.h;..\..\lib\SDL2_ttf\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\lib\libcurl\lib;..\..\lib\SDL2_ttf\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release with Tests|Win32'">
     <OutDir>$(SolutionDir)..\build\Release\</OutDir>
     <IntDir>$(SolutionDir)..\obj\$(ProjectName)\Release\</IntDir>
-    <IncludePath>..\..\lib\libcurl\include;..\..\lib\jansson;..\..\lib\cutest\CuTest.h;$(IncludePath)</IncludePath>
-    <LibraryPath>..\..\lib\libcurl\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\..\lib\libcurl\include;..\..\lib\jansson;..\..\lib\cutest\CuTest.h;..\..\lib\SDL2_ttf\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\lib\libcurl\lib;..\..\lib\SDL2_ttf\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -83,7 +83,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>libcurl.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcurl.lib;Ws2_32.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PreBuildEvent>
       <Command>Powershell -NonInteractive -ExecutionPolicy "ByPass" -File "$(ProjectDir)../../pre-build.ps1"</Command>
@@ -108,7 +108,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>libcurl.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcurl.lib;Ws2_32.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PreBuildEvent>
       <Command>Powershell -NonInteractive -ExecutionPolicy "ByPass" -File "$(ProjectDir)../../pre-build.ps1"</Command>
@@ -133,7 +133,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>libcurl.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcurl.lib;Ws2_32.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PreBuildEvent>
       <Command>Powershell -NonInteractive -ExecutionPolicy "ByPass" -File "$(ProjectDir)../../pre-build.ps1"</Command>

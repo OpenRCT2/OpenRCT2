@@ -19,10 +19,11 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../drawing/drawing.h"
 #include "../object.h"
+#include "../openrct2.h"
 #include "../util/util.h"
 #include "localisation.h"
-#include "../openrct2.h"
 
 typedef struct {
 	int id;
@@ -72,7 +73,7 @@ const char **_languageOriginal = (char**)0x009BF2D4;
 static int language_open_file(const char *filename, language_data *language);
 static void language_close(language_data *language);
 
-static int utf8_get_next(char *char_ptr, char **nextchar_ptr)
+uint32 utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr)
 {
 	int result;
 	int numBytes;
@@ -80,16 +81,44 @@ static int utf8_get_next(char *char_ptr, char **nextchar_ptr)
 	if (!(char_ptr[0] & 0x80)) {
 		result = char_ptr[0];
 		numBytes = 1;
-	} else if (!(char_ptr[0] & 0x20)) {
+	} else if ((char_ptr[0] & 0xE0) == 0xC0) {
 		result = ((char_ptr[0] & 0x1F) << 6) | (char_ptr[1] & 0x3F);
 		numBytes = 2;
+	} else if ((char_ptr[0] & 0xF0) == 0xE0) {
+		result = ((char_ptr[0] & 0x0F) << 12) | ((char_ptr[1] & 0x3F) << 6) | (char_ptr[2] & 0x3F);
+		numBytes = 3;
 	} else {
+		// TODO 4 bytes
+		result = ' ';
 		numBytes = 1;
 	}
 
 	if (nextchar_ptr != NULL)
 		*nextchar_ptr = char_ptr + numBytes;
 	return result;
+}
+
+utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint)
+{
+	if (codepoint <= 0x7F) {
+		dst[0] = codepoint;
+		return dst + 1;
+	} else if (codepoint <= 0x7FF) {
+		dst[0] = 0xC0 | ((codepoint >> 6) & 0x1F);
+		dst[1] = 0x80 | (codepoint & 0x3F);
+		return dst + 2;
+	} else if (codepoint <= 0xFFFF) {
+		dst[0] = 0xE0 | ((codepoint >> 12) & 0x0F);
+		dst[1] = 0x80 | ((codepoint >> 6) & 0x3F);
+		dst[2] = 0x80 | (codepoint & 0x3F);
+		return dst + 3;
+	} else {
+		dst[0] = 0xF0 | ((codepoint >> 18) & 0x07);
+		dst[1] = 0x80 | ((codepoint >> 12) & 0x3F);
+		dst[2] = 0x80 | ((codepoint >> 6) & 0x3F);
+		dst[3] = 0x80 | (codepoint & 0x3F);
+		return dst + 4;
+	}
 }
 
 const char *language_get_string(rct_string_id id)
@@ -133,6 +162,11 @@ int language_open(int id)
 	if (language_open_file(filename, &_languageCurrent)) {
 		_languageCurrent.id = id;
 		gCurrentLanguage = id;
+
+		if (!ttf_initialise()) {
+			log_warning("Unable to initialise TrueType fonts.");
+		}
+
 		return 1;
 	}
 
@@ -242,10 +276,10 @@ static int language_open_file(const char *filename, language_data *language)
 				int tokenLength = min(src - token, sizeof(tokenBuffer) - 1);
 				memcpy(tokenBuffer, token, tokenLength);
 				tokenBuffer[tokenLength] = 0;
-				char code = format_get_code(tokenBuffer);
+				uint8 code = (uint8)format_get_code(tokenBuffer);
 				if (code == 0)
 					code = atoi(tokenBuffer);
-				*dst++ = code;
+				dst = utf8_write_codepoint(dst, code);
 				mode = 1;
 			}
 			break;

@@ -848,6 +848,11 @@ static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 		window_event_scroll_paint_call(w, &scroll_dpi, scrollIndex);
 }
 
+static utf8 BlackUpArrowString[] = { 0xC2, 0x8E, 0xC2, 0xA0, 0x00 };
+static utf8 BlackDownArrowString[] = { 0xC2, 0x8E, 0xC2, 0xAA, 0x00 };
+static utf8 BlackLeftArrowString[] = { 0xC2, 0x8E, 0xC2, 0xBE, 0x00 };
+static utf8 BlackRightArrowString[] = { 0xC2, 0x8E, 0xC2, 0xAF, 0x00 };
+
 static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, int l, int t, int r, int b, int colour)
 {
 	colour &= 0x7F;
@@ -861,7 +866,7 @@ static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 	
 	// Left button
 	gfx_fill_rect_inset(dpi, l, t, l + 9, b, colour, (scroll->flags & HSCROLLBAR_LEFT_PRESSED ? 0x20 : 0));
-	gfx_draw_string(dpi, (char*)0x009DED6C, 0, l + 1, t);
+	gfx_draw_string(dpi, BlackLeftArrowString, 0, l + 1, t);
 	
 	// Thumb
 	gfx_fill_rect_inset(dpi,
@@ -871,7 +876,7 @@ static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 
 	// Right button
 	gfx_fill_rect_inset(dpi, r - 9, t, r, b, colour, (scroll->flags & HSCROLLBAR_RIGHT_PRESSED ? 0x20 : 0));
-	gfx_draw_string(dpi, (char*)0x009DED6F, 0, r - 6, t);
+	gfx_draw_string(dpi, BlackRightArrowString, 0, r - 6, t);
 }
 
 static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, int l, int t, int r, int b, int colour)
@@ -887,7 +892,7 @@ static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 
 	// Up button
 	gfx_fill_rect_inset(dpi, l, t, r, t + 9, colour, (scroll->flags & VSCROLLBAR_UP_PRESSED ? 0x20 : 0));
-	gfx_draw_string(dpi, (char*)0x009DED66, 0, l + 1, t - 1);
+	gfx_draw_string(dpi, BlackUpArrowString, 0, l + 1, t - 1);
 
 	// Thumb
 	gfx_fill_rect_inset(dpi,
@@ -897,7 +902,7 @@ static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 
 	// Down button
 	gfx_fill_rect_inset(dpi, l, b - 9, r, b, colour, (scroll->flags & VSCROLLBAR_DOWN_PRESSED ? 0x20 : 0));
-	gfx_draw_string(dpi, (char*)0x009DED69, 0, l + 1, b - 9);
+	gfx_draw_string(dpi, BlackDownArrowString, 0, l + 1, b - 9);
 }
 
 /**

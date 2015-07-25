@@ -579,11 +579,11 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 	}
 }
 
-void format_string_part_from_raw(char **dest, const char *src, char **args)
+void format_string_part_from_raw(utf8 **dest, const utf8 *src, char **args)
 {
-	unsigned char code;
+	unsigned int code;
 	while (1) {
-		code = *src++;
+		code = utf8_get_next(src, &src);
 		if (code < ' ') {
 			if (code == 0) {
 				*(*dest)++ = code;
@@ -609,12 +609,12 @@ void format_string_part_from_raw(char **dest, const char *src, char **args)
 		} else if (code < 142) {
 			format_string_code(code, dest, args);
 		} else {
-			*(*dest)++ = code;
+			*dest = utf8_write_codepoint(*dest, code);
 		}
 	}
 }
 
-void format_string_part(char **dest, rct_string_id format, char **args)
+void format_string_part(utf8 **dest, rct_string_id format, char **args)
 {
 	if (format == (rct_string_id)STR_NONE) {
 		**dest = 0;
@@ -654,12 +654,12 @@ void format_string_part(char **dest, rct_string_id format, char **args)
  * format (ax)
  * args (ecx)
  */
-void format_string(char *dest, rct_string_id format, void *args)
+void format_string(utf8 *dest, rct_string_id format, void *args)
 {
 	format_string_part(&dest, format, (char**)&args);
 }
 
-void format_string_raw(char *dest, char *src, void *args)
+void format_string_raw(utf8 *dest, utf8 *src, void *args)
 {
 	format_string_part_from_raw(&dest, src, (char**)&args);
 }
@@ -671,7 +671,7 @@ void format_string_raw(char *dest, char *src, void *args)
  * format (ax)
  * args (ecx)
  */
-void format_string_to_upper(char *dest, rct_string_id format, void *args)
+void format_string_to_upper(utf8 *dest, rct_string_id format, void *args)
 {
 	format_string(dest, format, args);
 
