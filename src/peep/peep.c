@@ -67,6 +67,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep);
 static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType);
 static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFlags);
 static void peep_give_real_name(rct_peep *peep);
+static int guest_surface_path_finding(rct_peep* peep);
 
 const char *gPeepEasterEggNames[] = {
 	"MICHAEL SCHUMACHER",
@@ -6553,6 +6554,100 @@ static int peep_interact_with_shop(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 		peep_window_state_update(peep);
 		return 1;
 	}
+}
+
+/* rct2: 0x0069524E */
+static int peep_move_one_tile(uint8 direction, rct_peep* peep){
+	sint16 x = peep->next_x;
+	sint16 y = peep->next_y;
+	x += RCT2_ADDRESS(0x00993CC, sint16)[direction * 2];
+	y += RCT2_ADDRESS(0x00993CE, sint16)[direction * 2];
+
+	if (x >= 8192 || y >= 8192){
+		// This could loop!
+		return guest_surface_path_finding(peep);
+	}
+
+	peep->var_78 = direction;
+	peep->destination_x = x + 16;
+	peep->destination_y = y + 16;
+	peep->destination_tolerence = 2;
+	if (peep->state == PEEP_STATE_QUEUING){
+		peep->destination_tolerence = (scenario_rand() & 7) + 2;
+	}
+	return 0;
+}
+
+/* rct2: 0x00694C41 */
+static int guest_surface_path_finding(rct_peep* peep){
+	sint16 x = peep->next_x;
+	sint16 y = peep->next_y;
+	sint16 z = peep->next_z;
+	uint8 randDirection = scenario_rand() & 3;
+
+	if (!fence_in_the_way(x, y, z, z + 4, randDirection)){
+		x += RCT2_ADDRESS(0x00993CC, sint16)[randDirection * 2];
+		y += RCT2_ADDRESS(0x00993CE, sint16)[randDirection * 2];
+		randDirection ^= (1 << 1);
+
+		if (!fence_in_the_way(x, y, z, z + 4, randDirection)){
+			randDirection ^= (1 << 1);
+			if (!map_surface_is_blocked(x, y)){
+				return peep_move_one_tile(randDirection, peep);
+			}
+		}
+	}
+
+	randDirection++;
+	uint8 rand_backwards = scenario_rand() & 1;
+	if (rand_backwards){
+		randDirection -= 2;
+	}
+	randDirection &= 3;
+
+	if (!fence_in_the_way(x, y, z, z + 4, randDirection)){
+		x += RCT2_ADDRESS(0x00993CC, sint16)[randDirection * 2];
+		y += RCT2_ADDRESS(0x00993CE, sint16)[randDirection * 2];
+		randDirection ^= (1 << 1);
+
+		if (!fence_in_the_way(x, y, z, z + 4, randDirection)){
+			randDirection ^= (1 << 1);
+			if (!map_surface_is_blocked(x, y)){
+				return peep_move_one_tile(randDirection, peep);
+			}
+		}
+	}
+
+	randDirection -= 2;
+	randDirection &= 3;
+
+	if (!fence_in_the_way(x, y, z, z + 4, randDirection)){
+		x += RCT2_ADDRESS(0x00993CC, sint16)[randDirection * 2];
+		y += RCT2_ADDRESS(0x00993CE, sint16)[randDirection * 2];
+		randDirection ^= (1 << 1);
+
+		if (!fence_in_the_way(x, y, z, z + 4, randDirection)){
+			randDirection ^= (1 << 1);
+			if (!map_surface_is_blocked(x, y)){
+				return peep_move_one_tile(randDirection, peep);
+			}
+		}
+	}
+
+	randDirection--;
+	if (rand_backwards){
+		randDirection += 2;
+	}
+	return peep_move_one_tile(randDirection, peep);
+}
+
+/* rct2: 0x00694C35 */
+static int guest_path_finding(rct_peep* peep){		
+	sint16 x, y, z;
+	if (peep->next_var_29 & 0x18){
+		return guest_surface_path_finding(peep);
+	}
+	//694DA8
 }
 
 /**

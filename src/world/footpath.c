@@ -698,7 +698,8 @@ void footpath_interrupt_peeps(int x, int y, int z)
 	}
 }
 
-bool sub_6E59DC(int x, int y, int z0, int z1, int direction)
+/* rct2: 0x006E59DC */
+bool fence_in_the_way(int x, int y, int z0, int z1, int direction)
 {
 	rct_map_element *mapElement;
 
@@ -899,7 +900,7 @@ static rct_map_element *footpath_get_element(int x, int y, int z0, int z1, int d
 static bool sub_footpath_disconnect_queue_from_path(int x, int y, rct_map_element *mapElement, int action, int direction) {
 	if (((mapElement->properties.path.edges & (1 << direction)) == 0) ^ (action < 0))
 		return false;
-	if ((action < 0) && sub_6E59DC(x, y, mapElement->base_height, mapElement->clearance_height, direction))
+	if ((action < 0) && fence_in_the_way(x, y, mapElement->base_height, mapElement->clearance_height, direction))
 		return false;
 
 	int x1 = x + TileDirectionDelta[direction].x;
@@ -1018,7 +1019,7 @@ static void loc_6A6D7E(
 
 	loc_6A6F1F:
 		if (query) {
-			if (sub_6E59DC(x, y, mapElement->base_height, mapElement->clearance_height, direction ^ 2)) {
+			if (fence_in_the_way(x, y, mapElement->base_height, mapElement->clearance_height, direction ^ 2)) {
 				return;
 			}
 			if (footpath_element_is_queue(mapElement)) {
@@ -1061,7 +1062,7 @@ static void loc_6A6C85(
 	int x, int y, int direction, rct_map_element *mapElement,
 	int flags, bool query, rct_neighbour_list *neighbourList
 ) {
-	if (query && sub_6E59DC(x, y, mapElement->base_height, mapElement->clearance_height, direction))
+	if (query && fence_in_the_way(x, y, mapElement->base_height, mapElement->clearance_height, direction))
 		return;
 
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {

@@ -61,6 +61,7 @@ void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y,
 void footpath_remove_litter(int x, int y, int z);
 void footpath_connect_edges(int x, int y, rct_map_element *mapElement, int flags);
 void sub_6A759F();
+bool fence_in_the_way(int x, int y, int z0, int z1, int direction);
 void footpath_chain_ride_queue(int rideIndex, int entranceIndex, int x, int y, rct_map_element *mapElement, int direction);
 
 void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement);

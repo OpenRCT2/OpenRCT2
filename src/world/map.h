@@ -283,6 +283,7 @@ int map_coord_is_connected(int x, int y, int z, uint8 faceDirection);
 void sub_6A876D();
 int map_is_location_owned(int x, int y, int z);
 int map_is_location_in_park(int x, int y);
+bool map_surface_is_blocked(sint16 x, sint16 y);
 int map_get_station(rct_map_element *mapElement);
 void map_element_remove(rct_map_element *mapElement);
 void map_remove_all_rides();
