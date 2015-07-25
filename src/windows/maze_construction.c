@@ -242,7 +242,20 @@ static void window_maze_construction_resize(rct_window *w)
  */
 static void window_maze_construction_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
 {
-	RCT2_CALLPROC_X(0x006CD48C, 0, 0, 0, widgetIndex, (int)w, (int)widget, 0);
+	switch (widgetIndex) {
+	case WIDX_MAZE_BUILD_MODE:
+		_rideConstructionState = RIDE_CONSTRUCTION_STATE_MAZE_BUILD;
+		window_maze_construction_update_pressed_widgets();
+		break;
+	case WIDX_MAZE_MOVE_MODE:
+		_rideConstructionState = RIDE_CONSTRUCTION_STATE_MAZE_MOVE;
+		window_maze_construction_update_pressed_widgets();
+		break;
+	case WIDX_MAZE_FILL_MODE:
+		_rideConstructionState = RIDE_CONSTRUCTION_STATE_MAZE_FILL;
+		window_maze_construction_update_pressed_widgets();
+		break;
+	}
 }
 
 /**
@@ -405,13 +418,13 @@ void window_maze_construction_update_pressed_widgets()
 	pressedWidgets &= ~(1ULL << WIDX_MAZE_FILL_MODE);
 
 	switch (_rideConstructionState) {
-	case RIDE_CONSTRUCTION_STATE_6:
+	case RIDE_CONSTRUCTION_STATE_MAZE_BUILD:
 		pressedWidgets |= (1ULL << WIDX_MAZE_BUILD_MODE);
 		break;
-	case RIDE_CONSTRUCTION_STATE_7:
+	case RIDE_CONSTRUCTION_STATE_MAZE_MOVE:
 		pressedWidgets |= (1ULL << WIDX_MAZE_MOVE_MODE);
 		break;
-	case RIDE_CONSTRUCTION_STATE_8:
+	case RIDE_CONSTRUCTION_STATE_MAZE_FILL:
 		pressedWidgets |= (1ULL << WIDX_MAZE_FILL_MODE);
 		break;
 	}
