@@ -688,7 +688,7 @@ void window_guest_viewport_init(rct_window* w){
 	union{
 		sprite_focus sprite;
 		coordinate_focus coordinate;
-	} focus; //The focus will be either a sprite or a coordinate.
+	} focus = { 0 }; //The focus will be either a sprite or a coordinate.
 
 	focus.sprite.sprite_id = w->number;
 	

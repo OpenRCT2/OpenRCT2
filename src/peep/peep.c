@@ -6129,7 +6129,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 			peep->destination_y += RCT2_ADDRESS(0x00993CCE, sint16)[peep->var_78 * 2];
 			peep->destination_tolerence = 9;
 			invalidate_sprite((rct_sprite*)peep);
-			sprite_move(peep->destination_x, peep->destination_y, peep->z, (rct_sprite*)peep);
+			sprite_move(x, y, peep->z, (rct_sprite*)peep);
 			invalidate_sprite((rct_sprite*)peep);
 
 			peep_decrement_num_riders(peep);
@@ -6253,7 +6253,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 		peep->destination_tolerence = 7;
 
 		invalidate_sprite((rct_sprite*)peep);
-		sprite_move(peep->destination_x, peep->destination_y, peep->z, (rct_sprite*)peep);
+		sprite_move(x, y, peep->z, (rct_sprite*)peep);
 		invalidate_sprite((rct_sprite*)peep);
 
 		return 1;
@@ -6265,7 +6265,7 @@ static int peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct_ma
 	peep->next_x = (x & 0xFFE0);
 	peep->next_y = (y & 0xFFE0);
 	peep->next_z = map_element->base_height;
-	peep->next_var_29 = map_element->properties.path.type & 3;
+	peep->next_var_29 = map_element->properties.path.type & 7;
 	
 	sint16 z = peep_get_height_on_slope(peep, x, y);
 
@@ -6280,7 +6280,7 @@ static int peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct_ma
 	peep->var_EF &= 0xC0;
 	peep->var_EF |= var_EF;
 
-	if (RCT2_GLOBAL(0x00F1AEE2, uint8) == 1){
+	if (vandalism == true){
 		peep->var_EF |= 1;
 		if (peep->var_EF & 0x3E && 
 			!(peep->var_EF & 0xC0)){
@@ -6599,7 +6599,7 @@ static int sub_693C9E(rct_peep *peep)
 	}
 
 	if (x < 32 || y < 32 || x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)){
-		if (peep->type == PEEP_TYPE_STAFF){
+		if (peep->var_2A == 1){
 			RCT2_GLOBAL(0x00F1EE18, uint16) |= (1 << 1);
 		}
 		return peep_return_to_center_of_tile(peep);

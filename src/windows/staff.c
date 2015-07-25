@@ -1177,7 +1177,7 @@ void window_staff_overview_unknown_14(rct_window *w)
 void window_staff_viewport_init(rct_window* w){
 	if (w->page != WINDOW_STAFF_OVERVIEW) return;
 
-	sprite_focus focus;
+	sprite_focus focus = { 0 };
 
 	focus.sprite_id = w->number;
 

@@ -518,7 +518,7 @@ void footpath_provisional_update()
  */
 void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y, int *direction, rct_map_element **mapElement)
 {
-	int z, interactionType;
+	int z = 0, interactionType;
 	rct_map_element *myMapElement;
 	rct_viewport *viewport;
 	rct_xy16 map_pos = { 0 };
