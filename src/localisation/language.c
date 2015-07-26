@@ -285,8 +285,22 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 	{
 		uint8_t language_code = *(*pStringTable)++;
 		
+		uint8 is_blank = 1;
+		// Strings that are just ' ' are set as invalid langauges.
+		// But if there is no real string then it will set the string as
+		// the blank string
+		for (uint8* test_string = *pStringTable; *test_string != '\0'; test_string++){
+			if (!isblank(*test_string)){
+				is_blank = 0;
+				break;
+			}
+		}
+
 		if (language_code == 0xFF) //end of string table
 			break;
+		
+		if (is_blank)
+			language_code = 0xFE;
 
 		// This is the ideal situation. Language found
 		if (language_code == OpenRCT2LangIdToObjectLangId[gCurrentLanguage])//1)
@@ -306,7 +320,8 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 		if (!(result & 7))
 		{
 			pString = *pStringTable;
-			result |= 4;
+			if (!is_blank)
+				result |= 4;
 		}
 
 		// Skip over the actual string entry to get to the next
