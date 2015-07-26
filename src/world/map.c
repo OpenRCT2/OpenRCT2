@@ -2981,7 +2981,104 @@ rct_map_element *map_element_insert(int x, int y, int z, int flags)
  */
 int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *clearFunc, uint8 bl)
 {
-	return (RCT2_CALLPROC_X(0x0068B932, x, bl, y, (zHigh << 8) | zLow, 0, 0, (int)clearFunc) & 0x100) == 0;
+	//return (RCT2_CALLPROC_X(0x0068B932, x, bl, y, (zHigh << 8) | zLow, 0, 0, (int)clearFunc) & 0x100) == 0;
+	RCT2_GLOBAL(0x00F1AD40, void*) = clearFunc;
+	RCT2_GLOBAL(0x00F1AD60, uint8) = 1;
+	if (x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16) || x < 32 || y < 32) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_OFF_EDGE_OF_MAP;
+		return false; 
+	}
+	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+	do {
+		if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SURFACE) {
+			if (zLow < map_element->clearance_height && zHigh > map_element->base_height && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST)) {
+				if (map_element->flags & (bl & 0x0F)) {
+					goto loc_68BABC;
+				}
+			}
+			continue;
+		}
+		int water_height = ((map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) * 2);
+		if (water_height && water_height > zLow && map_element->base_height < zHigh) {
+			RCT2_GLOBAL(0x00F1AD60, uint8) |= 4;
+			if (water_height < zHigh) {
+				goto loc_68BAE6;
+			}
+		}
+		loc_68B9B7:
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION) {
+			int al = zHigh - map_element->base_height;
+			if (al >= 0) {
+				if (al > 18) {
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT;
+					return false;
+				}
+			}
+		}
+		if ((bl & 0xF0) != 0xF0) {
+			if (map_element->base_height >= zHigh) {
+				// loc_68BA81
+				RCT2_GLOBAL(0x00F1AD60, uint8) |= 2;
+				RCT2_GLOBAL(0x00F1AD60, uint8) &= 0xFE;
+			} else {
+				int al = map_element->base_height;
+				int ah = al;
+				int cl = al;
+				int ch = al;
+				uint8 slope = map_element->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
+				if (slope & 1) {
+					al += 2;
+					if (slope == 0x1B)
+						al += 2;
+				}
+				if (slope & 2) {
+					ah += 2;
+					if (slope == 0x17)
+						ah += 2;
+				}
+				if (slope & 4) {
+					cl += 2;
+					if (slope == 0x1E)
+						cl += 2;
+				}
+				if (slope & 8) {
+					ch += 2;
+					if (slope == 0x1D)
+						ch += 2;
+				}
+				int bh = zLow + 4;
+				if ((!(bl & 1) || (bl & 0x10 || zLow >= al) && bh >= al) && 
+					(!(bl & 2) || (bl & 0x20 || zLow >= ah) && bh >= ah) &&
+					(!(bl & 4) || (bl & 0x40 || zLow >= cl) && bh >= cl) && 
+					(!(bl & 8) || (bl & 0x80 || zLow >= ch) && bh >= ch)) {
+					continue;
+				}
+				loc_68BABC:
+				if (RCT2_GLOBAL(0x00F1AD40, void*) != (void*)0xFFFFFFFF) {
+					int zero = 0;
+					if (!(RCT2_CALLFUNC_X((int)RCT2_GLOBAL(0x00F1AD40, void*), &zero, &zero, &zero, &zero, (int*)&map_element, &zero, &zero) & 0x100)) {
+						continue;
+					}
+				}
+				if (map_element != (rct_map_element*)0xFFFFFFF) {
+					RCT2_CALLPROC_X(0x0068BB18, 0, 0, 0, 0, (int)map_element, 0, 0);
+				}
+				return false;
+				loc_68BAE6:
+				if (RCT2_GLOBAL(0x00F1AD40, void*) != (void*)0xFFFFFFFF) {
+					int zero = 0;
+					if (!(RCT2_CALLFUNC_X((int)RCT2_GLOBAL(0x00F1AD40, void*), &zero, &zero, &zero, &zero, (int*)&map_element, &zero, &zero) & 0x100)) {
+						goto loc_68B9B7;
+					}
+				}
+				if (map_element != (rct_map_element*)0xFFFFFFF) {
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
+				}
+				return false;
+			}
+		}
+	} while (!map_element_is_last_for_tile(map_element++));
+	return true;
 }
 
 /**
@@ -3610,5 +3707,44 @@ int map_get_tile_quadrant(int mapX, int mapY)
 	return (subMapX > 16) ?
 		(subMapY < 16 ? 1 : 0):
 		(subMapY < 16 ? 2 : 3);
+}
+
+/* rct2: 0x00693BFF */
+bool map_surface_is_blocked(sint16 x, sint16 y){
+	rct_map_element *mapElement;
+	if (x >= 8192 || y >= 8192)
+		return true;
+
+	mapElement = map_get_surface_element_at(x / 32, y / 32);
+
+	sint16 water_height = mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+	water_height *= 2;
+	if (water_height > mapElement->base_height)
+		return true;
+
+	sint16 base_z = mapElement->base_height;
+	sint16 clear_z = mapElement->base_height + 2;
+	if (mapElement->properties.surface.slope & (1 << 4))
+		clear_z += 2;
+
+	while (!map_element_is_last_for_tile(mapElement++)){
+		if (clear_z >= mapElement->clearance_height)
+			continue;
+
+		if (base_z < mapElement->base_height)
+			continue;
+
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH ||
+			map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE)
+			continue;
+
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
+			return true;
+
+		rct_scenery_entry* scenery = g_smallSceneryEntries[mapElement->properties.scenery.type];
+		if (scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)
+			return true;
+	}
+	return false;
 }
 

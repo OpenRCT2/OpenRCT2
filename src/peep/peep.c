@@ -33,6 +33,7 @@
 #include "../sprites.h"
 #include "../world/sprite.h"
 #include "../world/scenery.h"
+#include "../world/footpath.h"
 #include "../management/marketing.h"
 #include "peep.h"
 #include "staff.h"
@@ -48,11 +49,16 @@ static int peep_empty_container_extra_flag(rct_peep* peep);
 static int peep_should_find_bench(rct_peep* peep);
 static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type);
 static void sub_693BAB(rct_peep* peep);
-static void sub_693C9E(rct_peep *peep);
+static int sub_693C9E(rct_peep *peep);
 static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 amount);
-static void sub_695444(rct_peep *peep, int rideIndex, int flags);
+static void peep_set_has_ridden(rct_peep *peep, int rideIndex);
+static bool peep_has_ridden(rct_peep *peep, int rideIndex);
+static void peep_set_has_ridden_ride_type(rct_peep *peep, int rideType);
+static bool peep_has_ridden_ride_type(rct_peep *peep, int rideType);
+static void peep_on_enter_or_exit_ride(rct_peep *peep, int rideIndex, int flags);
 static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 price);
 static bool peep_should_use_cash_machine(rct_peep *peep, int rideIndex);
+static bool sub_6960AB(rct_peep *peep, int rideIndex, int dh, int bp);
 static void sub_69A98C(rct_peep *peep);
 static void sub_68FD3A(rct_peep *peep);
 static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideSeatToView);
@@ -61,6 +67,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep);
 static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType);
 static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFlags);
 static void peep_give_real_name(rct_peep *peep);
+static int guest_surface_path_finding(rct_peep* peep);
 
 const char *gPeepEasterEggNames[] = {
 	"MICHAEL SCHUMACHER",
@@ -1823,7 +1830,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 			peep->destination_tolerence = 3;
 
 			ride->var_120++;
-			sub_695444(peep, peep->current_ride, 0);
+			peep_on_enter_or_exit_ride(peep, peep->current_ride, 0);
 			peep->sub_state = 17;
 			return;
 		}
@@ -1850,7 +1857,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 		peep->current_car = 0;
 
 		ride->var_120++;
-		sub_695444(peep, peep->current_ride, 0);
+		peep_on_enter_or_exit_ride(peep, peep->current_ride, 0);
 		peep->sub_state = 14;
 		return;
 	}
@@ -2203,7 +2210,7 @@ static void peep_update_ride_sub_state_5(rct_peep* peep){
 		peep_window_state_update(seated_peep);
 		seated_peep->time_on_ride = 0;
 		seated_peep->sub_state = 6;
-		sub_695444(seated_peep, peep->current_ride, 0);
+		peep_on_enter_or_exit_ride(seated_peep, peep->current_ride, 0);
 	}
 
 	vehicle->num_peeps++;
@@ -2222,7 +2229,7 @@ static void peep_update_ride_sub_state_5(rct_peep* peep){
 	peep->time_on_ride = 0;
 	peep->sub_state = 6;
 
-	sub_695444(peep, peep->current_ride, 0);
+	peep_on_enter_or_exit_ride(peep, peep->current_ride, 0);
 }
 
 /* rct2: 0x00693028*/
@@ -3025,7 +3032,7 @@ static void peep_update_ride_sub_state_18(rct_peep* peep){
 		return;
 	}
 
-	sub_695444(peep, peep->current_ride, 1);
+	peep_on_enter_or_exit_ride(peep, peep->current_ride, 1);
 
 	if (peep->flags & PEEP_FLAGS_TRACKING){
 		RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
@@ -3876,8 +3883,8 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
 		if (peep->energy < 85) return;
 		if (peep->state != PEEP_STATE_WALKING) return;
 
-		if ((peep->var_E1 & 0xC0) != 0xC0 &&
-			(peep->var_E3 & 0xC0) != 0xC0) return;
+		if ((peep->litter_count & 0xC0) != 0xC0 &&
+			(peep->disgusting_count & 0xC0) != 0xC0) return;
 
 		if ((scenario_rand() & 0xFFFF) > 3276) return;
 	}
@@ -5346,7 +5353,7 @@ rct_peep *peep_generate(int x, int y, int z)
 	memset(&peep->rides_been_on, 0, 32);
 
 	peep->no_of_rides = 0;
-	memset(&peep->var_48, 0, 16);
+	memset(&peep->ride_types_been_on, 0, 16);
 	peep->id = RCT2_GLOBAL(0x013B0E6C, uint32)++;
 	peep->name_string_idx = 767;
 
@@ -5372,8 +5379,8 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->item_standard_flags = 0;
 	peep->item_extra_flags = 0;
 	peep->guest_heading_to_ride_id = 0xFF;
-	peep->var_E1 = 0;
-	peep->var_E3 = 0;
+	peep->litter_count = 0;
+	peep->disgusting_count = 0;
 	peep->var_EF = 0;
 	peep->paid_to_enter = 0;
 	peep->paid_on_rides = 0;
@@ -5953,11 +5960,809 @@ void sub_693BAB(rct_peep* peep) {
 
 /**
  * 
+ *  rct2: 0x00693CBB
+ */
+static int peep_update_queue_position(rct_peep* peep){
+	peep->time_in_queue++;
+	if (peep->next_in_queue == 0xFFFF)
+		return 0;
+
+	rct_peep* peep_next = GET_PEEP(peep->next_in_queue);
+
+	sint16 x_diff = abs(peep_next->x - peep->x);
+	sint16 y_diff = abs(peep_next->y - peep->y);
+	sint16 z_diff = abs(peep_next->z - peep->z);
+
+	if (z_diff > 10)
+		return 0;
+
+	if (x_diff < y_diff){
+		sint16 temp_x = x_diff;
+		x_diff = y_diff;
+		y_diff = temp_x;
+	}
+
+	x_diff += y_diff / 2;
+	if (x_diff > 7){
+		if (x_diff > 13){
+			if ((peep->x & 0xFFE0) != (peep_next->x & 0xFFE0) ||
+				(peep->y & 0xFFE0) != (peep_next->y & 0xFFE0))
+				return 0;
+		}
+
+		if (peep->sprite_direction != peep_next->sprite_direction)
+			return 0;
+
+		switch (peep->sprite_direction / 8){
+		case 0:
+			if (peep->x >= peep_next->x)
+				return 0;
+			break;
+		case 1:
+			if (peep->y <= peep_next->y)
+				return 0;
+			break;
+		case 2:
+			if (peep->x <= peep_next->x)
+				return 0;
+			break;
+		case 3:
+			if (peep->y >= peep_next->y)
+				return 0;
+			break;
+		}
+	}
+
+	sint16 xy_dist, x, y;
+	if (peep->action < PEEP_ACTION_NONE_1)
+		peep_update_action(&x, &y, &xy_dist, peep);
+
+	if (peep->action != PEEP_ACTION_NONE_2)
+		return 1;
+
+	peep->action = PEEP_ACTION_NONE_1;
+	peep->var_6F = 2;
+	if (RCT2_GLOBAL(0x00F1AEF1, uint8) != 0xFE)
+		invalidate_sprite((rct_sprite*)peep);
+	return 1;
+}
+
+/* rct2: 0x00693EF2 */
+static int peep_return_to_center_of_tile(rct_peep* peep){
+	peep->var_78 ^= (1 << 1);
+	peep->destination_x = (peep->x & 0xFFE0) + 16;
+	peep->destination_y = (peep->y & 0xFFE0) + 16;
+	peep->destination_tolerence = 5;
+	return 1;
+}
+
+/* rct2: 0x00693f2C*/
+static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_map_element* map_element){
+	uint8 entranceType = map_element->properties.entrance.type;
+	uint8 rideIndex = map_element->properties.entrance.ride_index;
+
+	if (entranceType == ENTRANCE_TYPE_RIDE_EXIT){
+		RCT2_GLOBAL(0x00F1EE18, uint8) |= (1 << 2);
+		RCT2_GLOBAL(0x00F1EE1A, rct_map_element*) = map_element;
+	}
+	else if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE){
+		RCT2_GLOBAL(0x00F1EE18, uint8) |= (1 << 3);
+		RCT2_GLOBAL(0x00F1EE1A, rct_map_element*) = map_element;
+	}
+
+	if (entranceType == ENTRANCE_TYPE_RIDE_EXIT){
+		peep->var_79 = 0xFF;
+		return peep_return_to_center_of_tile(peep);
+	}
+
+	if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE){
+		if (peep->type == PEEP_TYPE_STAFF){
+			peep->var_79 = 0xFF;
+			return peep_return_to_center_of_tile(peep);
+		}
+
+		if (peep->state == PEEP_STATE_QUEUING){
+			peep->sub_state = 11;
+			peep->action_sprite_image_offset = RCT2_GLOBAL(0x00F1AEF0, uint8);
+			return 1;
+		}
+
+		if (peep->var_79 == rideIndex)
+			return peep_return_to_center_of_tile(peep);
+
+		peep->var_F4 = 0;
+		uint8 stationNum = (map_element->properties.entrance.index >> 4) & 0x7;
+		if (!sub_6960AB(peep, rideIndex, stationNum, 0)){
+			peep->var_79 = rideIndex;
+			return peep_return_to_center_of_tile(peep);
+		}
+
+		peep->action_sprite_image_offset = RCT2_GLOBAL(0x00F1AEF0, uint8);
+		peep->var_79 = rideIndex;
+
+		rct_ride* ride = GET_RIDE(rideIndex);
+		uint16 previous_first = ride->first_peep_in_queue[stationNum];
+		ride->first_peep_in_queue[stationNum] = peep->sprite_index;
+		peep->next_in_queue = previous_first;
+		ride->queue_length[stationNum]++;
+		
+		peep_decrement_num_riders(peep);
+		peep->current_ride = rideIndex;
+		peep->current_ride_station = stationNum;
+		peep->state = PEEP_STATE_QUEUING;
+		peep->days_in_queue = 0;
+		peep_window_state_update(peep);
+		peep->sub_state = 11;
+		peep->time_in_queue = 0;
+		if (peep->flags & PEEP_FLAGS_TRACKING){
+			RCT2_GLOBAL(0x0013CE952, rct_string_id) = peep->name_string_idx;
+			RCT2_GLOBAL(0x0013CE954, uint32) = peep->id;
+			RCT2_GLOBAL(0x0013CE958, rct_string_id) = ride->name;
+			RCT2_GLOBAL(0x0013CE95A, uint32) = ride->name_arguments;
+			news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, 1931, peep->sprite_index);
+		}
+		return 1;
+	}
+	else{
+		// PARK_ENTRANCE
+		if (peep->type == PEEP_TYPE_STAFF)
+			return  peep_return_to_center_of_tile(peep);
+
+		// If not the center of the entrance arch
+		if (map_element->properties.entrance.index & 0xF)
+			return peep_return_to_center_of_tile(peep);
+
+		uint8 entranceDirection = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
+		if (entranceDirection != peep->var_78){
+			if ((entranceDirection ^ (1 << 1)) != peep->var_78)
+				return peep_return_to_center_of_tile(peep);
+			// Peep is leaving the park.
+			if (peep->state != PEEP_STATE_WALKING)
+				return peep_return_to_center_of_tile(peep);
+
+			if (!(peep->flags & PEEP_FLAGS_LEAVING_PARK)){
+				// If the park is open and leaving flag isnt set return to center
+				if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN)
+					return peep_return_to_center_of_tile(peep);
+			}
+
+			peep->destination_x += RCT2_ADDRESS(0x00993CCC, sint16)[peep->var_78 * 2];
+			peep->destination_y += RCT2_ADDRESS(0x00993CCE, sint16)[peep->var_78 * 2];
+			peep->destination_tolerence = 9;
+			invalidate_sprite((rct_sprite*)peep);
+			sprite_move(x, y, peep->z, (rct_sprite*)peep);
+			invalidate_sprite((rct_sprite*)peep);
+
+			peep_decrement_num_riders(peep);
+			peep->state = PEEP_STATE_LEAVING_PARK;
+			peep_window_state_update(peep);
+
+			peep->var_37 = 0;
+			if (peep->flags & PEEP_FLAGS_TRACKING){
+				RCT2_GLOBAL(0x0013CE952, rct_string_id) = peep->name_string_idx;
+				RCT2_GLOBAL(0x0013CE954, uint32) = peep->id;
+				news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, 1935, peep->sprite_index);
+			}
+			return 1;
+		}
+
+		// Peep is entering the park.
+
+		if (peep->state != PEEP_STATE_ENTERING_PARK)
+			return peep_return_to_center_of_tile(peep);
+
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN)){
+			peep->state = PEEP_STATE_LEAVING_PARK;
+			peep->var_37 = 1;
+			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+			peep_window_state_update(peep);
+			return peep_return_to_center_of_tile(peep);
+		}
+
+		uint8 entranceIndex = 0;
+		while (1){
+			if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[entranceIndex] == (x & 0xFFE0) &&
+				RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[entranceIndex] == (y & 0xFFE0))
+				break;
+			entranceIndex++;
+		}
+
+		sint16 z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, sint16)[entranceIndex] / 8;
+		entranceDirection = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[entranceIndex];
+
+		sint16 next_x = (x & 0xFFE0) + RCT2_ADDRESS(0x00993CCC, sint16)[entranceDirection * 2];
+		sint16 next_y = (y & 0xFFE0) + RCT2_ADDRESS(0x00993CCE, sint16)[entranceDirection * 2];
+
+		uint8 found = 0;
+		rct_map_element* nextMapElement = map_get_first_element_at(next_x / 32, next_y / 32);
+		do{
+			if (map_element_get_type(nextMapElement) != MAP_ELEMENT_TYPE_PATH)
+				continue;
+
+			if (nextMapElement->type & 1)
+				continue;
+
+			if (footpath_element_is_sloped(nextMapElement)){
+				uint8 slopeDirection = footpath_element_get_slope_direction(nextMapElement);
+				if (slopeDirection == entranceDirection){
+					if (z != nextMapElement->base_height){
+						continue;
+					}
+					found = 1;
+					break;
+				}
+
+				if ((slopeDirection ^ (1 << 1)) != entranceDirection)
+					continue;
+
+				if (z - 2 != nextMapElement->base_height)
+					continue;
+				found = 1;
+				break;
+			}
+			else{
+				if (z != nextMapElement->base_height){
+					continue;
+				}
+				found = 1;
+				break;
+			}
+		} while (!map_element_is_last_for_tile(nextMapElement++));
+
+		if (!found){
+			peep->state = PEEP_STATE_LEAVING_PARK;
+			peep->var_37 = 1;
+			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+			peep_window_state_update(peep);
+			return peep_return_to_center_of_tile(peep);
+		}
+
+		money16 entranceFee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16);
+		if (entranceFee != 0 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)){
+			if (peep->item_standard_flags & PEEP_ITEM_VOUCHER){
+				if (peep->voucher_type == VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE){
+					entranceFee /= 2;
+					peep->item_standard_flags &= ~PEEP_ITEM_VOUCHER;
+					peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+				}
+				else if (peep->voucher_type == VOUCHER_TYPE_PARK_ENTRY_FREE){
+					entranceFee = 0;
+					peep->item_standard_flags &= ~PEEP_ITEM_VOUCHER;
+					peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+				}
+			}
+			if (entranceFee > peep->cash_in_pocket){
+				peep->state = PEEP_STATE_LEAVING_PARK;
+				peep->var_37 = 1;
+				RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+				peep_window_state_update(peep);
+				return peep_return_to_center_of_tile(peep);
+			}
+
+			RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, money32) += entranceFee;
+			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS * 4;
+			peep_spend_money(peep, &peep->paid_to_enter, entranceFee);
+			peep->flags |= PEEP_FLAGS_5;
+		}
+
+		RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32)++;
+		window_invalidate_by_number(WC_PARK_INFORMATION, 0);
+
+		peep->var_37 = 1;
+		peep->destination_x += RCT2_ADDRESS(0x00993CCC, sint16)[peep->var_78 * 2];
+		peep->destination_y += RCT2_ADDRESS(0x00993CCE, sint16)[peep->var_78 * 2];
+		peep->destination_tolerence = 7;
+
+		invalidate_sprite((rct_sprite*)peep);
+		sprite_move(x, y, peep->z, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
+
+		return 1;
+	}
+}
+
+/* rct2: 0x006946D8 */
+static int peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct_map_element* map_element, bool vandalism){
+	peep->next_x = (x & 0xFFE0);
+	peep->next_y = (y & 0xFFE0);
+	peep->next_z = map_element->base_height;
+	peep->next_var_29 = map_element->properties.path.type & 7;
+	
+	sint16 z = peep_get_height_on_slope(peep, x, y);
+
+	if (peep->type == PEEP_TYPE_STAFF){
+		invalidate_sprite((rct_sprite*)peep);
+		sprite_move(x, y, z, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
+		return 1;
+	}
+
+	uint8 var_EF = (peep->var_EF * 2) & 0x3F;
+	peep->var_EF &= 0xC0;
+	peep->var_EF |= var_EF;
+
+	if (vandalism == true){
+		peep->var_EF |= 1;
+		if (peep->var_EF & 0x3E && 
+			!(peep->var_EF & 0xC0)){
+
+			if ((scenario_rand() & 0xFFFF) <= 10922){
+				peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_VANDALISM, 0xFF);
+				peep->happiness_growth_rate = max(0, peep->happiness_growth_rate - 17);
+			}
+			peep->var_EF |= 0xC0;
+		}
+	}
+
+	if (peep->var_EF & 0xC0 &&
+		(scenario_rand()&0xFFFF) <= 4369){
+		peep->var_EF -= 0x40;
+	}
+	
+	uint16 crowded = 0;
+	uint8 litter_count = 0;
+	uint8 sick_count = 0;
+	uint16 sprite_id = RCT2_ADDRESS(0xF1EF60, uint16)[((x & 0x1FE0) << 3) | (y >> 5)];
+	for (rct_sprite* sprite; sprite_id != 0xFFFF; sprite_id = sprite->unknown.next_in_quadrant){
+		sprite = &g_sprite_list[sprite_id];
+		if (sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP){
+			rct_peep* other_peep = (rct_peep*)sprite;
+			if (other_peep->state != PEEP_STATE_WALKING)
+				continue;
+
+			if (abs(other_peep->z - peep->next_z * 8) > 16)
+				continue;
+			crowded++;
+			continue;
+		}
+		else if (sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER){
+			rct_litter* litter = (rct_litter*)sprite;
+			if (abs(litter->z - peep->next_z * 8) > 16)
+				continue;
+
+			litter_count++;
+			if (litter->type > 1)
+				continue;
+
+			litter_count--;
+			sick_count++;
+		}
+	}
+
+	if (crowded >= 10 && 
+		peep->state == PEEP_STATE_WALKING &&
+		(scenario_rand() & 0xFFFF) <= 21845){
+
+		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CROWDED, 0xFF);
+		peep->happiness_growth_rate = max(0, peep->happiness_growth_rate - 14);
+	}
+
+	litter_count = min(3, litter_count);
+	sick_count = min(3, sick_count);
+
+	uint8 disgusting_time = peep->disgusting_count & 0xC0;
+	uint8 disgusting_count = ((peep->disgusting_count & 0xF) << 2) | sick_count;
+	peep->disgusting_count = disgusting_count | disgusting_time;
+
+	if (disgusting_time & 0xC0 &&
+		(scenario_rand() & 0xFFFF) <= 4369){
+		// Reduce the disgusting time
+		peep->disgusting_count -= 0x40;
+	}
+	else{
+		uint8 total_sick = 0;
+		for (uint8 time = 0; time < 3; time++){
+			total_sick += (disgusting_count >> (2 * time)) & 0x3;
+		}
+		
+		if (total_sick >= 3 &&
+			(scenario_rand() & 0xFFFF) <= 10922){
+			peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_PATH_DISGUSTING, 0xFF);
+			peep->happiness_growth_rate = max(0, peep->happiness_growth_rate - 17);
+			// Reset disgusting time
+			peep->disgusting_count |= 0xC0;
+		}
+	}
+
+	uint8 litter_time = peep->litter_count & 0xC0;
+	litter_count = ((peep->litter_count & 0xF) << 2) | litter_count;
+	peep->litter_count = litter_count | litter_time;
+
+	if (litter_time & 0xC0 &&
+		(scenario_rand() & 0xFFFF) <= 4369){
+		// Reduce the litter time
+		peep->litter_count -= 0x40;
+	}
+	else{
+		uint8 total_litter = 0;
+		for (uint8 time = 0; time < 3; time++){
+			total_litter += (litter_count >> (2 * time)) & 0x3;
+		}
+
+		if (total_litter >= 3 &&
+			(scenario_rand() & 0xFFFF) <= 10922){
+			peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_BAD_LITTER, 0xFF);
+			peep->happiness_growth_rate = max(0, peep->happiness_growth_rate - 17);
+			// Reset litter time
+			peep->litter_count |= 0xC0;
+		}
+	}
+
+	invalidate_sprite((rct_sprite*)peep);
+	sprite_move(x, y, z, (rct_sprite*)peep);
+	invalidate_sprite((rct_sprite*)peep);
+	return 1;
+}
+
+/* rct2: 0x0069455E */
+static int peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_map_element* map_element){
+
+	// 0x00F1AEE2
+	bool vandalism_present = false;
+	if ((map_element->properties.path.additions & 0xF) != 0 &&
+		(map_element->flags & MAP_ELEMENT_FLAG_BROKEN) &&
+		(map_element->properties.path.edges & 0xF) != 0xF){
+		vandalism_present = 1;
+	}
+
+	sint16 z = map_element->base_height * 8;
+	if (!map_is_location_owned(x, y, z)){
+		if (peep->var_2A == 0)
+			return peep_return_to_center_of_tile(peep);
+	}
+	else{
+		if (peep->var_2A == 1)
+			return peep_return_to_center_of_tile(peep);
+	}
+
+	if (peep->type == PEEP_TYPE_GUEST &&
+		footpath_element_is_queue(map_element)){
+
+		uint8 rideIndex = map_element->properties.path.ride_index;
+
+		if (rideIndex == 0xFF){
+			peep->var_79 = 0xFF;
+			return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
+		}
+
+		if (peep->state == PEEP_STATE_QUEUING){
+			if (peep->current_ride == rideIndex){
+				return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
+			}
+			remove_peep_from_queue(peep);
+			peep_decrement_num_riders(peep);
+			peep->state = PEEP_STATE_1;
+			peep_window_state_update(peep);
+			return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
+		}
+
+		if (peep->var_79 == rideIndex){
+			return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
+		}
+
+		peep->var_F4 = 0;
+		uint8 stationNum = (map_element->properties.path.additions & 0x70) >> 4;
+		if (!sub_6960AB(peep, rideIndex, stationNum, 1)){
+			peep->var_79 = rideIndex;
+			return peep_return_to_center_of_tile(peep);
+		}
+
+		peep->var_79 = rideIndex;
+		rct_ride* ride = GET_RIDE(rideIndex);
+
+		uint16 old_first_peep = ride->first_peep_in_queue[stationNum];
+		ride->first_peep_in_queue[stationNum] = peep->sprite_index;		
+		peep->next_in_queue = old_first_peep;
+		ride->queue_length[stationNum]++;
+
+		peep_decrement_num_riders(peep);
+		peep->current_ride = rideIndex;
+		peep->current_ride_station = stationNum;
+		peep->state = PEEP_STATE_QUEUING;
+		peep->days_in_queue = 0;
+		peep_window_state_update(peep);
+
+		peep->sub_state = 10;
+		peep->destination_tolerence = 2;
+		peep->time_in_queue = 0;
+		if (peep->flags & PEEP_FLAGS_TRACKING){
+			RCT2_GLOBAL(0x0013CE952, rct_string_id) = peep->name_string_idx;
+			RCT2_GLOBAL(0x0013CE954, uint32) = peep->id;
+			RCT2_GLOBAL(0x0013CE958, rct_string_id) = ride->name;
+			RCT2_GLOBAL(0x0013CE95A, uint32) = ride->name_arguments;
+			news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, 1931, peep->sprite_index);
+		}
+
+		return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
+	}
+	else{
+		peep->var_79 = 0xFF;
+		if (peep->state == PEEP_STATE_QUEUING){
+			remove_peep_from_queue(peep);
+			peep_decrement_num_riders(peep);
+			peep->state = PEEP_STATE_1;
+			peep_window_state_update(peep);
+		}
+		return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
+	}
+}
+
+/* rct2: 0x00693F70 */
+static int peep_interact_with_shop(rct_peep* peep, sint16 x, sint16 y, rct_map_element* map_element){
+	uint8 rideIndex = map_element->properties.track.ride_index;
+	rct_ride* ride = GET_RIDE(rideIndex);
+
+	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+		return 0;
+
+	if (peep->type == PEEP_TYPE_STAFF)
+		return peep_return_to_center_of_tile(peep);
+	
+	peep->var_F4 = 0;
+	
+	if (ride->status != RIDE_STATUS_OPEN)
+		return peep_return_to_center_of_tile(peep);
+
+	if (peep->var_79 == rideIndex)
+		return peep_return_to_center_of_tile(peep);
+
+	if (peep->flags & PEEP_FLAGS_LEAVING_PARK)
+		return peep_return_to_center_of_tile(peep);
+
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_21)){
+		peep->var_F4 = 0;
+		if (!sub_6960AB(peep, rideIndex, 0, 0))
+			return peep_return_to_center_of_tile(peep);
+		
+		money16 cost = ride->price;
+		if (cost != 0){
+			ride->total_profit += cost;
+			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS * 4;
+			peep_spend_money(peep, NULL, cost);
+		}			
+		peep->destination_x = (x & 0xFFE0) + 16;
+		peep->destination_y = (y & 0xFFE0) + 16;
+		peep->destination_tolerence = 3;
+
+		peep_decrement_num_riders(peep);
+		peep->current_ride = rideIndex;
+		peep->state = PEEP_STATE_ENTERING_RIDE;
+		peep->sub_state = 19;
+		peep_window_state_update(peep);
+
+		peep->time_on_ride = 0;
+		ride->var_120++;
+		if (peep->flags & PEEP_FLAGS_TRACKING){
+			RCT2_GLOBAL(0x0013CE952, rct_string_id) = peep->name_string_idx;
+			RCT2_GLOBAL(0x0013CE954, uint32) = peep->id;
+			RCT2_GLOBAL(0x0013CE958, rct_string_id) = ride->name;
+			RCT2_GLOBAL(0x0013CE95A, uint32) = ride->name_arguments;
+			rct_string_id string_id = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? 1933 : 1932;
+			news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, string_id, peep->sprite_index);
+		}
+		return 1;
+	}
+	else{
+		if (peep->guest_heading_to_ride_id == rideIndex)
+			peep->guest_heading_to_ride_id = 0xFF;
+		peep->action_sprite_image_offset = RCT2_GLOBAL(0x00F1AEF0, uint8);
+		peep_decrement_num_riders(peep);
+		peep->current_ride = rideIndex;
+		peep->state = PEEP_STATE_BUYING;
+		peep->sub_state = 0;
+		peep_window_state_update(peep);
+		return 1;
+	}
+}
+
+/* rct2: 0x0069524E */
+static int peep_move_one_tile(uint8 direction, rct_peep* peep){
+	sint16 x = peep->next_x;
+	sint16 y = peep->next_y;
+	x += RCT2_ADDRESS(0x00993CC, sint16)[direction * 2];
+	y += RCT2_ADDRESS(0x00993CE, sint16)[direction * 2];
+
+	if (x >= 8192 || y >= 8192){
+		// This could loop!
+		return guest_surface_path_finding(peep);
+	}
+
+	peep->var_78 = direction;
+	peep->destination_x = x + 16;
+	peep->destination_y = y + 16;
+	peep->destination_tolerence = 2;
+	if (peep->state == PEEP_STATE_QUEUING){
+		peep->destination_tolerence = (scenario_rand() & 7) + 2;
+	}
+	return 0;
+}
+
+/* rct2: 0x00694C41 */
+static int guest_surface_path_finding(rct_peep* peep){
+	sint16 x = peep->next_x;
+	sint16 y = peep->next_y;
+	sint16 z = peep->next_z;
+	uint8 randDirection = scenario_rand() & 3;
+
+	if (!fence_in_the_way(x, y, z, z + 4, randDirection)){
+		x += RCT2_ADDRESS(0x00993CC, sint16)[randDirection * 2];
+		y += RCT2_ADDRESS(0x00993CE, sint16)[randDirection * 2];
+		randDirection ^= (1 << 1);
+
+		if (!fence_in_the_way(x, y, z, z + 4, randDirection)){
+			randDirection ^= (1 << 1);
+			if (!map_surface_is_blocked(x, y)){
+				return peep_move_one_tile(randDirection, peep);
+			}
+		}
+	}
+
+	randDirection++;
+	uint8 rand_backwards = scenario_rand() & 1;
+	if (rand_backwards){
+		randDirection -= 2;
+	}
+	randDirection &= 3;
+
+	if (!fence_in_the_way(x, y, z, z + 4, randDirection)){
+		x += RCT2_ADDRESS(0x00993CC, sint16)[randDirection * 2];
+		y += RCT2_ADDRESS(0x00993CE, sint16)[randDirection * 2];
+		randDirection ^= (1 << 1);
+
+		if (!fence_in_the_way(x, y, z, z + 4, randDirection)){
+			randDirection ^= (1 << 1);
+			if (!map_surface_is_blocked(x, y)){
+				return peep_move_one_tile(randDirection, peep);
+			}
+		}
+	}
+
+	randDirection -= 2;
+	randDirection &= 3;
+
+	if (!fence_in_the_way(x, y, z, z + 4, randDirection)){
+		x += RCT2_ADDRESS(0x00993CC, sint16)[randDirection * 2];
+		y += RCT2_ADDRESS(0x00993CE, sint16)[randDirection * 2];
+		randDirection ^= (1 << 1);
+
+		if (!fence_in_the_way(x, y, z, z + 4, randDirection)){
+			randDirection ^= (1 << 1);
+			if (!map_surface_is_blocked(x, y)){
+				return peep_move_one_tile(randDirection, peep);
+			}
+		}
+	}
+
+	randDirection--;
+	if (rand_backwards){
+		randDirection += 2;
+	}
+	return peep_move_one_tile(randDirection, peep);
+}
+
+/* rct2: 0x00694C35 */
+static int guest_path_finding(rct_peep* peep){		
+	sint16 x, y, z;
+	if (peep->next_var_29 & 0x18){
+		return guest_surface_path_finding(peep);
+	}
+	//694DA8
+}
+
+/**
+ * 
  *  rct2: 0x00693C9E
  */
-static void sub_693C9E(rct_peep *peep)
+static int sub_693C9E(rct_peep *peep)
 {
-	RCT2_CALLPROC_X(0x00693C9E, 0, 0, 0, 0, (int)peep, 0, 0);
+	RCT2_GLOBAL(0x00F1EE18, uint16) = 0;
+	RCT2_GLOBAL(0x00F1AEF1, uint8) = peep->action;
+
+	if (peep->action == PEEP_ACTION_NONE_1)
+		peep->action = PEEP_ACTION_NONE_2;
+
+	if (peep->state == PEEP_STATE_QUEUING){
+		if (peep_update_queue_position(peep))
+			return 1;
+	}
+
+	sint16 x, y, xy_dist;
+	if (!peep_update_action(&x, &y, &xy_dist, peep)){
+		RCT2_GLOBAL(0x00F1EE18, uint16) |= 1;
+		uint8 result = 0;
+		if (peep->type == PEEP_TYPE_GUEST){
+			result = RCT2_CALLPROC_X(0x00694C35, x, 0, y, 0, (int)peep, 0, 0) & 0x100;
+		}
+		else{
+			result = RCT2_CALLPROC_X(0x006BF926, x, 0, y, 0, (int)peep, 0, 0) & 0x100;
+		}
+
+		if (result != 0)
+			return 1;
+
+		if (!peep_update_action(&x, &y, &xy_dist, peep))
+			return 1;
+	}
+
+	if ((x & 0xFFE0) == peep->next_x && (y & 0xFFE0) == peep->next_y){
+		sint16 z = peep_get_height_on_slope(peep, x, y);
+		invalidate_sprite((rct_sprite*)peep);
+		sprite_move(x, y, z, (rct_sprite*)peep);
+		invalidate_sprite((rct_sprite*)peep);
+		return 1;
+	}
+
+	if (x < 32 || y < 32 || x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)){
+		if (peep->var_2A == 1){
+			RCT2_GLOBAL(0x00F1EE18, uint16) |= (1 << 1);
+		}
+		return peep_return_to_center_of_tile(peep);
+	}
+
+	rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+	sint16 base_z = max(0, (peep->z / 8) - 2);
+	sint16 top_z = (peep->z / 8) + 1;
+
+	do{				
+		if (base_z > mapElement->base_height)
+			continue;
+		if (top_z < mapElement->base_height)
+			continue;
+
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH){
+			if ((mapElement->flags & MAP_ELEMENT_FLAG_GHOST))
+				continue;
+			if (peep_interact_with_path(peep, x, y, mapElement))
+				return 1;
+		}
+		else if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK){
+			if (peep_interact_with_shop(peep, x, y, mapElement))
+				return 1;
+		}
+		else if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE){
+			if (peep_interact_with_entrance(peep, x, y, mapElement))
+				return 1;
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	if (peep->type == PEEP_TYPE_STAFF || (peep->next_var_29 & 0x18)){
+		sint16 z = abs(map_element_height(x, y) - peep->z);
+
+		if (z <= 3 || (peep->type == PEEP_TYPE_STAFF && z <= 32)){
+			peep->var_79 = 0xFF;
+			if (peep->state == PEEP_STATE_QUEUING){
+				remove_peep_from_queue(peep);
+				peep_decrement_num_riders(peep);
+				peep->state = PEEP_STATE_1;
+				peep_window_state_update(peep);
+			}
+
+			if (!map_is_location_in_park(x & 0xFFE0, y & 0xFFE0)){
+				return peep_return_to_center_of_tile(peep);
+			}
+
+			mapElement = map_get_surface_element_at(x / 32, y / 32);
+			if (mapElement == NULL)
+				return peep_return_to_center_of_tile(peep);
+
+			sint16 water_height = mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK; 
+			if (water_height)
+				return peep_return_to_center_of_tile(peep);
+
+			peep->next_x = x & 0xFFE0;
+			peep->next_y = y & 0xFFE0;
+			peep->next_z = mapElement->base_height;
+			peep->next_var_29 = 8;
+
+			sint16 z = peep_get_height_on_slope(peep, x, y);
+			invalidate_sprite((rct_sprite*)peep);
+			sprite_move(x, y, z, (rct_sprite*)peep);
+			invalidate_sprite((rct_sprite*)peep);
+			return 1;
+		}
+	}
+	return peep_return_to_center_of_tile(peep);
 }
 
 /**
@@ -5983,13 +6788,259 @@ static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 
 	sound_play_panned(SOUND_PURCHASE, 0x8001, peep->x, peep->y, peep->z);
 }
 
+static void peep_set_has_ridden(rct_peep *peep, int rideIndex)
+{
+	peep->rides_been_on[rideIndex >> 5] |= 1 << (rideIndex & 0x1F);
+}
+
+static bool peep_has_ridden(rct_peep *peep, int rideIndex)
+{
+	return peep->rides_been_on[rideIndex >> 5] & (1 << (rideIndex & 0x1F));
+}
+
+static void peep_set_has_ridden_ride_type(rct_peep *peep, int rideType)
+{
+	peep->rides_been_on[rideType >> 5] |= 1 << (rideType & 0x1F);
+}
+
+static bool peep_has_ridden_ride_type(rct_peep *peep, int rideType)
+{
+	return peep->rides_been_on[rideType >> 5] & (1 << (rideType & 0x1F));
+}
+
+/**
+ * 
+ *  rct2: 0x0069545B
+ */
+static void peep_on_enter_ride(rct_peep *peep, int rideIndex)
+{
+	rct_ride *ride;
+	ride_rating minIntensity, maxIntensity;
+	ride_rating minNausea, maxNausea;
+	uint16 satisfactionFlags;
+
+	ride = GET_RIDE(rideIndex);
+	peep->flags &= ~PEEP_FLAGS_19;
+	if (ride->excitement == (ride_rating)0xFFFF) {
+		satisfactionFlags = 0x1FF;
+	} else {
+		satisfactionFlags = 0;
+		maxIntensity = (peep->intensity & 0x0F) * 100;
+		minIntensity = (peep->intensity / 16) * 100;
+		if (maxIntensity <= ride->intensity || minIntensity >= ride->intensity) {
+			satisfactionFlags |= (1 << 1);
+		}
+		maxIntensity -= peep->happiness * 2;
+		minIntensity += peep->happiness;
+		if (maxIntensity <= ride->intensity || minIntensity >= ride->intensity) {
+			satisfactionFlags |= (1 << 4);
+		}
+		maxIntensity -= peep->happiness * 2;
+		minIntensity += peep->happiness;
+		if (maxIntensity <= ride->intensity || minIntensity >= ride->intensity) {
+			satisfactionFlags |= (1 << 7);
+		}
+
+		minNausea = RCT2_ADDRESS(0x00982390, uint16)[(peep->nausea_tolerance & 3) * 2];
+		maxNausea = RCT2_ADDRESS(0x00982392, uint16)[(peep->nausea_tolerance & 3) * 2];
+		if (maxNausea <= ride->nausea || minNausea >= ride->nausea) {
+			satisfactionFlags |= (1 << 2);
+		}
+		maxNausea -= peep->happiness * 2;
+		minNausea += peep->happiness;
+		if (maxNausea <= ride->nausea || minNausea >= ride->nausea) {
+			satisfactionFlags |= (1 << 5);
+		}
+		maxNausea -= peep->happiness * 2;
+		minNausea += peep->happiness;
+		if (maxNausea <= ride->nausea || minNausea >= ride->nausea) {
+			satisfactionFlags |= (1 << 8);
+		}
+		satisfactionFlags |= (1 << 9);
+	}
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+		if (ride->value != 0xFFFF) {
+			satisfactionFlags &= ~(1 << 9);
+			satisfactionFlags |= (1 << 10);
+			if ((money16)ride->value < ride->price) {
+				satisfactionFlags &= ~(1 << 10);
+				satisfactionFlags |= (1 << 9);
+				if ((ride->value + ((ride->value * peep->happiness) / 256)) < ride->price) {
+					satisfactionFlags &= ~(1 << 9);
+				}
+			}
+		}
+	}
+
+	uint8 satisfactionVar = 0;
+	if (satisfactionFlags & (1 << 9)) satisfactionVar += 15;
+	if (satisfactionFlags & (1 << 10)) satisfactionVar += 40;
+	if ((satisfactionFlags & (1 << 9)) && (satisfactionFlags & (1 << 10))) satisfactionVar -= 45;
+	if ((satisfactionFlags & 6) == 6) {
+		satisfactionVar += 70;
+	} else {
+		if (satisfactionFlags & 6) satisfactionVar += 15;
+		if ((satisfactionFlags & 0x30) == 0x30) {
+			satisfactionVar += 35;
+		} else {
+			if (satisfactionFlags & 0x30) satisfactionVar += 10;
+			if ((satisfactionFlags & 0x180) == 0x180) {
+				satisfactionVar += 10;
+			} else {
+				satisfactionVar -= 60;
+			}
+		}
+	}
+
+	if (peep->time_in_queue <= 750) {
+		satisfactionVar += 10;
+	} else if (peep->time_in_queue >= 2250) {
+		satisfactionVar -= 10;
+		if (peep->time_in_queue >= 4500) {
+			satisfactionVar -= 25;
+		}
+	}
+
+	if (peep_has_ridden(peep, peep->current_ride)) satisfactionVar += 10;
+	peep_set_has_ridden(peep, peep->current_ride);
+	if (peep->no_of_rides < 255) peep->no_of_rides++;
+
+	if (peep_has_ridden_ride_type(peep, ride->type)) satisfactionVar += 10;
+	peep_set_has_ridden_ride_type(peep, ride->type);
+
+	uint8 unkExcitementValue = clamp(0, (ride->excitement / 4) + peep->happiness, 255);
+	if (unkExcitementValue >= peep->var_FA) {
+		if (peep->happiness >= 160 && peep->happiness_growth_rate >= 160) {
+			peep->var_FA = unkExcitementValue;
+			peep->flags |= PEEP_FLAGS_19;
+		}
+	}
+
+	uint8 satisfaction = 0;
+	if (satisfactionVar >= 0) {
+		satisfaction++;
+		if (satisfactionVar >= 20) {
+			satisfaction++;
+			if (satisfactionVar >= 40) {
+				satisfaction++;
+			}
+		}
+	}
+	ride_update_satisfaction(ride, satisfaction);
+	peep->happiness_growth_rate = clamp(0, satisfactionVar + peep->happiness_growth_rate, 255);
+
+	uint32 nauseaMultiplier = clamp(64, 256 - peep->happiness_growth_rate, 200);
+	uint32 nauseaGrowthRateChange = (ride->nausea * nauseaMultiplier) / 512;
+	nauseaGrowthRateChange *= max(128, peep->hunger);
+	nauseaGrowthRateChange /= 128;
+	nauseaGrowthRateChange *= 2;
+	nauseaGrowthRateChange >>= (peep->nausea_tolerance & 3);
+	peep->nausea_growth_rate = (uint8)clamp(0, peep->nausea_growth_rate + nauseaGrowthRateChange, 255);
+}
+
+static bool peep_should_go_on_ride_again(rct_peep *peep, rct_ride *ride)
+{
+	if (!(RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x100000)) return false;
+	if (ride->excitement == (ride_rating)0xFFFF) return false;
+	if (ride->intensity > RIDE_RATING(10,00)) return false;
+	if (peep->happiness < 180) return false;
+	if (peep->energy < 100) return false;
+	if (peep->nausea > 160) return false;
+	if (peep->hunger < 30) return false;
+	if (peep->thirst < 20) return false;
+	if (peep->balloon_colour > 170) return false;
+	
+	uint8 r = (scenario_rand() & 0xFF);
+	if (r <= 128) {
+		if (peep->no_of_rides > 7) return false;
+		if (r > 64) return false;
+	}
+
+	return true;
+}
+
+static bool peep_should_preferred_intensity_increase(rct_peep *peep)
+{
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) return false;
+	if (peep->happiness < 200) return false;
+
+	return (scenario_rand() & 0xFF) >= peep->intensity;
+}
+
+static bool peep_really_liked_ride(rct_peep *peep, rct_ride *ride)
+{
+	return
+		peep->happiness >= 215 &&
+		peep->nausea <= 120 &&
+		ride->excitement != (ride_rating)0xFFFF &&
+		ride->intensity <= RIDE_RATING(10,00);
+}
+
+/**
+ * 
+ *  rct2: 0x0069576E
+ */
+static void peep_on_exit_ride(rct_peep *peep, int rideIndex)
+{
+	rct_ride *ride = GET_RIDE(rideIndex);
+
+	if (peep->flags & PEEP_FLAGS_19) {
+		peep->flags &= ~PEEP_FLAGS_19;
+		peep->favourite_ride = rideIndex;
+		// TODO fix this flag name or add another one
+		peep->window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
+	}
+	peep->happiness = peep->happiness_growth_rate;
+	peep->nausea = peep->nausea_growth_rate;
+	peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_STATS;
+
+	if (peep_should_go_on_ride_again(peep, ride)) {
+		peep->guest_heading_to_ride_id = rideIndex;
+		peep->var_C6 = 200;
+		sub_69A98C(peep);
+
+		rct_window *w = window_find_by_number(WC_PEEP, peep->sprite_index);
+		if (w != NULL) {
+			window_event_invalidate_call(w);
+			widget_invalidate(w, 12);
+		}
+	}
+
+	if (peep_should_preferred_intensity_increase(peep)) {
+		if (peep->intensity <= 255 - 16) {
+			peep->intensity += 16;
+		}
+	}
+
+	if (peep->flags & PEEP_FLAGS_26) {
+		peep_insert_new_thought(peep, PEEP_THOUGHT_NICE_RIDE, 255);
+	}
+
+	if (peep_really_liked_ride(peep, ride)) {
+		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WAS_GREAT, rideIndex);
+
+		int laugh = scenario_rand() & 7;
+		if (laugh < 3) {
+			sound_play_panned(SOUND_LAUGH_1 + laugh, 0x8001, peep->x, peep->y, peep->z);
+		}
+	}
+
+	ride->total_customers++;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+}
+
 /**
  * 
  *  rct2: 0x00695444
  */
-static void sub_695444(rct_peep *peep, int rideIndex, int flags)
+static void peep_on_enter_or_exit_ride(rct_peep *peep, int rideIndex, int flags)
 {
-	RCT2_CALLPROC_X(0x00695444, 0, 0, 0, (rideIndex & 0xFF) | (flags << 8), (int)peep, 0, 0);
+	if (flags & 1) {
+		peep_on_exit_ride(peep, rideIndex);
+	} else {
+		peep_on_enter_ride(peep, rideIndex);
+	}
 }
 
 /**
@@ -6162,7 +7213,7 @@ static bool sub_6960AB(rct_peep *peep, int rideIndex, int dh, int bp)
 				}
 				return true;
 			}
-			if (bp & 2) {
+			if (!(bp & 2)) {
 				if (ride->queue_length[dh] == 1000)
 					goto loc_696645;
 				if (!(bp & 1)) {
@@ -6172,7 +7223,7 @@ static bool sub_6960AB(rct_peep *peep, int rideIndex, int dh, int bp)
 					if (ride->first_peep_in_queue[dh] != 0xFFFF) {
 						rct_peep *firstPeepInQueue = &(g_sprite_list[ride->first_peep_in_queue[dh]].peep);
 						if (abs(firstPeepInQueue->z - peep->z) <= 6) {
-							int dx = abs(firstPeepInQueue->x = peep->x);
+							int dx = abs(firstPeepInQueue->x - peep->x);
 							int dy = abs(firstPeepInQueue->y - peep->y);
 							int maxD = max(dx, dy);
 							if (maxD <= 13) {
@@ -6364,7 +7415,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 		// Consider rides that peep hasn't been on yet
 		int i;
 		FOR_ALL_RIDES(i, ride) {
-			if (!(peep->rides_been_on[i >> 5] & (i & 0x1F))) {
+			if (!peep_has_ridden(peep, i)) {
 				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= i & 0x1F;
 			}
 		}

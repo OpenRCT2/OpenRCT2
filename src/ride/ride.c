@@ -1247,9 +1247,9 @@ void sub_6C9627()
 			1
 		);
 		break;
-	case RIDE_CONSTRUCTION_STATE_6:
-	case RIDE_CONSTRUCTION_STATE_7:
-	case RIDE_CONSTRUCTION_STATE_8:
+	case RIDE_CONSTRUCTION_STATE_MAZE_BUILD:
+	case RIDE_CONSTRUCTION_STATE_MAZE_MOVE:
+	case RIDE_CONSTRUCTION_STATE_MAZE_FILL:
 		if (_currentTrackSelectionFlags & 1) {
 			map_invalidate_tile_full(
 				_currentTrackBeginX & 0xFFE0,
@@ -1594,7 +1594,7 @@ static int ride_modify_entrance_or_exit(rct_map_element *mapElement, int x, int 
 int ride_modify_maze(rct_map_element *mapElement, int x, int y)
 {
 	_currentRideIndex = mapElement->properties.track.ride_index;
-	_rideConstructionState = RIDE_CONSTRUCTION_STATE_6;
+	_rideConstructionState = RIDE_CONSTRUCTION_STATE_MAZE_BUILD;
 	_currentTrackBeginX = x;
 	_currentTrackBeginY = y;
 	_currentTrackBeginZ = mapElement->base_height * 8;

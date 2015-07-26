@@ -252,7 +252,7 @@ enum PEEP_FLAGS {
 
 	PEEP_FLAGS_TRACKING = (1 << 3),
 	PEEP_FLAGS_WAVING = (1 << 4), // Makes the peep wave
-	PEEP_FLAGS_5 = (1 << 5),
+	PEEP_FLAGS_5 = (1 << 5), // Set on paying to enter park?
 	PEEP_FLAGS_PHOTO = (1 << 6), // Makes the peep take a picture
 	PEEP_FLAGS_PAINTING = (1 << 7),
 	PEEP_FLAGS_WOW = (1 << 8), // Makes a peep WOW2
@@ -266,12 +266,14 @@ enum PEEP_FLAGS {
 
 	PEEP_FLAGS_EATING = (1 << 17), // Reduces hunger
 	PEEP_FLAGS_EXPLODE = (1 << 18),
+	PEEP_FLAGS_19 = (1 << 19),
 	PEEP_FLAGS_20 = (1 << 20),
 	PEEP_FLAGS_21 = (1 << 21),
 
 	PEEP_FLAGS_JOY = (1 << 23), // Makes the peep jump in joy
 	PEEP_FLAGS_ANGRY = (1 << 24),
 	PEEP_FLAGS_ICE_CREAM = (1 << 25), // Unconfirmed
+	PEEP_FLAGS_26 = (1 << 26),
 	PEEP_FLAGS_27 = (1 << 27),
 	PEEP_FLAGS_TWITCH = (1 << 31)		// Added for twitch integration
 };
@@ -414,7 +416,7 @@ typedef struct {
 	uint8 nausea_tolerance;			// 0x44
 	uint8 window_invalidate_flags;	// 0x45
 	money16 paid_on_drink;			// 0x46
-	uint8 var_48[16];
+	uint8 ride_types_been_on[16];	// 0x48
 	uint32 item_extra_flags;		// 0x58
 	uint8 photo2_ride_ref;			// 0x5C
 	uint8 photo3_ride_ref;			// 0x5D
@@ -449,7 +451,7 @@ typedef struct {
 	uint8 pad_77;
 	union{
 		uint8 maze_last_edge;			// 0x78
-		uint8 var_78;
+		uint8 var_78;	//Direction ?
 	};
 	uint8 var_79;
 	uint16 time_in_queue;			// 0x7A
@@ -479,12 +481,14 @@ typedef struct {
 	uint32 var_CC;
 	uint8 pad_D0[0x10];
 	uint8 no_action_frame_no;		// 0xE0
-	uint8 var_E1;
+	// 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
+	uint8 litter_count;				// 0xE1
 	union{
 		uint8 time_on_ride;			// 0xE2
 		uint8 var_E2;				// 0xE2
 	};
-	uint8 var_E3;
+	// 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
+	uint8 disgusting_count;			// 0xE3
 	union{
 		money16 paid_to_enter;			// 0xE4
 		uint16 staff_lawns_mown;		// 0xE4
@@ -555,7 +559,7 @@ enum {
 #define GET_PEEP(sprite_index) &(g_sprite_list[sprite_index].peep)
 
 /**
- * Helper macro loop for enumerating through all the non null rides. To avoid needing a end loop counterpart, statements are
+ * Helper macro loop for enumerating through all the peeps. To avoid needing a end loop counterpart, statements are
  * applied in tautology if statements.
  */
 #define FOR_ALL_PEEPS(sprite_index, peep) \

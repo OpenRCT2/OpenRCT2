@@ -836,16 +836,17 @@ STR_0834    :{SMALLFONT}{BLACK}Schijf- en spelopties
 STR_0835    :Kan het spel niet initialiseren
 STR_0836    :Kan het spel niet in geminimaliseerde toestand starten
 STR_0837    :Kan het grafisch systeem niet starten
-STR_0838    :CD-code {INT32} is niet geldig voor deze CD van RollerCoaster Tycoon 2!{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Deïnstalleer RollerCoaster Tycoon 2% en installeer het opnieuw met de correcte CD-code
+STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-STR_0841    :Bureaubladvenster
-STR_0842    :640x480 (volledig scherm)
-STR_0843    :800x600 (volledig scherm)
-STR_0844    :1024x768 (volledig scherm)
-STR_0845    :1152x864 (volledig scherm)
-STR_0846    :1280x1024 (volledig scherm)
-STR_0847    :Over 'RollerCoaster Tycoon 2'
+# The follwing six strings were used for display resolutions, but have been replaced.
+STR_0841    :<not used anymore>
+STR_0842    :<not used anymore>
+STR_0843    :<not used anymore>
+STR_0844    :<not used anymore>
+STR_0845    :<not used anymore>
+STR_0846    :<not used anymore>
+STR_0847    :Over 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Versie 2.01.028
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, alle rechten voorbehouden
@@ -1041,10 +1042,10 @@ STR_1039    :Nieuw baanontwerp installeren
 STR_1040    :Spel opslaan
 STR_1041    :Scenario opslaan
 STR_1042    :Landschap opslaan
-STR_1043    :Opgeslagen spel van RollerCoaster Tycoon 2
-STR_1044    :Scenario voor RollerCoaster Tycoon 2
-STR_1045    :Landschap voor RollerCoaster Tycoon 2
-STR_1046    :Baanontwerp voor RollerCoaster Tycoon 2
+STR_1043    :Opgeslagen spel van OpenRCT2
+STR_1044    :Scenario voor OpenRCT2
+STR_1045    :Landschap voor OpenRCT2
+STR_1046    :Baanontwerp voor OpenRCT2
 STR_1047    :Spel opslaan mislukt!
 STR_1048    :Scenario opslaan mislukt!
 STR_1049    :Landschap opslaan mislukt!
@@ -1890,8 +1891,10 @@ STR_1888    :{WINDOW_COLOUR_2}Tijd sinds laatste inspectie: {BLACK}meer dan 4 uu
 STR_1889    :{WINDOW_COLOUR_2}Stilstandtijd: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Selecteer hoe vaak een monteur deze attractie moet inspecteren
 STR_1891    :Nog geen {STRINGID} in het park!
-STR_1892    :RollerCoaster Tycoon 2
-STR_1893    :Voer je CD van RollerCoaster Tycoon 2 in het volgende station in:
+# The following two strings were used to display an error when the disc was missing.
+# This has been replaced in OpenRCT2.
+STR_1892    :<not used anymore>
+STR_1893    :<not used anymore>
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} verkocht: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Nieuwe attractie bouwen
 STR_1896    :{WINDOW_COLOUR_2}Uitgaven/Inkomsten
@@ -2680,8 +2683,8 @@ STR_2678    :???
 STR_2679    :???
 STR_2680    :Alle onderzoeken zijn voltooid
 STR_2681    :{MEDIUMFONT}{BLACK}Verhoog je saldo met {CURRENCY}
-STR_2682    :{MEDIUMFONT}{BLACK}Wissel tussen betaalde en gratis entree
-STR_2683    :{MEDIUMFONT}{BLACK}Alle bezoekers hebben een maximale tevredenheid
+STR_2682    :<not used anymore>
+STR_2683    :<not used anymore>
 STR_2684    :{SMALLFONT}{BLACK}Er arriveert een grote groep bezoekers
 STR_2685    :Parameters voor Simplex noise
 STR_2686    :Minimum:
@@ -2759,10 +2762,10 @@ STR_2757    :Mooi weer
 STR_2758    :Regen
 STR_2759    :Hoogtes op nul
 STR_2760    :+{CURRENCY}
-STR_2761    :Betaalde entree
-STR_2762    :Betalen per rit
+STR_2761    :<not used anymore>
+STR_2762    :<not used anymore>
 STR_2763    :???
-STR_2764    :Tevreden gasten
+STR_2764    :<not used anymore>
 STR_2765    :Grote groep
 STR_2766    :Win scenario
 STR_2767    :Weer vastzetten
@@ -2857,7 +2860,7 @@ STR_2855    :{RED}{STRINGID} heeft geen pad vanaf de uitgang!{NEWLINE}Bouw een p
 STR_2856    :{WINDOW_COLOUR_2}Tutorial
 STR_2857    :{WINDOW_COLOUR_2}(Druk op een toets of muisknop om de controle over te nemen)
 STR_2858    :Kan marketingcampagne niet starten...
-STR_2859    :RollerCoaster Tycoon 2 draait al
+STR_2859    :OpenRCT2 draait al
 STR_2860    :Credits voor Infogrames Interactive...
 STR_2861    :{WINDOW_COLOUR_2}In licentie geven aan Infogrames Interactive Inc.
 STR_2862    :Muziekdankwoord...
@@ -3158,8 +3161,8 @@ STR_3156    :
 STR_3157    :kaart
 STR_3158    :grafiek
 STR_3159    :lijst
-STR_3160    :RollerCoaster Tycoon 2: Eerste start...
-STR_3161    :RollerCoaster Tycoon 2: Objectbestanden controleren...
+STR_3160    :<not used anymore>
+STR_3161    :<not used anymore>
 STR_3162    :Kan niet voldoende geheugen toewijzen
 STR_3163    :Nieuwe data installeren: 
 STR_3164    :{BLACK}{COMMA16} geselecteerd (maximum: {COMMA16})
@@ -3796,3 +3799,10 @@ STR_5463    :Doel: Plezier hebben!
 STR_5464    :Algemeen
 STR_5465    :Weer
 STR_5466    :Werknemers
+STR_5467    :ALT + 
+STR_5468    :'Recente berichten'-knop in werkbalk tonen
+STR_5469    :Kaart naar boven scrollen
+STR_5470    :Kaart naar links scrollen
+STR_5471    :Kaart naar beneden scrollen
+STR_5472    :Kaart naar rechts scrollen
+STR_5473    :Dag-nachtcyclus

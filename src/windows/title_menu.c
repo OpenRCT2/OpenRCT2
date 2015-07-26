@@ -99,7 +99,8 @@ void window_title_menu_open()
 		WF_STICK_TO_BACK | WF_TRANSPARENT
 	);
 	window->widgets = window_title_menu_widgets;
-	window->enabled_widgets |= (8 | 4 | 2 | 1);
+	window->enabled_widgets |= (8 | 2 | 1);
+	window->disabled_widgets |= (4); // Disable tutorial button
 	window_init_scroll_widgets(window);
 }
 

@@ -3456,7 +3456,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 
 	if (ride->type == RIDE_TYPE_MAZE) {
 		for (int zAttempts = 41; zAttempts >= 0; zAttempts--) {
-			_rideConstructionState = RIDE_CONSTRUCTION_STATE_6;
+			_rideConstructionState = RIDE_CONSTRUCTION_STATE_MAZE_BUILD;
 			_currentTrackBeginX = x;
 			_currentTrackBeginY = y;
 			_currentTrackBeginZ = z;
