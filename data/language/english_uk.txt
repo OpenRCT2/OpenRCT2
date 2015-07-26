@@ -3817,3 +3817,4 @@ STR_5478    :Controls
 STR_5479    :Toolbar
 STR_5480    :Show toolbar buttons for:
 STR_5481    :Themes
+STR_5482    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}1 minute
