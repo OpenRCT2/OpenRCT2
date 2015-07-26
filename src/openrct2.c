@@ -222,9 +222,12 @@ void openrct2_launch()
 {
 	if (openrct2_initialise()) {
 		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
+		if((gOpenRCT2StartupAction == STARTUP_ACTION_TITLE) && gConfigGeneral.play_intro)
+			gOpenRCT2StartupAction = STARTUP_ACTION_INTRO;
+
 		switch (gOpenRCT2StartupAction) {
 		case STARTUP_ACTION_INTRO:
-			RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 8;
+			RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 1;
 			break;
 		case STARTUP_ACTION_TITLE:
 			RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TITLE_DEMO;

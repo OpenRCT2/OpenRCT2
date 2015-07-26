@@ -47,29 +47,10 @@ void intro_update()
 
 	RCT2_GLOBAL(0x009E2C78, int) = 1;
 	switch ((*part)) {
+	// Cases 8 and 9 were used for the disclaimer text. There might be some residual occurences.
 	case 8:
-		// Clear the screen
-		gfx_clear(screenDPI, 10);
-
-		// Draw the disclaimer text
-		gfx_draw_string_centred(screenDPI, STR_LICENCE_AGREEMENT_NOTICE_1, screenWidth / 2, 180, 13, 0);
-		gfx_draw_string_centred(screenDPI, STR_LICENCE_AGREEMENT_NOTICE_2, screenWidth / 2, 195, 13, 0);
-
-		// Set palette thing
-		gfx_transpose_palette(1532, 255);
-
-		// Reset wait counter
-		_tick_counter = 0;
-
-		// Move to next part
-		(*part)++;
-		break;
 	case 9:
-		// Wait 320 game ticks, then move to part 1
-		_tick_counter++;
-		if (_tick_counter >= 320)
-			(*part) = 1;
-		break;
+		(*part) = 1;
 	case 1:
 		// Clear the screen
 		gfx_clear(screenDPI, 10);
