@@ -725,6 +725,8 @@ static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	gfx_draw_string_centred_clipped(dpi, widget->image, (void*)0x013CE952, colour, l, t, widget->right - widget->left - 2);
 }
 
+static const utf8 CheckBoxMarkString[] = { 0xE2, 0x9C, 0x93, 0x00 };
+
 /**
  * 
 *  rct2: 0x006EBAD9
@@ -754,7 +756,7 @@ static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 		// fill it when checkbox is pressed
 		if (widget_is_pressed(w, widgetIndex)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
-			gfx_draw_string(dpi, (char*)0x009DED72, colour & 0x7F, l, yMid - 5);
+			gfx_draw_string(dpi, (char*)CheckBoxMarkString, colour & 0x7F, l, yMid - 5);
 		}
 	}
 
@@ -848,10 +850,10 @@ static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 		window_event_scroll_paint_call(w, &scroll_dpi, scrollIndex);
 }
 
-static utf8 BlackUpArrowString[] = { 0xC2, 0x8E, 0xE2, 0x96, 0xB2, 0x00 };
-static utf8 BlackDownArrowString[] = { 0xC2, 0x8E, 0xE2, 0x96, 0xBC, 0x00 };
-static utf8 BlackLeftArrowString[] = { 0xC2, 0x8E, 0xE2, 0x96, 0x80, 0x00 };
-static utf8 BlackRightArrowString[] = { 0xC2, 0x8E, 0xE2, 0x96, 0xB6, 0x00 };
+static const utf8 BlackUpArrowString[] = { 0xC2, 0x8E, 0xE2, 0x96, 0xB2, 0x00 };
+static const utf8 BlackDownArrowString[] = { 0xC2, 0x8E, 0xE2, 0x96, 0xBC, 0x00 };
+static const utf8 BlackLeftArrowString[] = { 0xC2, 0x8E, 0xE2, 0x96, 0x80, 0x00 };
+static const utf8 BlackRightArrowString[] = { 0xC2, 0x8E, 0xE2, 0x96, 0xB6, 0x00 };
 
 static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, int l, int t, int r, int b, int colour)
 {
@@ -866,7 +868,7 @@ static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 	
 	// Left button
 	gfx_fill_rect_inset(dpi, l, t, l + 9, b, colour, (scroll->flags & HSCROLLBAR_LEFT_PRESSED ? 0x20 : 0));
-	gfx_draw_string(dpi, BlackLeftArrowString, 0, l + 1, t);
+	gfx_draw_string(dpi, (char*)BlackLeftArrowString, 0, l + 1, t);
 	
 	// Thumb
 	gfx_fill_rect_inset(dpi,
@@ -876,7 +878,7 @@ static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 
 	// Right button
 	gfx_fill_rect_inset(dpi, r - 9, t, r, b, colour, (scroll->flags & HSCROLLBAR_RIGHT_PRESSED ? 0x20 : 0));
-	gfx_draw_string(dpi, BlackRightArrowString, 0, r - 6, t);
+	gfx_draw_string(dpi, (char*)BlackRightArrowString, 0, r - 6, t);
 }
 
 static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, int l, int t, int r, int b, int colour)
@@ -892,7 +894,7 @@ static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 
 	// Up button
 	gfx_fill_rect_inset(dpi, l, t, r, t + 9, colour, (scroll->flags & VSCROLLBAR_UP_PRESSED ? 0x20 : 0));
-	gfx_draw_string(dpi, BlackUpArrowString, 0, l + 1, t - 1);
+	gfx_draw_string(dpi, (char*)BlackUpArrowString, 0, l + 1, t - 1);
 
 	// Thumb
 	gfx_fill_rect_inset(dpi,
@@ -902,7 +904,7 @@ static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 
 	// Down button
 	gfx_fill_rect_inset(dpi, l, b - 9, r, b, colour, (scroll->flags & VSCROLLBAR_DOWN_PRESSED ? 0x20 : 0));
-	gfx_draw_string(dpi, BlackDownArrowString, 0, l + 1, b - 9);
+	gfx_draw_string(dpi, (char*)BlackDownArrowString, 0, l + 1, b - 9);
 }
 
 /**

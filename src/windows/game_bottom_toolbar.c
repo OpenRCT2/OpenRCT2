@@ -524,8 +524,8 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 
 	// Text
 	stringId = 1926;
-	// memcpy((char*)language_get_string(1926) + 1, &newsItem->colour, 256);
-	memcpy((void*)0x009B5F2C, &newsItem->colour, 256);
+	utf8 *buffer = (utf8*)0x009B5F2C;
+	memcpy(buffer, &newsItem->text, 256);
 	x = w->x + (middleOutsetWidget->left + middleOutsetWidget->right) / 2;
 	y = w->y + middleOutsetWidget->top + 11;
 	width = middleOutsetWidget->right - middleOutsetWidget->left - 62;

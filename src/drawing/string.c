@@ -1311,6 +1311,9 @@ static void ttf_draw_string(rct_drawpixelinfo *dpi, char *text, int colour, int 
 	ttf_process_string(dpi, text, &info);
 	memcpy(text_palette, info.palette, sizeof(info.palette));
 
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = info.font_sprite_base;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = info.flags;
+
 	gLastDrawStringX = info.x;
 	gLastDrawStringY = info.y;
 }

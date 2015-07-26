@@ -328,8 +328,7 @@ void news_item_add_to_queue_raw(uint8 type, const char *text, uint32 assoc)
 	newsItem->ticks = 0;
 	newsItem->month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
 	newsItem->day = ((days_in_month[(newsItem->month_year & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16) + 1;
-	newsItem->colour = text[0];
-	strncpy(newsItem->text, text + 1, 254);
+	strncpy(newsItem->text, text, 255);
 	newsItem->text[254] = 0;
 
 	// blatant disregard for what happens on the last element.

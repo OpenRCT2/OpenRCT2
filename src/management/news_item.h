@@ -48,8 +48,7 @@ typedef struct {
 	uint16 month_year;			// 0x08
 	uint8 day;					// 0x0A
 	uint8 pad_0B;				// 0x0B
-	uint8 colour;				// 0x0C
-	char text[255];				// 0x0D
+	utf8 text[256];				// 0x0C
 } rct_news_item;
 
 void news_item_init_queue();
