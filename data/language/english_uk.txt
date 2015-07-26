@@ -2976,8 +2976,8 @@ STR_2965    :{WINDOW_COLOUR_2}
 STR_2966    :
 STR_2967    :
 STR_2968    :
-STR_2969    :Use of this product is subject to the terms of a licence agreement
-STR_2970    :found in the product's {OPENQUOTES}ReadMe{ENDQUOTES} file and in the manual
+STR_2969    :<not used anymore>
+STR_2970    :<not used anymore>
 STR_2971    :Main colour scheme
 STR_2972    :Alternative colour scheme 1
 STR_2973    :Alternative colour scheme 2
