@@ -848,10 +848,10 @@ static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 		window_event_scroll_paint_call(w, &scroll_dpi, scrollIndex);
 }
 
-static utf8 BlackUpArrowString[] = { 0xC2, 0x8E, 0xC2, 0xA0, 0x00 };
-static utf8 BlackDownArrowString[] = { 0xC2, 0x8E, 0xC2, 0xAA, 0x00 };
-static utf8 BlackLeftArrowString[] = { 0xC2, 0x8E, 0xC2, 0xBE, 0x00 };
-static utf8 BlackRightArrowString[] = { 0xC2, 0x8E, 0xC2, 0xAF, 0x00 };
+static utf8 BlackUpArrowString[] = { 0xC2, 0x8E, 0xE2, 0x96, 0xB2, 0x00 };
+static utf8 BlackDownArrowString[] = { 0xC2, 0x8E, 0xE2, 0x96, 0xBC, 0x00 };
+static utf8 BlackLeftArrowString[] = { 0xC2, 0x8E, 0xE2, 0x96, 0x80, 0x00 };
+static utf8 BlackRightArrowString[] = { 0xC2, 0x8E, 0xE2, 0x96, 0xB6, 0x00 };
 
 static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, int l, int t, int r, int b, int colour)
 {

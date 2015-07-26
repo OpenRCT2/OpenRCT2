@@ -26,12 +26,16 @@
 #include "language.h"
 #include "string_ids.h"
 
+bool utf8_is_format_code(int codepoint);
+bool utf8_should_use_sprite_for_codepoint(int codepoint);
+int utf8_get_sprite_offset_for_codepoint(int codepoint);
+
 void format_string(char *dest, rct_string_id format, void *args);
 void format_string_raw(char *dest, char *src, void *args);
 void format_string_to_upper(char *dest, rct_string_id format, void *args);
 void generate_string_file();
 void error_string_quit(int error, rct_string_id format);
-int get_string_length(char* buffer);
+int get_string_length(const utf8* buffer);
 
 void user_string_clear_all();
 rct_string_id user_string_allocate(int base, const char *text);

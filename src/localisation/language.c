@@ -33,39 +33,25 @@ typedef struct {
 	char *string_data;
 } language_data;
 
-const char *language_names[LANGUAGE_COUNT] = {
-	"",						// LANGUAGE_UNDEFINED
-	"English (UK)",			// LANGUAGE_ENGLISH_UK
-	"English (US)",			// LANGUAGE_ENGLISH_US
-	"Deutsch",				// LANGUAGE_GERMAN
-	"Nederlands",			// LANGUAGE_DUTCH
-	"Fran\u00E7ais",		// LANGUAGE_FRENCH
-	"Magyar",				// LANGUAGE_HUNGARIAN
-	"Polski",				// LANGUAGE_POLISH
-	"Espa\u00F1ol",			// LANGUAGE_SPANISH
-	"Svenska",				// LANGUAGE_SWEDISH
-	"Italiano",				// LANGUAGE_ITALIAN
-	"Portug\u00CAs (BR)",	// LANGUAGE_PORTUGUESE_BR
-	"Chinese Traditional"	// LANGUAGE_CHINESE_TRADITIONAL
-};
-
-const char *language_filenames[LANGUAGE_COUNT] = {
-	"",						// LANGUAGE_UNDEFINED
-	"english_uk",			// LANGUAGE_ENGLISH_UK
-	"english_us",			// LANGUAGE_ENGLISH_US
-	"german", 				// LANGUAGE_GERMAN
-	"dutch",				// LANGUAGE_DUTCH
-	"french",				// LANGUAGE_FRENCH
-	"hungarian",			// LANGUAGE_HUNGARIAN
-	"polish",				// LANGUAGE_POLISH
-	"spanish_sp",			// LANGUAGE_SPANISH
-	"swedish",				// LANGUAGE_SWEDISH
-	"italian",				// LANGUAGE_ITALIAN
-	"portuguese_br",		// LANGUAGE_PORTUGUESE_BR
-	"chinese_traditional"	// LANGUAGE_CHINESE_TRADITIONAL
+const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
+	{ "",			 "",						 "",						"",							FONT_OPENRCT2_SPRITE },		// LANGUAGE_UNDEFINED
+	{ "en-GB",		"English (UK)",				"English (UK)",				"english_uk",				FONT_OPENRCT2_SPRITE },		// LANGUAGE_ENGLISH_UK
+	{ "en-US",		"English (US)",				"English (US)",				"english_us",				FONT_OPENRCT2_SPRITE },		// LANGUAGE_ENGLISH_US
+	{ "de-DE",		"German",					"Deutsch",					"german",					FONT_OPENRCT2_SPRITE },		// LANGUAGE_GERMAN
+	{ "nl-NL",		"Dutch",					"Nederlands",				"dutch",					FONT_OPENRCT2_SPRITE },		// LANGUAGE_DUTCH
+	{ "fr-FR",		"French",					"Fran\xC3\xA7" "ais",		"french",					FONT_OPENRCT2_SPRITE },		// LANGUAGE_FRENCH
+	{ "hu-HU",		"Hungarian",				"Magyar",					"hungarian",				FONT_OPENRCT2_SPRITE },		// LANGUAGE_HUNGARIAN
+	{ "pl-PL",		"Polish",					"Polski",					"polish",					FONT_OPENRCT2_SPRITE },		// LANGUAGE_POLISH
+	{ "es-ES",		"Spanish",					"Espa\xC3\xB1ol",			"spanish_sp",				FONT_OPENRCT2_SPRITE },		// LANGUAGE_SPANISH
+	{ "sv-SE",		"Swedish",					"Svenska",					"swedish",					FONT_OPENRCT2_SPRITE },		// LANGUAGE_SWEDISH
+	{ "it-IT",		"Italian",					"Italiano",					"italian",					FONT_OPENRCT2_SPRITE },		// LANGUAGE_ITALIAN
+	{ "pt-BR",		"Portuguese (BR)",			"Portug\xC3\xAAs (BR)",		"portuguese_br",			FONT_OPENRCT2_SPRITE },		// LANGUAGE_PORTUGUESE_BR
+	{ "zh-Hant",	"Chinese (Traditional)",	"Chinese (Traditional)",	"chinese_traditional",		"msjh.ttc" },				// LANGUAGE_CHINESE_TRADITIONAL
 };
 
 int gCurrentLanguage = LANGUAGE_UNDEFINED;
+bool gUseTrueTypeFont = false;
+const utf8 *gTrueTypeFontPath;
 
 language_data _languageFallback = { 0 };
 language_data _languageCurrent = { 0 };
@@ -154,19 +140,27 @@ int language_open(int id)
 		return 1;
 
 	if (id != LANGUAGE_ENGLISH_UK) {
-		sprintf(filename, languagePath, gExePath, language_filenames[LANGUAGE_ENGLISH_UK]);
+		sprintf(filename, languagePath, gExePath, LanguagesDescriptors[LANGUAGE_ENGLISH_UK].path);
 		if (language_open_file(filename, &_languageFallback)) {
 			_languageFallback.id = LANGUAGE_ENGLISH_UK;
 		}
 	}
 
-	sprintf(filename, languagePath, gExePath, language_filenames[id]);
+	sprintf(filename, languagePath, gExePath, LanguagesDescriptors[id].path);
 	if (language_open_file(filename, &_languageCurrent)) {
 		_languageCurrent.id = id;
 		gCurrentLanguage = id;
 
-		if (!ttf_initialise()) {
-			log_warning("Unable to initialise TrueType fonts.");
+		if (LanguagesDescriptors[id].font == FONT_OPENRCT2_SPRITE) {
+			gUseTrueTypeFont = false;
+			gTrueTypeFontPath = NULL;
+			ttf_dispose();
+		} else {
+			gUseTrueTypeFont = true;
+			gTrueTypeFontPath = LanguagesDescriptors[id].font;
+			if (!ttf_initialise()) {
+				log_warning("Unable to initialise TrueType fonts.");
+			}
 		}
 
 		return 1;
@@ -274,10 +268,13 @@ static int language_open_file(const char *filename, language_data *language)
 				int tokenLength = min(src - token, sizeof(tokenBuffer) - 1);
 				memcpy(tokenBuffer, token, tokenLength);
 				tokenBuffer[tokenLength] = 0;
-				uint8 code = (uint8)format_get_code(tokenBuffer);
-				if (code == 0)
+				uint32 code = format_get_code(tokenBuffer);
+				if (code == 0) {
 					code = atoi(tokenBuffer);
-				dst = utf8_write_codepoint(dst, code);
+					*dst++ = code & 0xFF;
+				} else {
+					dst = utf8_write_codepoint(dst, code);
+				}
 				mode = 1;
 			}
 			break;

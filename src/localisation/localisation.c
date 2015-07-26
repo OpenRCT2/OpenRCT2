@@ -29,8 +29,8 @@
 #pragma region Format codes
 
 typedef struct {
-	char code;
-	char *token;
+	uint32 code;
+	const char *token;
 } format_code_token;
 
 format_code_token format_code_tokens[] = {
@@ -107,7 +107,7 @@ format_code_token format_code_tokens[] = {
 	{ FORMAT_INVERTEDQUESTION,			"INVERTEDQUESTION"		}
 };
 
-char format_get_code(const char *token)
+uint32 format_get_code(const char *token)
 {
 	int i;
 	for (i = 0; i < countof(format_code_tokens); i++)
@@ -116,13 +116,73 @@ char format_get_code(const char *token)
 	return 0;
 }
 
-const char *format_get_token(char code)
+const char *format_get_token(uint32 code)
 {
 	int i;
 	for (i = 0; i < countof(format_code_tokens); i++)
 		if (code == format_code_tokens[i].code)
 			return format_code_tokens[i].token;
 	return 0;
+}
+
+bool utf8_is_format_code(int codepoint)
+{
+	if (codepoint < 32) return true;
+	if (codepoint >= 123 && codepoint <= 155) return true;
+	return false;
+}
+
+bool utf8_should_use_sprite_for_codepoint(int codepoint)
+{
+	switch (codepoint) {
+	case FORMAT_UP:
+	case FORMAT_DOWN:
+	case FORMAT_LEFTGUILLEMET:
+	case FORMAT_TICK:
+	case FORMAT_CROSS:
+	case FORMAT_RIGHT:
+	case FORMAT_RIGHTGUILLEMET:
+	case FORMAT_SMALLUP:
+	case FORMAT_SMALLDOWN:
+	case FORMAT_LEFT:
+	case FORMAT_OPENQUOTES:
+	case FORMAT_ENDQUOTES:
+		return true;
+	default:
+		return false;
+	}
+}
+
+int utf8_get_sprite_offset_for_codepoint(int codepoint)
+{
+	switch (codepoint) {
+	case FORMAT_AMINUSCULE: return 159 - 32;
+	case FORMAT_POUND: return 163 - 32;
+	case FORMAT_YEN: return 165 - 32;
+	case FORMAT_COPYRIGHT: return 169 - 32;
+	case FORMAT_LEFTGUILLEMET: return 171 - 32;
+	case FORMAT_DEGREE: return 176 - 32;
+	case FORMAT_SQUARED: return 178 - 32;
+	case FORMAT_RIGHTGUILLEMET: return 187 - 32;
+	case FORMAT_INVERTEDQUESTION: return 191 - 32;
+	case FORMAT_OPENQUOTES: return 180 - 32;
+	case FORMAT_ENDQUOTES: return 34 - 32;
+	case FORMAT_BULLET: return 186 - 32;
+	case FORMAT_POWERNEGATIVEONE: return 185 - 32;
+	case FORMAT_EURO: return 181 - 32;
+	case FORMAT_APPROX: return 184 - 32;
+	case FORMAT_UP: return 160 - 32;
+	case FORMAT_RIGHT: return 175 - 32;
+	case FORMAT_DOWN: return 170 - 32;
+	case FORMAT_LEFT: return 190 - 32;
+	case FORMAT_SMALLUP: return 188 - 32;
+	case FORMAT_SMALLDOWN: return 189 - 32;
+	case FORMAT_TICK: return 172 - 32;
+	case FORMAT_CROSS: return 173 - 32;
+	default:
+		if (codepoint > 224) codepoint = ' ';
+		return codepoint - 32;
+	}
 }
 
 #pragma endregion
@@ -312,7 +372,7 @@ void format_currency(char **dest, long long value)
 	}
 
 	// Currency symbol
-	const char *symbol = currencySpec->symbol;
+	const utf8 *symbol = currencySpec->symbol;
 
 	// Prefix
 	if (currencySpec->affix == CURRENCY_PREFIX) {
@@ -343,7 +403,7 @@ void format_currency_2dp(char **dest, long long value)
 	}
 
 	// Currency symbol
-	const char *symbol = currencySpec->symbol;
+	const utf8 *symbol = currencySpec->symbol;
 
 	// Prefix
 	if (currencySpec->affix == CURRENCY_PREFIX) {
@@ -743,53 +803,34 @@ void generate_string_file()
 *
 * buffer (esi)
 */
-int get_string_length(char* buffer)
+int get_string_length(const utf8* text)
 {
-	// Length of string
-	int length = 0;
+	int codepoint;
+	const utf8 *ch = text;
 
-	for (uint8* curr_char = (uint8*)buffer; *curr_char != (uint8)0; curr_char++) {
-		length++;
-		if (*curr_char >= 0x20) {
-			continue;
-		}
-		switch (*curr_char) {
-		case FORMAT_MOVE_X:
-		case FORMAT_ADJUST_PALETTE:
-		case 3:
-		case 4:
-			curr_char++;
-			length++;
-			break;
-		case FORMAT_NEWLINE:
-		case FORMAT_NEWLINE_SMALLER:
-		case FORMAT_TINYFONT:
-		case FORMAT_BIGFONT:
-		case FORMAT_MEDIUMFONT:
-		case FORMAT_SMALLFONT:
-		case FORMAT_OUTLINE:
-		case FORMAT_OUTLINE_OFF:
-		case FORMAT_WINDOW_COLOUR_1:
-		case FORMAT_WINDOW_COLOUR_2:
-		case FORMAT_WINDOW_COLOUR_3:
-		case 0x10:
-			continue;
-		case FORMAT_INLINE_SPRITE:
-			length += 4;
-			curr_char += 4;
-			break;
-		default:
-			if (*curr_char <= 0x16) { //case 0x11? FORMAT_NEW_LINE_X_Y
-				length += 2;
-				curr_char += 2;
-				continue;
+	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
+		if (utf8_is_format_code(codepoint)) {
+			switch (codepoint) {
+			case FORMAT_MOVE_X:
+			case FORMAT_ADJUST_PALETTE:
+			case 3:
+			case 4:
+				ch++;
+				break;
+			case FORMAT_INLINE_SPRITE:
+				ch += 4;
+				break;
+			default:
+				if (codepoint <= 22) {
+					ch += 2;
+				} else {
+					ch += 4;
+				}
+				break;
 			}
-			length += 4;
-			curr_char += 4;//never happens?
-			break;
 		}
 	}
-	return length;
+	return ch - text - 1;
 }
 
 int win1252_to_utf8(utf8string dst, const char *src, int maxBufferLength)

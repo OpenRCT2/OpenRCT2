@@ -40,8 +40,21 @@ enum {
 	LANGUAGE_COUNT
 };
 
-extern const char *language_names[LANGUAGE_COUNT];
+#define FONT_OPENRCT2_SPRITE NULL
+
+typedef struct {
+	const char *locale;
+	const utf8 *english_name;
+	const utf8 *native_name;
+	const utf8 *path;
+	const utf8 *font;
+} language_descriptor;
+
+extern const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT];
+
 extern int gCurrentLanguage;
+extern bool gUseTrueTypeFont;
+extern const utf8 *gTrueTypeFontPath;
 
 const char *language_get_string(rct_string_id id);
 int language_open(int id);
