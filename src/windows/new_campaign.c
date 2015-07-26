@@ -294,8 +294,9 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
 			);
 		}
 		break;
+	// In RCT2, the maximum was 6 weeks
 	case WIDX_WEEKS_INCREASE_BUTTON:
-		w->campaign.no_weeks = min(w->campaign.no_weeks + 1, 6);
+		w->campaign.no_weeks = min(w->campaign.no_weeks + 1, 12);
 		window_invalidate(w);
 		break;
 	case WIDX_WEEKS_DECREASE_BUTTON:
@@ -366,7 +367,8 @@ static void window_new_campaign_invalidate(rct_window *w)
 	}
 
 	// Set current number of weeks spinner
-	window_new_campaign_widgets[WIDX_WEEKS_SPINNER].image = (STR_MARKETING_1_WEEK - 1) + w->campaign.no_weeks;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = w->campaign.no_weeks;
+	window_new_campaign_widgets[WIDX_WEEKS_SPINNER].image = w->campaign.no_weeks == 1 ? STR_MARKETING_1_WEEK : STR_X_WEEKS;
 
 	// Enable / disable start button based on ride dropdown
 	w->disabled_widgets &= ~(1 << WIDX_START_BUTTON);
