@@ -34,33 +34,35 @@ typedef struct {
 } language_data;
 
 const char *language_names[LANGUAGE_COUNT] = {
-	"",					// LANGUAGE_UNDEFINED
-	"English (UK)",		// LANGUAGE_ENGLISH_UK
-	"English (US)",		// LANGUAGE_ENGLISH_US
-	"Deutsch",			// LANGUAGE_GERMAN
-	"Nederlands",		// LANGUAGE_DUTCH
-	"Fran\u00E7ais",	// LANGUAGE_FRENCH
-	"Magyar",			// LANGUAGE_HUNGARIAN
-	"Polski",			// LANGUAGE_POLISH
-	"Espa\u00F1ol",		// LANGUAGE_SPANISH
-	"Svenska",			// LANGUAGE_SWEDISH
-	"Italiano",			// LANGUAGE_ITALIAN
-	"Portug\u00CAs (BR)"// LANGUAGE_PORTUGUESE_BR
+	"",						// LANGUAGE_UNDEFINED
+	"English (UK)",			// LANGUAGE_ENGLISH_UK
+	"English (US)",			// LANGUAGE_ENGLISH_US
+	"Deutsch",				// LANGUAGE_GERMAN
+	"Nederlands",			// LANGUAGE_DUTCH
+	"Fran\u00E7ais",		// LANGUAGE_FRENCH
+	"Magyar",				// LANGUAGE_HUNGARIAN
+	"Polski",				// LANGUAGE_POLISH
+	"Espa\u00F1ol",			// LANGUAGE_SPANISH
+	"Svenska",				// LANGUAGE_SWEDISH
+	"Italiano",				// LANGUAGE_ITALIAN
+	"Portug\u00CAs (BR)",	// LANGUAGE_PORTUGUESE_BR
+	"Chinese Traditional"	// LANGUAGE_CHINESE_TRADITIONAL
 };
 
 const char *language_filenames[LANGUAGE_COUNT] = {
-	"",					// LANGUAGE_UNDEFINED
-	"english_uk",		// LANGUAGE_ENGLISH_UK
-	"english_us",		// LANGUAGE_ENGLISH_US
-	"german", 			// LANGUAGE_GERMAN
-	"dutch",			// LANGUAGE_DUTCH
-	"french",			// LANGUAGE_FRENCH
-	"hungarian",		// LANGUAGE_HUNGARIAN
-	"polish",			// LANGUAGE_POLISH
-	"spanish_sp",		// LANGUAGE_SPANISH
-	"swedish",			// LANGUAGE_SWEDISH
-	"italian",			// LANGUAGE_ITALIAN
-	"portuguese_br"		// LANGUAGE_PORTUGUESE_BR
+	"",						// LANGUAGE_UNDEFINED
+	"english_uk",			// LANGUAGE_ENGLISH_UK
+	"english_us",			// LANGUAGE_ENGLISH_US
+	"german", 				// LANGUAGE_GERMAN
+	"dutch",				// LANGUAGE_DUTCH
+	"french",				// LANGUAGE_FRENCH
+	"hungarian",			// LANGUAGE_HUNGARIAN
+	"polish",				// LANGUAGE_POLISH
+	"spanish_sp",			// LANGUAGE_SPANISH
+	"swedish",				// LANGUAGE_SWEDISH
+	"italian",				// LANGUAGE_ITALIAN
+	"portuguese_br",		// LANGUAGE_PORTUGUESE_BR
+	"chinese_traditional"	// LANGUAGE_CHINESE_TRADITIONAL
 };
 
 int gCurrentLanguage = LANGUAGE_UNDEFINED;
@@ -101,7 +103,7 @@ uint32 utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr)
 utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint)
 {
 	if (codepoint <= 0x7F) {
-		dst[0] = codepoint;
+		dst[0] = (utf8)codepoint;
 		return dst + 1;
 	} else if (codepoint <= 0x7FF) {
 		dst[0] = 0xC0 | ((codepoint >> 6) & 0x1F);
@@ -231,12 +233,8 @@ static int language_open_file(const char *filename, language_data *language)
 
 		// Handle UTF-8
 		char *srcNext;
-		int utf8Char = utf8_get_next(src, &srcNext);
+		uint32 utf8Char = utf8_get_next(src, &srcNext);
 		i += srcNext - src - 1;
-		if (utf8Char > 0xFF)
-			utf8Char = '?';
-		else if (utf8Char > 0x7F)
-			utf8Char &= 0xFF;
 
 		switch (mode) {
 		case 0:
@@ -267,7 +265,7 @@ static int language_open_file(const char *filename, language_data *language)
 				*dst = 0;
 				mode = 0;
 			} else {
-				*dst++ = utf8Char;
+				dst = utf8_write_codepoint(dst, utf8Char);
 			}
 			break;
 		case 2:
