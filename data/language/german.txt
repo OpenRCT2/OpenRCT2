@@ -839,16 +839,16 @@ STR_0834    :{SMALLFONT}{BLACK}Festplatten- und Spieloptionen
 STR_0835    :Spielinitialisierung fehlgeschlagen
 STR_0836    :Spiel kann nicht im minimierten Zustand gestartet werden
 STR_0837    :Grafiksystem kann nicht initialisiert werden
-STR_0838    :CD-Code {INT32} ist für Ihre RollerCoaster Tycoon 2-CD nicht gültig!{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Deinstallieren Sie RollerCoaster Tycoon 2% und installieren Sie das Spiel mit dem korrekten CD-Code erneut
+STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-STR_0841    :Desktop-Fenster
-STR_0842    :640x480-Vollbild
-STR_0843    :800x600-Vollbild
-STR_0844    :1024x768-Vollbild
-STR_0845    :1152x864-Vollbild
-STR_0846    :1280x1024-Vollbild
-STR_0847    :Infos zu `RollerCoaster Tycoon 2'
+STR_0841    :<not used anymore>
+STR_0842    :<not used anymore>
+STR_0843    :<not used anymore>
+STR_0844    :<not used anymore>
+STR_0845    :<not used anymore>
+STR_0846    :<not used anymore>
+STR_0847    :Infos zu `OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Version 2.01.032
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, alle Rechte vorbehalten
@@ -1044,10 +1044,10 @@ STR_1039    :Neuen Streckenentwurf installieren
 STR_1040    :Spiel speichern
 STR_1041    :Szenario speichern
 STR_1042    :Landschaft speichern
-STR_1043    :RollerCoaster Tycoon 2 - gespeichertes Spiel
-STR_1044    :RollerCoaster Tycoon 2 - Szenariodatei
-STR_1045    :RollerCoaster Tycoon 2 - Landschaftsdatei
-STR_1046    :RollerCoaster Tycoon 2 - Streckenentwurfsdatei
+STR_1043    :OpenRCT2 - gespeichertes Spiel
+STR_1044    :OpenRCT2 - Szenariodatei
+STR_1045    :OpenRCT2 - Landschaftsdatei
+STR_1046    :OpenRCT2 - Streckenentwurfsdatei
 STR_1047    :Speicherung des Spiels fehlgeschlagen!
 STR_1048    :Speicherung des Szenarios fehlgeschlagen!
 STR_1049    :Speicherung der Landschaft fehlgeschlagen!
@@ -1893,8 +1893,8 @@ STR_1888    :{WINDOW_COLOUR_2}Letzte Inspektion vor: {BLACK}mehr als 4 Stunden
 STR_1889    :{WINDOW_COLOUR_2}Ausfallzeit: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Auswählen, wie oft ein Mechaniker{NEWLINE}diese Bahn überprüfen soll
 STR_1891    :Noch kein {STRINGID} im Park
-STR_1892    :RollerCoaster Tycoon 2
-STR_1893    :Legen Sie die RollerCoaster Tycoon 2-CD in folgendes Laufwerk ein:
+STR_1892    :<not used anymore>
+STR_1893    :<not used anymore>
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} verkauft: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Neue Attraktion bauen
 STR_1896    :{WINDOW_COLOUR_2}Ausgaben/Einnahmen
@@ -2864,7 +2864,7 @@ STR_2855    :{RED}{STRINGID} hat keinen Fußweg, der vom Ausgang wegführt!{NEWL
 STR_2856    :{WINDOW_COLOUR_2}Lehrgang
 STR_2857    :{WINDOW_COLOUR_2}(Drücken Sie eine Taste oder klicken Sie mit der Maus, um die Kontrolle zu übernehmen)
 STR_2858    :Marketingkampage kann nicht gestartet werden...
-STR_2859    :RollerCoaster Tycoon 2 läuft bereits
+STR_2859    :OpenRCT2 läuft bereits
 STR_2860    :Infogrames Interactive Credits...
 STR_2861    :{WINDOW_COLOUR_2}Lizenziert für Infogrames Interactive Inc.
 STR_2862    :Musik...
@@ -3165,8 +3165,8 @@ STR_3156    :
 STR_3157    :Karte
 STR_3158    :Diagramm
 STR_3159    :Liste
-STR_3160    :RollerCoaster Tycoon 2: Wird zum ersten Mal gestartet...
-STR_3161    :RollerCoaster Tycoon 2: Objektdateien werden überprüft...
+STR_3160    :<not used anymore>
+STR_3161    :<not used anymore>
 STR_3162    :Es kann nicht genügend Geld bereitgestellt werden
 STR_3163    :Neue Daten werden installiert:
 STR_3164    :{BLACK}{COMMA16} ausgewählt (maximal {COMMA16})
@@ -3800,3 +3800,10 @@ STR_5463    :Ziel: Viel Spaß!
 STR_5464    :Allgemein
 STR_5465    :Klima
 STR_5466    :Personal
+STR_5467    :ALT + 
+STR_5468    :Letzte Nachrichten in der Symbolleiste anzeigen
+STR_5469    :Karte nach oben verschieben
+STR_5470    :Karte nach links verschieben
+STR_5471    :Karte nach unten verschieben
+STR_5472    :Karte nach rechts verschieben
+STR_5473    :Tag-Nacht-Wechsel
