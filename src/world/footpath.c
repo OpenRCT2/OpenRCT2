@@ -683,7 +683,7 @@ void footpath_interrupt_peeps(int x, int y, int z)
 		nextSpriteIndex = peep->next_in_quadrant;
 		if (peep->linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_PEEP) {
 			if (peep->state == PEEP_STATE_SITTING || peep->state == PEEP_STATE_WATCHING) {
-				if (peep->z == 0) {
+				if (peep->z == z) {
 					peep_decrement_num_riders(peep);
 					peep->state = PEEP_STATE_WALKING;
 					peep_window_state_update(peep);
