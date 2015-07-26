@@ -3456,8 +3456,8 @@ STR_3445    :Set Patrol Area
 STR_3446    :Cancel Patrol Area
 
 # New strings, cleaner
-STR_5120    :Show finances button on toolbar
-STR_5121    :Show research button on toolbar
+STR_5120    :Finances
+STR_5121    :Research
 STR_5122    :Select rides by track type (like in RCT1)
 STR_5123    :Renew rides
 STR_5124    :No Six Flags
@@ -3483,7 +3483,7 @@ STR_5143    :Quick Speed
 STR_5144    :Fast Speed
 STR_5145    :Turbo Speed
 STR_5146    :Hyper Speed
-STR_5147    :Show cheats button on toolbar
+STR_5147    :Cheats
 STR_5148    :{SMALLFONT}{BLACK}Change the game speed
 STR_5149    :{SMALLFONT}{BLACK}Open the cheats window
 STR_5150    :Enable debugging tools
@@ -3605,7 +3605,7 @@ STR_5265    :{SMALLFONT}{BLACK}Select which content sources are visible
 STR_5266    :{SMALLFONT}{BLACK}Display
 STR_5267    :{SMALLFONT}{BLACK}Culture and Units
 STR_5268    :{SMALLFONT}{BLACK}Audio
-STR_5269    :{SMALLFONT}{BLACK}Controls
+STR_5269    :{SMALLFONT}{BLACK}Controls and interface
 STR_5270    :{SMALLFONT}{BLACK}Miscellaneous
 STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Small Scenery
@@ -3804,10 +3804,16 @@ STR_5464    :General
 STR_5465    :Climate
 STR_5466    :Staff
 STR_5467    :ALT + 
-STR_5468    :Show recent messages button on toolbar
+STR_5468    :Recent messages
 STR_5469    :Scroll map up
 STR_5470    :Scroll map left
 STR_5471    :Scroll map down
 STR_5472    :Scroll map right
 STR_5473    :Cycle day / night
 STR_5474    :Display text on banners in upper case
+STR_5476    :Hardware
+STR_5477    :Map rendering
+STR_5478    :Controls
+STR_5479    :Toolbar
+STR_5480    :Show toolbar buttons for:
+STR_5481    :Themes
