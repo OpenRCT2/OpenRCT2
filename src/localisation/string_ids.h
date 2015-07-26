@@ -1834,6 +1834,8 @@ enum {
 	STR_SHOW_TOOLBAR_BUTTONS_FOR = 5480,
 	STR_THEMES_GROUP = 5481,
 
+	STR_TIME_SINCE_LAST_INSPECTION_MINUTE = 5482,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
