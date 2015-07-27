@@ -3450,8 +3450,8 @@ STR_3445    :Werkgebied instellen
 STR_3446    :Werkgebied wissen
 
 #Start van OpenRCT2-indices
-STR_5120    :'Financiën'-knop in de werkbalk tonen
-STR_5121    :'Onderzoek'-knop in de werkbalk tonen
+STR_5120    :Financiën
+STR_5121    :Onderzoek
 STR_5122    :Attracties op baantype sorteren
 STR_5123    :Attr. vernieuwen
 STR_5124    :Six Flags weg
@@ -3477,7 +3477,7 @@ STR_5143    :Vlot
 STR_5144    :Hard
 STR_5145    :Turbo
 STR_5146    :Nitro
-STR_5147    :'Cheats'-knop in de werkbalk tonen
+STR_5147    :Cheats
 STR_5148    :{SMALLFONT}{BLACK}Spelsnelheid veranderen
 STR_5149    :{SMALLFONT}{BLACK}Het cheatsvenster openen
 STR_5150    :Debugging-hulpmiddelen inschakelen
@@ -3601,7 +3601,7 @@ STR_5265    :{SMALLFONT}{BLACK}Selecteer uit welke bronnen objecten zichtbaar zi
 STR_5266    :{SMALLFONT}{BLACK}Weergave
 STR_5267    :{SMALLFONT}{BLACK}Landinstellingen
 STR_5268    :{SMALLFONT}{BLACK}Audio
-STR_5269    :{SMALLFONT}{BLACK}Bediening
+STR_5269    :{SMALLFONT}{BLACK}Bediening en interface
 STR_5270    :{SMALLFONT}{BLACK}Overig
 STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Klein decor
@@ -3800,9 +3800,16 @@ STR_5464    :Algemeen
 STR_5465    :Weer
 STR_5466    :Werknemers
 STR_5467    :ALT + 
-STR_5468    :'Recente berichten'-knop in werkbalk tonen
+STR_5468    :Recente berichten
 STR_5469    :Kaart naar boven scrollen
 STR_5470    :Kaart naar links scrollen
 STR_5471    :Kaart naar beneden scrollen
 STR_5472    :Kaart naar rechts scrollen
 STR_5473    :Dag-nachtcyclus
+STR_5474    :Teksten op lichtkranten in hoofdletters tonen
+STR_5476    :Hardware
+STR_5477    :Kaartrendering
+STR_5478    :Bediening
+STR_5479    :Werkbalk
+STR_5480    :Knoppen in de werkbalk tonen voor:
+STR_5481    :Thema's

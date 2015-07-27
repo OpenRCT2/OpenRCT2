@@ -2438,11 +2438,11 @@ STR_2433    :{BLACK}Gutscheine für Gratis-{STRINGID}
 STR_2434    :{BLACK}Werbekampagne für {STRINGID}
 STR_2435    :{BLACK}Werbekampagne für {STRINGID}
 STR_2436    :1 Woche
-STR_2437    :2 Wochen
-STR_2438    :3 Wochen
-STR_2439    :4 Wochen
-STR_2440    :5 Wochen
-STR_2441    :6 Wochen
+STR_2437    :<not used anymore>
+STR_2438    :<not used anymore>
+STR_2439    :<not used anymore>
+STR_2440    :<not used anymore>
+STR_2441    :<not used anymore>
 STR_2442    :{BLACK}({STRINGID} übrig)
 STR_2443    :{WINDOW_COLOUR_2}Kosten pro Woche: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Gesamtkosten: {BLACK}{CURRENCY2DP}
@@ -2974,8 +2974,8 @@ STR_2965    :{WINDOW_COLOUR_2}
 STR_2966    :
 STR_2967    :
 STR_2968    :
-STR_2969    :Die Verwendung dieses Produkts unterliegt den Bestimmungen eines Lizenzvertrages,
-STR_2970    :der in der {OPENQUOTES}ReadMe{ENDQUOTES}-Datei und dem Handbuch nachgesehen werden kann
+STR_2969    :<not used anymore>
+STR_2970    :<not used anymore>
 STR_2971    :Hauptfarbschema
 STR_2972    :Alternatives Farbschema 1
 STR_2973    :Alternatives Farbschema 2
@@ -3453,8 +3453,8 @@ STR_3444    :Seite 5
 STR_3445    :Patrouillenbereich festlegen
 STR_3446    :Patrouillenbereich verwerfen
 # New strings, cleaner
-STR_5120    :Finanzen in der Symbolleiste anzeigen
-STR_5121    :Forschung in der Symbolleiste anzeigen
+STR_5120    :Finanzen
+STR_5121    :Forschung
 STR_5122    :Bahnen nach Streckentyp auswählen (wie in RCT1)
 STR_5123    :Bahnen erneuern
 STR_5124    :Keine Six Flags
@@ -3480,7 +3480,7 @@ STR_5143    :Erhöhte Geschwindigkeit
 STR_5144    :Hohe Geschwindigkeit
 STR_5145    :Sehr Hohe Geschwindigkeit
 STR_5146    :Extreme Geschwindigkeit
-STR_5147    :Cheats in der Symbolleiste anzeigen
+STR_5147    :Cheats
 STR_5148    :{SMALLFONT}{BLACK}Spielgeschwindigkeit ändern
 STR_5149    :{SMALLFONT}{BLACK}Cheats anzeigen
 STR_5150    :Aktiviere Debugging-Tools
@@ -3602,7 +3602,7 @@ STR_5265    :{SMALLFONT}{BLACK}Auswählen, welche Inhaltsquellen{NEWLINE}angezei
 STR_5266    :{SMALLFONT}{BLACK}Anzeige
 STR_5267    :{SMALLFONT}{BLACK}Sprache und Einheiten
 STR_5268    :{SMALLFONT}{BLACK}Audio
-STR_5269    :{SMALLFONT}{BLACK}Steuerung
+STR_5269    :{SMALLFONT}{BLACK}Bedienung und Oberfläche
 STR_5270    :{SMALLFONT}{BLACK}Sonstiges
 STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Kleine Szenerie
@@ -3801,9 +3801,18 @@ STR_5464    :Allgemein
 STR_5465    :Klima
 STR_5466    :Personal
 STR_5467    :ALT + 
-STR_5468    :Letzte Nachrichten in der Symbolleiste anzeigen
+STR_5468    :Letzte Nachrichten
 STR_5469    :Karte nach oben verschieben
 STR_5470    :Karte nach links verschieben
 STR_5471    :Karte nach unten verschieben
 STR_5472    :Karte nach rechts verschieben
 STR_5473    :Tag-Nacht-Wechsel
+STR_5474    :Text auf Banner in Großbuchstaben anzeigen
+STR_5475    :{COMMA16} Wochen
+STR_5476    :Hardware
+STR_5477    :Kartendarstellung
+STR_5478    :Bedienung
+STR_5479    :Symbolleiste
+STR_5480    :Schaltflächen anzeigen für:
+STR_5481    :Themen
+STR_5482    :{WINDOW_COLOUR_2}Letzte Inspektion vor: {BLACK}1 Minute

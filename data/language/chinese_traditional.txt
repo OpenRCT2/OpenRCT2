@@ -5,26 +5,26 @@ STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :Spiral Roller Coaster
 STR_0003    :站立式雲霄飛車
-STR_0004    :Suspended Swinging Coaster
+STR_0004    :懸吊式雲霄飛車
 STR_0005    :Inverted Roller Coaster
-STR_0006    :Junior Roller Coaster
+STR_0006    :兒童雲霄飛車
 STR_0007    :小火車
 STR_0008    :單軌電車
-STR_0009    :Mini Suspended Coaster
+STR_0009    :迷你懸吊式雲霄飛車
 STR_0010    :小船出租
 STR_0011    :Wooden Wild Mouse
-STR_0012    :Steeplechase
+STR_0012    :越野賽馬式雲霄飛車
 STR_0013    :Car Ride
 STR_0014    :自由落體
 STR_0015    :Bobsleigh Coaster
 STR_0016    :觀景塔
 STR_0017    :Looping Roller Coaster
 STR_0018    :滑水道
-STR_0019    :Mine Train Coaster
+STR_0019    :採礦列車雲霄飛車
 STR_0020    :纜車
 STR_0021    :Corkscrew Roller Coaster
 STR_0022    :迷宮
-STR_0023    :Spiral Slide
+STR_0023    :螺旋滑道
 STR_0024    :小型賽車
 STR_0025    :運木水道
 STR_0026    :激流船
@@ -41,24 +41,24 @@ STR_0036    :Unknown Stall (22)
 STR_0037    :訪客資訊中心
 STR_0038    :廁所
 STR_0039    :摩天輪
-STR_0040    :Motion Simulator
+STR_0040    :動感模擬器
 STR_0041    :3D戲院
 STR_0042    :Top Spin
-STR_0043    :Space Rings
-STR_0044    :Reverse Freefall Coaster
+STR_0043    :太空飛輪
+STR_0044    :向後自由落體式雲霄飛車
 STR_0045    :升降機
-STR_0046    :Vertical Drop Roller Coaster
+STR_0046    :垂直雲霄飛車
 STR_0047    :提款機
-STR_0048    :Twist
+STR_0048    :龍捲風
 STR_0049    :鬼屋
 STR_0050    :急救室
 STR_0051    :馬戲團
 STR_0052    :Ghost Train
-STR_0053    :Steel Twister Roller Coaster
+STR_0053    :鐵架旋轉式雲霄飛車
 STR_0054    :木製雲霄飛車
 STR_0055    :Side-Friction Roller Coaster
 STR_0056    :Wild Mouse
-STR_0057    :Multi-Dimension Roller Coaster
+STR_0057    :多維度雲霄飛車
 STR_0058    :Unknown Ride (38)
 STR_0059    :Flying Roller Coaster
 STR_0060    :Unknown Ride (3A)
@@ -74,7 +74,7 @@ STR_0069    :迷你高爾夫
 STR_0070    :Giga Coaster
 STR_0071    :Roto-Drop
 STR_0072    :Flying Saucers
-STR_0073    :Crooked House
+STR_0073    :古怪屋
 STR_0074    :Monorail Cycles
 STR_0075    :Compact Inverted Coaster
 STR_0076    :Water Coaster
@@ -93,7 +93,7 @@ STR_0088    :Inverted Impulse Coaster
 STR_0089    :迷你雲霄飛車
 STR_0090    :Mine Ride
 STR_0091    :Unknown Ride (59)
-STR_0092    :LIM Launched Roller Coaster
+STR_0092    :直線電動機發車雲霄飛車
 STR_0093    :
 STR_0094    :
 STR_0095    :
@@ -842,6 +842,7 @@ STR_0837    :Unable to initialise graphics system
 STR_0838    :CD key code {INT32} is not valid for your RollerCoaster Tycoon 2 CD !{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Please un-install RollerCoaster Tycoon 2% and re-install with the correct CD Key Code
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
+# The follwing six strings were used for display resolutions, but have been replaced.
 STR_0841    :Desktop window
 STR_0842    :640x480 全螢幕
 STR_0843    :800x600 全螢幕
@@ -956,7 +957,7 @@ STR_0951    :離開遊戲
 STR_0952    :離開遊戲
 STR_0953    :載入地型
 STR_0954    :
-STR_0955    :{SMALLFONT}{BLACK}Select seat rotation angle for this track section
+STR_0955    :{SMALLFONT}{BLACK}選擇此軌道的座位旋轉角度
 STR_0956    :-180{DEGREE}
 STR_0957    :-135{DEGREE}
 STR_0958    :-90{DEGREE}
@@ -1064,15 +1065,15 @@ STR_1059    :不能重命名遊樂設施/店鋪...
 STR_1060    :不適合的遊樂設施/店鋪名稱
 STR_1061    :正常模式
 STR_1062    :連續巡迴模式
-STR_1063    :Reverse-Incline launched shuttle 模式
-STR_1064    :Powered launch (passing station)
+STR_1063    :反向發車巡迴模式
+STR_1064    :動力發車 (穿過車站)
 STR_1065    :穿梭模式
 STR_1066    :出租小船模式
 STR_1067    :Upward launch
-STR_1068    :Rotating lift 模式
-STR_1069    :Station to station 模式
-STR_1070    :Single ride per admission
-STR_1071    :Unlimited rides per admission
+STR_1068    :旋轉升降模式
+STR_1069    :站對站模式
+STR_1070    :一次付費單次溜滑梯
+STR_1071    :一次付費無限次溜滑梯
 STR_1072    :迷宮模式
 STR_1073    :賽車模式
 STR_1074    :碰碰車模式
@@ -1083,7 +1084,7 @@ STR_1078    :向前旋轉
 STR_1079    :向後旋轉
 STR_1080    :電影: {ENDQUOTES}Avenging aviators{ENDQUOTES}
 STR_1081    :3D電影: {ENDQUOTES}Mouse tails{ENDQUOTES}
-STR_1082    :Space rings 模式
+STR_1082    :太空飛輪模式
 STR_1083    :Beginners 模式
 STR_1084    :LIM-powered launch
 STR_1085    :電影: {ENDQUOTES}Thrill riders{ENDQUOTES}
@@ -1097,38 +1098,38 @@ STR_1092    :Downward launch
 STR_1093    :Crooked house 模式
 STR_1094    :Freefall drop 模式
 STR_1095    :Continuous circuit block sectioned mode
-STR_1096    :Powered launch (without passing station)
+STR_1096    :動力發車 (不穿過車站)
 STR_1097    :Powered launch block sectioned mode
 STR_1098    :移動到{POP16}{STRINGID}的最尾中
 STR_1099    :在{POP16}{STRINGID}等待乘客中
 STR_1100    :等待離開{POP16}{STRINGID}中
 STR_1101    :離開{POP16}{STRINGID}
-STR_1102    :以{VELOCITY}行走
+STR_1102    :以{VELOCITY}行走中
 STR_1103    :到達{POP16}{STRINGID}
 STR_1104    :在{POP16}{STRINGID}卸去乘客中
-STR_1105    :以{VELOCITY}行走
+STR_1105    :以{VELOCITY}行走中
 STR_1106    :毀壞中!
 STR_1107    :毀壞了!
-STR_1108    :以{VELOCITY}行走
-STR_1109    :Swinging
-STR_1110    :Rotating
-STR_1111    :Rotating
-STR_1112    :Operating
-STR_1113    :Showing film
-STR_1114    :Rotating
-STR_1115    :Operating
-STR_1116    :Operating
+STR_1108    :以{VELOCITY}行走中
+STR_1109    :擺動中
+STR_1110    :旋轉中
+STR_1111    :旋轉中
+STR_1112    :運作中
+STR_1113    :放映中
+STR_1114    :旋轉中
+STR_1115    :運作中
+STR_1116    :運作中
 STR_1117    :馬戲團表演中
-STR_1118    :Operating
-STR_1119    :Waiting for cable lift
-STR_1120    :Travelling at {VELOCITY}
-STR_1121    :Stopping
+STR_1118    :運作中
+STR_1119    :等候纜索拉上坡中
+STR_1120    :以{VELOCITY}行走中
+STR_1121    :停止中
 STR_1122    :等待乘客中
-STR_1123    :Waiting to start
-STR_1124    :Starting
-STR_1125    :Operating
-STR_1126    :Stopping
-STR_1127    :Unloading passengers
+STR_1123    :等待開始中
+STR_1124    :開始中
+STR_1125    :運作中
+STR_1126    :停止中
+STR_1127    :卸客中
 STR_1128    :Stopped by block brakes
 STR_1129    :All vehicles in same colours
 STR_1130    :Different colours per {STRINGID}
@@ -1159,18 +1160,18 @@ STR_1154    :在土地上標記高度
 STR_1155    :在道路上標記高度
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1158    :Can't remove this...
+STR_1158    :不能移除...
 STR_1159    :{SMALLFONT}{BLACK}Place scenery, gardens, and other accessories
 STR_1160    :{SMALLFONT}{BLACK}Create/adjust lakes & water
-STR_1161    :Can't position this here...
+STR_1161    :不能放置於此...
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
-STR_1163    :{STRINGID}{NEWLINE}(Right-Click to Modify)
-STR_1164    :{STRINGID}{NEWLINE}(Right-Click to Remove)
+STR_1163    :{STRINGID}{NEWLINE}(按右鍵修改)
+STR_1164    :{STRINGID}{NEWLINE}(按右鍵移除)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1166    :Can't lower water level here...
-STR_1167    :Can't raise water level here...
-STR_1168    :Options
-STR_1169    :(None)
+STR_1166    :不能在此降低水位...
+STR_1167    :不能在此升高水位...
+STR_1168    :選項
+STR_1169    :(無)
 STR_1170    :{STRING}
 STR_1171    :{RED}Closed - - 
 STR_1172    :{YELLOW}{STRINGID} - - 
@@ -1180,7 +1181,7 @@ STR_1175    :Can't build this on sloped footpath
 STR_1176    :Can't build footpath here...
 STR_1177    :Can't remove footpath from here...
 STR_1178    :Land slope unsuitable
-STR_1179    :Footpath in the way
+STR_1179    :道路擋在路中
 STR_1180    :不能建造此於水底!
 STR_1181    :道路
 STR_1182    :類別
@@ -1205,23 +1206,23 @@ STR_1200    :{COMMA16} 個遊客在這個遊樂設施上
 STR_1201    :無人在排隊
 STR_1202    :1個遊客在排隊
 STR_1203    :{COMMA16}個遊客在排隊
-STR_1204    :{COMMA16} minute queue time
-STR_1205    :{COMMA16} minutes queue time
+STR_1204    :{COMMA16}分鐘的輪候時間
+STR_1205    :{COMMA16}分鐘的輪候時間
 STR_1206    :{WINDOW_COLOUR_2}Wait for:
 STR_1207    :{WINDOW_COLOUR_2}Leave if another train arrives at station
 STR_1208    :{WINDOW_COLOUR_2}Leave if another boat arrives at station
 STR_1209    :{SMALLFONT}{BLACK}Select whether should wait for passengers before departing
 STR_1210    :{SMALLFONT}{BLACK}Select whether should leave if another vehicle arrives at the same station
-STR_1211    :{WINDOW_COLOUR_2}Minimum waiting time:
-STR_1212    :{WINDOW_COLOUR_2}Maximum waiting time:
+STR_1211    :{WINDOW_COLOUR_2}最短等待時間:
+STR_1212    :{WINDOW_COLOUR_2}最長等待時間:
 STR_1213    :{SMALLFONT}{BLACK}Select minimum length of time to wait before departing
 STR_1214    :{SMALLFONT}{BLACK}Select maximum length of time to wait before departing
-STR_1215    :{WINDOW_COLOUR_2}Synchronise with adjacent stations
+STR_1215    :{WINDOW_COLOUR_2}與鄰近車站同步發車
 STR_1216    :{SMALLFONT}{BLACK}Select whether to synchronise departure with all adjacent stations (for 'racing')
 STR_1217    :{COMMA16} seconds
 STR_1218    :{BLACK}{SMALLUP}
 STR_1219    :{BLACK}{SMALLDOWN}
-STR_1220    :只准落客
+STR_1220    :只准卸客
 STR_1221    :No entrance
 STR_1222    :No exit
 STR_1223    :{SMALLFONT}{BLACK}運輸類遊樂設施
@@ -1244,12 +1245,12 @@ STR_1239    :小船
 STR_1240    :{COMMA16}小船
 STR_1241    :{COMMA16}小船
 STR_1242    :小船{COMMA16}
-STR_1243    :track
-STR_1244    :tracks
-STR_1245    :Track
-STR_1246    :Tracks
-STR_1247    :{COMMA16} track
-STR_1248    :{COMMA16} tracks
+STR_1243    :軌道
+STR_1244    :軌道
+STR_1245    :軌道
+STR_1246    :軌道
+STR_1247    :{COMMA16}軌道
+STR_1248    :{COMMA16}軌道
 STR_1249    :Track {COMMA16}
 STR_1250    :船用月台
 STR_1251    :船用月台
@@ -1272,13 +1273,13 @@ STR_1267    :車輛
 STR_1268    :{COMMA16}車輛
 STR_1269    :{COMMA16}車輛
 STR_1270    :車輛{COMMA16}
-STR_1271    :building
-STR_1272    :buildings
-STR_1273    :Building
-STR_1274    :Buildings
-STR_1275    :{COMMA16} building
-STR_1276    :{COMMA16} buildings
-STR_1277    :Building {COMMA16}
+STR_1271    :建築物
+STR_1272    :建築物
+STR_1273    :建築物
+STR_1274    :建築物
+STR_1275    :{COMMA16}建築物
+STR_1276    :{COMMA16}建築物
+STR_1277    :建築物{COMMA16}
 STR_1278    :structure
 STR_1279    :structures
 STR_1280    :Structure
@@ -1307,20 +1308,20 @@ STR_1302    :Wheels
 STR_1303    :{COMMA16} wheel
 STR_1304    :{COMMA16} wheels
 STR_1305    :Wheel {COMMA16}
-STR_1306    :ring
-STR_1307    :rings
-STR_1308    :Ring
-STR_1309    :Rings
-STR_1310    :{COMMA16} ring
-STR_1311    :{COMMA16} rings
-STR_1312    :Ring {COMMA16}
-STR_1313    :player
-STR_1314    :players
-STR_1315    :Player
-STR_1316    :Players
-STR_1317    :{COMMA16} player
-STR_1318    :{COMMA16} players
-STR_1319    :Player {COMMA16}
+STR_1306    :飛輪
+STR_1307    :飛輪
+STR_1308    :飛輪
+STR_1309    :飛輪
+STR_1310    :{COMMA16}個飛輪
+STR_1311    :{COMMA16}個飛輪
+STR_1312    :飛輪{COMMA16}
+STR_1313    :玩家
+STR_1314    :玩家
+STR_1315    :玩家
+STR_1316    :玩家
+STR_1317    :{COMMA16}玩家
+STR_1318    :{COMMA16}玩家
+STR_1319    :玩家{COMMA16}
 STR_1320    :course
 STR_1321    :courses
 STR_1322    :Course
@@ -1329,9 +1330,9 @@ STR_1324    :{COMMA16} course
 STR_1325    :{COMMA16} courses
 STR_1326    :Course {COMMA16}
 STR_1327    :{SMALLFONT}{BLACK}將物件旋轉90{DEGREE}
-STR_1328    :Level land required
-STR_1329    :{WINDOW_COLOUR_2}Launch speed:
-STR_1330    :{SMALLFONT}{BLACK}Maximum speed when leaving station
+STR_1328    :需要升高或降低土地
+STR_1329    :{WINDOW_COLOUR_2}發車速度:
+STR_1330    :{SMALLFONT}{BLACK}離開車站時的最高速度
 STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
@@ -1360,8 +1361,8 @@ STR_1355    :{WINDOW_COLOUR_2}Drops: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Inversions: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}Holes: {BLACK}{COMMA16}
 STR_1358    :{WINDOW_COLOUR_2}Total 'air' time: {BLACK}{COMMA2DP32}secs
-STR_1359    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minute
-STR_1360    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minutes
+STR_1359    :{WINDOW_COLOUR_2}輪候時間: {BLACK}{COMMA16}分鐘
+STR_1360    :{WINDOW_COLOUR_2}輪候時間: {BLACK}{COMMA16}分鐘
 STR_1361    :不能改變速度...
 STR_1362    :不能改變發車速度...
 STR_1363    :Too high for supports!
@@ -1376,8 +1377,8 @@ STR_1371    :橫滾軌道 (向右)
 STR_1372    :加速式的鏈條坡道
 STR_1373    :巨型的二分之一迴環 (向左)
 STR_1374    :巨型的二分之一迴環 (向右)
-STR_1375    :Upper Transfer
-STR_1376    :Lower Transfer
+STR_1375    :向上的傳輸裝置
+STR_1376    :向下的蝕輸裝置
 STR_1377    :橫滾軌道 (向左)
 STR_1378    :橫滾軌道 (向右)
 STR_1379    :逆向裝置 (向左)
@@ -1403,14 +1404,14 @@ STR_1398    :{SMALLFONT}{BLACK}Measurements and test data
 STR_1399    :{SMALLFONT}{BLACK}Graphs
 STR_1400    :入口
 STR_1401    :出口
-STR_1402    :{SMALLFONT}{BLACK}Build or move entrance to ride/attraction
-STR_1403    :{SMALLFONT}{BLACK}Build or move exit from ride/attraction
+STR_1402    :{SMALLFONT}{BLACK}建造或移動遊樂設施的入口
+STR_1403    :{SMALLFONT}{BLACK}建造或移動遊樂設施的出口
 STR_1404    :{SMALLFONT}{BLACK}90{DEGREE}旋轉
 STR_1405    :{SMALLFONT}{BLACK}Mirror image
 STR_1406    :{SMALLFONT}{BLACK}Toggle scenery on/off (if available for this design)
 STR_1407    :{WINDOW_COLOUR_2}建造此軌道...
 STR_1408    :{WINDOW_COLOUR_2}費用: {BLACK}{CURRENCY}
-STR_1409    :Entry/Exit Platform
+STR_1409    :入口/出口平台
 STR_1410    :Vertical Tower
 STR_1411    :{STRINGID}擋在路中
 STR_1412    :{WINDOW_COLOUR_3}Data logging not available for this type of ride
@@ -1423,33 +1424,33 @@ STR_1418    :{WINDOW_COLOUR_2}Lat.G's
 STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
 STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
 STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
-STR_1422    :{SMALLFONT}{BLACK}Logging data from {POP16}{STRINGID}
-STR_1423    :{SMALLFONT}{BLACK}Queue line path
-STR_1424    :{SMALLFONT}{BLACK}Footpath
+STR_1422    :{SMALLFONT}{BLACK}從{POP16}{STRINGID}記錄資料中
+STR_1423    :{SMALLFONT}{BLACK}輪侯區道路
+STR_1424    :{SMALLFONT}{BLACK}道路
 STR_1425    :道路
-STR_1426    :Queue Line
-STR_1427    :{WINDOW_COLOUR_2}Customers: {BLACK}{COMMA32} per hour
-STR_1428    :{WINDOW_COLOUR_2}Admission price:
+STR_1426    :輪侯區
+STR_1427    :{WINDOW_COLOUR_2}乘客: {BLACK}每小時{COMMA32}個
+STR_1428    :{WINDOW_COLOUR_2}門票價格:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :免費
 STR_1431    :行走中
 STR_1432    :前往{STRINGID}中
 STR_1433    :輪候{STRINGID}中
 STR_1434    :溺水中
-STR_1435    :On {STRINGID}
-STR_1436    :In {STRINGID}
-STR_1437    :At {STRINGID}
-STR_1438    :Sitting
-STR_1439    :(select location)
+STR_1435    :在{STRINGID}上
+STR_1436    :在{STRINGID}中
+STR_1437    :在{STRINGID}中
+STR_1438    :坐下中
+STR_1439    :(請選擇位置)
 STR_1440    :Mowing grass
-STR_1441    :Sweeping footpath
-STR_1442    :Emptying litter bin
-STR_1443    :Watering gardens
-STR_1444    :Watching {STRINGID}
-STR_1445    :Watching construction of {STRINGID}
-STR_1446    :Looking at scenery
-STR_1447    :Leaving the park
-STR_1448    :Watching new ride being constructed
+STR_1441    :清掃道路中
+STR_1442    :清空垃圾筒中
+STR_1443    :灌溉花圃中
+STR_1444    :觀看{STRINGID}中
+STR_1445    :觀看{STRINGID}的建造中
+STR_1446    :觀看景物中
+STR_1447    :離開樂園中
+STR_1448    :觀看新遊樂設施的建造過程中
 STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
@@ -1460,7 +1461,7 @@ STR_1455    :不適合的遊客姓名
 STR_1456    :{WINDOW_COLOUR_2}已花費的現金: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}在銀包中的現金: {BLACK}{CURRENCY2DP}
 STR_1458    :{WINDOW_COLOUR_2}已逗留在樂園的時間: {BLACK}{REALTIME}
-STR_1459    :Track style
+STR_1459    :軌道款式
 STR_1460    :{SMALLFONT}{BLACK}'U'型的開放式軌道
 STR_1461    :{SMALLFONT}{BLACK}'O'型的封閉式軌道
 STR_1462    :對於帶有鏈條的坡道來說太陡斜
@@ -1470,7 +1471,7 @@ STR_1465    :向上盤旋 (大型)
 STR_1466    :向下盤旋 (小型)
 STR_1467    :向下盤旋 (大型)
 STR_1468    :員工
-STR_1469    :Ride must start and end with stations
+STR_1469    :遊樂設施必需要由車站發車以及到達車站卸客
 STR_1470    :車站不夠長
 STR_1471    :{WINDOW_COLOUR_2}速度:
 STR_1472    :{SMALLFONT}{BLACK}此遊樂設施的速度
@@ -1520,7 +1521,7 @@ STR_1515    :{SMALLFONT}{OPENQUOTES}這樂園真是又整齊又乾淨{ENDQUOTES}
 STR_1516    :{SMALLFONT}{OPENQUOTES}這些跳躍噴泉真棒{ENDQUOTES}
 STR_1517    :{SMALLFONT}{OPENQUOTES}這裡播放的音樂挺不錯{ENDQUOTES}
 STR_1518    :{SMALLFONT}{OPENQUOTES}這個由{STRINGID}購買的氣球真的是超值{ENDQUOTES}
-STR_1519    :{SMALLFONT}{OPENQUOTES}這隻由{STRINGID}購買的熊寶寶真的是超值{ENDQUOTES}
+STR_1519    :{SMALLFONT}{OPENQUOTES}這隻由{STRINGID}購買的毛公仔真的是超值{ENDQUOTES}
 STR_1520    :{SMALLFONT}{OPENQUOTES}這份由{STRINGID}購買的樂園地圖真的是超值{ENDQUOTES}
 STR_1521    :{SMALLFONT}{OPENQUOTES}這張由{STRINGID}購買的即時照片真的是超值{ENDQUOTES}
 STR_1522    :{SMALLFONT}{OPENQUOTES}這把由{STRINGID}購買的雨傘真的是超值{ENDQUOTES}
@@ -1554,7 +1555,7 @@ STR_1549    :
 STR_1550    :{SMALLFONT}{OPENQUOTES}嘩!{ENDQUOTES}
 STR_1551    :{SMALLFONT}{OPENQUOTES}奇怪, 我覺得有人在偷窺我{ENDQUOTES}
 STR_1552    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一個氣球{ENDQUOTES}
-STR_1553    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一隻熊寶寶{ENDQUOTES}
+STR_1553    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一隻毛公仔{ENDQUOTES}
 STR_1554    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一份樂園地圖{ENDQUOTES}
 STR_1555    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一張即時照片{ENDQUOTES}
 STR_1556    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一把雨傘{ENDQUOTES}
@@ -1673,24 +1674,24 @@ STR_1668    :{WINDOW_COLOUR_2}滿意度: {BLACK}未知
 STR_1669    :{WINDOW_COLOUR_2}滿意度: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}總乘客數: {BLACK}{COMMA32}
 STR_1671    :{WINDOW_COLOUR_2}總利潤: {BLACK}{CURRENCY2DP}
-STR_1672    :Brakes
+STR_1672    :煞車裝置
 STR_1673    :Spinning Control Toggle Track
-STR_1674    :Brake speed
+STR_1674    :煞車速度
 STR_1675    :{POP16}{VELOCITY}
-STR_1676    :{SMALLFONT}{BLACK}Set speed limit for brakes
-STR_1677    :{WINDOW_COLOUR_2}Popularity: {BLACK}Unknown
-STR_1678    :{WINDOW_COLOUR_2}Popularity: {BLACK}{COMMA16}%
-STR_1679    :Helix up (left)
-STR_1680    :Helix up (right)
-STR_1681    :Helix down (left)
-STR_1682    :Helix down (right)
+STR_1676    :{SMALLFONT}{BLACK}設置煞車速度限制
+STR_1677    :{WINDOW_COLOUR_2}受歡迎度: {BLACK}未知
+STR_1678    :{WINDOW_COLOUR_2}受歡迎度: {BLACK}{COMMA16}%
+STR_1679    :向上盤旋 (向左)
+STR_1680    :向上盤旋 (向右)
+STR_1681    :向下盤旋 (向左)
+STR_1682    :向下盤旋 (向右)
 STR_1683    :Base size 2 x 2
 STR_1684    :Base size 4 x 4
 STR_1685    :Base size 2 x 4
 STR_1686    :Base size 5 x 1
 STR_1687    :Water splash
 STR_1688    :Base size 4 x 1
-STR_1689    :Block brakes
+STR_1689    :區域煞車裝置
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Cost: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Cost: {BLACK}from {CURRENCY}
@@ -1698,24 +1699,24 @@ STR_1693    :{SMALLFONT}{BLACK}遊客
 STR_1694    :{SMALLFONT}{BLACK}員工
 STR_1695    :{SMALLFONT}{BLACK}收入和支出
 STR_1696    :{SMALLFONT}{BLACK}Customer information
-STR_1697    :Cannot place these on queue line area
-STR_1698    :Can only place these on queue area
-STR_1699    :Too many people in game
+STR_1697    :不能在輪侯區放置此物件
+STR_1698    :只能在輪侯區放置此物件
+STR_1699    :遊戲中已有太多人物
 STR_1700    :僱用新的清潔工人
 STR_1701    :僱用新的維修人員
 STR_1702    :僱用新的安全警衛
 STR_1703    :僱用新的表演人員
 STR_1704    :不能僱用新員工...
-STR_1705    :{SMALLFONT}{BLACK}Sack this staff member
-STR_1706    :{SMALLFONT}{BLACK}Move this person to a new location
-STR_1707    :Too many staff in game
-STR_1708    :{SMALLFONT}{BLACK}Set patrol area for this staff member
+STR_1705    :{SMALLFONT}{BLACK}解僱這位員工
+STR_1706    :{SMALLFONT}{BLACK}移動這個人物到新的位置
+STR_1707    :遊戲中已有太多員工
+STR_1708    :{SMALLFONT}{BLACK}設置這位員工的巡邏位置
 STR_1709    :解僱員工
-STR_1710    :Yes
-STR_1711    :{WINDOW_COLOUR_1}Are you sure you want to sack {STRINGID}?
-STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Sweep footpaths
-STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Water gardens
-STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Empty litter bins
+STR_1710    :確定
+STR_1711    :{WINDOW_COLOUR_1}你確定要解僱{STRINGID}嗎?
+STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}清掃道路
+STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}灌溉花圃
+STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}清空垃圾筒
 STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Mow grass
 STR_1716    :非法的樂園名稱
 STR_1717    :不能重命名樂園...
@@ -1733,8 +1734,8 @@ STR_1728    :不能在此購買建造權...
 STR_1729    :土地不是由樂園所擁有!
 STR_1730    :{RED}Closed - - 
 STR_1731    :{WHITE}{STRINGID} - - 
-STR_1732    :Build
-STR_1733    :Mode
+STR_1732    :建造
+STR_1733    :模式
 STR_1734    :{WINDOW_COLOUR_2}圈數:
 STR_1735    :{SMALLFONT}{BLACK}Number of laps of circuit
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1742,31 +1743,31 @@ STR_1737    :{COMMA16}
 STR_1738    :不能改變圈數...
 STR_1739    :此賽事由遊客{INT32}勝出
 STR_1740    :此賽事由{STRINGID}勝出
-STR_1741    :Not yet constructed !
+STR_1741    :尚未建造!
 STR_1742    :{WINDOW_COLOUR_2}Max. people on ride:
 STR_1743    :{SMALLFONT}{BLACK}Maximum number of people allowed on this ride at one time
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1745    :{COMMA16}
-STR_1746    :Can't change this...
-STR_1747    :{WINDOW_COLOUR_2}Time limit:
-STR_1748    :{SMALLFONT}{BLACK}Time limit for ride
+STR_1746    :不能改變...
+STR_1747    :{WINDOW_COLOUR_2}遊玩時間限制:
+STR_1748    :{SMALLFONT}{BLACK}此遊樂設施的遊玩時間限制
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1750    :{DURATION}
-STR_1751    :Can't change time limit for ride...
+STR_1751    :不能改變此遊樂設施的遊玩時間限制...
 STR_1752    :{SMALLFONT}{BLACK}Show list of individual guests in park
 STR_1753    :{SMALLFONT}{BLACK}Show summarised list of guests in park
 STR_1754    :{BLACK}{COMMA16} guests
 STR_1755    :{BLACK}{COMMA16} guest
-STR_1756    :{WINDOW_COLOUR_2}Admission price:
-STR_1757    :{WINDOW_COLOUR_2}Reliability: {MOVE_X}{255}{BLACK}{COMMA16}%
+STR_1756    :{WINDOW_COLOUR_2}門票價格:
+STR_1757    :{WINDOW_COLOUR_2}可靠度: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Build mode
 STR_1759    :{SMALLFONT}{BLACK}Move mode
 STR_1760    :{SMALLFONT}{BLACK}Fill-in mode
-STR_1761    :{SMALLFONT}{BLACK}Build maze in this direction
-STR_1762    :Waterfalls
-STR_1763    :Rapids
-STR_1764    :Log Bumps
-STR_1765    :On-ride photo section
+STR_1761    :{SMALLFONT}{BLACK}以此方向建造迷宮
+STR_1762    :瀑布
+STR_1763    :急流
+STR_1764    :漩渦
+STR_1765    :即時拍照區域
 STR_1766    :Reverser turntable
 STR_1767    :Spinning tunnel
 STR_1768    :Can't change number of swings...
@@ -1776,9 +1777,9 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1772    :{COMMA16}
 STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
-STR_1775    :Off
-STR_1776    :On
-STR_1777    :{WINDOW_COLOUR_2}Music
+STR_1775    :關閉
+STR_1776    :開啟
+STR_1777    :{WINDOW_COLOUR_2}音樂
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} 熊貓服裝
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} 老虎服裝
@@ -1791,8 +1792,8 @@ STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} 太空人服裝
 STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} 土匪服裝
 STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} 警長服裝
 STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} 海盜服裝
-STR_1790    :{SMALLFONT}{BLACK}Select uniform colour for this type of staff
-STR_1791    :{WINDOW_COLOUR_2}Uniform colour:
+STR_1790    :{SMALLFONT}{BLACK}選擇這種員工的制服顏色
+STR_1791    :{WINDOW_COLOUR_2}制服的顏色:
 STR_1792    :Responding to {STRINGID} breakdown call
 STR_1793    :Heading to {STRINGID} for an inspection
 STR_1794    :Fixing {STRINGID}
@@ -1809,10 +1810,10 @@ STR_1804    :Doors stuck open
 STR_1805    :Vehicle malfunction
 STR_1806    :Brakes failure
 STR_1807    :Control failure
-STR_1808    :{WINDOW_COLOUR_2}Last breakdown: {BLACK}{STRINGID}
-STR_1809    :{WINDOW_COLOUR_2}Current breakdown: {OUTLINE}{RED}{STRINGID}
+STR_1808    :{WINDOW_COLOUR_2}上次故障原因: {BLACK}{STRINGID}
+STR_1809    :{WINDOW_COLOUR_2}今次故障原因: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Carrying:
-STR_1811    :Can't build this here...
+STR_1811    :不能建造於此...
 STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :其他物件
 STR_1814    :動作
@@ -1869,17 +1870,17 @@ STR_1864    :維修人員
 STR_1865    :安全警衛
 STR_1866    :表演人員
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
-STR_1868    :Can't change number of rotations...
-STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
-STR_1870    :{SMALLFONT}{BLACK}Number of complete rotations
+STR_1868    :不能改變旋轉次數...
+STR_1869    :{WINDOW_COLOUR_2}旋轉次數:
+STR_1870    :{SMALLFONT}{BLACK}完整旋轉次數
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1872    :{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}收入: {BLACK}{CURRENCY2DP}/每小時
 STR_1874    :{WINDOW_COLOUR_2}營利: {BLACK}{CURRENCY2DP}/每小時
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
-STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect Rides
-STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix Rides
-STR_1878    :{WINDOW_COLOUR_2}Inspection:
+STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}檢查遊樂設施
+STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}修理遊樂設施
+STR_1878    :{WINDOW_COLOUR_2}檢查時距:
 STR_1879    :每10分鐘
 STR_1880    :每20分鐘
 STR_1881    :每30分鐘
@@ -1887,17 +1888,19 @@ STR_1882    :每45分鐘
 STR_1883    :每小時
 STR_1884    :每2小時
 STR_1885    :從不
-STR_1886    :Inspecting {STRINGID}
-STR_1887    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}{COMMA16} minutes
-STR_1888    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}more than 4 hours
+STR_1886    :檢查{STRINGID}中
+STR_1887    :{WINDOW_COLOUR_2}上次檢查時間: {BLACK}{COMMA16}分鐘
+STR_1888    :{WINDOW_COLOUR_2}上次檢查時間: {BLACK}多於4小時
 STR_1889    :{WINDOW_COLOUR_2}Down-Time: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1890    :{SMALLFONT}{BLACK}Select how often a mechanic should check this ride
-STR_1891    :No {STRINGID} in park yet!
+STR_1890    :{SMALLFONT}{BLACK}選擇維修人員檢查此遊樂設施的時距
+STR_1891    :在樂園裡暫未有{STRINGID}!
+# The following two strings were used to display an error when the disc was missing.
+# This has been replaced in OpenRCT2.
 STR_1892    :RollerCoaster Tycoon 2
 STR_1893    :Please insert your RollerCoaster Tycoon 2 CD in the following drive:
-STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sold: {BLACK}{COMMA32}
-STR_1895    :{SMALLFONT}{BLACK}Build new ride/attraction
-STR_1896    :{WINDOW_COLOUR_2}Expenditure/Income
+STR_1894    :{WINDOW_COLOUR_2}賣出{STRINGID}: {BLACK}{COMMA32}
+STR_1895    :{SMALLFONT}{BLACK}建造新的遊樂設施/店鋪
+STR_1896    :{WINDOW_COLOUR_2}支出/收入
 STR_1897    :{WINDOW_COLOUR_2}Ride construction
 STR_1898    :{WINDOW_COLOUR_2}Ride running costs
 STR_1899    :{WINDOW_COLOUR_2}Land purchase
@@ -1910,34 +1913,34 @@ STR_1905    :{WINDOW_COLOUR_2}Food/drink sales
 STR_1906    :{WINDOW_COLOUR_2}Food/drink stock
 STR_1907    :{WINDOW_COLOUR_2}Staff wages
 STR_1908    :{WINDOW_COLOUR_2}Marketing
-STR_1909    :{WINDOW_COLOUR_2}Research
-STR_1910    :{WINDOW_COLOUR_2}Loan interest
-STR_1911    :{BLACK} at {COMMA16}% per year
+STR_1909    :{WINDOW_COLOUR_2}研發
+STR_1910    :{WINDOW_COLOUR_2}貸款利息
+STR_1911    :{BLACK} 每年 {COMMA16}% 
 STR_1912    :{MONTH}
 STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
-STR_1916    :{WINDOW_COLOUR_2}Loan:
+STR_1916    :{WINDOW_COLOUR_2}貸款:
 STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
-STR_1918    :Can't borrow any more money!
-STR_1919    :Not enough cash available!
-STR_1920    :Can't pay back loan!
-STR_1921    :{SMALLFONT}{BLACK}Start a new game
-STR_1922    :{SMALLFONT}{BLACK}Continue playing a saved game
+STR_1918    :不能再借貸更多錢!
+STR_1919    :沒有足夠的現金!
+STR_1920    :不能償還貸款!
+STR_1921    :{SMALLFONT}{BLACK}開新遊戲
+STR_1922    :{SMALLFONT}{BLACK}繼續遊玩存檔
 STR_1923    :{SMALLFONT}{BLACK}開始教學
 STR_1924    :{SMALLFONT}{BLACK}退出遊戲
-STR_1925    :Can't place person here...
+STR_1925    :不能放置人物於此...
 STR_1926    :{SMALLFONT}
-STR_1927    :{YELLOW}{STRINGID} has broken down
-STR_1928    :{RED}{STRINGID} has crashed!
+STR_1927    :{YELLOW}{STRINGID}發生故障了
+STR_1928    :{RED}{STRINGID}毀壞了!
 STR_1929    :{RED}{STRINGID} still hasn't been fixed{NEWLINE}Check where your mechanics are and consider organizing them better
 STR_1930    :{SMALLFONT}{BLACK}Turn on/off tracking information for this guest - (If tracking is on, guest's movements will be reported in the message area)
-STR_1931    :{STRINGID} has joined the queue line for {STRINGID}
-STR_1932    :{STRINGID} is on {STRINGID}
-STR_1933    :{STRINGID} is in {STRINGID}
-STR_1934    :{STRINGID} has left {STRINGID}
-STR_1935    :{STRINGID} has left the park
-STR_1936    :{STRINGID} has bought {STRINGID}
+STR_1931    :{STRINGID}已在輪候{STRINGID}
+STR_1932    :{STRINGID}已在{STRINGID}上
+STR_1933    :{STRINGID}已在{STRINGID}中
+STR_1934    :{STRINGID}已離開{STRINGID}
+STR_1935    :{STRINGID}已離開樂園
+STR_1936    :{STRINGID}已購買{STRINGID}
 STR_1937    :{SMALLFONT}{BLACK}Show information about the subject of this message
 STR_1938    :{SMALLFONT}{BLACK}Show view of guest
 STR_1939    :{SMALLFONT}{BLACK}Show view of staff member
@@ -1961,90 +1964,90 @@ STR_1956    :{SMALLFONT}{BLACK}Number of circuits of track per ride
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Can't change number of circuits...
-STR_1960    :{WINDOW_COLOUR_2}Balloon price:
-STR_1961    :{WINDOW_COLOUR_2}Cuddly Toy price:
-STR_1962    :{WINDOW_COLOUR_2}Park Map price:
-STR_1963    :{WINDOW_COLOUR_2}On-Ride Photo price:
-STR_1964    :{WINDOW_COLOUR_2}Umbrella price:
-STR_1965    :{WINDOW_COLOUR_2}Drink price:
-STR_1966    :{WINDOW_COLOUR_2}Burger price:
-STR_1967    :{WINDOW_COLOUR_2}Chips price:
-STR_1968    :{WINDOW_COLOUR_2}Ice Cream price:
-STR_1969    :{WINDOW_COLOUR_2}Candyfloss price:
+STR_1960    :{WINDOW_COLOUR_2}氣球價格:
+STR_1961    :{WINDOW_COLOUR_2}毛公仔價格:
+STR_1962    :{WINDOW_COLOUR_2}樂園地圖價格:
+STR_1963    :{WINDOW_COLOUR_2}即時照片價格:
+STR_1964    :{WINDOW_COLOUR_2}雨傘價格:
+STR_1965    :{WINDOW_COLOUR_2}飲料價格:
+STR_1966    :{WINDOW_COLOUR_2}漢堡價格:
+STR_1967    :{WINDOW_COLOUR_2}薯條價格:
+STR_1968    :{WINDOW_COLOUR_2}冰淇淋價格:
+STR_1969    :{WINDOW_COLOUR_2}棉花糖價格:
 STR_1970    :{WINDOW_COLOUR_2}
 STR_1971    :{WINDOW_COLOUR_2}
 STR_1972    :{WINDOW_COLOUR_2}
-STR_1973    :{WINDOW_COLOUR_2}Pizza price:
+STR_1973    :{WINDOW_COLOUR_2}批薩價格:
 STR_1974    :{WINDOW_COLOUR_2}
-STR_1975    :{WINDOW_COLOUR_2}Popcorn price:
-STR_1976    :{WINDOW_COLOUR_2}Hot Dog price:
-STR_1977    :{WINDOW_COLOUR_2}Tentacle price:
-STR_1978    :{WINDOW_COLOUR_2}Hat price:
-STR_1979    :{WINDOW_COLOUR_2}Toffee Apple price:
-STR_1980    :{WINDOW_COLOUR_2}T-Shirt price:
-STR_1981    :{WINDOW_COLOUR_2}Doughnut price:
-STR_1982    :{WINDOW_COLOUR_2}Coffee price:
+STR_1975    :{WINDOW_COLOUR_2}爆米花價格:
+STR_1976    :{WINDOW_COLOUR_2}熱狗價格:
+STR_1977    :{WINDOW_COLOUR_2}觸手價格:
+STR_1978    :{WINDOW_COLOUR_2}帽子價格:
+STR_1979    :{WINDOW_COLOUR_2}太妃蘋果糖價格:
+STR_1980    :{WINDOW_COLOUR_2}T-Shirt價格:
+STR_1981    :{WINDOW_COLOUR_2}甜甜圈價格:
+STR_1982    :{WINDOW_COLOUR_2}咖啡價格:
 STR_1983    :{WINDOW_COLOUR_2}
-STR_1984    :{WINDOW_COLOUR_2}Fried Chicken price:
-STR_1985    :{WINDOW_COLOUR_2}Lemonade price:
+STR_1984    :{WINDOW_COLOUR_2}炸雞價格:
+STR_1985    :{WINDOW_COLOUR_2}檸檬水價格:
 STR_1986    :{WINDOW_COLOUR_2}
 STR_1987    :{WINDOW_COLOUR_2}
-STR_1988    :Balloon
-STR_1989    :Cuddly Toy
-STR_1990    :Park Map
-STR_1991    :On-Ride Photo
-STR_1992    :Umbrella
-STR_1993    :Drink
-STR_1994    :Burger
-STR_1995    :Chips
-STR_1996    :Ice Cream
-STR_1997    :Candyfloss
-STR_1998    :Empty Can
-STR_1999    :Rubbish
-STR_2000    :Empty Burger Box
-STR_2001    :Pizza
-STR_2002    :Voucher
-STR_2003    :Popcorn
-STR_2004    :Hot Dog
-STR_2005    :Tentacle
-STR_2006    :Hat
-STR_2007    :Toffee Apple
+STR_1988    :氣球
+STR_1989    :毛公仔
+STR_1990    :樂園地圖
+STR_1991    :即時照片
+STR_1992    :雨傘
+STR_1993    :飲料
+STR_1994    :漢堡
+STR_1995    :薯條
+STR_1996    :冰淇淋
+STR_1997    :棉花糖
+STR_1998    :空罐子
+STR_1999    :垃圾
+STR_2000    :空漢堡盒子
+STR_2001    :批薩
+STR_2002    :優惠卷
+STR_2003    :爆米花
+STR_2004    :熱狗
+STR_2005    :觸手
+STR_2006    :帽子
+STR_2007    :太妃蘋果糖
 STR_2008    :T-Shirt
-STR_2009    :Doughnut
-STR_2010    :Coffee
-STR_2011    :Empty Cup
-STR_2012    :Fried Chicken
-STR_2013    :Lemonade
-STR_2014    :Empty Box
-STR_2015    :Empty Bottle
-STR_2016    :Balloons
-STR_2017    :Cuddly Toys
-STR_2018    :Park Maps
-STR_2019    :On-Ride Photos
-STR_2020    :Umbrellas
-STR_2021    :Drinks
-STR_2022    :Burgers
-STR_2023    :Chips
-STR_2024    :Ice Creams
-STR_2025    :Candyfloss
-STR_2026    :Empty Cans
-STR_2027    :Rubbish
-STR_2028    :Empty Burger Boxes
-STR_2029    :Pizzas
-STR_2030    :Vouchers
-STR_2031    :Popcorn
-STR_2032    :Hot Dogs
-STR_2033    :Tentacles
-STR_2034    :Hats
-STR_2035    :Toffee Apples
-STR_2036    :T-Shirts
-STR_2037    :Doughnuts
-STR_2038    :Coffees
-STR_2039    :Empty Cups
-STR_2040    :Fried Chicken
-STR_2041    :Lemonade
-STR_2042    :Empty Boxes
-STR_2043    :Empty Bottles
+STR_2009    :甜甜圈
+STR_2010    :咖啡
+STR_2011    :空杯子
+STR_2012    :炸雞
+STR_2013    :檸檬水
+STR_2014    :空盒子
+STR_2015    :空瓶子
+STR_2016    :氣球
+STR_2017    :毛公仔
+STR_2018    :樂園地圖
+STR_2019    :即時照片
+STR_2020    :雨傘
+STR_2021    :飲料
+STR_2022    :漢堡
+STR_2023    :薯條
+STR_2024    :冰淇淋
+STR_2025    :棉花糖
+STR_2026    :空罐子
+STR_2027    :垃圾
+STR_2028    :空漢堡盒子
+STR_2029    :批薩
+STR_2030    :優惠卷
+STR_2031    :爆米花
+STR_2032    :熱狗
+STR_2033    :觸手
+STR_2034    :帽子
+STR_2035    :太妃蘋果糖
+STR_2036    :T-Shirt
+STR_2037    :甜甜圈
+STR_2038    :咖啡
+STR_2039    :空杯子
+STR_2040    :炸雞
+STR_2041    :檸檬水
+STR_2042    :空盒子
+STR_2043    :空瓶子
 STR_2044    :a Balloon
 STR_2045    :a Cuddly Toy
 STR_2046    :a Park Map
@@ -2261,23 +2264,23 @@ STR_2256    :剌激類遊樂設施
 STR_2257    :水文類遊樂設施
 STR_2258    :商店及攤販
 STR_2259    :景物及主題景物
-STR_2260    :No funding
-STR_2261    :Minimum funding
-STR_2262    :Normal funding
-STR_2263    :Maximum funding
-STR_2264    :Research funding
+STR_2260    :無資金
+STR_2261    :最少資金
+STR_2262    :普通資金
+STR_2263    :最多資金
+STR_2264    :研發資金分配
 STR_2265    :{WINDOW_COLOUR_2}費用: {BLACK}每個月{CURRENCY}
-STR_2266    :Research priorities
-STR_2267    :Currently in development
-STR_2268    :Last development
-STR_2269    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID}
-STR_2270    :{WINDOW_COLOUR_2}Progress: {BLACK}{STRINGID}
-STR_2271    :{WINDOW_COLOUR_2}Expected: {BLACK}{STRINGID}
-STR_2272    :{WINDOW_COLOUR_2}Ride/attraction:{NEWLINE}{BLACK}{STRINGID}
-STR_2273    :{WINDOW_COLOUR_2}Scenery/themeing:{NEWLINE}{BLACK}{STRINGID}
-STR_2274    :{SMALLFONT}{BLACK}Show details of this invention or development
-STR_2275    :{SMALLFONT}{BLACK}Show funding and options for research & development
-STR_2276    :{SMALLFONT}{BLACK}Show research & development status
+STR_2266    :研發優先項目
+STR_2267    :目前研發項目
+STR_2268    :上次研發項目
+STR_2269    :{WINDOW_COLOUR_2}類別: {BLACK}{STRINGID}
+STR_2270    :{WINDOW_COLOUR_2}進度: {BLACK}{STRINGID}
+STR_2271    :{WINDOW_COLOUR_2}預計完工日期: {BLACK}{STRINGID}
+STR_2272    :{WINDOW_COLOUR_2}遊樂設施/店鋪:{NEWLINE}{BLACK}{STRINGID}
+STR_2273    :{WINDOW_COLOUR_2}景物/主題景物:{NEWLINE}{BLACK}{STRINGID}
+STR_2274    :{SMALLFONT}{BLACK}顯示此研發項目的詳細資料
+STR_2275    :{SMALLFONT}{BLACK}顯示研發的資金分配及選項
+STR_2276    :{SMALLFONT}{BLACK}顯示研發項目進度
 STR_2277    :未知
 STR_2278    :運輸類遊樂設施
 STR_2279    :溫和類遊樂設施
@@ -2297,15 +2300,15 @@ STR_2292    :{WINDOW_COLOUR_2}Rides been on:
 STR_2293    :{BLACK} Nothing
 STR_2294    :{SMALLFONT}{BLACK}Change base land style
 STR_2295    :{SMALLFONT}{BLACK}Change vertical edges of land
-STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} paid to enter park
-STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} ride
-STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} rides
-STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} item of food
-STR_2300    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} items of food
-STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} drink
-STR_2302    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} drinks
-STR_2303    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} souvenir
-STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} souvenirs
+STR_2296    :{WINDOW_COLOUR_2}付了{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}進入樂園
+STR_2297    :{WINDOW_COLOUR_2}付了{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}乘坐{BLACK}{COMMA16}個遊樂設施
+STR_2298    :{WINDOW_COLOUR_2}付了{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}乘坐{BLACK}{COMMA16}個遊樂設施
+STR_2299    :{WINDOW_COLOUR_2}付了{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}享用{BLACK}{COMMA16}款食物
+STR_2300    :{WINDOW_COLOUR_2}付了{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}享用{BLACK}{COMMA16}款食物
+STR_2301    :{WINDOW_COLOUR_2}付了{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}享用{BLACK}{COMMA16}款飲料
+STR_2302    :{WINDOW_COLOUR_2}付了{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}享用{BLACK}{COMMA16}款飲料
+STR_2303    :{WINDOW_COLOUR_2}付了{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}購買{BLACK}{COMMA16}個記念品
+STR_2304    :{WINDOW_COLOUR_2}付了{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}購買{BLACK}{COMMA16}個記念品
 STR_2305    :Track design files
 STR_2306    :Save track design
 STR_2307    :Select {STRINGID} design
@@ -2318,22 +2321,22 @@ STR_2313    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32} (approx.)
 STR_2314    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Cost: {BLACK}around {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Space required: {BLACK}{COMMA16} x {COMMA16} blocks
-STR_2317    :{WINDOW_COLOUR_2}Sound Quality:
-STR_2318    :Low
-STR_2319    :Medium
-STR_2320    :High
+STR_2317    :{WINDOW_COLOUR_2}音效品質:
+STR_2318    :低
+STR_2319    :中
+STR_2320    :高
 STR_2321    :{WINDOW_COLOUR_2}Number of rides/attractions: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Staff: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m{SQUARED}
 STR_2324    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}sq.ft.
 STR_2325    :{SMALLFONT}{BLACK}Buy land to extend park
 STR_2326    :{SMALLFONT}{BLACK}Buy construction rights to allow construction above or below land outside the park
-STR_2327    :Options
-STR_2328    :{WINDOW_COLOUR_2}Currency:
-STR_2329    :{WINDOW_COLOUR_2}Distance and Speed:
-STR_2330    :{WINDOW_COLOUR_2}Temperature:
-STR_2331    :{WINDOW_COLOUR_2}Height Labels:
-STR_2332    :Units
+STR_2327    :選項
+STR_2328    :{WINDOW_COLOUR_2}貨幣單位:
+STR_2329    :{WINDOW_COLOUR_2}距離及速度單位:
+STR_2330    :{WINDOW_COLOUR_2}溫度單位:
+STR_2331    :{WINDOW_COLOUR_2}高度標記單位:
+STR_2332    :單位
 STR_2333    :Sound
 STR_2334    :Pounds ({POUND})
 STR_2335    :Dollars ($)
@@ -2366,9 +2369,9 @@ STR_2361    :Landscape Smoothing
 STR_2362    :{SMALLFONT}{BLACK}Toggle landscape tile edge smoothing on/off
 STR_2363    :Gridlines on Landscape
 STR_2364    :{SMALLFONT}{BLACK}Toggle gridlines on landscape on/off
-STR_2365    :The bank refuses to increase your loan!
-STR_2366    :Celsius ({DEGREE}C)
-STR_2367    :Fahrenheit (F)
+STR_2365    :銀行拒絕增加你的貸款額!
+STR_2366    :攝氏 ({DEGREE}C)
+STR_2367    :華氏 (F)
 STR_2368    :無
 STR_2369    :低
 STR_2370    :普通
@@ -2387,17 +2390,17 @@ STR_2382    :Land
 STR_2383    :Water
 STR_2384    :{WINDOW_COLOUR_2}你的目標:
 STR_2385    :{BLACK}無
-STR_2386    :{BLACK}To have at least {COMMA16} guests in your park at the end of {MONTHYEAR}, with a park rating of at least 600
-STR_2387    :{BLACK}To achieve a park value of at least {POP16}{POP16}{CURRENCY} at the end of {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2386    :{BLACK}在{MONTHYEAR}尾之前, 樂園裡至少有{COMMA16}個遊客, 而且樂園評價並不低於600
+STR_2387    :{BLACK}在{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}尾之前, 樂園價值必需達到{POP16}{POP16}{CURRENCY}
 STR_2388    :{BLACK}盡情玩吧!
-STR_2389    :{BLACK}Build the best {STRINGID} you can!
-STR_2390    :{BLACK}To have 10 different types of roller coasters operating in your park, each with an excitement value of at least 6.00
-STR_2391    :{BLACK}To have at least {COMMA16} guests in your park. You must not let the park rating drop below 700 at any time!
-STR_2392    :{BLACK}To achieve a monthly income from ride tickets of at least {POP16}{POP16}{CURRENCY}
-STR_2393    :{BLACK}To have 10 different types of roller coasters operating in your park, each with a minimum length of {LENGTH}, and an excitement rating of at least 7.00
-STR_2394    :{BLACK}To finish building all 5 of the partially built roller coasters in this park, designing them to achieve excitement ratings of at least {POP16}{POP16}{COMMA2DP32} each
-STR_2395    :{BLACK}To repay your loan and achieve a park value of at least {POP16}{POP16}{CURRENCY}
-STR_2396    :{BLACK}To achieve a monthly profit from food, drink and merchandise sales of at least {POP16}{POP16}{CURRENCY}
+STR_2389    :{BLACK}建造你的最佳{STRINGID}吧!
+STR_2390    :{BLACK}樂園必需建造十種不同種類的雲霄飛車, 而且每座的興奮度不低於6.00
+STR_2391    :{BLACK}樂園裡至少有{COMMA16}個遊客. 任何時間下, 你並不可以令樂園評價跌至700以下!
+STR_2392    :{BLACK}遊樂設施的門票收入至少要達到每月{POP16}{POP16}{CURRENCY}
+STR_2393    :{BLACK}樂園必需建造十種不同種類的雲霄飛車, 每座的長度至少需要{LENGTH}, 而且興奮度都不低於7.00
+STR_2394    :{BLACK}建造好五座未完成的雲霄飛車, 將他們每座設計成興奮度至少達到{POP16}{POP16}{COMMA2DP32}
+STR_2395    :{BLACK}還清樂園的貸款, 並令其價值至少達到{POP16}{POP16}{CURRENCY}
+STR_2396    :{BLACK}食物, 飲料及記念品的銷售收入至少要達到每月{POP16}{POP16}{CURRENCY}
 STR_2397    :None
 STR_2398    :Number of guests at a given date
 STR_2399    :Park value at a given date
@@ -2411,11 +2414,11 @@ STR_2406    :Finish building 5 roller coasters
 STR_2407    :Repay loan and achieve a given park value
 STR_2408    :Monthly profit from food/merchandise
 STR_2409    :{WINDOW_COLOUR_2}Marketing campaigns in operation
-STR_2410    :{BLACK}None
+STR_2410    :{BLACK}無
 STR_2411    :{WINDOW_COLOUR_2}Marketing campaigns available
 STR_2412    :{SMALLFONT}{BLACK}Start this marketing campaign
-STR_2413    :{BLACK}({CURRENCY2DP} per week)
-STR_2414    :(Not Selected)
+STR_2413    :{BLACK}(每週{CURRENCY2DP})
+STR_2414    :(尚未選擇)
 STR_2415    :{WINDOW_COLOUR_2}Ride:
 STR_2416    :{WINDOW_COLOUR_2}Item:
 STR_2417    :{WINDOW_COLOUR_2}Length of time:
@@ -2423,38 +2426,38 @@ STR_2418    :Free entry to {STRINGID}
 STR_2419    :Free ride on {STRINGID}
 STR_2420    :Half-price entry to {STRINGID}
 STR_2421    :Free {STRINGID}
-STR_2422    :Advertising campaign for {STRINGID}
-STR_2423    :Advertising campaign for {STRINGID}
-STR_2424    :{WINDOW_COLOUR_2}Vouchers for free entry to the park
-STR_2425    :{WINDOW_COLOUR_2}Vouchers for free rides on a particular ride
-STR_2426    :{WINDOW_COLOUR_2}Vouchers for half-price entry to the park
-STR_2427    :{WINDOW_COLOUR_2}Vouchers for free food or drink
-STR_2428    :{WINDOW_COLOUR_2}Advertising campaign for the park
-STR_2429    :{WINDOW_COLOUR_2}Advertising campaign for a particular ride
-STR_2430    :{BLACK}Vouchers for free entry to {STRINGID}
-STR_2431    :{BLACK}Vouchers for free ride on {STRINGID}
-STR_2432    :{BLACK}Vouchers for half-price entry to {STRINGID}
-STR_2433    :{BLACK}Vouchers for free {STRINGID}
-STR_2434    :{BLACK}Advertising campaign for {STRINGID}
-STR_2435    :{BLACK}Advertising campaign for {STRINGID}
+STR_2422    :{STRINGID}的推廣計劃
+STR_2423    :{STRINGID}的推廣計劃
+STR_2424    :{WINDOW_COLOUR_2}發放免費進入樂園卷
+STR_2425    :{WINDOW_COLOUR_2}發放免費乘坐個別遊樂設施卷
+STR_2426    :{WINDOW_COLOUR_2}發放半價進入樂園卷
+STR_2427    :{WINDOW_COLOUR_2}發放免費進入食物或飲料樂園卷
+STR_2428    :{WINDOW_COLOUR_2}開始針對樂園的推廣計劃
+STR_2429    :{WINDOW_COLOUR_2}開始針對個別遊樂設施的推廣計劃
+STR_2430    :{BLACK}免費進入{STRINGID}的優惠卷
+STR_2431    :{BLACK}免費乘坐{STRINGID}的優惠卷
+STR_2432    :{BLACK}半價進入{STRINGID}的優惠卷
+STR_2433    :{BLACK}免費{STRINGID}的優惠卷
+STR_2434    :{BLACK}{STRINGID}的推廣計劃
+STR_2435    :{BLACK}{STRINGID}的推廣計劃
 STR_2436    :1週
 STR_2437    :2週
 STR_2438    :3週
 STR_2439    :4週
 STR_2440    :5週
 STR_2441    :6週
-STR_2442    :{BLACK}({STRINGID} remaining)
-STR_2443    :{WINDOW_COLOUR_2}Cost per week: {BLACK}{CURRENCY2DP}
-STR_2444    :{WINDOW_COLOUR_2}Total cost: {BLACK}{CURRENCY2DP}
-STR_2445    :Start this marketing campaign
+STR_2442    :{BLACK}(還剩{STRINGID}結束)
+STR_2443    :{WINDOW_COLOUR_2}每週費用: {BLACK}{CURRENCY2DP}
+STR_2444    :{WINDOW_COLOUR_2}總費用: {BLACK}{CURRENCY2DP}
+STR_2445    :開始實行此營銷計劃
 STR_2446    :{YELLOW}Your marketing campaign for free entry to the park has finished
 STR_2447    :{YELLOW}Your marketing campaign for free rides on {STRINGID} has finished
 STR_2448    :{YELLOW}Your marketing campaign for half-price entry to the park has finished
 STR_2449    :{YELLOW}Your marketing campaign for free {STRINGID} has finished
 STR_2450    :{YELLOW}Your advertising campaign for the park has finished
 STR_2451    :{YELLOW}Your advertising campaign for {STRINGID} has finished
-STR_2452    :{WINDOW_COLOUR_2}Cash (less loan): {BLACK}{CURRENCY2DP}
-STR_2453    :{WINDOW_COLOUR_2}Cash (less loan): {RED}{CURRENCY2DP}
+STR_2452    :{WINDOW_COLOUR_2}現金 (減去貸款): {BLACK}{CURRENCY2DP}
+STR_2453    :{WINDOW_COLOUR_2}現金 (減去貸款): {RED}{CURRENCY2DP}
 STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
 STR_2455    :{SMALLFONT}{BLACK}+{CURRENCY2DP} -
 STR_2456    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
@@ -2471,13 +2474,13 @@ STR_2466    :{SMALLFONT}{BLACK}Show park statistics
 STR_2467    :{SMALLFONT}{BLACK}Show objectives for this game
 STR_2468    :{SMALLFONT}{BLACK}Show recent awards this park has received
 STR_2469    :{SMALLFONT}{BLACK}Select level of research & development
-STR_2470    :{SMALLFONT}{BLACK}Research new transport rides
-STR_2471    :{SMALLFONT}{BLACK}Research new gentle rides
-STR_2472    :{SMALLFONT}{BLACK}Research new roller coasters
-STR_2473    :{SMALLFONT}{BLACK}Research new thrill rides
-STR_2474    :{SMALLFONT}{BLACK}Research new water rides
-STR_2475    :{SMALLFONT}{BLACK}Research new shops and stalls
-STR_2476    :{SMALLFONT}{BLACK}Research new scenery and themeing
+STR_2470    :{SMALLFONT}{BLACK}研發新的運輸類遊樂設施
+STR_2471    :{SMALLFONT}{BLACK}研發新的溫和類遊樂設施
+STR_2472    :{SMALLFONT}{BLACK}研發新的雲霄飛車
+STR_2473    :{SMALLFONT}{BLACK}研發新的剌激類遊樂設施
+STR_2474    :{SMALLFONT}{BLACK}研發新的水文類遊樂設施
+STR_2475    :{SMALLFONT}{BLACK}研發新的商店及攤販
+STR_2476    :{SMALLFONT}{BLACK}研發新的景物及主題景物
 STR_2477    :{SMALLFONT}{BLACK}Select operating mode for this ride/attraction
 STR_2478    :{SMALLFONT}{BLACK}Show graph of velocity against time
 STR_2479    :{SMALLFONT}{BLACK}Show graph of altitude against time
@@ -2710,9 +2713,9 @@ STR_2704    :每四個月
 STR_2705    :每年
 STR_2706    :從不
 STR_2707    :開啟新視窗
-STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
-STR_2709    :Overwrite
-STR_2710    :Type the name of the file.
+STR_2708    :{WINDOW_COLOUR_1}你確定要覆蓋存檔{STRINGID}?
+STR_2709    :覆蓋
+STR_2710    :請輸入存檔名稱:
 STR_2711    :;
 STR_2712    :=
 STR_2713    :,
@@ -2720,8 +2723,8 @@ STR_2714    :-
 STR_2715    :.
 STR_2716    :/
 STR_2717    :'
-STR_2718    :(up)
-STR_2719    :(new file)
+STR_2718    :(向上層)
+STR_2719    :(建立新檔案)
 STR_2720    :{UINT16}sec
 STR_2721    :{UINT16}secs
 STR_2722    :{UINT16}min:{UINT16}sec
@@ -2741,11 +2744,11 @@ STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, Year {COMMA16}
 STR_2737    :{STRINGID} {MONTH}, Year {COMMA16}
 STR_2738    :主選單音樂:
-STR_2739    :None
+STR_2739    :無
 STR_2740    :夢幻遊樂園 (RCT1)
 STR_2741    :模擬樂園 (RCT2)
-STR_2742    :css50.dat not found
-STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat in your RCT2 installation.
+STR_2742    :找不到css50.dat
+STR_2743    :複製夢幻遊樂園(RCT1)文件夾中的'data\css17.dat'到模擬樂園(RCT2)的文件夾, 並重新命名為'data\css50.dat'.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -2789,16 +2792,16 @@ STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :更改鍵盤快捷鍵
-STR_2785    :{WINDOW_COLOUR_2}Press new shortcut key for:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
-STR_2786    :{SMALLFONT}{BLACK}Click on shortcut description to select new key
-STR_2787    :{WINDOW_COLOUR_2}Park value: {BLACK}{CURRENCY}
-STR_2788    :{WINDOW_COLOUR_2}Congratulations !{NEWLINE}{BLACK}You achieved your objective with a company value of {CURRENCY} !
-STR_2789    :{WINDOW_COLOUR_2}You have failed your objective !
-STR_2790    :Enter name into scenario chart
-STR_2791    :Enter name
-STR_2792    :Please enter your name for the scenario chart:
-STR_2793    :{SMALLFONT}(Completed by {STRINGID})
-STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} with a company value of: {BLACK}{CURRENCY}
+STR_2785    :{WINDOW_COLOUR_2}請按下屬於下列快捷鍵的新鍵位:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2786    :{SMALLFONT}{BLACK}按一下快捷鍵的描述來選擇新的鍵位
+STR_2787    :{WINDOW_COLOUR_2}樂園價值: {BLACK}{CURRENCY}
+STR_2788    :{WINDOW_COLOUR_2}恭喜您!{NEWLINE}{BLACK}你已經達到你的目標, 並令公司價值增至 {CURRENCY} !
+STR_2789    :{WINDOW_COLOUR_2}你未能達到目標!
+STR_2790    :請輸入你要在劇情列表顯示的名字
+STR_2791    :輸入名字
+STR_2792    :請輸入你要在劇情列表顯示的名字:
+STR_2793    :{SMALLFONT}(已由{STRINGID}完成)
+STR_2794    :{WINDOW_COLOUR_2}完成目標者: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} 令公司價值增至: {BLACK}{CURRENCY}
 STR_2795    :Sort
 STR_2796    :{SMALLFONT}{BLACK}Sort the ride list into order using the information type displayed
 STR_2797    :Scroll view when pointer at screen edge
@@ -2857,9 +2860,9 @@ STR_2849    :New scenario installed successfully
 STR_2850    :New track design installed successfully
 STR_2851    :Scenario already installed
 STR_2852    :Track design already installed
-STR_2853    :Forbidden by the local authority!
-STR_2854    :{RED}Guests can't get to the entrance of {STRINGID} !{NEWLINE}Construct a path to the entrance
-STR_2855    :{RED}{STRINGID} has no path leading from its exit !{NEWLINE}Construct a path from the ride exit
+STR_2853    :被當地政府禁止!
+STR_2854    :{RED}遊客都不能走到去{STRINGID}的入口!{NEWLINE}請建造道路連接入口
+STR_2855    :{RED}{STRINGID}的出口並沒有道路連接!{NEWLINE}請建造道路連接出口
 STR_2856    :{WINDOW_COLOUR_2}教學
 STR_2857    :{WINDOW_COLOUR_2}(按下任意鍵來獲取控制)
 STR_2858    :Can't start marketing campaign...
@@ -3016,52 +3019,52 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :無法載入檔案...
 STR_3011    :檔案中含有非法資料
-STR_3012    :Dodgems beat style
-STR_3013    :Fairground organ style
-STR_3014    :Roman fanfare style
-STR_3015    :Oriental style
-STR_3016    :Martian style
-STR_3017    :Jungle drums style
-STR_3018    :Egyptian style
-STR_3019    :Toyland style
+STR_3012    :碰碰車節奏風格
+STR_3013    :遊樂場風琴風格
+STR_3014    :羅馬號角風格
+STR_3015    :東方風格
+STR_3016    :火星風格
+STR_3017    :叢林敲擊風格
+STR_3018    :埃及風格
+STR_3019    :童真風格
 STR_3020    :
-STR_3021    :Space style
-STR_3022    :Horror style
-STR_3023    :Techno style
-STR_3024    :Gentle style
-STR_3025    :Summer style
-STR_3026    :Water style
-STR_3027    :Wild west style
-STR_3028    :Jurassic style
-STR_3029    :Rock style
-STR_3030    :Ragtime style
-STR_3031    :Fantasy style
-STR_3032    :Rock style 2
-STR_3033    :Ice style
-STR_3034    :Snow style
-STR_3035    :Custom music 1
-STR_3036    :Custom music 2
-STR_3037    :Medieval style
-STR_3038    :Urban style
-STR_3039    :Organ style
-STR_3040    :Mechanical style
-STR_3041    :Modern style
-STR_3042    :Pirates style
-STR_3043    :Rock style 3
-STR_3044    :Candy style
-STR_3045    :{SMALLFONT}{BLACK}Select style of music to play
-STR_3046    :This ride cannot be modified
-STR_3047    :Local authority forbids demolition or modifications to this ride
-STR_3048    :Marketing campaigns forbidden by local authority
-STR_3049    :Golf hole A
-STR_3050    :Golf hole B
-STR_3051    :Golf hole C
-STR_3052    :Golf hole D
-STR_3053    :Golf hole E
+STR_3021    :太空風格
+STR_3022    :恐怖風格
+STR_3023    :電子風格
+STR_3024    :溫和風格
+STR_3025    :夏日風格
+STR_3026    :水文風格
+STR_3027    :美國西部風格
+STR_3028    :侏儸紀風格
+STR_3029    :搖滾風格
+STR_3030    :雷格泰姆音樂風格
+STR_3031    :夢幻風格
+STR_3032    :搖滾風格2
+STR_3033    :冰封風格
+STR_3034    :雪地風格
+STR_3035    :自訂音樂1
+STR_3036    :自訂音樂2
+STR_3037    :中世紀風格
+STR_3038    :都市風格
+STR_3039    :風琴風格
+STR_3040    :機械風格
+STR_3041    :摩登風格
+STR_3042    :海盜風格
+STR_3043    :搖滾風格3
+STR_3044    :糖果風格
+STR_3045    :{SMALLFONT}{BLACK}選擇要播放的音樂風格:
+STR_3046    :此遊樂設施不能被修改
+STR_3047    :當地政府禁止拆除或修改此遊樂設施
+STR_3048    :當地政府禁止所有推廣計劃進行
+STR_3049    :哥爾夫球洞A
+STR_3050    :哥爾夫球洞B
+STR_3051    :哥爾夫球洞C
+STR_3052    :哥爾夫球洞D
+STR_3053    :哥爾夫球洞E
 STR_3054    :載入中...
-STR_3055    :White
-STR_3056    :Translucent
-STR_3057    :{WINDOW_COLOUR_2}Construction Marker:
+STR_3055    :白色
+STR_3056    :透明
+STR_3057    :{WINDOW_COLOUR_2}建造標記:
 STR_3058    :Brick walls
 STR_3059    :Hedges
 STR_3060    :Ice blocks
@@ -3075,29 +3078,29 @@ STR_3067    :{OPENQUOTES}真實{ENDQUOTES}樂園
 STR_3068    :其他樂園
 STR_3069    :Top Section
 STR_3070    :Slope to Level
-STR_3071    :{WINDOW_COLOUR_2}Same price throughout park
-STR_3072    :{SMALLFONT}{BLACK}Select whether this price is used throughout the entire park
+STR_3071    :{WINDOW_COLOUR_2}劃一樂園內的價格
+STR_3072    :{SMALLFONT}{BLACK}選擇是否以此價格為劃一價格
 STR_3073    :{RED}WARNING: Your park rating has dropped below 700 !{NEWLINE}If you haven't raised the park rating in 4 weeks, your park will be closed down
 STR_3074    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You have 3 weeks to raise the park rating
 STR_3075    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You have only 2 weeks to raise the park rating, or your park will be closed down
 STR_3076    :{RED}FINAL WARNING: Your park rating is still below 700 !{NEWLINE}In just 7 days your park will be closed down unless you can raise the rating
 STR_3077    :{RED}CLOSURE NOTICE: Your park has been closed down !
-STR_3078    :Plain entrance
-STR_3079    :Wooden entrance
-STR_3080    :Canvas tent entrance
-STR_3081    :Castle entrance (grey)
-STR_3082    :Castle entrance (brown)
-STR_3083    :Jungle entrance
-STR_3084    :Log cabin entrance
-STR_3085    :Classical/Roman entrance
-STR_3086    :Abstract entrance
-STR_3087    :Snow/Ice entrance
-STR_3088    :Pagoda entrance
-STR_3089    :Space entrance
+STR_3078    :普通入口
+STR_3079    :木製入口
+STR_3080    :帆布帳幕式入口
+STR_3081    :城堡主題入口 (灰)
+STR_3082    :城堡主題入口 (啡)
+STR_3083    :叢林主題入口
+STR_3084    :木屋式入口
+STR_3085    :古羅馬主題入口
+STR_3086    :抽象主題入口
+STR_3087    :冰雪主題入口
+STR_3088    :寶塔式入口
+STR_3089    :太空主題入口
 STR_3090    :{SMALLFONT}{BLACK}Select style of entrance, exit, and station
 STR_3091    :You are not allowed to remove this section!
 STR_3092    :You are not allowed to move or modify the station for this ride!
-STR_3093    :{WINDOW_COLOUR_2}Favourite: {BLACK}{STRINGID}
+STR_3093    :{WINDOW_COLOUR_2}最愛: {BLACK}{STRINGID}
 STR_3094    :N/A
 STR_3095    :{WINDOW_COLOUR_2}Lift hill chain speed:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
@@ -3115,12 +3118,12 @@ STR_3107    :關閉
 STR_3108    :測試
 STR_3109    :開啟
 STR_3110    :{WINDOW_COLOUR_2}Block Sections: {BLACK}{COMMA16}
-STR_3111    :{SMALLFONT}{BLACK}Click on design to build it
-STR_3112    :{SMALLFONT}{BLACK}Click on design to rename or delete it
-STR_3113    :Select a different design
-STR_3114    :{SMALLFONT}{BLACK}Go back to design selection window
-STR_3115    :{SMALLFONT}{BLACK}Save track design
-STR_3116    :{SMALLFONT}{BLACK}Save track design (Not possible until ride has been tested and statistics have been generated)
+STR_3111    :{SMALLFONT}{BLACK}點擊建造設計
+STR_3112    :{SMALLFONT}{BLACK}點擊刪除或重命名設計
+STR_3113    :選擇另一個設計
+STR_3114    :{SMALLFONT}{BLACK}返回選擇設計視窗
+STR_3115    :{SMALLFONT}{BLACK}儲存軌道設計
+STR_3116    :{SMALLFONT}{BLACK}儲存軌道設計 (在測試完結及測試資料生成完畢前不可用)
 STR_3117    :{BLACK}Calling mechanic...
 STR_3118    :{BLACK}{STRINGID} is heading for the ride
 STR_3119    :{BLACK}{STRINGID} is fixing the ride
@@ -3129,13 +3132,13 @@ STR_3121    :Unable to locate mechanic, or all nearby mechanics are busy
 STR_3122    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA16} guest
 STR_3123    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA16} guests
 STR_3124    :Broken {STRINGID}
-STR_3125    :{WINDOW_COLOUR_2}Excitement Factor: {BLACK}+{COMMA16}%
-STR_3126    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}+{COMMA16}%
-STR_3127    :{WINDOW_COLOUR_2}Nausea Factor: {BLACK}+{COMMA16}%
-STR_3128    :Save Track Design
-STR_3129    :Save Track Design with Scenery
-STR_3130    :Save
-STR_3131    :Cancel
+STR_3125    :{WINDOW_COLOUR_2}興奮度加成: {BLACK}+{COMMA16}%
+STR_3126    :{WINDOW_COLOUR_2}刺激度加成: {BLACK}+{COMMA16}%
+STR_3127    :{WINDOW_COLOUR_2}噁心度加成: {BLACK}+{COMMA16}%
+STR_3128    :儲存軌道設計
+STR_3129    :儲存軌道設計及周邊景物
+STR_3130    :儲存
+STR_3131    :取消
 STR_3132    :{BLACK}Click items of scenery to select them to be saved with track design...
 STR_3133    :Unable to build this on a slope
 STR_3134    :{RED}(Design includes scenery which is unavailable)
@@ -3185,19 +3188,19 @@ STR_3177    :Unable to de-select this object
 STR_3178    :At least one path object must be selected
 STR_3179    :At least one ride vehicle/attraction object must be selected
 STR_3180    :Invalid selection of objects
-STR_3181    :Object Selection - {STRINGID}
-STR_3182    :Park entrance type must be selected
-STR_3183    :Water type must be selected
-STR_3184    :Ride Vehicles/Attractions
-STR_3185    :Small Scenery
-STR_3186    :Large Scenery
-STR_3187    :Walls/Fences
-STR_3188    :Path Signs
-STR_3189    :Footpaths
-STR_3190    :Path Extras
-STR_3191    :Scenery Groups
-STR_3192    :Park Entrance
-STR_3193    :Water
+STR_3181    :物件選擇 - {STRINGID}
+STR_3182    :必須選擇樂園入口類別
+STR_3183    :必須選擇水塘類別
+STR_3184    :遊樂設施/其車輛
+STR_3185    :小型景物
+STR_3186    :大型景物
+STR_3187    :牆壁/柵欄
+STR_3188    :道路指示牌
+STR_3189    :道路
+STR_3190    :額外的道路物件
+STR_3191    :景物組別
+STR_3192    :樂園入口
+STR_3193    :水塘
 STR_3194    :Scenario Description
 STR_3195    :Invention List
 STR_3196    :{WINDOW_COLOUR_2}Research Group: {BLACK}{STRINGID}
@@ -3205,17 +3208,17 @@ STR_3197    :{WINDOW_COLOUR_2}Items pre-invented at start of game:
 STR_3198    :{WINDOW_COLOUR_2}Items to invent during game:
 STR_3199    :Random Shuffle
 STR_3200    :{SMALLFONT}{BLACK}Randomly shuffle the list of items to invent during the game
-STR_3201    :Object Selection
-STR_3202    :Landscape Editor
-STR_3203    :Invention List Set Up
-STR_3204    :Options Selection
-STR_3205    :Objective Selection
-STR_3206    :Save Scenario
-STR_3207    :Roller Coaster Designer
-STR_3208    :Track Designs Manager
-STR_3209    :Back to Previous Step:
-STR_3210    :Forward to Next Step:
-STR_3211    :{WINDOW_COLOUR_2}Map size:
+STR_3201    :選取物件
+STR_3202    :編輯地勢
+STR_3203    :設定研發清單
+STR_3204    :選取選項
+STR_3205    :選取目標
+STR_3206    :儲存劇情
+STR_3207    :雲霄飛車設計工具
+STR_3208    :軌道設計管理工具
+STR_3209    :上一步:
+STR_3210    :下一步:
+STR_3211    :{WINDOW_COLOUR_2}地圖大小:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Can't decrease map size any further
 STR_3214    :Can't increase map size any further
@@ -3231,7 +3234,7 @@ STR_3223    :{SMALLFONT}{BLACK}Set land to be available to purchase by the park
 STR_3224    :{SMALLFONT}{BLACK}Set construction rights to be available to purchase by the park
 STR_3225    :{SMALLFONT}{BLACK}Toggle on/off building a random cluster of objects around the selected position
 STR_3226    :{SMALLFONT}{BLACK}Build park entrance
-STR_3227    :Too many park entrances!
+STR_3227    :太多樂園入口!
 STR_3228    :{SMALLFONT}{BLACK}Set starting positions for people
 STR_3229    :Block Brakes cannot be used directly after station
 STR_3230    :Block Brakes cannot be used directly after each other
@@ -3339,9 +3342,9 @@ STR_3331    :Path from park entrance to map edge either not complete or too comp
 STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
 STR_3333    :Export plug-in objects with saved games
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
-STR_3335    :Roller Coaster Designer - Select Ride Types & Vehicles
-STR_3336    :Track Designs Manager - Select Ride Type
-STR_3337    :Six Flags Park
+STR_3335    :雲霄飛車設計工具 - 選擇要設計的雲霄飛車的類型及車輛種類
+STR_3336    :軌道設計管理工具 - 選擇要管理的遊樂設施的類型
+STR_3337    :六旗樂園
 STR_3338    :{BLACK}Custom-designed layout
 STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
 STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
@@ -3481,15 +3484,15 @@ STR_5144    :加快速度
 STR_5145    :更快速度
 STR_5146    :超快速度
 STR_5147    :在工具列顯示"密技"按鈕
-STR_5148    :{SMALLFONT}{BLACK}Change the game speed
-STR_5149    :{SMALLFONT}{BLACK}Open the cheats window
+STR_5148    :{SMALLFONT}{BLACK}改變遊戲速度
+STR_5149    :{SMALLFONT}{BLACK}開啟密技視窗
 STR_5150    :啟用除錯工具
 STR_5151    :,
 STR_5152    :.
 STR_5153    :編輯配色主題...
 STR_5154    :使用硬體顯示
 STR_5155    :容許測試未建造好的軌道設計
-STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
+STR_5156    :{SMALLFONT}{BLACK}容許測試大部份軌道設計, 即使未建造好的也可以. 但不能適用於區域煞車模式
 STR_5157    :允許設置進入樂園及乘坐遊樂設施的價格
 STR_5158    :回到主選單
 STR_5159    :離開OpenRCT2
@@ -3511,10 +3514,10 @@ STR_5174    :{SMALLFONT}{BLACK}Will use Twitch chat messages preceded by !news f
 STR_5175    :Input the name of your Twitch channel
 STR_5176    :Enable Twitch integration
 STR_5177    :全屏幕模式:
-STR_5178    :{SMALLFONT}{BLACK}Show financial cheats
-STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
-STR_5180    :{SMALLFONT}{BLACK}Show park cheats
-STR_5181    :{SMALLFONT}{BLACK}Show ride cheats
+STR_5178    :{SMALLFONT}{BLACK}顯示用於財政的密技
+STR_5179    :{SMALLFONT}{BLACK}顯示用於遊客的密技
+STR_5180    :{SMALLFONT}{BLACK}顯示用於樂園的密技
+STR_5181    :{SMALLFONT}{BLACK}顯示用於設施的密技
 STR_5182    :{INT32}
 STR_5183    :Base height
 STR_5184    :Enter base height between {COMMA16} and {COMMA16}
@@ -3543,19 +3546,19 @@ STR_5206    :遊客列表
 STR_5207    :員工
 STR_5208    :員工列表
 STR_5209    :橫額
-STR_5210    :Object Selection
-STR_5211    :Invention List
-STR_5212    :Scenario Options
-STR_5213    :Objective Options
-STR_5214    :Map Generation
-STR_5215    :Track Design Manager
-STR_5216    :Track Design Manager List
+STR_5210    :選取物件
+STR_5211    :研發列表
+STR_5212    :劇情選項
+STR_5213    :目標選項
+STR_5214    :生成地圖
+STR_5215    :軌道設計管理工具
+STR_5216    :軌道設計管理工具列表
 STR_5217    :密技
-STR_5218    :Themes
-STR_5219    :Options
-STR_5220    :Keyboard Shortcuts
+STR_5218    :主題
+STR_5219    :選項
+STR_5220    :鍵盤快鍵盤
 STR_5221    :Change Keyboard Shortcut
-STR_5222    :Load/Save
+STR_5222    :載入/儲存
 STR_5223    :Save Prompt
 STR_5224    :Demolish Ride Prompt
 STR_5225    :Fire Staff Prompt
@@ -3608,9 +3611,9 @@ STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Small Scenery
 STR_5273    :{SMALLFONT}{BLACK}Large Scenery
 STR_5274    :{SMALLFONT}{BLACK}Footpath
-STR_5275    :Search for Objects
-STR_5276    :Enter the name of an object to search for
-STR_5277    :Clear
+STR_5275    :搜尋物件
+STR_5276    :請輸入你要搜尋的物件名稱
+STR_5277    :清除
 STR_5278    :沙盒模式
 STR_5279    :沙盒模式關閉
 STR_5280    :{SMALLFONT}{BLACK}Allow editing land ownership settings through the Map window and other options that are normally restricted to the Scenario Editor
@@ -3620,17 +3623,17 @@ STR_5283    :RCT1 Park Open/Close Lights
 STR_5284    :RCT1 Scenario Selection Font
 STR_5285    :人肉炸彈!!!
 STR_5286    :{SMALLFONT}{BLACK}將某些遊客爆炸，嘻嘻！
-STR_5287    :Ride is already broken down
-STR_5288    :Ride is closed
-STR_5289    :No breakdowns available for this ride
+STR_5287    :遊樂設施已經故障了
+STR_5288    :遊樂設施已關閉了
+STR_5289    :沒有故障可適用於此遊樂設施
 STR_5290    :修復遊樂設施
-STR_5291    :Can't force breakdown
-STR_5292    :{SMALLFONT}{BLACK}Force a breakdown
-STR_5293    :{SMALLFONT}{BLACK}Close ride/attraction
-STR_5294    :{SMALLFONT}{BLACK}Test ride/attraction
-STR_5295    :{SMALLFONT}{BLACK}Open ride/attraction
-STR_5296    :{SMALLFONT}{BLACK}Close park
-STR_5297    :{SMALLFONT}{BLACK}Open park
+STR_5291    :不能強制令遊樂設施故障
+STR_5292    :{SMALLFONT}{BLACK}強制故障
+STR_5293    :{SMALLFONT}{BLACK}關閉遊樂設施/店鋪
+STR_5294    :{SMALLFONT}{BLACK}測試遊樂設施
+STR_5295    :{SMALLFONT}{BLACK}開啟遊樂設施/店鋪
+STR_5296    :{SMALLFONT}{BLACK}關閉樂園
+STR_5297    :{SMALLFONT}{BLACK}開放樂園
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :{SMALLFONT}{BLACK}一鍵解僱員工
@@ -3644,7 +3647,7 @@ STR_5307    :夢幻遊樂場 (RCT1) (+資料片1&2 - AA+LL)
 STR_5308    :模擬樂園2
 STR_5309    :OpenRCT2
 STR_5310    :隨機
-STR_5311    :{SMALLFONT}{BLACK}Debug tools
+STR_5311    :{SMALLFONT}{BLACK}除錯工具
 STR_5312    :顯示命名行
 STR_5313    :Show tile inspector
 STR_5314    :Tile inspector
@@ -3801,3 +3804,10 @@ STR_5464    :一般
 STR_5465    :氣候
 STR_5466    :員工
 STR_5467    :ALT + 
+STR_5468    :在工具列顯示"最近消息"的按鈕
+STR_5469    :Scroll map up
+STR_5470    :Scroll map left
+STR_5471    :Scroll map down
+STR_5472    :Scroll map right
+STR_5473    :日與夜循環
+STR_5474    :Display text on banners in upper case
