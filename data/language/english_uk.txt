@@ -2446,7 +2446,7 @@ STR_2438    :<not used anymore>
 STR_2439    :<not used anymore>
 STR_2440    :<not used anymore>
 STR_2441    :<not used anymore>
-STR_2442    :{BLACK}({STRINGID} remaining)
+STR_2442    :<not used anymore>
 STR_2443    :{WINDOW_COLOUR_2}Cost per week: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Total cost: {BLACK}{CURRENCY2DP}
 STR_2445    :Start this marketing campaign
@@ -3819,3 +3819,4 @@ STR_5479    :Toolbar
 STR_5480    :Show toolbar buttons for:
 STR_5481    :Themes
 STR_5482    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}1 minute
+STR_5483    :{BLACK}({COMMA16} weeks remaining)
