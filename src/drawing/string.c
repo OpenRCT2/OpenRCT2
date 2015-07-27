@@ -105,7 +105,6 @@ void gfx_load_character_widths(){
 	}
 }
 
-
 /* rct2: 0x006C23B1 */
 int gfx_get_string_width_new_lined(char* buffer){
 	// Current font sprites
@@ -177,7 +176,6 @@ int gfx_get_string_width_new_lined(char* buffer){
 	return max_width;
 }
 
-
 /**
  *  Return the width of the string in buffer
  *
@@ -198,93 +196,43 @@ int gfx_get_string_width(char* buffer)
  */
 int gfx_clip_string(utf8 *text, int width)
 {
-	rct_g1_element g1_element;
-	uint16 fontSpriteBase;
-	int maxWidth;
+	int clippedWidth;
 
 	if (width < 6) {
 		*text = 0;
 		return 0;
 	}
 
-	fontSpriteBase = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
-	int dotCharacterWidth = _spriteFontCharacterWidths[fontSpriteBase + ('.' - ' ')];
-	int elipsisCharacterWidth = dotCharacterWidth * 3;
-	
-	maxWidth = width - elipsisCharacterWidth;
-
-	int clippedWidth = 0;
-	utf8 *lastCh = text;
-	utf8 *ch = text;
-	int codepoint;
-	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
-		if (utf8_is_format_code(codepoint)) {
-			switch (codepoint) {
-			case FORMAT_MOVE_X:
-				clippedWidth = *ch++;
-				break;
-			case FORMAT_ADJUST_PALETTE:
-			case 3:
-			case 4:
-				ch++;
-				break;
-			case FORMAT_NEWLINE:
-			case FORMAT_NEWLINE_SMALLER:
-				break;
-			case FORMAT_TINYFONT:
-				fontSpriteBase = 448;
-				break;
-			case FORMAT_SMALLFONT:
-				fontSpriteBase = 0;
-				break;
-			case FORMAT_MEDIUMFONT:
-				fontSpriteBase = 224;
-				break;
-			case FORMAT_BIGFONT:
-				fontSpriteBase = 672;
-				break;
-			case FORMAT_OUTLINE:
-			case FORMAT_OUTLINE_OFF:
-			case FORMAT_WINDOW_COLOUR_1:
-			case FORMAT_WINDOW_COLOUR_2:
-			case FORMAT_WINDOW_COLOUR_3:
-			case 0x10:
-				break;
-			case FORMAT_INLINE_SPRITE:
-				g1_element = g1Elements[*((uint32*)(ch - 1)) & 0x7FFFF];
-				clippedWidth += g1_element.width;
-				ch += 4;
-				break;
-			default:
-				if (codepoint >= FORMAT_COLOUR_CODE_START || codepoint <= FORMAT_COLOUR_CODE_END) {
-					break;
-				}
-				if (codepoint <= 22) { //case 0x11? FORMAT_NEW_LINE_X_Y
-					ch += 2;
-				} else {
-					ch += 4;//never happens?
-				}
-				break;
-			}
-
-			dotCharacterWidth = _spriteFontCharacterWidths[fontSpriteBase + ('.' - ' ')];
-			elipsisCharacterWidth = dotCharacterWidth * 3;
-			maxWidth = width - elipsisCharacterWidth;
-		} else {
-			clippedWidth += _spriteFontCharacterWidths[fontSpriteBase + utf8_get_sprite_offset_for_codepoint(codepoint)];
-			if (clippedWidth > width) {
-				strcpy(lastCh - 3, "...");
-				clippedWidth = width;
-				return clippedWidth;
-			}
-			if (clippedWidth <= maxWidth) {
-				lastCh = ch + 1;
-			}
-		}
+	clippedWidth = gfx_get_string_width(text);
+	if (clippedWidth <= width) {
+		return clippedWidth;
 	}
-	return clippedWidth;
-}
 
+	utf8 backup[4];
+	utf8 *ch = text;
+	utf8 *nextCh = text;
+	utf8 *clipCh = text;
+	int codepoint;
+	while ((codepoint = utf8_get_next(ch, &nextCh)) != 0) {
+		for (int i = 0; i < 4; i++) { backup[i] = nextCh[i]; };
+		for (int i = 0; i < 3; i++) { nextCh[i] = '.'; }
+		nextCh[3] = 0;
+
+		int queryWidth = gfx_get_string_width(text);
+		if (queryWidth < width) {
+			clipCh = nextCh;
+			clippedWidth = queryWidth;
+		} else {
+			for (int i = 0; i < 3; i++) { clipCh[i] = '.'; }
+			clipCh[3] = 0;
+			return clippedWidth;
+		}
+
+		for (int i = 0; i < 4; i++) { nextCh[i] = backup[i]; };
+		ch = nextCh;
+	}
+	return gfx_get_string_width(text);
+}
 
 /**
  *  Wrap the text in buffer to width, returns width of longest line.
@@ -299,111 +247,61 @@ int gfx_clip_string(utf8 *text, int width)
  * num_lines (edi) - out
  * font_height (ebx) - out
  */
-int gfx_wrap_string(utf8 *text, int width, int *num_lines, int *font_height)
+int gfx_wrap_string(utf8 *text, int width, int *outNumLines, int *outFontHeight)
 {
 	int lineWidth = 0;
 	int maxWidth = 0;
-	rct_g1_element g1Element;
-
-    *num_lines = 0;
-	*font_height = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+	*outNumLines = 0;
 
 	// Pointer to the start of the current word
 	utf8 *currentWord = NULL;
+
 	// Width of line up to current word
 	int currentWidth;
 
 	utf8 *ch = text;
+	utf8 *firstCh = text;
 	utf8 *lastCh;
 	int codepoint;
 	while ((codepoint = utf8_get_next(ch, &lastCh)) != 0) {
-		// Remember start of current word and line width up to this word
 		if (codepoint == ' ') {
 			currentWord = ch;
 			currentWidth = lineWidth;
 		}
 
-		if (utf8_is_format_code(codepoint)) {
-			switch (codepoint) {
-			case FORMAT_MOVE_X:
-			case FORMAT_ADJUST_PALETTE:
-			case 3:
-			case 4:
-				ch++;
-				break;
-			case FORMAT_NEWLINE:
-			case FORMAT_NEWLINE_SMALLER:
-				*num_lines += 1;
-				*ch = 0;
-				if (lineWidth > maxWidth) {
-					maxWidth = lineWidth;
-				}
-				lineWidth = 0;
-				currentWord = 0;
-				break;
-			case FORMAT_TINYFONT:
-				*font_height = FONT_SPRITE_BASE_TINY;
-				break;
-			case FORMAT_SMALLFONT:
-				*font_height = FONT_SPRITE_BASE_SMALL;
-				break;
-			case FORMAT_MEDIUMFONT:
-				*font_height = FONT_SPRITE_BASE_MEDIUM;
-				break;
-			case FORMAT_BIGFONT:
-				*font_height = FONT_SPRITE_BASE_BIG;
-				break;
-			case FORMAT_OUTLINE:
-			case FORMAT_OUTLINE_OFF:
-			case FORMAT_WINDOW_COLOUR_1:
-			case FORMAT_WINDOW_COLOUR_2:
-			case FORMAT_WINDOW_COLOUR_3:
-			case 0x10:
-				break;
-			case FORMAT_INLINE_SPRITE:
-				g1Element = g1Elements[*((uint32*)(ch + 1)) & 0x7FFFF];
-				lineWidth += g1Element.width;
-				lastCh += 4;
-				break;
-			default:
-				if (codepoint < FORMAT_COLOUR_CODE_START || codepoint > FORMAT_COLOUR_CODE_END) {
-					if (codepoint <= 0x16) {
-						lastCh += 2;
-					} else {
-						lastCh += 4;
-					}
-				}
-				break;
-			}
+		uint8 saveCh = *lastCh;
+		*lastCh = 0;
+		lineWidth = gfx_get_string_width(firstCh);
+		*lastCh = saveCh;
+
+		if (lineWidth <= width) {
 			ch = lastCh;
+		} else if (currentWord == NULL) {
+			// Single word is longer than line, insert null terminator
+			utf8 *end = get_string_end(ch);
+			memmove(ch + 1, ch, end - ch + 1);
+			*ch++ = 0;
+
+			maxWidth = max(maxWidth, lineWidth);
+			(*outNumLines)++;
+			lineWidth = 0;
+			currentWord = NULL;
+			firstCh = ch;
 		} else {
-			lineWidth += _spriteFontCharacterWidths[*font_height + utf8_get_sprite_offset_for_codepoint(codepoint)];
-			if ((int)lineWidth <= width) {
-				ch = lastCh;
-			} else if (currentWord == NULL) {
-				// Single word is longer than line, insert null terminator
-				utf8 *end = get_string_end(ch);
-				memmove(ch + 1, ch, end - ch + 1);
-				*ch++ = 0;
+			ch = currentWord;
+			*ch++ = 0;
 
-				maxWidth = max(maxWidth, lineWidth);
-				*num_lines += 1;
-				lineWidth = 0;
-				currentWord = NULL;
-			} else {
-				ch = currentWord;
-				*ch++ = 0;
-
-				maxWidth = max(maxWidth, currentWidth);
-				*num_lines += 1;
-				lineWidth = 0;
-				currentWord = NULL;
-			}
+			maxWidth = max(maxWidth, currentWidth);
+			(*outNumLines)++;
+			lineWidth = 0;
+			currentWord = NULL;
+			firstCh = ch;
 		}
 	}
+
+	*outFontHeight = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 	return maxWidth == 0 ? lineWidth : maxWidth;
 }
-
 
 /**
  * Draws i formatted text string left aligned at i specified position but clips

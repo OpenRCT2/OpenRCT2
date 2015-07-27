@@ -98,6 +98,7 @@ enum {
 
 	// Extra non-ascii characters
 	FORMAT_AMINUSCULE = 159,
+	FORMAT_CENT = 162,
 	FORMAT_POUND = 163,
 	FORMAT_YEN = 165,
 	FORMAT_COPYRIGHT = 169,
@@ -126,6 +127,12 @@ enum {
 
 	FORMAT_TICK = 10003,
 	FORMAT_CROSS = 10005,
+
+	// Format codes that need suitable unicode allocations
+	FORMAT_SYMBOL_i = 20000,
+	FORMAT_SYMBOL_RAILWAY = 20001,
+	FORMAT_SYMBOL_ROAD = 20002,
+	FORMAT_SYMBOL_FLAG = 20003,
 };
 
 #endif

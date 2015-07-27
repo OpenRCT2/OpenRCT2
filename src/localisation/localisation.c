@@ -156,31 +156,43 @@ bool utf8_should_use_sprite_for_codepoint(int codepoint)
 int utf8_get_sprite_offset_for_codepoint(int codepoint)
 {
 	switch (codepoint) {
-	case FORMAT_AMINUSCULE: return 159 - 32;
-	case FORMAT_POUND: return 163 - 32;
-	case FORMAT_YEN: return 165 - 32;
-	case FORMAT_COPYRIGHT: return 169 - 32;
-	case FORMAT_LEFTGUILLEMET: return 171 - 32;
-	case FORMAT_DEGREE: return 176 - 32;
-	case FORMAT_SQUARED: return 178 - 32;
-	case FORMAT_RIGHTGUILLEMET: return 187 - 32;
-	case FORMAT_INVERTEDQUESTION: return 191 - 32;
-	case FORMAT_OPENQUOTES: return 180 - 32;
 	case FORMAT_ENDQUOTES: return 34 - 32;
-	case FORMAT_BULLET: return 186 - 32;
-	case FORMAT_POWERNEGATIVEONE: return 185 - 32;
-	case FORMAT_EURO: return 181 - 32;
-	case FORMAT_APPROX: return 184 - 32;
+
+	case FORMAT_AMINUSCULE: return 159 - 32;
 	case FORMAT_UP: return 160 - 32;
-	case FORMAT_RIGHT: return 175 - 32;
+	case FORMAT_SYMBOL_i: return 160 - 32;
+	case FORMAT_CENT: return 162 - 32;
+	case FORMAT_POUND: return 163 - 32;
+
+	case FORMAT_YEN: return 165 - 32;
+
+
+
+	case FORMAT_COPYRIGHT: return 169 - 32;
 	case FORMAT_DOWN: return 170 - 32;
-	case FORMAT_LEFT: return 190 - 32;
-	case FORMAT_SMALLUP: return 188 - 32;
-	case FORMAT_SMALLDOWN: return 189 - 32;
+	case FORMAT_LEFTGUILLEMET: return 171 - 32;
 	case FORMAT_TICK: return 172 - 32;
 	case FORMAT_CROSS: return 173 - 32;
+
+	case FORMAT_RIGHT: return 175 - 32;
+	case FORMAT_DEGREE: return 176 - 32;
+	case FORMAT_SYMBOL_RAILWAY: return 177 - 32;
+	case FORMAT_SQUARED: return 178 - 32;
+
+	case FORMAT_OPENQUOTES: return 180 - 32;
+	case FORMAT_EURO: return 181 - 32;
+	case FORMAT_SYMBOL_ROAD: return 182 - 32;
+	case FORMAT_SYMBOL_FLAG: return 183 - 32;
+	case FORMAT_APPROX: return 184 - 32;
+	case FORMAT_POWERNEGATIVEONE: return 185 - 32;
+	case FORMAT_BULLET: return 186 - 32;
+	case FORMAT_RIGHTGUILLEMET: return 187 - 32;
+	case FORMAT_SMALLUP: return 188 - 32;
+	case FORMAT_SMALLDOWN: return 189 - 32;
+	case FORMAT_LEFT: return 190 - 32;
+	case FORMAT_INVERTEDQUESTION: return 191 - 32;
 	default:
-		if (codepoint > 224) codepoint = 'W';
+		if (codepoint < 32 || codepoint >= 256) codepoint = '?';
 		return codepoint - 32;
 	}
 }
