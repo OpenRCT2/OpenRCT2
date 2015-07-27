@@ -1963,7 +1963,7 @@ int sub_6D2189(int* cost, uint8* ride_id){
 		entry_index = 0xFF;
 
 	int eax = 0, ebx, ecx = 0, edx, esi, edi = 0, ebp = 0;
-	ebx = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_3 | GAME_COMMAND_FLAG_5;
+	ebx = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
 	edx = track_design->type | (entry_index << 8);
 	esi = GAME_COMMAND_CREATE_RIDE;
 
@@ -3185,7 +3185,7 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 	RCT2_GLOBAL(0x009DEA60, sint16) = y + 16;
 	RCT2_GLOBAL(0x009DEA62, sint16) = z;
 
-	if (!(flags & GAME_COMMAND_FLAG_3)){
+	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)){
 		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode){
 			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 			*ebx = MONEY32_UNDEFINED;
@@ -3506,7 +3506,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	if (!sub_68B044()) {
 		return MONEY32_UNDEFINED;
 	}
-	if (!(flags & GAME_COMMAND_FLAG_3)) {
+	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)) {
 		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 			return MONEY32_UNDEFINED;
@@ -3649,7 +3649,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		// push baseZ and clearanceZ
 		int cur_z = baseZ * 8;
 
-		if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_3)) {
+		if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)) {
 			footpath_remove_litter(x, y, z);
 			// push bl bh??
 			if (rideTypeFlags & RIDE_TYPE_FLAG_18) {

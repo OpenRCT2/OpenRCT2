@@ -540,7 +540,7 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_increase_game_speed,
 	shortcut_open_cheat_window,
 	shortcut_remove_top_bottom_toolbar_toggle,
-	shortcut_open_chat_window
+	shortcut_open_chat_window,
 	NULL,
 	NULL,
 	NULL,

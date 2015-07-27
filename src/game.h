@@ -89,7 +89,8 @@ enum GAME_COMMAND {
 enum {
 	GAME_COMMAND_FLAG_APPLY = (1 << 0), // If this flag is set, the command is applied, otherwise only the cost is retrieved
 	GAME_COMMAND_FLAG_2 = (1 << 2),
-	GAME_COMMAND_FLAG_3 = (1 << 3),
+	GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED = (1 << 3), // Allow while paused
+	GAME_COMMAND_FLAG_4 = (1 << 4),
 	GAME_COMMAND_FLAG_5 = (1 << 5),
 	GAME_COMMAND_FLAG_GHOST = (1 << 6),
 	GAME_COMMAND_FLAG_NETWORKED = (1 << 31) // Game command is coming from network
