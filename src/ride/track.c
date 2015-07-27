@@ -2931,9 +2931,6 @@ int ride_to_td6(uint8 rideIndex){
 	track_design->flags = 0;
 	track_design->var_6C = 0;
 
-	if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS)
-		track_design->var_6C |= (1 << 31);
-
 	uint8* track_elements = RCT2_ADDRESS(0x9D821B, uint8);
 	memset(track_elements, 0, 8000);
 
@@ -3278,11 +3275,7 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 
 	rct_ride* ride = GET_RIDE(rideIndex);
 
-	ride->lifecycle_flags |= RIDE_LIFECYCLE_18;
-
-	if (track_design->var_6C & (1 << 31)){
-		ride->lifecycle_flags |= RIDE_LIFECYCLE_SIX_FLAGS;
-	}
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
 
 	ride->colour_scheme_type = track_design->version_and_colour_scheme & 3;
 

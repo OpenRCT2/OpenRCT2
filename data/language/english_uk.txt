@@ -3460,7 +3460,7 @@ STR_5120    :Finances
 STR_5121    :Research
 STR_5122    :Select rides by track type (like in RCT1)
 STR_5123    :Renew rides
-STR_5124    :No Six Flags
+STR_5124    :<not used anymore>
 STR_5125    :All destructable
 STR_5126    :Random title music
 STR_5127    :{SMALLFONT}{BLACK}Disable land elevation

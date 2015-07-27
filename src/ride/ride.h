@@ -393,8 +393,8 @@ enum {
 	RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK = 1 << 15,
 	RIDE_LIFECYCLE_16 = 1 << 16,
 	RIDE_LIFECYCLE_CABLE_LIFT = 1 << 17,
-	RIDE_LIFECYCLE_18 = 1 << 18,
-	RIDE_LIFECYCLE_SIX_FLAGS = 1 << 19
+	RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN = 1 << 18, // Used for the Award for Best Custom-designed Rides
+	RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED = 1 << 19 // Not used anymore
 };
 
 // Constants used by the ride_type->flags property at 0x008

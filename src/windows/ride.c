@@ -2003,8 +2003,6 @@ static void window_ride_main_invalidate(rct_window *w)
 	w->disabled_widgets &= ~((1 << 22) | (1 << 19));
 	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK))
 		w->disabled_widgets |= (1 << 22);
-	if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS)
-		w->disabled_widgets |= (1 << 19);
 
 	RCT2_GLOBAL(0x013CE952 + 0, uint16) = ride->name;
 	RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->name_arguments;
@@ -4774,15 +4772,14 @@ static void window_ride_measurements_invalidate(rct_window *w)
 		window_ride_measurements_widgets[WIDX_RESET_SELECTION].type = WWT_EMPTY;
 		window_ride_measurements_widgets[WIDX_SAVE_DESIGN].type = WWT_EMPTY;
 		window_ride_measurements_widgets[WIDX_CANCEL_DESIGN].type = WWT_EMPTY;
-		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS)) {
-			if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK)) {
-				window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].type = WWT_FLATBTN;
-				w->disabled_widgets |= (1 << WIDX_SAVE_TRACK_DESIGN);
-				if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED) {
-					if (ride->excitement != -1) {
-						w->disabled_widgets &= ~(1 << WIDX_SAVE_TRACK_DESIGN);
-						window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN;
-					}
+
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK)) {
+			window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].type = WWT_FLATBTN;
+			w->disabled_widgets |= (1 << WIDX_SAVE_TRACK_DESIGN);
+			if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED) {
+				if (ride->excitement != -1) {
+					w->disabled_widgets &= ~(1 << WIDX_SAVE_TRACK_DESIGN);
+					window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN;
 				}
 			}
 		}
@@ -4821,9 +4818,6 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 	} else {
 		ride = GET_RIDE(w->number);
 		
-		if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS)
-			gfx_draw_sprite(dpi, 23225, w->x + w->width - 53, w->y + w->height - 73, 0);
-
 		x = w->x + window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND].left + 4;
 		y = w->y + window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
