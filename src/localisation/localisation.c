@@ -800,7 +800,7 @@ void generate_string_file()
 utf8 *get_string_end(utf8 *text)
 {
 	int codepoint;
-	const utf8 *ch = text;
+	utf8 *ch = text;
 
 	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
 		if (utf8_is_format_code(codepoint)) {

@@ -44,8 +44,8 @@ enum {
 	RCT2_LANGUAGE_ID_SWEDISH,
 	RCT2_LANGUAGE_ID_8,
 	RCT2_LANGUAGE_ID_KOREAN,
-	RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL,
 	RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED,
+	RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL,
 	RCT2_LANGUAGE_ID_12,
 	RCT2_LANGUAGE_ID_PORTUGESE,
 	RCT2_LANGUAGE_ID_END = 255
@@ -65,6 +65,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
 	{ "it-IT",		"Italian",					"Italiano",					"italian",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ITALIAN				},	// LANGUAGE_ITALIAN
 	{ "pt-BR",		"Portuguese (BR)",			"Portug\xC3\xAAs (BR)",		"portuguese_br",			FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_PORTUGESE				},	// LANGUAGE_PORTUGUESE_BR
 	{ "zh-Hant",	"Chinese (Traditional)",	"Chinese (Traditional)",	"chinese_traditional",		"msjh.ttc",				RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL	},	// LANGUAGE_CHINESE_TRADITIONAL
+//	{ "kr-KR",		"Korean",					"Korean",					"english_uk",				"malgun.ttf",			RCT2_LANGUAGE_ID_KOREAN					},	// LANGUAGE_KOREAN
 };
 
 int gCurrentLanguage = LANGUAGE_UNDEFINED;
@@ -376,7 +377,21 @@ void utf8_trim_string(utf8 *text)
 	*last = 0;
 }
 
-static utf8 *convert_multibyte_charset(const char *src)
+static wchar_t convert_specific_language_character_to_unicode(int languageId, wchar_t codepoint)
+{
+	switch (languageId) {
+	case RCT2_LANGUAGE_ID_KOREAN:
+		return codepoint;
+	case RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL:
+		return encoding_convert_big5_to_unicode(codepoint);
+	case RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED:
+		return encoding_convert_gb2312_to_unicode(codepoint);
+	default:
+		return codepoint;
+	}
+}
+
+static utf8 *convert_multibyte_charset(const char *src, int languageId)
 {
 	int reservedLength = (strlen(src) * 4) + 1;
 	utf8 *buffer = malloc(reservedLength);
@@ -388,7 +403,7 @@ static utf8 *convert_multibyte_charset(const char *src)
 			uint8 b = *ch++;
 			uint16 codepoint = (a << 8) | b;
 
-			codepoint = encoding_convert_gb2312_to_unicode(codepoint - 0x8080);
+			codepoint = convert_specific_language_character_to_unicode(languageId, codepoint);
 			dst = utf8_write_codepoint(dst, codepoint);
 		} else {
 			*dst++ = *ch++;
@@ -397,6 +412,7 @@ static utf8 *convert_multibyte_charset(const char *src)
 	*dst++ = 0;
 	int actualLength = dst - buffer;
 	buffer = realloc(buffer, actualLength);
+
 	return buffer;
 }
 
@@ -480,7 +496,7 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 			free(*cacheString);
 		}
 		if (rct2_language_is_multibyte_charset(chosenLanguageId)) {
-			*cacheString = convert_multibyte_charset(pString);
+			*cacheString = convert_multibyte_charset(pString, chosenLanguageId);
 		} else {
 			*cacheString = win1252_to_utf8_alloc(pString);
 		}
@@ -503,7 +519,7 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 			free(*cacheString);
 		}
 		if (rct2_language_is_multibyte_charset(chosenLanguageId)) {
-			*cacheString = convert_multibyte_charset(pString);
+			*cacheString = convert_multibyte_charset(pString, chosenLanguageId);
 		} else {
 			*cacheString = win1252_to_utf8_alloc(pString);
 		}
