@@ -1213,7 +1213,7 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 
 		// Duration
 		weeksRemaining = (gMarketingCampaignDaysLeft[i] % 128);
-		gfx_draw_string_left(dpi, STR_X_WEEKS_REMAINING, &weeksRemaining, 0, x + 304, y);
+		gfx_draw_string_left(dpi, weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, &weeksRemaining, 0, x + 304, y);
 
 		y += 10;
 	}
