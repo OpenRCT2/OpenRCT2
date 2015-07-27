@@ -1173,9 +1173,9 @@ static void window_finances_marketing_invalidate(rct_window *w)
  */
 static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	int i, x, y;
+	int i, x, y, weeksRemaining;
 	rct_ride *ride;
-	rct_string_id shopString, weeksRemainingStringId;
+	rct_string_id shopString;
 
 	window_draw_widgets(w, dpi);
 	window_finances_draw_tab_images(dpi, w);
@@ -1212,8 +1212,8 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 		gfx_draw_string_left_clipped(dpi, STR_VOUCHERS_FOR_FREE_ENTRY_TO + i, (void*)0x013CE952, 0, x + 4, y, 296);
 
 		// Duration
-		weeksRemainingStringId = (STR_MARKETING_1_WEEK - 1) + (gMarketingCampaignDaysLeft[i] % 128);
-		gfx_draw_string_left(dpi, STR_MARKETING_WEEKS_REMAINING, &weeksRemainingStringId, 0, x + 304, y);
+		weeksRemaining = (gMarketingCampaignDaysLeft[i] % 128);
+		gfx_draw_string_left(dpi, STR_X_WEEKS_REMAINING, &weeksRemaining, 0, x + 304, y);
 
 		y += 10;
 	}
