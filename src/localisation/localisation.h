@@ -42,6 +42,7 @@ rct_string_id user_string_allocate(int base, const char *text);
 void user_string_free(rct_string_id id);
 bool is_user_string_id(rct_string_id stringId);
 
+utf8 *win1252_to_utf8_alloc(const char *src);
 int win1252_to_utf8(utf8string dst, const char *src, int maxBufferLength);
 
 #define MAX_USER_STRINGS 1024

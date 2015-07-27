@@ -1200,7 +1200,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct
 		ride = GET_RIDE(i);
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE) {
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = stringId == 1193 ? 0xFFFE : 0xFFFF;
-			gfx_draw_string(dpi, (char*)0x009DED72, w->colours[1] & 0x7F, 2, y);
+			gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1] & 0x7F, 2, y);
 		}
 
 		// Ride name

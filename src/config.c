@@ -138,6 +138,7 @@ config_enum_definition _languageEnum[] = {
 	{ "sv-SE", LANGUAGE_SWEDISH },
 	{ "it-IT", LANGUAGE_ITALIAN },
 	{ "pt-BR", LANGUAGE_PORTUGUESE_BR },
+	{ "zh-Hant", LANGUAGE_CHINESE_TRADITIONAL },
 	END_OF_ENUM
 };
 

@@ -933,7 +933,7 @@ bool ttf_initialise()
 			}
 		}
 
-		_ttfFontOffsetX = 0;
+		_ttfFontOffsetX = 1;
 		_ttfFontOffsetY = -3;
 		_ttfInitialised = true;
 	}
@@ -972,22 +972,27 @@ typedef struct {
 	uint16 font_sprite_base;
 } text_draw_info;
 
+static void ttf_draw_character_sprite(rct_drawpixelinfo *dpi, int codepoint, text_draw_info *info)
+{
+	uint32 charOffset = info->font_sprite_base + utf8_get_sprite_offset_for_codepoint(codepoint);
+	int charWidth = _spriteFontCharacterWidths[charOffset] & 0xFF;
+
+	if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW)) {
+		RCT2_GLOBAL(0x009ABDA4, uint8*) = (uint8*)&info->palette;
+		RCT2_GLOBAL(0x00EDF81C, uint32) = (IMAGE_TYPE_USE_PALETTE << 28);
+		gfx_draw_sprite_palette_set(dpi, SPR_CHAR_START + ((IMAGE_TYPE_USE_PALETTE << 28) | charOffset), info->x, info->y, info->palette, NULL);
+	}
+
+	info->x += charWidth;
+}
+
 static void ttf_draw_string_raw_sprite(rct_drawpixelinfo *dpi, const utf8 *text, text_draw_info *info)
 {
 	const utf8 *ch = text;
 	int codepoint;
 
 	while (!utf8_is_format_code(codepoint = utf8_get_next(ch, &ch))) {
-		uint32 charOffset = info->font_sprite_base + utf8_get_sprite_offset_for_codepoint(codepoint);
-		int charWidth = _spriteFontCharacterWidths[charOffset] & 0xFF;
-
-		if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW)) {
-			RCT2_GLOBAL(0x009ABDA4, uint8*) = (uint8*)&info->palette;
-			RCT2_GLOBAL(0x00EDF81C, uint32) = (IMAGE_TYPE_USE_PALETTE << 28);
-			gfx_draw_sprite_palette_set(dpi, SPR_CHAR_START + ((IMAGE_TYPE_USE_PALETTE << 28) | charOffset), info->x, info->y, info->palette, NULL);
-		}
-
-		info->x += charWidth;
+		ttf_draw_character_sprite(dpi, codepoint, info);
 	};
 }
 
@@ -1206,7 +1211,11 @@ static const utf8 *ttf_process_glyph_run(rct_drawpixelinfo *dpi, const utf8 *tex
 	const utf8 *lastCh;
 	int codepoint;
 
+	bool isTTF = info->flags & TEXT_DRAW_FLAG_TTF;
 	while (!utf8_is_format_code(codepoint = utf8_get_next(ch, &lastCh))) {
+		if (isTTF && utf8_should_use_sprite_for_codepoint(codepoint)) {
+			break;
+		}
 		ch = lastCh;
 	}
 	if (codepoint == 0) {
@@ -1233,9 +1242,8 @@ static void ttf_process_string(rct_drawpixelinfo *dpi, const utf8 *text, text_dr
 		if (utf8_is_format_code(codepoint)) {
 			ch = ttf_process_format_code(dpi, ch, info);
 		} else if (isTTF && utf8_should_use_sprite_for_codepoint(codepoint)) {
-			info->flags &= ~TEXT_DRAW_FLAG_TTF;
-			ch = ttf_process_glyph_run(dpi, ch, info);
-			info->flags |= TEXT_DRAW_FLAG_TTF;
+			ttf_draw_character_sprite(dpi, codepoint, info);
+			ch = nextCh;
 		} else {
 			ch = ttf_process_glyph_run(dpi, ch, info);
 		}
@@ -1246,9 +1254,9 @@ static void ttf_process_initial_colour(int colour, text_draw_info *info)
 {
 	if (colour != 254 && colour != 255) {
 		info->flags &= ~(1 | 2 | 4 | 8);
-		if (info->font_sprite_base < 0) {
+		if ((sint16)info->font_sprite_base < 0) {
 			info->flags |= 4;
-			if (info->font_sprite_base != -1) {
+			if ((sint16)info->font_sprite_base != -1) {
 				info->flags |= 8;
 			}
 			info->font_sprite_base = 224;

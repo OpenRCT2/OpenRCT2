@@ -33,20 +33,38 @@ typedef struct {
 	char *string_data;
 } language_data;
 
+enum {
+	RCT2_LANGUAGE_ID_ENGLISH_UK,
+	RCT2_LANGUAGE_ID_ENGLISH_US,
+	RCT2_LANGUAGE_ID_FRENCH,
+	RCT2_LANGUAGE_ID_GERMAN,
+	RCT2_LANGUAGE_ID_SPANISH,
+	RCT2_LANGUAGE_ID_ITALIAN,
+	RCT2_LANGUAGE_ID_DUTCH,
+	RCT2_LANGUAGE_ID_SWEDISH,
+	RCT2_LANGUAGE_ID_8,
+	RCT2_LANGUAGE_ID_KOREAN,
+	RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL,
+	RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED,
+	RCT2_LANGUAGE_ID_12,
+	RCT2_LANGUAGE_ID_PORTUGESE,
+	RCT2_LANGUAGE_ID_END = 255
+};
+
 const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
-	{ "",			 "",						 "",						"",							FONT_OPENRCT2_SPRITE },		// LANGUAGE_UNDEFINED
-	{ "en-GB",		"English (UK)",				"English (UK)",				"english_uk",				FONT_OPENRCT2_SPRITE },		// LANGUAGE_ENGLISH_UK
-	{ "en-US",		"English (US)",				"English (US)",				"english_us",				FONT_OPENRCT2_SPRITE },		// LANGUAGE_ENGLISH_US
-	{ "de-DE",		"German",					"Deutsch",					"german",					FONT_OPENRCT2_SPRITE },		// LANGUAGE_GERMAN
-	{ "nl-NL",		"Dutch",					"Nederlands",				"dutch",					FONT_OPENRCT2_SPRITE },		// LANGUAGE_DUTCH
-	{ "fr-FR",		"French",					"Fran\xC3\xA7" "ais",		"french",					FONT_OPENRCT2_SPRITE },		// LANGUAGE_FRENCH
-	{ "hu-HU",		"Hungarian",				"Magyar",					"hungarian",				FONT_OPENRCT2_SPRITE },		// LANGUAGE_HUNGARIAN
-	{ "pl-PL",		"Polish",					"Polski",					"polish",					FONT_OPENRCT2_SPRITE },		// LANGUAGE_POLISH
-	{ "es-ES",		"Spanish",					"Espa\xC3\xB1ol",			"spanish_sp",				FONT_OPENRCT2_SPRITE },		// LANGUAGE_SPANISH
-	{ "sv-SE",		"Swedish",					"Svenska",					"swedish",					FONT_OPENRCT2_SPRITE },		// LANGUAGE_SWEDISH
-	{ "it-IT",		"Italian",					"Italiano",					"italian",					FONT_OPENRCT2_SPRITE },		// LANGUAGE_ITALIAN
-	{ "pt-BR",		"Portuguese (BR)",			"Portug\xC3\xAAs (BR)",		"portuguese_br",			FONT_OPENRCT2_SPRITE },		// LANGUAGE_PORTUGUESE_BR
-	{ "zh-Hant",	"Chinese (Traditional)",	"Chinese (Traditional)",	"chinese_traditional",		"msjh.ttc" },				// LANGUAGE_CHINESE_TRADITIONAL
+	{ "",			 "",						 "",						"",							FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_UNDEFINED
+	{ "en-GB",		"English (UK)",				"English (UK)",				"english_uk",				FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_ENGLISH_UK
+	{ "en-US",		"English (US)",				"English (US)",				"english_us",				FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_US				},	// LANGUAGE_ENGLISH_US
+	{ "de-DE",		"German",					"Deutsch",					"german",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_GERMAN					},	// LANGUAGE_GERMAN
+	{ "nl-NL",		"Dutch",					"Nederlands",				"dutch",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_DUTCH					},	// LANGUAGE_DUTCH
+	{ "fr-FR",		"French",					"Fran\xC3\xA7" "ais",		"french",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_FRENCH					},	// LANGUAGE_FRENCH
+	{ "hu-HU",		"Hungarian",				"Magyar",					"hungarian",				FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_HUNGARIAN
+	{ "pl-PL",		"Polish",					"Polski",					"polish",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_POLISH
+	{ "es-ES",		"Spanish",					"Espa\xC3\xB1ol",			"spanish_sp",				FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_SPANISH				},	// LANGUAGE_SPANISH
+	{ "sv-SE",		"Swedish",					"Svenska",					"swedish",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_SWEDISH				},	// LANGUAGE_SWEDISH
+	{ "it-IT",		"Italian",					"Italiano",					"italian",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ITALIAN				},	// LANGUAGE_ITALIAN
+	{ "pt-BR",		"Portuguese (BR)",			"Portug\xC3\xAAs (BR)",		"portuguese_br",			FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_PORTUGESE				},	// LANGUAGE_PORTUGUESE_BR
+	{ "zh-Hant",	"Chinese (Traditional)",	"Chinese (Traditional)",	"chinese_traditional",		"msjh.ttc",				RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL	},	// LANGUAGE_CHINESE_TRADITIONAL
 };
 
 int gCurrentLanguage = LANGUAGE_UNDEFINED;
@@ -57,6 +75,12 @@ language_data _languageFallback = { 0 };
 language_data _languageCurrent = { 0 };
 
 const char **_languageOriginal = (char**)0x009BF2D4;
+
+const utf8 BlackUpArrowString[] = { 0xC2, 0x8E, 0xE2, 0x96, 0xB2, 0x00 };
+const utf8 BlackDownArrowString[] = { 0xC2, 0x8E, 0xE2, 0x96, 0xBC, 0x00 };
+const utf8 BlackLeftArrowString[] = { 0xC2, 0x8E, 0xE2, 0x97, 0x80, 0x00 };
+const utf8 BlackRightArrowString[] = { 0xC2, 0x8E, 0xE2, 0x96, 0xB6, 0x00 };
+const utf8 CheckBoxMarkString[] = { 0xE2, 0x9C, 0x93, 0x00 };
 
 static int language_open_file(const char *filename, language_data *language);
 static void language_close(language_data *language);
@@ -299,56 +323,141 @@ static void language_close(language_data *language)
 }
 
 const int OpenRCT2LangIdToObjectLangId[] = {
-	0, 0, 1, 3, 6, 2, 0, 0, 4, 7, 5, 13
+	0,
+	0,
+	1,
+	3,
+	6,
+	2,
+	0,
+	0,
+	4,
+	7,
+	5,
+	13
 };
+
+#define STEX_BASE_STRING_ID			3447
+#define NONSTEX_BASE_STRING_ID		3463
+#define MAX_OBJECT_CACHED_STRINGS	2048
 
 /* rct2: 0x0098DA16 */
 uint16 ObjectTypeStringTableCount[] = { 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3 };
 
+utf8 *_cachedObjectStrings[MAX_OBJECT_CACHED_STRINGS] = { NULL };
+
+void utf8_trim_string(utf8 *text)
+{
+	utf8 *src = text;
+	utf8 *dst = text;
+	utf8 *last = text;
+	int codepoint;
+
+	// Trim left
+	while ((codepoint = utf8_get_next(src, &src)) != 0) {
+		if (codepoint != ' ') {
+			dst = utf8_write_codepoint(dst, codepoint);
+			last = dst;
+			break;
+		}
+	}
+	if (codepoint != 0) {
+		// Trim right
+		while ((codepoint = utf8_get_next(src, &src)) != 0) {
+			dst = utf8_write_codepoint(dst, codepoint);
+			if (codepoint != ' ') {
+				last = dst;
+			}
+		}
+	}
+	*last = 0;
+}
+
+static utf8 *convert_multibyte_charset(const char *src)
+{
+	int reservedLength = (strlen(src) * 4) + 1;
+	utf8 *buffer = malloc(reservedLength);
+	utf8 *dst = buffer;
+	for (const uint8 *ch = src; *ch != 0;) {
+		if (*ch == 0xFF) {
+			ch++;
+			uint8 a = *ch++;
+			uint8 b = *ch++;
+			uint16 codepoint = (a << 8) | b;
+			dst = utf8_write_codepoint(dst, codepoint);
+		} else {
+			*dst++ = *ch++;
+		}
+	}
+	*dst++ = 0;
+	int actualLength = dst - buffer;
+	return realloc(buffer, actualLength);
+}
+
+static bool rct2_language_is_multibyte_charset(int languageId)
+{
+	switch (languageId) {
+	case RCT2_LANGUAGE_ID_KOREAN:
+	case RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL:
+	case RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED:
+		return true;
+	default:
+		return false;
+	}
+}
+
 /* rct2: 0x006A9E24*/
 rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/*ecx*/, int index/*ebx*/, int tableindex/*edx*/)
 {
-	char* pString = NULL;
+	uint8 languageId, chosenLanguageId;
+	char *pString = NULL;
 	int result = 0;
-	while (true)
-	{
-		uint8_t language_code = *(*pStringTable)++;
-		
-		if (language_code == 0xFF) //end of string table
-			break;
+	bool isBlank;
+	
+	while ((languageId = *(*pStringTable)++) != RCT2_LANGUAGE_ID_END) {
+		isBlank = true;
+
+		// Strings that are just ' ' are set as invalid langauges.
+		// But if there is no real string then it will set the string as
+		// the blank string
+		for (char *ch = *pStringTable; *ch != 0; ch++) {
+			if (!isblank(*ch)) {
+				isBlank = false;
+				break;
+			}
+		}
+
+		if (isBlank) languageId = 0xFE;
 
 		// This is the ideal situation. Language found
-		if (language_code == OpenRCT2LangIdToObjectLangId[gCurrentLanguage])//1)
-		{
+		if (languageId == LanguagesDescriptors[gCurrentLanguage].rct2_original_id) {
+			chosenLanguageId = languageId;
 			pString = *pStringTable;
 			result |= 1;
 		}
 
 		// Just in case always load english into pString
-		if (language_code == 0 && !(result & 1))
-		{
+		if (languageId == RCT2_LANGUAGE_ID_ENGLISH_UK && !(result & 1)) {
+			chosenLanguageId = languageId;
 			pString = *pStringTable;
 			result |= 2;
 		}
 
 		// Failing that fall back to whatever is first string
-		if (!(result & 7))
-		{
+		if (!(result & 7)) {
+			chosenLanguageId = languageId;
 			pString = *pStringTable;
-			result |= 4;
+			if (!isBlank) result |= 4;
 		}
 
-		// Skip over the actual string entry to get to the next
-		// entry
+		// Skip over the actual string entry to get to the next entry
 		while (*(*pStringTable)++ != 0);
 	}
 
 	// If not scenario text
-	if (RCT2_GLOBAL(0x9ADAFC, uint8_t) == 0)
-	{
-		int stringid = 3463;
-		for (int i = 0; i < type; i++)
-		{
+	if (RCT2_GLOBAL(0x009ADAFC, uint8) == 0) {
+		int stringid = NONSTEX_BASE_STRING_ID;
+		for (int i = 0; i < type; i++) {
 			int nrobjects = object_entry_group_counts[i];
 			int nrstringtables = ObjectTypeStringTableCount[i];
 			stringid += nrobjects * nrstringtables;
@@ -358,23 +467,48 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 		RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32) = stringid;
 		stringid += tableindex;
 
+		// cache UTF-8 string
+		int cacheStringOffset = stringid - STEX_BASE_STRING_ID;
+		utf8 **cacheString = &_cachedObjectStrings[cacheStringOffset];
+		if (*cacheString != NULL) {
+			free(*cacheString);
+		}
+		if (rct2_language_is_multibyte_charset(chosenLanguageId)) {
+			*cacheString = convert_multibyte_charset(pString);
+		} else {
+			*cacheString = win1252_to_utf8_alloc(pString);
+		}
+		utf8_trim_string(*cacheString);
+
 		//put pointer in stringtable
 		if (_languageCurrent.num_strings > stringid)
-			_languageCurrent.strings[stringid] = pString;
+			_languageCurrent.strings[stringid] = *cacheString;
 		// Until all string related functions are finished copy
 		// to old array as well.
-		_languageOriginal[stringid] = pString;
+		_languageOriginal[stringid] = *cacheString;
 		return stringid;
-	}
-	else
-	{
-		int stringid = 3447 + tableindex;
+	} else {
+		int stringid = STEX_BASE_STRING_ID + tableindex;
+
+		// cache UTF-8 string
+		int cacheStringOffset = stringid - STEX_BASE_STRING_ID;
+		utf8 **cacheString = &_cachedObjectStrings[cacheStringOffset];
+		if (*cacheString != NULL) {
+			free(*cacheString);
+		}
+		if (rct2_language_is_multibyte_charset(chosenLanguageId)) {
+			*cacheString = convert_multibyte_charset(pString);
+		} else {
+			*cacheString = win1252_to_utf8_alloc(pString);
+		}
+		utf8_trim_string(*cacheString);
+
 		//put pointer in stringtable
 		if (_languageCurrent.num_strings > stringid)
-			_languageCurrent.strings[stringid] = pString;
+			_languageCurrent.strings[stringid] = *cacheString;
 		// Until all string related functions are finished copy
 		// to old array as well.
-		_languageOriginal[stringid] = pString;
+		_languageOriginal[stringid] = *cacheString;
 		return stringid;
 	}
 }

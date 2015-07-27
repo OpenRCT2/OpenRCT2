@@ -881,7 +881,7 @@ void window_themes_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scroll
 				gfx_fill_rect_inset(dpi, _button_offset_x + 12 * j, y + _check_offset_y, _button_offset_x + 12 * j + 9, y + _check_offset_y + 10, w->colours[1], 0xE0);
 				if (get_colour_scheme_tab_by_index(i)->colours[j] & 0x80) {
 					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = -1;
-					gfx_draw_string(dpi, (char*)0x009DED72, w->colours[1] & 0x7F, _button_offset_x + 12 * j, y + _check_offset_y);
+					gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1] & 0x7F, _button_offset_x + 12 * j, y + _check_offset_y);
 				}
 
 			}

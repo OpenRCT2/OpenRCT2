@@ -48,6 +48,7 @@ typedef struct {
 	const utf8 *native_name;
 	const utf8 *path;
 	const utf8 *font;
+	uint8 rct2_original_id;
 } language_descriptor;
 
 extern const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT];
@@ -55,6 +56,12 @@ extern const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT];
 extern int gCurrentLanguage;
 extern bool gUseTrueTypeFont;
 extern const utf8 *gTrueTypeFontPath;
+
+extern const utf8 BlackUpArrowString[];
+extern const utf8 BlackDownArrowString[];
+extern const utf8 BlackLeftArrowString[];
+extern const utf8 BlackRightArrowString[];
+extern const utf8 CheckBoxMarkString[];
 
 const char *language_get_string(rct_string_id id);
 int language_open(int id);

@@ -833,6 +833,14 @@ int get_string_length(const utf8* text)
 	return ch - text - 1;
 }
 
+utf8 *win1252_to_utf8_alloc(const char *src)
+{
+	int reservedSpace = (strlen(src) * 4) + 1;
+	utf8 *result = malloc(reservedSpace);
+	int actualSpace = win1252_to_utf8(result, src, reservedSpace);
+	return (utf8*)realloc(result, actualSpace);
+}
+
 int win1252_to_utf8(utf8string dst, const char *src, int maxBufferLength)
 {
 	utf16 stackBuffer[256];
