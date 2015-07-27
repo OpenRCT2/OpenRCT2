@@ -287,7 +287,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	for (int line = 0; line <= no_lines; ++line){
 		gfx_draw_string(dpi, wrap_pointer, w->colours[1], w->x + 12, y);
 
-		int string_length = get_string_length(wrap_pointer);
+		int string_length = get_string_size(wrap_pointer) - 1;
 
 		if (!cur_drawn && (gTextInputCursorPosition <= char_count + string_length)){
 			// Make a copy of the string for measuring the width.

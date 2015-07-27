@@ -105,75 +105,33 @@ void gfx_load_character_widths(){
 	}
 }
 
-/* rct2: 0x006C23B1 */
-int gfx_get_string_width_new_lined(char* buffer){
-	// Current font sprites
-	uint16* current_font_sprite_base;
-	// Width of string
-	int width = 0, max_width = 0, no_lines = 1;
-	rct_g1_element g1_element;
+/**
+ *
+ *  rct2: 0x006C23B1
+ */
+int gfx_get_string_width_new_lined(utf8 *text)
+{
+	utf8 *ch = text;
+	utf8 *firstCh = text;
+	utf8 *nextCh;
+	utf8 backup;
+	int codepoint;
 
-	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
-
-	for (uint8* curr_char = (uint8*)buffer; *curr_char != (uint8)0; curr_char++) {
-
-		if (*curr_char >= 0x20) {
-			width += _spriteFontCharacterWidths[*current_font_sprite_base + (*curr_char - 0x20)];
-			continue;
+	int width = 0;
+	int maxWidth = 0;
+	while ((codepoint = utf8_get_next(ch, &nextCh)) != 0) {
+		if (codepoint == FORMAT_NEWLINE || codepoint == FORMAT_NEWLINE_SMALLER) {
+			backup = *nextCh;
+			*nextCh = 0;
+			maxWidth = max(maxWidth, gfx_get_string_width(firstCh));
+			*nextCh = backup;
+			firstCh = nextCh;
 		}
-		switch (*curr_char) {
-		case FORMAT_MOVE_X:
-			curr_char++;
-			width = *curr_char;
-			break;
-		case FORMAT_ADJUST_PALETTE:
-		case 3:
-		case 4:
-			curr_char++;
-			break;
-		case FORMAT_NEWLINE:
-		case FORMAT_NEWLINE_SMALLER:
-			no_lines++;
-			max_width = max(max_width, width);
-			width = 0;
-			break;
-		case FORMAT_TINYFONT:
-			*current_font_sprite_base = 0x1C0;
-			break;
-		case FORMAT_BIGFONT:
-			*current_font_sprite_base = 0x2A0;
-			break;
-		case FORMAT_MEDIUMFONT:
-			*current_font_sprite_base = 0x0E0;
-			break;
-		case FORMAT_SMALLFONT:
-			*current_font_sprite_base = 0;
-			break;
-		case FORMAT_OUTLINE:
-		case FORMAT_OUTLINE_OFF:
-		case FORMAT_WINDOW_COLOUR_1:
-		case FORMAT_WINDOW_COLOUR_2:
-		case FORMAT_WINDOW_COLOUR_3:
-		case 0x10:
-			continue;
-		case FORMAT_INLINE_SPRITE:
-			g1_element = g1Elements[*((uint32*)(curr_char + 1)) & 0x7FFFF];
-			width += g1_element.width;
-			curr_char += 4;
-			break;
-		default:
-			if (*curr_char <= 0x16) { //case 0x11? FORMAT_NEW_LINE_X_Y
-				curr_char += 2;
-				continue;
-			}
-			curr_char += 4;//never happens?
-			break;
-		}
+		ch = nextCh;
 	}
+	maxWidth = max(maxWidth, gfx_get_string_width(firstCh));
 
-	if (width > max_width)
-		return width;
-	return max_width;
+	return maxWidth;
 }
 
 /**
@@ -267,6 +225,14 @@ int gfx_wrap_string(utf8 *text, int width, int *outNumLines, int *outFontHeight)
 		if (codepoint == ' ') {
 			currentWord = ch;
 			currentWidth = lineWidth;
+		} else if (codepoint == FORMAT_NEWLINE) {
+			*ch++ = 0;
+			maxWidth = max(maxWidth, lineWidth);
+			(*outNumLines)++;
+			lineWidth = 0;
+			currentWord = NULL;
+			firstCh = ch;
+			continue;
 		}
 
 		uint8 saveCh = *lastCh;
@@ -473,8 +439,8 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
 		int half_width = gfx_get_string_width(buffer) / 2;
 		gfx_draw_string(dpi, buffer, 0xFE, x - half_width, line_y);
 
-		buffer += get_string_length(buffer) + 1;
-        line_y += line_height;
+		buffer = get_string_end(buffer) + 1;
+		line_y += line_height;
 	}
 
 	return line_y - y;
@@ -494,45 +460,41 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
 int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int y, int width, int format, int colour)
 {
 	// font height might actually be something else
-	int font_height, line_height, line_width, line_y, num_lines;
+	int fontSpriteBase, lineHeight, lineY, numLines;
 
 	// Location of font sprites
 	uint16* current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
-	*current_font_sprite_base = 0xE0;
+	*current_font_sprite_base = FONT_SPRITE_BASE_MEDIUM;
 
 	char* buffer = RCT2_ADDRESS(0x009C383D, char);
-
 	gfx_draw_string(dpi, buffer, colour, dpi->x, dpi->y);
-
 	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
-
 	format_string(buffer, format, args);
 
-	*current_font_sprite_base = 0xE0;
-
-	// Line width unused here
-	line_width = gfx_wrap_string(buffer, width, &num_lines, &font_height);
-
-	line_height = 0x0A;
-
-	if (font_height > 0xE0) {
-		line_height = 6;
-		if (font_height != 0x1C0) {
-			line_height = 0x12;
-		}
+	*current_font_sprite_base = FONT_SPRITE_BASE_MEDIUM;
+	gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
+	switch (fontSpriteBase) {
+	case FONT_SPRITE_BASE_TINY:
+		lineHeight = 6;
+		break;
+	default:
+	case FONT_SPRITE_BASE_SMALL:
+	case FONT_SPRITE_BASE_MEDIUM:
+		lineHeight = 10;
+		break;
+	case FONT_SPRITE_BASE_BIG:
+		lineHeight = 18;
+		break;
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
-
-	line_y = y;
-
-	for (int line = 0; line <= num_lines; ++line) {
-		gfx_draw_string(dpi, buffer, 0xFE, x, line_y);
-		buffer += get_string_length(buffer) + 1;
-        line_y += line_height;
+	lineY = y;
+	for (int line = 0; line <= numLines; ++line) {
+		gfx_draw_string(dpi, buffer, 0xFE, x, lineY);
+		buffer = get_string_end(buffer) + 1;
+		lineY += lineHeight;
 	} 
-
-	return line_y - y;
+	return lineY - y;
 }
 
 /**

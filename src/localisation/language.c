@@ -137,6 +137,13 @@ utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint)
 	}
 }
 
+bool utf8_is_codepoint_start(utf8 *text)
+{
+	if ((text[0] & 0x80) == 0) return true;
+	if ((text[0] & 0xC0) == 0xC0) return true;
+	return false;
+}
+
 const char *language_get_string(rct_string_id id)
 {
 	const char *openrctString = NULL;

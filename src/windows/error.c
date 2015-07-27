@@ -92,14 +92,14 @@ void window_error_open(rct_string_id title, rct_string_id message)
 	*dst++ = FORMAT_BLACK;
 	if (title != (rct_string_id)STR_NONE) {
 		format_string(dst, title, args);
-		dst += get_string_length(dst);
+		dst += get_string_size(dst) - 1;
 	}
 
 	// Format the message
 	if (message != (rct_string_id)STR_NONE) {
 		*dst++ = FORMAT_NEWLINE;
 		format_string(dst, message, args);
-		dst += get_string_length(dst);
+		dst += get_string_size(dst) - 1;
 	}
 
 	log_verbose("show error, %s", _window_error_text + 1);

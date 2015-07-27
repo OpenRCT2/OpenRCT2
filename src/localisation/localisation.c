@@ -128,7 +128,8 @@ const char *format_get_token(uint32 code)
 bool utf8_is_format_code(int codepoint)
 {
 	if (codepoint < 32) return true;
-	if (codepoint >= 123 && codepoint <= 155) return true;
+	if (codepoint >= FORMAT_ARGUMENT_CODE_START && codepoint <= FORMAT_ARGUMENT_CODE_END) return true;
+	if (codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END) return true;
 	return false;
 }
 
@@ -194,6 +195,23 @@ int utf8_get_sprite_offset_for_codepoint(int codepoint)
 	default:
 		if (codepoint < 32 || codepoint >= 256) codepoint = '?';
 		return codepoint - 32;
+	}
+}
+
+int utf8_get_format_code_arg_length(int codepoint)
+{
+	switch (codepoint) {
+	case FORMAT_MOVE_X:
+	case FORMAT_ADJUST_PALETTE:
+	case 3:
+	case 4:
+		return 1;
+	case FORMAT_NEWLINE_X_Y:
+		return 2;
+	case FORMAT_INLINE_SPRITE:
+		return 4;
+	default:
+		return 0;
 	}
 }
 
@@ -809,70 +827,46 @@ void generate_string_file()
 	fclose(f);
 }
 
-utf8 *get_string_end(utf8 *text)
-{
-	int codepoint;
-	utf8 *ch = text;
-
-	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
-		if (utf8_is_format_code(codepoint)) {
-			switch (codepoint) {
-			case FORMAT_MOVE_X:
-			case FORMAT_ADJUST_PALETTE:
-			case 3:
-			case 4:
-				ch++;
-				break;
-			case FORMAT_INLINE_SPRITE:
-				ch += 4;
-				break;
-			default:
-				if (codepoint <= 22) {
-					ch += 2;
-				} else {
-					ch += 4;
-				}
-				break;
-			}
-		}
-	}
-	return ch - 1;
-}
-
 /**
-*  Return the length of the string in buffer.
-*  note you can't use strlen as there can be inline sprites!
-*
-* buffer (esi)
-*/
-int get_string_length(const utf8* text)
+ *  Returns a pointer to the null terminator of the given UTF-8 string.
+ */
+utf8 *get_string_end(const utf8 *text)
 {
 	int codepoint;
 	const utf8 *ch = text;
 
 	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
+		int argLength = utf8_get_format_code_arg_length(codepoint);
+		ch += argLength;
+	}
+	return (utf8*)(ch - 1);
+}
+
+/**
+ *  Return the number of bytes (including the null terminator) in the given UTF-8 string.
+ */
+size_t get_string_size(const utf8 *text)
+{
+	return get_string_end(text) - text + 1;
+}
+
+/**
+ *  Return the number of visible characters (excludes format codes) in the given UTF-8 string.
+ */
+int get_string_length(const utf8 *text)
+{
+	int codepoint;
+	const utf8 *ch = text;
+
+	int count = 0;
+	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
 		if (utf8_is_format_code(codepoint)) {
-			switch (codepoint) {
-			case FORMAT_MOVE_X:
-			case FORMAT_ADJUST_PALETTE:
-			case 3:
-			case 4:
-				ch++;
-				break;
-			case FORMAT_INLINE_SPRITE:
-				ch += 4;
-				break;
-			default:
-				if (codepoint <= 22) {
-					ch += 2;
-				} else {
-					ch += 4;
-				}
-				break;
-			}
+			ch += utf8_get_format_code_arg_length(codepoint);
+		} else {
+			count++;
 		}
 	}
-	return ch - text - 1;
+	return count;
 }
 
 utf8 *win1252_to_utf8_alloc(const char *src)

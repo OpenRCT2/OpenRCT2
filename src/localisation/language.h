@@ -72,5 +72,6 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 
 uint32 utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr);
 utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint);
+bool utf8_is_codepoint_start(utf8 *text);
 
 #endif
