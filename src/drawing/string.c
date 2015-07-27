@@ -299,121 +299,109 @@ int gfx_clip_string(utf8 *text, int width)
  * num_lines (edi) - out
  * font_height (ebx) - out
  */
-int gfx_wrap_string(char* buffer, int width, int* num_lines, int* font_height)
+int gfx_wrap_string(utf8 *text, int width, int *num_lines, int *font_height)
 {
-	unsigned int line_width = 0;
-	unsigned int max_width = 0;
-	rct_g1_element g1_element;
+	int lineWidth = 0;
+	int maxWidth = 0;
+	rct_g1_element g1Element;
 
     *num_lines = 0;
 	*font_height = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 
 	// Pointer to the start of the current word
-	unsigned char* curr_word = NULL;
+	utf8 *currentWord = NULL;
 	// Width of line up to current word
-	unsigned int curr_width;
+	int currentWidth;
 
-	for (unsigned char* curr_char = buffer; *curr_char != (uint8)0; curr_char++) {
-
+	utf8 *ch = text;
+	utf8 *lastCh;
+	int codepoint;
+	while ((codepoint = utf8_get_next(ch, &lastCh)) != 0) {
 		// Remember start of current word and line width up to this word
-        if (*curr_char == ' ') {
-            curr_word = curr_char;
-            curr_width = line_width;
-        }
-
-		// 5 is RCT2 new line?
-        if (*curr_char != 5) {
-			if (*curr_char < ' ') {
-				switch(*curr_char) {
-				case FORMAT_MOVE_X:
-				case FORMAT_ADJUST_PALETTE:
-				case 3:
-				case 4:
-					curr_char++;
-					continue;
-				case FORMAT_NEWLINE:
-				case FORMAT_NEWLINE_SMALLER:
-					continue;
-				case FORMAT_TINYFONT:
-					*font_height = 0x1C0;
-					continue;
-				case FORMAT_BIGFONT:
-					*font_height = 0x2A0;
-					continue;
-				case FORMAT_MEDIUMFONT:
-					*font_height = 0xE0;
-					continue;
-				case FORMAT_SMALLFONT:
-					*font_height = 0;
-					continue;
-				case FORMAT_OUTLINE:
-				case FORMAT_OUTLINE_OFF:
-				case FORMAT_WINDOW_COLOUR_1:
-				case FORMAT_WINDOW_COLOUR_2:
-				case FORMAT_WINDOW_COLOUR_3:
-				case 0x10:
-					continue;
-				case FORMAT_INLINE_SPRITE:
-					g1_element = g1Elements[*((uint32*)(curr_char + 1)) & 0x7FFFF];
-					line_width += g1_element.width;
-					curr_char += 4;
-					break;
-				default:
-					if (*curr_char <= 0x16) {
-						curr_char += 2;
-						continue;
-					}
-					curr_char += 4;
-					continue;
-				}
-			}
-
-			line_width += _spriteFontCharacterWidths[*font_height + (*curr_char - 0x20)];
-
-			if ((int)line_width <= width) {
-				continue;
-			}
-			if (curr_word == 0) {
-				curr_char--;
-				unsigned char* old_char = curr_char;
-				unsigned char swap_char = 0;
-				unsigned char temp;
-				// Insert NULL at current character
-				// Aboslutely no guarantee that this won't overrun!
-				do {
-					temp = swap_char;
-					swap_char = *curr_char;
-					*curr_char = temp;
-					curr_char++;
-				} while(swap_char != 0);
-
-				*curr_char = swap_char;
-				curr_char = old_char;
-				curr_char++;
-				*num_lines += 1;
-
-				if (line_width > max_width) {
-					max_width = line_width;
-				}
-				line_width = 0;
-				curr_word = 0;
-				continue;
-			}
-			curr_char = curr_word;
-			line_width = curr_width;
-        }
-
-        *num_lines += 1;
-        *curr_char = 0;
-
-		if (line_width > max_width) {
-			max_width = line_width;
+		if (codepoint == ' ') {
+			currentWord = ch;
+			currentWidth = lineWidth;
 		}
-		line_width = 0;
-		curr_word = 0;
+
+		if (utf8_is_format_code(codepoint)) {
+			switch (codepoint) {
+			case FORMAT_MOVE_X:
+			case FORMAT_ADJUST_PALETTE:
+			case 3:
+			case 4:
+				ch++;
+				break;
+			case FORMAT_NEWLINE:
+			case FORMAT_NEWLINE_SMALLER:
+				*num_lines += 1;
+				*ch = 0;
+				if (lineWidth > maxWidth) {
+					maxWidth = lineWidth;
+				}
+				lineWidth = 0;
+				currentWord = 0;
+				break;
+			case FORMAT_TINYFONT:
+				*font_height = FONT_SPRITE_BASE_TINY;
+				break;
+			case FORMAT_SMALLFONT:
+				*font_height = FONT_SPRITE_BASE_SMALL;
+				break;
+			case FORMAT_MEDIUMFONT:
+				*font_height = FONT_SPRITE_BASE_MEDIUM;
+				break;
+			case FORMAT_BIGFONT:
+				*font_height = FONT_SPRITE_BASE_BIG;
+				break;
+			case FORMAT_OUTLINE:
+			case FORMAT_OUTLINE_OFF:
+			case FORMAT_WINDOW_COLOUR_1:
+			case FORMAT_WINDOW_COLOUR_2:
+			case FORMAT_WINDOW_COLOUR_3:
+			case 0x10:
+				break;
+			case FORMAT_INLINE_SPRITE:
+				g1Element = g1Elements[*((uint32*)(ch + 1)) & 0x7FFFF];
+				lineWidth += g1Element.width;
+				lastCh += 4;
+				break;
+			default:
+				if (codepoint < FORMAT_COLOUR_CODE_START || codepoint > FORMAT_COLOUR_CODE_END) {
+					if (codepoint <= 0x16) {
+						lastCh += 2;
+					} else {
+						lastCh += 4;
+					}
+				}
+				break;
+			}
+			ch = lastCh;
+		} else {
+			lineWidth += _spriteFontCharacterWidths[*font_height + utf8_get_sprite_offset_for_codepoint(codepoint)];
+			if ((int)lineWidth <= width) {
+				ch = lastCh;
+			} else if (currentWord == NULL) {
+				// Single word is longer than line, insert null terminator
+				utf8 *end = get_string_end(ch);
+				memmove(ch + 1, ch, end - ch + 1);
+				*ch++ = 0;
+
+				maxWidth = max(maxWidth, lineWidth);
+				*num_lines += 1;
+				lineWidth = 0;
+				currentWord = NULL;
+			} else {
+				ch = currentWord;
+				*ch++ = 0;
+
+				maxWidth = max(maxWidth, currentWidth);
+				*num_lines += 1;
+				lineWidth = 0;
+				currentWord = NULL;
+			}
+		}
 	}
-	if (max_width == 0)return line_width;
-	return max_width;
+	return maxWidth == 0 ? lineWidth : maxWidth;
 }
 
 
@@ -1018,15 +1006,6 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
 		break;
 	}
 
-	int fontStyle = TTF_GetFontStyle(font);
-	int newFontStyle = 0;
-	if (info->flags & TEXT_DRAW_FLAG_OUTLINE) {
-		newFontStyle |= TTF_STYLE_BOLD;
-	}
-	if (fontStyle != newFontStyle) {
-		TTF_SetFontStyle(font, newFontStyle);
-	}
-
 	if (info->flags & TEXT_DRAW_FLAG_NO_DRAW) {
 		int width, height;
 
@@ -1079,7 +1058,12 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
 		int dstScanSkip = dpi->width + dpi->pitch - width;
 		for (int yy = 0; yy < height; yy++) {
 			for (int xx = 0; xx < width; xx++) {
-				if (*src != 0) *dst = colour;
+				if (*src != 0) {
+					*dst = colour;
+					if (info->flags & TEXT_DRAW_FLAG_OUTLINE) {
+						*(dst + width + dstScanSkip + 1) = 0;
+					}
+				}
 				src++;
 				dst++;
 			}

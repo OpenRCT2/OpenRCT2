@@ -58,6 +58,7 @@
     <ClCompile Include="..\src\interface\widget.c" />
     <ClCompile Include="..\src\interface\window.c" />
     <ClCompile Include="..\src\intro.c" />
+    <ClCompile Include="..\src\localisation\convert.c" />
     <ClCompile Include="..\src\localisation\currency.c" />
     <ClCompile Include="..\src\localisation\date.c" />
     <ClCompile Include="..\src\localisation\language.c" />

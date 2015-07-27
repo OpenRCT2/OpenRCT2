@@ -180,7 +180,7 @@ int utf8_get_sprite_offset_for_codepoint(int codepoint)
 	case FORMAT_TICK: return 172 - 32;
 	case FORMAT_CROSS: return 173 - 32;
 	default:
-		if (codepoint > 224) codepoint = ' ';
+		if (codepoint > 224) codepoint = 'W';
 		return codepoint - 32;
 	}
 }
@@ -795,6 +795,36 @@ void generate_string_file()
 	}
 
 	fclose(f);
+}
+
+utf8 *get_string_end(utf8 *text)
+{
+	int codepoint;
+	const utf8 *ch = text;
+
+	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
+		if (utf8_is_format_code(codepoint)) {
+			switch (codepoint) {
+			case FORMAT_MOVE_X:
+			case FORMAT_ADJUST_PALETTE:
+			case 3:
+			case 4:
+				ch++;
+				break;
+			case FORMAT_INLINE_SPRITE:
+				ch += 4;
+				break;
+			default:
+				if (codepoint <= 22) {
+					ch += 2;
+				} else {
+					ch += 4;
+				}
+				break;
+			}
+		}
+	}
+	return ch - 1;
 }
 
 /**

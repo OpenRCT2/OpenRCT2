@@ -99,6 +99,9 @@ uint32 utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr)
 	} else if ((char_ptr[0] & 0xF0) == 0xE0) {
 		result = ((char_ptr[0] & 0x0F) << 12) | ((char_ptr[1] & 0x3F) << 6) | (char_ptr[2] & 0x3F);
 		numBytes = 3;
+	} else if ((char_ptr[0] & 0xF8) == 0xF0) {
+		result = ((char_ptr[0] & 0x07) << 18) | ((char_ptr[1] & 0x3F) << 12) | ((char_ptr[1] & 0x3F) << 6) | (char_ptr[2] & 0x3F);
+		numBytes = 4;
 	} else {
 		// TODO 4 bytes
 		result = ' ';
@@ -384,6 +387,8 @@ static utf8 *convert_multibyte_charset(const char *src)
 			uint8 a = *ch++;
 			uint8 b = *ch++;
 			uint16 codepoint = (a << 8) | b;
+
+			codepoint = encoding_convert_gb2312_to_unicode(codepoint - 0x8080);
 			dst = utf8_write_codepoint(dst, codepoint);
 		} else {
 			*dst++ = *ch++;
@@ -391,7 +396,8 @@ static utf8 *convert_multibyte_charset(const char *src)
 	}
 	*dst++ = 0;
 	int actualLength = dst - buffer;
-	return realloc(buffer, actualLength);
+	buffer = realloc(buffer, actualLength);
+	return buffer;
 }
 
 static bool rct2_language_is_multibyte_charset(int languageId)

@@ -35,6 +35,7 @@ void format_string_raw(char *dest, char *src, void *args);
 void format_string_to_upper(char *dest, rct_string_id format, void *args);
 void generate_string_file();
 void error_string_quit(int error, rct_string_id format);
+utf8 *get_string_end(utf8 *text);
 int get_string_length(const utf8* buffer);
 
 void user_string_clear_all();
@@ -44,6 +45,8 @@ bool is_user_string_id(rct_string_id stringId);
 
 utf8 *win1252_to_utf8_alloc(const char *src);
 int win1252_to_utf8(utf8string dst, const char *src, int maxBufferLength);
+
+wchar_t encoding_convert_gb2312_to_unicode(wchar_t gb2312);
 
 #define MAX_USER_STRINGS 1024
 #define USER_STRING_MAX_LENGTH 32
