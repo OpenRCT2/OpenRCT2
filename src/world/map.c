@@ -38,6 +38,70 @@
 #include "scenery.h"
 
 
+typedef struct {
+
+	int16_t top;	// -1 for empty bin
+
+	int16_t collision;	// -1 for no collision
+	rct_map_element *element_0;
+} rct_map_clear_scenery_table_node;
+
+// Max 7 x 7 tiles.
+//
+// TODO: Enforce this limit or dynamically allocate the table when the tool size is changed.
+//
+#define RCT2_MAP_CLEAR_SCENERY_TABLE_SIZE		64	// Needs to be a power of 2
+
+int gMapClearSceneryEnableMemos;
+int gMapClearSceneryNodeCount;
+rct_map_clear_scenery_table_node gMapClearSceneryTable[RCT2_MAP_CLEAR_SCENERY_TABLE_SIZE];
+
+static void map_clear_scenery_table_reset()
+{
+	for(int i = 0; i < RCT2_MAP_CLEAR_SCENERY_TABLE_SIZE; ++i){
+		gMapClearSceneryTable[i].top = -1;
+	}
+	gMapClearSceneryNodeCount = 0;
+}
+
+// Returns true if the entry was new, false otherwise.
+static bool map_clear_scenery_table_add_memo(rct_map_element *element_0)
+{
+	rct_map_clear_scenery_table_node *bin, *itr;
+	uint16_t hash = (uint16_t)(((uintptr_t)element_0) & 0xFFFF);
+	uint16_t bin_index = hash & (RCT2_MAP_CLEAR_SCENERY_TABLE_SIZE - 1);
+
+	bin = &gMapClearSceneryTable[bin_index];
+	if(bin->top >= 0){
+		itr = &gMapClearSceneryTable[bin->top];
+		do{
+			if(element_0 == itr->element_0){
+				return true;
+			}
+			if(itr->collision < 0){
+				break;
+			}
+			itr = &gMapClearSceneryTable[itr->collision];
+		}while(true);
+	}
+
+	// Not in the table.
+	if(RCT2_MAP_CLEAR_SCENERY_TABLE_SIZE == gMapClearSceneryNodeCount){
+		log_error("map_clear_scenery_table_add_memo: Too many memos!\n");
+	}
+
+	// Allocate a new node and push it into the bin.
+	itr = &gMapClearSceneryTable[gMapClearSceneryNodeCount];
+
+	itr->collision = bin->top;
+	bin->top = gMapClearSceneryNodeCount;
+	itr->element_0 = element_0;
+
+	++gMapClearSceneryNodeCount;
+
+	return false;
+}
+
 const rct_xy16 TileDirectionDelta[] = {
 	{ -32,   0 },
 	{   0, +32 },
@@ -793,6 +857,52 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 	firstTile.x = x - firstTile.x;
 	firstTile.y = y - firstTile.y;
 
+	bool already_accounted_for = false;
+
+	if(gMapClearSceneryEnableMemos){
+
+		// Memoize the address of the entry on tile 0
+		//
+		rct_xyz16 tile_0 = {
+			.x = scenery_entry->large_scenery.tiles[0].x_offset,
+			.y = scenery_entry->large_scenery.tiles[0].y_offset,
+			.z = scenery_entry->large_scenery.tiles[0].z_offset
+			};
+		rotate_map_coordinates(&tile_0.x, &tile_0.y, map_element_direction);
+		tile_0.x += firstTile.x;
+		tile_0.y += firstTile.y;
+		tile_0.z += firstTile.z;
+
+		rct_map_element* sceneryElement = map_get_first_element_at(tile_0.x / 32, tile_0.y / 32);
+		uint8 tile_not_found = 1;
+		do{
+			if(MAP_ELEMENT_TYPE_SCENERY_MULTIPLE != map_element_get_type(sceneryElement))
+				continue;
+
+			if((sceneryElement->type & MAP_ELEMENT_DIRECTION_MASK) != map_element_direction)
+				continue;
+
+			if(0 != (sceneryElement->properties.scenerymultiple.type >> 10))
+				continue;
+
+			if(sceneryElement->base_height != (tile_0.z / 8))
+				continue;
+
+			tile_not_found = 0;
+			break;
+		} while (!map_element_is_last_for_tile(sceneryElement++));
+
+		if(tile_not_found){
+			log_error("Tile not found when trying to remove element!");
+		}
+
+		already_accounted_for = map_clear_scenery_table_add_memo(sceneryElement);
+
+	}// if(gMapClearSceneryEnableMemos)
+
+
+	// Remove/examine all tiles comprising the item.
+	//
 	for (int i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; i++){
 
 		rct_xyz16 currentTile = {
@@ -853,6 +963,10 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
 		*ebx = 0;
 	}
+	if(already_accounted_for){
+		*ebx = 0;
+	}
+
 	return;
 }
 
@@ -1261,6 +1375,7 @@ restart_from_beginning:
 	return totalCost;
 }
 
+
 money32 map_clear_scenery(int x0, int y0, int x1, int y1, int flags)
 {
 	int x, y, z;
@@ -1280,6 +1395,23 @@ money32 map_clear_scenery(int x0, int y0, int x1, int y1, int flags)
 	x1 = min(x1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
 	y1 = min(y1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
 
+	// To correctly account for the removal cost of large
+	// scenery objects (more than one tile), the addresses
+	// of their element-0 entries are memoized in a global
+	// table.
+	//
+	// The only function that needs to do this is
+	// game_command_remove_large_scenery.
+	//
+	// Ideally, tools like this would act on local
+	// copies of the target area on the map, or there
+	// would be a set of utility flags in scenery
+	// entries allowing the same functionality.
+
+	map_clear_scenery_table_reset();
+
+	gMapClearSceneryEnableMemos = 1;
+
 	totalCost = 0;
 	for (y = y0; y <= y1; y += 32) {
 		for (x = x0; x <= x1; x += 32) {
@@ -1290,6 +1422,11 @@ money32 map_clear_scenery(int x0, int y0, int x1, int y1, int flags)
 			totalCost += cost;
 		}
 	}
+
+	// Disable memoization so removal works
+	// correctly elsewhere.
+	//
+	gMapClearSceneryEnableMemos = 0;
 
 	return totalCost;
 }
