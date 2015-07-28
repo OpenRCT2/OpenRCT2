@@ -22,6 +22,7 @@
 #define _PEEP_H_
 
 #include "../common.h"
+#include "../world/map.h"
 
 #define PEEP_MAX_THOUGHTS 5
 
@@ -249,7 +250,7 @@ enum PEEP_ACTION_EVENTS {
 enum PEEP_FLAGS {
 	PEEP_FLAGS_LEAVING_PARK = (1 << 0),
 	PEEP_FLAGS_SLOW_WALK = (1 << 1),
-
+	PEEP_FLAGS_2 = (1 << 2),
 	PEEP_FLAGS_TRACKING = (1 << 3),
 	PEEP_FLAGS_WAVING = (1 << 4), // Makes the peep wave
 	PEEP_FLAGS_5 = (1 << 5), // Set on paying to enter park?
@@ -478,8 +479,8 @@ typedef struct {
 	};
 	uint8 photo1_ride_ref;			// 0xC7
 	uint32 flags;					// 0xC8
-	uint32 var_CC;
-	uint8 pad_D0[0x10];
+	rct_xyzd8 var_CC;
+	rct_xyzd8 var_D0[4];
 	uint8 no_action_frame_no;		// 0xE0
 	// 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
 	uint8 litter_count;				// 0xE1

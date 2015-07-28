@@ -5375,7 +5375,10 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->cash_in_pocket = cash;
 	peep->cash_spent = 0;
 	peep->time_in_park = -1;
-	peep->var_CC = 0xFFFF;
+	peep->var_CC.x = 0xFF;
+	peep->var_CC.y = 0xFF;
+	peep->var_CC.z = 0xFF;
+	peep->var_CC.direction = 0xFF;
 	peep->item_standard_flags = 0;
 	peep->item_extra_flags = 0;
 	peep->guest_heading_to_ride_id = 0xFF;
@@ -6832,8 +6835,104 @@ static int guest_path_find_aimless(rct_peep* peep, uint8 edges){
 	}
 }
 
+/* rct2: 0x0069A60A */
+uint8 sub_69A60A(rct_peep* peep){
+	RCT2_GLOBAL(0x00F1AED8, uint32) = 0xC350;
+	RCT2_GLOBAL(0x00F1AEDD, uint8) = 0x80;
+
+	if (peep->type == PEEP_TYPE_STAFF)
+		return 16;
+
+	RCT2_GLOBAL(0x00F1AED8, uint32) = 0x3A98;
+	RCT2_GLOBAL(0x00F1AEDD, uint8) = 0;
+	if ((peep->flags & PEEP_FLAGS_2)){
+		if ((scenario_rand() & 0xFFFF) <= 7281)
+			peep->flags &= ~PEEP_FLAGS_2;
+
+		return 16;
+	}
+
+	if (peep->flags & PEEP_FLAGS_LEAVING_PARK &&
+		peep->var_C6 < 90){
+		return 16;
+	}
+
+	if (peep->item_standard_flags & PEEP_ITEM_MAP)
+		return 14;
+
+	if (peep->flags & PEEP_FLAGS_LEAVING_PARK)
+		return 14;
+
+	return 10;
+}
+
 /* rct2: 0x0069A5F0 */
 static int sub_69A5F0(sint16 x, sint16 y, sint16 z, rct_peep *peep, rct_map_element *map_element){
+	//RCT2_GLOBAL(0x00F1AEDC, uint8) = sub_69A60A(peep);
+
+	//// Redundant check to make sure peep is not null??
+	//sint16 start_x = RCT2_GLOBAL(0x00F1AECE, sint16);
+	//sint16 start_y = RCT2_GLOBAL(0x00F1AED0, sint16);
+	//uint8 start_z = RCT2_GLOBAL(0x00F1AED2, uint8);
+	//
+	//uint8 edges = 0xF;
+	//if (peep->var_CC.x == (start_x / 32) && 
+	//	peep->var_CC.y == (start_y / 32) &&
+	//	peep->var_CC.z == start_z){
+
+	//	uint8 index = 0;
+	//	for (; index < 4; ++index){
+	//		if (peep->var_D0[index].x == x &&
+	//			peep->var_D0[index].y == y &&
+	//			peep->var_D0[index].z == z){
+	//			edges = peep->var_D0[index].direction & 0xF;	
+	//			break;
+	//		}
+	//	}
+	//}
+
+	//bool found = false;
+	//rct_map_element *destMapElement = map_get_first_element_at(x / 32, y / 32);
+	//do{
+	//	if (destMapElement->base_height != z)
+	//		continue;
+
+	//	if (map_element_get_type(destMapElement) != MAP_ELEMENT_TYPE_PATH)
+	//		continue;
+
+	//	found = true;
+	//	break;
+	//} while (!map_element_is_last_for_tile(destMapElement++));
+
+	//sint8 chosenDirection = 0xF;
+	//if (!found){
+	//	chosenDirection = 0xF;
+	//	//goto 69A89C
+	//}
+
+	//edges &= destMapElement->properties.path.edges & 0xF;
+	//rct_map_element *bannerElement = get_banner_on_path(destMapElement);
+	//if (bannerElement != NULL) {
+	//	do {
+	//		edges &= bannerElement->properties.banner.flags;
+	//	} while ((bannerElement = get_banner_on_path(bannerElement)) != NULL);
+	//}
+
+	//if (edges == 0){
+	//	chosenDirection = 0xF;
+	//	// goto 69A89C
+	//}
+
+	//chosenDirection = bitscanforward(edges);
+	//if (edges & ~(1 << chosenDirection) == 0){
+	//	// goto 69A8A1 chosenDirection
+	//}
+
+	//for (; chosenDirection != -1; chosenDirection = bitscanforward(edges)){
+	//	edges &= ~(1 << chosenDirection);
+	//	//69a814
+	//}
+	////69a895
 	int eax = x, ebx, ecx = y, edx = z, esi = (int)peep, ebp, edi = (int)map_element;
 	RCT2_CALLFUNC_X(0x0069A5F0, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	return ebp;
@@ -7718,7 +7817,10 @@ static bool peep_should_use_cash_machine(rct_peep *peep, int rideIndex)
  */
 static void sub_69A98C(rct_peep *peep)
 {
-	peep->var_CC = 0xFFFFFFFF;
+	peep->var_CC.x = 0xFF;
+	peep->var_CC.y = 0xFF;
+	peep->var_CC.z = 0xFF;
+	peep->var_CC.direction = 0xFF;
 }
 
 /**
