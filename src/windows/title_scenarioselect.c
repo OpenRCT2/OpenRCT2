@@ -282,10 +282,6 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (scenario == NULL)
 		return;
 
-	// Draw SixFlags image
-	if (scenario->flags & SCENARIO_FLAGS_SIXFLAGS)
-		gfx_draw_sprite(dpi, SPR_SIX_FLAGS, w->x + w->width - 55, w->y + w->height - 75, 0);
-
 	// Scenario name
 	x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
 	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;

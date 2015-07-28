@@ -1629,13 +1629,6 @@ int ride_modify(rct_xy_element *input)
 		return 0;
 	}
 
-	if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS) {
-		RCT2_GLOBAL(0x013CE952 + 6, uint16) = ride->name;
-		RCT2_GLOBAL(0x013CE952 + 8, uint32) = ride->name_arguments;
-		window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_THIS_RIDE_CANNOT_BE_MODIFIED);
-		return 0;
-	}
-
 	ride_clear_for_construction(rideIndex);
 	ride_remove_peeps(rideIndex);
 
@@ -2168,7 +2161,7 @@ static int ride_get_new_breakdown_problem(rct_ride *ride)
 		return -1;
 
 	monthsOld = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint8) - ride->build_date;
-	if (monthsOld < 16 || ride->reliability > (50 << 8) || ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS)
+	if (monthsOld < 16 || ride->reliability > (50 << 8))
 		return -1;
 
 	return BREAKDOWN_BRAKES_FAILURE;
@@ -3596,15 +3589,6 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 
 		if (ride->status != RIDE_STATUS_CLOSED){
 			RCT2_GLOBAL(0x141E9AC, uint16) = 1006;
-			*ebx = MONEY32_UNDEFINED;
-			return;
-		}
-	}
-
-	if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS){
-		if (setting == 0 || setting == 4 || setting == 8 || setting == 9)
-		{ 
-			RCT2_GLOBAL(0x141E9AC, uint16) = 1797;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}

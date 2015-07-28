@@ -43,7 +43,7 @@ enum {
 	PARK_FLAGS_DIFFICULT_PARK_RATING = (1 << 14),
 	PARK_FLAGS_NO_MONEY_SCENARIO = (1 << 17),  // equivalent to PARK_FLAGS_NO_MONEY, but used in scenario editor
 	PARK_FLAGS_18 = (1 << 18),
-	PARK_FLAGS_SIX_FLAGS = (1 << 19)
+	PARK_FLAGS_SIX_FLAGS_DEPRECATED = (1 << 19)
 };
 
 extern uint8 *gParkRatingHistory;
