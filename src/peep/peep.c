@@ -7559,7 +7559,7 @@ static void peep_on_enter_ride(rct_peep *peep, int rideIndex)
 	uint16 satisfactionFlags;
 
 	ride = GET_RIDE(rideIndex);
-	peep->flags &= ~PEEP_FLAGS_19;
+	peep->flags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
 	if (ride->excitement == (ride_rating)0xFFFF) {
 		satisfactionFlags = 0x1FF;
 	} else {
@@ -7652,7 +7652,7 @@ static void peep_on_enter_ride(rct_peep *peep, int rideIndex)
 	if (unkExcitementValue >= peep->var_FA) {
 		if (peep->happiness >= 160 && peep->happiness_growth_rate >= 160) {
 			peep->var_FA = unkExcitementValue;
-			peep->flags |= PEEP_FLAGS_19;
+			peep->flags |= PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
 		}
 	}
 
@@ -7724,8 +7724,8 @@ static void peep_on_exit_ride(rct_peep *peep, int rideIndex)
 {
 	rct_ride *ride = GET_RIDE(rideIndex);
 
-	if (peep->flags & PEEP_FLAGS_19) {
-		peep->flags &= ~PEEP_FLAGS_19;
+	if (peep->flags & PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE) {
+		peep->flags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
 		peep->favourite_ride = rideIndex;
 		// TODO fix this flag name or add another one
 		peep->window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
