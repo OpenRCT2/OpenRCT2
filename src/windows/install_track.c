@@ -346,11 +346,6 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + widget->bottom + 2;
 	// 0x006D3CF1 -- 0x006d3d71 missing
 
-	if (track_td6->var_6C & 0x80000000) {
-		// Six flags logo
-		gfx_draw_sprite(dpi, SPR_SIX_FLAGS, w->x + widget->right - 50, y + 4, 0);
-	}
-
 	// Stats
 	rating = track_td6->excitement * 10;
 	gfx_draw_string_left(dpi, STR_TRACK_LIST_EXCITEMENT_RATING, &rating, 0, x, y);

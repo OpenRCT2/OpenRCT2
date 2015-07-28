@@ -3344,7 +3344,7 @@ STR_3333    :Export plug-in objects with saved games
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
 STR_3335    :Roller Coaster Designer - Select Ride Types & Vehicles
 STR_3336    :Track Designs Manager - Select Ride Type
-STR_3337    :Six Flags Park
+STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Custom-designed layout
 STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
 STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout

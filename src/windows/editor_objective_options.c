@@ -30,8 +30,6 @@
 #include "error.h"
 #include "../interface/themes.h"
 
-#define DISABLE_SIX_FLAGS_CHECKBOX
-
 #pragma region Widgets
 
 enum {
@@ -63,7 +61,6 @@ enum {
 	WIDX_CATEGORY,
 	WIDX_CATEGORY_DROPDOWN,
 	WIDX_DETAILS,
-	WIDX_SIX_FLAGS,
 
 	WIDX_RIDES = 6
 };
@@ -90,7 +87,6 @@ static rct_widget window_editor_objective_options_main_widgets[] = {
 	{ WWT_DROPDOWN,			1,	98,		277,	150,	161,	STR_NONE,					STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN		},
 	{ WWT_DROPDOWN_BUTTON,	1,	266,	276,	151,	160,	STR_DROPDOWN_GLYPH,			STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN		},
 	{ WWT_DROPDOWN_BUTTON,	1,	370,	444,	167,	178,	STR_CHANGE,					STR_CHANGE_DETAIL_NOTES_ABOUT_PARK_SCENARIO_TIP		},
-	{ WWT_CHECKBOX,			1,	8,		441,	215,	226,	STR_SIX_FLAGS_PARK,			STR_NONE											},
 	{ WIDGETS_END }
 };
 
@@ -222,8 +218,7 @@ static uint64 window_editor_objective_options_page_enabled_widgets[] = {
 	(1 << WIDX_SCENARIO_NAME) |
 	(1 << WIDX_CATEGORY) |
 	(1 << WIDX_CATEGORY_DROPDOWN) |
-	(1 << WIDX_DETAILS) |
-	(1 << WIDX_SIX_FLAGS),
+	(1 << WIDX_DETAILS),
 
 	(1 << WIDX_CLOSE) |
 	(1 << WIDX_TAB_1) |
@@ -416,10 +411,6 @@ static void window_editor_objective_options_main_mouseup(rct_window *w, int widg
 	case WIDX_DETAILS:
 		strcpy((char*)0x009BC677, s6Info->details);
 		window_text_input_open(w, WIDX_DETAILS, 3315, 3316, 3165, 0, 256);
-		break;
-	case WIDX_SIX_FLAGS:
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_SIX_FLAGS;
-		window_invalidate(w);
 		break;
 	}
 }
@@ -825,16 +816,6 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
 	}
 
 	window_editor_objective_options_set_pressed_tab(w);
-
-	// This options was only available in development version
-#ifdef DISABLE_SIX_FLAGS_CHECKBOX
-	window_editor_objective_options_main_widgets[WIDX_SIX_FLAGS].type = WWT_EMPTY;
-#endif
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SIX_FLAGS)
-		w->pressed_widgets |= (1 << WIDX_SIX_FLAGS);
-	else
-		w->pressed_widgets &= ~(1 << WIDX_SIX_FLAGS);
 
 	if (stex == NULL)
 		w->disabled_widgets &= ~(WIDX_PARK_NAME | WIDX_SCENARIO_NAME);
