@@ -8,6 +8,7 @@
 - Feature: Cheats for guest parameters like hunger, energy, nausea etc.
 - Feature: Cheats for park parameters like guest generation, loan settings and switching to and from not using money.
 - Fix: Launched TD4 rides will now always use the RCT1 launch mode (that doesn't pass the station).
+- Fix: Guests will no longer ignore no entry signs if the tile contains more than one fence.
 
 0.0.2-beta (2015-06-21)
 ------------------------------------------------------------------------
