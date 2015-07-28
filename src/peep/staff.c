@@ -248,7 +248,10 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		}
 
 		newPeep->time_in_park = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
-		newPeep->var_CC = 0xFFFFFFFF;
+		newPeep->var_CC.x = 0xFF;
+		newPeep->var_CC.y = 0xFF;
+		newPeep->var_CC.z = 0xFF;
+		newPeep->var_CC.direction = 0xFF;
 
 		uint8 colour = RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[staff_type > 2 ? 2 : staff_type];
 		newPeep->tshirt_colour = colour;

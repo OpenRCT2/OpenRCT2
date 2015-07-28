@@ -419,6 +419,7 @@ static void window_guest_list_scrollgetsize(rct_window *w, int scrollIndex, int 
 		}
 		w->var_492 = numGuests;
 		y = numGuests * 10;
+		RCT2_GLOBAL(0x00F1EE09, uint32) = numGuests;
 		break;
 	case PAGE_SUMMARISED:
 		// Find the groups
@@ -428,7 +429,6 @@ static void window_guest_list_scrollgetsize(rct_window *w, int scrollIndex, int 
 		break;
 	}
 
-	RCT2_GLOBAL(0x00F1EE09, uint32) = numGuests;
 	i = _window_guest_list_selected_page;
 	for (i = _window_guest_list_selected_page - 1; i >= 0; i--)
 		y -= 0x7BF2;

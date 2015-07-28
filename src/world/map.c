@@ -37,7 +37,7 @@
 #include "park.h"
 #include "scenery.h"
 
-
+/* Replaces 0x00993CCC & 0x00993CCE */
 const rct_xy16 TileDirectionDelta[] = {
 	{ -32,   0 },
 	{   0, +32 },

@@ -573,7 +573,7 @@ static rct_peep *viewport_interaction_get_closest_peep(int x, int y, int maxDist
 void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rct_map_element **mapElement)
 {
 	sint16 my_x, my_y;
-	int z, interactionType;
+	int z = 0, interactionType;
 	rct_map_element *myMapElement;
 	rct_viewport *viewport;
 	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &my_x, &my_y, &interactionType, &myMapElement, &viewport);
