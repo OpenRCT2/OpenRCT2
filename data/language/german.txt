@@ -2318,10 +2318,10 @@ STR_2313    :{WINDOW_COLOUR_2}Übelkeitswert: {BLACK}{COMMA2DP32} (ungefähr)
 STR_2314    :{WINDOW_COLOUR_2}Fahrtlänge: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kosten: {BLACK}ungefähr {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Erforderlicher Platz: {BLACK}{COMMA16} x {COMMA16} Blöcke
-STR_2317    :{WINDOW_COLOUR_2}Soundqualität:
-STR_2318    :Niedrig
-STR_2319    :Mittel
-STR_2320    :Hoch
+STR_2317    :<not used anymore>
+STR_2318    :<not used anymore>
+STR_2319    :<not used anymore>
+STR_2320    :<not used anymore>
 STR_2321    :{WINDOW_COLOUR_2}Anzahl der Attraktionen: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Personal: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Parkgröße: {BLACK}{COMMA32}m{SQUARED}
@@ -2443,7 +2443,7 @@ STR_2438    :<not used anymore>
 STR_2439    :<not used anymore>
 STR_2440    :<not used anymore>
 STR_2441    :<not used anymore>
-STR_2442    :{BLACK}({STRINGID} übrig)
+STR_2442    :<not used anymore>
 STR_2443    :{WINDOW_COLOUR_2}Kosten pro Woche: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Gesamtkosten: {BLACK}{CURRENCY2DP}
 STR_2445    :Diese Marketingkampagne starten
@@ -3367,8 +3367,8 @@ STR_3358    :Streckenentwurf kann nicht gelöscht werden...
 STR_3359    :{BLACK}Keine Streckenentwürfe dieser Art
 STR_3360    :Warnung!
 STR_3361    :Zu viele Streckenentwürfe dieser Art - einige werden nicht aufgeführt.
-STR_3362    :Erzwungenes Software-Buffer-Mixing
-STR_3363    :{SMALLFONT}{BLACK}Diese Option wählen, falls das Spiel jedesmal kurz anhält sobald Töne gespielt werden oder falls ein Rauschen zu hören ist.
+STR_3362    :<not used anymore>
+STR_3363    :<not used anymore>
 STR_3364    :Fortgeschritten
 STR_3365    :{SMALLFONT}{BLACK}Ermöglichen Sie die Auswahl einzelner Szenerieobjekte zusätzlich zu Szeneriegruppen
 STR_3366    :{BLACK}= Bahn
@@ -3816,3 +3816,5 @@ STR_5479    :Symbolleiste
 STR_5480    :Schaltflächen anzeigen für:
 STR_5481    :Themen
 STR_5482    :{WINDOW_COLOUR_2}Letzte Inspektion vor: {BLACK}1 Minute
+STR_5483    :{BLACK}({COMMA16} Wochen verbleibend)
+STR_5484    :{BLACK}({COMMA16} Woche verbleibend)

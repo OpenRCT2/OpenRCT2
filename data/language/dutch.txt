@@ -2318,10 +2318,10 @@ STR_2313    :{WINDOW_COLOUR_2}Misselijkheidswaarde: {BLACK}{COMMA2DP32} (ongevee
 STR_2314    :{WINDOW_COLOUR_2}Lengte: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kosten: {BLACK}ongeveer {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Vereiste ruimte: {BLACK}{COMMA16} x {COMMA16} blokken
-STR_2317    :{WINDOW_COLOUR_2}Geluidskwaliteit:
-STR_2318    :Laag
-STR_2319    :Gemiddeld
-STR_2320    :Hoog
+STR_2317    :<not used anymore>
+STR_2318    :<not used anymore>
+STR_2319    :<not used anymore>
+STR_2320    :<not used anymore>
 STR_2321    :{WINDOW_COLOUR_2}Aantal attracties: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Werknemers: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Parkgrootte: {BLACK}{COMMA32}m{SQUARED}
@@ -2438,11 +2438,11 @@ STR_2433    :{BLACK}Bonnen voor gratis {STRINGID}
 STR_2434    :{BLACK}Advertentiecampagne voor {STRINGID}
 STR_2435    :{BLACK}Advertentiecampagne voor {STRINGID}
 STR_2436    :1 week
-STR_2437    :2 weken
-STR_2438    :3 weken
-STR_2439    :4 weken
-STR_2440    :5 weken
-STR_2441    :6 weken
+STR_2437    :<not used anymore>
+STR_2438    :<not used anymore>
+STR_2439    :<not used anymore>
+STR_2440    :<not used anymore>
+STR_2441    :<not used anymore>
 STR_2442    :{BLACK}({STRINGID} resterend)
 STR_2443    :{WINDOW_COLOUR_2}Kosten per week: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Totale kosten: {BLACK}{CURRENCY2DP}
@@ -2970,8 +2970,8 @@ STR_2965    :{WINDOW_COLOUR_2}
 STR_2966    :
 STR_2967    :
 STR_2968    :
-STR_2969    :Het gebruik van dit product is onderhevig aan de bepalingen in de gebruikersovereenkomst
-STR_2970    :die te raadplegen is in de {OPENQUOTES}ReadMe{ENDQUOTES} of de handleiding.
+STR_2969    :<not used anymore>
+STR_2970    :<not used anymore>
 STR_2971    :Standaard kleurenschema
 STR_2972    :Alternatief kleurenschema 1
 STR_2973    :Alternatief kleurenschema 2
@@ -3363,8 +3363,8 @@ STR_3358    :Kan het baanontwerp niet verwijderen...
 STR_3359    :{BLACK}Geen baanontwerpen van dit type
 STR_3360    :Waarschuwing!
 STR_3361    :Te veel baanontwerpen van dit type; sommige staan niet in de lijst
-STR_3362    :Mixen via softwarebuffer forceren
-STR_3363    :{SMALLFONT}{BLACK}Selecteer deze optie om de prestaties te verbeteren als het spel vertraagt bij het afspelen van geluiden of als er ruis hoorbaar is
+STR_3362    :<not used anymore>
+STR_3363    :<not used anymore>
 STR_3364    :Meer opties
 STR_3365    :{SMALLFONT}{BLACK}Maakt naast selectie van decorgroepen ook selectie van losse items mogelijk
 STR_3366    :{BLACK}= Attractie
@@ -3807,9 +3807,11 @@ STR_5471    :Kaart naar beneden scrollen
 STR_5472    :Kaart naar rechts scrollen
 STR_5473    :Dag-nachtcyclus
 STR_5474    :Teksten op lichtkranten in hoofdletters tonen
+STR_5475    :{COMMA16} weken
 STR_5476    :Hardware
 STR_5477    :Kaartrendering
 STR_5478    :Bediening
 STR_5479    :Werkbalk
 STR_5480    :Knoppen in de werkbalk tonen voor:
 STR_5481    :Thema's
+STR_5482    :{WINDOW_COLOUR_2}Tijd sinds laatste inspectie: {BLACK}1 minuut
