@@ -173,7 +173,7 @@ typedef struct {
 	uint8 track_spine_colour[4];					// 0x60
 	uint8 track_rail_colour[4];						// 0x64
 	uint8 track_support_colour[4];					// 0x68
-	uint32 var_6C;									// some flags
+	uint32 var_6C;									// some extra flags. (1 << 31) was used to mark the TD6 as a Six Flags ride.
 	rct_object_entry vehicle_object;				// 0x70
 	uint8 space_required_x;							// 0x80
 	uint8 space_required_y;							// 0x81
