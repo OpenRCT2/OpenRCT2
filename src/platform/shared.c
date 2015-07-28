@@ -44,6 +44,11 @@ int gTextInputLength;
 int gTextInputMaxLength;
 int gTextInputCursorPosition = 0;
 
+bool gTextInputCompositionActive;
+utf8 gTextInputComposition[32];
+int gTextInputCompositionStart;
+int gTextInputCompositionLength;
+
 int gNumResolutions = 0;
 resolution *gResolutions = NULL;
 int gResolutionsAllowAnyAspectRatio = 0;
@@ -402,6 +407,8 @@ void platform_process_messages()
 			}
 			break;
 		case SDL_KEYDOWN:
+			if (gTextInputCompositionActive) break;
+
 			if (e.key.keysym.sym == SDLK_KP_ENTER){
 				// Map Keypad enter to regular enter.
 				e.key.keysym.scancode = SDL_SCANCODE_RETURN;
@@ -520,29 +527,33 @@ void platform_process_messages()
 				}
 			}
 			break;
-
+		case SDL_TEXTEDITING:
+			strcpy(gTextInputComposition, e.edit.text);
+			gTextInputCompositionStart = e.edit.start;
+			gTextInputCompositionLength = e.edit.length;
+			gTextInputCompositionActive = gTextInputComposition[0] != 0;
+			break;
 		case SDL_TEXTINPUT:
 			if (gTextInputLength < gTextInputMaxLength && gTextInput){
-				// Convert the utf-8 code into rct ascii
-				char new_char;
+				// HACK ` will close console, so don't input any text
 				if (e.text.text[0] == '`' && gConsoleOpen)
 					break;
-				if (!(e.text.text[0] & 0x80))
-					new_char = *e.text.text;
-				else if (!(e.text.text[0] & 0x20))
-					new_char = ((e.text.text[0] & 0x1F) << 6) | (e.text.text[1] & 0x3F);
+
+				utf8 *newText = e.text.text;
+				int newTextLength = strlen(newText);
 
 				// If inserting in center of string make space for new letter
-				if (gTextInputLength > gTextInputCursorPosition){
-					memmove(gTextInput + gTextInputCursorPosition + 1, gTextInput + gTextInputCursorPosition, gTextInputMaxLength - gTextInputCursorPosition - 1);
-					gTextInput[gTextInputCursorPosition] = new_char;
-					gTextInputLength++;
+				if (gTextInputLength > gTextInputCursorPosition) {
+					memmove(gTextInput + gTextInputCursorPosition + newTextLength, gTextInput + gTextInputCursorPosition, gTextInputMaxLength - gTextInputCursorPosition - newTextLength);
+					memcpy(&gTextInput[gTextInputCursorPosition], newText, newTextLength);
+					gTextInputLength += newTextLength;
 				} else {
-					gTextInput[gTextInputLength++] = new_char;
+					memcpy(&gTextInput[gTextInputLength], newText, newTextLength);
+					gTextInputLength += newTextLength;
 					gTextInput[gTextInputLength] = 0;
 				}
 
-				gTextInputCursorPosition++;
+				gTextInputCursorPosition += newTextLength;
 				console_refresh_caret();
 				window_update_textbox();
 			}
@@ -645,6 +656,10 @@ void platform_free()
 
 void platform_start_text_input(char* buffer, int max_length)
 {
+	// TODO This doesn't work, and position could be improved to where text entry is
+	SDL_Rect rect = { 10, 10, 100, 100 };
+	SDL_SetTextInputRect(&rect);
+
 	SDL_StartTextInput();
 	gTextInputMaxLength = max_length - 1;
 	gTextInput = buffer;

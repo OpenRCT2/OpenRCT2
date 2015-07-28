@@ -31,6 +31,7 @@
 #include "../interface/window.h"
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
+#include "../util/util.h"
 
 #define WW 250
 #define WH 90
@@ -284,16 +285,18 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int char_count = 0;
 	uint8 cur_drawn = 0;
 
-	for (int line = 0; line <= no_lines; ++line){
+	int cursorX, cursorY;
+	for (int line = 0; line <= no_lines; line++) {
 		gfx_draw_string(dpi, wrap_pointer, w->colours[1], w->x + 12, y);
 
 		int string_length = get_string_size(wrap_pointer) - 1;
 
-		if (!cur_drawn && (gTextInputCursorPosition <= char_count + string_length)){
+		if (!cur_drawn && (gTextInputCursorPosition <= char_count + string_length)) {
 			// Make a copy of the string for measuring the width.
 			char temp_string[512] = { 0 };
 			memcpy(temp_string, wrap_pointer, gTextInputCursorPosition - char_count);
-			int cur_x = w->x + 13 + gfx_get_string_width(temp_string);
+			cursorX = w->x + 13 + gfx_get_string_width(temp_string);
+			cursorY = y;
 
 			int width = 6;
 			if ((uint32)gTextInputCursorPosition < strlen(text_input)){
@@ -306,7 +309,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 			if (w->frame_no > 15){
 				uint8 colour = RCT2_ADDRESS(0x0141FC48, uint8)[w->colours[1] * 8];
-				gfx_fill_rect(dpi, cur_x, y + 9, cur_x + width, y + 9, colour + 5);
+				gfx_fill_rect(dpi, cursorX, y + 9, cursorX + width, y + 9, colour + 5);
 			}
 
 			cur_drawn++;
@@ -318,6 +321,24 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		char_count += string_length;
 
 		y += 10;
+	}
+
+	if (!cur_drawn) {
+		cursorX = gLastDrawStringX;
+		cursorY = y - 10;
+	}
+
+	// IME composition
+	if (gTextInputCompositionActive) {
+		int compositionWidth = gfx_get_string_width(gTextInputComposition);
+		int x = cursorX - (compositionWidth / 2);
+		int y = cursorY + 13;
+		int w = compositionWidth;
+		int h = 10;
+
+		gfx_fill_rect(dpi, x - 1, y - 1, x + w + 1, y + h + 1, 12);
+		gfx_fill_rect(dpi, x, y, x + w, y + h, 0);
+		gfx_draw_string(dpi, gTextInputComposition, 12, x, y);
 	}
 }
 

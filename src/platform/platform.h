@@ -63,6 +63,11 @@ extern unsigned int gLastKeyPressed;
 extern int gTextInputCursorPosition;
 extern int gTextInputLength;
 
+extern bool gTextInputCompositionActive;
+extern utf8 gTextInputComposition[32];
+extern int gTextInputCompositionStart;
+extern int gTextInputCompositionLength;
+
 extern int gResolutionsAllowAnyAspectRatio;
 extern int gNumResolutions;
 extern resolution *gResolutions;
