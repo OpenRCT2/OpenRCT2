@@ -590,7 +590,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window *w)
 		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) >= 5000) {
 			window_error_open(3264, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) += 100;
+			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) += 50;
 			window_invalidate(w);
 		}
 		break;
@@ -635,10 +635,10 @@ static void window_editor_objective_options_arg_1_decrease(rct_window *w)
 		}
 		break;
 	default:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) <= 500) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) <= 250) {
 			window_error_open(3265, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) -= 100;
+			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) -= 50;
 			window_invalidate(w);
 		}
 		break;
