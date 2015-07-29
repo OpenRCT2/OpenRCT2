@@ -92,14 +92,14 @@ typedef struct {
  */
 typedef struct {
 	uint16 flags;				// 0x00
-	sint32 h_left;				// 0x02
-	sint32 h_right;				// 0x04
-	sint32 h_thumb_left;		// 0x06
-	sint32 h_thumb_right;		// 0x08
-	sint32 v_top;				// 0x0A
-	sint32 v_bottom;			// 0x0C
-	sint32 v_thumb_top;			// 0x0E
-	sint32 v_thumb_bottom;		// 0x10
+	uint16 h_left;				// 0x02
+	uint16 h_right;				// 0x04
+	uint16 h_thumb_left;		// 0x06
+	uint16 h_thumb_right;		// 0x08
+	uint16 v_top;				// 0x0A
+	uint16 v_bottom;			// 0x0C
+	uint16 v_thumb_top;			// 0x0E
+	uint16 v_thumb_bottom;		// 0x10
 } rct_scroll;
 
 /** 
