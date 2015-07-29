@@ -836,7 +836,7 @@ STR_0831    :{SMALLFONT}{BLACK}Zoom view out
 STR_0832    :{SMALLFONT}{BLACK}Rotate view 90{DEGREE} clockwise
 STR_0833    :{SMALLFONT}{BLACK}Pause game
 STR_0834    :{SMALLFONT}{BLACK}Disk and game options
-STR_0835    :Game initialization failed
+STR_0835    :Game initialisation failed
 STR_0836    :Unable to start game in a minimised state
 STR_0837    :Unable to initialise graphics system
 STR_0838    :<not used anymore>
@@ -2813,9 +2813,9 @@ STR_2802    :Map
 STR_2803    :{SMALLFONT}{BLACK}Show these guests highlighted on map
 STR_2804    :{SMALLFONT}{BLACK}Show these staff members highlighted on map
 STR_2805    :{SMALLFONT}{BLACK}Show map of park
-STR_2806    :{RED}Guests are complaining about the disgusting state of the paths in your park{NEWLINE}Check where your handymen are and consider organizing them better
-STR_2807    :{RED}Guests are complaining about the amount of litter in your park{NEWLINE}Check where your handymen are and consider organizing them better
-STR_2808    :{RED}Guests are complaining about the vandalism in your park{NEWLINE}Check where your security guards are and consider organizing them better
+STR_2806    :{RED}Guests are complaining about the disgusting state of the paths in your park{NEWLINE}Check where your handymen are and consider organising them better
+STR_2807    :{RED}Guests are complaining about the amount of litter in your park{NEWLINE}Check where your handymen are and consider organising them better
+STR_2808    :{RED}Guests are complaining about the vandalism in your park{NEWLINE}Check where your security guards are and consider organising them better
 STR_2809    :{RED}Guests are hungry and can't find anywhere to buy food
 STR_2810    :{RED}Guests are thirsty and can't find anywhere to buy drinks
 STR_2811    :{RED}Guests are complaining because they can't find the toilets in your park
