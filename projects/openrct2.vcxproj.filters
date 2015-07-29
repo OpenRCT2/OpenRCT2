@@ -498,6 +498,9 @@
     <ClCompile Include="..\src\localisation\convert.c">
       <Filter>Source\Localisation</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\drawing\scrolling_text.c">
+      <Filter>Source\Drawing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">

@@ -144,4 +144,8 @@ void redraw_rain();
 // unknown
 void sub_681DE2(rct_drawpixelinfo *dpi, int x, int y, int image1, int image2);
 
+// scrolling text
+void scrolling_text_initialise_bitmaps();
+int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode);
+
 #endif
