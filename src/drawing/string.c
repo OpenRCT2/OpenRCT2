@@ -707,18 +707,63 @@ int string_get_height_raw(char *buffer)
  * width    : bp
  * ticks    : ebp >> 16
  */
-void sub_6C1F57(rct_drawpixelinfo *dpi, int x, int y, int width, int colour, rct_string_id format, void *args, int ticks)
+void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, int x, int y, int width, int colour, rct_string_id format, void *args, int ticks)
 {
-	RCT2_CALLPROC_X(
-		0x006C1F57,
-		colour,
-		format,
-		x,
-		y,
-		(int)args,
-		(int)dpi,
-		(width & 0xFFFF) | (ticks << 16)
-	);
+	int numLines, fontSpriteBase, lineHeight, lineY;
+	utf8 *buffer = (utf8*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
+	gfx_draw_string(dpi, (char*)0x009C383D, colour, dpi->x, dpi->y);
+	format_string(buffer, format, args);
+
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
+	gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
+	switch (fontSpriteBase) {
+	case FONT_SPRITE_BASE_TINY:
+		lineHeight = 6;
+		break;
+	default:
+	case FONT_SPRITE_BASE_SMALL:
+	case FONT_SPRITE_BASE_MEDIUM:
+		lineHeight = 10;
+		break;
+	case FONT_SPRITE_BASE_BIG:
+		lineHeight = 18;
+		break;
+	}
+
+	int numCharactersDrawn = 0;
+	int numCharactersToDraw = ticks;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
+	lineY = y;
+	for (int line = 0; line <= numLines; line++) {
+		int halfWidth = gfx_get_string_width(buffer) / 2;
+		
+		utf8 *ch = buffer;
+		utf8 *nextCh;
+		int codepoint;
+		while ((codepoint = utf8_get_next(ch, &nextCh)) != 0) {
+			if (!utf8_is_format_code(codepoint)) {
+				numCharactersDrawn++;
+				if (numCharactersDrawn > numCharactersToDraw) {
+					*ch = 0;
+					break;
+				}
+			}
+			ch = nextCh;
+		}
+
+		gfx_draw_string(dpi, buffer, 0xFE, x - halfWidth, lineY);
+
+		if (numCharactersDrawn > numCharactersToDraw) {
+			break;
+		}
+
+		buffer = get_string_end(buffer) + 1;
+		lineY += lineHeight;
+	} 
 }
 
 static uint32 _ttf_surface_cache_hash(TTF_Font *font, const utf8 *text)

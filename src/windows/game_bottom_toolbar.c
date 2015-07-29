@@ -523,13 +523,12 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 	);
 
 	// Text
-	stringId = 1926;
-	utf8 *buffer = (utf8*)0x009B5F2C;
-	memcpy(buffer, &newsItem->text, 256);
+	stringId = 5485;
+	utf8 *newsItemText = newsItem->text;
 	x = w->x + (middleOutsetWidget->left + middleOutsetWidget->right) / 2;
 	y = w->y + middleOutsetWidget->top + 11;
 	width = middleOutsetWidget->right - middleOutsetWidget->left - 62;
-	sub_6C1F57(dpi, x, y, width, 14, stringId, NULL, newsItem->ticks);
+	gfx_draw_string_centred_wrapped_partial(dpi, x, y, width, 14, stringId, &newsItemText, newsItem->ticks);
 
 	x = w->x + window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].left;
 	y = w->y + window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].top;

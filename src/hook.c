@@ -25,10 +25,12 @@ void* g_hooktableaddress = 0;
 int g_hooktableoffset = 0;
 int g_maxhooks = 1000;
 
-void hookfunc(int address, int newaddress, int stacksize, int registerargs[], int registersreturned)
+void hookfunc(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister)
 {
 	int i = 0;
 	char data[100];
+
+	registersreturned |= eaxDestinationRegister;
 
 	int registerssaved = 7;
 	int n = registersreturned;
@@ -146,6 +148,39 @@ void hookfunc(int address, int newaddress, int stacksize, int registerargs[], in
 
 	// returnlocation:
 
+	switch (eaxDestinationRegister) {
+	case EBX:
+		// mov ebx, eax
+		data[i++] = 0x8B;
+		data[i++] = 0xD8;
+		break;
+	case ECX:
+		// mov ecx, eax
+		data[i++] = 0x8B;
+		data[i++] = 0xC8;
+		break;
+	case EDX:
+		// mov ecx, eax
+		data[i++] = 0x8B;
+		data[i++] = 0xD0;
+		break;
+	case ESI:
+		// mov ecx, eax
+		data[i++] = 0x8B;
+		data[i++] = 0xF0;
+		break;
+	case EDI:
+		// mov ecx, eax
+		data[i++] = 0x8B;
+		data[i++] = 0xF8;
+		break;
+	case EBP:
+		// mov ecx, eax
+		data[i++] = 0x8B;
+		data[i++] = 0xE8;
+		break;
+	}
+
 	data[i++] = 0x83; // sub esp, x
 	data[i++] = 0xEC;
 	data[i++] = (signed char)(stacksize * -4) - rargssize;
@@ -177,7 +212,7 @@ void hookfunc(int address, int newaddress, int stacksize, int registerargs[], in
 	WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
 }
 
-void addhook(int address, int newaddress, int stacksize, int registerargs[], int registersreturned)
+void addhook(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister)
 {
 	if (!g_hooktableaddress) {
 		g_hooktableaddress = VirtualAllocEx(GetCurrentProcess(), NULL, g_maxhooks * 100, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
@@ -192,6 +227,6 @@ void addhook(int address, int newaddress, int stacksize, int registerargs[], int
 	*((int *)&data[i]) = hookaddress - address - i - 4; i += 4;
 	data[i++] = 0xC3; // retn
 	WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
-	hookfunc(hookaddress, newaddress, stacksize, registerargs, registersreturned);
+	hookfunc(hookaddress, newaddress, stacksize, registerargs, registersreturned, eaxDestinationRegister);
 	g_hooktableoffset++;
 }

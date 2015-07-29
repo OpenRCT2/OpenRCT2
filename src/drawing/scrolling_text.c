@@ -107,6 +107,10 @@ static void scrolling_text_format(utf8 *dst, rct_draw_scroll_text *scrollText)
 /**
  *
  *  rct2: 0x006C42D9
+ * @param stringId (ax)
+ * @param scroll (cx)
+ * @param scrollingMode (bp)
+ * @returns ebx
  */
 int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode)
 {
