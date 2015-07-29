@@ -373,43 +373,49 @@ void platform_show_messagebox(char *message)
  * 
  *  rct2: 0x004080EA
  */
-int platform_open_common_file_dialog(int type, char *title, char *filename, char *filterPattern, char *filterName)
+int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName)
 {
-	char initialDirectory[MAX_PATH], *dotAddress, *slashAddress;
-	OPENFILENAME openFileName;
+	wchar_t wctitle[256], wcfilename[MAX_PATH], wcfilterPattern[256], wcfilterName[256];
+	wchar_t initialDirectory[MAX_PATH], *dotAddress, *slashAddress;
+	OPENFILENAMEW openFileName;
 	BOOL result;
 	int tmp;
 	DWORD commonFlags;
 
+	MultiByteToWideChar(CP_UTF8, 0, title, -1, wctitle, countof(wctitle));
+	MultiByteToWideChar(CP_UTF8, 0, filename, -1, wcfilename, countof(wcfilename));
+	MultiByteToWideChar(CP_UTF8, 0, filterPattern, -1, wcfilterPattern, countof(wcfilterPattern));
+	MultiByteToWideChar(CP_UTF8, 0, filterName, -1, wcfilterName, countof(wcfilterName));
+
 	// Get directory path from given filename
-	strcpy(initialDirectory, filename);
-	dotAddress = strrchr(initialDirectory, '.');
+	lstrcpyW(initialDirectory, wcfilename);
+	dotAddress = wcsrchr(initialDirectory, '.');
 	if (dotAddress != NULL) {
-		slashAddress = strrchr(initialDirectory, '\\');
+		slashAddress = wcsrchr(initialDirectory, '\\');
 		if (slashAddress < dotAddress)
 			*(slashAddress + 1) = 0;
 	}
 
 	// Clear filename
 	if (type != 0)
-	*filename = 0;
+	wcfilename[0] = 0;
 
 	// Set open file name options
-	memset(&openFileName, 0, sizeof(OPENFILENAME));
-	openFileName.lStructSize = sizeof(OPENFILENAME);
+	memset(&openFileName, 0, sizeof(OPENFILENAMEW));
+	openFileName.lStructSize = sizeof(OPENFILENAMEW);
 	openFileName.hwndOwner = windows_get_window_handle();
-	openFileName.lpstrFile = filename;
+	openFileName.lpstrFile = wcfilename;
 	openFileName.nMaxFile = MAX_PATH;
 	openFileName.lpstrInitialDir = initialDirectory;
-	openFileName.lpstrTitle = title;
+	openFileName.lpstrTitle = wctitle;
 
 	// Copy filter name
-	strcpy((char*)0x01423800, filterName);
+	lstrcpyW((wchar_t*)0x01423800, wcfilterName);
 
 	// Copy filter pattern
-	strcpy((char*)0x01423800 + strlen(filterName) + 1, filterPattern);
-	*((char*)(0x01423800 + strlen(filterName) + 1 + strlen(filterPattern) + 1)) = 0;
-	openFileName.lpstrFilter = (char*)0x01423800;
+	lstrcpyW((wchar_t*)0x01423800 + lstrlenW(wcfilterName) + 1, wcfilterPattern);
+	*((wchar_t*)(0x01423800 + lstrlenW(wcfilterName) + 1 + lstrlenW(wcfilterPattern) + 1)) = 0;
+	openFileName.lpstrFilter = (wchar_t*)0x01423800;
 
 	// 
 	tmp = RCT2_GLOBAL(0x009E2C74, uint32);
@@ -420,14 +426,16 @@ int platform_open_common_file_dialog(int type, char *title, char *filename, char
 	commonFlags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
 	if (type == 0) {
 		openFileName.Flags = commonFlags | OFN_CREATEPROMPT | OFN_OVERWRITEPROMPT;
-		result = GetSaveFileName(&openFileName);
+		result = GetSaveFileNameW(&openFileName);
 	} else if (type == 1) {
 		openFileName.Flags = commonFlags | OFN_NONETWORKBUTTON | OFN_FILEMUSTEXIST;
-		result = GetOpenFileName(&openFileName);
+		result = GetOpenFileNameW(&openFileName);
 	}
 
 	// 
 	RCT2_GLOBAL(0x009E2C74, uint32) = tmp;
+
+	WideCharToMultiByte(CP_UTF8, 0, wcfilename, countof(wcfilename), filename, MAX_PATH, NULL, NULL);
 
 	return result;
 }
