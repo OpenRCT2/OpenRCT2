@@ -265,17 +265,14 @@ static void window_banner_dropdown(rct_window *w, int widgetIndex, int dropdownI
 
 		int colourCodepoint = FORMAT_COLOUR_CODE_START + banner->text_colour;
 
-		// Can be replaced with a buffer 34 chars wide ( 32 character + 1 colour_format + 1 '\0')
-		uint8* buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, uint8);
+		uint8 buffer[256];
 		format_string(buffer, banner->string_idx, 0);
-		
 		int firstCodepoint = utf8_get_next(buffer, NULL);
-		if (!(firstCodepoint >= FORMAT_COLOUR_CODE_START && firstCodepoint <= FORMAT_COLOUR_CODE_END)) {
-			utf8 *endPoint = get_string_end(buffer) + utf8_get_codepoint_length(colourCodepoint);
-			memmove(buffer + utf8_get_codepoint_length(colourCodepoint), buffer, endPoint - buffer);
-			*endPoint = 0;
+		if (firstCodepoint >= FORMAT_COLOUR_CODE_START && firstCodepoint <= FORMAT_COLOUR_CODE_END) {
+			utf8_write_codepoint(buffer, colourCodepoint);
+		} else {
+			utf8_insert_codepoint(buffer, colourCodepoint);
 		}
-		utf8_write_codepoint(buffer, colourCodepoint);
 
 		rct_string_id stringId = user_string_allocate(128, buffer);
 		if (stringId != 0) {

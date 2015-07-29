@@ -210,7 +210,7 @@ void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, si
 	int codepoint;
 	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
 		if (utf8_is_format_code(codepoint)) {
-			if (colour == 0 && codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END) {
+			if (codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END) {
 				colour = (uint8)codepoint;
 			}
 		} else {

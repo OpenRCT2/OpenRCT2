@@ -504,6 +504,9 @@
     <ClCompile Include="..\src\drawing\font.c">
       <Filter>Source\Drawing</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\localisation\utf8.c">
+      <Filter>Source\Localisation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">

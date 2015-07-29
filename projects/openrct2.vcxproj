@@ -67,6 +67,7 @@
     <ClCompile Include="..\src\localisation\localisation.c" />
     <ClCompile Include="..\src\localisation\real_names.c" />
     <ClCompile Include="..\src\localisation\user.c" />
+    <ClCompile Include="..\src\localisation\utf8.c" />
     <ClCompile Include="..\src\management\award.c" />
     <ClCompile Include="..\src\management\finance.c" />
     <ClCompile Include="..\src\management\marketing.c" />

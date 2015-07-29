@@ -200,10 +200,7 @@ int gfx_wrap_string(utf8 *text, int width, int *outNumLines, int *outFontHeight)
 			ch = lastCh;
 		} else if (currentWord == NULL) {
 			// Single word is longer than line, insert null terminator
-			utf8 *end = get_string_end(ch);
-			memmove(ch + 1, ch, end - ch + 1);
-			*ch++ = 0;
-
+			ch += utf8_insert_codepoint(ch, 0);
 			maxWidth = max(maxWidth, lineWidth);
 			(*outNumLines)++;
 			lineWidth = 0;
