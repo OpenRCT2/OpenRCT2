@@ -1957,7 +1957,7 @@ void window_event_unknown_15_call(rct_window *w, int scrollIndex, int scrollArea
 
 rct_string_id window_event_tooltip_call(rct_window *w, int widgetIndex)
 {
-	rct_string_id result = STR_NONE;
+	rct_string_id result = 0;
 	if (w->event_handlers->tooltip != NULL)
 		w->event_handlers->tooltip(w, widgetIndex, &result);
 	return result;
