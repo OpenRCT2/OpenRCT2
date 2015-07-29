@@ -356,7 +356,6 @@ static void openrct2_loop()
 			}
 
 			platform_process_messages();
-			network_update();
 			rct2_draw();
 			platform_draw();
 			fps++;
@@ -373,6 +372,7 @@ static void openrct2_loop()
 				invalidate_sprite(&g_sprite_list[i]);
 				sprite_move(_spritelocations2[i].x, _spritelocations2[i].y, _spritelocations2[i].z, &g_sprite_list[i]);
 			}
+			network_update();
 		} else {
 			uncapTick = 0;
 			currentTick = SDL_GetTicks();

@@ -768,6 +768,7 @@ int Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pac
 				if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) & 1)
 					pause_toggle();
 				game_command_queue.clear();
+				server_tick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32);
 				window_network_status_open("Loaded new map from network");
 			}
 			SDL_RWclose(rw);

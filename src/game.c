@@ -777,9 +777,6 @@ int game_load_sv6(SDL_RWops* rw)
 	reset_0x69EBE4();
 	openrct2_reset_object_tween_locations();
 	game_convert_strings_to_utf8();
-	if (network_get_mode() == NETWORK_MODE_SERVER) {
-		network_send_map();
-	}
 	return 1;
 }
 
@@ -814,6 +811,9 @@ int game_load_save(const char *path)
 	SDL_RWclose(rw);
 
 	game_load_init();
+	if (network_get_mode() == NETWORK_MODE_SERVER) {
+		network_send_map();
+	}
 	return 1;
 }
 
@@ -855,6 +855,7 @@ void game_load_init()
 
 	load_palette();
 	gfx_invalidate_screen();
+	window_update_all();
 
 	gGameSpeed = 1;
 
