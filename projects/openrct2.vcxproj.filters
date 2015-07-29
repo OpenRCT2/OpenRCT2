@@ -501,6 +501,9 @@
     <ClCompile Include="..\src\drawing\scrolling_text.c">
       <Filter>Source\Drawing</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\drawing\font.c">
+      <Filter>Source\Drawing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">
@@ -730,6 +733,9 @@
     </ClInclude>
     <ClInclude Include="..\src\cheats.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\font.h">
+      <Filter>Source\Drawing</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

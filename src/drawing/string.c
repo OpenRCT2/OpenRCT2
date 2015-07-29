@@ -29,10 +29,10 @@ static void ttf_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, in
 
 static bool _ttfInitialised = false;
 static TTF_Font *_ttfFont[4] = { NULL };
-static int _ttfFontOffsetX = 0;
-static int _ttfFontOffsetY = 0;
+int _ttfFontOffsetX = 0;
+int _ttfFontOffsetY = 0;
 
-static const int TTFFontSizes[] = { 7, 9, 11, 13 };
+static const int TTFFontSizes[] = { 9, 9, 11, 13 };
 
 #define TTF_SURFACE_CACHE_SIZE 256
 #define TTF_GETWIDTH_CACHE_SIZE 1024
@@ -60,58 +60,6 @@ static ttf_getwidth_cache_entry _ttfGetWidthCache[TTF_GETWIDTH_CACHE_SIZE] = { 0
 static int _ttfGetWidthCacheCount = 0;
 static int _ttfGetWidthCacheHitCount = 0;
 static int _ttfGetWidthCacheMissCount = 0;
-
-enum {
-	FONT_SIZE_TINY = 2,
-	FONT_SIZE_SMALL = 0,
-	FONT_SIZE_MEDIUM = 1,
-	FONT_SIZE_BIG = 3,
-	FONT_SIZE_COUNT = 4
-};
-
-enum {
-	FONT_SPRITE_GLYPH_COUNT = 224,
-
-	FONT_SPRITE_BASE_TINY = 448,
-	FONT_SPRITE_BASE_SMALL = 0,
-	FONT_SPRITE_BASE_MEDIUM = 224,
-	FONT_SPRITE_BASE_BIG = 672
-};
-
-static uint8 *_spriteFontCharacterWidths = (uint8*)RCT2_ADDRESS_FONT_CHAR_WIDTH;
-
-/**
- *
- *  rct2: 0x006C19AC
- */
-void gfx_load_character_widths()
-{
-	uint8* pCharacterWidth = _spriteFontCharacterWidths;
-	for (int fontSize = 0; fontSize < FONT_SIZE_COUNT; fontSize++) {
-		int glyphOffset = fontSize * FONT_SPRITE_GLYPH_COUNT;
-		for (uint8 glyphIndex = 0; glyphIndex < FONT_SPRITE_GLYPH_COUNT; glyphIndex++) {
-			rct_g1_element g1 = g1Elements[glyphIndex + SPR_CHAR_START + glyphOffset];
-			
-			int width = fontSize == FONT_SIZE_BIG ? g1.width + 1 : g1.width - 1;
-			if (glyphIndex >= (FORMAT_ARGUMENT_CODE_START - 32) && glyphIndex < (FORMAT_COLOUR_CODE_END - 32)) {
-				width = 0;
-			}
-			*pCharacterWidth++ = (uint8)width;
-		}
-	}
-	
-	scrolling_text_initialise_bitmaps();
-
-	for (int i = 0; i < 32; i++) {
-		rct_g1_element* g1 = &g1Elements[0x606 + i];
-		uint8* unknown_pointer = RCT2_ADDRESS(0x009C3852, uint8) + 0xA12 * i;
-		g1->offset = unknown_pointer;
-		g1->width = 64;
-		g1->height = 40;
-		*((uint16*)unknown_pointer) = 0xFFFF;
-		*((uint32*)(unknown_pointer + 0x0E)) = 0;
-	}
-}
 
 /**
  *
@@ -802,7 +750,7 @@ static void _ttf_surface_cache_dispose_all()
 	}
 }
 
-static SDL_Surface *_ttf_surface_cache_get_or_add(TTF_Font *font, const utf8 *text)
+SDL_Surface *_ttf_surface_cache_get_or_add(TTF_Font *font, const utf8 *text)
 {
 	ttf_cache_entry *entry;
 
@@ -987,16 +935,16 @@ typedef struct {
 
 static void ttf_draw_character_sprite(rct_drawpixelinfo *dpi, int codepoint, text_draw_info *info)
 {
-	uint32 charOffset = info->font_sprite_base + utf8_get_sprite_offset_for_codepoint(codepoint);
-	int charWidth = _spriteFontCharacterWidths[charOffset] & 0xFF;
+	int characterWidth = font_sprite_get_codepoint_width(info->font_sprite_base, codepoint);
+	int sprite = font_sprite_get_codepoint_sprite(info->font_sprite_base, codepoint);
 
 	if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW)) {
 		RCT2_GLOBAL(0x009ABDA4, uint8*) = (uint8*)&info->palette;
 		RCT2_GLOBAL(0x00EDF81C, uint32) = (IMAGE_TYPE_USE_PALETTE << 28);
-		gfx_draw_sprite_palette_set(dpi, SPR_CHAR_START + ((IMAGE_TYPE_USE_PALETTE << 28) | charOffset), info->x, info->y, info->palette, NULL);
+		gfx_draw_sprite_palette_set(dpi, sprite, info->x, info->y, info->palette, NULL);
 	}
 
-	info->x += charWidth;
+	info->x += characterWidth;
 }
 
 static void ttf_draw_string_raw_sprite(rct_drawpixelinfo *dpi, const utf8 *text, text_draw_info *info)

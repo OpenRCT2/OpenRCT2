@@ -33,6 +33,7 @@
     <ClCompile Include="..\src\cursors.c" />
     <ClCompile Include="..\src\diagnostic.c" />
     <ClCompile Include="..\src\drawing\drawing.c" />
+    <ClCompile Include="..\src\drawing\font.c" />
     <ClCompile Include="..\src\drawing\line.c" />
     <ClCompile Include="..\src\drawing\rain.c" />
     <ClCompile Include="..\src\drawing\rect.c" />
@@ -195,6 +196,7 @@
     <ClInclude Include="..\src\cursors.h" />
     <ClInclude Include="..\src\diagnostic.h" />
     <ClInclude Include="..\src\drawing\drawing.h" />
+    <ClInclude Include="..\src\drawing\font.h" />
     <ClInclude Include="..\src\editor.h" />
     <ClInclude Include="..\src\game.h" />
     <ClInclude Include="..\src\hook.h" />

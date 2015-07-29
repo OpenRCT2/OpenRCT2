@@ -1,3 +1,4 @@
+#include <SDL_ttf.h>
 #include "../addresses.h"
 #include "../config.h"
 #include "../localisation/localisation.h"
@@ -15,6 +16,10 @@ typedef struct {
 } rct_draw_scroll_text;
 
 rct_draw_scroll_text *gDrawScrollTextList = RCT2_ADDRESS(RCT2_ADDRESS_DRAW_SCROLL_LIST, rct_draw_scroll_text);
+uint8 *gCharacterBitmaps = RCT2_ADDRESS(RCT2_ADDRESS_CHARACTER_BITMAP, uint8);
+
+void scrolling_text_set_bitmap_for_sprite(utf8 *text, int scroll, uint8 *bitmap, sint16 *scrollPositionOffsets);
+void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, sint16 *scrollPositionOffsets);
 
 void scrolling_text_initialise_bitmaps()
 {
@@ -42,27 +47,22 @@ void scrolling_text_initialise_bitmaps()
 					val |= 0x80;
 				}
 			}
-			RCT2_ADDRESS(RCT2_ADDRESS_CHARACTER_BITMAP, uint8)[i * 8 + x] = val;
+			gCharacterBitmaps[i * 8 + x] = val;
 		}
 
 	}
 }
 
-/**
- *
- *  rct2: 0x006C42D9
- */
-int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode)
+static uint8 *font_sprite_get_codepoint_bitmap(int codepoint)
 {
-	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	return &gCharacterBitmaps[font_sprite_get_codepoint_offset(codepoint) * 8];
+}
 
-	if (dpi->zoom_level != 0) return 0x626;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_DRAW_SCROLL_NEXT_ID, uint32)++;
-
-	// Find the oldest scroll for use as the newest
+static int scrolling_text_get_matching_or_oldest(rct_string_id stringId, uint16 scroll, uint16 scrollingMode)
+{
 	uint32 oldestId = 0xFFFFFFFF;
-	uint8 scrollIndex = 0xFF;
+	int scrollIndex = -1;
 	rct_draw_scroll_text* oldestScroll = NULL;
 	for (int i = 0; i < 32; i++) {
 		rct_draw_scroll_text *scrollText = &gDrawScrollTextList[i];
@@ -84,70 +84,103 @@ int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrolling
 			return i + 0x606;
 		}
 	}
+	return scrollIndex;
+}
+
+static uint8 scrolling_text_get_colour(uint32 character)
+{
+	int edi = character & 0x7F;
+	int offset = 0;
+	if (character >= 0x80) offset = 2;
+	return RCT2_ADDRESS(0x0141FC47, uint8)[offset + (edi * 8)];
+}
+
+static void scrolling_text_format(utf8 *dst, rct_draw_scroll_text *scrollText)
+{
+	if (gConfigGeneral.upper_case_banners) {
+		format_string_to_upper(dst, scrollText->string_id, &scrollText->string_args_0);
+	} else {
+		format_string(dst, scrollText->string_id, &scrollText->string_args_0);
+	}
+}
+
+/**
+ *
+ *  rct2: 0x006C42D9
+ */
+int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode)
+{
+	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+
+	if (dpi->zoom_level != 0) return 0x626;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_DRAW_SCROLL_NEXT_ID, uint32)++;
+
+	int scrollIndex = scrolling_text_get_matching_or_oldest(stringId, scroll, scrollingMode);
+	if (scrollIndex >= 0x606) return scrollIndex;
 
 	// Setup scrolling text
-	rct_draw_scroll_text* scrollText = oldestScroll;
+	rct_draw_scroll_text* scrollText = &gDrawScrollTextList[scrollIndex];
 	scrollText->string_id = stringId;
-	scrollText->string_args_0 = RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32);
-	scrollText->string_args_1 = RCT2_GLOBAL(0x13CE956, uint32);
+	scrollText->string_args_0 = RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32);
+	scrollText->string_args_1 = RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32);
 	scrollText->position = scroll;
 	scrollText->mode = scrollingMode;
-	scrollText->id = RCT2_GLOBAL(RCT2_ADDRESS_DRAW_SCROLL_NEXT_ID, uint32_t);
+	scrollText->id = RCT2_GLOBAL(RCT2_ADDRESS_DRAW_SCROLL_NEXT_ID, uint32);
 
-	uint8* scrollPixelPointer = scrollText->bitmap;
-	memset(scrollPixelPointer, 0, 320 * 8);
+	// Create the string to draw
+	utf8 scrollString[256];
+	scrolling_text_format(scrollString, scrollText);
 
-	// Convert string id back into a string for processing
-	utf8 scrollString[MAX_PATH];
-	if (gConfigGeneral.upper_case_banners)
-		format_string_to_upper(scrollString, stringId, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
-	else
-		format_string(scrollString, stringId, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+	sint16* scrollingModePositions = RCT2_ADDRESS(RCT2_ADDRESS_SCROLLING_MODE_POSITIONS, uint16*)[scrollingMode];
+	
+	memset(scrollText->bitmap, 0, 320 * 8);
+	if (gUseTrueTypeFont) {
+		scrolling_text_set_bitmap_for_ttf(scrollString, scroll, scrollText->bitmap, scrollingModePositions);
+	} else {
+		scrolling_text_set_bitmap_for_sprite(scrollString, scroll, scrollText->bitmap, scrollingModePositions);
+	}
 
-	// Setup character colour from ???
-	uint32 character = RCT2_GLOBAL(0x13CE959, uint8);
-	int edi = character & 0x7F;
-	int offs = 0;
-	if (character >= 0x80) offs = 2;
-	uint8 characterColour = RCT2_ADDRESS(0x0141FC47, uint8)[offs + edi * 8];
+	return scrollIndex + 0x606;
+}
 
-	sint16* scrollingModePositions = RCT2_ADDRESS(RCT2_ADDRESS_SCROLLING_MODE_POSITIONS, uint16_t*)[scrollingMode];
-	uint8* formatResult = scrollString;
+void scrolling_text_set_bitmap_for_sprite(utf8 *text, int scroll, uint8 *bitmap, sint16 *scrollPositionOffsets)
+{
+	uint8 characterColour = scrolling_text_get_colour(RCT2_GLOBAL(0x013CE959, uint8));
+
+	utf8 *ch = text;
 	while (true) {
-		character = utf8_get_next(formatResult, &formatResult);
+		uint32 codepoint = utf8_get_next(ch, &ch);
 
 		// If at the end of the string loop back to the start
-		if (character == 0) {
-			formatResult = scrollString;
+		if (codepoint == 0) {
+			ch = text;
 			continue;
 		}
 
 		// Set any change in colour
-		if (character <= FORMAT_COLOUR_CODE_END && character >= FORMAT_COLOUR_CODE_START){
-			character -= FORMAT_COLOUR_CODE_START;
-			characterColour = RCT2_GLOBAL(0x009FF048, uint8*)[character * 4];
+		if (codepoint <= FORMAT_COLOUR_CODE_END && codepoint >= FORMAT_COLOUR_CODE_START){
+			codepoint -= FORMAT_COLOUR_CODE_START;
+			characterColour = RCT2_GLOBAL(0x009FF048, uint8*)[codepoint * 4];
 			continue;
 		}
 
 		// If another type of control character ignore
-		if (character < 32) continue;
+		if (codepoint < 32) continue;
 
-		// Convert to an indexable character
-		character = utf8_get_sprite_offset_for_codepoint(character);
-
-		uint8 characterWidth = RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH + 448, uint8)[character];
-		uint8* characterBitmap = &(RCT2_ADDRESS(RCT2_ADDRESS_CHARACTER_BITMAP, uint8)[character * 8]);
+		int characterWidth = font_sprite_get_codepoint_width(FONT_SPRITE_BASE_TINY, codepoint);
+		uint8 *characterBitmap = font_sprite_get_codepoint_bitmap(codepoint);
 		for (; characterWidth != 0; characterWidth--, characterBitmap++) {
 			// Skip any none displayed columns
-			if (scroll != 0){
+			if (scroll != 0) {
 				scroll--;
 				continue;
 			}
 
-			sint16 scrollPosition = *scrollingModePositions;
-			if (scrollPosition == -1) return scrollIndex + 0x606;
+			sint16 scrollPosition = *scrollPositionOffsets;
+			if (scrollPosition == -1) return;
 			if (scrollPosition > -1) {
-				uint8* dst = &scrollPixelPointer[scrollPosition];
+				uint8 *dst = &bitmap[scrollPosition];
 				for (uint8 char_bitmap = *characterBitmap; char_bitmap != 0; char_bitmap >>= 1){
 					if (char_bitmap & 1) *dst = characterColour;
 					
@@ -155,7 +188,83 @@ int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrolling
 					dst += 64;
 				}
 			}
-			scrollingModePositions++;
+			scrollPositionOffsets++;
 		}
 	}
+}
+
+TTF_Font *ttf_get_font_from_sprite_base(uint16 spriteBase);
+SDL_Surface *_ttf_surface_cache_get_or_add(TTF_Font *font, const utf8 *text);
+
+void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, sint16 *scrollPositionOffsets)
+{
+	// Currently only supports one colour
+	uint8 colour = 0;
+
+	utf8 *dstCh = text;
+	utf8 *ch = text;
+	int codepoint;
+	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
+		if (utf8_is_format_code(codepoint)) {
+			if (colour == 0 && codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END) {
+				colour = (uint8)codepoint;
+			}
+		} else {
+			dstCh = utf8_write_codepoint(dstCh, codepoint);
+		}
+	}
+	*dstCh = 0;
+
+	if (colour == 0) {
+		colour = scrolling_text_get_colour(RCT2_GLOBAL(0x013CE959, uint8));
+	} else {
+		colour = RCT2_GLOBAL(0x009FF048, uint8*)[(colour - FORMAT_COLOUR_CODE_START) * 4];
+	}
+
+	TTF_Font *font = ttf_get_font_from_sprite_base(FONT_SPRITE_BASE_TINY);
+	SDL_Surface *surface = _ttf_surface_cache_get_or_add(font, text);
+	if (surface == NULL) {
+		return;
+	}
+
+	if (SDL_MUSTLOCK(surface) && SDL_LockSurface(surface) == -1) {
+		return;
+	}
+
+	int pitch = surface->pitch;
+	int width = surface->w;
+	int height = surface->h;
+	uint8 *src = surface->pixels;
+
+	// Offset
+	height -= 3;
+	src += 3 * pitch;
+	height = min(height, 8);
+
+	int x = 0;
+	while (true) {
+		// Skip any none displayed columns
+		if (scroll == 0) {
+			sint16 scrollPosition = *scrollPositionOffsets;
+			if (scrollPosition == -1) return;
+			if (scrollPosition > -1) {
+				uint8 *dst = &bitmap[scrollPosition];
+
+				for (int y = 0; y < height; y++) {
+					if (src[y * pitch + x] != 0) *dst = colour;
+
+					// Jump to next row 
+					dst += 64;
+				}
+			}
+			scrollPositionOffsets++;
+		} else {
+			scroll--;
+		}
+
+		x++;
+		if (x >= width) x = 0;
+	}
+
+	if (SDL_MUSTLOCK(surface)) SDL_UnlockSurface(surface);
 }

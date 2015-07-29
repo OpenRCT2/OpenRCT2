@@ -99,7 +99,7 @@ int rct2_init()
 
 	gfx_load_g1();
 	gfx_load_g2();
-	gfx_load_character_widths();
+	font_sprite_initialise_characters();
 	if (!gOpenRCT2Headless) {
 		platform_init();
 		audio_init1();

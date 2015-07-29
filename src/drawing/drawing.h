@@ -22,6 +22,7 @@
 #define _DRAWING_H_
 
 #include "../common.h"
+#include "font.h"
 
 // Size: 0x10
 typedef struct {
@@ -113,7 +114,6 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 
 void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer);
 
 // string
-void gfx_load_character_widths();
 int clip_text(char *buffer, int width);
 int gfx_wrap_string(char* buffer, int width, int* num_lines, int* font_height);
 int gfx_get_string_width(char *buffer);

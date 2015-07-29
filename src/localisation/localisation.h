@@ -28,7 +28,7 @@
 
 bool utf8_is_format_code(int codepoint);
 bool utf8_should_use_sprite_for_codepoint(int codepoint);
-int utf8_get_sprite_offset_for_codepoint(int codepoint);
+int font_sprite_get_codepoint_offset(int codepoint);
 int utf8_get_format_code_arg_length(int codepoint);
 
 void format_string(char *dest, rct_string_id format, void *args);

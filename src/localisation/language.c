@@ -144,6 +144,32 @@ bool utf8_is_codepoint_start(utf8 *text)
 	return false;
 }
 
+void utf8_remove_format_codes(utf8 *text)
+{
+	utf8 *dstCh = text;
+	utf8 *ch = text;
+	int codepoint;
+	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
+		if (!utf8_is_format_code(codepoint)) {
+			dstCh = utf8_write_codepoint(dstCh, codepoint);
+		}
+	}
+	*dstCh = 0;
+}
+
+int utf8_get_codepoint_length(int codepoint)
+{
+	if (codepoint <= 0x7F) {
+		return 1;
+	} else if (codepoint <= 0x7FF) {
+		return 2;
+	} else if (codepoint <= 0xFFFF) {
+		return 3;
+	} else {
+		return 4;
+	}
+}
+
 const char *language_get_string(rct_string_id id)
 {
 	const char *openrctString = NULL;
