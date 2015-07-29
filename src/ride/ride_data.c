@@ -4,7 +4,7 @@
  *
  * Data source is 0x0097E3AC
  *
- * Generating function is here 
+ * Generating function is here
  * https://gist.github.com/kevinburke/eaeb1d8149a6eef0dcc1
  */
 
@@ -20,7 +20,7 @@ const bool hasRunningTrack[0x60] = {
 	true,	// 5 Mini Railroad
 	true,	// 6 Monorail
 	true,	// 7 Mini Suspended Coaster
-	false,	// 8 Bumper Boats
+	false,	// 8 Boat Ride
 	true,	// 9 Wooden Wild Mine/Mouse
 	true,	// a Steeplechase/Motorbike/Soap Box Derby
 	true,	// b Car Ride
@@ -52,7 +52,7 @@ const bool hasRunningTrack[0x60] = {
 	false,	// 25 Ferris Wheel
 	false,	// 26 Motion Simulator
 	false,	// 27 3D Cinema
-	false,	// 28 Gravitron
+	false,	// 28 Topspin
 	false,	// 29 Space Rings
 	true,	// 2a Reverse Freefall Coaster
 	true,	// 2b Elevator
@@ -120,7 +120,7 @@ const uint8 initialUpkeepCosts[0x60] = {
 	60,	// 05 Mini Railroad
 	65,	// 06 Monorail
 	40,	// 07 Mini Suspended Coaster
-	50,	// 08 Bumper Boats
+	50,	// 08 Boat Ride
 	40,	// 09 Wooden Wild Mine/Mouse
 	40,	// 0a Steeplechase/Motorbike/Soap Box Derby
 	70,	// 0b Car Ride
@@ -152,7 +152,7 @@ const uint8 initialUpkeepCosts[0x60] = {
 	50,	// 25 Ferris Wheel
 	50,	// 26 Motion Simulator
 	50,	// 27 3D Cinema
-	50,	// 28 Gravitron
+	50,	// 28 Topspin
 	50,	// 29 Space Rings
 	80,	// 2a Reverse Freefall Coaster
 	50,	// 2b Elevator
@@ -213,7 +213,7 @@ const uint8 costPerTrackPiece[0x60] = {
 	0,	// 05 Mini Railroad
 	0,	// 06 Monorail
 	80,	// 07 Mini Suspended Coaster
-	0,	// 08 Bumper Boats
+	0,	// 08 Boat Ride
 	80,	// 09 Wooden Wild Mine/Mouse
 	80,	// 0a Steeplechase/Motorbike/Soap Box Derby
 	0,	// 0b Car Ride
@@ -245,7 +245,7 @@ const uint8 costPerTrackPiece[0x60] = {
 	0,	// 25 Ferris Wheel
 	0,	// 26 Motion Simulator
 	0,	// 27 3D Cinema
-	0,	// 28 Gravitron
+	0,	// 28 Topspin
 	0,	// 29 Space Rings
 	0,	// 2a Reverse Freefall Coaster
 	0,	// 2b Elevator
@@ -309,7 +309,7 @@ const uint8 rideUnknownData1[0x60] = {
 	10,	// 05 Mini Railroad
 	10,	// 06 Monorail
 	10,	// 07 Mini Suspended Coaster
-	4,	// 08 Bumper Boats
+	4,	// 08 Boat Ride
 	9,	// 09 Wooden Wild Mine/Mouse
 	10,	// 0a Steeplechase/Motorbike/Soap Box Derby
 	8,	// 0b Car Ride
@@ -341,7 +341,7 @@ const uint8 rideUnknownData1[0x60] = {
 	0,	// 25 Ferris Wheel
 	0,	// 26 Motion Simulator
 	0,	// 27 3D Cinema
-	0,	// 28 Gravitron
+	0,	// 28 Topspin
 	0,	// 29 Space Rings
 	0,	// 2a Reverse Freefall Coaster
 	10,	// 2b Elevator
@@ -406,7 +406,7 @@ const bool rideUnknownData2[0x60] = {
 	true,	// 05 Mini Railroad
 	true,	// 06 Monorail
 	true,	// 07 Mini Suspended Coaster
-	false,	// 08 Bumper Boats
+	false,	// 08 Boat Ride
 	true,	// 09 Wooden Wild Mine/Mouse
 	true,	// 0a Steeplechase/Motorbike/Soap Box Derby
 	true,	// 0b Car Ride
@@ -438,7 +438,7 @@ const bool rideUnknownData2[0x60] = {
 	false,	// 25 Ferris Wheel
 	false,	// 26 Motion Simulator
 	false,	// 27 3D Cinema
-	false,	// 28 Gravitron
+	false,	// 28 Topspin
 	false,	// 29 Space Rings
 	false,	// 2a Reverse Freefall Coaster
 	false,	// 2b Elevator
@@ -500,7 +500,7 @@ const uint8 rideUnknownData3[0x60] = {
 	5,	// 05 Mini Railroad
 	10,	// 06 Monorail
 	10,	// 07 Mini Suspended Coaster
-	0,	// 08 Bumper Boats
+	0,	// 08 Boat Ride
 	10,	// 09 Wooden Wild Mine/Mouse
 	10,	// 0a Steeplechase/Motorbike/Soap Box Derby
 	5,	// 0b Car Ride
@@ -532,7 +532,7 @@ const uint8 rideUnknownData3[0x60] = {
 	0,	// 25 Ferris Wheel
 	0,	// 26 Motion Simulator
 	0,	// 27 3D Cinema
-	0,	// 28 Gravitron
+	0,	// 28 Topspin
 	0,	// 29 Space Rings
 	10,	// 2a Reverse Freefall Coaster
 	0,	// 2b Elevator
@@ -593,7 +593,7 @@ const rct_ride_name_convention RideNameConvention[96] = {
 	{ 1229,    1243,    1257,       0 }, // 05 Mini Railroad
 	{ 1229,    1243,    1257,       0 }, // 06 Monorail
 	{ 1264,    1243,    1257,       0 }, // 07 Mini Suspended Coaster
-	{ 1236,    1250,    1250,       0 }, // 08 Bumper Boats
+	{ 1236,    1250,    1250,       0 }, // 08 Boat Ride
 	{ 1264,    1243,    1257,       0 }, // 09 Wooden Wild Mine/Mouse
 	{ 1264,    1243,    1257,       0 }, // 0a Steeplechase/Motorbike/Soap Box Derby
 	{ 1264,    1243,    1257,       0 }, // 0b Car Ride
@@ -625,7 +625,7 @@ const rct_ride_name_convention RideNameConvention[96] = {
 	{ 1299,    1278,    1257,       0 }, // 25 Ferris Wheel
 	{ 1264,    1278,    1257,       0 }, // 26 Motion Simulator
 	{ 1271,    1278,    1257,       0 }, // 27 3D Cinema
-	{ 1264,    1278,    1257,       0 }, // 28 Gravitron
+	{ 1264,    1278,    1257,       0 }, // 28 Topspin
 	{ 1306,    1278,    1257,       0 }, // 29 Space Rings
 	{ 1264,    1243,    1257,       0 }, // 2a Reverse Freefall Coaster
 	{ 1292,    1243,    1257,       0 }, // 2b Elevator
@@ -684,11 +684,11 @@ const uint8 RideAvailableModes[] = {
 	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 01 Stand Up Coaster
 	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 02 Suspended Swinging
 	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 03 Inverted
-	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 04 Steel Mini Coaster
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE, 0xFF,							// 04 Steel Mini Coaster
 	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_SHUTTLE, 0xFF,																									// 05 Mini Railroad
 	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_SHUTTLE, 0xFF,																									// 06 Monorail
 	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 07 Mini Suspended Coaster
-	RIDE_MODE_BOAT_HIRE, 0xFF,																																// 08 Bumper Boats
+	RIDE_MODE_BOAT_HIRE, 0xFF,																																// 08 Boat Ride
 	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 09 Wooden Wild Mine/Mouse
 	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 0A Steeplechase/Motorbike/Soap Box Derby
 	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 0B Car Ride
@@ -720,7 +720,7 @@ const uint8 RideAvailableModes[] = {
 	RIDE_MODE_FORWARD_ROTATION, RIDE_MODE_BACKWARD_ROTATION, 0xFF,																							// 25 Ferris Wheel
 	RIDE_MODE_FILM_AVENGING_AVIATORS, RIDE_MODE_FILM_THRILL_RIDERS, 0xFF,																					// 26 Motion Simulator
 	RIDE_MODE_3D_FILM_MOUSE_TAILS, RIDE_MODE_3D_FILM_STORM_CHASERS, RIDE_MODE_3D_FILM_SPACE_RAIDERS, 0xFF,													// 27 3D Cinema
-	RIDE_MODE_BEGINNERS, RIDE_MODE_INTENSE, RIDE_MODE_BERSERK, 0xFF,																						// 28 Gravitron
+	RIDE_MODE_BEGINNERS, RIDE_MODE_INTENSE, RIDE_MODE_BERSERK, 0xFF,																						// 28 Topspin
 	RIDE_MODE_SPACE_RINGS, 0xFF,																															// 29 Space Rings
 	RIDE_MODE_LIM_POWERED_LAUNCH, 0xFF,																														// 2A Reverse Freefall Coaster
 	RIDE_MODE_SHUTTLE, 0xFF,																																// 2B Elevator
@@ -769,8 +769,8 @@ const uint8 RideAvailableModes[] = {
 	RIDE_MODE_POWERED_LAUNCH_PASSTROUGH, RIDE_MODE_POWERED_LAUNCH, 0xFF,																					// 56 Inverted Impulse Coaster
 	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 57 Mini Roller Coaster
 	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 58 Mine Ride
-	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 59 LIM Launched Roller Coaster
-	RIDE_MODE_POWERED_LAUNCH_PASSTROUGH, RIDE_MODE_POWERED_LAUNCH, RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED, 0xFF																				// 60 (none)
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 59 Unknown
+	RIDE_MODE_POWERED_LAUNCH_PASSTROUGH, RIDE_MODE_POWERED_LAUNCH, RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED, 0xFF											// 60 LIM Launched Roller Coaster
 };
 
 const uint8 RideAvailableBreakdowns[] = {
@@ -782,7 +782,7 @@ const uint8 RideAvailableBreakdowns[] = {
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),																															// 05 Mini Railroad
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_DOORS_STUCK_CLOSED) | (1 << BREAKDOWN_DOORS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),												// 06 Monorail
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),	// 07 Mini Suspended Coaster
-	(1 << BREAKDOWN_VEHICLE_MALFUNCTION),																																							// 08 Bumper Boats
+	(1 << BREAKDOWN_VEHICLE_MALFUNCTION),																																							// 08 Boat Ride
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),																						// 09 Wooden Wild Mine/Mouse
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),																						// 0A Steeplechase/Motorbike/Soap Box Derby
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),																															// 0B Car Ride
@@ -814,7 +814,7 @@ const uint8 RideAvailableBreakdowns[] = {
 	(1 << BREAKDOWN_SAFETY_CUT_OUT),																																								// 25 Ferris Wheel
 	(1 << BREAKDOWN_SAFETY_CUT_OUT),																																								// 26 Motion Simulator
 	(1 << BREAKDOWN_SAFETY_CUT_OUT),																																								// 27 3D Cinema
-	(1 << BREAKDOWN_SAFETY_CUT_OUT),																																								// 28 Gravitron
+	(1 << BREAKDOWN_SAFETY_CUT_OUT),																																								// 28 Topspin
 	(1 << BREAKDOWN_SAFETY_CUT_OUT),																																								// 29 Space Rings
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),										// 2A Reverse Freefall Coaster
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_DOORS_STUCK_CLOSED) | (1 << BREAKDOWN_DOORS_STUCK_OPEN),																						// 2B Elevator
@@ -863,8 +863,8 @@ const uint8 RideAvailableBreakdowns[] = {
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),										// 56 Inverted Impulse Coaster
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),	// 57 Mini Roller Coaster
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),										// 58 Mine Ride
-	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),	// 59 LIM Launched Roller Coaster
-	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)	// 60 (none)
+	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),	// 59 Unknown
+	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)	// 60 LIM Launched Roller Coaster
 };
 
 const rct_ride_entrance_definition RideEntranceDefinitions[12] = {
@@ -884,94 +884,94 @@ const rct_ride_entrance_definition RideEntranceDefinitions[12] = {
 
 // Data read from 0x0097D7C9 4 bytes at a time
 const uint8 RideLiftHillAdjustments[0x60] = {
-		7,		 // Spiral Roller coaster     
-		4,		 // Stand Up Coaster     
-		4,		 // Suspended Swinging     
-		5,		 // Inverted     
-		4,		 // Steel Mini Coaster     
-		5,		 // Mini Railroad     
-		5,		 // Monorail     
-		4,		 // Mini Suspended Coaster     
-		5,		 // Bumper Boats     
-		4,		 // Wooden Wild Mine/Mouse     
-		4,		 // Steeplechase/Motorbike/Soap Box Derby     
-		5,		 // Car Ride     
-		5,		 // Launched Freefall     
-		4,		 // Bobsleigh Coaster     
-		5,		 // Observation Tower     
-		4,		 // Looping Roller Coaster     
-		4,		 // Dinghy Slide     
-		4,		 // Mine Train Coaster     
-		5,		 // Chairlift     
-		4,		 // Corkscrew Roller Coaster     
-		5,		 // Maze     
-		5,		 // Spiral Slide     
-		5,		 // Go Karts     
-		5,		 // Log Flume     
-		5,		 // River Rapids     
-		5,		 // Bumper Cars     
-		5,		 // Pirate Ship     
-		5,		 // Swinging Inverter Ship     
-		5,		 // Food Stall     
-		5,		 // (none)     
-		5,		 // Drink Stall     
-		5,		 // (none)     
-		5,		 // Shop (all types)     
-		5,		 // Merry Go Round     
-		5,		 // Balloon Stall (maybe)     
-		5,		 // Information Kiosk     
-		5,		 // Bathroom     
-		5,		 // Ferris Wheel     
-		5,		 // Motion Simulator     
-		5,		 // 3D Cinema     
-		5,		 // Gravitron     
-		5,		 // Space Rings     
-		5,		 // Reverse Freefall Coaster     
-		5,		 // Elevator     
-		4,		 // Vertical Drop Roller Coaster     
-		5,		 // ATM     
-		5,		 // Twist     
-		5,		 // Haunted House     
-		5,		 // First Aid     
-		5,		 // Circus Show     
-		5,		 // Ghost Train     
-		5,		 // Twister Roller Coaster     
-		5,		 // Wooden Roller Coaster     
-		3,		 // Side-Friction Roller Coaster     
-		4,		 // Wild Mouse     
-		4,		 // Multi Dimension Coaster     
-		4,		 // (none)     
-		4,		 // Flying Roller Coaster     
-		4,		 // (none)     
-		3,		 // Virginia Reel     
-		5,		 // Splash Boats     
-		5,		 // Mini Helicopters     
-		4,		 // Lay-down Roller Coaster     
-		5,		 // Suspended Monorail     
-		4,		 // (none)     
-		3,		 // Reverser Roller Coaster     
-		4,		 // Heartline Twister Roller Coaster     
-		5,		 // Mini Golf     
-		5,		 // Giga Coaster     
-		5,		 // Roto-Drop     
-		5,		 // Flying Saucers     
-		5,		 // Crooked House     
-		5,		 // Monorail Cycles     
-		4,		 // Compact Inverted Coaster     
-		4,		 // Water Coaster     
-		5,		 // Air Powered Vertical Coaster     
-		4,		 // Inverted Hairpin Coaster     
-		5,		 // Magic Carpet     
-		5,		 // Submarine Ride     
-		5,		 // River Rafts     
-		5,		 // (none)     
-		5,		 // Enterprise     
-		5,		 // (none)     
-		5,		 // (none)     
-		5,		 // (none)     
-		4,		 // (none)     
-		4,		 // Inverted Impulse Coaster     
-		4,		 // Mini Roller Coaster     
-		5,		 // Mine Ride     
-		4		 // LIM Launched Roller Coaster     
+		7,		 // Spiral Roller coaster
+		4,		 // Stand Up Coaster
+		4,		 // Suspended Swinging
+		5,		 // Inverted
+		4,		 // Steel Mini Coaster
+		5,		 // Mini Railroad
+		5,		 // Monorail
+		4,		 // Mini Suspended Coaster
+		5,		 // Boat Ride
+		4,		 // Wooden Wild Mine/Mouse
+		4,		 // Steeplechase/Motorbike/Soap Box Derby
+		5,		 // Car Ride
+		5,		 // Launched Freefall
+		4,		 // Bobsleigh Coaster
+		5,		 // Observation Tower
+		4,		 // Looping Roller Coaster
+		4,		 // Dinghy Slide
+		4,		 // Mine Train Coaster
+		5,		 // Chairlift
+		4,		 // Corkscrew Roller Coaster
+		5,		 // Maze
+		5,		 // Spiral Slide
+		5,		 // Go Karts
+		5,		 // Log Flume
+		5,		 // River Rapids
+		5,		 // Bumper Cars
+		5,		 // Pirate Ship
+		5,		 // Swinging Inverter Ship
+		5,		 // Food Stall
+		5,		 // (none)
+		5,		 // Drink Stall
+		5,		 // (none)
+		5,		 // Shop (all types)
+		5,		 // Merry Go Round
+		5,		 // Balloon Stall (maybe)
+		5,		 // Information Kiosk
+		5,		 // Bathroom
+		5,		 // Ferris Wheel
+		5,		 // Motion Simulator
+		5,		 // 3D Cinema
+		5,		 // Topspin
+		5,		 // Space Rings
+		5,		 // Reverse Freefall Coaster
+		5,		 // Elevator
+		4,		 // Vertical Drop Roller Coaster
+		5,		 // ATM
+		5,		 // Twist
+		5,		 // Haunted House
+		5,		 // First Aid
+		5,		 // Circus Show
+		5,		 // Ghost Train
+		5,		 // Twister Roller Coaster
+		5,		 // Wooden Roller Coaster
+		3,		 // Side-Friction Roller Coaster
+		4,		 // Wild Mouse
+		4,		 // Multi Dimension Coaster
+		4,		 // (none)
+		4,		 // Flying Roller Coaster
+		4,		 // (none)
+		3,		 // Virginia Reel
+		5,		 // Splash Boats
+		5,		 // Mini Helicopters
+		4,		 // Lay-down Roller Coaster
+		5,		 // Suspended Monorail
+		4,		 // (none)
+		3,		 // Reverser Roller Coaster
+		4,		 // Heartline Twister Roller Coaster
+		5,		 // Mini Golf
+		5,		 // Giga Coaster
+		5,		 // Roto-Drop
+		5,		 // Flying Saucers
+		5,		 // Crooked House
+		5,		 // Monorail Cycles
+		4,		 // Compact Inverted Coaster
+		4,		 // Water Coaster
+		5,		 // Air Powered Vertical Coaster
+		4,		 // Inverted Hairpin Coaster
+		5,		 // Magic Carpet
+		5,		 // Submarine Ride
+		5,		 // River Rafts
+		5,		 // (none)
+		5,		 // Enterprise
+		5,		 // (none)
+		5,		 // (none)
+		5,		 // (none)
+		4,		 // (none)
+		4,		 // Inverted Impulse Coaster
+		4,		 // Mini Roller Coaster
+		5,		 // Mine Ride
+		4		 // LIM Launched Roller Coaster
 };
