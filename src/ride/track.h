@@ -173,7 +173,7 @@ typedef struct {
 	uint8 track_spine_colour[4];					// 0x60
 	uint8 track_rail_colour[4];						// 0x64
 	uint8 track_support_colour[4];					// 0x68
-	uint32 var_6C;									// some flags
+	uint32 flags2;									// 0x6C
 	rct_object_entry vehicle_object;				// 0x70
 	uint8 space_required_x;							// 0x80
 	uint8 space_required_y;							// 0x81
@@ -186,6 +186,10 @@ typedef struct{
 	uint8 preview[4][TRACK_PREVIEW_IMAGE_SIZE];		// 0xA3
 } rct_track_design;
 
+enum {
+	TRACK_FLAGS2_CONTAINS_LOG_FLUME_REVERSER = (1 << 1),
+	TRACK_FLAGS2_SIX_FLAGS_RIDE_DEPRECATED = (1 << 31)		// Not used anymore.
+};
 
 enum {
 	TRACK_NONE = 0,

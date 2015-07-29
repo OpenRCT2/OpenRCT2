@@ -2711,7 +2711,7 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 			track_design->flags |= (1 << 31);
 
 		if (track->type == TRACK_ELEM_LOG_FLUME_REVERSER)
-			track_design->var_6C |= (1 << 1);
+			track_design->flags2 |= TRACK_FLAGS2_CONTAINS_LOG_FLUME_REVERSER;
 
 		uint8 bh;
 		if (track->type == TRACK_ELEM_BRAKES){
@@ -2929,7 +2929,7 @@ int ride_to_td6(uint8 rideIndex){
 
 	track_design->upkeep_cost = ride->upkeep_cost;
 	track_design->flags = 0;
-	track_design->var_6C = 0;
+	track_design->flags2 = 0;
 
 	uint8* track_elements = RCT2_ADDRESS(0x9D821B, uint8);
 	memset(track_elements, 0, 8000);
