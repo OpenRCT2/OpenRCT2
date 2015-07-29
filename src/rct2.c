@@ -51,6 +51,8 @@
 #include "world/scenery.h"
 #include "world/sprite.h"
 
+uint32 gCurrentDrawCount = 0;
+
 typedef struct tm tm_t;
 
 void print_launch_information();
@@ -236,6 +238,8 @@ void rct2_draw()
 	} else {
 		//game
 	}
+	
+	gCurrentDrawCount++;
 }
 
 int rct2_open_file(const char *path)

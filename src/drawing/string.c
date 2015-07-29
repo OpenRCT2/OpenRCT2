@@ -34,6 +34,33 @@ static int _ttfFontOffsetY = 0;
 
 static const int TTFFontSizes[] = { 7, 9, 11, 13 };
 
+#define TTF_SURFACE_CACHE_SIZE 256
+#define TTF_GETWIDTH_CACHE_SIZE 1024
+
+typedef struct {
+	SDL_Surface *surface;
+	TTF_Font *font;
+	utf8 *text;
+	uint32 lastUseTick;
+} ttf_cache_entry;
+
+static ttf_cache_entry _ttfSurfaceCache[TTF_SURFACE_CACHE_SIZE] = { 0 };
+static int _ttfSurfaceCacheCount = 0;
+static int _ttfSurfaceCacheHitCount = 0;
+static int _ttfSurfaceCacheMissCount = 0;
+
+typedef struct {
+	uint32 width;
+	TTF_Font *font;
+	utf8 *text;
+	uint32 lastUseTick;
+} ttf_getwidth_cache_entry;
+
+static ttf_getwidth_cache_entry _ttfGetWidthCache[TTF_GETWIDTH_CACHE_SIZE] = { 0 };
+static int _ttfGetWidthCacheCount = 0;
+static int _ttfGetWidthCacheHitCount = 0;
+static int _ttfGetWidthCacheMissCount = 0;
+
 enum {
 	FONT_SIZE_TINY = 2,
 	FONT_SIZE_SMALL = 0,
@@ -746,6 +773,144 @@ void sub_6C1F57(rct_drawpixelinfo *dpi, int x, int y, int width, int colour, rct
 	);
 }
 
+static uint32 _ttf_surface_cache_hash(TTF_Font *font, const utf8 *text)
+{
+	uint32 hash = ((uint32)font * 23) ^ 0xAAAAAAAA;
+	for (const uint8 *ch = text; *ch != 0; ch++) {
+		hash = ror32(hash, 3) ^ (*ch * 13);
+	}
+	return hash;
+}
+
+static void _ttf_surface_cache_dispose(ttf_cache_entry *entry)
+{
+	if (entry->surface != NULL) {
+		SDL_FreeSurface(entry->surface);
+		free(entry->text);
+
+		entry->surface = NULL;
+		entry->font = NULL;
+		entry->text = NULL;
+	}
+}
+
+static void _ttf_surface_cache_dispose_all()
+{
+	for (int i = 0; i < TTF_SURFACE_CACHE_SIZE; i++) {
+		_ttf_surface_cache_dispose(&_ttfSurfaceCache[i]);
+		_ttfSurfaceCacheCount--;
+	}
+}
+
+static SDL_Surface *_ttf_surface_cache_get_or_add(TTF_Font *font, const utf8 *text)
+{
+	ttf_cache_entry *entry;
+
+	uint32 hash = _ttf_surface_cache_hash(font, text);
+	int index = hash % TTF_SURFACE_CACHE_SIZE;
+	for (int i = 0; i < TTF_SURFACE_CACHE_SIZE; i++) {
+		entry = &_ttfSurfaceCache[index];
+
+		// Check if entry is a hit
+		if (entry->surface == NULL) break;
+		if (entry->font == font && strcmp(entry->text, text) == 0) {
+			_ttfSurfaceCacheHitCount++;
+			entry->lastUseTick = gCurrentDrawCount;
+			return entry->surface;
+		}
+
+		// If entry hasn't been used for a while, replace it
+		if (entry->lastUseTick < gCurrentDrawCount - 64) {
+			break;
+		}
+
+		// Check if next entry is a hit
+		if (++index >= TTF_SURFACE_CACHE_SIZE) index = 0;
+	}
+
+	// Cache miss, replace entry with new surface
+	entry = &_ttfSurfaceCache[index];
+	_ttf_surface_cache_dispose(entry);
+
+	SDL_Color c = { 0, 0, 0, 255 };
+	SDL_Surface *surface = TTF_RenderUTF8_Solid(font, text, c);
+	if (surface == NULL) {
+		return NULL;
+	}
+
+	_ttfSurfaceCacheMissCount++;
+	// printf("CACHE HITS: %d   MISSES: %d)\n", _ttfSurfaceCacheHitCount, _ttfSurfaceCacheMissCount);
+
+	_ttfSurfaceCacheCount++;
+	entry->surface = surface;
+	entry->font = font;
+	entry->text = _strdup(text);
+	entry->lastUseTick = gCurrentDrawCount;
+	return entry->surface;
+}
+
+static void _ttf_getwidth_cache_dispose(ttf_getwidth_cache_entry *entry)
+{
+	if (entry->text != NULL) {
+		free(entry->text);
+
+		entry->width = 0;
+		entry->font = NULL;
+		entry->text = NULL;
+	}
+}
+
+static void _ttf_getwidth_cache_dispose_all()
+{
+	for (int i = 0; i < TTF_GETWIDTH_CACHE_SIZE; i++) {
+		_ttf_getwidth_cache_dispose(&_ttfGetWidthCache[i]);
+		_ttfGetWidthCacheCount--;
+	}
+}
+
+static uint32 _ttf_getwidth_cache_get_or_add(TTF_Font *font, const utf8 *text)
+{
+	ttf_getwidth_cache_entry *entry;
+
+	uint32 hash = _ttf_surface_cache_hash(font, text);
+	int index = hash % TTF_GETWIDTH_CACHE_SIZE;
+	for (int i = 0; i < TTF_GETWIDTH_CACHE_SIZE; i++) {
+		entry = &_ttfGetWidthCache[index];
+
+		// Check if entry is a hit
+		if (entry->text == NULL) break;
+		if (entry->font == font && strcmp(entry->text, text) == 0) {
+			_ttfGetWidthCacheHitCount++;
+			entry->lastUseTick = gCurrentDrawCount;
+			return entry->width;
+		}
+
+		// If entry hasn't been used for a while, replace it
+		if (entry->lastUseTick < gCurrentDrawCount - 64) {
+			break;
+		}
+
+		// Check if next entry is a hit
+		if (++index >= TTF_GETWIDTH_CACHE_SIZE) index = 0;
+	}
+
+	// Cache miss, replace entry with new width
+	entry = &_ttfGetWidthCache[index];
+	_ttf_getwidth_cache_dispose(entry);
+
+	int width, height;
+	TTF_SizeUTF8(font, text, &width, &height);
+
+	_ttfGetWidthCacheMissCount++;
+
+	_ttfGetWidthCacheCount++;
+	entry->width = width;
+	entry->font = font;
+	entry->text = _strdup(text);
+	entry->lastUseTick = gCurrentDrawCount;
+	return entry->width;
+}
+
 bool ttf_initialise()
 {
 	if (!_ttfInitialised) {
@@ -774,6 +939,9 @@ void ttf_dispose()
 	if (!_ttfInitialised)
 		return;
 
+	_ttf_surface_cache_dispose_all();
+	_ttf_getwidth_cache_dispose_all();
+
 	if (_ttfFont != NULL) {
 		for (int i = 0; i < 4; i++) {
 			TTF_CloseFont(_ttfFont[i]);
@@ -783,6 +951,21 @@ void ttf_dispose()
 
 	TTF_Quit();
 	_ttfInitialised = false;
+}
+
+TTF_Font *ttf_get_font_from_sprite_base(uint16 spriteBase)
+{
+	switch (spriteBase) {
+	case FONT_SPRITE_BASE_TINY:
+		return _ttfFont[0];
+	case FONT_SPRITE_BASE_SMALL:
+		return _ttfFont[1];
+	default:
+	case FONT_SPRITE_BASE_MEDIUM:
+		return _ttfFont[2];
+	case FONT_SPRITE_BASE_BIG:
+		return _ttfFont[3];
+	}
 }
 
 enum {
@@ -831,39 +1014,20 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
 	if (!_ttfInitialised && !ttf_initialise())
 		return;
 
-	TTF_Font *font;
-	switch (info->font_sprite_base) {
-	case FONT_SPRITE_BASE_TINY:
-		font = _ttfFont[0];
-		break;
-	case FONT_SPRITE_BASE_SMALL:
-		font = _ttfFont[1];
-		break;
-	default:
-	case FONT_SPRITE_BASE_MEDIUM:
-		font = _ttfFont[2];
-		break;
-	case FONT_SPRITE_BASE_BIG:
-		font = _ttfFont[3];
-		break;
-	}
-
+	TTF_Font *font = ttf_get_font_from_sprite_base(info->font_sprite_base);
 	if (info->flags & TEXT_DRAW_FLAG_NO_DRAW) {
-		int width, height;
-
-		TTF_SizeUTF8(font, text, &width, &height);
-		info->x += width;
+		info->x += _ttf_getwidth_cache_get_or_add(font, text);
 		return;
 	} else {
 		uint8 colour = info->palette[1];
-		SDL_Color c = { 0, 0, 0, 255 };
-		SDL_Surface *surface = TTF_RenderUTF8_Solid(font, text, c);
+		SDL_Surface *surface = _ttf_surface_cache_get_or_add(font, text);
 		if (surface == NULL)
 			return;
 
-		if (SDL_LockSurface(surface) != 0) {
-			SDL_FreeSurface(surface);
-			return;
+		if (SDL_MUSTLOCK(surface)) {
+			if (SDL_LockSurface(surface) != 0) {
+				return;
+			}
 		}
 
 		int drawX = info->x + _ttfFontOffsetX;
@@ -914,9 +1078,10 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
 			src += srcScanSkip;
 			dst += dstScanSkip;
 		}
-		SDL_UnlockSurface(surface);
 
-		SDL_FreeSurface(surface);
+		if (SDL_MUSTLOCK(surface)) {
+			SDL_UnlockSurface(surface);
+		}
 	}
 }
 
