@@ -754,7 +754,7 @@ enum {
 	RIDE_TYPE_FLAG_18 = 1 << 18,
 	RIDE_TYPE_FLAG_FLAT_RIDE = 1 << 19,
 	RIDE_TYPE_FLAG_20 = 1 << 20,
-	RIDE_TYPE_FLAG_21 = 1 << 21,								// used only by toilets and first aid
+	RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY = 1 << 21,	// used by toilets and first aid to mark that peep should go inside the building (rather than 'buying' at the counter)
 	RIDE_TYPE_FLAG_IN_RIDE = 1 << 22,							// peeps are "IN" (ride) rather than "ON" (ride)
 	RIDE_TYPE_FLAG_SELLS_FOOD = 1 << 23,
 	RIDE_TYPE_FLAG_SELLS_DRINKS = 1 << 24,

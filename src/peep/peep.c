@@ -6512,7 +6512,7 @@ static int peep_interact_with_shop(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 	if (peep->flags & PEEP_FLAGS_LEAVING_PARK)
 		return peep_return_to_center_of_tile(peep);
 
-	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_21)){
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY)){
 		peep->var_F4 = 0;
 		if (!sub_6960AB(peep, rideIndex, 0, 0))
 			return peep_return_to_center_of_tile(peep);
