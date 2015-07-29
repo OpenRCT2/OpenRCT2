@@ -499,6 +499,7 @@ static int editor_read_s6(const char *path)
 		news_item_init_queue();
 		window_editor_main_open();
 		editor_finalise_main_view();
+		game_convert_strings_to_utf8();
 		return 1;
 	}
 

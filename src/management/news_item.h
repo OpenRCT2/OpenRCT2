@@ -51,6 +51,8 @@ typedef struct {
 	utf8 text[256];				// 0x0C
 } rct_news_item;
 
+#define MAX_NEWS_ITEMS 60
+
 void news_item_init_queue();
 void news_item_update_current();
 void news_item_close_current();
@@ -59,9 +61,9 @@ void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc);
 void news_item_add_to_queue_raw(uint8 type, const char *text, uint32 assoc);
 void news_item_open_subject(int type, int subject);
 void news_item_disable_news(uint8 type, uint32 assoc);
-rct_news_item *news_item_get(const uint8 idx);
-bool news_item_is_empty(const uint8 idx);
+rct_news_item *news_item_get(int index);
+bool news_item_is_empty(int index);
 bool news_item_is_queue_empty();
-bool news_item_is_valid_idx(const uint8 idx);
+bool news_item_is_valid_idx(int index);
 
 #endif

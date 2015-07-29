@@ -180,6 +180,7 @@ int scenario_load(const char *path)
 			map_update_tile_pointers();
 			reset_0x69EBE4();
 			openrct2_reset_object_tween_locations();
+			game_convert_strings_to_utf8();
 			return 1;
 		}
 
@@ -965,6 +966,7 @@ int scenario_save(SDL_RWops* rw, int flags)
 	memcpy(&s6->dword_010E63B8, (void*)0x010E63B8, 0x2E8570);
 
 	scenario_fix_ghosts(s6);
+	game_convert_strings_to_rct2(s6);
 	scenario_save_s6(rw, s6);
 
 	free(s6);

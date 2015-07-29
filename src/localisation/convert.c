@@ -7,6 +7,51 @@ typedef struct {
 
 static const encoding_convert_entry GB2312ToUnicodeTable[7445];
 static const encoding_convert_entry Big5ToUnicodeTable[13710];
+static const encoding_convert_entry RCT2ToUnicodeTable[256];
+
+int rct2_to_utf8(utf8 *dst, const char *src)
+{
+	int codepoint;
+
+	utf8 *start = dst;
+	const char *ch = src;
+	while (*ch != 0) {
+		if (*ch == (char)0xFF) {
+			ch++;
+
+			// Read wide char
+			uint8 a = *ch++;
+			uint8 b = *ch++;
+			codepoint = (a << 8) | b;
+		} else {
+			codepoint = (uint8)(*ch++);
+			codepoint = encoding_convert_rct2_to_unicode(codepoint);
+		}
+
+		dst = utf8_write_codepoint(dst, codepoint);
+	}
+	dst = utf8_write_codepoint(dst, 0);
+	return dst - start;
+}
+
+int utf8_to_rct2(char *dst, const utf8 *src)
+{
+	char *start = dst;
+	const utf8 *ch = src;
+	int codepoint;
+	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
+		codepoint = encoding_convert_unicode_to_rct2(codepoint);
+		if (codepoint < 256) {
+			*dst++ = (char)codepoint;
+		} else if (codepoint <= 0xFFFF) {
+			*dst++ = (char)0xFF;
+			*dst++ = (codepoint >> 8) & 0xFF;
+			*dst++ = codepoint & 0xFF;
+		}
+	}
+	*dst++ = 0;
+	return dst - start;
+}
 
 static int encoding_search_compare(const void *pKey, const void *pEntry)
 {
@@ -24,6 +69,20 @@ static wchar_t encoding_convert_x_to_unicode(wchar_t code, const encoding_conver
 	else return entry->unicode;
 }
 
+wchar_t encoding_convert_unicode_to_rct2(wchar_t unicode)
+{
+	// Can't do a binary search as its sorted by RCT2 code, not unicode
+	for (int i = 0; i < countof(RCT2ToUnicodeTable); i++) {
+		if (RCT2ToUnicodeTable[i].unicode == unicode) return RCT2ToUnicodeTable[i].code;
+	}
+	return unicode;
+}
+
+wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str)
+{
+	return encoding_convert_x_to_unicode(rct2str, RCT2ToUnicodeTable, countof(RCT2ToUnicodeTable));
+}
+
 wchar_t encoding_convert_gb2312_to_unicode(wchar_t gb2312)
 {
 	return encoding_convert_x_to_unicode(gb2312 - 0x8080, GB2312ToUnicodeTable, countof(GB2312ToUnicodeTable));
@@ -33,6 +92,265 @@ wchar_t encoding_convert_big5_to_unicode(wchar_t big5)
 {
 	return encoding_convert_x_to_unicode(big5, Big5ToUnicodeTable, countof(Big5ToUnicodeTable));
 }
+
+static const encoding_convert_entry RCT2ToUnicodeTable[256] = {
+	{ 0, 0 },
+	{ 1, FORMAT_MOVE_X },
+	{ 2, FORMAT_ADJUST_PALETTE },
+	{ 3, 3 },
+	{ 4, 4 },
+	{ 5, FORMAT_NEWLINE },
+	{ 6, FORMAT_NEWLINE_SMALLER },
+	{ 7, FORMAT_TINYFONT },
+	{ 8, FORMAT_BIGFONT },
+	{ 9, FORMAT_MEDIUMFONT },
+	{ 10, FORMAT_SMALLFONT },
+	{ 11, FORMAT_OUTLINE },
+	{ 12, FORMAT_OUTLINE_OFF },
+	{ 13, FORMAT_WINDOW_COLOUR_1 },
+	{ 14, FORMAT_WINDOW_COLOUR_2 },
+	{ 15, FORMAT_WINDOW_COLOUR_3 },
+	{ 16, 16 },
+	{ 17, FORMAT_NEWLINE_X_Y },
+	{ 18, 18 },
+	{ 19, 19 },
+	{ 20, 20 },
+	{ 21, 21 },
+	{ 22, 22 },
+	{ 23, FORMAT_INLINE_SPRITE },
+	{ 24, 24 },
+	{ 25, 25 },
+	{ 26, 26 },
+	{ 27, 27 },
+	{ 28, 28 },
+	{ 29, 29 },
+	{ 30, 30 },
+	{ 31, 31 },
+	{ 32, 32 },
+	{ 33, 33 },
+	{ 34, 34 },
+	{ 35, 35 },
+	{ 36, 36 },
+	{ 37, 37 },
+	{ 38, 38 },
+	{ 39, 39 },
+	{ 40, 40 },
+	{ 41, 41 },
+	{ 42, 42 },
+	{ 43, 43 },
+	{ 44, 44 },
+	{ 45, 45 },
+	{ 46, 46 },
+	{ 47, 47 },
+	{ 48, 48 },
+	{ 49, 49 },
+	{ 50, 50 },
+	{ 51, 51 },
+	{ 52, 52 },
+	{ 53, 53 },
+	{ 54, 54 },
+	{ 55, 55 },
+	{ 56, 56 },
+	{ 57, 57 },
+	{ 58, 58 },
+	{ 59, 59 },
+	{ 60, 60 },
+	{ 61, 61 },
+	{ 62, 62 },
+	{ 63, 63 },
+	{ 64, 64 },
+	{ 65, 65 },
+	{ 66, 66 },
+	{ 67, 67 },
+	{ 68, 68 },
+	{ 69, 69 },
+	{ 70, 70 },
+	{ 71, 71 },
+	{ 72, 72 },
+	{ 73, 73 },
+	{ 74, 74 },
+	{ 75, 75 },
+	{ 76, 76 },
+	{ 77, 77 },
+	{ 78, 78 },
+	{ 79, 79 },
+	{ 80, 80 },
+	{ 81, 81 },
+	{ 82, 82 },
+	{ 83, 83 },
+	{ 84, 84 },
+	{ 85, 85 },
+	{ 86, 86 },
+	{ 87, 87 },
+	{ 88, 88 },
+	{ 89, 89 },
+	{ 90, 90 },
+	{ 91, 91 },
+	{ 92, 92 },
+	{ 93, 93 },
+	{ 94, 94 },
+	{ 95, 95 },
+	{ 96, 96 },
+	{ 97, 97 },
+	{ 98, 98 },
+	{ 99, 99 },
+	{ 100, 100 },
+	{ 101, 101 },
+	{ 102, 102 },
+	{ 103, 103 },
+	{ 104, 104 },
+	{ 105, 105 },
+	{ 106, 106 },
+	{ 107, 107 },
+	{ 108, 108 },
+	{ 109, 109 },
+	{ 110, 110 },
+	{ 111, 111 },
+	{ 112, 112 },
+	{ 113, 113 },
+	{ 114, 114 },
+	{ 115, 115 },
+	{ 116, 116 },
+	{ 117, 117 },
+	{ 118, 118 },
+	{ 119, 119 },
+	{ 120, 120 },
+	{ 121, 121 },
+	{ 122, 122 },
+	{ 123, FORMAT_COMMA32 },
+	{ 124, FORMAT_INT32 },
+	{ 125, FORMAT_COMMA2DP32 },
+	{ 126, FORMAT_COMMA16 },
+	{ 127, FORMAT_UINT16 },
+	{ 128, FORMAT_CURRENCY2DP },
+	{ 129, FORMAT_CURRENCY },
+	{ 130, FORMAT_STRINGID },
+	{ 131, FORMAT_STRINGID2 },
+	{ 132, FORMAT_STRING },
+	{ 133, FORMAT_MONTHYEAR },
+	{ 134, FORMAT_MONTH },
+	{ 135, FORMAT_VELOCITY },
+	{ 136, FORMAT_POP16 },
+	{ 137, FORMAT_PUSH16 },
+	{ 138, FORMAT_DURATION },
+	{ 139, FORMAT_REALTIME },
+	{ 140, FORMAT_LENGTH },
+	{ 141, FORMAT_SPRITE },
+	{ 142, FORMAT_BLACK },
+	{ 143, FORMAT_GREY },
+	{ 144, FORMAT_WHITE },
+	{ 145, FORMAT_RED },
+	{ 146, FORMAT_GREEN },
+	{ 147, FORMAT_YELLOW },
+	{ 148, FORMAT_TOPAZ },
+	{ 149, FORMAT_CELADON },
+	{ 150, FORMAT_BABYBLUE },
+	{ 151, FORMAT_PALELAVENDER },
+	{ 152, FORMAT_PALEGOLD },
+	{ 153, FORMAT_LIGHTPINK },
+	{ 154, FORMAT_PEARLAQUA },
+	{ 155, FORMAT_PALESILVER },
+	{ 156, 156 },
+	{ 157, 157 },
+	{ 158, 158 },
+	{ 159, FORMAT_AMINUSCULE },
+	{ 160, FORMAT_UP },
+	{ 161, FORMAT_SYMBOL_i },
+	{ 162, 162 },
+	{ 163, FORMAT_POUND },
+	{ 164, 164 },
+	{ 165, FORMAT_YEN },
+	{ 166, 166 },
+	{ 167, 167 },
+	{ 168, 168 },
+	{ 169, FORMAT_COPYRIGHT },
+	{ 170, FORMAT_DOWN },
+	{ 171, FORMAT_LEFTGUILLEMET },
+	{ 172, FORMAT_TICK },
+	{ 173, FORMAT_CROSS },
+	{ 174, 174 },
+	{ 175, FORMAT_RIGHT },
+	{ 176, FORMAT_DEGREE },
+	{ 177, FORMAT_SYMBOL_RAILWAY },
+	{ 178, FORMAT_SQUARED },
+	{ 179, 179 },
+	{ 180, FORMAT_OPENQUOTES },
+	{ 181, FORMAT_EURO },
+	{ 182, FORMAT_SYMBOL_ROAD },
+	{ 183, FORMAT_SYMBOL_FLAG },
+	{ 184, FORMAT_APPROX },
+	{ 185, FORMAT_POWERNEGATIVEONE },
+	{ 186, FORMAT_BULLET },
+	{ 187, FORMAT_RIGHTGUILLEMET },
+	{ 188, FORMAT_SMALLUP },
+	{ 189, FORMAT_SMALLDOWN },
+	{ 190, FORMAT_LEFT },
+	{ 191, FORMAT_INVERTEDQUESTION },
+	{ 192, 192 },
+	{ 193, 193 },
+	{ 194, 194 },
+	{ 195, 195 },
+	{ 196, 196 },
+	{ 197, 197 },
+	{ 198, 198 },
+	{ 199, 199 },
+	{ 200, 200 },
+	{ 201, 201 },
+	{ 202, 202 },
+	{ 203, 203 },
+	{ 204, 204 },
+	{ 205, 205 },
+	{ 206, 206 },
+	{ 207, 207 },
+	{ 208, 208 },
+	{ 209, 209 },
+	{ 210, 210 },
+	{ 211, 211 },
+	{ 212, 212 },
+	{ 213, 213 },
+	{ 214, 214 },
+	{ 215, 215 },
+	{ 216, 216 },
+	{ 217, 217 },
+	{ 218, 218 },
+	{ 219, 219 },
+	{ 220, 220 },
+	{ 221, 221 },
+	{ 222, 222 },
+	{ 223, 223 },
+	{ 224, 224 },
+	{ 225, 225 },
+	{ 226, 226 },
+	{ 227, 227 },
+	{ 228, 228 },
+	{ 229, 229 },
+	{ 230, 230 },
+	{ 231, 231 },
+	{ 232, 232 },
+	{ 233, 233 },
+	{ 234, 234 },
+	{ 235, 235 },
+	{ 236, 236 },
+	{ 237, 237 },
+	{ 238, 238 },
+	{ 239, 239 },
+	{ 240, 240 },
+	{ 241, 241 },
+	{ 242, 242 },
+	{ 243, 243 },
+	{ 244, 244 },
+	{ 245, 245 },
+	{ 246, 246 },
+	{ 247, 247 },
+	{ 248, 248 },
+	{ 249, 249 },
+	{ 250, 250 },
+	{ 251, 251 },
+	{ 252, 252 },
+	{ 253, 253 },
+	{ 254, 254 },
+	{ 255, 255 }
+};
 
 static const encoding_convert_entry GB2312ToUnicodeTable[7445] = {
 	{ 8481, 12288 },
