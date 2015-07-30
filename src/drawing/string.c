@@ -22,6 +22,7 @@
 #include "../addresses.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
+#include "../world/map.h"
 #include "drawing.h"
 
 static int ttf_get_string_width(const utf8 *text);
@@ -29,10 +30,9 @@ static void ttf_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, in
 
 static bool _ttfInitialised = false;
 static TTF_Font *_ttfFont[4] = { NULL };
-int _ttfFontOffsetX = 0;
-int _ttfFontOffsetY = 0;
 
-static const int TTFFontSizes[] = { 9, 9, 11, 13 };
+static const int TTFFontSizes[] = { 9, 11, 12, 13 };
+static const rct_xy16 TTFFontOffsets[] = { { -1, -2 }, { -1, -2 }, { -1, -3 }, { -1, -3 } };
 
 #define TTF_SURFACE_CACHE_SIZE 256
 #define TTF_GETWIDTH_CACHE_SIZE 1024
@@ -927,8 +927,6 @@ bool ttf_initialise()
 			}
 		}
 
-		_ttfFontOffsetX = 1;
-		_ttfFontOffsetY = -2;
 		_ttfInitialised = true;
 	}
 	return true;
@@ -953,19 +951,24 @@ void ttf_dispose()
 	_ttfInitialised = false;
 }
 
-TTF_Font *ttf_get_font_from_sprite_base(uint16 spriteBase)
+int ttf_get_font_size_from_sprite_base(uint16 spriteBase)
 {
 	switch (spriteBase) {
 	case FONT_SPRITE_BASE_TINY:
-		return _ttfFont[0];
+		return 0;
 	case FONT_SPRITE_BASE_SMALL:
-		return _ttfFont[1];
+		return 1;
 	default:
 	case FONT_SPRITE_BASE_MEDIUM:
-		return _ttfFont[2];
+		return 2;
 	case FONT_SPRITE_BASE_BIG:
-		return _ttfFont[3];
+		return 3;
 	}
+}
+
+TTF_Font *ttf_get_font_from_sprite_base(uint16 spriteBase)
+{
+	return _ttfFont[ttf_get_font_size_from_sprite_base(spriteBase)];
 }
 
 enum {
@@ -1029,9 +1032,10 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
 				return;
 			}
 		}
-
-		int drawX = info->x + _ttfFontOffsetX;
-		int drawY = info->y + _ttfFontOffsetY;
+		
+		int fontSize = ttf_get_font_size_from_sprite_base(info->font_sprite_base);
+		int drawX = info->x + TTFFontOffsets[fontSize].x;
+		int drawY = info->y + TTFFontOffsets[fontSize].y;
 		int width = surface->w;
 		int height = surface->h;
 
