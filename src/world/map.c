@@ -61,7 +61,7 @@ bool gClearLargeScenery;
 bool gClearFootpath;
 
 static void tiles_init();
-static void sub_6A87BB(int x, int y);
+static void update_path_wide_flags(int x, int y);
 static void map_update_grass_length(int x, int y, rct_map_element *mapElement);
 static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int length);
 static void sub_68AE2A(int x, int y);
@@ -569,13 +569,13 @@ void sub_6A876D()
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
 		return;
 
-	// Presumebly sub_6A87BB is too computationally expensive to call for every
+	// Presumebly update_path_wide_flags is too computationally expensive to call for every
 	// tile every update, so word_13CE774 and word_13CE776 store the x and y
 	// progress. A maximum of 128 calls is done per update.
 	x = RCT2_GLOBAL(0x013CE774, sint16);
 	y = RCT2_GLOBAL(0x013CE776, sint16);
 	for (i = 0; i < 128; i++) {
-		sub_6A87BB(x, y);
+		update_path_wide_flags(x, y);
 
 		// Next x, y tile
 		x += 32;
@@ -592,11 +592,192 @@ void sub_6A876D()
 
 /**
  *
+ *  rct2: 0x006A8B12
+ */
+static void sub_6A8B12(int x, int y)
+{
+	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
+	do {
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
+			mapElement->type &= ~0x2;
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
+}
+
+/**
+ *
+ *  rct2: 0x006A8ACF
+ */
+static void sub_6A8ACF(int x, int y, uint8 height, rct_map_element **l)
+{
+	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
+	do {
+		if ((map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) &&
+			!footpath_element_is_queue(mapElement) && !footpath_element_is_sloped(mapElement) &&
+			(height == mapElement->base_height)) {
+			*l = mapElement;
+			return;
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
+	*l = (rct_map_element*)0xFFFFFFFF;
+}
+
+
+/**
+ *
  *  rct2: 0x006A87BB
  */
-static void sub_6A87BB(int x, int y)
+static void update_path_wide_flags(int x, int y)
 {
-	RCT2_CALLPROC_X(0x006A87BB, x, 0, y, 0, 0, 0, 0);
+	if (x < 0x20)
+		return;
+	if (y < 0x20)
+		return;
+	if (x > 0x1FDF)
+		return;
+	if (y > 0x1FDF)
+		return;
+
+	sub_6A8B12(x, y);
+	x += 0x20;
+	sub_6A8B12(x, y);
+	y += 0x20;
+	sub_6A8B12(x, y);
+	x -= 0x20;
+	sub_6A8B12(x, y);
+	y -= 0x20;
+
+	if (!(x & 0xE0))
+		return;
+	if (!(y & 0xE0))
+		return;
+
+	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+			continue;
+
+		if (footpath_element_is_queue(mapElement))
+			continue;
+
+		if (footpath_element_is_sloped(mapElement))
+			continue;
+
+		uint8 height = mapElement->base_height;
+
+		// pathList is a list of elements, set by sub_6A8ACF adjacent to x,y
+		// Spanned from 0x00F3EFA8 to 0x00F3EFC7 (8 elements) in the original
+		rct_map_element *pathList[8];
+
+		x -= 0x20;
+		y -= 0x20;
+		sub_6A8ACF(x, y, height, pathList + 0);
+		y += 0x20;
+		sub_6A8ACF(x, y, height, pathList + 1);
+		y += 0x20;
+		sub_6A8ACF(x, y, height, pathList + 2);
+		x += 0x20;
+		sub_6A8ACF(x, y, height, pathList + 3);
+		x += 0x20;
+		sub_6A8ACF(x, y, height, pathList + 4);
+		y -= 0x20;
+		sub_6A8ACF(x, y, height, pathList + 5);
+		y -= 0x20;
+		sub_6A8ACF(x, y, height, pathList + 6);
+		x -= 0x20;
+		sub_6A8ACF(x, y, height, pathList + 7);
+		y += 0x20;
+
+		uint8 F3EFA5 = 0;
+		const rct_map_element *invalidPointer = (rct_map_element*)0xFFFFFFFF;
+
+		if (mapElement->properties.path.edges & 8) {
+			F3EFA5 |= 0x80;
+			if (pathList[7] != invalidPointer) {
+				if (footpath_element_is_wide(pathList[7])) {
+					F3EFA5 &= ~0x80;
+				}
+			}
+		}
+
+		if (mapElement->properties.path.edges & 1) {
+			F3EFA5 |= 0x2;
+			if (pathList[1] != invalidPointer) {
+				if (footpath_element_is_wide(pathList[1])) {
+					F3EFA5 &= ~0x2;
+				}
+			}
+		}
+
+		if (mapElement->properties.path.edges & 2) {
+			F3EFA5 |= 0x8;
+			if (pathList[3] != invalidPointer) {
+				if (footpath_element_is_wide(pathList[3])) {
+					F3EFA5 &= ~0x8;
+				}
+			}
+		}
+
+		if (mapElement->properties.path.edges & 4) {
+			F3EFA5 |= 0x20;
+			if (pathList[5] != invalidPointer) {
+				if (footpath_element_is_wide(pathList[5])) {
+					F3EFA5 &= ~0x20;
+				}
+			}
+		}
+
+		if ((F3EFA5 & 0x80) && (pathList[7] != invalidPointer) && !(footpath_element_is_wide(pathList[7])))	{
+			if ((F3EFA5 & 2) &&
+				(pathList[0] != invalidPointer) && (!footpath_element_is_wide(pathList[0])) &&
+				((pathList[0]->properties.path.edges & 6) == 6) && // N E
+				(pathList[1] != invalidPointer) && (!footpath_element_is_wide(pathList[1]))) {
+				F3EFA5 |= 0x1;
+			}
+
+			if ((F3EFA5 & 0x20) &&
+				(pathList[6] != invalidPointer) && (!footpath_element_is_wide(pathList[6])) &&
+				((pathList[6]->properties.path.edges & 3) == 3) && // N W
+				(pathList[5] != invalidPointer) && (!footpath_element_is_wide(pathList[5]))) {
+				F3EFA5 |= 0x40;
+			}
+		}
+
+
+		if ((F3EFA5 & 0x8) && (pathList[3] != invalidPointer) && !(pathList[3]->type & 2))	{
+			if ((F3EFA5 & 2) &&
+				(pathList[2] != invalidPointer) && (!footpath_element_is_wide(pathList[2])) &&
+				((pathList[2]->properties.path.edges & 0xC) == 0xC) &&
+				(pathList[1] != invalidPointer) && (!footpath_element_is_wide(pathList[1]))) {
+				F3EFA5 |= 0x4;
+			}
+
+			if ((F3EFA5 & 0x20) &&
+				(pathList[4] != invalidPointer) && (!footpath_element_is_wide(pathList[4])) &&
+				((pathList[4]->properties.path.edges & 9) == 9) &&
+				(pathList[5] != invalidPointer) && (!footpath_element_is_wide(pathList[5]))) {
+				F3EFA5 |= 0x10;
+			}
+		}
+
+		if ((F3EFA5 & 0x80) && (F3EFA5 & (0x40 | 0x1)))
+			F3EFA5 &= ~0x80;
+
+		if ((F3EFA5 & 0x2) && (F3EFA5 & (0x4 | 0x1)))
+			F3EFA5 &= ~0x2;
+
+		if ((F3EFA5 & 0x8) && (F3EFA5 & (0x10 | 0x4)))
+			F3EFA5 &= ~0x8;
+
+		if ((F3EFA5 & 0x20) && (F3EFA5 & (0x40 | 0x10)))
+			F3EFA5 &= ~0x20;
+
+		if (!(F3EFA5 & (0x2 | 0x8 | 0x20 | 0x80))) {
+			uint8 e = mapElement->properties.path.edges;
+			if ((e != 0xAF) && (e != 0x5F) && (e != 0xEF))
+				mapElement->type |= 2;
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
 }
 
 /**
