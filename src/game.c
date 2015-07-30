@@ -319,8 +319,6 @@ void game_update()
 
 	window_map_tooltip_update_visibility();
 
-	RCT2_GLOBAL(0x01388698, uint16)++;
-
 	// Input
 	RCT2_GLOBAL(0x0141F568, uint8) = RCT2_GLOBAL(0x0013CA740, uint8);
 	game_handle_input();
@@ -366,6 +364,8 @@ void game_logic_update()
 	peep_update_crowd_noise();
 	climate_update_sound();
 	editor_open_windows_for_current_step();
+
+	RCT2_GLOBAL(0x01388698, uint16)++;
 
 	// Update windows
 	//window_dispatch_update_all();
@@ -860,6 +860,8 @@ void game_load_init()
 	gGameSpeed = 1;
 
 	scenario_set_filename((char*)0x0135936C);
+
+	RCT2_GLOBAL(0x01388698, uint16) = 0;
 }
 
 /*
