@@ -128,6 +128,12 @@ int gfx_clip_string(utf8 *text, int width)
 	utf8 *clipCh = text;
 	int codepoint;
 	while ((codepoint = utf8_get_next(ch, &nextCh)) != 0) {
+		if (utf8_is_format_code(codepoint)) {
+			ch = nextCh;
+			ch += utf8_get_format_code_arg_length(codepoint);
+			continue;
+		}
+
 		for (int i = 0; i < 4; i++) { backup[i] = nextCh[i]; };
 		for (int i = 0; i < 3; i++) { nextCh[i] = '.'; }
 		nextCh[3] = 0;
@@ -175,9 +181,9 @@ int gfx_wrap_string(utf8 *text, int width, int *outNumLines, int *outFontHeight)
 
 	utf8 *ch = text;
 	utf8 *firstCh = text;
-	utf8 *lastCh;
+	utf8 *nextCh;
 	int codepoint;
-	while ((codepoint = utf8_get_next(ch, &lastCh)) != 0) {
+	while ((codepoint = utf8_get_next(ch, &nextCh)) != 0) {
 		if (codepoint == ' ') {
 			currentWord = ch;
 			currentWidth = lineWidth;
@@ -189,15 +195,19 @@ int gfx_wrap_string(utf8 *text, int width, int *outNumLines, int *outFontHeight)
 			currentWord = NULL;
 			firstCh = ch;
 			continue;
+		} else if (utf8_is_format_code(codepoint)) {
+			ch = nextCh;
+			ch += utf8_get_format_code_arg_length(codepoint);
+			continue;
 		}
 
-		uint8 saveCh = *lastCh;
-		*lastCh = 0;
+		uint8 saveCh = *nextCh;
+		*nextCh = 0;
 		lineWidth = gfx_get_string_width(firstCh);
-		*lastCh = saveCh;
+		*nextCh = saveCh;
 
 		if (lineWidth <= width) {
-			ch = lastCh;
+			ch = nextCh;
 		} else if (currentWord == NULL) {
 			// Single word is longer than line, insert null terminator
 			ch += utf8_insert_codepoint(ch, 0);
