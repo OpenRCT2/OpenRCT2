@@ -839,7 +839,7 @@ STR_0837    :Kan het grafisch systeem niet starten
 STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-# The follwing six strings were used for display resolutions, but have been replaced.
+# The following six strings were used for display resolutions, but have been replaced.
 STR_0841    :<not used anymore>
 STR_0842    :<not used anymore>
 STR_0843    :<not used anymore>
@@ -2437,13 +2437,13 @@ STR_2432    :{BLACK}Bonnen voor 50% korting op entree voor {STRINGID}
 STR_2433    :{BLACK}Bonnen voor gratis {STRINGID}
 STR_2434    :{BLACK}Advertentiecampagne voor {STRINGID}
 STR_2435    :{BLACK}Advertentiecampagne voor {STRINGID}
-STR_2436    :1 week
+STR_2436    :<not used anymore>
 STR_2437    :<not used anymore>
 STR_2438    :<not used anymore>
 STR_2439    :<not used anymore>
 STR_2440    :<not used anymore>
 STR_2441    :<not used anymore>
-STR_2442    :{BLACK}({STRINGID} resterend)
+STR_2442    :<not used anymore>
 STR_2443    :{WINDOW_COLOUR_2}Kosten per week: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Totale kosten: {BLACK}{CURRENCY2DP}
 STR_2445    :Start deze marketingcampagne
@@ -3338,7 +3338,7 @@ STR_3333    :Plug-inobjecten meeleveren in opgeslagen spellen
 STR_3334    :{SMALLFONT}{BLACK}Selecteer of toegevoegde (niet-standaard) objecten in opgeslagen spellen en scenario's moeten worden meegeleverd, zodat ze geopend kunnen worden door iemand die deze objecten nog niet heeft
 STR_3335    :Achtbaanontwerper - Attractietypes en -voertuigen selecteren
 STR_3336    :Baanontwerpbeheer - Attractietype selecteren
-STR_3337    :Six Flags-park
+STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Eigen ontwerp
 STR_3339    :{BLACK}{COMMA16} ontwerp beschikbaar, of maak een eigen ontwerp
 STR_3340    :{BLACK}{COMMA16} ontwerpen beschikbaar, of maak een eigen ontwerp
@@ -3454,7 +3454,7 @@ STR_5120    :Financiën
 STR_5121    :Onderzoek
 STR_5122    :Attracties op baantype sorteren
 STR_5123    :Attr. vernieuwen
-STR_5124    :Six Flags weg
+STR_5124    :<not used anymore>
 STR_5125    :Afbreekbaar maken
 STR_5126    :Willekeurige titelmuziek
 STR_5127    :{SMALLFONT}{BLACK}Landtype i.p.v. landhoogte aanpassen bij slepen
@@ -3815,3 +3815,5 @@ STR_5479    :Werkbalk
 STR_5480    :Knoppen in de werkbalk tonen voor:
 STR_5481    :Thema's
 STR_5482    :{WINDOW_COLOUR_2}Tijd sinds laatste inspectie: {BLACK}1 minuut
+STR_5483    :{BLACK}({COMMA16} weken resterend)
+STR_5484    :{BLACK}({COMMA16} week resterend)
