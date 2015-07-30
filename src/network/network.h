@@ -135,6 +135,7 @@ public:
 	NetworkPlayer* GetPlayerByID(int id);
 	const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
 	void SendPacketToClients(NetworkPacket& packet);
+	bool CheckSRAND(uint32 tick, uint32 srand0);
 
 	void Client_Send_AUTH(const char* gameversion, const char* name, const char* password);
 	void Server_Send_MAP();
@@ -179,6 +180,8 @@ private:
 	uint32 last_tick_sent_time;
 	uint32 last_ping_sent_time;
 	uint32 server_tick;
+	uint32 server_srand0;
+	uint32 server_srand0_tick;
 	uint8 player_id;
 	std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
 	std::multiset<GameCommand> game_command_queue;

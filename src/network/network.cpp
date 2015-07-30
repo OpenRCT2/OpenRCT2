@@ -470,6 +470,17 @@ void Network::SendPacketToClients(NetworkPacket& packet)
 	}
 }
 
+bool Network::CheckSRAND(uint32 tick, uint32 srand0)
+{
+	if (tick == server_srand0_tick) {
+		server_srand0_tick = 0;
+		if (srand0 != server_srand0) {
+			return false;
+		}
+	}
+	return true;
+}
+
 void Network::Client_Send_AUTH(const char* gameversion, const char* name, const char* password)
 {
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
@@ -532,7 +543,7 @@ void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx
 void Network::Server_Send_TICK()
 {
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
-	*packet << (uint32)NETWORK_COMMAND_TICK << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32);
+	*packet << (uint32)NETWORK_COMMAND_TICK << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32);
 	SendPacketToClients(*packet);
 }
 
@@ -769,6 +780,7 @@ int Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pac
 					pause_toggle();
 				game_command_queue.clear();
 				server_tick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32);
+				server_srand0_tick = 0;
 				window_network_status_open("Loaded new map from network");
 			}
 			SDL_RWclose(rw);
@@ -826,7 +838,12 @@ int Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket&
 
 int Network::Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet)
 {
-	packet >> server_tick;
+	uint32 srand0;
+	packet >> server_tick >> srand0;
+	if (server_srand0_tick == 0) {
+		server_srand0 = srand0;
+		server_srand0_tick = server_tick;
+	}
 	return 1;
 }
 
@@ -905,6 +922,10 @@ int network_begin_server(int port)
 void network_update()
 {
 	gNetwork.Update();
+	if (!gNetwork.CheckSRAND(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32), RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32))) {
+		window_network_status_open("Network desync detected");
+		gNetwork.Close();
+	}
 }
 
 int network_get_mode()

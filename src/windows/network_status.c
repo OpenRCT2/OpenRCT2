@@ -79,14 +79,14 @@ void window_network_status_open(const char* text)
 {
 	rct_window* window;
 
+	strncpy(window_network_status_text, text, sizeof(window_network_status_text));
+
 	// Check if window is already open
 	window = window_bring_to_front_by_class(WC_NETWORK_STATUS);
 	if (window != NULL)
 		return;
 
 	window = window_create_centred(320, 90, &window_network_status_events, WC_NETWORK_STATUS, WF_10 | WF_TRANSPARENT);
-
-	strncpy(window_network_status_text, text, sizeof(window_network_status_text));
 
 	window->widgets = window_network_status_widgets;
 	window->enabled_widgets = 1 << WIDX_CLOSE;
