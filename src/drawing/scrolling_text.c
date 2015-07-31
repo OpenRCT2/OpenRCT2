@@ -202,6 +202,12 @@ SDL_Surface *_ttf_surface_cache_get_or_add(TTF_Font *font, const utf8 *text);
 
 void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, sint16 *scrollPositionOffsets)
 {
+	TTFFontDescriptor *fontDesc = ttf_get_font_from_sprite_base(FONT_SPRITE_BASE_TINY);
+	if (fontDesc->font == NULL) {
+		scrolling_text_set_bitmap_for_sprite(text, scroll, bitmap, scrollPositionOffsets);
+		return;
+	}
+
 	// Currently only supports one colour
 	uint8 colour = 0;
 
@@ -225,7 +231,6 @@ void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, si
 		colour = RCT2_GLOBAL(0x009FF048, uint8*)[(colour - FORMAT_COLOUR_CODE_START) * 4];
 	}
 
-	TTFFontDescriptor *fontDesc = ttf_get_font_from_sprite_base(FONT_SPRITE_BASE_TINY);
 	SDL_Surface *surface = _ttf_surface_cache_get_or_add(fontDesc->font, text);
 	if (surface == NULL) {
 		return;

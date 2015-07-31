@@ -179,10 +179,12 @@ int gfx_wrap_string(utf8 *text, int width, int *outNumLines, int *outFontHeight)
 	utf8 *firstCh = text;
 	utf8 *nextCh;
 	int codepoint;
+	int numCharactersOnLine = 0;
 	while ((codepoint = utf8_get_next(ch, &nextCh)) != 0) {
 		if (codepoint == ' ') {
 			currentWord = ch;
 			currentWidth = lineWidth;
+			numCharactersOnLine++;
 		} else if (codepoint == FORMAT_NEWLINE) {
 			*ch++ = 0;
 			maxWidth = max(maxWidth, lineWidth);
@@ -190,6 +192,7 @@ int gfx_wrap_string(utf8 *text, int width, int *outNumLines, int *outFontHeight)
 			lineWidth = 0;
 			currentWord = NULL;
 			firstCh = ch;
+			numCharactersOnLine = 0;
 			continue;
 		} else if (utf8_is_format_code(codepoint)) {
 			ch = nextCh;
@@ -202,8 +205,9 @@ int gfx_wrap_string(utf8 *text, int width, int *outNumLines, int *outFontHeight)
 		lineWidth = gfx_get_string_width(firstCh);
 		*nextCh = saveCh;
 
-		if (lineWidth <= width) {
+		if (lineWidth <= width || numCharactersOnLine == 0) {
 			ch = nextCh;
+			numCharactersOnLine++;
 		} else if (currentWord == NULL) {
 			// Single word is longer than line, insert null terminator
 			ch += utf8_insert_codepoint(ch, 0);
@@ -212,6 +216,7 @@ int gfx_wrap_string(utf8 *text, int width, int *outNumLines, int *outFontHeight)
 			lineWidth = 0;
 			currentWord = NULL;
 			firstCh = ch;
+			numCharactersOnLine = 0;
 		} else {
 			ch = currentWord;
 			*ch++ = 0;
@@ -221,6 +226,7 @@ int gfx_wrap_string(utf8 *text, int width, int *outNumLines, int *outFontHeight)
 			lineWidth = 0;
 			currentWord = NULL;
 			firstCh = ch;
+			numCharactersOnLine = 0;
 		}
 	}
 
@@ -889,8 +895,7 @@ bool ttf_initialise()
 
 			fontDesc->font = TTF_OpenFont(fontPath, fontDesc->ptSize);
 			if (fontDesc->font == NULL) {
-				TTF_Quit();
-				return false;
+				log_error("Unable to load '%s'", fontPath);
 			}
 		}
 
@@ -936,6 +941,8 @@ typedef struct {
 	int startY;
 	int x;
 	int y;
+	int maxX;
+	int maxY;
 	int flags;
 	uint8 palette[8];
 	uint16 font_sprite_base;
@@ -971,6 +978,10 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
 		return;
 
 	TTFFontDescriptor *fontDesc = ttf_get_font_from_sprite_base(info->font_sprite_base);
+	if (fontDesc->font == NULL) {
+		return ttf_draw_string_raw_sprite(dpi, text, info);
+	}
+
 	if (info->flags & TEXT_DRAW_FLAG_NO_DRAW) {
 		info->x += _ttf_getwidth_cache_get_or_add(fontDesc->font, text);
 		return;
@@ -1198,6 +1209,8 @@ static void ttf_process_string(rct_drawpixelinfo *dpi, const utf8 *text, text_dr
 		} else {
 			ch = ttf_process_glyph_run(dpi, ch, info);
 		}
+		info->maxX = max(info->maxX, info->x);
+		info->maxY = max(info->maxY, info->y);
 	}
 }
 
@@ -1286,11 +1299,13 @@ static int ttf_get_string_width(const utf8 *text)
 	info.startY = 0;
 	info.x = 0;
 	info.y = 0;
+	info.maxX = 0;
+	info.maxY = 0;
 
 	info.flags |= TEXT_DRAW_FLAG_NO_DRAW;
 	if (gUseTrueTypeFont) info.flags |= TEXT_DRAW_FLAG_TTF;
 
 	ttf_process_string(NULL, text, &info);
 
-	return info.x;
+	return info.maxX;
 }
