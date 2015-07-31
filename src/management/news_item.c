@@ -84,7 +84,7 @@ void news_item_init_queue()
 static void news_item_tick_current()
 {
 	int ticks;
-	ticks = news_item_get(0)->ticks++;
+	ticks = ++news_item_get(0)->ticks;
 	if (ticks == 1 && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)) {
 		// Play sound
 		sound_play_panned(SOUND_NEWS_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2, 0, 0, 0);
