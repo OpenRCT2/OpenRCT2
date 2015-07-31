@@ -70,6 +70,7 @@ int footpath_is_connected_to_map_edge(int x, int y, int z, int direction, int fl
 bool footpath_element_is_sloped(rct_map_element *mapElement);
 int footpath_element_get_slope_direction(rct_map_element *mapElement);
 bool footpath_element_is_queue(rct_map_element *mapElement);
+bool footpath_element_is_wide(rct_map_element *mapElement);
 void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement);
 
 #endif
