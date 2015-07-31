@@ -780,6 +780,63 @@ int game_load_sv6(SDL_RWops* rw)
 	return 1;
 }
 
+// Load game state for multiplayer
+int game_load_network(SDL_RWops* rw)
+{
+	int i, j;
+
+	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
+	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+
+	// Read first chunk
+	sawyercoding_read_chunk(rw, (uint8*)s6Header);
+	if (s6Header->type == S6_TYPE_SAVEDGAME) {
+		// Read packed objects
+		if (s6Header->num_packed_objects > 0) {
+			j = 0;
+			for (i = 0; i < s6Header->num_packed_objects; i++)
+				j += object_load_packed(rw);
+			if (j > 0)
+				object_list_load();
+		}
+	}
+
+	uint8 load_success = object_read_and_load_entries(rw);
+
+	// Read flags (16 bytes)
+	sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
+
+	// Read map elements
+	memset((void*)RCT2_ADDRESS_MAP_ELEMENTS, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
+	sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
+
+	// Read game data, including sprites
+	sawyercoding_read_chunk(rw, (uint8*)0x010E63B8);
+
+	// Read checksum
+	uint32 checksum;
+	SDL_RWread(rw, &checksum, sizeof(uint32), 1);
+
+	if (!load_success){
+		set_load_objects_fail_reason();
+		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_5){
+			RCT2_GLOBAL(0x14241BC, uint32) = 2;
+			//call 0x0040705E Sets cursor position and something else. Calls maybe wind func 8 probably pointless
+			RCT2_GLOBAL(0x14241BC, uint32) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_5;
+		}
+
+		return 0;//This never gets called
+	}
+
+	// The rest is the same as in scenario load and play
+	reset_loaded_objects();
+	map_update_tile_pointers();
+	reset_0x69EBE4();
+	openrct2_reset_object_tween_locations();
+	return 1;
+}
+
 /**
  * 
  *  rct2: 0x00675E1B
@@ -860,8 +917,6 @@ void game_load_init()
 	gGameSpeed = 1;
 
 	scenario_set_filename((char*)0x0135936C);
-
-	RCT2_GLOBAL(0x01388698, uint16) = 0;
 }
 
 /*

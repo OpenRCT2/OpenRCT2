@@ -138,7 +138,7 @@ public:
 	bool CheckSRAND(uint32 tick, uint32 srand0);
 
 	void Client_Send_AUTH(const char* gameversion, const char* name, const char* password);
-	void Server_Send_MAP();
+	void Server_Send_MAP(NetworkConnection* connection = nullptr);
 	void Client_Send_CHAT(const char* text);
 	void Server_Send_CHAT(const char* text);
 	void Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);

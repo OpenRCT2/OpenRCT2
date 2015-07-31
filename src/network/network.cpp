@@ -492,12 +492,12 @@ void Network::Client_Send_AUTH(const char* gameversion, const char* name, const 
 	server_connection.QueuePacket(std::move(packet));
 }
 
-void Network::Server_Send_MAP()
+void Network::Server_Send_MAP(NetworkConnection* connection)
 {
 	int buffersize = 0x600000;
 	std::vector<uint8> buffer(buffersize);
 	SDL_RWops* rw = SDL_RWFromMem(&buffer[0], buffersize);
-	scenario_save(rw, 0);
+	scenario_save_network(rw);
 	int size = (int)SDL_RWtell(rw);
 	int chunksize = 1000;
 	for (int i = 0; i < size; i += chunksize) {
@@ -505,7 +505,11 @@ void Network::Server_Send_MAP()
 		std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 		*packet << (uint32)NETWORK_COMMAND_MAP << (uint32)size << (uint32)i;
 		packet->Write(&buffer[i], datasize);
-		SendPacketToClients(*packet);
+		if (connection) {
+			connection->QueuePacket(std::move(packet));
+		} else {
+			SendPacketToClients(*packet);
+		}
 	}
 	SDL_RWclose(rw);
 }
@@ -744,6 +748,7 @@ int Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& pa
 				sprintf(&text[2], "%s has joined the game", player->name);
 				chat_history_add(text);
 				gNetwork.Server_Send_CHAT(text);
+				Server_Send_MAP(&connection);
 			}
 		}
 		std::unique_ptr<NetworkPacket> responsepacket = std::move(NetworkPacket::Allocate());
@@ -774,7 +779,7 @@ int Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pac
 		memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
 		if (offset + chunksize == size) {
 			SDL_RWops* rw = SDL_RWFromMem(&chunk_buffer[0], size);
-			if (game_load_sv6(rw)) {
+			if (game_load_network(rw)) {
 				game_load_init();
 				if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) & 1)
 					pause_toggle();
