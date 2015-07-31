@@ -22,6 +22,7 @@
 #define _LANGUAGE_H_
 
 #include "../common.h"
+#include "../drawing/font.h"
 
 enum {
 	LANGUAGE_UNDEFINED,
@@ -48,7 +49,7 @@ typedef struct {
 	const utf8 *english_name;
 	const utf8 *native_name;
 	const utf8 *path;
-	const utf8 *font;
+	TTFFontSetDescriptor *font;
 	uint8 rct2_original_id;
 } language_descriptor;
 
@@ -56,7 +57,6 @@ extern const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT];
 
 extern int gCurrentLanguage;
 extern bool gUseTrueTypeFont;
-extern const utf8 *gTrueTypeFontPath;
 
 extern const utf8 BlackUpArrowString[];
 extern const utf8 BlackDownArrowString[];

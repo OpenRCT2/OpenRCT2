@@ -4,7 +4,11 @@
 #include "drawing.h"
 #include "font.h"
 
+static const int SpriteFontLineHeight[] = { 6, 10, 10, 18 };
+
 static uint8 *_spriteFontCharacterWidths = (uint8*)RCT2_ADDRESS_FONT_CHAR_WIDTH;
+
+TTFFontSetDescriptor *gCurrentTTFFontSet;
 
 /**
  *
@@ -91,4 +95,34 @@ int font_sprite_get_codepoint_width(int fontSpriteBase, int codepoint)
 int font_sprite_get_codepoint_sprite(int fontSpriteBase, int codepoint)
 {
 	return SPR_CHAR_START + ((IMAGE_TYPE_USE_PALETTE << 28) | (fontSpriteBase + font_sprite_get_codepoint_offset(codepoint)));
+}
+
+int font_get_size_from_sprite_base(uint16 spriteBase)
+{
+	switch (spriteBase) {
+	case FONT_SPRITE_BASE_TINY:
+		return 0;
+	case FONT_SPRITE_BASE_SMALL:
+		return 1;
+	default:
+	case FONT_SPRITE_BASE_MEDIUM:
+		return 2;
+	case FONT_SPRITE_BASE_BIG:
+		return 3;
+	}
+}
+
+int font_get_line_height(int fontSpriteBase)
+{
+	int fontSize = font_get_size_from_sprite_base(fontSpriteBase);
+	if (gUseTrueTypeFont) {
+		return gCurrentTTFFontSet->size[fontSize].line_height;
+	} else {
+		return SpriteFontLineHeight[fontSize];
+	}
+}
+
+int font_get_line_height_small(int fontSpriteBase)
+{
+	return font_get_line_height(fontSpriteBase) / 2;
 }

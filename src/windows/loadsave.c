@@ -462,9 +462,14 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (_shortenedDirectory[0] == '\0')
 		shorten_path(_directory, _shortenedDirectory, w->width - 8);
 
-	char buffer[256];
+	utf8 buffer[256];
+
 	// Format text
-	sprintf(buffer, "%c%c%s", FORMAT_MEDIUMFONT, FORMAT_BLACK, _shortenedDirectory);
+	utf8 *ch = buffer;
+	ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
+	ch = utf8_write_codepoint(ch, FORMAT_BLACK);
+	strcpy(ch, _shortenedDirectory);
+
 	// Draw shadow
 	gfx_draw_string(dpi, buffer, 0, w->x + 4, w->y + 20);
 	rct_string_id id = STR_NONE;

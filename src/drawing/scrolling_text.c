@@ -197,7 +197,7 @@ void scrolling_text_set_bitmap_for_sprite(utf8 *text, int scroll, uint8 *bitmap,
 	}
 }
 
-TTF_Font *ttf_get_font_from_sprite_base(uint16 spriteBase);
+TTFFontDescriptor *ttf_get_font_from_sprite_base(uint16 spriteBase);
 SDL_Surface *_ttf_surface_cache_get_or_add(TTF_Font *font, const utf8 *text);
 
 void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, sint16 *scrollPositionOffsets)
@@ -225,8 +225,8 @@ void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, si
 		colour = RCT2_GLOBAL(0x009FF048, uint8*)[(colour - FORMAT_COLOUR_CODE_START) * 4];
 	}
 
-	TTF_Font *font = ttf_get_font_from_sprite_base(FONT_SPRITE_BASE_TINY);
-	SDL_Surface *surface = _ttf_surface_cache_get_or_add(font, text);
+	TTFFontDescriptor *fontDesc = ttf_get_font_from_sprite_base(FONT_SPRITE_BASE_TINY);
+	SDL_Surface *surface = _ttf_surface_cache_get_or_add(fontDesc->font, text);
 	if (surface == NULL) {
 		return;
 	}

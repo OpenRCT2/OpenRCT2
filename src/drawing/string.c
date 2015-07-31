@@ -29,10 +29,6 @@ static int ttf_get_string_width(const utf8 *text);
 static void ttf_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, int y);
 
 static bool _ttfInitialised = false;
-static TTF_Font *_ttfFont[4] = { NULL };
-
-static const int TTFFontSizes[] = { 9, 11, 12, 13 };
-static const rct_xy16 TTFFontOffsets[] = { { -1, -2 }, { -1, -2 }, { -1, -3 }, { -1, -3 } };
 
 #define TTF_SURFACE_CACHE_SIZE 256
 #define TTF_GETWIDTH_CACHE_SIZE 1024
@@ -379,17 +375,9 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
 
 	// line_width unused here
 	line_width = gfx_wrap_string(buffer, width, &num_lines, &font_height);
+	line_height = font_get_line_height(font_height);
 
-	line_height = 0x0A;
-
-	if (font_height > 0xE0) {
-		line_height = 6;
-		if (font_height != 0x1C0) {
-			line_height = 0x12;
-		}
-	}
-
-	if (*buffer == 0x0B) {
+	if (*buffer == FORMAT_OUTLINE) {
 		line_height = line_height + 1;
 	}
 
@@ -436,19 +424,7 @@ int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int 
 
 	*current_font_sprite_base = FONT_SPRITE_BASE_MEDIUM;
 	gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
-	switch (fontSpriteBase) {
-	case FONT_SPRITE_BASE_TINY:
-		lineHeight = 6;
-		break;
-	default:
-	case FONT_SPRITE_BASE_SMALL:
-	case FONT_SPRITE_BASE_MEDIUM:
-		lineHeight = 10;
-		break;
-	case FONT_SPRITE_BASE_BIG:
-		lineHeight = 18;
-		break;
-	}
+	lineHeight = font_get_line_height(fontSpriteBase);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
 	lineY = y;
@@ -726,25 +702,13 @@ void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, int x, int 
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
 	gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
-	switch (fontSpriteBase) {
-	case FONT_SPRITE_BASE_TINY:
-		lineHeight = 6;
-		break;
-	default:
-	case FONT_SPRITE_BASE_SMALL:
-	case FONT_SPRITE_BASE_MEDIUM:
-		lineHeight = 10;
-		break;
-	case FONT_SPRITE_BASE_BIG:
-		lineHeight = 18;
-		break;
-	}
+	lineHeight = font_get_line_height(fontSpriteBase);
 
 	int numCharactersDrawn = 0;
 	int numCharactersToDraw = ticks;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
-	lineY = y;
+	lineY = y - ((numLines * lineHeight) / 2);
 	for (int line = 0; line <= numLines; line++) {
 		int halfWidth = gfx_get_string_width(buffer) / 2;
 		
@@ -917,11 +881,14 @@ bool ttf_initialise()
 		if (TTF_Init() != 0)
 			return false;
 
-		utf8 fontPath[MAX_PATH] = "C:\\Windows\\Fonts\\";
-		strcat(fontPath, gTrueTypeFontPath);
 		for (int i = 0; i < 4; i++) {
-			_ttfFont[i] = TTF_OpenFont(fontPath, TTFFontSizes[i]);
-			if (_ttfFont[i] == NULL) {
+			TTFFontDescriptor *fontDesc = &(gCurrentTTFFontSet->size[i]);
+			
+			utf8 fontPath[MAX_PATH] = "C:\\Windows\\Fonts\\";
+			strcat(fontPath, fontDesc->filename);
+
+			fontDesc->font = TTF_OpenFont(fontPath, fontDesc->ptSize);
+			if (fontDesc->font == NULL) {
 				TTF_Quit();
 				return false;
 			}
@@ -940,10 +907,11 @@ void ttf_dispose()
 	_ttf_surface_cache_dispose_all();
 	_ttf_getwidth_cache_dispose_all();
 
-	if (_ttfFont != NULL) {
-		for (int i = 0; i < 4; i++) {
-			TTF_CloseFont(_ttfFont[i]);
-			_ttfFont[i] = NULL;
+	for (int i = 0; i < 4; i++) {
+		TTFFontDescriptor *fontDesc = &(gCurrentTTFFontSet->size[i]);
+		if (fontDesc->font != NULL) {
+			TTF_CloseFont(fontDesc->font);
+			fontDesc->font = NULL;
 		}
 	}
 
@@ -951,24 +919,9 @@ void ttf_dispose()
 	_ttfInitialised = false;
 }
 
-int ttf_get_font_size_from_sprite_base(uint16 spriteBase)
+TTFFontDescriptor *ttf_get_font_from_sprite_base(uint16 spriteBase)
 {
-	switch (spriteBase) {
-	case FONT_SPRITE_BASE_TINY:
-		return 0;
-	case FONT_SPRITE_BASE_SMALL:
-		return 1;
-	default:
-	case FONT_SPRITE_BASE_MEDIUM:
-		return 2;
-	case FONT_SPRITE_BASE_BIG:
-		return 3;
-	}
-}
-
-TTF_Font *ttf_get_font_from_sprite_base(uint16 spriteBase)
-{
-	return _ttfFont[ttf_get_font_size_from_sprite_base(spriteBase)];
+	return &gCurrentTTFFontSet->size[font_get_size_from_sprite_base(spriteBase)];
 }
 
 enum {
@@ -1017,13 +970,13 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
 	if (!_ttfInitialised && !ttf_initialise())
 		return;
 
-	TTF_Font *font = ttf_get_font_from_sprite_base(info->font_sprite_base);
+	TTFFontDescriptor *fontDesc = ttf_get_font_from_sprite_base(info->font_sprite_base);
 	if (info->flags & TEXT_DRAW_FLAG_NO_DRAW) {
-		info->x += _ttf_getwidth_cache_get_or_add(font, text);
+		info->x += _ttf_getwidth_cache_get_or_add(fontDesc->font, text);
 		return;
 	} else {
 		uint8 colour = info->palette[1];
-		SDL_Surface *surface = _ttf_surface_cache_get_or_add(font, text);
+		SDL_Surface *surface = _ttf_surface_cache_get_or_add(fontDesc->font, text);
 		if (surface == NULL)
 			return;
 
@@ -1033,9 +986,9 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
 			}
 		}
 		
-		int fontSize = ttf_get_font_size_from_sprite_base(info->font_sprite_base);
-		int drawX = info->x + TTFFontOffsets[fontSize].x;
-		int drawY = info->y + TTFFontOffsets[fontSize].y;
+		int fontSize = font_get_size_from_sprite_base(info->font_sprite_base);
+		int drawX = info->x + fontDesc->offset_x;
+		int drawY = info->y + fontDesc->offset_y;
 		int width = surface->w;
 		int height = surface->h;
 
@@ -1132,11 +1085,12 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
 		nextCh++;
 		break;
 	case FORMAT_NEWLINE:
-		if (info->font_sprite_base <= 224) { info->y += 28; }
-		else if (info->font_sprite_base <= 448) { info->y += 24; }
-		else { info->y += 18; }
+		info->x = info->startX;
+		info->y += font_get_line_height(info->font_sprite_base);
 		break;
 	case FORMAT_NEWLINE_SMALLER:
+		info->x = info->startX;
+		info->y += font_get_line_height_small(info->font_sprite_base);
 		break;
 	case FORMAT_TINYFONT:
 		info->font_sprite_base = 448;
