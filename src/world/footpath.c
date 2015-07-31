@@ -1427,6 +1427,11 @@ bool footpath_element_is_queue(rct_map_element *mapElement)
 	return mapElement->type & 1;
 }
 
+bool footpath_element_is_wide(rct_map_element *mapElement)
+{
+	return mapElement->type & 2;
+}
+
 /**
  *
  *  rct2: 0x006A76E9
