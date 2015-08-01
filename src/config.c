@@ -705,13 +705,13 @@ static config_line *_configLines = NULL;
  * @param resultPath Pointer to where the absolute path of the RCT2 installation directory will be copied to.
  * @returns 1 if successful, otherwise 0.
  */
-static bool config_find_rct2_path(char *resultPath)
+static bool config_find_rct2_path(utf8 *resultPath)
 {
 	int i;
 
 	log_verbose("searching common installation locations.");
 
-	const char *searchLocations[] = {
+	const utf8 *searchLocations[] = {
 		"C:\\Program Files\\Infogrames\\RollerCoaster Tycoon 2",
 		"C:\\Program Files (x86)\\Infogrames\\RollerCoaster Tycoon 2",
 		"C:\\Program Files\\Infogrames Interactive\\RollerCoaster Tycoon 2",
@@ -734,8 +734,8 @@ static bool config_find_rct2_path(char *resultPath)
 
 bool config_find_or_browse_install_directory()
 {
-	char path[MAX_PATH];
-	char *installPath;
+	utf8 path[MAX_PATH];
+	utf8 *installPath;
 
 	if (config_find_rct2_path(path)) {
 		SafeFree(gConfigGeneral.game_path);

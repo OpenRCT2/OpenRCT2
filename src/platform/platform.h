@@ -119,7 +119,7 @@ unsigned int platform_get_ticks();
 void platform_get_user_directory(char *outPath, const char *subDirectory);
 void platform_show_messagebox(char *message);
 int platform_open_common_file_dialog(int type, char *title, char *filename, char *filterPattern, char *filterName);
-char *platform_open_directory_browser(char *title);
+utf8 *platform_open_directory_browser(utf8 *title);
 uint8 platform_get_locale_currency();
 uint16 platform_get_locale_language();
 uint8 platform_get_locale_measurement_format();

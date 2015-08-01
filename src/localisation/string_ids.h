@@ -1825,6 +1825,8 @@ enum {
 	STR_X_WEEKS_REMAINING = 5483,
 	STR_1_WEEK_REMAINING = 5484,
 
+	STR_LAND_TOOL_SIZE_VALUE = 5486,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

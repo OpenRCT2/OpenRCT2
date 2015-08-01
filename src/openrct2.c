@@ -39,8 +39,8 @@
 #include "world/mapgen.h"
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
-char gOpenRCT2StartupActionPath[512] = { 0 };
-char gExePath[MAX_PATH];
+utf8 gOpenRCT2StartupActionPath[512] = { 0 };
+utf8 gExePath[MAX_PATH];
 
 // This should probably be changed later and allow a custom selection of things to initialise like SDL_INIT
 bool gOpenRCT2Headless = false;
@@ -112,19 +112,18 @@ static void openrct2_copy_files_over(const char *originalDirectory, const char *
 
 static void openrct2_set_exe_path()
 {
-	char exePath[MAX_PATH];
-	char tempPath[MAX_PATH];
-	char *exeDelimiter;
-	int pathEnd;
+	wchar_t exePath[MAX_PATH];
+	wchar_t tempPath[MAX_PATH];
+	wchar_t *exeDelimiter;
 	int exeDelimiterIndex;
 
-	GetModuleFileName(NULL, exePath, MAX_PATH);
-	exeDelimiter = strrchr(exePath, platform_get_path_separator());
+	GetModuleFileNameW(NULL, exePath, MAX_PATH);
+	exeDelimiter = wcsrchr(exePath, platform_get_path_separator());
 	exeDelimiterIndex = (int)(exeDelimiter - exePath);
-	pathEnd = strlen(exePath) - (strlen(exePath) - exeDelimiterIndex);
-	strncpy(tempPath, exePath, pathEnd);
-	tempPath[pathEnd] = '\0';
-	_fullpath(gExePath, tempPath, MAX_PATH);
+	lstrcpynW(tempPath, exePath, exeDelimiterIndex + 1);
+	tempPath[exeDelimiterIndex] = L'\0';
+	_wfullpath(exePath, tempPath, MAX_PATH);
+	WideCharToMultiByte(CP_UTF8, 0, exePath, countof(exePath), gExePath, countof(gExePath), NULL, NULL);
 }
 
 /**

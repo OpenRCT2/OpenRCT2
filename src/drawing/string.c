@@ -229,7 +229,7 @@ int gfx_wrap_string(utf8 *text, int width, int *outNumLines, int *outFontHeight)
 			numCharactersOnLine = 0;
 		}
 	}
-
+	maxWidth = max(maxWidth, lineWidth);
 	*outFontHeight = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 	return maxWidth == 0 ? lineWidth : maxWidth;
 }
@@ -608,15 +608,7 @@ void draw_string_centred_raw(rct_drawpixelinfo *dpi, int x, int y, int numLines,
 			text += 2;
 		}
 
-		y += 10;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) <= 224)
-			continue;
-		
-		y -= 4;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) <= 448)
-			continue;
-
-		y += 12;
+		y += font_get_line_height(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16));
 	}
 }
 

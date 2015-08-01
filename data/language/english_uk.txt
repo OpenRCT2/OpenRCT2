@@ -3822,3 +3822,4 @@ STR_5482    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}1 minute
 STR_5483    :{BLACK}({COMMA16} weeks remaining)
 STR_5484    :{BLACK}({COMMA16} week remaining)
 STR_5485    :{SMALLFONT}{STRING}
+STR_5486    :{BLACK}{COMMA16}

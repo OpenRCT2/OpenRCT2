@@ -413,8 +413,11 @@ int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8
 	lstrcpyW((wchar_t*)0x01423800, wcfilterName);
 
 	// Copy filter pattern
-	lstrcpyW((wchar_t*)0x01423800 + lstrlenW(wcfilterName) + 1, wcfilterPattern);
-	*((wchar_t*)(0x01423800 + lstrlenW(wcfilterName) + 1 + lstrlenW(wcfilterPattern) + 1)) = 0;
+	int wcfilterNameLength = lstrlenW(wcfilterName);
+	int wcfilterPatternLength = lstrlenW(wcfilterPattern);
+
+	lstrcpyW((wchar_t*)0x01423800 + wcfilterNameLength + 1, wcfilterPattern);
+	*((wchar_t*)((wchar_t*)0x01423800 + wcfilterNameLength + 1 + wcfilterPatternLength + 1)) = 0;
 	openFileName.lpstrFilter = (wchar_t*)0x01423800;
 
 	// 
@@ -440,12 +443,14 @@ int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8
 	return result;
 }
 
-char *platform_open_directory_browser(char *title)
+utf8 *platform_open_directory_browser(utf8 *title)
 {
-	BROWSEINFO bi;
-	char pszBuffer[MAX_PATH];
+	BROWSEINFOW bi;
+	wchar_t pszBuffer[MAX_PATH], wctitle[256];
 	LPITEMIDLIST pidl;
 	LPMALLOC lpMalloc;
+
+	MultiByteToWideChar(CP_UTF8, 0, title, -1, wctitle, countof(wctitle));
 
 	// Initialize COM
 	if (FAILED(CoInitializeEx(0, COINIT_APARTMENTTHREADED))) {
@@ -466,19 +471,20 @@ char *platform_open_directory_browser(char *title)
 	bi.hwndOwner = NULL;
 	bi.pidlRoot = NULL;
 	bi.pszDisplayName = pszBuffer;
-	bi.lpszTitle = title;
+	bi.lpszTitle = wctitle;
 	bi.ulFlags = BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 	bi.lpfn = NULL;
 	bi.lParam = 0;
 
-	char *outPath = NULL;
+	utf8 *outPath = NULL;
 
-	if (pidl = SHBrowseForFolder(&bi)) {
+	if (pidl = SHBrowseForFolderW(&bi)) {
 		// Copy the path directory to the buffer
-		if (SHGetPathFromIDList(pidl, pszBuffer)) {
+		if (SHGetPathFromIDListW(pidl, pszBuffer)) {
 			// Store pszBuffer (and the path) in the outPath
-			outPath = (char*) malloc(strlen(pszBuffer)+1);
-			strcpy(outPath, pszBuffer);
+			int outPathCapacity = lstrlenW(pszBuffer) * 4 + 1;
+			outPath = (utf8*)malloc(outPathCapacity);
+			WideCharToMultiByte(CP_UTF8, 0, pszBuffer, countof(pszBuffer), outPath, outPathCapacity, NULL, NULL);
 		}
 	}
 	CoUninitialize();
