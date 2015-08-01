@@ -1171,7 +1171,7 @@ STR_1168    :Opties
 STR_1169    :(Geen)
 STR_1170    :{STRING}
 STR_1171    :{RED}Gesloten - - 
-STR_1172    :{YELLLOW}{STRINGID} - - 
+STR_1172    :{YELLOW}{STRINGID} - - 
 STR_1173    :{SMALLFONT}{BLACK}Voetpaden en wachtrijen aanleggen
 STR_1174    :Lichtkrant in de weg
 STR_1175    :Kan dit niet op hellend voetpad neerzetten
