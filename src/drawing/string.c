@@ -971,7 +971,7 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
 
 	TTFFontDescriptor *fontDesc = ttf_get_font_from_sprite_base(info->font_sprite_base);
 	if (fontDesc->font == NULL) {
-		return ttf_draw_string_raw_sprite(dpi, text, info);
+		ttf_draw_string_raw_sprite(dpi, text, info);
 	}
 
 	if (info->flags & TEXT_DRAW_FLAG_NO_DRAW) {

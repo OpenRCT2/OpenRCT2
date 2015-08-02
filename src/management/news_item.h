@@ -58,7 +58,7 @@ void news_item_update_current();
 void news_item_close_current();
 void news_item_get_subject_location(int type, int subject, int *x, int *y, int *z);
 void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc);
-void news_item_add_to_queue_raw(uint8 type, const char *text, uint32 assoc);
+void news_item_add_to_queue_raw(uint8 type, const utf8 *text, uint32 assoc);
 void news_item_open_subject(int type, int subject);
 void news_item_disable_news(uint8 type, uint32 assoc);
 rct_news_item *news_item_get(int index);
