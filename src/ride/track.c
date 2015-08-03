@@ -470,7 +470,7 @@ void track_load_list(ride_list_item item)
 	free(track_list_cache);
 }
 
-static void read(void *dst, char **src, int length)
+static void copy(void *dst, char **src, int length)
 {
 	memcpy(dst, *src, length);
 	*src += length;
@@ -545,7 +545,7 @@ rct_track_td6* load_track_design(const char *path)
 	// Clear top of track_design as this is not loaded from the td4 files
 	memset(&track_design->track_spine_colour, 0, 67);
 	// Read start of track_design
-	read(track_design, &src, 32);
+	copy(track_design, &src, 32);
 
 	uint8 version = track_design->version_and_colour_scheme >> 2;
 
@@ -557,17 +557,17 @@ rct_track_td6* load_track_design(const char *path)
 	// In td6 there are 32 sets of two byte vehicle colour specifiers 
 	// In td4 there are 12 sets so the remaining 20 need to be read.
 	if (version == 2)
-		read(&track_design->vehicle_colours[12], &src, 40);
+		copy(&track_design->vehicle_colours[12], &src, 40);
 
-	read(&track_design->pad_48, &src, 24);
+	copy(&track_design->pad_48, &src, 24);
 
 	// In td4 (version AA/CF) and td6 both start actual track data at 0xA3
 	if (version > 0)
-		read(&track_design->track_spine_colour, &src, version == 1 ? 140 : 67);
+		copy(&track_design->track_spine_colour, &src, version == 1 ? 140 : 67);
 
 	uint8* track_elements = RCT2_ADDRESS(0x9D821B, uint8);
 	// Read the actual track data.
-	read(track_elements, &src, 24572);
+	copy(track_elements, &src, 24572);
 	
 	uint8* final_track_element_location = track_elements + 24572;
 	free(decoded);
