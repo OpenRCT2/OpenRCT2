@@ -804,7 +804,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
 	int left, top, bottom, itemY, disableItemMovement;
 	sint32 researchItemEndMarker;
 	rct_string_id stringId;
-	char buffer[256], *ptr;
+	utf8 buffer[256], *ptr;
 
 	// Draw background
 	colour = RCT2_GLOBAL(0x0141FC48 + (w->colours[1] * 8), uint8);
@@ -856,8 +856,9 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
 		stringId = research_item_get_name(researchItem->entryIndex & 0xFFFFFF);
 
 		ptr = buffer;
-		if (!disableItemMovement)
-			*ptr++ = colour & 0xFF;
+		if (!disableItemMovement) {
+			ptr = utf8_write_codepoint(ptr, colour & 0xFF);
+		}
 
 		format_string(ptr, stringId, NULL);
 

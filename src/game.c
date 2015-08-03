@@ -590,6 +590,66 @@ static void load_landscape()
 }
 
 /**
+ * Converts all the user strings and news item strings to UTF-8.
+ */
+void game_convert_strings_to_utf8()
+{
+	utf8 buffer[512];
+
+	// User strings
+	for (int i = 0; i < MAX_USER_STRINGS; i++) {
+		utf8 *userString = &gUserStrings[i * USER_STRING_MAX_LENGTH];
+
+		if (!str_is_null_or_empty(userString)) {
+			rct2_to_utf8(buffer, userString);
+			memcpy(userString, buffer, 31);
+			userString[31] = 0;
+		}
+	}
+
+	// News items
+	for (int i = 0; i < MAX_NEWS_ITEMS; i++) {
+		rct_news_item *newsItem = news_item_get(i);
+
+		if (!str_is_null_or_empty(newsItem->text)) {
+			rct2_to_utf8(buffer, newsItem->text);
+			memcpy(newsItem->text, buffer, 255);
+			newsItem->text[255] = 0;
+		}
+	}
+}
+
+/**
+ * Converts all the user strings and news item strings to RCT2 encoding.
+ */
+void game_convert_strings_to_rct2(rct_s6_data *s6)
+{
+	char buffer[512];
+
+	// User strings
+	for (int i = 0; i < MAX_USER_STRINGS; i++) {
+		char *userString = &s6->custom_strings[i * USER_STRING_MAX_LENGTH];
+
+		if (!str_is_null_or_empty(userString)) {
+			utf8_to_rct2(buffer, userString);
+			memcpy(userString, buffer, 31);
+			userString[31] = 0;
+		}
+	}
+
+	// News items
+	for (int i = 0; i < MAX_NEWS_ITEMS; i++) {
+		rct_news_item *newsItem = &s6->news_items[i];
+
+		if (!str_is_null_or_empty(newsItem->text)) {
+			utf8_to_rct2(buffer, newsItem->text);
+			memcpy(newsItem->text, buffer, 255);
+			newsItem->text[255] = 0;
+		}
+	}
+}
+
+/**
  * 
  *  rct2: 0x00675E1B
  */
@@ -650,6 +710,7 @@ int game_load_sv6(SDL_RWops* rw)
 	map_update_tile_pointers();
 	reset_0x69EBE4();
 	openrct2_reset_object_tween_locations();
+	game_convert_strings_to_utf8();
 	return 1;
 }
 

@@ -32,6 +32,6 @@ enum REGISTER_ARGS {
 	END = 0
 };
 
-void addhook(int address, int newaddress, int stacksize, int registerargs[], int registersreturned);
+void addhook(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister);
 
 #endif

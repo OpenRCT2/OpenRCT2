@@ -22,6 +22,7 @@
 #define _DRAWING_H_
 
 #include "../common.h"
+#include "font.h"
 
 // Size: 0x10
 typedef struct {
@@ -113,7 +114,6 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 
 void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer);
 
 // string
-void gfx_load_character_widths();
 int clip_text(char *buffer, int width);
 int gfx_wrap_string(char* buffer, int width, int* num_lines, int* font_height);
 int gfx_get_string_width(char *buffer);
@@ -132,7 +132,11 @@ void draw_string_centred_raw(rct_drawpixelinfo *dpi, int x, int y, int numLines,
 void gfx_draw_string_right(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
 void draw_string_right_underline(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
 int string_get_height_raw(char *buffer);
-void sub_6C1F57(rct_drawpixelinfo *dpi, int x, int y, int width, int colour, rct_string_id format, void *args, int ticks);
+void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, int x, int y, int width, int colour, rct_string_id format, void *args, int ticks);
+void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, utf8 *text, int colour, int x, int y, const sint8 *yOffsets);
+
+bool ttf_initialise();
+void ttf_dispose();
 
 // rain
 void update_rain_animation();
@@ -140,5 +144,9 @@ void redraw_rain();
 
 // unknown
 void sub_681DE2(rct_drawpixelinfo *dpi, int x, int y, int image1, int image2);
+
+// scrolling text
+void scrolling_text_initialise_bitmaps();
+int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode);
 
 #endif

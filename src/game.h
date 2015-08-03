@@ -23,6 +23,7 @@
 
 #include "common.h"
 #include "platform/platform.h"
+#include "scenario.h"
 
 enum GAME_COMMAND {
 	GAME_COMMAND_SET_RIDE_APPEARANCE,
@@ -117,5 +118,7 @@ int save_game();
 void rct2_exit();
 void rct2_exit_reason(rct_string_id title, rct_string_id body);
 void game_autosave();
+void game_convert_strings_to_utf8();
+void game_convert_strings_to_rct2(rct_s6_data *s6);
 
 #endif

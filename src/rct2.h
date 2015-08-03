@@ -286,6 +286,8 @@ static const struct file_to_check
 	{ PATH_ID_END,          0 }
 };
 
+extern uint32 gCurrentDrawCount;
+
 int rct2_init();
 void rct2_update();
 void rct2_draw();

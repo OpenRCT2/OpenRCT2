@@ -9,7 +9,7 @@ if [[ ! -d build ]]; then
 	mkdir -p build
 fi
 
-libversion=1
+libversion=2
 libVFile="./libversion"
 libdir="./lib"
 currentversion=0

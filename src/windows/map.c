@@ -798,11 +798,7 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Draw land tool size
 	if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS) && RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > 7) {
-		RCT2_GLOBAL(0x009BC677, char) = FORMAT_BLACK;
-		RCT2_GLOBAL(0x009BC678, char) = FORMAT_COMMA16;
-		RCT2_GLOBAL(0x009BC679, char) = 0;
-		RCT2_GLOBAL(0x013CE952, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
-		gfx_draw_string_centred(dpi, 3165, x, y - 2, 0, (void*)0x013CE952);
+		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, 0, &RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16));
 	}
 	y = w->y + window_map_widgets[WIDX_LAND_TOOL].bottom + 5;
 

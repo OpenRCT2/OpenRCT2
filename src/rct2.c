@@ -51,6 +51,8 @@
 #include "world/scenery.h"
 #include "world/sprite.h"
 
+uint32 gCurrentDrawCount = 0;
+
 typedef struct tm tm_t;
 
 void print_launch_information();
@@ -97,7 +99,7 @@ int rct2_init()
 
 	gfx_load_g1();
 	gfx_load_g2();
-	gfx_load_character_widths();
+	font_sprite_initialise_characters();
 	if (!gOpenRCT2Headless) {
 		platform_init();
 		audio_init1();
@@ -236,6 +238,8 @@ void rct2_draw()
 	} else {
 		//game
 	}
+	
+	gCurrentDrawCount++;
 }
 
 int rct2_open_file(const char *path)

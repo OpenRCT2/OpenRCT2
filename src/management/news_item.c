@@ -32,31 +32,27 @@ rct_news_item *gNewsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_i
 void window_game_bottom_toolbar_invalidate_news_item();
 static int news_item_get_new_history_slot();
 
-#define MAX_NEWS 60
-
-bool news_item_is_valid_idx(const uint8 idx)
+bool news_item_is_valid_idx(int index)
 {
-	if (idx > MAX_NEWS)
-	{
+	if (index > MAX_NEWS_ITEMS) {
 		log_error("Tried to get news item past MAX_NEWS.");
 		return false;
 	}
 	return true;
 }
 
-rct_news_item *news_item_get(const uint8 idx)
+rct_news_item *news_item_get(int index)
 {
-	if (news_item_is_valid_idx(idx))
-	{
-		return &gNewsItems[idx];
+	if (news_item_is_valid_idx(index)) {
+		return &gNewsItems[index];
 	} else {
 		return NULL;
 	}
 }
 
-bool news_item_is_empty(const uint8 idx)
+bool news_item_is_empty(int index)
 {
-	return news_item_get(idx)->type == NEWS_ITEM_NULL;
+	return news_item_get(index)->type == NEWS_ITEM_NULL;
 }
 
 bool news_item_is_queue_empty()
@@ -179,7 +175,7 @@ void news_item_close_current()
 	newsItems[i] = newsItems[0];
 
 	// Set the end of the end of the history list
-	if (i < MAX_NEWS)
+	if (i < MAX_NEWS_ITEMS)
 		newsItems[i + 1].type = NEWS_ITEM_NULL;
 
 	// Invalidate the news window
@@ -198,7 +194,7 @@ static void news_item_shift_history_up()
 {
 	const int history_idx = 11;
 	rct_news_item *history_start = news_item_get(history_idx);
-	const size_t count = sizeof(rct_news_item) * (MAX_NEWS - 1 - history_idx);
+	const size_t count = sizeof(rct_news_item) * (MAX_NEWS_ITEMS - 1 - history_idx);
 	memmove(history_start, history_start + 1, count);
 }
 
@@ -212,13 +208,13 @@ static int news_item_get_new_history_slot()
 	int i;
 
 	// Find an available history news item slot
-	for (i = 11; i <= MAX_NEWS; i++)
+	for (i = 11; i <= MAX_NEWS_ITEMS; i++)
 		if (news_item_is_empty(i))
 			return i;
 
 	// Dequeue the first history news item, shift history up
 	news_item_shift_history_up();
-	return MAX_NEWS;
+	return MAX_NEWS_ITEMS;
 }
 
 /**
@@ -301,14 +297,14 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
  **/
 void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 {
-	char *buffer = (char*)0x0141EF68;
+	utf8 *buffer = (char*)0x0141EF68;
 	void *args = (void*)0x013CE952;
 
 	format_string(buffer, string_id, args); // overflows possible?
 	news_item_add_to_queue_raw(type, buffer, assoc);
 }
 
-void news_item_add_to_queue_raw(uint8 type, const char *text, uint32 assoc)
+void news_item_add_to_queue_raw(uint8 type, const utf8 *text, uint32 assoc)
 {
 	int i = 0;
 	rct_news_item *newsItem = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
@@ -328,8 +324,7 @@ void news_item_add_to_queue_raw(uint8 type, const char *text, uint32 assoc)
 	newsItem->ticks = 0;
 	newsItem->month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
 	newsItem->day = ((days_in_month[(newsItem->month_year & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16) + 1;
-	newsItem->colour = text[0];
-	strncpy(newsItem->text, text + 1, 254);
+	strncpy(newsItem->text, text, 255);
 	newsItem->text[254] = 0;
 
 	// blatant disregard for what happens on the last element.
@@ -406,39 +401,36 @@ void news_item_open_subject(int type, int subject)
 }
 
 /**
- * rct2: 0x0066E407
+ *
+ *  rct2: 0x0066E407
  */
-void news_item_disable_news(uint8 type, uint32 assoc) {
-		// TODO: write test invalidating windows
-		int i;
-		for (i = 0; i < 11; i++)
-		{
-			if (!news_item_is_empty(i))
-			{
-				rct_news_item * const newsItem = news_item_get(i);
-                if (type == newsItem->type && assoc == newsItem->assoc) {
-                        newsItem->flags |= 0x1;
-                        if (i == 0) {
-                                window_game_bottom_toolbar_invalidate_news_item();
-                        }
-                }
-			} else {
-				break;
+void news_item_disable_news(uint8 type, uint32 assoc)
+{
+	// TODO: write test invalidating windows
+	for (int i = 0; i < 11; i++) {
+		if (!news_item_is_empty(i)) {
+			rct_news_item * const newsItem = news_item_get(i);
+			if (type == newsItem->type && assoc == newsItem->assoc) {
+				newsItem->flags |= 0x1;
+				if (i == 0) {
+					window_game_bottom_toolbar_invalidate_news_item();
+				}
 			}
-        }
+		} else {
+			break;
+		}
+	}
 
-		for (i = 11; i <= MAX_NEWS; i++)
-		{
-			if (!news_item_is_empty(i))
-			{
-				rct_news_item * const newsItem = news_item_get(i);
-                if (type == newsItem->type && assoc == newsItem->assoc) {
-                        newsItem->flags |= 0x1;
-                        window_invalidate_by_class(WC_RECENT_NEWS);
-                }
-			} else {
-				break;
+	for (int i = 11; i <= MAX_NEWS_ITEMS; i++) {
+		if (!news_item_is_empty(i)) {
+			rct_news_item * const newsItem = news_item_get(i);
+			if (type == newsItem->type && assoc == newsItem->assoc) {
+				newsItem->flags |= 0x1;
+				window_invalidate_by_class(WC_RECENT_NEWS);
 			}
-        }
+		} else {
+			break;
+		}
+	}
 }
 

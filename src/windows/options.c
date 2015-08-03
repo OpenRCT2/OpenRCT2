@@ -759,7 +759,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		case WIDX_LANGUAGE_DROPDOWN:
 			for (i = 1; i < LANGUAGE_COUNT; i++) {
 				gDropdownItemsFormat[i - 1] = 2777;
-				gDropdownItemsArgs[i - 1] = (sint32)language_names[i];
+				gDropdownItemsArgs[i - 1] = (sint32)LanguagesDescriptors[i].native_name;
 			}
 			window_options_show_dropdown(w, widget, LANGUAGE_COUNT - 1);
 			gDropdownItemsChecked = 1 << (gCurrentLanguage - 1);
@@ -1289,7 +1289,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
 		gfx_draw_string(
 			dpi,
-			(char*)language_names[gCurrentLanguage],
+			(char*)LanguagesDescriptors[gCurrentLanguage].native_name,
 			w->colours[1],
 			w->x + window_options_culture_widgets[WIDX_LANGUAGE].left + 1,
 			w->y + window_options_culture_widgets[WIDX_LANGUAGE].top

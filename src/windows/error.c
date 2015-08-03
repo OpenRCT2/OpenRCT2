@@ -80,7 +80,8 @@ static uint16 _window_error_num_lines;
  */
 void window_error_open(rct_string_id title, rct_string_id message)
 {
-	char *dst, *args;
+	utf8 *dst;
+	char *args;
 	int numLines, fontHeight, x, y, width, height, maxY;
 	rct_window *w;
 
@@ -89,17 +90,17 @@ void window_error_open(rct_string_id title, rct_string_id message)
 	args = (char*)0x0013CE952;
 
 	// Format the title
-	*dst++ = FORMAT_BLACK;
+	dst = utf8_write_codepoint(dst, FORMAT_BLACK);
 	if (title != (rct_string_id)STR_NONE) {
 		format_string(dst, title, args);
-		dst += get_string_length(dst);
+		dst = get_string_end(dst);
 	}
 
 	// Format the message
 	if (message != (rct_string_id)STR_NONE) {
-		*dst++ = FORMAT_NEWLINE;
+		dst = utf8_write_codepoint(dst, FORMAT_NEWLINE);
 		format_string(dst, message, args);
-		dst += get_string_length(dst);
+		dst = get_string_end(dst);
 	}
 
 	log_verbose("show error, %s", _window_error_text + 1);

@@ -21,6 +21,8 @@
 #ifndef CURRENCY_H
 #define CURRENCY_H
 
+#include "../common.h"
+
 // List of currencies
 typedef enum {
 	CURRENCY_POUNDS,			// British Pound
@@ -46,7 +48,7 @@ typedef enum {
 typedef struct {
 	// Rate is relative to 0.1 GBP
 	int rate;
-	char symbol[8];
+	utf8 symbol[8];
 	int affix;
 } rct_currency_spec;
 

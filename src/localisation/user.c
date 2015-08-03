@@ -21,7 +21,7 @@
 #include "../addresses.h"
 #include "localisation.h"
 
-char *gUserStrings = (char*)0x0135A8F4;
+utf8 *gUserStrings = (char*)0x0135A8F4;
 
 static bool user_string_exists(const char *text);
 
@@ -38,7 +38,7 @@ void user_string_clear_all()
  * 
  *  rct2: 0x006C421D
  */
-rct_string_id user_string_allocate(int base, const char *text)
+rct_string_id user_string_allocate(int base, const utf8 *text)
 {
 	int highBits = (base & 0x7F) << 9;
 	bool allowDuplicates = base & 0x80;
@@ -73,7 +73,7 @@ void user_string_free(rct_string_id id)
 	gUserStrings[id * USER_STRING_MAX_LENGTH] = 0;
 }
 
-static bool user_string_exists(const char *text)
+static bool user_string_exists(const utf8 *text)
 {
 	char *userString = gUserStrings;
 	for (int i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {

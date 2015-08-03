@@ -22,6 +22,7 @@
 #define _LANGUAGE_H_
 
 #include "../common.h"
+#include "../drawing/font.h"
 
 enum {
 	LANGUAGE_UNDEFINED,
@@ -36,16 +37,44 @@ enum {
 	LANGUAGE_SWEDISH,
 	LANGUAGE_ITALIAN,
 	LANGUAGE_PORTUGUESE_BR,
+	LANGUAGE_CHINESE_TRADITIONAL,
+//	LANGUAGE_KOREAN,
 	LANGUAGE_COUNT
 };
 
-extern const char *language_names[LANGUAGE_COUNT];
+#define FONT_OPENRCT2_SPRITE NULL
+
+typedef struct {
+	const char *locale;
+	const utf8 *english_name;
+	const utf8 *native_name;
+	const utf8 *path;
+	TTFFontSetDescriptor *font;
+	uint8 rct2_original_id;
+} language_descriptor;
+
+extern const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT];
+
 extern int gCurrentLanguage;
+extern bool gUseTrueTypeFont;
+
+extern const utf8 BlackUpArrowString[];
+extern const utf8 BlackDownArrowString[];
+extern const utf8 BlackLeftArrowString[];
+extern const utf8 BlackRightArrowString[];
+extern const utf8 CheckBoxMarkString[];
 
 const char *language_get_string(rct_string_id id);
 int language_open(int id);
 void language_close_all();
 
 rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/*ecx*/, int index/*ebx*/, int tableindex/*edx*/);
+
+uint32 utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr);
+utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint);
+int utf8_insert_codepoint(utf8 *dst, uint32 codepoint);
+bool utf8_is_codepoint_start(utf8 *text);
+void utf8_remove_format_codes(utf8 *text);
+int utf8_get_codepoint_length(int codepoint);
 
 #endif

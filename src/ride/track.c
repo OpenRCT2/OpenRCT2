@@ -3111,20 +3111,24 @@ rct_track_design *temp_track_get_info(char* path, uint8** preview)
 	return trackDesign;
 }
 
-void window_track_list_format_name(char *dst, const char *src, char colour, char quotes)
+void window_track_list_format_name(utf8 *dst, const utf8 *src, int colour, bool quotes)
 {
-	if (colour != 0)
-		*dst++ = colour;
+	const utf8 *ch;
+	int codepoint;
 
-	if (quotes != 0)
-		*dst++ = FORMAT_OPENQUOTES;
-
-	while (*src != '.' && *src != 0) {
-		*dst++ = *src++;
+	if (colour != 0) {
+		dst = utf8_write_codepoint(dst, colour);
 	}
 
-	if (quotes != 0)
-		*dst++ = FORMAT_ENDQUOTES;
+	if (quotes) dst = utf8_write_codepoint(dst, FORMAT_OPENQUOTES);
+
+	ch = src;
+	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
+		if (codepoint == '.') break;
+		dst = utf8_write_codepoint(dst, codepoint);
+	}
+
+	if (quotes) dst = utf8_write_codepoint(dst, FORMAT_ENDQUOTES);
 
 	*dst = 0;
 }

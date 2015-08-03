@@ -112,24 +112,21 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 	char* buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 
 	format_string(buffer, widget->tooltip, (void*)0x013CE952);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
 
-	int tooltip_text_width = 0, tooltip_text_height = 0;
-
+	int tooltip_text_width;
 	tooltip_text_width = gfx_get_string_width_new_lined(buffer);
 	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
-	tooltip_text_width &= 0xFFFF;
-	if (tooltip_text_width > 196)
-		tooltip_text_width = 196;
+	tooltip_text_width = min(tooltip_text_width, 196);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
 
-	int fontHeight;
-	tooltip_text_width = gfx_wrap_string(buffer, tooltip_text_width + 1, &tooltip_text_height, &fontHeight);
+	int numLines, fontSpriteBase;
+	tooltip_text_width = gfx_wrap_string(buffer, tooltip_text_width + 1, &numLines, &fontSpriteBase);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TEXT_HEIGHT, sint16) = tooltip_text_height;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TEXT_HEIGHT, sint16) = numLines;
 	width = tooltip_text_width + 3;
-	height = ((tooltip_text_height + 1) * 10) + 4;
+	height = ((numLines + 1) * font_get_line_height(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16))) + 4;
 	window_tooltip_widgets[WIDX_BACKGROUND].right = width;
 	window_tooltip_widgets[WIDX_BACKGROUND].bottom = height;
 

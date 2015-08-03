@@ -21,14 +21,14 @@
 #include "currency.h"
 
 const rct_currency_spec g_currency_specs[CURRENCY_END] = {
-	{ 10	, "\xA3"	, CURRENCY_PREFIX },	// British Pound
-	{ 10	, "\x24"	, CURRENCY_PREFIX },	// US Dollar
-	{ 10	, "F"		, CURRENCY_SUFFIX },	// French Franc
-	{ 10	, "DM"		, CURRENCY_PREFIX },	// Deutsche Mark
-	{ 1000	, "\xA5"	, CURRENCY_PREFIX },	// Japanese Yen
-	{ 10	, "Pts"		, CURRENCY_SUFFIX },	// Spanish Peseta
-	{ 1000	, "L"		, CURRENCY_PREFIX },	// Italian Lira
-	{ 10	, "fl. "	, CURRENCY_PREFIX },	// Dutch Guilder
-	{ 10	, "kr."		, CURRENCY_SUFFIX },	// Swedish Krona
-	{ 10	, "\xb5"	, CURRENCY_PREFIX },	// Euro
+	{ 10	, "\xC2\xA3"		, CURRENCY_PREFIX },	// British Pound
+	{ 10	, "$"				, CURRENCY_PREFIX },	// US Dollar
+	{ 10	, "F"				, CURRENCY_SUFFIX },	// French Franc
+	{ 10	, "DM"				, CURRENCY_PREFIX },	// Deutsche Mark
+	{ 1000	, "\xC2\xA5"		, CURRENCY_PREFIX },	// Japanese Yen
+	{ 10	, "Pts"				, CURRENCY_SUFFIX },	// Spanish Peseta
+	{ 1000	, "L"				, CURRENCY_PREFIX },	// Italian Lira
+	{ 10	, "fl. "			, CURRENCY_PREFIX },	// Dutch Guilder
+	{ 10	, "kr."				, CURRENCY_SUFFIX },	// Swedish Krona
+	{ 10	, "\xE2\x82\xAC"	, CURRENCY_PREFIX },	// Euro
 };

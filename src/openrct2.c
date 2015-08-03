@@ -39,8 +39,8 @@
 #include "world/mapgen.h"
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
-char gOpenRCT2StartupActionPath[512] = { 0 };
-char gExePath[MAX_PATH];
+utf8 gOpenRCT2StartupActionPath[512] = { 0 };
+utf8 gExePath[MAX_PATH];
 
 // This should probably be changed later and allow a custom selection of things to initialise like SDL_INIT
 bool gOpenRCT2Headless = false;
@@ -112,19 +112,18 @@ static void openrct2_copy_files_over(const char *originalDirectory, const char *
 
 static void openrct2_set_exe_path()
 {
-	char exePath[MAX_PATH];
-	char tempPath[MAX_PATH];
-	char *exeDelimiter;
-	int pathEnd;
+	wchar_t exePath[MAX_PATH];
+	wchar_t tempPath[MAX_PATH];
+	wchar_t *exeDelimiter;
 	int exeDelimiterIndex;
 
-	GetModuleFileName(NULL, exePath, MAX_PATH);
-	exeDelimiter = strrchr(exePath, platform_get_path_separator());
+	GetModuleFileNameW(NULL, exePath, MAX_PATH);
+	exeDelimiter = wcsrchr(exePath, platform_get_path_separator());
 	exeDelimiterIndex = (int)(exeDelimiter - exePath);
-	pathEnd = strlen(exePath) - (strlen(exePath) - exeDelimiterIndex);
-	strncpy(tempPath, exePath, pathEnd);
-	tempPath[pathEnd] = '\0';
-	_fullpath(gExePath, tempPath, MAX_PATH);
+	lstrcpynW(tempPath, exePath, exeDelimiterIndex + 1);
+	tempPath[exeDelimiterIndex] = L'\0';
+	_wfullpath(exePath, tempPath, MAX_PATH);
+	WideCharToMultiByte(CP_UTF8, 0, exePath, countof(exePath), gExePath, countof(gExePath), NULL, NULL);
 }
 
 /**
@@ -188,11 +187,14 @@ bool openrct2_initialise()
 	title_sequences_load_presets();
 
 	// Hooks to allow RCT2 to call OpenRCT2 functions instead
-	addhook(0x006E732D, (int)gfx_set_dirty_blocks, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0);	// remove when all callers are decompiled
-	addhook(0x006E7499, (int)gfx_redraw_screen_rect, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0);	// remove when 0x6E7FF3 is decompiled
-	addhook(0x006B752C, (int)ride_crash, 0, (int[]){ EDX, EBX, END }, 0);						// remove when all callers are decompiled
-	addhook(0x0069A42F, (int)peep_window_state_update, 0, (int[]){ ESI, END }, 0);					// remove when all callers are decompiled
-	addhook(0x006BB76E, (int)sound_play_panned, 0, (int[]){EAX, EBX, ECX, EDX, EBP, END}, EAX); // remove when all callers are decompiled
+	addhook(0x006E732D, (int)gfx_set_dirty_blocks, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0, 0);	// remove when all callers are decompiled
+	addhook(0x006E7499, (int)gfx_redraw_screen_rect, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0, 0);	// remove when 0x6E7FF3 is decompiled
+	addhook(0x006B752C, (int)ride_crash, 0, (int[]){ EDX, EBX, END }, 0, 0);						// remove when all callers are decompiled
+	addhook(0x0069A42F, (int)peep_window_state_update, 0, (int[]){ ESI, END }, 0, 0);				// remove when all callers are decompiled
+	addhook(0x006BB76E, (int)sound_play_panned, 0, (int[]){EAX, EBX, ECX, EDX, EBP, END}, EAX, 0);	// remove when all callers are decompiled
+	addhook(0x006C42D9, (int)scrolling_text_setup, 0, (int[]){EAX, ECX, EBP, END}, 0, EBX);			// remove when all callers are decompiled
+	addhook(0x006C2321, (int)gfx_get_string_width, 0, (int[]){ESI, END}, 0, ECX);					// remove when all callers are decompiled
+	addhook(0x006C2555, (int)format_string, 0, (int[]){EDI, EAX, ECX, END}, 0, 0);					// remove when all callers are decompiled
 
 	if (!rct2_init())
 		return false;

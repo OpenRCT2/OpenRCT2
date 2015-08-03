@@ -33,9 +33,11 @@
     <ClCompile Include="..\src\cursors.c" />
     <ClCompile Include="..\src\diagnostic.c" />
     <ClCompile Include="..\src\drawing\drawing.c" />
+    <ClCompile Include="..\src\drawing\font.c" />
     <ClCompile Include="..\src\drawing\line.c" />
     <ClCompile Include="..\src\drawing\rain.c" />
     <ClCompile Include="..\src\drawing\rect.c" />
+    <ClCompile Include="..\src\drawing\scrolling_text.c" />
     <ClCompile Include="..\src\drawing\sprite.c" />
     <ClCompile Include="..\src\drawing\string.c" />
     <ClCompile Include="..\src\editor.c" />
@@ -58,12 +60,14 @@
     <ClCompile Include="..\src\interface\widget.c" />
     <ClCompile Include="..\src\interface\window.c" />
     <ClCompile Include="..\src\intro.c" />
+    <ClCompile Include="..\src\localisation\convert.c" />
     <ClCompile Include="..\src\localisation\currency.c" />
     <ClCompile Include="..\src\localisation\date.c" />
     <ClCompile Include="..\src\localisation\language.c" />
     <ClCompile Include="..\src\localisation\localisation.c" />
     <ClCompile Include="..\src\localisation\real_names.c" />
     <ClCompile Include="..\src\localisation\user.c" />
+    <ClCompile Include="..\src\localisation\utf8.c" />
     <ClCompile Include="..\src\management\award.c" />
     <ClCompile Include="..\src\management\finance.c" />
     <ClCompile Include="..\src\management\marketing.c" />
@@ -193,6 +197,7 @@
     <ClInclude Include="..\src\cursors.h" />
     <ClInclude Include="..\src\diagnostic.h" />
     <ClInclude Include="..\src\drawing\drawing.h" />
+    <ClInclude Include="..\src\drawing\font.h" />
     <ClInclude Include="..\src\editor.h" />
     <ClInclude Include="..\src\game.h" />
     <ClInclude Include="..\src\hook.h" />
@@ -310,13 +315,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)..\lib;$(SolutionDir)..\lib\libspeex;$(SolutionDir)..\lib\sdl\include;$(SolutionDir)..\lib\libcurl\include;$(SolutionDir)..\lib\jansson;$(SolutionDir)..\lib\cutest;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\lib;$(SolutionDir)..\lib\libspeex;$(SolutionDir)..\lib\sdl\include;$(SolutionDir)..\lib\libcurl\include;$(SolutionDir)..\lib\jansson;$(SolutionDir)..\lib\cutest;$(SolutionDir)..\lib\SDL2_ttf\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\lib\sdl\lib\x86;$(SolutionDir)..\lib\libcurl\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)..\lib;$(SolutionDir)..\lib\libspeex;$(SolutionDir)..\lib\sdl\include;$(SolutionDir)..\lib\libcurl\include;$(SolutionDir)..\lib\jansson;$(SolutionDir)..\lib\cutest;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\lib;$(SolutionDir)..\lib\libspeex;$(SolutionDir)..\lib\sdl\include;$(SolutionDir)..\lib\libcurl\include;$(SolutionDir)..\lib\jansson;$(SolutionDir)..\lib\cutest;$(SolutionDir)..\lib\SDL2_ttf\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\lib\sdl\lib\x86;$(SolutionDir)..\lib\libcurl\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)\</IntDir>
@@ -324,7 +329,7 @@
     </CustomBuildBeforeTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release with Tests|Win32'">
-    <IncludePath>$(SolutionDir)..\lib;$(SolutionDir)..\lib\libspeex;$(SolutionDir)..\lib\sdl\include;$(SolutionDir)..\lib\libcurl\include;$(SolutionDir)..\lib\jansson;$(SolutionDir)..\lib\cutest;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\lib;$(SolutionDir)..\lib\libspeex;$(SolutionDir)..\lib\sdl\include;$(SolutionDir)..\lib\libcurl\include;$(SolutionDir)..\lib\jansson;$(SolutionDir)..\lib\cutest;$(SolutionDir)..\lib\SDL2_ttf\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\lib\sdl\lib\x86;$(SolutionDir)..\lib\libcurl\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)..\build\Release\</OutDir>
     <IntDir>$(SolutionDir)..\obj\$(ProjectName)\Release\</IntDir>

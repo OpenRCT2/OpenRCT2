@@ -512,7 +512,7 @@ int track_is_connected_by_shape(rct_map_element *a, rct_map_element *b);
 int sub_6D01B3(uint8 bl, uint8 rideIndex, int x, int y, int z);
 int save_track_design(uint8 rideIndex);
 int install_track(char* source_path, char* dest_name);
-void window_track_list_format_name(char *dst, const char *src, char colour, char quotes);
+void window_track_list_format_name(utf8 *dst, const utf8 *src, int colour, bool quotes);
 void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
 void track_save_reset_scenery();

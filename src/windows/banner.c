@@ -263,21 +263,18 @@ static void window_banner_dropdown(rct_window *w, int widgetIndex, int dropdownI
 
 		banner->text_colour = dropdownIndex + 1;
 
-		// Can be replaced with a buffer 34 chars wide ( 32 character + 1 colour_format + 1 '\0')
-		uint8* text_buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, uint8);
-		
-		format_string(text_buffer, banner->string_idx, 0);
-		
-		if (text_buffer[0] < FORMAT_COLOUR_CODE_START 
-			|| text_buffer[0] > FORMAT_COLOUR_CODE_END){
-			int end_point = strlen(text_buffer) + 1;
-			strncpy(text_buffer + 1, text_buffer, 32);
-			text_buffer[end_point] = '\0';
+		int colourCodepoint = FORMAT_COLOUR_CODE_START + banner->text_colour;
+
+		uint8 buffer[256];
+		format_string(buffer, banner->string_idx, 0);
+		int firstCodepoint = utf8_get_next(buffer, NULL);
+		if (firstCodepoint >= FORMAT_COLOUR_CODE_START && firstCodepoint <= FORMAT_COLOUR_CODE_END) {
+			utf8_write_codepoint(buffer, colourCodepoint);
+		} else {
+			utf8_insert_codepoint(buffer, colourCodepoint);
 		}
 
-		text_buffer[0] = banner->text_colour + FORMAT_COLOUR_CODE_START;
-
-		rct_string_id stringId = user_string_allocate(128, text_buffer);
+		rct_string_id stringId = user_string_allocate(128, buffer);
 		if (stringId != 0) {
 			rct_string_id prev_string_id = banner->string_idx;
 			banner->string_idx = stringId;
@@ -296,12 +293,12 @@ static void window_banner_textinput(rct_window *w, int widgetIndex, char *text)
 	if (widgetIndex == WIDX_BANNER_TEXT && text != NULL) {
 		rct_banner* banner = &gBanners[w->number];
 
-		uint8* text_buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, uint8);
+		utf8 *buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, uint8);
+		utf8 *dst = buffer;
+		dst = utf8_write_codepoint(dst, FORMAT_COLOUR_CODE_START + banner->text_colour);
+		strncpy(dst, text, 32);
 
-		text_buffer[0] = banner->text_colour + FORMAT_COLOUR_CODE_START;
-		strncpy(text_buffer + 1, text, 32);
-
-		rct_string_id stringId = user_string_allocate(128, text_buffer);
+		rct_string_id stringId = user_string_allocate(128, buffer);
 		if (stringId) {
 			rct_string_id prev_string_id = banner->string_idx;
 			banner->string_idx = stringId;

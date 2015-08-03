@@ -1439,14 +1439,13 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 				if (*listItem->flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_REQUIRED | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
 					colour2 |= 0x40;
 
-				gfx_draw_string(dpi, (char*)0x009DED72, colour2, x, y);
+				gfx_draw_string(dpi, (char*)CheckBoxMarkString, colour2, x, y);
 			}
 
 			x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
 
 			char *bufferWithColour = (char*)0x0141ED68;
-			char *buffer = bufferWithColour + 1;
-			bufferWithColour[0] = colour;
+			char *buffer = utf8_write_codepoint(bufferWithColour, colour);
 			if (*listItem->flags & OBJECT_SELECTION_FLAG_6) {
 				colour = w->colours[1] & 0x7F;
 				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = -1;

@@ -112,6 +112,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="..\..\data\language\chinese_traditional.txt" />
     <Text Include="..\..\data\language\dutch.txt" />
     <Text Include="..\..\data\language\english_uk.txt" />
     <Text Include="..\..\data\language\english_us.txt" />
