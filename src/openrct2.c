@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -62,7 +62,7 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 	utf8 *ch, filter[MAX_PATH], oldPath[MAX_PATH], newPath[MAX_PATH];
 	int fileEnumHandle;
 	file_info fileInfo;
-	
+
 	if (!platform_ensure_directory_exists(newDirectory)) {
 		log_error("Could not create directory %s.", newDirectory);
 		return;
@@ -80,7 +80,7 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
 		strcpy(newPath, newDirectory);
 		strcat(newPath, fileInfo.path);
-		
+
 		strcpy(oldPath, originalDirectory);
 		ch = strchr(oldPath, '*');
 		if (ch != NULL)
@@ -115,6 +115,7 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 // TODO move to platform
 static void openrct2_set_exe_path()
 {
+#ifdef _WIN32
 	wchar_t exePath[MAX_PATH];
 	wchar_t tempPath[MAX_PATH];
 	wchar_t *exeDelimiter;
@@ -127,6 +128,16 @@ static void openrct2_set_exe_path()
 	tempPath[exeDelimiterIndex] = L'\0';
 	_wfullpath(exePath, tempPath, MAX_PATH);
 	WideCharToMultiByte(CP_UTF8, 0, exePath, countof(exePath), gExePath, countof(gExePath), NULL, NULL);
+#else
+	char exePath[MAX_PATH];
+	ssize_t bytesRead;
+	bytesRead = readlink("/proc/self/exe", exePath, MAX_PATH);
+	if (bytesRead == -1) {
+		log_fatal("failed to read /proc/self/exe");
+	}
+	exePath[MAX_PATH - 1] = '\0';
+	strncpy(gExePath, exePath, MAX_PATH);
+#endif // _WIN32
 }
 
 /**
@@ -179,7 +190,11 @@ bool openrct2_initialise()
 	if (!gOpenRCT2Headless) {
 		audio_init();
 		audio_get_devices();
+#ifdef _WIN32
 		get_dsound_devices();
+#else
+		STUB();
+#endif // _WIN32
 	}
 	language_open(gConfigGeneral.language);
 	http_init();
@@ -331,7 +346,7 @@ static void openrct2_loop()
 					_spritelocations1[i].y = g_sprite_list[i].unknown.y;
 					_spritelocations1[i].z = g_sprite_list[i].unknown.z;
 				}
-				
+
 				// Update the game so the sprite positions update
 				rct2_update();
 

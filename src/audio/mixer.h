@@ -21,8 +21,15 @@
 #ifndef _MIXER_H_
 #define _MIXER_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
 #include "../common.h"
 #include <SDL.h>
+#include "../platform/platform.h"
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #define USE_MIXER
 
@@ -206,7 +213,11 @@ void Mixer_Channel_SetGroup(void* channel, int group);
 void* Mixer_Play_Music(int pathid, int loop, int streaming);
 
 static int DStoMixerVolume(int volume) { return (int)(SDL_MIX_MAXVOLUME * (SDL_pow(10, (float)volume / 2000))); };
+#ifdef _WIN32
 static float DStoMixerPan(int pan) { return (((float)pan + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2; };
+#else
+static float DStoMixerPan(int pan) { STUB(); return ((float)pan) / 2; };
+#endif // _WIN32
 static double DStoMixerRate(int frequency) { return (double)frequency / 22050; };
 
 #ifdef __cplusplus

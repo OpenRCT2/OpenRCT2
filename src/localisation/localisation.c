@@ -18,6 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#ifdef _WIN32
+#include <windows.h>
+#endif // _WIN32
 #include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
@@ -848,8 +851,13 @@ int win1252_to_utf8(utf8string dst, const char *src, int maxBufferLength)
 		}
 	}
 
+#ifdef _WIN32
 	MultiByteToWideChar(CP_ACP, 0, src, -1, intermediateBuffer, bufferCount);
 	int result = WideCharToMultiByte(CP_UTF8, 0, intermediateBuffer, -1, dst, maxBufferLength, NULL, NULL);
+#else
+	STUB();
+	int result = 0;
+#endif // _WIN32
 
 	if (heapBuffer != NULL) {
 		free(heapBuffer);

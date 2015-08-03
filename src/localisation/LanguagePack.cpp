@@ -2,6 +2,7 @@ extern "C" {
 	#include "../common.h"
 	#include "../util/util.h"
 	#include "localisation.h"
+	#include "../platform/platform.h"
 }
 
 #include "../core/FileStream.hpp"

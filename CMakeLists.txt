@@ -26,8 +26,10 @@ project(${PROJECT})
 add_definitions(-DORCT2_RESOURCE_DIR="${ORCT2_RESOURCE_DIR}")
 add_definitions(-DHAVE_CONFIG_H)
 add_definitions(-DCURL_STATICLIB)
-#uncomment the line bellow if you don't want to build openrct2 with twitch integration
-#add_definitions(-DDISABLE_HTTP -DDISABLE_TWITCH)
+option(DISABLE_HTTP_TWITCH "Disable HTTP and Twitch support.")
+if (DISABLE_HTTP_TWITCH)
+	add_definitions(-DDISABLE_HTTP -DDISABLE_TWITCH)
+endif (DISABLE_HTTP_TWITCH)
 
 option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
 if (DISABLE_NETWORK)
@@ -37,7 +39,7 @@ endif (DISABLE_NETWORK)
 set(ORCTLIBS_INCLUDE /usr/local/cross-tools/orctlibs/include) 
 set(JANSSON_INCLUDE /usr/local/cross-tools/orctlibs/include/jansson) 
 set(ORCTLIBS_LIB_DIR /usr/local/cross-tools/orctlibs/lib)
-set(ORCTLIBS_LIB jansson curl ssl crypto ws2_32)
+set(ORCTLIBS_LIB jansson curl ssl crypto)
 
 # include lib
 include_directories("lib/")
@@ -75,6 +77,6 @@ set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCTLIBS_LIB})
 
 if (WIN32)
-	target_link_libraries(${PROJECT} winmm.lib -limm32 -lversion -ldsound)
+	target_link_libraries(${PROJECT} winmm.lib -limm32 -lversion -ldsound ws2_32)
 endif (WIN32)
 

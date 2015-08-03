@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,11 +17,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
- 
+
 #ifndef _PLATFORM_H_
 #define _PLATFORM_H_
 
+#ifdef _WIN32
 #define HAVE_MATH_H
+#endif // _WIN32
 
 #include <SDL.h>
 
@@ -136,6 +138,26 @@ uint8 platform_get_locale_temperature_format();
 
 	int windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset);
 	HWND windows_get_window_handle();
-#endif
+#endif // _WIN32
+
+#ifdef __linux__
+#include <unistd.h>
+#include <limits.h>
+#define STUB() log_warning("Function %s at %s:%d is a stub.\n", __PRETTY_FUNCTION__, __FILE__, __LINE__)
+#define _strcmpi _stricmp
+#define _stricmp(x, y) strcasecmp((x), (y))
+#define _strnicmp(x, y, n) strncasecmp((x), (y), (n))
+
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#define RCT2_ENDIANESS __ORDER_LITTLE_ENDIAN__
+#define LOBYTE(w) ((uint8_t)(w))
+#define HIBYTE(w) ((uint8_t)(((uint16_t)(w)>>8)&0xFF))
+#endif // __BYTE_ORDER__
+
+#ifndef RCT2_ENDIANESS
+#error Unknown endianess!
+#endif // RCT2_ENDIANESS
+
+#endif // __linux__
 
 #endif

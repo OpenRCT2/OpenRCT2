@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "../common.h"
 #include "drawing.h"
+#include "../platform/platform.h"
 
 /**
  *
