@@ -18,7 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <SDL.h>
 #include "../addresses.h"
 #include "../config.h"
 #include "../interface/viewport.h"
