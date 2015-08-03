@@ -53,7 +53,7 @@ enum {
 
 static TTFFontSetDescriptor TTFFontMingliu = {{
 	{ "msjh.ttc",		9,		-1,		-3,		6,		NULL },
-	{ "mingliu.ttc",	11,		1,		0,		12,		NULL },
+	{ "mingliu.ttc",	11,		1,		1,		12,		NULL },
 	{ "mingliu.ttc",	12,		1,		0,		12,		NULL },
 	{ "mingliu.ttc",	13,		1,		0,		20,		NULL },
 }};

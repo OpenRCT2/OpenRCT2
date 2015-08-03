@@ -217,6 +217,6 @@ static void window_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	
 	// Text
 	left = w->x + ((w->width + 1) / 2) - 1;
-	top = w->y + 2;
+	top = w->y + 1;
 	draw_string_centred_raw(dpi, left, top, RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TEXT_HEIGHT, uint16), gTooltip_text_buffer);
 }
