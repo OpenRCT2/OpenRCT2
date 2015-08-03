@@ -375,7 +375,7 @@ static utf8 *convert_multibyte_charset(const char *src, int languageId)
 			codepoint = convert_specific_language_character_to_unicode(languageId, codepoint);
 			dst = utf8_write_codepoint(dst, codepoint);
 		} else {
-			*dst++ = *ch++;
+			dst = utf8_write_codepoint(dst, *ch++);
 		}
 	}
 	*dst++ = 0;
