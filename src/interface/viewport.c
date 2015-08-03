@@ -1990,6 +1990,48 @@ void sub_688217()
 		sub_688217_helper(eax & 0xFFFF, 0);
 }
 
+typedef struct paint_string_struct paint_string_struct;
+struct paint_string_struct {
+	rct_string_id string_id;		// 0x00
+	paint_string_struct *next;		// 0x02
+	uint16 x;						// 0x06
+	uint16 y;						// 0x08
+	uint8 args[16];					// 0x0A
+	uint8 *y_offsets;				// 0x1A
+};
+
+static void draw_pixel_info_crop_by_zoom(rct_drawpixelinfo *dpi)
+{
+	int zoom = dpi->zoom_level;
+	dpi->zoom_level = 0;
+	dpi->x >>= zoom;
+	dpi->y >>= zoom;
+	dpi->width >>= zoom;
+	dpi->height >>= zoom;
+}
+
+/**
+ *
+ *  rct2:0x006860C3
+ */
+static void viewport_draw_money_effects()
+{
+	utf8 buffer[256];
+
+	paint_string_struct *ps = RCT2_GLOBAL(0x00F1AD20, paint_string_struct*);
+	if (ps == NULL)
+		return;
+
+	rct_drawpixelinfo dpi = *(RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*));
+	draw_pixel_info_crop_by_zoom(&dpi);
+
+	do {
+		format_string(buffer, ps->string_id, &ps->args);
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
+		gfx_draw_string_with_y_offsets(&dpi, buffer, 0, ps->x, ps->y, ps->y_offsets);
+	} while ((ps = ps->next) != NULL);
+}
+
 /**
  *
  *  rct2:0x00685CBF
@@ -2087,7 +2129,7 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		if ((weather_colour != -1) && (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x4000)) && (!(RCT2_GLOBAL(0x9DEA6F, uint8) & 1))){
 			gfx_fill_rect(dpi2, dpi2->x, dpi2->y, dpi2->width + dpi2->x - 1, dpi2->height + dpi2->y - 1, weather_colour);
 		}
-		RCT2_CALLPROC_EBPSAFE(0x6860C3); //string related
+		viewport_draw_money_effects();
 	}
 }
 

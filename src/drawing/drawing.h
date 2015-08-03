@@ -133,6 +133,7 @@ void gfx_draw_string_right(rct_drawpixelinfo *dpi, int format, void *args, int c
 void draw_string_right_underline(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y);
 int string_get_height_raw(char *buffer);
 void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, int x, int y, int width, int colour, rct_string_id format, void *args, int ticks);
+void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, utf8 *text, int colour, int x, int y, const sint8 *yOffsets);
 
 bool ttf_initialise();
 void ttf_dispose();

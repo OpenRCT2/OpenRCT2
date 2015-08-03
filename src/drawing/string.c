@@ -924,6 +924,7 @@ TTFFontDescriptor *ttf_get_font_from_sprite_base(uint16 spriteBase)
 enum {
 	TEXT_DRAW_FLAG_INSET = 1 << 0,
 	TEXT_DRAW_FLAG_OUTLINE = 1 << 1,
+	TEXT_DRAW_FLAG_Y_OFFSET_EFFECT = 1 << 29,
 	TEXT_DRAW_FLAG_TTF = 1 << 30,
 	TEXT_DRAW_FLAG_NO_DRAW = 1 << 31
 };
@@ -938,6 +939,7 @@ typedef struct {
 	int flags;
 	uint8 palette[8];
 	uint16 font_sprite_base;
+	const sint8 *y_offset;
 } text_draw_info;
 
 static void ttf_draw_character_sprite(rct_drawpixelinfo *dpi, int codepoint, text_draw_info *info)
@@ -948,7 +950,13 @@ static void ttf_draw_character_sprite(rct_drawpixelinfo *dpi, int codepoint, tex
 	if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW)) {
 		RCT2_GLOBAL(0x009ABDA4, uint8*) = (uint8*)&info->palette;
 		RCT2_GLOBAL(0x00EDF81C, uint32) = (IMAGE_TYPE_USE_PALETTE << 28);
-		gfx_draw_sprite_palette_set(dpi, sprite, info->x, info->y, info->palette, NULL);
+
+		int x = info->x;
+		int y = info->y;
+		if (info->flags & TEXT_DRAW_FLAG_Y_OFFSET_EFFECT) {
+			y += *info->y_offset++;
+		}
+		gfx_draw_sprite_palette_set(dpi, sprite, x, y, info->palette, NULL);
 	}
 
 	info->x += characterWidth;
@@ -972,6 +980,7 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
 	TTFFontDescriptor *fontDesc = ttf_get_font_from_sprite_base(info->font_sprite_base);
 	if (fontDesc->font == NULL) {
 		ttf_draw_string_raw_sprite(dpi, text, info);
+		return;
 	}
 
 	if (info->flags & TEXT_DRAW_FLAG_NO_DRAW) {
@@ -1300,4 +1309,35 @@ static int ttf_get_string_width(const utf8 *text)
 	ttf_process_string(NULL, text, &info);
 
 	return info.maxX;
+}
+
+/**
+ *
+ *  rct2: 0x00682F28
+ */
+void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, utf8 *text, int colour, int x, int y, const sint8 *yOffsets)
+{
+	text_draw_info info;
+	info.font_sprite_base = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+	info.flags = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16);
+	info.startX = x;
+	info.startY = x;
+	info.x = x;
+	info.y = y;
+	info.y_offset = yOffsets;
+
+	info.flags |= TEXT_DRAW_FLAG_Y_OFFSET_EFFECT;
+
+	// if (gUseTrueTypeFont) info.flags |= TEXT_DRAW_FLAG_TTF;
+
+	memcpy(info.palette, text_palette, sizeof(info.palette));
+	ttf_process_initial_colour(colour, &info);
+	ttf_process_string(dpi, text, &info);
+	memcpy(text_palette, info.palette, sizeof(info.palette));
+
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = info.font_sprite_base;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = info.flags;
+
+	gLastDrawStringX = info.x;
+	gLastDrawStringY = info.y;
 }
