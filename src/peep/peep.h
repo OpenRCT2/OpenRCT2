@@ -468,12 +468,11 @@ typedef struct {
 	uint16 previous_ride_time_out;	// 0xAE
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
 	uint8 var_C4;					// 0xC4
-	union							// 0xC5
-	{
-		uint8 staff_id;
-		uint8 guest_heading_to_ride_id;
+	union {
+		uint8 staff_id;						// 0xC5
+		uint8 guest_heading_to_ride_id;		// 0xC5
 	};
-	union{
+	union {
 		uint8 staff_orders;			// 0xC6
 		uint8 var_C6;
 	};

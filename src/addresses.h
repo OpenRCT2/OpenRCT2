@@ -830,4 +830,62 @@ static int RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_e
 	#endif
 }
 
+typedef struct {
+	union {
+		int eax;
+		short ax;
+		struct {
+			char al;
+			char ah;
+		};
+	};
+	union {
+		int ebx;
+		short bx;
+		struct {
+			char bl;
+			char bh;
+		};
+	};
+	union {
+		int ecx;
+		short cx;
+		struct {
+			char cl;
+			char ch;
+		};
+	};
+	union {
+		int edx;
+		short dx;
+		struct {
+			char dl;
+			char dh;
+		};
+	};
+	union {
+		int esi;
+		short si;
+	};
+	union {
+		int edi;
+		short di;
+	};
+	union {
+		int ebp;
+		short bp;
+	};
+} registers;
+
+static int RCT2_CALLFUNC_Y(int address, registers *inOut)
+{
+	return RCT2_CALLFUNC_X(address, &inOut->eax, &inOut->ebx, &inOut->ecx, &inOut->edx, &inOut->esi, &inOut->edi, &inOut->ebp);
+}
+
+static int RCT2_CALLFUNC_Z(int address, const registers *in, registers *out)
+{
+	*out = *in;
+	return RCT2_CALLFUNC_Y(address, out);
+}
+
 #endif

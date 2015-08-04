@@ -84,6 +84,7 @@
     </Link>
     <Lib>
       <AdditionalDependencies>libcurl.lib;Ws2_32.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
     </Lib>
     <PreBuildEvent>
       <Command>Powershell -NonInteractive -ExecutionPolicy "ByPass" -File "$(ProjectDir)../../pre-build.ps1"</Command>

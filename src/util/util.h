@@ -37,6 +37,7 @@ long fsize(FILE *fp);
 bool readentirefile(const char *path, void **outBuffer, long *outLength);
 
 int bitscanforward(int source);
+int bitcount(int source);
 bool strequals(const char *a, const char *b, int length, bool caseInsensitive);
 int strcicmp(char const *a, char const *b);
 
