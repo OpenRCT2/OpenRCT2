@@ -76,8 +76,9 @@ enum WINDOW_WATER_WIDGET_IDX {
 
 static bool _window_title_command_editor_insert;
 static int _window_title_command_editor_index;
-static char textbox1Buffer[50];
-static char textbox2Buffer[50];
+#define BUF_SIZE 50
+static char textbox1Buffer[BUF_SIZE];
+static char textbox2Buffer[BUF_SIZE];
 static title_command command = { 6, 0, 0 };
 
 static rct_widget window_title_command_editor_widgets[] = {
@@ -235,13 +236,13 @@ void window_title_command_editor_open(int index, bool insert)
 			command.saveIndex = 0xFF;
 		break;
 	case TITLE_SCRIPT_LOCATION:
-		_itoa(command.x, textbox1Buffer, 10);
-		_itoa(command.y, textbox2Buffer, 10);
+		snprintf(textbox1Buffer, BUF_SIZE, "%d", command.x);
+		snprintf(textbox2Buffer, BUF_SIZE, "%d", command.y);
 		break;
 	case TITLE_SCRIPT_ROTATE:
 	case TITLE_SCRIPT_ZOOM:
 	case TITLE_SCRIPT_WAIT:
-		_itoa(command.rotations, textbox1Buffer, 10);
+		snprintf(textbox1Buffer, BUF_SIZE, "%d", command.rotations);
 		break;
 	}
 }
@@ -271,13 +272,13 @@ static void window_title_command_editor_mouseup(rct_window *w, int widgetIndex)
 			mapCoord = get_location();
 			command.x = (uint8)mapCoord.x;
 			command.y = (uint8)mapCoord.y;
-			_itoa(command.x, textbox1Buffer, 10);
-			_itoa(command.y, textbox2Buffer, 10);
+			snprintf(textbox1Buffer, BUF_SIZE, "%d", command.x);
+			snprintf(textbox2Buffer, BUF_SIZE, "%d", command.y);
 		}
 		else if (command.command == TITLE_SCRIPT_ZOOM) {
 			zoom = get_zoom();
 			command.zoom = zoom;
-			_itoa(command.zoom, textbox1Buffer, 10);
+			snprintf(textbox1Buffer, BUF_SIZE, "%d", command.zoom);
 		}
 		window_invalidate(w);
 		break;
@@ -383,23 +384,23 @@ static void window_title_command_editor_dropdown(rct_window *w, int widgetIndex,
 			mapCoord = get_location();
 			command.x = (uint8)mapCoord.x;
 			command.y = (uint8)mapCoord.y;
-			_itoa(command.x, textbox1Buffer, 10);
-			_itoa(command.y, textbox2Buffer, 10);
+			snprintf(textbox1Buffer, BUF_SIZE, "%d", command.x);
+			snprintf(textbox2Buffer, BUF_SIZE, "%d", command.y);
 			break;
 		case TITLE_SCRIPT_ROTATE:
 			command.rotations = 1;
-			_itoa(command.rotations, textbox1Buffer, 10);
+			snprintf(textbox1Buffer, BUF_SIZE, "%d", command.rotations);
 			break;
 		case TITLE_SCRIPT_ZOOM:
 			command.zoom = 0;
-			_itoa(command.zoom, textbox1Buffer, 10);
+			snprintf(textbox1Buffer, BUF_SIZE, "%d", command.zoom);
 			break;
 		case TITLE_SCRIPT_SPEED:
 			command.speed = 1;
 			break;
 		case TITLE_SCRIPT_WAIT:
 			command.seconds = 10;
-			_itoa(command.seconds, textbox1Buffer, 10);
+			snprintf(textbox1Buffer, BUF_SIZE, "%d", command.seconds);
 			break;
 		case TITLE_SCRIPT_LOAD:
 			command.saveIndex = 0;
@@ -445,7 +446,7 @@ static void window_title_command_editor_textinput(rct_window *w, int widgetIndex
 				}
 				command.rotations = (uint8)value;
 			}
-			_itoa(command.rotations, textbox1Buffer, 10);
+			snprintf(textbox1Buffer, BUF_SIZE, "%d", command.rotations);
 			window_invalidate(w);
 		}
 		else {
@@ -456,7 +457,7 @@ static void window_title_command_editor_textinput(rct_window *w, int widgetIndex
 		if (text == NULL) {
 			if (*end == '\0')
 				command.x = (uint8)value;
-			_itoa(command.x, textbox1Buffer, 10);
+			snprintf(textbox1Buffer, BUF_SIZE, "%d", command.x);
 			window_invalidate(w);
 		}
 		else {
@@ -467,7 +468,7 @@ static void window_title_command_editor_textinput(rct_window *w, int widgetIndex
 		if (text == NULL) {
 			if (*end == '\0')
 				command.y = (uint8)value;
-			_itoa(command.y, textbox2Buffer, 10);
+			snprintf(textbox2Buffer, BUF_SIZE, "%d", command.y);
 			window_invalidate(w);
 		}
 		else {
