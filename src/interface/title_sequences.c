@@ -158,7 +158,7 @@ void title_sequence_duplicate_preset(int duplicate, const char *name)
 			strncat(path, &separator, 1);
 			strcat(path, gConfigTitleSequences.presets[preset].saves[i]);
 
-			platform_file_copy(srcPath, path);
+			platform_file_copy(srcPath, path, false);
 		}
 
 		if (loadmm) {
@@ -237,7 +237,7 @@ void title_sequence_add_save(int preset, const char *path, const char *newName)
 		// Add the appropriate extension if needed
 		if (_stricmp(extension, ".sv6") != 0 && _stricmp(extension, ".sc6") != 0)
 			strcat(newPath, ".sv6");
-		platform_file_copy(path, newPath);
+		platform_file_copy(path, newPath, false);
 
 		gConfigTitleSequences.presets[preset].num_saves++;
 		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * (size_t)gConfigTitleSequences.presets[preset].num_saves);

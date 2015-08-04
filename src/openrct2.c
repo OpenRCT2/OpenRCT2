@@ -55,9 +55,9 @@ static struct { sint16 x, y, z; } _spritelocations1[MAX_SPRITES], _spritelocatio
 
 static void openrct2_loop();
 
-static void openrct2_copy_files_over(const char *originalDirectory, const char *newDirectory, const char *extension)
+static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *newDirectory, const utf8 *extension)
 {
-	char *ch, filter[MAX_PATH], oldPath[MAX_PATH], newPath[MAX_PATH];
+	utf8 *ch, filter[MAX_PATH], oldPath[MAX_PATH], newPath[MAX_PATH];
 	int fileEnumHandle;
 	file_info fileInfo;
 	
@@ -86,7 +86,7 @@ static void openrct2_copy_files_over(const char *originalDirectory, const char *
 		strcat(oldPath, fileInfo.path);
 
 		if (!platform_file_exists(newPath))
-			platform_file_copy(oldPath, newPath);
+			platform_file_copy(oldPath, newPath, false);
 	}
 	platform_enumerate_files_end(fileEnumHandle);
 
@@ -110,6 +110,7 @@ static void openrct2_copy_files_over(const char *originalDirectory, const char *
 	platform_enumerate_directories_end(fileEnumHandle);
 }
 
+// TODO move to platform
 static void openrct2_set_exe_path()
 {
 	wchar_t exePath[MAX_PATH];
@@ -131,18 +132,18 @@ static void openrct2_set_exe_path()
  */
 static void openrct2_copy_original_user_files_over()
 {
-	char path[MAX_PATH];
+	utf8 path[MAX_PATH];
 
 	platform_get_user_directory(path, "save");
-	openrct2_copy_files_over((char*)RCT2_ADDRESS_SAVED_GAMES_PATH, path, ".sv6");
+	openrct2_copy_files_over((utf8*)RCT2_ADDRESS_SAVED_GAMES_PATH, path, ".sv6");
 
 	platform_get_user_directory(path, "landscape");
-	openrct2_copy_files_over((char*)RCT2_ADDRESS_LANDSCAPES_PATH, path, ".sc6");
+	openrct2_copy_files_over((utf8*)RCT2_ADDRESS_LANDSCAPES_PATH, path, ".sc6");
 }
 
 bool openrct2_initialise()
 {
-	char userPath[MAX_PATH];
+	utf8 userPath[MAX_PATH];
 
 	platform_get_user_directory(userPath, NULL);
 	if (!platform_ensure_directory_exists(userPath)) {

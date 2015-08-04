@@ -81,46 +81,46 @@ void platform_get_closest_resolution(int inWidth, int inHeight, int *outWidth, i
 void platform_init();
 void platform_draw();
 void platform_free();
-void platform_update_palette(char* colours, int start_index, int num_colours);
+void platform_update_palette(char *colours, int start_index, int num_colours);
 void platform_set_fullscreen_mode(int mode);
 void platform_set_cursor(char cursor);
 void platform_refresh_video();
 void platform_process_messages();
 int platform_scancode_to_rct_keycode(int sdl_key);
-void platform_start_text_input(char* buffer, int max_length);
+void platform_start_text_input(utf8 *buffer, int max_length);
 void platform_stop_text_input();
-SDL_RWops* platform_sdl_rwfromfile(const char* filename, const char* mode);
+SDL_RWops* platform_sdl_rwfromfile(const utf8* filename, const char* mode);
 
 // Platform specific definitions
 char platform_get_path_separator();
-int platform_file_exists(const char *path);
-int platform_directory_exists(const char *path);
-int platform_original_game_data_exists(const char *path);
-time_t platform_file_get_modified_time(char* path);
-int platform_ensure_directory_exists(const char *path);
-int platform_directory_delete(const char *path);
-int platform_lock_single_instance();
-int platform_enumerate_files_begin(const char *pattern);
-int platform_enumerate_files_next(int handle, file_info *outFileInfo);
+bool platform_file_exists(const utf8 *path);
+bool platform_directory_exists(const utf8 *path);
+bool platform_original_game_data_exists(const utf8 *path);
+time_t platform_file_get_modified_time(const utf8* path);
+bool platform_ensure_directory_exists(const utf8 *path);
+bool platform_directory_delete(const utf8 *path);
+bool platform_lock_single_instance();
+int platform_enumerate_files_begin(const utf8 *pattern);
+bool platform_enumerate_files_next(int handle, file_info *outFileInfo);
 void platform_enumerate_files_end(int handle);
-int platform_enumerate_directories_begin(const char *directory);
-int platform_enumerate_directories_next(int handle, char *path);
+int platform_enumerate_directories_begin(const utf8 *directory);
+bool platform_enumerate_directories_next(int handle, utf8 *path);
 void platform_enumerate_directories_end(int handle);
 
 // Returns the bitmask of the GetLogicalDrives function for windows, 0 for other systems
 int platform_get_drives();
 
-int platform_file_copy(const char *srcPath, const char *dstPath);
-int platform_file_move(const char *srcPath, const char *dstPath);
-int platform_file_delete(const char *path);
+bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite);
+bool platform_file_move(const utf8 *srcPath, const utf8 *dstPath);
+bool platform_file_delete(const utf8 *path);
 void platform_hide_cursor();
 void platform_show_cursor();
 void platform_get_cursor_position(int *x, int *y);
 void platform_set_cursor_position(int x, int y);
 unsigned int platform_get_ticks();
-void platform_get_user_directory(char *outPath, const char *subDirectory);
-void platform_show_messagebox(char *message);
-int platform_open_common_file_dialog(int type, char *title, char *filename, char *filterPattern, char *filterName);
+void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory);
+void platform_show_messagebox(utf8 *message);
+int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName);
 utf8 *platform_open_directory_browser(utf8 *title);
 uint8 platform_get_locale_currency();
 uint16 platform_get_locale_language();

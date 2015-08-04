@@ -90,55 +90,68 @@ char platform_get_path_separator()
 	return '\\';
 }
 
-int platform_file_exists(const char *path)
+bool platform_file_exists(const utf8 *path)
 {
-	return !(GetFileAttributes(path) == INVALID_FILE_ATTRIBUTES && (GetLastError() == ERROR_FILE_NOT_FOUND || GetLastError() == ERROR_PATH_NOT_FOUND));
+	wchar_t *wPath = utf8_to_widechar(path);
+	DWORD result = GetFileAttributesW(wPath);
+	DWORD error = GetLastError();
+	free(wPath);
+	return !(result == INVALID_FILE_ATTRIBUTES && (error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND));
 }
 
-int platform_directory_exists(const char *path)
+bool platform_directory_exists(const utf8 *path)
 {
-	DWORD dwAttrib = GetFileAttributes(path);
+	wchar_t *wPath = utf8_to_widechar(path);
+	DWORD dwAttrib = GetFileAttributesW(wPath);
+	free(wPath);
 	return dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
 }
 
-int platform_original_game_data_exists(const char *path)
+bool platform_original_game_data_exists(const utf8 *path)
 {
-	char checkPath[MAX_PATH];
+	utf8 checkPath[MAX_PATH];
 	sprintf(checkPath, "%s%c%s%c%s", path, platform_get_path_separator(), "data", platform_get_path_separator(), "g1.dat");
 	return platform_file_exists(checkPath);
 }
 
-int platform_ensure_directory_exists(const char *path)
+bool platform_ensure_directory_exists(const utf8 *path)
 {
 	if (platform_directory_exists(path))
 		return 1;
 
-	return CreateDirectory(path, NULL);
+	wchar_t *wPath = utf8_to_widechar(path);
+	BOOL success = CreateDirectoryW(wPath, NULL);
+	free(wPath);
+	return success == TRUE;
 }
 
-int platform_directory_delete(const char *path)
+bool platform_directory_delete(const utf8 *path)
 {
-	char pszFrom[MAX_PATH];
-	strcpy(pszFrom, path);
+	wchar_t pszFrom[MAX_PATH];
+
+	wchar_t *wPath = utf8_to_widechar(path);
+	wcsncpy(pszFrom, wPath, MAX_PATH);
+	free(wPath);
+
 	// Needs to be double-null terminated for some weird reason
-	pszFrom[strlen(path) + 1] = 0;
-  
-	SHFILEOPSTRUCTA fileop;
+	pszFrom[wcslen(wPath) + 1] = 0;
+
+	SHFILEOPSTRUCTW fileop;
 	fileop.hwnd   = NULL;    // no status display
 	fileop.wFunc  = FO_DELETE;  // delete operation
 	fileop.pFrom  = pszFrom;  // source file name as double null terminated string
 	fileop.pTo    = NULL;    // no destination needed
-	fileop.fFlags = FOF_NOCONFIRMATION|FOF_SILENT;  // do not prompt the user
+	fileop.fFlags = FOF_NOCONFIRMATION | FOF_SILENT;  // do not prompt the user
 
 	fileop.fAnyOperationsAborted = FALSE;
 	fileop.lpszProgressTitle     = NULL;
 	fileop.hNameMappings         = NULL;
 
-	int ret = SHFileOperationA(&fileop);
+	int ret = SHFileOperationW(&fileop);
 	return (ret == 0);
 }
 
-int platform_lock_single_instance()
+bool platform_lock_single_instance()
 {
 	HANDLE mutex, status;
 
@@ -150,67 +163,74 @@ int platform_lock_single_instance()
 		if (status == NULL)
 			log_error("unable to create mutex\n");
 
-		return 1;
+		return true;
 	} else {
 		// Already running
 		CloseHandle(mutex);
-		return 0;
+		return false;
 	}
 }
 
 typedef struct {
-	char active;
-	char pattern[MAX_PATH];
+	bool active;
+	wchar_t pattern[MAX_PATH];
 	HANDLE handle;
-	WIN32_FIND_DATAA data;
+	WIN32_FIND_DATAW data;
+	utf8 *outFilename;
 } enumerate_file_info;
 static enumerate_file_info _enumerateFileInfoList[8] = { 0 };
 
-int platform_enumerate_files_begin(const char *pattern)
+int platform_enumerate_files_begin(const utf8 *pattern)
 {
 	int i;
 	enumerate_file_info *enumFileInfo;
 
+	wchar_t *wPattern = utf8_to_widechar(pattern);
+
 	for (i = 0; i < countof(_enumerateFileInfoList); i++) {
 		enumFileInfo = &_enumerateFileInfoList[i];
 		if (!enumFileInfo->active) {
-			strncpy(enumFileInfo->pattern, pattern, MAX_PATH);
+			wcsncpy(enumFileInfo->pattern, wPattern, MAX_PATH);
 			enumFileInfo->handle = NULL;
-			enumFileInfo->active = 1;
+			enumFileInfo->active = true;
+			enumFileInfo->outFilename = NULL;
+
+			free(wPattern);
 			return i;
 		}
 	}
 
+	free(wPattern);
 	return INVALID_HANDLE;
 }
 
-int platform_enumerate_files_next(int handle, file_info *outFileInfo)
+bool platform_enumerate_files_next(int handle, file_info *outFileInfo)
 {
-	int result;
+	bool result;
 	enumerate_file_info *enumFileInfo;
 	HANDLE findFileHandle;
 
 	enumFileInfo = &_enumerateFileInfoList[handle];
 
 	if (enumFileInfo->handle == NULL) {
-		findFileHandle = FindFirstFile(enumFileInfo->pattern, &enumFileInfo->data);
+		findFileHandle = FindFirstFileW(enumFileInfo->pattern, &enumFileInfo->data);
 		if (findFileHandle != INVALID_HANDLE_VALUE) {
 			enumFileInfo->handle = findFileHandle;
-			result = 1;
+			result = true;
 		} else {
-			result = 0;
+			result = false;
 		}
 	} else {
-		result = FindNextFile(enumFileInfo->handle, &enumFileInfo->data);
+		result = FindNextFileW(enumFileInfo->handle, &enumFileInfo->data);
 	}
 
 	if (result) {
-		outFileInfo->path = enumFileInfo->data.cFileName;
+		outFileInfo->path = enumFileInfo->outFilename = widechar_to_utf8(enumFileInfo->data.cFileName);
 		outFileInfo->size = ((uint64)enumFileInfo->data.nFileSizeHigh << 32ULL) | (uint64)enumFileInfo->data.nFileSizeLow;
 		outFileInfo->last_modified = ((uint64)enumFileInfo->data.ftLastWriteTime.dwHighDateTime << 32ULL) | (uint64)enumFileInfo->data.ftLastWriteTime.dwLowDateTime;
-		return 1;
+		return true;
 	} else {
-		return 0;
+		return false;
 	}
 }
 
@@ -223,32 +243,39 @@ void platform_enumerate_files_end(int handle)
 		FindClose(enumFileInfo->handle);
 		enumFileInfo->handle = NULL;
 	}
-	enumFileInfo->active = 0;
+	enumFileInfo->active = false;
+	SafeFree(enumFileInfo->outFilename);
 }
 
-int platform_enumerate_directories_begin(const char *directory)
+int platform_enumerate_directories_begin(const utf8 *directory)
 {
 	int i;
 	enumerate_file_info *enumFileInfo;
 
-	if (strlen(directory) + 3 >= MAX_PATH)
+	wchar_t *wDirectory = utf8_to_widechar(directory);
+
+	if (wcslen(wDirectory) + 3 >= MAX_PATH)
 		return INVALID_HANDLE;
 
 	for (i = 0; i < countof(_enumerateFileInfoList); i++) {
 		enumFileInfo = &_enumerateFileInfoList[i];
 		if (!enumFileInfo->active) {
-			strncpy(enumFileInfo->pattern, directory, MAX_PATH);
-			strncat(enumFileInfo->pattern, "*", MAX_PATH);
+			wcsncpy(enumFileInfo->pattern, wDirectory, MAX_PATH);
+			wcsncat(enumFileInfo->pattern, L"*", MAX_PATH);
 			enumFileInfo->handle = NULL;
-			enumFileInfo->active = 1;
+			enumFileInfo->active = true;
+			enumFileInfo->outFilename = NULL;
+
+			free(wDirectory);
 			return i;
 		}
 	}
 
+	free(wDirectory);
 	return INVALID_HANDLE;
 }
 
-int platform_enumerate_directories_next(int handle, char *path)
+bool platform_enumerate_directories_next(int handle, utf8 *path)
 {
 	enumerate_file_info *enumFileInfo;
 	HANDLE fileHandle;
@@ -256,31 +283,32 @@ int platform_enumerate_directories_next(int handle, char *path)
 	enumFileInfo = &_enumerateFileInfoList[handle];
 
 	if (enumFileInfo->handle == NULL) {
-		fileHandle = FindFirstFile(enumFileInfo->pattern, &enumFileInfo->data);
+		fileHandle = FindFirstFileW(enumFileInfo->pattern, &enumFileInfo->data);
 		if (fileHandle != 0) {
 			enumFileInfo->handle = fileHandle;
 		} else {
-			return 0;
+			return false;
 		}
 	} else {
-		if (!FindNextFile(enumFileInfo->handle, &enumFileInfo->data)) {
-			return 0;
+		if (!FindNextFileW(enumFileInfo->handle, &enumFileInfo->data)) {
+			return false;
 		}
 	}
 
 	while (
-		(enumFileInfo->data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0 
-		|| strchr(enumFileInfo->data.cFileName, '.') != NULL
+		(enumFileInfo->data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0 ||
+		wcschr(enumFileInfo->data.cFileName, '.') != NULL
 	) {
-		if (!FindNextFile(enumFileInfo->handle, &enumFileInfo->data)) {
-			return 0;
+		if (!FindNextFileW(enumFileInfo->handle, &enumFileInfo->data)) {
+			return false;
 		}
 	}
-	
-	memset(path, '\0', MAX_PATH);
-	strncpy(path, enumFileInfo->data.cFileName, MAX_PATH);
+
+	utf8 *filename = widechar_to_utf8(enumFileInfo->data.cFileName);
+	strncpy(path, filename, MAX_PATH);
 	strncat(path, "\\", MAX_PATH);
-	return 1;
+	free(filename);
+	return true;
 }
 
 void platform_enumerate_directories_end(int handle)
@@ -292,26 +320,40 @@ void platform_enumerate_directories_end(int handle)
 		FindClose(enumFileInfo->handle);
 		enumFileInfo->handle = NULL;
 	}
-	enumFileInfo->active = 0;
+	enumFileInfo->active = false;
 }
 
-int platform_get_drives(){
+int platform_get_drives()
+{
 	return GetLogicalDrives();
 }
 
-int platform_file_copy(const char *srcPath, const char *dstPath)
+bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite)
 {
-	return CopyFileA(srcPath, dstPath, TRUE);
+	wchar_t *wSrcPath = utf8_to_widechar(srcPath);
+	wchar_t *wDstPath = utf8_to_widechar(dstPath);
+	BOOL success = CopyFileW(wSrcPath, wDstPath, overwrite ? FALSE : TRUE);
+	free(wSrcPath);
+	free(wDstPath);
+	return success == TRUE;
 }
 
-int platform_file_move(const char *srcPath, const char *dstPath)
+bool platform_file_move(const utf8 *srcPath, const utf8 *dstPath)
 {
-	return MoveFileA(srcPath, dstPath);
+	wchar_t *wSrcPath = utf8_to_widechar(srcPath);
+	wchar_t *wDstPath = utf8_to_widechar(dstPath);
+	BOOL success = MoveFileW(wSrcPath, wDstPath);
+	free(wSrcPath);
+	free(wDstPath);
+	return success == TRUE;
 }
 
-int platform_file_delete(const char *path)
+bool platform_file_delete(const utf8 *path)
 {
-	return DeleteFileA(path);
+	wchar_t *wPath = utf8_to_widechar(path);
+	BOOL success = DeleteFileW(wPath);
+	free(wPath);
+	return success == TRUE;
 }
 
 void platform_hide_cursor()
@@ -347,11 +389,16 @@ unsigned int platform_get_ticks()
 	return GetTickCount();
 }
 
-void platform_get_user_directory(char *outPath, const char *subDirectory)
+void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
 {
+	wchar_t wOutPath[MAX_PATH];
 	char separator[2] = { platform_get_path_separator(), 0 };
 
-	if (SUCCEEDED(SHGetFolderPathA(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, outPath))) {
+	if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, wOutPath))) {
+		utf8 *outPathTemp = widechar_to_utf8(wOutPath);
+		strcpy(outPath, outPathTemp);
+		free(outPathTemp);
+
 		strcat(outPath, separator);
 		strcat(outPath, "OpenRCT2");
 		strcat(outPath, separator);
@@ -362,6 +409,8 @@ void platform_get_user_directory(char *outPath, const char *subDirectory)
 	} else {
 		outPath[0] = 0;
 	}
+
+	free(wOutPath);
 }
 
 void platform_show_messagebox(char *message)
@@ -643,7 +692,8 @@ PCHAR *CommandLineToArgvA(PCHAR CmdLine, int *_argc)
 	return argv;
 }
 
-uint16 platform_get_locale_language(){
+uint16 platform_get_locale_language()
+{
 	CHAR langCode[4];
 
 	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
@@ -689,23 +739,33 @@ uint16 platform_get_locale_language(){
 	return LANGUAGE_UNDEFINED;
 }
 
-time_t platform_file_get_modified_time(char* path){
+time_t platform_file_get_modified_time(const utf8* path)
+{
 	WIN32_FILE_ATTRIBUTE_DATA data;
-	if (!GetFileAttributesEx(path, GetFileExInfoStandard, &data))
+
+	wchar_t *wPath = utf8_to_widechar(path);
+	BOOL result = GetFileAttributesExW(wPath, GetFileExInfoStandard, &data);
+	free(wPath);
+
+	if (result) {
+		ULARGE_INTEGER ull;
+		ull.LowPart = data.ftLastWriteTime.dwLowDateTime;
+		ull.HighPart = data.ftLastWriteTime.dwHighDateTime;
+		return ull.QuadPart / 10000000ULL - 11644473600ULL;
+	} else {
 		return 0;
-	ULARGE_INTEGER ull;
-	ull.LowPart = data.ftLastWriteTime.dwLowDateTime;
-	ull.HighPart = data.ftLastWriteTime.dwHighDateTime;
-	return ull.QuadPart / 10000000ULL - 11644473600ULL;
+	}
 }
 
-uint8 platform_get_locale_currency(){
+uint8 platform_get_locale_currency()
+{
 	CHAR currCode[4];
 
 	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
 		LOCALE_SINTLSYMBOL,
 		(LPSTR)&currCode,
-		sizeof(currCode)) == 0){
+		sizeof(currCode)) == 0
+	) {
 		return CURRENCY_POUNDS;
 	}
 	if (strcmp(currCode, "GBP") == 0){
@@ -741,15 +801,18 @@ uint8 platform_get_locale_currency(){
 	return CURRENCY_POUNDS;
 }
 
-uint8 platform_get_locale_measurement_format(){
+uint8 platform_get_locale_measurement_format()
+{
 	UINT measurement_system;
 	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
 		LOCALE_IMEASURE | LOCALE_RETURN_NUMBER,
 		(LPSTR)&measurement_system,
-		sizeof(measurement_system)) == 0){
+		sizeof(measurement_system)) == 0
+	) {
 		return MEASUREMENT_FORMAT_IMPERIAL;
 	}
-	switch (measurement_system){
+
+	switch (measurement_system) {
 	case 0:
 		return MEASUREMENT_FORMAT_METRIC;
 	case 1:
@@ -758,16 +821,19 @@ uint8 platform_get_locale_measurement_format(){
 	}
 }
 
-uint8 platform_get_locale_temperature_format(){
+uint8 platform_get_locale_temperature_format()
+{
 	// There does not seem to be a function to obtain this, just check the countries
 	UINT country;
 	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
 		LOCALE_IMEASURE | LOCALE_RETURN_NUMBER,
 		(LPSTR)&country,
-		sizeof(country)) == 0){
+		sizeof(country)) == 0
+	) {
 		return TEMPERATURE_FORMAT_C;
 	}
-	switch (country){
+
+	switch (country) {
 	case CTRY_UNITED_STATES:
 	case CTRY_BELIZE:
 		return TEMPERATURE_FORMAT_F;

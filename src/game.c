@@ -890,10 +890,18 @@ int save_game()
 
 void game_autosave()
 {
-	char path[MAX_PATH];
+	utf8 path[MAX_PATH];
+	utf8 backupPath[MAX_PATH];
 
 	platform_get_user_directory(path, "save");
+	strcpy(backupPath, path);
+
 	strcat(path, "autosave.sv6");
+	strcat(backupPath, "autosave.sv6.bak");
+
+	if (platform_file_exists(path)) {
+		platform_file_copy(path, backupPath, true);
+	}
 
 	SDL_RWops* rw = platform_sdl_rwfromfile(path, "wb+");
 	if (rw != NULL) {

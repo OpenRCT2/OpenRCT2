@@ -76,5 +76,8 @@ int utf8_insert_codepoint(utf8 *dst, uint32 codepoint);
 bool utf8_is_codepoint_start(utf8 *text);
 void utf8_remove_format_codes(utf8 *text);
 int utf8_get_codepoint_length(int codepoint);
+int utf8_length(const utf8 *text);
+wchar_t *utf8_to_widechar(const utf8 *src);
+utf8 *widechar_to_utf8(const wchar_t *src);
 
 #endif

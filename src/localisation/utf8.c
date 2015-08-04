@@ -83,3 +83,52 @@ int utf8_get_codepoint_length(int codepoint)
 		return 4;
 	}
 }
+
+/**
+ * Gets the number of characters / codepoints in a UTF-8 string (not necessarily 1:1 with bytes and not including null
+ * terminator).
+ */
+int utf8_length(const utf8 *text)
+{
+	int codepoint;
+	const utf8 *ch = text;
+
+	int count = 0;
+	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
+		count++;
+	}
+	return count;
+}
+
+wchar_t *utf8_to_widechar(const utf8 *src)
+{
+	wchar_t *result = malloc((utf8_length(src) + 1) * sizeof(wchar_t));
+	wchar_t *dst = result;
+
+	const utf8 *ch = src;
+	int codepoint;
+	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
+		if ((uint32)codepoint > 0xFFFF) {
+			*dst++ = '?';
+		} else {
+			*dst++ = codepoint;
+		}
+	}
+	*dst = 0;
+
+	return result;
+}
+
+utf8 *widechar_to_utf8(const wchar_t *src)
+{
+	utf8 *result = malloc((wcslen(src) * 4) + 1);
+	utf8 *dst = result;
+
+	for (; *src != 0; src++) {
+		dst = utf8_write_codepoint(dst, *src);
+	}
+	*dst++ = 0;
+
+	int size = dst - result;
+	return realloc(result, size);
+}

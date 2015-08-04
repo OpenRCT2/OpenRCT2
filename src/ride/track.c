@@ -3171,7 +3171,7 @@ int install_track(char* source_path, char* dest_name){
 	// Set path for actual copy
 	subsitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), dest_name);
 
-	return platform_file_copy(source_path, dest_path);
+	return platform_file_copy(source_path, dest_path, false);
 }
 
 /* rct2: 0x006D13FE */
