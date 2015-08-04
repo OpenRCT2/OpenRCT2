@@ -814,6 +814,7 @@ static void footpath_connect_corners(int initialX, int initialY, rct_map_element
 typedef struct {
 	uint8 order;
 	uint8 direction;
+	uint8 ride_index;
 } rct_neighbour;
 
 typedef struct {
@@ -841,10 +842,11 @@ static void neighbour_list_init(rct_neighbour_list *neighbourList)
 	neighbourList->count = 0;
 }
 
-static void neighbour_list_push(rct_neighbour_list *neighbourList, int order, int direction)
+static void neighbour_list_push(rct_neighbour_list *neighbourList, int order, int direction, uint8 rideIndex)
 {
 	neighbourList->items[neighbourList->count].order = order;
 	neighbourList->items[neighbourList->count].direction = direction;
+	neighbourList->items[neighbourList->count].ride_index = rideIndex;
 	neighbourList->count++;
 }
 
@@ -858,6 +860,15 @@ static bool neighbour_list_pop(rct_neighbour_list *neighbourList, rct_neighbour 
 		neighbourList->items[i] = neighbourList->items[i + 1];
 	neighbourList->count--;
 	return true;
+}
+
+static void neighbour_list_remove(rct_neighbour_list *neighbourList, int index)
+{
+	int itemsRemaining = neighbourList->count - index - 1;
+	if (itemsRemaining > 0) {
+		memmove(&neighbourList->items[index], &neighbourList->items[index + 1], sizeof(rct_neighbour) * itemsRemaining);
+	}
+	neighbourList->count--;
 }
 
 static void neighbour_list_sort(rct_neighbour_list *neighbourList)
@@ -946,6 +957,20 @@ static bool footpath_disconnect_queue_from_path(int x, int y, rct_map_element *m
 	return false;
 }
 
+static bool footpath_is_queue_connected_to_path(int x, int y, rct_map_element *mapElement, int direction)
+{
+	if (!footpath_element_is_queue(mapElement)) return false;
+	if (!(mapElement->properties.path.edges & (1 << direction))) return false;
+
+	x += TileDirectionDelta[direction].x;
+	y += TileDirectionDelta[direction].y;
+	mapElement = map_get_path_element_at(x / 32, y / 32, mapElement->base_height);
+	if (mapElement == NULL) return false;
+	if (footpath_element_is_queue(mapElement)) return false;
+	if (mapElement->properties.path.edges & ((1 << direction) ^ 2)) return true;
+	return false;
+}
+
 /**
  * 
  *  rct2: 0x006A6D7E
@@ -958,7 +983,7 @@ static void loc_6A6D7E(
 	int y = initialY + TileDirectionDelta[direction].y;
 	if (((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && map_is_edge(x, y)) {
 		if (query) {
-			neighbour_list_push(neighbourList, 7, direction);
+			neighbour_list_push(neighbourList, 7, direction, 255);
 		}
 	} else {
 		rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
@@ -994,7 +1019,7 @@ static void loc_6A6D7E(
 						return;
 					}
 					if (query) {
-						neighbour_list_push(neighbourList, 1, direction);
+						neighbour_list_push(neighbourList, 1, direction, mapElement->properties.track.ride_index);
 					}
 					goto loc_6A6FD2;
 				}
@@ -1003,7 +1028,7 @@ static void loc_6A6D7E(
 				if (z == mapElement->base_height) {
 					if (entrance_has_direction(mapElement, ((direction - mapElement->type) & 3) ^ 2)) {
 						if (query) {
-							neighbour_list_push(neighbourList, 8, direction);
+							neighbour_list_push(neighbourList, 8, direction, mapElement->properties.entrance.ride_index);
 						} else {
 							if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) {
 								sub_6A76E9(mapElement->properties.entrance.ride_index);
@@ -1024,17 +1049,17 @@ static void loc_6A6D7E(
 			}
 			if (footpath_element_is_queue(mapElement)) {
 				if (RCT2_ADDRESS(0x0098D7F0, uint8)[mapElement->properties.path.edges & 0x0F] < 2) {
-					neighbour_list_push(neighbourList, 3, direction);
+					neighbour_list_push(neighbourList, 4, direction, mapElement->properties.path.ride_index);
 				} else {
 					if (map_element_get_type(initialMapElement) == MAP_ELEMENT_TYPE_PATH &&
 						footpath_element_is_queue(initialMapElement)) {
 						if (footpath_disconnect_queue_from_path(x, y, mapElement, 0)) {
-							neighbour_list_push(neighbourList, 3, direction);
+							neighbour_list_push(neighbourList, 3, direction, mapElement->properties.path.ride_index);
 						}
 					}
 				}
 			} else {
-				neighbour_list_push(neighbourList, 2, direction);
+				neighbour_list_push(neighbourList, 2, direction, 255);
 			}
 		} else {
 			footpath_disconnect_queue_from_path(x, y, mapElement, 1 + ((flags >> 6) & 1));
@@ -1110,6 +1135,8 @@ void footpath_connect_edges(int x, int y, rct_map_element *mapElement, int flags
 	rct_neighbour_list neighbourList;
 	rct_neighbour neighbour;
 
+	sub_6A759F();
+
 	neighbour_list_init(&neighbourList);
 
 	sub_6A7642(x, y, mapElement);
@@ -1119,8 +1146,18 @@ void footpath_connect_edges(int x, int y, rct_map_element *mapElement, int flags
 
 	neighbour_list_sort(&neighbourList);
 
-	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH
-			&& footpath_element_is_queue(mapElement)) {
+	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH && footpath_element_is_queue(mapElement)) {
+		int rideIndex = -1;
+		for (int i = 0; i < neighbourList.count; i++) {
+			if (neighbourList.items[i].ride_index != 255) {
+				if (rideIndex == -1) {
+					rideIndex = neighbourList.items[i].ride_index;
+				} else if (rideIndex != neighbourList.items[i].ride_index) {
+					neighbour_list_remove(&neighbourList, i);
+				}
+			}
+		}
+
 		neighbourList.count = min(neighbourList.count, 2);
 	}
 
