@@ -3638,7 +3638,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 
 		RCT2_GLOBAL(0x00F44060, void*) = &clearance_struct;
 
-		if (!gCheatsDisableClearanceChecks || flags & (1 << 6)){
+		if (!gCheatsDisableClearanceChecks) {
 			if (!map_can_construct_with_clear_at(x, y, baseZ, clearanceZ, (void*)0x006C5A5F, bl))
 				return MONEY32_UNDEFINED;
 		}

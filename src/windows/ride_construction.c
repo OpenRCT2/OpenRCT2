@@ -20,6 +20,7 @@
 
 #include "../addresses.h"
 #include "../audio/audio.h"
+#include "../cheats.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../input.h"
@@ -3449,7 +3450,11 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 			trackBlock++;
 		} while (trackBlock->index != 255);
 		z -= bx;
-		z -= 16;
+
+		// FIX not sure exactly why it starts trial and error place from a lower Z, but it causes issues with disable clearance
+		if (!gCheatsDisableClearanceChecks) {
+			z -= 16;
+		}
 	} else {
 		z = RCT2_GLOBAL(0x00F44163, uint16);
 	}
