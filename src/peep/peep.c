@@ -6656,7 +6656,8 @@ static int guest_surface_path_finding(rct_peep* peep){
 	return peep_move_one_tile(randDirection, peep);
 }
 
-rct_map_element* get_banner_on_path(rct_map_element *path_element){
+rct_map_element* get_banner_on_path(rct_map_element *path_element)
+{
 	// This is an improved version of original.
 	// That only checked for one fence in the way.
 	if (map_element_is_last_for_tile(path_element))
@@ -6677,6 +6678,25 @@ rct_map_element* get_banner_on_path(rct_map_element *path_element){
 	} while (bannerElement++);
 	
 	return NULL;
+}
+
+static int banner_clear_path_edges(rct_map_element *mapElement, int edges)
+{
+	rct_map_element *bannerElement = get_banner_on_path(mapElement);
+	if (bannerElement != NULL) {
+		do {
+			edges &= bannerElement->properties.banner.flags;
+		} while ((bannerElement = get_banner_on_path(bannerElement)) != NULL);
+	}
+	return edges;
+}
+
+/**
+ * Gets the connected edges of a path that are permitted (i.e. no 'no entry' signs)
+ */
+static int path_get_permitted_edges(rct_map_element *mapElement)
+{
+	return banner_clear_path_edges(mapElement, mapElement->properties.path.edges) & 0x0F;
 }
 
 static bool is_valid_path_z_and_direction(rct_map_element *mapElement, int currentZ, int currentDirection)
@@ -6779,14 +6799,7 @@ static uint8 loc_6949B9(
 			if (!is_valid_path_z_and_direction(mapElement, z, chosenDirection)) continue;
 			if (footpath_element_is_wide(mapElement)) return PATH_SEARCH_WIDE;
 
-			uint8 edges = mapElement->properties.path.edges;
-			rct_map_element *bannerElement = get_banner_on_path(mapElement);
-			if (bannerElement != NULL) {
-				do {
-					edges &= bannerElement->properties.banner.flags;
-				} while ((bannerElement = get_banner_on_path(bannerElement)) != NULL);
-			}
-			edges &= 0x0F;
+			uint8 edges = path_get_permitted_edges(mapElement);
 			edges &= ~(1 << (chosenDirection ^ 2));
 			z = mapElement->base_height;
 
@@ -6922,14 +6935,7 @@ static int sub_69A5F0(sint16 x, sint16 y, sint16 z, rct_peep *peep, rct_map_elem
 	//	//goto 69A89C
 	//}
 
-	//edges &= destMapElement->properties.path.edges & 0xF;
-	//rct_map_element *bannerElement = get_banner_on_path(destMapElement);
-	//if (bannerElement != NULL) {
-	//	do {
-	//		edges &= bannerElement->properties.banner.flags;
-	//	} while ((bannerElement = get_banner_on_path(bannerElement)) != NULL);
-	//}
-
+	//edges &= path_get_permitted_edges(destMapElement);
 	//if (edges == 0){
 	//	chosenDirection = 0xF;
 	//	// goto 69A89C
@@ -7203,15 +7209,7 @@ static int guest_path_finding(rct_peep* peep)
 		return 1;
 	}
 
-	uint8 edges = mapElement->properties.path.edges;
-	rct_map_element *bannerElement = get_banner_on_path(mapElement);
-	if (bannerElement != NULL) {
-		do {
-			edges &= bannerElement->properties.banner.flags;
-		} while ((bannerElement = get_banner_on_path(bannerElement)) != NULL);
-	}
-	edges &= 0x0F;
-
+	uint8 edges = path_get_permitted_edges(mapElement);
 	if (peep->var_2A == 0 && peep_heading_for_ride_or_park_exit(peep)) {
 		uint8 adjustedEdges = edges;
 		for (int chosenDirection = 0; chosenDirection < 4; chosenDirection++) {
