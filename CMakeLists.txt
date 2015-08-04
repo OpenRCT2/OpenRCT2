@@ -36,8 +36,8 @@ if (DISABLE_NETWORK)
 	add_definitions(-DDISABLE_NETWORK)
 endif (DISABLE_NETWORK)
 
-set(ORCTLIBS_INCLUDE /usr/local/cross-tools/orctlibs/include) 
-set(JANSSON_INCLUDE /usr/local/cross-tools/orctlibs/include/jansson) 
+set(ORCTLIBS_INCLUDE /usr/local/cross-tools/orctlibs/include)
+set(JANSSON_INCLUDE /usr/local/cross-tools/orctlibs/include/jansson)
 set(ORCTLIBS_LIB_DIR /usr/local/cross-tools/orctlibs/lib)
 set(ORCTLIBS_LIB jansson curl ssl crypto)
 
@@ -50,8 +50,8 @@ file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp" "lib/*.c")
 
 if (UNIX)
 	# force 32bit build for now and set necessary flags to compile code as is
-	set(CMAKE_C_FLAGS "-m32 -masm=intel -std=gnu99")
-	set(CMAKE_CXX_FLAGS "-m32 -std=gnu++11 -masm=intel")
+	set(CMAKE_C_FLAGS "-m32 -masm=intel -fvar-tracking-assignments -std=gnu99")
+	set(CMAKE_CXX_FLAGS "-m32 -std=gnu++11 -fvar-tracking-assignments -masm=intel")
 	set(LIB32 /usr/lib32)
 	set(CMAKE_SHARED_LINKER_FLAGS "-m32 -Wl,-melf_i386 -L${LIB32} -lSDL2_ttf")
 	set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_SHARED_LINKER_FLAGS})
@@ -62,11 +62,15 @@ if (UNIX)
 	INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS})
 endif (UNIX)
 
-INCLUDE_DIRECTORIES(${ORCTLIBS_INCLUDE} ${JANSSON_INCLUDE})
-LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${ORCTLIBS_LIB_DIR})
+if (WIN32)
+	# build as library for now, replace with add_executable
+	add_library(${PROJECT} SHARED ${ORCT2_SOURCES})
+else (WIN32)
+	add_executable(${PROJECT} ${ORCT2_SOURCES})
+endif (WIN32)
 
-# build as library for now, replace with add_executable
-add_library(${PROJECT} SHARED ${ORCT2_SOURCES})
+INCLUDE_DIRECTORIES(${ORCTLIBS_INCLUDE} ${JANSSON_INCLUDE})
+LINK_DIRECTORIES(${LINK_DIRECTORIES} ${LIB32} ${SDL2_LIBRARY_DIRS} ${ORCTLIBS_LIB_DIR})
 
 # install into ${CMAKE_INSTALL_PREFIX}/bin/
 #install (TARGETS ${PROJECT} DESTINATION bin)
@@ -79,4 +83,3 @@ TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCTLIBS_LIB})
 if (WIN32)
 	target_link_libraries(${PROJECT} winmm.lib -limm32 -lversion -ldsound ws2_32)
 endif (WIN32)
-

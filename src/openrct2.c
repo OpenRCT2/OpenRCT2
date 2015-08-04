@@ -135,8 +135,19 @@ static void openrct2_set_exe_path()
 	if (bytesRead == -1) {
 		log_fatal("failed to read /proc/self/exe");
 	}
-	exePath[MAX_PATH - 1] = '\0';
-	strncpy(gExePath, exePath, MAX_PATH);
+	exePath[bytesRead] = '\0';
+	log_verbose("######################################## Setting exe path to %s", exePath);
+	char *exeDelimiter = strrchr(exePath, platform_get_path_separator());
+	if (exeDelimiter == NULL)
+	{
+		log_error("should never happen here");
+		gExePath[0] = '\0';
+		return;
+	}
+	int exeDelimiterIndex = (int)(exeDelimiter - exePath);
+
+	strncpy(gExePath, exePath, exeDelimiterIndex + 1);
+	gExePath[exeDelimiterIndex] = '\0';
 #endif // _WIN32
 }
 

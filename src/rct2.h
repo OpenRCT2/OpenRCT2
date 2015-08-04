@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
- 
+
 #ifndef _RCT2_H_
 #define _RCT2_H_
 
@@ -206,7 +206,11 @@ enum {
 // rct2 @ 0x0097F67C
 static const char * const file_paths[] =
 {
-	"Data\\G1.DAT",
+#ifdef _WIN32
+	"data\\g1.dat",
+#else
+	"data/g1.dat",
+#endif // _WIN32
 	"Data\\PLUGIN.DAT",
 	"Data\\CSS1.DAT",
 	"Data\\CSS2.DAT",
