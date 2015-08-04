@@ -64,11 +64,6 @@ static void rct1_fix_paths();
 static void rct1_fix_walls();
 static void sub_69E891();
 
-static void read(void *dst, void *src, int length)
-{
-	memcpy(dst, src, length);
-}
-
 bool rct1_read_sc4(const char *path, rct1_s4 *s4)
 {
 	char *buffer, *decodedBuffer;
@@ -134,15 +129,15 @@ void rct1_import_s4(rct1_s4 *s4)
 	int i;
 	rct_banner *banner;
 
-	read((void*)RCT2_ADDRESS_CURRENT_MONTH_YEAR, &s4->month, 16);
+	memcpy((void*)RCT2_ADDRESS_CURRENT_MONTH_YEAR, &s4->month, 16);
 	memset((void*)RCT2_ADDRESS_MAP_ELEMENTS, 0, 0x30000 * sizeof(rct_map_element));
-	read((void*)RCT2_ADDRESS_MAP_ELEMENTS, s4->map_elements, sizeof(s4->map_elements));
-	read((void*)0x010E63B8, &s4->unk_counter, 4 + sizeof(s4->sprites));
+	memcpy((void*)RCT2_ADDRESS_MAP_ELEMENTS, s4->map_elements, sizeof(s4->map_elements));
+	memcpy((void*)0x010E63B8, &s4->unk_counter, 4 + sizeof(s4->sprites));
 
 	for (i = 0; i < MAX_BANNERS; i++)
 		gBanners[i].type = 255;
 
-	read((void*)0x013573BC, &s4->next_sprite_index, 12424);
+	memcpy((void*)0x013573BC, &s4->next_sprite_index, 12424);
 
 	for (i = 0; i < MAX_BANNERS; i++) {
 		banner = &gBanners[i];
@@ -150,10 +145,10 @@ void rct1_import_s4(rct1_s4 *s4)
 			banner->string_idx = 778;
 	}
 
-	read((void*)0x0135A8F4, &s4->string_table, 0x2F51C);
+	memcpy((void*)0x0135A8F4, &s4->string_table, 0x2F51C);
 	memset((void*)0x013CA672, 0, 204);
-	read((void*)0x0138B580, &s4->map_animations, 0x258F2);
-	read((void*)0x013C6A72, &s4->patrol_areas, sizeof(s4->patrol_areas));
+	memcpy((void*)0x0138B580, &s4->map_animations, 0x258F2);
+	memcpy((void*)0x013C6A72, &s4->patrol_areas, sizeof(s4->patrol_areas));
 
 	char *esi = (char*)0x13C6A72;
 	char *edi = (char*)0x13B0E72;
@@ -178,9 +173,9 @@ void rct1_import_s4(rct1_s4 *s4)
 		memset(edi, 0, 64); edi += 64;
 	} while (--edx);
 
-	read((void*)0x013CA672, &s4->unk_1F42AA, 116);
-	read((void*)0x013CA73A, &s4->unk_1F431E, 4);
-	read((void*)0x013CA73E, &s4->unk_1F4322, 0x41EA);
+	memcpy((void*)0x013CA672, &s4->unk_1F42AA, 116);
+	memcpy((void*)0x013CA73A, &s4->unk_1F431E, 4);
+	memcpy((void*)0x013CA73E, &s4->unk_1F4322, 0x41EA);
 }
 
 /**

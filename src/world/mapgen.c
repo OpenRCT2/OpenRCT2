@@ -737,12 +737,6 @@ static int fast_floor(float x)
 	return (x > 0) ? ((int)x) : (((int)x) - 1);
 }
 
-static int mod(int x, int m)
-{
-	int a = x % m;
-	return a < 0 ? a + m : a;
-}
-
 static float grad(int hash, float x, float y)
 {
 	int h = hash & 7;      // Convert low 3 bits of hash code
