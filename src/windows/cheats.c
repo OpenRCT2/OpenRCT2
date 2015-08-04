@@ -89,7 +89,6 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_OPEN_CLOSE_PARK,
 	WIDX_PARK_PARAMETERS,
 	WIDX_SANDBOX_MODE,
-	WIDX_ZERO_CLEARANCE,
 	WIDX_UNLOCK_ALL_PRICES,
 	WIDX_FORCE_PARK_RATING,
 	WIDX_PARK_RATING_SPINNER,
@@ -221,7 +220,6 @@ static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(1), 		HPL(1),			STR_CHEAT_OPEN_PARK,				STR_NONE},								// open / close park
 	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1), 				YPL(1), 		HPL(1),			STR_CHEAT_PARK_PARAMETERS,			STR_CHEAT_TIP_PARK_PARAMETERS},			// Park parameters
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0), 				YPL(2), 		HPL(2),			STR_CHEAT_SANDBOX_MODE,				STR_CHEAT_SANDBOX_MODE_TIP},			// Sandbox mode (edit land ownership in-game)
-	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(2), 		HPL(2),			STR_CHEAT_ZERO_CLEARANCE,			STR_NONE},								// Zero Clearance
 	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL, 					YPL(3),			OHPL(3),		STR_CHEAT_UNLOCK_PRICES,			STR_NONE}, 								// Unlock all prices
 	{ WWT_CHECKBOX,			1,		XPL(0),					WPL(0), 				YPL(4), 		HPL(4),			STR_FORCE_PARK_RATING,				STR_NONE},								// Force park rating
 	{ WWT_SPINNER,			1,		XPL(1),					WPL(1) - 10,			YPL(4) + 2,		HPL(4) - 3,		STR_NONE,							STR_NONE },								// park rating
@@ -269,8 +267,6 @@ static void window_cheats_money_mouseup(rct_window *w, int widgetIndex);
 static void window_cheats_guests_mouseup(rct_window *w, int widgetIndex);
 static void window_cheats_misc_mouseup(rct_window *w, int widgetIndex);
 static void window_cheats_rides_mouseup(rct_window *w, int widgetIndex);
-static void window_cheats_misc_tool_update(rct_window* w, int widgetIndex, int x, int y);
-static void window_cheats_misc_tool_down(rct_window* w, int widgetIndex, int x, int y);
 static void window_cheats_update(rct_window *w);
 static void window_cheats_invalidate(rct_window *w);
 static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -348,8 +344,8 @@ static rct_window_event_list window_cheats_misc_events = {
 	window_cheats_update,
 	NULL,
 	NULL,
-	window_cheats_misc_tool_update,
-	window_cheats_misc_tool_down,
+	NULL,
+	NULL,
 	NULL,
 	NULL,
 	NULL,
@@ -411,7 +407,7 @@ static rct_window_event_list *window_cheats_page_events[] = {
 static uint64 window_cheats_page_enabled_widgets[] = {
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_TAB_3) | (1ULL << WIDX_TAB_4) | (1ULL << WIDX_HIGH_MONEY) | (1ULL << WIDX_CLEAR_LOAN),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_TAB_3) | (1ULL << WIDX_TAB_4) | (1ULL << WIDX_GUEST_PARAMETERS_GROUP) | (1ULL << WIDX_GUEST_HAPPINESS_MAX)  | (1ULL << WIDX_GUEST_HAPPINESS_MIN) | (1ULL << WIDX_GUEST_ENERGY_MAX) | (1ULL << WIDX_GUEST_ENERGY_MIN) | (1ULL << WIDX_GUEST_HUNGER_MAX) | (1ULL << WIDX_GUEST_HUNGER_MIN) | (1ULL << WIDX_GUEST_THIRST_MAX) | (1ULL << WIDX_GUEST_THIRST_MIN) | (1ULL << WIDX_GUEST_NAUSEA_MAX) | (1ULL << WIDX_GUEST_NAUSEA_MIN) | (1ULL << WIDX_GUEST_NAUSEA_TOLERANCE_MAX) | (1ULL << WIDX_GUEST_NAUSEA_TOLERANCE_MIN) | (1ULL << WIDX_GUEST_BATHROOM_MAX) | (1ULL << WIDX_GUEST_BATHROOM_MIN) | (1ULL << WIDX_GUEST_RIDE_INTENSITY_MORE_THAN_1) | (1ULL << WIDX_GUEST_RIDE_INTENSITY_LESS_THAN_15) | (1ULL << WIDX_GIVE_ALL_GUESTS_GROUP) | (1ULL << WIDX_GIVE_GUESTS_MONEY) | (1ULL << WIDX_GIVE_GUESTS_PARK_MAPS) | (1ULL << WIDX_GIVE_GUESTS_BALLOONS) | (1ULL << WIDX_GIVE_GUESTS_UMBRELLAS) | (1ULL << WIDX_TRAM_GUESTS) | (1ULL << WIDX_REMOVE_ALL_GUESTS) | (1ULL << WIDX_EXPLODE_GUESTS),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_TAB_3) | (1ULL << WIDX_TAB_4) | (1ULL << WIDX_FREEZE_CLIMATE) | (1ULL << WIDX_OPEN_CLOSE_PARK) | (1ULL << WIDX_ZERO_CLEARANCE) | (1ULL << WIDX_WEATHER_SUN) | (1ULL << WIDX_WEATHER_THUNDER) | (1ULL << WIDX_CLEAR_GRASS) | (1ULL << WIDX_MOWED_GRASS) | (1ULL << WIDX_WATER_PLANTS) | (1ULL << WIDX_FIX_VANDALISM) | (1ULL << WIDX_REMOVE_LITTER) | (1ULL << WIDX_WIN_SCENARIO) | (1ULL << WIDX_HAVE_FUN) | (1ULL << WIDX_UNLOCK_ALL_PRICES) | (1ULL << WIDX_SANDBOX_MODE) | (1ULL << WIDX_FAST_STAFF) | (1ULL << WIDX_NORMAL_STAFF) | (1ULL << WIDX_PARK_PARAMETERS) | (1ULL << WIDX_FORCE_PARK_RATING) | (1ULL << WIDX_INCREASE_PARK_RATING) | (1ULL << WIDX_DECREASE_PARK_RATING),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_TAB_3) | (1ULL << WIDX_TAB_4) | (1ULL << WIDX_FREEZE_CLIMATE) | (1ULL << WIDX_OPEN_CLOSE_PARK) | (1ULL << WIDX_WEATHER_SUN) | (1ULL << WIDX_WEATHER_THUNDER) | (1ULL << WIDX_CLEAR_GRASS) | (1ULL << WIDX_MOWED_GRASS) | (1ULL << WIDX_WATER_PLANTS) | (1ULL << WIDX_FIX_VANDALISM) | (1ULL << WIDX_REMOVE_LITTER) | (1ULL << WIDX_WIN_SCENARIO) | (1ULL << WIDX_HAVE_FUN) | (1ULL << WIDX_UNLOCK_ALL_PRICES) | (1ULL << WIDX_SANDBOX_MODE) | (1ULL << WIDX_FAST_STAFF) | (1ULL << WIDX_NORMAL_STAFF) | (1ULL << WIDX_PARK_PARAMETERS) | (1ULL << WIDX_FORCE_PARK_RATING) | (1ULL << WIDX_INCREASE_PARK_RATING) | (1ULL << WIDX_DECREASE_PARK_RATING),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_TAB_3) | (1ULL << WIDX_TAB_4) | (1ULL << WIDX_RENEW_RIDES) | (1ULL << WIDX_MAKE_DESTRUCTIBLE) | (1ULL << WIDX_FIX_ALL) | (1ULL << WIDX_FAST_LIFT_HILL) | (1ULL << WIDX_DISABLE_BRAKES_FAILURE) | (1ULL << WIDX_DISABLE_ALL_BREAKDOWNS) | (1ULL << WIDX_BUILD_IN_PAUSE_MODE) | (1ULL << WIDX_RESET_CRASH_STATUS)
 };
 
@@ -879,11 +875,6 @@ static void window_cheats_misc_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_OPEN_CLOSE_PARK:
 		park_set_open(park_is_open() ? 0 : 1);
 		break;
-	case WIDX_ZERO_CLEARANCE:
-		if (tool_set(w, widgetIndex, 7)) {
-			return;
-		}
-		break;
 	case WIDX_WEATHER_SUN:
 		climate_force_weather(WEATHER_SUNNY);
 		break;
@@ -1160,55 +1151,4 @@ static void window_cheats_set_page(rct_window *w, int page)
 	w->widgets[WIDX_BACKGROUND].bottom = maxY - 1;
 	w->widgets[WIDX_PAGE_BACKGROUND].bottom = maxY - 1;
 	window_invalidate(w);
-}
-
-static void window_cheats_misc_tool_update(rct_window* w, int widgetIndex, int x, int y)
-{
-	if (widgetIndex != WIDX_ZERO_CLEARANCE)
-		return;
-
-	map_invalidate_selection_rect();
-
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
-
-	int map_x, map_y;
-	footpath_get_coordinates_from_pos(x, y + 16, &map_x, &map_y, NULL, NULL);
-	if (map_x != (sint16)0x8000){
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 1;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) = map_x;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) = map_x;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) = map_y;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) = map_y;
-		map_invalidate_selection_rect();
-	}
-
-	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
-}
-
-static void window_cheats_misc_tool_down(rct_window* w, int widgetIndex, int x, int y)
-{
-	if (widgetIndex != WIDX_ZERO_CLEARANCE)
-		return;
-
-	int dest_x, dest_y;
-	footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, NULL, NULL);
-
-	if (dest_x == (sint16)0x8000)return;
-
-	// Set the coordinate of destination to be exactly 
-	// in the middle of a tile.
-	dest_x += 16;
-	dest_y += 16;
-
-	// Set the tile coordinate to top left of tile
-	int tile_x = (dest_x & 0xFFE0) >> 5;
-	int tile_y = (dest_y & 0xFFE0) >> 5;
-
-	rct_map_element *mapElement = map_get_first_element_at(tile_x, tile_y);
-	do {
-		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SURFACE) {
-			mapElement->clearance_height = 0;
-		}
-	} while (!map_element_is_last_for_tile(mapElement++));
 }
