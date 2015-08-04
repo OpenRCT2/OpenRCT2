@@ -4961,15 +4961,17 @@ foundRideEntry:
 		ride->price = RCT2_GLOBAL(0x0097D4F0 + 0 + (ride->type * 8), uint8);
 		ride->price_secondary = RCT2_GLOBAL(0x0097D4F0 + 1 + (ride->type * 8), uint8);
 
-		if (rideEntry->shop_item != 255) {
-			ride->price = RCT2_ADDRESS(0x00982358, money8)[rideEntry->shop_item];
+		if (rideEntry->shop_item == 255) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY)) {
+				ride->price = 0;
+			}
+		} else {
+			ride->price = DefaultShopItemPrice[rideEntry->shop_item];
 		}
 		if (rideEntry->shop_item_secondary != 255) {
-			ride->price = RCT2_ADDRESS(0x00982358, money8)[rideEntry->shop_item_secondary];
+			ride->price_secondary = DefaultShopItemPrice[rideEntry->shop_item_secondary];
 		}
-		if (rideEntry->shop_item == 255 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY)) {
-			ride->price = 0;
-		}
+		
 		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_BUILD_THE_BEST) {
 			ride->price = 0;
 		}

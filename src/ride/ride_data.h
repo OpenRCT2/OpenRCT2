@@ -51,4 +51,6 @@ extern const uint8 RideAvailableBreakdowns[];
 extern const rct_ride_entrance_definition RideEntranceDefinitions[12];
 extern const uint8 RideLiftHillAdjustments[0x60];
 
+extern const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT];
+
 #endif
