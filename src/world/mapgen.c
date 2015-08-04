@@ -18,10 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifndef _USE_MATH_DEFINES
-  #define _USE_MATH_DEFINES
-#endif
-#include <math.h>
 #include <time.h>
 #include "../addresses.h"
 #include "../object.h"
@@ -739,12 +735,6 @@ static float generate(float x, float y)
 static int fast_floor(float x)
 {
 	return (x > 0) ? ((int)x) : (((int)x) - 1);
-}
-
-static int mod(int x, int m)
-{
-	int a = x % m;
-	return a < 0 ? a + m : a;
 }
 
 static float grad(int hash, float x, float y)

@@ -1,4 +1,3 @@
-#include <SDL_ttf.h>
 #include "../addresses.h"
 #include "../config.h"
 #include "../localisation/localisation.h"

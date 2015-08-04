@@ -822,7 +822,7 @@ int map_is_location_owned(int x, int y, int z)
 		}
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 1729;
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_LAND_NOT_OWNED_BY_PARK;
 	return 0;
 }
 
@@ -840,8 +840,20 @@ int map_is_location_in_park(int x, int y)
 			return 1;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 1729;
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_LAND_NOT_OWNED_BY_PARK;
 	return 0;
+}
+
+bool map_is_location_owned_or_has_rights(int x, int y)
+{
+	rct_map_element *mapElement;
+
+	if (x < (256 * 32) && y < (256 * 32)) {
+		mapElement = map_get_surface_element_at(x / 32, y / 32);
+		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED) return true;
+		if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) return true;
+	}
+	return false;
 }
 
 /**
@@ -1446,6 +1458,7 @@ money32 map_clear_scenery(int x0, int y0, int x1, int y1, int flags)
 {
 	int x, y, z;
 	money32 totalCost, cost;
+	bool noValidTiles;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 
@@ -1461,18 +1474,23 @@ money32 map_clear_scenery(int x0, int y0, int x1, int y1, int flags)
 	x1 = min(x1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
 	y1 = min(y1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
 
+	noValidTiles = true;
 	totalCost = 0;
 	for (y = y0; y <= y1; y += 32) {
 		for (x = x0; x <= x1; x += 32) {
-			cost = map_clear_scenery_from_tile(x / 32, y / 32, flags);
-			if (cost == MONEY32_UNDEFINED)
-				return MONEY32_UNDEFINED;
-
-			totalCost += cost;
+			if (gCheatsSandboxMode || map_is_location_owned_or_has_rights(x, y)) {
+				cost = map_clear_scenery_from_tile(x / 32, y / 32, flags);
+				if (cost != MONEY32_UNDEFINED) {
+					noValidTiles = false;
+					totalCost += cost;
+				}
+			} else {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_LAND_NOT_OWNED_BY_PARK;
+			}
 		}
 	}
 
-	return totalCost;
+	return noValidTiles ? MONEY32_UNDEFINED : totalCost;
 }
 
 /**

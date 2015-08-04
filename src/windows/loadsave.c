@@ -196,7 +196,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 			return NULL;
 		}
 
-		window_loadsave_populate_list(includeNewItem, TRUE, path, ".sv6");
+		window_loadsave_populate_list(includeNewItem, true, path, ".sv6");
 		break;
 	case LOADSAVETYPE_LANDSCAPE:
 		platform_get_user_directory(path, "landscape");
@@ -206,7 +206,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 			return NULL;
 		}
 
-		window_loadsave_populate_list(includeNewItem, TRUE, path, ".sc6");
+		window_loadsave_populate_list(includeNewItem, true, path, ".sc6");
 		break;
 	case LOADSAVETYPE_SCENARIO:
 		/*
@@ -225,7 +225,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 		if (ch != NULL)
 			*ch = 0;
 
-		window_loadsave_populate_list(includeNewItem, TRUE, path, ".sc6");
+		window_loadsave_populate_list(includeNewItem, true, path, ".sc6");
 		break;
 	case LOADSAVETYPE_TRACK:
 		/*
@@ -244,7 +244,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 		if (ch != NULL)
 			*ch = 0;
 
-		window_loadsave_populate_list(includeNewItem, TRUE, path, ".td?");
+		window_loadsave_populate_list(includeNewItem, true, path, ".td?");
 		break;
 	}
 	w->no_list_items = _listItemsCount;
@@ -376,7 +376,7 @@ static void window_loadsave_scrollmousedown(rct_window *w, int scrollIndex, int 
 			char directory[MAX_PATH];
 			strncpy(directory, _listItems[selectedItem].path, sizeof(directory));
 
-			window_loadsave_populate_list(includeNewItem, TRUE, directory, _extension);
+			window_loadsave_populate_list(includeNewItem, true, directory, _extension);
 			window_init_scroll_widgets(w);
 
 			w->no_list_items = _listItemsCount;

@@ -18,8 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <math.h>
-#include <SDL.h>
 #include "../addresses.h"
 #include "../config.h"
 #include "../cursors.h"
@@ -789,18 +787,6 @@ static void platform_load_cursors()
 	_cursors[26] = SDL_CreateCursor(hand_closed_cursor_data, hand_closed_cursor_mask, 32, 32, HAND_CLOSED_CURSOR_HOTX, HAND_CLOSED_CURSOR_HOTY);
 	platform_set_cursor(CURSOR_ARROW);
 	RCT2_GLOBAL(0x14241BC, uint32) = 0;
-}
-
-/**
- * 
- *  rct2: 0x00407D80
- */
-int platform_get_cursor_pos(int* x, int* y)
-{
-	POINT point;
-	GetCursorPos(&point);
-	*x = point.x;
-	*y = point.y;
 }
 
 void platform_refresh_video()

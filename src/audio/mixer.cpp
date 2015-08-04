@@ -18,14 +18,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <math.h>
-#include <SDL.h>
-
 extern "C" {
 	#include "../config.h"
 	#include "../platform/platform.h"
-	#include "audio.h"
 	#include "../localisation/localisation.h"
+	#include "audio.h"
 }
 #include "mixer.h"
 

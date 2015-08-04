@@ -38,6 +38,16 @@
 #include "peep.h"
 #include "staff.h"
 
+enum {
+	PATH_SEARCH_DEAD_END,
+	PATH_SEARCH_RIDE_EXIT,
+	PATH_SEARCH_RIDE_ENTRANCE,
+	PATH_SEARCH_3,
+	PATH_SEARCH_PARK_EXIT,
+	PATH_SEARCH_LIMIT_REACHED,
+	PATH_SEARCH_WIDE,
+};
+
 static void sub_68F41A(rct_peep *peep, int index);
 static void peep_update(rct_peep *peep);
 static int peep_has_empty_container(rct_peep* peep);
@@ -68,6 +78,8 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType);
 static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFlags);
 static void peep_give_real_name(rct_peep *peep);
 static int guest_surface_path_finding(rct_peep* peep);
+static void peep_read_map(rct_peep *peep);
+static bool peep_heading_for_ride_or_park_exit(rct_peep *peep);
 
 const char *gPeepEasterEggNames[] = {
 	"MICHAEL SCHUMACHER",
@@ -6724,7 +6736,7 @@ static uint8 loc_6949B9(
 	rct_map_element *mapElement;
 	int direction;
 
-	if (level > 25) return 5;
+	if (level > 25) return PATH_SEARCH_LIMIT_REACHED;
 
 	x += TileDirectionDelta[chosenDirection].x;
 	y += TileDirectionDelta[chosenDirection].y;
@@ -6739,7 +6751,7 @@ static uint8 loc_6949B9(
 			rct_ride *ride = GET_RIDE(rideIndex);
 			if (RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x20000) {
 				*outRideIndex = rideIndex;
-				return 2;
+				return PATH_SEARCH_RIDE_ENTRANCE;
 			}
 			break;
 		case MAP_ELEMENT_TYPE_ENTRANCE:
@@ -6749,23 +6761,23 @@ static uint8 loc_6949B9(
 				direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 				if (direction == chosenDirection) {
 					*outRideIndex = mapElement->properties.entrance.ride_index;
-					return 2;
+					return PATH_SEARCH_RIDE_ENTRANCE;
 				}
 				break;
 			case ENTRANCE_TYPE_RIDE_EXIT:
 				direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 				if (direction == chosenDirection) {
 					*outRideIndex = mapElement->properties.entrance.ride_index;
-					return 1;
+					return PATH_SEARCH_RIDE_EXIT;
 				}
 				break;
 			case ENTRANCE_TYPE_PARK_ENTRANCE:
-				return 4;
+				return PATH_SEARCH_PARK_EXIT;
 			}
 			break;
 		case MAP_ELEMENT_TYPE_PATH:
 			if (!is_valid_path_z_and_direction(mapElement, z, chosenDirection)) continue;
-			if (!(mapElement->type & 2)) return 6;
+			if (footpath_element_is_wide(mapElement)) return PATH_SEARCH_WIDE;
 
 			uint8 edges = mapElement->properties.path.edges;
 			rct_map_element *bannerElement = get_banner_on_path(mapElement);
@@ -6782,7 +6794,7 @@ static uint8 loc_6949B9(
 				if (!(edges & (1 << direction))) continue;
 
 				edges &= ~(1 << direction);
-				if (edges != 0) return 3;
+				if (edges != 0) return PATH_SEARCH_3;
 
 				if (footpath_element_is_sloped(mapElement)) {
 					if (footpath_element_get_slope_direction(mapElement) == direction) {
@@ -6794,7 +6806,7 @@ static uint8 loc_6949B9(
 		}
 	} while (!map_element_is_last_for_tile(mapElement++));
 
-	return 0;
+	return PATH_SEARCH_DEAD_END;
 }
 
 /**
@@ -6804,7 +6816,7 @@ static uint8 loc_6949B9(
  *   2 - ride entrance
  *   4 - park entrance / exit
  *   5 - search limit reached
- *   6 - (path->type & 2)?
+ *   6 - wide path
  *  rct2: 0x006949A4
  */
 static uint8 sub_6949A4(sint16 x, sint16 y, sint16 z, rct_map_element *inputMapElement, uint8 chosenDirection, uint8 *outRideIndex)
@@ -7174,55 +7186,40 @@ static void get_ride_queue_end(sint16 *x, sint16 *y, sint16 *z, sint16 dist){
 }
 
 /* rct2: 0x00694C35 */
-static int guest_path_finding(rct_peep* peep){		
+static int guest_path_finding(rct_peep* peep)
+{
 	sint16 x, y, z;
-	if (peep->next_var_29 & 0x18){
+
+	if (peep->next_var_29 & 0x18) {
 		return guest_surface_path_finding(peep);
 	}
 	
-
 	x = peep->next_x;
 	y = peep->next_y;
 	z = peep->next_z;
 
-	bool found = false;
-	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
-	do{
-		if (z != mapElement->base_height)
-			continue;
-
-		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
-			continue;
-
-		found = true;
-		break;
-	} while (!map_element_is_last_for_tile(mapElement++));
-
-	if (!found){
+	rct_map_element *mapElement = map_get_path_element_at(x / 32, y / 32, z);
+	if (mapElement == NULL) {
 		return 1;
 	}
 
 	uint8 edges = mapElement->properties.path.edges;
 	rct_map_element *bannerElement = get_banner_on_path(mapElement);
-	if (bannerElement != NULL){
-		do{
+	if (bannerElement != NULL) {
+		do {
 			edges &= bannerElement->properties.banner.flags;
 		} while ((bannerElement = get_banner_on_path(bannerElement)) != NULL);
 	}
-	edges &= 0xF;
+	edges &= 0x0F;
 
-	if (peep->var_2A == 0 && 
-		(peep->guest_heading_to_ride_id == 0xFF || 
-		peep->flags & PEEP_FLAGS_LEAVING_PARK)){
-
+	if (peep->var_2A == 0 && peep_heading_for_ride_or_park_exit(peep)) {
 		uint8 adjustedEdges = edges;
-		uint8 chosenDirection = 0;
-		for (; chosenDirection < 4; ++chosenDirection){
+		for (int chosenDirection = 0; chosenDirection < 4; chosenDirection++) {
 			// If there is no path in that direction try another
 			if (!(adjustedEdges & (1 << chosenDirection)))
 				continue;
 
-			if (sub_694BAE(peep->next_x, peep->next_y, peep->next_z, mapElement, chosenDirection) == 6){
+			if (sub_694BAE(peep->next_x, peep->next_y, peep->next_z, mapElement, chosenDirection) == 6) {
 				adjustedEdges &= ~(1 << chosenDirection);
 			}
 		}
@@ -7230,79 +7227,68 @@ static int guest_path_finding(rct_peep* peep){
 			edges = adjustedEdges;
 	}
 
-	if (edges == 0)
+	if (edges == 0) {
 		return guest_surface_path_finding(peep);
+	}
 
 	sint8 direction = peep->var_78 ^ (1 << 1);
-	if (!(edges & ~(1 << direction))){
+	if (!(edges & ~(1 << direction))) {
 		peep_check_if_lost(peep);
 		peep_check_cant_find_ride(peep);
 		peep_check_cant_find_exit(peep);
-	}
-	else{
+	} else {
 		edges &= ~(1 << direction);
 	}
 
 	direction = bitscanforward(edges);
 	// IF only one edge to choose from
-	if ((edges & ~(1 << direction)) == 0){
+	if ((edges & ~(1 << direction)) == 0) {
 		return peep_move_one_tile(direction, peep);
 	}
 
-	//694F19
+	// loc_694F19:
 	if (peep->var_2A != 0){
-		if (peep->state == PEEP_STATE_ENTERING_PARK){
+		switch (peep->state) {
+		case PEEP_STATE_ENTERING_PARK:
 			return guest_path_find_entering_park(peep, mapElement, edges);
-		}
-		else if (peep->state == PEEP_STATE_LEAVING_PARK){
+		case PEEP_STATE_LEAVING_PARK:
 			return guest_path_find_leaving_park(peep, mapElement, edges);
+		default:
+			return guest_path_find_aimless(peep, edges);
 		}
-		return guest_path_find_aimless(peep, edges);
 	}
 
 	
-	if (!peep_has_food(peep) && 
-		(scenario_rand()&0xFFFF) >= 2184){
-
+	if (!peep_has_food(peep) && (scenario_rand() & 0xFFFF) >= 2184) {
 		uint8 adjustedEdges = edges;
-		uint8 chosenDirection = 0;
-		for (; chosenDirection < 4; ++chosenDirection){
+		for (int chosenDirection = 0; chosenDirection < 4; chosenDirection++) {
 			// If there is no path in that direction try another
 			if (!(adjustedEdges & (1 << chosenDirection)))
 				continue;
 				
-			uint8 rideIndex;
-			uint8 al = sub_6949A4(peep->next_x, peep->next_y, peep->next_z, mapElement, chosenDirection, &rideIndex);
-			if (al == 6 || al <= 1){
+			uint8 rideIndex, pathSearchResult;
+			pathSearchResult = sub_6949A4(peep->next_x, peep->next_y, peep->next_z, mapElement, chosenDirection, &rideIndex);
+			switch (pathSearchResult) {
+			case PATH_SEARCH_DEAD_END:
+			case PATH_SEARCH_RIDE_EXIT:
+			case PATH_SEARCH_WIDE:
 				adjustedEdges &= ~(1 << chosenDirection);
+				break;
 			}
 		}
 		if (adjustedEdges != 0)
 			edges = adjustedEdges;
 	}
 
-	if (peep->item_standard_flags & PEEP_ITEM_MAP){
+	if (peep->item_standard_flags & PEEP_ITEM_MAP) {
 		// If at least 2 directions consult map
-		direction = bitscanforward(edges);
-		if (direction != -1){
-			uint8 edges2 = edges & ~(1 << direction);
-			if (bitscanforward(edges2) != -1){
-
-				uint16 probability = 1638;
-				if ((peep->flags & PEEP_FLAGS_LEAVING_PARK) ||
-					peep->guest_heading_to_ride_id == 0xFF){
-					probability = 9362;
-				}
-
-				if ((scenario_rand() & 0xFFFF) < probability){
-					if (peep->action >= PEEP_ACTION_NONE_1){
-						peep->action = PEEP_ACTION_READ_MAP;
-						peep->action_frame = 0;
-						peep->action_sprite_image_offset = 0;
-						sub_693B58(peep);
-						invalidate_sprite((rct_sprite*)peep);
-					}
-				}
+		if (bitcount(edges) >= 2) {
+			uint16 probability = 1638;
+			if (peep_heading_for_ride_or_park_exit(peep)) {
+				probability = 9362;
+			}
+			if ((scenario_rand() & 0xFFFF) < probability) {
+				peep_read_map(peep);
 			}
 		}
 	}
@@ -7349,11 +7335,13 @@ static int guest_path_finding(rct_peep* peep){
 	if (closestStationNum == 4)
 		closestStationNum = 0;
 
-	if (RCT2_GLOBAL(0x00F1AEBC, uint32) != 4){
-		if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS &&
+	if (RCT2_GLOBAL(0x00F1AEBC, uint32) != 4) {
+		if (
+			(ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) &&
 			ride->num_stations == 2 &&
 			ride->entrances[0] != 0xFFFF &&
-			ride->entrances[1] != 0xFFFF){
+			ride->entrances[1] != 0xFFFF
+		) {
 			closestStationNum = 0;
 			if (peep->no_of_rides & 1)
 				closestStationNum++;
@@ -7378,8 +7366,8 @@ static int guest_path_finding(rct_peep* peep){
 
 	get_ride_queue_end(&x, &y, &z, closestDist);
 	RCT2_GLOBAL(0x00F1AECE, sint16) = x;
-	RCT2_GLOBAL(0x00F1AECE, sint16) = y;
-	RCT2_GLOBAL(0x00F1AECE, uint8) = (uint8)z;
+	RCT2_GLOBAL(0x00F1AED0, sint16) = y;
+	RCT2_GLOBAL(0x00F1AED2, uint8) = (uint8)z;
 	RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
 
 	direction = sub_69A5F0(peep->next_x, peep->next_y, peep->next_z, peep, mapElement);
@@ -8135,7 +8123,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 {
 	rct_ride *ride;
 
-	if (peep->state == PEEP_STATE_WALKING) return;
+	if (peep->state != PEEP_STATE_WALKING) return;
 	if (peep->guest_heading_to_ride_id != 255) return;
 	if (peep->flags & PEEP_FLAGS_LEAVING_PARK) return;
 	if (peep_has_food(peep)) return;
@@ -8150,15 +8138,15 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 	RCT2_GLOBAL(0x00F1ADB0, uint32) = 0;
 	RCT2_GLOBAL(0x00F1ADB4, uint32) = 0;
 
-	// TODO Check for a toy is likely a mistake and should be a map,
+	// FIX  Originally checked for a toy, likely a mistake and should be a map,
 	//      but then again this seems to only allow the peep to go on
 	//      rides they haven't been on before.
-	if (peep->item_standard_flags & PEEP_ITEM_TOY) {
+	if (peep->item_standard_flags & PEEP_ITEM_MAP) {
 		// Consider rides that peep hasn't been on yet
 		int i;
 		FOR_ALL_RIDES(i, ride) {
 			if (!peep_has_ridden(peep, i)) {
-				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= i & 0x1F;
+				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= (1 << (i & 0x1F));
 			}
 		}
 	} else {
@@ -8173,7 +8161,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 						if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
 
 						int rideIndex = mapElement->properties.track.ride_index;
-						RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (rideIndex & 0x1F);
+						RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (1 << (rideIndex & 0x1F));
 					} while (!map_element_is_last_for_tile(mapElement++));
 				}
 			}
@@ -8186,7 +8174,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 			if (ride->excitement == (ride_rating)0xFFFF) continue;
 			if (ride->highest_drop_height <= 66 && ride->excitement < RIDE_RATING(8,00)) continue;
 
-			RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= i & 0x1F;
+			RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= (1 << (i & 0x1F));
 		}
 	}
 
@@ -8195,7 +8183,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 	uint8 *nextPotentialRide = potentialRides;
 	int numPotentialRides = 0;
 	for (int i = 0; i < MAX_RIDES; i++) {
-		if (!(RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] & (i & 0x1F)))
+		if (!(RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] & (1 << (i & 0x1F))))
 			continue;
 
 		rct_ride *ride = GET_RIDE(i);
@@ -8235,13 +8223,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 
 	// Make peep look at their map if they have one
 	if (peep->item_standard_flags & PEEP_ITEM_MAP) {
-		if (peep->action == PEEP_ACTION_NONE_1 || peep->action == PEEP_ACTION_NONE_2) {
-			peep->action = PEEP_ACTION_READ_MAP;
-			peep->action_frame = 0;
-			peep->action_sprite_image_offset = 0;
-			sub_693B58(peep);
-			invalidate_sprite((rct_sprite*)peep);
-		}
+		peep_read_map(peep);
 	}
 }
 
@@ -8274,13 +8256,13 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 	RCT2_GLOBAL(0x00F1ADB0, uint32) = 0;
 	RCT2_GLOBAL(0x00F1ADB4, uint32) = 0;
 
-	// TODO Check for a toy is likely a mistake and should be a map
-	if ((peep->item_standard_flags & PEEP_ITEM_TOY) && rideType != RIDE_TYPE_FIRST_AID) {
+	// FIX Originally checked for a toy,.likely a mistake and should be a map
+	if ((peep->item_standard_flags & PEEP_ITEM_MAP) && rideType != RIDE_TYPE_FIRST_AID) {
 		// Consider all rides in the park
 		int i;
 		FOR_ALL_RIDES(i, ride) {
 			if (ride->type == rideType) {
-				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= i & 0x1F;
+				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= (1 << (i & 0x1F));
 			}
 		}
 	} else {
@@ -8297,7 +8279,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 						int rideIndex = mapElement->properties.track.ride_index;
 						ride = GET_RIDE(rideIndex);
 						if (ride->type == rideType) {
-							RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (rideIndex & 0x1F);
+							RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (1 << (rideIndex & 0x1F));
 						}
 					} while (!map_element_is_last_for_tile(mapElement++));
 				}
@@ -8310,7 +8292,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 	uint8 *nextPotentialRide = potentialRides;
 	int numPotentialRides = 0;
 	for (int i = 0; i < MAX_RIDES; i++) {
-		if (!(RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] & (i & 0x1F)))
+		if (!(RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] & (1 << (i & 0x1F))))
 			continue;
 
 		rct_ride *ride = GET_RIDE(i);
@@ -8386,13 +8368,13 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 	RCT2_GLOBAL(0x00F1ADB0, uint32) = 0;
 	RCT2_GLOBAL(0x00F1ADB4, uint32) = 0;
 
-	// TODO Check for a toy is likely a mistake and should be a map
-	if (peep->item_standard_flags & PEEP_ITEM_TOY) {
+	// FIX Originally checked for a toy,.likely a mistake and should be a map
+	if (peep->item_standard_flags & PEEP_ITEM_MAP) {
 		// Consider all rides in the park
 		int i;
 		FOR_ALL_RIDES(i, ride) {
 			if (RCT2_ADDRESS(0x0097CF40, uint32)[ride->type * 2] & rideTypeFlags) {
-				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= i & 0x1F;
+				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= (1 << (i & 0x1F));
 			}
 		}
 	} else {
@@ -8409,7 +8391,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 						int rideIndex = mapElement->properties.track.ride_index;
 						ride = GET_RIDE(rideIndex);
 						if (RCT2_ADDRESS(0x0097CF40, uint32)[ride->type * 2] & rideTypeFlags) {
-							RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (rideIndex & 0x1F);
+							RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (1 << (rideIndex & 0x1F));
 						}
 					} while (!map_element_is_last_for_tile(mapElement++));
 				}
@@ -8422,7 +8404,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 	uint8 *nextPotentialRide = potentialRides;
 	int numPotentialRides = 0;
 	for (int i = 0; i < MAX_RIDES; i++) {
-		if (!(RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] & (i & 0x1F)))
+		if (!(RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] & (1 << (i & 0x1F))))
 			continue;
 
 		rct_ride *ride = GET_RIDE(i);
@@ -8526,4 +8508,20 @@ void peep_update_names(bool realNames)
 		} while (restart);
 		gfx_invalidate_screen();
 	}
+}
+
+static void peep_read_map(rct_peep *peep)
+{
+	if (peep->action == PEEP_ACTION_NONE_1 || peep->action == PEEP_ACTION_NONE_2) {
+		peep->action = PEEP_ACTION_READ_MAP;
+		peep->action_frame = 0;
+		peep->action_sprite_image_offset = 0;
+		sub_693B58(peep);
+		invalidate_sprite((rct_sprite*)peep);
+	}
+}
+
+static bool peep_heading_for_ride_or_park_exit(rct_peep *peep)
+{
+	return (peep->flags & PEEP_FLAGS_LEAVING_PARK) || peep->guest_heading_to_ride_id != 0xFF;
 }

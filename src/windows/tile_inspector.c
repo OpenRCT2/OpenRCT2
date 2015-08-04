@@ -313,12 +313,20 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				uint8 pathType, pathDirection;
 				pathType = element->properties.path.type >> 2;
 				pathDirection = element->properties.path.type & 3;
+				if (footpath_element_is_queue(element)) {
+					sprintf(
+						buffer,
+						"Queue for (%d)",
+						element->properties.path.ride_index
+					);
+				} else {
+					sprintf(
+						buffer,
+						"Path (%s)",
+						"" // TODO: queue? has bins? has benches? e.t.c.
+					);
+				}
 			}
-			sprintf(
-				buffer,
-				"Path (%s)",
-				"" // TODO: queue? has bins? has benches? e.t.c.
-			);
 			type_name = buffer;
 			break;
 			case MAP_ELEMENT_TYPE_TRACK:

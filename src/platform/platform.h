@@ -21,6 +21,8 @@
 #ifndef _PLATFORM_H_
 #define _PLATFORM_H_
 
+#define HAVE_MATH_H
+
 #include <SDL.h>
 
 #include "../common.h"

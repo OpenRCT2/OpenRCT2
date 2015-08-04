@@ -264,7 +264,13 @@ static void window_track_list_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_BACK:
 		window_close(w);
-		window_new_ride_open();
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+			window_close_by_number(WC_MANAGE_TRACK_DESIGN, w->number);
+			window_close_by_number(WC_TRACK_DELETE_PROMPT, w->number);
+			trackmanager_load();
+		} else {
+			window_new_ride_open();
+		}
 		break;
 	}
 }

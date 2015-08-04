@@ -1,5 +1,4 @@
 #include <lodepng/lodepng.h>
-#include <math.h>
 #include "cmdline.h"
 #include "drawing/drawing.h"
 #include "platform/platform.h"
@@ -433,7 +432,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 			printf("height: %d\n", g1->height);
 			printf("x offset: %d\n", g1->x_offset);
 			printf("y offset: %d\n", g1->y_offset);
-			printf("data offset: 0x%X\n", g1->offset);
+			printf("data offset: 0x%X\n", (uint32)g1->offset);
 
 			sprite_file_close();
 			return 1;
@@ -473,7 +472,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		}
 
 		const char *spriteFilePath = argv[1];
-		char outputPath[_MAX_PATH];
+		char outputPath[MAX_PATH];
 
 		if (!sprite_file_open(spriteFilePath)) {
 			fprintf(stderr, "Unable to open input sprite file.\n");
@@ -489,10 +488,10 @@ int cmdline_for_sprite(const char **argv, int argc)
 		int maxIndex = (int)spriteFileHeader.num_entries;
 		int numbers = (int)floor(log(maxIndex));
 		
-		strncpy(outputPath, argv[2], _MAX_PATH);
+		strncpy(outputPath, argv[2], MAX_PATH);
 		int pathLen = strlen(outputPath);
 
-		if (pathLen >= _MAX_PATH - numbers - 5){
+		if (pathLen >= MAX_PATH - numbers - 5){
 			fprintf(stderr, "Path too long.\n");
 			return -1;
 		}
@@ -500,7 +499,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		for (int x = 0; x < numbers; x++){
 			outputPath[pathLen + x] = '0';
 		}
-		strncpy(outputPath + pathLen + numbers, ".png", _MAX_PATH);
+		strncpy(outputPath + pathLen + numbers, ".png", MAX_PATH);
 
 		for (int spriteIndex = 0; spriteIndex < maxIndex; spriteIndex++){
 
@@ -648,7 +647,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		} while (file != NULL);
 
 
-		fprintf(stderr, "Finished\n", imagePath);
+		fprintf(stderr, "Finished\n");
 		return 1;
 	} else {
 		fprintf(stderr, "Unknown sprite command.");

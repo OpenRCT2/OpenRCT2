@@ -392,3 +392,17 @@ void openrct2_reset_object_tween_locations()
 		_spritelocations1[i].z = _spritelocations2[i].z = g_sprite_list[i].unknown.z;
 	}
 }
+
+#if _MSC_VER >= 1900
+/**
+ * Temporary fix for libraries not compiled with VS2015
+ */
+FILE **__iob_func()
+{
+	static FILE* streams[3];
+	streams[0] = stdin;
+	streams[1] = stdout;
+	streams[2] = stderr;
+	return streams;
+}
+#endif

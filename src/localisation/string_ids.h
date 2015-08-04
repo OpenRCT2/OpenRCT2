@@ -661,6 +661,8 @@ enum {
 	STR_CANT_OPEN_PARK = 1723,
 	STR_CANT_CLOSE_PARK = 1724,
 
+	STR_LAND_NOT_OWNED_BY_PARK = 1729,
+
 	STR_BANNER_TEXT = 1731,
 
 	STR_RIDE_CONSTRUCTION_BUILD = 1732,
@@ -1826,6 +1828,8 @@ enum {
 	STR_1_WEEK_REMAINING = 5484,
 
 	STR_LAND_TOOL_SIZE_VALUE = 5486,
+
+	STR_SHOW_RECENT_MESSAGES_TIP = 5487,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
