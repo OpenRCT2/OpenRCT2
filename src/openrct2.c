@@ -301,6 +301,11 @@ static void openrct2_loop()
 				openrct2_reset_object_tween_locations();
 			}
 
+			// Limit number of updates per loop (any long pauses or debugging can make this update for a very long time)
+			if (currentTick - uncapTick > 25 * 60) {
+				uncapTick = currentTick - 25 - 1;
+			}
+
 			while (uncapTick <= currentTick && currentTick - uncapTick > 25) {
 				// Get the original position of each sprite
 				for (uint16 i = 0; i < MAX_SPRITES; i++) {

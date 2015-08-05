@@ -299,6 +299,7 @@ static void ride_ratings_update_state_5()
 
 			x = trackBeginEnd.begin_x;
 			y = trackBeginEnd.begin_y;
+			z = trackBeginEnd.begin_z;
 			if (x == _rideRatingsProximityStartX && y == _rideRatingsProximityStartY && z == _rideRatingsProximityStartZ) {
 				_rideRatingsState = RIDE_RATINGS_STATE_CALCULATE;
 				return;
@@ -306,7 +307,7 @@ static void ride_ratings_update_state_5()
 			_rideRatingsProximityX = x;
 			_rideRatingsProximityY = y;
 			_rideRatingsProximityZ = z;
-			_rideRatingsProximityTrackType = mapElement->properties.track.type;
+			_rideRatingsProximityTrackType = trackBeginEnd.begin_element->properties.track.type;
 			return;
 		}
 	} while (!map_element_is_last_for_tile(mapElement++));
