@@ -15,3 +15,5 @@ cache:
     directories:
         - cache
     apt: true
+
+sudo: required
