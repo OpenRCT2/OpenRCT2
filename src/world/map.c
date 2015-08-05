@@ -2302,7 +2302,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 				}
 				if(*ebx & GAME_COMMAND_FLAG_APPLY && !(*ebx & 0x40)){
 					footpath_remove_litter(x, y, F64EC8);
-					if(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG19){
+					if(!gCheatsDisableClearanceChecks && (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG19)) {
 						map_remove_walls_at(x, y, F64EC8, F64EC8 + scenery_entry->small_scenery.height);
 					}
 				}
@@ -2860,7 +2860,9 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 							if(*ebx & GAME_COMMAND_FLAG_APPLY){
 								if(!(*ebx & 0x40)){
 									footpath_remove_litter(x2, y2, zLow * 8);
-									map_remove_walls_at(x2, y2, zLow * 8, zHigh * 8);
+									if (!gCheatsDisableClearanceChecks) {
+										map_remove_walls_at(x2, y2, zLow * 8, zHigh * 8);
+									}
 								}
 								rct_map_element *new_map_element = map_element_insert(x2 / 32, y2 / 32, zLow, F43887);
 								map_animation_create(0xB, x2, y2, zLow);
