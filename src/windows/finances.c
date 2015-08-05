@@ -1148,17 +1148,10 @@ static void window_finances_marketing_invalidate(rct_window *w)
 
 		campaginButton->type = 0;
 
-		// Do not allow park entry campaigns if park entry is free
-		if (
-			(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) && (
-				i == ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE ||
-				i == ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE
-			)
-		) {
-			continue;
-		}
-
 		if (gMarketingCampaignDaysLeft[i] != 0)
+			continue;
+
+		if (!marketing_is_campaign_type_applicable(i))
 			continue;
 
 		campaginButton->type = WWT_DROPDOWN_BUTTON;
@@ -1176,7 +1169,6 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 {
 	int i, x, y, weeksRemaining;
 	rct_ride *ride;
-	rct_string_id shopString;
 
 	window_draw_widgets(w, dpi);
 	window_finances_draw_tab_images(dpi, w);
@@ -1226,19 +1218,7 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 	for (i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++) {
 		rct_widget *campaginButton = &window_finances_marketing_widgets[WIDX_CAMPAIGN_1 + i];
 
-		campaginButton->type = 0;
-
-		// Do not allow park entry campaigns if park entry is free
-		if (
-			(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) && (
-				i == ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE ||
-				i == ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE
-			)
-		) {
-			continue;
-		}
-
-		if (gMarketingCampaignDaysLeft[i] != 0)
+		if (campaginButton->type == WWT_EMPTY)
 			continue;
 
 		money32 pricePerWeek = AdvertisingCampaignPricePerWeek[i];

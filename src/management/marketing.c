@@ -168,3 +168,48 @@ void game_command_start_campaign(int* eax, int* ebx, int* ecx, int* edx, int* es
 
 	*ebx = numWeeks * AdvertisingCampaignPricePerWeek[type];
 }
+
+bool marketing_is_campaign_type_applicable(int campaignType)
+{
+	int i;
+	rct_ride *ride;
+	rct_ride_type *rideEntry;
+
+	switch (campaignType) {
+	case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
+	case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY)
+			return false;
+		return true;
+
+	case ADVERTISING_CAMPAIGN_RIDE_FREE:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY))
+			return false;
+
+		// fall-through
+	case ADVERTISING_CAMPAIGN_RIDE:
+		// Check if any rides exist
+		FOR_ALL_RIDES(i, ride) {
+			if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE) {
+				return true;
+			}
+		}
+		return false;
+
+	case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
+		// Check if any food or drink stalls exist
+		FOR_ALL_RIDES(i, ride) {
+			rideEntry = GET_RIDE_ENTRY(ride->subtype);
+			if (
+				shop_item_is_food_or_drink(rideEntry->shop_item) ||
+				shop_item_is_food_or_drink(rideEntry->shop_item_secondary)
+			) {
+				return true;
+			}
+		}
+		return false;
+
+	default:
+		return true;
+	}
+}

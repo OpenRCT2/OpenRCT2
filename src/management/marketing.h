@@ -52,5 +52,6 @@ void marketing_update();
 void marketing_set_guest_campaign(rct_peep *peep, int campaign);
 void marketing_start_campaign(int type, int rideOrItem, int numWeeks);
 void game_command_start_campaign(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+bool marketing_is_campaign_type_applicable(int campaignType);
 
 #endif

@@ -6594,3 +6594,41 @@ bool ride_type_is_intamin(int rideType)
 		rideType == RIDE_TYPE_GIGA_COASTER ||
 		rideType == RIDE_TYPE_INVERTED_IMPULSE_COASTER;
 }
+
+bool shop_item_is_food_or_drink(int shopItem)
+{
+	switch (shopItem) {
+	case SHOP_ITEM_DRINK:
+	case SHOP_ITEM_BURGER:
+	case SHOP_ITEM_FRIES:
+	case SHOP_ITEM_ICE_CREAM:
+	case SHOP_ITEM_COTTON_CANDY:
+	case SHOP_ITEM_PIZZA:
+	case SHOP_ITEM_POPCORN:
+	case SHOP_ITEM_HOT_DOG:
+	case SHOP_ITEM_TENTACLE:
+	case SHOP_ITEM_CANDY_APPLE:
+	case SHOP_ITEM_DONUT:
+	case SHOP_ITEM_COFFEE:
+	case SHOP_ITEM_CHICKEN:
+	case SHOP_ITEM_LEMONADE:
+	case SHOP_ITEM_PRETZEL:
+	case SHOP_ITEM_CHOCOLATE:
+	case SHOP_ITEM_ICED_TEA:
+	case SHOP_ITEM_FUNNEL_CAKE:
+	case SHOP_ITEM_SUNGLASSES:
+	case SHOP_ITEM_BEEF_NOODLES:
+	case SHOP_ITEM_FRIED_RICE_NOODLES:
+	case SHOP_ITEM_WONTON_SOUP:
+	case SHOP_ITEM_MEATBALL_SOUP:
+	case SHOP_ITEM_FRUIT_JUICE:
+	case SHOP_ITEM_SOYBEAN_MILK:
+	case SHOP_ITEM_SU_JONGKWA:
+	case SHOP_ITEM_SUB_SANDWICH:
+	case SHOP_ITEM_COOKIE:
+	case SHOP_ITEM_ROAST_SAUSAGE:
+		return true;
+	default:
+		return false;
+	}
+}
