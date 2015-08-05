@@ -71,7 +71,7 @@ OpenRCT2 requires original files of Rollercoaster Tycoon 2 to play. It can be bo
 
 ### Windows:
 - Windows XP / Vista / 7 / 8 / 10
-- Visual Studio 2013 (Professional / [Community](http://www.visualstudio.com/en-us/products/visual-studio-community-vs.aspx) / [Express for Windows Desktop](http://www.visualstudio.com/downloads/download-visual-studio-vs#d-express-windows-desktop))
+- Visual Studio 2015 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/products/visual-studio-community-vs)
 - [Powershell 4.0](http://social.technet.microsoft.com/wiki/contents/articles/21016.how-to-install-windows-powershell-4-0.aspx).
 
 ### Mac OS X:
