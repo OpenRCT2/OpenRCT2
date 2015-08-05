@@ -22,6 +22,7 @@
 #include "../config.h"
 #include "../drawing/drawing.h"
 #include "../localisation/localisation.h"
+#include "../ride/ride_data.h"
 #include "../ride/track_data.h"
 #include "../sprites.h"
 #include "../world/map.h"
@@ -1005,14 +1006,9 @@ int sub_6629BC(int height, uint16 ax, uint32 image_id, int edi){
 	return eax & 0xFF;
 }
 
-typedef struct{	
-	uint32 image_id;
-	sint16 height;
-	sint16 scrolling_mode;
-}rct_entrance_style;
-
 /* rct2: 0x0066508C & 0x00665540 */
-void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_map_element* map_element){
+void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_map_element* map_element)
+{
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 	uint8 is_exit = map_element->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT;
 
@@ -1022,12 +1018,13 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 	}
 
 	rct_ride* ride = GET_RIDE(map_element->properties.entrance.ride_index);
+	if (ride->entrance_style == RIDE_ENTRANCE_STYLE_NONE) return;
 
-	rct_entrance_style* style = &RCT2_ADDRESS(0x00993E7C,rct_entrance_style)[ride->entrance_style];
+	const rct_ride_entrance_definition *style = &RideEntranceDefinitions[ride->entrance_style];
 
 	uint8 colour_1, colour_2;
 	uint32 transparant_image_id = 0, image_id = 0;
-	if (RCT2_ADDRESS(0x00993E1C, uint32)[ride->entrance_style * 2] & (1 << 30)){
+	if (style->flags & (1 << 30)) {
 		colour_1 = ride->track_colour_main[0] + 0x70;
 		transparant_image_id = (colour_1 << 19) | 0x40000000;
 	}
@@ -1048,10 +1045,10 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 	}
 
 	if (is_exit){
-		image_id |= style->image_id + direction + 8;
+		image_id |= style->sprite_index + direction + 8;
 	}
 	else{
-		image_id |= style->image_id + direction;
+		image_id |= style->sprite_index + direction;
 	}
 	// Format modifed to stop repeated code
 
@@ -1068,10 +1065,10 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 
 	if (transparant_image_id){
 		if (is_exit){
-			transparant_image_id |= style->image_id + direction + 24;
+			transparant_image_id |= style->sprite_index + direction + 24;
 		}
 		else{
-			transparant_image_id |= style->image_id + direction + 16;
+			transparant_image_id |= style->sprite_index + direction + 16;
 		}
 		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
@@ -1296,9 +1293,17 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 	rct_ride *ride;
 	int rideIndex, trackType, trackColourScheme, trackSequence;
 
-	if (!(RCT2_GLOBAL(0x009DEA6F, uint8) & 1) || mapElement->properties.track.ride_index == RCT2_GLOBAL(0x00F64DE8, uint8)) {
-		rideIndex = mapElement->properties.track.ride_index;
-		ride = GET_RIDE(rideIndex);
+	rideIndex = mapElement->properties.track.ride_index;
+	ride = GET_RIDE(rideIndex);
+
+	// HACK Set entrance style to plain if none to stop glitch until entrance track piece is implemented
+	bool isEntranceStyleNone = false;
+	if (ride->entrance_style == RIDE_ENTRANCE_STYLE_NONE) {
+		isEntranceStyleNone = true;
+		ride->entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
+	}
+
+	if (!(RCT2_GLOBAL(0x009DEA6F, uint8) & 1) || rideIndex == RCT2_GLOBAL(0x00F64DE8, uint8)) {
 		trackType = mapElement->properties.track.type;
 		trackSequence = mapElement->properties.track.sequence & 0x0F;
 		trackColourScheme = mapElement->properties.track.colour & 3;
@@ -1361,6 +1366,10 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 			trackSequence
 		);
 	}
+
+	if (isEntranceStyleNone) {
+		ride->entrance_style = RIDE_ENTRANCE_STYLE_NONE;
+	}
 }
 
 /* rct2: 0x00664FD4 */
@@ -1396,8 +1405,6 @@ void viewport_entrance_paint_setup(uint8 direction, int height, rct_map_element*
 
 	switch (map_element->properties.entrance.type){
 	case ENTRANCE_TYPE_RIDE_ENTRANCE:
-		viewport_ride_entrance_exit_paint_setup(direction, height, map_element);
-		break;
 	case ENTRANCE_TYPE_RIDE_EXIT:
 		viewport_ride_entrance_exit_paint_setup(direction, height, map_element);
 		break;

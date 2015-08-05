@@ -3654,7 +3654,8 @@ const uint8 window_ride_entrance_style_list[] = {
 	RIDE_ENTRANCE_STYLE_ABSTRACT,
 	RIDE_ENTRANCE_STYLE_SNOW_ICE,
 	RIDE_ENTRANCE_STYLE_PAGODA,
-	RIDE_ENTRANCE_STYLE_SPACE
+	RIDE_ENTRANCE_STYLE_SPACE,
+	RIDE_ENTRANCE_STYLE_NONE
 };
 
 static uint32 window_ride_get_colour_button_image(int colour)
@@ -3664,11 +3665,11 @@ static uint32 window_ride_get_colour_button_image(int colour)
 
 static int window_ride_has_track_colour(rct_ride *ride, int trackColour)
 {
-	uint16 unk_1 = RCT2_GLOBAL(0x00993E20 + (ride->entrance_style * 8), uint16);
+	uint16 colourUse = RideEntranceDefinitions[ride->entrance_style].colour_use_flags;
 
 	switch (trackColour) {
-	case 0: return ((unk_1 & 1) && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)) || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN);
-	case 1: return ((unk_1 & 2) && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)) || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL);
+	case 0: return ((colourUse & 1) && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)) || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN);
+	case 1: return ((colourUse & 2) && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)) || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL);
 	case 2: return ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS);
 	default: return 0;
 	}
@@ -3822,7 +3823,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 	case WIDX_ENTRANCE_STYLE_DROPDOWN:		
 		for (i = 0; i < countof(window_ride_entrance_style_list); i++) {
 			gDropdownItemsFormat[i] = 1142;
-			gDropdownItemsArgs[i] = STR_PLAIN_ENTRANCE + window_ride_entrance_style_list[i];
+			gDropdownItemsArgs[i] = RideEntranceDefinitions[window_ride_entrance_style_list[i]].string_id;
 
 			if (ride->entrance_style == window_ride_entrance_style_list[i])
 				gDropdownItemsChecked = 1 << i;
@@ -4068,7 +4069,7 @@ static void window_ride_colour_invalidate(rct_window *w)
 		window_ride_colour_widgets[WIDX_ENTRANCE_STYLE].type = WWT_DROPDOWN;
 		window_ride_colour_widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 
-		window_ride_colour_widgets[WIDX_ENTRANCE_STYLE].image = STR_PLAIN_ENTRANCE + ride->entrance_style;
+		window_ride_colour_widgets[WIDX_ENTRANCE_STYLE].image = RideEntranceDefinitions[ride->entrance_style].string_id;
 	} else {
 		window_ride_colour_widgets[WIDX_ENTRANCE_PREVIEW].type = WWT_EMPTY;
 		window_ride_colour_widgets[WIDX_ENTRANCE_STYLE].type = WWT_EMPTY;
@@ -4222,23 +4223,28 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (clippedDpi != NULL) {
 			gfx_clear(clippedDpi, 0x0C0C0C0C);
 
-			terniaryColour = 0;
-			if (RCT2_GLOBAL(0x00993E1C + (ride->entrance_style * 8), uint32) & 0x40000000)
-				terniaryColour = 0x40000000 | ((trackColour.main + 112) << 19);
+			if (ride->entrance_style != RIDE_ENTRANCE_STYLE_NONE) {
+				const rct_ride_entrance_definition *entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
 
-			spriteIndex = (trackColour.additional << 24) | (trackColour.main << 19);
-			spriteIndex |= 0xA0000000;
-			spriteIndex += RideEntranceDefinitions[ride->entrance_style].spriteIndex;
+				terniaryColour = 0;
+				if (entranceStyle->flags & 0x40000000) {
+					terniaryColour = 0x40000000 | ((trackColour.main + 112) << 19);
+				}
 
-			// Back
-			gfx_draw_sprite(clippedDpi, spriteIndex, 34, 20, terniaryColour);
+				spriteIndex = (trackColour.additional << 24) | (trackColour.main << 19);
+				spriteIndex |= 0xA0000000;
+				spriteIndex += RideEntranceDefinitions[ride->entrance_style].sprite_index;
 
-			// Front
-			gfx_draw_sprite(clippedDpi, spriteIndex + 4, 34, 20, terniaryColour);
+				// Back
+				gfx_draw_sprite(clippedDpi, spriteIndex, 34, 20, terniaryColour);
 
-			// ?
-			if (terniaryColour != 0)
-				gfx_draw_sprite(clippedDpi, ((spriteIndex + 20) & 0x7FFFF) + terniaryColour, 34, 20, terniaryColour);
+				// Front
+				gfx_draw_sprite(clippedDpi, spriteIndex + 4, 34, 20, terniaryColour);
+
+				// ?
+				if (terniaryColour != 0)
+					gfx_draw_sprite(clippedDpi, ((spriteIndex + 20) & 0x7FFFF) + terniaryColour, 34, 20, terniaryColour);
+			}
 
 			rct2_free(clippedDpi);
 		}

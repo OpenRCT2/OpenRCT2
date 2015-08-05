@@ -22,6 +22,7 @@
 #define _RIDE_DATA_H_
 
 #include "../common.h"
+#include "ride.h"
 
 typedef struct {
 	rct_string_id vehicle_name;
@@ -31,9 +32,12 @@ typedef struct {
 } rct_ride_name_convention;
 
 typedef struct {
-	uint32 spriteIndex;
+	uint32 sprite_index;
 	uint16 height;
-	uint16 var_06;
+	uint16 scrolling_mode;
+	rct_string_id string_id;
+	uint32 flags;
+	uint16 colour_use_flags;
 } rct_ride_entrance_definition;
 
 extern const bool hasRunningTrack[0x60];
@@ -48,7 +52,7 @@ extern const rct_ride_name_convention RideNameConvention[96];
 extern const uint8 RideAvailableModes[];
 extern const uint8 RideAvailableBreakdowns[];
 
-extern const rct_ride_entrance_definition RideEntranceDefinitions[12];
+extern const rct_ride_entrance_definition RideEntranceDefinitions[RIDE_ENTRANCE_STYLE_COUNT];
 extern const uint8 RideLiftHillAdjustments[0x60];
 
 extern const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT];

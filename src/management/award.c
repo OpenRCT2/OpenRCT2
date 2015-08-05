@@ -31,7 +31,7 @@
 #define NEGATIVE 0
 #define POSITIVE 1
 
-int _awardPositiveMap[] = {
+static const uint8 AwardPositiveMap[] = {
 	NEGATIVE, // PARK_AWARD_MOST_UNTIDY
 	POSITIVE, // PARK_AWARD_MOST_TIDY
 	POSITIVE, // PARK_AWARD_BEST_ROLLERCOASTERS
@@ -53,9 +53,9 @@ int _awardPositiveMap[] = {
 
 rct_award *gCurrentAwards = (rct_award*)RCT2_ADDRESS_AWARD_LIST;
 
-int award_is_positive(int type)
+bool award_is_positive(int type)
 {
-	return _awardPositiveMap[type];
+	return AwardPositiveMap[type];
 }
 
 #pragma region Award checks

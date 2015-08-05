@@ -53,7 +53,7 @@ enum {
 
 extern rct_award *gCurrentAwards;
 
-int award_is_positive(int type);
+bool award_is_positive(int type);
 void award_reset();
 void award_update_all();
 

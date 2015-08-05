@@ -1831,6 +1831,8 @@ enum {
 
 	STR_SHOW_RECENT_MESSAGES_TIP = 5487,
 
+	STR_ENTRANCE_NONE = 5488,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

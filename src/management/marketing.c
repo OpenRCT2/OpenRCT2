@@ -28,22 +28,22 @@
 #include "news_item.h"
 
 const money16 AdvertisingCampaignPricePerWeek[] = {
-	MONEY(50,00),	// PARK_ENTRY_FREE,
-	MONEY(50,00),	// RIDE_FREE,
-	MONEY(50,00),	// PARK_ENTRY_HALF_PRICE,
-	MONEY(50,00),	// FOOD_OR_DRINK_FREE,
-	MONEY(350,00),	// PARK,
-	MONEY(200,00)	// RIDE,
+	MONEY(50,00),	// PARK_ENTRY_FREE
+	MONEY(50,00),	// RIDE_FREE
+	MONEY(50,00),	// PARK_ENTRY_HALF_PRICE
+	MONEY(50,00),	// FOOD_OR_DRINK_FREE
+	MONEY(350,00),	// PARK
+	MONEY(200,00)	// RIDE
 };
 
-const int advertisingCampaignGuestGenerationProbabilities[] = { 400, 300, 200, 200, 250, 200 };
+static const int AdvertisingCampaignGuestGenerationProbabilities[] = { 400, 300, 200, 200, 250, 200 };
 
 uint8 *gMarketingCampaignDaysLeft = RCT2_ADDRESS(0x01358102, uint8);
 uint8 *gMarketingCampaignRideIndex = RCT2_ADDRESS(0x01358116, uint8);
 
 int marketing_get_campaign_guest_generation_probability(int campaign)
 {
-	int probability = advertisingCampaignGuestGenerationProbabilities[campaign];
+	int probability = AdvertisingCampaignGuestGenerationProbabilities[campaign];
 	rct_ride *ride;
 
 	// Lower probability of guest generation if price was already low
