@@ -114,7 +114,7 @@ const char *language_get_string(rct_string_id id)
 
 	if (_languageCurrent.num_strings > id)
 		openrctString = _languageCurrent.strings[id];
-	else if (_languageFallback.num_strings > id)
+	if (openrctString == NULL && _languageFallback.num_strings > id)
 		openrctString = _languageFallback.strings[id];
 
 	if (id >= STR_OPENRCT2_BEGIN_STRING_ID) {

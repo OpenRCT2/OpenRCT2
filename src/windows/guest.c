@@ -21,23 +21,24 @@
 #include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
-#include "../world/map.h"
+#include "../input.h"
 #include "../management/marketing.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
 #include "../ride/ride.h"
+#include "../ride/ride_data.h"
 #include "../scenario.h"
 #include "../localisation/localisation.h"
-#include "../world/sprite.h"
 #include "../sprites.h"
+#include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../world/footpath.h"
-#include "../input.h"
+#include "../world/map.h"
+#include "../world/sprite.h"
 #include "dropdown.h"
 #include "error.h"
-#include "../interface/themes.h"
 
 enum WINDOW_GUEST_PAGE {
 	WINDOW_GUEST_OVERVIEW,
@@ -1949,6 +1950,79 @@ void window_guest_inventory_invalidate(rct_window *w)
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_6);
 }
 
+static rct_string_id window_guest_inventory_format_item(rct_peep *peep, int item, uint8 *args)
+{
+	rct_ride *ride;
+
+	// Default arguments
+	RCT2_GLOBAL(args + 0, uint32) = ShopItemImage[item];
+	RCT2_GLOBAL(args + 4, uint16) = ShopItemStringIds[item].display;
+	RCT2_GLOBAL(args + 6, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, uint16);
+	RCT2_GLOBAL(args + 8, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+
+	// Special overrides
+	switch (item) {
+	case SHOP_ITEM_BALLOON:
+		RCT2_GLOBAL(args + 0, uint32) |= 0x20000000 | peep->balloon_colour << 19;
+		break;
+	case SHOP_ITEM_PHOTO:
+		ride = GET_RIDE(peep->photo1_ride_ref);
+		RCT2_GLOBAL(args + 6, uint16) = ride->name;
+		RCT2_GLOBAL(args + 8, uint32) = ride->name_arguments;
+		break;
+	case SHOP_ITEM_UMBRELLA:
+		RCT2_GLOBAL(args + 0, uint32) |= 0x20000000 | peep->umbrella_colour << 19;
+		break;
+	case SHOP_ITEM_VOUCHER:
+		switch (peep->voucher_type) {
+		case VOUCHER_TYPE_PARK_ENTRY_FREE:
+			RCT2_GLOBAL(args + 6, uint16) = 2418;
+			RCT2_GLOBAL(args + 8, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, uint16);
+			RCT2_GLOBAL(args + 10, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+			break;
+		case VOUCHER_TYPE_RIDE_FREE:
+			ride = GET_RIDE(peep->voucher_arguments);
+			RCT2_GLOBAL(args + 6, uint16) = 2419;
+			RCT2_GLOBAL(args + 8, uint16) = ride->name;
+			RCT2_GLOBAL(args + 10, uint32) = ride->name_arguments;
+			break;
+		case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
+			RCT2_GLOBAL(args + 6, uint16) = 2420;
+			RCT2_GLOBAL(args + 8, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, uint16);
+			RCT2_GLOBAL(args + 10, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+			break;
+		case VOUCHER_TYPE_FOOD_OR_DRINK_FREE:
+			RCT2_GLOBAL(args + 6, uint16) = 2421;
+			RCT2_GLOBAL(args + 8, uint16) = ShopItemStringIds[peep->voucher_arguments].singular;
+			break;
+		}
+		break;
+	case SHOP_ITEM_HAT:
+		RCT2_GLOBAL(args + 0, uint32) |= 0x20000000 | peep->hat_colour << 19;
+		break;
+	case SHOP_ITEM_TSHIRT:
+		RCT2_GLOBAL(args + 0, uint32) |= 0x20000000 | peep->tshirt_colour << 19;
+		break;
+	case SHOP_ITEM_PHOTO2:
+		ride = GET_RIDE(peep->photo2_ride_ref);
+		RCT2_GLOBAL(args + 6, uint16) = ride->name;
+		RCT2_GLOBAL(args + 8, uint32) = ride->name_arguments;
+		break;
+	case SHOP_ITEM_PHOTO3:
+		ride = GET_RIDE(peep->photo3_ride_ref);
+		RCT2_GLOBAL(args + 6, uint16) = ride->name;
+		RCT2_GLOBAL(args + 8, uint32) = ride->name_arguments;
+		break;
+	case SHOP_ITEM_PHOTO4:
+		ride = GET_RIDE(peep->photo4_ride_ref);
+		RCT2_GLOBAL(args + 6, uint16) = ride->name;
+		RCT2_GLOBAL(args + 8, uint32) = ride->name_arguments;
+		break;
+	}
+
+	return STR_GUEST_ITEM_FORMAT;
+}
+
 /* rct2: 0x00697F81 */
 void window_guest_inventory_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
@@ -1960,120 +2034,30 @@ void window_guest_inventory_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_guest_thoughts_tab_paint(w, dpi);
 	window_guest_inventory_tab_paint(w, dpi);
 
-	rct_peep* peep = GET_PEEP(w->number);
+	rct_peep *peep = GET_PEEP(w->number);
 
-	//cx
-	int x = w->x + window_guest_inventory_widgets[WIDX_PAGE_BACKGROUND].left + 4;
-	//dx
-	int y = w->y + window_guest_inventory_widgets[WIDX_PAGE_BACKGROUND].top + 2;
+	rct_widget *pageBackgroundWidget = &window_guest_inventory_widgets[WIDX_PAGE_BACKGROUND];
+	int x = w->x + pageBackgroundWidget->left + 4;
+	int y = w->y + pageBackgroundWidget->top + 2;
+	int itemNameWidth = pageBackgroundWidget->right - pageBackgroundWidget->left - 8;
 
-	int max_y = w->y + w->height - 22;
-	int no_items = 0;
+	int maxY = w->y + w->height - 22;
+	int numItems = 0;
 
-	gfx_draw_string_left(dpi, 1810, (void*)0, 0, x, y);
-
+	gfx_draw_string_left(dpi, STR_CARRYING, NULL, 0, x, y);
 	y += 10;
 
-	for (int i = 0; y < max_y && i < 28; ++i){
-		int item_flag = 1 << i;
-		if (!(peep->item_standard_flags & item_flag))continue;
-		no_items++;
-
-		RCT2_GLOBAL(0x13CE952, uint32) = 5061 + i;
-
-		switch (item_flag){
-		case PEEP_ITEM_TSHIRT:
-			RCT2_GLOBAL(0x13CE952, uint32) |= 0x20000000 | peep->tshirt_colour << 19;
-			break;
-		case PEEP_ITEM_HAT:
-			RCT2_GLOBAL(0x13CE952, uint32) |= 0x20000000 | peep->hat_colour << 19;
-			break;
-		case PEEP_ITEM_BALLOON:
-			RCT2_GLOBAL(0x13CE952, uint32) |= 0x20000000 | peep->balloon_colour << 19;
-			break;
-		case PEEP_ITEM_UMBRELLA:
-			RCT2_GLOBAL(0x13CE952, uint32) |= 0x20000000 | peep->umbrella_colour << 19;
-			break;
-		}
-
-		int string_format = 2072 + i;
-		if (string_format >= 2104) string_format += 84; //??? i is never 32
-
-		RCT2_GLOBAL(0x13CE956, uint16) = string_format;
-		RCT2_GLOBAL(0x13CE958, uint16) = RCT2_GLOBAL(0x13573D4, uint16);
-		RCT2_GLOBAL(0x13CE95A, uint32) = RCT2_GLOBAL(0x13573D8, uint32);
-		rct_ride* ride;
-
-		switch (item_flag){
-		case PEEP_ITEM_PHOTO:
-			ride = GET_RIDE(peep->photo1_ride_ref);
-			RCT2_GLOBAL(0x13CE958, uint16) = ride->name;
-			RCT2_GLOBAL(0x13CE95A, uint32) = ride->name_arguments;
-			break;
-		case PEEP_ITEM_VOUCHER:
-			RCT2_GLOBAL(0x13CE958, uint16) = peep->voucher_type + 2418;
-			RCT2_GLOBAL(0x13CE95A, uint16) = RCT2_GLOBAL(0x13573D4, uint16);
-			RCT2_GLOBAL(0x13CE95C, uint32) = RCT2_GLOBAL(0x13573D8, uint32);
-
-			if (peep->voucher_type == VOUCHER_TYPE_PARK_ENTRY_FREE || peep->voucher_type == VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE)break;
-
-			int voucher_id = peep->voucher_arguments + 1988;
-			if (voucher_id >= 2020) voucher_id += 102;
-
-			RCT2_GLOBAL(0x13CE95A, uint16) = voucher_id;
-
-			if (peep->voucher_type == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)break;
-			ride = GET_RIDE(peep->voucher_arguments);
-			RCT2_GLOBAL(0x13CE95A, uint16) = ride->name;
-			RCT2_GLOBAL(0x13CE95C, uint32) = ride->name_arguments;
-			break;
-		}
-
-		int width = window_guest_inventory_widgets[WIDX_PAGE_BACKGROUND].right
-			- window_guest_inventory_widgets[WIDX_PAGE_BACKGROUND].left
-			- 8;
-
-		y += gfx_draw_string_left_wrapped(dpi, (void*)0x13CE952, x, y, width, 1875, 0);
+	for (int item = 0; item < SHOP_ITEM_COUNT; item++) {
+		if (y >= maxY) break;
+		if (!peep_has_item(peep, item)) continue;
+		
+		void *args = (void*)0x013CE952;
+		rct_string_id stringId = window_guest_inventory_format_item(peep, item, (uint8*)args);
+		y += gfx_draw_string_left_wrapped(dpi, args, x, y, itemNameWidth, stringId, 0);
+		numItems++;
 	}
 
-	for (int i = 0; y < max_y && i < 22; ++i){
-		int item_flag = 1 << i;
-
-		if (!(peep->item_extra_flags & item_flag))continue;
-		no_items++;
-
-		RCT2_GLOBAL(0x13CE952, uint32) = 5089 + i;
-		RCT2_GLOBAL(0x13CE956, uint16) = 2188 + i;
-		RCT2_GLOBAL(0x13CE958, uint16) = RCT2_GLOBAL(0x13573D4, uint16);
-		RCT2_GLOBAL(0x13CE95A, uint32) = RCT2_GLOBAL(0x13573D8, uint32);
-
-		if (i < 3){
-			int ride_id = 0;
-			switch (item_flag){
-			case PEEP_ITEM_PHOTO2:
-				ride_id = peep->photo2_ride_ref;
-				break;
-			case PEEP_ITEM_PHOTO3:
-				ride_id = peep->photo3_ride_ref;
-				break;
-			case PEEP_ITEM_PHOTO4:
-				ride_id = peep->photo4_ride_ref;
-				break;
-			}
-
-			rct_ride* ride = GET_RIDE(ride_id);
-			RCT2_GLOBAL(0x13CE958, uint16) = ride->name;
-			RCT2_GLOBAL(0x13CE95A, uint32) = ride->name_arguments;
-		}
-
-		int width = window_guest_inventory_widgets[WIDX_PAGE_BACKGROUND].right
-			- window_guest_inventory_widgets[WIDX_PAGE_BACKGROUND].left
-			- 8;
-
-		y += gfx_draw_string_left_wrapped(dpi, (void*)0x13CE952, x, y, width, 1875, 0);
-	}
-
-	if (!no_items){
-		gfx_draw_string_left(dpi, 2293, (void*)0, 0, x, y);
+	if (numItems == 0) {
+		gfx_draw_string_left(dpi, STR_NOTHING, (void*)0, 0, x, y);
 	}
 }

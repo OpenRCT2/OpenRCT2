@@ -30,6 +30,7 @@
 #include "../management/marketing.h"
 #include "../management/research.h"
 #include "../ride/ride.h"
+#include "../ride/ride_data.h"
 #include "../scenario.h"
 #include "../sprites.h"
 #include "dropdown.h"
@@ -1201,10 +1202,7 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 			RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->name_arguments;
 			break;
 		case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-			shopString = gMarketingCampaignRideIndex[i] + 2016; // STR_BALLOONS+
-			if (shopString >= 2048) // STR_AN_UMBRELLA
-				shopString += 96; // STR_ON_RIDE_PHOTOS+
-			RCT2_GLOBAL(0x013CE952, uint16) = shopString;
+			RCT2_GLOBAL(0x013CE952, uint16) = ShopItemStringIds[gMarketingCampaignRideIndex[i]].plural;
 			break;
 		}
 

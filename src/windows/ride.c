@@ -5966,11 +5966,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Primary shop items sold
 	shopItem = ride_get_entry(ride)->shop_item;
 	if (shopItem != 0xFF) {
-		stringId = 2016 + shopItem;
-		if (stringId >= 2048)
-			stringId += 96;
-
-		RCT2_GLOBAL(0x013CE952 + 0, uint16) = stringId;
+		RCT2_GLOBAL(0x013CE952 + 0, uint16) = ShopItemStringIds[shopItem].plural;
 		RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->no_primary_items_sold;
 		gfx_draw_string_left(dpi, STR_ITEMS_SOLD, (void*)0x013CE952, 0, x, y);
 		y += 10;
@@ -5981,11 +5977,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8) :
 		ride_get_entry(ride)->shop_item_secondary;
 	if (shopItem != 0xFF) {
-		stringId = 2016 + shopItem;
-		if (stringId >= 2048)
-			stringId += 96;
-
-		RCT2_GLOBAL(0x013CE952 + 0, uint16) = stringId;
+		RCT2_GLOBAL(0x013CE952 + 0, uint16) = ShopItemStringIds[shopItem].plural;
 		RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->no_secondary_items_sold;
 		gfx_draw_string_left(dpi, STR_ITEMS_SOLD, (void*)0x013CE952, 0, x, y);
 		y += 10;

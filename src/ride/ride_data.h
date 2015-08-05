@@ -40,6 +40,13 @@ typedef struct {
 	uint16 colour_use_flags;
 } rct_ride_entrance_definition;
 
+typedef struct {
+	rct_string_id singular;			// Balloon
+	rct_string_id plural;			// Balloons
+	rct_string_id indefinite;		// a Balloon
+	rct_string_id display;			// "Diamond Heights" Balloon
+} rct_shop_item_string_types;
+
 extern const bool hasRunningTrack[0x60];
 extern const uint8 initialUpkeepCosts[0x60];
 extern const uint8 costPerTrackPiece[0x60];
@@ -56,5 +63,7 @@ extern const rct_ride_entrance_definition RideEntranceDefinitions[RIDE_ENTRANCE_
 extern const uint8 RideLiftHillAdjustments[0x60];
 
 extern const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT];
+extern const rct_shop_item_string_types ShopItemStringIds[SHOP_ITEM_COUNT];
+extern const uint32 ShopItemImage[SHOP_ITEM_COUNT];
 
 #endif

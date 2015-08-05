@@ -26,6 +26,7 @@
 #include "../interface/window.h"
 #include "../management/marketing.h"
 #include "../ride/ride.h"
+#include "../ride/ride_data.h"
 #include "dropdown.h"
 #include "../interface/themes.h"
 
@@ -252,12 +253,8 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
 					if (window_new_campaign_shop_items[i] == 255)
 						break;
 
-					rct_string_id itemStringId = window_new_campaign_shop_items[i] + 2016;
-					if (itemStringId >= 2048)
-						itemStringId += 96;
-
 					gDropdownItemsFormat[i] = 1142;
-					gDropdownItemsArgs[i] = itemStringId;
+					gDropdownItemsArgs[i] = ShopItemStringIds[window_new_campaign_shop_items[i]].plural;
 					numItems++;
 				}
 
@@ -316,10 +313,7 @@ static void window_new_campaign_dropdown(rct_window *w, int widgetIndex, int dro
 		return;
 
 	if (w->campaign.campaign_type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE) {
-		rct_string_id itemStringId = (uint16)gDropdownItemsArgs[dropdownIndex] - 2016;
-		if (itemStringId >= 32)
-			itemStringId -= 96;
-		w->campaign.ride_id = itemStringId;
+		w->campaign.ride_id = window_new_campaign_shop_items[dropdownIndex];
 	} else {
 		w->campaign.ride_id = window_new_campaign_rides[dropdownIndex];
 	}
@@ -358,17 +352,13 @@ static void window_new_campaign_invalidate(rct_window *w)
 		window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		window_new_campaign_widgets[WIDX_RIDE_LABEL].image = STR_MARKETING_ITEM;
 		if (w->campaign.ride_id != SELECTED_RIDE_UNDEFINED) {
-			rct_string_id itemStringId = w->campaign.ride_id + 2016;
-			if (itemStringId >= 2048)
-				itemStringId += 96;
-			window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].image = itemStringId;
+			window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].image = ShopItemStringIds[w->campaign.ride_id].plural;
 		}
 		break;
 	}
 
-	// Set current number of weeks spinner
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = w->campaign.no_weeks;
-	window_new_campaign_widgets[WIDX_WEEKS_SPINNER].image = w->campaign.no_weeks == 1 ? STR_MARKETING_1_WEEK : STR_X_WEEKS;
+	// Set current number of weeks spinner (moved to paint due to required parameter)
+	window_new_campaign_widgets[WIDX_WEEKS_SPINNER].image = STR_NONE;
 
 	// Enable / disable start button based on ride dropdown
 	w->disabled_widgets &= ~(1 << WIDX_START_BUTTON);
@@ -385,6 +375,17 @@ static void window_new_campaign_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int x, y;
 
 	window_draw_widgets(w, dpi);
+
+	// Number of weeks
+	rct_widget *spinnerWidget = &window_new_campaign_widgets[WIDX_WEEKS_SPINNER];
+	gfx_draw_string_left(
+		dpi,
+		w->campaign.no_weeks == 1 ? STR_MARKETING_1_WEEK : STR_X_WEEKS,
+		&w->campaign.no_weeks,
+		w->colours[0],
+		w->x + spinnerWidget->left + 1,
+		w->y + spinnerWidget->top
+	);
 
 	x = w->x + 14;
 	y = w->y + 60;

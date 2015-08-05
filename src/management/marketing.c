@@ -24,6 +24,7 @@
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
 #include "../ride/ride.h"
+#include "../ride/ride_data.h"
 #include "marketing.h"
 #include "news_item.h"
 
@@ -96,10 +97,7 @@ void marketing_update()
 			RCT2_GLOBAL(0x013CE952, uint16) = ride->name;
 			RCT2_GLOBAL(0x013CE954, uint32) = ride->name_arguments;
 		} else if (campaign == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE) {
-			campaignItem += 2016;
-			if (campaignItem >= 2048)
-				campaignItem += 96;
-			RCT2_GLOBAL(0x013CE952, uint16) = campaignItem;
+			RCT2_GLOBAL(0x013CE952, uint16) = ShopItemStringIds[campaignItem].plural;
 		}
 
 		news_item_add_to_queue(NEWS_ITEM_MONEY, STR_MARKETING_FINISHED_BASE + campaign, 0);
