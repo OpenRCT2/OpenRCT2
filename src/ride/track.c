@@ -3920,7 +3920,9 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			mapElement = surfaceElement;
 		}
 
-		footpath_connect_edges(x, y, mapElement, flags);
+		if (!gCheatsDisableClearanceChecks || !(flags & (1 << 6))) {
+			footpath_connect_edges(x, y, mapElement, flags);
+		}
 		map_invalidate_tile_full(x, y);
 	}
 
@@ -4152,7 +4154,9 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 
 		invalidate_test_results(rideIndex);
 		sub_6A7594();
-		footpath_remove_edges_at(x, y, mapElement);
+		if (!gCheatsDisableClearanceChecks || !(mapElement->flags & MAP_ELEMENT_FLAG_GHOST)) {
+			footpath_remove_edges_at(x, y, mapElement);
+		}
 		map_element_remove(mapElement);
 		sub_6CB945(rideIndex);
 		if (!(flags & (1 << 6))){
