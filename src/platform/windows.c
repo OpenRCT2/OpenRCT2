@@ -409,8 +409,6 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
 	} else {
 		outPath[0] = 0;
 	}
-
-	free(wOutPath);
 }
 
 void platform_show_messagebox(char *message)
