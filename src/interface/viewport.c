@@ -652,7 +652,7 @@ void paint_attached_ps(paint_struct* ps, paint_struct* attached_ps, rct_drawpixe
 		}
 
 		if (attached_ps->var_0C & 1) {
-			sub_681DE2(dpi, x, y, image_id, attached_ps->var_04);
+			gfx_draw_sprite_raw_masked(dpi, x, y, image_id, attached_ps->var_04);
 		} else {
 			gfx_draw_sprite(dpi, image_id, x, y, ps->var_04);
 		}
@@ -704,7 +704,7 @@ void sub_688485(){
 		}
 
 		if (ps->var_1A & 1)
-			sub_681DE2(dpi, x, y, image_id, ps->var_04);
+			gfx_draw_sprite_raw_masked(dpi, x, y, image_id, ps->var_04);
 		else
 			gfx_draw_sprite(dpi, image_id, x, y, ps->var_04);
 		

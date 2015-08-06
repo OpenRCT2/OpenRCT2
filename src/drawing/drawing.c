@@ -308,9 +308,6 @@ void gfx_redraw_screen_rect(short left, short top, short right, short bottom)
 	rct_drawpixelinfo *screenDPI = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
 	rct_drawpixelinfo *windowDPI = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_DPI, rct_drawpixelinfo);
 
-	// Unsure what this does
-	RCT2_CALLPROC_X(0x00683326, left, top, right - 1, bottom - 1, 0, 0, 0);
-
 	windowDPI->bits = screenDPI->bits + left + ((screenDPI->width + screenDPI->pitch) * top);
 	windowDPI->x = left;
 	windowDPI->y = top;
@@ -516,7 +513,66 @@ void gfx_draw_pickedup_peep()
 	}
 }
 
-void sub_681DE2(rct_drawpixelinfo *dpi, int x, int y, int image1, int image2)
+/**
+ * Draws the given colour image masked out by the given mask image. This can currently only cope with bitmap formatted mask and
+ * colour images. Presumebly the original game never used RLE images for masking. Colour 0 represents transparent.
+ *
+ *  rct2: 0x00681DE2
+ */
+void gfx_draw_sprite_raw_masked(rct_drawpixelinfo *dpi, int x, int y, int maskImage, int colourImage)
 {
-	RCT2_CALLPROC_X(0x00681DE2, 0, image1, x, y, 0, (int)dpi, image2);
+	int left, top, right, bottom, width, height;
+	rct_g1_element *imgMask = &g1Elements[maskImage & 0x7FFFF];
+	rct_g1_element *imgColour = &g1Elements[colourImage & 0x7FFFF];
+
+	assert(imgMask->flags & 1);
+	assert(imgColour->flags & 1);
+
+	if (dpi->zoom_level != 0) {
+		// TODO implement other zoom levels (probably not used though)
+		assert(false);
+		return;
+	}
+
+	width = min(imgMask->width, imgColour->width);
+	height = min(imgMask->height, imgColour->height);
+
+	x += imgMask->x_offset;
+	y += imgMask->y_offset;
+
+	left = max(dpi->x, x);
+	top = max(dpi->y, y);
+	right = min(dpi->x + dpi->width, x + width);
+	bottom = min(dpi->y + dpi->height, y + height);
+
+	width = right - left;
+	height = bottom - top;
+	if (width < 0 || height < 0)
+		return;
+
+	int skipX = left - x;
+	int skipY = top - y;
+
+	uint8 *maskSrc = imgMask->offset + (skipY * imgMask->width) + skipX;
+	uint8 *colourSrc = imgColour->offset + (skipY * imgColour->width) + skipX;
+	uint8 *dst = dpi->bits + (left - dpi->x) + ((top - dpi->y) * (dpi->width + dpi->pitch));
+
+	int maskWrap = imgMask->width - width;
+	int colourWrap = imgColour->width - width;
+	int dstWrap = ((dpi->width + dpi->pitch) - width);
+	for (int y = top; y < bottom; y++) {
+		for (int x = left; x < right; x++) {
+			uint8 colour = (*colourSrc) & (*maskSrc);
+			if (colour != 0) {
+				*dst = colour;
+			}
+
+			maskSrc++;
+			colourSrc++;
+			dst++;
+		}
+		maskSrc += maskWrap;
+		colourSrc += colourWrap;
+		dst += dstWrap;
+	}
 }

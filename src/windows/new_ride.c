@@ -790,7 +790,7 @@ static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 		if (w->new_ride.highlighted_ride_id == *((sint16*)listItem) || flags != 0)
 			gfx_fill_rect_inset(dpi, x, y, x + 115, y + 115, w->colours[1], 0x80 | flags);
 		
-		// Draw ride image
+		// Draw ride image with feathered border
 		rideEntry = rideEntries[listItem->entry_index];
 		int image_id = rideEntry->images_offset;
 		if (listItem->type != rideEntry->ride_type[0]) {
@@ -798,7 +798,7 @@ static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 			if (listItem->type != rideEntry->ride_type[1])
 				image_id++;
 		}
-		sub_681DE2(dpi, x + 2, y + 2, 29013, image_id);
+		gfx_draw_sprite_raw_masked(dpi, x + 2, y + 2, 29013, image_id);
 
 		// Next position
 		x += 116;

@@ -112,6 +112,7 @@ void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, ui
 void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_pointer, uint8* palette_pointer, rct_drawpixelinfo *dpi, int image_type, int source_y_start, int height, int source_x_start, int width);
 void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour);
 void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer);
+void gfx_draw_sprite_raw_masked(rct_drawpixelinfo *dpi, int x, int y, int maskImage, int colourImage);
 
 // string
 int clip_text(char *buffer, int width);
@@ -141,9 +142,6 @@ void ttf_dispose();
 // rain
 void update_rain_animation();
 void redraw_rain();
-
-// unknown
-void sub_681DE2(rct_drawpixelinfo *dpi, int x, int y, int image1, int image2);
 
 // scrolling text
 void scrolling_text_initialise_bitmaps();
