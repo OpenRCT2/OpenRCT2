@@ -135,6 +135,8 @@ static rct_window_event_list window_maze_construction_events = {
 
 #pragma endregion
 
+static void window_maze_construction_construct(int direction);
+
 /**
  *
  * rct2: 0x006CB481
@@ -222,7 +224,9 @@ static void window_maze_construction_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_MAZE_DIRECTION_NE:
 	case WIDX_MAZE_DIRECTION_SE:
 	case WIDX_MAZE_DIRECTION_SW:
-		RCT2_CALLPROC_X(0x006CD4AB, 0, 0, 0, widgetIndex, (int)w, 0, 0);
+		window_maze_construction_construct(
+			((widgetIndex - WIDX_MAZE_DIRECTION_NW) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) & 3
+		);
 		break;
 	}
 }
@@ -233,7 +237,30 @@ static void window_maze_construction_mouseup(rct_window *w, int widgetIndex)
  */
 static void window_maze_construction_resize(rct_window *w)
 {
-	RCT2_CALLPROC_X(0x006CD623, 0, 0, 0, 0, (int)w, 0, 0);
+	uint64 disabledWidgets = 0;
+	if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_PLACE) {
+		disabledWidgets |= (
+			(1ULL << WIDX_MAZE_BUILD_MODE) |
+			(1ULL << WIDX_MAZE_MOVE_MODE) |
+			(1ULL << WIDX_MAZE_FILL_MODE) |
+			(1ULL << WIDX_MAZE_DIRECTION_NW) |
+			(1ULL << WIDX_MAZE_DIRECTION_NE) |
+			(1ULL << WIDX_MAZE_DIRECTION_SW) |
+			(1ULL << WIDX_MAZE_DIRECTION_SE)
+		);
+	}
+
+	// Set and invalidate the changed widgets
+	uint64 currentDisabledWidgets = w->disabled_widgets;
+	if (currentDisabledWidgets == disabledWidgets)
+		return;
+
+	for (int i = 0; i < 64; i++) {
+		if ((disabledWidgets & (1ULL << i)) != (currentDisabledWidgets & (1ULL << i))) {
+			widget_invalidate(w, i);
+		}
+	}
+	w->disabled_widgets = disabledWidgets;
 }
 
 /**
@@ -311,7 +338,10 @@ static void window_maze_construction_toolupdate(rct_window* w, int widgetIndex, 
 	}
 }
 
-/* rct2: 0x006C825F */
+/**
+ *
+ *  rct2: 0x006C825F
+ */
 static void window_maze_construction_entrance_tooldown(int x, int y, rct_window* w){
 	sub_6C9627();
 
@@ -431,4 +461,54 @@ void window_maze_construction_update_pressed_widgets()
 
 	w->pressed_widgets = pressedWidgets;
 	window_invalidate(w);
+}
+
+/**
+ *
+ * rct2: 0x006CD4AB
+ */
+static void window_maze_construction_construct(int direction)
+{
+	int x, y, z, flags, mode;
+
+	sub_6C9627();
+
+	x = _currentTrackBeginX + (TileDirectionDelta[direction].x / 2);
+	y = _currentTrackBeginY + (TileDirectionDelta[direction].y / 2);
+	z = _currentTrackBeginZ;
+	switch (_rideConstructionState) {
+	case RIDE_CONSTRUCTION_STATE_MAZE_BUILD:
+		mode = 0;
+		flags = 1;
+		break;
+	case RIDE_CONSTRUCTION_STATE_MAZE_MOVE:
+		mode = 1;
+		flags = 1 | 8;
+		break;
+	default:
+	case RIDE_CONSTRUCTION_STATE_MAZE_FILL:
+		mode = 2;
+		flags = 1 | 8;
+		break;
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+	money32 cost = game_do_command(
+		x,
+		flags | (direction << 8),
+		y,
+		_currentRideIndex | (mode << 8),
+		GAME_COMMAND_SET_MAZE_TRACK,
+		z,
+		0
+	);
+	if (cost == MONEY32_UNDEFINED) {
+		return;
+	}
+
+	_currentTrackBeginX = x;
+	_currentTrackBeginY = y;
+	if (_rideConstructionState != 7) {
+		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, x, y, z);
+	}
 }
