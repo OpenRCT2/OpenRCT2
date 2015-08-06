@@ -1172,8 +1172,8 @@ STR_1167    :Wasserspiegel kann hier nicht erhöht werden...
 STR_1168    :Optionen
 STR_1169    :(Keine)
 STR_1170    :{STRING}
-STR_1171    :{RED}Geschlossen - -
-STR_1172    :{YELLOW}{STRINGID} - -
+STR_1171    :{RED}Geschlossen - - 
+STR_1172    :{YELLOW}{STRINGID} - - 
 STR_1173    :{SMALLFONT}{BLACK}Fußwege und Warteschlangenreihen anlegen
 STR_1174    :Banner im Weg
 STR_1175    :Kann nicht auf Fußweg mit Neigung angelegt werden
@@ -1731,8 +1731,8 @@ STR_1726    :Land nicht zum Verkauf!
 STR_1727    :Baurechte nicht zum Verkauf!
 STR_1728    :Erwerb von Baurechten hier nicht möglich...
 STR_1729    :Land gehört nicht dem Park!
-STR_1730    :{RED}Geschlossen - -
-STR_1731    :{WHITE}{STRINGID} - -
+STR_1730    :{RED}Geschlossen - - 
+STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Bauen
 STR_1733    :Modus
 STR_1734    :{WINDOW_COLOUR_2}Anzahl der Runden:
@@ -1779,7 +1779,7 @@ STR_1774    :Nur ein Kabellifthügel pro Bahn erlaubt
 STR_1775    :Aus
 STR_1776    :Ein
 STR_1777    :{WINDOW_COLOUR_2}Musik
-STR_1778    :{STRINGID} - -
+STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandakostüm
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigerkostüm
 STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elefantenkostüm
@@ -1938,7 +1938,7 @@ STR_1933    :{STRINGID} ist in {STRINGID}
 STR_1934    :{STRINGID} hat {STRINGID} verlassen
 STR_1935    :{STRINGID} hat den Park verlassen
 STR_1936    :{STRINGID} hat {STRINGID} gekauft
-STR_1937    :{SMALLFONT}{BLACK}Informationen zum Thema dieser Nachricht anzeigen
+STR_1937    :{SMALLFONT}{BLACK}Informationen zum Thema dieser{NEWLINE}Nachricht anzeigen
 STR_1938    :{SMALLFONT}{BLACK}Ansicht des Besuchers anzeigen
 STR_1939    :{SMALLFONT}{BLACK}Ansicht des Mitarbeiters anzeigen
 STR_1940    :{SMALLFONT}{BLACK}Vergnügen, Energie, Hunger, usw.{NEWLINE}dieses Besuchers anzeigen
@@ -2986,7 +2986,7 @@ STR_2977    :Mitarbeitername
 STR_2978    :Neuen Namen für diesen Mitarbeiter eingeben:
 STR_2979    :Dieser Mitarbeiter kann nicht benannt werden...
 STR_2980    :Zu viele Banner im Spiel
-STR_2981    :{RED}Kein Zutritt - -
+STR_2981    :{RED}Kein Zutritt - - 
 STR_2982    :Bannertext
 STR_2983    :Neuen Text für dieses Banner eingeben:
 STR_2984    :Neuer Text für das Banner kann nicht erstellt werden...
@@ -3310,14 +3310,14 @@ STR_3301    :{WINDOW_COLOUR_2}Zieldatum:
 STR_3302    :{WINDOW_COLOUR_2}{MONTHYEAR}
 STR_3303    :{WINDOW_COLOUR_2}Besucheranzahl:
 STR_3304    :{WINDOW_COLOUR_2}Verkehrswert:
-STR_3305    :{WINDOW_COLOUR_2}Mon. Einkünfte:
+STR_3305    :{WINDOW_COLOUR_2}Monatliche Einkünfte:
 STR_3306    :{WINDOW_COLOUR_2}Monatlicher Gewinn:
 STR_3307    :{WINDOW_COLOUR_2}Mindestlänge:
 STR_3308    :{WINDOW_COLOUR_2}Nervenkitzelwert:
 STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
-STR_3312    :{WINDOW_COLOUR_2}Attraktionen unter  Beibehaltungsauftrag:
+STR_3312    :{WINDOW_COLOUR_2}Attraktionen unter Beibehaltungsauftrag:
 STR_3313    :Szenarioname
 STR_3314    :Namen für Szenario eingeben:
 STR_3315    :Park-/Szenariodetails
@@ -3356,7 +3356,7 @@ STR_3347    :Bahn ist zu lang, enthält zu viele Elemente oder Szenerie ist zu z
 STR_3348    :Umbenennen
 STR_3349    :Löschen
 STR_3350    :Streckenentwurfsname
-STR_3351    :Neuen Namen für diesen Streckenentwurf eingeben:
+STR_3351    :Neuen Namen für Streckenentwurf eingeben:
 STR_3352    :Streckenentwurf kann nicht umbenannt werden...
 STR_3353    :Neuer Name enthält ungültige Zeichen
 STR_3354    :Entweder besteht bereits eine Datei mit diesem Namen oder die Datei ist schreibgeschützt
@@ -3818,3 +3818,7 @@ STR_5481    :Themen
 STR_5482    :{WINDOW_COLOUR_2}Letzte Inspektion vor: {BLACK}1 Minute
 STR_5483    :{BLACK}({COMMA16} Wochen verbleibend)
 STR_5484    :{BLACK}({COMMA16} Woche verbleibend)
+STR_5485    :{SMALLFONT}{STRING}
+STR_5486    :{BLACK}{COMMA16}
+STR_5487    :{SMALLFONT}{BLACK}Aktuelle Nachrichten anzeigen
+STR_5488    :Kein Eingang

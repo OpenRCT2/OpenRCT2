@@ -4,7 +4,7 @@
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :螺旋过山车
-STR_0003    :站立式过山车
+STR_0003    :站立过山车
 STR_0004    :悬挂摇摆过山车
 STR_0005    :回转过山车
 STR_0006    :儿童过山车
@@ -53,7 +53,7 @@ STR_0044    :反向自由落体过山车
 STR_0045    :升降观景台
 STR_0046    :垂直坠落过山车
 STR_0047    :自动取款机
-STR_0048    :Twist
+STR_0048    :龙卷风
 STR_0049    :鬼屋
 STR_0050    :急救室
 STR_0051    :马戏表演
@@ -69,7 +69,7 @@ STR_0060    :Unknown Ride (3A)
 STR_0061    :弗吉尼亚卷轴
 STR_0062    :Splash Boats
 STR_0063    :迷你直升机
-STR_0064    :躺卧式过山车
+STR_0064    :躺卧过山车
 STR_0065    :悬挂式单轨电车
 STR_0066    :Unknown Ride (40)
 STR_0067    :反转过山车
@@ -77,12 +77,12 @@ STR_0068    :Heartline Twister Coaster
 STR_0069    :迷你高尔夫
 STR_0070    :巨型过山车
 STR_0071    :Roto-Drop
-STR_0072    :飞一般的碟子
+STR_0072    :转转飞碟
 STR_0073    :鬼怪屋
 STR_0074    :单轨自行车
 STR_0075    :紧凑回转过山车
 STR_0076    :Water Coaster
-STR_0077    :喷射弹射过山车
+STR_0077    :喷气弹射过山车
 STR_0078    :回转发卡过山车
 STR_0079    :魔毯
 STR_0080    :迷你潜艇
@@ -518,7 +518,7 @@ STR_0508    :
 STR_0509    :
 STR_0510    :
 STR_0511    :
-STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
+STR_0512    :一种紧凑的过山车，有着螺旋状的爬升和平滑盘旋的下坠
 STR_0513    :A looping roller coaster where the riders ride in a standing position
 STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
 STR_0515    :A steel roller coaster with trains that are held beneath the track, with many complex and twisting track elements
@@ -609,181 +609,181 @@ STR_0599    :A compact roller coaster with individual cars and smooth twisting d
 STR_0600    :Powered mine trains career along a smooth and twisted track layout
 STR_0601    :
 STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
-STR_0603    :Guest {INT32}
-STR_0604    :Guest {INT32}
-STR_0605    :Guest {INT32}
-STR_0606    :Guest {INT32}
-STR_0607    :Guest {INT32}
-STR_0608    :Guest {INT32}
-STR_0609    :Guest {INT32}
-STR_0610    :Guest {INT32}
-STR_0611    :Guest {INT32}
-STR_0612    :Guest {INT32}
-STR_0613    :Guest {INT32}
-STR_0614    :Guest {INT32}
-STR_0615    :Guest {INT32}
-STR_0616    :Guest {INT32}
-STR_0617    :Guest {INT32}
-STR_0618    :Guest {INT32}
-STR_0619    :Guest {INT32}
-STR_0620    :Guest {INT32}
-STR_0621    :Guest {INT32}
-STR_0622    :Guest {INT32}
-STR_0623    :Guest {INT32}
-STR_0624    :Guest {INT32}
-STR_0625    :Guest {INT32}
-STR_0626    :Guest {INT32}
-STR_0627    :Guest {INT32}
-STR_0628    :Guest {INT32}
-STR_0629    :Guest {INT32}
-STR_0630    :Guest {INT32}
-STR_0631    :Guest {INT32}
-STR_0632    :Guest {INT32}
-STR_0633    :Guest {INT32}
-STR_0634    :Guest {INT32}
-STR_0635    :Guest {INT32}
-STR_0636    :Guest {INT32}
-STR_0637    :Guest {INT32}
-STR_0638    :Guest {INT32}
-STR_0639    :Guest {INT32}
-STR_0640    :Guest {INT32}
-STR_0641    :Guest {INT32}
-STR_0642    :Guest {INT32}
-STR_0643    :Guest {INT32}
-STR_0644    :Guest {INT32}
-STR_0645    :Guest {INT32}
-STR_0646    :Guest {INT32}
-STR_0647    :Guest {INT32}
-STR_0648    :Guest {INT32}
-STR_0649    :Guest {INT32}
-STR_0650    :Guest {INT32}
-STR_0651    :Guest {INT32}
-STR_0652    :Guest {INT32}
-STR_0653    :Guest {INT32}
-STR_0654    :Guest {INT32}
-STR_0655    :Guest {INT32}
-STR_0656    :Guest {INT32}
-STR_0657    :Guest {INT32}
-STR_0658    :Guest {INT32}
-STR_0659    :Guest {INT32}
-STR_0660    :Guest {INT32}
-STR_0661    :Guest {INT32}
-STR_0662    :Guest {INT32}
-STR_0663    :Guest {INT32}
-STR_0664    :Guest {INT32}
-STR_0665    :Guest {INT32}
-STR_0666    :Guest {INT32}
-STR_0667    :Guest {INT32}
-STR_0668    :Guest {INT32}
-STR_0669    :Guest {INT32}
-STR_0670    :Guest {INT32}
-STR_0671    :Guest {INT32}
-STR_0672    :Guest {INT32}
-STR_0673    :Guest {INT32}
-STR_0674    :Guest {INT32}
-STR_0675    :Guest {INT32}
-STR_0676    :Guest {INT32}
-STR_0677    :Guest {INT32}
-STR_0678    :Guest {INT32}
-STR_0679    :Guest {INT32}
-STR_0680    :Guest {INT32}
-STR_0681    :Guest {INT32}
-STR_0682    :Guest {INT32}
-STR_0683    :Guest {INT32}
-STR_0684    :Guest {INT32}
-STR_0685    :Guest {INT32}
-STR_0686    :Guest {INT32}
-STR_0687    :Guest {INT32}
-STR_0688    :Guest {INT32}
-STR_0689    :Guest {INT32}
-STR_0690    :Guest {INT32}
-STR_0691    :Guest {INT32}
-STR_0692    :Guest {INT32}
-STR_0693    :Guest {INT32}
-STR_0694    :Guest {INT32}
-STR_0695    :Guest {INT32}
-STR_0696    :Guest {INT32}
-STR_0697    :Guest {INT32}
-STR_0698    :Guest {INT32}
-STR_0699    :Guest {INT32}
-STR_0700    :Guest {INT32}
-STR_0701    :Guest {INT32}
-STR_0702    :Guest {INT32}
-STR_0703    :Guest {INT32}
-STR_0704    :Guest {INT32}
-STR_0705    :Guest {INT32}
-STR_0706    :Guest {INT32}
-STR_0707    :Guest {INT32}
-STR_0708    :Guest {INT32}
-STR_0709    :Guest {INT32}
-STR_0710    :Guest {INT32}
-STR_0711    :Guest {INT32}
-STR_0712    :Guest {INT32}
-STR_0713    :Guest {INT32}
-STR_0714    :Guest {INT32}
-STR_0715    :Guest {INT32}
-STR_0716    :Guest {INT32}
-STR_0717    :Guest {INT32}
-STR_0718    :Guest {INT32}
-STR_0719    :Guest {INT32}
-STR_0720    :Guest {INT32}
-STR_0721    :Guest {INT32}
-STR_0722    :Guest {INT32}
-STR_0723    :Guest {INT32}
-STR_0724    :Guest {INT32}
-STR_0725    :Guest {INT32}
-STR_0726    :Guest {INT32}
-STR_0727    :Guest {INT32}
-STR_0728    :Guest {INT32}
-STR_0729    :Guest {INT32}
-STR_0730    :Guest {INT32}
-STR_0731    :Guest {INT32}
-STR_0732    :Guest {INT32}
-STR_0733    :Guest {INT32}
-STR_0734    :Guest {INT32}
-STR_0735    :Guest {INT32}
-STR_0736    :Guest {INT32}
-STR_0737    :Guest {INT32}
-STR_0738    :Guest {INT32}
-STR_0739    :Guest {INT32}
-STR_0740    :Guest {INT32}
-STR_0741    :Guest {INT32}
-STR_0742    :Guest {INT32}
-STR_0743    :Guest {INT32}
-STR_0744    :Guest {INT32}
-STR_0745    :Guest {INT32}
-STR_0746    :Guest {INT32}
-STR_0747    :Guest {INT32}
-STR_0748    :Guest {INT32}
-STR_0749    :Guest {INT32}
-STR_0750    :Guest {INT32}
-STR_0751    :Guest {INT32}
-STR_0752    :Guest {INT32}
-STR_0753    :Guest {INT32}
-STR_0754    :Guest {INT32}
-STR_0755    :Guest {INT32}
-STR_0756    :Guest {INT32}
-STR_0757    :Guest {INT32}
-STR_0758    :Guest {INT32}
-STR_0759    :Guest {INT32}
-STR_0760    :Guest {INT32}
-STR_0761    :Guest {INT32}
-STR_0762    :Guest {INT32}
-STR_0763    :Guest {INT32}
-STR_0764    :Guest {INT32}
-STR_0765    :Guest {INT32}
-STR_0766    :Guest {INT32}
-STR_0767    :Guest {INT32}
-STR_0768    :Handyman {INT32}
-STR_0769    :Mechanic {INT32}
-STR_0770    :Security Guard {INT32}
-STR_0771    :Entertainer {INT32}
-STR_0772    :Unnamed park{POP16}{POP16}
-STR_0773    :Unnamed park{POP16}{POP16}
-STR_0774    :Unnamed park{POP16}{POP16}
-STR_0775    :Unnamed park{POP16}{POP16}
-STR_0776    :Unnamed park{POP16}{POP16}
-STR_0777    :Unnamed park{POP16}{POP16}
+STR_0603    :游客 {INT32}
+STR_0604    :游客 {INT32}
+STR_0605    :游客 {INT32}
+STR_0606    :游客 {INT32}
+STR_0607    :游客 {INT32}
+STR_0608    :游客 {INT32}
+STR_0609    :游客 {INT32}
+STR_0610    :游客 {INT32}
+STR_0611    :游客 {INT32}
+STR_0612    :游客 {INT32}
+STR_0613    :游客 {INT32}
+STR_0614    :游客 {INT32}
+STR_0615    :游客 {INT32}
+STR_0616    :游客 {INT32}
+STR_0617    :游客 {INT32}
+STR_0618    :游客 {INT32}
+STR_0619    :游客 {INT32}
+STR_0620    :游客 {INT32}
+STR_0621    :游客 {INT32}
+STR_0622    :游客 {INT32}
+STR_0623    :游客 {INT32}
+STR_0624    :游客 {INT32}
+STR_0625    :游客 {INT32}
+STR_0626    :游客 {INT32}
+STR_0627    :游客 {INT32}
+STR_0628    :游客 {INT32}
+STR_0629    :游客 {INT32}
+STR_0630    :游客 {INT32}
+STR_0631    :游客 {INT32}
+STR_0632    :游客 {INT32}
+STR_0633    :游客 {INT32}
+STR_0634    :游客 {INT32}
+STR_0635    :游客 {INT32}
+STR_0636    :游客 {INT32}
+STR_0637    :游客 {INT32}
+STR_0638    :游客 {INT32}
+STR_0639    :游客 {INT32}
+STR_0640    :游客 {INT32}
+STR_0641    :游客 {INT32}
+STR_0642    :游客 {INT32}
+STR_0643    :游客 {INT32}
+STR_0644    :游客 {INT32}
+STR_0645    :游客 {INT32}
+STR_0646    :游客 {INT32}
+STR_0647    :游客 {INT32}
+STR_0648    :游客 {INT32}
+STR_0649    :游客 {INT32}
+STR_0650    :游客 {INT32}
+STR_0651    :游客 {INT32}
+STR_0652    :游客 {INT32}
+STR_0653    :游客 {INT32}
+STR_0654    :游客 {INT32}
+STR_0655    :游客 {INT32}
+STR_0656    :游客 {INT32}
+STR_0657    :游客 {INT32}
+STR_0658    :游客 {INT32}
+STR_0659    :游客 {INT32}
+STR_0660    :游客 {INT32}
+STR_0661    :游客 {INT32}
+STR_0662    :游客 {INT32}
+STR_0663    :游客 {INT32}
+STR_0664    :游客 {INT32}
+STR_0665    :游客 {INT32}
+STR_0666    :游客 {INT32}
+STR_0667    :游客 {INT32}
+STR_0668    :游客 {INT32}
+STR_0669    :游客 {INT32}
+STR_0670    :游客 {INT32}
+STR_0671    :游客 {INT32}
+STR_0672    :游客 {INT32}
+STR_0673    :游客 {INT32}
+STR_0674    :游客 {INT32}
+STR_0675    :游客 {INT32}
+STR_0676    :游客 {INT32}
+STR_0677    :游客 {INT32}
+STR_0678    :游客 {INT32}
+STR_0679    :游客 {INT32}
+STR_0680    :游客 {INT32}
+STR_0681    :游客 {INT32}
+STR_0682    :游客 {INT32}
+STR_0683    :游客 {INT32}
+STR_0684    :游客 {INT32}
+STR_0685    :游客 {INT32}
+STR_0686    :游客 {INT32}
+STR_0687    :游客 {INT32}
+STR_0688    :游客 {INT32}
+STR_0689    :游客 {INT32}
+STR_0690    :游客 {INT32}
+STR_0691    :游客 {INT32}
+STR_0692    :游客 {INT32}
+STR_0693    :游客 {INT32}
+STR_0694    :游客 {INT32}
+STR_0695    :游客 {INT32}
+STR_0696    :游客 {INT32}
+STR_0697    :游客 {INT32}
+STR_0698    :游客 {INT32}
+STR_0699    :游客 {INT32}
+STR_0700    :游客 {INT32}
+STR_0701    :游客 {INT32}
+STR_0702    :游客 {INT32}
+STR_0703    :游客 {INT32}
+STR_0704    :游客 {INT32}
+STR_0705    :游客 {INT32}
+STR_0706    :游客 {INT32}
+STR_0707    :游客 {INT32}
+STR_0708    :游客 {INT32}
+STR_0709    :游客 {INT32}
+STR_0710    :游客 {INT32}
+STR_0711    :游客 {INT32}
+STR_0712    :游客 {INT32}
+STR_0713    :游客 {INT32}
+STR_0714    :游客 {INT32}
+STR_0715    :游客 {INT32}
+STR_0716    :游客 {INT32}
+STR_0717    :游客 {INT32}
+STR_0718    :游客 {INT32}
+STR_0719    :游客 {INT32}
+STR_0720    :游客 {INT32}
+STR_0721    :游客 {INT32}
+STR_0722    :游客 {INT32}
+STR_0723    :游客 {INT32}
+STR_0724    :游客 {INT32}
+STR_0725    :游客 {INT32}
+STR_0726    :游客 {INT32}
+STR_0727    :游客 {INT32}
+STR_0728    :游客 {INT32}
+STR_0729    :游客 {INT32}
+STR_0730    :游客 {INT32}
+STR_0731    :游客 {INT32}
+STR_0732    :游客 {INT32}
+STR_0733    :游客 {INT32}
+STR_0734    :游客 {INT32}
+STR_0735    :游客 {INT32}
+STR_0736    :游客 {INT32}
+STR_0737    :游客 {INT32}
+STR_0738    :游客 {INT32}
+STR_0739    :游客 {INT32}
+STR_0740    :游客 {INT32}
+STR_0741    :游客 {INT32}
+STR_0742    :游客 {INT32}
+STR_0743    :游客 {INT32}
+STR_0744    :游客 {INT32}
+STR_0745    :游客 {INT32}
+STR_0746    :游客 {INT32}
+STR_0747    :游客 {INT32}
+STR_0748    :游客 {INT32}
+STR_0749    :游客 {INT32}
+STR_0750    :游客 {INT32}
+STR_0751    :游客 {INT32}
+STR_0752    :游客 {INT32}
+STR_0753    :游客 {INT32}
+STR_0754    :游客 {INT32}
+STR_0755    :游客 {INT32}
+STR_0756    :游客 {INT32}
+STR_0757    :游客 {INT32}
+STR_0758    :游客 {INT32}
+STR_0759    :游客 {INT32}
+STR_0760    :游客 {INT32}
+STR_0761    :游客 {INT32}
+STR_0762    :游客 {INT32}
+STR_0763    :游客 {INT32}
+STR_0764    :游客 {INT32}
+STR_0765    :游客 {INT32}
+STR_0766    :游客 {INT32}
+STR_0767    :游客 {INT32}
+STR_0768    :勤杂工 {INT32}
+STR_0769    :维修员 {INT32}
+STR_0770    :警卫 {INT32}
+STR_0771    :表演人员 {INT32}
+STR_0772    :未命名游乐园{POP16}{POP16}
+STR_0773    :未命名游乐园{POP16}{POP16}
+STR_0774    :未命名游乐园{POP16}{POP16}
+STR_0775    :未命名游乐园{POP16}{POP16}
+STR_0776    :未命名游乐园{POP16}{POP16}
+STR_0777    :未命名游乐园{POP16}{POP16}
 STR_0778    :Sign
 STR_0779    :1st
 STR_0780    :2nd

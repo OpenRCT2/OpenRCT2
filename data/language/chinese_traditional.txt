@@ -43,7 +43,7 @@ STR_0038    :廁所
 STR_0039    :摩天輪
 STR_0040    :動感模擬器
 STR_0041    :3D戲院
-STR_0042    :Top Spin
+STR_0042    :上旋搖擺
 STR_0043    :太空飛輪
 STR_0044    :向後自由落體式雲霄飛車
 STR_0045    :升降機
@@ -60,19 +60,19 @@ STR_0055    :木製軌道阻力式雲霄飛車
 STR_0056    :飛鼠式雲霄飛車
 STR_0057    :多維度雲霄飛車
 STR_0058    :Unknown Ride (38)
-STR_0059    :Flying Roller Coaster
+STR_0059    :飛行式雲霄飛車
 STR_0060    :Unknown Ride (3A)
-STR_0061    :Virginia Reel
+STR_0061    :木製旋轉杯式雲霄飛車
 STR_0062    :濺水船
 STR_0063    :迷你直升機
 STR_0064    :躺身式雲霄飛車
 STR_0065    :懸吊式單軌電車
 STR_0066    :Unknown Ride (40)
-STR_0067    :Reverser Roller Coaster
-STR_0068    :Heartline Twister Coaster
+STR_0067    :木製倒轉車式雲霄飛車
+STR_0068    :管道旋轉式雲霄飛車
 STR_0069    :迷你高爾夫
-STR_0070    :Giga Coaster
-STR_0071    :Roto-Drop
+STR_0070    :巨型雲霄飛車
+STR_0071    :旋轉落體
 STR_0072    :碰碰飛碟
 STR_0073    :古怪屋
 STR_0074    :單軌單車
@@ -89,7 +89,7 @@ STR_0084    :Unknown Ride (52)
 STR_0085    :Unknown Ride (53)
 STR_0086    :Unknown Ride (54)
 STR_0087    :Unknown Ride (55)
-STR_0088    :Inverted Impulse Coaster
+STR_0088    :反轉極速式雲霄飛車
 STR_0089    :迷你雲霄飛車
 STR_0090    :礦遊式雲霄飛車
 STR_0091    :Unknown Ride (59)
@@ -513,31 +513,31 @@ STR_0508    :
 STR_0509    :
 STR_0510    :
 STR_0511    :
-STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
-STR_0513    :A looping roller coaster where the riders ride in a standing position
-STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
-STR_0515    :A steel roller coaster with trains that are held beneath the track, with many complex and twisting track elements
-STR_0516    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
+STR_0512    :一款帶有螺旋式鏈條坡道, 以及順滑又彎曲的下坡的雲霄飛車
+STR_0513    :一款乘客需要以站立乘坐的迴環式雲霄飛車
+STR_0514    :列車懸吊在雲霄飛車的軌道下, 並會在拐彎的時候搖擺乘客到旁邊
+STR_0515    :一款鐵架式雲霄飛車但列車於軌道下方行駛, 附帶很多複雜及扭曲的軌道配置
+STR_0516    :一款較溫和的雲霄飛車, 設計給不敢乘坐雲霄飛車的乘客壯膽
 STR_0517    :乘客乘坐於小型火車延著窄軌鐵道行走
 STR_0518    :乘客乘坐於電氣化列車延著單軌鐵路行走
-STR_0519    :Passengers ride in small cars hanging beneath the single-rail track, swinging freely from side to side around corners
-STR_0520    :A dock platform where guests can drive/row personal watercraft on a body of water
-STR_0521    :A fast and twisting roller coaster with tight turns and steep drops. Intensity is bound to be high.
-STR_0522    :A smaller roller coaster where the riders sit above the track with no car around them
-STR_0523    :Riders travel slowly in powered vehicles along a track-based route
-STR_0524    :Freefall car is pneumatically launched up a tall steel tower and then allowed to freefall down
-STR_0525    :Riders career down a twisting track guided only by the curvature and banking of the semi-circular track
-STR_0526    :Passengers travel in a rotating observation cabin which travels up a tall tower
-STR_0527    :A smooth steel-tracked roller coaster capable of vertical loops
-STR_0528    :Riders travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
-STR_0529    :Mine train themed roller coaster trains career along steel roller coaster track made to look like old railway track
-STR_0530    :Cars hang from a steel cable which runs continuously from one end of the ride to the other and back again
-STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
+STR_0519    :乘客乘坐於單軌軌道下的小型車廂裡, 然後在途中被不斷搖擺到一旁
+STR_0520    :一個遊客可以駕駛/划駛個人小船的船用月台
+STR_0521    :一款極快而有複雜軌道配置的雲霄飛車, 附有緊接的彎道及陡斜的落坡. 這款雲霄飛車刺激度注定會偏高.
+STR_0522    :一款較小型的雲霄飛車, 乘客坐在軌道上而並沒有其他車卡包圍他們
+STR_0523    :乘客會坐在有動力的車輛內, 慢慢地依照軌道路線遊覽
+STR_0524    :自由落體的車輛會被氣體噴射到高塔頂, 並隨後自由落下
+STR_0525    :乘客飛馳在扭曲的軌道上, 只靠彎道及半月型的軌道引領他們
+STR_0526    :乘客會在不斷旋轉並上升到最頂的座艙內觀看樂園景色
+STR_0527    :一款以順滑軌道為特徵的雲霄飛車, 並附有垂直迴環可供使用
+STR_0528    :乘客坐在充氣小艇中於半月型或完全封閉的軌道上滑翔
+STR_0529    :以採礦列車為主題的雲霄飛車沿著鐵架軌道行駛, 令它很像在古老的軌道行駛上
+STR_0530    :列車懸掛在鋼纜下並不斷於車站與車站之間遊走
+STR_0531    :一款列車會穿過螺旋及迴環的較小型雲霄飛車
 STR_0532    :
 STR_0533    :
 STR_0534    :自駕式, 並以氣油驅動的小型賽車(卡丁車)
-STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
-STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
+STR_0535    :以運木為形狀的小船穿梭於有水的軌道, 並會於下滑時濺濕遊客
+STR_0536    :圓形的小船穿梭於比較廣闊的水道, 於水道中被瀑布濺濕, 並有激流使乘客的緊張感大增
 STR_0537    :
 STR_0538    :
 STR_0539    :
@@ -565,7 +565,7 @@ STR_0560    :
 STR_0561    :
 STR_0562    :Powered cars travel along a multi-level track past spooky scenery and special effects
 STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
-STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
+STR_0564    :一款在木製軌道運行的雲霄飛車, 這個雲霄飛車會嘈吵地飛馳過高低不平的軌道, 給乘客充足的'空中時間'之餘, 同時會給人一種'失去控制'的乘坐體驗
 STR_0565    :A simple wooden roller coaster capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
 STR_0566    :Individual roller coaster cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
 STR_0567    :Sitting in seats suspended either side of the track, riders are pitched head-over-heels while they plunge down steep drops and travel through various inversions
@@ -601,9 +601,9 @@ STR_0596    :
 STR_0597    :
 STR_0598    :Inverted roller coaster trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
 STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
-STR_0600    :Powered mine trains career along a smooth and twisted track layout
+STR_0600    :有動車的採礦列車遊走在順滑但又曲折的軌道配置中
 STR_0601    :
-STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
+STR_0602    :雲霄飛車列車由直線發動機加速離開車站, 穿過盤繞的倒轉軌道後回到車站
 STR_0603    :遊客{INT32}
 STR_0604    :遊客{INT32}
 STR_0605    :遊客{INT32}
@@ -886,8 +886,8 @@ STR_0880    :不能升高此地...
 STR_0881    :物件擋於此地
 STR_0882    :載入遊戲
 STR_0883    :儲存遊戲
-STR_0884    :儲存劇情
-STR_0885    :儲存劇情
+STR_0884    :載入地型
+STR_0885    :儲存地型
 STR_0886    :離開遊戲
 STR_0887    :離開劇情編輯工具
 STR_0888    :離開雲霄飛車設計工具
@@ -1322,13 +1322,13 @@ STR_1316    :玩家
 STR_1317    :{COMMA16}位玩家
 STR_1318    :{COMMA16}位玩家
 STR_1319    :玩家{COMMA16}
-STR_1320    :course
-STR_1321    :courses
-STR_1322    :Course
-STR_1323    :Courses
-STR_1324    :{COMMA16} course
-STR_1325    :{COMMA16} courses
-STR_1326    :Course {COMMA16}
+STR_1320    :場地
+STR_1321    :場地
+STR_1322    :場地
+STR_1323    :場地
+STR_1324    :{COMMA16}個場地
+STR_1325    :{COMMA16}個場地
+STR_1326    :場地{COMMA16}
 STR_1327    :{SMALLFONT}{BLACK}將物件旋轉90{DEGREE}
 STR_1328    :需要升高或降低土地
 STR_1329    :{WINDOW_COLOUR_2}發車速度:
@@ -1407,8 +1407,8 @@ STR_1401    :出口
 STR_1402    :{SMALLFONT}{BLACK}建造或移動遊樂設施的入口
 STR_1403    :{SMALLFONT}{BLACK}建造或移動遊樂設施的出口
 STR_1404    :{SMALLFONT}{BLACK}90{DEGREE}旋轉
-STR_1405    :{SMALLFONT}{BLACK}Mirror image
-STR_1406    :{SMALLFONT}{BLACK}Toggle scenery on/off (if available for this design)
+STR_1405    :{SMALLFONT}{BLACK}反轉鬼影
+STR_1406    :{SMALLFONT}{BLACK}使用/棄用景物 (如果這個軌道設計擁有景物)
 STR_1407    :{WINDOW_COLOUR_2}建造此軌道...
 STR_1408    :{WINDOW_COLOUR_2}費用: {BLACK}{CURRENCY}
 STR_1409    :入口/出口平台
@@ -1775,8 +1775,8 @@ STR_1769    :{WINDOW_COLOUR_2}搖擺次數:
 STR_1770    :{SMALLFONT}{BLACK}完全搖擺的次數
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1772    :{COMMA16}
-STR_1773    :Only one on-ride photo section allowed per ride
-STR_1774    :Only one cable lift hill allowed per ride
+STR_1773    :每個遊樂設施只可建造一個即時照相區域
+STR_1774    :每個遊樂設施只可建造一個纜索坡道
 STR_1775    :關閉
 STR_1776    :開啟
 STR_1777    :{WINDOW_COLOUR_2}音樂
@@ -1858,8 +1858,8 @@ STR_1852    :{WINDOW_COLOUR_2}運作成本: {BLACK}未知
 STR_1853    :{WINDOW_COLOUR_2}落成年份: {BLACK}今年
 STR_1854    :{WINDOW_COLOUR_2}落成年份: {BLACK}去年
 STR_1855    :{WINDOW_COLOUR_2}落成年份: {BLACK}{COMMA16}年前
-STR_1856    :{WINDOW_COLOUR_2}每件售出產品的利潤: {BLACK}{CURRENCY2DP}
-STR_1857    :{WINDOW_COLOUR_2}每件售出產品的虧損: {BLACK}{CURRENCY2DP}
+STR_1856    :{WINDOW_COLOUR_2}每件產品售出的利潤: {BLACK}{CURRENCY2DP}
+STR_1857    :{WINDOW_COLOUR_2}每件產品售出的虧損: {BLACK}{CURRENCY2DP}
 STR_1858    :{WINDOW_COLOUR_2}成本: {BLACK}每個月{CURRENCY2DP}
 STR_1859    :清潔工人
 STR_1860    :維修人員
@@ -2361,9 +2361,9 @@ STR_2353    :{WINDOW_COLOUR_2}掃地次數: {BLACK}{COMMA16}
 STR_2354    :{WINDOW_COLOUR_2}清空拉坡筒次數: {BLACK}{COMMA16}
 STR_2355    :{WINDOW_COLOUR_2}修理遊樂設施次數: {BLACK}{COMMA16}
 STR_2356    :{WINDOW_COLOUR_2}檢驗遊樂設施次數: {BLACK}{COMMA16}
-STR_2357    :House
+STR_2357    :房屋
 STR_2358    :單位
-STR_2359    :Real Values
+STR_2359    :真實數值
 STR_2360    :{WINDOW_COLOUR_2}屏幕解析度:
 STR_2361    :土地邊緣平滑化
 STR_2362    :{SMALLFONT}{BLACK}開啟/關閉土地邊緣平滑化
@@ -2390,8 +2390,8 @@ STR_2382    :土地
 STR_2383    :水塘
 STR_2384    :{WINDOW_COLOUR_2}你的目標:
 STR_2385    :{BLACK}無
-STR_2386    :{BLACK}在{MONTHYEAR}尾之前, 樂園裡至少有{COMMA16}個遊客, 而且樂園評價並不低於600
-STR_2387    :{BLACK}在{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}尾之前, 樂園價值必需達到{POP16}{POP16}{CURRENCY}
+STR_2386    :{BLACK}在{POP16}{MONTHYEAR}尾之前, 樂園裡至少有{PUSH16}{PUSH16}{COMMA16}個遊客, 而且樂園評價並不低於600
+STR_2387    :{BLACK}在{POP16}{MONTHYEAR}尾之前, 樂園價值必需達到{CURRENCY}
 STR_2388    :{BLACK}盡情玩吧!
 STR_2389    :{BLACK}建造你的最佳{STRINGID}吧!
 STR_2390    :{BLACK}樂園必需建造十種不同種類的雲霄飛車, 而且每座的興奮度不低於6.00
@@ -2741,7 +2741,7 @@ STR_2732    :{COMMA16}ft
 STR_2733    :{COMMA16}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
-STR_2736    :{MONTH}, 第{COMMA16}年
+STR_2736    :第{POP16}{COMMA16}年, {PUSH16}{PUSH16}{MONTH}
 STR_2737    :{STRINGID} {MONTH}, 第{COMMA16}年
 STR_2738    :主選單音樂:
 STR_2739    :無
@@ -2869,52 +2869,52 @@ STR_2858    :不能開始實行營銷計劃...
 STR_2859    :另外一個OpenRCT2程序已在運行中
 STR_2860    :Infogrames Interactive credits...
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
-STR_2862    :Music acknowledgements...
-STR_2863    :Music acknowledgements
-STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) non copyright
+STR_2862    :音樂鳴謝列表...
+STR_2863    :音樂鳴謝列表
+STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) 無版權
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (Composer unknown) Copyright Control
+STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (Composer unknown) 版權被受控制
 STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Traditional)
-STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (Johann Strauss) non copyright
+STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (Johann Strauss) 無版權
 STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (Traditional)
 STR_2870    :{WINDOW_COLOUR_2}Das Alpenhorn:   (Traditional)
 STR_2871    :{WINDOW_COLOUR_2}The Blond Sailor:   (Traditional)
-STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Suppe) non copyright
-STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (Johann Strauss) non copyright
+STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Suppe) 無版權
+STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (Johann Strauss) 無版權
 STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Traditional)
 STR_2875    :{WINDOW_COLOUR_2}Original recordings (P) 1976 C.J.Mears Organization, used with consent
-STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Title Music:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright {COPYRIGHT} Chris Sawyer
-STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Title Music:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
 STR_2900    :{WINDOW_COLOUR_2}
-STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
-STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording {COPYRIGHT} Chris Sawyer
-STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2901    :{WINDOW_COLOUR_2}(音樂採樣承蒙Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
+STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording {COPYRIGHT} Chris Sawyer 版權所有
+STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
 STR_2908    :{WINDOW_COLOUR_2}Infogrames Interactive
 STR_2909    :{WINDOW_COLOUR_2}Senior Producer:  Thomas J. Zahorik
 STR_2910    :{WINDOW_COLOUR_2}Executive Producer:  Bill Levay
@@ -3338,7 +3338,7 @@ STR_3327    :尚未設定遊客的開始步行位置
 STR_3328    :不能進行下一步編輯...
 STR_3329    :尚未建造樂園入口
 STR_3330    :樂園必需有一些己擁有的土地
-STR_3331    :由地圖邊緣到樂園入口的道路尚未連接好, 或者太覆雜 - 這些道路必需是一格寬度, 並以越少交界及彎位越好
+STR_3331    :由地圖邊緣到樂園入口的道路尚未連接好, 或者太複雜 - 這些道路必需是一格寬度, 並以越少交界及彎位越好
 STR_3332    :樂園入口倒轉了, 或沒有道路連接至地圖邊緣
 STR_3333    :在存檔中導出附加物件
 STR_3334    :{SMALLFONT}{BLACK}選擇是否儲存附加物件(額外加入的附加物件)到存檔, 以便存檔給沒有那些附加物件的人載入
@@ -3473,7 +3473,7 @@ STR_5133    :{SMALLFONT}{BLACK}選擇較小的土地範圍
 STR_5134    :{SMALLFONT}{BLACK}選擇較大的土地範圍
 STR_5135    :{SMALLFONT}{BLACK}購買土地擁有權或建造權
 STR_5136    :土地擁有權
-STR_5137    :允許鏈條上拉及發車速度{NEWLINE}高至{VELOCITY}
+STR_5137    :允許鏈條上拉及發車速度高至{VELOCITY}
 STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :去除煞車組件故障
@@ -3675,11 +3675,11 @@ STR_5334    :雪地
 STR_5335    :遊樂設施入口
 STR_5336    :遊樂設施出口
 STR_5337    :樂園入口
-STR_5338    :Element type
-STR_5339    :Base height
-STR_5340    :Clearance height
-STR_5341    :Flags
-STR_5342    :Choose a map tile
+STR_5338    :元素類別
+STR_5339    :地面高度
+STR_5340    :清理高度
+STR_5341    :標記
+STR_5342    :請選擇地圖網格
 STR_5343    :自動放置員工
 STR_5344    :更新日誌
 STR_5345    :用於財政的密技
@@ -3778,14 +3778,14 @@ STR_5437    :暫無存檔被選中
 STR_5438    :當命令編輯工具開啟不能作出改變
 STR_5439    :4秒以上的等待(Wait)命令需要加上重新開始(Restart)命令
 STR_5440    :當焦點失去時最小化全螢幕的遊戲
-STR_5441    :{SMALLFONT}{BLACK}以軌道類別分別遊樂設施,{NEWLINE}令到車輔風格可以在建造後更改,(RCT1){NEWLINE}就像夢幻遊樂園1一樣.
+STR_5441    :{SMALLFONT}{BLACK}以軌道類別分別遊樂設施,{NEWLINE}令到車輔風格可以在建造後更改,{NEWLINE}就像夢幻遊樂園1(RCT1)一樣.
 STR_5442    :固定樂園評價:
 STR_5443    :速度{MOVE_X}{87}{STRINGID}
 STR_5444    :速度:
 STR_5445    :速度
 STR_5446    :獲取
-STR_5447    :Type {STRINGID}
-STR_5448    :Ride / Vehicle {STRINGID}
+STR_5447    :類別 {STRINGID}
+STR_5448    :遊樂設施/車輛 {STRINGID}
 STR_5449    :減慢遊戲速度
 STR_5450    :增快遊戲速度
 STR_5451    :開啟密技視窗
@@ -3822,3 +3822,5 @@ STR_5481    :主題
 STR_5482    :{WINDOW_COLOUR_2}上次檢查時間: {BLACK} 1分鐘前
 STR_5483    :{BLACK}(還剩{COMMA16}週結束)
 STR_5484    :{BLACK}(還剩{COMMA16}週結束)
+STR_5485    :{SMALLFONT}{STRING}
+STR_5486    :{BLACK}{COMMA16}
