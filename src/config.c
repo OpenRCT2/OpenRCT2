@@ -266,9 +266,9 @@ void config_set_defaults()
 		config_section_definition *section = &_sectionDefinitions[i];
 		for (j = 0; j < section->property_definitions_count; j++) {
 			config_property_definition *property = &section->property_definitions[j];
-
 			value_union *destValue = (value_union*)((size_t)section->base_address + (size_t)property->offset);
 
+			// Special dynamic defaults
 			if (strcmp(property->property_name, "language") == 0){
 				destValue->value_uint16 = platform_get_locale_language();
 				if (destValue->value_uint16 == LANGUAGE_UNDEFINED)
@@ -284,7 +284,17 @@ void config_set_defaults()
 				destValue->value_uint8 = platform_get_locale_temperature_format();
 			}
 			else {
-				memcpy(destValue, &property->default_value, _configValueTypeSize[property->type]);
+				// Use static default
+				if (property->type == CONFIG_VALUE_TYPE_STRING) {
+					// Copy the string to new memory
+					const utf8 *src = property->default_value.value_string;
+					const utf8 **dst = &(destValue->value_string);
+					if (src != NULL) {
+						*dst = _strdup(property->default_value.value_string);
+					}
+				} else {
+					memcpy(destValue, &property->default_value, _configValueTypeSize[property->type]);
+				}
 			}
 		}
 	}
