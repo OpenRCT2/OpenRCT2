@@ -320,6 +320,7 @@ static void window_new_ride_populate_list()
 
 				quadIndex = rideEntryIndex >> 5;
 				bitIndex = rideEntryIndex & 0x1F;
+				// Skip if vehicle type is not invented yet
 				if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1 << bitIndex)))
 					continue;
 
