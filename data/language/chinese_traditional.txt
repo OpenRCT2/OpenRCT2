@@ -555,16 +555,16 @@ STR_0550    :
 STR_0551    :
 STR_0552    :
 STR_0553    :
-STR_0554    :The car is accelerated out of the station along a long level track using Linear Induction Motors, then heads straight up a vertical spike of track, freefalling back down to return to the station
-STR_0555    :Guests ride in an elevator up or down a vertical tower to get from one level to another
-STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
+STR_0554    :列車會被又長又直的軌道上的直線發動機加速, 然後衝上垂直軌道, 自由落體後回到車站
+STR_0555    :遊客乘搭升降機上下穿梭於垂直的管道中, 並借此訪問另一層
+STR_0556    :加闊的列車於垂直下坡上完全滑落, 給予人終極的雲霄飛車自由落體體驗
 STR_0557    :
 STR_0558    :
 STR_0559    :
 STR_0560    :
 STR_0561    :
-STR_0562    :Powered cars travel along a multi-level track past spooky scenery and special effects
-STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
+STR_0562    :有動力的車輛將會穿梭於有著恐怖景物及特效的多層軌道中
+STR_0563    :乘客坐在舒適並只有簡單安全裝備的列車上享受巨大而順滑的下滑, 扭曲的軌道和充足的'空中'時間
 STR_0564    :一款在木製軌道運行的雲霄飛車, 這個雲霄飛車會嘈吵地飛馳過高低不平的軌道, 給乘客充足的'空中時間'之餘, 同時會給人一種'失去控制'的乘坐體驗
 STR_0565    :A simple wooden roller coaster capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
 STR_0566    :Individual roller coaster cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
@@ -591,7 +591,7 @@ STR_0586    :Boat shaped cars run on roller coaster track to allow twisting curv
 STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
 STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
 STR_0589    :
-STR_0590    :Riders ride in a submerged submarine through an underwater course
+STR_0590    :乘客在潛艇中觀賞水底的景觀
 STR_0591    :木筏造型船於河道上慢慢地遊覽著
 STR_0592    :
 STR_0593    :
@@ -599,8 +599,8 @@ STR_0594    :
 STR_0595    :
 STR_0596    :
 STR_0597    :
-STR_0598    :Inverted roller coaster trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
-STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
+STR_0598    :反轉式雲霄飛車加速離開車站, 穿過到垂直軌道的尖端, 然後倒轉返回到車站, 再穿越到另一邊垂直軌道的尖端
+STR_0599    :一款擁有獨立車輛及順滑又彎曲的下坡的緊湊式雲霄飛車
 STR_0600    :有動車的採礦列車遊走在順滑但又曲折的軌道配置中
 STR_0601    :
 STR_0602    :雲霄飛車列車由直線發動機加速離開車站, 穿過盤繞的倒轉軌道後回到車站
@@ -1861,14 +1861,14 @@ STR_1855    :{WINDOW_COLOUR_2}落成年份: {BLACK}{COMMA16}年前
 STR_1856    :{WINDOW_COLOUR_2}每件產品售出的利潤: {BLACK}{CURRENCY2DP}
 STR_1857    :{WINDOW_COLOUR_2}每件產品售出的虧損: {BLACK}{CURRENCY2DP}
 STR_1858    :{WINDOW_COLOUR_2}成本: {BLACK}每個月{CURRENCY2DP}
-STR_1859    :清潔工人
-STR_1860    :維修人員
-STR_1861    :安全警衛
-STR_1862    :表演人員
-STR_1863    :清潔工人
-STR_1864    :維修人員
-STR_1865    :安全警衛
-STR_1866    :表演人員
+STR_1859    :個清潔工人
+STR_1860    :個維修人員
+STR_1861    :個安全警衛
+STR_1862    :個表演人員
+STR_1863    :個清潔工人
+STR_1864    :個維修人員
+STR_1865    :個安全警衛
+STR_1866    :個表演人員
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
 STR_1868    :不能改變旋轉次數...
 STR_1869    :{WINDOW_COLOUR_2}旋轉次數:
@@ -2788,7 +2788,7 @@ STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :額外檢視視窗#{COMMA16}
 STR_2780    :新的額外檢視視窗
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
+STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :更改鍵盤快捷鍵
@@ -3824,3 +3824,5 @@ STR_5483    :{BLACK}(還剩{COMMA16}週結束)
 STR_5484    :{BLACK}(還剩{COMMA16}週結束)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
+STR_5487    :{SMALLFONT}{BLACK}顯示最近消息
+STR_5488    :隱藏入口
