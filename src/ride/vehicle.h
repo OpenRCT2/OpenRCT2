@@ -39,7 +39,7 @@ typedef struct {
 	// Height from center of sprite to bottom
 	uint8 sprite_height_negative;	// 0x09
 	uint16 sprite_index;			// 0x0A
-	uint8 pad_0C[2];
+	uint16 var_0C;
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
@@ -91,7 +91,9 @@ typedef struct {
 	sint8 var_BF;
 	uint8 pad_C0[0x02];
 	uint8 speed;					// 0xC2
-	uint8 pad_C3[0x09];
+	uint8 pad_C3[2];
+	uint8 var_C5;
+	uint8 pad_C6[6];
 	uint8 var_CC;
 	uint8 var_CD;
 	union {

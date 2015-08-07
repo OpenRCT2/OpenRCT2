@@ -877,7 +877,58 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int edx, sint16 si, s
  */
 void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
 {
-	RCT2_CALLPROC_X(0x006D4244, vehicle->x, imageDirection, vehicle->y, vehicle->z, (int)vehicle, 0, 0);
+	rct_ride_type *rideEntry;
+	rct_ride_type_vehicle *vehicleEntry;
+
+	int x = vehicle->x;
+	int y = vehicle->y;
+	int z = vehicle->z;
+
+	if (vehicle->var_0C & 0x80) {
+		uint32 ebx = 22965 + vehicle->var_C5;
+		RCT2_GLOBAL(0x9DEA52, uint16) = 0;
+		RCT2_GLOBAL(0x9DEA54, uint16) = 0;
+		RCT2_GLOBAL(0x9DEA56, uint16) = z + 2;
+		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) {
+		case 0: RCT2_CALLPROC_X(0x00686806, 0, ebx, 0, z, 1, 1, 0); break;
+		case 1: RCT2_CALLPROC_X(0x006869B2, 0, ebx, 0, z, 1, 1, 0); break;
+		case 2: RCT2_CALLPROC_X(0x00686B6F, 0, ebx, 0, z, 1, 1, 0); break;
+		case 3: RCT2_CALLPROC_X(0x00686D31, 0, ebx, 0, z, 1, 1, 0); break;
+		}
+	}
+
+	if (vehicle->ride_subtype == 0xFF) {
+		vehicleEntry = (rct_ride_type_vehicle*)0x009DE232;
+	} else {
+		rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+		vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+
+		if (vehicle->var_48 & 0x800) {
+			vehicleEntry++;
+			z += 16;
+		}
+	}
+
+	uint32 rct2VehiclePtrFormat = ((uint32)vehicleEntry) - offsetof(rct_ride_type, vehicles);
+	RCT2_GLOBAL(0x00F64DFC, uint32) = rct2VehiclePtrFormat;
+	switch (vehicleEntry->var_5D) {
+	case 0:  RCT2_CALLPROC_X(0x006D45F8, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case 2:  RCT2_CALLPROC_X(0x006D5FAB, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case 3:  RCT2_CALLPROC_X(0x006D6258, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case 4:  RCT2_CALLPROC_X(0x006D5889, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case 5:  RCT2_CALLPROC_X(0x006D42F0, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case 6:  RCT2_CALLPROC_X(0x006D43C6, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case 7:  RCT2_CALLPROC_X(0x006D4453, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case 8:  RCT2_CALLPROC_X(0x006D4295, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case 9:  RCT2_CALLPROC_X(0x006D5DA9, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case 10: RCT2_CALLPROC_X(0x006D5600, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case 11: RCT2_CALLPROC_X(0x006D5696, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case 12: RCT2_CALLPROC_X(0x006D57EE, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case 13: RCT2_CALLPROC_X(0x006D5783, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case 14: RCT2_CALLPROC_X(0x006D5701, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case 15: RCT2_CALLPROC_X(0x006D5B48, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case 16: RCT2_CALLPROC_X(0x006D44D5, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	}
 }
 
 /**
