@@ -64,7 +64,8 @@ void chat_draw()
 	_chatTop = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 40 - ((CHAT_HISTORY_SIZE + 1) * 10);
 	_chatRight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 10;
 	_chatBottom = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 40;
-	char lineBuffer[CHAT_INPUT_SIZE + 3];
+	char lineBuffer[CHAT_INPUT_SIZE + 10];
+	char* lineCh = lineBuffer;
 	int x = _chatLeft;
 	int y = _chatBottom - (10 * 2);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
@@ -78,9 +79,9 @@ void chat_draw()
 		gfx_draw_string(dpi, lineBuffer, 255, x, y);
 	}
 	if (gChatOpen) {
-		lineBuffer[0] = FORMAT_OUTLINE;
-		lineBuffer[1] = FORMAT_CELADON;
-		strcpy(lineBuffer + 2, _chatCurrentLine);
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_CELADON);
+		strcpy(lineCh, _chatCurrentLine);
 		y = _chatBottom - 10;
 		gfx_set_dirty_blocks(x, y, x + gfx_get_string_width(lineBuffer) + 7, y + 12);
 		if (_chatCaretTicks < 15) {

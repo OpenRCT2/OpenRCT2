@@ -133,9 +133,10 @@ static void window_network_status_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
-	char buffer[sizeof(window_network_status_text) + 1];
-	buffer[0] = FORMAT_BLACK;
-	strcpy(&buffer[1], window_network_status_text);
+	char buffer[sizeof(window_network_status_text) + 10];
+	char* lineCh = buffer;
+	lineCh = utf8_write_codepoint(lineCh, FORMAT_BLACK);
+	strcpy(lineCh, window_network_status_text);
 	gfx_clip_string(buffer, 230);
 	int x = w->x + (w->width / 2);
 	int y = w->y + (w->height / 2);

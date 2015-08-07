@@ -226,29 +226,33 @@ static void window_player_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 
 		if (y + 11 >= dpi->y) {
 			char buffer[300];
+			char* lineCh = buffer;
 			int colour = 0;
 			if (i == w->selected_list_item) {
 				gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x02000031);
 				strcpy(&buffer[0], network_get_player_name(i));
 				colour = w->colours[2];
 			} else {
-				buffer[0] = FORMAT_BLACK;
 				if (network_get_player_flags(i) & NETWORK_PLAYER_FLAG_ISSERVER) {
-					buffer[0] = FORMAT_BABYBLUE;
+					lineCh = utf8_write_codepoint(lineCh, FORMAT_BABYBLUE);
+				} else {
+					lineCh = utf8_write_codepoint(lineCh, FORMAT_BLACK);
 				}
-				strcpy(&buffer[1], network_get_player_name(i));
+				strcpy(lineCh, network_get_player_name(i));
 			}
 			gfx_clip_string(buffer, 230);
 			gfx_draw_string(dpi, buffer, colour, 0, y - 1);
-			buffer[0] = FORMAT_RED;
+			lineCh = buffer;
 			int ping = network_get_player_ping(i);
-			if (ping <= 250) {
-				buffer[0] = FORMAT_YELLOW;
-			}
 			if (ping <= 100) {
-				buffer[0] = FORMAT_GREEN;
+				lineCh = utf8_write_codepoint(lineCh, FORMAT_GREEN);
+			} else
+			if (ping <= 250) {
+				lineCh = utf8_write_codepoint(lineCh, FORMAT_YELLOW);
+			} else {
+				lineCh = utf8_write_codepoint(lineCh, FORMAT_RED);
 			}
-			sprintf(&buffer[1], "%d ms", ping);
+			sprintf(lineCh, "%d ms", ping);
 			gfx_draw_string(dpi, buffer, colour, 240, y - 1);
 		}
 		y += 10;

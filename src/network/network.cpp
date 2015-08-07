@@ -203,7 +203,7 @@ int NetworkConnection::SendPacket(NetworkPacket& packet)
 void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet)
 {
 	if (authstatus == NETWORK_AUTH_OK || authstatus == NETWORK_AUTH_REQUESTED) {
-		packet->size = packet->data->size();
+		packet->size = (uint16)packet->data->size();
 		outboundpackets.push_back(std::move(packet));
 	}
 }
@@ -452,12 +452,13 @@ NetworkPlayer* Network::GetPlayerByID(int id) {
 const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
 {
 	static char formatted[1024];
+	char* lineCh = formatted;
 	formatted[0] = 0;
 	if (fromplayer) {
-		formatted[0] = (char)FORMAT_OUTLINE;
-		formatted[1] = (char)FORMAT_BABYBLUE;
-		strcpy(&formatted[2], (const char*)fromplayer->name);
-		strcat(formatted, ": ");
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_BABYBLUE);
+		strcpy(lineCh, (const char*)fromplayer->name);
+		strcat(lineCh, ": ");
 	}
 	strcat(formatted, text);
 	return formatted;
@@ -669,9 +670,10 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
 	NetworkPlayer* connection_player = connection->player;
 	if (connection_player) {
 		char text[256];
-		text[0] = (char)FORMAT_OUTLINE;
-		text[1] = (char)FORMAT_RED;
-		sprintf(&text[2], "%s has disconnected", connection_player->name);
+		char* lineCh = text;
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_RED);
+		sprintf(lineCh, "%s has disconnected", connection_player->name);
 		chat_history_add(text);
 		gNetwork.Server_Send_CHAT(text);
 	}
@@ -743,9 +745,10 @@ int Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& pa
 			if (player) {
 				playerid = player->id;
 				char text[256];
-				text[0] = (char)FORMAT_OUTLINE;
-				text[1] = (char)FORMAT_GREEN;
-				sprintf(&text[2], "%s has joined the game", player->name);
+				char* lineCh = text;
+				lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
+				lineCh = utf8_write_codepoint(lineCh, FORMAT_GREEN);
+				sprintf(lineCh, "%s has joined the game", player->name);
 				chat_history_add(text);
 				gNetwork.Server_Send_CHAT(text);
 				Server_Send_MAP(&connection);

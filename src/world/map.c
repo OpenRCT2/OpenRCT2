@@ -1482,7 +1482,7 @@ money32 map_clear_scenery(int x0, int y0, int x1, int y1, int clear, int flags)
 	for (y = y0; y <= y1; y += 32) {
 		for (x = x0; x <= x1; x += 32) {
 			if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode || map_is_location_owned_or_has_rights(x, y)) {
-				cost = map_clear_scenery_from_tile(x / 32, y / 32, flags);
+				cost = map_clear_scenery_from_tile(x / 32, y / 32, clear, flags);
 				if (cost != MONEY32_UNDEFINED) {
 					noValidTiles = false;
 					totalCost += cost;
