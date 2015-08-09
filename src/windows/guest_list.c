@@ -46,6 +46,7 @@ enum WINDOW_GUEST_LIST_WIDGET_IDX {
 	WIDX_INFO_TYPE_DROPDOWN,
 	WIDX_INFO_TYPE_DROPDOWN_BUTTON,
 	WIDX_MAP,
+	WIDX_TRACKING,
 	WIDX_TAB_1,
 	WIDX_TAB_2,
 	WIDX_GUEST_LIST
@@ -66,6 +67,7 @@ static rct_widget window_guest_list_widgets[] = {
 	{ WWT_DROPDOWN,			1,	126,	301,	59,	70, 	0x0FFFFFFFF,	STR_INFORMATION_TYPE_TIP },		// information type dropdown
 	{ WWT_DROPDOWN_BUTTON,	1,	290,	300,	60,	69, 	876,			STR_INFORMATION_TYPE_TIP },		// information type dropdown button
 	{ WWT_FLATBTN,			1,	321,	344,	46,	69, 	5192,			STR_SHOW_GUESTS_ON_MAP_TIP },	// map
+	{ WWT_FLATBTN,			1,	321,	344,	46,	69,		SPR_TRACK_PEEP,	STR_TRACKED_GUESTS_ONLY_TIP },	// tracking
 	{ WWT_TAB,				1,	3,		33,		17,	43, 	0x02000144E,	STR_INDIVIDUAL_GUESTS_TIP },	// tab 1
 	{ WWT_TAB,				1,	34,		64,		17,	43, 	0x02000144E,	STR_SUMMARISED_GUESTS_TIP },	// tab 2
 	{ WWT_SCROLL,			1,	3,		346,	72,	326,	3,				STR_NONE },						// guest list
@@ -123,6 +125,7 @@ static int _window_guest_list_selected_page;     // 0x00F1EE07
 static int _window_guest_list_selected_view;     // 0x00F1EE13
 static int _window_guest_list_num_pages;         // 0x00F1EE08
 static int _window_guest_list_num_groups;        // 0x00F1AF22
+static bool _window_guest_list_tracking_only;
 
 static uint16 _window_guest_list_groups_num_guests[240];
 static uint32 _window_guest_list_groups_argument_1[240];
@@ -156,6 +159,7 @@ void window_guest_list_open()
 		(1 << WIDX_INFO_TYPE_DROPDOWN) |
 		(1 << WIDX_INFO_TYPE_DROPDOWN_BUTTON) |
 		(1 << WIDX_MAP) |
+		(1 << WIDX_TRACKING) |
 		(1 << WIDX_TAB_1) |
 		(1 << WIDX_TAB_2);
 
@@ -166,6 +170,7 @@ void window_guest_list_open()
 	_window_guest_list_selected_filter = -1;
 	_window_guest_list_selected_page = 0;
 	_window_guest_list_num_pages = 1;
+	_window_guest_list_tracking_only = false;
 	window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WWT_EMPTY;
 	window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WWT_EMPTY;
 	window->var_492 = 0;
@@ -193,6 +198,7 @@ void window_guest_list_open_with_filter(int type, int index)
 
 	_window_guest_list_selected_page = 0;
 	_window_guest_list_num_pages = 1;
+	_window_guest_list_tracking_only = false;
 
 	RCT2_GLOBAL(0x009AC7E0, uint8) = 0;
 	RCT2_GLOBAL(0x009AC7F0, uint8) = 0;
@@ -273,6 +279,15 @@ static void window_guest_list_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_MAP:
 		window_map_open();
 		break;
+	case WIDX_TRACKING:
+		_window_guest_list_tracking_only = !_window_guest_list_tracking_only;
+		if (_window_guest_list_tracking_only)
+			w->pressed_widgets |= (1 << WIDX_TRACKING);
+		else
+			w->pressed_widgets &= ~(1 << WIDX_TRACKING);
+		window_invalidate(w);
+		w->scrolls[0].v_top = 0;
+		break;
 	}
 }
 
@@ -310,6 +325,9 @@ static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widge
 		_window_guest_list_selected_tab = widgetIndex - WIDX_TAB_1;
 		_window_guest_list_selected_page = 0;
 		_window_guest_list_num_pages = 1;
+		window_guest_list_widgets[WIDX_TRACKING].type = WWT_EMPTY;
+		if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL)
+			window_guest_list_widgets[WIDX_TRACKING].type = WWT_FLATBTN;
 		window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WWT_EMPTY;
 		window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WWT_EMPTY;
 		w->list_information_type = 0;
@@ -415,6 +433,8 @@ static void window_guest_list_scrollgetsize(rct_window *w, int scrollIndex, int 
 			if (_window_guest_list_selected_filter != -1)
 				if (window_guest_list_is_peep_in_filter(peep))
 					continue;
+			if (_window_guest_list_tracking_only && !(peep->flags & PEEP_FLAGS_TRACKING))
+				continue;
 			numGuests++;
 		}
 		w->var_492 = numGuests;
@@ -472,6 +492,8 @@ static void window_guest_list_scrollmousedown(rct_window *w, int scrollIndex, in
 			if (_window_guest_list_selected_filter != -1)
 				if (window_guest_list_is_peep_in_filter(peep))
 					continue;
+			if (_window_guest_list_tracking_only && !(peep->flags & PEEP_FLAGS_TRACKING))
+				continue;
 
 			if (i == 0) {
 				// Open guest window
@@ -490,6 +512,7 @@ static void window_guest_list_scrollmousedown(rct_window *w, int scrollIndex, in
 			RCT2_GLOBAL(0x00F1EDFA, uint32) = _window_guest_list_groups_argument_2[i];
 			_window_guest_list_selected_filter = _window_guest_list_selected_view;
 			_window_guest_list_selected_tab = PAGE_INDIVIDUAL;
+			window_guest_list_widgets[WIDX_TRACKING].type = WWT_FLATBTN;
 			window_invalidate(w);
 			w->scrolls[0].v_top = 0;
 		}
@@ -638,6 +661,8 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 				RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) |= (1 << 0);
 				peep->var_0C |= 0x200;
 			}
+			if (_window_guest_list_tracking_only && !(peep->flags & PEEP_FLAGS_TRACKING))
+				continue;
 
 			// 
 			if (y + 11 >= -0x7FFF && y + 11 > dpi->y && y < 0x7FFF) {
