@@ -734,6 +734,9 @@ uint16 platform_get_locale_language()
 	else if (strcmp(langCode, "POR") == 0){
 		return LANGUAGE_PORTUGUESE_BR;
 	}
+	else if (strcmp(langCode, "FIN") == 0){
+		return LANGUAGE_FINNISH;
+	}
 	return LANGUAGE_UNDEFINED;
 }
 
