@@ -566,30 +566,30 @@ STR_0561    :
 STR_0562    :有動力的車輛將會穿梭於有著恐怖景物及特效的多層軌道中
 STR_0563    :乘客坐在舒適並只有簡單安全裝備的列車上享受巨大而順滑的下滑, 扭曲的軌道和充足的'空中'時間
 STR_0564    :一款在木製軌道運行的雲霄飛車, 這個雲霄飛車會嘈吵地飛馳過高低不平的軌道, 給乘客充足的'空中時間'之餘, 同時會給人一種'失去控制'的乘坐體驗
-STR_0565    :A simple wooden roller coaster capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
-STR_0566    :Individual roller coaster cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
-STR_0567    :Sitting in seats suspended either side of the track, riders are pitched head-over-heels while they plunge down steep drops and travel through various inversions
+STR_0565    :一款只能使用普通下坡及彎道的簡單木製雲霄飛車, 車輛只靠產生軌道阻力的車輪及重力滑翔於軌道上
+STR_0566    :每輛單獨的雲霄飛車都會遊走在附有急彎及急短下坡的Z型軌道上
+STR_0567    :乘客坐在懸掛在軌道的不同位置下, 衝下陡下坡及各種倒轉軌道時, 會被翻騰得四腳朝天
 STR_0568    :
-STR_0569    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air
+STR_0569    :乘客將會乘坐在軌道下的特別繫帶, 在空中盤旋時體驗飛一般的感受
 STR_0570    :
-STR_0571    :Circular cars spin around as they travel along the zig-zagging wooden track
-STR_0572    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyer belt, accelerating down steep slopes to soak the riders with a gaint splash
-STR_0573    :Powered helicoper shaped cars running on a steel track, controlled by the pedalling of the riders
-STR_0574    :Riders are held in special harnesses in a lying-down position, travlling through twisted track and inversions either on their backs or facing the ground
-STR_0575    :Powered trains hanging from a single rail transport people around the park
+STR_0571    :圓型的車輛於他們行走在Z型軌道上被不停的轉動
+STR_0572    :載客量大的小船遊走於寬敞的水道上, 由輸送帶送他們上坡, 並於下坡中加速, 務求濺出巨型的水花令到乘客全身濕透
+STR_0573    :有動力的直升機型車輔於鋼軌上遊走, 他們由乘客的腳踏所控制
+STR_0574    :乘客躺臥在特別繫帶中, 以他們面向的背或頭遊走於曲折的軌道及翻轉
+STR_0575    :有動力的列車懸掛在單軌下運送乘客到樂園內的不同地方
 STR_0576    :
-STR_0577    :Bogied cars run on wooden tracks, turning around on special reversing sections
-STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
+STR_0577    :擁有轉向架的車輔於木製軌道上, 被特別的倒轉裝置轉向
+STR_0578    :車輛運行於O型的軌道中, 並會穿過陡下坡及橫滾軌道
 STR_0579    :
-STR_0580    :A giant steel roller coaster capable of smooth drops and hills of over 300ft
-STR_0581    :A ring of seats is pulled to the top of a tall tower while gently rotating, then allowed to free-fall down, stopping gently at the bottom using magnetic brakes
+STR_0580    :一款可建造順滑下坡及高達300英尺坡道的巨型鐵製雲霄飛車
+STR_0581    :圍繞著塔的座位會在不斷慢慢旋轉中被拉至塔頂, 然後便自由落體, 再被有磁力的煞車裝置慢慢煞停於站台
 STR_0582    :
 STR_0583    :
-STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
-STR_0585    :Riders sit in pairs of seats suspended beneath the track as they loop and twist through tight inversions
-STR_0586    :Boat shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
-STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
-STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
+STR_0584    :運行在鐵製單軌上的特別單車, 像一般單車一樣, 會被乘客踏行
+STR_0585    :乘客坐在軌道懸掛下的一對對的座位經歷被緊密的軌道上旋轉及迴轉
+STR_0586    :船型的車輛行駛於雲霄飛車的軌道上, 允許他們能夠擁有扭曲式的彎道陡下坡等軌道配置, 更會被普通的水道所濺濕
+STR_0587    :雲霄飛車列車被令人膽跳心驚的氣動發車加速衝上垂直軌道後, 穿過最頂, 然後垂直下落到另一邊回到車站
+STR_0588    :每輛單獨的雲霄飛車遊走在附有髮夾彎及急下坡的Z型軌道上
 STR_0589    :
 STR_0590    :乘客在潛艇中觀賞水底的景觀
 STR_0591    :木筏造型船於河道上慢慢地遊覽著
@@ -2988,7 +2988,7 @@ STR_2977    :員工命名
 STR_2978    :請輸入這位員工的新姓名:
 STR_2979    :不能命名這位員工...
 STR_2980    :遊戲中太多橫額
-STR_2981    :{RED}No entry - - 
+STR_2981    :{RED}閒人止步 - - 
 STR_2982    :橫額文字
 STR_2983    :請輸入橫額中的文字:
 STR_2984    :不能設定橫額中的文字...
