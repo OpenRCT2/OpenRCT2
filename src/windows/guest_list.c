@@ -64,9 +64,9 @@ static rct_widget window_guest_list_widgets[] = {
 	{ WWT_RESIZE,			1,	0,		349,	43,	329,	0x0FFFFFFFF,	STR_NONE },						// tab content panel
 	{ WWT_DROPDOWN,			1,	5,		84,		59,	70,		STR_PAGE_1,		STR_NONE },						// page dropdown
 	{ WWT_DROPDOWN_BUTTON,	1,	73,		83,		60,	69, 	876,			STR_NONE },						// page dropdown button
-	{ WWT_DROPDOWN,			1,	126,	301,	59,	70, 	0x0FFFFFFFF,	STR_INFORMATION_TYPE_TIP },		// information type dropdown
-	{ WWT_DROPDOWN_BUTTON,	1,	290,	300,	60,	69, 	876,			STR_INFORMATION_TYPE_TIP },		// information type dropdown button
-	{ WWT_FLATBTN,			1,	321,	344,	46,	69, 	5192,			STR_SHOW_GUESTS_ON_MAP_TIP },	// map
+	{ WWT_DROPDOWN,			1,	120,	295,	59,	70, 	0x0FFFFFFFF,	STR_INFORMATION_TYPE_TIP },		// information type dropdown
+	{ WWT_DROPDOWN_BUTTON,	1,	284,	294,	60,	69, 	876,			STR_INFORMATION_TYPE_TIP },		// information type dropdown button
+	{ WWT_FLATBTN,			1,	297,	320,	46,	69, 	5192,			STR_SHOW_GUESTS_ON_MAP_TIP },	// map
 	{ WWT_FLATBTN,			1,	321,	344,	46,	69,		SPR_TRACK_PEEP,	STR_TRACKED_GUESTS_ONLY_TIP },	// tracking
 	{ WWT_TAB,				1,	3,		33,		17,	43, 	0x02000144E,	STR_INDIVIDUAL_GUESTS_TIP },	// tab 1
 	{ WWT_TAB,				1,	34,		64,		17,	43, 	0x02000144E,	STR_SUMMARISED_GUESTS_TIP },	// tab 2
