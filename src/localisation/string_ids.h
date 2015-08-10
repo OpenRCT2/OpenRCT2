@@ -2023,6 +2023,8 @@ enum {
 
 	STR_ENTRANCE_NONE = 5488,
 
+	STR_TRACKED_GUESTS_ONLY_TIP = 5489,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
