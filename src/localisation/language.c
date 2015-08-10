@@ -58,6 +58,13 @@ static TTFFontSetDescriptor TTFFontMingliu = {{
 	{ "mingliu.ttc",	13,		1,		0,		20,		NULL },
 }};
 
+static TTFFontSetDescriptor TTFFontSimSun = {{
+	{ "msyh.ttc",		9,		-1,		-3,		6,		NULL },
+	{ "simsun.ttc",		11,		1,		1,		12,		NULL },
+	{ "simsun.ttc",		12,		1,		0,		12,		NULL },
+	{ "simsun.ttc",		13,		1,		0,		20,		NULL },
+}};
+
 const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
 	{ "",			 "",						 "",						"",							FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_UNDEFINED
 	{ "en-GB",		"English (UK)",				"English (UK)",				"english_uk",				FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_ENGLISH_UK
@@ -72,7 +79,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
 	{ "it-IT",		"Italian",					"Italiano",					"italian",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ITALIAN				},	// LANGUAGE_ITALIAN
 	{ "pt-BR",		"Portuguese (BR)",			"Portug\xC3\xAAs (BR)",		"portuguese_br",			FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_PORTUGESE				},	// LANGUAGE_PORTUGUESE_BR
 	{ "zh-Hant",	"Chinese (Traditional)",	"Chinese (Traditional)",	"chinese_traditional",		&TTFFontMingliu,		RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL	},	// LANGUAGE_CHINESE_TRADITIONAL
-	{ "zh-Hans",	"Chinese (Simplified)",		"Chinese (Simplified)",		"chinese_simplified",		&TTFFontMingliu,		RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED		},	// LANGUAGE_CHINESE_SIMPLIFIED
+	{ "zh-Hans",	"Chinese (Simplified)",		"Chinese (Simplified)",		"chinese_simplified",		&TTFFontSimSun,			RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED		},	// LANGUAGE_CHINESE_SIMPLIFIED
 	{ "fi-FI",		"Finnish",					"Suomi",					"finnish",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_FINNISH
 //	{ "kr-KR",		"Korean",					"Korean",					"english_uk",				"malgun.ttf",			RCT2_LANGUAGE_ID_KOREAN					},	// LANGUAGE_KOREAN
 };
