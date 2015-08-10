@@ -524,7 +524,8 @@ bool config_get_property_name_value(const utf8string line, utf8 **propertyName, 
 		}
 		lastC = c;
 	}
-	*valueSize = ch - *value - 1;
+	*valueSize = ch - *value;
+	if (quotes) (*valueSize)--;
 	return true;
 }
 
@@ -632,7 +633,7 @@ static void config_read_properties(config_section_definition **currentSection, c
 static bool config_read_enum(void *dest, int destSize, const utf8 *key, int keySize, config_enum_definition *enumDefinitions)
 {
 	while (enumDefinitions->key != NULL) {
-		if (_strnicmp(enumDefinitions->key, key, keySize) == 0) {
+		if (strlen(enumDefinitions->key) == keySize && _strnicmp(enumDefinitions->key, key, keySize) == 0) {
 			memcpy(dest, &enumDefinitions->value.value_uint32, destSize);
 			return true;
 		}

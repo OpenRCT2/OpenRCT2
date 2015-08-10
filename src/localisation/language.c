@@ -51,11 +51,18 @@ enum {
 	RCT2_LANGUAGE_ID_END = 255
 };
 
-static TTFFontSetDescriptor TTFFontMingliu = {{
+static TTFFontSetDescriptor TTFFontMingLiu = {{
 	{ "msjh.ttc",		9,		-1,		-3,		6,		NULL },
 	{ "mingliu.ttc",	11,		1,		1,		12,		NULL },
 	{ "mingliu.ttc",	12,		1,		0,		12,		NULL },
 	{ "mingliu.ttc",	13,		1,		0,		20,		NULL },
+}};
+
+static TTFFontSetDescriptor TTFFontSimSun = {{
+	{ "msyh.ttc",		9,		-1,		-3,		6,		NULL },
+	{ "simsun.ttc",		11,		1,		-1,		14,		NULL },
+	{ "simsun.ttc",		12,		1,		-2,		14,		NULL },
+	{ "simsun.ttc",		13,		1,		0,		20,		NULL },
 }};
 
 const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
@@ -71,8 +78,8 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
 	{ "sv-SE",		"Swedish",					"Svenska",					"swedish",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_SWEDISH				},	// LANGUAGE_SWEDISH
 	{ "it-IT",		"Italian",					"Italiano",					"italian",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ITALIAN				},	// LANGUAGE_ITALIAN
 	{ "pt-BR",		"Portuguese (BR)",			"Portug\xC3\xAAs (BR)",		"portuguese_br",			FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_PORTUGESE				},	// LANGUAGE_PORTUGUESE_BR
-	{ "zh-Hant",	"Chinese (Traditional)",	"Chinese (Traditional)",	"chinese_traditional",		&TTFFontMingliu,		RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL	},	// LANGUAGE_CHINESE_TRADITIONAL
-	{ "zh-Hans",	"Chinese (Simplified)",		"Chinese (Simplified)",		"chinese_simplified",		&TTFFontMingliu,		RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED		},	// LANGUAGE_CHINESE_SIMPLIFIED
+	{ "zh-Hant",	"Chinese (Traditional)",	"Chinese (Traditional)",	"chinese_traditional",		&TTFFontMingLiu,		RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL	},	// LANGUAGE_CHINESE_TRADITIONAL
+	{ "zh-Hans",	"Chinese (Simplified)",		"Chinese (Simplified)",		"chinese_simplified",		&TTFFontSimSun,			RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED		},	// LANGUAGE_CHINESE_SIMPLIFIED
 	{ "fi-FI",		"Finnish",					"Suomi",					"finnish",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_FINNISH
 //	{ "kr-KR",		"Korean",					"Korean",					"english_uk",				"malgun.ttf",			RCT2_LANGUAGE_ID_KOREAN					},	// LANGUAGE_KOREAN
 };
