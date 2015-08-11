@@ -41,6 +41,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Alexander Overvoorde (Overv) - Misc.
 * (eezstreet) - Misc.
 * Thomas den Hollander (ThomasdenH) - Misc.
+* James Robertson (rd3k) - Misc.
 
 ## Bug fixes
 * (halfbro)
