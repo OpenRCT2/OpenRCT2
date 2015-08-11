@@ -3830,4 +3830,3 @@ STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Show recent messages
 STR_5488    :No entrance
-STR_5490    :Disable audio on focus loss
