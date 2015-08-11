@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../audio/audio.h"
 #include "../config.h"
 #include "../cursors.h"
 #include "../drawing/drawing.h"
@@ -351,6 +352,16 @@ void platform_process_messages()
 		case SDL_WINDOWEVENT:
 			if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
 				platform_resize(e.window.data1, e.window.data2);
+			if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
+				if (gConfigSound.sound) {
+					unpause_sounds();
+				}
+			}
+			if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
+				if (gConfigSound.sound) {
+					pause_sounds();
+				}
+			}
 			break;
 		case SDL_MOUSEMOTION:
 			RCT2_GLOBAL(0x0142406C, int) = e.motion.x;
