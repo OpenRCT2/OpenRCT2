@@ -352,13 +352,11 @@ void platform_process_messages()
 		case SDL_WINDOWEVENT:
 			if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
 				platform_resize(e.window.data1, e.window.data2);
-			if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
-				if (gConfigSound.sound) {
+			if (gConfigSound.audio_focus && gConfigSound.sound) {
+				if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
 					unpause_sounds();
 				}
-			}
-			if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
-				if (gConfigSound.sound) {
+				if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
 					pause_sounds();
 				}
 			}

@@ -105,6 +105,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_SOUND_DROPDOWN,
 	WIDX_SOUND_CHECKBOX,
 	WIDX_MUSIC_CHECKBOX,
+	WIDX_AUDIO_FOCUS_CHECKBOX,
 	WIDX_TITLE_MUSIC,
 	WIDX_TITLE_MUSIC_DROPDOWN,
 	WIDX_MASTER_VOLUME,
@@ -202,14 +203,15 @@ static rct_widget window_options_culture_widgets[] = {
 
 static rct_widget window_options_audio_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
-	{ WWT_DROPDOWN,			1,	10,		299,	53,		64,		865,			STR_NONE },	// audio device
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	54,		63,		876,			STR_NONE },
-	{ WWT_CHECKBOX,			1,	10,		229,	69,		80,		STR_SOUND,		STR_NONE },	// enable / disable sound
-	{ WWT_CHECKBOX,			1,	10,		229,	84,		95,		STR_MUSIC,		STR_NONE },	// enable / disable music
-	{ WWT_DROPDOWN,			1,	155,	299,	98,		109,	STR_NONE,		STR_NONE },	// title music
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	99,		108,	876,			STR_NONE },
-	{ WWT_SCROLL,			1,	155,	299,	68,		80,		1,				STR_NONE }, // master volume
-	{ WWT_SCROLL,			1,	155,	299,	83,		95,		1,				STR_NONE }, // music volume
+	{ WWT_DROPDOWN,			1,	10,		299,	53,		64,		865,					STR_NONE },	// audio device
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	54,		63,		876,					STR_NONE },
+	{ WWT_CHECKBOX,			1,	10,		229,	69,		80,		STR_SOUND,				STR_NONE },	// enable / disable sound
+	{ WWT_CHECKBOX,			1,	10,		229,	84,		95,		STR_MUSIC,				STR_NONE },	// enable / disable music
+	{ WWT_CHECKBOX,			1,	10,		229,	98,		110,	STR_AUDIO_FOCUS,		STR_NONE },	// enable / disable audio disabled on focus lost
+	{ WWT_DROPDOWN,			1,	155,	299,	112,	124,	STR_NONE,				STR_NONE },	// title music
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	113,	123,	876,					STR_NONE },
+	{ WWT_SCROLL,			1,	155,	299,	68,		80,		1,						STR_NONE }, // master volume
+	{ WWT_SCROLL,			1,	155,	299,	83,		95,		1,						STR_NONE }, // music volume
 	{ WIDGETS_END },
 };
 
@@ -372,6 +374,7 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_SOUND_DROPDOWN) |
 	(1 << WIDX_SOUND_CHECKBOX) |
 	(1 << WIDX_MUSIC_CHECKBOX) |
+	(1 << WIDX_AUDIO_FOCUS_CHECKBOX) |
 	(1 << WIDX_TITLE_MUSIC) |
 	(1 << WIDX_TITLE_MUSIC_DROPDOWN),
 
@@ -520,6 +523,11 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 			if (!gConfigSound.ride_music) {
 				stop_ride_music();
 			}
+			config_save_default();
+			window_invalidate(w);
+			break;
+		case WIDX_AUDIO_FOCUS_CHECKBOX:
+			gConfigSound.audio_focus = !gConfigSound.audio_focus;
 			config_save_default();
 			window_invalidate(w);
 			break;
@@ -1154,6 +1162,7 @@ static void window_options_invalidate(rct_window *w)
 
 		widget_set_checkbox_value(w, WIDX_SOUND_CHECKBOX, gConfigSound.sound);
 		widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music);
+		widget_set_checkbox_value(w, WIDX_AUDIO_FOCUS_CHECKBOX, gConfigSound.audio_focus);
 
 		if(w->frame_no == 0){ // initialize only on first frame, otherwise the scrollbars wont be able to be modified
 			widget = &window_options_audio_widgets[WIDX_MASTER_VOLUME];
@@ -1169,6 +1178,7 @@ static void window_options_invalidate(rct_window *w)
 		window_options_audio_widgets[WIDX_SOUND_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_audio_widgets[WIDX_SOUND_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_audio_widgets[WIDX_MUSIC_CHECKBOX].type = WWT_CHECKBOX;
+		window_options_audio_widgets[WIDX_AUDIO_FOCUS_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_audio_widgets[WIDX_TITLE_MUSIC].type = WWT_DROPDOWN;
 		window_options_audio_widgets[WIDX_TITLE_MUSIC_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_audio_widgets[WIDX_MASTER_VOLUME].type = WWT_SCROLL;
