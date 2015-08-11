@@ -29,7 +29,8 @@
 #include "../game.h"
 #include "../interface/themes.h"
 
-const int MAX_LAND_RIGHTS_SIZE = 64;
+static int _minimumSize = 1;
+static int _maximumSize = 64;
 
 enum WINDOW_WATER_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -121,10 +122,6 @@ void window_land_rights_open()
 
 static void window_land_rights_close(rct_window *w)
 {
-	//if (LandRightsMode)
-	//	hide_land_rights();
-	//else
-	//	hide_construction_rights();
 	// If the tool wasn't changed, turn tool off
 	if (!window_land_rights_should_close())
 		tool_cancel();
@@ -132,30 +129,20 @@ static void window_land_rights_close(rct_window *w)
 
 static void window_land_rights_mouseup(rct_window *w, int widgetIndex)
 {
-	int limit;
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
 		break;
 	case WIDX_DECREMENT:
-		// Decrement land tool size
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)--;
-		limit = 1;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) < limit)
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = limit;
+		// Decrement land rights tool size
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = max(_minimumSize, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)-1);
 
 		// Invalidate the window
 		window_invalidate(w);
 		break;
 	case WIDX_INCREMENT:
-		// Increment land tool size
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)++;
-
-		limit = MAX_LAND_RIGHTS_SIZE;
-		
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > limit)
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = limit;
+		// Decrement land rights tool size
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = min(_maximumSize, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)+1);
 
 		// Invalidate the window
 		window_invalidate(w);
@@ -192,8 +179,8 @@ static void window_land_rights_textinput(rct_window *w, int widgetIndex, char *t
 
 	size = strtol(text, &end, 10);
 	if (*end == '\0') {
-		if (size < 1) size = 1;
-		if (size > MAX_LAND_RIGHTS_SIZE) size = MAX_LAND_RIGHTS_SIZE;
+		size = max(_minimumSize,size);
+		size = min(_maximumSize,size);
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
 		window_invalidate(w);
 	}
@@ -201,8 +188,8 @@ static void window_land_rights_textinput(rct_window *w, int widgetIndex, char *t
 
 static void window_land_rights_inputsize(rct_window *w)
 {
-	((uint16*)TextInputDescriptionArgs)[0] = 1;
-	((uint16*)TextInputDescriptionArgs)[1] = MAX_LAND_RIGHTS_SIZE;
+	((uint16*)TextInputDescriptionArgs)[0] = _minimumSize;
+	((uint16*)TextInputDescriptionArgs)[1] = _maximumSize;
 	window_text_input_open(w, WIDX_PREVIEW, 5128, 5129, STR_NONE, STR_NONE, 3);
 }
 
@@ -235,7 +222,7 @@ static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + (window_land_rights_widgets[WIDX_PREVIEW].top + window_land_rights_widgets[WIDX_PREVIEW].bottom) / 2;
 
 	window_draw_widgets(w, dpi);
-	// FEATURE larger land tool size support
+	// Draw number for tool sizes bigger than 7
 	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > 7) {
 		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, 0, &RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16));
 	}
