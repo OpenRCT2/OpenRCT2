@@ -63,6 +63,8 @@ static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_land_textinput(rct_window *w, int widgetIndex, char *text);
 static void window_land_inputsize(rct_window *w);
 
+static int _minimumSize = 0;
+static int _maximumSize = 64;
 
 static rct_window_event_list window_land_events = {
 	window_land_close,
@@ -165,36 +167,20 @@ static void window_land_close(rct_window *w)
  */
 static void window_land_mouseup(rct_window *w, int widgetIndex)
 {
-	int limit;
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
 		break;
 	case WIDX_DECREMENT:
 		// Decrement land tool size
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)--;
-
-		// FEATURE: minimum size is always 0
-		limit = 0;
-		// limit = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2 ? 0 : 1);
-
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) < limit)
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = limit;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = max(_minimumSize, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)-1);
 
 		// Invalidate the window
 		window_invalidate(w);
 		break;
 	case WIDX_INCREMENT:
 		// Increment land tool size
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)++;
-
-		// FEATURE: maximum size is 64
-		limit = 64;
-		// limit = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2 ? 7 : 5);
-		
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > limit)
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = limit;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = min(_maximumSize, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)+1);
 
 		// Invalidate the window
 		window_invalidate(w);
@@ -312,17 +298,18 @@ static void window_land_textinput(rct_window *w, int widgetIndex, char *text)
 
 	size = strtol(text, &end, 10);
 	if (*end == '\0') {
-		if (size < 0) size = 0;
-		if (size > 64) size = 64;
+		size = max(_minimumSize,size);
+		size = min(_maximumSize,size);
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
+
 		window_invalidate(w);
 	}
 }
 
 static void window_land_inputsize(rct_window *w)
 {
-	((uint16*)TextInputDescriptionArgs)[0] = 0;
-	((uint16*)TextInputDescriptionArgs)[1] = 64;
+	((uint16*)TextInputDescriptionArgs)[0] = _minimumSize;
+	((uint16*)TextInputDescriptionArgs)[1] = _maximumSize;
 	window_text_input_open(w, WIDX_PREVIEW, 5128, 5129, STR_NONE, STR_NONE, 3);
 }
 
@@ -354,6 +341,7 @@ static void window_land_invalidate(rct_window *w)
 
 	window_land_widgets[WIDX_FLOOR].image = SPR_FLOOR_TEXTURE_GRASS + _selectedFloorTexture;
 	window_land_widgets[WIDX_WALL].image = SPR_WALL_TEXTURE_ROCK + _selectedWallTexture;
+	// Update the preview image (for tool sizes up to 7)
 	window_land_widgets[WIDX_PREVIEW].image = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) <= 7 ?
 		SPR_LAND_TOOL_SIZE_0 + RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) :
 		0xFFFFFFFF;
@@ -373,7 +361,7 @@ static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = w->x + (window_land_widgets[WIDX_PREVIEW].left + window_land_widgets[WIDX_PREVIEW].right) / 2;
 	y = w->y + (window_land_widgets[WIDX_PREVIEW].top + window_land_widgets[WIDX_PREVIEW].bottom) / 2;
 
-	// FEATURE larger land tool size support
+	// Draw number for tool sizes bigger than 7
 	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > 7) {
 		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, 0, &RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16));
 	}
