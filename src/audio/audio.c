@@ -1423,7 +1423,7 @@ int get_dsound_devices()
 int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z)
 {
 	int result = 0;
-	if (gConfigSound.sound) {
+	if (!gGameSoundsOff) {
 		RCT2_GLOBAL(0x00F438AD, uint8) = 0;
 		int volume = 0;
 		if (ebx == 0x8001) {
@@ -1557,7 +1557,7 @@ void start_title_music()
 		break;
 	}
 
-	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) && gConfigSound.sound
+	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) && !gGameSoundsOff
 			&& RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
 		if (!RCT2_GLOBAL(0x009AF600, uint8)) {
 #ifdef USE_MIXER
