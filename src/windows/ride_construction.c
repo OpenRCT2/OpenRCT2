@@ -1139,7 +1139,7 @@ static void window_ride_construction_resize(rct_window *w)
 			disabledWidgets |= (1ULL << WIDX_CONSTRUCT);
 		}
 	}
-	if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIATIES)) {
+	if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES)) {
 		disabledWidgets &= ~(1ULL << WIDX_BANKING_GROUPBOX);
 	}
 	if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT || _rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED) {
@@ -2879,7 +2879,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
 			window_ride_construction_widgets[WIDX_BANK_STRAIGHT].type = WWT_FLATBTN;
 			window_ride_construction_widgets[WIDX_BANK_RIGHT].type = WWT_FLATBTN;
 		}
-		if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIATIES)) {
+		if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES)) {
 			if (rideType == RIDE_TYPE_WATER_COASTER) {
 				window_ride_construction_widgets[WIDX_U_TRACK].image = 5158;
 				window_ride_construction_widgets[WIDX_O_TRACK].image = 5159;
@@ -3061,7 +3061,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
 	pressedWidgets |= (1ULL << widgetIndex);
 
 	if (RCT2_GLOBAL(0x00F440D3, uint8) == 0) {
-		if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIATIES)) {
+		if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES)) {
 			if (_currentTrackCovered & 1) {
 				w->pressed_widgets |= (1ULL << WIDX_O_TRACK);
 			} else {
