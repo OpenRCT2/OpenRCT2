@@ -180,6 +180,7 @@ typedef struct {
 	uint8 title_music;
 	uint8 sound;
 	uint8 ride_music;
+	uint8 audio_focus;
 	uint8 master_volume;
 	uint8 music_volume;
 	utf8string device;

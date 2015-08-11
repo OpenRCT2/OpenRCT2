@@ -2025,6 +2025,8 @@ enum {
 
 	STR_TRACKED_GUESTS_ONLY_TIP = 5489,
 
+	STR_AUDIO_FOCUS = 5490,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
