@@ -1641,7 +1641,7 @@ int ride_modify(rct_xy_element *input)
 	if (ride->type == RIDE_TYPE_MAZE)
 		return ride_modify_maze(mapElement.element, mapElement.x, mapElement.y);
 
-	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_8)) {
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS)) {
 		if (ride_find_track_gap(&mapElement, &endOfTrackElement))
 			mapElement = endOfTrackElement;
 	}
