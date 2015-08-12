@@ -554,6 +554,13 @@ void window_editor_inventions_list_open()
  */
 static void window_editor_inventions_list_close(rct_window *w)
 {
+	// When used in-game (as a cheat)
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR)) {
+		gSilentResearch = true;
+		sub_684AC3();
+		gSilentResearch = false;
+	}
+
 	sub_685A79();
 }
 
