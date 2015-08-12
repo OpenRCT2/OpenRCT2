@@ -27,7 +27,7 @@
 #include "../world/map.h"
 #include "../interface/themes.h"
 
-#define MINIMUM_TOOL_SIZE 0
+#define MINIMUM_TOOL_SIZE 1
 #define MAXIMUM_TOOL_SIZE 64
 
 enum WINDOW_WATER_WIDGET_IDX {

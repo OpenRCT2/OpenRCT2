@@ -27,7 +27,7 @@
 #include "../interface/window.h"
 #include "../interface/themes.h"
 
-#define MINIMUM_TOOL_SIZE 0
+#define MINIMUM_TOOL_SIZE 1
 #define MAXIMUM_TOOL_SIZE 64
 
 enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
