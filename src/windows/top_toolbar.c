@@ -100,7 +100,9 @@ typedef enum {
 typedef enum {
 	DDIDX_CONSOLE = 0,
 	DDIDX_TILE_INSPECTOR = 1,
-	DDIDX_OBJECT_SELECTION = 2
+	DDIDX_OBJECT_SELECTION = 2,
+	DDIDX_INVENTIONS_LIST = 3,
+	DDIDX_SCENARIO_OPTIONS = 4
 } TOP_TOOLBAR_DEBUG_DDIDX;
 
 enum {
@@ -2845,6 +2847,8 @@ void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget) {
 	gDropdownItemsFormat[0] = STR_DEBUG_DROPDOWN_CONSOLE;
 	gDropdownItemsFormat[1] = STR_DEBUG_DROPDOWN_TILE_INSPECTOR;
 	gDropdownItemsFormat[2] = STR_DEBUG_DROPDOWN_OBJECT_SELECTION;
+	gDropdownItemsFormat[3] = STR_DEBUG_DROPDOWN_INVENTIONS_LIST;
+	gDropdownItemsFormat[4] = STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS;
 
 	window_dropdown_show_text(
 		w->x + widget->left,
@@ -2852,7 +2856,7 @@ void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget) {
 		widget->bottom - widget->top + 1,
 		w->colours[1] | 0x80,
 		0,
-		3
+		5
 	);
 
 	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
@@ -2872,6 +2876,12 @@ void top_toolbar_debug_menu_dropdown(short dropdownIndex) {
 		case DDIDX_OBJECT_SELECTION:
 			window_close_all();
 			window_editor_object_selection_open();
+			break;
+		case DDIDX_INVENTIONS_LIST:
+			window_editor_inventions_list_open();
+			break;
+		case DDIDX_SCENARIO_OPTIONS:
+			window_editor_scenario_options_open();
 			break;
 		}
 	}
