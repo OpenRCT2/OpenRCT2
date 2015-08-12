@@ -29,8 +29,8 @@
 #include "../game.h"
 #include "../interface/themes.h"
 
-static int _minimumSize = 1;
-static int _maximumSize = 64;
+#define MINIMUM_TOOL_SIZE 0
+#define MAXIMUM_TOOL_SIZE 64
 
 enum WINDOW_WATER_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -135,14 +135,14 @@ static void window_land_rights_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_DECREMENT:
 		// Decrement land rights tool size
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = max(_minimumSize, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)-1);
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = max(MINIMUM_TOOL_SIZE, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)-1);
 
 		// Invalidate the window
 		window_invalidate(w);
 		break;
 	case WIDX_INCREMENT:
 		// Decrement land rights tool size
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = min(_maximumSize, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)+1);
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = min(MAXIMUM_TOOL_SIZE, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)+1);
 
 		// Invalidate the window
 		window_invalidate(w);
@@ -179,8 +179,8 @@ static void window_land_rights_textinput(rct_window *w, int widgetIndex, char *t
 
 	size = strtol(text, &end, 10);
 	if (*end == '\0') {
-		size = max(_minimumSize,size);
-		size = min(_maximumSize,size);
+		size = max(MINIMUM_TOOL_SIZE,size);
+		size = min(MAXIMUM_TOOL_SIZE,size);
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
 		window_invalidate(w);
 	}
@@ -188,8 +188,8 @@ static void window_land_rights_textinput(rct_window *w, int widgetIndex, char *t
 
 static void window_land_rights_inputsize(rct_window *w)
 {
-	((uint16*)TextInputDescriptionArgs)[0] = _minimumSize;
-	((uint16*)TextInputDescriptionArgs)[1] = _maximumSize;
+	((uint16*)TextInputDescriptionArgs)[0] = MINIMUM_TOOL_SIZE;
+	((uint16*)TextInputDescriptionArgs)[1] = MAXIMUM_TOOL_SIZE;
 	window_text_input_open(w, WIDX_PREVIEW, 5128, 5129, STR_NONE, STR_NONE, 3);
 }
 
