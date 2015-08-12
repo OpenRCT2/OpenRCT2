@@ -27,6 +27,9 @@
 #include "../interface/window.h"
 #include "../interface/themes.h"
 
+#define MINIMUM_TOOL_SIZE 1
+#define MAXIMUM_TOOL_SIZE 64
+
 enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
@@ -52,7 +55,6 @@ rct_widget window_clear_scenery_widgets[] = {
 	{ WIDGETS_END },
 };
 
-
 static int window_clear_scenery_should_close();
 
 static void window_clear_scenery_close(rct_window *w);
@@ -62,9 +64,6 @@ static void window_clear_scenery_invalidate(rct_window *w);
 static void window_clear_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_clear_scenery_textinput(rct_window *w, int widgetIndex, char *text);
 static void window_clear_scenery_inputsize(rct_window *w);
-
-static int _minimumSize = 1;
-static int _maximumSize = 64;
 
 static rct_window_event_list window_clear_scenery_events = {
 	window_clear_scenery_close,
@@ -148,14 +147,14 @@ static void window_clear_scenery_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_DECREMENT:
 		// Decrement land tool size, if it stays within the limit
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = max(_minimumSize,RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)-1);
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = max(MINIMUM_TOOL_SIZE,RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)-1);
 
 		// Invalidate the window
 		window_invalidate(w);
 		break;
 	case WIDX_INCREMENT:
 		// Increment land tool size, if it stays within the limit
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = min(_maximumSize,RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)+1);
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = min(MAXIMUM_TOOL_SIZE,RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)+1);
 
 		// Invalidate the window
 		window_invalidate(w);
@@ -188,8 +187,8 @@ static void window_clear_scenery_textinput(rct_window *w, int widgetIndex, char 
 
 	size = strtol(text, &end, 10);
 	if (*end == '\0') {
-		size=max(_minimumSize,size);
-		size=min(_maximumSize,size);
+		size=max(MINIMUM_TOOL_SIZE,size);
+		size=min(MAXIMUM_TOOL_SIZE,size);
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
 		window_invalidate(w);
 	}
@@ -197,8 +196,8 @@ static void window_clear_scenery_textinput(rct_window *w, int widgetIndex, char 
 
 static void window_clear_scenery_inputsize(rct_window *w)
 {
-	((uint16*)TextInputDescriptionArgs)[0] = _minimumSize;
-	((uint16*)TextInputDescriptionArgs)[1] = _maximumSize;
+	((uint16*)TextInputDescriptionArgs)[0] = MINIMUM_TOOL_SIZE;
+	((uint16*)TextInputDescriptionArgs)[1] = MAXIMUM_TOOL_SIZE;
 	window_text_input_open(w, WIDX_PREVIEW, 5128, 5129, STR_NONE, STR_NONE, 3);
 }
 
