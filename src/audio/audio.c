@@ -1714,7 +1714,8 @@ void audio_init1()
 			}
 		}
 		m++;
-	} while(m + 1 < 0x2E);
+	// 46 is the number of files in ride_music_info_list
+	} while(m + 1 < 46);
 }
 
 /**

@@ -820,7 +820,7 @@ void config_apply_to_old_addresses()
  *  Reads the config file data/config.cfg
  *  rct2: 0x006752D5
  */
-void config_dat_load()
+/*void config_dat_load()
 {
 	FILE *fp=NULL;
 
@@ -898,13 +898,13 @@ void config_dat_load()
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS, sint8) = 1;
-}
+}*/
 
 /**
  *  Save configuration to the data/config.cfg file
  *  rct2: 0x00675487
  */
-void config_dat_save()
+/*void config_dat_save()
 {
 	FILE *fp = fopen(get_file_path(PATH_ID_GAMECFG), "wb");
 	if (fp != NULL){
@@ -912,7 +912,7 @@ void config_dat_save()
 		fwrite((void*)0x009AAC5C, 2155, 1, fp);
 		fclose(fp);
 	}
-}
+}*/
 
 #pragma endregion
 
