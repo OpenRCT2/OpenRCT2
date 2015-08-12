@@ -188,7 +188,7 @@ void finance_init() {
 
 	RCT2_GLOBAL(0x013587D8, uint16) = 0x3F;
 
-	sub_69E869();
+	finance_mark_loan_settings_as_legitimate();
 }
 
 /**
@@ -243,9 +243,9 @@ void finance_update_daily_profit()
 	window_invalidate_by_class(WC_FINANCES);
 }
 
-void sub_69E869()
+// This subroutine is used to mark loan changes as 'legitimate', to prevent cheat detection from incorrectly interfering
+void finance_mark_loan_settings_as_legitimate()
 {
-	// This subroutine is loan related and is used for cheat detection
 	sint32 value = 0x70093A;
 	value -= RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32);
 	value = ror32(value, 5);
@@ -314,7 +314,7 @@ void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* 
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = newLoan;
 		RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = money;
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(money);
-		sub_69E869();
+		finance_mark_loan_settings_as_legitimate();
 
 		window_invalidate_by_class(WC_FINANCES);
 		RCT2_GLOBAL(0x009A9804, uint16) |= 1;
