@@ -33,6 +33,9 @@
 #include "../world/scenery.h"
 #include "error.h"
 
+#define MINIMUM_TOOL_SIZE 1
+#define MAXIMUM_TOOL_SIZE 64
+
 enum {
 	PAGE_PEEPS,
 	PAGE_RIDES
@@ -221,6 +224,9 @@ void window_map_open()
 	window_map_init_map();
 	RCT2_GLOBAL(0x00F64F05, uint8) = 0;
 	window_map_center_on_view_point();
+
+	// Reset land tool size
+	RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 }
 
 /**
@@ -235,9 +241,6 @@ static void window_map_close(rct_window *w)
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, uint16) == w->number) {
 		tool_cancel();
 	}
-
-	// Reset land tool size
-	RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 0;
 }
 
 /**
@@ -246,9 +249,6 @@ static void window_map_close(rct_window *w)
  */
 static void window_map_mouseup(rct_window *w, int widgetIndex)
 {
-	// Maximum land ownership tool size
-	int landToolSizeLimit;
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
@@ -257,8 +257,6 @@ static void window_map_mouseup(rct_window *w, int widgetIndex)
 		window_invalidate(w);
 		if (tool_set(w, widgetIndex, 2))
 			break;
-
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 		RCT2_GLOBAL(0xF1AD61, sint8) = 2;
 		show_gridlines();
 		show_land_rights();
@@ -297,20 +295,14 @@ static void window_map_mouseup(rct_window *w, int widgetIndex)
 		window_invalidate(w);
 		break;
 	case WIDX_LAND_TOOL_SMALLER:
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)--;
-		landToolSizeLimit = 1;
-
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) < landToolSizeLimit)
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = landToolSizeLimit;
+		// Decrement land ownership tool size
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = max(MINIMUM_TOOL_SIZE, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)-1);
 
 		window_invalidate(w);
 		break;
 	case WIDX_LAND_TOOL_LARGER:
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)++;
-		landToolSizeLimit = 64;
-
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > landToolSizeLimit)
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = landToolSizeLimit;
+		// Increment land ownership tool size
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = min(MAXIMUM_TOOL_SIZE, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)+1);
 
 		window_invalidate(w);
 		break;
@@ -385,11 +377,6 @@ static void window_map_mousedown(int widgetIndex, rct_window *w, rct_widget *wid
 		break;
 	case WIDX_MAP_SIZE_SPINNER_DOWN:
 		map_window_decrease_map_size();
-		break;
-	case WIDX_SET_LAND_RIGHTS:
-		// When unselecting the land rights tool, reset the size so the number doesn't
-		// stay in the map window.
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 		break;
 	}
 }
@@ -615,8 +602,8 @@ static void window_map_textinput(rct_window *w, int widgetIndex, char *text)
 	case WIDX_LAND_TOOL:
 		size = strtol(text, &end, 10);
 		if (*end == '\0') {
-			if (size < 1) size = 1;
-			if (size > 64) size = 64;
+			size = max(MINIMUM_TOOL_SIZE,size);
+			size = min(MAXIMUM_TOOL_SIZE,size);
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
 			window_invalidate(w);
 		}
@@ -940,8 +927,8 @@ static void window_map_show_default_scenario_editor_buttons(rct_window *w) {
 
 static void window_map_inputsize_land(rct_window *w)
 {
-	((uint16*)TextInputDescriptionArgs)[0] = 1;
-	((uint16*)TextInputDescriptionArgs)[1] = 64;
+	((uint16*)TextInputDescriptionArgs)[0] = MINIMUM_TOOL_SIZE;
+	((uint16*)TextInputDescriptionArgs)[1] = MAXIMUM_TOOL_SIZE;
 	window_text_input_open(w, WIDX_LAND_TOOL, 5128, 5129, STR_NONE, STR_NONE, 3);
 }
 
