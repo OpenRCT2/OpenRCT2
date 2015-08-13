@@ -485,7 +485,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) < MONEY(1000000,00)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) += MONEY(500,00);
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32));
-			finance_mark_loan_settings_as_legitimate();
+			finance_update_loan_hash();
 		} else {
 			window_error_open(3248, STR_NONE);
 		}
@@ -495,7 +495,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) > MONEY(0,00)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) -= MONEY(500,00);
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32));
-			finance_mark_loan_settings_as_legitimate();
+			finance_update_loan_hash();
 		} else {
 			window_error_open(3249, STR_NONE);
 		}
@@ -505,7 +505,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) < MONEY(5000000,00)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) += MONEY(1000,00);
 			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = max(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32), RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
-			finance_mark_loan_settings_as_legitimate();
+			finance_update_loan_hash();
 		} else {
 			window_error_open(3250, STR_NONE);
 		}
@@ -515,7 +515,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) > MONEY(0,00)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) -= MONEY(1000,00);
 			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = max(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32), RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
-			finance_mark_loan_settings_as_legitimate();
+			finance_update_loan_hash();
 		} else {
 			window_error_open(3251, STR_NONE);
 		}
@@ -525,7 +525,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) < MONEY(5000000,00)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) += MONEY(1000,00);
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = min(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32), RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
-			finance_mark_loan_settings_as_legitimate();
+			finance_update_loan_hash();
 		} else {
 			window_error_open(3252, STR_NONE);
 		}
@@ -535,7 +535,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) > MONEY(0,00)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) -= MONEY(1000,00);
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = min(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32), RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
-			finance_mark_loan_settings_as_legitimate();
+			finance_update_loan_hash();
 		} else {
 			window_error_open(3253, STR_NONE);
 		}
