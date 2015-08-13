@@ -3821,3 +3821,5 @@ STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Recente berichten tonen
 STR_5488    :Geen ingang
+STR_5489    :{SMALLFONT}{BLACK}Enkel bezoekers die gevolgd worden weergeven
+STR_5490    :Geluid dempen bij focusverlies

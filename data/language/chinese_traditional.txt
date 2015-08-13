@@ -1732,7 +1732,7 @@ STR_1726    :土地不供購買!
 STR_1727    :建造權不供購買!
 STR_1728    :不能在此購買建造權...
 STR_1729    :土地不是由樂園所擁有!
-STR_1730    :{RED}Closed - - 
+STR_1730    :{RED}已關閉 - - 
 STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :建造
 STR_1733    :模式
@@ -3826,3 +3826,7 @@ STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}顯示最近消息
 STR_5488    :隱藏入口
+STR_5489    :{SMALLFONT}{BLACK}只顯示追蹤中的遊客
+STR_5490    :失去焦點時靜音
+STR_5491    :研發列表
+STR_5492    :劇情選項

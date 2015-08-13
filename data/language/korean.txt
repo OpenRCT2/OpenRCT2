@@ -3,97 +3,97 @@
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
-STR_0002    :Spiral Roller Coaster
-STR_0003    :Stand-up Roller Coaster
-STR_0004    :Suspended Swinging Coaster
-STR_0005    :Inverted Roller Coaster
-STR_0006    :Junior Roller Coaster
-STR_0007    :Miniature Railroad
-STR_0008    :Monorail
-STR_0009    :Mini Suspended Coaster
-STR_0010    :Boat Hire
-STR_0011    :Wooden Wild Mouse
-STR_0012    :Steeplechase
-STR_0013    :Car Ride
-STR_0014    :Launched Freefall
-STR_0015    :Bobsled Coaster
-STR_0016    :Observation Tower
-STR_0017    :Looping Roller Coaster
-STR_0018    :Dinghy Slide
-STR_0019    :Mine Train Coaster
-STR_0020    :Chairlift
-STR_0021    :Corkscrew Roller Coaster
-STR_0022    :Maze
-STR_0023    :Spiral Slide
-STR_0024    :Go Karts
-STR_0025    :Log Flume
-STR_0026    :River Rapids
-STR_0027    :Bumper Cars
-STR_0028    :Pirate Ship
-STR_0029    :Swinging Inverter Ship
-STR_0030    :Food Stall
-STR_0031    :Unknown Stall (1D)
-STR_0032    :Drink Stall
-STR_0033    :Unknown Stall (1F)
-STR_0034    :Shop
-STR_0035    :Carousel
-STR_0036    :Unknown Stall (22)
-STR_0037    :Information Kiosk
-STR_0038    :Restroom
-STR_0039    :Ferris Wheel
-STR_0040    :Motion Simulator
-STR_0041    :3D Theater
-STR_0042    :Top Spin
-STR_0043    :Space Rings
-STR_0044    :Reverse Freefall Coaster
-STR_0045    :Elevator
-STR_0046    :Vertical Drop Roller Coaster
-STR_0047    :ATM
-STR_0048    :Twist
-STR_0049    :Haunted House
-STR_0050    :First Aid Room
-STR_0051    :Circus Show
-STR_0052    :Tunnel Of Horror
-STR_0053    :Steel Twister Roller Coaster
-STR_0054    :Wooden Roller Coaster
-STR_0055    :Side-Friction Roller Coaster
-STR_0056    :Wild Mouse
-STR_0057    :Multi-Dimension Roller Coaster
-STR_0058    :Unknown Ride (38)
-STR_0059    :Flying Roller Coaster
-STR_0060    :Unknown Ride (3A)
-STR_0061    :Virginia Reel
-STR_0062    :Splash Boats
-STR_0063    :Mini Helicopters
-STR_0064    :Lay-down Roller Coaster
-STR_0065    :Suspended Monorail
-STR_0066    :Unknown Ride (40)
-STR_0067    :Reverser Roller Coaster
-STR_0068    :Heartline Twister Coaster
-STR_0069    :Mini Golf
-STR_0070    :Giga Coaster
-STR_0071    :Roto-Drop
-STR_0072    :Flying Saucers
-STR_0073    :Crooked House
-STR_0074    :Monorail Cycles
-STR_0075    :Compact Inverted Coaster
-STR_0076    :Water Coaster
-STR_0077    :Air Powered Vertical Coaster
-STR_0078    :Inverted Hairpin Coaster
-STR_0079    :Magic Carpet
-STR_0080    :Submarine Ride
-STR_0081    :River Rafts
-STR_0082    :Unknown Ride (50)
-STR_0083    :Enterprise
-STR_0084    :Unknown Ride (52)
-STR_0085    :Unknown Ride (53)
-STR_0086    :Unknown Ride (54)
-STR_0087    :Unknown Ride (55)
-STR_0088    :Inverted Impulse Coaster
-STR_0089    :Mini Roller Coaster
-STR_0090    :Mine Ride
-STR_0091    :Unknown Ride (59)
-STR_0092    :LIM Launched Roller Coaster
+STR_0002    :스파이럴 롤러코스터
+STR_0003    :스탠드업 롤러코스터
+STR_0004    :서스펜디드 스윙잉 코스터
+STR_0005    :인버티드 롤러코스터
+STR_0006    :주니어 롤러코스터
+STR_0007    :미니어처 레일웨이
+STR_0008    :모노레일
+STR_0009    :미니 서스펜디드 롤러코스터
+STR_0010    :보트 라이드
+STR_0011    :우든 와일드 마우스
+STR_0012    :스티플체이스
+STR_0013    :카 라이드
+STR_0014    :런치드 프리폴
+STR_0015    :봅슬레이 코스터
+STR_0016    :전망탑
+STR_0017    :루핑 롤러코스터
+STR_0018    :디니 슬라이드
+STR_0019    :마인 트레인 코스터
+STR_0020    :체어리프트
+STR_0021    :코르크스크류 롤러코스터
+STR_0022    :미로
+STR_0023    :나선 미끄럼틀
+STR_0024    :고 카트
+STR_0025    :통나무 수로
+STR_0026    :리버 래피드
+STR_0027    :범퍼카
+STR_0028    :바이킹
+STR_0029    :360도 바이킹
+STR_0030    :음식 상점
+STR_0031    :알 수 없는 상점 (1D)
+STR_0032    :음료수 상점
+STR_0033    :알 수 없는 상점 (1F)
+STR_0034    :상점
+STR_0035    :회전목마
+STR_0036    :알 수 없는 상점 (22)
+STR_0037    :안내소
+STR_0038    :화장실
+STR_0039    :관람차
+STR_0040    :모션 시뮬레이터
+STR_0041    :3D 영화관
+STR_0042    :톱 스핀
+STR_0043    :스페이스 링
+STR_0044    :리버스 프리폴 코스터
+STR_0045    :리프트
+STR_0046    :버티컬 드롭 롤러코스터
+STR_0047    :현금 지급기
+STR_0048    :트위스트
+STR_0049    :귀신의 집
+STR_0050    :응급 치료소
+STR_0051    :서커스 쇼
+STR_0052    :고스트 트레인
+STR_0053    :스틸 트위스터 롤러코스터
+STR_0054    :우든 롤러코스터
+STR_0055    :사이드 프릭션 롤러코스터
+STR_0056    :와일드 마우스
+STR_0057    :멀티 디멘션 롤러코스터
+STR_0058    :알 수 없는 놀이기구 (38)
+STR_0059    :플라잉 롤러코스터
+STR_0060    :알 수 없는 놀이기구 (3A)
+STR_0061    :버지니아 릴
+STR_0062    :스플래시 보트
+STR_0063    :미니 헬리콥터
+STR_0064    :레이 다운 롤러코스터
+STR_0065    :서스펜디드 모노레일
+STR_0066    :알 수 없는 놀이기구 (40)
+STR_0067    :리버서 롤러코스터
+STR_0068    :하트라인 트위스터 코스터
+STR_0069    :미니 골프
+STR_0070    :기가 코스터
+STR_0071    :자이로드롭
+STR_0072    :플라잉 사우서
+STR_0073    :이상한 집
+STR_0074    :모노레일 사이클
+STR_0075    :컴팩트 인버티드 코스터
+STR_0076    :워터 코스터
+STR_0077    :에어 파워드 버티컬 코스터
+STR_0078    :인버티드 헤어핀 코스터
+STR_0079    :마술 양탄자
+STR_0080    :서브마린 라이드
+STR_0081    :리버 래프트
+STR_0082    :알 수 없는 놀이기구 (50)
+STR_0083    :엔터프라이즈
+STR_0084    :알 수 없는 놀이기구 (52)
+STR_0085    :알 수 없는 놀이기구 (53)
+STR_0086    :알 수 없는 놀이기구 (54)
+STR_0087    :알 수 없는 놀이기구 (55)
+STR_0088    :인버티트 임펄스 코스터
+STR_0089    :미니 롤러코스터
+STR_0090    :마인 라이드
+STR_0091    :알 수 없는 놀이기구 (59)
+STR_0092    :LIM 런치드 롤러코스터
 STR_0093    :
 STR_0094    :
 STR_0095    :
@@ -513,31 +513,31 @@ STR_0508    :
 STR_0509    :
 STR_0510    :
 STR_0511    :
-STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
-STR_0513    :A looping roller coaster where the riders ride in a standing position
-STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
-STR_0515    :A steel roller coaster with trains that are held beneath the track, with many complex and twisting track elements
-STR_0516    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
-STR_0517    :Passengers ride in miniature trains along a narrow-gauge railway track
+STR_0512    :컴팩트 롤러코스터 with a spiral lift hill and smooth, twisting drops.
+STR_0513    :루핑 롤러코스터 where the 라이더 라이드 in a standing position
+STR_0514    :Trains 서스펜디드 beneath the 롤러코스터 track swing out to the side around corners
+STR_0515    :A steel 롤러코스터 with trains that are held beneath the track, with many complex and twisting track elements
+STR_0516    :A gentle 롤러코스터 for people who haven't yet got the courage to face the larger 라이드s
+STR_0517    :Passengers 라이드 in 미니ature trains along a narrow-gauge railway track
 STR_0518    :Passengers travel in electric trains along a monorail track
-STR_0519    :Passengers ride in small cars hanging beneath the single-rail track, swinging freely from side to side around corners
-STR_0520    :A dock platform where guests can drive/row personal watercraft on a body of water
-STR_0521    :A fast and twisting roller coaster with tight turns and steep drops. Intensity is bound to be high.
-STR_0522    :A smaller roller coaster where the riders sit above the track with no car around them
-STR_0523    :Riders travel slowly in powered vehicles along a track-based route
+STR_0519    :Passengers 라이드 in small cars hanging beneath the single-rail track, swinging freely from side to side around corners
+STR_0520    :A dock platform where 손님s can drive/row personal watercraft on a body of water
+STR_0521    :A fast and twisting 롤러코스터 with tight turns and steep drops. Intensity is bound to be high.
+STR_0522    :A smaller 롤러코스터 where the 라이더 sit above the track with no car around them
+STR_0523    :라이더 travel slowly in powered vehicles along a track-based route
 STR_0524    :Freefall car is pneumatically launched up a tall steel tower and then allowed to freefall down
-STR_0525    :Riders career down a twisting track guided only by the curvature and banking of the semi-circular track
+STR_0525    :라이더 career down a twisting track guided only by the curvature and banking of the semi-circular track
 STR_0526    :Passengers travel in a rotating observation cabin which travels up a tall tower
-STR_0527    :A smooth steel-tracked roller coaster capable of vertical loops
-STR_0528    :Riders travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
-STR_0529    :Mine train themed roller coaster trains career along steel roller coaster track made to look like old railway track
-STR_0530    :Cars hang from a steel cable which runs continuously from one end of the ride to the other and back again
-STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
+STR_0527    :A smooth steel-tracked 롤러코스터 capable of vertical loops
+STR_0528    :라이더 travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
+STR_0529    :Mine train themed 롤러코스터 trains career along steel 롤러코스터 track made to look like old railway track
+STR_0530    :Cars hang from a steel cable which runs continuously from one end of the 라이드 to the other and back again
+STR_0531    :A compact steel-tracked 롤러코스터 where the train travels through corkscrews and loops
 STR_0532    :
 STR_0533    :
 STR_0534    :Self-drive petrol-engined go karts
-STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
-STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
+STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the 라이더
+STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling 라이더 through foaming rapids
 STR_0537    :
 STR_0538    :
 STR_0539    :
@@ -556,42 +556,42 @@ STR_0551    :
 STR_0552    :
 STR_0553    :
 STR_0554    :The car is accelerated out of the station along a long level track using Linear Induction Motors, then heads straight up a vertical spike of track, freefalling back down to return to the station
-STR_0555    :Guests ride in an elevator up or down a vertical tower to get from one level to another
-STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
+STR_0555    :손님s 라이드 in an elevator up or down a vertical tower to get from one level to another
+STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall 롤러코스터 experience
 STR_0557    :
 STR_0558    :
 STR_0559    :
 STR_0560    :
 STR_0561    :
 STR_0562    :Powered cars travel along a multi-level track past spooky scenery and special effects
-STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
-STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
-STR_0565    :A simple wooden roller coaster capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
-STR_0566    :Individual roller coaster cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
-STR_0567    :Sitting in seats suspended either side of the track, riders are pitched head-over-heels while they plunge down steep drops and travel through various inversions
+STR_0563    :Sitting in comfortable trains with only simple lap restraints 라이더 enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
+STR_0564    :Running on 우든 track, this 코스터 is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
+STR_0565    :A simple 우든 롤러코스터 capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
+STR_0566    :Individual 롤러코스터 cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
+STR_0567    :Sitting in seats 서스펜디드 either side of the track, 라이더 are pitched head-over-heels while they plunge down steep drops and travel through various inversions
 STR_0568    :
-STR_0569    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air
+STR_0569    :Riding in special harnesses below the track, 라이더 experience the feeling of flight as they swoop through the air
 STR_0570    :
-STR_0571    :Circular cars spin around as they travel along the zig-zagging wooden track
-STR_0572    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyer belt, accelerating down steep slopes to soak the riders with a gaint splash
-STR_0573    :Powered helicoper shaped cars running on a steel track, controlled by the pedalling of the riders
-STR_0574    :Riders are held in special harnesses in a lying-down position, travlling through twisted track and inversions either on their backs or facing the ground
+STR_0571    :Circular cars spin around as they travel along the zig-zagging 우든 track
+STR_0572    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyer belt, accelerating down steep slopes to soak the 라이더 with a gaint splash
+STR_0573    :Powered helicoper shaped cars running on a steel track, controlled by the pedalling of the 라이더
+STR_0574    :라이더 are held in special harnesses in a lying-down position, travlling through twisted track and inversions either on their backs or facing the ground
 STR_0575    :Powered trains hanging from a single rail transport people around the park
 STR_0576    :
-STR_0577    :Bogied cars run on wooden tracks, turning around on special reversing sections
+STR_0577    :Bogied cars run on 우든 tracks, turning around on special reversing sections
 STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
 STR_0579    :
-STR_0580    :A giant steel roller coaster capable of smooth drops and hills of over 300ft
+STR_0580    :A giant steel 롤러코스터 capable of smooth drops and hills of over 300ft
 STR_0581    :A ring of seats is pulled to the top of a tall tower while gently rotating, then allowed to free-fall down, stopping gently at the bottom using magnetic brakes
 STR_0582    :
 STR_0583    :
-STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
-STR_0585    :Riders sit in pairs of seats suspended beneath the track as they loop and twist through tight inversions
-STR_0586    :Boat shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
+STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the 라이더
+STR_0585    :라이더 sit in pairs of seats 서스펜디드 beneath the track as they loop and twist through tight inversions
+STR_0586    :Boat shaped cars run on 롤러코스터 track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
 STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
 STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
 STR_0589    :
-STR_0590    :Riders ride in a submerged submarine through an underwater course
+STR_0590    :라이더 라이드 in a submerged submarine through an underwater course
 STR_0591    :Raft-shaped boats gently meander around a river track
 STR_0592    :
 STR_0593    :
@@ -599,246 +599,246 @@ STR_0594    :
 STR_0595    :
 STR_0596    :
 STR_0597    :
-STR_0598    :Inverted roller coaster trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
-STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
+STR_0598    :인버티드 롤러코스터 trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
+STR_0599    :A compact 롤러코스터 with individual cars and smooth twisting drops
 STR_0600    :Powered mine trains career along a smooth and twisted track layout
 STR_0601    :
-STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
-STR_0603    :Guest {INT32}
-STR_0604    :Guest {INT32}
-STR_0605    :Guest {INT32}
-STR_0606    :Guest {INT32}
-STR_0607    :Guest {INT32}
-STR_0608    :Guest {INT32}
-STR_0609    :Guest {INT32}
-STR_0610    :Guest {INT32}
-STR_0611    :Guest {INT32}
-STR_0612    :Guest {INT32}
-STR_0613    :Guest {INT32}
-STR_0614    :Guest {INT32}
-STR_0615    :Guest {INT32}
-STR_0616    :Guest {INT32}
-STR_0617    :Guest {INT32}
-STR_0618    :Guest {INT32}
-STR_0619    :Guest {INT32}
-STR_0620    :Guest {INT32}
-STR_0621    :Guest {INT32}
-STR_0622    :Guest {INT32}
-STR_0623    :Guest {INT32}
-STR_0624    :Guest {INT32}
-STR_0625    :Guest {INT32}
-STR_0626    :Guest {INT32}
-STR_0627    :Guest {INT32}
-STR_0628    :Guest {INT32}
-STR_0629    :Guest {INT32}
-STR_0630    :Guest {INT32}
-STR_0631    :Guest {INT32}
-STR_0632    :Guest {INT32}
-STR_0633    :Guest {INT32}
-STR_0634    :Guest {INT32}
-STR_0635    :Guest {INT32}
-STR_0636    :Guest {INT32}
-STR_0637    :Guest {INT32}
-STR_0638    :Guest {INT32}
-STR_0639    :Guest {INT32}
-STR_0640    :Guest {INT32}
-STR_0641    :Guest {INT32}
-STR_0642    :Guest {INT32}
-STR_0643    :Guest {INT32}
-STR_0644    :Guest {INT32}
-STR_0645    :Guest {INT32}
-STR_0646    :Guest {INT32}
-STR_0647    :Guest {INT32}
-STR_0648    :Guest {INT32}
-STR_0649    :Guest {INT32}
-STR_0650    :Guest {INT32}
-STR_0651    :Guest {INT32}
-STR_0652    :Guest {INT32}
-STR_0653    :Guest {INT32}
-STR_0654    :Guest {INT32}
-STR_0655    :Guest {INT32}
-STR_0656    :Guest {INT32}
-STR_0657    :Guest {INT32}
-STR_0658    :Guest {INT32}
-STR_0659    :Guest {INT32}
-STR_0660    :Guest {INT32}
-STR_0661    :Guest {INT32}
-STR_0662    :Guest {INT32}
-STR_0663    :Guest {INT32}
-STR_0664    :Guest {INT32}
-STR_0665    :Guest {INT32}
-STR_0666    :Guest {INT32}
-STR_0667    :Guest {INT32}
-STR_0668    :Guest {INT32}
-STR_0669    :Guest {INT32}
-STR_0670    :Guest {INT32}
-STR_0671    :Guest {INT32}
-STR_0672    :Guest {INT32}
-STR_0673    :Guest {INT32}
-STR_0674    :Guest {INT32}
-STR_0675    :Guest {INT32}
-STR_0676    :Guest {INT32}
-STR_0677    :Guest {INT32}
-STR_0678    :Guest {INT32}
-STR_0679    :Guest {INT32}
-STR_0680    :Guest {INT32}
-STR_0681    :Guest {INT32}
-STR_0682    :Guest {INT32}
-STR_0683    :Guest {INT32}
-STR_0684    :Guest {INT32}
-STR_0685    :Guest {INT32}
-STR_0686    :Guest {INT32}
-STR_0687    :Guest {INT32}
-STR_0688    :Guest {INT32}
-STR_0689    :Guest {INT32}
-STR_0690    :Guest {INT32}
-STR_0691    :Guest {INT32}
-STR_0692    :Guest {INT32}
-STR_0693    :Guest {INT32}
-STR_0694    :Guest {INT32}
-STR_0695    :Guest {INT32}
-STR_0696    :Guest {INT32}
-STR_0697    :Guest {INT32}
-STR_0698    :Guest {INT32}
-STR_0699    :Guest {INT32}
-STR_0700    :Guest {INT32}
-STR_0701    :Guest {INT32}
-STR_0702    :Guest {INT32}
-STR_0703    :Guest {INT32}
-STR_0704    :Guest {INT32}
-STR_0705    :Guest {INT32}
-STR_0706    :Guest {INT32}
-STR_0707    :Guest {INT32}
-STR_0708    :Guest {INT32}
-STR_0709    :Guest {INT32}
-STR_0710    :Guest {INT32}
-STR_0711    :Guest {INT32}
-STR_0712    :Guest {INT32}
-STR_0713    :Guest {INT32}
-STR_0714    :Guest {INT32}
-STR_0715    :Guest {INT32}
-STR_0716    :Guest {INT32}
-STR_0717    :Guest {INT32}
-STR_0718    :Guest {INT32}
-STR_0719    :Guest {INT32}
-STR_0720    :Guest {INT32}
-STR_0721    :Guest {INT32}
-STR_0722    :Guest {INT32}
-STR_0723    :Guest {INT32}
-STR_0724    :Guest {INT32}
-STR_0725    :Guest {INT32}
-STR_0726    :Guest {INT32}
-STR_0727    :Guest {INT32}
-STR_0728    :Guest {INT32}
-STR_0729    :Guest {INT32}
-STR_0730    :Guest {INT32}
-STR_0731    :Guest {INT32}
-STR_0732    :Guest {INT32}
-STR_0733    :Guest {INT32}
-STR_0734    :Guest {INT32}
-STR_0735    :Guest {INT32}
-STR_0736    :Guest {INT32}
-STR_0737    :Guest {INT32}
-STR_0738    :Guest {INT32}
-STR_0739    :Guest {INT32}
-STR_0740    :Guest {INT32}
-STR_0741    :Guest {INT32}
-STR_0742    :Guest {INT32}
-STR_0743    :Guest {INT32}
-STR_0744    :Guest {INT32}
-STR_0745    :Guest {INT32}
-STR_0746    :Guest {INT32}
-STR_0747    :Guest {INT32}
-STR_0748    :Guest {INT32}
-STR_0749    :Guest {INT32}
-STR_0750    :Guest {INT32}
-STR_0751    :Guest {INT32}
-STR_0752    :Guest {INT32}
-STR_0753    :Guest {INT32}
-STR_0754    :Guest {INT32}
-STR_0755    :Guest {INT32}
-STR_0756    :Guest {INT32}
-STR_0757    :Guest {INT32}
-STR_0758    :Guest {INT32}
-STR_0759    :Guest {INT32}
-STR_0760    :Guest {INT32}
-STR_0761    :Guest {INT32}
-STR_0762    :Guest {INT32}
-STR_0763    :Guest {INT32}
-STR_0764    :Guest {INT32}
-STR_0765    :Guest {INT32}
-STR_0766    :Guest {INT32}
-STR_0767    :Guest {INT32}
-STR_0768    :Handyman {INT32}
-STR_0769    :Mechanic {INT32}
-STR_0770    :Security Guard {INT32}
-STR_0771    :Entertainer {INT32}
-STR_0772    :Unnamed park{POP16}{POP16}
-STR_0773    :Unnamed park{POP16}{POP16}
-STR_0774    :Unnamed park{POP16}{POP16}
-STR_0775    :Unnamed park{POP16}{POP16}
-STR_0776    :Unnamed park{POP16}{POP16}
-STR_0777    :Unnamed park{POP16}{POP16}
-STR_0778    :Sign
-STR_0779    :1st
-STR_0780    :2nd
-STR_0781    :3rd
-STR_0782    :4th
-STR_0783    :5th
-STR_0784    :6th
-STR_0785    :7th
-STR_0786    :8th
-STR_0787    :9th
-STR_0788    :10th
-STR_0789    :11th
-STR_0790    :12th
-STR_0791    :13th
-STR_0792    :14th
-STR_0793    :15th
-STR_0794    :16th
-STR_0795    :17th
-STR_0796    :18th
-STR_0797    :19th
-STR_0798    :20th
-STR_0799    :21st
-STR_0800    :22nd
-STR_0801    :23rd
-STR_0802    :24th
-STR_0803    :25th
-STR_0804    :26th
-STR_0805    :27th
-STR_0806    :28th
-STR_0807    :29th
-STR_0808    :30th
-STR_0809    :31st
-STR_0810    :Jan
-STR_0811    :Feb
-STR_0812    :Mar
-STR_0813    :Apr
-STR_0814    :May
-STR_0815    :Jun
-STR_0816    :Jul
-STR_0817    :Aug
-STR_0818    :Sep
-STR_0819    :Oct
-STR_0820    :Nov
-STR_0821    :Dec
-STR_0822    :Unable to access graphic data file
-STR_0823    :Missing or inaccessible data file
+STR_0602    :롤러코스터 trains are accelerated out of the station by linear induction motors to speed through twisting inversions
+STR_0603    :손님 {INT32}
+STR_0604    :손님 {INT32}
+STR_0605    :손님 {INT32}
+STR_0606    :손님 {INT32}
+STR_0607    :손님 {INT32}
+STR_0608    :손님 {INT32}
+STR_0609    :손님 {INT32}
+STR_0610    :손님 {INT32}
+STR_0611    :손님 {INT32}
+STR_0612    :손님 {INT32}
+STR_0613    :손님 {INT32}
+STR_0614    :손님 {INT32}
+STR_0615    :손님 {INT32}
+STR_0616    :손님 {INT32}
+STR_0617    :손님 {INT32}
+STR_0618    :손님 {INT32}
+STR_0619    :손님 {INT32}
+STR_0620    :손님 {INT32}
+STR_0621    :손님 {INT32}
+STR_0622    :손님 {INT32}
+STR_0623    :손님 {INT32}
+STR_0624    :손님 {INT32}
+STR_0625    :손님 {INT32}
+STR_0626    :손님 {INT32}
+STR_0627    :손님 {INT32}
+STR_0628    :손님 {INT32}
+STR_0629    :손님 {INT32}
+STR_0630    :손님 {INT32}
+STR_0631    :손님 {INT32}
+STR_0632    :손님 {INT32}
+STR_0633    :손님 {INT32}
+STR_0634    :손님 {INT32}
+STR_0635    :손님 {INT32}
+STR_0636    :손님 {INT32}
+STR_0637    :손님 {INT32}
+STR_0638    :손님 {INT32}
+STR_0639    :손님 {INT32}
+STR_0640    :손님 {INT32}
+STR_0641    :손님 {INT32}
+STR_0642    :손님 {INT32}
+STR_0643    :손님 {INT32}
+STR_0644    :손님 {INT32}
+STR_0645    :손님 {INT32}
+STR_0646    :손님 {INT32}
+STR_0647    :손님 {INT32}
+STR_0648    :손님 {INT32}
+STR_0649    :손님 {INT32}
+STR_0650    :손님 {INT32}
+STR_0651    :손님 {INT32}
+STR_0652    :손님 {INT32}
+STR_0653    :손님 {INT32}
+STR_0654    :손님 {INT32}
+STR_0655    :손님 {INT32}
+STR_0656    :손님 {INT32}
+STR_0657    :손님 {INT32}
+STR_0658    :손님 {INT32}
+STR_0659    :손님 {INT32}
+STR_0660    :손님 {INT32}
+STR_0661    :손님 {INT32}
+STR_0662    :손님 {INT32}
+STR_0663    :손님 {INT32}
+STR_0664    :손님 {INT32}
+STR_0665    :손님 {INT32}
+STR_0666    :손님 {INT32}
+STR_0667    :손님 {INT32}
+STR_0668    :손님 {INT32}
+STR_0669    :손님 {INT32}
+STR_0670    :손님 {INT32}
+STR_0671    :손님 {INT32}
+STR_0672    :손님 {INT32}
+STR_0673    :손님 {INT32}
+STR_0674    :손님 {INT32}
+STR_0675    :손님 {INT32}
+STR_0676    :손님 {INT32}
+STR_0677    :손님 {INT32}
+STR_0678    :손님 {INT32}
+STR_0679    :손님 {INT32}
+STR_0680    :손님 {INT32}
+STR_0681    :손님 {INT32}
+STR_0682    :손님 {INT32}
+STR_0683    :손님 {INT32}
+STR_0684    :손님 {INT32}
+STR_0685    :손님 {INT32}
+STR_0686    :손님 {INT32}
+STR_0687    :손님 {INT32}
+STR_0688    :손님 {INT32}
+STR_0689    :손님 {INT32}
+STR_0690    :손님 {INT32}
+STR_0691    :손님 {INT32}
+STR_0692    :손님 {INT32}
+STR_0693    :손님 {INT32}
+STR_0694    :손님 {INT32}
+STR_0695    :손님 {INT32}
+STR_0696    :손님 {INT32}
+STR_0697    :손님 {INT32}
+STR_0698    :손님 {INT32}
+STR_0699    :손님 {INT32}
+STR_0700    :손님 {INT32}
+STR_0701    :손님 {INT32}
+STR_0702    :손님 {INT32}
+STR_0703    :손님 {INT32}
+STR_0704    :손님 {INT32}
+STR_0705    :손님 {INT32}
+STR_0706    :손님 {INT32}
+STR_0707    :손님 {INT32}
+STR_0708    :손님 {INT32}
+STR_0709    :손님 {INT32}
+STR_0710    :손님 {INT32}
+STR_0711    :손님 {INT32}
+STR_0712    :손님 {INT32}
+STR_0713    :손님 {INT32}
+STR_0714    :손님 {INT32}
+STR_0715    :손님 {INT32}
+STR_0716    :손님 {INT32}
+STR_0717    :손님 {INT32}
+STR_0718    :손님 {INT32}
+STR_0719    :손님 {INT32}
+STR_0720    :손님 {INT32}
+STR_0721    :손님 {INT32}
+STR_0722    :손님 {INT32}
+STR_0723    :손님 {INT32}
+STR_0724    :손님 {INT32}
+STR_0725    :손님 {INT32}
+STR_0726    :손님 {INT32}
+STR_0727    :손님 {INT32}
+STR_0728    :손님 {INT32}
+STR_0729    :손님 {INT32}
+STR_0730    :손님 {INT32}
+STR_0731    :손님 {INT32}
+STR_0732    :손님 {INT32}
+STR_0733    :손님 {INT32}
+STR_0734    :손님 {INT32}
+STR_0735    :손님 {INT32}
+STR_0736    :손님 {INT32}
+STR_0737    :손님 {INT32}
+STR_0738    :손님 {INT32}
+STR_0739    :손님 {INT32}
+STR_0740    :손님 {INT32}
+STR_0741    :손님 {INT32}
+STR_0742    :손님 {INT32}
+STR_0743    :손님 {INT32}
+STR_0744    :손님 {INT32}
+STR_0745    :손님 {INT32}
+STR_0746    :손님 {INT32}
+STR_0747    :손님 {INT32}
+STR_0748    :손님 {INT32}
+STR_0749    :손님 {INT32}
+STR_0750    :손님 {INT32}
+STR_0751    :손님 {INT32}
+STR_0752    :손님 {INT32}
+STR_0753    :손님 {INT32}
+STR_0754    :손님 {INT32}
+STR_0755    :손님 {INT32}
+STR_0756    :손님 {INT32}
+STR_0757    :손님 {INT32}
+STR_0758    :손님 {INT32}
+STR_0759    :손님 {INT32}
+STR_0760    :손님 {INT32}
+STR_0761    :손님 {INT32}
+STR_0762    :손님 {INT32}
+STR_0763    :손님 {INT32}
+STR_0764    :손님 {INT32}
+STR_0765    :손님 {INT32}
+STR_0766    :손님 {INT32}
+STR_0767    :손님 {INT32}
+STR_0768    :미화원 {INT32}
+STR_0769    :정비기술자 {INT32}
+STR_0770    :경비원 {INT32}
+STR_0771    :엔터테이너 {INT32}
+STR_0772    :이름 없는 공원{POP16}{POP16}
+STR_0773    :이름 없는 공원{POP16}{POP16}
+STR_0774    :이름 없는 공원{POP16}{POP16}
+STR_0775    :이름 없는 공원{POP16}{POP16}
+STR_0776    :이름 없는 공원{POP16}{POP16}
+STR_0777    :이름 없는 공원{POP16}{POP16}
+STR_0778    :팻말
+STR_0779    :1일
+STR_0780    :2일
+STR_0781    :3일
+STR_0782    :4일
+STR_0783    :5일
+STR_0784    :6일
+STR_0785    :7일
+STR_0786    :8일
+STR_0787    :9일
+STR_0788    :10일
+STR_0789    :11일
+STR_0790    :12일
+STR_0791    :13일
+STR_0792    :14일
+STR_0793    :15일
+STR_0794    :16일
+STR_0795    :17일
+STR_0796    :18일
+STR_0797    :19일
+STR_0798    :20일
+STR_0799    :21일
+STR_0800    :22일
+STR_0801    :23일
+STR_0802    :24일
+STR_0803    :25일
+STR_0804    :26일
+STR_0805    :27일
+STR_0806    :28일
+STR_0807    :29일
+STR_0808    :30일
+STR_0809    :31일
+STR_0810    :1월
+STR_0811    :2월
+STR_0812    :3월
+STR_0813    :4월
+STR_0814    :5월
+STR_0815    :6월
+STR_0816    :7월
+STR_0817    :8월
+STR_0818    :9월
+STR_0819    :10월
+STR_0820    :11월
+STR_0821    :12월
+STR_0822    :그래픽 데이터 파일에 접근할 수 없습니다
+STR_0823    :데이터 파일이 존재하지 않거나 접근할 수 없습니다
 STR_0824    :{BLACK}{CROSS}
-STR_0825    :Chosen name in use already
-STR_0826    :Too many names defined
-STR_0827    :Not enough cash - requires {CURRENCY2DP}
-STR_0828    :{SMALLFONT}{BLACK}Close window
-STR_0829    :{SMALLFONT}{BLACK}Window title - Drag this to move window
-STR_0830    :{SMALLFONT}{BLACK}Zoom view in
-STR_0831    :{SMALLFONT}{BLACK}Zoom view out
-STR_0832    :{SMALLFONT}{BLACK}Rotate view 90{DEGREE} clockwise
-STR_0833    :{SMALLFONT}{BLACK}Pause game
-STR_0834    :{SMALLFONT}{BLACK}Disk and game options
-STR_0835    :Game initialization failed
-STR_0836    :Unable to start game in a minimized state
-STR_0837    :Unable to initialize graphics system
+STR_0825    :이미 사용 중인 이름입니다
+STR_0826    :이름이 너무 많이 지정되었습니다
+STR_0827    :돈이 부족합니다 - {CURRENCY2DP} 만큼의 돈이 더 필요합니다
+STR_0828    :{SMALLFONT}{BLACK}창 닫기
+STR_0829    :{SMALLFONT}{BLACK}창 제목 - 창을 움직이려면 여기를 드래그하세요
+STR_0830    :{SMALLFONT}{BLACK}화면 확대하기
+STR_0831    :{SMALLFONT}{BLACK}화면 축소하기
+STR_0832    :{SMALLFONT}{BLACK}화면을 시계 방향으로 90{DEGREE}도 회전하기
+STR_0833    :{SMALLFONT}{BLACK}게임 일시정지
+STR_0834    :{SMALLFONT}{BLACK}디스크 및 게임 옵션
+STR_0835    :게임 초기화 실패
+STR_0836    :게임을 최소화 상태에서 실행할 수 없습니다
+STR_0837    :그래픽 시스템을 초기화할 수 없습니다
 STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
@@ -849,17 +849,17 @@ STR_0843    :<not used anymore>
 STR_0844    :<not used anymore>
 STR_0845    :<not used anymore>
 STR_0846    :<not used anymore>
-STR_0847    :About 'OpenRCT2'
-STR_0848    :RollerCoaster Tycoon 2
-STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
+STR_0847    :'OpenRCT2'에 대해서
+STR_0848    :롤러코스터 타이쿤 2
+STR_0849    :{WINDOW_COLOUR_2}버전 2.01.028
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, all rights reserved
-STR_0851    :{WINDOW_COLOUR_2}Designed and programmed by Chris Sawyer
-STR_0852    :{WINDOW_COLOUR_2}Graphics by Simon Foster
-STR_0853    :{WINDOW_COLOUR_2}Sound and music by Allister Brimble
-STR_0854    :{WINDOW_COLOUR_2}Additional sounds recorded by David Ellis
-STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
-STR_0856    :{WINDOW_COLOUR_2}Thanks to:
-STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
+STR_0851    :{WINDOW_COLOUR_2}디자인 및 프로그래밍: Chris Sawyer
+STR_0852    :{WINDOW_COLOUR_2}그래픽: Simon Foster
+STR_0853    :{WINDOW_COLOUR_2}효과음 및 배경음악: Allister Brimble
+STR_0854    :{WINDOW_COLOUR_2}추가 효과음 녹음: David Ellis
+STR_0855    :{WINDOW_COLOUR_2}리프리젠테이션: Marjacq Ltd사의 Jacqui Lyons
+STR_0856    :{WINDOW_COLOUR_2}감사드릴 분들:
+STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth 그리고 John Wardley
 STR_0858    :{WINDOW_COLOUR_2}
 STR_0859    :{WINDOW_COLOUR_2}
 STR_0860    :{WINDOW_COLOUR_2}
@@ -879,85 +879,85 @@ STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}{DOWN}
-STR_0877    :Too low !
-STR_0878    :Too high !
-STR_0879    :Can't lower land here...
-STR_0880    :Can't raise land here...
-STR_0881    :Object in the way
-STR_0882    :Load Game
-STR_0883    :Save Game
-STR_0884    :Load Landscape
-STR_0885    :Save Landscape
-STR_0886    :Quit Game
-STR_0887    :Quit Scenario Editor
-STR_0888    :Quit Roller Coaster Designer
-STR_0889    :Quit Track Designs Manager
+STR_0877    :너무 낮습니다!
+STR_0878    :너무 높습니다!
+STR_0879    :여기를 더 이상 내릴 수 없습니다...
+STR_0880    :여기를 더 이상 올릴 수 없습니다...
+STR_0881    :오브젝트가 있습니다
+STR_0882    :게임 불러오기
+STR_0883    :게임 저장하기
+STR_0884    :풍경 불러오기
+STR_0885    :풍경 저장하기
+STR_0886    :게임 종료하기
+STR_0887    :시나리오 에디터 종료하기
+STR_0888    :롤러코스터 디자이너 종료하기
+STR_0889    :트랙 디자인 매니저 종료하기
 STR_0890    :SCR{COMMA16}.BMP
-STR_0891    :Screenshot
-STR_0892    :Screenshot saved to disk as '{STRINGID}'
-STR_0893    :Screenshot failed !
-STR_0894    :Landscape data area full !
-STR_0895    :Can't build partly above and partly below ground
-STR_0896    :{POP16}{POP16}{STRINGID} Construction
-STR_0897    :Direction
-STR_0898    :{SMALLFONT}{BLACK}Left-hand curve
-STR_0899    :{SMALLFONT}{BLACK}Right-hand curve
-STR_0900    :{SMALLFONT}{BLACK}Left-hand curve (small radius)
-STR_0901    :{SMALLFONT}{BLACK}Right-hand curve (small radius)
-STR_0902    :{SMALLFONT}{BLACK}Left-hand curve (very small radius)
-STR_0903    :{SMALLFONT}{BLACK}Right-hand curve (very small radius)
-STR_0904    :{SMALLFONT}{BLACK}Left-hand curve (large radius)
-STR_0905    :{SMALLFONT}{BLACK}Right-hand curve (large radius)
-STR_0906    :{SMALLFONT}{BLACK}Straight
-STR_0907    :Slope
-STR_0908    :Roll/Banking
-STR_0909    :Seat Rot.
-STR_0910    :{SMALLFONT}{BLACK}Roll for left-hand curve
-STR_0911    :{SMALLFONT}{BLACK}Roll for right-hand curve
-STR_0912    :{SMALLFONT}{BLACK}No roll
-STR_0913    :{SMALLFONT}{BLACK}Move to previous section
-STR_0914    :{SMALLFONT}{BLACK}Move to next section
-STR_0915    :{SMALLFONT}{BLACK}Construct the selected section
-STR_0916    :{SMALLFONT}{BLACK}Remove the highlighted section
-STR_0917    :{SMALLFONT}{BLACK}Vertical drop
-STR_0918    :{SMALLFONT}{BLACK}Steep slope down
-STR_0919    :{SMALLFONT}{BLACK}Slope down
-STR_0920    :{SMALLFONT}{BLACK}Level
-STR_0921    :{SMALLFONT}{BLACK}Slope up
-STR_0922    :{SMALLFONT}{BLACK}Steep slope up
-STR_0923    :{SMALLFONT}{BLACK}Vertical rise
-STR_0924    :{SMALLFONT}{BLACK}Helix down
-STR_0925    :{SMALLFONT}{BLACK}Helix up
-STR_0926    :Can't remove this...
-STR_0927    :Can't construct this here...
-STR_0928    :{SMALLFONT}{BLACK}Chain lift, to pull cars up slopes
-STR_0929    :'S' Bend (left)
-STR_0930    :'S' Bend (right)
-STR_0931    :Vertical Loop (left)
-STR_0932    :Vertical Loop (right)
-STR_0933    :Raise or lower land first
-STR_0934    :Ride entrance in the way
-STR_0935    :Ride exit in the way
-STR_0936    :Park entrance in the way
-STR_0937    :{SMALLFONT}{BLACK}View options
-STR_0938    :{SMALLFONT}{BLACK}Adjust land height and slope
-STR_0939    :Underground/Inside View
-STR_0940    :Remove Base Land
-STR_0941    :Remove Vertical Faces
-STR_0942    :See-Through Rides
-STR_0943    :See-Through Scenery
-STR_0944    :Save
-STR_0945    :Don't Save
-STR_0946    :Cancel
-STR_0947    :Save this before loading ?
-STR_0948    :Save this before quitting ?
-STR_0949    :Save this before quitting ?
-STR_0950    :Load Game
-STR_0951    :Quit Game
-STR_0952    :Quit Game
-STR_0953    :Load Landscape
+STR_0891    :스크린 샷
+STR_0892    :스크린 샷이 디스크에 다음 이름으로 저장되었습니다: {STRINGID}
+STR_0893    :스크린 샷 찍기 실패!
+STR_0894    :풍경 데이터 영역이 가득 찼습니다!
+STR_0895    :일부분만 땅의 위/아래로 건설할 수 없습니다
+STR_0896    :{POP16}{POP16}{STRINGID} 건설
+STR_0897    :방향
+STR_0898    :{SMALLFONT}{BLACK}왼쪽 커브
+STR_0899    :{SMALLFONT}{BLACK}오른쪽 커브
+STR_0900    :{SMALLFONT}{BLACK}왼쪽 커브 (작은 반경)
+STR_0901    :{SMALLFONT}{BLACK}오른쪽 커브 (작은 반경)
+STR_0902    :{SMALLFONT}{BLACK}왼쪽 커브 (아주 작은 반경)
+STR_0903    :{SMALLFONT}{BLACK}오른쪽 커브 (아주 작은 반경)
+STR_0904    :{SMALLFONT}{BLACK}왼쪽 커브 (큰 반경)
+STR_0905    :{SMALLFONT}{BLACK}오른쪽 커브 (큰 반경)
+STR_0906    :{SMALLFONT}{BLACK}직선
+STR_0907    :경사
+STR_0908    :회전/뱅킹
+STR_0909    :좌석 회전각
+STR_0910    :{SMALLFONT}{BLACK}왼쪽으로 회전
+STR_0911    :{SMALLFONT}{BLACK}오른쪽으로 회전
+STR_0912    :{SMALLFONT}{BLACK}회전 없음
+STR_0913    :{SMALLFONT}{BLACK}이전 조각으로 이동
+STR_0914    :{SMALLFONT}{BLACK}다음 조각으로 이동
+STR_0915    :{SMALLFONT}{BLACK}선택한 조각을 건설
+STR_0916    :{SMALLFONT}{BLACK}선택한 조각을 제거
+STR_0917    :{SMALLFONT}{BLACK}수직 낙하
+STR_0918    :{SMALLFONT}{BLACK}급 하강
+STR_0919    :{SMALLFONT}{BLACK}하강
+STR_0920    :{SMALLFONT}{BLACK}평탄
+STR_0921    :{SMALLFONT}{BLACK}상승
+STR_0922    :{SMALLFONT}{BLACK}급상승
+STR_0923    :{SMALLFONT}{BLACK}수직 상승
+STR_0924    :{SMALLFONT}{BLACK}나선 하강
+STR_0925    :{SMALLFONT}{BLACK}나선 상승
+STR_0926    :여기를 제거할 수 없습니다...
+STR_0927    :여기에 건설할 수 없습니다...
+STR_0928    :{SMALLFONT}{BLACK}경사를 오르기 위한 체인 리프트
+STR_0929    :S자 트랙 (왼쪽)
+STR_0930    :S자 트랙 (오른쪽)
+STR_0931    :버티컬 루프 (왼쪽)
+STR_0932    :버티컬 루프 (오른쪽)
+STR_0933    :땅을 먼저 올리거나 내리세요
+STR_0934    :놀이기구 입구가 있습니다
+STR_0935    :놀이기구 출구가 있습니다
+STR_0936    :공원 입구가 있습니다
+STR_0937    :{SMALLFONT}{BLACK}보기 설정
+STR_0938    :{SMALLFONT}{BLACK}지형 높이와 경사를 보여줌
+STR_0939    :지하/내부 시야
+STR_0940    :땅 안 보이기
+STR_0941    :절벽 안 보이기
+STR_0942    :놀이기구 안 보이기
+STR_0943    :풍경 안 보이기
+STR_0944    :저장
+STR_0945    :저장하지 않음
+STR_0946    :취소
+STR_0947    :불러오기 전에 저장하시겠습니까?
+STR_0948    :종료하기 전에 저장하시겠습니까?
+STR_0949    :종료하기 전에 저장하시겠습니까?
+STR_0950    :게임 불러오기
+STR_0951    :게임 종료하기
+STR_0952    :게임 종료하기
+STR_0953    :풍경 불러오기
 STR_0954    :
-STR_0955    :{SMALLFONT}{BLACK}Select seat rotation angle for this track section
+STR_0955    :{SMALLFONT}{BLACK}이 트랙 조각에서의 좌석 회전 각도를 선택하세요
 STR_0956    :-180{DEGREE}
 STR_0957    :-135{DEGREE}
 STR_0958    :-90{DEGREE}
@@ -974,49 +974,49 @@ STR_0968    :+360{DEGREE}
 STR_0969    :+405{DEGREE}
 STR_0970    :+450{DEGREE}
 STR_0971    :+495{DEGREE}
-STR_0972    :Cancel
-STR_0973    :OK
-STR_0974    :Rides
-STR_0975    :Shops and Stalls
-STR_0976    :Restrooms and Information Kiosks
-STR_0977    :New Transport Rides
-STR_0978    :New Gentle Rides
-STR_0979    :New Roller Coasters
-STR_0980    :New Thrill Rides
-STR_0981    :New Water Rides
-STR_0982    :New Shops & Stalls
-STR_0983    :Research & Development
+STR_0972    :취소
+STR_0973    :확인
+STR_0974    :놀이기구
+STR_0975    :상점·매점
+STR_0976    :화장실 및 안내소
+STR_0977    :새로운 운송용 놀이기구
+STR_0978    :새로운 얌전한 놀이기구
+STR_0979    :새로운 롤러코스터
+STR_0980    :새로운 스릴있는 놀이기구
+STR_0981    :새로운 물 놀이기구
+STR_0982    :새로운 상점·매점
+STR_0983    :연구 & 개발
 STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
-STR_0987    :Too many rides/attractions
-STR_0988    :Can't create new ride/attraction...
+STR_0987    :놀이기구나 시설이 너무 많습니다
+STR_0988    :새 놀이기구나 시설을 만들 수 없습니다...
 STR_0989    :{STRINGID}
-STR_0990    :{SMALLFONT}{BLACK}Construction
-STR_0991    :Station platform
-STR_0992    :{SMALLFONT}{BLACK}Demolish entire ride/attraction
-STR_0993    :Demolish ride/attraction
-STR_0994    :Demolish
-STR_0995    :{WINDOW_COLOUR_1}Are you sure you want to completely demolish {STRINGID}?
-STR_0996    :Overall view
-STR_0997    :{SMALLFONT}{BLACK}View selection
-STR_0998    :No more stations allowed on this ride
-STR_0999    :Requires a station platform
-STR_1000    :Track is not a complete circuit
-STR_1001    :Track unsuitable for type of train
-STR_1002    :Can't open {POP16}{POP16}{POP16}{STRINGID}...
-STR_1003    :Can't test {POP16}{POP16}{POP16}{STRINGID}...
-STR_1004    :Can't close {POP16}{POP16}{POP16}{STRINGID}...
-STR_1005    :Can't start construction on {POP16}{POP16}{POP16}{STRINGID}...
-STR_1006    :Must be closed first
-STR_1007    :Unable to create enough vehicles
-STR_1008    :{SMALLFONT}{BLACK}Open, close, or test ride/attraction
-STR_1009    :{SMALLFONT}{BLACK}Open or close all rides/attractions
-STR_1010    :{SMALLFONT}{BLACK}Open or close park
-STR_1011    :Close all
-STR_1012    :Open all
-STR_1013    :Close park
-STR_1014    :Open park
+STR_0990    :{SMALLFONT}{BLACK}건설
+STR_0991    :탑승장 선택
+STR_0992    :{SMALLFONT}{BLACK}전체 놀이기구나 시설을 파괴합니다
+STR_0993    :놀이기구/시설 파괴
+STR_0994    :파괴
+STR_0995    :{WINDOW_COLOUR_1}정말 이 놀이기구/시설을 완전히 파괴하시겠습니까? : {STRINGID}
+STR_0996    :전경
+STR_0997    :{SMALLFONT}{BLACK}시야 선택
+STR_0998    :탑승장이 너무 많습니다
+STR_0999    :탑승장이 필요합니다
+STR_1000    :트랙이 완성되지 않았습니다
+STR_1001    :트랙이 열차 종류와 맞지 않습니다
+STR_1002    :{POP16}{POP16}{POP16}{STRINGID}(을)를 운행할 수 없습니다...
+STR_1003    :Can't test {POP16}{POP16}{POP16}{STRINGID}(을)를 테스트할 수 없습니다...
+STR_1004    :{POP16}{POP16}{POP16}{STRINGID}(을)를 닫을 수 없습니다...
+STR_1005    :{POP16}{POP16}{POP16}{STRINGID}의 건설을 시작할 수 없습니다...
+STR_1006    :먼저 닫아야 합니다
+STR_1007    :차량을 충분히 만들 수 없습니다
+STR_1008    :{SMALLFONT}{BLACK}놀이기구나 시설을 열거나, 닫거나 테스트합니다
+STR_1009    :{SMALLFONT}{BLACK}모든 놀이기구나 시설을 열거나 닫습니다
+STR_1010    :{SMALLFONT}{BLACK}공원을 열거나 닫습니다
+STR_1011    :모두 닫기
+STR_1012    :모두 열기
+STR_1013    :공원 닫기
+STR_1014    :공원 열기
 STR_1015    :Unable to operate with more than one station platform in this mode
 STR_1016    :Unable to operate with less than two stations in this mode
 STR_1017    :Can't change operating mode...
@@ -1024,13 +1024,13 @@ STR_1018    :Can't make changes...
 STR_1019    :Can't make changes...
 STR_1020    :Can't make changes...
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :{POP16}{POP16}{POP16}{COMMA16} car per train
-STR_1023    :{POP16}{POP16}{POP16}{COMMA16} cars per train
-STR_1024    :{COMMA16} car per train
-STR_1025    :{COMMA16} cars per train
-STR_1026    :Station platform too long!
+STR_1022    :1대당 {POP16}{POP16}{POP16}{COMMA16}량의 차량
+STR_1023    :1대당 {POP16}{POP16}{POP16}{COMMA16}량의 차량
+STR_1024    :1대당 {COMMA16}량의 차량
+STR_1025    :1대당 {COMMA16}량의 차량
+STR_1026    :탑승장이 너무 깁니다!
 STR_1027    :{SMALLFONT}{BLACK}Locate this on Main View
-STR_1028    :Off edge of map!
+STR_1028    :지도 끝을 벗어납니다!
 STR_1029    :Cannot build partly above and partly below water!
 STR_1030    :Can only build this underwater!
 STR_1031    :Can't build this underwater!
@@ -1038,575 +1038,575 @@ STR_1032    :Can only build this on water!
 STR_1033    :Can only build this above ground!
 STR_1034    :Can only build this on land!
 STR_1035    :Local authority won't allow construction above tree-height!
-STR_1036    :Load Game
-STR_1037    :Load Landscape
-STR_1038    :Convert saved game to scenario
-STR_1039    :Install new track design
-STR_1040    :Save Game
-STR_1041    :Save Scenario
-STR_1042    :Save Landscape
-STR_1043    :OpenRCT2 Saved Game
-STR_1044    :OpenRCT2 Scenario File
-STR_1045    :OpenRCT2 Landscape File
-STR_1046    :OpenRCT2 Track Design File
-STR_1047    :Game save failed!
-STR_1048    :Scenario save failed!
-STR_1049    :Landscape save failed!
-STR_1050    :Failed to load...{NEWLINE}File contains invalid data!
-STR_1051    :Invisible Supports
-STR_1052    :Invisible People
-STR_1053    :{SMALLFONT}{BLACK}Rides/attractions in park
-STR_1054    :{SMALLFONT}{BLACK}Name ride/attraction
-STR_1055    :{SMALLFONT}{BLACK}Name person
-STR_1056    :{SMALLFONT}{BLACK}Name staff member
-STR_1057    :Ride/attraction name
-STR_1058    :Enter new name for this ride/attraction:
-STR_1059    :Can't rename ride/attraction...
-STR_1060    :Invalid ride/attraction name
-STR_1061    :Normal mode
-STR_1062    :Continuous circuit mode
-STR_1063    :Reverse-Incline launched shuttle mode
-STR_1064    :Powered launch (passing station)
-STR_1065    :Shuttle mode
-STR_1066    :Boat hire mode
-STR_1067    :Upward launch
-STR_1068    :Rotating lift mode
-STR_1069    :Station to station mode
-STR_1070    :Single ride per admission
-STR_1071    :Unlimited rides per admission
-STR_1072    :Maze mode
-STR_1073    :Race mode
-STR_1074    :Bumper-car mode
-STR_1075    :Swing mode
-STR_1076    :Shop stall mode
-STR_1077    :Rotation mode
-STR_1078    :Forward rotation
-STR_1079    :Backward rotation
-STR_1080    :Film: {ENDQUOTES}Avenging aviators{ENDQUOTES}
-STR_1081    :3D film: {ENDQUOTES}Mouse tails{ENDQUOTES}
-STR_1082    :Space rings mode
-STR_1083    :Beginners mode
-STR_1084    :LIM-powered launch
-STR_1085    :Film: {ENDQUOTES}Thrill riders{ENDQUOTES}
-STR_1086    :3D film: {ENDQUOTES}Storm chasers{ENDQUOTES}
-STR_1087    :3D film: {ENDQUOTES}Space raiders{ENDQUOTES}
-STR_1088    :Intense mode
-STR_1089    :Berserk mode
-STR_1090    :Haunted house mode
-STR_1091    :Circus show mode
-STR_1092    :Downward launch
-STR_1093    :Crooked house mode
-STR_1094    :Freefall drop mode
-STR_1095    :Continuous circuit block sectioned mode
-STR_1096    :Powered launch (without passing station)
-STR_1097    :Powered launch block sectioned mode
-STR_1098    :Moving to end of {POP16}{STRINGID}
-STR_1099    :Waiting for passengers at {POP16}{STRINGID}
-STR_1100    :Waiting to depart {POP16}{STRINGID}
-STR_1101    :Departing {POP16}{STRINGID}
-STR_1102    :Traveling at {VELOCITY}
-STR_1103    :Arriving at {POP16}{STRINGID}
-STR_1104    :Unloading passengers at {POP16}{STRINGID}
-STR_1105    :Traveling at {VELOCITY}
-STR_1106    :Crashing!
-STR_1107    :Crashed!
-STR_1108    :Traveling at {VELOCITY}
-STR_1109    :Swinging
-STR_1110    :Rotating
-STR_1111    :Rotating
-STR_1112    :Operating
-STR_1113    :Showing film
-STR_1114    :Rotating
-STR_1115    :Operating
-STR_1116    :Operating
-STR_1117    :Doing circus show
-STR_1118    :Operating
-STR_1119    :Waiting for cable lift
-STR_1120    :Traveling at {VELOCITY}
-STR_1121    :Stopping
-STR_1122    :Waiting for passengers
-STR_1123    :Waiting to start
-STR_1124    :Starting
-STR_1125    :Operating
-STR_1126    :Stopping
-STR_1127    :Unloading passengers
-STR_1128    :Stopped by block brakes
-STR_1129    :All vehicles in same colors
-STR_1130    :Different colors per {STRINGID}
-STR_1131    :Different colors per vehicle
-STR_1132    :Vehicle {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :Vehicle {POP16}{COMMA16}
+STR_1036    :게임 불러오기
+STR_1037    :풍경 불러오기
+STR_1038    :저장된 게임을 시나리오로 변환
+STR_1039    :새 트랙 디자인을 설치
+STR_1040    :게임 저장하기
+STR_1041    :시나리오 저장하기
+STR_1042    :풍경 저장하기
+STR_1043    :OpenRCT2 저장된 게임 파일
+STR_1044    :OpenRCT2 시나리오 파일
+STR_1045    :OpenRCT2 풍경 파일
+STR_1046    :OpenRCT2 트랙 디자인 파일
+STR_1047    :게임 저장 실패!
+STR_1048    :시나리오 저장 실패
+STR_1049    :풍경 저장 실패!
+STR_1050    :불러오기 실패...{NEWLINE}파일에 유효하지 않은 데이터가 있습니다!
+STR_1051    :트랙 지지대 감추기
+STR_1052    :손님 감추기
+STR_1053    :{SMALLFONT}{BLACK}공원의 놀이기구나 시설
+STR_1054    :{SMALLFONT}{BLACK}놀이기구/시설 이름
+STR_1055    :{SMALLFONT}{BLACK}손님 이름
+STR_1056    :{SMALLFONT}{BLACK}직원 이름
+STR_1057    :놀이기구/시설 이름
+STR_1058    :이 놀이기구/시설의 새 이름을 입력하세요:
+STR_1059    :놀이기구/시설의 이름을 바꿀 수 없습니다...
+STR_1060    :유효하지 않은 놀이기구/시설의 이름입니다
+STR_1061    :일반 모드
+STR_1062    :연속 순환 모드
+STR_1063    :역방향 인클라인 발진 셔틀 모드
+STR_1064    :급발진 출발 (역 통과)
+STR_1065    :셔틀 모드
+STR_1066    :보트 대여 모드
+STR_1067    :상승 발진
+STR_1068    :리프트 회전 모드
+STR_1069    :역 대 역 모드
+STR_1070    :1회 탑승 모드
+STR_1071    :무한 탑승 모드
+STR_1072    :미로 모드
+STR_1073    :레이스 모드
+STR_1074    :범퍼카 모드
+STR_1075    :스윙 모드
+STR_1076    :상점 매점 모드
+STR_1077    :회전 모드
+STR_1078    :전진 회전
+STR_1079    :후진 회전
+STR_1080    :영화: {ENDQUOTES}비행사의 복수사{ENDQUOTES}
+STR_1081    :3D 영화: {ENDQUOTES}생쥐의 꼬리{ENDQUOTES}
+STR_1082    :스페이스 링 모드
+STR_1083    :초급 모드
+STR_1084    :LIM-파워 발진
+STR_1085    :영화: {ENDQUOTES}스릴 라이더{ENDQUOTES}
+STR_1086    :3D 영화: {ENDQUOTES}폭풍의 추적자{ENDQUOTES}
+STR_1087    :3D 영화: {ENDQUOTES}스페이스 라이더{ENDQUOTES}
+STR_1088    :격렬 모드
+STR_1089    :난폭 모드
+STR_1090    :귀신의 집 모드
+STR_1091    :서커스 쇼 모드
+STR_1092    :하향 발진
+STR_1093    :이상한 집 모드
+STR_1094    :자유낙하 모드
+STR_1095    :연속 순환 블록 섹션 모드
+STR_1096    :급발진 출발 (역을 지나치지 않음)
+STR_1097    :급발진 출발 블록 섹션 모드
+STR_1098    :{POP16}{STRINGID}의 끝으로 이동
+STR_1099    :{POP16}{STRINGID}에서 승객 탑승 대기 중
+STR_1100    :{POP16}{STRINGID}에서 출발 대기중
+STR_1101    :{POP16}{STRINGID} 출발 중
+STR_1102    :운행 중 : {VELOCITY}
+STR_1103    :{POP16}{STRINGID}에 도착 중
+STR_1104    :{POP16}{STRINGID}에서 승객 하차 중
+STR_1105    :운행 중 : {VELOCITY}
+STR_1106    :충돌 중!
+STR_1107    :충돌!
+STR_1108    :운행 중 : {VELOCITY}
+STR_1109    :스윙 중
+STR_1110    :회전 중
+STR_1111    :회전 중
+STR_1112    :운행 중
+STR_1113    :영화 상영 중
+STR_1114    :회전 중
+STR_1115    :운행 중
+STR_1116    :운행 중
+STR_1117    :서커스 쇼 진행 중
+STR_1118    :운행 중
+STR_1119    :케이블 리프트를 기다리는 중
+STR_1120    :운행 중 : {VELOCITY}
+STR_1121    :정지하는 중
+STR_1122    :승객 대기 중
+STR_1123    :출발 대기 중
+STR_1124    :출발 중
+STR_1125    :운행 중
+STR_1126    :정지하는 중
+STR_1127    :승객 하차 중
+STR_1128    :블록 브레이크에 의해 정지함
+STR_1129    :모든 차량을 같은 색으로
+STR_1130    :{STRINGID} 마다 다른 색
+STR_1131    :차량 마다 다른 색
+STR_1132    :차량 {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1133    :차량 {POP16}{COMMA16}
 STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
-STR_1136    :{SMALLFONT}{BLACK}Select main color
-STR_1137    :{SMALLFONT}{BLACK}Select additional color 1
-STR_1138    :{SMALLFONT}{BLACK}Select additional color 2
-STR_1139    :{SMALLFONT}{BLACK}Select support structure color
-STR_1140    :{SMALLFONT}{BLACK}Select vehicle color scheme option
-STR_1141    :{SMALLFONT}{BLACK}Select which vehicle/train to modify
+STR_1136    :{SMALLFONT}{BLACK}주요 색상 선택하세요
+STR_1137    :{SMALLFONT}{BLACK}1번 추가 색상 선택하세요
+STR_1138    :{SMALLFONT}{BLACK}2번 추가 색상 선택하세요
+STR_1139    :{SMALLFONT}{BLACK}트랙 지지대 색상 선택하세요
+STR_1140    :{SMALLFONT}{BLACK}차량 색상을 선택하세요
+STR_1141    :{SMALLFONT}{BLACK}어떤 차량/열차를 수정할 지 선택하세요
 STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1144    :Can't build/move entrance for this ride/attraction...
-STR_1145    :Can't build/move exit for this ride/attraction...
-STR_1146    :Entrance not yet built
-STR_1147    :Exit not yet built
-STR_1148    :Quarter load
-STR_1149    :Half load
-STR_1150    :Three-quarter load
-STR_1151    :Full load
-STR_1152    :Any load
-STR_1153    :Height Marks on Ride Tracks
-STR_1154    :Height Marks on Land
-STR_1155    :Height Marks on Paths
+STR_1144    :이 놀이기구/시설의 입구를 건설/파괴할 수 없습니다...
+STR_1145    :이 놀이기구/시설의 출구를 건설/파괴할 수 없습니다...
+STR_1146    :입구가 아직 설치되지 않았습니다
+STR_1147    :출구가 아직 설치되지 않았습니다
+STR_1148    :1/4을 태우면
+STR_1149    :1/2을 태우면
+STR_1150    :3/4을 태우면
+STR_1151    :모두 태우면
+STR_1152    :한 사람이라도 태우면
+STR_1153    :놀이기구 트랙 높이 표시
+STR_1154    :지형 높이 표시
+STR_1155    :보도 높이 표시
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1158    :Can't remove this...
-STR_1159    :{SMALLFONT}{BLACK}Place scenery, gardens, and other accessories
-STR_1160    :{SMALLFONT}{BLACK}Create/adjust lakes & water
-STR_1161    :Can't position this here...
+STR_1158    :제거할 수 없습니다...
+STR_1159    :{SMALLFONT}{BLACK}풍경, 정원, 기타 시설을 설치합니다
+STR_1160    :{SMALLFONT}{BLACK}호수나 물을 만듭니다
+STR_1161    :여기에 위치시킬 수 없습니다...
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
-STR_1163    :{STRINGID}{NEWLINE}(Right-Click to Modify)
-STR_1164    :{STRINGID}{NEWLINE}(Right-Click to Remove)
+STR_1163    :{STRINGID}{NEWLINE}(수정하려면 오른쪽 클릭하세요)
+STR_1164    :{STRINGID}{NEWLINE}(제거하려면 오른쪽 클릭하세요)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1166    :Can't lower water level here...
-STR_1167    :Can't raise water level here...
-STR_1168    :Options
-STR_1169    :(None)
+STR_1166    :이곳의 물을 내릴 수 없습니다...
+STR_1167    :이곳의 물을 올릴 수 없습니다...
+STR_1168    :옵션
+STR_1169    :(없음)
 STR_1170    :{STRING}
-STR_1171    :{RED}Closed - - 
-STR_1172    :{YELLOW}{STRINGID} - - 
-STR_1173    :{SMALLFONT}{BLACK}Build footpaths and queue lines
-STR_1174    :Banner sign in the way
-STR_1175    :Can't build this on sloped footpath
-STR_1176    :Can't build footpath here...
-STR_1177    :Can't remove footpath from here...
-STR_1178    :Land slope unsuitable
-STR_1179    :Footpath in the way
-STR_1180    :Can't build this underwater!
-STR_1181    :Footpaths
-STR_1182    :Type
-STR_1183    :Direction
-STR_1184    :Slope
-STR_1185    :{SMALLFONT}{BLACK}Direction
-STR_1186    :{SMALLFONT}{BLACK}Slope down
-STR_1187    :{SMALLFONT}{BLACK}Level
-STR_1188    :{SMALLFONT}{BLACK}Slope up
-STR_1189    :{SMALLFONT}{BLACK}Construct the selected footpath section
-STR_1190    :{SMALLFONT}{BLACK}Remove previous footpath section
+STR_1171    :{RED}닫음 - -
+STR_1172    :{YELLOW}{STRINGID} - -
+STR_1173    :{SMALLFONT}{BLACK}보도와 대기줄을 만듭니다
+STR_1174    :배너 사인이 있습니다
+STR_1175    :경사진 보도 위에 건설할 수 없습니다
+STR_1176    :보도를 여기에 건설할 수 없습니다...
+STR_1177    :보도를 제거할 수 없습니다...
+STR_1178    :땅의 경사가 적절하지 않습니다
+STR_1179    :중간에 보도가 있습니다
+STR_1180    :수중에 건설할 수 없습니다!
+STR_1181    :보도
+STR_1182    :종류
+STR_1183    :방향
+STR_1184    :경사
+STR_1185    :{SMALLFONT}{BLACK}방향
+STR_1186    :{SMALLFONT}{BLACK}아래로
+STR_1187    :{SMALLFONT}{BLACK}평탄
+STR_1188    :{SMALLFONT}{BLACK}위로
+STR_1189    :{SMALLFONT}{BLACK}선택한 보도 조각을 건설
+STR_1190    :{SMALLFONT}{BLACK}이전 보도 조각을 제거
 STR_1191    :{BLACK}{STRINGID}
 STR_1192    :{OUTLINE}{RED}{STRINGID}
 STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
-STR_1194    :Closed
-STR_1195    :Test Run
-STR_1196    :Open
-STR_1197    :Broken Down
-STR_1198    :Crashed!
-STR_1199    :{COMMA16} person on ride
-STR_1200    :{COMMA16} people on ride
-STR_1201    :Nobody in queue line
-STR_1202    :1 person in queue line
-STR_1203    :{COMMA16} people in queue line
-STR_1204    :{COMMA16} minute queue time
-STR_1205    :{COMMA16} minutes queue time
-STR_1206    :{WINDOW_COLOUR_2}Wait for:
-STR_1207    :{WINDOW_COLOUR_2}Leave if another train arrives at station
-STR_1208    :{WINDOW_COLOUR_2}Leave if another boat arrives at station
-STR_1209    :{SMALLFONT}{BLACK}Select whether should wait for passengers before departing
-STR_1210    :{SMALLFONT}{BLACK}Select whether should leave if another vehicle arrives at the same station
-STR_1211    :{WINDOW_COLOUR_2}Minimum waiting time:
-STR_1212    :{WINDOW_COLOUR_2}Maximum waiting time:
-STR_1213    :{SMALLFONT}{BLACK}Select minimum length of time to wait before departing
-STR_1214    :{SMALLFONT}{BLACK}Select maximum length of time to wait before departing
-STR_1215    :{WINDOW_COLOUR_2}Synchronize with adjacent stations
-STR_1216    :{SMALLFONT}{BLACK}Select whether to synchronize departure with all adjacent stations (for 'racing')
-STR_1217    :{COMMA16} seconds
+STR_1194    :닫힘
+STR_1195    :테스트 운행
+STR_1196    :열림
+STR_1197    :고장
+STR_1198    :충돌!
+STR_1199    :놀이기구에 {COMMA16}명 있음
+STR_1200    :놀이기구에 {COMMA16}명 있음
+STR_1201    :대기 중인 손님: 없음
+STR_1202    :대기 중인 손님: 1명
+STR_1203    :대기 중인 손님: {COMMA16}명
+STR_1204    :대기 시간: {COMMA16}분
+STR_1205    :대기 시간: {COMMA16}분
+STR_1206    :{WINDOW_COLOUR_2}출발 대기:
+STR_1207    :{WINDOW_COLOUR_2}다른 열차가 탑승장에 도착하면 열차를 출발시킴
+STR_1208    :{WINDOW_COLOUR_2}다른 보트가 탑승장에 도착하면 보트를 출발시킴
+STR_1209    :{SMALLFONT}{BLACK}출발하기 전에 승객을 기다릴지 여부를 선택하세요
+STR_1210    :{SMALLFONT}{BLACK}다른 차량이 같은 탑승장에 도착하면 열차를 출발시킬지 여부를 선택하세요
+STR_1211    :{WINDOW_COLOUR_2}최소 대기 시간:
+STR_1212    :{WINDOW_COLOUR_2}최대 대기 시간:
+STR_1213    :{SMALLFONT}{BLACK}출발하기 전에 최소한으로 기다릴 시간 길이를 선택하세요
+STR_1214    :{SMALLFONT}{BLACK}출발하기 전에 최대한으로 기다릴 시간 길이를 선택하세요
+STR_1215    :{WINDOW_COLOUR_2}인접한 탑승장과 같이 출발시킴
+STR_1216    :{SMALLFONT}{BLACK}모든 인접한 탑승장과 차량을 동시에 출발시킬지 여부를 선택하세요
+STR_1217    :{COMMA16}초
 STR_1218    :{BLACK}{SMALLUP}
 STR_1219    :{BLACK}{SMALLDOWN}
-STR_1220    :Exit only
-STR_1221    :No entrance
-STR_1222    :No exit
-STR_1223    :{SMALLFONT}{BLACK}Transport rides
-STR_1224    :{SMALLFONT}{BLACK}Gentle rides
-STR_1225    :{SMALLFONT}{BLACK}Roller coasters
-STR_1226    :{SMALLFONT}{BLACK}Thrill rides
-STR_1227    :{SMALLFONT}{BLACK}Water rides
-STR_1228    :{SMALLFONT}{BLACK}Shops & stalls
-STR_1229    :train
-STR_1230    :trains
-STR_1231    :Train
-STR_1232    :Trains
-STR_1233    :{COMMA16} train
-STR_1234    :{COMMA16} trains
-STR_1235    :Train {COMMA16}
-STR_1236    :boat
-STR_1237    :boats
-STR_1238    :Boat
-STR_1239    :Boats
-STR_1240    :{COMMA16} boat
-STR_1241    :{COMMA16} boats
-STR_1242    :Boat {COMMA16}
-STR_1243    :track
-STR_1244    :tracks
-STR_1245    :Track
-STR_1246    :Tracks
-STR_1247    :{COMMA16} track
-STR_1248    :{COMMA16} tracks
-STR_1249    :Track {COMMA16}
-STR_1250    :docking platform
-STR_1251    :docking platforms
-STR_1252    :Docking platform
-STR_1253    :Docking platforms
-STR_1254    :{COMMA16} docking platform
-STR_1255    :{COMMA16} docking platforms
-STR_1256    :Docking platform {COMMA16}
-STR_1257    :station
-STR_1258    :stations
-STR_1259    :Station
-STR_1260    :Stations
-STR_1261    :{COMMA16} station
-STR_1262    :{COMMA16} stations
-STR_1263    :Station {COMMA16}
-STR_1264    :car
-STR_1265    :cars
-STR_1266    :Car
-STR_1267    :Cars
-STR_1268    :{COMMA16} car
-STR_1269    :{COMMA16} cars
-STR_1270    :Car {COMMA16}
-STR_1271    :building
-STR_1272    :buildings
-STR_1273    :Building
-STR_1274    :Buildings
-STR_1275    :{COMMA16} building
-STR_1276    :{COMMA16} buildings
-STR_1277    :Building {COMMA16}
-STR_1278    :structure
-STR_1279    :structures
-STR_1280    :Structure
-STR_1281    :Structures
-STR_1282    :{COMMA16} structure
-STR_1283    :{COMMA16} structures
-STR_1284    :Structure {COMMA16}
-STR_1285    :ship
-STR_1286    :ships
-STR_1287    :Ship
-STR_1288    :Ships
-STR_1289    :{COMMA16} ship
-STR_1290    :{COMMA16} ships
-STR_1291    :Ship {COMMA16}
-STR_1292    :cabin
-STR_1293    :cabins
-STR_1294    :Cabin
-STR_1295    :Cabins
-STR_1296    :{COMMA16} cabin
-STR_1297    :{COMMA16} cabins
-STR_1298    :Cabin {COMMA16}
-STR_1299    :wheel
-STR_1300    :wheels
-STR_1301    :Wheel
-STR_1302    :Wheels
-STR_1303    :{COMMA16} wheel
-STR_1304    :{COMMA16} wheels
-STR_1305    :Wheel {COMMA16}
-STR_1306    :ring
-STR_1307    :rings
-STR_1308    :Ring
-STR_1309    :Rings
-STR_1310    :{COMMA16} ring
-STR_1311    :{COMMA16} rings
-STR_1312    :Ring {COMMA16}
-STR_1313    :player
-STR_1314    :players
-STR_1315    :Player
-STR_1316    :Players
-STR_1317    :{COMMA16} player
-STR_1318    :{COMMA16} players
-STR_1319    :Player {COMMA16}
-STR_1320    :course
-STR_1321    :courses
-STR_1322    :Course
-STR_1323    :Courses
-STR_1324    :{COMMA16} course
-STR_1325    :{COMMA16} courses
-STR_1326    :Course {COMMA16}
-STR_1327    :{SMALLFONT}{BLACK}Rotate objects by 90{DEGREE}
-STR_1328    :Level land required
-STR_1329    :{WINDOW_COLOUR_2}Launch speed:
-STR_1330    :{SMALLFONT}{BLACK}Maximum speed when leaving station
+STR_1220    :출구만 있음
+STR_1221    :입구 없음
+STR_1222    :출구 없음
+STR_1223    :{SMALLFONT}{BLACK}운송용 놀이기구
+STR_1224    :{SMALLFONT}{BLACK}얌전한 놀이기구
+STR_1225    :{SMALLFONT}{BLACK}롤러코스터
+STR_1226    :{SMALLFONT}{BLACK}스릴있는 놀이기구
+STR_1227    :{SMALLFONT}{BLACK}물 놀이기구
+STR_1228    :{SMALLFONT}{BLACK}상점 & 매점
+STR_1229    :열차
+STR_1230    :열차
+STR_1231    :열차
+STR_1232    :열차
+STR_1233    :{COMMA16} 열차
+STR_1234    :{COMMA16} 열차
+STR_1235    :열차 {COMMA16}
+STR_1236    :보트
+STR_1237    :보트
+STR_1238    :보트
+STR_1239    :보트
+STR_1240    :{COMMA16} 보트
+STR_1241    :{COMMA16} 보트
+STR_1242    :보트 {COMMA16}
+STR_1243    :트랙
+STR_1244    :트랙
+STR_1245    :트랙
+STR_1246    :트랙
+STR_1247    :{COMMA16} 트랙
+STR_1248    :{COMMA16} 트랙
+STR_1249    :트랙 {COMMA16}
+STR_1250    :도킹 승강장
+STR_1251    :도킹 승강장
+STR_1252    :도킹 승강장
+STR_1253    :도킹 승강장
+STR_1254    :{COMMA16} 도킹 승강장
+STR_1255    :{COMMA16} 도킹 승강장
+STR_1256    :도킹 승강장 {COMMA16}
+STR_1257    :탑승장
+STR_1258    :탑승장
+STR_1259    :탑승장
+STR_1260    :탑승장
+STR_1261    :{COMMA16} 탑승장
+STR_1262    :{COMMA16} 탑승장
+STR_1263    :탑승장 {COMMA16}
+STR_1264    :차
+STR_1265    :차
+STR_1266    :차
+STR_1267    :차
+STR_1268    :{COMMA16} 차
+STR_1269    :{COMMA16} 차
+STR_1270    :차 {COMMA16}
+STR_1271    :건물
+STR_1272    :건물
+STR_1273    :건물
+STR_1274    :건물
+STR_1275    :{COMMA16} 건물
+STR_1276    :{COMMA16} 건물
+STR_1277    :건물 {COMMA16}
+STR_1278    :구조물
+STR_1279    :구조물
+STR_1280    :구조물
+STR_1281    :구조물
+STR_1282    :{COMMA16} 구조물
+STR_1283    :{COMMA16} 구조물
+STR_1284    :구조물 {COMMA16}
+STR_1285    :배
+STR_1286    :배
+STR_1287    :배
+STR_1288    :배
+STR_1289    :{COMMA16} 배
+STR_1290    :{COMMA16} 배
+STR_1291    :배 {COMMA16}
+STR_1292    :객실
+STR_1293    :객실
+STR_1294    :객실
+STR_1295    :객실
+STR_1296    :{COMMA16} 객실
+STR_1297    :{COMMA16} 객실
+STR_1298    :객실 {COMMA16}
+STR_1299    :휠
+STR_1300    :휠
+STR_1301    :휠
+STR_1302    :휠
+STR_1303    :{COMMA16} 휠
+STR_1304    :{COMMA16} 휠
+STR_1305    :휠 {COMMA16}
+STR_1306    :링
+STR_1307    :링
+STR_1308    :링
+STR_1309    :링
+STR_1310    :{COMMA16} 링
+STR_1311    :{COMMA16} 링
+STR_1312    :링 {COMMA16}
+STR_1313    :플레이어
+STR_1314    :플레이어
+STR_1315    :플레이어
+STR_1316    :플레이어
+STR_1317    :{COMMA16} 플레이어
+STR_1318    :{COMMA16} 플레이어
+STR_1319    :플레이어 {COMMA16}
+STR_1320    :코스
+STR_1321    :코스
+STR_1322    :코스
+STR_1323    :코스
+STR_1324    :{COMMA16} 코스
+STR_1325    :{COMMA16} 코스
+STR_1326    :코스 {COMMA16}
+STR_1327    :{SMALLFONT}{BLACK}오브젝트를 90{DEGREE} 회전시킵니다
+STR_1328    :평지가 필요합니다
+STR_1329    :{WINDOW_COLOUR_2}발진 속도:
+STR_1330    :{SMALLFONT}{BLACK}탑승장 출발 최대 속도
 STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1335    :{STRINGID} - Entrance{POP16}{POP16}
-STR_1336    :{STRINGID} - Station {POP16}{COMMA16} Entrance
-STR_1337    :{STRINGID} - Exit{POP16}{POP16}
-STR_1338    :{STRINGID} - Station {POP16}{COMMA16} Exit
-STR_1339    :{BLACK}No test results yet...
-STR_1340    :{WINDOW_COLOUR_2}Max. speed: {BLACK}{VELOCITY}
-STR_1341    :{WINDOW_COLOUR_2}Ride time: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1335    :{STRINGID} - 입구{POP16}{POP16}
+STR_1336    :{STRINGID} - 탑승장 {POP16}{COMMA16} 입구
+STR_1337    :{STRINGID} - 출구{POP16}{POP16}
+STR_1338    :{STRINGID} - 탑승장 {POP16}{COMMA16} 출구
+STR_1339    :{BLACK}테스트 결과가 아직 나오지 않았습니다...
+STR_1340    :{WINDOW_COLOUR_2}최대 속력: {BLACK}{VELOCITY}
+STR_1341    :{WINDOW_COLOUR_2}탑승 시간: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1342    :{DURATION}
-STR_1343    :{DURATION} / 
-STR_1344    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1343    :{DURATION} /
+STR_1344    :{WINDOW_COLOUR_2}탑승 길이: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1345    :{LENGTH}
-STR_1346    :{LENGTH} / 
-STR_1347    :{WINDOW_COLOUR_2}Average speed: {BLACK}{VELOCITY}
-STR_1348    :{WINDOW_COLOUR_2}Max. positive vertical G's: {BLACK}{COMMA2DP32}g
-STR_1349    :{WINDOW_COLOUR_2}Max. positive vertical G's: {OUTLINE}{RED}{COMMA2DP32}g
-STR_1350    :{WINDOW_COLOUR_2}Max. negative vertical G's: {BLACK}{COMMA2DP32}g
-STR_1351    :{WINDOW_COLOUR_2}Max. negative vertical G's: {OUTLINE}{RED}{COMMA2DP32}g
-STR_1352    :{WINDOW_COLOUR_2}Max. lateral G's: {BLACK}{COMMA2DP32}g
-STR_1353    :{WINDOW_COLOUR_2}Max. lateral G's: {OUTLINE}{RED}{COMMA2DP32}g
-STR_1354    :{WINDOW_COLOUR_2}Highest drop height: {BLACK}{LENGTH}
-STR_1355    :{WINDOW_COLOUR_2}Drops: {BLACK}{COMMA16}
-STR_1356    :{WINDOW_COLOUR_2}Inversions: {BLACK}{COMMA16}
-STR_1357    :{WINDOW_COLOUR_2}Holes: {BLACK}{COMMA16}
-STR_1358    :{WINDOW_COLOUR_2}Total 'air' time: {BLACK}{COMMA2DP32}secs
-STR_1359    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minute
-STR_1360    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minutes
-STR_1361    :Can't change speed...
-STR_1362    :Can't change launch speed...
-STR_1363    :Too high for supports!
-STR_1364    :Supports for track above can't be extended any further!
-STR_1365    :In-line Twist (left)
-STR_1366    :In-line Twist (right)
-STR_1367    :Half Loop
-STR_1368    :Half Corkscrew (left)
-STR_1369    :Half Corkscrew (right)
-STR_1370    :Barrel Roll (left)
-STR_1371    :Barrel Roll (right)
-STR_1372    :Launched Lift Hill
-STR_1373    :Large Half Loop (left)
-STR_1374    :Large Half Loop (right)
-STR_1375    :Upper Transfer
-STR_1376    :Lower Transfer
-STR_1377    :Heartline Roll (left)
-STR_1378    :Heartline Roll (right)
-STR_1379    :Reverser (left)
-STR_1380    :Reverser (right)
-STR_1381    :Curved Lift Hill (left)
-STR_1382    :Curved Lift Hill (right)
-STR_1383    :Quarter Loop
+STR_1346    :{LENGTH} /
+STR_1347    :{WINDOW_COLOUR_2}평균 속력: {BLACK}{VELOCITY}
+STR_1348    :{WINDOW_COLOUR_2}최대 양수 수직 중력값: {BLACK}{COMMA2DP32}g
+STR_1349    :{WINDOW_COLOUR_2}최대 양수 수직 중력값: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1350    :{WINDOW_COLOUR_2}최대 음수 수직 중력값: {BLACK}{COMMA2DP32}g
+STR_1351    :{WINDOW_COLOUR_2}최대 음수 수직 중력값: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1352    :{WINDOW_COLOUR_2}최대 측면 중력값: {BLACK}{COMMA2DP32}g
+STR_1353    :{WINDOW_COLOUR_2}최대 측면 중력값: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1354    :{WINDOW_COLOUR_2}최고 낙하 높이: {BLACK}{LENGTH}
+STR_1355    :{WINDOW_COLOUR_2}낙하 회수: {BLACK}{COMMA16}
+STR_1356    :{WINDOW_COLOUR_2}뒤집어진 회수: {BLACK}{COMMA16}
+STR_1357    :{WINDOW_COLOUR_2}홀 개수: {BLACK}{COMMA16}
+STR_1358    :{WINDOW_COLOUR_2}총 '무중력' 시간: {BLACK}{COMMA2DP32}초
+STR_1359    :{WINDOW_COLOUR_2}대기 시간: {BLACK}{COMMA16}분
+STR_1360    :{WINDOW_COLOUR_2}대기 시간: {BLACK}{COMMA16}분
+STR_1361    :속력을 바꿀 수 없습니다...
+STR_1362    :발진 속도를 바꿀 수 없습니다...
+STR_1363    :지지대가 버틸 수 있는 최대 높이입니다!
+STR_1364    :위 트랙의 지지대를 더 이상 늘릴 수 없습니다!
+STR_1365    :인라인 트위스트 (왼쪽)
+STR_1366    :인라인 트위스트 (오른쪽)
+STR_1367    :하프 루프
+STR_1368    :하프 코르크스크류 (왼쪽)
+STR_1369    :하프 코르크스크류 (오른쪽)
+STR_1370    :바렐 롤 (왼쪽)
+STR_1371    :바렐 롤 (오른쪽)
+STR_1372    :런치드 리프트 힐
+STR_1373    :대형 하프 루프 (왼쪽)
+STR_1374    :대형 하프 루프 (오른쪽)
+STR_1375    :위쪽 전송기
+STR_1376    :아래쪽 전송기
+STR_1377    :하트라인 롤 (왼쪽)
+STR_1378    :하트라인 롤 (오른쪽)
+STR_1379    :리버서 (왼쪽)
+STR_1380    :리버서 (오른쪽)
+STR_1381    :커브드 리프트 힐 (왼쪽)
+STR_1382    :커브드 리프트 힐 (오른쪽)
+STR_1383    :1/4 루프
 STR_1384    :{YELLOW}{STRINGID}
-STR_1385    :{SMALLFONT}{BLACK}Other track configurations
-STR_1386    :Special...
-STR_1387    :Can't change land type...
+STR_1385    :{SMALLFONT}{BLACK}기타 트랙 설정
+STR_1386    :특수 트랙...
+STR_1387    :지형 종류를 바꿀 수 없습니다...
 STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
 STR_1389    :{OUTLINE}{RED}- {CURRENCY}
 STR_1390    :{CURRENCY2DP}
 STR_1391    :{RED}{CURRENCY2DP}
-STR_1392    :{SMALLFONT}{BLACK}View of ride/attraction
-STR_1393    :{SMALLFONT}{BLACK}Vehicle details and options
-STR_1394    :{SMALLFONT}{BLACK}Operating options
-STR_1395    :{SMALLFONT}{BLACK}Maintenance options
-STR_1396    :{SMALLFONT}{BLACK}Color scheme options
-STR_1397    :{SMALLFONT}{BLACK}Sound & music options
-STR_1398    :{SMALLFONT}{BLACK}Measurements and test data
-STR_1399    :{SMALLFONT}{BLACK}Graphs
-STR_1400    :Entrance
-STR_1401    :Exit
-STR_1402    :{SMALLFONT}{BLACK}Build or move entrance to ride/attraction
-STR_1403    :{SMALLFONT}{BLACK}Build or move exit from ride/attraction
-STR_1404    :{SMALLFONT}{BLACK}Rotate 90{DEGREE}
-STR_1405    :{SMALLFONT}{BLACK}Mirror image
-STR_1406    :{SMALLFONT}{BLACK}Toggle scenery on/off (if available for this design)
-STR_1407    :{WINDOW_COLOUR_2}Build this...
-STR_1408    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY}
-STR_1409    :Entry/Exit Platform
-STR_1410    :Vertical Tower
-STR_1411    :{STRINGID} in the way
-STR_1412    :{WINDOW_COLOUR_3}Data logging not available for this type of ride
-STR_1413    :{WINDOW_COLOUR_3}Data logging will start when next {STRINGID} leaves {STRINGID}
+STR_1392    :{SMALLFONT}{BLACK}놀이기구/시설 전경
+STR_1393    :{SMALLFONT}{BLACK}차량 상세 설정
+STR_1394    :{SMALLFONT}{BLACK}운행 설정
+STR_1395    :{SMALLFONT}{BLACK}유지 설정
+STR_1396    :{SMALLFONT}{BLACK}색상 설정
+STR_1397    :{SMALLFONT}{BLACK}효과음 & 배경음악 설정
+STR_1398    :{SMALLFONT}{BLACK}측정 및 테스트 데이터
+STR_1399    :{SMALLFONT}{BLACK}그래프
+STR_1400    :입구
+STR_1401    :출구
+STR_1402    :{SMALLFONT}{BLACK}놀이기구/시설의 입구를 건설하거나 이동합니다
+STR_1403    :{SMALLFONT}{BLACK}놀이기구/시설의 출구를 건설하거나 이동합니다
+STR_1404    :{SMALLFONT}{BLACK}90{DEGREE} 회전
+STR_1405    :{SMALLFONT}{BLACK}반전
+STR_1406    :{SMALLFONT}{BLACK}풍경을 켜거나 끕니다 (단 사용할 수 있는 경우에만 켜짐)
+STR_1407    :{WINDOW_COLOUR_2}건설하기...
+STR_1408    :{WINDOW_COLOUR_2}예상 가격: {BLACK}{CURRENCY}
+STR_1409    :탑승장 출입구
+STR_1410    :버티컬 타워
+STR_1411    :{STRINGID}(이)가 중간에 있습니다
+STR_1412    :{WINDOW_COLOUR_3}이 종류의 놀이기구는 데이터를 기록할 수 없습니다
+STR_1413    :{WINDOW_COLOUR_3}다음 {STRINGID}(이)가 {STRINGID}(을)를 출발할 때 데이터를 기록합니다
 STR_1414    :{SMALLFONT}{BLACK}{DURATION}
-STR_1415    :{WINDOW_COLOUR_2}Velocity
-STR_1416    :{WINDOW_COLOUR_2}Altitude
-STR_1417    :{WINDOW_COLOUR_2}Vert.G's
-STR_1418    :{WINDOW_COLOUR_2}Lat.G's
+STR_1415    :{WINDOW_COLOUR_2}속력
+STR_1416    :{WINDOW_COLOUR_2}고도
+STR_1417    :{WINDOW_COLOUR_2}수직 중력
+STR_1418    :{WINDOW_COLOUR_2}측면 중력
 STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
 STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
 STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
-STR_1422    :{SMALLFONT}{BLACK}Logging data from {POP16}{STRINGID}
-STR_1423    :{SMALLFONT}{BLACK}Queue line path
-STR_1424    :{SMALLFONT}{BLACK}Footpath
-STR_1425    :Footpath
-STR_1426    :Queue Line
-STR_1427    :{WINDOW_COLOUR_2}Customers: {BLACK}{COMMA32} per hour
-STR_1428    :{WINDOW_COLOUR_2}Admission price:
+STR_1422    :{SMALLFONT}{BLACK}{POP16}{STRINGID}로부터 데이터 기록 중
+STR_1423    :{SMALLFONT}{BLACK}대기줄
+STR_1424    :{SMALLFONT}{BLACK}보도
+STR_1425    :보도
+STR_1426    :대기줄
+STR_1427    :{WINDOW_COLOUR_2}손님: {BLACK}{COMMA32}명/시간
+STR_1428    :{WINDOW_COLOUR_2}입장료:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Free
-STR_1431    :Walking
-STR_1432    :Heading for {STRINGID}
-STR_1433    :Queuing for {STRINGID}
-STR_1434    :Drowning
-STR_1435    :On {STRINGID}
-STR_1436    :In {STRINGID}
-STR_1437    :At {STRINGID}
-STR_1438    :Sitting
-STR_1439    :(select location)
-STR_1440    :Mowing grass
-STR_1441    :Sweeping footpath
-STR_1442    :Emptying litter bin
-STR_1443    :Watering gardens
-STR_1444    :Watching {STRINGID}
-STR_1445    :Watching construction of {STRINGID}
-STR_1446    :Looking at scenery
-STR_1447    :Leaving the park
-STR_1448    :Watching new ride being constructed
+STR_1431    :걷는 중
+STR_1432    :{STRINGID}(으)로 향하는 중
+STR_1433    :{STRINGID}(에)서 대기 중
+STR_1434    :물에 빠짐
+STR_1435    :{STRINGID} 위에
+STR_1436    :{STRINGID} 안에
+STR_1437    :{STRINGID}에
+STR_1438    :앉음
+STR_1439    :(위치를 선택하세요)
+STR_1440    :잔디 깎는 중
+STR_1441    :보도 청소 중
+STR_1442    :쓰레기통 비우는 중
+STR_1443    :정원에 물을 주는 중
+STR_1444    :{STRINGID}(을)를 보는 중
+STR_1445    :{STRINGID}의 건설 장면을 보는 중
+STR_1446    :풍경을 보는 중
+STR_1447    :공원을 떠나는 중
+STR_1448    :새 놀이기구가 건설되는 장면을 보는 중
 STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
-STR_1452    :Guest's name
-STR_1453    :Enter name for this guest:
-STR_1454    :Can't name guest...
-STR_1455    :Invalid name for guest
-STR_1456    :{WINDOW_COLOUR_2}Cash spent: {BLACK}{CURRENCY2DP}
-STR_1457    :{WINDOW_COLOUR_2}Cash in pocket: {BLACK}{CURRENCY2DP}
-STR_1458    :{WINDOW_COLOUR_2}Time in park: {BLACK}{REALTIME}
-STR_1459    :Track style
-STR_1460    :{SMALLFONT}{BLACK}'U' shaped open track
-STR_1461    :{SMALLFONT}{BLACK}'O' shaped enclosed track
-STR_1462    :Too steep for lift hill
-STR_1463    :Guests
-STR_1464    :Helix up (small)
-STR_1465    :Helix up (large)
-STR_1466    :Helix down (small)
-STR_1467    :Helix down (large)
-STR_1468    :Staff
-STR_1469    :Ride must start and end with stations
-STR_1470    :Station not long enough
-STR_1471    :{WINDOW_COLOUR_2}Speed:
-STR_1472    :{SMALLFONT}{BLACK}Speed of this ride
-STR_1473    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1474    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}Not yet available
-STR_1475    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1476    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}Not yet available
-STR_1477    :{WINDOW_COLOUR_2}Intensity rating: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
-STR_1478    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1479    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}Not yet available
-STR_1480    :{SMALLFONT}{OPENQUOTES}I can't afford {STRINGID}{ENDQUOTES}
-STR_1481    :{SMALLFONT}{OPENQUOTES}I've spent all my money{ENDQUOTES}
-STR_1482    :{SMALLFONT}{OPENQUOTES}I feel sick{ENDQUOTES}
-STR_1483    :{SMALLFONT}{OPENQUOTES}I feel very sick{ENDQUOTES}
-STR_1484    :{SMALLFONT}{OPENQUOTES}I want to go on something more thrilling than {STRINGID}{ENDQUOTES}
-STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID} looks too intense for me{ENDQUOTES}
-STR_1486    :{SMALLFONT}{OPENQUOTES}I haven't finished my {STRINGID} yet{ENDQUOTES}
-STR_1487    :{SMALLFONT}{OPENQUOTES}Just looking at {STRINGID} makes me feel sick{ENDQUOTES}
-STR_1488    :{SMALLFONT}{OPENQUOTES}I'm not paying that much to go on {STRINGID}{ENDQUOTES}
-STR_1489    :{SMALLFONT}{OPENQUOTES}I want to go home{ENDQUOTES}
-STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} is really good value{ENDQUOTES}
-STR_1491    :{SMALLFONT}{OPENQUOTES}I've already got {STRINGID}{ENDQUOTES}
-STR_1492    :{SMALLFONT}{OPENQUOTES}I can't afford {STRINGID}{ENDQUOTES}
-STR_1493    :{SMALLFONT}{OPENQUOTES}I'm not hungry{ENDQUOTES}
-STR_1494    :{SMALLFONT}{OPENQUOTES}I'm not thirsty{ENDQUOTES}
-STR_1495    :{SMALLFONT}{OPENQUOTES}Help! I'm drowning!{ENDQUOTES}
-STR_1496    :{SMALLFONT}{OPENQUOTES}I'm lost!{ENDQUOTES}
-STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} was great{ENDQUOTES}
-STR_1498    :{SMALLFONT}{OPENQUOTES}I've been queuing for {STRINGID} for ages{ENDQUOTES}
-STR_1499    :{SMALLFONT}{OPENQUOTES}I'm tired{ENDQUOTES}
-STR_1500    :{SMALLFONT}{OPENQUOTES}I'm hungry{ENDQUOTES}
-STR_1501    :{SMALLFONT}{OPENQUOTES}I'm thirsty{ENDQUOTES}
-STR_1502    :{SMALLFONT}{OPENQUOTES}I need to go to the bathroom{ENDQUOTES}
-STR_1503    :{SMALLFONT}{OPENQUOTES}I can't find {STRINGID}{ENDQUOTES}
-STR_1504    :{SMALLFONT}{OPENQUOTES}I'm not paying that much to use {STRINGID}{ENDQUOTES}
-STR_1505    :{SMALLFONT}{OPENQUOTES}I'm not going on {STRINGID} while it's raining{ENDQUOTES}
-STR_1506    :{SMALLFONT}{OPENQUOTES}The litter here is really bad{ENDQUOTES}
-STR_1507    :{SMALLFONT}{OPENQUOTES}I can't find the park exit{ENDQUOTES}
-STR_1508    :{SMALLFONT}{OPENQUOTES}I want to get off {STRINGID}{ENDQUOTES}
-STR_1509    :{SMALLFONT}{OPENQUOTES}I want to get out of {STRINGID}{ENDQUOTES}
-STR_1510    :{SMALLFONT}{OPENQUOTES}I'm not going on {STRINGID} - It isn't safe{ENDQUOTES}
-STR_1511    :{SMALLFONT}{OPENQUOTES}This path is disgusting{ENDQUOTES}
-STR_1512    :{SMALLFONT}{OPENQUOTES}It's too crowded here{ENDQUOTES}
-STR_1513    :{SMALLFONT}{OPENQUOTES}The vandalism here is really bad{ENDQUOTES}
-STR_1514    :{SMALLFONT}{OPENQUOTES}Great scenery!{ENDQUOTES}
-STR_1515    :{SMALLFONT}{OPENQUOTES}This park is really clean and tidy{ENDQUOTES}
-STR_1516    :{SMALLFONT}{OPENQUOTES}The jumping fountains are great{ENDQUOTES}
-STR_1517    :{SMALLFONT}{OPENQUOTES}The music is nice here{ENDQUOTES}
-STR_1518    :{SMALLFONT}{OPENQUOTES}This balloon from {STRINGID} is really good value{ENDQUOTES}
-STR_1519    :{SMALLFONT}{OPENQUOTES}This cuddly toy from {STRINGID} is really good value{ENDQUOTES}
-STR_1520    :{SMALLFONT}{OPENQUOTES}This park map from {STRINGID} is really good value{ENDQUOTES}
-STR_1521    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1522    :{SMALLFONT}{OPENQUOTES}This umbrella from {STRINGID} is really good value{ENDQUOTES}
-STR_1523    :{SMALLFONT}{OPENQUOTES}This drink from {STRINGID} is really good value{ENDQUOTES}
-STR_1524    :{SMALLFONT}{OPENQUOTES}This burger from {STRINGID} is really good value{ENDQUOTES}
-STR_1525    :{SMALLFONT}{OPENQUOTES}These fries from {STRINGID} are really good value{ENDQUOTES}
-STR_1526    :{SMALLFONT}{OPENQUOTES}This ice cream from {STRINGID} is really good value{ENDQUOTES}
-STR_1527    :{SMALLFONT}{OPENQUOTES}This cotton candy from {STRINGID} is really good value{ENDQUOTES}
+STR_1452    :손님의 이름
+STR_1453    :이 손님의 이름을 입력하세요:
+STR_1454    :손님의 이름을 바꿀 수 없습니다...
+STR_1455    :손님 이름으로 적합하지 않습니다
+STR_1456    :{WINDOW_COLOUR_2}사용한 돈: {BLACK}{CURRENCY2DP}
+STR_1457    :{WINDOW_COLOUR_2}보유한 돈: {BLACK}{CURRENCY2DP}
+STR_1458    :{WINDOW_COLOUR_2}공원에 머무른 시간: {BLACK}{REALTIME}
+STR_1459    :트랙 스타일
+STR_1460    :{SMALLFONT}{BLACK}'U' 모양의 천장이 없는 트랙
+STR_1461    :{SMALLFONT}{BLACK}'O' 모양의 천장이 있는 트랙
+STR_1462    :리프트 힐을 쓰기엔 너무 경사가 급합니다
+STR_1463    :손님
+STR_1464    :나선 상승 (작음)
+STR_1465    :나선 상승 (큼)
+STR_1466    :나선 하강 (작음)
+STR_1467    :나선 하강 (큼)
+STR_1468    :직원
+STR_1469    :놀이기구는 탑승장에서 시작하고 끝나야 합니다
+STR_1470    :탑승장이 충분히 길지 않습니다
+STR_1471    :{WINDOW_COLOUR_2}속력:
+STR_1472    :{SMALLFONT}{BLACK}이 놀이기구의 속력
+STR_1473    :{WINDOW_COLOUR_2}흥미도: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1474    :{WINDOW_COLOUR_2}흥미도: {BLACK}아직 조회할 수 없음
+STR_1475    :{WINDOW_COLOUR_2}격렬도: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1476    :{WINDOW_COLOUR_2}격렬도: {BLACK}아직 조회할 수 없음
+STR_1477    :{WINDOW_COLOUR_2}격렬도: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
+STR_1478    :{WINDOW_COLOUR_2}멀미도: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1479    :{WINDOW_COLOUR_2}멀미도: {BLACK}아직 조회할 수 없음
+STR_1480    :{SMALLFONT}{OPENQUOTES}{STRINGID}에 쓸 돈은 없어{ENDQUOTES}
+STR_1481    :{SMALLFONT}{OPENQUOTES}내 돈을 전부 다 써버렸어{ENDQUOTES}
+STR_1482    :{SMALLFONT}{OPENQUOTES}속이 메스꺼워{ENDQUOTES}
+STR_1483    :{SMALLFONT}{OPENQUOTES}속이 정말 메스꺼워{ENDQUOTES}
+STR_1484    :{SMALLFONT}{OPENQUOTES}{STRINGID}보다 더 스릴있는 걸 타고 싶어{ENDQUOTES}
+STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID}(은)는 내가 타기엔 너무 격렬해 보여{ENDQUOTES}
+STR_1486    :{SMALLFONT}{OPENQUOTES}아직 {STRINGID}(을)를 다 먹지 않았어{ENDQUOTES}
+STR_1487    :{SMALLFONT}{OPENQUOTES}{STRINGID}(은)는 바라만 봐도 속이 메스꺼워{ENDQUOTES}
+STR_1488    :{SMALLFONT}{OPENQUOTES}{STRINGID}에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1489    :{SMALLFONT}{OPENQUOTES}집에 가고 싶어{ENDQUOTES}
+STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID}(은)는 정말 가격이 좋아{ENDQUOTES}
+STR_1491    :{SMALLFONT}{OPENQUOTES}{STRINGID}(을)를 이미 갖고 있어{ENDQUOTES}
+STR_1492    :{SMALLFONT}{OPENQUOTES}{STRINGID}에 쓸 돈은 없어{ENDQUOTES}
+STR_1493    :{SMALLFONT}{OPENQUOTES}배고프지 않아{ENDQUOTES}
+STR_1494    :{SMALLFONT}{OPENQUOTES}목마르지 않아{ENDQUOTES}
+STR_1495    :{SMALLFONT}{OPENQUOTES}살려주세요! 물에 빠졌어요!{ENDQUOTES}
+STR_1496    :{SMALLFONT}{OPENQUOTES}길을 잃어버렸어!{ENDQUOTES}
+STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID}(은)는 정말 훌륭했어{ENDQUOTES}
+STR_1498    :{SMALLFONT}{OPENQUOTES}{STRINGID}(을)를 타려고 한참동안이나 기다렸어{ENDQUOTES}
+STR_1499    :{SMALLFONT}{OPENQUOTES}피곤해{ENDQUOTES}
+STR_1500    :{SMALLFONT}{OPENQUOTES}배고파{ENDQUOTES}
+STR_1501    :{SMALLFONT}{OPENQUOTES}목말라{ENDQUOTES}
+STR_1502    :{SMALLFONT}{OPENQUOTES}화장실에 가야겠어{ENDQUOTES}
+STR_1503    :{SMALLFONT}{OPENQUOTES}{STRINGID}(을)를 못 찾겠어{ENDQUOTES}
+STR_1504    :{SMALLFONT}{OPENQUOTES}{STRINGID}(을)를 이용하는데 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1505    :{SMALLFONT}{OPENQUOTES}비가 오는 동안에는 {STRINGID}에 가지 않을래{ENDQUOTES}
+STR_1506    :{SMALLFONT}{OPENQUOTES}여기는 쓰레기가 여기 저기 널려있어{ENDQUOTES}
+STR_1507    :{SMALLFONT}{OPENQUOTES}공원 출구를 찾을 수 없어{ENDQUOTES}
+STR_1508    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 내리고 싶어{ENDQUOTES}
+STR_1509    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 나가고 싶어{ENDQUOTES}
+STR_1510    :{SMALLFONT}{OPENQUOTES}{STRINGID}(은)는 안전하지 않아서 가지 않을래{ENDQUOTES}
+STR_1511    :{SMALLFONT}{OPENQUOTES}이 길은 역겨워{ENDQUOTES}
+STR_1512    :{SMALLFONT}{OPENQUOTES}여긴 사람이 너무 많아{ENDQUOTES}
+STR_1513    :{SMALLFONT}{OPENQUOTES}여기는 시설이 막 파괴되어 있어{ENDQUOTES}
+STR_1514    :{SMALLFONT}{OPENQUOTES}풍경이 참 좋다!{ENDQUOTES}
+STR_1515    :{SMALLFONT}{OPENQUOTES}이 공원은 정말 깨끗하고 깔끔한 것 같아{ENDQUOTES}
+STR_1516    :{SMALLFONT}{OPENQUOTES}분수대가 참 훌륭해{ENDQUOTES}
+STR_1517    :{SMALLFONT}{OPENQUOTES}여기 음악 좋다{ENDQUOTES}
+STR_1518    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 풍선은 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1519    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 캐릭터 인형은 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1520    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 공원 지도는 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1521    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 탑승 사진은 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1522    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 우산은 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1523    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 음료수는 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1524    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 햄버거는 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1525    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 감자칩은 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1526    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 아이스크림은 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1527    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 솜사탕은 가격이 참 적당한 것 같아{ENDQUOTES}
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}{OPENQUOTES}This pizza from {STRINGID} is really good value{ENDQUOTES}
+STR_1531    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 피자는 가격이 참 적당한 것 같아{ENDQUOTES}
 STR_1532    :
-STR_1533    :{SMALLFONT}{OPENQUOTES}This popcorn from {STRINGID} is really good value{ENDQUOTES}
-STR_1534    :{SMALLFONT}{OPENQUOTES}This hot dog from {STRINGID} is really good value{ENDQUOTES}
-STR_1535    :{SMALLFONT}{OPENQUOTES}This tentacle from {STRINGID} is really good value{ENDQUOTES}
-STR_1536    :{SMALLFONT}{OPENQUOTES}This hat from {STRINGID} is really good value{ENDQUOTES}
-STR_1537    :{SMALLFONT}{OPENQUOTES}This candy apple from {STRINGID} is really good value{ENDQUOTES}
-STR_1538    :{SMALLFONT}{OPENQUOTES}This T-shirt from {STRINGID} is really good value{ENDQUOTES}
-STR_1539    :{SMALLFONT}{OPENQUOTES}This donut from {STRINGID} is really good value{ENDQUOTES}
-STR_1540    :{SMALLFONT}{OPENQUOTES}This coffee from {STRINGID} is really good value{ENDQUOTES}
+STR_1533    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 팝콘은 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1534    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 핫도그는 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1535    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 문어발은 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1536    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 모자는 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1537    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 사과 토피 사탕은 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1538    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 티셔츠는 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1539    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 도넛은 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1540    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 커피는 가격이 참 적당한 것 같아{ENDQUOTES}
 STR_1541    :
-STR_1542    :{SMALLFONT}{OPENQUOTES}This fried chicken from {STRINGID} is really good value{ENDQUOTES}
-STR_1543    :{SMALLFONT}{OPENQUOTES}This lemonade from {STRINGID} is really good value{ENDQUOTES}
+STR_1542    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 프라이드 치킨은 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1543    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 레모네이드는 가격이 참 적당한 것 같아{ENDQUOTES}
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}{OPENQUOTES}Wow!{ENDQUOTES}
-STR_1551    :{SMALLFONT}{OPENQUOTES}I have the strangest feeling someone is watching me{ENDQUOTES}
-STR_1552    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a balloon from {STRINGID}{ENDQUOTES}
-STR_1553    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cuddly toy from {STRINGID}{ENDQUOTES}
-STR_1554    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a park map from {STRINGID}{ENDQUOTES}
-STR_1555    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1556    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an umbrella from {STRINGID}{ENDQUOTES}
-STR_1557    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a drink from {STRINGID}{ENDQUOTES}
-STR_1558    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a burger from {STRINGID}{ENDQUOTES}
-STR_1559    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fries from {STRINGID}{ENDQUOTES}
-STR_1560    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an ice cream from {STRINGID}{ENDQUOTES}
-STR_1561    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for cotton candy from {STRINGID}{ENDQUOTES}
+STR_1550    :{SMALLFONT}{OPENQUOTES}와우!{ENDQUOTES}
+STR_1551    :{SMALLFONT}{OPENQUOTES}누가 지켜보는 것 같은 이상한 기분이 들어{ENDQUOTES}
+STR_1552    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 풍선에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1553    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 캐릭터 인형에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1554    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 공원 지도에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1555    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 탑승 사진에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1556    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 우산에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1557    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 음료수에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1558    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 햄버거에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1559    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 감자칩에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1560    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 아이스크립에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1561    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 솜사탕에 돈을 쓰고 싶지 않아{ENDQUOTES}
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for pizza from {STRINGID}{ENDQUOTES}
+STR_1565    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 피자에 돈을 쓰고 싶지 않아{ENDQUOTES}
 STR_1566    :
-STR_1567    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for popcorn from {STRINGID}{ENDQUOTES}
-STR_1568    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a hot dog from {STRINGID}{ENDQUOTES}
-STR_1569    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for tentacle from {STRINGID}{ENDQUOTES}
-STR_1570    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a hat from {STRINGID}{ENDQUOTES}
-STR_1571    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a candy apple from {STRINGID}{ENDQUOTES}
-STR_1572    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a T-shirt from {STRINGID}{ENDQUOTES}
-STR_1573    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a donut from {STRINGID}{ENDQUOTES}
-STR_1574    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for coffee from {STRINGID}{ENDQUOTES}
+STR_1567    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 팝콘에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1568    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 핫도그에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1569    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 문어발에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1570    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 모자에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1571    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 사과 토피 사탕에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1572    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 티셔츠에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1573    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 도넛에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1574    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 커피에 돈을 쓰고 싶지 않아{ENDQUOTES}
 STR_1575    :
-STR_1576    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fried chicken from {STRINGID}{ENDQUOTES}
-STR_1577    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for lemonade from {STRINGID}{ENDQUOTES}
+STR_1576    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 프라이드 치킨에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1577    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 레모네이드에 돈을 쓰고 싶지 않아{ENDQUOTES}
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1585    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1586    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1587    :{SMALLFONT}{OPENQUOTES}This pretzel from {STRINGID} is really good value{ENDQUOTES}
-STR_1588    :{SMALLFONT}{OPENQUOTES}This hot chocolate from {STRINGID} is really good value{ENDQUOTES}
-STR_1589    :{SMALLFONT}{OPENQUOTES}This iced tea from {STRINGID} is really good value{ENDQUOTES}
-STR_1590    :{SMALLFONT}{OPENQUOTES}This funnel cake from {STRINGID} is really good value{ENDQUOTES}
-STR_1591    :{SMALLFONT}{OPENQUOTES}These sunglasses from {STRINGID} are really good value{ENDQUOTES}
-STR_1592    :{SMALLFONT}{OPENQUOTES}These beef noodles from {STRINGID} are really good value{ENDQUOTES}
-STR_1593    :{SMALLFONT}{OPENQUOTES}These fried rice noodles from {STRINGID} are really good value{ENDQUOTES}
-STR_1594    :{SMALLFONT}{OPENQUOTES}This wonton soup from {STRINGID} is really good value{ENDQUOTES}
-STR_1595    :{SMALLFONT}{OPENQUOTES}This meatball soup from {STRINGID} is really good value{ENDQUOTES}
-STR_1596    :{SMALLFONT}{OPENQUOTES}This fruit juice from {STRINGID} is really good value{ENDQUOTES}
-STR_1597    :{SMALLFONT}{OPENQUOTES}This soybean milk from {STRINGID} is really good value{ENDQUOTES}
-STR_1598    :{SMALLFONT}{OPENQUOTES}This sujongkwa from {STRINGID} is really good value{ENDQUOTES}
-STR_1599    :{SMALLFONT}{OPENQUOTES}This sub sandwich from {STRINGID} is really good value{ENDQUOTES}
-STR_1600    :{SMALLFONT}{OPENQUOTES}This cookie from {STRINGID} is really good value{ENDQUOTES}
+STR_1584    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 탑승 사진은 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1585    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 탑승 사진은 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1586    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 탑승 사진은 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1587    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 프레첼은 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1588    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 핫 초코는 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1589    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 아이스 티는 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1590    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 휜넬 케이크는 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1591    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 선글라스는 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1592    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 고기 국수는 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1593    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 볶음밥은 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1594    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 만둣국은 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1595    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 미트볼 스프는 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1596    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 과일 주스는 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1597    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 두유는 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1598    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 수정과는 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1599    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 샌드위치는 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1600    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 쿠키는 가격이 참 적당한 것 같아{ENDQUOTES}
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}{OPENQUOTES}This roast sausage from {STRINGID} are really good value{ENDQUOTES}
+STR_1604    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 구운 소시지는 가격이 참 적당한 것 같아{ENDQUOTES}
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1618,27 +1618,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1617    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1618    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1619    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a pretzel from {STRINGID}{ENDQUOTES}
-STR_1620    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for hot chocolate from {STRINGID}{ENDQUOTES}
-STR_1621    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for iced tea from {STRINGID}{ENDQUOTES}
-STR_1622    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a funnel cake from {STRINGID}{ENDQUOTES}
-STR_1623    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sunglasses from {STRINGID}{ENDQUOTES}
-STR_1624    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for beef noodles from {STRINGID}{ENDQUOTES}
-STR_1625    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fried rice noodles from {STRINGID}{ENDQUOTES}
-STR_1626    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for wonton soup from {STRINGID}{ENDQUOTES}
-STR_1627    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for meatball soup from {STRINGID}{ENDQUOTES}
-STR_1628    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fruit juice from {STRINGID}{ENDQUOTES}
-STR_1629    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for soybean milk from {STRINGID}{ENDQUOTES}
-STR_1630    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sujongkwa from {STRINGID}{ENDQUOTES}
-STR_1631    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a sub sandwich from {STRINGID}{ENDQUOTES}
-STR_1632    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cookie from {STRINGID}{ENDQUOTES}
+STR_1616    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 탑승 사진에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1617    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 탑승 사진에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1618    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 탑승 사진에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1619    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 프레첼에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1620    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 핫 초코에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1621    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 아이스 티에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1622    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 휜넬 케이크에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1623    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 선글라스에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1624    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 고기 국수에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1625    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 볶음밥에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1626    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 만둣국에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1627    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 미트볼 스프에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1628    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 과일 주스에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1629    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 두유에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1630    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 수정과에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1631    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 샌드위치에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1632    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 쿠키에 돈을 쓰고 싶지 않아{ENDQUOTES}
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a roast sausage from {STRINGID}{ENDQUOTES}
+STR_1636    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 구운 소시지에 돈을 쓰고 싶지 않아{ENDQUOTES}
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1650,71 +1650,71 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}{OPENQUOTES}Help! Put me down!{ENDQUOTES}
-STR_1649    :{SMALLFONT}{OPENQUOTES}I'm running out of cash!{ENDQUOTES}
-STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! A new ride being built!{ENDQUOTES}
-STR_1651    :{SMALLFONT}{OPENQUOTES}Nice ride! But not as good as the Phoenix...{ENDQUOTES}
-STR_1652    :{SMALLFONT}{OPENQUOTES}I'm so excited - It's an Intamin ride!{ENDQUOTES}
-STR_1653    :{SMALLFONT}{OPENQUOTES}...and here we are on {STRINGID}!{ENDQUOTES}
-STR_1654    :{WINDOW_COLOUR_2}Recent thoughts:
-STR_1655    :{SMALLFONT}{BLACK}Construct footpath on land
-STR_1656    :{SMALLFONT}{BLACK}Construct bridge or tunnel footpath
-STR_1657    :{WINDOW_COLOUR_2}Preferred ride
-STR_1658    :{WINDOW_COLOUR_2}intensity: {BLACK}less than {COMMA16}
-STR_1659    :{WINDOW_COLOUR_2}intensity: {BLACK}between {COMMA16} and {COMMA16}
-STR_1660    :{WINDOW_COLOUR_2}intensity: {BLACK}more than {COMMA16}
-STR_1661    :{WINDOW_COLOUR_2}Nausea tolerance: {BLACK}{STRINGID}
-STR_1662    :{WINDOW_COLOUR_2}Happiness:
-STR_1663    :{WINDOW_COLOUR_2}Nausea:
-STR_1664    :{WINDOW_COLOUR_2}Energy:
-STR_1665    :{WINDOW_COLOUR_2}Hunger:
-STR_1666    :{WINDOW_COLOUR_2}Thirst:
-STR_1667    :{WINDOW_COLOUR_2}Bathroom:
-STR_1668    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}Unknown
-STR_1669    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}{COMMA16}%
-STR_1670    :{WINDOW_COLOUR_2}Total customers: {BLACK}{COMMA32}
-STR_1671    :{WINDOW_COLOUR_2}Total profit: {BLACK}{CURRENCY2DP}
-STR_1672    :Brakes
-STR_1673    :Spinning Control Toggle Track
-STR_1674    :Brake speed
+STR_1648    :{SMALLFONT}{OPENQUOTES}살려주세요! 절 내려주세요!{ENDQUOTES}
+STR_1649    :{SMALLFONT}{OPENQUOTES}돈이 다 떨어져가고 있어요!{ENDQUOTES}
+STR_1650    :{SMALLFONT}{OPENQUOTES}와우! 새 놀이기구가 지어지고 있어요!{ENDQUOTES}
+STR_1651    :{SMALLFONT}{OPENQUOTES}멋진 놀이기구에요! 하지만 피닉스만큼 멋지진 않네요...{ENDQUOTES}
+STR_1652    :{SMALLFONT}{OPENQUOTES}정말 흥분돼요! 인타민 공원의 놀이기구에요!{ENDQUOTES}
+STR_1653    :{SMALLFONT}{OPENQUOTES}...그리고 드디어 {STRINGID}에 왔어요!{ENDQUOTES}
+STR_1654    :{WINDOW_COLOUR_2}최근 생각:
+STR_1655    :{SMALLFONT}{BLACK}땅 위에 보도 건설
+STR_1656    :{SMALLFONT}{BLACK}다리나 터널 보도를 건설
+STR_1657    :{WINDOW_COLOUR_2}좋아하는 놀이기구
+STR_1658    :{WINDOW_COLOUR_2}격렬도: {BLACK}{COMMA16} 이하
+STR_1659    :{WINDOW_COLOUR_2}격렬도: {BLACK}{COMMA16}에서 {COMMA16} 사이
+STR_1660    :{WINDOW_COLOUR_2}격렬도: {BLACK}{COMMA16} 이상
+STR_1661    :{WINDOW_COLOUR_2}멀미 참을성: {BLACK}{STRINGID}
+STR_1662    :{WINDOW_COLOUR_2}행복도:
+STR_1663    :{WINDOW_COLOUR_2}멀미도:
+STR_1664    :{WINDOW_COLOUR_2}에너지:
+STR_1665    :{WINDOW_COLOUR_2}배고픔:
+STR_1666    :{WINDOW_COLOUR_2}목마름:
+STR_1667    :{WINDOW_COLOUR_2}화장실:
+STR_1668    :{WINDOW_COLOUR_2}만족도: {BLACK}알 수 없음
+STR_1669    :{WINDOW_COLOUR_2}만족도: {BLACK}{COMMA16}%
+STR_1670    :{WINDOW_COLOUR_2}총 고객: {BLACK}{COMMA32}
+STR_1671    :{WINDOW_COLOUR_2}총 수익: {BLACK}{CURRENCY2DP}
+STR_1672    :브레이크
+STR_1673    :회전 컨트롤 토글 트랙
+STR_1674    :브레이크 속력
 STR_1675    :{POP16}{VELOCITY}
-STR_1676    :{SMALLFONT}{BLACK}Set speed limit for brakes
-STR_1677    :{WINDOW_COLOUR_2}Popularity: {BLACK}Unknown
-STR_1678    :{WINDOW_COLOUR_2}Popularity: {BLACK}{COMMA16}%
-STR_1679    :Helix up (left)
-STR_1680    :Helix up (right)
-STR_1681    :Helix down (left)
-STR_1682    :Helix down (right)
-STR_1683    :Base size 2 x 2
-STR_1684    :Base size 4 x 4
-STR_1685    :Base size 2 x 4
-STR_1686    :Base size 5 x 1
-STR_1687    :Water splash
-STR_1688    :Base size 4 x 1
-STR_1689    :Block brakes
+STR_1676    :{SMALLFONT}{BLACK}브레이크의 제한 속도를 설정하세요
+STR_1677    :{WINDOW_COLOUR_2}인기도: {BLACK}알 수 없음
+STR_1678    :{WINDOW_COLOUR_2}인기도: {BLACK}{COMMA16}%
+STR_1679    :나선 상승 (왼쪽)
+STR_1680    :나선 상승 (오른쪽)
+STR_1681    :나선 하강 (왼쪽)
+STR_1682    :나선 하강 (오른쪽)
+STR_1683    :기본 크기 2 x 2
+STR_1684    :기본 크기 4 x 4
+STR_1685    :기본 크기 2 x 4
+STR_1686    :기본 크기 5 x 1
+STR_1687    :물 튀김
+STR_1688    :기본 크기 4 x 1
+STR_1689    :블록 브레이크
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
-STR_1691    :{WINDOW_COLOUR_2}  Cost: {BLACK}{CURRENCY}
-STR_1692    :{WINDOW_COLOUR_2}  Cost: {BLACK}from {CURRENCY}
-STR_1693    :{SMALLFONT}{BLACK}Guests
-STR_1694    :{SMALLFONT}{BLACK}Staff
-STR_1695    :{SMALLFONT}{BLACK}Income and costs
-STR_1696    :{SMALLFONT}{BLACK}Customer information
+STR_1691    :{WINDOW_COLOUR_2}  비용: {BLACK}{CURRENCY}
+STR_1692    :{WINDOW_COLOUR_2}  비용: {BLACK}{CURRENCY}으로부터
+STR_1693    :{SMALLFONT}{BLACK}손님
+STR_1694    :{SMALLFONT}{BLACK}직원
+STR_1695    :{SMALLFONT}{BLACK}수익 및 지출
+STR_1696    :{SMALLFONT}{BLACK}고객 정보
 STR_1697    :Cannot place these on queue line area
 STR_1698    :Can only place these on queue area
-STR_1699    :Too many people in game
-STR_1700    :Hire new Handyman
-STR_1701    :Hire new Mechanic
-STR_1702    :Hire new Security Guard
-STR_1703    :Hire new Entertainer
-STR_1704    :Can't hire new staff...
+STR_1699    :게임에 사람이 너무 많습니다
+STR_1700    :새 미화원 고용
+STR_1701    :새 정비기술자 고용
+STR_1702    :새 경비원 고용
+STR_1703    :새 엔터테이너 고용
+STR_1704    :새 직원을 고용할 수 없습니다...
 STR_1705    :{SMALLFONT}{BLACK}Sack this staff member
 STR_1706    :{SMALLFONT}{BLACK}Move this person to a new location
 STR_1707    :Too many staff in game
 STR_1708    :{SMALLFONT}{BLACK}Set patrol area for this staff member
 STR_1709    :Sack staff
-STR_1710    :Yes
+STR_1710    :예
 STR_1711    :{WINDOW_COLOUR_1}Are you sure you want to sack {STRINGID}?
-STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Sweep footpaths
+STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Sweep 보도s
 STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Water gardens
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Empty litter bins
 STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Mow grass
@@ -1732,8 +1732,8 @@ STR_1726    :Land not for sale!
 STR_1727    :Construction rights not for sale!
 STR_1728    :Can't buy construction rights here...
 STR_1729    :Land not owned by park!
-STR_1730    :{RED}Closed - - 
-STR_1731    :{WHITE}{STRINGID} - - 
+STR_1730    :{RED}Closed - -
+STR_1731    :{WHITE}{STRINGID} - -
 STR_1732    :Build
 STR_1733    :Mode
 STR_1734    :{WINDOW_COLOUR_2}Number of laps:
@@ -1741,23 +1741,23 @@ STR_1735    :{SMALLFONT}{BLACK}Number of laps of circuit
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1737    :{COMMA16}
 STR_1738    :Can't change number of laps...
-STR_1739    :Race won by guest {INT32}
+STR_1739    :Race won by 손님 {INT32}
 STR_1740    :Race won by {STRINGID}
 STR_1741    :Not yet constructed !
-STR_1742    :{WINDOW_COLOUR_2}Max. people on ride:
-STR_1743    :{SMALLFONT}{BLACK}Maximum number of people allowed on this ride at one time
+STR_1742    :{WINDOW_COLOUR_2}Max. people on 라이드:
+STR_1743    :{SMALLFONT}{BLACK}Maximum number of people allowed on this 라이드 at one time
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1745    :{COMMA16}
 STR_1746    :Can't change this...
 STR_1747    :{WINDOW_COLOUR_2}Time limit:
-STR_1748    :{SMALLFONT}{BLACK}Time limit for ride
+STR_1748    :{SMALLFONT}{BLACK}Time limit for 라이드
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1750    :{DURATION}
-STR_1751    :Can't change time limit for ride...
-STR_1752    :{SMALLFONT}{BLACK}Show list of individual guests in park
-STR_1753    :{SMALLFONT}{BLACK}Show summarized list of guests in park
-STR_1754    :{BLACK}{COMMA16} guests
-STR_1755    :{BLACK}{COMMA16} guest
+STR_1751    :Can't change time limit for 라이드...
+STR_1752    :{SMALLFONT}{BLACK}Show list of individual 손님s in park
+STR_1753    :{SMALLFONT}{BLACK}Show summarised list of 손님s in park
+STR_1754    :{BLACK}{COMMA16} 손님s
+STR_1755    :{BLACK}{COMMA16} 손님
 STR_1756    :{WINDOW_COLOUR_2}Admission price:
 STR_1757    :{WINDOW_COLOUR_2}Reliability: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Build mode
@@ -1767,7 +1767,7 @@ STR_1761    :{SMALLFONT}{BLACK}Build maze in this direction
 STR_1762    :Waterfalls
 STR_1763    :Rapids
 STR_1764    :Log Bumps
-STR_1765    :On-ride photo section
+STR_1765    :On-라이드 photo section
 STR_1766    :Reverser turntable
 STR_1767    :Spinning tunnel
 STR_1768    :Can't change number of swings...
@@ -1775,12 +1775,12 @@ STR_1769    :{WINDOW_COLOUR_2}Number of swings:
 STR_1770    :{SMALLFONT}{BLACK}Number of complete swings
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1772    :{COMMA16}
-STR_1773    :Only one on-ride photo section allowed per ride
-STR_1774    :Only one cable lift hill allowed per ride
+STR_1773    :Only one on-라이드 photo section allowed per 라이드
+STR_1774    :Only one cable lift hill allowed per 라이드
 STR_1775    :Off
 STR_1776    :On
 STR_1777    :{WINDOW_COLOUR_2}Music
-STR_1778    :{STRINGID} - - 
+STR_1778    :{STRINGID} - -
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger costume
 STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elephant costume
@@ -1792,14 +1792,14 @@ STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronaut costume
 STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Bandit costume
 STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriff costume
 STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Pirate costume
-STR_1790    :{SMALLFONT}{BLACK}Select uniform color for this type of staff
-STR_1791    :{WINDOW_COLOUR_2}Uniform color:
+STR_1790    :{SMALLFONT}{BLACK}Select uniform colour for this type of staff
+STR_1791    :{WINDOW_COLOUR_2}Uniform colour:
 STR_1792    :Responding to {STRINGID} breakdown call
 STR_1793    :Heading to {STRINGID} for an inspection
 STR_1794    :Fixing {STRINGID}
 STR_1795    :Answering radio call
 STR_1796    :Has broken down and requires fixing
-STR_1797    :This option cannot be changed for this ride
+STR_1797    :This option cannot be changed for this 라이드
 STR_1798    :Whirlpool
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Safety cut-out
@@ -1818,16 +1818,16 @@ STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Miscellaneous Objects
 STR_1814    :Actions
 STR_1815    :Thoughts
-STR_1816    :{SMALLFONT}{BLACK}Select information type to show in guest list
+STR_1816    :{SMALLFONT}{BLACK}Select information type to show in 손님 list
 STR_1817    :({COMMA16})
-STR_1818    :{WINDOW_COLOUR_2}All guests
-STR_1819    :{WINDOW_COLOUR_2}All guests (summarized)
-STR_1820    :{WINDOW_COLOUR_2}Guests {STRINGID}
-STR_1821    :{WINDOW_COLOUR_2}Guests thinking {STRINGID}
-STR_1822    :{WINDOW_COLOUR_2}Guests thinking about {POP16}{STRINGID}
-STR_1823    :{SMALLFONT}{BLACK}Show guests' thoughts about this ride/attraction
-STR_1824    :{SMALLFONT}{BLACK}Show guests on this ride/attraction
-STR_1825    :{SMALLFONT}{BLACK}Show guests queuing for this ride/attraction
+STR_1818    :{WINDOW_COLOUR_2}All 손님s
+STR_1819    :{WINDOW_COLOUR_2}All 손님s (summarised)
+STR_1820    :{WINDOW_COLOUR_2}손님s {STRINGID}
+STR_1821    :{WINDOW_COLOUR_2}손님s thinking {STRINGID}
+STR_1822    :{WINDOW_COLOUR_2}손님s thinking about {POP16}{STRINGID}
+STR_1823    :{SMALLFONT}{BLACK}Show 손님s' thoughts about this 라이드/attraction
+STR_1824    :{SMALLFONT}{BLACK}Show 손님s on this 라이드/attraction
+STR_1825    :{SMALLFONT}{BLACK}Show 손님s queuing for this 라이드/attraction
 STR_1826    :Status
 STR_1827    :Popularity
 STR_1828    :Satisfaction
@@ -1836,25 +1836,25 @@ STR_1830    :Queue length
 STR_1831    :Queue time
 STR_1832    :Reliability
 STR_1833    :Down-time
-STR_1834    :Guests favorite
-STR_1835    :Popularity: Unknown
+STR_1834    :손님s favourite
+STR_1835    :Popularity: 알 수 없는
 STR_1836    :Popularity: {COMMA16}%
-STR_1837    :Satisfaction: Unknown
+STR_1837    :Satisfaction: 알 수 없는
 STR_1838    :Satisfaction: {COMMA16}%
 STR_1839    :Reliability: {COMMA16}%
 STR_1840    :Down-time: {COMMA16}%
 STR_1841    :Profit: {CURRENCY2DP} per hour
-STR_1842    :Favorite of: {COMMA16} guest
-STR_1843    :Favorite of: {COMMA16} guests
-STR_1844    :{SMALLFONT}{BLACK}Select information type to show in ride/attraction list
+STR_1842    :Favourite of: {COMMA16} 손님
+STR_1843    :Favourite of: {COMMA16} 손님s
+STR_1844    :{SMALLFONT}{BLACK}Select information type to show in 라이드/attraction list
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} guests
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} guests
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} guests
+STR_1846    :{COMMA16} 손님s
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} 손님s
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} 손님s
 STR_1849    :{WINDOW_COLOUR_2}Play music
-STR_1850    :{SMALLFONT}{BLACK}Select whether music should be played for this ride
+STR_1850    :{SMALLFONT}{BLACK}Select whether music should be played for this 라이드
 STR_1851    :{WINDOW_COLOUR_2}Running cost: {BLACK}{CURRENCY2DP} per hour
-STR_1852    :{WINDOW_COLOUR_2}Running cost: {BLACK}Unknown
+STR_1852    :{WINDOW_COLOUR_2}Running cost: {BLACK}알 수 없는
 STR_1853    :{WINDOW_COLOUR_2}Built: {BLACK}This Year
 STR_1854    :{WINDOW_COLOUR_2}Built: {BLACK}Last Year
 STR_1855    :{WINDOW_COLOUR_2}Built: {BLACK}{COMMA16} Years Ago
@@ -1878,8 +1878,8 @@ STR_1872    :{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Income: {BLACK}{CURRENCY2DP} per hour
 STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY2DP} per hour
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
-STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect Rides
-STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix Rides
+STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect 라이드s
+STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix 라이드s
 STR_1878    :{WINDOW_COLOUR_2}Inspection:
 STR_1879    :Every 10 minutes
 STR_1880    :Every 20 minutes
@@ -1892,21 +1892,21 @@ STR_1886    :Inspecting {STRINGID}
 STR_1887    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}{COMMA16} minutes
 STR_1888    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}more than 4 hours
 STR_1889    :{WINDOW_COLOUR_2}Down-Time: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1890    :{SMALLFONT}{BLACK}Select how often a mechanic should check this ride
+STR_1890    :{SMALLFONT}{BLACK}Select how often a mechanic should check this 라이드
 STR_1891    :No {STRINGID} in park yet!
 # The following two strings were used to display an error when the disc was missing.
 # This has been replaced in OpenRCT2.
 STR_1892    :<not used anymore>
 STR_1893    :<not used anymore>
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sold: {BLACK}{COMMA32}
-STR_1895    :{SMALLFONT}{BLACK}Build new ride/attraction
+STR_1895    :{SMALLFONT}{BLACK}Build new 라이드/attraction
 STR_1896    :{WINDOW_COLOUR_2}Expenditure/Income
-STR_1897    :{WINDOW_COLOUR_2}Ride construction
-STR_1898    :{WINDOW_COLOUR_2}Ride running costs
+STR_1897    :{WINDOW_COLOUR_2}라이드 construction
+STR_1898    :{WINDOW_COLOUR_2}라이드 running costs
 STR_1899    :{WINDOW_COLOUR_2}Land purchase
 STR_1900    :{WINDOW_COLOUR_2}Landscaping
 STR_1901    :{WINDOW_COLOUR_2}Park entrance tickets
-STR_1902    :{WINDOW_COLOUR_2}Ride tickets
+STR_1902    :{WINDOW_COLOUR_2}라이드 tickets
 STR_1903    :{WINDOW_COLOUR_2}Shop sales
 STR_1904    :{WINDOW_COLOUR_2}Shop stock
 STR_1905    :{WINDOW_COLOUR_2}Food/drink sales
@@ -1934,7 +1934,7 @@ STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} has broken down
 STR_1928    :{RED}{STRINGID} has crashed!
 STR_1929    :{RED}{STRINGID} still hasn't been fixed{NEWLINE}Check where your mechanics are and consider organizing them better
-STR_1930    :{SMALLFONT}{BLACK}Turn on/off tracking information for this guest - (If tracking is on, guest's movements will be reported in the message area)
+STR_1930    :{SMALLFONT}{BLACK}Turn on/off tracking information for this 손님 - (If tracking is on, 손님's movements will be reported in the message area)
 STR_1931    :{STRINGID} has joined the queue line for {STRINGID}
 STR_1932    :{STRINGID} is on {STRINGID}
 STR_1933    :{STRINGID} is in {STRINGID}
@@ -1942,13 +1942,13 @@ STR_1934    :{STRINGID} has left {STRINGID}
 STR_1935    :{STRINGID} has left the park
 STR_1936    :{STRINGID} has bought {STRINGID}
 STR_1937    :{SMALLFONT}{BLACK}Show information about the subject of this message
-STR_1938    :{SMALLFONT}{BLACK}Show view of guest
+STR_1938    :{SMALLFONT}{BLACK}Show view of 손님
 STR_1939    :{SMALLFONT}{BLACK}Show view of staff member
-STR_1940    :{SMALLFONT}{BLACK}Show happiness, energy, hunger etc. for this guest
-STR_1941    :{SMALLFONT}{BLACK}Show which rides this guest has been on
-STR_1942    :{SMALLFONT}{BLACK}Show financial information about this guest
-STR_1943    :{SMALLFONT}{BLACK}Show guest's recent thoughts
-STR_1944    :{SMALLFONT}{BLACK}Show items guest is carrying
+STR_1940    :{SMALLFONT}{BLACK}Show happiness, energy, hunger etc. for this 손님
+STR_1941    :{SMALLFONT}{BLACK}Show which 라이드s this 손님 has been on
+STR_1942    :{SMALLFONT}{BLACK}Show financial information about this 손님
+STR_1943    :{SMALLFONT}{BLACK}Show 손님's recent thoughts
+STR_1944    :{SMALLFONT}{BLACK}Show items 손님 is carrying
 STR_1945    :{SMALLFONT}{BLACK}Show orders and options for this staff member
 STR_1946    :{SMALLFONT}{BLACK}Select costume for this entertainer
 STR_1947    :{SMALLFONT}{BLACK}Show areas patrolled by selected staff type, and locate the nearest staff member
@@ -1960,20 +1960,20 @@ STR_1952    :Profit Graph
 STR_1953    :Marketing
 STR_1954    :Research Funding
 STR_1955    :{WINDOW_COLOUR_2}Number of circuits:
-STR_1956    :{SMALLFONT}{BLACK}Number of circuits of track per ride
+STR_1956    :{SMALLFONT}{BLACK}Number of circuits of track per 라이드
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Can't change number of circuits...
 STR_1960    :{WINDOW_COLOUR_2}Balloon price:
 STR_1961    :{WINDOW_COLOUR_2}Cuddly Toy price:
 STR_1962    :{WINDOW_COLOUR_2}Park Map price:
-STR_1963    :{WINDOW_COLOUR_2}On-Ride Photo price:
+STR_1963    :{WINDOW_COLOUR_2}On-라이드 Photo price:
 STR_1964    :{WINDOW_COLOUR_2}Umbrella price:
 STR_1965    :{WINDOW_COLOUR_2}Drink price:
 STR_1966    :{WINDOW_COLOUR_2}Burger price:
-STR_1967    :{WINDOW_COLOUR_2}Fries price:
+STR_1967    :{WINDOW_COLOUR_2}Chips price:
 STR_1968    :{WINDOW_COLOUR_2}Ice Cream price:
-STR_1969    :{WINDOW_COLOUR_2}Cotton Candy price:
+STR_1969    :{WINDOW_COLOUR_2}Candyfloss price:
 STR_1970    :{WINDOW_COLOUR_2}
 STR_1971    :{WINDOW_COLOUR_2}
 STR_1972    :{WINDOW_COLOUR_2}
@@ -1983,9 +1983,9 @@ STR_1975    :{WINDOW_COLOUR_2}Popcorn price:
 STR_1976    :{WINDOW_COLOUR_2}Hot Dog price:
 STR_1977    :{WINDOW_COLOUR_2}Tentacle price:
 STR_1978    :{WINDOW_COLOUR_2}Hat price:
-STR_1979    :{WINDOW_COLOUR_2}Candy Apple price:
+STR_1979    :{WINDOW_COLOUR_2}Toffee Apple price:
 STR_1980    :{WINDOW_COLOUR_2}T-Shirt price:
-STR_1981    :{WINDOW_COLOUR_2}Donut price:
+STR_1981    :{WINDOW_COLOUR_2}Doughnut price:
 STR_1982    :{WINDOW_COLOUR_2}Coffee price:
 STR_1983    :{WINDOW_COLOUR_2}
 STR_1984    :{WINDOW_COLOUR_2}Fried Chicken price:
@@ -1995,13 +1995,13 @@ STR_1987    :{WINDOW_COLOUR_2}
 STR_1988    :Balloon
 STR_1989    :Cuddly Toy
 STR_1990    :Park Map
-STR_1991    :On-Ride Photo
+STR_1991    :On-라이드 Photo
 STR_1992    :Umbrella
 STR_1993    :Drink
 STR_1994    :Burger
-STR_1995    :Fries
+STR_1995    :Chips
 STR_1996    :Ice Cream
-STR_1997    :Cotton Candy
+STR_1997    :Candyfloss
 STR_1998    :Empty Can
 STR_1999    :Rubbish
 STR_2000    :Empty Burger Box
@@ -2011,9 +2011,9 @@ STR_2003    :Popcorn
 STR_2004    :Hot Dog
 STR_2005    :Tentacle
 STR_2006    :Hat
-STR_2007    :Candy Apple
+STR_2007    :Toffee Apple
 STR_2008    :T-Shirt
-STR_2009    :Donut
+STR_2009    :Doughnut
 STR_2010    :Coffee
 STR_2011    :Empty Cup
 STR_2012    :Fried Chicken
@@ -2023,13 +2023,13 @@ STR_2015    :Empty Bottle
 STR_2016    :Balloons
 STR_2017    :Cuddly Toys
 STR_2018    :Park Maps
-STR_2019    :On-Ride Photos
+STR_2019    :On-라이드 Photos
 STR_2020    :Umbrellas
 STR_2021    :Drinks
 STR_2022    :Burgers
-STR_2023    :Fries
+STR_2023    :Chips
 STR_2024    :Ice Creams
-STR_2025    :Cotton Candy
+STR_2025    :Candyfloss
 STR_2026    :Empty Cans
 STR_2027    :Rubbish
 STR_2028    :Empty Burger Boxes
@@ -2039,9 +2039,9 @@ STR_2031    :Popcorn
 STR_2032    :Hot Dogs
 STR_2033    :Tentacles
 STR_2034    :Hats
-STR_2035    :Candy Apples
+STR_2035    :Toffee Apples
 STR_2036    :T-Shirts
-STR_2037    :Donuts
+STR_2037    :Doughnuts
 STR_2038    :Coffees
 STR_2039    :Empty Cups
 STR_2040    :Fried Chicken
@@ -2051,13 +2051,13 @@ STR_2043    :Empty Bottles
 STR_2044    :a Balloon
 STR_2045    :a Cuddly Toy
 STR_2046    :a Park Map
-STR_2047    :an On-Ride Photo
+STR_2047    :an On-라이드 Photo
 STR_2048    :an Umbrella
 STR_2049    :a Drink
 STR_2050    :a Burger
-STR_2051    :some Fries
+STR_2051    :some Chips
 STR_2052    :an Ice Cream
-STR_2053    :some Cotton Candy
+STR_2053    :some Candyfloss
 STR_2054    :an Empty Can
 STR_2055    :some Rubbish
 STR_2056    :an Empty Burger Box
@@ -2067,9 +2067,9 @@ STR_2059    :some Popcorn
 STR_2060    :a Hot Dog
 STR_2061    :a Tentacle
 STR_2062    :a Hat
-STR_2063    :a Candy Apple
+STR_2063    :a Toffee Apple
 STR_2064    :a T-Shirt
-STR_2065    :a Donut
+STR_2065    :a Doughnut
 STR_2066    :a Coffee
 STR_2067    :an Empty Cup
 STR_2068    :some Fried Chicken
@@ -2079,13 +2079,13 @@ STR_2071    :an Empty Bottle
 STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Balloon
 STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Cuddly Toy
 STR_2074    :Map of {STRINGID}
-STR_2075    :On-Ride Photo of {STRINGID}
+STR_2075    :On-라이드 Photo of {STRINGID}
 STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Umbrella
 STR_2077    :Drink
 STR_2078    :Burger
-STR_2079    :Fries
+STR_2079    :Chips
 STR_2080    :Ice Cream
-STR_2081    :Cotton Candy
+STR_2081    :Candyfloss
 STR_2082    :Empty Can
 STR_2083    :Rubbish
 STR_2084    :Empty Burger Box
@@ -2095,124 +2095,124 @@ STR_2087    :Popcorn
 STR_2088    :Hot Dog
 STR_2089    :Tentacle
 STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Hat
-STR_2091    :Candy Apple
+STR_2091    :Toffee Apple
 STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES} T-Shirt
-STR_2093    :Donut
+STR_2093    :Doughnut
 STR_2094    :Coffee
 STR_2095    :Empty Cup
 STR_2096    :Fried Chicken
 STR_2097    :Lemonade
 STR_2098    :Empty Box
 STR_2099    :Empty Bottle
-STR_2100    :{WINDOW_COLOUR_2}On-Ride Photo price:
-STR_2101    :{WINDOW_COLOUR_2}On-Ride Photo price:
-STR_2102    :{WINDOW_COLOUR_2}On-Ride Photo price:
-STR_2103    :{WINDOW_COLOUR_2}Pretzel price:
+STR_2100    :{WINDOW_COLOUR_2}On-라이드 Photo price:
+STR_2101    :{WINDOW_COLOUR_2}On-라이드 Photo price:
+STR_2102    :{WINDOW_COLOUR_2}On-라이드 Photo price:
+STR_2103    :{WINDOW_COLOUR_2}프레첼 price:
 STR_2104    :{WINDOW_COLOUR_2}Hot Chocolate price:
-STR_2105    :{WINDOW_COLOUR_2}Iced Tea price:
-STR_2106    :{WINDOW_COLOUR_2}Funnel Cake price:
-STR_2107    :{WINDOW_COLOUR_2}Sunglasses price:
-STR_2108    :{WINDOW_COLOUR_2}Beef Noodles price:
+STR_2105    :{WINDOW_COLOUR_2}아이스 티 price:
+STR_2106    :{WINDOW_COLOUR_2}휜넬 케이크 price:
+STR_2107    :{WINDOW_COLOUR_2}선글라스 price:
+STR_2108    :{WINDOW_COLOUR_2}고기 국수 price:
 STR_2109    :{WINDOW_COLOUR_2}Fried Rice Noodles price:
-STR_2110    :{WINDOW_COLOUR_2}Wonton Soup price:
-STR_2111    :{WINDOW_COLOUR_2}Meatball Soup price:
-STR_2112    :{WINDOW_COLOUR_2}Fruit Juice price:
-STR_2113    :{WINDOW_COLOUR_2}Soybean Milk price:
-STR_2114    :{WINDOW_COLOUR_2}Sujongkwa price:
+STR_2110    :{WINDOW_COLOUR_2}만둣국 price:
+STR_2111    :{WINDOW_COLOUR_2}미트볼 스프 price:
+STR_2112    :{WINDOW_COLOUR_2}과일 주스 price:
+STR_2113    :{WINDOW_COLOUR_2}두유 price:
+STR_2114    :{WINDOW_COLOUR_2}수정과 price:
 STR_2115    :{WINDOW_COLOUR_2}Sub Sandwich price:
-STR_2116    :{WINDOW_COLOUR_2}Cookie price:
+STR_2116    :{WINDOW_COLOUR_2}쿠키 price:
 STR_2117    :{WINDOW_COLOUR_2}
 STR_2118    :{WINDOW_COLOUR_2}
 STR_2119    :{WINDOW_COLOUR_2}
-STR_2120    :{WINDOW_COLOUR_2}Roast Sausage price:
+STR_2120    :{WINDOW_COLOUR_2}구운 소시지 price:
 STR_2121    :{WINDOW_COLOUR_2}
-STR_2122    :On-Ride Photo
-STR_2123    :On-Ride Photo
-STR_2124    :On-Ride Photo
-STR_2125    :Pretzel
+STR_2122    :On-라이드 Photo
+STR_2123    :On-라이드 Photo
+STR_2124    :On-라이드 Photo
+STR_2125    :프레첼
 STR_2126    :Hot Chocolate
-STR_2127    :Iced Tea
-STR_2128    :Funnel Cake
-STR_2129    :Sunglasses
-STR_2130    :Beef Noodles
+STR_2127    :아이스 티
+STR_2128    :휜넬 케이크
+STR_2129    :선글라스
+STR_2130    :고기 국수
 STR_2131    :Fried Rice Noodles
-STR_2132    :Wonton Soup
-STR_2133    :Meatball Soup
-STR_2134    :Fruit Juice
-STR_2135    :Soybean Milk
-STR_2136    :Sujongkwa
+STR_2132    :만둣국
+STR_2133    :미트볼 스프
+STR_2134    :과일 주스
+STR_2135    :두유
+STR_2136    :수정과
 STR_2137    :Sub Sandwich
-STR_2138    :Cookie
+STR_2138    :쿠키
 STR_2139    :Empty Bowl
 STR_2140    :Empty Drink Carton
 STR_2141    :Empty Juice Cup
-STR_2142    :Roast Sausage
+STR_2142    :구운 소시지
 STR_2143    :Empty Bowl
-STR_2144    :On-Ride Photos
-STR_2145    :On-Ride Photos
-STR_2146    :On-Ride Photos
-STR_2147    :Pretzels
+STR_2144    :On-라이드 Photos
+STR_2145    :On-라이드 Photos
+STR_2146    :On-라이드 Photos
+STR_2147    :프레첼s
 STR_2148    :Hot Chocolates
-STR_2149    :Iced Teas
-STR_2150    :Funnel Cakes
-STR_2151    :Sunglasses
-STR_2152    :Beef Noodles
+STR_2149    :아이스 티s
+STR_2150    :휜넬 케이크s
+STR_2151    :선글라스
+STR_2152    :고기 국수
 STR_2153    :Fried Rice Noodles
-STR_2154    :Wonton Soups
-STR_2155    :Meatball Soups
-STR_2156    :Fruit Juices
-STR_2157    :Soybean Milks
-STR_2158    :Sujongkwa
+STR_2154    :만둣국s
+STR_2155    :미트볼 스프s
+STR_2156    :과일 주스s
+STR_2157    :두유s
+STR_2158    :수정과
 STR_2159    :Sub Sandwiches
-STR_2160    :Cookies
+STR_2160    :쿠키s
 STR_2161    :Empty Bowls
 STR_2162    :Empty Drink Cartons
 STR_2163    :Empty Juice cups
-STR_2164    :Roast Sausages
+STR_2164    :구운 소시지s
 STR_2165    :Empty Bowls
-STR_2166    :an On-Ride Photo
-STR_2167    :an On-Ride Photo
-STR_2168    :an On-Ride Photo
-STR_2169    :a Pretzel
+STR_2166    :an On-라이드 Photo
+STR_2167    :an On-라이드 Photo
+STR_2168    :an On-라이드 Photo
+STR_2169    :a 프레첼
 STR_2170    :a Hot Chocolate
-STR_2171    :an Iced Tea
-STR_2172    :a Funnel Cake
-STR_2173    :a pair of Sunglasses
-STR_2174    :some Beef Noodles
+STR_2171    :an 아이스 티
+STR_2172    :a 휜넬 케이크
+STR_2173    :a pair of 선글라스
+STR_2174    :some 고기 국수
 STR_2175    :some Fried Rice Noodles
-STR_2176    :some Wonton Soup
-STR_2177    :some Meatball Soup
-STR_2178    :a Fruit Juice
-STR_2179    :some Soybean Milk
-STR_2180    :some Sujongkwa
-STR_2181    :a Sub Sandwich
-STR_2182    :a Cookie
+STR_2176    :some 만둣국
+STR_2177    :some 미트볼 스프
+STR_2178    :a 과일 주스
+STR_2179    :some 두유
+STR_2180    :some 수정과
+STR_2181    :샌드위치
+STR_2182    :쿠키
 STR_2183    :an Empty Bowl
 STR_2184    :an Empty Drink Carton
 STR_2185    :an Empty Juice Cup
-STR_2186    :a Roast Sausage
+STR_2186    :구운 소시지
 STR_2187    :an Empty Bowl
-STR_2188    :On-Ride Photo of {STRINGID}
-STR_2189    :On-Ride Photo of {STRINGID}
-STR_2190    :On-Ride Photo of {STRINGID}
-STR_2191    :Pretzel
+STR_2188    :On-라이드 Photo of {STRINGID}
+STR_2189    :On-라이드 Photo of {STRINGID}
+STR_2190    :On-라이드 Photo of {STRINGID}
+STR_2191    :프레첼
 STR_2192    :Hot Chocolate
-STR_2193    :Iced Tea
-STR_2194    :Funnel Cake
-STR_2195    :Sunglasses
-STR_2196    :Beef Noodles
+STR_2193    :아이스 티
+STR_2194    :휜넬 케이크
+STR_2195    :선글라스
+STR_2196    :고기 국수
 STR_2197    :Fried Rice Noodles
-STR_2198    :Wonton Soup
-STR_2199    :Meatball Soup
-STR_2200    :Fruit Juice
-STR_2201    :Soybean Milk
-STR_2202    :Sujongkwa
+STR_2198    :만둣국
+STR_2199    :미트볼 스프
+STR_2200    :과일 주스
+STR_2201    :두유
+STR_2202    :수정과
 STR_2203    :Sub Sandwich
-STR_2204    :Cookie
+STR_2204    :쿠키
 STR_2205    :Empty Bowl
 STR_2206    :Empty Drink Carton
 STR_2207    :Empty Juice Cup
-STR_2208    :Roast Sausage
+STR_2208    :구운 소시지
 STR_2209    :Empty Bowl
 STR_2210    :{SMALLFONT}{BLACK}Show list of handymen in park
 STR_2211    :{SMALLFONT}{BLACK}Show list of mechanics in park
@@ -2222,12 +2222,12 @@ STR_2214    :Construction not possible while game is paused!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}F
-STR_2218    :{RED}{STRINGID} on {STRINGID} hasn't returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
+STR_2218    :{RED}{STRINGID} on {STRINGID} hasn't returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has 상점ed
 STR_2219    :{RED}{COMMA16} people have died in an accident on {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Rating: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Park Rating: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Guests in park: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}손님s in park: {BLACK}{COMMA16}
 STR_2224    :{WINDOW_COLOUR_2}Cash: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Cash: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Park value: {BLACK}{CURRENCY}
@@ -2252,20 +2252,20 @@ STR_2244    :September
 STR_2245    :October
 STR_2246    :November
 STR_2247    :December
-STR_2248    :Can't demolish ride/attraction...
-STR_2249    :{BABYBLUE}New ride/attraction now available:{NEWLINE}{STRINGID}
+STR_2248    :Can't demolish 라이드/attraction...
+STR_2249    :{BABYBLUE}New 라이드/attraction now available:{NEWLINE}{STRINGID}
 STR_2250    :{BABYBLUE}New scenery/themeing now available:{NEWLINE}{STRINGID}
 STR_2251    :Can only be built on paths!
 STR_2252    :Can only be built across paths!
-STR_2253    :Transport Rides
-STR_2254    :Gentle Rides
-STR_2255    :Roller Coasters
-STR_2256    :Thrill Rides
-STR_2257    :Water Rides
-STR_2258    :Shops & Stalls
+STR_2253    :Transport 라이드s
+STR_2254    :Gentle 라이드s
+STR_2255    :롤러코스터s
+STR_2256    :Thrill 라이드s
+STR_2257    :Water 라이드s
+STR_2258    :Shops & 상점s
 STR_2259    :Scenery & Themeing
 STR_2260    :No funding
-STR_2261    :Minimum funding
+STR_2261    :미니mum funding
 STR_2262    :Normal funding
 STR_2263    :Maximum funding
 STR_2264    :Research funding
@@ -2276,33 +2276,33 @@ STR_2268    :Last development
 STR_2269    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID}
 STR_2270    :{WINDOW_COLOUR_2}Progress: {BLACK}{STRINGID}
 STR_2271    :{WINDOW_COLOUR_2}Expected: {BLACK}{STRINGID}
-STR_2272    :{WINDOW_COLOUR_2}Ride/attraction:{NEWLINE}{BLACK}{STRINGID}
+STR_2272    :{WINDOW_COLOUR_2}라이드/attraction:{NEWLINE}{BLACK}{STRINGID}
 STR_2273    :{WINDOW_COLOUR_2}Scenery/themeing:{NEWLINE}{BLACK}{STRINGID}
 STR_2274    :{SMALLFONT}{BLACK}Show details of this invention or development
 STR_2275    :{SMALLFONT}{BLACK}Show funding and options for research & development
 STR_2276    :{SMALLFONT}{BLACK}Show research & development status
-STR_2277    :Unknown
-STR_2278    :Transport Ride
-STR_2279    :Gentle Ride
-STR_2280    :Roller Coaster
-STR_2281    :Thrill Ride
-STR_2282    :Water Ride
-STR_2283    :Shop/Stall
+STR_2277    :알 수 없는
+STR_2278    :Transport 라이드
+STR_2279    :Gentle 라이드
+STR_2280    :롤러코스터
+STR_2281    :Thrill 라이드
+STR_2282    :Water 라이드
+STR_2283    :Shop/상점
 STR_2284    :Scenery/Themeing
 STR_2285    :Initial research
 STR_2286    :Designing
 STR_2287    :Completing design
-STR_2288    :Unknown
+STR_2288    :알 수 없는
 STR_2289    :{STRINGID} {STRINGID}
 STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
 STR_2291    :Select scenario for new game
-STR_2292    :{WINDOW_COLOUR_2}Rides been on:
+STR_2292    :{WINDOW_COLOUR_2}라이드s been on:
 STR_2293    :{BLACK} Nothing
 STR_2294    :{SMALLFONT}{BLACK}Change base land style
 STR_2295    :{SMALLFONT}{BLACK}Change vertical edges of land
 STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} paid to enter park
-STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} ride
-STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} rides
+STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} 라이드
+STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} 라이드s
 STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} item of food
 STR_2300    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} items of food
 STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} drink
@@ -2313,19 +2313,19 @@ STR_2305    :Track design files
 STR_2306    :Save track design
 STR_2307    :Select {STRINGID} design
 STR_2308    :{STRINGID} Track Designs
-STR_2309    :Install New Track Design
+STR_2309    :설치 New Track Design
 STR_2310    :Build custom design
 STR_2311    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32} (approx.)
 STR_2312    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32} (approx.)
 STR_2313    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32} (approx.)
-STR_2314    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}
+STR_2314    :{WINDOW_COLOUR_2}라이드 length: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Cost: {BLACK}around {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Space required: {BLACK}{COMMA16} x {COMMA16} blocks
-STR_2317    :{WINDOW_COLOUR_2}Sound Quality:
-STR_2318    :Low
-STR_2319    :Medium
-STR_2320    :High
-STR_2321    :{WINDOW_COLOUR_2}Number of rides/attractions: {BLACK}{COMMA16}
+STR_2317    :<not used anymore>
+STR_2318    :<not used anymore>
+STR_2319    :<not used anymore>
+STR_2320    :<not used anymore>
+STR_2321    :{WINDOW_COLOUR_2}Number of 라이드s/attractions: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Staff: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m{SQUARED}
 STR_2324    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}sq.ft.
@@ -2359,8 +2359,8 @@ STR_2351    :{WINDOW_COLOUR_2}Lawns mown: {BLACK}{COMMA16}
 STR_2352    :{WINDOW_COLOUR_2}Gardens watered: {BLACK}{COMMA16}
 STR_2353    :{WINDOW_COLOUR_2}Litter swept: {BLACK}{COMMA16}
 STR_2354    :{WINDOW_COLOUR_2}Bins emptied: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Rides fixed: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Rides inspected: {BLACK}{COMMA16}
+STR_2355    :{WINDOW_COLOUR_2}라이드s fixed: {BLACK}{COMMA16}
+STR_2356    :{WINDOW_COLOUR_2}라이드s inspected: {BLACK}{COMMA16}
 STR_2357    :House
 STR_2358    :Units
 STR_2359    :Real Values
@@ -2390,27 +2390,27 @@ STR_2382    :Land
 STR_2383    :Water
 STR_2384    :{WINDOW_COLOUR_2}Your objective:
 STR_2385    :{BLACK}None
-STR_2386    :{BLACK}To have at least {COMMA16} guests in your park at the end of {MONTHYEAR}, with a park rating of at least 600
+STR_2386    :{BLACK}To have at least {COMMA16} 손님s in your park at the end of {MONTHYEAR}, with a park rating of at least 600
 STR_2387    :{BLACK}To achieve a park value of at least {POP16}{POP16}{CURRENCY} at the end of {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Have Fun!
 STR_2389    :{BLACK}Build the best {STRINGID} you can!
-STR_2390    :{BLACK}To have 10 different types of roller coasters operating in your park, each with an excitement value of at least 6.00
-STR_2391    :{BLACK}To have at least {COMMA16} guests in your park. You must not let the park rating drop below 700 at any time!
-STR_2392    :{BLACK}To achieve a monthly income from ride tickets of at least {POP16}{POP16}{CURRENCY}
-STR_2393    :{BLACK}To have 10 different types of roller coasters operating in your park, each with a minimum length of {LENGTH}, and an excitement rating of at least 7.00
-STR_2394    :{BLACK}To finish building all 5 of the partially built roller coasters in this park, designing them to achieve excitement ratings of at least {POP16}{POP16}{COMMA2DP32} each
+STR_2390    :{BLACK}To have 10 different types of 롤러코스터s operating in your park, each with an excitement value of at least 6.00
+STR_2391    :{BLACK}To have at least {COMMA16} 손님s in your park. You must not let the park rating drop below 700 at any time!
+STR_2392    :{BLACK}To achieve a monthly income from 라이드 tickets of at least {POP16}{POP16}{CURRENCY}
+STR_2393    :{BLACK}To have 10 different types of 롤러코스터s operating in your park, each with a 미니mum length of {LENGTH}, and an excitement rating of at least 7.00
+STR_2394    :{BLACK}To finish building all 5 of the partially built 롤러코스터s in this park, designing them to achieve excitement ratings of at least {POP16}{POP16}{COMMA2DP32} each
 STR_2395    :{BLACK}To repay your loan and achieve a park value of at least {POP16}{POP16}{CURRENCY}
 STR_2396    :{BLACK}To achieve a monthly profit from food, drink and merchandise sales of at least {POP16}{POP16}{CURRENCY}
 STR_2397    :None
-STR_2398    :Number of guests at a given date
+STR_2398    :Number of 손님s at a given date
 STR_2399    :Park value at a given date
 STR_2400    :Have fun
-STR_2401    :Build the best ride you can
-STR_2402    :Build 10 roller coasters
-STR_2403    :Number of guests in park
-STR_2404    :Monthly income from ride tickets
-STR_2405    :Build 10 roller coasters of a given length
-STR_2406    :Finish building 5 roller coasters
+STR_2401    :Build the best 라이드 you can
+STR_2402    :Build 10 롤러코스터s
+STR_2403    :Number of 손님s in park
+STR_2404    :Monthly income from 라이드 tickets
+STR_2405    :Build 10 롤러코스터s of a given length
+STR_2406    :Finish building 5 롤러코스터s
 STR_2407    :Repay loan and achieve a given park value
 STR_2408    :Monthly profit from food/merchandise
 STR_2409    :{WINDOW_COLOUR_2}Marketing campaigns in operation
@@ -2419,39 +2419,39 @@ STR_2411    :{WINDOW_COLOUR_2}Marketing campaigns available
 STR_2412    :{SMALLFONT}{BLACK}Start this marketing campaign
 STR_2413    :{BLACK}({CURRENCY2DP} per week)
 STR_2414    :(Not Selected)
-STR_2415    :{WINDOW_COLOUR_2}Ride:
+STR_2415    :{WINDOW_COLOUR_2}라이드:
 STR_2416    :{WINDOW_COLOUR_2}Item:
 STR_2417    :{WINDOW_COLOUR_2}Length of time:
 STR_2418    :Free entry to {STRINGID}
-STR_2419    :Free ride on {STRINGID}
+STR_2419    :Free 라이드 on {STRINGID}
 STR_2420    :Half-price entry to {STRINGID}
 STR_2421    :Free {STRINGID}
 STR_2422    :Advertising campaign for {STRINGID}
 STR_2423    :Advertising campaign for {STRINGID}
 STR_2424    :{WINDOW_COLOUR_2}Vouchers for free entry to the park
-STR_2425    :{WINDOW_COLOUR_2}Vouchers for free rides on a particular ride
+STR_2425    :{WINDOW_COLOUR_2}Vouchers for free 라이드s on a particular 라이드
 STR_2426    :{WINDOW_COLOUR_2}Vouchers for half-price entry to the park
 STR_2427    :{WINDOW_COLOUR_2}Vouchers for free food or drink
 STR_2428    :{WINDOW_COLOUR_2}Advertising campaign for the park
-STR_2429    :{WINDOW_COLOUR_2}Advertising campaign for a particular ride
+STR_2429    :{WINDOW_COLOUR_2}Advertising campaign for a particular 라이드
 STR_2430    :{BLACK}Vouchers for free entry to {STRINGID}
-STR_2431    :{BLACK}Vouchers for free ride on {STRINGID}
+STR_2431    :{BLACK}Vouchers for free 라이드 on {STRINGID}
 STR_2432    :{BLACK}Vouchers for half-price entry to {STRINGID}
 STR_2433    :{BLACK}Vouchers for free {STRINGID}
 STR_2434    :{BLACK}Advertising campaign for {STRINGID}
 STR_2435    :{BLACK}Advertising campaign for {STRINGID}
 STR_2436    :1 week
-STR_2437    :2 weeks
-STR_2438    :3 weeks
-STR_2439    :4 weeks
-STR_2440    :5 weeks
-STR_2441    :6 weeks
-STR_2442    :{BLACK}({STRINGID} remaining)
+STR_2437    :<not used anymore>
+STR_2438    :<not used anymore>
+STR_2439    :<not used anymore>
+STR_2440    :<not used anymore>
+STR_2441    :<not used anymore>
+STR_2442    :<not used anymore>
 STR_2443    :{WINDOW_COLOUR_2}Cost per week: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Total cost: {BLACK}{CURRENCY2DP}
 STR_2445    :Start this marketing campaign
 STR_2446    :{YELLOW}Your marketing campaign for free entry to the park has finished
-STR_2447    :{YELLOW}Your marketing campaign for free rides on {STRINGID} has finished
+STR_2447    :{YELLOW}Your marketing campaign for free 라이드s on {STRINGID} has finished
 STR_2448    :{YELLOW}Your marketing campaign for half-price entry to the park has finished
 STR_2449    :{YELLOW}Your marketing campaign for free {STRINGID} has finished
 STR_2450    :{YELLOW}Your advertising campaign for the park has finished
@@ -2468,20 +2468,20 @@ STR_2460    :{SMALLFONT}{BLACK}Show graph of weekly profit
 STR_2461    :{SMALLFONT}{BLACK}Show marketing campaigns
 STR_2462    :{SMALLFONT}{BLACK}Show view of park entrance
 STR_2463    :{SMALLFONT}{BLACK}Show graph of park ratings over time
-STR_2464    :{SMALLFONT}{BLACK}Show graph of guest numbers over time
+STR_2464    :{SMALLFONT}{BLACK}Show graph of 손님 numbers over time
 STR_2465    :{SMALLFONT}{BLACK}Show park entrance price and information
 STR_2466    :{SMALLFONT}{BLACK}Show park statistics
 STR_2467    :{SMALLFONT}{BLACK}Show objectives for this game
 STR_2468    :{SMALLFONT}{BLACK}Show recent awards this park has received
 STR_2469    :{SMALLFONT}{BLACK}Select level of research & development
-STR_2470    :{SMALLFONT}{BLACK}Research new transport rides
-STR_2471    :{SMALLFONT}{BLACK}Research new gentle rides
-STR_2472    :{SMALLFONT}{BLACK}Research new roller coasters
-STR_2473    :{SMALLFONT}{BLACK}Research new thrill rides
-STR_2474    :{SMALLFONT}{BLACK}Research new water rides
-STR_2475    :{SMALLFONT}{BLACK}Research new shops and stalls
+STR_2470    :{SMALLFONT}{BLACK}Research new transport 라이드s
+STR_2471    :{SMALLFONT}{BLACK}Research new gentle 라이드s
+STR_2472    :{SMALLFONT}{BLACK}Research new 롤러코스터s
+STR_2473    :{SMALLFONT}{BLACK}Research new thrill 라이드s
+STR_2474    :{SMALLFONT}{BLACK}Research new water 라이드s
+STR_2475    :{SMALLFONT}{BLACK}Research new shops and 상점s
 STR_2476    :{SMALLFONT}{BLACK}Research new scenery and themeing
-STR_2477    :{SMALLFONT}{BLACK}Select operating mode for this ride/attraction
+STR_2477    :{SMALLFONT}{BLACK}Select operating mode for this 라이드/attraction
 STR_2478    :{SMALLFONT}{BLACK}Show graph of velocity against time
 STR_2479    :{SMALLFONT}{BLACK}Show graph of altitude against time
 STR_2480    :{SMALLFONT}{BLACK}Show graph of vertical acceleration against time
@@ -2491,8 +2491,8 @@ STR_2483    :{WINDOW_COLOUR_2}Weekly profit: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Weekly profit: {RED}{CURRENCY2DP}
 STR_2485    :Controls
 STR_2486    :General
-STR_2487    :Show 'real' names of guests
-STR_2488    :{SMALLFONT}{BLACK}Toggle between showing 'real' names of guests and guest numbers
+STR_2487    :Show 'real' names of 손님s
+STR_2488    :{SMALLFONT}{BLACK}Toggle between showing 'real' names of 손님s and 손님 numbers
 STR_2489    :Shortcut keys...
 STR_2490    :Keyboard shortcuts
 STR_2491    :Reset keys
@@ -2503,33 +2503,33 @@ STR_2495    :Cancel construction mode
 STR_2496    :Pause game
 STR_2497    :Zoom view out
 STR_2498    :Zoom view in
-STR_2499    :Rotate view
+STR_2499    :Rotate view clockwise
 STR_2500    :Rotate construction object
 STR_2501    :Underground view toggle
 STR_2502    :Remove base land toggle
 STR_2503    :Remove vertical land toggle
-STR_2504    :See-through rides toggle
+STR_2504    :See-through 라이드s toggle
 STR_2505    :See-through scenery toggle
 STR_2506    :Invisible supports toggle
 STR_2507    :Invisible people toggle
 STR_2508    :Height marks on land toggle
-STR_2509    :Height marks on ride tracks toggle
+STR_2509    :Height marks on 라이드 tracks toggle
 STR_2510    :Height marks on paths toggle
 STR_2511    :Adjust land
 STR_2512    :Adjust water
 STR_2513    :Build scenery
 STR_2514    :Build paths
-STR_2515    :Build new ride
+STR_2515    :Build new 라이드
 STR_2516    :Show financial information
 STR_2517    :Show research information
-STR_2518    :Show rides list
+STR_2518    :Show 라이드s list
 STR_2519    :Show park information
-STR_2520    :Show guest list
+STR_2520    :Show 손님 list
 STR_2521    :Show staff list
 STR_2522    :Show recent messages
 STR_2523    :Show map
 STR_2524    :Screenshot
-
+### The following need to be reordered to match SDL_keycode layout.
 STR_2525    :???
 STR_2526    :???
 STR_2527    :???
@@ -2745,17 +2745,16 @@ STR_2736    :{MONTH}, Year {COMMA16}
 STR_2737    :{STRINGID} {MONTH}, Year {COMMA16}
 STR_2738    :Title screen music:
 STR_2739    :None
-STR_2740    :RollerCoaster Tycoon 1
-STR_2741    :RollerCoaster Tycoon 2
+STR_2740    :Roller코스터 Tycoon 1
+STR_2741    :Roller코스터 Tycoon 2
 STR_2742    :css50.dat not found
-STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat in your RCT2 installation.
+STR_2743    :Copy data\css17.dat from your RCT1 설치ation to data\css50.dat in your RCT2 설치ation.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
 STR_2747    :{ENDQUOTES}
 STR_2748    :Bar
 STR_2749    :My new scenario
-
 # New strings used in the cheats window previously these were ???
 STR_2750    :Move all items to top
 STR_2751    :Move all items to bottom
@@ -2789,10 +2788,9 @@ STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Viewport #{COMMA16}
 STR_2780    :Extra viewport
 # End of new strings
-
 STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
-STR_2782    :SHIFT + 
-STR_2783    :CTRL + 
+STR_2782    :SHIFT +
+STR_2783    :CTRL +
 STR_2784    :Change keyboard shortcut
 STR_2785    :{WINDOW_COLOUR_2}Press new shortcut key for:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
 STR_2786    :{SMALLFONT}{BLACK}Click on shortcut description to select new key
@@ -2805,27 +2803,27 @@ STR_2792    :Please enter your name for the scenario chart:
 STR_2793    :{SMALLFONT}(Completed by {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} with a company value of: {BLACK}{CURRENCY}
 STR_2795    :Sort
-STR_2796    :{SMALLFONT}{BLACK}Sort the ride list into order using the information type displayed
+STR_2796    :{SMALLFONT}{BLACK}Sort the 라이드 list into order using the information type displayed
 STR_2797    :Scroll view when pointer at screen edge
 STR_2798    :{SMALLFONT}{BLACK}Select whether to scroll the view when the mouse pointer is at the screen edge
 STR_2799    :{SMALLFONT}{BLACK}View or change control key assignments
 STR_2800    :{WINDOW_COLOUR_2}Total admissions: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Income from admissions: {BLACK}{CURRENCY2DP}
 STR_2802    :Map
-STR_2803    :{SMALLFONT}{BLACK}Show these guests highlighted on map
+STR_2803    :{SMALLFONT}{BLACK}Show these 손님s highlighted on map
 STR_2804    :{SMALLFONT}{BLACK}Show these staff members highlighted on map
 STR_2805    :{SMALLFONT}{BLACK}Show map of park
-STR_2806    :{RED}Guests are complaining about the disgusting state of the paths in your park{NEWLINE}Check where your handymen are and consider organizing them better
-STR_2807    :{RED}Guests are complaining about the amount of litter in your park{NEWLINE}Check where your handymen are and consider organizing them better
-STR_2808    :{RED}Guests are complaining about the vandalism in your park{NEWLINE}Check where your security guards are and consider organizing them better
-STR_2809    :{RED}Guests are hungry and can't find anywhere to buy food
-STR_2810    :{RED}Guests are thirsty and can't find anywhere to buy drinks
-STR_2811    :{RED}Guests are complaining because they can't find the restrooms in your park
-STR_2812    :{RED}Guests are getting lost or stuck{NEWLINE}Check whether the layout of your footpaths needs improving to help the guests find their way around
-STR_2813    :{RED}Your park entrance fee is too high!{NEWLINE}Reduce your entrance fee or improve the value of the park to attract more guests
+STR_2806    :{RED}손님s are complaining about the disgusting state of the paths in your park{NEWLINE}Check where your handymen are and consider organising them better
+STR_2807    :{RED}손님s are complaining about the amount of litter in your park{NEWLINE}Check where your handymen are and consider organising them better
+STR_2808    :{RED}손님s are complaining about the vandalism in your park{NEWLINE}Check where your security guards are and consider organising them better
+STR_2809    :{RED}손님s are hungry and can't find anywhere to buy food
+STR_2810    :{RED}손님s are thirsty and can't find anywhere to buy drinks
+STR_2811    :{RED}손님s are complaining because they can't find the toilets in your park
+STR_2812    :{RED}손님s are getting lost or stuck{NEWLINE}Check whether the layout of your 보도s needs improving to help the 손님s find their way around
+STR_2813    :{RED}Your park entrance fee is too high!{NEWLINE}Reduce your entrance fee or improve the value of the park to attract more 손님s
 STR_2814    :{WINDOW_COLOUR_2}Most untidy park award
 STR_2815    :{WINDOW_COLOUR_2}Tidiest park award
-STR_2816    :{WINDOW_COLOUR_2}Award for the park with the best roller coasters
+STR_2816    :{WINDOW_COLOUR_2}Award for the park with the best 롤러코스터s
 STR_2817    :{WINDOW_COLOUR_2}Best value park award
 STR_2818    :{WINDOW_COLOUR_2}Most beautiful park award
 STR_2819    :{WINDOW_COLOUR_2}Worst value park award
@@ -2833,16 +2831,16 @@ STR_2820    :{WINDOW_COLOUR_2}Safest park award
 STR_2821    :{WINDOW_COLOUR_2}Best staff award
 STR_2822    :{WINDOW_COLOUR_2}Best park food award
 STR_2823    :{WINDOW_COLOUR_2}Worst park food award
-STR_2824    :{WINDOW_COLOUR_2}Best park restrooms award
+STR_2824    :{WINDOW_COLOUR_2}Best park toilets award
 STR_2825    :{WINDOW_COLOUR_2}Most disappointing park award
-STR_2826    :{WINDOW_COLOUR_2}Best water rides award
-STR_2827    :{WINDOW_COLOUR_2}Best custom-designed rides award
-STR_2828    :{WINDOW_COLOUR_2}Most dazzling ride color schemes award
+STR_2826    :{WINDOW_COLOUR_2}Best water 라이드s award
+STR_2827    :{WINDOW_COLOUR_2}Best custom-designed 라이드s award
+STR_2828    :{WINDOW_COLOUR_2}Most dazzling 라이드 colour schemes award
 STR_2829    :{WINDOW_COLOUR_2}Most confusing park layout award
-STR_2830    :{WINDOW_COLOUR_2}Best gentle ride award
+STR_2830    :{WINDOW_COLOUR_2}Best gentle 라이드 award
 STR_2831    :{TOPAZ}Your park has received an award for being 'The most untidy park in the country'!
 STR_2832    :{TOPAZ}Your park has received an award for being 'The tidiest park in the country'!
-STR_2833    :{TOPAZ}Your park has received an award for being 'The park with the best roller coasters'!
+STR_2833    :{TOPAZ}Your park has received an award for being 'The park with the best 롤러코스터s'!
 STR_2834    :{TOPAZ}Your park has received an award for being 'The best value park in the country'!
 STR_2835    :{TOPAZ}Your park has received an award for being 'The most beautiful park in the country'!
 STR_2836    :{TOPAZ}Your park has received an award for being 'The worst value park in the country'!
@@ -2850,21 +2848,21 @@ STR_2837    :{TOPAZ}Your park has received an award for being 'The safest park i
 STR_2838    :{TOPAZ}Your park has received an award for being 'The park with the best staff'!
 STR_2839    :{TOPAZ}Your park has received an award for being 'The park with the best food in the country'!
 STR_2840    :{TOPAZ}Your park has received an award for being 'The park with the worst food in the country'!
-STR_2841    :{TOPAZ}Your park has received an award for being 'The park with the best restroom facilities in the country'!
+STR_2841    :{TOPAZ}Your park has received an award for being 'The park with the best toilet facilities in the country'!
 STR_2842    :{TOPAZ}Your park has received an award for being 'The most disappointing park in the country'!
-STR_2843    :{TOPAZ}Your park has received an award for being 'The park with the best water rides in the country'!
-STR_2844    :{TOPAZ}Your park has received an award for being 'The park with the best custom-designed rides'!
-STR_2845    :{TOPAZ}Your park has received an award for being 'The park with the most dazzling choice of color schemes'!
+STR_2843    :{TOPAZ}Your park has received an award for being 'The park with the best water 라이드s in the country'!
+STR_2844    :{TOPAZ}Your park has received an award for being 'The park with the best custom-designed 라이드s'!
+STR_2845    :{TOPAZ}Your park has received an award for being 'The park with the most dazzling choice of colour schemes'!
 STR_2846    :{TOPAZ}Your park has received an award for being 'The park with the most confusing layout'!
-STR_2847    :{TOPAZ}Your park has received an award for being 'The park with the best gentle rides'!
+STR_2847    :{TOPAZ}Your park has received an award for being 'The park with the best gentle 라이드s'!
 STR_2848    :{WINDOW_COLOUR_2}No recent awards
-STR_2849    :New scenario installed successfully
-STR_2850    :New track design installed successfully
-STR_2851    :Scenario already installed
-STR_2852    :Track design already installed
+STR_2849    :New scenario 설치ed successfully
+STR_2850    :New track design 설치ed successfully
+STR_2851    :Scenario already 설치ed
+STR_2852    :Track design already 설치ed
 STR_2853    :Forbidden by the local authority!
-STR_2854    :{RED}Guests can't get to the entrance of {STRINGID} !{NEWLINE}Construct a path to the entrance
-STR_2855    :{RED}{STRINGID} has no path leading from its exit !{NEWLINE}Construct a path from the ride exit
+STR_2854    :{RED}손님s can't get to the entrance of {STRINGID} !{NEWLINE}Construct a path to the entrance
+STR_2855    :{RED}{STRINGID} has no path leading from its exit !{NEWLINE}Construct a path from the 라이드 exit
 STR_2856    :{WINDOW_COLOUR_2}Tutorial
 STR_2857    :{WINDOW_COLOUR_2}(Press a key or mouse button to take control)
 STR_2858    :Can't start marketing campaign...
@@ -2875,7 +2873,7 @@ STR_2862    :Music acknowledgements...
 STR_2863    :Music acknowledgements
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) non copyright
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (Composer unknown) Copyright Control
+STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (Composer 알 수 없는) Copyright Control
 STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Traditional)
 STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (Johann Strauss) non copyright
 STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (Traditional)
@@ -2885,7 +2883,7 @@ STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Suppe) non copyrig
 STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (Johann Strauss) non copyright
 STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Traditional)
 STR_2875    :{WINDOW_COLOUR_2}Original recordings (P) 1976 C.J.Mears Organization, used with consent
-STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Title Music:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2876    :{WINDOW_COLOUR_2}Roller코스터 Tycoon 2 Title Music:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
@@ -2906,7 +2904,7 @@ STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble)
 STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright {COPYRIGHT} Chris Sawyer
 STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2897    :{WINDOW_COLOUR_2}Last Sleigh 라이드:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2900    :{WINDOW_COLOUR_2}
@@ -2937,7 +2935,7 @@ STR_2924    :{WINDOW_COLOUR_2}Special Thanks to:  Peter Matiss
 STR_2925    :{WINDOW_COLOUR_2}Engineering Specialist:  Ken Edwards
 STR_2926    :{WINDOW_COLOUR_2}Engineering Services Manager:  Luis Rivas
 STR_2927    :{WINDOW_COLOUR_2}Lead Compatibility Analyst:  Geoffrey Smith
-STR_2928    :{WINDOW_COLOUR_2}Compatibility Analysts:  Jason Cordero, Burke McQuinn, Kim Jardin 
+STR_2928    :{WINDOW_COLOUR_2}Compatibility Analysts:  Jason Cordero, Burke McQuinn, Kim Jardin
 STR_2929    :{WINDOW_COLOUR_2}Lead Tester:  Daniel Frisoli
 STR_2930    :{WINDOW_COLOUR_2}Senior Tester:  Matt Pantaleoni
 STR_2931    :{WINDOW_COLOUR_2}
@@ -2978,28 +2976,28 @@ STR_2965    :{WINDOW_COLOUR_2}
 STR_2966    :
 STR_2967    :
 STR_2968    :
-STR_2969    :Use of this product is subject to the terms of a license agreement
-STR_2970    :found in the product's {OPENQUOTES}ReadMe{ENDQUOTES} file and in the manual
-STR_2971    :Main color scheme
-STR_2972    :Alternative color scheme 1
-STR_2973    :Alternative color scheme 2
-STR_2974    :Alternative color scheme 3
-STR_2975    :{SMALLFONT}{BLACK}Select which color scheme to change, or paint ride with
-STR_2976    :{SMALLFONT}{BLACK}Paint an individual area of this ride using the selected color scheme
+STR_2969    :<not used anymore>
+STR_2970    :<not used anymore>
+STR_2971    :Main colour scheme
+STR_2972    :Alternative colour scheme 1
+STR_2973    :Alternative colour scheme 2
+STR_2974    :Alternative colour scheme 3
+STR_2975    :{SMALLFONT}{BLACK}Select which colour scheme to change, or paint 라이드 with
+STR_2976    :{SMALLFONT}{BLACK}Paint an individual area of this 라이드 using the selected colour scheme
 STR_2977    :Staff member name
 STR_2978    :Enter new name for this member of staff:
 STR_2979    :Can't name staff member...
 STR_2980    :Too many banners in game
-STR_2981    :{RED}No entry - - 
+STR_2981    :{RED}No entry - -
 STR_2982    :Banner text
 STR_2983    :Enter new text for this banner:
 STR_2984    :Can't set new text for banner...
 STR_2985    :Banner
 STR_2986    :{SMALLFONT}{BLACK}Change text on banner
-STR_2987    :{SMALLFONT}{BLACK}Set this banner as a 'no-entry' sign for guests
+STR_2987    :{SMALLFONT}{BLACK}Set this banner as a 'no-entry' sign for 손님s
 STR_2988    :{SMALLFONT}{BLACK}Demolish this banner
-STR_2989    :{SMALLFONT}{BLACK}Select main color
-STR_2990    :{SMALLFONT}{BLACK}Select text color
+STR_2989    :{SMALLFONT}{BLACK}Select main colour
+STR_2990    :{SMALLFONT}{BLACK}Select text colour
 STR_2991    :Sign
 STR_2992    :Sign text
 STR_2993    :Enter new text for this sign:
@@ -3055,8 +3053,8 @@ STR_3042    :Pirates style
 STR_3043    :Rock style 3
 STR_3044    :Candy style
 STR_3045    :{SMALLFONT}{BLACK}Select style of music to play
-STR_3046    :This ride cannot be modified
-STR_3047    :Local authority forbids demolition or modifications to this ride
+STR_3046    :This 라이드 cannot be modified
+STR_3047    :Local authority forbids demolition or modifications to this 라이드
 STR_3048    :Marketing campaigns forbidden by local authority
 STR_3049    :Golf hole A
 STR_3050    :Golf hole B
@@ -3070,8 +3068,8 @@ STR_3057    :{WINDOW_COLOUR_2}Construction Marker:
 STR_3058    :Brick walls
 STR_3059    :Hedges
 STR_3060    :Ice blocks
-STR_3061    :Wooden fences
-STR_3062    :{SMALLFONT}{BLACK}Standard roller coaster track
+STR_3061    :우든 fences
+STR_3062    :{SMALLFONT}{BLACK}Standard 롤러코스터 track
 STR_3063    :{SMALLFONT}{BLACK}Water channel (track submerged)
 STR_3064    :Beginner Parks
 STR_3065    :Challenging Parks
@@ -3088,9 +3086,9 @@ STR_3075    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You hav
 STR_3076    :{RED}FINAL WARNING: Your park rating is still below 700 !{NEWLINE}In just 7 days your park will be closed down unless you can raise the rating
 STR_3077    :{RED}CLOSURE NOTICE: Your park has been closed down !
 STR_3078    :Plain entrance
-STR_3079    :Wooden entrance
+STR_3079    :우든 entrance
 STR_3080    :Canvas tent entrance
-STR_3081    :Castle entrance (gray)
+STR_3081    :Castle entrance (grey)
 STR_3082    :Castle entrance (brown)
 STR_3083    :Jungle entrance
 STR_3084    :Log cabin entrance
@@ -3101,21 +3099,21 @@ STR_3088    :Pagoda entrance
 STR_3089    :Space entrance
 STR_3090    :{SMALLFONT}{BLACK}Select style of entrance, exit, and station
 STR_3091    :You are not allowed to remove this section!
-STR_3092    :You are not allowed to move or modify the station for this ride!
-STR_3093    :{WINDOW_COLOUR_2}Favorite: {BLACK}{STRINGID}
+STR_3092    :You are not allowed to move or modify the station for this 라이드!
+STR_3093    :{WINDOW_COLOUR_2}Favourite: {BLACK}{STRINGID}
 STR_3094    :N/A
 STR_3095    :{WINDOW_COLOUR_2}Lift hill chain speed:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :{SMALLFONT}{BLACK}Select lift hill chain speed
 STR_3098    :Can't change lift hill speed...
-STR_3099    :{SMALLFONT}{BLACK}Select color
-STR_3100    :{SMALLFONT}{BLACK}Select second color
-STR_3101    :{SMALLFONT}{BLACK}Select third color
-STR_3102    :{SMALLFONT}{BLACK}Re-paint colored scenery on landscape
+STR_3099    :{SMALLFONT}{BLACK}Select colour
+STR_3100    :{SMALLFONT}{BLACK}Select second colour
+STR_3101    :{SMALLFONT}{BLACK}Select third colour
+STR_3102    :{SMALLFONT}{BLACK}Re-paint coloured scenery on landscape
 STR_3103    :Can't re-paint this...
-STR_3104    :{SMALLFONT}{BLACK}List rides
-STR_3105    :{SMALLFONT}{BLACK}List shops and stalls
-STR_3106    :{SMALLFONT}{BLACK}List information kiosks and other guest facilities
+STR_3104    :{SMALLFONT}{BLACK}List 라이드s
+STR_3105    :{SMALLFONT}{BLACK}List shops and 상점s
+STR_3106    :{SMALLFONT}{BLACK}List information kiosks and other 손님 facilities
 STR_3107    :Close
 STR_3108    :Test
 STR_3109    :Open
@@ -3125,14 +3123,14 @@ STR_3112    :{SMALLFONT}{BLACK}Click on design to rename or delete it
 STR_3113    :Select a different design
 STR_3114    :{SMALLFONT}{BLACK}Go back to design selection window
 STR_3115    :{SMALLFONT}{BLACK}Save track design
-STR_3116    :{SMALLFONT}{BLACK}Save track design (Not possible until ride has been tested and statistics have been generated)
+STR_3116    :{SMALLFONT}{BLACK}Save track design (Not possible until 라이드 has been tested and statistics have been generated)
 STR_3117    :{BLACK}Calling mechanic...
-STR_3118    :{BLACK}{STRINGID} is heading for the ride
-STR_3119    :{BLACK}{STRINGID} is fixing the ride
-STR_3120    :{SMALLFONT}{BLACK}Locate nearest available mechanic, or mechanic fixing ride
+STR_3118    :{BLACK}{STRINGID} is heading for the 라이드
+STR_3119    :{BLACK}{STRINGID} is fixing the 라이드
+STR_3120    :{SMALLFONT}{BLACK}Locate nearest available mechanic, or mechanic fixing 라이드
 STR_3121    :Unable to locate mechanic, or all nearby mechanics are busy
-STR_3122    :{WINDOW_COLOUR_2}Favorite ride of: {BLACK}{COMMA16} guest
-STR_3123    :{WINDOW_COLOUR_2}Favorite ride of: {BLACK}{COMMA16} guests
+STR_3122    :{WINDOW_COLOUR_2}Favourite 라이드 of: {BLACK}{COMMA16} 손님
+STR_3123    :{WINDOW_COLOUR_2}Favourite 라이드 of: {BLACK}{COMMA16} 손님s
 STR_3124    :Broken {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Excitement Factor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}+{COMMA16}%
@@ -3144,16 +3142,16 @@ STR_3131    :Cancel
 STR_3132    :{BLACK}Click items of scenery to select them to be saved with track design...
 STR_3133    :Unable to build this on a slope
 STR_3134    :{RED}(Design includes scenery which is unavailable)
-STR_3135    :{RED}(Vehicle design unavailable - Ride performance may be affected)
+STR_3135    :{RED}(Vehicle design unavailable - 라이드 performance may be affected)
 STR_3136    :Warning: This design will be built with an alternative vehicle type and may not perform as expected
 STR_3137    :Select Nearby Scenery
 STR_3138    :Reset Selection
 STR_3139    :Cable lift unable to work in this operating mode
 STR_3140    :Cable lift hill must start immediately after station
-STR_3141    :Multi-circuit per ride not possible with cable lift hill
+STR_3141    :Multi-circuit per 라이드 not possible with cable lift hill
 STR_3142    :{WINDOW_COLOUR_2}Capacity: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Show people on map
-STR_3144    :{SMALLFONT}{BLACK}Show rides and stalls on map
+STR_3144    :{SMALLFONT}{BLACK}Show 라이드s and 상점s on map
 STR_3145    :{SMALLFONT}{BLACK}Scroll {STRINGID} left
 STR_3146    :{SMALLFONT}{BLACK}Scroll {STRINGID} right
 STR_3147    :{SMALLFONT}{BLACK}Scroll {STRINGID} left fast
@@ -3172,13 +3170,13 @@ STR_3159    :list
 STR_3160    :<not used anymore>
 STR_3161    :<not used anymore>
 STR_3162    :Unable to allocate enough memory
-STR_3163    :Installing new data: 
+STR_3163    :설치ing new data:
 STR_3164    :{BLACK}{COMMA16} selected (maximum {COMMA16})
 STR_3165    :
-STR_3166    :{BLACK}(ID: 
+STR_3166    :{BLACK}(ID:
 STR_3167    :{WINDOW_COLOUR_2}Includes: {BLACK}{COMMA16} objects
 STR_3168    :{WINDOW_COLOUR_2}Text: {BLACK}{STRINGID}
-STR_3169    :Data for the following object not found: 
+STR_3169    :Data for the following object not found:
 STR_3170    :Not enough space for graphics
 STR_3171    :Too many objects of this type selected
 STR_3172    :The following object must be selected first: {STRING}
@@ -3188,17 +3186,17 @@ STR_3175    :This object is always required
 STR_3176    :Unable to select this object
 STR_3177    :Unable to de-select this object
 STR_3178    :At least one path object must be selected
-STR_3179    :At least one ride vehicle/attraction object must be selected
+STR_3179    :At least one 라이드 vehicle/attraction object must be selected
 STR_3180    :Invalid selection of objects
 STR_3181    :Object Selection - {STRINGID}
 STR_3182    :Park entrance type must be selected
 STR_3183    :Water type must be selected
-STR_3184    :Ride Vehicles/Attractions
+STR_3184    :라이드 Vehicles/Attractions
 STR_3185    :Small Scenery
 STR_3186    :Large Scenery
 STR_3187    :Walls/Fences
 STR_3188    :Path Signs
-STR_3189    :Footpaths
+STR_3189    :보도s
 STR_3190    :Path Extras
 STR_3191    :Scenery Groups
 STR_3192    :Park Entrance
@@ -3216,7 +3214,7 @@ STR_3203    :Invention List Set Up
 STR_3204    :Options Selection
 STR_3205    :Objective Selection
 STR_3206    :Save Scenario
-STR_3207    :Roller Coaster Designer
+STR_3207    :롤러코스터 Designer
 STR_3208    :Track Designs Manager
 STR_3209    :Back to Previous Step:
 STR_3210    :Forward to Next Step:
@@ -3238,14 +3236,14 @@ STR_3225    :{SMALLFONT}{BLACK}Toggle on/off building a random cluster of object
 STR_3226    :{SMALLFONT}{BLACK}Build park entrance
 STR_3227    :Too many park entrances!
 STR_3228    :{SMALLFONT}{BLACK}Set starting positions for people
-STR_3229    :Block Brakes cannot be used directly after station
-STR_3230    :Block Brakes cannot be used directly after each other
-STR_3231    :Block Brakes cannot be used directly after the top of this lift hill
+STR_3229    :블록 브레이크 cannot be used directly after station
+STR_3230    :블록 브레이크 cannot be used directly after each other
+STR_3231    :블록 브레이크 cannot be used directly after the top of this lift hill
 STR_3232    :Options - Financial
-STR_3233    :Options - Guests
+STR_3233    :Options - 손님s
 STR_3234    :Options - Park
 STR_3235    :{SMALLFONT}{BLACK}Show financial options
-STR_3236    :{SMALLFONT}{BLACK}Show guest options
+STR_3236    :{SMALLFONT}{BLACK}Show 손님 options
 STR_3237    :{SMALLFONT}{BLACK}Show park options
 STR_3238    :No Money
 STR_3239    :{SMALLFONT}{BLACK}Make this park a 'no money' park with no financial restrictions
@@ -3265,17 +3263,17 @@ STR_3252    :Can't increase maximum loan size any further!
 STR_3253    :Can't reduce maximum loan size any further!
 STR_3254    :Can't increase interest rate any further!
 STR_3255    :Can't reduce interest rate any further!
-STR_3256    :Guests prefer less intense rides
-STR_3257    :{SMALLFONT}{BLACK}Select whether guests should generally prefer less intense rides only
-STR_3258    :Guests prefer more intense rides
-STR_3259    :{SMALLFONT}{BLACK}Select whether guests should generally prefer more intense rides only
-STR_3260    :{WINDOW_COLOUR_2}Cash per guest (average):
-STR_3261    :{WINDOW_COLOUR_2}Guests initial happiness:
-STR_3262    :{WINDOW_COLOUR_2}Guests initial hunger:
-STR_3263    :{WINDOW_COLOUR_2}Guests initial thirst:
+STR_3256    :손님s prefer less intense 라이드s
+STR_3257    :{SMALLFONT}{BLACK}Select whether 손님s should generally prefer less intense 라이드s only
+STR_3258    :손님s prefer more intense 라이드s
+STR_3259    :{SMALLFONT}{BLACK}Select whether 손님s should generally prefer more intense 라이드s only
+STR_3260    :{WINDOW_COLOUR_2}Cash per 손님 (average):
+STR_3261    :{WINDOW_COLOUR_2}손님s initial happiness:
+STR_3262    :{WINDOW_COLOUR_2}손님s initial hunger:
+STR_3263    :{WINDOW_COLOUR_2}손님s initial thirst:
 STR_3264    :Can't increase this any further!
 STR_3265    :Can't reduce this any further!
-STR_3266    :{SMALLFONT}{BLACK}Select how this park charges for entrance and rides
+STR_3266    :{SMALLFONT}{BLACK}Select how this park charges for entrance and 라이드s
 STR_3267    :Forbid tree removal
 STR_3268    :{SMALLFONT}{BLACK}Forbid tall trees being removed
 STR_3269    :Forbid landscape changes
@@ -3284,17 +3282,17 @@ STR_3271    :Forbid high construction
 STR_3272    :{SMALLFONT}{BLACK}Forbid any tall construction
 STR_3273    :Park rating higher difficult level
 STR_3274    :{SMALLFONT}{BLACK}Make the park rating value more challenging
-STR_3275    :Guest generation higher difficult level
-STR_3276    :{SMALLFONT}{BLACK}Make it more difficult to attract guests to the park
+STR_3275    :손님 generation higher difficult level
+STR_3276    :{SMALLFONT}{BLACK}Make it more difficult to attract 손님s to the park
 STR_3277    :{WINDOW_COLOUR_2}Cost to buy land:
 STR_3278    :{WINDOW_COLOUR_2}Cost to buy construction rights:
-STR_3279    :Free park entry / Pay per ride
-STR_3280    :Pay to enter park / Free rides
+STR_3279    :Free park entry / Pay per 라이드
+STR_3280    :Pay to enter park / Free 라이드s
 STR_3281    :{WINDOW_COLOUR_2}Entry price:
 STR_3282    :{SMALLFONT}{BLACK}Select objective and park name
-STR_3283    :{SMALLFONT}{BLACK}Select rides to be preserved
+STR_3283    :{SMALLFONT}{BLACK}Select 라이드s to be preserved
 STR_3284    :Objective Selection
-STR_3285    :Preserved Rides
+STR_3285    :Preserved 라이드s
 STR_3286    :{SMALLFONT}{BLACK}Select objective for this scenario
 STR_3287    :{WINDOW_COLOUR_2}Objective:
 STR_3288    :{SMALLFONT}{BLACK}Select climate
@@ -3312,16 +3310,16 @@ STR_3299    :{WINDOW_COLOUR_2}Park/Scenario Details:
 STR_3300    :{WINDOW_COLOUR_2}Scenario Name: {BLACK}{STRINGID}
 STR_3301    :{WINDOW_COLOUR_2}Objective Date:
 STR_3302    :{WINDOW_COLOUR_2}{MONTHYEAR}
-STR_3303    :{WINDOW_COLOUR_2}Number of guests:
+STR_3303    :{WINDOW_COLOUR_2}Number of 손님s:
 STR_3304    :{WINDOW_COLOUR_2}Park value:
 STR_3305    :{WINDOW_COLOUR_2}Monthly income:
 STR_3306    :{WINDOW_COLOUR_2}Monthly profit:
-STR_3307    :{WINDOW_COLOUR_2}Minimum length:
+STR_3307    :{WINDOW_COLOUR_2}미니mum length:
 STR_3308    :{WINDOW_COLOUR_2}Excitement rating:
 STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
-STR_3312    :{WINDOW_COLOUR_2}Rides/attractions under a preservation order:
+STR_3312    :{WINDOW_COLOUR_2}라이드s/attractions under a preservation order:
 STR_3313    :Scenario Name
 STR_3314    :Enter name for scenario:
 STR_3315    :Park/Scenario Details
@@ -3330,10 +3328,10 @@ STR_3317    :No details yet
 STR_3318    :{SMALLFONT}{BLACK}Select which group this scenario appears in
 STR_3319    :{WINDOW_COLOUR_2}Scenario Group:
 STR_3320    :Unable to save scenario file...
-STR_3321    :New objects installed successfully
+STR_3321    :New objects 설치ed successfully
 STR_3322    :{WINDOW_COLOUR_2}Objective: {BLACK}{STRINGID}
-STR_3323    :Missing object data, ID: 
-STR_3324    :Requires Add-On Pack: 
+STR_3323    :Missing object data, ID:
+STR_3324    :Requires Add-On Pack:
 STR_3325    :Requires an Add-On Pack
 STR_3326    :{WINDOW_COLOUR_2}(no image)
 STR_3327    :Starting positions for people not set
@@ -3344,19 +3342,19 @@ STR_3331    :Path from park entrance to map edge either not complete or too comp
 STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
 STR_3333    :Export plug-in objects with saved games
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
-STR_3335    :Roller Coaster Designer - Select Ride Types & Vehicles
-STR_3336    :Track Designs Manager - Select Ride Type
-STR_3337    :Six Flags Park
+STR_3335    :롤러코스터 Designer - Select 라이드 Types & Vehicles
+STR_3336    :Track Designs Manager - Select 라이드 Type
+STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Custom-designed layout
 STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
 STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
 STR_3341    :{SMALLFONT}{BLACK}Game tools
 STR_3342    :Scenario Editor
 STR_3343    :Convert Saved Game to Scenario
-STR_3344    :Roller Coaster Designer
+STR_3344    :롤러코스터 Designer
 STR_3345    :Track Designs Manager
 STR_3346    :Can't save track design...
-STR_3347    :Ride is too large, contains too many elements, or scenery is too spread out
+STR_3347    :라이드 is too large, contains too many elements, or scenery is too spread out
 STR_3348    :Rename
 STR_3349    :Delete
 STR_3350    :Track design name
@@ -3371,32 +3369,32 @@ STR_3358    :Can't delete track design...
 STR_3359    :{BLACK}No track designs of this type
 STR_3360    :Warning!
 STR_3361    :Too many track designs of this type - Some will not be listed.
-STR_3362    :Forced Software Buffer Mixing
-STR_3363    :{SMALLFONT}{BLACK}Select this option to improve performance if the game pauses slightly when sounds start or interference is heard
+STR_3362    :<not used anymore>
+STR_3363    :<not used anymore>
 STR_3364    :Advanced
 STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of scenery in addition to scenery groups
-STR_3366    :{BLACK}= Ride
-STR_3367    :{BLACK}= Food Stall
-STR_3368    :{BLACK}= Drink Stall
-STR_3369    :{BLACK}= Souvenir Stall
+STR_3366    :{BLACK}= 라이드
+STR_3367    :{BLACK}= Food 상점
+STR_3368    :{BLACK}= Drink 상점
+STR_3369    :{BLACK}= Souvenir 상점
 STR_3370    :{BLACK}= Info. Kiosk
 STR_3371    :{BLACK}= First Aid
-STR_3372    :{BLACK}= A.T.M.
-STR_3373    :{BLACK}= Restroom
+STR_3372    :{BLACK}= Cash Machine
+STR_3373    :{BLACK}= Toilet
 STR_3374    :Warning: Too many objects selected!
 STR_3375    :Not all objects in this scenery group could be selected
-STR_3376    :Install new track design...
-STR_3377    :{SMALLFONT}{BLACK}Install a new track design file
-STR_3378    :Install
+STR_3376    :설치 new track design...
+STR_3377    :{SMALLFONT}{BLACK}설치 a new track design file
+STR_3378    :설치
 STR_3379    :Cancel
-STR_3380    :Unable to install this track design...
+STR_3380    :Unable to 설치 this track design...
 STR_3381    :File is not compatible or contains invalid data
 STR_3382    :File copy failed
 STR_3383    :Select new name for track design
 STR_3384    :An existing track design already has this name - Please select a new name for this design:
 STR_3385    :Beginners Tutorial
-STR_3386    :Custom Rides Tutorial
-STR_3387    :Roller Coaster Building Tutorial
+STR_3386    :Custom 라이드s Tutorial
+STR_3387    :롤러코스터 Building Tutorial
 STR_3388    :Unable to switch to selected mode
 STR_3389    :Unable to select additional item of scenery...
 STR_3390    :Too many items selected
@@ -3405,47 +3403,47 @@ STR_3392    :{SMALLFONT}{BLACK}Holding down the RIGHT mouse button and moving th
 STR_3393    :{SMALLFONT}{BLACK}To view more of the park, you can zoom the view out using the icon at the top of the screen...
 STR_3394    :{SMALLFONT}{BLACK}You can also rotate the view in 90 degree steps...
 STR_3395    :{SMALLFONT}{BLACK}Building anything at this scale is a bit difficult, so let's zoom the view back in again...
-STR_3396    :{SMALLFONT}{BLACK}Let's build a simple ride to get the park started...
-STR_3397    :{SMALLFONT}{BLACK}The white 'ghost' image shows where the ride will be built. We'll move the pointer to select the position then click to build it...
-STR_3398    :{SMALLFONT}{BLACK}Rides need an entrance and an exit. We'll move the pointer to a square on the edge of the ride and then click to build first the entrance and then the exit...
-STR_3399    :{SMALLFONT}{BLACK}We need to build footpaths to allow guests to reach our new ride...
-STR_3400    :{SMALLFONT}{BLACK}For the path to the ride entrance we'll use a special 'queue line' path...
+STR_3396    :{SMALLFONT}{BLACK}Let's build a simple 라이드 to get the park started...
+STR_3397    :{SMALLFONT}{BLACK}The white 'ghost' image shows where the 라이드 will be built. We'll move the pointer to select the position then click to build it...
+STR_3398    :{SMALLFONT}{BLACK}라이드s need an entrance and an exit. We'll move the pointer to a square on the edge of the 라이드 and then click to build first the entrance and then the exit...
+STR_3399    :{SMALLFONT}{BLACK}We need to build 보도s to allow 손님s to reach our new 라이드...
+STR_3400    :{SMALLFONT}{BLACK}For the path to the 라이드 entrance we'll use a special 'queue line' path...
 STR_3401    :{SMALLFONT}{BLACK}For the exit path, just an 'ordinary' path will do...
-STR_3402    :{SMALLFONT}{BLACK}Right, lets open the ride! To open the ride we click the flag icon on the ride window and select 'open'...
-STR_3403    :{SMALLFONT}{BLACK}But where are the guests?
+STR_3402    :{SMALLFONT}{BLACK}Right, lets open the 라이드! To open the 라이드 we click the flag icon on the 라이드 window and select 'open'...
+STR_3403    :{SMALLFONT}{BLACK}But where are the 손님s?
 STR_3404    :{SMALLFONT}{BLACK}Oh - The park is still closed! Right - Let's open it...
-STR_3405    :{SMALLFONT}{BLACK}While we're waiting for our first guests, let's build some scenery...
-STR_3406    :{SMALLFONT}{BLACK}Here's our empty park. We're going to build a simple custom-designed ride...
+STR_3405    :{SMALLFONT}{BLACK}While we're waiting for our first 손님s, let's build some scenery...
+STR_3406    :{SMALLFONT}{BLACK}Here's our empty park. We're going to build a simple custom-designed 라이드...
 STR_3407    :{SMALLFONT}{BLACK}First we need to choose a starting position...
-STR_3408    :{SMALLFONT}{BLACK}The section of track we've just built is a 'station platform', to allow guests to get on and off the ride...
+STR_3408    :{SMALLFONT}{BLACK}The section of track we've just built is a 'station platform', to allow 손님s to get on and off the 라이드...
 STR_3409    :{SMALLFONT}{BLACK}We'll extend the platform a bit by adding a couple more station platform sections...
 STR_3410    :{SMALLFONT}{BLACK}The icons at the top of the construction window let you choose different track pieces to add...
-STR_3411    :{SMALLFONT}{BLACK}We'll select a left-hand curve...
+STR_3411    :{SMALLFONT}{BLACK}We'll select a 왼쪽 커브...
 STR_3412    :{SMALLFONT}{BLACK}The curve hasn't been built yet, but the white ghost image shows where it will be built. Clicking the large 'build this' icon actually builds the track...
 STR_3413    :{SMALLFONT}{BLACK}Now we want to build straight track, so we click the straight track icon...
-STR_3414    :{SMALLFONT}{BLACK}Now that the circuit is complete, we need to build the ride entrance and exit...
-STR_3415    :{SMALLFONT}{BLACK}Let's test our ride to check it works...
+STR_3414    :{SMALLFONT}{BLACK}Now that the circuit is complete, we need to build the 라이드 entrance and exit...
+STR_3415    :{SMALLFONT}{BLACK}Let's test our 라이드 to check it works...
 STR_3416    :{SMALLFONT}{BLACK}White it's being tested, we'll build the queue line and exit path...
-STR_3417    :{SMALLFONT}{BLACK}OK - Let's open the park and the ride...
-STR_3418    :{SMALLFONT}{BLACK}Our new ride isn't very exciting - Perhaps we should add some scenery?
+STR_3417    :{SMALLFONT}{BLACK}OK - Let's open the park and the 라이드...
+STR_3418    :{SMALLFONT}{BLACK}Our new 라이드 isn't very exciting - Perhaps we should add some scenery?
 STR_3419    :{SMALLFONT}{BLACK}To build scenery above other scenery or in mid-air, hold down the SHIFT key and move the mouse to select the height...
 STR_3420    :{SMALLFONT}{BLACK}Some types of scenery can be re-painted after it's built...
-STR_3421    :{SMALLFONT}{BLACK}Let's add some music to the ride...
-STR_3422    :{SMALLFONT}{BLACK}Let's build a roller coaster !
-STR_3423    :{SMALLFONT}{BLACK}There are loads of pre-designed coasters, but we're going to build our own custom design...
+STR_3421    :{SMALLFONT}{BLACK}Let's add some music to the 라이드...
+STR_3422    :{SMALLFONT}{BLACK}Let's build a 롤러코스터 !
+STR_3423    :{SMALLFONT}{BLACK}There are loads of pre-designed 코스터s, but we're going to build our own custom design...
 STR_3424    :{SMALLFONT}{BLACK}That's the station platform built. Now we need a lift hill...
-STR_3425    :{SMALLFONT}{BLACK}Roller coaster trains aren't powered, so a 'chain lift' is needed to pull the train up the first hill...
+STR_3425    :{SMALLFONT}{BLACK}롤러코스터 trains aren't powered, so a 'chain lift' is needed to pull the train up the first hill...
 STR_3426    :{SMALLFONT}{BLACK}That's the lift hill complete - Now for the first drop...
-STR_3427    :{SMALLFONT}{BLACK}Those curves are a bad idea - The riders will be flung to the sides by the lateral G forces as the train hurtles around...
-STR_3428    :{SMALLFONT}{BLACK}Banking the curves will improve the ride - Riders will be pushed down into their seats instead of flung to the sides...
+STR_3427    :{SMALLFONT}{BLACK}Those curves are a bad idea - The 라이더 will be flung to the sides by the lateral G forces as the train hurtles around...
+STR_3428    :{SMALLFONT}{BLACK}Banking the curves will improve the 라이드 - 라이더 will be pushed down into their seats instead of flung to the sides...
 STR_3429    :{SMALLFONT}{BLACK}No - That won't work! Look at the height marks - The second hill is taller than the lift hill...
 STR_3430    :{SMALLFONT}{BLACK}To ensure the train makes it around, each hill should be slightly smaller than the previous one...
 STR_3431    :{SMALLFONT}{BLACK}That's better - Our train should make it up that hill now! Let's try some more twisted track...
 STR_3432    :{SMALLFONT}{BLACK}We need to slow the train before the final curve and station, so let's add some brakes...
-STR_3433    :{SMALLFONT}{BLACK}And finally we'll add 'block brakes', which allow two trains to operate more safely on the circuit...
-STR_3434    :{SMALLFONT}{BLACK}Let's test the ride and see if it works!
-STR_3435    :{SMALLFONT}{BLACK}Great - It worked! Let's add the footpaths and let guests onto our new roller coaster...
-STR_3436    :{SMALLFONT}{BLACK}While waiting for our first riders, we could customize the ride a bit...
+STR_3433    :{SMALLFONT}{BLACK}And finally we'll add '블록 브레이크', which allow two trains to operate more safely on the circuit...
+STR_3434    :{SMALLFONT}{BLACK}Let's test the 라이드 and see if it works!
+STR_3435    :{SMALLFONT}{BLACK}Great - It worked! Let's add the 보도s and let 손님s onto our new 롤러코스터...
+STR_3436    :{SMALLFONT}{BLACK}While waiting for our first 라이더, we could customise the 라이드 a bit...
 STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
 STR_3438    :Unable to remove all scenery from here...
 STR_3439    :Clear Scenery
@@ -3460,9 +3458,9 @@ STR_3446    :Cancel Patrol Area
 # New strings, cleaner
 STR_5120    :Finances
 STR_5121    :Research
-STR_5122    :Select rides by track type (like in RCT1)
-STR_5123    :Renew rides
-STR_5124    :No Six Flags
+STR_5122    :Select 라이드s by track type (like in RCT1)
+STR_5123    :Renew 라이드s
+STR_5124    :<not used anymore>
 STR_5125    :All destructable
 STR_5126    :Random title music
 STR_5127    :{SMALLFONT}{BLACK}Disable land elevation
@@ -3470,7 +3468,7 @@ STR_5128    :Selection size
 STR_5129    :Enter selection size between {COMMA16} and {COMMA16}
 STR_5130    :Map size
 STR_5131    :Enter map size between {COMMA16} and {COMMA16}
-STR_5132    :Fix all rides
+STR_5132    :Fix all 라이드s
 STR_5133    :{SMALLFONT}{BLACK}Adjust smaller area of land rights
 STR_5134    :{SMALLFONT}{BLACK}Adjust larger area of land rights
 STR_5135    :{SMALLFONT}{BLACK}Buy land rights and construction rights
@@ -3489,14 +3487,12 @@ STR_5147    :Cheats
 STR_5148    :{SMALLFONT}{BLACK}Change the game speed
 STR_5149    :{SMALLFONT}{BLACK}Open the cheats window
 STR_5150    :Enable debugging tools
-#Thousands separator
 STR_5151    :,
-#Decimals separator
 STR_5152    :.
 STR_5153    :Edit Themes...
 STR_5154    :Hardware display
 STR_5155    :Allow testing of unfinished tracks
-STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
+STR_5156    :{SMALLFONT}{BLACK}Allows testing of most 라이드 types even when the track is unfinished, does not apply to block sectioned modes
 STR_5157    :Unlock all prices
 STR_5158    :Quit to menu
 STR_5159    :Exit OpenRCT2
@@ -3508,25 +3504,25 @@ STR_5164    :Twitch Channel name
 STR_5165    :Name peeps after followers
 STR_5166    :{SMALLFONT}{BLACK}Will name peeps after channel's Twitch followers
 STR_5167    :Track follower peeps
-STR_5168    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after channel's Twitch followers
+STR_5168    :{SMALLFONT}{BLACK}Will turn on tracking information for 손님s named after channel's Twitch followers
 STR_5169    :Name peeps after people in Twitch chat
 STR_5170    :{SMALLFONT}{BLACK}Will name peeps after people in Twitch chat
 STR_5171    :Track chat peeps
-STR_5172    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after Twitch chat participants
+STR_5172    :{SMALLFONT}{BLACK}Will turn on tracking information for 손님s named after Twitch chat participants
 STR_5173    :Pull Twitch chat as news
 STR_5174    :{SMALLFONT}{BLACK}Will use Twitch chat messages preceded by !news for in game notifications
 STR_5175    :Input the name of your Twitch channel
 STR_5176    :Enable Twitch integration
 STR_5177    :Fullscreen mode:
 STR_5178    :{SMALLFONT}{BLACK}Show financial cheats
-STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
+STR_5179    :{SMALLFONT}{BLACK}Show 손님 cheats
 STR_5180    :{SMALLFONT}{BLACK}Show park cheats
-STR_5181    :{SMALLFONT}{BLACK}Show ride cheats
+STR_5181    :{SMALLFONT}{BLACK}Show 라이드 cheats
 STR_5182    :{INT32}
 STR_5183    :Base height
 STR_5184    :Enter base height between {COMMA16} and {COMMA16}
 STR_5185    :Water level
-STR_5186    :Enter water level between {COMMA16} and {COMMA16} 
+STR_5186    :Enter water level between {COMMA16} and {COMMA16}
 STR_5187    :Finances
 STR_5188    :New Campaign
 STR_5189    :Research
@@ -3538,15 +3534,15 @@ STR_5194    :Water
 STR_5195    :Clear Scenery
 STR_5196    :Land Rights
 STR_5197    :Scenery
-STR_5198    :Footpath
-STR_5199    :Ride Construction
+STR_5198    :보도
+STR_5199    :라이드 Construction
 STR_5200    :Track Design Place
-STR_5201    :New Ride
+STR_5201    :New 라이드
 STR_5202    :Track Design Selection
-STR_5203    :Ride
-STR_5204    :Ride List
-STR_5205    :Guest
-STR_5206    :Guest List
+STR_5203    :라이드
+STR_5204    :라이드 List
+STR_5205    :손님
+STR_5206    :손님 List
 STR_5207    :Staff
 STR_5208    :Staff List
 STR_5209    :Banner
@@ -3564,14 +3560,14 @@ STR_5220    :Keyboard Shortcuts
 STR_5221    :Change Keyboard Shortcut
 STR_5222    :Load/Save
 STR_5223    :Save Prompt
-STR_5224    :Demolish Ride Prompt
+STR_5224    :Demolish 라이드 Prompt
 STR_5225    :Fire Staff Prompt
 STR_5226    :Track Delete Prompt
 STR_5227    :Save Overwrite Prompt
 STR_5228    :{SMALLFONT}{BLACK}Main UI
 STR_5229    :{SMALLFONT}{BLACK}Park
 STR_5230    :{SMALLFONT}{BLACK}Tools
-STR_5231    :{SMALLFONT}{BLACK}Rides and Peeps
+STR_5231    :{SMALLFONT}{BLACK}라이드s and Peeps
 STR_5232    :{SMALLFONT}{BLACK}Editors
 STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
 STR_5234    :{SMALLFONT}{BLACK}Prompts
@@ -3614,7 +3610,7 @@ STR_5270    :{SMALLFONT}{BLACK}Miscellaneous
 STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Small Scenery
 STR_5273    :{SMALLFONT}{BLACK}Large Scenery
-STR_5274    :{SMALLFONT}{BLACK}Footpaths
+STR_5274    :{SMALLFONT}{BLACK}보도
 STR_5275    :Search for Objects
 STR_5276    :Enter the name of an object to search for
 STR_5277    :Clear
@@ -3622,20 +3618,20 @@ STR_5278    :Sandbox mode
 STR_5279    :Sandbox mode off
 STR_5280    :{SMALLFONT}{BLACK}Allow editing land ownership settings through the Map window and other options that are normally restricted to the Scenario Editor
 STR_5281    :{SMALLFONT}{BLACK}Features
-STR_5282    :RCT1 Ride Open/Close Lights
+STR_5282    :RCT1 라이드 Open/Close Lights
 STR_5283    :RCT1 Park Open/Close Lights
 STR_5284    :RCT1 Scenario Selection Font
 STR_5285    :EXPLODE!!!
-STR_5286    :{SMALLFONT}{BLACK}Makes some guests explode
-STR_5287    :Ride is already broken down
-STR_5288    :Ride is closed
-STR_5289    :No breakdowns available for this ride
-STR_5290    :Fix ride
+STR_5286    :{SMALLFONT}{BLACK}Makes some 손님s explode
+STR_5287    :라이드 is already broken down
+STR_5288    :라이드 is closed
+STR_5289    :No breakdowns available for this 라이드
+STR_5290    :Fix 라이드
 STR_5291    :Can't force breakdown
 STR_5292    :{SMALLFONT}{BLACK}Force a breakdown
-STR_5293    :{SMALLFONT}{BLACK}Close ride/attraction
-STR_5294    :{SMALLFONT}{BLACK}Test ride/attraction
-STR_5295    :{SMALLFONT}{BLACK}Open ride/attraction
+STR_5293    :{SMALLFONT}{BLACK}Close 라이드/attraction
+STR_5294    :{SMALLFONT}{BLACK}Test 라이드/attraction
+STR_5295    :{SMALLFONT}{BLACK}Open 라이드/attraction
 STR_5296    :{SMALLFONT}{BLACK}Close park
 STR_5297    :{SMALLFONT}{BLACK}Open park
 STR_5298    :{RED}{STRINGID}
@@ -3645,10 +3641,10 @@ STR_5301    :{MEDIUMFONT}{BLACK}Clear your loan
 STR_5302    :Clear loan
 STR_5303    :Allow building in pause mode
 STR_5304    :Title Sequence:
-STR_5305    :RollerCoaster Tycoon 1
-STR_5306    :RollerCoaster Tycoon 1 (AA)
-STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
-STR_5308    :RollerCoaster Tycoon 2
+STR_5305    :Roller코스터 Tycoon 1
+STR_5306    :Roller코스터 Tycoon 1 (AA)
+STR_5307    :Roller코스터 Tycoon 1 (AA + LL)
+STR_5308    :Roller코스터 Tycoon 2
 STR_5309    :OpenRCT2
 STR_5310    :Random
 STR_5311    :{SMALLFONT}{BLACK}Debug tools
@@ -3669,14 +3665,14 @@ STR_5325    :Grid (blue)
 STR_5326    :Grid (green)
 STR_5327    :Sand (dark)
 STR_5328    :Sand (light)
-STR_5329    :Checkerboard (inverted)
+STR_5329    :Checkerboard (인버티드)
 STR_5330    :Underground view
 STR_5331    :Rock
 STR_5332    :Wood (red)
 STR_5333    :Wood (black)
 STR_5334    :Ice
-STR_5335    :Ride entrance
-STR_5336    :Ride exit
+STR_5335    :라이드 entrance
+STR_5336    :라이드 exit
 STR_5337    :Park entrance
 STR_5338    :Element type
 STR_5339    :Base height
@@ -3686,10 +3682,10 @@ STR_5342    :Choose a map tile
 STR_5343    :Automatically place staff
 STR_5344    :Changelog
 STR_5345    :Financial cheats
-STR_5346    :Guest cheats
+STR_5346    :손님 cheats
 STR_5347    :Park cheats
-STR_5348    :Ride cheats
-STR_5349    :{SMALLFONT}{BLACK}All Rides
+STR_5348    :라이드 cheats
+STR_5349    :{SMALLFONT}{BLACK}All 라이드s
 STR_5350    :Max
 STR_5351    :Min
 STR_5352    :{BLACK}Happiness:
@@ -3699,10 +3695,10 @@ STR_5355    :{BLACK}Thirst:
 STR_5356    :{BLACK}Nausea:
 STR_5357    :{BLACK}Nausea tolerance:
 STR_5358    :{BLACK}Bathroom:
-STR_5359    :Remove guests
-STR_5360    :{SMALLFONT}{BLACK}Removes all guests from the map
-STR_5361    :Give all guests:
-STR_5362    :{BLACK}Set all guests' preferred ride intensity to:
+STR_5359    :Remove 손님s
+STR_5360    :{SMALLFONT}{BLACK}Removes all 손님s from the map
+STR_5361    :Give all 손님s:
+STR_5362    :{BLACK}Set all 손님s' preferred 라이드 intensity to:
 STR_5363    :More than 1
 STR_5364    :Less than 15
 STR_5365    :{BLACK}Staff speed:
@@ -3710,7 +3706,7 @@ STR_5366    :Normal
 STR_5367    :Fast
 STR_5368    :Reset crash status
 STR_5369    :Park parameters...
-STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
+STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}손님 generation and money.
 STR_5371    :Object Selection
 STR_5372    :Invert right mouse dragging
 STR_5373    :Name {STRINGID}
@@ -3768,7 +3764,7 @@ STR_5424    :Wait{MOVE_X}{87}{COMMA16}
 STR_5425    :Restart
 STR_5426    :End
 STR_5427    :Coordinates:
-STR_5428    :Counter-clockwise rotations:
+STR_5428    :Anticlockwise rotations:
 STR_5429    :Zoom level:
 STR_5430    :Seconds to wait:
 STR_5431    :Save to load:
@@ -3780,34 +3776,34 @@ STR_5436    :Edit Title Sequences...
 STR_5437    :No save selected
 STR_5438    :Can't make changes while command editor is open
 STR_5439    :A wait command with at least 4 seconds is required with a restart command
-STR_5440    :Minimize fullscreen on focus loss
-STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type,{NEWLINE}so vehicles can be changed{NEWLINE}afterwards, like in RCT1.
+STR_5440    :미니mise fullscreen on focus loss
+STR_5441    :{SMALLFONT}{BLACK}Identifies 라이드s by track type,{NEWLINE}so vehicles can be changed{NEWLINE}afterwards, like in RCT1.
 STR_5442    :Force park rating:
 STR_5443    :Speed{MOVE_X}{87}{STRINGID}
 STR_5444    :Speed:
 STR_5445    :Speed
 STR_5446    :Get
 STR_5447    :Type {STRINGID}
-STR_5448    :Ride / Vehicle {STRINGID}
+STR_5448    :라이드 / Vehicle {STRINGID}
 STR_5449    :Reduce game speed
 STR_5450    :Increase game speed
 STR_5451    :Open cheats window
 STR_5452    :Toggle visibility of toolbars
-STR_5453    :Select another ride
+STR_5453    :Select another 라이드
 STR_5454    :Uncap FPS
 STR_5455    :Enable sandbox mode
 STR_5456    :Disable clearance checks
 STR_5457    :Disable support limits
 STR_5458    :Rotate clockwise
-STR_5459    :Rotate counterclockwise
-STR_5460    :Rotate view counterclockwise
-STR_5461    :Set guests' parameters
+STR_5459    :Rotate anti-clockwise
+STR_5460    :Rotate view anti-clockwise
+STR_5461    :Set 손님s' parameters
 STR_5462    :{CURRENCY}
 STR_5463    :Goal: Have fun!
 STR_5464    :General
 STR_5465    :Climate
 STR_5466    :Staff
-STR_5467    :ALT + 
+STR_5467    :ALT +
 STR_5468    :Recent messages
 STR_5469    :Scroll map up
 STR_5470    :Scroll map left
@@ -3829,7 +3825,5 @@ STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Show recent messages
 STR_5488    :No entrance
-STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
+STR_5489    :{SMALLFONT}{BLACK}Show only tracked 손님s
 STR_5490    :Disable audio on focus loss
-STR_5491    :Inventions list
-STR_5492    :Scenario options
