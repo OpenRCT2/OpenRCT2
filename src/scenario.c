@@ -276,7 +276,7 @@ void scenario_begin()
 	RCT2_GLOBAL(0x013587D0, money32) = RCT2_GLOBAL(0x013573DC, money32) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(RCT2_GLOBAL(0x013573DC, sint32));
 
-	finance_mark_loan_settings_as_legitimate(); // (loan related)
+	finance_update_loan_hash();
 
 	strcpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, s6Info->details);
 	strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, s6Info->name);
@@ -315,7 +315,7 @@ void scenario_begin()
 	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(0x013587D8, uint16) = 63;
-	finance_mark_loan_settings_as_legitimate(); // (loan related, called above already)
+	finance_update_loan_hash();
 	park_reset_history();
 	finance_reset_history();
 	award_reset();

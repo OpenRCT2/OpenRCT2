@@ -776,7 +776,7 @@ int game_load_save(const char *path)
 	window_new_ride_init_vars();
 	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
 	if (RCT2_GLOBAL(0x0013587C4, uint32) == 0)		// this check is not in scenario play
-		finance_mark_loan_settings_as_legitimate();
+		finance_update_loan_hash();
 
 	load_palette();
 	gfx_invalidate_screen();

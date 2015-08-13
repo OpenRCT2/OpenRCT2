@@ -259,7 +259,7 @@ void rct1_fix_landscape()
 		RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32)
 	);
 	finance_reset_cash_to_initial();
-	finance_mark_loan_settings_as_legitimate();
+	finance_update_loan_hash();
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = clamp(
 		MONEY(0,00),
