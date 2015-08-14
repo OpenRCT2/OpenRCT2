@@ -93,7 +93,6 @@ static void ride_ratings_begin_proximity_loop();
 static void ride_ratings_calculate(rct_ride *ride);
 static void ride_ratings_calculate_value(rct_ride *ride);
 static void ride_ratings_score_close_proximity(rct_map_element *mapElement);
-static void ride_ratings_check_valid_configuration(int rideIndex);
 
 /**
  *
@@ -241,7 +240,6 @@ static void ride_ratings_update_state_3()
 	}
 
 	ride_ratings_calculate(ride);
-	ride_ratings_check_valid_configuration(_rideRatingsCurrentRide);
 	ride_ratings_calculate_value(ride);
 
 	window_invalidate_by_number(WC_RIDE, _rideRatingsCurrentRide);
@@ -615,52 +613,6 @@ static void ride_ratings_score_close_proximity(rct_map_element *inputMapElement)
 		RCT2_GLOBAL(0x0138B5CC, uint16)++;
 		break;
 	}
-}
-
-/**
- *
- *  rct2: 0x00655F64
- */
-static void ride_ratings_check_valid_configuration(int rideIndex)
-{
-	rct_ride *ride = GET_RIDE(rideIndex);
-
-	// Check if launch speed is valid
-	switch (ride->mode) {
-	case RIDE_MODE_POWERED_LAUNCH_PASSTROUGH:
-	case RIDE_MODE_UPWARD_LAUNCH:
-	case RIDE_MODE_LIM_POWERED_LAUNCH:
-	case RIDE_MODE_POWERED_LAUNCH:
-	case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
-		if (ride->launch_speed > RCT2_GLOBAL(0x0097CF40 + (ride->type * 8) + 5, uint8)) {
-			ride->unreliability_factor = 255;
-			ride->reliability /= 8;
-		}
-		break;
-	}
-
-	// Check if number of vehicles is valid
-	ride_update_max_vehicles(rideIndex);
-	if (ride->num_vehicles > ride->max_trains) {
-		ride->unreliability_factor = 255;
-		ride->reliability /= 8;
-	}
-
-	// Check if ride entry is valid
-	uint8 *availableRideEntries = (uint8*)0x009E32F8;
-	for (int i = 0; i < ride->type; i++) {
-		while (*availableRideEntries != 255) availableRideEntries++;
-		*availableRideEntries++;
-	}
-
-	do {
-		if (ride->subtype == *availableRideEntries) {
-			return;
-		}
-	} while (*++availableRideEntries != 255);
-
-	ride->unreliability_factor = 255;
-	ride->reliability /= 8;
 }
 
 static void ride_ratings_calculate(rct_ride *ride)
