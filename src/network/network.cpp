@@ -439,6 +439,11 @@ void Network::Update()
 			}
 		}
 	}
+
+	if (!CheckSRAND(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32), RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32))) {
+		window_network_status_open("Network desync detected");
+		Close();
+	}
 }
 
 NetworkPlayer* Network::GetPlayerByID(int id) {
@@ -930,10 +935,6 @@ int network_begin_server(int port)
 void network_update()
 {
 	gNetwork.Update();
-	if (!gNetwork.CheckSRAND(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32), RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32))) {
-		window_network_status_open("Network desync detected");
-		gNetwork.Close();
-	}
 }
 
 int network_get_mode()
