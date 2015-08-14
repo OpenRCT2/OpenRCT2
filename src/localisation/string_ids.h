@@ -2030,9 +2030,11 @@ enum {
 	STR_DEBUG_DROPDOWN_INVENTIONS_LIST = 5491,
 	STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS = 5492,
 
-	STR_PLAYER_LIST = 6002,
-	STR_PLAYER = 6003,
-	STR_PING = 6004,
+	STR_SEND_MESSAGE = 5493,
+	STR_TYPE_THE_MESSAGE_YOU_WOULD_LIKE_TO_SEND = 5494,
+	STR_PLAYER_LIST = 5495,
+	STR_PLAYER = 5496,
+	STR_PING = 5497,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

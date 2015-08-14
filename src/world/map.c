@@ -1389,7 +1389,7 @@ restart_from_beginning:
 				int ebx = flags;
 				int ecx = y * 32;
 				int edx = mapElement->base_height;
-				int edi, ebp; 
+				int edi = 0, ebp = 0;
 				cost = game_do_command(eax, ebx, ecx, edx, GAME_COMMAND_REMOVE_PATH, edi, ebp);
 
 				if (cost == MONEY32_UNDEFINED)
@@ -1405,7 +1405,7 @@ restart_from_beginning:
 				int ebx = (mapElement->type << 8) | flags;
 				int ecx = y * 32;
 				int edx = (mapElement->properties.scenery.type << 8) | (mapElement->base_height);
-				int edi, ebp; 
+				int edi = 0, ebp = 0;
 				cost = game_do_command(eax, ebx, ecx, edx, GAME_COMMAND_REMOVE_SCENERY, edi, ebp);
 
 				if (cost == MONEY32_UNDEFINED)
@@ -1422,7 +1422,7 @@ restart_from_beginning:
 				int ebx = flags;
 				int ecx = y * 32;
 				int edx = (mapElement->base_height << 8) | (mapElement->type & MAP_ELEMENT_DIRECTION_MASK);
-				int edi, ebp; 
+				int edi = 0, ebp = 0;
 				cost = game_do_command(eax, ebx, ecx, edx, GAME_COMMAND_REMOVE_FENCE, edi, ebp);
 
 				if (cost == MONEY32_UNDEFINED)
@@ -1439,7 +1439,7 @@ restart_from_beginning:
 				int ebx = flags | ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) << 8);
 				int ecx = y * 32;
 				int edx = mapElement->base_height | ((mapElement->properties.scenerymultiple.type >> 10) << 8);
-				int edi, ebp;
+				int edi = 0, ebp = 0;
 				cost = game_do_command(eax, ebx, ecx, edx, GAME_COMMAND_REMOVE_LARGE_SCENERY, edi, ebp);
 
 				if (cost == MONEY32_UNDEFINED)

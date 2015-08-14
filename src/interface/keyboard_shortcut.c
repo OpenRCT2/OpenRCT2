@@ -540,11 +540,11 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_increase_game_speed,
 	shortcut_open_cheat_window,
 	shortcut_remove_top_bottom_toolbar_toggle,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	shortcut_open_chat_window,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
 };
 
 #pragma endregion

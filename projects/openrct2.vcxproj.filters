@@ -498,13 +498,6 @@
     <ClCompile Include="..\src\localisation\convert.c">
       <Filter>Source\Localisation</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\network\network.c">
-    <ClCompile Include="..\src\network\network.cpp">
-      <Filter>Source\Network</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\windows\network.c">
-      <Filter>Source\Windows</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\drawing\scrolling_text.c">
       <Filter>Source\Drawing</Filter>
     </ClCompile>
@@ -513,6 +506,18 @@
     </ClCompile>
     <ClCompile Include="..\src\localisation\utf8.c">
       <Filter>Source\Localisation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\network\network.cpp">
+      <Filter>Source\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\network_status.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\player_list.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interface\chat.c">
+      <Filter>Source\Interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -749,6 +754,9 @@
     </ClInclude>
     <ClInclude Include="..\src\network\network.h">
       <Filter>Source\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\interface\chat.h">
+      <Filter>Source\Interface</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
