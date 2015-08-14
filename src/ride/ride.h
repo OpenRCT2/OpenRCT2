@@ -858,7 +858,7 @@ enum {
 #define STATION_DEPART_MASK (~STATION_DEPART_FLAG)
 
 // rct2: 0x009ACFA4
-rct_ride_type **gRideTypeList;
+extern rct_ride_type **gRideTypeList;
 
 // rct2: 0x013628F8
 extern rct_ride* g_ride_list;
@@ -960,6 +960,7 @@ void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 int ride_get_refund_price(int ride_id);
 void game_command_create_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_callback_ride_construct_new(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
 void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);

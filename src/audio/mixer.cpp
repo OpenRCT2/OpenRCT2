@@ -780,6 +780,9 @@ void Mixer_Init(const char* device)
 
 void* Mixer_Play_Effect(int id, int loop, int volume, float pan, double rate, int deleteondone)
 {
+	if (!gConfigSound.sound) {
+		return 0;
+	}
 	if (id >= countof(gMixer.css1sources)) {
 		return 0;
 	}
@@ -842,6 +845,9 @@ void Mixer_Channel_SetGroup(void* channel, int group)
 
 void* Mixer_Play_Music(int pathid, int loop, int streaming)
 {
+	if (!gConfigSound.sound) {
+		return 0;
+	}
 	if (streaming) {
 		const char* filename = get_file_path(pathid);
 

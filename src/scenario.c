@@ -979,6 +979,72 @@ int scenario_save(SDL_RWops* rw, int flags)
 	return 1;
 }
 
+// Save game state without modifying any of the state for multiplayer
+int scenario_save_network(SDL_RWops* rw)
+{
+	rct_window *w;
+	rct_viewport *viewport;
+	int viewX, viewY, viewZoom, viewRotation;
+
+	/*map_reorganise_elements();
+	reset_0x69EBE4();
+	sprite_clear_all_unused();
+	sub_677552();
+	sub_674BCF();*/
+
+	// Set saved view
+	w = window_get_main();
+	if (w != NULL) {
+		viewport = w->viewport;
+
+		viewX = viewport->view_width / 2 + viewport->view_x;
+		viewY = viewport->view_height / 2 + viewport->view_y;
+		viewZoom = viewport->zoom;
+		viewRotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+	} else {
+		viewX = 0;
+		viewY = 0;
+		viewZoom = 0;
+		viewRotation = 0;
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, uint16) = viewX;
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, uint16) = viewY;
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) = viewZoom | (viewRotation << 8);
+
+	// Prepare S6
+	rct_s6_data *s6 = malloc(sizeof(rct_s6_data));
+	s6->header.type = S6_TYPE_SAVEDGAME;
+	s6->header.num_packed_objects = scenario_get_num_packed_objects_to_write();
+	s6->header.version = S6_RCT2_VERSION;
+	s6->header.magic_number = S6_MAGIC_NUMBER;
+
+	memcpy(&s6->info, (rct_s6_info*)0x0141F570, sizeof(rct_s6_info));
+
+	for (int i = 0; i < 721; i++) {
+		uint32 chunkPtr = RCT2_ADDRESS(0x009ACFA4, uint32)[i];
+		rct_object_entry_extended *entry = &(RCT2_ADDRESS(0x00F3F03C, rct_object_entry_extended)[i]);
+
+		if (RCT2_ADDRESS(0x009ACFA4, uint32)[i] == 0xFFFFFFFF) {
+			memset(&s6->objects[i], 0xFF, sizeof(rct_object_entry));
+		} else {
+			s6->objects[i] = *((rct_object_entry*)entry);
+		}
+	}
+
+	memcpy(&s6->elapsed_months, (void*)0x00F663A8, 16);
+	memcpy(s6->map_elements, (void*)0x00F663B8, 0x180000);
+	memcpy(&s6->dword_010E63B8, (void*)0x010E63B8, 0x2E8570);
+
+	scenario_fix_ghosts(s6);
+	scenario_save_s6(rw, s6);
+
+	free(s6);
+
+	gfx_invalidate_screen();
+	return 1;
+}
+
 bool scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6)
 {
 	char *buffer;

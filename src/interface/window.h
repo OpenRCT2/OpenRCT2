@@ -446,12 +446,14 @@ enum {
 	WC_CHANGELOG = 121,
 	WC_TITLE_EDITOR = 122,
 	WC_TITLE_COMMAND_EDITOR = 123,
+	WC_CHAT_HOST = 124,
+	WC_PLAYER_LIST = 125,
+	WC_NETWORK_STATUS = 126,
 
 	// Only used for colour schemes
 	WC_STAFF = 220,
 	WC_EDITOR_TRACK_BOTTOM_TOOLBAR = 221,
 	WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR = 222,
-
 } WINDOW_CLASS;
 
 enum PROMPT_MODE {
@@ -611,6 +613,8 @@ void window_banner_open(rct_windownumber number);
 void window_sign_open(rct_windownumber number);
 void window_sign_small_open(rct_windownumber number);
 void window_cheats_open();
+void window_player_list_open();
+void window_network_status_open(const char* text);
 
 void window_research_open();
 void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dpi, int baseWidgetIndex);

@@ -32,6 +32,7 @@
 #include "../management/finance.h"
 #include "../management/marketing.h"
 #include "../management/news_item.h"
+#include "../network/network.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
 #include "../rct1.h"
@@ -812,7 +813,7 @@ int ride_create_ride(ride_list_item listItem)
 	edx = *((uint16*)&listItem);
 	eax = 0;
 	ecx = 0;
-	ebx = 1;
+	ebx = GAME_COMMAND_FLAG_APPLY;
 	edi = 0;
 	esi = 0;
 
@@ -831,9 +832,12 @@ void ride_construct_new(ride_list_item listItem)
 {
 	int rideIndex;
 
+	game_command_callback = game_command_callback_ride_construct_new;
 	rideIndex = ride_create_ride(listItem);
-	if (rideIndex != -1)
-		ride_construct(rideIndex);
+
+	// moved to game_command_callback_ride_construct_new:
+	/*if (rideIndex != -1)
+		ride_construct(rideIndex);*/
 }
 
 /**
@@ -5070,6 +5074,13 @@ foundRideEntry:
 void game_command_create_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
 	*ebx = ride_create(*edx & 0xFF, (*edx >> 8) & 0xFF, *ebx & 0xFF, edi);
+}
+
+void game_command_callback_ride_construct_new(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	int rideIndex = edi;
+	if (rideIndex != -1)
+		ride_construct(rideIndex);
 }
 
 /**

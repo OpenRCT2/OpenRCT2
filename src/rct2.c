@@ -29,6 +29,7 @@
 #include "drawing/drawing.h"
 #include "editor.h"
 #include "game.h"
+#include "interface/chat.h"
 #include "interface/console.h"
 #include "interface/viewport.h"
 #include "intro.h"
@@ -74,7 +75,7 @@ int rct2_init()
 {
 	log_verbose("initialising game");
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) = 0;
 	RCT2_GLOBAL(0x009AC310, char*) = RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, char*);
 	get_system_time();
 	srand((unsigned int)time(0));
@@ -228,6 +229,7 @@ void rct2_draw()
 	update_rain_animation();
 	update_palette_effects();
 
+	chat_draw();
 	console_draw(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo));
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0) {
@@ -381,6 +383,7 @@ void rct2_update_2()
 	stop_completed_sounds(); // removes other sounds that are no longer playing in directsound
 
 	twitch_update();
+	chat_update();
 	console_update();
 }
 

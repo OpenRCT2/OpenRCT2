@@ -65,6 +65,7 @@ enum {
 	WIDX_FINANCES,
 	WIDX_RESEARCH,
 	WIDX_NEWS,
+	WIDX_NETWORK,
 
 	WIDX_SEPARATOR,
 };
@@ -105,6 +106,10 @@ typedef enum {
 	DDIDX_SCENARIO_OPTIONS = 4
 } TOP_TOOLBAR_DEBUG_DDIDX;
 
+typedef enum {
+	DDIDX_PLAYER_LIST = 0
+} TOP_TOOLBAR_NETWORK_DDIDX;
+
 enum {
 	DDIDX_CHEATS,
 	DDIDX_ENABLE_SANDBOX_MODE = 2,
@@ -129,6 +134,7 @@ static const int left_aligned_widgets_order[] = {
 	WIDX_ROTATE,
 	WIDX_VIEW_MENU,
 	WIDX_MAP,
+	WIDX_NETWORK,
 };
 
 // from right to left
@@ -179,6 +185,7 @@ static rct_widget window_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B, 0,						27,		0x20000000 | 0x15F9,						3235 },								// Finances
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						2275 },								// Research
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_SHOW_RECENT_MESSAGES_TIP },		// News
+	{ WWT_TRNBTN,	1,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						2276 },								// Network
 	
 	{ WWT_EMPTY,	0,	0,		10-1,	0,						0,		0xFFFFFFFF,									STR_NONE },							// Artificial widget separator
 	{ WIDGETS_END },
@@ -234,6 +241,8 @@ void top_toolbar_init_rotate_menu(rct_window *window, rct_widget *widget);
 void top_toolbar_rotate_menu_dropdown(short dropdownIndex);
 void top_toolbar_init_debug_menu(rct_window *window, rct_widget *widget);
 void top_toolbar_debug_menu_dropdown(short dropdownIndex);
+void top_toolbar_init_network_menu(rct_window *window, rct_widget *widget);
+void top_toolbar_network_menu_dropdown(short dropdownIndex);
 
 void toggle_footpath_window();
 void toggle_land_window(rct_window *topToolbar, int widgetIndex);
@@ -461,6 +470,9 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 	case WIDX_DEBUG:
 		top_toolbar_init_debug_menu(w, widget);
 		break;
+	case WIDX_NETWORK:
+		top_toolbar_init_network_menu(w, widget);
+		break;
 	}
 }
 
@@ -560,6 +572,9 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 	case WIDX_DEBUG:
 		top_toolbar_debug_menu_dropdown(dropdownIndex);
 		break;
+	case WIDX_NETWORK:
+		top_toolbar_network_menu_dropdown(dropdownIndex);
+		break;
 	}
 }
 
@@ -598,6 +613,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 	window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_DEBUG].type = gConfigGeneral.debugging_tools ? WWT_TRNBTN : WWT_EMPTY;
 	window_top_toolbar_widgets[WIDX_NEWS].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_TRNBTN;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
@@ -645,7 +661,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 	}
 
 	enabledWidgets = 0;
-	for (i = WIDX_PAUSE; i <= WIDX_NEWS; i++)
+	for (i = WIDX_PAUSE; i <= WIDX_NETWORK; i++)
 		if (window_top_toolbar_widgets[i].type != WWT_EMPTY)
 			enabledWidgets |= (1 << i);
 	w->enabled_widgets = enabledWidgets;
@@ -1637,13 +1653,11 @@ void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
 	if (!state_changed)
 		return;
 
-	money32 cost = map_clear_scenery(
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16),
-		0
-	);
+	int eax = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16);
+	int ecx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16);
+	int edi = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16);
+	int ebp = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16);
+	money32 cost = game_do_command(eax, 0, ecx, 0, GAME_COMMAND_CLEAR_SCENERY, edi, ebp);
 
 	if (RCT2_GLOBAL(0x00F1AD62, money32) != cost){
 		RCT2_GLOBAL(0x00F1AD62, money32) = cost;
@@ -2472,7 +2486,7 @@ static void window_top_toolbar_tool_down(rct_window* w, int widgetIndex, int x, 
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 			1,
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
-			0,
+			(gClearSmallScenery | gClearLargeScenery << 1 | gClearFootpath << 2),
 			GAME_COMMAND_CLEAR_SCENERY,
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
@@ -2681,7 +2695,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, int widgetIndex, int x, 
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 			1,
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
-			0,
+			(gClearSmallScenery | gClearLargeScenery << 1 | gClearFootpath << 2),
 			GAME_COMMAND_CLEAR_SCENERY,
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
@@ -2862,6 +2876,21 @@ void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget) {
 	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
 }
 
+void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget) {
+	gDropdownItemsFormat[0] = STR_PLAYER_LIST;
+
+	window_dropdown_show_text(
+		w->x + widget->left,
+		w->y + widget->top,
+		widget->bottom - widget->top + 1,
+		w->colours[1] | 0x80,
+		0,
+		1
+	);
+
+	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
+}
+
 void top_toolbar_debug_menu_dropdown(short dropdownIndex) {
 	if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
 	rct_window* w = window_get_main();
@@ -2882,6 +2911,18 @@ void top_toolbar_debug_menu_dropdown(short dropdownIndex) {
 			break;
 		case DDIDX_SCENARIO_OPTIONS:
 			window_editor_scenario_options_open();
+			break;
+		}
+	}
+}
+
+void top_toolbar_network_menu_dropdown(short dropdownIndex) {
+	if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+	rct_window* w = window_get_main();
+	if (w) {
+		switch (dropdownIndex) {
+		case DDIDX_PLAYER_LIST:
+			window_player_list_open();
 			break;
 		}
 	}

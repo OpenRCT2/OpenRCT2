@@ -26,10 +26,12 @@
 #include "editor.h"
 #include "game.h"
 #include "hook.h"
+#include "interface/chat.h"
 #include "interface/window.h"
 #include "interface/viewport.h"
 #include "localisation/localisation.h"
 #include "network/http.h"
+#include "network/network.h"
 #include "openrct2.h"
 #include "platform/platform.h"
 #include "ride/ride.h"
@@ -168,10 +170,10 @@ bool openrct2_initialise()
 	config_save_default();
 
 	// TODO add configuration option to allow multiple instances
-	if (!gOpenRCT2Headless && !platform_lock_single_instance()) {
-		log_fatal("OpenRCT2 is already running.");
-		return false;
-	}
+	// if (!gOpenRCT2Headless && !platform_lock_single_instance()) {
+	// 	log_fatal("OpenRCT2 is already running.");
+	// 	return false;
+	// }
 
 	get_system_info();
 	if (!gOpenRCT2Headless) {
@@ -199,6 +201,8 @@ bool openrct2_initialise()
 
 	if (!rct2_init())
 		return false;
+
+	chat_init();
 
 	openrct2_copy_original_user_files_over();
 
@@ -248,7 +252,14 @@ void openrct2_launch()
 				editor_load_landscape(gOpenRCT2StartupActionPath);
 			}
 			break;
-    	}
+		}
+
+		if (gNetworkStart == NETWORK_MODE_CLIENT) {
+			network_begin_client(gNetworkStartHost, gNetworkStartPort);
+		} else if (gNetworkStart == NETWORK_MODE_SERVER) {
+			network_begin_server(gNetworkStartPort);
+		}
+
 		openrct2_loop();
 	}
 	openrct2_dispose();
@@ -259,6 +270,7 @@ void openrct2_launch()
 
 void openrct2_dispose()
 {
+	network_close();
 	http_dispose();
 	language_close_all();
 	platform_free();
@@ -360,6 +372,7 @@ static void openrct2_loop()
 				invalidate_sprite(&g_sprite_list[i]);
 				sprite_move(_spritelocations2[i].x, _spritelocations2[i].y, _spritelocations2[i].z, &g_sprite_list[i]);
 			}
+			network_update();
 		} else {
 			uncapTick = 0;
 			currentTick = SDL_GetTicks();

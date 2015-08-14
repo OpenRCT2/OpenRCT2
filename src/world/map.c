@@ -1370,7 +1370,7 @@ void game_command_set_banner_colour(int* eax, int* ebx, int* ecx, int* edx, int*
  *
  *  rct2: 0x0068DFE4
  */
-money32 map_clear_scenery_from_tile(int x, int y, int flags)
+money32 map_clear_scenery_from_tile(int x, int y, int clear, int flags)
 {
 	int type;
 	money32 cost, totalCost;
@@ -1384,8 +1384,14 @@ restart_from_beginning:
 		type = map_element_get_type(mapElement);
 		switch (type) {
 		case MAP_ELEMENT_TYPE_PATH:
-			if (gClearFootpath) {
-				cost = footpath_remove_real(x * 32, y * 32, mapElement->base_height, flags);
+			if (clear & (1 << 2)) {
+				int eax = x * 32;
+				int ebx = flags;
+				int ecx = y * 32;
+				int edx = mapElement->base_height;
+				int edi, ebp; 
+				cost = game_do_command(eax, ebx, ecx, edx, GAME_COMMAND_REMOVE_PATH, edi, ebp);
+
 				if (cost == MONEY32_UNDEFINED)
 					return MONEY32_UNDEFINED;
 
@@ -1394,14 +1400,13 @@ restart_from_beginning:
 					goto restart_from_beginning;
 			} break;
 		case MAP_ELEMENT_TYPE_SCENERY:
-			if (gClearSmallScenery) {
+			if (clear & (1 << 0)) {
 				int eax = x * 32;
 				int ebx = (mapElement->type << 8) | flags;
 				int ecx = y * 32;
 				int edx = (mapElement->properties.scenery.type << 8) | (mapElement->base_height);
-				int esi, edi, ebp; 
-				game_command_remove_scenery(&eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-				cost = ebx;
+				int edi, ebp; 
+				cost = game_do_command(eax, ebx, ecx, edx, GAME_COMMAND_REMOVE_SCENERY, edi, ebp);
 
 				if (cost == MONEY32_UNDEFINED)
 					return MONEY32_UNDEFINED;
@@ -1412,14 +1417,13 @@ restart_from_beginning:
 
 			} break;
 		case MAP_ELEMENT_TYPE_FENCE:
-			if (gClearSmallScenery) {
+			if (clear & (1 << 0)) {
 				int eax = x * 32;
 				int ebx = flags;
 				int ecx = y * 32;
 				int edx = (mapElement->base_height << 8) | (mapElement->type & MAP_ELEMENT_DIRECTION_MASK);
-				int esi, edi, ebp; 
-				game_command_remove_fence(&eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-				cost = ebx;
+				int edi, ebp; 
+				cost = game_do_command(eax, ebx, ecx, edx, GAME_COMMAND_REMOVE_FENCE, edi, ebp);
 
 				if (cost == MONEY32_UNDEFINED)
 					return MONEY32_UNDEFINED;
@@ -1430,14 +1434,13 @@ restart_from_beginning:
 
 			} break;
 		case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
-			if (gClearLargeScenery) {
+			if (clear & (1 << 1)) {
 				int eax = x * 32;
 				int ebx = flags | ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) << 8);
 				int ecx = y * 32;
 				int edx = mapElement->base_height | ((mapElement->properties.scenerymultiple.type >> 10) << 8);
-				int esi, edi, ebp;
-				game_command_remove_large_scenery(&eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-				cost = ebx;
+				int edi, ebp;
+				cost = game_do_command(eax, ebx, ecx, edx, GAME_COMMAND_REMOVE_LARGE_SCENERY, edi, ebp);
 
 				if (cost == MONEY32_UNDEFINED)
 					return MONEY32_UNDEFINED;
@@ -1454,7 +1457,7 @@ restart_from_beginning:
 	return totalCost;
 }
 
-money32 map_clear_scenery(int x0, int y0, int x1, int y1, int flags)
+money32 map_clear_scenery(int x0, int y0, int x1, int y1, int clear, int flags)
 {
 	int x, y, z;
 	money32 totalCost, cost;
@@ -1479,7 +1482,7 @@ money32 map_clear_scenery(int x0, int y0, int x1, int y1, int flags)
 	for (y = y0; y <= y1; y += 32) {
 		for (x = x0; x <= x1; x += 32) {
 			if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode || map_is_location_owned_or_has_rights(x, y)) {
-				cost = map_clear_scenery_from_tile(x / 32, y / 32, flags);
+				cost = map_clear_scenery_from_tile(x / 32, y / 32, clear, flags);
 				if (cost != MONEY32_UNDEFINED) {
 					noValidTiles = false;
 					totalCost += cost;
@@ -1504,6 +1507,7 @@ void game_command_clear_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 		(sint16)(*ecx & 0xFFFF),
 		(sint16)(*edi & 0xFFFF),
 		(sint16)(*ebp & 0xFFFF),
+		*edx,
 		*ebx & 0xFF
 	);
 }

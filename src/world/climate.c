@@ -168,7 +168,7 @@ void climate_update()
 
 		RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16)--;
 
-	} else if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, sint32) & 0x7F)) {
+	} else if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
 		
 		if (temperature == target_temperature) {
 			if (cur_gloom == next_gloom) {
