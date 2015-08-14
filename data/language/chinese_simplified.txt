@@ -785,65 +785,65 @@ STR_0775    :未命名游乐园{POP16}{POP16}
 STR_0776    :未命名游乐园{POP16}{POP16}
 STR_0777    :未命名游乐园{POP16}{POP16}
 STR_0778    :Sign
-STR_0779    :1st
-STR_0780    :2nd
-STR_0781    :3rd
-STR_0782    :4th
-STR_0783    :5th
-STR_0784    :6th
-STR_0785    :7th
-STR_0786    :8th
-STR_0787    :9th
-STR_0788    :10th
-STR_0789    :11th
-STR_0790    :12th
-STR_0791    :13th
-STR_0792    :14th
-STR_0793    :15th
-STR_0794    :16th
-STR_0795    :17th
-STR_0796    :18th
-STR_0797    :19th
-STR_0798    :20th
-STR_0799    :21st
-STR_0800    :22nd
-STR_0801    :23rd
-STR_0802    :24th
-STR_0803    :25th
-STR_0804    :26th
-STR_0805    :27th
-STR_0806    :28th
-STR_0807    :29th
-STR_0808    :30th
-STR_0809    :31st
-STR_0810    :Jan
-STR_0811    :Feb
-STR_0812    :Mar
-STR_0813    :Apr
-STR_0814    :May
-STR_0815    :Jun
-STR_0816    :Jul
-STR_0817    :Aug
-STR_0818    :Sep
-STR_0819    :Oct
-STR_0820    :Nov
-STR_0821    :Dec
-STR_0822    :Unable to access graphic data file
-STR_0823    :Missing or inaccessible data file
+STR_0779    :1日
+STR_0780    :2日
+STR_0781    :3日
+STR_0782    :4日
+STR_0783    :5日
+STR_0784    :6日
+STR_0785    :7日
+STR_0786    :8日
+STR_0787    :9日
+STR_0788    :10日
+STR_0789    :11日
+STR_0790    :12日
+STR_0791    :13日
+STR_0792    :14日
+STR_0793    :15日
+STR_0794    :16日
+STR_0795    :17日
+STR_0796    :18日
+STR_0797    :19日
+STR_0798    :20日
+STR_0799    :21日
+STR_0800    :22日
+STR_0801    :23日
+STR_0802    :24日
+STR_0803    :25日
+STR_0804    :26日
+STR_0805    :27日
+STR_0806    :28日
+STR_0807    :29日
+STR_0808    :30日
+STR_0809    :31日
+STR_0810    :1月
+STR_0811    :2月
+STR_0812    :3月
+STR_0813    :4月
+STR_0814    :5月
+STR_0815    :6月
+STR_0816    :7月
+STR_0817    :8月
+STR_0818    :9月
+STR_0819    :10月
+STR_0820    :11月
+STR_0821    :12月
+STR_0822    :无法访问图形数据
+STR_0823    :数据文件丢失或不可访问
 STR_0824    :{BLACK}{CROSS}
-STR_0825    :Chosen name in use already
-STR_0826    :Too many names defined
-STR_0827    :Not enough cash - requires {CURRENCY2DP}
-STR_0828    :{SMALLFONT}{BLACK}Close window
-STR_0829    :{SMALLFONT}{BLACK}Window title - Drag this to move window
-STR_0830    :{SMALLFONT}{BLACK}Zoom view in
-STR_0831    :{SMALLFONT}{BLACK}Zoom view out
-STR_0832    :{SMALLFONT}{BLACK}Rotate view 90{DEGREE} clockwise
-STR_0833    :{SMALLFONT}{BLACK}Pause game
-STR_0834    :{SMALLFONT}{BLACK}Disk and game options
-STR_0835    :Game initialization failed
-STR_0836    :Unable to start game in a minimized state
-STR_0837    :Unable to initialize graphics system
+STR_0825    :该名称已被使用
+STR_0826    :过多名称被定义
+STR_0827    :现金不足 - 需要 {CURRENCY2DP}
+STR_0828    :{SMALLFONT}{BLACK}关闭窗口
+STR_0829    :{SMALLFONT}{BLACK}窗口标题 - 拖拽来移动窗口
+STR_0830    :{SMALLFONT}{BLACK}放大
+STR_0831    :{SMALLFONT}{BLACK}缩小
+STR_0832    :{SMALLFONT}{BLACK}顺时针旋转90{DEGREE}
+STR_0833    :{SMALLFONT}{BLACK}暂停游戏
+STR_0834    :{SMALLFONT}{BLACK}磁盘和游戏选项
+STR_0835    :游戏初始化失败
+STR_0836    :最小化状态下无法启动游戏
+STR_0837    :无法初始化图形系统
 STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
@@ -854,16 +854,16 @@ STR_0843    :<not used anymore>
 STR_0844    :<not used anymore>
 STR_0845    :<not used anymore>
 STR_0846    :<not used anymore>
-STR_0847    :About 'OpenRCT2'
+STR_0847    :关于'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
-STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
+STR_0849    :{WINDOW_COLOUR_2}版本 2.01.028
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, all rights reserved
 STR_0851    :{WINDOW_COLOUR_2}Designed and programmed by Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Graphics by Simon Foster
 STR_0853    :{WINDOW_COLOUR_2}Sound and music by Allister Brimble
 STR_0854    :{WINDOW_COLOUR_2}Additional sounds recorded by David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
-STR_0856    :{WINDOW_COLOUR_2}Thanks to:
+STR_0856    :{WINDOW_COLOUR_2}致谢:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
 STR_0858    :{WINDOW_COLOUR_2}
 STR_0859    :{WINDOW_COLOUR_2}
@@ -884,31 +884,31 @@ STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}{DOWN}
-STR_0877    :Too low !
-STR_0878    :Too high !
-STR_0879    :Can't lower land here...
-STR_0880    :Can't raise land here...
-STR_0881    :Object in the way
-STR_0882    :Load Game
-STR_0883    :Save Game
-STR_0884    :Load Landscape
-STR_0885    :Save Landscape
-STR_0886    :Quit Game
-STR_0887    :Quit Scenario Editor
-STR_0888    :Quit Roller Coaster Designer
-STR_0889    :Quit Track Designs Manager
+STR_0877    :太低!
+STR_0878    :太高!
+STR_0879    :不能降低土地...
+STR_0880    :不能抬升土地...
+STR_0881    :有物体挡住去路
+STR_0882    :载入游戏
+STR_0883    :保存游戏
+STR_0884    :载入地形
+STR_0885    :保存地形
+STR_0886    :退出游戏
+STR_0887    :退出场景编辑器
+STR_0888    :退出过山车设计工具
+STR_0889    :退出轨道设计管理工具
 STR_0890    :SCR{COMMA16}.BMP
-STR_0891    :Screenshot
-STR_0892    :Screenshot saved to disk as '{STRINGID}'
-STR_0893    :Screenshot failed !
+STR_0891    :截图
+STR_0892    :截图 '{STRINGID}' 已保存
+STR_0893    :截图失败!
 STR_0894    :Landscape data area full !
 STR_0895    :Can't build partly above and partly below ground
 STR_0896    :{POP16}{POP16}{STRINGID} Construction
-STR_0897    :Direction
-STR_0898    :{SMALLFONT}{BLACK}Left-hand curve
-STR_0899    :{SMALLFONT}{BLACK}Right-hand curve
-STR_0900    :{SMALLFONT}{BLACK}Left-hand curve (small radius)
-STR_0901    :{SMALLFONT}{BLACK}Right-hand curve (small radius)
+STR_0897    :方向
+STR_0898    :{SMALLFONT}{BLACK}左转
+STR_0899    :{SMALLFONT}{BLACK}右转
+STR_0900    :{SMALLFONT}{BLACK}左转 (小弧度)
+STR_0901    :{SMALLFONT}{BLACK}右转 (小弧度)
 STR_0902    :{SMALLFONT}{BLACK}Left-hand curve (very small radius)
 STR_0903    :{SMALLFONT}{BLACK}Right-hand curve (very small radius)
 STR_0904    :{SMALLFONT}{BLACK}Left-hand curve (large radius)

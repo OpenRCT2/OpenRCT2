@@ -886,8 +886,8 @@ STR_0880    :不能升高此地...
 STR_0881    :物件擋於此地
 STR_0882    :載入遊戲
 STR_0883    :儲存遊戲
-STR_0884    :載入地型
-STR_0885    :儲存地型
+STR_0884    :載入地形
+STR_0885    :儲存地形
 STR_0886    :離開遊戲
 STR_0887    :離開劇情編輯工具
 STR_0888    :離開雲霄飛車設計工具
@@ -896,7 +896,7 @@ STR_0890    :SCR{COMMA16}.BMP
 STR_0891    :截圖
 STR_0892    :截圖'{STRINGID}'已儲存到硬碟中
 STR_0893    :截圖失敗!
-STR_0894    :地型資料的範圍已滿!
+STR_0894    :地形資料的範圍已滿!
 STR_0895    :不能建造在一半露天一半地底的地勢中
 STR_0896    :{POP16}{POP16}{STRINGID} 建造
 STR_0897    :方向
@@ -955,7 +955,7 @@ STR_0949    :離開遊戲之前儲存此遊戲?
 STR_0950    :載入遊戲
 STR_0951    :離開遊戲
 STR_0952    :離開遊戲
-STR_0953    :載入地型
+STR_0953    :載入地形
 STR_0954    :
 STR_0955    :{SMALLFONT}{BLACK}選擇此軌道的座位旋轉角度
 STR_0956    :-180{DEGREE}
@@ -1039,19 +1039,19 @@ STR_1033    :只能建造此於地上!
 STR_1034    :只能建造此於地面!
 STR_1035    :當地政府不允許建造高於樹木的物件!
 STR_1036    :載入遊戲
-STR_1037    :載入地型
+STR_1037    :載入地形
 STR_1038    :將存檔轉換成劇情
 STR_1039    :安裝新軌道設計
 STR_1040    :儲存遊戲
 STR_1041    :儲存劇情
-STR_1042    :儲存地型
-STR_1043    :RollerCoaster Tycoon 2 遊戲存檔
-STR_1044    :RollerCoaster Tycoon 2 劇情檔案
-STR_1045    :RollerCoaster Tycoon 2 地型檔案
-STR_1046    :RollerCoaster Tycoon 2 軌道設計檔案
+STR_1042    :儲存地形
+STR_1043    :OpenRCT2 遊戲存檔
+STR_1044    :OpenRCT2 劇情檔案
+STR_1045    :OpenRCT2 地形檔案
+STR_1046    :OpenRCT2 軌道設計檔案
 STR_1047    :儲存遊戲失敗!
 STR_1048    :儲存劇情失敗!
-STR_1049    :儲存地型失敗!
+STR_1049    :儲存地形失敗!
 STR_1050    :載入失敗...{NEWLINE}檔案中含有非法資料!
 STR_1051    :透明化支撐
 STR_1052    :透明化遊客
@@ -3109,7 +3109,7 @@ STR_3098    :不能更改鏈條坡道的鏈條速度...
 STR_3099    :{SMALLFONT}{BLACK}選擇顏色
 STR_3100    :{SMALLFONT}{BLACK}選擇第二顏色
 STR_3101    :{SMALLFONT}{BLACK}選擇第三顏色
-STR_3102    :{SMALLFONT}{BLACK}將地型的景物重新上色
+STR_3102    :{SMALLFONT}{BLACK}將地形的景物重新上色
 STR_3103    :不能重新上色這個物件...
 STR_3104    :{SMALLFONT}{BLACK}列出遊樂設施
 STR_3105    :{SMALLFONT}{BLACK}列出商店及攤販
@@ -3276,8 +3276,8 @@ STR_3265    :不能再減少這個選項!
 STR_3266    :{SMALLFONT}{BLACK}選擇這個樂園的收費策略
 STR_3267    :禁止移除樹木
 STR_3268    :{SMALLFONT}{BLACK}禁止移除高壯的樹木
-STR_3269    :禁止調整地型
-STR_3270    :{SMALLFONT}{BLACK}禁止對地型作任何調整
+STR_3269    :禁止調整地形
+STR_3270    :{SMALLFONT}{BLACK}禁止對地形作任何調整
 STR_3271    :禁止高空建造
 STR_3272    :{SMALLFONT}{BLACK}禁止任何高空發展
 STR_3273    :較高難度的樂園評價公式
@@ -3398,6 +3398,7 @@ STR_3387    :雲霄飛車建造教學
 STR_3388    :無法切換至已選擇的模式
 STR_3389    :無法選擇額外的景觀物件...
 STR_3390    :選取了太多物件
+# Start of tutorial strings. Not used at the moment, so not necessary to translate.
 STR_3391    :{SMALLFONT}{BLACK}這個就是我們的樂園 - 先瞧瞧周邊的環境吧...
 STR_3392    :{SMALLFONT}{BLACK}最簡單的方法就是按住滑鼠右鍵, 然後拖曳來移動檢視範圍...
 STR_3393    :{SMALLFONT}{BLACK}如果要觀看更多樂園的部份, 你可以按最上工具列中的縮小檢視圖標來縮小檢視...
@@ -3444,7 +3445,8 @@ STR_3433    :{SMALLFONT}{BLACK}最後, 我們要建造一些'區間制動器', �
 STR_3434    :{SMALLFONT}{BLACK}我們測試一下新的雲霄飛車, 看看它能不能運作吧!
 STR_3435    :{SMALLFONT}{BLACK}太好了 - 一切順利! 現在又要做一些熟悉的動作: 建造道路, 然後讓遊客乘坐這座嶄新的雲霄飛車...
 STR_3436    :{SMALLFONT}{BLACK}在它迎來第一個乘客的途中, 我們可以自訂化一下這座雲霄飛車...
-STR_3437    :{SMALLFONT}{BLACK}在地型中清理某些大範圍內的景物
+# End of tutorial strings
+STR_3437    :{SMALLFONT}{BLACK}在地形中清理某些大範圍內的景物
 STR_3438    :無法移除這裡所有的景物...
 STR_3439    :移除景物
 STR_3440    :頁1
@@ -3490,7 +3492,7 @@ STR_5150    :啟用除錯工具
 STR_5151    :,
 STR_5152    :.
 STR_5153    :編輯配色主題...
-STR_5154    :使用硬體顯示
+STR_5154    :使用硬體渲染
 STR_5155    :容許測試未建造好的軌道設計
 STR_5156    :{SMALLFONT}{BLACK}容許測試大部份軌道設計, 即使未建造好的也可以. 但不能適用於區域煞車模式
 STR_5157    :允許設置進入樂園及乘坐遊樂設施的價格

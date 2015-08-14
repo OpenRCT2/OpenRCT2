@@ -842,7 +842,7 @@ STR_0837    :Unable to initialise graphics system
 STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-# The follwing six strings were used for display resolutions, but have been replaced.
+# The following six strings were used for display resolutions, but have been replaced.
 STR_0841    :<not used anymore>
 STR_0842    :<not used anymore>
 STR_0843    :<not used anymore>
@@ -1696,7 +1696,7 @@ STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Cost: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Cost: {BLACK}from {CURRENCY}
 STR_1693    :{SMALLFONT}{BLACK}Visiteurs
-STR_1694    :{SMALLFONT}{BLACK}Staff
+STR_1694    :{SMALLFONT}{BLACK}Personnel
 STR_1695    :{SMALLFONT}{BLACK}Income and costs
 STR_1696    :{SMALLFONT}{BLACK}Customer information
 STR_1697    :Cannot place these on queue line area
@@ -2321,12 +2321,12 @@ STR_2313    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32} (approx.)
 STR_2314    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Cost: {BLACK}around {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Space required: {BLACK}{COMMA16} x {COMMA16} blocks
-STR_2317    :{WINDOW_COLOUR_2}Sound Quality:
-STR_2318    :Low
-STR_2319    :Medium
-STR_2320    :High
-STR_2321    :{WINDOW_COLOUR_2}Number of rides/attractions: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Staff: {BLACK}{COMMA16}
+STR_2317    :<not used anymore>
+STR_2318    :<not used anymore>
+STR_2319    :<not used anymore>
+STR_2320    :<not used anymore>
+STR_2321    :{WINDOW_COLOUR_2}Nombre d'attractions: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Personnel: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m{SQUARED}
 STR_2324    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}sq.ft.
 STR_2325    :{SMALLFONT}{BLACK}Buy land to extend park
@@ -2441,12 +2441,12 @@ STR_2433    :{BLACK}Vouchers for free {STRINGID}
 STR_2434    :{BLACK}Advertising campaign for {STRINGID}
 STR_2435    :{BLACK}Advertising campaign for {STRINGID}
 STR_2436    :1 semaine
-STR_2437    :2 semaines
-STR_2438    :3 semaines
-STR_2439    :4 semaines
-STR_2440    :5 semaines
-STR_2441    :6 semaines
-STR_2442    :{BLACK}({STRINGID} remaining)
+STR_2437    :<not used anymore>
+STR_2438    :<not used anymore>
+STR_2439    :<not used anymore>
+STR_2440    :<not used anymore>
+STR_2441    :<not used anymore>
+STR_2442    :<not used anymore>
 STR_2443    :{WINDOW_COLOUR_2}Cost per week: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Total cost: {BLACK}{CURRENCY2DP}
 STR_2445    :Commencer campagne marketing
@@ -2787,7 +2787,7 @@ STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 # End of new strings
 STR_2779    :Viewport #{COMMA16}
 STR_2780    :Extra viewport
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
+STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Change keyboard shortcut
@@ -2975,8 +2975,8 @@ STR_2965    :{WINDOW_COLOUR_2}
 STR_2966    :
 STR_2967    :
 STR_2968    :
-STR_2969    :Use of this product is subject to the terms of a license agreement
-STR_2970    :found in the product's {OPENQUOTES}ReadMe{ENDQUOTES} file and in the manual
+STR_2969    :<not used anymore>
+STR_2970    :<not used anymore>
 STR_2971    :Main colour scheme
 STR_2972    :Alternative colour scheme 1
 STR_2973    :Alternative colour scheme 2
@@ -3343,7 +3343,7 @@ STR_3333    :Export plug-in objects with saved games
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
 STR_3335    :Roller Coaster Designer - Select Ride Types & Vehicles
 STR_3336    :Track Designs Manager - Select Ride Type
-STR_3337    :Parc Six Flags
+STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Dispositions personnalisées
 STR_3339    :{BLACK}{COMMA16} design disponible, ou disposition personnalisée
 STR_3340    :{BLACK}{COMMA16} designs disponibles, ou dispositions personnalisées
@@ -3368,8 +3368,8 @@ STR_3358    :Impossible de supprimer le modèle du circuit...
 STR_3359    :{BLACK}Pas de modèle de circuit pour ce type
 STR_3360    :Attention !
 STR_3361    :Trop de modèles de circuit pour ce type - Certains ne seront pas listés.
-STR_3362    :Forcé mixage tampon logiciel
-STR_3363    :{SMALLFONT}{BLACK}Selectionnez cette option pour améliorer les performances si le jeu se met légèrement en pause slightly quand les sons démarrent ou de l'interférence est entendue
+STR_3362    :<not used anymore>
+STR_3363    :<not used anymore>
 STR_3364    :Avancé
 STR_3365    :{SMALLFONT}{BLACK}Autorise la sélection d'objets individuels du décor en plus des groupes de décor
 STR_3366    :{BLACK}= Attraction
@@ -3459,7 +3459,7 @@ STR_5120    :Finances
 STR_5121    :Research
 STR_5122    :Select rides by track type (like in RCT1)
 STR_5123    :Renouveler attr.
-STR_5124    :Pas de Six Flags
+STR_5124    :<not used anymore>
 STR_5125    :All destructable
 STR_5126    :Random title music
 STR_5127    :{SMALLFONT}{BLACK}Disable land elevation
@@ -3544,8 +3544,8 @@ STR_5203    :Attraction
 STR_5204    :Liste des attractions
 STR_5205    :Visiteur
 STR_5206    :Liste des visiteurs
-STR_5207    :Staff
-STR_5208    :Staff List
+STR_5207    :Personnel
+STR_5208    :Liste personnel
 STR_5209    :Banner
 STR_5210    :Object Selection
 STR_5211    :Invention List
@@ -3702,9 +3702,9 @@ STR_5361    :Give all guests:
 STR_5362    :{BLACK}Set all guests' preferred ride intensity to:
 STR_5363    :More than 1
 STR_5364    :Less than 15
-STR_5365    :{BLACK}Staff speed:
+STR_5365    :{BLACK}Vit. de personnel:
 STR_5366    :Normal
-STR_5367    :Fast
+STR_5367    :Rapide
 STR_5368    :Reset crash status
 STR_5369    :Park parameters...
 STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
@@ -3780,9 +3780,9 @@ STR_5439    :A wait command with at least 4 seconds is required with a restart c
 STR_5440    :Minimise fullscreen on focus loss
 STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type,{NEWLINE}so vehicles can be changed{NEWLINE}afterwards, like in RCT1.
 STR_5442    :Force park rating:
-STR_5443    :Speed{MOVE_X}{87}{STRINGID}
-STR_5444    :Speed:
-STR_5445    :Speed
+STR_5443    :Vitesse{MOVE_X}{87}{STRINGID}
+STR_5444    :Vitesse:
+STR_5445    :Vitesse
 STR_5446    :Get
 STR_5447    :Type {STRINGID}
 STR_5448    :Ride / Vehicle {STRINGID}
@@ -3803,7 +3803,7 @@ STR_5462    :{CURRENCY}
 STR_5463    :Goal: Have fun!
 STR_5464    :General
 STR_5465    :Climate
-STR_5466    :Staff
+STR_5466    :Personnel
 STR_5467    :ALT + 
 STR_5468    :Recent messages
 STR_5469    :Scroll map up
@@ -3812,9 +3812,21 @@ STR_5471    :Scroll map down
 STR_5472    :Scroll map right
 STR_5473    :Cycle day / night
 STR_5474    :Display text on banners in upper case
+STR_5475    :{COMMA16} semaines
 STR_5476    :Hardware
 STR_5477    :Map rendering
 STR_5478    :Controls
 STR_5479    :Toolbar
 STR_5480    :Show toolbar buttons for:
 STR_5481    :Thèmes
+STR_5482    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}1 minute
+STR_5483    :{BLACK}({COMMA16} weeks remaining)
+STR_5484    :{BLACK}({COMMA16} week remaining)
+STR_5485    :{SMALLFONT}{STRING}
+STR_5486    :{BLACK}{COMMA16}
+STR_5487    :{SMALLFONT}{BLACK}Show recent messages
+STR_5488    :No entrance
+STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
+STR_5490    :Disable audio on focus loss
+STR_5491    :Inventions list
+STR_5492    :Options scénario

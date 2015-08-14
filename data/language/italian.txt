@@ -3,97 +3,97 @@
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
-STR_0002    :Attrazione
-STR_0003    :Attrazione
+STR_0002    :Spiral Roller Coaster
+STR_0003    :Stand-up Roller Coaster
 STR_0004    :Attrazione oscillante
-STR_0005    :Attrazione
+STR_0005    :Inverted Roller Coaster
 STR_0006    :Ottovolante per giovanissimi
 STR_0007    :Ferrovia in miniatura
 STR_0008    :Monorotaia
 STR_0009    :Mini-attrazione sospesa
-STR_0010    :Attrazione
-STR_0011    :Attrazione
-STR_0012    :Attrazione
+STR_0010    :Boat Ride
+STR_0011    :Wooden Wild Mouse
+STR_0012    :Steeplechase
 STR_0013    :Attrazione su carrozza
-STR_0014    :Attrazione
-STR_0015    :Attrazione
-STR_0016    :Attrazione
+STR_0014    :Launched Freefall
+STR_0015    :Bobsleigh Coaster
+STR_0016    :Observation Tower
 STR_0017    :Ottovolante con giro d. morte
-STR_0018    :Attrazione
-STR_0019    :Attrazione
+STR_0018    :Dinghy Slide
+STR_0019    :Mine Train Coaster
 STR_0020    :Seggiovia
-STR_0021    :Attrazione
-STR_0022    :Attrazione
-STR_0023    :Attrazione
-STR_0024    :Attrazione
-STR_0025    :Attrazione
-STR_0026    :Attrazione
-STR_0027    :Attrazione
-STR_0028    :Attrazione
-STR_0029    :Attrazione
-STR_0030    :Chiosco
-STR_0031    :Chiosco
-STR_0032    :Chiosco
-STR_0033    :Chiosco
+STR_0021    :Corkscrew Roller Coaster
+STR_0022    :Maze
+STR_0023    :Spiral Slide
+STR_0024    :Go Karts
+STR_0025    :Log Flume
+STR_0026    :River Rapids
+STR_0027    :Dodgems
+STR_0028    :Pirate Ship
+STR_0029    :Swinging Inverter Ship
+STR_0030    :Food Stall
+STR_0031    :Unknown Stall (1D)
+STR_0032    :Drink Stall
+STR_0033    :Unknown Stall (1F)
 STR_0034    :Chiosco
-STR_0035    :Attrazione
-STR_0036    :Chiosco
+STR_0035    :Merry-Go-Round
+STR_0036    :Unknown Stall (22)
 STR_0037    :Chiosco
 STR_0038    :Servizi igienici
-STR_0039    :Attrazione
-STR_0040    :Attrazione
-STR_0041    :Attrazione
-STR_0042    :Attrazione
-STR_0043    :Attrazione
+STR_0039    :Ferris Wheel
+STR_0040    :Motion Simulator
+STR_0041    :3D Cinema
+STR_0042    :Top Spin
+STR_0043    :Space Rings
 STR_0044    :Attraz. a caduta libera rov.
 STR_0045    :Traino
-STR_0046    :Attrazione
-STR_0047    :Attrazione
-STR_0048    :Attrazione
-STR_0049    :Attrazione
-STR_0050    :Attrazione
-STR_0051    :Attrazione
-STR_0052    :Attrazione
+STR_0046    :Vertical Drop Roller Coaster
+STR_0047    :Cash Machine
+STR_0048    :Twist
+STR_0049    :Haunted House
+STR_0050    :First Aid Room
+STR_0051    :Circus Show
+STR_0052    :Ghost Train
 STR_0053    :Ottov. super-serpentina
 STR_0054    :Ottovolante di legno
 STR_0055    :Ottov. a frizione laterale
 STR_0056    :Topo tutto matto
 STR_0057    :Ottov. multi-dimensionale
-STR_0058    :Attrazione
+STR_0058    :Unknown Ride (38)
 STR_0059    :Ottovolante aereo invertito
-STR_0060    :Attrazione
-STR_0061    :Attrazione
-STR_0062    :Attrazione
-STR_0063    :Attrazione
-STR_0064    :Attrazione
+STR_0060    :Unknown Ride (3A)
+STR_0061    :Virginia Reel
+STR_0062    :Splash Boats
+STR_0063    :Mini Helicopters
+STR_0064    :Lay-down Roller Coaster
 STR_0065    :Monorotaia sospesa
-STR_0066    :Attrazione
-STR_0067    :Attrazione
+STR_0066    :Unknown Ride (40)
+STR_0067    :Reverser Roller Coaster
 STR_0068    :Serpentone volante
-STR_0069    :Attrazione
-STR_0070    :Attrazione
-STR_0071    :Attrazione
-STR_0072    :Attrazione
-STR_0073    :Attrazione
-STR_0074    :Attrazione
-STR_0075    :Attrazione
+STR_0069    :Mini Golf
+STR_0070    :Giga Coaster
+STR_0071    :Roto-Drop
+STR_0072    :Flying Saucers
+STR_0073    :Crooked House
+STR_0074    :Monorail Cycles
+STR_0075    :Compact Inverted Coaster
 STR_0076    :Attrazione acquatica
-STR_0077    :Attrazione
-STR_0078    :Attrazione
-STR_0079    :Attrazione
-STR_0080    :Attrazione
-STR_0081    :Attrazione
-STR_0082    :Attrazione
-STR_0083    :Attrazione
-STR_0084    :Attrazione
-STR_0085    :Attrazione
-STR_0086    :Attrazione
-STR_0087    :Attrazione
-STR_0088    :Attrazione
+STR_0077    :Air Powered Vertical Coaster
+STR_0078    :Inverted Hairpin Coaster
+STR_0079    :Magic Carpet
+STR_0080    :Submarine Ride
+STR_0081    :River Rafts
+STR_0082    :Unknown Ride (50)
+STR_0083    :Enterprise
+STR_0084    :Unknown Ride (52)
+STR_0085    :Unknown Ride (53)
+STR_0086    :Unknown Ride (54)
+STR_0087    :Unknown Ride (55)
+STR_0088    :Inverted Impulse Coaster
 STR_0089    :Mini-ottovolante
-STR_0090    :Attrazione
-STR_0091    :Attrazione
-STR_0092    :Attrazione
+STR_0090    :Mine Ride
+STR_0091    :Unknown Ride (59)
+STR_0092    :LIM Launched Roller Coaster
 STR_0093    :
 STR_0094    :
 STR_0095    :
@@ -513,31 +513,31 @@ STR_0508    :
 STR_0509    :
 STR_0510    :
 STR_0511    :
-STR_0512    :
-STR_0513    :
+STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
+STR_0513    :A looping roller coaster where the riders ride in a standing position
 STR_0514    :I treni, sospesi sotto l'ottovolante, durante le curve oscillano lateralmente
-STR_0515    :
+STR_0515    :A steel roller coaster with trains that are held beneath the track, with many complex and twisting track elements
 STR_0516    :Un ottovolante tranquillo, per chi non ha ancora il coraggio di affrontare le attrazioni più impegnative
 STR_0517    :I passeggeri viaggiano su treni in miniatura su una strada ferrata di dimensioni ridotte
 STR_0518    :I passeggeri viaggiano su treni elettrici lungo un tracciato monorotaia
 STR_0519    :I passeggeri viaggiano a bordo di piccole carrozze appese al circuito, oscillando liberamente da lato a lato a ogni curva
-STR_0520    :
-STR_0521    :
-STR_0522    :
+STR_0520    :A dock platform where guests can drive/row personal watercraft on a body of water
+STR_0521    :A fast and twisting roller coaster with tight turns and steep drops. Intensity is bound to be high.
+STR_0522    :A smaller roller coaster where the riders sit above the track with no car around them
 STR_0523    :I passeggeri viaggiano lentamente su veicoli elettrici lungo un percorso basato su un circuito
-STR_0524    :
-STR_0525    :
-STR_0526    :
+STR_0524    :Freefall car is pneumatically launched up a tall steel tower and then allowed to freefall down
+STR_0525    :Riders career down a twisting track guided only by the curvature and banking of the semi-circular track
+STR_0526    :Passengers travel in a rotating observation cabin which travels up a tall tower
 STR_0527    :Un rapido ottovolante d'acciaio caratterizzato da cadute verticali
-STR_0528    :
-STR_0529    :
+STR_0528    :Riders travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
+STR_0529    :Mine train themed roller coaster trains career along steel roller coaster track made to look like old railway track
 STR_0530    :Le carrozze pendono da un cavo d'acciaio che fa avanti e indietro per tutto il tracciato
-STR_0531    :
+STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
 STR_0532    :
 STR_0533    :
-STR_0534    :
-STR_0535    :
-STR_0536    :
+STR_0534    :Self-drive petrol-engined go karts
+STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
+STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
 STR_0537    :
 STR_0538    :
 STR_0539    :
@@ -556,14 +556,14 @@ STR_0551    :
 STR_0552    :
 STR_0553    :
 STR_0554    :La carrozza acquista accelerazione a partire dalla stazione attraverso un lungo tratto pianeggiante grazie a dei motori a induzione lineare, quindi percorre una ripida salita per poi scendere in caduta libera e tornare alla stazione
-STR_0555    :
-STR_0556    :
+STR_0555    :Guests ride in an elevator up or down a vertical tower to get from one level to another
+STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
 STR_0557    :
 STR_0558    :
 STR_0559    :
 STR_0560    :
 STR_0561    :
-STR_0562    :
+STR_0562    :Powered cars travel along a multi-level track past spooky scenery and special effects
 STR_0563    :Seduti comodamente - il solo limite è che si può effettuare un solo giro alla volta - i passeggeri sperimentano dolci discese e numerose curve, sperimentando una piacevole sensazione di assenza di peso
 STR_0564    :Quest'attrazione, in cui si viaggia lungo un tracciato di legno, è veloce, ricca di imprevisti, rumorosa e dà al passeggero la sensazione di essere senza controllo, oltre che quella di una grande libertà
 STR_0565    :Un semplice ottovolante di legno, adatto solo a curve e declivi  lenti, in cui le carrozze sono tenute in pista solo dalla frizione delle ruote sui i bordi della pista e dalla gravità
@@ -572,38 +572,38 @@ STR_0567    :Seduti su sedili sospesi a entrambi i lati del tracciato, i passegg
 STR_0568    :
 STR_0569    :I passeggeri, cinti da speciali imbracature al di sotto il tracciato, sperimentano la sensazione del volo quando vengono fatti oscillare nell'aria
 STR_0570    :
-STR_0571    :
-STR_0572    :
-STR_0573    :
-STR_0574    :
+STR_0571    :Circular cars spin around as they travel along the zig-zagging wooden track
+STR_0572    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyer belt, accelerating down steep slopes to soak the riders with a gaint splash
+STR_0573    :Powered helicoper shaped cars running on a steel track, controlled by the pedalling of the riders
+STR_0574    :Riders are held in special harnesses in a lying-down position, travlling through twisted track and inversions either on their backs or facing the ground
 STR_0575    :Dei treni elettrici sospesi sotto una singola rotaia trasportano i passeggeri per tutto il parco
 STR_0576    :
-STR_0577    :
+STR_0577    :Bogied cars run on wooden tracks, turning around on special reversing sections
 STR_0578    :Le carrozze corrono per il tracciato caratterizzato da vari giri,  ripide discese e curve ondulanti
 STR_0579    :
-STR_0580    :
-STR_0581    :
+STR_0580    :A giant steel roller coaster capable of smooth drops and hills of over 300ft
+STR_0581    :A ring of seats is pulled to the top of a tall tower while gently rotating, then allowed to free-fall down, stopping gently at the bottom using magnetic brakes
 STR_0582    :
 STR_0583    :
-STR_0584    :
-STR_0585    :
+STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
+STR_0585    :Riders sit in pairs of seats suspended beneath the track as they loop and twist through tight inversions
 STR_0586    :Carrozze a forma di barca viaggiano lungo l'ottovolante, caratterizzato da ripide discese, curve avvitate e tuffi in sezioni acquatiche più tranquille.
-STR_0587    :
-STR_0588    :
+STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
+STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
 STR_0589    :
-STR_0590    :
-STR_0591    :
+STR_0590    :Riders ride in a submerged submarine through an underwater course
+STR_0591    :Raft-shaped boats gently meander around a river track
 STR_0592    :
 STR_0593    :
 STR_0594    :
 STR_0595    :
 STR_0596    :
 STR_0597    :
-STR_0598    :
+STR_0598    :Inverted roller coaster trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
 STR_0599    :Un ottovolante compatto con carrozze individuali e rapide curve in discesa
-STR_0600    :
+STR_0600    :Powered mine trains career along a smooth and twisted track layout
 STR_0601    :
-STR_0602    :
+STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
 STR_0603    :Visitatore {INT32}
 STR_0604    :Visitatore {INT32}
 STR_0605    :Visitatore {INT32}
@@ -839,16 +839,17 @@ STR_0834    :{SMALLFONT}{BLACK}Opzioni di gioco e del disco
 STR_0835    :Inizializzazione del gioco fallita
 STR_0836    :Impossibile iniziare la partita se la finestra è ridotta a icona
 STR_0837    :Impossibile inizializzare il sistema grafico
-STR_0838    :Il codice CD {INT32} del CD del tuo RollerCoaster Tycoon 2 è errato!{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Disinstalla RollerCoaster Tycoon 2% e installalo di nuovo digitando il codice CD corretto
+STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-STR_0841    :Finestra sul desktop
-STR_0842    :640x480 schermo intero
-STR_0843    :800x600 schermo intero
-STR_0844    :1024x768 schermo intero
-STR_0845    :1152x864 schermo intero
-STR_0846    :1280x1024 schermo intero
-STR_0847    :Informazioni su 'RollerCoaster Tycoon 2'
+# The following six strings were used for display resolutions, but have been replaced.
+STR_0841    :<not used anymore>
+STR_0842    :<not used anymore>
+STR_0843    :<not used anymore>
+STR_0844    :<not used anymore>
+STR_0845    :<not used anymore>
+STR_0846    :<not used anymore>
+STR_0847    :Informazioni su 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Versione 2.01.032
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, tutti i diritti riservati
@@ -1044,10 +1045,10 @@ STR_1039    :Installa un nuovo design del tracciato
 STR_1040    :Salva la partita
 STR_1041    :Salva lo scenario
 STR_1042    :Salva il paesaggio
-STR_1043    :Partita di RollerCoaster Tycoon 2 salvata
-STR_1044    :File di scenario per RollerCoaster Tycoon 2
-STR_1045    :File di paesaggi per RollerCoaster Tycoon 2
-STR_1046    :File di design dei tracciati per RollerCoaster Tycoon 2
+STR_1043    :Partita di OpenRCT2 salvata
+STR_1044    :File di scenario per OpenRCT2
+STR_1045    :File di paesaggi per OpenRCT2
+STR_1046    :File di design dei tracciati per OpenRCT2
 STR_1047    :Salvataggio partita fallito!
 STR_1048    :Salvataggio scenario fallito!
 STR_1049    :Salvataggio terreno fallito!
@@ -1059,13 +1060,13 @@ STR_1054    :{SMALLFONT}{BLACK}Battezza attrazioni
 STR_1055    :{SMALLFONT}{BLACK}Battezza persone
 STR_1056    :{SMALLFONT}{BLACK}Battezza membri del personale
 STR_1057    :Nome dell'attrazione
-STR_1058    :Digita il nuovo nome di quest'attrazione:-
+STR_1058    :Digita il nuovo nome di quest'attrazione:
 STR_1059    :Impossibile ribattezzare l'attrazione...
 STR_1060    :Nome dell'attrazione non valido
 STR_1061    :Modalità normale
 STR_1062    :Modalità a circuito continuo
 STR_1063    :Mod. navetta a lancio rovesc. inclinato
-STR_1064    :Lancio a motore
+STR_1064    :Lancio a motore (passing station)
 STR_1065    :Modalità navetta
 STR_1066    :Modalità affitto barche
 STR_1067    :Lancio in salita
@@ -1097,7 +1098,7 @@ STR_1092    :Lancio in discesa
 STR_1093    :Modalità casa distorta
 STR_1094    :Modalità caduta libera
 STR_1095    :Mod. circuito continuo sezi. a blocchi
-STR_1096    :Lancio a motore
+STR_1096    :Lancio a motore (without passing station)
 STR_1097    :Mod. lancio a motore sez. a blocchi
 STR_1098    :In viaggio verso la fine della {POP16}{STRINGID}
 STR_1099    :In attesa di passeggeri a {POP16}{STRINGID}
@@ -1451,10 +1452,10 @@ STR_1446    :Sta guardando lo scenario
 STR_1447    :Sta lasciando il parco
 STR_1448    :Sta osservando la nuova attrazione in costruzione
 STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
-STR_1450    :{INLINE_SPRITE}{MEDIUMFONT}□
+STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
 STR_1452    :Nome del visitatore
-STR_1453    :Digita il nome di questo visitatore:-
+STR_1453    :Digita il nome di questo visitatore:
 STR_1454    :Impossibile battezzare il visitatore...
 STR_1455    :Il nome del visitatore non è valido
 STR_1456    :{WINDOW_COLOUR_2}Denaro speso: {BLACK}{CURRENCY2DP}
@@ -1713,14 +1714,14 @@ STR_1708    :{SMALLFONT}{BLACK}Fissa la zona che questo dipendente deve controll
 STR_1709    :Licenzia il personale
 STR_1710    :Sì
 STR_1711    :{WINDOW_COLOUR_1}Sei sicuro di voler licenziare{NEWLINE}{STRINGID}?
-STR_1712    :{INLINE_SPRITE}÷□
-STR_1713    :{INLINE_SPRITE}ø□
-STR_1714    :{INLINE_SPRITE}ù□
-STR_1715    :{INLINE_SPRITE}ú□
+STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Sweep footpaths
+STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Water gardens
+STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Empty litter bins
+STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Mow grass
 STR_1716    :Non è un nome valido per il parco
 STR_1717    :Impossibile ribattezzare il parco...
 STR_1718    :Nome del parco
-STR_1719    :Digita il nome del parco:-
+STR_1719    :Digita il nome del parco:
 STR_1720    :{SMALLFONT}{BLACK}Battezza il parco
 STR_1721    :Parco chiuso
 STR_1722    :Parco aperto
@@ -1758,7 +1759,7 @@ STR_1753    :{SMALLFONT}{BLACK}Mostra il riassunto dei visitatori del parco
 STR_1754    :{BLACK}{COMMA16} visitatori
 STR_1755    :{BLACK}{COMMA16} visitatore
 STR_1756    :{WINDOW_COLOUR_2}Prezzo biglietto:
-STR_1757    :{WINDOW_COLOUR_2}Affidabilità: {MOVE_X}ÿ{BLACK}{COMMA16}%
+STR_1757    :{WINDOW_COLOUR_2}Affidabilità: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Modalità costruzione
 STR_1759    :{SMALLFONT}{BLACK}Modalità spostamento
 STR_1760    :{SMALLFONT}{BLACK}Modalità riempimento
@@ -1780,17 +1781,17 @@ STR_1775    :Off
 STR_1776    :On
 STR_1777    :{WINDOW_COLOUR_2}Musica
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}þ□
-STR_1780    :{INLINE_SPRITE}ÿ□
-STR_1781    :{INLINE_SPRITE}
-STR_1782    :{INLINE_SPRITE}{MOVE_X}□
-STR_1783    :{INLINE_SPRITE}{ADJUST_PALETTE}□
-STR_1784    :{INLINE_SPRITE}□□
-STR_1785    :{INLINE_SPRITE}□□
-STR_1786    :{INLINE_SPRITE}{NEWLINE}□
-STR_1787    :{INLINE_SPRITE}{NEWLINE_SMALLER}□
-STR_1788    :{INLINE_SPRITE}{TINYFONT}□
-STR_1789    :{INLINE_SPRITE}{BIGFONT}□
+STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
+STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger costume
+STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elephant costume
+STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Roman costume
+STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilla costume
+STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Snowman costume
+STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Knight costume
+STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronaut costume
+STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Bandit costume
+STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriff costume
+STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Pirate costume
 STR_1790    :{SMALLFONT}{BLACK}Scegli il colore dell'uniforme per questo tipo di dipendente
 STR_1791    :{WINDOW_COLOUR_2}Colore dell'uniforme:
 STR_1792    :Sta accorrendo alla chiamata d'emergenza venuta da: {STRINGID}
@@ -1848,8 +1849,8 @@ STR_1843    :La preferita da: {COMMA16} visitatori
 STR_1844    :{SMALLFONT}{BLACK}Scegli il tipo di informazione da mostrare nella lista delle attrazioni
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA16} visitatori
-STR_1847    :{INLINE_SPRITE}{OUTLINE}□
-STR_1848    :{INLINE_SPRITE}{SMALLFONT}□
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} guests
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} guests
 STR_1849    :{WINDOW_COLOUR_2}Suona la musica
 STR_1850    :{SMALLFONT}{BLACK}Scegli quale musica dev'essere suonata in quest'attrazione
 STR_1851    :{WINDOW_COLOUR_2}Costo mantenim.: {BLACK}{CURRENCY2DP} l'ora
@@ -1877,8 +1878,8 @@ STR_1872    :{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Entrate: {BLACK}{CURRENCY} all'ora
 STR_1874    :{WINDOW_COLOUR_2}Profitto: {BLACK}{CURRENCY} all'ora
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
-STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}û□
-STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}ü□
+STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect Rides
+STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix Rides
 STR_1878    :{WINDOW_COLOUR_2}Ispezione:
 STR_1879    :Ogni 10 minuti
 STR_1880    :Ogni 20 minuti
@@ -1890,11 +1891,13 @@ STR_1885    :Mai
 STR_1886    :Sta effettuando un'ispezione {STRINGID}
 STR_1887    :{WINDOW_COLOUR_2}Tempo dall'ultima ispezione: {BLACK}{COMMA16} minuti
 STR_1888    :{WINDOW_COLOUR_2}Tempo dall'ultima ispezione: {BLACK}più di 4 ore
-STR_1889    :{WINDOW_COLOUR_2}Tempi morti: {MOVE_X}ÿ{BLACK}{COMMA16}%
+STR_1889    :{WINDOW_COLOUR_2}Tempi morti: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Scegli la frequenza con cui un meccanico deve controllare quest'attrazione
 STR_1891    :Ancora non ci sono {STRINGID} nel parco!!
-STR_1892    :RollerCoaster Tycoon 2
-STR_1893    :Inserisci il tuo CD di RollerCoaster Tycoon 2 nella seguente unità:-
+# The following two strings were used to display an error when the disc was missing.
+# This has been replaced in OpenRCT2.
+STR_1892    :<not used anymore>
+STR_1893    :<not used anymore>
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} venduti/e: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Costruisci una nuova attrazione
 STR_1896    :{WINDOW_COLOUR_2}Uscite/entrate
@@ -2318,10 +2321,10 @@ STR_2313    :{WINDOW_COLOUR_2}Livello di nausea: {BLACK}{COMMA2DP32} (circa)
 STR_2314    :{WINDOW_COLOUR_2}Lunghezza: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Costo: {BLACK}circa {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Spazio richiesto: {BLACK}{COMMA16} x {COMMA16} blocchi
-STR_2317    :{WINDOW_COLOUR_2}Qualità audio:
-STR_2318    :Bassa
-STR_2319    :Media
-STR_2320    :Alta
+STR_2317    :<not used anymore>
+STR_2318    :<not used anymore>
+STR_2319    :<not used anymore>
+STR_2320    :<not used anymore>
 STR_2321    :{WINDOW_COLOUR_2}Numero di attrazioni: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Personale: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Dimensioni del parco: {BLACK}{COMMA32}m{SQUARED}
@@ -2438,12 +2441,12 @@ STR_2433    :{BLACK}Buoni sconto gratis per: {STRINGID}
 STR_2434    :{BLACK}Campagna pubblicitaria per {STRINGID}
 STR_2435    :{BLACK}Campagna pubblicitaria per {STRINGID}
 STR_2436    :1 sett.
-STR_2437    :2 sett.
-STR_2438    :3 sett.
-STR_2439    :4 sett.
-STR_2440    :5 sett.
-STR_2441    :6 sett.
-STR_2442    :{BLACK}({STRINGID} rimanenti)
+STR_2437    :<not used anymore>
+STR_2438    :<not used anymore>
+STR_2439    :<not used anymore>
+STR_2440    :<not used anymore>
+STR_2441    :<not used anymore>
+STR_2442    :<not used anymore>
 STR_2443    :{WINDOW_COLOUR_2}Costo settimanale: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Costo totale: {BLACK}{CURRENCY2DP}
 STR_2445    :Comincia la campagna di marketing
@@ -2682,10 +2685,10 @@ STR_2677    :???
 STR_2678    :???
 STR_2679    :???
 STR_2680    :All research complete
-STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by 5,000
-STR_2682    :{MEDIUMFONT}{BLACK}Toggle between Free and Paid Entry
-STR_2683    :{MEDIUMFONT}{BLACK}Increases every peeps happiness to max
-STR_2684    :{MEDIUMFONT}{BLACK}Large group of peeps arrive
+STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by {CURRENCY}
+STR_2682    :<not used anymore>
+STR_2683    :<not used anymore>
+STR_2684    :{SMALLFONT}{BLACK}Large group of peeps arrive
 STR_2685    :Simplex Noise Parameters
 STR_2686    :{WINDOW_COLOUR_2}Low:
 STR_2687    :{WINDOW_COLOUR_2}High:
@@ -2748,7 +2751,7 @@ STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat i
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
-STR_2747    :#
+STR_2747    :{ENDQUOTES}
 STR_2748    :Barra
 STR_2749    :My new scenario
 # New strings used in the cheats window previously these were ???
@@ -2762,11 +2765,11 @@ STR_2756    :Remove litter
 STR_2757    :Force Sun
 STR_2758    :Force Thunder
 STR_2759    :Zero Clearance
-STR_2760    :+5K Money
-STR_2761    :Pay For Entrance
-STR_2762    :Pay For Rides
+STR_2760    :+{CURRENCY}
+STR_2761    :<not used anymore>
+STR_2762    :<not used anymore>
 STR_2763    :???
-STR_2764    :Happy Guests
+STR_2764    :<not used anymore>
 STR_2765    :Large Tram
 STR_2766    :Win scenario
 STR_2767    :Freeze Climate
@@ -2794,7 +2797,7 @@ STR_2788    :{WINDOW_COLOUR_2}Congratulazioni!!{NEWLINE}{BLACK}Hai raggiunto il 
 STR_2789    :{WINDOW_COLOUR_2}Non hai raggiunto il tuo obiettivo!!
 STR_2790    :Digita il tuo nome in classifica
 STR_2791    :Digita il tuo nome
-STR_2792    :Digita il tuo nome per la classifica degli scenari:-
+STR_2792    :Digita il tuo nome per la classifica degli scenari:
 STR_2793    :{SMALLFONT}(Completato da {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Completato da: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} con una società del valore di: {BLACK}{CURRENCY}
 STR_2795    :Ordina
@@ -2861,7 +2864,7 @@ STR_2855    :{RED}{STRINGID} non è dotato di un percorso alla sua uscita!!{NEWL
 STR_2856    :{WINDOW_COLOUR_2}Esercitazione
 STR_2857    :{WINDOW_COLOUR_2}(Premi un tasto o un pulsante del mouse per assumere il controllo)
 STR_2858    :Impossibile avviare la campagna di marketing...
-STR_2859    :Al momento è in corso un'altra sezione di RollerCoaster Tycoon 2
+STR_2859    :Al momento è in corso un'altra sezione di OpenRCT2
 STR_2860    :Riconoscimenti Infogrames...
 STR_2861    :{WINDOW_COLOUR_2}Concesso in licenza a Infogrames Interactive
 STR_2862    :Riconoscimenti dei brani musicali...
@@ -2971,8 +2974,8 @@ STR_2965    :{WINDOW_COLOUR_2}
 STR_2966    :
 STR_2967    :
 STR_2968    :
-STR_2969    :L'utilizzo di questo prodotto è soggetto alle condizioni della licenza
-STR_2970    :che si trova nel file {OPENQUOTES}ReadMe{ENDQUOTES} del prodotto e nel manuale
+STR_2969    :<not used anymore>
+STR_2970    :<not used anymore>
 STR_2971    :Modello decorativo principale
 STR_2972    :Modello decorativo alternativo 1
 STR_2973    :Modello decorativo alternativo 2
@@ -2980,12 +2983,12 @@ STR_2974    :Modello decorativo alternativo 3
 STR_2975    :{SMALLFONT}{BLACK}Seleziona il modello decorativo da cambiare o da utilizzare
 STR_2976    :{SMALLFONT}{BLACK}Dipingi una determinata area di quest'attrazione secondo il modello decorativo selezionato
 STR_2977    :Nome del dipendente
-STR_2978    :Digita il nome di questo dipendente:-
+STR_2978    :Digita il nome di questo dipendente:
 STR_2979    :Impossibile battezzare il dipendente...
 STR_2980    :Troppe insegne nella partita
 STR_2981    :{RED}Vietato l'ingresso - - 
 STR_2982    :Testo dell'insegna
-STR_2983    :Digita il testo di questa insegna:-
+STR_2983    :Digita il testo di questa insegna:
 STR_2984    :Impossibile fissare il testo dell'insegna...
 STR_2985    :Insegna
 STR_2986    :{SMALLFONT}{BLACK}Modifica il testo dell'insegna
@@ -2995,7 +2998,7 @@ STR_2989    :{SMALLFONT}{BLACK}Scegli il colore principale
 STR_2990    :{SMALLFONT}{BLACK}Scegli il colore del testo
 STR_2991    :Cartello
 STR_2992    :Testo del cartello
-STR_2993    :Digita il testo del cartello:-
+STR_2993    :Digita il testo del cartello:
 STR_2994    :{SMALLFONT}{BLACK}Modifica il testo del cartello
 STR_2995    :{SMALLFONT}{BLACK}Demolisci il cartello
 STR_2996    :{BLACK}ABC
@@ -3162,8 +3165,8 @@ STR_3156    :
 STR_3157    :mappa
 STR_3158    :grafico
 STR_3159    :lista
-STR_3160    :RollerCoaster Tycoon 2: si sta avviando per la prima volta...
-STR_3161    :RollerCoaster Tycoon 2: sta cercando i file degli oggetti...
+STR_3160    :<not used anymore>
+STR_3161    :<not used anymore>
 STR_3162    :Impossibile assegnare abbastanza memoria
 STR_3163    :Installazione dei nuovi dati: 
 STR_3164    :{BLACK}{COMMA16}  selezionati (massimo {COMMA16})
@@ -3316,9 +3319,9 @@ STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Attrazioni sotto ordine di protezione:
 STR_3313    :Nome scenario
-STR_3314    :Digita il nome dello scenario:-
+STR_3314    :Digita il nome dello scenario:
 STR_3315    :Informazioni sul parco/scenario
-STR_3316    :Scrivi una descrizione dello scenario:-
+STR_3316    :Scrivi una descrizione dello scenario:
 STR_3317    :Ancora nessuna informazione
 STR_3318    :{SMALLFONT}{BLACK}Scegli in quale gruppo sarà incluso questo scenario
 STR_3319    :{WINDOW_COLOUR_2}Gruppo scenari:
@@ -3339,7 +3342,7 @@ STR_3333    :Esporta oggetti di plug-in insieme alle partite salvate
 STR_3334    :{SMALLFONT}{BLACK}Scegli se salvare gli eventuali dati necessari degli oggetti di plug-in (dati non forniti con il prodotto principale) all'interno dei file di scenario o delle partite salvate, permettendone così l'accesso anche a chi non possiede questi dati addizionali
 STR_3335    :Progettista degli ottovolanti - Seleziona il tipo di veicoli e attrazione
 STR_3336    :Responsabile dei progetti di tracciato - Seleziona il tipo di attrazione
-STR_3337    :Parco Six Flags
+STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Disposizione personalizzata
 STR_3339    :{BLACK}{COMMA16} progetto disponibile o progetto personalizzato
 STR_3340    :{BLACK}{COMMA16} progetti disponibili o disposizioni personalizzate
@@ -3353,7 +3356,7 @@ STR_3347    :L{GREEN}attrazione è troppo grande, contiene troppi elementi o lo 
 STR_3348    :Ribattezza
 STR_3349    :Cancella
 STR_3350    :Battezza il progetto di tracciato
-STR_3351    :Digita il nome di questo progetto di tracciato:-
+STR_3351    :Digita il nome di questo progetto di tracciato:
 STR_3352    :Impossibile ribattezzare il  progetto di tracciato...
 STR_3353    :Il nuovo nome contiene dei caratteri non validi
 STR_3354    :Esiste già un altro file con quel nome, o il file è protetto dalla scrittura
@@ -3364,8 +3367,8 @@ STR_3358    :Impossibile cancellare il progetto di tracciato...
 STR_3359    :{BLACK}Non ci sono progetti di tracciato di questi tipo
 STR_3360    :Attenzione!
 STR_3361    :Troppi progetti di tracciato di questo tipo - qualcuno non verrà elencato.
-STR_3362    :Mixaggio software del buffer forzato
-STR_3363    :{SMALLFONT}{BLACK}Seleziona questa opzione per migliorare le prestazioni se quando viene avviato il sonoro il gioco rallenta leggermente o si sentono dei disturbi
+STR_3362    :<not used anymore>
+STR_3363    :<not used anymore>
 STR_3364    :Avanzato
 STR_3365    :{SMALLFONT}{BLACK}Permetti la selezione di oggetti singoli di uno scenario in aggiunta ai gruppi di scenario
 STR_3366    :{BLACK}= Attrazione
@@ -3393,6 +3396,7 @@ STR_3387    :Esercitazione per la costruzione di ottovolanti
 STR_3388    :Impossibile passare alla modalità selezionata: DirectX ha causato un errore
 STR_3389    :Impossibile selezionare l'oggetto aggiuntivo dello scenario...
 STR_3390    :Troppi oggetti selezionati
+# Start of tutorial strings. Not used at the moment, so not necessary to translate.
 STR_3391    :{SMALLFONT}{BLACK}Ecco il nostro parco - andiamo a dare un'occhiata in giro...
 STR_3392    :{SMALLFONT}{BLACK}Tenere premuto il pulsante DESTRO del mouse e muovere il mouse stesso è il modo più veloce per spostare la visuale...
 STR_3393    :{SMALLFONT}{BLACK}Per allargare la prospettiva, puoi zoomare in avanti tramite l'icona in cima allo schermo...
@@ -3439,6 +3443,7 @@ STR_3433    :{SMALLFONT}{BLACK}E infine aggiungeremo i 'freni di blocco', che pe
 STR_3434    :{SMALLFONT}{BLACK}Ora proviamo l'attrazione e vediamo se funziona!!
 STR_3435    :{SMALLFONT}{BLACK}Fantastico - ha funzionato! Ora aggiungiamo i sentieri e facciamo accomodare i visitatori sul nostro nuovo ottovolante...
 STR_3436    :{SMALLFONT}{BLACK}Mentre aspettiamo i nostri primi passeggeri, potremmo personalizzare un po' l'attrazione...
+# End of tutorial strings
 STR_3437    :{SMALLFONT}{BLACK}Elimina gli alberi, i muri e i piccoli oggetti di scenario dal terreno
 STR_3438    :Impossibile rimuovere tutto lo scenario da qui...
 STR_3439    :Elimina scen.
@@ -3450,164 +3455,9 @@ STR_3444    :Pagina 5
 STR_3445    :Imposta l'area da pattugliare
 STR_3446    :Annulla l'area da pattugliare
 
-# New strings, cleaner
-STR_5120    :Show finances button on toolbar
-STR_5121    :Show research button on toolbar
-STR_5122    :Show all vehicles sharing a track/ride type
-STR_5123    :Renew rides
-STR_5124    :No Six Flags
-STR_5125    :All destructable
-STR_5126    :Random title music
-STR_5127    :{SMALLFONT}{BLACK}Disable land elevation
-STR_5128    :Selection size
-STR_5129    :Enter selection size between {COMMA16} and {COMMA16}
-STR_5130    :Map size
-STR_5131    :Enter map size between {COMMA16} and {COMMA16}
-STR_5132    :Fix all rides
-STR_5133    :{SMALLFONT}{BLACK}Adjust smaller area of land rights
-STR_5134    :{SMALLFONT}{BLACK}Adjust larger area of land rights
-STR_5135    :{SMALLFONT}{BLACK}Buy land rights and construction rights
-STR_5136    :Land rights
-STR_5137    :Allow lift hill and launch speeds{NEWLINE}up to {VELOCITY}
-STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
-STR_5139    :{WHITE}{STRINGID}
-STR_5140    :Disable brakes failure
-STR_5141    :Disable all breakdowns
-STR_5142    :Normal Speed
-STR_5143    :Quick Speed
-STR_5144    :Fast Speed
-STR_5145    :Turbo Speed
-STR_5146    :Hyper Speed
-STR_5147    :Show cheats button on toolbar
-STR_5148    :{SMALLFONT}{BLACK}Change the game speed
-STR_5149    :{SMALLFONT}{BLACK}Open the cheats window
-STR_5150    :Enable debugging tools
 #Thousands separator
 STR_5151    :.
 #Decimal separator
 STR_5152    :,
-STR_5153    :Colour schemes...
-STR_5154    :Hardware display
-STR_5155    :Allow testing of unfinished tracks
-STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
-STR_5157    :Unlock all prices
-STR_5158    :Quit to menu
-STR_5159    :Exit OpenRCT2
-STR_5160    :{MONTH} {STRINGID}, Year {COMMA16}
-STR_5161    :Date Format:
-STR_5162    :Day/Month/Year
-STR_5163    :Month/Day/Year
-STR_5164    :Twitch Channel name
-STR_5165    :Name peeps after followers
-STR_5166    :{SMALLFONT}{BLACK}Will name peeps after channel's Twitch followers
-STR_5167    :Track follower peeps
-STR_5168    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after channel's Twitch followers
-STR_5169    :Name peeps after people in Twitch chat
-STR_5170    :{SMALLFONT}{BLACK}Will name peeps after people in Twitch chat
-STR_5171    :Track chat peeps
-STR_5172    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after Twitch chat participants
-STR_5173    :Pull Twitch chat as news
-STR_5174    :{SMALLFONT}{BLACK}Will use Twitch chat messages preceded by !news for in game notifications
-STR_5175    :Input the name of your Twitch channel
-STR_5176    :Enable Twitch integration
-STR_5177    :Fullscreen mode:
-STR_5178    :{SMALLFONT}{BLACK}Show financial cheats
-STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
-STR_5180    :{SMALLFONT}{BLACK}Show park cheats
-STR_5181    :{SMALLFONT}{BLACK}Show ride cheats
-STR_5182    :{INT32}
-STR_5183    :Base height
-STR_5184    :Enter base height between {COMMA16} and {COMMA16}
-STR_5185    :Water level
-STR_5186    :Enter water level between {COMMA16} and {COMMA16} 
-STR_5187    :Finances
-STR_5188    :New Campaign
-STR_5189    :Research
-STR_5190    :Map
-STR_5191    :Viewport
-STR_5192    :Recent News
-STR_5193    :Land
-STR_5194    :Water
-STR_5195    :Clear Scenery
-STR_5196    :Land Rights
-STR_5197    :Scenery
-STR_5198    :Footpath
-STR_5199    :Ride Construction
-STR_5200    :Track Design Place
-STR_5201    :New Ride
-STR_5202    :Track Design Selection
-STR_5203    :Ride
-STR_5204    :Ride List
-STR_5205    :Guest
-STR_5206    :Guest List
-STR_5207    :Staff
-STR_5208    :Staff List
-STR_5209    :Banner
-STR_5210    :Object Selection
-STR_5211    :Invention List
-STR_5212    :Scenario Options
-STR_5213    :Objective Options
-STR_5214    :Map Generation
-STR_5215    :Track Design Manager
-STR_5216    :Track Design Manager List
-STR_5217    :Cheats
-STR_5218    :Themes
-STR_5219    :Options
-STR_5220    :Keyboard Shortcuts
-STR_5221    :Change Keyboard Shortcut
-STR_5222    :Load/Save
-STR_5223    :Save Prompt
-STR_5224    :Demolish Ride Prompt
-STR_5225    :Fire Staff Prompt
-STR_5226    :Track Delete Prompt
-STR_5227    :Save Overwrite Prompt
-STR_5228    :{SMALLFONT}{BLACK}Main UI
-STR_5229    :{SMALLFONT}{BLACK}Park
-STR_5230    :{SMALLFONT}{BLACK}Tools
-STR_5231    :{SMALLFONT}{BLACK}Rides and Peeps
-STR_5232    :{SMALLFONT}{BLACK}Editors
-STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
-STR_5234    :{SMALLFONT}{BLACK}Prompts
-STR_5235    :{SMALLFONT}{BLACK}Settings
-STR_5236    :Window:
-STR_5237    :Palette:
-STR_5238    :Current Theme:
-STR_5239    :Duplicate
-STR_5240    :Enter a name for the theme
-STR_5241    :Can't change this theme
-STR_5242    :Theme name already exists
-STR_5243    :Invalid characters used
-STR_5244    :Themes
-STR_5245    :Top Toolbar
-STR_5246    :Bottom Toolbar
-STR_5247    :Track Editor Bottom Toolbar
-STR_5248    :Scenario Editor Bottom Toolbar
-STR_5249    :Title Menu Buttons
-STR_5250    :Title Exit Button
-STR_5251    :Title Options Button
-STR_5252    :Title Scenario Selection
-STR_5253    :Park Information
-STR_5254    :Add nausea
-STR_5255    :{MEDIUMFONT}{BLACK}All peeps become nauseous
-STR_5256    :Create a new theme to make changes to
-STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
-STR_5258    :{SMALLFONT}{BLACK}Delete the current theme
-STR_5259    :{SMALLFONT}{BLACK}Rename the current theme
-STR_5260    :Giant Screenshot
-STR_5261    :Filter
-STR_5262    :Wacky Worlds
-STR_5263    :Time Twister
-STR_5264    :Custom
-STR_5265    :{SMALLFONT}{BLACK}Select which content sources are visible
-STR_5266    :{SMALLFONT}{BLACK}Display
-STR_5267    :{SMALLFONT}{BLACK}Culture and Units
-STR_5268    :{SMALLFONT}{BLACK}Audio
-STR_5269    :{SMALLFONT}{BLACK}Controls
-STR_5270    :{SMALLFONT}{BLACK}Miscellaneous
-STR_5271    :{SMALLFONT}{BLACK}Twitch
-STR_5272    :{SMALLFONT}{BLACK}Small Scenery
-STR_5273    :{SMALLFONT}{BLACK}Large Scenery
-STR_5274    :{SMALLFONT}{BLACK}Footpaths
-STR_5275    :Search for Objects
-STR_5276    :Enter the name of an object to search for
-STR_5277    :Clear
+
+# Note: as this is an unmaintained language, don't add new strings unless you intend to become the mainainer.

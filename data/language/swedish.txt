@@ -3,97 +3,97 @@
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
-STR_0002    :Åktur
-STR_0003    :Åktur
+STR_0002    :Spiral Roller Coaster
+STR_0003    :Stand-up Roller Coaster
 STR_0004    :Hängande svängande bana
-STR_0005    :Åktur
+STR_0005    :Inverted Roller Coaster
 STR_0006    :Junior berg- och dalbana
 STR_0007    :Miniatyr-tåg
 STR_0008    :Balkbana
 STR_0009    :Liten hängande bana
-STR_0010    :Åktur
-STR_0011    :Åktur
-STR_0012    :Åktur
+STR_0010    :Boat Ride
+STR_0011    :Wooden Wild Mouse
+STR_0012    :Steeplechase
 STR_0013    :Bilåktur
-STR_0014    :Åktur
-STR_0015    :Åktur
-STR_0016    :Åktur
+STR_0014    :Launched Freefall
+STR_0015    :Bobsleigh Coaster
+STR_0016    :Observation Tower
 STR_0017    :Loopande berg- och dalbana
-STR_0018    :Åktur
-STR_0019    :Åktur
+STR_0018    :Dinghy Slide
+STR_0019    :Mine Train Coaster
 STR_0020    :Stolslift
-STR_0021    :Åktur
-STR_0022    :Åktur
-STR_0023    :Åktur
-STR_0024    :Åktur
-STR_0025    :Åktur
-STR_0026    :Åktur
-STR_0027    :Åktur
-STR_0028    :Åktur
-STR_0029    :Åktur
-STR_0030    :Stånd
-STR_0031    :Stånd
-STR_0032    :Stånd
-STR_0033    :Stånd
+STR_0021    :Corkscrew Roller Coaster
+STR_0022    :Maze
+STR_0023    :Spiral Slide
+STR_0024    :Go Karts
+STR_0025    :Log Flume
+STR_0026    :River Rapids
+STR_0027    :Dodgems
+STR_0028    :Pirate Ship
+STR_0029    :Swinging Inverter Ship
+STR_0030    :Food Stall
+STR_0031    :Unknown Stall (1D)
+STR_0032    :Drink Stall
+STR_0033    :Unknown Stall (1F)
 STR_0034    :Stånd
-STR_0035    :Åktur
-STR_0036    :Stånd
+STR_0035    :Merry-Go-Round
+STR_0036    :Unknown Stall (22)
 STR_0037    :Kiosk
 STR_0038    :Toalett
-STR_0039    :Åktur
-STR_0040    :Åktur
-STR_0041    :Åktur
-STR_0042    :Åktur
-STR_0043    :Åktur
+STR_0039    :Ferris Wheel
+STR_0040    :Motion Simulator
+STR_0041    :3D Cinema
+STR_0042    :Top Spin
+STR_0043    :Space Rings
 STR_0044    :Bakvänd fritt fall-bana
 STR_0045    :Lift
-STR_0046    :Åktur
-STR_0047    :Åktur
-STR_0048    :Åktur
-STR_0049    :Åktur
-STR_0050    :Åktur
-STR_0051    :Åktur
-STR_0052    :Åktur
+STR_0046    :Vertical Drop Roller Coaster
+STR_0047    :Cash Machine
+STR_0048    :Twist
+STR_0049    :Haunted House
+STR_0050    :First Aid Room
+STR_0051    :Circus Show
+STR_0052    :Ghost Train
 STR_0053    :Hyper-snurr berg- och dalbana
 STR_0054    :Berg- och dalbana i trä
 STR_0055    :Sidofriktion berg- och dalbana
 STR_0056    :Vilda Musen
 STR_0057    :Flerdimensionell berg- och dalbana
-STR_0058    :Åktur
+STR_0058    :Unknown Ride (38)
 STR_0059    :Inverterad berg- och dalbana
-STR_0060    :Åktur
-STR_0061    :Åktur
-STR_0062    :Åktur
-STR_0063    :Åktur
-STR_0064    :Åktur
+STR_0060    :Unknown Ride (3A)
+STR_0061    :Virginia Reel
+STR_0062    :Splash Boats
+STR_0063    :Mini Helicopters
+STR_0064    :Lay-down Roller Coaster
 STR_0065    :Hängande balkbana
-STR_0066    :Åktur
-STR_0067    :Åktur
+STR_0066    :Unknown Ride (40)
+STR_0067    :Reverser Roller Coaster
 STR_0068    :Skruvbana
-STR_0069    :Åktur
-STR_0070    :Åktur
-STR_0071    :Åktur
-STR_0072    :Åktur
-STR_0073    :Åktur
-STR_0074    :Åktur
-STR_0075    :Åktur
+STR_0069    :Mini Golf
+STR_0070    :Giga Coaster
+STR_0071    :Roto-Drop
+STR_0072    :Flying Saucers
+STR_0073    :Crooked House
+STR_0074    :Monorail Cycles
+STR_0075    :Compact Inverted Coaster
 STR_0076    :Vattenbana
-STR_0077    :Åktur
-STR_0078    :Åktur
-STR_0079    :Åktur
-STR_0080    :Åktur
-STR_0081    :Åktur
-STR_0082    :Åktur
-STR_0083    :Åktur
-STR_0084    :Åktur
-STR_0085    :Åktur
-STR_0086    :Åktur
-STR_0087    :Åktur
-STR_0088    :Åktur
+STR_0077    :Air Powered Vertical Coaster
+STR_0078    :Inverted Hairpin Coaster
+STR_0079    :Magic Carpet
+STR_0080    :Submarine Ride
+STR_0081    :River Rafts
+STR_0082    :Unknown Ride (50)
+STR_0083    :Enterprise
+STR_0084    :Unknown Ride (52)
+STR_0085    :Unknown Ride (53)
+STR_0086    :Unknown Ride (54)
+STR_0087    :Unknown Ride (55)
+STR_0088    :Inverted Impulse Coaster
 STR_0089    :Mini berg- och dalbana
-STR_0090    :Åktur
-STR_0091    :Åktur
-STR_0092    :Åktur
+STR_0090    :Mine Ride
+STR_0091    :Unknown Ride (59)
+STR_0092    :LIM Launched Roller Coaster
 STR_0093    :
 STR_0094    :
 STR_0095    :
@@ -513,31 +513,31 @@ STR_0508    :
 STR_0509    :
 STR_0510    :
 STR_0511    :
-STR_0512    :
-STR_0513    :
+STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
+STR_0513    :A looping roller coaster where the riders ride in a standing position
 STR_0514    :Hängande tåg under banan svingar ut åt sidan i svängar
-STR_0515    :
+STR_0515    :A steel roller coaster with trains that are held beneath the track, with many complex and twisting track elements
 STR_0516    :En snäll berg- och dalbana för de som inte har mod nog att utmana större åkturer
 STR_0517    :Passagerare åker i miniatyrtåg på en smal tågräls
 STR_0518    :Passagerare åker i elektriska tåg på en balkbana
 STR_0519    :Passagerare åker i små vagnar som hänger under en enkelspårig bana, fritt svingande från sida till sida i svängar
-STR_0520    :
-STR_0521    :
-STR_0522    :
+STR_0520    :A dock platform where guests can drive/row personal watercraft on a body of water
+STR_0521    :A fast and twisting roller coaster with tight turns and steep drops. Intensity is bound to be high.
+STR_0522    :A smaller roller coaster where the riders sit above the track with no car around them
 STR_0523    :Passagerare åker sakta i motoriserade fordon på en spår-baserad väg
-STR_0524    :
-STR_0525    :
-STR_0526    :
+STR_0524    :Freefall car is pneumatically launched up a tall steel tower and then allowed to freefall down
+STR_0525    :Riders career down a twisting track guided only by the curvature and banking of the semi-circular track
+STR_0526    :Passengers travel in a rotating observation cabin which travels up a tall tower
 STR_0527    :En mjuk berg- och dalbana byggd av stål som kan göra vertikala loopar
-STR_0528    :
-STR_0529    :
+STR_0528    :Riders travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
+STR_0529    :Mine train themed roller coaster trains career along steel roller coaster track made to look like old railway track
 STR_0530    :Vagnar hänger från en stålkabel som kör kontinuerligt från ena sidan åkturen till den andra, och sedan tillbaka igen
-STR_0531    :
+STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
 STR_0532    :
 STR_0533    :
-STR_0534    :
-STR_0535    :
-STR_0536    :
+STR_0534    :Self-drive petrol-engined go karts
+STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
+STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
 STR_0537    :
 STR_0538    :
 STR_0539    :
@@ -556,14 +556,14 @@ STR_0551    :
 STR_0552    :
 STR_0553    :
 STR_0554    :Vagnen accelereras ut ur stationen på en platt bana med hjälp av linjärmotorer, sen åker den vertikalt uppåt tills gravitationen tar över och vagnen åker tillbaka till stationen
-STR_0555    :
-STR_0556    :
+STR_0555    :Guests ride in an elevator up or down a vertical tower to get from one level to another
+STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
 STR_0557    :
 STR_0558    :
 STR_0559    :
 STR_0560    :
 STR_0561    :
-STR_0562    :
+STR_0562    :Powered cars travel along a multi-level track past spooky scenery and special effects
 STR_0563    :Sittandes i bekväma vagnar njuter passagerare av enorma nedförsbackar och spännande svängar, samt mycket tid flygandes över topparna
 STR_0564    :Den här berg- och dalbanan i trä är snabb, tuff, högljudd, och ger en känsla av att tappa kontrollen. Dessutom spenderar man mycket tid flygandes över topparna
 STR_0565    :En enkel berg- och dalbana i trä som bara har snälla backar och svängar. Vagnarna hålls på banan med sidofriktion på hjulen och gravitation
@@ -572,38 +572,38 @@ STR_0567    :Passagerare sitter i säten på varsin sida av banan och vänds upp
 STR_0568    :
 STR_0569    :Hängandes i speciella selar får passagerare känna på känslan av att flyga runt i luften
 STR_0570    :
-STR_0571    :
-STR_0572    :
-STR_0573    :
-STR_0574    :
+STR_0571    :Circular cars spin around as they travel along the zig-zagging wooden track
+STR_0572    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyer belt, accelerating down steep slopes to soak the riders with a gaint splash
+STR_0573    :Powered helicoper shaped cars running on a steel track, controlled by the pedalling of the riders
+STR_0574    :Riders are held in special harnesses in a lying-down position, travlling through twisted track and inversions either on their backs or facing the ground
 STR_0575    :Motoriserade tåg som hänger från en enkelspårig bana transporterar folk runt om i parken
 STR_0576    :
-STR_0577    :
+STR_0577    :Bogied cars run on wooden tracks, turning around on special reversing sections
 STR_0578    :Vagnar åker runt en bana omgiven av ringar utför branta nedförsbackar och skruvar
 STR_0579    :
-STR_0580    :
-STR_0581    :
+STR_0580    :A giant steel roller coaster capable of smooth drops and hills of over 300ft
+STR_0581    :A ring of seats is pulled to the top of a tall tower while gently rotating, then allowed to free-fall down, stopping gently at the bottom using magnetic brakes
 STR_0582    :
 STR_0583    :
-STR_0584    :
-STR_0585    :
+STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
+STR_0585    :Riders sit in pairs of seats suspended beneath the track as they loop and twist through tight inversions
 STR_0586    :Båtformade vagnar åker på berg- och dalbanespår med snurriga svängar och branta nedförsbackar, men plumsar då och då ner i lugna vattensektioner
-STR_0587    :
-STR_0588    :
+STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
+STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
 STR_0589    :
-STR_0590    :
-STR_0591    :
+STR_0590    :Riders ride in a submerged submarine through an underwater course
+STR_0591    :Raft-shaped boats gently meander around a river track
 STR_0592    :
 STR_0593    :
 STR_0594    :
 STR_0595    :
 STR_0596    :
 STR_0597    :
-STR_0598    :
+STR_0598    :Inverted roller coaster trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
 STR_0599    :En kompakt berg- och dalbana med individuella vagnar och mjuka snurrade nedförsbackar
-STR_0600    :
+STR_0600    :Powered mine trains career along a smooth and twisted track layout
 STR_0601    :
-STR_0602    :
+STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
 STR_0603    :Gäst {INT32}
 STR_0604    :Gäst {INT32}
 STR_0605    :Gäst {INT32}
@@ -839,16 +839,17 @@ STR_0834    :{SMALLFONT}{BLACK}Inställningar
 STR_0835    :Spelet kunde inte starta
 STR_0836    :Kan inte starta spelet minimerat
 STR_0837    :Kan inte initiera grafiksystemet
-STR_0838    :CD-nyckeln {INT32} är inte giltig för RollerCoaster Tycoon 2!{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Var god avinstallera RollerCoaster Tycoon 2% och återinstallera med rätt CD-nyckel
+STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-STR_0841    :Skrivbordsfönster
-STR_0842    :640x480 helskärm
-STR_0843    :800x600 helskärm
-STR_0844    :1024x768 helskärm
-STR_0845    :1152x864 helskärm
-STR_0846    :1280x1024 helskärm
-STR_0847    :Om 'RollerCoaster Tycoon 2'
+# The following six strings were used for display resolutions, but have been replaced.
+STR_0841    :<not used anymore>
+STR_0842    :<not used anymore>
+STR_0843    :<not used anymore>
+STR_0844    :<not used anymore>
+STR_0845    :<not used anymore>
+STR_0846    :<not used anymore>
+STR_0847    :Om 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, alla rättigheter förbehålls
@@ -1044,10 +1045,10 @@ STR_1039    :Installera ny bandesign
 STR_1040    :Spara Spel
 STR_1041    :Spara Scenario
 STR_1042    :Spara Landskap
-STR_1043    :RollerCoaster Tycoon 2 Sparat Spel
-STR_1044    :RollerCoaster Tycoon 2 Sparat Scenario
-STR_1045    :RollerCoaster Tycoon 2 Sparat Landskap
-STR_1046    :RollerCoaster Tycoon 2 Sparad Bandesign
+STR_1043    :OpenRCT2 Sparat Spel
+STR_1044    :OpenRCT2 Sparat Scenario
+STR_1045    :OpenRCT2 Sparat Landskap
+STR_1046    :OpenRCT2 Sparad Bandesign
 STR_1047    :Misslyckades med att spara spelet!
 STR_1048    :Misslyckades med att spara scenario!
 STR_1049    :Misslyckades med att spara landskap!
@@ -1066,7 +1067,7 @@ STR_1061    :Normalt läge
 STR_1062    :Kontinuerligt banläge
 #TODO
 STR_1063    :Reverse-Incline launched shuttle mode
-STR_1064    :Accelererad start
+STR_1064    :Accelererad start (passing station)
 STR_1065    :Pendlarläge
 STR_1066    :Uthyrning
 STR_1067    :Uppskjut
@@ -1098,7 +1099,7 @@ STR_1092    :Nedåtriktad start
 STR_1093    :Snea huset
 STR_1094    :Fritt fall
 STR_1095    :Blockavdelat kontinuerligt banläge
-STR_1096    :Motoriserad start
+STR_1096    :Motoriserad start (without passing station)
 STR_1097    :Blockavdelad motoriserad start
 STR_1098    :Rör sig mot slutet av {POP16}{STRINGID}
 STR_1099    :Väntar på passagerare vid {POP16}{STRINGID}
@@ -1876,8 +1877,8 @@ STR_1869    :{WINDOW_COLOUR_2}Antal rotationer:
 STR_1870    :{SMALLFONT}{BLACK}Antal hela rotationer
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1872    :{COMMA16}
-STR_1873    :{WINDOW_COLOUR_2}Inkomst: {BLACK}{CURRENCY} per timme
-STR_1874    :{WINDOW_COLOUR_2}Vinst: {BLACK}{CURRENCY} per timme
+STR_1873    :{WINDOW_COLOUR_2}Inkomst: {BLACK}{CURRENCY2DP} per timme
+STR_1874    :{WINDOW_COLOUR_2}Vinst: {BLACK}{CURRENCY2DP} per timme
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspektera åkturer
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fixa åkturer
@@ -1895,8 +1896,10 @@ STR_1888    :{WINDOW_COLOUR_2}Tid sen senaste inspektion: {BLACK}mer än 4 timma
 STR_1889    :{WINDOW_COLOUR_2}Dötid: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Välj hur ofta en mekaniker ska göra underhåll på den här åkturen
 STR_1891    :Ingen {STRINGID} i parken än!
-STR_1892    :RollerCoaster Tycoon 2
-STR_1893    :Var god sätt in din RollerCoaster Tycoon 2-skiva i följande CD-läsare:
+# The following two strings were used to display an error when the disc was missing.
+# This has been replaced in OpenRCT2.
+STR_1892    :<not used anymore>
+STR_1893    :<not used anymore>
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sålde: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Bygg ny Åktur/attraktion
 STR_1896    :{WINDOW_COLOUR_2}Utgifter/Inkomster
@@ -2320,10 +2323,10 @@ STR_2313    :{WINDOW_COLOUR_2}Illamåendenivå: {BLACK}{COMMA2DP32} (approx.)
 STR_2314    :{WINDOW_COLOUR_2}Åkturslängd: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kostnad: {BLACK}ca {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Storlek: {BLACK}{COMMA16} x {COMMA16} blocks
-STR_2317    :{WINDOW_COLOUR_2}Ljudkvalitet:
-STR_2318    :Låg
-STR_2319    :Mellan
-STR_2320    :Hög
+STR_2317    :<not used anymore>
+STR_2318    :<not used anymore>
+STR_2319    :<not used anymore>
+STR_2320    :<not used anymore>
 STR_2321    :{WINDOW_COLOUR_2}Antal åkturer/attraktioner: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Personal: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Parkstorlek: {BLACK}{COMMA32}m{SQUARED}
@@ -2440,12 +2443,12 @@ STR_2433    :{BLACK}Kuponger för gratis {STRINGID}
 STR_2434    :{BLACK}Kampanj för {STRINGID}
 STR_2435    :{BLACK}Kampanj för {STRINGID}
 STR_2436    :1 vecka
-STR_2437    :2 veckor
-STR_2438    :3 veckor
-STR_2439    :4 veckor
-STR_2440    :5 veckor
-STR_2441    :6 veckor
-STR_2442    :{BLACK}({STRINGID} återstår)
+STR_2437    :<not used anymore>
+STR_2438    :<not used anymore>
+STR_2439    :<not used anymore>
+STR_2440    :<not used anymore>
+STR_2441    :<not used anymore>
+STR_2442    :<not used anymore>
 STR_2443    :{WINDOW_COLOUR_2}Kostnad per vecka: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Totalkostnad: {BLACK}{CURRENCY2DP}
 STR_2445    :Starta kampanjen
@@ -2684,10 +2687,10 @@ STR_2677    :???
 STR_2678    :???
 STR_2679    :???
 STR_2680    :All research complete
-STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by 5,000
-STR_2682    :{MEDIUMFONT}{BLACK}Toggle between Free and Paid Entry
-STR_2683    :{MEDIUMFONT}{BLACK}Increases every peeps happiness to max
-STR_2684    :{MEDIUMFONT}{BLACK}Large group of peeps arrive
+STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by {CURRENCY}
+STR_2682    :<not used anymore>
+STR_2683    :<not used anymore>
+STR_2684    :{SMALLFONT}{BLACK}Large group of peeps arrive
 STR_2685    :Simplex Noise Parameters
 STR_2686    :{WINDOW_COLOUR_2}Low:
 STR_2687    :{WINDOW_COLOUR_2}High:
@@ -2765,11 +2768,11 @@ STR_2757    :Force Sun
 STR_2758    :Force Thunder
 STR_2759    :Zero Clearance
 # New strings used in the cheats window previously these were ???
-STR_2760    :+5K Pengar
-STR_2761    :Betala För Entré
-STR_2762    :Betala För Åkturer
+STR_2760    :+{CURRENCY}
+STR_2761    :<not used anymore>
+STR_2762    :<not used anymore>
 STR_2763    :???
-STR_2764    :Glada Gäster
+STR_2764    :<not used anymore>
 STR_2765    :Stort Tåg
 STR_2766    :Win scenario
 STR_2767    :Frys Klimat
@@ -2787,7 +2790,7 @@ STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 # End of new strings
 STR_2779    :Viewport #{COMMA16}
 STR_2780    :Extra viewport
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
+STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Ändra snabbtangenter
@@ -2867,7 +2870,7 @@ STR_2855    :{RED}{STRINGID} har ingen gångväg från sin utgång !{NEWLINE}Byg
 STR_2856    :{WINDOW_COLOUR_2}Handledning
 STR_2857    :{WINDOW_COLOUR_2}(Tryck ner en tangent eller musknapp för att ta kontroll)
 STR_2858    :Kan inte påbörja kampanj...
-STR_2859    :En annan instans av RollerCoaster Tycoon 2 körs redan
+STR_2859    :En annan instans av OpenRCT2 körs redan
 STR_2860    :Om Infogrames Interactive...
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
 STR_2862    :Om Musik...
@@ -2905,7 +2908,7 @@ STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble)
 STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright {COPYRIGHT} Chris Sawyer
 STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Åktur:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2900    :{WINDOW_COLOUR_2}
@@ -2977,8 +2980,8 @@ STR_2965    :{WINDOW_COLOUR_2}
 STR_2966    :
 STR_2967    :
 STR_2968    :
-STR_2969    :Use of this product is subject to the terms of a license agreement
-STR_2970    :found in the product's {OPENQUOTES}ReadMe{ENDQUOTES} file and in the manual
+STR_2969    :<not used anymore>
+STR_2970    :<not used anymore>
 STR_2971    :Huvudfärg
 STR_2972    :Andra färg
 STR_2973    :Tredje färg
@@ -3168,8 +3171,8 @@ STR_3156    :
 STR_3157    :karta
 STR_3158    :graf
 STR_3159    :lista
-STR_3160    :RollerCoaster Tycoon 2: Startar för första gången...
-STR_3161    :RollerCoaster Tycoon 2: Kollar objektfiler...
+STR_3160    :<not used anymore>
+STR_3161    :<not used anymore>
 STR_3162    :Kan inte allokera nog minne
 STR_3163    :Installerar ny data: 
 STR_3164    :{BLACK}{COMMA16} valda (av max {COMMA16})
@@ -3345,7 +3348,7 @@ STR_3333    :Exportera plug-in-objekt med sparade spel
 STR_3334    :{SMALLFONT}{BLACK}Välj om plug-in objekt (extra objekt som inte följer med basspelet) ska sparas i sparade spel och scenarion, vilket låter spelare importera denna data
 STR_3335    :Berg- och dalbane-designer - Välj Åkturstyp & Fordon
 STR_3336    :Bandesign-hanterare - Välj Åkturstype
-STR_3337    :Six Flags Park
+STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Egendesignad layout
 STR_3339    :{BLACK}{COMMA16} design tillgängliga, eller egendesignad layout
 STR_3340    :{BLACK}{COMMA16} designer tillgängliga, eller egendesignad layout
@@ -3399,6 +3402,7 @@ STR_3387    :Handledning för byggande av Berg- och dalbanor
 STR_3388    :Kan inte byta till det valda läget
 STR_3389    :Kan inte markera fler dekorationer...
 STR_3390    :För många saker markerade
+# Start of tutorial strings. Not used at the moment, so not necessary to translate.
 STR_3391    :{SMALLFONT}{BLACK}Här är vår park - Låt oss titta runt en snabbis...
 STR_3392    :{SMALLFONT}{BLACK}Det snabbaste sättet att flytta kameran är att hålla ner den HÖGRA musknappen samtidigt som du flyttar musen...
 STR_3393    :{SMALLFONT}{BLACK}För att se mer av parken kan du zooma ut genom att klicka på ikonen på toppen av skärmen...
@@ -3445,6 +3449,7 @@ STR_3433    :{SMALLFONT}{BLACK}Till sist lägger vi till 'blockbromsar', som lå
 STR_3434    :{SMALLFONT}{BLACK}Nu testar vi åkturen och se om den fungerar!
 STR_3435    :{SMALLFONT}{BLACK}Fantastiskt - Den fungerade! Dags att lägga till gångväger för att släppa in våra gäster till vår nya berg- och dalbana...
 STR_3436    :{SMALLFONT}{BLACK}Medans vi väntar på våra första passagerare kan vi modifiera åkturen lite grann...
+# End of tutorial strings
 STR_3437    :{SMALLFONT}{BLACK}Rensa stora områden av dekorationer från terrängen
 STR_3438    :Kan inte ta bort alla dekorationer härifrån...
 STR_3439    :Rensa Dekorationer
@@ -3455,164 +3460,10 @@ STR_3443    :Sida 4
 STR_3444    :Sida 5
 STR_3445    :Sätt Patrullområde
 STR_3446    :Avbryt Patrullområde
-# New strings, cleaner
-STR_5120    :Show finances button on toolbar
-STR_5121    :Show research button on toolbar
-STR_5122    :Show all vehicles sharing a track/ride type
-STR_5123    :Renew rides
-STR_5124    :No Six Flags
-STR_5125    :All destructable
-STR_5126    :Random title music
-STR_5127    :{SMALLFONT}{BLACK}Disable land elevation
-STR_5128    :Selection size
-STR_5129    :Enter selection size between {COMMA16} and {COMMA16}
-STR_5130    :Map size
-STR_5131    :Enter map size between {COMMA16} and {COMMA16}
-STR_5132    :Fix all rides
-STR_5133    :{SMALLFONT}{BLACK}Adjust smaller area of land rights
-STR_5134    :{SMALLFONT}{BLACK}Adjust larger area of land rights
-STR_5135    :{SMALLFONT}{BLACK}Buy land rights and construction rights
-STR_5136    :Land rights
-STR_5137    :Allow lift hill and launch speeds{NEWLINE}up to {VELOCITY}
-STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
-STR_5139    :{WHITE}{STRINGID}
-STR_5140    :Disable brakes failure
-STR_5141    :Disable all breakdowns
-STR_5142    :Normal Speed
-STR_5143    :Quick Speed
-STR_5144    :Fast Speed
-STR_5145    :Turbo Speed
-STR_5146    :Hyper Speed
-STR_5147    :Show cheats button on toolbar
-STR_5148    :{SMALLFONT}{BLACK}Change the game speed
-STR_5149    :{SMALLFONT}{BLACK}Open the cheats window
-STR_5150    :Enable debugging tools
+
 #Thousands separator
 STR_5151    : 
 #Decimal separator
 STR_5152    :,
-STR_5153    :Colour schemes...
-STR_5154    :Hardware display
-STR_5155    :Allow testing of unfinished tracks
-STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
-STR_5157    :Unlock all prices
-STR_5158    :Quit to menu
-STR_5159    :Exit OpenRCT2
-STR_5160    :{MONTH} {STRINGID}, Year {COMMA16}
-STR_5161    :Date Format:
-STR_5162    :Day/Month/Year
-STR_5163    :Month/Day/Year
-STR_5164    :Twitch Channel name
-STR_5165    :Name peeps after followers
-STR_5166    :{SMALLFONT}{BLACK}Will name peeps after channel's Twitch followers
-STR_5167    :Track follower peeps
-STR_5168    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after channel's Twitch followers
-STR_5169    :Name peeps after people in Twitch chat
-STR_5170    :{SMALLFONT}{BLACK}Will name peeps after people in Twitch chat
-STR_5171    :Track chat peeps
-STR_5172    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after Twitch chat participants
-STR_5173    :Pull Twitch chat as news
-STR_5174    :{SMALLFONT}{BLACK}Will use Twitch chat messages preceded by !news for in game notifications
-STR_5175    :Input the name of your Twitch channel
-STR_5176    :Enable Twitch integration
-STR_5177    :Fullscreen mode:
-STR_5178    :{SMALLFONT}{BLACK}Show financial cheats
-STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
-STR_5180    :{SMALLFONT}{BLACK}Show park cheats
-STR_5181    :{SMALLFONT}{BLACK}Show ride cheats
-STR_5182    :{INT32}
-STR_5183    :Base height
-STR_5184    :Enter base height between {COMMA16} and {COMMA16}
-STR_5185    :Water level
-STR_5186    :Enter water level between {COMMA16} and {COMMA16} 
-STR_5187    :Finances
-STR_5188    :New Campaign
-STR_5189    :Research
-STR_5190    :Map
-STR_5191    :Viewport
-STR_5192    :Recent News
-STR_5193    :Land
-STR_5194    :Water
-STR_5195    :Clear Scenery
-STR_5196    :Land Rights
-STR_5197    :Scenery
-STR_5198    :Footpath
-STR_5199    :Ride Construction
-STR_5200    :Track Design Place
-STR_5201    :New Ride
-STR_5202    :Track Design Selection
-STR_5203    :Ride
-STR_5204    :Ride List
-STR_5205    :Guest
-STR_5206    :Guest List
-STR_5207    :Staff
-STR_5208    :Staff List
-STR_5209    :Banner
-STR_5210    :Object Selection
-STR_5211    :Invention List
-STR_5212    :Scenario Options
-STR_5213    :Objective Options
-STR_5214    :Map Generation
-STR_5215    :Track Design Manager
-STR_5216    :Track Design Manager List
-STR_5217    :Cheats
-STR_5218    :Themes
-STR_5219    :Options
-STR_5220    :Keyboard Shortcuts
-STR_5221    :Change Keyboard Shortcut
-STR_5222    :Load/Save
-STR_5223    :Save Prompt
-STR_5224    :Demolish Ride Prompt
-STR_5225    :Fire Staff Prompt
-STR_5226    :Track Delete Prompt
-STR_5227    :Save Overwrite Prompt
-STR_5228    :{SMALLFONT}{BLACK}Main UI
-STR_5229    :{SMALLFONT}{BLACK}Park
-STR_5230    :{SMALLFONT}{BLACK}Tools
-STR_5231    :{SMALLFONT}{BLACK}Rides and Peeps
-STR_5232    :{SMALLFONT}{BLACK}Editors
-STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
-STR_5234    :{SMALLFONT}{BLACK}Prompts
-STR_5235    :{SMALLFONT}{BLACK}Settings
-STR_5236    :Window:
-STR_5237    :Palette:
-STR_5238    :Current Theme:
-STR_5239    :Duplicate
-STR_5240    :Enter a name for the theme
-STR_5241    :Can't change this theme
-STR_5242    :Theme name already exists
-STR_5243    :Invalid characters used
-STR_5244    :Themes
-STR_5245    :Top Toolbar
-STR_5246    :Bottom Toolbar
-STR_5247    :Track Editor Bottom Toolbar
-STR_5248    :Scenario Editor Bottom Toolbar
-STR_5249    :Title Menu Buttons
-STR_5250    :Title Exit Button
-STR_5251    :Title Options Button
-STR_5252    :Title Scenario Selection
-STR_5253    :Park Information
-STR_5254    :Add nausea
-STR_5255    :{MEDIUMFONT}{BLACK}All peeps become nauseous
-STR_5256    :Create a new theme to make changes to
-STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
-STR_5258    :{SMALLFONT}{BLACK}Delete the current theme
-STR_5259    :{SMALLFONT}{BLACK}Rename the current theme
-STR_5260    :Giant Screenshot
-STR_5261    :Filter
-STR_5262    :Wacky Worlds
-STR_5263    :Time Twister
-STR_5264    :Custom
-STR_5265    :{SMALLFONT}{BLACK}Select which content sources are visible
-STR_5266    :{SMALLFONT}{BLACK}Display
-STR_5267    :{SMALLFONT}{BLACK}Culture and Units
-STR_5268    :{SMALLFONT}{BLACK}Audio
-STR_5269    :{SMALLFONT}{BLACK}Controls
-STR_5270    :{SMALLFONT}{BLACK}Miscellaneous
-STR_5271    :{SMALLFONT}{BLACK}Twitch
-STR_5272    :{SMALLFONT}{BLACK}Small Scenery
-STR_5273    :{SMALLFONT}{BLACK}Large Scenery
-STR_5274    :{SMALLFONT}{BLACK}Footpaths
-STR_5275    :Search for Objects
-STR_5276    :Enter the name of an object to search for
-STR_5277    :Clear
+
+# Note: as this is an unmaintained language, don't add new strings unless you intend to become the mainainer.
