@@ -3833,3 +3833,4 @@ STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
 STR_5490    :Disable audio on focus loss
 STR_5491    :Inventions list
 STR_5492    :Scenario options
+STR_5493    :Guests ignore intensities
