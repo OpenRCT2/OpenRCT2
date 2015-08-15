@@ -7665,7 +7665,7 @@ static bool peep_should_go_on_ride_again(rct_peep *peep, rct_ride *ride)
 {
 	if (!(RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x100000)) return false;
 	if (ride->excitement == (ride_rating)0xFFFF) return false;
-	if (ride->intensity > RIDE_RATING(10,00)) return false;
+	if (ride->intensity > RIDE_RATING(10,00) && !gConfigCheat.ignore_ride_intensity) return false;
 	if (peep->happiness < 180) return false;
 	if (peep->energy < 100) return false;
 	if (peep->nausea > 160) return false;
@@ -7694,9 +7694,9 @@ static bool peep_really_liked_ride(rct_peep *peep, rct_ride *ride)
 {
 	return
 		peep->happiness >= 215 &&
-		peep->nausea <= 120 &&
+		((peep->nausea <= 120 &&
 		ride->excitement != (ride_rating)0xFFFF &&
-		ride->intensity <= RIDE_RATING(10,00);
+		ride->intensity <= RIDE_RATING(10,00))||gConfigCheat.ignore_ride_intensity);
 }
 
 /**
@@ -7992,7 +7992,7 @@ static bool sub_6960AB(rct_peep *peep, int rideIndex, int dh, int bp)
 				}
 				if (ride->excitement != 0xFFFF) {
 					if (rideIndex == peep->guest_heading_to_ride_id) {
-						if (ride->intensity > RIDE_RATING(10, 00)) goto loc_6965F1;
+						if (ride->intensity > RIDE_RATING(10, 00) && !gConfigCheat.ignore_ride_intensity) goto loc_6965F1;
 						goto loc_696387;
 					}
 					if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8) != 0) {
@@ -8008,7 +8008,7 @@ static bool sub_6960AB(rct_peep *peep, int rideIndex, int dh, int bp)
 					}
 					ride_rating maxIntensity = min((peep->intensity >> 4) * 100, 1000) + peep->happiness;
 					ride_rating minIntensity = ((peep->intensity & 0x0F) * 100) - peep->happiness;
-					if (ride->intensity < minIntensity) {
+					if (ride->intensity < minIntensity && !gConfigCheat.ignore_ride_intensity) {
 						if (!(bp & 4)) {
 							peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_MORE_THRILLING, rideIndex);
 							if (peep->happiness_growth_rate >= 64) {
@@ -8018,11 +8018,11 @@ static bool sub_6960AB(rct_peep *peep, int rideIndex, int dh, int bp)
 						}
 						goto loc_696658;
 					}
-					if (ride->intensity > maxIntensity) goto loc_6965F1;
+					if (ride->intensity > maxIntensity && !gConfigCheat.ignore_ride_intensity) goto loc_6965F1;
 
 					ride_rating minNausea = RCT2_ADDRESS(0x00982390, uint16)[(peep->nausea_tolerance & 3) * 2] - peep->happiness;
 					ride_rating maxNausea = RCT2_ADDRESS(0x00982392, uint16)[(peep->nausea_tolerance & 3) * 2] + peep->happiness;
-					if (ride->nausea > maxNausea) {
+					if (ride->nausea > maxNausea && !gConfigCheat.ignore_ride_intensity) {
 						if (!(bp & 4)) {
 							peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SICKENING, rideIndex);
 							if (peep->happiness_growth_rate >= 64) {
@@ -8032,15 +8032,15 @@ static bool sub_6960AB(rct_peep *peep, int rideIndex, int dh, int bp)
 						}
 						goto loc_696658;
 					}
-					if (ride->nausea >= 140 && peep->nausea > 160) goto loc_69666E;
+					if (ride->nausea >= 140 && peep->nausea > 160 && !gConfigCheat.ignore_ride_intensity) goto loc_69666E;
 					goto loc_696387;
 				}
 
 				if (RCT2_ADDRESS(0x0097D4F2, uint16)[ride->type * 8] & 0x10) {
 					if (scenario_rand() > 0x1999U) goto loc_69666E;
-					if (ride->max_positive_vertical_g > 500) goto loc_69666E;
-					if (ride->max_negative_vertical_g < -400) goto loc_69666E;
-					if (ride->max_lateral_g > 400) goto loc_69666E;
+					if (ride->max_positive_vertical_g > 500 && !gConfigCheat.ignore_ride_intensity) goto loc_69666E;
+					if (ride->max_negative_vertical_g < -400 && !gConfigCheat.ignore_ride_intensity) goto loc_69666E;
+					if (ride->max_lateral_g > 400 && !gConfigCheat.ignore_ride_intensity) goto loc_69666E;
 				}
 
 			loc_696387:;
