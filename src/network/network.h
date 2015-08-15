@@ -188,6 +188,11 @@ private:
 	std::vector<uint8> chunk_buffer;
 	char password[33];
 
+	bool was_paused_before_client_connected;
+
+	void UpdateServer();
+	void UpdateClient();
+
 private:
 	std::vector<int (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> client_command_handlers;
 	std::vector<int (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> server_command_handlers;

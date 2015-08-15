@@ -36,6 +36,7 @@
 #include "localisation/date.h"
 #include "localisation/localisation.h"
 #include "management/news_item.h"
+#include "network/network.h"
 #include "network/twitch.h"
 #include "object.h"
 #include "openrct2.h"
@@ -370,6 +371,8 @@ void rct2_update_2()
 		RCT2_GLOBAL(0x009DE588, sint16) = 31;
 
 	// TODO: screenshot countdown process
+
+	network_update();
 
 	// check_cmdline_arg();
 	// Screens

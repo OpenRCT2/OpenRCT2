@@ -57,6 +57,17 @@ enum {
 	NETWORK_COMMAND_MAX
 };
 
+const char *NetworkCommandNames[] = {
+	"NETWORK_COMMAND_AUTH",
+	"NETWORK_COMMAND_MAP",
+	"NETWORK_COMMAND_CHAT",
+	"NETWORK_COMMAND_GAMECMD",
+	"NETWORK_COMMAND_TICK",
+	"NETWORK_COMMAND_PLAYERLIST",
+	"NETWORK_COMMAND_PING",
+	"NETWORK_COMMAND_PINGLIST",
+};
+
 NetworkPacket::NetworkPacket()
 {
 	transferred = 0;
@@ -397,52 +408,73 @@ void Network::Update()
 	if (GetMode() == NETWORK_MODE_NONE)
 		return;
 
-	if (GetMode() == NETWORK_MODE_CLIENT) {
-		if (!ProcessConnection(server_connection)) {
-			Close();
+	switch (GetMode()) {
+	case NETWORK_MODE_NONE:
+		return;
+	case NETWORK_MODE_SERVER:
+		UpdateServer();
+		break;
+	case NETWORK_MODE_CLIENT:
+		UpdateClient();
+		break;
+	}
+}
+
+void Network::UpdateServer()
+{
+	auto it = client_connection_list.begin();
+	while (it != client_connection_list.end()) {
+		if (!ProcessConnection(*(*it))) {
+			RemoveClient((*it));
+			it = client_connection_list.begin();
 		} else {
-			ProcessGameCommandQueue();
+			it++;
 		}
-	} else 
-	if (GetMode() == NETWORK_MODE_SERVER) {
-		auto it = client_connection_list.begin();
-		while (it != client_connection_list.end()) {
-			if (!ProcessConnection(*(*it))) {
-				RemoveClient((*it));
-				it = client_connection_list.begin();
-			} else {
-				it++;
-			}
+	}
+	if (SDL_GetTicks() - last_tick_sent_time >= 25) {
+		last_tick_sent_time = SDL_GetTicks();
+		Server_Send_TICK();
+	}
+	if (SDL_GetTicks() - last_ping_sent_time >= 3000) {
+		last_ping_sent_time = SDL_GetTicks();
+		Server_Send_PING();
+		Server_Send_PINGLIST();
+	}
+	SOCKET socket = accept(listening_socket, NULL, NULL);
+	if (socket == INVALID_SOCKET) {
+		if (WSAGetLastError() != WSAEWOULDBLOCK) {
+			PrintError();
+			log_error("Failed to accept client.");
 		}
-		if (SDL_GetTicks() - last_tick_sent_time >= 25) {
-			last_tick_sent_time = SDL_GetTicks();
-			Server_Send_TICK();
-		}
-		if (SDL_GetTicks() - last_ping_sent_time >= 3000) {
-			last_ping_sent_time = SDL_GetTicks();
-			Server_Send_PING();
-			Server_Send_PINGLIST();
-		}
-		SOCKET socket = accept(listening_socket, NULL, NULL);
-		if (socket == INVALID_SOCKET) {
-			if (WSAGetLastError() != WSAEWOULDBLOCK) {
-				PrintError();
-				log_error("Failed to accept client.");
-			}
+	} else {
+		u_long nonblocking = 1;
+		if (ioctlsocket(socket, FIONBIO, &nonblocking) != NO_ERROR) {
+			closesocket(socket);
+			log_error("Failed to set non-blocking mode.");
 		} else {
-			u_long nonblocking = 1;
-			if (ioctlsocket(socket, FIONBIO, &nonblocking) != NO_ERROR) {
-				closesocket(socket);
-				log_error("Failed to set non-blocking mode.");
-			} else {
-				AddClient(socket);
+			AddClient(socket);
+			was_paused_before_client_connected = RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) != 0;
+			if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) == 0) {
+				pause_toggle();
 			}
 		}
 	}
+}
 
-	if (!CheckSRAND(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32), RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32))) {
-		window_network_status_open("Network desync detected");
+void Network::UpdateClient()
+{
+	if (!ProcessConnection(server_connection)) {
 		Close();
+	} else {
+		ProcessGameCommandQueue();
+		if (CheckSRAND(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32), RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32))) {
+			if (server_srand0_tick == 0) {
+				// printf("SRAND OK!\n");
+			}
+		} else {
+			window_network_status_open("Network desync detected");
+			Close();
+		}
 	}
 }
 
@@ -478,6 +510,14 @@ void Network::SendPacketToClients(NetworkPacket& packet)
 
 bool Network::CheckSRAND(uint32 tick, uint32 srand0)
 {
+	if (server_srand0_tick == 0)
+		return true;
+
+	if (tick >= server_srand0_tick) {
+		server_srand0_tick = 0;
+		return true;
+	}
+
 	if (tick == server_srand0_tick) {
 		server_srand0_tick = 0;
 		if (srand0 != server_srand0) {
@@ -634,17 +674,20 @@ void Network::ProcessPacket(NetworkConnection& connection, NetworkPacket& packet
 	uint32 command;
 	packet >> command;
 	if (command < NETWORK_COMMAND_MAX) {
-		if (GetMode() == NETWORK_MODE_CLIENT) {
-			if (client_command_handlers[command]) {
-				(this->*client_command_handlers[command])(connection, packet);
-			}
-		} else
-		if (GetMode() == NETWORK_MODE_SERVER) {
+		// printf("RECV %s\n", NetworkCommandNames[command]);
+		switch (gNetwork.GetMode()) {
+		case NETWORK_MODE_SERVER:
 			if (server_command_handlers[command]) {
 				if (connection.authstatus == NETWORK_AUTH_OK || command == NETWORK_COMMAND_AUTH) {
 					(this->*server_command_handlers[command])(connection, packet);
 				}
 			}
+			break;
+		case NETWORK_MODE_CLIENT:
+			if (client_command_handlers[command]) {
+				(this->*client_command_handlers[command])(connection, packet);
+			}
+			break;
 		}
 	}
 	packet.Clear();
@@ -997,11 +1040,13 @@ void network_send_chat(const char* text)
 
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback)
 {
-	if (gNetwork.GetMode() == NETWORK_MODE_CLIENT) {
-		gNetwork.Client_Send_GAMECMD(eax, ebx, ecx, edx, esi, edi, ebp, callback);
-	} else
-	if (gNetwork.GetMode() == NETWORK_MODE_SERVER) {
+	switch (gNetwork.GetMode()) {
+	case NETWORK_MODE_SERVER:
 		gNetwork.Server_Send_GAMECMD(eax, ebx, ecx, edx, esi, edi, ebp, gNetwork.GetPlayerID(), callback);
+		break;
+	case NETWORK_MODE_CLIENT:
+		gNetwork.Client_Send_GAMECMD(eax, ebx, ecx, edx, esi, edi, ebp, callback);
+		break;
 	}
 }
 
