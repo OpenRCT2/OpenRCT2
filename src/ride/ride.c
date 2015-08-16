@@ -4862,7 +4862,7 @@ foundRideEntry:
 
 	if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-		RCT2_GLOBAL(0x009DEA5E, uint16) = 0x8000;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = 0x8000;
 		return 0;
 	}
 
@@ -5063,7 +5063,7 @@ foundRideEntry:
 	window_invalidate_by_class(WC_RIDE_LIST);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-	RCT2_GLOBAL(0x009DEA5E, uint16) = 0x8000;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = 0x8000;
 	return 0;
 }
 
@@ -5091,18 +5091,18 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 {
 	uint8 ride_id = *(uint8*)edx;
 
-	RCT2_GLOBAL(0x009DEA5E, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA60, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA62, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = 0;
 	rct_ride *ride = &g_ride_list[ride_id];
 	int x = 0, y = 0, z = 0;
 	if(ride->overall_view != (uint16)-1){
 		x = ((ride->overall_view & 0xFF) * 32) + 16;
 		y = ((ride->overall_view >> 8) * 32) + 16;
 		z = map_element_height(x, y);
-		RCT2_GLOBAL(0x009DEA5E, uint16) = x;
-		RCT2_GLOBAL(0x009DEA60, uint16) = y;
-		RCT2_GLOBAL(0x009DEA62, uint16) = z;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
 	}
 	if(!(*ebx & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) && !gConfigCheat.build_in_pause_mode){
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
@@ -5198,9 +5198,9 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 			ride->type = RIDE_TYPE_NULL;
 			window_invalidate_by_class(WC_RIDE_LIST);
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = calculate_park_value();
-			RCT2_GLOBAL(0x009DEA5E, uint16) = x;
-			RCT2_GLOBAL(0x009DEA60, uint16) = y;
-			RCT2_GLOBAL(0x009DEA62, uint16) = z;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
 			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
 			return;
 		}else{
@@ -6307,8 +6307,8 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 	// When in known station num mode rideIndex is known and z is unknown
 
 	RCT2_GLOBAL(0x009E32B8, uint32) = 0;
-	RCT2_GLOBAL(0x009DEA5E, sint16) = x;
-	RCT2_GLOBAL(0x009DEA60, sint16) = y;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, sint16) = x;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, sint16) = y;
 
 	if (!sub_68B044()) {
 		return MONEY32_UNDEFINED;
@@ -6411,7 +6411,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 		}
 
 		z = ride->station_heights[station_num] * 8;
-		RCT2_GLOBAL(0x009DEA62, sint16) = z;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, sint16) = z;
 
 		if (flags & GAME_COMMAND_FLAG_APPLY && !(flags & 0x48)){
 			footpath_remove_litter(x, y, z);

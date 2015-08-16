@@ -374,9 +374,9 @@ static void window_maze_construction_entrance_tooldown(int x, int y, rct_window*
 	sound_play_panned(
 		SOUND_PLACE_ITEM,
 		0x8001,
-		RCT2_GLOBAL(0x009DEA5E, sint16),
-		RCT2_GLOBAL(0x009DEA60, sint16),
-		RCT2_GLOBAL(0x009DEA62, uint16));
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, sint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, sint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
 
 	rct_ride* ride = GET_RIDE(rideIndex);
 	if (ride_are_all_possible_entrances_and_exits_built(ride)){

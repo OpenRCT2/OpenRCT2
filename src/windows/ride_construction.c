@@ -3629,9 +3629,9 @@ static void ride_construction_tooldown_entrance_exit(int screenX, int screenY)
 	sound_play_panned(
 		SOUND_PLACE_ITEM,
 		0x8001,
-		RCT2_GLOBAL(0x009DEA5E, uint16),
-		RCT2_GLOBAL(0x009DEA60, uint16),
-		RCT2_GLOBAL(0x009DEA62, uint16)
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16)
 	);
 
 	rct_ride *ride = GET_RIDE(RCT2_GLOBAL(0x00F44192, uint8));

@@ -347,7 +347,7 @@ static void window_staff_list_tooldown(rct_window *w, int widgetIndex, int x, in
 				continue;
 
 			if (isPatrolAreaSet) {
-				if (!(gStaffModes[peep->staff_id] & 2)) {
+				if (!(RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] & 2)) {
 					continue;
 				}
 				if (!mechanic_is_location_in_patrol(peep, x, y)) {

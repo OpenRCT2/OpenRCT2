@@ -3181,9 +3181,9 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 	int z = *edi;
 	uint8 flags = *ebx;
 
-	RCT2_GLOBAL(0x009DEA5E, sint16) = x + 16;
-	RCT2_GLOBAL(0x009DEA60, sint16) = y + 16;
-	RCT2_GLOBAL(0x009DEA62, sint16) = z;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, sint16) = x + 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, sint16) = y + 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, sint16) = z;
 
 	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)){
 		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode){
@@ -3483,9 +3483,9 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	rct_map_element *mapElement;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
-	RCT2_GLOBAL(0x009DEA5E, uint16) = originX + 16;
-	RCT2_GLOBAL(0x009DEA60, uint16) = originY + 16;
-	RCT2_GLOBAL(0x009DEA62, uint16) = originZ;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = originX + 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = originY + 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = originZ;
 	direction &= 3;
 	RCT2_GLOBAL(0x00F441D5, uint32) = properties_1;
 	RCT2_GLOBAL(0x00F441D9, uint32) = properties_2;
@@ -3965,9 +3965,9 @@ void game_command_place_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, 
 
 money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY, sint16 originZ, uint8 rotation, uint8 flags){
 	RCT2_GLOBAL(0x00141F56C, uint8) = 0;
-	RCT2_GLOBAL(0x009DEA5E, sint16) = originX + 16;
-	RCT2_GLOBAL(0x009DEA60, sint16) = originY + 16;
-	RCT2_GLOBAL(0x009DEA62, sint16) = originZ;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, sint16) = originX + 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, sint16) = originY + 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, sint16) = originZ;
 	RCT2_GLOBAL(0x00F440E1, uint8) = sequence;
 
 	switch (type){
@@ -4252,9 +4252,9 @@ void game_command_set_brakes_speed(int *eax, int *ebx, int *ecx, int *edx, int *
 	brakesSpeed = ((*ebx >> 8) & 0xFF);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
-	RCT2_GLOBAL(0x009DEA5E, uint8) = x + 16;
-	RCT2_GLOBAL(0x009DEA60, uint8) = y + 16;
-	RCT2_GLOBAL(0x009DEA62, uint8) = z;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint8) = x + 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint8) = y + 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint8) = z;
 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		*ebx = 0;

@@ -146,12 +146,12 @@ void rct1_import_s4(rct1_s4 *s4)
 	}
 
 	memcpy((void*)0x0135A8F4, &s4->string_table, 0x2F51C);
-	memset((void*)0x013CA672, 0, 204);
+	memset((void*)RCT2_ADDRESS_STAFF_MODE_ARRAY, 0, 204);
 	memcpy((void*)0x0138B580, &s4->map_animations, 0x258F2);
 	memcpy((void*)0x013C6A72, &s4->patrol_areas, sizeof(s4->patrol_areas));
 
 	char *esi = (char*)0x13C6A72;
-	char *edi = (char*)0x13B0E72;
+	char *edi = (char*)RCT2_ADDRESS_STAFF_PATROL_AREAS;
 	int ebx, edx = 116;
 	do {
 		ebx = 32;
@@ -173,7 +173,7 @@ void rct1_import_s4(rct1_s4 *s4)
 		memset(edi, 0, 64); edi += 64;
 	} while (--edx);
 
-	memcpy((void*)0x013CA672, &s4->unk_1F42AA, 116);
+	memcpy((void*)RCT2_ADDRESS_STAFF_MODE_ARRAY, &s4->unk_1F42AA, 116);
 	memcpy((void*)0x013CA73A, &s4->unk_1F431E, 4);
 	memcpy((void*)0x013CA73E, &s4->unk_1F4322, 0x41EA);
 }
