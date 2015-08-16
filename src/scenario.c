@@ -340,7 +340,6 @@ void scenario_begin()
 
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA5C, uint16) = 62000; // (doesn't appear to ever be read)
 	gGameSpeed = 1;
 }
 

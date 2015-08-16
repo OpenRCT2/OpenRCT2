@@ -329,12 +329,6 @@ void game_update()
 	// Input
 	RCT2_GLOBAL(0x0141F568, uint8) = RCT2_GLOBAL(0x0013CA740, uint8);
 	game_handle_input();
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SAVE_TIMER, uint8) != 255) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SAVE_TIMER, uint8)++;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SAVE_TIMER, uint8) == 255)
-			config_save_default();
-	}
 }
 
 void game_logic_update()
