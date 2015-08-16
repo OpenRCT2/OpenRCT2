@@ -26,6 +26,7 @@
 #include "network.h"
 extern "C" {
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
 #include "../interface/chat.h"
 #include "../interface/window.h"
@@ -301,7 +302,7 @@ bool Network::BeginClient(const char* host, unsigned short port)
 	server_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (server_socket == INVALID_SOCKET) {
 		log_error("Unable to create socket.");
-		return 0;
+		return false;
 	}
 
 	SOCKADDR_IN server_address;
@@ -326,7 +327,7 @@ bool Network::BeginClient(const char* host, unsigned short port)
 
 	mode = NETWORK_MODE_CLIENT;
 
-	Client_Send_AUTH(OPENRCT2_VERSION, "Player", "");
+	Client_Send_AUTH(OPENRCT2_VERSION, gConfigNetwork.player_name, "");
 	return true;
 }
 

@@ -162,7 +162,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	}
 
 	_loadsaveType = type;
-	switch (type) {
+	switch (type & 0x0F) {
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME):
 		w->widgets[WIDX_TITLE].image = STR_LOAD_GAME;
 		break;
@@ -186,8 +186,8 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	w->no_list_items = 0;
 	w->selected_list_item = -1;
 
-	includeNewItem = (type & 1) == LOADSAVETYPE_SAVE;
-	switch (type & 6) {
+	includeNewItem = (type & 0x01) == LOADSAVETYPE_SAVE;
+	switch (type & 0x0E) {
 	case LOADSAVETYPE_GAME:
 		platform_get_user_directory(path, "save");
 		if (!platform_ensure_directory_exists(path)) {
@@ -383,7 +383,7 @@ static void window_loadsave_scrollmousedown(rct_window *w, int scrollIndex, int 
 		} else {
 			// TYPE_FILE
 			// Load or overwrite
-			if ((_loadsaveType & 1) == LOADSAVETYPE_SAVE)
+			if ((_loadsaveType & 0x01) == LOADSAVETYPE_SAVE)
 				window_overwrite_prompt_open(_listItems[selectedItem].name, _listItems[selectedItem].path);
 			else
 				window_loadsave_select(w, _listItems[selectedItem].path);
@@ -730,103 +730,103 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 static void window_loadsave_select(rct_window *w, const char *path)
 {
 	SDL_RWops* rw;
-	switch (_loadsaveType) {
+	switch (_loadsaveType & 0x0E) {
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
-			if (gLoadSaveTitleSequenceSave) {
-				utf8 newName[MAX_PATH];
-				char *extension = (char*)path_get_extension(path_get_filename(path));
-				strcpy(newName, path_get_filename(path));
-				if (_stricmp(extension, ".sv6") != 0 && _stricmp(extension, ".sc6") != 0)
-					strcat(newName, ".sv6");
-				if (title_sequence_save_exists(gCurrentTitleSequence, newName)) {
-					RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&_listItems[w->selected_list_item].name;
-					window_text_input_open(w, WIDX_SCROLL, 5435, 5404, 1170, (uint32)_listItems[w->selected_list_item].name, TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1);
-				}
-				else {
-					title_sequence_add_save(gCurrentTitleSequence, path, newName);
-					window_close(w);
-				}
-			}
-			else if (game_load_save(path)) {
-				window_close(w);
-				gfx_invalidate_screen();
-				rct2_endupdate();
+		if (gLoadSaveTitleSequenceSave) {
+			utf8 newName[MAX_PATH];
+			char *extension = (char*)path_get_extension(path_get_filename(path));
+			strcpy(newName, path_get_filename(path));
+			if (_stricmp(extension, ".sv6") != 0 && _stricmp(extension, ".sc6") != 0)
+				strcat(newName, ".sv6");
+			if (title_sequence_save_exists(gCurrentTitleSequence, newName)) {
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&_listItems[w->selected_list_item].name;
+				window_text_input_open(w, WIDX_SCROLL, 5435, 5404, 1170, (uint32)_listItems[w->selected_list_item].name, TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1);
 			}
 			else {
-				// 1050, not the best message...
-				window_error_open(STR_LOAD_GAME, 1050);
+				title_sequence_add_save(gCurrentTitleSequence, path, newName);
+				window_close(w);
 			}
-			break;
-		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
-			rw = platform_sdl_rwfromfile(path, "wb+");
-			if (rw != NULL) {
-				int success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 1 : 0);
-				SDL_RWclose(rw);
-				if (success) {
-					window_close_by_class(WC_LOADSAVE);
-					game_do_command(0, 1047, 0, -1, GAME_COMMAND_SET_RIDE_APPEARANCE, 0, 0);
-					gfx_invalidate_screen();
-				} else {
-					window_error_open(STR_SAVE_GAME, 1047);
-				}
+		}
+		else if (game_load_save(path)) {
+			window_close(w);
+			gfx_invalidate_screen();
+			rct2_endupdate();
+		}
+		else {
+			// 1050, not the best message...
+			window_error_open(STR_LOAD_GAME, 1050);
+		}
+		break;
+	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
+		rw = platform_sdl_rwfromfile(path, "wb+");
+		if (rw != NULL) {
+			int success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 1 : 0);
+			SDL_RWclose(rw);
+			if (success) {
+				window_close_by_class(WC_LOADSAVE);
+				game_do_command(0, 1047, 0, -1, GAME_COMMAND_SET_RIDE_APPEARANCE, 0, 0);
+				gfx_invalidate_screen();
 			} else {
 				window_error_open(STR_SAVE_GAME, 1047);
 			}
-			break;
-		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
-			editor_load_landscape(path);
-			if (1) {
+		} else {
+			window_error_open(STR_SAVE_GAME, 1047);
+		}
+		break;
+	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
+		editor_load_landscape(path);
+		if (1) {
+			gfx_invalidate_screen();
+			rct2_endupdate();
+		}
+		else {
+			// 1050, not the best message...
+			window_error_open(STR_LOAD_LANDSCAPE, 1050);
+		}
+		break;
+	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
+		rw = platform_sdl_rwfromfile(path, "wb+");
+		if (rw != NULL) {
+			int success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2);
+			SDL_RWclose(rw);
+			if (success) {
+				window_close_by_class(WC_LOADSAVE);
 				gfx_invalidate_screen();
-				rct2_endupdate();
-			}
-			else {
-				// 1050, not the best message...
-				window_error_open(STR_LOAD_LANDSCAPE, 1050);
-			}
-			break;
-		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
-			rw = platform_sdl_rwfromfile(path, "wb+");
-			if (rw != NULL) {
-				int success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2);
-				SDL_RWclose(rw);
-				if (success) {
-					window_close_by_class(WC_LOADSAVE);
-					gfx_invalidate_screen();
-				} else {
-					window_error_open(STR_SAVE_LANDSCAPE, 1049);
-				}
 			} else {
 				window_error_open(STR_SAVE_LANDSCAPE, 1049);
 			}
-			break;
-		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
-		{
-			rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
-			int parkFlagsBackup = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_18;
-			s6Info->var_000 = 255;
-			rw = platform_sdl_rwfromfile(path, "wb+");
-			int success = 0;
-			if (rw != NULL) {
-				success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2);
-				SDL_RWclose(rw);
-			}
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = parkFlagsBackup;
-
-			if (success) {
-				window_close_by_class(WC_LOADSAVE);
-				title_load();
-			} else {
-				window_error_open(STR_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED);
-				s6Info->var_000 = 4;
-			}
+		} else {
+			window_error_open(STR_SAVE_LANDSCAPE, 1049);
 		}
 		break;
-		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
-			window_install_track_open(path);
-			window_close_by_class(WC_LOADSAVE);
-			break;
+	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
+	{
+		rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+		int parkFlagsBackup = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_18;
+		s6Info->var_000 = 255;
+		rw = platform_sdl_rwfromfile(path, "wb+");
+		int success = 0;
+		if (rw != NULL) {
+			success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2);
+			SDL_RWclose(rw);
 		}
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = parkFlagsBackup;
+
+		if (success) {
+			window_close_by_class(WC_LOADSAVE);
+			title_load();
+		} else {
+			window_error_open(STR_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED);
+			s6Info->var_000 = 4;
+		}
+		break;
+	}
+	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
+		window_install_track_open(path);
+		window_close_by_class(WC_LOADSAVE);
+		break;
+	}
 }
 
 #pragma region Overwrite prompt

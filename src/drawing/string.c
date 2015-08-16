@@ -1268,6 +1268,8 @@ static void ttf_process_initial_colour(int colour, text_draw_info *info)
 
 static void ttf_draw_string(rct_drawpixelinfo *dpi, char *text, int colour, int x, int y)
 {
+	if (text == NULL) return;
+
 	text_draw_info info;
 	info.font_sprite_base = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
 	info.flags = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16);

@@ -24,6 +24,7 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../sprites.h"
+#include "error.h"
 
 #define WWIDTH_MIN 500
 #define WHEIGHT_MIN 300
@@ -79,8 +80,6 @@ static void window_server_list_invalidate(rct_window *w);
 static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 
-static void server_list_get_item_button(int buttonIndex, int x, int y, int width, int *outX, int *outY);
-
 static rct_window_event_list window_server_list_events = {
 	window_server_list_close,
 	window_server_list_mouseup,
@@ -114,10 +113,15 @@ static rct_window_event_list window_server_list_events = {
 
 static int _hoverButtonIndex = -1;
 
+static void server_list_get_item_button(int buttonIndex, int x, int y, int width, int *outX, int *outY);
+static void server_list_update_player_name(rct_window *w);
 static void server_list_load_saved_servers();
 static void server_list_save_saved_servers();
 static void dispose_saved_server_list();
 static void dispose_saved_server(saved_server *serverInfo);
+static void add_saved_server(char *address);
+static void remove_saved_server(int index);
+static void join_server(char *address, bool spectate);
 
 void window_server_list_open()
 {
@@ -162,11 +166,7 @@ void window_server_list_open()
 
 static void window_server_list_close(rct_window *w)
 {
-	if (strlen(_playerName) > 0) {
-		SafeFree(gConfigNetwork.player_name);
-		gConfigNetwork.player_name = _strdup(_playerName);
-		config_save_default();
-	}
+	server_list_update_player_name(w);
 	dispose_saved_server_list();
 }
 
@@ -181,6 +181,9 @@ static void window_server_list_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_ADD_SERVER:
 		window_text_input_open(w, widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, STR_NONE, 0, 128);
+		break;
+	case WIDX_START_SERVER:
+		window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME | LOADSAVETYPE_NETWORK, NULL);
 		break;
 	}
 }
@@ -206,15 +209,23 @@ static void window_server_list_scroll_getsize(rct_window *w, int scrollIndex, in
 
 static void window_server_list_scroll_mousedown(rct_window *w, int scrollIndex, int x, int y)
 {
-	if (w->selected_list_item == -1) return;
+	int serverIndex = w->selected_list_item;
+	if (serverIndex < 0) return;
+	if (serverIndex >= _numSavedServers) return;
+
+	char *serverAddress = _savedServers[serverIndex].address;
 	
 	switch (_hoverButtonIndex) {
 	case WIDX_LIST_REMOVE:
+		remove_saved_server(serverIndex);
+		w->no_list_items = _numSavedServers;
+		window_invalidate(w);
 		break;
 	case WIDX_LIST_SPECTATE:
+		join_server(serverAddress, true);
 		break;
 	default:
-		// Join
+		join_server(serverAddress, false);
 		break;
 	}
 }
@@ -251,20 +262,29 @@ static void window_server_list_scroll_mouseover(rct_window *w, int scrollIndex, 
 
 static void window_server_list_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	if (widgetIndex != WIDX_PLAYER_NAME_INPUT || text == NULL)
-		return;
+	if (text == NULL || text[0] == 0) return;
 
-	if (strcmp(_playerName, text) == 0)
-		return;
+	switch (widgetIndex) {
+	case WIDX_PLAYER_NAME_INPUT:
+		if (strcmp(_playerName, text) == 0)
+			return;
 
-	if (strlen(text) == 0) {
-		memset(_playerName, 0, sizeof(_playerName));
-	} else {
-		memset(_playerName, 0, sizeof(_playerName));
-		strcpy(_playerName, text);
+		if (strlen(text) == 0) {
+			memset(_playerName, 0, sizeof(_playerName));
+		} else {
+			memset(_playerName, 0, sizeof(_playerName));
+			strcpy(_playerName, text);
+		}
+
+		widget_invalidate(w, WIDX_PLAYER_NAME_INPUT);
+		break;
+
+	case WIDX_ADD_SERVER:
+		add_saved_server(text);
+		w->no_list_items = _numSavedServers;
+		window_invalidate(w);
+		break;
 	}
-
-	widget_invalidate(w, WIDX_PLAYER_NAME_INPUT);
 }
 
 static void window_server_list_invalidate(rct_window *w)
@@ -346,6 +366,15 @@ static void server_list_get_item_button(int buttonIndex, int x, int y, int width
 {
 	*outX = width - 3 - 36 - (30 * buttonIndex);
 	*outY = y + 2;
+}
+
+static void server_list_update_player_name(rct_window *w)
+{
+	if (strlen(_playerName) > 0) {
+		SafeFree(gConfigNetwork.player_name);
+		gConfigNetwork.player_name = _strdup(_playerName);
+		config_save_default();
+	}
 }
 
 static char *freadstralloc(FILE *file)
@@ -450,4 +479,57 @@ static void dispose_saved_server(saved_server *serverInfo)
 	SafeFree(serverInfo->address);
 	SafeFree(serverInfo->name);
 	SafeFree(serverInfo->description);
+}
+
+static void add_saved_server(char *address)
+{
+	_numSavedServers++;
+	if (_savedServers == NULL) {
+		_savedServers = malloc(_numSavedServers * sizeof(saved_server));
+	} else {
+		_savedServers = realloc(_savedServers, _numSavedServers * sizeof(saved_server));
+	}
+
+	int index = _numSavedServers - 1;
+	_savedServers[index].address = _strdup(address);
+	_savedServers[index].name = _strdup(address);
+	_savedServers[index].description = NULL;
+}
+
+static void remove_saved_server(int index)
+{
+	if (_numSavedServers <= index) return;
+
+	int serversToMove = _numSavedServers - index - 1;
+	memmove(&_savedServers[index], &_savedServers[index + 1], serversToMove * sizeof(saved_server));
+
+	_numSavedServers--;
+	_savedServers = realloc(_savedServers, _numSavedServers * sizeof(saved_server));
+}
+
+static char *substr(char *start, int length)
+{
+	char *result = malloc(length + 1);
+	memcpy(result, start, length);
+	result[length] = 0;
+	return result;
+}
+
+static void join_server(char *address, bool spectate)
+{
+	int port = gConfigNetwork.default_port;
+
+	char *colon = strchr(address, ':');
+	if (colon != NULL) {
+		address = substr(address, colon - address);
+		sscanf(colon + 1, "%d", &port);
+	}
+
+	if (!network_begin_client(address, port)) {
+		window_error_open(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE);
+	}
+
+	if (colon != NULL) {
+		free(address);
+	}
 }

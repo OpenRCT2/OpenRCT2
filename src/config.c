@@ -20,12 +20,13 @@
 
 #include "addresses.h"
 #include "config.h"
+#include "interface/themes.h"
+#include "interface/title_sequences.h"
 #include "localisation/language.h"
 #include "localisation/localisation.h"
-#include "util/util.h"
-#include "interface/themes.h"
+#include "network/network.h"
 #include "openrct2.h"
-#include "interface/title_sequences.h"
+#include "util/util.h"
 
 // Magic number for original game cfg file
 static const int MagicNumber = 0x0003113A;
@@ -232,7 +233,7 @@ config_property_definition _twitchDefinitions[] = {
 
 config_property_definition _networkDefinitions[] = {
 	{ offsetof(network_configuration, player_name),						"player_name",					CONFIG_VALUE_TYPE_STRING,		{.value_string = "Player" },	NULL					},
-	{ offsetof(network_configuration, default_port),					"default_port",					CONFIG_VALUE_TYPE_UINT32,		true,							NULL					},
+	{ offsetof(network_configuration, default_port),					"default_port",					CONFIG_VALUE_TYPE_UINT32,		NETWORK_DEFAULT_PORT,			NULL					},
 };
 
 config_section_definition _sectionDefinitions[] = {
