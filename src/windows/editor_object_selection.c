@@ -1,3 +1,4 @@
+
 /*****************************************************************************
 * Copyright (c) 2014 Dániel Tar
 * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.

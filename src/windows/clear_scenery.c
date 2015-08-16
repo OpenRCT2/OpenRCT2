@@ -139,8 +139,6 @@ static void window_clear_scenery_close(rct_window *w)
  */
 static void window_clear_scenery_mouseup(rct_window *w, int widgetIndex)
 {
-	int limit;
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);

@@ -519,6 +519,9 @@
     <ClCompile Include="..\src\interface\chat.c">
       <Filter>Source\Interface</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\windows\server_list.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">

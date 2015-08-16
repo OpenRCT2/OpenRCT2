@@ -2035,6 +2035,12 @@ enum {
 	STR_PLAYER_LIST = 5495,
 	STR_PLAYER = 5496,
 	STR_PING = 5497,
+	STR_SERVER_LIST = 5498,
+	STR_PLAYER_NAME = 5499,
+	STR_ADD_SERVER = 5500,
+	STR_START_SERVER = 5501,
+	STR_MULTIPLAYER = 5502,
+	STR_ENTER_HOSTNAME_OR_IP_ADDRESS = 5503,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

@@ -35,6 +35,7 @@ enum {
 	WIDX_CONTINUE_SAVED_GAME,
 	WIDX_SHOW_TUTORIAL,
 	WIDX_GAME_TOOLS,
+	WIDX_MULTIPLAYER
 };
 
 static rct_widget window_title_menu_widgets[] = {
@@ -42,6 +43,7 @@ static rct_widget window_title_menu_widgets[] = {
 	{ WWT_IMGBTN, 2, 82, 163, 0, 81, SPR_MENU_LOAD_GAME, STR_CONTINUE_SAVED_GAME_TIP },
 	{ WWT_IMGBTN, 2, 164, 245, 0, 81, SPR_MENU_TUTORIAL, STR_SHOW_TUTORIAL_TIP },
 	{ WWT_IMGBTN, 2, 246, 327, 0, 81, SPR_MENU_TOOLBOX, STR_GAME_TOOLS },
+	{ WWT_DROPDOWN_BUTTON, 2, 82, 245, 88, 99, STR_MULTIPLAYER, STR_NONE },
 	{ WIDGETS_END },
 };
 
@@ -93,14 +95,23 @@ void window_title_menu_open()
 
 	window = window_create(
 		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 328) / 2, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 142,
-		328, 82,
+		328, 100,
 		&window_title_menu_events,
 		WC_TITLE_MENU,
-		WF_STICK_TO_BACK | WF_TRANSPARENT
+		WF_STICK_TO_BACK | WF_TRANSPARENT | WF_5
 	);
 	window->widgets = window_title_menu_widgets;
-	window->enabled_widgets |= (8 | 2 | 1);
-	window->disabled_widgets |= (4); // Disable tutorial button
+	window->enabled_widgets = (
+		(1 << WIDX_START_NEW_GAME) |
+		(1 << WIDX_CONTINUE_SAVED_GAME) |
+		(1 << WIDX_SHOW_TUTORIAL) |
+		(1 << WIDX_GAME_TOOLS) |
+		(1 << WIDX_MULTIPLAYER)
+	);
+
+	// Disable tutorial button
+	window->disabled_widgets = (1 << WIDX_SHOW_TUTORIAL);
+
 	window_init_scroll_widgets(window);
 }
 
@@ -112,6 +123,9 @@ static void window_title_menu_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_CONTINUE_SAVED_GAME:
 		game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
+		break;
+	case WIDX_MULTIPLAYER:
+		window_server_list_open();
 		break;
 	}
 }
@@ -175,6 +189,15 @@ static void window_title_menu_cursor(rct_window *w, int widgetIndex, int x, int 
 
 static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
+	gfx_fill_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + 82 - 1, 0x2000000 | 51);
+	gfx_fill_rect(
+		dpi,
+		w->x + window_title_menu_widgets[WIDX_MULTIPLAYER].left,
+		w->y + window_title_menu_widgets[WIDX_MULTIPLAYER].top,
+		w->x + window_title_menu_widgets[WIDX_MULTIPLAYER].right,
+		w->y + window_title_menu_widgets[WIDX_MULTIPLAYER].bottom,
+		0x2000000 | 51
+	);
 	window_draw_widgets(w, dpi);
 }
 
