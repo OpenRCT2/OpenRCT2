@@ -147,7 +147,8 @@ typedef struct {
 	uint8 var_9;
 } rct_ride_music_info;
 
-extern rct_ride_music_info* ride_music_info_list[46];
+#define NUM_DEFAULT_MUSIC_TRACKS 46
+extern rct_ride_music_info* ride_music_info_list[NUM_DEFAULT_MUSIC_TRACKS];
 extern rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 extern rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
 extern rct_vehicle_sound_params *gVehicleSoundParamsListEnd;

@@ -3313,7 +3313,7 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 #define INIT_MUSIC_INFO(pathid, offset, length, unknown) (rct_ride_music_info[]){length, offset, pathid, unknown}
 
 //0x009AF1C8
-rct_ride_music_info* ride_music_info_list[46] = {
+rct_ride_music_info* ride_music_info_list[NUM_DEFAULT_MUSIC_TRACKS] = {
 	INIT_MUSIC_INFO(PATH_ID_CSS4, 1378, 8139054, 0),
 	INIT_MUSIC_INFO(PATH_ID_CSS5, 1378, 7796656, 0),
 	INIT_MUSIC_INFO(PATH_ID_CSS6, 1378, 15787850, 0),

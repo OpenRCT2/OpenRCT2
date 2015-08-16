@@ -23,6 +23,7 @@
 #include "../interface/viewport.h"
 #include "../interface/window.h"
 #include "../platform/platform.h"
+#include "../ride/ride.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
 #include "audio.h"
