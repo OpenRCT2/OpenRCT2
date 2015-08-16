@@ -23,6 +23,7 @@
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
+#include "../sprites.h"
 
 enum WINDOW_PLAYER_LIST_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -210,6 +211,8 @@ static void window_player_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 	gfx_draw_string_left(dpi, STR_PLAYER, w, w->colours[2], w->x + 6, 58 - 12 + w->y + 1);
 	gfx_draw_string_left(dpi, STR_PING, w, w->colours[2], w->x + 246, 58 - 12 + w->y + 1);
+
+	gfx_draw_sprite(dpi, SPR_TAB_GUESTS_0, w->x + w->widgets[WIDX_TAB1].left, w->y + w->widgets[WIDX_TAB1].top, 0);
 }
 
 static void window_player_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)

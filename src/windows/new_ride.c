@@ -189,7 +189,7 @@ static rct_widget window_new_ride_widgets[] = {
 	{ WWT_GROUPBOX,			2,	3,		292,	47,		116,	STR_CURRENTLY_IN_DEVELOPMENT,			STR_NONE							},
 	{ WWT_GROUPBOX,			2,	3,		292,	124,	188,	STR_LAST_DEVELOPMENT,					STR_NONE							},
 	{ WWT_FLATBTN,			2,	265,	288,	161,	184,	0xFFFFFFFF,								STR_RESEARCH_SHOW_DETAILS_TIP		},
-	{ WWT_FLATBTN,			2,	265,	288,	68,		91,		5190,									STR_FINANCES_RESEARCH				},
+	{ WWT_FLATBTN,			2,	265,	288,	68,		91,		5190,									STR_FINANCES_RESEARCH_TIP				},
 	{ WIDGETS_END },
 };
 
