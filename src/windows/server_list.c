@@ -37,7 +37,7 @@ typedef struct {
 	utf8 *description;
 } saved_server;
 
-char _playerName[64] = "Player";
+char _playerName[64];
 saved_server *_savedServers = NULL;
 int _numSavedServers = 0;
 
@@ -67,6 +67,7 @@ static rct_widget window_server_list_widgets[] = {
 	{ WIDGETS_END },
 };
 
+static void window_server_list_close(rct_window *w);
 static void window_server_list_mouseup(rct_window *w, int widgetIndex);
 static void window_server_list_resize(rct_window *w);
 static void window_server_list_update(rct_window *w);
@@ -81,7 +82,7 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 static void server_list_get_item_button(int buttonIndex, int x, int y, int width, int *outX, int *outY);
 
 static rct_window_event_list window_server_list_events = {
-	NULL,
+	window_server_list_close,
 	window_server_list_mouseup,
 	window_server_list_resize,
 	NULL,
@@ -112,6 +113,11 @@ static rct_window_event_list window_server_list_events = {
 };
 
 static int _hoverButtonIndex = -1;
+
+static void server_list_load_saved_servers();
+static void server_list_save_saved_servers();
+static void dispose_saved_server_list();
+static void dispose_saved_server(saved_server *serverInfo);
 
 void window_server_list_open()
 {
@@ -148,15 +154,20 @@ void window_server_list_open()
 
 	window_set_resize(window, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
 
-	_numSavedServers = 2;
-	_savedServers = malloc(_numSavedServers * sizeof(saved_server));
-	_savedServers[0].address = "127.0.0.1";
-	_savedServers[0].name = "localhost";
-	_savedServers[0].description = "Home sweet home.";
-	_savedServers[1].address = "81.124.111.146:12428";
-	_savedServers[1].name = "Another server, #1";
-	_savedServers[1].description = "Another server...";
+	strncpy(_playerName, gConfigNetwork.player_name, sizeof(_playerName));
+
+	server_list_load_saved_servers();
 	window->no_list_items = _numSavedServers;
+}
+
+static void window_server_list_close(rct_window *w)
+{
+	if (strlen(_playerName) > 0) {
+		SafeFree(gConfigNetwork.player_name);
+		gConfigNetwork.player_name = _strdup(_playerName);
+		config_save_default();
+	}
+	dispose_saved_server_list();
 }
 
 static void window_server_list_mouseup(rct_window *w, int widgetIndex)
@@ -335,4 +346,108 @@ static void server_list_get_item_button(int buttonIndex, int x, int y, int width
 {
 	*outX = width - 3 - 36 - (30 * buttonIndex);
 	*outY = y + 2;
+}
+
+static char *freadstralloc(FILE *file)
+{
+	int capacity = 64;
+	char *buffer = malloc(capacity);
+
+	int length = 0;
+	int c;
+	for (;;) {
+		c = fgetc(file);
+		if (c == EOF) break;
+		if (c == 0) break;
+
+		if (length > capacity) {
+			capacity *= 2;
+			buffer = realloc(buffer, capacity);
+		}
+		buffer[length] = c;
+		length++;
+	}
+
+	buffer = realloc(buffer, length + 1);
+	buffer[length] = 0;
+	return buffer;
+}
+
+static void server_list_load_saved_servers()
+{
+	utf8 path[MAX_PATH];
+	FILE *file;
+
+	platform_get_user_directory(path, NULL);
+	strcat(path, "servers.cfg");
+
+	file = fopen(path, "rb");
+	if (file == NULL) {
+		return;
+	}
+
+	dispose_saved_server_list();
+
+	// Read number of saved servers
+	fread(&_numSavedServers, sizeof(uint32), 1, file);
+	_savedServers = malloc(_numSavedServers * sizeof(saved_server));
+	
+	// Load each saved server
+	for (int i = 0; i < _numSavedServers; i++) {
+		saved_server *serverInfo = &_savedServers[i];
+
+		serverInfo->address = freadstralloc(file);
+		serverInfo->name = freadstralloc(file);
+		serverInfo->description = freadstralloc(file);
+	}
+
+	fclose(file);
+}
+
+static void server_list_save_saved_servers()
+{
+	utf8 path[MAX_PATH];
+	FILE *file;
+
+	platform_get_user_directory(path, NULL);
+	strcat(path, "servers.cfg");
+
+	file = fopen(path, "wb");
+	if (file == NULL) {
+		log_error("Unable to save servers.");
+		return;
+	}
+
+	// Write number of saved servers
+	fwrite(&_numSavedServers, sizeof(uint32), 1, file);
+
+	// Write each saved server
+	for (int i = 0; i < _numSavedServers; i++) {
+		saved_server *serverInfo = &_savedServers[i];
+
+		fwrite(serverInfo->address, strlen(serverInfo->address) + 1, 1, file);
+		fwrite(serverInfo->name, strlen(serverInfo->name) + 1, 1, file);
+		fwrite(serverInfo->description, strlen(serverInfo->description) + 1, 1, file);
+	}
+
+	fclose(file);
+}
+
+static void dispose_saved_server_list()
+{
+	if (_savedServers != NULL) {
+		for (int i = 0; i < _numSavedServers; i++) {
+			dispose_saved_server(&_savedServers[i]);
+		}
+		free(_savedServers);
+		_savedServers = NULL;
+	}
+	_numSavedServers = 0;
+}
+
+static void dispose_saved_server(saved_server *serverInfo)
+{
+	SafeFree(serverInfo->address);
+	SafeFree(serverInfo->name);
+	SafeFree(serverInfo->description);
 }

@@ -230,12 +230,18 @@ config_property_definition _twitchDefinitions[] = {
 	{ offsetof(twitch_configuration, enable_news),						"news",							CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					}
 };
 
+config_property_definition _networkDefinitions[] = {
+	{ offsetof(network_configuration, player_name),						"player_name",					CONFIG_VALUE_TYPE_STRING,		{.value_string = "Player" },	NULL					},
+	{ offsetof(network_configuration, default_port),					"default_port",					CONFIG_VALUE_TYPE_UINT32,		true,							NULL					},
+};
+
 config_section_definition _sectionDefinitions[] = {
 	{ &gConfigGeneral, "general", _generalDefinitions, countof(_generalDefinitions) },
 	{ &gConfigInterface, "interface", _interfaceDefinitions, countof(_interfaceDefinitions) },
 	{ &gConfigSound, "sound", _soundDefinitions, countof(_soundDefinitions) },
 	{ &gConfigCheat, "cheat", _cheatDefinitions, countof(_cheatDefinitions) },
-	{ &gConfigTwitch, "twitch", _twitchDefinitions, countof(_twitchDefinitions) }
+	{ &gConfigTwitch, "twitch", _twitchDefinitions, countof(_twitchDefinitions) },
+	{ &gConfigNetwork, "network", _networkDefinitions, countof(_networkDefinitions) }
 };
 
 #pragma endregion
@@ -245,6 +251,7 @@ interface_configuration gConfigInterface;
 sound_configuration gConfigSound;
 cheat_configuration gConfigCheat;
 twitch_configuration gConfigTwitch;
+network_configuration gConfigNetwork;
 themes_configuration gConfigThemes;
 title_sequences_configuration gConfigTitleSequences;
 

@@ -204,6 +204,11 @@ typedef struct {
 	uint8 enable_news;
 } twitch_configuration;
 
+typedef struct {
+	utf8string player_name;
+	uint32 default_port;
+} network_configuration;
+
 typedef struct theme_window {
 	uint8 colours[6];
 
@@ -274,6 +279,7 @@ extern interface_configuration gConfigInterface;
 extern sound_configuration gConfigSound;
 extern cheat_configuration gConfigCheat;
 extern twitch_configuration gConfigTwitch;
+extern network_configuration gConfigNetwork;
 extern themes_configuration gConfigThemes;
 extern title_sequences_configuration gConfigTitleSequences;
 
