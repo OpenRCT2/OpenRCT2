@@ -1034,5 +1034,6 @@ bool ride_type_is_intamin(int rideType);
 void sub_6C94D8();
 
 bool shop_item_is_food_or_drink(int shopItem);
+void ride_reset_all_names();
 
 #endif
