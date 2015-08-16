@@ -339,7 +339,7 @@ void scenario_begin()
 	load_palette();
 
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA5C, uint16) = 62000; // (doesn't appear to ever be read)
 	gGameSpeed = 1;
 }
@@ -975,7 +975,7 @@ int scenario_save(SDL_RWops* rw, int flags)
 		reset_loaded_objects();
 
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
 	return 1;
 }
 

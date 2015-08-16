@@ -1286,7 +1286,7 @@ static void window_map_place_park_entrance_tool_down(int x, int y)
 		0x8001,
 		RCT2_GLOBAL(0x009DEA62, uint16),
 		RCT2_GLOBAL(0x009DEA64, uint16),
-		RCT2_GLOBAL(0x009DEA66, uint16)
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16)
 	);
 }
 

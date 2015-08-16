@@ -146,7 +146,7 @@ void window_save_prompt_open()
 			}
 		}
 
-		if (RCT2_GLOBAL(0x009DEA66, uint16) < 3840) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) < 3840) {
 			game_load_or_quit_no_save_prompt();
 			return;
 		}
@@ -263,7 +263,7 @@ static void window_save_prompt_mouseup(rct_window *w, int widgetIndex)
 		}
 	}
 
-	if (RCT2_GLOBAL(0x009DEA66, uint16) < 3840) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) < 3840) {
 		game_load_or_quit_no_save_prompt();
 		return;
 	}
