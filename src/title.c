@@ -214,7 +214,6 @@ static int title_load_park(const char *path)
 	news_item_init_queue();
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
-	RCT2_GLOBAL(0x009DEA5C, sint16) = 0x0D6D8;
 	gGameSpeed = 1;
 	return 1;
 }
@@ -490,12 +489,6 @@ void title_update()
 
 	// Input
 	game_handle_input();
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SAVE_TIMER, uint8) != 255) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SAVE_TIMER, uint8)++;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SAVE_TIMER, uint8) == 255)
-			config_save_default();
-	}
 }
 
 static uint8 *generate_random_script()

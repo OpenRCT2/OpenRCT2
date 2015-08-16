@@ -75,10 +75,6 @@
 // When all sounds reversed replace with gConfigSound.ride_music
 #define RCT2_ADDRESS_CONFIG_MUSIC					0x009AAC72
 
-// Is supposed to be set to 0 whenever the screen resolution is changed
-// it will then count up 255 ticks before saving the config
-// In OpenRCT2 this value is only set to 0 on startup
-#define RCT2_ADDRESS_CONFIG_SAVE_TIMER				0x009AAC73
 #define RCT2_ADDRESS_CONFIG_FLAGS					0x009AAC74
 
 // MAX vehicle sounds not used anymore
