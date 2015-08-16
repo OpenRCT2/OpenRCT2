@@ -731,7 +731,7 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 static void window_loadsave_select(rct_window *w, const char *path)
 {
 	SDL_RWops* rw;
-	switch (_loadsaveType & 0x0E) {
+	switch (_loadsaveType & 0x0F) {
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
 		if (gLoadSaveTitleSequenceSave) {
 			utf8 newName[MAX_PATH];
