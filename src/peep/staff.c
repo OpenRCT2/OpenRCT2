@@ -274,6 +274,11 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		}
 	}
 
+	if(staff_type == STAFF_TYPE_HANDYMAN && gConfigGeneral.handymen_mow_default) {
+		int flags = ((newPeep->staff_orders ^ (1 << 3)) << 8) | 1;
+		game_do_command(newPeep->x, flags, newPeep->y, newPeep->sprite_index, GAME_COMMAND_SET_STAFF_ORDER, (int)newPeep, 0);
+	}
+
 	*ebx = 0;
 	*edi = newPeep->sprite_index;
 }
