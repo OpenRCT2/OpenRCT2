@@ -29,6 +29,9 @@
 #include "peep.h"
 #include "staff.h"
 
+uint32 *gStaffPatrolAreas = (uint32*)0x013B0E72;
+uint8 *gStaffModes = (uint8*)0x013CA672;
+
 /**
  *
  *  rct2: 0x006BD3A4
@@ -478,5 +481,5 @@ bool staff_is_patrol_area_set(int staffIndex, int x, int y)
 	int peepOffset = staffIndex * 128;
 	int offset = (x | y) >> 5;
 	int bitIndex = (x | y) & 0x1F;
-	return RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS, uint32)[peepOffset + offset] & (1 << bitIndex);
+	return gStaffPatrolAreas[peepOffset + offset] & (1 << bitIndex);
 }
