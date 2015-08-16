@@ -55,6 +55,7 @@ enum {
 	NETWORK_COMMAND_PLAYERLIST,
 	NETWORK_COMMAND_PING,
 	NETWORK_COMMAND_PINGLIST,
+	NETWORK_COMMAND_READY,
 	NETWORK_COMMAND_MAX
 };
 
@@ -67,6 +68,7 @@ const char *NetworkCommandNames[] = {
 	"NETWORK_COMMAND_PLAYERLIST",
 	"NETWORK_COMMAND_PING",
 	"NETWORK_COMMAND_PINGLIST",
+	"NETWORK_COMMAND_READY",
 };
 
 NetworkPacket::NetworkPacket()
@@ -248,6 +250,7 @@ Network::Network()
 	server_command_handlers[NETWORK_COMMAND_CHAT] = &Network::Server_Handle_CHAT;
 	server_command_handlers[NETWORK_COMMAND_GAMECMD] = &Network::Server_Handle_GAMECMD;
 	server_command_handlers[NETWORK_COMMAND_PING] = &Network::Server_Handle_PING;
+	server_command_handlers[NETWORK_COMMAND_READY] = &Network::Server_Handle_READY;
 }
 
 Network::~Network()
@@ -406,12 +409,7 @@ uint8 Network::GetPlayerID()
 
 void Network::Update()
 {
-	if (GetMode() == NETWORK_MODE_NONE)
-		return;
-
 	switch (GetMode()) {
-	case NETWORK_MODE_NONE:
-		return;
 	case NETWORK_MODE_SERVER:
 		UpdateServer();
 		break;
@@ -466,16 +464,36 @@ void Network::UpdateClient()
 {
 	if (!ProcessConnection(server_connection)) {
 		Close();
-	} else {
-		ProcessGameCommandQueue();
-		if (CheckSRAND(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32), RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32))) {
-			if (server_srand0_tick == 0) {
-				// printf("SRAND OK!\n");
-			}
-		} else {
-			window_network_status_open("Network desync detected");
-			Close();
+	}
+}
+
+void Network::UpdateTick()
+{
+	switch (GetMode()) {
+	case NETWORK_MODE_SERVER:
+		UpdateServerTick();
+		break;
+	case NETWORK_MODE_CLIENT:
+		UpdateClientTick();
+		break;
+	}
+}
+
+void Network::UpdateServerTick()
+{
+
+}
+
+void Network::UpdateClientTick()
+{
+	ProcessGameCommandQueue();
+	if (CheckSRAND(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32), RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32))) {
+		if (server_srand0_tick == 0) {
+			// printf("SRAND OK!\n");
 		}
+	} else {
+		window_network_status_open("Network desync detected");
+		Close();
 	}
 }
 
@@ -634,6 +652,13 @@ void Network::Server_Send_PINGLIST()
 		*packet << player_list[i]->id << player_list[i]->ping;
 	}
 	SendPacketToClients(*packet);
+}
+
+void Network::Client_Send_READY()
+{
+	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	*packet << (uint32)NETWORK_COMMAND_READY;
+	server_connection.QueuePacket(std::move(packet));
 }
 
 bool Network::ProcessConnection(NetworkConnection& connection)
@@ -830,15 +855,20 @@ int Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pac
 		window_network_status_open(status);
 		memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
 		if (offset + chunksize == size) {
+			window_network_status_close();
+
 			SDL_RWops* rw = SDL_RWFromMem(&chunk_buffer[0], size);
 			if (game_load_network(rw)) {
 				game_load_init();
-				if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) & 1)
+				if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
 					pause_toggle();
+				}
 				game_command_queue.clear();
 				server_tick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32);
 				server_srand0_tick = 0;
-				window_network_status_open("Loaded new map from network");
+
+				Client_Send_READY();
+				// window_network_status_open("Loaded new map from network");
 			}
 			SDL_RWclose(rw);
 		}
@@ -873,8 +903,13 @@ int Network::Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket&
 	uint8 playerid;
 	uint8 callback;
 	packet >> tick >> args[0] >> args[1] >> args[2] >> args[3] >> args[4] >> args[5] >> args[6] >> playerid >> callback;
-	GameCommand gc = GameCommand(tick, args, playerid, callback);
-	game_command_queue.insert(gc);
+
+	if (args[4] == GAME_COMMAND_TOGGLE_PAUSE) {
+		pause_toggle();
+	} else {
+		GameCommand gc = GameCommand(tick, args, playerid, callback);
+		game_command_queue.insert(gc);
+	}
 	return 1;
 }
 
@@ -956,6 +991,14 @@ int Network::Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket
 	return 1;
 }
 
+int Network::Server_Handle_READY(NetworkConnection& connection, NetworkPacket& packet)
+{
+	if (!was_paused_before_client_connected) {
+		game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
+	}
+	return 1;
+}
+
 int network_init()
 {
 	return gNetwork.Init();
@@ -979,6 +1022,11 @@ int network_begin_server(int port)
 void network_update()
 {
 	gNetwork.Update();
+}
+
+void network_tick()
+{
+	gNetwork.UpdateTick();
 }
 
 int network_get_mode()

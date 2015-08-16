@@ -106,6 +106,11 @@ void window_network_status_open(const char* text)
 	window->colours[2] = 7;
 }
 
+void window_network_status_close()
+{
+	window_close_by_class(WC_NETWORK_STATUS);
+}
+
 static void window_network_status_mouseup(rct_window *w, int widgetIndex)
 {
 	switch (widgetIndex) {

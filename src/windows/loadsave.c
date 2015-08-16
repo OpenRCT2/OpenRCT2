@@ -26,6 +26,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../network/network.h"
 #include "../scenario.h"
 #include "../title.h"
 #include "../windows/error.h"
@@ -748,6 +749,10 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			}
 		}
 		else if (game_load_save(path)) {
+			if (_loadsaveType & LOADSAVETYPE_NETWORK) {
+				network_begin_server(gConfigNetwork.default_port);
+			}
+
 			window_close(w);
 			gfx_invalidate_screen();
 			rct2_endupdate();

@@ -619,6 +619,7 @@ void window_sign_small_open(rct_windownumber number);
 void window_cheats_open();
 void window_player_list_open();
 void window_network_status_open(const char* text);
+void window_network_status_close();
 void window_server_list_open();
 
 void window_research_open();

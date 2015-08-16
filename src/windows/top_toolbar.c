@@ -660,8 +660,17 @@ static void window_top_toolbar_invalidate(rct_window *w)
 		if (!gConfigInterface.toolbar_show_news)
 			window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
 
-		if (network_get_mode() == NETWORK_MODE_NONE)
+		switch (network_get_mode()) {
+		case NETWORK_MODE_SERVER:
+			window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
+			break;
+		case NETWORK_MODE_CLIENT:
+			window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
+			window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
+			break;
+		default:
 			window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
+		}
 	}
 
 	enabledWidgets = 0;

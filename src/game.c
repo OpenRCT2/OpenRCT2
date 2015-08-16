@@ -380,6 +380,8 @@ void game_logic_update()
 
 		window_error_open(title_text, body_text);
 	}
+
+	network_tick();
 }
 
 /**

@@ -244,6 +244,10 @@ void openrct2_launch()
 			rct2_open_file(gOpenRCT2StartupActionPath);
 
 			RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
+
+			if (gNetworkStart == NETWORK_MODE_SERVER) {
+				network_begin_server(gNetworkStartPort);
+			}
 			break;
 		case STARTUP_ACTION_EDIT:
 			if (strlen(gOpenRCT2StartupActionPath) == 0) {
@@ -256,8 +260,6 @@ void openrct2_launch()
 
 		if (gNetworkStart == NETWORK_MODE_CLIENT) {
 			network_begin_client(gNetworkStartHost, gNetworkStartPort);
-		} else if (gNetworkStart == NETWORK_MODE_SERVER) {
-			network_begin_server(gNetworkStartPort);
 		}
 
 		openrct2_loop();
