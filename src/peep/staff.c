@@ -29,8 +29,8 @@
 #include "peep.h"
 #include "staff.h"
 
-uint32 *gStaffPatrolAreas = (uint32*)0x013B0E72;
-uint8 *gStaffModes = (uint8*)0x013CA672;
+uint32 *gStaffPatrolAreas = (uint32*)RCT2_ADDRESS_STAFF_PATROL_AREAS;
+uint8 *gStaffModes = (uint8*)RCT2_ADDRESS_STAFF_MODE_ARRAY;
 
 /**
  *
