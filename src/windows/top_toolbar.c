@@ -1467,7 +1467,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 
 				if (cost != MONEY32_UNDEFINED){
 					window_close_by_class(WC_ERROR);
-					sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+					sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
 					success = 1;
 					break;
 				}
@@ -1481,7 +1481,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 			}
 
 			if (!success && !window_scenery_is_build_cluster_tool_on){
-				sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+				sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
 				return;
 			}
 
@@ -1504,7 +1504,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 			return;
 		}
 
-		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
 		break;
 	}
 	case 2:
@@ -1529,7 +1529,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 
 			if (cost != MONEY32_UNDEFINED){
 				window_close_by_class(WC_ERROR);
-				sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+				sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
 				return;
 			}
 
@@ -1541,7 +1541,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
 		}
 
-		sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+		sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
 		break;
 	}
 	case 3:
@@ -1567,7 +1567,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 
 			if (cost != MONEY32_UNDEFINED){
 				window_close_by_class(WC_ERROR);
-				sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+				sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
 				return;
 			}
 
@@ -1579,7 +1579,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
 		}
 
-		sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+		sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
 	}
 		break;
 	case 4:
@@ -1598,7 +1598,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 
 		if (cost == MONEY32_UNDEFINED)return;
 
-		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
 
 		window_banner_open(banner_id);
 		break;

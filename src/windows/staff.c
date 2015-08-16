@@ -557,7 +557,7 @@ void window_staff_overview_dropdown(rct_window *w, int widgetIndex, int dropdown
 
 		for (int i = 0; i < 128; i++)
 		{
-			RCT2_ADDRESS(0x13B0E72 + (peep->staff_id * 512), uint32)[i] = 0;
+			RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + (peep->staff_id * 512), uint32)[i] = 0;
 		}
 		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] &= ~2;
 

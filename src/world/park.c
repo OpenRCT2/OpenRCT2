@@ -812,9 +812,9 @@ void game_command_remove_park_entrance(int *eax, int *ebx, int *ecx, int *edx, i
 	z = *edx * 16;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LAND_PURCHASE * 4;
-	RCT2_GLOBAL(0x009DEA5E, uint16) = x;
-	RCT2_GLOBAL(0x009DEA60, uint16) = y;
-	RCT2_GLOBAL(0x009DEA62, uint16) = z;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
 
 	if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
 		*ebx = 0;
@@ -1103,9 +1103,9 @@ int map_buy_land_rights(int x0, int y0, int x1, int y1, int setting, int flags)
 	x = (x0 + x1) / 2 + 16;
 	y = (y0 + y1) / 2 + 16;
 	z = map_element_height(x, y);
-	RCT2_GLOBAL(0x009DEA5E, uint16) = x;
-	RCT2_GLOBAL(0x009DEA60, uint16) = y;
-	RCT2_GLOBAL(0x009DEA62, uint16) = z;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
 
 	// Game command modified to accept selection size
 	totalCost = 0;
