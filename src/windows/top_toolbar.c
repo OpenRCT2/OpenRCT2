@@ -31,6 +31,7 @@
 #include "../interface/window.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
+#include "../network/network.h"
 #include "../network/twitch.h"
 #include "../scenario.h"
 #include "../world/scenery.h"
@@ -179,13 +180,13 @@ static rct_widget window_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	3,	0x0230,	0x024D,	0,						27,		0x20000000 | SPR_TOOLBAR_GUESTS,			STR_GUESTS_TIP },					// Guests
 	{ WWT_TRNBTN,	2,	0x0230,	0x024D,	0,						27,		0x20000000 | SPR_TOOLBAR_CLEAR_SCENERY,		STR_CLEAR_SCENERY_TIP },			// Clear scenery
 
-	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						5148 },								// Fast forward
-	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						5149 },								// Cheats
+	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_GAME_SPEED_TIP },				// Fast forward
+	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_CHEATS_TIP },					// Cheats
 	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_DEBUG_TIP },					// Debug
-	{ WWT_TRNBTN,	3,	0x001E,	0x003B, 0,						27,		0x20000000 | 0x15F9,						3235 },								// Finances
-	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						2275 },								// Research
+	{ WWT_TRNBTN,	3,	0x001E,	0x003B, 0,						27,		0x20000000 | 0x15F9,						STR_SCENARIO_OPTIONS_FINANCIAL_TIP },// Finances
+	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_FINANCES_RESEARCH_TIP },		// Research
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_SHOW_RECENT_MESSAGES_TIP },		// News
-	{ WWT_TRNBTN,	1,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						2276 },								// Network
+	{ WWT_TRNBTN,	1,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_SHOW_MULTIPLAYER_STATUS_TIP },	// Network
 	
 	{ WWT_EMPTY,	0,	0,		10-1,	0,						0,		0xFFFFFFFF,									STR_NONE },							// Artificial widget separator
 	{ WIDGETS_END },
@@ -658,6 +659,9 @@ static void window_top_toolbar_invalidate(rct_window *w)
 
 		if (!gConfigInterface.toolbar_show_news)
 			window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
+
+		if (network_get_mode() == NETWORK_MODE_NONE)
+			window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
 	}
 
 	enabledWidgets = 0;
@@ -822,6 +826,16 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (widget_is_pressed(w, WIDX_NEWS))
 			y++;
 		imgId = SPR_G2_TAB_NEWS;
+		gfx_draw_sprite(dpi, imgId, x, y, 0);
+	}
+
+	// Draw network button
+	if (window_top_toolbar_widgets[WIDX_NETWORK].type != WWT_EMPTY) {
+		x = w->x + window_top_toolbar_widgets[WIDX_NETWORK].left + 3;
+		y = w->y + window_top_toolbar_widgets[WIDX_NETWORK].top + 0;
+		if (widget_is_pressed(w, WIDX_NETWORK))
+			y++;
+		imgId = SPR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION;
 		gfx_draw_sprite(dpi, imgId, x, y, 0);
 	}
 }

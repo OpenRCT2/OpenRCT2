@@ -3487,7 +3487,7 @@ STR_5145    :Turbo Speed
 STR_5146    :Hyper Speed
 STR_5147    :Cheats
 STR_5148    :{SMALLFONT}{BLACK}Change the game speed
-STR_5149    :{SMALLFONT}{BLACK}Open the cheats window
+STR_5149    :{SMALLFONT}{BLACK}Show cheat options
 STR_5150    :Enable debugging tools
 STR_5151    :,
 STR_5152    :.
@@ -3832,7 +3832,7 @@ STR_5490    :Disable audio on focus loss
 STR_5491    :Inventions list
 STR_5492    :Scenario options
 STR_5493    :Send Message
-STR_5494    :Type the message you would like to send.
+STR_5494    :<not used anymore>
 STR_5495    :Player List
 STR_5496    :Player:
 STR_5497    :Ping:
@@ -3842,3 +3842,4 @@ STR_5500    :Add Server
 STR_5501    :Start Server
 STR_5502    :Multiplayer
 STR_5503    :Enter hostname or IP address:
+STR_5504    :{SMALLFONT}{BLACK}Show multiplayer status
