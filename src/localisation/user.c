@@ -90,3 +90,11 @@ bool is_user_string_id(rct_string_id stringId)
 {
 	return stringId >= 0x8000 && stringId < 0x9000;
 }
+
+void reset_user_strings()
+{
+	char *userString = gUserStrings;
+	for (int i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {
+		userString[0] = 0;
+	}
+}
