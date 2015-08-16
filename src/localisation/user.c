@@ -20,6 +20,7 @@
 
 #include "../addresses.h"
 #include "localisation.h"
+#include "../ride/ride.h"
 
 utf8 *gUserStrings = (char*)0x0135A8F4;
 
@@ -89,4 +90,15 @@ static bool user_string_exists(const utf8 *text)
 bool is_user_string_id(rct_string_id stringId)
 {
 	return stringId >= 0x8000 && stringId < 0x9000;
+}
+
+void reset_user_strings()
+{
+	char *userString = gUserStrings;
+
+	for (int i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {
+		userString[0] = 0;
+	}
+
+	ride_reset_all_names();
 }

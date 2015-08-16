@@ -6643,3 +6643,30 @@ bool shop_item_is_food_or_drink(int shopItem)
 		return false;
 	}
 }
+
+void ride_reset_all_names()
+{
+	int i;
+	rct_ride *ride;
+	char rideNameBuffer[256];
+
+	FOR_ALL_RIDES(i, ride)
+	{
+		ride->name = STR_NONE;
+
+		struct {
+			uint16 type_name;
+			uint16 number;
+		} name_args;
+		name_args.type_name = 2 + ride->type;
+		name_args.number = 0;
+		do {
+			name_args.number++;
+			format_string(rideNameBuffer, 1, &name_args);
+		} while (ride_name_exists(rideNameBuffer));
+
+		ride->name = 1;
+		ride->name_arguments_type_name = name_args.type_name;
+		ride->name_arguments_number = name_args.number;
+	}
+}

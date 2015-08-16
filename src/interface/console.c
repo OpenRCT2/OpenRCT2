@@ -4,6 +4,7 @@
 #include "../addresses.h"
 #include "../drawing/drawing.h"
 #include "../localisation/localisation.h"
+#include "../localisation/user.h"
 #include "../platform/platform.h"
 #include "../world/park.h"
 #include "../util/sawyercoding.h"
@@ -816,6 +817,7 @@ static int cc_load_object(const utf8 **argv, int argc) {
 
 	return 0;
 }
+
 static int cc_object_count(const utf8 **argv, int argc) {
 	const utf8* object_type_names[] = { "Rides", "Small scenery", "Large scenery", "Walls", "Banners", "Paths", "Path Additions", "Scenery groups", "Park entrances", "Water" };
 	for (int i = 0; i < 10; i++) {
@@ -831,6 +833,13 @@ static int cc_object_count(const utf8 **argv, int argc) {
 
 	return 0;
 }
+
+static int cc_reset_user_strings(const utf8 **argv, int argc)
+{
+	reset_user_strings();
+	return 0;
+}
+
 static int cc_open(const utf8 **argv, int argc) {
 	if (argc > 0) {
 		bool title = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) != 0;
@@ -920,7 +929,8 @@ console_command console_command_table[] = {
 									"This is a safer method opposed to \"open object_selection\".", 
 									"load_object <objectfilenodat>" },
 	{ "object_count", cc_object_count, "Shows the number of objects of each type in the scenario.", "object_count" },
-	{ "twitch", cc_twitch, "Twitch API" }
+	{ "twitch", cc_twitch, "Twitch API" },
+	{ "reset_user_strings", cc_reset_user_strings, "Resets all user-defined strings, to fix incorrectly occurring 'Chosen name in use already' errors.", "reset_user_strings" }
 };
 
 static int cc_windows(const utf8 **argv, int argc) {
