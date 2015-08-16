@@ -88,7 +88,7 @@ void editor_load()
 	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
 	load_palette();
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
 
 	strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(2749));
 }
@@ -166,7 +166,7 @@ void editor_convert_save_to_scenario()
 	news_item_init_queue();
 	window_editor_main_open();
 	editor_finalise_main_view();
-	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
 }
 
 /**
@@ -203,7 +203,7 @@ void trackdesigner_load()
 	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
 	load_palette();
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
 }
 
 /**
@@ -240,7 +240,7 @@ void trackmanager_load()
 	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
 	load_palette();
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
 }
 
 /**
@@ -295,7 +295,7 @@ static int editor_load_landscape_from_sv4(const char *path)
 
 	rct1_fix_landscape();
 	editor_finalise_main_view();
-	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
 	return 1;
 }
 
@@ -313,7 +313,7 @@ static int editor_load_landscape_from_sc4(const char *path)
 
 	rct1_fix_landscape();
 	editor_finalise_main_view();
-	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
 	return 1;
 }
 

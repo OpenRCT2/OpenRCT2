@@ -75,6 +75,10 @@
 // When all sounds reversed replace with gConfigSound.ride_music
 #define RCT2_ADDRESS_CONFIG_MUSIC					0x009AAC72
 
+// Is supposed to be set to 0 whenever the screen resolution is changed
+// it will then count up 255 ticks before saving the config
+// In OpenRCT2 this value is only set to 0 on startup
+#define RCT2_ADDRESS_CONFIG_SAVE_TIMER				0x009AAC73
 #define RCT2_ADDRESS_CONFIG_FLAGS					0x009AAC74
 
 // MAX vehicle sounds not used anymore
@@ -228,6 +232,8 @@
 #define RCT2_ADDRESS_MAP_ARROW_Z					0x009DEA4C
 #define RCT2_ADDRESS_MAP_ARROW_DIRECTION			0x009DEA4E
 
+//Counts how many ticks the current screen has been open for
+#define RCT2_ADDRESS_SCREEN_AGE						0x009DEA66
 #define RCT2_ADDRESS_SCREEN_FLAGS					0x009DEA68
 #define RCT2_ADDRESS_SCREENSHOT_COUNTDOWN			0x009DEA6D
 // Note: not only the zeroth bit can be set to control pause
@@ -456,6 +462,9 @@
 #define RCT2_ADDRESS_RIDE_LIST						0x013628F8
 #define RCT2_ADDRESS_RIDE_COUNT						0x013587C8
 #define RCT2_ADDRESS_RIDE_FLAGS						0x0097CF40
+
+//How many ticks the scenario has existed for
+#define RCT2_ADDRESS_SAVED_AGE						0x01388698
 #define RCT2_ADDRESS_SAVED_VIEW_X					0x0138869A
 #define RCT2_ADDRESS_SAVED_VIEW_Y					0x0138869C
 #define RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION	0x0138869E

@@ -130,7 +130,7 @@ void title_load()
 	title_create_windows();
 	title_init_showcase();
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
 
 	if (gOpenRCT2ShowChangelog) {
 		gOpenRCT2ShowChangelog = false;
@@ -188,9 +188,9 @@ static int title_load_park(const char *path)
 	w->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
 
 	{
-		char _cl = (RCT2_GLOBAL(0x0138869E, sint16) & 0xFF) - w->viewport->zoom;
-		w->viewport->zoom = RCT2_GLOBAL(0x0138869E, sint16) & 0xFF;
-		*((char*)(&RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32))) = RCT2_GLOBAL(0x0138869E, sint16) >> 8;
+		char _cl = (RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) & 0xFF) - w->viewport->zoom;
+		w->viewport->zoom = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) & 0xFF;
+		*((char*)(&RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32))) = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) >> 8;
 		if (_cl != 0) {
 			if (_cl < 0) {
 				_cl = -_cl;
@@ -213,7 +213,7 @@ static int title_load_park(const char *path)
 	scenery_set_default_placement_configuration();
 	news_item_init_queue();
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
 	RCT2_GLOBAL(0x009DEA5C, sint16) = 0x0D6D8;
 	gGameSpeed = 1;
 	return 1;
@@ -486,14 +486,14 @@ void title_update()
 	window_map_tooltip_update_visibility();
 	window_dispatch_update_all();
 
-	RCT2_GLOBAL(0x01388698, uint16)++;
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_AGE, uint16)++;
 
 	// Input
 	game_handle_input();
 
-	if (RCT2_GLOBAL(0x009AAC73, uint8) != 255) {
-		RCT2_GLOBAL(0x009AAC73, uint8)++;
-		if (RCT2_GLOBAL(0x009AAC73, uint8) == 255)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SAVE_TIMER, uint8) != 255) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SAVE_TIMER, uint8)++;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SAVE_TIMER, uint8) == 255)
 			config_save_default();
 	}
 }

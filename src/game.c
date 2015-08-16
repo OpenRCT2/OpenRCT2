@@ -330,9 +330,9 @@ void game_update()
 	RCT2_GLOBAL(0x0141F568, uint8) = RCT2_GLOBAL(0x0013CA740, uint8);
 	game_handle_input();
 
-	if (RCT2_GLOBAL(0x009AAC73, uint8) != 255) {
-		RCT2_GLOBAL(0x009AAC73, uint8)++;
-		if (RCT2_GLOBAL(0x009AAC73, uint8) == 255)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SAVE_TIMER, uint8) != 255) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SAVE_TIMER, uint8)++;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SAVE_TIMER, uint8) == 255)
 			config_save_default();
 	}
 }
@@ -341,9 +341,9 @@ void game_logic_update()
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)++;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32)++;
-	RCT2_GLOBAL(0x009DEA66, sint16)++;
-	if (RCT2_GLOBAL(0x009DEA66, sint16) == 0)
-		RCT2_GLOBAL(0x009DEA66, sint16)--;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16)++;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) == 0)
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16)--;
 
 	sub_68B089();
 	scenario_update();
@@ -364,7 +364,7 @@ void game_logic_update()
 	climate_update_sound();
 	editor_open_windows_for_current_step();
 
-	RCT2_GLOBAL(0x01388698, uint16)++;
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_AGE, uint16)++;
 
 	// Update windows
 	//window_dispatch_update_all();
@@ -392,11 +392,12 @@ static int game_check_affordability(int cost)
 {
 	if (cost <= 0)return cost;
 	if (RCT2_GLOBAL(0x141F568, uint8) & 0xF0)return cost;
-	
+
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32)&(1 << 8))){
 		if (cost <= (sint32)(DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32))))return cost;
 	}
-	RCT2_GLOBAL(0x13CE952, uint32) = cost;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = cost;
+
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 827;
 	return MONEY32_UNDEFINED;
 }
@@ -648,7 +649,7 @@ static void load_landscape()
 			gfx_invalidate_screen();
 			rct2_endupdate();
 		} else {
-			RCT2_GLOBAL(0x009DEA66, uint16) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
 			rct2_endupdate();
 		}
 	}
@@ -959,7 +960,7 @@ static void load_game()
 			gfx_invalidate_screen();
 			rct2_endupdate();
 		} else {
-			RCT2_GLOBAL(0x009DEA66, uint16) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
 			rct2_endupdate();
 		}
 	}
