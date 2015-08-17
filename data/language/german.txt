@@ -3822,3 +3822,18 @@ STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Aktuelle Nachrichten anzeigen
 STR_5488    :Kein Eingang
+STR_5489    :{SMALLFONT}{BLACK}Nur überwachte Gäste anzeigen
+STR_5490    :Audio deaktivieren, wenn Spiel nicht im Vordergrund
+STR_5491    :Erfindungsliste
+STR_5492    :Szenario-Optionen
+STR_5493    :Nachricht senden
+STR_5494    :Zu versendende Nachricht eingeben.
+STR_5495    :Spielerliste
+STR_5496    :Spieler:
+STR_5497    :Ping:
+STR_5498    :Serverliste
+STR_5499    :Spielername:
+STR_5500    :Server hinzufügen
+STR_5501    :Server starten
+STR_5502    :Multiplayer
+STR_5503    :Hostnamen oder IP-Adresse eingeben:

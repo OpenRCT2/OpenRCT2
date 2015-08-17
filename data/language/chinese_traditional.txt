@@ -3487,7 +3487,7 @@ STR_5145    :更快速度
 STR_5146    :超快速度
 STR_5147    :密技
 STR_5148    :{SMALLFONT}{BLACK}改變遊戲速度
-STR_5149    :{SMALLFONT}{BLACK}開啟密技視窗
+STR_5149    :{SMALLFONT}{BLACK}顯示密技選項
 STR_5150    :啟用除錯工具
 STR_5151    :,
 STR_5152    :.
@@ -3833,7 +3833,14 @@ STR_5490    :失去焦點時靜音
 STR_5491    :研發列表
 STR_5492    :劇情選項
 STR_5493    :發送訊息
-STR_5494    :請輸入你要發送的訊息.
+STR_5494    :<not used anymore>
 STR_5495    :玩家列表
 STR_5496    :玩家:
 STR_5497    :延遲值 (Ping):
+STR_5498    :伺服器列表
+STR_5499    :玩家名稱:
+STR_5500    :新增伺服器
+STR_5501    :開始伺服器
+STR_5502    :多人連線模式
+STR_5503    :請輸入主機名稱或IP地址:
+STR_5504    :{SMALLFONT}{BLACK}顯示多人連線狀態

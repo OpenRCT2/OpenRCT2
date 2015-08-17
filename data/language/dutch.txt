@@ -3825,3 +3825,16 @@ STR_5489    :{SMALLFONT}{BLACK}Enkel bezoekers die gevolgd worden weergeven
 STR_5490    :Geluid dempen bij focusverlies
 STR_5491    :Uitvindingenlijst
 STR_5492    :Scenario-opties
+STR_5493    :Bericht verzenden
+STR_5494    :<not used anymore>
+STR_5495    :Spelerslijst
+STR_5496    :Speler:
+STR_5497    :Ping:
+STR_5498    :Serverlijst
+STR_5499    :Spelersnaam:
+STR_5500    :Server toevoegen
+STR_5501    :Server starten
+STR_5502    :Multiplayer
+STR_5503    :Hostnaam of IP-adres invoeren:
+STR_5504    :{SMALLFONT}{BLACK}Status multiplayer tonen
+STR_5505    :Kan niet met de server verbinden.
