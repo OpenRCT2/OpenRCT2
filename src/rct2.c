@@ -299,7 +299,7 @@ int check_file_path(int pathId)
 			// A data file is missing from the installation directory. The original implementation
 			// asks for a CD-ROM path at this point and stores it in cdrom_path @ 0x9AA318.
 			// The file_on_cdrom[pathId] @ 0x009AA0B flag is set to 1 as well.
-			// For PATH_ID_SIXFLAGS_MAGICMOUNTAIN and PATH_ID_SIXFLAGS_BUILDYOUROWN,
+			// For PATH_ID_SIXFLAGS_MAGICMOUNTAIN (and the now removed PATH_ID_SIXFLAGS_BUILDYOUROWN),
 			// the original implementation always assumes they are stored on CD-ROM.
 			// This has been removed for now for the sake of simplicity and could be added
 			// later in a more convenient way using the INI file.

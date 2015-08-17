@@ -23,6 +23,7 @@
 #include "../interface/viewport.h"
 #include "../interface/window.h"
 #include "../platform/platform.h"
+#include "../ride/ride.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
 #include "audio.h"
@@ -1700,8 +1701,8 @@ void audio_init1()
 		}
 	}
 	audio_init2(devicenum);
-	int m = 0;
-	do {
+
+	for(int m = 0; m < countof(ride_music_info_list); m++) {
 		rct_ride_music_info* ride_music_info = ride_music_info_list[m];
 		const char* path = get_file_path(ride_music_info->pathid);
 		FILE *file = fopen(path, "rb");
@@ -1713,8 +1714,7 @@ void audio_init1()
 				ride_music_info->length = 0;
 			}
 		}
-		m++;
-	} while(m + 1 < 0x2E);
+	}
 }
 
 /**
