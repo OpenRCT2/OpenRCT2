@@ -218,6 +218,7 @@ static void window_server_list_scroll_mousedown(rct_window *w, int scrollIndex, 
 	switch (_hoverButtonIndex) {
 	case WIDX_LIST_REMOVE:
 		remove_saved_server(serverIndex);
+		server_list_save_saved_servers();
 		w->no_list_items = _numSavedServers;
 		window_invalidate(w);
 		break;
@@ -281,6 +282,7 @@ static void window_server_list_textinput(rct_window *w, int widgetIndex, char *t
 
 	case WIDX_ADD_SERVER:
 		add_saved_server(text);
+		server_list_save_saved_servers();
 		w->no_list_items = _numSavedServers;
 		window_invalidate(w);
 		break;
