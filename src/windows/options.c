@@ -134,6 +134,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_AUTOSAVE_DROPDOWN,
 	WIDX_TEST_UNFINISHED_TRACKS,
 	WIDX_AUTO_STAFF_PLACEMENT,
+	WIDX_HANDYMEN_MOW_DEFAULT,
 	WIDX_DEBUGGING_TOOLS,
 	WIDX_TITLE_SEQUENCE,
 	WIDX_TITLE_SEQUENCE_DROPDOWN,
@@ -245,10 +246,11 @@ static rct_widget window_options_misc_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	84,		93,		876,					STR_NONE },
 	{ WWT_CHECKBOX,			2,	10,		299,	114,	125,	5155,					5156 },		// test unfinished tracks
 	{ WWT_CHECKBOX,			2,	10,		299,	129,	140,	5343,					STR_NONE }, // auto staff placement
-	{ WWT_CHECKBOX,			2,	10,		299,	144,	155,	5150,					STR_NONE },	// enabled debugging tools
-	{ WWT_DROPDOWN,			1,	155,	299,	158,	169,	STR_NONE,				STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	159,	168,	876,					STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	174,	185,	5436,					STR_NONE },	// Title sequences button
+	{ WWT_CHECKBOX,			2,	10,		299,	144,	155,	5507,					STR_NONE },	// handymen mow by default
+	{ WWT_CHECKBOX,			2,	10,		299,	159,	170,	5150,					STR_NONE },	// enabled debugging tools
+	{ WWT_DROPDOWN,			1,	155,	299,	173,	184,	STR_NONE,				STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	174,	183,	876,					STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	189,	200,	5436,					STR_NONE },	// Title sequences button
 	{ WIDGETS_END },
 };
 
@@ -398,6 +400,7 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_AUTOSAVE_DROPDOWN) |
 	(1 << WIDX_TEST_UNFINISHED_TRACKS) |
 	(1 << WIDX_AUTO_STAFF_PLACEMENT) |
+	(1 << WIDX_HANDYMEN_MOW_DEFAULT) |
 	(1 << WIDX_DEBUGGING_TOOLS) |
 	(1 << WIDX_TITLE_SEQUENCE) |
 	(1 << WIDX_TITLE_SEQUENCE_DROPDOWN) |
@@ -612,6 +615,11 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 			break;
 		case WIDX_AUTO_STAFF_PLACEMENT:
 			gConfigGeneral.auto_staff_placement ^= 1;
+			config_save_default();
+			window_invalidate(w);
+			break;
+		case WIDX_HANDYMEN_MOW_DEFAULT:
+			gConfigGeneral.handymen_mow_default = !gConfigGeneral.handymen_mow_default;
 			config_save_default();
 			window_invalidate(w);
 			break;
@@ -1221,6 +1229,7 @@ static void window_options_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
 		widget_set_checkbox_value(w, WIDX_TEST_UNFINISHED_TRACKS, gConfigGeneral.test_unfinished_tracks);
 		widget_set_checkbox_value(w, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
+		widget_set_checkbox_value(w, WIDX_HANDYMEN_MOW_DEFAULT, gConfigGeneral.handymen_mow_default);
 		widget_set_checkbox_value(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
 
 		window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].type = WWT_CHECKBOX;
@@ -1229,6 +1238,7 @@ static void window_options_invalidate(rct_window *w)
 		window_options_misc_widgets[WIDX_AUTOSAVE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_misc_widgets[WIDX_TEST_UNFINISHED_TRACKS].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_AUTO_STAFF_PLACEMENT].type = WWT_CHECKBOX;
+		window_options_misc_widgets[WIDX_HANDYMEN_MOW_DEFAULT].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_DEBUGGING_TOOLS].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_TITLE_SEQUENCE].type = WWT_DROPDOWN;
 		window_options_misc_widgets[WIDX_TITLE_SEQUENCE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;

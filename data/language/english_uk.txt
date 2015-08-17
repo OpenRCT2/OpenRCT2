@@ -3845,3 +3845,4 @@ STR_5503    :Enter hostname or IP address:
 STR_5504    :{SMALLFONT}{BLACK}Show multiplayer status
 STR_5505    :Unable to connect to server.
 STR_5506    :Guests ignore intensities
+STR_5507    :Handymen mow grass by default

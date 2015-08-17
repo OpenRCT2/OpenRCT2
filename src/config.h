@@ -157,6 +157,7 @@ typedef struct {
 	uint8 no_test_crashes;
 	uint8 date_format;
 	uint8 auto_staff_placement;
+	uint8 handymen_mow_default;
 	utf8string last_run_version;
 	uint8 invert_viewport_drag;
 	uint8 load_save_sort;
