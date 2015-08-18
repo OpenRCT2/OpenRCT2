@@ -139,6 +139,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_TITLE_SEQUENCE,
 	WIDX_TITLE_SEQUENCE_DROPDOWN,
 	WIDX_TITLE_SEQUENCE_BUTTON,
+	WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM,
 
 	// Twitch
 	WIDX_CHANNEL_BUTTON = WIDX_PAGE_START,
@@ -168,9 +169,9 @@ static rct_widget window_options_display_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
 	{ WWT_GROUPBOX,			1,	5,      304,	53,		145,	STR_HARDWARE_GROUP,		STR_NONE },					// Hardware group
 	{ WWT_DROPDOWN,			1,	155,	299,	68,		79,		STR_RESOLUTION_X_BY_Y,	STR_NONE },					// resolution
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	69,		78,		876,					STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	69,		78,		STR_DROPDOWN_GLYPH,		STR_NONE },
 	{ WWT_DROPDOWN,			1,	155,	299,	83,		94,		871,					STR_NONE },					// fullscreen
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	84,		93,		876,					STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	84,		93,		STR_DROPDOWN_GLYPH,		STR_NONE },
 	{ WWT_CHECKBOX,			1,	10,		290,	99,		110,	STR_HARDWARE_DISPLAY,	STR_NONE },					// hardware display
 	{ WWT_CHECKBOX,			1,	10,		290,	114,	125,	STR_UNCAP_FPS,			STR_NONE },					// uncap fps
 	{ WWT_CHECKBOX,			1,	10,		290,	129,	140,	STR_MININISE_FULL_SCREEN_ON_FOCUS_LOSS,	STR_NONE },	// minimise fullscreen focus loss
@@ -179,7 +180,7 @@ static rct_widget window_options_display_widgets[] = {
 	{ WWT_CHECKBOX,			1,	10,		290,	164,	175,	STR_TILE_SMOOTHING, 	STR_TILE_SMOOTHING_TIP },	// landscape smoothing
 	{ WWT_CHECKBOX,			1,	10,		290,	179,	190,	STR_GRIDLINES,			STR_GRIDLINES_TIP },		// gridlines
 	{ WWT_DROPDOWN,			1,	155,	299,	193,	204,	STR_NONE,				STR_NONE },					// construction marker
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	194,	203,	876,					STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	194,	203,	STR_DROPDOWN_GLYPH,		STR_NONE },
 	{ WWT_CHECKBOX,			1,	10,		290,	209,	220,	STR_CYCLE_DAY_NIGHT,	STR_NONE },					// cycle day-night
 	{ WWT_CHECKBOX,			1,	10,		290,	224,	235,	STR_UPPER_CASE_BANNERS,	STR_NONE },					// upper case banners
 	{ WIDGETS_END },
@@ -187,30 +188,30 @@ static rct_widget window_options_display_widgets[] = {
 
 static rct_widget window_options_culture_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
-	{ WWT_DROPDOWN,			1,	155,	299,	53,		64,		STR_NONE,		STR_NONE },	// language
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	54,		63,		876,			STR_NONE },
-	{ WWT_DROPDOWN,			1,	155,	299,	68,		79,		871,			STR_NONE },	// currency
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	69,		78,		876,			STR_NONE }, //
-	{ WWT_DROPDOWN,			1,	155,	299,	83,		94,		872,			STR_NONE },	// distance
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	84,		93,		876,			STR_NONE },
-	{ WWT_DROPDOWN,			1,	155,	299,	98,		110,	875,			STR_NONE },	// temperature
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	99,		108,	876,			STR_NONE }, 
-	{ WWT_DROPDOWN,			1,	155,	299,	113,	124,	868,			STR_NONE },	// height labels
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	114,	123,	876,			STR_NONE },
-	{ WWT_DROPDOWN,			1,	155,	299,	128,	139,	STR_NONE,		STR_NONE },	// date format
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	129,	138,	876,			STR_NONE },
+	{ WWT_DROPDOWN,			1,	155,	299,	53,		64,		STR_NONE,				STR_NONE },	// language
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	54,		63,		STR_DROPDOWN_GLYPH,		STR_NONE },
+	{ WWT_DROPDOWN,			1,	155,	299,	68,		79,		871,					STR_NONE },	// currency
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	69,		78,		STR_DROPDOWN_GLYPH,		STR_NONE }, //
+	{ WWT_DROPDOWN,			1,	155,	299,	83,		94,		872,					STR_NONE },	// distance
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	84,		93,		STR_DROPDOWN_GLYPH,		STR_NONE },
+	{ WWT_DROPDOWN,			1,	155,	299,	98,		110,	875,					STR_NONE },	// temperature
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	99,		108,	STR_DROPDOWN_GLYPH,		STR_NONE }, 
+	{ WWT_DROPDOWN,			1,	155,	299,	113,	124,	868,					STR_NONE },	// height labels
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	114,	123,	STR_DROPDOWN_GLYPH,		STR_NONE },
+	{ WWT_DROPDOWN,			1,	155,	299,	128,	139,	STR_NONE,				STR_NONE },	// date format
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	129,	138,	STR_DROPDOWN_GLYPH,		STR_NONE },
 	{ WIDGETS_END },
 };
 
 static rct_widget window_options_audio_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
 	{ WWT_DROPDOWN,			1,	10,		299,	53,		64,		865,					STR_NONE },	// audio device
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	54,		63,		876,					STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	54,		63,		STR_DROPDOWN_GLYPH,					STR_NONE },
 	{ WWT_CHECKBOX,			1,	10,		229,	69,		80,		STR_SOUND,				STR_NONE },	// enable / disable sound
 	{ WWT_CHECKBOX,			1,	10,		229,	84,		95,		STR_MUSIC,				STR_NONE },	// enable / disable music
 	{ WWT_CHECKBOX,			1,	10,		229,	98,		110,	STR_AUDIO_FOCUS,		STR_NONE },	// enable / disable audio disabled on focus lost
 	{ WWT_DROPDOWN,			1,	155,	299,	112,	124,	STR_NONE,				STR_NONE },	// title music
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	113,	123,	876,					STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	113,	123,	STR_DROPDOWN_GLYPH,					STR_NONE },
 	{ WWT_SCROLL,			1,	155,	299,	68,		80,		1,						STR_NONE }, // master volume
 	{ WWT_SCROLL,			1,	155,	299,	83,		95,		1,						STR_NONE }, // music volume
 	{ WIDGETS_END },
@@ -225,8 +226,8 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
 
 	{ WWT_GROUPBOX,			1,	5,      304,	118,	164,	STR_THEMES_GROUP,						STR_NONE },							// Toolbar buttons group
 	{ WWT_DROPDOWN,			1,	155,	299,	132,	143,	STR_NONE,								STR_NONE },							// Themes
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	133,	142,	876,									STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	10,		145,	148,	159,	5153,									STR_NONE },							// Themes button
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	133,	142,	STR_DROPDOWN_GLYPH,						STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	10,		145,	148,	159,	STR_EDIT_THEMES_BUTTON,					STR_NONE },							// Themes button
 
 	{ WWT_GROUPBOX,			1,	5,      304,	168,	230,	STR_TOOLBAR_BUTTONS_GROUP,				STR_NONE },							// Toolbar buttons group
 	{ WWT_CHECKBOX,			2,	10,		145,	199,	210,	STR_FINANCES_BUTTON_ON_TOOLBAR,			STR_NONE },							// Finances
@@ -240,17 +241,18 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
 
 static rct_widget window_options_misc_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
-	{ WWT_CHECKBOX,			2,	10,		299,	54,		65,		STR_REAL_NAME,			STR_REAL_NAME_TIP },
-	{ WWT_CHECKBOX,			2,	10,		299,	69,		80,		STR_SAVE_PLUGIN_DATA,	STR_SAVE_PLUGIN_DATA_TIP },
-	{ WWT_DROPDOWN,			1,	155,	299,	83,		94,		STR_NONE,				STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	84,		93,		876,					STR_NONE },
-	{ WWT_CHECKBOX,			2,	10,		299,	114,	125,	5155,					5156 },		// test unfinished tracks
-	{ WWT_CHECKBOX,			2,	10,		299,	129,	140,	5343,					STR_NONE }, // auto staff placement
-	{ WWT_CHECKBOX,			2,	10,		299,	144,	155,	5507,					STR_NONE },	// handymen mow by default
-	{ WWT_CHECKBOX,			2,	10,		299,	159,	170,	5150,					STR_NONE },	// enabled debugging tools
-	{ WWT_DROPDOWN,			1,	155,	299,	173,	184,	STR_NONE,				STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	174,	183,	876,					STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	189,	200,	5436,					STR_NONE },	// Title sequences button
+	{ WWT_CHECKBOX,			2,	10,		299,	54,		65,		STR_REAL_NAME,								STR_REAL_NAME_TIP },
+	{ WWT_CHECKBOX,			2,	10,		299,	69,		80,		STR_SAVE_PLUGIN_DATA,						STR_SAVE_PLUGIN_DATA_TIP },
+	{ WWT_DROPDOWN,			1,	155,	299,	83,		94,		STR_NONE,									STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	84,		93,		STR_DROPDOWN_GLYPH,							STR_NONE },
+	{ WWT_CHECKBOX,			2,	10,		299,	114,	125,	STR_TEST_UNFINISHED_TRACKS,					STR_TEST_UNFINISHED_TRACKS_TIP },					// test unfinished tracks
+	{ WWT_CHECKBOX,			2,	10,		299,	129,	140,	STR_AUTO_STAFF_PLACEMENT,					STR_NONE }, 										// auto staff placement
+	{ WWT_CHECKBOX,			2,	10,		299,	144,	155,	STR_HANDYMEN_MOW_BY_DEFAULT,				STR_NONE },											// handymen mow by default
+	{ WWT_CHECKBOX,			2,	10,		299,	159,	170,	STR_ENABLE_DEBUGGING_TOOLS,					STR_NONE },											// enable debugging tools
+	{ WWT_DROPDOWN,			1,	155,	299,	173,	184,	STR_NONE,									STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	174,	183,	STR_DROPDOWN_GLYPH,							STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	189,	200,	STR_EDIT_TITLE_SEQUENCES_BUTTON,			STR_NONE },											// Title sequences button
+	{ WWT_CHECKBOX,			2,	10,		299,	204,	215,	STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM,	STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM_TIP },	// Allow loading with incorrect checksum
 	{ WIDGETS_END },
 };
 
@@ -404,7 +406,8 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_DEBUGGING_TOOLS) |
 	(1 << WIDX_TITLE_SEQUENCE) |
 	(1 << WIDX_TITLE_SEQUENCE_DROPDOWN) |
-	(1 << WIDX_TITLE_SEQUENCE_BUTTON),
+	(1 << WIDX_TITLE_SEQUENCE_BUTTON) | 
+	(1 << WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_CHANNEL_BUTTON) |
@@ -625,6 +628,10 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 			break;
 		case WIDX_TITLE_SEQUENCE_BUTTON:
 			window_title_editor_open(0);
+			break;
+		case WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM:
+			gConfigGeneral.allow_loading_with_incorrect_checksum = !gConfigGeneral.allow_loading_with_incorrect_checksum;
+			break;
 		}
 		break;
 
@@ -1231,6 +1238,7 @@ static void window_options_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
 		widget_set_checkbox_value(w, WIDX_HANDYMEN_MOW_DEFAULT, gConfigGeneral.handymen_mow_default);
 		widget_set_checkbox_value(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
+		widget_set_checkbox_value(w, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
 
 		window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
@@ -1243,6 +1251,7 @@ static void window_options_invalidate(rct_window *w)
 		window_options_misc_widgets[WIDX_TITLE_SEQUENCE].type = WWT_DROPDOWN;
 		window_options_misc_widgets[WIDX_TITLE_SEQUENCE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_misc_widgets[WIDX_TITLE_SEQUENCE_BUTTON].type = WWT_DROPDOWN_BUTTON;
+		window_options_misc_widgets[WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM].type = WWT_CHECKBOX;
 		break;
 
 	case WINDOW_OPTIONS_PAGE_TWITCH:
