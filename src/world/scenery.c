@@ -111,18 +111,19 @@ void scenery_increase_age(int x, int y, rct_map_element *mapElement)
 	}
 }
 
-
-/* 0x006E2712 */
+/*
+ *
+ *  rct2: 0x006E2712
+ */
 void scenery_remove_ghost_tool_placement(){
 	sint16 x, y, z;
 
-	x = RCT2_GLOBAL(0x00F64EC4, sint16);
-	y = RCT2_GLOBAL(0x00F64EC6, sint16);
-	z = RCT2_GLOBAL(0x00F64F09, uint8);
+	x = RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16);
+	y = RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16);
+	z = RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8);
 
-	if (RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 0)){
-		RCT2_GLOBAL(0x00F64F0D, uint8) &= ~(1 << 0);
-
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 0)){
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) &= ~(1 << 0);
 		game_do_command(
 			x, 
 			105 | (RCT2_GLOBAL(0x00F64F0C, uint8) << 8), 
@@ -133,9 +134,8 @@ void scenery_remove_ghost_tool_placement(){
 			0);
 	}
 
-	if (RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 1)){
-		RCT2_GLOBAL(0x00F64F0D, uint8) &= ~(1 << 1);
-
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 1)){
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) &= ~(1 << 1);
 		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 
 		do{
@@ -157,9 +157,8 @@ void scenery_remove_ghost_tool_placement(){
 		} while (!map_element_is_last_for_tile(map_element++));
 	}
 
-	if (RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 2)){
-		RCT2_GLOBAL(0x00F64F0D, uint8) &= ~(1 << 2);
-
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 2)){
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) &= ~(1 << 2);
 		game_do_command(
 			x,
 			105 | (RCT2_GLOBAL(0x00F64F0C, uint8) << 8),
@@ -170,9 +169,8 @@ void scenery_remove_ghost_tool_placement(){
 			0);
 	}
 
-	if (RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 3)){
-		RCT2_GLOBAL(0x00F64F0D, uint8) &= ~(1 << 3);
-
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 3)){
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) &= ~(1 << 3);
 		game_do_command(
 			x,
 			105 | (RCT2_GLOBAL(0x00F64EC0, uint8) << 8),
@@ -183,9 +181,8 @@ void scenery_remove_ghost_tool_placement(){
 			0);
 	}
 
-	if (RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 4)){
-		RCT2_GLOBAL(0x00F64F0D, uint8) &= ~(1 << 4);
-
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 4)){
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) &= ~(1 << 4);
 		game_do_command(
 			x,
 			105,
