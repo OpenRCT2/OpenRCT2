@@ -2047,6 +2047,9 @@ enum {
 	STR_SHOW_MULTIPLAYER_STATUS_TIP = 5504,
 	STR_UNABLE_TO_CONNECT_TO_SERVER = 5505,
 
+	STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM = 5508,
+	STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM_TIP = 5509,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

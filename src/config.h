@@ -164,6 +164,7 @@ typedef struct {
 	uint8 minimize_fullscreen_focus_loss;
 	uint8 day_night_cycle;
 	uint8 upper_case_banners;
+	uint8 allow_loading_with_incorrect_checksum;
 } general_configuration;
 
 typedef struct {
