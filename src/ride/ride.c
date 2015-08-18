@@ -6170,46 +6170,50 @@ void ride_update_max_vehicles(int rideIndex)
 	}
 }
 
+static uint8 ride_get_random_colour_scheme(rct_ride* ride, rct_vehicle_colour_extended* colours, uint8 count) {
+	uint8 colourIndex = 0;
+	rct_ride* rideTemp;
+
+	for (int remaining = 200; remaining > 0; remaining--) {
+		colourIndex = ((uint16)count * (uint16)(uint8)scenario_rand()) >> 8;
+		for (int index = 0; index < 255; index++) {
+			rideTemp = GET_RIDE(index);
+			if (rideTemp->subtype == RIDE_TYPE_NULL ||					//RideTemp is unused
+				rideTemp == ride ||									//RideTemp is this ride
+				ride->subtype != rideTemp->subtype) continue;		//RideTemp is different type from this ride
+			if (colours[colourIndex].vehicle_colour.vehicle_colour == rideTemp->vehicle_colours[0].vehicle_colour) {
+				rideTemp = NULL;		//Indicates that the loop exited from a break
+				break;
+			}
+		}
+		if (rideTemp != NULL) return colourIndex;
+	}
+	return 0;	//Default to first colour scheme
+}
+
 /*
  * rtc2: 0x006DE52C
  */
 static void ride_reset_vehicle_colours(rct_ride *ride)
 {
 	uint8* colourCount = GET_RIDE_ENTRY(ride->subtype)->default_colours_ptr;
-	rct_vehicle_colour_extended* colour = colourCount + 1;
+	rct_vehicle_colour_extended* colours = colourCount + 1;
 
 	//Different colour per train
 	if (*colourCount == 255) {
 		ride->colour_scheme_type = RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN;
 		for (int index = 0; index < 32; index++) {
-			ride->vehicle_colours[index] = colour[index].vehicle_colour;
-			ride->vehicle_colours_extended[index] = colour[index].restraint_colour;
+			ride->vehicle_colours[index] = colours[index].vehicle_colour;
+			ride->vehicle_colours_extended[index] = colours[index].restraint_colour;
 		}
 		return;
 	}
 
 	//Same colour per train, different from all existing rides of this type if possible
 	ride->colour_scheme_type = RIDE_COLOUR_SCHEME_ALL_SAME;
-	int remaining = 0xC8;		//Not sure why 200
-	rct_ride* ride_list = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride);
-	uint16 colourIndex;
-	rct_ride* rideTemp;
-
-getRandomColorScheme:
-	if (--remaining != 0) {
-		colourIndex = ((uint16)*colourCount * (uint16)(uint8)scenario_rand()) >> 8;	//High bit of a 8bit x 8bit mul operation
-		rct_vehicle_colour v_colour = colour[colourIndex].vehicle_colour;
-		for (int index = 0; index < 255; index++) {	//Check to see if any rides of this subtype already have this color scheme
-			rideTemp = &ride_list[index];
-			if (rideTemp->type != 255 && rideTemp != ride && ride->subtype == rideTemp->subtype && v_colour.vehicle_colour == rideTemp->vehicle_colours[0].vehicle_colour) {
-				goto getRandomColorScheme;
-			}
-		}
-	} else {
-		colourIndex = 0;	//Default to using first color
-	}
-	ride->vehicle_colours[0] = colour[colourIndex].vehicle_colour;
-	ride->vehicle_colours_extended[0] = colour[colourIndex].restraint_colour;
+	uint8 colourIndex = ride_get_random_colour_scheme(ride, colours, *colourCount);
+	ride->vehicle_colours[0] = colours[colourIndex].vehicle_colour;
+	ride->vehicle_colours_extended[0] = colours[colourIndex].restraint_colour;
 	return;
 }
 
