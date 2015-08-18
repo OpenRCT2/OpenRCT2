@@ -25,9 +25,26 @@
 
 /* size: 0x2 */
 typedef struct{
-	uint8 body_colour;
-	uint8 trim_colour;
+	union {
+		uint16 vehicle_colour;			// 0x00
+		struct {
+			uint8 body_colour;			// 0x00
+			uint8 trim_colour;			// 0x01
+		};
+	};
 } rct_vehicle_colour;
+
+/* size: 0x3 */
+typedef struct {
+	union {
+		rct_vehicle_colour vehicle_colour;	// 0x00
+		struct {
+			uint8 body_colour;				// 0x00
+			uint8 trim_colour;				// 0x01
+		};
+	};
+	uint8 restraint_colour;					// 0x02
+} rct_vehicle_colour_extended;
 
 typedef struct {
 	uint8 sprite_identifier;		// 0x00

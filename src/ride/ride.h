@@ -116,7 +116,7 @@ typedef struct {
 	uint8 third_vehicle;					// 0x018
 	uint8 pad_019;
 	rct_ride_type_vehicle vehicles[4];		// 0x1A
-	uint32 var_1AE;
+	uint8* default_colours_ptr;				// 0x1AE
 	sint8 excitement_multipler;				// 0x1B2
 	sint8 intensity_multipler;				// 0x1B3
 	sint8 nausea_multipler;					// 0x1B4

@@ -145,7 +145,7 @@ static void ride_shop_connected(rct_ride* ride, int ride_idx);
 static void ride_spiral_slide_update(rct_ride *ride);
 static void ride_update(int rideIndex);
 static void ride_update_vehicle_colours(int rideIndex);
-static void sub_6DE52C(rct_ride *ride);
+static void ride_reset_vehicle_colours(rct_ride *ride);
 
 rct_ride_type *ride_get_entry(rct_ride *ride)
 {
@@ -5059,7 +5059,7 @@ foundRideEntry:
 	ride->num_circuits = 1;
 	ride->mode = ride_get_default_mode(ride);
 	ride->min_max_cars_per_train = (rideEntry->min_cars_in_train << 4) | rideEntry->max_cars_in_train;
-	sub_6DE52C(ride);
+	ride_reset_vehicle_colours(ride);
 	window_invalidate_by_class(WC_RIDE_LIST);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
@@ -5082,7 +5082,6 @@ void game_command_callback_ride_construct_new(int eax, int ebx, int ecx, int edx
 	if (rideIndex != -1)
 		ride_construct(rideIndex);
 }
-
 /**
  * 
  *  rct2: 0x006B49D9
@@ -6171,9 +6170,47 @@ void ride_update_max_vehicles(int rideIndex)
 	}
 }
 
-static void sub_6DE52C(rct_ride *ride)
+/*
+ * rtc2: 0x006DE52C
+ */
+static void ride_reset_vehicle_colours(rct_ride *ride)
 {
-	RCT2_CALLPROC_X(0x006DE52C, 0, 0, 0, 0, (int)ride, 0, 0);
+	uint8* colourCount = GET_RIDE_ENTRY(ride->subtype)->default_colours_ptr;
+	rct_vehicle_colour_extended* colour = colourCount + 1;
+
+	//Different colour per train
+	if (*colourCount == 255) {
+		ride->colour_scheme_type = RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN;
+		for (int index = 0; index < 32; index++) {
+			ride->vehicle_colours[index] = colour[index].vehicle_colour;
+			ride->vehicle_colours_extended[index] = colour[index].restraint_colour;
+		}
+		return;
+	}
+
+	//Same colour per train, different from all existing rides of this type if possible
+	ride->colour_scheme_type = RIDE_COLOUR_SCHEME_ALL_SAME;
+	int remaining = 0xC8;		//Not sure why 200
+	rct_ride* ride_list = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride);
+	uint16 colourIndex;
+	rct_ride* rideTemp;
+
+getRandomColorScheme:
+	if (--remaining != 0) {
+		colourIndex = ((uint16)*colourCount * (uint16)(uint8)scenario_rand()) >> 8;	//High bit of a 8bit x 8bit mul operation
+		rct_vehicle_colour v_colour = colour[colourIndex].vehicle_colour;
+		for (int index = 0; index < 255; index++) {	//Check to see if any rides of this subtype already have this color scheme
+			rideTemp = &ride_list[index];
+			if (rideTemp->type != 255 && rideTemp != ride && ride->subtype == rideTemp->subtype && v_colour.vehicle_colour == rideTemp->vehicle_colours[0].vehicle_colour) {
+				goto getRandomColorScheme;
+			}
+		}
+	} else {
+		colourIndex = 0;	//Default to using first color
+	}
+	ride->vehicle_colours[0] = colour[colourIndex].vehicle_colour;
+	ride->vehicle_colours_extended[0] = colour[colourIndex].restraint_colour;
+	return;
 }
 
 void ride_set_ride_entry(int rideIndex, int rideEntry)
@@ -6276,7 +6313,7 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 		break;
 	case RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY:
 		ride->subtype = value;
-		sub_6DE52C(ride);
+		ride_reset_vehicle_colours(ride);
 		break;
 	}
 
