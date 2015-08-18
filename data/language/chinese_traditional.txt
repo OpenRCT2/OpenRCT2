@@ -1173,7 +1173,7 @@ STR_1167    :不能在此升高水位...
 STR_1168    :選項
 STR_1169    :(無)
 STR_1170    :{STRING}
-STR_1171    :{RED}Closed - - 
+STR_1171    :{RED}已關閉 - - 
 STR_1172    :{YELLOW}{STRINGID} - - 
 STR_1173    :{SMALLFONT}{BLACK}建造道路及'輪候區'道路
 STR_1174    :橫額擋在路上
@@ -1408,13 +1408,13 @@ STR_1402    :{SMALLFONT}{BLACK}建造或移動遊樂設施的入口
 STR_1403    :{SMALLFONT}{BLACK}建造或移動遊樂設施的出口
 STR_1404    :{SMALLFONT}{BLACK}90{DEGREE}旋轉
 STR_1405    :{SMALLFONT}{BLACK}反轉鬼影
-STR_1406    :{SMALLFONT}{BLACK}使用/棄用景物 (如果這個軌道設計擁有景物)
+STR_1406    :{SMALLFONT}{BLACK}使用/棄用景物 (如果這個軌道設計附帶景物)
 STR_1407    :{WINDOW_COLOUR_2}建造此軌道...
 STR_1408    :{WINDOW_COLOUR_2}費用: {BLACK}{CURRENCY}
 STR_1409    :入口/出口平台
 STR_1410    :垂直高塔
 STR_1411    :{STRINGID}擋在路中
-STR_1412    :{WINDOW_COLOUR_3}這類型的遊樂設施並不適合數據記錄
+STR_1412    :{WINDOW_COLOUR_3}數據記錄並不適合這類型的遊樂設施
 STR_1413    :{WINDOW_COLOUR_3}數據會於{STRINGID}離開{STRINGID}後記錄
 STR_1414    :{SMALLFONT}{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}速度
@@ -1454,7 +1454,7 @@ STR_1448    :觀看新遊樂設施的建造過程中
 STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
-STR_1452    :遊客的名字
+STR_1452    :遊客命名
 STR_1453    :請輸入這位遊客的新姓名:
 STR_1454    :不能命名這位遊客...
 STR_1455    :不適合的遊客姓名
@@ -1471,7 +1471,7 @@ STR_1465    :向上盤旋 (大型)
 STR_1466    :向下盤旋 (小型)
 STR_1467    :向下盤旋 (大型)
 STR_1468    :員工
-STR_1469    :遊樂設施必需要由車站發車以及到達車站卸客
+STR_1469    :遊樂設施必需要由車站發車後到達車站卸客
 STR_1470    :車站不夠長
 STR_1471    :{WINDOW_COLOUR_2}速度:
 STR_1472    :{SMALLFONT}{BLACK}此遊樂設施的速度
@@ -1723,7 +1723,7 @@ STR_1717    :不能重命名樂園...
 STR_1718    :樂園名稱
 STR_1719    :請輸入樂園名稱:
 STR_1720    :{SMALLFONT}{BLACK}命名樂園
-STR_1721    :樂園關閉中
+STR_1721    :樂園已關閉
 STR_1722    :樂園開放中
 STR_1723    :不能開放樂園...
 STR_1724    :不能關閉樂園...
@@ -3844,3 +3844,6 @@ STR_5501    :開始伺服器
 STR_5502    :多人連線模式
 STR_5503    :請輸入主機名稱或IP地址:
 STR_5504    :{SMALLFONT}{BLACK}顯示多人連線狀態
+STR_5505    :無法連接至伺服器.
+STR_5506    :遊客無視設施的刺激度
+STR_5507    :預設清潔工人會修剪草皮
