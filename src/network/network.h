@@ -21,15 +21,28 @@
 #ifndef _NETWORK_H_
 #define _NETWORK_H_
 
-#ifndef DISABLE_NETWORK
-
-#define NETWORK_DEFAULT_PORT 11753
-
 enum {
 	NETWORK_MODE_NONE,
 	NETWORK_MODE_CLIENT,
 	NETWORK_MODE_SERVER
 };
+
+enum {
+	NETWORK_PLAYER_FLAG_ISSERVER = 1 << 0,
+};
+
+#define NETWORK_DEFAULT_PORT 11753
+
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+#include "../common.h"
+#include "../platform/platform.h"
+#ifdef __cplusplus
+}
+#endif // __cplusplus
+
+#ifndef DISABLE_NETWORK
 
 enum {
 	NETWORK_AUTH_NONE,
@@ -40,20 +53,13 @@ enum {
 	NETWORK_AUTH_BADPASSWORD
 };
 
-enum {
-	NETWORK_PLAYER_FLAG_ISSERVER = 1 << 0,
-};
-
 #ifdef __cplusplus
 
 #include <list>
+#include <set>
 #include <memory>
 #include <vector>
 #include <SDL.h>
-extern "C" {
-#include "../common.h"
-#include "../platform/platform.h"
-}
 
 template <std::size_t size>
 struct ByteSwapT { };
@@ -215,17 +221,20 @@ private:
 	int Server_Handle_READY(NetworkConnection& connection, NetworkPacket& packet);
 };
 
-extern "C" {
-#endif
+#endif // __cplusplus
+#endif /* DISABLE_NETWORK */
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
 int network_init();
 void network_close();
 int network_begin_client(const char *host, int port);
 int network_begin_server(int port);
 
+int network_get_mode();
 void network_update();
 void network_tick();
-int network_get_mode();
 int network_get_authstatus();
 uint32 network_get_server_tick();
 uint8 network_get_player_id();
@@ -242,8 +251,6 @@ void network_print_error();
 
 #ifdef __cplusplus
 }
-#endif
-
-#endif /* DISABLE_NETWORK */
+#endif // __cplusplus
 
 #endif

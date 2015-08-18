@@ -8,6 +8,9 @@ mkdir -p $cachedir
 if [[ ! -d build ]]; then
 	mkdir -p build
 fi
+if [[ ! -d build_nonet ]]; then
+	mkdir -p build_nonet
+fi
 
 libversion=2
 libVFile="./libversion"
@@ -56,6 +59,10 @@ fi
 
 pushd build
 	cmake -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=Debug  ..
+	make
+popd
+pushd build_nonet
+	cmake -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=Debug -DDISABLE_NETWORK=ON ..
 	make
 popd
 
