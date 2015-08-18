@@ -109,7 +109,7 @@ int scenario_load(const char *path)
 
 	rw = platform_sdl_rwfromfile(path, "rb");
 	if (rw != NULL) {
-		if (!sawyercoding_validate_checksum(rw)) {
+		if (!sawyercoding_validate_checksum(rw) && !gConfigGeneral.allow_loading_with_incorrect_checksum) {
 			SDL_RWclose(rw);
 			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
 			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
