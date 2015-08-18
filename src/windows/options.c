@@ -631,6 +631,8 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 			break;
 		case WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM:
 			gConfigGeneral.allow_loading_with_incorrect_checksum = !gConfigGeneral.allow_loading_with_incorrect_checksum;
+			config_save_default();
+			window_invalidate(w);
 			break;
 		}
 		break;
