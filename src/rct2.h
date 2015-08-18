@@ -150,6 +150,7 @@ enum {
 
 enum {
 	PATH_ID_G1,
+	PATH_ID_PLUGIN,
 	PATH_ID_CSS1,
 	PATH_ID_CSS2,
 	PATH_ID_CSS4,
@@ -206,6 +207,7 @@ enum {
 static const char * const file_paths[] =
 {
 	"Data\\G1.DAT",
+	"Data\\PLUGIN.DAT",
 	"Data\\CSS1.DAT",
 	"Data\\CSS2.DAT",
 	"Data\\CSS4.DAT",
