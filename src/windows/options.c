@@ -1117,7 +1117,7 @@ static void window_options_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
 		widget_set_checkbox_value(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
 
-		// construction marker: celsius/fahrenheit
+		// construction marker: white/translucent
 		window_options_display_widgets[WIDX_CONSTRUCTION_MARKER].image = STR_WHITE + RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8);
 
 		window_options_display_widgets[WIDX_RESOLUTION].type = WWT_DROPDOWN;
@@ -1170,7 +1170,11 @@ static void window_options_invalidate(rct_window *w)
 			RCT2_GLOBAL(0x013CE952, uint16) = STR_SOUND_NONE;
 		}
 		else {
-			RCT2_GLOBAL(0x013CE952, uint16) = 1170;
+			if (currentSoundDevice == 0)
+				RCT2_GLOBAL(0x013CE952, uint16) = 5510;
+			else
+				RCT2_GLOBAL(0x013CE952, uint16) = 1170;
+
 			RCT2_GLOBAL(0x013CE952 + 2, uint32) = (uint32)gAudioDevices[currentSoundDevice].name;
 		}
 
