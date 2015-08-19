@@ -907,9 +907,9 @@ int scenario_save(SDL_RWops* rw, int flags)
 	int viewX, viewY, viewZoom, viewRotation;
 
 	if (flags & 2)
-		log_error("saving scenario");
+		log_verbose("saving scenario");
 	else
-		log_error("saving game");
+		log_verbose("saving game");
 
 
 	if (!(flags & 0x80000000))

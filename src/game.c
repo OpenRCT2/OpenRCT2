@@ -993,7 +993,7 @@ int save_game()
 	if (!gFirstTimeSave) {
 		utf8 path[MAX_PATH];
 
-		log_error("Saving to %s", gScenarioSaveName);
+		log_verbose("Saving to %s", gScenarioSaveName);
 
 		platform_get_user_directory(path, "save");
 
@@ -1003,7 +1003,7 @@ int save_game()
 		SDL_RWops* rw = platform_sdl_rwfromfile(path, "wb+");
 		if (rw != NULL) {
 			scenario_save(rw, 0x80000000);
-			log_error("Saved to %s", gScenarioSaveName);
+			log_verbose("Saved to %s", gScenarioSaveName);
 			SDL_RWclose(rw);
 		}
 
