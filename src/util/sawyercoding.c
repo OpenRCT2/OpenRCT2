@@ -468,14 +468,20 @@ int sawyercoding_detect_file_type(char *src, int length)
 		actualChecksum = rol32(actualChecksum, 3);
 	}
 
-	switch (checksum - actualChecksum) {
-	case +108156:	return FILE_VERSION_RCT1 | FILE_TYPE_SV4;
-	case -108156:	return FILE_VERSION_RCT1 | FILE_TYPE_SC4;
-	case +110001:	return FILE_VERSION_RCT1_AA | FILE_TYPE_SV4;
-	case -110001:	return FILE_VERSION_RCT1_AA | FILE_TYPE_SC4;
-	case +120001:	return FILE_VERSION_RCT1_LL | FILE_TYPE_SV4;
-	case -120001:	return FILE_VERSION_RCT1_LL | FILE_TYPE_SC4;
-	}
+	return sawyercoding_detect_rct1_version(checksum - actualChecksum);
+}
+
+int sawyercoding_detect_rct1_version(int gameVersion)
+{
+	int fileType = (gameVersion) > 0 ? FILE_TYPE_SV4 : FILE_TYPE_SC4;
+	gameVersion=abs(gameVersion);
+
+	if (gameVersion >= 108000 && gameVersion < 110000)
+		return (FILE_VERSION_RCT1 | fileType);
+	else if (gameVersion >= 110000 && gameVersion < 120000)
+		return (FILE_VERSION_RCT1_AA | fileType);
+	else if (gameVersion >= 120000 && gameVersion < 130000)
+		return (FILE_VERSION_RCT1_LL | fileType);
 
 	return -1;
 }
