@@ -108,7 +108,8 @@ const char *gPeepEasterEggNames[] = {
 	"NANCY STILLWAGON",
 	"ANDY HINE",
 	"ELISSA WHITE",
-	"DAVID ELLIS"
+	"DAVID ELLIS",
+	"LOADSAMONEY"
 };
 
 int peep_get_staff_count()
