@@ -84,7 +84,7 @@ STR_0079    :Ковёр-самолёт
 STR_0080    :Заплыв на подводной лодке
 STR_0081    :Речной рафтинг
 STR_0082    :Неизвесный атракцион (50)
-STR_0083    :Цинтрефуга
+STR_0083    :Центрефуга
 STR_0084    :Неизвестный атракцион (52)
 STR_0085    :Неизвестный атракцион (53)
 STR_0086    :Неизвестный атракцион (54)
@@ -513,31 +513,31 @@ STR_0508    :
 STR_0509    :
 STR_0510    :
 STR_0511    :
-STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
-STR_0513    :A looping roller coaster where the riders ride in a standing position
-STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
-STR_0515    :A steel roller coaster with trains that are held beneath the track, with many complex and twisting track elements
-STR_0516    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
-STR_0517    :Passengers ride in miniature trains along a narrow-gauge railway track
-STR_0518    :Passengers travel in electric trains along a monorail track
-STR_0519    :Passengers ride in small cars hanging beneath the single-rail track, swinging freely from side to side around corners
-STR_0520    :A dock platform where guests can drive/row personal watercraft on a body of water
-STR_0521    :A fast and twisting roller coaster with tight turns and steep drops. Intensity is bound to be high.
-STR_0522    :A smaller roller coaster where the riders sit above the track with no car around them
-STR_0523    :Riders travel slowly in powered vehicles along a track-based route
-STR_0524    :Freefall car is pneumatically launched up a tall steel tower and then allowed to freefall down
-STR_0525    :Riders career down a twisting track guided only by the curvature and banking of the semi-circular track
-STR_0526    :Passengers travel in a rotating observation cabin which travels up a tall tower
-STR_0527    :A smooth steel-tracked roller coaster capable of vertical loops
-STR_0528    :Riders travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
-STR_0529    :Mine train themed roller coaster trains career along steel roller coaster track made to look like old railway track
-STR_0530    :Cars hang from a steel cable which runs continuously from one end of the ride to the other and back again
-STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
+STR_0512    :Компактные горки со спиральными подъёмом и плавными, кручёными выпадами.
+STR_0513    :Петляющие горки, на которых люди едут в стоячем положении.
+STR_0514    :Дно вагонеток раскачивается по пути, прыжимаясь к сторонам на поворотах.
+STR_0515    :Стальные горки с вагонетками, которые прикриплены к треку, с множеством сложных и закрученых элементов.
+STR_0516    :Мягкие горки для людей, которых ещё не хватает духа, чтобы столкнутся с большими заездами.
+STR_0517    :Пассажиры едут в поездах по узко-калиберной железной дороге.
+STR_0518    :Пассажиры путишествуют в электрических поездах по морельсовой дороге.
+STR_0519    :Пассажиры едут в меленьких машинках, удерживающихся за одно-рельсовую дорогу, свободно раскачиваясь из стороны в сторону около поворотов.
+STR_0520    :Причал, где гости могут кататься/грести на личных водных судах по водному пространству.
+STR_0521    :Быстрые и закрученые горки, с жёсткими поворотами и крутыми выпадами. Обязательно высокая интенсивновсть.
+STR_0522    :Небольшие горки, где посетители сидят над путями без вагонетонетки около них.
+STR_0523    :Пассажири неспеша путишествуют в электро-мобилях по маршруту, основаному на треке.
+STR_0524    :Капсула свободного падения пневматически запускается вверх по высокой стальной башне и потом переходит в свободное подение.
+STR_0525    :Пассажиры быстро движутся вниз по закрученому пути, направляемые только кривизной и виражами полу-круглого трека.
+STR_0526    :Пассажиры поднимаются во вращающейся кабине для обозрения, которая поднимается по высокой башне.
+STR_0527    :Плавные стальные горки с мёртвыми петлями.
+STR_0528    :Пассажири сплавляются на надувныъ шлюпках по извилистому полу-круглому треку, или по полностью закрытой трубе.
+STR_0529    :Стилизованые под шахтёрские вагонетки вогончики быстро едут по стальным горкам, который выглядит, как старая железная дорога.
+STR_0530    :Прикреплённые вагонетки к стальному кабелю, которые едут из одного конца трассы к другому, и обратно.
+STR_0531    :Компактные горки со стальными путями, по которым вагончики едут через штопоры и мёртвые петли.
 STR_0532    :
 STR_0533    :
-STR_0534    :Self-drive petrol-engined go karts
-STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
-STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
+STR_0534    :Само-управляемые моторные машинки.
+STR_0535    :Бревнообразные лодки плывут по водному каналу, создавая брызги на крутых склонах, чтобы намочить пассажиров.
+STR_0536    :Круглые лодочки извилисто плывут по широкому водному каналу, обрызгивая через водопады и тряся пассажиров на пенящимся порогам.
 STR_0537    :
 STR_0538    :
 STR_0539    :
