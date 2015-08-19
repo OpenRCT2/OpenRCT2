@@ -753,6 +753,10 @@ static void window_loadsave_select(rct_window *w, const char *path)
 				network_begin_server(gConfigNetwork.default_port);
 			}
 
+			strcpy(gScenarioSaveName, path_get_filename(path));
+			path_remove_extension(gScenarioSaveName);
+			gFirstTimeSave = 0;
+
 			window_close(w);
 			gfx_invalidate_screen();
 			rct2_endupdate();
@@ -768,6 +772,11 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			int success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 1 : 0);
 			SDL_RWclose(rw);
 			if (success) {
+
+				strcpy(gScenarioSaveName, path_get_filename(path));
+				path_remove_extension(gScenarioSaveName);
+				gFirstTimeSave = 0;
+
 				window_close_by_class(WC_LOADSAVE);
 				game_do_command(0, 1047, 0, -1, GAME_COMMAND_SET_RIDE_APPEARANCE, 0, 0);
 				gfx_invalidate_screen();

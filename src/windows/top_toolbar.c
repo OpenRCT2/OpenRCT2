@@ -72,18 +72,19 @@ enum {
 };
 
 typedef enum {
-	DDIDX_LOAD_GAME = 0,
-	DDIDX_SAVE_GAME = 1,
+	DDIDX_SAVE_GAME = 0,
+	DDIDX_SAVE_GAME_AS = 1,
+	DDIDX_LOAD_GAME = 2,
 	// separator
-	DDIDX_ABOUT = 3,
-	DDIDX_OPTIONS = 4,
-	DDIDX_SCREENSHOT = 5,
-	DDIDX_GIANT_SCREENSHOT = 6,
+	DDIDX_ABOUT = 4,
+	DDIDX_OPTIONS = 5,
+	DDIDX_SCREENSHOT = 6,
+	DDIDX_GIANT_SCREENSHOT = 7,
 	// separator
-	DDIDX_QUIT_TO_MENU = 8,
-	DDIDX_EXIT_OPENRCT2 = 9,
+	DDIDX_QUIT_TO_MENU = 9,
+	DDIDX_EXIT_OPENRCT2 = 10,
 	// separator
-	DDIDX_ENABLE_TWITCH = 11
+	DDIDX_ENABLE_TWITCH = 12
 } FILE_MENU_DDIDX;
 
 typedef enum {
@@ -377,25 +378,26 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			gDropdownItemsFormat[9] = STR_EXIT_OPENRCT2;
 			numItems = 10;
 		} else {
-			gDropdownItemsFormat[0] = STR_LOAD_GAME;
-			gDropdownItemsFormat[1] = STR_SAVE_GAME;
-			gDropdownItemsFormat[2] = 0;
-			gDropdownItemsFormat[3] = STR_ABOUT;
-			gDropdownItemsFormat[4] = STR_OPTIONS;
-			gDropdownItemsFormat[5] = STR_SCREENSHOT;
-			gDropdownItemsFormat[6] = STR_GIANT_SCREENSHOT;
-			gDropdownItemsFormat[7] = 0;
-			gDropdownItemsFormat[8] = STR_QUIT_TO_MENU;
-			gDropdownItemsFormat[9] = STR_EXIT_OPENRCT2;
-			numItems = 10;
+			gDropdownItemsFormat[0] = STR_SAVE_GAME;
+			gDropdownItemsFormat[1] = STR_SAVE_GAME_AS;
+			gDropdownItemsFormat[2] = STR_LOAD_GAME;
+			gDropdownItemsFormat[3] = 0;
+			gDropdownItemsFormat[4] = STR_ABOUT;
+			gDropdownItemsFormat[5] = STR_OPTIONS;
+			gDropdownItemsFormat[6] = STR_SCREENSHOT;
+			gDropdownItemsFormat[7] = STR_GIANT_SCREENSHOT;
+			gDropdownItemsFormat[8] = 0;
+			gDropdownItemsFormat[9] = STR_QUIT_TO_MENU;
+			gDropdownItemsFormat[10] = STR_EXIT_OPENRCT2;
+			numItems = 11;
 
 		#ifndef DISABLE_TWITCH
 			if (gConfigTwitch.channel != NULL && gConfigTwitch.channel[0] != 0) {
 				_menuDropdownIncludesTwitch = true;
-				gDropdownItemsFormat[10] = 0;
-				gDropdownItemsFormat[11] = 1156;
-				gDropdownItemsArgs[11] = STR_TWITCH_ENABLE;
-				numItems = 12;
+				gDropdownItemsFormat[11] = 0;
+				gDropdownItemsFormat[12] = 1156;
+				gDropdownItemsArgs[12] = STR_TWITCH_ENABLE;
+				numItems = 13;
 			}
 		#endif
 		}
@@ -492,11 +494,22 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 		case DDIDX_LOAD_GAME:
 			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 			break;
+		case DDIDX_SAVE_GAME_AS:
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
+				rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+				window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE, s6Info->name);
+			}
+			else {
+				tool_cancel();
+				save_game_as();
+			}
+			break;
 		case DDIDX_SAVE_GAME:
 			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
 				rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 				window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE, s6Info->name);
-			} else {
+			}
+			else {
 				tool_cancel();
 				save_game();
 			}

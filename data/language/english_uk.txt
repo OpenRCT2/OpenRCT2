@@ -885,7 +885,7 @@ STR_0879    :Can't lower land here...
 STR_0880    :Can't raise land here...
 STR_0881    :Object in the way
 STR_0882    :Load Game
-STR_0883    :Save Game
+STR_0883    :Save Game as
 STR_0884    :Load Landscape
 STR_0885    :Save Landscape
 STR_0886    :Quit Game
@@ -3850,3 +3850,4 @@ STR_5508    :Allow loading files with incorrect checksums
 STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves that have an incorrect checksum, like the scenarios from the demo or damaged saves.
 STR_5510    :Default sound device
 STR_5511    :(UNKNOWN)
+STR_5512    :Save game

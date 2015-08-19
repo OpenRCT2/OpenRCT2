@@ -48,6 +48,7 @@ static char _scenarioPath[MAX_PATH];
 static const char *_scenarioFileName;
 
 char gScenarioSaveName[MAX_PATH];
+int gFirstTimeSave = 1;
 
 static int scenario_create_ducks();
 static void scenario_objective_check();
@@ -906,9 +907,9 @@ int scenario_save(SDL_RWops* rw, int flags)
 	int viewX, viewY, viewZoom, viewRotation;
 
 	if (flags & 2)
-		log_verbose("saving scenario");
+		log_error("saving scenario");
 	else
-		log_verbose("saving game");
+		log_error("saving game");
 
 
 	if (!(flags & 0x80000000))
