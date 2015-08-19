@@ -126,9 +126,9 @@ void scenery_remove_ghost_tool_placement(){
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) &= ~(1 << 0);
 		game_do_command(
 			x, 
-			105 | (RCT2_GLOBAL(0x00F64F0C, uint8) << 8), 
+			105 | (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT_TYPE, uint8) << 8),
 			y, 
-			z | (RCT2_GLOBAL(0x00F64EDA, uint8) << 8), 
+			z | (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_SELECTED_OBJECT, uint8) << 8),
 			GAME_COMMAND_REMOVE_SCENERY,
 			0, 
 			0);
@@ -161,7 +161,7 @@ void scenery_remove_ghost_tool_placement(){
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) &= ~(1 << 2);
 		game_do_command(
 			x,
-			105 | (RCT2_GLOBAL(0x00F64F0C, uint8) << 8),
+			105 | (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT_TYPE, uint8) << 8),
 			y,
 			RCT2_GLOBAL(0x00F64F11, uint8) |(z << 8),
 			GAME_COMMAND_REMOVE_FENCE,
@@ -173,7 +173,7 @@ void scenery_remove_ghost_tool_placement(){
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) &= ~(1 << 3);
 		game_do_command(
 			x,
-			105 | (RCT2_GLOBAL(0x00F64EC0, uint8) << 8),
+			105 | (RCT2_GLOBAL(0x00F64EC0 /* rotation? */, uint8) << 8),
 			y,
 			z,
 			GAME_COMMAND_REMOVE_LARGE_SCENERY,

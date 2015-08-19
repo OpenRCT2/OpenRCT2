@@ -2091,11 +2091,11 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) = map_tile.x;
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) = map_tile.y;
 		RCT2_GLOBAL(0x00F64EC0, uint16) = (uint16)(parameter_3 & 0xFFFF);
-		RCT2_GLOBAL(0x00F64EDA, sint16) = selected_tab;
-		
-		mapElement = RCT2_GLOBAL(0x00F64EBC, rct_map_element*);
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_SELECTED_OBJECT, sint16) = selected_tab;
+
+		mapElement = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT, rct_map_element*);
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) = mapElement->base_height;
-		RCT2_GLOBAL(0x00F64F0C, uint8) = mapElement->type;
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT_TYPE, uint8) = mapElement->type;
 		if (RCT2_GLOBAL(0x00F64F14, uint8) & (1 << 1)){
 			viewport_set_visibility(4);
 		}
@@ -2148,7 +2148,7 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) = map_tile.y;
 		RCT2_GLOBAL(0x00F64F11, uint8) = (parameter_2 & 0xFF);
 		
-		mapElement = RCT2_GLOBAL(0x00F64EBC, rct_map_element*);
+		mapElement = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT, rct_map_element*);
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) = mapElement->base_height;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) |= (1 << 2);
@@ -2172,7 +2172,7 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) = map_tile.y;
 		RCT2_GLOBAL(0x00F64EC0, uint8) = ((parameter_1 >> 8) & 0xFF);
 
-		mapElement = RCT2_GLOBAL(0x00F64EBC, rct_map_element*);
+		mapElement = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT, rct_map_element*);
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) = mapElement->base_height;
 
 		if (RCT2_GLOBAL(0x00F64F14, uint8) & (1 << 1)){
@@ -2269,7 +2269,7 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 			mapTile.y == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) &&
 			(parameter2 & 0xFF) == RCT2_GLOBAL(0x00F64F0E, uint8)&&
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) == RCT2_GLOBAL(0x00F64F0A, sint16) &&
-			RCT2_GLOBAL(0x00F64EDA, uint16) == selected_tab){
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_SELECTED_OBJECT, uint16) == selected_tab){
 			return;		
 		}
 
@@ -2404,13 +2404,13 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 			mapTile.x == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) &&
 			mapTile.y == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) &&
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) == RCT2_GLOBAL(0x00F64F0A, sint16) &&
-			(parameter3 & 0xFFFF) == RCT2_GLOBAL(0x00F64EDA, uint16)){
+			(parameter3 & 0xFFFF) == RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_SELECTED_OBJECT, uint16)){
 			return;
 		}
 
 		scenery_remove_ghost_tool_placement();
 
-		RCT2_GLOBAL(0x00F64EDA, uint16) = (parameter3 & 0xFFFF);
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_SELECTED_OBJECT, uint16) = (parameter3 & 0xFFFF);
 		RCT2_GLOBAL(0x00F64F0A, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16);
 
 		bl = 1;
