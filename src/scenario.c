@@ -48,6 +48,7 @@ static char _scenarioPath[MAX_PATH];
 static const char *_scenarioFileName;
 
 char gScenarioSaveName[MAX_PATH];
+int gFirstTimeSave = 1;
 
 static int scenario_create_ducks();
 static void scenario_objective_check();

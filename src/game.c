@@ -990,31 +990,36 @@ static int show_save_game_dialog(char *resultPath)
 
 int save_game()
 {
-	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, gScenarioSaveName);
-	return 0;
+	if (!gFirstTimeSave) {
+		utf8 path[MAX_PATH];
 
-	char path[256];
+		log_verbose("Saving to %s", gScenarioSaveName);
 
-	if (!show_save_game_dialog(path)) {
-		gfx_invalidate_screen();
+		platform_get_user_directory(path, "save");
+
+		strcat(path, gScenarioSaveName);
+		strcat(path, ".sv6");
+
+		SDL_RWops* rw = platform_sdl_rwfromfile(path, "wb+");
+		if (rw != NULL) {
+			scenario_save(rw, 0x80000000);
+			log_verbose("Saved to %s", gScenarioSaveName);
+			SDL_RWclose(rw);
+		}
+
 		return 0;
 	}
-
-	// Ensure path has .SV6 extension
-	path_set_extension(path, ".SV6");
-	
-	SDL_RWops* rw = platform_sdl_rwfromfile(path, "wb+");
-	if (rw != NULL) {
-		int success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 1 : 0);
-		SDL_RWclose(rw);
-		if (success) {
-			game_do_command(0, 1047, 0, -1, GAME_COMMAND_SET_RIDE_APPEARANCE, 0, 0);
-			gfx_invalidate_screen();
-			return 1;
-		}
+	else {
+		save_game_as();
 	}
+
+}
+int save_game_as()
+{
+	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, gScenarioSaveName);
 	return 0;
 }
+
 
 void game_autosave()
 {

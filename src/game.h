@@ -133,6 +133,7 @@ void game_load_init();
 void game_pause_toggle(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void pause_toggle();
 int save_game();
+int save_game_as();
 void rct2_exit();
 void rct2_exit_reason(rct_string_id title, rct_string_id body);
 void game_autosave();
