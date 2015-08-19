@@ -36,6 +36,7 @@
 #include "map_animation.h"
 #include "park.h"
 #include "scenery.h"
+#include "../openrct2.h"
 
 /* Replaces 0x00993CCC & 0x00993CCE */
 const rct_xy16 TileDirectionDelta[] = {
@@ -3847,7 +3848,7 @@ void map_invalidate_tile_under_zoom(int x, int y, int z0, int z1, int maxZoom)
 	y2 = y + 32 - z0;
 
 	viewport = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*);
-	while (viewport->width != 0) {
+	while (!gOpenRCT2Headless && viewport->width != 0) {
 		if (maxZoom == -1 || viewport->zoom <= maxZoom) {
 			viewport_invalidate(viewport, x1, y1, x2, y2);
 		}

@@ -184,59 +184,64 @@ void platform_draw()
 	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
 	int height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
 
-	if (gConfigGeneral.hardware_display) {
-		void *pixels;
-		int pitch;
-		if (SDL_LockTexture(gBufferTexture, NULL, &pixels, &pitch) == 0) {
-			uint8 *src = (uint8*)_screenBuffer;
-			int padding = pitch - (width * 4);
-			if (pitch == width * 4) {
-				uint32 *dst = pixels;
-				for (int i = width * height; i > 0; i--) { *dst++ = *(uint32 *)(&gPaletteHWMapped[*src++]); }
-			} else
-			if (pitch == (width * 2) + padding) {
-				uint16 *dst = pixels;
-				for (int y = height; y > 0; y++) {
-					for (int x = width; x > 0; x--) { *dst++ = *(uint16 *)(&gPaletteHWMapped[*src++]); }
-					dst = (uint16*)(((uint8 *)dst) + padding);
+	if (!gOpenRCT2Headless) {
+		if (gConfigGeneral.hardware_display) {
+			void *pixels;
+			int pitch;
+			if (SDL_LockTexture(gBufferTexture, NULL, &pixels, &pitch) == 0) {
+				uint8 *src = (uint8*)_screenBuffer;
+				int padding = pitch - (width * 4);
+				if (pitch == width * 4) {
+					uint32 *dst = pixels;
+					for (int i = width * height; i > 0; i--) { *dst++ = *(uint32 *)(&gPaletteHWMapped[*src++]); }
 				}
-			} else
-			if (pitch == width + padding) {
-				uint8 *dst = pixels;
-				for (int y = height; y > 0; y++) {
-					for (int x = width; x > 0; x--) { *dst++ = *(uint8 *)(&gPaletteHWMapped[*src++]); }
-					dst += padding;
+				else
+					if (pitch == (width * 2) + padding) {
+						uint16 *dst = pixels;
+						for (int y = height; y > 0; y++) {
+							for (int x = width; x > 0; x--) { *dst++ = *(uint16 *)(&gPaletteHWMapped[*src++]); }
+							dst = (uint16*)(((uint8 *)dst) + padding);
+						}
+					}
+					else
+						if (pitch == width + padding) {
+							uint8 *dst = pixels;
+							for (int y = height; y > 0; y++) {
+								for (int x = width; x > 0; x--) { *dst++ = *(uint8 *)(&gPaletteHWMapped[*src++]); }
+								dst += padding;
+							}
+						}
+				SDL_UnlockTexture(gBufferTexture);
+			}
+
+			SDL_RenderCopy(gRenderer, gBufferTexture, NULL, NULL);
+			SDL_RenderPresent(gRenderer);
+		}
+		else {
+			// Lock the surface before setting its pixels
+			if (SDL_MUSTLOCK(_surface)) {
+				if (SDL_LockSurface(_surface) < 0) {
+					log_error("locking failed %s", SDL_GetError());
+					return;
 				}
 			}
-			SDL_UnlockTexture(gBufferTexture);
-		}
 
-		SDL_RenderCopy(gRenderer, gBufferTexture, NULL, NULL);
-		SDL_RenderPresent(gRenderer);
-	} else {
-		// Lock the surface before setting its pixels
-		if (SDL_MUSTLOCK(_surface)) {
-			if (SDL_LockSurface(_surface) < 0) {
-				log_error("locking failed %s", SDL_GetError());
-				return;
+			// Copy pixels from the virtual screen buffer to the surface
+			memcpy(_surface->pixels, _screenBuffer, _surface->pitch * _surface->h);
+
+			// Unlock the surface
+			if (SDL_MUSTLOCK(_surface))
+				SDL_UnlockSurface(_surface);
+
+			// Copy the surface to the window
+			if (SDL_BlitSurface(_surface, NULL, SDL_GetWindowSurface(gWindow), NULL)) {
+				log_fatal("SDL_BlitSurface %s", SDL_GetError());
+				exit(1);
 			}
-		}
-
-		// Copy pixels from the virtual screen buffer to the surface
-		memcpy(_surface->pixels, _screenBuffer, _surface->pitch * _surface->h);
-
-		// Unlock the surface
-		if (SDL_MUSTLOCK(_surface))
-			SDL_UnlockSurface(_surface);
-
-		// Copy the surface to the window
-		if (SDL_BlitSurface(_surface, NULL, SDL_GetWindowSurface(gWindow), NULL)) {
-			log_fatal("SDL_BlitSurface %s", SDL_GetError());
-			exit(1);
-		}
-		if (SDL_UpdateWindowSurface(gWindow)) {
-			log_fatal("SDL_UpdateWindowSurface %s", SDL_GetError());
-			exit(1);
+			if (SDL_UpdateWindowSurface(gWindow)) {
+				log_fatal("SDL_UpdateWindowSurface %s", SDL_GetError());
+				exit(1);
+			}
 		}
 	}
 }

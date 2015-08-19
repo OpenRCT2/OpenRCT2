@@ -29,6 +29,7 @@
 #include "../world/sprite.h"
 #include "audio.h"
 #include "mixer.h"
+#include "../openrct2.h"
 
 int gAudioDeviceCount;
 audio_device *gAudioDevices = NULL;
@@ -1835,7 +1836,7 @@ void unpause_sounds()
 */
 void stop_vehicle_sounds()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) != -1) {
+	if (!gOpenRCT2Headless && RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) != -1) {
 		for (int i = 0; i < countof(gVehicleSoundList)/*7*/; i++) {
 			rct_vehicle_sound* vehicle_sound = &gVehicleSoundList[i];
 			//rct_vehicle_sound* vehicle_sound = &RCT2_ADDRESS(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound)[i];

@@ -27,6 +27,7 @@
 #include "ride.h"
 #include "ride_data.h"
 #include "vehicle.h"
+#include "../openrct2.h"
 
 static void vehicle_update(rct_vehicle *vehicle);
 
@@ -167,7 +168,7 @@ int sub_6BC2F3(rct_vehicle* vehicle)
 */
 void vehicle_sounds_update()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) != -1 && !gGameSoundsOff && gConfigSound.sound) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) != -1 && !gGameSoundsOff && gConfigSound.sound && !gOpenRCT2Headless) {
 		RCT2_GLOBAL(0x00F438A4, rct_viewport*) = (rct_viewport*)-1;
 		rct_viewport* viewport = (rct_viewport*)-1;
 		rct_window* window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);

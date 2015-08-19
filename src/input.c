@@ -42,6 +42,7 @@
 #include "world/map.h"
 #include "world/sprite.h"
 #include "world/scenery.h"
+#include "openrct2.h"
 
 static int _dragX, _dragY;
 static rct_windowclass _dragWindowClass;
@@ -1331,7 +1332,7 @@ void game_handle_keyboard_input()
 
 
 	// Handle key input
-	while ((key = get_next_key()) != 0) {
+	while (!gOpenRCT2Headless && (key = get_next_key()) != 0) {
 		if (key == 255)
 			continue;
 
