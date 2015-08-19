@@ -29,6 +29,11 @@ add_definitions(-DCURL_STATICLIB)
 #uncomment the line bellow if you don't want to build openrct2 with twitch integration
 #add_definitions(-DDISABLE_HTTP -DDISABLE_TWITCH)
 
+option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
+if (DISABLE_NETWORK)
+	add_definitions(-DDISABLE_NETWORK)
+endif (DISABLE_NETWORK)
+
 set(ORCTLIBS_INCLUDE /usr/local/cross-tools/orctlibs/include) 
 set(JANSSON_INCLUDE /usr/local/cross-tools/orctlibs/include/jansson) 
 set(ORCTLIBS_LIB_DIR /usr/local/cross-tools/orctlibs/lib)
@@ -44,7 +49,10 @@ file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp" "lib/*.c")
 if (UNIX)
 	# force 32bit build for now and set necessary flags to compile code as is
 	set(CMAKE_C_FLAGS "-m32 -masm=intel -std=gnu99")
-	set(CMAKE_LDFLAGS_FLAGS "-m32")
+	set(CMAKE_CXX_FLAGS "-m32 -std=gnu++11 -masm=intel")
+	set(LIB32 /usr/lib32)
+	set(CMAKE_SHARED_LINKER_FLAGS "-m32 -Wl,-melf_i386 -L${LIB32} -lSDL2_ttf")
+	set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_SHARED_LINKER_FLAGS})
 
 	# find and include SDL2
 	INCLUDE(FindPkgConfig)

@@ -46,9 +46,11 @@ typedef int (*cmdline_action)(const char **argv, int argc);
 
 int gExitCode = 0;
 
+#ifndef DISABLE_NETWORK
 int gNetworkStart = NETWORK_MODE_NONE;
 char gNetworkStartHost[128];
 int gNetworkStartPort = NETWORK_DEFAULT_PORT;
+#endif // DISABLE_NETWORK
 
 static void print_launch_information();
 static int cmdline_call_action(const char **argv, int argc);
@@ -96,6 +98,7 @@ int cmdline_run(const char **argv, int argc)
 	if (verbose)
 		_log_levels[DIAGNOSTIC_LEVEL_VERBOSE] = 1;
 
+#ifndef DISABLE_NETWORK
 	if (port != 0) {
 		gNetworkStart = NETWORK_MODE_SERVER;
 		gNetworkStartPort = port;
@@ -105,6 +108,7 @@ int cmdline_run(const char **argv, int argc)
 		gNetworkStart = NETWORK_MODE_CLIENT;
 		strncpy(gNetworkStartHost, server, sizeof(gNetworkStartHost));
 	}
+#endif // DISABLE_NETWORK
 
 	if (argc != 0) {
 		gExitCode = cmdline_call_action(argv, argc);

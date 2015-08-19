@@ -18,14 +18,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include "network.h"
+
+extern "C" {
+#include "../addresses.h"
+}
+
 #ifndef DISABLE_NETWORK
 
 #include <math.h>
 #include <algorithm>
 #include <set>
-#include "network.h"
 extern "C" {
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
 #include "../interface/chat.h"
@@ -566,7 +570,7 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 	int size = (int)SDL_RWtell(rw);
 	int chunksize = 1000;
 	for (int i = 0; i < size; i += chunksize) {
-		int datasize = min(chunksize, size - i);
+		int datasize = std::min(chunksize, size - i);
 		std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 		*packet << (uint32)NETWORK_COMMAND_MAP << (uint32)size << (uint32)i;
 		packet->Write(&buffer[i], datasize);
@@ -1099,4 +1103,19 @@ void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32
 	}
 }
 
+#else
+int network_get_mode() { return NETWORK_MODE_NONE; }
+void network_tick() {}
+uint32 network_get_server_tick() { return RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32); }
+void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback) {}
+void network_send_map() {}
+void network_update() {}
+int network_begin_client(const char *host, int port) { return 1; }
+int network_begin_server(int port) { return 1; }
+int network_get_num_players() { return 1; }
+const char* network_get_player_name(unsigned int index) { return "local (OpenRCT2 compiled without MP)"; }
+uint32 network_get_player_flags(unsigned int index) { return 0; }
+int network_get_player_ping(unsigned int index) { return 0; }
+void network_send_chat(const char* text) {}
+void network_close() {}
 #endif /* DISABLE_NETWORK */
