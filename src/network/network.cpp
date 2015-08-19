@@ -570,7 +570,7 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 	int size = (int)SDL_RWtell(rw);
 	int chunksize = 1000;
 	for (int i = 0; i < size; i += chunksize) {
-		int datasize = std::min(chunksize, size - i);
+		int datasize = min(chunksize, size - i);
 		std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 		*packet << (uint32)NETWORK_COMMAND_MAP << (uint32)size << (uint32)i;
 		packet->Write(&buffer[i], datasize);
