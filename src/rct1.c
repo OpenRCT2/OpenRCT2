@@ -2101,7 +2101,7 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 
 	// Colours
 	dst->colour_scheme_type = src->colour_scheme;
-	if (s4->game_version == 108166) {
+	if (s4->game_version < 110000) {
 		dst->track_colour_main[0] = RCT1ColourConversionTable[src->track_primary_colour];
 		dst->track_colour_additional[0] = RCT1ColourConversionTable[src->track_secondary_colour];
 		dst->track_colour_supports[0] = RCT1ColourConversionTable[src->track_support_colour];
@@ -2113,8 +2113,8 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 		}
 	}
 
-	if(s4->game_version == 108166 && dst->type == RIDE_TYPE_MERRY_GO_ROUND) {
-		// The merry-go-round in the base game was always yellow with red
+	if(s4->game_version < 120000 && dst->type == RIDE_TYPE_MERRY_GO_ROUND) {
+		// The merry-go-round in pre-LL versions was always yellow with red
 		dst->vehicle_colours[0].body_colour = 18;
 		dst->vehicle_colours[0].trim_colour = 28;
 	} else {
