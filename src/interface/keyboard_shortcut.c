@@ -500,6 +500,19 @@ static void shortcut_open_chat_window()
 	chat_toggle();
 }
 
+static void shortcut_quick_save_game()
+{
+	// Do a quick save in playing mode and a regular save in Scenario Editor mode. In other cases, don't do anything.
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_PLAYING) {
+		tool_cancel();
+		save_game();
+	}
+	else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
+		rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+		window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE, s6Info->name);
+	}
+}
+
 static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_close_top_most_window,
 	shortcut_close_all_floating_windows,
@@ -545,6 +558,7 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	NULL,
 	NULL,
 	shortcut_open_chat_window,
+	shortcut_quick_save_game,
 };
 
 #pragma endregion
