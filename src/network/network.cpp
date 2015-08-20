@@ -536,7 +536,7 @@ bool Network::CheckSRAND(uint32 tick, uint32 srand0)
 	if (server_srand0_tick == 0)
 		return true;
 
-	if (tick >= server_srand0_tick) {
+	if (tick > server_srand0_tick) { // this should not happen
 		server_srand0_tick = 0;
 		return true;
 	}

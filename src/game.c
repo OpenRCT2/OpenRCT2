@@ -262,11 +262,6 @@ void game_update()
 			// make sure client doesn't fall behind the server too much
 			numUpdates += 10;
 		}
-
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >= network_get_server_tick()) {
-			// dont run past the server
-			numUpdates = 0;
-		}
 	} else {
 		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
 			numUpdates = 0;
@@ -333,6 +328,12 @@ void game_update()
 
 void game_logic_update()
 {
+	if (network_get_mode() == NETWORK_MODE_CLIENT) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >= network_get_server_tick()) {
+			// dont run past the server
+			return;
+		}
+	}
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)++;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32)++;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16)++;
