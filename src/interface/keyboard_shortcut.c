@@ -502,10 +502,8 @@ static void shortcut_open_chat_window()
 
 static void shortcut_quick_save_game()
 {
-	log_error("quicksave");
 	// Do a quick save in playing mode and a regular save in Scenario Editor mode. In other cases, don't do anything.
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_PLAYING) {
-		log_error("quicksave2");
 		tool_cancel();
 		save_game();
 	}
