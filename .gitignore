@@ -64,7 +64,7 @@ local.properties
 [Rr]elease/
 x64/
 build/
-build_nonet/
+build_*/
 [Bb]in/
 [Oo]bj/
 
