@@ -3,76 +3,76 @@
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
-STR_0002    :Spiral Roller Coaster
-STR_0003    :Stand-up Roller Coaster
+STR_0002    :Spiral berg- och dalbana
+STR_0003    :Stående berg- och dalbana
 STR_0004    :Hängande svängande bana
-STR_0005    :Inverted Roller Coaster
+STR_0005    :Inverterad berg- och dalbana
 STR_0006    :Junior berg- och dalbana
 STR_0007    :Miniatyr-tåg
 STR_0008    :Balkbana
 STR_0009    :Liten hängande bana
-STR_0010    :Boat Ride
-STR_0011    :Wooden Wild Mouse
-STR_0012    :Steeplechase
+STR_0010    :Båttur
+STR_0011    :Vildmus i trä
+STR_0012    :Hinderbana
 STR_0013    :Bilåktur
 STR_0014    :Launched Freefall
 STR_0015    :Bobsleigh Coaster
-STR_0016    :Observation Tower
+STR_0016    :Observationstorn
 STR_0017    :Loopande berg- och dalbana
 STR_0018    :Dinghy Slide
-STR_0019    :Mine Train Coaster
+STR_0019    :Gruvtåg
 STR_0020    :Stolslift
-STR_0021    :Corkscrew Roller Coaster
-STR_0022    :Maze
+STR_0021    :Korkskruvs berg- och dalbana
+STR_0022    :Labyrint
 STR_0023    :Spiral Slide
 STR_0024    :Go Karts
 STR_0025    :Log Flume
 STR_0026    :River Rapids
 STR_0027    :Dodgems
-STR_0028    :Pirate Ship
-STR_0029    :Swinging Inverter Ship
-STR_0030    :Food Stall
-STR_0031    :Unknown Stall (1D)
-STR_0032    :Drink Stall
-STR_0033    :Unknown Stall (1F)
+STR_0028    :Piratskepp
+STR_0029    :Svängande omvänt Piratskepp
+STR_0030    :Matstånd
+STR_0031    :Okänt Stånd (1D)
+STR_0032    :Dryckesstånd
+STR_0033    :Okänt Stånd (1F)
 STR_0034    :Stånd
-STR_0035    :Merry-Go-Round
-STR_0036    :Unknown Stall (22)
+STR_0035    :Karusell
+STR_0036    :Okänt Stånd (22)
 STR_0037    :Kiosk
 STR_0038    :Toalett
-STR_0039    :Ferris Wheel
-STR_0040    :Motion Simulator
-STR_0041    :3D Cinema
+STR_0039    :Pariserhjul
+STR_0040    :Rörelsesimulator
+STR_0041    :3D Bio
 STR_0042    :Top Spin
-STR_0043    :Space Rings
+STR_0043    :Rymdringar
 STR_0044    :Bakvänd fritt fall-bana
 STR_0045    :Lift
 STR_0046    :Vertical Drop Roller Coaster
-STR_0047    :Cash Machine
+STR_0047    :Bankomat
 STR_0048    :Twist
-STR_0049    :Haunted House
-STR_0050    :First Aid Room
-STR_0051    :Circus Show
-STR_0052    :Ghost Train
+STR_0049    :Spökhuset
+STR_0050    :Första Hjälpen
+STR_0051    :Cirkusföreställning
+STR_0052    :Spöktåget
 STR_0053    :Hyper-snurr berg- och dalbana
 STR_0054    :Berg- och dalbana i trä
 STR_0055    :Sidofriktion berg- och dalbana
 STR_0056    :Vilda Musen
 STR_0057    :Flerdimensionell berg- och dalbana
-STR_0058    :Unknown Ride (38)
+STR_0058    :Okänd Åktur (38)
 STR_0059    :Inverterad berg- och dalbana
-STR_0060    :Unknown Ride (3A)
+STR_0060    :Okänd Åktur (3A)
 STR_0061    :Virginia Reel
 STR_0062    :Splash Boats
 STR_0063    :Mini Helicopters
-STR_0064    :Lay-down Roller Coaster
+STR_0064    :Liggande berg- och dalbana
 STR_0065    :Hängande balkbana
-STR_0066    :Unknown Ride (40)
+STR_0066    :Okänd Åktur (40)
 STR_0067    :Reverser Roller Coaster
 STR_0068    :Skruvbana
 STR_0069    :Mini Golf
 STR_0070    :Giga Coaster
-STR_0071    :Roto-Drop
+STR_0071    :Roto-Fall
 STR_0072    :Flying Saucers
 STR_0073    :Crooked House
 STR_0074    :Monorail Cycles
@@ -80,19 +80,19 @@ STR_0075    :Compact Inverted Coaster
 STR_0076    :Vattenbana
 STR_0077    :Air Powered Vertical Coaster
 STR_0078    :Inverted Hairpin Coaster
-STR_0079    :Magic Carpet
+STR_0079    :Magisk matta
 STR_0080    :Submarine Ride
 STR_0081    :River Rafts
-STR_0082    :Unknown Ride (50)
+STR_0082    :Okänd Åktur (50)
 STR_0083    :Enterprise
-STR_0084    :Unknown Ride (52)
-STR_0085    :Unknown Ride (53)
-STR_0086    :Unknown Ride (54)
-STR_0087    :Unknown Ride (55)
+STR_0084    :Okänd Åktur (52)
+STR_0085    :Okänd Åktur (53)
+STR_0086    :Okänd Åktur (54)
+STR_0087    :Okänd Åktur (55)
 STR_0088    :Inverted Impulse Coaster
 STR_0089    :Mini berg- och dalbana
 STR_0090    :Mine Ride
-STR_0091    :Unknown Ride (59)
+STR_0091    :Okänd Åktur (59)
 STR_0092    :LIM Launched Roller Coaster
 STR_0093    :
 STR_0094    :
@@ -1094,12 +1094,12 @@ STR_1087    :3D film: {ENDQUOTES}Rymdrädarna{ENDQUOTES}
 STR_1088    :Intensivt läge
 STR_1089    :Berserkläge
 STR_1090    :Spökhuset
-STR_1091    :Circusvisning
+STR_1091    :Cirkusvisning
 STR_1092    :Nedåtriktad start
 STR_1093    :Snea huset
 STR_1094    :Fritt fall
 STR_1095    :Blockavdelat kontinuerligt banläge
-STR_1096    :Motoriserad start (without passing station)
+STR_1096    :Motoriserad start (utan att passera station)
 STR_1097    :Blockavdelad motoriserad start
 STR_1098    :Rör sig mot slutet av {POP16}{STRINGID}
 STR_1099    :Väntar på passagerare vid {POP16}{STRINGID}
@@ -1116,11 +1116,11 @@ STR_1109    :Svingar
 STR_1110    :Roterar
 STR_1111    :Roterar
 STR_1112    :Pågår
-STR_1113    :Showing film
+STR_1113    :Visar film
 STR_1114    :Rotating
 STR_1115    :Pågår
 STR_1116    :Pågår
-STR_1117    :Circusshow pågår
+STR_1117    :Cirkusshow pågår
 STR_1118    :Pågår
 STR_1119    :Väntar på linbanevagn
 STR_1120    :Åker i {VELOCITY}
@@ -1750,7 +1750,7 @@ STR_1742    :{WINDOW_COLOUR_2}Max. people on Åktur:
 STR_1743    :{SMALLFONT}{BLACK}Maximum number of people allowed on this Åktur at one time
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1745    :{COMMA16}
-STR_1746    :Can't change this...
+STR_1746    :Kan inte ändra detta...
 STR_1747    :{WINDOW_COLOUR_2}Tidsgräns:
 STR_1748    :{SMALLFONT}{BLACK}Tidsgräns för åkturen
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
@@ -2686,11 +2686,11 @@ STR_2676    :???
 STR_2677    :???
 STR_2678    :???
 STR_2679    :???
-STR_2680    :All research complete
-STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by {CURRENCY}
+STR_2680    :All forskning färdig
+STR_2681    :{MEDIUMFONT}{BLACK}Ökar pengarna med {CURRENCY}
 STR_2682    :<not used anymore>
 STR_2683    :<not used anymore>
-STR_2684    :{SMALLFONT}{BLACK}Large group of peeps arrive
+STR_2684    :{SMALLFONT}{BLACK}En stor grupp anländer
 STR_2685    :Simplex Noise Parameters
 STR_2686    :{WINDOW_COLOUR_2}Low:
 STR_2687    :{WINDOW_COLOUR_2}High:
@@ -2700,23 +2700,23 @@ STR_2690    :Map Generation
 STR_2691    :{WINDOW_COLOUR_2}Base height:
 STR_2692    :{WINDOW_COLOUR_2}Water level:
 STR_2693    :{WINDOW_COLOUR_2}Terrain:
-STR_2694    :Generate
-STR_2695    :Random terrain
-STR_2696    :Place trees
+STR_2694    :Generera
+STR_2695    :Slumpvis terräng
+STR_2696    :Placera trä
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
-STR_2700    :Autosave frequency:
-STR_2701    :Every week
-STR_2702    :Every 2 weeks
-STR_2703    :Every month
-STR_2704    :Every 4 months
-STR_2705    :Every year
-STR_2706    :Never
-STR_2707    :Open new window
-STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
-STR_2709    :Overwrite
-STR_2710    :Type the name of the file.
+STR_2700    :Autospar frekvens:
+STR_2701    :Varje vecka
+STR_2702    :Varannan vecka
+STR_2703    :Varje månad
+STR_2704    :Var 4:e månad
+STR_2705    :Varje år
+STR_2706    :Aldrig
+STR_2707    :Öppna ett nytt fönster
+STR_2708    :{WINDOW_COLOUR_1}Är du säker på att du vill skriva över {STRINGID}?
+STR_2709    :Skriv över
+STR_2710    :Skriv namnet på filen.
 STR_2711    :;
 STR_2712    :=
 STR_2713    :,
@@ -2726,24 +2726,24 @@ STR_2716    :/
 STR_2717    :'
 STR_2718    :(up)
 STR_2719    :(new file)
-STR_2720    :{UINT16}sec
-STR_2721    :{UINT16}secs
-STR_2722    :{UINT16}min:{UINT16}sec
-STR_2723    :{UINT16}min:{UINT16}secs
-STR_2724    :{UINT16}mins:{UINT16}sec
-STR_2725    :{UINT16}mins:{UINT16}secs
+STR_2720    :{UINT16}sek
+STR_2721    :{UINT16}sek
+STR_2722    :{UINT16}min:{UINT16}sek
+STR_2723    :{UINT16}min:{UINT16}sek
+STR_2724    :{UINT16}mins:{UINT16}sek
+STR_2725    :{UINT16}mins:{UINT16}sek
 STR_2726    :{UINT16}min
 STR_2727    :{UINT16}mins
-STR_2728    :{UINT16}hour:{UINT16}min
-STR_2729    :{UINT16}hour:{UINT16}mins
-STR_2730    :{UINT16}hours:{UINT16}min
-STR_2731    :{UINT16}hours:{UINT16}mins
+STR_2728    :{UINT16}tim:{UINT16}min
+STR_2729    :{UINT16}tim:{UINT16}mins
+STR_2730    :{UINT16}tim:{UINT16}min
+STR_2731    :{UINT16}tim:{UINT16}mins
 STR_2732    :{COMMA16}ft
 STR_2733    :{COMMA16}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
-STR_2736    :{MONTH}, Year {COMMA16}
-STR_2737    :{STRINGID} {MONTH}, Year {COMMA16}
+STR_2736    :{MONTH}, År {COMMA16}
+STR_2737    :{STRINGID} {MONTH}, År {COMMA16}
 STR_2738    :Title screen music:
 STR_2739    :None
 STR_2740    :RollerCoaster Tycoon 1
