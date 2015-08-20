@@ -375,7 +375,7 @@ bool Network::BeginServer(unsigned short port)
 		return false;
 	}
 
-	NetworkPlayer* player = AddPlayer("Server Player");
+	NetworkPlayer* player = AddPlayer(gConfigNetwork.player_name);
 	player->flags |= NETWORK_PLAYER_FLAG_ISSERVER;
 	player_id = player->id;
 

@@ -114,7 +114,7 @@ static rct_window_event_list window_server_list_events = {
 static int _hoverButtonIndex = -1;
 
 static void server_list_get_item_button(int buttonIndex, int x, int y, int width, int *outX, int *outY);
-static void server_list_update_player_name(rct_window *w);
+static void server_list_update_player_name();
 static void server_list_load_saved_servers();
 static void server_list_save_saved_servers();
 static void dispose_saved_server_list();
@@ -166,7 +166,7 @@ void window_server_list_open()
 
 static void window_server_list_close(rct_window *w)
 {
-	server_list_update_player_name(w);
+	server_list_update_player_name();
 	dispose_saved_server_list();
 }
 
@@ -183,6 +183,7 @@ static void window_server_list_mouseup(rct_window *w, int widgetIndex)
 		window_text_input_open(w, widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, STR_NONE, 0, 128);
 		break;
 	case WIDX_START_SERVER:
+		server_list_update_player_name();
 		window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME | LOADSAVETYPE_NETWORK, NULL);
 		break;
 	}
@@ -223,9 +224,11 @@ static void window_server_list_scroll_mousedown(rct_window *w, int scrollIndex, 
 		window_invalidate(w);
 		break;
 	case WIDX_LIST_SPECTATE:
+		server_list_update_player_name();
 		join_server(serverAddress, true);
 		break;
 	default:
+		server_list_update_player_name();
 		join_server(serverAddress, false);
 		break;
 	}
@@ -370,7 +373,7 @@ static void server_list_get_item_button(int buttonIndex, int x, int y, int width
 	*outY = y + 2;
 }
 
-static void server_list_update_player_name(rct_window *w)
+static void server_list_update_player_name()
 {
 	if (strlen(_playerName) > 0) {
 		SafeFree(gConfigNetwork.player_name);
