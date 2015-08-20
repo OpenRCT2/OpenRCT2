@@ -1106,6 +1106,10 @@ void window_guest_overview_text_input(rct_window *w, int widgetIndex, char *text
 	game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 0)), GAME_COMMAND_SET_PEEP_NAME, *((int*)(text + 8)), *((int*)(text + 4)));
 	game_do_command(2, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 12)), GAME_COMMAND_SET_PEEP_NAME, *((int*)(text + 20)), *((int*)(text + 16)));
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 24)), GAME_COMMAND_SET_PEEP_NAME, *((int*)(text + 32)), *((int*)(text + 28)));
+
+	rct_peep* peep = GET_PEEP(w->number);
+	if (peep_get_easteregg_name_id(peep) == EASTEREGG_PEEP_NAME_LOADSAMONEY)
+		peep->cash_in_pocket = MONEY(31415,92);
 }
 
 /* rct2: 0x696A5F */
