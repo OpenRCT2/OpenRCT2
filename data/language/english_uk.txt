@@ -3851,3 +3851,4 @@ STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves that have an i
 STR_5510    :Default sound device
 STR_5511    :(UNKNOWN)
 STR_5512    :Save Game As
+STR_5513    :(Quick) save game

@@ -72,9 +72,9 @@ enum {
 };
 
 typedef enum {
-	DDIDX_SAVE_GAME = 0,
-	DDIDX_SAVE_GAME_AS = 1,
-	DDIDX_LOAD_GAME = 2,
+	DDIDX_LOAD_GAME = 0,
+	DDIDX_SAVE_GAME = 1,
+	DDIDX_SAVE_GAME_AS = 2,
 	// separator
 	DDIDX_ABOUT = 4,
 	DDIDX_OPTIONS = 5,
@@ -378,9 +378,9 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			gDropdownItemsFormat[9] = STR_EXIT_OPENRCT2;
 			numItems = 10;
 		} else {
-			gDropdownItemsFormat[0] = STR_SAVE_GAME;
-			gDropdownItemsFormat[1] = STR_SAVE_GAME_AS;
-			gDropdownItemsFormat[2] = STR_LOAD_GAME;
+			gDropdownItemsFormat[0] = STR_LOAD_GAME;
+			gDropdownItemsFormat[1] = STR_SAVE_GAME;
+			gDropdownItemsFormat[2] = STR_SAVE_GAME_AS;
 			gDropdownItemsFormat[3] = 0;
 			gDropdownItemsFormat[4] = STR_ABOUT;
 			gDropdownItemsFormat[5] = STR_OPTIONS;
@@ -487,12 +487,22 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 {
 	switch (widgetIndex) {
 	case WIDX_FILE_MENU:
+
+		// Quicksave is only available in the normal game. Skip one position to avoid incorrect mappings in the menus of the other modes.
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_SCENARIO_EDITOR) && dropdownIndex > DDIDX_LOAD_GAME)
+			dropdownIndex += 1;
+
+		// Track designer and track designs manager start with About, not Load/save
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
 			dropdownIndex += DDIDX_ABOUT;
 
 		switch (dropdownIndex) {
 		case DDIDX_LOAD_GAME:
 			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
+			break;
+		case DDIDX_SAVE_GAME:
+			tool_cancel();
+			save_game();
 			break;
 		case DDIDX_SAVE_GAME_AS:
 			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
@@ -502,16 +512,6 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 			else {
 				tool_cancel();
 				save_game_as();
-			}
-			break;
-		case DDIDX_SAVE_GAME:
-			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
-				rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
-				window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE, s6Info->name);
-			}
-			else {
-				tool_cancel();
-				save_game();
 			}
 			break;
 		case DDIDX_ABOUT:
