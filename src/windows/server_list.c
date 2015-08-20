@@ -495,7 +495,7 @@ static void add_saved_server(char *address)
 	int index = _numSavedServers - 1;
 	_savedServers[index].address = _strdup(address);
 	_savedServers[index].name = _strdup(address);
-	_savedServers[index].description = NULL;
+	_savedServers[index].description = _strdup("");
 }
 
 static void remove_saved_server(int index)
