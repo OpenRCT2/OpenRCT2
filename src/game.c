@@ -262,11 +262,6 @@ void game_update()
 			// make sure client doesn't fall behind the server too much
 			numUpdates += 10;
 		}
-
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >= network_get_server_tick()) {
-			// dont run past the server
-			numUpdates = 0;
-		}
 	} else {
 		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
 			numUpdates = 0;
@@ -299,6 +294,7 @@ void game_update()
 		}
 	}
 
+	network_update();
 	news_item_update_current();
 	window_dispatch_update_all();
 
@@ -333,6 +329,13 @@ void game_update()
 
 void game_logic_update()
 {
+	network_update();
+	if (network_get_mode() == NETWORK_MODE_CLIENT) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >= network_get_server_tick()) {
+			// dont run past the server
+			return;
+		}
+	}
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)++;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32)++;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16)++;
@@ -374,8 +377,6 @@ void game_logic_update()
 
 		window_error_open(title_text, body_text);
 	}
-
-	network_tick();
 }
 
 /**
@@ -477,13 +478,15 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 				return cost;
 			}
 
-			if (network_get_mode() != NETWORK_MODE_NONE && !(flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_5) && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
-				network_send_gamecmd(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp, game_command_callback_get_index(game_command_callback));
-				if (network_get_mode() == NETWORK_MODE_CLIENT) {
-					game_command_callback = 0;
-					// Decrement nest count
-					RCT2_GLOBAL(0x009A8C28, uint8)--;
-					return cost;
+			if (network_get_mode() != NETWORK_MODE_NONE && !(flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_5) && RCT2_GLOBAL(0x009A8C28, uint8) == 1 /* Send only top-level commands */) {
+				if (command != GAME_COMMAND_LOAD_OR_QUIT) { // Disable these commands over the network
+					network_send_gamecmd(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp, game_command_callback_get_index(game_command_callback));
+					if (network_get_mode() == NETWORK_MODE_CLIENT) { // Client sent the command to the server, do not run it locally, just return.  It will run when server sends it
+						game_command_callback = 0;
+						// Decrement nest count
+						RCT2_GLOBAL(0x009A8C28, uint8)--;
+						return cost;
+					}
 				}
 			}
 
@@ -812,6 +815,9 @@ int game_load_network(SDL_RWops* rw)
 	// Read checksum
 	uint32 checksum;
 	SDL_RWread(rw, &checksum, sizeof(uint32), 1);
+
+	// Read other data not in normal save files
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) = SDL_ReadLE32(rw);
 
 	if (!load_success){
 		set_load_objects_fail_reason();

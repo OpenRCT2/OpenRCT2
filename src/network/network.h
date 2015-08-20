@@ -138,7 +138,6 @@ public:
 	uint32 GetServerTick();
 	uint8 GetPlayerID();
 	void Update();
-	void UpdateTick();
 	NetworkPlayer* GetPlayerByID(int id);
 	const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
 	void SendPacketToClients(NetworkPacket& packet);
@@ -155,7 +154,6 @@ public:
 	void Client_Send_PING();
 	void Server_Send_PING();
 	void Server_Send_PINGLIST();
-	void Client_Send_READY();
 
 	std::vector<std::unique_ptr<NetworkPlayer>> player_list;
 
@@ -196,12 +194,8 @@ private:
 	std::vector<uint8> chunk_buffer;
 	char password[33];
 
-	bool was_paused_before_client_connected;
-
 	void UpdateServer();
 	void UpdateClient();
-	void UpdateServerTick();
-	void UpdateClientTick();
 
 private:
 	std::vector<int (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> client_command_handlers;
@@ -218,7 +212,6 @@ private:
 	int Client_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
 	int Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
 	int Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket& packet);
-	int Server_Handle_READY(NetworkConnection& connection, NetworkPacket& packet);
 };
 
 #endif // __cplusplus
@@ -234,7 +227,6 @@ int network_begin_server(int port);
 
 int network_get_mode();
 void network_update();
-void network_tick();
 int network_get_authstatus();
 uint32 network_get_server_tick();
 uint8 network_get_player_id();

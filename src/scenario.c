@@ -1041,6 +1041,9 @@ int scenario_save_network(SDL_RWops* rw)
 
 	free(s6);
 
+	// Write other data not in normal save files
+	SDL_WriteLE32(rw, RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32));
+
 	gfx_invalidate_screen();
 	return 1;
 }
