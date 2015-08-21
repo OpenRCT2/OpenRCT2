@@ -3844,3 +3844,4 @@ STR_5508    :Laden van bestanden met incorrecte checksum toestaan
 STR_5509    :{SMALLFONT}{BLACK}Maakt het mogelijk om scenario's en opgeslagen spellen met een incorrecte checksum te laden, zoals scenario's uit de demo of beschadigde opgeslagen parken.
 STR_5510    :Standaard geluidsapparaat
 STR_5511    :(ONBEKEND)
+STR_5512    :Spel opslaan als...

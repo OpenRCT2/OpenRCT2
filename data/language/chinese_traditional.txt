@@ -930,14 +930,14 @@ STR_0924    :{SMALLFONT}{BLACK}向下盤旋
 STR_0925    :{SMALLFONT}{BLACK}向上盤旋
 STR_0926    :不能移除...
 STR_0927    :不能在此建造...
-STR_0928    :{SMALLFONT}{BLACK}帶有鏈條的坡道, 將車卡拉上坡
+STR_0928    :{SMALLFONT}{BLACK}帶有鏈條的坡道, 會將車卡拉上坡
 STR_0929    :'S'型彎道 (向左)
 STR_0930    :'S'型彎道 (向右)
 STR_0931    :垂直回環 (向左)
 STR_0932    :垂直回環 (向右)
 STR_0933    :先把地面降低或升高
-STR_0934    :遊樂設施的入口擋於此地
-STR_0935    :遊樂設施的出口擋於此地
+STR_0934    :遊樂設施的入口擋在路上
+STR_0935    :遊樂設施的出口擋在路上
 STR_0936    :樂園入口擋於此地
 STR_0937    :{SMALLFONT}{BLACK}檢視選項
 STR_0938    :{SMALLFONT}{BLACK}調整地勢高低及陡峭
@@ -1181,7 +1181,7 @@ STR_1175    :不能在斜路上建造此物件
 STR_1176    :不能在此建造道路...
 STR_1177    :不能移除此處道路...
 STR_1178    :不適合的土地斜度
-STR_1179    :道路擋在路中
+STR_1179    :道路擋在路上
 STR_1180    :不能建造此於水底!
 STR_1181    :道路
 STR_1182    :類別
@@ -1413,7 +1413,7 @@ STR_1407    :{WINDOW_COLOUR_2}建造此軌道...
 STR_1408    :{WINDOW_COLOUR_2}費用: {BLACK}{CURRENCY}
 STR_1409    :入口/出口平台
 STR_1410    :垂直高塔
-STR_1411    :{STRINGID}擋在路中
+STR_1411    :{STRINGID}擋在路上
 STR_1412    :{WINDOW_COLOUR_3}數據記錄並不適合這類型的遊樂設施
 STR_1413    :{WINDOW_COLOUR_3}數據會於{STRINGID}離開{STRINGID}後記錄
 STR_1414    :{SMALLFONT}{BLACK}{DURATION}
@@ -1875,8 +1875,8 @@ STR_1869    :{WINDOW_COLOUR_2}旋轉次數:
 STR_1870    :{SMALLFONT}{BLACK}完整旋轉次數
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1872    :{COMMA16}
-STR_1873    :{WINDOW_COLOUR_2}收入: {BLACK}{CURRENCY2DP}/每小時
-STR_1874    :{WINDOW_COLOUR_2}營利: {BLACK}{CURRENCY2DP}/每小時
+STR_1873    :{WINDOW_COLOUR_2}收入: {BLACK}每小時{CURRENCY2DP}
+STR_1874    :{WINDOW_COLOUR_2}營利: {BLACK}每小時{CURRENCY2DP}
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}檢查遊樂設施
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}修理遊樂設施
@@ -1891,14 +1891,14 @@ STR_1885    :從不
 STR_1886    :檢查{STRINGID}中
 STR_1887    :{WINDOW_COLOUR_2}上次檢查時間: {BLACK}{COMMA16}分鐘前
 STR_1888    :{WINDOW_COLOUR_2}上次檢查時間: {BLACK}多於4小時
-STR_1889    :{WINDOW_COLOUR_2}Down-Time: {MOVE_X}{255}{BLACK}{COMMA16}%
+STR_1889    :{WINDOW_COLOUR_2}故障度: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}選擇維修人員檢查此遊樂設施的時距
 STR_1891    :在樂園裡暫未有{STRINGID}!
 # The following two strings were used to display an error when the disc was missing.
 # This has been replaced in OpenRCT2.
 STR_1892    :<not used anymore>
 STR_1893    :<not used anymore>
-STR_1894    :{WINDOW_COLOUR_2}賣出{STRINGID}: {BLACK}{COMMA32}
+STR_1894    :{WINDOW_COLOUR_2}售出{STRINGID}: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}建造新的遊樂設施/店鋪
 STR_1896    :{WINDOW_COLOUR_2}支出/收入
 STR_1897    :{WINDOW_COLOUR_2}建造遊樂設施
@@ -1915,7 +1915,7 @@ STR_1907    :{WINDOW_COLOUR_2}員工薪金
 STR_1908    :{WINDOW_COLOUR_2}營銷費用
 STR_1909    :{WINDOW_COLOUR_2}研發費用
 STR_1910    :{WINDOW_COLOUR_2}貸款利息
-STR_1911    :{BLACK} 每年 {COMMA16}% 
+STR_1911    :{BLACK} 每年{COMMA16}% 
 STR_1912    :{MONTH}
 STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
@@ -2765,7 +2765,7 @@ STR_2755    :修復被毀壞的物件
 STR_2756    :移除垃圾
 STR_2757    :強制晴天
 STR_2758    :強制雷暴
-STR_2759    :無'擋在路中'檢查
+STR_2759    :無'擋在路上'檢查
 STR_2760    :+{CURRENCY}
 STR_2761    :<not used anymore>
 STR_2762    :<not used anymore>
@@ -3851,3 +3851,4 @@ STR_5508    :允許載入校驗失敗的檔案
 STR_5509    :{SMALLFONT}{BLACK}允許載入校驗失敗的劇情及存檔, 例如試玩版的劇情或已損壞的存檔.
 STR_5510    :預設聲效裝置
 STR_5511    :(未知)
+STR_5512    :另存遊戲

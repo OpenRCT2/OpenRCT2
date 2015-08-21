@@ -3841,3 +3841,8 @@ STR_5504    :{SMALLFONT}{BLACK}Mehrspielerstatus anzeigen
 STR_5505    :Verbindung zum Server konnte nicht hergestellt werden
 STR_5506    :Besucher ignorieren Bahnintensität
 STR_5507    :Parkpfleger mähen standardmäßig Gras
+STR_5508    :Laden von Dateien mit unzul. Prüfsummen erlauben
+STR_5509    :{SMALLFONT}{BLACK}Erlaubt das Laden von Szenarios und gespeicherten Spielständen, die eine unzulässige Prüfsumme haben, wie Szenarios aus der Demo oder fehlerhafte Spielstände
+STR_5510    :Standard Audiogerät
+STR_5511    :(UNBEKANNT)
+STR_5512    :Spiel speichern unter
