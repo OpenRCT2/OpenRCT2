@@ -3132,16 +3132,6 @@ static void window_ride_construction_select_map_tiles(rct_ride *ride, int trackT
  */
 static void window_ride_construction_show_special_track_dropdown(rct_window *w, rct_widget *widget)
 {
-	window_dropdown_show_text_custom_width(
-		w->x + widget->left,
-		w->y + widget->top,
-		widget->bottom - widget->top + 1,
-		w->colours[1],
-		0,
-		_numCurrentPossibleRideConfigurations,
-		widget->right - widget->left
-	);
-
 	for (int i = 0; i < _numCurrentPossibleRideConfigurations; i++) {
 		uint8 trackPiece = _currentPossibleRideConfigurations[i];
 		rct_string_id trackPieceStringId = RideConfigurationStringIds[trackPiece];
@@ -3156,6 +3146,16 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
 		}
 	}
 	*gDropdownItemsDisabled = RCT2_GLOBAL(0x00F4409C, uint32);
+
+	window_dropdown_show_text_custom_width(
+		w->x + widget->left,
+		w->y + widget->top,
+		widget->bottom - widget->top + 1,
+		w->colours[1],
+		0,
+		_numCurrentPossibleRideConfigurations,
+		widget->right - widget->left
+	);
 }
 
 /**
