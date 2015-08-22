@@ -531,6 +531,9 @@
     <ClCompile Include="..\src\world\money_effect.c">
       <Filter>Source\World</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\world\particle.c">
+      <Filter>Source\World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">

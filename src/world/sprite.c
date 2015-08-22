@@ -266,45 +266,81 @@ void move_sprite_to_list(rct_sprite *sprite, uint8 cl)
  *
  *  rct: 0x00673200
  */
-static void sub_673200(rct_sprite *sprite)
+static void sprite_misc_0_update(rct_sprite *sprite)
 {
-	RCT2_CALLPROC_X(0x00673200, 0, 0, 0, 0, (int)sprite, 0, 0);
+	invalidate_sprite_2(sprite);
+
+	int original_var24 = sprite->unknown.var_24;
+	sprite->unknown.var_24 += 0x5555;
+	if (sprite->unknown.var_24 < 0x5555) {
+		sprite_move(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z + 1, sprite);
+	}
+	sprite->unknown.var_26 += 64;
+	if (sprite->unknown.var_26 >= (56 * 64)) {
+		sprite_remove(sprite);
+	}
 }
 
 /**
  *
- *  rct: 0x00673298
+ *  rct2: 0x0067363D
  */
-static void sub_673298(rct_sprite *sprite)
+void sprite_misc_3_create(int x, int y, int z)
 {
-	RCT2_CALLPROC_X(0x00673298, 0, 0, 0, 0, (int)sprite, 0, 0);
+	rct_unk_sprite *sprite = (rct_unk_sprite*)create_sprite(2);
+	if (sprite != NULL) {
+		sprite->sprite_width = 44;
+		sprite->sprite_height_negative = 32;
+		sprite->sprite_height_positive = 34;
+		sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
+		sprite_move(x, y, z + 4, (rct_sprite*)sprite);
+		sprite->misc_identifier = SPRITE_MISC_3;
+		sprite->var_26 = 0;
+	}
 }
 
 /**
  *
  *  rct: 0x00673385
  */
-static void sub_673385(rct_sprite *sprite)
+static void sprite_misc_3_update(rct_sprite *sprite)
 {
-	RCT2_CALLPROC_X(0x00673385, 0, 0, 0, 0, (int)sprite, 0, 0);
+	invalidate_sprite_2(sprite);
+	sprite->unknown.var_26 += 128;
+	if (sprite->unknown.var_26 >= (36 * 128)) {
+		sprite_remove(sprite);
+	}
 }
 
 /**
  *
- *  rct: 0x0067339D
+ *  rct2: 0x0067366B
  */
-static void sub_67339D(rct_sprite *sprite)
+void sprite_misc_5_create(int x, int y, int z)
 {
-	RCT2_CALLPROC_X(0x0067339D, 0, 0, 0, 0, (int)sprite, 0, 0);
+	rct_unk_sprite *sprite = (rct_unk_sprite*)create_sprite(2);
+	if (sprite != NULL) {
+		sprite->sprite_width = 25;
+		sprite->sprite_height_negative = 85;
+		sprite->sprite_height_positive = 8;
+		sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
+		sprite_move(x, y, z + 4, (rct_sprite*)sprite);
+		sprite->misc_identifier = SPRITE_MISC_5;
+		sprite->var_26 = 0;
+	}
 }
 
 /**
  *
  *  rct: 0x006733B4
  */
-static void sub_6733B4(rct_sprite *sprite)
+static void sprite_misc_5_update(rct_sprite *sprite)
 {
-	RCT2_CALLPROC_X(0x006733B4, 0, 0, 0, 0, (int)sprite, 0, 0);
+	invalidate_sprite_2(sprite);
+	sprite->unknown.var_26 += 64;
+	if (sprite->unknown.var_26 >= (124 * 64)) {
+		sprite_remove(sprite);
+	}
 }
 
 /**
@@ -315,22 +351,22 @@ void sprite_misc_update(rct_sprite *sprite)
 {
 	switch (sprite->unknown.misc_identifier) {
 	case SPRITE_MISC_0:
-		sub_673200(sprite);
+		sprite_misc_0_update(sprite);
 		break;
 	case SPRITE_MISC_MONEY_EFFECT:
 		money_effect_update(&sprite->money_effect);
 		break;
-	case SPRITE_MISC_2:
-		sub_673298(sprite);
+	case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
+		crashed_vehicle_particle_update((rct_crashed_vehicle_particle*)sprite);
 		break;
 	case SPRITE_MISC_3:
-		sub_673385(sprite);
+		sprite_misc_3_update(sprite);
 		break;
-	case SPRITE_MISC_4:
-		sub_67339D(sprite);
+	case SPRITE_MISC_CRASH_SPLASH:
+		crash_splash_update((rct_crash_splash*)sprite);
 		break;
 	case SPRITE_MISC_5:
-		sub_6733B4(sprite);
+		sprite_misc_5_update(sprite);
 		break;
 	case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
 	case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
@@ -527,40 +563,4 @@ void litter_create(int x, int y, int z, int direction, int type)
 void sub_6738E1(int x, int y, int z)
 {
 	RCT2_CALLPROC_X(0x006738E1, x, 0, y, z, 0, 0, 0);
-}
-
-/**
- *
- *  rct2: 0x0067363D
- */
-void sprite_misc_3_create(int x, int y, int z)
-{
-	rct_unk_sprite *sprite = (rct_unk_sprite*)create_sprite(2);
-	if (sprite != NULL) {
-		sprite->sprite_width = 44;
-		sprite->sprite_height_negative = 32;
-		sprite->sprite_height_positive = 34;
-		sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-		sprite_move(x, y, z + 4, (rct_sprite*)sprite);
-		sprite->misc_identifier = SPRITE_MISC_3;
-		sprite->var_26 = 0;
-	}
-}
-
-/**
- *
- *  rct2: 0x0067366B
- */
-void sprite_misc_5_create(int x, int y, int z)
-{
-	rct_unk_sprite *sprite = (rct_unk_sprite*)create_sprite(2);
-	if (sprite != NULL) {
-		sprite->sprite_width = 25;
-		sprite->sprite_height_negative = 85;
-		sprite->sprite_height_positive = 8;
-		sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-		sprite_move(x, y, z + 4, (rct_sprite*)sprite);
-		sprite->misc_identifier = SPRITE_MISC_5;
-		sprite->var_26 = 0;
-	}
 }

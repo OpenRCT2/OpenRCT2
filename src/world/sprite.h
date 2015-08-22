@@ -71,7 +71,7 @@ typedef struct {
 	uint8  sprite_direction; //direction of sprite? 0x1e
 	uint8 pad_1F[3]; // 0x1f
 	uint16 name_string_idx;			// 0x22
-	uint8 pad_24[2];
+	uint16 var_24;
 	uint16 var_26;
 	uint8 var_28[3];
 	uint8 var_2B;
@@ -211,6 +211,77 @@ typedef struct {
 	uint16 wiggle;					// 0x46
 } rct_money_effect;
 
+typedef struct {
+	uint8 sprite_identifier;		// 0x00
+	uint8 misc_identifier;			// 0x01
+	uint16 next_in_quadrant;		// 0x02
+	uint16 next;					// 0x04
+	uint16 previous;				// 0x06
+	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
+	// Height from center of sprite to bottom
+	uint8 sprite_height_negative;	// 0x09
+	uint16 sprite_index;			// 0x0A
+	uint16 var_0C;
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
+	// Width from center of sprite to edge
+	uint8 sprite_width;				// 0x14
+	// Height from center of sprite to top
+	uint8 sprite_height_positive;	// 0x15
+	sint16 sprite_left;				// 0x16
+	sint16 sprite_top;				// 0x18
+	sint16 sprite_right;			// 0x1A
+	sint16 sprite_bottom;			// 0x1C
+	uint8  sprite_direction; //direction of sprite? 0x1e
+	uint8 pad_1F[3]; // 0x1f
+	uint16 name_string_idx;			// 0x22
+	uint16 var_24;
+	uint16 var_26;
+	uint8 var_28[3];
+	uint8 var_2B;
+	uint8 colour[2];
+	uint16 var_2E;
+	sint16 velocity_x;				// 0x30
+	sint16 velocity_y;				// 0x32
+	sint16 velocity_z;				// 0x34
+	uint16 pad_36;
+	sint32 acceleration_x;			// 0x38
+	sint32 acceleration_y;			// 0x3C
+	sint32 acceleration_z;			// 0x40
+	uint8 pad_44[0x2D];
+	uint8 var_71;
+} rct_crashed_vehicle_particle;
+
+typedef struct {
+	uint8 sprite_identifier;		// 0x00
+	uint8 misc_identifier;			// 0x01
+	uint16 next_in_quadrant;		// 0x02
+	uint16 next;					// 0x04
+	uint16 previous;				// 0x06
+	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
+	// Height from center of sprite to bottom
+	uint8 sprite_height_negative;	// 0x09
+	uint16 sprite_index;			// 0x0A
+	uint16 var_0C;
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
+	// Width from center of sprite to edge
+	uint8 sprite_width;				// 0x14
+	// Height from center of sprite to top
+	uint8 sprite_height_positive;	// 0x15
+	sint16 sprite_left;				// 0x16
+	sint16 sprite_top;				// 0x18
+	sint16 sprite_right;			// 0x1A
+	sint16 sprite_bottom;			// 0x1C
+	uint8  sprite_direction; //direction of sprite? 0x1e
+	uint8 pad_1F[3]; // 0x1f
+	uint16 name_string_idx;			// 0x22
+	uint16 var_24;
+	uint16 var_26;
+} rct_crash_splash;
+
 /**
  * Sprite structure.
  * size: 0x0100
@@ -225,14 +296,16 @@ typedef union {
 	rct_duck duck;
 	rct_jumping_fountain jumping_fountain;
 	rct_money_effect money_effect;
+	rct_crashed_vehicle_particle crashed_vehicle_particle;
+	rct_crash_splash crash_splash;
 } rct_sprite;
 
 enum {
 	SPRITE_MISC_0,
 	SPRITE_MISC_MONEY_EFFECT,
-	SPRITE_MISC_2,							// (related to vehicle crash, probably crash particles)
+	SPRITE_MISC_CRASHED_VEHICLE_PARTICLE,
 	SPRITE_MISC_3,							// (related to vehicle crash, probably crash particles)
-	SPRITE_MISC_4,							// (related to vehicle crash, probably crash particles)
+	SPRITE_MISC_CRASH_SPLASH,
 	SPRITE_MISC_5,							// (related to vehicle crash, probably crash particles)
 	SPRITE_MISC_JUMPING_FOUNTAIN_WATER,
 	SPRITE_MISC_BALLOON,
@@ -279,5 +352,13 @@ void duck_remove_all();
 ///////////////////////////////////////////////////////////////
 void money_effect_create(money32 value);
 void money_effect_update(rct_money_effect *moneyEffect);
+
+///////////////////////////////////////////////////////////////
+// Crash particles
+///////////////////////////////////////////////////////////////
+void crashed_vehicle_particle_create(rct_vehicle_colour colours, int x, int y, int z);
+void crashed_vehicle_particle_update(rct_crashed_vehicle_particle *particle);
+void crash_splash_create(int x, int y, int z);
+void crash_splash_update(rct_crash_splash *splash);
 
 #endif
