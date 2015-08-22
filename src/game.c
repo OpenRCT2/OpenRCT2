@@ -994,7 +994,7 @@ static int show_save_game_dialog(char *resultPath)
 	return result;
 }
 
-int save_game()
+void save_game()
 {
 	if (!gFirstTimeSave) {
 		utf8 path[MAX_PATH];
@@ -1012,18 +1012,14 @@ int save_game()
 			log_verbose("Saved to %s", gScenarioSaveName);
 			SDL_RWclose(rw);
 		}
-
-		return 0;
-	}
-	else {
+	} else {
 		save_game_as();
 	}
 
 }
-int save_game_as()
+void save_game_as()
 {
 	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, gScenarioSaveName);
-	return 0;
 }
 
 

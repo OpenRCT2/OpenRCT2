@@ -874,7 +874,7 @@ static void ride_remove_cable_lift(rct_ride *ride)
 		spriteIndex = ride->cable_lift;
 		do {
 			vehicle = &(g_sprite_list[spriteIndex].vehicle);
-			invalidate_sprite((rct_sprite*)vehicle);
+			invalidate_sprite_2((rct_sprite*)vehicle);
 			sprite_remove((rct_sprite*)vehicle);
 			spriteIndex = vehicle->next_vehicle_on_train;
 		} while (spriteIndex != SPRITE_INDEX_NULL);
@@ -899,7 +899,7 @@ static void ride_remove_vehicles(rct_ride *ride)
 			spriteIndex = ride->vehicles[i];
 			while (spriteIndex != SPRITE_INDEX_NULL) {
 				vehicle = &(g_sprite_list[spriteIndex].vehicle);
-				invalidate_sprite((rct_sprite*)vehicle);
+				invalidate_sprite_2((rct_sprite*)vehicle);
 				sprite_remove((rct_sprite*)vehicle);
 				spriteIndex = vehicle->next_vehicle_on_train;
 			}
@@ -996,7 +996,7 @@ void ride_remove_peeps(int rideIndex)
 			if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->sub_state == 0)
 				remove_peep_from_queue(peep);
 
-			invalidate_sprite((rct_sprite*)peep);
+			invalidate_sprite_2((rct_sprite*)peep);
 
 			if (exitDirection == 255) {
 				x = peep->next_x + 16;
@@ -1011,7 +1011,7 @@ void ride_remove_peeps(int rideIndex)
 				peep->sprite_direction = exitDirection;
 			}
 
-			invalidate_sprite((rct_sprite*)peep);
+			invalidate_sprite_2((rct_sprite*)peep);
 			peep->state = PEEP_STATE_FALLING;
 			sub_693BE5(peep, 0);
 			
@@ -5947,7 +5947,7 @@ static void ride_update_vehicle_colours(int rideIndex)
 
 			vehicle->colours = colours;
 			vehicle->colours_extended = coloursExtended;
-			invalidate_sprite((rct_sprite*)vehicle);
+			invalidate_sprite_2((rct_sprite*)vehicle);
 			spriteIndex = vehicle->next_vehicle_on_train;
 			carIndex++;
 		}

@@ -358,7 +358,7 @@ static void openrct2_loop()
 					_spritelocations2[i].z + (sint16)((_spritelocations1[i].z - _spritelocations2[i].z) * nudge),
 					&g_sprite_list[i]
 				);
-				invalidate_sprite(&g_sprite_list[i]);
+				invalidate_sprite_2(&g_sprite_list[i]);
 			}
 
 			platform_process_messages();
@@ -375,7 +375,7 @@ static void openrct2_loop()
 				if (!sprite_should_tween(&g_sprite_list[i]))
 					continue;
 
-				invalidate_sprite(&g_sprite_list[i]);
+				invalidate_sprite_2(&g_sprite_list[i]);
 				sprite_move(_spritelocations2[i].x, _spritelocations2[i].y, _spritelocations2[i].z, &g_sprite_list[i]);
 			}
 			network_update();

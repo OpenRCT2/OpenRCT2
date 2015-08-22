@@ -657,7 +657,7 @@ void footpath_remove_litter(int x, int y, int z)
 		if (sprite->linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_LITTER) {
 			int distanceZ = abs(sprite->z - z);
 			if (distanceZ <= 32) {
-				sub_6EC60B((rct_sprite*)sprite);
+				invalidate_sprite_0((rct_sprite*)sprite);
 				sprite_remove((rct_sprite*)sprite);
 			}
 		}

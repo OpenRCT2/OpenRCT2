@@ -615,7 +615,7 @@ void window_guest_overview_mouse_up(rct_window *w, int widgetIndex)
 		w->var_48C = peep->x;
 
 		remove_peep_from_ride(peep);
-		invalidate_sprite((rct_sprite*)peep);
+		invalidate_sprite_2((rct_sprite*)peep);
 
 		sprite_move(0x8000, peep->y, peep->z, (rct_sprite*)peep);
 		peep_decrement_num_riders(peep);
@@ -1194,7 +1194,7 @@ void window_guest_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 
 	rct_peep* peep = GET_PEEP(w->number);
 	sprite_move(dest_x, dest_y, dest_z, (rct_sprite*)peep);
-	invalidate_sprite((rct_sprite*)peep);
+	invalidate_sprite_2((rct_sprite*)peep);
 	peep_decrement_num_riders(peep);
 	peep->state = 0;
 	peep_window_state_update(peep);
@@ -1222,7 +1222,7 @@ void window_guest_overview_tool_abort(rct_window *w, int widgetIndex)
 		return;
 
 	sprite_move( w->var_48C, peep->y, peep->z + 8, (rct_sprite*)peep);
-	invalidate_sprite((rct_sprite*)peep);
+	invalidate_sprite_2((rct_sprite*)peep);
 
 	if (peep->x != (sint16)0x8000){
 		peep_decrement_num_riders(peep);

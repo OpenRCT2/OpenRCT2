@@ -235,11 +235,8 @@ static void window_save_prompt_mouseup(rct_window *w, int widgetIndex)
 	} else {
 		switch (widgetIndex) {
 		case WIDX_SAVE:
-			if (!save_game_as()) {
-				// user pressed cancel
-				window_close(w);
-				return;
-			}
+			save_game_as();
+			window_close(w);
 			break;
 		case WIDX_DONT_SAVE:
 			game_load_or_quit_no_save_prompt();

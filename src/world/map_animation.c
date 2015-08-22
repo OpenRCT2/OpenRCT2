@@ -212,7 +212,7 @@ static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ)
 					peep->action_frame = 0;
 					peep->action_sprite_image_offset = 0;
 					sub_693B58(peep);
-					sub_6EC53F((rct_sprite*)peep);
+					invalidate_sprite_1((rct_sprite*)peep);
 					break;
 				}
 			}

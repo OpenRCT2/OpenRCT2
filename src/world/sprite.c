@@ -77,7 +77,7 @@ void balloon_pop(rct_balloon *balloon)
  */
 void balloon_update(rct_balloon *balloon)
 {
-	invalidate_sprite((rct_sprite*)balloon);
+	invalidate_sprite_2((rct_sprite*)balloon);
 	if (balloon->popped == 1) {
 		balloon->var_26 += 256;
 		if (balloon->var_26 >= 1280)
@@ -211,7 +211,7 @@ void duck_update(rct_duck *duck)
 
 static void duck_invalidate(rct_duck *duck)
 {
-	sub_6EC60B((rct_sprite*)duck);
+	invalidate_sprite_0((rct_sprite*)duck);
 }
 
 /**
@@ -498,7 +498,7 @@ void money_effect_create(money32 value)
  */
 void money_effect_update(rct_money_effect *moneyEffect)
 {
-	invalidate_sprite((rct_sprite*)moneyEffect);
+	invalidate_sprite_2((rct_sprite*)moneyEffect);
 	moneyEffect->wiggle++;
 	if (moneyEffect->wiggle >= 22)
 		moneyEffect->wiggle = 0;
@@ -520,58 +520,49 @@ void money_effect_update(rct_money_effect *moneyEffect)
 	sprite_remove((rct_sprite*)moneyEffect);
 }
 
-/*
- *
- * rct2: 0x006EC473
- */
-void invalidate_sprite(rct_sprite* sprite){
+void invalidate_sprite_max_zoom(rct_sprite *sprite, int maxZoom)
+{
 	if (sprite->unknown.sprite_left == (sint16)0x8000) return;
 
-	for (rct_viewport** viewport_p = RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*); *viewport_p != NULL; viewport_p++){
+	for (rct_viewport** viewport_p = RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*); *viewport_p != NULL; viewport_p++) {
 		rct_viewport* viewport = *viewport_p;
-		int left, right, top, bottom;
-		left = sprite->unknown.sprite_left;
-		right = sprite->unknown.sprite_right;
-		top = sprite->unknown.sprite_top;
-		bottom = sprite->unknown.sprite_bottom;
-
-		if (viewport->zoom >= 3)continue;
-		if (right <= viewport->view_x)continue;
-		if (bottom <= viewport->view_y) continue;
-
-		int viewport_right = viewport->view_x + viewport->view_width;
-		int viewport_bottom = viewport->view_y + viewport->view_height;
-
-		if (left >= viewport_right)continue;
-		if (top >= viewport_bottom)continue;
-
-		left = max(left, viewport->view_x);
-		right = min(right, viewport_right);
-		top = max(top, viewport->view_y);
-		bottom = min(bottom, viewport_bottom);
-
-		left -= viewport->view_x;
-		top -= viewport->view_y;
-		right -= viewport->view_x;
-		bottom -= viewport->view_y;
-
-		int zoom = 1 << viewport->zoom;
-		left /= zoom;
-		top /= zoom;
-		right /= zoom;
-		bottom /= zoom;
-
-		gfx_set_dirty_blocks(left + viewport->x, top + viewport->y, right + viewport->x, bottom + viewport->y);
+		if (viewport->zoom <= maxZoom) {
+			viewport_invalidate(
+				viewport,
+				sprite->unknown.sprite_left,
+				sprite->unknown.sprite_top,
+				sprite->unknown.sprite_right,
+				sprite->unknown.sprite_bottom
+			);
+		}
 	}
 }
 
 /**
- * Similar to invalidate sprite...
- * rct2: 0x006EC60B
+ * Invalidate the sprite if at closest zoom.
+ *  rct2: 0x006EC60B
  */
-void sub_6EC60B(rct_sprite* sprite)
+void invalidate_sprite_0(rct_sprite* sprite)
 {
-	RCT2_CALLPROC_X(0x006EC60B, 0, 0, 0, 0, (int)sprite, 0, 0);
+	invalidate_sprite_max_zoom(sprite, 0);
+}
+
+/**
+ * Invalidate sprite if at closest zoom or next zoom up from closest.
+ *  rct2: 0x006EC53F
+ */
+void invalidate_sprite_1(rct_sprite *sprite)
+{
+	invalidate_sprite_max_zoom(sprite, 1);
+}
+
+/**
+* Invalidate sprite if not at furthest zoom.
+*  rct2: 0x006EC473
+*/
+void invalidate_sprite_2(rct_sprite *sprite)
+{
+	invalidate_sprite_max_zoom(sprite, 2);
 }
 
 /*
@@ -999,7 +990,7 @@ void litter_create(int x, int y, int z, int direction, int type)
 		}
 
 		if (newestLitter != NULL) {
-			sub_6EC60B((rct_sprite*)newestLitter);
+			invalidate_sprite_0((rct_sprite*)newestLitter);
 			sprite_remove((rct_sprite*)newestLitter);
 		}
 	}
@@ -1016,17 +1007,8 @@ void litter_create(int x, int y, int z, int direction, int type)
 	litter->sprite_identifier = SPRITE_IDENTIFIER_LITTER;
 	litter->type = type;
 	sprite_move(x, y, z, (rct_sprite*)litter);
-	sub_6EC60B((rct_sprite*)litter);
+	invalidate_sprite_0((rct_sprite*)litter);
 	litter->creationTick = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
-}
-
-/**
- *
- *  rct2: 0x006EC53F
- */
-void sub_6EC53F(rct_sprite *sprite)
-{
-	RCT2_CALLPROC_X(0x006EC53F, 0, 0, 0, 0, (int)sprite, 0, 0);
 }
 
 /**

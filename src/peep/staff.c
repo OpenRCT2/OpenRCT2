@@ -239,12 +239,12 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 			}
 
 			sprite_move(x, y, z + 16, (rct_sprite*)newPeep);
-			invalidate_sprite((rct_sprite*)newPeep);
+			invalidate_sprite_2((rct_sprite*)newPeep);
 		} else {
 			newPeep->state = PEEP_STATE_PICKED;
 
 			sprite_move(newPeep->x, newPeep->y, newPeep->z, (rct_sprite*)newPeep);
-			invalidate_sprite((rct_sprite*)newPeep);
+			invalidate_sprite_2((rct_sprite*)newPeep);
 		}
 
 		newPeep->time_in_park = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
@@ -304,7 +304,7 @@ void game_command_set_staff_order(int *eax, int *ebx, int *ecx, int *edx, int *e
 			}
 			peep->action_frame = 0;
 			sub_693B58(peep);
-			invalidate_sprite((rct_sprite*)peep);
+			invalidate_sprite_2((rct_sprite*)peep);
 			window_invalidate_by_number(WC_PEEP, sprite_id);
 			window_invalidate_by_class(WC_STAFF_LIST);
 		}else{
