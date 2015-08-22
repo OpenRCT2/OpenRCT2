@@ -243,12 +243,6 @@ enum {
 // rct2: 0x010E63BC
 extern rct_sprite* g_sprite_list;
 
-void create_balloon(int x, int y, int z, int colour, uint8 bl);
-void balloon_press(rct_balloon *balloon);
-void create_duck(int targetX, int targetY);
-void duck_press(rct_duck *duck);
-void duck_remove_all();
-void money_effect_create(money32 value);
 rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();
 void reset_0x69EBE4();
@@ -264,5 +258,26 @@ void litter_create(int x, int y, int z, int direction, int type);
 void sub_6738E1(int x, int y, int z);
 void sprite_misc_3_create(int x, int y, int z);
 void sprite_misc_5_create(int x, int y, int z);
+
+///////////////////////////////////////////////////////////////
+// Balloon
+///////////////////////////////////////////////////////////////
+void create_balloon(int x, int y, int z, int colour, uint8 bl);
+void balloon_update(rct_balloon *balloon);
+void balloon_press(rct_balloon *balloon);
+
+///////////////////////////////////////////////////////////////
+// Duck
+///////////////////////////////////////////////////////////////
+void create_duck(int targetX, int targetY);
+void duck_update(rct_duck *duck);
+void duck_press(rct_duck *duck);
+void duck_remove_all();
+
+///////////////////////////////////////////////////////////////
+// Money effect
+///////////////////////////////////////////////////////////////
+void money_effect_create(money32 value);
+void money_effect_update(rct_money_effect *moneyEffect);
 
 #endif

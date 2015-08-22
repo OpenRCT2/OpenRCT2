@@ -107,6 +107,9 @@
       </ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\src\windows\maze_construction.c" />
+    <ClCompile Include="..\src\world\balloon.c" />
+    <ClCompile Include="..\src\world\duck.c" />
+    <ClCompile Include="..\src\world\money_effect.c" />
     <ClCompile Include="..\test\management\finance_test.c" />
     <ClCompile Include="..\test\ride\ride_ratings_test.c" />
     <ClCompile Include="..\test\tests.c" />
