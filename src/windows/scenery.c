@@ -472,7 +472,7 @@ void window_scenery_open()
 	window_push_others_below(window);
 	RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_COST, uint32) = MONEY32_UNDEFINED;
-	RCT2_GLOBAL(0x00F64EC0, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint16) = 0;
 	window_scenery_is_repaint_scenery_tool_on = 0; // repaint colored scenery tool state
 	window_scenery_is_build_cluster_tool_on = 0; // build cluster tool state
 
