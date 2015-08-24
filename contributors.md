@@ -47,7 +47,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (eezstreet) - Misc.
 * Thomas den Hollander (ThomasdenH) - Misc.
 * James Robertson (rd3k) - Misc.
-* Robert Jordan (trigger-death) - UI theming, misc.
+* Robert Jordan (trigger-death) - UI theming, title sequence editor, misc.
 
 ## Bug fixes
 * (halfbro)
