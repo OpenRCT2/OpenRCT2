@@ -84,7 +84,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Polish - Adrian Wielgosik (adrian17)
 * Portuguese (BR) - (kaudy)
 * Russian - (Soosisya)
-* Simplified Chinese - (naijim)
+* Simplified Chinese - Naiji Ma (naijim)
 * Spanish - (mdtrooper)
 * Swedish - (Jinxit), (mharrys), (Slimeyo)
 * Traditional Chinese - Harry Lam (daihakken)
