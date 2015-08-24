@@ -65,14 +65,24 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (RollingStar)
 
 ## Translation
+* Extracting from original files: Ted John (IntelOrca)
+* Reviewing and merging: Rune Laenen (runelaenen), Michael Steenbeek (Gymnasiast)
+* Fixing unmaintained languages: Michael Steenbeek (Gymnasiast)
+
 * English (UK) - Ted John (IntelOrca), (Tinytimrob)
 * English (US) - Ted John (IntelOrca), Michael Steenbeek (Gymnasiast)
-* French - (fbourigault), Michael Steenbeek (Gymnasiast)
-* German - (danidoedel), (atmaxinger), (Yepoleb)
-* Dutch - Michael Steenbeek (Gymnasiast), (hostbrute), (mrtnptrs), (xzbobzx)
+* Dutch - Michael Steenbeek (Gymnasiast), (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (Vijfhoek).
+* Finnish - (DJHasis)
+* French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast)
+* German - (danidoedel), (atmaxinger), (Yepoleb), Daniël Kessel (dkessel), Leon (AllGoodNamesAreTaken)
+* Korean - "TELK" (telk5093)
+* Polish - Adrian Wielgosik (adrian17)
 * Portuguese (BR) - (kaudy)
+* Russian - (Soosisya)
+* Simplified Chinese - (naijim)
 * Spanish - (mdtrooper)
-* Swedish - (Jinxit), (mharrys)
+* Swedish - (Jinxit), (mharrys), (Slimeyo)
+* Traditional Chinese - Harry Lam (daihakken)
 
 ## Graphics
 * OpenRCT2 Logo - xzbobzx
