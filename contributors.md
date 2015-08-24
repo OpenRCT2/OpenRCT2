@@ -2,11 +2,17 @@
 Includes all git commit authors. Aliases are GitHub user names.
 
 ## Project team
-* Ted John (IntelOrca) - Owner
+* Ted John (IntelOrca) - Owner, merger, issue management
+* Duncan Frost (duncanspumpkin) - Merger, issue management
+* Michael Steenbeek (Gymnasiast) - Translation management
+* Rune Laenen (runelaenen) - Translation management
+* Miso Zmiric (mzmiric5) - Dependency / library management
 
 ## Long term developers
 * Ted John (IntelOrca)
 * Duncan Frost (duncanspumpkin)
+* Michael Steenbeek (Gymnasiast)
+* (zsilencer)
 
 ## Implementation (RCT2)
 * Ted John (IntelOrca)
@@ -14,12 +20,11 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Peter Hill (ZedThree) - String handling, misc.
 * (qcz) - Scenery window, misc.
 * Matthias Lanzinger (lnz) - Climate, finance, scenario, ride reachability
-* (zsilencer) - Audio, misc.
+* (zsilencer) - Audio, multiplayer, misc.
 * Adrian Wielgosik (adrian17) - Misc.
 * (hexdec) - Misc.
 * Dennis Devriendt (ddevrien) - Misc.
 * Maciek Baron (MaciekBaron) - Misc.
-* Michael Steenbeek (Gymnasiast) - Cheats and misc. features
 * (AngeloG) - Scrollbar input, misc.
 * (jcdavis) - Misc.
 * (marcotc) - Rain drawing, misc.
@@ -29,11 +34,11 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (Vijfhoek) - Misc.
 * (wolfreak99) - Misc.
 * Inseok Lee (dlunch) - Original command line
-* Robert Jordan (trigger-death) - New UI features, misc.
 
 ## Additional implementation (OpenRCT2)
 * (atmaxinger) - User configuration
 * (anyc) - Housecleaning, cross-platform fixes
+* Michael Steenbeek (Gymnasiast) - Cheats, RCT1 ride style, misc.
 * Miso Zmiric (mzmiric5) - Misc.
 * (DutchRPW) - Housecleaning, initialisation
 * Jørn Lomax (jvlomax) - User configuration
@@ -42,6 +47,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (eezstreet) - Misc.
 * Thomas den Hollander (ThomasdenH) - Misc.
 * James Robertson (rd3k) - Misc.
+* Robert Jordan (trigger-death) - UI theming, misc.
 
 ## Bug fixes
 * (halfbro)
