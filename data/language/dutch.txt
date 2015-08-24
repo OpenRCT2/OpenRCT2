@@ -3845,3 +3845,4 @@ STR_5509    :{SMALLFONT}{BLACK}Maakt het mogelijk om scenario's en opgeslagen sp
 STR_5510    :Standaard geluidsapparaat
 STR_5511    :(ONBEKEND)
 STR_5512    :Spel opslaan als...
+STR_5513    :Spel (snel) opslaan
