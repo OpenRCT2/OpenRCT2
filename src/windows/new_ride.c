@@ -931,6 +931,7 @@ static void window_new_ride_select(rct_window *w)
 		return;
 
 	window_close(w);
+	window_close_construction_windows();
 
 	if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
 		track_load_list(item);
