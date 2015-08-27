@@ -14,6 +14,7 @@
 #include "../input.h"
 #include "../network/twitch.h"
 #include "../object.h"
+#include "../world/banner.h"
 #include "../world/scenery.h"
 #include "../management/research.h"
 #include "console.h"
@@ -840,6 +841,12 @@ static int cc_reset_user_strings(const utf8 **argv, int argc)
 	return 0;
 }
 
+static int cc_fix_banner_count(const utf8 **argv, int argc)
+{
+	fix_banner_count();
+	return 0;
+}
+
 static int cc_open(const utf8 **argv, int argc) {
 	if (argc > 0) {
 		bool title = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) != 0;
@@ -930,7 +937,8 @@ console_command console_command_table[] = {
 									"load_object <objectfilenodat>" },
 	{ "object_count", cc_object_count, "Shows the number of objects of each type in the scenario.", "object_count" },
 	{ "twitch", cc_twitch, "Twitch API" },
-	{ "reset_user_strings", cc_reset_user_strings, "Resets all user-defined strings, to fix incorrectly occurring 'Chosen name in use already' errors.", "reset_user_strings" }
+	{ "reset_user_strings", cc_reset_user_strings, "Resets all user-defined strings, to fix incorrectly occurring 'Chosen name in use already' errors.", "reset_user_strings" },
+	{ "fix_banner_count", cc_fix_banner_count, "Fixes incorrectly appearing 'Too many banners' error by marking every banner entry without a map element as null..", "fix_banner_count" }
 };
 
 static int cc_windows(const utf8 **argv, int argc) {
