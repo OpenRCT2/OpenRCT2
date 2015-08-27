@@ -484,6 +484,10 @@ enum {
 	TRACK_ELEM_LEFT_LARGE_HALF_LOOP_DOWN
 };
 
+enum {
+	TRACK_ELEMENT_LOCATION_IS_UNDERGROUND = 2,
+};
+
 typedef struct {
 	rct_xy_element last;
 	rct_xy_element current;

@@ -3586,13 +3586,13 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 
 	if (setting == 0){
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN){
-			RCT2_GLOBAL(0x141E9AC, uint16) = 1796;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
 
 		if (ride->status != RIDE_STATUS_CLOSED){
-			RCT2_GLOBAL(0x141E9AC, uint16) = 1006;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_MUST_BE_CLOSED_FIRST;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
@@ -3601,7 +3601,7 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 	if (setting == 9 &&
 		ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT &&
 		new_value > 1){
-		RCT2_GLOBAL(0x141E9AC, uint16) = 3141;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_MULTICIRCUIT_NOT_POSSIBLE_WITH_CABLE_LIFT_HILL;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
@@ -3708,17 +3708,17 @@ int ride_mode_check_valid_station_numbers(rct_ride *ride)
 	case RIDE_MODE_POWERED_LAUNCH:
 	case RIDE_MODE_LIM_POWERED_LAUNCH:
 		if (no_stations <= 1) return 1;
-		RCT2_GLOBAL(0x141E9AC, uint16) = 1015;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_UNABLE_TO_OPERATE_WITH_MORE_THAN_ONE_STATION_IN_THIS_MODE;
 		return 0;
 	case RIDE_MODE_SHUTTLE:
 		if (no_stations >= 2) return 1;
-		RCT2_GLOBAL(0x141E9AC, uint16) = 1016;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_UNABLE_TO_OPERATE_WITH_LESS_THAN_TWO_STATIONS_IN_THIS_MODE;
 		return 0;
 	}
 
 	if (ride->type == RIDE_TYPE_GO_KARTS || ride->type == RIDE_TYPE_MINI_GOLF){
 		if (no_stations <= 1) return 1;
-		RCT2_GLOBAL(0x141E9AC, uint16) = 1015;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_UNABLE_TO_OPERATE_WITH_MORE_THAN_ONE_STATION_IN_THIS_MODE;
 		return 0;
 	}
 
@@ -3787,12 +3787,12 @@ int ride_check_for_entrance_exit(int rideIndex)
 	}
 
 	if (entrance == 0){
-		RCT2_GLOBAL(0x141E9AC, uint16) = 1146;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_ENTRANCE_NOT_YET_BUILT;
 		return 0;
 	}
 
 	if (exit == 0){
-		RCT2_GLOBAL(0x141E9AC, uint16) = 1147;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_EXIT_NOT_YET_BUILT;
 		return 0;
 	}
 
@@ -6315,7 +6315,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0){
-		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 2214;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
 
@@ -6339,13 +6339,13 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 			return MONEY32_UNDEFINED;
 		}
 
-		if (RCT2_GLOBAL(0x00F1AD60, uint8) & (1 << 2)){
-			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 1031;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & (1 << 2)){
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
 			return MONEY32_UNDEFINED;
 		}
 
 		if (z > 1952){
-			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 878;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH;
 			return MONEY32_UNDEFINED;
 		}
 
@@ -6353,12 +6353,12 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 	else{
 		rct_ride* ride = GET_RIDE(rideIndex);
 		if (ride->status != RIDE_STATUS_CLOSED){
-			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 1006;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_MUST_BE_CLOSED_FIRST;
 			return MONEY32_UNDEFINED;
 		}
 
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK){
-			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 3092;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NOT_ALLOWED_TO_MODIFY_STATION;
 			return MONEY32_UNDEFINED;
 		}
 
@@ -6372,7 +6372,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 		if (is_exit){
 			if (ride->exits[station_num] != 0xFFFF){
 				if (flags & (1 << 6)){
-					RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 0;
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = 0;
 					return MONEY32_UNDEFINED;
 				}
 
@@ -6384,7 +6384,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 		else{
 			if (ride->entrances[station_num] != 0xFFFF){
 				if (flags & (1 << 6)){
-					RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 0;
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = 0;
 					return MONEY32_UNDEFINED;
 				}
 
@@ -6433,13 +6433,13 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 			return MONEY32_UNDEFINED;
 		}
 
-		if (RCT2_GLOBAL(0x00F1AD60, uint8) & (1 << 2)){
-			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 1031;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER){
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
 			return MONEY32_UNDEFINED;
 		}
 
 		if (z / 8 > 244){
-			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 878;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH;
 			return MONEY32_UNDEFINED;
 		}
 
@@ -6501,13 +6501,13 @@ money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex, uint8 
 
 	if (!(flags & (1 << 6))){
 		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0){
-			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 2214;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 			return MONEY32_UNDEFINED;
 		}
 	}
 
 	if (ride->status != RIDE_STATUS_CLOSED){
-		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 1006;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_MUST_BE_CLOSED_FIRST;
 		return MONEY32_UNDEFINED;
 	}
 
