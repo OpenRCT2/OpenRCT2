@@ -386,7 +386,7 @@ void update_staff_colour(uint8 staffType, uint16 colour)
  */
 uint16 hire_new_staff_member(uint8 staffType)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, uint16) = STR_CANT_HIRE_NEW_STAFF;
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_HIRE_NEW_STAFF;
 
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = 0x8000;

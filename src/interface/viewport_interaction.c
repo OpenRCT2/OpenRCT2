@@ -484,7 +484,7 @@ static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, i
 	if (sceneryEntry->wall.var_0D != 0xFF){
 		window_sign_small_open(mapElement->properties.fence.item[0]);
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_REMOVE_THIS;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_REMOVE_THIS;
 		game_do_command(
 			x,
 			GAME_COMMAND_FLAG_APPLY,
@@ -513,7 +513,7 @@ static void viewport_interaction_remove_large_scenery(rct_map_element *mapElemen
 			((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
 		window_sign_open(id);
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1158;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_REMOVE_THIS;
 		game_do_command(
 			x, 
 			1 | ((mapElement->type & 0x3) << 8), 
