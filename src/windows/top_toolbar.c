@@ -1471,7 +1471,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 					ebx |= GAME_COMMAND_FLAG_APPLY;
 				}
 
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_POSITION_THIS_HERE;
 
 				int cost = game_do_command(cur_grid_x, ebx, cur_grid_y, parameter_2, GAME_COMMAND_PLACE_SCENERY, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint8) | (parameter_3 & 0xFFFF0000), RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
 
@@ -1485,8 +1485,8 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 					break;
 				}
 
-				if (RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 827 ||
-					RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 1032){
+				if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_NOT_ENOUGH_CASH_REQUIRES ||
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_CAN_ONLY_BUILD_THIS_ON_WATER){
 					break;
 				}
 
@@ -1509,7 +1509,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 		ebx &= 0xFF00;
 		ebx |= 0x81;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_POSITION_THIS_HERE;
 
 		int cost = game_do_command(grid_x, ebx, grid_y, parameter_2, GAME_COMMAND_PLACE_PATH, parameter_3, 0);
 
@@ -1546,8 +1546,8 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 				return;
 			}
 
-			if (RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 827 ||
-				RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 1032){
+			if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_NOT_ENOUGH_CASH_REQUIRES ||
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_CAN_ONLY_BUILD_THIS_ON_WATER){
 				break;
 			}
 
@@ -1569,7 +1569,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 		for (; bl != 0; bl--){
 			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
 
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_POSITION_THIS_HERE;
 
 			int ebx = (parameter_1 & 0xFF00) | 1;
 
@@ -1584,8 +1584,8 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 				return;
 			}
 
-			if (RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 827 ||
-				RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 1032){
+			if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_NOT_ENOUGH_CASH_REQUIRES ||
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_CAN_ONLY_BUILD_THIS_ON_WATER){
 				break;
 			}
 
@@ -1598,7 +1598,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w
 	case 4:
 	{
 		// Banners
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_POSITION_THIS_HERE;
 
 		// The return value will be banner id but the input is colour (param 3)
 		int banner_id = parameter_3;
@@ -2110,9 +2110,11 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) = mapElement->base_height;
 		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT_TYPE, uint8) = mapElement->type;
 		if (RCT2_GLOBAL(0x00F64F14, uint8) & (1 << 1)){
+			//Set underground on
 			viewport_set_visibility(4);
 		}
 		else{
+			//Set underground off
 			viewport_set_visibility(5);
 		}
 
@@ -2189,9 +2191,11 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) = mapElement->base_height;
 
 		if (RCT2_GLOBAL(0x00F64F14, uint8) & (1 << 1)){
+			//Set underground on
 			viewport_set_visibility(4);
 		}
 		else{
+			//Set underground off
 			viewport_set_visibility(5);
 		}
 

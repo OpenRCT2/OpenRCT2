@@ -986,7 +986,7 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, int s
 			STR_UNABLE_TO_SELECT_THIS_OBJECT :
 			STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
 
-		window_error_open(error_title, RCT2_GLOBAL(0x141E9AC, uint16));
+		window_error_open(error_title, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16));
 		return;
 	}
 
@@ -1664,7 +1664,7 @@ void reset_required_object_flags(){
  * object.
  */
 void set_object_selection_error(uint8 is_master_object, rct_string_id error_msg){
-	RCT2_GLOBAL(0x141E9AC, rct_string_id) = error_msg;
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = error_msg;
 	if (!is_master_object){
 		reset_selected_object_count_and_size();
 	}

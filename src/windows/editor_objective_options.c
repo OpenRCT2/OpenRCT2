@@ -888,7 +888,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	// Objective value
 	x = w->x + w->widgets[WIDX_OBJECTIVE].left + 1;
 	y = w->y + w->widgets[WIDX_OBJECTIVE].top;
-	stringId = STR_OBJECTIVE_2_NONE + RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
+	stringId = STR_OBJECTIVE_DROPDOWN_NONE + RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
 	gfx_draw_string_left(dpi, 1193, &stringId, 0, x, y);
 
 	if (w->widgets[WIDX_OBJECTIVE_ARG_1].type != WWT_EMPTY) {

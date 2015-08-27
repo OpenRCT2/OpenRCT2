@@ -2380,7 +2380,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 						RCT2_GLOBAL(0x00F64F24, uint16) = y;
 						RCT2_GLOBAL(0x00F64F1E, uint32) = (uint32)(ebx - 1); //0x006E0D6E uses [F64F1E+4] to read ebx value
 						if(gCheatsDisableClearanceChecks || map_can_construct_with_clear_at(x, y, zLow, zHigh, (void*)0x006E0D6E, bl)){
-							RCT2_GLOBAL(0x00F64F14, uint8) = RCT2_GLOBAL(0x00F1AD60, uint8) & 0x3;
+							RCT2_GLOBAL(0x00F64F14, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & 0x3;
 							if(*ebx & GAME_COMMAND_FLAG_APPLY){
 								int flags = (bl & 0xf);
 								rct_map_element* new_map_element = map_element_insert(x / 32, y / 32, zLow, flags);
@@ -2484,7 +2484,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode){
-		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 2214;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
@@ -2536,14 +2536,14 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 		water_height *= 16;
 
 		if (position.z < water_height){
-			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 1180;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CANT_BUILD_THIS_UNDERWATER;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
 	}
 
 	if (position.z / 8 < map_element->base_height){
-		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 1033;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
@@ -2553,7 +2553,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 		bp += 2;
 		if (map_element->properties.surface.slope & (1 << new_edge)){
 			if (position.z / 8 < bp){
-				RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 1033;
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 				*ebx = MONEY32_UNDEFINED;
 				return;
 			}
@@ -2566,7 +2566,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 					if (map_element->properties.surface.slope & (1 << new_edge)){
 						bp += 2;
 						if (position.z / 8 < bp){
-							RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 1033;
+							RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 							*ebx = MONEY32_UNDEFINED;
 							return;
 						}
@@ -2579,7 +2579,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 		new_edge = (edge + 3) & 3;
 		if (map_element->properties.surface.slope & (1 << new_edge)){
 			if (position.z / 8 < bp){
-				RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 1033;
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 				*ebx = MONEY32_UNDEFINED;
 				return;
 			}
@@ -2592,7 +2592,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 					if (map_element->properties.surface.slope & (1 << new_edge)){
 						bp += 2;
 						if (position.z / 8 < bp){
-							RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 1033;
+							RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 							*ebx = MONEY32_UNDEFINED;
 							return;
 						}
@@ -2632,7 +2632,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	RCT2_GLOBAL(0x00141F722, uint8) = position.z / 8;
 	if (bp & 0xC0){
 		if (fence->wall.flags & WALL_SCENERY_FLAG3){
-			RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 3133;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = 3133;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
@@ -2846,8 +2846,8 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 				RCT2_GLOBAL(0x00F43894, sint16) = y2;
 				RCT2_GLOBAL(0x00F43896, uint32) = (uint32)(ebx - 3); // this is how ebx flags var is passed to 0x006B8D88
 				if(gCheatsDisableClearanceChecks || map_can_construct_with_clear_at(x2, y2, zLow, zHigh, (void*)0x006B8D88, bl)){
-					if(!(RCT2_GLOBAL(0x00F1AD60, uint8) & 4) && !(RCT2_GLOBAL(0x00F1AD60, uint8) & 2)){
-						int b = RCT2_GLOBAL(0x00F1AD60, uint8) & 0x3;
+					if(!(RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER) && !(RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & 2)){
+						int b = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & 0x3;
 						if (!gCheatsDisableClearanceChecks) {
 							if (RCT2_GLOBAL(0x00F64F14, uint8) && !(RCT2_GLOBAL(0x00F64F14, uint8) & b)){
 								RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND;
@@ -3121,7 +3121,7 @@ int sub_68B044()
 	if (RCT2_GLOBAL(0x00140E9A4, rct_map_element*) <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
 		return 1;
 	else{
-		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 894;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = 894;
 		return 0;
 	}
 }
@@ -3189,7 +3189,7 @@ int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *cle
 {
 	//return (RCT2_CALLPROC_X(0x0068B932, x, bl, y, (zHigh << 8) | zLow, 0, 0, (int)clearFunc) & 0x100) == 0;
 	RCT2_GLOBAL(0x00F1AD40, void*) = clearFunc;
-	RCT2_GLOBAL(0x00F1AD60, uint8) = 1;
+	RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) = 1;
 	if (x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16) || x < 32 || y < 32) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_OFF_EDGE_OF_MAP;
 		return false; 
@@ -3206,7 +3206,7 @@ int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *cle
 		}
 		int water_height = ((map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) * 2);
 		if (water_height && water_height > zLow && map_element->base_height < zHigh) {
-			RCT2_GLOBAL(0x00F1AD60, uint8) |= 4;
+			RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) |= 4;
 			if (water_height < zHigh) {
 				goto loc_68BAE6;
 			}
@@ -3224,8 +3224,8 @@ int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *cle
 		if ((bl & 0xF0) != 0xF0) {
 			if (map_element->base_height >= zHigh) {
 				// loc_68BA81
-				RCT2_GLOBAL(0x00F1AD60, uint8) |= 2;
-				RCT2_GLOBAL(0x00F1AD60, uint8) &= 0xFE;
+				RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) |= 2;
+				RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) &= 0xFE;
 			} else {
 				int al = map_element->base_height;
 				int ah = al;
