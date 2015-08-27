@@ -126,6 +126,7 @@ static const int left_aligned_widgets_order[] = {
 	WIDX_PAUSE,
 	WIDX_FASTFORWARD,
 	WIDX_FILE_MENU,
+	WIDX_NETWORK,
 	WIDX_CHEATS,
 	WIDX_DEBUG,
 
@@ -136,7 +137,6 @@ static const int left_aligned_widgets_order[] = {
 	WIDX_ROTATE,
 	WIDX_VIEW_MENU,
 	WIDX_MAP,
-	WIDX_NETWORK,
 };
 
 // from right to left
@@ -187,7 +187,7 @@ static rct_widget window_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B, 0,						27,		0x20000000 | 0x15F9,						STR_SCENARIO_OPTIONS_FINANCIAL_TIP },// Finances
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_FINANCES_RESEARCH_TIP },		// Research
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_SHOW_RECENT_MESSAGES_TIP },		// News
-	{ WWT_TRNBTN,	1,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_SHOW_MULTIPLAYER_STATUS_TIP },	// Network
+	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_SHOW_MULTIPLAYER_STATUS_TIP },	// Network
 	
 	{ WWT_EMPTY,	0,	0,		10-1,	0,						0,		0xFFFFFFFF,									STR_NONE },							// Artificial widget separator
 	{ WIDGETS_END },
@@ -2908,7 +2908,7 @@ void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget) {
 		w->x + widget->left,
 		w->y + widget->top,
 		widget->bottom - widget->top + 1,
-		w->colours[1] | 0x80,
+		w->colours[0] | 0x80,
 		0,
 		5
 	);
@@ -2923,7 +2923,7 @@ void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget) {
 		w->x + widget->left,
 		w->y + widget->top,
 		widget->bottom - widget->top + 1,
-		w->colours[1] | 0x80,
+		w->colours[0] | 0x80,
 		0,
 		1
 	);
