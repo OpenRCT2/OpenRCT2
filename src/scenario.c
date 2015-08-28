@@ -965,6 +965,8 @@ int scenario_save(SDL_RWops* rw, int flags)
 	memcpy(s6->map_elements, (void*)0x00F663B8, 0x180000);
 	memcpy(&s6->dword_010E63B8, (void*)0x010E63B8, 0x2E8570);
 
+	strncpy(s6->scenario_filename, _scenarioFileName, sizeof(s6->scenario_filename));
+
 	scenario_fix_ghosts(s6);
 	game_convert_strings_to_rct2(s6);
 	scenario_save_s6(rw, s6);
