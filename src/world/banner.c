@@ -163,3 +163,12 @@ int banner_get_closest_ride_index(int x, int y, int z)
 
 	return rideIndex;
 }
+
+void fix_banner_count()
+{
+	for (int banner_index = 0; banner_index < MAX_BANNERS; banner_index++){
+		rct_map_element *map_element = banner_get_map_element(banner_index);
+		if(map_element==NULL)
+			gBanners[banner_index].type = BANNER_NULL;
+	}
+}
