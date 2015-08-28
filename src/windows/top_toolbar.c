@@ -639,6 +639,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 		window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
+		window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
 
 		if (g_editor_step != EDITOR_STEP_LANDSCAPE_EDITOR) {
 			window_top_toolbar_widgets[WIDX_MAP].type = WWT_EMPTY;
