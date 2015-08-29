@@ -186,6 +186,13 @@ extern "C"
 {
 #endif
 
+#ifndef DSBPAN_LEFT
+#define DSBPAN_LEFT -10000
+#endif
+#ifndef DSBPAN_RIGHT
+#define DSBPAN_RIGHT 10000
+#endif
+
 void Mixer_Init(const char* device);
 void* Mixer_Play_Effect(int id, int loop, int volume, float pan, double rate, int deleteondone);
 void Mixer_Stop_Channel(void* channel);

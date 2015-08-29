@@ -358,7 +358,7 @@ void rct2_update_2()
 {
 	int tick, tick2;
 
-	tick = timeGetTime();
+	tick = SDL_GetTicks();
 
 	tick2 = tick - RCT2_GLOBAL(0x009DE580, sint32);
 	RCT2_GLOBAL(0x009DE588, sint16) = tick2 = min(tick2, 500);

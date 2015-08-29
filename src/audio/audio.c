@@ -18,6 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <dsound.h>
+
 #include "../addresses.h"
 #include "../config.h"
 #include "../interface/viewport.h"
@@ -31,6 +33,34 @@
 #include "mixer.h"
 #include "../openrct2.h"
 
+typedef struct {
+	uint32 playing;					// 0x000
+	uint32 var_4;
+	char filename[MAX_PATH];		// 0x008
+	uint32 var_10C;
+	uint32 var_110;
+	uint32 var_114;
+	uint32 var_118;
+	HGLOBAL hmem;					// 0x11C
+	HMMIO hmmio;					// 0x120
+	MMCKINFO mmckinfo1;				// 0x124
+	MMCKINFO mmckinfo2;				// 0x138
+	LPDIRECTSOUNDBUFFER dsbuffer;	// 0x14C
+	uint32 bufsize;					// 0x150
+	uint32 playpos;					// 0x154
+	uint32 var_158;
+	uint32 var_15C;
+	uint32 stopped;					// 0x160
+	uint32 var_164;
+	uint32 var_168;
+} rct_sound_channel;
+
+struct rct_sound_effect {
+	uint32 size;
+	WAVEFORMATEX format;
+	uint8* data;
+};
+
 int gAudioDeviceCount;
 audio_device *gAudioDevices = NULL;
 rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
@@ -42,6 +72,20 @@ rct_ride_music_params *gRideMusicParamsListEnd;
 void *gCrowdSoundChannel = 0;
 void *gTitleMusicChannel = 0;
 bool gGameSoundsOff = false;
+
+void audio_timefunc(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2, int channel);
+int sound_effect_loadvars(struct rct_sound_effect* sound_effect, LPWAVEFORMATEX* waveformat, char** data, DWORD* buffersize);
+MMRESULT mmio_open(const char* filename, HMMIO* hmmio, HGLOBAL* hmem, LPMMCKINFO mmckinfo);
+MMRESULT mmio_read(HMMIO hmmio, uint32 size, char* buffer, LPMMCKINFO mmckinfo, int* read);
+MMRESULT mmio_seek(HMMIO* hmmio, LPMMCKINFO mmckinfo1, LPMMCKINFO mmckinfo2, int offset);
+int mmio_open_channel(int channel, char* filename, LONG offset);
+BOOL CALLBACK dsound_enum_callback_count(LPGUID lpGuid, LPCSTR lpcstrDescription, LPCSTR lpcstrModule, LPVOID lpContext);
+BOOL CALLBACK dsound_enum_callback(LPGUID lpGuid, LPCSTR lpcstrDescription, LPCSTR lpcstrModule, LPVOID lpContext);
+int CALLBACK audio_timer_callback(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2);
+int sound_fill_buffer(LPDIRECTSOUNDBUFFER dsbuffer, char* src, DWORD size);
+void sound_channel_free(HMMIO* hmmio, HGLOBAL* hmem);
+LPVOID map_file(LPCSTR lpFileName, DWORD dwCreationDisposition, DWORD dwNumberOfBytesToMap);
+int unmap_file(LPCVOID base);
 
 void audio_init(int i)
 {
@@ -693,7 +737,7 @@ int sound_prepare(int sound_id, rct_sound *sound, int channels, int software)
 			return 1;
 		}
 	}
-	rct_sound_effect* sound_effect = sound_get_effect(sound_id);
+	struct rct_sound_effect* sound_effect = sound_get_effect(sound_id);
 	if (sound_effect) {
 		if (sound_effect_loadvars(sound_effect, &bufferdesc.lpwfxFormat, &buffer, &bufferdesc.dwBufferBytes)) {
 			if (channels == 0){
@@ -943,7 +987,7 @@ BOOL CALLBACK dsound_enum_callback(LPGUID lpGuid, LPCSTR lpcstrDescription, LPCS
 *
 *  rct2: 0x00405054
 */
-int sound_effect_loadvars(rct_sound_effect* sound_effect, LPWAVEFORMATEX* waveformat, char** data, DWORD* buffersize)
+int sound_effect_loadvars(struct rct_sound_effect* sound_effect, LPWAVEFORMATEX* waveformat, char** data, DWORD* buffersize)
 {
 	*buffersize = sound_effect->size;
 	*waveformat = &sound_effect->format;
@@ -1050,7 +1094,7 @@ int sound_bufferlost_restore(rct_sound* sound)
 	char* data = 0;
 	if (sound) {
 		if (SUCCEEDED(sound->dsbuffer->lpVtbl->Restore(sound->dsbuffer))) {
-			rct_sound_effect* sound_effect = sound_get_effect(sound->id);
+			struct rct_sound_effect* sound_effect = sound_get_effect(sound->id);
 			if (sound_effect != 0) {
 				return sound_effect_loadvars(sound_effect, &waveformat, &data, &buffersize) && sound_fill_buffer(sound->dsbuffer, data, buffersize);
 			}
@@ -1063,10 +1107,10 @@ int sound_bufferlost_restore(rct_sound* sound)
 *
 *  rct2: 0x00405206
 */
-rct_sound_effect* sound_get_effect(uint16 sound_id)
+struct rct_sound_effect* sound_get_effect(uint16 sound_id)
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SOUND_EFFECTS_MAPPING, LPVOID) && sound_id < RCT2_GLOBAL(RCT2_ADDRESS_SOUND_EFFECTS_MAPPING, uint32*)[0]) {
-		return (rct_sound_effect*)(RCT2_GLOBAL(RCT2_ADDRESS_SOUND_EFFECTS_MAPPING, int) + RCT2_GLOBAL(RCT2_ADDRESS_SOUND_EFFECTS_MAPPING, uint32*)[sound_id + 1]);
+		return (struct rct_sound_effect*)(RCT2_GLOBAL(RCT2_ADDRESS_SOUND_EFFECTS_MAPPING, int) + RCT2_GLOBAL(RCT2_ADDRESS_SOUND_EFFECTS_MAPPING, uint32*)[sound_id + 1]);
 	}
 	return 0;
 }

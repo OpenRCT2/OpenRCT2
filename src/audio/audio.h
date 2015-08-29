@@ -21,6 +21,8 @@
 #ifndef _AUDIO_H_
 #define _AUDIO_H_
 
+#include <guiddef.h>
+
 #include "../common.h"
 #include "../world/sprite.h"
 
@@ -38,56 +40,26 @@ void audio_init();
 void audio_quit();
 void audio_get_devices();
 
-#include <dsound.h>
-
 /**
  * Represents a single directsound device.
  */
 typedef struct {
 	GUID guid;
-	CHAR desc[256];
-	CHAR drvname[256];
+	char desc[256];
+	char drvname[256];
 } rct_dsdevice;
 
 /**
  * Represents a prepared sound.
  */
 typedef struct rct_sound {
-	LPDIRECTSOUNDBUFFER dsbuffer;
+	struct IDirectSoundBuffer *dsbuffer;
 	uint16 id;
 	uint16 var_8;
 	int has_caps;
 	int var_0C;
 	struct rct_sound* next;
 } rct_sound;
-
-typedef struct {
-	uint32 playing;					// 0x000
-	uint32 var_4;
-	char filename[MAX_PATH];		// 0x008
-	uint32 var_10C;
-	uint32 var_110;
-	uint32 var_114;
-	uint32 var_118;
-	HGLOBAL hmem;					// 0x11C
-	HMMIO hmmio;					// 0x120
-	MMCKINFO mmckinfo1;				// 0x124
-	MMCKINFO mmckinfo2;				// 0x138
-	LPDIRECTSOUNDBUFFER dsbuffer;	// 0x14C
-	uint32 bufsize;					// 0x150
-	uint32 playpos;					// 0x154
-	uint32 var_158;
-	uint32 var_15C;
-	uint32 stopped;					// 0x160
-	uint32 var_164;
-	uint32 var_168;
-} rct_sound_channel;
-
-typedef struct {
-	uint32 size;
-	WAVEFORMATEX format;
-	uint8* data;
-} rct_sound_effect;
 
 typedef struct {
 	uint16 id;
@@ -147,6 +119,8 @@ typedef struct {
 	uint8 var_9;
 } rct_ride_music_info;
 
+struct rct_sound_effect;
+
 #define NUM_DEFAULT_MUSIC_TRACKS 46
 extern rct_ride_music_info* ride_music_info_list[NUM_DEFAULT_MUSIC_TRACKS];
 extern rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
@@ -159,12 +133,9 @@ extern void *gCrowdSoundChannel;
 extern void *gTitleMusicChannel;
 extern bool gGameSoundsOff;
 
-void audio_timefunc(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2, int channel);
-int CALLBACK audio_timer_callback(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2);
 int sub_40153B(int channel);
 int sub_4015E7(int channel);
 int sound_channel_load_file(int channel, const char* filename, int offset);
-int mmio_open_channel(int channel, char* filename, LONG offset);
 int audio_create_timer();
 int audio_remove_timer();
 int sound_channel_load_file2(int channel, const char* filename, int offset);
@@ -191,23 +162,13 @@ int sound_set_pan(rct_sound* sound, int pan);
 int sound_set_volume(rct_sound* sound, int volume);
 int sound_load3dparameters();
 int sound_load3dposition();
-BOOL CALLBACK dsound_enum_callback_count(LPGUID lpGuid, LPCSTR lpcstrDescription, LPCSTR lpcstrModule, LPVOID lpContext);
 int dsound_count_devices();
-BOOL CALLBACK dsound_enum_callback(LPGUID lpGuid, LPCSTR lpcstrDescription, LPCSTR lpcstrModule, LPVOID lpContext);
-int sound_effect_loadvars(rct_sound_effect* sound_effect, LPWAVEFORMATEX* waveformat, char** data, DWORD* buffersize);
-int sound_fill_buffer(LPDIRECTSOUNDBUFFER dsbuffer, char* src, DWORD size);
 rct_sound* sound_begin();
 rct_sound* sound_next(rct_sound* sound);
 rct_sound* sound_add(rct_sound* sound);
 rct_sound* sound_remove(rct_sound* sound);
 int sound_bufferlost_restore(rct_sound* sound);
-rct_sound_effect* sound_get_effect(uint16 sound_id);
-MMRESULT mmio_open(const char* filename, HMMIO* hmmio, HGLOBAL* hmem, LPMMCKINFO mmckinfo);
-MMRESULT mmio_read(HMMIO hmmio, uint32 size, char* buffer, LPMMCKINFO mmckinfo, int* read);
-void sound_channel_free(HMMIO* hmmio, HGLOBAL* hmem);
-MMRESULT mmio_seek(HMMIO* hmmio, LPMMCKINFO mmckinfo1, LPMMCKINFO mmckinfo2, int offset);
-LPVOID map_file(LPCSTR lpFileName, DWORD dwCreationDisposition, DWORD dwNumberOfBytesToMap);
-int unmap_file(LPCVOID base);
+struct rct_sound_effect* sound_get_effect(uint16 sound_id);
 int dsound_create_primary_buffer(int a, int device, int channels, int samples, int bits);
 int get_dsound_devices();
 int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z);
