@@ -203,6 +203,10 @@
     <ClInclude Include="..\src\cmdline.h" />
     <ClInclude Include="..\src\common.h" />
     <ClInclude Include="..\src\config.h" />
+    <ClInclude Include="..\src\core\Exception.hpp" />
+    <ClInclude Include="..\src\core\FileStream.hpp" />
+    <ClInclude Include="..\src\core\IDisposable.hpp" />
+    <ClInclude Include="..\src\core\IStream.hpp" />
     <ClInclude Include="..\src\cursors.h" />
     <ClInclude Include="..\src\diagnostic.h" />
     <ClInclude Include="..\src\drawing\drawing.h" />
