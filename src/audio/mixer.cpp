@@ -90,7 +90,7 @@ bool Source_Sample::LoadWAV(const char* filename)
 	log_verbose("Source_Sample::LoadWAV(%s)", filename);
 
 	Unload();
-	SDL_RWops* rw = platform_sdl_rwfromfile(filename, "rb");
+	SDL_RWops* rw = SDL_RWFromFile(filename, "rb");
 	if (rw == NULL) {
 		log_verbose("Error loading %s", filename);
 		return false;
@@ -114,12 +114,12 @@ bool Source_Sample::LoadWAV(const char* filename)
 	return true;
 }
 
-bool Source_Sample::LoadCSS1(const char* filename, unsigned int offset)
+bool Source_Sample::LoadCSS1(const char *filename, unsigned int offset)
 {
 	log_verbose("Source_Sample::LoadCSS1(%s, %d)", filename, offset);
 
 	Unload();
-	SDL_RWops* rw = platform_sdl_rwfromfile(filename, "rb");
+	SDL_RWops* rw = SDL_RWFromFile(filename, "rb");
 	if (rw == NULL) {
 		log_verbose("Unable to load %s", filename);
 		return false;
@@ -851,9 +851,9 @@ void* Mixer_Play_Music(int pathid, int loop, int streaming)
 		return 0;
 	}
 	if (streaming) {
-		const char* filename = get_file_path(pathid);
+		const utf8 *filename = get_file_path(pathid);
 
-		SDL_RWops* rw = platform_sdl_rwfromfile(filename, "rb");
+		SDL_RWops* rw = SDL_RWFromFile(filename, "rb");
 		if (rw == NULL) {
 			return 0;
 		}

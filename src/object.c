@@ -33,20 +33,20 @@
 #include "scenario.h"
 #include "rct1.h"
 
-int object_load_entry(const char *path, rct_object_entry *outEntry)
+int object_load_entry(const utf8 *path, rct_object_entry *outEntry)
 {
-	FILE *file;
+	SDL_RWops *file;
 
-	file = fopen(path, "rb");
+	file = SDL_RWFromFile(path, "rb");
 	if (file == NULL)
 		return 0;
 
-	if (fread(outEntry, sizeof(rct_object_entry), 1, file) != 1) {
-		fclose(file);
+	if (SDL_RWread(file, outEntry, sizeof(rct_object_entry), 1) != 1) {
+		SDL_RWclose(file);
 		return 0;
 	}
 
-	fclose(file);
+	SDL_RWclose(file);
 	return 1;
 }
 
@@ -61,7 +61,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 
 	log_verbose("loading object, %s", path);
 
-	rw = platform_sdl_rwfromfile(path, "rb");
+	rw = SDL_RWFromFile(path, "rb");
 	if (rw == NULL)
 		return 0;
 
@@ -315,7 +315,7 @@ int object_load_packed(SDL_RWops* rw)
 	}
 
 	// Actually write the object to the file
-	SDL_RWops* rw_out = platform_sdl_rwfromfile(path, "wb");
+	SDL_RWops* rw_out = SDL_RWFromFile(path, "wb");
 	if (rw_out != NULL){
 		uint8 result = write_object_file(rw_out, &entry);
 
@@ -1514,7 +1514,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 	subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), objectPath);
 
 	rct_object_entry openedEntry;
-	SDL_RWops* rw = platform_sdl_rwfromfile(path, "rb");
+	SDL_RWops* rw = SDL_RWFromFile(path, "rb");
 	if (rw != NULL) {
 		SDL_RWread(rw, &openedEntry, sizeof(rct_object_entry), 1);
 		if (object_entry_compare(&openedEntry, entry)) {

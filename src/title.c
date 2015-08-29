@@ -170,7 +170,7 @@ static int title_load_park(const char *path)
 	int successfulLoad;
 
 	if (_strcmpi(path_get_extension(path), ".sv6") == 0) {
-		SDL_RWops* rw = platform_sdl_rwfromfile(path, "rb");
+		SDL_RWops* rw = SDL_RWFromFile(path, "rb");
 		if (rw != NULL) {
 			successfulLoad = game_load_sv6(rw);
 			SDL_RWclose(rw);
@@ -522,7 +522,7 @@ static uint8 *generate_random_script()
 
 #pragma region Load script.txt
 
-void title_script_get_line(FILE *file, char *parts)
+void title_script_get_line(SDL_RWops *file, char *parts)
 {
 	int i, c, part, cindex, whitespace, comment, load;
 
@@ -535,7 +535,10 @@ void title_script_get_line(FILE *file, char *parts)
 	comment = 0;
 	load = 0;
 	for (; part < 3;) {
-		c = fgetc(file);
+		c = 0;
+		if (SDL_RWread(file, &c, 1, 1) != 1)
+			c = EOF;
+
 		if (c == '\n' || c == '\r' || c == EOF) {
 			parts[part * 128 + cindex] = 0;
 			return;
@@ -567,15 +570,16 @@ void title_script_get_line(FILE *file, char *parts)
 
 static uint8 *title_script_load()
 {
-	FILE *file;
+	SDL_RWops *file;
 	char parts[3 * 128], *token, *part1, *part2, *src;
 
-	char path[MAX_PATH];
-	char filePath[] = "data/title/script.txt";
+	utf8 path[MAX_PATH];
+	utf8 filePath[] = "data/title/script.txt";
 	
 	sprintf(path, "%s%c%s", gExePath, platform_get_path_separator(), filePath);
 	log_verbose("loading title script, %s", path);
-	file = fopen(path, "r");
+	file = SDL_RWFromFile(path, "r");
+	sint64 fileSize = SDL_RWsize(file);
 	if (file == NULL) {
 		log_error("unable to load title script");
 		return NULL;
@@ -583,7 +587,7 @@ static uint8 *title_script_load()
 
 	uint8 *binaryScript = (uint8*)malloc(1024 * 8);
 	if (binaryScript == NULL) {
-		fclose(file);
+		SDL_RWclose(file);
 
 		log_error("unable to allocate memory for script");
 		return NULL;
@@ -623,8 +627,8 @@ static uint8 *title_script_load()
 				return NULL;
 			}
 		}
-	} while (!feof(file));
-	fclose(file);
+	} while (SDL_RWtell(file) < fileSize);
+	SDL_RWclose(file);
 
 	*scriptPtr++ = TITLE_SCRIPT_RESTART;
 

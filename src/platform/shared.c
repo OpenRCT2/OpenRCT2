@@ -685,13 +685,6 @@ void platform_stop_text_input()
 	gTextInput = NULL;
 }
 
-SDL_RWops* platform_sdl_rwfromfile(const char* filename, const char* mode)
-{
-	utf8 utf8filename[512];
-	win1252_to_utf8(utf8filename, filename, sizeof(utf8filename));
-	return SDL_RWFromFile(utf8filename, mode);
-}
-
 static void platform_unload_cursors()
 {
 	for (int i = 0; i < CURSOR_COUNT; i++)

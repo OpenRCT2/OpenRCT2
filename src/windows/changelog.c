@@ -192,7 +192,7 @@ static void window_changelog_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 static bool window_changelog_read_file()
 {
 	window_changelog_dispose_file();
-	char path[MAX_PATH];
+	utf8 path[MAX_PATH];
 	sprintf(path, "%s%cchangelog.txt", gExePath, platform_get_path_separator());
 	if (!readentirefile(path, &_changelogText, &_changelogTextSize)) {
 		log_error("Unable to read changelog.txt");

@@ -330,7 +330,7 @@ static int editor_read_s6(const char *path)
 
 	log_verbose("loading landscape, %s", path);
 
-	rw = platform_sdl_rwfromfile(path, "rb");
+	rw = SDL_RWFromFile(path, "rb");
 	if (rw != NULL) {
 		if (!sawyercoding_validate_checksum(rw)) {
 			SDL_RWclose(rw);

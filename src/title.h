@@ -21,6 +21,8 @@
 #ifndef _TITLE_H_
 #define _TITLE_H_
 
+#include <SDL.h>
+
 enum {
 	TITLE_SCRIPT_WAIT,
 	TITLE_SCRIPT_LOADMM,
@@ -43,7 +45,7 @@ extern sint32 gTitleScriptSkipLoad;
 void title_load();
 void title_update();
 void title_skip_from_beginning();
-void title_script_get_line(FILE *file, char *parts);
+void title_script_get_line(SDL_RWops *file, char *parts);
 bool title_refresh_sequence();
 void DrawOpenRCT2(int x, int y);
 

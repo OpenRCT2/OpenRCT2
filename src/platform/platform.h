@@ -89,7 +89,6 @@ void platform_process_messages();
 int platform_scancode_to_rct_keycode(int sdl_key);
 void platform_start_text_input(utf8 *buffer, int max_length);
 void platform_stop_text_input();
-SDL_RWops* platform_sdl_rwfromfile(const utf8* filename, const char* mode);
 
 // Platform specific definitions
 char platform_get_path_separator();

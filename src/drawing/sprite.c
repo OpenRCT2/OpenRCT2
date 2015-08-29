@@ -39,25 +39,25 @@ int gfx_load_g1()
 {
 	log_verbose("loading g1 graphics");
 
-	FILE *file;
+	SDL_RWops *file;
 	rct_g1_header header;
 	unsigned int i;
 
-	file = fopen(get_file_path(PATH_ID_G1), "rb");
+	file = SDL_RWFromFile(get_file_path(PATH_ID_G1), "rb");
 	if (file != NULL) {
-		if (fread(&header, 8, 1, file) == 1) {
+		if (SDL_RWread(file, &header, 8, 1) == 1) {
 			// number of elements is stored in g1.dat, but because the entry headers are static, this can't be variable until
 			// made into a dynamic array
 			header.num_entries = 29294;
 
 			// Read element headers
-			fread(g1Elements, header.num_entries * sizeof(rct_g1_element), 1, file);
+			SDL_RWread(file, g1Elements, header.num_entries * sizeof(rct_g1_element), 1);
 
 			// Read element data
 			_g1Buffer = rct2_malloc(header.total_size);
-			fread(_g1Buffer, header.total_size, 1, file);
+			SDL_RWread(file, _g1Buffer, header.total_size, 1);
 
-			fclose(file);
+			SDL_RWclose(file);
 
 			// Fix entry data offsets
 			for (i = 0; i < header.num_entries; i++)
@@ -66,7 +66,7 @@ int gfx_load_g1()
 			// Successful
 			return 1;
 		}
-		fclose(file);
+		SDL_RWclose(file);
 	}
 
 	// Unsuccessful
@@ -78,23 +78,23 @@ int gfx_load_g2()
 {
 	log_verbose("loading g2 graphics");
 
-	FILE *file;
+	SDL_RWops *file;
 	unsigned int i;
 
 	char path[MAX_PATH];
 	sprintf(path, "%s%cdata%cg2.dat", gExePath, platform_get_path_separator(), platform_get_path_separator());
-	file = fopen(path, "rb");
+	file = SDL_RWFromFile(path, "rb");
 	if (file != NULL) {
-		if (fread(&g2.header, 8, 1, file) == 1) {
+		if (SDL_RWread(file, &g2.header, 8, 1) == 1) {
 			// Read element headers
 			g2.elements = malloc(g2.header.num_entries * sizeof(rct_g1_element));
-			fread(g2.elements, g2.header.num_entries * sizeof(rct_g1_element), 1, file);
+			SDL_RWread(file, g2.elements, g2.header.num_entries * sizeof(rct_g1_element), 1);
 
 			// Read element data
 			g2.data = malloc(g2.header.total_size);
-			fread(g2.data, g2.header.total_size, 1, file);
+			SDL_RWread(file, g2.data, g2.header.total_size, 1);
 
-			fclose(file);
+			SDL_RWclose(file);
 
 			// Fix entry data offsets
 			for (i = 0; i < g2.header.num_entries; i++)
@@ -103,7 +103,7 @@ int gfx_load_g2()
 			// Successful
 			return 1;
 		}
-		fclose(file);
+		SDL_RWclose(file);
 	}
 
 	// Unsuccessful

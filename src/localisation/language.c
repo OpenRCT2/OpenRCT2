@@ -98,7 +98,7 @@ const utf8 BlackLeftArrowString[] = { 0xC2, 0x8E, 0xE2, 0x97, 0x80, 0x00 };
 const utf8 BlackRightArrowString[] = { 0xC2, 0x8E, 0xE2, 0x96, 0xB6, 0x00 };
 const utf8 CheckBoxMarkString[] = { 0xE2, 0x9C, 0x93, 0x00 };
 
-static int language_open_file(const char *filename, language_data *language);
+static int language_open_file(const utf8 *filename, language_data *language);
 static void language_close(language_data *language);
 
 void utf8_remove_format_codes(utf8 *text)
@@ -200,21 +200,21 @@ void language_close_all()
  * colon and before the new line will be saved as the string. Tokens are written with inside curly braces {TOKEN}.
  * Use # at the beginning of a line to leave a comment.
  */
-static int language_open_file(const char *filename, language_data *language)
+static int language_open_file(const utf8 *filename, language_data *language)
 {
 	assert(filename != NULL);
 	assert(language != NULL);
 
-	FILE *f = fopen(filename, "rb");
+	SDL_RWops *f = SDL_RWFromFile(filename, "rb");
 	if (f == NULL)
 		return 0;
 
-	fseek(f, 0, SEEK_END);
-	language->string_data_size = ftell(f) + 1;
+	SDL_RWseek(f, 0, RW_SEEK_END);
+	language->string_data_size = (size_t)(SDL_RWtell(f) + 1);
 	language->string_data = calloc(1, language->string_data_size);
-	fseek(f, 0, SEEK_SET);
-	fread(language->string_data, language->string_data_size, 1, f);
-	fclose(f);
+	SDL_RWseek(f, 0, RW_SEEK_SET);
+	SDL_RWread(f, language->string_data, language->string_data_size, 1);
+	SDL_RWclose(f);
 
 	language->strings = calloc(STR_COUNT, sizeof(char*));
 

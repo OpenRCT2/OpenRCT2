@@ -382,7 +382,7 @@ static void server_list_update_player_name()
 	}
 }
 
-static char *freadstralloc(FILE *file)
+static char *freadstralloc(SDL_RWops *file)
 {
 	int capacity = 64;
 	char *buffer = malloc(capacity);
@@ -390,8 +390,8 @@ static char *freadstralloc(FILE *file)
 	int length = 0;
 	int c;
 	for (;;) {
-		c = fgetc(file);
-		if (c == EOF) break;
+		c = 0;
+		if (SDL_RWread(file, &c, 1, 1) != 1) break;
 		if (c == 0) break;
 
 		if (length > capacity) {
@@ -410,12 +410,12 @@ static char *freadstralloc(FILE *file)
 static void server_list_load_saved_servers()
 {
 	utf8 path[MAX_PATH];
-	FILE *file;
+	SDL_RWops *file;
 
 	platform_get_user_directory(path, NULL);
 	strcat(path, "servers.cfg");
 
-	file = fopen(path, "rb");
+	file = SDL_RWFromFile(path, "rb");
 	if (file == NULL) {
 		return;
 	}
@@ -423,7 +423,7 @@ static void server_list_load_saved_servers()
 	dispose_saved_server_list();
 
 	// Read number of saved servers
-	fread(&_numSavedServers, sizeof(uint32), 1, file);
+	SDL_RWread(file, &_numSavedServers, sizeof(uint32), 1);
 	_savedServers = malloc(_numSavedServers * sizeof(saved_server));
 	
 	// Load each saved server
@@ -435,36 +435,36 @@ static void server_list_load_saved_servers()
 		serverInfo->description = freadstralloc(file);
 	}
 
-	fclose(file);
+	SDL_RWclose(file);
 }
 
 static void server_list_save_saved_servers()
 {
 	utf8 path[MAX_PATH];
-	FILE *file;
+	SDL_RWops *file;
 
 	platform_get_user_directory(path, NULL);
 	strcat(path, "servers.cfg");
 
-	file = fopen(path, "wb");
+	file = SDL_RWFromFile(path, "wb");
 	if (file == NULL) {
 		log_error("Unable to save servers.");
 		return;
 	}
 
 	// Write number of saved servers
-	fwrite(&_numSavedServers, sizeof(uint32), 1, file);
+	SDL_RWwrite(file, &_numSavedServers, sizeof(uint32), 1);
 
 	// Write each saved server
 	for (int i = 0; i < _numSavedServers; i++) {
 		saved_server *serverInfo = &_savedServers[i];
 
-		fwrite(serverInfo->address, strlen(serverInfo->address) + 1, 1, file);
-		fwrite(serverInfo->name, strlen(serverInfo->name) + 1, 1, file);
-		fwrite(serverInfo->description, strlen(serverInfo->description) + 1, 1, file);
+		SDL_RWwrite(file, serverInfo->address, strlen(serverInfo->address) + 1, 1);
+		SDL_RWwrite(file, serverInfo->name, strlen(serverInfo->name) + 1, 1);
+		SDL_RWwrite(file, serverInfo->description, strlen(serverInfo->description) + 1, 1);
 	}
 
-	fclose(file);
+	SDL_RWclose(file);
 }
 
 static void dispose_saved_server_list()

@@ -853,7 +853,7 @@ int game_load_save(const char *path)
 	strcpy(gScenarioSaveName, path_get_filename(path));
 	path_remove_extension(gScenarioSaveName);
 
-	SDL_RWops* rw = platform_sdl_rwfromfile(path, "rb");
+	SDL_RWops* rw = SDL_RWFromFile(path, "rb");
 	if (rw == NULL) {
 		log_error("unable to open %s", path);
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
@@ -1006,7 +1006,7 @@ void save_game()
 		strcat(path, gScenarioSaveName);
 		strcat(path, ".sv6");
 
-		SDL_RWops* rw = platform_sdl_rwfromfile(path, "wb+");
+		SDL_RWops* rw = SDL_RWFromFile(path, "wb+");
 		if (rw != NULL) {
 			scenario_save(rw, 0x80000000);
 			log_verbose("Saved to %s", gScenarioSaveName);
@@ -1038,7 +1038,7 @@ void game_autosave()
 		platform_file_copy(path, backupPath, true);
 	}
 
-	SDL_RWops* rw = platform_sdl_rwfromfile(path, "wb+");
+	SDL_RWops* rw = SDL_RWFromFile(path, "wb+");
 	if (rw != NULL) {
 		scenario_save(rw, 0x80000000);
 		SDL_RWclose(rw);

@@ -94,7 +94,7 @@ static void load_object_filter(rct_object_entry* entry, uint8* chunk, rct_object
 
 static rct_object_filters *_installedObjectFilters = NULL;
 
-static void get_plugin_path(char *outPath)
+static void get_plugin_path(utf8 *outPath)
 {
 	platform_get_user_directory(outPath, NULL);
 	strcat(outPath, "plugin.dat");
@@ -347,20 +347,20 @@ void object_list_load()
 static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int fileDateModifiedChecksum)
 {
 	char path[MAX_PATH];
-	FILE *file;
+	SDL_RWops *file;
 	rct_plugin_header pluginHeader;
 	uint32 filterVersion = 0;
 
 	log_verbose("loading object list cache (plugin.dat)");
 
 	get_plugin_path(path);
-	file = fopen(path, "rb");
+	file = SDL_RWFromFile(path, "rb");
 	if (file == NULL) {
 		log_verbose("Unable to load %s", path);
 		return 0;
 	}
 
-	if (fread(&pluginHeader, sizeof(rct_plugin_header), 1, file) == 1) {
+	if (SDL_RWread(file, &pluginHeader, sizeof(rct_plugin_header), 1) == 1) {
 		// Check if object repository has changed in anyway
 		if (
 			pluginHeader.total_files == totalFiles &&
@@ -375,20 +375,20 @@ static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int file
 
 			// Read installed object list
 			RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*) = rct2_malloc(pluginHeader.object_list_size);
-			if (fread(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*), pluginHeader.object_list_size, 1, file) == 1) {
+			if (SDL_RWread(file, RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*), pluginHeader.object_list_size, 1) == 1) {
 				RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) = pluginHeader.object_list_no_items;
 
 				if (pluginHeader.object_list_no_items != (pluginHeader.total_files & 0xFFFFFF))
 					log_error("Potential mismatch in file numbers. Possible corrupt file. Consider deleting plugin.dat.");
 
-				if (fread(&filterVersion, sizeof(filterVersion), 1, file) == 1) {
+				if (SDL_RWread(file, &filterVersion, sizeof(filterVersion), 1) == 1) {
 					if (filterVersion == FILTER_VERSION) {
 						if (_installedObjectFilters)
 							free(_installedObjectFilters);
 						_installedObjectFilters = malloc(sizeof(rct_object_filters) * pluginHeader.object_list_no_items);
-						if (fread(_installedObjectFilters, sizeof(rct_object_filters) * pluginHeader.object_list_no_items, 1, file) == 1) {
+						if (SDL_RWread(file, _installedObjectFilters, sizeof(rct_object_filters) * pluginHeader.object_list_no_items, 1) == 1) {
 							
-							fclose(file);
+							SDL_RWclose(file);
 							reset_loaded_objects();
 							object_list_examine();
 							return 1;
@@ -411,11 +411,11 @@ static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int file
 			log_info("Objects files have been updated... updating object list cache");
 		}
 
-		fclose(file);
+		SDL_RWclose(file);
 		return 0;
 	}
 
-	fclose(file);
+	SDL_RWclose(file);
 
 	log_error("loading object list cache failed");
 	return 0;
@@ -423,8 +423,8 @@ static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int file
 
 static int object_list_cache_save(int fileCount, uint64 totalFileSize, int fileDateModifiedChecksum, int currentItemOffset)
 {
-	char path[MAX_PATH];
-	FILE *file;
+	utf8 path[MAX_PATH];
+	SDL_RWops *file;
 	rct_plugin_header pluginHeader;
 	uint32 filterVersion = FILTER_VERSION;
 	
@@ -437,17 +437,17 @@ static int object_list_cache_save(int fileCount, uint64 totalFileSize, int fileD
 	pluginHeader.object_list_no_items = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32);
 
 	get_plugin_path(path);
-	file = fopen(path,"wb");
+	file = SDL_RWFromFile(path,"wb");
 	if (file == NULL) {
 		log_error("Failed to save %s", path);
 		return 0;
 	}
 
-	fwrite(&pluginHeader, sizeof(rct_plugin_header), 1, file);
-	fwrite(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, uint8*), pluginHeader.object_list_size, 1, file);
-	fwrite(&filterVersion, sizeof(filterVersion), 1, file);
-	fwrite(_installedObjectFilters, sizeof(rct_object_filters) * RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32), 1, file);
-	fclose(file);
+	SDL_RWwrite(file, &pluginHeader, sizeof(rct_plugin_header), 1);
+	SDL_RWwrite(file, RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, uint8*), pluginHeader.object_list_size, 1);
+	SDL_RWwrite(file, &filterVersion, sizeof(filterVersion), 1);
+	SDL_RWwrite(file, _installedObjectFilters, sizeof(rct_object_filters) * RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32), 1);
+	SDL_RWclose(file);
 	return 1;
 }
 

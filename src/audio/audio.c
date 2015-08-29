@@ -84,7 +84,7 @@ BOOL CALLBACK dsound_enum_callback(LPGUID lpGuid, LPCSTR lpcstrDescription, LPCS
 int CALLBACK audio_timer_callback(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2);
 int sound_fill_buffer(LPDIRECTSOUNDBUFFER dsbuffer, char* src, DWORD size);
 void sound_channel_free(HMMIO* hmmio, HGLOBAL* hmem);
-LPVOID map_file(LPCSTR lpFileName, DWORD dwCreationDisposition, DWORD dwNumberOfBytesToMap);
+LPVOID map_file(LPCWSTR lpFileName, DWORD dwCreationDisposition, DWORD dwNumberOfBytesToMap);
 int unmap_file(LPCVOID base);
 
 void audio_init(int i)
@@ -693,7 +693,9 @@ int map_sound_effects(const char* filename)
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SOUND_EFFECTS_MAPPING, LPVOID)) {
 		return 0;
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_SOUND_EFFECTS_MAPPING, LPVOID) = map_file(filename, 0, 0);
+		wchar_t *wcFilename = utf8_to_widechar(filename);
+		RCT2_GLOBAL(RCT2_ADDRESS_SOUND_EFFECTS_MAPPING, LPVOID) = map_file(wcFilename, 0, 0);
+		free(wcFilename);
 		return RCT2_GLOBAL(RCT2_ADDRESS_SOUND_EFFECTS_MAPPING, LPVOID) != 0;
 	}
 }
@@ -1296,7 +1298,7 @@ MMRESULT mmio_seek(HMMIO* hmmio, LPMMCKINFO mmckinfo1, LPMMCKINFO mmckinfo2, int
 *
 *  rct2: 0x004067F9
 */
-LPVOID map_file(LPCSTR lpFileName, DWORD dwCreationDisposition, DWORD dwNumberOfBytesToMap)
+LPVOID map_file(LPCWSTR lpFileName, DWORD dwCreationDisposition, DWORD dwNumberOfBytesToMap)
 {
 	DWORD dwDesiredAccess;
 	DWORD dwDesiredAccessmap;
@@ -1317,9 +1319,9 @@ LPVOID map_file(LPCSTR lpFileName, DWORD dwCreationDisposition, DWORD dwNumberOf
 		dwDesiredAccessmap = FILE_MAP_READ;
 		dwCreationDisposition = OPEN_EXISTING;
 	}
-	filehandle = CreateFileA(lpFileName, dwDesiredAccess, 0, 0, dwCreationDisposition, FILE_ATTRIBUTE_NORMAL, 0);
+	filehandle = CreateFileW(lpFileName, dwDesiredAccess, 0, 0, dwCreationDisposition, FILE_ATTRIBUTE_NORMAL, 0);
 	if (filehandle != INVALID_HANDLE_VALUE) {
-		filemaphandle = CreateFileMappingA(filehandle, 0, flProtect, 0, dwNumberOfBytesToMap, 0);
+		filemaphandle = CreateFileMappingW(filehandle, 0, flProtect, 0, dwNumberOfBytesToMap, 0);
 		CloseHandle(filehandle);
 		if (filemaphandle) {
 			address = MapViewOfFile(filemaphandle, dwDesiredAccessmap, 0, 0, dwNumberOfBytesToMap);
@@ -1750,11 +1752,11 @@ void audio_init1()
 
 	for(int m = 0; m < countof(ride_music_info_list); m++) {
 		rct_ride_music_info* ride_music_info = ride_music_info_list[m];
-		const char* path = get_file_path(ride_music_info->pathid);
-		FILE *file = fopen(path, "rb");
+		const utf8* path = get_file_path(ride_music_info->pathid);
+		SDL_RWops *file = SDL_RWFromFile(path, "rb");
 		if (file != NULL) {
-			fread(&RCT2_GLOBAL(0x009AF47E, uint32), 4, 1, file);
-			fclose(file);
+			SDL_RWread(file, &RCT2_GLOBAL(0x009AF47E, uint32), 4, 1);
+			SDL_RWclose(file);
 			RCT2_GLOBAL(0x014241BC, uint32) = 0;
 			if (RCT2_GLOBAL(0x009AF47E, uint32) == 0x78787878) {
 				ride_music_info->length = 0;

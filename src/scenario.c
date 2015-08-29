@@ -63,7 +63,7 @@ int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *in
 
 	log_verbose("loading scenario details, %s", path);
 
-	rw = platform_sdl_rwfromfile(path, "rb");
+	rw = SDL_RWFromFile(path, "rb");
 	if (rw != NULL) {
 		// Read first chunk
 		sawyercoding_read_chunk(rw, (uint8*)header);
@@ -108,7 +108,7 @@ int scenario_load(const char *path)
 	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
-	rw = platform_sdl_rwfromfile(path, "rb");
+	rw = SDL_RWFromFile(path, "rb");
 	if (rw != NULL) {
 		if (!sawyercoding_validate_checksum(rw) && !gConfigGeneral.allow_loading_with_incorrect_checksum) {
 			SDL_RWclose(rw);

@@ -27,14 +27,13 @@ int squaredmetres_to_squaredfeet(int squaredMetres);
 int metres_to_feet(int metres);
 int mph_to_kmph(int mph);
 
-bool filename_valid_characters(const char *filename);
+bool filename_valid_characters(const utf8 *filename);
 
-const char *path_get_filename(const char *path);
-const char *path_get_extension(const char *path);
-void path_set_extension(char *path, const char *newExtension);
-void path_remove_extension(char *path);
-long fsize(FILE *fp);
-bool readentirefile(const char *path, void **outBuffer, long *outLength);
+const char *path_get_filename(const utf8 *path);
+const char *path_get_extension(const utf8 *path);
+void path_set_extension(utf8 *path, const utf8 *newExtension);
+void path_remove_extension(utf8 *path);
+bool readentirefile(const utf8 *path, void **outBuffer, int *outLength);
 
 int bitscanforward(int source);
 int bitcount(int source);

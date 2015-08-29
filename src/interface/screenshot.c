@@ -143,7 +143,7 @@ int screenshot_dump_bmp()
 
 	int i, y, index, width, height, stride;
 	char *buffer, path[MAX_PATH], *row;
-	FILE *fp;
+	SDL_RWops *fp;
 	unsigned int bytesWritten;
 
 	// Get a free screenshot path
@@ -151,15 +151,14 @@ int screenshot_dump_bmp()
 		return -1;
 
 	// Open binary file for writing
-	if ((fp = fopen(path, "wb")) == NULL){
+	if ((fp = SDL_RWFromFile(path, "wb")) == NULL){
 		return -1;
 	}
 
 	// Allocate buffer
 	buffer = malloc(0xFFFF);
 	if (buffer == NULL) {
-		//CloseHandle(hFile);
-		fclose(fp);
+		SDL_RWclose(fp);
 		return -1;
 	}
 
@@ -174,9 +173,9 @@ int screenshot_dump_bmp()
 	header.bfSize = height * stride + 1038;
 	header.bfOffBits = 1038;
 
-	bytesWritten = fwrite(&header, sizeof(BitmapFileHeader), 1, fp);
+	bytesWritten = SDL_RWwrite(fp, &header, sizeof(BitmapFileHeader), 1);
 	if (bytesWritten != 1) {
-		fclose(fp);
+		SDL_RWclose(fp);
 		free(buffer);
 	}
 
@@ -191,9 +190,9 @@ int screenshot_dump_bmp()
 	info.biYPelsPerMeter = 2520;
 	info.biClrUsed = 246;
 
-	bytesWritten=fwrite(&info, sizeof(BitmapInfoHeader), 1, fp); 
+	bytesWritten = SDL_RWwrite(fp, &info, sizeof(BitmapInfoHeader), 1);
 	if (bytesWritten != 1) {
-		fclose(fp);
+		SDL_RWclose(fp);
 		free(buffer);
 	}
 
@@ -205,9 +204,9 @@ int screenshot_dump_bmp()
 		buffer[i * 4 + 2] = RCT2_ADDRESS(0x01424680, uint8)[i * 4 + 2];
 	}
 
-	bytesWritten = fwrite(buffer, sizeof(char), 246*4,  fp);
+	bytesWritten = SDL_RWwrite(fp, buffer, sizeof(char), 246 * 4);
 	if (bytesWritten != 246*4){
-		fclose(fp);
+		SDL_RWclose(fp);
 		free(buffer);
 	}
 
@@ -219,14 +218,14 @@ int screenshot_dump_bmp()
 		memset(buffer, 0, stride);
 		memcpy(buffer, row, dpi->width);
 
-		bytesWritten=fwrite(buffer, sizeof(char), stride, fp);
+		bytesWritten = SDL_RWwrite(fp, buffer, sizeof(char), stride);
 		if (bytesWritten != stride){
-			fclose(fp);
+			SDL_RWclose(fp);
 			free(buffer);
 		}
 	}
 
-	fclose(fp);
+	SDL_RWclose(fp);
 	free(buffer);
 
 	return index;
@@ -289,7 +288,14 @@ int screenshot_dump_png()
 		log_error("Unable to save screenshot, %u: %s", lodepng_error_text(error));
 		index = -1;
 	} else {
-		lodepng_save_file(png, pngSize, path);
+		SDL_RWops *file = SDL_RWFromFile(path, "wb");
+		if (file == NULL) {
+			log_error("Unable to save screenshot, %s", SDL_GetError());
+			index = -1;
+		} else {
+			SDL_RWwrite(file, png, pngSize, 1);
+			SDL_RWclose(file);
+		}
 	}
 
 	free(png);
@@ -327,11 +333,13 @@ bool screenshot_write_png(rct_drawpixelinfo *dpi, const char *path)
 		free(png);
 		return false;
 	} else {
-		error = lodepng_save_file(png, pngSize, path);
-		if (error != 0) {
+		SDL_RWops *file = SDL_RWFromFile(path, "wb");
+		if (file == NULL) {
 			free(png);
 			return false;
 		}
+		SDL_RWwrite(file, png, pngSize, 1);
+		SDL_RWclose(file);
 	}
 
 	free(png);

@@ -290,12 +290,12 @@ int check_file_paths()
  */
 int check_file_path(int pathId)
 {
-	const char * path = get_file_path(pathId);
-	HANDLE file = CreateFile(path, FILE_GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS, NULL);
+	const utf8* path = get_file_path(pathId);
+	SDL_RWops *file = SDL_RWFromFile(path, "rb");
 
 	switch (pathId) {
 	case PATH_ID_G1:
-		if (file == INVALID_HANDLE_VALUE) {
+		if (file == NULL) {
 			// A data file is missing from the installation directory. The original implementation
 			// asks for a CD-ROM path at this point and stores it in cdrom_path @ 0x9AA318.
 			// The file_on_cdrom[pathId] @ 0x009AA0B flag is set to 1 as well.
@@ -309,18 +309,18 @@ int check_file_path(int pathId)
 		break;
 
 	case PATH_ID_CUSTOM1:
-		if (file != INVALID_HANDLE_VALUE)
-			ride_music_info_list[36]->length = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom1_size @ 0x009AF164
+		if (file != NULL)
+			ride_music_info_list[36]->length = (uint32)SDL_RWsize(file); // Store file size in music_custom1_size @ 0x009AF164
 		break;
 
 	case PATH_ID_CUSTOM2:
-		if (file != INVALID_HANDLE_VALUE)
-			ride_music_info_list[37]->length = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom2_size @ 0x009AF16E
+		if (file != NULL)
+			ride_music_info_list[37]->length = (uint32)SDL_RWsize(file); // Store file size in music_custom2_size @ 0x009AF16E
 		break;
 	}
 
-	if (file != INVALID_HANDLE_VALUE)
-		CloseHandle(file);
+	if (file != NULL)
+		SDL_RWclose(file);
 
 	return 1;
 }
@@ -399,9 +399,9 @@ void rct2_endupdate()
  * 
  *  rct2: 0x00674E6C
  */
-const char *get_file_path(int pathId)
+const utf8 *get_file_path(int pathId)
 {
-	static char path[MAX_PATH]; // get_file_path_buffer @ 0x009E3605
+	static utf8 path[MAX_PATH]; // get_file_path_buffer @ 0x009E3605
 
 	// The original implementation checks if the file is on CD-ROM here (file_on_cdrom[pathId] @ 0x009AA0B1).
 	// If so, the CD-ROM path (cdrom_path @ 0x9AA318) is used instead. This has been removed for now for

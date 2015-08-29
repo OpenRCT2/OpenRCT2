@@ -154,7 +154,7 @@ static int scenario_list_sort_compare(const void *a, const void *b)
 /**
  * Gets the path for the scenario scores path.
  */
-static void scenario_scores_get_path(char *outPath)
+static void scenario_scores_get_path(utf8 *outPath)
 {
 	platform_get_user_directory(outPath, NULL);
 	strcat(outPath, "scores.dat");
@@ -166,7 +166,7 @@ static void scenario_scores_get_path(char *outPath)
  */
 static int scenario_scores_load()
 {
-	FILE *file;
+	SDL_RWops *file;
 	char scoresPath[MAX_PATH];
 
 	scenario_scores_get_path(scoresPath);
@@ -180,9 +180,9 @@ static int scenario_scores_load()
 	// Try and load the scores file
 
 	// First check user folder and then fallback to install directory
-	file = fopen(scoresPath, "rb");
+	file = SDL_RWFromFile(scoresPath, "rb");
 	if (file == NULL) {
-		file = fopen(get_file_path(PATH_ID_SCORES), "rb");
+		file = SDL_RWFromFile(get_file_path(PATH_ID_SCORES), "rb");
 		if (file == NULL) {
 			log_error("Unable to load scenario scores.");
 			return 0;
@@ -191,8 +191,8 @@ static int scenario_scores_load()
 
 	// Load header
 	rct_scenario_scores_header header;
-	if (fread(&header, 16, 1, file) != 1) {
-		fclose(file);
+	if (SDL_RWread(file, &header, 16, 1) != 1) {
+		SDL_RWclose(file);
 		log_error("Invalid header in scenario scores file.");
 		return 0;
 	}
@@ -202,13 +202,13 @@ static int scenario_scores_load()
 	int scenarioListBufferSize = gScenarioListCount * sizeof(rct_scenario_basic);
 	gScenarioListCapacity = gScenarioListCount;
 	gScenarioList = malloc(scenarioListBufferSize);
-	if (fread(gScenarioList, scenarioListBufferSize, 1, file) == 1) {
-		fclose(file);
+	if (SDL_RWread(file, gScenarioList, scenarioListBufferSize, 1) == 1) {
+		SDL_RWclose(file);
 		return 1;
 	}
 
 	// Unable to load scores, free scenario list
-	fclose(file);
+	SDL_RWclose(file);
 	gScenarioListCount = 0;
 	gScenarioListCapacity = 0;
 	free(gScenarioList);
@@ -222,12 +222,12 @@ static int scenario_scores_load()
  */
 int scenario_scores_save()
 {
-	FILE *file;
-	char scoresPath[MAX_PATH];
+	SDL_RWops *file;
+	utf8 scoresPath[MAX_PATH];
 
 	scenario_scores_get_path(scoresPath);
 
-	file = fopen(scoresPath, "wb");
+	file = SDL_RWFromFile(scoresPath, "wb");
 	if (file == NULL) {
 		log_error("Unable to save scenario scores.");
 		return 0;
@@ -236,10 +236,10 @@ int scenario_scores_save()
 	rct_scenario_scores_header header;
 	header.scenario_count = gScenarioListCount;
 
-	fwrite(&header, sizeof(header), 1, file);
+	SDL_RWwrite(file, &header, sizeof(header), 1);
 	if (gScenarioListCount > 0)
-		fwrite(gScenarioList, gScenarioListCount * sizeof(rct_scenario_basic), 1, file);
+		SDL_RWwrite(file, gScenarioList, gScenarioListCount * sizeof(rct_scenario_basic), 1);
 
-	fclose(file);
+	SDL_RWclose(file);
 	return 1;
 }

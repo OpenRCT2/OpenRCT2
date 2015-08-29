@@ -277,33 +277,36 @@ static void track_list_query_directory(int *outTotalFiles){
 	platform_enumerate_files_end(enumFileHandle);
 }
 
-static int track_list_cache_save(int fileCount, uint8* track_list_cache, uint32 track_list_size){
+static int track_list_cache_save(int fileCount, uint8* track_list_cache, uint32 track_list_size)
+{
 	char path[MAX_PATH];
-	FILE *file;
+	SDL_RWops *file;
 
 	log_verbose("saving track list cache (tracks.idx)");
 	get_track_idx_path(path);
-	file = fopen(path, "wb");
+
+	file = SDL_RWFromFile(path, "wb");
 	if (file == NULL) {
 		log_error("Failed to save %s", path);
 		return 0;
 	}
 
-	fwrite(&fileCount, sizeof(int), 1, file);
-	fwrite(track_list_cache, track_list_size, 1, file);
+	SDL_RWwrite(file, &fileCount, sizeof(int), 1);
+	SDL_RWwrite(file, track_list_cache, track_list_size, 1);
 	uint8 last_entry = 0xFE;
-	fwrite(&last_entry, 1, 1, file);
-	fclose(file);
+	SDL_RWwrite(file, &last_entry, 1, 1);
+	SDL_RWclose(file);
 	return 1;
 }
 
-static uint8* track_list_cache_load(int totalFiles){
+static uint8* track_list_cache_load(int totalFiles)
+{
 	char path[MAX_PATH];
-	FILE *file;
+	SDL_RWops *file;
 
 	log_verbose("loading track list cache (tracks.idx)");
 	get_track_idx_path(path);
-	file = fopen(path, "rb");
+	file = SDL_RWFromFile(path, "rb");
 	if (file == NULL) {
 		log_error("Failed to load %s", path);
 		return 0;
@@ -312,11 +315,11 @@ static uint8* track_list_cache_load(int totalFiles){
 	uint8* track_list_cache;
 	uint32 fileCount;
 	// Remove 4 for the file count variable
-	long track_list_size = fsize(file) - 4;
+	long track_list_size = (long)SDL_RWsize(file) - 4;
 
 	if (track_list_size < 0) return 0;
 
-	fread(&fileCount, 4, 1, file);
+	SDL_RWread(file, &fileCount, 4, 1);
 	
 	if (fileCount != totalFiles){
 		log_verbose("Track file count is different.");
@@ -324,7 +327,7 @@ static uint8* track_list_cache_load(int totalFiles){
 	}
 
 	track_list_cache = malloc(track_list_size);
-	fread(track_list_cache, track_list_size, 1, file);
+	SDL_RWread(file, track_list_cache, track_list_size, 1);
 	return track_list_cache;
 }
 
@@ -500,15 +503,15 @@ uint8 td4_track_has_boosters(rct_track_td6* track_design, uint8* track_elements)
  */
 rct_track_td6* load_track_design(const char *path)
 {
-	FILE *fp;
-	long fpLength;
+	SDL_RWops *fp;
+	int fpLength;
 	char *fpBuffer, *decoded, *src;
 	int i, decodedLength;
 	uint8* edi;
 
 	RCT2_GLOBAL(0x009AAC54, uint8) = 1;
 	
-	fp = fopen(path, "rb");
+	fp = SDL_RWFromFile(path, "rb");
 	if (fp == NULL)
 		return 0;
 
@@ -521,10 +524,10 @@ rct_track_td6* load_track_design(const char *path)
 	*default_name++ = '\0';
 
 	// Read whole file into a buffer
-	fpLength = fsize(fp);
+	fpLength = (int)SDL_RWsize(fp);
 	fpBuffer = malloc(fpLength);
-	fread(fpBuffer, fpLength, 1, fp);
-	fclose(fp);
+	SDL_RWread(fp, fpBuffer, fpLength, 1);
+	SDL_RWclose(fp);
 
 	// Validate the checksum
 	// Not the same checksum algorithm as scenarios and saved games
@@ -2944,25 +2947,26 @@ int ride_to_td6(uint8 rideIndex){
 /* rct2: 0x006771DC but not really its branched from that
  * quite far.
  */
-int save_track_to_file(rct_track_td6* track_design, char* path){
+int save_track_to_file(rct_track_td6* track_design, char* path)
+{
 	window_close_construction_windows();
 
 	uint8* track_file = malloc(0x8000);
 
 	int length = sawyercoding_encode_td6((char*)track_design, track_file, 0x609F);
 
-	FILE *file;
+	SDL_RWops *file;
 
 	log_verbose("saving track %s", path);
-	file = fopen(path, "wb");
+	file = SDL_RWFromFile(path, "wb");
 	if (file == NULL) {
 		free(track_file);
 		log_error("Failed to save %s", path);
 		return 0;
 	}
 
-	fwrite(track_file, length, 1, file);
-	fclose(file);
+	SDL_RWwrite(file, track_file, length, 1);
+	SDL_RWclose(file);
 	free(track_file);
 
 	return 1;
