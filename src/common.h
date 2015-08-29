@@ -26,4 +26,6 @@
 
 #define SafeFree(x) if ((x) != NULL) { free(x); (x) = NULL; }
 
+#define interface struct
+
 #endif
