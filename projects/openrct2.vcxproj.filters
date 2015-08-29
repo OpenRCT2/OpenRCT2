@@ -53,6 +53,9 @@
     <Filter Include="Test\Ride">
       <UniqueIdentifier>{c6b9c169-ff2a-41df-9b1c-47d15763c3e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Core">
+      <UniqueIdentifier>{28a808eb-9017-44cc-939b-f828fd1e2e7d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">
@@ -772,6 +775,18 @@
     </ClInclude>
     <ClInclude Include="..\src\interface\chat.h">
       <Filter>Source\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\IStream.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\IDisposable.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\FileStream.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\Exception.hpp">
+      <Filter>Source\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
