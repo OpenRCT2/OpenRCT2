@@ -1516,7 +1516,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 	}
 	case SCENERY_TYPE_PATH_ITEM:
 	{
-		int flags = GAME_COMMAND_FLAG_APPLY | GAME_COOMAND_FLAG_7 | (parameter_1 & 0xFF00);
+		int flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_7 | (parameter_1 & 0xFF00);
 
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_POSITION_THIS_HERE;
 		int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_PATH, parameter_3, 0);
