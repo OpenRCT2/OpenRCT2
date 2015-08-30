@@ -322,12 +322,14 @@ static uint8* track_list_cache_load(int totalFiles)
 	SDL_RWread(file, &fileCount, 4, 1);
 	
 	if (fileCount != totalFiles){
+		SDL_RWclose(file);
 		log_verbose("Track file count is different.");
 		return 0;
 	}
 
 	track_list_cache = malloc(track_list_size);
 	SDL_RWread(file, track_list_cache, track_list_size, 1);
+	SDL_RWclose(file);
 	return track_list_cache;
 }
 
