@@ -93,6 +93,7 @@ enum {
 	GAME_COMMAND_FLAG_4 = (1 << 4),
 	GAME_COMMAND_FLAG_5 = (1 << 5),
 	GAME_COMMAND_FLAG_GHOST = (1 << 6),
+	GAME_COOMAND_FLAG_7,
 	GAME_COMMAND_FLAG_NETWORKED = (1 << 31) // Game command is coming from network
 };
 

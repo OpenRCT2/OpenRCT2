@@ -149,6 +149,14 @@ enum {
 	PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW = 1 << 5
 };
 
+enum {
+	SCENERY_TYPE_SMALL,
+	SCENERY_TYPE_PATH_ITEM,
+	SCENERY_TYPE_WALL,
+	SCENERY_TYPE_LARGE,
+	SCENERY_TYPE_BANNER
+};
+
 #define SCENERY_ENTRIES_BY_TAB 128
 
 #define g_smallSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].chunks)
