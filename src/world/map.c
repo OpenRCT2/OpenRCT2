@@ -3954,3 +3954,14 @@ bool map_surface_is_blocked(sint16 x, sint16 y){
 	return false;
 }
 
+/* Clears all map elements, to be used before generating a new map */
+void map_clear_all_elements()
+{
+	int mapMaxXY = RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16);
+
+	for (int y = 0; y < (256 * 32); y += 32) {
+		for (int x = 0; x < (256 * 32); x += 32) {
+			sub_68AE2A(x, y);
+		}
+	}
+}
