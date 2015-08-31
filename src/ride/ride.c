@@ -6385,6 +6385,35 @@ static void sub_666CBE(int x, int y, rct_map_element *mapElement)
 	} while (!map_element_is_last_for_tile(mapElement++));
 }
 
+/**
+ *
+ *  rct2: 0x00666D6F
+ */
+static void sub_666D6F(int x, int y, rct_map_element *mapElement)
+{
+	int direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+	x += TileDirectionDelta[direction].x;
+	y += TileDirectionDelta[direction].y;
+	int z = mapElement->base_height;
+	int rideIndex = mapElement->properties.track.ride_index;
+
+	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (mapElement->type != MAP_ELEMENT_TYPE_TRACK) continue;
+		if (mapElement->properties.track.ride_index != rideIndex) continue;
+		if (mapElement->base_height != z) continue;
+		if (mapElement->properties.track.type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) continue;
+
+		direction <<= 2;
+		direction = (direction + 9) & 0x0F;
+		mapElement->properties.track.sequence |= direction;
+		direction = (direction + 3) & 0x0F;
+		mapElement->properties.track.sequence |= direction;
+		map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+		return;
+	} while (!map_element_is_last_for_tile(mapElement++));
+}
+
 money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 direction, uint8 flags, uint8 rideIndex, uint8 station_num, uint8 is_exit)
 {
 	// Remember when in Unknown station num mode rideIndex is unknown and z is set
@@ -6618,7 +6647,7 @@ money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex, uint8 
 		}
 
 		sub_6A7594();
-		RCT2_CALLPROC_X(0x00666D6F, x, 0, y, 0, (int)mapElement, 0, 0);
+		sub_666D6F(x, y, mapElement);
 		footpath_remove_edges_at(x, y, mapElement);
 
 		uint8 is_exit = mapElement->properties.entrance.type;
