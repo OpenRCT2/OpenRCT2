@@ -444,8 +444,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 		}
 
 		object_get_localised_text(&chunk, ecx, ebx, 2);
-		// Offset to Unknown struct
-		ride_type->var_1AE = (uint32_t)chunk;
+		ride_type->vehicle_preset_list = (vehicle_colour_preset_list*)chunk;
 
 		// If Unknown struct size is 0xFF then there are 32 3 byte structures
 		uint8 unknown_size = *chunk++;
@@ -723,7 +722,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 			rideVehicleEntry->peep_loading_positions = 0;
 		}
 
-		ride_type->var_1AE = 0;
+		ride_type->vehicle_preset_list = NULL;
 		return flags;
 	}
 	else if ((flags & 0xFF) == 2){

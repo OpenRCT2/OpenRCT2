@@ -48,6 +48,28 @@ typedef struct {
 	uint8 entry_index;
 } ride_list_item;
 
+typedef struct {
+	uint8 main;
+	uint8 additional;
+	uint8 supports;
+} track_colour;
+
+typedef struct {
+	uint8 main;
+	uint8 additional_1;
+	uint8 additional_2;
+} vehicle_colour;
+
+typedef struct {
+	uint8 count;
+	track_colour list[256];
+} track_colour_preset_list;
+
+typedef struct {
+	uint8 count;
+	vehicle_colour list[256];
+} vehicle_colour_preset_list;
+
 /** 
  * Ride type vehicle structure.
  * size: 0x65
@@ -99,38 +121,38 @@ typedef struct{
  * size: unknown
  */
 typedef struct {
-	rct_string_id name;						// 0x000
-	rct_string_id description;				// 0x002
-	uint32 images_offset;					// 0x004
-	uint32 flags;							// 0x008
-	uint8 ride_type[3];						// 0x00C
-	uint8 min_cars_in_train;				// 0x00F
-	uint8 max_cars_in_train;				// 0x010
-	uint8 cars_per_flat_ride;				// 0x011
-	uint8 zero_cars;						// 0x012
-	uint8 tab_vehicle;						// 0x013
-	uint8 default_vehicle;					// 0x014
-	uint8 front_vehicle;					// 0x015
-	uint8 second_vehicle;					// 0x016
-	uint8 rear_vehicle;						// 0x017
-	uint8 third_vehicle;					// 0x018
+	rct_string_id name;									// 0x000
+	rct_string_id description;							// 0x002
+	uint32 images_offset;								// 0x004
+	uint32 flags;										// 0x008
+	uint8 ride_type[3];									// 0x00C
+	uint8 min_cars_in_train;							// 0x00F
+	uint8 max_cars_in_train;							// 0x010
+	uint8 cars_per_flat_ride;							// 0x011
+	uint8 zero_cars;									// 0x012
+	uint8 tab_vehicle;									// 0x013
+	uint8 default_vehicle;								// 0x014
+	uint8 front_vehicle;								// 0x015
+	uint8 second_vehicle;								// 0x016
+	uint8 rear_vehicle;									// 0x017
+	uint8 third_vehicle;								// 0x018
 	uint8 pad_019;
-	rct_ride_type_vehicle vehicles[4];		// 0x1A
-	uint32 var_1AE;
-	sint8 excitement_multipler;				// 0x1B2
-	sint8 intensity_multipler;				// 0x1B3
-	sint8 nausea_multipler;					// 0x1B4
-	uint8 max_height;						// 0x1B5
+	rct_ride_type_vehicle vehicles[4];					// 0x01A
+	vehicle_colour_preset_list *vehicle_preset_list;	// 0x1AE
+	sint8 excitement_multipler;							// 0x1B2
+	sint8 intensity_multipler;							// 0x1B3
+	sint8 nausea_multipler;								// 0x1B4
+	uint8 max_height;									// 0x1B5
 	union {
-		uint64 enabledTrackPieces;			// 0x1B6
+		uint64 enabledTrackPieces;						// 0x1B6
 		struct {
-			uint32 enabledTrackPiecesA;		// 0x1B6
-			uint32 enabledTrackPiecesB;		// 0x1BA
+			uint32 enabledTrackPiecesA;					// 0x1B6
+			uint32 enabledTrackPiecesB;					// 0x1BA
 		};
 	};
-	uint8 category[2];						// 0x1BE
-	uint8 shop_item;						// 0x1C0
-	uint8 shop_item_secondary;				// 0x1C1
+	uint8 category[2];									// 0x1BE
+	uint8 shop_item;									// 0x1C0
+	uint8 shop_item_secondary;							// 0x1C1
 } rct_ride_type;
 
 /**
@@ -704,23 +726,6 @@ enum {
 	RIDE_INVALIDATE_RIDE_OPERATING   = 1 << 4,
 	RIDE_INVALIDATE_RIDE_MAINTENANCE = 1 << 5,
 };
-
-typedef struct {
-	uint8 main;
-	uint8 additional;
-	uint8 supports;
-} track_colour;
-
-typedef struct {
-	uint8 main;
-	uint8 additional_1;
-	uint8 additional_2;
-} vehicle_colour;
-
-typedef struct {
-	uint8 count;
-	track_colour list[256];
-} track_colour_preset_list;
 
 enum {
 	RIDE_MEASUREMENT_FLAG_RUNNING = 1 << 0,

@@ -145,7 +145,7 @@ static void ride_shop_connected(rct_ride* ride, int ride_idx);
 static void ride_spiral_slide_update(rct_ride *ride);
 static void ride_update(int rideIndex);
 static void ride_update_vehicle_colours(int rideIndex);
-static void sub_6DE52C(rct_ride *ride);
+static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride);
 
 rct_ride_type *ride_get_entry(rct_ride *ride)
 {
@@ -2864,6 +2864,59 @@ vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex)
 	return result;
 }
 
+static bool ride_does_vehicle_colour_exist(rct_ride *ride, vehicle_colour *vehicleColour)
+{
+	int i;
+	rct_ride *ride2;
+	FOR_ALL_RIDES(i, ride2) {
+		if (ride2 == ride) continue;
+		if (ride2->subtype != ride->subtype) continue;
+		if (ride2->vehicle_colours[0].body_colour != vehicleColour->main) continue;
+		return false;
+	}
+	return true;
+}
+
+static int ride_get_unused_preset_vehicle_colour(rct_ride *ride, vehicle_colour_preset_list *presetList)
+{
+	for (int attempt = 0; attempt < 200; attempt++) {
+		uint8 numColourConfigurations = presetList->count;
+		int randomConfigIndex = scenario_rand() % numColourConfigurations;
+		vehicle_colour *preset = &presetList->list[randomConfigIndex];
+
+		if (ride_does_vehicle_colour_exist(ride, preset)) {
+			return randomConfigIndex;
+		}
+	}
+	return 0;
+}
+
+/**
+ *
+ *  rct2: 0x006DE52C
+ */
+static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride)
+{
+	rct_ride_type *rideEntry = GET_RIDE_ENTRY(ride->subtype);
+	vehicle_colour_preset_list *presetList = rideEntry->vehicle_preset_list;
+	if (presetList->count != 255) {
+		ride->colour_scheme_type = RIDE_COLOUR_SCHEME_ALL_SAME;
+		int presetIndex = ride_get_unused_preset_vehicle_colour(ride, presetList);
+		vehicle_colour *preset = &presetList->list[presetIndex];
+		ride->vehicle_colours[0].body_colour = preset->main;
+		ride->vehicle_colours[0].trim_colour = preset->additional_1;
+		ride->vehicle_colours_extended[0] = preset->additional_2;
+	} else {
+		ride->colour_scheme_type = RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN;
+		for (int i = 0; i < 32; i++) {
+			vehicle_colour *preset = &presetList->list[i];
+			ride->vehicle_colours[i].body_colour = preset->main;
+			ride->vehicle_colours[i].trim_colour = preset->additional_1;
+			ride->vehicle_colours_extended[i] = preset->additional_2;
+		}
+	}
+}
+
 #pragma endregion
 
 #pragma region Reachability
@@ -5059,7 +5112,7 @@ foundRideEntry:
 	ride->num_circuits = 1;
 	ride->mode = ride_get_default_mode(ride);
 	ride->min_max_cars_per_train = (rideEntry->min_cars_in_train << 4) | rideEntry->max_cars_in_train;
-	sub_6DE52C(ride);
+	ride_set_vehicle_colours_to_random_preset(ride);
 	window_invalidate_by_class(WC_RIDE_LIST);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
@@ -6171,11 +6224,6 @@ void ride_update_max_vehicles(int rideIndex)
 	}
 }
 
-static void sub_6DE52C(rct_ride *ride)
-{
-	RCT2_CALLPROC_X(0x006DE52C, 0, 0, 0, 0, (int)ride, 0, 0);
-}
-
 void ride_set_ride_entry(int rideIndex, int rideEntry)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_SET_VEHICLE_TYPE_FAIL;
@@ -6276,7 +6324,7 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 		break;
 	case RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY:
 		ride->subtype = value;
-		sub_6DE52C(ride);
+		ride_set_vehicle_colours_to_random_preset(ride);
 		break;
 	}
 
