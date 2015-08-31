@@ -65,6 +65,7 @@
     <ClCompile Include="..\src\localisation\currency.c" />
     <ClCompile Include="..\src\localisation\date.c" />
     <ClCompile Include="..\src\localisation\language.c" />
+    <ClCompile Include="..\src\localisation\LanguagePack.cpp" />
     <ClCompile Include="..\src\localisation\localisation.c" />
     <ClCompile Include="..\src\localisation\real_names.c" />
     <ClCompile Include="..\src\localisation\user.c" />
@@ -235,6 +236,7 @@
     <ClInclude Include="..\src\localisation\date.h" />
     <ClInclude Include="..\src\localisation\format_codes.h" />
     <ClInclude Include="..\src\localisation\language.h" />
+    <ClInclude Include="..\src\localisation\LanguagePack.h" />
     <ClInclude Include="..\src\localisation\localisation.h" />
     <ClInclude Include="..\src\localisation\string_ids.h" />
     <ClInclude Include="..\src\management\award.h" />

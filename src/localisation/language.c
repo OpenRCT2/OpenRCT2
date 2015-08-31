@@ -228,6 +228,8 @@ static int language_open_file(const utf8 *filename, language_data *language)
 	char *dst = NULL;
 	char *token = NULL;
 	char tokenBuffer[64];
+	char groupBuffer[64];
+	int groupLength = 0;
 	int stringIndex = 0, mode = 0, stringId, maxStringId = 0;
 	size_t i = 0;
 
@@ -248,18 +250,39 @@ static int language_open_file(const utf8 *filename, language_data *language)
 			// Search for a comment
 			if (utf8Char == '#') {
 				mode = 3;
-			} else if (utf8Char == ':' && stringId != -1) {
-				// Search for colon
-				dst = src + 1;
-				language->strings[stringId] = dst;
-				stringIndex++;
-				mode = 1;
-			} else if (!strncmp(src, "STR_", 4)){
-				// Copy in the string number, 4 characters only
-				if (sscanf(src, "STR_%4d", &stringId) != 1) {
-					stringId = -1;
-				} else {
-					maxStringId = max(maxStringId, stringId);
+			} else if (utf8Char == '[') {
+				mode = 4;
+			}
+			
+			if (groupLength == 0) {
+				if (utf8Char == ':' && stringId != -1) {
+					// Search for colon
+					dst = src + 1;
+					language->strings[stringId] = dst;
+					stringIndex++;
+					mode = 1;
+				} else if (!strncmp(src, "STR_", 4)) {
+					// Copy in the string number, 4 characters only
+					if (sscanf(src, "STR_%4d", &stringId) != 1) {
+						stringId = -1;
+					} else {
+						maxStringId = max(maxStringId, stringId);
+					}
+				}
+			} else {
+				if (utf8Char == ':' && stringId != -1) {
+					// Search for colon
+					dst = src + 1;
+					language->strings[stringId] = dst;
+					stringIndex++;
+					mode = 1;
+				} else if (!strncmp(src, "STR_", 4)) {
+					// Copy in the string number, 4 characters only
+					if (sscanf(src, "STR_%4d", &stringId) != 1) {
+						stringId = -1;
+					} else {
+						maxStringId = max(maxStringId, stringId);
+					}
 				}
 			}
 			break;
@@ -295,6 +318,21 @@ static int language_open_file(const utf8 *filename, language_data *language)
 			if (utf8Char == '\n' || utf8Char == '\r') {
 				mode = 0;
 			}
+			break;
+		case 4:
+			if (utf8Char == '\n' || utf8Char == '\r') {
+				groupLength = 0;
+				mode = 0;
+			} else if (utf8Char == ']') {
+				mode = 3;
+			} else {
+				if (groupLength < sizeof(groupBuffer) - 1) {
+					groupBuffer[groupLength + 0] = utf8Char;
+					groupBuffer[groupLength + 1] = 0;
+					groupLength++;
+				}
+			}
+			break;
 		}
 	}
 	language->num_strings = maxStringId + 1;
@@ -310,21 +348,6 @@ static void language_close(language_data *language)
 	language->num_strings = 0;
 	language->string_data_size = 0;
 }
-
-const int OpenRCT2LangIdToObjectLangId[] = {
-	0,
-	0,
-	1,
-	3,
-	6,
-	2,
-	0,
-	0,
-	4,
-	7,
-	5,
-	13
-};
 
 #define STEX_BASE_STRING_ID			3447
 #define NONSTEX_BASE_STRING_ID		3463
@@ -420,7 +443,7 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 	char *pString = NULL;
 	int result = 0;
 	bool isBlank;
-	
+
 	while ((languageId = *(*pStringTable)++) != RCT2_LANGUAGE_ID_END) {
 		isBlank = true;
 
@@ -459,6 +482,23 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 
 		// Skip over the actual string entry to get to the next entry
 		while (*(*pStringTable)++ != 0);
+	}
+
+	if (RCT2_GLOBAL(0x009ADAFC, uint8) == 0) {
+		if (type == OBJECT_TYPE_RIDE) {
+			char name[9];
+			memcpy(name, object_entry_groups[type].entries[index].name, 8);
+			name[8] = 0;
+
+			if (strcmp(name, "MGR1    ") == 0) {
+				switch (tableindex) {
+				case 0: return 824;
+				case 1: return 2142;
+				}
+			}
+		}
+	} else {
+
 	}
 
 	// If not scenario text
