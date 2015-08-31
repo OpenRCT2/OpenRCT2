@@ -479,7 +479,23 @@ void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite* sprite){
  */
 void sprite_remove(rct_sprite *sprite)
 {
-	RCT2_CALLPROC_X(0x0069EDB6, 0, 0, 0, 0, (int)sprite, 0, 0);
+	move_sprite_to_list(sprite, SPRITE_LINKEDLIST_OFFSET_NULL);
+	user_string_free(sprite->unknown.name_string_idx);
+	sprite->unknown.sprite_identifier = SPRITE_IDENTIFIER_NULL;
+
+	uint32 quadrantIndex = sprite->unknown.x;
+	if (sprite->unknown.x == SPRITE_LOCATION_NULL) {
+		quadrantIndex = 0x10000;
+	} else {
+		quadrantIndex = (floor2(sprite->unknown.x, 32) << 3) | (sprite->unknown.y >> 5);
+	}
+
+	uint16 *spriteIndex = &RCT2_ADDRESS(0x00F1EF60, uint16)[quadrantIndex];
+	rct_sprite *quadrantSprite;
+	while ((quadrantSprite = &g_sprite_list[*spriteIndex]) != sprite) {
+		spriteIndex = &quadrantSprite->unknown.next_in_quadrant;
+	}
+	*spriteIndex = sprite->unknown.next_in_quadrant;
 }
 
 static bool litter_can_be_at(int x, int y, int z)
