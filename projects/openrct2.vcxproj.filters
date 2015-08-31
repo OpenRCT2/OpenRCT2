@@ -537,6 +537,9 @@
     <ClCompile Include="..\src\world\particle.c">
       <Filter>Source\World</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\localisation\LanguagePack.cpp">
+      <Filter>Source\Localisation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">
@@ -787,6 +790,9 @@
     </ClInclude>
     <ClInclude Include="..\src\core\Exception.hpp">
       <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\localisation\LanguagePack.h">
+      <Filter>Source\Localisation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
