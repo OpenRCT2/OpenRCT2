@@ -370,4 +370,6 @@ void map_invalidate_element(int x, int y, rct_map_element *mapElement);
 int map_get_tile_side(int mapX, int mapY);
 int map_get_tile_quadrant(int mapX, int mapY);
 
+void map_clear_all_elements();
+
 #endif

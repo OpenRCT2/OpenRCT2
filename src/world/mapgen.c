@@ -105,6 +105,8 @@ void mapgen_generate_blank(mapgen_settings *settings)
 	int x, y;
 	rct_map_element *mapElement;
 
+	map_clear_all_elements();
+
 	map_init(settings->mapSize);
 	for (y = 1; y < settings->mapSize - 1; y++) {
 		for (x = 1; x < settings->mapSize - 1; x++) {
@@ -148,6 +150,8 @@ void mapgen_generate(mapgen_settings *settings)
 			break;
 		}
 	}
+
+	map_clear_all_elements();
 
 	// Initialise the base map
 	map_init(mapSize);
