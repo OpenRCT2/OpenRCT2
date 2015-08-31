@@ -2073,6 +2073,9 @@ enum {
 	STR_SAVE_GAME_AS = 5512,
 	STR_SHORTCUT_QUICK_SAVE_GAME = 5513,
 
+	STR_CHEAT_DISABLE_VANDALISM = 5514,
+	STR_CHEAT_DISABLE_VANDALISM_TIP = 5515,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
