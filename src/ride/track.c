@@ -646,8 +646,13 @@ rct_track_td6* load_track_design(const char *path)
 		}
 
 		memcpy(&track_design->vehicle_object, vehicle_object, sizeof(rct_object_entry));
-		for (i = 0; i < 32; i++)
+		for (i = 0; i < 32; i++) {
 			track_design->vehicle_additional_colour[i] = track_design->vehicle_colours[i].trim_colour;
+
+			// RCT1 river rapids always had black seats.
+			if (track_design->type == RCT1_RIDE_TYPE_RIVER_RAPIDS)
+				track_design->vehicle_colours[i].trim_colour = 0;
+		}
 
 		track_design->space_required_x = 255;
 		track_design->space_required_y = 255;
