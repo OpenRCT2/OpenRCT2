@@ -290,40 +290,44 @@ static void peep_leave_park(rct_peep* peep){
 	window_invalidate_by_number(WC_PEEP, peep->sprite_index);
 }
 
-/* rct2: 0x0068f8CD*/
-static void sub_68F8CD(rct_peep *peep){
-	if (peep->energy_growth_rate >= 33)
+/**
+ *
+ *  rct2: 0x0068F8CD
+ */
+static void sub_68F8CD(rct_peep *peep)
+{
+	if (peep->energy_growth_rate >= 33) {
 		peep->energy_growth_rate -= 2;
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, uint8) >= 21){
-		if (peep->thirst >= 5)
-			peep->thirst--;
 	}
 
-	if (peep->var_2A != 0)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, uint8) >= 21 && peep->thirst >= 5) {
+		peep->thirst--;
+	}
+
+	if (peep->var_2A != 0) {
 		return;
+	}
 	
 	if (!(peep->flags & PEEP_FLAGS_LEAVING_PARK)){
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)){
-			if (peep->energy >= 55)
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
+			if (peep->energy >= 70 && peep->happiness >= 60) {
 				return;
-			
-			if (peep->happiness >= 45)
+			}
+		} else {
+			if (
+				peep->energy >= 55 &&
+				peep->happiness >= 45 &&
+				peep->cash_in_pocket >= MONEY(5, 00)
+			) {
 				return;
-			
-			if (peep->cash_in_pocket >= MONEY(5, 00))
-				return;
+			}
 		}
-		else{
-			if (peep->energy >= 70)
-				return;
-
-			if (peep->happiness >= 60)
-				return;
-		}			
-		if ((scenario_rand() & 0xFFFF) > 3276)
-			return;
 	}
+
+	if ((scenario_rand() & 0xFFFF) > 3276) {
+		return;
+	}
+
 	peep_leave_park(peep);
 }
 
