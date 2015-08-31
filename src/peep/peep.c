@@ -3891,6 +3891,9 @@ static int peep_update_walking_find_bin(rct_peep* peep){
 
 /* rct2: 0x00690848*/
 static void peep_update_walking_break_scenery(rct_peep* peep){
+	if(gConfigCheat.disable_vandalism)
+		return;
+
 	if (!(peep->flags & PEEP_FLAGS_ANGRY)){
 		if (peep->happiness >= 48) return;
 		if (peep->energy < 85) return;

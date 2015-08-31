@@ -197,6 +197,7 @@ typedef struct {
 	uint8 unlock_all_prices;
 	uint8 build_in_pause_mode;
 	uint8 ignore_ride_intensity;
+	uint8 disable_vandalism;
 } cheat_configuration;
 
 typedef struct {
