@@ -3846,3 +3846,6 @@ STR_5509    :{SMALLFONT}{BLACK}Erlaubt das Laden von Szenarios und gespeicherten
 STR_5510    :Standard Audiogerät
 STR_5511    :(UNBEKANNT)
 STR_5512    :Spiel speichern unter
+STR_5513    :Schnellspeichern
+STR_5514    :Vandalismus deaktivieren
+STR_5515    :{SMALLFONT}{BLACK}Verhindert Vandalismus durch{NEWLINE}verärgerte Besucher
