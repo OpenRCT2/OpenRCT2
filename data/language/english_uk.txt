@@ -3854,3 +3854,35 @@ STR_5512    :Save Game As
 STR_5513    :(Quick) save game
 STR_5514    :Disable vandalism
 STR_5515    :{SMALLFONT}{BLACK}Stops guests from vandalising your park when they're angry
+STR_5516    :Colour 00
+STR_5517    :Colour 01
+STR_5518    :Colour 02
+STR_5519    :Colour 03
+STR_5520    :Colour 04
+STR_5521    :Colour 05
+STR_5522    :Colour 06
+STR_5523    :Colour 07
+STR_5524    :Colour 08
+STR_5525    :Colour 09
+STR_5526    :Colour 0A
+STR_5527    :Colour 0B
+STR_5528    :Colour 0C
+STR_5529    :Colour 0D
+STR_5530    :Colour 0E
+STR_5531    :Colour 0F
+STR_5532    :Colour 10
+STR_5533    :Colour 11
+STR_5534    :Colour 12
+STR_5535    :Colour 13
+STR_5536    :Colour 14
+STR_5537    :Colour 15
+STR_5538    :Colour 16
+STR_5539    :Colour 17
+STR_5540    :Colour 18
+STR_5541    :Colour 19
+STR_5542    :Colour 1A
+STR_5543    :Colour 1B
+STR_5544    :Colour 1C
+STR_5545    :Colour 1D
+STR_5546    :Colour 1E
+STR_5547    :Colour 1F

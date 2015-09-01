@@ -1197,6 +1197,12 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 
 		if (dropdown_index == -1) return;
 
+		if (gDropdownIsColour && gDropdownLastColourHover != dropdown_index) {
+			gDropdownLastColourHover = dropdown_index;
+			window_tooltip_close();
+			window_tooltip_show(STR_COLOUR_NAMES_START + dropdown_index, x, y);
+		}
+
 		// _dropdown_unknown?? highlighted?
 		if (dropdown_index < 32 && RCT2_GLOBAL(0x009DED34, sint32) & (1 << dropdown_index))return;
 
@@ -1206,6 +1212,9 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 		// _dropdown_highlighted_index
 		RCT2_GLOBAL(0x009DEBA2, sint16) = dropdown_index;
 		window_invalidate_by_class(WC_DROPDOWN);
+	} else {
+		gDropdownLastColourHover = -1;
+		window_tooltip_close();
 	}
 }
 

@@ -55,6 +55,8 @@ sint64 gDropdownItemsArgs[64];
 // Replaces 0x009DED38
 uint32 gDropdownItemsChecked;
 uint32 *gDropdownItemsDisabled = RCT2_ADDRESS(0x009DED34, uint32);
+bool gDropdownIsColour;
+int gDropdownLastColourHover;
 
 static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -188,6 +190,7 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 	RCT2_GLOBAL(0x009DED40, sint32) = _dropdown_item_width;
 	RCT2_GLOBAL(0x009DED3C, sint32) = _dropdown_item_height;
 	RCT2_GLOBAL(0x009DEBA2, sint16) = _dropdown_highlighted_index;
+	gDropdownIsColour = false;
 }
 
 /**
@@ -266,6 +269,7 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 	RCT2_GLOBAL(0x009DED40, sint32) = _dropdown_item_width;
 	RCT2_GLOBAL(0x009DED3C, sint32) = _dropdown_item_height;
 	RCT2_GLOBAL(0x009DEBA2, sint16) = _dropdown_highlighted_index;
+	gDropdownIsColour = false;
 }
 
 void window_dropdown_close()
@@ -429,4 +433,6 @@ void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, ui
 		gAppropriateImageDropdownItemsPerRow[numItems]
 	);
 
+	gDropdownIsColour = true;
+	gDropdownLastColourHover = -1;
 }

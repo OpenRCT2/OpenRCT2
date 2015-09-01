@@ -79,30 +79,11 @@ void window_tooltip_reset(int x, int y)
 }
 
 uint8* gTooltip_text_buffer = RCT2_ADDRESS(RCT2_ADDRESS_TOOLTIP_TEXT_BUFFER, uint8);
-/**
- * 
- *  rct2: 0x006EA10D
- */
-void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y)
+
+void window_tooltip_show(rct_string_id id, int x, int y)
 {
 	rct_window *w;
-	rct_widget *widget;
 	int width, height;
-	
-	if (widgetWindow == NULL || widgetIndex == -1)
-		return;
-
-	widget = &widgetWindow->widgets[widgetIndex];
-	window_event_invalidate_call(widgetWindow);
-	if (widget->tooltip == 0xFFFF)
-		return;
-
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = widgetWindow->classification;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = widgetWindow->number;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = widgetIndex;
-
-	if (window_event_tooltip_call(widgetWindow, widgetIndex) == (rct_string_id)STR_NONE)
-		return;
 
 	w = window_find_by_class(WC_ERROR);
 	if (w != NULL)
@@ -111,7 +92,7 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 	RCT2_GLOBAL(0x0142006C, sint32) = -1;
 	char* buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 
-	format_string(buffer, widget->tooltip, (void*)0x013CE952);
+	format_string(buffer, id, (void*)0x013CE952);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
 
 	int tooltip_text_width;
@@ -131,7 +112,7 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 	window_tooltip_widgets[WIDX_BACKGROUND].bottom = height;
 
 	memcpy(gTooltip_text_buffer, buffer, 512);
-	
+
 	x = clamp(0, x - (width / 2), RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - width);
 
 	int max_y = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height;
@@ -150,10 +131,36 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 		&window_tooltip_events,
 		WC_TOOLTIP,
 		WF_TRANSPARENT | WF_STICK_TO_FRONT
-	);
+		);
 	w->widgets = window_tooltip_widgets;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, uint16) = 0;
+}
+
+/**
+ * 
+ *  rct2: 0x006EA10D
+ */
+void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y)
+{
+	rct_widget *widget;
+	
+	if (widgetWindow == NULL || widgetIndex == -1)
+		return;
+
+	widget = &widgetWindow->widgets[widgetIndex];
+	window_event_invalidate_call(widgetWindow);
+	if (widget->tooltip == 0xFFFF)
+		return;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = widgetWindow->classification;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = widgetWindow->number;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = widgetIndex;
+
+	if (window_event_tooltip_call(widgetWindow, widgetIndex) == (rct_string_id)STR_NONE)
+		return;
+
+	window_tooltip_show(widget->tooltip, x, y);
 }
 
 /**

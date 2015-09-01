@@ -2076,6 +2076,8 @@ enum {
 	STR_CHEAT_DISABLE_VANDALISM = 5514,
 	STR_CHEAT_DISABLE_VANDALISM_TIP = 5515,
 
+	STR_COLOUR_NAMES_START = 5516,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
