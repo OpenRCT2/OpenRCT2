@@ -3846,3 +3846,5 @@ STR_5510    :Standaard geluidsapparaat
 STR_5511    :(ONBEKEND)
 STR_5512    :Spel opslaan als...
 STR_5513    :Spel (snel) opslaan
+STR_5514    :Vandalisme uitschakelen
+STR_5515    :{SMALLFONT}{BLACK}Voorkomt dat bezoekers objecten in je park vernielen als ze kwaad zijn

@@ -3854,3 +3854,5 @@ STR_5510    :Default sound device
 STR_5511    :(UNKNOWN)
 STR_5512    :Save Game As
 STR_5513    :(Quick) save game
+STR_5514    :Disable vandalism
+STR_5515    :{SMALLFONT}{BLACK}Stops guests from vandalising your park when they're angry
