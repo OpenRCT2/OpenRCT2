@@ -5485,12 +5485,6 @@ static void window_ride_income_increase_secondary_price(rct_window *w)
 	ride = GET_RIDE(w->number);
 	ride_type = gRideTypeList[ride->subtype];
 	
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) == 0) {
-		if (ride->type != RIDE_TYPE_TOILETS && ride_type->shop_item_secondary == 0xFF) {
-			if (!gConfigCheat.unlock_all_prices)
-				return;
-		}
-	}
 	money16 price = ride->price_secondary;
 	if (price < MONEY(20, 00))
 		price++;
@@ -5510,12 +5504,6 @@ static void window_ride_income_decrease_secondary_price(rct_window *w)
 	ride = GET_RIDE(w->number);
 	ride_type = gRideTypeList[ride->subtype];
 	
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) == 0) {
-		if (ride->type != RIDE_TYPE_TOILETS && ride_type->shop_item_secondary == 0xFF) {
-			if (!gConfigCheat.unlock_all_prices)
-				return;
-		}
-	}
 	money16 price = ride->price_secondary;
 	if (price > MONEY(0, 00))
 		price--;
