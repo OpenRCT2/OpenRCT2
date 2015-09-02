@@ -208,6 +208,9 @@
     <ClInclude Include="..\src\core\FileStream.hpp" />
     <ClInclude Include="..\src\core\IDisposable.hpp" />
     <ClInclude Include="..\src\core\IStream.hpp" />
+    <ClInclude Include="..\src\core\Memory.hpp" />
+    <ClInclude Include="..\src\core\StringBuilder.hpp" />
+    <ClInclude Include="..\src\core\StringReader.hpp" />
     <ClInclude Include="..\src\cursors.h" />
     <ClInclude Include="..\src\diagnostic.h" />
     <ClInclude Include="..\src\drawing\drawing.h" />
