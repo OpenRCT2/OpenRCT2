@@ -4,100 +4,37 @@ extern "C" {
 	#include "localisation.h"
 }
 
+#include "../core/FileStream.hpp"
+#include "../core/Memory.hpp"
+#include "../core/StringBuilder.hpp"
 #include "LanguagePack.h"
-
 #include <SDL.h>
-
-// TODO Move to separate file
-class StringBuilder final {
-public:
-	StringBuilder()
-	{
-		_buffer = NULL;
-		_capacity = 0;
-		_length = 0;
-	}
-
-	StringBuilder(int capacity) : StringBuilder()
-	{
-		EnsureCapacity(capacity);
-	}
-
-	~StringBuilder()
-	{
-		if (_buffer != NULL) free(_buffer);
-	}
-
-	utf8 *GetString() const
-	{
-		utf8 *result = (utf8*)malloc(_length + 1);
-		memcpy(result, _buffer, _length);
-		result[_length] = 0;
-		return result;
-	}
-
-	void Append(int codepoint)
-	{
-		int codepointLength = utf8_get_codepoint_length(codepoint);
-		EnsureCapacity(_length + codepointLength + 1);
-		utf8_write_codepoint(_buffer + _length, codepoint);
-		_length += codepointLength;
-	}
-
-	void Append(utf8 *text)
-	{
-		int textLength = strlen(text);
-
-		EnsureCapacity(_length + textLength + 1);
-		memcpy(_buffer + _length, text, textLength);
-		_length += textLength;
-	}
-
-private:
-	utf8 *_buffer;
-	size_t _capacity;
-	size_t _length;
-
-	void EnsureCapacity(size_t capacity)
-	{
-		if (_capacity > capacity) return;
-
-		_capacity = max(8, _capacity);
-		while (_capacity < capacity) {
-			_capacity *= 2;
-		}
-
-		if (_buffer == NULL) {
-			_buffer = (utf8*)malloc(_capacity);
-		} else {
-			_buffer = (utf8*)realloc(_buffer, _capacity);
-		}
-	}
-};
 
 LanguagePack *LanguagePack::FromFile(int id, const utf8 *path)
 {
 	assert(path != NULL);
 
-	int fileLength;
+	uint32 fileLength;
 	utf8 *fileData;
 
 	// Load file directly into memory
-	SDL_RWops *file = SDL_RWFromFile(path, "rb");
-	if (file == NULL) {
-		log_error("Unable to open %s", path);
+	try {
+		FileStream fs = FileStream(path, FILE_MODE_OPEN);
+		
+		fileLength = (uint32)fs.GetLength();
+		fileData = Memory::Allocate<utf8>(fileLength);
+		fs.Read(fileData, fileLength);
+
+		fs.Dispose();
+	} catch (Exception ex) {
+		log_error("Unable to open %s: %s", path, ex.GetMessage());
 		return NULL;
 	}
 
-	fileLength = (int)SDL_RWsize(file);
-	fileData = (utf8*)malloc(fileLength);
-	SDL_RWread(file, fileData, fileLength, 1);
-	SDL_RWclose(file);
-
 	// Parse the memory as text
 	LanguagePack *result = FromText(id, fileData);
-	free(fileData);
 
+	Memory::Free(fileData);
 	return result;
 }
 
