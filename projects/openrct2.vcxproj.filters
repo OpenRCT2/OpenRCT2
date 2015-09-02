@@ -794,5 +794,14 @@
     <ClInclude Include="..\src\localisation\LanguagePack.h">
       <Filter>Source\Localisation</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\core\Memory.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\StringBuilder.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\StringReader.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
