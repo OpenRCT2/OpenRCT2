@@ -646,9 +646,6 @@ static uint8 *title_script_load()
 
 bool title_refresh_sequence()
 {
-	if(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) != SCREEN_FLAGS_TITLE_DEMO)
-		return;
-
 	_scriptCurrentPreset = gCurrentPreviewTitleSequence;
 	title_sequence *title = &gConfigTitleSequences.presets[_scriptCurrentPreset];
 
@@ -719,8 +716,11 @@ bool title_refresh_sequence()
 		_scriptWaitCounter = 0;
 		gTitleScriptCommand = -1;
 		gTitleScriptSave = 0xFF;
-		title_update_showcase();
-		gfx_invalidate_screen();
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_TITLE_DEMO) {
+			title_update_showcase();
+			gfx_invalidate_screen();
+		}
 
 		return true;
 	}
@@ -738,8 +738,12 @@ bool title_refresh_sequence()
 	gCurrentPreviewTitleSequence = 0;
 	window_invalidate_by_class(WC_OPTIONS);
 	window_invalidate_by_class(WC_TITLE_EDITOR);
-	title_update_showcase();
-	gfx_invalidate_screen();
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_TITLE_DEMO) {
+		title_update_showcase();
+		gfx_invalidate_screen();
+	}
+
 	return false;
 }
 
