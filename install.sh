@@ -74,7 +74,7 @@ if [[ `uname` == "Darwin" ]]; then
         popd
     fi
 elif [[ `uname` == "Linux" ]]; then
-    sudo apt-get install -y --force-yes binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 cmake
+    sudo apt-get install -y binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 cmake wine
 fi
 
 if [[ ! -f $cachedir/SDL2-devel-${SDL2_PV}-mingw.tar.gz ]]; then
