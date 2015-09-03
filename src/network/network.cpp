@@ -170,6 +170,9 @@ int NetworkConnection::ReadPacket()
 		inboundpacket.transferred += readBytes;
 		if (inboundpacket.transferred == sizeof(inboundpacket.size)) {
 			inboundpacket.size = ntohs(inboundpacket.size);
+			if(inboundpacket.size == 0){ // Can't have a size 0 packet
+				return NETWORK_DISCONNECTED;
+			}
 			inboundpacket.data->resize(inboundpacket.size);
 		}
 	} else {
@@ -192,30 +195,23 @@ int NetworkConnection::ReadPacket()
 	return NETWORK_MORE_DATA;
 }
 
-int NetworkConnection::SendPacket(NetworkPacket& packet)
+bool NetworkConnection::SendPacket(NetworkPacket& packet)
 {
+	uint16 sizen = htons(packet.size);
+	std::vector<uint8> tosend;
+	tosend.insert(tosend.end(), (uint8*)&sizen, (uint8*)&sizen + sizeof(sizen));
+	tosend.insert(tosend.end(), packet.data->begin(), packet.data->end());
 	while (1) {
-		if (packet.transferred < sizeof(packet.size)) {
-			// send packet size
-			uint16 size = htons(packet.size);
-			int sentBytes = send(socket, &((char*)&size)[packet.transferred], sizeof(size) - packet.transferred, 0);
-			if (sentBytes == SOCKET_ERROR) {
-				return 0;
-			}
-			packet.transferred += sentBytes;
-		} else {
-			// send packet data
-			int sentBytes = send(socket, (const char*)&packet.GetData()[packet.transferred - sizeof(packet.size)], packet.data->size(), 0);
-			if (sentBytes == SOCKET_ERROR) {
-				return 0;
-			}
-			packet.transferred += sentBytes;
-			if (packet.transferred == sizeof(packet.size) + packet.data->size()) {
-				return 1;
-			}
+		int sentBytes = send(socket, (const char*)&tosend[packet.transferred], tosend.size() - packet.transferred, 0);
+		if (sentBytes == SOCKET_ERROR) {
+			return false;
+		}
+		packet.transferred += sentBytes;
+		if (packet.transferred == tosend.size()) {
+			return true;
 		}
 	}
-	return 0;
+	return false;
 }
 
 void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet)
@@ -231,6 +227,11 @@ void NetworkConnection::SendQueuedPackets()
 	while (outboundpackets.size() > 0 && SendPacket(*(outboundpackets.front()).get())) {
 		outboundpackets.remove(outboundpackets.front());
 	}
+}
+
+bool NetworkConnection::SetTCPNoDelay(bool on)
+{
+	return setsockopt(socket, IPPROTO_TCP, TCP_NODELAY, (const char*)&on, sizeof(on)) == 0;
 }
 
 Network::Network()
@@ -330,6 +331,7 @@ bool Network::BeginClient(const char* host, unsigned short port)
 	}
 
 	server_connection.socket = server_socket;
+	server_connection.SetTCPNoDelay(true);
 
 	mode = NETWORK_MODE_CLIENT;
 
@@ -703,6 +705,7 @@ void Network::AddClient(SOCKET socket)
 {
 	auto connection = std::unique_ptr<NetworkConnection>(new NetworkConnection);  // change to make_unique in c++14
 	connection->socket = socket;
+	connection->SetTCPNoDelay(true);
 	client_connection_list.push_back(std::move(connection));
 }
 
