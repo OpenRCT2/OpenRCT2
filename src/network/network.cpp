@@ -314,7 +314,7 @@ bool Network::BeginClient(const char* host, unsigned short port)
 
 	SOCKADDR_IN server_address;
 	server_address.sin_family = AF_INET;
-	server_address.sin_addr.S_un.S_addr = inet_addr(host);
+	server_address.sin_addr.S_un.S_addr = inet_addr(network_getAddress((char *)host));
 	server_address.sin_port = htons(port);
 
 	if (connect(server_socket, (SOCKADDR*)&server_address, sizeof(SOCKADDR_IN)) != 0) {
@@ -1045,6 +1045,20 @@ void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32
 		gNetwork.Client_Send_GAMECMD(eax, ebx, ecx, edx, esi, edi, ebp, callback);
 		break;
 	}
+}
+
+static char *network_getAddress(char *host)
+{
+	struct hostent *remoteHost;
+	struct in_addr addr;
+
+	remoteHost = gethostbyname(host);
+	if (remoteHost != NULL && remoteHost->h_addrtype == AF_INET && remoteHost->h_addr_list[0] != 0) {
+		addr.s_addr = *(u_long *)remoteHost->h_addr_list[0];
+		return inet_ntoa(addr);
+	}
+
+	return host;
 }
 
 #else
