@@ -84,7 +84,7 @@ public:
 	void Write(uint8* bytes, unsigned int size);
 	void WriteString(const char* string);
 	template <typename T>
-	NetworkPacket& operator>>(T& value) { if (read + sizeof(value) > size) { value = 0; } else { value = ByteSwapBE(*((T*)&GetData()[read])); read += sizeof(value); } return *this; };
+	NetworkPacket& operator>>(T& value) { if (read + sizeof(value) > size) { value = 0; } else { value = ByteSwapBE(*((T*)&GetData()[read])); read += sizeof(value); } return *this; }
 	const uint8* Read(unsigned int size);
 	const char* ReadString();
 	void Clear();
@@ -112,6 +112,7 @@ public:
 	int ReadPacket();
 	void QueuePacket(std::unique_ptr<NetworkPacket> packet);
 	void SendQueuedPackets();
+	bool SetTCPNoDelay(bool on);
 
 	SOCKET socket;
 	NetworkPacket inboundpacket;
@@ -120,7 +121,7 @@ public:
 	uint32 ping_time;
 
 private:
-	int SendPacket(NetworkPacket& packet);
+	bool SendPacket(NetworkPacket& packet);
 	std::list<std::unique_ptr<NetworkPacket>> outboundpackets;
 };
 
