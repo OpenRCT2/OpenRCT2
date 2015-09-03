@@ -513,31 +513,31 @@ STR_0508    :
 STR_0509    :
 STR_0510    :
 STR_0511    :
-STR_0512    :컴팩트 롤러코스터 with a spiral lift hill and smooth, twisting drops.
-STR_0513    :루핑 롤러코스터 where the 라이더 라이드 in a standing position
-STR_0514    :Trains 서스펜디드 beneath the 롤러코스터 track swing out to the side around corners
-STR_0515    :A steel 롤러코스터 with trains that are held beneath the track, with many complex and twisting track elements
-STR_0516    :A gentle 롤러코스터 for people who haven't yet got the courage to face the larger 라이드s
-STR_0517    :Passengers 라이드 in 미니ature trains along a narrow-gauge railway track
-STR_0518    :Passengers travel in electric trains along a monorail track
-STR_0519    :Passengers 라이드 in small cars hanging beneath the single-rail track, swinging freely from side to side around corners
-STR_0520    :A dock platform where 손님 can drive/row personal watercraft on a body of water
-STR_0521    :A fast and twisting 롤러코스터 with tight turns and steep drops. Intensity is bound to be high.
-STR_0522    :A smaller 롤러코스터 where the 라이더 sit above the track with no car around them
-STR_0523    :라이더 travel slowly in powered vehicles along a track-based route
-STR_0524    :Freefall car is pneumatically launched up a tall steel tower and then allowed to freefall down
-STR_0525    :라이더 career down a twisting track guided only by the curvature and banking of the semi-circular track
-STR_0526    :Passengers travel in a rotating observation cabin which travels up a tall tower
-STR_0527    :A smooth steel-tracked 롤러코스터 capable of vertical loops
-STR_0528    :라이더 travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
-STR_0529    :Mine train themed 롤러코스터 trains career along steel 롤러코스터 track made to look like old railway track
-STR_0530    :Cars hang from a steel cable which runs continuously from one end of the 라이드 to the other and back again
-STR_0531    :A compact steel-tracked 롤러코스터 where the train travels through corkscrews and loops
+STR_0512    :나선형 리프트 힐과 부드럽게 꼬인 낙하를 가진 알찬 구성의 롤러코스터입니다.
+STR_0513    :손님들이 일어선 자세로 탑승하는 루핑 롤러코스터입니다
+STR_0514    :코너를 돌 때 롤러코스터 트랙 아래에 달린 차량이 흔들리는 열차입니다
+STR_0515    :복잡하고 꼬인 트랙 요소를 가진 트랙 아래를 달리는 스틸 롤러코스터 차량입니다
+STR_0516    :큰 놀이기구를 탈 용기가 없는 사람들을 위한 얌전한 롤러코스터입니다
+STR_0517    :손님들은 협궤 선로를 따라 달리는 미니어처 열차에 탑승합니다
+STR_0518    :손님들은 모노렝리 트랙을 따라 달리는 전기 차량에 탑승합니다
+STR_0519    :손님들은 코너를 돌 때마다 좌우로 흔들리는, 단선 트랙 아래에 달린 작은 차량에 탑승합니다
+STR_0520    :손님들이 물 위를 다니는 배를 운전하거나 또는 저을 수 있는 선착장입니다
+STR_0521    :급커브와 급하강을 가진 빠르게 꼬인 롤러코스터입니다. 격렬도가 높게 나올 것입니다
+STR_0522    :탑승객이 차량 없이 트랙 위에 앉는 작은 롤러코스터입니다
+STR_0523    :정해진 트랙을 따라 천천히 움직이는 차량입니다
+STR_0524    :자유낙하 차량은 공기 압축 방식으로 높은 철제 탑을 향해 차량을 쏘아올려 자유낙하하는 차량입니다
+STR_0525    :탑승객은 오직 반원형으로 휘어있고 꼬여있는 트랙을 따라 이동합니다
+STR_0526    :탑승객은 높은 곳으로 올라가면서 회전하는 관망대 캐빈에 탑승합니다
+STR_0527    :버티컬 루프를 사용할 수 있는 부드러운 철제 트랙의 롤러코스터입니다
+STR_0528    :탑승객은 공기를 넣은 고무 보트를 타고 반원이나 원형의 튜브 트랙을 따라 이동합니다
+STR_0529    :오래된 기차 선로처럼 보이게 만든 철제 트랙을 따라 움직이는 탄광 열차 테마를 한 롤러코스터 차량입니다.
+STR_0530    :철제 케이블에 달린 차량이 연속적으로 놀이기구의 한쪽 끝에서 다른쪽 끝을 왕복 운행합니다
+STR_0531    :차량이 코크스크류와 루프를 통과하는 알찬 구성의 철제 트랙 롤러코스터입니다
 STR_0532    :
 STR_0533    :
-STR_0534    :Self-drive petrol-engined go karts
-STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the 라이더
-STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling 라이더 through foaming rapids
+STR_0534    :패트롤 엔진으로 움직이는 고 카트입니다
+STR_0535    :통나무 모양의 보트가 수로를 따라 이동하며, 떨어지면서 탑승객을 물에 젖게 만듭니다
+STR_0536    :원형의 보트가 수로를 따라 요동치며, 폭포를 통과하며 물을 튀기고 탑승객들에게 거품 소용돌이를 통과하며 스릴을 선사합니다
 STR_0537    :
 STR_0538    :
 STR_0539    :
@@ -563,47 +563,47 @@ STR_0558    :
 STR_0559    :
 STR_0560    :
 STR_0561    :
-STR_0562    :Powered cars travel along a multi-level track past spooky scenery and special effects
-STR_0563    :Sitting in comfortable trains with only simple lap restraints 라이더 enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
-STR_0564    :Running on 우든 track, this 코스터 is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
-STR_0565    :A simple 우든 롤러코스터 capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
-STR_0566    :Individual 롤러코스터 cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
-STR_0567    :Sitting in seats 서스펜디드 either side of the track, 라이더 are pitched head-over-heels while they plunge down steep drops and travel through various inversions
+STR_0562    :무서운 풍경과 특수 효과를 통과하며 여러 높이의 트랙을 따라 이동하는 전동 차량입니다
+STR_0563    :탑승객들은 한 바퀴를 운행하는 편안한 좌석에 앉아 언덕을 오르면서 느낄 수 있는 '무중력 시간'뿐만이 아니라 크고 부드러운 낙하와 꼬인 트랙의 느낌을 즐길 수 있습니다
+STR_0564    :목재 트랙 위를 움직이는 이 롤러코스터는 빠르고, 거칠고, 시끄럽고, 많은 '무중력 시간'과 함께 '제어 불가능할 것 같은' 탑승감을 선사합니다
+STR_0565    :완만한 경사와 커브만을 가진 간단한 목재 롤러코스터로, 이 롤러코스터의 차량은 오직 측면 마찰륜과 중력만으로 트랙 위에 얹혀진 상태로 운행합니다
+STR_0566    :개별적인 롤러코스터 차량이 급커브와 짧고 급한 경사를 가진 지그재그 모양의 트랙을 어지럽게 돌아다닙니다
+STR_0567    :트랙 반대편에 매달린 좌석에 앉아서, 탑승객들은 급강하와 여러 가지 반전 트랙을 통과하면서 거꾸러지는 동안 머리와 다리가 뒤집히게 됩니다
 STR_0568    :
-STR_0569    :Riding in special harnesses below the track, 라이더 experience the feeling of flight as they swoop through the air
+STR_0569    :차량 밑에 달린 특별한 마차에 탑승하여, 탑승객들은 공중으로 급강하면서 하늘을 나는 기분을 느끼게 만듭니다
 STR_0570    :
-STR_0571    :Circular cars spin around as they travel along the zig-zagging 우든 track
-STR_0572    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyer belt, accelerating down steep slopes to soak the 라이더 with a gaint splash
-STR_0573    :Powered helicoper shaped cars running on a steel track, controlled by the pedalling of the 라이더
-STR_0574    :라이더 are held in special harnesses in a lying-down position, travlling through twisted track and inversions either on their backs or facing the ground
-STR_0575    :Powered trains hanging from a single rail transport people around the park
+STR_0571    :원형의 차량이 나무 트랙을 지그재그로 이동하면서 회전합니다
+STR_0572    :대형 보트가 넓은 수로를 따라 컨베이어 벨트에 의해 언덕을 올라간 뒤, 급강하하면서 큰 물보라를 일으켜 탑승객을 젖게 만듭니다
+STR_0573    :탑승객이 직접 페달을 밟아 이동하는, 철제 트랙을 달리는 헬리콥터 모양의 전동 차량입니다
+STR_0574    :탑승객은 특수한 마차에 누운 자세로 매달려, 이리 저리 꼬이고 뒤집히는 트랙을 땅을 등지거나 마주보는 자세로 탑승하게 됩니다
+STR_0575    :공원 여기 저기로 사람들을 실어나르는, 단선 레일에 매달린 전동 열차입니다
 STR_0576    :
-STR_0577    :Bogied cars run on 우든 tracks, turning around on special reversing sections
-STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
+STR_0577    :특수한 반전 섹션에서 앞뒤가 바뀌는 목재 트랙을 달리는 보우기 차입니다
+STR_0578    :원형 고리로 둘러싸여 급강하와 하트라인 트위트스를 횡단하는 트랙을 달리는 차량입니다.
 STR_0579    :
-STR_0580    :A giant steel 롤러코스터 capable of smooth drops and hills of over 300ft
-STR_0581    :A ring of seats is pulled to the top of a tall tower while gently rotating, then allowed to free-fall down, stopping gently at the bottom using magnetic brakes
+STR_0580    :90m 이상의 언덕을 부드럽게 오르내리는 거대한 철제 롤러코스터입니다
+STR_0581    :원형 모양의 좌석이 맨 위까지 끌어올려진 다음, 자유 낙하하며, 자기장에 의해 부드럽게 바닥에 정지합니다
 STR_0582    :
 STR_0583    :
-STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the 라이더
-STR_0585    :라이더 sit in pairs of seats 서스펜디드 beneath the track as they loop and twist through tight inversions
-STR_0586    :Boat shaped cars run on 롤러코스터 track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
-STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
-STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
+STR_0584    :탑승객이 스스로 페달을 밟아 이동해야 하는, 특별한 철제 모노레일 트랙 위를 이동하는 자전거입니다
+STR_0585    :탑승객은 트랙 밑에 매달린 좌석 한 쌍에 앉아 루프와 트위스트를 급격히 통과합니다
+STR_0586    :보트 모양의 차량이 꼬인 커브와 급강하가 가능한 롤러코스터 트랙을 달리며, 강 섹션의 물에서는 물보라를 일으키며 감속합니다
+STR_0587    :아주 짜릿한 공기 압축 방식으로 발진하여 차량이 수직 트랙을 향해 속력을 높인 뒤, 꼭대기에 다다르면 다시 수직으로 하강하며 다른 탑승장에 도착합니다
+STR_0588    :개별적인 차량이 헤이펀 커브와 급강하를 포함한 지그재그 모양의 트랙 아래를 이동합니다
 STR_0589    :
-STR_0590    :라이더 라이드 in a submerged submarine through an underwater course
-STR_0591    :Raft-shaped boats gently meander around a river track
+STR_0590    :탑승객들은 잠수가 가능한 잠수함을 타고 수중 코스를 돕니다
+STR_0591    :뗏목 모양의 보트가 강 모양의 트랙을 따라 얌전히 이동합니다
 STR_0592    :
 STR_0593    :
 STR_0594    :
 STR_0595    :
 STR_0596    :
 STR_0597    :
-STR_0598    :인버티드 롤러코스터 trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
-STR_0599    :A compact 롤러코스터 with individual cars and smooth twisting drops
-STR_0600    :Powered mine trains career along a smooth and twisted track layout
+STR_0598    :뒤집힌 롤러코스터 차량이 탑승장을 나서 가속하여 높이 솟은 수직 트랙으로 솟아오르고, 다시 탑승장으로 후진하여 반대편의 수직 트랙을 향해 다시 솟아오릅니다
+STR_0599    :각각의 차량이 부드럽게 꼬인 채로 낙하하는 알찬 구성의 롤러코스터입니다.
+STR_0600    :부드럽게 꼬인 트랙 구조를 따라 이동하는 탄광 차량입니다
 STR_0601    :
-STR_0602    :롤러코스터 trains are accelerated out of the station by linear induction motors to speed through twisting inversions
+STR_0602    :롤러코스터 차량은 탑승장에서 선형 유도 모터에 의해 가속하여 트랙을 돌만한 속도까지 올라갑니다
 STR_0603    :손님 {INT32}
 STR_0604    :손님 {INT32}
 STR_0605    :손님 {INT32}
@@ -1017,27 +1017,27 @@ STR_1011    :모두 닫기
 STR_1012    :모두 열기
 STR_1013    :공원 닫기
 STR_1014    :공원 열기
-STR_1015    :Unable to operate with more than one station platform in this mode
-STR_1016    :Unable to operate with less than two stations in this mode
-STR_1017    :Can't change operating mode...
-STR_1018    :Can't make changes...
-STR_1019    :Can't make changes...
-STR_1020    :Can't make changes...
+STR_1015    :이 운행 모드에서는 승강장을 하나만 건설해야 합니다
+STR_1016    :이 운행 모드에서는 승강장이 2개 이상 필요합니다
+STR_1017    :운행 모드를 변경할 수 없습니다...
+STR_1018    :변경할 수 없습니다...
+STR_1019    :변경할 수 없습니다...
+STR_1020    :변경할 수 없습니다...
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_1022    :1대당 {POP16}{POP16}{POP16}{COMMA16}량의 차량
 STR_1023    :1대당 {POP16}{POP16}{POP16}{COMMA16}량의 차량
 STR_1024    :1대당 {COMMA16}량의 차량
 STR_1025    :1대당 {COMMA16}량의 차량
 STR_1026    :탑승장이 너무 깁니다!
-STR_1027    :{SMALLFONT}{BLACK}Locate this on Main View
+STR_1027    :{SMALLFONT}{BLACK}여기로 이동
 STR_1028    :지도 끝을 벗어납니다!
-STR_1029    :Cannot build partly above and partly below water!
-STR_1030    :Can only build this underwater!
-STR_1031    :Can't build this underwater!
-STR_1032    :Can only build this on water!
-STR_1033    :Can only build this above ground!
-STR_1034    :Can only build this on land!
-STR_1035    :Local authority won't allow construction above tree-height!
+STR_1029    :일부분만 수면 위로 나오도록 건설할 수 없습니다!
+STR_1030    :수중에만 건설할 수 있습니다!
+STR_1031    :물 속에 건설할 수 없습니다!
+STR_1032    :물 위에만 건설할 수 있습니다!
+STR_1033    :땅 위에만 건설할 수 있습니다!
+STR_1034    :땅 위에만 건설할 수 있습니다!
+STR_1035    :지역 당국이 나무 높이 이상의 건설을 허용하지 않습니다!
 STR_1036    :게임 불러오기
 STR_1037    :풍경 불러오기
 STR_1038    :저장된 게임을 시나리오로 변환
@@ -3827,3 +3827,28 @@ STR_5487    :{SMALLFONT}{BLACK}최근 메시지 보이기
 STR_5488    :입구 없음
 STR_5489    :{SMALLFONT}{BLACK}추적 중인 손님만 보기
 STR_5490    :게임 밖으로 커서가 나가면 효과음 끄기
+STR_5491    :개발 목록
+STR_5492    :시나리오 설정
+STR_5493    :메시지 보내기
+STR_5494    :<더 이상 사용하지 않음>
+STR_5495    :플레이어 목록
+STR_5496    :플레이어:
+STR_5497    :핑:
+STR_5498    :서버 목록
+STR_5499    :플레이어 이름:
+STR_5500    :서버 추가
+STR_5501    :서버 열기
+STR_5502    :멀티플레이
+STR_5503    :호스트네임이나 IP 주소를 입력하세요:
+STR_5504    :{SMALLFONT}{BLACK}멀티플레이 창을 엽니다
+STR_5505    :서버에 접속할 수 없습니다
+STR_5506    :손님이 격렬도를 무시하고 탐
+STR_5507    :미화원이 기본적으로 잔디를 깎음
+STR_5508    :올바르지 않은 체크합을 가진 파일 불러오기 허용
+STR_5509    :{SMALLFONT}{BLACK}데모에서 저장한 시나리오나 손상된 저장 파일과 같이 올바르지 않은 체크합을 가진 시나리오나 저장 파일을 불러오는 것을 허용합니다.
+STR_5510    :기본 사운드 장치
+STR_5511    :(알 수 없음)
+STR_5512    :다른 이름으로 저장
+STR_5513    :(간편) 게임 저장
+STR_5514    :기물 파손 끄기
+STR_5515    :{SMALLFONT}{BLACK}손님이 화가 났을 때 기물을 파손하지 않도록 설정합니다
