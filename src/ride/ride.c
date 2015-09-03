@@ -246,7 +246,7 @@ money32 ride_calculate_income_per_hour(rct_ride *ride)
 {
 	rct_ride_type *entry;
 	money32 incomePerHour, priceMinusCost;
-	int shopItem;
+	int currentShopItem;
 
 	entry = GET_RIDE_ENTRY(ride->subtype);
 	incomePerHour =
@@ -263,16 +263,21 @@ money32 ride_calculate_income_per_hour(rct_ride *ride)
 	incomePerHour *= 12;
 	priceMinusCost = ride->price;
 
-	shopItem = entry->shop_item;
-	if (shopItem != 255) {
-		priceMinusCost -= get_shop_item_cost(shopItem);
+	currentShopItem = entry->shop_item;
+	if (currentShopItem != 255) {
+		priceMinusCost -= get_shop_item_cost(currentShopItem);
+	}
 
-		shopItem = entry->shop_item_secondary;
-		if (shopItem != 255) {
-			priceMinusCost += ride->price_secondary;
-			priceMinusCost -= get_shop_item_cost(shopItem);
+	currentShopItem = ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO ?
+			RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8) :
+			entry->shop_item_secondary;
+
+	if (currentShopItem != 255) {
+		priceMinusCost += ride->price_secondary;
+		priceMinusCost -= get_shop_item_cost(currentShopItem);
+
+		if(entry->shop_item!=255)
 			priceMinusCost /= 2;
-		}
 	}
 
 	incomePerHour *= priceMinusCost;
