@@ -241,6 +241,7 @@ void network_send_chat(const char* text);
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
 
 void network_print_error();
+static char *network_getAddress(char *host);
 
 #ifdef __cplusplus
 }
