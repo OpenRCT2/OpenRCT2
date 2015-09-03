@@ -646,6 +646,9 @@ static uint8 *title_script_load()
 
 bool title_refresh_sequence()
 {
+	if(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) != SCREEN_FLAGS_TITLE_DEMO)
+		return;
+
 	_scriptCurrentPreset = gCurrentPreviewTitleSequence;
 	title_sequence *title = &gConfigTitleSequences.presets[_scriptCurrentPreset];
 
