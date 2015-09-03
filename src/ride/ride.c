@@ -6181,7 +6181,7 @@ static uint8 ride_get_random_colour_scheme(rct_ride* ride, rct_vehicle_colour_ex
 			if (rideTemp->subtype == RIDE_TYPE_NULL ||					//RideTemp is unused
 				rideTemp == ride ||									//RideTemp is this ride
 				ride->subtype != rideTemp->subtype) continue;		//RideTemp is different type from this ride
-			if (colours[colourIndex].vehicle_colour.vehicle_colour == rideTemp->vehicle_colours[0].vehicle_colour) {
+			if (*(uint16*)&colours[colourIndex] == *(uint16*)&rideTemp->vehicle_colours) {
 				rideTemp = NULL;		//Indicates that the loop exited from a break
 				break;
 			}
@@ -6203,7 +6203,7 @@ static void ride_reset_vehicle_colours(rct_ride *ride)
 	if (*colourCount == 255) {
 		ride->colour_scheme_type = RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN;
 		for (int index = 0; index < 32; index++) {
-			ride->vehicle_colours[index] = colours[index].vehicle_colour;
+			ride->vehicle_colours[index] = *(rct_vehicle_colour*)&colours[index].body_colour;
 			ride->vehicle_colours_extended[index] = colours[index].restraint_colour;
 		}
 		return;
@@ -6212,7 +6212,7 @@ static void ride_reset_vehicle_colours(rct_ride *ride)
 	//Same colour per train, different from all existing rides of this type if possible
 	ride->colour_scheme_type = RIDE_COLOUR_SCHEME_ALL_SAME;
 	uint8 colourIndex = ride_get_random_colour_scheme(ride, colours, *colourCount);
-	ride->vehicle_colours[0] = colours[colourIndex].vehicle_colour;
+	ride->vehicle_colours[0] = *(rct_vehicle_colour*)&colours[colourIndex];
 	ride->vehicle_colours_extended[0] = colours[colourIndex].restraint_colour;
 	return;
 }
