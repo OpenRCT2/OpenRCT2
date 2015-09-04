@@ -13,7 +13,7 @@ enum {
 /**
  * Represents a stream that can be read or written to. Implemented by types such as FileStream, NetworkStream or MemoryStream.
  */
-interface IStream abstract : public IDisposable {
+interface IStream : public IDisposable {
 	///////////////////////////////////////////////////////////////////////////
 	// Interface methods
 	///////////////////////////////////////////////////////////////////////////
