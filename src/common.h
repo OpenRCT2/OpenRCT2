@@ -26,6 +26,10 @@
 
 #define SafeFree(x) if ((x) != NULL) { free(x); (x) = NULL; }
 
+#define SafeDelete(x) if ((x) != nullptr) { delete (x); (x) = nullptr; }
+#define SafeDeleteArray(x) if ((x) != nullptr) { delete[] (x); (x) = nullptr; }
+
 #define interface struct
+#define abstract = 0
 
 #endif

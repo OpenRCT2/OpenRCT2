@@ -64,7 +64,7 @@
     <ClCompile Include="..\src\localisation\convert.c" />
     <ClCompile Include="..\src\localisation\currency.c" />
     <ClCompile Include="..\src\localisation\date.c" />
-    <ClCompile Include="..\src\localisation\language.c" />
+    <ClCompile Include="..\src\localisation\language.cpp" />
     <ClCompile Include="..\src\localisation\LanguagePack.cpp" />
     <ClCompile Include="..\src\localisation\localisation.c" />
     <ClCompile Include="..\src\localisation\real_names.c" />

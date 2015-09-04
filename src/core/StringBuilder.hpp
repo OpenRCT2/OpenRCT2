@@ -6,7 +6,7 @@
 
 /**
  * Class for constructing strings efficiently. A buffer is automatically allocated and reallocated when characters or strings
- * are appended. Use GetString to copy the current state of the string builder to a new fire and forget string.
+ * are appended. Use GetString to copy the current state of the string builder to a new fire-and-forget string.
  */
 class StringBuilder final {
 public:
@@ -24,13 +24,9 @@ public:
 		if (_buffer != NULL) Memory::Free(_buffer);
 	}
 
-	utf8 *GetString() const {
-		utf8 *result = Memory::AllocateArray<utf8>(_length + 1);
-		Memory::CopyArray(result, _buffer, _length);
-		result[_length] = 0;
-		return result;
-	}
-
+	/**
+	 * Appends the given character to the current string.
+	 */
 	void Append(int codepoint) {
 		int codepointLength = utf8_get_codepoint_length(codepoint);
 		EnsureCapacity(_length + codepointLength + 1);
@@ -39,7 +35,10 @@ public:
 		_buffer[_length] = 0;
 	}
 
-	void Append(utf8 *text) {
+	/**
+	 * Appends the given string to the current string.
+	 */
+	void Append(const utf8 *text) {
 		int textLength = strlen(text);
 
 		EnsureCapacity(_length + textLength + 1);
@@ -48,6 +47,9 @@ public:
 		_buffer[_length] = 0;
 	}
 
+	/**
+	 * Clears the current string, but preserves the allocated memory for another string.
+	 */
 	void Clear() {
 		_length = 0;
 		if (_capacity >= 1) {
@@ -56,12 +58,43 @@ public:
 	}
 
 	/**
+	 * Like Clear, only will guarantee freeing of the underlying buffer.
+	 */
+	void Reset() {
+		_length = 0;
+		_capacity = 0;
+		if (_buffer != NULL) {
+			Memory::Free(_buffer);
+		}
+	}
+
+	/**
+	 * Returns the current string buffer as a new fire-and-forget string.
+	 */
+	utf8 *GetString() const {
+		utf8 *result = Memory::AllocateArray<utf8>(_length + 1);
+		Memory::CopyArray(result, _buffer, _length);
+		result[_length] = 0;
+		return result;
+	}
+
+	/**
 	 * Gets the current state of the StringBuilder. Warning: this represents the StringBuilder's current working buffer and will
 	 * be deallocated when the StringBuilder is destructed.
 	 */
-	const utf8 *GetBuffer() {
+	const utf8 *GetBuffer() const {
 		return _buffer;
 	}
+
+	/**
+	 * Gets the amount of allocated memory for the string buffer.
+	 */
+	size_t GetCapacity() const { return _capacity; }
+
+	/**
+	 * Gets the length of the current string.
+	 */
+	size_t GetLength() const { return _length; }
 
 private:
 	utf8 *_buffer;
