@@ -3848,3 +3848,35 @@ STR_5512    :Spel opslaan als...
 STR_5513    :Spel (snel) opslaan
 STR_5514    :Vandalisme uitschakelen
 STR_5515    :{SMALLFONT}{BLACK}Voorkomt dat bezoekers objecten in je park vernielen als ze kwaad zijn
+STR_5516    :{SMALLFONT}{BLACK}Zwart
+STR_5517    :{SMALLFONT}{BLACK}Grijs
+STR_5518    :{SMALLFONT}{BLACK}Wit
+STR_5519    :{SMALLFONT}{BLACK}Donkerpaars
+STR_5520    :{SMALLFONT}{BLACK}Lichtpaars
+STR_5521    :{SMALLFONT}{BLACK}Helder paars
+STR_5522    :{SMALLFONT}{BLACK}Darkblauw
+STR_5523    :{SMALLFONT}{BLACK}Lichtblauw
+STR_5524    :{SMALLFONT}{BLACK}IJzig blauw
+STR_5525    :{SMALLFONT}{BLACK}Turquoise
+STR_5526    :{SMALLFONT}{BLACK}Aquamarijn
+STR_5527    :{SMALLFONT}{BLACK}Verzadigd groen
+STR_5528    :{SMALLFONT}{BLACK}Donkergroen
+STR_5529    :{SMALLFONT}{BLACK}Mosgroen
+STR_5530    :{SMALLFONT}{BLACK}Helder groen
+STR_5531    :{SMALLFONT}{BLACK}Olijfgroen
+STR_5532    :{SMALLFONT}{BLACK}Donker olijfgroen
+STR_5533    :{SMALLFONT}{BLACK}Helder geel
+STR_5534    :{SMALLFONT}{BLACK}Geel
+STR_5535    :{SMALLFONT}{BLACK}Donkergeel
+STR_5536    :{SMALLFONT}{BLACK}Lichtoranje
+STR_5537    :{SMALLFONT}{BLACK}Donkeroranje
+STR_5538    :{SMALLFONT}{BLACK}Lichtbruin
+STR_5539    :{SMALLFONT}{BLACK}Verzadigd bruin
+STR_5540    :{SMALLFONT}{BLACK}Donkerbruin
+STR_5541    :{SMALLFONT}{BLACK}Zalmroze
+STR_5542    :{SMALLFONT}{BLACK}Bordeauxrood
+STR_5543    :{SMALLFONT}{BLACK}Verzadigd rood
+STR_5544    :{SMALLFONT}{BLACK}Helder rood
+STR_5545    :{SMALLFONT}{BLACK}Donkerroze
+STR_5546    :{SMALLFONT}{BLACK}Helder roze
+STR_5547    :{SMALLFONT}{BLACK}Lichtroze
