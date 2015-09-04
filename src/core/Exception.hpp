@@ -6,7 +6,14 @@
 class Exception : public std::exception {
 public:
 	Exception() : std::exception() { }
-	Exception(const char *message) : std::exception(message) { }
+	Exception(const char *message) : std::exception() {
+		_message = message;
+	}
+	virtual ~Exception() { }
 
-	const char *GetMessage() const { return what(); }
+	const char *what() const throw() override { return _message; }
+	const char *GetMessage() const { return _message; }
+
+private:
+	const char *_message;
 };

@@ -216,9 +216,6 @@
     <ClCompile Include="..\src\localisation\currency.c">
       <Filter>Source\Localisation</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\localisation\language.c">
-      <Filter>Source\Localisation</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ride\ride.c">
       <Filter>Source\Ride</Filter>
     </ClCompile>
@@ -538,6 +535,9 @@
       <Filter>Source\World</Filter>
     </ClCompile>
     <ClCompile Include="..\src\localisation\LanguagePack.cpp">
+      <Filter>Source\Localisation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\localisation\language.cpp">
       <Filter>Source\Localisation</Filter>
     </ClCompile>
   </ItemGroup>

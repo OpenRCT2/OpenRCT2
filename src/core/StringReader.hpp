@@ -4,16 +4,16 @@
 #include "../localisation/localisation.h"
 #include "../util/util.h"
 
-interface IStringReader abstract {
+interface IStringReader {
 	virtual bool TryPeek(int *outCodepoint) abstract;
 	virtual bool TryRead(int *outCodepoint) abstract;
 	virtual void Skip() abstract;
+	virtual bool CanRead() const abstract;
 };
 
 class UTF8StringReader final : public IStringReader {
 public:
-	UTF8StringReader(const utf8 *text)
-	{
+	UTF8StringReader(const utf8 *text) {
 		// Skip UTF-8 byte order mark
 		if (strlen(text) >= 3 && utf8_is_bom(text)) {
 			text += 3;
@@ -23,8 +23,7 @@ public:
 		_current = text;
 	}
 
-	bool TryPeek(int *outCodepoint) override
-	{
+	bool TryPeek(int *outCodepoint) override {
 		if (_current == NULL) return false;
 
 		int codepoint = utf8_get_next(_current, NULL);
@@ -32,8 +31,7 @@ public:
 		return true;
 	}
 
-	bool TryRead(int *outCodepoint) override
-	{
+	bool TryRead(int *outCodepoint) override {
 		if (_current == NULL) return false;
 
 		int codepoint = utf8_get_next(_current, &_current);
@@ -45,10 +43,13 @@ public:
 		return true;
 	}
 
-	void Skip() override
-	{
+	void Skip() override {
 		int codepoint;
 		TryRead(&codepoint);
+	}
+
+	bool CanRead() const override {
+		return _current != NULL;
 	}
 
 private:
