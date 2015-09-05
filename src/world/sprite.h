@@ -328,7 +328,7 @@ void invalidate_sprite_1(rct_sprite *sprite);
 void invalidate_sprite_2(rct_sprite *sprite);
 void sprite_remove(rct_sprite *sprite);
 void litter_create(int x, int y, int z, int direction, int type);
-void sub_6738E1(int x, int y, int z);
+void litter_remove_at(int x, int y, int z);
 void sprite_misc_3_create(int x, int y, int z);
 void sprite_misc_5_create(int x, int y, int z);
 

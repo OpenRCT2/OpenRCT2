@@ -3556,7 +3556,7 @@ static void peep_update_sweeping(rct_peep* peep){
 
 	if (peep->action == PEEP_ACTION_STAFF_SWEEP && peep->action_frame == 8){
 		// Remove sick at this location
-		sub_6738E1(peep->x, peep->y, peep->z);
+		litter_remove_at(peep->x, peep->y, peep->z);
 		peep->staff_litter_swept++;
 		peep->window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
 	}

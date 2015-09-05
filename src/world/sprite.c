@@ -29,6 +29,12 @@
 
 rct_sprite* g_sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
 
+static uint16 sprite_get_first_in_quadrant(int x, int y)
+{
+	int offset = ((x & 0x1FE0) << 3) | (y >> 5);
+	return RCT2_ADDRESS(0x00F1EF60, uint16)[offset];
+}
+
 static void invalidate_sprite_max_zoom(rct_sprite *sprite, int maxZoom)
 {
 	if (sprite->unknown.sprite_left == (sint16)0x8000) return;
@@ -576,7 +582,22 @@ void litter_create(int x, int y, int z, int direction, int type)
  *
  *  rct2: 0x006738E1
  */
-void sub_6738E1(int x, int y, int z)
+void litter_remove_at(int x, int y, int z)
 {
-	RCT2_CALLPROC_X(0x006738E1, x, 0, y, z, 0, 0, 0);
+	uint16 spriteIndex = sprite_get_first_in_quadrant(x, y);
+	while (spriteIndex != SPRITE_INDEX_NULL) {
+		rct_sprite *sprite = &g_sprite_list[spriteIndex];
+		uint16 nextSpriteIndex = sprite->unknown.next_in_quadrant;
+		if (sprite->unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_LITTER) {
+			rct_litter *litter = &sprite->litter;
+
+			if (abs(litter->z - z) <= 16) {
+				if (abs(litter->x - x) <= 8 && abs(litter->y - y) <= 8) {
+					invalidate_sprite_0(sprite);
+					sprite_remove(sprite);
+				}
+			}
+		}
+		spriteIndex = nextSpriteIndex;
+	}
 }
