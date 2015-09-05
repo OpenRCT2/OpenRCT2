@@ -801,6 +801,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
 		rw = SDL_RWFromFile(path, "wb+");
 		if (rw != NULL) {
+			scenario_set_filename(path);
 			int success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2);
 			SDL_RWclose(rw);
 			if (success) {
@@ -822,6 +823,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		rw = SDL_RWFromFile(path, "wb+");
 		int success = 0;
 		if (rw != NULL) {
+			scenario_set_filename(path);
 			success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2);
 			SDL_RWclose(rw);
 		}

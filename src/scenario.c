@@ -45,7 +45,7 @@
 #include "world/water.h"
 
 static char _scenarioPath[MAX_PATH];
-static const char *_scenarioFileName;
+static const char *_scenarioFileName = "";
 
 char gScenarioSaveName[MAX_PATH];
 int gFirstTimeSave = 1;
