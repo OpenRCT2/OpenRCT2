@@ -3874,6 +3874,15 @@ const rct_preview_track *get_track_def_from_ride_index(int rideIndex, int trackT
 	return get_track_def_from_ride(GET_RIDE(rideIndex), trackType);
 }
 
+/**
+ *
+ *  rct2: 0x006C4D89
+ */
+static bool sub_6C4D89(int x, int y, int z, int direction, int rideIndex, int flags)
+{
+	return !(RCT2_CALLPROC_X(0x006C4D89, x, flags | (rideIndex << 8), y, z | (direction << 8), 0, 0, 0) & 0x100);
+}
+
 static money32 track_place(int rideIndex, int type, int originX, int originY, int originZ, int direction, int properties_1, int properties_2, int properties_3, int edx_flags, int flags)
 {
 	rct_ride *ride = GET_RIDE(rideIndex);
@@ -4145,7 +4154,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			entranceDirections = RCT2_ADDRESS(0x0099BA64, uint8)[type * 16];
 		}
 		if ((entranceDirections & 0x10) && trackBlock->index == 0) {
-			if (RCT2_CALLPROC_X(0x006C4D89, x, rideIndex << 8, y, baseZ | (direction << 8), 0, 0, 0) & 0x100) {
+			if (!sub_6C4D89(x, y, baseZ, direction, rideIndex, 0)) {
 				return MONEY32_UNDEFINED;
 			}
 		}
@@ -4299,14 +4308,9 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			entranceDirections = RCT2_ADDRESS(0x0099BA64, uint8)[type * 16];
 		}
 
-		if (entranceDirections & (1 << 4)){
-			if (trackBlock->index == 0){
-				RCT2_CALLPROC_X(0x006C4D89,
-					x,
-					(rideIndex << 8) | GAME_COMMAND_FLAG_APPLY,
-					y,
-					baseZ | (direction << 8),
-					0, 0, 0);
+		if (entranceDirections & (1 << 4)) {
+			if (trackBlock->index == 0) {
+				sub_6C4D89(x, y, baseZ, direction, rideIndex, GAME_COMMAND_FLAG_APPLY);
 			}
 			sub_6CB945(rideIndex);
 			ride_update_max_vehicles(rideIndex);
@@ -4359,6 +4363,15 @@ void game_command_place_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, 
 		(*edx >> 16),
 		*ebx & 0xFF
 		);
+}
+
+/**
+ *
+ *  rct2: 0x006C494B
+ */
+static bool sub_6C494B(int x, int y, int z, int direction, int rideIndex, int flags)
+{
+	return !(RCT2_CALLPROC_X(0x006C494B, x, flags | (rideIndex << 8), y, z | (direction << 8), 0, 0, 0) & 0x100);
 }
 
 money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY, sint16 originZ, uint8 rotation, uint8 flags){
@@ -4520,7 +4533,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 		}
 
 		if (entranceDirections & (1 << 4) && ((mapElement->properties.track.sequence & 0xF) == 0)){
-			if (RCT2_CALLPROC_X(0x006C494B, x, (rideIndex << 8), y, (z / 8) | (rotation << 8), 0, 0, 0) & 0x100){
+			if (!sub_6C494B(x, y, z / 8, rotation, rideIndex, 0)) {
 				return MONEY32_UNDEFINED;
 			}
 		}
@@ -4541,7 +4554,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 			continue;
 
 		if (entranceDirections & (1 << 4) && ((mapElement->properties.track.sequence & 0xF) == 0)){
-			if (RCT2_CALLPROC_X(0x006C494B, x, GAME_COMMAND_FLAG_APPLY | (rideIndex << 8), y, (z / 8) | (rotation << 8), 0, 0, 0) & 0x100){
+			if (!sub_6C494B(x, y, z / 8, rotation, rideIndex, GAME_COMMAND_FLAG_APPLY)) {
 				return MONEY32_UNDEFINED;
 			}
 		}
