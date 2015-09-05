@@ -294,7 +294,7 @@ static void rwopsprintf(SDL_RWops *file, const char *format, ...)
 	char buffer[64];
 	vsprintf(buffer, format, args);
 
-	SDL_RWwrite(file, buffer, strlen(buffer) + 1, 1);
+	SDL_RWwrite(file, buffer, strlen(buffer), 1);
 
 	va_end(args);
 }
