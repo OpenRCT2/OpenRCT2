@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+
 #include "../common.h"
 #include "../localisation/localisation.h"
 #include "Memory.hpp"
@@ -105,7 +107,7 @@ private:
 	{
 		if (_capacity > capacity) return;
 
-		_capacity = max(8, _capacity);
+		_capacity = (std::max<size_t>)(8, _capacity);
 		while (_capacity < capacity) {
 			_capacity *= 2;
 		}
