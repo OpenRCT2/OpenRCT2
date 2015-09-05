@@ -341,9 +341,9 @@ static void sub_68F41A(rct_peep *peep, int index)
 		if (peep->staff_type != STAFF_TYPE_SECURITY)
 			return;
 
-		uint8 sprite_type = 23;
+		uint8 sprite_type = PEEP_SPRITE_TYPE_23;
 		if (peep->state != PEEP_STATE_PATROLLING)
-			sprite_type = 3;
+			sprite_type = PEEP_SPRITE_TYPE_3;
 
 		if (peep->sprite_type == sprite_type)
 			return;
@@ -1102,20 +1102,28 @@ item_pref item_order_preference[] = {
 		{ 0xFF, 0xFFFFFFFF, 0xFF}
 };
 
-/* rct2: 0x0069B8CC */
-void peep_update_sprite_type(rct_peep* peep){
-	if (peep->sprite_type == 19 &&
-		(scenario_rand() & 0xFFFF) <= 327){
+/**
+ * 
+ *  rct2: 0x0069B8CC
+ */
+void peep_update_sprite_type(rct_peep* peep)
+{
+	if (
+		peep->sprite_type == PEEP_SPRITE_TYPE_19 &&
+		(scenario_rand() & 0xFFFF) <= 327
+	) {
 		uint8 bl = 0;
 
-		if ((scenario_rand() & 0xFFFF) <= 13107 &&
-			peep->x != SPRITE_LOCATION_NULL){
+		if (
+			(scenario_rand() & 0xFFFF) <= 13107 &&
+			peep->x != SPRITE_LOCATION_NULL
+		) {
 				
 			bl = 1;
 			sound_play_panned(SOUND_BALLOON_POP, 0x8001, peep->x, peep->y, peep->z);
 		}
 
-		if (peep->x != SPRITE_LOCATION_NULL){
+		if (peep->x != SPRITE_LOCATION_NULL) {
 			create_balloon(peep->x, peep->y, peep->z + 9, peep->balloon_colour, bl);
 		}
 
@@ -1124,19 +1132,21 @@ void peep_update_sprite_type(rct_peep* peep){
 		peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8) != 0 &&
-		peep->item_standard_flags & PEEP_ITEM_UMBRELLA &&
-		peep->x != SPRITE_LOCATION_NULL){
+	if (
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8) != 0 &&
+		(peep->item_standard_flags & PEEP_ITEM_UMBRELLA) &&
+		peep->x != SPRITE_LOCATION_NULL
+	) {
 		int x = peep->x & 0xFFE0;
 		int y = peep->y & 0xFFE0;
 
-		if (x < 0x1FFF && y < 0x1FFF){
+		if (x < 0x1FFF && y < 0x1FFF) {
 			rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 			while (1) {
-				if ((peep->z / 32) < map_element->base_height)break;
+				if ((peep->z / 8) < map_element->base_height) break;
 
-				if (map_element_is_last_for_tile(map_element)){
-					set_sprite_type(peep, 21);
+				if (map_element_is_last_for_tile(map_element)) {
+					set_sprite_type(peep, PEEP_SPRITE_TYPE_UMBRELLA);
 					return;
 				}
 				map_element++;
@@ -1144,55 +1154,51 @@ void peep_update_sprite_type(rct_peep* peep){
 		}	
 	}
 
-	for (item_pref* item_pref = item_order_preference; item_pref->type != 0xFF; item_pref++){
+	for (item_pref* item_pref = item_order_preference; item_pref->type != 0xFF; item_pref++) {
 		if (item_pref->type == 0){
-			if (peep->item_standard_flags & item_pref->item){
+			if (peep->item_standard_flags & item_pref->item) {
 				set_sprite_type(peep, item_pref->sprite_type);
 				return;
 			}
-		}
-		else{
-			if (peep->item_extra_flags & item_pref->item){
+		} else {
+			if (peep->item_extra_flags & item_pref->item) {
 				set_sprite_type(peep, item_pref->sprite_type);
 				return;
 			}
 		}
 	}
 
-	if (peep->state == PEEP_STATE_WATCHING &&
-		peep->standing_flags & (1<<1)){
-		set_sprite_type(peep, 38);
+	if (peep->state == PEEP_STATE_WATCHING && peep->standing_flags & (1 << 1)) {
+		set_sprite_type(peep, PEEP_SPRITE_TYPE_WATCHING);
 		return;
 	}
 	
-	if (peep->nausea > 170){
-		set_sprite_type(peep, 28);
+	if (peep->nausea > 170) {
+		set_sprite_type(peep, PEEP_SPRITE_TYPE_VERY_NAUSEOUS);
 		return;
 	}
 	
-	if (peep->nausea > 140){
-		set_sprite_type(peep, 27);
+	if (peep->nausea > 140) {
+		set_sprite_type(peep, PEEP_SPRITE_TYPE_NAUSEOUS);
 		return;
 	}
 	
-	if (peep->energy <= 64 &&
-		peep->happiness < 128){
-		set_sprite_type(peep, 26);
+	if (peep->energy <= 64 && peep->happiness < 128) {
+		set_sprite_type(peep, PEEP_SPRITE_TYPE_26);
 		return;
 	}
 	
-	if (peep->energy <= 80 &&
-		peep->happiness < 128){
-		set_sprite_type(peep, 25);
+	if (peep->energy <= 80 && peep->happiness < 128) {
+		set_sprite_type(peep, PEEP_SPRITE_TYPE_25);
 		return;
 	}
 	
-	if (peep->bathroom > 220){
-		set_sprite_type(peep, 29);
+	if (peep->bathroom > 220) {
+		set_sprite_type(peep, PEEP_SPRITE_TYPE_REQUIRE_BATHROOM);
 		return;
 	}
 	
-	set_sprite_type(peep, 0);
+	set_sprite_type(peep, PEEP_SPRITE_TYPE_NORMAL);
 }
 
 /**
@@ -5296,7 +5302,7 @@ rct_peep *peep_generate(int x, int y, int z)
 	move_sprite_to_list((rct_sprite*)peep, SPRITE_LINKEDLIST_OFFSET_PEEP);
 
 	peep->sprite_identifier = 1;
-	peep->sprite_type = 0;
+	peep->sprite_type = PEEP_SPRITE_TYPE_NORMAL;
 	peep->var_2A = 1;
 	peep->state = PEEP_STATE_FALLING;
 	peep->action = PEEP_ACTION_NONE_2;
