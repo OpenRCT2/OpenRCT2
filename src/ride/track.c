@@ -239,6 +239,8 @@ const rct_trackdefinition gTrackDefinitions_INCORRECT[] = {
     { TRACK_HALF_LOOP_LARGE,		TRACK_SLOPE_DOWN_25,		TRACK_SLOPE_NONE,			TRACK_BANK_NONE,		TRACK_BANK_UPSIDE_DOWN,	TRACK_HALF_LOOP_DOWN		},	// ELEM_LEFT_LARGE_HALF_LOOP_DOWN
 };
 
+#define TRACK_MAX_SAVED_MAP_ELEMENTS 1500
+
 rct_map_element **gTrackSavedMapElements = (rct_map_element**)0x00F63674;
 
 static bool track_save_should_select_scenery_around(int rideIndex, rct_map_element *mapElement);
@@ -3351,13 +3353,385 @@ static bool track_save_contains_map_element(rct_map_element *mapElement)
 	return false;
 }
 
+static int map_element_get_total_element_count(rct_map_element *mapElement)
+{
+	int elementCount;
+	rct_scenery_entry *sceneryEntry;
+	rct_large_scenery_tile *tile;
+	
+	switch (map_element_get_type(mapElement)) {
+	case MAP_ELEMENT_TYPE_PATH:
+	case MAP_ELEMENT_TYPE_SCENERY:
+	case MAP_ELEMENT_TYPE_FENCE:
+		return 1;
+
+	case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
+		sceneryEntry = g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & 0x3FF];
+		tile = sceneryEntry->large_scenery.tiles;
+		elementCount = 0;
+		do {
+			tile++;
+			elementCount++;
+		} while (tile->x_offset != (sint16)0xFFFF);
+		return elementCount;
+
+	default:
+		return 0;
+	}
+}
+
+static bool track_scenery_is_null(rct_track_scenery *trackScenery)
+{
+	return *((uint8*)trackScenery) == 0xFF;
+}
+
+static void track_scenery_set_to_null(rct_track_scenery *trackScenery)
+{
+	*((uint8*)trackScenery) = 0xFF;
+}
+
+static rct_map_element **track_get_next_spare_saved_map_element()
+{
+	rct_map_element **savedMapElement = gTrackSavedMapElements;
+	while (*savedMapElement != (rct_map_element*)0xFFFFFFFF) {
+		savedMapElement++;
+	}
+	return savedMapElement;
+}
+
+/**
+ *
+ * rct2: 0x006D2ED2
+ */
+static bool track_save_can_add_map_element(rct_map_element *mapElement)
+{
+	int newElementCount = map_element_get_total_element_count(mapElement);
+	if (newElementCount == 0) {
+		return false;
+	}
+
+	// Get number of saved elements so far
+	rct_map_element **savedMapElement = track_get_next_spare_saved_map_element();
+
+	// Get number of spare elements left
+	int numSavedElements = savedMapElement - gTrackSavedMapElements;
+	int spareSavedElements = TRACK_MAX_SAVED_MAP_ELEMENTS - numSavedElements;
+	if (newElementCount > spareSavedElements) {
+		// No more spare saved elements left
+		return false;
+	}
+
+	// Probably checking for spare elements in the TD6 struct
+	rct_track_scenery *trackScenery = (rct_track_scenery*)0x009DA193;
+	while (!track_scenery_is_null(trackScenery)) { trackScenery++; }
+	if (trackScenery >= (rct_track_scenery*)0x9DE207) {
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * 
+ * rct2: 0x006D2F4C
+ */
+static void track_save_push_map_element(int x, int y, rct_map_element *mapElement)
+{
+	rct_map_element **savedMapElement;
+
+	map_invalidate_tile_full(x, y);
+	savedMapElement = track_get_next_spare_saved_map_element();
+	*savedMapElement = mapElement;
+	*(savedMapElement + 1) = (rct_map_element*)0xFFFFFFFF;
+}
+
+/**
+ * 
+ * rct2: 0x006D2FA7
+ */
+static void track_save_push_map_element_desc(rct_object_entry *entry, int x, int y, int z, uint8 flags, uint8 primaryColour, uint8 secondaryColour)
+{
+	rct_track_scenery *item = (rct_track_scenery*)0x009DA193;
+	while (!track_scenery_is_null(item)) { item++; }
+
+	item->scenery_object = *entry;
+	item->x = x / 32;
+	item->y = y / 32;
+	item->z = z;
+	item->flags = flags;
+	item->primary_colour = primaryColour;
+	item->secondary_colour = secondaryColour;
+
+	track_scenery_set_to_null(item + 1);
+}
+
+static void track_save_add_scenery(int x, int y, rct_map_element *mapElement)
+{
+	int entryType = mapElement->properties.scenery.type;
+	rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].entries[entryType];
+
+	uint8 flags = 0;
+	flags |= mapElement->type & 3;
+	flags |= (mapElement->type & 0xC0) >> 4;
+
+	uint8 primaryColour = mapElement->properties.scenery.colour_1 & 0x1F;
+	uint8 secondaryColour = mapElement->properties.scenery.colour_2 & 0x1F;
+		
+	track_save_push_map_element(x, y, mapElement);
+	track_save_push_map_element_desc(entry, x, y, mapElement->base_height, flags, primaryColour, secondaryColour);
+}
+
+static void track_save_add_large_scenery(int x, int y, rct_map_element *mapElement)
+{
+	rct_large_scenery_tile *sceneryTiles, *tile;
+	int x0, y0, z0, z;
+	int direction, sequence;
+
+	int entryType = mapElement->properties.scenerymultiple.type & 0x3FF;
+	rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_LARGE_SCENERY].entries[entryType];
+	sceneryTiles = g_largeSceneryEntries[entryType]->large_scenery.tiles;
+
+	z = mapElement->base_height;
+	direction = mapElement->type & 3;
+	sequence = mapElement->properties.scenerymultiple.type >> 10;
+
+	if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0)) {
+		return;
+	}
+
+	// Iterate through each tile of the large scenery element
+	sequence = 0;
+	for (tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++) {
+		sint16 offsetX = tile->x_offset;
+		sint16 offsetY = tile->y_offset;
+		rotate_map_coordinates(&offsetX, &offsetY, direction);
+
+		x = x0 + offsetX;
+		y = y0 + offsetY;
+		z = (z0 + tile->z_offset) / 8;
+		mapElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
+		if (mapElement != NULL) {
+			if (sequence == 0) {
+				uint8 flags = mapElement->type & 3;
+				uint8 primaryColour = mapElement->properties.scenerymultiple.colour[0] & 0x1F;
+				uint8 secondaryColour = mapElement->properties.scenerymultiple.colour[1] & 0x1F;
+
+				track_save_push_map_element_desc(entry, x, y, z, flags, primaryColour, secondaryColour);
+			}
+			track_save_push_map_element(x, y, mapElement);
+		}
+	}
+}
+
+static void track_save_add_wall(int x, int y, rct_map_element *mapElement)
+{
+	int entryType = mapElement->properties.fence.type;
+	rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_WALLS].entries[entryType];
+
+	uint8 flags = 0;
+	flags |= mapElement->type & 3;
+	flags |= mapElement->properties.fence.item[0] << 2;
+		
+	uint8 secondaryColour = ((mapElement->flags & 0x60) >> 2) | (mapElement->properties.fence.item[1] >> 5);
+	uint8 primaryColour = mapElement->properties.fence.item[1] & 0x1F;
+
+	track_save_push_map_element(x, y, mapElement);
+	track_save_push_map_element_desc(entry, x, y, mapElement->base_height, flags, primaryColour, secondaryColour);
+}
+
+static void track_save_add_footpath(int x, int y, rct_map_element *mapElement)
+{
+	int entryType = mapElement->properties.path.type >> 4;
+	rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_PATHS].entries[entryType];
+
+	uint8 flags = 0;
+	flags |= mapElement->properties.path.edges & 0x0F;
+	flags |= (mapElement->properties.path.type & 4) << 2;
+	flags |= (mapElement->properties.path.type & 3) << 5;
+	flags |= (mapElement->type & 1) << 7;
+		
+	track_save_push_map_element(x, y, mapElement);
+	track_save_push_map_element_desc(entry, x, y, mapElement->base_height, flags, 0, 0);
+}
+
 /**
  * 
  * rct2: 0x006D2B3C
  */
 static bool track_save_add_map_element(int interactionType, int x, int y, rct_map_element *mapElement)
 {
-	return !(RCT2_CALLPROC_X(0x006D2B3C, x, interactionType | (0 << 8), y, (int)mapElement, 0, 0, 0) & 0x100);
+	if (!track_save_can_add_map_element(mapElement)) {
+		return false;
+	}
+
+	switch (interactionType) {
+	case VIEWPORT_INTERACTION_ITEM_SCENERY:
+		track_save_add_scenery(x, y, mapElement);
+		return true;
+	case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
+		track_save_add_large_scenery(x, y, mapElement);
+		return true;
+	case VIEWPORT_INTERACTION_ITEM_WALL:
+		track_save_add_wall(x, y, mapElement);
+		return true;
+	case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
+		track_save_add_footpath(x, y, mapElement);
+		return true;
+	default:
+		return false;
+	}
+}
+
+/**
+ * 
+ * rct2: 0x006D2F78
+ */
+static void track_save_pop_map_element(int x, int y, rct_map_element *mapElement)
+{
+	map_invalidate_tile_full(x, y);
+
+	// Find map element and total of saved elements
+	int removeIndex = -1;
+	int numSavedElements = 0;
+	rct_map_element **savedMapElement = gTrackSavedMapElements;
+	while (*savedMapElement != (rct_map_element*)0xFFFFFFFF) {
+		if (*savedMapElement == mapElement) {
+			removeIndex = numSavedElements;
+		}
+		savedMapElement++;
+		numSavedElements++;
+	}
+
+	if (removeIndex == -1) {
+		return;
+	}
+
+	// Remove item and shift rest up one item
+	if (removeIndex < numSavedElements - 1) {
+		memmove(&gTrackSavedMapElements[removeIndex], &gTrackSavedMapElements[removeIndex + 1], (numSavedElements - removeIndex - 1) * sizeof(rct_map_element*));
+	}
+	gTrackSavedMapElements[numSavedElements - 1] = (rct_map_element*)0xFFFFFFFF;
+}
+
+/**
+ * 
+ * rct2: 0x006D2FDD
+ */
+static void track_save_pop_map_element_desc(rct_object_entry *entry, int x, int y, int z, uint8 flags, uint8 primaryColour, uint8 secondaryColour)
+{
+	int removeIndex = -1;
+	int totalItems = 0;
+
+	rct_track_scenery *items = (rct_track_scenery*)0x009DA193;
+	rct_track_scenery *item = items;
+	for (; !track_scenery_is_null(item); item++, totalItems++) {
+		if (item->x != x / 32) continue;
+		if (item->y != y / 32) continue;
+		if (item->z != z) continue;
+		if (item->flags != flags) continue;
+		if (!object_entry_compare(&item->scenery_object, entry)) continue;
+
+		removeIndex = totalItems;
+	}
+
+	if (removeIndex == -1) {
+		return;
+	}
+
+	// Remove item and shift rest up one item
+	if (removeIndex < totalItems - 1) {
+		memmove(&items[removeIndex], &items[removeIndex + 1], (totalItems - removeIndex - 1) * sizeof(rct_track_scenery));
+	}
+	track_scenery_set_to_null(&items[totalItems - 1]);
+}
+
+static void track_save_remove_scenery(int x, int y, rct_map_element *mapElement)
+{
+	int entryType = mapElement->properties.scenery.type;
+	rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].entries[entryType];
+
+	uint8 flags = 0;
+	flags |= mapElement->type & 3;
+	flags |= (mapElement->type & 0xC0) >> 4;
+
+	uint8 primaryColour = mapElement->properties.scenery.colour_1 & 0x1F;
+	uint8 secondaryColour = mapElement->properties.scenery.colour_2 & 0x1F;
+		
+	track_save_pop_map_element(x, y, mapElement);
+	track_save_pop_map_element_desc(entry, x, y, mapElement->base_height, flags, primaryColour, secondaryColour);
+}
+
+static void track_save_remove_large_scenery(int x, int y, rct_map_element *mapElement)
+{
+	rct_large_scenery_tile *sceneryTiles, *tile;
+	int x0, y0, z0, z;
+	int direction, sequence;
+
+	int entryType = mapElement->properties.scenerymultiple.type & 0x3FF;
+	rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_LARGE_SCENERY].entries[entryType];
+	sceneryTiles = g_largeSceneryEntries[entryType]->large_scenery.tiles;
+
+	z = mapElement->base_height;
+	direction = mapElement->type & 3;
+	sequence = mapElement->properties.scenerymultiple.type >> 10;
+
+	if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0)) {
+		return;
+	}
+
+	// Iterate through each tile of the large scenery element
+	sequence = 0;
+	for (tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++) {
+		sint16 offsetX = tile->x_offset;
+		sint16 offsetY = tile->y_offset;
+		rotate_map_coordinates(&offsetX, &offsetY, direction);
+
+		x = x0 + offsetX;
+		y = y0 + offsetY;
+		z = (z0 + tile->z_offset) / 8;
+		mapElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
+		if (mapElement != NULL) {
+			if (sequence == 0) {
+				uint8 flags = mapElement->type & 3;
+				uint8 primaryColour = mapElement->properties.scenerymultiple.colour[0] & 0x1F;
+				uint8 secondaryColour = mapElement->properties.scenerymultiple.colour[1] & 0x1F;
+
+				track_save_pop_map_element_desc(entry, x, y, z, flags, primaryColour, secondaryColour);
+			}
+			track_save_pop_map_element(x, y, mapElement);
+		}
+	}
+}
+
+static void track_save_remove_wall(int x, int y, rct_map_element *mapElement)
+{
+	int entryType = mapElement->properties.fence.type;
+	rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_WALLS].entries[entryType];
+
+	uint8 flags = 0;
+	flags |= mapElement->type & 3;
+	flags |= mapElement->properties.fence.item[0] << 2;
+		
+	uint8 secondaryColour = ((mapElement->flags & 0x60) >> 2) | (mapElement->properties.fence.item[1] >> 5);
+	uint8 primaryColour = mapElement->properties.fence.item[1] & 0x1F;
+
+	track_save_pop_map_element(x, y, mapElement);
+	track_save_pop_map_element_desc(entry, x, y, mapElement->base_height, flags, primaryColour, secondaryColour);
+}
+
+static void track_save_remove_footpath(int x, int y, rct_map_element *mapElement)
+{
+	int entryType = mapElement->properties.path.type >> 4;
+	rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_PATHS].entries[entryType];
+
+	uint8 flags = 0;
+	flags |= mapElement->properties.path.edges & 0x0F;
+	flags |= (mapElement->properties.path.type & 4) << 2;
+	flags |= (mapElement->properties.path.type & 3) << 5;
+	flags |= (mapElement->type & 1) << 7;
+		
+	track_save_pop_map_element(x, y, mapElement);
+	track_save_pop_map_element_desc(entry, x, y, mapElement->base_height, flags, 0, 0);
 }
 
 /**
@@ -3366,7 +3740,20 @@ static bool track_save_add_map_element(int interactionType, int x, int y, rct_ma
  */
 static void track_save_remove_map_element(int interactionType, int x, int y, rct_map_element *mapElement)
 {
-	RCT2_CALLPROC_X(0x006D2B3C, x, interactionType | (1 << 8), y, (int)mapElement, 0, 0, 0);
+	switch (interactionType) {
+	case VIEWPORT_INTERACTION_ITEM_SCENERY:
+		track_save_remove_scenery(x, y, mapElement);
+		break;
+	case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
+		track_save_remove_large_scenery(x, y, mapElement);
+		break;
+	case VIEWPORT_INTERACTION_ITEM_WALL:
+		track_save_remove_wall(x, y, mapElement);
+		break;
+	case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
+		track_save_remove_footpath(x, y, mapElement);
+		break;
+	}
 }
 
 /**

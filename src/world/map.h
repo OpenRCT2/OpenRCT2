@@ -372,4 +372,10 @@ int map_get_tile_quadrant(int mapX, int mapY);
 
 void map_clear_all_elements();
 
+rct_map_element *map_get_large_scenery_segment(int x, int y, int z, int direction, int sequence);
+bool map_large_scenery_get_origin(
+	int x, int y, int z, int direction, int sequence,
+	int *outX, int *outY, int *outZ
+);
+
 #endif
