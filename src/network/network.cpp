@@ -298,6 +298,8 @@ void Network::Close()
 		WSACleanup();
 		wsa_initialized = false;
 	}
+
+	gfx_invalidate_screen();
 }
 
 bool Network::BeginClient(const char* host, unsigned short port)
@@ -467,9 +469,14 @@ void Network::UpdateClient()
 		Close();
 	}
 	ProcessGameCommandQueue();
-	if (!CheckSRAND(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32), RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32))) {
+
+	// Check synchronisation
+	if (!_desynchronised && !CheckSRAND(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32), RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32))) {
+		_desynchronised = true;
 		window_network_status_open("Network desync detected");
-		Close();
+		if (!gConfigNetwork.stay_connected) {
+			Close();
+		}
 	}
 }
 
@@ -834,6 +841,7 @@ int Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pac
 				server_tick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32);
 				server_srand0_tick = 0;
 				// window_network_status_open("Loaded new map from network");
+				_desynchronised = false;
 			}
 			SDL_RWclose(rw);
 		}

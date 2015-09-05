@@ -194,6 +194,7 @@ private:
 	std::multiset<GameCommand> game_command_queue;
 	std::vector<uint8> chunk_buffer;
 	char password[33];
+	bool _desynchronised;
 
 	void UpdateServer();
 	void UpdateClient();
