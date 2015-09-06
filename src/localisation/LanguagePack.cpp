@@ -302,6 +302,7 @@ void LanguagePack::ParseString(IStringReader *reader)
 	} else {
 		if (strcmp(identifier, "STR_NAME") == 0) { stringId = 0; }
 		else if (strcmp(identifier, "STR_DESC") == 0) { stringId = 1; }
+		else if (strcmp(identifier, "STR_CPTY") == 0) { stringId = 2; }
 
 		else if (strcmp(identifier, "STR_SCNR") == 0) { stringId = 0; }
 		else if (strcmp(identifier, "STR_PARK") == 0) { stringId = 1; }
