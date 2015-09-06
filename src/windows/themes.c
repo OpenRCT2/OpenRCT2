@@ -595,7 +595,7 @@ static void window_themes_dropdown(rct_window *w, int widgetIndex, int dropdownI
 	switch (widgetIndex) {
 	case WIDX_THEMES_LIST:
 		if (dropdownIndex != -1) {
-			get_colour_scheme_tab()->colours[_color_index_2] = dropdownIndex | get_colour_scheme_tab()->colours[_color_index_2] & 0x80;
+			get_colour_scheme_tab()->colours[_color_index_2] = dropdownIndex | (get_colour_scheme_tab()->colours[_color_index_2] & 0x80);
 			window_invalidate_all();
 			_color_index_1 = -1;
 			_color_index_2 = -1;

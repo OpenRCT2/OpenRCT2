@@ -275,7 +275,7 @@ void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, int format, void* args
 void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y, int width)
 {
 	char* buffer;
-	short text_width;
+	int text_width;
 
 	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	format_string(buffer, format, args);
@@ -286,9 +286,11 @@ void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, int format, void *a
 	text_width = gfx_clip_string(buffer, width);
 
 	// Draw the text centred
-	if (text_width <= 0xFFFF) {
+	if (text_width <= 0xFFFF && text_width >= 0) {
 		x -= (text_width - 1) / 2;
 		gfx_draw_string(dpi, buffer, colour, x, y);
+	} else {
+		log_warning("improper text width %d for string %s", text_width, buffer);
 	}
 }
 
@@ -331,7 +333,7 @@ void gfx_draw_string_right(rct_drawpixelinfo* dpi, int format, void* args, int c
 void gfx_draw_string_centred(rct_drawpixelinfo *dpi, int format, int x, int y, int colour, void *args)
 {
 	char* buffer;
-	short text_width;
+	int text_width;
 
 	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	format_string(buffer, format, args);
@@ -342,9 +344,11 @@ void gfx_draw_string_centred(rct_drawpixelinfo *dpi, int format, int x, int y, i
 	text_width = gfx_get_string_width(buffer);
 
 	// Draw the text centred
-	if (text_width <= 0xFFFF) {
+	if (text_width <= 0xFFFF && text_width >= 0) {
 		x -= text_width / 2;
 		gfx_draw_string(dpi, buffer, colour, x, y);
+	} else {
+		log_warning("improper text width %d for string %s", text_width, buffer);
 	}
 }
 

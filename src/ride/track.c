@@ -543,7 +543,11 @@ rct_track_td6* load_track_design(const char *path)
 	// Decode the track data
 	decoded = malloc(0x10000);
 	decodedLength = sawyercoding_decode_td6(fpBuffer, decoded, fpLength);
-	realloc(decoded, decodedLength);
+	decoded = realloc(decoded, decodedLength);
+	if (decoded == NULL) {
+		log_error("failed to realloc");
+		return 0;
+	}
 	free(fpBuffer);
 
 	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
@@ -2733,7 +2737,7 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 			bh = trackElement.element->properties.track.colour >> 4;
 		}
 
-		uint8 flags = trackElement.element->type & (1 << 7) | bh;
+		uint8 flags = (trackElement.element->type & (1 << 7)) | bh;
 		flags |= (trackElement.element->properties.track.colour & 3) << 4;
 
 		if (RCT2_ADDRESS(0x0097D4F2, uint16)[ride->type * 4] & (1 << 3) &&
@@ -2990,7 +2994,7 @@ int save_track_design(uint8 rideIndex){
 		return 0;
 	}
 
-	if (ride->ratings.excitement == 0xFFFF){
+	if (ride->ratings.excitement == (ride_rating)0xFFFF){
 		window_error_open(STR_CANT_SAVE_TRACK_DESIGN, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
 		return 0;
 	}

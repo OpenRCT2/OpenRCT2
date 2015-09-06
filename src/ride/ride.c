@@ -2989,9 +2989,9 @@ static void ride_entrance_exit_connected(rct_ride* ride, int ride_idx)
 			entrance = ride->entrances[i],
 			exit = ride->exits[i];
 
-		if (station_start == -1 )
+		if (station_start == 0xFFFF )
 			continue;
-		if (entrance != -1 && !ride_entrance_exit_is_reachable(entrance, ride, i)) {
+		if (entrance != 0xFFFF && !ride_entrance_exit_is_reachable(entrance, ride, i)) {
 			// name of ride is parameter of the format string
 			RCT2_GLOBAL(0x013CE952, uint16) = ride->name;
 			RCT2_GLOBAL(0x013CE954, uint32) = ride->name_arguments;			
@@ -2999,7 +2999,7 @@ static void ride_entrance_exit_connected(rct_ride* ride, int ride_idx)
 			ride->connected_message_throttle = 3;
 		}
 			
-		if (exit != -1 && !ride_entrance_exit_is_reachable(exit, ride, i)) {
+		if (exit != 0xFFFF && !ride_entrance_exit_is_reachable(exit, ride, i)) {
 			// name of ride is parameter of the format string
 			RCT2_GLOBAL(0x013CE952, uint16) = ride->name;
 			RCT2_GLOBAL(0x013CE954, uint32) = ride->name_arguments;
@@ -5222,17 +5222,17 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 						peep->item_standard_flags &= ~PEEP_ITEM_PHOTO;
 					}
 				}
-				if(peep->item_extra_flags && PEEP_ITEM_PHOTO2){
+				if(peep->item_extra_flags & PEEP_ITEM_PHOTO2){
 					if(peep->photo2_ride_ref == ride_id){
 						peep->item_extra_flags &= ~PEEP_ITEM_PHOTO2;
 					}
 				}
-				if(peep->item_extra_flags && PEEP_ITEM_PHOTO3){
+				if(peep->item_extra_flags & PEEP_ITEM_PHOTO3){
 					if(peep->photo3_ride_ref == ride_id){
 						peep->item_extra_flags &= ~PEEP_ITEM_PHOTO3;
 					}
 				}
-				if(peep->item_extra_flags && PEEP_ITEM_PHOTO4){
+				if(peep->item_extra_flags & PEEP_ITEM_PHOTO4){
 					if(peep->photo4_ride_ref == ride_id){
 						peep->item_extra_flags &= ~PEEP_ITEM_PHOTO4;
 					}

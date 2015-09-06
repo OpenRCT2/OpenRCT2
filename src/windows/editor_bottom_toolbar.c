@@ -400,7 +400,7 @@ static void window_editor_bottom_toolbar_mouseup(rct_window *w, int widgetIndex)
 {
 	if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON) {
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) ||
-			RCT2_GLOBAL(0x13573C8, uint16) == 0x2710 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_18)) {
+			(RCT2_GLOBAL(0x13573C8, uint16) == 0x2710 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_18))) {
 			previous_button_mouseup_events[g_editor_step]();
 		}
 	} else if (widgetIndex == WIDX_NEXT_STEP_BUTTON) {

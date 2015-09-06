@@ -429,8 +429,8 @@ static void window_loadsave_textinput(rct_window *w, int widgetIndex, char *text
 	}
 
 	strncpy(path, _directory, sizeof(path));
-	strncat(path, text, sizeof(path));
-	strncat(path, _extension, sizeof(path));
+	strncat(path, text, sizeof(path) - strnlen(path, MAX_PATH) - 1);
+	strncat(path, _extension, sizeof(path) - strnlen(path, MAX_PATH) - 1);
 
 	overwrite = 0;
 	for (i = 0; i < _listItemsCount; i++) {
@@ -604,8 +604,8 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 	_shortenedDirectory[0] = '\0';
 
 	strncpy(filter, directory, sizeof(filter));
-	strncat(filter, "*", sizeof(filter));
-	strncat(filter, extension, sizeof(filter));
+	strncat(filter, "*", sizeof(filter) - strnlen(filter, MAX_PATH) - 1);
+	strncat(filter, extension, sizeof(filter) - strnlen(filter, MAX_PATH) - 1);
 
 	if (_listItems != NULL)
 		free(_listItems);

@@ -5394,7 +5394,7 @@ rct_peep *peep_generate(int x, int y, int z)
 		cash = 0;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) == 0xFFFF){
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) == (money16)0xFFFF){
 		cash = 0;
 	}
 
@@ -7030,7 +7030,7 @@ static int guest_path_find_leaving_park(rct_peep *peep, rct_map_element *map_ele
 	RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
 	RCT2_GLOBAL(0x00F1AEE1, uint8) = 0xFF;
 	direction = sub_69A5F0(peep->next_x, peep->next_y, peep->next_z, peep, map_element);
-	if (direction == -1)
+	if (direction == 0xFF)
 		return guest_path_find_aimless(peep, edges);
 	else
 		return peep_move_one_tile(direction, peep);
@@ -8003,7 +8003,7 @@ static bool sub_6960AB(rct_peep *peep, int rideIndex, int dh, int bp)
 						goto loc_696658;
 					}
 				}
-				if (ride->excitement != 0xFFFF) {
+				if (ride->excitement != (ride_rating)0xFFFF) {
 					if (rideIndex == peep->guest_heading_to_ride_id) {
 						if (ride->intensity > RIDE_RATING(10, 00) && !gConfigCheat.ignore_ride_intensity) goto loc_6965F1;
 						goto loc_696387;

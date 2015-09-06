@@ -471,7 +471,7 @@ static void config_save_property_value(SDL_RWops *file, uint8 type, value_union 
 		rwopsprintf(file, "%u", value->value_uint16);
 		break;
 	case CONFIG_VALUE_TYPE_UINT32:
-		rwopsprintf(file, "%u", value->value_uint32);
+		rwopsprintf(file, "%lu", value->value_uint32);
 		break;
 	case CONFIG_VALUE_TYPE_SINT8:
 		rwopsprintf(file, "%d", value->value_sint8);
@@ -480,7 +480,7 @@ static void config_save_property_value(SDL_RWops *file, uint8 type, value_union 
 		rwopsprintf(file, "%d", value->value_sint16);
 		break;
 	case CONFIG_VALUE_TYPE_SINT32:
-		rwopsprintf(file, "%d", value->value_sint32);
+		rwopsprintf(file, "%ld", value->value_sint32);
 		break;
 	case CONFIG_VALUE_TYPE_FLOAT:
 		rwopsprintf(file, "%.3f", value->value_float);
