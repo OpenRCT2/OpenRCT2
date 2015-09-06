@@ -3183,11 +3183,68 @@ rct_map_element *map_element_insert(int x, int y, int z, int flags)
 
 /**
  *
+ *  rct2: 0x0068BB18
+ */
+static void map_obstruction_set_error_text(rct_map_element *mapElement)
+{
+	rct_string_id errorStringId;
+	rct_ride *ride;
+	rct_scenery_entry *sceneryEntry;
+
+	errorStringId = STR_OBJECT_IN_THE_WAY;
+	switch (map_element_get_type(mapElement)) {
+	case MAP_ELEMENT_TYPE_SURFACE:
+		errorStringId = STR_RAISE_OR_LOWER_LAND_FIRST;
+		break;
+	case MAP_ELEMENT_TYPE_PATH:
+		errorStringId = STR_FOOTPATH_IN_THE_WAY;
+		break;
+	case MAP_ELEMENT_TYPE_TRACK:
+		ride = GET_RIDE(mapElement->properties.track.ride_index);
+		errorStringId = STR_X_IN_THE_WAY;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = ride->name;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
+		break;
+	case MAP_ELEMENT_TYPE_SCENERY:
+		sceneryEntry = g_smallSceneryEntries[mapElement->properties.scenery.type];
+		errorStringId = STR_X_IN_THE_WAY;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = sceneryEntry->name;
+		break;
+	case MAP_ELEMENT_TYPE_ENTRANCE:
+		switch (mapElement->properties.entrance.type) {
+		case ENTRANCE_TYPE_RIDE_ENTRANCE:
+			errorStringId = STR_RIDE_ENTRANCE_IN_THE_WAY;
+			break;
+		case ENTRANCE_TYPE_RIDE_EXIT:
+			errorStringId = STR_RIDE_EXIT_IN_THE_WAY;
+			break;
+		case ENTRANCE_TYPE_PARK_ENTRANCE:
+			errorStringId = STR_PARK_ENTRANCE_IN_THE_WAY;
+			break;
+		}
+		break;
+	case MAP_ELEMENT_TYPE_FENCE:
+		sceneryEntry = g_wallSceneryEntries[mapElement->properties.scenery.type];
+		errorStringId = STR_X_IN_THE_WAY;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = sceneryEntry->name;
+		break;
+	case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
+		sceneryEntry = g_largeSceneryEntries[mapElement->properties.scenery.type];
+		errorStringId = STR_X_IN_THE_WAY;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = sceneryEntry->name;
+		break;
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = errorStringId;
+}
+
+/**
+ *
  *  rct2: 0x0068B932
  */
 int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *clearFunc, uint8 bl)
 {
-	//return (RCT2_CALLPROC_X(0x0068B932, x, bl, y, (zHigh << 8) | zLow, 0, 0, (int)clearFunc) & 0x100) == 0;
+	// return (RCT2 CALLPROC X(0x0068B932, x, bl, y, (zHigh << 8) | zLow, 0, 0, (int)clearFunc) & 0x100) == 0;
 	RCT2_GLOBAL(0x00F1AD40, void*) = clearFunc;
 	RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) = 1;
 	if (x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16) || x < 32 || y < 32) {
@@ -3267,7 +3324,7 @@ int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *cle
 					}
 				}
 				if (map_element != (rct_map_element*)0xFFFFFFF) {
-					RCT2_CALLPROC_X(0x0068BB18, 0, 0, 0, 0, (int)map_element, 0, 0);
+					map_obstruction_set_error_text(map_element);
 				}
 				return false;
 				loc_68BAE6:
