@@ -7891,7 +7891,7 @@ static void peep_reset_ride_heading(rct_peep *peep)
  */
 static bool sub_6960AB(rct_peep *peep, int rideIndex, int dh, int bp)
 {
-	// return RCT2_CALLPROC_X(0x006960AB, 0, 0, 0, rideIndex | (dh << 8), (int)peep, 0, bp) & 0x100;
+	// return RCT2 CALLPROC X(0x006960AB, 0, 0, 0, rideIndex | (dh << 8), (int)peep, 0, bp) & 0x100;
 
 	rct_ride *ride = GET_RIDE(rideIndex);
 	rct_ride_type *rideEntry;

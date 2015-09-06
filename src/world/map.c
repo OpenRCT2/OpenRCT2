@@ -28,6 +28,9 @@
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
+#include "../openrct2.h"
+#include "../ride/track.h"
+#include "../ride/track_data.h"
 #include "../scenario.h"
 #include "banner.h"
 #include "climate.h"
@@ -36,7 +39,6 @@
 #include "map_animation.h"
 #include "park.h"
 #include "scenery.h"
-#include "../openrct2.h"
 
 /* Replaces 0x00993CCC & 0x00993CCE */
 const rct_xy16 TileDirectionDelta[] = {
@@ -67,6 +69,7 @@ static void map_update_grass_length(int x, int y, rct_map_element *mapElement);
 static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int length);
 static void sub_68AE2A(int x, int y);
 static void translate_3d_to_2d(int rotation, int *x, int *y);
+static void map_obstruction_set_error_text(rct_map_element *mapElement);
 
 void rotate_map_coordinates(sint16 *x, sint16 *y, int rotation)
 {
@@ -2307,7 +2310,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 				}
 				if(*ebx & GAME_COMMAND_FLAG_APPLY && !(*ebx & 0x40)){
 					footpath_remove_litter(x, y, F64EC8);
-					if(!gCheatsDisableClearanceChecks && (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG19)) {
+					if(!gCheatsDisableClearanceChecks && (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_ALLOW_WALLS)) {
 						map_remove_walls_at(x, y, F64EC8, F64EC8 + scenery_entry->small_scenery.height);
 					}
 				}
@@ -2433,21 +2436,178 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	*ebx = MONEY32_UNDEFINED;
 }
 
+static bool map_is_location_at_edge(int x, int y)
+{
+	return x < 32 || y < 32 || x >= ((256 - 1) * 32) || y >= ((256 - 1) * 32);
+}
+
+/**
+ *
+ *  rct2: 0x006E5CBA
+ */
+static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall, int x, int y, int z0, int z1, int edge, rct_map_element *trackElement)
+{
+	const rct_preview_track *trackBlock;
+	int z, direction;
+
+	int trackType = trackElement->properties.track.type;
+	int sequence = trackElement->properties.track.sequence & 0x0F;
+	int typeAndSequence = (trackType << 4) | sequence;
+	direction = (edge - trackElement->type) & 3;
+	rct_ride *ride = GET_RIDE(trackElement->properties.track.ride_index);
+
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
+		if (RCT2_ADDRESS(0x0099AA94, uint8)[typeAndSequence] & (1 << direction)) {
+			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_18)) {
+				return true;
+			}
+		}
+	} else {
+		if (RCT2_ADDRESS(0x00999A94, uint8)[typeAndSequence] & (1 << direction)) {
+			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_18)) {
+				return true;
+			}
+		}
+	}
+	
+	if (!(wall->wall.flags & WALL_SCENERY_FLAG5)) {
+		return false;
+	}
+
+	if (!(RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 1)) {
+		return false;
+	}
+
+	rct_ride_type *rideEntry = GET_RIDE_ENTRY(ride->subtype);
+	if (rideEntry->flags & RIDE_ENTRY_FLAG_16) {
+		return false;
+	}
+
+	RCT2_GLOBAL(0x0141F725, uint8) |= 1;
+	if (z0 & 1) {
+		return false;
+	}
+
+	if (sequence == 0) {
+		if (RCT2_GLOBAL(0x0099BA64 + (trackType * 16), uint8) & 0x40) {
+			return false;
+		}
+
+		if (gTrackDefinitions[trackType].bank_start == 0) {
+			if (!(RCT2_ADDRESS(0x009968BB, uint8)[trackType * 10] & 4)) {
+				direction = (trackElement->type & 3) ^ 2;
+				if (direction == edge) {
+					trackBlock = &TrackBlocks[trackType][sequence];
+					z = RCT2_GLOBAL(0x009968BD + (trackType * 10), uint8);
+					z = trackElement->base_height + ((z - trackBlock->z) * 8);
+					if (z == z0) {
+						return true;
+					}
+				}
+			}
+		}
+	}
+
+	trackBlock = &TrackBlocks[trackType][sequence + 1];
+	if (trackBlock->index != 0xFF) {
+		return false;
+	}
+
+	if (gTrackDefinitions[trackType].bank_end != 0) {
+		return false;
+	}
+
+	direction = RCT2_ADDRESS(0x009968BC, uint8)[trackType * 10];
+	if (direction & 4) {
+		return false;
+	}
+
+	direction = (trackElement->type + direction) & 3;
+	if (direction != edge) {
+		return false;
+	}
+
+	trackBlock = &TrackBlocks[trackType][sequence];
+	z = RCT2_GLOBAL(0x009968BF + (trackType * 10), uint8);
+	z = trackElement->base_height + ((z - trackBlock->z) * 8);
+	if (z != z0) {
+		return false;
+	}
+
+	return true;
+}
+
 /**
  *
  *  rct2: 0x006E5C1A
  */
-bool sub_6E5C1A(rct_scenery_entry *wall, int x, int y, int edge, int dl, int dh)
+static bool map_place_fence_check_obstruction(rct_scenery_entry *wall, int x, int y, int z0, int z1, int edge)
 {
-	return !(RCT2_CALLPROC_X(0x006E5C1A,
-		x,
-		edge,
-		y,
-		dl | (dh << 8),
-		0,
-		(int)wall,
-		0
-	) & 0x100);
+	int entryType, sequence;
+	rct_scenery_entry *entry;
+	rct_large_scenery_tile *tile;
+
+	RCT2_GLOBAL(0x0141F725, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) = 1;
+	if (map_is_location_at_edge(x, y)) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_OFF_EDGE_OF_MAP;
+		return false;
+	}
+
+	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
+	do {
+		int elementType = map_element_get_type(mapElement);
+		if (elementType == MAP_ELEMENT_TYPE_SURFACE) continue;
+		if (z0 >= mapElement->clearance_height) continue;
+		if (z1 <= mapElement->base_height) continue;
+		if (elementType == MAP_ELEMENT_TYPE_FENCE) {
+			int direction = mapElement->type & 3;
+			if (edge == direction) {
+				map_obstruction_set_error_text(mapElement);
+				return false;
+			}
+			continue;
+		}
+		if ((mapElement->flags & 0x0F) == 0) continue;
+
+		switch (elementType) {
+		case MAP_ELEMENT_TYPE_ENTRANCE:
+			map_obstruction_set_error_text(mapElement);
+			return false;
+		case MAP_ELEMENT_TYPE_PATH:
+			if (mapElement->properties.path.edges & (1 << edge)) {
+				map_obstruction_set_error_text(mapElement);
+				return false;
+			}
+			break;
+		case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
+			entryType = mapElement->properties.scenerymultiple.type & 0x3FF;
+			sequence = mapElement->properties.scenerymultiple.type >> 10;
+			entry = g_largeSceneryEntries[entryType];
+			tile = &entry->large_scenery.tiles[sequence];
+
+			int direction = ((edge - mapElement->type) & 3) + 8;
+			if (!(tile->var_7 & (1 << direction))) {
+				map_obstruction_set_error_text(mapElement);
+				return false;
+			}
+			break;
+		case MAP_ELEMENT_TYPE_SCENERY:
+			entryType = mapElement->properties.scenery.type;
+			entry = g_smallSceneryEntries[entryType];
+			if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_ALLOW_WALLS) {
+				map_obstruction_set_error_text(mapElement);
+				return false;
+			}
+			break;
+		case MAP_ELEMENT_TYPE_TRACK:
+			if (!map_place_fence_check_obstruction_with_track(wall, x, y, z0, z1, edge, mapElement)) {
+				return false;
+			}
+			break;
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
+	return true;
 }
 
 /**
@@ -2641,7 +2801,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	RCT2_GLOBAL(0x00141F722, uint8) += fence->wall.height;
 
 	if (!(flags & (1 << 7)) && !gCheatsDisableClearanceChecks){
-		if (!sub_6E5C1A(fence, position.x, position.y, edge, RCT2_GLOBAL(0x00141F721, uint8), RCT2_GLOBAL(0x00141F722, uint8))) {
+		if (!map_place_fence_check_obstruction(fence, position.x, position.y, RCT2_GLOBAL(0x00141F721, uint8), RCT2_GLOBAL(0x00141F722, uint8), edge)) {
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
