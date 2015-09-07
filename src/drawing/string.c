@@ -70,7 +70,7 @@ int gfx_get_string_width_new_lined(utf8 *text)
 
 	int width = 0;
 	int maxWidth = 0;
-	while ((codepoint = utf8_get_next(ch, &nextCh)) != 0) {
+	while ((codepoint = utf8_get_next(ch, (const utf8**)&nextCh)) != 0) {
 		if (codepoint == FORMAT_NEWLINE || codepoint == FORMAT_NEWLINE_SMALLER) {
 			backup = *nextCh;
 			*nextCh = 0;
@@ -122,7 +122,7 @@ int gfx_clip_string(utf8 *text, int width)
 	utf8 *nextCh = text;
 	utf8 *clipCh = text;
 	int codepoint;
-	while ((codepoint = utf8_get_next(ch, &nextCh)) != 0) {
+	while ((codepoint = utf8_get_next(ch, (const utf8**)&nextCh)) != 0) {
 		if (utf8_is_format_code(codepoint)) {
 			ch = nextCh;
 			ch += utf8_get_format_code_arg_length(codepoint);
@@ -179,7 +179,7 @@ int gfx_wrap_string(utf8 *text, int width, int *outNumLines, int *outFontHeight)
 	utf8 *nextCh;
 	int codepoint;
 	int numCharactersOnLine = 0;
-	while ((codepoint = utf8_get_next(ch, &nextCh)) != 0) {
+	while ((codepoint = utf8_get_next(ch, (const utf8**)&nextCh)) != 0) {
 		if (codepoint == ' ') {
 			currentWord = ch;
 			currentWidth = lineWidth;
@@ -712,7 +712,7 @@ void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, int x, int 
 		utf8 *ch = buffer;
 		utf8 *nextCh;
 		int codepoint;
-		while ((codepoint = utf8_get_next(ch, &nextCh)) != 0) {
+		while ((codepoint = utf8_get_next(ch, (const utf8**)&nextCh)) != 0) {
 			if (!utf8_is_format_code(codepoint)) {
 				numCharactersDrawn++;
 				if (numCharactersDrawn > numCharactersToDraw) {
