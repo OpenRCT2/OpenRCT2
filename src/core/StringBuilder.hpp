@@ -1,11 +1,13 @@
 #pragma once
 
-#include <algorithm>
-
 #include "../common.h"
 #include "../localisation/localisation.h"
 #include "Memory.hpp"
 
+#undef min
+#undef max
+
+#include <algorithm>
 /**
  * Class for constructing strings efficiently. A buffer is automatically allocated and reallocated when characters or strings
  * are appended. Use GetString to copy the current state of the string builder to a new fire-and-forget string.
