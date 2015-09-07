@@ -803,5 +803,8 @@
     <ClInclude Include="..\src\core\StringReader.hpp">
       <Filter>Source\Core</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\core\Math.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

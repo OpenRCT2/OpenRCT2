@@ -33,6 +33,8 @@
 #include "scenario.h"
 #include "rct1.h"
 
+char gTempObjectLoadName[9] = { 0 };
+
 int object_load_entry(const utf8 *path, rct_object_entry *outEntry)
 {
 	SDL_RWops *file;
@@ -1566,6 +1568,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 
 			// Tell text to be loaded into a different address
 			RCT2_GLOBAL(0x009ADAFC, uint8) = 255;
+			memcpy(gTempObjectLoadName, openedEntry.name, 8);
 			// Not used??
 			RCT2_GLOBAL(0x009ADAFD, uint8) = 1;
 			object_paint(openedEntry.flags & 0x0F, 0, 0, 0, 0, (int)chunk, 0, 0);			

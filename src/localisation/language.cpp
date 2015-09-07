@@ -315,15 +315,17 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 		while (*(*pStringTable)++ != 0);
 	}
 
+	char name[9];
 	if (RCT2_GLOBAL(0x009ADAFC, uint8) == 0) {
-		char name[9];
 		memcpy(name, object_entry_groups[type].entries[index].name, 8);
-		name[8] = 0;
+	} else {
+		memcpy(name, gTempObjectLoadName, 8);
+	}
+	name[8] = 0;
 
-		rct_string_id stringId = _languageCurrent->GetObjectOverrideStringId(name, tableindex);
-		if (stringId != (rct_string_id)STR_NONE) {
-			return stringId;
-		}
+	rct_string_id stringId = _languageCurrent->GetObjectOverrideStringId(name, tableindex);
+	if (stringId != (rct_string_id)STR_NONE) {
+		return stringId;
 	}
 
 	// If not scenario text
