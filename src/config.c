@@ -329,7 +329,7 @@ void config_set_defaults()
 				if (property->type == CONFIG_VALUE_TYPE_STRING) {
 					// Copy the string to new memory
 					const utf8 *src = property->default_value.value_string;
-					const utf8 **dst = &(destValue->value_string);
+					const utf8 **dst = (const utf8**)&(destValue->value_string);
 					if (src != NULL) {
 						*dst = _strdup(property->default_value.value_string);
 					}
@@ -507,7 +507,7 @@ bool config_get_section(const utf8string line, const utf8 **sectionName, int *se
 	if (*ch != '[') return false;
 	*sectionName = ++ch;
 
-	while ((c = utf8_get_next(ch, &ch)) != 0) {
+	while ((c = utf8_get_next(ch, (const utf8**)&ch)) != 0) {
 		if (c == '#') return false;
 		if (c == '[') return false;
 		if (c == ' ') break;
@@ -530,7 +530,7 @@ bool config_get_property_name_value(const utf8string line, utf8 **propertyName, 
 	if (*ch == 0) return false;
 	*propertyName = ch;
 
-	while ((c = utf8_get_next(ch, &ch)) != 0) {
+	while ((c = utf8_get_next(ch, (const utf8**)&ch)) != 0) {
 		if (isspace(c) || c == '=') {
 			*propertyNameSize = ch - *propertyName - 1;
 			break;
@@ -554,7 +554,7 @@ bool config_get_property_name_value(const utf8string line, utf8 **propertyName, 
 	}
 	*value = ch;
 
-	while ((c = utf8_get_next(ch, &ch)) != 0) {
+	while ((c = utf8_get_next(ch, (const utf8**)&ch)) != 0) {
 		if (isspace(c) || c == '#') {
 			if (!quotes) break;
 		}
@@ -716,7 +716,7 @@ static void utf8_skip_whitespace(utf8 **outch)
 	utf8 *ch;
 	while (**outch != 0) {
 		ch = *outch;
-		if (!isspace(utf8_get_next(*outch, outch))) {
+		if (!isspace(utf8_get_next(*outch, (const utf8**)outch))) {
 			*outch = ch;
 			break;
 		}
@@ -726,7 +726,7 @@ static void utf8_skip_whitespace(utf8 **outch)
 static void utf8_skip_non_whitespace(utf8 **outch)
 {
 	while (**outch != 0) {
-		if (isspace(utf8_get_next(*outch, outch)))
+		if (isspace(utf8_get_next(*outch, (const utf8**)outch)))
 			break;
 	}
 }

@@ -113,7 +113,7 @@ void utf8_remove_format_codes(utf8 *text)
 	utf8 *dstCh = text;
 	utf8 *ch = text;
 	int codepoint;
-	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
+	while ((codepoint = utf8_get_next(ch, (const utf8**)&ch)) != 0) {
 		if (!utf8_is_format_code(codepoint)) {
 			dstCh = utf8_write_codepoint(dstCh, codepoint);
 		}
@@ -240,7 +240,7 @@ static int language_open_file(const utf8 *filename, language_data *language)
 
 		// Handle UTF-8
 		char *srcNext;
-		uint32 utf8Char = utf8_get_next(src, &srcNext);
+		uint32 utf8Char = utf8_get_next(src, (const utf8**)&srcNext);
 		i += srcNext - src - 1;
 
 		switch (mode) {
@@ -343,7 +343,7 @@ void utf8_trim_string(utf8 *text)
 	int codepoint;
 
 	// Trim left
-	while ((codepoint = utf8_get_next(src, &src)) != 0) {
+	while ((codepoint = utf8_get_next(src, (const utf8**)&src)) != 0) {
 		if (codepoint != ' ') {
 			dst = utf8_write_codepoint(dst, codepoint);
 			last = dst;
@@ -352,7 +352,7 @@ void utf8_trim_string(utf8 *text)
 	}
 	if (codepoint != 0) {
 		// Trim right
-		while ((codepoint = utf8_get_next(src, &src)) != 0) {
+		while ((codepoint = utf8_get_next(src, (const utf8**)&src)) != 0) {
 			dst = utf8_write_codepoint(dst, codepoint);
 			if (codepoint != ' ') {
 				last = dst;

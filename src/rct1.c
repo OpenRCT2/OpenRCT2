@@ -70,7 +70,7 @@ bool rct1_read_sc4(const char *path, rct1_s4 *s4)
 	long length, decodedLength;
 	bool success;
 
-	if (!readentirefile(path, (void**)&buffer, &length)) {
+	if (!readentirefile(path, (void**)&buffer, (int*)&length)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3011;
 		return 0;
@@ -100,7 +100,7 @@ bool rct1_read_sv4(const char *path, rct1_s4 *s4)
 	long length, decodedLength;
 	bool success;
 
-	if (!readentirefile(path, (void**)&buffer, &length)) {
+	if (!readentirefile(path, (void**)&buffer, (int*)&length)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3011;
 		return 0;

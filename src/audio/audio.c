@@ -1164,7 +1164,7 @@ MMRESULT mmio_open(const char* filename, HMMIO* hmmio, HGLOBAL* hmem, LPMMCKINFO
 					goto label20;
 				}
 				memcpy(hmemold2, &waveformat, 16);
-				*((uint16*)*hmemold + 8) = (uint16)hmem;
+				*((uint16*)*hmemold + 8) = *(uint16*)*hmem;
 				if (!hmem || mmioRead(hmmio1, (char*)*hmemold + 18, (LONG)hmem) == (LONG)hmem) {
 					result = mmioAscend(hmmio1, &mmckinfo1, 0);
 					if (!result) {

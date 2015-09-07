@@ -194,7 +194,7 @@ static bool window_changelog_read_file()
 	window_changelog_dispose_file();
 	utf8 path[MAX_PATH];
 	sprintf(path, "%s%cchangelog.txt", gExePath, platform_get_path_separator());
-	if (!readentirefile(path, &_changelogText, &_changelogTextSize)) {
+	if (!readentirefile(path, (void**)&_changelogText, (int*)&_changelogTextSize)) {
 		log_error("Unable to read changelog.txt");
 		return false;
 	}
