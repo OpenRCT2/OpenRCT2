@@ -414,7 +414,7 @@ static int award_is_deserved_most_disappointing(int awardType, int activeAwardTy
 	disappointingRides = 0;
 
 	FOR_ALL_RIDES(i, ride) {
-		if (ride->excitement == 0xFFFF || ride->popularity == 0xFF)
+		if (ride->excitement == (ride_rating)0xFFFF || ride->popularity == 0xFF)
 			continue;
 		
 		countedRides++;
