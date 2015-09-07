@@ -3949,7 +3949,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		}
 	}
 
-	if ((edx_flags & (1 << 0)) && !(enabledTrackPieces & TRACK_LIFT_HILL_STEEP)) {
+	if ((edx_flags & (1 << 0)) && !(enabledTrackPieces & (1ULL << TRACK_LIFT_HILL_STEEP))) {
 		if (RCT2_ADDRESS(0x0099423C, uint16)[type] & 0x400) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_STEEP_FOR_LIFT_HILL;
 			return MONEY32_UNDEFINED;
