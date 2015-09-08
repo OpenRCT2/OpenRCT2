@@ -80,7 +80,10 @@ elif [[ `uname` == "Linux" ]]; then
 			sudo apt-get install -y wine
 		fi
 	else
-		sudo apt-get install -y --force-yes binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 cmake
+		sudo add-apt-repostiory -y ppa:ubuntu-toolchain-r/test
+		sudo apt-get update
+		sudo apt-get install -y --force-yes gcc-5 binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 cmake
+		sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 90
 	fi
 fi
 
