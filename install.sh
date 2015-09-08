@@ -83,7 +83,7 @@ elif [[ `uname` == "Linux" ]]; then
 		sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 		sudo apt-get update
 		sudo apt-get install -y --force-yes gcc-5 binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 cmake
-		sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 90
+		sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 50
 	fi
 fi
 
