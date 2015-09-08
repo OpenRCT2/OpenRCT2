@@ -73,14 +73,29 @@ int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *in
 			SDL_RWclose(rw);
 			RCT2_GLOBAL(0x009AA00C, uint8) = 0;
 
-			// Checks for a scenario string object (possibly for localisation)
-			if ((info->entry.flags & 0xFF) != 255) {
-				if (object_get_scenario_text(&info->entry)) {
-					rct_stex_entry* stex_entry = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, rct_stex_entry*);
-					format_string(info->name, stex_entry->scenario_name, NULL);
-					format_string(info->details, stex_entry->details, NULL);
-					RCT2_GLOBAL(0x009AA00C, uint8) = stex_entry->var_06;
-					object_free_scenario_text();
+			// Get filename
+			utf8 filename[MAX_PATH];
+			strcpy(filename, path_get_filename(path));
+			path_remove_extension(filename);
+
+			rct_string_id localisedStringIds[3];
+			if (language_get_localised_scenario_strings(filename, localisedStringIds)) {
+				if (localisedStringIds[0] != (rct_string_id)STR_NONE) {
+					strncpy(info->name, language_get_string(localisedStringIds[0]), 64);
+				}
+				if (localisedStringIds[2] != (rct_string_id)STR_NONE) {
+					strncpy(info->details, language_get_string(localisedStringIds[2]), 256);
+				}
+			} else {
+				// Checks for a scenario string object (possibly for localisation)
+				if ((info->entry.flags & 0xFF) != 255) {
+					if (object_get_scenario_text(&info->entry)) {
+						rct_stex_entry* stex_entry = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, rct_stex_entry*);
+						format_string(info->name, stex_entry->scenario_name, NULL);
+						format_string(info->details, stex_entry->details, NULL);
+						RCT2_GLOBAL(0x009AA00C, uint8) = stex_entry->var_06;
+						object_free_scenario_text();
+					}
 				}
 			}
 			return 1;
@@ -282,23 +297,45 @@ void scenario_begin()
 	strcpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, s6Info->details);
 	strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, s6Info->name);
 
-	rct_stex_entry* stex = g_stexEntries[0];
-	if ((int)stex != -1) {
-		char *buffer = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
+	{
+		// Get filename
+		utf8 filename[MAX_PATH];
+		strcpy(filename, _scenarioFileName);
+		path_remove_extension(filename);
 
-		// Set localised park name
-		format_string(buffer, stex->park_name, 0);
-		park_set_name(buffer);
+		rct_string_id localisedStringIds[3];
+		if (language_get_localised_scenario_strings(filename, localisedStringIds)) {
+			if (localisedStringIds[0] != (rct_string_id)STR_NONE) {
+				strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(localisedStringIds[0]), 31);
+				((char*)RCT2_ADDRESS_SCENARIO_NAME)[31] = '\0';
+			}
+			if (localisedStringIds[1] != (rct_string_id)STR_NONE) {
+				park_set_name(language_get_string(localisedStringIds[1]));
+			}
+			if (localisedStringIds[2] != (rct_string_id)STR_NONE) {
+				strncpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, language_get_string(localisedStringIds[2]), 255);
+				((char*)RCT2_ADDRESS_SCENARIO_DETAILS)[255] = '\0';
+			}
+		} else {
+			rct_stex_entry* stex = g_stexEntries[0];
+			if ((int)stex != -1) {
+				char *buffer = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
 
-		// Set localised scenario name
-		format_string(buffer, stex->scenario_name, 0);
-		strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, buffer, 31);
-		((char*)RCT2_ADDRESS_SCENARIO_NAME)[31] = '\0';
+				// Set localised park name
+				format_string(buffer, stex->park_name, 0);
+				park_set_name(buffer);
 
-		// Set localised scenario details
-		format_string(buffer, stex->details, 0);
-		strncpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, buffer, 255);
-		((char*)RCT2_ADDRESS_SCENARIO_DETAILS)[255] = '\0';
+				// Set localised scenario name
+				format_string(buffer, stex->scenario_name, 0);
+				strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, buffer, 31);
+				((char*)RCT2_ADDRESS_SCENARIO_NAME)[31] = '\0';
+
+				// Set localised scenario details
+				format_string(buffer, stex->details, 0);
+				strncpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, buffer, 255);
+				((char*)RCT2_ADDRESS_SCENARIO_DETAILS)[255] = '\0';
+			}
+		}
 	}
 
 	// Set the last saved game path

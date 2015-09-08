@@ -385,4 +385,15 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 	}
 }
 
+bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_string_id *outStringIds)
+{
+	outStringIds[0] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 0);
+	outStringIds[1] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 1);
+	outStringIds[2] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 2);
+	return
+		outStringIds[0] != (rct_string_id)STR_NONE ||
+		outStringIds[1] != (rct_string_id)STR_NONE ||
+		outStringIds[2] != (rct_string_id)STR_NONE;
+}
+
 }

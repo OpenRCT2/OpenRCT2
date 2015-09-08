@@ -13,6 +13,9 @@ extern "C" {
 constexpr rct_string_id ObjectOverrideBase = 0x6000;
 constexpr int ObjectOverrideMaxStringCount = 4;
 
+constexpr rct_string_id ScenarioOverrideBase = 0x7000;
+constexpr int ScenarioOverrideMaxStringCount = 3;
+
 LanguagePack *LanguagePack::FromFile(int id, const utf8 *path)
 {
 	assert(path != NULL);
@@ -54,6 +57,7 @@ LanguagePack::LanguagePack(int id, const utf8 *text)
 	_stringData = NULL;
 	_currentGroup = NULL;
 	_currentObjectOverride = NULL;
+	_currentScenarioOverride = NULL;
 
 	auto reader = UTF8StringReader(text);
 	while (reader.CanRead()) {
@@ -74,6 +78,14 @@ LanguagePack::LanguagePack(int id, const utf8 *text)
 			}
 		}
 	}
+	for (size_t i = 0; i < _scenarioOverrides.size(); i++) {
+		for (int j = 0; j < ScenarioOverrideMaxStringCount; j++) {
+			const utf8 **strPtr = &(_scenarioOverrides[i].strings[j]);
+			if (*strPtr != NULL) {
+				*strPtr = (utf8*)(stringDataBaseAddress + (size_t)*strPtr);
+			}
+		}
+	}
 
 	// Destruct the string builder to free memory
 	_stringDataSB = StringBuilder();
@@ -86,7 +98,17 @@ LanguagePack::~LanguagePack()
 }
 
 const utf8 *LanguagePack::GetString(int stringId) const {
-	if (stringId >= ObjectOverrideBase) {
+	if (stringId >= ScenarioOverrideBase) {
+		int offset = stringId - ScenarioOverrideBase;
+		int ooIndex = offset / ScenarioOverrideMaxStringCount;
+		int ooStringIndex = offset % ScenarioOverrideMaxStringCount;
+
+		if (_scenarioOverrides.size() > (size_t)ooIndex) {
+			return _scenarioOverrides[ooIndex].strings[ooStringIndex];
+		} else {
+			return NULL;
+		}
+	}else if (stringId >= ObjectOverrideBase) {
 		int offset = stringId - ObjectOverrideBase;
 		int ooIndex = offset / ObjectOverrideMaxStringCount;
 		int ooStringIndex = offset % ObjectOverrideMaxStringCount;
@@ -124,6 +146,25 @@ rct_string_id LanguagePack::GetObjectOverrideStringId(const char *objectIdentifi
 	return STR_NONE;
 }
 
+rct_string_id LanguagePack::GetScenarioOverrideStringId(const utf8 *scenarioFilename, int index)
+{
+	assert(scenarioFilename != NULL);
+	assert(index < ScenarioOverrideMaxStringCount);
+
+	int ooIndex = 0;
+	for (const ScenarioOverride &scenarioOverride : _scenarioOverrides) {
+		if (_stricmp(scenarioOverride.filename, scenarioFilename) == 0) {
+			if (scenarioOverride.strings[index] == NULL) {
+				return STR_NONE;
+			}
+			return ScenarioOverrideBase + (ooIndex * ScenarioOverrideMaxStringCount) + index;
+		}
+		ooIndex++;
+	}
+
+	return STR_NONE;
+}
+
 LanguagePack::ObjectOverride *LanguagePack::GetObjectOverride(const char *objectIdentifier)
 {
 	assert(objectIdentifier != NULL);
@@ -132,6 +173,19 @@ LanguagePack::ObjectOverride *LanguagePack::GetObjectOverride(const char *object
 		ObjectOverride *oo = &_objectOverrides[i];
 		if (strncmp(oo->name, objectIdentifier, 8) == 0) {
 			return oo;
+		}
+	}
+	return false;
+}
+
+LanguagePack::ScenarioOverride *LanguagePack::GetScenarioOverride(const utf8 *scenarioIdentifier)
+{
+	assert(scenarioIdentifier != NULL);
+
+	for (size_t i = 0; i < _scenarioOverrides.size(); i++) {
+		ScenarioOverride *so = &_scenarioOverrides[i];
+		if (_stricmp(so->name, scenarioIdentifier) == 0) {
+			return so;
 		}
 	}
 	return false;
@@ -209,7 +263,10 @@ void LanguagePack::ParseLine(IStringReader *reader)
 			SkipToEndOfLine(reader);
 			break;
 		case '[':
-			ParseGroup(reader);
+			ParseGroupObject(reader);
+			break;
+		case '<':
+			ParseGroupScenario(reader);
 			break;
 		case '\r':
 		case '\n':
@@ -223,7 +280,7 @@ void LanguagePack::ParseLine(IStringReader *reader)
 	}
 }
 
-void LanguagePack::ParseGroup(IStringReader *reader)
+void LanguagePack::ParseGroupObject(IStringReader *reader)
 {
 	auto sb = StringBuilder();
 	int codepoint;
@@ -253,12 +310,49 @@ void LanguagePack::ParseGroup(IStringReader *reader)
 		if (sb.GetLength() == 8) {
 			_currentGroup = sb.GetString();
 			_currentObjectOverride = GetObjectOverride(_currentGroup);
+			_currentScenarioOverride = NULL;
 			if (_currentObjectOverride == NULL) {
 				_objectOverrides.push_back(ObjectOverride());
 				_currentObjectOverride = &_objectOverrides[_objectOverrides.size() - 1];
 				memset(_currentObjectOverride, 0, sizeof(ObjectOverride));
 				memcpy(_currentObjectOverride->name, _currentGroup, 8);
 			}
+		}
+	}
+}
+
+void LanguagePack::ParseGroupScenario(IStringReader *reader)
+{
+	auto sb = StringBuilder();
+	int codepoint;
+
+	// Should have already deduced that the next codepoint is a <
+	reader->Skip();
+
+	// Read string up to > or line end
+	bool closedCorrectly = false;
+	while (reader->TryPeek(&codepoint)) {
+		if (IsNewLine(codepoint)) break;
+
+		reader->Skip();
+		if (codepoint == '>') {
+			closedCorrectly = true;
+			break;
+		}
+		sb.Append(codepoint);
+	}
+
+	if (closedCorrectly) {
+		SafeFree(_currentGroup);
+
+		_currentGroup = sb.GetString();
+		_currentObjectOverride = NULL;
+		_currentScenarioOverride = GetScenarioOverride(_currentGroup);
+		if (_currentScenarioOverride == NULL) {
+			_scenarioOverrides.push_back(ScenarioOverride());
+			_currentScenarioOverride = &_scenarioOverrides[_scenarioOverrides.size() - 1];
+			memset(_currentScenarioOverride, 0, sizeof(ObjectOverride));
+			_currentScenarioOverride->filename = sb.GetString();
 		}
 	}
 }
@@ -344,7 +438,11 @@ void LanguagePack::ParseString(IStringReader *reader)
 		
 		_strings[stringId] = relativeOffset;
 	} else {
-		_currentObjectOverride->strings[stringId] = relativeOffset;
+		if (_currentObjectOverride != NULL) {
+			_currentObjectOverride->strings[stringId] = relativeOffset;
+		} else {
+			_currentScenarioOverride->strings[stringId] = relativeOffset;
+		}
 	}
 
 	_stringDataSB.Append(sb.GetBuffer());

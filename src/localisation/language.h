@@ -82,4 +82,6 @@ int utf8_length(const utf8 *text);
 wchar_t *utf8_to_widechar(const utf8 *src);
 utf8 *widechar_to_utf8(const wchar_t *src);
 
+bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_string_id *outStringIds);
+
 #endif

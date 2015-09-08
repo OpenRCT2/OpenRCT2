@@ -30,6 +30,7 @@ public:
 	}
 
 	rct_string_id GetObjectOverrideStringId(const char *objectIdentifier, int index);
+	rct_string_id GetScenarioOverrideStringId(const utf8 *scenarioFilename, int index);
 
 private:
 	struct ObjectOverride {
@@ -37,13 +38,27 @@ private:
 		const utf8 *strings[4];
 	};
 
+	struct ScenarioOverride {
+		const utf8 *filename;
+		union {
+			const utf8 *strings[3];
+			struct {
+				const utf8 *name;
+				const utf8 *park;
+				const utf8 *details;
+			};
+		};
+	};
+
 	int _id;
 	utf8 *_stringData;
 	std::vector<const utf8*> _strings;
 	std::vector<ObjectOverride> _objectOverrides;
+	std::vector<ScenarioOverride> _scenarioOverrides;
 
 	LanguagePack(int id, const utf8 *text);
 	ObjectOverride *GetObjectOverride(const char *objectIdentifier);
+	ScenarioOverride *GetScenarioOverride(const utf8 *scenarioFilename);
 
 	///////////////////////////////////////////////////////////////////////////
 	// Parsing
@@ -51,9 +66,11 @@ private:
 	StringBuilder _stringDataSB;
 	utf8 *_currentGroup;
 	ObjectOverride *_currentObjectOverride;
+	ScenarioOverride *_currentScenarioOverride;
 
 	void ParseLine(IStringReader *reader);
-	void ParseGroup(IStringReader *reader);
+	void ParseGroupObject(IStringReader *reader);
+	void ParseGroupScenario(IStringReader *reader);
 	void ParseString(IStringReader *reader);
 
 	bool ParseToken(IStringReader *reader, uint32 *token);
