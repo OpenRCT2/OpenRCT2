@@ -16,7 +16,7 @@ namespace Math {
 	}
 
 	template<typename T>
-	T Clamp(T low, T x, T max) {
+	T Clamp(T low, T x, T high) {
 		return Min(Max(low, x), high);
 	}
 
