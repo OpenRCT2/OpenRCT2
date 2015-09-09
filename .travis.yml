@@ -17,3 +17,6 @@ cache:
     apt: true
 
 sudo: required
+
+services:
+    - docker

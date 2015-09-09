@@ -27,6 +27,10 @@
 #include "util/sawyercoding.h"
 #include "game.h"
 #include "rct1.h"
+#include "world/entrance.h"
+#include "world/footpath.h"
+#include "world/scenery.h"
+#include "world/water.h"
 
 #define OBJECT_ENTRY_GROUP_COUNT 11
 #define OBJECT_ENTRY_COUNT 721
@@ -673,6 +677,33 @@ rct_object_entry *object_list_find(rct_object_entry *entry)
 	return NULL;
 }
 
+rct_string_id object_get_name_string_id(rct_object_entry *entry, const void *chunk)
+{
+	int objectType = entry->flags & 0x0F;
+	switch (objectType) {
+	case OBJECT_TYPE_RIDE:
+		return ((rct_ride_type*)chunk)->name;
+	case OBJECT_TYPE_SMALL_SCENERY:
+	case OBJECT_TYPE_LARGE_SCENERY:
+	case OBJECT_TYPE_WALLS:
+	case OBJECT_TYPE_BANNERS:
+	case OBJECT_TYPE_PATH_BITS:
+		return ((rct_scenery_entry*)chunk)->name;
+	case OBJECT_TYPE_PATHS:
+		return ((rct_path_type*)chunk)->string_idx;
+	case OBJECT_TYPE_SCENERY_SETS:
+		return ((rct_scenery_set_entry*)chunk)->name;
+	case OBJECT_TYPE_PARK_ENTRANCE:
+		return ((rct_entrance_type*)chunk)->string_idx;
+	case OBJECT_TYPE_WATER:
+		return ((rct_water_type*)chunk)->string_idx;
+	case OBJECT_TYPE_SCENARIO_TEXT:
+		return ((rct_stex_entry*)chunk)->scenario_name;
+	default:
+		return STR_NONE;
+	}
+}
+
 /* Installs an  object_entry at the desired installed_entry address
  * Returns the size of the new entry. Will return 0 on failure.
  */
@@ -740,7 +771,12 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 	load_object_filter(entry, chunk, filter);
 
 	// Always extract only the vehicle type, since the track type is always displayed in the left column, to prevent duplicate track names.
-	strcpy(installed_entry_pointer, language_get_string((rct_string_id)RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32)));
+	rct_string_id nameStringId = object_get_name_string_id(entry, chunk);
+	if (nameStringId == STR_NONE) {
+		nameStringId = (rct_string_id)RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32);
+	}
+
+	strcpy(installed_entry_pointer, language_get_string(nameStringId));
 	while (*installed_entry_pointer++);
 
 	// This is deceptive. Due to setting the total no images earlier to 0xF26E

@@ -91,6 +91,7 @@ typedef struct {
 } rct_object_filters;
 
 extern rct_object_entry_group object_entry_groups[];
+extern char gTempObjectLoadName[9];
 
 int object_load_entry(const utf8 *path, rct_object_entry *outEntry);
 void object_list_load();

@@ -18,20 +18,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include "LanguagePack.h"
+
+extern "C" {
+
 #include "../addresses.h"
 #include "../drawing/drawing.h"
 #include "../object.h"
 #include "../openrct2.h"
 #include "../util/util.h"
 #include "localisation.h"
-
-typedef struct {
-	int id;
-	int num_strings;
-	char **strings;
-	size_t string_data_size;
-	char *string_data;
-} language_data;
 
 enum {
 	RCT2_LANGUAGE_ID_ENGLISH_UK,
@@ -88,25 +84,22 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
 	{ "zh-Hant",	"Chinese (Traditional)",	"Chinese (Traditional)",	"chinese_traditional",		&TTFFontMingLiu,		RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL	},	// LANGUAGE_CHINESE_TRADITIONAL
 	{ "zh-Hans",	"Chinese (Simplified)",		"Chinese (Simplified)",		"chinese_simplified",		&TTFFontSimSun,			RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED		},	// LANGUAGE_CHINESE_SIMPLIFIED
 	{ "fi-FI",		"Finnish",					"Suomi",					"finnish",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_FINNISH
-	{ "kr-KR",		"Korean",					"Korean",					"korean",					&TTFFontMalgun,			RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_KOREAN
+	{ "kr-KR",		"Korean",					"Korean",					"korean",					&TTFFontMalgun,			RCT2_LANGUAGE_ID_KOREAN					},	// LANGUAGE_KOREAN
 };
 
 int gCurrentLanguage = LANGUAGE_UNDEFINED;
 bool gUseTrueTypeFont = false;
 
-language_data _languageFallback = { 0 };
-language_data _languageCurrent = { 0 };
+LanguagePack *_languageFallback = nullptr;
+LanguagePack *_languageCurrent = nullptr;
 
-const char **_languageOriginal = (char**)0x009BF2D4;
+const char **_languageOriginal = (const char**)0x009BF2D4;
 
-const utf8 BlackUpArrowString[] = { 0xC2, 0x8E, 0xE2, 0x96, 0xB2, 0x00 };
-const utf8 BlackDownArrowString[] = { 0xC2, 0x8E, 0xE2, 0x96, 0xBC, 0x00 };
-const utf8 BlackLeftArrowString[] = { 0xC2, 0x8E, 0xE2, 0x97, 0x80, 0x00 };
-const utf8 BlackRightArrowString[] = { 0xC2, 0x8E, 0xE2, 0x96, 0xB6, 0x00 };
-const utf8 CheckBoxMarkString[] = { 0xE2, 0x9C, 0x93, 0x00 };
-
-static int language_open_file(const utf8 *filename, language_data *language);
-static void language_close(language_data *language);
+const utf8 BlackUpArrowString[] =		{ (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB2, (utf8)0x00 };
+const utf8 BlackDownArrowString[] =		{ (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xBC, (utf8)0x00 };
+const utf8 BlackLeftArrowString[] =		{ (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x97, (utf8)0x80, (utf8)0x00 };
+const utf8 BlackRightArrowString[] =	{ (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB6, (utf8)0x00 };
+const utf8 CheckBoxMarkString[] =		{ (utf8)0xE2, (utf8)0x9C, (utf8)0x93, (utf8)0x00 };
 
 void utf8_remove_format_codes(utf8 *text)
 {
@@ -128,10 +121,10 @@ const char *language_get_string(rct_string_id id)
 	if (id == (rct_string_id)STR_NONE)
 		return NULL;
 
-	if (_languageCurrent.num_strings > id)
-		openrctString = _languageCurrent.strings[id];
-	if (openrctString == NULL && _languageFallback.num_strings > id)
-		openrctString = _languageFallback.strings[id];
+	if (_languageCurrent != nullptr)
+		openrctString = _languageCurrent->GetString(id);
+	if (openrctString == NULL && _languageFallback != nullptr)
+		openrctString = _languageFallback->GetString(id);
 
 	if (id >= STR_OPENRCT2_BEGIN_STRING_ID) {
 		return openrctString != NULL ? openrctString : "(undefined string)";
@@ -153,14 +146,12 @@ int language_open(int id)
 
 	if (id != LANGUAGE_ENGLISH_UK) {
 		sprintf(filename, languagePath, gExePath, LanguagesDescriptors[LANGUAGE_ENGLISH_UK].path);
-		if (language_open_file(filename, &_languageFallback)) {
-			_languageFallback.id = LANGUAGE_ENGLISH_UK;
-		}
+		_languageFallback = LanguagePack::FromFile(LANGUAGE_ENGLISH_UK, filename);
 	}
 
 	sprintf(filename, languagePath, gExePath, LanguagesDescriptors[id].path);
-	if (language_open_file(filename, &_languageCurrent)) {
-		_languageCurrent.id = id;
+	_languageCurrent = LanguagePack::FromFile(id, filename);
+	if (_languageCurrent != NULL) {
 		gCurrentLanguage = id;
 
 		if (LanguagesDescriptors[id].font == FONT_OPENRCT2_SPRITE) {
@@ -184,147 +175,10 @@ int language_open(int id)
 
 void language_close_all()
 {
-	language_close(&_languageFallback);
-	language_close(&_languageCurrent);
-	_languageFallback.id = LANGUAGE_UNDEFINED;
-	_languageCurrent.id = LANGUAGE_UNDEFINED;
+	SafeDelete(_languageFallback);
+	SafeDelete(_languageCurrent);
 	gCurrentLanguage = LANGUAGE_UNDEFINED;
 }
-
-/**
- * Partial support to open a uncompiled language file which parses tokens and converts them to the corresponding character
- * code. Due to resource strings (strings in scenarios and objects) being written to the original game's string table,
- * get_string will use those if the same entry in the loaded language is empty.
- * 
- * Unsure at how the original game decides which entries to write resource strings to, but this could affect adding new
- * strings for the time being. Further investigation is required.
- *
- * Also note that all strings are currently still ASCII. It probably can't be converted to UTF-8 until all game functions that
- * read / write strings in some way is decompiled. The original game used a DIY extended 8-bit extended ASCII set for special
- * characters, format codes and accents.
- *
- * In terms of reading the language files, the STR_XXXX part is read and XXXX becomes the string id number. Everything after the
- * colon and before the new line will be saved as the string. Tokens are written with inside curly braces {TOKEN}.
- * Use # at the beginning of a line to leave a comment.
- */
-static int language_open_file(const utf8 *filename, language_data *language)
-{
-	assert(filename != NULL);
-	assert(language != NULL);
-
-	SDL_RWops *f = SDL_RWFromFile(filename, "rb");
-	if (f == NULL)
-		return 0;
-
-	SDL_RWseek(f, 0, RW_SEEK_END);
-	language->string_data_size = (size_t)(SDL_RWtell(f) + 1);
-	language->string_data = calloc(1, language->string_data_size);
-	SDL_RWseek(f, 0, RW_SEEK_SET);
-	SDL_RWread(f, language->string_data, language->string_data_size, 1);
-	SDL_RWclose(f);
-
-	language->strings = calloc(STR_COUNT, sizeof(char*));
-
-	char *dst = NULL;
-	char *token = NULL;
-	char tokenBuffer[64];
-	int stringIndex = 0, mode = 0, stringId, maxStringId = 0;
-	size_t i = 0;
-
-	// Skim UTF-8 byte order mark
-	if (utf8_is_bom(language->string_data))
-		i += 3;
-
-	for (; i < language->string_data_size; i++) {
-		char *src = &language->string_data[i];
-
-		// Handle UTF-8
-		char *srcNext;
-		uint32 utf8Char = utf8_get_next(src, (const utf8**)&srcNext);
-		i += srcNext - src - 1;
-
-		switch (mode) {
-		case 0:
-			// Search for a comment
-			if (utf8Char == '#') {
-				mode = 3;
-			} else if (utf8Char == ':' && stringId != -1) {
-				// Search for colon
-				dst = src + 1;
-				language->strings[stringId] = dst;
-				stringIndex++;
-				mode = 1;
-			} else if (!strncmp(src, "STR_", 4)){
-				// Copy in the string number, 4 characters only
-				if (sscanf(src, "STR_%4d", &stringId) != 1) {
-					stringId = -1;
-				} else {
-					maxStringId = max(maxStringId, stringId);
-				}
-			}
-			break;
-		case 1:
-			// Copy string over, stop at line break
-			if (utf8Char == '{') {
-				token = src + 1;
-				mode = 2;
-			} else if (utf8Char == '\n' || *src == '\r') {
-				*dst = 0;
-				mode = 0;
-			} else {
-				dst = utf8_write_codepoint(dst, utf8Char);
-			}
-			break;
-		case 2:
-			// Read token, convert to code
-			if (utf8Char == '}') {
-				int tokenLength = min(src - token, sizeof(tokenBuffer) - 1);
-				memcpy(tokenBuffer, token, tokenLength);
-				tokenBuffer[tokenLength] = 0;
-				uint32 code = format_get_code(tokenBuffer);
-				if (code == 0) {
-					code = atoi(tokenBuffer);
-					*dst++ = code & 0xFF;
-				} else {
-					dst = utf8_write_codepoint(dst, code);
-				}
-				mode = 1;
-			}
-			break;
-		case 3:
-			if (utf8Char == '\n' || utf8Char == '\r') {
-				mode = 0;
-			}
-		}
-	}
-	language->num_strings = maxStringId + 1;
-	language->strings = realloc(language->strings, language->num_strings * sizeof(char*));
-
-	return 1;
-}
-
-static void language_close(language_data *language)
-{
-	SafeFree(language->strings);
-	SafeFree(language->string_data);
-	language->num_strings = 0;
-	language->string_data_size = 0;
-}
-
-const int OpenRCT2LangIdToObjectLangId[] = {
-	0,
-	0,
-	1,
-	3,
-	6,
-	2,
-	0,
-	0,
-	4,
-	7,
-	5,
-	13
-};
 
 #define STEX_BASE_STRING_ID			3447
 #define NONSTEX_BASE_STRING_ID		3463
@@ -379,9 +233,9 @@ static wchar_t convert_specific_language_character_to_unicode(int languageId, wc
 static utf8 *convert_multibyte_charset(const char *src, int languageId)
 {
 	int reservedLength = (strlen(src) * 4) + 1;
-	utf8 *buffer = malloc(reservedLength);
+	utf8 *buffer = (utf8*)malloc(reservedLength);
 	utf8 *dst = buffer;
-	for (const uint8 *ch = src; *ch != 0;) {
+	for (const uint8 *ch = (const uint8*)src; *ch != 0;) {
 		if (*ch == 0xFF) {
 			ch++;
 			uint8 a = *ch++;
@@ -396,7 +250,7 @@ static utf8 *convert_multibyte_charset(const char *src, int languageId)
 	}
 	*dst++ = 0;
 	int actualLength = dst - buffer;
-	buffer = realloc(buffer, actualLength);
+	buffer = (utf8*)realloc(buffer, actualLength);
 
 	return buffer;
 }
@@ -420,14 +274,14 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 	char *pString = NULL;
 	int result = 0;
 	bool isBlank;
-	
+
 	while ((languageId = *(*pStringTable)++) != RCT2_LANGUAGE_ID_END) {
 		isBlank = true;
 
 		// Strings that are just ' ' are set as invalid langauges.
 		// But if there is no real string then it will set the string as
 		// the blank string
-		for (char *ch = *pStringTable; *ch != 0; ch++) {
+		for (char *ch = (char*)(*pStringTable); *ch != 0; ch++) {
 			if (!isblank(*ch)) {
 				isBlank = false;
 				break;
@@ -439,26 +293,39 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 		// This is the ideal situation. Language found
 		if (languageId == LanguagesDescriptors[gCurrentLanguage].rct2_original_id) {
 			chosenLanguageId = languageId;
-			pString = *pStringTable;
+			pString = (char*)(*pStringTable);
 			result |= 1;
 		}
 
 		// Just in case always load english into pString
 		if (languageId == RCT2_LANGUAGE_ID_ENGLISH_UK && !(result & 1)) {
 			chosenLanguageId = languageId;
-			pString = *pStringTable;
+			pString = (char*)(*pStringTable);
 			result |= 2;
 		}
 
 		// Failing that fall back to whatever is first string
 		if (!(result & 7)) {
 			chosenLanguageId = languageId;
-			pString = *pStringTable;
+			pString = (char*)(*pStringTable);
 			if (!isBlank) result |= 4;
 		}
 
 		// Skip over the actual string entry to get to the next entry
 		while (*(*pStringTable)++ != 0);
+	}
+
+	char name[9];
+	if (RCT2_GLOBAL(0x009ADAFC, uint8) == 0) {
+		memcpy(name, object_entry_groups[type].entries[index].name, 8);
+	} else {
+		memcpy(name, gTempObjectLoadName, 8);
+	}
+	name[8] = 0;
+
+	rct_string_id stringId = _languageCurrent->GetObjectOverrideStringId(name, tableindex);
+	if (stringId != (rct_string_id)STR_NONE) {
+		return stringId;
 	}
 
 	// If not scenario text
@@ -488,8 +355,7 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 		utf8_trim_string(*cacheString);
 
 		//put pointer in stringtable
-		if (_languageCurrent.num_strings > stringid)
-			_languageCurrent.strings[stringid] = *cacheString;
+		_languageCurrent->SetString(stringid, *cacheString);
 		// Until all string related functions are finished copy
 		// to old array as well.
 		_languageOriginal[stringid] = *cacheString;
@@ -511,11 +377,23 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 		utf8_trim_string(*cacheString);
 
 		//put pointer in stringtable
-		if (_languageCurrent.num_strings > stringid)
-			_languageCurrent.strings[stringid] = *cacheString;
+		_languageCurrent->SetString(stringid, *cacheString);
 		// Until all string related functions are finished copy
 		// to old array as well.
 		_languageOriginal[stringid] = *cacheString;
 		return stringid;
 	}
+}
+
+bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_string_id *outStringIds)
+{
+	outStringIds[0] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 0);
+	outStringIds[1] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 1);
+	outStringIds[2] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 2);
+	return
+		outStringIds[0] != (rct_string_id)STR_NONE ||
+		outStringIds[1] != (rct_string_id)STR_NONE ||
+		outStringIds[2] != (rct_string_id)STR_NONE;
+}
+
 }
