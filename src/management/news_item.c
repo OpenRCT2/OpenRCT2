@@ -208,13 +208,13 @@ static int news_item_get_new_history_slot()
 	int i;
 
 	// Find an available history news item slot
-	for (i = 11; i <= MAX_NEWS_ITEMS; i++)
+	for (i = 11; i < MAX_NEWS_ITEMS; i++)
 		if (news_item_is_empty(i))
 			return i;
 
 	// Dequeue the first history news item, shift history up
 	news_item_shift_history_up();
-	return MAX_NEWS_ITEMS;
+	return MAX_NEWS_ITEMS - 1;
 }
 
 /**
