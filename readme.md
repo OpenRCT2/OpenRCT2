@@ -5,7 +5,7 @@ An open source clone of RollerCoaster Tycoon 2 built by decompiling the original
 - [Screenshot 3, high resolution](http://i.imgur.com/yFzNyVu.jpg)
 - [Screenshot 4, resizable window](http://imgur.com/a/3GDuT)
 
-[![Build Status](https://travis-ci.org/OpenRCT2/OpenRCT2.svg)](https://travis-ci.org/OpenRCT2/OpenRCT2)
+[![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg)](https://travis-ci.org/OpenRCT2/OpenRCT2) [![AppVeyor](https://ci.appveyor.com/api/projects/status/fib6re830brysuo2?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2)
 
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/OpenRCT2/OpenRCT2?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -39,7 +39,7 @@ The project therefore acts as a patch to RollerCoaster Tycoon 2, allowing each p
 ## 1.3 Progress
 Currently, the windowing system, graphics rendering and basic game loop are being decompiled. Decompiling all of the game's procedures is a convenient way of identifying the game's memory structure. SDL2 has been used as a replacement for the operating system calls, allowing for cross-platform support after the dependency on the original game's executable has been removed.
 
-As of 16th August 2014, various UI improvements have already been made, settings are now stored in a local INI file. More drawing functions have now been decompiled but still remain cryptic C, much of the game management have been decompiled (e.g. peep generation, awards, cash out) and almost half of the windows. A rough estimate based on number of functions in the original game and number of functions now in C tells us that the project is approximately 25% complete of its target goal of having the game run on 100% C code. More information can be found in [changes to original game](https://github.com/OpenRCT2/OpenRCT2/wiki/Changes-to-original-game) and [window progress](https://github.com/OpenRCT2/OpenRCT2/wiki/Window-progress).
+As of 9th September 2015, a vast set of improvements have been added such as improved UI, tools, cheats, localisation and configuration. The entire window system and UI has been implemented, all file format handling such as loading and saving of parks, graphics and tracks, ride logic, game management (e.g. peep generation, awards, cash out) and a lot of the peep logic. What remains is a lot of code to draw the map, the rest of the peep logic, and the entirety of vehicle logic. The rest are small parts around different areas that aren't particularly significant. More information can be found in [changes to original game](https://github.com/OpenRCT2/OpenRCT2/wiki/Changes-to-original-game).
 
 ## 1.4 Aim
 The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-platform support, new features, and new gameplay can be added in a similar fashion to OpenTTD. With the addition of SDL2, the game can already be run in a resizeable window (which was not possible originally). Once the game has been fully decompiled, additional gameplay features, gameplay tweaks, and improvements can be introduced. The following is only a brief, non-exhaustive list of the possibilities - there are many more:
@@ -58,10 +58,10 @@ The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-p
 
 # 2 Downloading the game / Building the source code
 
-A couple of third parties offer downloadable precompiled builds. However, building the project is always recommended
-
-[OpenRCT2.com](https://openrct2.com/download)  
+Several third party build servers offer precompiled builds and installers of the latest stable and the develop branch.
+[OpenRCT2.com](https://openrct2.com/download)
 [OpenRCT.net](https://openrct.net/builds.php)
+[UrsaLabs](https://openrct.ursalabs.co)
 
 There is also a Launcher available from [OpenRCT.net](https://openrct.net/download) that will automatically update your build so that you always have the current version as they are released.
 
@@ -108,6 +108,8 @@ As the easiest approach depends on your distribution, please take a look at the 
 # 3 Contributing
 OpenRCT2 uses the [gitflow workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow). If you are implementing a new feature or logic from the original game, please branch off and perform pull requests to **develop**. If you are fixing a bug for the next release, please branch off and perform pull requests to the correct release branch. **master** only contains tagged releases, you should never branch off this.
 
+Please read our [contributing guidelines](https://github.com/OpenRCT2/OpenRCT2/blob/develop/CONTRIBUTING.md) for information.
+
 ## 3.1 Decompiling
 Experience with reverse engineering and x86 assembly is necessary to decompile the original game. [IDA 5.0](https://www.hex-rays.com/products/ida/support/download_freeware.shtml) is currently being used to disassemble and analyze the game. You are welcome to contribute to the process by taking an undecompiled procedure, disassembling it, and rewriting it in C. For more information and the latest IDA database, contact IntelOrca.
 
@@ -138,9 +140,8 @@ Translations are in progress for German, Dutch, French, Hungarian, Polish, Spani
 # 5 More information
 - [GitHub](https://github.com/OpenRCT2/OpenRCT2)
 - [Facebook](https://www.facebook.com/OpenRCT2)
-- [Automated builds](https://openrct2.com/download)
-- [Secondary site for automated builds](https://openrct.net/builds.php)  
-- [Launcher that keeps your copy up-to-date](https://openrct.net/download)  
+- [OpenRCT2.com](https://openrct2.com)
+- [OpenRCT.net](https://openrct.net)
 - [rct2 subreddit](http://www.reddit.com/r/rct/)
 - [openrct2 subreddit](http://www.reddit.com/r/openrct2)
 - [openrct2 subverse](http://www.voat.co/v/openrct2)
