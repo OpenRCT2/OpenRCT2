@@ -121,7 +121,7 @@ static void loc_6A6620(int flags, int x, int y, rct_map_element *mapElement)
 {
 	int direction, z;
 
-	if ((mapElement->properties.path.type & 4) && !(flags & (1 << 6))) {
+	if ((mapElement->properties.path.type & 4) && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 		direction = mapElement->properties.path.type & 3;
 		z = mapElement->base_height;
 		map_remove_intersecting_walls(x, y, z, z + 6, direction ^ 2);
@@ -129,14 +129,14 @@ static void loc_6A6620(int flags, int x, int y, rct_map_element *mapElement)
 		mapElement = map_get_footpath_element(x / 32, y / 32, z);
 	}
 
-	if (!(flags & (1 << 7)))
+	if (!(flags & GAME_COMMAND_FLAG_7))
 		footpath_connect_edges(x, y, mapElement, flags);
 
 	sub_6A759F();
 	map_invalidate_tile_full(x, y);
 }
 
-static money32 footpath_element_insert(int type, int x, int y, int z, int slope, int flags)
+static money32 footpath_element_insert(int type, int x, int y, int z, int slope, int flags, uint8 pathItemType)
 {
 	rct_map_element *mapElement;
 	int bl, zHigh;
@@ -184,7 +184,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 		mapElement->clearance_height = z + 4 + (slope & 4 ? 2 : 0);
 		mapElement->properties.path.type = (type << 4) | (slope & 7);
 		mapElement->type |= type >> 7;
-		mapElement->properties.path.additions = RCT2_GLOBAL(0x00F3EF88, uint8);
+		mapElement->properties.path.additions = pathItemType;
 		mapElement->properties.path.addition_status = 255;
 		mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
 		if (flags & (1 << 6))
@@ -203,24 +203,24 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 	return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
 }
 
-static money32 footpath_element_update(int x, int y, rct_map_element *mapElement, int type, int flags)
+static money32 footpath_element_update(int x, int y, rct_map_element *mapElement, int type, int flags, uint8 pathItemType)
 {
 	if ((mapElement->properties.path.type >> 4) != (type & 0x0F) || (mapElement->type & 1) != (type >> 7)) {
 		RCT2_GLOBAL(0x00F3EFD9, money32) += MONEY(6, 00);
-	} else if (RCT2_GLOBAL(0x00F3EF88, uint16) != 0) {
+	} else if (pathItemType != 0) {
 		if (
-			!(flags & (1 << 6)) &&
-			(mapElement->properties.path.additions & 0x0F) == RCT2_GLOBAL(0x00F3EF88, uint16) &&
+			!(flags & GAME_COMMAND_FLAG_GHOST) &&
+			(mapElement->properties.path.additions & 0x0F) == pathItemType &&
 			!(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)
 		) {
-			if (flags & (1 << 4))
+			if (flags & GAME_COMMAND_FLAG_4)
 				return MONEY32_UNDEFINED;
 
 			return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
 		}
 
-		if (RCT2_GLOBAL(0x00F3EF88, uint16) != 0) {
-			rct_scenery_entry* scenery_entry = g_pathBitSceneryEntries[RCT2_GLOBAL(0x00F3EF88, uint16) - 1];
+		if (pathItemType != 0) {
+			rct_scenery_entry* scenery_entry = g_pathBitSceneryEntries[pathItemType - 1];
 			uint16 unk6 = scenery_entry->path_bit.var_06;
 
 			if ((unk6 & 0x80) && (mapElement->properties.path.type & 4)) {
@@ -246,10 +246,10 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 			RCT2_GLOBAL(0x00F3EFD9, money32) += scenery_entry->path_bit.price;
 		}
 
-		if (flags & (1 << 4))
+		if (flags & GAME_COMMAND_FLAG_4)
 			return MONEY32_UNDEFINED;
 
-		if (flags & (1 << 6)) {
+		if (flags & GAME_COMMAND_FLAG_GHOST) {
 			if (mapElement->properties.path.additions & 0x0F) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NONE;
 				return MONEY32_UNDEFINED;
@@ -263,22 +263,16 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 			return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
 
 		if (
-			(
-				RCT2_GLOBAL(0x00F3EF88, uint16) != 0 &&
-				!(flags & (1 << 6))
-			) ||
-			(
-				RCT2_GLOBAL(0x00F3EF88, uint16) == 0 ||
-				(mapElement->properties.path.additions & 0x80)
-			)
+			(pathItemType != 0 && !(flags & GAME_COMMAND_FLAG_GHOST)) ||
+			(pathItemType == 0 && (mapElement->properties.path.additions & 0x80))
 		) {
 			mapElement->properties.path.additions &= ~0x80;
 		}
 
-		mapElement->properties.path.additions = (mapElement->properties.path.additions & 0xF0) | RCT2_GLOBAL(0x00F3EF88, uint8);
-		mapElement->flags &= ~0x20;
-		if (RCT2_GLOBAL(0x00F3EF88, uint16) != 0) {
-			rct_scenery_entry* scenery_entry = g_pathBitSceneryEntries[RCT2_GLOBAL(0x00F3EF88, uint16) - 1];
+		mapElement->properties.path.additions = (mapElement->properties.path.additions & 0xF0) | pathItemType;
+		mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
+		if (pathItemType != 0) {
+			rct_scenery_entry* scenery_entry = g_pathBitSceneryEntries[pathItemType - 1];
 			uint16 unk6 = scenery_entry->path_bit.var_06;
 			if (unk6 & 1)
 				mapElement->properties.path.addition_status = 255;
@@ -287,18 +281,18 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
 	}
 
-	if (flags & (1 << 4))
+	if (flags & GAME_COMMAND_FLAG_4)
 		return MONEY32_UNDEFINED;
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
 		RCT2_GLOBAL(0x00F3EFF4, uint32) = 0x00F3EFF8;
 
-		if (!(flags & (1 << 7)))
+		if (!(flags & GAME_COMMAND_FLAG_7))
 			footpath_remove_edges_at(x, y, mapElement);
 
 		mapElement->properties.path.type = (mapElement->properties.path.type & 0x0F) | (type << 4);
 		mapElement->type = (mapElement->type & 0xFE) | (type >> 7);
-		mapElement->properties.path.additions = (mapElement->properties.path.additions & 0xF0) | RCT2_GLOBAL(0x00F3EF88, uint8);
+		mapElement->properties.path.additions = (mapElement->properties.path.additions & 0xF0) | pathItemType;
 		mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
 
 		loc_6A6620(flags, x, y, mapElement);
@@ -307,7 +301,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 	return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
 }
 
-static money32 footpath_place_real(int type, int x, int y, int z, int slope, int flags, uint8 path_bit_type)
+static money32 footpath_place_real(int type, int x, int y, int z, int slope, int flags, uint8 pathItemType)
 {
 	rct_map_element *mapElement;
 
@@ -326,7 +320,6 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 
 	RCT2_GLOBAL(0x00F3EFD9, money32) = 0;
 	RCT2_GLOBAL(0x00F3EFA4, uint8) = 0;
-	RCT2_GLOBAL(0x00F3EF88, uint16) = path_bit_type; // di
 
 	if (x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_OFF_EDGE_OF_MAP;
@@ -354,9 +347,9 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 	footpath_provisional_remove();
 	mapElement = map_get_footpath_element_slope((x / 32), (y / 32), z, slope);
 	if (mapElement == NULL) {
-		return footpath_element_insert(type, x, y, z, slope, flags);
+		return footpath_element_insert(type, x, y, z, slope, flags, pathItemType);
 	} else {
-		return footpath_element_update(x, y, mapElement, type, flags);
+		return footpath_element_update(x, y, mapElement, type, flags, pathItemType);
 	}
 }
 

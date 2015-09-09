@@ -2130,7 +2130,13 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 		//6e265b
 		cost = game_do_command(
 			map_tile.x,
-			parameter_1 | 0xE9,
+			(parameter_1 & 0xFF00) | (
+				GAME_COMMAND_FLAG_APPLY |
+				GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED |
+				GAME_COMMAND_FLAG_5 |
+				GAME_COMMAND_FLAG_GHOST |
+				GAME_COMMAND_FLAG_7
+			),
 			map_tile.y,
 			parameter_2,
 			GAME_COMMAND_PLACE_PATH,
