@@ -445,7 +445,7 @@ void LanguagePack::ParseString(IStringReader *reader)
 		}
 	}
 
-	_stringDataSB.Append(sb.GetBuffer());
+	_stringDataSB.Append(&sb);
 }
 
 bool LanguagePack::ParseToken(IStringReader *reader, uint32 *token)
@@ -469,5 +469,14 @@ bool LanguagePack::ParseToken(IStringReader *reader, uint32 *token)
 
 	const utf8 *tokenName = sb.GetBuffer();
 	*token = format_get_code(tokenName);
+
+	// Handle explicit byte values
+	if (*token == 0) {
+		int number;
+		if (sscanf(tokenName, "%d", &number) == 1) {
+			*token = Math::Clamp(0, number, 255);
+		}
+	}
+
 	return true;
 }

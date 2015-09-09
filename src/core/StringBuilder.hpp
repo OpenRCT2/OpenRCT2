@@ -41,11 +41,25 @@ public:
 	 */
 	void Append(const utf8 *text) {
 		int textLength = strlen(text);
+		Append(text, textLength);
+	}
 
+	/**
+	 * Appends the given string of the given length to the current string. Essentially used to ignore null terminators or copy
+	 * the data faster as the length is already known.
+	 */
+	void Append(const utf8 *text, int textLength) {
 		EnsureCapacity(_length + textLength + 1);
 		Memory::Copy(_buffer + _length, text, textLength);
 		_length += textLength;
 		_buffer[_length] = 0;
+	}
+
+	/**
+	 * Appends the string of a given StringBuilder to the current string.
+	 */
+	void Append(const StringBuilder *sb) {
+		Append(sb->GetBuffer(), sb->GetLength());
 	}
 
 	/**
