@@ -210,7 +210,8 @@ typedef struct {
 		uint8 speed;				// 0x0D0
 		uint8 rotations;			// 0x0D0
 	};
-	uint8 pad_0D1[0x3];
+	uint8 boat_hire_return_direction;	// 0x0D1
+	uint16 boat_hire_return_position;	// 0x0D2
 	uint8 measurement_index;		// 0x0D4
     // bits 0 through 4 are the number of helix sections
     // bit 5: spinning tunnel, water splash, or rapids
@@ -997,6 +998,7 @@ bool ride_has_whirlpool(rct_ride *ride);
 
 bool ride_type_has_flag(int rideType, int flag);
 bool ride_is_powered_launched(rct_ride *ride);
+bool ride_is_block_sectioned(rct_ride *ride);
 bool ride_has_any_track_elements(int rideIndex);
 void ride_all_has_any_track_elements(bool *rideIndexArray);
 

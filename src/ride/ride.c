@@ -146,6 +146,7 @@ static void ride_spiral_slide_update(rct_ride *ride);
 static void ride_update(int rideIndex);
 static void ride_update_vehicle_colours(int rideIndex);
 static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride);
+static void sub_666CBE(int x, int y, rct_map_element *mapElement);
 
 rct_ride_type *ride_get_entry(rct_ride *ride)
 {
@@ -4092,47 +4093,118 @@ bool ride_check_start_and_end_is_station(rct_xy_element *input, rct_xy_element *
 }
 
 /**
+ * Sets the position and direction of the returning point on the track of a boat hire ride. This will either be the end of the
+ * station or the last track piece from the end of the direction.
+ *  rct2: 0x006B4D39
+ */
+void ride_set_boat_hire_return_point(rct_ride *ride, rct_xy_element *startElement)
+{
+	int trackType;
+	int returnX = startElement->x;
+	int returnY = startElement->y;
+	rct_map_element *returnTrackElement = startElement->element;
+	track_begin_end trackBeginEnd;
+	while (track_block_get_previous(returnX, returnY, returnTrackElement, &trackBeginEnd)) {
+		int x = trackBeginEnd.begin_x;
+		int y = trackBeginEnd.begin_y;
+		int z = trackBeginEnd.begin_z;
+		int direction = trackBeginEnd.begin_direction;
+		trackType = trackBeginEnd.begin_element->properties.track.type;
+		sub_6C683D(&x, &y, &z, direction, trackType, 0, &returnTrackElement, 0);
+		returnX = x;
+		returnY = y;
+	};
+
+	trackType = returnTrackElement->properties.track.type;
+	int elementReturnDirection = RCT2_GLOBAL(0x009968BB + (trackType * 10), uint8);
+	ride->boat_hire_return_direction = (returnTrackElement->type + elementReturnDirection) & 3;
+	ride->boat_hire_return_position = (returnX >> 5) | ((returnY >> 5) << 8);
+}
+
+/**
+ * 
+ *  rct2: 0x006B4D39
+ */
+static void ride_set_maze_entrance_exit_points(rct_ride *ride)
+{
+	uint16 positions[9];
+
+	// Create a list of all the entrance and exit positions
+	uint16 *position = positions;
+	for (int i = 0; i < 4; i++) {
+		if (ride->entrances[i] != 0xFFFF) {
+			*position++ = ride->entrances[i];
+		}
+		if (ride->exits[i] != 0xFFFF) {
+			*position++ = ride->exits[i];
+		}
+	}
+	*position++ = 0xFFFF;
+
+	// Enumerate entrance and exit positions
+	for (position = positions; *position != 0xFFFF; position++) {
+		int x = (*position & 0xFF) << 5;
+		int y = (*position >> 8) << 5;
+		int z = ride->station_heights[0];
+
+		rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+		do {
+			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE) continue;
+			if (
+				mapElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE &&
+				mapElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_EXIT
+			) {
+				continue;
+			}
+			if (mapElement->base_height != z) continue;
+
+			sub_666CBE(x, y, mapElement);
+		} while (!map_element_is_last_for_tile(mapElement++));
+	}
+}
+
+/**
+ * Sets a flag on all the track elements that can be the start of a circuit block. i.e. where a train can start.
+ *  rct2: 0x006B4E6B
+ */
+static void ride_set_block_points(rct_xy_element *startElement)
+{
+	rct_xy_element currentElement = *startElement;
+	do {
+		int trackType = currentElement.element->properties.track.type;
+		switch (trackType) {
+		case TRACK_ELEM_END_STATION:
+		case TRACK_ELEM_CABLE_LIFT_HILL:
+		case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+		case TRACK_ELEM_60_DEG_UP_TO_FLAT:
+		case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:	
+		case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:	
+		case 216:		// block brakes
+			currentElement.element->flags &= ~(1 << 5);
+			break;
+		}
+	} while (track_block_get_next(&currentElement, &currentElement, NULL, NULL) && currentElement.element != startElement->element);
+}
+
+/**
  * 
  *  rct2: 0x006B4D26
  */
-void sub_6B4D26(int rideIndex, rct_xy_element *startElement)
+void ride_set_start_finish_points(int rideIndex, rct_xy_element *startElement)
 {
-	RCT2_CALLPROC_X(0x006B4D26, startElement->x, 0, startElement->y, rideIndex, (int)startElement->element, 0, 0); return;
+	rct_ride *ride = GET_RIDE(rideIndex);
 
-	rct_xy_element currentElement;
-	rct_ride *ride;
-	int trackType;
-
-	ride = GET_RIDE(rideIndex);
-	if (ride->type == RIDE_TYPE_BOAT_RIDE) {
-
-	} else if (ride->type != RIDE_TYPE_MAZE) {
-
+	switch (ride->type) {
+	case RIDE_TYPE_BOAT_RIDE:
+		ride_set_boat_hire_return_point(ride, startElement);
+		break;
+	case RIDE_TYPE_MAZE:
+		ride_set_maze_entrance_exit_points(ride);
+		break;
 	}
 
-	if (
-		(
-			ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED ||
-			ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
-		) &&
-		!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
-	) {
-		// Set flag on track pieces where a train can start
-		currentElement = *startElement;
-		do {
-			trackType = currentElement.element->properties.track.type;
-			switch (trackType) {
-			case TRACK_ELEM_END_STATION:
-			case TRACK_ELEM_CABLE_LIFT_HILL:
-			case TRACK_ELEM_25_DEG_UP_TO_FLAT:
-			case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-			case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:	
-			case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:	
-			case 216:		// block brakes
-				currentElement.element->flags &= ~(1 << 5);
-				break;
-			}
-		} while (track_block_get_next(&currentElement, &currentElement, NULL, NULL) && currentElement.element != startElement->element);
+	if (ride_is_block_sectioned(ride) && !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)) {
+		ride_set_block_points(startElement);
 	}
 }
 
@@ -4358,7 +4430,7 @@ int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplying)
 	}
 
 	if (isApplying)
-		sub_6B4D26(rideIndex, &trackElement);
+		ride_set_start_finish_points(rideIndex, &trackElement);
 
 	if (
 		!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13) &&
@@ -4481,7 +4553,7 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 	}
 
 	if (isApplying)
-		sub_6B4D26(rideIndex, &trackElement);
+		ride_set_start_finish_points(rideIndex, &trackElement);
 
 	if (
 		!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13) &&
@@ -5507,6 +5579,13 @@ bool ride_is_powered_launched(rct_ride *ride)
 	return
 		ride->mode == RIDE_MODE_POWERED_LAUNCH_PASSTROUGH ||
 		ride->mode == RIDE_MODE_POWERED_LAUNCH ||
+		ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED;
+}
+
+bool ride_is_block_sectioned(rct_ride *ride)
+{
+	return
+		ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED ||
 		ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED;
 }
 
