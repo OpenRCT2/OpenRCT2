@@ -7,8 +7,7 @@ script:
     - bash build.sh
 
 notifications:
-    irc: "irc.freenode.net#openrct2-dev"
-    on_failure: always
+    on_failure: change
     on_success: change
 
 cache: 
