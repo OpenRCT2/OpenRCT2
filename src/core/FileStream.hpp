@@ -18,7 +18,7 @@ private:
 	bool _canRead;
 	bool _canWrite;
 	bool _disposed;
-		
+
 public:
 	FileStream(const utf8 *path, int fileMode) {
 		const char *mode;
