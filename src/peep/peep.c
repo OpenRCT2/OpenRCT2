@@ -7974,9 +7974,12 @@ static bool sub_6960AB(rct_peep *peep, int rideIndex, int dh, int bp)
 					}
 				}
 			}
-			if (!(RCT2_ADDRESS(0x0097D4F2, uint16)[ride->type * 8] & 0x1000) || ride->value == 0xFFFF || ride->price != 0) {
+
+			// Check price, safety, ratings etc.
+			if (!(RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x1000) || ride->value == 0xFFFF || ride->price != 0) {
 				if (peep->previous_ride == rideIndex)
 					goto loc_69666E;
+
 				if (ride->price != 0 && !peep_has_voucher_for_free_ride(peep, rideIndex)) {
 					if (peep->cash_in_pocket <= 0) {
 						if (!(bp & 4)) {
@@ -8049,8 +8052,9 @@ static bool sub_6960AB(rct_peep *peep, int rideIndex, int dh, int bp)
 					goto loc_696387;
 				}
 
-				if (RCT2_ADDRESS(0x0097D4F2, uint16)[ride->type * 8] & 0x10) {
-					if (scenario_rand() > 0x1999U) goto loc_69666E;
+				// Check G forces (basic intensity look check)
+				if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x10) {
+					if ((scenario_rand() & 0xFFFF) > 0x1999U) goto loc_69666E;
 					if (ride->max_positive_vertical_g > 500 && !gConfigCheat.ignore_ride_intensity) goto loc_69666E;
 					if (ride->max_negative_vertical_g < -400 && !gConfigCheat.ignore_ride_intensity) goto loc_69666E;
 					if (ride->max_lateral_g > 400 && !gConfigCheat.ignore_ride_intensity) goto loc_69666E;
