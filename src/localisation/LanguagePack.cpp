@@ -18,7 +18,7 @@ constexpr int ScenarioOverrideMaxStringCount = 3;
 
 LanguagePack *LanguagePack::FromFile(int id, const utf8 *path)
 {
-	assert(path != NULL);
+	assert(path != nullptr);
 
 	uint32 fileLength;
 	utf8 *fileData;
@@ -26,7 +26,7 @@ LanguagePack *LanguagePack::FromFile(int id, const utf8 *path)
 	// Load file directly into memory
 	try {
 		FileStream fs = FileStream(path, FILE_MODE_OPEN);
-		
+
 		fileLength = (uint32)fs.GetLength();
 		fileData = Memory::Allocate<utf8>(fileLength);
 		fs.Read(fileData, fileLength);
@@ -34,7 +34,7 @@ LanguagePack *LanguagePack::FromFile(int id, const utf8 *path)
 		fs.Dispose();
 	} catch (Exception ex) {
 		log_error("Unable to open %s: %s", path, ex.GetMessage());
-		return NULL;
+		return nullptr;
 	}
 
 	// Parse the memory as text
@@ -45,19 +45,19 @@ LanguagePack *LanguagePack::FromFile(int id, const utf8 *path)
 }
 
 LanguagePack *LanguagePack::FromText(int id, const utf8 *text)
-{	
+{
 	return new LanguagePack(id, text);
 }
 
 LanguagePack::LanguagePack(int id, const utf8 *text)
 {
-	assert(text != NULL);
+	assert(text != nullptr);
 
 	_id = id;
-	_stringData = NULL;
-	_currentGroup = NULL;
-	_currentObjectOverride = NULL;
-	_currentScenarioOverride = NULL;
+	_stringData = nullptr;
+	_currentGroup = nullptr;
+	_currentObjectOverride = nullptr;
+	_currentScenarioOverride = nullptr;
 
 	auto reader = UTF8StringReader(text);
 	while (reader.CanRead()) {
@@ -73,7 +73,7 @@ LanguagePack::LanguagePack(int id, const utf8 *text)
 	for (size_t i = 0; i < _objectOverrides.size(); i++) {
 		for (int j = 0; j < ObjectOverrideMaxStringCount; j++) {
 			const utf8 **strPtr = &(_objectOverrides[i].strings[j]);
-			if (*strPtr != NULL) {
+			if (*strPtr != nullptr) {
 				*strPtr = (utf8*)(stringDataBaseAddress + (size_t)*strPtr);
 			}
 		}
@@ -81,7 +81,7 @@ LanguagePack::LanguagePack(int id, const utf8 *text)
 	for (size_t i = 0; i < _scenarioOverrides.size(); i++) {
 		for (int j = 0; j < ScenarioOverrideMaxStringCount; j++) {
 			const utf8 **strPtr = &(_scenarioOverrides[i].strings[j]);
-			if (*strPtr != NULL) {
+			if (*strPtr != nullptr) {
 				*strPtr = (utf8*)(stringDataBaseAddress + (size_t)*strPtr);
 			}
 		}
@@ -106,7 +106,7 @@ const utf8 *LanguagePack::GetString(int stringId) const {
 		if (_scenarioOverrides.size() > (size_t)ooIndex) {
 			return _scenarioOverrides[ooIndex].strings[ooStringIndex];
 		} else {
-			return NULL;
+			return nullptr;
 		}
 	}else if (stringId >= ObjectOverrideBase) {
 		int offset = stringId - ObjectOverrideBase;
@@ -116,26 +116,26 @@ const utf8 *LanguagePack::GetString(int stringId) const {
 		if (_objectOverrides.size() > (size_t)ooIndex) {
 			return _objectOverrides[ooIndex].strings[ooStringIndex];
 		} else {
-			return NULL;
+			return nullptr;
 		}
 	} else {
 		if (_strings.size() > (size_t)stringId) {
 			return _strings[stringId];
 		} else {
-			return NULL;
+			return nullptr;
 		}
 	}
 }
 
 rct_string_id LanguagePack::GetObjectOverrideStringId(const char *objectIdentifier, int index)
 {
-	assert(objectIdentifier != NULL);
+	assert(objectIdentifier != nullptr);
 	assert(index < ObjectOverrideMaxStringCount);
 
 	int ooIndex = 0;
 	for (const ObjectOverride &objectOverride : _objectOverrides) {
 		if (strncmp(objectOverride.name, objectIdentifier, 8) == 0) {
-			if (objectOverride.strings[index] == NULL) {
+			if (objectOverride.strings[index] == nullptr) {
 				return STR_NONE;
 			}
 			return ObjectOverrideBase + (ooIndex * ObjectOverrideMaxStringCount) + index;
@@ -148,13 +148,13 @@ rct_string_id LanguagePack::GetObjectOverrideStringId(const char *objectIdentifi
 
 rct_string_id LanguagePack::GetScenarioOverrideStringId(const utf8 *scenarioFilename, int index)
 {
-	assert(scenarioFilename != NULL);
+	assert(scenarioFilename != nullptr);
 	assert(index < ScenarioOverrideMaxStringCount);
 
 	int ooIndex = 0;
 	for (const ScenarioOverride &scenarioOverride : _scenarioOverrides) {
 		if (_stricmp(scenarioOverride.filename, scenarioFilename) == 0) {
-			if (scenarioOverride.strings[index] == NULL) {
+			if (scenarioOverride.strings[index] == nullptr) {
 				return STR_NONE;
 			}
 			return ScenarioOverrideBase + (ooIndex * ScenarioOverrideMaxStringCount) + index;
@@ -167,7 +167,7 @@ rct_string_id LanguagePack::GetScenarioOverrideStringId(const utf8 *scenarioFile
 
 LanguagePack::ObjectOverride *LanguagePack::GetObjectOverride(const char *objectIdentifier)
 {
-	assert(objectIdentifier != NULL);
+	assert(objectIdentifier != nullptr);
 
 	for (size_t i = 0; i < _objectOverrides.size(); i++) {
 		ObjectOverride *oo = &_objectOverrides[i];
@@ -175,12 +175,12 @@ LanguagePack::ObjectOverride *LanguagePack::GetObjectOverride(const char *object
 			return oo;
 		}
 	}
-	return false;
+	return nullptr;
 }
 
 LanguagePack::ScenarioOverride *LanguagePack::GetScenarioOverride(const utf8 *scenarioIdentifier)
 {
-	assert(scenarioIdentifier != NULL);
+	assert(scenarioIdentifier != nullptr);
 
 	for (size_t i = 0; i < _scenarioOverrides.size(); i++) {
 		ScenarioOverride *so = &_scenarioOverrides[i];
@@ -188,7 +188,7 @@ LanguagePack::ScenarioOverride *LanguagePack::GetScenarioOverride(const utf8 *sc
 			return so;
 		}
 	}
-	return false;
+	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -310,8 +310,8 @@ void LanguagePack::ParseGroupObject(IStringReader *reader)
 		if (sb.GetLength() == 8) {
 			_currentGroup = sb.GetString();
 			_currentObjectOverride = GetObjectOverride(_currentGroup);
-			_currentScenarioOverride = NULL;
-			if (_currentObjectOverride == NULL) {
+			_currentScenarioOverride = nullptr;
+			if (_currentObjectOverride == nullptr) {
 				_objectOverrides.push_back(ObjectOverride());
 				_currentObjectOverride = &_objectOverrides[_objectOverrides.size() - 1];
 				memset(_currentObjectOverride, 0, sizeof(ObjectOverride));
@@ -346,9 +346,9 @@ void LanguagePack::ParseGroupScenario(IStringReader *reader)
 		SafeFree(_currentGroup);
 
 		_currentGroup = sb.GetString();
-		_currentObjectOverride = NULL;
+		_currentObjectOverride = nullptr;
 		_currentScenarioOverride = GetScenarioOverride(_currentGroup);
-		if (_currentScenarioOverride == NULL) {
+		if (_currentScenarioOverride == nullptr) {
 			_scenarioOverrides.push_back(ScenarioOverride());
 			_currentScenarioOverride = &_scenarioOverrides[_scenarioOverrides.size() - 1];
 			memset(_currentScenarioOverride, 0, sizeof(ObjectOverride));
@@ -388,7 +388,7 @@ void LanguagePack::ParseString(IStringReader *reader)
 	const utf8 *identifier = sb.GetBuffer();
 
 	int stringId;
-	if (_currentGroup == NULL) {
+	if (_currentGroup == nullptr) {
 		if (sscanf(identifier, "STR_%4d", &stringId) != 1) {
 			// Ignore line entirely
 			return;
@@ -430,15 +430,15 @@ void LanguagePack::ParseString(IStringReader *reader)
 	// Get the relative offset to the string (add the base offset when we extract the string properly)
 	utf8 *relativeOffset = (utf8*)_stringDataSB.GetLength();
 
-	if (_currentGroup == NULL) {
+	if (_currentGroup == nullptr) {
 		// Make sure the list is big enough to contain this string id
 		while (_strings.size() <= (size_t)stringId) {
-			_strings.push_back(NULL);
+			_strings.push_back(nullptr);
 		}
-		
+
 		_strings[stringId] = relativeOffset;
 	} else {
-		if (_currentObjectOverride != NULL) {
+		if (_currentObjectOverride != nullptr) {
 			_currentObjectOverride->strings[stringId] = relativeOffset;
 		} else {
 			_currentScenarioOverride->strings[stringId] = relativeOffset;

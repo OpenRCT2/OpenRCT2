@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -241,7 +241,7 @@ void format_comma_separated_integer(char **dest, long long value)
 			// Append group separator
 			if (groupIndex == 3) {
 				groupIndex = 0;
-				
+
 				ch = commaMark;
 				while (*ch != 0) {
 					*dst++ = *ch++;
@@ -309,7 +309,7 @@ void format_comma_separated_fixed_2dp(char **dest, long long value)
 			// Append group separator
 			if (groupIndex == 3) {
 				groupIndex = 0;
-				
+
 				ch = commaMark;
 				while (*ch != 0) {
 					*dst++ = *ch++;

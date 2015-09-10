@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -48,24 +48,24 @@ enum {
 };
 
 static TTFFontSetDescriptor TTFFontMingLiu = {{
-	{ "msjh.ttc",		9,		-1,		-3,		6,		NULL },
-	{ "mingliu.ttc",	11,		1,		1,		12,		NULL },
-	{ "mingliu.ttc",	12,		1,		0,		12,		NULL },
-	{ "mingliu.ttc",	13,		1,		0,		20,		NULL },
+	{ "msjh.ttc",		9,		-1,		-3,		6,		nullptr },
+	{ "mingliu.ttc",	11,		1,		1,		12,		nullptr },
+	{ "mingliu.ttc",	12,		1,		0,		12,		nullptr },
+	{ "mingliu.ttc",	13,		1,		0,		20,		nullptr },
 }};
 
 static TTFFontSetDescriptor TTFFontSimSun = {{
-	{ "msyh.ttc",		9,		-1,		-3,		6,		NULL },
-	{ "simsun.ttc",		11,		1,		-1,		14,		NULL },
-	{ "simsun.ttc",		12,		1,		-2,		14,		NULL },
-	{ "simsun.ttc",		13,		1,		0,		20,		NULL },
+	{ "msyh.ttc",		9,		-1,		-3,		6,		nullptr },
+	{ "simsun.ttc",		11,		1,		-1,		14,		nullptr },
+	{ "simsun.ttc",		12,		1,		-2,		14,		nullptr },
+	{ "simsun.ttc",		13,		1,		0,		20,		nullptr },
 }};
 
 static TTFFontSetDescriptor TTFFontMalgun = { {
-	{ "malgun.ttf",		8,		-1,		-3,		6,		NULL },
-	{ "malgun.ttf",		11,		1,		-2,		14,		NULL },
-	{ "malgun.ttf",		12,		1,		-4,		14,		NULL },
-	{ "malgun.ttf",		13,		1,		0,		20,		NULL },
+	{ "malgun.ttf",		8,		-1,		-3,		6,		nullptr },
+	{ "malgun.ttf",		11,		1,		-2,		14,		nullptr },
+	{ "malgun.ttf",		12,		1,		-4,		14,		nullptr },
+	{ "malgun.ttf",		13,		1,		0,		20,		nullptr },
 } };
 
 const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
@@ -116,22 +116,22 @@ void utf8_remove_format_codes(utf8 *text)
 
 const char *language_get_string(rct_string_id id)
 {
-	const char *openrctString = NULL;
+	const char *openrctString = nullptr;
 
 	if (id == (rct_string_id)STR_NONE)
-		return NULL;
+		return nullptr;
 
 	if (_languageCurrent != nullptr)
 		openrctString = _languageCurrent->GetString(id);
-	if (openrctString == NULL && _languageFallback != nullptr)
+	if (openrctString == nullptr && _languageFallback != nullptr)
 		openrctString = _languageFallback->GetString(id);
 
 	if (id >= STR_OPENRCT2_BEGIN_STRING_ID) {
-		return openrctString != NULL ? openrctString : "(undefined string)";
+		return openrctString != nullptr ? openrctString : "(undefined string)";
 	} else {
 		const char *rct = _languageOriginal[id];
-		const char *str = (openrctString == NULL || strlen(openrctString) == 0 ? rct : openrctString);
-		return str == NULL ? "" : str;
+		const char *str = (openrctString == nullptr || strlen(openrctString) == 0 ? rct : openrctString);
+		return str == nullptr ? "" : str;
 	}
 }
 
@@ -151,13 +151,13 @@ int language_open(int id)
 
 	sprintf(filename, languagePath, gExePath, LanguagesDescriptors[id].path);
 	_languageCurrent = LanguagePack::FromFile(id, filename);
-	if (_languageCurrent != NULL) {
+	if (_languageCurrent != nullptr) {
 		gCurrentLanguage = id;
 
 		if (LanguagesDescriptors[id].font == FONT_OPENRCT2_SPRITE) {
 			ttf_dispose();
 			gUseTrueTypeFont = false;
-			gCurrentTTFFontSet = NULL;
+			gCurrentTTFFontSet = nullptr;
 		} else {
 			ttf_dispose();
 			gUseTrueTypeFont = true;
@@ -187,7 +187,7 @@ void language_close_all()
 /* rct2: 0x0098DA16 */
 uint16 ObjectTypeStringTableCount[] = { 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3 };
 
-utf8 *_cachedObjectStrings[MAX_OBJECT_CACHED_STRINGS] = { NULL };
+utf8 *_cachedObjectStrings[MAX_OBJECT_CACHED_STRINGS] = { nullptr };
 
 void utf8_trim_string(utf8 *text)
 {
@@ -271,7 +271,7 @@ static bool rct2_language_is_multibyte_charset(int languageId)
 rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/*ecx*/, int index/*ebx*/, int tableindex/*edx*/)
 {
 	uint8 languageId, chosenLanguageId;
-	char *pString = NULL;
+	char *pString = nullptr;
 	int result = 0;
 	bool isBlank;
 
@@ -344,7 +344,7 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 		// cache UTF-8 string
 		int cacheStringOffset = stringid - STEX_BASE_STRING_ID;
 		utf8 **cacheString = &_cachedObjectStrings[cacheStringOffset];
-		if (*cacheString != NULL) {
+		if (*cacheString != nullptr) {
 			free(*cacheString);
 		}
 		if (rct2_language_is_multibyte_charset(chosenLanguageId)) {
@@ -366,7 +366,7 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 		// cache UTF-8 string
 		int cacheStringOffset = stringid - STEX_BASE_STRING_ID;
 		utf8 **cacheString = &_cachedObjectStrings[cacheStringOffset];
-		if (*cacheString != NULL) {
+		if (*cacheString != nullptr) {
 			free(*cacheString);
 		}
 		if (rct2_language_is_multibyte_charset(chosenLanguageId)) {
