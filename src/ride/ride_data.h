@@ -47,6 +47,32 @@ typedef struct {
 	rct_string_id display;			// "Diamond Heights" Balloon
 } rct_shop_item_string_types;
 
+typedef struct {
+	uint16 flags;
+	uint8 default_music;
+	uint8 var_3;
+	uint8 pad[4];
+} rct_ride_data_4;
+
+enum {
+	RIDE_TYPE_FLAG4_0 = (1 << 0),
+	RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT = (1 << 1),
+	RIDE_TYPE_FLAG4_ALLOW_MUSIC = (1 << 2),
+	RIDE_TYPE_FLAG4_3 = (1 << 3),
+	RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES = (1 << 4),
+	RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT = (1 << 5),
+	RIDE_TYPE_FLAG4_6 = (1 << 6),
+	RIDE_TYPE_FLAG4_HAS_AIR_TIME = (1 << 7),
+	RIDE_TYPE_FLAG4_SINGLE_SESSION = (1 << 8),
+	RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS = (1 << 9),
+	RIDE_TYPE_FLAG4_10 = (1 << 10),
+	RIDE_TYPE_FLAG4_11 = (1 << 11),
+	RIDE_TYPE_FLAG4_TRANSPORT_RIDE = (1 << 12),
+	RIDE_TYPE_FLAG4_13 = (1 << 13),
+	RIDE_TYPE_FLAG4_14 = (1 << 14),
+	RIDE_TYPE_FLAG4_15 = (1 << 15),
+};
+
 extern const bool hasRunningTrack[0x60];
 extern const uint8 initialUpkeepCosts[0x60];
 extern const uint8 costPerTrackPiece[0x60];
@@ -61,6 +87,8 @@ extern const uint8 RideAvailableBreakdowns[];
 
 extern const rct_ride_entrance_definition RideEntranceDefinitions[RIDE_ENTRANCE_STYLE_COUNT];
 extern const uint8 RideLiftHillAdjustments[0x60];
+
+extern const rct_ride_data_4 RideData4[91];
 
 extern const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT];
 extern const rct_shop_item_string_types ShopItemStringIds[SHOP_ITEM_COUNT];

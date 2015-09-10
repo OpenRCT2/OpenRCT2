@@ -22,17 +22,20 @@
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../game.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../management/research.h"
 #include "../object.h"
+#include "../rct1.h"
+#include "../ride/ride.h"
+#include "../ride/ride_data.h"
 #include "../ride/track.h"
 #include "../scenario.h"
-#include "error.h"
-#include "../interface/themes.h"
 #include "dropdown.h"
-#include "../rct1.h"
+#include "error.h"
+
 
 enum {
 	FILTER_RCT2 = (1 << 0),
@@ -523,8 +526,7 @@ static void setup_track_designer_objects(){
 				if (ride_type == 0xFF)
 					continue;
 
-				if (!(RCT2_ADDRESS(0x0097D4F2, uint16)[ride_type * 4] &
-					(1 << 11)))
+				if (!(RideData4[ride_type].flags & RIDE_TYPE_FLAG4_11))
 					continue;
 
 				*selection_flags &= ~OBJECT_SELECTION_FLAG_6;

@@ -7898,7 +7898,7 @@ static bool sub_6960AB(rct_peep *peep, int rideIndex, int dh, int bp)
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_8)) {
 		if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)) {
-			if (!(RCT2_ADDRESS(0x0097D4F2, uint16)[ride->type * 8] & 0x1000) || ride->value == 0xFFFF || ride->price != 0) {
+			if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_TRANSPORT_RIDE) || ride->value == 0xFFFF || ride->price != 0) {
 				if (peep->flags & PEEP_FLAGS_LEAVING_PARK) {
 					goto loc_69666E;
 				}
@@ -7976,7 +7976,7 @@ static bool sub_6960AB(rct_peep *peep, int rideIndex, int dh, int bp)
 			}
 
 			// Check price, safety, ratings etc.
-			if (!(RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x1000) || ride->value == 0xFFFF || ride->price != 0) {
+			if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_TRANSPORT_RIDE) || ride->value == 0xFFFF || ride->price != 0) {
 				if (peep->previous_ride == rideIndex)
 					goto loc_69666E;
 
@@ -8053,7 +8053,7 @@ static bool sub_6960AB(rct_peep *peep, int rideIndex, int dh, int bp)
 				}
 
 				// Check G forces (basic intensity look check)
-				if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x10) {
+				if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES) {
 					if ((scenario_rand() & 0xFFFF) > 0x1999U) goto loc_69666E;
 					if (ride->max_positive_vertical_g > 500 && !gConfigCheat.ignore_ride_intensity) goto loc_69666E;
 					if (ride->max_negative_vertical_g < -400 && !gConfigCheat.ignore_ride_intensity) goto loc_69666E;

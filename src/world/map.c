@@ -29,6 +29,7 @@
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
 #include "../openrct2.h"
+#include "../ride/ride_data.h"
 #include "../ride/track.h"
 #include "../ride/track_data.h"
 #include "../scenario.h"
@@ -2474,7 +2475,7 @@ static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall
 		return false;
 	}
 
-	if (!(RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 1)) {
+	if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_0)) {
 		return false;
 	}
 

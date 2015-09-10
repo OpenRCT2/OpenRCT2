@@ -36,6 +36,7 @@
 #include "../world/footpath.h"
 #include "../windows/error.h"
 #include "ride.h"
+#include "ride_data.h"
 #include "ride_ratings.h"
 #include "track.h"
 #include "track_data.h"
@@ -2346,7 +2347,7 @@ int track_is_connected_by_shape(rct_map_element *a, rct_map_element *b)
 	trackType = a->properties.track.type;
 	aBank = gTrackDefinitions[trackType].bank_end;
 	aAngle = gTrackDefinitions[trackType].vangle_end;
-	if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 8) {
+	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_3) {
 		if (a->properties.track.colour & 4) {
 			if (aBank == TRACK_BANK_NONE)
 				aBank = TRACK_BANK_UPSIDE_DOWN;
@@ -2359,7 +2360,7 @@ int track_is_connected_by_shape(rct_map_element *a, rct_map_element *b)
 	trackType = b->properties.track.type;
 	bBank = gTrackDefinitions[trackType].bank_start;
 	bAngle = gTrackDefinitions[trackType].vangle_start;
-	if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 8) {
+	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_3) {
 		if (b->properties.track.colour & 4) {
 			if (bBank == TRACK_BANK_NONE)
 				bBank = TRACK_BANK_UPSIDE_DOWN;
@@ -2740,8 +2741,10 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 		uint8 flags = (trackElement.element->type & (1 << 7)) | bh;
 		flags |= (trackElement.element->properties.track.colour & 3) << 4;
 
-		if (RCT2_ADDRESS(0x0097D4F2, uint16)[ride->type * 4] & (1 << 3) &&
-			trackElement.element->properties.track.colour & (1 << 2)){
+		if (
+			RideData4[ride->type].flags & RIDE_TYPE_FLAG4_3 &&
+			trackElement.element->properties.track.colour & (1 << 2)
+		) {
 			flags |= (1 << 6);
 		}
 

@@ -30,6 +30,7 @@
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
+#include "../ride/ride_data.h"
 #include "../ride/track.h"
 #include "dropdown.h"
 
@@ -543,7 +544,7 @@ rct_window *window_ride_construction_open()
 	_currentTrackLiftHill = 0;
 	_currentTrackCovered = 0;
 
-	if (RCT2_ADDRESS(0x0097D4F2, uint16)[ride->type * 4] & 0x8000)
+	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_15)
 		_currentTrackCovered |= 2;
 
 	RCT2_GLOBAL(0x00F440B6, uint8) = 0;

@@ -715,7 +715,7 @@ int ride_get_total_time(rct_ride *ride)
 
 int ride_can_have_multiple_circuits(rct_ride *ride)
 {
-	if (!(RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x200))
+	if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS))
 		return 0;
 
 	// Only allow circuit or launch modes
@@ -1294,7 +1294,7 @@ static void ride_construction_reset_current_piece()
 		_currentTrackBankEnd = 0;
 		_currentTrackLiftHill = 0;
 		_currentTrackCovered = 0;
-		if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x8000) {
+		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_15) {
 			_currentTrackCovered |= 2;
 		}
 		_previousTrackSlopeEnd = 0;
@@ -1342,7 +1342,7 @@ void ride_construction_set_default_next_piece()
 
 		// Set whether track is covered
 		_currentTrackCovered &= ~2;
-		if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 8) {
+		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_3) {
 			if (mapElement->properties.track.colour & 4) {
 				_currentTrackCovered |= 2;
 			}
@@ -1362,7 +1362,7 @@ void ride_construction_set_default_next_piece()
 		_currentTrackCurve = curve;
 
 		// Set track banking
-		if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 8) {
+		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_3) {
 			if (bank == TRACK_BANK_UPSIDE_DOWN) {
 				bank = TRACK_BANK_NONE;
 				_currentTrackCovered ^= 2;
@@ -1394,7 +1394,7 @@ void ride_construction_set_default_next_piece()
 
 		// Set whether track is covered
 		_currentTrackCovered &= ~2;
-		if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 8) {
+		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_3) {
 			if (mapElement->properties.track.colour & 4) {
 				_currentTrackCovered |= 2;
 			}
@@ -1414,7 +1414,7 @@ void ride_construction_set_default_next_piece()
 		_currentTrackCurve = curve;
 
 		// Set track banking
-		if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 8) {
+		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_3) {
 			if (bank == TRACK_BANK_UPSIDE_DOWN) {
 				bank = TRACK_BANK_NONE;
 				_currentTrackCovered ^= 2;
@@ -1743,7 +1743,7 @@ int sub_6CC3FB(int rideIndex)
 	_currentTrackLiftHill = 0;
 	_currentTrackCovered = 0;
 
-	if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x8000)
+	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_15)
 		_currentTrackCovered |= 2;
 
 	_previousTrackBankEnd = 0;
@@ -2552,8 +2552,12 @@ static void ride_music_update(int rideIndex)
 	rct_vehicle *vehicle;
 	rct_ride *ride = GET_RIDE(rideIndex);
 
-	if (!(RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 6))
+	if (
+		!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT) &&
+		!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_MUSIC)
+	) {
 		return;
+	}
 
 	if (ride->status != RIDE_STATUS_OPEN || !(ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC)) {
 		ride->music_tune_id = 255;
@@ -4441,7 +4445,7 @@ int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplying)
 	}
 
 	if (
-		(RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint32) & 0x400) &&
+		(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_10) &&
 		(ride->lifecycle_flags & RIDE_LIFECYCLE_16) &&
 		!(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
 		) {
@@ -4564,7 +4568,7 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 	}
 
 	if (
-		(RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint32) & 0x400) &&
+		(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_10) &&
 		(ride->lifecycle_flags & RIDE_LIFECYCLE_16) &&
 		!(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
 	) {
@@ -5069,7 +5073,7 @@ foundRideEntry:
 	ride->min_waiting_time = 10;
 	ride->max_waiting_time = 60;
 	ride->depart_flags = RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH | 3;
-	if (RCT2_ADDRESS(0x0097D4F2, uint16)[ride->type * 4] & 2) {
+	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT) {
 		ride->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
 	}
 	ride->music = RCT2_ADDRESS(0x0097D4F4, uint8)[ride->type * 8];
@@ -6260,7 +6264,7 @@ void ride_update_max_vehicles(int rideIndex)
 
 			if (
 				(ride->mode != RIDE_MODE_STATION_TO_STATION && ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT) ||
-				!(RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x40)
+				!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_6)
 			) {
 				maxNumTrains = min(maxNumTrains, 31);
 			} else {

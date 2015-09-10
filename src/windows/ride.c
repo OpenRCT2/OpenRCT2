@@ -1131,15 +1131,19 @@ void window_ride_disable_tabs(rct_window *w)
 	if ((RCT2_GLOBAL(0x97CF40 + ride_type * 8, uint32) & 0x2000) != 0)
 		disabled_tabs |= (1 << WIDX_TAB_2); // 0x20
 
-	if ((RCT2_GLOBAL(0x97CF40 + ride_type * 8, uint32) & 0x4000007) == 0 &&
-		(RCT2_GLOBAL(0x97D4F2 + ride_type * 8, uint16) & 0x20) == 0)
+	if (
+		!(RCT2_GLOBAL(0x97CF40 + ride_type * 8, uint32) & 0x4000007) &&
+		!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT)
+	) {
 		disabled_tabs |= (1 << WIDX_TAB_5); // 0x100
+	}
 
 	if ((RCT2_GLOBAL(0x97CF40 + ride_type * 8, uint32) & 0x20000) != 0)
 		disabled_tabs |= (1 << WIDX_TAB_3 | 1 << WIDX_TAB_4 | 1 << WIDX_TAB_7); // 0x4C0
 
-	if ((RCT2_GLOBAL(0x97D4F2 + ride_type * 8, uint32) & 0x4) == 0)
+	if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_MUSIC)) {
 		disabled_tabs |= (1 << WIDX_TAB_6); // 0x200
+	}
 
 	if (ride_type == RIDE_TYPE_CASH_MACHINE ||
 		ride_type == RIDE_TYPE_FIRST_AID ||
@@ -2122,7 +2126,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window *w, void *argumen
 	if (ride->type == RIDE_TYPE_MINI_GOLF)
 		return 0;
 
-	if ((RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x100) && stringId <= 1104)
+	if ((RideData4[ride->type].flags & RIDE_TYPE_FLAG4_SINGLE_SESSION) && stringId <= 1104)
 		stringId += 23;
 
 	RCT2_GLOBAL((int)arguments + 4, uint16) = RideNameConvention[ride->type].station_name;
@@ -4065,7 +4069,7 @@ static void window_ride_colour_invalidate(rct_window *w)
 		window_ride_colour_widgets[WIDX_TRACK_PREVIEW].type = WWT_EMPTY;
 
 	// Entrance style
-	if (RCT2_GLOBAL(0x0097D4F2 + (ride->type * 8), uint16) & 0x20) {
+	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT) {
 		window_ride_colour_widgets[WIDX_ENTRANCE_PREVIEW].type = WWT_SPINNER;
 		window_ride_colour_widgets[WIDX_ENTRANCE_STYLE].type = WWT_DROPDOWN;
 		window_ride_colour_widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;

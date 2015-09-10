@@ -784,11 +784,8 @@ static void ride_ratings_apply_adjustments(rct_ride *ride, rating_tuple *ratings
 	ratings->intensity +=  ((ratings->intensity  * rideEntry->intensity_multipler ) >> 7);
 	ratings->nausea +=     ((ratings->nausea     * rideEntry->nausea_multipler    ) >> 7);
 
-	// As far as I can tell, this flag detects whether the ride is a roller
-	// coaster, or a log flume or rapids. Everything else it's not set.
-	// more detail: https://gist.github.com/kevinburke/d951e74e678b235eef3e
-	uint16 flags = RCT2_GLOBAL(0x0097D4F2 + ride->type * 8, uint16);
-	if (flags & 0x80) {
+	// Apply total air time
+	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_AIR_TIME) {
 		uint16 totalAirTime = ride->total_air_time;
 		if (rideEntry->flags & RIDE_ENTRY_FLAG_11) {
 			if (totalAirTime >= 96) {

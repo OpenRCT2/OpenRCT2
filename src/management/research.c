@@ -24,10 +24,12 @@
 #include "../localisation/date.h"
 #include "../management/finance.h"
 #include "../scenario.h"
+#include "../rct1.h"
+#include "../ride/ride.h"
+#include "../ride/ride_data.h"
 #include "../world/scenery.h"
 #include "news_item.h"
 #include "research.h"
-#include "../rct1.h"
 
 const int _researchRate[] = { 0, 160, 250, 400 };
 
@@ -177,7 +179,7 @@ void research_finish_item(sint32 entryIndex)
 		RCT2_ADDRESS(0x01357404, uint32)[base_ride_type >> 5] |= (1 << (base_ride_type & 0x1F));
 		RCT2_ADDRESS(0x01357444, uint32)[base_ride_type] = RCT2_ADDRESS(0x0097C468, uint32)[base_ride_type];
 		RCT2_ADDRESS(0x01357644, uint32)[base_ride_type] = RCT2_ADDRESS(0x0097C5D4, uint32)[base_ride_type];
-		if (RCT2_GLOBAL(0x0097D4F2 + (base_ride_type * 8), uint16) & 8) {
+		if (RideData4[base_ride_type].flags & RIDE_TYPE_FLAG4_3) {
 			ebx = RCT2_GLOBAL(0x0097D4F5 + (base_ride_type * 8), uint8);
 			RCT2_ADDRESS(0x01357444, uint32)[ebx] = RCT2_ADDRESS(0x0097C468, uint32)[ebx];
 			RCT2_ADDRESS(0x01357644, uint32)[ebx] = RCT2_ADDRESS(0x0097C5D4, uint32)[ebx];
