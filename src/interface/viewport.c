@@ -288,12 +288,12 @@ void sub_6E7FF3(rct_window *w, rct_viewport *viewport, int x, int y)
 //					viewport->view_width = (w->x - viewport->x) * zoom;
 //
 //					sub_6E7FF3(w, viewport, x, y);
-//					
+//
 //					viewport->x += viewport->width;
 //					viewport->view_x += viewport->width*zoom;
 //					viewport->view_width = (viewport_bkup.width - viewport->width) * zoom;
 //					viewport->width = viewport_bkup.width - viewport->width;
-//					
+//
 //					sub_6E7FF3(w, viewport, x, y);
 //
 //					memcpy(viewport, &viewport_bkup, sizeof(rct_viewport));
@@ -707,7 +707,7 @@ void sub_688485(){
 			gfx_draw_sprite_raw_masked(dpi, x, y, image_id, ps->var_04);
 		else
 			gfx_draw_sprite(dpi, image_id, x, y, ps->var_04);
-		
+
 		if (ps->var_20 != 0){
 			ps = ps->var_20;
 			continue;
@@ -867,12 +867,12 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int edx, sint16 si, s
 		RCT2_GLOBAL(0x00F1AD10, sint32) = di;
 	}
 
-	RCT2_GLOBAL(0xEE7888, paint_struct*) += sizeof(paint_struct);
+	RCT2_GLOBAL(0xEE7888, paint_struct*) += 1;
 	return 0;
 }
 
 /**
- * 
+ *
  *  rct2: 0x006D4244
  */
 void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
@@ -932,7 +932,7 @@ void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0068F0FB
  */
 void viewport_peep_paint_setup(rct_peep *peep, int imageDirection)
@@ -941,7 +941,7 @@ void viewport_peep_paint_setup(rct_peep *peep, int imageDirection)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00672AC9
  */
 void viewport_misc_paint_setup(rct_sprite *misc, int imageDirection)
@@ -1000,7 +1000,7 @@ void sprite_paint_setup(uint16 eax, uint16 ecx){
 	eax = (eax & 0x1FE0) << 3 | (ecx >> 5);
 	int sprite_idx = RCT2_ADDRESS(0xF1EF60, uint16)[eax];
 	if (sprite_idx == SPRITE_INDEX_NULL) return;
-	
+
 	for (rct_sprite* spr = &g_sprite_list[sprite_idx]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = spr->unknown.next_in_quadrant){
 		spr = &g_sprite_list[sprite_idx];
 		dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
@@ -1042,7 +1042,7 @@ void sprite_paint_setup(uint16 eax, uint16 ecx){
 	}
 }
 
-/* rct2: 0x006629BC 
+/* rct2: 0x006629BC
  * returns al
  * ebp : image_id
  * ax : unknown
@@ -1158,7 +1158,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 	}
 
 	if (!is_exit &&
-		!(map_element->flags & MAP_ELEMENT_FLAG_GHOST) && 
+		!(map_element->flags & MAP_ELEMENT_FLAG_GHOST) &&
 		map_element->properties.entrance.ride_index != 0xFF){
 
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = 0;
@@ -1189,7 +1189,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
 			0x3300, scrolling_text_setup(string_id, scroll, style->scrolling_mode), 0, height + style->height, 0x1C, 0x1C, 0);
 	}
-	
+
 	image_id = RCT2_GLOBAL(0x009E32BC, uint32);
 	if (!image_id){
 		image_id = 0x20B80000;
@@ -1358,7 +1358,7 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 		trackType = mapElement->properties.track.type;
 		trackSequence = mapElement->properties.track.sequence & 0x0F;
 		trackColourScheme = mapElement->properties.track.colour & 3;
-		
+
 		if ((RCT2_GLOBAL(0x0141E9E4, uint16) & 0x20) && dpi->zoom_level == 0) {
 			RCT2_GLOBAL(0x009DE570, uint8) = 0;
 			if (RCT2_ADDRESS(0x00999694, uint32)[trackType] & (1 << trackSequence)) {
@@ -1431,14 +1431,14 @@ void viewport_entrance_paint_setup(uint8 direction, int height, rct_map_element*
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_PATH_HEIGHTS &&
 		dpi->zoom_level == 0){
-		uint32 ebx = 
-			(map_element->properties.entrance.type << 4) | 
+		uint32 ebx =
+			(map_element->properties.entrance.type << 4) |
 			(map_element->properties.entrance.index & 0xF);
 
 		if (RCT2_ADDRESS(0x0097B974, uint8)[ebx] & 0xF){
 
 			int z = map_element->base_height * 8 + 3;
-			uint32 image_id = 
+			uint32 image_id =
 				z / 16 +
 				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS,sint16) +
 				0x20101689;
@@ -1577,12 +1577,12 @@ static void sub_68B3FB(int x, int y)
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & 4) &&
 		RCT2_GLOBAL(0x9DE56A, uint16) == RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, uint16) &&
 		RCT2_GLOBAL(0x9DE56E, uint16) == RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, uint16)){
-		uint8 arrowRotation = 
+		uint8 arrowRotation =
 			(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)
 			+ (RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) & 3)) & 3;
 
-		uint32 imageId = 
-			arrowRotation + 
+		uint32 imageId =
+			arrowRotation +
 			(RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) & 0xFC) +
 			0x20900C27;
 
@@ -1601,7 +1601,7 @@ static void sub_68B3FB(int x, int y)
 
 	if (bx <= dpi->y)
 		return;
-		
+
 	rct_map_element* element = map_element;//push map_element
 
 	sint16 max_height = 0;
@@ -1624,7 +1624,7 @@ static void sub_68B3FB(int x, int y)
 	dx -= dpi->height;
 	if (dx >= dpi->y)
 		return;
-		
+
 	RCT2_GLOBAL(0x9DE568, sint16) = x;
 	RCT2_GLOBAL(0x9DE56C, sint16) = y;
 	RCT2_GLOBAL(0x9DE57C, uint16) = 0;
@@ -1777,7 +1777,7 @@ void map_element_paint_setup(int x, int y)
 		RCT2_GLOBAL(0x0141E9D4, uint32) = 0xFFFF;
 		RCT2_GLOBAL(0x0141E9D8, uint32) = 0xFFFF;
 		RCT2_GLOBAL(0x0141E9DC, uint32) = 0xFFFF;
-		
+
 		sub_68B3FB(x, y);
 	} else {
 		viewport_blank_tiles_paint_setup(x, y);
@@ -1790,8 +1790,8 @@ void map_element_paint_setup(int x, int y)
 */
 void viewport_paint_setup()
 {
-	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);	
-	
+	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+
 	rct_xy16 mapTile = {
 		.x = dpi->x & 0xFFE0,
 		.y = (dpi->y - 16) & 0xFFE0
@@ -1808,7 +1808,7 @@ void viewport_paint_setup()
 
 		mapTile.x &= 0xFFE0;
 		mapTile.y &= 0xFFE0;
-		
+
 		for (; num_vertical_quadrants > 0; --num_vertical_quadrants){
 			map_element_paint_setup(mapTile.x, mapTile.y);
 			sprite_paint_setup(mapTile.x, mapTile.y);
@@ -1866,7 +1866,7 @@ void viewport_paint_setup()
 
 		mapTile.x &= 0xFFE0;
 		mapTile.y &= 0xFFE0;
-		
+
 		for (; num_vertical_quadrants > 0; --num_vertical_quadrants){
 			map_element_paint_setup(mapTile.x, mapTile.y);
 			sprite_paint_setup(mapTile.x, mapTile.y);
@@ -2612,7 +2612,7 @@ rct_viewport *viewport_find_from_point(int screenX, int screenY)
 {
 	rct_window *w;
 	rct_viewport *viewport;
-	
+
 	w = window_find_from_point(screenX, screenY);
 	if (w == NULL)
 		return NULL;
