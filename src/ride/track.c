@@ -323,7 +323,7 @@ static uint8* track_list_cache_load(int totalFiles)
 	if (track_list_size < 0) return 0;
 
 	SDL_RWread(file, &fileCount, 4, 1);
-	
+
 	if (fileCount != totalFiles){
 		SDL_RWclose(file);
 		log_verbose("Track file count is different.");
@@ -387,8 +387,8 @@ void track_list_populate(ride_list_item item, uint8* track_list_cache){
 
 		if (isBelow == 1){
 			memmove(
-				&RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8)[track_entry_index * 128 + 128], 
-				&RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8)[track_entry_index * 128], 
+				&RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8)[track_entry_index * 128 + 128],
+				&RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8)[track_entry_index * 128],
 				(cur_track_entry_index - track_entry_index) * 128);
 		}
 
@@ -416,7 +416,7 @@ void track_load_list(ride_list_item item)
 	}
 
 	int totalFiles;
-	
+
 	track_list_query_directory(&totalFiles);
 
 	uint8* track_list_cache;
@@ -431,7 +431,10 @@ void track_load_list(ride_list_item item)
 
 		int enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char));
 		if (enumFileHandle == INVALID_HANDLE)
+		{
+			free(new_file_pointer);
 			return;
+		}
 
 		while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo)) {
 			if (new_file_pointer > new_track_file + 0x3FF00)break;
@@ -484,7 +487,7 @@ static void copy(void *dst, char **src, int length)
 	*src += length;
 }
 
-/* rct2: 0x00677530 
+/* rct2: 0x00677530
  * Returns 1 if it has booster track elements
  */
 uint8 td4_track_has_boosters(rct_track_td6* track_design, uint8* track_elements){
@@ -515,7 +518,7 @@ rct_track_td6* load_track_design(const char *path)
 	uint8* edi;
 
 	RCT2_GLOBAL(0x009AAC54, uint8) = 1;
-	
+
 	fp = SDL_RWFromFile(path, "rb");
 	if (fp == NULL)
 		return 0;
@@ -566,7 +569,7 @@ rct_track_td6* load_track_design(const char *path)
 		return NULL;
 	}
 
-	// In td6 there are 32 sets of two byte vehicle colour specifiers 
+	// In td6 there are 32 sets of two byte vehicle colour specifiers
 	// In td4 there are 12 sets so the remaining 20 need to be read.
 	if (version == 2)
 		copy(&track_design->vehicle_colours[12], &src, 40);
@@ -580,7 +583,7 @@ rct_track_td6* load_track_design(const char *path)
 	uint8* track_elements = RCT2_ADDRESS(0x9D821B, uint8);
 	// Read the actual track data.
 	copy(track_elements, &src, 24572);
-	
+
 	uint8* final_track_element_location = track_elements + 24572;
 	free(decoded);
 
@@ -602,7 +605,7 @@ rct_track_td6* load_track_design(const char *path)
 				track_element++;
 			}
 			memset(((uint8*)track_element) + 1, 255, final_track_element_location - (uint8*)track_element);
-		
+
 		}
 
 		// Edit the colours to use the new versions
@@ -687,7 +690,7 @@ void reset_track_list_cache(){
 int backup_map(){
 	RCT2_GLOBAL(0xF440ED, uint8*) = malloc(0xED600);
 	if (RCT2_GLOBAL(0xF440ED, uint32) == 0) return 0;
-	
+
 	RCT2_GLOBAL(0xF440F1, uint8*) = malloc(0x40000);
 	if (RCT2_GLOBAL(0xF440F1, uint32) == 0){
 		free(RCT2_GLOBAL(0xF440ED, uint8*));
@@ -1055,8 +1058,8 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 						entry_type = 0xFF;
 
 					entry_index = 0;
-					for (rct_path_type* path = g_pathTypeEntries[0]; 
-						entry_index < object_entry_group_counts[OBJECT_TYPE_PATHS]; 
+					for (rct_path_type* path = g_pathTypeEntries[0];
+						entry_index < object_entry_group_counts[OBJECT_TYPE_PATHS];
 						path = g_pathTypeEntries[entry_index], entry_index++){
 
 						if (path == (rct_path_type*)-1)
@@ -1135,7 +1138,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 					RCT2_GLOBAL(0x00F44129, sint16) = z;
 				}
 			}
-			
+
 			if (RCT2_GLOBAL(0x00F440D4, uint8) == 1 ||
 				RCT2_GLOBAL(0x00F440D4, uint8) == 2 ||
 				RCT2_GLOBAL(0x00F440D4, uint8) == 3 ||
@@ -1255,12 +1258,12 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 					RCT2_GLOBAL(0x00141E9AE, rct_string_id) = 1811;
 
 					cost = game_do_command(
-						mapCoord.x, 
-						bl | (entry_index << 8), 
-						mapCoord.y, 
-						rotation | (scenery->primary_colour << 8), 
-						GAME_COMMAND_PLACE_FENCE, 
-						z, 
+						mapCoord.x,
+						bl | (entry_index << 8),
+						mapCoord.y,
+						rotation | (scenery->primary_colour << 8),
+						GAME_COMMAND_PLACE_FENCE,
+						z,
 						scenery->secondary_colour | ((scenery->flags & 0xFC) << 6)
 						);
 
@@ -1411,7 +1414,7 @@ int track_place_maze(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 			RCT2_GLOBAL(0x00F440D4, uint8) == 4 ||
 			RCT2_GLOBAL(0x00F440D4, uint8) == 5){
 
-			uint8 bl; 
+			uint8 bl;
 			money32 cost = 0;
 			uint16 maze_entry;
 
@@ -1888,8 +1891,8 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 }
 
 /**
-* Places a virtual track. This can involve highlighting the surface tiles and showing the track layout. It is also used by 
-* the track preview window to place the whole track. 
+* Places a virtual track. This can involve highlighting the surface tiles and showing the track layout. It is also used by
+* the track preview window to place the whole track.
 * Depending on the value of bl it modifies the function.
 * bl == 0, Draw outlines on the ground
 * bl == 1,
@@ -1967,7 +1970,7 @@ int sub_6D01B3(uint8 bl, uint8 rideIndex, int x, int y, int z)
 	return ebx;
 }
 
-/* rct2: 0x006D2189 
+/* rct2: 0x006D2189
  * ebx = ride_id
  * cost = edi
  */
@@ -1975,7 +1978,7 @@ int sub_6D2189(int* cost, uint8* ride_id){
 	RCT2_GLOBAL(0xF44151, uint8) = 0;
 	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
 	uint8 entry_type, entry_index;
-	
+
 	if (!find_object_in_entry_group(&track_design->vehicle_object, &entry_type, &entry_index))
 		entry_index = 0xFF;
 
@@ -2105,7 +2108,7 @@ void draw_track_preview(uint8** preview){
 		width = height;
 
 	int zoom_level = 1;
-	
+
 	if (width > 1120)
 		zoom_level = 2;
 
@@ -2196,7 +2199,7 @@ void draw_track_preview(uint8** preview){
 }
 
 /**
- * 
+ *
  * I don't think preview is a necessary output argument. It can be obtained easily using the track design structure.
  *  rct2: 0x006D1DEC
  */
@@ -2258,7 +2261,7 @@ rct_track_design *track_get_info(int index, uint8** preview)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006D3664
  */
 int track_rename(const char *text)
@@ -2301,13 +2304,13 @@ int track_rename(const char *text)
 	track_load_list(item);
 
 	reset_track_list_cache();
-	
+
 	window_invalidate(w);
 	return 1;
 }
 
 /**
- * 
+ *
  *  rct2: 0x006D3761
  */
 int track_delete()
@@ -2613,7 +2616,7 @@ int maze_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* track_
 
 	RCT2_GLOBAL(0x00F44058, uint8*) = track_elements;
 
-	// Previously you had to save start_x, y, z but 
+	// Previously you had to save start_x, y, z but
 	// no need since global vars not used
 	sub_6D01B3(0, 0, 4096, 4096, 0);
 
@@ -2895,7 +2898,7 @@ int ride_to_td6(uint8 rideIndex){
 	track_design->type = ride->type;
 	rct_object_entry_extended* object = &object_entry_groups[OBJECT_TYPE_RIDE].entries[ride->subtype];
 
-	// Note we are only copying rct_object_entry in size and 
+	// Note we are only copying rct_object_entry in size and
 	// not the extended as we don't need the chunk size.
 	memcpy(&track_design->vehicle_object, object, sizeof(rct_object_entry));
 
@@ -3038,10 +3041,10 @@ int save_track_design(uint8 rideIndex){
 	pause_sounds();
 
 	int result = platform_open_common_file_dialog(
-		0, 
-		RCT2_ADDRESS(0x141ED68, char), 
-		path, 
-		"*.TD?", 
+		0,
+		RCT2_ADDRESS(0x141ED68, char),
+		path,
+		"*.TD?",
 		RCT2_ADDRESS(0x141EE68, char));
 
 	unpause_sounds();
@@ -3224,12 +3227,12 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 	RCT2_GLOBAL(0x00141E9AE, rct_string_id) = 988;
 	int rideIndex = 0;
 	{
-		int _eax = 0, 
-			_ebx = GAME_COMMAND_FLAG_APPLY, 
-			_ecx = 0, 
-			_edx = track_design->type | (entry_index << 8), 
+		int _eax = 0,
+			_ebx = GAME_COMMAND_FLAG_APPLY,
+			_ecx = 0,
+			_edx = track_design->type | (entry_index << 8),
 			_esi = GAME_COMMAND_CREATE_RIDE,
-			_edi = 0, 
+			_edi = 0,
 			_ebp = 0;
 		game_do_command_p(GAME_COMMAND_CREATE_RIDE, &_eax, &_ebx, &_ecx, &_edx, &_esi, &_edi, &_ebp);
 		if (_ebx == MONEY32_UNDEFINED){
@@ -3262,7 +3265,7 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 		cost = sub_6D01B3(bl, rideIndex, x, y, z);
 	}
 
-	if (cost == MONEY32_UNDEFINED || 
+	if (cost == MONEY32_UNDEFINED ||
 		!(flags & GAME_COMMAND_FLAG_APPLY)){
 		rct_string_id error_reason = RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id);
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
@@ -3337,7 +3340,7 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 }
 
 /**
- * 
+ *
  * rct2: 0x006D3026
  */
 void track_save_reset_scenery()
@@ -3365,7 +3368,7 @@ static int map_element_get_total_element_count(rct_map_element *mapElement)
 	int elementCount;
 	rct_scenery_entry *sceneryEntry;
 	rct_large_scenery_tile *tile;
-	
+
 	switch (map_element_get_type(mapElement)) {
 	case MAP_ELEMENT_TYPE_PATH:
 	case MAP_ELEMENT_TYPE_SCENERY:
@@ -3439,7 +3442,7 @@ static bool track_save_can_add_map_element(rct_map_element *mapElement)
 }
 
 /**
- * 
+ *
  * rct2: 0x006D2F4C
  */
 static void track_save_push_map_element(int x, int y, rct_map_element *mapElement)
@@ -3453,7 +3456,7 @@ static void track_save_push_map_element(int x, int y, rct_map_element *mapElemen
 }
 
 /**
- * 
+ *
  * rct2: 0x006D2FA7
  */
 static void track_save_push_map_element_desc(rct_object_entry *entry, int x, int y, int z, uint8 flags, uint8 primaryColour, uint8 secondaryColour)
@@ -3483,7 +3486,7 @@ static void track_save_add_scenery(int x, int y, rct_map_element *mapElement)
 
 	uint8 primaryColour = mapElement->properties.scenery.colour_1 & 0x1F;
 	uint8 secondaryColour = mapElement->properties.scenery.colour_2 & 0x1F;
-		
+
 	track_save_push_map_element(x, y, mapElement);
 	track_save_push_map_element_desc(entry, x, y, mapElement->base_height, flags, primaryColour, secondaryColour);
 }
@@ -3538,7 +3541,7 @@ static void track_save_add_wall(int x, int y, rct_map_element *mapElement)
 	uint8 flags = 0;
 	flags |= mapElement->type & 3;
 	flags |= mapElement->properties.fence.item[0] << 2;
-		
+
 	uint8 secondaryColour = ((mapElement->flags & 0x60) >> 2) | (mapElement->properties.fence.item[1] >> 5);
 	uint8 primaryColour = mapElement->properties.fence.item[1] & 0x1F;
 
@@ -3556,13 +3559,13 @@ static void track_save_add_footpath(int x, int y, rct_map_element *mapElement)
 	flags |= (mapElement->properties.path.type & 4) << 2;
 	flags |= (mapElement->properties.path.type & 3) << 5;
 	flags |= (mapElement->type & 1) << 7;
-		
+
 	track_save_push_map_element(x, y, mapElement);
 	track_save_push_map_element_desc(entry, x, y, mapElement->base_height, flags, 0, 0);
 }
 
 /**
- * 
+ *
  * rct2: 0x006D2B3C
  */
 static bool track_save_add_map_element(int interactionType, int x, int y, rct_map_element *mapElement)
@@ -3590,7 +3593,7 @@ static bool track_save_add_map_element(int interactionType, int x, int y, rct_ma
 }
 
 /**
- * 
+ *
  * rct2: 0x006D2F78
  */
 static void track_save_pop_map_element(int x, int y, rct_map_element *mapElement)
@@ -3621,7 +3624,7 @@ static void track_save_pop_map_element(int x, int y, rct_map_element *mapElement
 }
 
 /**
- * 
+ *
  * rct2: 0x006D2FDD
  */
 static void track_save_pop_map_element_desc(rct_object_entry *entry, int x, int y, int z, uint8 flags, uint8 primaryColour, uint8 secondaryColour)
@@ -3663,7 +3666,7 @@ static void track_save_remove_scenery(int x, int y, rct_map_element *mapElement)
 
 	uint8 primaryColour = mapElement->properties.scenery.colour_1 & 0x1F;
 	uint8 secondaryColour = mapElement->properties.scenery.colour_2 & 0x1F;
-		
+
 	track_save_pop_map_element(x, y, mapElement);
 	track_save_pop_map_element_desc(entry, x, y, mapElement->base_height, flags, primaryColour, secondaryColour);
 }
@@ -3718,7 +3721,7 @@ static void track_save_remove_wall(int x, int y, rct_map_element *mapElement)
 	uint8 flags = 0;
 	flags |= mapElement->type & 3;
 	flags |= mapElement->properties.fence.item[0] << 2;
-		
+
 	uint8 secondaryColour = ((mapElement->flags & 0x60) >> 2) | (mapElement->properties.fence.item[1] >> 5);
 	uint8 primaryColour = mapElement->properties.fence.item[1] & 0x1F;
 
@@ -3736,13 +3739,13 @@ static void track_save_remove_footpath(int x, int y, rct_map_element *mapElement
 	flags |= (mapElement->properties.path.type & 4) << 2;
 	flags |= (mapElement->properties.path.type & 3) << 5;
 	flags |= (mapElement->type & 1) << 7;
-		
+
 	track_save_pop_map_element(x, y, mapElement);
 	track_save_pop_map_element_desc(entry, x, y, mapElement->base_height, flags, 0, 0);
 }
 
 /**
- * 
+ *
  * rct2: 0x006D2B3C
  */
 static void track_save_remove_map_element(int interactionType, int x, int y, rct_map_element *mapElement)
@@ -3764,7 +3767,7 @@ static void track_save_remove_map_element(int interactionType, int x, int y, rct
 }
 
 /**
- * 
+ *
  * rct2: 0x006D2B07
  */
 void track_save_toggle_map_element(int interactionType, int x, int y, rct_map_element *mapElement)
@@ -3782,7 +3785,7 @@ void track_save_toggle_map_element(int interactionType, int x, int y, rct_map_el
 }
 
 /**
- * 
+ *
  * rct2: 0x006D303D
  */
 void track_save_select_nearby_scenery(int rideIndex)
@@ -4350,7 +4353,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		return price;
 	}
 }
- 
+
 /**
  *
  *  rct2: 0x006C511D
