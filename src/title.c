@@ -334,7 +334,7 @@ static void title_do_next_script_opcode()
 			const uint8 *loadPtr;
 			char *ch, filename[32], path[MAX_PATH];
 			char separator = platform_get_path_separator();
-			
+
 			loadPtr = _currentScript - 1;
 
 			// Get filename
@@ -430,7 +430,7 @@ void DrawOpenRCT2(int x, int y)
 {
 	char buffer[256];
 	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
-	
+
 	// Draw background
 	gfx_fill_rect_inset(dpi, x, y, x + 128, y + 20, 0x80 | 12, 0x8);
 
@@ -575,7 +575,7 @@ static uint8 *title_script_load()
 
 	utf8 path[MAX_PATH];
 	utf8 filePath[] = "data/title/script.txt";
-	
+
 	sprintf(path, "%s%c%s", gExePath, platform_get_path_separator(), filePath);
 	log_verbose("loading title script, %s", path);
 	file = SDL_RWFromFile(path, "r");
@@ -624,6 +624,7 @@ static uint8 *title_script_load()
 				*scriptPtr++ = atoi(part1) & 0xFF;
 			} else {
 				log_error("unknown token, %s", token);
+				free(binaryScript);
 				return NULL;
 			}
 		}

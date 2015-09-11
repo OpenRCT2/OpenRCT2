@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -110,7 +110,7 @@ int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *in
 }
 
 /**
- * 
+ *
  *  rct2: 0x00676053
  * scenario (ebx)
  */
@@ -210,7 +210,7 @@ int scenario_load(const char *path)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00678282
  * scenario (ebx)
  */
@@ -385,7 +385,7 @@ void scenario_end()
 {
 	rct_window* w;
 	window_close_by_class(WC_DROPDOWN);
-	
+
 	for (w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++){
 		if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
 			window_close(w);
@@ -418,7 +418,7 @@ void scenario_success()
 	int i;
 	rct_scenario_basic* scenario;
 	uint32 current_val = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, uint32);
-	
+
 	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = current_val;
 	peep_applause();
 
@@ -452,7 +452,7 @@ void scenario_success_submit_name(const char *name)
 	int i;
 	rct_scenario_basic* scenario;
 	uint32 scenarioWinCompanyValue;
-	
+
 	for (i = 0; i < gScenarioListCount; i++) {
 		scenario = &gScenarioList[i];
 
@@ -466,7 +466,7 @@ void scenario_success_submit_name(const char *name)
 			break;
 		}
 	}
-	
+
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 }
 
@@ -761,7 +761,7 @@ int scenario_prepare_for_save()
 	if ((int)stex != 0xFFFFFFFF) {
 		format_string(buffer, stex->scenario_name, NULL);
 		strncpy(s6Info->name, buffer, sizeof(s6Info->name));
-		
+
 		memcpy(&s6Info->entry, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0], sizeof(rct_object_entry));
 	}
 
@@ -834,9 +834,16 @@ int scenario_write_available_objects(FILE *file)
 
 	// Initialise buffers
 	buffer = malloc(bufferLength);
+  if (buffer == NULL) {
+    log_error("out of memory");
+    return 0;
+  }
 	dstBuffer = malloc(bufferLength + sizeof(sawyercoding_chunk_header));
-	if (buffer == NULL || dstBuffer == NULL)
-		return 0;
+  if (dstBuffer == NULL) {
+    free(buffer);
+    log_error("out of memory");
+  	return 0;
+  }
 
 	// Write entries
 	rct_object_entry_extended *srcEntry = (rct_object_entry_extended*)0x00F3F03C;
@@ -846,7 +853,7 @@ int scenario_write_available_objects(FILE *file)
 			memset(dstEntry, 0xFF, sizeof(rct_object_entry));
 		else
 			*dstEntry = *((rct_object_entry*)srcEntry);
-		
+
 		srcEntry++;
 		dstEntry++;
 	}
