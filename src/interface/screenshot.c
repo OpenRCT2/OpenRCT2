@@ -299,7 +299,7 @@ int screenshot_dump_png()
 	}
 
 	free(png);
-	if (pixels != dpi->bits) {
+	if ((utf8*)pixels != (utf8*)dpi->bits) {
 		free(pixels);
 	}
 	return index;
