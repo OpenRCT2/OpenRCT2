@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -417,7 +417,7 @@ void platform_show_messagebox(char *message)
 }
 
 /**
- * 
+ *
  *  rct2: 0x004080EA
  */
 int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName)
@@ -467,7 +467,7 @@ int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8
 	*((wchar_t*)((wchar_t*)0x01423800 + wcfilterNameLength + 1 + wcfilterPatternLength + 1)) = 0;
 	openFileName.lpstrFilter = (wchar_t*)0x01423800;
 
-	// 
+	//
 	tmp = RCT2_GLOBAL(0x009E2C74, uint32);
 	if (RCT2_GLOBAL(0x009E2BB8, uint32) == 2 && RCT2_GLOBAL(0x009E1AF8, uint32) == 1)
 		RCT2_GLOBAL(0x009E2C74, uint32) = 1;
@@ -482,7 +482,7 @@ int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8
 		result = GetOpenFileNameW(&openFileName);
 	}
 
-	// 
+	//
 	RCT2_GLOBAL(0x009E2C74, uint32) = tmp;
 
 	WideCharToMultiByte(CP_UTF8, 0, wcfilename, countof(wcfilename), filename, MAX_PATH, NULL, NULL);
@@ -539,7 +539,7 @@ utf8 *platform_open_directory_browser(utf8 *title)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00407978
  */
 int windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset)
@@ -553,7 +553,7 @@ int windows_get_registry_install_info(rct2_install_info *installInfo, char *sour
 	strcat(subkeyInfogrames, source);
 	strcpy(subkeyFishTechGroup, "Software\\Fish Technology Group\\");
 	strcat(subkeyFishTechGroup, source);
-	
+
 	memset(&lf, 0, sizeof(lf));
 	lf.lfCharSet = charset;
 	lf.lfHeight = 12;
@@ -561,22 +561,22 @@ int windows_get_registry_install_info(rct2_install_info *installInfo, char *sour
 	strcpy(lf.lfFaceName, font);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_HFONT, HFONT) = CreateFontIndirectA(&lf);
-	
+
 	if (RegOpenKeyA(HKEY_LOCAL_MACHINE, subkeyInfogrames, &hKey) != ERROR_SUCCESS)
 		return 0;
 
 	if (RegOpenKeyA(HKEY_LOCAL_MACHINE, subkeyFishTechGroup, &hKey) != ERROR_SUCCESS)
 		return 0;
 
-	
+
 	size = 260;
 	RegQueryValueExA(hKey, "Title", 0, &type, installInfo->title, &size);
 
 	size = 260;
 	RegQueryValueExA(hKey, "Path", 0, &type, installInfo->path, &size);
-	
+
 	installInfo->var_20C = 235960;
-	
+
 	size = 4;
 	RegQueryValueExA(hKey, "InstallLevel", 0, &type, (LPBYTE)&installInfo->installLevel, &size);
 	for (int i = 0; i <= 15; i++) {
@@ -602,7 +602,15 @@ HWND windows_get_window_handle()
 		log_error("SDL_GetWindowWMInfo failed %s", SDL_GetError());
 		exit(-1);
 	}
-	return wmInfo.info.win.window;
+	HWND handle = wmInfo.info.win.window;
+	#ifdef __MINGW32__
+	assert(sizeof(HWND) == sizeof(uint32));
+	HWND result = (((uint32)handle & 0xff000000) >> 8) | (((uint32)handle & 0xff0000) << 8) | (((uint32)handle & 0xff00) >> 8) | (((uint32)handle & 0xff) << 8);
+	log_warning("twisting bits of handle, a workaround for mingw/sdl bug");
+	#else
+	HWND result = handle;
+	#endif // __MINGW32__
+	return result;
 }
 
 /**
