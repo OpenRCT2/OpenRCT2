@@ -4223,9 +4223,9 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			if (trackBlock->index != 0)
 				break;
 			ride->lifecycle_flags |= RIDE_LIFECYCLE_16;
-			ride->var_1F8 = x;
-			ride->var_1FA = y;
-			ride->var_1FC = baseZ;
+			ride->cable_lift_x = x;
+			ride->cable_lift_y = y;
+			ride->cable_lift_z = baseZ;
 			break;
 		case 0xD8:
 			ride->num_block_brakes++;

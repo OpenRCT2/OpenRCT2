@@ -349,9 +349,9 @@ typedef struct {
 	uint16 total_air_time;			// 0x1F4
 	uint8 pad_1F6;
 	uint8 num_circuits;				// 0x1F7
-	sint16 var_1F8;
-	sint16 var_1FA;
-	uint8 var_1FC;
+	sint16 cable_lift_x;			// 0x1F8
+	sint16 cable_lift_y;			// 0x1FA
+	uint8 cable_lift_z;				// 0x1FC
 	uint8 pad_1FD;
 	uint16 cable_lift;				// 0x1FE
 	uint16 queue_length[4];			// 0x200

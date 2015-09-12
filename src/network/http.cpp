@@ -10,8 +10,11 @@ void http_dispose() { }
 #else
 
 #include <SDL.h>
-#include <curl/curl.h>
 #include <jansson/jansson.h>
+
+// cURL includes windows.h, but we don't need all of it.
+#define WIN32_LEAN_AND_MEAN
+#include <curl/curl.h>
 
 typedef struct {
 	char *ptr;

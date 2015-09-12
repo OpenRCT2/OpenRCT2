@@ -29,7 +29,9 @@
 #define SafeDelete(x) if ((x) != nullptr) { delete (x); (x) = nullptr; }
 #define SafeDeleteArray(x) if ((x) != nullptr) { delete[] (x); (x) = nullptr; }
 
-#define interface struct
+#ifndef interface
+	#define interface struct
+#endif
 #define abstract = 0
 
 #endif

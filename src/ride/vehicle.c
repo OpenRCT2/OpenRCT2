@@ -23,11 +23,12 @@
 #include "../audio/mixer.h"
 #include "../config.h"
 #include "../interface/viewport.h"
+#include "../openrct2.h"
 #include "../world/sprite.h"
 #include "ride.h"
 #include "ride_data.h"
+#include "track.h"
 #include "vehicle.h"
-#include "../openrct2.h"
 
 static void vehicle_update(rct_vehicle *vehicle);
 
@@ -639,4 +640,74 @@ rct_vehicle *vehicle_get_head(rct_vehicle *vehicle)
 int vehicle_is_used_in_pairs(rct_vehicle *vehicle)
 {
 	return vehicle->num_seats & VEHICLE_SEAT_PAIR_FLAG;
+}
+
+/**
+ *
+ *  rct2: 0x006DEF56
+ */
+void sub_6DEF56(rct_vehicle *cableLift)
+{
+	RCT2_CALLPROC_X(0x006DEF56, 0, 0, 0, 0, (int)cableLift, 0, 0);
+}
+
+rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int direction, uint16 var_44, uint32 var_24, bool head)
+{
+	rct_ride *ride = GET_RIDE(rideIndex);
+	rct_vehicle *current = &(create_sprite(1)->vehicle);
+	current->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
+	current->ride = rideIndex;
+	current->ride_subtype = 0xFF;
+	if (head) {
+		move_sprite_to_list((rct_sprite*)current, SPRITE_LINKEDLIST_OFFSET_VEHICLE);
+		ride->cable_lift = current->sprite_index;
+	}
+	current->var_01 = head ? 0 : 1;
+	current->var_44 = var_44;
+	current->var_24 = var_24;
+	current->sprite_width = 10;
+	current->sprite_height_negative = 10;
+	current->sprite_height_positive = 10;
+	current->var_46 = 100;
+	current->num_seats = 0;
+	current->speed = 20;
+	current->var_C3 = 80;
+	current->velocity = 0;
+	current->var_2C = 0;
+	current->var_4A = 0;
+	current->var_4C = 0;
+	current->var_4E = 0;
+	current->var_B5 = 0;
+	current->var_BA = 0;
+	current->var_B6 = 0;
+	current->var_B8 = 0;
+	current->sound1_id = 0xFF;
+	current->sound2_id = 0xFF;
+	current->var_C4 = 0;
+	current->var_C5 = 0;
+	current->var_C8 = 0;
+	current->var_CC = 0xFF;
+	current->var_1F = 0;
+	current->var_20 = 0;
+	for (int j = 0; j < 32; j++) {
+		current->peep[j] = SPRITE_INDEX_NULL;
+	}
+	current->var_CD = 0;
+	current->sprite_direction = direction << 3;
+	current->var_38 = x;
+	current->var_3A = y;
+
+	z = z * 8;
+	current->var_3C = z;
+	z += RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
+
+	sprite_move(16, 16, z, (rct_sprite*)current);
+	current->var_36 = (TRACK_ELEM_CABLE_LIFT_HILL << 2) | (current->sprite_direction >> 3);
+	current->var_34 = 164;
+	current->var_48 = 2;
+	current->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
+	current->var_51 = 0;
+	current->num_peeps = 0;
+	current->next_free_seat = 0;
+	return current;
 }

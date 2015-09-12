@@ -53,9 +53,11 @@ typedef struct {
 	sint16 sprite_bottom;			// 0x1C
 	uint8 sprite_direction;			// 0x1E
 	uint8 var_1F;
-	uint8 pad_20[0x08];
+	uint8 var_20;
+	uint8 pad_21[3];
+	uint32 var_24;
 	sint32 velocity;				// 0x28
-	uint8 pad_2C[0x04];
+	uint32 var_2C;
 	uint8 ride;						// 0x30
 	uint8 vehicle_type;				// 0x31
 	rct_vehicle_colour colours;		// 0x32
@@ -69,31 +71,37 @@ typedef struct {
 	uint16 var_3C;
 	uint16 next_vehicle_on_train;	// 0x3E
 	uint16 prev_vehicle_on_train;	// 0x40
-	uint16 pad_42;
+	uint16 next_or_first_vehicle_on_train;	// 0x42
 	uint16 var_44;
 	uint16 var_46;
 	uint16 var_48;
-	uint8 pad_4A;
+	uint8 var_4A;
 	uint8 current_station;			// 0x4B
-	uint8 pad_4C[0x4];
+	uint16 var_4C;
+	uint16 var_4E;
 	uint8 status;					// 0x50
 	uint8 var_51;
 	uint16 peep[32];				// 0x52
 	uint8 peep_tshirt_colours[32];	// 0x92
 	uint8 num_seats;				// 0xB2
 	uint8 num_peeps;				// 0xB3
-	uint8 next_free_seat;		// 0xB4
-	uint8 pad_B5[0x06];
+	uint8 next_free_seat;			// 0xB4
+	uint8 var_B5;
+	uint16 var_B6;
+	uint16 var_B8;
+	uint8 var_BA;
 	uint8 sound1_id;				// 0xBB
 	uint8 sound1_volume;			// 0xBC
 	uint8 sound2_id;				// 0xBD
 	uint8 sound2_volume;			// 0xBE
 	sint8 var_BF;
-	uint8 pad_C0[0x02];
+	uint8 pad_C0[2];
 	uint8 speed;					// 0xC2
-	uint8 pad_C3[2];
+	uint8 var_C3;
+	uint8 var_C4;
 	uint8 var_C5;
-	uint8 pad_C6[6];
+	uint8 pad_C6[2];
+	uint32 var_C8;
 	uint8 var_CC;
 	uint8 var_CD;
 	union {
@@ -151,6 +159,8 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG);
 void vehicle_set_map_toolbar(rct_vehicle *vehicle);
 int vehicle_is_used_in_pairs(rct_vehicle *vehicle);
 rct_vehicle *vehicle_get_head(rct_vehicle *vehicle);
+void sub_6DEF56(rct_vehicle *cableLift);
+rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int direction, uint16 var_44, uint32 var_24, bool head);
 
 /** Helper macro until rides are stored in this module. */
 #define GET_VEHICLE(sprite_index) &(g_sprite_list[sprite_index].vehicle)

@@ -4214,20 +4214,101 @@ void ride_set_start_finish_points(int rideIndex, rct_xy_element *startElement)
 
 /**
  * 
+ *  rct2: 0x0069ED9E
+ */
+static int sub_69ED9E()
+{
+	int miscSpriteCount = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_MISC, uint16);
+	int unkCount = RCT2_GLOBAL(0x013573C8, uint16);
+	return max(0, miscSpriteCount + unkCount - 300);
+}
+
+/**
+ * 
  *  rct2: 0x006DD84C
  */
-int sub_6DD84C(rct_ride *ride, int rideIndex, rct_xy_element *element, int isApplying)
+int ride_create_vehicles(rct_ride *ride, int rideIndex, rct_xy_element *element, int isApplying)
 {
 	return RCT2_CALLPROC_X(0x006DD84C, element->x, isApplying, element->y, rideIndex, (int)ride, (int)element->element, 0) & 0x100;
+}
+
+static bool sub_6D31A6(rct_ride *ride)
+{
+	return !(RCT2_CALLPROC_X(0x006D31A6, 0, 0, 0, 0, 0, (int)ride, 0) & 0x100);
 }
 
 /**
  * 
  *  rct2: 0x006DF4D4
  */
-int sub_6DF4D4(rct_ride *ride, rct_xy_element *element, int isApplying)
+bool ride_create_cable_lift(int rideIndex, bool isApplying)
 {
-	return RCT2_CALLPROC_X(0x006DF4D4, element->x, isApplying, element->y, 0, (int)ride, (int)element->element, 0) & 0x100;
+	rct_ride *ride = GET_RIDE(rideIndex);
+
+	if (ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED &&
+		ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT
+	) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CABLE_LIFT_UNABLE_TO_WORK_IN_THIS_OPERATING_MODE;
+		return false;
+	}
+
+	if (ride->num_circuits > 1) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_MULTICIRCUIT_NOT_POSSIBLE_WITH_CABLE_LIFT_HILL;
+		return false;
+	}
+
+	if (sub_69ED9E() <= 5) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES;
+		return false;
+	}
+
+	if (!sub_6D31A6(ride)) {
+		return false;
+	}
+
+	if (!isApplying) {
+		return true;
+	}
+
+	int x = ride->cable_lift_x;
+	int y = ride->cable_lift_y;
+	int z = ride->cable_lift_z;
+	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
+		if (mapElement->base_height != z) continue;
+		break;
+	} while (!map_element_is_last_for_tile(mapElement++));
+	int direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+
+	rct_vehicle *head = NULL;
+	rct_vehicle *tail = NULL;
+	uint32 ebx = 0;
+	for (int i = 0; i < 5; i++) {
+		uint32 edx = ror32(0x15478, 10);
+		uint16 var_44 = edx & 0xFFFF;
+		edx = rol32(edx, 10) >> 1;
+		ebx -= edx;
+		uint32 var_24 = ebx;
+		ebx -= edx;
+
+		rct_vehicle *current = cable_lift_segment_create(rideIndex, x, y, z, direction, var_44, var_24, i == 0);
+		current->next_vehicle_on_train = SPRITE_INDEX_NULL;
+		if (i == 0) {
+			head = current;
+		} else {
+			tail->next_vehicle_on_train = current->sprite_index;
+			tail->next_or_first_vehicle_on_train = current->sprite_index;
+			current->prev_vehicle_on_train = tail->sprite_index;
+		}
+		tail = current;
+	}
+	head->prev_vehicle_on_train = tail->sprite_index;
+	tail->next_or_first_vehicle_on_train = head->sprite_index;
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT;
+	sub_6DEF56(head);
+	return true;
 }
 
 /**
@@ -4440,7 +4521,7 @@ int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplying)
 		!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13) &&
 		!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
 		) {
-		if (sub_6DD84C(ride, rideIndex, &trackElement, isApplying))
+		if (ride_create_vehicles(ride, rideIndex, &trackElement, isApplying))
 			return 0;
 	}
 
@@ -4449,7 +4530,7 @@ int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplying)
 		(ride->lifecycle_flags & RIDE_LIFECYCLE_16) &&
 		!(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
 		) {
-		if (sub_6DF4D4(ride, &trackElement, isApplying))
+		if (!ride_create_cable_lift(rideIndex, isApplying))
 			return 0;
 	}
 
@@ -4563,7 +4644,7 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 		!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13) &&
 		!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
 	) {
-		if (sub_6DD84C(ride, rideIndex, &trackElement, isApplying))
+		if (ride_create_vehicles(ride, rideIndex, &trackElement, isApplying))
 			return 0;
 	}
 
@@ -4572,7 +4653,7 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 		(ride->lifecycle_flags & RIDE_LIFECYCLE_16) &&
 		!(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
 	) {
-		if (sub_6DF4D4(ride, &trackElement, isApplying))
+		if (!ride_create_cable_lift(rideIndex, isApplying))
 			return 0;
 	}
 
