@@ -555,17 +555,17 @@ STR_0550    :
 STR_0551    :
 STR_0552    :
 STR_0553    :
-STR_0554    :The car is accelerated out of the station along a long level track using Linear Induction Motors, then heads straight up a vertical spike of track, freefalling back down to return to the station
-STR_0555    :Guests ride in an elevator up or down a vertical tower to get from one level to another
-STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
+STR_0554    :Разогнемая на станции вагонетка движется по длинно-уровневому пути, используюя линейный индукционный двигатель, после чего, устримляется прямиком вверх по вертикальному стержню, свободно падая обратно вниз, чтобы вернуться на станцию.
+STR_0555    :Посетители катаются на лифте вверх, ли вниз по вертикальной башне, чтобы попасть с одного этажа на другой.
+STR_0556    :Экстро-широкие вагонетки опускаются по совершенно вертикально-наклонённому пути, для максимального испытывания свободного падения.
 STR_0557    :
 STR_0558    :
 STR_0559    :
 STR_0560    :
 STR_0561    :
-STR_0562    :Powered cars travel along a multi-level track past spooky scenery and special effects
-STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
-STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
+STR_0562    :Самоходные вагончики едут по мульти-уровневому пути, проезжая страшные декорации и специальные эффекты.
+STR_0563    :Сидя в комфортных вагончиках, только с простыми поручнями, пассажиры наслаждаются большими мягкими выподами и извилистым путём, так же часто, как и "временем в воздухе" на возвышенностях.
+STR_0564    :Бегущий по деревянному пути, этот атракцион быстр, жёсткий, шумный и дающие ощущение неуправляемой поездки с большм количеством "времени в воздухе".
 STR_0565    :A simple wooden roller coaster capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
 STR_0566    :Individual roller coaster cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
 STR_0567    :Sitting in seats suspended either side of the track, riders are pitched head-over-heels while they plunge down steep drops and travel through various inversions
