@@ -87,6 +87,7 @@ public:
 	 * Returns the current string buffer as a new fire-and-forget string.
 	 */
 	utf8 *GetString() const {
+		// If buffer is null, length should be 0 which will create a new one byte memory block containing a null terminator
 		utf8 *result = Memory::AllocateArray<utf8>(_length + 1);
 		Memory::CopyArray(result, _buffer, _length);
 		result[_length] = 0;
@@ -98,6 +99,8 @@ public:
 	 * be deallocated when the StringBuilder is destructed.
 	 */
 	const utf8 *GetBuffer() const {
+		// buffer may be null, so return an immutable empty string
+		if (_buffer == NULL) return "";
 		return _buffer;
 	}
 

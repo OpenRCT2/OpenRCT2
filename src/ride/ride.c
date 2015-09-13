@@ -4181,8 +4181,8 @@ static void ride_set_block_points(rct_xy_element *startElement)
 		case TRACK_ELEM_CABLE_LIFT_HILL:
 		case TRACK_ELEM_25_DEG_UP_TO_FLAT:
 		case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-		case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:	
-		case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:	
+		case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
+		case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
 		case 216:		// block brakes
 			currentElement.element->flags &= ~(1 << 5);
 			break;
@@ -4191,7 +4191,7 @@ static void ride_set_block_points(rct_xy_element *startElement)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006B4D26
  */
 void ride_set_start_finish_points(int rideIndex, rct_xy_element *startElement)
@@ -4213,7 +4213,7 @@ void ride_set_start_finish_points(int rideIndex, rct_xy_element *startElement)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069ED9E
  */
 static int sub_69ED9E()
@@ -4224,7 +4224,7 @@ static int sub_69ED9E()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006DD84C
  */
 int ride_create_vehicles(rct_ride *ride, int rideIndex, rct_xy_element *element, int isApplying)
@@ -4232,9 +4232,103 @@ int ride_create_vehicles(rct_ride *ride, int rideIndex, rct_xy_element *element,
 	return RCT2_CALLPROC_X(0x006DD84C, element->x, isApplying, element->y, rideIndex, (int)ride, (int)element->element, 0) & 0x100;
 }
 
-static bool sub_6D31A6(rct_ride *ride)
+/**
+ *
+ *  rct2: 0x006D31A6
+ */
+static bool sub_6D31A6(rct_ride *ride, bool isApplying)
 {
-	return !(RCT2_CALLPROC_X(0x006D31A6, 0, 0, 0, 0, 0, (int)ride, 0) & 0x100);
+	return !(RCT2_CALLPROC_X(0x006D31A6, 0, isApplying ? 1 : 0, 0, 0, 0, (int)ride, 0) & 0x100);
+
+	// TODO This implementation does not work because track_block_get_previous called from track_circuit_iterator_previous seems
+	//      to be ending prematurely and not iterating the complete track. This can be reproduced by constructing a giga coaster
+	//      with a lift hill (pre-designed one will do) and testing it. This means other methods that use
+	//      track_block_get_previous could be faulty. It might a particuarly track block that causes it.
+
+	uint16 xy;
+	int stationIndex;
+	for (stationIndex = 0; stationIndex < 4; stationIndex++) {
+		xy = ride->station_starts[stationIndex];
+		if (xy != 0xFFFF) break;
+		if (stationIndex == 3) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CABLE_LIFT_HILL_MUST_START_IMMEDIATELY_AFTER_STATION;
+			return false;
+		}
+	}
+
+	int x = (xy & 0xFF) * 32;
+	int y = (xy >> 8) * 32;
+	int z = ride->station_heights[stationIndex];
+
+	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (mapElement->type != MAP_ELEMENT_TYPE_TRACK) continue;
+		if (mapElement->base_height != z) continue;
+
+		int trackType = mapElement->properties.track.type;
+		if (!(RCT2_ADDRESS(0x0099BA64, uint8)[trackType * 16] & 0x10)) {
+			continue;
+		}
+
+		break;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	enum {
+		STATE_FIND_CABLE_LIFT,
+		STATE_FIND_STATION,
+		STATE_REST_OF_TRACK
+	};
+	int state = STATE_FIND_CABLE_LIFT;
+
+	track_circuit_iterator it;
+	track_circuit_iterator_begin(&it, (rct_xy_element){
+		.x = x,
+		.y = y,
+		.element = mapElement
+	});
+	while (track_circuit_iterator_previous(&it)) {
+		mapElement = it.current.element;
+		int trackType = mapElement->properties.track.type;
+
+		uint16 flags = 16;
+		switch (state) {
+		case STATE_FIND_CABLE_LIFT:
+			// Search for a cable lift hill track element
+			if (trackType == TRACK_ELEM_CABLE_LIFT_HILL) {
+				flags = 8;
+				state = STATE_FIND_STATION;
+			}
+			break;
+		case STATE_FIND_STATION:
+			// Search for the start of the hill
+			switch (trackType) {
+			case TRACK_ELEM_FLAT:
+			case TRACK_ELEM_25_DEG_UP:
+			case TRACK_ELEM_60_DEG_UP:
+			case TRACK_ELEM_FLAT_TO_25_DEG_UP:
+			case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+			case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP:
+			case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP:
+			case TRACK_ELEM_FLAT_TO_60_DEG_UP_LONG_BASE:
+				flags = 8;
+				break;
+			case TRACK_ELEM_END_STATION:
+				state = STATE_REST_OF_TRACK;
+				break;
+			default:
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CABLE_LIFT_HILL_MUST_START_IMMEDIATELY_AFTER_STATION;
+				return false;
+			}
+			break;
+		}
+		if (isApplying) {
+			z = mapElement->base_height * 8;
+			int direction = mapElement->type & 3;
+			trackType = mapElement->properties.track.type;
+			sub_6C683D(&x, &y, &z, direction, trackType, 0, &mapElement, flags);
+		}
+	}
+	return true;
 }
 
 /**
@@ -4262,7 +4356,7 @@ bool ride_create_cable_lift(int rideIndex, bool isApplying)
 		return false;
 	}
 
-	if (!sub_6D31A6(ride)) {
+	if (!sub_6D31A6(ride, isApplying)) {
 		return false;
 	}
 

@@ -4709,6 +4709,44 @@ void track_circuit_iterator_begin(track_circuit_iterator *it, rct_xy_element fir
 	it->looped = false;
 }
 
+bool track_circuit_iterator_previous(track_circuit_iterator *it)
+{
+	track_begin_end trackBeginEnd;
+
+	if (it->first == NULL) {
+		if (!track_block_get_previous(it->last.x, it->last.y, it->last.element, &trackBeginEnd))
+			return false;
+
+		it->current.x = trackBeginEnd.begin_x;
+		it->current.y = trackBeginEnd.begin_y;
+		it->current.element = trackBeginEnd.begin_element;
+		it->currentZ = trackBeginEnd.begin_z;
+		it->currentDirection = trackBeginEnd.begin_direction;
+
+		it->first = it->current.element;
+		return true;
+	} else {
+		if (!it->firstIteration && it->first == it->current.element) {
+			it->looped = true;
+			return false;
+		}
+
+		it->firstIteration = false;
+		it->last = it->current;
+
+		if (track_block_get_previous(it->last.x, it->last.y, it->last.element, &trackBeginEnd)) {
+			it->current.x = trackBeginEnd.begin_x;
+			it->current.y = trackBeginEnd.begin_y;
+			it->current.element = trackBeginEnd.begin_element;
+			it->currentZ = trackBeginEnd.begin_z;
+			it->currentDirection = trackBeginEnd.begin_direction;
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
+
 bool track_circuit_iterator_next(track_circuit_iterator *it)
 {
 	if (it->first == NULL) {
