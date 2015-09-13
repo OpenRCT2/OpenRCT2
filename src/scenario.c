@@ -75,7 +75,14 @@ int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *in
 
 			// Get filename
 			utf8 filename[MAX_PATH];
-			strcpy(filename, path_get_filename(path));
+			const char *temp_filename = path_get_filename(path);
+			int len = strnlen(temp_filename, MAX_PATH);
+			strncpy(filename, temp_filename, MAX_PATH);
+			if (len == MAX_PATH)
+			{
+				filename[MAX_PATH - 1] = '\0';
+				log_warning("truncated string %s", filename);
+			}
 			path_remove_extension(filename);
 
 			rct_string_id localisedStringIds[3];
@@ -229,7 +236,13 @@ int scenario_load_and_play_from_path(const char *path)
 	if (!scenario_load(path))
 		return 0;
 
-	strcpy(_scenarioPath, path);
+	int len = strnlen(path, MAX_PATH);
+	strncpy(_scenarioPath, path, len);
+	if (len == MAX_PATH)
+	{
+		_scenarioPath[MAX_PATH - 1] = '\0';
+		log_warning("truncated string %s", _scenarioPath);
+	}
 	_scenarioFileName = path_get_filename(_scenarioPath);
 
 	log_verbose("starting scenario, %s", path);
@@ -300,7 +313,13 @@ void scenario_begin()
 	{
 		// Get filename
 		utf8 filename[MAX_PATH];
-		strcpy(filename, _scenarioFileName);
+		int len = strnlen(_scenarioFileName, MAX_PATH);
+		strncpy(filename, _scenarioFileName, len);
+		if (len == MAX_PATH)
+		{
+			filename[MAX_PATH - 1] = '\0';
+			log_warning("truncated string %s", filename);
+		}
 		path_remove_extension(filename);
 
 		rct_string_id localisedStringIds[3];
