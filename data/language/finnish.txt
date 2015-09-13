@@ -75,7 +75,7 @@ STR_0070    :Jättirata
 STR_0071    :Pyörivä tiputus
 STR_0072    :Lentävät lautaset
 STR_0073    :Kiero talo
-STR_0074    :yksiraiteinen rautatiekierto
+STR_0074    :Yksiraiteinen rautatiekierto
 STR_0075    :Tiivis käänteinen rata
 STR_0076    :Vesirata
 STR_0077    :Ilmakäyttöinen pystysuora rata
@@ -858,7 +858,7 @@ STR_0851    :{WINDOW_COLOUR_2}Suunnitellut ja ohjelmoinut Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Grafiikka Simon Foster
 STR_0853    :{WINDOW_COLOUR_2}Äänet ja musiikki Allister Brimble
 STR_0854    :{WINDOW_COLOUR_2}Lisä-äänet nauhoittanut David Ellis
-STR_0855    :{WINDOW_COLOUR_2}Edustaja Jacqui Lyons, Marjacq Ltd.
+STR_0855    :{WINDOW_COLOUR_2}Edustaja Jacqui Lyons at Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Kiitoksia:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, ja John Wardley
 STR_0858    :{WINDOW_COLOUR_2}
@@ -897,7 +897,7 @@ STR_0890    :Kuva{COMMA16}.BMP
 STR_0891    :Kuvankaappaus
 STR_0892    :Kuvankaappaus tallennettu levylle nimellä '{STRINGID}'
 STR_0893    :Kuvankaappaus epäonnistui !
-STR_0894    :Maiseman data-alue täynnä!
+STR_0894    :Maisematietoalue on täynnä !
 STR_0895    :Ei voi rakentaa osittain maan ylle ja alle
 STR_0896    :{POP16}{POP16}{STRINGID} Rakenne
 STR_0897    :Suunta
@@ -934,7 +934,7 @@ STR_0927    :Tämän rakentaminen tähän ei onnistu...
 STR_0928    :{SMALLFONT}{BLACK}Ketjumäki, vaunujen vetämistä varten mäissä.
 STR_0929    :'S' mutka (vasen)
 STR_0930    :'S' mutka (oikea)
-STR_0931    :Pystysuora kierukka(vasen)
+STR_0931    :Pystysuora kierukka (vasen)
 STR_0932    :Pystysuora kierukka (oikea)
 STR_0933    :Nosta tai laske maata ensin
 STR_0934    :Laitteen sisäänkäynti edessä
@@ -1004,14 +1004,14 @@ STR_0997    :{SMALLFONT}{BLACK}Näe valinta
 STR_0998    :Ei lisää asemia sallittu tälle laitteelle
 STR_0999    :Vaatii asematasanteen
 STR_1000    :Rata ei tee täydellistä kierrosta
-STR_1001    :Track unsuitable for type of train Rata ei sovi kyseiselle junalajille.
+STR_1001    :Rata ei sovi kyseiselle junalajille
 STR_1002    :Avaaminen ei onnistu laitteessa {POP16}{POP16}{POP16}{STRINGID}...
 STR_1003    :Testiajo ei onnistu laitteessa {POP16}{POP16}{POP16}{STRINGID}...
 STR_1004    :Sulkeminen ei onnistu laitteessa {POP16}{POP16}{POP16}{STRINGID}...
 STR_1005    :Rakentaminen ei onnistu laitteessa {POP16}{POP16}{POP16}{STRINGID}...
 STR_1006    :Täytyy ensin sulkea
 STR_1007    :Kykenemätön luomaan tarpeeksi kulkuneuvoja
-STR_1008    :{SMALLFONT}{BLACK}Avaa, sulje, tai testaa laitetta/kohdetta
+STR_1008    :{SMALLFONT}{BLACK}Avaa, sulje tai testaa laitetta/kohdetta
 STR_1009    :{SMALLFONT}{BLACK}Avaa tai sulje kaikki laitteet/kohteet
 STR_1010    :{SMALLFONT}{BLACK}Avaa tai sulje puisto
 STR_1011    :Sulje kaikki
@@ -1070,7 +1070,7 @@ STR_1063    :Käänteinen-kallistus laukaistu sukkula toimintatila
 STR_1064    :Voimalaukaisu (aseman ohimennen)
 STR_1065    :Sukkulatoimintatila
 STR_1066    :Veneajelu toimintatila
-STR_1067    :ylöspäin laukaisu
+STR_1067    :Ylöspäin laukaisu
 STR_1068    :Pyörivä hissi toimintatila
 STR_1069    :Asemalta asemalle toimintatila
 STR_1070    :Yksi kyyti per sisäänpääsy
@@ -1122,7 +1122,7 @@ STR_1115    :Käynnissä
 STR_1116    :Käynnissä
 STR_1117    :Sirkusesitys menossa
 STR_1118    :Käynnissä
-STR_1119    :Odotettaa kaapelihissiä
+STR_1119    :Odotetaan kaapelihissiä
 STR_1120    :Nopeus {VELOCITY}
 STR_1121    :Pysäytetään
 STR_1122    :Odotetaan matkustajia
@@ -1163,8 +1163,8 @@ STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1158    :Tämän poistaminen ei onnistu...
 STR_1159    :{SMALLFONT}{BLACK}Aseta maisemaa, puutarhoja, ja muita tilpehöörejä.
-STR_1160    :{SMALLFONT}{BLACK}Luo/säädä järviä ja vettä.
-STR_1161    :Tätä ei voi asettaa sitä tähän...
+STR_1160    :{SMALLFONT}{BLACK}Luo/säädä järviä ja vettä
+STR_1161    :Tätä ei voi asettaa tähän...
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
 STR_1163    :{STRINGID}{NEWLINE}(Oikea klikkaus muokkaa)
 STR_1164    :{STRINGID}{NEWLINE}(Oikea klikkaus poistaa)
@@ -1343,7 +1343,7 @@ STR_1336    :{STRINGID} - Asema {POP16}{COMMA16} Sisäänkäynti
 STR_1337    :{STRINGID} - Uloskäynti{POP16}{POP16}
 STR_1338    :{STRINGID} - Asema {POP16}{COMMA16} Uloskäynti
 STR_1339    :{BLACK}Testituloksia ei ole vielä saatavilla...
-STR_1340    :{WINDOW_COLOUR_2}Isoin nopeus: {BLACK}{VELOCITY}
+STR_1340    :{WINDOW_COLOUR_2}Suurin nopeus: {BLACK}{VELOCITY}
 STR_1341    :{WINDOW_COLOUR_2}Ajelun kesto: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1342    :{DURATION}
 STR_1343    :{DURATION} / 
@@ -1351,17 +1351,17 @@ STR_1344    :{WINDOW_COLOUR_2}Radan pituus: {BLACK}{STRINGID}{STRINGID}{STRINGID
 STR_1345    :{LENGTH}
 STR_1346    :{LENGTH} / 
 STR_1347    :{WINDOW_COLOUR_2}Keskinopeus: {BLACK}{VELOCITY}
-STR_1348    :{WINDOW_COLOUR_2}Isoin positiivinen vertikaalinen G-voima: {BLACK}{COMMA2DP32}g
-STR_1349    :{WINDOW_COLOUR_2}Isoin positiivinen vertikaalinen G-voima: {OUTLINE}{RED}{COMMA2DP32}g
-STR_1350    :{WINDOW_COLOUR_2}Isoin negatiivinen vertikaalinen G-voima: {BLACK}{COMMA2DP32}g
-STR_1351    :{WINDOW_COLOUR_2}Isoin negatiivinen vertikaalinen G-voima: {OUTLINE}{RED}{COMMA2DP32}g
-STR_1352    :{WINDOW_COLOUR_2}Isoin sivuttainen G-voima: {BLACK}{COMMA2DP32}g
-STR_1353    :{WINDOW_COLOUR_2}Isoin sivuttainen G-voima: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1348    :{WINDOW_COLOUR_2}Suurin positiivinen vertikaalinen G-voima: {BLACK}{COMMA2DP32}g
+STR_1349    :{WINDOW_COLOUR_2}Suurin positiivinen vertikaalinen G-voima: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1350    :{WINDOW_COLOUR_2}Suurin negatiivinen vertikaalinen G-voima: {BLACK}{COMMA2DP32}g
+STR_1351    :{WINDOW_COLOUR_2}Suurin negatiivinen vertikaalinen G-voima: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1352    :{WINDOW_COLOUR_2}Suurin sivuttainen G-voima: {BLACK}{COMMA2DP32}g
+STR_1353    :{WINDOW_COLOUR_2}Suurin sivuttainen G-voima: {OUTLINE}{RED}{COMMA2DP32}g
 STR_1354    :{WINDOW_COLOUR_2}Korkein pudotuskorkeus: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}Pudotuksia: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Käänteitä: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}Reikää: {BLACK}{COMMA16}
-STR_1358    :{WINDOW_COLOUR_2}'ilma-aika' yhteensä: {BLACK}{COMMA2DP32}secs
+STR_1358    :{WINDOW_COLOUR_2}ilma-aika' yhteensä: {BLACK}{COMMA2DP32}secs
 STR_1359    :{WINDOW_COLOUR_2}Jonotusaika: {BLACK}{COMMA16} minuutti
 STR_1360    :{WINDOW_COLOUR_2}Jonotusaika: {BLACK}{COMMA16} minuuttia
 STR_1361    :Nopeuden muuttaminen ei onnistu...
@@ -1380,8 +1380,8 @@ STR_1373    :Iso puolikas silmukka (vasen)
 STR_1374    :Iso puolikas silmukka (oikea)
 STR_1375    :Ylempi siirto
 STR_1376    :Alempi siirto
-STR_1377    :Sydämmen viiva vierähdys (vasen)
-STR_1378    :Sydämmen viiva vierähdys (oikea)
+STR_1377    :Sydämen viiva vierähdys (vasen)
+STR_1378    :Sydämen viiva vierähdys (oikea)
 STR_1379    :Käännin (vasen)
 STR_1380    :Käännin (oikea)
 STR_1381    :Kaareva nostomäki (vasen)
@@ -1397,11 +1397,11 @@ STR_1390    :{CURRENCY2DP}
 STR_1391    :{RED}{CURRENCY2DP}
 STR_1392    :{SMALLFONT}{BLACK}Näkymä laitteesta/kohteesta
 STR_1393    :{SMALLFONT}{BLACK}Kulkuneuvon yksitoiskohdat ja asetukset
-STR_1394    :{SMALLFONT}{BLACK}Toiminta asetukset
-STR_1395    :{SMALLFONT}{BLACK}Huolto asetukset
+STR_1394    :{SMALLFONT}{BLACK}Toiminta-asetukset
+STR_1395    :{SMALLFONT}{BLACK}Huoltoasetukset
 STR_1396    :{SMALLFONT}{BLACK}Värityylin asetukset
 STR_1397    :{SMALLFONT}{BLACK}Ääni- ja musiikkiasetukset
-STR_1398    :{SMALLFONT}{BLACK}Mitat ja testitiedot
+STR_1398    :{SMALLFONT}{BLACK}Mitat- ja testitiedot
 STR_1399    :{SMALLFONT}{BLACK}Kaaviokuvat
 STR_1400    :Sisäänkäynti
 STR_1401    :Uloskäynti
@@ -1479,9 +1479,9 @@ STR_1471    :{WINDOW_COLOUR_2}Nopeus:
 STR_1472    :{SMALLFONT}{BLACK}Tämän laitteen nopeus
 STR_1473    :{WINDOW_COLOUR_2}Jännityksen arvosana: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1474    :{WINDOW_COLOUR_2}Jännityksen arvosana: {BLACK}Ei viellä saatavilla
-STR_1475    :{WINDOW_COLOUR_2}Intensiteetti arvosana: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1476    :{WINDOW_COLOUR_2}Intensiteetti arvosana: {BLACK}Ei viellä saatavilla
-STR_1477    :{WINDOW_COLOUR_2}Intensiteetti arvosana: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
+STR_1475    :{WINDOW_COLOUR_2}Intensiteettiarvosana: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1476    :{WINDOW_COLOUR_2}Intensiteettiarvosana: {BLACK}Ei viellä saatavilla
+STR_1477    :{WINDOW_COLOUR_2}Intensiteettiarvosana: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Pahoinvoinnin arvosana: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Pahoinvoinnin arvosana: {BLACK}Ei viellä saatavilla
 STR_1480    :{SMALLFONT}{OPENQUOTES}Minulla ei ole varaa mennä {STRINGID}{ENDQUOTES}
@@ -1492,7 +1492,7 @@ STR_1484    :{SMALLFONT}{OPENQUOTES}Tahdon mennä johonkin jännittävämpään 
 STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID} näyttää liian hurjalta minulle{ENDQUOTES}
 STR_1486    :{SMALLFONT}{OPENQUOTES}En ole syönyt/juonut {STRINGID} loppuun vielä{ENDQUOTES}
 STR_1487    :{SMALLFONT}{OPENQUOTES}Pelkästään {STRINGID} katsominen saa minut tuntemaan oloni kamalaksi{ENDQUOTES}
-STR_1488    :{SMALLFONT}{OPENQUOTES}En aijo maksaa noin paljon päästäkseni {STRINGID}{ENDQUOTES}
+STR_1488    :{SMALLFONT}{OPENQUOTES}En aio maksaa noin paljon päästäkseni {STRINGID}{ENDQUOTES}
 STR_1489    :{SMALLFONT}{OPENQUOTES}Haluan kotiin{ENDQUOTES}
 STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} on todella hyvän arvoinen{ENDQUOTES}
 STR_1491    :{SMALLFONT}{OPENQUOTES}Minulla on jo {STRINGID}{ENDQUOTES}
@@ -1508,7 +1508,7 @@ STR_1500    :{SMALLFONT}{OPENQUOTES}Minulla on nälkä{ENDQUOTES}
 STR_1501    :{SMALLFONT}{OPENQUOTES}Minulla on jano{ENDQUOTES}
 STR_1502    :{SMALLFONT}{OPENQUOTES}Minun tarvitsee käydä vessassa{ENDQUOTES}
 STR_1503    :{SMALLFONT}{OPENQUOTES}En löydä {STRINGID}{ENDQUOTES}
-STR_1504    :{SMALLFONT}{OPENQUOTES}En aijo maksaa noin paljon käyttääkseni {STRINGID}{ENDQUOTES}
+STR_1504    :{SMALLFONT}{OPENQUOTES}En aio maksaa noin paljon käyttääkseni {STRINGID}{ENDQUOTES}
 STR_1505    :{SMALLFONT}{OPENQUOTES}Täällä sataa, en halua mennä kohteeseen {STRINGID}{ENDQUOTES}
 STR_1506    :{SMALLFONT}{OPENQUOTES}Täällä on todella paljon roskaa{ENDQUOTES}
 STR_1507    :{SMALLFONT}{OPENQUOTES}En löydä puiston uloskäyntiä{ENDQUOTES}
@@ -1541,8 +1541,8 @@ STR_1533    :{SMALLFONT}{OPENQUOTES}Tämä popcorn kojusta {STRINGID} on todella
 STR_1534    :{SMALLFONT}{OPENQUOTES}Tämä nakkisämpylä kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
 STR_1535    :{SMALLFONT}{OPENQUOTES}Tämä lonkero kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
 STR_1536    :{SMALLFONT}{OPENQUOTES}Tämä hattu kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
-STR_1537    :{SMALLFONT}{OPENQUOTES}Tämä toffee omena kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
-STR_1538    :{SMALLFONT}{OPENQUOTES}Tämä T-paita kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
+STR_1537    :{SMALLFONT}{OPENQUOTES}Tämä toffeeomena kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
+STR_1538    :{SMALLFONT}{OPENQUOTES}Tämä t-paita kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
 STR_1539    :{SMALLFONT}{OPENQUOTES}Tämä donitsi kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
 STR_1540    :{SMALLFONT}{OPENQUOTES}Tämä kahvi kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
 STR_1541    :
@@ -1556,32 +1556,32 @@ STR_1548    :
 STR_1549    :
 STR_1550    :{SMALLFONT}{OPENQUOTES}Vau!{ENDQUOTES}
 STR_1551    :{SMALLFONT}{OPENQUOTES}Minulla on outo fiilis että joku katselee minua{ENDQUOTES}
-STR_1552    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa ilmapallosta kojussa {STRINGID}{ENDQUOTES}
-STR_1553    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa pehmolelusta kojussa {STRINGID}{ENDQUOTES}
-STR_1554    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa puiston kartasta kojussa {STRINGID}{ENDQUOTES}
-STR_1555    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa kuva kojussa {STRINGID}{ENDQUOTES}
-STR_1556    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa sateenvarjosta kojussa {STRINGID}{ENDQUOTES}
-STR_1557    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa juomasta kojussa {STRINGID}{ENDQUOTES}
-STR_1558    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa hampurilaisesta kojussa {STRINGID}{ENDQUOTES}
-STR_1559    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa ranskalaisista kojussa {STRINGID}{ENDQUOTES}
-STR_1560    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa jäätelöstä kojussa {STRINGID}{ENDQUOTES}
-STR_1561    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa hattarasta kojussa {STRINGID}{ENDQUOTES}
+STR_1552    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon ilmapallosta kojussa {STRINGID}{ENDQUOTES}
+STR_1553    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon pehmolelusta kojussa {STRINGID}{ENDQUOTES}
+STR_1554    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon puiston kartasta kojussa {STRINGID}{ENDQUOTES}
+STR_1555    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon kuvasta kojussa {STRINGID}{ENDQUOTES}
+STR_1556    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon sateenvarjosta kojussa {STRINGID}{ENDQUOTES}
+STR_1557    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon juomasta kojussa {STRINGID}{ENDQUOTES}
+STR_1558    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon hampurilaisesta kojussa {STRINGID}{ENDQUOTES}
+STR_1559    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon ranskalaisista kojussa {STRINGID}{ENDQUOTES}
+STR_1560    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon jäätelöstä kojussa {STRINGID}{ENDQUOTES}
+STR_1561    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon hattarasta kojussa {STRINGID}{ENDQUOTES}
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa pitsasta kojussa {STRINGID}{ENDQUOTES}
+STR_1565    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon hattarasta kojussa {STRINGID}{ENDQUOTES}
 STR_1566    :
-STR_1567    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa popcornista kojussa {STRINGID}{ENDQUOTES}
-STR_1568    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa nakkisämpylästä kojussa {STRINGID}{ENDQUOTES}
-STR_1569    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa lonkerosta kojussa {STRINGID}{ENDQUOTES}
-STR_1570    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa hatusta kojussa {STRINGID}{ENDQUOTES}
-STR_1571    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa toffee omenasta kojussa {STRINGID}{ENDQUOTES}
-STR_1572    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa T-paidasta kojussa {STRINGID}{ENDQUOTES}
-STR_1573    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa donitsista kojussa {STRINGID}{ENDQUOTES}
-STR_1574    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa kahvista kojussa {STRINGID}{ENDQUOTES}
+STR_1567    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon popcornista kojussa {STRINGID}{ENDQUOTES}
+STR_1568    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon nakkisämpylästä kojussa {STRINGID}{ENDQUOTES}
+STR_1569    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon lonkerosta kojussa {STRINGID}{ENDQUOTES}
+STR_1570    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon hatusta kojussa {STRINGID}{ENDQUOTES}
+STR_1571    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon toffeeomenasta kojussa {STRINGID}{ENDQUOTES}
+STR_1572    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon t-paidasta kojussa {STRINGID}{ENDQUOTES}
+STR_1573    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon donitsista kojussa {STRINGID}{ENDQUOTES}
+STR_1574    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon kahvista kojussa {STRINGID}{ENDQUOTES}
 STR_1575    :
-STR_1576    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa friteeratusta kanasta kojussa {STRINGID}{ENDQUOTES}
-STR_1577    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa limonaatista kojussa {STRINGID}{ENDQUOTES}
+STR_1576    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon friteeratusta kanasta kojussa {STRINGID}{ENDQUOTES}
+STR_1577    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon limonaatista kojussa {STRINGID}{ENDQUOTES}
 STR_1578    :
 STR_1579    :
 STR_1580    :
@@ -1595,20 +1595,20 @@ STR_1587    :{SMALLFONT}{OPENQUOTES}Tämä viipurinrinkeli kojusta {STRINGID} on
 STR_1588    :{SMALLFONT}{OPENQUOTES}Tämä kuuma kaakao kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
 STR_1589    :{SMALLFONT}{OPENQUOTES}Tämä jäätee kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
 STR_1590    :{SMALLFONT}{OPENQUOTES}Tämä tippaleipä kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
-STR_1591    :{SMALLFONT}{OPENQUOTES}Nämä aurinkolasit kojusta {STRINGID} are really good value{ENDQUOTES}
-STR_1592    :{SMALLFONT}{OPENQUOTES}Nämä häränlihanuudelit kojusta {STRINGID} are really good value{ENDQUOTES}
-STR_1593    :{SMALLFONT}{OPENQUOTES}Nämä paistetut riisinuudelit kojusta {STRINGID} are really good value{ENDQUOTES}
-STR_1594    :{SMALLFONT}{OPENQUOTES}Tämä wonton keitto kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
+STR_1591    :{SMALLFONT}{OPENQUOTES}TNämä aurinkolasit kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
+STR_1592    :{SMALLFONT}{OPENQUOTES}Nämä häränlihanuudelit kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
+STR_1593    :{SMALLFONT}{OPENQUOTES}Nämä paistetut riisinuudelit kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
+STR_1594    :{SMALLFONT}{OPENQUOTES}Tämä wontonkeitto kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
 STR_1595    :{SMALLFONT}{OPENQUOTES}Tämä lihapullakeitto kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
 STR_1596    :{SMALLFONT}{OPENQUOTES}Tämä hedelmämehu kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
 STR_1597    :{SMALLFONT}{OPENQUOTES}Tämä soijamaito kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
 STR_1598    :{SMALLFONT}{OPENQUOTES}Tämä sujongkwa kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
-STR_1599    :{SMALLFONT}{OPENQUOTES}Tämä subi kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
+STR_1599    :{SMALLFONT}{OPENQUOTES}Tämä pantonki kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
 STR_1600    :{SMALLFONT}{OPENQUOTES}Tämä keksi kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}{OPENQUOTES}Tämä grillattu makkara kojusta {STRINGID} are really good value{ENDQUOTES}
+STR_1604    :{SMALLFONT}{OPENQUOTES}Tämä grillattu makkara kojusta {STRINGID} on todella hyvän arvoinen{ENDQUOTES}
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1620,27 +1620,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa kuvasta kojussa {STRINGID}{ENDQUOTES}
-STR_1617    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa kuvasta kojussa {STRINGID}{ENDQUOTES}
-STR_1618    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa kuvasta kojussa {STRINGID}{ENDQUOTES}
-STR_1619    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa viipurinrinkelistä kojussa {STRINGID}{ENDQUOTES}
-STR_1620    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa kaakaosta kojussa {STRINGID}{ENDQUOTES}
-STR_1621    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa jääteestä kojussa {STRINGID}{ENDQUOTES}
-STR_1622    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa tippaleivästä kojussa {STRINGID}{ENDQUOTES}
-STR_1623    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa aurinkolaseista kojussa {STRINGID}{ENDQUOTES}
-STR_1624    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa härkänuudeleista kojussa {STRINGID}{ENDQUOTES}
-STR_1625    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa paistetusta riisinuudeleista kojussa {STRINGID}{ENDQUOTES}
-STR_1626    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa wonton keitosta kojussa {STRINGID}{ENDQUOTES}
-STR_1627    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa lihapullakeitosta kojussa {STRINGID}{ENDQUOTES}
-STR_1628    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa hedelmämehusta kojussa {STRINGID}{ENDQUOTES}
-STR_1629    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa soijamaidosta kojussa {STRINGID}{ENDQUOTES}
-STR_1630    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa sujongkwa:sta kojussa {STRINGID}{ENDQUOTES}
-STR_1631    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa subista kojussa {STRINGID}{ENDQUOTES}
-STR_1632    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa keksistä kojussa {STRINGID}{ENDQUOTES}
+STR_1616    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon kuvasta kojussa {STRINGID}{ENDQUOTES}
+STR_1617    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon kuvasta kojussa {STRINGID}{ENDQUOTES}
+STR_1618    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon kuvasta kojussa {STRINGID}{ENDQUOTES}
+STR_1619    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon viipurinrinkelistä kojussa {STRINGID}{ENDQUOTES}
+STR_1620    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon kaakaosta kojussa {STRINGID}{ENDQUOTES}
+STR_1621    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon jääteestä kojussa {STRINGID}{ENDQUOTES}
+STR_1622    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon tippaleivästä kojussa {STRINGID}{ENDQUOTES}
+STR_1623    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon aurinkolaseista kojussa {STRINGID}{ENDQUOTES}
+STR_1624    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon härkänuudeleista kojussa {STRINGID}{ENDQUOTES}
+STR_1625    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon paistetusta riisinuudeleista kojussa {STRINGID}{ENDQUOTES}
+STR_1626    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon wontonkeitosta kojussa {STRINGID}{ENDQUOTES}
+STR_1627    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon lihapullakeitosta kojussa {STRINGID}{ENDQUOTES}
+STR_1628    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon hedelmämehusta kojussa {STRINGID}{ENDQUOTES}
+STR_1629    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon soijamaidosta kojussa {STRINGID}{ENDQUOTES}
+STR_1630    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon sujongkwasta kojussa {STRINGID}{ENDQUOTES}
+STR_1631    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon patongista kojussa {STRINGID}{ENDQUOTES}
+STR_1632    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon keksistä kojussa {STRINGID}{ENDQUOTES}
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}{OPENQUOTES}En maksa noin paljoa grillatusta makkarasta kojussa {STRINGID}{ENDQUOTES}
+STR_1636    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon grillatusta makkarasta kojussa {STRINGID}{ENDQUOTES}
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1655,8 +1655,8 @@ STR_1647    :
 STR_1648    :{SMALLFONT}{OPENQUOTES}Auta! Laske minut alas!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}Rahat ovat loppumassa!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}Vau! Uutta laitetta rakennetaan!{ENDQUOTES}
-STR_1651    :{SMALLFONT}{OPENQUOTES}Hieno laite! Mutta se ei ole yhtä hyvä kuin Phoenix:i...{ENDQUOTES}
-STR_1652    :{SMALLFONT}{OPENQUOTES}Olen niin innoissani - se on Intamin laite!{ENDQUOTES}
+STR_1651    :{SMALLFONT}{OPENQUOTES}Hieno laite! Mutta se ei ole yhtä hyvä kuin Phoenix...{ENDQUOTES}
+STR_1652    :{SMALLFONT}{OPENQUOTES}Olen niin innoissani - se on Intaminlaite!{ENDQUOTES}
 STR_1653    :{SMALLFONT}{OPENQUOTES}...ja tässä me olemme {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Viimeisimmät ajatukset:
 STR_1655    :{SMALLFONT}{BLACK}Construct footpath on land
