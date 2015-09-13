@@ -351,7 +351,7 @@ void LanguagePack::ParseGroupScenario(IStringReader *reader)
 		if (_currentScenarioOverride == nullptr) {
 			_scenarioOverrides.push_back(ScenarioOverride());
 			_currentScenarioOverride = &_scenarioOverrides[_scenarioOverrides.size() - 1];
-			memset(_currentScenarioOverride, 0, sizeof(ObjectOverride));
+			memset(_currentScenarioOverride, 0, sizeof(ScenarioOverride));
 			_currentScenarioOverride->filename = sb.GetString();
 		}
 	}
