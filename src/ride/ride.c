@@ -6791,7 +6791,6 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 		return;
 	}
 
-	invalidate_test_results(rideIndex);
 	ride_clear_for_construction(rideIndex);
 	ride_remove_peeps(rideIndex);
 	ride->var_1CA = 100;
@@ -6807,11 +6806,13 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 		}
 		break;
 	case RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_CARS_PER_TRAIN:
+		invalidate_test_results(rideIndex);
 		rideEntry = GET_RIDE_ENTRY(ride->subtype);
 		value = clamp(rideEntry->min_cars_in_train, value, rideEntry->max_cars_in_train);
 		ride->var_0CB = value;
 		break;
 	case RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY:
+		invalidate_test_results(rideIndex);
 		ride->subtype = value;
 		ride_set_vehicle_colours_to_random_preset(ride, *eax & 0xFF);
 		break;
