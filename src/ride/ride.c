@@ -6816,6 +6816,8 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 		ride->subtype = value;
 		ride_set_vehicle_colours_to_random_preset(ride, *eax & 0xFF);
 		break;
+	default:
+		log_error("Unknown command!");
 	}
 
 	ride->num_circuits = 1;
