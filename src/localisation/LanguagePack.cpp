@@ -28,8 +28,9 @@ LanguagePack *LanguagePack::FromFile(int id, const utf8 *path)
 		FileStream fs = FileStream(path, FILE_MODE_OPEN);
 
 		fileLength = (uint32)fs.GetLength();
-		fileData = Memory::Allocate<utf8>(fileLength);
+		fileData = Memory::Allocate<utf8>(fileLength + 1);
 		fs.Read(fileData, fileLength);
+		fileData[fileLength] = '\0';
 
 		fs.Dispose();
 	} catch (Exception ex) {
