@@ -21,18 +21,20 @@ LanguagePack *LanguagePack::FromFile(int id, const utf8 *path)
 	assert(path != nullptr);
 
 	uint32 fileLength;
-	utf8 *fileData;
+	utf8 *fileData = nullptr;
 
 	// Load file directly into memory
 	try {
 		FileStream fs = FileStream(path, FILE_MODE_OPEN);
 
 		fileLength = (uint32)fs.GetLength();
-		fileData = Memory::Allocate<utf8>(fileLength);
+		fileData = Memory::Allocate<utf8>(fileLength + 1);
 		fs.Read(fileData, fileLength);
+		fileData[fileLength] = '\0';
 
 		fs.Dispose();
 	} catch (Exception ex) {
+		Memory::Free(fileData);
 		log_error("Unable to open %s: %s", path, ex.GetMessage());
 		return nullptr;
 	}
