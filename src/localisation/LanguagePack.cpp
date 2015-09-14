@@ -21,7 +21,7 @@ LanguagePack *LanguagePack::FromFile(int id, const utf8 *path)
 	assert(path != nullptr);
 
 	uint32 fileLength;
-	utf8 *fileData;
+	utf8 *fileData = nullptr;
 
 	// Load file directly into memory
 	try {
@@ -34,6 +34,7 @@ LanguagePack *LanguagePack::FromFile(int id, const utf8 *path)
 
 		fs.Dispose();
 	} catch (Exception ex) {
+		Memory::Free(fileData);
 		log_error("Unable to open %s: %s", path, ex.GetMessage());
 		return nullptr;
 	}
