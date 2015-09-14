@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -526,7 +526,7 @@ bool config_get_property_name_value(const utf8string line, utf8 **propertyName, 
 
 	ch = line;
 	utf8_skip_whitespace(&ch);
-	
+
 	if (*ch == 0) return false;
 	*propertyName = ch;
 
@@ -816,7 +816,7 @@ bool config_find_or_browse_install_directory()
 void config_apply_to_old_addresses()
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, sint8) = gConfigGeneral.edge_scrolling;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gConfigGeneral.currency_format; 
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gConfigGeneral.currency_format;
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gConfigGeneral.measurement_format;
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = gConfigGeneral.temperature_format;
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8) = gConfigGeneral.construction_marker_colour;
@@ -866,10 +866,10 @@ void config_apply_to_old_addresses()
 
 			//general configuration
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, sint8) = gConfigGeneral.edge_scrolling;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gConfigGeneral.currency_format; 
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gConfigGeneral.currency_format;
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gConfigGeneral.measurement_format;
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = gConfigGeneral.temperature_format;
-			
+
 			// always show gridlines
 			if (gConfigGeneral.always_show_gridlines){
 				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
@@ -885,7 +885,7 @@ void config_apply_to_old_addresses()
 			else {
 				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= !CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE;
 			}
-			
+
 			// show height as units
 			if (gConfigGeneral.show_height_as_units){
 				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
@@ -904,10 +904,10 @@ void config_apply_to_old_addresses()
 
 			//sound configuration: force software buffering and best quality
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8) = 2;
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, sint8) = 1; 
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, sint8) = 1;
 
 			// Line below is temporarily disabled until all config is in the new format.
-			//if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1) 
+			//if (RCT2_GLOBAL(0x009AB4C6, sint8) == 1)
 			//	return;
 
 			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_CONFIG, sint8) = 1; // Marks config as first time loaded
@@ -916,9 +916,9 @@ void config_apply_to_old_addresses()
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS))
 				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) + 1) * 256;
 		}
-	
+
 	}
-	
+
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MAX_VEHICLE_SOUNDS, sint8) = RCT2_ADDRESS(0x009AF601, sint8)[RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8)];
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MAX_NO_SOUNDS, sint8) = RCT2_ADDRESS(0x009AF604, sint8)[RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_QUALITY, sint8)];
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 0;
@@ -1004,7 +1004,7 @@ static const uint16 _defaultShortcutKeys[SHORTCUT_COUNT] = {
 #define SHORTCUT_FILE_VERSION 1
 
 /**
- * 
+ *
  *  rct2: 0x006E3604
  */
 void config_reset_shortcut_keys()
@@ -1201,7 +1201,7 @@ void themes_load_presets()
 bool themes_save_preset(int preset)
 {
 	utf8 path[MAX_PATH];
-	
+
 	platform_get_user_directory(path, "themes");
 	strcat(path, gConfigThemes.presets[preset].name);
 	strcat(path, ".ini");
@@ -1323,7 +1323,7 @@ static bool themes_save(const_utf8string path, int preset)
 
 	for (i = 0; i < (int)gNumThemeWindows; i++) {
 		theme_section_definition *section = &_themeSectionDefinitions[0];
-		
+
 		rwopswritec(file, '[');
 		SDL_RWwrite(file, gThemeWindowDefinitions[i].section_name, strlen(gThemeWindowDefinitions[i].section_name), 1);
 		rwopswritec(file, ']');
@@ -1473,7 +1473,7 @@ void title_sequences_set_default()
 
 	gConfigTitleSequences.presets = malloc(0);
 	gConfigTitleSequences.num_presets = 0;
-	
+
 	// Load OpenRCT2 title sequence
 	sprintf(path, "%s%c%s%c%s%c%s%c", gExePath, sep, "data", sep, "title", sep, "rct2", sep);
 	title_sequence_open(path, language_get_string(5308));
@@ -1547,7 +1547,7 @@ static void title_sequence_open(const char *path, const char *customName)
 	if (preset == gConfigTitleSequences.num_presets) {
 		gConfigTitleSequences.num_presets++;
 		gConfigTitleSequences.presets = realloc(gConfigTitleSequences.presets, sizeof(title_sequence) * (size_t)gConfigTitleSequences.num_presets);
-		
+
 		if (customName == NULL) {
 			char nameBuffer[MAX_PATH], *name;
 			strcpy(nameBuffer, path);
@@ -1566,7 +1566,7 @@ static void title_sequence_open(const char *path, const char *customName)
 			strcpy(gConfigTitleSequences.presets[preset].name, customName);
 			strcpy(gConfigTitleSequences.presets[preset].path, path);
 		}
-		
+
 		gConfigTitleSequences.presets[preset].saves = malloc(0);
 		gConfigTitleSequences.presets[preset].commands = malloc(0);
 		gConfigTitleSequences.presets[preset].num_saves = 0;
@@ -1580,7 +1580,8 @@ static void title_sequence_open(const char *path, const char *customName)
 	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
 		gConfigTitleSequences.presets[preset].num_saves++;
 		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * (size_t)gConfigTitleSequences.presets[preset].num_saves);
-		strcpy(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], fileInfo.path);
+		strncpy(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], fileInfo.path, TITLE_SEQUENCE_MAX_SAVE_LENGTH);
+		gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1][TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1] = '\0';
 	}
 	platform_enumerate_files_end(fileEnumHandle);
 	strcpy(titlePath, path);
@@ -1589,10 +1590,11 @@ static void title_sequence_open(const char *path, const char *customName)
 	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
 		gConfigTitleSequences.presets[preset].num_saves++;
 		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * (size_t)gConfigTitleSequences.presets[preset].num_saves);
-		strcpy(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], fileInfo.path);
+		strncpy(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], fileInfo.path, TITLE_SEQUENCE_MAX_SAVE_LENGTH);
+		gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1][TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1] = '\0';
 	}
 	platform_enumerate_files_end(fileEnumHandle);
-	
+
 	// Load the script file
 	file = SDL_RWFromFile(scriptPath, "r");
 	sint64 fileSize = SDL_RWsize(file);
@@ -1653,7 +1655,7 @@ void title_sequence_save_preset_script(int preset)
 	int i;
 	char separator = platform_get_path_separator();
 
-	
+
 	platform_get_user_directory(path, "title sequences");
 	strcat(path, path_get_filename(gConfigTitleSequences.presets[preset].name));
 	strncat(path, &separator, 1);
@@ -1664,7 +1666,7 @@ void title_sequence_save_preset_script(int preset)
 		log_error("Unable to write to script file.");
 		return;
 	}
-	
+
 	for (i = 0; i < gConfigTitleSequences.presets[preset].num_commands; i++) {
 		title_command *command = &gConfigTitleSequences.presets[preset].commands[i];
 		switch (command->command) {
