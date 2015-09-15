@@ -3573,9 +3573,9 @@ STR_5237    :Palet:
 STR_5238    :Huidig thema:
 STR_5239    :Kopiëren
 STR_5240    :Voer een naam in voor dit thema
-STR_5241    :Kan dit thema niet wijzigen
-STR_5242    :Themanaam bestaat al
-STR_5243    :Er zijn ongeldige tekens gebruikt
+STR_5241    :Kan dit thema niet wijzigen.
+STR_5242    :Themanaam bestaat al.
+STR_5243    :Er zijn ongeldige tekens gebruikt.
 STR_5244    :Thema's
 STR_5245    :Bovenste werkbalk
 STR_5246    :Onderste werkbalk
@@ -3588,7 +3588,7 @@ STR_5252    :Scenarioselectie titelscherm
 STR_5253    :Parkinformatie
 STR_5254    :Aanmaken
 STR_5255    :{SMALLFONT}{BLACK}Begint een nieuwe, lege titelpresentatie
-STR_5256    :Een nieuw thema aanmaken om wijzigingen aan te brengen
+STR_5256    :Maak een nieuw thema aan om wijzigingen aan te brengen.
 STR_5257    :{SMALLFONT}{BLACK}Een nieuw thema aanmaken dat is gebaseerd op het huidige
 STR_5258    :{SMALLFONT}{BLACK}Het huidige thema verwijderen
 STR_5259    :{SMALLFONT}{BLACK}Het huidige thema hernoemen
