@@ -56,7 +56,7 @@ fi
 
 pushd build
 	echo OPENRCT2_CMAKE_OPTS = $OPENRCT_CMAKE_OPTS
-	cmake -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=Debug $OPENRCT2_CMAKE_OPTS ..
+	cmake -DCMAKE_BUILD_TYPE=Debug $OPENRCT2_CMAKE_OPTS ..
 	make
 popd
 

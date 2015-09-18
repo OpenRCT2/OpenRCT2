@@ -16,8 +16,8 @@ cache:
     apt: true
 
 env:
-    - OPENRCT2_CMAKE_OPTS=
-    - OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=ON"
+    - OPENRCT2_CMAKE_OPTS="-DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt"
+    - OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=ON -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt"
 
 sudo: required
 
