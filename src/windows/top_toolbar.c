@@ -739,12 +739,6 @@ static void window_top_toolbar_invalidate(rct_window *w)
 	else
 		w->pressed_widgets |= (1 << WIDX_PATH);
 
-	// Fast forward button pressed down
-	// if (0)
-	// 	w->pressed_widgets |= (1 << WIDX_FASTFORWARD);
-	// else
-	// 	w->pressed_widgets &= ~(1 << WIDX_FASTFORWARD);
-
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1))
 		w->pressed_widgets &= ~(1 << WIDX_PAUSE);
 	else
@@ -797,9 +791,6 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		for (int i = 0; i < 3 && i < gGameSpeed - 4 && gGameSpeed >= 5; i++) {
 			gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROW, x + 5 + i * 6, y + 15, 0);
 		}
-		/*if (gGameSpeed >= 8) {
-			gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROWS, x + 5, y + 15, 0);
-		}*/
 	}
 
 	// Draw cheats button

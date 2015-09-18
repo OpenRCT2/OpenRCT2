@@ -26,6 +26,7 @@
 extern bool gCheatsSandboxMode;
 extern bool gCheatsDisableClearanceChecks;
 extern bool gCheatsDisableSupportLimits;
+extern bool gCheatsShowAllOperatingModes;
 
 void cheats_reset();
 
