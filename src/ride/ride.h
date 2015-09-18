@@ -1042,5 +1042,6 @@ void sub_6C94D8();
 
 bool shop_item_is_food_or_drink(int shopItem);
 void ride_reset_all_names();
+const uint8* ride_seek_available_modes(rct_ride *ride);
 
 #endif

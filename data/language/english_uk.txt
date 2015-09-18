@@ -3886,6 +3886,7 @@ STR_5544    :{SMALLFONT}{BLACK}Bright red
 STR_5545    :{SMALLFONT}{BLACK}Dark pink
 STR_5546    :{SMALLFONT}{BLACK}Bright pink
 STR_5547    :{SMALLFONT}{BLACK}Light pink
+STR_5548    :Show all operating modes
 
 #####################
 # Rides/attractions # 

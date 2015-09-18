@@ -2762,10 +2762,7 @@ static void window_ride_mode_dropdown(rct_window *w, rct_widget *widget)
 	rideEntry = ride_get_entry(ride);
 
 	// Seek to available modes for this ride
-	availableModes = RideAvailableModes;
-	for (i = 0; i < ride->type; i++) {
-		while (*(availableModes++) != 255) { }
-	}
+	availableModes = ride_seek_available_modes(ride);
 
 	// Count number of available modes
 	mode = availableModes;
@@ -2950,7 +2947,6 @@ static void window_ride_operating_dropdown(rct_window *w, int widgetIndex, int d
 {
 	rct_ride *ride;
 	const uint8 *availableModes;
-	int i;
 
 	if (dropdownIndex == -1)
 		return;
@@ -2960,10 +2956,8 @@ static void window_ride_operating_dropdown(rct_window *w, int widgetIndex, int d
 	switch (widgetIndex) {
 	case WIDX_MODE_DROPDOWN:
 		// Seek to available modes for this ride
-		availableModes = RideAvailableModes;
-		for (i = 0; i < ride->type; i++) {
-			while (*(availableModes++) != 255) { }
-		}
+		availableModes = ride_seek_available_modes(ride);
+
 		set_operating_setting(w->number, 0, availableModes[dropdownIndex]);
 		break;
 	case WIDX_LOAD_DROPDOWN:

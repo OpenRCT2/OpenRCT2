@@ -3681,11 +3681,8 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 		ride_remove_peeps(ride_id);
 
 		rct_ride_type* ride_entry = GET_RIDE_ENTRY(ride->subtype);
-		const uint8* available_modes = RideAvailableModes;
+		const uint8* available_modes = ride_seek_available_modes(ride);
 
-		for (int i = 0; i < ride->type; i++) {
-			while (*(available_modes++) != 255) {}
-		}
 		if (ride_entry->flags & RIDE_ENTRY_FLAG_17){
 			available_modes += 2;
 		}
@@ -7042,4 +7039,23 @@ void ride_reset_all_names()
 		ride->name_arguments_type_name = name_args.type_name;
 		ride->name_arguments_number = name_args.number;
 	}
+}
+
+const uint8* ride_seek_available_modes(rct_ride *ride)
+{
+	const uint8* availableModes;
+
+	if(!gCheatsShowAllOperatingModes) {
+		availableModes = RideAvailableModes;
+
+		for (int i = 0; i < ride->type; i++) {
+			while (*(availableModes++) != 255) { }
+		}
+	}
+	else
+	{
+		availableModes = AllRideModesAvailable;
+	}
+
+	return availableModes;
 }

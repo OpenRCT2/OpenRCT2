@@ -116,7 +116,8 @@ enum {
 	DDIDX_CHEATS,
 	DDIDX_ENABLE_SANDBOX_MODE = 2,
 	DDIDX_DISABLE_CLEARANCE_CHECKS,
-	DDIDX_DISABLE_SUPPORT_LIMITS
+	DDIDX_DISABLE_SUPPORT_LIMITS,
+	DDIDX_SHOW_ALL_OPERATING_MODES
 };
 
 #pragma region Toolbar_widget_ordering
@@ -421,17 +422,19 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 		gDropdownItemsFormat[2] = 1156;
 		gDropdownItemsFormat[3] = 1156;
 		gDropdownItemsFormat[4] = 1156;
+		gDropdownItemsFormat[5] = 1156;
 		gDropdownItemsArgs[0] = 5217;
 		gDropdownItemsArgs[2] = STR_ENABLE_SANDBOX_MODE;
 		gDropdownItemsArgs[3] = STR_DISABLE_CLEARANCE_CHECKS;
 		gDropdownItemsArgs[4] = STR_DISABLE_SUPPORT_LIMITS;
+		gDropdownItemsArgs[5] = STR_SHOW_ALL_OPERATING_MODES;
 		window_dropdown_show_text(
 			w->x + widget->left,
 			w->y + widget->top,
 			widget->bottom - widget->top + 1,
 			w->colours[0] | 0x80,
 			0,
-			5
+			6
 		);
 		if (gCheatsSandboxMode)
 			gDropdownItemsChecked |= (1 << DDIDX_ENABLE_SANDBOX_MODE);
@@ -439,6 +442,8 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			gDropdownItemsChecked |= (1 << DDIDX_DISABLE_CLEARANCE_CHECKS);
 		if (gCheatsDisableSupportLimits)
 			gDropdownItemsChecked |= (1 << DDIDX_DISABLE_SUPPORT_LIMITS);
+		if (gCheatsShowAllOperatingModes)
+			gDropdownItemsChecked |= (1 << DDIDX_SHOW_ALL_OPERATING_MODES);
 		RCT2_GLOBAL(0x009DEBA2, uint16) = 0;
 		break;
 	case WIDX_VIEW_MENU:
@@ -556,6 +561,8 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 		case DDIDX_DISABLE_SUPPORT_LIMITS:
 			gCheatsDisableSupportLimits = !gCheatsDisableSupportLimits;
 			break;
+		case DDIDX_SHOW_ALL_OPERATING_MODES:
+			gCheatsShowAllOperatingModes = !gCheatsShowAllOperatingModes;
 		}
 		break;
 	case WIDX_VIEW_MENU:
@@ -739,12 +746,6 @@ static void window_top_toolbar_invalidate(rct_window *w)
 	else
 		w->pressed_widgets |= (1 << WIDX_PATH);
 
-	// Fast forward button pressed down
-	// if (0)
-	// 	w->pressed_widgets |= (1 << WIDX_FASTFORWARD);
-	// else
-	// 	w->pressed_widgets &= ~(1 << WIDX_FASTFORWARD);
-
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1))
 		w->pressed_widgets &= ~(1 << WIDX_PAUSE);
 	else
@@ -797,9 +798,6 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		for (int i = 0; i < 3 && i < gGameSpeed - 4 && gGameSpeed >= 5; i++) {
 			gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROW, x + 5 + i * 6, y + 15, 0);
 		}
-		/*if (gGameSpeed >= 8) {
-			gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROWS, x + 5, y + 15, 0);
-		}*/
 	}
 
 	// Draw cheats button
