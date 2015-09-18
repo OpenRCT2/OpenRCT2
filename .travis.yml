@@ -15,6 +15,10 @@ cache:
         - cache
     apt: true
 
+env:
+    - OPENRCT2_CMAKE_OPTS=
+    - OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=ON"
+
 sudo: required
 
 services:

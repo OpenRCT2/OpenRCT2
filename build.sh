@@ -2,22 +2,11 @@
 
 set -e
 
-nonet=false;
-
-if [[ "$1" = "--include-nonet" ]]; then
-	nonet=true
-fi
-
 cachedir=.cache
 mkdir -p $cachedir
 
 if [[ ! -d build ]]; then
 	mkdir -p build
-fi
-if [[ $nonet = true ]]; then
-	if [[ ! -d build_nonet ]]; then
-		mkdir -p build_nonet
-	fi
 fi
 
 libversion=2
@@ -66,15 +55,10 @@ if [[ "$needsdownload" = "true" ]]; then
 fi
 
 pushd build
-	cmake -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=Debug  ..
+	echo OPENRCT2_CMAKE_OPTS = $OPENRCT_CMAKE_OPTS
+	cmake -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=Debug $OPENRCT2_CMAKE_OPTS ..
 	make
 popd
-if [[ $nonet = true ]]; then
-	pushd build_nonet
-		cmake -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=Debug -DDISABLE_NETWORK=ON ..
-		make
-	popd
-fi
 
 if [[ ! -h openrct2.dll ]]; then 
     ln -s build/openrct2.dll openrct2.dll
