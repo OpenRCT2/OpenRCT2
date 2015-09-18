@@ -333,6 +333,7 @@ int check_files_integrity()
 	{
 	int i;
 	const char *path;
+#ifdef _WIN32
 	HANDLE file;
 		WIN32_FIND_DATA find_data;
 
@@ -350,6 +351,9 @@ int check_files_integrity()
 
 		FindClose(file);
 	}
+#else
+	STUB();
+#endif // _WIN32
 
 	return 1;
 }
@@ -439,6 +443,7 @@ const utf8 *get_file_path(int pathId)
  */
 void get_system_info()
 {
+#ifdef _WIN32
 	OSVERSIONINFO versionInfo;
 	SYSTEM_INFO sysInfo;
 	MEMORYSTATUS memInfo;
@@ -450,10 +455,12 @@ void get_system_info()
 		RCT2_GLOBAL(RCT2_ADDRESS_OS_MINOR_VERSION, uint32) = versionInfo.dwMinorVersion;
 		RCT2_GLOBAL(RCT2_ADDRESS_OS_BUILD_NUMBER, uint32) = versionInfo.dwBuildNumber;
 	} else {
+#endif // _WIN32
 		RCT2_GLOBAL(RCT2_ADDRESS_OS_PLATFORM_ID, uint32) = -1;
 		RCT2_GLOBAL(RCT2_ADDRESS_OS_MAJOR_VERSION, uint32) = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_OS_MINOR_VERSION, uint32) = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_OS_BUILD_NUMBER, uint32) = 0;
+#ifdef _WIN32
 	}
 
 	GetSystemInfo(&sysInfo);
@@ -494,6 +501,9 @@ void get_system_info()
 		RCT2_GLOBAL(0x1423C18, sint32) = 1;
 
 	RCT2_GLOBAL(0x01423C20, uint32) = (SDL_HasMMX() == SDL_TRUE);
+#else
+	STUB();
+#endif // _WIN32
 }
 
 
@@ -503,6 +513,7 @@ void get_system_info()
  */
 void get_system_time()
 {
+#ifdef _WIN32
 	SYSTEMTIME systime;
 
 	GetSystemTime(&systime);
@@ -510,6 +521,9 @@ void get_system_time()
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, sint16) = systime.wMonth;
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_YEAR, sint16) = systime.wYear;
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAYOFWEEK, sint16) = systime.wDayOfWeek;
+#else
+	STUB();
+#endif // _WIN32
 }
 
 /**
@@ -518,11 +532,15 @@ void get_system_time()
  */
 void get_local_time()
 {
+#ifdef _WIN32
 	SYSTEMTIME systime;
 	GetLocalTime(&systime);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_HOUR, sint16) = systime.wHour;
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MINUTE, sint16) = systime.wMinute;
+#else
+	STUB();
+#endif // _WIN32
 }
 
 /**

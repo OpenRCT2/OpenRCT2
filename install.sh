@@ -74,6 +74,9 @@ if [[ `uname` == "Darwin" ]]; then
         popd
     fi
 elif [[ `uname` == "Linux" ]]; then
+	if [[ ! -z "$TRAVIS" ]]; then
+		sudo dpkg --add-architecture i386
+	fi
 	sudo apt-get update
 	if [[ -z "$TRAVIS" ]]; then
 	    sudo apt-get install -y binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 cmake
@@ -81,7 +84,12 @@ elif [[ `uname` == "Linux" ]]; then
 			sudo apt-get install -y wine
 		fi
 	else
-		sudo apt-get install -y --force-yes binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 cmake
+		apt-cache search libsdl2
+		apt-cache policy libsdl2-dev:i386
+		apt-cache policy libsdl2-dev
+		sudo apt-get install -y --force-yes binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 cmake libsdl2-dev:i386 libsdl2-ttf-dev:i386 gcc-4.8 pkg-config:i386 g++-4.8-multilib gcc-4.8-multilib libjansson-dev:i386 libspeex-dev:i386 libspeexdsp-dev:i386
+		export CC=gcc-4.8
+		export CXX=g++-4.8
 	fi
 fi
 
@@ -143,6 +151,11 @@ if [[ ! -f $cachedir/i686-w64-mingw32-pkg-config ]]; then
     # file.
     echo -e "#!/bin/sh\nexport PKG_CONFIG_LIBDIR=/usr/local/cross-tools/i686-w64-mingw32/lib/pkgconfig\npkg-config \$@" > $cachedir/i686-w64-mingw32-pkg-config;
 fi
+
+set -x
+dpkg -L libsdl2-dev
+dpkg -L libsdl2-ttf-dev
+set +x
 
 chmod +x $cachedir/i686-w64-mingw32-pkg-config
 sudo cp $cachedir/i686-w64-mingw32-pkg-config /usr/local/bin/

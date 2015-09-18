@@ -18,7 +18,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#ifdef _WIN32
 #include <dsound.h>
+#endif // _WIN32
 
 #include "../addresses.h"
 #include "../config.h"
@@ -41,11 +43,13 @@ typedef struct {
 	uint32 var_110;
 	uint32 var_114;
 	uint32 var_118;
+#ifdef _WIN32
 	HGLOBAL hmem;					// 0x11C
 	HMMIO hmmio;					// 0x120
 	MMCKINFO mmckinfo1;				// 0x124
 	MMCKINFO mmckinfo2;				// 0x138
 	LPDIRECTSOUNDBUFFER dsbuffer;	// 0x14C
+#endif // _WIN32
 	uint32 bufsize;					// 0x150
 	uint32 playpos;					// 0x154
 	uint32 var_158;
@@ -57,7 +61,9 @@ typedef struct {
 
 struct rct_sound_effect {
 	uint32 size;
+#ifdef _WIN32
 	WAVEFORMATEX format;
+#endif // _WIN32
 	uint8* data;
 };
 
@@ -73,6 +79,7 @@ void *gCrowdSoundChannel = 0;
 void *gTitleMusicChannel = 0;
 bool gGameSoundsOff = false;
 
+#ifdef _WIN32
 void audio_timefunc(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2, int channel);
 int sound_effect_loadvars(struct rct_sound_effect* sound_effect, LPWAVEFORMATEX* waveformat, char** data, DWORD* buffersize);
 MMRESULT mmio_open(const char* filename, HMMIO* hmmio, HGLOBAL* hmem, LPMMCKINFO mmckinfo);
@@ -86,6 +93,7 @@ int sound_fill_buffer(LPDIRECTSOUNDBUFFER dsbuffer, char* src, DWORD size);
 void sound_channel_free(HMMIO* hmmio, HGLOBAL* hmem);
 LPVOID map_file(LPCWSTR lpFileName, DWORD dwCreationDisposition, DWORD dwNumberOfBytesToMap);
 int unmap_file(LPCVOID base);
+#endif // _WIN32
 
 void audio_init(int i)
 {
@@ -126,6 +134,7 @@ void audio_get_devices()
 	}
 }
 
+#ifdef _WIN32
 /**
 *
 *  rct2: 0x00401000
@@ -329,6 +338,7 @@ int CALLBACK audio_timer_callback(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DW
 	}
 	return 0;
 }
+#endif // _WIN32
 
 /**
 *
@@ -336,6 +346,7 @@ int CALLBACK audio_timer_callback(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DW
 */
 int sub_40153B(int channel)
 {
+#ifdef _WIN32
 	rct_sound_channel* sound_channel = &RCT2_ADDRESS(0x014262E0, rct_sound_channel)[channel];
 	if (sound_channel->var_4) {
 		if (sound_channel->hmmio) {
@@ -354,6 +365,9 @@ int sub_40153B(int channel)
 			return 0;
 		}
 	}
+#else
+	STUB();
+#endif // _WIN32
 	return 1;
 }
 
@@ -369,6 +383,7 @@ int sub_4015E7(int channel)
 	int buf2size;
 	int read;
 	int zero = 0;
+#ifdef _WIN32
 	rct_sound_channel* sound_channel = &RCT2_ADDRESS(0x014262E0, rct_sound_channel)[channel];
 	LPDIRECTSOUNDBUFFER dsbuffer = RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel];
 	int result = dsbuffer->lpVtbl->Lock(dsbuffer, 0, sound_channel->bufsize, (LPVOID*)&buf1, (LPDWORD)&buf1size, (LPVOID*)&buf2, (LPDWORD)&buf2size, 0);
@@ -401,6 +416,10 @@ int sub_4015E7(int channel)
 		sound_channel->playpos = 0;
 	}
 	return result;
+#else
+	STUB();
+	return 0;
+#endif // _WIN32
 }
 
 /**
@@ -409,6 +428,7 @@ int sub_4015E7(int channel)
 */
 int sound_channel_load_file(int channel, const char* filename, int offset)
 {
+#ifdef _WIN32
 	rct_sound_channel* sound_channel = &RCT2_ADDRESS(0x014262E0, rct_sound_channel)[channel];
 	sound_channel->hmem;
 	sound_channel->hmmio;
@@ -441,9 +461,13 @@ int sound_channel_load_file(int channel, const char* filename, int offset)
 	sub_4015E7(channel);
 	sound_channel->var_158 = offset;
 	sound_channel->stopped = 0;
+#else
+	STUB();
+#endif // _WIN32
 	return 0;
 }
 
+#ifdef _WIN32
 /**
 *
 *  rct2: 0x00401822
@@ -467,6 +491,7 @@ int mmio_open_channel(int channel, char* filename, LONG offset)
 	sound_channel->var_158 = offset;
 	return 0;
 }
+#endif // _WIN32
 
 /**
 *
@@ -474,6 +499,7 @@ int mmio_open_channel(int channel, char* filename, LONG offset)
 */
 int audio_create_timer()
 {
+#ifdef _WIN32
 	if (RCT2_GLOBAL(0x009E1AA4, int)) {
 		return 0;
 	}
@@ -485,6 +511,9 @@ int audio_create_timer()
 	if (!RCT2_GLOBAL(0x009E1AA0, MMRESULT)) {
 		return 0;
 	}
+#else
+	STUB();
+#endif // _WIN32
 	RCT2_GLOBAL(0x009E1AA4, int) = 1;
 	return 1;
 }
@@ -498,6 +527,7 @@ int audio_remove_timer()
 	for (int i = 0; i < 4; i++) {
 		sound_channel_stop(i);
 	}
+#ifdef _WIN32
 	if (RCT2_GLOBAL(0x009E1AA4, int)) {
 		timeKillEvent(RCT2_GLOBAL(0x009E1AA0, MMRESULT));
 		timeEndPeriod(50);
@@ -508,6 +538,9 @@ int audio_remove_timer()
 		RCT2_GLOBAL(0x009E1AA4, int) = 0;
 		return result;
 	}
+#else
+	STUB();
+#endif // _WIN32
 	return 0;
 }
 
@@ -536,6 +569,7 @@ int sound_channel_load_file2(int channel, const char* filename, int offset)
 */
 int sound_channel_play(int channel, int a2, int volume, int pan, int frequency)
 {
+#ifdef _WIN32
 	rct_sound_channel* sound_channel = &RCT2_ADDRESS(RCT2_ADDRESS_SOUND_CHANNEL_LIST, rct_sound_channel)[channel];
 	sound_channel->var_164 = a2;
 	sound_channel_set_frequency(channel, frequency);
@@ -545,6 +579,9 @@ int sound_channel_play(int channel, int a2, int volume, int pan, int frequency)
 	dsbuffer->lpVtbl->SetCurrentPosition(dsbuffer, 0);
 	dsbuffer->lpVtbl->Play(dsbuffer, 0, 0, DSBPLAY_LOOPING);
 	sound_channel->playing = 1;
+#else
+	STUB();
+#endif // _WIN32
 	return 1;
 }
 
@@ -554,6 +591,7 @@ int sound_channel_play(int channel, int a2, int volume, int pan, int frequency)
 */
 int sound_channel_stop(int channel)
 {
+#ifdef _WIN32
 	rct_sound_channel* sound_channel = &RCT2_ADDRESS(RCT2_ADDRESS_SOUND_CHANNEL_LIST, rct_sound_channel)[channel];
 	sound_channel->playing = 0;
 	sound_channel->stopped = 1;
@@ -571,6 +609,9 @@ int sound_channel_stop(int channel)
 		RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel] = 0;
 	}
 	_InterlockedExchange(&RCT2_GLOBAL(0x009E1AAC, LONG), 0);
+#else
+	STUB();
+#endif // _WIN32
 	return 1;
 }
 
@@ -580,12 +621,16 @@ int sound_channel_stop(int channel)
 */
 int sound_channel_set_frequency(int channel, int frequency)
 {
+#ifdef _WIN32
 	LPDIRECTSOUNDBUFFER dsbuffer = RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel];
 	if (dsbuffer) {
 		if (SUCCEEDED(dsbuffer->lpVtbl->SetFrequency(dsbuffer, frequency)))
 			return 1;
 
 	}
+#else
+	STUB();
+#endif // _WIN32
 	return 0;
 }
 
@@ -595,12 +640,16 @@ int sound_channel_set_frequency(int channel, int frequency)
 */
 int sound_channel_set_pan(int channel, int pan)
 {
+#ifdef _WIN32
 	LPDIRECTSOUNDBUFFER dsbuffer = RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel];
 	if (dsbuffer) {
 		if (SUCCEEDED(dsbuffer->lpVtbl->SetPan(dsbuffer, pan)))
 			return 1;
 
 	}
+#else
+	STUB();
+#endif // _WIN32
 	return 0;
 }
 
@@ -610,12 +659,16 @@ int sound_channel_set_pan(int channel, int pan)
 */
 int sound_channel_set_volume(int channel, int volume)
 {
+#ifdef _WIN32
 	LPDIRECTSOUNDBUFFER dsbuffer = RCT2_ADDRESS(RCT2_ADDRESS_DSOUND_BUFFERS, LPDIRECTSOUNDBUFFER)[channel];
 	if (dsbuffer) {
 		if (SUCCEEDED(dsbuffer->lpVtbl->SetVolume(dsbuffer, volume)))
 			return 1;
 
 	}
+#else
+	STUB();
+#endif // _WIN32
 	return 0;
 }
 
@@ -668,6 +721,7 @@ int sound_channel_is_playing(int channel)
 int audio_release()
 {
 	sound_stop_all();
+#ifdef _WIN32
 	if (RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER)) {
 		RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER)->lpVtbl->Release(RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER));
 		RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER) = 0;
@@ -682,6 +736,10 @@ int audio_release()
 		RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND) = 0;
 	}
 	return result;
+#else
+	STUB();
+	return 0;
+#endif // _WIN32
 }
 
 /**
@@ -690,6 +748,7 @@ int audio_release()
 */
 int map_sound_effects(const char* filename)
 {
+#ifdef _WIN32
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SOUND_EFFECTS_MAPPING, LPVOID)) {
 		return 0;
 	} else {
@@ -698,6 +757,10 @@ int map_sound_effects(const char* filename)
 		free(wcFilename);
 		return RCT2_GLOBAL(RCT2_ADDRESS_SOUND_EFFECTS_MAPPING, LPVOID) != 0;
 	}
+#else
+	STUB();
+	return 0;
+#endif // _WIN32
 }
 
 /**
@@ -706,12 +769,16 @@ int map_sound_effects(const char* filename)
 */
 int unmap_sound_effects()
 {
+#ifdef _WIN32
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SOUND_EFFECTS_MAPPING, LPVOID)) {
 		sound_stop_all();
 		unmap_file(RCT2_GLOBAL(RCT2_ADDRESS_SOUND_EFFECTS_MAPPING, LPVOID));
 		RCT2_GLOBAL(RCT2_ADDRESS_SOUND_EFFECTS_MAPPING, LPVOID) = 0;
 		return 1;
 	}
+#else
+	STUB();
+#endif // _WIN32
 	return 0;
 }
 
@@ -721,6 +788,7 @@ int unmap_sound_effects()
 */
 int sound_prepare(int sound_id, rct_sound *sound, int channels, int software)
 {
+#ifdef _WIN32
 	DSBUFFERDESC bufferdesc;
 	char* buffer = 0;
 	memset(&bufferdesc, 0, sizeof(bufferdesc));
@@ -772,6 +840,9 @@ int sound_prepare(int sound_id, rct_sound *sound, int channels, int software)
 			sound->dsbuffer = 0;
 		}
 	}
+#else
+	STUB();
+#endif // _WIN32
 	return 0;
 }
 
@@ -781,6 +852,7 @@ int sound_prepare(int sound_id, rct_sound *sound, int channels, int software)
 */
 int sound_duplicate(rct_sound* newsound, rct_sound* sound)
 {
+#ifdef _WIN32
 	if (FAILED(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND)->lpVtbl->DuplicateSoundBuffer(RCT2_GLOBAL(RCT2_ADDRESS_DIRECTSOUND, LPDIRECTSOUND), sound->dsbuffer, &newsound->dsbuffer))) {
 		return 0;
 	} else {
@@ -790,6 +862,10 @@ int sound_duplicate(rct_sound* newsound, rct_sound* sound)
 		sound_add(newsound);
 		return 1;
 	}
+#else
+	STUB();
+	return 1;
+#endif // _WIN32
 }
 
 /**
@@ -798,11 +874,15 @@ int sound_duplicate(rct_sound* newsound, rct_sound* sound)
 */
 int sound_stop(rct_sound* sound)
 {
+#ifdef _WIN32
 	if (sound->dsbuffer) {
 		sound->dsbuffer->lpVtbl->Release(sound->dsbuffer);
 		sound->dsbuffer = 0;
 		return sound_remove(sound) ? 1 : 0;
 	}
+#else
+	STUB();
+#endif // _WIN32
 	return 0;
 }
 
@@ -825,6 +905,7 @@ int sound_stop_all()
 */
 void sound_bufferlost_check()
 {
+#ifdef _WIN32
 	rct_sound* sound = RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_BEGIN, rct_sound*);
 	while (sound && sound != RCT2_GLOBAL(RCT2_ADDRESS_SOUNDLIST_END, rct_sound*)) {
 		DWORD status;
@@ -835,6 +916,9 @@ void sound_bufferlost_check()
 		}
 		sound = sound->next;
 	}
+#else
+	STUB();
+#endif // _WIN32
 }
 
 /**
@@ -842,6 +926,7 @@ void sound_bufferlost_check()
 *  rct2: 0x00404E53
 */
 int sound_is_playing(rct_sound* sound){
+#ifdef _WIN32
 	if (sound->dsbuffer) {
 		DWORD status;
 		if (SUCCEEDED(sound->dsbuffer->lpVtbl->GetStatus(sound->dsbuffer, &status))) {
@@ -850,6 +935,9 @@ int sound_is_playing(rct_sound* sound){
 
 		}
 	}
+#else
+	STUB();
+#endif // _WIN32
 	return 0;
 }
 
@@ -859,6 +947,7 @@ int sound_is_playing(rct_sound* sound){
 */
 int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency)
 {
+#ifdef _WIN32
 	if (sound->dsbuffer) {
 		sound_set_frequency(sound, frequency);
 		sound_set_pan(sound, pan);
@@ -876,6 +965,9 @@ int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency
 			return 1;
 
 	}
+#else
+	STUB();
+#endif // _WIN32
 	return 0;
 }
 
@@ -885,11 +977,15 @@ int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency
 */
 int sound_set_frequency(rct_sound* sound, int frequency)
 {
+#ifdef _WIN32
 	if (sound->dsbuffer) {
 		if (SUCCEEDED(sound->dsbuffer->lpVtbl->SetFrequency(sound->dsbuffer, frequency)))
 			return 1;
 
 	}
+#else
+	STUB();
+#endif // _WIN32
 	return 0;
 }
 
@@ -899,11 +995,15 @@ int sound_set_frequency(rct_sound* sound, int frequency)
 */
 int sound_set_pan(rct_sound* sound, int pan)
 {
+#ifdef _WIN32
 	if (sound->dsbuffer) {
 		if (SUCCEEDED(sound->dsbuffer->lpVtbl->SetPan(sound->dsbuffer, pan)))
 			return 1;
 
 	}
+#else
+	STUB();
+#endif // _WIN32
 	return 0;
 }
 
@@ -913,11 +1013,15 @@ int sound_set_pan(rct_sound* sound, int pan)
 */
 int sound_set_volume(rct_sound* sound, int volume)
 {
+#ifdef _WIN32
 	if (sound->dsbuffer) {
 		if (SUCCEEDED(sound->dsbuffer->lpVtbl->SetVolume(sound->dsbuffer, volume)))
 			return 1;
 
 	}
+#else
+	STUB();
+#endif // _WIN32
 	return 0;
 }
 
@@ -927,9 +1031,13 @@ int sound_set_volume(rct_sound* sound, int volume)
 */
 int sound_load3dparameters()
 {
+#ifdef _WIN32
 	if (SUCCEEDED(RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER)->lpVtbl->GetAllParameters(RCT2_GLOBAL(0x009E2BA4, LPDIRECTSOUND3DBUFFER), &RCT2_GLOBAL(0x009A6084, DS3DBUFFER)))) {
 		return 1;
 	}
+#else
+	STUB();
+#endif // _WIN32
 	return 0;
 }
 
@@ -945,6 +1053,7 @@ int sound_load3dposition()
 	return 0;
 }
 
+#ifdef _WIN32
 /**
 *
 *  rct2: 0x00404F85
@@ -1017,6 +1126,7 @@ int sound_fill_buffer(LPDIRECTSOUNDBUFFER dsbuffer, char* src, DWORD size)
 	}
 	return 0;
 }
+#endif // _WIN32
 
 /**
 *
@@ -1091,6 +1201,7 @@ rct_sound* sound_remove(rct_sound* sound)
 */
 int sound_bufferlost_restore(rct_sound* sound)
 {
+#ifdef _WIN32
 	DWORD buffersize = 0;
 	LPWAVEFORMATEX waveformat = 0;
 	char* data = 0;
@@ -1102,6 +1213,9 @@ int sound_bufferlost_restore(rct_sound* sound)
 			}
 		}
 	}
+#else
+	STUB();
+#endif // _WIN32
 	return 0;
 }
 
@@ -1111,12 +1225,17 @@ int sound_bufferlost_restore(rct_sound* sound)
 */
 struct rct_sound_effect* sound_get_effect(uint16 sound_id)
 {
+#ifdef _WIN32
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SOUND_EFFECTS_MAPPING, LPVOID) && sound_id < RCT2_GLOBAL(RCT2_ADDRESS_SOUND_EFFECTS_MAPPING, uint32*)[0]) {
 		return (struct rct_sound_effect*)(RCT2_GLOBAL(RCT2_ADDRESS_SOUND_EFFECTS_MAPPING, int) + RCT2_GLOBAL(RCT2_ADDRESS_SOUND_EFFECTS_MAPPING, uint32*)[sound_id + 1]);
 	}
+#else
+	STUB();
+#endif // _WIN32
 	return 0;
 }
 
+#ifdef _WIN32
 /**
 *
 *  rct2: 0x00405222
@@ -1458,6 +1577,7 @@ int get_dsound_devices()
 	}
 	return 0;
 }
+#endif // _WIN32
 
 /**
 *
@@ -1734,6 +1854,7 @@ void stop_title_music()
 void audio_init1()
 {
 	int devicenum = 0;
+#ifdef _WIN32
 	if (RCT2_GLOBAL(0x009AAC5C, uint8)) {
 		rct_dsdevice* dsdevice = &RCT2_GLOBAL(RCT2_ADDRESS_DSOUND_DEVICES, rct_dsdevice*)[0];
 		while (dsdevice->guid.Data1 != RCT2_GLOBAL(RCT2_ADDRESS_DSOUND_GUID, GUID).Data1 ||
@@ -1763,6 +1884,9 @@ void audio_init1()
 			}
 		}
 	}
+#else
+	STUB();
+#endif // _WIN32
 }
 
 /**
@@ -1782,7 +1906,12 @@ void audio_init2(int device)
 		other_sound->id = 0xFFFF;
 	}
 	RCT2_GLOBAL(0x014241BC, uint32) = 1;
+#ifdef _WIN32
 	int successdsound = dsound_create_primary_buffer(0, device, 2, 22050, 16);
+#else
+	int successdsound = 0;
+	STUB();
+#endif // _WIN32
 	RCT2_GLOBAL(0x014241BC, uint32) = 0;
 	if (!successdsound) {
 		return;
@@ -1799,7 +1928,11 @@ void audio_init2(int device)
 	}
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) = device;
 	rct_dsdevice dsdevice = RCT2_GLOBAL(RCT2_ADDRESS_DSOUND_DEVICES, rct_dsdevice*)[device];
+#ifdef _WIN32
 	RCT2_GLOBAL(RCT2_ADDRESS_DSOUND_GUID, GUID) = dsdevice.guid;
+#else
+	STUB();
+#endif // _WIN32
 	RCT2_GLOBAL(0x009AAC5C, uint8) = 1;
 	config_save_default();
 	RCT2_GLOBAL(0x014241BC, uint32) = 1;

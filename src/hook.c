@@ -18,13 +18,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#ifdef _WIN32
 #include <windows.h>
+#endif // _WIN32
 #include "hook.h"
+#include "platform/platform.h"
 
 void* g_hooktableaddress = 0;
 int g_hooktableoffset = 0;
 int g_maxhooks = 1000;
 
+#ifdef _WIN32
 void hookfunc(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister)
 {
 	int i = 0;
@@ -211,9 +215,11 @@ void hookfunc(int address, int newaddress, int stacksize, int registerargs[], in
 
 	WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
 }
+#endif // _WIN32
 
 void addhook(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister)
 {
+#ifdef _WIN32
 	if (!g_hooktableaddress) {
 		g_hooktableaddress = VirtualAllocEx(GetCurrentProcess(), NULL, g_maxhooks * 100, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 	}
@@ -229,4 +235,7 @@ void addhook(int address, int newaddress, int stacksize, int registerargs[], int
 	WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
 	hookfunc(hookaddress, newaddress, stacksize, registerargs, registersreturned, eaxDestinationRegister);
 	g_hooktableoffset++;
+#else
+	STUB();
+#endif // _WIN32
 }

@@ -44,6 +44,10 @@ extern "C" {
 
 #ifndef DISABLE_NETWORK
 
+#ifdef _WIN32
+#include <winsock2.h>
+#endif // _WIN32
+
 enum {
 	NETWORK_AUTH_NONE,
 	NETWORK_AUTH_REQUESTED,

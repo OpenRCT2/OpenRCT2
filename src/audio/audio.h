@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -21,7 +21,9 @@
 #ifndef _AUDIO_H_
 #define _AUDIO_H_
 
+#ifdef _WIN32
 #include <guiddef.h>
+#endif // _WIN32
 
 #include "../common.h"
 #include "../world/sprite.h"
@@ -44,16 +46,24 @@ void audio_get_devices();
  * Represents a single directsound device.
  */
 typedef struct {
+#ifdef _WIN32
 	GUID guid;
 	char desc[256];
 	char drvname[256];
+#else
+  uint8 padding[16+256+256];
+#endif // _WIN32
 } rct_dsdevice;
 
 /**
  * Represents a prepared sound.
  */
 typedef struct rct_sound {
+#ifdef _WIN32
 	struct IDirectSoundBuffer *dsbuffer;
+#else
+  void *padding;
+#endif // _WIN32
 	uint16 id;
 	uint16 var_8;
 	int has_caps;
@@ -162,15 +172,19 @@ int sound_set_pan(rct_sound* sound, int pan);
 int sound_set_volume(rct_sound* sound, int volume);
 int sound_load3dparameters();
 int sound_load3dposition();
+#ifdef _WIN32
 int dsound_count_devices();
+#endif // _WIN32
 rct_sound* sound_begin();
 rct_sound* sound_next(rct_sound* sound);
 rct_sound* sound_add(rct_sound* sound);
 rct_sound* sound_remove(rct_sound* sound);
 int sound_bufferlost_restore(rct_sound* sound);
 struct rct_sound_effect* sound_get_effect(uint16 sound_id);
+#ifdef _WIN32
 int dsound_create_primary_buffer(int a, int device, int channels, int samples, int bits);
 int get_dsound_devices();
+#endif // _WIN32
 int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z);
 void stop_completed_sounds();
 void start_title_music();

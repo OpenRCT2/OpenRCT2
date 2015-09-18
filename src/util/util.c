@@ -20,6 +20,7 @@
 
 #include "util.h"
 #include <SDL.h>
+#include "../platform/platform.h"
 
 int squaredmetres_to_squaredfeet(int squaredMetres)
 {
