@@ -116,8 +116,7 @@ enum {
 	DDIDX_CHEATS,
 	DDIDX_ENABLE_SANDBOX_MODE = 2,
 	DDIDX_DISABLE_CLEARANCE_CHECKS,
-	DDIDX_DISABLE_SUPPORT_LIMITS,
-	DDIDX_SHOW_ALL_OPERATING_MODES
+	DDIDX_DISABLE_SUPPORT_LIMITS
 };
 
 #pragma region Toolbar_widget_ordering
@@ -422,19 +421,17 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 		gDropdownItemsFormat[2] = 1156;
 		gDropdownItemsFormat[3] = 1156;
 		gDropdownItemsFormat[4] = 1156;
-		gDropdownItemsFormat[5] = 1156;
 		gDropdownItemsArgs[0] = 5217;
 		gDropdownItemsArgs[2] = STR_ENABLE_SANDBOX_MODE;
 		gDropdownItemsArgs[3] = STR_DISABLE_CLEARANCE_CHECKS;
 		gDropdownItemsArgs[4] = STR_DISABLE_SUPPORT_LIMITS;
-		gDropdownItemsArgs[5] = STR_SHOW_ALL_OPERATING_MODES;
 		window_dropdown_show_text(
 			w->x + widget->left,
 			w->y + widget->top,
 			widget->bottom - widget->top + 1,
 			w->colours[0] | 0x80,
 			0,
-			6
+			5
 		);
 		if (gCheatsSandboxMode)
 			gDropdownItemsChecked |= (1 << DDIDX_ENABLE_SANDBOX_MODE);
@@ -442,8 +439,6 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			gDropdownItemsChecked |= (1 << DDIDX_DISABLE_CLEARANCE_CHECKS);
 		if (gCheatsDisableSupportLimits)
 			gDropdownItemsChecked |= (1 << DDIDX_DISABLE_SUPPORT_LIMITS);
-		if (gCheatsShowAllOperatingModes)
-			gDropdownItemsChecked |= (1 << DDIDX_SHOW_ALL_OPERATING_MODES);
 		RCT2_GLOBAL(0x009DEBA2, uint16) = 0;
 		break;
 	case WIDX_VIEW_MENU:
@@ -561,8 +556,6 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 		case DDIDX_DISABLE_SUPPORT_LIMITS:
 			gCheatsDisableSupportLimits = !gCheatsDisableSupportLimits;
 			break;
-		case DDIDX_SHOW_ALL_OPERATING_MODES:
-			gCheatsShowAllOperatingModes = !gCheatsShowAllOperatingModes;
 		}
 		break;
 	case WIDX_VIEW_MENU:
