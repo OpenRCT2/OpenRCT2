@@ -397,7 +397,6 @@ void track_list_populate(ride_list_item item, uint8* track_list_cache){
 	}
 
 	RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8)[cur_track_entry_index * 128] = '\0';
-	free(track_list_cache);
 }
 
 /**
