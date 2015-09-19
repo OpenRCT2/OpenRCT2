@@ -3852,3 +3852,46 @@ STR_5512    :다른 이름으로 저장
 STR_5513    :(간편) 게임 저장
 STR_5514    :기물 파손 끄기
 STR_5515    :{SMALLFONT}{BLACK}손님이 화가 났을 때 기물을 파손하지 않도록 설정합니다
+STR_5516    :{SMALLFONT}{BLACK}검은색
+STR_5517    :{SMALLFONT}{BLACK}회색
+STR_5518    :{SMALLFONT}{BLACK}흰색
+STR_5519    :{SMALLFONT}{BLACK}어두운 보라색
+STR_5520    :{SMALLFONT}{BLACK}보라색
+STR_5521    :{SMALLFONT}{BLACK}밝은 보라색
+STR_5522    :{SMALLFONT}{BLACK}어두운 파란색
+STR_5523    :{SMALLFONT}{BLACK}밝은 파란색
+STR_5524    :{SMALLFONT}{BLACK}아이시 블루
+STR_5525    :{SMALLFONT}{BLACK}틸
+STR_5526    :{SMALLFONT}{BLACK}아쿠아마린
+STR_5527    :{SMALLFONT}{BLACK}짙은 녹색
+STR_5528    :{SMALLFONT}{BLACK}어두운 녹색
+STR_5529    :{SMALLFONT}{BLACK}모스 그린
+STR_5530    :{SMALLFONT}{BLACK}밝은 녹색
+STR_5531    :{SMALLFONT}{BLACK}올리브 그린
+STR_5532    :{SMALLFONT}{BLACK}어두운 올리브 그린
+STR_5533    :{SMALLFONT}{BLACK}밝은 노란색
+STR_5534    :{SMALLFONT}{BLACK}노란색
+STR_5535    :{SMALLFONT}{BLACK}어두운 노란색
+STR_5536    :{SMALLFONT}{BLACK}밝은 주황색
+STR_5537    :{SMALLFONT}{BLACK}어두운 주황색
+STR_5538    :{SMALLFONT}{BLACK}밝은 갈색
+STR_5539    :{SMALLFONT}{BLACK}짙은 갈색
+STR_5540    :{SMALLFONT}{BLACK}어두운 갈색
+STR_5541    :{SMALLFONT}{BLACK}살몬 핑크
+STR_5542    :{SMALLFONT}{BLACK}보르도 레드
+STR_5543    :{SMALLFONT}{BLACK}짙은 빨간색
+STR_5544    :{SMALLFONT}{BLACK}밝은 빨간색
+STR_5545    :{SMALLFONT}{BLACK}어두운 분홍색
+STR_5546    :{SMALLFONT}{BLACK}밝은 분홍색
+STR_5547    :{SMALLFONT}{BLACK}분홍색
+STR_5548    :모든 운행 모드 보이기
+
+#####################
+# Rides/attractions # 
+#####################
+
+#WW
+[CONDORRD]
+STR_NAME    :콘도르 라이드
+STR_DESC    :트랙 아래를 달리는 특별한 차량에 탑승한 승객들은 콘도르 모양의 열차 안에서 공중으로 떨어지며 하늘을 나는 기분을 경험하게 됩니다.
+STR_CPTY    :차량당 4명의 승객

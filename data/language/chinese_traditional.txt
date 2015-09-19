@@ -3887,6 +3887,7 @@ STR_5544    :{SMALLFONT}{BLACK}明紅色
 STR_5545    :{SMALLFONT}{BLACK}暗粉紅色
 STR_5546    :{SMALLFONT}{BLACK}明粉紅色
 STR_5547    :{SMALLFONT}{BLACK}淺粉紅色
+STR_5548    :顯示所有運作模式
 
 
 #####################
@@ -3919,6 +3920,76 @@ STR_CPTY    :16個乘客
 STR_NAME    :流線型單軌電車
 STR_DESC    :大載客量的單軌電車, 車頭車尾都配備著流線型設計
 STR_CPTY    :每車卡5或10個乘客
+
+[MONO2]
+STR_NAME    :小型單軌電車
+STR_DESC    :附有開放式側邊的小型單軌電車
+STR_CPTY    :每車卡4個乘客
+
+[MONO3]
+STR_NAME    :懷舊風格單軌電車
+STR_DESC    :使用開放式設計車廂的單軌電車
+STR_CPTY    :每車卡4個乘客
+
+[NRL]
+STR_NAME    :蒸氣火車
+STR_DESC    :配備著復刻蒸氣火車頭及煤水車的小型蒸氣火車, 拉著開放式的木製車廂
+STR_CPTY    :每車廂6個乘客
+
+[NRL2]
+STR_NAME    :有蓋蒸氣火車
+STR_DESC    :配備著復刻蒸氣火車頭及煤水車的小型蒸氣火車, 拉著帶有織布車頂的木製車廂
+STR_CPTY    :每車廂6個乘客
+
+[SMONO]
+STR_NAME    :懸掛式單軌電車
+STR_DESC    :大載客量的單軌電車
+STR_CPTY    :每車卡8個乘客
+
+[TRAM1]
+STR_NAME    :電車Trams
+STR_DESC    :復刻的懷舊電車
+STR_CPTY    :每車卡10個乘客
+
+[4X4]
+STR_NAME    :怪獸卡車
+STR_DESC    :能爬上陡斜坡道, 而且帶有動力的巨型4 x 4卡車
+STR_CPTY    :每卡車2個乘客
+
+[CHBUILD]
+STR_NAME    :古怪屋
+STR_DESC    :一座建築物, 含有扭曲房間及傾斜走道使人於行走中失去方向感
+STR_CPTY    :5個遊客
+
+[CIRCUS1]
+STR_NAME    :馬戲團
+STR_DESC    :於大型帳幕內進行動物馬戲團表演
+STR_CPTY    :30個遊客
+
+[CTCAR]
+STR_NAME    :笑臉貓遊
+STR_DESC    :帶有動力的貓班車輛跟隨著軌道的路線遊覽周邊
+STR_CPTY    :每輛車2個乘客
+
+[DODG1]
+STR_NAME    :碰碰車
+STR_DESC    :自助駕駛的電力碰碰車
+STR_CPTY    :每車輛1個乘客
+
+[FSAUC]
+STR_NAME    :碰碰飛碟
+STR_DESC    :自助駕駛的飛碟型車輛
+STR_CPTY    :每飛碟1個乘客
+
+[FWH1]
+STR_NAME    :摩天輪
+STR_DESC    :不斷旋轉, 附有露天座椅的巨大輪環
+STR_CPTY    :32乘客
+
+[GOLF1]
+STR_NAME    :迷你高爾夫
+STR_DESC    :一個溫和的迷你高爾夫遊戲
+STR_CPTY    : 
 
 #WW
 [CONDORRD]
