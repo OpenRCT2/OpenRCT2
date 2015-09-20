@@ -1,3 +1,6 @@
+SET(ACTUAL_SYSTEM ${CMAKE_SYSTEM_NAME})
+SET(CMAKE_SYSTEM_NAME Windows)
+
 SET(COMPILER_PREFIX i686-w64-mingw32)
 SET(CMAKE_C_COMPILER ${COMPILER_PREFIX}-gcc)
 SET(CMAKE_CXX_COMPILER ${COMPILER_PREFIX}-c++)
@@ -10,11 +13,11 @@ SET(PKG_CONFIG_EXECUTABLE ${COMPILER_PREFIX}-pkg-config)
 #
 set(CMAKE_C_FLAGS "-masm=intel -std=gnu99 -fpack-struct=1" CACHE STRING "" FORCE)
 set(CMAKE_CXX_FLAGS "-masm=intel -std=c++0x -std=gnu++0x -fpack-struct=1" CACHE STRING "" FORCE)
-if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+if(${ACTUAL_SYSTEM} MATCHES "Linux")
     set(CMAKE_SHARED_LINKER_FLAGS "-O3 -static-libgcc -static-libstdc++ -static -lpthread" CACHE STRING "" FORCE)
 else()
     set(CMAKE_SHARED_LINKER_FLAGS "-static-libgcc -static-libstdc++" CACHE STRING "" FORCE)
-endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+endif(${ACTUAL_SYSTEM} MATCHES "Linux")
 
 # find and include SDL2
 INCLUDE(FindPkgConfig)
