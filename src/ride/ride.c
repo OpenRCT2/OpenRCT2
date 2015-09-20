@@ -4100,12 +4100,17 @@ bool ride_check_start_and_end_is_station(rct_xy_element *input, rct_xy_element *
  */
 void ride_set_boat_hire_return_point(rct_ride *ride, rct_xy_element *startElement)
 {
-	int trackType;
+	int trackType = -1;
 	int returnX = startElement->x;
 	int returnY = startElement->y;
+	int startX = returnX;
+	int startY = returnY;
 	rct_map_element *returnTrackElement = startElement->element;
 	track_begin_end trackBeginEnd;
 	while (track_block_get_previous(returnX, returnY, returnTrackElement, &trackBeginEnd)) {
+		// If previous track is back to the starting x, y, then break loop (otherwise possible infinite loop)
+		if (trackType != -1 && startX == trackBeginEnd.begin_x && startY == trackBeginEnd.begin_y) break;
+
 		int x = trackBeginEnd.begin_x;
 		int y = trackBeginEnd.begin_y;
 		int z = trackBeginEnd.begin_z;
