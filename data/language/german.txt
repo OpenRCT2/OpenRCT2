@@ -3849,3 +3849,36 @@ STR_5512    :Spiel speichern unter
 STR_5513    :Schnellspeichern
 STR_5514    :Vandalismus deaktivieren
 STR_5515    :{SMALLFONT}{BLACK}Verhindert Vandalismus durch{NEWLINE}verärgerte Besucher
+STR_5516    :{SMALLFONT}{BLACK}Schwarz
+STR_5517    :{SMALLFONT}{BLACK}Grau
+STR_5518    :{SMALLFONT}{BLACK}Weiß
+STR_5519    :{SMALLFONT}{BLACK}Dunkelviolett
+STR_5520    :{SMALLFONT}{BLACK}Hellviolett
+STR_5521    :{SMALLFONT}{BLACK}Lila
+STR_5522    :{SMALLFONT}{BLACK}Dunkelblau
+STR_5523    :{SMALLFONT}{BLACK}Hellblau
+STR_5524    :{SMALLFONT}{BLACK}Himmelblau
+STR_5525    :{SMALLFONT}{BLACK}Blaugrün
+STR_5526    :{SMALLFONT}{BLACK}Aquamarinblau
+STR_5527    :{SMALLFONT}{BLACK}Gesättigtes Grün
+STR_5528    :{SMALLFONT}{BLACK}Dunkelgrün
+STR_5529    :{SMALLFONT}{BLACK}Moosgrün
+STR_5530    :{SMALLFONT}{BLACK}Hellgrün
+STR_5531    :{SMALLFONT}{BLACK}Olivgrün
+STR_5532    :{SMALLFONT}{BLACK}Dunkles Olivgrün
+STR_5533    :{SMALLFONT}{BLACK}Hellgelb
+STR_5534    :{SMALLFONT}{BLACK}Gelb
+STR_5535    :{SMALLFONT}{BLACK}Dunkelgelb
+STR_5536    :{SMALLFONT}{BLACK}Orange
+STR_5537    :{SMALLFONT}{BLACK}Dunkelorange
+STR_5538    :{SMALLFONT}{BLACK}Hellbraun
+STR_5539    :{SMALLFONT}{BLACK}Gesättigtes Braun
+STR_5540    :{SMALLFONT}{BLACK}Dunkelbraun
+STR_5541    :{SMALLFONT}{BLACK}Lachsrosa
+STR_5542    :{SMALLFONT}{BLACK}Bordeauxrot
+STR_5543    :{SMALLFONT}{BLACK}Gesättigtes Rot
+STR_5544    :{SMALLFONT}{BLACK}Hellrot
+STR_5545    :{SMALLFONT}{BLACK}Dunkelrosa
+STR_5546    :{SMALLFONT}{BLACK}Leuchtendes Rosa
+STR_5547    :{SMALLFONT}{BLACK}Hellrosa
+STR_5548    :Alle Betriebsmodi anzeigen
