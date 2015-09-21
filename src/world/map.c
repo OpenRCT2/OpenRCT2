@@ -350,7 +350,7 @@ int map_element_height(int x, int y)
 	rct_map_element *mapElement;
 
 	// Off the map
-	if (x >= 8192 || y >= 8192)
+	if ((unsigned)x >= 8192 || (unsigned)y >= 8192)
 		return 16;
 
 	// Truncate subtile coordinates
