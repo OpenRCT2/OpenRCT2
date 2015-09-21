@@ -856,7 +856,12 @@ int win1252_to_utf8(utf8string dst, const char *src, int maxBufferLength)
 	int result = WideCharToMultiByte(CP_UTF8, 0, intermediateBuffer, -1, dst, maxBufferLength, NULL, NULL);
 #else
 	STUB();
-	int result = 0;
+	// we cannot walk past maxBufferLength, but in case we have still space left
+	// we need one byte for null terminator
+	int result = strnlen(src, maxBufferLength) + 1;
+	result = min(result, maxBufferLength);
+	strncpy(dst, src, maxBufferLength);
+	dst[maxBufferLength - 1] = '\0';
 #endif // _WIN32
 
 	if (heapBuffer != NULL) {

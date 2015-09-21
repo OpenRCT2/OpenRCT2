@@ -147,6 +147,7 @@ uint8 platform_get_locale_temperature_format();
 #define _strcmpi _stricmp
 #define _stricmp(x, y) strcasecmp((x), (y))
 #define _strnicmp(x, y, n) strncasecmp((x), (y), (n))
+#define _strdup(x) strdup((x))
 
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 #define RCT2_ENDIANESS __ORDER_LITTLE_ENDIAN__

@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -22,6 +22,7 @@
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "../world/map.h"
+#include "../platform/platform.h"
 #include "drawing.h"
 
 static int ttf_get_string_width(const utf8 *text);
@@ -353,7 +354,7 @@ void gfx_draw_string_centred(rct_drawpixelinfo *dpi, int format, int x, int y, i
 }
 
 /**
- * 
+ *
  *  rct2: 0x006C1E53
  * dpi (edi)
  * args (esi)
@@ -407,7 +408,7 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
 }
 
 /**
- * 
+ *
  *  rct2: 0x006C2105
  * dpi (edi)
  * args (esi)
@@ -441,7 +442,7 @@ int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int 
 		gfx_draw_string(dpi, buffer, 0xFE, x, lineY);
 		buffer = get_string_end(buffer) + 1;
 		lineY += lineHeight;
-	} 
+	}
 	return lineY - y;
 }
 
@@ -492,7 +493,7 @@ void colour_char(uint8 colour, uint16* current_font_flags, uint8* palette_pointe
 	if (!(*current_font_flags & 2)) {
 		eax = eax & 0x0FF0000FF;
 	}
-	// Adjust text palette. Store current colour? 
+	// Adjust text palette. Store current colour?
 	palette_pointer[1] = eax & 0xFF;
 	palette_pointer[2] = (eax >> 8) & 0xFF;
 	palette_pointer[3] = (eax >> 16) & 0xFF;
@@ -512,7 +513,7 @@ void colour_char_window(uint8 colour, uint16* current_font_flags,uint8* palette_
 	if (*current_font_flags & 2) {
 		eax |= 0x0A0A00;
 	}
-	 //Adjust text palette. Store current colour? 
+	 //Adjust text palette. Store current colour?
 	palette_pointer[1] = eax & 0xFF;
 	palette_pointer[2] = (eax >> 8) & 0xFF;
 	palette_pointer[3] = (eax >> 16) & 0xFF;
@@ -521,7 +522,7 @@ void colour_char_window(uint8 colour, uint16* current_font_flags,uint8* palette_
 }
 
 /**
- * 
+ *
  *  rct2: 0x00682702
  * dpi (edi)
  * buffer (esi)
@@ -712,7 +713,7 @@ void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, int x, int 
 	lineY = y - ((numLines * lineHeight) / 2);
 	for (int line = 0; line <= numLines; line++) {
 		int halfWidth = gfx_get_string_width(buffer) / 2;
-		
+
 		utf8 *ch = buffer;
 		utf8 *nextCh;
 		int codepoint;
@@ -735,7 +736,7 @@ void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, int x, int 
 
 		buffer = get_string_end(buffer) + 1;
 		lineY += lineHeight;
-	} 
+	}
 }
 
 static uint32 _ttf_surface_cache_hash(TTF_Font *font, const utf8 *text)
@@ -884,7 +885,7 @@ bool ttf_initialise()
 
 		for (int i = 0; i < 4; i++) {
 			TTFFontDescriptor *fontDesc = &(gCurrentTTFFontSet->size[i]);
-			
+
 			utf8 fontPath[MAX_PATH] = "C:\\Windows\\Fonts\\";
 			strcat(fontPath, fontDesc->filename);
 
@@ -1000,7 +1001,7 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
 				return;
 			}
 		}
-		
+
 		int fontSize = font_get_size_from_sprite_base(info->font_sprite_base);
 		int drawX = info->x + fontDesc->offset_x;
 		int drawY = info->y + fontDesc->offset_y;

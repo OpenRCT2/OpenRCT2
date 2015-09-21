@@ -56,7 +56,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 {
 	uint8 objectType;
 	rct_object_entry openedEntry;
-	char path[260];
+	char path[MAX_PATH];
 	SDL_RWops* rw;
 
 	subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), (char*)installedObject + 16);
@@ -259,7 +259,7 @@ int object_load_packed(SDL_RWops* rw)
 	}
 
 	if (entryGroupIndex == object_entry_group_counts[type]){
-		// This should never occur. Objects are not loaded before installing a 
+		// This should never occur. Objects are not loaded before installing a
 		// packed object. So there is only one object loaded at this point.
 		log_error("Too many objects of the same type loaded.");
 		rct2_free(chunk);
@@ -285,7 +285,7 @@ int object_load_packed(SDL_RWops* rw)
 	}
 
 	// Convert the entry name to a upper case path name
-	char path[260];
+	char path[MAX_PATH];
 	char objectPath[9] = { 0 };
 	for (int i = 0; i < 8; ++i){
 		if (entry.name[i] != ' ')
@@ -400,7 +400,7 @@ int object_calculate_checksum(const rct_object_entry *entry, const char *data, i
 int object_chunk_load_image_directory(uint8_t** chunk)
 {
 	int image_start_no = RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32_t);
-	
+
 	// First dword of chunk is no_images
 	int no_images = *((uint32_t*)(*chunk));
 	*chunk += 4;
@@ -754,7 +754,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 			return flags;
 		}
 		else
-		{	
+		{
 			rct_window* w = (rct_window*)esi;
 			int width = w->x + w->width - x - 4;
 
@@ -1415,7 +1415,7 @@ int paint_water_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* d
 		return 0;
 	}
 	else if ((flags & 0xFF) == 3){
-		if (!((flags >> 8) & 0xFF)) 
+		if (!((flags >> 8) & 0xFF))
 			gfx_draw_string_centred(dpi, 3326, ecx, edx, 0, (void*)esi);
 	}
 	return flags;
@@ -1467,7 +1467,7 @@ int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi,
 	switch (type)
 	{
 	case OBJECT_TYPE_RIDE:
-		return paint_ride_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);			
+		return paint_ride_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
 	case OBJECT_TYPE_SMALL_SCENERY:
 		return paint_small_scenery(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
 	case OBJECT_TYPE_LARGE_SCENERY:
@@ -1477,7 +1477,7 @@ int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi,
 	case OBJECT_TYPE_BANNERS:
 		return paint_banner(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
 	case OBJECT_TYPE_PATHS:
-		return paint_path_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);	
+		return paint_path_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
 	case OBJECT_TYPE_PATH_BITS:
 		return paint_path_bit(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
 	case OBJECT_TYPE_SCENERY_SETS:
@@ -1503,14 +1503,14 @@ int object_get_scenario_text(rct_object_entry *entry)
 	rct_object_entry *installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
 
 	installedObject = object_list_find(entry);
-	
+
 	if (installedObject == NULL){
 		log_error("Object not found: %.8s", entry->name);
 		RCT2_GLOBAL(0x00F42BD9, uint8) = 0;
 		return 0;
 	}
 
-	char path[260];
+	char path[MAX_PATH];
 	char *objectPath = (char*)installedObject + 16;
 	subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), objectPath);
 
@@ -1571,7 +1571,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 			memcpy(gTempObjectLoadName, openedEntry.name, 8);
 			// Not used??
 			RCT2_GLOBAL(0x009ADAFD, uint8) = 1;
-			object_paint(openedEntry.flags & 0x0F, 0, 0, 0, 0, (int)chunk, 0, 0);			
+			object_paint(openedEntry.flags & 0x0F, 0, 0, 0, 0, (int)chunk, 0, 0);
 			// Tell text to be loaded into normal address
 			RCT2_GLOBAL(0x009ADAFC, uint8) = 0;
 			// Not used??
@@ -1630,7 +1630,7 @@ rct_object_entry *object_get_next(rct_object_entry *entry)
 	// Skip theme objects
 	pos += *pos * 16 + 1;
 
-	// Skip 
+	// Skip
 	pos += 4;
 
 	return (rct_object_entry*)pos;

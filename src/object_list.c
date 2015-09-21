@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -115,7 +115,7 @@ static void object_list_sort()
 	objectBuffer = &RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
 	numObjects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32);
 	copied = calloc(numObjects, sizeof(uint8));
-	
+
 	// Get buffer size
 	entry = *objectBuffer;
 	for (i = 0; i < numObjects; i++)
@@ -166,7 +166,7 @@ static void object_list_sort()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A93CD
  */
 static void object_list_examine()
@@ -237,7 +237,7 @@ static int object_list_query_directory(int *outTotalFiles, uint64 *outTotalFileS
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A8B40
  */
 void object_list_load()
@@ -291,17 +291,17 @@ void object_list_load()
 		free(_installedObjectFilters);
 		_installedObjectFilters = NULL;
 	}
-	
+
 	enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char));
 	if (enumFileHandle != INVALID_HANDLE) {
 		uint32 installed_buffer_size = 0x1000;
-		
+
 		while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo)) {
 			fileCount++;
 
 			if ((installed_buffer_size - current_item_offset) <= 2842){
 				installed_buffer_size += 0x1000;
-				RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*) = rct2_realloc(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*), installed_buffer_size);			
+				RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*) = rct2_realloc(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*), installed_buffer_size);
 				if (RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, int) == -1){
 					log_error("Failed to allocate memory for object list");
 					rct2_exit_reason(835, 3162);
@@ -355,6 +355,11 @@ static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int file
 	rct_plugin_header pluginHeader;
 	uint32 filterVersion = 0;
 
+#ifndef _WIN32
+	// TODO: remove me!
+	log_error("this is to be removed after testing/implementation is done");
+	return 0;
+#endif
 	log_verbose("loading object list cache (plugin.dat)");
 
 	get_plugin_path(path);
@@ -391,7 +396,7 @@ static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int file
 							free(_installedObjectFilters);
 						_installedObjectFilters = malloc(sizeof(rct_object_filters) * pluginHeader.object_list_no_items);
 						if (SDL_RWread(file, _installedObjectFilters, sizeof(rct_object_filters) * pluginHeader.object_list_no_items, 1) == 1) {
-							
+
 							SDL_RWclose(file);
 							reset_loaded_objects();
 							object_list_examine();
@@ -431,7 +436,7 @@ static int object_list_cache_save(int fileCount, uint64 totalFileSize, int fileD
 	SDL_RWops *file;
 	rct_plugin_header pluginHeader;
 	uint32 filterVersion = FILTER_VERSION;
-	
+
 	log_verbose("saving object list cache (plugin.dat)");
 
 	pluginHeader.total_files = fileCount | 0x01000000;
@@ -519,7 +524,7 @@ void set_load_objects_fail_reason(){
 }
 
 /**
- * 
+ *
  *  rct2: 0x006AA0C6
  */
 int object_read_and_load_entries(SDL_RWops* rw)
@@ -557,7 +562,7 @@ int object_read_and_load_entries(SDL_RWops* rw)
 		}
 	}
 
-	free(entries);	
+	free(entries);
 	if (load_fail){
 		object_unload_all();
 		RCT2_GLOBAL(0x14241BC, uint32) = 0;
@@ -571,7 +576,7 @@ int object_read_and_load_entries(SDL_RWops* rw)
 
 
 /**
- * 
+ *
  *  rct2: 0x006A9CE8
  */
 void object_unload_all()
@@ -631,7 +636,7 @@ void object_list_create_hash_table()
 
 		// Set hash table slot
 		_installedObjectHashTable[index] = installedObject;
-		
+
 		// Next installed object
 		installedObject = object_get_next(installedObject);
 	}
@@ -645,8 +650,8 @@ int find_object_in_entry_group(rct_object_entry* entry, uint8* entry_type, uint8
 	*entry_type = entry->flags & 0xF;
 
 	rct_object_entry_group entry_group = object_entry_groups[*entry_type];
-	for (*entry_index = 0; 
-		*entry_index < object_entry_group_counts[*entry_type]; 
+	for (*entry_index = 0;
+		*entry_index < object_entry_group_counts[*entry_type];
 		++(*entry_index),
 		entry_group.chunks++,
 		entry_group.entries++){
