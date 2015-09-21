@@ -5310,6 +5310,81 @@ void game_command_callback_ride_construct_new(int eax, int ebx, int ecx, int edx
 
 /**
  *
+ * Network client callback when placing ride pieces
+ *   Client does execute placing the piece on the same tick as mouse_up - waits for server command
+ * Re-executes function from ride_construction - window_ride_construction_construct()
+ * Only uses part that deals with construction state
+ */
+
+void game_command_callback_ride_construct_placed_back(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	int trackType, trackDirection, rideIndex, edxRS16, x, y, z, properties;
+	track_begin_end trackBeginEnd;
+
+	RCT2_GLOBAL(0x00F441D2, uint8) = _currentRideIndex;
+	trackDirection = _currentTrackPieceDirection ^ 2;
+	x = _currentTrackBeginX;
+	y = _currentTrackBeginY;
+	z = _currentTrackBeginZ;
+	if (!(trackDirection & 4)) {
+		x += TileDirectionDelta[trackDirection].x;
+		y += TileDirectionDelta[trackDirection].y;
+	}
+
+	if (track_block_get_previous_from_zero(x, y, z, _currentRideIndex, trackDirection, &trackBeginEnd)) {
+		_currentTrackBeginX = trackBeginEnd.begin_x;
+		_currentTrackBeginY = trackBeginEnd.begin_y;
+		_currentTrackBeginZ = trackBeginEnd.begin_z;
+		_currentTrackPieceDirection = trackBeginEnd.begin_direction;
+		_currentTrackPieceType = trackBeginEnd.begin_element->properties.track.type;
+		_currentTrackSelectionFlags = 0;
+		_rideConstructionArrowPulseTime = 0;
+		_rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
+		ride_select_previous_section();
+	}
+	else {
+		_rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
+	}
+
+	sub_6C84CE();
+}
+
+void game_command_callback_ride_construct_placed_front(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	int trackType, trackDirection, rideIndex, edxRS16, x, y, z, properties;
+	track_begin_end trackBeginEnd;
+
+	RCT2_GLOBAL(0x00F441D2, uint8) = _currentRideIndex;
+	trackDirection = _currentTrackPieceDirection;
+	x = _currentTrackBeginX;
+	y = _currentTrackBeginY;
+	z = _currentTrackBeginZ;
+	if (!(trackDirection & 4)) {
+		x -= TileDirectionDelta[trackDirection].x;
+		y -= TileDirectionDelta[trackDirection].y;
+	}
+
+	rct_xy_element next_track;
+	if (track_block_get_next_from_zero(x, y, z, _currentRideIndex, trackDirection, &next_track, &z, &trackDirection)) {
+		_currentTrackBeginX = next_track.x;
+		_currentTrackBeginY = next_track.y;
+		_currentTrackBeginZ = z;
+		_currentTrackPieceDirection = next_track.element->type & MAP_ELEMENT_DIRECTION_MASK;
+		_currentTrackPieceType = next_track.element->properties.track.type;
+		_currentTrackSelectionFlags = 0;
+		_rideConstructionArrowPulseTime = 0;
+		_rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
+		ride_select_next_section();
+	}
+	else {
+		_rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
+	}
+
+	sub_6C84CE();
+}
+
+/**
+ *
  *  rct2: 0x006B49D9
  */
 void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
