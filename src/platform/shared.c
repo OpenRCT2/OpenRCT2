@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -117,7 +117,7 @@ void platform_update_fullscreen_resolutions()
 	gNumResolutions = 0;
 	for (i = 0; i < numDisplayModes; i++) {
 		SDL_GetDisplayMode(displayIndex, i, &mode);
-		
+
 		aspectRatio = (float)mode.w / mode.h;
 		if (gResolutionsAllowAnyAspectRatio || fabs(desktopAspectRatio - aspectRatio) < 0.0001f) {
 			gResolutions[gNumResolutions].width = mode.w;
@@ -198,7 +198,7 @@ void platform_draw()
 				else
 					if (pitch == (width * 2) + padding) {
 						uint16 *dst = pixels;
-						for (int y = height; y > 0; y++) {
+						for (int y = height; y > 0; y--) {
 							for (int x = width; x > 0; x--) { *dst++ = *(uint16 *)(&gPaletteHWMapped[*src++]); }
 							dst = (uint16*)(((uint8 *)dst) + padding);
 						}
@@ -206,7 +206,7 @@ void platform_draw()
 					else
 						if (pitch == width + padding) {
 							uint8 *dst = pixels;
-							for (int y = height; y > 0; y++) {
+							for (int y = height; y > 0; y--) {
 								for (int x = width; x > 0; x--) { *dst++ = *(uint8 *)(&gPaletteHWMapped[*src++]); }
 								dst += padding;
 							}
@@ -649,7 +649,7 @@ int platform_scancode_to_rct_keycode(int sdl_key)
 {
 	char keycode = (char)SDL_GetKeyFromScancode((SDL_Scancode)sdl_key);
 
-	// Until we reshufle the text files to use the new positions 
+	// Until we reshufle the text files to use the new positions
 	// this will suffice to move the majority to the correct positions.
 	// Note any special buttons PgUp PgDwn are mapped wrong.
 	if (keycode >= 'a' && keycode <= 'z')
@@ -804,7 +804,7 @@ void platform_refresh_video()
 {
 	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
 	int height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
-	
+
 	SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss ? "1" : "0");
 
 	if (gConfigGeneral.hardware_display) {
@@ -826,7 +826,7 @@ void platform_refresh_video()
 				pixelformat = format;
 			}
 		}
-	
+
 		gBufferTexture = SDL_CreateTexture(gRenderer, pixelformat, SDL_TEXTUREACCESS_STREAMING, width, height);
 		Uint32 format;
 		SDL_QueryTexture(gBufferTexture, &format, 0, 0, 0);
