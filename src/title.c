@@ -579,11 +579,11 @@ static uint8 *title_script_load()
 	sprintf(path, "%s%c%s", gExePath, platform_get_path_separator(), filePath);
 	log_verbose("loading title script, %s", path);
 	file = SDL_RWFromFile(path, "r");
-	sint64 fileSize = SDL_RWsize(file);
 	if (file == NULL) {
 		log_error("unable to load title script");
 		return NULL;
 	}
+	sint64 fileSize = SDL_RWsize(file);
 
 	uint8 *binaryScript = (uint8*)malloc(1024 * 8);
 	if (binaryScript == NULL) {
@@ -624,7 +624,8 @@ static uint8 *title_script_load()
 				*scriptPtr++ = atoi(part1) & 0xFF;
 			} else {
 				log_error("unknown token, %s", token);
-				free(binaryScript);
+				SafeFree(binaryScript);
+				SDL_RWclose(file);
 				return NULL;
 			}
 		}
