@@ -297,7 +297,7 @@ bool platform_enumerate_files_next(int handle, file_info *outFileInfo)
 	enumFileInfo = &_enumerateFileInfoList[handle];
 
 	log_verbose("handle = %d", handle);
-	if (enumFileInfo->handle < enumFileInfo->cnt) {
+	if ((handle >= 0) && (enumFileInfo->handle < enumFileInfo->cnt)) {
 		result = true;
 	} else {
 		result = false;
@@ -328,6 +328,10 @@ void platform_enumerate_files_end(int handle)
 	int i;
 	enumerate_file_info *enumFileInfo;
 
+	if (handle < 0)
+	{
+		return;
+	}
 	enumFileInfo = &_enumerateFileInfoList[handle];
 	int cnt = enumFileInfo->cnt;
 	for (i = 0; i < cnt; i++) {
@@ -425,7 +429,7 @@ bool platform_enumerate_directories_next(int handle, utf8 *path)
 	enumFileInfo = &_enumerateFileInfoList[handle];
 
 	log_verbose("handle = %d", handle);
-	if (enumFileInfo->handle < enumFileInfo->cnt) {
+	if ((handle >= 0) && (enumFileInfo->handle < enumFileInfo->cnt)) {
 		result = true;
 	} else {
 		result = false;
@@ -457,6 +461,10 @@ void platform_enumerate_directories_end(int handle)
 	int i;
 	enumerate_file_info *enumFileInfo;
 
+	if (handle < 0)
+	{
+		return;
+	}
 	enumFileInfo = &_enumerateFileInfoList[handle];
 	int cnt = enumFileInfo->cnt;
 	for (i = 0; i < cnt; i++) {
