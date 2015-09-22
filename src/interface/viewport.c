@@ -1364,7 +1364,7 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 		trackColourScheme = mapElement->properties.track.colour & 3;
 
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_TRACK_HEIGHTS) && dpi->zoom_level == 0) {
-			RCT2_GLOBAL(0x009DE570, uint8) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 0;
 			if (RCT2_ADDRESS(0x00999694, uint32)[trackType] & (1 << trackSequence)) {
 				uint16 ax = RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
 				uint32 ebx = 0x20381689 + (height + 8) / 16;
@@ -1386,7 +1386,7 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 			}
 		}
 
-		RCT2_GLOBAL(0x009DE570, uint8) = 3;
+		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 3;
 		RCT2_GLOBAL(0x00F44198, uint32) = (ride->track_colour_main[trackColourScheme] << 19) | (ride->track_colour_additional[trackColourScheme] << 24) | 0xA0000000;
 		RCT2_GLOBAL(0x00F441A0, uint32) = 0x20000000;
 		RCT2_GLOBAL(0x00F441A4, uint32) = 0x20C00000;
@@ -1399,7 +1399,7 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 		}
 		if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
 			uint32 meh = RCT2_ADDRESS(0x00993CC4, uint32)[RCT2_GLOBAL(0x009AACBF, uint8)];
-			RCT2_GLOBAL(0x009DE570, uint8) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 0;
 			RCT2_GLOBAL(0x00F44198, uint32) = meh;
 			RCT2_GLOBAL(0x00F4419C, uint32) = meh;
 			RCT2_GLOBAL(0x00F441A0, uint32) = meh;
