@@ -271,7 +271,11 @@ void sub_689174(sint16* x, sint16* y, sint16 *z)
 
 void sub_6E7FF3(rct_window *w, rct_viewport *viewport, int x, int y)
 {
+#ifdef _WIN32
 	RCT2_CALLPROC_X(0x006E7FF3, 0, 0, 0, x, (int)viewport, (int)w, y);
+#else
+	STUB();
+#endif // _WIN32
 
 //	int zoom = 1 << viewport->zoom;
 //	if (w >= RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*)){

@@ -567,7 +567,12 @@ void get_local_time()
  */
 void *rct2_malloc(size_t numBytes)
 {
+	#ifdef _WIN32
 	return RCT2_CALLFUNC_1(0x004068B2, void*, size_t, numBytes);
+	#else
+	//log_warning("call rct's function");
+	return malloc(numBytes);
+	#endif // _WIN32
 }
 
 /**
@@ -577,7 +582,12 @@ void *rct2_malloc(size_t numBytes)
  */
 void *rct2_realloc(void *block, size_t numBytes)
 {
+	#ifdef _WIN32
 	return RCT2_CALLFUNC_2(0x004068BD, void*, void*, size_t, block, numBytes);
+	#else
+	//log_warning("call rct's function");
+	return realloc(block, numBytes);
+	#endif // _WIN32
 }
 
 /**
@@ -586,5 +596,10 @@ void *rct2_realloc(void *block, size_t numBytes)
  */
 void rct2_free(void *block)
 {
+	#ifdef _WIN32
 	RCT2_CALLPROC_1(0x004068CD, void*, block);
+	#else
+	//log_warning("call rct's function");
+	free(block);
+	#endif // _WIN32
 }
