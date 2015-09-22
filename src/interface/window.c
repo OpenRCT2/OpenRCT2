@@ -142,7 +142,7 @@ rct_widget *window_get_scroll_widget(rct_window *w, int scrollIndex)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006ED7B0
  */
 void window_dispatch_update_all()
@@ -165,7 +165,7 @@ void window_update_all_viewports()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E77A1
  */
 void window_update_all()
@@ -201,7 +201,7 @@ void window_update_all()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E78E3
  */
 static void window_scroll_wheel_input(rct_window *w, int scrollIndex, int wheel)
@@ -209,7 +209,7 @@ static void window_scroll_wheel_input(rct_window *w, int scrollIndex, int wheel)
 	int widgetIndex, size;
 	rct_scroll *scroll;
 	rct_widget *widget;
-	
+
 	scroll = &w->scrolls[scrollIndex];
 	widget = window_get_scroll_widget(w, scrollIndex);
 	widgetIndex = window_get_widget_index(w, widget);
@@ -233,7 +233,7 @@ static void window_scroll_wheel_input(rct_window *w, int scrollIndex, int wheel)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E793B
  */
 static int window_wheel_input(rct_window *w, int wheel)
@@ -260,7 +260,7 @@ static int window_wheel_input(rct_window *w, int wheel)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E79FB
  */
 static void window_viewport_wheel_input(rct_window *w, int wheel)
@@ -275,7 +275,7 @@ static void window_viewport_wheel_input(rct_window *w, int wheel)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E7868
  */
 static void window_all_wheel_input()
@@ -328,7 +328,7 @@ static void window_all_wheel_input()
 						return;
 					}
 				}
-				
+
 				// Check other scroll views on window
 				if (window_wheel_input(w, wheel))
 					return;
@@ -430,7 +430,7 @@ rct_window *window_create(int x, int y, int width, int height, rct_window_event_
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EA934
  *
  * @param x (dx)
@@ -455,7 +455,7 @@ static bool sub_6EA8EC(int x, int y, int width, int height)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EA934
  *
  * @param x (dx)
@@ -473,7 +473,7 @@ static bool sub_6EA934(int x, int y, int width, int height)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EA934
  *
  * @param x (dx)
@@ -624,7 +624,7 @@ rct_window *window_create_auto_pos(int width, int height, rct_window_event_list 
 	// Clamp to inside the screen
 foundSpace:
 	if (x < 0)
-		x = x;
+		x = 0;
 	if (x + width > screenWidth)
 		x = screenWidth - width;
 
@@ -708,7 +708,7 @@ void window_close_by_class(rct_windowclass cls)
 void window_close_by_number(rct_windowclass cls, rct_windownumber number)
 {
 	rct_window* w;
-	
+
 	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
 		if (w->classification == cls && w->number == number) {
 			window_close(w);
@@ -744,7 +744,7 @@ rct_window *window_find_by_class(rct_windowclass cls)
 rct_window *window_find_by_number(rct_windowclass cls, rct_windownumber number)
 {
 	rct_window *w;
-	
+
 	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
 		if (w->classification == cls && w->number == number)
 			return w;
@@ -807,7 +807,7 @@ void window_close_all_except_class(rct_windowclass cls) {
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EA845
  */
 rct_window *window_find_from_point(int x, int y)
@@ -827,7 +827,7 @@ rct_window *window_find_from_point(int x, int y)
 
 			widget = &w->widgets[widget_index];
 		}
-		
+
 		return w;
 	}
 
@@ -835,7 +835,7 @@ rct_window *window_find_from_point(int x, int y)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EA594
  * x (ax)
  * y (bx)
@@ -953,7 +953,7 @@ void widget_invalidate(rct_window *w, int widgetIndex)
 void widget_invalidate_by_class(rct_windowclass cls, int widgetIndex)
 {
 	rct_window* w;
-	
+
 	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
 		if (w->classification == cls)
 			widget_invalidate(w, widgetIndex);
@@ -969,7 +969,7 @@ void widget_invalidate_by_class(rct_windowclass cls, int widgetIndex)
 void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, int widgetIndex)
 {
 	rct_window* w;
-	
+
 	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
 		if (w->classification == cls && w->number == number)
 			widget_invalidate(w, widgetIndex);
@@ -1019,7 +1019,7 @@ void window_init_scroll_widgets(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EAE4E
  *
  * @param w The window (esi).
@@ -1081,7 +1081,7 @@ int window_get_scroll_data_index(rct_window *w, int widget_index)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006ECDA4
  */
 rct_window *window_bring_to_front(rct_window *w)
@@ -1133,7 +1133,7 @@ rct_window *window_bring_to_front_by_class(rct_windowclass cls)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006ED78A
  * cls (cl)
  * number (dx)
@@ -1184,7 +1184,7 @@ void window_push_others_right(rct_window* window)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EE6EA
  */
 void window_push_others_below(rct_window *w1)
@@ -1228,13 +1228,13 @@ void window_push_others_below(rct_window *w1)
 
 
 /**
- * 
+ *
  *  rct2: 0x006EE2E4
  */
 rct_window *window_get_main()
 {
 	rct_window* w;
-	
+
 	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
 		if (w->classification == WC_MAIN_WINDOW)
 			return w;
@@ -1243,9 +1243,9 @@ rct_window *window_get_main()
 }
 
 /**
- * Based on 
+ * Based on
  * rct2: 0x696ee9 & 0x66842F & 0x006AF3B3
- * 
+ *
  */
 void window_scroll_to_viewport(rct_window *w)
 {
@@ -1345,7 +1345,7 @@ void window_scroll_to_location(rct_window *w, int x, int y, int z)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00688956
  */
 void sub_688956()
@@ -1357,7 +1357,7 @@ void sub_688956()
 }
 
 /**
- * 
+ *
  *  rct2: 0x0068881A
  *  direction can be used to alter the camera rotation:
  *		1: clockwise
@@ -1438,7 +1438,7 @@ void window_zoom_set(rct_window *w, int zoomLevel)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006887A6
  */
 void window_zoom_in(rct_window *w)
@@ -1447,7 +1447,7 @@ void window_zoom_in(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006887E0
  */
 void window_zoom_out(rct_window *w)
@@ -1456,7 +1456,7 @@ void window_zoom_out(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EE308
  * DEPRECIATED please use the new text_input window.
  */
@@ -1602,7 +1602,7 @@ static int window_draw_split(rct_window *w, int left, int top, int right, int bo
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EB15C
  *
  * @param window (esi)
@@ -1636,7 +1636,7 @@ void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00685BE1
  *
  * @param dpi (edi)
@@ -1726,7 +1726,7 @@ void window_set_resize(rct_window *w, int minWidth, int minHeight, int maxWidth,
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EE212
  *
  * @param tool (al)
@@ -1758,7 +1758,7 @@ int tool_set(rct_window *w, int widgetIndex, int tool)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EE281
  */
 void tool_cancel()
@@ -2006,7 +2006,7 @@ void window_bubble_list_item(rct_window* w, int item_position){
 	w->list_item_positions[item_position + 1] = swap;
 }
 
-/* rct2: 0x006ED710 
+/* rct2: 0x006ED710
  * Called after a window resize to move windows if they
  * are going to be out of sight.
  */
@@ -2140,7 +2140,7 @@ void window_resize_gui_scenario_editor(int width, int height)
 		RCT2_GLOBAL(0x9A998A, uint16) = bottomWind->width - 198;
 		RCT2_GLOBAL(0x9A998C, uint16) = bottomWind->width - 3;
 	}
-	
+
 }
 
 /* Based on rct2: 0x6987ED and another version from window_park */
@@ -2148,7 +2148,7 @@ void window_align_tabs(rct_window *w, uint8 start_tab_id, uint8 end_tab_id)
 {
 	int i, x = w->widgets[start_tab_id].left;
 	int tab_width = w->widgets[start_tab_id].right - w->widgets[start_tab_id].left;
-	
+
 	for (i = start_tab_id; i <= end_tab_id; i++) {
 		if (!(w->disabled_widgets & (1LL << i))) {
 			w->widgets[i].left = x;
@@ -2380,7 +2380,7 @@ void window_move_and_snap(rct_window *w, int newWindowX, int newWindowY, int sna
 	int originalY = w->y;
 
 	newWindowY = clamp(29, newWindowY, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 34);
-	
+
 	if (snapProximity > 0) {
 		w->x = newWindowX;
 		w->y = newWindowY;
