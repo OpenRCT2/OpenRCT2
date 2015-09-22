@@ -2179,12 +2179,12 @@ static void sub_6CBCE2(
 ) {
 	rct_ride *ride;
 	const rct_preview_track *trackBlock;
-	int preserve_word_141E9E4;
+	int preserve_current_viewport_flags;
 	int x, y, baseZ, clearanceZ, offsetX, offsetY;
 	uint64 preserve_map_size_vars;
 
-	preserve_word_141E9E4 = RCT2_GLOBAL(0x0141E9E4, uint16);
-	RCT2_GLOBAL(0x0141E9E4, uint16) = 0;
+	preserve_current_viewport_flags = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) = 0;
 	trackDirection &= 3;
 
 	RCT2_GLOBAL(0x00EE7880, uint32) = 0x00F1A4CC;
@@ -2287,7 +2287,7 @@ static void sub_6CBCE2(
 	sub_688217();
 	sub_688485();
 
-	RCT2_GLOBAL(0x0141E9E4, uint16) = preserve_word_141E9E4;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) = preserve_current_viewport_flags;
 }
 
 /**
