@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -38,7 +38,7 @@ static int screenshot_dump_bmp();
 static int screenshot_dump_png();
 
 /**
- * 
+ *
  *  rct2: 0x006E3AEC
  */
 void screenshot_check()
@@ -133,7 +133,7 @@ typedef struct {
 } BitmapInfoHeader;
 
 /**
- * 
+ *
  *  rct2: 0x00683D20
  */
 int screenshot_dump_bmp()
@@ -176,7 +176,9 @@ int screenshot_dump_bmp()
 	bytesWritten = SDL_RWwrite(fp, &header, sizeof(BitmapFileHeader), 1);
 	if (bytesWritten != 1) {
 		SDL_RWclose(fp);
-		free(buffer);
+		SafeFree(buffer);
+		log_error("failed to save screenshot");
+		return -1;
 	}
 
 	// Info header
@@ -193,7 +195,9 @@ int screenshot_dump_bmp()
 	bytesWritten = SDL_RWwrite(fp, &info, sizeof(BitmapInfoHeader), 1);
 	if (bytesWritten != 1) {
 		SDL_RWclose(fp);
-		free(buffer);
+		SafeFree(buffer);
+		log_error("failed to save screenshot");
+		return -1;
 	}
 
 	// Palette
@@ -207,7 +211,9 @@ int screenshot_dump_bmp()
 	bytesWritten = SDL_RWwrite(fp, buffer, sizeof(char), 246 * 4);
 	if (bytesWritten != 246*4){
 		SDL_RWclose(fp);
-		free(buffer);
+		SafeFree(buffer);
+		log_error("failed to save screenshot");
+		return -1;
 	}
 
 	// Image, save upside down
@@ -221,7 +227,9 @@ int screenshot_dump_bmp()
 		bytesWritten = SDL_RWwrite(fp, buffer, sizeof(char), stride);
 		if (bytesWritten != stride){
 			SDL_RWclose(fp);
-			free(buffer);
+			SafeFree(buffer);
+			log_error("failed to save screenshot");
+			return -1;
 		}
 	}
 
@@ -451,7 +459,7 @@ int cmdline_for_screenshot(const char **argv, int argc)
 	bool centreMapX = false;
 	bool centreMapY = false;
 	int resolutionWidth, resolutionHeight, customX, customY, customZoom, customRotation;
-	
+
 	const char *inputPath = argv[0];
 	const char *outputPath = argv[1];
 	if (giantScreenshot) {
