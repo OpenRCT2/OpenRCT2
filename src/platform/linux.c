@@ -517,7 +517,6 @@ void platform_show_cursor()
 
 void platform_get_cursor_position(int *x, int *y)
 {
-
 	STUB();
 }
 

@@ -545,9 +545,13 @@ Channel* Mixer::Play(Source& source, int loop, bool deleteondone, bool deletesou
 
 void Mixer::Stop(Channel& channel)
 {
+#ifdef _WIN32
 	Lock();
 	channel.stopping = true;
 	Unlock();
+#else
+#warning unimplemented
+#endif // _WIN32
 }
 
 bool Mixer::LoadMusic(int pathid)

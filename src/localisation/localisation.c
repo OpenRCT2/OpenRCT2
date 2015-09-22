@@ -855,7 +855,7 @@ int win1252_to_utf8(utf8string dst, const char *src, int maxBufferLength)
 	MultiByteToWideChar(CP_ACP, 0, src, -1, intermediateBuffer, bufferCount);
 	int result = WideCharToMultiByte(CP_UTF8, 0, intermediateBuffer, -1, dst, maxBufferLength, NULL, NULL);
 #else
-	STUB();
+	//STUB();
 	// we cannot walk past maxBufferLength, but in case we have still space left
 	// we need one byte for null terminator
 	int result = strnlen(src, maxBufferLength) + 1;
