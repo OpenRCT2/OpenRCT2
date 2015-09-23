@@ -993,7 +993,7 @@ void sprite_paint_setup(uint16 eax, uint16 ecx){
 
 	dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x4000)return;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_INVISIBLE_SPRITES) return;
 
 	if (dpi->zoom_level > 2) return;
 
@@ -1363,8 +1363,8 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 		trackSequence = mapElement->properties.track.sequence & 0x0F;
 		trackColourScheme = mapElement->properties.track.colour & 3;
 
-		if ((RCT2_GLOBAL(0x0141E9E4, uint16) & 0x20) && dpi->zoom_level == 0) {
-			RCT2_GLOBAL(0x009DE570, uint8) = 0;
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_TRACK_HEIGHTS) && dpi->zoom_level == 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 0;
 			if (RCT2_ADDRESS(0x00999694, uint32)[trackType] & (1 << trackSequence)) {
 				uint16 ax = RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
 				uint32 ebx = 0x20381689 + (height + 8) / 16;
@@ -1386,7 +1386,7 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 			}
 		}
 
-		RCT2_GLOBAL(0x009DE570, uint8) = 3;
+		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 3;
 		RCT2_GLOBAL(0x00F44198, uint32) = (ride->track_colour_main[trackColourScheme] << 19) | (ride->track_colour_additional[trackColourScheme] << 24) | 0xA0000000;
 		RCT2_GLOBAL(0x00F441A0, uint32) = 0x20000000;
 		RCT2_GLOBAL(0x00F441A4, uint32) = 0x20C00000;
@@ -1399,7 +1399,7 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 		}
 		if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
 			uint32 meh = RCT2_ADDRESS(0x00993CC4, uint32)[RCT2_GLOBAL(0x009AACBF, uint8)];
-			RCT2_GLOBAL(0x009DE570, uint8) = 0;
+			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 0;
 			RCT2_GLOBAL(0x00F44198, uint32) = meh;
 			RCT2_GLOBAL(0x00F4419C, uint32) = meh;
 			RCT2_GLOBAL(0x00F441A0, uint32) = meh;
@@ -2172,9 +2172,9 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		dpi2->bits = bits_pointer;
 		dpi2->pitch = pitch;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x3001){
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)){
 			uint8 colour = 0x0A;
-			if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x4000){
+			if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_INVISIBLE_SPRITES){
 				colour = 0;
 			}
 			gfx_clear(dpi2, colour);
@@ -2188,7 +2188,7 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		sub_688485();
 
 		int weather_colour = RCT2_ADDRESS(0x98195C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, uint8)];
-		if ((weather_colour != -1) && (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x4000)) && (!(RCT2_GLOBAL(0x9DEA6F, uint8) & 1))){
+		if ((weather_colour != -1) && (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_INVISIBLE_SPRITES)) && (!(RCT2_GLOBAL(0x9DEA6F, uint8) & 1))){
 			gfx_fill_rect(dpi2, dpi2->x, dpi2->y, dpi2->width + dpi2->x - 1, dpi2->height + dpi2->y - 1, weather_colour);
 		}
 		viewport_draw_money_effects();
