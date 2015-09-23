@@ -81,5 +81,5 @@ set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCTLIBS_LIB})
 
 if (WIN32)
-	target_link_libraries(${PROJECT} winmm.lib -limm32 -lversion -ldsound ws2_32)
+	target_link_libraries(${PROJECT} winmm.lib -limm32 -lversion ws2_32)
 endif (WIN32)

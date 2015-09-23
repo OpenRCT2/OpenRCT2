@@ -1003,7 +1003,6 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 		case WIDX_SOUND_DROPDOWN:
 			audio_init2(dropdownIndex);
 			if (dropdownIndex < gAudioDeviceCount) {
-#ifdef USE_MIXER
 				if (dropdownIndex == 0) {
 					Mixer_Init(NULL);
 					gConfigSound.device = NULL;
@@ -1016,7 +1015,6 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 					strcpy(gConfigSound.device, devicename);
 				}
 				config_save_default();
-#endif
 			}
 			window_invalidate(w);
 			break;

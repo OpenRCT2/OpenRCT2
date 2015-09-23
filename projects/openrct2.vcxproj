@@ -363,7 +363,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)fake\%(RelativeDir)</ObjectFileName>
@@ -372,7 +372,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>winmm.lib;sdl2.lib;Dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;sdl2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>"$(TargetDir)\openrct2.exe" sprite build "$(SolutionDir)\..\Data\g2.dat" "$(SolutionDir)\..\Resources\g2\"

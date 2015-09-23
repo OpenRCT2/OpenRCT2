@@ -3322,24 +3322,12 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 					goto label51;
 				}
 			}
-#ifdef USE_MIXER
 			int playing = Mixer_Channel_IsPlaying(gRideMusicList[channel].sound_channel);
-#else
-			RCT2_GLOBAL(0x014241BC, uint32) = 1;
-			int playing = sound_channel_is_playing(channel);
-			RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 			if (!playing) {
 				*tuneId = 0xFF;
 				return 0;
 			}
-#ifdef USE_MIXER
 			a1 = Mixer_Channel_GetOffset(gRideMusicList[channel].sound_channel);
-#else
-			RCT2_GLOBAL(0x014241BC, uint32) = 1;
-			a1 = sub_401B46(channel);
-			RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 		label51:
 			if (a1 < ride_music_info_list[*tuneId]->length) {
 				position = a1;
@@ -3487,13 +3475,7 @@ void ride_music_update_final()
 						rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0];//&RCT2_GLOBAL(0x009AF430, rct_ride_music_params);
 						while (ride_music_params < gRideMusicParamsListEnd/*RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*)*/) {
 							if (ride_music_params->rideid == ride_music->rideid && ride_music_params->tuneid == ride_music->tuneid) {
-#ifdef USE_MIXER
 								int isplaying = Mixer_Channel_IsPlaying(gRideMusicList[channel].sound_channel);
-#else
-								RCT2_GLOBAL(0x014241BC, uint32) = 1;
-								int isplaying = sound_channel_is_playing(channel);
-								RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 								if (isplaying) {
 									goto label32;
 								}
@@ -3501,13 +3483,7 @@ void ride_music_update_final()
 							}
 							ride_music_params++;
 						}
-#ifdef USE_MIXER
 						Mixer_Stop_Channel(gRideMusicList[channel].sound_channel);
-#else
-						RCT2_GLOBAL(0x014241BC, uint32) = 1;
-						sound_channel_stop(channel);
-						RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 						ride_music->rideid = -1;
 					}
 				label32:
@@ -3527,7 +3503,6 @@ void ride_music_update_final()
 							channel++;
 							if (channel >= AUDIO_MAX_RIDE_MUSIC) {
 								rct_ride_music_info* ride_music_info = ride_music_info_list[ride_music_params->tuneid];
-#ifdef USE_MIXER
 								rct_ride_music* ride_music = &gRideMusicList[ebx];
 								ride_music->sound_channel = Mixer_Play_Music(ride_music_info->pathid, MIXER_LOOP_NONE, true);
 								if (ride_music->sound_channel) {
@@ -3547,82 +3522,21 @@ void ride_music_update_final()
 								} else {
 									//RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) = 0;
 								}
-#else
-								const char* filename = get_file_path(ride_music_info->pathid);
-								RCT2_GLOBAL(0x014241BC, uint32) = 3;
-								HANDLE hfile = osinterface_file_open(filename);
-								RCT2_GLOBAL(0x014241BC, uint32) = 0;
-								if (hfile != INVALID_HANDLE_VALUE) {
-									RCT2_GLOBAL(0x014241BC, uint32) = 3;
-									osinterface_file_read(hfile, &RCT2_GLOBAL(0x009AF47E, uint32), 4);
-									RCT2_GLOBAL(0x014241BC, uint32) = 3;
-									osinterface_file_close(hfile);
-									RCT2_GLOBAL(0x014241BC, uint32) = 0;
-								}
-								if (hfile == INVALID_HANDLE_VALUE || RCT2_GLOBAL(0x009AF47E, uint32) != 0x78787878) {
-									int offset = ride_music_params->offset - 10000;
-									if (offset < 0) {
-										offset = 0;
-									}
-									RCT2_GLOBAL(0x014241BC, uint32) = 1;
-									int musicloaded = sound_channel_load_file2(ebx, filename, offset & 0xFFFFFFF0);
-									RCT2_GLOBAL(0x014241BC, uint32) = 0;
-									if (musicloaded) {
-										RCT2_GLOBAL(0x014241BC, uint32) = 1;
-										int musicplayed = sound_channel_play(ebx, 0, ride_music_params->volume, ride_music_params->pan, ride_music_params->freq);
-										RCT2_GLOBAL(0x014241BC, uint32) = 0;
-										if (musicplayed) {
-											rct_ride_music_info* ride_music_info = &RCT2_GLOBAL(0x009AF1C8, rct_ride_music_info*)[ride_music_params->tuneid];
-											if (ride_music_info->var_9) {
-												RCT2_GLOBAL(0x014241BC, uint32) = 1;
-												sub_401AF3(ebx, get_file_path(ride_music_info->pathid), 1, 0);
-												RCT2_GLOBAL(0x014241BC, uint32) = 0;
-											}
-											rct_ride_music* ride_music = &gRideMusicList[ebx];//&RCT2_ADDRESS(0x009AF46C, rct_ride_music)[ebx];
-											ride_music->volume = ride_music_params->volume;
-											ride_music->pan = ride_music_params->pan;
-											ride_music->freq = ride_music_params->freq;
-											ride_music->rideid = ride_music_params->rideid;
-											ride_music->tuneid = ride_music_params->tuneid;
-										}
-									} else {
-										RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) = 0;
-									}
-								}
-#endif
 								return;
 							}
 						}
 
 						if (ride_music_params->volume != ride_music->volume) {
 							ride_music->volume = ride_music_params->volume;
-#ifdef USE_MIXER
 							Mixer_Channel_Volume(ride_music->sound_channel, DStoMixerVolume(ride_music->volume));
-#else
-							RCT2_GLOBAL(0x014241BC, uint32) = 1;
-							sound_channel_set_volume(channel, ride_music_params->volume);
-							RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 						}
 						if (ride_music_params->pan != ride_music->pan) {
 							ride_music->pan = ride_music_params->pan;
-#ifdef USE_MIXER
 							Mixer_Channel_Pan(ride_music->sound_channel, DStoMixerPan(ride_music->pan));
-#else
-							RCT2_GLOBAL(0x014241BC, uint32) = 1;
-							sound_channel_set_pan(channel, ride_music_params->pan);
-							RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 						}
 						if (ride_music_params->freq != ride_music->freq) {
 							ride_music->freq = ride_music_params->freq;
-#ifdef USE_MIXER
 							Mixer_Channel_Rate(ride_music->sound_channel, DStoMixerRate(ride_music->freq));
-#else
-							RCT2_GLOBAL(0x014241BC, uint32) = 1;
-							sound_channel_set_frequency(channel, ride_music_params->freq);
-							RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 						}
 
 					}

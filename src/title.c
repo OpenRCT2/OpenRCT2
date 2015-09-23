@@ -124,7 +124,7 @@ void title_load()
 	reset_0x69EBE4();
 	stop_ride_music();
 	stop_crowd_sound();
-	stop_other_sounds();
+	//stop_other_sounds();
 	viewport_init_all();
 	news_item_init_queue();
 	title_create_windows();

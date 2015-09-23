@@ -31,7 +31,6 @@ static void screen_intro_process_keyboard_input();
 static void screen_intro_skip_part();
 
 static int _sound_playing_flag = 0;		///< Used to test if a sound is currently playing.
-static rct_sound _prepared_sound;		///< A prepared sound for playing.
 static int _tick_counter;				///< Used mainly for timing but also for Y coordinate and fading.
 
 // rct2: 0x0068E966
@@ -60,12 +59,12 @@ void intro_update()
 
 		// Chain lift sound
 		_sound_playing_flag = 0;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) != -1) {
+		/*if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) != -1) {
 			// Prepare and play the sound
 			if (sound_prepare(SOUND_LIFT_7, &_prepared_sound, 0, 1))
 				if (sound_play(&_prepared_sound, 1, 0, 0, 0))
 					_sound_playing_flag = 1;
-		}
+		}*/
 
 		// Move to next part
 		(*part)++;
@@ -132,17 +131,17 @@ void intro_update()
 		if (_tick_counter == 259) {
 			// Stop the chain lift sound
 			if (_sound_playing_flag == 1) {
-				sound_stop(&_prepared_sound);
+				//sound_stop(&_prepared_sound);
 				_sound_playing_flag = 0;
 			}
 
 			// Play the track friction sound
-			if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) != -1) {
+			/*if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) != -1) {
 				// Prepare and play the sound
 				if (sound_prepare(SOUND_TRACK_FRICTION_3, &_prepared_sound, 1, 1))
 					if (sound_play(&_prepared_sound, 1, -800, 0, 0x3A98))
 						_sound_playing_flag = 1;
-			}
+			}*/
 		}
 
 		// Check if logo is off the screen .ish
@@ -163,15 +162,15 @@ void intro_update()
 
 			// Stop the track friction sound
 			if (_sound_playing_flag == 1) {
-				sound_stop(&_prepared_sound);
+				//sound_stop(&_prepared_sound);
 				_sound_playing_flag = 0;
 			}
 
 			// Play long peep scream sound
-			if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) != -1)
+			/*if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) != -1)
 				if (sound_prepare(SOUND_SCREAM_1, &_prepared_sound, 0, 1))
 					if (sound_play(&_prepared_sound, 0, 0, 0, 0))
-						_sound_playing_flag = 1;
+						_sound_playing_flag = 1;*/
 
 			// Move to the next part
 			(*part)++;
@@ -230,7 +229,7 @@ void intro_update()
 
 		// Stop any playing sound
 		if (_sound_playing_flag == 1) {
-			sound_stop(&_prepared_sound);
+			//sound_stop(&_prepared_sound);
 			_sound_playing_flag = 0;
 		}
 

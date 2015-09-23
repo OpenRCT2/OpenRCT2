@@ -21,10 +21,6 @@
 #ifndef _AUDIO_H_
 #define _AUDIO_H_
 
-#ifdef _WIN32
-#include <guiddef.h>
-#endif // _WIN32
-
 #include "../common.h"
 #include "../world/sprite.h"
 
@@ -42,94 +38,54 @@ void audio_init();
 void audio_quit();
 void audio_get_devices();
 
-/**
- * Represents a single directsound device.
- */
-typedef struct {
-#ifdef _WIN32
-	GUID guid;
-	char desc[256];
-	char drvname[256];
-#else
-  uint8 padding[16+256+256];
-#endif // _WIN32
-} rct_dsdevice;
-
-/**
- * Represents a prepared sound.
- */
-typedef struct rct_sound {
-#ifdef _WIN32
-	struct IDirectSoundBuffer *dsbuffer;
-#else
-  void *padding;
-#endif // _WIN32
-	uint16 id;
-	uint16 var_8;
-	int has_caps;
-	int var_0C;
-	struct rct_sound* next;
-} rct_sound;
-
 typedef struct {
 	uint16 id;
-	sint16 volume;			// 0x02
-	rct_sound sound1;		// 0x04
-	uint16 sound1_id;		// 0x18
-	sint16 sound1_volume;	// 0x1A
-	sint16 sound1_pan;		// 0x1C
+	sint16 volume;
+	uint16 sound1_id;
+	sint16 sound1_volume;
+	sint16 sound1_pan;
 	uint16 sound1_freq;
-	rct_sound sound2;		// 0x20
-	uint16 sound2_id;		// 0x34
-	sint16 sound2_volume;	// 0x36
-	sint16 sound2_pan;		// 0x38
-	uint16 sound2_freq;		// 0x3A
-	// added to openrct2:
+	uint16 sound2_id;
+	sint16 sound2_volume;
+	sint16 sound2_pan;
+	uint16 sound2_freq;
 	void* sound1_channel;
 	void* sound2_channel;
 } rct_vehicle_sound;
 
 typedef struct {
 	uint16 id;
-	sint16 panx;		// 0x2
-	sint16 pany;		// 0x4
-	uint16 frequency;	// 0x6
-	sint16 volume;	// 0x8
-	uint16 var_A;		// 0xA
+	sint16 panx;
+	sint16 pany;
+	uint16 frequency;
+	sint16 volume;
+	uint16 var_A;
 } rct_vehicle_sound_params;
-
-typedef struct {
-	uint16 id;
-	rct_sound sound;
-} rct_other_sound;
 
 typedef struct {
 	uint8 rideid;
 	uint8 tuneid;
-	sint32 offset;	//0x2
-	sint16 volume;	//0x6
-	sint16 pan;		//0x8
-	uint16 freq;	//0xA
+	sint32 offset;
+	sint16 volume;
+	sint16 pan;
+	uint16 freq;
 } rct_ride_music_params;
 
 typedef struct {
 	uint8 rideid;
 	uint8 tuneid;
-	sint16 volume;	//0x2
-	sint16 pan;		//0x4
-	uint16 freq;	//0x6
-	// added to openrct2:
+	sint16 volume;
+	sint16 pan;
+	uint16 freq;
 	void* sound_channel;
 } rct_ride_music;
 
 typedef struct {
 	uint32 length;
 	uint32 offset;
-	uint8 pathid;	//0x8
+	uint8 pathid;
 	uint8 var_9;
 } rct_ride_music_info;
-
-struct rct_sound_effect;
 
 #define NUM_DEFAULT_MUSIC_TRACKS 46
 extern rct_ride_music_info* ride_music_info_list[NUM_DEFAULT_MUSIC_TRACKS];
@@ -143,52 +99,8 @@ extern void *gCrowdSoundChannel;
 extern void *gTitleMusicChannel;
 extern bool gGameSoundsOff;
 
-int sub_40153B(int channel);
-int sub_4015E7(int channel);
-int sound_channel_load_file(int channel, const char* filename, int offset);
-int audio_create_timer();
-int audio_remove_timer();
-int sound_channel_load_file2(int channel, const char* filename, int offset);
-int sound_channel_play(int channel, int a2, int volume, int pan, int frequency);
-int sound_channel_stop(int channel);
-int sound_channel_set_frequency(int channel, int frequency);
-int sound_channel_set_pan(int channel, int pan);
-int sound_channel_set_volume(int channel, int volume);
-void sub_401AF3(int channel, const char* filename, int a3, int a4);
-int sub_401B46(int channel);
-int sound_channel_is_playing(int channel);
-int audio_release();
-int map_sound_effects(const char* filename);
-int unmap_sound_effects();
-int sound_prepare(int sound_id, rct_sound *sound, int channels, int software);
-int sound_duplicate(rct_sound* newsound, rct_sound* sound);
-int sound_stop(rct_sound *sound);
-int sound_stop_all();
-void sound_bufferlost_check();
-int sound_is_playing(rct_sound* sound);
-int sound_play(rct_sound* sound, int looping, int volume, int pan, int frequency);
-int sound_set_frequency(rct_sound* sound, int frequency);
-int sound_set_pan(rct_sound* sound, int pan);
-int sound_set_volume(rct_sound* sound, int volume);
-int sound_load3dparameters();
-int sound_load3dposition();
-#ifdef _WIN32
-int dsound_count_devices();
-#endif // _WIN32
-rct_sound* sound_begin();
-rct_sound* sound_next(rct_sound* sound);
-rct_sound* sound_add(rct_sound* sound);
-rct_sound* sound_remove(rct_sound* sound);
-int sound_bufferlost_restore(rct_sound* sound);
-struct rct_sound_effect* sound_get_effect(uint16 sound_id);
-#ifdef _WIN32
-int dsound_create_primary_buffer(int a, int device, int channels, int samples, int bits);
-int get_dsound_devices();
-#endif // _WIN32
 int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z);
-void stop_completed_sounds();
 void start_title_music();
-void stop_other_sounds();
 void stop_ride_music();
 void stop_crowd_sound();
 void stop_title_music();

@@ -18,10 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifdef _WIN32
-#include <dsound.h>
-#endif // _WIN32
-
 extern "C" {
 	#include "../config.h"
 	#include "../platform/platform.h"
@@ -105,11 +101,7 @@ bool Source_Sample::LoadWAV(const char* filename)
 
 	if (spec != NULL) {
 		format.freq = spec->freq;
-#ifdef _WIN32
 		format.format = spec->format;
-#else
-		STUB();
-#endif // _WIN32
 		format.channels = spec->channels;
 		issdlwav = true;
 	} else {
@@ -144,15 +136,20 @@ bool Source_Sample::LoadCSS1(const char *filename, unsigned int offset)
 	Uint32 soundsize;
 	SDL_RWread(rw, &soundsize, sizeof(soundsize), 1);
 	length = soundsize;
-#ifdef _WIN32
-	WAVEFORMATEX waveformat;
+	struct WaveFormatEx
+	{
+		Uint16 encoding;
+		Uint16 channels;
+		Uint32 frequency;
+		Uint32 byterate;
+		Uint16 blockalign;
+		Uint16 bitspersample;
+		Uint16 extrasize;
+	} waveformat;
 	SDL_RWread(rw, &waveformat, sizeof(waveformat), 1);
-	format.freq = waveformat.nSamplesPerSec;
+	format.freq = waveformat.frequency;
 	format.format = AUDIO_S16LSB;
-	format.channels = waveformat.nChannels;
-#else
-	STUB();
-#endif // _WIN32
+	format.channels = waveformat.channels;
 	data = new (std::nothrow) uint8[length];
 	if (!data) {
 		log_verbose("Unable to allocate data");
@@ -180,7 +177,6 @@ void Source_Sample::Unload()
 
 bool Source_Sample::Convert(AudioFormat format)
 {
-#ifdef _WIN32
 	if(Source_Sample::format.format != format.format || Source_Sample::format.channels != format.channels || Source_Sample::format.freq != format.freq){
 		SDL_AudioCVT cvt;
 		if (SDL_BuildAudioCVT(&cvt, Source_Sample::format.format, Source_Sample::format.channels, Source_Sample::format.freq, format.format, format.channels, format.freq) < 0) {
@@ -199,9 +195,6 @@ bool Source_Sample::Convert(AudioFormat format)
 		Source_Sample::format = format;
 		return true;
 	}
-#else
-	STUB();
-#endif // _WIN32
 	return false;
 }
 
@@ -276,16 +269,24 @@ bool Source_SampleStream::LoadWAV(SDL_RWops* rw)
 		return false;
 	}
 	Uint64 chunkstart = SDL_RWtell(rw);
-#ifdef _WIN32
-	PCMWAVEFORMAT waveformat;
+	struct WaveFormat
+	{
+		Uint16 encoding;
+		Uint16 channels;
+		Uint32 frequency;
+		Uint32 byterate;
+		Uint16 blockalign;
+		Uint16 bitspersample;
+	} waveformat;
 	SDL_RWread(rw, &waveformat, sizeof(waveformat), 1);
 	SDL_RWseek(rw, chunkstart + fmtchunk_size, RW_SEEK_SET);
-	if (waveformat.wf.wFormatTag != WAVE_FORMAT_PCM) {
+	const Uint16 pcmformat = 0x0001;
+	if (waveformat.encoding != pcmformat) {
 		log_verbose("Not in proper format");
 		return false;
 	}
-	format.freq = waveformat.wf.nSamplesPerSec;
-	switch (waveformat.wBitsPerSample) {
+	format.freq = waveformat.frequency;
+	switch (waveformat.bitspersample) {
 		case 8:
 			format.format = AUDIO_U8;
 			break;
@@ -297,10 +298,7 @@ bool Source_SampleStream::LoadWAV(SDL_RWops* rw)
 			return false;
 			break;
 	}
-	format.channels = waveformat.wf.nChannels;
-#else
-	STUB();
-#endif // _WIN32
+	format.channels = waveformat.channels;
 	const Uint32 DATA = 0x61746164;
 	Uint32 datachunk_size = FindChunk(rw, DATA);
 	if (!datachunk_size) {
@@ -462,7 +460,6 @@ void Mixer::Init(const char* device)
 {
 	Close();
 	SDL_AudioSpec want, have;
-#ifdef _WIN32
 	SDL_zero(want);
 	want.freq = 44100;
 	want.format = AUDIO_S16SYS;
@@ -474,9 +471,6 @@ void Mixer::Init(const char* device)
 	format.format = have.format;
 	format.channels = have.channels;
 	format.freq = have.freq;
-#else
-	STUB();
-#endif // _WIN32
 	const char* filename = get_file_path(PATH_ID_CSS1);
 	for (int i = 0; i < countof(css1sources); i++) {
 		Source_Sample* source_sample = new Source_Sample;
@@ -545,13 +539,9 @@ Channel* Mixer::Play(Source& source, int loop, bool deleteondone, bool deletesou
 
 void Mixer::Stop(Channel& channel)
 {
-#ifdef _WIN32
 	Lock();
 	channel.stopping = true;
 	Unlock();
-#else
-#warning unimplemented
-#endif // _WIN32
 }
 
 bool Mixer::LoadMusic(int pathid)
@@ -593,7 +583,6 @@ void SDLCALL Mixer::Callback(void* arg, uint8* stream, int length)
 
 void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 {
-#ifdef _WIN32
 	if (channel.source && channel.source->Length() > 0 && !channel.done && gConfigSound.sound) {
 		AudioFormat streamformat = channel.source->Format();
 		int loaded = 0;
@@ -737,9 +726,6 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 			channel.done = true;
 		}
 	}
-#else
-	STUB();
-#endif // _WIN32
 }
 
 void Mixer::EffectPanS16(Channel& channel, sint16* data, int length)
@@ -782,14 +768,10 @@ void Mixer::EffectFadeU8(uint8* data, int length, int startvolume, int endvolume
 
 bool Mixer::MustConvert(Source& source)
 {
-#ifdef _WIN32
 	const AudioFormat sourceformat = source.Format();
 	if (sourceformat.format != format.format || sourceformat.channels != format.channels || sourceformat.freq != format.freq) {
 		return true;
 	}
-#else
-	STUB();
-#endif // _WIN32
 	return false;
 }
 
