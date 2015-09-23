@@ -524,7 +524,8 @@ rct_track_td6* load_track_design(const char *path)
 
 	char* track_name_pointer = (char*)path;
 	while (*track_name_pointer++ != '\0');
-	while (*--track_name_pointer != '\\');
+	const char separator = platform_get_path_separator();
+	while (*--track_name_pointer != separator);
 	char* default_name = RCT2_ADDRESS(0x009E3504, char);
 	// Copy the track name for use as the default name of this ride
 	while (*++track_name_pointer != '.')*default_name++ = *track_name_pointer;
@@ -580,10 +581,11 @@ rct_track_td6* load_track_design(const char *path)
 		copy(&track_design->track_spine_colour, &src, version == 1 ? 140 : 67);
 
 	uint8* track_elements = RCT2_ADDRESS(0x9D821B, uint8);
+	int len = decodedLength - (src - decoded);
 	// Read the actual track data.
-	copy(track_elements, &src, 24572);
+	copy(track_elements, &src, len);
 
-	uint8* final_track_element_location = track_elements + 24572;
+	uint8* final_track_element_location = track_elements + len;
 	free(decoded);
 
 	// td4 files require some work to be recognised as td6.
