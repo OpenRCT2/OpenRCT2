@@ -31,8 +31,6 @@ extern "C" {
 }
 #endif // __cplusplus
 
-#define USE_MIXER
-
 #define MIXER_LOOP_NONE			0
 #define MIXER_LOOP_INFINITE		-1
 
@@ -213,11 +211,7 @@ void Mixer_Channel_SetGroup(void* channel, int group);
 void* Mixer_Play_Music(int pathid, int loop, int streaming);
 
 static int DStoMixerVolume(int volume) { return (int)(SDL_MIX_MAXVOLUME * (SDL_pow(10, (float)volume / 2000))); };
-#ifdef _WIN32
 static float DStoMixerPan(int pan) { return (((float)pan + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2; };
-#else
-static float DStoMixerPan(int pan) { STUB(); return ((float)pan) / 2; };
-#endif // _WIN32
 static double DStoMixerRate(int frequency) { return (double)frequency / 22050; };
 
 #ifdef __cplusplus

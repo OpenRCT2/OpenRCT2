@@ -212,22 +212,10 @@ void vehicle_sounds_update()
 						}
 					}
 					if (vehicle_sound->sound1_id != (uint16)-1) {
-#ifdef USE_MIXER
 						Mixer_Stop_Channel(vehicle_sound->sound1_channel);
-#else
-						RCT2_GLOBAL(0x014241BC, uint32) = 1;
-						sound_stop(&vehicle_sound->sound1);
-						RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 					}
 					if (vehicle_sound->sound2_id != (uint16)-1) {
-#ifdef USE_MIXER
 						Mixer_Stop_Channel(vehicle_sound->sound2_channel);
-#else
-						RCT2_GLOBAL(0x014241BC, uint32) = 1;
-						sound_stop(&vehicle_sound->sound2);
-						RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 					}
 					vehicle_sound->id = (uint16)-1;
 				}
@@ -347,33 +335,16 @@ void vehicle_sounds_update()
 				if (sprite->vehicle.sound1_id == (uint8)-1) {
 					if (vehicle_sound->sound1_id != (uint16)-1) {
 						vehicle_sound->sound1_id = -1;
-#ifdef USE_MIXER
-						Mixer_Stop_Channel(vehicle_sound->sound1_channel);
-#else
-						RCT2_GLOBAL(0x014241BC, uint32) = 1;
-						sound_stop(&vehicle_sound->sound1);
-						RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif			
+						Mixer_Stop_Channel(vehicle_sound->sound1_channel);		
 					}
 				} else {
 					if (vehicle_sound->sound1_id == (uint16)-1) {
 						goto label69;
 					}
 					if (sprite->vehicle.sound1_id != vehicle_sound->sound1_id) {
-#ifdef USE_MIXER
 						Mixer_Stop_Channel(vehicle_sound->sound1_channel);
-#else
-						RCT2_GLOBAL(0x014241BC, uint32) = 1;
-						sound_stop(&vehicle_sound->sound1);
-						RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 					label69:
 						vehicle_sound->sound1_id = sprite->vehicle.sound1_id;
-#ifndef USE_MIXER
-						RCT2_GLOBAL(0x014241BC, uint32) = 1;
-						sound_prepare(sprite->vehicle.sound1_id, &vehicle_sound->sound1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32));
-						RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 						vehicle_sound->sound1_pan = vehicle_sound_params->panx;
 						vehicle_sound->sound1_volume = volume;
 						vehicle_sound->sound1_freq = vehicle_sound_params->frequency;
@@ -386,35 +357,17 @@ void vehicle_sounds_update()
 						if (!RCT2_GLOBAL(0x009AAC6D, uint8)) {
 							pan = 0;
 						}
-#ifdef USE_MIXER
 						vehicle_sound->sound1_channel = Mixer_Play_Effect(sprite->vehicle.sound1_id, looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), DStoMixerRate(frequency), 0);
-#else
-						RCT2_GLOBAL(0x014241BC, uint32) = 1;
-						sound_play(&vehicle_sound->sound1, looping, volume, pan, frequency);
-						RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 						goto label87;
 					}
 					if (volume != vehicle_sound->sound1_volume) {
 						vehicle_sound->sound1_volume = volume;
-#ifdef USE_MIXER
 						Mixer_Channel_Volume(vehicle_sound->sound1_channel, DStoMixerVolume(volume));
-#else
-						RCT2_GLOBAL(0x014241BC, uint32) = 1;
-						sound_set_volume(&vehicle_sound->sound1, volume);
-						RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 					}
 					if (vehicle_sound_params->panx != vehicle_sound->sound1_pan) {
 						vehicle_sound->sound1_pan = vehicle_sound_params->panx;
 						if (RCT2_GLOBAL(0x009AAC6D, uint8)) {
-#ifdef USE_MIXER
 							Mixer_Channel_Pan(vehicle_sound->sound1_channel, DStoMixerPan(vehicle_sound_params->panx));
-#else
-							RCT2_GLOBAL(0x014241BC, uint32) = 1;
-							sound_set_pan(&vehicle_sound->sound1, vehicle_sound_params->panx);
-							RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 						}
 					}
 					if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 3) && vehicle_sound_params->frequency != vehicle_sound->sound1_freq) {
@@ -423,13 +376,7 @@ void vehicle_sounds_update()
 						if (RCT2_GLOBAL(0x009AF51F, uint8*)[2 * sprite->vehicle.sound1_id] & 2) {
 							frequency = (frequency / 2) + 4000;
 						}
-#ifdef USE_MIXER
 						Mixer_Channel_Rate(vehicle_sound->sound1_channel, DStoMixerRate(frequency));
-#else
-						RCT2_GLOBAL(0x014241BC, uint32) = 1;
-						sound_set_frequency(&vehicle_sound->sound1, frequency);
-						RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 					}
 				}
 			label87: // do sound2 stuff, screams
@@ -444,33 +391,16 @@ void vehicle_sounds_update()
 				if (sprite->vehicle.sound2_id == (uint8)-1) {
 					if (vehicle_sound->sound2_id != (uint16)-1) {
 						vehicle_sound->sound2_id = -1;
-#ifdef USE_MIXER
 						Mixer_Stop_Channel(vehicle_sound->sound2_channel);
-#else
-						RCT2_GLOBAL(0x014241BC, uint32) = 1;
-						sound_stop(&vehicle_sound->sound2);
-						RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif	
 					}
 				} else {
 					if (vehicle_sound->sound2_id == (uint16)-1) {
 						goto label93;
 					}
 					if (sprite->vehicle.sound2_id != vehicle_sound->sound2_id) {
-#ifdef USE_MIXER
 						Mixer_Stop_Channel(vehicle_sound->sound2_channel);
-#else
-						RCT2_GLOBAL(0x014241BC, uint32) = 1;
-						sound_stop(&vehicle_sound->sound2);
-						RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 					label93:
 						vehicle_sound->sound2_id = sprite->vehicle.sound2_id;
-#ifndef USE_MIXER
-						RCT2_GLOBAL(0x014241BC, uint32) = 1;
-						sound_prepare(sprite->vehicle.sound2_id, &vehicle_sound->sound2, 1, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32));
-						RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 						vehicle_sound->sound2_pan = vehicle_sound_params->panx;
 						vehicle_sound->sound2_volume = volume;
 						vehicle_sound->sound2_freq = vehicle_sound_params->frequency;
@@ -487,35 +417,17 @@ void vehicle_sounds_update()
 						if (!RCT2_GLOBAL(0x009AAC6D, uint8)) {
 							pan = 0;
 						}
-#ifdef USE_MIXER
 						vehicle_sound->sound2_channel = Mixer_Play_Effect(sprite->vehicle.sound2_id, looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), DStoMixerRate(frequency), 0);
-#else
-						RCT2_GLOBAL(0x014241BC, uint32) = 1;
-						sound_play(&vehicle_sound->sound2, looping, volume, pan, frequency);
-						RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 						goto label114;
 					}
 					if (volume != vehicle_sound->sound2_volume) {
-#ifdef USE_MIXER
 						Mixer_Channel_Volume(vehicle_sound->sound2_channel, DStoMixerVolume(volume));
-#else
-						RCT2_GLOBAL(0x014241BC, uint32) = 1;
-						sound_set_volume(&vehicle_sound->sound2, volume);
-						RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 						vehicle_sound->sound2_volume = volume;
 					}
 					if (vehicle_sound_params->panx != vehicle_sound->sound2_pan) {
 						vehicle_sound->sound2_pan = vehicle_sound_params->panx;
 						if (RCT2_GLOBAL(0x009AAC6D, uint8)) {
-#ifdef USE_MIXER
 							Mixer_Channel_Pan(vehicle_sound->sound2_channel, DStoMixerPan(vehicle_sound_params->panx));
-#else
-							RCT2_GLOBAL(0x014241BC, uint32) = 1;
-							sound_set_pan(&vehicle_sound->sound2, vehicle_sound_params->panx);
-							RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 						}
 					}
 					if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 3) && vehicle_sound_params->frequency != vehicle_sound->sound2_freq) {
@@ -525,13 +437,7 @@ void vehicle_sounds_update()
 							if (frequency > 25700) {
 								frequency = 25700;
 							}
-#ifdef USE_MIXER
 							Mixer_Channel_Rate(vehicle_sound->sound2_channel, DStoMixerRate(frequency));
-#else
-							RCT2_GLOBAL(0x014241BC, uint32) = 1;
-							sound_set_frequency(&vehicle_sound->sound2, frequency);
-							RCT2_GLOBAL(0x014241BC, uint32) = 0;
-#endif
 							
 						}
 					}

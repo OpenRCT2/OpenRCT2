@@ -403,7 +403,7 @@ void rct2_update_2()
 	else
 		game_update();
 
-	stop_completed_sounds(); // removes other sounds that are no longer playing in directsound
+	//stop_completed_sounds(); // removes other sounds that are no longer playing in directsound
 
 	twitch_update();
 	chat_update();

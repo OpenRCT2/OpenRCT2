@@ -1071,7 +1071,7 @@ void rct2_exit_reason(rct_string_id title, rct_string_id body){
  */
 void rct2_exit()
 {
-	audio_close();
+	//audio_close();
 	//Post quit message does not work in 0x6e3879 as its windows only.
 	openrct2_finish();
 }

@@ -290,11 +290,7 @@ bool openrct2_initialise()
 	if (!gOpenRCT2Headless) {
 		audio_init();
 		audio_get_devices();
-#ifdef _WIN32
-		get_dsound_devices();
-#else
-		STUB();
-#endif // _WIN32
+		//get_dsound_devices();
 	}
 	language_open(gConfigGeneral.language);
 	http_init();

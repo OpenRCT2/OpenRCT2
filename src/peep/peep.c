@@ -5184,12 +5184,8 @@ void peep_update_crowd_noise()
 	if (visiblePeeps < 0) {
 		// Mute crowd noise
 		if (RCT2_GLOBAL(0x009AF5FC, uint32) != 1) {
-#ifdef USE_MIXER
 			Mixer_Stop_Channel(gCrowdSoundChannel);
 			gCrowdSoundChannel = 0;
-#else
-			sound_channel_stop(2); //RCT2_CALLPROC_1(0x00401A05, int, 2);
-#endif
 			RCT2_GLOBAL(0x009AF5FC, uint32) = 1;
 		}
 	} else {
@@ -5204,7 +5200,6 @@ void peep_update_crowd_noise()
 		// Check if crowd noise is already playing
 		if (RCT2_GLOBAL(0x009AF5FC, uint32) == 1) {
 			// Load and play crowd noise
-#ifdef USE_MIXER
 			if (!gCrowdSoundChannel) {
 				gCrowdSoundChannel = Mixer_Play_Music(PATH_ID_CSS2, MIXER_LOOP_INFINITE, false);
 				if (gCrowdSoundChannel) {
@@ -5215,20 +5210,10 @@ void peep_update_crowd_noise()
 				Mixer_Channel_Volume(gCrowdSoundChannel, DStoMixerVolume(volume));
 				RCT2_GLOBAL(0x009AF5FC, uint32) = volume;
 			}
-#else
-			if (sound_channel_load_file2(2, (char*)get_file_path(PATH_ID_CSS2), 0)) {
-				sound_channel_play(2, 1, volume, 0, 0);
-				RCT2_GLOBAL(0x009AF5FC, uint32) = volume;
-			}
-#endif
 		} else {
 			// Alter crowd noise volume
 			if (RCT2_GLOBAL(0x009AF5FC, uint32) != volume) {
-#ifdef USE_MIXER
 				Mixer_Channel_Volume(gCrowdSoundChannel, DStoMixerVolume(volume));
-#else
-				sound_channel_set_volume(2, volume);//RCT2_CALLPROC_2(0x00401AD3, int, int, 2, volume);
-#endif
 				RCT2_GLOBAL(0x009AF5FC, uint32) = volume;
 			}
 		}
