@@ -46,6 +46,7 @@ extern "C" {
 
 #ifdef _WIN32
 #include <winsock2.h>
+#include <ws2tcpip.h>
 #endif // _WIN32
 
 enum {
@@ -246,7 +247,7 @@ void network_send_chat(const char* text);
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
 
 void network_print_error();
-static char *network_getAddress(char *host);
+static bool network_get_address(char *dst, size_t dstLength, const char *host);
 
 #ifdef __cplusplus
 }

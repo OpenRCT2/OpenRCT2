@@ -316,9 +316,17 @@ bool Network::BeginClient(const char* host, unsigned short port)
 		return false;
 	}
 
+	char address[64];
+	if (!network_get_address(address, sizeof(address), host)) {
+		log_error("Unable to resolve hostname.");
+		return false;
+	}
+
 	SOCKADDR_IN server_address;
+	if (inet_pton(AF_INET, address, &server_address.sin_addr) != 1) {
+		return false;
+	}
 	server_address.sin_family = AF_INET;
-	server_address.sin_addr.S_un.S_addr = inet_addr(network_getAddress((char *)host));
 	server_address.sin_port = htons(port);
 
 	if (connect(server_socket, (SOCKADDR*)&server_address, sizeof(SOCKADDR_IN)) != 0) {
@@ -1057,18 +1065,24 @@ void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32
 	}
 }
 
-static char *network_getAddress(char *host)
+static bool network_get_address(char *dst, size_t dstLength, const char *host)
 {
-	struct hostent *remoteHost;
-	struct in_addr addr;
+	struct addrinfo *remoteHost;
 
-	remoteHost = gethostbyname(host);
-	if (remoteHost != NULL && remoteHost->h_addrtype == AF_INET && remoteHost->h_addr_list[0] != 0) {
-		addr.s_addr = *(u_long *)remoteHost->h_addr_list[0];
-		return inet_ntoa(addr);
+	if (getaddrinfo(host, NULL, NULL, &remoteHost) != 0) {
+		// Failed to resolve host name
+		return false;
 	}
 
-	return host;
+	for (; remoteHost != NULL; remoteHost = remoteHost->ai_next) {
+		if (remoteHost->ai_family != AF_INET) continue;
+
+		struct sockaddr_in *ipv4SockAddr = (struct sockaddr_in*)remoteHost->ai_addr;
+		return inet_ntop(AF_INET, (const void*)&ipv4SockAddr->sin_addr, dst, dstLength) != NULL;
+	}
+
+	// No IPv4 addresses found for host name
+	return false;
 }
 
 #else
