@@ -65,6 +65,8 @@ int _finished;
 static struct { sint16 x, y, z; } _spritelocations1[MAX_SPRITES], _spritelocations2[MAX_SPRITES];
 
 static void openrct2_loop();
+static bool openrct2_setup_rct2_segment();
+static void openrct2_setup_rct2_hooks();
 
 static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *newDirectory, const utf8 *extension)
 {
@@ -184,86 +186,11 @@ bool openrct2_initialise()
 		return false;
 	}
 
-#ifdef __linux__
-	#define DATA_OFFSET 0x004A4000
-
-	const char *exepath = "../openrct2.exe";
-	int fd = open(exepath, O_RDONLY);
-	if (fd < 0) {
-		log_fatal("failed to open %s, errno = %d", exepath, errno);
-		exit(1);
+	if (!openrct2_setup_rct2_segment()) {
+		log_fatal("Unable to load RCT2 data sector");
+		return false;
 	}
 
-	// Using PE-bear I was able to figure out all the needed addresses to be filled.
-	// There are three sections to be loaded: .rdata, .data and .text, plus another
-	// one to be mapped: DATASEG.
-	// Out of the three, two can simply be mmapped into memory, while the third one,
-	// .data has a virtual size which is much completely different to its file size
-	// (even when taking page-alignment into consideration)
-	//
-	// The sections are as follows (dump from gdb)
-	// [0]     0x401000->0x6f7000 at 0x00001000: .text ALLOC LOAD READONLY CODE HAS_CONTENTS
-	// [1]     0x6f7000->0x8a325d at 0x002f7000: CODESEG ALLOC LOAD READONLY CODE HAS_CONTENTS
-	// [2]     0x8a4000->0x9a5894 at 0x004a4000: .rdata ALLOC LOAD DATA HAS_CONTENTS
-	// [3]     0x9a6000->0x9e2000 at 0x005a6000: .data ALLOC LOAD DATA HAS_CONTENTS
-	// [4]     0x1428000->0x14282bc at 0x005e2000: DATASEG ALLOC LOAD DATA HAS_CONTENTS
-	// [5]     0x1429000->0x1452000 at 0x005e3000: .cms_t ALLOC LOAD READONLY CODE HAS_CONTENTS
-	// [6]     0x1452000->0x14aaf3e at 0x0060c000: .cms_d ALLOC LOAD DATA HAS_CONTENTS
-	// [7]     0x14ab000->0x14ac58a at 0x00665000: .idata ALLOC LOAD READONLY DATA HAS_CONTENTS
-	// [8]     0x14ad000->0x14b512f at 0x00667000: .rsrc ALLOC LOAD DATA HAS_CONTENTS
-	//
-	// .data section, however, has virtual size of 0xA81C3C, and so
-	// 0x9a6000 + 0xA81C3C = 0x1427C3C, which after alignment to page size becomes
-	// 0x1428000, which can be seen as next section, DATASEG
-	//
-	// Since mmap does not provide a way to create a mapping with virtual size,
-	// I resorted to creating a one large map for data and memcpy'ing data where
-	// required.
-	// Another section is needed for .text, as it requires PROT_EXEC flag.
-
-	// TODO: UGLY, UGLY HACK!
-	off_t file_size = 6750208;
-
-	int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
-	// section: rw data
-	void *base = mmap((void *)0x8a4000, len, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_SHARED, 0, 0);
-	log_warning("base = %x, 0x01423b40 >= base == %i, 0x01423b40 < base + len == %i", base, (void *)0x01423b40 >= base, (void *)0x01423b40 < base + len);
-	if (base == MAP_FAILED) {
-		log_warning("errno = %i", errno);
-		exit(1);
-	}
-
-	len = 0x004A3000;
-	// section: text
-	void *base2 = mmap((void *)(0x401000), len, PROT_EXEC | PROT_WRITE | PROT_READ, MAP_PRIVATE, fd, 0x1000);
-	if (base2 != (void *)(0x401000))
-	{
-		log_fatal("mmap failed to get required offset! got %p, expected %p, errno = %d", base2, (void *)(0x401000), errno);
-		exit(1);
-	}
-
-	void *fbase = mmap(NULL, file_size, PROT_READ, MAP_PRIVATE, fd, 0);
-	int err = errno;
-	log_warning("mmapped file to %p", fbase);
-	if (fbase == MAP_FAILED)
-	{
-		log_fatal("mmap failed to get required offset! got %p, errno = %d", fbase, err);
-		exit(1);
-	}
-	// .rdata and real part of .data
-	// 0x9e2000 - 0x8a4000 = 0x13e000
-	memcpy(base, fbase + DATA_OFFSET, 0x13e000);
-#endif // __linux__
-	const uint32 c1 = sawyercoding_calculate_checksum((void *)0x009ACFA4, 128);
-	const uint32 c2 = sawyercoding_calculate_checksum((void *)0x009ACFA4, 720 * 4);
-	const uint32 exp_c1 = 32640;
-	const uint32 exp_c2 = 734400;
-	log_warning("c1 = %u, expected %u, match %d", c1, exp_c1, c1 == exp_c1);
-	log_warning("c1 = %u, expected %u, match %d", c2, exp_c2, c2 == exp_c2);
-	if (c1 != exp_c1 || c2 != exp_c2)
-	{
-		exit(1);
-	}
 	openrct2_set_exe_path();
 
 	config_set_defaults();
@@ -300,15 +227,7 @@ bool openrct2_initialise()
 	title_sequences_set_default();
 	title_sequences_load_presets();
 
-	// Hooks to allow RCT2 to call OpenRCT2 functions instead
-	addhook(0x006E732D, (int)gfx_set_dirty_blocks, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0, 0);	// remove when all callers are decompiled
-	addhook(0x006E7499, (int)gfx_redraw_screen_rect, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0, 0);	// remove when 0x6E7FF3 is decompiled
-	addhook(0x006B752C, (int)ride_crash, 0, (int[]){ EDX, EBX, END }, 0, 0);						// remove when all callers are decompiled
-	addhook(0x0069A42F, (int)peep_window_state_update, 0, (int[]){ ESI, END }, 0, 0);				// remove when all callers are decompiled
-	addhook(0x006BB76E, (int)sound_play_panned, 0, (int[]){EAX, EBX, ECX, EDX, EBP, END}, EAX, 0);	// remove when all callers are decompiled
-	addhook(0x006C42D9, (int)scrolling_text_setup, 0, (int[]){EAX, ECX, EBP, END}, 0, EBX);			// remove when all callers are decompiled
-	addhook(0x006C2321, (int)gfx_get_string_width, 0, (int[]){ESI, END}, 0, ECX);					// remove when all callers are decompiled
-	addhook(0x006C2555, (int)format_string, 0, (int[]){EDI, EAX, ECX, END}, 0, 0);					// remove when all callers are decompiled
+	openrct2_setup_rct2_hooks();
 
 	if (!rct2_init())
 		return false;
@@ -527,6 +446,114 @@ void openrct2_reset_object_tween_locations()
 		_spritelocations1[i].y = _spritelocations2[i].y = g_sprite_list[i].unknown.y;
 		_spritelocations1[i].z = _spritelocations2[i].z = g_sprite_list[i].unknown.z;
 	}
+}
+
+/**
+ * Loads RCT2's data model and remaps the addresses.
+ * @returns true if the data integrity check succeeded, otherwise false.
+ */
+static bool openrct2_setup_rct2_segment()
+{
+	// Linux will run OpenRCT2 as a native application and then load in the Windows PE, mapping the appropriate addresses as
+	// necessary. Windows does not need to do this as OpenRCT2 runs as a DLL loaded from the Windows PE.
+#ifdef __linux__
+	#define DATA_OFFSET 0x004A4000
+
+	const char *exepath = "../openrct2.exe";
+	int fd = open(exepath, O_RDONLY);
+	if (fd < 0) {
+		log_fatal("failed to open %s, errno = %d", exepath, errno);
+		exit(1);
+	}
+
+	// Using PE-bear I was able to figure out all the needed addresses to be filled.
+	// There are three sections to be loaded: .rdata, .data and .text, plus another
+	// one to be mapped: DATASEG.
+	// Out of the three, two can simply be mmapped into memory, while the third one,
+	// .data has a virtual size which is much completely different to its file size
+	// (even when taking page-alignment into consideration)
+	//
+	// The sections are as follows (dump from gdb)
+	// [0]     0x401000->0x6f7000 at 0x00001000: .text ALLOC LOAD READONLY CODE HAS_CONTENTS
+	// [1]     0x6f7000->0x8a325d at 0x002f7000: CODESEG ALLOC LOAD READONLY CODE HAS_CONTENTS
+	// [2]     0x8a4000->0x9a5894 at 0x004a4000: .rdata ALLOC LOAD DATA HAS_CONTENTS
+	// [3]     0x9a6000->0x9e2000 at 0x005a6000: .data ALLOC LOAD DATA HAS_CONTENTS
+	// [4]     0x1428000->0x14282bc at 0x005e2000: DATASEG ALLOC LOAD DATA HAS_CONTENTS
+	// [5]     0x1429000->0x1452000 at 0x005e3000: .cms_t ALLOC LOAD READONLY CODE HAS_CONTENTS
+	// [6]     0x1452000->0x14aaf3e at 0x0060c000: .cms_d ALLOC LOAD DATA HAS_CONTENTS
+	// [7]     0x14ab000->0x14ac58a at 0x00665000: .idata ALLOC LOAD READONLY DATA HAS_CONTENTS
+	// [8]     0x14ad000->0x14b512f at 0x00667000: .rsrc ALLOC LOAD DATA HAS_CONTENTS
+	//
+	// .data section, however, has virtual size of 0xA81C3C, and so
+	// 0x9a6000 + 0xA81C3C = 0x1427C3C, which after alignment to page size becomes
+	// 0x1428000, which can be seen as next section, DATASEG
+	//
+	// Since mmap does not provide a way to create a mapping with virtual size,
+	// I resorted to creating a one large map for data and memcpy'ing data where
+	// required.
+	// Another section is needed for .text, as it requires PROT_EXEC flag.
+
+	// TODO: UGLY, UGLY HACK!
+	off_t file_size = 6750208;
+
+	int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
+	// section: rw data
+	void *base = mmap((void *)0x8a4000, len, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_SHARED, 0, 0);
+	log_warning("base = %x, 0x01423b40 >= base == %i, 0x01423b40 < base + len == %i", base, (void *)0x01423b40 >= base, (void *)0x01423b40 < base + len);
+	if (base == MAP_FAILED) {
+		log_warning("errno = %i", errno);
+		exit(1);
+	}
+
+	len = 0x004A3000;
+	// section: text
+	void *base2 = mmap((void *)(0x401000), len, PROT_EXEC | PROT_WRITE | PROT_READ, MAP_PRIVATE, fd, 0x1000);
+	if (base2 != (void *)(0x401000))
+	{
+		log_fatal("mmap failed to get required offset! got %p, expected %p, errno = %d", base2, (void *)(0x401000), errno);
+		exit(1);
+	}
+
+	void *fbase = mmap(NULL, file_size, PROT_READ, MAP_PRIVATE, fd, 0);
+	int err = errno;
+	log_warning("mmapped file to %p", fbase);
+	if (fbase == MAP_FAILED)
+	{
+		log_fatal("mmap failed to get required offset! got %p, errno = %d", fbase, err);
+		exit(1);
+	}
+	// .rdata and real part of .data
+	// 0x9e2000 - 0x8a4000 = 0x13e000
+	memcpy(base, fbase + DATA_OFFSET, 0x13e000);
+#endif // __linux__
+
+	// Check that the expected data is at various addresses.
+	const uint32 c1 = sawyercoding_calculate_checksum((void *)0x009ACFA4, 128);
+	const uint32 c2 = sawyercoding_calculate_checksum((void *)0x009ACFA4, 720 * 4);
+	const uint32 exp_c1 = 32640;
+	const uint32 exp_c2 = 734400;
+	if (c1 != exp_c1 || c2 != exp_c2) {
+		log_warning("c1 = %u, expected %u, match %d", c1, exp_c1, c1 == exp_c1);
+		log_warning("c1 = %u, expected %u, match %d", c2, exp_c2, c2 == exp_c2);
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * Setup hooks to allow RCT2 to call OpenRCT2 functions instead.
+ */
+static void openrct2_setup_rct2_hooks()
+{
+	addhook(0x006E732D, (int)gfx_set_dirty_blocks, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0, 0);	// remove when all callers are decompiled
+	addhook(0x006E7499, (int)gfx_redraw_screen_rect, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0, 0);	// remove when 0x6E7FF3 is decompiled
+	addhook(0x006B752C, (int)ride_crash, 0, (int[]){ EDX, EBX, END }, 0, 0);						// remove when all callers are decompiled
+	addhook(0x0069A42F, (int)peep_window_state_update, 0, (int[]){ ESI, END }, 0, 0);				// remove when all callers are decompiled
+	addhook(0x006BB76E, (int)sound_play_panned, 0, (int[]){EAX, EBX, ECX, EDX, EBP, END}, EAX, 0);	// remove when all callers are decompiled
+	addhook(0x006C42D9, (int)scrolling_text_setup, 0, (int[]){EAX, ECX, EBP, END}, 0, EBX);			// remove when all callers are decompiled
+	addhook(0x006C2321, (int)gfx_get_string_width, 0, (int[]){ESI, END}, 0, ECX);					// remove when all callers are decompiled
+	addhook(0x006C2555, (int)format_string, 0, (int[]){EDI, EAX, ECX, END}, 0, 0);					// remove when all callers are decompiled
 }
 
 #if _MSC_VER >= 1900
