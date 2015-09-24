@@ -42,7 +42,7 @@ if [[ "$needsdownload" = "true" ]]; then
      if [[ -d $cachedir/orctlibs ]]; then
         rm -rf $cachedir/orctlibs
     fi
-    curl https://download.openrct2.website/dev/lib/mingw -o $cachedir/orctlibs.zip
+    curl https://dl.dropboxusercontent.com/u/1323345/orctlibs.zip -o $cachedir/orctlibs.zip
     mkdir -p $cachedir/orctlibs
     pushd $cachedir/orctlibs
         unzip -uaq ../orctlibs.zip 
@@ -55,7 +55,7 @@ if [[ "$needsdownload" = "true" ]]; then
 fi
 
 pushd build
-	echo OPENRCT2_CMAKE_OPTS = $OPENRCT_CMAKE_OPTS
+	echo OPENRCT2_CMAKE_OPTS = $OPENRCT2_CMAKE_OPTS
 	cmake -DCMAKE_BUILD_TYPE=Debug $OPENRCT2_CMAKE_OPTS ..
 	make
 popd

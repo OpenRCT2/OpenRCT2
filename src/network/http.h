@@ -2,7 +2,7 @@
 #define _HTTP_H_
 
 #ifndef DISABLE_HTTP
-#include <jansson/jansson.h>
+#include <jansson.h>
 #include "../common.h"
 
 typedef struct {
