@@ -6,7 +6,7 @@ questions or concerns, please ask in the [gitter](https://gitter.im/OpenRCT2/Ope
 # Reporting bugs
 To report a bug, ensure you have a GitHub account. Search the issues page to see if the bug has already been reported.
 If not, create a new issue and write the steps to reproduce. Upload a saved game if possible and this is very helpful
-for users to replicate the bug.
+for users to replicate the bug. Please state which version of the game you are running and where you downloaded it from, e.g. *openrct2.com develop 0.0.3 build 1255 (ec25b2f)*.
 
 # Translation
 Translation is managed in a separate repository, [OpenRCT2/Localisation](https://github.com/OpenRCT2/Localisation).
