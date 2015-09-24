@@ -46,6 +46,21 @@ extern "C" {
 
 #ifdef _WIN32
 #include <winsock2.h>
+#define LAST_SOCKET_ERROR() WSAGetLastError()
+#undef EWOULDBLOCK
+#define EWOULDBLOCK WSAEWOULDBLOCK
+#else
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <netinet/tcp.h>
+#include <sys/socket.h>
+#include <sys/fcntl.h>
+typedef int SOCKET;
+#define SOCKET_ERROR -1
+#define INVALID_SOCKET -1
+#define LAST_SOCKET_ERROR() errno
+#define closesocket close
+#define ioctlsocket ioctl
 #endif // _WIN32
 
 enum {
@@ -117,6 +132,8 @@ public:
 	void QueuePacket(std::unique_ptr<NetworkPacket> packet);
 	void SendQueuedPackets();
 	bool SetTCPNoDelay(bool on);
+	bool SetNonBlocking(bool on);
+	static bool SetNonBlocking(SOCKET socket, bool on);
 
 	SOCKET socket;
 	NetworkPacket inboundpacket;

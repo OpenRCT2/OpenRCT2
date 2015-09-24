@@ -33,6 +33,7 @@
 #include "intro.h"
 #include "management/news_item.h"
 #include "management/research.h"
+#include "network/network.h"
 #include "openrct2.h"
 #include "peep/staff.h"
 #include "ride/ride.h"
@@ -131,6 +132,9 @@ void title_load()
 	title_init_showcase();
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
+#ifndef DISABLE_NETWORK
+	network_close();
+#endif
 
 	if (gOpenRCT2ShowChangelog) {
 		gOpenRCT2ShowChangelog = false;
