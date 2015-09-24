@@ -163,7 +163,7 @@ int NetworkConnection::ReadPacket()
 		// read packet size
 		int readBytes = recv(socket, &((char*)&inboundpacket.size)[inboundpacket.transferred], sizeof(inboundpacket.size) - inboundpacket.transferred, 0);
 		if (readBytes == SOCKET_ERROR || readBytes == 0) {
-			if (WSAGetLastError() != WSAEWOULDBLOCK) {
+			if (LAST_SOCKET_ERROR() != EWOULDBLOCK && LAST_SOCKET_ERROR() != EAGAIN) {
 				return NETWORK_DISCONNECTED;
 			} else {
 				return NETWORK_NO_DATA; 
@@ -182,7 +182,7 @@ int NetworkConnection::ReadPacket()
 		if (inboundpacket.data->capacity() > 0) {
 			int readBytes = recv(socket, (char*)&inboundpacket.GetData()[inboundpacket.transferred - sizeof(inboundpacket.size)], sizeof(inboundpacket.size) + inboundpacket.size - inboundpacket.transferred, 0);
 			if (readBytes == SOCKET_ERROR || readBytes == 0) {
-				if (WSAGetLastError() != WSAEWOULDBLOCK) {
+				if (LAST_SOCKET_ERROR() != EWOULDBLOCK && LAST_SOCKET_ERROR() != EAGAIN) {
 					return NETWORK_DISCONNECTED;
 				} else {
 					return NETWORK_NO_DATA;
@@ -201,6 +201,7 @@ bool NetworkConnection::SendPacket(NetworkPacket& packet)
 {
 	uint16 sizen = htons(packet.size);
 	std::vector<uint8> tosend;
+	tosend.reserve(sizeof(sizen) + packet.size);
 	tosend.insert(tosend.end(), (uint8*)&sizen, (uint8*)&sizen + sizeof(sizen));
 	tosend.insert(tosend.end(), packet.data->begin(), packet.data->end());
 	while (1) {
@@ -236,6 +237,22 @@ bool NetworkConnection::SetTCPNoDelay(bool on)
 	return setsockopt(socket, IPPROTO_TCP, TCP_NODELAY, (const char*)&on, sizeof(on)) == 0;
 }
 
+bool NetworkConnection::SetNonBlocking(bool on)
+{
+	return SetNonBlocking(socket, on);
+}
+
+bool NetworkConnection::SetNonBlocking(SOCKET socket, bool on)
+{
+#ifdef _WIN32
+	u_long nonblocking = on;
+	return ioctlsocket(socket, FIONBIO, &nonblocking) == 0;
+#else
+	int flags = fcntl(socket, F_GETFL, 0);
+	return fcntl(socket, F_SETFL, on ? (flags | O_NONBLOCK) : (flags & ~O_NONBLOCK)) == 0;
+#endif
+}
+
 Network::Network()
 {
 	wsa_initialized = false;
@@ -266,6 +283,7 @@ Network::~Network()
 
 bool Network::Init()
 {
+#ifdef _WIN32
 	if (!wsa_initialized) {
 		log_verbose("Initialising WSA");
 		WSADATA wsa_data;
@@ -275,6 +293,7 @@ bool Network::Init()
 		}
 		wsa_initialized = true;
 	}
+#endif
 	return true;
 }
 
@@ -296,10 +315,12 @@ void Network::Close()
 	game_command_queue.clear();
 	player_list.clear();
 
+#ifdef _WIN32
 	if (wsa_initialized) {
 		WSACleanup();
 		wsa_initialized = false;
 	}
+#endif
 
 	gfx_invalidate_screen();
 }
@@ -322,28 +343,27 @@ bool Network::BeginClient(const char* host, unsigned short port)
 		return false;
 	}
 
-	SOCKADDR_IN server_address;
+	sockaddr_in server_address;
 	if (inet_pton(AF_INET, address, &server_address.sin_addr) != 1) {
 		return false;
 	}
 	server_address.sin_family = AF_INET;
 	server_address.sin_port = htons(port);
 
-	if (connect(server_socket, (SOCKADDR*)&server_address, sizeof(SOCKADDR_IN)) != 0) {
+	if (connect(server_socket, (sockaddr*)&server_address, sizeof(server_address)) != 0) {
 		log_error("Unable to connect to host.");
 		return false;
 	} else {
 		printf("Connected to server!\n");
 	}
 
-	u_long nonblocking = 1;
-	if (ioctlsocket(server_socket, FIONBIO, &nonblocking) != NO_ERROR) {
-		closesocket(server_socket);
-		log_error("Failed to set non-blocking mode.");
-	}
-
 	server_connection.socket = server_socket;
 	server_connection.SetTCPNoDelay(true);
+	if (!server_connection.SetNonBlocking(true)) {
+		closesocket(server_socket);
+		log_error("Failed to set non-blocking mode.");
+		return false;
+	}
 
 	mode = NETWORK_MODE_CLIENT;
 
@@ -364,12 +384,12 @@ bool Network::BeginServer(unsigned short port)
 		return false;
 	}
 
-	SOCKADDR_IN local_address;
+	sockaddr_in local_address;
 	local_address.sin_family = AF_INET;
-	local_address.sin_addr.S_un.S_addr = INADDR_ANY;
+	local_address.sin_addr.s_addr = INADDR_ANY;
 	local_address.sin_port = htons(port);
 
-	if (bind(listening_socket, (SOCKADDR*)&local_address, sizeof(SOCKADDR_IN)) != 0) {
+	if (bind(listening_socket, (sockaddr*)&local_address, sizeof(local_address)) != 0) {
 		closesocket(listening_socket);
 		log_error("Unable to bind to socket.");
 		return false;
@@ -381,8 +401,7 @@ bool Network::BeginServer(unsigned short port)
 		return false;
 	}
 
-	u_long nonblocking = 1;
-	if (ioctlsocket(listening_socket, FIONBIO, &nonblocking) != NO_ERROR) {
+	if (!NetworkConnection::SetNonBlocking(listening_socket, true)) {
 		closesocket(listening_socket);
 		log_error("Failed to set non-blocking mode.");
 		return false;
@@ -458,13 +477,12 @@ void Network::UpdateServer()
 	}
 	SOCKET socket = accept(listening_socket, NULL, NULL);
 	if (socket == INVALID_SOCKET) {
-		if (WSAGetLastError() != WSAEWOULDBLOCK) {
+		if (LAST_SOCKET_ERROR() != EWOULDBLOCK) {
 			PrintError();
 			log_error("Failed to accept client.");
 		}
 	} else {
-		u_long nonblocking = 1;
-		if (ioctlsocket(socket, FIONBIO, &nonblocking) != NO_ERROR) {
+		if (!NetworkConnection::SetNonBlocking(socket, true)) {
 			closesocket(socket);
 			log_error("Failed to set non-blocking mode.");
 		} else {
@@ -772,10 +790,16 @@ NetworkPlayer* Network::AddPlayer(const char* name)
 
 void Network::PrintError()
 {
+#ifdef _WIN32
 	wchar_t *s = NULL;
-	FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, WSAGetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&s, 0, NULL);
+	FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, LAST_SOCKET_ERROR(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&s, 0, NULL);
 	fprintf(stderr, "%S\n", s);
 	LocalFree(s);
+#else
+	char *s = strerror(LAST_SOCKET_ERROR());
+	fprintf(stderr, "%s\n", s);
+#endif
+	
 }
 
 int Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet)
@@ -838,7 +862,7 @@ int Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pac
 			chunk_buffer.resize(offset + chunksize);
 		}
 		char status[256];
-		sprintf(status, "Downloading map ... (%d / %d)", (offset + chunksize) / 1000, size / 1000);
+		sprintf(status, "Downloading map ... (%lu / %lu)", (offset + chunksize) / 1000, size / 1000);
 		window_network_status_open(status);
 		memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
 		if (offset + chunksize == size) {
@@ -982,7 +1006,11 @@ void network_close()
 
 int network_begin_client(const char *host, int port)
 {
+	if (gNetwork.GetMode() == NETWORK_MODE_NONE) {
 	return gNetwork.BeginClient(host, port);
+	} else {
+		return false;
+	}
 }
 
 int network_begin_server(int port)
