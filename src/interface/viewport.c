@@ -1173,14 +1173,18 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 		if (ride->status == RIDE_STATUS_OPEN &&
 			!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)){
 
-			RCT2_GLOBAL(0x0013CE954, uint32) = ride->name_arguments;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = ride->name;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, rct_string_id) = ride->name;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
 
 			string_id = STR_RIDE_ENTRANCE_NAME;
 		}
 
 		uint8 entrance_string[MAX_PATH];
-		format_string(entrance_string, string_id, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
+		if (gConfigGeneral.upper_case_banners) {
+			format_string_to_upper(entrance_string, string_id, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
+		} else {
+			format_string(entrance_string, string_id, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
+		}
 
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0x1C0;
 
@@ -1280,7 +1284,11 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 		}
 
 		uint8 park_name[MAX_PATH];
-		format_string(park_name, park_text_id, RCT2_ADDRESS(0x0013CE952, void));
+		if (gConfigGeneral.upper_case_banners) {
+			format_string_to_upper(park_name, park_text_id, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
+		} else {
+			format_string(park_name, park_text_id, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
+		}
 
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0x1C0;
 		uint16 string_width = gfx_get_string_width(park_name);
@@ -1527,7 +1535,11 @@ void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* m
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = gBanners[map_element->properties.banner.index].string_idx;
 		string_id = STR_BANNER_TEXT;
 	}
-	format_string(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), string_id, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+	if (gConfigGeneral.upper_case_banners) {
+		format_string_to_upper(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), string_id, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
+	} else {
+		format_string(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), string_id, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
+	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0x1C0;
 
