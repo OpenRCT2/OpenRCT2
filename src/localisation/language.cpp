@@ -61,12 +61,19 @@ static TTFFontSetDescriptor TTFFontSimSun = {{
 	{ "simsun.ttc",		13,		1,		0,		20,		nullptr },
 }};
 
-static TTFFontSetDescriptor TTFFontMalgun = { {
+static TTFFontSetDescriptor TTFFontMalgun = {{
 	{ "malgun.ttf",		8,		-1,		-3,		6,		nullptr },
 	{ "malgun.ttf",		11,		1,		-2,		14,		nullptr },
 	{ "malgun.ttf",		12,		1,		-4,		14,		nullptr },
 	{ "malgun.ttf",		13,		1,		0,		20,		nullptr },
-} };
+}};
+
+static TTFFontSetDescriptor TTFFontArial = {{
+	{ "arial.ttf",		8,		-1,		-3,		6,		nullptr },
+	{ "arial.ttf",		11,		1,		-2,		14,		nullptr },
+	{ "arial.ttf",		12,		1,		-4,		14,		nullptr },
+	{ "arial.ttf",		13,		1,		0,		20,		nullptr },
+}};
 
 const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
 	{ "",			 "",						 "",						"",							FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_UNDEFINED
@@ -85,6 +92,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
 	{ "zh-Hans",	"Chinese (Simplified)",		"Chinese (Simplified)",		"chinese_simplified",		&TTFFontSimSun,			RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED		},	// LANGUAGE_CHINESE_SIMPLIFIED
 	{ "fi-FI",		"Finnish",					"Suomi",					"finnish",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_FINNISH
 	{ "kr-KR",		"Korean",					"Korean",					"korean",					&TTFFontMalgun,			RCT2_LANGUAGE_ID_KOREAN					},	// LANGUAGE_KOREAN
+	{ "ru-RU",		"Russian",					"ру́сский язы́к",				"russian",					&TTFFontArial,			RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_RUSSIAN
 };
 
 int gCurrentLanguage = LANGUAGE_UNDEFINED;
