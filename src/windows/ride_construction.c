@@ -1563,6 +1563,15 @@ static void window_ride_construction_construct(rct_window *w)
 		return;
 	}
 
+	// If client, then we can't update 'next piece selection' code until server sends back command
+	if (network_get_mode() == NETWORK_MODE_CLIENT) {
+		if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK) {
+			game_command_callback = game_command_callback_ride_construct_placed_back;
+		} else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT) {
+			game_command_callback = game_command_callback_ride_construct_placed_front;
+		}
+	}
+
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 	RCT2_GLOBAL(0x00F44074, money32) = game_do_command(
 		x,
@@ -1592,6 +1601,9 @@ static void window_ride_construction_construct(rct_window *w)
 		viewport_set_visibility(2);
 	}
 
+	// ***************
+	// NOTE: the rest of this function (minus the network condition) is copied to game_command_callback_ride_construct_placed_front/back
+	// Please update both ends if there are any changes here
 	if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK) {
 		RCT2_GLOBAL(0x00F441D2, uint8) = _currentRideIndex;
 		trackDirection = _currentTrackPieceDirection ^ 2;
@@ -1642,6 +1654,10 @@ static void window_ride_construction_construct(rct_window *w)
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
 		}
 	}
+
+	// returning early here makes it so that the construction window doesn't blink
+	if (network_get_mode() == NETWORK_MODE_CLIENT)
+		return;
 
 	sub_6C84CE();
 }
