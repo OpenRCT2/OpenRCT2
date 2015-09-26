@@ -1106,7 +1106,7 @@ static bool network_get_address(char *dst, size_t dstLength, const char *host)
 		if (remoteHost->ai_family != AF_INET) continue;
 
 		struct sockaddr_in *ipv4SockAddr = (struct sockaddr_in*)remoteHost->ai_addr;
-		return inet_ntop(AF_INET, (const void*)&ipv4SockAddr->sin_addr, dst, dstLength) != NULL;
+		return inet_ntop(AF_INET, (void*)&ipv4SockAddr->sin_addr, dst, dstLength) != NULL;
 	}
 
 	// No IPv4 addresses found for host name
