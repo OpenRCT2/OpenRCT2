@@ -31,17 +31,18 @@
 #include "../audio/mixer.h"
 #include "../config.h"
 #include "../drawing/drawing.h"
+#include "../interface/themes.h"
+#include "../interface/title_sequences.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
 #include "../sprites.h"
+#include "../title.h"
 #include "dropdown.h"
 #include "error.h"
-#include "../interface/themes.h"
-#include "../interface/title_sequences.h"
-#include "../title.h"
 
 enum WINDOW_OPTIONS_PAGE {
 	WINDOW_OPTIONS_PAGE_DISPLAY,
@@ -789,11 +790,11 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			gDropdownItemsChecked = 1 << (gCurrentLanguage - 1);
 			break;
 		case WIDX_DATE_FORMAT_DROPDOWN:
-			for (i = 0; i < 2; i++) {
+			for (i = 0; i < 4; i++) {
 				gDropdownItemsFormat[i] = 1142;
-				gDropdownItemsArgs[i] = 5162 + i;
+				gDropdownItemsArgs[i] = DateFormatStringIds[i];
 			}
-			window_options_show_dropdown(w, widget, 2);
+			window_options_show_dropdown(w, widget, 4);
 			gDropdownItemsChecked = 1 << (gConfigGeneral.date_format);
 			break;
 		}
@@ -1334,12 +1335,12 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		gfx_draw_string_left(dpi, 5161, w, w->colours[1], w->x + 10, w->y + window_options_culture_widgets[WIDX_DATE_FORMAT].top + 1);
 		gfx_draw_string_left(
 			dpi,
-			5162 + gConfigGeneral.date_format,
+			DateFormatStringIds[gConfigGeneral.date_format],
 			NULL,
 			w->colours[1],
 			w->x + window_options_culture_widgets[WIDX_DATE_FORMAT].left + 1,
 			w->y + window_options_culture_widgets[WIDX_DATE_FORMAT].top
-			);
+		);
 		break;
 	case WINDOW_OPTIONS_PAGE_AUDIO:
 		gfx_draw_string_left(dpi, 2738, w, w->colours[1], w->x + 10, w->y + window_options_audio_widgets[WIDX_TITLE_MUSIC].top + 1);
