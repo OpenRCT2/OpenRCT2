@@ -67,7 +67,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * James Robertson (rd3k)
 * Max Boße (MakaHost)
 * (MaxBareiss)
-* Philip Plarkson (Philpax)
+* Mithun Hunsur (Philpax)
 * (RollingStar)
 
 ## Translation
