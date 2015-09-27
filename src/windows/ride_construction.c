@@ -1583,6 +1583,8 @@ static void window_ride_construction_construct(rct_window *w)
 		0
 	);
 	if (RCT2_GLOBAL(0x00F44074, money32) == MONEY32_UNDEFINED) {
+		if (network_get_mode() == NETWORK_MODE_CLIENT)
+			game_command_callback = 0; // don't do callback if we can't afford the track piece
 		sub_6C84CE();
 		return;
 	}
