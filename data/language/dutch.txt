@@ -3492,7 +3492,7 @@ STR_5156    :{SMALLFONT}{BLACK}Maakt het mogelijk om de meeste attractietypes te
 STR_5157    :Alle prijzen ontgrendelen
 STR_5158    :Terug naar het hoofdmenu
 STR_5159    :OpenRCT2 afsluiten
-STR_5160    :{MONTH} {STRINGID}, jaar {COMMA16}
+STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, jaar {POP16}{COMMA16}
 STR_5161    :Datumnotatie:
 STR_5162    :Dag/maand/jaar
 STR_5163    :Maand/dag/jaar
@@ -3880,6 +3880,11 @@ STR_5544    :{SMALLFONT}{BLACK}Helder rood
 STR_5545    :{SMALLFONT}{BLACK}Donkerroze
 STR_5546    :{SMALLFONT}{BLACK}Helder roze
 STR_5547    :{SMALLFONT}{BLACK}Lichtroze
+STR_5548    :Alle bedrijfsmodi tonen
+STR_5549    :Jaar/maand/dag
+STR_5550    :{POP16}{POP16}Jaar {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_5551    :Jaar/dag/maand
+STR_5552    :{POP16}{POP16}Jaar {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 
 #############
 # Scenarios #
