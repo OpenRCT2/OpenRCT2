@@ -5,20 +5,24 @@ set -e
 cachedir=.cache
 mkdir -p $cachedir
 
+# Sets default target to "linux", if none specified
+TARGET=${TARGET-linux}
+
 if [[ ! -d build ]]; then
 	mkdir -p build
 fi
 
-libversion=2
+# keep in sync with version in install.sh
+libversion=3
 libVFile="./libversion"
 libdir="./lib"
 currentversion=0
 needsdownload="true"
 
-if [ -f $libVFile ]; then 
-    while read line; do    
-        currentversion=$line  
-        continue 
+if [ -f $libVFile ]; then
+    while read line; do
+        currentversion=$line
+        continue
     done < $libVFile
 fi
 
@@ -27,40 +31,40 @@ if [ $currentversion -ge $libversion ]; then
 fi
 
 if [ ! -d $libdir ]; then
-    needsdownload="true"    
+    needsdownload="true"
 fi
-    
+
 if [[ "$needsdownload" = "true" ]]; then
-    echo "New libraries need to be downloaded, the script might ask you for sudo access password"
-    rm -rf ./lib
-    if [[ -f $cachedir/orctlibs.zip ]]; then 
-        rm -rf $cachedir/orctlibs.zip
-    fi
-    if [[ -d /usr/local/cross-tools/orctlibs ]]; then
-        sudo rm -rf /usr/local/cross-tools/orctlibs
-    fi
-     if [[ -d $cachedir/orctlibs ]]; then
-        rm -rf $cachedir/orctlibs
-    fi
-    curl https://dl.dropboxusercontent.com/u/1323345/orctlibs.zip -o $cachedir/orctlibs.zip
-    mkdir -p $cachedir/orctlibs
-    pushd $cachedir/orctlibs
-        unzip -uaq ../orctlibs.zip 
-    popd
-    sudo mkdir -p /usr/local/cross-tools/orctlibs
-    mkdir -p lib
-    sudo cp -rf $cachedir/orctlibs/glob/* /usr/local/cross-tools/orctlibs/.
-    cp -rf $cachedir/orctlibs/local/* ./lib/. 
-    echo $libversion > $libVFile
+	echo "New libraries need to be downloaded. Clearing cache and calling ./install.sh"
+	rm -rf ./lib
+	if [[ -f $cachedir/orctlibs.zip ]]; then
+		rm -rf $cachedir/orctlibs.zip
+	fi
+	if [[ -d /usr/local/cross-tools/orctlibs ]]; then
+		sudo rm -rf /usr/local/cross-tools/orctlibs
+	fi
+	if [[ -d $cachedir/orctlibs ]]; then
+		rm -rf $cachedir/orctlibs
+	fi
+	./install.sh
+	echo $libversion > $libVFile
 fi
 
 pushd build
 	echo OPENRCT2_CMAKE_OPTS = $OPENRCT2_CMAKE_OPTS
-	cmake -DCMAKE_BUILD_TYPE=Debug $OPENRCT2_CMAKE_OPTS ..
-	make
+	if [[ $TARGET == "docker32" ]]
+	then
+		PARENT=`readlink -f ../`
+		chmod a+rwx `pwd`
+		chmod g+s `pwd`
+		docker run -u travis -v $PARENT:/work/openrct2 -w /work/openrct2/build -i -t janisozaur/openrct2:32bit-only bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && make"
+	else
+		cmake -DCMAKE_BUILD_TYPE=Debug $OPENRCT2_CMAKE_OPTS ..
+		make
+	fi
 popd
 
-if [[ ! -h openrct2.dll ]]; then 
+if [[ ! -h openrct2.dll ]]; then
     ln -s build/openrct2.dll openrct2.dll
 fi
 
@@ -74,4 +78,3 @@ if [[ -t 1 ]]; then
 else
     echo -e "\nDone! Run OpenRCT2 by typing:\n\nwine openrct2.exe\n"
 fi
- 
