@@ -174,12 +174,12 @@ extern unsigned char entrance_down_cursor_mask[32 * 4];
 
 extern unsigned char hand_open_cursor_data[32 * 4];
 extern unsigned char hand_open_cursor_mask[32 * 4];
-#define HAND_OPEN_CURSOR_HOTX 0
-#define HAND_OPEN_CURSOR_HOTY 0
+#define HAND_OPEN_CURSOR_HOTX 5
+#define HAND_OPEN_CURSOR_HOTY 1
 
 extern unsigned char hand_closed_cursor_data[32 * 4];
 extern unsigned char hand_closed_cursor_mask[32 * 4];
-#define HAND_CLOSED_CURSOR_HOTX 0
-#define HAND_CLOSED_CURSOR_HOTY 0
+#define HAND_CLOSED_CURSOR_HOTX 5
+#define HAND_CLOSED_CURSOR_HOTY 1
 
 #endif
