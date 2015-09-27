@@ -2643,6 +2643,7 @@ static void peep_udpate_ride_sub_state_13(rct_peep* peep){
 
 		peep->destination_x = x;
 		peep->destination_y = y;
+		return;
 	}
 
 	peep->var_37 |= 3;
