@@ -146,7 +146,7 @@ static void ride_spiral_slide_update(rct_ride *ride);
 static void ride_update(int rideIndex);
 static void ride_update_vehicle_colours(int rideIndex);
 static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride);
-static void sub_666CBE(int x, int y, rct_map_element *mapElement);
+static void maze_entrance_hedge_removal(int x, int y, rct_map_element *mapElement);
 
 rct_ride_type *ride_get_entry(rct_ride *ride)
 {
@@ -4078,7 +4078,7 @@ static void ride_set_maze_entrance_exit_points(rct_ride *ride)
 			}
 			if (mapElement->base_height != z) continue;
 
-			sub_666CBE(x, y, mapElement);
+			maze_entrance_hedge_removal(x, y, mapElement);
 		} while (!map_element_is_last_for_tile(mapElement++));
 	}
 }
@@ -6607,8 +6607,9 @@ void sub_6CB945(int rideIndex)
 /**
  *
  *  rct2: 0x00666CBE
+ *  Removes the hedge walls for an entrance placement.
  */
-static void sub_666CBE(int x, int y, rct_map_element *mapElement)
+static void maze_entrance_hedge_removal(int x, int y, rct_map_element *mapElement)
 {
 	int direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 	x += TileDirectionDelta[direction].x;
@@ -6623,17 +6624,19 @@ static void sub_666CBE(int x, int y, rct_map_element *mapElement)
 		if (mapElement->base_height != z) continue;
 		if (mapElement->properties.track.type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) continue;
 
-		direction <<= 2;
-		direction = (direction + 9) & 0x0F;
-		mapElement->properties.track.sequence &= direction;
-		direction = (direction + 3) & 0x0F;
-		mapElement->properties.track.sequence &= direction;
-		direction = (direction - 2) & 0x0F;
-		mapElement->properties.track.sequence &= direction;
-		direction = (direction + 1) & 0x0F;
-		mapElement->properties.track.sequence &= direction;
-		direction = (direction + 4) & 0x0F;
-		mapElement->properties.track.sequence &= direction;
+		// Each maze element is split into 4 sections with 4 different walls
+		uint8 mazeSection = direction * 4;
+		// Remove the top outer wall
+		mapElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 9) & 0x0F));
+		// Remove the bottom outer wall
+		mapElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 12) & 0x0F));
+		// Remove the intersecting wall
+		mapElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 10) & 0x0F));
+		// Remove the top hedge section
+		mapElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 11) & 0x0F));
+		// Remove the bottom hedge section
+		mapElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 15) & 0x0F));
+
 		map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 		return;
 	} while (!map_element_is_last_for_tile(mapElement++));
@@ -6642,8 +6645,9 @@ static void sub_666CBE(int x, int y, rct_map_element *mapElement)
 /**
  *
  *  rct2: 0x00666D6F
+ *  Replaces the outer hedge walls for an entrance placement removal.
  */
-static void sub_666D6F(int x, int y, rct_map_element *mapElement)
+static void maze_entrance_hedge_replacement(int x, int y, rct_map_element *mapElement)
 {
 	int direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 	x += TileDirectionDelta[direction].x;
@@ -6658,11 +6662,13 @@ static void sub_666D6F(int x, int y, rct_map_element *mapElement)
 		if (mapElement->base_height != z) continue;
 		if (mapElement->properties.track.type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) continue;
 
-		direction <<= 2;
-		direction = (direction + 9) & 0x0F;
-		mapElement->properties.track.sequence |= direction;
-		direction = (direction + 3) & 0x0F;
-		mapElement->properties.track.sequence |= direction;
+		// Each maze element is split into 4 sections with 4 different walls
+		uint8 mazeSection = direction * 4;
+		// Add the top outer wall
+		mapElement->properties.track.maze_entry |= (1 << ((mazeSection + 9) & 0x0F));
+		// Add the bottom outer wall
+		mapElement->properties.track.maze_entry |= (1 << ((mazeSection + 12) & 0x0F));
+
 		map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 		return;
 	} while (!map_element_is_last_for_tile(mapElement++));
@@ -6833,7 +6839,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 
 			sub_6A7594();
 			if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
-				sub_666CBE(x, y, mapElement);
+				maze_entrance_hedge_removal(x, y, mapElement);
 			}
 			footpath_connect_edges(x, y, mapElement, flags);
 			sub_6A759F();
@@ -6901,7 +6907,7 @@ money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex, uint8 
 		}
 
 		sub_6A7594();
-		sub_666D6F(x, y, mapElement);
+		maze_entrance_hedge_replacement(x, y, mapElement);
 		footpath_remove_edges_at(x, y, mapElement);
 
 		uint8 is_exit = mapElement->properties.entrance.type;
