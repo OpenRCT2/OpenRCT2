@@ -179,7 +179,7 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 
 	// Input state
 	_dropdown_highlighted_index = -1;
-	RCT2_GLOBAL(0x009DED34, sint32) = 0;
+	*gDropdownItemsDisabled = 0;
 	gDropdownItemsChecked = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, sint8) = INPUT_STATE_DROPDOWN_ACTIVE;
 
@@ -258,7 +258,7 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 
 	// Input state
 	_dropdown_highlighted_index = -1;
-	RCT2_GLOBAL(0x009DED34, sint32) = 0;
+	*gDropdownItemsDisabled = 0;
 	gDropdownItemsChecked = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, sint8) = INPUT_STATE_DROPDOWN_ACTIVE;
 
@@ -337,7 +337,7 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				colour = w->colours[0] & 0x7F;
 				if (i == _dropdown_highlighted_index)
 					colour = 2;
-				if (RCT2_GLOBAL(0x009DED34, uint32) & (1 << i))
+				if (*gDropdownItemsDisabled & (1 << i))
 					if (i < 32)
 						colour = (w->colours[0] & 0x7F) | 0x40;
 

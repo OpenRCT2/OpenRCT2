@@ -3164,7 +3164,6 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
 			RCT2_GLOBAL(0x009DEBA2, sint16) = i;
 		}
 	}
-	*gDropdownItemsDisabled = RCT2_GLOBAL(0x00F4409C, uint32);
 
 	window_dropdown_show_text_custom_width(
 		w->x + widget->left,
@@ -3175,6 +3174,8 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
 		_numCurrentPossibleRideConfigurations,
 		widget->right - widget->left
 	);
+
+	*gDropdownItemsDisabled = RCT2_GLOBAL(0x00F4409C, uint32);
 }
 
 /**
