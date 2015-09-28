@@ -3498,7 +3498,7 @@ STR_5156    :{SMALLFONT}{BLACK}容許測試大部份軌道設計, 即使未建�
 STR_5157    :允許設置進入樂園及乘坐遊樂設施的價格
 STR_5158    :回到主選單
 STR_5159    :離開OpenRCT2
-STR_5160    :{MONTH} {STRINGID}, 第{COMMA16}年
+STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, {POP16}第{COMMA16}年
 STR_5161    :日期格式:
 STR_5162    :日/月/年
 STR_5163    :月/日/年
@@ -3888,7 +3888,10 @@ STR_5545    :{SMALLFONT}{BLACK}暗粉紅色
 STR_5546    :{SMALLFONT}{BLACK}明粉紅色
 STR_5547    :{SMALLFONT}{BLACK}淺粉紅色
 STR_5548    :顯示所有運作模式
-
+STR_5549    :年/月/日
+STR_5550    :{POP16}{POP16}第{COMMA16}年, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_5551    :年/日/月
+STR_5552    :{POP16}{POP16}第{COMMA16}年, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 
 #####################
 # Rides/attractions # 

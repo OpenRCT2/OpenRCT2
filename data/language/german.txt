@@ -3493,7 +3493,7 @@ STR_5156    :{SMALLFONT}{BLACK}Erlaubt das Testen der meisten Bahnarten, selbst 
 STR_5157    :Alle Preise freischalten
 STR_5158    :Spiel beenden
 STR_5159    :OpenRCT2 beenden
-STR_5160    :{MONTH} {STRINGID}, Jahr {COMMA16}
+STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Jahr {POP16}{COMMA16}
 STR_5161    :Datumsformat:
 STR_5162    :Tag/Monat/Jahr
 STR_5163    :Monat/Tag/Jahr
@@ -3882,3 +3882,7 @@ STR_5545    :{SMALLFONT}{BLACK}Dunkelrosa
 STR_5546    :{SMALLFONT}{BLACK}Leuchtendes Rosa
 STR_5547    :{SMALLFONT}{BLACK}Hellrosa
 STR_5548    :Alle Betriebsmodi anzeigen
+STR_5549    :Jahr/Monat/Tag
+STR_5550    :{POP16}{POP16}Jahr {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_5551    :Jahr/Tag/Monat
+STR_5552    :{POP16}{POP16}Jahr {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
