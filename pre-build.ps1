@@ -1,9 +1,10 @@
 #init
-$libversion = 2
+$libversion = 3
 $path = Split-Path $Script:MyInvocation.MyCommand.Path
 $zip = $path+'\orctlibs.zip'
 $libs = $path+'\lib'
 $libsVFile = $path+'\libversion'
+$liburl = 'https://openrct.net/launcher/libs/orctlibs_vs.zip'
 $libsTest = Test-Path $libs
 
 #libs version test
@@ -23,7 +24,7 @@ if (!$libsTest -or $needsdownload) {
         rm $libs -Recurse -Force
     }
     mkdir $libs
-	Invoke-WebRequest https://download.openrct2.website/dev/lib/vs -OutFile $path\orctlibs.zip
+	Invoke-WebRequest $liburl -OutFile $path\orctlibs.zip
 	[System.Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem') > $null
 	[System.IO.Compression.ZipFile]::ExtractToDirectory($zip, $libs)
 	rm $path\orctlibs.zip -Force -ErrorAction SilentlyContinue

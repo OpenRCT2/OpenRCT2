@@ -26,20 +26,29 @@ project(${PROJECT})
 add_definitions(-DORCT2_RESOURCE_DIR="${ORCT2_RESOURCE_DIR}")
 add_definitions(-DHAVE_CONFIG_H)
 add_definitions(-DCURL_STATICLIB)
+
+INCLUDE(FindPkgConfig)
+
 option(DISABLE_HTTP_TWITCH "Disable HTTP and Twitch support.")
 if (DISABLE_HTTP_TWITCH)
 	add_definitions(-DDISABLE_HTTP -DDISABLE_TWITCH)
+else (DISABLE_HTTP_TWITCH)
+	PKG_CHECK_MODULES(LIBCURL REQUIRED libcurl)
+	PKG_CHECK_MODULES(JANSSON REQUIRED jansson)
+	SET(HTTPLIBS ${LIBCURL_LIBRARIES} ${JANSSON_LIBRARIES})
+	if (WIN32)
+		SET(HTTPLIBS ${HTTPLIBS} ssl crypto winmm.lib ws2_32)
+	endif (WIN32)
 endif (DISABLE_HTTP_TWITCH)
 
 option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
 if (DISABLE_NETWORK)
 	add_definitions(-DDISABLE_NETWORK)
+else (DISABLE_NETWORK)
+	if (WIN32)
+		SET(NETWORKLIBS ${NETWORKLIBS} ws2_32)
+	endif (WIN32)
 endif (DISABLE_NETWORK)
-
-set(ORCTLIBS_INCLUDE /usr/local/cross-tools/orctlibs/include)
-set(JANSSON_INCLUDE /usr/local/cross-tools/orctlibs/include/jansson)
-set(ORCTLIBS_LIB_DIR /usr/local/cross-tools/orctlibs/lib)
-set(ORCTLIBS_LIB jansson curl ssl crypto)
 
 # include lib
 include_directories("lib/")
@@ -52,18 +61,15 @@ if (UNIX)
 	# force 32bit build for now and set necessary flags to compile code as is
 	set(CMAKE_C_FLAGS "-m32 -masm=intel -fvar-tracking-assignments -std=gnu99")
 	set(CMAKE_CXX_FLAGS "-m32 -std=gnu++11 -fvar-tracking-assignments -masm=intel")
-	set(LIB32 /usr/lib32)
-	set(CMAKE_SHARED_LINKER_FLAGS "-m32 -Wl,-melf_i386 -L${LIB32} -lSDL2_ttf")
+	set(CMAKE_SHARED_LINKER_FLAGS "-m32 -Wl,-melf_i386")
 	set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_SHARED_LINKER_FLAGS})
-
-	# find and include SDL2
-	INCLUDE(FindPkgConfig)
-	PKG_CHECK_MODULES(SDL2 REQUIRED sdl2 SDL2_ttf)
-	INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS})
 endif (UNIX)
 
-INCLUDE_DIRECTORIES(${ORCTLIBS_INCLUDE} ${JANSSON_INCLUDE})
-LINK_DIRECTORIES(${LINK_DIRECTORIES} ${LIB32} ${SDL2_LIBRARY_DIRS} ${ORCTLIBS_LIB_DIR})
+# find and include SDL2
+PKG_CHECK_MODULES(SDL2 REQUIRED sdl2 SDL2_ttf)
+INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLUDE_DIRS})
+
+LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${JANSSON_LIBRARY_DIRS} ${LIBCURL_LIBRARY_DIRS})
 
 if (WIN32)
 	# build as library for now, replace with add_executable
@@ -78,8 +84,4 @@ endif (WIN32)
 # libopenrct2.dll -> openrct2.dll
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 
-TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCTLIBS_LIB})
-
-if (WIN32)
-	target_link_libraries(${PROJECT} winmm.lib -limm32 -lversion ws2_32)
-endif (WIN32)
+TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCTLIBS_LIB} ${JANSSON_LIBRARIES} ${HTTPLIBS} ${NETWORKLIBS})

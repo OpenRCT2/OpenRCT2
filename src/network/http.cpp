@@ -1,5 +1,6 @@
 extern "C" {
 	#include "http.h"
+	#include "../platform/platform.h"
 }
 
 #ifdef DISABLE_HTTP
@@ -10,7 +11,6 @@ void http_dispose() { }
 #else
 
 #include <SDL.h>
-#include <jansson/jansson.h>
 
 // cURL includes windows.h, but we don't need all of it.
 #define WIN32_LEAN_AND_MEAN
@@ -69,8 +69,8 @@ http_json_response *http_request_json(const char *url)
 	writeBuffer.length = 0;
 	writeBuffer.capacity = 0;
 
-	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, TRUE);
-	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, TRUE);
+	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
+	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
 	curl_easy_setopt(curl, CURLOPT_CAINFO, "curl-ca-bundle.crt");
 	curl_easy_setopt(curl, CURLOPT_URL, url);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &writeBuffer);
