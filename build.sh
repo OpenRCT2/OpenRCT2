@@ -13,7 +13,7 @@ if [[ ! -d build ]]; then
 fi
 
 # keep in sync with version in install.sh
-libversion=3
+sha256sum=0a7b5ea46e9cb4b19000b69690eae0b75929752f7db192c78bd7ffb61d696835
 libVFile="./libversion"
 libdir="./lib"
 currentversion=0
@@ -26,7 +26,7 @@ if [ -f $libVFile ]; then
     done < $libVFile
 fi
 
-if [ $currentversion -ge $libversion ]; then
+if [ "z$currentversion" == "z$sha256sum" ]; then
     needsdownload="false"
 fi
 
@@ -35,6 +35,7 @@ if [ ! -d $libdir ]; then
 fi
 
 if [[ "$needsdownload" = "true" ]]; then
+	echo "Found library had sha256sum $currentversion, expected $sha256sum"
 	echo "New libraries need to be downloaded. Clearing cache and calling ./install.sh"
 	rm -rf ./lib
 	if [[ -f $cachedir/orctlibs.zip ]]; then
@@ -47,7 +48,6 @@ if [[ "$needsdownload" = "true" ]]; then
 		rm -rf $cachedir/orctlibs
 	fi
 	./install.sh
-	echo $libversion > $libVFile
 fi
 
 pushd build

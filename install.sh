@@ -166,7 +166,6 @@ elif [[ `uname` == "Linux" ]]; then
 		fi
 	else
 		# prevent build.sh from re-doing all the steps again
-		echo $libversion > $libVFile
 		case "$TARGET" in
 			"linux")
 				sudo dpkg --add-architecture i386
@@ -195,6 +194,9 @@ elif [[ `uname` == "Linux" ]]; then
 fi
 
 download_libs
+# mind the gap (trailing space)
+sha256sum $cachedir/orctlibs.zip | cut -f1 -d\  > $libVFile
+echo "Downloaded library with sha256sum: $(cat $libVFile)"
 # Local libs are required for all targets
 install_local_libs
 
