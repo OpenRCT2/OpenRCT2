@@ -73,5 +73,5 @@ private:
 	void ParseGroupScenario(IStringReader *reader);
 	void ParseString(IStringReader *reader);
 
-	bool ParseToken(IStringReader *reader, uint32 *token);
+	bool ParseToken(IStringReader *reader, uint32 *token, bool *isByte);
 };

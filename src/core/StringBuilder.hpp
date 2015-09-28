@@ -47,6 +47,8 @@ public:
 	/**
 	 * Appends the given string of the given length to the current string. Essentially used to ignore null terminators or copy
 	 * the data faster as the length is already known.
+	 * @param text Pointer to the UTF-8 text to append.
+	 * @param textLength Number of bytes to copy. (Can be used to append single bytes rather than codepoints)
 	 */
 	void Append(const utf8 *text, int textLength) {
 		EnsureCapacity(_length + textLength + 1);

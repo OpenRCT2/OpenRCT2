@@ -415,11 +415,16 @@ void LanguagePack::ParseString(IStringReader *reader)
 	while (reader->TryPeek(&codepoint) && !IsNewLine(codepoint)) {
 		if (codepoint == '{') {
 			uint32 token;
-			if (!ParseToken(reader, &token)) {
+			bool isByte;
+			if (ParseToken(reader, &token, &isByte)) {
+				if (isByte) {
+					sb.Append((const utf8*)&token, 1);
+				} else {
+					sb.Append((int)token);
+				}
+			} else {
 				// Syntax error or unknown token, ignore line entirely
 				return;
-			} else {
-				sb.Append((int)token);
 			}
 		} else {
 			reader->Skip();
@@ -451,7 +456,7 @@ void LanguagePack::ParseString(IStringReader *reader)
 	_stringDataSB.Append(&sb);
 }
 
-bool LanguagePack::ParseToken(IStringReader *reader, uint32 *token)
+bool LanguagePack::ParseToken(IStringReader *reader, uint32 *token, bool *isByte)
 {
 	auto sb = StringBuilder();
 	int codepoint;
@@ -472,12 +477,14 @@ bool LanguagePack::ParseToken(IStringReader *reader, uint32 *token)
 
 	const utf8 *tokenName = sb.GetBuffer();
 	*token = format_get_code(tokenName);
+	*isByte = false;
 
 	// Handle explicit byte values
 	if (*token == 0) {
 		int number;
 		if (sscanf(tokenName, "%d", &number) == 1) {
 			*token = Math::Clamp(0, number, 255);
+			*isByte = true;
 		}
 	}
 
