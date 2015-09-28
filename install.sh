@@ -4,6 +4,7 @@ SDL2_PV=2.0.3
 SDL2_TTF_PV=2.0.12
 
 cachedir=.cache
+liburl=https://openrct.net/launcher/libs/orctlibs.zip
 mkdir -p $cachedir
 
 echo `uname`
@@ -46,7 +47,7 @@ function download_sdl {
 
 function download_libs {
 	if [[ ! -f $cachedir/orctlibs.zip ]]; then
-		curl https://dl.dropboxusercontent.com/u/1323345/orctlibs.zip -o $cachedir/orctlibs.zip;
+		curl $liburl -o $cachedir/orctlibs.zip;
 	fi
 	if [[ ! -d $cachedir/orctlibs ]]; then
 		mkdir -p $cachedir/orctlibs
