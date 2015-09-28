@@ -23,7 +23,7 @@ if (!$libsTest -or $needsdownload) {
         rm $libs -Recurse -Force
     }
     mkdir $libs
-	Invoke-WebRequest https://download.openrct2.website/dev/lib/vs -OutFile $path\orctlibs.zip
+	Invoke-WebRequest https://dl.dropboxusercontent.com/u/1323345/orctlibs_vs.zip -OutFile $path\orctlibs.zip
 	[System.Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem') > $null
 	[System.IO.Compression.ZipFile]::ExtractToDirectory($zip, $libs)
 	rm $path\orctlibs.zip -Force -ErrorAction SilentlyContinue
