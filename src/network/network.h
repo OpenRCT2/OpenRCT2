@@ -44,24 +44,32 @@ extern "C" {
 
 #ifndef DISABLE_NETWORK
 
-#ifdef _WIN32
-#include <winsock2.h>
-#include <ws2tcpip.h>
-#define LAST_SOCKET_ERROR() WSAGetLastError()
-#undef EWOULDBLOCK
-#define EWOULDBLOCK WSAEWOULDBLOCK
+#ifndef __MINGW32__
+#define USE_INET_PTON
 #else
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <netinet/tcp.h>
-#include <sys/socket.h>
-#include <sys/fcntl.h>
-typedef int SOCKET;
-#define SOCKET_ERROR -1
-#define INVALID_SOCKET -1
-#define LAST_SOCKET_ERROR() errno
-#define closesocket close
-#define ioctlsocket ioctl
+#warning using deprecated network functions in lieu of inet_pton, inet_ntop
+#endif // __MINGW32__
+
+#ifdef _WIN32
+	#include <winsock2.h>
+	#ifdef USE_INET_PTON
+		#include <ws2tcpip.h>
+	#endif
+	#define LAST_SOCKET_ERROR() WSAGetLastError()
+	#undef EWOULDBLOCK
+	#define EWOULDBLOCK WSAEWOULDBLOCK
+#else
+	#include <arpa/inet.h>
+	#include <netdb.h>
+	#include <netinet/tcp.h>
+	#include <sys/socket.h>
+	#include <sys/fcntl.h>
+	typedef int SOCKET;
+	#define SOCKET_ERROR -1
+	#define INVALID_SOCKET -1
+	#define LAST_SOCKET_ERROR() errno
+	#define closesocket close
+	#define ioctlsocket ioctl
 #endif // _WIN32
 
 enum {
@@ -264,7 +272,11 @@ void network_send_chat(const char* text);
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
 
 void network_print_error();
+#ifdef USE_INET_PTON
 static bool network_get_address(char *dst, size_t dstLength, const char *host);
+#else
+static char *network_getAddress(char *host);
+#endif // USE_INET_PTON
 
 #ifdef __cplusplus
 }

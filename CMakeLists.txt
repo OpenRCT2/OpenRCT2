@@ -44,6 +44,10 @@ endif (DISABLE_HTTP_TWITCH)
 option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
 if (DISABLE_NETWORK)
 	add_definitions(-DDISABLE_NETWORK)
+else (DISABLE_NETWORK)
+	if (WIN32)
+		SET(NETWORKLIBS ${NETWORKLIBS} ws2_32)
+	endif (WIN32)
 endif (DISABLE_NETWORK)
 
 # include lib
@@ -80,4 +84,4 @@ endif (WIN32)
 # libopenrct2.dll -> openrct2.dll
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 
-TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCTLIBS_LIB} ${JANSSON_LIBRARIES} ${HTTPLIBS})
+TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCTLIBS_LIB} ${JANSSON_LIBRARIES} ${HTTPLIBS} ${NETWORKLIBS})
