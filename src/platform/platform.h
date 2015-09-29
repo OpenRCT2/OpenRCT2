@@ -46,6 +46,19 @@ typedef struct {
 } file_info;
 
 typedef struct {
+	sint16 day;
+	sint16 month;
+	sint16 year;
+	sint16 day_of_week;
+} rct2_date;
+
+typedef struct {
+	sint16 hour;
+	sint16 minute;
+	sint16 second;
+} rct2_time;
+
+typedef struct {
 	int x, y;
 	unsigned char left, middle, right, any;
 	int wheel;
@@ -91,6 +104,8 @@ void platform_process_messages();
 int platform_scancode_to_rct_keycode(int sdl_key);
 void platform_start_text_input(utf8 *buffer, int max_length);
 void platform_stop_text_input();
+void platform_get_date(rct2_date *out_date);
+void platform_get_time(rct2_time *out_time);
 
 // Platform specific definitions
 char platform_get_path_separator();

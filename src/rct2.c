@@ -530,17 +530,12 @@ void get_system_info()
  */
 void get_system_time()
 {
-#ifdef _WIN32
-	SYSTEMTIME systime;
-
-	GetSystemTime(&systime);
-	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, sint16) = systime.wDay;
-	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, sint16) = systime.wMonth;
-	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_YEAR, sint16) = systime.wYear;
-	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAYOFWEEK, sint16) = systime.wDayOfWeek;
-#else
-	STUB();
-#endif // _WIN32
+	rct2_date date;
+	platform_get_date(&date);
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, sint16) = date.day;
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, sint16) = date.month;
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_YEAR, sint16) = date.year;
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAYOFWEEK, sint16) = date.day_of_week;
 }
 
 /**
@@ -549,15 +544,10 @@ void get_system_time()
  */
 void get_local_time()
 {
-#ifdef _WIN32
-	SYSTEMTIME systime;
-	GetLocalTime(&systime);
-
-	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_HOUR, sint16) = systime.wHour;
-	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MINUTE, sint16) = systime.wMinute;
-#else
-	STUB();
-#endif // _WIN32
+	rct2_time t;
+	platform_get_time(&t);
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_HOUR, sint16) = t.hour;
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MINUTE, sint16) = t.minute;
 }
 
 /**

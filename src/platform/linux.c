@@ -33,6 +33,7 @@
 #include "../config.h"
 #include "platform.h"
 #include <dirent.h>
+#include <time.h>
 
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
@@ -55,6 +56,31 @@ int main(int argc, const char **argv)
 
 	exit(gExitCode);
 	return gExitCode;
+}
+
+void platform_get_date(rct2_date *out_date)
+{
+	assert(out_date != NULL);
+	time_t rawtime;
+	struct tm * timeinfo;
+	time(&rawtime);
+	timeinfo = gmtime(&rawtime);
+	out_date->day = timeinfo->tm_mday;
+	out_date->month = timeinfo->tm_mon;
+	out_date->year = timeinfo->tm_year;
+	out_date->day_of_week = timeinfo->tm_wday;
+}
+
+void platform_get_time(rct2_time *out_time)
+{
+	assert(out_time != NULL);
+	time_t rawtime;
+	struct tm * timeinfo;
+	time(&rawtime);
+	timeinfo = gmtime(&rawtime);
+	out_time->second = timeinfo->tm_sec;
+	out_time->minute = timeinfo->tm_min;
+	out_time->hour = timeinfo->tm_hour;
 }
 
 char platform_get_path_separator()
