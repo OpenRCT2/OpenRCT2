@@ -3496,7 +3496,7 @@ STR_5156    :{SMALLFONT}{BLACK}대부분의 놀이기구 종류에서 트랙이 
 STR_5157    :모든 가격 잠금 해제
 STR_5158    :종료하고 메뉴로
 STR_5159    :OpenRCT2 종료
-STR_5160    :{COMMA16}년 {MONTH} {STRINGID}
+STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, {POP16}{COMMA16}년
 STR_5161    :날짜 형식:
 STR_5162    :일/월/년
 STR_5163    :년/월/일

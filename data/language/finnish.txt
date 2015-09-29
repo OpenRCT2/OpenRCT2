@@ -3498,7 +3498,7 @@ STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the t
 STR_5157    :Unlock all prices
 STR_5158    :Lopeta valikkoon
 STR_5159    :Lopeta OpenRCT2
-STR_5160    :{MONTH} {STRINGID}, vuosi {COMMA16}
+STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, vuosi {POP16}{COMMA16}
 STR_5161    :Päiväyksen tyyli:
 STR_5162    :Päivä/Kuukausi/Vuosi
 STR_5163    :Kuukausi/Päivä/Vuosi
