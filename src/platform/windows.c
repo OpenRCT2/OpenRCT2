@@ -85,6 +85,28 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	return gExitCode;
 }
 
+void platform_get_date(rct2_date *out_date)
+{
+	assert(out_date != NULL);
+	SYSTEMTIME systime;
+
+	GetSystemTime(&systime);
+	out_date->day = systime.wDay;
+	out_date->month = systime.wMonth;
+	out_date->year = systime.wYear;
+	out_date->day_of_week = systime.wDayOfWeek;
+}
+
+void platform_get_time(rct2_time *out_time)
+{
+	assert(out_time != NULL);
+	SYSTEMTIME systime;
+	GetLocalTime(&systime);
+	out_time->hour = systime.wHour;
+	out_time->minute = systime.wMinute;
+	out_time->second = systime.wSecond;
+}
+
 char platform_get_path_separator()
 {
 	return '\\';
