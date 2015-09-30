@@ -264,13 +264,13 @@ enum PEEP_FLAGS {
 	PEEP_FLAGS_CROWDED = (1 << 13), // The peep will start feeling crowded
 	PEEP_FLAGS_HAPPINESS = (1 << 14), // The peep will start increasing happiness
 	PEEP_FLAGS_NAUSEA = (1 << 15), // Makes the peep feel sick (e.g. after an extreme ride)
-	PEEP_FLAGS_16 = (1 << 16),
+	PEEP_FLAGS_PURPLE = (1 << 16), // Makes surrounding peeps purple
 	PEEP_FLAGS_EATING = (1 << 17), // Reduces hunger
 	PEEP_FLAGS_EXPLODE = (1 << 18),
 	PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE = (1 << 19),
 	PEEP_FLAGS_PARK_ENTRANCE_CHOSEN = (1 << 20), //Set when the nearest park entrance has been chosen
 	PEEP_FLAGS_21 = (1 << 21),
-	PEEP_FLAGS_22 = (1 << 22),
+	PEEP_FLAGS_CONTAGIOUS = (1 << 22), // Makes any peeps in surrounding tiles sick
 	PEEP_FLAGS_JOY = (1 << 23), // Makes the peep jump in joy
 	PEEP_FLAGS_ANGRY = (1 << 24),
 	PEEP_FLAGS_ICE_CREAM = (1 << 25), // Gives the peeps infront of them in queue ice cream

@@ -8647,9 +8647,9 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 		peep->flags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
 	}
 	
-	peep->flags &= ~PEEP_FLAGS_16;
+	peep->flags &= ~PEEP_FLAGS_PURPLE;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_EMMA_GARRELL, peep)) {
-		peep->flags |= PEEP_FLAGS_16;
+		peep->flags |= PEEP_FLAGS_PURPLE;
 	}
 
 	peep->flags &= ~PEEP_FLAGS_EATING;
@@ -8657,9 +8657,9 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 		peep->flags |= PEEP_FLAGS_EATING;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_22;
+	peep->flags &= ~PEEP_FLAGS_CONTAGIOUS;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_FELICITY_ANDERSON, peep)) {
-		peep->flags |= PEEP_FLAGS_22;
+		peep->flags |= PEEP_FLAGS_CONTAGIOUS;
 	}
 
 	peep->flags &= ~PEEP_FLAGS_JOY;
