@@ -36,6 +36,7 @@
 #include "../world/scenery.h"
 #include "../world/footpath.h"
 #include "../management/marketing.h"
+#include "../game.h"
 #include "peep.h"
 #include "staff.h"
 
@@ -7741,7 +7742,7 @@ static void peep_on_exit_ride(rct_peep *peep, int rideIndex)
 		}
 	}
 
-	if (peep->flags & PEEP_FLAGS_26) {
+	if (peep->flags & PEEP_FLAGS_NICE_RIDE) {
 		peep_insert_new_thought(peep, PEEP_THOUGHT_NICE_RIDE, 255);
 	}
 
@@ -8078,7 +8079,7 @@ static bool sub_6960AB(rct_peep *peep, int rideIndex, int dh, int bp)
 
 			if (!(bp & 4)) {
 				ride_update_popularity(ride, 1);
-				if ((peep->flags & PEEP_FLAGS_27) && ride_type_is_intamin(ride->type)) {
+				if ((peep->flags & PEEP_FLAGS_INTAMIN) && ride_type_is_intamin(ride->type)) {
 					peep_insert_new_thought(peep, PEEP_THOUGHT_EXCITED, 255);
 				}
 			}
@@ -8529,4 +8530,180 @@ static void peep_read_map(rct_peep *peep)
 static bool peep_heading_for_ride_or_park_exit(rct_peep *peep)
 {
 	return (peep->flags & PEEP_FLAGS_LEAVING_PARK) || peep->guest_heading_to_ride_id != 0xFF;
+}
+
+money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, uint8* text_2, uint8* text_3) {
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
+	if (state == 1) {
+		RCT2_GLOBAL(0x00F1AEF4, uint16) = sprite_index;
+	}
+
+	uint8* fullText = RCT2_ADDRESS(0x00F1AEF6, uint8);
+	if (flags & GAME_COMMAND_FLAG_APPLY) {
+		uint8 position = (state - 1) % 3;
+		memcpy(fullText + position * 12, text_1, 4);
+		memcpy(fullText + 4 + position * 12, text_2, 4);
+		memcpy(fullText + 8 + position * 12, text_3, 4);
+	}
+
+	if (state != 0)
+		return 0;
+
+	rct_peep* peep = GET_PEEP(sprite_index);
+	RCT2_GLOBAL(0x0013CE952, uint32) = peep->id;
+	uint8* curName = RCT2_ADDRESS(0x00141ED68, uint8);
+	rct_string_id curId = peep->name_string_idx;
+	format_string(curName, curId, RCT2_ADDRESS(0x0013CE952, void));
+
+	if (strcmp(curName, fullText) == 0)
+		return 0;
+
+	if (*fullText == '\0') {
+		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 1455;
+		return MONEY32_UNDEFINED;
+	}
+
+	rct_string_id newId = user_string_allocate(4, fullText);
+	if (newId == 0) {
+		return MONEY32_UNDEFINED;
+	}
+
+	if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
+		user_string_free(newId);
+		return 0;
+	}
+
+	user_string_free(curId);
+	peep->name_string_idx = newId;
+
+	peep_update_name_sort(peep);
+
+	peep->flags &= ~PEEP_FLAGS_WAVING;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATIE_BRAYSHAW, peep)) {
+		peep->flags |= PEEP_FLAGS_WAVING;
+	}
+
+	peep->flags &= ~PEEP_FLAGS_PHOTO;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_CHRIS_SAWYER, peep)) {
+		peep->flags |= PEEP_FLAGS_PHOTO;
+	}
+
+	peep->flags &= ~PEEP_FLAGS_PAINTING;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_SIMON_FOSTER, peep)) {
+		peep->flags |= PEEP_FLAGS_PAINTING;
+	}
+
+	peep->flags &= ~PEEP_FLAGS_WOW;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_JOHN_WARDLEY, peep)) {
+		peep->flags |= PEEP_FLAGS_WOW;
+	}
+
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_MELANIE_WARN, peep)) {
+		peep->happiness = 250;
+		peep->happiness_growth_rate = 250;
+		peep->energy = 127;
+		peep->energy_growth_rate = 127;
+		peep->nausea = 0;
+		peep->nausea_growth_rate = 0;
+	}
+
+	peep->flags &= ~PEEP_FLAGS_LITTER;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_LISA_STIRLING, peep)) {
+		peep->flags |= PEEP_FLAGS_LITTER;
+	}
+
+	peep->flags &= ~PEEP_FLAGS_LOST;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_DONALD_MACRAE, peep)) {
+		peep->flags |= PEEP_FLAGS_LOST;
+	}
+
+	peep->flags &= ~PEEP_FLAGS_HUNGER;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATHERINE_MCGOWAN, peep)) {
+		peep->flags |= PEEP_FLAGS_HUNGER;
+	}
+
+	peep->flags &= ~PEEP_FLAGS_BATHROOM;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_FRANCES_MCGOWAN, peep)) {
+		peep->flags |= PEEP_FLAGS_BATHROOM;
+	}
+
+	peep->flags &= ~PEEP_FLAGS_CROWDED;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_CORINA_MASSOURA, peep)) {
+		peep->flags |= PEEP_FLAGS_CROWDED;
+	}
+
+	peep->flags &= ~PEEP_FLAGS_HAPPINESS;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_CAROL_YOUNG, peep)) {
+		peep->flags |= PEEP_FLAGS_HAPPINESS;
+	}
+
+	peep->flags &= ~PEEP_FLAGS_NAUSEA;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_MIA_SHERIDAN, peep)) {
+		peep->flags |= PEEP_FLAGS_NAUSEA;
+	}
+
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATIE_RODGER, peep)) {
+		peep->flags |= PEEP_FLAGS_LEAVING_PARK;
+		peep->flags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
+	}
+	
+	peep->flags &= ~PEEP_FLAGS_16;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_EMMA_GARRELL, peep)) {
+		peep->flags |= PEEP_FLAGS_16;
+	}
+
+	peep->flags &= ~PEEP_FLAGS_EATING;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_JOANNE_BARTON, peep)) {
+		peep->flags |= PEEP_FLAGS_EATING;
+	}
+
+	peep->flags &= ~PEEP_FLAGS_22;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_FELICITY_ANDERSON, peep)) {
+		peep->flags |= PEEP_FLAGS_22;
+	}
+
+	peep->flags &= ~PEEP_FLAGS_JOY;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATIE_SMITH, peep)) {
+		peep->flags |= PEEP_FLAGS_JOY;
+	}
+
+	peep->flags &= ~PEEP_FLAGS_ANGRY;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_EILIDH_BELL, peep)) {
+		peep->flags |= PEEP_FLAGS_ANGRY;
+	}
+
+	peep->flags &= ~PEEP_FLAGS_ICE_CREAM;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_NANCY_STILLWAGON, peep)) {
+		peep->flags |= PEEP_FLAGS_ICE_CREAM;
+	}
+
+	peep->flags &= ~PEEP_FLAGS_NICE_RIDE;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_ANDY_HINE, peep)) {
+		peep->flags |= PEEP_FLAGS_NICE_RIDE;
+	}
+
+	peep->flags &= ~PEEP_FLAGS_INTAMIN;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_ELISSA_WHITE, peep)) {
+		peep->flags |= PEEP_FLAGS_INTAMIN;
+	}
+
+	peep->flags &= ~PEEP_FLAGS_HERE_WE_ARE;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_DAVID_ELLIS, peep)) {
+		peep->flags |= PEEP_FLAGS_HERE_WE_ARE;
+	}
+
+	gfx_invalidate_screen();
+	return 0;
+}
+
+/* rct2: 0x00698D6C */
+void game_command_set_peep_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp) {
+	*ebx = set_peep_name(
+		*ebx & 0xFF,
+		*eax & 0xFFFF,
+		*ecx & 0xFFFF,
+		(uint8*)edx,
+		(uint8*)ebp,
+		(uint8*)edi
+		);
 }

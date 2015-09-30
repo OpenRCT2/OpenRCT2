@@ -264,18 +264,19 @@ enum PEEP_FLAGS {
 	PEEP_FLAGS_CROWDED = (1 << 13), // The peep will start feeling crowded
 	PEEP_FLAGS_HAPPINESS = (1 << 14), // The peep will start increasing happiness
 	PEEP_FLAGS_NAUSEA = (1 << 15), // Makes the peep feel sick (e.g. after an extreme ride)
-
+	PEEP_FLAGS_16 = (1 << 16),
 	PEEP_FLAGS_EATING = (1 << 17), // Reduces hunger
 	PEEP_FLAGS_EXPLODE = (1 << 18),
 	PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE = (1 << 19),
 	PEEP_FLAGS_PARK_ENTRANCE_CHOSEN = (1 << 20), //Set when the nearest park entrance has been chosen
 	PEEP_FLAGS_21 = (1 << 21),
-
+	PEEP_FLAGS_22 = (1 << 22),
 	PEEP_FLAGS_JOY = (1 << 23), // Makes the peep jump in joy
 	PEEP_FLAGS_ANGRY = (1 << 24),
-	PEEP_FLAGS_ICE_CREAM = (1 << 25), // Unconfirmed
-	PEEP_FLAGS_26 = (1 << 26),
-	PEEP_FLAGS_27 = (1 << 27),
+	PEEP_FLAGS_ICE_CREAM = (1 << 25), // Gives the peeps infront of them in queue ice cream
+	PEEP_FLAGS_NICE_RIDE = (1 << 26), // Makes the peep think "Nice ride! But not as good as the Phoenix..." on exiting a ride
+	PEEP_FLAGS_INTAMIN = (1 << 27), // Makes the peep think "I'm so excited - It's an Intamin ride!" while riding on a Intamin
+	PEEP_FLAGS_HERE_WE_ARE = (1 << 28), // Makes the peep think  "...and here we are on X!" while riding a ride
 	PEEP_FLAGS_TWITCH = (1 << 31)		// Added for twitch integration
 };
 
@@ -627,5 +628,7 @@ void remove_peep_from_queue(rct_peep* peep);
 void sub_693BE5(rct_peep* peep, uint8 al);
 void peep_update_name_sort(rct_peep *peep);
 void peep_update_names(bool realNames);
+
+void game_command_set_peep_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
 #endif
