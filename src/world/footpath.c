@@ -416,6 +416,112 @@ void game_command_place_footpath(int *eax, int *ebx, int *ecx, int *edx, int *es
 	);
 }
 
+static money32 footpath_place_from_track(int type, int x, int y, int z, int slope, int edges, int flags)
+{
+	rct_map_element *mapElement;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z * 8;
+
+	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+		return MONEY32_UNDEFINED;
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY)
+		footpath_interrupt_peeps(x, y, z * 8);
+
+	RCT2_GLOBAL(0x00F3EFD9, money32) = 0;
+	RCT2_GLOBAL(0x00F3EFA4, uint8) = 0;
+
+	if (!map_is_location_owned(x, y, z * 8) && !gCheatsSandboxMode) {
+		return MONEY32_UNDEFINED;
+	}
+
+	if (!((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
+		return MONEY32_UNDEFINED;
+
+	if (z < 2) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_LOW;
+		return MONEY32_UNDEFINED;
+	}
+
+	if (z > 248) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH;
+		return MONEY32_UNDEFINED;
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY) {
+		if (!(flags & (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST))) {
+			footpath_remove_litter(x, y, z * 8);
+		}
+	}
+
+	RCT2_GLOBAL(0x00F3EFD9, money32) += 120;
+	uint8 bl = 15;
+	int zHigh = z + 4;
+	if (slope & 4) {
+		bl = RCT2_ADDRESS(0x0098D7EC, uint8)[slope & 3];
+		zHigh += 2;
+	}
+
+	RCT2_GLOBAL(0x00F3EF84, uint16) = x;
+	RCT2_GLOBAL(0x00F3EF86, uint16) = y;
+
+	// Ugh, hack until 0x006A6733 is written
+	// 0x006A6733 expects the flags to be at (*0xF3EF7C) + 8
+	RCT2_GLOBAL(0x00F3EF7C, uint32) = (uint32)(&flags - 2);
+
+	if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, (void*)0x006A6733, bl))
+		return MONEY32_UNDEFINED;
+
+	RCT2_GLOBAL(0x00F3EFA4, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8);
+	if (!gCheatsDisableClearanceChecks && (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER)) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CANT_BUILD_THIS_UNDERWATER;
+		return MONEY32_UNDEFINED;
+	}
+
+	mapElement = map_get_surface_element_at((x / 32), (y / 32));
+
+	int supportHeight = z - mapElement->base_height;
+	RCT2_GLOBAL(0x00F3EFD9, money32) += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
+
+	if (flags & GAME_COMMAND_FLAG_APPLY) {
+		mapElement = map_element_insert(x / 32, y / 32, z, 0x0F);
+		mapElement->type = MAP_ELEMENT_TYPE_PATH;
+		mapElement->clearance_height = z + 4 + (slope & 4 ? 2 : 0);
+		mapElement->properties.path.type = (type << 4) | (slope & 7);
+		mapElement->type |= type >> 7;
+		mapElement->properties.path.additions = 0;
+		mapElement->properties.path.addition_status = 255;
+		mapElement->properties.path.edges = edges & 0xF;
+		mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
+		if (flags & (1 << 6))
+			mapElement->flags |= MAP_ELEMENT_FLAG_GHOST;
+
+		map_invalidate_tile_full(x, y);
+	}
+	return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
+}
+
+/*
+ * rct2: 0x006A68AE
+ */
+void game_command_place_footpath_from_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	*ebx = footpath_place_from_track(
+		(*edx >> 8) & 0xFF,
+		*eax & 0xFFFF,
+		*ecx & 0xFFFF,
+		*edx & 0xFF,		
+		((*ebx >> 13) & 0x3) | ((*ebx >> 10) & 0x4),
+		(*ebx >> 8) & 0xF,
+		*ebx & 0xFF
+		);
+}
+
 /**
  *
  *  rct2: 0x006A67C0

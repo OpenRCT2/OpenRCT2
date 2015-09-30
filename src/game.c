@@ -1127,7 +1127,7 @@ static uint32 game_do_command_table[58] = {
 	0,
 	0,
 	0,
-	0x006A68AE,
+	0,
 	0,
 	0, // use new_game_command_table, original: 0x00663CCD, // 20
 	0,//0x006B53E9,
@@ -1190,7 +1190,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_place_scenery,
 	game_command_set_water_height,
 	game_command_place_footpath,
-	game_command_emptysub,
+	game_command_place_footpath_from_track,
 	game_command_remove_footpath,
 	game_command_change_surface_style, // 20
 	game_command_set_ride_price,

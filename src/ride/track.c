@@ -1297,7 +1297,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 						if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0;
 
 						RCT2_GLOBAL(0x00141E9AE, rct_string_id) = 927;
-						cost = game_do_command(mapCoord.x, bl | (bh << 8), mapCoord.y, z | (entry_index << 8), GAME_COMMAND_18, 0, 0);
+						cost = game_do_command(mapCoord.x, bl | (bh << 8), mapCoord.y, z | (entry_index << 8), GAME_COMMAND_PLACE_PATH_FROM_TRACK, 0, 0);
 					}
 					else{
 						if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)
