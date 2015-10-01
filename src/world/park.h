@@ -66,6 +66,7 @@ void generate_new_guest();
 
 void park_update();
 void park_update_histories();
+void update_park_fences(int x, int y);
 
 uint8 calculate_guest_initial_happiness(uint8 percentage);
 
