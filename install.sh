@@ -197,7 +197,11 @@ fi
 
 download_libs
 # mind the gap (trailing space)
-sha256sum $cachedir/orctlibs.zip | cut -f1 -d\  > $libVFile
+if [[ `uname` == "Darwin" ]]; then
+	shasum -a 256 $cachedir/orctlibs.zip | cut -f1 -d\  > $libVFile
+else
+	sha256sum $cachedir/orctlibs.zip | cut -f1 -d\  > $libVFile
+fi
 echo "Downloaded library with sha256sum: $(cat $libVFile)"
 # Local libs are required for all targets
 install_local_libs
