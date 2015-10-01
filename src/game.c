@@ -1129,9 +1129,9 @@ static uint32 game_do_command_table[58] = {
 	0,
 	0,
 	0,
-	0, // use new_game_command_table, original: 0x00663CCD, // 20
-	0,//0x006B53E9,
-	0x00698D6C, // text input
+	0, // 20
+	0,
+	0, 
 	0,
 	0,
 	0x0068BC01,
@@ -1194,7 +1194,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_remove_footpath,
 	game_command_change_surface_style, // 20
 	game_command_set_ride_price,
-	game_command_emptysub,
+	game_command_set_peep_name,
 	game_command_raise_land,
 	game_command_lower_land,
 	game_command_emptysub,
