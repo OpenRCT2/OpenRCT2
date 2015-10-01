@@ -1145,7 +1145,7 @@ static uint32 game_do_command_table[58] = {
 	0,
 	0,
 	0,//0x006649BD, //buy_land_rights
-	0x006666E7,
+	0,
 	0,
 	0x006CD8CE,
 	0,
@@ -1208,7 +1208,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_set_park_name,
 	game_command_set_park_open,
 	game_command_buy_land_rights, //game_command_emptysub,//game_command_buy_land_rights,
-	game_command_emptysub,
+	game_command_place_park_entrance,
 	game_command_remove_park_entrance,
 	game_command_emptysub,
 	game_command_set_park_entrance_fee,

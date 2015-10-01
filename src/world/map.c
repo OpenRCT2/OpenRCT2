@@ -4181,3 +4181,164 @@ void map_clear_all_elements()
 		}
 	}
 }
+
+money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direction) {
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LAND_PURCHASE * 4;
+
+	RCT2_GLOBAL(0x009DEA5E, sint16) = x;
+	RCT2_GLOBAL(0x009DEA60, sint16) = y;
+	// ??
+	RCT2_GLOBAL(0x009DEA62, sint16) = (z & 0xFF) << 4;
+
+	if (!sub_68B044()) {
+		return MONEY32_UNDEFINED;
+	}
+
+	if (x <= 32 || y <= 32 || x >= (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16) - 32) || y >= (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16) - 32)) {
+		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 3215;
+		return MONEY32_UNDEFINED;
+	}
+
+	sint8 entranceNum = -1;
+	for (uint8 i = 0; i < 4; ++i) {
+		if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[i] == (sint16)0x8000) {
+			entranceNum = i;
+			break;
+		}
+	}
+
+	if (entranceNum == -1) {
+		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 3227;
+		return MONEY32_UNDEFINED;
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY) {
+		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[entranceNum] = x;
+		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[entranceNum] = y;
+		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, sint16)[entranceNum] = (z & 0xFF) << 4;
+		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[entranceNum] = direction;
+	}
+
+	sint16 zLow = (z & 0xFF) * 2;
+	sint16 zHigh = zLow + 12;
+	if (!map_can_construct_at(x, y, zLow, zHigh, 0xF)) {
+		return MONEY32_UNDEFINED;
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY) {
+
+		if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
+			rct_map_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+			surfaceElement->properties.surface.ownership = 0;
+		}
+
+		rct_map_element* newElement = map_element_insert(x / 32, y / 32, zLow, 0xF);
+		newElement->clearance_height = zHigh;
+
+		if (flags & GAME_COMMAND_FLAG_GHOST) {
+			newElement->flags |= MAP_ELEMENT_FLAG_GHOST;
+		}
+
+		newElement->type = MAP_ELEMENT_TYPE_ENTRANCE;
+		newElement->type |= direction;
+		newElement->properties.entrance.index = 0;
+		newElement->properties.entrance.type = ENTRANCE_TYPE_PARK_ENTRANCE;
+		newElement->properties.entrance.path_type = RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, uint16) & 0xFF;
+
+		if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
+			footpath_connect_edges(x, y, newElement, 1);
+		}
+
+		update_park_fences(x, y);
+		update_park_fences(x - 32, y);
+		update_park_fences(x + 32, y);
+		update_park_fences(x, y - 32);
+		update_park_fences(x, y + 32);
+
+		map_invalidate_tile(x, y, newElement->base_height, newElement->clearance_height);
+
+		map_animation_create(MAP_ANIMATION_TYPE_PARK_ENTRANCE, x, y, zLow);
+	}
+
+	x += TileDirectionDelta[(direction - 1) & 0x3].x;
+	y += TileDirectionDelta[(direction - 1) & 0x3].y;
+
+	if (!map_can_construct_at(x, y, zLow, zHigh, 0xF)) {
+		return MONEY32_UNDEFINED;
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY) {
+
+		if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
+			rct_map_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+			surfaceElement->properties.surface.ownership = 0;
+		}
+
+		rct_map_element* newElement = map_element_insert(x / 32, y / 32, zLow, 0xF);
+		newElement->clearance_height = zHigh;
+
+		if (flags & GAME_COMMAND_FLAG_GHOST) {
+			newElement->flags |= MAP_ELEMENT_FLAG_GHOST;
+		}
+
+		newElement->type = MAP_ELEMENT_TYPE_ENTRANCE;
+		newElement->type |= direction;
+		newElement->properties.entrance.index = 1;
+		newElement->properties.entrance.type = ENTRANCE_TYPE_PARK_ENTRANCE;
+
+		update_park_fences(x, y);
+		update_park_fences(x - 32, y);
+		update_park_fences(x + 32, y);
+		update_park_fences(x, y - 32);
+		update_park_fences(x, y + 32);
+
+		map_invalidate_tile(x, y, newElement->base_height, newElement->clearance_height);
+	}
+
+	x += TileDirectionDelta[(direction + 1) & 0x3].x * 2;
+	y += TileDirectionDelta[(direction + 1) & 0x3].y * 2;
+
+	if (!map_can_construct_at(x, y, zLow, zHigh, 0xF)) {
+		return MONEY32_UNDEFINED;
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY) {
+
+		if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
+			rct_map_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+			surfaceElement->properties.surface.ownership = 0;
+		}
+
+		rct_map_element* newElement = map_element_insert(x / 32, y / 32, zLow, 0xF);
+		newElement->clearance_height = zHigh;
+
+		if (flags & GAME_COMMAND_FLAG_GHOST) {
+			newElement->flags |= MAP_ELEMENT_FLAG_GHOST;
+		}
+
+		newElement->type = MAP_ELEMENT_TYPE_ENTRANCE;
+		newElement->type |= direction;
+		newElement->properties.entrance.index = 2;
+		newElement->properties.entrance.type = ENTRANCE_TYPE_PARK_ENTRANCE;
+
+		update_park_fences(x, y);
+		update_park_fences(x - 32, y);
+		update_park_fences(x + 32, y);
+		update_park_fences(x, y - 32);
+		update_park_fences(x, y + 32);
+
+		map_invalidate_tile(x, y, newElement->base_height, newElement->clearance_height);
+	}
+
+	return 0;
+}
+
+/* rct2: 0x006666E7 */
+void game_command_place_park_entrance(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {
+	*ebx = place_park_entrance(
+		*ebx & 0xFF,
+		*eax & 0xFFFF,
+		*ecx & 0xFFFF,
+		*edx & 0xFFFF,
+		(*ebx >> 8) & 0xFF);
+}
