@@ -531,32 +531,6 @@ bool platform_file_delete(const utf8 *path)
 	return 0;
 }
 
-void platform_hide_cursor()
-{
-	STUB();
-}
-
-void platform_show_cursor()
-{
-	STUB();
-}
-
-void platform_get_cursor_position(int *x, int *y)
-{
-	STUB();
-}
-
-void platform_set_cursor_position(int x, int y)
-{
-	STUB();
-}
-
-unsigned int platform_get_ticks()
-{
-	STUB();
-	return 100;
-}
-
 wchar_t *regular_to_wchar(const char* src)
 {
 	int len = strnlen(src, MAX_PATH);
