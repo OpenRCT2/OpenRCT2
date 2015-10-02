@@ -907,3 +907,28 @@ static void platform_refresh_screenbuffer(int width, int height, int pitch)
 	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) = (width >> 6) + 1;
 	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, uint32) = (height >> 3) + 1;
 }
+
+void platform_hide_cursor()
+{
+	SDL_ShowCursor(SDL_DISABLE);
+}
+
+void platform_show_cursor()
+{
+	SDL_ShowCursor(SDL_ENABLE);
+}
+
+void platform_get_cursor_position(int *x, int *y)
+{
+	SDL_GetMouseState(x, y);
+}
+
+void platform_set_cursor_position(int x, int y)
+{
+	SDL_WarpMouseInWindow(NULL, x, y);
+}
+
+unsigned int platform_get_ticks()
+{
+	return SDL_GetTicks();
+}

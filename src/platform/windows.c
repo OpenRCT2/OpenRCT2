@@ -132,7 +132,7 @@ bool platform_directory_exists(const utf8 *path)
 bool platform_original_game_data_exists(const utf8 *path)
 {
 	utf8 checkPath[MAX_PATH];
-	sprintf(checkPath, "%s%c%s%c%s", path, platform_get_path_separator(), "data", platform_get_path_separator(), "g1.dat");
+	sprintf(checkPath, "%s%c%s%c%s", path, platform_get_path_separator(), "Data", platform_get_path_separator(), "g1.dat");
 	return platform_file_exists(checkPath);
 }
 
@@ -376,39 +376,6 @@ bool platform_file_delete(const utf8 *path)
 	BOOL success = DeleteFileW(wPath);
 	free(wPath);
 	return success == TRUE;
-}
-
-void platform_hide_cursor()
-{
-	ShowCursor(FALSE);
-}
-
-void platform_show_cursor()
-{
-	ShowCursor(TRUE);
-}
-
-void platform_get_cursor_position(int *x, int *y)
-{
-	POINT point;
-
-	if (GetCursorPos(&point)) {
-		*x = point.x;
-		*y = point.y;
-	} else {
-		*x = INT32_MIN;
-		*y = INT32_MIN;
-	}
-}
-
-void platform_set_cursor_position(int x, int y)
-{
-	SetCursorPos(x, y);
-}
-
-unsigned int platform_get_ticks()
-{
-	return GetTickCount();
 }
 
 void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
