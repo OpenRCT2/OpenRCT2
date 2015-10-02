@@ -53,6 +53,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (halfbro)
 * (Myrtle)
 * (nean)
+* Michael Pham (nightroan)
 
 ## Toolchain
 * (Balletie) - OSX
