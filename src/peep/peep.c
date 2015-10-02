@@ -305,7 +305,7 @@ static void sub_68F8CD(rct_peep *peep)
 		peep->thirst--;
 	}
 
-	if (peep->var_2A != 0) {
+	if (peep->outside_of_park != 0) {
 		return;
 	}
 
@@ -460,7 +460,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 		}
 
 		if (peep->state == PEEP_STATE_WALKING &&
-			peep->var_2A == 0 &&
+			peep->outside_of_park == 0 &&
 			!(peep->flags & PEEP_FLAGS_LEAVING_PARK) &&
 			peep->no_of_rides == 0 &&
 			peep->guest_heading_to_ride_id == 0xFF){
@@ -486,7 +486,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 
 		if ((index & 0x3FF) == (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x3FF)){
 
-			if (peep->var_2A == 0 &&
+			if (peep->outside_of_park == 0 &&
 				(peep->state == PEEP_STATE_WALKING || peep->state == PEEP_STATE_SITTING)){
 
 				uint8 num_thoughts = 0;
@@ -1265,7 +1265,7 @@ void peep_sprite_remove(rct_peep* peep){
  */
 void peep_remove(rct_peep* peep){
 	if (peep->type == PEEP_TYPE_GUEST){
-		if (peep->var_2A == 0){
+		if (peep->outside_of_park == 0){
 			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)--;
 			RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 		}
@@ -3630,7 +3630,7 @@ static void peep_update_leaving_park(rct_peep* peep){
 		return;
 	}
 
-	peep->var_2A = 1;
+	peep->outside_of_park = 1;
 	peep->destination_tolerence = 5;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)--;
 	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
@@ -3750,7 +3750,7 @@ static void peep_update_entering_park(rct_peep* peep){
 	peep->state = PEEP_STATE_FALLING;
 	peep_window_state_update(peep);
 
-	peep->var_2A = 0;
+	peep->outside_of_park = 0;
 	peep->time_in_park = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)++;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
@@ -5024,7 +5024,7 @@ void peep_problem_warnings_update()
 	RCT2_GLOBAL(RCT2_ADDRESS_RIDE_COUNT, sint16) = ride_get_count(); // refactor this to somewhere else
 
 	FOR_ALL_GUESTS(spriteIndex, peep) {
-		if (peep->var_2A != 0 || peep->thoughts[0].var_2 > 5)
+		if (peep->outside_of_park != 0 || peep->thoughts[0].var_2 > 5)
 			continue;
 
 		switch (peep->thoughts[0].type) {
@@ -5232,7 +5232,7 @@ void peep_applause()
 	rct_peep* peep;
 
 	FOR_ALL_GUESTS(spriteIndex, peep) {
-		if (peep->var_2A != 0)
+		if (peep->outside_of_park != 0)
 			continue;
 
 		// Release balloon
@@ -5269,7 +5269,7 @@ void peep_update_days_in_queue()
 	rct_peep *peep;
 
 	FOR_ALL_GUESTS(sprite_index, peep) {
-		if (peep->var_2A == 0 && peep->state == PEEP_STATE_QUEUING) {
+		if (peep->outside_of_park == 0 && peep->state == PEEP_STATE_QUEUING) {
 			if (peep->days_in_queue < 255) {
 				peep->days_in_queue += 1;
 			}
@@ -5292,7 +5292,7 @@ rct_peep *peep_generate(int x, int y, int z)
 
 	peep->sprite_identifier = 1;
 	peep->sprite_type = PEEP_SPRITE_TYPE_NORMAL;
-	peep->var_2A = 1;
+	peep->outside_of_park = 1;
 	peep->state = PEEP_STATE_FALLING;
 	peep->action = PEEP_ACTION_NONE_2;
 	peep->var_6D = 0;
@@ -6426,11 +6426,11 @@ static int peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 
 	sint16 z = map_element->base_height * 8;
 	if (!map_is_location_owned(x, y, z)){
-		if (peep->var_2A == 0)
+		if (peep->outside_of_park == 0)
 			return peep_return_to_center_of_tile(peep);
 	}
 	else{
-		if (peep->var_2A == 1)
+		if (peep->outside_of_park == 1)
 			return peep_return_to_center_of_tile(peep);
 	}
 
@@ -7214,7 +7214,7 @@ static int guest_path_finding(rct_peep* peep)
 	}
 
 	uint8 edges = path_get_permitted_edges(mapElement);
-	if (peep->var_2A == 0 && peep_heading_for_ride_or_park_exit(peep)) {
+	if (peep->outside_of_park == 0 && peep_heading_for_ride_or_park_exit(peep)) {
 		uint8 adjustedEdges = edges;
 		for (int chosenDirection = 0; chosenDirection < 4; chosenDirection++) {
 			// If there is no path in that direction try another
@@ -7249,7 +7249,7 @@ static int guest_path_finding(rct_peep* peep)
 	}
 
 	// loc_694F19:
-	if (peep->var_2A != 0){
+	if (peep->outside_of_park != 0){
 		switch (peep->state) {
 		case PEEP_STATE_ENTERING_PARK:
 			return guest_path_find_entering_park(peep, mapElement, edges);
@@ -7423,7 +7423,7 @@ static int sub_693C9E(rct_peep *peep)
 	}
 
 	if (x < 32 || y < 32 || x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)){
-		if (peep->var_2A == 1){
+		if (peep->outside_of_park == 1){
 			RCT2_GLOBAL(0x00F1EE18, uint16) |= (1 << 1);
 		}
 		return peep_return_to_center_of_tile(peep);

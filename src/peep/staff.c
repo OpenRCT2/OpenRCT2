@@ -135,7 +135,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		newPeep->action_sprite_type = 0;
 		newPeep->var_C4 = 0;
 		newPeep->type = PEEP_TYPE_STAFF;
-		newPeep->var_2A = 0;
+		newPeep->outside_of_park = 0;
 		newPeep->flags = 0;
 		newPeep->paid_to_enter = 0;
 		newPeep->paid_on_rides = 0;
