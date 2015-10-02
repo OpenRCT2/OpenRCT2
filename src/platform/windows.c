@@ -378,39 +378,6 @@ bool platform_file_delete(const utf8 *path)
 	return success == TRUE;
 }
 
-void platform_hide_cursor()
-{
-	ShowCursor(FALSE);
-}
-
-void platform_show_cursor()
-{
-	ShowCursor(TRUE);
-}
-
-void platform_get_cursor_position(int *x, int *y)
-{
-	POINT point;
-
-	if (GetCursorPos(&point)) {
-		*x = point.x;
-		*y = point.y;
-	} else {
-		*x = INT32_MIN;
-		*y = INT32_MIN;
-	}
-}
-
-void platform_set_cursor_position(int x, int y)
-{
-	SetCursorPos(x, y);
-}
-
-unsigned int platform_get_ticks()
-{
-	return GetTickCount();
-}
-
 void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
 {
 	wchar_t wOutPath[MAX_PATH];

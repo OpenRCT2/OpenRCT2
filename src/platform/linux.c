@@ -374,8 +374,11 @@ void platform_enumerate_files_end(int handle)
 
 static int dirfilter(const struct dirent *d)
 {
+	if(d->d_name[0] == '.'){
+		return 0;
+	}
 #ifdef _DIRENT_HAVE_D_TYPE
-	if (d->d_type != DT_DIR)
+	if (d->d_type == DT_DIR)
 	{
 		return 1;
 	} else {
@@ -510,7 +513,7 @@ int platform_get_drives(){
 	return GetLogicalDrives();
 	*/
 	STUB();
-	return 0xff;
+	return 0;
 }
 
 bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite)
@@ -529,32 +532,6 @@ bool platform_file_delete(const utf8 *path)
 {
 	STUB();
 	return 0;
-}
-
-void platform_hide_cursor()
-{
-	STUB();
-}
-
-void platform_show_cursor()
-{
-	STUB();
-}
-
-void platform_get_cursor_position(int *x, int *y)
-{
-	STUB();
-}
-
-void platform_set_cursor_position(int x, int y)
-{
-	STUB();
-}
-
-unsigned int platform_get_ticks()
-{
-	STUB();
-	return 100;
 }
 
 wchar_t *regular_to_wchar(const char* src)
@@ -690,17 +667,9 @@ uint16 platform_get_locale_language(){
 }
 
 time_t platform_file_get_modified_time(const utf8* path){
-	/*
-	WIN32_FILE_ATTRIBUTE_DATA data;
-	if (!GetFileAttributesEx(path, GetFileExInfoStandard, &data))
-		return 0;
-	ULARGE_INTEGER ull;
-	ull.LowPart = data.ftLastWriteTime.dwLowDateTime;
-	ull.HighPart = data.ftLastWriteTime.dwHighDateTime;
-	return ull.QuadPart / 10000000ULL - 11644473600ULL;
-	*/
-	STUB();
-	return 100;
+	struct stat buf;
+	stat(path, &buf);
+	return buf.st_mtime;
 }
 
 uint8 platform_get_locale_currency(){
