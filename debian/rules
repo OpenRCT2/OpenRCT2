@@ -1,0 +1,13 @@
+#!/usr/bin/make -f
+
+BUILDDIR=build_dir
+
+build:
+	./install.sh
+	mkdir $(BUILDDIR)
+	cd $(BUILDDIR); cmake ..
+	make -C $(BUILDDIR)
+	touch build
+
+%:
+	dh $@

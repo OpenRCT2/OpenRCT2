@@ -1,0 +1,12 @@
+Source: openrct2
+Maintainer: Michal Janiszewski <janisozaur+openrct2@gmail.com>
+Section: misc
+Priority: optional
+Standards-Version: 3.9.2
+Build-Depends: debhelper (>= 9), cmake, libsdl2-dev:i386, libsdl2-ttf-dev:i386, gcc-4.8, pkg-config:i386, g++-4.8-multilib, gcc-4.8-multilib, libjansson-dev:i386, libspeex-dev:i386, libspeexdsp-dev:i386, libcurl4-openssl-dev:i386, libcrypto++-dev:i386, curl
+
+Package: openrct2
+Architecture: i386
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: greet user
+ hithere greets the user, or the world.
