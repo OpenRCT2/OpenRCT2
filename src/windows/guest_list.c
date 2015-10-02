@@ -865,7 +865,7 @@ static void window_guest_list_find_groups()
 
 		// Find more peeps that belong to same group
 		FOR_ALL_GUESTS(spriteIndex2, peep2) {
-			if (peep2->var_2A != 0 || !(peep2->var_0C & (1 << 8)))
+			if (peep2->outside_of_park != 0 || !(peep2->var_0C & (1 << 8)))
 				continue;
 
 			uint32 argument1, argument2;
