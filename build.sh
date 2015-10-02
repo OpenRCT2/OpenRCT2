@@ -64,8 +64,20 @@ pushd build
 	fi
 popd
 
-if [[ ! -h openrct2.dll ]]; then
-    ln -s build/openrct2.dll openrct2.dll
+if [[ $TARGET == "windows" ]]; then
+	if [[ ! -h openrct2.dll ]]; then
+		ln -s build/openrct2.dll openrct2.dll
+	fi
+fi
+
+if [[ ! -h build/data ]]; then
+	ln -s ../data build/data
+fi
+
+if [[ $TARGET == "linux" ]] || [[ $TARGET == "docker32" ]]; then
+	if [[ ! -h openrct2 ]]; then
+		ln -s build/openrct2 openrct2
+	fi
 fi
 
 if [[ -z "$DISABLE_G2_BUILD" ]]; then
@@ -73,8 +85,16 @@ if [[ -z "$DISABLE_G2_BUILD" ]]; then
     ./build_g2.sh > /dev/null 2>&1
 fi
 
-if [[ -t 1 ]]; then
-    echo -e "\nDone! Run OpenRCT2 by typing:\n\n\033[95mwine openrct2.exe\n\033[0m"
+if [[ $TARGET == "windows" ]]; then
+	if [[ -t 1 ]]; then
+		echo -e "\nDone! Run OpenRCT2 by typing:\n\n\033[95mwine openrct2.exe\n\033[0m"
+	else
+		echo -e "\nDone! Run OpenRCT2 by typing:\n\nwine openrct2.exe\n"
+	fi
 else
-    echo -e "\nDone! Run OpenRCT2 by typing:\n\nwine openrct2.exe\n"
+	if [[ -t 1 ]]; then
+		echo -e "\nDone! Run OpenRCT2 by typing:\n\n\033[95m./openrct2\n\033[0m"
+	else
+		echo -e "\nDone! Run OpenRCT2 by typing:\n\n./openrct2\n"
+	fi
 fi

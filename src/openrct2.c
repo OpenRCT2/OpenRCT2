@@ -459,7 +459,7 @@ static bool openrct2_setup_rct2_segment()
 #ifdef __linux__
 	#define DATA_OFFSET 0x004A4000
 
-	const char *exepath = "../openrct2.exe";
+	const char *exepath = "openrct2.exe";
 	int fd = open(exepath, O_RDONLY);
 	if (fd < 0) {
 		log_fatal("failed to open %s, errno = %d", exepath, errno);

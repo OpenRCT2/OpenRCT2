@@ -128,7 +128,7 @@ bool platform_original_game_data_exists(const utf8 *path)
 	buffer[len] = '\0';
 	free(wPath);
 	char checkPath[MAX_PATH];
-	sprintf(checkPath, "%s%c%s%c%s", buffer, platform_get_path_separator(), "data", platform_get_path_separator(), "g1.dat");
+	sprintf(checkPath, "%s%c%s%c%s", buffer, platform_get_path_separator(), "Data", platform_get_path_separator(), "g1.dat");
 	return platform_file_exists(checkPath);
 }
 
@@ -374,8 +374,11 @@ void platform_enumerate_files_end(int handle)
 
 static int dirfilter(const struct dirent *d)
 {
+	if (d->d_name[0] == '.') {
+		return 0;
+	}
 #ifdef _DIRENT_HAVE_D_TYPE
-	if (d->d_type != DT_DIR)
+	if (d->d_type == DT_DIR)
 	{
 		return 1;
 	} else {
@@ -510,7 +513,7 @@ int platform_get_drives(){
 	return GetLogicalDrives();
 	*/
 	STUB();
-	return 0xff;
+	return 0;
 }
 
 bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite)
@@ -664,16 +667,10 @@ uint16 platform_get_locale_language(){
 }
 
 time_t platform_file_get_modified_time(const utf8* path){
-	/*
-	WIN32_FILE_ATTRIBUTE_DATA data;
-	if (!GetFileAttributesEx(path, GetFileExInfoStandard, &data))
-		return 0;
-	ULARGE_INTEGER ull;
-	ull.LowPart = data.ftLastWriteTime.dwLowDateTime;
-	ull.HighPart = data.ftLastWriteTime.dwHighDateTime;
-	return ull.QuadPart / 10000000ULL - 11644473600ULL;
-	*/
-	STUB();
+	struct stat buf;
+	if (stat(path, &buf) == 0) {
+		return buf.st_mtime;
+	}
 	return 100;
 }
 

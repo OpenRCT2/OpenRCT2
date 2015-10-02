@@ -132,7 +132,7 @@ bool platform_directory_exists(const utf8 *path)
 bool platform_original_game_data_exists(const utf8 *path)
 {
 	utf8 checkPath[MAX_PATH];
-	sprintf(checkPath, "%s%c%s%c%s", path, platform_get_path_separator(), "data", platform_get_path_separator(), "g1.dat");
+	sprintf(checkPath, "%s%c%s%c%s", path, platform_get_path_separator(), "Data", platform_get_path_separator(), "g1.dat");
 	return platform_file_exists(checkPath);
 }
 

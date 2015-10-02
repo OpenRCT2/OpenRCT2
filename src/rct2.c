@@ -449,7 +449,14 @@ const utf8 *get_file_path(int pathId)
 		return path;
 	}
 
+	char *pathp = path + strnlen(path, sizeof(path));
+
 	strcat(path, file_paths[pathId]);
+
+	while (*pathp) {
+		if (*pathp == '\\') *pathp = platform_get_path_separator();
+		pathp++;
+	}
 
 	return path;
 }
