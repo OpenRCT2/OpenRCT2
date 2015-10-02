@@ -85,7 +85,15 @@ typedef utf16* utf16string;
 #define OPENRCT2_NAME				"OpenRCT2"
 #define OPENRCT2_VERSION			"0.0.3"
 #define OPENRCT2_ARCHITECTURE		"x86"
-#define OPENRCT2_PLATFORM			"Windows"
+#ifdef _WIN32
+	#define OPENRCT2_PLATFORM		"Windows"
+#endif // _WIN32
+#ifdef __linux__
+	#define OPENRCT2_PLATFORM		"Linux"
+#endif
+#ifndef OPENRCT2_PLATFORM
+	#error Unknown platform!
+#endif
 #define OPENRCT2_TIMESTAMP			__DATE__ " " __TIME__
 
 // The following constants are for automated build servers
