@@ -428,7 +428,7 @@ static void window_guest_list_scrollgetsize(rct_window *w, int scrollIndex, int 
 		numGuests = 0;
 
 		FOR_ALL_GUESTS(spriteIndex, peep) {
-			if (peep->var_2A != 0)
+			if (peep->outside_of_park != 0)
 				continue;
 			if (_window_guest_list_selected_filter != -1)
 				if (window_guest_list_is_peep_in_filter(peep))
@@ -487,7 +487,7 @@ static void window_guest_list_scrollmousedown(rct_window *w, int scrollIndex, in
 		i = y / 10;
 		i += _window_guest_list_selected_page * 3173;
 		FOR_ALL_GUESTS(spriteIndex, peep) {
-			if (peep->var_2A != 0)
+			if (peep->outside_of_park != 0)
 				continue;
 			if (_window_guest_list_selected_filter != -1)
 				if (window_guest_list_is_peep_in_filter(peep))
@@ -653,7 +653,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 		// For each guest
 		FOR_ALL_GUESTS(spriteIndex, peep) {
 			peep->var_0C &= ~0x200;
-			if (peep->var_2A != 0)
+			if (peep->outside_of_park != 0)
 				continue;
 			if (_window_guest_list_selected_filter != -1) {
 				if (window_guest_list_is_peep_in_filter(peep))
@@ -837,12 +837,12 @@ static void window_guest_list_find_groups()
 
 	// Set all guests to unassigned
 	FOR_ALL_GUESTS(spriteIndex, peep)
-		if (peep->var_2A == 0)
+		if (peep->outside_of_park == 0)
 			peep->var_0C |= (1 << 8);
 
 	// For each guest / group
 	FOR_ALL_GUESTS(spriteIndex, peep) {
-		if (peep->var_2A != 0 || !(peep->var_0C & (1 << 8)))
+		if (peep->outside_of_park != 0 || !(peep->var_0C & (1 << 8)))
 			continue;
 
 		// New group, cap at 240 though

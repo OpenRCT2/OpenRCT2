@@ -187,7 +187,7 @@ int calculate_park_rating()
 		num_happy_peeps = 0;
 		_bp = 0;
 		FOR_ALL_GUESTS(spriteIndex, peep) {
-			if (peep->var_2A != 0)
+			if (peep->outside_of_park != 0)
 				continue;
 			if (peep->happiness > 128)
 				num_happy_peeps++;
