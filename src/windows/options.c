@@ -221,24 +221,24 @@ static rct_widget window_options_audio_widgets[] = {
 
 static rct_widget window_options_controls_and_interface_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
-	{ WWT_GROUPBOX,			1,	5,      304,	53,				114 + 15,	STR_CONTROLS_GROUP,						STR_NONE },							// Controls group
-	{ WWT_CHECKBOX,			2,	10,		299,	68,				79,			STR_SCREEN_EDGE_SCROLLING,				STR_SCREEN_EDGE_SCROLLING_TIP },	// Edge scrolling
-	{ WWT_CHECKBOX,			2,	10,		299,	68 + 15,		79 + 15,	STR_TRAP_MOUSE,							STR_NONE },	// Trap mouse
-	{ WWT_CHECKBOX,			2,	10,		299,	83 + 15,		94 + 15,	STR_INVERT_RIGHT_MOUSE_DRAG,			STR_NONE },							// Invert right mouse dragging
-	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	98 + 15,		109 + 15,	STR_HOTKEY,								STR_HOTKEY_TIP },					// Set hotkeys buttons
+	{ WWT_GROUPBOX,			1,	5,      304,	53,			129,	STR_CONTROLS_GROUP,						STR_NONE },							// Controls group
+	{ WWT_CHECKBOX,			2,	10,		299,	68,			79,		STR_SCREEN_EDGE_SCROLLING,				STR_SCREEN_EDGE_SCROLLING_TIP },	// Edge scrolling
+	{ WWT_CHECKBOX,			2,	10,		299,	83,			94,		STR_TRAP_MOUSE,							STR_NONE },	// Trap mouse
+	{ WWT_CHECKBOX,			2,	10,		299,	98,			109,	STR_INVERT_RIGHT_MOUSE_DRAG,			STR_NONE },							// Invert right mouse dragging
+	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	113,		124,	STR_HOTKEY,								STR_HOTKEY_TIP },					// Set hotkeys buttons
 
-	{ WWT_GROUPBOX,			1,	5,      304,	118 + 15,	164 + 15,	STR_THEMES_GROUP,						STR_NONE },							// Toolbar buttons group
-	{ WWT_DROPDOWN,			1,	155,	299,	132 + 15,	143 + 15,	STR_NONE,								STR_NONE },							// Themes
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	133 + 15,	142 + 15,	STR_DROPDOWN_GLYPH,						STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	10,		145,	148 + 15,	159 + 15,	STR_EDIT_THEMES_BUTTON,					STR_NONE },							// Themes button
+	{ WWT_GROUPBOX,			1,	5,      304,	133,		179,	STR_THEMES_GROUP,						STR_NONE },							// Toolbar buttons group
+	{ WWT_DROPDOWN,			1,	155,	299,	147,		158,	STR_NONE,								STR_NONE },							// Themes
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	148,		157,	STR_DROPDOWN_GLYPH,						STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	10,		145,	163,		174,	STR_EDIT_THEMES_BUTTON,					STR_NONE },							// Themes button
 
-	{ WWT_GROUPBOX,			1,	5,      304,	168 + 15,	230 + 15,	STR_TOOLBAR_BUTTONS_GROUP,				STR_NONE },							// Toolbar buttons group
-	{ WWT_CHECKBOX,			2,	10,		145,	199 + 15,	210 + 15,	STR_FINANCES_BUTTON_ON_TOOLBAR,			STR_NONE },							// Finances
-	{ WWT_CHECKBOX,			2,	10,		145,	214 + 15,	225 + 15,	STR_RESEARCH_BUTTON_ON_TOOLBAR,			STR_NONE },							// Research
-	{ WWT_CHECKBOX,			2,	155,	299,	199 + 15,	210 + 15,	STR_CHEATS_BUTTON_ON_TOOLBAR,			STR_NONE },							// Cheats
-	{ WWT_CHECKBOX,			2,	155,	299,	214 + 15,	225 + 15,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,	STR_NONE },							// Recent messages
+	{ WWT_GROUPBOX,			1,	5,      304,	183,		245,	STR_TOOLBAR_BUTTONS_GROUP,				STR_NONE },							// Toolbar buttons group
+	{ WWT_CHECKBOX,			2,	10,		145,	1214,		225,	STR_FINANCES_BUTTON_ON_TOOLBAR,			STR_NONE },							// Finances
+	{ WWT_CHECKBOX,			2,	10,		145,	229,		240,	STR_RESEARCH_BUTTON_ON_TOOLBAR,			STR_NONE },							// Research
+	{ WWT_CHECKBOX,			2,	155,	299,	114,		225,	STR_CHEATS_BUTTON_ON_TOOLBAR,			STR_NONE },							// Cheats
+	{ WWT_CHECKBOX,			2,	155,	299,	229,		240,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,	STR_NONE },							// Recent messages
 
-	{ WWT_CHECKBOX,			2,	10,		299,	239 + 15,	250 + 15,	STR_SELECT_BY_TRACK_TYPE,				STR_SELECT_BY_TRACK_TYPE_TIP },		// Select by track type
+	{ WWT_CHECKBOX,			2,	10,		299,	254,		265,	STR_SELECT_BY_TRACK_TYPE,				STR_SELECT_BY_TRACK_TYPE_TIP },		// Select by track type
 	{ WIDGETS_END },
 };
 
