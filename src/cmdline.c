@@ -90,9 +90,7 @@ int cmdline_run(const char **argv, int argc)
 	argc = argparse_parse(&argparse, argc, argv);
 
 	if (version) {
-		printf("%s v%s\n", OPENRCT2_NAME, OPENRCT2_VERSION);
-		printf("%s (%s)\n", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
-		printf("%s\n", OPENRCT2_TIMESTAMP);
+		print_launch_information();
 		return 0;
 	}
 
