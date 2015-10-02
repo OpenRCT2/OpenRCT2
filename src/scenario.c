@@ -245,6 +245,8 @@ int scenario_load_and_play_from_path(const char *path)
 	}
 	_scenarioFileName = path_get_filename(_scenarioPath);
 
+	gFirstTimeSave = 1;
+
 	log_verbose("starting scenario, %s", path);
 	scenario_begin();
 
