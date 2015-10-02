@@ -2119,6 +2119,8 @@ enum {
 	STR_DATE_FORMAT_YEAR_DAY_MONTH = 5551,
 	STR_DATE_FORMAT_YDM = 5552,
 
+	STR_TRAP_MOUSE = 5553,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
