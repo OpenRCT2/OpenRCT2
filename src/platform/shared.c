@@ -73,6 +73,9 @@ static const int _fullscreen_modes[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FU
 static unsigned int _lastGestureTimestamp;
 static float _gestureRadius;
 
+static uint32 _pixelBeforeOverlay;
+static uint32 _pixelAfterOverlay;
+
 static void platform_create_window();
 static void platform_load_cursors();
 static void platform_unload_cursors();
@@ -179,6 +182,39 @@ void platform_get_closest_resolution(int inWidth, int inHeight, int *outWidth, i
 	}
 }
 
+static void read_center_pixel(int width, int height, uint32 *pixel) {
+	SDL_Rect centerPixelRegion = {width / 2, height / 2, 1, 1};
+	SDL_RenderReadPixels(gRenderer, &centerPixelRegion, SDL_PIXELFORMAT_RGBA8888, pixel, sizeof(uint32));
+}
+
+// Should be called before SDL_RenderPresent to capture frame buffer before Steam overlay is drawn.
+static void overlay_pre_render(int width, int height) {
+	read_center_pixel(width, height, &_pixelBeforeOverlay);
+}
+
+// Should be called after SDL_RenderPresent, when Steam overlay has had the chance to be drawn.
+static void overlay_post_render(int width, int height) {
+	static bool overlayActive = false;
+	static bool pausedBeforeOverlay = false;
+
+	read_center_pixel(width, height, &_pixelAfterOverlay);
+
+	// Detect an active Steam overlay by checking if the center pixel is changed by the gray fade.
+	// Will not be triggered by applications rendering to corners, like FRAPS, MSI Afterburner and Friends popups.
+	bool newOverlayActive = _pixelBeforeOverlay != _pixelAfterOverlay;
+
+	// Toggle game pause state consistently with base pause state
+	if (!overlayActive && newOverlayActive) {
+		pausedBeforeOverlay = RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1;
+
+		if (!pausedBeforeOverlay) pause_toggle();
+	} else if (overlayActive && !newOverlayActive && !pausedBeforeOverlay) {
+		pause_toggle();
+	}
+
+	overlayActive = newOverlayActive;
+}
+
 void platform_draw()
 {
 	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
@@ -215,7 +251,12 @@ void platform_draw()
 			}
 
 			SDL_RenderCopy(gRenderer, gBufferTexture, NULL, NULL);
+
+			overlay_pre_render(width, height);
+
 			SDL_RenderPresent(gRenderer);
+
+			overlay_post_render(width, height);
 		}
 		else {
 			// Lock the surface before setting its pixels
