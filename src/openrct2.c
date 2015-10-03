@@ -354,6 +354,8 @@ static void openrct2_loop()
 				uncapTick = currentTick - 25 - 1;
 			}
 
+			platform_process_messages();
+
 			while (uncapTick <= currentTick && currentTick - uncapTick > 25) {
 				// Get the original position of each sprite
 				for (uint16 i = 0; i < MAX_SPRITES; i++) {
@@ -391,7 +393,6 @@ static void openrct2_loop()
 				invalidate_sprite_2(&g_sprite_list[i]);
 			}
 
-			platform_process_messages();
 			rct2_draw();
 			platform_draw();
 			fps++;
