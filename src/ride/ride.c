@@ -5594,6 +5594,8 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 	//edx ride_number
 	//ebp ride_type
 
+	*ebx = 0; // for cost check - changing ride price does not cost anything
+
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS * 4;
 	if (flags & 0x1) {
 		if (!secondary_price) {
