@@ -23,6 +23,7 @@
 
 #include "../cmdline.h"
 #include "../openrct2.h"
+#include <dlfcn.h>
 
 /**
  * Unix, linux and fallback entry point to OpenRCT2.
@@ -41,6 +42,10 @@ char platform_get_path_separator()
 	return '/';
 }
 */
+
+bool platform_is_steam_overlay_attached() {
+	return dlopen("gameoverlayrenderer.so", RTLD_NOLOAD) != NULL;
+}
 
 #endif
 #endif
