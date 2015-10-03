@@ -532,7 +532,7 @@ void window_editor_inventions_list_open()
 		400,
 		&window_editor_inventions_list_events,
 		WC_EDITOR_INVENTION_LIST,
-		WF_2
+		WF_NO_SCROLLING
 	);
 	w->widgets = window_editor_inventions_list_widgets;
 	w->enabled_widgets =

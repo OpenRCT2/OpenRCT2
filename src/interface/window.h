@@ -329,13 +329,13 @@ typedef enum {
 
 	WF_STICK_TO_BACK = (1 << 0),
 	WF_STICK_TO_FRONT = (1 << 1),
-	WF_2 = (1 << 2),
+	WF_NO_SCROLLING = (1 << 2), // User is unable to scroll this viewport
 	WF_SCROLLING_TO_LOCATION = (1 << 3),
 	WF_TRANSPARENT = (1 << 4),
-	WF_5 = (1 << 5),
+	WF_NO_BACKGROUND = (1 << 5), // Instead of half transparency, completely remove the window background
 	WF_7 = (1 << 7),
 	WF_RESIZABLE = (1 << 8),
-	WF_9 = (1 << 9),
+	WF_NO_AUTO_CLOSE = (1 << 9), // Don't auto close this window if too many windows are open
 	WF_10 = (1 << 10),
 	WF_WHITE_BORDER_ONE = (1 << 12),
 	WF_WHITE_BORDER_MASK = (1 << 12) | (1 << 13),

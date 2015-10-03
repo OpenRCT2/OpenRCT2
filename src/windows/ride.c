@@ -1581,7 +1581,7 @@ static void window_ride_init_viewport(rct_window *w)
 			focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK, 
 			focus.sprite.sprite_id);
 
-		w->flags |= WF_2;
+		w->flags |= WF_NO_SCROLLING;
 		window_invalidate(w);
 	}
 	if (w->viewport){

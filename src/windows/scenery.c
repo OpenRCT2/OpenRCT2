@@ -428,7 +428,7 @@ void window_scenery_open()
 		WINDOW_SCENERY_HEIGHT,
 		&window_scenery_events,
 		WC_SCENERY,
-		WF_2
+		WF_NO_SCROLLING
 	);
 	window->widgets = window_scenery_widgets;
 

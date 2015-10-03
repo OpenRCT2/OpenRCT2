@@ -143,7 +143,7 @@ static void window_maze_construction_construct(int direction);
  */
 rct_window *window_maze_construction_open()
 {
-	rct_window *w = window_create(0, 29, 166, 200, &window_maze_construction_events, WC_RIDE_CONSTRUCTION, WF_9);
+	rct_window *w = window_create(0, 29, 166, 200, &window_maze_construction_events, WC_RIDE_CONSTRUCTION, WF_NO_AUTO_CLOSE);
 	w->widgets = window_maze_construction_widgets;
 	w->enabled_widgets = 0x6F0001C4;
 

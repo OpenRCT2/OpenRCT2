@@ -269,7 +269,7 @@ void window_top_toolbar_open()
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16), 28,
 		&window_top_toolbar_events,
 		WC_TOP_TOOLBAR,
-		WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_5
+		WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND
 	);
 	window->widgets = window_top_toolbar_widgets;
 
