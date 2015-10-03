@@ -52,10 +52,8 @@ endif (DISABLE_NETWORK)
 
 # include lib
 include_directories("lib/")
-# include speex header
-include_directories("lib/libspeex/")
 # add source files
-file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp" "lib/*.c")
+file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp" "lib/argparse/*.c" "lib/cutest/*.c" "lib/lodepng/*.c")
 
 if (UNIX)
 	# force 32bit build for now and set necessary flags to compile code as is
@@ -67,13 +65,24 @@ endif (UNIX)
 
 # find and include SDL2
 PKG_CHECK_MODULES(SDL2 REQUIRED sdl2 SDL2_ttf)
-INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLUDE_DIRS})
+
+# speex v1.1.15 is supplied in our zipped library, but distributions provide
+# updated version, with required functions extracted out to libspeexdsp.
+# This largely takes care of the problem
+if (WIN32)
+	include_directories("lib/libspeex/")
+	file(GLOB_RECURSE SPEEX_SOURCES "lib/libspeex/*.c")
+else (WIN32)
+	PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
+endif (WIN32)
+
+INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLUDE_DIRS} ${SPEEX_INCLUDE_DIRS})
 
 LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${JANSSON_LIBRARY_DIRS} ${LIBCURL_LIBRARY_DIRS})
 
 if (WIN32)
 	# build as library for now, replace with add_executable
-	add_library(${PROJECT} SHARED ${ORCT2_SOURCES})
+	add_library(${PROJECT} SHARED ${ORCT2_SOURCES} ${SPEEX_SOURCES})
 else (WIN32)
 	add_executable(${PROJECT} ${ORCT2_SOURCES})
 endif (WIN32)
@@ -84,4 +93,4 @@ endif (WIN32)
 # libopenrct2.dll -> openrct2.dll
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 
-TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCTLIBS_LIB} ${JANSSON_LIBRARIES} ${HTTPLIBS} ${NETWORKLIBS})
+TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCTLIBS_LIB} ${JANSSON_LIBRARIES} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES})
