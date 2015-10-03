@@ -233,9 +233,9 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	10,		145,	163,		174,	STR_EDIT_THEMES_BUTTON,					STR_NONE },							// Themes button
 
 	{ WWT_GROUPBOX,			1,	5,      304,	183,		245,	STR_TOOLBAR_BUTTONS_GROUP,				STR_NONE },							// Toolbar buttons group
-	{ WWT_CHECKBOX,			2,	10,		145,	1214,		225,	STR_FINANCES_BUTTON_ON_TOOLBAR,			STR_NONE },							// Finances
+	{ WWT_CHECKBOX,			2,	10,		145,	214,		225,	STR_FINANCES_BUTTON_ON_TOOLBAR,			STR_NONE },							// Finances
 	{ WWT_CHECKBOX,			2,	10,		145,	229,		240,	STR_RESEARCH_BUTTON_ON_TOOLBAR,			STR_NONE },							// Research
-	{ WWT_CHECKBOX,			2,	155,	299,	114,		225,	STR_CHEATS_BUTTON_ON_TOOLBAR,			STR_NONE },							// Cheats
+	{ WWT_CHECKBOX,			2,	155,	299,	214,		225,	STR_CHEATS_BUTTON_ON_TOOLBAR,			STR_NONE },							// Cheats
 	{ WWT_CHECKBOX,			2,	155,	299,	229,		240,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,	STR_NONE },							// Recent messages
 
 	{ WWT_CHECKBOX,			2,	10,		299,	254,		265,	STR_SELECT_BY_TRACK_TYPE,				STR_SELECT_BY_TRACK_TYPE_TIP },		// Select by track type
