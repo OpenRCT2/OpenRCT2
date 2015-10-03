@@ -143,6 +143,8 @@ uint16 platform_get_locale_language();
 uint8 platform_get_locale_measurement_format();
 uint8 platform_get_locale_temperature_format();
 
+bool platform_is_steam_overlay_attached();
+
 // Windows specific definitions
 #ifdef _WIN32
 	// Defining WIN32_LEAN_AND_MEAN breaks dsound.h in audio.h (uncomment when dsound is finally removed)

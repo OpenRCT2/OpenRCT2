@@ -79,6 +79,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_HARDWARE_DISPLAY_CHECKBOX,
 	WIDX_UNCAP_FPS_CHECKBOX,
 	WIDX_MINIMIZE_FOCUS_LOSS,
+	WIDX_STEAM_OVERLAY_PAUSE,
 	WIDX_RENDERING_GROUP,
 	WIDX_TILE_SMOOTHING_CHECKBOX,
 	WIDX_GRIDLINES_CHECKBOX,
@@ -168,7 +169,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 
 static rct_widget window_options_display_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
-	{ WWT_GROUPBOX,			1,	5,      304,	53,		145,	STR_HARDWARE_GROUP,		STR_NONE },					// Hardware group
+	{ WWT_GROUPBOX,			1,	5,      304,	53,		160,	STR_HARDWARE_GROUP,		STR_NONE },					// Hardware group
 	{ WWT_DROPDOWN,			1,	155,	299,	68,		79,		STR_RESOLUTION_X_BY_Y,	STR_NONE },					// resolution
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	69,		78,		STR_DROPDOWN_GLYPH,		STR_NONE },
 	{ WWT_DROPDOWN,			1,	155,	299,	83,		94,		871,					STR_NONE },					// fullscreen
@@ -176,14 +177,15 @@ static rct_widget window_options_display_widgets[] = {
 	{ WWT_CHECKBOX,			1,	10,		290,	99,		110,	STR_HARDWARE_DISPLAY,	STR_NONE },					// hardware display
 	{ WWT_CHECKBOX,			1,	10,		290,	114,	125,	STR_UNCAP_FPS,			STR_NONE },					// uncap fps
 	{ WWT_CHECKBOX,			1,	10,		290,	129,	140,	STR_MININISE_FULL_SCREEN_ON_FOCUS_LOSS,	STR_NONE },	// minimise fullscreen focus loss
+	{ WWT_CHECKBOX,			1,	10,		290,	144,	155,	STR_STEAM_OVERLAY_PAUSE,	STR_NONE },				// minimise fullscreen focus loss
 
-	{ WWT_GROUPBOX,			1,	5,      304,	149,	240,	STR_RENDERING_GROUP,	STR_NONE },					// Rendering group
-	{ WWT_CHECKBOX,			1,	10,		290,	164,	175,	STR_TILE_SMOOTHING, 	STR_TILE_SMOOTHING_TIP },	// landscape smoothing
-	{ WWT_CHECKBOX,			1,	10,		290,	179,	190,	STR_GRIDLINES,			STR_GRIDLINES_TIP },		// gridlines
-	{ WWT_DROPDOWN,			1,	155,	299,	193,	204,	STR_NONE,				STR_NONE },					// construction marker
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	194,	203,	STR_DROPDOWN_GLYPH,		STR_NONE },
-	{ WWT_CHECKBOX,			1,	10,		290,	209,	220,	STR_CYCLE_DAY_NIGHT,	STR_NONE },					// cycle day-night
-	{ WWT_CHECKBOX,			1,	10,		290,	224,	235,	STR_UPPER_CASE_BANNERS,	STR_NONE },					// upper case banners
+	{ WWT_GROUPBOX,			1,	5,      304,	164,	255,	STR_RENDERING_GROUP,	STR_NONE },					// Rendering group
+	{ WWT_CHECKBOX,			1,	10,		290,	179,	190,	STR_TILE_SMOOTHING, 	STR_TILE_SMOOTHING_TIP },	// landscape smoothing
+	{ WWT_CHECKBOX,			1,	10,		290,	194,	205,	STR_GRIDLINES,			STR_GRIDLINES_TIP },		// gridlines
+	{ WWT_DROPDOWN,			1,	155,	299,	208,	219,	STR_NONE,				STR_NONE },					// construction marker
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	209,	218,	STR_DROPDOWN_GLYPH,		STR_NONE },
+	{ WWT_CHECKBOX,			1,	10,		290,	224,	235,	STR_CYCLE_DAY_NIGHT,	STR_NONE },					// cycle day-night
+	{ WWT_CHECKBOX,			1,	10,		290,	239,	250,	STR_UPPER_CASE_BANNERS,	STR_NONE },					// upper case banners
 	{ WIDGETS_END },
 };
 
@@ -355,6 +357,7 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_HARDWARE_DISPLAY_CHECKBOX) |
 	(1 << WIDX_UNCAP_FPS_CHECKBOX) |
 	(1 << WIDX_MINIMIZE_FOCUS_LOSS) |
+	(1 << WIDX_STEAM_OVERLAY_PAUSE) |
 	(1 << WIDX_CONSTRUCTION_MARKER) |
 	(1 << WIDX_CONSTRUCTION_MARKER_DROPDOWN) |
 	(1 << WIDX_DAY_NIGHT_CHECKBOX) |
@@ -499,6 +502,11 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 		case WIDX_MINIMIZE_FOCUS_LOSS:
 			gConfigGeneral.minimize_fullscreen_focus_loss ^= 1;
 			platform_refresh_video();
+			config_save_default();
+			window_invalidate(w);
+			break;
+		case WIDX_STEAM_OVERLAY_PAUSE:
+			gConfigGeneral.steam_overlay_pause ^= 1;
 			config_save_default();
 			window_invalidate(w);
 			break;
@@ -1114,6 +1122,7 @@ static void window_options_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_HARDWARE_DISPLAY_CHECKBOX, gConfigGeneral.hardware_display);
 		widget_set_checkbox_value(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
 		widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
+		widget_set_checkbox_value(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
 		widget_set_checkbox_value(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
 		widget_set_checkbox_value(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
 
@@ -1131,6 +1140,7 @@ static void window_options_invalidate(rct_window *w)
 		window_options_display_widgets[WIDX_HARDWARE_DISPLAY_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_display_widgets[WIDX_UNCAP_FPS_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_display_widgets[WIDX_MINIMIZE_FOCUS_LOSS].type = WWT_CHECKBOX;
+		window_options_display_widgets[WIDX_STEAM_OVERLAY_PAUSE].type = WWT_CHECKBOX;
 		window_options_display_widgets[WIDX_DAY_NIGHT_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_display_widgets[WIDX_UPPER_CASE_BANNERS_CHECKBOX].type = WWT_CHECKBOX;
 		break;

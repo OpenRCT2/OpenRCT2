@@ -201,7 +201,10 @@ static void overlay_post_render(int width, int height) {
 
 	// Detect an active Steam overlay by checking if the center pixel is changed by the gray fade.
 	// Will not be triggered by applications rendering to corners, like FRAPS, MSI Afterburner and Friends popups.
-	bool newOverlayActive = _pixelBeforeOverlay != _pixelAfterOverlay;
+	bool newOverlayActive =
+		_pixelBeforeOverlay != _pixelAfterOverlay &&
+		platform_is_steam_overlay_attached() &&
+		gConfigGeneral.steam_overlay_pause;
 
 	// Toggle game pause state consistently with base pause state
 	if (!overlayActive && newOverlayActive) {
