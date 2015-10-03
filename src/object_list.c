@@ -355,11 +355,6 @@ static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int file
 	rct_plugin_header pluginHeader;
 	uint32 filterVersion = 0;
 
-#ifndef _WIN32
-	// TODO: remove me!
-	log_error("this is to be removed after testing/implementation is done");
-	return 0;
-#endif
 	log_verbose("loading object list cache (plugin.dat)");
 
 	get_plugin_path(path);
