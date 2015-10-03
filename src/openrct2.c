@@ -40,14 +40,14 @@
 #include "util/util.h"
 #include "world/mapgen.h"
 
-#ifdef __linux__
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 #include <sys/mman.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#endif // __linux__
+#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 utf8 gOpenRCT2StartupActionPath[512] = { 0 };
@@ -59,11 +59,11 @@ bool gOpenRCT2Headless = false;
 
 bool gOpenRCT2ShowChangelog;
 
-#if defined(__linux__)
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 void *gDataSegment;
 void *gTextSegment;
 int gExeFd;
-#endif // defined(__linux__)
+#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
 /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to 0. */
 int _finished;
@@ -498,9 +498,9 @@ void openrct2_reset_object_tween_locations()
  */
 static bool openrct2_setup_rct2_segment()
 {
-	// Linux will run OpenRCT2 as a native application and then load in the Windows PE, mapping the appropriate addresses as
+	// POSIX OSes will run OpenRCT2 as a native application and then load in the Windows PE, mapping the appropriate addresses as
 	// necessary. Windows does not need to do this as OpenRCT2 runs as a DLL loaded from the Windows PE.
-#ifdef __linux__
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 	#define RDATA_OFFSET 0x004A4000
 	#define DATASEG_OFFSET 0x005E2000
 
@@ -577,7 +577,7 @@ static bool openrct2_setup_rct2_segment()
 		err = errno;
 		log_error("Failed to unmap file! errno = %d", err);
 	}
-#endif // __linux__
+#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
 	// Check that the expected data is at various addresses.
 	// Start at 0x9a6000, which is start of .data, to skip the region containing addresses to DLL
@@ -601,7 +601,7 @@ static bool openrct2_setup_rct2_segment()
 static bool openrct2_release_rct2_segment()
 {
 	bool result = true;
-#if defined(__linux__)
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 	int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
 	int err;
 	err = munmap(gDataSegment, len);
@@ -626,7 +626,7 @@ static bool openrct2_release_rct2_segment()
 		log_error("Failed to close file! errno = %d", err);
 		result = false;
 	}
-#endif // defined(__linux__)
+#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 	return result;
 }
 
