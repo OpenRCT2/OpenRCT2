@@ -247,7 +247,8 @@ static void game_handle_input_mouse(int x, int y, int state)
 		}
 		else if (state == 4) {
 			input_viewport_drag_end();
-			if (RCT2_GLOBAL(0x009DE540, sint16) < 500) {
+			if (RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_DRAG_START, sint16) < 500) {
+				// If the user pressed the right mouse button for less than 500 ticks, interpret as right click
 				viewport_interaction_right_click(x, y);
 			}
 		}
@@ -409,7 +410,7 @@ static void input_viewport_drag_begin(rct_window *w, int x, int y)
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_VIEWPORT_RIGHT;
 	_dragWindowClass = w->classification;
 	_dragWindowNumber = w->number;
-	RCT2_GLOBAL(0x009DE540, sint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_DRAG_START, sint16) = 0;
 	platform_get_cursor_position(&_dragX, &_dragY);
 	platform_hide_cursor();
 
@@ -429,13 +430,18 @@ static void input_viewport_drag_continue()
 	w = window_find_by_number(_dragWindowClass, _dragWindowNumber);
 
 	viewport = w->viewport;
-	RCT2_GLOBAL(0x009DE540, sint16) += RCT2_GLOBAL(0x009DE588, sint16);
+	RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_DRAG_START, sint16) += RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, sint16);
 	if (viewport == NULL) {
 		platform_show_cursor();
 		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_RESET;
 	} else if (dx != 0 || dy != 0) {
 		if (!(w->flags & WF_NO_SCROLLING)) {
-			RCT2_GLOBAL(0x009DE540, sint16) = 1000;
+			// User dragged a scrollable viewport
+
+			// If the drag time is less than 500 the "drag" is usually interpreted as a right click.
+			// As the user moved the mouse, don't interpret it as right click in any case.
+			RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_DRAG_START, sint16) = 1000;
+
 			dx <<= viewport->zoom + 1;
 			dy <<= viewport->zoom + 1;
 			if (gConfigGeneral.invert_viewport_drag){
@@ -1225,7 +1231,7 @@ static void input_update_tooltip(rct_window *w, int widgetIndex, int x, int y)
 			(RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, sint16) == x &&
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, sint16) == y)
 			) {
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = RCT2_GLOBAL(0x009DE588, uint16);
+			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, uint16);
 
 			int bp = 2000;
 			if (RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, uint16) >= 1)
@@ -1245,7 +1251,7 @@ static void input_update_tooltip(rct_window *w, int widgetIndex, int x, int y)
 			) {
 			window_tooltip_close();
 		}
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) += RCT2_GLOBAL(0x009DE588, uint16);
+		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) += RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, uint16);
 		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) < 8000)
 			return;
 		window_close_by_class(WC_TOOLTIP);

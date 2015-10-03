@@ -380,15 +380,15 @@ void rct2_update_2()
 
 	tick = SDL_GetTicks();
 
-	tick2 = tick - RCT2_GLOBAL(0x009DE580, sint32);
-	RCT2_GLOBAL(0x009DE588, sint16) = tick2 = min(tick2, 500);
+	tick2 = tick - RCT2_GLOBAL(RCT2_ADDRESS_LAST_TICK_COUNT, sint32);
+	RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, sint16) = tick2 = min(tick2, 500);
 
-	RCT2_GLOBAL(0x009DE580, sint32) = tick;
+	RCT2_GLOBAL(RCT2_ADDRESS_LAST_TICK_COUNT, sint32) = tick;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0)
 		RCT2_GLOBAL(RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO, sint32) += tick2;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 0)
-		RCT2_GLOBAL(0x009DE588, sint16) = 31;
+		RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, sint16) = 31;
 
 	// TODO: screenshot countdown process
 
