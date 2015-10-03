@@ -869,10 +869,11 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 	case WINDOW_OPTIONS_PAGE_MISC:
 		switch (widgetIndex) {
 		case WIDX_AUTOSAVE_DROPDOWN:
-			for (i = AUTOSAVE_EVERY_WEEK; i <= AUTOSAVE_NEVER; i++) {
+			for (i = AUTOSAVE_EVERY_MINUTE; i <= AUTOSAVE_NEVER; i++) {
 				gDropdownItemsFormat[i] = 1142;
-				gDropdownItemsArgs[i] = 2701 + i;
+				gDropdownItemsArgs[i] = STR_SAVE_EVERY_MINUTE + i;
 			}
+
 			window_options_show_dropdown(w, widget, AUTOSAVE_NEVER + 1);
 			gDropdownItemsChecked = 1 << gConfigGeneral.autosave_frequency;
 			break;
@@ -1371,7 +1372,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		gfx_draw_string_left(dpi, 2700, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_AUTOSAVE].top + 1);
 		gfx_draw_string_left(
 			dpi,
-			2701 + gConfigGeneral.autosave_frequency,
+			STR_SAVE_EVERY_MINUTE + gConfigGeneral.autosave_frequency,
 			NULL,
 			w->colours[1],
 			w->x + window_options_misc_widgets[WIDX_AUTOSAVE].left + 1,

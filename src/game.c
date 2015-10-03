@@ -296,6 +296,9 @@ void game_update()
 		}
 	}
 
+	// Always perform autosave check, even when paused
+	scenario_autosave_check();
+
 	network_update();
 	news_item_update_current();
 	window_dispatch_update_all();

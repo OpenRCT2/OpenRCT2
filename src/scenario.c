@@ -514,34 +514,38 @@ void scenario_entrance_fee_too_high_check()
 	}
 }
 
-static void scenario_autosave_check()
+void scenario_autosave_check()
 {
-	uint32 next_month_tick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) + 4;
-	uint16 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+	// Timestamp in milliseconds
+	static uint32 last_save = 0;
+
 	bool shouldSave = 0;
 
+	// Milliseconds since last save
+	uint32_t time_since_save = SDL_GetTicks() - last_save;
+
 	switch (gConfigGeneral.autosave_frequency) {
-	case AUTOSAVE_EVERY_WEEK:
-		shouldSave = (next_month_tick % 0x4000 == 0);
+	case AUTOSAVE_EVERY_MINUTE:
+		shouldSave = time_since_save >= 1 * 60 * 1000;
 		break;
-	case AUTOSAVE_EVERY_2_WEEKS:
-		shouldSave = (next_month_tick % 0x8000 == 0);
+	case AUTOSAVE_EVERY_5MINUTES:
+		shouldSave = time_since_save >= 5 * 60 * 1000;
 		break;
-	case AUTOSAVE_EVERY_MONTH:
-		shouldSave = (next_month_tick >= 0x10000);
+	case AUTOSAVE_EVERY_15MINUTES:
+		shouldSave = time_since_save >= 15 * 60 * 1000;
 		break;
-	case AUTOSAVE_EVERY_4_MONTHS:
-		if (next_month_tick >= 0x10000)
-			shouldSave = (((month + 1) & 3) == 0);
+	case AUTOSAVE_EVERY_30MINUTES:
+		shouldSave = time_since_save >= 30 * 60 * 1000;
 		break;
-	case AUTOSAVE_EVERY_YEAR:
-		if (next_month_tick >= 0x10000)
-			shouldSave = (((month + 1) & 7) == 0);
+	case AUTOSAVE_EVERY_HOUR:
+		shouldSave = time_since_save >= 60 * 60 * 1000;
 		break;
 	}
 
-	if (shouldSave)
+	if (shouldSave) {
+		last_save = SDL_GetTicks();
 		game_autosave();
+	}
 }
 
 static void scenario_day_update()
@@ -636,7 +640,6 @@ void scenario_update()
 		uint8 currentMonth = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
 		uint8 currentDaysInMonth = (uint8)days_in_month[currentMonth];
 
-		scenario_autosave_check();
 		if ((currentDaysInMonth * nextMonthTick) >> 16 != (currentDaysInMonth * currentMonthTick) >> 16) {
 			scenario_day_update();
 		}
