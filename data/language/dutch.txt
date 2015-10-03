@@ -88,7 +88,7 @@ STR_0086    :Onbekende attractie (54)
 STR_0087    :Onbekende attractie (55)
 STR_0088    :Omgekeerde Impulse-achtbaan
 STR_0089    :Mini-achtbaan
-STR_0090    :Aandreven mijntrein
+STR_0090    :Aangedreven mijntrein
 STR_0091    :Onbekende attractie (59)
 STR_0092    :LIM-lanceringsachtbaan
 STR_0093    :
