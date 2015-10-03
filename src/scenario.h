@@ -434,5 +434,6 @@ void scenario_set_filename(const char *value);
 void scenario_failure();
 void scenario_success();
 void scenario_success_submit_name(const char *name);
+void scenario_autosave_check();
 
 #endif
