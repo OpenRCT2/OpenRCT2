@@ -1717,6 +1717,54 @@ void game_command_set_land_height(int *eax, int *ebx, int *ecx, int *edx, int *e
 	);
 }
 
+money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 x2, sint16 y2, uint8 newOwnership) {
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LAND_PURCHASE * 4;
+
+	if (!(flags & GAME_COMMAND_FLAG_APPLY))
+		return 0;
+
+	RCT2_GLOBAL(0x009E2E28, uint8) = 0;
+
+	for (sint16 y = y1; y < y2; y += 32) {
+		for (sint16 x = x1; x < x2; x += 32) {
+			if (x > RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16))
+				continue;
+			if (y > RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16))
+				continue;
+
+			map_buy_land_rights(x, y, x2, y2, 6, flags | (newOwnership << 8));
+		}
+	}
+
+	if (!(RCT2_GLOBAL(0x9E2E28, uint8) & 1)) {
+		return 0;
+	}
+
+	sint16 x = clamp(0, x1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16));
+	sint16 y = clamp(0, y1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16));
+
+	x += 16;
+	y += 16;
+
+	sint16 z = map_element_height(x, y) & 0xFFFF;
+	sound_play_panned(SOUND_PLACE_ITEM, 0x8001, x, y, z);
+	return 0;
+}
+
+/* rct2: 0x006648E3*/
+void game_command_set_land_ownership(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	*ebx = map_set_land_ownership(
+		*ebx & 0xFF,
+		*eax & 0xFFFF,
+		*ecx & 0xFFFF,
+		*edi & 0xFFFF,
+		*ebp & 0xFFFF,
+		*edx & 0xFF
+		);
+}
+
+
 money32 raise_land(int flags, int x, int y, int z, int ax, int ay, int bx, int by, int selectionType)
 {
 	money32 cost = 0;

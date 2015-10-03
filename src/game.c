@@ -1168,7 +1168,7 @@ static uint32 game_do_command_table[58] = {
 	0,
 	0,
 	0,
-	0x006648E3,
+	0,
 	0
 };
 
@@ -1231,7 +1231,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_set_fence_colour,
 	game_command_set_large_scenery_colour,
 	game_command_set_banner_colour,
-	game_command_emptysub,
+	game_command_set_land_ownership,
 	game_command_clear_scenery
 };
 
