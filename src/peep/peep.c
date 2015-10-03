@@ -2588,7 +2588,7 @@ static void peep_update_ride_sub_state_12(rct_peep* peep){
 }
 
 /* rct2: 0x0069357D */
-static void peep_udpate_ride_sub_state_13(rct_peep* peep){
+static void peep_update_ride_sub_state_13(rct_peep* peep){
 	sint16 x, y, xy_distance;
 	rct_ride* ride = GET_RIDE(peep->current_ride);
 
@@ -3235,7 +3235,7 @@ static void peep_update_ride(rct_peep* peep){
 		peep_update_ride_sub_state_12(peep);
 		break;
 	case 13:
-		peep_udpate_ride_sub_state_13(peep);
+		peep_update_ride_sub_state_13(peep);
 		break;
 	case 14:
 		peep_update_ride_sub_state_14(peep);
