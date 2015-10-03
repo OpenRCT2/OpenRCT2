@@ -184,7 +184,7 @@ elif [[ `uname` == "Linux" ]]; then
 				sudo apt-get install -y --force-yes binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 cmake
 				;;
 			"docker32")
-				docker pull janisozaur/openrct2:32bit-only
+				docker pull openrct2/openrct2:32bit-only
 				;;
 			*)
 				echo "unkown target $TARGET"
