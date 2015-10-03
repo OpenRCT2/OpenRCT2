@@ -524,10 +524,10 @@ void get_system_info()
 	else
 		RCT2_GLOBAL(0x1423C18, sint32) = 1;
 
-	RCT2_GLOBAL(0x01423C20, uint32) = (SDL_HasMMX() == SDL_TRUE);
 #else
 	STUB();
 #endif // _WIN32
+	RCT2_GLOBAL(0x01423C20, uint32) = (SDL_HasMMX() == SDL_TRUE);
 }
 
 
