@@ -841,6 +841,8 @@ int map_is_location_in_park(int x, int y)
 
 	if (x < (256 * 32) && y < (256 * 32)) {
 		mapElement = map_get_surface_element_at(x / 32, y / 32);
+		if (mapElement == NULL)
+			return 0;
 		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED)
 			return 1;
 	}
@@ -4219,8 +4221,8 @@ money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direc
 		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[entranceNum] = direction;
 	}
 
-	sint16 zLow = (z & 0xFF) * 2;
-	sint16 zHigh = zLow + 12;
+	sint8 zLow = (z & 0xFF) * 2;
+	sint8 zHigh = zLow + 12;
 	if (!map_can_construct_at(x, y, zLow, zHigh, 0xF)) {
 		return MONEY32_UNDEFINED;
 	}
