@@ -434,7 +434,7 @@ static void input_viewport_drag_continue()
 		platform_show_cursor();
 		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_RESET;
 	} else if (dx != 0 || dy != 0) {
-		if (!(w->flags & (1 << 2))) {
+		if (!(w->flags & WF_NO_SCROLLING)) {
 			RCT2_GLOBAL(0x009DE540, sint16) = 1000;
 			dx <<= viewport->zoom + 1;
 			dy <<= viewport->zoom + 1;
@@ -1543,7 +1543,7 @@ void game_handle_edge_scroll()
 	mainWindow = window_get_main();
 	if (mainWindow == NULL)
 		return;
-	if ((mainWindow->flags & WF_2) || (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 9))
+	if ((mainWindow->flags & WF_NO_SCROLLING) || (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 9))
 		return;
 	if (mainWindow->viewport == NULL)
 		return;
@@ -1586,7 +1586,7 @@ void game_handle_key_scroll()
 	mainWindow = window_get_main();
 	if (mainWindow == NULL)
 		return;
-	if ((mainWindow->flags & WF_2) || (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 9))
+	if ((mainWindow->flags & WF_NO_SCROLLING) || (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 9))
 		return;
 	if (mainWindow->viewport == NULL)
 		return;

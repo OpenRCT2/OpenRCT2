@@ -98,7 +98,7 @@ void window_title_menu_open()
 		328, 100,
 		&window_title_menu_events,
 		WC_TITLE_MENU,
-		WF_STICK_TO_BACK | WF_TRANSPARENT | WF_5
+		WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND
 	);
 	window->widgets = window_title_menu_widgets;
 	window->enabled_widgets = (

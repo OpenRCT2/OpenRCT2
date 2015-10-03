@@ -1228,7 +1228,7 @@ void window_staff_viewport_init(rct_window* w){
 			int height = view_widget->bottom - view_widget->top - 1;
 
 			viewport_create(w, x, y, width, height, 0, 0, 0, 0, focus.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite_id);
-			w->flags |= WF_2;
+			w->flags |= WF_NO_SCROLLING;
 			window_invalidate(w);
 		}
 	}

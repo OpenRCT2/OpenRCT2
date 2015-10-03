@@ -343,7 +343,7 @@ void window_editor_scenario_options_open()
 		148,
 		window_editor_scenario_options_page_events[0],
 		WC_EDITOR_SCENARIO_OPTIONS,
-		WF_2
+		WF_NO_SCROLLING
 	);
 	w->widgets = window_editor_scenario_options_widgets[0];
 	w->enabled_widgets = window_editor_scenario_options_page_enabled_widgets[0];

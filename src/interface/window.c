@@ -361,7 +361,7 @@ rct_window *window_create(int x, int y, int width, int height, rct_window_event_
 	if (RCT2_NEW_WINDOW >= &(g_window_list[MAX_NUMBER_WINDOWS])) {
 		// Close least recently used window
 		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
-			if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_9)))
+			if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
 				break;
 
 		window_close(w);
@@ -820,7 +820,7 @@ rct_window *window_find_from_point(int x, int y)
 		if (x < w->x || x >= w->x + w->width || y < w->y || y >= w->y + w->height)
 			continue;
 
-		if (w->flags & WF_5) {
+		if (w->flags & WF_NO_BACKGROUND) {
 			widget_index = window_find_widget_from_point(w, x, y);
 			if (widget_index == -1)
 				continue;
@@ -1335,7 +1335,7 @@ void window_scroll_to_location(rct_window *w, int x, int y, int z)
 		}
 		// rct2: 0x006E7C76
 		if (w->viewport_target_sprite == -1) {
-			if (!(w->flags & WF_2)) {
+			if (!(w->flags & WF_NO_SCROLLING)) {
 				w->saved_view_x = map_coordinate.x - (sint16)(w->viewport->view_width * window_scroll_locations[i][0]);
 				w->saved_view_y = map_coordinate.y - (sint16)(w->viewport->view_height * window_scroll_locations[i][1]);
 				w->flags |= WF_SCROLLING_TO_LOCATION;
@@ -1613,7 +1613,7 @@ void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi)
 	rct_widget *widget;
 	int widgetIndex;
 
-	if ((w->flags & WF_TRANSPARENT) && !(w->flags & WF_5))
+	if ((w->flags & WF_TRANSPARENT) && !(w->flags & WF_NO_BACKGROUND))
 		gfx_fill_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, 0x2000000 | 51);
 
 	//todo: some code missing here? Between 006EB18C and 006EB260
