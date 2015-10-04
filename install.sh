@@ -47,7 +47,7 @@ function download_sdl {
 
 function download_libs {
 	if [[ ! -f $cachedir/orctlibs.zip ]]; then
-		curl $liburl -o $cachedir/orctlibs.zip;
+		wget $liburl -O $cachedir/orctlibs.zip;
 	fi
 	if [[ ! -d $cachedir/orctlibs ]]; then
 		mkdir -p $cachedir/orctlibs
