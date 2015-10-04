@@ -1727,8 +1727,8 @@ money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 x2, sin
 
 	RCT2_GLOBAL(0x009E2E28, uint8) = 0;
 
-	for (sint16 y = y1; y < y2; y += 32) {
-		for (sint16 x = x1; x < x2; x += 32) {
+	for (sint16 y = y1; y <= y2; y += 32) {
+		for (sint16 x = x1; x <= x2; x += 32) {
 			if (x > RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16))
 				continue;
 			if (y > RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16))
