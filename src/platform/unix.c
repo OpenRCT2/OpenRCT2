@@ -23,6 +23,7 @@
 
 #include "../cmdline.h"
 #include "../openrct2.h"
+#include <dlfcn.h>
 
 /**
  * Unix, linux and fallback entry point to OpenRCT2.
@@ -41,6 +42,37 @@ char platform_get_path_separator()
 	return '/';
 }
 */
+
+// See http://syprog.blogspot.ru/2011/12/listing-loaded-shared-objects-in-linux.html
+struct lmap {
+	void* base_address;
+	char* path;
+	void* unused;
+	struct lmap *next, *prev;
+};
+
+struct dummy {
+	void* pointers[3];
+	struct dummy* ptr;
+};
+
+bool platform_check_steam_overlay_attached() {
+	void* processHandle = dlopen(NULL, RTLD_NOW);
+
+	struct dummy* p = (struct dummy*) processHandle;
+	p = p->ptr;
+
+	struct lmap* pl = (struct lmap*) p->ptr;
+
+	while (pl != NULL) {
+		if (strstr(pl->path, "gameoverlayrenderer.so") != NULL) {
+			return true;
+		}
+		pl = pl->next;
+	}
+
+	return false;
+}
 
 #endif
 #endif

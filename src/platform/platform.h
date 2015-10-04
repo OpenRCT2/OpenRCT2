@@ -90,6 +90,8 @@ extern int gNumResolutions;
 extern resolution *gResolutions;
 extern SDL_Window *gWindow;
 
+extern bool gSteamOverlayActive;
+
 // Platform shared definitions
 void platform_update_fullscreen_resolutions();
 void platform_get_closest_resolution(int inWidth, int inHeight, int *outWidth, int *outHeight);
@@ -142,6 +144,8 @@ uint8 platform_get_locale_currency();
 uint16 platform_get_locale_language();
 uint8 platform_get_locale_measurement_format();
 uint8 platform_get_locale_temperature_format();
+
+bool platform_check_steam_overlay_attached();
 
 // Windows specific definitions
 #ifdef _WIN32

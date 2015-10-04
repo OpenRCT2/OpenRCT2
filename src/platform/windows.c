@@ -21,6 +21,7 @@
 #ifdef _WIN32
 
 #include <windows.h>
+#include <psapi.h>
 #include <shlobj.h>
 #include <SDL_syswm.h>
 #include <sys/stat.h>
@@ -838,5 +839,10 @@ uint8 platform_get_locale_temperature_format()
 	default:
 		return TEMPERATURE_FORMAT_C;
 	}
+}
+
+bool platform_check_steam_overlay_attached()
+{
+	return GetModuleHandle("GameOverlayRenderer.dll") != NULL;
 }
 #endif
