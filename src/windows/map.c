@@ -258,6 +258,8 @@ static void window_map_mouseup(rct_window *w, int widgetIndex)
 		if (tool_set(w, widgetIndex, 2))
 			break;
 		RCT2_GLOBAL(0xF1AD61, sint8) = 2;
+		// Prevent mountain tool tool size.
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = max(MINIMUM_TOOL_SIZE, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16));
 		show_gridlines();
 		show_land_rights();
 		show_construction_rights();
