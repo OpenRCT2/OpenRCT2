@@ -59,6 +59,8 @@ SDL_PixelFormat *gBufferTextureFormat = NULL;
 SDL_Color gPalette[256];
 uint32 gPaletteHWMapped[256];
 
+bool gSteamOverlayActive = false;
+
 static SDL_Surface *_surface;
 static SDL_Palette *_palette;
 
@@ -188,12 +190,12 @@ static void read_center_pixel(int width, int height, uint32 *pixel) {
 }
 
 // Should be called before SDL_RenderPresent to capture frame buffer before Steam overlay is drawn.
-static void overlay_pre_render(int width, int height) {
+static void overlay_pre_render_check(int width, int height) {
 	read_center_pixel(width, height, &_pixelBeforeOverlay);
 }
 
 // Should be called after SDL_RenderPresent, when Steam overlay has had the chance to be drawn.
-static void overlay_post_render(int width, int height) {
+static void overlay_post_render_check(int width, int height) {
 	static bool overlayActive = false;
 	static bool pausedBeforeOverlay = false;
 
@@ -201,10 +203,7 @@ static void overlay_post_render(int width, int height) {
 
 	// Detect an active Steam overlay by checking if the center pixel is changed by the gray fade.
 	// Will not be triggered by applications rendering to corners, like FRAPS, MSI Afterburner and Friends popups.
-	bool newOverlayActive =
-		_pixelBeforeOverlay != _pixelAfterOverlay &&
-		platform_is_steam_overlay_attached() &&
-		gConfigGeneral.steam_overlay_pause;
+	bool newOverlayActive = _pixelBeforeOverlay != _pixelAfterOverlay;
 
 	// Toggle game pause state consistently with base pause state
 	if (!overlayActive && newOverlayActive) {
@@ -255,11 +254,15 @@ void platform_draw()
 
 			SDL_RenderCopy(gRenderer, gBufferTexture, NULL, NULL);
 
-			overlay_pre_render(width, height);
+			if (gSteamOverlayActive && gConfigGeneral.steam_overlay_pause) {
+				overlay_pre_render_check(width, height);
+			}
 
 			SDL_RenderPresent(gRenderer);
 
-			overlay_post_render(width, height);
+			if (gSteamOverlayActive && gConfigGeneral.steam_overlay_pause) {
+				overlay_post_render_check(width, height);
+			}
 		}
 		else {
 			// Lock the surface before setting its pixels
@@ -687,6 +690,9 @@ static void platform_create_window()
 
 	platform_update_fullscreen_resolutions();
 	platform_set_fullscreen_mode(gConfigGeneral.fullscreen_mode);
+
+	// Check if steam overlay renderer is loaded into the process
+	gSteamOverlayActive = platform_check_steam_overlay_attached();
 }
 
 int platform_scancode_to_rct_keycode(int sdl_key)

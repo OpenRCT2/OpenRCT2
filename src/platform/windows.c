@@ -841,7 +841,7 @@ uint8 platform_get_locale_temperature_format()
 	}
 }
 
-bool platform_is_steam_overlay_attached()
+bool platform_check_steam_overlay_attached()
 {
 	return GetModuleHandle("GameOverlayRenderer.dll") != NULL;
 }

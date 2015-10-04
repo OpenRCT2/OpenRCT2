@@ -56,7 +56,7 @@ struct dummy {
 	struct dummy* ptr;
 };
 
-bool platform_is_steam_overlay_attached() {
+bool platform_check_steam_overlay_attached() {
 	void* processHandle = dlopen(NULL, RTLD_NOW);
 
 	struct dummy* p = (struct dummy*) processHandle;
