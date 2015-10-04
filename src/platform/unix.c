@@ -44,7 +44,7 @@ char platform_get_path_separator()
 */
 
 bool platform_is_steam_overlay_attached() {
-	return dlopen("gameoverlayrenderer.so", RTLD_NOLOAD) != NULL;
+	return dlopen("gameoverlayrenderer.so", RTLD_NOW | RTLD_NOLOAD) != NULL;
 }
 
 #endif
