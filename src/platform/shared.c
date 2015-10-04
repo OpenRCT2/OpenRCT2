@@ -630,10 +630,17 @@ static void platform_create_window()
 	gWindow = SDL_CreateWindow(
 		"OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE
 	);
+
 	if (!gWindow) {
 		log_fatal("SDL_CreateWindow failed %s", SDL_GetError());
 		exit(-1);
 	}
+
+	if (gConfigGeneral.trap_cursor)
+		SDL_SetWindowGrab(gWindow, SDL_TRUE);
+	else
+		SDL_SetWindowGrab(gWindow, SDL_FALSE);
+	
 
 	// Set the update palette function pointer
 	RCT2_GLOBAL(0x009E2BE4, update_palette_func) = platform_update_palette;
