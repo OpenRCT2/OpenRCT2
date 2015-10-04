@@ -2704,11 +2704,11 @@ STR_2697    :???
 STR_2698    :???
 STR_2699    :???
 STR_2700    :Autosave-Frequenz:
-STR_2701    :Jede Woche
-STR_2702    :Alle 2 Wochen
-STR_2703    :Jeden Monat
-STR_2704    :Alle 4 Monate
-STR_2705    :Jedes Jahr
+STR_2701    :Jede Minute
+STR_2702    :Alle 5 Minuten
+STR_2703    :Alle 15 Minuten
+STR_2704    :Alle 30 Minuten
+STR_2705    :Jede Stunde
 STR_2706    :Nie
 STR_2707    :Neues Fenster
 STR_2708    :{WINDOW_COLOUR_1}Sind Sie sicher, dass Sie {STRINGID} überschreiben möchten?

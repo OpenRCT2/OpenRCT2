@@ -2703,11 +2703,11 @@ STR_2697    :???
 STR_2698    :???
 STR_2699    :???
 STR_2700    :Frequencia do Salvamento automático
-STR_2701    :Toda semana
-STR_2702    :A cada 2 semanas
-STR_2703    :Todo mês
-STR_2704    :A cada 4 meses
-STR_2705    :Todo ano
+STR_2701    :A cada minuto
+STR_2702    :A cada 5 minutos
+STR_2703    :A cada 15 minutos
+STR_2704    :A cada 30 minutos
+STR_2705    :A cada hora
 STR_2706    :Nunca
 STR_2707    :Abrir nova janela
 STR_2708    :{WINDOW_COLOUR_1}Você tem certeza que quer sobrescrever {STRINGID}?

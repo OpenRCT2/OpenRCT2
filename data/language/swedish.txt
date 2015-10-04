@@ -2707,11 +2707,11 @@ STR_2697    :???
 STR_2698    :???
 STR_2699    :???
 STR_2700    :Autospar frekvens:
-STR_2701    :Varje vecka
-STR_2702    :Varannan vecka
-STR_2703    :Varje månad
-STR_2704    :Var 4:e månad
-STR_2705    :Varje år
+STR_2701    :Varje minut
+STR_2702    :Var 5:e minut
+STR_2703    :Var 15:e minut
+STR_2704    :Var 30:e minut
+STR_2705    :Varje timme
 STR_2706    :Aldrig
 STR_2707    :Öppna ett nytt fönster
 STR_2708    :{WINDOW_COLOUR_1}Är du säker på att du vill skriva över {STRINGID}?

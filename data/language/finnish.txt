@@ -1069,9 +1069,9 @@ STR_1062    :Toistuva kierros toimintatila
 STR_1063    :Käänteinen-kallistus laukaistu sukkula toimintatila
 STR_1064    :Voimalaukaisu (aseman ohimennen)
 STR_1065    :Sukkulatoimintatila
-STR_1066    :Veneajelu toimintatila
+STR_1066    :Veneajelutoimintatila
 STR_1067    :Ylöspäin laukaisu
-STR_1068    :Pyörivä hissi toimintatila
+STR_1068    :Pyörivä hissi -toimintatila
 STR_1069    :Asemalta asemalle toimintatila
 STR_1070    :Yksi kyyti per sisäänpääsy
 STR_1071    :Loputtomat kyydit per sisäänpääsy
@@ -1671,7 +1671,7 @@ STR_1663    :{WINDOW_COLOUR_2}Nausea:
 STR_1664    :{WINDOW_COLOUR_2}Energia:
 STR_1665    :{WINDOW_COLOUR_2}Nälkä:
 STR_1666    :{WINDOW_COLOUR_2}Jano:
-STR_1667    :{WINDOW_COLOUR_2}WC:
+STR_1667    :{WINDOW_COLOUR_2}Vessa:
 STR_1668    :{WINDOW_COLOUR_2}Tyytyväisyys: {BLACK}Tuntematon
 STR_1669    :{WINDOW_COLOUR_2}Tyytyväisyys: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}Asiakkaiden määrä: {BLACK}{COMMA32}
@@ -2708,11 +2708,11 @@ STR_2697    :???
 STR_2698    :???
 STR_2699    :???
 STR_2700    :Automaattisen tallennuksen tiheys:
-STR_2701    :Joka viikko
-STR_2702    :Joka toinen viikko
-STR_2703    :Joka kuukausi
-STR_2704    :Joka neljäs kuukausi
-STR_2705    :Joka vuosi
+STR_2701    :1 min välein
+STR_2702    :5 min välein
+STR_2703    :15 min välein
+STR_2704    :30 min välein
+STR_2705    :Tunnin välein
 STR_2706    :Ei koskaan
 STR_2707    :Avaa uusi ikkuna
 STR_2708    :{WINDOW_COLOUR_1}Oletko varma, että haluat korvata tiedoston {STRINGID}?
@@ -2820,7 +2820,7 @@ STR_2807    :{RED}Guests are complaining about the amount of litter in your park
 STR_2808    :{RED}Guests are complaining about the vandalism in your park{NEWLINE}Check where your security guards are and consider organising them better
 STR_2809    :{RED}Vieraat ovat nälkäisiä eivätkä löydä paikkaa mistä saisi ruokaa
 STR_2810    :{RED}Vieraat ovat janoisia eivätkä löydä paikkaa josta saisi juotavaa
-STR_2811    :{RED}Vieraat valittavat etteivät löydä wc:tä puistostasi
+STR_2811    :{RED}Vieraat valittavat etteivät löydä vessaa puistostasi
 STR_2812    :{RED}Guests are getting lost or stuck{NEWLINE}Check whether the layout of your footpaths needs improving to help the guests find their way around
 STR_2813    :{RED}Your park entrance fee is too high!{NEWLINE}Reduce your entrance fee or improve the value of the park to attract more guests
 STR_2814    :{WINDOW_COLOUR_2}Sotkuisin puisto -palkinto
@@ -2833,8 +2833,8 @@ STR_2820    :{WINDOW_COLOUR_2}Turvallisin puisto -palkinto
 STR_2821    :{WINDOW_COLOUR_2}Paras henkilöstö -palkinto
 STR_2822    :{WINDOW_COLOUR_2}Parhaat puistoruuat -palkinto
 STR_2823    :{WINDOW_COLOUR_2}Huonoimmat puistoruuat -palkinto
-STR_2824    :{WINDOW_COLOUR_2}Parhaat puistowc:t -palkinto
-STR_2825    :{WINDOW_COLOUR_2}Most disappointing park award
+STR_2824    :{WINDOW_COLOUR_2}Parhaat puistovessat -palkinto
+STR_2825    :{WINDOW_COLOUR_2}Pettymyksellisin puisto -palkinto
 STR_2826    :{WINDOW_COLOUR_2}Parhaat vesiajelut -palkinto
 STR_2827    :{WINDOW_COLOUR_2}Best custom-designed rides award
 STR_2828    :{WINDOW_COLOUR_2}Most dazzling ride colour schemes award
@@ -2850,17 +2850,17 @@ STR_2837    :{TOPAZ}Puistosi sai 'Turvallisin puisto maassa' -palkinnon!
 STR_2838    :{TOPAZ}Puistosi sai 'Puisto parhaimmalla henkilöstöllä' -palkinnon!
 STR_2839    :{TOPAZ}Puistosi sai 'Puisto parhaimmalla ruualla maassa' -palkinnon!
 STR_2840    :{TOPAZ}Puisto sai 'Puisto huonoimmalla ruualla maassa' -palkinnon!
-STR_2841    :{TOPAZ}Puistosi sai 'Puisto parhaimmilla wc-tiloilla maassa' -palkinnon!
-STR_2842    :{TOPAZ}Your park has received an award for being 'The most disappointing park in the country'!
-STR_2843    :{TOPAZ}Your park has received an award for being 'The park with the best water rides in the country'!
+STR_2841    :{TOPAZ}Puistosi sai 'Puisto parhaimmilla vessatiloilla maassa' -palkinnon!
+STR_2842    :{TOPAZ}Puistosi sai 'Pettymyksellisin puisto maassa' -palkinnon!
+STR_2843    :{TOPAZ}Puistosi sai 'Parhaat vesiajelut maassa' -palkinnon!
 STR_2844    :{TOPAZ}Your park has received an award for being 'The park with the best custom-designed rides'!
 STR_2845    :{TOPAZ}Your park has received an award for being 'The park with the most dazzling choice of colour schemes'!
 STR_2846    :{TOPAZ}Your park has received an award for being 'The park with the most confusing layout'!
 STR_2847    :{TOPAZ}Your park has received an award for being 'The park with the best gentle rides'!
 STR_2848    :{WINDOW_COLOUR_2}Ei tuoreita palkintoja
-STR_2849    :New scenario installed successfully
+STR_2849    :Uusi skenaario asennettiin onnistuneesti
 STR_2850    :New track design installed successfully
-STR_2851    :Scenario already installed
+STR_2851    :Skenaario jo asennettu
 STR_2852    :Track design already installed
 STR_2853    :Kiellettyä paikallisten viranomaisten mukaan!
 STR_2854    :{RED}Guests can't get to the entrance of {STRINGID} !{NEWLINE}Construct a path to the entrance
@@ -3382,7 +3382,7 @@ STR_3369    :{BLACK}= Matkamuistokoju
 STR_3370    :{BLACK}= Info. Kiosk
 STR_3371    :{BLACK}= Ensiapu
 STR_3372    :{BLACK}= Kassakone
-STR_3373    :{BLACK}= WC
+STR_3373    :{BLACK}= Vessa
 STR_3374    :Varoitus: Liian monta objektia valittuna!
 STR_3375    :Not all objects in this scenery group could be selected
 STR_3376    :Install new track design...
@@ -3448,7 +3448,7 @@ STR_3435    :{SMALLFONT}{BLACK}Great - It worked! Let's add the footpaths and le
 STR_3436    :{SMALLFONT}{BLACK}While waiting for our first riders, we could customise the ride a bit...
 STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
 STR_3438    :Unable to remove all scenery from here...
-STR_3439    :Clear Scenery
+STR_3439    :Tyhjennä maisema
 STR_3440    :Sivu 1
 STR_3441    :Sivu 2
 STR_3442    :Sivu 3
@@ -3463,9 +3463,9 @@ STR_5121    :Tutkimustyö
 STR_5122    :Valitse ajelut radan tyypin mukaan (kuten RCT1:ssä)
 STR_5123    :Uusi ajelut
 STR_5124    :<not used anymore>
-STR_5125    :All destructable
+STR_5125    :Kaikki tuhottavat
 STR_5126    :Satunnainen otsikkomusiikki
-STR_5127    :{SMALLFONT}{BLACK}Disable land elevation
+STR_5127    :{SMALLFONT}{BLACK}Estä maan korkeuden muuttaminen
 STR_5128    :Valinnan koko
 STR_5129    :Enter selection size between {COMMA16} and {COMMA16}
 STR_5130    :Kartan koko
@@ -3498,7 +3498,7 @@ STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the t
 STR_5157    :Unlock all prices
 STR_5158    :Lopeta valikkoon
 STR_5159    :Lopeta OpenRCT2
-STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, vuosi {POP16}{COMMA16}
+STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Vuosi {POP16}{COMMA16}
 STR_5161    :Päiväyksen tyyli:
 STR_5162    :Päivä/Kuukausi/Vuosi
 STR_5163    :Kuukausi/Päivä/Vuosi
@@ -3697,7 +3697,7 @@ STR_5354    :{BLACK}Nälkä:
 STR_5355    :{BLACK}Jano:
 STR_5356    :{BLACK}Pahoinvointi:
 STR_5357    :{BLACK}Pahoinvoinnin sietoraja:
-STR_5358    :{BLACK}WC:
+STR_5358    :{BLACK}Vessa:
 STR_5359    :Poista vieraat
 STR_5360    :{SMALLFONT}{BLACK}Poista kaikki vieraat kartalta
 STR_5361    :Anna kaikille vieraille:
@@ -3887,3 +3887,18 @@ STR_5544    :{SMALLFONT}{BLACK}Kirkkaanpunainen
 STR_5545    :{SMALLFONT}{BLACK}Tummanvaaleanpunainen
 STR_5546    :{SMALLFONT}{BLACK}Kirkasvaaleanpunainen
 STR_5547    :{SMALLFONT}{BLACK}Vaaleanpunainen
+STR_5548    :Show all operating modes
+STR_5549    :Vuosi/Kuukausi/Päivä
+STR_5550    :{POP16}{POP16}Vuosi {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_5551    :Vuosi/Päivä/Kuukausi
+STR_5552    :{POP16}{POP16}Vuosi {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
+
+#########
+# Rides #
+#########
+
+#WW
+[CONDORRD]
+STR_NAME    :Condor Ride
+STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
+STR_CPTY    :4 matkustajaa per auto

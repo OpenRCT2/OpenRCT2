@@ -2702,11 +2702,11 @@ STR_2697    :???
 STR_2698    :???
 STR_2699    :???
 STR_2700    :Automatisch opslaan:
-STR_2701    :Elke week
-STR_2702    :Elke 2 weken
-STR_2703    :Elke maand
-STR_2704    :Elke 4 maanden
-STR_2705    :Elk jaar
+STR_2701    :Elke minuut
+STR_2702    :Elke 5 minuten
+STR_2703    :Elke 15 minuten
+STR_2704    :Elke 30 minuten
+STR_2705    :Elk uur
 STR_2706    :Nooit
 STR_2707    :Open nieuw scherm
 STR_2708    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} wilt vervangen?
