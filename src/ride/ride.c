@@ -6396,7 +6396,9 @@ void ride_update_max_vehicles(int rideIndex)
 				break;
 			}
 		}
+		int newCarsPerTrain = max(ride->var_0CB, rideEntry->min_cars_in_train);
 		maxCarsPerTrain = max(maxCarsPerTrain, rideEntry->min_cars_in_train);
+		newCarsPerTrain = min(maxCarsPerTrain, newCarsPerTrain);
 		ride->min_max_cars_per_train = maxCarsPerTrain | (rideEntry->min_cars_in_train << 4);
 
 		switch (ride->mode) {
@@ -6413,15 +6415,15 @@ void ride_update_max_vehicles(int rideIndex)
 			break;
 		default:
 			// Calculate maximum number of trains
-			ride_entry_get_train_layout(ride->subtype, maxCarsPerTrain, trainLayout);
+			ride_entry_get_train_layout(ride->subtype, newCarsPerTrain, trainLayout);
 			trainLength = 0;
-			for (int i = 0; i < maxCarsPerTrain; i++) {
+			for (int i = 0; i < newCarsPerTrain; i++) {
 				vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
 				trainLength += vehicleEntry->var_04;
 			}
 
 			int totalLength = trainLength / 2;
-			if (maxCarsPerTrain != 1)
+			if (newCarsPerTrain != 1)
 				totalLength /= 2;
 
 			maxNumTrains = 0;
@@ -6436,12 +6438,12 @@ void ride_update_max_vehicles(int rideIndex)
 			) {
 				maxNumTrains = min(maxNumTrains, 31);
 			} else {
-				ride_entry_get_train_layout(ride->subtype, maxCarsPerTrain, trainLayout);
+				ride_entry_get_train_layout(ride->subtype, newCarsPerTrain, trainLayout);
 				vehicleEntry = &rideEntry->vehicles[trainLayout[0]];
 				int unk = vehicleEntry->var_5C;
 
 				int totalSpacing = 0;
-				for (int i = 0; i < maxCarsPerTrain; i++) {
+				for (int i = 0; i < newCarsPerTrain; i++) {
 					vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
 					totalSpacing += vehicleEntry->var_04;
 				}
@@ -6463,7 +6465,7 @@ void ride_update_max_vehicles(int rideIndex)
 		}
 		ride->max_trains = maxNumTrains;
 
-		numCarsPerTrain = min(ride->var_0CB, maxCarsPerTrain);
+		numCarsPerTrain = min(ride->var_0CB, newCarsPerTrain);
 		numVehicles = min(ride->var_0CA, maxNumTrains);
 	} else {
 		ride->max_trains = rideEntry->cars_per_flat_ride;
