@@ -947,7 +947,7 @@ STR_0941    :절벽 안 보이기
 STR_0942    :놀이기구 안 보이기
 STR_0943    :풍경 안 보이기
 STR_0944    :저장
-STR_0945    :저장하지 않음
+STR_0945    :저장 안 함
 STR_0946    :취소
 STR_0947    :불러오기 전에 저장하시겠습니까?
 STR_0948    :종료하기 전에 저장하시겠습니까?
@@ -1173,7 +1173,7 @@ STR_1167    :이곳의 물을 올릴 수 없습니다...
 STR_1168    :옵션
 STR_1169    :(없음)
 STR_1170    :{STRING}
-STR_1171    :{RED}닫음 - -
+STR_1171    :{RED}닫힘 - -
 STR_1172    :{YELLOW}{STRINGID} - -
 STR_1173    :{SMALLFONT}{BLACK}보도와 대기줄을 만듭니다
 STR_1174    :전광판 사인이 있습니다
@@ -1432,7 +1432,7 @@ STR_1426    :대기줄
 STR_1427    :{WINDOW_COLOUR_2}손님: {BLACK}{COMMA32}명/시간
 STR_1428    :{WINDOW_COLOUR_2}입장료:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
-STR_1430    :Free
+STR_1430    :무료
 STR_1431    :걷는 중
 STR_1432    :{STRINGID}(으)로 향하는 중
 STR_1433    :{STRINGID}(에)서 대기 중
@@ -1846,7 +1846,7 @@ STR_1840    :고장률: {COMMA16}%
 STR_1841    :수익: 시간당 {CURRENCY2DP}
 STR_1842    :좋아하는 손님 수: {COMMA16}명
 STR_1843    :좋아하는 손님 수: {COMMA16}명
-STR_1844    :{SMALLFONT}{BLACK}놀이기구/시설 목록에서 보여줄 정보의 종류를 선택하세요
+STR_1844    :{SMALLFONT}{BLACK}놀이기구/시설 목록에서 보여줄 정보를 선택하세요
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA16} 손님
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} 손님
@@ -2278,9 +2278,9 @@ STR_2270    :{WINDOW_COLOUR_2}진행: {BLACK}{STRINGID}
 STR_2271    :{WINDOW_COLOUR_2}예상: {BLACK}{STRINGID}
 STR_2272    :{WINDOW_COLOUR_2}놀이기구/시술:{NEWLINE}{BLACK}{STRINGID}
 STR_2273    :{WINDOW_COLOUR_2}풍경/테마:{NEWLINE}{BLACK}{STRINGID}
-STR_2274    :{SMALLFONT}{BLACK}Show details of this invention or development
-STR_2275    :{SMALLFONT}{BLACK}Show funding and options for research & development
-STR_2276    :{SMALLFONT}{BLACK}Show research & development status
+STR_2274    :{SMALLFONT}{BLACK}이 개발에 대한 상세 내역을 보여줍니다
+STR_2275    :{SMALLFONT}{BLACK}연구 & 개발을 위한 투자 설정 창을 보여줍니다
+STR_2276    :{SMALLFONT}{BLACK}연구 & 개발 상황을 보여줍니다
 STR_2277    :알 수 없는
 STR_2278    :운송용 놀이기구
 STR_2279    :얌전한 놀이기구
@@ -2527,7 +2527,7 @@ STR_2519    :공원 정보를 보여줍니다
 STR_2520    :손님 목록을 보여줍니다
 STR_2521    :직원 목록을 보여줍니다
 STR_2522    :최근 메시지를 보여줍니다
-STR_2523    :지도를 봅니다
+STR_2523    :지도 보기
 STR_2524    :스크린 샷
 ### The following need to be reordered to match SDL_keycode layout.
 STR_2525    :???
@@ -2538,8 +2538,8 @@ STR_2529    :???
 STR_2530    :???
 STR_2531    :???
 STR_2532    :???
-STR_2533    :Backspace
-STR_2534    :Tab
+STR_2533    :백스페이스
+STR_2534    :탭
 STR_2535    :???
 STR_2536    :???
 STR_2537    :Clear
@@ -2562,7 +2562,7 @@ STR_2553    :???
 STR_2554    :???
 STR_2555    :???
 STR_2556    :???
-STR_2557    :Spacebar
+STR_2557    :스페이스바
 STR_2558    :PgUp
 STR_2559    :PgDn
 STR_2560    :End
@@ -2706,7 +2706,7 @@ STR_2697    :???
 STR_2698    :???
 STR_2699    :???
 STR_2700    :자동 저장 주기:
-STR_2701    :매 모든 분
+STR_2701    :매 1분마다
 STR_2702    :매 5분마다
 STR_2703    :매 15분마다
 STR_2704    :매 30분마다
@@ -3127,8 +3127,8 @@ STR_3116    :{SMALLFONT}{BLACK}트랙 디자인을 저장합니다 (놀이기구
 STR_3117    :{BLACK}정비기술자에게 연락 중...
 STR_3118    :{BLACK}{STRINGID}(이)가 놀이기구로 향하고 있음
 STR_3119    :{BLACK}{STRINGID}(이)가 놀이기구를 수리하고 있음
-STR_3120    :{SMALLFONT}{BLACK}가장 가까운 정비기술자를 찾거나 정비기술자가 놀이기구를 수리하게 합니다
-STR_3121    :정비기술자를 찾을 수 없거나 근방에 있는 모든 정비기술자가 바쁩니다
+STR_3120    :{SMALLFONT}{BLACK}가까운 정비기술자를 찾아서 놀이기구를 수리하게 합니다
+STR_3121    :정비기술자가 근처에 없거나 모두 바쁩니다
 STR_3122    :{WINDOW_COLOUR_2}이 놀이기구를 좋아하는 손님: {BLACK}{COMMA16}명
 STR_3123    :{WINDOW_COLOUR_2}이 놀이기구를 좋아하는 손님: {BLACK}{COMMA16}명
 STR_3124    :고장난 {STRINGID}
@@ -3286,8 +3286,8 @@ STR_3275    :손님 생성 난이도 상승
 STR_3276    :{SMALLFONT}{BLACK}공원에 손님을 유치하기 더 어렵게 만듭니다
 STR_3277    :{WINDOW_COLOUR_2}땅 구입 비용:
 STR_3278    :{WINDOW_COLOUR_2}건설권 구입 비용:
-STR_3279    :공원 입장 무료 / 놀이기구 탑승료 받음
-STR_3280    :공원 입장료 받음 / 놀이기구 탑승료 무료
+STR_3279    :놀이기구 탑승료만 받기
+STR_3280    :공원 입장료만 받기
 STR_3281    :{WINDOW_COLOUR_2}입장료:
 STR_3282    :{SMALLFONT}{BLACK}목표와 공원 이름을 선택하세요
 STR_3283    :{SMALLFONT}{BLACK}보호할 놀이기구를 선택하세요
@@ -3373,7 +3373,7 @@ STR_3362    :<더 이상 사용하지 않음>
 STR_3363    :<더 이상 사용하지 않음>
 STR_3364    :고급
 STR_3365    :{SMALLFONT}{BLACK}조형물 그룹과 함께 조형물 각각을 따로 선택할 수 있게 허용합니다
-STR_3366    :{BLACK}= 라이드
+STR_3366    :{BLACK}= 놀이기구
 STR_3367    :{BLACK}= 음식 상점
 STR_3368    :{BLACK}= 음료수 상점
 STR_3369    :{BLACK}= 기념품 가게
@@ -3459,7 +3459,7 @@ STR_3446    :순찰 영역 해제
 STR_5120    :재정
 STR_5121    :연구
 STR_5122    :놀이기구를 (RCT1처럼) 트랙 종류 별로 선택
-STR_5123    :놀이기구 갱신
+STR_5123    :놀이기구 새 걸로
 STR_5124    :<더 이상 사용하지 않음>
 STR_5125    :모두 파괴 가능
 STR_5126    :무작위 타이틀 음악
@@ -3473,7 +3473,7 @@ STR_5133    :{SMALLFONT}{BLACK}땅 구입 도구 크기 줄이기
 STR_5134    :{SMALLFONT}{BLACK}땅 구입 도구 크기 늘이기
 STR_5135    :{SMALLFONT}{BLACK}땅 소유권과 건설권 구입하기
 STR_5136    :땅 소유권
-STR_5137    :체인 리프트 힐과 발사 속력을{NEWLINE}다음 속도까지 허용: {VELOCITY}
+STR_5137    :체인/발사 속력을 {VELOCITY}까지 허용
 STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :브레이크 고장 안 나게
@@ -3499,20 +3499,20 @@ STR_5159    :OpenRCT2 종료
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, {POP16}{COMMA16}년
 STR_5161    :날짜 형식:
 STR_5162    :일/월/년
-STR_5163    :년/월/일
-STR_5164    :Twitch 채널 이름
-STR_5165    :팔로워 이후에 사람들 이름 붙이기
-STR_5166    :{SMALLFONT}{BLACK}Twitch 채널의 팔로워 다음으로 사람들의 이름을 붙입니다
-STR_5167    :팔로워 사람 추적
-STR_5168    :{SMALLFONT}{BLACK}Will turn on tracking information for 손님 named after channel's Twitch followers
-STR_5169    :Twitch 채팅의 손님 이후에 사람들 이름 붙이기
-STR_5170    :{SMALLFONT}{BLACK}Will name peeps after people in Twitch chat
+STR_5163    :월/일/년
+STR_5164    :트위치 채널 이름
+STR_5165    :손님 이름을 팔로워 이름을 따서 붙이기
+STR_5166    :{SMALLFONT}{BLACK}트위치 채널의 팔로워 이름을 따서 손님 이름으로 사용합니다
+STR_5167    :팔로워 손님 추적
+STR_5168    :{SMALLFONT}{BLACK}채널의 트위치 팔로워 이름을 딴 손님을 추적합니다
+STR_5169    :손님 이름을 트위치 채팅의 접속자 이름을 따서 붙이기
+STR_5170    :{SMALLFONT}{BLACK}트위치 채팅의 접속자 이름을 따서 손님 이름으로 사용합니다
 STR_5171    :채팅 인원 추적
-STR_5172    :{SMALLFONT}{BLACK}Will turn on tracking information for 손님 named after Twitch chat participants
-STR_5173    :Twitch 채팅 내용을 뉴스로 전송
-STR_5174    :{SMALLFONT}{BLACK}Twitch의 채팅 메시지를 !news를 이용하여 게임 메시지로 알려줍니다
-STR_5175    :Twitch 채널 이름 입력
-STR_5176    :Twitch 통합 허용
+STR_5172    :{SMALLFONT}{BLACK}트위치 채팅에 참가하고 있는 사람들의 이름을 딴 손님의 행적을 추적합니다
+STR_5173    :트위치 채팅 내용을 뉴스로 전송
+STR_5174    :{SMALLFONT}{BLACK}트위치의 채팅 메시지를 !news를 이용하여 게임 메시지로 알려줍니다
+STR_5175    :트위치 채널 이름 입력
+STR_5176    :트위치 통합 허용
 STR_5177    :풀 스크린 모드:
 STR_5178    :{SMALLFONT}{BLACK}재정 치트를 보여줍니다
 STR_5179    :{SMALLFONT}{BLACK}손님 치트를 보여줍니다
@@ -3621,7 +3621,7 @@ STR_5281    :{SMALLFONT}{BLACK}기능
 STR_5282    :RCT1 놀이기구 열기/닫기 아이콘
 STR_5283    :RCT1 공원 열기/닫기 아이콘
 STR_5284    :RCT1 시나리오 선택 폰트
-STR_5285    :손님 폭탄!!!
+STR_5285    :손님 터트리기!!!
 STR_5286    :{SMALLFONT}{BLACK}일부 손님을 터뜨립니다
 STR_5287    :놀이기구가 이미 고장난 상태입니다
 STR_5288    :놀이기구가 닫혔습니다
@@ -3649,8 +3649,8 @@ STR_5309    :OpenRCT2
 STR_5310    :무작위
 STR_5311    :{SMALLFONT}{BLACK}디버그 도구
 STR_5312    :콘솔 보이기
-STR_5313    :칸 검색기 보이기
-STR_5314    :칸 검색기
+STR_5313    :칸 탐색기 열기
+STR_5314    :칸 탐색기
 STR_5315    :잔디
 STR_5316    :모래
 STR_5317    :진흙
@@ -3675,9 +3675,9 @@ STR_5335    :놀이기구 입구
 STR_5336    :놀이기구 출구
 STR_5337    :공원 입구
 STR_5338    :요소 종류
-STR_5339    :기본 높이
-STR_5340    :높이 제한 제거
-STR_5341    :깃발
+STR_5339    :기본 고도
+STR_5340    :최상단 높이
+STR_5341    :플래그
 STR_5342    :지도 칸 선택
 STR_5343    :직원 자동 배치
 STR_5344    :변경기록
@@ -3697,8 +3697,8 @@ STR_5357    :{BLACK}멀미 참을성:
 STR_5358    :{BLACK}화장실:
 STR_5359    :손님 없애기
 STR_5360    :{SMALLFONT}{BLACK}지도 상의 모든 손님을 없앱니다
-STR_5361    :모든 손님에게:
-STR_5362    :{BLACK}모든 손님들이 선호하는 놀이기구 격렬도를 설정합니다
+STR_5361    :모든 손님에게 다음 물건 주기:
+STR_5362    :{BLACK}손님들의 선호 격렬도 설정:
 STR_5363    :1 이상
 STR_5364    :15 이하
 STR_5365    :{BLACK}직원 속도:
@@ -3778,11 +3778,11 @@ STR_5438    :명령 에디터가 열려있을 때 변경할 수 없습니다
 STR_5439    :4초 이상의 기다림 명령은 재시작 명령이 필요합니다.
 STR_5440    :커서가 게임 밖으로 나가면 풀스크린을 최소화
 STR_5441    :{SMALLFONT}{BLACK}놀이기구를 RCT1처럼 종류별로 구분합니다.
-STR_5442    :공원 등급 고정하기:
+STR_5442    :공원 등급 고정:
 STR_5443    :속도{MOVE_X}{87}{STRINGID}
 STR_5444    :속도:
 STR_5445    :속도
-STR_5446    :Get
+STR_5446    :얻기
 STR_5447    :종류 {STRINGID}
 STR_5448    :놀이기구 / 차량 {STRINGID}
 STR_5449    :게임 속도 느리게
@@ -3791,8 +3791,8 @@ STR_5451    :치트 창 열기
 STR_5452    :메뉴 표시 설정 변경
 STR_5453    :다른 놀이기구 선택
 STR_5454    :FPS 제한 해제
-STR_5455    :모래상자 모드 사용
-STR_5456    :재고(?) 확인 안 하기
+STR_5455    :모래상자 모드
+STR_5456    :겹쳐짓기 모드
 STR_5457    :지지대 제한 없애기
 STR_5458    :시계방향으로 회전
 STR_5459    :반시계방향으로 회전
@@ -3850,7 +3850,7 @@ STR_5510    :기본 사운드 장치
 STR_5511    :(알 수 없음)
 STR_5512    :다른 이름으로 저장
 STR_5513    :(간편) 게임 저장
-STR_5514    :기물 파손 끄기
+STR_5514    :기물을 파손하지 않게 하기
 STR_5515    :{SMALLFONT}{BLACK}손님이 화가 났을 때 기물을 파손하지 않도록 설정합니다
 STR_5516    :{SMALLFONT}{BLACK}검은색
 STR_5517    :{SMALLFONT}{BLACK}회색
@@ -3885,9 +3885,13 @@ STR_5545    :{SMALLFONT}{BLACK}어두운 분홍색
 STR_5546    :{SMALLFONT}{BLACK}밝은 분홍색
 STR_5547    :{SMALLFONT}{BLACK}분홍색
 STR_5548    :모든 운행 모드 보이기
+STR_5549    :연/월/일
+STR_5550    :{POP16}{POP16}{COMMA16}년 {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_5551    :연/일/월
+STR_5552    :{POP16}{POP16}{COMMA16}년 {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 
 #####################
-# Rides/attractions # 
+# Rides/attractions #
 #####################
 
 #WW
