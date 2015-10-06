@@ -3892,6 +3892,7 @@ STR_5549    :年/月/日
 STR_5550    :{POP16}{POP16}第{COMMA16}年, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :年/日/月
 STR_5552    :{POP16}{POP16}第{COMMA16}年, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
+STR_5553    :當Steam overlay開啟時暫停遊戲
 
 #####################
 # Rides/attractions # 

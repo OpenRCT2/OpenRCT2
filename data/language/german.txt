@@ -3886,3 +3886,4 @@ STR_5549    :Jahr/Monat/Tag
 STR_5550    :{POP16}{POP16}Jahr {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Jahr/Tag/Monat
 STR_5552    :{POP16}{POP16}Jahr {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
+STR_5553    :Spiel bei geöffnetem Steam Overlay pausieren
