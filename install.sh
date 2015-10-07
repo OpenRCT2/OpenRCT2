@@ -15,12 +15,23 @@ TARGET=${TARGET-linux}
 libversion=3
 libVFile="./libversion"
 
+function download {
+	if command -v curl > /dev/null 2>&1; then
+		curl -o $2 $1
+	elif command -v wget > /dev/null 2>&1; then
+		wget -O $2 $1
+	else
+		echo "Please install either wget or curl to continue"
+		exit 1
+	fi
+}
+
 function download_sdl {
 	if [[ ! -f $cachedir/SDL2-devel-${SDL2_PV}-mingw.tar.gz ]]; then
-		wget http://libsdl.org/release/SDL2-devel-${SDL2_PV}-mingw.tar.gz --output-document $cachedir/SDL2-devel-${SDL2_PV}-mingw.tar.gz;
+		download http://libsdl.org/release/SDL2-devel-${SDL2_PV}-mingw.tar.gz $cachedir/SDL2-devel-${SDL2_PV}-mingw.tar.gz;
 	fi
 	if [[ ! -f $cachedir/SDL2_ttf-devel-${SDL2_TTF_PV}-mingw.tar.gz ]]; then
-		wget https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-${SDL2_TTF_PV}-mingw.tar.gz --output-document $cachedir/SDL2_ttf-devel-${SDL2_TTF_PV}-mingw.tar.gz;
+		download https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-${SDL2_TTF_PV}-mingw.tar.gz $cachedir/SDL2_ttf-devel-${SDL2_TTF_PV}-mingw.tar.gz;
 	fi
 	if [[ ! -d $cachedir/SDL2-${SDL2_PV} ]]; then
 		pushd $cachedir
@@ -35,7 +46,7 @@ function download_sdl {
 	# Apply platform patch
 	mingw_patch=libsdl2-mingw-2.0.3-fix-platform-detection-for-mingw.patch
 	if [[ ! -f $cachedir/$mingw_patch ]]; then
-		wget "https://github.com/anyc/anyc-overlay/raw/master/media-libs/libsdl2-mingw/files/$mingw_patch" --output-document $cachedir/$mingw_patch;
+		download "https://github.com/anyc/anyc-overlay/raw/master/media-libs/libsdl2-mingw/files/$mingw_patch" $cachedir/$mingw_patch;
 
 		# XXX not sure how to make this idempotent.
 		pushd $cachedir/SDL2-${SDL2_PV}/i686-w64-mingw32/include/SDL2/
@@ -47,7 +58,7 @@ function download_sdl {
 
 function download_libs {
 	if [[ ! -f $cachedir/orctlibs.zip ]]; then
-		wget $liburl -O $cachedir/orctlibs.zip;
+		download $liburl $cachedir/orctlibs.zip;
 	fi
 	if [[ ! -d $cachedir/orctlibs ]]; then
 		mkdir -p $cachedir/orctlibs
@@ -114,13 +125,6 @@ if [[ `uname` == "Darwin" ]]; then
         echo "brew was found"
     fi
 
-    echo "Check if wget is installed"
-    which -s wget
-    if [ $? -eq 1 ]; then
-        echo "wget is not installed, installing wget.."
-        eval "$package_command install wget"
-    fi
-
     # Install packages with whatever command was found.
     # Very possible I'm missing some dependencies here.
     eval "$package_command install cmake wine"
@@ -139,7 +143,7 @@ if [[ `uname` == "Darwin" ]]; then
     mingw_tar=$mingw_name"_20130531".tar.bz2
     mingw_path=/usr/local/$mingw_name
     if [[ ! -f $cachedir/$mingw_tar ]]; then
-        wget "https://downloads.sourceforge.net/project/mingw-w64/Toolchains targetting Win32/Automated Builds/$mingw_tar" --output-document $cachedir/$mingw_tar
+        download "https://downloads.sourceforge.net/project/mingw-w64/Toolchains targetting Win32/Automated Builds/$mingw_tar" $cachedir/$mingw_tar
     fi
     if [[ ! -d "$mingw_path" ]]; then
 
@@ -171,8 +175,8 @@ elif [[ `uname` == "Linux" ]]; then
 				sudo dpkg --add-architecture i386
 				sudo apt-get update
 				sudo apt-get install --no-install-recommends -y --force-yes cmake libsdl2-dev:i386 libsdl2-ttf-dev:i386 gcc-4.8 pkg-config:i386 g++-4.8-multilib gcc-4.8-multilib libjansson-dev:i386 libspeex-dev:i386 libspeexdsp-dev:i386 libcurl4-openssl-dev:i386 libcrypto++-dev:i386
-				wget https://launchpad.net/ubuntu/+archive/primary/+files/libjansson4_2.7-1ubuntu1_i386.deb
-				wget https://launchpad.net/ubuntu/+archive/primary/+files/libjansson-dev_2.7-1ubuntu1_i386.deb
+				download https://launchpad.net/ubuntu/+archive/primary/+files/libjansson4_2.7-1ubuntu1_i386.deb libjansson4_2.7-1ubuntu1_i386.deb
+				download https://launchpad.net/ubuntu/+archive/primary/+files/libjansson-dev_2.7-1ubuntu1_i386.deb libjansson-dev_2.7-1ubuntu1_i386.deb
 				sudo dpkg -i libjansson4_2.7-1ubuntu1_i386.deb
 				sudo dpkg -i libjansson-dev_2.7-1ubuntu1_i386.deb
 				sudo apt-get install -f
