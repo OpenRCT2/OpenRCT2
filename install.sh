@@ -17,7 +17,7 @@ libVFile="./libversion"
 
 function download {
 	if command -v curl > /dev/null 2>&1; then
-		curl -o $2 $1
+		curl -L -o $2 $1
 	elif command -v wget > /dev/null 2>&1; then
 		wget -O $2 $1
 	else
