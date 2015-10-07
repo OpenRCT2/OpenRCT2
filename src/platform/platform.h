@@ -90,6 +90,8 @@ extern int gNumResolutions;
 extern resolution *gResolutions;
 extern SDL_Window *gWindow;
 
+extern bool gHardwareDisplay;
+
 extern bool gSteamOverlayActive;
 
 // Platform shared definitions

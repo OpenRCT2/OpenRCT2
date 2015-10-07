@@ -2143,6 +2143,9 @@ enum {
 	STR_KICK_PLAYER = 5556,
 	STR_STAY_CONNECTED_AFTER_DESYNC = 5557,
 
+    STR_RESTART_REQUIRED = 5558,
+
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

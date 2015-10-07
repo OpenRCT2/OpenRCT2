@@ -58,6 +58,7 @@ SDL_Texture *gBufferTexture = NULL;
 SDL_PixelFormat *gBufferTextureFormat = NULL;
 SDL_Color gPalette[256];
 uint32 gPaletteHWMapped[256];
+bool gHardwareDisplay;
 
 bool gSteamOverlayActive = false;
 
@@ -223,7 +224,7 @@ void platform_draw()
 	int height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
 
 	if (!gOpenRCT2Headless) {
-		if (gConfigGeneral.hardware_display) {
+		if (gHardwareDisplay) {
 			void *pixels;
 			int pitch;
 			if (SDL_LockTexture(gBufferTexture, NULL, &pixels, &pitch) == 0) {
@@ -370,7 +371,7 @@ void platform_update_palette(char* colours, int start_index, int num_colours)
 		}
 	}
 
-	if (!gOpenRCT2Headless && !gConfigGeneral.hardware_display) {
+	if (!gOpenRCT2Headless && !gHardwareDisplay) {
 		surface = SDL_GetWindowSurface(gWindow);
 		if (!surface) {
 			log_fatal("SDL_GetWindowSurface failed %s", SDL_GetError());
@@ -673,6 +674,8 @@ static void platform_create_window()
 
 	RCT2_GLOBAL(0x009E2D8C, sint32) = 0;
 
+	gHardwareDisplay = gConfigGeneral.hardware_display;
+
 	// Create window in window first rather than fullscreen so we have the display the window is on first
 	gWindow = SDL_CreateWindow(
 		"OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE
@@ -857,13 +860,18 @@ void platform_refresh_video()
 
 	SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss ? "1" : "0");
 
-	if (gConfigGeneral.hardware_display) {
+	log_verbose("HardwareDisplay: %s", gHardwareDisplay ? "true" : "false");
+
+	if (gHardwareDisplay) {
 		if (gRenderer == NULL)
 			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 		
 		if (gRenderer == NULL) {
-			log_fatal("SDL_CreateRenderer %s", SDL_GetError());
-			exit(-1);
+			log_warning("SDL_CreateRenderer failed: %s", SDL_GetError());
+			log_warning("Falling back to software rendering...");
+			gHardwareDisplay = false;
+			platform_refresh_video(); // try again without hardware rendering
+			return;
 		}
 
 		if (gBufferTexture != NULL)
