@@ -470,7 +470,7 @@ typedef struct {
 		uint8 var_78;	//Direction ?
 	};
 	uint8 var_79;
-	uint16 time_in_queue;			// 0x7A
+	sint16 time_in_queue;			// 0x7A
 	uint8 rides_been_on[32];		// 0x7C 
 	// 255 bit bitmap of every ride the peep has been on see
 	// window_peep_rides_update for how to use.
