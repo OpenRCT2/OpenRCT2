@@ -253,7 +253,7 @@ enum PEEP_FLAGS {
 	PEEP_FLAGS_2 = (1 << 2),
 	PEEP_FLAGS_TRACKING = (1 << 3),
 	PEEP_FLAGS_WAVING = (1 << 4), // Makes the peep wave
-	PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY = (1 << 5), // Set on paying to enter park?
+	PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY = (1 << 5), // Set on paying to enter park
 	PEEP_FLAGS_PHOTO = (1 << 6), // Makes the peep take a picture
 	PEEP_FLAGS_PAINTING = (1 << 7),
 	PEEP_FLAGS_WOW = (1 << 8), // Makes a peep WOW2
