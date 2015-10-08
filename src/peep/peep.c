@@ -6261,7 +6261,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 			RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, money32) += entranceFee;
 			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS * 4;
 			peep_spend_money(peep, &peep->paid_to_enter, entranceFee);
-			peep->flags |= PEEP_FLAGS_5;
+			peep->flags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
 		}
 
 		RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32)++;
@@ -8057,7 +8057,7 @@ static bool sub_6960AB(rct_peep *peep, int rideIndex, int dh, int bp)
 			loc_696387:;
 				uint32 value = ride->value;
 				if (value != 0xFFFF && !peep_has_voucher_for_free_ride(peep, rideIndex)) {
-					if (peep->flags & PEEP_FLAGS_5) value /= 4;
+					if (peep->flags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY) value /= 4;
 					if (ride->price > (money16)(value * 2)) {
 						if (bp & 4) goto loc_696658;
 						peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_BAD_VALUE, rideIndex);
