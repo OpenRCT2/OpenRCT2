@@ -71,6 +71,7 @@ static void peep_on_enter_or_exit_ride(rct_peep *peep, int rideIndex, int flags)
 static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 price);
 static bool peep_should_use_cash_machine(rct_peep *peep, int rideIndex);
 static bool sub_6960AB(rct_peep *peep, int rideIndex, int entranceNum, int flags);
+static void peep_tried_to_enter_full_queue(rct_peep *peep, int rideIndex);
 static bool peep_should_go_to_shop(rct_peep *peep, int rideIndex, bool peepAtShop);
 static void sub_69A98C(rct_peep *peep);
 static void sub_68FD3A(rct_peep *peep);
@@ -7889,20 +7890,13 @@ static void peep_reset_ride_heading(rct_peep *peep)
  */
 static bool sub_6960AB(rct_peep *peep, int rideIndex, int entranceNum, int flags)
 {
-	// return RCT2 CALLPROC X(0x006960AB, 0, 0, 0, rideIndex | (dh << 8), (int)peep, 0, bp) & 0x100;
-
 	rct_ride *ride = GET_RIDE(rideIndex);
-	rct_ride_type *rideEntry;
 
 	// Indicates if the peep is about to enter a queue (as opposed to entering an entrance directly from a path)
 	bool peepAtQueue = flags & 1;
 
 	// Indicates whether a peep is physically at the ride, or is just thinking about it.
 	bool peepAtRide = !(flags & 4);
-
-	char buffer[255];
-	sprintf(buffer, "sub_6960AB: ride %d, queue %d, flags %d\n", rideIndex, entranceNum, flags);
-	OutputDebugString(buffer);
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_8)) {
 		if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)) {
@@ -7914,37 +7908,47 @@ static bool sub_6960AB(rct_peep *peep, int rideIndex, int entranceNum, int flags
 				}
 			}
 
-			// All of the shop logic is contained within this if statement.
 			if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_IS_SHOP) {
 				return peep_should_go_to_shop(peep, rideIndex, peepAtRide);
 			}
 
-			// Queue logic
+			// Flag 2 and flag 4 are always used together, and never with flag 1.
+			// This is the only place that flag 2 is checked; unsure if it has any special significance.
 			if (!(flags & 2)) {
 
 				// Peeps won't join a queue that has 1000 peeps already in it.
-				if (ride->queue_length[entranceNum] >= 1000)
-					goto loc_696645;
+				if (ride->queue_length[entranceNum] >= 1000) {
+					peep_tried_to_enter_full_queue(peep, rideIndex);
+					return false;
+				}
 
 				// Rides without queues can only have one peep waiting at a time.
 				if (!peepAtQueue) {
-					if (ride->first_peep_in_queue[entranceNum] != 0xFFFF)
-						goto loc_696645;
-
+					if (ride->first_peep_in_queue[entranceNum] != 0xFFFF) {
+						peep_tried_to_enter_full_queue(peep, rideIndex);
+						return false;
+					}
 				} else {
-
-					// This block of code won't allow a peep to join a queue if some sort of distance based criteria is met.
+					// Check if there's room in the queue for the peep to enter.
 					if (ride->first_peep_in_queue[entranceNum] != 0xFFFF) {
 						rct_peep *firstPeepInQueue = &(g_sprite_list[ride->first_peep_in_queue[entranceNum]].peep);
 						if (abs(firstPeepInQueue->z - peep->z) <= 6) {
 							int dx = abs(firstPeepInQueue->x - peep->x);
 							int dy = abs(firstPeepInQueue->y - peep->y);
 							int maxD = max(dx, dy);
-							if (maxD <= 13) {
-								if (firstPeepInQueue->time_in_queue > 10)
-									goto loc_696645;
-								if (maxD < 8)
-									goto loc_696645;
+
+							// Unlike normal paths, peeps cannot overlap when queueing for a ride.
+							// This check enforces a minimum distance between peeps entering the queue.
+							if (maxD < 8) {
+								peep_tried_to_enter_full_queue(peep, rideIndex);
+								return false;
+							}
+
+							// This checks if there's a peep standing still at the very end of the queue.					
+							if (maxD <= 13
+								&& firstPeepInQueue->time_in_queue > 10) {
+								peep_tried_to_enter_full_queue(peep, rideIndex);
+								return false;
 							}
 						}
 					}
@@ -7994,11 +7998,6 @@ static bool sub_6960AB(rct_peep *peep, int rideIndex, int entranceNum, int flags
 
 					// Peeps won't go on certain rides while it's raining.
 					if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8) != 0) {
-
-						char buffer[255];
-						sprintf(buffer, "var_114: %d/255\n", ride->var_114);
-						OutputDebugString(buffer);
-
 						if (ride->var_114 > 96) goto loc_696387;
 						if (peepAtRide) {
 							peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NOT_WHILE_RAINING, rideIndex);
@@ -8082,7 +8081,7 @@ static bool sub_6960AB(rct_peep *peep, int rideIndex, int entranceNum, int flags
 				peep_reset_ride_heading(peep);
 			}
 
-			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_9;
+			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_QUEUE_FULL;
 			return true;
 		}
 	}
@@ -8105,10 +8104,6 @@ loc_6965F1:
 	}
 	goto loc_696658;
 
-// Something queue related? When RIDE_LIFECYCLE_9 is set, peeps won't consider the ride when thinking about what to go on next.
-loc_696645:
-	ride->lifecycle_flags |= RIDE_LIFECYCLE_9;
-
 // Check has failed: peep will not go on ride, but it will still be marked as the last ride they visited.
 loc_696658:
 	if (!(flags & 4)) {
@@ -8118,6 +8113,20 @@ loc_696658:
 
 	peep_reset_ride_heading(peep);
 	return false;
+}
+
+/*
+ * When the queue is full, peeps will ignore the ride when thinking about what to go on next.
+ * Does not effect peeps that walk up to the queue entrance.
+ * This flag is reset the next time a peep successfully joins the queue.
+ */
+static void peep_tried_to_enter_full_queue(rct_peep *peep, int rideIndex)
+{
+	rct_ride *ride = GET_RIDE(rideIndex);
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_QUEUE_FULL;
+	peep->previous_ride = rideIndex;
+	peep->previous_ride_time_out = 0;
 }
 
 static bool peep_should_go_to_shop(rct_peep *peep, int rideIndex, bool peepAtShop)
@@ -8257,7 +8266,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 			continue;
 
 		rct_ride *ride = GET_RIDE(i);
-		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_9)) {
+		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL)) {
 			if (sub_6960AB(peep, i, 0, 6)) {
 				*nextPotentialRide++ = i;
 				numPotentialRides++;
@@ -8366,7 +8375,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 			continue;
 
 		rct_ride *ride = GET_RIDE(i);
-		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_9)) {
+		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL)) {
 			if (sub_6960AB(peep, i, 0, 6)) {
 				*nextPotentialRide++ = i;
 				numPotentialRides++;
@@ -8478,7 +8487,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 			continue;
 
 		rct_ride *ride = GET_RIDE(i);
-		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_9)) {
+		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL)) {
 			if (sub_6960AB(peep, i, 0, 6)) {
 				*nextPotentialRide++ = i;
 				numPotentialRides++;
