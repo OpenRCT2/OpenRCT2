@@ -236,7 +236,7 @@ int scenario_load_and_play_from_path(const char *path)
 	if (!scenario_load(path))
 		return 0;
 
-	int len = strnlen(path, MAX_PATH);
+	int len = strnlen(path, MAX_PATH) + 1;
 	strncpy(_scenarioPath, path, len);
 	if (len == MAX_PATH)
 	{
