@@ -48,7 +48,6 @@ namespace Memory {
 
 	template<typename T>
 	T *CopyArray(T *dst, const T *src, size_t count) {
-		count *= sizeof(T);
 		if (count == 0) return (T*)dst;
 		return (T*)memcpy((void*)dst, (const void*)src, count * sizeof(T));
 	}
