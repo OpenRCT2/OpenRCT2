@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -38,7 +38,7 @@ int _screenDirtyBlocksSize = 0;
 uint32 rainPixels[MAX_RAIN_PIXELS];
 
 //Originally 0x9ABE0C, 12 elements from 0xF3 are the peep top colour, 12 elements from 0xCA are peep trouser colour
-const uint8 peep_palette[0x100] = { 
+const uint8 peep_palette[0x100] = {
 	0x00, 0xF3, 0xF4, 0xF5, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
 	0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
 	0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F,
@@ -138,8 +138,8 @@ void gfx_transpose_palette(int pal, unsigned char product)
 {
 	rct_g1_element g1 = g1Elements[pal];
 	int width = g1.width;
-	int x = g1.x_offset;  
-	uint8* dest_pointer = (uint8*)&(RCT2_ADDRESS(0x01424680, uint8)[x * 4]);
+	int x = g1.x_offset;
+	uint8* dest_pointer = (uint8*)&(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[x * 4]);
 	uint8* source_pointer = g1.offset;
 
 	for (; width > 0; width--) {
@@ -149,7 +149,7 @@ void gfx_transpose_palette(int pal, unsigned char product)
 		source_pointer += 3;
 		dest_pointer += 4;
 	}
-	platform_update_palette((char*)0x01424680, 10, 236);
+	platform_update_palette((char*)RCT2_ADDRESS_PALETTE, 10, 236);
 }
 
 /* rct2: 0x006837E3 */
@@ -165,7 +165,7 @@ void load_palette(){
 	rct_g1_element g1 = g1Elements[palette];
 	int width = g1.width;
 	int x = g1.x_offset;
-	uint8* dest_pointer = (uint8*)&(RCT2_ADDRESS(0x01424680, uint8)[x * 4]);
+	uint8* dest_pointer = (uint8*)&(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[x * 4]);
 	uint8* source_pointer = g1.offset;
 
 	for (; width > 0; width--) {
@@ -175,7 +175,7 @@ void load_palette(){
 		source_pointer += 3;
 		dest_pointer += 4;
 	}
-	platform_update_palette((char*)0x01424680, 10, 236);
+	platform_update_palette((char*)RCT2_ADDRESS_PALETTE, 10, 236);
 }
 
 /**
@@ -204,7 +204,7 @@ uint8* gfx_get_dirty_blocks()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E732D
  * left (ax)
  * top (bx)
@@ -264,7 +264,7 @@ void gfx_draw_all_dirty_blocks()
 				for (xx = x; xx < x + columns; xx++)
 					if (screenDirtyBlocks[yy * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) + xx] == 0)
 						goto endRowCheck;
-			
+
 		endRowCheck:
 			rows = yy - y;
 			gfx_draw_dirty_blocks(x, y, columns, rows);
@@ -295,8 +295,8 @@ static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows)
 }
 
 /**
- * 
- *  rct2: 0x006E7499 
+ *
+ *  rct2: 0x006E7499
  * left (ax)
  * top (bx)
  * right (dx)
@@ -435,7 +435,7 @@ void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sin
 
 					//Store colour and position
 					*pixel_store++ = (x_pixel_offset << 8) | current_pixel;
-					
+
 				}
 			}
 		}
@@ -460,7 +460,7 @@ void redraw_rain()
 		}
 		rct_window *window = window_get_main();
 		uint32 numPixels = window->width * window->height;
-		
+
 		uint32 *rain_pixels = rainPixels;
 		if (rain_pixels) {
 			uint8 *screen_pixels = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo)->bits;
@@ -485,13 +485,13 @@ void gfx_invalidate_pickedup_peep()
 		int sprite = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32);
 		if (sprite != -1) {
 			sprite = sprite & 0x7FFFF;
-			
+
 			rct_g1_element *g1_elements = &g1Elements[sprite];
 			int left = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, sint16) + g1_elements->x_offset;
 			int top = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16) + g1_elements->y_offset;
 			int right = left + g1_elements->width;
 			int bottom = top + g1_elements->height;
-			
+
 			gfx_set_dirty_blocks(left, top, right, bottom);
 		}
 	}

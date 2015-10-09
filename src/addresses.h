@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John, Kevin Burke, Matthias Lanzinger
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -556,7 +556,7 @@
 #define RCT2_ADDRESS_NEW_WINDOW_PTR					0x014234B8
 
 #define RCT2_ADDRESS_VIEWPORT_LIST					0x014234BC
-// Null Terminated list of active viewport pointers. 
+// Null Terminated list of active viewport pointers.
 // This is also the end of RCT2_ADDRESS_VIEWPORT_LIST.
 #define RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY		0x01423570
 
@@ -631,6 +631,8 @@
 #define RCT2_ADDRESS_SCREEN_CAP_RASTER_STRETCH		0x01423C14
 
 #define RCT2_ADDRESS_INPUT_QUEUE					0x01424340
+
+#define RCT2_ADDRESS_PALETTE						0x01424680
 
 #define RCT2_ADDRESS_AUDIO_INFO						0x01425B40
 
@@ -707,7 +709,7 @@ static int RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, 
 		add esp, 4 	\n\
 		pop ebp \n\
 		pop ebx \n\
-	 " : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp) 
+	 " : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp)
 		:
 		: "eax","ecx","edx","esi","edi"
 	);
@@ -758,7 +760,7 @@ static int RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_e
 
 		// Call function
 		call [esp]
-		
+
 		// Store output eax
 		push eax
 		push ebp
@@ -778,7 +780,7 @@ static int RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_e
 		mov [eax], ecx
 
 		// Pop ebx reg into ecx
-		pop ecx		
+		pop ecx
 		mov eax, [_ebx]
 		mov[eax], ecx
 
@@ -796,7 +798,7 @@ static int RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_e
 		lahf
 		// Pop address
 		pop ebp
-		
+
 		pop ebx
 		pop ebp
 	}
@@ -866,7 +868,7 @@ static int RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_e
 				\n\
 				pop ebx \n\
 				pop ebp \n\
-	 " : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp) 
+	 " : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp)
 		:
 		: "eax","ecx","edx","esi","edi"
 	);
