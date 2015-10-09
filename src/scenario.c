@@ -238,7 +238,7 @@ int scenario_load_and_play_from_path(const char *path)
 
 	int len = strnlen(path, MAX_PATH) + 1;
 	strncpy(_scenarioPath, path, len);
-	if (len == MAX_PATH)
+	if (len - 1 == MAX_PATH)
 	{
 		_scenarioPath[MAX_PATH - 1] = '\0';
 		log_warning("truncated string %s", _scenarioPath);
