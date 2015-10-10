@@ -2053,6 +2053,15 @@ void game_command_lower_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, i
 
 /**
  *
+ *  rct2: 0x0068BC01
+ */
+void game_command_smooth_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	RCT2_CALLFUNC_X(0x0068BC01, eax, ebx, ecx, edx, esi, edi, ebp);
+}
+
+/**
+ *
  *  rct2: 0x006E66A0
  */
 void game_command_raise_water(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)

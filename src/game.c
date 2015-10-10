@@ -404,7 +404,6 @@ static int game_check_affordability(int cost)
 	return MONEY32_UNDEFINED;
 }
 
-static uint32 game_do_command_table[58];
 static GAME_COMMAND_POINTER* new_game_command_table[58];
 
 /**
@@ -456,12 +455,8 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 
 	*ebx &= ~GAME_COMMAND_FLAG_APPLY;
 
-	// Primary command
-	if (game_do_command_table[command] == 0) {
-		new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
-	} else {
-		RCT2_CALLFUNC_X(game_do_command_table[command], eax, ebx, ecx, edx, esi, edi, ebp);
-	}
+	// First call for validity and price check
+	new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
 	cost = *ebx;
 
 	if (cost != MONEY32_UNDEFINED) {
@@ -495,12 +490,8 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 				}
 			}
 
-			// Secondary command
-			if (game_do_command_table[command] == 0) {
-				new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
-			} else {
-				RCT2_CALLFUNC_X(game_do_command_table[command], eax, ebx, ecx, edx, esi, edi, ebp);
-			}
+			// Second call to actually perform the operation
+			new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
 
 			if (game_command_callback) {
 				game_command_callback(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp);
@@ -1127,71 +1118,6 @@ void game_load_or_quit_no_save_prompt()
 	}
 }
 
-#pragma region Game command function table
-
-static uint32 game_do_command_table[58] = {
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0, // 10
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0, // 20
-	0,
-	0,
-	0,
-	0,
-	0x0068BC01,
-	0,
-	0,
-	0,
-	0, // use new_game_command_table, original: 0x006BEFA1, 29
-	0, // 30
-	0,
-	0,
-	0,
-	0,
-	0,//0x006649BD, //buy_land_rights
-	0,
-	0,
-	0x006CD8CE,
-	0,
-	0, // 40
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0x006CDEE4,
-	0, // 50
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0
-};
-
-void game_command_emptysub(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {}
-
 static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_set_ride_appearance,
 	game_command_set_land_height,
@@ -1203,7 +1129,7 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_demolish_ride,
 	game_command_set_ride_status,
 	game_command_set_ride_vehicles,
-	game_command_set_ride_name, // 10
+	game_command_set_ride_name,
 	game_command_set_ride_setting,
 	game_command_place_ride_entrance_or_exit,
 	game_command_remove_ride_entrance_or_exit,
@@ -1213,27 +1139,27 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_place_footpath,
 	game_command_place_footpath_from_track,
 	game_command_remove_footpath,
-	game_command_change_surface_style, // 20
+	game_command_change_surface_style,
 	game_command_set_ride_price,
 	game_command_set_peep_name,
 	game_command_raise_land,
 	game_command_lower_land,
-	game_command_emptysub,
+	game_command_smooth_land,
 	game_command_raise_water,
 	game_command_lower_water,
 	game_command_set_brakes_speed,
-	game_command_hire_new_staff_member, //game_command_emptysub,
-	game_command_set_staff_patrol, // 30
+	game_command_hire_new_staff_member,
+	game_command_set_staff_patrol,
 	game_command_fire_staff_member,
 	game_command_set_staff_order,
 	game_command_set_park_name,
 	game_command_set_park_open,
-	game_command_buy_land_rights, //game_command_emptysub,//game_command_buy_land_rights,
+	game_command_buy_land_rights,
 	game_command_place_park_entrance,
 	game_command_remove_park_entrance,
-	game_command_emptysub,
+	game_command_set_maze_track,
 	game_command_set_park_entrance_fee,
-	game_command_update_staff_colour, // 40
+	game_command_update_staff_colour,
 	game_command_place_fence,
 	game_command_remove_fence,
 	game_command_place_large_scenery,
@@ -1242,8 +1168,8 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_set_research_funding,
 	game_command_place_track_design,
 	game_command_start_campaign,
-	game_command_emptysub,
-	game_command_place_banner, // 50
+	game_command_place_maze_design,
+	game_command_place_banner,
 	game_command_remove_banner,
 	game_command_set_scenery_colour,
 	game_command_set_fence_colour,
@@ -1252,5 +1178,3 @@ static GAME_COMMAND_POINTER* new_game_command_table[58] = {
 	game_command_set_land_ownership,
 	game_command_clear_scenery
 };
-
-#pragma endregion

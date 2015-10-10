@@ -3342,6 +3342,15 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 
 /**
  *
+ * rct2: 0x006CDEE4
+ */
+void game_command_place_maze_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	RCT2_CALLFUNC_X(0x006CDEE4, eax, ebx, ecx, edx, esi, edi, ebp);
+}
+
+/**
+ *
  * rct2: 0x006D3026
  */
 void track_save_reset_scenery()
@@ -4656,6 +4665,15 @@ void game_command_remove_track(int *eax, int *ebx, int *ecx, int *edx, int *esi,
 		*ebx & 0xFF
 		);
 	return;
+}
+
+/**
+ *
+ *  rct2: 0x006CD8CE
+ */
+void game_command_set_maze_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	RCT2_CALLFUNC_X(0x006CD8CE, eax, ebx, ecx, edx, esi, edi, ebp);
 }
 
 /**

@@ -518,6 +518,7 @@ int save_track_design(uint8 rideIndex);
 int install_track(char* source_path, char* dest_name);
 void window_track_list_format_name(utf8 *dst, const utf8 *src, int colour, bool quotes);
 void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void game_command_place_maze_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
 void track_save_reset_scenery();
 void track_save_select_nearby_scenery(int rideIndex);
@@ -529,6 +530,7 @@ const rct_track_coordinates *get_track_coord_from_ride(rct_ride *ride, int track
 
 void game_command_place_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_remove_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_set_maze_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_brakes_speed(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
 void track_circuit_iterator_begin(track_circuit_iterator *it, rct_xy_element first);
