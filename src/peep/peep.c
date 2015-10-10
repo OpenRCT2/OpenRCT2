@@ -116,6 +116,15 @@ const char *gPeepEasterEggNames[] = {
 	"DAVID ELLIS"
 };
 
+// These arrays contain the base minimum and maximum nausea ratings for peeps, based on their nausea tolerance level.
+static const ride_rating NauseaMinimumThresholds[] = {
+	0, 0, 200, 400
+};
+
+static const ride_rating NauseaMaximumThresholds[] = {
+	300, 600, 800, 1000
+};
+
 int peep_get_staff_count()
 {
 	uint16 spriteIndex;
@@ -7574,8 +7583,8 @@ static void peep_on_enter_ride(rct_peep *peep, int rideIndex)
 			satisfactionFlags |= (1 << 7);
 		}
 
-		minNausea = RCT2_ADDRESS(RCT2_ADDRESS_NAUSEA_THRESHOLDS, uint16)[(peep->nausea_tolerance & 3) * 2];
-		maxNausea = RCT2_ADDRESS(RCT2_ADDRESS_NAUSEA_THRESHOLDS, uint16)[(peep->nausea_tolerance & 3) * 2 + 1];
+		minNausea = NauseaMinimumThresholds[(peep->nausea_tolerance & 3)];
+		maxNausea = NauseaMaximumThresholds[(peep->nausea_tolerance & 3)];
 		if (maxNausea <= ride->nausea || minNausea >= ride->nausea) {
 			satisfactionFlags |= (1 << 2);
 		}
@@ -8044,8 +8053,8 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 						}
 
 						// Nausea calculations.
-						ride_rating maxNausea = RCT2_ADDRESS(RCT2_ADDRESS_NAUSEA_THRESHOLDS, uint16)[(peep->nausea_tolerance & 3) * 2 + 1] + peep->happiness;
-
+						ride_rating maxNausea = NauseaMaximumThresholds[(peep->nausea_tolerance & 3)] + peep->happiness;
+						
 						if (ride->nausea > maxNausea) {
 							if (peepAtRide) {
 								peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SICKENING, rideIndex);

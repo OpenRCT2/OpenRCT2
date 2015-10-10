@@ -64,10 +64,6 @@
 // they aren't directly referenced, for example when a game is saved and
 // loaded, large chunks of data is read and written to.
 
-// An array of 8 uint16s containing the min and max nausea values for each
-// of the four nausea tolerance levels.
-#define RCT2_ADDRESS_NAUSEA_THRESHOLDS				0x00982390
-
 #define RCT2_ADDRESS_EASTEREGG_NAMES				0x00988C20
 
 // An array of pointers to the start of a way to
@@ -661,6 +657,7 @@
 #define RCT2_ADDRESS_DPI_LINE_LENGTH_GLOBAL			0x9ABDB0	//uint16 width+pitch
 #define RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS 0x009AA00D
 #define RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_CONFIG	0x009AB4C6
+#define RCT2_ADDRESS_NAUSEA_THRESHOLDS				0x00982390  //uint16
 
 #pragma endregion
 
