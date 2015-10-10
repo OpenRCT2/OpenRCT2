@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John, Peter Hill
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
- 
+
 #include "addresses.h"
 #include "audio/audio.h"
 #include "config.h"
@@ -104,7 +104,7 @@ void game_reduce_game_speed()
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066B5C0 (part of 0x0066B3E8)
  */
 void game_create_windows()
@@ -134,12 +134,12 @@ void update_palette_effects()
 		int xoffset = g1_element.x_offset;
 		xoffset = xoffset * 4;
 		for (int i = 0; i < g1_element.width; i++) {
-			RCT2_ADDRESS(0x01424680 + xoffset, uint8)[(i * 4) + 0] = -((0xFF - g1_element.offset[(i * 3) + 0]) / 2) - 1;
-			RCT2_ADDRESS(0x01424680 + xoffset, uint8)[(i * 4) + 1] = -((0xFF - g1_element.offset[(i * 3) + 1]) / 2) - 1;
-			RCT2_ADDRESS(0x01424680 + xoffset, uint8)[(i * 4) + 2] = -((0xFF - g1_element.offset[(i * 3) + 2]) / 2) - 1;
+			RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 0] = -((0xFF - g1_element.offset[(i * 3) + 0]) / 2) - 1;
+			RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 1] = -((0xFF - g1_element.offset[(i * 3) + 1]) / 2) - 1;
+			RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 2] = -((0xFF - g1_element.offset[(i * 3) + 2]) / 2) - 1;
 		}
 		RCT2_GLOBAL(0x014241BC, uint32) = 2;
-		platform_update_palette(RCT2_ADDRESS(0x01424680, uint8), 10, 236);
+		platform_update_palette(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8), 10, 236);
 		RCT2_GLOBAL(0x014241BC, uint32) = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8)++;
 	} else {
@@ -155,9 +155,9 @@ void update_palette_effects()
 			int xoffset = g1_element.x_offset;
 			xoffset = xoffset * 4;
 			for (int i = 0; i < g1_element.width; i++) {
-				RCT2_ADDRESS(0x01424680 + xoffset, uint8)[(i * 4) + 0] = g1_element.offset[(i * 3) + 0];
-				RCT2_ADDRESS(0x01424680 + xoffset, uint8)[(i * 4) + 1] = g1_element.offset[(i * 3) + 1];
-				RCT2_ADDRESS(0x01424680 + xoffset, uint8)[(i * 4) + 2] = g1_element.offset[(i * 3) + 2];
+				RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 0] = g1_element.offset[(i * 3) + 0];
+				RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 1] = g1_element.offset[(i * 3) + 1];
+				RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 2] = g1_element.offset[(i * 3) + 2];
 			}
 		}
 
@@ -227,11 +227,11 @@ void update_palette_effects()
 		}
 
 		RCT2_GLOBAL(0x014241BC, uint32) = 2;
-		platform_update_palette(RCT2_ADDRESS(0x01424680, uint8), 230, 16);
+		platform_update_palette(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8), 230, 16);
 		RCT2_GLOBAL(0x014241BC, uint32) = 0;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 2) {
 			RCT2_GLOBAL(0x014241BC, uint32) = 2;
-			platform_update_palette(RCT2_ADDRESS(0x01424680, uint8), 10, 236);
+			platform_update_palette(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8), 10, 236);
 			RCT2_GLOBAL(0x014241BC, uint32) = 0;
 			RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) = 0;
 		}
@@ -385,7 +385,7 @@ void game_logic_update()
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069C62C
  *
  * @param cost (ebp)
@@ -408,7 +408,7 @@ static uint32 game_do_command_table[58];
 static GAME_COMMAND_POINTER* new_game_command_table[58];
 
 /**
- * 
+ *
  *  rct2: 0x006677F2
  *
  * @param flags (ebx)
@@ -449,13 +449,13 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 		(command == GAME_COMMAND_PLACE_FENCE ||
 		command == GAME_COMMAND_PLACE_SCENERY ||
 		command == GAME_COMMAND_PLACE_LARGE_SCENERY ||
-		command == GAME_COMMAND_PLACE_BANNER || 
+		command == GAME_COMMAND_PLACE_BANNER ||
 		command == GAME_COMMAND_PLACE_PATH)) {
 		scenery_remove_ghost_tool_placement();
 	}
 
 	*ebx &= ~GAME_COMMAND_FLAG_APPLY;
-	
+
 	// Primary command
 	if (game_do_command_table[command] == 0) {
 		new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
@@ -517,7 +517,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 			if (RCT2_GLOBAL(0x009A8C28, uint8) != 0)
 				return cost;
 
-			// 
+			//
 			if (!(flags & 0x20)) {
 				// Update money balance
 				finance_payment(cost, RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) / 4);
@@ -555,7 +555,7 @@ void pause_toggle()
 }
 
 /**
- * 
+ *
  *  rct2: 0x00667C15
  */
 void game_pause_toggle(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
@@ -567,7 +567,7 @@ void game_pause_toggle(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *ed
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066DB5F
  */
 static void game_load_or_quit(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
@@ -720,7 +720,7 @@ void game_convert_strings_to_rct2(rct_s6_data *s6)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00675E1B
  */
 int game_load_sv6(SDL_RWops* rw)
@@ -863,7 +863,7 @@ int game_load_network(SDL_RWops* rw)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00675E1B
  */
 int game_load_save(const char *path)
@@ -957,7 +957,7 @@ void reset_all_sprite_quadrant_placements()
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066DBB7
  */
 static void load_game()
@@ -1089,7 +1089,7 @@ void rct2_exit_reason(rct_string_id title, rct_string_id body){
 
 
 /**
- * 
+ *
  *  rct2: 0x006E3879
  */
 void rct2_exit()
@@ -1100,7 +1100,7 @@ void rct2_exit()
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066DB79
  */
 void game_load_or_quit_no_save_prompt()
@@ -1152,7 +1152,7 @@ static uint32 game_do_command_table[58] = {
 	0,
 	0, // 20
 	0,
-	0, 
+	0,
 	0,
 	0,
 	0x0068BC01,

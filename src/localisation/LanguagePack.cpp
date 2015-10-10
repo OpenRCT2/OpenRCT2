@@ -187,7 +187,10 @@ LanguagePack::ScenarioOverride *LanguagePack::GetScenarioOverride(const utf8 *sc
 
 	for (size_t i = 0; i < _scenarioOverrides.size(); i++) {
 		ScenarioOverride *so = &_scenarioOverrides[i];
-		if (_stricmp(so->name, scenarioIdentifier) == 0) {
+		// At this point ScenarioOverrides were not yet rewritten to point at
+		// strings, but rather still hold offsets from base.
+		const utf8 *name = _stringDataSB.GetBuffer() + (size_t)so->name;
+		if (_stricmp(name, scenarioIdentifier) == 0) {
 			return so;
 		}
 	}

@@ -203,9 +203,9 @@ int screenshot_dump_bmp()
 	// Palette
 	memset(buffer, 0, 246 * 4);
 	for (i = 0; i < 246; i++) {
-		buffer[i * 4 + 0] = RCT2_ADDRESS(0x01424680, uint8)[i * 4 + 0];
-		buffer[i * 4 + 1] = RCT2_ADDRESS(0x01424680, uint8)[i * 4 + 1];
-		buffer[i * 4 + 2] = RCT2_ADDRESS(0x01424680, uint8)[i * 4 + 2];
+		buffer[i * 4 + 0] = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 0];
+		buffer[i * 4 + 1] = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 1];
+		buffer[i * 4 + 2] = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 2];
 	}
 
 	bytesWritten = SDL_RWwrite(fp, buffer, sizeof(char), 246 * 4);
@@ -267,9 +267,9 @@ int screenshot_dump_png()
 	padding = dpi->pitch;
 
 	for (i = 0; i < 256; i++) {
-		b = RCT2_ADDRESS(0x01424680, uint8)[i * 4 + 0];
-		g = RCT2_ADDRESS(0x01424680, uint8)[i * 4 + 1];
-		r = RCT2_ADDRESS(0x01424680, uint8)[i * 4 + 2];
+		b = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 0];
+		g = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 1];
+		r = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 2];
 
 		lodepng_palette_add(&state.info_raw, r, g, b, a);
 	}
@@ -329,9 +329,9 @@ bool screenshot_write_png(rct_drawpixelinfo *dpi, const char *path)
 	for (int i = 0; i < 256; i++) {
 		unsigned char r, g, b, a = 255;
 
-		b = RCT2_ADDRESS(0x01424680, uint8)[i * 4 + 0];
-		g = RCT2_ADDRESS(0x01424680, uint8)[i * 4 + 1];
-		r = RCT2_ADDRESS(0x01424680, uint8)[i * 4 + 2];
+		b = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 0];
+		g = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 1];
+		r = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 2];
 
 		lodepng_palette_add(&state.info_raw, r, g, b, a);
 	}
