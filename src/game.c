@@ -775,13 +775,31 @@ int game_load_sv6(SDL_RWops* rw)
 		return 0;//This never gets called
 	}
 
-	// The rest is the same as in scenario load and play
+	// The rest is the same as in scenario_load
 	reset_loaded_objects();
 	map_update_tile_pointers();
 	reset_0x69EBE4();
 	openrct2_reset_object_tween_locations();
 	game_convert_strings_to_utf8();
+	game_fix_save_vars(); // OpenRCT2 fix broken save games
+
 	return 1;
+}
+
+// OpenRCT2 workaround to recalculate some values which are saved redundantly in the save to fix corrupted files.
+// For example recalculate guest count by looking at all the guests instead of trusting the value in the file.
+void game_fix_save_vars() {
+
+	// Recalculates peep count after loading a save to fix corrupted files
+	rct_peep* peep;
+	uint16 spriteIndex;
+	uint16 peepCount = 0;
+	FOR_ALL_GUESTS(spriteIndex, peep) {
+		if(!peep->outside_of_park)
+			peepCount++;
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) = peepCount;
 }
 
 // Load game state for multiplayer

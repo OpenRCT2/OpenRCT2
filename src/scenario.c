@@ -204,6 +204,8 @@ int scenario_load(const char *path)
 			reset_0x69EBE4();
 			openrct2_reset_object_tween_locations();
 			game_convert_strings_to_utf8();
+			game_fix_save_vars(); // OpenRCT2 fix broken save games
+
 			return 1;
 		}
 
