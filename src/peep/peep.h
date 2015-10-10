@@ -366,6 +366,12 @@ enum {
 	PEEP_INVALIDATE_STAFF_STATS = 1 << 4,
 };
 
+// Flags used by peep_should_go_on_ride()
+enum {
+	PEEP_RIDE_DECISION_AT_QUEUE = 1,
+	PEEP_RIDE_DECISION_THINKING = 1 << 2
+};
+
 typedef struct {
 	uint8 type;		//0
 	uint8 item;		//1

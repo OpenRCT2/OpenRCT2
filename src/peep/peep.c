@@ -6465,7 +6465,7 @@ static int peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 
 		peep->var_F4 = 0;
 		uint8 stationNum = (map_element->properties.path.additions & 0x70) >> 4;
-		if (!peep_should_go_on_ride(peep, rideIndex, stationNum, 1)){
+		if (!peep_should_go_on_ride(peep, rideIndex, stationNum, PEEP_RIDE_DECISION_AT_QUEUE)){
 			peep->var_79 = rideIndex;
 			return peep_return_to_center_of_tile(peep);
 		}
@@ -7895,10 +7895,10 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 	rct_ride *ride = GET_RIDE(rideIndex);
 
 	// Indicates if the peep is about to enter a queue (as opposed to entering an entrance directly from a path)
-	bool peepAtQueue = flags & 1;
+	bool peepAtQueue = flags & PEEP_RIDE_DECISION_AT_QUEUE;
 
 	// Indicates whether a peep is physically at the ride, or is just thinking about going on the ride.
-	bool peepAtRide = !(flags & 4);
+	bool peepAtRide = !(flags & PEEP_RIDE_DECISION_THINKING);
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_8)) {
 		if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)) {
@@ -8313,7 +8313,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 
 		rct_ride *ride = GET_RIDE(i);
 		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL)) {
-			if (peep_should_go_on_ride(peep, i, 0, 6)) {
+			if (peep_should_go_on_ride(peep, i, 0, PEEP_RIDE_DECISION_THINKING)) {
 				*nextPotentialRide++ = i;
 				numPotentialRides++;
 			}
@@ -8422,7 +8422,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 
 		rct_ride *ride = GET_RIDE(i);
 		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL)) {
-			if (peep_should_go_on_ride(peep, i, 0, 6)) {
+			if (peep_should_go_on_ride(peep, i, 0, PEEP_RIDE_DECISION_THINKING)) {
 				*nextPotentialRide++ = i;
 				numPotentialRides++;
 			}
@@ -8534,7 +8534,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 
 		rct_ride *ride = GET_RIDE(i);
 		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL)) {
-			if (peep_should_go_on_ride(peep, i, 0, 6)) {
+			if (peep_should_go_on_ride(peep, i, 0, PEEP_RIDE_DECISION_THINKING)) {
 				*nextPotentialRide++ = i;
 				numPotentialRides++;
 			}
