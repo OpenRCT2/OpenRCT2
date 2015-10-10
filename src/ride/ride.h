@@ -236,6 +236,7 @@ typedef struct {
 	union {
 		uint8 inversions;			// 0x114 (???X XXXX)
 		uint8 holes;				// 0x114 (???X XXXX)
+		// This has something to do with how much of the ride is undercover.
 		uint8 var_114;
 	};
 	uint8 drops;					// 0x115 (??XX XXXX)

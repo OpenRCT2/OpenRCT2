@@ -428,7 +428,7 @@ typedef struct {
 	uint8 bathroom;					// 0x40
 	uint8 var_41;
 	uint8 var_42;
-	uint8 intensity;				// 0x43
+	uint8 intensity;				// 0x43 The max intensity is stored in the first 4 bits, and the min intensity in the second 4 bits
 	uint8 nausea_tolerance;			// 0x44
 	uint8 window_invalidate_flags;	// 0x45
 	money16 paid_on_drink;			// 0x46
