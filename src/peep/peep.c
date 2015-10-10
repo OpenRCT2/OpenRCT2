@@ -7934,7 +7934,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 				else {
 					// Check if there's room in the queue for the peep to enter.
 					if (ride->first_peep_in_queue[entranceNum] != 0xFFFF) {
-						rct_peep *firstPeepInQueue = &(g_sprite_list[ride->first_peep_in_queue[entranceNum]].peep);
+						rct_peep *firstPeepInQueue = GET_PEEP(ride->first_peep_in_queue[entranceNum]);
 						if (abs(firstPeepInQueue->z - peep->z) <= 6) {
 							int dx = abs(firstPeepInQueue->x - peep->x);
 							int dy = abs(firstPeepInQueue->y - peep->y);
