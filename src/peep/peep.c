@@ -8007,8 +8007,9 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 						}
 					}
 
-					// Peeps won't go on certain rides while it's raining.
-					if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8) != 0 && ride->var_114 < 96) {
+					// Peeps won't go on rides that aren't sufficiently undercover while it's raining.
+					// The threshold is fairly low and only requires about 10-15% of the ride to be undercover.
+					if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8) != 0 && (ride->undercover_portion >> 5) < 3) {
 						if (peepAtRide) {
 							peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NOT_WHILE_RAINING, rideIndex);
 							if (peep->happiness_growth_rate >= 64) {

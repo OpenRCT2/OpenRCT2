@@ -236,8 +236,9 @@ typedef struct {
 	union {
 		uint8 inversions;			// 0x114 (???X XXXX)
 		uint8 holes;				// 0x114 (???X XXXX)
-		// This has something to do with how much of the ride is undercover.
-		uint8 var_114;
+		// The undercover portion is a very rough approximation of how much of the ride is undercover.
+		// It reaches the maximum value of 7 at about 50% undercover and doesn't increase beyond that.
+		uint8 undercover_portion;	// 0x114 (XXX?-????)
 	};
 	uint8 drops;					// 0x115 (??XX XXXX)
 	uint8 var_116;
