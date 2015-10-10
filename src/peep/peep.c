@@ -464,7 +464,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 		}
 
 		if (peep->state == PEEP_STATE_WALKING &&
-			peep->outside_of_park == 0 &&	
+			peep->outside_of_park == 0 &&
 			!(peep->flags & PEEP_FLAGS_LEAVING_PARK) &&
 			peep->no_of_rides == 0 &&
 			peep->guest_heading_to_ride_id == 0xFF){
@@ -7884,7 +7884,7 @@ static void peep_reset_ride_heading(rct_peep *peep)
 }
 
 /**
- *  
+ *
  *  rct2: 0x006960AB
  *
  *  This function is called whenever a peep is deciding whether or not they want to go on a ride or visit a shop.
@@ -7947,7 +7947,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 								return false;
 							}
 
-							// This checks if there's a peep standing still at the very end of the queue.					
+							// This checks if there's a peep standing still at the very end of the queue.
 							if (maxD <= 13
 								&& firstPeepInQueue->time_in_queue > 10) {
 								peep_tried_to_enter_full_queue(peep, rideIndex);
@@ -8227,7 +8227,7 @@ static bool peep_should_go_to_shop(rct_peep *peep, int rideIndex, bool peepAtSho
 		peep_chose_not_to_go_on_ride(peep, rideIndex, peepAtShop, true);
 		return false;
 	}
-	
+
 	if (peepAtShop) {
 		ride_update_popularity(ride, 1);
 		if (rideIndex == peep->guest_heading_to_ride_id) {
