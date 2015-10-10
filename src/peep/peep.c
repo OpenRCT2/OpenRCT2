@@ -7574,8 +7574,8 @@ static void peep_on_enter_ride(rct_peep *peep, int rideIndex)
 			satisfactionFlags |= (1 << 7);
 		}
 
-		minNausea = RCT2_ADDRESS(0x00982390, uint16)[(peep->nausea_tolerance & 3) * 2];
-		maxNausea = RCT2_ADDRESS(0x00982392, uint16)[(peep->nausea_tolerance & 3) * 2];
+		minNausea = RCT2_ADDRESS(RCT2_ADDRESS_NAUSEA_THRESHOLDS, uint16)[(peep->nausea_tolerance & 3) * 2];
+		maxNausea = RCT2_ADDRESS(RCT2_ADDRESS_NAUSEA_THRESHOLDS, uint16)[(peep->nausea_tolerance & 3) * 2 + 1];
 		if (maxNausea <= ride->nausea || minNausea >= ride->nausea) {
 			satisfactionFlags |= (1 << 2);
 		}
@@ -8042,9 +8042,9 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 							return false;
 						}
 
-						// Nausea calculations
-						ride_rating minNausea = RCT2_ADDRESS(0x00982390, uint16)[(peep->nausea_tolerance & 3) * 2] - peep->happiness;
-						ride_rating maxNausea = RCT2_ADDRESS(0x00982392, uint16)[(peep->nausea_tolerance & 3) * 2] + peep->happiness;
+						// Nausea calculations.
+						ride_rating maxNausea = RCT2_ADDRESS(RCT2_ADDRESS_NAUSEA_THRESHOLDS, uint16)[(peep->nausea_tolerance & 3) * 2 + 1] + peep->happiness;
+
 						if (ride->nausea > maxNausea) {
 							if (peepAtRide) {
 								peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SICKENING, rideIndex);
@@ -8056,7 +8056,9 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 							peep_chose_not_to_go_on_ride(peep, rideIndex, peepAtRide, true);
 							return false;
 						}
-						if (ride->nausea >= 140 && peep->nausea > 160) {
+
+						// Very nauseous peeps will only go on very gentle rides.
+						if (ride->nausea >= FIXED_2DP(1, 40) && peep->nausea > 160) {
 							peep_chose_not_to_go_on_ride(peep, rideIndex, peepAtRide, false);
 							return false;
 						}
