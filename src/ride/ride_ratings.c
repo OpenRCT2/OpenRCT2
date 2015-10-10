@@ -620,8 +620,14 @@ static void ride_ratings_calculate(rct_ride *ride)
 	ride_ratings_calculation calcFunc;
 
 	calcFunc = ride_ratings_calculate_func_table[ride->type];
-	if (calcFunc != NULL)
+	if (calcFunc != NULL) {
 		calcFunc(ride);
+	}
+
+	// Prevent negative ratings
+	ride->ratings.excitement = max(0, ride->ratings.excitement);
+	ride->ratings.intensity = max(0, ride->ratings.intensity);
+	ride->ratings.nausea = max(0, ride->ratings.nausea);
 
 	// Original ride calculation
 	// calcFunc = RCT2_ADDRESS(0x0097E050, ride_ratings_calculation)[ride->type];
