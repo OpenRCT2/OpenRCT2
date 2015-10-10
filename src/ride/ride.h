@@ -187,7 +187,7 @@ typedef struct {
 	uint8 var_066[4];
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
-	uint16 first_peep_in_queue[4];	// 0x07A
+	uint16 last_peep_in_queue[4];	// 0x07A
 	uint8 pad_082[4];
 	uint16 vehicles[32];			// 0x086 Points to the first car in the train
 	uint8 depart_flags;				// 0x0C6

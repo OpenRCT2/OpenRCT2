@@ -6835,7 +6835,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 				ride->exits[station_num] = (x / 32) | (y / 32 << 8);
 			} else {
 				ride->entrances[station_num] = (x / 32) | (y / 32 << 8);
-				ride->first_peep_in_queue[station_num] = 0xFFFF;
+				ride->last_peep_in_queue[station_num] = 0xFFFF;
 				ride->queue_length[station_num] = 0;
 
 				map_animation_create(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, x, y, z / 8);

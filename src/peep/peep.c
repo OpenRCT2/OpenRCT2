@@ -1521,13 +1521,13 @@ void remove_peep_from_queue(rct_peep* peep)
 
 	uint8 cur_station = peep->current_ride_station;
 	ride->queue_length[cur_station]--;
-	if (peep->sprite_index == ride->first_peep_in_queue[cur_station])
+	if (peep->sprite_index == ride->last_peep_in_queue[cur_station])
 	{
-		ride->first_peep_in_queue[cur_station] = peep->next_in_queue;
+		ride->last_peep_in_queue[cur_station] = peep->next_in_queue;
 		return;
 	}
 
-	for (rct_peep* other_peep = GET_PEEP(ride->first_peep_in_queue[cur_station]);;
+	for (rct_peep* other_peep = GET_PEEP(ride->last_peep_in_queue[cur_station]);;
 		other_peep = GET_PEEP(other_peep->next_in_queue)){
 		if (peep->sprite_index == other_peep->next_in_queue){
 			other_peep->next_in_queue = peep->next_in_queue;
@@ -2104,14 +2104,14 @@ static void peep_update_ride_sub_state_2_rejoin_queue(rct_peep* peep, rct_ride* 
 
 	ride->queue_length[peep->current_ride_station]++;
 
-	uint16 current_first = ride->first_peep_in_queue[peep->current_ride_station];
-	if (current_first == 0xFFFF){
-		ride->first_peep_in_queue[peep->current_ride_station] = peep->sprite_index;
+	uint16 current_last = ride->last_peep_in_queue[peep->current_ride_station];
+	if (current_last == 0xFFFF){
+		ride->last_peep_in_queue[peep->current_ride_station] = peep->sprite_index;
 		return;
 	}
 
 	rct_peep* queue_peep;
-	for (queue_peep = GET_PEEP(current_first);
+	for (queue_peep = GET_PEEP(current_last);
 		queue_peep->next_in_queue != 0xFFFF;
 		queue_peep = GET_PEEP(queue_peep->next_in_queue));
 
@@ -6104,9 +6104,9 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 		peep->var_79 = rideIndex;
 
 		rct_ride* ride = GET_RIDE(rideIndex);
-		uint16 previous_first = ride->first_peep_in_queue[stationNum];
-		ride->first_peep_in_queue[stationNum] = peep->sprite_index;
-		peep->next_in_queue = previous_first;
+		uint16 previous_last = ride->last_peep_in_queue[stationNum];
+		ride->last_peep_in_queue[stationNum] = peep->sprite_index;
+		peep->next_in_queue = previous_last;
 		ride->queue_length[stationNum]++;
 
 		peep_decrement_num_riders(peep);
@@ -6473,9 +6473,9 @@ static int peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 		peep->var_79 = rideIndex;
 		rct_ride* ride = GET_RIDE(rideIndex);
 
-		uint16 old_first_peep = ride->first_peep_in_queue[stationNum];
-		ride->first_peep_in_queue[stationNum] = peep->sprite_index;
-		peep->next_in_queue = old_first_peep;
+		uint16 old_last_peep = ride->last_peep_in_queue[stationNum];
+		ride->last_peep_in_queue[stationNum] = peep->sprite_index;
+		peep->next_in_queue = old_last_peep;
 		ride->queue_length[stationNum]++;
 
 		peep_decrement_num_riders(peep);
@@ -7926,18 +7926,18 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 
 				// Rides without queues can only have one peep waiting at a time.
 				if (!peepAtQueue) {
-					if (ride->first_peep_in_queue[entranceNum] != 0xFFFF) {
+					if (ride->last_peep_in_queue[entranceNum] != 0xFFFF) {
 						peep_tried_to_enter_full_queue(peep, rideIndex);
 						return false;
 					}
 				}
 				else {
 					// Check if there's room in the queue for the peep to enter.
-					if (ride->first_peep_in_queue[entranceNum] != 0xFFFF) {
-						rct_peep *firstPeepInQueue = GET_PEEP(ride->first_peep_in_queue[entranceNum]);
-						if (abs(firstPeepInQueue->z - peep->z) <= 6) {
-							int dx = abs(firstPeepInQueue->x - peep->x);
-							int dy = abs(firstPeepInQueue->y - peep->y);
+					if (ride->last_peep_in_queue[entranceNum] != 0xFFFF) {
+						rct_peep *lastPeepInQueue = GET_PEEP(ride->last_peep_in_queue[entranceNum]);
+						if (abs(lastPeepInQueue->z - peep->z) <= 6) {
+							int dx = abs(lastPeepInQueue->x - peep->x);
+							int dy = abs(lastPeepInQueue->y - peep->y);
 							int maxD = max(dx, dy);
 
 							// Unlike normal paths, peeps cannot overlap when queueing for a ride.
@@ -7949,7 +7949,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 
 							// This checks if there's a peep standing still at the very end of the queue.
 							if (maxD <= 13
-								&& firstPeepInQueue->time_in_queue > 10) {
+								&& lastPeepInQueue->time_in_queue > 10) {
 								peep_tried_to_enter_full_queue(peep, rideIndex);
 								return false;
 							}
