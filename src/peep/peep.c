@@ -7558,8 +7558,8 @@ static void peep_on_enter_ride(rct_peep *peep, int rideIndex)
 		satisfactionFlags = 0x1FF;
 	} else {
 		satisfactionFlags = 0;
-		maxIntensity = (peep->intensity & 0x0F) * 100;
-		minIntensity = (peep->intensity / 16) * 100;
+		maxIntensity = (peep->intensity >> 4) * 100;
+		minIntensity = (peep->intensity & 0xF) * 100;
 		if (maxIntensity <= ride->intensity || minIntensity >= ride->intensity) {
 			satisfactionFlags |= (1 << 1);
 		}
