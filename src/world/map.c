@@ -58,7 +58,8 @@ rct_map_element **gMapElementTilePointers = (rct_map_element**)RCT2_ADDRESS_TILE
 rct_xy16 *gMapSelectionTiles = (rct_xy16*)0x009DE596;
 rct2_peep_spawn *gPeepSpawns = (rct2_peep_spawn*)RCT2_ADDRESS_PEEP_SPAWNS;
 
-bool LandPaintMode;
+bool gLandMountainMode;
+bool gLandPaintMode;
 bool LandRightsMode;
 bool gClearSmallScenery;
 bool gClearLargeScenery;
@@ -2051,13 +2052,326 @@ void game_command_lower_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, i
 	);
 }
 
+static int map_get_corner_height(rct_map_element *mapElement, int direction)
+{
+	int z = mapElement->base_height;
+	int slope = mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
+	switch (direction) {
+	case 0:
+		if (slope & 1) {
+			z += 2;
+			if (slope == 27) {
+				z += 2;
+			}
+		}
+		break;
+	case 1:
+		if (slope & 2) {
+			z += 2;
+			if (slope == 23) {
+				z += 2;
+			}
+		}
+		break;
+	case 2:
+		if (slope & 4) {
+			z += 2;
+			if (slope == 30) {
+				z += 2;
+			}
+		}
+		break;
+	case 3:
+		if (slope & 8) {
+			z += 2;
+			if (slope == 29) {
+				z += 2;
+			}
+		}
+		break;
+	}
+	return z;
+}
+
+/**
+ *
+ *  rct2: 0x0068C3B2 slope 1, style 0
+ *  rct2: 0x0068C47A slope 2, style 1
+ *  rct2: 0x0068C222 slope 4, style 2
+ *  rct2: 0x0068C2EA slope 8, style 3
+ */
+static money32 smooth_land_tile(int direction, uint8 flags, int x, int y, int targetBaseZ, int minBaseZ)
+{
+	// Check if inside map bounds
+	if (x < 0 || y < 0 || x >= (256 * 32) || y >= (256 * 32)) {
+		return MONEY32_UNDEFINED;
+	}
+
+	// Get height of tile
+	rct_map_element *mapElement = map_get_surface_element_at(x >> 5, y >> 5);
+	int baseZ = map_get_corner_height(mapElement, direction);
+
+	// Check if tile is same height as target tile
+	if (baseZ == targetBaseZ) {
+		// No need to raise or lower
+		return MONEY32_UNDEFINED;
+	}
+
+	uint8 style;
+	if (targetBaseZ <= baseZ) {
+		baseZ = baseZ - targetBaseZ;
+		if (baseZ <= minBaseZ) {
+			return MONEY32_UNDEFINED;
+		}
+		targetBaseZ = mapElement->base_height;
+		int slope = mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
+		style = map_element_lower_styles[direction][slope];
+		if (style & 0x20) {
+			targetBaseZ -= 2;
+			style &= ~0x20;
+		}
+	} else {
+		baseZ = targetBaseZ - baseZ;
+		if (baseZ <= minBaseZ) {
+			return MONEY32_UNDEFINED;
+		}
+		targetBaseZ = mapElement->base_height;
+		int slope = mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
+		style = map_element_raise_styles[direction][slope];
+		if ((style & 0x20) != 0) {
+			targetBaseZ += 2;
+			style &= ~0x20;
+		}
+	}
+
+	return game_do_command(x, flags, y, targetBaseZ | (style << 8), GAME_COMMAND_SET_LAND_HEIGHT, 0, 0);
+}
+
+money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int mapTop, int mapRight, int mapBottom, int command)
+{
+	// Cap bounds to map
+	mapLeft = max(mapLeft, 32);
+	mapTop = max(mapTop, 32);
+	mapRight = min(mapRight, 255 * 32);
+	mapBottom = min(mapBottom, 255 * 32);
+
+	int commandType;
+	int centreZ = map_element_height(centreX, centreY);
+	int mapLeftRight = mapLeft | (mapRight << 16);
+	int mapTopBottom = mapTop | (mapBottom << 16);
+
+	// Play sound (only once)
+	if ((flags & GAME_COMMAND_FLAG_APPLY) && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
+		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, centreX, centreY, centreZ);
+	}
+
+	money32 totalCost = 0;
+
+	// First raise / lower the centre tile
+	money32 result;
+	commandType = command == 1 ? GAME_COMMAND_RAISE_LAND : GAME_COMMAND_LOWER_LAND;
+	result = game_do_command(centreX, flags, centreY, mapLeftRight, commandType, 4, mapTopBottom);
+	if (result != MONEY32_UNDEFINED) {
+		totalCost += result;
+	}
+
+	int x, y, z;
+	rct_map_element *mapElement;
+
+	x = mapLeft;
+	y = mapTop;
+	mapElement = map_get_surface_element_at(x >> 5, y >> 5);
+	int slope = mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
+	if (slope != 0) {
+		commandType = command == 0xFFFF ? GAME_COMMAND_RAISE_LAND : GAME_COMMAND_LOWER_LAND;
+		result = game_do_command(centreX, flags, centreY, mapLeftRight, commandType, 4, mapTopBottom);
+		if (result != MONEY32_UNDEFINED) {
+			totalCost += result;
+		}
+
+		x = mapLeft;
+		y = mapTop;
+		mapElement = map_get_surface_element_at(x >> 5, y >> 5);
+		slope = mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
+		if (slope != 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint32) = centreX;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint32) = centreY;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint32) = centreZ;
+			return totalCost * 4;
+		}
+	}
+
+	x = mapLeft;
+	y = mapTop;
+	int size = ((mapRight - mapLeft) >> 5) + 1;
+	int initialMinZ = -2;
+
+	for (; size <= 256; size += 2) {
+		initialMinZ += 2;
+		int minZ = initialMinZ * 2;
+		x -= 32;
+		y -= 32;
+
+		// Corner (North-West)
+		mapElement = map_get_surface_element_at(mapLeft >> 5, mapTop >> 5);
+		z = map_get_corner_height(mapElement, 2);
+		result = smooth_land_tile(0, flags, x, y, z, minZ);
+		if (result != MONEY32_UNDEFINED) {
+			totalCost += result;
+		}
+		y += 32;
+
+		// Side (West)
+		for (int i = 0; i < size; i++) {
+			int y2 = clamp(mapTop, y, mapBottom);
+			mapElement = map_get_surface_element_at(mapLeft >> 5, y2 >> 5);
+			z = map_get_corner_height(mapElement, 2);
+			result = smooth_land_tile(1, flags, x, y, z, minZ);
+			if (result != MONEY32_UNDEFINED) {
+				totalCost += result;
+			}
+			minZ -= 2;
+			if (y >= mapTop) {
+				minZ += 2;
+				if (y > mapBottom) {
+					minZ += 2;
+				}
+			}
+			z = map_get_corner_height(mapElement, 3);
+			result = smooth_land_tile(0, flags, x, y, z, minZ);
+			if (result != MONEY32_UNDEFINED) {
+				totalCost += result;
+			}
+
+			y += 32;
+		}
+
+		// Corner (South-West)
+		mapElement = map_get_surface_element_at(mapLeft >> 5, mapBottom >> 5);
+		z = map_get_corner_height(mapElement, 3);
+		result = smooth_land_tile(1, flags, x, y, z, minZ);
+		if (result != MONEY32_UNDEFINED) {
+			totalCost += result;
+		}
+		x += 32;
+
+		// Side (South)
+		for (int i = 0; i < size; i++) {
+			int x2 = clamp(mapLeft, x, mapRight);
+			mapElement = map_get_surface_element_at(x2 >> 5, mapBottom >> 5);
+			z = map_get_corner_height(mapElement, 3);
+			result = smooth_land_tile(2, flags, x, y, z, minZ);
+			if (result != MONEY32_UNDEFINED) {
+				totalCost += result;
+			}
+			minZ -= 2;
+			if (x >= mapLeft) {
+				minZ += 2;
+				if (x > mapRight) {
+					minZ += 2;
+				}
+			}
+			z = map_get_corner_height(mapElement, 0);
+			result = smooth_land_tile(1, flags, x, y, z, minZ);
+			if (result != MONEY32_UNDEFINED) {
+				totalCost += result;
+			}
+
+			x += 32;
+		}
+
+		// Corner (South-East)
+		mapElement = map_get_surface_element_at(mapRight >> 5, mapBottom >> 5);
+		z = map_get_corner_height(mapElement, 0);
+		result = smooth_land_tile(2, flags, x, y, z, minZ);
+		if (result != MONEY32_UNDEFINED) {
+			totalCost += result;
+		}
+		y -= 32;
+
+		// Side (East)
+		for (int i = 0; i < size; i++) {
+			int y2 = clamp(mapTop, y, mapBottom);
+			mapElement = map_get_surface_element_at(mapRight >> 5, y2 >> 5);
+			z = map_get_corner_height(mapElement, 0);
+			result = smooth_land_tile(3, flags, x, y, z, minZ);
+			if (result != MONEY32_UNDEFINED) {
+				totalCost += result;
+			}
+			minZ -= 2;
+			if (y <= mapBottom) {
+				minZ += 2;
+				if (y < mapTop) {
+					minZ += 2;
+				}
+			}
+			z = map_get_corner_height(mapElement, 1);
+			result = smooth_land_tile(2, flags, x, y, z, minZ);
+			if (result != MONEY32_UNDEFINED) {
+				totalCost += result;
+			}
+
+			y -= 32;
+		}
+
+		// Corner (North-East)
+		mapElement = map_get_surface_element_at(mapRight >> 5, mapTop >> 5);
+		z = map_get_corner_height(mapElement, 1);
+		result = smooth_land_tile(3, flags, x, y, z, minZ);
+		if (result != MONEY32_UNDEFINED) {
+			totalCost += result;
+		}
+		x -= 32;
+
+		// Side (North)
+		for (int i = 0; i < size; i++) {
+			int x2 = clamp(mapLeft, x, mapRight);
+			mapElement = map_get_surface_element_at(x2 >> 5, mapTop >> 5);
+			z = map_get_corner_height(mapElement, 1);
+			result = smooth_land_tile(0, flags, x, y, z, minZ);
+			if (result != MONEY32_UNDEFINED) {
+				totalCost += result;
+			}
+			minZ -= 2;
+			if (x <= mapRight) {
+				minZ += 2;
+				if (x < mapLeft) {
+					minZ += 2;
+				}
+			}
+			z = map_get_corner_height(mapElement, 2);
+			result = smooth_land_tile(3, flags, x, y, z, minZ);
+			if (result != MONEY32_UNDEFINED) {
+				totalCost += result;
+			}
+
+			x -= 32;
+		}
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint32) = centreX;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint32) = centreY;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint32) = centreZ;
+	return totalCost * 4;
+}
+
 /**
  *
  *  rct2: 0x0068BC01
  */
 void game_command_smooth_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
-	RCT2_CALLFUNC_X(0x0068BC01, eax, ebx, ecx, edx, esi, edi, ebp);
+	int flags = *ebx & 0xFF;
+	int centreX = *eax & 0xFFFF;
+	int centreY = *ecx & 0xFFFF;
+	int mapLeft = (sint16)(*edx & 0xFFFF);
+	int mapTop = (sint16)(*ebp & 0xFFFF);
+	int mapRight = (sint16)(*edx >> 16);
+	int mapBottom = (sint16)(*ebp >> 16);
+	int command = *edi;
+	*ebx = smooth_land(flags, centreX, centreY, mapLeft, mapTop, mapRight, mapBottom, command);
 }
 
 /**

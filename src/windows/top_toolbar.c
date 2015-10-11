@@ -1792,7 +1792,7 @@ void top_toolbar_tool_update_land(sint16 x, sint16 y){
 	rct_xy16 mapTile = { .x = x, .y = y };
 
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
-	if (tool_size == 1){
+	if (tool_size == 1 && !gLandMountainMode){
 		int direction;
 		screen_pos_to_map_pos(&mapTile.x, &mapTile.y, &direction);
 
@@ -2498,7 +2498,7 @@ static void window_top_toolbar_tool_update(rct_window* w, int widgetIndex, int x
 		top_toolbar_tool_update_scenery_clear(x, y);
 		break;
 	case WIDX_LAND:
-		if (LandPaintMode)
+		if (gLandPaintMode)
 			top_toolbar_tool_update_land_paint(x, y);
 		else
 			top_toolbar_tool_update_land(x, y);
@@ -2576,7 +2576,7 @@ money32 selection_raise_land(uint8 flags)
 	uint32 yBounds = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) & 0xFFFF) | (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) << 16);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_RAISE_LAND_HERE;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) == 0) {
+	if (gLandMountainMode) {
 		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_EDIT_LAND_SMOOTH, 1, yBounds);
 	} else {
 		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_RAISE_LAND, RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16), yBounds);
@@ -2598,7 +2598,7 @@ money32 selection_lower_land(uint8 flags)
 	uint32 yBounds = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) & 0xFFFF) | (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) << 16);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_LOWER_LAND_HERE;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) == 0) {
+	if (gLandMountainMode) {
 		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_EDIT_LAND_SMOOTH, 0xFFFF, yBounds);
 	} else {
 		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_LOWER_LAND, RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16), yBounds);
@@ -2746,7 +2746,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, int widgetIndex, int x, 
 		break;
 	case WIDX_LAND:
 		// Custom setting to only change land style instead of raising or lowering land
-		if (LandPaintMode) {
+		if (gLandPaintMode) {
 			if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16)&(1 << 0)){
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_CHANGE_LAND_TYPE;
 				game_do_command(
