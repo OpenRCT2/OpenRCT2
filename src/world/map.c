@@ -2100,7 +2100,7 @@ static int map_get_corner_height(rct_map_element *mapElement, int direction)
  *  rct2: 0x0068C222 slope 4, style 2
  *  rct2: 0x0068C2EA slope 8, style 3
  */
-static money32 smooth_land_tile(int direction, uint8 flags, int x, int y, uint8 targetBaseZ, uint8 minBaseZ)
+static money32 smooth_land_tile(int direction, uint8 flags, int x, int y, int targetBaseZ, int minBaseZ)
 {
 	// Check if inside map bounds
 	if (x < 0 || y < 0 || x >= (256 * 32) || y >= (256 * 32)) {
@@ -2109,7 +2109,7 @@ static money32 smooth_land_tile(int direction, uint8 flags, int x, int y, uint8 
 
 	// Get height of tile
 	rct_map_element *mapElement = map_get_surface_element_at(x >> 5, y >> 5);
-	uint8 baseZ = map_get_corner_height(mapElement, direction);
+	int baseZ = map_get_corner_height(mapElement, direction);
 
 	// Check if tile is same height as target tile
 	if (baseZ == targetBaseZ) {
@@ -2205,11 +2205,11 @@ money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int mapTop
 	x = mapLeft;
 	y = mapTop;
 	int size = ((mapRight - mapLeft) >> 5) + 1;
-	sint8 initialMinZ = -2;
+	int initialMinZ = -2;
 
 	for (; size <= 256; size += 2) {
 		initialMinZ += 2;
-		sint8 minZ = (initialMinZ << 1) & 0xFF;
+		int minZ = initialMinZ * 2;
 		x -= 32;
 		y -= 32;
 
