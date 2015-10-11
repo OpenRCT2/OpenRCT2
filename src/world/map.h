@@ -262,8 +262,10 @@ extern rct_map_element **gMapElementTilePointers;
 
 extern rct_xy16 *gMapSelectionTiles;
 extern rct2_peep_spawn *gPeepSpawns;
+// Used in the land tool window to enable mountain tool / land smoothing
+extern bool gLandMountainMode;
 // Used in the land tool window to allow dragging and changing land styles
-extern bool LandPaintMode;
+extern bool gLandPaintMode;
 // Used in the land rights tool window to either buy land rights or construction rights
 extern bool LandRightsMode;
 // Used in the clear scenery tool

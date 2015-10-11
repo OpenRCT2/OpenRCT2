@@ -58,7 +58,8 @@ rct_map_element **gMapElementTilePointers = (rct_map_element**)RCT2_ADDRESS_TILE
 rct_xy16 *gMapSelectionTiles = (rct_xy16*)0x009DE596;
 rct2_peep_spawn *gPeepSpawns = (rct2_peep_spawn*)RCT2_ADDRESS_PEEP_SPAWNS;
 
-bool LandPaintMode;
+bool gLandMountainMode;
+bool gLandPaintMode;
 bool LandRightsMode;
 bool gClearSmallScenery;
 bool gClearLargeScenery;
@@ -2148,6 +2149,12 @@ static money32 smooth_land_tile(int direction, uint8 flags, int x, int y, uint8 
 
 money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int mapTop, int mapRight, int mapBottom, int command)
 {
+	// Cap bounds to map
+	mapLeft = max(mapLeft, 32);
+	mapTop = max(mapTop, 32);
+	mapRight = min(mapRight, 255 * 32);
+	mapBottom = min(mapBottom, 255 * 32);
+
 	int commandType;
 	int centreZ = map_element_height(centreX, centreY);
 	int mapLeftRight = mapLeft | (mapRight << 16);
@@ -2200,7 +2207,7 @@ money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int mapTop
 	int size = ((mapRight - mapLeft) >> 5) + 1;
 	sint8 initialMinZ = -2;
 
-	for (; size <= 64; size += 2) {
+	for (; size <= 256; size += 2) {
 		initialMinZ += 2;
 		sint8 minZ = (initialMinZ << 1) & 0xFF;
 		x -= 32;
@@ -2359,10 +2366,10 @@ void game_command_smooth_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	int flags = *ebx & 0xFF;
 	int centreX = *eax & 0xFFFF;
 	int centreY = *ecx & 0xFFFF;
-	int mapLeft = *edx & 0xFFFF;
-	int mapTop = *ebp & 0xFFFF;
-	int mapRight = *edx >> 16;
-	int mapBottom = *ebp >> 16;
+	int mapLeft = (sint16)(*edx & 0xFFFF);
+	int mapTop = (sint16)(*ebp & 0xFFFF);
+	int mapRight = (sint16)(*edx >> 16);
+	int mapBottom = (sint16)(*ebp >> 16);
 	int command = *edi;
 	*ebx = smooth_land(flags, centreX, centreY, mapLeft, mapTop, mapRight, mapBottom, command);
 }

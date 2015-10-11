@@ -2128,6 +2128,8 @@ enum {
 
 	STR_STEAM_OVERLAY_PAUSE = 5553,
 
+	STR_ENABLE_MOUNTAIN_TOOL_TIP = 5554,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
