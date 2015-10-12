@@ -366,6 +366,12 @@ enum {
 	PEEP_INVALIDATE_STAFF_STATS = 1 << 4,
 };
 
+// Flags used by peep_should_go_on_ride()
+enum {
+	PEEP_RIDE_DECISION_AT_QUEUE = 1,
+	PEEP_RIDE_DECISION_THINKING = 1 << 2
+};
+
 typedef struct {
 	uint8 type;		//0
 	uint8 item;		//1
@@ -428,7 +434,7 @@ typedef struct {
 	uint8 bathroom;					// 0x40
 	uint8 var_41;
 	uint8 var_42;
-	uint8 intensity;				// 0x43
+	uint8 intensity;				// 0x43 The max intensity is stored in the first 4 bits, and the min intensity in the second 4 bits
 	uint8 nausea_tolerance;			// 0x44
 	uint8 window_invalidate_flags;	// 0x45
 	money16 paid_on_drink;			// 0x46

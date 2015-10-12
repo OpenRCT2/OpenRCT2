@@ -63,7 +63,7 @@ typedef struct {
 	uint8 station_depart[4];
 	uint16 entrance[4];
 	uint16 exit[4];
-	uint16 first_peep_in_queue[4];
+	uint16 last_peep_in_queue[4];
 	uint8 num_peeps_in_queue[4];
 	uint16 vehicles[12];
 	uint8 depart_flags;

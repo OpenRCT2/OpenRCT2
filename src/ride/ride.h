@@ -187,7 +187,7 @@ typedef struct {
 	uint8 var_066[4];
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
-	uint16 first_peep_in_queue[4];	// 0x07A
+	uint16 last_peep_in_queue[4];	// 0x07A
 	uint8 pad_082[4];
 	uint16 vehicles[32];			// 0x086 Points to the first car in the train
 	uint8 depart_flags;				// 0x0C6
@@ -236,7 +236,9 @@ typedef struct {
 	union {
 		uint8 inversions;			// 0x114 (???X XXXX)
 		uint8 holes;				// 0x114 (???X XXXX)
-		uint8 var_114;
+		// The undercover portion is a very rough approximation of how much of the ride is undercover.
+		// It reaches the maximum value of 7 at about 50% undercover and doesn't increase beyond that.
+		uint8 undercover_portion;	// 0x114 (XXX?-????)
 	};
 	uint8 drops;					// 0x115 (??XX XXXX)
 	uint8 var_116;
@@ -407,7 +409,7 @@ enum {
 	RIDE_LIFECYCLE_BREAKDOWN_PENDING = 1 << 6,
 	RIDE_LIFECYCLE_BROKEN_DOWN = 1 << 7,
 	RIDE_LIFECYCLE_DUE_INSPECTION = 1 << 8,
-	RIDE_LIFECYCLE_9 = 1 << 9,
+	RIDE_LIFECYCLE_QUEUE_FULL = 1 << 9,
 	RIDE_LIFECYCLE_CRASHED = 1 << 10,
 	RIDE_LIFECYCLE_11 = 1 << 11,
 	RIDE_LIFECYCLE_EVER_BEEN_OPENED = 1 << 12,
