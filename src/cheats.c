@@ -4,6 +4,7 @@ bool gCheatsSandboxMode = false;
 bool gCheatsDisableClearanceChecks = false;
 bool gCheatsDisableSupportLimits = false;
 bool gCheatsShowAllOperatingModes = false;
+bool gCheatsShowVehiclesFromOtherTrackTypes = false;
 
 void cheats_reset()
 {
@@ -11,4 +12,5 @@ void cheats_reset()
 	gCheatsDisableClearanceChecks = false;
 	gCheatsDisableSupportLimits = false;
 	gCheatsShowAllOperatingModes = false;
+	gCheatsShowVehiclesFromOtherTrackTypes = false;
 }

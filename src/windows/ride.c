@@ -20,6 +20,7 @@
 
 #include "../addresses.h"
 #include "../audio/audio.h"
+#include "../cheats.h"
 #include "../config.h"
 #include "../game.h"
 #include "../input.h"
@@ -2312,39 +2313,60 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 	rct_ride *ride;
 	rct_ride_type *rideEntry, *currentRideEntry;
 	rct_string_id stringId;
-	int i, minCars, maxCars, cars, numItems, quadIndex, bitIndex, rideEntryIndex, selectedIndex;
+	int i, minCars, maxCars, cars, numItems, quadIndex, bitIndex, rideEntryIndex, selectedIndex, rideTypeIterator, rideTypeIteratorMax;
 	uint8 *rideEntryIndexPtr, *currentRideEntryIndex;
+	bool selectionShouldBeExpanded;
 
 	ride = GET_RIDE(w->number);
 	rideEntry = ride_get_entry(ride);
 
+	if(gCheatsShowVehiclesFromOtherTrackTypes && !(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type==RIDE_TYPE_MAZE || ride->type==RIDE_TYPE_MINI_GOLF)) {
+		selectionShouldBeExpanded=true;
+		rideTypeIterator=0;
+		rideTypeIteratorMax=90;
+	}
+	else {
+		selectionShouldBeExpanded=false;
+		rideTypeIterator=ride->type;
+		rideTypeIteratorMax=ride->type;
+	}
+
 	switch (widgetIndex) {
 	case WIDX_VEHICLE_TYPE_DROPDOWN:
-		rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(ride->type);
-		currentRideEntryIndex;
-
 		selectedIndex = -1;
 		numItems = 0;
-		for (currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != 0xFF; currentRideEntryIndex++) {
-			rideEntryIndex = *currentRideEntryIndex;
-			currentRideEntry = GET_RIDE_ENTRY(rideEntryIndex);
-			// Skip if vehicle has the same track type, but not same subtype, unless subtype switching is enabled
-			if ((currentRideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) && !gConfigInterface.select_by_track_type)
+
+		for (; rideTypeIterator<=rideTypeIteratorMax; rideTypeIterator++) {
+
+			if(selectionShouldBeExpanded && ride_type_has_flag(rideTypeIterator, RIDE_TYPE_FLAG_FLAT_RIDE))
+				continue;
+			if(selectionShouldBeExpanded && (rideTypeIterator==RIDE_TYPE_MAZE || rideTypeIterator==RIDE_TYPE_MINI_GOLF))
 				continue;
 
-			quadIndex = rideEntryIndex >> 5;
-			bitIndex = rideEntryIndex & 0x1F;
-			// Skip if vehicle type is not invented yet
-			if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1 << bitIndex)))
-				continue;
+			rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideTypeIterator);
+			currentRideEntryIndex;
 
-			if (ride->subtype == rideEntryIndex)
-				selectedIndex = numItems;
+			for (currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != 0xFF; currentRideEntryIndex++) {
+				rideEntryIndex = *currentRideEntryIndex;
+				currentRideEntry = GET_RIDE_ENTRY(rideEntryIndex);
+				// Skip if vehicle has the same track type, but not same subtype, unless subtype switching is enabled
+				if ((currentRideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) && !(gConfigInterface.select_by_track_type || selectionShouldBeExpanded))
+					continue;
 
-			gDropdownItemsFormat[numItems] = 1142;
-			gDropdownItemsArgs[numItems] = (rideEntryIndex << 16) | currentRideEntry->name;
+				quadIndex = rideEntryIndex >> 5;
+				bitIndex = rideEntryIndex & 0x1F;
+				// Skip if vehicle type is not invented yet
+				if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1 << bitIndex)))
+					continue;
 
-			numItems++;
+				if (ride->subtype == rideEntryIndex)
+					selectedIndex = numItems;
+
+				gDropdownItemsFormat[numItems] = 1142;
+				gDropdownItemsArgs[numItems] = (rideEntryIndex << 16) | currentRideEntry->name;
+
+				numItems++;
+			}
 		}
 
 		window_dropdown_show_text_custom_width(
@@ -3353,7 +3375,7 @@ static void window_ride_maintenance_mousedown(int widgetIndex, rct_window *w, rc
 				break;
 		}
 		gDropdownItemsFormat[0] = 1142;
-		gDropdownItemsArgs[0] = 5290;
+		gDropdownItemsArgs[0] = STR_DEBUG_FIX_RIDE;
 		for (i = 0; i < 8; i++) {
 			if (RideAvailableBreakdowns[ride_type->ride_type[j]] & (uint8)(1 << i)) {
 				if (i == BREAKDOWN_BRAKES_FAILURE && (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)) {
@@ -3366,7 +3388,7 @@ static void window_ride_maintenance_mousedown(int widgetIndex, rct_window *w, rc
 			}
 		}
 		if (num_items == 1) {
-			window_error_open(5289, STR_NONE);
+			window_error_open(STR_DEBUG_NO_BREAKDOWNS_AVAILABLE, STR_NONE);
 		}
 		else {
 			window_dropdown_show_text(

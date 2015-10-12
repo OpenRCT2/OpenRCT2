@@ -27,6 +27,7 @@ extern bool gCheatsSandboxMode;
 extern bool gCheatsDisableClearanceChecks;
 extern bool gCheatsDisableSupportLimits;
 extern bool gCheatsShowAllOperatingModes;
+extern bool gCheatsShowVehiclesFromOtherTrackTypes;
 
 void cheats_reset();
 
