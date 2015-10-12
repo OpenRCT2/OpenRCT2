@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -22,17 +22,18 @@
 #include "../platform/platform.h"
 #include "sawyercoding.h"
 
-static int decode_chunk_rle(uint8* src_buffer, uint8* dst_buffer, int length);
-static int decode_chunk_repeat(char *buffer, int length);
-static void decode_chunk_rotate(char *buffer, int length);
+static size_t decode_chunk_rle(const uint8* src_buffer, uint8* dst_buffer, size_t length);
+static size_t decode_chunk_repeat(uint8 *buffer, size_t length);
+static void decode_chunk_rotate(uint8 *buffer, size_t length);
 
-static int encode_chunk_rle(char *src_buffer, char *dst_buffer, int length);
-static int encode_chunk_repeat(char *src_buffer, char *dst_buffer, int length);
-static void encode_chunk_rotate(char *buffer, int length);
+static size_t encode_chunk_rle(const uint8 *src_buffer, uint8 *dst_buffer, size_t length);
+static size_t encode_chunk_repeat(const uint8 *src_buffer, uint8 *dst_buffer, size_t length);
+static void encode_chunk_rotate(uint8 *buffer, size_t length);
 
-uint32 sawyercoding_calculate_checksum(uint8* buffer, uint32 length)
+uint32 sawyercoding_calculate_checksum(const uint8* buffer, size_t length)
 {
-	uint32 i, checksum = 0;
+	size_t i;
+	uint32 checksum = 0;
 	for (i = 0; i < length; i++)
 		checksum += buffer[i];
 
@@ -40,21 +41,23 @@ uint32 sawyercoding_calculate_checksum(uint8* buffer, uint32 length)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00676FD2
  */
 int sawyercoding_validate_checksum(SDL_RWops* rw)
 {
-	uint32 i, checksum, fileChecksum, dataSize, bufferSize;
+	size_t i, dataSize, bufferSize;
+	uint32 checksum, fileChecksum;
 	uint8 buffer[1024];
 
 	// Get data size
 	SDL_RWseek(rw, 0, RW_SEEK_END);
-	dataSize = (uint32)SDL_RWtell(rw);
+	// for whatever the reason, SDL_RWtell return Sint64 instead of size_t.
+	dataSize = (size_t)SDL_RWtell(rw);
 	if (dataSize < 8)
 		return 0;
 	dataSize -= 4;
-	
+
 	// Calculate checksum
 	SDL_RWseek(rw, 0, RW_SEEK_SET);
 	checksum = 0;
@@ -80,11 +83,11 @@ int sawyercoding_validate_checksum(SDL_RWops* rw)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0067685F
  * buffer (esi)
  */
-int sawyercoding_read_chunk(SDL_RWops* rw, uint8 *buffer)
+size_t sawyercoding_read_chunk(SDL_RWops* rw, uint8 *buffer)
 {
 	sawyercoding_chunk_header chunkHeader;
 
@@ -129,9 +132,9 @@ int sawyercoding_read_chunk(SDL_RWops* rw, uint8 *buffer)
 /**
 *
 *  rct2: 0x006762E1
-* 
+*
 */
-int sawyercoding_write_chunk_buffer(uint8 *dst_file, uint8* buffer, sawyercoding_chunk_header chunkHeader){
+size_t sawyercoding_write_chunk_buffer(uint8 *dst_file, uint8* buffer, sawyercoding_chunk_header chunkHeader){
 	uint8 *encode_buffer, *encode_buffer2;
 
 	switch (chunkHeader.encoding){
@@ -178,16 +181,16 @@ int sawyercoding_write_chunk_buffer(uint8 *dst_file, uint8* buffer, sawyercoding
 	return chunkHeader.length + sizeof(sawyercoding_chunk_header);
 }
 
-int sawyercoding_decode_sv4(char *src, char *dst, int length)
+size_t sawyercoding_decode_sv4(const uint8 *src, uint8 *dst, size_t length)
 {
 	// (0 to length - 4): RLE chunk
 	// (length - 4 to length): checksum
 	return decode_chunk_rle(src, dst, length - 4);
 }
 
-int sawyercoding_decode_sc4(char *src, char *dst, int length)
+size_t sawyercoding_decode_sc4(const uint8 *src, uint8 *dst, size_t length)
 {
-	int decodedLength, i;
+	size_t decodedLength, i;
 	uint32 *code;
 
 	// Uncompress
@@ -207,9 +210,10 @@ int sawyercoding_decode_sc4(char *src, char *dst, int length)
 	return decodedLength;
 }
 
-int sawyercoding_encode_sv4(char *src, char *dst, int length)
+size_t sawyercoding_encode_sv4(const uint8 *src, uint8 *dst, size_t length)
 {
-	int encodedLength, checksum;
+	size_t encodedLength;
+	uint32 checksum;
 
 	// Encode
 	encodedLength = encode_chunk_rle(src, dst, length);
@@ -221,16 +225,16 @@ int sawyercoding_encode_sv4(char *src, char *dst, int length)
 	return encodedLength + 4;
 }
 
-int sawyercoding_decode_td6(char *src, char *dst, int length)
+size_t sawyercoding_decode_td6(const uint8 *src, uint8 *dst, size_t length)
 {
 	return decode_chunk_rle(src, dst, length - 4);
 }
 
-int sawyercoding_encode_td6(char* src, char* dst, int length){
-	int output_length = encode_chunk_rle(src, dst, length);
+size_t sawyercoding_encode_td6(const uint8* src, uint8* dst, size_t length){
+	size_t output_length = encode_chunk_rle(src, dst, length);
 
 	uint32 checksum = 0;
-	for (int i = 0; i < output_length; i++){
+	for (size_t i = 0; i < output_length; i++){
 		uint8 new_byte = ((checksum & 0xFF) + dst[i]) & 0xFF;
 		checksum = (checksum & 0xFFFFFF00) + new_byte;
 		checksum = rol32(checksum, 3);
@@ -243,11 +247,11 @@ int sawyercoding_encode_td6(char* src, char* dst, int length){
 }
 
 /* Based off of rct2: 0x006770C1 */
-int sawyercoding_validate_track_checksum(char* src, int length){
+int sawyercoding_validate_track_checksum(const uint8* src, size_t length){
 	uint32 file_checksum = *((uint32*)&src[length - 4]);
 
 	uint32 checksum = 0;
-	for (int i = 0; i < length - 4; i++){
+	for (size_t i = 0; i < length - 4; i++){
 		uint8 new_byte = ((checksum & 0xFF) + src[i]) & 0xFF;
 		checksum = (checksum & 0xFFFFFF00) + new_byte;
 		checksum = rol32(checksum, 3);
@@ -258,7 +262,7 @@ int sawyercoding_validate_track_checksum(char* src, int length){
 	else if (checksum - 0x1A67C == file_checksum)
 		return 1;	// .TD4
 	else if (checksum - 0x1A650 == file_checksum)
-		return 1;	// .TD4 
+		return 1;	// .TD4
 	else
 		return 0;
 }
@@ -266,12 +270,12 @@ int sawyercoding_validate_track_checksum(char* src, int length){
 #pragma region Decoding
 
 /**
- * 
+ *
  *  rct2: 0x0067693A
  */
-static int decode_chunk_rle(uint8* src_buffer, uint8* dst_buffer, int length)
+static size_t decode_chunk_rle(const uint8* src_buffer, uint8* dst_buffer, size_t length)
 {
-	int i, j, count;
+	size_t i, j, count;
 	uint8 *dst, rleCodeByte;
 
 	dst = dst_buffer;
@@ -288,19 +292,19 @@ static int decode_chunk_rle(uint8* src_buffer, uint8* dst_buffer, int length)
 				*dst++ = src_buffer[++i];
 		}
 	}
-	
+
 	// Return final size
 	return dst - dst_buffer;
 }
 
 /**
- * 
+ *
  *  rct2: 0x006769F1
  */
-static int decode_chunk_repeat(char *buffer, int length)
+static size_t decode_chunk_repeat(uint8 *buffer, size_t length)
 {
-	int i, j, count;
-	unsigned char *src, *dst, *copyOffset;
+	size_t i, j, count;
+	uint8 *src, *dst, *copyOffset;
 
 	// Backup buffer
 	src = malloc(length);
@@ -322,16 +326,17 @@ static int decode_chunk_repeat(char *buffer, int length)
 	free(src);
 
 	// Return final size
-	return (char*)dst - buffer;
+	return dst - buffer;
 }
 
 /**
- * 
+ *
  *  rct2: 0x006768F4
  */
-static void decode_chunk_rotate(char *buffer, int length)
+static void decode_chunk_rotate(uint8 *buffer, size_t length)
 {
-	int i, code = 1;
+	size_t i;
+	uint8 code = 1;
 	for (i = 0; i < length; i++) {
 		buffer[i] = ror8(buffer[i], code);
 		code = (code + 2) % 8;
@@ -346,13 +351,13 @@ static void decode_chunk_rotate(char *buffer, int length)
  * Ensure dst_buffer is bigger than src_buffer then resize afterwards
  * returns length of dst_buffer
  */
-static int encode_chunk_rle(char *src_buffer, char *dst_buffer, int length)
+static size_t encode_chunk_rle(const uint8 *src_buffer, uint8 *dst_buffer, size_t length)
 {
-	char* src = src_buffer;
-	char* dst = dst_buffer;
-	char* end_src = src + length;
+	const uint8* src = src_buffer;
+	uint8* dst = dst_buffer;
+	const uint8* end_src = src + length;
 	uint8 count = 0;
-	char* src_norm_start = src;
+	const uint8* src_norm_start = src;
 
 	while (src < end_src - 1){
 
@@ -387,11 +392,11 @@ static int encode_chunk_rle(char *src_buffer, char *dst_buffer, int length)
 	return dst - dst_buffer;
 }
 
-static int encode_chunk_repeat(char *src_buffer, char *dst_buffer, int length)
+static size_t encode_chunk_repeat(const uint8 *src_buffer, uint8 *dst_buffer, size_t length)
 {
-	int i, j, outLength;
-	int searchIndex, searchEnd, maxRepeatCount;
-	int bestRepeatIndex, bestRepeatCount, repeatIndex, repeatCount;
+	size_t i, j, outLength;
+	size_t searchIndex, searchEnd, maxRepeatCount;
+	size_t bestRepeatIndex, bestRepeatCount, repeatIndex, repeatCount;
 
 	if (length == 0)
 		return 0;
@@ -444,9 +449,10 @@ static int encode_chunk_repeat(char *src_buffer, char *dst_buffer, int length)
 	return outLength;
 }
 
-static void encode_chunk_rotate(char *buffer, int length)
+static void encode_chunk_rotate(uint8 *buffer, size_t length)
 {
-	int i, code = 1;
+	size_t i;
+	uint8 code = 1;
 	for (i = 0; i < length; i++) {
 		buffer[i] = rol8(buffer[i], code);
 		code = (code + 2) % 8;
@@ -455,9 +461,9 @@ static void encode_chunk_rotate(char *buffer, int length)
 
 #pragma endregion
 
-int sawyercoding_detect_file_type(char *src, int length)
+int sawyercoding_detect_file_type(const uint8 *src, size_t length)
 {
-	int i;
+	size_t i;
 
 	// Currently can't detect TD4, as the checksum is the same as SC4 (need alternative method)
 

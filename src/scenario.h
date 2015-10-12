@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -175,7 +175,7 @@ typedef struct {
 	uint32 dword_0135789C;
 	uint32 dword_013578A0;
 	uint32 dword_013578A4[201];
-	
+
 	// SC6[8]
 	uint16 last_guests_in_park;
 	uint8 pad_01357BCA[3];
@@ -283,7 +283,7 @@ typedef struct {
 	uint16 park_entrance_y[4];
 	uint16 park_entrance_z[4];
 	uint8 park_entrance_direction[4];
-	uint8 scenario_filename[256];
+	char scenario_filename[256];
 	uint8 saved_expansion_pack_names[3256];
 	rct_banner banners[250];
 	char custom_strings[0x8000];
