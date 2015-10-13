@@ -851,7 +851,7 @@ int scenario_write_packed_objects(SDL_RWops* rw)
  */
 int scenario_write_available_objects(FILE *file)
 {
-	char *buffer, *dstBuffer;
+	uint8 *buffer, *dstBuffer;
 	int i, encodedLength;
 	sawyercoding_chunk_header chunkHeader;
 
@@ -860,16 +860,16 @@ int scenario_write_available_objects(FILE *file)
 
 	// Initialise buffers
 	buffer = malloc(bufferLength);
-  if (buffer == NULL) {
-    log_error("out of memory");
-    return 0;
-  }
+	if (buffer == NULL) {
+		log_error("out of memory");
+		return 0;
+	}
 	dstBuffer = malloc(bufferLength + sizeof(sawyercoding_chunk_header));
-  if (dstBuffer == NULL) {
-    free(buffer);
-    log_error("out of memory");
-  	return 0;
-  }
+	if (dstBuffer == NULL) {
+		free(buffer);
+		log_error("out of memory");
+		return 0;
+	}
 
 	// Write entries
 	rct_object_entry_extended *srcEntry = (rct_object_entry_extended*)0x00F3F03C;
@@ -1123,7 +1123,7 @@ int scenario_save_network(SDL_RWops* rw)
 
 bool scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6)
 {
-	char *buffer;
+	uint8 *buffer;
 	sawyercoding_chunk_header chunkHeader;
 	int encodedLength;
 	long fileSize;
