@@ -1126,7 +1126,7 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 					if (dropdown_index == -1)goto dropdown_cleanup;
 
 					// _dropdown_unknown?? highlighted?
-					if (dropdown_index < 32 && RCT2_GLOBAL(0x009DED34, sint32) & (1 << dropdown_index))goto dropdown_cleanup;
+					if (dropdown_index < 64 && gDropdownItemsDisabled & (1ULL << dropdown_index))goto dropdown_cleanup;
 
 					// gDropdownItemsFormat[dropdown_index] will not work until all windows that use dropdown decompiled
 					if (RCT2_ADDRESS(0x9DEBA4, uint16)[dropdown_index] == 0)goto dropdown_cleanup;
@@ -1210,7 +1210,7 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 		}
 
 		// _dropdown_unknown?? highlighted?
-		if (dropdown_index < 32 && RCT2_GLOBAL(0x009DED34, sint32) & (1 << dropdown_index))return;
+		if (dropdown_index < 64 && gDropdownItemsDisabled & (1ULL << dropdown_index))return;
 
 		// gDropdownItemsFormat[dropdown_index] will not work until all windows that use dropdown decompiled
 		if (RCT2_ADDRESS(0x9DEBA4, uint16)[dropdown_index] == 0)return;

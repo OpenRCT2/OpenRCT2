@@ -53,8 +53,8 @@ int gDropdownNumItems;
 uint16 gDropdownItemsFormat[64];
 sint64 gDropdownItemsArgs[64];
 // Replaces 0x009DED38
-uint32 gDropdownItemsChecked;
-uint32 *gDropdownItemsDisabled = RCT2_ADDRESS(0x009DED34, uint32);
+uint64 gDropdownItemsChecked;
+uint64 gDropdownItemsDisabled;
 bool gDropdownIsColour;
 int gDropdownLastColourHover;
 
@@ -179,7 +179,7 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 
 	// Input state
 	_dropdown_highlighted_index = -1;
-	*gDropdownItemsDisabled = 0;
+	gDropdownItemsDisabled = 0;
 	gDropdownItemsChecked = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, sint8) = INPUT_STATE_DROPDOWN_ACTIVE;
 
@@ -258,7 +258,7 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 
 	// Input state
 	_dropdown_highlighted_index = -1;
-	*gDropdownItemsDisabled = 0;
+	gDropdownItemsDisabled = 0;
 	gDropdownItemsChecked = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, sint8) = INPUT_STATE_DROPDOWN_ACTIVE;
 
@@ -329,16 +329,16 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				);
 			} else {
 				// Text item
-				if (i < 32)
-					if (gDropdownItemsChecked & (1 << i))
+				if (i < 64)
+					if (gDropdownItemsChecked & (1ULL << i))
 						item++;
 
 				// Calculate colour
 				colour = w->colours[0] & 0x7F;
 				if (i == _dropdown_highlighted_index)
 					colour = 2;
-				if (*gDropdownItemsDisabled & (1 << i))
-					if (i < 32)
+				if (gDropdownItemsDisabled & (1ULL << i))
+					if (i < 64)
 						colour = (w->colours[0] & 0x7F) | 0x40;
 
 				// Draw item string

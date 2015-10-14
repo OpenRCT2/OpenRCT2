@@ -35,8 +35,8 @@ extern int gAppropriateImageDropdownItemsPerRow[];
 extern int gDropdownNumItems;
 extern uint16 gDropdownItemsFormat[64];
 extern sint64 gDropdownItemsArgs[64];
-extern uint32 gDropdownItemsChecked;
-extern uint32 *gDropdownItemsDisabled;
+extern uint64 gDropdownItemsChecked;
+extern uint64 gDropdownItemsDisabled;
 extern bool gDropdownIsColour;
 extern int gDropdownLastColourHover;
 

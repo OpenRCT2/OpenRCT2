@@ -3175,7 +3175,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
 		widget->right - widget->left
 	);
 
-	*gDropdownItemsDisabled = RCT2_GLOBAL(0x00F4409C, uint32);
+	gDropdownItemsDisabled = (uint64)RCT2_GLOBAL(0x00F4409C, uint32);
 }
 
 /**

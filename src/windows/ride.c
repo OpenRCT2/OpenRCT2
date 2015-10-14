@@ -1763,7 +1763,7 @@ static void window_ride_show_view_dropdown(rct_window *w, rct_widget *widget)
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)) {
 		j = 2;
 		for (i = 0; i < ride->num_vehicles; i++) {
-			RCT2_GLOBAL(0x009DED34, uint32) |= j;
+			gDropdownItemsDisabled |= j;
 			j <<= 1;
 		}
 	}
@@ -2336,7 +2336,8 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 		selectedIndex = -1;
 		numItems = 0;
 
-		for (; rideTypeIterator<=rideTypeIteratorMax; rideTypeIterator++) {
+		// Dropdowns with more items start acting weird, so cap it to 63.
+		for (; rideTypeIterator<=rideTypeIteratorMax && numItems<=63; rideTypeIterator++) {
 
 			if(selectionShouldBeExpanded && ride_type_has_flag(rideTypeIterator, RIDE_TYPE_FLAG_FLAT_RIDE))
 				continue;
@@ -2379,7 +2380,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 			widget->right - dropdownWidget->left
 		);
 
-		gDropdownItemsChecked = (1 << selectedIndex);
+		gDropdownItemsChecked = (1ULL << selectedIndex);
 		break;
 	case WIDX_VEHICLE_TRAINS_DROPDOWN:
 		window_dropdown_show_text_custom_width(
@@ -3421,7 +3422,7 @@ static void window_ride_maintenance_mousedown(int widgetIndex, rct_window *w, rc
 			}
 
 			if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BREAKDOWN_PENDING) == 0) {
-				*gDropdownItemsDisabled = (1 << 0);
+				gDropdownItemsDisabled = (1 << 0);
 			}
 		}
 		break;
@@ -4703,7 +4704,7 @@ static void window_ride_measurements_mousedown(int widgetIndex, rct_window *w, r
 	);
 	RCT2_GLOBAL(0x009DEBA2, sint16) = 0;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
-		RCT2_GLOBAL(0x009DED34, uint32) |= 2;
+		gDropdownItemsDisabled |= 2;
 }
 
 /**

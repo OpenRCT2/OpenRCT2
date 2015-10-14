@@ -538,7 +538,7 @@ void window_staff_overview_mousedown(int widgetIndex, rct_window* w, rct_widget*
 
 	// Disable clear patrol area if no area is set.
 	if (!(RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] & 2)) {
-		RCT2_GLOBAL(0x009DED34, sint32) |= 1 << 1;
+		gDropdownItemsDisabled |= (1ULL << 1);
 	}
 }
 
