@@ -5314,7 +5314,7 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->action_sprite_type = 0;
 	peep->flags = 0;
 	peep->favourite_ride = 0xFF;
-	peep->var_FA = 0;
+	peep->favourite_ride_rating = 0;
 
 	uint8* edx = RCT2_ADDRESS(0x98270C, uint8*)[peep->sprite_type * 2];
 	peep->sprite_width = edx[peep->action_sprite_type * 4];
@@ -7553,130 +7553,204 @@ static bool peep_has_ridden_ride_type(rct_peep *peep, int rideType)
 /**
  *
  *  rct2: 0x0069545B
+ *  Updates the happiness and nausea growth rates for peeps upon entering a ride,
+ *  and contains the logic for determining if the ride will become the peep's favourite.
+ *  The ride itself has its satisfaction value updated.
  */
 static void peep_on_enter_ride(rct_peep *peep, int rideIndex)
 {
-	rct_ride *ride;
-	ride_rating minIntensity, maxIntensity;
-	ride_rating minNausea, maxNausea;
-	uint16 satisfactionFlags;
+	rct_ride *ride = GET_RIDE(rideIndex);
 
-	ride = GET_RIDE(rideIndex);
+	// Check to see if this should become the peep's favourite ride.
+	// For this, a "ride rating" is calculated based on the excitement of the ride and the peep's current happiness.
+	// As this value cannot exceed 255, the happier the peep is, the more irrelevant the ride's excitement becomes.
+	// Due to the minimum happiness requirement, an excitement rating of more than 3.8 has no further effect.
+	
+	// If the ride rating is higher than any ride the peep has already been on and the happiness criteria is met,
+	// the ride becomes the peep's favourite.
+
 	peep->flags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
-	if (ride->excitement == (ride_rating)0xFFFF) {
-		satisfactionFlags = 0x1FF;
-	} else {
-		satisfactionFlags = 0;
-		maxIntensity = (peep->intensity >> 4) * 100;
-		minIntensity = (peep->intensity & 0xF) * 100;
-		if (maxIntensity <= ride->intensity || minIntensity >= ride->intensity) {
-			satisfactionFlags |= (1 << 1);
-		}
-		maxIntensity -= peep->happiness * 2;
-		minIntensity += peep->happiness;
-		if (maxIntensity <= ride->intensity || minIntensity >= ride->intensity) {
-			satisfactionFlags |= (1 << 4);
-		}
-		maxIntensity -= peep->happiness * 2;
-		minIntensity += peep->happiness;
-		if (maxIntensity <= ride->intensity || minIntensity >= ride->intensity) {
-			satisfactionFlags |= (1 << 7);
-		}
-
-		minNausea = NauseaMinimumThresholds[(peep->nausea_tolerance & 3)];
-		maxNausea = NauseaMaximumThresholds[(peep->nausea_tolerance & 3)];
-		if (maxNausea <= ride->nausea || minNausea >= ride->nausea) {
-			satisfactionFlags |= (1 << 2);
-		}
-		maxNausea -= peep->happiness * 2;
-		minNausea += peep->happiness;
-		if (maxNausea <= ride->nausea || minNausea >= ride->nausea) {
-			satisfactionFlags |= (1 << 5);
-		}
-		maxNausea -= peep->happiness * 2;
-		minNausea += peep->happiness;
-		if (maxNausea <= ride->nausea || minNausea >= ride->nausea) {
-			satisfactionFlags |= (1 << 8);
-		}
-		satisfactionFlags |= (1 << 9);
-	}
-
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
-		if (ride->value != 0xFFFF) {
-			satisfactionFlags &= ~(1 << 9);
-			satisfactionFlags |= (1 << 10);
-			if ((money16)ride->value < ride->price) {
-				satisfactionFlags &= ~(1 << 10);
-				satisfactionFlags |= (1 << 9);
-				if ((ride->value + ((ride->value * peep->happiness) / 256)) < ride->price) {
-					satisfactionFlags &= ~(1 << 9);
-				}
-			}
-		}
-	}
-
-	uint8 satisfactionVar = 0;
-	if (satisfactionFlags & (1 << 9)) satisfactionVar += 15;
-	if (satisfactionFlags & (1 << 10)) satisfactionVar += 40;
-	if ((satisfactionFlags & (1 << 9)) && (satisfactionFlags & (1 << 10))) satisfactionVar -= 45;
-	if ((satisfactionFlags & 6) == 6) {
-		satisfactionVar += 70;
-	} else {
-		if (satisfactionFlags & 6) satisfactionVar += 15;
-		if ((satisfactionFlags & 0x30) == 0x30) {
-			satisfactionVar += 35;
-		} else {
-			if (satisfactionFlags & 0x30) satisfactionVar += 10;
-			if ((satisfactionFlags & 0x180) == 0x180) {
-				satisfactionVar += 10;
-			} else {
-				satisfactionVar -= 60;
-			}
-		}
-	}
-
-	if (peep->time_in_queue <= 750) {
-		satisfactionVar += 10;
-	} else if (peep->time_in_queue >= 2250) {
-		satisfactionVar -= 10;
-		if (peep->time_in_queue >= 4500) {
-			satisfactionVar -= 25;
-		}
-	}
-
-	if (peep_has_ridden(peep, peep->current_ride)) satisfactionVar += 10;
-	peep_set_has_ridden(peep, peep->current_ride);
-	if (peep->no_of_rides < 255) peep->no_of_rides++;
-
-	if (peep_has_ridden_ride_type(peep, ride->type)) satisfactionVar += 10;
-	peep_set_has_ridden_ride_type(peep, ride->type);
-
-	uint8 unkExcitementValue = clamp(0, (ride->excitement / 4) + peep->happiness, 255);
-	if (unkExcitementValue >= peep->var_FA) {
+	uint8 peepRideRating = clamp(0, (ride->excitement / 4) + peep->happiness, 255);
+	if (peepRideRating >= peep->favourite_ride_rating) {
 		if (peep->happiness >= 160 && peep->happiness_growth_rate >= 160) {
-			peep->var_FA = unkExcitementValue;
+			peep->favourite_ride_rating = peepRideRating;
 			peep->flags |= PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
 		}
 	}
 
-	uint8 satisfaction = 0;
-	if (satisfactionVar >= 0) {
-		satisfaction++;
-		if (satisfactionVar >= 20) {
-			satisfaction++;
-			if (satisfactionVar >= 40) {
-				satisfaction++;
+	/**
+	 * The satisfaction values calculated here are used to determine how happy the peep is with the ride,
+	 * and also affects the satisfaction stat of the ride itself. The factors that affect satisfaction include:
+	 * - The price of the ride compared to the ride's value
+	 * - How closely the intensity and nausea of the ride matches the peep's preferences
+	 * - How long the peep was waiting in the queue
+	 * - If the peep has been on the ride before, or on another ride of the same type
+	 */
+
+	uint8 rawSatisfaction = 0;
+
+	// Calculate satisfaction based on the price and value of the ride.
+	uint8 valueSatisfaction = 1;
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+		if (ride->value != 0xFFFF) {
+			if (ride->price <= (money16)ride->value) {
+				valueSatisfaction = 2;
+			}
+			// Even if the price is more than the value, the peep will still be partially satisfied if their
+			// happiness is high enough to offset the difference. (Scales from +0% at empty happiness to +99% at full)
+			else if (ride->price <= (money16)(ride->value + ride->value * (peep->happiness / 256.0))) {
+				valueSatisfaction = 1;
+			}
+			else {
+				valueSatisfaction = 0;
 			}
 		}
 	}
-	ride_update_satisfaction(ride, satisfaction);
-	peep->happiness_growth_rate = clamp(0, satisfactionVar + peep->happiness_growth_rate, 255);
 
+	switch (valueSatisfaction) {
+	case 2:
+		rawSatisfaction += 40;
+		break;
+	case 1:
+		rawSatisfaction += 15;
+		break;
+	case 0:
+		rawSatisfaction -= 45;
+		break;
+	}
+
+	// Calculate satisfaction based on the intensity and nausea of the ride.
+	// The best possible score from this section is achieved by having the intensity and nausea
+	// of the ride fall exactly within the peep's preferences, but lower scores can still be achieved
+	// if the peep's happiness is enough to offset it.
+	ride_rating minIntensity, maxIntensity;
+	ride_rating minNausea, maxNausea;
+	uint8 intensitySatisfaction = 3;
+	uint8 nauseaSatisfaction = 3;
+
+	if (ride->excitement != (ride_rating)0xFFFF) {
+		maxIntensity = (peep->intensity >> 4) * 100;
+		minIntensity = (peep->intensity & 0xF) * 100;
+		if (ride->intensity > maxIntensity || ride->intensity < minIntensity) {
+			intensitySatisfaction--;
+		}
+
+		minIntensity -= peep->happiness * 2;
+		maxIntensity += peep->happiness;
+		if (ride->intensity > maxIntensity || ride->intensity < minIntensity) {
+			intensitySatisfaction--;
+		}
+
+		minIntensity -= peep->happiness * 2;
+		maxIntensity += peep->happiness;
+		if (ride->intensity > maxIntensity || ride->intensity < minIntensity) {
+			intensitySatisfaction--;
+		}
+
+		// Although it's not shown in the interface, a peep with Average or High nausea tolerance
+		// has a minimum preferred nausea value. (For peeps with None or Low, this is set to zero.)
+		minNausea = NauseaMinimumThresholds[peep->nausea_tolerance & 3];
+		maxNausea = NauseaMaximumThresholds[peep->nausea_tolerance & 3];
+		if (ride->nausea > maxNausea || ride->nausea < minNausea) {
+			nauseaSatisfaction--;
+		}
+
+		minNausea -= peep->happiness * 2;
+		maxNausea += peep->happiness;
+		if (ride->nausea > maxNausea || ride->nausea < minNausea) {
+			nauseaSatisfaction--;
+		}
+
+		minNausea -= peep->happiness * 2;
+		maxNausea += peep->happiness;
+		if (ride->nausea > maxNausea || ride->nausea < minNausea) {
+			nauseaSatisfaction--;
+		}
+	}
+
+	// The combination of the intensity and nausea satisfaction is then used to determine the raw satisfaction value.
+	uint8 highestSatisfaction = max(intensitySatisfaction, nauseaSatisfaction);
+	uint8 lowestSatisfaction = min(intensitySatisfaction, nauseaSatisfaction);
+
+	if (highestSatisfaction == 3) {
+		switch (lowestSatisfaction) {
+		case 3:
+			rawSatisfaction += 20;
+		case 2:
+			rawSatisfaction += 15;
+		case 1:
+			rawSatisfaction += 35;
+			break;
+		case 0:
+			rawSatisfaction -= 35;
+		}
+	}
+	else if (highestSatisfaction == 2) {
+		switch (lowestSatisfaction) {
+		case 2:
+			rawSatisfaction += 15;
+		case 1:
+			rawSatisfaction += 20;
+			break;
+		case 0:
+			rawSatisfaction -= 50;
+		}
+	}
+	else if (highestSatisfaction == 1 && lowestSatisfaction == 1) {
+		rawSatisfaction += 10;
+	}
+	else {
+		rawSatisfaction -= 60;
+	}
+	
+	// Calculate satisfaction based on how long the peep has been in the queue for.
+	// (For comparison: peeps start thinking "I've been queueing for a long time" at 3500 and
+	// start leaving the queue at 4300.)
+	if (peep->time_in_queue >= 4500)
+		rawSatisfaction -= 35;
+	else if (peep->time_in_queue >= 2250)
+		rawSatisfaction -= 10;
+	else if (peep->time_in_queue <= 750)
+		rawSatisfaction += 10;
+
+	// Peeps get a small boost in satisfaction if they've been on a ride of the same type before,
+	// and this boost is doubled if they've already been on this particular ride.
+	if (peep_has_ridden_ride_type(peep, ride->type))
+		rawSatisfaction += 10;
+	peep_set_has_ridden_ride_type(peep, ride->type);
+
+	if (peep_has_ridden(peep, peep->current_ride))
+		rawSatisfaction += 10;
+	peep_set_has_ridden(peep, peep->current_ride);
+
+	if (peep->no_of_rides < 255)
+		peep->no_of_rides++;
+
+	// Update the satisfaction stat of the ride itself.
+	uint8 satisfaction = 0;
+	if (rawSatisfaction >= 40)
+		satisfaction = 3;
+	else if (rawSatisfaction >= 20)
+		satisfaction = 2;
+	else if (rawSatisfaction >= 0)
+		satisfaction = 1;
+	
+	ride_update_satisfaction(ride, satisfaction);
+
+	// Update the happiness growth rate of the peep. The largest possible change is +/- 1
+	peep->happiness_growth_rate = clamp(0, rawSatisfaction + peep->happiness_growth_rate, 255);
+
+	/*
+	 * Update the nausea growth of the peep. This is calculated based on:
+	 * - The nausea rating of the ride
+	 * - Their new happiness growth rate (the higher, the less nauseous)
+	 * - How hungry the peep is (+0% nausea at 50% hunger up to +100% nausea at 100% hunger)
+	 * - The peep's nausea tolerance (Final modifier: none: 100%, low: 50%, average: 25%, high: 12.5%)
+	 */
 	uint32 nauseaMultiplier = clamp(64, 256 - peep->happiness_growth_rate, 200);
 	uint32 nauseaGrowthRateChange = (ride->nausea * nauseaMultiplier) / 512;
-	nauseaGrowthRateChange *= max(128, peep->hunger);
-	nauseaGrowthRateChange /= 128;
-	nauseaGrowthRateChange *= 2;
+	nauseaGrowthRateChange *= max(128, peep->hunger) / 64;
 	nauseaGrowthRateChange >>= (peep->nausea_tolerance & 3);
 	peep->nausea_growth_rate = (uint8)clamp(0, peep->nausea_growth_rate + nauseaGrowthRateChange, 255);
 }
