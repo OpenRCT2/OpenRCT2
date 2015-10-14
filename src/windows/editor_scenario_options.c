@@ -1035,7 +1035,7 @@ static void window_editor_scenario_options_park_mousedown(int widgetIndex, rct_w
 			dropdownWidget->right - dropdownWidget->left - 3
 		);
 
-		gDropdownItemsChecked = 1 << (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY ? 0 : 1);
+		dropdown_set_checked((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY ? 0 : 1), true);
 		break;
 	}
 }

@@ -239,7 +239,7 @@ static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* w
 			13, 
 			widget->right - widget->left - 3);
 		
-		gDropdownItemsChecked = 1 << (banner->text_colour - 1);
+		dropdown_set_checked(banner->text_colour - 1, true);
 		break;
 	}
 }

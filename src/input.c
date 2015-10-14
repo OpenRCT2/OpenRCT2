@@ -1123,13 +1123,17 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 
 				if (w->classification == WC_DROPDOWN) {
 					dropdown_index = dropdown_index_from_point(x, y, w);
-					if (dropdown_index == -1)goto dropdown_cleanup;
+					if (dropdown_index == -1) {
+						goto dropdown_cleanup;
+					}
 
-					// _dropdown_unknown?? highlighted?
-					if (dropdown_index < 64 && gDropdownItemsDisabled & (1ULL << dropdown_index))goto dropdown_cleanup;
+					if (dropdown_index < 64 && gDropdownItemsDisabled & (1ULL << dropdown_index)) {
+						goto dropdown_cleanup;
+					}
 
-					// gDropdownItemsFormat[dropdown_index] will not work until all windows that use dropdown decompiled
-					if (RCT2_ADDRESS(0x9DEBA4, uint16)[dropdown_index] == 0)goto dropdown_cleanup;
+					if (gDropdownItemsFormat[dropdown_index] == 0) {
+						goto dropdown_cleanup;
+					}
 				}
 				else {
 					if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
@@ -1209,14 +1213,15 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 			window_tooltip_show(STR_COLOUR_NAMES_START + dropdown_index, x, y);
 		}
 
-		// _dropdown_unknown?? highlighted?
-		if (dropdown_index < 64 && gDropdownItemsDisabled & (1ULL << dropdown_index))return;
+		if (dropdown_index < 64 && gDropdownItemsDisabled & (1ULL << dropdown_index)) {
+			return;
+		}
 
-		// gDropdownItemsFormat[dropdown_index] will not work until all windows that use dropdown decompiled
-		if (RCT2_ADDRESS(0x9DEBA4, uint16)[dropdown_index] == 0)return;
+		if (gDropdownItemsFormat[dropdown_index] == 0) {
+			return;
+		}
 
-		// _dropdown_highlighted_index
-		RCT2_GLOBAL(0x009DEBA2, sint16) = dropdown_index;
+		gDropdownHighlightedIndex = dropdown_index;
 		window_invalidate_by_class(WC_DROPDOWN);
 	} else {
 		gDropdownLastColourHover = -1;

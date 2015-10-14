@@ -465,7 +465,7 @@ static void window_research_funding_mousedown(int widgetIndex, rct_window *w, rc
 	);
 
 	int currentResearchLevel = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
-	gDropdownItemsChecked = (1 << currentResearchLevel);
+	dropdown_set_checked(currentResearchLevel, true);
 }
 
 /**

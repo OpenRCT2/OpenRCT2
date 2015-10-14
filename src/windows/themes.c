@@ -552,10 +552,11 @@ static void window_themes_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 			widget->right - widget->left - 3
 			);
 
-		if (gCurrentTheme == 0 || gCurrentTheme == 1)
-			gDropdownItemsChecked = 1 << (gCurrentTheme ^ 1);
-		else
-			gDropdownItemsChecked = 1 << (gCurrentTheme);
+		if (gCurrentTheme == 0 || gCurrentTheme == 1) {
+			dropdown_set_checked(gCurrentTheme ^ 1, true);
+		} else {
+			dropdown_set_checked(gCurrentTheme, true);
+		}
 		break;
 	case WIDX_THEMES_RCT1_RIDE_LIGHTS:
 		if (gCurrentTheme >= 2) {

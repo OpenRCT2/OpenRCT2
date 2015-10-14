@@ -496,7 +496,7 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window *
 	objectiveType = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
 	for (i = 0; i < numItems; i++) {
 		if (gDropdownItemsArgs[i] - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType) {
-			gDropdownItemsChecked = (1 << i);
+			dropdown_set_checked(i, true);
 			break;
 		}
 	}
@@ -522,7 +522,7 @@ static void window_editor_objective_options_show_climate_dropdown(rct_window *w)
 		4,
 		dropdownWidget->right - dropdownWidget->left - 3
 	);
-	gDropdownItemsChecked = (1 << RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
+	dropdown_set_checked(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8), true);
 }
 
 static void window_editor_objective_options_show_category_dropdown(rct_window *w)
@@ -546,7 +546,7 @@ static void window_editor_objective_options_show_category_dropdown(rct_window *w
 		5,
 		dropdownWidget->right - dropdownWidget->left - 3
 	);
-	gDropdownItemsChecked = (1 << s6Info->category);
+	dropdown_set_checked(s6Info->category, true);
 }
 
 static void window_editor_objective_options_arg_1_increase(rct_window *w)

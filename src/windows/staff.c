@@ -532,7 +532,7 @@ void window_staff_overview_mousedown(int widgetIndex, rct_window* w, rct_widget*
 	int y = widget->top + w->y;
 	int extray = widget->bottom - widget->top + 1;
 	window_dropdown_show_text(x, y, extray, w->colours[1], 0, 2);
-	RCT2_GLOBAL(0x009DEBA2, sint16) = 0;
+	gDropdownHighlightedIndex = 0;
 
 	rct_peep* peep = GET_PEEP(w->number);
 

@@ -263,7 +263,7 @@ static void window_ride_list_mousedown(int widgetIndex, rct_window*w, rct_widget
 			numItems,
 			widget->right - widget->left - 3
 		);
-		gDropdownItemsChecked |= (1 << _window_ride_list_information_type);
+		dropdown_set_checked(_window_ride_list_information_type, true);
 	}
 }
 
