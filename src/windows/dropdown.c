@@ -203,11 +203,8 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 	gDropdownHighlightedIndex = -1;
 	gDropdownItemsDisabled = 0;
 	gDropdownItemsChecked = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, sint8) = INPUT_STATE_DROPDOWN_ACTIVE;
-
-	// Copy the following properties until all use of it is decompiled
-	gDropdownHighlightedIndex = gDropdownHighlightedIndex;
 	gDropdownIsColour = false;
+	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, sint8) = INPUT_STATE_DROPDOWN_ACTIVE;
 }
 
 /**
