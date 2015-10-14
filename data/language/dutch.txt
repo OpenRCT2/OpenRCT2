@@ -3885,6 +3885,8 @@ STR_5549    :Jaar/maand/dag
 STR_5550    :{POP16}{POP16}Jaar {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Jaar/dag/maand
 STR_5552    :{POP16}{POP16}Jaar {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
+STR_5553    :Spel pauzeren als de Steam-overlay open staat
+STR_5554    :{SMALLFONT}{BLACK}Overgangen met omringend land gladstrijken
 
 #############
 # Scenarios #
