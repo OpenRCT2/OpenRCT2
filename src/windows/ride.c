@@ -20,6 +20,7 @@
 
 #include "../addresses.h"
 #include "../audio/audio.h"
+#include "../cheats.h"
 #include "../config.h"
 #include "../game.h"
 #include "../input.h"
@@ -1762,13 +1763,13 @@ static void window_ride_show_view_dropdown(rct_window *w, rct_widget *widget)
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)) {
 		j = 2;
 		for (i = 0; i < ride->num_vehicles; i++) {
-			RCT2_GLOBAL(0x009DED34, uint32) |= j;
+			gDropdownItemsDisabled |= j;
 			j <<= 1;
 		}
 	}
 
 	// Set checked item
-	gDropdownItemsChecked |= (1 << w->ride.view);
+	dropdown_set_checked(w->ride.view, true);
 }
 
 /**
@@ -1843,8 +1844,8 @@ static void window_ride_show_open_dropdown(rct_window *w, rct_widget *widget)
 			highlightedIndex--;
 	}
 
-	gDropdownItemsChecked |= (1 << checkedIndex);
-	RCT2_GLOBAL(0x009DEBA2, sint16) = highlightedIndex;
+	dropdown_set_checked(checkedIndex, true);
+	gDropdownHighlightedIndex = highlightedIndex;
 }
 
 /**
@@ -1891,7 +1892,7 @@ static void window_ride_main_dropdown(rct_window *w, int widgetIndex, int dropdo
 		break;
 	case WIDX_OPEN:
 		if (dropdownIndex == -1)
-			dropdownIndex = RCT2_GLOBAL(0x009DEBA2, sint16);
+			dropdownIndex = gDropdownHighlightedIndex;
 
 		ride = GET_RIDE(w->number);
 		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_TEST_MODE) && dropdownIndex != 0)
@@ -2312,39 +2313,61 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 	rct_ride *ride;
 	rct_ride_type *rideEntry, *currentRideEntry;
 	rct_string_id stringId;
-	int i, minCars, maxCars, cars, numItems, quadIndex, bitIndex, rideEntryIndex, selectedIndex;
+	int i, minCars, maxCars, cars, numItems, quadIndex, bitIndex, rideEntryIndex, selectedIndex, rideTypeIterator, rideTypeIteratorMax;
 	uint8 *rideEntryIndexPtr, *currentRideEntryIndex;
+	bool selectionShouldBeExpanded;
 
 	ride = GET_RIDE(w->number);
 	rideEntry = ride_get_entry(ride);
 
+	if(gCheatsShowVehiclesFromOtherTrackTypes && !(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type==RIDE_TYPE_MAZE || ride->type==RIDE_TYPE_MINI_GOLF)) {
+		selectionShouldBeExpanded=true;
+		rideTypeIterator=0;
+		rideTypeIteratorMax=90;
+	}
+	else {
+		selectionShouldBeExpanded=false;
+		rideTypeIterator=ride->type;
+		rideTypeIteratorMax=ride->type;
+	}
+
 	switch (widgetIndex) {
 	case WIDX_VEHICLE_TYPE_DROPDOWN:
-		rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(ride->type);
-		currentRideEntryIndex;
-
 		selectedIndex = -1;
 		numItems = 0;
-		for (currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != 0xFF; currentRideEntryIndex++) {
-			rideEntryIndex = *currentRideEntryIndex;
-			currentRideEntry = GET_RIDE_ENTRY(rideEntryIndex);
-			// Skip if vehicle has the same track type, but not same subtype, unless subtype switching is enabled
-			if ((currentRideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) && !gConfigInterface.select_by_track_type)
+
+		// Dropdowns with more items start acting weird, so cap it to 63.
+		for (; rideTypeIterator<=rideTypeIteratorMax && numItems<=63; rideTypeIterator++) {
+
+			if(selectionShouldBeExpanded && ride_type_has_flag(rideTypeIterator, RIDE_TYPE_FLAG_FLAT_RIDE))
+				continue;
+			if(selectionShouldBeExpanded && (rideTypeIterator==RIDE_TYPE_MAZE || rideTypeIterator==RIDE_TYPE_MINI_GOLF))
 				continue;
 
-			quadIndex = rideEntryIndex >> 5;
-			bitIndex = rideEntryIndex & 0x1F;
-			// Skip if vehicle type is not invented yet
-			if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1 << bitIndex)))
-				continue;
+			rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideTypeIterator);
+			currentRideEntryIndex;
 
-			if (ride->subtype == rideEntryIndex)
-				selectedIndex = numItems;
+			for (currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != 0xFF; currentRideEntryIndex++) {
+				rideEntryIndex = *currentRideEntryIndex;
+				currentRideEntry = GET_RIDE_ENTRY(rideEntryIndex);
+				// Skip if vehicle has the same track type, but not same subtype, unless subtype switching is enabled
+				if ((currentRideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) && !(gConfigInterface.select_by_track_type || selectionShouldBeExpanded))
+					continue;
 
-			gDropdownItemsFormat[numItems] = 1142;
-			gDropdownItemsArgs[numItems] = (rideEntryIndex << 16) | currentRideEntry->name;
+				quadIndex = rideEntryIndex >> 5;
+				bitIndex = rideEntryIndex & 0x1F;
+				// Skip if vehicle type is not invented yet
+				if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1 << bitIndex)))
+					continue;
 
-			numItems++;
+				if (ride->subtype == rideEntryIndex)
+					selectedIndex = numItems;
+
+				gDropdownItemsFormat[numItems] = 1142;
+				gDropdownItemsArgs[numItems] = (rideEntryIndex << 16) | currentRideEntry->name;
+
+				numItems++;
+			}
 		}
 
 		window_dropdown_show_text_custom_width(
@@ -2357,7 +2380,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 			widget->right - dropdownWidget->left
 		);
 
-		gDropdownItemsChecked = (1 << selectedIndex);
+		dropdown_set_checked(selectedIndex, true);
 		break;
 	case WIDX_VEHICLE_TRAINS_DROPDOWN:
 		window_dropdown_show_text_custom_width(
@@ -2376,7 +2399,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 			gDropdownItemsArgs[i] = ((i + 1) << 16) | (i == 0 ? stringId : stringId + 1);
 		}
 
-		gDropdownItemsChecked = (1 << (ride->num_vehicles - 1));
+		dropdown_set_checked(ride->num_vehicles - 1, true);
 		break;
 	case WIDX_VEHICLE_CARS_PER_TRAIN_DROPDOWN:
 		minCars = (ride->min_max_cars_per_train >> 4);
@@ -2402,7 +2425,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 			gDropdownItemsArgs[i] |= (cars - rideEntry->zero_cars) << 16;
 		}
 
-		gDropdownItemsChecked = (1 << (ride->num_cars_per_train - minCars));
+		dropdown_set_checked(ride->num_cars_per_train - minCars, true);
 		break;
 	}
 }
@@ -2481,7 +2504,7 @@ static void window_ride_vehicle_invalidate(rct_window *w)
 	// Vehicle type
 	window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].image = rideEntry->name;
 	// Always show a dropdown button when changing subtypes is allowed
-	if ((var_496(w) <= 1 || (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) && !gConfigInterface.select_by_track_type) {
+	if ((var_496(w) <= 1 || (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) && !(gConfigInterface.select_by_track_type || gCheatsShowVehiclesFromOtherTrackTypes)) {
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].type = WWT_14;
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE_DROPDOWN].type = WWT_EMPTY;
 		w->enabled_widgets &= ~(1 << WIDX_VEHICLE_TYPE);
@@ -2797,9 +2820,11 @@ static void window_ride_mode_dropdown(rct_window *w, rct_widget *widget)
 	);
 
 	// Set checked item
-	for (i = 0; i < numAvailableModes; i++)
-		if (ride->mode == availableModes[i])
-			gDropdownItemsChecked = 1 << i;
+	for (i = 0; i < numAvailableModes; i++) {
+		if (ride->mode == availableModes[i]) {
+			dropdown_set_checked(i, true);
+		}
+	}
 }
 
 /**
@@ -2828,7 +2853,7 @@ static void window_ride_load_dropdown(rct_window *w, rct_widget *widget)
 		widget->right - dropdownWidget->left
 	);
 
-	gDropdownItemsChecked = (1 << (ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK));
+	dropdown_set_checked(ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK, true);
 }
 
 /**
@@ -3343,7 +3368,7 @@ static void window_ride_maintenance_mousedown(int widgetIndex, rct_window *w, rc
 			widget->right - dropdownWidget->left
 		);
 
-		gDropdownItemsChecked = (1 << ride->inspection_interval);
+		dropdown_set_checked(ride->inspection_interval, true);
 		break;
 
 	case WIDX_FORCE_BREAKDOWN:
@@ -3353,7 +3378,7 @@ static void window_ride_maintenance_mousedown(int widgetIndex, rct_window *w, rc
 				break;
 		}
 		gDropdownItemsFormat[0] = 1142;
-		gDropdownItemsArgs[0] = 5290;
+		gDropdownItemsArgs[0] = STR_DEBUG_FIX_RIDE;
 		for (i = 0; i < 8; i++) {
 			if (RideAvailableBreakdowns[ride_type->ride_type[j]] & (uint8)(1 << i)) {
 				if (i == BREAKDOWN_BRAKES_FAILURE && (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)) {
@@ -3366,7 +3391,7 @@ static void window_ride_maintenance_mousedown(int widgetIndex, rct_window *w, rc
 			}
 		}
 		if (num_items == 1) {
-			window_error_open(5289, STR_NONE);
+			window_error_open(STR_DEBUG_NO_BREAKDOWNS_AVAILABLE, STR_NONE);
 		}
 		else {
 			window_dropdown_show_text(
@@ -3388,7 +3413,7 @@ static void window_ride_maintenance_mousedown(int widgetIndex, rct_window *w, rc
 								continue;
 						}
 						if (i == breakdownReason) {
-							gDropdownItemsChecked = (1 << num_items);
+							dropdown_set_checked(num_items, true);
 							break;
 						}
 						gDropdownItemsFormat[num_items] = 1142;
@@ -3399,7 +3424,7 @@ static void window_ride_maintenance_mousedown(int widgetIndex, rct_window *w, rc
 			}
 
 			if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BREAKDOWN_PENDING) == 0) {
-				*gDropdownItemsDisabled = (1 << 0);
+				gDropdownItemsDisabled = (1 << 0);
 			}
 		}
 		break;
@@ -3790,7 +3815,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			widget->right - dropdownWidget->left
 		);
 
-		gDropdownItemsChecked = 1 << colourSchemeIndex;
+		dropdown_set_checked(colourSchemeIndex, true);
 		break;
 	case WIDX_TRACK_MAIN_COLOUR:
 		window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour_main[colourSchemeIndex]);
@@ -3817,17 +3842,18 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			widget->right - dropdownWidget->left
 		);
 
-		gDropdownItemsChecked = 1 << ride->track_colour_supports[colourSchemeIndex];
+		dropdown_set_checked(ride->track_colour_supports[colourSchemeIndex], true);
 		break;
-	case WIDX_ENTRANCE_STYLE_DROPDOWN:		
+	case WIDX_ENTRANCE_STYLE_DROPDOWN:
 		for (i = 0; i < countof(window_ride_entrance_style_list); i++) {
 			gDropdownItemsFormat[i] = 1142;
 			gDropdownItemsArgs[i] = RideEntranceDefinitions[window_ride_entrance_style_list[i]].string_id;
 
-			if (ride->entrance_style == window_ride_entrance_style_list[i])
-				gDropdownItemsChecked = 1 << i;
+			if (ride->entrance_style == window_ride_entrance_style_list[i]) {
+				dropdown_set_checked(i, true);
+			}
 		}
-		int checked = gDropdownItemsChecked;
+		uint64 checked = gDropdownItemsChecked;
 
 		window_dropdown_show_text_custom_width(
 			w->x + dropdownWidget->left,
@@ -3841,7 +3867,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 
 		gDropdownItemsChecked = checked;
 		break;
-	case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:		
+	case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
 		for (i = 0; i < 3; i++) {
 			gDropdownItemsFormat[i] = 1142;
 			gDropdownItemsArgs[i] = (RideNameConvention[ride->type].vehicle_name << 16) | (STR_ALL_VEHICLES_IN_SAME_COLOURS + i);
@@ -3857,7 +3883,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			widget->right - dropdownWidget->left
 		);
 
-		gDropdownItemsChecked = 1 << (ride->colour_scheme_type & 3);
+		dropdown_set_checked(ride->colour_scheme_type & 3, true);
 		break;
 	case WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN:
 		numItems = ride->num_vehicles;
@@ -3880,7 +3906,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			widget->right - dropdownWidget->left
 		);
 
-		gDropdownItemsChecked = 1 << w->var_48C;
+		dropdown_set_checked(w->var_48C, true);
 		break;
 	case WIDX_VEHICLE_MAIN_COLOUR:
 		vehicleColour = ride_get_vehicle_colour(ride, w->var_48C);
@@ -4429,8 +4455,9 @@ static void window_ride_music_mousedown(int widgetIndex, rct_window *w, rct_widg
 	);
 
 	for (i = 0; i < numItems; i++) {
-		if (window_ride_current_music_style_order[i] == ride->music)
-			gDropdownItemsChecked = (1 << i);
+		if (window_ride_current_music_style_order[i] == ride->music) {
+			dropdown_set_checked(i, true);
+		}
 	}
 }
 
@@ -4679,9 +4706,9 @@ static void window_ride_measurements_mousedown(int widgetIndex, rct_window *w, r
 		0,
 		2
 	);
-	RCT2_GLOBAL(0x009DEBA2, sint16) = 0;
+	gDropdownHighlightedIndex = 0;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
-		RCT2_GLOBAL(0x009DED34, uint32) |= 2;
+		gDropdownItemsDisabled |= 2;
 }
 
 /**
@@ -4694,7 +4721,7 @@ static void window_ride_measurements_dropdown(rct_window *w, int widgetIndex, in
 		return;
 
 	if (dropdownIndex == -1)
-		dropdownIndex = RCT2_GLOBAL(0x009DEBA2, sint16);
+		dropdownIndex = gDropdownHighlightedIndex;
 
 	if (dropdownIndex == 0)
 		save_track_design((uint8)w->number);

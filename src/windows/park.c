@@ -689,11 +689,11 @@ static void window_park_entrance_mousedown(int widgetIndex, rct_window*w, rct_wi
 		);
 
 		if (park_is_open()) {
-			RCT2_GLOBAL(0x009DEBA2, sint16) = 0;
-			gDropdownItemsChecked |= (1 << 1);
+			gDropdownHighlightedIndex = 0;
+			dropdown_set_checked(1, true);
 		} else {
-			RCT2_GLOBAL(0x009DEBA2, sint16) = 1;
-			gDropdownItemsChecked |= (1 << 0);
+			gDropdownHighlightedIndex = 1;
+			dropdown_set_checked(0, true);
 		}
 	}
 }
@@ -706,7 +706,7 @@ static void window_park_entrance_dropdown(rct_window *w, int widgetIndex, int dr
 {
 	if (widgetIndex == WIDX_OPEN_OR_CLOSE) {
 		if (dropdownIndex == -1)
-			dropdownIndex = RCT2_GLOBAL(0x009DEBA2, sint16);
+			dropdownIndex = gDropdownHighlightedIndex;
 
 		if (dropdownIndex != 0) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1724;

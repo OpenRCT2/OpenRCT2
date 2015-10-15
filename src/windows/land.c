@@ -222,7 +222,7 @@ static void window_land_mousedown(int widgetIndex, rct_window*w, rct_widget* wid
 			gDropdownItemsFormat[i] = -1;
 			gDropdownItemsArgs[i] = SPR_FLOOR_TEXTURE_GRASS + window_land_floor_texture_order[i];
 			if (window_land_floor_texture_order[i] == _selectedFloorTexture)
-				RCT2_GLOBAL(0x009DEBA2, sint16) = i;
+				gDropdownHighlightedIndex = i;
 		}
 		window_dropdown_show_image(
 			w->x + widget->left, w->y + widget->top,
@@ -239,7 +239,7 @@ static void window_land_mousedown(int widgetIndex, rct_window*w, rct_widget* wid
 			gDropdownItemsFormat[i] = -1;
 			gDropdownItemsArgs[i] = SPR_WALL_TEXTURE_ROCK + window_land_wall_texture_order[i];
 			if (window_land_wall_texture_order[i] == _selectedWallTexture)
-				RCT2_GLOBAL(0x009DEBA2, sint16) = i;
+				gDropdownHighlightedIndex = i;
 		}
 		window_dropdown_show_image(
 			w->x + widget->left, w->y + widget->top,
@@ -268,7 +268,7 @@ static void window_land_dropdown(rct_window *w, int widgetIndex, int dropdownInd
 	switch (widgetIndex) {
 	case WIDX_FLOOR:
 		if (dropdownIndex == -1)
-			dropdownIndex = RCT2_GLOBAL(0x009DEBA2, sint16);
+			dropdownIndex = gDropdownHighlightedIndex;
 
 		type = (dropdownIndex == -1) ?
 			_selectedFloorTexture :
@@ -284,7 +284,7 @@ static void window_land_dropdown(rct_window *w, int widgetIndex, int dropdownInd
 		break;
 	case WIDX_WALL:
 		if (dropdownIndex == -1)
-			dropdownIndex = RCT2_GLOBAL(0x009DEBA2, sint16);
+			dropdownIndex = gDropdownHighlightedIndex;
 
 		type = (dropdownIndex == -1) ?
 			_selectedWallTexture :

@@ -1298,7 +1298,7 @@ static void window_finances_research_mousedown(int widgetIndex, rct_window *w, r
 	);
 
 	int currentResearchLevel = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
-	gDropdownItemsChecked = (1 << currentResearchLevel);
+	dropdown_set_checked(currentResearchLevel, true);
 }
 
 /**

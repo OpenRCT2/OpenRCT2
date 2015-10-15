@@ -322,7 +322,7 @@ static void window_title_command_editor_mousedown(int widgetIndex, rct_window* w
 			widget->right - widget->left - 3
 			);
 
-		gDropdownItemsChecked = 1 << get_command_info_index(command.command);
+		dropdown_set_checked(get_command_info_index(command.command), true);
 		break;
 	case WIDX_INPUT_DROPDOWN:
 		if (command.command == TITLE_SCRIPT_SPEED) {
@@ -342,7 +342,7 @@ static void window_title_command_editor_mousedown(int widgetIndex, rct_window* w
 				widget->right - widget->left - 3
 				);
 
-			gDropdownItemsChecked = 1 << (command.speed - 1);
+			dropdown_set_checked(command.speed - 1, true);
 		}
 		else if (command.command == TITLE_SCRIPT_LOAD) {
 			num_items = gConfigTitleSequences.presets[gCurrentTitleSequence].num_saves;
@@ -361,7 +361,7 @@ static void window_title_command_editor_mousedown(int widgetIndex, rct_window* w
 				widget->right - widget->left - 3
 				);
 
-			gDropdownItemsChecked = 1 << (command.saveIndex);
+			dropdown_set_checked(command.saveIndex, true);
 		}
 		break;
 	}
