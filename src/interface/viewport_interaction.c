@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../editor.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
 #include "../ride/ride.h"
@@ -56,7 +57,7 @@ int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 	// 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->var_000 != 6)
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 	rct_xy16 mapCoord = { 0 };
@@ -179,7 +180,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 	// 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->var_000 != 6)
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 	rct_xy16 mapCoord = { 0 };

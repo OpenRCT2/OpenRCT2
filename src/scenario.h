@@ -49,7 +49,7 @@ typedef struct {
  * size: 0x198
  */
 typedef struct {
-	uint8 var_000;
+	uint8 editor_step;
 	uint8 category;				// 0x01
 	uint8 objective_type;		// 0x02
 	uint8 objective_arg_1;		// 0x03
