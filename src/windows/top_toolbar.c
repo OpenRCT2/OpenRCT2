@@ -411,8 +411,9 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 		);
 
 #ifndef DISABLE_TWITCH
-		if (_menuDropdownIncludesTwitch && gTwitchEnable)
-			gDropdownItemsChecked |= (1 << 11);
+		if (_menuDropdownIncludesTwitch && gTwitchEnable) {
+			dropdown_set_checked(11, true);
+		}
 #endif
 		break;
 	case WIDX_CHEATS:
@@ -433,12 +434,15 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			0,
 			5
 		);
-		if (gCheatsSandboxMode)
-			gDropdownItemsChecked |= (1 << DDIDX_ENABLE_SANDBOX_MODE);
-		if (gCheatsDisableClearanceChecks)
-			gDropdownItemsChecked |= (1 << DDIDX_DISABLE_CLEARANCE_CHECKS);
-		if (gCheatsDisableSupportLimits)
-			gDropdownItemsChecked |= (1 << DDIDX_DISABLE_SUPPORT_LIMITS);
+		if (gCheatsSandboxMode) {
+			dropdown_set_checked(DDIDX_ENABLE_SANDBOX_MODE, true);
+		}
+		if (gCheatsDisableClearanceChecks) {
+			dropdown_set_checked(DDIDX_DISABLE_CLEARANCE_CHECKS, true);
+		}
+		if (gCheatsDisableSupportLimits) {
+			dropdown_set_checked(DDIDX_DISABLE_SUPPORT_LIMITS, true);
+		}
 		RCT2_GLOBAL(0x009DEBA2, uint16) = 0;
 		break;
 	case WIDX_VIEW_MENU:
@@ -2844,10 +2848,12 @@ void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget) {
 		);
 
 	// Set checkmarks
-	if (gGameSpeed <= 4)
-		gDropdownItemsChecked |= (1 << (gGameSpeed - 1));
-	if (gGameSpeed == 8)
-		gDropdownItemsChecked |= (1 << 5);
+	if (gGameSpeed <= 4) {
+		dropdown_set_checked(gGameSpeed - 1, true);
+	}
+	if (gGameSpeed == 8) {
+		dropdown_set_checked(5, true);
+	}
 
 	if (gConfigGeneral.debugging_tools)
 		RCT2_GLOBAL(0x9DEBA2, uint16) = (gGameSpeed == 8 ? 0 : gGameSpeed);
@@ -3011,25 +3017,25 @@ void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
 	// Set checkmarks
 	rct_viewport* mainViewport = window_get_main()->viewport;
 	if (mainViewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-		gDropdownItemsChecked |= (1 << 0);
+		dropdown_set_checked(0, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_HIDE_BASE)
-		gDropdownItemsChecked |= (1 << 1);
+		dropdown_set_checked(1, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_HIDE_VERTICAL)
-		gDropdownItemsChecked |= (1 << 2);
+		dropdown_set_checked(2, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
-		gDropdownItemsChecked |= (1 << 4);
+		dropdown_set_checked(4, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
-		gDropdownItemsChecked |= (1 << 5);
+		dropdown_set_checked(5, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
-		gDropdownItemsChecked |= (1 << 6);
+		dropdown_set_checked(6, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
-		gDropdownItemsChecked |= (1 << 7);
+		dropdown_set_checked(7, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_LAND_HEIGHTS)
-		gDropdownItemsChecked |= (1 << 9);
+		dropdown_set_checked(9, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_TRACK_HEIGHTS)
-		gDropdownItemsChecked |= (1 << 10);
+		dropdown_set_checked(10, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_PATH_HEIGHTS)
-		gDropdownItemsChecked |= (1 << 11);
+		dropdown_set_checked(11, true);
 
 	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
 }

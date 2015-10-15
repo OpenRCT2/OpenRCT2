@@ -3161,7 +3161,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
 		}
 		gDropdownItemsFormat[i] = trackPieceStringId;
 		if ((trackPiece | 0x100) == _currentTrackCurve) {
-			RCT2_GLOBAL(0x009DEBA2, sint16) = i;
+			gDropdownHighlightedIndex = i;
 		}
 	}
 

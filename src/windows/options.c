@@ -715,8 +715,9 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			window_options_show_dropdown(w, widget, gNumResolutions);
 
-			if (selectedResolution != -1 && selectedResolution < 32)
-				gDropdownItemsChecked = 1 << selectedResolution;
+			if (selectedResolution != -1 && selectedResolution < 32) {
+				dropdown_set_checked(selectedResolution, true);
+			}
 		}
 
 		break;
@@ -730,7 +731,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			window_options_show_dropdown(w, widget, 3);
 
-			gDropdownItemsChecked = 1 << gConfigGeneral.fullscreen_mode;
+			dropdown_set_checked(gConfigGeneral.fullscreen_mode, true);
 			break;
 		case WIDX_CONSTRUCTION_MARKER_DROPDOWN:
 			gDropdownItemsFormat[0] = 1142;
@@ -740,7 +741,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			window_options_show_dropdown(w, widget, 2);
 
-			gDropdownItemsChecked = 1 << gConfigGeneral.construction_marker_colour;
+			dropdown_set_checked(gConfigGeneral.construction_marker_colour, true);
 			break;
 		}
 		break;
@@ -755,7 +756,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			window_options_show_dropdown(w, widget, 2);
 
-			gDropdownItemsChecked = gConfigGeneral.show_height_as_units ? 1 : 2;
+			dropdown_set_checked(gConfigGeneral.show_height_as_units ? 1 : 2, true);
 			break;
 		case WIDX_CURRENCY_DROPDOWN:
 			num_items = 10;
@@ -767,7 +768,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			window_options_show_dropdown(w, widget, num_items);
 
-			gDropdownItemsChecked = 1 << gConfigGeneral.currency_format;
+			dropdown_set_checked(gConfigGeneral.currency_format, true);
 			break;
 		case WIDX_DISTANCE_DROPDOWN:
 			gDropdownItemsFormat[0] = 1142;
@@ -777,7 +778,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			window_options_show_dropdown(w, widget, 2);
 
-			gDropdownItemsChecked = 1 << gConfigGeneral.measurement_format;
+			dropdown_set_checked(gConfigGeneral.measurement_format, true);
 			break;
 		case WIDX_TEMPERATURE_DROPDOWN:
 			gDropdownItemsFormat[0] = 1142;
@@ -787,7 +788,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			window_options_show_dropdown(w, widget, 2);
 
-			gDropdownItemsChecked = 1 << gConfigGeneral.temperature_format;
+			dropdown_set_checked(gConfigGeneral.temperature_format, true);
 			break;
 		case WIDX_LANGUAGE_DROPDOWN:
 			for (i = 1; i < LANGUAGE_COUNT; i++) {
@@ -795,7 +796,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 				gDropdownItemsArgs[i - 1] = (sint32)LanguagesDescriptors[i].native_name;
 			}
 			window_options_show_dropdown(w, widget, LANGUAGE_COUNT - 1);
-			gDropdownItemsChecked = 1 << (gCurrentLanguage - 1);
+			dropdown_set_checked(gCurrentLanguage - 1, true);
 			break;
 		case WIDX_DATE_FORMAT_DROPDOWN:
 			for (i = 0; i < 4; i++) {
@@ -803,7 +804,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 				gDropdownItemsArgs[i] = DateFormatStringIds[i];
 			}
 			window_options_show_dropdown(w, widget, 4);
-			gDropdownItemsChecked = 1 << (gConfigGeneral.date_format);
+			dropdown_set_checked(gConfigGeneral.date_format, true);
 			break;
 		}
 		break;
@@ -821,7 +822,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			window_options_show_dropdown(w, widget, gAudioDeviceCount);
 
-			gDropdownItemsChecked |= (1 << RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32));
+			dropdown_set_checked(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32), true);
 			break;
 		case WIDX_TITLE_MUSIC_DROPDOWN:
 			num_items = 4;
@@ -836,7 +837,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			window_options_show_dropdown(w, widget, num_items);
 
-			gDropdownItemsChecked = 1 << gConfigSound.title_music;
+			dropdown_set_checked(gConfigSound.title_music, true);
 			break;
 		}
 		break;
@@ -866,10 +867,11 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 				widget->right - widget->left - 3
 				);
 
-			if (gCurrentTheme == 0 || gCurrentTheme == 1)
-				gDropdownItemsChecked = 1 << (gCurrentTheme ^ 1);
-			else
-				gDropdownItemsChecked = 1 << (gCurrentTheme);
+			if (gCurrentTheme == 0 || gCurrentTheme == 1) {
+				dropdown_set_checked(gCurrentTheme ^ 1, true);
+			} else {
+				dropdown_set_checked(gCurrentTheme, true);
+			}
 			break;
 		}
 		break;
@@ -883,7 +885,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			}
 
 			window_options_show_dropdown(w, widget, AUTOSAVE_NEVER + 1);
-			gDropdownItemsChecked = 1 << gConfigGeneral.autosave_frequency;
+			dropdown_set_checked(gConfigGeneral.autosave_frequency, true);
 			break;
 		case WIDX_TITLE_SEQUENCE_DROPDOWN:
 			num_items = gConfigTitleSequences.num_presets;
@@ -903,7 +905,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 				widget->right - widget->left - 3
 				);
 
-			gDropdownItemsChecked = 1 << (gCurrentPreviewTitleSequence);
+			dropdown_set_checked(gCurrentPreviewTitleSequence, true);
 			break;
 		}
 		break;

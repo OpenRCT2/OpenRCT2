@@ -1769,7 +1769,7 @@ static void window_ride_show_view_dropdown(rct_window *w, rct_widget *widget)
 	}
 
 	// Set checked item
-	gDropdownItemsChecked |= (1 << w->ride.view);
+	dropdown_set_checked(w->ride.view, true);
 }
 
 /**
@@ -1844,8 +1844,8 @@ static void window_ride_show_open_dropdown(rct_window *w, rct_widget *widget)
 			highlightedIndex--;
 	}
 
-	gDropdownItemsChecked |= (1 << checkedIndex);
-	RCT2_GLOBAL(0x009DEBA2, sint16) = highlightedIndex;
+	dropdown_set_checked(checkedIndex, true);
+	gDropdownHighlightedIndex = highlightedIndex;
 }
 
 /**
@@ -1892,7 +1892,7 @@ static void window_ride_main_dropdown(rct_window *w, int widgetIndex, int dropdo
 		break;
 	case WIDX_OPEN:
 		if (dropdownIndex == -1)
-			dropdownIndex = RCT2_GLOBAL(0x009DEBA2, sint16);
+			dropdownIndex = gDropdownHighlightedIndex;
 
 		ride = GET_RIDE(w->number);
 		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_TEST_MODE) && dropdownIndex != 0)
@@ -2380,7 +2380,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 			widget->right - dropdownWidget->left
 		);
 
-		gDropdownItemsChecked = (1ULL << selectedIndex);
+		dropdown_set_checked(selectedIndex, true);
 		break;
 	case WIDX_VEHICLE_TRAINS_DROPDOWN:
 		window_dropdown_show_text_custom_width(
@@ -2399,7 +2399,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 			gDropdownItemsArgs[i] = ((i + 1) << 16) | (i == 0 ? stringId : stringId + 1);
 		}
 
-		gDropdownItemsChecked = (1 << (ride->num_vehicles - 1));
+		dropdown_set_checked(ride->num_vehicles - 1, true);
 		break;
 	case WIDX_VEHICLE_CARS_PER_TRAIN_DROPDOWN:
 		minCars = (ride->min_max_cars_per_train >> 4);
@@ -2425,7 +2425,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 			gDropdownItemsArgs[i] |= (cars - rideEntry->zero_cars) << 16;
 		}
 
-		gDropdownItemsChecked = (1 << (ride->num_cars_per_train - minCars));
+		dropdown_set_checked(ride->num_cars_per_train - minCars, true);
 		break;
 	}
 }
@@ -2820,9 +2820,11 @@ static void window_ride_mode_dropdown(rct_window *w, rct_widget *widget)
 	);
 
 	// Set checked item
-	for (i = 0; i < numAvailableModes; i++)
-		if (ride->mode == availableModes[i])
-			gDropdownItemsChecked = 1 << i;
+	for (i = 0; i < numAvailableModes; i++) {
+		if (ride->mode == availableModes[i]) {
+			dropdown_set_checked(i, true);
+		}
+	}
 }
 
 /**
@@ -2851,7 +2853,7 @@ static void window_ride_load_dropdown(rct_window *w, rct_widget *widget)
 		widget->right - dropdownWidget->left
 	);
 
-	gDropdownItemsChecked = (1 << (ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK));
+	dropdown_set_checked(ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK, true);
 }
 
 /**
@@ -3366,7 +3368,7 @@ static void window_ride_maintenance_mousedown(int widgetIndex, rct_window *w, rc
 			widget->right - dropdownWidget->left
 		);
 
-		gDropdownItemsChecked = (1 << ride->inspection_interval);
+		dropdown_set_checked(ride->inspection_interval, true);
 		break;
 
 	case WIDX_FORCE_BREAKDOWN:
@@ -3411,7 +3413,7 @@ static void window_ride_maintenance_mousedown(int widgetIndex, rct_window *w, rc
 								continue;
 						}
 						if (i == breakdownReason) {
-							gDropdownItemsChecked = (1 << num_items);
+							dropdown_set_checked(num_items, true);
 							break;
 						}
 						gDropdownItemsFormat[num_items] = 1142;
@@ -3813,7 +3815,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			widget->right - dropdownWidget->left
 		);
 
-		gDropdownItemsChecked = 1 << colourSchemeIndex;
+		dropdown_set_checked(colourSchemeIndex, true);
 		break;
 	case WIDX_TRACK_MAIN_COLOUR:
 		window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour_main[colourSchemeIndex]);
@@ -3840,17 +3842,18 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			widget->right - dropdownWidget->left
 		);
 
-		gDropdownItemsChecked = 1 << ride->track_colour_supports[colourSchemeIndex];
+		dropdown_set_checked(ride->track_colour_supports[colourSchemeIndex], true);
 		break;
-	case WIDX_ENTRANCE_STYLE_DROPDOWN:		
+	case WIDX_ENTRANCE_STYLE_DROPDOWN:
 		for (i = 0; i < countof(window_ride_entrance_style_list); i++) {
 			gDropdownItemsFormat[i] = 1142;
 			gDropdownItemsArgs[i] = RideEntranceDefinitions[window_ride_entrance_style_list[i]].string_id;
 
-			if (ride->entrance_style == window_ride_entrance_style_list[i])
-				gDropdownItemsChecked = 1 << i;
+			if (ride->entrance_style == window_ride_entrance_style_list[i]) {
+				dropdown_set_checked(i, true);
+			}
 		}
-		int checked = gDropdownItemsChecked;
+		uint64 checked = gDropdownItemsChecked;
 
 		window_dropdown_show_text_custom_width(
 			w->x + dropdownWidget->left,
@@ -3864,7 +3867,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 
 		gDropdownItemsChecked = checked;
 		break;
-	case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:		
+	case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
 		for (i = 0; i < 3; i++) {
 			gDropdownItemsFormat[i] = 1142;
 			gDropdownItemsArgs[i] = (RideNameConvention[ride->type].vehicle_name << 16) | (STR_ALL_VEHICLES_IN_SAME_COLOURS + i);
@@ -3880,7 +3883,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			widget->right - dropdownWidget->left
 		);
 
-		gDropdownItemsChecked = 1 << (ride->colour_scheme_type & 3);
+		dropdown_set_checked(ride->colour_scheme_type & 3, true);
 		break;
 	case WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN:
 		numItems = ride->num_vehicles;
@@ -3903,7 +3906,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 			widget->right - dropdownWidget->left
 		);
 
-		gDropdownItemsChecked = 1 << w->var_48C;
+		dropdown_set_checked(w->var_48C, true);
 		break;
 	case WIDX_VEHICLE_MAIN_COLOUR:
 		vehicleColour = ride_get_vehicle_colour(ride, w->var_48C);
@@ -4452,8 +4455,9 @@ static void window_ride_music_mousedown(int widgetIndex, rct_window *w, rct_widg
 	);
 
 	for (i = 0; i < numItems; i++) {
-		if (window_ride_current_music_style_order[i] == ride->music)
-			gDropdownItemsChecked = (1 << i);
+		if (window_ride_current_music_style_order[i] == ride->music) {
+			dropdown_set_checked(i, true);
+		}
 	}
 }
 
@@ -4702,7 +4706,7 @@ static void window_ride_measurements_mousedown(int widgetIndex, rct_window *w, r
 		0,
 		2
 	);
-	RCT2_GLOBAL(0x009DEBA2, sint16) = 0;
+	gDropdownHighlightedIndex = 0;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
 		gDropdownItemsDisabled |= 2;
 }
@@ -4717,7 +4721,7 @@ static void window_ride_measurements_dropdown(rct_window *w, int widgetIndex, in
 		return;
 
 	if (dropdownIndex == -1)
-		dropdownIndex = RCT2_GLOBAL(0x009DEBA2, sint16);
+		dropdownIndex = gDropdownHighlightedIndex;
 
 	if (dropdownIndex == 0)
 		save_track_design((uint8)w->number);

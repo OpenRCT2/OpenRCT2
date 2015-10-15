@@ -587,7 +587,7 @@ static void window_title_editor_mousedown(int widgetIndex, rct_window* w, rct_wi
 				widget->right - widget->left - 3
 				);
 
-			gDropdownItemsChecked = 1 << (gCurrentTitleSequence);
+			dropdown_set_checked(gCurrentTitleSequence, true);
 		}
 		break;
 	}
