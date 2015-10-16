@@ -8829,27 +8829,27 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 static void peep_give_real_name(rct_peep *peep)
 {
 	// Generate a name_string_idx from the peep id using bit twiddling
-	uint32 eax = peep->id + 0xF0B;
+	uint16 ax = (uint16)(peep->id + 0xF0B);
 	uint16 dx = 0;
-	dx |= ((eax & 0x400) ? 1 : 0) << 13;
-	dx |= ((eax & 0x2000) ? 1 : 0) << 12;
-	dx |= ((eax & 0x800) ? 1 : 0) << 11;
-	dx |= ((eax & 0x400) ? 1 : 0) << 10;
-	dx |= ((eax & 0x1) ? 1 : 0) << 9;
-	dx |= ((eax & 0x40) ? 1 : 0) << 8;
-	dx |= ((eax & 0x2) ? 1 : 0) << 7;
-	dx |= ((eax & 0x4) ? 1 : 0) << 6;
-	dx |= ((eax & 0x100) ? 1 : 0) << 5;
-	dx |= ((eax & 0x20) ? 1 : 0) << 4;
-	dx |= ((eax & 0x80) ? 1 : 0) << 3;
-	dx |= ((eax & 0x8) ? 1 : 0) << 2;
-	dx |= ((eax & 0x200) ? 1 : 0) << 1;
-	dx |= ((eax & 0x10) ? 1 : 0) << 0;
-	eax = dx & 0xF;
+	dx |= ((ax & 0x400) ? 1 : 0) << 13;
+	dx |= ((ax & 0x2000) ? 1 : 0) << 12;
+	dx |= ((ax & 0x800) ? 1 : 0) << 11;
+	dx |= ((ax & 0x400) ? 1 : 0) << 10;
+	dx |= ((ax & 0x1) ? 1 : 0) << 9;
+	dx |= ((ax & 0x40) ? 1 : 0) << 8;
+	dx |= ((ax & 0x2) ? 1 : 0) << 7;
+	dx |= ((ax & 0x4) ? 1 : 0) << 6;
+	dx |= ((ax & 0x100) ? 1 : 0) << 5;
+	dx |= ((ax & 0x20) ? 1 : 0) << 4;
+	dx |= ((ax & 0x80) ? 1 : 0) << 3;
+	dx |= ((ax & 0x8) ? 1 : 0) << 2;
+	dx |= ((ax & 0x200) ? 1 : 0) << 1;
+	dx |= ((ax & 0x10) ? 1 : 0) << 0;
+	ax = dx & 0xF;
 	dx *= 4;
-	eax *= 4096;
-	dx += eax;
-	if (dx < eax) {
+	ax *= 4096;
+	dx += ax;
+	if (dx < ax) {
 		dx += 0x1000;
 	}
 	dx /= 4;
