@@ -7787,7 +7787,7 @@ static void peep_on_enter_or_exit_ride(rct_peep *peep, int rideIndex, int flags)
 static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 price)
 {
 	rct_ride* ride = GET_RIDE(rideIndex);
-	money16 value;
+	money32 value;
 
 	bool has_voucher = false;
 
@@ -7889,18 +7889,18 @@ loc_69B119:
 		else {
 			value -= price;
 			value = max(8, value);
-			sint8 dl = value;
 
-			if ((dl >= (scenario_rand() & 0x07)) && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
-				// "This x is a really good value"
-				uint8 thought_item = (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2 + (shopItem - 32)) : (PEEP_THOUGHT_TYPE_BALLOON + shopItem));
-				peep_insert_new_thought(peep, thought_item, rideIndex);
+			if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
+				if (value >= (money32)(scenario_rand() & 0x07)) {
+					// "This x is a really good value"
+					uint8 thought_item = (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2 + (shopItem - 32)) : (PEEP_THOUGHT_TYPE_BALLOON + shopItem));
+					peep_insert_new_thought(peep, thought_item, rideIndex);
+				}
 			}
 
-			dl *= 4;
-			peep->happiness_growth_rate = min((peep->happiness_growth_rate + dl), 255);
-
-			peep->happiness = min((peep->happiness + dl), 255);
+			int happinessGrowth = value * 4;
+			peep->happiness_growth_rate = min((peep->happiness_growth_rate + happinessGrowth), 255);
+			peep->happiness = min((peep->happiness + happinessGrowth), 255);
 		}
 	}
 
