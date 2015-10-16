@@ -160,7 +160,7 @@ void editor_convert_save_to_scenario()
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
-	s6Info->var_000 = 4;
+	s6Info->editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
 	s6Info->category = SCENARIO_CATEGORY_BUILDYOUROWN;
 	viewport_init_all();
 	news_item_init_queue();
@@ -347,10 +347,10 @@ static int editor_read_s6(const char *path)
 			// Read second chunk
 			sawyercoding_read_chunk(rw, (uint8*)s6Info);
 
-			if (s6Info->var_000 == 255)
-				s6Info->var_000 = 1;
+			if (s6Info->editor_step == 255)
+				s6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 		} else {
-			s6Info->var_000 = 1;
+			s6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 			s6Info->category = SCENARIO_CATEGORY_BUILDYOUROWN;
 			format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
 		}

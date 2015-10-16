@@ -119,6 +119,8 @@ static EMPTY_ARGS_VOID_POINTER *next_button_mouseup_events[] = {
 	NULL
 };
 
+static void sub_6DFED0();
+
 /**
 * Creates the main editor top toolbar window.
 * rct2: 0x0066F052 (part of 0x0066EF38)
@@ -140,6 +142,7 @@ void window_editor_bottom_toolbar_open()
 		(1 << WIDX_NEXT_IMAGE);
 
 	window_init_scroll_widgets(window);
+	sub_6DFED0();
 }
 
 /**
@@ -369,7 +372,7 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 	}
 
 	// 
-	s6Info->var_000 = 255;
+	s6Info->editor_step = 255;
 
 	// Ensure path has .SC6 extension
 	path_set_extension(path, ".SC6");
@@ -388,7 +391,7 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 		title_load();
 	} else {
 		window_error_open(STR_SCENARIO_SAVE_FAILED, -1);
-		s6Info->var_000 = 4;
+		s6Info->editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
 	}
 }
 

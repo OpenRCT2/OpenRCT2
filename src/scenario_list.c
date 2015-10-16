@@ -89,7 +89,7 @@ static void scenario_list_add(const char *path)
 		return;
 
 	// Ignore scenarios where first header byte is not 255
-	if (s6Info.var_000 != 255)
+	if (s6Info.editor_step != 255)
 		return;
 
 	// Check if scenario already exists in list, likely if in scores

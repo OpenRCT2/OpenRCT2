@@ -819,7 +819,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 		int parkFlagsBackup = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_18;
-		s6Info->var_000 = 255;
+		s6Info->editor_step = 255;
 		rw = SDL_RWFromFile(path, "wb+");
 		int success = 0;
 		if (rw != NULL) {
@@ -834,7 +834,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			title_load();
 		} else {
 			window_error_open(STR_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED);
-			s6Info->var_000 = 4;
+			s6Info->editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
 		}
 		break;
 	}

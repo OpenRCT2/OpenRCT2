@@ -20,6 +20,7 @@
 
 #include "addresses.h"
 #include "config.h"
+#include "editor.h"
 #include "interface/viewport.h"
 #include "interface/window.h"
 #include "localisation/localisation.h"
@@ -234,7 +235,7 @@ void rct1_fix_landscape()
 	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
-	s6Info->var_000 = 1;
+	s6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 	s6Info->category = 4;
 	format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
 	s6Info->name[0] = 0;

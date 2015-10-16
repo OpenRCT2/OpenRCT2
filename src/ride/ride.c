@@ -24,6 +24,7 @@
 #include "../cheats.h"
 #include "../common.h"
 #include "../config.h"
+#include "../editor.h"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/window.h"
@@ -1797,7 +1798,7 @@ void ride_update_all()
 
 	// Remove all rides if scenario editor
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
-		if (s6Info->var_000 <= 2)
+		if (s6Info->editor_step <= EDITOR_STEP_INVENTIONS_LIST_SET_UP)
 			FOR_ALL_RIDES(i, ride)
 				ride->type = RIDE_TYPE_NULL;
 		return;
