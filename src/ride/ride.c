@@ -239,6 +239,27 @@ money32 get_shop_item_cost(int shopItem)
 		RCT2_GLOBAL(0x00982144 + (shopItem * 8), uint16);
 }
 
+money16 get_shop_base_value(int shopItem)
+{
+	return shopItem < 32 ?
+		RCT2_GLOBAL((0x00982164 + 2) + (shopItem * 8), uint16) :
+		RCT2_GLOBAL((0x00982144 + 2) + (shopItem * 8), uint16);
+}
+
+money16 get_shop_cold_value(int shopItem)
+{
+	return shopItem < 32 ?
+		RCT2_GLOBAL((0x00982164 + 4) + (shopItem * 8), uint16) :
+		RCT2_GLOBAL((0x00982144 + 4) + (shopItem * 8), uint16);
+}
+
+money16 get_shop_hot_value(int shopItem)
+{
+	return shopItem < 32 ?
+		RCT2_GLOBAL((0x00982164 + 6) + (shopItem * 8), uint16) :
+		RCT2_GLOBAL((0x00982144 + 6) + (shopItem * 8), uint16);
+}
+
 /**
  *
  * rct2: 0x006AC3AB
@@ -7001,7 +7022,6 @@ bool shop_item_is_food_or_drink(int shopItem)
 	case SHOP_ITEM_CHOCOLATE:
 	case SHOP_ITEM_ICED_TEA:
 	case SHOP_ITEM_FUNNEL_CAKE:
-	case SHOP_ITEM_SUNGLASSES:
 	case SHOP_ITEM_BEEF_NOODLES:
 	case SHOP_ITEM_FRIED_RICE_NOODLES:
 	case SHOP_ITEM_WONTON_SOUP:
@@ -7012,6 +7032,72 @@ bool shop_item_is_food_or_drink(int shopItem)
 	case SHOP_ITEM_SUB_SANDWICH:
 	case SHOP_ITEM_COOKIE:
 	case SHOP_ITEM_ROAST_SAUSAGE:
+		return true;
+	default:
+		return false;
+	}
+}
+
+bool shop_item_is_food(int shopItem)
+{
+	switch (shopItem) {
+	case SHOP_ITEM_BURGER:
+	case SHOP_ITEM_FRIES:
+	case SHOP_ITEM_ICE_CREAM:
+	case SHOP_ITEM_COTTON_CANDY:
+	case SHOP_ITEM_PIZZA:
+	case SHOP_ITEM_POPCORN:
+	case SHOP_ITEM_HOT_DOG:
+	case SHOP_ITEM_TENTACLE:
+	case SHOP_ITEM_CANDY_APPLE:
+	case SHOP_ITEM_DONUT:
+	case SHOP_ITEM_CHICKEN:
+	case SHOP_ITEM_PRETZEL:
+	case SHOP_ITEM_FUNNEL_CAKE:
+	case SHOP_ITEM_BEEF_NOODLES:
+	case SHOP_ITEM_FRIED_RICE_NOODLES:
+	case SHOP_ITEM_WONTON_SOUP:
+	case SHOP_ITEM_MEATBALL_SOUP:
+	case SHOP_ITEM_SUB_SANDWICH:
+	case SHOP_ITEM_COOKIE:
+	case SHOP_ITEM_ROAST_SAUSAGE:
+		return true;
+	default:
+		return false;
+	}
+}
+
+bool shop_item_is_drink(int shopItem)
+{
+	switch (shopItem) {
+	case SHOP_ITEM_DRINK:
+	case SHOP_ITEM_COFFEE:
+	case SHOP_ITEM_LEMONADE:
+	case SHOP_ITEM_CHOCOLATE:
+	case SHOP_ITEM_ICED_TEA:
+	case SHOP_ITEM_FRUIT_JUICE:
+	case SHOP_ITEM_SOYBEAN_MILK:
+	case SHOP_ITEM_SU_JONGKWA:
+		return true;
+	default:
+		return false;
+	}
+}
+
+bool shop_item_is_souvenir(int shopItem)
+{
+	switch (shopItem) {
+	case SHOP_ITEM_BALLOON:
+	case SHOP_ITEM_TOY:
+	case SHOP_ITEM_MAP:
+	case SHOP_ITEM_PHOTO:
+	case SHOP_ITEM_UMBRELLA:
+	case SHOP_ITEM_HAT:
+	case SHOP_ITEM_TSHIRT:
+	case SHOP_ITEM_PHOTO2:
+	case SHOP_ITEM_PHOTO3:
+	case SHOP_ITEM_PHOTO4:
+	case SHOP_ITEM_SUNGLASSES:
 		return true;
 	default:
 		return false;

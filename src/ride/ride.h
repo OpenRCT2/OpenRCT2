@@ -930,6 +930,10 @@ void ride_update_all();
 void ride_check_all_reachable();
 void ride_update_satisfaction(rct_ride* ride, uint8 happiness);
 void ride_update_popularity(rct_ride* ride, uint8 pop_amount);
+money32 get_shop_item_cost(int shopItem);
+money16 get_shop_base_value(int shopItem);
+money16 get_shop_hot_value(int shopItem);
+money16 get_shop_cold_value(int shopItem);
 int sub_6CAF80(int rideIndex, rct_xy_element *output);
 int ride_find_track_gap(rct_xy_element *input, rct_xy_element *output);
 void ride_construct_new(ride_list_item listItem);
@@ -1043,6 +1047,9 @@ bool ride_type_is_intamin(int rideType);
 void sub_6C94D8();
 
 bool shop_item_is_food_or_drink(int shopItem);
+bool shop_item_is_food(int shopItem);
+bool shop_item_is_drink(int shopItem);
+bool shop_item_is_souvenir(int shopItem);
 void ride_reset_all_names();
 const uint8* ride_seek_available_modes(rct_ride *ride);
 
