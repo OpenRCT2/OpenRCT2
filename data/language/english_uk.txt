@@ -3895,6 +3895,7 @@ STR_5553    :Pause game when Steam overlay is open
 STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
 STR_5555    :Show vehicles from other track types
 STR_5556    :Kick Player
+STR_5557    :Stay connected after desynchronisation (Multiplayer)
 
 #####################
 # Rides/attractions # 
