@@ -5156,9 +5156,6 @@ void peep_update_crowd_noise()
 	rct_peep *peep;
 	int visiblePeeps;
 
-	if (!(RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)))
-		return;
-
 	if (gGameSoundsOff)
 		return;
 
@@ -5198,10 +5195,9 @@ void peep_update_crowd_noise()
 	visiblePeeps = (visiblePeeps / 2) - 6;
 	if (visiblePeeps < 0) {
 		// Mute crowd noise
-		if (RCT2_GLOBAL(0x009AF5FC, uint32) != 1) {
+		if (gCrowdSoundChannel) {
 			Mixer_Stop_Channel(gCrowdSoundChannel);
 			gCrowdSoundChannel = 0;
-			RCT2_GLOBAL(0x009AF5FC, uint32) = 1;
 		}
 	} else {
 		sint32 volume;
@@ -5212,25 +5208,15 @@ void peep_update_crowd_noise()
 		volume = volume * volume * volume * volume;
 		volume = (((207360000 - volume) >> viewport->zoom) - 207360000) / 65536 - 150;
 
-		// Check if crowd noise is already playing
-		if (RCT2_GLOBAL(0x009AF5FC, uint32) == 1) {
-			// Load and play crowd noise
-			if (!gCrowdSoundChannel) {
-				gCrowdSoundChannel = Mixer_Play_Music(PATH_ID_CSS2, MIXER_LOOP_INFINITE, false);
-				if (gCrowdSoundChannel) {
-					Mixer_Channel_SetGroup(gCrowdSoundChannel, MIXER_GROUP_NONE);
-				}
-			}
+		// Load and play crowd noise if needed and set volume
+		if (!gCrowdSoundChannel) {
+			gCrowdSoundChannel = Mixer_Play_Music(PATH_ID_CSS2, MIXER_LOOP_INFINITE, false);
 			if (gCrowdSoundChannel) {
-				Mixer_Channel_Volume(gCrowdSoundChannel, DStoMixerVolume(volume));
-				RCT2_GLOBAL(0x009AF5FC, uint32) = volume;
+				Mixer_Channel_SetGroup(gCrowdSoundChannel, MIXER_GROUP_NONE);
 			}
-		} else {
-			// Alter crowd noise volume
-			if (RCT2_GLOBAL(0x009AF5FC, uint32) != volume) {
-				Mixer_Channel_Volume(gCrowdSoundChannel, DStoMixerVolume(volume));
-				RCT2_GLOBAL(0x009AF5FC, uint32) = volume;
-			}
+		}
+		if (gCrowdSoundChannel) {
+			Mixer_Channel_Volume(gCrowdSoundChannel, DStoMixerVolume(volume));
 		}
 	}
 }

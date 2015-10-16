@@ -94,35 +94,34 @@ void audio_get_devices()
 */
 int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z)
 {
-	int result = 0;
 	if (!gGameSoundsOff) {
-		RCT2_GLOBAL(0x00F438AD, uint8) = 0;
+		int volumedown = 0;
 		int volume = 0;
 		if (ebx == 0x8001) {
 			rct_map_element* mapelement = map_get_surface_element_at(x / 32, y / 32);
 			if (mapelement) {
 				if ((mapelement->base_height * 8) - 5 > z) {
-					RCT2_GLOBAL(0x00F438AD, uint8) = 10;
+					volumedown = 10;
 				}
 			}
-			sint16 v11;
-			sint16 v12;
+			sint16 rx;
+			sint16 ry;
 			switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
 				case 0:
-					v11 = y - x;
-					v12 = ((y + x) / 2) - z;
+					rx = y - x;
+					ry = ((y + x) / 2) - z;
 					break;
 				case 1:
-					v11 = -x - y;
-					v12 = ((y - x) / 2) - z;
+					rx = -x - y;
+					ry = ((y - x) / 2) - z;
 					break;
 				case 2:
-					v11 = x - y;
-					v12 = ((-y - x) / 2) - z;
+					rx = x - y;
+					ry = ((-y - x) / 2) - z;
 					break;
 				case 3:
-					v11 = y + x;
-					v12 = ((x - y) / 2) - z;
+					rx = y + x;
+					ry = ((x - y) / 2) - z;
 					break;
 			}
 			rct_window* window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);
@@ -133,11 +132,11 @@ int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z)
 				}
 				rct_viewport* viewport = window->viewport;
 				if (viewport && viewport->flags & VIEWPORT_FLAG_SOUND_ON) {
-					sint16 v15 = v12 - viewport->view_y;
-					sint16 v16 = v11 - viewport->view_x;
-					ebx = viewport->x + (v16 >> viewport->zoom);
-					volume = RCT2_ADDRESS(0x0099282C, int)[sound_id] + ((-1024 * viewport->zoom - 1) << RCT2_GLOBAL(0x00F438AD, uint8)) + 1;
-					if (v15 < 0 || v15 >= viewport->view_height || v16 < 0 || v16 >= viewport->view_width || volume < -10000) {
+					sint16 vy = ry - viewport->view_y;
+					sint16 vx = rx - viewport->view_x;
+					ebx = viewport->x + (vx >> viewport->zoom);
+					volume = RCT2_ADDRESS(0x0099282C, int)[sound_id] + ((-1024 * viewport->zoom - 1) << volumedown) + 1;
+					if (vy < 0 || vy >= viewport->view_height || vx < 0 || vx >= viewport->view_width || volume < -10000) {
 						return sound_id;
 					}
 				}
@@ -154,12 +153,9 @@ int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z)
 			}
 			pan = ((x2 / screenwidth) - 0x8000) >> 4;
 		}
-		if (!RCT2_GLOBAL(0x009AAC6D, uint8)) {
-			pan = 0;
-		}
 		Mixer_Play_Effect(sound_id, MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), 1, 1);
 	}
-	return result;
+	return 0;
 }
 
 /**
@@ -186,16 +182,12 @@ void start_title_music()
 		break;
 	}
 
-	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) && !gGameSoundsOff
-			&& RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
-		if (!RCT2_GLOBAL(0x009AF600, uint8)) {
+	if (!gGameSoundsOff && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
+		if (!gTitleMusicChannel) {
 			gTitleMusicChannel = Mixer_Play_Music(musicPathId, MIXER_LOOP_INFINITE, true);
-			RCT2_GLOBAL(0x009AF600, uint8) = 1;
 		}
 	} else {
-		if (RCT2_GLOBAL(0x009AF600, uint8)) {
-			stop_title_music();
-		}
+		stop_title_music();
 	}
 }
 
@@ -205,13 +197,13 @@ void start_title_music()
 */
 void stop_ride_music()
 {
-	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0))) {
-		for (int i = 0; i < AUDIO_MAX_RIDE_MUSIC; i++) {
-			rct_ride_music* ride_music = &gRideMusicList[i];
-			if (ride_music->rideid != (uint8)-1) {
+	for (int i = 0; i < AUDIO_MAX_RIDE_MUSIC; i++) {
+		rct_ride_music* ride_music = &gRideMusicList[i];
+		if (ride_music->rideid != (uint8)-1) {
+			if (ride_music->sound_channel) {
 				Mixer_Stop_Channel(ride_music->sound_channel);
-				ride_music->rideid = -1;
 			}
+			ride_music->rideid = -1;
 		}
 	}
 }
@@ -222,14 +214,9 @@ void stop_ride_music()
 */
 void stop_crowd_sound()
 {
-	if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0))) {
-		if (RCT2_GLOBAL(0x009AF5FC, uint32) != 1) {
-			if (gCrowdSoundChannel) {
-				Mixer_Stop_Channel(gCrowdSoundChannel);
-				gCrowdSoundChannel = 0;
-			}
-			RCT2_GLOBAL(0x009AF5FC, uint32) = 1;
-		}
+	if (gCrowdSoundChannel) {
+		Mixer_Stop_Channel(gCrowdSoundChannel);
+		gCrowdSoundChannel = 0;
 	}
 }
 
@@ -239,15 +226,10 @@ void stop_crowd_sound()
 */
 void stop_title_music()
 {
-	if (RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) {
-		if (RCT2_GLOBAL(0x009AF600, uint8) != 0) {
-			if (gTitleMusicChannel) {
-				Mixer_Stop_Channel(gTitleMusicChannel);
-				gTitleMusicChannel = 0;
-			}
-		}
+	if (gTitleMusicChannel) {
+		Mixer_Stop_Channel(gTitleMusicChannel);
+		gTitleMusicChannel = 0;
 	}
-	RCT2_GLOBAL(0x009AF600, uint8) = 0;
 }
 
 /**
@@ -264,10 +246,11 @@ void audio_init1()
 		const utf8* path = get_file_path(ride_music_info->pathid);
 		SDL_RWops *file = SDL_RWFromFile(path, "rb");
 		if (file != NULL) {
-			SDL_RWread(file, &RCT2_GLOBAL(0x009AF47E, uint32), 4, 1);
+			uint32 head;
+			SDL_RWread(file, &head, sizeof(head), 1);
 			SDL_RWclose(file);
 			RCT2_GLOBAL(0x014241BC, uint32) = 0;
-			if (RCT2_GLOBAL(0x009AF47E, uint32) == 0x78787878) {
+			if (head == 0x78787878) {
 				ride_music_info->length = 0;
 			}
 		}
@@ -283,12 +266,10 @@ void audio_init2(int device)
 	audio_close();
 	for (int i = 0; i < AUDIO_MAX_VEHICLE_SOUNDS; i++) {
 		rct_vehicle_sound* vehicle_sound = &gVehicleSoundList[i];
-		vehicle_sound->id = 0xFFFF;
+		vehicle_sound->id = -1;
 	}
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) = device;
-	RCT2_GLOBAL(0x009AAC5C, uint8) = 1;
 	config_save_default();
-	RCT2_GLOBAL(0x009AF284, uint32) |= (1 << 0);
 	for (int i = 0; i < AUDIO_MAX_RIDE_MUSIC; i++) {
 		rct_ride_music* ride_music = &gRideMusicList[i];
 		ride_music->rideid = -1;
@@ -303,9 +284,7 @@ void audio_close()
 {
 	stop_crowd_sound();
 	stop_title_music();
-	if (RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0)) {
-		stop_ride_music();
-	}
+	stop_ride_music();
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) = -1;
 }
 
@@ -326,7 +305,7 @@ void toggle_all_sounds(){
 */
 void pause_sounds()
 {
-	gGameSoundsOff = 1;
+	gGameSoundsOff = true;
 	stop_vehicle_sounds();
 	stop_ride_music();
 	stop_crowd_sound();
@@ -338,7 +317,7 @@ void pause_sounds()
 */
 void unpause_sounds()
 {
-	gGameSoundsOff = 0;
+	gGameSoundsOff = false;
 }
 
 /**

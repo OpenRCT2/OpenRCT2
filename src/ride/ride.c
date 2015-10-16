@@ -3328,10 +3328,7 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 			if (panx < -10000) {
 				panx = -10000;
 			}
-			if (!RCT2_GLOBAL(0x009AAC6D, uint8)) {
-				panx = 0;
-			}
-			rct_ride_music* ride_music = &gRideMusicList[0];//&RCT2_GLOBAL(0x009AF46C, rct_ride_music);
+			rct_ride_music* ride_music = &gRideMusicList[0];
 			int channel = 0;
 			uint32 a1;
 			while (ride_music->rideid != rideIndex || ride_music->tuneid != *tuneId) {
@@ -3352,15 +3349,15 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 		label51:
 			if (a1 < ride_music_info_list[*tuneId]->length) {
 				position = a1;
-				rct_ride_music_params* ride_music_params = gRideMusicParamsListEnd;//RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*);
-				if (ride_music_params < &gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC]/*(rct_ride_music_params*)0x009AF46C*/) {
+				rct_ride_music_params* ride_music_params = gRideMusicParamsListEnd;
+				if (ride_music_params < &gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC]) {
 					ride_music_params->rideid = rideIndex;
 					ride_music_params->tuneid = *tuneId;
 					ride_music_params->offset = a1;
 					ride_music_params->volume = v32;
 					ride_music_params->pan = panx;
 					ride_music_params->freq = RCT2_GLOBAL(0x009AF47C, uint16);
-					gRideMusicParamsListEnd++;//RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*)++;
+					gRideMusicParamsListEnd++;
 				}
 			} else {
 				*tuneId = 0xFF;
@@ -3443,124 +3440,122 @@ void ride_music_update_final()
 	rct_ride_music_params* edi = NULL;
 	int ebx;
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)) {
-		if ((RCT2_GLOBAL(0x009AF284, uint32) & (1 << 0))) {
-			if (!gGameSoundsOff && gConfigSound.sound && gConfigSound.ride_music && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)) {
-				// set to stop music if volume <= 1 ?
-				while (1) {
-					int v8 = 0;
-					int v9 = 1;
-					rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0];//&RCT2_GLOBAL(0x009AF430, rct_ride_music_params);
-					while (ride_music_params < gRideMusicParamsListEnd/*RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*)*/) {
-						if (ride_music_params->rideid != (uint8)-1) {
-							rct_ride_music_info* ride_music_info = ride_music_info_list[ride_music_params->tuneid];
-							if (RCT2_ADDRESS(0x009AA0B1, uint8*)[ride_music_info->pathid]) { // file_on_cdrom[]
-								v8++;
-								if (v9 >= ride_music_params->volume) {
-									v9 = ride_music_params->volume;
-									edi = ride_music_params;
-								}
-							}
-						}
-						ride_music_params++;
-					}
-					if (v8 <= 1) {
-						break;
-					}
-					edi->rideid = -1;
-				}
-				while (1) {
-					int v8 = 0;
-					int v9 = 1;
-					rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0];//&RCT2_GLOBAL(0x009AF430, rct_ride_music_params);
-					while (ride_music_params < gRideMusicParamsListEnd/*RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*)*/) {
-						if (ride_music_params->rideid != (uint8)-1) {
+		if (!gGameSoundsOff && gConfigSound.sound && gConfigSound.ride_music && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)) {
+			// set to stop music if volume <= 1 ?
+			while (1) {
+				int v8 = 0;
+				int v9 = 1;
+				rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0];
+				while (ride_music_params < gRideMusicParamsListEnd) {
+					if (ride_music_params->rideid != (uint8)-1) {
+						rct_ride_music_info* ride_music_info = ride_music_info_list[ride_music_params->tuneid];
+						if (RCT2_ADDRESS(0x009AA0B1, uint8*)[ride_music_info->pathid]) { // file_on_cdrom[]
 							v8++;
 							if (v9 >= ride_music_params->volume) {
 								v9 = ride_music_params->volume;
 								edi = ride_music_params;
 							}
 						}
+					}
+					ride_music_params++;
+				}
+				if (v8 <= 1) {
+					break;
+				}
+				edi->rideid = -1;
+			}
+			while (1) {
+				int v8 = 0;
+				int v9 = 1;
+				rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0];
+				while (ride_music_params < gRideMusicParamsListEnd) {
+					if (ride_music_params->rideid != (uint8)-1) {
+						v8++;
+						if (v9 >= ride_music_params->volume) {
+							v9 = ride_music_params->volume;
+							edi = ride_music_params;
+						}
+					}
+					ride_music_params++;
+				}
+				if (v8 <= 2) {
+					break;
+				}
+				edi->rideid = -1;
+			}
+
+			// stop currently playing music that is not in music params list or not playing?
+			rct_ride_music* ride_music = &gRideMusicList[0];
+			int channel = 0;
+			do {
+				if (ride_music->rideid != (uint8)-1) {
+					rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0];
+					while (ride_music_params < gRideMusicParamsListEnd) {
+						if (ride_music_params->rideid == ride_music->rideid && ride_music_params->tuneid == ride_music->tuneid) {
+							int isplaying = Mixer_Channel_IsPlaying(gRideMusicList[channel].sound_channel);
+							if (isplaying) {
+								goto label32;
+							}
+							break;
+						}
 						ride_music_params++;
 					}
-					if (v8 <= 2) {
-						break;
-					}
-					edi->rideid = -1;
+					Mixer_Stop_Channel(gRideMusicList[channel].sound_channel);
+					ride_music->rideid = -1;
 				}
+			label32:
+				ride_music++;
+				channel++;
+			} while(channel < AUDIO_MAX_RIDE_MUSIC);
 
-				// stop currently playing music that is not in music params list or not playing?
-				rct_ride_music* ride_music = &gRideMusicList[0];//&RCT2_GLOBAL(0x009AF46C, rct_ride_music);
-				int channel = 0;
-				do {
-					if (ride_music->rideid != (uint8)-1) {
-						rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0];//&RCT2_GLOBAL(0x009AF430, rct_ride_music_params);
-						while (ride_music_params < gRideMusicParamsListEnd/*RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*)*/) {
-							if (ride_music_params->rideid == ride_music->rideid && ride_music_params->tuneid == ride_music->tuneid) {
-								int isplaying = Mixer_Channel_IsPlaying(gRideMusicList[channel].sound_channel);
-								if (isplaying) {
-									goto label32;
+			for (rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0]; ride_music_params < gRideMusicParamsListEnd; ride_music_params++) {
+				if (ride_music_params->rideid != (uint8)-1) {
+					rct_ride_music* ride_music = &gRideMusicList[0];
+					int channel = 0;
+					while (ride_music_params->rideid != ride_music->rideid || ride_music_params->tuneid != ride_music->tuneid) {
+						if (ride_music->rideid == (uint8)-1) {
+							ebx = channel;
+						}
+						ride_music++;
+						channel++;
+						if (channel >= AUDIO_MAX_RIDE_MUSIC) {
+							rct_ride_music_info* ride_music_info = ride_music_info_list[ride_music_params->tuneid];
+							rct_ride_music* ride_music = &gRideMusicList[ebx];
+							ride_music->sound_channel = Mixer_Play_Music(ride_music_info->pathid, MIXER_LOOP_NONE, true);
+							if (ride_music->sound_channel) {
+								ride_music->volume = ride_music_params->volume;
+								ride_music->pan = ride_music_params->pan;
+								ride_music->freq = ride_music_params->freq;
+								ride_music->rideid = ride_music_params->rideid;
+								ride_music->tuneid = ride_music_params->tuneid;
+								Mixer_Channel_Volume(ride_music->sound_channel, DStoMixerVolume(ride_music->volume));
+								Mixer_Channel_Pan(ride_music->sound_channel, DStoMixerPan(ride_music->pan));
+								Mixer_Channel_Rate(ride_music->sound_channel, DStoMixerRate(ride_music->freq));
+								int offset = ride_music_params->offset - 10000;
+								if (offset < 0) {
+									offset = 0;
 								}
-								break;
+								Mixer_Channel_SetOffset(ride_music->sound_channel, offset);
+							} else {
+								//RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) = 0;
 							}
-							ride_music_params++;
+							return;
 						}
-						Mixer_Stop_Channel(gRideMusicList[channel].sound_channel);
-						ride_music->rideid = -1;
 					}
-				label32:
-					ride_music++;
-					channel++;
-				} while(channel < AUDIO_MAX_RIDE_MUSIC);
 
-				for (rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0]/*&RCT2_GLOBAL(0x009AF430, rct_ride_music_params)*/; ride_music_params < gRideMusicParamsListEnd/*RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*)*/; ride_music_params++) {
-					if (ride_music_params->rideid != (uint8)-1) {
-						rct_ride_music* ride_music = &gRideMusicList[0];//&RCT2_GLOBAL(0x009AF46C, rct_ride_music);
-						int channel = 0;
-						while (ride_music_params->rideid != ride_music->rideid || ride_music_params->tuneid != ride_music->tuneid) {
-							if (ride_music->rideid == (uint8)-1) {
-								ebx = channel;
-							}
-							ride_music++;
-							channel++;
-							if (channel >= AUDIO_MAX_RIDE_MUSIC) {
-								rct_ride_music_info* ride_music_info = ride_music_info_list[ride_music_params->tuneid];
-								rct_ride_music* ride_music = &gRideMusicList[ebx];
-								ride_music->sound_channel = Mixer_Play_Music(ride_music_info->pathid, MIXER_LOOP_NONE, true);
-								if (ride_music->sound_channel) {
-									ride_music->volume = ride_music_params->volume;
-									ride_music->pan = ride_music_params->pan;
-									ride_music->freq = ride_music_params->freq;
-									ride_music->rideid = ride_music_params->rideid;
-									ride_music->tuneid = ride_music_params->tuneid;
-									Mixer_Channel_Volume(ride_music->sound_channel, DStoMixerVolume(ride_music->volume));
-									Mixer_Channel_Pan(ride_music->sound_channel, DStoMixerPan(ride_music->pan));
-									Mixer_Channel_Rate(ride_music->sound_channel, DStoMixerRate(ride_music->freq));
-									int offset = ride_music_params->offset - 10000;
-									if (offset < 0) {
-										offset = 0;
-									}
-									Mixer_Channel_SetOffset(ride_music->sound_channel, offset);
-								} else {
-									//RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) = 0;
-								}
-								return;
-							}
-						}
-
-						if (ride_music_params->volume != ride_music->volume) {
-							ride_music->volume = ride_music_params->volume;
-							Mixer_Channel_Volume(ride_music->sound_channel, DStoMixerVolume(ride_music->volume));
-						}
-						if (ride_music_params->pan != ride_music->pan) {
-							ride_music->pan = ride_music_params->pan;
-							Mixer_Channel_Pan(ride_music->sound_channel, DStoMixerPan(ride_music->pan));
-						}
-						if (ride_music_params->freq != ride_music->freq) {
-							ride_music->freq = ride_music_params->freq;
-							Mixer_Channel_Rate(ride_music->sound_channel, DStoMixerRate(ride_music->freq));
-						}
-
+					if (ride_music_params->volume != ride_music->volume) {
+						ride_music->volume = ride_music_params->volume;
+						Mixer_Channel_Volume(ride_music->sound_channel, DStoMixerVolume(ride_music->volume));
 					}
+					if (ride_music_params->pan != ride_music->pan) {
+						ride_music->pan = ride_music_params->pan;
+						Mixer_Channel_Pan(ride_music->sound_channel, DStoMixerPan(ride_music->pan));
+					}
+					if (ride_music_params->freq != ride_music->freq) {
+						ride_music->freq = ride_music_params->freq;
+						Mixer_Channel_Rate(ride_music->sound_channel, DStoMixerRate(ride_music->freq));
+					}
+
 				}
 			}
 		}
