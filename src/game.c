@@ -539,10 +539,12 @@ void pause_toggle()
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) ^= 1;
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1) {
 		pause_sounds();
-	else
 		unpause_sounds();
+	} else {
+		unpause_sounds();
+	}
 }
 
 /**
