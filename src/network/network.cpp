@@ -1042,7 +1042,7 @@ uint32 network_get_server_tick()
 	return gNetwork.GetServerTick();
 }
 
-uint8 network_get_player_id()
+uint8 network_get_current_player_id()
 {
 	return gNetwork.GetPlayerID();
 }
@@ -1065,6 +1065,11 @@ uint32 network_get_player_flags(unsigned int index)
 int network_get_player_ping(unsigned int index)
 {
 	return gNetwork.player_list[index]->ping;
+}
+
+int network_get_player_id(unsigned int index)
+{
+	return gNetwork.player_list[index]->id;
 }
 
 void network_send_map()
@@ -1095,6 +1100,29 @@ void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32
 		gNetwork.Client_Send_GAMECMD(eax, ebx, ecx, edx, esi, edi, ebp, callback);
 		break;
 	}
+}
+
+void Network::KickPlayer(int playerId)
+{
+	NetworkPlayer *player = GetPlayerByID(playerId);
+	for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
+		if ((*it)->player->id == playerId) {
+			char buffer[128];
+			sprintf(buffer, "%s has been kicked.", (*it)->player->name);
+
+			// Disconnect the client
+			closesocket((*it)->socket);
+
+			chat_history_add(buffer);
+			Server_Send_CHAT(buffer);
+			break;
+		}
+	}
+}
+
+void network_kick_player(int playerId)
+{
+	gNetwork.KickPlayer(playerId);
 }
 
 #ifdef USE_INET_PTON
@@ -1145,6 +1173,8 @@ int network_get_num_players() { return 1; }
 const char* network_get_player_name(unsigned int index) { return "local (OpenRCT2 compiled without MP)"; }
 uint32 network_get_player_flags(unsigned int index) { return 0; }
 int network_get_player_ping(unsigned int index) { return 0; }
+int network_get_player_id(unsigned int index) { return 0; }
 void network_send_chat(const char* text) {}
 void network_close() {}
+void network_kick_player(int playerId) { }
 #endif /* DISABLE_NETWORK */

@@ -2140,6 +2140,8 @@ enum {
 
 	STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES = 5555,
 
+	STR_KICK_PLAYER = 5556,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

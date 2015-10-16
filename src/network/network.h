@@ -173,6 +173,7 @@ public:
 	const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
 	void SendPacketToClients(NetworkPacket& packet);
 	bool CheckSRAND(uint32 tick, uint32 srand0);
+	void KickPlayer(int playerId);
 
 	void Client_Send_AUTH(const char* gameversion, const char* name, const char* password);
 	void Server_Send_MAP(NetworkConnection* connection = nullptr);
@@ -261,15 +262,18 @@ int network_get_mode();
 void network_update();
 int network_get_authstatus();
 uint32 network_get_server_tick();
-uint8 network_get_player_id();
+uint8 network_get_current_player_id();
 int network_get_num_players();
 const char* network_get_player_name(unsigned int index);
 uint32 network_get_player_flags(unsigned int index);
 int network_get_player_ping(unsigned int index);
+int network_get_player_id(unsigned int index);
 
 void network_send_map();
 void network_send_chat(const char* text);
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
+
+void network_kick_player(int playerId);
 
 void network_print_error();
 #ifdef USE_INET_PTON
