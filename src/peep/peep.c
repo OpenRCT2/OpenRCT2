@@ -7785,13 +7785,254 @@ static void peep_on_enter_or_exit_ride(rct_peep *peep, int rideIndex, int flags)
 	}
 }
 
-/**
+/** Main logic to decide whether a peep should buy an item in question
+ *
+ * Also handles the purchase as well, so once it returns, the peep will have the
+ * item and the money will have been deducted.
+ *
+ * eax: shopItem | (rideIndex << 8)
+ * ecx: price
+ * esi: *peep
+ *
+ * Returns 0 or 1 depending on if the peep decided to buy the item
  *
  *  rct2: 0x0069AF1E
  */
 static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 price)
 {
-	return !(RCT2_CALLPROC_X(0x0069AF1E, shopItem | (rideIndex << 8), 0, price, 0, (int)peep, 0, 0) & 0x100);
+	rct_ride* ride = GET_RIDE(rideIndex);
+	money16 value;
+
+	bool has_voucher = false;
+
+	if ((peep->item_standard_flags & PEEP_ITEM_VOUCHER) &&
+		(peep->voucher_type == VOUCHER_TYPE_FOOD_OR_DRINK_FREE) &&
+		(peep->voucher_arguments == shopItem)) {
+		has_voucher = true;
+	}
+
+	if (peep_has_item(peep, shopItem)) {
+		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_ALREADY_GOT, shopItem);
+		return 0;
+	}
+
+	if (shop_item_is_food_or_drink(shopItem)) {
+		int food = -1;
+		if (food = peep_has_food_standard_flag(peep)) {
+			peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_HAVENT_FINISHED, bitscanforward(food));
+			return 0;
+		} else if (food = peep_has_food_extra_flag(peep)) {
+			peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_HAVENT_FINISHED, bitscanforward(food) + 32);
+			return 0;
+		} else if (peep->nausea >= 145)
+			return 0;
+	}
+
+	if ((shopItem == SHOP_ITEM_BALLOON) || (shopItem == SHOP_ITEM_ICE_CREAM)
+		|| (shopItem == SHOP_ITEM_COTTON_CANDY) || (shopItem == SHOP_ITEM_SUNGLASSES)) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) != 0)
+			return 0;
+	}
+
+	if ((shopItem == SHOP_ITEM_SUNGLASSES) || (shopItem == SHOP_ITEM_ICE_CREAM)) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8) < 12)
+			return 0;
+	}
+
+	if (shop_item_is_food(shopItem) && (peep->hunger > 75)) {
+		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NOT_HUNGRY, 0xFF);
+		return 0;
+	}
+
+	if (shop_item_is_drink(shopItem) && (peep->thirst > 75)) {
+		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NOT_THIRSTY, 0xFF);
+		return 0;
+	}
+
+	if ((shopItem == SHOP_ITEM_UMBRELLA) && (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) != 0))
+			goto loc_69B119;
+
+	if ((shopItem != SHOP_ITEM_MAP) && shop_item_is_souvenir(shopItem) && !has_voucher) {
+		if (((scenario_rand() & 0x7F) + 0x73) > peep->happiness)
+			return 0;
+		else if (peep->no_of_rides < 3)
+			return 0;
+	}
+
+loc_69B119:
+	if (!has_voucher) {
+		if (price != 0) {
+			if (peep->cash_in_pocket == 0) {
+				peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SPENT_MONEY, 0xFF);
+				return 0;
+			}
+			if (price > peep->cash_in_pocket) {
+				peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_AFFORD, shopItem);
+				return 0;
+			}
+		}
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, uint16) >= 21)
+			value = get_shop_hot_value(shopItem);
+		else if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, uint16) <= 11)
+			value = get_shop_cold_value(shopItem);
+		else
+			value = get_shop_base_value(shopItem);
+
+		if (value < price) {
+			value -= price;
+			if (shopItem == SHOP_ITEM_UMBRELLA) {
+				if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) != 0)
+					goto loc_69B221;
+			}
+
+			value = -value;
+			if (peep->happiness >= 128)
+				value /= 2;
+
+			if (peep->happiness >= 180)
+				value /= 2;
+
+			if (value > ((money16)(scenario_rand() & 0x07))) {
+				// "I'm not paying that much for x"
+				uint8 thought_type = (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2_MUCH + (shopItem - 32)) : (PEEP_THOUGHT_TYPE_BALLOON_MUCH + shopItem));
+				peep_insert_new_thought(peep, shopItem, rideIndex);
+				return 0;
+			}
+		}
+		else {
+			value -= price;
+			value = max(8, value);
+			sint8 dl = value;
+
+			if ((dl >= (scenario_rand() & 0x07)) && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+				// "This x is a really good value"
+				uint8 thought_item = (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2 + (shopItem - 32)) : (PEEP_THOUGHT_TYPE_BALLOON + shopItem));
+				peep_insert_new_thought(peep, thought_item, rideIndex);
+			}
+
+			dl *= 4;
+			peep->happiness_growth_rate = min((peep->happiness_growth_rate + dl), 255);
+
+			peep->happiness = min((peep->happiness + dl), 255);
+		}
+	}
+
+loc_69B221:
+	if (!has_voucher) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, uint16) >= 21)
+			value = get_shop_hot_value(shopItem);
+		else if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, uint16) <= 11)
+			value = get_shop_cold_value(shopItem);
+		else
+			value = get_shop_base_value(shopItem);
+
+		value -= price;
+		uint8 satisfaction = 0;
+		if (value > -8) {
+			satisfaction++;
+			if (value > -3) {
+				satisfaction++;
+				if (value > 3)
+					satisfaction++;
+			}
+		}
+
+		ride_update_satisfaction(ride, satisfaction);
+	}
+
+	// The peep has now decided to buy the item (or, specifically, has not been
+	// dissuaded so far).
+	if (shopItem >= 32)
+		peep->item_extra_flags |= (1 << (shopItem - 32));
+	else
+		peep->item_standard_flags |= (1 << shopItem);
+
+	if (shopItem == SHOP_ITEM_TSHIRT)
+		peep->tshirt_colour = ride->track_colour_main[0];
+
+	if (shopItem == SHOP_ITEM_HAT)
+		peep->hat_colour = ride->track_colour_main[0];
+
+	if (shopItem == SHOP_ITEM_BALLOON)
+		peep->balloon_colour = ride->track_colour_main[0];
+
+	if (shopItem == SHOP_ITEM_UMBRELLA)
+		peep->umbrella_colour = ride->track_colour_main[0];
+
+	if (shopItem == SHOP_ITEM_MAP)
+		sub_69A98C(peep);
+
+	uint16 dl;
+	if (shopItem >= 32)
+		dl = RCT2_ADDRESS(0x982310, uint8)[shopItem - 32];
+	else
+		dl = RCT2_ADDRESS(0x9822F4, uint8)[shopItem];
+
+	peep->var_42 = min((peep->var_42 + dl), 255);
+
+	if (shopItem == SHOP_ITEM_PHOTO)
+		peep->photo1_ride_ref = rideIndex;
+
+	if (shopItem == SHOP_ITEM_PHOTO2)
+		peep->photo2_ride_ref = rideIndex;
+
+	if (shopItem == SHOP_ITEM_PHOTO3)
+		peep->photo3_ride_ref = rideIndex;
+
+	if (shopItem == SHOP_ITEM_PHOTO4)
+		peep->photo4_ride_ref = rideIndex;
+
+	peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+	peep_update_sprite_type(peep);
+	if (peep->flags & PEEP_FLAGS_TRACKING) {
+		RCT2_GLOBAL(0x13CE952,uint16) = peep->name_string_idx;
+		RCT2_GLOBAL((0x13CE952 + 2), uint32) = peep->id;
+		RCT2_GLOBAL((0x13CE956 + 2), uint16) = (shopItem >= 32 ? STR_SHOP_ITEM_INDEFINITE_PHOTO2 + (shopItem - 32) : STR_SHOP_ITEM_INDEFINITE_BALLOON + shopItem);
+		news_item_add_to_queue(2, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, peep->sprite_index);
+	}
+
+	if (shop_item_is_food(shopItem))
+		peep->no_of_food++;
+
+	if (shop_item_is_drink(shopItem))
+		peep->no_of_drinks++;
+
+	if (shop_item_is_souvenir(shopItem))
+		peep->no_of_souvenirs++;
+
+	money16* expend_type = &peep->paid_on_souvenirs;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_SHOP_STOCK * 4;
+
+	if (shop_item_is_food(shopItem)) {
+		expend_type = &peep->paid_on_food;
+		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK * 4;
+	}
+
+	if (shop_item_is_drink(shopItem)) {
+		expend_type = &peep->paid_on_drink;
+		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK * 4;
+	}
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
+		finance_payment(get_shop_item_cost(shopItem), (RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) / 4));
+
+	// Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) -= 4;
+	if (!has_voucher)
+		peep_spend_money(peep, expend_type, price);
+	else {
+		peep->item_standard_flags &= ~PEEP_ITEM_VOUCHER;
+		peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+	}
+
+	ride->total_profit += (price - get_shop_item_cost(shopItem));
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+	ride->var_120++;
+	ride->total_customers++;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+
+	return 1;
 }
 
 /**

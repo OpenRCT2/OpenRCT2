@@ -443,7 +443,7 @@ typedef struct {
 	uint8 photo2_ride_ref;			// 0x5C
 	uint8 photo3_ride_ref;			// 0x5D
 	uint8 photo4_ride_ref;			// 0x5E
-	uint8 pad_5F[0x09];				// 0x5C
+	uint8 pad_5F[0x09];				// 0x5F
 	uint8 current_ride;				// 0x68
 	uint8 current_ride_station;		// 0x69
 	uint8 current_train;   	        // 0x6A
