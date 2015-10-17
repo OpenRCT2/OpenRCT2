@@ -17,9 +17,9 @@ libVFile="./libversion"
 
 function download {
 	if command -v curl > /dev/null 2>&1; then
-		curl -L -o $2 $1
+		curl -L -o "$2" "$1"
 	elif command -v wget > /dev/null 2>&1; then
-		wget -O $2 $1
+		wget -O "$2" "$1"
 	else
 		echo "Please install either wget or curl to continue"
 		exit 1
