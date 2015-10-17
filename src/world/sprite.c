@@ -538,8 +538,8 @@ void litter_create(int x, int y, int z, int direction, int type)
 	uint16 spriteIndex, nextSpriteIndex;
 	uint32 newestLitterCreationTick;
 
-	x += TileDirectionDelta[direction].x / 8;
-	y += TileDirectionDelta[direction].y / 8;
+	x += TileDirectionDelta[direction >> 3].x / 8;
+	y += TileDirectionDelta[direction >> 3].y / 8;
 
 	if (!litter_can_be_at(x, y, z))
 		return;
