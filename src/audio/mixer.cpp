@@ -448,6 +448,7 @@ void Channel::SetGroup(int group)
 Mixer::Mixer()
 {
 	effectbuffer = 0;
+	volume = 1;
 	for (int i = 0; i < countof(css1sources); i++) {
 		css1sources[i] = 0;
 	}
@@ -565,6 +566,11 @@ bool Mixer::LoadMusic(int pathid)
 	}
 }
 
+void Mixer::SetVolume(float volume)
+{
+	Mixer::volume = volume;
+}
+
 void SDLCALL Mixer::Callback(void* arg, uint8* stream, int length)
 {
 	Mixer* mixer = (Mixer*)arg;
@@ -671,7 +677,8 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 					mixlength = length - loaded;
 				}
 
-				float volumeadjust = (gConfigSound.master_volume / 100.0f);
+				float volumeadjust = volume;
+				volumeadjust *= (gConfigSound.master_volume / 100.0f);
 				if (channel.group == MIXER_GROUP_MUSIC) {
 					volumeadjust *= (gConfigSound.music_volume / 100.0f);
 				}
@@ -896,4 +903,9 @@ void* Mixer_Play_Music(int pathid, int loop, int streaming)
 		}
 	}
 	return 0;
+}
+
+void Mixer_SetVolume(float volume)
+{
+	gMixer.SetVolume(volume);
 }

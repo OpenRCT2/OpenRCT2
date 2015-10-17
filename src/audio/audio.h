@@ -105,7 +105,6 @@ void start_title_music();
 void stop_ride_music();
 void stop_crowd_sound();
 void stop_title_music();
-void stop_raid_sound();
 void audio_init1();
 void audio_init2(int device);
 void audio_close();
