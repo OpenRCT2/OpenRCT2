@@ -41,6 +41,7 @@ rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
 rct_ride_music_params *gRideMusicParamsListEnd;
 void *gCrowdSoundChannel = 0;
 void *gTitleMusicChannel = 0;
+void *gRainSoundChannel = 0;
 bool gGameSoundsOff = false;
 
 void audio_init(int i)
@@ -232,6 +233,14 @@ void stop_title_music()
 	}
 }
 
+void stop_rain_sound()
+{
+	if (gRainSoundChannel) {
+		Mixer_Stop_Channel(gRainSoundChannel);
+		gRainSoundChannel = 0;
+	}
+}
+
 /**
 *
 *  rct2: 0x006BA8E0
@@ -285,6 +294,7 @@ void audio_close()
 	stop_crowd_sound();
 	stop_title_music();
 	stop_ride_music();
+	stop_rain_sound();
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) = -1;
 }
 
@@ -309,6 +319,7 @@ void pause_sounds()
 	stop_vehicle_sounds();
 	stop_ride_music();
 	stop_crowd_sound();
+	stop_rain_sound();
 }
 
 /**

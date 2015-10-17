@@ -97,6 +97,7 @@ extern rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
 extern rct_ride_music_params *gRideMusicParamsListEnd;
 extern void *gCrowdSoundChannel;
 extern void *gTitleMusicChannel;
+extern void *gRainSoundChannel;
 extern bool gGameSoundsOff;
 
 int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z);
@@ -104,6 +105,7 @@ void start_title_music();
 void stop_ride_music();
 void stop_crowd_sound();
 void stop_title_music();
+void stop_raid_sound();
 void audio_init1();
 void audio_init2(int device);
 void audio_close();
