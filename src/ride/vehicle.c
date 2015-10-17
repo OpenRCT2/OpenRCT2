@@ -1186,8 +1186,6 @@ static void vehicle_update(rct_vehicle *vehicle)
 	vehicle_update_sound(vehicle);
 }
 
-
-
 /**
  *
  *  rct2: 0x006D7BCC
