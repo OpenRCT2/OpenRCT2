@@ -97,6 +97,7 @@ extern rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
 extern rct_ride_music_params *gRideMusicParamsListEnd;
 extern void *gCrowdSoundChannel;
 extern void *gTitleMusicChannel;
+extern void *gRainSoundChannel;
 extern bool gGameSoundsOff;
 
 int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z);

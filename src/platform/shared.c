@@ -20,6 +20,7 @@
 
 #include "../addresses.h"
 #include "../audio/audio.h"
+#include "../audio/mixer.h"
 #include "../config.h"
 #include "../cursors.h"
 #include "../drawing/drawing.h"
@@ -406,10 +407,10 @@ void platform_process_messages()
 				platform_resize(e.window.data1, e.window.data2);
 			if (gConfigSound.audio_focus && gConfigSound.sound) {
 				if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
-					unpause_sounds();
+					Mixer_SetVolume(1);
 				}
 				if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
-					pause_sounds();
+					Mixer_SetVolume(0);
 				}
 			}
 			break;

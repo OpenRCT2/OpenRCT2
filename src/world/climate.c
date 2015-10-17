@@ -62,7 +62,6 @@ static const rct_weather_transition* climate_transitions[4];
 
 // Sound data
 static int _rainVolume = 1;
-static void* _rainSoundChannel = 0;
 static unsigned int _lightningTimer, _thunderTimer;
 static void* _thunderSoundChannels[MAX_THUNDER_INSTANCES];
 static int _thunderStatus[MAX_THUNDER_INSTANCES] = { THUNDER_STATUS_NULL, THUNDER_STATUS_NULL };
@@ -108,9 +107,9 @@ void climate_reset(int climate)
 	_lightningTimer = 0;
 	_thunderTimer = 0;
 	if (_rainVolume != 1){
-		if (_rainSoundChannel) {
-			Mixer_Stop_Channel(_rainSoundChannel);
-			_rainSoundChannel = 0;
+		if (gRainSoundChannel) {
+			Mixer_Stop_Channel(gRainSoundChannel);
+			gRainSoundChannel = 0;
 		}
 		_rainVolume = 1;
 	}
@@ -251,30 +250,30 @@ void climate_update_sound()
 static void climate_update_rain_sound()
 {
 	if (_climateCurrentWeatherEffect == 1 || _climateCurrentWeatherEffect == 2) {
+		// Start playing the rain sound
+		if (!gRainSoundChannel) {
+			gRainSoundChannel = Mixer_Play_Effect(SOUND_RAIN_1, MIXER_LOOP_INFINITE, DStoMixerVolume(-4000), 0.5f, 1, 0);
+		}
 		if (_rainVolume == 1) {
-			// Start playing the rain sound
-			if (!_rainSoundChannel) {
-				_rainSoundChannel = Mixer_Play_Effect(SOUND_RAIN_1, MIXER_LOOP_INFINITE, DStoMixerVolume(-4000), 0.5f, 1, 0);
-			}
 			_rainVolume = -4000;
 		} else {
 			// Increase rain sound
 			_rainVolume = min(-1400, _rainVolume + 80);
-			if (_rainSoundChannel) {
-				Mixer_Channel_Volume(_rainSoundChannel, DStoMixerVolume(_rainVolume));
+			if (gRainSoundChannel) {
+				Mixer_Channel_Volume(gRainSoundChannel, DStoMixerVolume(_rainVolume));
 			}
 		}
 	} else if (_rainVolume != 1) {
 		// Decrease rain sound
 		_rainVolume -= 80;
 		if (_rainVolume > -4000) {
-			if (_rainSoundChannel) {
-				Mixer_Channel_Volume(_rainSoundChannel, DStoMixerVolume(_rainVolume));
+			if (gRainSoundChannel) {
+				Mixer_Channel_Volume(gRainSoundChannel, DStoMixerVolume(_rainVolume));
 			}
 		} else {
-			if (_rainSoundChannel) {
-				Mixer_Stop_Channel(_rainSoundChannel);
-				_rainSoundChannel = 0;
+			if (gRainSoundChannel) {
+				Mixer_Stop_Channel(gRainSoundChannel);
+				gRainSoundChannel = 0;
 			}
 			_rainVolume = 1;
 		}
