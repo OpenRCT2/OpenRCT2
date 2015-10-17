@@ -5441,7 +5441,7 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 			uint16 spriteIndex;
 			rct_peep *peep;
 			FOR_ALL_GUESTS(spriteIndex, peep){
-				uint8 ride_id_bit = ride_id & 0x3;
+				uint8 ride_id_bit = ride_id % 8;
 				uint8 ride_id_offset = ride_id / 8;
 				peep->rides_been_on[ride_id_offset] &= ~(1 << ride_id_bit); // clear ride from potentially being in rides_been_on
 				if(peep->state == PEEP_STATE_WATCHING){

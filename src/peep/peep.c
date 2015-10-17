@@ -7535,24 +7535,24 @@ static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 
 
 static void peep_set_has_ridden(rct_peep *peep, int rideIndex)
 {
-	peep->rides_been_on[rideIndex / 32] |= 1 << (rideIndex % 32);
+	peep->rides_been_on[rideIndex / 8] |= 1 << (rideIndex % 8);
 	rct_ride *ride = GET_RIDE(rideIndex);
 	peep_set_has_ridden_ride_type(peep, ride->type);
 }
 
 static bool peep_has_ridden(rct_peep *peep, int rideIndex)
 {
-	return peep->rides_been_on[rideIndex / 32] & (1 << (rideIndex % 32));
+	return peep->rides_been_on[rideIndex / 8] & (1 << (rideIndex % 8));
 }
 
 static void peep_set_has_ridden_ride_type(rct_peep *peep, int rideType)
 {
-	peep->ride_types_been_on[rideType / 32] |= 1 << (rideType % 32);
+	peep->ride_types_been_on[rideType / 8] |= 1 << (rideType % 8);
 }
 
 static bool peep_has_ridden_ride_type(rct_peep *peep, int rideType)
 {
-	return peep->ride_types_been_on[rideType / 32] & (1 << (rideType % 32));
+	return peep->ride_types_been_on[rideType / 8] & (1 << (rideType % 8));
 }
 
 /**
