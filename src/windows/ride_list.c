@@ -195,8 +195,9 @@ static void window_ride_list_mouseup(rct_window *w, int widgetIndex)
 			w->no_list_items = 0;
 			w->frame_no = 0;
 			w->selected_list_item = -1;
-			if (w->page != PAGE_RIDES && _window_ride_list_information_type > INFORMATION_TYPE_PROFIT)
-				_window_ride_list_information_type = INFORMATION_TYPE_PROFIT;
+			if (w->page != PAGE_RIDES && _window_ride_list_information_type > INFORMATION_TYPE_PROFIT) {
+				_window_ride_list_information_type = INFORMATION_TYPE_STATUS;
+			}
 			window_invalidate(w);
 		}
 		break;
