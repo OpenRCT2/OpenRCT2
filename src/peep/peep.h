@@ -542,7 +542,7 @@ typedef struct {
 	uint8 umbrella_colour;			// 0xF7
 	uint8 hat_colour;				// 0xF8
 	uint8 favourite_ride;			// 0xF9
-	uint8 var_FA;
+	uint8 favourite_ride_rating;	// 0xFA
 	uint8 pad_FB;
 	uint32 item_standard_flags;		// 0xFC
 } rct_peep;
