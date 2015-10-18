@@ -889,16 +889,12 @@ void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
 		RCT2_GLOBAL(0x9DEA52, uint16) = 0;
 		RCT2_GLOBAL(0x9DEA54, uint16) = 0;
 		RCT2_GLOBAL(0x9DEA56, uint16) = z + 2;
-		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) {
-		case 0: RCT2_CALLPROC_X(0x00686806, 0, ebx, 0, z, 1, 1, 0); break;
-		case 1: RCT2_CALLPROC_X(0x006869B2, 0, ebx, 0, z, 1, 1, 0); break;
-		case 2: RCT2_CALLPROC_X(0x00686B6F, 0, ebx, 0, z, 1, 1, 0); break;
-		case 3: RCT2_CALLPROC_X(0x00686D31, 0, ebx, 0, z, 1, 1, 0); break;
-		}
+		sub_98197C(0, 0, ebx, 0, z, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32));
+		return;
 	}
 
 	if (vehicle->ride_subtype == 0xFF) {
-		vehicleEntry = (rct_ride_type_vehicle*)0x009DE232;
+		vehicleEntry = &CableLiftVehicle;
 	} else {
 		rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
 		vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
