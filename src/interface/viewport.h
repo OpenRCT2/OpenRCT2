@@ -131,6 +131,9 @@ void painter_setup();
 void sub_688485();
 void sub_688217();
 
+int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 length_x, sint16 length_y, uint32 rotation);
+int sub_6629BC(int height, uint16 ax, uint32 image_id, int edi);
+
 void viewport_invalidate(rct_viewport *viewport, int left, int top, int right, int bottom);
 
 void screen_get_map_xy(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **viewport);

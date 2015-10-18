@@ -722,7 +722,7 @@ void sub_688485(){
 }
 
 /* rct2: 0x00686806, 0x006869B2, 0x00686B6F, 0x00686D31, 0x0098197C */
-int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int edx, sint16 si, sint16 di, uint32 rotation){
+int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 length_x, sint16 length_y, uint32 rotation){
 	int ebp = ah + RCT2_GLOBAL(0x9DEA56, uint16);
 
 	RCT2_GLOBAL(0xF1AD28, paint_struct*) = 0;
@@ -731,7 +731,7 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int edx, sint16 si, s
 	//Not a paint struct but something similar
 	paint_struct* ps = RCT2_GLOBAL(0xEE7888, paint_struct*);
 
-	if ((uint32)ps >= RCT2_GLOBAL(0xEE7880, uint32)) return 1;
+	if ((uint32)ps >= RCT2_GLOBAL(0xEE7880, uint32))return 1;
 
 	ps->image_id = image_id;
 
@@ -748,11 +748,23 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int edx, sint16 si, s
 	rct_xyz16 coord_3d = {
 		.x = al,
 		.y = cl,
-		.z = edx
+		.z = height
 	};
 
-	rotate_map_coordinates(&coord_3d.x, &coord_3d.y, rotation);
-
+	switch (rotation) {
+	case 0:	
+		rotate_map_coordinates(&coord_3d.x, &coord_3d.y, 0);
+		break;
+	case 1:
+		rotate_map_coordinates(&coord_3d.x, &coord_3d.y, 3);
+		break;
+	case 2:
+		rotate_map_coordinates(&coord_3d.x, &coord_3d.y, 2);
+		break;
+	case 3:
+		rotate_map_coordinates(&coord_3d.x, &coord_3d.y, 1);
+		break;
+	}
 	coord_3d.x += RCT2_GLOBAL(0x9DE568, sint16);
 	coord_3d.y += RCT2_GLOBAL(0x9DE56C, sint16);
 
@@ -774,12 +786,12 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int edx, sint16 si, s
 
 	if (right <= dpi->x)return 1;
 	if (top <= dpi->y)return 1;
-	if (left > dpi->x + dpi->width) return 1;
-	if (bottom > dpi->y + dpi->height) return 1;
+	if (left > dpi->x + dpi->width)return 1;
+	if (bottom > dpi->y + dpi->height)return 1;
 
-	rct_xy16 unk = {
-		.x = di,
-		.y = si
+	rct_xy16 boundBox = {
+		.x = length_x,
+		.y = length_y
 	};
 
 	rct_xy16 s_unk = {
@@ -790,31 +802,31 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int edx, sint16 si, s
 	// Unsure why rots 1 and 3 need to swap
 	switch (rotation){
 	case 0:
-		rotate_map_coordinates(&unk.x, &unk.y, 0);
+		rotate_map_coordinates(&boundBox.x, &boundBox.y, 0);
 		rotate_map_coordinates(&s_unk.x, &s_unk.y, 0);
-		unk.x--;
-		unk.y--;
+		boundBox.x--;
+		boundBox.y--;
 		break;
 	case 1:
-		rotate_map_coordinates(&unk.x, &unk.y, 3);
+		rotate_map_coordinates(&boundBox.x, &boundBox.y, 3);
 		rotate_map_coordinates(&s_unk.x, &s_unk.y, 3);
-		unk.y--;
+		boundBox.y--;
 		break;
 	case 2:
-		rotate_map_coordinates(&unk.x, &unk.y, 2);
+		rotate_map_coordinates(&boundBox.x, &boundBox.y, 2);
 		rotate_map_coordinates(&s_unk.x, &s_unk.y, 2);
 		break;
 	case 3:
-		rotate_map_coordinates(&unk.x, &unk.y, 1);
+		rotate_map_coordinates(&boundBox.x, &boundBox.y, 1);
 		rotate_map_coordinates(&s_unk.x, &s_unk.y, 1);
-		unk.x--;
+		boundBox.x--;
 		break;
 	}
 
-	ps->other_x = unk.x + s_unk.x + RCT2_GLOBAL(0x9DE568, sint16);
+	ps->other_x = boundBox.x + s_unk.x + RCT2_GLOBAL(0x9DE568, sint16);
 	ps->some_x = RCT2_GLOBAL(0x009DEA56, sint16);
 	ps->some_y = ebp;
-	ps->other_y = unk.y + s_unk.y + RCT2_GLOBAL(0x009DE56C, sint16);
+	ps->other_y = boundBox.y + s_unk.y + RCT2_GLOBAL(0x009DE56C, sint16);
 	ps->var_1A = 0;
 	ps->attached_x = s_unk.x + RCT2_GLOBAL(0x9DE568, sint16);
 	ps->attached_y = s_unk.y + RCT2_GLOBAL(0x009DE56C, sint16);
@@ -846,7 +858,7 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int edx, sint16 si, s
 		break;
 	}
 
-	di = attach.x + attach.y;
+	sint16 di = attach.x + attach.y;
 
 	if (di < 0)
 		di = 0;
@@ -860,12 +872,12 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int edx, sint16 si, s
 	RCT2_ADDRESS(0x00F1A50C, paint_struct*)[di] = ps;
 	ps->next_quadrant_ps = old_ps;
 
-	if (di < RCT2_GLOBAL(0x00F1AD0C, sint32)){
-		RCT2_GLOBAL(0x00F1AD0C, sint32) = di;
+	if ((uint16)di < RCT2_GLOBAL(0x00F1AD0C, uint32)){
+		RCT2_GLOBAL(0x00F1AD0C, uint32) = di;
 	}
 
-	if (di > RCT2_GLOBAL(0x00F1AD10, sint32)){
-		RCT2_GLOBAL(0x00F1AD10, sint32) = di;
+	if ((uint16)di > RCT2_GLOBAL(0x00F1AD10, uint32)){
+		RCT2_GLOBAL(0x00F1AD10, uint32) = di;
 	}
 
 	RCT2_GLOBAL(0xEE7888, paint_struct*) += 1;

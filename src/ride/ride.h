@@ -828,7 +828,7 @@ extern rct_ride* g_ride_list;
 /** Helper macros until rides are stored in this module. */
 #define GET_RIDE(x) (&g_ride_list[x])
 #define GET_RIDE_MEASUREMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement)[x]))
-#define GET_RIDE_ENTRY(x) RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, rct_ride_type*)[x]
+#define GET_RIDE_ENTRY(x) gRideTypeList[x]
 
 /**
  * Helper macro loop for enumerating through all the non null rides.
