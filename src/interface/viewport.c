@@ -24,6 +24,7 @@
 #include "../localisation/localisation.h"
 #include "../ride/ride_data.h"
 #include "../ride/track_data.h"
+#include "../ride/track_paint.h"
 #include "../sprites.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
@@ -1373,16 +1374,7 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 				RCT2_GLOBAL(0x009DEA52, uint16) = 1000;
 				RCT2_GLOBAL(0x009DEA54, uint16) = 1000;
 				RCT2_GLOBAL(0x009DEA56, uint16) = 2047;
-				RCT2_CALLPROC_X(
-					RCT2_ADDRESS(0x0098197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)],
-					16,
-					ebx,
-					16,
-					height + ax + 3,
-					1,
-					1,
-					0
-				);
+				sub_98197C(16, 0, ebx, 16, height + ax + 3, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32));
 			}
 		}
 
@@ -1398,28 +1390,34 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 			RCT2_GLOBAL(0x00F441A4, uint32) = 0x21600000;
 		}
 		if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
-			uint32 meh = RCT2_ADDRESS(0x00993CC4, uint32)[RCT2_GLOBAL(0x009AACBF, uint8)];
+			uint32 ghost_id = RCT2_ADDRESS(0x00993CC4, uint32)[RCT2_GLOBAL(0x009AACBF, uint8)];
 			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 0;
-			RCT2_GLOBAL(0x00F44198, uint32) = meh;
-			RCT2_GLOBAL(0x00F4419C, uint32) = meh;
-			RCT2_GLOBAL(0x00F441A0, uint32) = meh;
-			RCT2_GLOBAL(0x00F441A4, uint32) = meh;
+			RCT2_GLOBAL(0x00F44198, uint32) = ghost_id;
+			RCT2_GLOBAL(0x00F4419C, uint32) = ghost_id;
+			RCT2_GLOBAL(0x00F441A0, uint32) = ghost_id;
+			RCT2_GLOBAL(0x00F441A4, uint32) = ghost_id;
 		}
 
-		uint32 **trackTypeList = (uint32**)RideTypeTrackPaintFunctions[ride->type];
-		uint32 *trackDirectionList = trackTypeList[trackType];
+		TRACK_PAINT_FUNCTION ***trackTypeList = (TRACK_PAINT_FUNCTION***)RideTypeTrackPaintFunctionsOld[ride->type];
+		if (trackTypeList == NULL) {
+			trackTypeList = (TRACK_PAINT_FUNCTION***)RideTypeTrackPaintFunctions[ride->type];
+			trackTypeList[trackType][direction](rideIndex, trackSequence, direction, height, mapElement);
+		}
+		else {
+			uint32 *trackDirectionList = (uint32*)trackTypeList[trackType];
 
-		// Have to call from this point as it pushes esi and expects callee to pop it
-		RCT2_CALLPROC_X(
-			0x006C4934,
-			ride->type,
-			(int)trackDirectionList,
-			direction,
-			height,
-			(int)mapElement,
-			rideIndex * sizeof(rct_ride),
-			trackSequence
-		);
+			// Have to call from this point as it pushes esi and expects callee to pop it
+			RCT2_CALLPROC_X(
+				0x006C4934,
+				ride->type,
+				(int)trackDirectionList,
+				direction,
+				height,
+				(int)mapElement,
+				rideIndex * sizeof(rct_ride),
+				trackSequence
+				);
+		}
 	}
 
 	if (isEntranceStyleNone) {
