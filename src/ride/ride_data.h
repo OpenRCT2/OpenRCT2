@@ -95,4 +95,6 @@ extern const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT];
 extern const rct_shop_item_string_types ShopItemStringIds[SHOP_ITEM_COUNT];
 extern const uint32 ShopItemImage[SHOP_ITEM_COUNT];
 
+extern const rct_ride_type_vehicle CableLiftVehicle;
+
 #endif

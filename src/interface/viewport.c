@@ -894,7 +894,7 @@ void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
 	}
 
 	if (vehicle->ride_subtype == 0xFF) {
-		vehicleEntry = (rct_ride_type_vehicle*)0x009DE232;
+		vehicleEntry = &CableLiftVehicle;
 	} else {
 		rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
 		vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
