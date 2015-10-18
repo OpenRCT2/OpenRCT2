@@ -3894,6 +3894,9 @@ STR_5551    :年/日/月
 STR_5552    :{POP16}{POP16}第{COMMA16}年, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5553    :當Steam overlay開啟時暫停遊戲
 STR_5554    :{SMALLFONT}{BLACK}啟用山丘工具
+STR_5555    :顯示來自其他類型軌道的車輛種類
+STR_5556    :踢走玩家
+STR_5557    :多人遊戲不同步時依然保持連線
 
 #####################
 # Rides/attractions # 
