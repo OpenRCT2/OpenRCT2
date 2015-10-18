@@ -1177,4 +1177,5 @@ int network_get_player_id(unsigned int index) { return 0; }
 void network_send_chat(const char* text) {}
 void network_close() {}
 void network_kick_player(int playerId) { }
+uint8 network_get_current_player_id() { return 0; }
 #endif /* DISABLE_NETWORK */
