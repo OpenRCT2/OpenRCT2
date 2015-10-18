@@ -235,7 +235,7 @@ static void window_ride_list_resize(rct_window *w)
  */
 static void window_ride_list_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
-	int numItems, i;
+	int currentItem, lastItem, count;
 
 	if (widgetIndex == WIDX_OPEN_CLOSE_ALL) {
 		gDropdownItemsFormat[0] = STR_CLOSE_ALL;
@@ -244,23 +244,26 @@ static void window_ride_list_mousedown(int widgetIndex, rct_window*w, rct_widget
 	} else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN) {
 		widget--;
 
-		numItems = 9;
-		if (w->page != PAGE_RIDES)
-			numItems -= 5;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
-			numItems--;
+		if (w->page == PAGE_RIDES)
+			lastItem = STR_GUESTS_FAVOURITE;
+		else
+			lastItem = STR_PROFIT;
 
-		for (i = 0; i < numItems; i++) {
-			gDropdownItemsFormat[i] = 1142;
-			gDropdownItemsArgs[i] = STR_STATUS + i;
-		}		
+		for (count = 0, currentItem = STR_STATUS; currentItem <= lastItem; currentItem++) {
+			if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) && (currentItem == STR_PROFIT))
+				continue;
+			gDropdownItemsFormat[count] = 1142;
+			gDropdownItemsArgs[count] = currentItem;
+			count++;
+		}
+
 		window_dropdown_show_text_custom_width(
 			w->x + widget->left,
 			w->y + widget->top,
 			widget->bottom - widget->top,
 			w->colours[1],
 			DROPDOWN_FLAG_STAY_OPEN,
-			numItems,
+			count,
 			widget->right - widget->left - 3
 		);
 		dropdown_set_checked(_window_ride_list_information_type, true);
