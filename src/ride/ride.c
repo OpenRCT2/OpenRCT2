@@ -5335,7 +5335,7 @@ void game_command_callback_ride_construct_new(int eax, int ebx, int ecx, int edx
 
 void game_command_callback_ride_construct_placed_back(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 {
-	int trackType, trackDirection, rideIndex, edxRS16, x, y, z, properties;
+	int trackDirection, x, y, z;
 	track_begin_end trackBeginEnd;
 
 	RCT2_GLOBAL(0x00F441D2, uint8) = _currentRideIndex;
@@ -5368,8 +5368,7 @@ void game_command_callback_ride_construct_placed_back(int eax, int ebx, int ecx,
 
 void game_command_callback_ride_construct_placed_front(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 {
-	int trackType, trackDirection, rideIndex, edxRS16, x, y, z, properties;
-	track_begin_end trackBeginEnd;
+	int trackDirection, x, y, z;
 
 	RCT2_GLOBAL(0x00F441D2, uint8) = _currentRideIndex;
 	trackDirection = _currentTrackPieceDirection;
