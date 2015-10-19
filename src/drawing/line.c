@@ -53,13 +53,13 @@ void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, int y, int x, 
 		if (no_pixels <= 0)return;
 	}
 
-	char* bits_pointer;
+	uint8* bits_pointer;
 	//Get the buffer we are drawing to and move to the first coordinate.
 	bits_pointer = dpi->bits + y*(dpi->pitch + dpi->width) + x;
 
 	//Draw the line to the specified colour
 	for (; no_pixels > 0; --no_pixels, ++bits_pointer){
-		*((uint8*)bits_pointer) = colour;
+		*bits_pointer = colour;
 	}
 }
 

@@ -2314,7 +2314,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 	rct_ride_type *rideEntry, *currentRideEntry;
 	rct_string_id stringId;
 	int i, minCars, maxCars, cars, numItems, quadIndex, bitIndex, rideEntryIndex, selectedIndex, rideTypeIterator, rideTypeIteratorMax;
-	uint8 *rideEntryIndexPtr, *currentRideEntryIndex;
+	uint8 *rideEntryIndexPtr;
 	bool selectionShouldBeExpanded;
 
 	ride = GET_RIDE(w->number);
@@ -2345,9 +2345,8 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 				continue;
 
 			rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideTypeIterator);
-			currentRideEntryIndex;
 
-			for (currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != 0xFF; currentRideEntryIndex++) {
+			for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != 0xFF; currentRideEntryIndex++) {
 				rideEntryIndex = *currentRideEntryIndex;
 				currentRideEntry = GET_RIDE_ENTRY(rideEntryIndex);
 				// Skip if vehicle has the same track type, but not same subtype, unless subtype switching is enabled
@@ -5802,7 +5801,7 @@ static void window_ride_income_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Running cost per hour
 	costPerHour = ride->upkeep_cost * 16;
-	stringId = ride->upkeep_cost == 0xFFFF ? STR_RUNNING_COST_UNKNOWN : STR_RUNNING_COST_PER_HOUR;
+	stringId = ride->upkeep_cost == (money16)0xFFFF ? STR_RUNNING_COST_UNKNOWN : STR_RUNNING_COST_PER_HOUR;
 	gfx_draw_string_left(dpi, stringId, &costPerHour, 0, x, y);
 	y += 10;
 

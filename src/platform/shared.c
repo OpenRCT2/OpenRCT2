@@ -33,7 +33,7 @@
 #include "../openrct2.h"
 #include "platform.h"
 
-typedef void(*update_palette_func)(char*, int, int);
+typedef void(*update_palette_func)(const uint8*, int, int);
 
 openrct2_cursor gCursorState;
 const unsigned char *gKeysState;

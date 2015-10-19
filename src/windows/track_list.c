@@ -153,7 +153,7 @@ void window_track_list_open(ride_list_item item)
  */
 static void window_track_list_select(rct_window *w, int index)
 {
-	uint8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
+	utf8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, utf8);
 	rct_track_design *trackDesign;
 
 	w->track_list.var_480 = index;
@@ -172,7 +172,7 @@ static void window_track_list_select(rct_window *w, int index)
 		index--;
 
 	trackDesignItem = trackDesignList + (index * 128);
-	RCT2_GLOBAL(0x00F4403C, uint8*) = trackDesignItem;
+	RCT2_GLOBAL(0x00F4403C, utf8*) = trackDesignItem;
 
 	window_track_list_format_name(
 		(char*)0x009BC313,
@@ -382,7 +382,8 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	rct_widget *widget;
 	rct_track_design *trackDesign = NULL;
-	uint8 *image, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
+	uint8 *image;
+	utf8 *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, utf8);
 	uint16 holes, speed, drops, dropHeight, inversions;
 	fixed32_2dp rating;
 	int trackIndex, x, y, colour, gForces, airTime;
@@ -559,7 +560,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 {
 	rct_string_id stringId, stringId2;
 	int i, x, y, colour;
-	uint8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
+	utf8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, utf8);
 
 	colour = RCT2_GLOBAL(0x00141FC48 + (w->colours[0] * 8), uint8);
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;

@@ -878,7 +878,7 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int edx, sint16 si, s
 void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
 {
 	rct_ride_type *rideEntry;
-	rct_ride_type_vehicle *vehicleEntry;
+	const rct_ride_type_vehicle *vehicleEntry;
 
 	int x = vehicle->x;
 	int y = vehicle->y;
@@ -1171,7 +1171,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 			string_id = STR_RIDE_ENTRANCE_NAME;
 		}
 
-		uint8 entrance_string[MAX_PATH];
+		utf8 entrance_string[MAX_PATH];
 		if (gConfigGeneral.upper_case_banners) {
 			format_string_to_upper(entrance_string, string_id, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
 		} else {
@@ -1275,7 +1275,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 			park_text_id = 1731;
 		}
 
-		uint8 park_name[MAX_PATH];
+		utf8 park_name[MAX_PATH];
 		if (gConfigGeneral.upper_case_banners) {
 			format_string_to_upper(park_name, park_text_id, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
 		} else {
@@ -2094,7 +2094,7 @@ static void viewport_draw_money_effects()
 	do {
 		format_string(buffer, ps->string_id, &ps->args);
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
-		gfx_draw_string_with_y_offsets(&dpi, buffer, 0, ps->x, ps->y, ps->y_offsets);
+		gfx_draw_string_with_y_offsets(&dpi, buffer, 0, ps->x, ps->y, (sint8 *)ps->y_offsets);
 	} while ((ps = ps->next) != NULL);
 }
 

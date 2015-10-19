@@ -462,7 +462,7 @@ int check_object_entry(rct_object_entry *entry)
 }
 
 /* rct2: 0x006AB344 */
-void object_create_identifier_name(uint8* string_buffer, rct_object_entry* object){
+void object_create_identifier_name(char* string_buffer, const rct_object_entry* object){
 	for (uint8 i = 0; i < 8; ++i){
 		if (object->name[i] != ' '){
 			*string_buffer++ = object->name[i];
@@ -473,14 +473,14 @@ void object_create_identifier_name(uint8* string_buffer, rct_object_entry* objec
 
 	for (uint8 i = 0; i < 4; ++i){
 		uint8 flag_part = (object->flags >> (i * 8)) & 0xFF;
-		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, uint8)[flag_part >> 4];
-		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, uint8)[flag_part & 0xF];
+		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, char)[flag_part >> 4];
+		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, char)[flag_part & 0xF];
 	}
 
 	for (uint8 i = 0; i < 4; ++i){
 		uint8 checksum_part = (object->checksum >> (i * 8)) & 0xFF;
-		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, uint8)[checksum_part >> 4];
-		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, uint8)[checksum_part & 0xF];
+		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, char)[checksum_part >> 4];
+		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, char)[checksum_part & 0xF];
 	}
 	*string_buffer++ = '\0';
 }
@@ -714,7 +714,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 	memcpy(installed_entry_pointer, entry, sizeof(rct_object_entry));
 	installed_entry_pointer += sizeof(rct_object_entry);
 
-	strcpy(installed_entry_pointer, path);
+	strcpy((char *)installed_entry_pointer, path);
 	while (*installed_entry_pointer++);
 
 	// Chunk size is set to unknown
@@ -772,11 +772,11 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 	// Always extract only the vehicle type, since the track type is always displayed in the left column, to prevent duplicate track names.
 	rct_string_id nameStringId = object_get_name_string_id(entry, chunk);
-	if (nameStringId == STR_NONE) {
+	if (nameStringId == (rct_string_id)STR_NONE) {
 		nameStringId = (rct_string_id)RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32);
 	}
 
-	strcpy(installed_entry_pointer, language_get_string(nameStringId));
+	strcpy((char *)installed_entry_pointer, language_get_string(nameStringId));
 	while (*installed_entry_pointer++);
 
 	// This is deceptive. Due to setting the total no images earlier to 0xF26E

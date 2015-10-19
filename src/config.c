@@ -373,7 +373,7 @@ bool config_save_default()
 bool config_open(const utf8string path)
 {
 	SDL_RWops *file;
-	uint8 *lineBuffer;
+	utf8string lineBuffer;
 	size_t lineBufferCapacity;
 	size_t lineLength;
 	int c;
@@ -1216,7 +1216,7 @@ bool themes_save_preset(int preset)
 bool themes_open(const_utf8string path)
 {
 	SDL_RWops *file;
-	uint8 *lineBuffer;
+	utf8string lineBuffer;
 	size_t lineBufferCapacity;
 	size_t lineLength;
 	int c, preset;
@@ -1255,7 +1255,7 @@ bool themes_open(const_utf8string path)
 
 	// Skim UTF-8 byte order mark
 	SDL_RWread(file, lineBuffer, 3, 1);
-	if (!(lineBuffer[0] == 0xEF && lineBuffer[1] == 0xBB && lineBuffer[2] == 0xBF))
+	if (!(lineBuffer[0] == (utf8)0xEF && lineBuffer[1] == (utf8)0xBB && lineBuffer[2] == (utf8)0xBF))
 		SDL_RWseek(file, 0, SEEK_SET);
 
 	while ((c = rwopsreadc(file)) != EOF) {

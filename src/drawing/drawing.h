@@ -26,7 +26,7 @@
 
 // Size: 0x10
 typedef struct {
-	char* bits;			// 0x00
+	uint8* bits;		// 0x00
 	short x;			// 0x04
 	short y;			// 0x06
 	short width;		// 0x08

@@ -142,7 +142,8 @@ int screenshot_dump_bmp()
 	BitmapInfoHeader info;
 
 	int i, y, index, width, height, stride;
-	char *buffer, path[MAX_PATH], *row;
+	char path[MAX_PATH];
+	uint8 *buffer, *row;
 	SDL_RWops *fp;
 	unsigned int bytesWritten;
 

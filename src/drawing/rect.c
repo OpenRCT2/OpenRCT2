@@ -126,7 +126,7 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 	if (colour & 0x4000000){
 		//0x4000000
 		// 00678B8A   00678E38
-		char* dest_pointer;
+		uint8* dest_pointer;
 		dest_pointer = start_y * (dpi->width + dpi->pitch) + start_x + dpi->bits;
 
 		//The pattern loops every 15 lines this is which
@@ -142,7 +142,7 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 		pattern_pointer = RCT2_ADDRESS(0x0097FEFC,uint16*)[colour >> 28]; // or possibly uint8)[esi*4] ?
 
 		for (int no_lines = height; no_lines > 0; no_lines--) {
-			char* next_dest_pointer = dest_pointer + dpi->width + dpi->pitch;
+			uint8* next_dest_pointer = dest_pointer + dpi->width + dpi->pitch;
 			uint16 pattern = pattern_pointer[pattern_y];
 
 			for (int no_pixels = width; no_pixels > 0; --no_pixels) {

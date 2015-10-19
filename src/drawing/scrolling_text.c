@@ -24,7 +24,7 @@ void scrolling_text_initialise_bitmaps()
 {
 	uint8 drawingSurface[64];
 	rct_drawpixelinfo dpi = {
-		.bits = (char*)&drawingSurface,
+		.bits = (uint8 *)&drawingSurface,
 		.x = 0,
 		.y = 0,
 		.width = 8,
@@ -135,7 +135,7 @@ int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrolling
 	utf8 scrollString[256];
 	scrolling_text_format(scrollString, scrollText);
 
-	sint16* scrollingModePositions = RCT2_ADDRESS(RCT2_ADDRESS_SCROLLING_MODE_POSITIONS, uint16*)[scrollingMode];
+	sint16* scrollingModePositions = RCT2_ADDRESS(RCT2_ADDRESS_SCROLLING_MODE_POSITIONS, sint16*)[scrollingMode];
 
 	memset(scrollText->bitmap, 0, 320 * 8);
 	if (gUseTrueTypeFont) {
