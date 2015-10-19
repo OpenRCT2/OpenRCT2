@@ -67,7 +67,7 @@ static void sub_69E891();
 
 bool rct1_read_sc4(const char *path, rct1_s4 *s4)
 {
-	char *buffer, *decodedBuffer;
+	uint8 *buffer, *decodedBuffer;
 	long length, decodedLength;
 	bool success;
 
@@ -97,7 +97,7 @@ bool rct1_read_sc4(const char *path, rct1_s4 *s4)
 
 bool rct1_read_sv4(const char *path, rct1_s4 *s4)
 {
-	char *buffer, *decodedBuffer;
+	uint8 *buffer, *decodedBuffer;
 	long length, decodedLength;
 	bool success;
 

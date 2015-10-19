@@ -677,7 +677,8 @@ bool title_refresh_sequence()
 		}
 	}
 	if (hasLoad && (hasWait || !hasRestart) && !hasInvalidSave) {
-		uint8 *src, *scriptPtr, *binaryScript;
+		char *src;
+		uint8 *scriptPtr, *binaryScript;
 		binaryScript = malloc(1024 * 8);
 		scriptPtr = binaryScript;
 

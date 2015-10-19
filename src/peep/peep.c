@@ -9017,7 +9017,7 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 		RCT2_GLOBAL(0x00F1AEF4, uint16) = sprite_index;
 	}
 
-	uint8* fullText = RCT2_ADDRESS(0x00F1AEF6, uint8);
+	utf8* fullText = RCT2_ADDRESS(0x00F1AEF6, utf8);
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
 		uint8 position = (state - 1) % 3;
 		memcpy(fullText + position * 12, text_1, 4);
@@ -9030,7 +9030,7 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 
 	rct_peep* peep = GET_PEEP(sprite_index);
 	RCT2_GLOBAL(0x0013CE952, uint32) = peep->id;
-	uint8* curName = RCT2_ADDRESS(0x00141ED68, uint8);
+	utf8* curName = RCT2_ADDRESS(0x00141ED68, utf8);
 	rct_string_id curId = peep->name_string_idx;
 	format_string(curName, curId, RCT2_ADDRESS(0x0013CE952, void));
 
