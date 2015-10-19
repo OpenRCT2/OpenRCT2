@@ -265,9 +265,11 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 	uint8* next_source_pointer;
 	uint8* next_dest_pointer = dest_bits_pointer;
 
+	int line_width = (dpi->width >> zoom_level) + dpi->pitch;
+
 	if (source_y_start < 0){ 
 		source_y_start += zoom_amount; 
-		next_dest_pointer += dpi->width / zoom_amount + dpi->pitch;
+		next_dest_pointer += line_width;
 		height -= zoom_amount;
 	}
 
@@ -309,7 +311,7 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 			if (x_start > 0){
 				//Since the start is positive
 				//We need to move the drawing surface to the correct position
-				dest_pointer += x_start / zoom_amount;
+				dest_pointer += x_start >> zoom_level;
 			}
 			else{
 				//If the start is negative we require to remove part of the image.
@@ -365,7 +367,7 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 		}
 
 		//Add a line to the drawing surface pointer
-		next_dest_pointer += dpi->width / zoom_amount + dpi->pitch;
+		next_dest_pointer += line_width;
 	}
 }
 
