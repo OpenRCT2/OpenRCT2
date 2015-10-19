@@ -265,11 +265,11 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 	uint8* next_source_pointer;
 	uint8* next_dest_pointer = dest_bits_pointer;
 
-	int lineWidth = (dpi->width / zoom_amount) + dpi->pitch;
+	int line_width = (dpi->width / zoom_amount) + dpi->pitch;
 
 	if (source_y_start < 0){ 
 		source_y_start += zoom_amount; 
-		next_dest_pointer += lineWidth;
+		next_dest_pointer += line_width;
 		height -= zoom_amount;
 	}
 
@@ -367,7 +367,7 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 		}
 
 		//Add a line to the drawing surface pointer
-		next_dest_pointer += lineWidth;
+		next_dest_pointer += line_width;
 	}
 }
 
