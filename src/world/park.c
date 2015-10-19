@@ -202,9 +202,8 @@ int calculate_park_rating()
 			result += 2 * min(250, (num_happy_peeps * 300) / RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16));
 
 		// Up to 25 guests can be lost without affecting the park rating.
-		num_lost_guests -= 25;
-		if (num_lost_guests > 0)
-			result -= num_lost_guests * 7;
+		if (num_lost_guests > 25)
+			result -= (num_lost_guests - 25) * 7;
 	}
 
 	// Rides
