@@ -347,7 +347,7 @@ static uint8 lerp(uint8 a, uint8 b, float t)
 	return (uint8)(a + amount);
 }
 
-void platform_update_palette(char* colours, int start_index, int num_colours)
+void platform_update_palette(const uint8* colours, int start_index, int num_colours)
 {
 	SDL_Surface *surface;
 	int i;
