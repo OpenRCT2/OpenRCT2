@@ -290,12 +290,12 @@ static void peep_update_hunger(rct_peep *peep){
 static void peep_leave_park(rct_peep* peep){
 	peep->guest_heading_to_ride_id = 0xFF;
 	if (peep->flags & PEEP_FLAGS_LEAVING_PARK){
-		if (peep->var_C6 < 60){
+		if (peep->peep_is_lost_countdown < 60){
 			return;
 		}
 	}
 	else{
-		peep->var_C6 = 254;
+		peep->peep_is_lost_countdown = 254;
 		peep->flags |= PEEP_FLAGS_LEAVING_PARK;
 		peep->flags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
 	}
@@ -899,16 +899,18 @@ void peep_check_if_lost(rct_peep* peep){
 * Check if cant find ride.
 */
 void peep_check_cant_find_ride(rct_peep* peep){
-	if (peep->guest_heading_to_ride_id == 0xFF) return;
+	if (peep->guest_heading_to_ride_id == 0xFF)
+		return;
 
-	if (peep->var_C6 == 30 || peep->var_C6 == 60){
+	// Peeps will think "I can't find ride X" twice before giving up completely.
+	if (peep->peep_is_lost_countdown == 30 || peep->peep_is_lost_countdown == 60) {
 		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_FIND, peep->guest_heading_to_ride_id);
-
 		peep->happiness_growth_rate = max(peep->happiness_growth_rate - 30, 0);
 	}
 
-	peep->var_C6--;
-	if (peep->var_C6 != 0)return;
+	peep->peep_is_lost_countdown--;
+	if (peep->peep_is_lost_countdown != 0)
+		return;
 
 	peep->guest_heading_to_ride_id = 0xFF;
 	rct_window* w = window_find_by_number(WC_PEEP, peep->sprite_index);
@@ -924,15 +926,17 @@ void peep_check_cant_find_ride(rct_peep* peep){
 * Check if cant find exit.
 */
 void peep_check_cant_find_exit(rct_peep* peep){
-	if (!(peep->flags & PEEP_FLAGS_LEAVING_PARK))return;
+	if (!(peep->flags & PEEP_FLAGS_LEAVING_PARK))
+		return;
 
-	if (peep->var_C6 == 1){
+	// Peeps who can't find the park exit will continue to get less happy until they find it.
+	if (peep->peep_is_lost_countdown == 1) {
 		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_FIND_EXIT, 0xFF);
-
 		peep->happiness_growth_rate = max(peep->happiness_growth_rate - 30, 0);
 	}
 
-	if (--peep->var_C6 == 0) peep->var_C6 = 90;
+	if (--peep->peep_is_lost_countdown == 0)
+		peep->peep_is_lost_countdown = 90;
 }
 
 /* rct2: 0x6939EB
@@ -6884,7 +6888,7 @@ uint8 sub_69A60A(rct_peep* peep){
 	}
 
 	if (peep->flags & PEEP_FLAGS_LEAVING_PARK &&
-		peep->var_C6 < 90){
+		peep->peep_is_lost_countdown < 90){
 		return 16;
 	}
 
@@ -7819,7 +7823,7 @@ static void peep_on_exit_ride(rct_peep *peep, int rideIndex)
 
 	if (peep_should_go_on_ride_again(peep, ride)) {
 		peep->guest_heading_to_ride_id = rideIndex;
-		peep->var_C6 = 200;
+		peep->peep_is_lost_countdown = 200;
 		sub_69A98C(peep);
 
 		rct_window *w = window_find_by_number(WC_PEEP, peep->sprite_index);
@@ -8666,7 +8670,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 
 	// Head to that ride
 	peep->guest_heading_to_ride_id = mostExcitingRideIndex;
-	peep->var_C6 = 200;
+	peep->peep_is_lost_countdown = 200;
 	sub_69A98C(peep);
 
 	// Invalidate windows
@@ -8777,7 +8781,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 
 	// Head to that ride
 	peep->guest_heading_to_ride_id = closestRideIndex;
-	peep->var_C6 = 200;
+	peep->peep_is_lost_countdown = 200;
 	sub_69A98C(peep);
 
 	// Invalidate windows
@@ -8889,7 +8893,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 
 	// Head to that ride
 	peep->guest_heading_to_ride_id = closestRideIndex;
-	peep->var_C6 = 200;
+	peep->peep_is_lost_countdown = 200;
 	sub_69A98C(peep);
 
 	// Invalidate windows

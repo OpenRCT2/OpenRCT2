@@ -142,12 +142,12 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		newPeep->paid_on_food = 0;
 		newPeep->paid_on_souvenirs = 0;
 
-		newPeep->var_C6 = 0;
+		newPeep->staff_orders = 0;
 		if (staff_type == 0) {
-			newPeep->var_C6 = 7;
+			newPeep->staff_orders = 7;
 		}
 		else if (staff_type == 1) {
-			newPeep->var_C6 = 3;
+			newPeep->staff_orders = 3;
 		}
 
 		uint16 idSearchSpriteIndex;

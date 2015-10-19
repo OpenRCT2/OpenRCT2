@@ -170,7 +170,7 @@ int calculate_park_rating()
 	int result;
 
 	result = 1150;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x4000)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_DIFFICULT_PARK_RATING)
 		result = 1050;
 	
 	// Guests
@@ -178,23 +178,21 @@ int calculate_park_rating()
 		rct_peep* peep;
 		uint16 spriteIndex;
 		int num_happy_peeps;
-		short _bp;
+		int num_lost_guests;
 		
 		// -150 to +3 based on a range of guests from 0 to 2000
 		result -= 150 - (min(2000, RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)) / 13);
 
-		// Guests, happiness, ?
+		// Find the number of happy peeps and the number of peeps who can't find the park exit
 		num_happy_peeps = 0;
-		_bp = 0;
+		num_lost_guests = 0;
 		FOR_ALL_GUESTS(spriteIndex, peep) {
 			if (peep->outside_of_park != 0)
 				continue;
 			if (peep->happiness > 128)
 				num_happy_peeps++;
-			if (!(peep->flags & PEEP_FLAGS_LEAVING_PARK))
-				continue;
-			if (peep->var_C6 <= 89)
-				_bp++;
+			if ((peep->flags & PEEP_FLAGS_LEAVING_PARK) && (peep->peep_is_lost_countdown < 90))
+				num_lost_guests++;
 		}
 		
 		// Peep happiness -500 to +0
@@ -203,10 +201,10 @@ int calculate_park_rating()
 		if (RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) > 0)
 			result += 2 * min(250, (num_happy_peeps * 300) / RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16));
 
-		// ?
-		_bp -= 25;
-		if (_bp >= 0)
-			result -= _bp * 7;
+		// Up to 25 guests can be lost without affecting the park rating.
+		num_lost_guests -= 25;
+		if (num_lost_guests > 0)
+			result -= num_lost_guests * 7;
 	}
 
 	// Rides

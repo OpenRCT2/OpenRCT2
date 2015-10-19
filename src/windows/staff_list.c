@@ -656,7 +656,7 @@ void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
 
 				staffOrderIcon_x = 0x7D;
 				if (peep->staff_type != 3) {
-					staffOrders = peep->var_C6;
+					staffOrders = peep->staff_orders;
 					staffOrderSprite = RCT2_ADDRESS(0x00992A08, uint32)[selectedTab];
 
 					while (staffOrders != 0) {

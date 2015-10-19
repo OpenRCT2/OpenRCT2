@@ -494,8 +494,8 @@ typedef struct {
 		uint8 guest_heading_to_ride_id;		// 0xC5
 	};
 	union {
-		uint8 staff_orders;			// 0xC6
-		uint8 var_C6;
+		uint8 staff_orders;				// 0xC6
+		uint8 peep_is_lost_countdown;	// 0xC6
 	};
 	uint8 photo1_ride_ref;			// 0xC7
 	uint32 flags;					// 0xC8
