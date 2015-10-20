@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -72,7 +72,7 @@ static char _window_error_text[512];
 static uint16 _window_error_num_lines;
 
 /**
- * 
+ *
  *  rct2: 0x0066792F
  *
  * bx: title
@@ -133,7 +133,7 @@ void window_error_open(rct_string_id title, rct_string_id message)
 		y = y - height - 40;
 		y = min(y, maxY);
 	}
-		
+
 	w = window_create(x, y, width, height, &window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
 	w->widgets = window_error_widgets;
 	w->error.var_480 = 0;
@@ -142,7 +142,7 @@ void window_error_open(rct_string_id title, rct_string_id message)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00667BFE
  */
 static void window_error_unknown5(rct_window *w)
@@ -153,7 +153,7 @@ static void window_error_unknown5(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00667AA3
  */
 static void window_error_paint(rct_window *w, rct_drawpixelinfo *dpi)

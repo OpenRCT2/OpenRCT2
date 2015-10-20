@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -103,7 +103,7 @@ static bool news_item_is_current_old()
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066E252
  */
 void news_item_update_current()
@@ -156,7 +156,7 @@ void news_item_update_current()
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066E377
  */
 void news_item_close_current()
@@ -381,7 +381,7 @@ void news_item_open_subject(int type, int subject)
 				}
 			}
 		}
-		
+
 		// Switch to new scenery tab
 		window = window_find_by_class(WC_SCENERY);
 		if (window != NULL)

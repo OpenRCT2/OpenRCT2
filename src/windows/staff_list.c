@@ -412,7 +412,7 @@ void window_staff_list_scrollgetsize(rct_window *w, int scrollIndex, int *width,
 		RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short) = -1;
 		window_invalidate(w);
 	}
-	
+
 	*height = staffCount * 10;
 	i = *height - window_staff_list_widgets[WIDX_STAFF_LIST_LIST].bottom + window_staff_list_widgets[WIDX_STAFF_LIST_LIST].top + 21;
 	if (i < 0)
@@ -493,7 +493,7 @@ void window_staff_list_invalidate(rct_window *w)
 	w->pressed_widgets = pressed_widgets | (1 << widgetIndex);
 	window_staff_list_widgets[WIDX_STAFF_LIST_HIRE_BUTTON].image = STR_HIRE_HANDYMAN + tabIndex;
 	window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOR_PICKER].type = WWT_EMPTY;
-	
+
 	if (tabIndex < 3) {
 		window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOR_PICKER].type = WWT_COLORBTN;
 		window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOR_PICKER].image =
@@ -573,8 +573,8 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].top + w->y + 1,
 		window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].bottom - window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].top - 1
 		);
-		
-	
+
+
 
 	if (sprite_dpi != NULL) {
 		// Entertainers tab image

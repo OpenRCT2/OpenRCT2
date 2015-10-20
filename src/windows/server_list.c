@@ -215,7 +215,7 @@ static void window_server_list_scroll_mousedown(rct_window *w, int scrollIndex, 
 	if (serverIndex >= _numSavedServers) return;
 
 	char *serverAddress = _savedServers[serverIndex].address;
-	
+
 	switch (_hoverButtonIndex) {
 	case WIDX_LIST_REMOVE:
 		remove_saved_server(serverIndex);
@@ -425,7 +425,7 @@ static void server_list_load_saved_servers()
 	// Read number of saved servers
 	SDL_RWread(file, &_numSavedServers, sizeof(uint32), 1);
 	_savedServers = malloc(_numSavedServers * sizeof(saved_server));
-	
+
 	// Load each saved server
 	for (int i = 0; i < _numSavedServers; i++) {
 		saved_server *serverInfo = &_savedServers[i];

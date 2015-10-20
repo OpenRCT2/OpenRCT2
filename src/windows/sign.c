@@ -248,8 +248,8 @@ static void window_sign_mouseup(rct_window *w, int widgetIndex)
 			1 | ((map_element->type&0x3) << 8),
 			y,
 			map_element->base_height | ((map_element->properties.scenerymultiple.type >> 10) << 8),
-			GAME_COMMAND_REMOVE_LARGE_SCENERY, 
-			0, 
+			GAME_COMMAND_REMOVE_LARGE_SCENERY,
+			0,
 			0);
 		break;
 	case WIDX_SIGN_TEXT:
@@ -451,7 +451,7 @@ void window_sign_small_open(rct_windownumber number){
 
 	int view_x = gBanners[w->number].x << 5;
 	int view_y = gBanners[w->number].y << 5;
-	
+
 	rct_map_element* map_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
 	while (1){

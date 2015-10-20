@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -195,7 +195,7 @@ static void ride_ratings_update_state_2()
 				if (ride->entrances[entranceIndex] == 0xFFFF)
 					RCT2_GLOBAL(0x0138B5CE, uint16) |= 1;
 			}
-			
+
 			ride_ratings_score_close_proximity(mapElement);
 
 			trackElement.x = _rideRatingsProximityX;
@@ -759,7 +759,7 @@ static uint16 ride_compute_upkeep(rct_ride *ride)
 		upkeep += 160;
 	} else if (ride->mode == RIDE_MODE_LIM_POWERED_LAUNCH) {
 		upkeep += 320;
-	} else if (ride->mode == RIDE_MODE_POWERED_LAUNCH || 
+	} else if (ride->mode == RIDE_MODE_POWERED_LAUNCH ||
 			ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED) {
 		upkeep += 220;
 	}
@@ -782,7 +782,7 @@ static uint16 ride_compute_upkeep(rct_ride *ride)
 static void ride_ratings_apply_adjustments(rct_ride *ride, rating_tuple *ratings)
 {
 	rct_ride_type *rideEntry;
-	
+
 	rideEntry = gRideTypeList[ride->subtype];
 
 	// Apply ride entry multipliers
@@ -1024,7 +1024,7 @@ static rating_tuple get_special_track_elements_rating(uint8 type, rct_ride *ride
 			excitement += 50;
 			intensity  += 30;
 			nausea     += 20;
-		} 
+		}
 		if (ride_has_waterfall(ride)) {
 			excitement += 55;
 			intensity  += 30;
@@ -1400,7 +1400,7 @@ static void ride_ratings_calculate_spiral_roller_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 14;
 	set_unreliability_factor(ride);
 
@@ -1417,12 +1417,12 @@ static void ride_ratings_calculate_spiral_roller_coaster(rct_ride *ride)
 	ride_ratings_apply_65E1C2(&ratings, ride, 15420, 32768, 35108);
 	ride_ratings_apply_proximity(&ratings, ride, 20130);
 	ride_ratings_apply_scenery(&ratings, ride, 6693);
-	
+
 	if ((ride->inversions & 0x1F) == 0)
 		ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 12, 2, 2, 2);
-	
+
 	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 2, 2);
-	
+
 	if ((ride->inversions & 0x1F) == 0) {
 		ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 40), 2, 2, 2);
 		ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
@@ -1446,7 +1446,7 @@ static void ride_ratings_calculate_stand_up_roller_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 17;
 	set_unreliability_factor(ride);
 
@@ -1485,7 +1485,7 @@ static void ride_ratings_calculate_suspended_swinging_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 18;
 	set_unreliability_factor(ride);
 
@@ -1526,7 +1526,7 @@ static void ride_ratings_calculate_inverted_roller_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 17;
 	set_unreliability_factor(ride);
 
@@ -1543,12 +1543,12 @@ static void ride_ratings_calculate_inverted_roller_coaster(rct_ride *ride)
 	ride_ratings_apply_65E1C2(&ratings, ride, 15420, 15291, 35108);
 	ride_ratings_apply_proximity(&ratings, ride, 15657);
 	ride_ratings_apply_scenery(&ratings, ride, 8366);
-	
+
 	if ((ride->inversions & 0x1F) == 0)
 		ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 12, 2, 2, 2);
-	
+
 	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 2, 2);
-	
+
 	if ((ride->inversions & 0x1F) == 0)
 		ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0,30), 2, 2, 2);
 
@@ -1570,7 +1570,7 @@ static void ride_ratings_calculate_junior_roller_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 13;
 	set_unreliability_factor(ride);
 
@@ -1683,7 +1683,7 @@ static void ride_ratings_calculate_mini_suspended_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 15;
 	set_unreliability_factor(ride);
 
@@ -1755,7 +1755,7 @@ static void ride_ratings_calculate_wooden_wild_mouse(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 14;
 	set_unreliability_factor(ride);
 
@@ -1797,7 +1797,7 @@ static void ride_ratings_calculate_steeplechase(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 14;
 	set_unreliability_factor(ride);
 
@@ -1909,7 +1909,7 @@ static void ride_ratings_calculate_bobsleigh_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
@@ -1980,7 +1980,7 @@ static void ride_ratings_calculate_looping_roller_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = ride_is_powered_launched(ride) ? 20 : 15;
 	set_unreliability_factor(ride);
 
@@ -2002,7 +2002,7 @@ static void ride_ratings_calculate_looping_roller_coaster(rct_ride *ride)
 		ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 14, 2, 2, 2);
 
 	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 2, 2);
-	
+
 	if ((ride->inversions & 0x1F) == 0) {
 		ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 10), 2, 2, 2);
 		ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
@@ -2026,7 +2026,7 @@ static void ride_ratings_calculate_dinghy_slide(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 13;
 	set_unreliability_factor(ride);
 
@@ -2065,7 +2065,7 @@ static void ride_ratings_calculate_mine_train_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
@@ -2121,7 +2121,7 @@ static void ride_ratings_calculate_chairlift(rct_ride *ride)
 	ride_ratings_apply_proximity(&ratings, ride, 11183);
 	ride_ratings_apply_scenery(&ratings, ride, 25098);
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0x960000, 2, 2, 2);
-	
+
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -2149,7 +2149,7 @@ static void ride_ratings_calculate_corkscrew_roller_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
@@ -2203,7 +2203,7 @@ static void ride_ratings_calculate_maze(rct_ride *ride)
 	int size = min(ride->maze_tiles, 100);
 	ratings.excitement += size;
 	ratings.intensity += size * 2;
-	
+
 	ride_ratings_apply_scenery(&ratings, ride, 22310);
 
 	ride_ratings_apply_intensity_penalty(&ratings);
@@ -2262,7 +2262,7 @@ static void ride_ratings_calculate_go_karts(rct_ride *ride)
 
 	ride_ratings_set(&ratings, RIDE_RATING(1,42), RIDE_RATING(1,73), RIDE_RATING(0,40));
 	ride_ratings_apply_length(&ratings, ride, 700, 32768);
-	
+
 	if (ride->mode == RIDE_MODE_RACE && ride->num_vehicles >= 4) {
 		ratings.excitement +=	RIDE_RATING(1,40);
 		ratings.intensity +=	RIDE_RATING(0,50);
@@ -2692,7 +2692,7 @@ static void ride_ratings_calculate_reverse_freefall_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 25;
 	set_unreliability_factor(ride);
 
@@ -2759,7 +2759,7 @@ static void ride_ratings_calculate_vertical_drop_roller_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
@@ -2814,10 +2814,10 @@ static void ride_ratings_calculate_twist(rct_ride *ride)
 	ratings.nausea += ride->rotations * 20;
 
 	ride_ratings_apply_scenery(&ratings, ride, 13943);
-	
+
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
-	
+
 	ride->ratings = ratings;
 
 	ride->upkeep_cost = ride_compute_upkeep(ride);
@@ -2858,7 +2858,7 @@ static void ride_ratings_calculate_flying_roller_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 17;
 	set_unreliability_factor(ride);
 
@@ -2904,7 +2904,7 @@ static void ride_ratings_calculate_virginia_reel(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 19;
 	set_unreliability_factor(ride);
 
@@ -3012,7 +3012,7 @@ static void ride_ratings_calculate_lay_down_roller_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 18;
 	set_unreliability_factor(ride);
 
@@ -3098,7 +3098,7 @@ static void ride_ratings_calculate_reverser_roller_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 19;
 	set_unreliability_factor(ride);
 
@@ -3146,7 +3146,7 @@ static void ride_ratings_calculate_heartline_twister_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 18;
 	set_unreliability_factor(ride);
 
@@ -3292,7 +3292,7 @@ static void ride_ratings_calculate_twister_roller_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 15;
 	set_unreliability_factor(ride);
 
@@ -3338,7 +3338,7 @@ static void ride_ratings_calculate_wooden_roller_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 19;
 	set_unreliability_factor(ride);
 
@@ -3379,7 +3379,7 @@ static void ride_ratings_calculate_side_friction_roller_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 19;
 	set_unreliability_factor(ride);
 
@@ -3419,7 +3419,7 @@ static void ride_ratings_calculate_wild_mouse(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 14;
 	set_unreliability_factor(ride);
 
@@ -3460,7 +3460,7 @@ static void ride_ratings_calculate_multi_dimension_roller_coaster(rct_ride *ride
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 18;
 	set_unreliability_factor(ride);
 
@@ -3506,7 +3506,7 @@ static void ride_ratings_calculate_giga_coaster(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
-	
+
 	ride->unreliability_factor = 14;
 	set_unreliability_factor(ride);
 
@@ -3526,9 +3526,9 @@ static void ride_ratings_calculate_giga_coaster(rct_ride *ride)
 
 	if ((ride->inversions & 0x1F) == 0)
 		ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 16, 2, 2, 2);
-	
+
 	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 2, 2);
-	
+
 	if ((ride->inversions & 0x1F) == 0) {
 		ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 40), 2, 2, 2);
 		ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
@@ -3851,7 +3851,7 @@ static void ride_ratings_calculate_magic_carpet(rct_ride *ride)
 	ratings.nausea += ride->operation_option * 20;
 
 	ride_ratings_apply_scenery(&ratings, ride, 11155);
-	
+
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3909,7 +3909,7 @@ static void ride_ratings_calculate_river_rafts(rct_ride *ride)
 	ride_ratings_apply_drops(&ratings, ride, 78643, 93622, 62259);
 	ride_ratings_apply_proximity(&ratings, ride, 13420);
 	ride_ratings_apply_scenery(&ratings, ride, 11155);
-	
+
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3941,7 +3941,7 @@ static void ride_ratings_calculate_enterprise(rct_ride *ride)
 	ratings.nausea += ride->operation_option * 16;
 
 	ride_ratings_apply_scenery(&ratings, ride, 19521);
-	
+
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 

@@ -506,7 +506,7 @@ static void window_editor_objective_options_show_climate_dropdown(rct_window *w)
 {
 	int i;
 	rct_widget *dropdownWidget;
-	
+
 	dropdownWidget = &w->widgets[WIDX_CLIMATE];
 
 	for (i = 0; i < 4; i++) {
@@ -530,7 +530,7 @@ static void window_editor_objective_options_show_category_dropdown(rct_window *w
 	rct_s6_info *s6Info = (rct_s6_info*)0x00141F570;
 	int i;
 	rct_widget *dropdownWidget;
-	
+
 	dropdownWidget = &w->widgets[WIDX_CATEGORY];
 
 	for (i = 0; i < 5; i++) {
@@ -1224,7 +1224,7 @@ static void window_editor_objective_options_update_disabled_widgets(rct_window *
 			numRides++;
 		}
 	}
-	
+
 	if (numRides == 0) {
 		w->disabled_widgets &= ~(1 << WIDX_TAB_2);
 	} else {

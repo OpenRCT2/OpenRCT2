@@ -50,7 +50,7 @@ enum {
 	FILTER_RIDE_WATER = (1 << 9),
 	FILTER_RIDE_STALL = (1 << 10),
 
-	
+
 	FILTER_ALL = 0x7EF,
 } FILTER_FLAGS;
 
@@ -628,8 +628,8 @@ static void setup_in_use_selection_flags(){
 		uint8 entry_type, entry_index;
 		if (find_object_in_entry_group(installedObject, &entry_type, &entry_index)){
 			if (RCT2_ADDRESS(0x0098DA38, uint8*)[entry_type][entry_index] & (1 << 0)){
-				*selection_flags |= 
-					OBJECT_SELECTION_FLAG_IN_USE | 
+				*selection_flags |=
+					OBJECT_SELECTION_FLAG_IN_USE |
 					OBJECT_SELECTION_FLAG_SELECTED;
 			}
 			if (RCT2_ADDRESS(0x0098DA38, uint8*)[entry_type][entry_index] & (1 << 1)){
@@ -733,7 +733,7 @@ void unload_unselected_objects(){
 }
 
 /**
- * 
+ *
  *  rct2: 0x006AB199
  */
 static void window_editor_object_selection_close(rct_window *w)
@@ -765,7 +765,7 @@ static void window_editor_object_selection_close(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006AAFAB
  */
 static void window_editor_object_selection_mouseup(rct_window *w, int widgetIndex)
@@ -910,7 +910,7 @@ void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct
 
 		gDropdownItemsChecked = _filter_flags & 0xF;
 		break;
-		
+
 	}
 }
 
@@ -935,7 +935,7 @@ static void window_editor_object_selection_dropdown(rct_window *w, int widgetInd
 }
 
 /**
- * 
+ *
  *  rct2: 0x006AB031
  */
 static void window_editor_object_selection_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
@@ -944,7 +944,7 @@ static void window_editor_object_selection_scrollgetsize(rct_window *w, int scro
 }
 
 /**
- * 
+ *
  *  rct2: 0x006AB0B6
  */
 static void window_editor_object_selection_scroll_mousedown(rct_window *w, int scrollIndex, int x, int y)
@@ -999,7 +999,7 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, int s
 }
 
 /**
- * 
+ *
  *  rct2: 0x006AB079
  */
 static void window_editor_object_selection_scroll_mouseover(rct_window *w, int scrollIndex, int x, int y)
@@ -1027,7 +1027,7 @@ static void window_editor_object_selection_scroll_mouseover(rct_window *w, int s
 }
 
 /**
- * 
+ *
  *  rct2: 0x006AB058
  */
 static void window_editor_object_selection_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
@@ -1054,7 +1054,7 @@ static void window_editor_object_selection_tooltip(rct_window* w, int widgetInde
 }
 
 /**
- * 
+ *
  *  rct2: 0x006AA9FD
  */
 static void window_editor_object_selection_invalidate(rct_window *w)
@@ -1180,14 +1180,14 @@ static void window_editor_object_selection_invalidate(rct_window *w)
 			(1 << WIDX_FILTER_RIDE_TAB_WATER) | (1 << WIDX_FILTER_RIDE_TAB_STALL));
 		for (int i = WIDX_FILTER_RIDE_TAB_FRAME; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
 			w->widgets[i].type = WWT_EMPTY;
-		
+
 		w->widgets[WIDX_LIST_SORT_TYPE].type = WWT_EMPTY;
 		w->widgets[WIDX_LIST_SORT_RIDE].type = WWT_EMPTY;
 	}
 }
 
 /**
- * 
+ *
  *  rct2: 0x006AAB56
  */
 static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -1363,7 +1363,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 		strcpy(stringBuffer, name);
 	}
 	gfx_draw_string_centred_clipped(dpi, stringId, NULL, 0, x, y, width);
-	
+
 	// Draw description of object
 	x = w->x + w->widgets[WIDX_LIST].right + 4;
 	y += 15;
@@ -1379,7 +1379,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	}
 	gfx_draw_string_right(dpi, stringId, NULL, 2, w->x + w->width - 5, w->y + w->height - 3 - 12 - 14);
 
-	// 
+	//
 	if (w->selected_tab == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS) {
 		y = w->y + w->height - 3 - 12 - 14 - 14;
 
@@ -1404,7 +1404,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 }
 
 /**
- * 
+ *
  *  rct2: 0x006AADA3
  */
 static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
@@ -1651,7 +1651,7 @@ void reset_required_object_flags(){
 				set_required_object_flags(required_object);
 				required_object++;
 			}
-			
+
 		}
 
 		selection_flags++;
@@ -1659,9 +1659,9 @@ void reset_required_object_flags(){
 	}
 }
 
-/* 
+/*
  * Master objects are objects that are not
- * optional / required dependants of an 
+ * optional / required dependants of an
  * object.
  */
 void set_object_selection_error(uint8 is_master_object, rct_string_id error_msg){
@@ -1814,7 +1814,7 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 		// Skip size of chunk
 		pos += 4;
 
-		uint8 num_required_objects = *pos++;	
+		uint8 num_required_objects = *pos++;
 		rct_object_entry* required_objects = (rct_object_entry*)pos;
 		for (; num_required_objects != 0; num_required_objects--){
 			if (!window_editor_object_selection_select_object(++bh, flags, required_objects)){
@@ -1837,7 +1837,7 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 			}
 			theme_object++;
 		}
-		
+
 		if (bh != 0 && !(flags&(1 << 1))){
 			uint32* arguments = RCT2_ADDRESS(0x0013CE952, uint32);
 			object_create_identifier_name((char*)0x009BC95A, installedObject);
@@ -1888,7 +1888,7 @@ static int get_object_from_object_selection(uint8 object_type, int y, uint8 *obj
 }
 
 /**
- * 
+ *
  *  rct2: 0x006D33E2
  */
 static void window_editor_object_selection_manage_tracks()
@@ -1927,7 +1927,7 @@ static void window_editor_object_selection_manage_tracks()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006ABBBE
  */
 static void editor_load_selected_objects()

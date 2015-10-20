@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -113,7 +113,7 @@ rct_map_element *map_get_footpath_element_slope(int x, int y, int z, int slope)
 			return mapElement;
 		}
 	} while (!map_element_is_last_for_tile(mapElement++));
-	
+
 	return NULL;
 }
 
@@ -159,7 +159,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 
 	RCT2_GLOBAL(0x00F3EF84, uint16) = x;
 	RCT2_GLOBAL(0x00F3EF86, uint16) = y;
-		
+
 	// Ugh, hack until 0x006A6733 is written
 	// 0x006A6733 expects the flags to be at (*0xF3EF7C) + 8
 	RCT2_GLOBAL(0x00F3EF7C, uint32) = (uint32)(&flags - 2);
@@ -515,7 +515,7 @@ void game_command_place_footpath_from_track(int *eax, int *ebx, int *ecx, int *e
 		(*edx >> 8) & 0xFF,
 		*eax & 0xFFFF,
 		*ecx & 0xFFFF,
-		*edx & 0xFF,		
+		*edx & 0xFF,
 		((*ebx >> 13) & 0x3) | ((*ebx >> 10) & 0x4),
 		(*ebx >> 8) & 0xF,
 		*ebx & 0xFF
@@ -542,7 +542,7 @@ void footpath_remove(int x, int y, int z, int flags)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A76FF
  */
 money32 footpath_provisional_set(int type, int x, int y, int z, int slope)
@@ -565,7 +565,7 @@ money32 footpath_provisional_set(int type, int x, int y, int z, int slope)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A77FF
  */
 void footpath_provisional_remove()
@@ -583,7 +583,7 @@ void footpath_provisional_remove()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A7831
  */
 void footpath_provisional_update()
@@ -686,7 +686,7 @@ void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y,
 }
 
 /**
- * 
+ *
  *  rct2: 0x0068A0C9
  * screenX: eax
  * screenY: ebx
@@ -719,7 +719,7 @@ void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y,
 			return;
 		}
 	}
-	
+
 	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &map_pos.x, &map_pos.y, &interactionType, mapElement, &viewport);
 	*x = map_pos.x;
 	*y = map_pos.y;
@@ -739,7 +739,7 @@ void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y,
 }
 
 /**
- * 
+ *
  *  rct2: 0x00673883
  */
 void footpath_remove_litter(int x, int y, int z)
@@ -765,7 +765,7 @@ void footpath_remove_litter(int x, int y, int z)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069A48B
  */
 void footpath_interrupt_peeps(int x, int y, int z)
@@ -858,15 +858,15 @@ static rct_map_element *footpath_connect_corners_get_neighbour(int x, int y, int
 static void footpath_connect_corners(int initialX, int initialY, rct_map_element *initialMapElement)
 {
 	rct_map_element *mapElement[4];
-	
+
 	if (footpath_element_is_queue(initialMapElement))
 		return;
 	if (footpath_element_is_sloped(initialMapElement))
 		return;
-	
+
 	mapElement[0] = initialMapElement;
 	int z = initialMapElement->base_height;
-	for (int initialDirection = 0; initialDirection < 4; initialDirection++) {		
+	for (int initialDirection = 0; initialDirection < 4; initialDirection++) {
 		int x = initialX;
 		int y = initialY;
 		int direction = initialDirection;
@@ -1070,7 +1070,7 @@ static bool footpath_is_queue_connected_to_path(int x, int y, rct_map_element *m
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A6D7E
  */
 static void loc_6A6D7E(
@@ -1225,7 +1225,7 @@ static void loc_6A6C85(
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A6C66
  */
 void footpath_connect_edges(int x, int y, rct_map_element *mapElement, int flags)
@@ -1269,7 +1269,7 @@ void footpath_connect_edges(int x, int y, rct_map_element *mapElement, int flags
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A742F
  */
 void footpath_chain_ride_queue(int rideIndex, int entranceIndex, int x, int y, rct_map_element *mapElement, int direction)
@@ -1292,7 +1292,7 @@ void footpath_chain_ride_queue(int rideIndex, int entranceIndex, int x, int y, r
 				}
 			}
 		}
-		
+
 		x += TileDirectionDelta[direction].x;
 		y += TileDirectionDelta[direction].y;
 		mapElement = map_get_first_element_at(x >> 5, y >> 5);
@@ -1364,7 +1364,7 @@ void footpath_chain_ride_queue(int rideIndex, int entranceIndex, int x, int y, r
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A759F
  */
 void sub_6A759F()

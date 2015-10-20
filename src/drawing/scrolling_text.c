@@ -33,7 +33,7 @@ void scrolling_text_initialise_bitmaps()
 		.zoom_level = 0
 	};
 
-	
+
 	for (int i = 0; i < 224; i++) {
 		memset(drawingSurface, 0, sizeof(drawingSurface));
 		gfx_draw_sprite(&dpi, i + 0x10D5, -1, 0, 0);
@@ -136,7 +136,7 @@ int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrolling
 	scrolling_text_format(scrollString, scrollText);
 
 	sint16* scrollingModePositions = RCT2_ADDRESS(RCT2_ADDRESS_SCROLLING_MODE_POSITIONS, uint16*)[scrollingMode];
-	
+
 	memset(scrollText->bitmap, 0, 320 * 8);
 	if (gUseTrueTypeFont) {
 		scrolling_text_set_bitmap_for_ttf(scrollString, scroll, scrollText->bitmap, scrollingModePositions);
@@ -186,8 +186,8 @@ void scrolling_text_set_bitmap_for_sprite(utf8 *text, int scroll, uint8 *bitmap,
 				uint8 *dst = &bitmap[scrollPosition];
 				for (uint8 char_bitmap = *characterBitmap; char_bitmap != 0; char_bitmap >>= 1){
 					if (char_bitmap & 1) *dst = characterColour;
-					
-					// Jump to next row 
+
+					// Jump to next row
 					dst += 64;
 				}
 			}
@@ -261,7 +261,7 @@ void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, si
 				for (int y = 0; y < height; y++) {
 					if (src[y * pitch + x] != 0) *dst = colour;
 
-					// Jump to next row 
+					// Jump to next row
 					dst += 64;
 				}
 			}

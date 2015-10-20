@@ -270,7 +270,7 @@ static void window_install_track_invalidate(rct_window *w)
 	else
 		w->pressed_widgets &= ~(1 << WIDX_TOGGLE_SCENERY);
 
-	if (w->track_list.var_482 != 0xFFFF) {	
+	if (w->track_list.var_482 != 0xFFFF) {
 		w->disabled_widgets &= ~(1 << WIDX_TRACK_PREVIEW);
 	}
 	else {
@@ -326,7 +326,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + widget->bottom - 12;
 
 	RCT2_GLOBAL(0x00F44153, uint8) = 0;
-	
+
 	// Warnings
 	if (track_td6->track_flags & 1) {
 		RCT2_GLOBAL(0x00F44153, uint8) = 1;

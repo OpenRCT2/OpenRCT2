@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -32,7 +32,7 @@ enum {
 	SPR_HOT_AND_DRY = 3292,
 	SPR_COLD = 3293,
 
-	// This is the start of every character there are 
+	// This is the start of every character there are
 	// 224 characters per font (first 32 are control codes hence why it doesn't go to 255)
 	// 4 fonts
 	// = 896 sprites

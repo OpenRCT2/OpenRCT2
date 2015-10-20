@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -96,7 +96,7 @@ static rct_widget window_title_command_editor_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,		1,	WW-28,		WW-18,		BY2+1,	BY2+10,	876,						STR_NONE },
 
 	{ WWT_DROPDOWN_BUTTON,		1,	WS+WHA+3,	WW-WS-1,	BY2-14,	BY2-3,	5446,						STR_NONE }, // Get location/zoom/etc
-	
+
 	{ WWT_DROPDOWN_BUTTON,		1,	10,			80,			WH-21,	WH-10,	STR_OK,						STR_NONE }, // OKAY
 	{ WWT_DROPDOWN_BUTTON,		1,	WW-80,		WW-10,		WH-21,	WH-10,	STR_CANCEL,					STR_NONE }, // Cancel
 
@@ -203,9 +203,9 @@ void window_title_command_editor_open(int index, bool insert)
 		return;
 
 	window = window_create_centred(
-		WW, 
+		WW,
 		WH,
-		&window_title_command_editor_events, 
+		&window_title_command_editor_events,
 		WC_TITLE_COMMAND_EDITOR,
 		WF_STICK_TO_FRONT
 	);
@@ -311,7 +311,7 @@ static void window_title_command_editor_mousedown(int widgetIndex, rct_window* w
 			gDropdownItemsFormat[i] = 1142;
 			gDropdownItemsArgs[i] = window_title_command_editor_orders[i].nameStringId;
 		}
-		
+
 		window_dropdown_show_text_custom_width(
 			w->x + widget->left,
 			w->y + widget->top,
@@ -370,7 +370,7 @@ static void window_title_command_editor_mousedown(int widgetIndex, rct_window* w
 static void window_title_command_editor_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
 	rct_xy16 mapCoord;
-	
+
 	if (dropdownIndex == -1)
 		return;
 

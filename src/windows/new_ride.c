@@ -383,7 +383,7 @@ static void window_new_ride_scroll_to_focused_ride(rct_window *w)
 	int scrollWidth = 0;
 	int scrollHeight = 0;
 	window_get_scroll_size(w, 0, &scrollWidth, &scrollHeight);
-	
+
 	// Find row index of the focused ride type
 	rct_widget *listWidget = &window_new_ride_widgets[WIDX_RIDE_LIST];
 	int focusRideType = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_RIDE_LIST_HIGHLIGHTED_ITEM, uint16)[_window_new_ride_current_tab];
@@ -443,13 +443,13 @@ rct_window *window_new_ride_open()
 	w->new_ride.highlighted_ride_id = -1;
 	_lastTrackDesignCountRideType.type = 255;
 	_lastTrackDesignCountRideType.entry_index = 255;
-	
+
 	window_new_ride_populate_list();
-	
+
 	w->new_ride.highlighted_ride_id = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_RIDE_LIST_HIGHLIGHTED_ITEM, sint16)[_window_new_ride_current_tab];
 	if (w->new_ride.highlighted_ride_id == -1)
 		w->new_ride.highlighted_ride_id = RCT2_GLOBAL(0x00F43523, sint16);
-	
+
 	w->width = 1;
 	window_new_ride_refresh_widget_sizing(w);
 	window_new_ride_scroll_to_focused_ride(w);
@@ -460,7 +460,7 @@ rct_window *window_new_ride_open()
 rct_window *window_new_ride_open_research()
 {
 	rct_window *w;
-	
+
 	w = window_new_ride_open();
 	window_new_ride_set_page(w, WINDOW_NEW_RIDE_PAGE_RESEARCH);
 	return w;
@@ -790,7 +790,7 @@ static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 			flags |= 0x20;
 		if (w->new_ride.highlighted_ride_id == *((sint16*)listItem) || flags != 0)
 			gfx_fill_rect_inset(dpi, x, y, x + 115, y + 115, w->colours[1], 0x80 | flags);
-		
+
 		// Draw ride image with feathered border
 		rideEntry = rideEntries[listItem->entry_index];
 		int image_id = rideEntry->images_offset;
@@ -911,7 +911,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 		}
 		price = (price >> 17) * 10 * RCT2_GLOBAL(0x0097D21D + (item.type * 8), uint8);
 
-		// 
+		//
 		rct_string_id stringId = 1691;
 		if (!ride_type_has_flag(item.type, RIDE_TYPE_FLAG_15))
 			stringId++;

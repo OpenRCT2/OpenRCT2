@@ -102,7 +102,7 @@ void window_music_credits_open()
 	window->colours[0] = 7;
 	window->colours[1] = 7;
 	window->colours[2] = 7;
-	
+
 }
 
 /**
@@ -172,5 +172,5 @@ static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *d
 		y += 10;
 		string += 1;
 	}
-	
+
 }

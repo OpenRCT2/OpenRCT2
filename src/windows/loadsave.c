@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#include <time.h>  
+#include <time.h>
 #include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
@@ -399,7 +399,7 @@ static void window_loadsave_scrollmouseover(rct_window *w, int scrollIndex, int 
 	selectedItem = y / 10;
 	if (selectedItem >= w->no_list_items)
 		return;
-	
+
 	w->selected_list_item = selectedItem;
 
 	window_invalidate(w);
@@ -530,13 +530,13 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 	char *templateString;
 
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, RCT2_ADDRESS(0x0141FC48,uint8)[w->colours[1] * 8]);
-	
+
 	templateString = (char*)language_get_string(templateStringId);
 	for (i = 0; i < w->no_list_items; i++) {
 		y = i * 10;
 		if (y > dpi->y + dpi->height)
 			break;
-		
+
 		if (y + 10 < dpi->y)
 			continue;
 

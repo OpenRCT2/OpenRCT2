@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -35,7 +35,7 @@ typedef void (*shortcut_action)();
 static const shortcut_action shortcut_table[SHORTCUT_COUNT];
 
 /**
- * 
+ *
  *  rct2: 0x006E3E91
  */
 void keyboard_shortcut_set(int key)
@@ -58,7 +58,7 @@ void keyboard_shortcut_set(int key)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E3E68
  */
 void keyboard_shortcut_handle(int key)

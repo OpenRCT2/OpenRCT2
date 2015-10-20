@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -70,7 +70,7 @@ static const char *const usage[] = {
  */
 int cmdline_run(const char **argv, int argc)
 {
-	// 
+	//
 	int version = 0, headless = 0, verbose = 0, width = 0, height = 0, port = 0;
 	char *server = NULL;
 

@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -36,7 +36,7 @@ static const map_animation_invalidate_event_handler _animatedObjectEventHandlers
 rct_map_animation *gAnimatedObjects = (rct_map_animation*)0x013886A0;
 
 /**
- * 
+ *
  *  rct2: 0x0068AF67
  *
  * @param type (dh)
@@ -404,7 +404,7 @@ static bool map_animation_invalidate_banner(int x, int y, int baseZ)
 			continue;
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_BANNER)
 			continue;
-		
+
 		baseZ = mapElement->base_height * 8;
 		map_invalidate_tile_zoom1(x, y, baseZ, baseZ + 16);
 		return false;

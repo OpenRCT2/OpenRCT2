@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -75,8 +75,8 @@ static rct_window_event_list window_banner_events = {
 	NULL,
 	window_banner_mouseup,
 	NULL,
-	window_banner_mousedown, 
-	window_banner_dropdown, 
+	window_banner_mousedown,
+	window_banner_dropdown,
 	NULL,
 	NULL,
 	NULL,
@@ -133,7 +133,7 @@ void window_banner_open(rct_windownumber number)
 
 	int view_x = gBanners[w->number].x << 5;
 	int view_y = gBanners[w->number].y << 5;
-	
+
 	rct_map_element* map_element = map_get_first_element_at(view_x / 32, view_y / 32);
 	while(1) {
 		if (
@@ -220,25 +220,25 @@ static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* w
 		window_dropdown_show_colour(w, widget, w->colours[1] | 0x80, banner->colour);
 		break;
 	case WIDX_TEXT_COLOR_DROPDOWN_BUTTON:
-	
+
 		for( int i = 0; i < 13; ++i){
 			gDropdownItemsFormat[i] = 1142;
 			gDropdownItemsArgs[i] = 2997 + i;
 
 		}
-		
+
 		//Switch to the dropdown box widget.
 		widget--;
 
 		window_dropdown_show_text_custom_width(
-			widget->left + w->x, 
-			widget->top + w->y, 
+			widget->left + w->x,
+			widget->top + w->y,
 			widget->bottom - widget->top + 1,
-			w->colours[1], 
+			w->colours[1],
 			DROPDOWN_FLAG_STAY_OPEN,
-			13, 
+			13,
 			widget->right - widget->left - 3);
-		
+
 		dropdown_set_checked(banner->text_colour - 1, true);
 		break;
 	}
@@ -246,7 +246,7 @@ static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* w
 
 /* rct2: 0x6ba517 */
 static void window_banner_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
-{	
+{
 	rct_banner* banner = &gBanners[w->number];
 
 	switch(widgetIndex){
@@ -323,16 +323,16 @@ static void window_banner_invalidate(rct_window *w)
 	rct_scenery_entry* sceneryEntry = g_bannerSceneryEntries[banner->type];
 
 	if (sceneryEntry->banner.flags & 1) colour_btn->type = WWT_COLORBTN;
-	
+
 	w->pressed_widgets &= ~(1ULL<<WIDX_BANNER_NO_ENTRY);
 	w->disabled_widgets &= ~(
 		(1ULL<<WIDX_BANNER_TEXT)|
 		(1ULL<<WIDX_TEXT_COLOR_DROPDOWN)|
 		(1ULL<<WIDX_TEXT_COLOR_DROPDOWN_BUTTON));
-	
+
 	if (banner->flags & BANNER_FLAG_NO_ENTRY){
 		w->pressed_widgets |= (1ULL<<WIDX_BANNER_NO_ENTRY);
-		w->disabled_widgets |= 	
+		w->disabled_widgets |=
 			(1ULL<<WIDX_BANNER_TEXT)|
 			(1ULL<<WIDX_TEXT_COLOR_DROPDOWN)|
 			(1ULL<<WIDX_TEXT_COLOR_DROPDOWN_BUTTON);

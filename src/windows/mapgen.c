@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -168,7 +168,7 @@ static rct_widget window_mapgen_simplex_widgets[] = {
 
 	{ WWT_FLATBTN,			1,	225,	271,	68,		103,	0xFFFFFFFF,				STR_CHANGE_BASE_LAND_TIP },
 	{ WWT_FLATBTN,			1,	225,	271,	104,	139,	0xFFFFFFFF,				STR_CHANGE_VERTICAL_LAND_TIP },
-	
+
 	{ WIDGETS_END },
 };
 
@@ -978,7 +978,7 @@ static void window_mapgen_simplex_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	uint16 mapSizeArgs[2] = { _mapSize, _mapSize };
 	gfx_draw_string_left(dpi, 839, mapSizeArgs, w->colours[1], w->x + w->widgets[WIDX_SIMPLEX_MAP_SIZE].left + 1, w->y + w->widgets[WIDX_SIMPLEX_MAP_SIZE].top + 1);
-	
+
 	arg = (_waterLevel - 12) / 2;
 	gfx_draw_string_left(dpi, 1737, &arg, w->colours[1], w->x + w->widgets[WIDX_SIMPLEX_WATER_LEVEL].left + 1, w->y + w->widgets[WIDX_SIMPLEX_WATER_LEVEL].top + 1);
 }

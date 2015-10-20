@@ -41,7 +41,7 @@ int cmdline_for_test(const char **argv, int argc)
 CuSuite* new_suite(void)
 {
 	CuSuite* suite = CuSuiteNew();
-	
+
 	// Test Finance
 	SUITE_ADD_TEST(suite, test_finance_setup);
 	SUITE_ADD_TEST(suite, test_finance_loan_increase);

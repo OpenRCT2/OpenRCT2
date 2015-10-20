@@ -21,7 +21,7 @@
 /**
  * Text Input Window
  *
- * This is a new window created to replace the windows dialog box 
+ * This is a new window created to replace the windows dialog box
  * that is used for inputing new text for ride names and peep names.
  */
 
@@ -137,9 +137,9 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 
 	// Window will be in the center of the screen
 	rct_window* w = window_create_centred(
-		WW, 
+		WW,
 		height,
-		&window_text_input_events, 
+		&window_text_input_events,
 		WC_TEXTINPUT,
 		WF_STICK_TO_FRONT
 	);
@@ -260,10 +260,10 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 
 	int y = w->y + 25;
-	
+
 	int no_lines = 0;
 	int font_height = 0;
-	
+
 
 	gfx_draw_string_centred(dpi, input_text_description, w->x + WW / 2, y, w->colours[1], &TextInputDescriptionArgs);
 
@@ -316,7 +316,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 			cur_drawn++;
 		}
-		
+
 		wrap_pointer += string_length + 1;
 
 		if (text_input[char_count + string_length] == ' ')char_count++;
@@ -359,7 +359,7 @@ void window_text_input_key(rct_window* w, int key)
 		if (calling_w)
 			window_event_textinput_call(calling_w, calling_widget, text_input);
 	}
-	
+
 	window_invalidate(w);
 }
 

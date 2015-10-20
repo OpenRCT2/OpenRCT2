@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -91,7 +91,7 @@ static void research_calculate_expected_date()
 		expectedDay = currentDay + (daysRemaining & 0xFFFF);
 		dayQuotient = expectedDay / 0x10000;
 		dayRemainder = expectedDay % 0x10000;
-		
+
 		expectedMonth = date_get_month(currentMonth + dayQuotient + (daysRemaining >> 16));
 		expectedDay = (dayRemainder * days_in_month[expectedMonth]) >> 16;
 
@@ -299,7 +299,7 @@ void sub_684AC3(){
 		ebp->entryIndex = (research + 1)->entryIndex;
 
 		uint8 cat = edx->category;
-		edx->category = ebp->category;		
+		edx->category = ebp->category;
 		ebp->category = cat;
 	}
 
@@ -322,7 +322,7 @@ void sub_684AC3(){
 		}
 	}
 
-	
+
 	for (research = gResearchItems; research->entryIndex != RESEARCHED_ITEMS_SEPARATOR; research++){
 		research_finish_item(research->entryIndex);
 	}
@@ -351,7 +351,7 @@ void research_remove_non_separate_vehicle_types()
 			researchItem != gResearchItems &&
 			researchItem->entryIndex != RESEARCHED_ITEMS_SEPARATOR &&
 			researchItem->entryIndex != RESEARCHED_ITEMS_END &&
-			researchItem->entryIndex >= 0x10000			
+			researchItem->entryIndex >= 0x10000
 		) {
 			rct_ride_type *rideEntry = GET_RIDE_ENTRY(researchItem->entryIndex & 0xFF);
 			if (!(rideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME))) {
