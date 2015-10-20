@@ -143,11 +143,16 @@ int bitscanforward(int source)
 {
 	int i;
 
+	#if _MSC_VER >= 1400 // Visual Studio 2005
+		_BitScanForward(&i, source);
+		return i;
+	#else
 	for (i = 0; i < 32; i++)
 		if (source & (1 << i))
 			return i;
 
 	return -1;
+	#endif
 }
 
 int bitcount(int source)
