@@ -8612,8 +8612,8 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 		// Take nearby rides into consideration
 		int cx = floor2(peep->x, 32);
 		int cy = floor2(peep->y, 32);
-		for (int x = cx - 320; x <= cx + 320; x++) {
-			for (int y = cy - 320; y <= cy + 320; y++) {
+		for (int x = cx - 320; x <= cx + 320; x += 32) {
+			for (int y = cy - 320; y <= cy + 320; y += 32) {
 				if (x >= 0 && y >= 0 && x < (256 * 32) && y < (256 * 32)) {
 					rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
 					do {
@@ -8728,8 +8728,8 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 		// Take nearby rides into consideration
 		int cx = floor2(peep->x, 32);
 		int cy = floor2(peep->y, 32);
-		for (int x = cx - 320; x <= cx + 320; x++) {
-			for (int y = cy - 320; y <= cy + 320; y++) {
+		for (int x = cx - 320; x <= cx + 320; x += 32) {
+			for (int y = cy - 320; y <= cy + 320; y += 32) {
 				if (x >= 0 && y >= 0 && x < (256 * 32) && y < (256 * 32)) {
 					rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
 					do {
@@ -8840,8 +8840,8 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 		// Take nearby rides into consideration
 		int cx = floor2(peep->x, 32);
 		int cy = floor2(peep->y, 32);
-		for (int x = cx - 320; x <= cx + 320; x++) {
-			for (int y = cy - 320; y <= cy + 320; y++) {
+		for (int x = cx - 320; x <= cx + 320; x += 32) {
+			for (int y = cy - 320; y <= cy + 320; y += 32) {
 				if (x >= 0 && y >= 0 && x < (256 * 32) && y < (256 * 32)) {
 					rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
 					do {
