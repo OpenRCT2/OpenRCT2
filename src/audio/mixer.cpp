@@ -22,6 +22,7 @@ extern "C" {
 	#include "../config.h"
 	#include "../platform/platform.h"
 	#include "../localisation/localisation.h"
+	#include "../openrct2.h"
 	#include "audio.h"
 }
 #include "mixer.h"
@@ -800,11 +801,15 @@ bool Mixer::Convert(SDL_AudioCVT& cvt, const uint8* data, unsigned long length, 
 
 void Mixer_Init(const char* device)
 {
+	if (gOpenRCT2Headless) return;
+
 	gMixer.Init(device);
 }
 
 void* Mixer_Play_Effect(int id, int loop, int volume, float pan, double rate, int deleteondone)
 {
+	if (gOpenRCT2Headless) return 0;
+
 	if (!gConfigSound.sound) {
 		return 0;
 	}
@@ -824,11 +829,15 @@ void* Mixer_Play_Effect(int id, int loop, int volume, float pan, double rate, in
 
 void Mixer_Stop_Channel(void* channel)
 {
+	if (gOpenRCT2Headless) return;
+
 	gMixer.Stop(*(Channel*)channel);
 }
 
 void Mixer_Channel_Volume(void* channel, int volume)
 {
+	if (gOpenRCT2Headless) return;
+
 	gMixer.Lock();
 	((Channel*)channel)->SetVolume(volume);
 	gMixer.Unlock();
@@ -836,6 +845,8 @@ void Mixer_Channel_Volume(void* channel, int volume)
 
 void Mixer_Channel_Pan(void* channel, float pan)
 {
+	if (gOpenRCT2Headless) return;
+
 	gMixer.Lock();
 	((Channel*)channel)->SetPan(pan);
 	gMixer.Unlock();
@@ -843,6 +854,8 @@ void Mixer_Channel_Pan(void* channel, float pan)
 
 void Mixer_Channel_Rate(void* channel, double rate)
 {
+	if (gOpenRCT2Headless) return;
+
 	gMixer.Lock();
 	((Channel*)channel)->SetRate(rate);
 	gMixer.Unlock();
@@ -850,26 +863,36 @@ void Mixer_Channel_Rate(void* channel, double rate)
 
 int Mixer_Channel_IsPlaying(void* channel)
 {
+	if (gOpenRCT2Headless) return false;
+
 	return ((Channel*)channel)->IsPlaying();
 }
 
 unsigned long Mixer_Channel_GetOffset(void* channel)
 {
+	if (gOpenRCT2Headless) return 0;
+
 	return ((Channel*)channel)->GetOffset();
 }
 
 int Mixer_Channel_SetOffset(void* channel, unsigned long offset)
 {
+	if (gOpenRCT2Headless) return 0;
+
 	return ((Channel*)channel)->SetOffset(offset);
 }
 
 void Mixer_Channel_SetGroup(void* channel, int group)
 {
+	if (gOpenRCT2Headless) return;
+
 	((Channel*)channel)->SetGroup(group);
 }
 
 void* Mixer_Play_Music(int pathid, int loop, int streaming)
 {
+	if (gOpenRCT2Headless) return 0;
+
 	if (!gConfigSound.sound) {
 		return 0;
 	}
@@ -907,5 +930,7 @@ void* Mixer_Play_Music(int pathid, int loop, int streaming)
 
 void Mixer_SetVolume(float volume)
 {
+	if (gOpenRCT2Headless) return;
+
 	gMixer.SetVolume(volume);
 }
