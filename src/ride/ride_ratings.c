@@ -624,10 +624,12 @@ static void ride_ratings_calculate(rct_ride *ride)
 		calcFunc(ride);
 	}
 
-	// Prevent negative ratings
-	ride->ratings.excitement = max(0, ride->ratings.excitement);
-	ride->ratings.intensity = max(0, ride->ratings.intensity);
-	ride->ratings.nausea = max(0, ride->ratings.nausea);
+	if (ride->ratings.excitement != -1) {
+		// Prevent negative ratings
+		ride->ratings.excitement = max(0, ride->ratings.excitement);
+		ride->ratings.intensity = max(0, ride->ratings.intensity);
+		ride->ratings.nausea = max(0, ride->ratings.nausea);
+	}
 
 	// Original ride calculation
 	// calcFunc = RCT2_ADDRESS(0x0097E050, ride_ratings_calculation)[ride->type];
