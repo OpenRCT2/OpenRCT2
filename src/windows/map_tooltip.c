@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -63,7 +63,7 @@ static rct_window_event_list window_map_tooltip_events = {
 	NULL
 };
 
-#define MAP_TOOLTIP_ARGS 
+#define MAP_TOOLTIP_ARGS
 
 static int _lastCursorX;
 static int _lastCursorY;
@@ -105,7 +105,7 @@ void window_map_tooltip_update_visibility()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A7C43
  */
 static void window_map_tooltip_open()
@@ -134,7 +134,7 @@ static void window_map_tooltip_open()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EE8CE
  */
 static void window_map_tooltip_update(rct_window *w)
@@ -143,7 +143,7 @@ static void window_map_tooltip_update(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EE894
  */
 static void window_map_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi)

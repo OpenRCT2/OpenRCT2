@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -138,13 +138,13 @@ void window_tooltip_show(rct_string_id id, int x, int y)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EA10D
  */
 void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y)
 {
 	rct_widget *widget;
-	
+
 	if (widgetWindow == NULL || widgetIndex == -1)
 		return;
 
@@ -164,7 +164,7 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E98C6
  */
 void window_tooltip_close()
@@ -177,7 +177,7 @@ void window_tooltip_close()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EA578
  */
 static void window_tooltip_onclose(rct_window *w)
@@ -186,7 +186,7 @@ static void window_tooltip_onclose(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EA580
  */
 static void window_tooltip_update(rct_window *w)
@@ -196,7 +196,7 @@ static void window_tooltip_update(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EA41D
  */
 static void window_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -221,7 +221,7 @@ static void window_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	gfx_draw_pixel(dpi, right - 1, top    + 1, 0x0200002F);
 	gfx_draw_pixel(dpi, left  + 1, bottom - 1, 0x0200002F);
 	gfx_draw_pixel(dpi, right - 1, bottom - 1, 0x0200002F);
-	
+
 	// Text
 	left = w->x + ((w->width + 1) / 2) - 1;
 	top = w->y + 1;

@@ -66,7 +66,7 @@ void finance_payment(money32 amount, rct_expenditure_type type)
 	RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[type] -= amount;
 	if (dword_988E60[type] & 1)
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32) -= amount; // Cumulative amount of money spent this day
-	
+
 
 	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_MONEY;
 	window_invalidate_by_class(WC_FINANCES);
@@ -353,7 +353,7 @@ void finance_shift_expenditure_table() {
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069E89B
  */
 void finance_reset_cash_to_initial()

@@ -112,7 +112,7 @@ void window_staff_fire_prompt_open(rct_peep* peep)
 static void window_staff_fire_mouseup(rct_window *w, int widgetIndex)
 {
 	rct_peep* peep = &g_sprite_list[w->number].peep;
-	
+
 	switch (widgetIndex){
 	case WIDX_YES:
 		game_do_command(peep->x, 1, peep->y, w->number, GAME_COMMAND_FIRE_STAFF_MEMBER, 0, 0);
@@ -137,12 +137,12 @@ static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 
 	rct_peep* peep = &g_sprite_list[w->number].peep;
-	
+
 	RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
 	RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
-	
+
 	int x = w->x + WW / 2;
 	int y = w->y + (WH / 2) - 3;
-	
+
 	gfx_draw_string_centred_wrapped(dpi, (void*)0x13CE952, x, y, WW - 4, STR_FIRE_STAFF_ID, 0);
 }

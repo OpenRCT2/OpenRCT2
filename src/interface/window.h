@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -102,7 +102,7 @@ typedef struct {
 	uint16 v_thumb_bottom;		// 0x10
 } rct_scroll;
 
-/** 
+/**
  * Viewport focus structure.
  * size: 0xA
  * Use sprite.type to work out type.
@@ -122,7 +122,7 @@ typedef struct{
 	uint16 sprite_id; //0x482
 	uint8 pad_484;
 	uint8 type; //0x485 & VIEWPORT_FOCUS_TYPE_MASK
-	uint16 pad_486; 
+	uint16 pad_486;
 	uint8 rotation; //0x488
 	uint8 zoom; //0x489
 } sprite_focus;
@@ -286,7 +286,7 @@ typedef enum {
 	WE_RESIZE = 2,
 	WE_MOUSE_DOWN = 3,
 	WE_DROPDOWN = 4,
-	WE_UNKNOWN_05 = 5, 
+	WE_UNKNOWN_05 = 5,
 	// Unknown 05: Used to update tabs that are not being animated
 	// see window_peep. When the overview tab is not highlighted the
 	// items being carried such as hats/balloons still need to be shown

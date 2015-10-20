@@ -172,7 +172,7 @@ static void window_maze_construction_close(rct_window *w)
 	// In order to cancel the yellow arrow correctly the
 	// selection tool should be cancelled.
 	tool_cancel();
-	
+
 	hide_gridlines();
 
 	uint8 rideIndex = _currentRideIndex;
@@ -360,12 +360,12 @@ static void window_maze_construction_entrance_tooldown(int x, int y, rct_window*
 	RCT2_GLOBAL(0x00141E9AE, rct_string_id) = is_exit ? 1144 : 1145;
 
 	money32 cost = game_do_command(
-		x, 
-		GAME_COMMAND_FLAG_APPLY | ((direction ^ 2) << 8), 
-		y, 
+		x,
+		GAME_COMMAND_FLAG_APPLY | ((direction ^ 2) << 8),
+		y,
 		rideIndex | (is_exit << 8),
-		GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, 
-		RCT2_GLOBAL(0x00F44193, uint8), 
+		GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
+		RCT2_GLOBAL(0x00F44193, uint8),
 		0);
 
 	if (cost == MONEY32_UNDEFINED)
@@ -392,7 +392,7 @@ static void window_maze_construction_entrance_tooldown(int x, int y, rct_window*
 }
 
 /**
- * 
+ *
  *  rct2: 0x006CD65D
  */
 static void window_maze_construction_tooldown(rct_window* w, int widgetIndex, int x, int y)
@@ -431,13 +431,13 @@ static void window_maze_construction_paint(rct_window *w, rct_drawpixelinfo *dpi
 }
 
 /**
- * 
+ *
  * rct2: 0x006CD887
  */
 void window_maze_construction_update_pressed_widgets()
 {
 	rct_window *w;
-	
+
 	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 	if (w == NULL)
 		return;

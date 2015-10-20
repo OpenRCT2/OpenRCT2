@@ -56,7 +56,7 @@ void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, in
 	uint8 staffType, colour;
 	int spriteIndex;
 	rct_peep *peep;
-	
+
 	staffType = (*ebx >> 8) & 0xFF;
 	colour = (*edx >> 8) & 0xFF;
 
@@ -125,7 +125,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		sprite_remove((rct_sprite*)newPeep);
 	} else {
 		move_sprite_to_list((rct_sprite *)newPeep, SPRITE_LINKEDLIST_OFFSET_PEEP);
-		
+
 		newPeep->sprite_identifier = 1;
 		newPeep->window_invalidate_flags = 0;
 		newPeep->action = PEEP_ACTION_NONE_2;
@@ -412,7 +412,7 @@ void staff_update_greyed_patrol_areas()
 	{
 		for (int i = 0; i < 128; ++i)
 			RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + ((staff_type + STAFF_MAX_COUNT) * 512), uint32)[i] = 0;
-		
+
 		for (uint16 sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_index != SPRITE_INDEX_NULL; sprite_index = peep->next)
 		{
 			peep = GET_PEEP(sprite_index);

@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -138,7 +138,7 @@ static void window_guest_list_find_groups();
 static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* argument_2);
 
 /**
- * 
+ *
  *  rct2: 0x006992E3
  */
 void window_guest_list_open()
@@ -267,7 +267,7 @@ void window_guest_list_open_with_filter(int type, int index)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00699AAF
  */
 static void window_guest_list_mouseup(rct_window *w, int widgetIndex)
@@ -292,7 +292,7 @@ static void window_guest_list_mouseup(rct_window *w, int widgetIndex)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00699EA3
  */
 static void window_guest_list_resize(rct_window *w)
@@ -310,7 +310,7 @@ static void window_guest_list_resize(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00699AC4
  */
 static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
@@ -378,7 +378,7 @@ static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widge
 }
 
 /**
- * 
+ *
  *  rct2: 0x00699AE1
  */
 static void window_guest_list_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
@@ -400,7 +400,7 @@ static void window_guest_list_dropdown(rct_window *w, int widgetIndex, int dropd
 }
 
 /**
- * 
+ *
  *  rct2: 0x00699E54
  */
 static void window_guest_list_update(rct_window *w)
@@ -414,7 +414,7 @@ static void window_guest_list_update(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00699C55
  */
 static void window_guest_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
@@ -474,7 +474,7 @@ static void window_guest_list_scrollgetsize(rct_window *w, int scrollIndex, int 
 }
 
 /**
- * 
+ *
  *  rct2: 0x00699D7D
  */
 static void window_guest_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
@@ -498,7 +498,7 @@ static void window_guest_list_scrollmousedown(rct_window *w, int scrollIndex, in
 			if (i == 0) {
 				// Open guest window
 				window_guest_open(peep);
-				
+
 				break;
 			} else {
 				i--;
@@ -521,7 +521,7 @@ static void window_guest_list_scrollmousedown(rct_window *w, int scrollIndex, in
 }
 
 /**
- * 
+ *
  *  rct2: 0x00699D3B
  */
 static void window_guest_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
@@ -537,7 +537,7 @@ static void window_guest_list_scrollmouseover(rct_window *w, int scrollIndex, in
 }
 
 /**
- * 
+ *
  *  rct2: 0x00699E4A
  */
 static void window_guest_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
@@ -546,7 +546,7 @@ static void window_guest_list_tooltip(rct_window* w, int widgetIndex, rct_string
 }
 
 /**
- * 
+ *
  *  rct2: 0x00699511
  */
 static void window_guest_list_invalidate(rct_window *w)
@@ -576,7 +576,7 @@ static void window_guest_list_invalidate(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006995CC
  */
 static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -632,7 +632,7 @@ static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00699701
  */
 static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
@@ -664,7 +664,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 			if (_window_guest_list_tracking_only && !(peep->flags & PEEP_FLAGS_TRACKING))
 				continue;
 
-			// 
+			//
 			if (y + 11 >= -0x7FFF && y + 11 > dpi->y && y < 0x7FFF) {
 				// Check if y is beyond the scroll control
 				if (y > dpi->y + dpi->height)
@@ -690,9 +690,9 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 					// Tracking icon
 					if (peep->flags & PEEP_FLAGS_TRACKING)
 						gfx_draw_sprite(dpi, 5129, 112, y, 0);
-					
+
 					// Action
-					
+
 					get_arguments_from_action(peep, &argument_1, &argument_2);
 
 					RCT2_GLOBAL(0x013CE952, uint32) = argument_1;
@@ -709,7 +709,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 							continue;
 						if (thought->var_2 > 5)
 							break;
-						
+
 						get_arguments_from_thought(peep->thoughts[j], &argument_1, &argument_2);
 
 						RCT2_GLOBAL(0x013CE952, uint32) = argument_1;
@@ -789,7 +789,7 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep)
 	return 1;
 }
 
-/** 
+/**
  * rct2:0x0069B7EA
  * Calculates a hash value (arguments) for comparing peep actions/thoughts
  * peep (esi)
@@ -817,7 +817,7 @@ static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* 
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069B5AE
  */
 static void window_guest_list_find_groups()
@@ -854,11 +854,11 @@ static void window_guest_list_find_groups()
 		_window_guest_list_num_groups++;
 		_window_guest_list_groups_num_guests[groupIndex] = 1;
 		peep->var_0C &= ~(1 << 8);
-		
+
 		get_arguments_from_peep( peep, &_window_guest_list_groups_argument_1[groupIndex], &_window_guest_list_groups_argument_2[groupIndex]);
 		RCT2_GLOBAL(0x00F1EDF6, uint32) = _window_guest_list_groups_argument_1[groupIndex];
 		RCT2_GLOBAL(0x00F1EDFA, uint32) = _window_guest_list_groups_argument_2[groupIndex];
-		
+
 		RCT2_ADDRESS(0x00F1AF26, uint8)[groupIndex] = groupIndex;
 		faceIndex = groupIndex * 56;
 		_window_guest_list_groups_guest_faces[faceIndex++] = get_peep_face_sprite_small(peep) - 5486;

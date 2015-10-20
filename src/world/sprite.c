@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -156,7 +156,7 @@ void sprite_clear_all_unused()
 {
 	rct_unk_sprite *sprite;
 	uint16 spriteIndex, nextSpriteIndex, previousSpriteIndex;
-	
+
 	spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16);
 	while (spriteIndex != SPRITE_INDEX_NULL) {
 		sprite = &g_sprite_list[spriteIndex].unknown;
@@ -219,7 +219,7 @@ rct_sprite *create_sprite(uint8 bl)
 /*
 * rct2: 0x0069ED0B
 * This function moves a sprite to the specified sprite linked list.
-* There are 5/6 of those, and cl specifies a pointer offset 
+* There are 5/6 of those, and cl specifies a pointer offset
 * of the desired linked list in a uint16 array. Known valid values are
 * 2, 4, 6, 8 or 10 (SPRITE_LINKEDLIST_OFFSET_...)
 */
@@ -231,7 +231,7 @@ void move_sprite_to_list(rct_sprite *sprite, uint8 cl)
 	if (unkSprite->linked_list_type_offset == cl)
 		return;
 
-	// If the sprite is currently the head of the list, the 
+	// If the sprite is currently the head of the list, the
 	// sprite following this one becomes the new head of the list.
 	if (unkSprite->previous == SPRITE_INDEX_NULL)
 	{

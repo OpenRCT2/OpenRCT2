@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -163,7 +163,7 @@ void rct1_import_s4(rct1_s4 *s4)
 		memset(edi, 0, 64); edi += 64;
 	} while (--edx > 0);
 	edi += 0xA800;
-	
+
 	edx = 4;
 	do {
 		ebx = 32;
@@ -366,7 +366,7 @@ static void rct1_load_default_objects()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A29B9
  */
 static void rct1_fix_terrain()
@@ -380,7 +380,7 @@ static void rct1_fix_terrain()
 
 		if (map_element_get_type(element) != MAP_ELEMENT_TYPE_SURFACE)
 			continue;
-		
+
 		// Convert terrain
 		map_element_set_terrain(element, RCT1TerrainConvertTable[map_element_get_terrain(element)]);
 		map_element_set_terrain_edge(element, RCT1TerrainEdgeConvertTable[map_element_get_terrain_edge(element)]);
@@ -423,7 +423,7 @@ static void rct1_fix_entrance_positions()
 {
 	rct_map_element *element;
 	map_element_iterator it;
-	
+
 	for (int i = 0; i < 4; i++)
 		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] = 0x8000;
 
@@ -534,10 +534,10 @@ static void rct1_reset_park_entrance_path_type()
 static void rct1_clear_extra_sprite_entries()
 {
 	rct_unk_sprite *sprite;
-	
+
 	for (int i = 5000; i < MAX_SPRITES; i++) {
 		sprite = &(g_sprite_list[i].unknown);
-		
+
 		memset(&g_sprite_list[i], 0, sizeof(rct_sprite));
 
 		sprite->sprite_identifier = 255;
@@ -563,7 +563,7 @@ static void rct1_clear_extra_tile_entries()
 	for (int i = 0; i < 0x10000; i++) {
 		gMapElementTilePointers[i] = (rct_map_element*)-1;
 	}
-	
+
 	// Get the first free map element
 	rct_map_element *nextFreeMapElement = gMapElements;
 	for (int i = 0; i < 128 * 128; i++) {

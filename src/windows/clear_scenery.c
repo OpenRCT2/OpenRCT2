@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -97,7 +97,7 @@ static rct_window_event_list window_clear_scenery_events = {
 };
 
 /**
- * 
+ *
  *  rct2: 0x0068E0A7
  */
 void window_clear_scenery_open()
@@ -221,11 +221,11 @@ static void window_clear_scenery_invalidate(rct_window *w)
 	// Set the preview image button to be pressed down
 	w->pressed_widgets = (1 << WIDX_PREVIEW) |
 		(gClearSmallScenery ? (1 << WIDX_SMALL_SCENERY) : 0) |
-		(gClearLargeScenery ? (1 << WIDX_LARGE_SCENERY) : 0) | 
+		(gClearLargeScenery ? (1 << WIDX_LARGE_SCENERY) : 0) |
 		(gClearFootpath     ? (1 << WIDX_FOOTPATH)      : 0);
 
 	// Update the preview image (for tool sizes up to 7)
-	window_clear_scenery_widgets[WIDX_PREVIEW].image = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) <= 7 ? 
+	window_clear_scenery_widgets[WIDX_PREVIEW].image = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) <= 7 ?
 		SPR_LAND_TOOL_SIZE_0 + RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) : 0xFFFFFFFF;
 }
 

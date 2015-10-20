@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -416,7 +416,7 @@ static int award_is_deserved_most_disappointing(int awardType, int activeAwardTy
 	FOR_ALL_RIDES(i, ride) {
 		if (ride->excitement == (ride_rating)0xFFFF || ride->popularity == 0xFF)
 			continue;
-		
+
 		countedRides++;
 
 		// Unpopular

@@ -8379,7 +8379,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 
 						// Nausea calculations.
 						ride_rating maxNausea = NauseaMaximumThresholds[(peep->nausea_tolerance & 3)] + peep->happiness;
-						
+
 						if (ride->nausea > maxNausea) {
 							if (peepAtRide) {
 								peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SICKENING, rideIndex);
@@ -9125,7 +9125,7 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 		peep->flags |= PEEP_FLAGS_LEAVING_PARK;
 		peep->flags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
 	}
-	
+
 	peep->flags &= ~PEEP_FLAGS_PURPLE;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_EMMA_GARRELL, peep)) {
 		peep->flags |= PEEP_FLAGS_PURPLE;

@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -158,7 +158,7 @@ void window_game_bottom_toolbar_open()
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066C588
  */
 static void window_game_bottom_toolbar_mouseup(rct_window *w, int widgetIndex)
@@ -225,7 +225,7 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, int widgetIndex, r
 	case WIDX_DATE:
 		month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
 		day = ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) * days_in_month[month]) >> 16) & 0xFF;
-		
+
 		RCT2_GLOBAL(0x013CE952, short) = STR_DATE_DAY_1 + day;
 		RCT2_GLOBAL(0x013CE954, short) = STR_MONTH_MARCH + month;
 		break;
@@ -233,7 +233,7 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, int widgetIndex, r
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066BBA0
  */
 static void window_game_bottom_toolbar_invalidate(rct_window *w)
@@ -314,7 +314,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066BB79
  */
 void window_game_bottom_toolbar_invalidate_news_item()
@@ -325,7 +325,7 @@ void window_game_bottom_toolbar_invalidate_news_item()
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066BC87
  */
 static void window_game_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -411,7 +411,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066C76C
  */
 static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, rct_window *w, int colour, int x, int y, uint8 factor)
@@ -493,7 +493,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066BFA5
  */
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rct_window *w)

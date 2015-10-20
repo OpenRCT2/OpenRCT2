@@ -56,7 +56,7 @@ int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER))
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-	// 
+	//
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
@@ -162,7 +162,7 @@ int viewport_interaction_left_click(int x, int y)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EDE88
  */
 int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info *info)
@@ -179,7 +179,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_MANAGER))
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-	// 
+	//
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
@@ -336,7 +336,7 @@ int viewport_interaction_right_over(int x, int y)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E8A62
  */
 int viewport_interaction_right_click(int x, int y)
@@ -385,7 +385,7 @@ int viewport_interaction_right_click(int x, int y)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E08D2
  */
 static void viewport_interaction_remove_scenery(rct_map_element *mapElement, int x, int y)
@@ -403,7 +403,7 @@ static void viewport_interaction_remove_scenery(rct_map_element *mapElement, int
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A614A
  */
 static void viewport_interaction_remove_footpath(rct_map_element *mapElement, int x, int y)
@@ -413,7 +413,7 @@ static void viewport_interaction_remove_footpath(rct_map_element *mapElement, in
 	rct_map_element *mapElement2;
 
 	z = mapElement->base_height;
-	
+
 	w = window_find_by_class(WC_FOOTPATH);
 	if (w != NULL)
 		footpath_provisional_update();
@@ -429,7 +429,7 @@ static void viewport_interaction_remove_footpath(rct_map_element *mapElement, in
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A61AB
  */
 static void viewport_interaction_remove_footpath_item(rct_map_element *mapElement, int x, int y)
@@ -453,7 +453,7 @@ static void viewport_interaction_remove_footpath_item(rct_map_element *mapElemen
 }
 
 /**
- * 
+ *
  *  rct2: 0x00666C0E
  */
 void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int x, int y)
@@ -474,7 +474,7 @@ void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int 
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E57A9
  */
 static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, int x, int y)
@@ -499,7 +499,7 @@ static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, i
 }
 
 /**
- * 
+ *
  *  rct2: 0x006B88DC
  */
 static void viewport_interaction_remove_large_scenery(rct_map_element *mapElement, int x, int y)
@@ -516,12 +516,12 @@ static void viewport_interaction_remove_large_scenery(rct_map_element *mapElemen
 	} else {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_REMOVE_THIS;
 		game_do_command(
-			x, 
-			1 | ((mapElement->type & 0x3) << 8), 
-			y, 
+			x,
+			1 | ((mapElement->type & 0x3) << 8),
+			y,
 			mapElement->base_height | ((mapElement->properties.scenerymultiple.type >> 10) << 8),
-			GAME_COMMAND_REMOVE_LARGE_SCENERY, 
-			0, 
+			GAME_COMMAND_REMOVE_LARGE_SCENERY,
+			0,
 			0
 		);
 	}
@@ -538,7 +538,7 @@ static rct_peep *viewport_interaction_get_closest_peep(int x, int y, int maxDist
 	w = window_find_from_point(x, y);
 	if (w == NULL)
 		return 0;
-		
+
 	viewport = w->viewport;
 	if (viewport == NULL || viewport->zoom >= 2)
 		return 0;

@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -188,7 +188,7 @@ static rct_widget window_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_FINANCES_RESEARCH_TIP },		// Research
 	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_SHOW_RECENT_MESSAGES_TIP },		// News
 	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_SHOW_MULTIPLAYER_STATUS_TIP },	// Network
-	
+
 	{ WWT_EMPTY,	0,	0,		10-1,	0,						0,		0xFFFFFFFF,									STR_NONE },							// Artificial widget separator
 	{ WIDGETS_END },
 };
@@ -277,7 +277,7 @@ void window_top_toolbar_open()
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066C957
  */
 static void window_top_toolbar_mouseup(rct_window *w, int widgetIndex)
@@ -342,7 +342,7 @@ static void window_top_toolbar_mouseup(rct_window *w, int widgetIndex)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066CA3B
  */
 static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
@@ -597,7 +597,7 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066C810
  */
 static void window_top_toolbar_invalidate(rct_window *w)
@@ -653,7 +653,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 			window_top_toolbar_widgets[WIDX_PATH].type = WWT_EMPTY;
 			window_top_toolbar_widgets[WIDX_CLEAR_SCENERY].type = WWT_EMPTY;
 		}
-		
+
 		if (g_editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
 			window_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].type = WWT_EMPTY;
 			window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
@@ -759,7 +759,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066C8EC
  */
 static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -965,7 +965,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	}
 }
 
-/* rct2: 0x006E1F34 
+/* rct2: 0x006E1F34
  * Outputs
  * eax : grid_x
  * ebx : parameter_1
@@ -1053,7 +1053,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			}
 		}
 	}
-	
+
 	switch (scenery_type){
 	case 0:
 	{
@@ -1129,7 +1129,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 
 		// If CTRL not pressed
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
-			uint16 flags = 
+			uint16 flags =
 				VIEWPORT_INTERACTION_MASK_TERRAIN &
 				VIEWPORT_INTERACTION_MASK_WATER;
 			int interaction_type = 0;
@@ -1208,7 +1208,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 	{
 		// Path bits
 
-		uint16 flags = 
+		uint16 flags =
 			VIEWPORT_INTERACTION_MASK_FOOTPATH &
 			VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
 		int interaction_type = 0;
@@ -1373,7 +1373,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		uint8 rotation = window_scenery_rotation;
 		rotation -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
 		rotation &= 0x3;
-		
+
 		sint16 z = map_element->base_height;
 
 		if (map_element->properties.path.type & (1 << 2)){
@@ -1394,7 +1394,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E2CC6
  */
 static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w, short widgetIndex)
@@ -1418,7 +1418,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 	sub_6E1F34(x, y, selectedTab, &gridX, &gridY, &parameter_1, &parameter_2, &parameter_3);
 
 	if (gridX == (sint16)0x8000) return;
-	
+
 	switch (sceneryType){
 	case SCENERY_TYPE_SMALL:
 	{
@@ -1457,7 +1457,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 			) {
 				zAttemptRange = 20;
 			}
-			
+
 			bool success = false;
 			for (; zAttemptRange != 0; zAttemptRange--){
 				int flags = GAME_COMMAND_FLAG_APPLY | (parameter_1 & 0xFF00);
@@ -1569,7 +1569,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 
 		for (; zAttemptRange != 0; zAttemptRange--) {
 			int flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
-			
+
 			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_POSITION_THIS_HERE;
 			int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_LARGE_SCENERY, parameter_3, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
@@ -1783,7 +1783,7 @@ void top_toolbar_tool_update_land(sint16 x, sint16 y){
 		money32 lower_cost = selection_lower_land(0);
 		money32 raise_cost = selection_raise_land(0);
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) != raise_cost || 
+		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) != raise_cost ||
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) != lower_cost){
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) = raise_cost;
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) = lower_cost;
@@ -1889,7 +1889,7 @@ void top_toolbar_tool_update_land(sint16 x, sint16 y){
 		state_changed++;
 	}
 
-	
+
 	if (tool_size == 0)
 		tool_size = 1;
 
@@ -1978,11 +1978,11 @@ void top_toolbar_tool_update_water(sint16 x, sint16 y){
 	rct_xy16 mapTile = { 0 };
 	int interaction_type = 0;
 	get_map_coordinates_from_pos(
-		x, 
-		y, 
-		VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, 
-		&mapTile.x, 
-		&mapTile.y, 
+		x,
+		y,
+		VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER,
+		&mapTile.x,
+		&mapTile.y,
 		&interaction_type,
 		NULL,
 		NULL);
@@ -2073,7 +2073,7 @@ void top_toolbar_tool_update_water(sint16 x, sint16 y){
 	}
 }
 
-/* rct2: 0x006E24F6 
+/* rct2: 0x006E24F6
  * On failure returns MONEY32_UNDEFINED
  * On success places ghost scenery and returns cost to place proper
  */
@@ -2090,12 +2090,12 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 		// Small Scenery
 		//6e252b
 		cost = game_do_command(
-			map_tile.x, 
+			map_tile.x,
 			parameter_1 | 0x69,
-			map_tile.y, 
-			parameter_2, 
-			GAME_COMMAND_PLACE_SCENERY, 
-			parameter_3, 
+			map_tile.y,
+			parameter_2,
+			GAME_COMMAND_PLACE_SCENERY,
+			parameter_3,
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
 
 		if (cost == MONEY32_UNDEFINED)
@@ -2168,7 +2168,7 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) = map_tile.x;
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) = map_tile.y;
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_WALL_ROTATION, uint8) = (parameter_2 & 0xFF);
-		
+
 		mapElement = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT, rct_map_element*);
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) = mapElement->base_height;
 
@@ -2264,7 +2264,7 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		scenery_remove_ghost_tool_placement();
 		return;
 	}
-	
+
 	rct_scenery_entry* scenery;
 	uint8 bl;
 	money32 cost;
@@ -2293,7 +2293,7 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 			(parameter2 & 0xFF) == RCT2_GLOBAL(0x00F64F0E, uint8)&&
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) == RCT2_GLOBAL(0x00F64F0A, sint16) &&
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_SELECTED_OBJECT, uint16) == selected_tab){
-			return;		
+			return;
 		}
 
 		scenery_remove_ghost_tool_placement();
@@ -2403,9 +2403,9 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		rct_xy16* selectedTile = gMapSelectionTiles;
 
 		for (rct_large_scenery_tile* tile = scenery->large_scenery.tiles; tile->x_offset != (sint16)0xFFFF; tile++){
-			rct_xy16 tileLocation = { 
-				.x = tile->x_offset, 
-				.y = tile->y_offset 
+			rct_xy16 tileLocation = {
+				.x = tile->x_offset,
+				.y = tile->y_offset
 			};
 
 			rotate_map_coordinates(&tileLocation.x, &tileLocation.y, (parameter1 >> 8) & 0xFF);
@@ -2566,7 +2566,7 @@ static void window_top_toolbar_tool_down(rct_window* w, int widgetIndex, int x, 
 }
 
 /**
-*  
+*
 *  rct2: 0x006644DD
 */
 money32 selection_raise_land(uint8 flags)
@@ -2780,11 +2780,11 @@ static void window_top_toolbar_tool_drag(rct_window* w, int widgetIndex, int x, 
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066CC5B
  */
 static void window_top_toolbar_tool_up(rct_window* w, int widgetIndex, int x, int y)
-{	
+{
 	switch (widgetIndex) {
 	case WIDX_LAND:
 		map_invalidate_selection_rect();
@@ -2805,7 +2805,7 @@ static void window_top_toolbar_tool_up(rct_window* w, int widgetIndex, int x, in
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066CA58
  */
 static void window_top_toolbar_tool_abort(rct_window *w, int widgetIndex)

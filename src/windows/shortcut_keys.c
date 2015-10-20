@@ -228,20 +228,20 @@ static void window_shortcut_scrollmouseover(rct_window *w, int scrollIndex, int 
 	int selected_item = y / 10;
 	if (selected_item >= w->no_list_items)
 		return;
-	
+
 	w->selected_list_item = selected_item;
 
 	window_invalidate(w);
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E38E6
  */
 static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, RCT2_ADDRESS(0x0141FC48,uint8)[w->colours[1] * 8]);
-	
+
 	for (int i = 0; i < w->no_list_items; ++i) {
 		int y = i * 10;
 		if (y > dpi->y + dpi->height)

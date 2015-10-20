@@ -99,7 +99,7 @@ static rct_window_event_list window_scenarioselect_events = {
 };
 
 /**
- * 
+ *
  *  rct2: 0x006781B5
  */
 void window_scenarioselect_open()
@@ -120,7 +120,7 @@ void window_scenarioselect_open()
 		WF_10
 	);
 	window->widgets = window_scenarioselect_widgets;
-	
+
 	window->enabled_widgets = 0x04 | 0x10 | 0x20 | 0x40 | 0x80 | 0x100;
 	window_init_scroll_widgets(window);
 	window->viewport_focus_coordinates.var_480 = -1;
@@ -132,7 +132,7 @@ void window_scenarioselect_open()
 }
 
 /**
- * 
+ *
  *  rct2: 0x00677C8A
  */
 static void window_scenarioselect_init_tabs()
@@ -262,7 +262,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	rct_scenario_basic *scenario;
 
 	window_draw_widgets(w, dpi);
-	
+
 	format = (theme_get_preset()->features.rct1_scenario_font) ? 5138 : 1193;
 
 	// Text for each tab

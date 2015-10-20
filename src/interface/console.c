@@ -154,7 +154,7 @@ void console_draw(rct_drawpixelinfo *dpi)
 
 	int x = _consoleLeft + 4;
 	int y = _consoleTop + 4;
-	
+
 	// Draw previous lines
 	utf8 lineBuffer[2 + 256], *lineCh;
 	ch = _consoleViewBufferStart;
@@ -933,7 +933,7 @@ console_command console_command_table[] = {
 	{ "windows", cc_windows, "Lists all the windows that can be opened.", "windows" },
 	{ "load_object", cc_load_object, "Loads the object file into the scenario.\n"
 									"Loading a scenery group will not load its associated objects.\n"
-									"This is a safer method opposed to \"open object_selection\".", 
+									"This is a safer method opposed to \"open object_selection\".",
 									"load_object <objectfilenodat>" },
 	{ "object_count", cc_object_count, "Shows the number of objects of each type in the scenario.", "object_count" },
 	{ "twitch", cc_twitch, "Twitch API" },

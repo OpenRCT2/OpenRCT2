@@ -754,7 +754,7 @@ void window_themes_invalidate(rct_window *w)
 	window_themes_widgets[WIDX_THEMES_LIST].right = w->width - 4;
 	window_themes_widgets[WIDX_THEMES_LIST].bottom = w->height - 0x0F;
 
-	
+
 	window_themes_widgets[WIDX_THEMES_LIST].type = WWT_EMPTY;
 	window_themes_widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WWT_EMPTY;
 	window_themes_widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WWT_EMPTY;

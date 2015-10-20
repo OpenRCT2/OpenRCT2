@@ -121,7 +121,7 @@ static void window_research_funding_update(rct_window *w);
 static void window_research_funding_invalidate(rct_window *w);
 static void window_research_funding_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-// 
+//
 static rct_window_event_list window_research_development_events = {
 	NULL,
 	window_research_development_mouseup,
@@ -288,7 +288,7 @@ static void window_research_development_update(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006B6819
  */
 static void window_research_development_invalidate(rct_window *w)
@@ -311,7 +311,7 @@ static void window_research_development_invalidate(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006B689B
  */
 static void window_research_development_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -407,7 +407,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 #pragma region Funding page
 
 /**
- * 
+ *
  *  rct2: 0x0069DB3F
  */
 static void window_research_funding_mouseup(rct_window *w, int widgetIndex)
@@ -437,14 +437,14 @@ static void window_research_funding_mouseup(rct_window *w, int widgetIndex)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069DB66
  */
 static void window_research_funding_mousedown(int widgetIndex, rct_window *w, rct_widget* widget)
 {
 	rct_widget *dropdownWidget;
 	int i;
-	
+
 	if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON)
 		return;
 
@@ -469,7 +469,7 @@ static void window_research_funding_mousedown(int widgetIndex, rct_window *w, rc
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069DB6D
  */
 static void window_research_funding_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
@@ -482,7 +482,7 @@ static void window_research_funding_dropdown(rct_window *w, int widgetIndex, int
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069DC23
  */
 static void window_research_funding_update(rct_window *w)
@@ -494,7 +494,7 @@ static void window_research_funding_update(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069DA64
  */
 static void window_research_funding_invalidate(rct_window *w)
@@ -508,7 +508,7 @@ static void window_research_funding_invalidate(rct_window *w)
 
 	window_research_set_pressed_tab(w);
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) || 
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) ||
 		(RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) == RESEARCH_STAGE_FINISHED_ALL)) {
 		//window_research_funding_widgets[WIDX_FUNDING_GROUP].type = WWT_EMPTY;
 		window_research_funding_widgets[WIDX_RESEARCH_FUNDING].type = WWT_EMPTY;
@@ -522,7 +522,7 @@ static void window_research_funding_invalidate(rct_window *w)
 		int currentResearchLevel = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
 		window_research_funding_widgets[WIDX_RESEARCH_FUNDING].image = STR_NO_FUNDING + currentResearchLevel;
 	}
-	
+
 	// Checkboxes
 	int activeResearchTypes = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16);
 	int uncompletedResearchTypes = gResearchUncompletedCategories;
@@ -547,7 +547,7 @@ static void window_research_funding_invalidate(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069DAF0
  */
 static void window_research_funding_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -591,7 +591,7 @@ static void window_research_set_page(rct_window *w, int page)
 	w->widgets = window_research_page_widgets[page];
 	w->disabled_widgets = 0;
 	w->pressed_widgets = 0;
-	
+
 	window_invalidate(w);
 	if (w->page == WINDOW_RESEARCH_PAGE_DEVELOPMENT) {
 		w->width = 300;
