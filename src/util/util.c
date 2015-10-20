@@ -144,8 +144,8 @@ int bitscanforward(int source)
 	int i;
 
 	#if _MSC_VER >= 1400 // Visual Studio 2005
-		_BitScanForward(&i, source);
-		return i;
+		uint8 success = _BitScanForward(&i, source);
+		return success != 0 ? i : -1;
 	#else
 	for (i = 0; i < 32; i++)
 		if (source & (1 << i))
