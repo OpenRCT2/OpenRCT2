@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -43,9 +43,9 @@ typedef struct {
 
 // These still need to be read / written when loading and saving
 // int gClimateNextWeather;
-// 
+//
 // static int _climateCurrentWeatherEffect;
-// 
+//
 // static int _climateNextTemperature;
 // static int _climateNextWeatherEffect;
 // static int _climateNextWeatherGloom;
@@ -103,7 +103,7 @@ void climate_reset(int climate)
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, sint8) = climate_weather_data[weather].effect_level;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8) = climate_weather_data[weather].gloom_level;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = climate_weather_data[weather].rain_level;
-	
+
 	_lightningTimer = 0;
 	_thunderTimer = 0;
 	if (_rainVolume != 1){
@@ -135,7 +135,7 @@ void toggle_climate_lock()
 /**
  * Weather & climate update iteration.
  * Gradually changes the weather parameters towards their determined next values.
- * 
+ *
  * rct2: 0x006C46B1
  */
 void climate_update()
@@ -162,7 +162,7 @@ void climate_update()
 		RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16)--;
 
 	} else if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
-		
+
 		if (temperature == target_temperature) {
 			if (cur_gloom == next_gloom) {
 				_climateCurrentWeatherEffect = _climateNextWeatherEffect;
@@ -196,14 +196,14 @@ void climate_force_weather(uint8 weather){
 	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) = 1920;
 
 	climate_update();
-	
+
 	// Incase of change in gloom level force a complete redraw
 	gfx_invalidate_screen();
 }
 
 /**
  * Calculates future weather development.
- * RCT2 implements this as discrete probability distributions dependant on month and climate 
+ * RCT2 implements this as discrete probability distributions dependant on month and climate
  * for next_weather. The other weather parameters are then looked up depending only on the
  * next weather.
  *
@@ -215,7 +215,7 @@ static void climate_determine_future_weather()
 	const rct_weather_transition* climate_table = climate_transitions[climate];
 	sint8 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
 	rct_weather_transition transition = climate_table[month];
-	
+
 	// Generate a random variable with values 0 upto distribution_size-1 and chose weather from the distribution table accordingly
 	sint8 next_weather = transition.distribution[ ((scenario_rand() & 0xFF) * transition.distribution_size) >> 8 ];
 	gClimateNextWeather = next_weather;
@@ -224,12 +224,12 @@ static void climate_determine_future_weather()
 	_climateNextWeatherEffect = climate_weather_data[next_weather].effect_level;
 	_climateNextWeatherGloom = climate_weather_data[next_weather].gloom_level;
 	_climateNextRainLevel = climate_weather_data[next_weather].rain_level;
-	
+
 	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) = 1920;
 }
 
 /**
- * 
+ *
  * rct2: 0x006BCB91
  */
 void climate_update_sound()

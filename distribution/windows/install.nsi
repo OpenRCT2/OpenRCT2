@@ -121,7 +121,7 @@ Section "!OpenRCT2" Section1
 
     ; Copy the rest of the stuff
     SetOutPath "$INSTDIR\"
-	
+
 	; Copy curl ca file
 	File ..\..\curl-ca-bundle.crt
 
@@ -370,14 +370,14 @@ FunctionEnd
 ;    $var=2  Version2 is newer
 Function VersionCompare
 	!define VersionCompare `!insertmacro VersionCompareCall`
- 
+
 	!macro VersionCompareCall _VER1 _VER2 _RESULT
 		Push `${_VER1}`
 		Push `${_VER2}`
 		Call VersionCompare
 		Pop ${_RESULT}
 	!macroend
- 
+
 	Exch $1
 	Exch
 	Exch $0
@@ -388,7 +388,7 @@ Function VersionCompare
 	Push $5
 	Push $6
 	Push $7
- 
+
 	begin:
 	StrCpy $2 -1
 	IntOp $2 $2 + 1
@@ -398,7 +398,7 @@ Function VersionCompare
 	StrCpy $4 $0 $2
 	IntOp $2 $2 + 1
 	StrCpy $0 $0 '' $2
- 
+
 	StrCpy $2 -1
 	IntOp $2 $2 + 1
 	StrCpy $3 $1 1 $2
@@ -407,32 +407,32 @@ Function VersionCompare
 	StrCpy $5 $1 $2
 	IntOp $2 $2 + 1
 	StrCpy $1 $1 '' $2
- 
+
 	StrCmp $4$5 '' equal
- 
+
 	StrCpy $6 -1
 	IntOp $6 $6 + 1
 	StrCpy $3 $4 1 $6
 	StrCmp $3 '0' -2
 	StrCmp $3 '' 0 +2
 	StrCpy $4 0
- 
+
 	StrCpy $7 -1
 	IntOp $7 $7 + 1
 	StrCpy $3 $5 1 $7
 	StrCmp $3 '0' -2
 	StrCmp $3 '' 0 +2
 	StrCpy $5 0
- 
+
 	StrCmp $4 0 0 +2
 	StrCmp $5 0 begin newer2
 	StrCmp $5 0 newer1
 	IntCmp $6 $7 0 newer1 newer2
- 
+
 	StrCpy $4 '1$4'
 	StrCpy $5 '1$5'
 	IntCmp $4 $5 begin newer2 newer1
- 
+
 	equal:
 	StrCpy $0 0
 	goto end
@@ -441,7 +441,7 @@ Function VersionCompare
 	goto end
 	newer2:
 	StrCpy $0 2
- 
+
 	end:
 	Pop $7
 	Pop $6

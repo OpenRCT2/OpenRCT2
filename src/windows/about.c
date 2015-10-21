@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -77,7 +77,7 @@ static rct_window_event_list window_about_events = {
 };
 
 /**
- * 
+ *
  *  rct2: 0x0066D2AC
  */
 void window_about_open()
@@ -106,7 +106,7 @@ void window_about_open()
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066D4D5
  */
 static void window_about_mouseup(rct_window *w, int widgetIndex)
@@ -125,7 +125,7 @@ static void window_about_mouseup(rct_window *w, int widgetIndex)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066D321
  */
 static void window_about_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -140,7 +140,7 @@ static void window_about_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Version
 	RCT2_GLOBAL(0x009C383C, uint8) = 49;
 	gfx_draw_string_centred(dpi, STR_VERSION_X, x, y, 0, (void*)0x009E2D28);
-	
+
 	// Credits
 	RCT2_GLOBAL(0x009C383C, uint8) = 48;
 	y += 10;

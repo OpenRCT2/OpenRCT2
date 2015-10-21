@@ -175,7 +175,7 @@ static void twitch_leave()
 	// 	http_request_json_dispose(jsonResponse);
 	// 	_twitchState = TWITCH_STATE_LEFT;
 	// 	_twitchIdle = true;
-	// 
+	//
 	// 	console_writeline("Left twitch channel.");
 	// });
 }

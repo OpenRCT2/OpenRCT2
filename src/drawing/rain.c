@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014 
+ * Copyright (c) 2014
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
  * This file is part of OpenRCT2.
@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -105,7 +105,7 @@ static void draw_rain_window(rct_window* original_w, short left, short right, sh
 		draw_rain_window(original_w, left, w_right, top, bottom, draw_rain_func);
 
 		left = w_right;
-		draw_rain_window(original_w, left, right, top, bottom, draw_rain_func); 
+		draw_rain_window(original_w, left, right, top, bottom, draw_rain_func);
 		return;
 	}
 
@@ -113,7 +113,7 @@ static void draw_rain_window(rct_window* original_w, short left, short right, sh
 		draw_rain_window(original_w, left, right, top, w->y, draw_rain_func);
 
 		top = w->y;
-		draw_rain_window(original_w, left, right, top, bottom, draw_rain_func); 
+		draw_rain_window(original_w, left, right, top, bottom, draw_rain_func);
 		return;
 	}
 
@@ -122,7 +122,7 @@ static void draw_rain_window(rct_window* original_w, short left, short right, sh
 		draw_rain_window(original_w, left, right, top, w_bottom, draw_rain_func);
 
 		top = w_bottom;
-		draw_rain_window(original_w, left, right, top, bottom, draw_rain_func); 
+		draw_rain_window(original_w, left, right, top, bottom, draw_rain_func);
 		return;
 	}
 }
@@ -147,7 +147,7 @@ static void draw_rain_animation(uint32 draw_rain_func)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00684218
  */
 void update_rain_animation()

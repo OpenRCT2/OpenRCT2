@@ -89,7 +89,7 @@ bool sprite_file_save(const char *path)
 	SDL_RWops *file = SDL_RWFromFile(path, "wb");
 	if (file == NULL)
 		return false;
-	
+
 	if (SDL_RWwrite(file, &spriteFileHeader, sizeof(rct_sprite_file_header), 1) != 1) {
 		SDL_RWclose(file);
 		return false;
@@ -218,7 +218,7 @@ int get_closest_palette_index(sint16 *colour){
 }
 
 int get_palette_index(sint16 *colour)
-{	
+{
 	if (is_transparent_pixel(colour))
 		return -1;
 
@@ -267,7 +267,7 @@ bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **ou
 	}
 
 	uint8 *dst = buffer + (height * 2);
-	
+
 	for (unsigned int y = 0; y < height; y++) {
 		rle_code *previousCode, *currentCode;
 
@@ -285,7 +285,7 @@ bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **ou
 			if (mode == MODE_CLOSEST || mode == MODE_DITHERING)
 				if (paletteIndex == -1 && !is_transparent_pixel(src))
 					paletteIndex = get_closest_palette_index(src);
-			
+
 
 			if (mode == MODE_DITHERING)
 				if (!is_transparent_pixel(src) && is_changable_pixel(get_palette_index(src))){
@@ -487,7 +487,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 
 		int maxIndex = (int)spriteFileHeader.num_entries;
 		int numbers = (int)floor(log(maxIndex));
-		
+
 		strncpy(outputPath, argv[2], MAX_PATH);
 		int pathLen = strlen(outputPath);
 
@@ -560,7 +560,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 			fprintf(stderr, "Unable to open input sprite file.\n");
 			return -1;
 		}
-		
+
 		spriteFileHeader.num_entries++;
 		spriteFileHeader.total_size += bufferLength;
 		spriteFileEntries = realloc(spriteFileEntries, spriteFileHeader.num_entries * sizeof(rct_g1_element));
@@ -572,7 +572,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		spriteFileEntries[spriteFileHeader.num_entries - 1] = spriteElement;
 		memcpy(spriteFileData + (spriteFileHeader.total_size - bufferLength), buffer, bufferLength);
 		spriteFileEntries[spriteFileHeader.num_entries - 1].offset = spriteFileData + (spriteFileHeader.total_size - bufferLength);
-		
+
 		free(buffer);
 		if (!sprite_file_save(spriteFilePath))
 			return -1;
@@ -672,7 +672,7 @@ static rct_sprite_file_palette_entry _standardPalette[256] = {
 	{ 0, 0, 0, 255 },
 	{ 0, 0, 0, 255 },
 
-	// 
+	//
 	{ 35, 35, 23, 255 },
 	{ 51, 51, 35, 255 },
 	{ 67, 67, 47, 255 },
@@ -865,9 +865,9 @@ static rct_sprite_file_palette_entry _standardPalette[256] = {
 	{ 207, 207, 131, 255 },
 	{ 231, 231, 171, 255 },
 	{ 255, 255, 207, 255 },
-	
+
 	// 203 - 214 (Secondary remap)
-	{ 27, 0, 63, 255 },	
+	{ 27, 0, 63, 255 },
 	{ 51, 0, 103, 255 },
 	{ 63, 11, 123, 255 },
 	{ 79, 23, 143, 255 },

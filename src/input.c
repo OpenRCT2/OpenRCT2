@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -98,7 +98,7 @@ static void sub_6EA2AA(rct_window *w, int widgetIndex, int x, int y, int edi);
 #pragma region Mouse input
 
 /**
- * 
+ *
  *  rct2: 0x006EA627
  */
 void game_handle_input()
@@ -144,7 +144,7 @@ void game_handle_input()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E83C7
 */
 static void game_get_next_input(int *x, int *y, int *state)
@@ -165,7 +165,7 @@ static void game_get_next_input(int *x, int *y, int *state)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00407074
  */
 static rct_mouse_data* get_mouse_input()
@@ -181,7 +181,7 @@ static rct_mouse_data* get_mouse_input()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E8655
  */
 static void game_handle_input_mouse(int x, int y, int state)
@@ -330,7 +330,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 		break;
 	}
 }
-		
+
 #pragma region Window positioning / resizing
 
 void input_window_position_begin(rct_window *w, int widgetIndex, int x, int y)
@@ -512,7 +512,7 @@ static void input_scroll_begin(rct_window *w, int widgetIndex, int x, int y)
 	case SCROLL_PART_HSCROLLBAR_RIGHT:
 		scroll->h_left = min(scroll->h_left + 3, widget_width);
 		break;
-	case SCROLL_PART_HSCROLLBAR_LEFT_TROUGH: 
+	case SCROLL_PART_HSCROLLBAR_LEFT_TROUGH:
 		scroll->h_left = max(scroll->h_left - widget_width , 0);
 		break;
 	case SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH:
@@ -556,9 +556,9 @@ static void input_scroll_continue(rct_window *w, int widgetIndex, int state, int
 		invalidate_scroll();
 		return;
 	}
-	
+
 	widget_scroll_get_part(w, widget, x, y, &x2, &y2, &scroll_part, &scroll_id);
-	
+
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_AREA, uint16) == SCROLL_PART_HSCROLLBAR_THUMB){
 		int temp_x = x;
 		x -= RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, uint16);
@@ -780,7 +780,7 @@ static void input_scroll_part_update_vbottom(rct_window *w, int widgetIndex, int
 #pragma region Widgets
 
 /**
- * 
+ *
  *  rct2: 0x006E9253
  */
 static void input_widget_over(int x, int y, rct_window *w, int widgetIndex)
@@ -818,7 +818,7 @@ static void input_widget_over(int x, int y, rct_window *w, int widgetIndex)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E9269
  */
 static void input_widget_over_change_check(rct_windowclass windowClass, rct_windownumber windowNumber, int widgetIndex)
@@ -871,7 +871,7 @@ static void input_widget_over_flatbutton_invalidate()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E95F9
  */
 static void input_widget_left(int x, int y, rct_window *w, int widgetIndex)
@@ -956,7 +956,7 @@ static void input_widget_left(int x, int y, rct_window *w, int widgetIndex)
 #pragma endregion
 
 /**
- * 
+ *
 *  rct2: 0x006ED833
  */
 void process_mouse_over(int x, int y)
@@ -1072,7 +1072,7 @@ void process_mouse_tool(int x, int y)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E8DA7
  */
 void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_window *w, rct_widget *widget)
@@ -1270,14 +1270,14 @@ static void input_update_tooltip(rct_window *w, int widgetIndex, int x, int y)
 #pragma region Keyboard input
 
 /**
- * 
+ *
  *  rct2: 0x006E3B43
  */
 void title_handle_keyboard_input()
 {
 	rct_window *w;
 	int key;
-	
+
 	if (!gConsoleOpen) {
 		// Handle modifier keys and key scrolling
 		RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
@@ -1294,7 +1294,7 @@ void title_handle_keyboard_input()
 	while ((key = get_next_key()) != 0) {
 		if (key == 255)
 			continue;
-		
+
 		// Reserve backtick for console
 		if (key == SDL_SCANCODE_GRAVE) {
 			if (gConfigGeneral.debugging_tools || gConsoleOpen) {
@@ -1320,7 +1320,7 @@ void title_handle_keyboard_input()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E3B43
  */
 void game_handle_keyboard_input()
@@ -1464,7 +1464,7 @@ static void sub_6EA2AA(rct_window *w, int widgetIndex, int x, int y, int edi)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00406CD2
  */
 int get_next_key()
@@ -1505,7 +1505,7 @@ void sub_6ED990(char cursor_id){
 
 
 /**
- * 
+ *
  *  rct2: 0x006E876D
  */
 void invalidate_scroll()

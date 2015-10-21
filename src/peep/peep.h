@@ -210,16 +210,16 @@ enum PEEP_STATE {
 	PEEP_STATE_INSPECTING = 23
 };
 
-enum PEEP_ACTION_EVENTS {	
+enum PEEP_ACTION_EVENTS {
 	PEEP_ACTION_CHECK_TIME = 0,
 	// If no food then check watch
 	PEEP_ACTION_EAT_FOOD = 1,
 	PEEP_ACTION_SHAKE_HEAD = 2,
-	PEEP_ACTION_EMPTY_POCKETS = 3,	
+	PEEP_ACTION_EMPTY_POCKETS = 3,
 	PEEP_ACTION_SITTING_EAT_FOOD = 4,
 	PEEP_ACTION_SITTING_CHECK_WATCH = 4,
 	PEEP_ACTION_SITTING_LOOK_AROUND_LEFT = 5,
-	PEEP_ACTION_SITTING_LOOK_AROUND_RIGHT = 6,	
+	PEEP_ACTION_SITTING_LOOK_AROUND_RIGHT = 6,
 	PEEP_ACTION_WOW = 7,
 	PEEP_ACTION_THROW_UP = 8,
 	PEEP_ACTION_JUMP = 9,
@@ -413,14 +413,14 @@ typedef struct {
 	uint8 sub_state;				// 0x2C
 	uint8 sprite_type;				// 0x2D
 	uint8 type;						// 0x2E
-	union{							
+	union{
 		uint8 staff_type;			// 0x2F
 		uint8 no_of_rides;			// 0x2F
 	};
 	uint8 tshirt_colour;			// 0x30
 	uint8 trousers_colour;			// 0x31
 	uint16 destination_x;			// 0x32 Location that the peep is trying to get to
-	uint16 destination_y;			// 0x34 
+	uint16 destination_y;			// 0x34
 	uint8 destination_tolerence;	// 0x36 How close to destination before next action/state 0 = exact
 	uint8 var_37;
 	uint8 energy;					// 0x38
@@ -477,7 +477,7 @@ typedef struct {
 	};
 	uint8 var_79;
 	uint16 time_in_queue;			// 0x7A
-	uint8 rides_been_on[32];		// 0x7C 
+	uint8 rides_been_on[32];		// 0x7C
 	// 255 bit bitmap of every ride the peep has been on see
 	// window_peep_rides_update for how to use.
 	uint32 id;						// 0x9C

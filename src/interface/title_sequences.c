@@ -100,7 +100,7 @@ void title_sequence_create_preset(const char *name)
 		strcat(path, gConfigTitleSequences.presets[preset].name);
 		platform_file_delete(path);
 		platform_ensure_directory_exists(path);
-		
+
 		title_sequence_save_preset_script(preset);
 		gCurrentTitleSequence = preset;
 	}
@@ -164,7 +164,7 @@ void title_sequence_duplicate_preset(int duplicate, const char *name)
 		if (loadmm) {
 			title_sequence_add_save(preset, get_file_path(PATH_ID_SIXFLAGS_MAGICMOUNTAIN), "Six Flags Magic Mountain.SC6");
 		}
-		
+
 		title_sequence_save_preset_script(preset);
 		gCurrentTitleSequence = preset;
 	}
@@ -241,7 +241,7 @@ void title_sequence_add_save(int preset, const char *path, const char *newName)
 
 		gConfigTitleSequences.presets[preset].num_saves++;
 		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * (size_t)gConfigTitleSequences.presets[preset].num_saves);
-		
+
 		strcpy(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], newName);
 		// Add the appropriate extension if needed
 		if (_stricmp(extension, ".sv6") != 0 && _stricmp(extension, ".sc6") != 0)
@@ -260,7 +260,7 @@ void title_sequence_remove_save(int preset, int index)
 		strncat(path, &separator, 1);
 		strcat(path, gConfigTitleSequences.presets[preset].saves[index]);
 		platform_file_delete(path);
-		
+
 		// Remove all references to this save in the commands and decrement save indecies
 		for (int i = 0; i < gConfigTitleSequences.presets[preset].num_commands; i++) {
 			if (gConfigTitleSequences.presets[preset].commands[i].command == TITLE_SCRIPT_LOAD) {
@@ -270,7 +270,7 @@ void title_sequence_remove_save(int preset, int index)
 					gConfigTitleSequences.presets[preset].commands[i].saveIndex--;
 			}
 		}
-		
+
 		for (int i = index; i < gConfigTitleSequences.presets[preset].num_saves - 1; i++) {
 			strcpy(gConfigTitleSequences.presets[preset].saves[i], gConfigTitleSequences.presets[preset].saves[i + 1]);
 		}

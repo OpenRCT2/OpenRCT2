@@ -8379,7 +8379,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 
 						// Nausea calculations.
 						ride_rating maxNausea = NauseaMaximumThresholds[(peep->nausea_tolerance & 3)] + peep->happiness;
-						
+
 						if (ride->nausea > maxNausea) {
 							if (peepAtRide) {
 								peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SICKENING, rideIndex);
@@ -8612,8 +8612,8 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 		// Take nearby rides into consideration
 		int cx = floor2(peep->x, 32);
 		int cy = floor2(peep->y, 32);
-		for (int x = cx - 320; x <= cx + 320; x++) {
-			for (int y = cy - 320; y <= cy + 320; y++) {
+		for (int x = cx - 320; x <= cx + 320; x += 32) {
+			for (int y = cy - 320; y <= cy + 320; y += 32) {
 				if (x >= 0 && y >= 0 && x < (256 * 32) && y < (256 * 32)) {
 					rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
 					do {
@@ -8728,8 +8728,8 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 		// Take nearby rides into consideration
 		int cx = floor2(peep->x, 32);
 		int cy = floor2(peep->y, 32);
-		for (int x = cx - 320; x <= cx + 320; x++) {
-			for (int y = cy - 320; y <= cy + 320; y++) {
+		for (int x = cx - 320; x <= cx + 320; x += 32) {
+			for (int y = cy - 320; y <= cy + 320; y += 32) {
 				if (x >= 0 && y >= 0 && x < (256 * 32) && y < (256 * 32)) {
 					rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
 					do {
@@ -8840,8 +8840,8 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 		// Take nearby rides into consideration
 		int cx = floor2(peep->x, 32);
 		int cy = floor2(peep->y, 32);
-		for (int x = cx - 320; x <= cx + 320; x++) {
-			for (int y = cy - 320; y <= cy + 320; y++) {
+		for (int x = cx - 320; x <= cx + 320; x += 32) {
+			for (int y = cy - 320; y <= cy + 320; y += 32) {
 				if (x >= 0 && y >= 0 && x < (256 * 32) && y < (256 * 32)) {
 					rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
 					do {
@@ -9017,7 +9017,7 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 		RCT2_GLOBAL(0x00F1AEF4, uint16) = sprite_index;
 	}
 
-	uint8* fullText = RCT2_ADDRESS(0x00F1AEF6, uint8);
+	utf8* fullText = RCT2_ADDRESS(0x00F1AEF6, utf8);
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
 		uint8 position = (state - 1) % 3;
 		memcpy(fullText + position * 12, text_1, 4);
@@ -9030,7 +9030,7 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 
 	rct_peep* peep = GET_PEEP(sprite_index);
 	RCT2_GLOBAL(0x0013CE952, uint32) = peep->id;
-	uint8* curName = RCT2_ADDRESS(0x00141ED68, uint8);
+	utf8* curName = RCT2_ADDRESS(0x00141ED68, utf8);
 	rct_string_id curId = peep->name_string_idx;
 	format_string(curName, curId, RCT2_ADDRESS(0x0013CE952, void));
 
@@ -9125,7 +9125,7 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 		peep->flags |= PEEP_FLAGS_LEAVING_PARK;
 		peep->flags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
 	}
-	
+
 	peep->flags &= ~PEEP_FLAGS_PURPLE;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_EMMA_GARRELL, peep)) {
 		peep->flags |= PEEP_FLAGS_PURPLE;

@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -170,7 +170,7 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 	_dropdown_item_height = 10;
 	if (flags & 0x40)
 		_dropdown_item_height = flags & 0x3F;
-	
+
 	// Set the widgets
 	gDropdownNumItems = num_items;
 	_dropdown_num_rows = num_items;
@@ -314,7 +314,7 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 					*((char*)(0x00141FC4B + (w->colours[0] * 8))));
 			}
 		} else {
-			// 
+			//
 			if (i == gDropdownHighlightedIndex) {
 				l = w->x + 2 + (cell_x * _dropdown_item_width);
 				t = w->y + 2 + (cell_y * _dropdown_item_height);
@@ -366,7 +366,7 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 }
 
-/* New function based on 6e914e 
+/* New function based on 6e914e
  * returns -1 if index is invalid
  */
 int dropdown_index_from_point(int x, int y, rct_window *w)
@@ -408,7 +408,7 @@ void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, ui
 	uint32 availableColours)
 {
 	int i, numItems;
-	
+
 	// Count number of available colours
 	numItems = 0;
 	for (i = 0; i < 32; i++)

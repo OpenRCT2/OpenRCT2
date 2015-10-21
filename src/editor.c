@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -183,7 +183,7 @@ void trackdesigner_load()
 	banner_init();
 	reset_park_entrances();
 	user_string_clear_all();
-	reset_sprite_list(); 
+	reset_sprite_list();
 	ride_init_all();
 	window_guest_list_init_vars_a();
 	staff_reset_modes();
@@ -261,7 +261,7 @@ static void set_all_land_owned()
 void editor_load_landscape(const char *path)
 {
 	window_close_construction_windows();
-	
+
 	char *extension = strrchr(path, '.');
 	if (extension != NULL) {
 		if (_stricmp(extension, ".sv4") == 0) {
@@ -413,19 +413,19 @@ static int editor_read_s6(const char *path)
 		map_update_tile_pointers();
 		map_remove_all_rides();
 
-		// 
+		//
 		for (i = 0; i < MAX_BANNERS; i++)
 			if (gBanners[i].type == 255)
 				gBanners[i].flags &= ~BANNER_FLAG_2;
 
-		// 
+		//
 		rct_ride *ride;
 		FOR_ALL_RIDES(i, ride)
 			user_string_free(ride->name);
 
 		ride_init_all();
 
-		// 
+		//
 		for (i = 0; i < MAX_SPRITES; i++) {
 			rct_sprite *sprite = &g_sprite_list[i];
 			user_string_free(sprite->unknown.name_string_idx);

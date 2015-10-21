@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -70,7 +70,7 @@ typedef struct {
 	vehicle_colour list[256];
 } vehicle_colour_preset_list;
 
-/** 
+/**
  * Ride type vehicle structure.
  * size: 0x65
  */
@@ -219,7 +219,7 @@ typedef struct {
     // bit 7: whirlpool
 	uint8 special_track_elements;   // 0x0D5
 	uint8 pad_0D6[2];
-	// Divide this value by 29127 to get the human-readable max speed 
+	// Divide this value by 29127 to get the human-readable max speed
 	// (in RCT2, display_speed = (max_speed * 9) >> 18)
 	sint32 max_speed;				// 0x0D8
 	sint32 average_speed;			// 0x0DC

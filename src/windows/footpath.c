@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -162,7 +162,7 @@ static void window_footpath_set_enabled_and_pressed_widgets();
 static void footpath_get_next_path_info(int *type, int *x, int *y, int *z, int *slope);
 
 /**
- * 
+ *
  *  rct2: 0x006A7C43
  */
 void window_footpath_open()
@@ -222,7 +222,7 @@ void window_footpath_open()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A852F
  */
 static void window_footpath_close(rct_window *w)
@@ -236,7 +236,7 @@ static void window_footpath_close(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A7E92
  */
 static void window_footpath_mouseup(rct_window *w, int widgetIndex)
@@ -285,7 +285,7 @@ static void window_footpath_mouseup(rct_window *w, int widgetIndex)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A7EC5
  */
 static void window_footpath_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
@@ -322,7 +322,7 @@ static void window_footpath_mousedown(int widgetIndex, rct_window*w, rct_widget*
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A7F18
  */
 static void window_footpath_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
@@ -336,7 +336,7 @@ static void window_footpath_dropdown(rct_window *w, int widgetIndex, int dropdow
 		RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_TYPE, uint8) = SELECTED_PATH_TYPE_QUEUE;
 	else
 		return;
-	
+
 	// Get path id
 	pathId = dropdownIndex;
 	if (pathId == -1) {
@@ -372,7 +372,7 @@ static void window_footpath_dropdown(rct_window *w, int widgetIndex, int dropdow
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A8032
  */
 static void window_footpath_toolupdate(rct_window* w, int widgetIndex, int x, int y)
@@ -385,7 +385,7 @@ static void window_footpath_toolupdate(rct_window* w, int widgetIndex, int x, in
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A8047
  */
 static void window_footpath_tooldown(rct_window* w, int widgetIndex, int x, int y)
@@ -397,7 +397,7 @@ static void window_footpath_tooldown(rct_window* w, int widgetIndex, int x, int 
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A8067
  */
 static void window_footpath_tooldrag(rct_window* w, int widgetIndex, int x, int y)
@@ -408,7 +408,7 @@ static void window_footpath_tooldrag(rct_window* w, int widgetIndex, int x, int 
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A8066
  */
 static void window_footpath_toolup(rct_window* w, int widgetIndex, int x, int y)
@@ -420,7 +420,7 @@ static void window_footpath_toolup(rct_window* w, int widgetIndex, int x, int y)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A7760
  */
 static void window_footpath_update_provisional_path_for_bridge_mode(rct_window *w)
@@ -455,7 +455,7 @@ static void window_footpath_update_provisional_path_for_bridge_mode(rct_window *
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A84BB
  */
 static void window_footpath_update(rct_window *w)
@@ -482,7 +482,7 @@ static void window_footpath_update(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A7D1C
  */
 static void window_footpath_invalidate(rct_window *w)
@@ -491,7 +491,7 @@ static void window_footpath_invalidate(rct_window *w)
 	rct_path_type *pathType;
 
 	colour_scheme_update(w);
-	
+
 	// Press / unpress footpath and queue type buttons
 	w->pressed_widgets &= ~(1 << WIDX_FOOTPATH_TYPE);
 	w->pressed_widgets &= ~(1 << WIDX_QUEUELINE_TYPE);
@@ -517,7 +517,7 @@ static void window_footpath_invalidate(rct_window *w)
 		window_footpath_widgets[WIDX_QUEUELINE_TYPE].type = WWT_FLATBTN;
 	} else {
 		window_footpath_widgets[WIDX_QUEUELINE_TYPE].type = WWT_EMPTY;
-	}	
+	}
 
 	// Disable queue line button if in Scenario Editor
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
@@ -525,7 +525,7 @@ static void window_footpath_invalidate(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A7D8B
  */
 static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -570,7 +570,7 @@ static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A7F88
  */
 static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget *widget, int showQueues)
@@ -636,7 +636,7 @@ static void window_footpath_mousedown_slope(int slope)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A81FB
  */
 static void window_footpath_set_provisional_path_at_point(int x, int y)
@@ -724,7 +724,7 @@ static void window_footpath_set_selection_start_bridge_at_point(int screenX, int
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A82C5
  */
 static void window_footpath_place_path_at_point(int x, int y)
@@ -767,7 +767,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A840F
  */
 static void window_footpath_start_bridge_at_point(int screenX, int screenY)
@@ -800,7 +800,7 @@ static void window_footpath_start_bridge_at_point(int screenX, int screenY)
 			}
 		}
 	}
-		
+
 	tool_cancel();
 	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16) = x;
 	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16) = y;
@@ -878,7 +878,7 @@ static void window_footpath_construct()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A78EF
  */
 static void footpath_remove_map_element(rct_map_element *mapElement)
@@ -929,7 +929,7 @@ static void footpath_remove_map_element(rct_map_element *mapElement)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A7873
  */
 static rct_map_element *footpath_get_map_element_to_remove()
@@ -958,7 +958,7 @@ static rct_map_element *footpath_get_map_element_to_remove()
 				if (!(mapElement->properties.path.type & 4))
 					if ((mapElement->properties.path.type & 3) == RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8))
 						continue;
-				
+
 				return mapElement;
 			}
 		}
@@ -968,7 +968,7 @@ static rct_map_element *footpath_get_map_element_to_remove()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A7863
  */
 static void window_footpath_remove()
@@ -986,7 +986,7 @@ static void window_footpath_remove()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A855C
  */
 static void window_footpath_set_enabled_and_pressed_widgets()
@@ -1061,7 +1061,7 @@ static void window_footpath_set_enabled_and_pressed_widgets()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A7B20
  */
 static void footpath_get_next_path_info(int *type, int *x, int *y, int *z, int *slope)

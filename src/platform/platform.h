@@ -98,7 +98,7 @@ void platform_get_closest_resolution(int inWidth, int inHeight, int *outWidth, i
 void platform_init();
 void platform_draw();
 void platform_free();
-void platform_update_palette(char *colours, int start_index, int num_colours);
+void platform_update_palette(const uint8 *colours, int start_index, int num_colours);
 void platform_set_fullscreen_mode(int mode);
 void platform_set_cursor(char cursor);
 void platform_refresh_video();

@@ -98,7 +98,7 @@ theme_window_preset gThemeWindowsRCT1[] = {
 	{ WC_GUEST_LIST,		COLOURS_RCT1(22, 26, 26, 0, 0, 0)			},
 	{ WC_STAFF_LIST,		COLOURS_RCT1(12, 4, 4, 0, 0, 0)				},
 	{ WC_FINANCES,			COLOURS_RCT1(4, 1, 1, 0, 0, 0)				},
-	{ WC_TITLE_MENU,		COLOURS_RCT1(129, 129, 129, 0, 0, 0)		}, 
+	{ WC_TITLE_MENU,		COLOURS_RCT1(129, 129, 129, 0, 0, 0)		},
 	{ WC_TITLE_EXIT,		COLOURS_RCT1(129, 129, 129, 0, 0, 0)		},
 	{ WC_NEW_CAMPAIGN,		COLOURS_RCT1(4, 4, 1, 0, 0, 0)				},
 	{ WC_TITLE_OPTIONS,		COLOURS_RCT1(129, 129, 129, 0, 0, 0)		},
@@ -156,7 +156,7 @@ void colour_scheme_update(rct_window *window)
 void colour_scheme_update_by_class(rct_window *window, rct_windowclass classification)
 {
 	theme_window* theme = theme_window_get_by_class(classification);
-	
+
 	bool transparent = false;
 	for (int i = 0; i < 6; i++) {
 		window->colours[i] = theme->colours[i];

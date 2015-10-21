@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -126,7 +126,7 @@ int ride_name_compare(const void *a, const void *b)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069E16F
  */
 void window_new_campaign_open(sint16 campaignType)
@@ -134,7 +134,7 @@ void window_new_campaign_open(sint16 campaignType)
 	rct_window *w;
 	rct_ride *ride;
 	int i, numApplicableRides;
-	
+
 	w = window_bring_to_front_by_class(WC_NEW_CAMPAIGN);
 	if (w != NULL) {
 		if (w->campaign.campaign_type == campaignType)
@@ -189,7 +189,7 @@ void window_new_campaign_open(sint16 campaignType)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069E320
  */
 static void window_new_campaign_get_shop_items()
@@ -208,7 +208,7 @@ static void window_new_campaign_get_shop_items()
 	// Remove certain items?
 	items &= 0x0011FF78036BA3E0;
 
-	// 
+	//
 	numItems = 0;
 	for (i = 0; i < 64; i++)
 		if (items & (1LL << i))
@@ -217,7 +217,7 @@ static void window_new_campaign_get_shop_items()
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069E50B
  */
 static void window_new_campaign_mouseup(rct_window *w, int widgetIndex)
@@ -234,7 +234,7 @@ static void window_new_campaign_mouseup(rct_window *w, int widgetIndex)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069E51C
  */
 static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_widget* widget)
@@ -304,7 +304,7 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069E537
  */
 static void window_new_campaign_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
@@ -322,7 +322,7 @@ static void window_new_campaign_dropdown(rct_window *w, int widgetIndex, int dro
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069E397
  */
 static void window_new_campaign_invalidate(rct_window *w)
@@ -367,7 +367,7 @@ static void window_new_campaign_invalidate(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069E493
  */
 static void window_new_campaign_paint(rct_window *w, rct_drawpixelinfo *dpi)

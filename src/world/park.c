@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -60,7 +60,7 @@ int park_is_open()
 }
 
 /**
- * 
+ *
  *  rct2: 0x00667132
  */
 void park_init()
@@ -120,7 +120,7 @@ void park_init()
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066729F
  */
 void park_reset_history()
@@ -132,7 +132,7 @@ void park_reset_history()
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066A348
  */
 int park_calculate_size()
@@ -154,12 +154,12 @@ int park_calculate_size()
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, uint16) = tiles;
 		window_invalidate_by_class(WC_PARK_INFORMATION);
 	}
-	
+
 	return tiles;
 }
 
 /**
- * 
+ *
  *  rct2: 0x00669EAA
  */
 int calculate_park_rating()
@@ -172,14 +172,14 @@ int calculate_park_rating()
 	result = 1150;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_DIFFICULT_PARK_RATING)
 		result = 1050;
-	
+
 	// Guests
 	{
 		rct_peep* peep;
 		uint16 spriteIndex;
 		int num_happy_peeps;
 		int num_lost_guests;
-		
+
 		// -150 to +3 based on a range of guests from 0 to 2000
 		result -= 150 - (min(2000, RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)) / 13);
 
@@ -194,7 +194,7 @@ int calculate_park_rating()
 			if ((peep->flags & PEEP_FLAGS_LEAVING_PARK) && (peep->peep_is_lost_countdown < 90))
 				num_lost_guests++;
 		}
-		
+
 		// Peep happiness -500 to +0
 		result -= 500;
 
@@ -270,7 +270,7 @@ int calculate_park_rating()
 		}
 		result -= 600 - (4 * (150 - min(150, num_litter)));
 	}
-	
+
 	result -= RCT2_GLOBAL(0x0135882E, sint16);
 	result = clamp(0, result, 999);
 	return result;
@@ -293,7 +293,7 @@ money32 calculate_ride_value(rct_ride *ride)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066A3F6
  */
 money32 calculate_park_value()
@@ -476,7 +476,7 @@ static rct_peep *park_generate_new_guest()
 		peep = peep_generate(spawn.x, spawn.y, spawn.z * 16);
 		if (peep != NULL) {
 			peep->sprite_direction = spawn.direction << 3;
-						
+
 			// Get the centre point of the tile the peep is on
 			peep->destination_x = (peep->x & 0xFFE0) + 16;
 			peep->destination_y = (peep->y & 0xFFE0) + 16;
@@ -722,7 +722,7 @@ void update_park_fences(int x, int y)
 		return;
 	if (y > 0x1FFF)
 		return;
-	
+
 	rct_map_element* sufaceElement = map_get_surface_element_at(x / 32, y / 32);
 	if (sufaceElement == NULL)return;
 
@@ -735,7 +735,7 @@ void update_park_fences(int x, int y)
 		do {
 			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
 				continue;
-				
+
 			if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
 				continue;
 
@@ -772,7 +772,7 @@ void update_park_fences(int x, int y)
 	if (sufaceElement->properties.surface.ownership != newOwnership) {
 		int z0 = sufaceElement->base_height * 8;
 		int z1 = z0 + 16;
-		map_invalidate_tile(x, y, z0, z1);	
+		map_invalidate_tile(x, y, z0, z1);
 		sufaceElement->properties.surface.ownership = newOwnership;
 	}
 }
@@ -926,7 +926,7 @@ money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 		if ((surfaceElement->properties.surface.ownership & OWNERSHIP_OWNED) != 0) { // If the land is already owned
 			return 0;
 		}
-		
+
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (surfaceElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) == 0) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 1726; // Land not for sale!
 			return MONEY32_UNDEFINED;
@@ -954,12 +954,12 @@ money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 		if ((surfaceElement->properties.surface.ownership & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0) { // If the land or construction rights are already owned
 			return 0;
 		}
-		
+
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (surfaceElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 1727; // Construction rights not for sale!
 			return MONEY32_UNDEFINED;
 		}
-		
+
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			surfaceElement->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
 			uint16 baseHeight = surfaceElement->base_height * 8;
@@ -1122,7 +1122,7 @@ void park_remove_ghost_entrance()
 }
 
 /**
- * 
+ *
  *  rct2: 0x00666F4E
  */
 money32 park_place_ghost_entrance(int x, int y, int z, int direction)

@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -48,7 +48,7 @@ static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 
 /**
- * 
+ *
  *  rct2: 0x006EAF26
  */
 void widget_scroll_update_thumbs(rct_window *w, int widget_index)
@@ -102,7 +102,7 @@ void widget_scroll_update_thumbs(rct_window *w, int widget_index)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EB2A8
  */
 void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -170,7 +170,7 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EB6CE
  */
 static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -188,7 +188,7 @@ static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	r = w->x + widget->right;
 	b = w->y + widget->bottom;
 
-	// 
+	//
 	press = (w->flags & WF_10 ? 0x80 : 0);
 
 	// Get the colour
@@ -210,7 +210,7 @@ static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EB765
  */
 static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -247,7 +247,7 @@ static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EB8E5
  */
 static void widget_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -297,7 +297,7 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetInd
 	// Get the widget
 	widget = &w->widgets[widgetIndex];
 
-	// 
+	//
 	if (widget->image == -1)
 		return;
 
@@ -330,7 +330,7 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetInd
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EB861
  */
 static void widget_flat_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -373,7 +373,7 @@ static void widget_flat_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int w
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EBBEB
  */
 static void widget_text_button(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -403,7 +403,7 @@ static void widget_text_button(rct_drawpixelinfo *dpi, rct_window *w, int widget
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EBC41
  */
 static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -462,7 +462,7 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widge
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EBD52
  */
 static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -492,7 +492,7 @@ static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EBD1F
  */
 static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -518,7 +518,7 @@ static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EC1A6
  */
 static void widget_text_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -546,12 +546,12 @@ static void widget_text_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIn
 	gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
 
 	// TODO
-	
+
 	gfx_fill_rect(dpi, l, t, r, b, colour);
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EB535
  */
 static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -611,7 +611,7 @@ static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EB2F9
  */
 static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -632,7 +632,7 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 	// Get the colour
 	colour = w->colours[widget->colour];
 
-	// 
+	//
 	if (w->var_4B8 != -1) {
 		gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B8)) << 19, l + 1, t + 1, 0);
 		if (w->width > 638)
@@ -643,7 +643,7 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 				gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B9)) << 19, l + 1 + 638, t + 1, 0);
 		}
 
-		// 
+		//
 		press = 0x70;
 		if (w->flags & WF_10)
 			press |= 0x80;
@@ -651,7 +651,7 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 		gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
 		gfx_fill_rect(dpi, r + 1, t, r + 1, b, *((char*)(0x0141FC47 + (colour * 8))));
 	} else {
-		// 
+		//
 		press = 0x60;
 		if (w->flags & WF_10)
 			press |= 0x80;
@@ -682,7 +682,7 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EBB85
  */
 static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -726,7 +726,7 @@ static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 }
 
 /**
- * 
+ *
 *  rct2: 0x006EBAD9
 */
 static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -770,7 +770,7 @@ static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EBD96
  */
 static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -858,11 +858,11 @@ static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 	gfx_fill_rect(dpi, l + 10, t + 3, r - 10, t + 3, *((char*)(0x0141FC4B + (colour * 8))));
 	gfx_fill_rect(dpi, l + 10, t + 7, r - 10, t + 7, *((char*)(0x0141FC47 + (colour * 8))));
 	gfx_fill_rect(dpi, l + 10, t + 8, r - 10, t + 8, *((char*)(0x0141FC4B + (colour * 8))));
-	
+
 	// Left button
 	gfx_fill_rect_inset(dpi, l, t, l + 9, b, colour, (scroll->flags & HSCROLLBAR_LEFT_PRESSED ? 0x20 : 0));
 	gfx_draw_string(dpi, (char*)BlackLeftArrowString, 0, l + 1, t);
-	
+
 	// Thumb
 	gfx_fill_rect_inset(dpi,
 		max(l + 10, l + scroll->h_thumb_left - 1), t,
@@ -901,7 +901,7 @@ static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EB951
  */
 static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)

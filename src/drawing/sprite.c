@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -32,7 +32,7 @@ rct_gx g2;
 rct_g1_element *g1Elements = (rct_g1_element*)RCT2_ADDRESS_G1_ELEMENTS;
 
 /**
- * 
+ *
  *  rct2: 0x00678998
  */
 int gfx_load_g1()
@@ -265,9 +265,11 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 	uint8* next_source_pointer;
 	uint8* next_dest_pointer = dest_bits_pointer;
 
-	if (source_y_start < 0){ 
-		source_y_start += zoom_amount; 
-		next_dest_pointer += dpi->width / zoom_amount + dpi->pitch;
+	int line_width = (dpi->width >> zoom_level) + dpi->pitch;
+
+	if (source_y_start < 0){
+		source_y_start += zoom_amount;
+		next_dest_pointer += line_width;
 		height -= zoom_amount;
 	}
 
@@ -309,7 +311,7 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 			if (x_start > 0){
 				//Since the start is positive
 				//We need to move the drawing surface to the correct position
-				dest_pointer += x_start / zoom_amount;
+				dest_pointer += x_start >> zoom_level;
 			}
 			else{
 				//If the start is negative we require to remove part of the image.
@@ -349,7 +351,7 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 			else if (image_type & IMAGE_TYPE_MIX_BACKGROUND){//In the .exe these are all unraveled loops
 				//Doesnt use source pointer ??? mix with background only?
 				//Not Tested
-				
+
 				for (; no_pixels > 0; no_pixels -= zoom_amount, dest_pointer++){
 					uint8 pixel = *dest_pointer;
 					pixel = palette_pointer[pixel];
@@ -365,14 +367,14 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 		}
 
 		//Add a line to the drawing surface pointer
-		next_dest_pointer += dpi->width / zoom_amount + dpi->pitch;
+		next_dest_pointer += line_width;
 	}
 }
 
 /**
  *
  *  rct2: 0x0067A28E
- * image_id (ebx) 
+ * image_id (ebx)
  * image_id as below
  * 0b_111X_XXXX_XXXX_XXXX_XXXX_XXXX_XXXX_XXXX image_type
  * 0b_XXX1_11XX_XXXX_XXXX_XXXX_XXXX_XXXX_XXXX image_sub_type (unknown pointer)
@@ -442,7 +444,7 @@ void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 
 		uint32 top_offset = palette_to_g1_offset[top_type]; //RCT2_ADDRESS(0x97FCBC, uint32)[top_type];
 		rct_g1_element top_palette = g1Elements[top_offset];
 		memcpy(palette_pointer + 0xF3, top_palette.offset + 0xF3, 12);
-		
+
 		//Trousers
 		int trouser_type = (image_id >> 24) & 0x1f;
 		uint32 trouser_offset = palette_to_g1_offset[trouser_type]; //RCT2_ADDRESS(0x97FCBC, uint32)[trouser_type];
@@ -469,7 +471,7 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 {
 	int image_element = image_id & 0x7FFFF;
 	int image_type = (image_id & 0xE0000000) >> 28;
-	
+
 	rct_g1_element* g1_source;
 	if (image_element < SPR_G2_BEGIN) {
 		g1_source = &g1Elements[image_element];
@@ -596,7 +598,7 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	uint8* dest_pointer = (uint8*)dpi->bits;
 	//Move the pointer to the start point of the destination
 	dest_pointer += ((dpi->width / zoom_amount) + dpi->pitch)*dest_start_y + dest_start_x;
-	
+
 	if (g1_source->flags & G1_FLAG_RLE_COMPRESSION){
 		//We have to use a different method to move the source pointer for
 		//rle encoded sprites so that will be handled within this function

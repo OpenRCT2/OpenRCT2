@@ -256,7 +256,7 @@ void init_scenery()
 		}
 	}
 
-	// small scenery 
+	// small scenery
 	for (uint16 sceneryId = 0; sceneryId < 0xFC; sceneryId++) {
 		if ((uint32)g_smallSceneryEntries[sceneryId] == 0xFFFFFFFF)
 			continue;
@@ -722,7 +722,7 @@ static void window_scenery_update(rct_window *w)
 	}
 
 	window_invalidate(w);
-	
+
 	if (!window_scenery_is_scenery_tool_active()){
 		window_close(w);
 		return;
@@ -861,7 +861,7 @@ void window_scenery_invalidate(rct_window *w)
 	uint32 titleStringId = 1813;
 	if (tabIndex < 19)
 		titleStringId = g_scenerySetEntries[tabIndex]->name;
-	
+
 	window_scenery_widgets[WIDX_SCENERY_TITLE].image = titleStringId;
 
 	w->pressed_widgets = (((uint32)w->pressed_widgets & 0xFF00000F) | (1 << (tabIndex + 4))) & 0xBBFFFFFF;
@@ -871,10 +871,10 @@ void window_scenery_invalidate(rct_window *w)
 
 	if (window_scenery_is_build_cluster_tool_on == 1)
 		w->pressed_widgets |= (1 << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
-		
+
 	window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WWT_EMPTY;
 	window_scenery_widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WWT_EMPTY;
-	
+
 	sint16 tabSelectedSceneryId = window_scenery_selected_scenery_by_tab[tabIndex];
 	if (tabSelectedSceneryId != -1) {
 		if (tabSelectedSceneryId < 0x100) {
@@ -901,7 +901,7 @@ void window_scenery_invalidate(rct_window *w)
 	window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_EMPTY;
 	window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_EMPTY;
 	window_scenery_widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WWT_EMPTY;
-	
+
 	if (window_scenery_is_repaint_scenery_tool_on & 1) { // repaint colored scenery tool is on
 		window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLORBTN;
 		window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_COLORBTN;
@@ -912,7 +912,7 @@ void window_scenery_invalidate(rct_window *w)
 
 		if (tabSelectedSceneryId >= 0x400) {
 			sceneryEntry = g_bannerSceneryEntries[tabSelectedSceneryId - 0x400];
-			
+
 			if (sceneryEntry->banner.flags & 1)
 				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLORBTN;
 		} else if (tabSelectedSceneryId >= 0x300) {
@@ -984,12 +984,12 @@ void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	uint16 tabIndex = window_scenery_active_tab_index;
 	uint16 selectedWidgetId = tabIndex + 4;
 	uint32 imageId = ((w->colours[1] << 19) | window_scenery_widgets[selectedWidgetId].image) + 1ul;
-	
+
 	gfx_draw_sprite(dpi, imageId,
 		w->x + window_scenery_widgets[selectedWidgetId].left,
 		w->y + window_scenery_widgets[selectedWidgetId].top,
 		selectedWidgetId);
-	
+
 	sint16 selectedSceneryEntryId = w->scenery.selected_scenery_id;
 	if (selectedSceneryEntryId == -1) {
 		if (window_scenery_is_repaint_scenery_tool_on & 1)  // repaint colored scenery tool is on
@@ -1051,10 +1051,10 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrol
 	int sceneryTabItemIndex = 0;
 	sint16 currentSceneryGlobalId = -1;
 	sint16 left = 0, top = 0;
-	
+
 	while ((currentSceneryGlobalId = window_scenery_tab_entries[tabIndex][sceneryTabItemIndex]) != -1) {
 		uint16 tabSelectedSceneryId = window_scenery_selected_scenery_by_tab[tabIndex];
-				
+
 		if (window_scenery_is_repaint_scenery_tool_on == 1)
 		{
 			if (w->scenery.selected_scenery_id == currentSceneryGlobalId) {
@@ -1117,8 +1117,8 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrol
 							imageId &= 0xDFFFFFFF;
 							tertiaryColour = window_scenery_tertiary_colour;
 						}
-							
-					}				
+
+					}
 					gfx_draw_sprite(clipdpi, imageId, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
 					tertiaryColour);
 
@@ -1175,7 +1175,7 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrol
 				rct2_free(clipdpi);
 			}
 		}
-		
+
 		left += SCENERY_BUTTON_WIDTH;
 		if (left >= 594) {
 			top += SCENERY_BUTTON_HEIGHT;

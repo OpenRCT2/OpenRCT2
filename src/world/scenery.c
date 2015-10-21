@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -94,7 +94,7 @@ void scenery_update_age(int x, int y, rct_map_element *mapElement)
 			break;
 		}
 	}
-	
+
 	// Reset age / water plant
 	mapElement->properties.scenery.age = 0;
 	map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
@@ -125,12 +125,12 @@ void scenery_remove_ghost_tool_placement(){
 	if (RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 0)){
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) &= ~(1 << 0);
 		game_do_command(
-			x, 
+			x,
 			105 | (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT_TYPE, uint8) << 8),
-			y, 
+			y,
 			z | (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_SELECTED_OBJECT, uint8) << 8),
 			GAME_COMMAND_REMOVE_SCENERY,
-			0, 
+			0,
 			0);
 	}
 

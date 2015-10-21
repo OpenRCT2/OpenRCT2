@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -320,7 +320,7 @@ void vehicle_sounds_update()
 				if (sprite->vehicle.sound1_id == (uint8)-1) {
 					if (vehicle_sound->sound1_id != (uint16)-1) {
 						vehicle_sound->sound1_id = -1;
-						Mixer_Stop_Channel(vehicle_sound->sound1_channel);		
+						Mixer_Stop_Channel(vehicle_sound->sound1_channel);
 					}
 				} else {
 					if (vehicle_sound->sound1_id == (uint16)-1) {
@@ -424,7 +424,7 @@ void vehicle_sounds_update()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006D4204
  */
 void vehicle_update_all()
@@ -449,7 +449,7 @@ void vehicle_update_all()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006D77F2
  */
 static void vehicle_update(rct_vehicle *vehicle)
@@ -458,7 +458,7 @@ static void vehicle_update(rct_vehicle *vehicle)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006D73D0
  * ax: verticalG
  * dx: lateralG
@@ -470,7 +470,7 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG)
 
 	esi = (int)vehicle;
 	RCT2_CALLFUNC_X(0x006D73D0, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	
+
 	if (verticalG != NULL) *verticalG = (sint16)(eax & 0xFFFF);
 	if (lateralG != NULL) *lateralG = (sint16)(edx & 0xFFFF);
 }

@@ -109,7 +109,7 @@ static EMPTY_ARGS_VOID_POINTER *previous_button_mouseup_events[] = {
 };
 
 static EMPTY_ARGS_VOID_POINTER *next_button_mouseup_events[] = {
-	window_editor_bottom_toolbar_jump_forward_from_object_selection, 
+	window_editor_bottom_toolbar_jump_forward_from_object_selection,
 	window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up,
 	window_editor_bottom_toolbar_jump_forward_to_options_selection,
 	window_editor_bottom_toolbar_jump_forward_to_objective_selection,
@@ -371,7 +371,7 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 		return;
 	}
 
-	// 
+	//
 	s6Info->editor_step = 255;
 
 	// Ensure path has .SC6 extension
@@ -467,16 +467,16 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (g_editor_step == EDITOR_STEP_OBJECT_SELECTION) {
 		drawNextButton = true;
-	} 
+	}
 	else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) {
 		drawPreviousButton = true;
-	} 
+	}
 	else if (RCT2_GLOBAL(0x13573C8, uint16) != 0x2710) {
 		drawNextButton = true;
 	}
 	else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_18) {
 		drawNextButton = true;
-	} 
+	}
 	else {
 		drawPreviousButton = true;
 	}
@@ -502,7 +502,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER)) {
-		
+
 
 		if (drawPreviousButton) {
 			gfx_fill_rect_inset(dpi,
@@ -566,7 +566,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			short textX = (window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left +
 				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 30) / 2 + w->x;
 			short textY = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 + w->y;
-			
+
 			short stringId = STR_OBJECT_SELECTION_STEP + g_editor_step + 1;
 			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
 				stringId = STR_ROLLERCOASTER_DESIGNER_STEP;

@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -847,7 +847,7 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
 		window_map_paint_peep_overlay(dpi);
 	else
 		window_map_paint_train_overlay(dpi);
-	
+
 	window_map_paint_hud_rectangle(dpi);
 }
 
@@ -855,7 +855,7 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
  *
  *  rct2: 0x0068CA6C
  */
-static void window_map_init_map() 
+static void window_map_init_map()
 {
 	memset(RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, void*), 0x0A0A0A0A, 256 * 256 * sizeof(uint32));
 	RCT2_GLOBAL(0x00F1AD6C, uint32) = 0;
@@ -887,7 +887,7 @@ static void window_map_center_on_view_point()
 	dx = ((w->viewport->view_height >> 1) + w->viewport->view_y) >> 4;
 	cx += offset.x;
 	dx += offset.y;
-	
+
 	// calculate width and height of minimap
 
 	ax = w_map->widgets[WIDX_MAP].right - w_map->widgets[WIDX_MAP].left - 11;
@@ -1078,7 +1078,7 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi)
 /**
  *  The call to gfx_fill_rect was originally wrapped in sub_68DABD which made sure that arguments were ordered correctly,
  *  but it doesn't look like it's ever necessary here so the call was removed.
- * 
+ *
  *  rct2: 0x0068D8CE
  */
 static void window_map_paint_hud_rectangle(rct_drawpixelinfo *dpi)
@@ -1115,7 +1115,7 @@ static void window_map_paint_hud_rectangle(rct_drawpixelinfo *dpi)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0068D24E
  */
 static void window_map_set_land_rights_tool_update(int x, int y)
@@ -1148,7 +1148,7 @@ static void window_map_set_land_rights_tool_update(int x, int y)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00666EEF
  */
 void sub_666EEF(int x, int y, sint16 *mapX, sint16 *mapY, sint16 *mapZ, int *direction)
@@ -1174,7 +1174,7 @@ void sub_666EEF(int x, int y, sint16 *mapX, sint16 *mapY, sint16 *mapZ, int *dir
 }
 
 /**
- * 
+ *
  *  rct2: 0x00666FD0
  */
 static void window_map_place_park_entrance_tool_update(int x, int y)
@@ -1218,7 +1218,7 @@ static void window_map_place_park_entrance_tool_update(int x, int y)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0068D4E9
  */
 static void window_map_set_peep_spawn_tool_update(int x, int y)
@@ -1256,7 +1256,7 @@ static void window_map_set_peep_spawn_tool_update(int x, int y)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006670A4
  */
 static void window_map_place_park_entrance_tool_down(int x, int y)
@@ -1293,7 +1293,7 @@ static void window_map_place_park_entrance_tool_down(int x, int y)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0068D573
  */
 static void window_map_set_peep_spawn_tool_down(int x, int y)
@@ -1327,7 +1327,7 @@ static void window_map_set_peep_spawn_tool_down(int x, int y)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0068D641
  */
 static void map_window_increase_map_size()
@@ -1348,7 +1348,7 @@ static void map_window_increase_map_size()
 }
 
 /**
- * 
+ *
  *  rct2: 0x0068D6B4
  */
 static void map_window_decrease_map_size()
@@ -1596,7 +1596,7 @@ static void map_window_set_pixels(rct_window *w)
 {
 	uint16 colour, *destination;
 	int x, y, dx, dy;
-	
+
 	destination = (uint16*)((RCT2_GLOBAL(0x00F1AD6C, uint32) * 511) + RCT2_GLOBAL(0x00F1AD68, uint32) + 255);
 	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) {
 	case 0:

@@ -430,7 +430,7 @@ void format_length(char **dest, sint16 value)
 		stringId--;
 	}
 
-	uint16 *argRef = &value;
+	sint16 *argRef = &value;
 	format_string_part(dest, stringId, (char**)&argRef);
 	(*dest)--;
 }

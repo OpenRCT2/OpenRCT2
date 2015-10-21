@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -135,7 +135,7 @@ static void window_ride_list_close_all(rct_window *w);
 static void window_ride_list_open_all(rct_window *w);
 
 /**
- * 
+ *
  *  rct2: 0x006B30BC
  */
 void window_ride_list_open()
@@ -173,7 +173,7 @@ void window_ride_list_open()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006B3511
  */
 static void window_ride_list_mouseup(rct_window *w, int widgetIndex)
@@ -211,7 +211,7 @@ static void window_ride_list_mouseup(rct_window *w, int widgetIndex)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006B38A7
  */
 static void window_ride_list_resize(rct_window *w)
@@ -231,7 +231,7 @@ static void window_ride_list_resize(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006B3532
  */
 static void window_ride_list_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
@@ -272,7 +272,7 @@ static void window_ride_list_mousedown(int widgetIndex, rct_window*w, rct_widget
 }
 
 /**
- * 
+ *
  *  rct2: 0x006B3547
  */
 static void window_ride_list_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
@@ -292,7 +292,7 @@ static void window_ride_list_dropdown(rct_window *w, int widgetIndex, int dropdo
 }
 
 /**
- * 
+ *
  *  rct2: 0x006B386B
  */
 static void window_ride_list_update(rct_window *w)
@@ -304,7 +304,7 @@ static void window_ride_list_update(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006B35A1
  */
 static void window_ride_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
@@ -327,7 +327,7 @@ static void window_ride_list_scrollgetsize(rct_window *w, int scrollIndex, int *
 }
 
 /**
- * 
+ *
  *  rct2: 0x006B361F
  */
 static void window_ride_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
@@ -343,7 +343,7 @@ static void window_ride_list_scrollmousedown(rct_window *w, int scrollIndex, int
 }
 
 /**
- * 
+ *
  *  rct2: 0x006B35EF
  */
 static void window_ride_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
@@ -359,7 +359,7 @@ static void window_ride_list_scrollmouseover(rct_window *w, int scrollIndex, int
 }
 
 /**
- * 
+ *
  *  rct2: 0x006B3861
  */
 static void window_ride_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
@@ -368,7 +368,7 @@ static void window_ride_list_tooltip(rct_window* w, int widgetIndex, rct_string_
 }
 
 /**
- * 
+ *
  *  rct2: 0x006B3182
  */
 static void window_ride_list_invalidate(rct_window *w)
@@ -407,7 +407,7 @@ static void window_ride_list_invalidate(rct_window *w)
 		w->widgets[WIDX_OPEN_CLOSE_ALL].type = WWT_EMPTY;
 		w->widgets[WIDX_CLOSE_LIGHT].type = WWT_IMGBTN;
 		w->widgets[WIDX_OPEN_LIGHT].type = WWT_IMGBTN;
-		
+
 		sint8 allClosed = -1;
 		sint8 allOpen = -1;
 		FOR_ALL_RIDES(i, ride) {
@@ -433,7 +433,7 @@ static void window_ride_list_invalidate(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006B3235
  */
 static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -443,7 +443,7 @@ static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006B3240
  */
 static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
@@ -462,7 +462,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x02000031);
 			format = 1193;
 		}
-		
+
 		// Get ride
 		ride = &g_ride_list[w->list_item_positions[i]];
 
@@ -543,7 +543,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 }
 
 /**
- * 
+ *
  *  rct2: 0x006B38EA
  */
 static void window_ride_list_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
@@ -572,7 +572,7 @@ static void window_ride_list_draw_tab_images(rct_drawpixelinfo *dpi, rct_window 
 
 
 /**
- * 
+ *
  *  rct2: 0x006B39A8
  */
 static void window_ride_list_refresh_list(rct_window *w)
@@ -592,7 +592,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 			countB++;
 		}
 	}
-	
+
 	if (countB != 0)
 		window_invalidate(w);
 

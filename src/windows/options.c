@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -87,7 +87,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_CONSTRUCTION_MARKER_DROPDOWN,
 	WIDX_DAY_NIGHT_CHECKBOX,
 	WIDX_UPPER_CASE_BANNERS_CHECKBOX,
-	
+
 	// Culture / Units
 	WIDX_LANGUAGE = WIDX_PAGE_START,
 	WIDX_LANGUAGE_DROPDOWN,
@@ -199,7 +199,7 @@ static rct_widget window_options_culture_widgets[] = {
 	{ WWT_DROPDOWN,			1,	155,	299,	83,		94,		872,					STR_NONE },	// distance
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	84,		93,		STR_DROPDOWN_GLYPH,		STR_NONE },
 	{ WWT_DROPDOWN,			1,	155,	299,	98,		110,	875,					STR_NONE },	// temperature
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	99,		108,	STR_DROPDOWN_GLYPH,		STR_NONE }, 
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	99,		108,	STR_DROPDOWN_GLYPH,		STR_NONE },
 	{ WWT_DROPDOWN,			1,	155,	299,	113,	124,	868,					STR_NONE },	// height labels
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	114,	123,	STR_DROPDOWN_GLYPH,		STR_NONE },
 	{ WWT_DROPDOWN,			1,	155,	299,	128,	139,	STR_NONE,				STR_NONE },	// date format
@@ -263,7 +263,7 @@ static rct_widget window_options_misc_widgets[] = {
 
 static rct_widget window_options_twitch_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
-	{ WWT_DROPDOWN_BUTTON,	2,	10,		299,	54,		65,		STR_TWITCH_NAME,			STR_NONE },							// Twitch channel name 
+	{ WWT_DROPDOWN_BUTTON,	2,	10,		299,	54,		65,		STR_TWITCH_NAME,			STR_NONE },							// Twitch channel name
 	{ WWT_CHECKBOX,			2,	10,		299,	69,		80,		STR_TWITCH_PEEP_FOLLOWERS,	STR_TWITCH_PEEP_FOLLOWERS_TIP },	// Twitch name peeps by follows
 	{ WWT_CHECKBOX,			2,	10,		299,	84,		95,		STR_TWITCH_FOLLOWERS_TRACK,	STR_TWITCH_FOLLOWERS_TRACK_TIP },	// Twitch information on for follows
 	{ WWT_CHECKBOX,			2,	10,		299,	99,		110,	STR_TWITCH_PEEP_CHAT,		STR_TWITCH_PEEP_CHAT_TIP },			// Twitch name peeps by chat
@@ -412,7 +412,7 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_DEBUGGING_TOOLS) |
 	(1 << WIDX_TITLE_SEQUENCE) |
 	(1 << WIDX_TITLE_SEQUENCE_DROPDOWN) |
-	(1 << WIDX_TITLE_SEQUENCE_BUTTON) | 
+	(1 << WIDX_TITLE_SEQUENCE_BUTTON) |
 	(1 << WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM) |
 	(1 << WIDX_STAY_CONNECTED_AFTER_DESYNC),
 
@@ -695,7 +695,7 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
 	int num_items, i;
-	
+
 	widget = &w->widgets[widgetIndex - 1];
 
 	switch (w->page) {
@@ -1093,7 +1093,7 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 }
 
 /**
-*  
+*
 *  rct2: 0x006BAD48
 */
 static void window_options_invalidate(rct_window *w)
@@ -1399,7 +1399,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			w->x + window_options_misc_widgets[WIDX_AUTOSAVE].left + 1,
 			w->y + window_options_misc_widgets[WIDX_AUTOSAVE].top
 		);
-		
+
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&gConfigTitleSequences.presets[gCurrentPreviewTitleSequence].name;
 		gfx_draw_string_left(dpi, STR_TITLE_SEQUENCE, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1);
 		gfx_draw_string_left_clipped(
@@ -1429,7 +1429,7 @@ static void window_options_show_dropdown(rct_window *w, rct_widget *widget, int 
 	);
 }
 
-static void window_options_update_height_markers() 
+static void window_options_update_height_markers()
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, uint16) = gConfigGeneral.show_height_as_units ?
 		0 : (gConfigGeneral.measurement_format + 1) * 256;

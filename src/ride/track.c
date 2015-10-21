@@ -341,7 +341,7 @@ void track_list_populate(ride_list_item item, uint8* track_list_cache){
 
 	uint8 cur_track_entry_index = 0;
 	for (uint8 track_type = *track_pointer++; track_type != 0xFE;
-		track_pointer += strlen(track_pointer) + 1,
+		track_pointer += strlen((const char *)track_pointer) + 1,
 		track_type = *track_pointer++){
 		rct_object_entry* track_object = (rct_object_entry*)track_pointer;
 		track_pointer += sizeof(rct_object_entry);
@@ -379,7 +379,7 @@ void track_list_populate(ride_list_item item, uint8* track_list_cache){
 		uint8 track_entry_index = 0;
 		uint8 isBelow = 0;
 		for (; track_entry_index != cur_track_entry_index; track_entry_index++){
-			if (strcicmp(track_pointer, &RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8)[track_entry_index * 128]) < 0){
+			if (strcicmp((const char *)track_pointer, &RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, const char)[track_entry_index * 128]) < 0){
 				isBelow = 1;
 				break;
 			}
@@ -392,7 +392,7 @@ void track_list_populate(ride_list_item item, uint8* track_list_cache){
 				(cur_track_entry_index - track_entry_index) * 128);
 		}
 
-		strcpy(&RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8)[track_entry_index * 128], track_pointer);
+		strcpy(&RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char)[track_entry_index * 128], (const char *)track_pointer);
 		cur_track_entry_index++;
 	}
 
@@ -458,7 +458,7 @@ void track_load_list(ride_list_item item)
 			new_file_pointer += sizeof(rct_object_entry);
 
 			int file_name_length = strlen(enumFileInfo.path);
-			strcpy(new_file_pointer, enumFileInfo.path);
+			strcpy((char *)new_file_pointer, enumFileInfo.path);
 			new_file_pointer += file_name_length + 1;
 		}
 		platform_enumerate_files_end(enumFileHandle);
@@ -480,7 +480,7 @@ void track_load_list(ride_list_item item)
 	free(track_list_cache);
 }
 
-static void copy(void *dst, char **src, int length)
+static void copy(void *dst, uint8 **src, int length)
 {
 	memcpy(dst, *src, length);
 	*src += length;
@@ -512,7 +512,7 @@ rct_track_td6* load_track_design(const char *path)
 {
 	SDL_RWops *fp;
 	int fpLength;
-	char *fpBuffer, *decoded, *src;
+	uint8 *fpBuffer, *decoded, *src;
 	int i, decodedLength;
 	uint8* edi;
 
@@ -1995,7 +1995,7 @@ int sub_6D2189(int* cost, uint8* ride_id){
 
 	rct_ride* ride = GET_RIDE(*ride_id);
 
-	uint8* ride_name = RCT2_ADDRESS(0x9E3504, uint8);
+	const utf8* ride_name = RCT2_ADDRESS(0x9E3504, const utf8);
 	rct_string_id new_ride_name = user_string_allocate(132, ride_name);
 
 	if (new_ride_name){
@@ -2229,7 +2229,7 @@ rct_track_design *track_get_info(int index, uint8** preview)
 		RCT2_ADDRESS(RCT2_ADDRESS_TRACK_DESIGN_INDEX_CACHE, uint32)[i] = index;
 
 		char track_path[MAX_PATH] = { 0 };
-		subsitute_path(track_path, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignList + (index * 128));
+		subsitute_path(track_path, (char*)RCT2_ADDRESS_TRACKS_PATH, (char *)trackDesignList + (index * 128));
 
 		rct_track_td6* loaded_track = NULL;
 
@@ -2973,7 +2973,7 @@ int save_track_to_file(rct_track_td6* track_design, char* path)
 
 	uint8* track_file = malloc(0x8000);
 
-	int length = sawyercoding_encode_td6((char*)track_design, track_file, 0x609F);
+	int length = sawyercoding_encode_td6((uint8 *)track_design, track_file, 0x609F);
 
 	SDL_RWops *file;
 

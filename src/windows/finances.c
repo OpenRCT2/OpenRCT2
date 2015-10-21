@@ -627,7 +627,7 @@ static void window_finances_summary_update(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069C732
  */
 static void window_finances_summary_invalidate(rct_window *w)
@@ -644,7 +644,7 @@ static void window_finances_summary_invalidate(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069C771
  */
 static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -693,7 +693,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			y - 1
 		);
 		y += 14;
-		
+
 		// Month expenditures
 		money32 profit = 0;
 		money32 *expenditures = &RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i * 14];
@@ -728,7 +728,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		x += 80;
 	}
 
-	
+
 	// Horizontal rule below expenditure / income table
 	gfx_fill_rect_inset(dpi, w->x + 8, w->y + 223, w->x + 8 + 513, w->y + 223 + 1, w->colours[1], 0x20);
 
@@ -765,7 +765,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 #pragma region Financial graph page
 
 /**
- * 
+ *
  *  rct2: 0x0069CF70
  */
 static void window_finances_financial_graph_mouseup(rct_window *w, int widgetIndex)
@@ -777,7 +777,7 @@ static void window_finances_financial_graph_mouseup(rct_window *w, int widgetInd
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069CF8B
  */
 static void window_finances_financial_graph_update(rct_window *w)
@@ -789,7 +789,7 @@ static void window_finances_financial_graph_update(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069CBDB
  */
 static void window_finances_financial_graph_invalidate(rct_window *w)
@@ -805,7 +805,7 @@ static void window_finances_financial_graph_invalidate(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069CC10
  */
 static void window_finances_financial_graph_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -875,7 +875,7 @@ static void window_finances_financial_graph_paint(rct_window *w, rct_drawpixelin
 #pragma region Value graph page
 
 /**
- * 
+ *
  *  rct2: 0x0069D338
  */
 static void window_finances_park_value_graph_mouseup(rct_window *w, int widgetIndex)
@@ -887,7 +887,7 @@ static void window_finances_park_value_graph_mouseup(rct_window *w, int widgetIn
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069D353
  */
 static void window_finances_park_value_graph_update(rct_window *w)
@@ -899,7 +899,7 @@ static void window_finances_park_value_graph_update(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069CFC0
  */
 static void window_finances_park_value_graph_invalidate(rct_window *w)
@@ -915,7 +915,7 @@ static void window_finances_park_value_graph_invalidate(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069CFF5
  */
 static void window_finances_park_value_graph_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -981,7 +981,7 @@ static void window_finances_park_value_graph_paint(rct_window *w, rct_drawpixeli
 #pragma region Profit graph page
 
 /**
- * 
+ *
  *  rct2: 0x0069D715
  */
 static void window_finances_profit_graph_mouseup(rct_window *w, int widgetIndex)
@@ -993,7 +993,7 @@ static void window_finances_profit_graph_mouseup(rct_window *w, int widgetIndex)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069D730
  */
 static void window_finances_profit_graph_update(rct_window *w)
@@ -1005,7 +1005,7 @@ static void window_finances_profit_graph_update(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069D388
  */
 static void window_finances_profit_graph_invalidate(rct_window *w)
@@ -1021,7 +1021,7 @@ static void window_finances_profit_graph_invalidate(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069D3BD
  */
 static void window_finances_profit_graph_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -1087,7 +1087,7 @@ static void window_finances_profit_graph_paint(rct_window *w, rct_drawpixelinfo 
 #pragma region Marketing page
 
 /**
- * 
+ *
  *  rct2: 0x0069D9F9
  */
 static void window_finances_marketing_mouseup(rct_window *w, int widgetIndex)
@@ -1102,7 +1102,7 @@ static void window_finances_marketing_mouseup(rct_window *w, int widgetIndex)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069DA2F
  */
 static void window_finances_marketing_update(rct_window *w)
@@ -1114,7 +1114,7 @@ static void window_finances_marketing_update(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069D765
  */
 static void window_finances_marketing_invalidate(rct_window *w)
@@ -1162,7 +1162,7 @@ static void window_finances_marketing_invalidate(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069D834
  */
 static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -1236,7 +1236,7 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 #pragma region Research page
 
 /**
- * 
+ *
  *  rct2: 0x0069DB3F
  */
 static void window_finances_research_mouseup(rct_window *w, int widgetIndex)
@@ -1270,14 +1270,14 @@ static void window_finances_research_mouseup(rct_window *w, int widgetIndex)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069DB66
  */
 static void window_finances_research_mousedown(int widgetIndex, rct_window *w, rct_widget* widget)
 {
 	rct_widget *dropdownWidget;
 	int i;
-	
+
 	if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON)
 		return;
 
@@ -1302,7 +1302,7 @@ static void window_finances_research_mousedown(int widgetIndex, rct_window *w, r
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069DB6D
  */
 static void window_finances_research_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
@@ -1314,7 +1314,7 @@ static void window_finances_research_dropdown(rct_window *w, int widgetIndex, in
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069DC23
  */
 static void window_finances_research_update(rct_window *w)
@@ -1326,7 +1326,7 @@ static void window_finances_research_update(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069DA64
  */
 static void window_finances_research_invalidate(rct_window *w)
@@ -1347,7 +1347,7 @@ static void window_finances_research_invalidate(rct_window *w)
 
 	// Current funding
 	window_finances_research_widgets[WIDX_RESEARCH_FUNDING].image = STR_NO_FUNDING + currentResearchLevel;
-	
+
 	// Checkboxes
 	int activeResearchTypes = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16);
 	int uncompletedResearchTypes = gResearchUncompletedCategories;
@@ -1372,7 +1372,7 @@ static void window_finances_research_invalidate(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x0069DAF0
  */
 static void window_finances_research_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -1406,7 +1406,7 @@ static void window_finances_set_page(rct_window *w, int page)
 	w->widgets = window_finances_page_widgets[page];
 	w->disabled_widgets = 0;
 	w->pressed_widgets = 0;
-	
+
 	window_invalidate(w);
 	if (w->page == WINDOW_FINANCES_PAGE_RESEARCH) {
 		w->width = 320;
