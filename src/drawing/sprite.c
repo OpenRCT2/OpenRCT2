@@ -644,7 +644,6 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 		eax = 0;
 		memcpy((char*)new_source_pointer, (char*)source_pointer, ecx);
 		new_source_pointer += ecx;
-		source_pointer += ecx;
 		source_pointer = (uint8*)ebx;
 	}
 	source_pointer = new_source_pointer_start + g1_source->width*source_start_y + source_start_x;

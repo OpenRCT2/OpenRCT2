@@ -167,6 +167,7 @@ bool sprite_file_export(int spriteIndex, const char *outPath)
 
 	pngError = lodepng_encode(&pngData, &pngSize, pixels, spriteHeader->width, spriteHeader->height, &pngState);
 	if (pngError != 0) {
+		free(pngData);
 		fprintf(stderr, "Error creating PNG data, %u: %s", pngError, lodepng_error_text(pngError));
 		return false;
 	} else {
@@ -247,6 +248,7 @@ bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **ou
 
 	pngError = lodepng_decode_file(&pixels, &width, &height, path, LCT_RGBA, 8);
 	if (pngError != 0) {
+		free(pixels);
 		fprintf(stderr, "Error creating PNG data, %u: %s", pngError, lodepng_error_text(pngError));
 		return false;
 	}
@@ -373,6 +375,7 @@ bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **ou
 		}
 	}
 	free(pixels);
+	free(src);
 
 	int bufferLength = (int)(dst - buffer);
 	buffer = realloc(buffer, bufferLength);

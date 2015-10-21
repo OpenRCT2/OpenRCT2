@@ -5815,10 +5815,10 @@ void ride_all_has_any_track_elements(bool *rideIndexArray)
 
 /* rct2: 0x006847BA */
 void set_vehicle_type_image_max_sizes(rct_ride_type_vehicle* vehicle_type, int num_images){
-	char bitmap[200][200] = { 0 };
+	uint8 bitmap[200][200] = { 0 };
 
 	rct_drawpixelinfo dpi = {
-		.bits = (char*)bitmap,
+		.bits = (uint8*)bitmap,
 		.x = -100,
 		.y = -100,
 		.width = 200,

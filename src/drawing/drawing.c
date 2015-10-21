@@ -111,7 +111,7 @@ static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows);
 void gfx_clear(rct_drawpixelinfo *dpi, int colour)
 {
 	int y, w, h;
-	char* ptr;
+	uint8* ptr;
 
 	w = dpi->width >> dpi->zoom_level;
 	h = dpi->height >> dpi->zoom_level;
@@ -149,7 +149,7 @@ void gfx_transpose_palette(int pal, unsigned char product)
 		source_pointer += 3;
 		dest_pointer += 4;
 	}
-	platform_update_palette((char*)RCT2_ADDRESS_PALETTE, 10, 236);
+	platform_update_palette((uint8*)RCT2_ADDRESS_PALETTE, 10, 236);
 }
 
 /* rct2: 0x006837E3 */
@@ -175,7 +175,7 @@ void load_palette(){
 		source_pointer += 3;
 		dest_pointer += 4;
 	}
-	platform_update_palette((char*)RCT2_ADDRESS_PALETTE, 10, 236);
+	platform_update_palette((uint8*)RCT2_ADDRESS_PALETTE, 10, 236);
 }
 
 /**

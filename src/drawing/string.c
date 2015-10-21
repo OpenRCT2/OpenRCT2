@@ -742,7 +742,7 @@ void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, int x, int 
 static uint32 _ttf_surface_cache_hash(TTF_Font *font, const utf8 *text)
 {
 	uint32 hash = ((uint32)font * 23) ^ 0xAAAAAAAA;
-	for (const uint8 *ch = text; *ch != 0; ch++) {
+	for (const utf8 *ch = text; *ch != 0; ch++) {
 		hash = ror32(hash, 3) ^ (*ch * 13);
 	}
 	return hash;

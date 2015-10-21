@@ -2141,7 +2141,7 @@ void draw_track_preview(uint8** preview){
 	dpi->width = 370;
 	dpi->height = 217;
 	dpi->pitch = 0;
-	dpi->bits = (char*)preview;
+	dpi->bits = (uint8*)preview;
 
 	top = y;
 	left = x;
