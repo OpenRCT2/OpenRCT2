@@ -10,7 +10,7 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release XP|Win32">
-      <Configuration>Release</Configuration>
+      <Configuration>Release XP</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release with Tests|Win32">
