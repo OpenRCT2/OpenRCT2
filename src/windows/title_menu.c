@@ -112,6 +112,11 @@ void window_title_menu_open()
 	// Disable tutorial button
 	window->disabled_widgets = (1 << WIDX_SHOW_TUTORIAL);
 
+#if DISABLE_NETWORK
+	// Disable multiplayer
+	window->widgets[WIDX_MULTIPLAYER].type = WWT_EMPTY;
+#endif
+
 	window_init_scroll_widgets(window);
 }
 
@@ -190,14 +195,18 @@ static void window_title_menu_cursor(rct_window *w, int widgetIndex, int x, int 
 static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	gfx_fill_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + 82 - 1, 0x2000000 | 51);
-	gfx_fill_rect(
-		dpi,
-		w->x + window_title_menu_widgets[WIDX_MULTIPLAYER].left,
-		w->y + window_title_menu_widgets[WIDX_MULTIPLAYER].top,
-		w->x + window_title_menu_widgets[WIDX_MULTIPLAYER].right,
-		w->y + window_title_menu_widgets[WIDX_MULTIPLAYER].bottom,
-		0x2000000 | 51
-	);
+
+	rct_widget *multiplayerButtonWidget = &window_title_menu_widgets[WIDX_MULTIPLAYER];
+	if (multiplayerButtonWidget->type != WWT_EMPTY) {
+		gfx_fill_rect(
+			dpi,
+			w->x + multiplayerButtonWidget->left,
+			w->y + multiplayerButtonWidget->top,
+			w->x + multiplayerButtonWidget->right,
+			w->y + multiplayerButtonWidget->bottom,
+			0x2000000 | 51
+		);
+	}
 	window_draw_widgets(w, dpi);
 }
 
