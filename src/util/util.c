@@ -125,9 +125,7 @@ bool readentirefile(const utf8 *path, void **outBuffer, int *outLength)
 		return 0;
 
 	// Get length
-	SDL_RWseek(fp, 0, RW_SEEK_END);
-	fpLength = (int)SDL_RWtell(fp);
-	SDL_RWseek(fp, 0, RW_SEEK_SET);
+	fpLength = (int)SDL_RWsize(fp);
 
 	// Read whole file into a buffer
 	fpBuffer = malloc(fpLength);
