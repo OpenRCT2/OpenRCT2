@@ -28,6 +28,7 @@ env:
     - OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON" TARGET=docker32
 
 sudo: required
+dist: trusty
 
 services:
     - docker
