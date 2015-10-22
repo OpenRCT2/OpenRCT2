@@ -4452,7 +4452,7 @@ int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplying)
 
 	ride = GET_RIDE(rideIndex);
 
-	window_close_by_class(WC_RIDE_CONSTRUCTION);
+	window_close_by_number(WC_RIDE_CONSTRUCTION, rideIndex);
 
 	stationIndex = ride_mode_check_station_present(ride);
 	if (stationIndex == -1)return 0;
@@ -4575,7 +4575,7 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 
 	ride = GET_RIDE(rideIndex);
 
-	window_close_by_class(WC_RIDE_CONSTRUCTION);
+	window_close_by_number(WC_RIDE_CONSTRUCTION, rideIndex);
 
 	stationIndex = ride_mode_check_station_present(ride);
 	if (stationIndex == -1)return 0;
