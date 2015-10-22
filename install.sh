@@ -180,8 +180,6 @@ elif [[ `uname` == "Linux" ]]; then
 				sudo dpkg -i libjansson4_2.7-1ubuntu1_i386.deb
 				sudo dpkg -i libjansson-dev_2.7-1ubuntu1_i386.deb
 				sudo apt-get install -f
-				export CC=gcc-4.8
-				export CXX=g++-4.8
 				;;
 			"windows")
 				sudo apt-get update
