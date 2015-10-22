@@ -61,6 +61,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Miso Zmiric (mzmiric5) - OSX
 * Jarno Veuger (JarnoVgr) - Windows build server
 * Ted John (IntelOrca) - Windows
+* Michał Janiszewski (janisozaur) - Linux, Travis CI
 
 ## Documentation
 * (honzi)
