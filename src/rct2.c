@@ -228,8 +228,8 @@ void rct2_update()
 	#else
 	__asm__ ( "\
 	\n\
-		mov eax, 0x009DE564 	\n\
-		mov [eax], esp 	\n\
+		movl $0x009DE564, %%eax 	\n\
+		movl %%esp, (%%eax) 	\n\
 	 " : : : "eax" );
 	#endif
 
