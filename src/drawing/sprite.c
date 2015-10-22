@@ -258,11 +258,10 @@ void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, ui
  * This function copies the sprite data onto the screen
  *  rct2: 0x0067AA18
  */
-void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_pointer, uint8* palette_pointer, rct_drawpixelinfo *dpi, int image_type, int source_y_start, int height, int source_x_start, int width){
+void gfx_rle_sprite_to_buffer(const uint8* source_bits_pointer, uint8* dest_bits_pointer, const uint8* palette_pointer, const rct_drawpixelinfo *dpi, int image_type, int source_y_start, int height, int source_x_start, int width){
 	int zoom_level = dpi->zoom_level;
 	int zoom_amount = 1 << zoom_level;
 	int zoom_mask = 0xFFFFFFFF << zoom_level;
-	uint8* next_source_pointer;
 	uint8* next_dest_pointer = dest_bits_pointer;
 
 	int line_width = (dpi->width >> zoom_level) + dpi->pitch;
@@ -278,13 +277,13 @@ void gfx_rle_sprite_to_buffer(uint8* source_bits_pointer, uint8* dest_bits_point
 
 		//The first part of the source pointer is a list of offsets to different lines
 		//This will move the pointer to the correct source line.
-		next_source_pointer = source_bits_pointer + ((uint16*)source_bits_pointer)[y];
+		const uint8 *next_source_pointer = source_bits_pointer + ((uint16*)source_bits_pointer)[y];
 
 		uint8 last_data_line = 0;
 
 		//For every data section in the line
 		while (!last_data_line){
-			uint8* source_pointer = next_source_pointer;
+			const uint8* source_pointer = next_source_pointer;
 			uint8* dest_pointer = next_dest_pointer;
 
 			int no_pixels = *source_pointer++;
