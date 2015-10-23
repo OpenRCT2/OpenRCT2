@@ -1327,13 +1327,13 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	width = w->width - w->widgets[WIDX_LIST].right - 6;
 
 	// Skip object dat name
-	text = (char*)(highlightedEntry + 1);
-	datName = text;
+	text = (uint8*)(highlightedEntry + 1);
+	datName = (char*)text;
 	do {
 		text++;
 	} while (*(text - 1) != 0);
 	text += 4;
-	name = text;
+	name = (char*)text;
 
 	RCT2_GLOBAL(0x009BC677, uint8) = 14;
 

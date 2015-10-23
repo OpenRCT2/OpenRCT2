@@ -698,23 +698,23 @@ static int RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, 
 	#else
 	__asm__ ( "\
 		\n\
-		push ebx \n\
-		push ebp \n\
+		push %%ebx \n\
+		push %%ebp \n\
 		push %[address] 	\n\
-		mov eax, %[_eax] 	\n\
-		mov ebx, %[_ebx] 	\n\
-		mov ecx, %[_ecx] 	\n\
-		mov edx, %[_edx] 	\n\
-		mov esi, %[_esi] 	\n\
-		mov edi, %[_edi] 	\n\
-		mov ebp, %[_ebp] 	\n\
-		call [esp] 	\n\
+		mov %[_eax], %%eax 	\n\
+		mov %[_ebx], %%ebx 	\n\
+		mov %[_ecx], %%ecx 	\n\
+		mov %[_edx], %%edx 	\n\
+		mov %[_esi], %%esi 	\n\
+		mov %[_edi], %%edi 	\n\
+		mov %[_ebp], %%ebp 	\n\
+		call *(%%esp) 	\n\
 		lahf \n\
-		add esp, 4 	\n\
-		pop ebp \n\
-		pop ebx \n\
+		add $4, %%esp 	\n\
+		pop %%ebp \n\
+		pop %%ebx \n\
 		/* Load result with flags */ \n\
-		mov %[result], eax \n\
+		mov %%eax, %[result] \n\
 		" : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp), [result] "+m" (result)
 		:
 		: "eax","ecx","edx","esi","edi"
@@ -817,70 +817,70 @@ static int RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_e
 	__asm__ ( "\
 		\n\
 		/* Store C's base pointer*/     \n\
-		push ebp        \n\
-		push ebx        \n\
+		push %%ebp        \n\
+		push %%ebx        \n\
 		\n\
 		/* Store %[address] to call*/   \n\
 		push %[address]         \n\
 		\n\
 		/* Set all registers to the input values*/      \n\
-		mov eax, [%[_eax]]      \n\
-		mov eax, [eax]  \n\
-		mov ebx, [%[_ebx]]      \n\
-		mov ebx, [ebx]  \n\
-		mov ecx, [%[_ecx]]      \n\
-		mov ecx, [ecx]  \n\
-		mov edx, [%[_edx]]      \n\
-		mov edx, [edx]  \n\
-		mov esi, [%[_esi]]      \n\
-		mov esi, [esi]  \n\
-		mov edi, [%[_edi]]      \n\
-		mov edi, [edi]  \n\
-		mov ebp, [%[_ebp]]      \n\
-		mov ebp, [ebp]  \n\
+		mov %[_eax], %%eax      \n\
+		mov (%%eax), %%eax  \n\
+		mov %[_ebx], %%ebx      \n\
+		mov (%%ebx), %%ebx  \n\
+		mov %[_ecx], %%ecx      \n\
+		mov (%%ecx), %%ecx  \n\
+		mov %[_edx], %%edx      \n\
+		mov (%%edx), %%edx  \n\
+		mov %[_esi], %%esi      \n\
+		mov (%%esi), %%esi  \n\
+		mov %[_edi], %%edi      \n\
+		mov (%%edi), %%edi  \n\
+		mov %[_ebp], %%ebp      \n\
+		mov (%%ebp), %%ebp  \n\
 		\n\
 		/* Call function*/      \n\
-		call [esp]      \n\
+		call *(%%esp)      \n\
 		\n\
 		/* Store output eax */ \n\
-		push eax \n\
-		push ebp \n\
-		push ebx \n\
-		mov ebp, [esp + 20] \n\
-		mov ebx, [esp + 16] \n\
+		push %%eax \n\
+		push %%ebp \n\
+		push %%ebx \n\
+		mov 20(%%esp), %%ebp \n\
+		mov 16(%%esp), %%ebx \n\
 		/* Get resulting ecx, edx, esi, edi registers*/       \n\
-		mov eax, [%[_edi]]      \n\
-		mov [eax], edi  \n\
-		mov eax, [%[_esi]]      \n\
-		mov [eax], esi  \n\
-		mov eax, [%[_edx]]      \n\
-		mov [eax], edx  \n\
-		mov eax, [%[_ecx]]      \n\
-		mov [eax], ecx  \n\
+		mov %[_edi], %%eax      \n\
+		mov %%edi, (%%eax)  \n\
+		mov %[_esi], %%eax      \n\
+		mov %%esi, (%%eax)  \n\
+		mov %[_edx], %%eax      \n\
+		mov %%edx, (%%eax)  \n\
+		mov %[_ecx], %%eax      \n\
+		mov %%ecx, (%%eax)  \n\
 		/* Pop ebx reg into ecx*/ \n\
-		pop ecx		\n\
-		mov eax, [%[_ebx]] \n\
-		mov [eax], ecx \n\
+		pop %%ecx		\n\
+		mov %[_ebx], %%eax \n\
+		mov %%ecx, (%%eax) \n\
 		\n\
 		/* Pop ebp reg into ecx */\n\
-		pop ecx \n\
-		mov eax, [%[_ebp]] \n\
-		mov [eax], ecx \n\
+		pop %%ecx \n\
+		mov %[_ebp], %%eax \n\
+		mov %%ecx, (%%eax) \n\
 		\n\
-		pop eax \n\
+		pop %%eax \n\
 		/* Get resulting eax register*/ \n\
-		mov ecx, [%[_eax]] \n\
-		mov [ecx], eax \n\
+		mov %[_eax], %%ecx \n\
+		mov %%eax, (%%ecx) \n\
 		\n\
 		/* Save flags as return in eax*/  \n\
 		lahf \n\
 		/* Pop address*/ \n\
-		pop ebp \n\
+		pop %%ebp \n\
 		\n\
-		pop ebx \n\
-		pop ebp \n\
+		pop %%ebx \n\
+		pop %%ebp \n\
 		/* Load result with flags */ \n\
-		mov %[result], eax \n\
+		mov %%eax, %[result] \n\
 		" : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp), [result] "+m" (result)
 
 		:
