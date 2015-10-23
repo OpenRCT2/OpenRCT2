@@ -15,7 +15,7 @@ An open source clone of RollerCoaster Tycoon 2 built by decompiling the original
   - 1.2 - [Decompiling the game](#12-decompiling-the-game)
   - 1.3 - [Progress](#13-progress)
   - 1.4 - [Aim](#14-aim)
-- 2 - [Downloading the game / Building the source code](#2-building-the-source-code)
+- 2 - [Downloading the game / Building the source code](#2-downloading-the-game--building-the-source-code)
   - 2.1 - [Building Prerequisites](#21-building-prerequisites)
   - 2.2 - [Compiling and running](#22-compiling-and-running)
 - 3 - [Contributing](#3-contributing)
