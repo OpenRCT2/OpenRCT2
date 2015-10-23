@@ -600,7 +600,9 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 	char *dst, filter[MAX_PATH], subDir[MAX_PATH];
 
 	strncpy(_directory, directory, sizeof(_directory));
-	strncpy(_extension, extension, sizeof(_extension));
+	if (_extension != extension) {
+		strncpy(_extension, extension, sizeof(_extension));
+	}
 	_shortenedDirectory[0] = '\0';
 
 	strncpy(filter, directory, sizeof(filter));
