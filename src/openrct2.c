@@ -393,8 +393,11 @@ static void openrct2_loop()
 				invalidate_sprite_2(&g_sprite_list[i]);
 			}
 
-			rct2_draw();
-			platform_draw();
+			if ((SDL_GetWindowFlags(gWindow) & (SDL_WINDOW_MINIMIZED | SDL_WINDOW_HIDDEN)) == 0) {
+				rct2_draw();
+				platform_draw();
+			}
+
 			fps++;
 			if (SDL_GetTicks() - secondTick >= 1000) {
 				fps = 0;
@@ -426,8 +429,10 @@ static void openrct2_loop()
 
 			rct2_update();
 
-			rct2_draw();
-			platform_draw();
+			if ((SDL_GetWindowFlags(gWindow) & (SDL_WINDOW_MINIMIZED | SDL_WINDOW_HIDDEN)) == 0) {
+				rct2_draw();
+				platform_draw();
+			}
 		}
 	} while (!_finished);
 }
