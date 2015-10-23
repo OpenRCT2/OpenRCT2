@@ -738,11 +738,11 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 
 void Mixer::EffectPanS16(Channel& channel, sint16* data, int length)
 {
-	const float dt = 1 / (length * 2);
+	const float dt = 1.0f / (length * 2);
 	float left_volume = channel.oldvolume_l;
 	float right_volume = channel.oldvolume_r;
-	const float d_left = dt * channel.volume_l;
-	const float d_right = dt * channel.volume_r;
+	const float d_left = dt * (channel.volume_l - channel.oldvolume_l);
+	const float d_right = dt * (channel.volume_r - channel.oldvolume_r);
 
 	for (int i = 0; i < length * 2; i += 2) {
 		data[i] = (sint16)(data[i] * left_volume);
