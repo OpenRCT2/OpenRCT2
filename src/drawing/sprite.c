@@ -132,6 +132,8 @@ void sub_68371D()
 void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, int height, int width, int image_type){
 	uint16 zoom_level = dest_dpi->zoom_level;
 	uint8 zoom_amount = 1 << zoom_level;
+	uint32 dest_line_width = (dest_dpi->width / zoom_amount) + dest_dpi->pitch;
+	uint32 source_line_width = source_image->width * zoom_amount;
 	//Requires use of palette?
 	if (image_type & IMAGE_TYPE_USE_PALETTE){
 
@@ -140,9 +142,9 @@ void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, ui
 			unknown_pointer += source_pointer - source_image->offset;// RCT2_GLOBAL(0x9E3CE0, uint32);
 
 			for (; height > 0; height -= zoom_amount){
-				uint8* next_source_pointer = source_pointer + (uint32)(source_image->width * zoom_amount);
-				uint8* next_unknown_pointer = unknown_pointer + (uint32)(source_image->width * zoom_amount);
-				uint8* next_dest_pointer = dest_pointer + (dest_dpi->width / zoom_amount) + dest_dpi->pitch;
+				uint8* next_source_pointer = source_pointer + source_line_width;
+				uint8* next_unknown_pointer = unknown_pointer + source_line_width;
+				uint8* next_dest_pointer = dest_pointer + dest_line_width;
 
 				for (int no_pixels = width; no_pixels > 0; no_pixels -= zoom_amount, source_pointer += zoom_amount, unknown_pointer += zoom_amount, dest_pointer++){
 					uint8 pixel = *source_pointer;
@@ -161,8 +163,8 @@ void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, ui
 
 		//image colour adjusted?
 		for (; height > 0; height -= zoom_amount){
-			uint8* next_source_pointer = source_pointer + (uint32)(source_image->width * zoom_amount);
-			uint8* next_dest_pointer = dest_pointer + (dest_dpi->width / zoom_amount) + dest_dpi->pitch;
+			uint8* next_source_pointer = source_pointer + source_line_width;
+			uint8* next_dest_pointer = dest_pointer + dest_line_width;
 			for (int no_pixels = width; no_pixels > 0; no_pixels -= zoom_amount, source_pointer += zoom_amount, dest_pointer++){
 				uint8 pixel = *source_pointer;
 				pixel = palette_pointer[pixel];
@@ -171,7 +173,7 @@ void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, ui
 				}
 			}
 
-			source_pointer = next_source_pointer;
+			source_pointer == next_source_pointer;
 			dest_pointer = next_dest_pointer;
 		}
 		return;
@@ -181,8 +183,8 @@ void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, ui
 	//telling if it needs to be drawn not for colour.
 	if (image_type & IMAGE_TYPE_MIX_BACKGROUND){//Not tested
 		for (; height > 0; height -= zoom_amount){
-			uint8* next_source_pointer = source_pointer + (uint32)(source_image->width * zoom_amount);
-			uint8* next_dest_pointer = dest_pointer + (dest_dpi->width / zoom_amount) + dest_dpi->pitch;
+			uint8* next_source_pointer = source_pointer + source_line_width;
+			uint8* next_dest_pointer = dest_pointer + dest_line_width;
 
 			for (int no_pixels = width; no_pixels > 0; no_pixels -= zoom_amount, source_pointer += zoom_amount, dest_pointer++){
 				uint8 pixel = *source_pointer;
@@ -202,8 +204,8 @@ void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, ui
 	//Basic bitmap no fancy stuff
 	if (!(source_image->flags & G1_FLAG_BMP)){//Not tested
 		for (; height > 0; height -= zoom_amount){
-			uint8* next_source_pointer = source_pointer + (uint32)(source_image->width * zoom_amount);
-			uint8* next_dest_pointer = dest_pointer + (dest_dpi->width / zoom_amount) + dest_dpi->pitch;
+			uint8* next_source_pointer = source_pointer + source_line_width;
+			uint8* next_dest_pointer = dest_pointer + dest_line_width;
 
 			for (int no_pixels = width; no_pixels > 0; no_pixels -= zoom_amount, dest_pointer++, source_pointer += zoom_amount){
 				*dest_pointer = *source_pointer;
@@ -219,9 +221,9 @@ void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, ui
 		unknown_pointer += source_pointer - source_image->offset;
 
 		for (; height > 0; height -= zoom_amount){
-			uint8* next_source_pointer = source_pointer + (uint32)(source_image->width * zoom_amount);
-			uint8* next_unknown_pointer = unknown_pointer + (uint32)(source_image->width * zoom_amount);
-			uint8* next_dest_pointer = dest_pointer + (dest_dpi->width / zoom_amount) + dest_dpi->pitch;
+			uint8* next_source_pointer = source_pointer + source_line_width;
+			uint8* next_unknown_pointer = unknown_pointer + source_line_width;
+			uint8* next_dest_pointer = dest_pointer + dest_line_width;
 
 			for (int no_pixels = width; no_pixels > 0; no_pixels -= zoom_amount, dest_pointer++, source_pointer += zoom_amount, unknown_pointer += zoom_amount){
 				uint8 pixel = *source_pointer;
@@ -238,8 +240,8 @@ void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, ui
 
 	//Basic bitmap with no draw pixels
 	for (; height > 0; height -= zoom_amount){
-		uint8* next_source_pointer = source_pointer + (uint32)(source_image->width * zoom_amount);
-		uint8* next_dest_pointer = dest_pointer + (dest_dpi->width / zoom_amount) + dest_dpi->pitch;
+		uint8* next_source_pointer = source_pointer + source_line_width;
+		uint8* next_dest_pointer = dest_pointer + dest_line_width;
 
 		for (int no_pixels = width; no_pixels > 0; no_pixels -= zoom_amount, dest_pointer++, source_pointer += zoom_amount){
 			uint8 pixel = *source_pointer;
