@@ -173,7 +173,7 @@ void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, ui
 				}
 			}
 
-			source_pointer == next_source_pointer;
+			source_pointer = next_source_pointer;
 			dest_pointer = next_dest_pointer;
 		}
 		return;
