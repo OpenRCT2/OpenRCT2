@@ -359,8 +359,13 @@ void gfx_rle_sprite_to_buffer(const uint8* source_bits_pointer, uint8* dest_bits
 			}
 			else
 			{
-				for (; no_pixels > 0; no_pixels -= zoom_amount, source_pointer += zoom_amount, dest_pointer++){
-					*dest_pointer = *source_pointer;
+				if (zoom_amount == 1) {
+					memcpy(dest_pointer, source_pointer, no_pixels);
+				}
+				else {
+					for (; no_pixels > 0; no_pixels -= zoom_amount, source_pointer += zoom_amount, dest_pointer++) {
+						*dest_pointer = *source_pointer;
+					}
 				}
 			}
 		}
@@ -498,7 +503,6 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 
 	//Its used super often so we will define it to a separate variable.
 	int zoom_level = dpi->zoom_level;
-	int zoom_amount = 1 << zoom_level;
 	int zoom_mask = 0xFFFFFFFF << zoom_level;
 
 	if (zoom_level && g1_source->flags & G1_FLAG_RLE_COMPRESSION){
@@ -552,8 +556,8 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 	//If the image no longer has anything to draw
 	if (height <= 0)return;
 
-	dest_start_y /= zoom_amount;
-	dest_end_y /= zoom_amount;
+	dest_start_y >>= zoom_level;
+	dest_end_y >>= zoom_level;
 
 	//This will be the width of the drawn image
 	int width = g1_source->width;
@@ -591,12 +595,12 @@ void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, in
 		if (width <= 0)return;
 	}
 
-	dest_start_x /= zoom_amount;
-	dest_end_x /= zoom_amount;
+	dest_start_x >>= zoom_level;
+	dest_end_x >>= zoom_level;
 
 	uint8* dest_pointer = (uint8*)dpi->bits;
 	//Move the pointer to the start point of the destination
-	dest_pointer += ((dpi->width / zoom_amount) + dpi->pitch)*dest_start_y + dest_start_x;
+	dest_pointer += ((dpi->width >> zoom_level) + dpi->pitch) * dest_start_y + dest_start_x;
 
 	if (g1_source->flags & G1_FLAG_RLE_COMPRESSION){
 		//We have to use a different method to move the source pointer for

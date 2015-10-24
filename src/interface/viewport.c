@@ -1559,7 +1559,7 @@ static void sub_68B3FB(int x, int y)
 	RCT2_GLOBAL(0x9DE574, uint16_t) = x;
 	RCT2_GLOBAL(0x9DE576, uint16_t) = y;
 
-	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+	rct_map_element* map_element = map_get_first_element_at(x >> 5, y >> 5);
 
 	int dx = 0;
 	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)) {
@@ -1580,7 +1580,7 @@ static void sub_68B3FB(int x, int y)
 		dx = x - y;
 		break;
 	}
-	dx /= 2;
+	dx >>= 1;
 	// Display little yellow arrow when building footpaths?
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & 4) &&
 		RCT2_GLOBAL(0x9DE56A, uint16) == RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, uint16) &&
@@ -1805,9 +1805,9 @@ void viewport_paint_setup()
 		.y = (dpi->y - 16) & 0xFFE0
 	};
 
-	sint16 half_x = mapTile.x / 2;
+	sint16 half_x = mapTile.x >> 1;
 
-	uint16 num_vertical_quadrants = (dpi->height + 2128) / 32;
+	uint16 num_vertical_quadrants = (dpi->height + 2128) >> 5;
 
 	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)){
 	case 0:
@@ -1821,19 +1821,12 @@ void viewport_paint_setup()
 			map_element_paint_setup(mapTile.x, mapTile.y);
 			sprite_paint_setup(mapTile.x, mapTile.y);
 
-			mapTile.x -= 32;
-			mapTile.y += 32;
+			sprite_paint_setup(mapTile.x - 32, mapTile.y + 32);
 
-			sprite_paint_setup(mapTile.x, mapTile.y);
-
-			mapTile.x += 32;
-
-			map_element_paint_setup(mapTile.x, mapTile.y);
-			sprite_paint_setup(mapTile.x, mapTile.y);
+			map_element_paint_setup(mapTile.x, mapTile.y + 32);
+			sprite_paint_setup(mapTile.x, mapTile.y + 32);
 
 			mapTile.x += 32;
-			mapTile.y -= 32;
-
 			sprite_paint_setup(mapTile.x, mapTile.y);
 
 			mapTile.y += 32;
@@ -1850,19 +1843,12 @@ void viewport_paint_setup()
 			map_element_paint_setup(mapTile.x, mapTile.y);
 			sprite_paint_setup(mapTile.x, mapTile.y);
 
-			mapTile.x -= 32;
-			mapTile.y -= 32;
+			sprite_paint_setup(mapTile.x - 32, mapTile.y - 32);
 
-			sprite_paint_setup(mapTile.x, mapTile.y);
+			map_element_paint_setup(mapTile.x - 32, mapTile.y);
+			sprite_paint_setup(mapTile.x - 32, mapTile.y);
 
 			mapTile.y += 32;
-
-			map_element_paint_setup(mapTile.x, mapTile.y);
-			sprite_paint_setup(mapTile.x, mapTile.y);
-
-			mapTile.x += 32;
-			mapTile.y += 32;
-
 			sprite_paint_setup(mapTile.x, mapTile.y);
 
 			mapTile.x -= 32;
@@ -1879,18 +1865,12 @@ void viewport_paint_setup()
 			map_element_paint_setup(mapTile.x, mapTile.y);
 			sprite_paint_setup(mapTile.x, mapTile.y);
 
-			mapTile.x += 32;
-			mapTile.y -= 32;
+			sprite_paint_setup(mapTile.x + 32, mapTile.y - 32);
 
-			sprite_paint_setup(mapTile.x, mapTile.y);
-
-			mapTile.x -= 32;
-
-			map_element_paint_setup(mapTile.x, mapTile.y);
-			sprite_paint_setup(mapTile.x, mapTile.y);
+			map_element_paint_setup(mapTile.x, mapTile.y - 32);
+			sprite_paint_setup(mapTile.x, mapTile.y - 32);
 
 			mapTile.x -= 32;
-			mapTile.y += 32;
 
 			sprite_paint_setup(mapTile.x, mapTile.y);
 
@@ -1908,17 +1888,11 @@ void viewport_paint_setup()
 			map_element_paint_setup(mapTile.x, mapTile.y);
 			sprite_paint_setup(mapTile.x, mapTile.y);
 
-			mapTile.x += 32;
-			mapTile.y += 32;
+			sprite_paint_setup(mapTile.x + 32, mapTile.y + 32);
 
-			sprite_paint_setup(mapTile.x, mapTile.y);
+			map_element_paint_setup(mapTile.x + 32, mapTile.y);
+			sprite_paint_setup(mapTile.x + 32, mapTile.y);
 
-			mapTile.y -= 32;
-
-			map_element_paint_setup(mapTile.x, mapTile.y);
-			sprite_paint_setup(mapTile.x, mapTile.y);
-
-			mapTile.x -= 32;
 			mapTile.y -= 32;
 
 			sprite_paint_setup(mapTile.x, mapTile.y);
