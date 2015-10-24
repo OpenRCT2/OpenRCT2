@@ -493,7 +493,16 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 			break;
 		case WIDX_HARDWARE_DISPLAY_CHECKBOX:
 			gConfigGeneral.hardware_display ^= 1;
+#ifdef _WIN32
+			// Windows is apparently able to switch to hardware rendering on the fly although
+			// using the same window in an unaccelerated and accelerated context is unsupported by SDL2
+			gHardwareDisplay = gConfigGeneral.hardware_display;
 			platform_refresh_video();
+#else
+			// Linux requires a restart. This could be improved in the future by recreating the window,
+			// https://github.com/OpenRCT2/OpenRCT2/issues/2015
+			window_error_open(STR_RESTART_REQUIRED, STR_NONE);
+#endif
 			config_save_default();
 			window_invalidate(w);
 			break;

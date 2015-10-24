@@ -3896,6 +3896,7 @@ STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
 STR_5555    :Show vehicles from other track types
 STR_5556    :Kick Player
 STR_5557    :Stay connected after desynchronisation (Multiplayer)
+STR_5558    :A restart is required for this setting to take effect
 
 #####################
 # Rides/attractions # 
