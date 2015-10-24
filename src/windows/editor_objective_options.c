@@ -785,10 +785,20 @@ static void window_editor_objective_options_main_textinput(rct_window *w, int wi
 		break;
 	case WIDX_SCENARIO_NAME:
 		strncpy(s6Info->name, text, 64);
+		if (strnlen(s6Info->name, 64) == 64)
+		{
+			s6Info->name[64 - 1] = '\0';
+			log_warning("Truncated S6 name: %s", s6Info->name);
+		}
 		window_invalidate(w);
 		break;
 	case WIDX_DETAILS:
 		strncpy(s6Info->details, text, 256);
+		if (strnlen(s6Info->details, 256) == 256)
+		{
+			s6Info->details[256 - 1] = '\0';
+			log_warning("Truncated S6 name: %s", s6Info->details);
+		}
 		window_invalidate(w);
 		break;
 	}

@@ -602,6 +602,7 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 	strncpy(_directory, directory, sizeof(_directory));
 	if (_extension != extension) {
 		strncpy(_extension, extension, sizeof(_extension));
+		_extension[sizeof(_extension) - 1] = '\0';
 	}
 	_shortenedDirectory[0] = '\0';
 
@@ -921,7 +922,9 @@ static rct_window *window_overwrite_prompt_open(const char *name, const char *pa
 	w->colours[0] = 154;
 
 	strncpy(_window_overwrite_prompt_name, name, sizeof(_window_overwrite_prompt_name));
+	_window_overwrite_prompt_name[sizeof(_window_overwrite_prompt_name) - 1] = '\0';
 	strncpy(_window_overwrite_prompt_path, path, sizeof(_window_overwrite_prompt_path));
+	_window_overwrite_prompt_path[sizeof(_window_overwrite_prompt_path) - 1] = '\0';
 
 	return w;
 }

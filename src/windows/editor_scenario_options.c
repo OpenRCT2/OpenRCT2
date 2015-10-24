@@ -559,7 +559,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		break;
 	}
 
-	if(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_PLAYING) {
+	if(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_PLAYING) {
 		window_invalidate_by_class(WC_FINANCES);
 		window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 	}

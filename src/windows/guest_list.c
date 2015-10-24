@@ -447,6 +447,9 @@ static void window_guest_list_scrollgetsize(rct_window *w, int scrollIndex, int 
 		w->var_492 = _window_guest_list_num_groups;
 		y = _window_guest_list_num_groups * 21;
 		break;
+	default:
+		log_error("Improper tab selected: %d, bailing out.", _window_guest_list_selected_tab);
+		return;
 	}
 
 	i = _window_guest_list_selected_page;

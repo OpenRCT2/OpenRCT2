@@ -171,7 +171,7 @@ static void title_init_showcase()
 static int title_load_park(const char *path)
 {
 	rct_window* w;
-	int successfulLoad;
+	int successfulLoad = 0;
 
 	if (_strcmpi(path_get_extension(path), ".sv6") == 0) {
 		SDL_RWops* rw = SDL_RWFromFile(path, "rb");
