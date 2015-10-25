@@ -748,6 +748,32 @@ static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
 
 /**
  *
+ *  rct2: 0x006DADAE
+ */
+static void sub_6DAB4C_chunk_3(rct_vehicle *vehicle)
+{
+	sint32 nextVelocity = vehicle->var_2C + vehicle->velocity;
+	if (vehicle->var_48 & (1 << 7)) {
+		nextVelocity = 0;
+	}
+	if (vehicle->var_48 & (1 << 10)) {
+		vehicle->var_D2--;
+		if (vehicle->var_D2 == -70) {
+			vehicle->var_48 &= ~(1 << 10);
+		}
+		if (vehicle->var_D2 >= 0) {
+			nextVelocity = 0;
+			vehicle->var_2C = 0;
+		}
+	}
+	vehicle->velocity = nextVelocity;
+
+	RCT2_GLOBAL(0x00F64E08, sint32) = nextVelocity;
+	RCT2_GLOBAL(0x00F64E0C, sint32) = (nextVelocity >> 10) * 42;
+}
+
+/**
+ *
  *  rct2: 0x006DAB4C
  */
 int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
@@ -768,10 +794,16 @@ int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
 
 	sub_6DAB4C_chunk_1(vehicle);
 	sub_6DAB4C_chunk_2(vehicle);
+	sub_6DAB4C_chunk_3(vehicle);
 
-loc_6DADAE:
+	if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
+		vehicle = vehicle_get_tail(vehicle);
+	}
+	RCT2_GLOBAL(0x00F64E00, rct_vehicle*) = vehicle;
+
+loc_6DAE27:
 	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DADAE, &regs);
+	RCT2_CALLFUNC_Y(0x006DAE27, &regs);
 	goto end;
 
 loc_6DC3A7:
