@@ -3537,8 +3537,6 @@ void ride_music_update_final()
 									offset = 0;
 								}
 								Mixer_Channel_SetOffset(ride_music->sound_channel, offset);
-							} else {
-								//RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_MUSIC, uint8) = 0;
 							}
 							return;
 						}

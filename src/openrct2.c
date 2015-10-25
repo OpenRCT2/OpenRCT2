@@ -217,7 +217,6 @@ bool openrct2_initialise()
 	if (!gOpenRCT2Headless) {
 		audio_init();
 		audio_get_devices();
-		//get_dsound_devices();
 	}
 	language_open(gConfigGeneral.language);
 	http_init();
