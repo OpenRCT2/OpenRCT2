@@ -21,6 +21,9 @@
 #ifndef _HOOK_H_
 #define _HOOK_H_
 
+#include "addresses.h"
+#include "common.h"
+
 enum REGISTER_ARGS {
 	EAX = 1 << 0,
 	EBX = 1 << 1,
@@ -32,6 +35,7 @@ enum REGISTER_ARGS {
 	END = 0
 };
 
-void addhook(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister);
+void addhook(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister, bool useReturnRegisters);
+void hook_setreturnregisters(registers *regs);
 
 #endif

@@ -623,11 +623,19 @@ bool sub_6DD365(rct_vehicle *vehicle)
 int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
 {
 	registers regs;
-	regs.esi = (int)vehicle;
 
-	RCT2_CALLFUNC_Y(0x006DAB4C, &regs);
+	regs.esi = vehicle;
+	regs.edi = vehicle->vehicle_type;
+	regs.eax = vehicle->ride_subtype;
+	regs.edi *= 0x65;
+	regs.eax = GET_RIDE_ENTRY(regs.eax);
+	regs.edi += regs.eax;
 
-	if (outStation != NULL) *outStation = regs.ebx;
+	RCT2_CALLFUNC_Y(0x006DAB63, &regs);
+
+	// regs.eax = 0;
+	// regs.ebx = 0;
+	hook_setreturnregisters(&regs);
 	return regs.eax;
 }
 
