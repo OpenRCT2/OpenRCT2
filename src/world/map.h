@@ -383,4 +383,6 @@ bool map_large_scenery_get_origin(
 	int *outX, int *outY, int *outZ
 );
 
+rct_map_element *map_get_track_element_at(int x, int y, int z);
+
 #endif

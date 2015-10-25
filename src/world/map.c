@@ -4715,3 +4715,22 @@ void game_command_place_park_entrance(int* eax, int* ebx, int* ecx, int* edx, in
 		*edx & 0xFFFF,
 		(*ebx >> 8) & 0xFF);
 }
+
+/**
+ * Gets the map element at x, y, z.
+ * @param x x units, not tiles.
+ * @param y y units, not tiles.
+ * @param z Base height.
+ */
+rct_map_element *map_get_track_element_at(int x, int y, int z)
+{
+	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
+		if (mapElement->base_height != z) continue;
+
+		return mapElement;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	return NULL;
+}

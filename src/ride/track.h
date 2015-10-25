@@ -540,4 +540,6 @@ bool track_circuit_iterator_next(track_circuit_iterator *it);
 void track_get_back(rct_xy_element *input, rct_xy_element *output);
 void track_get_front(rct_xy_element *input, rct_xy_element *output);
 
+bool track_element_is_lift_hill(rct_map_element *trackElement);
+
 #endif

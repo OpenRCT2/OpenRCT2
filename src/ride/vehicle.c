@@ -138,7 +138,7 @@ int sub_6BC2F3(rct_vehicle* vehicle)
 	int result = 0;
 	rct_vehicle* vehicle_temp = vehicle;
 	do {
-		result += vehicle_temp->var_46;
+		result += vehicle_temp->friction;
 	} while (vehicle_temp->next_vehicle_on_train != (uint16)-1 && (vehicle_temp = GET_VEHICLE(vehicle_temp->next_vehicle_on_train)));
 	sint32 v4 = vehicle->velocity;
 	if (v4 < 0) {
@@ -482,8 +482,9 @@ void vehicle_set_map_toolbar(rct_vehicle *vehicle)
 
 	ride = GET_RIDE(vehicle->ride);
 
-	while (vehicle->var_01 != 0)
-		vehicle = &(g_sprite_list[vehicle->prev_vehicle_on_train].vehicle);
+	while (vehicle->is_child) {
+		vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
+	}
 
 	for (vehicleIndex = 0; vehicleIndex < 32; vehicleIndex++)
 		if (ride->vehicles[vehicleIndex] == vehicle->sprite_index)
@@ -507,7 +508,7 @@ rct_vehicle *vehicle_get_head(rct_vehicle *vehicle)
 	rct_vehicle *prevVehicle;
 
 	for (;;) {
-		prevVehicle = &(g_sprite_list[vehicle->prev_vehicle_on_train].vehicle);
+		prevVehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
 		if (prevVehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
 			break;
 
@@ -542,16 +543,16 @@ rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int d
 		move_sprite_to_list((rct_sprite*)current, SPRITE_LINKEDLIST_OFFSET_VEHICLE);
 		ride->cable_lift = current->sprite_index;
 	}
-	current->var_01 = head ? 0 : 1;
+	current->is_child = head ? 0 : 1;
 	current->var_44 = var_44;
 	current->var_24 = var_24;
 	current->sprite_width = 10;
 	current->sprite_height_negative = 10;
 	current->sprite_height_positive = 10;
-	current->var_46 = 100;
+	current->friction = 100;
 	current->num_seats = 0;
 	current->speed = 20;
-	current->var_C3 = 80;
+	current->acceleration = 80;
 	current->velocity = 0;
 	current->var_2C = 0;
 	current->var_4A = 0;
@@ -574,11 +575,11 @@ rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int d
 	}
 	current->var_CD = 0;
 	current->sprite_direction = direction << 3;
-	current->var_38 = x;
-	current->var_3A = y;
+	current->track_x = x;
+	current->track_y = y;
 
 	z = z * 8;
-	current->var_3C = z;
+	current->track_z = z;
 	z += RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
 
 	sprite_move(16, 16, z, (rct_sprite*)current);
@@ -590,4 +591,37 @@ rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int d
 	current->num_peeps = 0;
 	current->next_free_seat = 0;
 	return current;
+}
+
+/**
+ *
+ *  rct2: 0x006DAB4C
+ */
+int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
+{
+	registers regs;
+	regs.esi = (int)vehicle;
+
+	RCT2_CALLFUNC_Y(0x006DAB4C, &regs);
+
+	if (outStation != NULL) *outStation = regs.ebx;
+	return regs.eax;
+}
+
+/**
+ *
+ *  rct2: 0x006DD365
+ */
+bool sub_6DD365(rct_vehicle *vehicle)
+{
+	registers regs;
+	regs.esi = (int)vehicle;
+
+	return RCT2_CALLFUNC_Y(0x006DD365, &regs) & 0x100;
+}
+
+rct_ride_type_vehicle *vehicle_get_vehicle_entry(rct_vehicle *vehicle)
+{
+	rct_ride_type *rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+	return &rideEntry->vehicles[vehicle->vehicle_type];
 }

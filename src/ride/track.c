@@ -4819,3 +4819,8 @@ void track_get_front(rct_xy_element *input, rct_xy_element *output)
 	} while (result);
 	*output = lastTrack;
 }
+
+bool track_element_is_lift_hill(rct_map_element *trackElement)
+{
+	return trackElement->type & 0x80;
+}

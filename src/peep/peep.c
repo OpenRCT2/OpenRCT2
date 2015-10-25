@@ -2245,7 +2245,7 @@ static void peep_update_ride_sub_state_5(rct_peep* peep){
 		vehicle->num_peeps++;
 		ride->var_120++;
 
-		vehicle->var_46 += seated_peep->var_41;
+		vehicle->friction += seated_peep->var_41;
 		invalidate_sprite_2((rct_sprite*)seated_peep);
 		sprite_move(0x8000, 0, 0, (rct_sprite*)seated_peep);
 
@@ -2260,7 +2260,7 @@ static void peep_update_ride_sub_state_5(rct_peep* peep){
 	vehicle->num_peeps++;
 	ride->var_120++;
 
-	vehicle->var_46 += peep->var_41;
+	vehicle->friction += peep->var_41;
 	invalidate_sprite_2((rct_sprite*)vehicle);
 
 	invalidate_sprite_2((rct_sprite*)peep);
@@ -2300,7 +2300,7 @@ void peep_update_ride_sub_state_7(rct_peep* peep){
 	peep->action_sprite_image_offset = 0;
 
 	vehicle->num_peeps--;
-	vehicle->var_46 -= peep->var_41;
+	vehicle->friction -= peep->var_41;
 	invalidate_sprite_2((rct_sprite*)vehicle);
 
 	peep->current_ride_station = ride_station;
@@ -2321,16 +2321,16 @@ void peep_update_ride_sub_state_7(rct_peep* peep){
 
 		if (!(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_16)){
 
-			for (; vehicle->var_01 != 0; vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_train)){
+			for (; vehicle->is_child; vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride)){
 				uint16 eax = vehicle->var_36 / 4;
 				if (eax == 0 || eax > 3)
 					continue;
 
-				rct_map_element* inner_map = map_get_first_element_at(vehicle->var_38 / 32, vehicle->var_3A / 32);
+				rct_map_element* inner_map = map_get_first_element_at(vehicle->track_x / 32, vehicle->track_y / 32);
 				for (;; inner_map++){
 					if (map_element_get_type(inner_map) != MAP_ELEMENT_TYPE_TRACK)
 						continue;
-					if (inner_map->base_height == vehicle->var_3C / 8)
+					if (inner_map->base_height == vehicle->track_z / 8)
 						break;
 				}
 
