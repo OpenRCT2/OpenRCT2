@@ -37,7 +37,7 @@ static uint16 sprite_get_first_in_quadrant(int x, int y)
 
 static void invalidate_sprite_max_zoom(rct_sprite *sprite, int maxZoom)
 {
-	if (sprite->unknown.sprite_left == (sint16)0x8000) return;
+	if (sprite->unknown.sprite_left == SPRITE_LOCATION_NULL) return;
 
 	for (rct_viewport** viewport_p = RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*); *viewport_p != NULL; viewport_p++) {
 		rct_viewport* viewport = *viewport_p;
@@ -86,7 +86,7 @@ void invalidate_sprite_2(rct_sprite *sprite)
  */
 void reset_sprite_list(){
 	RCT2_GLOBAL(0x1388698, uint16) = 0;
-	memset(g_sprite_list, 0, sizeof(rct_sprite)* 0x2710);
+	memset(g_sprite_list, 0, sizeof(rct_sprite) * MAX_SPRITES);
 
 	for (int i = 0; i < 6; ++i){
 		RCT2_ADDRESS(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16)[i] = -1;
@@ -96,8 +96,8 @@ void reset_sprite_list(){
 	rct_sprite* previous_spr = (rct_sprite*)SPRITE_INDEX_NULL;
 
 	rct_sprite* spr = g_sprite_list;
-	for (int i = 0; i < 0x2710; ++i){
-		spr->unknown.sprite_identifier = 0xFF;
+	for (int i = 0; i < MAX_SPRITES; ++i){
+		spr->unknown.sprite_identifier = SPRITE_IDENTIFIER_NULL;
 		spr->unknown.sprite_index = i;
 		spr->unknown.next = SPRITE_INDEX_NULL;
 		spr->unknown.linked_list_type_offset = 0;
@@ -114,7 +114,7 @@ void reset_sprite_list(){
 		spr++;
 	}
 
-	RCT2_GLOBAL(0x13573C8, uint16) = 0x2710;
+	RCT2_GLOBAL(0x13573C8, uint16) = MAX_SPRITES;
 
 	reset_0x69EBE4();
 }
@@ -130,7 +130,7 @@ void reset_0x69EBE4(){
 	rct_sprite* spr = g_sprite_list;
 	for (; spr < (rct_sprite*)RCT2_ADDRESS_SPRITES_NEXT_INDEX; spr++){
 
-		if (spr->unknown.sprite_identifier != 0xFF){
+		if (spr->unknown.sprite_identifier != SPRITE_IDENTIFIER_NULL){
 			uint32 edi = spr->unknown.x;
 			if (spr->unknown.x == SPRITE_LOCATION_NULL){
 				edi = 0x10000;
@@ -413,17 +413,17 @@ void sprite_misc_update_all()
  */
 void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite* sprite){
 	if (x < 0 || y < 0 || x > 0x1FFF || y > 0x1FFF)
-		x = 0x8000;
+		x = SPRITE_LOCATION_NULL;
 
 	int new_position = x;
-	if (x == (sint16)0x8000)new_position = 0x10000;
+	if (x == SPRITE_LOCATION_NULL)new_position = 0x10000;
 	else{
 		new_position &= 0x1FE0;
 		new_position = (y >> 5) | (new_position << 3);
 	}
 
 	int current_position = sprite->unknown.x;
-	if (sprite->unknown.x == (sint16)0x8000)current_position = 0x10000;
+	if (sprite->unknown.x == SPRITE_LOCATION_NULL)current_position = 0x10000;
 	else{
 		current_position &= 0x1FE0;
 		current_position = (sprite->unknown.y >> 5) | (current_position << 3);
@@ -443,8 +443,8 @@ void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite* sprite){
 		sprite->unknown.next_in_quadrant = temp_sprite_idx;
 	}
 
-	if (x == (sint16)0x8000){
-		sprite->unknown.sprite_left = 0x8000;
+	if (x == SPRITE_LOCATION_NULL){
+		sprite->unknown.sprite_left = SPRITE_LOCATION_NULL;
 		sprite->unknown.x = x;
 		sprite->unknown.y = y;
 		sprite->unknown.z = z;
