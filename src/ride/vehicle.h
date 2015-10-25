@@ -111,7 +111,10 @@ typedef struct {
 	uint8 vehicle_type;				// 0x31
 	rct_vehicle_colour colours;		// 0x32
 	uint16 var_34;
-	sint16 var_36;
+	union {
+		sint16 track_direction;		// 0x36 (0000 0000 0000 0011)
+		sint16 track_type;			// 0x36 (0000 0011 1111 1100)
+	};
 	uint16 track_x;					// 0x38
 	uint16 track_y;					// 0x3A
 	uint16 track_z;					// 0x3C
@@ -125,7 +128,7 @@ typedef struct {
 
 	uint16 var_44;
 	uint16 friction;				// 0x46
-	uint16 var_48;
+	uint16 update_flags;			// 0x48
 	uint8 var_4A;
 	uint8 current_station;			// 0x4B
 	uint16 var_4C;
@@ -153,13 +156,14 @@ typedef struct {
 	uint8 var_C5;
 	uint8 pad_C6[2];
 	uint32 var_C8;
-	uint8 var_CC;
+	uint8 scream_sound_id;			// 0xCC
 	uint8 var_CD;
 	union {
 		uint8 var_CE;
 		uint8 num_laps;				// 0xCE
 	};
-	uint8 pad_CF[0x04];
+	uint8 pad_CF[0x03];
+	sint8 var_D2;
 	uint8 var_D3;
 	uint8 var_D4;
 	uint8 var_D5;
@@ -206,6 +210,25 @@ enum {
 	VEHICLE_STATUS_STOPPING_1B,
 	VEHICLE_STATUS_UNLOADING_PASSENGERS_1C,
 	VEHICLE_STATUS_STOPPED_BY_BLOCK_BRAKES
+};
+
+enum{
+	VEHICLE_UPDATE_FLAG_0 = (1 << 0),
+	VEHICLE_UPDATE_FLAG_1 = (1 << 1),
+	VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT = (1 << 2),
+	VEHICLE_UPDATE_FLAG_3 = (1 << 3),
+	VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART = (1 << 4),
+	VEHICLE_UPDATE_FLAG_TESTING = (1 << 5),
+	VEHICLE_UPDATE_FLAG_6 = (1 << 6),
+	VEHICLE_UPDATE_FLAG_7 = (1 << 7),
+	VEHICLE_UPDATE_FLAG_BROKEN_CAR = (1 << 8),
+	VEHICLE_UPDATE_FLAG_BROKEN_TRAIN = (1 << 9),
+	VEHICLE_UPDATE_FLAG_10 = (1 << 10),
+	VEHICLE_UPDATE_FLAG_11 = (1 << 11),
+	VEHICLE_UPDATE_FLAG_12 = (1 << 12),
+	VEHICLE_UPDATE_FLAG_13 = (1 << 13),
+	VEHICLE_UPDATE_FLAG_14 = (1 << 14),
+	VEHICLE_UPDATE_FLAG_15 = (1 << 15)
 };
 
 enum {
@@ -255,8 +278,8 @@ int vehicle_is_used_in_pairs(rct_vehicle *vehicle);
 rct_vehicle *vehicle_get_head(rct_vehicle *vehicle);
 void sub_6DEF56(rct_vehicle *cableLift);
 rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int direction, uint16 var_44, uint32 var_24, bool head);
-int sub_6DAB4C(rct_vehicle *vehicle, int *outStation);
 bool sub_6DD365(rct_vehicle *vehicle);
+int sub_6DAB4C(rct_vehicle *vehicle, int *outStation);
 rct_ride_type_vehicle *vehicle_get_vehicle_entry(rct_vehicle *vehicle);
 
 /** Helper macro until rides are stored in this module. */

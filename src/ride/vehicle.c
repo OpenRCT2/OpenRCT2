@@ -22,6 +22,7 @@
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
 #include "../config.h"
+#include "../hook.h"
 #include "../interface/viewport.h"
 #include "../openrct2.h"
 #include "../world/sprite.h"
@@ -518,6 +519,16 @@ rct_vehicle *vehicle_get_head(rct_vehicle *vehicle)
 	return vehicle;
 }
 
+rct_vehicle *vehicle_get_tail(rct_vehicle *vehicle)
+{
+	uint16 spriteIndex;
+
+	while ((spriteIndex = vehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL) {
+		vehicle = GET_VEHICLE(spriteIndex);
+	}
+	return vehicle;
+}
+
 int vehicle_is_used_in_pairs(rct_vehicle *vehicle)
 {
 	return vehicle->num_seats & VEHICLE_SEAT_PAIR_FLAG;
@@ -567,7 +578,7 @@ rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int d
 	current->var_C4 = 0;
 	current->var_C5 = 0;
 	current->var_C8 = 0;
-	current->var_CC = 0xFF;
+	current->scream_sound_id = 0xFF;
 	current->var_1F = 0;
 	current->var_20 = 0;
 	for (int j = 0; j < 32; j++) {
@@ -583,14 +594,26 @@ rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int d
 	z += RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
 
 	sprite_move(16, 16, z, (rct_sprite*)current);
-	current->var_36 = (TRACK_ELEM_CABLE_LIFT_HILL << 2) | (current->sprite_direction >> 3);
+	current->track_type = (TRACK_ELEM_CABLE_LIFT_HILL << 2) | (current->sprite_direction >> 3);
 	current->var_34 = 164;
-	current->var_48 = 2;
+	current->update_flags = VEHICLE_UPDATE_FLAG_1;
 	current->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
 	current->var_51 = 0;
 	current->num_peeps = 0;
 	current->next_free_seat = 0;
 	return current;
+}
+
+/**
+ *
+ *  rct2: 0x006DD365
+ */
+bool sub_6DD365(rct_vehicle *vehicle)
+{
+	registers regs;
+	regs.esi = (int)vehicle;
+
+	return RCT2_CALLFUNC_Y(0x006DD365, &regs) & 0x100;
 }
 
 /**
@@ -606,18 +629,6 @@ int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
 
 	if (outStation != NULL) *outStation = regs.ebx;
 	return regs.eax;
-}
-
-/**
- *
- *  rct2: 0x006DD365
- */
-bool sub_6DD365(rct_vehicle *vehicle)
-{
-	registers regs;
-	regs.esi = (int)vehicle;
-
-	return RCT2_CALLFUNC_Y(0x006DD365, &regs) & 0x100;
 }
 
 rct_ride_type_vehicle *vehicle_get_vehicle_entry(rct_vehicle *vehicle)

@@ -248,7 +248,7 @@ static void ride_race_init_vehicle_speeds(rct_ride *ride)
 
 	for (i = 0; i < ride->num_vehicles; i++) {
 		vehicle = &g_sprite_list[ride->vehicles[i]].vehicle;
-		vehicle->var_48 &= ~(1 << 6);
+		vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_6;
 
 		rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
 

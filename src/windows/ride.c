@@ -2110,8 +2110,8 @@ static rct_string_id window_ride_get_status_vehicle(rct_window *w, void *argumen
 
 	vehicle = &(g_sprite_list[vehicleSpriteIndex].vehicle);
 	if (vehicle->status != VEHICLE_STATUS_CRASHING && vehicle->status != VEHICLE_STATUS_CRASHED) {
-		int ax = vehicle->var_36 / 4;
-		if (ax == 216 || ax == 123 || ax == 9 || ax == 63 || ax == 147 || ax == 155) {
+		int trackType = vehicle->track_type >> 2;
+		if (trackType == 216 || trackType == 123 || trackType == 9 || trackType == 63 || trackType == 147 || trackType == 155) {
 			if ((RCT2_ADDRESS(0x01357644, uint32)[ride->type] & 0x40) && vehicle->velocity == 0) {
 				RCT2_GLOBAL((int)arguments + 0, uint16) = STR_STOPPED_BY_BLOCK_BRAKES;
 				return 1191;
@@ -3462,11 +3462,11 @@ static void window_ride_maintenance_dropdown(rct_window *w, int widgetIndex, int
 			case BREAKDOWN_DOORS_STUCK_CLOSED:
 			case BREAKDOWN_DOORS_STUCK_OPEN:
 				vehicle = &(g_sprite_list[ride->vehicles[ride->broken_vehicle]].vehicle);
-				vehicle->var_48 &= ~0x100;
+				vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_CAR;
 				break;
 			case BREAKDOWN_VEHICLE_MALFUNCTION:
 				vehicle = &(g_sprite_list[ride->vehicles[ride->broken_vehicle]].vehicle);
-				vehicle->var_48 &= ~0x200;
+				vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_TRAIN;
 				break;
 			}
 			ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);

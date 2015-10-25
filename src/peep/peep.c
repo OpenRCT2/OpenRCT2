@@ -2206,10 +2206,13 @@ static void peep_update_ride_sub_state_2(rct_peep* peep){
 		}
 	}
 
+	rct_vehicle *currentTrain = GET_VEHICLE(ride->vehicles[peep->current_train]);
 	if (ride->status == RIDE_STATUS_OPEN &&
 		++peep->var_AC != 0 &&
-		!((GET_VEHICLE(ride->vehicles[peep->current_train]))->var_48 & (1 << 4)))
+		!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART)
+	) {
 		return;
+	}
 
 	if (ride->mode != RIDE_MODE_FORWARD_ROTATION &&
 		ride->mode != RIDE_MODE_BACKWARD_ROTATION){
@@ -2322,8 +2325,8 @@ void peep_update_ride_sub_state_7(rct_peep* peep){
 		if (!(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_16)){
 
 			for (; vehicle->is_child; vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride)){
-				uint16 eax = vehicle->var_36 / 4;
-				if (eax == 0 || eax > 3)
+				uint16 trackType = vehicle->track_type >> 2;
+				if (trackType == 0 || trackType > 3)
 					continue;
 
 				rct_map_element* inner_map = map_get_first_element_at(vehicle->track_x / 32, vehicle->track_y / 32);

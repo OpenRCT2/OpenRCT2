@@ -2252,7 +2252,7 @@ void ride_prepare_breakdown(int rideIndex, int breakdownReason)
 			}
 		}
 		if (vehicle != NULL)
-			vehicle->var_48 |= 0x100;
+			vehicle->update_flags |= VEHICLE_UPDATE_FLAG_BROKEN_CAR;
 		break;
 	case BREAKDOWN_VEHICLE_MALFUNCTION:
 		// Choose a random train
@@ -2261,7 +2261,7 @@ void ride_prepare_breakdown(int rideIndex, int breakdownReason)
 
 		// Set flag on broken train, first car
 		vehicle = GET_VEHICLE(ride->vehicles[ride->broken_vehicle]);
-		vehicle->var_48 |= 0x200;
+		vehicle->update_flags |= VEHICLE_UPDATE_FLAG_BROKEN_TRAIN;
 		break;
 	case BREAKDOWN_BRAKES_FAILURE:
 		// Original code generates a random number but does not use it
@@ -2671,7 +2671,7 @@ void ride_measurement_update(rct_ride_measurement *measurement)
 	uint16 spriteIndex;
 	rct_ride *ride;
 	rct_vehicle *vehicle;
-	int unk, velocity, altitude, verticalG, lateralG;
+	int velocity, altitude, verticalG, lateralG;
 
 	ride = GET_RIDE(measurement->ride_index);
 	spriteIndex = ride->vehicles[measurement->vehicle_index];
@@ -2694,8 +2694,8 @@ void ride_measurement_update(rct_ride_measurement *measurement)
 		return;
 	}
 
-	unk = (vehicle->var_36 / 4) & 0xFF;
-	if (unk == 216 || unk == 123 || unk == 9 || unk == 63 || unk == 147 || unk == 155)
+	uint8 trackType = (vehicle->track_type >> 2) & 0xFF;
+	if (trackType == 216 || trackType == 123 || trackType == 9 || trackType == 63 || trackType == 147 || trackType == 155)
 		if (vehicle->velocity == 0)
 			return;
 
@@ -4159,7 +4159,7 @@ void vehicle_unset_var_48_b1(rct_vehicle *head)
 	uint16 spriteIndex;
 	rct_vehicle *vehicle = head;
 	while (true) {
-		vehicle->var_48 &= ~(1 << 1);
+		vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
 		spriteIndex = vehicle->next_vehicle_on_train;
 		if (spriteIndex == SPRITE_INDEX_NULL) {
 			break;
@@ -4245,7 +4245,6 @@ void ride_create_vehicles_find_first_block(rct_ride *ride, rct_xy_element *outXY
  */
 void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement)
 {
-	registers regs;
 	rct_vehicle *train, *car;
 
 	for (int i = 0; i < ride->num_vehicles; i++) {
@@ -4276,10 +4275,9 @@ void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement)
 		mapElement->flags |= (1 << 5);
 		car = train;
 		while (true) {
-			car->var_48 &= ~(1 << 1);
+			car->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
 			car->status = VEHICLE_STATUS_TRAVELLING;
-			regs.ax = car->var_36 >> 2;
-			if (regs.al == 1) {
+			if ((car->track_type >> 2) == TRACK_ELEM_END_STATION) {
 				car->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
 			}
 
@@ -6332,7 +6330,7 @@ void invalidate_test_results(int rideIndex)
 			uint16 spriteIndex = ride->vehicles[i];
 			if (spriteIndex != SPRITE_INDEX_NULL) {
 				rct_vehicle *vehicle = GET_VEHICLE(spriteIndex);
-				vehicle->var_48 &= ~(1 << 5);
+				vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_TESTING;
 			}
 		}
 	}
@@ -6360,9 +6358,9 @@ void ride_fix_breakdown(int rideIndex, int reliabilityIncreaseFactor)
 			spriteIndex = ride->vehicles[i];
 			while (spriteIndex != SPRITE_INDEX_NULL) {
 				vehicle = GET_VEHICLE(spriteIndex);
-				vehicle->var_48 &= ~(1 << 7);
-				vehicle->var_48 &= ~(1 << 8);
-				vehicle->var_48 &= ~(1 << 9);
+				vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_7;
+				vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_CAR;
+				vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_TRAIN;
 				spriteIndex = vehicle->next_vehicle_on_train;
 			}
 		}

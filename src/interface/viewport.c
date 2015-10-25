@@ -899,7 +899,7 @@ void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
 		rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
 		vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
-		if (vehicle->var_48 & 0x800) {
+		if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_11) {
 			vehicleEntry++;
 			z += 16;
 		}
