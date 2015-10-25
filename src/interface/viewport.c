@@ -721,6 +721,19 @@ void sub_688485(){
 
 }
 
+/* rct2: 0x006874B0, 0x00687618, 0x0068778C, 0x00687902, 0x0098199C */
+int sub_98199C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 length_x, sint16 length_y, uint32 rotation){
+	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
+		al | (ah << 8), 
+		image_id, 
+		cl, 
+		height, 
+		length_x, 
+		length_y, 
+		rotation);
+	return 1;
+}
+
 /* rct2: 0x00686806, 0x006869B2, 0x00686B6F, 0x00686D31, 0x0098197C */
 int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 length_x, sint16 length_y, uint32 rotation){
 	int ebp = ah + RCT2_GLOBAL(0x9DEA56, uint16);
@@ -1134,8 +1147,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height;
 
-		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-			ah << 8, transparant_image_id, 0, height, 2, 0x1C, 0);
+		sub_98199C(0, ah, transparant_image_id, 0, height, 2, 0x1C, 0);
 	}
 
 	image_id += 4;
@@ -1152,8 +1164,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 		RCT2_GLOBAL(0x009DEA54, uint16) = 28;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height;
 
-		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-			ah << 8, transparant_image_id, 0, height, 2, 0x1C, 0);
+		sub_98199C(0, ah, transparant_image_id, 0, height, 2, 0x1C, 0);
 	}
 
 	uint32 eax = 0xFFFF0600 | ((height / 16) & 0xFF);
@@ -1199,8 +1210,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height + style->height;
-		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-			0x3300, scrolling_text_setup(string_id, scroll, style->scrolling_mode), 0, height + style->height, 0x1C, 0x1C, 0);
+		sub_98199C(0, 0x33, scrolling_text_setup(string_id, scroll, style->scrolling_mode), 0, height + style->height, 0x1C, 0x1C, 0);
 	}
 
 	image_id = RCT2_GLOBAL(0x009E32BC, uint32);
@@ -1306,8 +1316,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height + entrance->text_height;
 
-		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-			0x2F00, scrolling_text_setup(park_text_id, scroll, entrance->scrolling_mode + direction / 2), 0, height + entrance->text_height, 0x1C, 0x1C, 0);
+		sub_98199C(0, 0x2F, scrolling_text_setup(park_text_id, scroll, entrance->scrolling_mode + direction / 2), 0, height + entrance->text_height, 0x1C, 0x1C, 0);
 		break;
 	case 1:
 	case 2:
@@ -1548,8 +1557,7 @@ void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* m
 	uint16 string_width = gfx_get_string_width(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char));
 	uint16 scroll = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) / 2) % string_width;
 
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-		0x1500, scrolling_text_setup(string_id, scroll, scrollingMode), 0, height + 22, 1, 1, 0);
+	sub_98199C(0, 0x15, scrolling_text_setup(string_id, scroll, scrollingMode), 0, height + 22, 1, 1, 0);
 }
 
 /**
