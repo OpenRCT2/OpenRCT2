@@ -354,6 +354,10 @@ static void visible_list_refresh(rct_window *w)
 	case RIDE_SORT_RIDE:
 		sortFunc = visible_list_sort_ride_name;
 		break;
+	default:
+		log_warning("Wrong sort type %d, leaving list as-is.", _listSortType);
+		window_invalidate(w);
+		return;
 	}
 	qsort(_listItems, _numListItems, sizeof(list_item), sortFunc);
 

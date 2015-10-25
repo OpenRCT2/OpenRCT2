@@ -134,15 +134,16 @@ void window_install_track_open(const char* path)
 	w->track_list.var_484 = 0;
 	window_push_others_right(w);
 
-	memset(track_path, 0, MAX_PATH - 1);
-	strcpy(track_path, path);
+	strncpy(track_path, path, MAX_PATH);
+	track_path[MAX_PATH - 1] = '\0';
 
 	char* track_name_pointer = track_path;
 	while (*track_name_pointer++ != '\0');
 	while (*--track_name_pointer != '\\');
 	track_name_pointer++;
 
-	strcpy(track_dest_name, track_name_pointer);
+	strncpy(track_dest_name, track_name_pointer, MAX_PATH);
+	track_dest_name[MAX_PATH - 1] = '\0';
 
 	window_invalidate(w);
 }
@@ -153,7 +154,7 @@ void window_install_track_open(const char* path)
 */
 static void window_install_track_select(rct_window *w, int index)
 {
-	uint8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
+	utf8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, utf8);
 	rct_track_design *trackDesign;
 
 	w->track_list.var_480 = index;
@@ -172,7 +173,7 @@ static void window_install_track_select(rct_window *w, int index)
 		index--;
 
 	trackDesignItem = trackDesignList + (index * 128);
-	RCT2_GLOBAL(0x00F4403C, uint8*) = trackDesignItem;
+	RCT2_GLOBAL(0x00F4403C, utf8*) = trackDesignItem;
 
 	window_track_list_format_name(
 		(char*)0x009BC313,
