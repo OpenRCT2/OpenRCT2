@@ -752,13 +752,13 @@ static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
 static void sub_6DAB4C_chunk_3(rct_vehicle *vehicle)
 {
 	sint32 nextVelocity = vehicle->var_2C + vehicle->velocity;
-	if (vehicle->var_48 & (1 << 7)) {
+	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_7) {
 		nextVelocity = 0;
 	}
-	if (vehicle->var_48 & (1 << 10)) {
+	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_10) {
 		vehicle->var_D2--;
 		if (vehicle->var_D2 == -70) {
-			vehicle->var_48 &= ~(1 << 10);
+			vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_10;
 		}
 		if (vehicle->var_D2 >= 0) {
 			nextVelocity = 0;
