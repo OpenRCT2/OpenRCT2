@@ -617,7 +617,7 @@ bool sub_6DD365(rct_vehicle *vehicle)
 }
 
 // 0x0x009A2970
-const sint32 *dword_9A297 = (sint32*)0x009A2970;
+const sint32 *dword_9A2970 = (sint32*)0x009A2970;
 
 /**
  *
@@ -627,7 +627,6 @@ static void sub_6DAB4C_chunk_1(rct_vehicle *vehicle)
 {
 	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 	int verticalG, lateralG;
-	registers regs;
 
 	RCT2_GLOBAL(0x00F64E2C, uint8) = 0;
 	RCT2_GLOBAL(0x00F64E04, rct_vehicle*) = vehicle;
@@ -635,12 +634,12 @@ static void sub_6DAB4C_chunk_1(rct_vehicle *vehicle)
 	RCT2_GLOBAL(0x00F64E1C, uint32) = 0xFFFFFFFF;
 
 	if (vehicleEntry->var_12 & (1 << 1)) {
-		regs.bx = vehicle->var_36 >> 2;
-		if (regs.bx < 68 || regs.bx >= 87) {
+		int trackType = vehicle->track_type >> 2;
+		if (trackType < 68 || trackType >= 87) {
 			vehicle_get_g_forces(vehicle, &verticalG, &lateralG);
 			lateralG = abs(lateralG);
 			if (lateralG <= 150) {
-				if (dword_9A297[vehicle->var_1F] < 0) {
+				if (dword_9A2970[vehicle->var_1F] < 0) {
 					if (verticalG > -40) {
 						return;
 					}
@@ -654,11 +653,11 @@ static void sub_6DAB4C_chunk_1(rct_vehicle *vehicle)
 			}
 		}
 	} else if (vehicleEntry->var_12 & (1 << 2)) {
-		regs.bx = vehicle->var_36 >> 2;
-		if (regs.bx < 68 || regs.bx >= 87) {
+		int trackType = vehicle->track_type >> 2;
+		if (trackType < 68 || trackType >= 87) {
 			vehicle_get_g_forces(vehicle, &verticalG, &lateralG);
 
-			if (dword_9A297[vehicle->var_1F] < 0) {
+			if (dword_9A2970[vehicle->var_1F] < 0) {
 				if (verticalG > -45) {
 					return;
 				}
@@ -693,7 +692,7 @@ static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
 		vehicle->var_2C = 0;
 	}
 	
-	int trackType = vehicle->var_36 >> 2;
+	int trackType = vehicle->track_type >> 2;
 	switch (trackType) {
 	case 1:
 	case 216:
@@ -774,6 +773,33 @@ static void sub_6DAB4C_chunk_3(rct_vehicle *vehicle)
 
 /**
  *
+ *  rct2: 0x006D6776
+ */
+static void sub_6D6776(rct_vehicle *vehicle)
+{
+	RCT2_CALLPROC_X(0x006D6776, 0, 0, 0, 0, (int)vehicle, 0, 0);
+}
+
+/**
+ *
+ *  rct2: 0x006D661F
+ */
+static void sub_6D661F(rct_vehicle *vehicle)
+{
+	RCT2_CALLPROC_X(0x006D661F, 0, 0, 0, 0, (int)vehicle, 0, 0);
+}
+
+/**
+ *
+ *  rct2: 0x006D63D4
+ */
+static void sub_6D63D4(rct_vehicle *vehicle)
+{
+	RCT2_CALLPROC_X(0x006D63D4, 0, 0, 0, 0, (int)vehicle, 0, 0);
+}
+
+/**
+ *
  *  rct2: 0x006DAB4C
  */
 int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
@@ -802,8 +828,44 @@ int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
 	RCT2_GLOBAL(0x00F64E00, rct_vehicle*) = vehicle;
 
 loc_6DAE27:
+	if (vehicleEntry->var_14 & (1 << 1)) {
+		sub_6D6776(vehicle);
+	}
+	if (vehicleEntry->var_14 & (1 << 2)) {
+		sub_6D661F(vehicle);
+	}
+	if ((vehicleEntry->var_14 & (1 << 7)) || (vehicleEntry->var_14 & (1 << 8))) {
+		sub_6D63D4(vehicle);
+	}
+	vehicle->var_2C = dword_9A2970[vehicle->var_1F];
+	RCT2_GLOBAL(0x00F64E10, uint32) = 1;
+
+	regs.eax = RCT2_GLOBAL(0x00F64E0C, sint32) + vehicle->var_24;
+	vehicle->var_24 = regs.eax;
+	if (regs.eax < 0) {
+		goto loc_6DBA13;
+	}
+	if (regs.eax < 0x368A) {
+		goto loc_6DBF3E;
+	}
+	vehicle->var_B8 &= ~(1 << 1);
+	RCT2_GLOBAL(0x00F64E20, uint32) = vehicle->x | (vehicle->y << 16);
+	RCT2_GLOBAL(0x00F64E24, uint16) = vehicle->z;
+	invalidate_sprite_2((rct_sprite*)vehicle);
+
+loc_6DAEB9:
 	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DAE27, &regs);
+	RCT2_CALLFUNC_Y(0x006DAEB9, &regs);
+	goto end;
+
+loc_6DBA13:
+	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DBA13, &regs);
+	goto end;
+
+loc_6DBF3E:
+	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DBF3E, &regs);
 	goto end;
 
 loc_6DC3A7:
