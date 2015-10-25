@@ -151,7 +151,6 @@ bool platform_check_steam_overlay_attached();
 
 // Windows specific definitions
 #ifdef _WIN32
-	// Defining WIN32_LEAN_AND_MEAN breaks dsound.h in audio.h (uncomment when dsound is finally removed)
 	#ifndef WIN32_LEAN_AND_MEAN
 		#define WIN32_LEAN_AND_MEAN
 	#endif

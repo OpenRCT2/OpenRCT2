@@ -146,10 +146,10 @@ int sub_6BC2F3(rct_vehicle* vehicle)
 	}
 	result += ((uint16)v4) >> 13;
 	rct_vehicle_sound* vehicle_sound = &gVehicleSoundList[0];
-	//rct_vehicle_sound* vehicle_sound = RCT2_ADDRESS(RCT2_ADDRESS_VEHICLE_SOUND_LIST, rct_vehicle_sound);
+
 	while (vehicle_sound->id != vehicle->sprite_index) {
 		vehicle_sound++;
-		//if (vehicle_sound >= RCT2_GLOBAL(0x009AF42C, rct_vehicle_sound*)) {
+
 		if (vehicle_sound >= &gVehicleSoundList[countof(gVehicleSoundList)]) {
 			return result;
 		}
