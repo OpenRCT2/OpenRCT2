@@ -625,9 +625,7 @@ const sint32 *dword_9A297 = (sint32*)0x009A2970;
  */
 static void sub_6DAB4C_chunk_1(rct_vehicle *vehicle)
 {
-	rct_ride_type *rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
-	rct_ride_type_vehicle *vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
-
+	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 	int verticalG, lateralG;
 	registers regs;
 
@@ -679,12 +677,84 @@ static void sub_6DAB4C_chunk_1(rct_vehicle *vehicle)
 
 /**
  *
+ *  rct2: 0x006DAC43
+ */
+static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
+{
+	rct_ride *ride = GET_RIDE(vehicle->ride);
+	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+
+	if (vehicleEntry->var_14 & (1 << 12)) {
+		sint32 velocity = ride->speed << 16;
+		if (RCT2_GLOBAL(0x00F64E34, uint8) == 0) {
+			velocity = 0;
+		}
+		vehicle->velocity = velocity;
+		vehicle->var_2C = 0;
+	}
+	
+	int trackType = vehicle->var_36 >> 2;
+	switch (trackType) {
+	case 1:
+	case 216:
+		if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT || ride_is_block_sectioned(ride)) {
+			break;
+		}
+		return;
+	case 9:
+	case 63:
+	case 123:
+	case 147:
+	case 155:
+		if (ride_is_block_sectioned(ride)) {
+			break;
+		}
+		return;
+	default:
+		return;
+	}
+
+	rct_map_element *trackElement =  map_get_track_element_at_of_type(
+		vehicle->track_x,
+		vehicle->track_y,
+		vehicle->track_z >> 3,
+		trackType
+	);
+	if (trackType == 1) {
+		if (trackElement->flags & (1 << 5)) {
+			RCT2_GLOBAL(0x00F64E18, uint32) |= 0x400;
+		}
+	} else if (trackType == 123 || trackType == 216 || track_element_is_lift_hill(trackElement)) {
+		if (!(trackElement->flags & (1 << 5))) {
+			if (trackType == 216 && vehicle->velocity >= 0) {
+				if (vehicle->velocity <= 0x20364) {
+					vehicle->velocity = 0x20364;
+					vehicle->var_2C = 0;
+				} else {
+					vehicle->velocity -= vehicle->velocity >> 4;
+					vehicle->var_2C = 0;
+				}
+			}
+			return;
+		}
+		RCT2_GLOBAL(0x00F64E18, uint32) |= 0x400;
+		vehicle->var_2C = 0;
+		if (vehicle->velocity <= 0x20000) {
+			vehicle->velocity = 0;
+		}
+		vehicle->velocity -= vehicle->velocity >> 3;
+	}
+}
+
+/**
+ *
  *  rct2: 0x006DAB4C
  */
 int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
 {
 	registers regs;
 
+	rct_ride *ride = GET_RIDE(vehicle->ride);
 	rct_ride_type *rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
 	rct_ride_type_vehicle *vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
@@ -697,11 +767,11 @@ int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
 	}
 
 	sub_6DAB4C_chunk_1(vehicle);
+	sub_6DAB4C_chunk_2(vehicle);
 
-loc_6DAC43:
+loc_6DADAE:
 	regs.esi = vehicle;
-	regs.edi = (int)vehicleEntry - 0x1A;
-	RCT2_CALLFUNC_Y(0x006DAC43, &regs);
+	RCT2_CALLFUNC_Y(0x006DADAE, &regs);
 	goto end;
 
 loc_6DC3A7:
