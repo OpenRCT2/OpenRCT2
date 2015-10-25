@@ -616,6 +616,67 @@ bool sub_6DD365(rct_vehicle *vehicle)
 	return RCT2_CALLFUNC_Y(0x006DD365, &regs) & 0x100;
 }
 
+// 0x0x009A2970
+const sint32 *dword_9A297 = (sint32*)0x009A2970;
+
+/**
+ *
+ *  rct2: 0x006DAB6F
+ */
+static void sub_6DAB4C_chunk_1(rct_vehicle *vehicle)
+{
+	rct_ride_type *rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+	rct_ride_type_vehicle *vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+
+	int verticalG, lateralG;
+	registers regs;
+
+	RCT2_GLOBAL(0x00F64E2C, uint8) = 0;
+	RCT2_GLOBAL(0x00F64E04, rct_vehicle*) = vehicle;
+	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
+	RCT2_GLOBAL(0x00F64E1C, uint32) = 0xFFFFFFFF;
+
+	if (vehicleEntry->var_12 & (1 << 1)) {
+		regs.bx = vehicle->var_36 >> 2;
+		if (regs.bx < 68 || regs.bx >= 87) {
+			vehicle_get_g_forces(vehicle, &verticalG, &lateralG);
+			lateralG = abs(lateralG);
+			if (lateralG <= 150) {
+				if (dword_9A297[vehicle->var_1F] < 0) {
+					if (verticalG > -40) {
+						return;
+					}
+				} else if (verticalG > -80) {
+					return;
+				}
+			}
+
+			if (vehicle->var_1F != 8) {
+				RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 6);
+			}
+		}
+	} else if (vehicleEntry->var_12 & (1 << 2)) {
+		regs.bx = vehicle->var_36 >> 2;
+		if (regs.bx < 68 || regs.bx >= 87) {
+			vehicle_get_g_forces(vehicle, &verticalG, &lateralG);
+
+			if (dword_9A297[vehicle->var_1F] < 0) {
+				if (verticalG > -45) {
+					return;
+				}
+			} else {
+				if (verticalG > -80) {
+					return;
+				}
+			}
+
+			if (vehicle->var_1F != 8 && vehicle->var_1F != 55) {
+				RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 6);
+			}
+		}
+	}
+}
+
 /**
  *
  *  rct2: 0x006DAB4C
@@ -624,17 +685,30 @@ int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
 {
 	registers regs;
 
+	rct_ride_type *rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+	rct_ride_type_vehicle *vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+
+	// esi = vehicle
+	// eax = rideEntry
+	// edi = vehicleEntry
+
+	if (vehicleEntry->var_12 & (1 << 3)) {
+		goto loc_6DC3A7;
+	}
+
+	sub_6DAB4C_chunk_1(vehicle);
+
+loc_6DAC43:
 	regs.esi = vehicle;
-	regs.edi = vehicle->vehicle_type;
-	regs.eax = vehicle->ride_subtype;
-	regs.edi *= 0x65;
-	regs.eax = GET_RIDE_ENTRY(regs.eax);
-	regs.edi += regs.eax;
+	regs.edi = (int)vehicleEntry - 0x1A;
+	RCT2_CALLFUNC_Y(0x006DAC43, &regs);
+	goto end;
 
-	RCT2_CALLFUNC_Y(0x006DAB63, &regs);
+loc_6DC3A7:
+	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DC3A7, &regs);
 
-	// regs.eax = 0;
-	// regs.ebx = 0;
+end:
 	hook_setreturnregisters(&regs);
 	return regs.eax;
 }
