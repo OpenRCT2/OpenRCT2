@@ -36,6 +36,11 @@
 #define MINIMUM_TOOL_SIZE 1
 #define MAXIMUM_TOOL_SIZE 64
 
+#define MINIMUM_MAP_SIZE_TECHNICAL 15
+#define MAXIMUM_MAP_SIZE_TECHNICAL 256
+#define MINIMUM_MAP_SIZE_PRACTICAL MINIMUM_MAP_SIZE_TECHNICAL-2
+#define MAXIMUM_MAP_SIZE_PRACTICAL MAXIMUM_MAP_SIZE_TECHNICAL-2
+
 enum {
 	PAGE_PEEPS,
 	PAGE_RIDES
@@ -604,8 +609,7 @@ static void window_map_textinput(rct_window *w, int widgetIndex, char *text)
 	case WIDX_LAND_TOOL:
 		size = strtol(text, &end, 10);
 		if (*end == '\0') {
-			size = max(MINIMUM_TOOL_SIZE,size);
-			size = min(MAXIMUM_TOOL_SIZE,size);
+			size = clamp(MINIMUM_TOOL_SIZE, size, MAXIMUM_TOOL_SIZE);
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
 			window_invalidate(w);
 		}
@@ -613,8 +617,10 @@ static void window_map_textinput(rct_window *w, int widgetIndex, char *text)
 	case WIDX_MAP_SIZE_SPINNER:
 		size = strtol(text, &end, 10);
 		if (*end == '\0') {
-			if (size < 50) size = 50;
-			if (size > 256) size = 256;
+			// The practical size is 2 lower than the technical size
+			size += 2;
+			size=clamp(MINIMUM_MAP_SIZE_TECHNICAL, size, MAXIMUM_MAP_SIZE_TECHNICAL);
+
 			int currentSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
 			while (size < currentSize) {
 				map_window_decrease_map_size();
@@ -924,7 +930,7 @@ static void window_map_show_default_scenario_editor_buttons(rct_window *w) {
 	w->widgets[WIDX_MAP_SIZE_SPINNER].type = WWT_SPINNER;
 	w->widgets[WIDX_MAP_SIZE_SPINNER_UP].type = WWT_DROPDOWN_BUTTON;
 	w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].type = WWT_DROPDOWN_BUTTON;
-	RCT2_GLOBAL(0x013CE952 + 2, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
+	RCT2_GLOBAL(0x013CE952 + 2, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 2;
 }
 
 static void window_map_inputsize_land(rct_window *w)
@@ -936,8 +942,8 @@ static void window_map_inputsize_land(rct_window *w)
 
 static void window_map_inputsize_map(rct_window *w)
 {
-	((uint16*)TextInputDescriptionArgs)[0] = 50;
-	((uint16*)TextInputDescriptionArgs)[1] = 256;
+	((uint16*)TextInputDescriptionArgs)[0] = MINIMUM_MAP_SIZE_PRACTICAL;
+	((uint16*)TextInputDescriptionArgs)[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
 	window_text_input_open(w, WIDX_MAP_SIZE_SPINNER, 5130, 5131, STR_NONE, STR_NONE, 4);
 }
 
