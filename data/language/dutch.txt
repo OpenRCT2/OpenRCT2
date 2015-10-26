@@ -3888,6 +3888,11 @@ STR_5552    :{POP16}{POP16}Jaar {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {M
 STR_5553    :Spel pauzeren als de Steam-overlay open staat
 STR_5554    :{SMALLFONT}{BLACK}Overgangen met omringend land gladstrijken
 STR_5555    :Voertuigen van andere baantypen tonen
+STR_5556    :Speler verwijderen
+STR_5557    :Verbinding behouden na desynchronisatie (multiplayer)
+STR_5558    :Om deze instelling van kracht te laten worden is een herstart vereist.
+STR_5559    :Elke 10 min. inspect.
+STR_5560    :{SMALLFONT}{BLACK}Stelt het inspectieinterval van alle attracties in op 'Elke 10 minuten'.
 
 #############
 # Scenarios #
