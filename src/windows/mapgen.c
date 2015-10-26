@@ -289,7 +289,7 @@ static rct_window_event_list window_mapgen_simplex_events = {
 	NULL,
 	NULL,
 	NULL,
-	NULL,
+	window_mapgen_textinput,
 	NULL,
 	NULL,
 	NULL,
@@ -392,8 +392,10 @@ static uint32 window_mapgen_page_hold_down_widgets[] = {
 
 const int window_mapgen_tab_animation_loops[] = { 16, 16 };
 
-#define MAPSIZE_MIN	16
-#define MAPSIZE_MAX 256
+#define MINIMUM_MAP_SIZE_TECHNICAL 15
+#define MAXIMUM_MAP_SIZE_TECHNICAL 256
+#define MINIMUM_MAP_SIZE_PRACTICAL MINIMUM_MAP_SIZE_TECHNICAL-2
+#define MAXIMUM_MAP_SIZE_PRACTICAL MAXIMUM_MAP_SIZE_TECHNICAL-2
 #define BASESIZE_MIN 0
 #define BASESIZE_MAX 60
 #define WATERLEVEL_MIN 0
@@ -485,9 +487,10 @@ static void window_mapgen_base_mouseup(rct_window *w, int widgetIndex)
 		gfx_invalidate_screen();
 		break;
 	case WIDX_MAP_SIZE:
-		((uint16*)TextInputDescriptionArgs)[0] = MAPSIZE_MIN;
-		((uint16*)TextInputDescriptionArgs)[1] = MAPSIZE_MAX;
-		window_text_input_open(w, WIDX_MAP_SIZE, 5130, 5131, 5182, _mapSize, 4);
+		((uint16*)TextInputDescriptionArgs)[0] = MINIMUM_MAP_SIZE_PRACTICAL;
+		((uint16*)TextInputDescriptionArgs)[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
+		// Practical map size is 2 lower than the technical map size
+		window_text_input_open(w, WIDX_MAP_SIZE, 5130, 5131, 5182, _mapSize - 2, 4);
 		break;
 	case WIDX_BASE_HEIGHT:
 		((uint16*)TextInputDescriptionArgs)[0] = (BASESIZE_MIN - 12) / 2;
@@ -508,11 +511,11 @@ static void window_mapgen_base_mousedown(int widgetIndex, rct_window *w, rct_wid
 
 	switch (widgetIndex) {
 	case WIDX_MAP_SIZE_UP:
-		_mapSize = min(_mapSize + 1, MAPSIZE_MAX);
+		_mapSize = min(_mapSize + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
 		window_invalidate(w);
 		break;
 	case WIDX_MAP_SIZE_DOWN:
-		_mapSize = max(_mapSize - 1, MAPSIZE_MIN);
+		_mapSize = max(_mapSize - 1, MINIMUM_MAP_SIZE_TECHNICAL);
 		window_invalidate(w);
 		break;
 	case WIDX_BASE_HEIGHT_UP:
@@ -632,7 +635,10 @@ static void window_mapgen_textinput(rct_window *w, int widgetIndex, char *text)
 
 	switch (widgetIndex) {
 	case WIDX_MAP_SIZE:
-		_mapSize = clamp(MAPSIZE_MIN, value, MAPSIZE_MAX);
+	case WIDX_SIMPLEX_MAP_SIZE:
+		// The practical size is 2 lower than the technical size
+		value += 2;
+		_mapSize = clamp(MINIMUM_MAP_SIZE_TECHNICAL, value, MAXIMUM_MAP_SIZE_TECHNICAL);
 		break;
 	case WIDX_BASE_HEIGHT:
 		_baseHeight = clamp(BASESIZE_MIN, (value * 2) + 12, BASESIZE_MAX);
@@ -674,7 +680,8 @@ static void window_mapgen_base_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	gfx_draw_string_left(dpi, 2692, 0, 0, w->x + 4, w->y + w->widgets[WIDX_WATER_LEVEL].top + 1);
 	gfx_draw_string_left(dpi, 2693, 0, 0, w->x + 4, w->y + w->widgets[WIDX_FLOOR_TEXTURE].top + 1);
 
-	uint16 mapSizeArgs[2] = { _mapSize, _mapSize };
+	// The practical map size is 2 lower than the technical map size
+	uint16 mapSizeArgs[2] = { _mapSize - 2, _mapSize -2 };
 	gfx_draw_string_left(dpi, 839, mapSizeArgs, w->colours[1], w->x + w->widgets[WIDX_MAP_SIZE].left + 1, w->y + w->widgets[WIDX_MAP_SIZE].top + 1);
 
 	arg = (_baseHeight - 12) / 2;
@@ -781,6 +788,12 @@ static void window_mapgen_simplex_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_TAB_3:
 		window_mapgen_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
+	case WIDX_SIMPLEX_MAP_SIZE:
+		((uint16*)TextInputDescriptionArgs)[0] = MINIMUM_MAP_SIZE_PRACTICAL;
+		((uint16*)TextInputDescriptionArgs)[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
+		// Practical map size is 2 lower than the technical map size
+		window_text_input_open(w, WIDX_SIMPLEX_MAP_SIZE, 5130, 5131, 5182, _mapSize - 2, 4);
+		break;
 	case WIDX_GENERATE:
 		mapgenSettings.mapSize = _mapSize;
 
@@ -839,11 +852,11 @@ static void window_mapgen_simplex_mousedown(int widgetIndex, rct_window *w, rct_
 		window_invalidate(w);
 		break;
 	case WIDX_SIMPLEX_MAP_SIZE_UP:
-		_mapSize = min(_mapSize + 1, 256);
+		_mapSize = min(_mapSize + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
 		window_invalidate(w);
 		break;
 	case WIDX_SIMPLEX_MAP_SIZE_DOWN:
-		_mapSize = max(_mapSize - 1, 16);
+		_mapSize = max(_mapSize - 1, MINIMUM_MAP_SIZE_TECHNICAL);
 		window_invalidate(w);
 		break;
 	case WIDX_SIMPLEX_WATER_LEVEL_UP:
@@ -976,7 +989,8 @@ static void window_mapgen_simplex_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	gfx_draw_string_left(dpi, 3311, &_simplex_base_freq, w->colours[1], w->x + w->widgets[WIDX_SIMPLEX_BASE_FREQ].left + 1, w->y + w->widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1);
 	gfx_draw_string_left(dpi, 1737, &_simplex_octaves, w->colours[1], w->x + w->widgets[WIDX_SIMPLEX_OCTAVES].left + 1, w->y + w->widgets[WIDX_SIMPLEX_OCTAVES].top + 1);
 
-	uint16 mapSizeArgs[2] = { _mapSize, _mapSize };
+	// The practical map size is 2 lower than the technical map size
+	uint16 mapSizeArgs[2] = { _mapSize - 2, _mapSize - 2 };
 	gfx_draw_string_left(dpi, 839, mapSizeArgs, w->colours[1], w->x + w->widgets[WIDX_SIMPLEX_MAP_SIZE].left + 1, w->y + w->widgets[WIDX_SIMPLEX_MAP_SIZE].top + 1);
 
 	arg = (_waterLevel - 12) / 2;
