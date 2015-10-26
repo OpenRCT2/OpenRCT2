@@ -942,8 +942,8 @@ static void window_map_inputsize_land(rct_window *w)
 
 static void window_map_inputsize_map(rct_window *w)
 {
-	((uint16*)TextInputDescriptionArgs)[0] = 13;
-	((uint16*)TextInputDescriptionArgs)[1] = 254;
+	((uint16*)TextInputDescriptionArgs)[0] = MINIMUM_MAP_SIZE_PRACTICAL;
+	((uint16*)TextInputDescriptionArgs)[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
 	window_text_input_open(w, WIDX_MAP_SIZE_SPINNER, 5130, 5131, STR_NONE, STR_NONE, 4);
 }
 
