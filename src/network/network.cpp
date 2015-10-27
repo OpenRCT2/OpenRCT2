@@ -33,6 +33,7 @@ extern "C" {
 #include <math.h>
 #include <algorithm>
 #include <set>
+#include <string>
 extern "C" {
 #include "../config.h"
 #include "../game.h"
@@ -41,6 +42,7 @@ extern "C" {
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../scenario.h"
+#include "../windows/error.h"
 }
 
 #pragma comment(lib, "Ws2_32.lib")
@@ -155,6 +157,14 @@ NetworkConnection::NetworkConnection()
 {
 	authstatus = NETWORK_AUTH_NONE;
 	player = 0;
+	socket = INVALID_SOCKET;
+}
+
+NetworkConnection::~NetworkConnection()
+{
+	if (socket != INVALID_SOCKET) {
+		closesocket(socket);
+	}
 }
 
 int NetworkConnection::ReadPacket()
@@ -253,10 +263,78 @@ bool NetworkConnection::SetNonBlocking(SOCKET socket, bool on)
 #endif
 }
 
+NetworkAddress::NetworkAddress()
+{
+	ss = std::make_shared<sockaddr_storage>();
+	ss_len = std::make_shared<int>();
+	status = std::make_shared<int>();
+	*status = RESOLVE_NONE;
+}
+
+void NetworkAddress::Resolve(const char* host, unsigned short port, bool nonblocking)
+{
+	// A non-blocking hostname resolver
+	*status = RESOLVE_INPROGRESS;
+	mutex = SDL_CreateMutex();
+	cond = SDL_CreateCond();
+	NetworkAddress::host = host;
+	NetworkAddress::port = port;
+	SDL_LockMutex(mutex);
+	SDL_Thread* thread = SDL_CreateThread(ResolveFunc, 0, this);
+	// The mutex/cond is to make sure ResolveFunc doesn't ever get a dangling pointer
+	SDL_CondWait(cond, mutex);
+	SDL_UnlockMutex(mutex);
+	SDL_DestroyCond(cond);
+	SDL_DestroyMutex(mutex);
+	if (!nonblocking) {
+		int status;
+		SDL_WaitThread(thread, &status);
+	}
+}
+
+int NetworkAddress::GetResolveStatus(void)
+{
+	return *status;
+}
+
+int NetworkAddress::ResolveFunc(void* pointer)
+{
+	// Copy data for thread safety
+	NetworkAddress * networkaddress = (NetworkAddress*)pointer;
+	SDL_LockMutex(networkaddress->mutex);
+	std::string host;
+	if (networkaddress->host) host = networkaddress->host;
+	std::string port = std::to_string(networkaddress->port);
+	std::shared_ptr<sockaddr_storage> ss = networkaddress->ss;
+	std::shared_ptr<int> ss_len = networkaddress->ss_len;
+	std::shared_ptr<int> status = networkaddress->status;
+	SDL_CondSignal(networkaddress->cond);
+	SDL_UnlockMutex(networkaddress->mutex);
+
+	// Perform the resolve
+	addrinfo hints;
+	addrinfo* res;
+	memset(&hints, 0, sizeof(hints));
+	hints.ai_family = AF_UNSPEC;
+	if (host.length() == 0) {
+		hints.ai_flags = AI_PASSIVE;
+	}
+	getaddrinfo(host.length() == 0 ? NULL : host.c_str(), port.c_str(), &hints, &res);
+	if (res) {
+		memcpy(&(*ss), res->ai_addr, res->ai_addrlen);
+		*ss_len = res->ai_addrlen;
+		*status = RESOLVE_OK;
+	} else {
+		*status = RESOLVE_FAILED;
+	}
+	return 0;
+}
+
 Network::Network()
 {
 	wsa_initialized = false;
 	mode = NETWORK_MODE_NONE;
+	status = NETWORK_STATUS_NONE;
 	last_tick_sent_time = 0;
 	last_ping_sent_time = 0;
 	strcpy(password, "");
@@ -300,16 +378,15 @@ bool Network::Init()
 void Network::Close()
 {
 	if (mode == NETWORK_MODE_CLIENT) {
-		closesocket(server_socket);
+		closesocket(server_connection.socket);
 	} else
 	if (mode == NETWORK_MODE_SERVER) {
 		closesocket(listening_socket);
-		for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
-			closesocket((*it)->socket);
-		}
 	}
 
 	mode = NETWORK_MODE_NONE;
+	status = NETWORK_STATUS_NONE;
+	server_connection.authstatus = NETWORK_AUTH_NONE;
 
 	client_connection_list.clear();
 	game_command_queue.clear();
@@ -331,69 +408,39 @@ bool Network::BeginClient(const char* host, unsigned short port)
 	if (!Init())
 		return false;
 
-	server_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (server_socket == INVALID_SOCKET) {
-		log_error("Unable to create socket.");
-		return false;
-	}
+	server_address.Resolve(host, port);
+	status = NETWORK_STATUS_RESOLVING;
 
-	sockaddr_in server_address;
-#ifdef USE_INET_PTON
-	char address[64];
-	if (!network_get_address(address, sizeof(address), host)) {
-		log_error("Unable to resolve hostname.");
-		return false;
-	}
-
-	if (inet_pton(AF_INET, address, &server_address.sin_addr) != 1) {
-		return false;
-	}
-#else
-	server_address.sin_addr.S_un.S_addr = inet_addr(network_getAddress((char *)host));
-#endif // USE_INET_PTON
-	server_address.sin_family = AF_INET;
-	server_address.sin_port = htons(port);
-
-	if (connect(server_socket, (sockaddr*)&server_address, sizeof(server_address)) != 0) {
-		log_error("Unable to connect to host.");
-		return false;
-	} else {
-		printf("Connected to server!\n");
-	}
-
-	server_connection.socket = server_socket;
-	server_connection.SetTCPNoDelay(true);
-	if (!server_connection.SetNonBlocking(true)) {
-		closesocket(server_socket);
-		log_error("Failed to set non-blocking mode.");
-		return false;
-	}
+	window_network_status_open("Resolving...");
 
 	mode = NETWORK_MODE_CLIENT;
 
-	Client_Send_AUTH(OPENRCT2_VERSION, gConfigNetwork.player_name, "");
 	return true;
 }
 
-bool Network::BeginServer(unsigned short port)
+bool Network::BeginServer(unsigned short port, const char* address)
 {
 	Close();
 	if (!Init())
 		return false;
 
+	NetworkAddress networkaddress;
+	networkaddress.Resolve(address, port, false);
+
 	log_verbose("Begin listening for clients");
-	listening_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	listening_socket = socket(networkaddress.ss->ss_family, SOCK_STREAM, IPPROTO_TCP);
 	if (listening_socket == INVALID_SOCKET) {
 		log_error("Unable to create socket.");
 		return false;
 	}
 
-	sockaddr_in local_address;
-	local_address.sin_family = AF_INET;
-	local_address.sin_addr.s_addr = INADDR_ANY;
-	local_address.sin_port = htons(port);
+	// Turn off IPV6_V6ONLY so we can accept both v4 and v6 connections
+	int value = 0;
+	if (setsockopt(listening_socket, IPPROTO_IPV6, IPV6_V6ONLY, (const char*)&value, sizeof(value)) != 0) {
+		log_error("IPV6_V6ONLY failed. %d", LAST_SOCKET_ERROR());
+	}
 
-	if (bind(listening_socket, (sockaddr*)&local_address, sizeof(local_address)) != 0) {
+	if (bind(listening_socket, (sockaddr*)&(*networkaddress.ss), (*networkaddress.ss_len)) != 0) {
 		closesocket(listening_socket);
 		log_error("Unable to bind to socket.");
 		return false;
@@ -424,6 +471,11 @@ bool Network::BeginServer(unsigned short port)
 int Network::GetMode()
 {
 	return mode;
+}
+
+int Network::GetStatus()
+{
+	return status;
 }
 
 int Network::GetAuthStatus()
@@ -470,11 +522,11 @@ void Network::UpdateServer()
 			it++;
 		}
 	}
-	if (SDL_GetTicks() - last_tick_sent_time >= 25) {
+	if (SDL_TICKS_PASSED(SDL_GetTicks(), last_tick_sent_time + 25)) {
 		last_tick_sent_time = SDL_GetTicks();
 		Server_Send_TICK();
 	}
-	if (SDL_GetTicks() - last_ping_sent_time >= 3000) {
+	if (SDL_TICKS_PASSED(SDL_GetTicks(), last_ping_sent_time + 3000)) {
 		last_ping_sent_time = SDL_GetTicks();
 		Server_Send_PING();
 		Server_Send_PINGLIST();
@@ -497,18 +549,91 @@ void Network::UpdateServer()
 
 void Network::UpdateClient()
 {
-	if (!ProcessConnection(server_connection)) {
-		Close();
-	}
-	ProcessGameCommandQueue();
+	bool connectfailed = false;
+	switch(status){
+	case NETWORK_STATUS_RESOLVING:{
+		if(server_address.GetResolveStatus() == NetworkAddress::RESOLVE_OK){
+			server_connection.socket = socket(server_address.ss->ss_family, SOCK_STREAM, IPPROTO_TCP);
+			if (server_connection.socket == INVALID_SOCKET) {
+				log_error("Unable to create socket.");
+				connectfailed = true;
+				break;
+			}
 
-	// Check synchronisation
-	if (!_desynchronised && !CheckSRAND(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32), RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32))) {
-		_desynchronised = true;
-		window_network_status_open("Network desync detected");
-		if (!gConfigNetwork.stay_connected) {
+			server_connection.SetTCPNoDelay(true);
+			if (!server_connection.SetNonBlocking(true)) {
+				log_error("Failed to set non-blocking mode.");
+				connectfailed = true;
+				break;
+			}
+
+			if (connect(server_connection.socket, (sockaddr *)&(*server_address.ss), (*server_address.ss_len)) == SOCKET_ERROR && (LAST_SOCKET_ERROR() == EINPROGRESS || LAST_SOCKET_ERROR() == EWOULDBLOCK)){
+				window_network_status_open("Connecting...");
+				server_connect_time = SDL_GetTicks();
+				status = NETWORK_STATUS_CONNECTING;
+			} else {
+				log_error("connect() failed %d", LAST_SOCKET_ERROR());
+				connectfailed = true;
+				break;
+			}
+		} else {
+			log_error("Could not resolve address.");
+			connectfailed = true;
+		}
+	}break;
+	case NETWORK_STATUS_CONNECTING:{
+		int error = 0;
+		socklen_t len = sizeof(error);
+		getsockopt(server_connection.socket, SOL_SOCKET, SO_ERROR, (char*)&error, &len);
+		if (error != 0) {
+			log_error("Connection failed %d", error);
+			connectfailed = true;
+			break;
+		}
+		if (SDL_TICKS_PASSED(SDL_GetTicks(), server_connect_time + 3000)) {
+			log_error("Connection timed out.");
+			connectfailed = true;
+			break;
+		}
+		fd_set writeFD;
+		FD_ZERO(&writeFD);
+		FD_SET(server_connection.socket, &writeFD);
+		timeval timeout;
+		timeout.tv_sec = 0;
+		timeout.tv_usec = 0;
+		if (select(server_connection.socket + 1, NULL, &writeFD, NULL, &timeout) > 0) {
+			int error = 0;
+			socklen_t len = sizeof(error);
+			getsockopt(server_connection.socket, SOL_SOCKET, SO_ERROR, (char*)&error, &len);
+			if (error == 0) {
+				status = NETWORK_STATUS_CONNECTED;
+				Client_Send_AUTH(OPENRCT2_VERSION, gConfigNetwork.player_name, "");
+				window_network_status_open("Authenticating...");
+			}
+		}
+	}break;
+	case NETWORK_STATUS_CONNECTED:
+		if (!ProcessConnection(server_connection)) {
+			window_network_status_open("Connection closed");
 			Close();
 		}
+		ProcessGameCommandQueue();
+
+		// Check synchronisation
+		if (!_desynchronised && !CheckSRAND(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32), RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32))) {
+			_desynchronised = true;
+			window_network_status_open("Network desync detected");
+			if (!gConfigNetwork.stay_connected) {
+				Close();
+			}
+		}
+		break;
+	}
+
+	if (connectfailed) {
+		Close();
+		window_network_status_close();
+		window_error_open(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE);
 	}
 }
 
@@ -1032,6 +1157,11 @@ int network_get_mode()
 	return gNetwork.GetMode();
 }
 
+int network_get_status()
+{
+	return gNetwork.GetStatus();
+}
+
 int network_get_authstatus()
 {
 	return gNetwork.GetAuthStatus();
@@ -1125,44 +1255,9 @@ void network_kick_player(int playerId)
 	gNetwork.KickPlayer(playerId);
 }
 
-#ifdef USE_INET_PTON
-static bool network_get_address(char *dst, size_t dstLength, const char *host)
-{
-	struct addrinfo *remoteHost;
-
-	if (getaddrinfo(host, NULL, NULL, &remoteHost) != 0) {
-		// Failed to resolve host name
-		return false;
-	}
-
-	for (; remoteHost != NULL; remoteHost = remoteHost->ai_next) {
-		if (remoteHost->ai_family != AF_INET) continue;
-
-		struct sockaddr_in *ipv4SockAddr = (struct sockaddr_in*)remoteHost->ai_addr;
-		return inet_ntop(AF_INET, (void*)&ipv4SockAddr->sin_addr, dst, dstLength) != NULL;
-	}
-
-	// No IPv4 addresses found for host name
-	return false;
-}
-#else
-static char *network_getAddress(char *host)
-{
-	struct hostent *remoteHost;
-	struct in_addr addr;
-	remoteHost = gethostbyname(host);
-	if (remoteHost != NULL && remoteHost->h_addrtype == AF_INET && remoteHost->h_addr_list[0] != 0) {
-		addr.s_addr = *(u_long *)remoteHost->h_addr_list[0];
-		return inet_ntoa(addr);
-	}
-
-	return host;
-}
-#endif // USE_INET_PTON
-
-
 #else
 int network_get_mode() { return NETWORK_MODE_NONE; }
+int network_get_status() { return NETWORK_STATUS_NONE; }
 uint32 network_get_server_tick() { return RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32); }
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback) {}
 void network_send_map() {}

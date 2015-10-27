@@ -59,6 +59,9 @@ void chat_update()
 
 void chat_draw()
 {
+	if (network_get_mode() == NETWORK_MODE_NONE) {
+		return;
+	}
 	rct_drawpixelinfo *dpi = (rct_drawpixelinfo*)RCT2_ADDRESS_SCREEN_DPI;
 	_chatLeft = 10;
 	_chatTop = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 40 - ((CHAT_HISTORY_SIZE + 1) * 10);
@@ -108,7 +111,9 @@ void chat_input(int c)
 {
 	switch (c) {
 	case SDL_SCANCODE_RETURN:
-		network_send_chat(_chatCurrentLine);
+		if (strlen(_chatCurrentLine) > 0) {
+			network_send_chat(_chatCurrentLine);
+		}
 		chat_clear_input();
 		chat_close();
 		break;

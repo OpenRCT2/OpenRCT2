@@ -524,17 +524,29 @@ static void join_server(char *address, bool spectate)
 {
 	int port = gConfigNetwork.default_port;
 
-	char *colon = strchr(address, ':');
-	if (colon != NULL) {
+	bool addresscopied = false;
+
+	char *endbracket = strrchr(address, ']');
+	char *startbracket = strrchr(address, '[');
+	char *dot = strchr(address, '.');
+
+	char *colon = strrchr(address, ':');
+	if (colon != NULL && (endbracket != NULL || dot != NULL)) {
 		address = substr(address, colon - address);
 		sscanf(colon + 1, "%d", &port);
+		addresscopied = true;
+	}
+
+	if (startbracket && endbracket) {
+		address = substr(startbracket + 1, endbracket - startbracket - 1);
+		addresscopied = true;
 	}
 
 	if (!network_begin_client(address, port)) {
 		window_error_open(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE);
 	}
 
-	if (colon != NULL) {
+	if (addresscopied) {
 		free(address);
 	}
 }
