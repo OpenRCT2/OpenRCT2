@@ -3985,6 +3985,43 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 
 	money32 cost = 0;
 	const rct_preview_track *trackBlock = get_track_def_from_ride(ride, type);
+
+	// First check if any of the track pieces are outside the park
+	for (; trackBlock->index != 0xFF; trackBlock++) {
+		int x, y, z, offsetX, offsetY;
+
+		switch (direction) {
+		case 0:
+			offsetX = trackBlock->x;
+			offsetY = trackBlock->y;
+			break;
+		case 1:
+			offsetX = trackBlock->y;
+			offsetY = -trackBlock->x;
+			break;
+		case 2:
+			offsetX = -trackBlock->x;
+			offsetY = -trackBlock->y;
+			break;
+		case 3:
+			offsetX = -trackBlock->y;
+			offsetY = trackBlock->x;
+			break;
+		}
+
+		x = originX + offsetX;
+		y = originY + offsetY;
+		z = originZ + trackBlock->z;
+
+		if (!map_is_location_owned(x, y, z) && !gCheatsSandboxMode) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_LAND_NOT_OWNED_BY_PARK;
+			return MONEY32_UNDEFINED;
+		}
+	}
+
+	// If that is not the case, then perform the remaining checks
+	trackBlock = get_track_def_from_ride(ride, type);
+
 	for (; trackBlock->index != 0xFF; trackBlock++, RCT2_GLOBAL(0x00F44054, uint8*)++) {
 		int x, y, z, offsetX, offsetY;
 		int bl = trackBlock->var_08;
@@ -4091,10 +4128,6 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 					map_remove_intersecting_walls(x, y, baseZ, clearanceZ, direction & 3);
 				}
 			}
-		}
-
-		if (!map_is_location_owned(x, y, z) && !gCheatsSandboxMode) {
-			return MONEY32_UNDEFINED;
 		}
 
 		bh = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & 3;
