@@ -31,6 +31,22 @@ enum {
 	NETWORK_PLAYER_FLAG_ISSERVER = 1 << 0,
 };
 
+enum {
+	NETWORK_AUTH_NONE,
+	NETWORK_AUTH_REQUESTED,
+	NETWORK_AUTH_OK,
+	NETWORK_AUTH_BADVERSION,
+	NETWORK_AUTH_BADNAME,
+	NETWORK_AUTH_BADPASSWORD
+};
+
+enum {
+	NETWORK_STATUS_NONE,
+	NETWORK_STATUS_RESOLVING,
+	NETWORK_STATUS_CONNECTING,
+	NETWORK_STATUS_CONNECTED
+};
+
 #define NETWORK_DEFAULT_PORT 11753
 
 #ifdef __cplusplus
@@ -44,17 +60,9 @@ extern "C" {
 
 #ifndef DISABLE_NETWORK
 
-#ifndef __MINGW32__
-#define USE_INET_PTON
-#else
-#warning using deprecated network functions in lieu of inet_pton, inet_ntop
-#endif // __MINGW32__
-
 #ifdef _WIN32
 	#include <winsock2.h>
-	#ifdef USE_INET_PTON
-		#include <ws2tcpip.h>
-	#endif
+	#include <ws2tcpip.h>
 	#define LAST_SOCKET_ERROR() WSAGetLastError()
 	#undef EWOULDBLOCK
 	#define EWOULDBLOCK WSAEWOULDBLOCK
@@ -71,15 +79,6 @@ extern "C" {
 	#define closesocket close
 	#define ioctlsocket ioctl
 #endif // _WIN32
-
-enum {
-	NETWORK_AUTH_NONE,
-	NETWORK_AUTH_REQUESTED,
-	NETWORK_AUTH_OK,
-	NETWORK_AUTH_BADVERSION,
-	NETWORK_AUTH_BADNAME,
-	NETWORK_AUTH_BADPASSWORD
-};
 
 #ifdef __cplusplus
 
@@ -137,6 +136,7 @@ class NetworkConnection
 {
 public:
 	NetworkConnection();
+	~NetworkConnection();
 	int ReadPacket();
 	void QueuePacket(std::unique_ptr<NetworkPacket> packet);
 	void SendQueuedPackets();
@@ -155,6 +155,33 @@ private:
 	std::list<std::unique_ptr<NetworkPacket>> outboundpackets;
 };
 
+class NetworkAddress
+{
+public:
+	NetworkAddress();
+	void Resolve(const char* host, unsigned short port, bool nonblocking = true);
+	int GetResolveStatus(void);
+
+	std::shared_ptr<sockaddr_storage> ss;
+	std::shared_ptr<int> ss_len;
+
+	enum {
+		RESOLVE_NONE,
+		RESOLVE_INPROGRESS,
+		RESOLVE_OK,
+		RESOLVE_FAILED
+	};
+
+private:
+	static int ResolveFunc(void* pointer);
+
+	const char* host;
+	unsigned short port;
+	SDL_mutex* mutex;
+	SDL_cond* cond;
+	std::shared_ptr<int> status;
+};
+
 class Network
 {
 public:
@@ -163,8 +190,9 @@ public:
 	bool Init();
 	void Close();
 	bool BeginClient(const char* host, unsigned short port);
-	bool BeginServer(unsigned short port);
+	bool BeginServer(unsigned short port, const char* address = NULL);
 	int GetMode();
+	int GetStatus();
 	int GetAuthStatus();
 	uint32 GetServerTick();
 	uint8 GetPlayerID();
@@ -211,8 +239,9 @@ private:
 	};
 
 	int mode;
+	int status;
+	NetworkAddress server_address;
 	bool wsa_initialized;
-	SOCKET server_socket;
 	SOCKET listening_socket;
 	NetworkConnection server_connection;
 	uint32 last_tick_sent_time;
@@ -226,6 +255,8 @@ private:
 	std::vector<uint8> chunk_buffer;
 	char password[33];
 	bool _desynchronised;
+	uint32 server_connect_time;
+
 
 	void UpdateServer();
 	void UpdateClient();
@@ -259,6 +290,7 @@ int network_begin_client(const char *host, int port);
 int network_begin_server(int port);
 
 int network_get_mode();
+int network_get_status();
 void network_update();
 int network_get_authstatus();
 uint32 network_get_server_tick();
@@ -276,11 +308,6 @@ void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32
 void network_kick_player(int playerId);
 
 void network_print_error();
-#ifdef USE_INET_PTON
-static bool network_get_address(char *dst, size_t dstLength, const char *host);
-#else
-static char *network_getAddress(char *host);
-#endif // USE_INET_PTON
 
 #ifdef __cplusplus
 }

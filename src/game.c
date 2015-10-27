@@ -259,7 +259,7 @@ void game_update()
 		numUpdates = clamp(1, numUpdates, 4);
 	}
 
-	if (network_get_mode() == NETWORK_MODE_CLIENT) {
+	if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED) {
 		if (network_get_server_tick() - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >= 10) {
 			// make sure client doesn't fall behind the server too much
 			numUpdates += 10;
@@ -335,7 +335,7 @@ void game_update()
 void game_logic_update()
 {
 	network_update();
-	if (network_get_mode() == NETWORK_MODE_CLIENT) {
+	if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED) {
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >= network_get_server_tick()) {
 			// dont run past the server
 			return;
