@@ -270,40 +270,133 @@ void sub_689174(sint16* x, sint16* y, sint16 *z)
 	*z = height;
 }
 
-void sub_6E7FF3(rct_window *w, rct_viewport *viewport, int x, int y)
+// ax = viewport->x
+// bx = viewport->y;
+// cx = viewport->width;
+// dx = viewport->height;
+// di = dx;
+// si = dy;
+void sub_683359(int x, int y, int width, int height, int dx, int dy)
 {
-	RCT2_CALLPROC_X(0x006E7FF3, 0, 0, 0, x, (int)viewport, (int)w, y);
+	RCT2_CALLPROC_X(0x00683359, x, y, width, height, dy, dx, 0);
+}
 
-//	int zoom = 1 << viewport->zoom;
-//	if (w >= RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*)){
-//		if (viewport != w->viewport){
-//			if ((viewport->x + viewport->width > w->x) &&
-//				(w->x + w->width > viewport->x) &&
-//				(viewport->y + viewport->height > w->y) &&
-//				(w->y + w->height > viewport->y)){
-//				if (viewport->x < w->x){
-//					rct_viewport viewport_bkup;
-//					memcpy(&viewport_bkup, viewport, sizeof(rct_viewport));
-//
-//					viewport->width = w->x - viewport->x;
-//					viewport->view_width = (w->x - viewport->x) * zoom;
-//
-//					sub_6E7FF3(w, viewport, x, y);
-//
-//					viewport->x += viewport->width;
-//					viewport->view_x += viewport->width*zoom;
-//					viewport->view_width = (viewport_bkup.width - viewport->width) * zoom;
-//					viewport->width = viewport_bkup.width - viewport->width;
-//
-//					sub_6E7FF3(w, viewport, x, y);
-//
-//					memcpy(viewport, &viewport_bkup, sizeof(rct_viewport));
-//					return;
-//				}//x6E80C4
-//			}//0x6E824a
-//		} // 0x6e824a
-//	}//x6e8255
-//
+void sub_6E7FF3(rct_window *window, rct_viewport *viewport, int x, int y)
+{
+	// sub-divide by intersecting windows
+	if (window < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*))
+	{
+		// skip current window and non-intersecting windows
+		if (viewport == window->viewport                                ||
+			viewport->x + viewport->width  <= window->x                 ||
+			viewport->x                    >= window->x + window->width ||
+			viewport->y + viewport->height <= window->y                 ||
+			viewport->y                    >= window->y + window->height)
+			return sub_6E7FF3(window + 1, viewport, x, y);
+
+		// save viewport
+		rct_viewport view_copy;
+		memcpy(&view_copy, viewport, sizeof(rct_viewport));
+
+		if (viewport->x < window->x)
+		{
+			viewport->width = window->x - viewport->x;
+			viewport->view_width = viewport->width << viewport->zoom;
+			sub_6E7FF3(window, viewport, x, y);
+
+			viewport->x += viewport->width;
+			viewport->view_x += viewport->width << viewport->zoom;
+			viewport->width = view_copy.width - viewport->width;
+			viewport->view_width = viewport->width << viewport->zoom;
+			sub_6E7FF3(window, viewport, x, y);
+		}
+		else if (viewport->x + viewport->width > window->x + window->width)
+		{
+			viewport->width = window->x + window->width - viewport->x;
+			viewport->view_width = viewport->width << viewport->zoom;
+			sub_6E7FF3(window, viewport, x, y);
+
+			viewport->x += viewport->width;
+			viewport->view_x += viewport->width << viewport->zoom;
+			viewport->width = view_copy.width - viewport->width;
+			viewport->view_width = viewport->width << viewport->zoom;
+			sub_6E7FF3(window, viewport, x, y);
+		}
+		else if (viewport->y < window->y)
+		{
+			viewport->height = window->y - viewport->y;
+			viewport->view_width = viewport->width << viewport->zoom;
+			sub_6E7FF3(window, viewport, x, y);
+
+			viewport->y += viewport->height;
+			viewport->view_y += viewport->height << viewport->zoom;
+			viewport->height = view_copy.height - viewport->height;
+			viewport->view_width = viewport->width << viewport->zoom;
+			sub_6E7FF3(window, viewport, x, y);
+		}
+		else if (viewport->y + viewport->height > window->y + window->height)
+		{
+			viewport->height = window->y + window->height - viewport->y;
+			viewport->view_width = viewport->width << viewport->zoom;
+			sub_6E7FF3(window, viewport, x, y);
+
+			viewport->y += viewport->height;
+			viewport->view_y += viewport->height << viewport->zoom;
+			viewport->height = view_copy.height - viewport->height;
+			viewport->view_width = viewport->width << viewport->zoom;
+			sub_6E7FF3(window, viewport, x, y);
+		}
+
+		// restore viewport
+		memcpy(viewport, &view_copy, sizeof(rct_viewport));
+	}
+	else
+	{
+		sint16 left = viewport->x;
+		sint16 right = viewport->x + viewport->width;
+		sint16 top = viewport->y;
+		sint16 bottom = viewport->y + viewport->height;
+
+		// if moved more than the viewport size
+		if (abs(x) < viewport->width && abs(y) < viewport->height)
+		{
+			// update whole block ?
+			sub_683359(viewport->x, viewport->y, viewport->width, viewport->height, x, y);
+
+			if (x > 0)
+			{
+				// draw left
+				sint16 _right = viewport->x + x;
+				gfx_redraw_screen_rect(left, top, _right, bottom);
+				left += x;
+			}
+			else if (x < 0)
+			{
+				// draw right
+				sint16 _left = viewport->x + viewport->width + x;
+				gfx_redraw_screen_rect(_left, top, right, bottom);
+				right += x;
+			}
+
+			if (y > 0)
+			{
+				// draw top
+				bottom = viewport->y + y;
+				gfx_redraw_screen_rect(left, top, right, bottom);
+			}
+			else if (y < 0)
+			{
+				// draw bottom
+				top = viewport->y + viewport->height + y;
+				gfx_redraw_screen_rect(left, top, right, bottom);
+			}
+		}
+		else
+		{
+			// redraw whole viewport
+			gfx_redraw_screen_rect(left, top, right, bottom);
+		}
+	}
 }
 
 void sub_6E7F34(rct_window* w, rct_viewport* viewport, sint16 x_diff, sint16 y_diff){
