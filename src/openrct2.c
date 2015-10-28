@@ -503,7 +503,7 @@ static bool openrct2_setup_rct2_segment()
 
 	int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
 	// section: rw data
-	void *base = mmap((void *)0x8a4000, len, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_SHARED, 0, 0);
+	void *base = mmap((void *)0x8a4000, len, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_ANONYMOUS | MAP_SHARED, 0, 0);
 	log_warning("base = %x, 0x01423b40 >= base == %i, 0x01423b40 < base + len == %i", base, (void *)0x01423b40 >= base, (void *)0x01423b40 < base + len);
 	if (base == MAP_FAILED) {
 		log_warning("errno = %i", errno);
@@ -512,7 +512,7 @@ static bool openrct2_setup_rct2_segment()
 
 	len = 0x004A3000;
 	// section: text
-	void *base2 = mmap((void *)(0x401000), len, PROT_EXEC | PROT_WRITE | PROT_READ, MAP_PRIVATE, fd, 0x1000);
+	void *base2 = mmap((void *)(0x401000), len, PROT_EXEC | PROT_WRITE | PROT_READ, MAP_FIXED | MAP_PRIVATE, fd, 0x1000);
 	if (base2 != (void *)(0x401000))
 	{
 		log_fatal("mmap failed to get required offset! got %p, expected %p, errno = %d", base2, (void *)(0x401000), errno);
