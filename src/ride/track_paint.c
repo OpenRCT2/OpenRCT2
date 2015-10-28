@@ -248,9 +248,9 @@ void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction
 	RCT2_GLOBAL(0x009DEA56, sint16) = height;
 
 	//di
-	uint8 lengthY = 24;
-	//si
 	uint8 lengthX = 24;
+	//si
+	uint8 lengthY = 24;
 
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	if (image_id == 0x20000000) {
@@ -265,7 +265,7 @@ void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction
 	// Left back bottom support
 	image_id += 572;
 
-	sub_98197C(al, 90, image_id, cl, height, lengthX, lengthY, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32));
+	sub_98197C(al, 90, image_id, cl, height, lengthY, lengthX, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32));
 
 	image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	if (image_id == 0x20000000) {
@@ -293,8 +293,8 @@ void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction
 		image_id, 
 		cl, 
 		height, 
-		lengthX, 
-		lengthY,
+		lengthY, 
+		lengthX,
 		0);
 
 	uint32 seatImageId;
@@ -356,8 +356,8 @@ void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction
 		image_id, 
 		(sint8)seatCoords.y,
 		seatCoords.z, 
-		lengthX, 
-		lengthY,
+		lengthY, 
+		lengthX,
 		0);
 
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
@@ -369,7 +369,7 @@ void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction
 		image_id += 0xA0000000;
 		image_id += 76;
 
-		sub_98199C((sint8)seatCoords.x, 90, image_id, (sint8)seatCoords.y, seatCoords.z, lengthX, lengthY, 0);
+		sub_98199C((sint8)seatCoords.x, 90, image_id, (sint8)seatCoords.y, seatCoords.z, lengthY, lengthX, 0);
 
 		if (vehicle->num_peeps > 2) {
 			image_id =
@@ -379,7 +379,7 @@ void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction
 			image_id += 0xA0000000;
 			image_id += 152;
 
-			sub_98199C((sint8)seatCoords.x, 90, image_id, (sint8)seatCoords.y, seatCoords.z, lengthX, lengthY, 0);
+			sub_98199C((sint8)seatCoords.x, 90, image_id, (sint8)seatCoords.y, seatCoords.z, lengthY, lengthX, 0);
 		}
 
 		if (vehicle->num_peeps > 4) {
@@ -390,7 +390,7 @@ void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction
 			image_id += 0xA0000000;
 			image_id += 228;
 
-			sub_98199C((sint8)seatCoords.x, 90, image_id, (sint8)seatCoords.y, seatCoords.z, lengthX, lengthY, 0);
+			sub_98199C((sint8)seatCoords.x, 90, image_id, (sint8)seatCoords.y, seatCoords.z, lengthY, lengthX, 0);
 		}
 
 		if (vehicle->num_peeps > 6) {
@@ -401,7 +401,7 @@ void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction
 			image_id += 0xA0000000;
 			image_id += 304;
 
-			sub_98199C((sint8)seatCoords.x, 90, image_id, (sint8)seatCoords.y, seatCoords.z, lengthX, lengthY, 0);
+			sub_98199C((sint8)seatCoords.x, 90, image_id, (sint8)seatCoords.y, seatCoords.z, lengthY, lengthX, 0);
 		}
 	}		
 
@@ -425,8 +425,8 @@ void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction
 		image_id, 
 		cl, 
 		height, 
-		lengthX, 
-		lengthY,
+		lengthY, 
+		lengthX,
 		0);
 
 	image_id = RCT2_GLOBAL(0x00F441A0, uint32);
@@ -448,8 +448,8 @@ void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction
 		image_id, 
 		cl, 
 		height, 
-		lengthX, 
-		lengthY,
+		lengthY, 
+		lengthX,
 		0);
 
 	RCT2_GLOBAL(0x009DE578, rct_map_element*) = curMapElement;
