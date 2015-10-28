@@ -817,7 +817,7 @@ int scenario_get_num_packed_objects_to_write()
 	rct_object_entry_extended *entry = (rct_object_entry_extended*)0x00F3F03C;
 
 	for (i = 0; i < 721; i++, entry++) {
-		if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, uint32)[i] == 0xFFFFFFFF || (entry->flags & 0xF0))
+		if (GET_RIDE_ENTRY(i) == 0xFFFFFFFF || (entry->flags & 0xF0))
 			continue;
 
 		count++;
@@ -835,7 +835,7 @@ int scenario_write_packed_objects(SDL_RWops* rw)
 	int i;
 	rct_object_entry_extended *entry = (rct_object_entry_extended*)0x00F3F03C;
 	for (i = 0; i < 721; i++, entry++) {
-		if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, uint32)[i] == 0xFFFFFFFF || (entry->flags & 0xF0))
+		if (GET_RIDE_ENTRY(i) == 0xFFFFFFFF || (entry->flags & 0xF0))
 			continue;
 
 		if (!write_object_file(rw, (rct_object_entry*)entry))
@@ -875,7 +875,7 @@ int scenario_write_available_objects(FILE *file)
 	rct_object_entry_extended *srcEntry = (rct_object_entry_extended*)0x00F3F03C;
 	rct_object_entry *dstEntry = (rct_object_entry*)buffer;
 	for (i = 0; i < 721; i++) {
-		if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, uint32)[i] == 0xFFFFFFFF)
+		if (GET_RIDE_ENTRY(i) == 0xFFFFFFFF)
 			memset(dstEntry, 0xFF, sizeof(rct_object_entry));
 		else
 			*dstEntry = *((rct_object_entry*)srcEntry);
@@ -1021,10 +1021,10 @@ int scenario_save(SDL_RWops* rw, int flags)
 	memcpy(&s6->info, (rct_s6_info*)0x0141F570, sizeof(rct_s6_info));
 
 	for (int i = 0; i < 721; i++) {
-		uint32 chunkPtr = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, uint32)[i];
+		uint32 chunkPtr = GET_RIDE_ENTRY(i);
 		rct_object_entry_extended *entry = &(RCT2_ADDRESS(0x00F3F03C, rct_object_entry_extended)[i]);
 
-		if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, uint32)[i] == 0xFFFFFFFF) {
+		if (GET_RIDE_ENTRY(i) == 0xFFFFFFFF) {
 			memset(&s6->objects[i], 0xFF, sizeof(rct_object_entry));
 		} else {
 			s6->objects[i] = *((rct_object_entry*)entry);
@@ -1095,10 +1095,10 @@ int scenario_save_network(SDL_RWops* rw)
 	memcpy(&s6->info, (rct_s6_info*)0x0141F570, sizeof(rct_s6_info));
 
 	for (int i = 0; i < 721; i++) {
-		uint32 chunkPtr = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, uint32)[i];
+		uint32 chunkPtr = GET_RIDE_ENTRY(i);
 		rct_object_entry_extended *entry = &(RCT2_ADDRESS(0x00F3F03C, rct_object_entry_extended)[i]);
 
-		if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, uint32)[i] == 0xFFFFFFFF) {
+		if (GET_RIDE_ENTRY(i) == 0xFFFFFFFF) {
 			memset(&s6->objects[i], 0xFF, sizeof(rct_object_entry));
 		} else {
 			s6->objects[i] = *((rct_object_entry*)entry);
