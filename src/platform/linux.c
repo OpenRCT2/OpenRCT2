@@ -317,13 +317,16 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 
 bool platform_enumerate_files_next(int handle, file_info *outFileInfo)
 {
-	bool result;
+	bool result = true;
 	enumerate_file_info *enumFileInfo;
 
+	if (handle < 0)
+	{
+		result = false;
+	}
 	enumFileInfo = &_enumerateFileInfoList[handle];
 
-	log_verbose("handle = %d", handle);
-	if ((handle >= 0) && (enumFileInfo->handle < enumFileInfo->cnt)) {
+	if (result && (enumFileInfo->handle < enumFileInfo->cnt)) {
 		result = true;
 	} else {
 		result = false;

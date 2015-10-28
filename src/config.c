@@ -692,26 +692,6 @@ static void config_write_enum(SDL_RWops *file, uint8 type, value_union *value, c
 	config_save_property_value(file, type, value);
 }
 
-static int utf8_read(utf8 **outch)
-{
-	int result;
-	int numBytes;
-
-	utf8 *ch = *outch;
-	if (!(ch[0] & 0x80)) {
-		result = ch[0];
-		numBytes = 1;
-	} else if (!(ch[0] & 0x20)) {
-		result = ((ch[0] & 0x1F) << 6) | (ch[1] & 0x3F);
-		numBytes = 2;
-	} else {
-		numBytes = 1;
-	}
-
-	*outch = ch + numBytes;
-	return result;
-}
-
 static void utf8_skip_whitespace(utf8 **outch)
 {
 	utf8 *ch;

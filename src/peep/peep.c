@@ -7905,10 +7905,10 @@ static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 pric
 
 	if (shop_item_is_food_or_drink(shopItem)) {
 		int food = -1;
-		if (food = peep_has_food_standard_flag(peep)) {
+		if ((food = peep_has_food_standard_flag(peep))) {
 			peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_HAVENT_FINISHED, bitscanforward(food));
 			return 0;
-		} else if (food = peep_has_food_extra_flag(peep)) {
+		} else if ((food = peep_has_food_extra_flag(peep))) {
 			peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_HAVENT_FINISHED, bitscanforward(food) + 32);
 			return 0;
 		} else if (peep->nausea >= 145)
