@@ -34,13 +34,15 @@
 #include "viewport.h"
 #include "window.h"
 
-#define RCT2_FIRST_VIEWPORT		(RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport))
-#define RCT2_LAST_VIEWPORT		(RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport) - 1)
-#define RCT2_NEW_VIEWPORT		(RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*))
+#define RCT2_FIRST_VIEWPORT     (g_viewport_list)
+#define RCT2_LAST_VIEWPORT      (g_viewport_list + g_viewport_list_size - 1)
+#define RCT2_NEW_VIEWPORT       (g_viewport_list_ptr)
 
 //#define DEBUG_SHOW_DIRTY_BOX
 
-rct_viewport* g_viewport_list = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport);
+sint32         g_viewport_list_size = 20;
+rct_viewport*  g_viewport_list      = NULL; // RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport);
+rct_viewport** g_viewport_list_ptr  = NULL;
 
 typedef struct paint_struct paint_struct;
 
@@ -89,6 +91,11 @@ void viewport_init_all()
 	int i, d;
 	rct_g1_element *g1_element;
 
+	if (g_viewport_list == NULL)
+		g_viewport_list = (rct_viewport*)malloc((g_viewport_list_size) * sizeof(rct_viewport));
+	if (g_viewport_list_ptr == NULL)
+		g_viewport_list_ptr = (rct_viewport**)malloc((g_viewport_list_size + 1) * sizeof(rct_viewport*));
+
 	// Palette from sprites?
 	d = 0;
 	for (i = 4915; i < 4947; i++) {
@@ -100,13 +107,12 @@ void viewport_init_all()
 	}
 
 	// Setting up windows
-	RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*) = g_window_list;
+	g_new_window = g_window_list;
 	RCT2_GLOBAL(0x01423604, sint32) = 0;
 
 	// Setting up viewports
-	for (i = 0; i < 9; i++)
+	for (i = 0; i < g_viewport_list_size; i++)
 		g_viewport_list[i].width = 0;
-	RCT2_NEW_VIEWPORT = NULL;
 
 	// ?
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, sint32) = 0;
@@ -227,7 +233,7 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
 void viewport_update_pointers()
 {
 	rct_viewport *viewport;
-	rct_viewport **vp = RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*);
+	rct_viewport **vp = g_viewport_list_ptr;
 
 	// The last possible viewport entry is 1 before what is the active viewport_ptr_array
 	for (viewport = g_viewport_list; viewport <= RCT2_LAST_VIEWPORT; viewport++)
@@ -283,7 +289,7 @@ void sub_683359(int x, int y, int width, int height, int dx, int dy)
 void sub_6E7FF3(rct_window *window, rct_viewport *viewport, int x, int y)
 {
 	// sub-divide by intersecting windows
-	if (window < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*))
+	if (window < g_new_window)
 	{
 		// skip current window and non-intersecting windows
 		if (viewport == window->viewport                                ||
@@ -402,7 +408,7 @@ void sub_6E7F34(rct_window* w, rct_viewport* viewport, sint16 x_diff, sint16 y_d
 	rct_window* orignal_w = w;
 	int left = 0, right = 0, top = 0, bottom = 0;
 
-	for (; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++){
+	for (; w < g_new_window; w++) {
 		if (!(w->flags & WF_TRANSPARENT)) continue;
 		if (w->viewport == viewport) continue;
 

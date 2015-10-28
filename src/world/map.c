@@ -3589,7 +3589,7 @@ void map_invalidate_selection_rect()
 	bottom += 32;
 	top -= 32 + 2080;
 
-	viewport = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*);
+	viewport = g_viewport_list_ptr[0];
 	while (viewport->width != 0) {
 		viewport_invalidate(viewport, left, top, right, bottom);
 		viewport++;
@@ -4438,7 +4438,7 @@ void map_invalidate_tile_under_zoom(int x, int y, int z0, int z1, int maxZoom)
 	x2 = x + 32;
 	y2 = y + 32 - z0;
 
-	viewport = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*);
+	viewport = g_viewport_list_ptr[0];
 	while (!gOpenRCT2Headless && viewport->width != 0) {
 		if (maxZoom == -1 || viewport->zoom <= maxZoom) {
 			viewport_invalidate(viewport, x1, y1, x2, y2);

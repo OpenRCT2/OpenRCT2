@@ -89,7 +89,9 @@ typedef struct {
 } viewport_interaction_info;
 
 // rct2: 0x014234BC
-extern rct_viewport* g_viewport_list;
+extern sint32         g_viewport_list_size;
+extern rct_viewport*  g_viewport_list;
+extern rct_viewport** g_viewport_list_ptr;
 
 void viewport_init_all();
 void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_viewport* viewport);
