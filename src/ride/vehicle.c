@@ -5644,13 +5644,13 @@ static void check_and_apply_block_section_stop_site(rct_vehicle *vehicle)
 	switch (trackType) {
 	case TRACK_ELEM_BLOCK_BRAKES:
 		if (ride_is_block_sectioned(ride))
-			apply_block_brakes(vehicle, trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED);
+			apply_block_brakes(vehicle, trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED);
 		else
 			apply_non_stop_block_brake(vehicle, true);
 
 		break;
 	case TRACK_ELEM_END_STATION:
-		if (trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED)
+		if (trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED)
 			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
 
 		break;
@@ -5661,12 +5661,11 @@ static void check_and_apply_block_section_stop_site(rct_vehicle *vehicle)
 	case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
 		if(ride_is_block_sectioned(ride)){
 			if(trackType == TRACK_ELEM_CABLE_LIFT_HILL || track_element_is_lift_hill(trackElement)) {
-				if (trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED) {
+				if (trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED) {
 					apply_block_brakes(vehicle, true);
 				}
 			}
 		}
-
 		break;
 	}
 }
@@ -5727,7 +5726,7 @@ static void vehicle_update_block_breaks_open_previous_section(rct_vehicle *vehic
 	if (mapElement == NULL) {
 		return;
 	}
-	mapElement->flags &= ~MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED;
+	mapElement->flags &= ~MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
 	map_invalidate_element(x, y, mapElement);
 
 	int trackType = mapElement->properties.track.type;
@@ -6992,7 +6991,7 @@ static bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle *vehi
 
 	if (track_element_is_block_start(mapElement)) {
 		if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
-			mapElement->flags |= MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED;
+			mapElement->flags |= MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
 			if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_END_STATION) {
 				if (!(rideEntry->vehicles[0].flags_b & VEHICLE_ENTRY_FLAG_B_3)) {
 					audio_play_sound_at_location(SOUND_49, vehicle->track_x, vehicle->track_y, vehicle->track_z);
