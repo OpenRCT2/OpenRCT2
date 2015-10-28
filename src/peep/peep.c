@@ -8812,7 +8812,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 	if (peep->x == (sint16)0x8000) return;
 	if (peep->guest_heading_to_ride_id != 255) {
 		ride = GET_RIDE(peep->guest_heading_to_ride_id);
-		if (RCT2_ADDRESS(0x0097CF40, uint32)[ride->type * 2] & 0x03800000) {
+		if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & 0x03800000) {
 			return;
 		}
 	}
@@ -8835,7 +8835,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 		// Consider all rides in the park
 		int i;
 		FOR_ALL_RIDES(i, ride) {
-			if (RCT2_ADDRESS(0x0097CF40, uint32)[ride->type * 2] & rideTypeFlags) {
+			if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & rideTypeFlags) {
 				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= (1 << (i & 0x1F));
 			}
 		}
@@ -8852,7 +8852,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 
 						int rideIndex = mapElement->properties.track.ride_index;
 						ride = GET_RIDE(rideIndex);
-						if (RCT2_ADDRESS(0x0097CF40, uint32)[ride->type * 2] & rideTypeFlags) {
+						if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & rideTypeFlags) {
 							RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (1 << (rideIndex & 0x1F));
 						}
 					} while (!map_element_is_last_for_tile(mapElement++));
