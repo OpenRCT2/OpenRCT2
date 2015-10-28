@@ -540,6 +540,9 @@
     <ClCompile Include="..\src\localisation\language.cpp">
       <Filter>Source\Localisation</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ride\track_paint.c">
+      <Filter>Source\Ride</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">
@@ -805,6 +808,9 @@
     </ClInclude>
     <ClInclude Include="..\src\core\Math.hpp">
       <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ride\track_paint.h">
+      <Filter>Source\Ride</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

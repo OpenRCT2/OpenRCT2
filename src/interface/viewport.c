@@ -24,6 +24,7 @@
 #include "../localisation/localisation.h"
 #include "../ride/ride_data.h"
 #include "../ride/track_data.h"
+#include "../ride/track_paint.h"
 #include "../sprites.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
@@ -720,8 +721,21 @@ void sub_688485(){
 
 }
 
+/* rct2: 0x006874B0, 0x00687618, 0x0068778C, 0x00687902, 0x0098199C */
+int sub_98199C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 length_x, sint16 length_y, uint32 rotation){
+	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
+		al | (ah << 8), 
+		image_id, 
+		cl, 
+		height, 
+		length_x, 
+		length_y, 
+		rotation);
+	return 1;
+}
+
 /* rct2: 0x00686806, 0x006869B2, 0x00686B6F, 0x00686D31, 0x0098197C */
-int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int edx, sint16 si, sint16 di, uint32 rotation){
+int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 length_x, sint16 length_y, uint32 rotation){
 	int ebp = ah + RCT2_GLOBAL(0x9DEA56, uint16);
 
 	RCT2_GLOBAL(0xF1AD28, paint_struct*) = 0;
@@ -730,7 +744,7 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int edx, sint16 si, s
 	//Not a paint struct but something similar
 	paint_struct* ps = RCT2_GLOBAL(0xEE7888, paint_struct*);
 
-	if ((uint32)ps >= RCT2_GLOBAL(0xEE7880, uint32)) return 1;
+	if ((uint32)ps >= RCT2_GLOBAL(0xEE7880, uint32))return 1;
 
 	ps->image_id = image_id;
 
@@ -747,11 +761,23 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int edx, sint16 si, s
 	rct_xyz16 coord_3d = {
 		.x = al,
 		.y = cl,
-		.z = edx
+		.z = height
 	};
 
-	rotate_map_coordinates(&coord_3d.x, &coord_3d.y, rotation);
-
+	switch (rotation) {
+	case 0:	
+		rotate_map_coordinates(&coord_3d.x, &coord_3d.y, 0);
+		break;
+	case 1:
+		rotate_map_coordinates(&coord_3d.x, &coord_3d.y, 3);
+		break;
+	case 2:
+		rotate_map_coordinates(&coord_3d.x, &coord_3d.y, 2);
+		break;
+	case 3:
+		rotate_map_coordinates(&coord_3d.x, &coord_3d.y, 1);
+		break;
+	}
 	coord_3d.x += RCT2_GLOBAL(0x9DE568, sint16);
 	coord_3d.y += RCT2_GLOBAL(0x9DE56C, sint16);
 
@@ -773,12 +799,12 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int edx, sint16 si, s
 
 	if (right <= dpi->x)return 1;
 	if (top <= dpi->y)return 1;
-	if (left > dpi->x + dpi->width) return 1;
-	if (bottom > dpi->y + dpi->height) return 1;
+	if (left > dpi->x + dpi->width)return 1;
+	if (bottom > dpi->y + dpi->height)return 1;
 
-	rct_xy16 unk = {
-		.x = di,
-		.y = si
+	rct_xy16 boundBox = {
+		.x = length_x,
+		.y = length_y
 	};
 
 	rct_xy16 s_unk = {
@@ -789,31 +815,31 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int edx, sint16 si, s
 	// Unsure why rots 1 and 3 need to swap
 	switch (rotation){
 	case 0:
-		rotate_map_coordinates(&unk.x, &unk.y, 0);
+		rotate_map_coordinates(&boundBox.x, &boundBox.y, 0);
 		rotate_map_coordinates(&s_unk.x, &s_unk.y, 0);
-		unk.x--;
-		unk.y--;
+		boundBox.x--;
+		boundBox.y--;
 		break;
 	case 1:
-		rotate_map_coordinates(&unk.x, &unk.y, 3);
+		rotate_map_coordinates(&boundBox.x, &boundBox.y, 3);
 		rotate_map_coordinates(&s_unk.x, &s_unk.y, 3);
-		unk.y--;
+		boundBox.y--;
 		break;
 	case 2:
-		rotate_map_coordinates(&unk.x, &unk.y, 2);
+		rotate_map_coordinates(&boundBox.x, &boundBox.y, 2);
 		rotate_map_coordinates(&s_unk.x, &s_unk.y, 2);
 		break;
 	case 3:
-		rotate_map_coordinates(&unk.x, &unk.y, 1);
+		rotate_map_coordinates(&boundBox.x, &boundBox.y, 1);
 		rotate_map_coordinates(&s_unk.x, &s_unk.y, 1);
-		unk.x--;
+		boundBox.x--;
 		break;
 	}
 
-	ps->other_x = unk.x + s_unk.x + RCT2_GLOBAL(0x9DE568, sint16);
+	ps->other_x = boundBox.x + s_unk.x + RCT2_GLOBAL(0x9DE568, sint16);
 	ps->some_x = RCT2_GLOBAL(0x009DEA56, sint16);
 	ps->some_y = ebp;
-	ps->other_y = unk.y + s_unk.y + RCT2_GLOBAL(0x009DE56C, sint16);
+	ps->other_y = boundBox.y + s_unk.y + RCT2_GLOBAL(0x009DE56C, sint16);
 	ps->var_1A = 0;
 	ps->attached_x = s_unk.x + RCT2_GLOBAL(0x9DE568, sint16);
 	ps->attached_y = s_unk.y + RCT2_GLOBAL(0x009DE56C, sint16);
@@ -845,7 +871,7 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int edx, sint16 si, s
 		break;
 	}
 
-	di = attach.x + attach.y;
+	sint16 di = attach.x + attach.y;
 
 	if (di < 0)
 		di = 0;
@@ -859,12 +885,12 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int edx, sint16 si, s
 	RCT2_ADDRESS(0x00F1A50C, paint_struct*)[di] = ps;
 	ps->next_quadrant_ps = old_ps;
 
-	if (di < RCT2_GLOBAL(0x00F1AD0C, sint32)){
-		RCT2_GLOBAL(0x00F1AD0C, sint32) = di;
+	if ((uint16)di < RCT2_GLOBAL(0x00F1AD0C, uint32)){
+		RCT2_GLOBAL(0x00F1AD0C, uint32) = di;
 	}
 
-	if (di > RCT2_GLOBAL(0x00F1AD10, sint32)){
-		RCT2_GLOBAL(0x00F1AD10, sint32) = di;
+	if ((uint16)di > RCT2_GLOBAL(0x00F1AD10, uint32)){
+		RCT2_GLOBAL(0x00F1AD10, uint32) = di;
 	}
 
 	RCT2_GLOBAL(0xEE7888, paint_struct*) += 1;
@@ -1121,8 +1147,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height;
 
-		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-			ah << 8, transparant_image_id, 0, height, 2, 0x1C, 0);
+		sub_98199C(0, ah, transparant_image_id, 0, height, 2, 0x1C, 0);
 	}
 
 	image_id += 4;
@@ -1139,8 +1164,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 		RCT2_GLOBAL(0x009DEA54, uint16) = 28;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height;
 
-		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-			ah << 8, transparant_image_id, 0, height, 2, 0x1C, 0);
+		sub_98199C(0, ah, transparant_image_id, 0, height, 2, 0x1C, 0);
 	}
 
 	uint32 eax = 0xFFFF0600 | ((height / 16) & 0xFF);
@@ -1186,8 +1210,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height + style->height;
-		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-			0x3300, scrolling_text_setup(string_id, scroll, style->scrolling_mode), 0, height + style->height, 0x1C, 0x1C, 0);
+		sub_98199C(0, 0x33, scrolling_text_setup(string_id, scroll, style->scrolling_mode), 0, height + style->height, 0x1C, 0x1C, 0);
 	}
 
 	image_id = RCT2_GLOBAL(0x009E32BC, uint32);
@@ -1293,8 +1316,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height + entrance->text_height;
 
-		RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-			0x2F00, scrolling_text_setup(park_text_id, scroll, entrance->scrolling_mode + direction / 2), 0, height + entrance->text_height, 0x1C, 0x1C, 0);
+		sub_98199C(0, 0x2F, scrolling_text_setup(park_text_id, scroll, entrance->scrolling_mode + direction / 2), 0, height + entrance->text_height, 0x1C, 0x1C, 0);
 		break;
 	case 1:
 	case 2:
@@ -1373,16 +1395,7 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 				RCT2_GLOBAL(0x009DEA52, uint16) = 1000;
 				RCT2_GLOBAL(0x009DEA54, uint16) = 1000;
 				RCT2_GLOBAL(0x009DEA56, uint16) = 2047;
-				RCT2_CALLPROC_X(
-					RCT2_ADDRESS(0x0098197C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)],
-					16,
-					ebx,
-					16,
-					height + ax + 3,
-					1,
-					1,
-					0
-				);
+				sub_98197C(16, 0, ebx, 16, height + ax + 3, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32));
 			}
 		}
 
@@ -1398,28 +1411,36 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 			RCT2_GLOBAL(0x00F441A4, uint32) = 0x21600000;
 		}
 		if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
-			uint32 meh = RCT2_ADDRESS(0x00993CC4, uint32)[RCT2_GLOBAL(0x009AACBF, uint8)];
+			uint32 ghost_id = RCT2_ADDRESS(0x00993CC4, uint32)[RCT2_GLOBAL(0x009AACBF, uint8)];
 			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 0;
-			RCT2_GLOBAL(0x00F44198, uint32) = meh;
-			RCT2_GLOBAL(0x00F4419C, uint32) = meh;
-			RCT2_GLOBAL(0x00F441A0, uint32) = meh;
-			RCT2_GLOBAL(0x00F441A4, uint32) = meh;
+			RCT2_GLOBAL(0x00F44198, uint32) = ghost_id;
+			RCT2_GLOBAL(0x00F4419C, uint32) = ghost_id;
+			RCT2_GLOBAL(0x00F441A0, uint32) = ghost_id;
+			RCT2_GLOBAL(0x00F441A4, uint32) = ghost_id;
 		}
 
-		uint32 **trackTypeList = (uint32**)RideTypeTrackPaintFunctions[ride->type];
-		uint32 *trackDirectionList = trackTypeList[trackType];
+		TRACK_PAINT_FUNCTION **trackTypeList = (TRACK_PAINT_FUNCTION**)RideTypeTrackPaintFunctionsOld[ride->type];
+		if (trackTypeList == NULL) {
+			trackTypeList = (TRACK_PAINT_FUNCTION**)RideTypeTrackPaintFunctions[ride->type];
 
-		// Have to call from this point as it pushes esi and expects callee to pop it
-		RCT2_CALLPROC_X(
-			0x006C4934,
-			ride->type,
-			(int)trackDirectionList,
-			direction,
-			height,
-			(int)mapElement,
-			rideIndex * sizeof(rct_ride),
-			trackSequence
-		);
+			if (trackTypeList[trackType] != NULL)
+				trackTypeList[trackType][direction](rideIndex, trackSequence, direction, height, mapElement);
+		}
+		else {
+			uint32 *trackDirectionList = (uint32*)trackTypeList[trackType];
+
+			// Have to call from this point as it pushes esi and expects callee to pop it
+			RCT2_CALLPROC_X(
+				0x006C4934,
+				ride->type,
+				(int)trackDirectionList,
+				direction,
+				height,
+				(int)mapElement,
+				rideIndex * sizeof(rct_ride),
+				trackSequence
+				);
+		}
 	}
 
 	if (isEntranceStyleNone) {
@@ -1538,8 +1559,7 @@ void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* m
 	uint16 string_width = gfx_get_string_width(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char));
 	uint16 scroll = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) / 2) % string_width;
 
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
-		0x1500, scrolling_text_setup(string_id, scroll, scrollingMode), 0, height + 22, 1, 1, 0);
+	sub_98199C(0, 0x15, scrolling_text_setup(string_id, scroll, scrollingMode), 0, height + 22, 1, 1, 0);
 }
 
 /**

@@ -41,3 +41,4 @@ extern const track_curve_chain gTrackCurveChain[256];
 extern const track_curve_chain gFlatRideTrackCurveChain[256];
 
 extern const uint32 RideTypeTrackPaintFunctions[91];
+extern const uint32 RideTypeTrackPaintFunctionsOld[91];
