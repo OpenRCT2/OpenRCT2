@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <limits.h>
 #include "../addresses.h"
 #include "../common.h"
 #include "drawing.h"
