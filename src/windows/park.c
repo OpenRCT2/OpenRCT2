@@ -1160,7 +1160,7 @@ void window_park_rating_open()
 		tool_cancel();
 
 	window->viewport = NULL;
-	window->page = WINDOW_PARK_PAGE_RATING;
+	window_park_set_page(window, WINDOW_PARK_PAGE_RATING);
 	window_invalidate(window);
 	window->widgets = window_park_rating_widgets;
 	window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_RATING];
@@ -1276,7 +1276,7 @@ void window_park_guests_open()
 			tool_cancel();
 
 	window->viewport = NULL;
-	window->page = WINDOW_PARK_PAGE_GUESTS;
+	window_park_set_page(window, WINDOW_PARK_PAGE_GUESTS);
 	window_invalidate(window);
 	window->widgets = window_park_guests_widgets;
 	window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_GUESTS];
