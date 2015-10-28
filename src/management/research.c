@@ -200,7 +200,7 @@ void research_finish_item(sint32 entryIndex)
 
 		// I don't think 0x009AC06C is ever not 0, so probably redundant
 		if (RCT2_GLOBAL(0x009AC06C, uint8) == 0) {
-			RCT2_GLOBAL(0x013CE952, rct_string_id) = ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) ?
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) ?
 				rideEntry->name : base_ride_type + 2;
 			if (!gSilentResearch)
 				news_item_add_to_queue(NEWS_ITEM_RESEARCH, 2249, entryIndex);
@@ -217,7 +217,7 @@ void research_finish_item(sint32 entryIndex)
 
 		// I don't think 0x009AC06C is ever not 0, so probably redundant
 		if (RCT2_GLOBAL(0x009AC06C, uint8) == 0) {
-			RCT2_GLOBAL(0x013CE952, rct_string_id) = scenerySetEntry->name;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = scenerySetEntry->name;
 			if (!gSilentResearch)
 				news_item_add_to_queue(NEWS_ITEM_RESEARCH, 2250, entryIndex);
 		}

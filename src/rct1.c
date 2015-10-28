@@ -467,7 +467,7 @@ static void rct1_reset_research()
 	researchItem++;
 	researchItem->entryIndex = RESEARCHED_ITEMS_END_2;
 	RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = 0;
-	RCT2_GLOBAL(0x01357CF4, sint32) = -1;
+	RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, sint32) = -1;
 	news_item_init_queue();
 }
 

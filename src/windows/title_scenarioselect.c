@@ -342,7 +342,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 
 		// Draw scenario name
 		strcpy((char*)0x009BC677, scenario->name);
-		RCT2_GLOBAL(0x013CE952, short) = 3165;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 3165;
 		gfx_draw_string_centred(dpi, highlighted ? highlighted_format : unhighlighted_format, 210, y + 1, 0, (void*)0x013CE952);
 
 		// Check if scenario is completed
@@ -352,7 +352,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 
 			// Draw completion score
 			strcpy((char*)0x009BC677, scenario->completed_by);
-			RCT2_GLOBAL(0x013CE952, short) = 2793;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 2793;
 			RCT2_GLOBAL(0x013CE954, short) = 3165;
 			gfx_draw_string_centred(dpi, highlighted ? 1193 : 1191, 210, y + 11, 0, (void*)0x013CE952);
 		}

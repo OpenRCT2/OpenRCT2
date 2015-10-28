@@ -1603,7 +1603,7 @@ static void map_window_set_pixels(rct_window *w)
 	uint16 colour, *destination;
 	int x, y, dx, dy;
 
-	destination = (uint16*)((RCT2_GLOBAL(0x00F1AD6C, uint32) * 511) + RCT2_GLOBAL(0x00F1AD68, uint32) + 255);
+	destination = (uint16*)((RCT2_GLOBAL(0x00F1AD6C, uint32) * 511) + RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32) + 255);
 	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) {
 	case 0:
 		x = RCT2_GLOBAL(0x00F1AD6C, uint32) * 32;

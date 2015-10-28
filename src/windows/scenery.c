@@ -822,7 +822,7 @@ void window_scenery_tooltip(rct_window* w, int widgetIndex, rct_string_id *strin
 {
 	switch (widgetIndex) {
 	case WIDX_SCENERY_LIST:
-		RCT2_GLOBAL(0x013CE952, uint16) = 3159;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = 3159;
 		break;
 	case WIDX_SCENERY_TAB_1:
 	case WIDX_SCENERY_TAB_2:
@@ -844,7 +844,7 @@ void window_scenery_tooltip(rct_window* w, int widgetIndex, rct_string_id *strin
 	case WIDX_SCENERY_TAB_18:
 	case WIDX_SCENERY_TAB_19:
 	case WIDX_SCENERY_TAB_20:
-		RCT2_GLOBAL(0x013CE952, uint16) = g_scenerySetEntries[widgetIndex - WIDX_SCENERY_TAB_1]->name;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = g_scenerySetEntries[widgetIndex - WIDX_SCENERY_TAB_1]->name;
 		break;
 	}
 }
@@ -1025,7 +1025,7 @@ void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		price = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_COST, uint32);
 	}
 
-	RCT2_GLOBAL(0x013CE952, uint32) = price;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = price;
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
 		// -14
@@ -1033,7 +1033,7 @@ void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			w->x + w->width - 0x1A, w->y + w->height - 13);
 	}
 
-	RCT2_GLOBAL(0x013CE952, uint16) = sceneryEntry->name;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = sceneryEntry->name;
 	gfx_draw_string_left_clipped(dpi, 0x4A7, (void*)0x013CE952, 0,
 		w->x + 3, w->y + w->height - 13, w->width - 19);
 }

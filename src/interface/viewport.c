@@ -1390,7 +1390,7 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 			if (RCT2_ADDRESS(0x00999694, uint32)[trackType] & (1 << trackSequence)) {
 				uint16 ax = RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
 				uint32 ebx = 0x20381689 + (height + 8) / 16;
-				ebx += RCT2_GLOBAL(0x009AACBD, uint16);
+				ebx += RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, uint16);
 				ebx -= RCT2_GLOBAL(0x01359208, uint16);
 				RCT2_GLOBAL(0x009DEA52, uint16) = 1000;
 				RCT2_GLOBAL(0x009DEA54, uint16) = 1000;
@@ -1411,7 +1411,7 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 			RCT2_GLOBAL(0x00F441A4, uint32) = 0x21600000;
 		}
 		if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
-			uint32 ghost_id = RCT2_ADDRESS(0x00993CC4, uint32)[RCT2_GLOBAL(0x009AACBF, uint8)];
+			uint32 ghost_id = RCT2_ADDRESS(0x00993CC4, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8)];
 			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 0;
 			RCT2_GLOBAL(0x00F44198, uint32) = ghost_id;
 			RCT2_GLOBAL(0x00F4419C, uint32) = ghost_id;

@@ -1454,7 +1454,7 @@ static void sub_6EA2AA(rct_window *w, int widgetIndex, int x, int y, int edi)
 	int numLines, fontHeight;
 	gfx_wrap_string(buffer, width + 1, &numLines, &fontHeight);
 
-	RCT2_GLOBAL(0x01420044, uint16) = numLines;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TEXT_HEIGHT, uint16) = numLines;
 	tooltipWindow->widgets[0].right = width + 3;
 	tooltipWindow->widgets[0].bottom = ((numLines + 1) * 10) + 4;
 

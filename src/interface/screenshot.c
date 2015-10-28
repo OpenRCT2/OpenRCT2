@@ -55,8 +55,8 @@ void screenshot_check()
 				rct_string_id stringId = 3165;
 				sprintf((char*)language_get_string(stringId), "SCR%d%s", screenshotIndex, _screenshot_format_extension[gConfigGeneral.screenshot_format]);
 
-				RCT2_GLOBAL(0x013CE952, uint16) = stringId;
-				// RCT2_GLOBAL(0x013CE952, uint16) = STR_SCR_BMP;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = stringId;
+				// RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_SCR_BMP;
 				// RCT2_GLOBAL(0x013CE952 + 2, uint16) = screenshotIndex;
 				RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
 
@@ -83,7 +83,7 @@ static int screenshot_get_next_path(char *path, int format)
 
 	int i;
 	for (i = 1; i < 1000; i++) {
-		RCT2_GLOBAL(0x013CE952, uint16) = i;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = i;
 
 		// Glue together path and filename
 		sprintf(path, "%sSCR%d%s", screenshotPath, i, _screenshot_format_extension[format]);
