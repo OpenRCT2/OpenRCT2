@@ -3525,7 +3525,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 
 			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
 
-			RCT2_GLOBAL(0x00141E9AE, rct_string_id) = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 			RCT2_GLOBAL(0x00F44074, money32) = game_do_command(
 				_currentTrackBeginX,
 				GAME_COMMAND_FLAG_APPLY | (4 << 8),
