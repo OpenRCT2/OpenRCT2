@@ -360,10 +360,10 @@ void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction
 	RCT2_GLOBAL(0x014280BA, sint16) = seatCoords.z;
 
 	sub_98199C(
-		seatCoords.x,
+		(sint8)seatCoords.x,
 		90, 
 		image_id, 
-		seatCoords.y, 
+		(sint8)seatCoords.y,
 		seatCoords.z, 
 		lengthX, 
 		lengthY,
@@ -378,7 +378,7 @@ void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction
 		image_id += 0xA0000000;
 		image_id += 76;
 
-		sub_98199C(seatCoords.x, 90, image_id, seatCoords.y, seatCoords.z, lengthX, lengthY, 0);
+		sub_98199C((sint8)seatCoords.x, 90, image_id, (sint8)seatCoords.y, seatCoords.z, lengthX, lengthY, 0);
 
 		if (vehicle->num_peeps > 2) {
 			image_id =
@@ -388,7 +388,7 @@ void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction
 			image_id += 0xA0000000;
 			image_id += 152;
 
-			sub_98199C(seatCoords.x, 90, image_id, seatCoords.y, seatCoords.z, lengthX, lengthY, 0);
+			sub_98199C((sint8)seatCoords.x, 90, image_id, (sint8)seatCoords.y, seatCoords.z, lengthX, lengthY, 0);
 		}
 
 		if (vehicle->num_peeps > 4) {
@@ -399,7 +399,7 @@ void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction
 			image_id += 0xA0000000;
 			image_id += 228;
 
-			sub_98199C(seatCoords.x, 90, image_id, seatCoords.y, seatCoords.z, lengthX, lengthY, 0);
+			sub_98199C((sint8)seatCoords.x, 90, image_id, (sint8)seatCoords.y, seatCoords.z, lengthX, lengthY, 0);
 		}
 
 		if (vehicle->num_peeps > 6) {
@@ -410,7 +410,7 @@ void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction
 			image_id += 0xA0000000;
 			image_id += 304;
 
-			sub_98199C(seatCoords.x, 90, image_id, seatCoords.y, seatCoords.z, lengthX, lengthY, 0);
+			sub_98199C((sint8)seatCoords.x, 90, image_id, (sint8)seatCoords.y, seatCoords.z, lengthX, lengthY, 0);
 		}
 	}		
 
@@ -466,7 +466,7 @@ void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction
 }
 
 /* rct2: 0x0076693F */
-void top_spin_paint_tile_rot_0_tile_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+void top_spin_paint_tile_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	sub_6629BC(height, 0, image_id, direction & 1);
 
@@ -532,7 +532,7 @@ void top_spin_paint_tile_rot_0_tile_1(uint8 rideIndex, uint8 trackSequence, uint
 }
 
 /* rct2: 0x00767033 */
-void top_spin_paint_tile_rot_0_tile_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+void top_spin_paint_tile_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	sub_6629BC(height, 0, image_id, direction & 1);
 
@@ -579,7 +579,7 @@ void top_spin_paint_tile_rot_0_tile_2(uint8 rideIndex, uint8 trackSequence, uint
 }
 
 /* rct2: 0x0076718D */
-void top_spin_paint_tile_rot_0_tile_4(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+void top_spin_paint_tile_4(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	sub_6629BC(height, 0, image_id, direction & 1);
 
@@ -626,7 +626,7 @@ void top_spin_paint_tile_rot_0_tile_4(uint8 rideIndex, uint8 trackSequence, uint
 }
 
 /* rct2: 0x00766B4C */
-void top_spin_paint_tile_rot_0_tile_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+void top_spin_paint_tile_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	sub_6629BC(height, 0, image_id, direction & 1);
 
@@ -685,7 +685,7 @@ void top_spin_paint_tile_rot_0_tile_3(uint8 rideIndex, uint8 trackSequence, uint
 }
 
 /* rct2: 0x007672E7 */
-void top_spin_paint_tile_rot_0_tile_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+void top_spin_paint_tile_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	sub_6629BC(height, 0, image_id, direction & 1);
 
@@ -723,7 +723,7 @@ void top_spin_paint_tile_rot_0_tile_5(uint8 rideIndex, uint8 trackSequence, uint
 }
 
 /* rct2: 0x00766D09 */
-void top_spin_paint_tile_rot_0_tile_6(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+void top_spin_paint_tile_6(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	sub_6629BC(height, 0, image_id, direction & 1);
 
@@ -782,7 +782,7 @@ void top_spin_paint_tile_rot_0_tile_6(uint8 rideIndex, uint8 trackSequence, uint
 }
 
 /* rct2: 0x00766EC6 */
-void top_spin_paint_tile_rot_0_tile_7(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+void top_spin_paint_tile_7(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	sub_6629BC(height, 0, image_id, direction & 1);
 
@@ -830,7 +830,7 @@ void top_spin_paint_tile_rot_0_tile_7(uint8 rideIndex, uint8 trackSequence, uint
 }
 
 /* rct2: 0x007673FA */
-void top_spin_paint_tile_rot_0_tile_8(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+void top_spin_paint_tile_8(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	sub_6629BC(height, 0, image_id, direction & 1);
 
@@ -876,28 +876,28 @@ void top_spin_paint_setup_rot_0(uint8 rideIndex, uint8 trackSequence, uint8 dire
 		top_spin_paint_tile_0(rideIndex, trackSequence, direction, height, mapElement);
 		break;
 	case 1:
-		top_spin_paint_tile_rot_0_tile_1(rideIndex, trackSequence, direction, height, mapElement);
+		top_spin_paint_tile_1(rideIndex, trackSequence, direction, height, mapElement);
 		break;
 	case 2:
-		top_spin_paint_tile_rot_0_tile_2(rideIndex, trackSequence, direction, height, mapElement);
+		top_spin_paint_tile_2(rideIndex, trackSequence, direction, height, mapElement);
 		break;
 	case 3:
-		top_spin_paint_tile_rot_0_tile_3(rideIndex, trackSequence, direction, height, mapElement);
+		top_spin_paint_tile_3(rideIndex, trackSequence, direction, height, mapElement);
 		break;
 	case 4:
-		top_spin_paint_tile_rot_0_tile_4(rideIndex, trackSequence, direction, height, mapElement);
+		top_spin_paint_tile_4(rideIndex, trackSequence, direction, height, mapElement);
 		break;
 	case 5:
-		top_spin_paint_tile_rot_0_tile_5(rideIndex, trackSequence, direction, height, mapElement);
+		top_spin_paint_tile_5(rideIndex, trackSequence, direction, height, mapElement);
 		break;
 	case 6:
-		top_spin_paint_tile_rot_0_tile_6(rideIndex, trackSequence, direction, height, mapElement);
+		top_spin_paint_tile_6(rideIndex, trackSequence, direction, height, mapElement);
 		break;
 	case 7:
-		top_spin_paint_tile_rot_0_tile_7(rideIndex, trackSequence, direction, height, mapElement);
+		top_spin_paint_tile_7(rideIndex, trackSequence, direction, height, mapElement);
 		break;
 	case 8:
-		top_spin_paint_tile_rot_0_tile_8(rideIndex, trackSequence, direction, height, mapElement);
+		top_spin_paint_tile_8(rideIndex, trackSequence, direction, height, mapElement);
 		break;
 	}
 	return;
@@ -911,12 +911,35 @@ void top_spin_paint_setup_rot_1(uint8 rideIndex, uint8 trackSequence, uint8 dire
 	case 0:
 		top_spin_paint_tile_0(rideIndex, trackSequence, direction, height, mapElement);
 		break;
+	case 1:
+		top_spin_paint_tile_3(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 2:
+		top_spin_paint_tile_5(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 3:
+		top_spin_paint_tile_7(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 4:
+		top_spin_paint_tile_2(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 5:
+		top_spin_paint_tile_8(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 6:
+		top_spin_paint_tile_1(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 7:
+		top_spin_paint_tile_6(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 8:
+		top_spin_paint_tile_4(rideIndex, trackSequence, direction, height, mapElement);
+		break;
 	}
 	return;
-	RCT2_CALLPROC_X(0x007667EC, 0, 0, 0, 0, 0, 0, 0);
 }
 
-/* rct2: 0x0076671C
+/* rct2: 0x0076681C
 */
 void top_spin_paint_setup_rot_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	switch (trackSequence)
@@ -924,12 +947,35 @@ void top_spin_paint_setup_rot_2(uint8 rideIndex, uint8 trackSequence, uint8 dire
 	case 0:
 		top_spin_paint_tile_0(rideIndex, trackSequence, direction, height, mapElement);
 		break;
+	case 1:
+		top_spin_paint_tile_7(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 2:
+		top_spin_paint_tile_8(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 3:
+		top_spin_paint_tile_6(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 4:
+		top_spin_paint_tile_5(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 5:
+		top_spin_paint_tile_4(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 6:
+		top_spin_paint_tile_3(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 7:
+		top_spin_paint_tile_1(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 8:
+		top_spin_paint_tile_2(rideIndex, trackSequence, direction, height, mapElement);
+		break;
 	}
 	return;
-	RCT2_CALLPROC_X(0x0076671C, 0, 0, 0, 0, 0, 0, 0);
 }
 
-/* rct2: 0x0076674C
+/* rct2: 0x0076684C
 */
 void top_spin_paint_setup_rot_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	switch (trackSequence)
@@ -937,7 +983,30 @@ void top_spin_paint_setup_rot_3(uint8 rideIndex, uint8 trackSequence, uint8 dire
 	case 0:
 		top_spin_paint_tile_0(rideIndex, trackSequence, direction, height, mapElement);
 		break;
+	case 1:
+		top_spin_paint_tile_6(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 2:
+		top_spin_paint_tile_4(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 3:
+		top_spin_paint_tile_1(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 4:
+		top_spin_paint_tile_8(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 5:
+		top_spin_paint_tile_2(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 6:
+		top_spin_paint_tile_7(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 7:
+		top_spin_paint_tile_3(rideIndex, trackSequence, direction, height, mapElement);
+		break;
+	case 8:
+		top_spin_paint_tile_5(rideIndex, trackSequence, direction, height, mapElement);
+		break;
 	}
 	return;
-	RCT2_CALLPROC_X(0x0076674C, 0, 0, 0, 0, 0, 0, 0);
 }
