@@ -912,7 +912,7 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 	while(map_element->type != map_element_type ||
 		map_element->base_height != base_height ||
 		map_element->properties.scenery.type != scenery_type ||
-		(*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST)){
+		((*ebx & GAME_COMMAND_FLAG_GHOST) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST))){
 		map_element++;
 		if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
 			*ebx = 0;
@@ -3844,10 +3844,10 @@ int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *cle
 						ch += 2;
 				}
 				int bh = zLow + 4;
-				if ((!(bl & 1) || (bl & 0x10 || zLow >= al) && bh >= al) &&
-					(!(bl & 2) || (bl & 0x20 || zLow >= ah) && bh >= ah) &&
-					(!(bl & 4) || (bl & 0x40 || zLow >= cl) && bh >= cl) &&
-					(!(bl & 8) || (bl & 0x80 || zLow >= ch) && bh >= ch)) {
+				if ((!(bl & 1) || ((bl & 0x10 || zLow >= al) && bh >= al)) &&
+					(!(bl & 2) || ((bl & 0x20 || zLow >= ah) && bh >= ah)) &&
+					(!(bl & 4) || ((bl & 0x40 || zLow >= cl) && bh >= cl)) &&
+					(!(bl & 8) || ((bl & 0x80 || zLow >= ch) && bh >= ch))) {
 					continue;
 				}
 				loc_68BABC:
