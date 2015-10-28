@@ -490,10 +490,13 @@ extern bool gLoadSaveTitleSequenceSave;
 
 // rct2: 0x01420078
 extern rct_window* g_window_list;
+extern sint32      g_window_list_size;
+extern rct_window* g_new_window;
 
 // rct2: 0x00F635EE
 extern ride_list_item _window_track_list_item;
 
+void window_init_all();
 void window_dispatch_update_all();
 void window_update_all_viewports();
 void window_update_all();

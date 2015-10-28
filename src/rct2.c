@@ -106,6 +106,7 @@ int rct2_init()
 		platform_init();
 		audio_init1();
 	}
+	window_init_all();
 	viewport_init_all();
 	news_item_init_queue();
 	get_local_time();
