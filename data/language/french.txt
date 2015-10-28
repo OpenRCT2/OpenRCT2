@@ -1062,7 +1062,7 @@ STR_1055    :{SMALLFONT}{BLACK}Nommer la personne
 STR_1056    :{SMALLFONT}{BLACK}Nommer l'employé
 STR_1057    :Nom de l'attraction
 STR_1058    :Entrez un nom pour cette attraction :
-STR_1059    :Ne peut pas renommer l'attraction...
+STR_1059    :Impossible de renommer l'attraction...
 STR_1060    :Nom d'attraction invalide
 STR_1061    :Mode normal
 STR_1062    :Mode circuit continu
@@ -1083,12 +1083,12 @@ STR_1076    :Mode stand de boutique
 STR_1077    :Mode rotation
 STR_1078    :Rotation vers l'avant
 STR_1079    :Rotation vers l'arrière
-STR_1080    :Film: {ENDQUOTES}Avenging aviators{ENDQUOTES}
+STR_1080    :Film: {ENDQUOTES}Les aviateurs vengeurs{ENDQUOTES}
 STR_1081    :3D film: {ENDQUOTES}Queues de souris{ENDQUOTES}
 STR_1082    :Mode anneaux de l'espace
 STR_1083    :Mode débutants
 STR_1084    :LIM-powered launch
-STR_1085    :Film: {ENDQUOTES}Thrill riders{ENDQUOTES}
+STR_1085    :Film: {ENDQUOTES}Le grand frisson{ENDQUOTES}
 STR_1086    :3D film: {ENDQUOTES}Chasseurs de tempêtes{ENDQUOTES}
 STR_1087    :3D film: {ENDQUOTES}Commandos de l'espace{ENDQUOTES}
 STR_1088    :Mode intense
@@ -1373,8 +1373,8 @@ STR_1366    :In-line Twist (right)
 STR_1367    :Demi boucle
 STR_1368    :Half Corkscrew (left)
 STR_1369    :Half Corkscrew (right)
-STR_1370    :Barrel Roll (left)
-STR_1371    :Barrel Roll (right)
+STR_1370    :Tonneau (gauche)
+STR_1371    :Tonneau (droite)
 STR_1372    :Launched Lift Hill
 STR_1373    :Large Half Loop (left)
 STR_1374    :Large Half Loop (right)
@@ -1847,21 +1847,21 @@ STR_1840    :Immobilisation: {COMMA16}%
 STR_1841    :Revenu : {CURRENCY} par heure
 STR_1842    :Attraction préférée de : {COMMA16} visiteur
 STR_1843    :Attraction préférée de : {COMMA16} visiteurs
-STR_1844    :{SMALLFONT}{BLACK}Select information type to show in ride/attraction list
+STR_1844    :{SMALLFONT}{BLACK}Sélectionnez le type d'information à afficher dans la liste des attractions
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA16} visiteurs
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} visiteurs
 STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} visiteurs
 STR_1849    :{WINDOW_COLOUR_2}Jouer de la musique
 STR_1850    :{SMALLFONT}{BLACK}Select whether music should be played for this ride
-STR_1851    :{WINDOW_COLOUR_2}Running cost: {BLACK}{CURRENCY2DP} per hour
-STR_1852    :{WINDOW_COLOUR_2}Running cost: {BLACK}Unknown
-STR_1853    :{WINDOW_COLOUR_2}Built: {BLACK}This Year
-STR_1854    :{WINDOW_COLOUR_2}Built: {BLACK}Last Year
-STR_1855    :{WINDOW_COLOUR_2}Built: {BLACK}{COMMA16} Years Ago
-STR_1856    :{WINDOW_COLOUR_2}Profit per item sold: {BLACK}{CURRENCY2DP}
-STR_1857    :{WINDOW_COLOUR_2}Loss per item sold: {BLACK}{CURRENCY2DP}
-STR_1858    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY2DP} per month
+STR_1851    :{WINDOW_COLOUR_2}Coût de fonctionnement: {BLACK}{CURRENCY2DP} par heure
+STR_1852    :{WINDOW_COLOUR_2}Coût de fonctionnement: {BLACK}Inconnu
+STR_1853    :{WINDOW_COLOUR_2}Construit: {BLACK}Cette année
+STR_1854    :{WINDOW_COLOUR_2}Construit: {BLACK}L'année dernière
+STR_1855    :{WINDOW_COLOUR_2}Construit: {BLACK}il y a {COMMA16} ans
+STR_1856    :{WINDOW_COLOUR_2}Bénéfice par objet vendu: {BLACK}{CURRENCY2DP}
+STR_1857    :{WINDOW_COLOUR_2}Perte par objet vendu: {BLACK}{CURRENCY2DP}
+STR_1858    :{WINDOW_COLOUR_2}Coût: {BLACK}{CURRENCY2DP} par mois
 STR_1859    :Hommes de service
 STR_1860    :Mécaniciens
 STR_1861    :Gardes de sécurité
@@ -1871,9 +1871,9 @@ STR_1864    :Mécanicien
 STR_1865    :Garde de sécurité
 STR_1866    :Animateur
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
-STR_1868    :Can't change number of rotations...
-STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
-STR_1870    :{SMALLFONT}{BLACK}Number of complete rotations
+STR_1868    :Impossible de changer le nombre de rotations...
+STR_1869    :{WINDOW_COLOUR_2}Nombre de rotations:
+STR_1870    :{SMALLFONT}{BLACK}Nombre de rotations complètes
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1872    :{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Revenu: {BLACK}{CURRENCY2DP} par heure
@@ -1945,15 +1945,15 @@ STR_1936    :{STRINGID} a acheté {STRINGID}
 STR_1937    :{SMALLFONT}{BLACK}Afficher des informations à propos du sujet de ce message
 STR_1938    :{SMALLFONT}{BLACK}Afficher vue du visiteur
 STR_1939    :{SMALLFONT}{BLACK}Afficher vue de l'employé
-STR_1940    :{SMALLFONT}{BLACK}Show happiness, energy, hunger etc. for this guest
-STR_1941    :{SMALLFONT}{BLACK}Show which rides this guest has been on
-STR_1942    :{SMALLFONT}{BLACK}Show financial information about this guest
-STR_1943    :{SMALLFONT}{BLACK}Show guest's recent thoughts
-STR_1944    :{SMALLFONT}{BLACK}Show items guest is carrying
-STR_1945    :{SMALLFONT}{BLACK}Show orders and options for this staff member
-STR_1946    :{SMALLFONT}{BLACK}Select costume for this entertainer
-STR_1947    :{SMALLFONT}{BLACK}Show areas patrolled by selected staff type, and locate the nearest staff member
-STR_1948    :{SMALLFONT}{BLACK}Hire a new staff member of the selected type
+STR_1940    :{SMALLFONT}{BLACK}Afficher l'humeur, l'énergie, la faim... de ce visiteur
+STR_1941    :{SMALLFONT}{BLACK}Afficher sur quelles attractions ce visiteur est allé
+STR_1942    :{SMALLFONT}{BLACK}Afficher les informations financières à propos de ce visiteur
+STR_1943    :{SMALLFONT}{BLACK}Afficher les pensées récentes de ce visiteur
+STR_1944    :{SMALLFONT}{BLACK}Afficher les objets que porte ce visiteur
+STR_1945    :{SMALLFONT}{BLACK}Afficher les ordres et options pour cet employé
+STR_1946    :{SMALLFONT}{BLACK}Sélectionner le costume de cet animateur
+STR_1947    :{SMALLFONT}{BLACK}Afficher les zones de patrouilles des employés de ce type, et localiser l'employé le plus proche
+STR_1948    :{SMALLFONT}{BLACK}Embaucher un nouvel employé du même type
 STR_1949    :Résumé financier
 STR_1950    :Graphique financier
 STR_1951    :Graphique valeur du parc
@@ -1982,244 +1982,244 @@ STR_1973    :{WINDOW_COLOUR_2}Prix d'une pizza:
 STR_1974    :{WINDOW_COLOUR_2}
 STR_1975    :{WINDOW_COLOUR_2}Prix du popcorn:
 STR_1976    :{WINDOW_COLOUR_2}Prix d'un hot-dog:
-STR_1977    :{WINDOW_COLOUR_2}Tentacle price:
-STR_1978    :{WINDOW_COLOUR_2}Hat price:
-STR_1979    :{WINDOW_COLOUR_2}Toffee Apple price:
-STR_1980    :{WINDOW_COLOUR_2}T-Shirt price:
-STR_1981    :{WINDOW_COLOUR_2}Doughnut price:
-STR_1982    :{WINDOW_COLOUR_2}Coffee price:
+STR_1977    :{WINDOW_COLOUR_2}Prix du pouple:
+STR_1978    :{WINDOW_COLOUR_2}Prix d'un chapeau:
+STR_1979    :{WINDOW_COLOUR_2}Prix d'une pomme d'amour:
+STR_1980    :{WINDOW_COLOUR_2}Prix d'un T-Shirt:
+STR_1981    :{WINDOW_COLOUR_2}Prix d'un donut:
+STR_1982    :{WINDOW_COLOUR_2}Prix d'un café:
 STR_1983    :{WINDOW_COLOUR_2}
-STR_1984    :{WINDOW_COLOUR_2}Fried Chicken price:
-STR_1985    :{WINDOW_COLOUR_2}Lemonade price:
+STR_1984    :{WINDOW_COLOUR_2}Prix du poulet frit:
+STR_1985    :{WINDOW_COLOUR_2}Prix de la limonade:
 STR_1986    :{WINDOW_COLOUR_2}
 STR_1987    :{WINDOW_COLOUR_2}
-STR_1988    :Balloon
-STR_1989    :Cuddly Toy
-STR_1990    :Park Map
-STR_1991    :On-Ride Photo
-STR_1992    :Umbrella
-STR_1993    :Drink
+STR_1988    :Ballon
+STR_1989    :Peluche
+STR_1990    :Carte du parc
+STR_1991    :Photo sur le vif
+STR_1992    :Parapluie
+STR_1993    :Boisson gazeuse
 STR_1994    :Burger
-STR_1995    :Chips
-STR_1996    :Ice Cream
-STR_1997    :Candyfloss
-STR_1998    :Empty Can
-STR_1999    :Rubbish
-STR_2000    :Empty Burger Box
+STR_1995    :Frites
+STR_1996    :Glace
+STR_1997    :Barbe-à-papa
+STR_1998    :Canette vide
+STR_1999    :Déchet
+STR_2000    :Boite à Burger vide
 STR_2001    :Pizza
-STR_2002    :Voucher
+STR_2002    :Coupon
 STR_2003    :Popcorn
-STR_2004    :Hot Dog
-STR_2005    :Tentacle
-STR_2006    :Hat
-STR_2007    :Toffee Apple
+STR_2004    :Hot-Dog
+STR_2005    :Poulpe
+STR_2006    :Chapeau
+STR_2007    :Pomme d'amour
 STR_2008    :T-Shirt
-STR_2009    :Doughnut
-STR_2010    :Coffee
-STR_2011    :Empty Cup
-STR_2012    :Fried Chicken
-STR_2013    :Lemonade
-STR_2014    :Empty Box
-STR_2015    :Empty Bottle
-STR_2016    :Balloons
-STR_2017    :Cuddly Toys
-STR_2018    :Park Maps
-STR_2019    :On-Ride Photos
-STR_2020    :Umbrellas
-STR_2021    :Drinks
+STR_2009    :Donut
+STR_2010    :Café
+STR_2011    :Tasse vide
+STR_2012    :Poulet frit
+STR_2013    :Limonade
+STR_2014    :Boite vide
+STR_2015    :Bouteille vide
+STR_2016    :Ballons
+STR_2017    :Peluches
+STR_2018    :Cartes du parc
+STR_2019    :Photos sur le vif
+STR_2020    :Parapluies
+STR_2021    :Boissons gazeuses
 STR_2022    :Burgers
-STR_2023    :Chips
-STR_2024    :Ice Creams
-STR_2025    :Candyfloss
-STR_2026    :Empty Cans
-STR_2027    :Rubbish
-STR_2028    :Empty Burger Boxes
+STR_2023    :Frites
+STR_2024    :Glaces
+STR_2025    :Barbes-à-papa
+STR_2026    :Canettes vides
+STR_2027    :Déchets
+STR_2028    :Boites à Burger vides
 STR_2029    :Pizzas
-STR_2030    :Vouchers
+STR_2030    :Coupons
 STR_2031    :Popcorn
-STR_2032    :Hot Dogs
-STR_2033    :Tentacles
-STR_2034    :Hats
-STR_2035    :Toffee Apples
+STR_2032    :Hot-Dogs
+STR_2033    :Poulpe
+STR_2034    :Chapeaux
+STR_2035    :Pommes d'amour
 STR_2036    :T-Shirts
-STR_2037    :Doughnuts
-STR_2038    :Coffees
-STR_2039    :Empty Cups
-STR_2040    :Fried Chicken
-STR_2041    :Lemonade
-STR_2042    :Empty Boxes
-STR_2043    :Empty Bottles
-STR_2044    :a Balloon
-STR_2045    :a Cuddly Toy
-STR_2046    :a Park Map
-STR_2047    :an On-Ride Photo
-STR_2048    :an Umbrella
-STR_2049    :a Drink
-STR_2050    :a Burger
-STR_2051    :some Chips
-STR_2052    :an Ice Cream
-STR_2053    :some Candyfloss
-STR_2054    :an Empty Can
-STR_2055    :some Rubbish
-STR_2056    :an Empty Burger Box
-STR_2057    :a Pizza
-STR_2058    :a Voucher
-STR_2059    :some Popcorn
-STR_2060    :a Hot Dog
-STR_2061    :a Tentacle
-STR_2062    :a Hat
-STR_2063    :a Toffee Apple
-STR_2064    :a T-Shirt
-STR_2065    :a Doughnut
-STR_2066    :a Coffee
-STR_2067    :an Empty Cup
-STR_2068    :some Fried Chicken
-STR_2069    :some Lemonade
-STR_2070    :an Empty Box
-STR_2071    :an Empty Bottle
-STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Balloon
-STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Cuddly Toy
-STR_2074    :Map of {STRINGID}
-STR_2075    :On-Ride Photo of {STRINGID}
-STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Umbrella
-STR_2077    :Drink
+STR_2037    :Donuts
+STR_2038    :Cafés
+STR_2039    :Tasses vides
+STR_2040    :Poulet frit
+STR_2041    :Limonade
+STR_2042    :Boites vides
+STR_2043    :Bouteilles vides
+STR_2044    :un Ballon
+STR_2045    :une Peluche
+STR_2046    :une carte du parc
+STR_2047    :une photo sur le vif
+STR_2048    :un parapluie
+STR_2049    :une boisson gazeuse
+STR_2050    :un Burger
+STR_2051    :des Frites
+STR_2052    :une glace
+STR_2053    :une barbe-à-papa
+STR_2054    :une canette vide
+STR_2055    :un déchet
+STR_2056    :une Boite à Burger vide
+STR_2057    :une Pizza
+STR_2058    :un Coupon
+STR_2059    :du Popcorn
+STR_2060    :un Hot-Dog
+STR_2061    :du Poulpe
+STR_2062    :un chapeau
+STR_2063    :une pomme d'amour
+STR_2064    :un T-Shirt
+STR_2065    :un Donut
+STR_2066    :un café
+STR_2067    :une tasse vide
+STR_2068    :du poulet frit
+STR_2069    :de la limonade
+STR_2070    :une boite vide
+STR_2071    :une bouteille vide
+STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Ballon
+STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Peluche
+STR_2074    :Carte de {STRINGID}
+STR_2075    :Photo sur le vif de {STRINGID}
+STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Parapluie
+STR_2077    :Boisson gazeuse
 STR_2078    :Burger
-STR_2079    :Chips
-STR_2080    :Ice Cream
-STR_2081    :Candyfloss
-STR_2082    :Empty Can
-STR_2083    :Rubbish
-STR_2084    :Empty Burger Box
+STR_2079    :Frites
+STR_2080    :Glace
+STR_2081    :Barbe-à-papa
+STR_2082    :Canette vide
+STR_2083    :Déchet
+STR_2084    :Boite à Burger vide
 STR_2085    :Pizza
-STR_2086    :Voucher for {STRINGID}
+STR_2086    :Coupon pour {STRINGID}
 STR_2087    :Popcorn
-STR_2088    :Hot Dog
-STR_2089    :Tentacle
-STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Hat
-STR_2091    :Toffee Apple
+STR_2088    :Hot-Dog
+STR_2089    :Poulpe
+STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Chapeau
+STR_2091    :Pomme d'amour
 STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES} T-Shirt
-STR_2093    :Doughnut
-STR_2094    :Coffee
-STR_2095    :Empty Cup
-STR_2096    :Fried Chicken
-STR_2097    :Lemonade
-STR_2098    :Empty Box
-STR_2099    :Empty Bottle
-STR_2100    :{WINDOW_COLOUR_2}On-Ride Photo price:
-STR_2101    :{WINDOW_COLOUR_2}On-Ride Photo price:
-STR_2102    :{WINDOW_COLOUR_2}On-Ride Photo price:
-STR_2103    :{WINDOW_COLOUR_2}Pretzel price:
-STR_2104    :{WINDOW_COLOUR_2}Hot Chocolate price:
-STR_2105    :{WINDOW_COLOUR_2}Iced Tea price:
-STR_2106    :{WINDOW_COLOUR_2}Funnel Cake price:
-STR_2107    :{WINDOW_COLOUR_2}Sunglasses price:
-STR_2108    :{WINDOW_COLOUR_2}Beef Noodles price:
-STR_2109    :{WINDOW_COLOUR_2}Fried Rice Noodles price:
-STR_2110    :{WINDOW_COLOUR_2}Wonton Soup price:
-STR_2111    :{WINDOW_COLOUR_2}Meatball Soup price:
-STR_2112    :{WINDOW_COLOUR_2}Fruit Juice price:
-STR_2113    :{WINDOW_COLOUR_2}Soybean Milk price:
-STR_2114    :{WINDOW_COLOUR_2}Sujongkwa price:
-STR_2115    :{WINDOW_COLOUR_2}Sub Sandwich price:
-STR_2116    :{WINDOW_COLOUR_2}Cookie price:
+STR_2093    :Donut
+STR_2094    :Café
+STR_2095    :Tasse vide
+STR_2096    :Poulet frit
+STR_2097    :Limonade
+STR_2098    :Boite vide
+STR_2099    :Bouteille vide
+STR_2100    :{WINDOW_COLOUR_2}Prix d'une photo sur le vif:
+STR_2101    :{WINDOW_COLOUR_2}Prix d'une photo sur le vif:
+STR_2102    :{WINDOW_COLOUR_2}Prix d'une photo sur le vif:
+STR_2103    :{WINDOW_COLOUR_2}Prix d'un bretzel:
+STR_2104    :{WINDOW_COLOUR_2}Prix d'un chocolat chaud:
+STR_2105    :{WINDOW_COLOUR_2}Prix d'un thé glacé:
+STR_2106    :{WINDOW_COLOUR_2}Prix d'un funnel cake:
+STR_2107    :{WINDOW_COLOUR_2}Prix des lunettes de soleil:
+STR_2108    :{WINDOW_COLOUR_2}Prix des nouilles au boeuf:
+STR_2109    :{WINDOW_COLOUR_2}Prix des nouilles au riz frit:
+STR_2110    :{WINDOW_COLOUR_2}Prix de la soupe aux raviolis:
+STR_2111    :{WINDOW_COLOUR_2}Prix de la soupe aux boulettes de viande:
+STR_2112    :{WINDOW_COLOUR_2}Prix d'un jus de fruits:
+STR_2113    :{WINDOW_COLOUR_2}Prix d'un lait de soja:
+STR_2114    :{WINDOW_COLOUR_2}Prix d'un sujongkwa:
+STR_2115    :{WINDOW_COLOUR_2}Prix d'un sub sandwich:
+STR_2116    :{WINDOW_COLOUR_2}Prix d'un cookie:
 STR_2117    :{WINDOW_COLOUR_2}
 STR_2118    :{WINDOW_COLOUR_2}
 STR_2119    :{WINDOW_COLOUR_2}
-STR_2120    :{WINDOW_COLOUR_2}Roast Sausage price:
+STR_2120    :{WINDOW_COLOUR_2}Prix d'une saucisse grillée:
 STR_2121    :{WINDOW_COLOUR_2}
-STR_2122    :On-Ride Photo
-STR_2123    :On-Ride Photo
-STR_2124    :On-Ride Photo
-STR_2125    :Pretzel
-STR_2126    :Hot Chocolate
-STR_2127    :Iced Tea
+STR_2122    :Photo sur le vif
+STR_2123    :Photo sur le vif
+STR_2124    :Photo sur le vif
+STR_2125    :Bretzel
+STR_2126    :Chocolat chaud
+STR_2127    :Thé glacé
 STR_2128    :Funnel Cake
-STR_2129    :Sunglasses
-STR_2130    :Beef Noodles
-STR_2131    :Fried Rice Noodles
-STR_2132    :Wonton Soup
-STR_2133    :Meatball Soup
-STR_2134    :Fruit Juice
-STR_2135    :Soybean Milk
+STR_2129    :Lunettes de soleil
+STR_2130    :Nouilles au boeuf
+STR_2131    :Nouilles au riz frit
+STR_2132    :Soupe aux raviolis
+STR_2133    :Soupe aux boulettes de viande
+STR_2134    :Jus de fruits
+STR_2135    :Lait de soja
 STR_2136    :Sujongkwa
 STR_2137    :Sub Sandwich
 STR_2138    :Cookie
-STR_2139    :Empty Bowl
-STR_2140    :Empty Drink Carton
-STR_2141    :Empty Juice Cup
-STR_2142    :Roast Sausage
-STR_2143    :Empty Bowl
-STR_2144    :On-Ride Photos
-STR_2145    :On-Ride Photos
-STR_2146    :On-Ride Photos
-STR_2147    :Pretzels
-STR_2148    :Hot Chocolates
-STR_2149    :Iced Teas
+STR_2139    :Bol vide
+STR_2140    :Brique vide
+STR_2141    :Tasse de jus vide
+STR_2142    :Saucisse grillée
+STR_2143    :Bol vide
+STR_2144    :Photos sur le vif
+STR_2145    :Photos sur le vif
+STR_2146    :Photos sur le vif
+STR_2147    :Bretzels
+STR_2148    :Chocolats chaud
+STR_2149    :Thés glacés
 STR_2150    :Funnel Cakes
-STR_2151    :Sunglasses
-STR_2152    :Beef Noodles
-STR_2153    :Fried Rice Noodles
-STR_2154    :Wonton Soups
-STR_2155    :Meatball Soups
-STR_2156    :Fruit Juices
-STR_2157    :Soybean Milks
+STR_2151    :Lunettes de soleil
+STR_2152    :Nouilles au boeuf
+STR_2153    :Nouilles au riz frit
+STR_2154    :Soupes aux raviolis
+STR_2155    :Soupes aux boulettes de viande
+STR_2156    :Jus de fruits
+STR_2157    :Laits de soja
 STR_2158    :Sujongkwa
-STR_2159    :Sub Sandwiches
+STR_2159    :Sub Sandwichs
 STR_2160    :Cookies
-STR_2161    :Empty Bowls
-STR_2162    :Empty Drink Cartons
-STR_2163    :Empty Juice cups
-STR_2164    :Roast Sausages
-STR_2165    :Empty Bowls
-STR_2166    :an On-Ride Photo
-STR_2167    :an On-Ride Photo
-STR_2168    :an On-Ride Photo
-STR_2169    :a Pretzel
-STR_2170    :a Hot Chocolate
-STR_2171    :an Iced Tea
-STR_2172    :a Funnel Cake
-STR_2173    :a pair of Sunglasses
-STR_2174    :some Beef Noodles
-STR_2175    :some Fried Rice Noodles
-STR_2176    :some Wonton Soup
-STR_2177    :some Meatball Soup
-STR_2178    :a Fruit Juice
-STR_2179    :some Soybean Milk
-STR_2180    :some Sujongkwa
-STR_2181    :a Sub Sandwich
-STR_2182    :a Cookie
-STR_2183    :an Empty Bowl
-STR_2184    :an Empty Drink Carton
-STR_2185    :an Empty Juice Cup
-STR_2186    :a Roast Sausage
-STR_2187    :an Empty Bowl
-STR_2188    :On-Ride Photo of {STRINGID}
-STR_2189    :On-Ride Photo of {STRINGID}
-STR_2190    :On-Ride Photo of {STRINGID}
-STR_2191    :Pretzel
-STR_2192    :Hot Chocolate
-STR_2193    :Iced Tea
+STR_2161    :Bols vides
+STR_2162    :Briques vides
+STR_2163    :Tasses de jus vides
+STR_2164    :Saucisses grillées
+STR_2165    :Bols vides
+STR_2166    :une photo sur le vif
+STR_2167    :une photo sur le vif
+STR_2168    :une photo sur le vif
+STR_2169    :un bretzel
+STR_2170    :un chocolat chaud
+STR_2171    :un thé glacé
+STR_2172    :un Funnel Cake
+STR_2173    :une paire de lunettes de soleil
+STR_2174    :des nouilles au boeuf
+STR_2175    :des nouilles au riz frit
+STR_2176    :de la soupe aux raviolis
+STR_2177    :de la soupe aux boulettes de viande
+STR_2178    :un jus de fruits
+STR_2179    :du lait de soja
+STR_2180    :du Sujongkwa
+STR_2181    :un Sub Sandwich
+STR_2182    :un Cookie
+STR_2183    :un bol vide
+STR_2184    :une brique vide
+STR_2185    :une tasse de jus vide
+STR_2186    :une saucisse grillée
+STR_2187    :un bol vide
+STR_2188    :Photo sur le vif de {STRINGID}
+STR_2189    :Photo sur le vif de {STRINGID}
+STR_2190    :Photo sur le vif de {STRINGID}
+STR_2191    :Bretzel
+STR_2192    :Chocolat chaud
+STR_2193    :Thé glacé
 STR_2194    :Funnel Cake
-STR_2195    :Sunglasses
-STR_2196    :Beef Noodles
-STR_2197    :Fried Rice Noodles
-STR_2198    :Wonton Soup
-STR_2199    :Meatball Soup
-STR_2200    :Fruit Juice
-STR_2201    :Soybean Milk
+STR_2195    :Lunettes de soleil
+STR_2196    :Nouilles au boeuf
+STR_2197    :Nouilles au riz frit
+STR_2198    :Soupe aux raviolis
+STR_2199    :Soupe aux boulettes de viande
+STR_2200    :Jus de fruits
+STR_2201    :Lait de soja
 STR_2202    :Sujongkwa
 STR_2203    :Sub Sandwich
 STR_2204    :Cookie
-STR_2205    :Empty Bowl
-STR_2206    :Empty Drink Carton
-STR_2207    :Empty Juice Cup
-STR_2208    :Roast Sausage
-STR_2209    :Empty Bowl
-STR_2210    :{SMALLFONT}{BLACK}Show list of handymen in park
-STR_2211    :{SMALLFONT}{BLACK}Show list of mechanics in park
-STR_2212    :{SMALLFONT}{BLACK}Show list of security guards in park
-STR_2213    :{SMALLFONT}{BLACK}Show list of entertainers in park
-STR_2214    :Construction not possible while game is paused!
+STR_2205    :Bol vide
+STR_2206    :Brique vide
+STR_2207    :Tasse de jus vide
+STR_2208    :Saucisse grillée
+STR_2209    :Bol vide
+STR_2210    :{SMALLFONT}{BLACK}Afficher la liste des hommes de service dans le parc
+STR_2211    :{SMALLFONT}{BLACK}Afficher la liste des mécaniciens dans le parc
+STR_2212    :{SMALLFONT}{BLACK}Afficher la liste des agents de sécurité dans le parc
+STR_2213    :{SMALLFONT}{BLACK}Afficher la liste des animateurs dans le parc
+STR_2214    :Construction impossible durant la pause!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}F
@@ -2253,11 +2253,11 @@ STR_2244    :Septembre
 STR_2245    :Octobre
 STR_2246    :Novembre
 STR_2247    :Décembre
-STR_2248    :Can't demolish ride/attraction...
-STR_2249    :{BABYBLUE}New ride/attraction now available:{NEWLINE}{STRINGID}
-STR_2250    :{BABYBLUE}New scenery/themeing now available:{NEWLINE}{STRINGID}
-STR_2251    :Can only be built on paths!
-STR_2252    :Can only be built across paths!
+STR_2248    :Impossible de démolir l'attraction...
+STR_2249    :{BABYBLUE}Nouvelle attraction disponible:{NEWLINE}{STRINGID}
+STR_2250    :{BABYBLUE}Nouveau paysage disponible:{NEWLINE}{STRINGID}
+STR_2251    :Ne peut être construit que sur les chemins!
+STR_2252    :Ne peut être construit qu'à travers les chemins!
 STR_2253    :Attractions de transport
 STR_2254    :Attractions tranquilles
 STR_2255    :Montagnes russes
@@ -2269,7 +2269,7 @@ STR_2260    :Aucun financement
 STR_2261    :Financement minimum
 STR_2262    :Financement normal
 STR_2263    :Financement maximum
-STR_2264    :Research funding
+STR_2264    :Financement recherches
 STR_2265    :{WINDOW_COLOUR_2}Coût: {BLACK}{CURRENCY} par mois
 STR_2266    :Priorités recherches
 STR_2267    :En cours de développement
@@ -2279,9 +2279,9 @@ STR_2270    :{WINDOW_COLOUR_2}Progression: {BLACK}{STRINGID}
 STR_2271    :{WINDOW_COLOUR_2}Fin prévue: {BLACK}{STRINGID}
 STR_2272    :{WINDOW_COLOUR_2}Ride/attraction:{NEWLINE}{BLACK}{STRINGID}
 STR_2273    :{WINDOW_COLOUR_2}Scenery/themeing:{NEWLINE}{BLACK}{STRINGID}
-STR_2274    :{SMALLFONT}{BLACK}Show details of this invention or development
-STR_2275    :{SMALLFONT}{BLACK}Show funding and options for research & development
-STR_2276    :{SMALLFONT}{BLACK}Show research & development status
+STR_2274    :{SMALLFONT}{BLACK}Afficher détails de cette invention
+STR_2275    :{SMALLFONT}{BLACK}Afficher financement et options de la recherche et du développement
+STR_2276    :{SMALLFONT}{BLACK}Afficher status de la recherche et du développement
 STR_2277    :Inconnu
 STR_2278    :Attraction de transport
 STR_2279    :Attraction tranquille
@@ -2290,32 +2290,32 @@ STR_2281    :Attraction frisson
 STR_2282    :Attraction aquatique
 STR_2283    :Magasins et boutiques
 STR_2284    :Décor et thèmes
-STR_2285    :Initial research
-STR_2286    :Designing
-STR_2287    :Completing design
-STR_2288    :Unknown
+STR_2285    :Recherche initiale
+STR_2286    :Conception
+STR_2287    :Finition du concept
+STR_2288    :Inconnu
 STR_2289    :{STRINGID} {STRINGID}
 STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
 STR_2291    :Choisir scénario pour nouvelle partie
-STR_2292    :{WINDOW_COLOUR_2}Rides been on:
-STR_2293    :{BLACK} Nothing
+STR_2292    :{WINDOW_COLOUR_2}Attractions utilisées:
+STR_2293    :{BLACK} Rien
 STR_2294    :{SMALLFONT}{BLACK}Change base land style
 STR_2295    :{SMALLFONT}{BLACK}Change vertical edges of land
-STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} paid to enter park
-STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} ride
-STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} rides
-STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} item of food
-STR_2300    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} items of food
-STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} drink
-STR_2302    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} drinks
-STR_2303    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} souvenir
-STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} souvenirs
-STR_2305    :Track design files
-STR_2306    :Save track design
-STR_2307    :Select {STRINGID} design
-STR_2308    :{STRINGID} Track Designs
-STR_2309    :Install New Track Design
-STR_2310    :Build custom design
+STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} payé pour entrer dans le parc
+STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} dépensé pour {BLACK}{COMMA16} attraction
+STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} dépensé pour {BLACK}{COMMA16} attractions
+STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} dépensé pour {BLACK}{COMMA16} aliment
+STR_2300    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} dépensé pour {BLACK}{COMMA16} aliments
+STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} dépensé pour {BLACK}{COMMA16} boisson
+STR_2302    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} dépensé pour {BLACK}{COMMA16} boissons
+STR_2303    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} dépensé pour {BLACK}{COMMA16} souvenir
+STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}  dépensé pour {BLACK}{COMMA16} souvenirs
+STR_2305    :Fichiers de concepts de voie
+STR_2306    :Sauvegarder le concept de voie
+STR_2307    :Sélectionner le concept {STRINGID}
+STR_2308    :{STRINGID} Concepts de Voies
+STR_2309    :Installer un Nouveau Concept de Voie
+STR_2310    :Construire un concept personnalisé
 STR_2311    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32} (approx.)
 STR_2312    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32} (approx.)
 STR_2313    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32} (approx.)

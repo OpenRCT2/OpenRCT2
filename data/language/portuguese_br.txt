@@ -3890,6 +3890,11 @@ STR_5549    :Ano/Mês/Dia
 STR_5550    :{POP16}{POP16}Ano {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Ano/Mês/Dia
 STR_5552    :{POP16}{POP16}Ano {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
+STR_5553    :Pausar o jogo quando a Steam estiver aberta sobrepondo
+STR_5554    :{SMALLFONT}{BLACK}Habilitar ferramenta de montanha
+STR_5555    :Exibir veiculos de outros tipos de atrações
+STR_5556    :Remover Jogador
+STR_5557    :Manter conectado após dessincronização (Multijogador)
 
 #####################
 # Rides/attractions # 
