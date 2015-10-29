@@ -324,6 +324,7 @@ int NetworkAddress::ResolveFunc(void* pointer)
 		memcpy(&(*ss), res->ai_addr, res->ai_addrlen);
 		*ss_len = res->ai_addrlen;
 		*status = RESOLVE_OK;
+		freeaddrinfo(res);
 	} else {
 		*status = RESOLVE_FAILED;
 	}
@@ -584,7 +585,12 @@ void Network::UpdateClient()
 	case NETWORK_STATUS_CONNECTING:{
 		int error = 0;
 		socklen_t len = sizeof(error);
-		getsockopt(server_connection.socket, SOL_SOCKET, SO_ERROR, (char*)&error, &len);
+		int result = getsockopt(server_connection.socket, SOL_SOCKET, SO_ERROR, (char*)&error, &len);
+		if (result != 0)
+		{
+			log_error("getsockopt failed with error %d", LAST_SOCKET_ERROR());
+			break;
+		}
 		if (error != 0) {
 			log_error("Connection failed %d", error);
 			connectfailed = true;
@@ -602,9 +608,14 @@ void Network::UpdateClient()
 		timeout.tv_sec = 0;
 		timeout.tv_usec = 0;
 		if (select(server_connection.socket + 1, NULL, &writeFD, NULL, &timeout) > 0) {
-			int error = 0;
+			error = 0;
 			socklen_t len = sizeof(error);
-			getsockopt(server_connection.socket, SOL_SOCKET, SO_ERROR, (char*)&error, &len);
+			result = getsockopt(server_connection.socket, SOL_SOCKET, SO_ERROR, (char*)&error, &len);
+			if (result != 0)
+			{
+				log_error("getsockopt failed with error %d", LAST_SOCKET_ERROR());
+				break;
+			}
 			if (error == 0) {
 				status = NETWORK_STATUS_CONNECTED;
 				Client_Send_AUTH(OPENRCT2_VERSION, gConfigNetwork.player_name, "");
