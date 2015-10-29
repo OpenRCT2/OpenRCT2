@@ -3891,6 +3891,9 @@ STR_5554    :{SMALLFONT}{BLACK}Gebirgswerkzeug aktivieren
 STR_5555    :Fahrzeuge anderer Streckentyp. anzeigen
 STR_5556    :Spieler entfernen
 STR_5557    :Nach Desync. verbunden bleiben (Mehrspieler)
+STR_5558    :Damit diese Einstellung wirksam wird, ist ein Neustart erforderlich
+STR_5559    :10 Min. Inspektionen
+STR_5560    :{SMALLFONT}{BLACK}Setzt die Inspektionszeit aller Bahnen{NEWLINE}auf 'Alle 10 Minuten'
 
 #######################
 # Bahnen/Attraktionen # 
