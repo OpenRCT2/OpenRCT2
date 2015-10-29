@@ -41,9 +41,9 @@
 
 //#define DEBUG_SHOW_DIRTY_BOX
 
-sint32         g_viewport_list_size = 20;
-rct_viewport*  g_viewport_list      = NULL; // RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport);
-rct_viewport** g_viewport_list_ptr  = NULL;
+sint32         g_viewport_list_size = 9;
+rct_viewport*  g_viewport_list      = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport);
+rct_viewport** g_viewport_list_ptr  = RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*);
 
 typedef struct paint_struct paint_struct;
 
@@ -92,10 +92,10 @@ void viewport_init_all()
 	int i, d;
 	rct_g1_element *g1_element;
 
-	if (g_viewport_list == NULL)
-		g_viewport_list = (rct_viewport*)malloc((g_viewport_list_size) * sizeof(rct_viewport));
-	if (g_viewport_list_ptr == NULL)
-		g_viewport_list_ptr = (rct_viewport**)malloc((g_viewport_list_size + 1) * sizeof(rct_viewport*));
+	//if (g_viewport_list == NULL)
+	//	g_viewport_list = (rct_viewport*)malloc((g_viewport_list_size) * sizeof(rct_viewport));
+	//if (g_viewport_list_ptr == NULL)
+	//	g_viewport_list_ptr = (rct_viewport**)malloc((g_viewport_list_size + 1) * sizeof(rct_viewport*));
 
 	// Palette from sprites?
 	d = 0;

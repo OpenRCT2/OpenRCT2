@@ -170,7 +170,7 @@ void vehicle_sounds_update()
 		rct_window* window = g_new_window;
 		while (1) {
 			window--;
-			if (window < RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window)) {
+			if (window < g_window_list) {
 				break;
 			}
 			viewport = window->viewport;
