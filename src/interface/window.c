@@ -33,13 +33,15 @@
 #include "../localisation/localisation.h"
 #include "../cursors.h"
 
-#define RCT2_FIRST_WINDOW		(RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window))
-#define RCT2_LAST_WINDOW		(RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*) - 1)
-#define RCT2_NEW_WINDOW			(RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*))
+#define RCT2_FIRST_WINDOW		(g_window_list)
+#define RCT2_LAST_WINDOW		(g_new_window - 1)
+#define RCT2_NEW_WINDOW			(g_new_window)
 
-#define MAX_NUMBER_WINDOWS 11
+#define MAX_NUMBER_WINDOWS g_window_list_size
 
+sint32      g_window_list_size = 11;
 rct_window* g_window_list = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window);
+rct_window* g_new_window  = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window);
 
 uint8 TextInputDescriptionArgs[8];
 widget_identifier gCurrentTextBox = { { 255, 0 }, 0 };
@@ -74,6 +76,14 @@ float window_scroll_locations[][2] = {
 static bool sub_6EA95D(int x, int y, int width, int height);
 static void window_all_wheel_input();
 static int window_draw_split(rct_window *w, int left, int top, int right, int bottom);
+
+void window_init_all()
+{
+	//if (g_window_list == NULL)
+	//	g_window_list = (rct_window*)calloc(MAX_NUMBER_WINDOWS, sizeof(rct_window));
+	//if (g_new_window == NULL)
+	//	g_new_window = g_window_list;
+}
 
 int window_get_widget_index(rct_window *w, rct_widget *widget)
 {
@@ -1158,7 +1168,7 @@ rct_window *window_bring_to_front_by_number(rct_windowclass cls, rct_windownumbe
  */
 void window_push_others_right(rct_window* window)
 {
-	for (rct_window* w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++) {
+	for (rct_window* w = g_window_list; w < g_new_window; w++) {
 		if (w == window)
 			continue;
 		if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
@@ -1312,7 +1322,7 @@ void window_scroll_to_location(rct_window *w, int x, int y, int z)
 				rct_window* w2 = w;
 				while (1) {
 					w2++;
-					if (w2 >= RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*)) {
+					if (w2 >= g_new_window) {
 						found = 1;
 						break;
 					}

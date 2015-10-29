@@ -167,10 +167,10 @@ void vehicle_sounds_update()
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) != -1 && !gGameSoundsOff && gConfigSound.sound && !gOpenRCT2Headless) {
 		RCT2_GLOBAL(0x00F438A4, rct_viewport*) = (rct_viewport*)-1;
 		rct_viewport* viewport = (rct_viewport*)-1;
-		rct_window* window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);
+		rct_window* window = g_new_window;
 		while (1) {
 			window--;
-			if (window < RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window)) {
+			if (window < g_window_list) {
 				break;
 			}
 			viewport = window->viewport;
