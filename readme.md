@@ -24,7 +24,7 @@ An open source clone of RollerCoaster Tycoon 2 built by decompiling the original
   - 3.3 - [Cleaning and documenting the source code](#33-cleaning-and-documenting-the-source-code)
   - 3.4 - [Implementing new features / fixing bugs](#34-implementing-new-features--fixing-bugs)
   - 3.5 - [Translation](#35-translation)
-- 4 - [Licence](#4-license)
+- 4 - [Licence](#4-licence)
 
 # 1 Introduction
 
@@ -71,7 +71,7 @@ OpenRCT2 requires original files of Rollercoaster Tycoon 2 to play. It can be bo
 
 ### Windows:
 - Windows XP / Vista / 7 / 8 / 10
-- Visual Studio 2015 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/products/visual-studio-community-vs)
+- Visual Studio 2015 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/products/visual-studio-community-vs))
 - [Powershell 4.0](http://social.technet.microsoft.com/wiki/contents/articles/21016.how-to-install-windows-powershell-4-0.aspx).
 
 ### Mac OS X:
@@ -91,7 +91,7 @@ OpenRCT2 requires original files of Rollercoaster Tycoon 2 to play. It can be bo
 5. When OpenRCT2 is run for the first time, it creates a settings file in `My Documents/OpenRCT2`. If it can't find the original installation of RCT2, you will need to edit `config.ini` in that folder and change the value of `game_path` to where RCT2 is installed.
 6. If the game crashes, you may need to press the red, square Stop button along the top of VS Express to stop the program.
 
-Alternatively, to simply build the project you can just execute ``build.bat`` within VS2013 Native Tools Command prompt or Github Windows prompt.
+Alternatively, to simply build the project you can just execute ``build.bat`` within VS2015 Native Tools Command prompt or Github Windows prompt.
 
 ### Mac OS X:
 Providing Homebrew or MacPorts are installed (but not both!), OpenRCT2's dependencies and Wine can be installed automatically through `install.sh`.
@@ -134,7 +134,7 @@ While decompilation is an ongoing process, this does not prohibit changes being 
 ## 3.5 Translation
 Translations are in progress for German, Dutch, French, Hungarian, Polish, Spanish, Swedish, Italian, and more. You can translate the game into other languages by editing the language files in the data directory. Please join discussions and submit pull requests to https://github.com/OpenRCT2/Localisation.
 
-# 4 License
+# 4 Licence
 **OpenRCT2** is licensed under the GNU General Public License version 3.
 
 # 5 More information
