@@ -583,7 +583,7 @@ void park_update_histories()
 	int guestsInPark = RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16);
 	int lastGuestsInPark = RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16);
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = guestsInPark;
-	RCT2_GLOBAL(0x009A9804, uint16) |= 4;
+	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= 4;
 
 	int changeInGuestsInPark = guestsInPark - lastGuestsInPark;
 	int guestChangeModifier = 1;

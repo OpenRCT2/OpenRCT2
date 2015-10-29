@@ -2038,7 +2038,7 @@ static void window_ride_construction_invalidate(rct_window *w)
 		if (stringId == STR_RAPIDS && ride->type == RIDE_TYPE_CAR_RIDE)
 			stringId = STR_LOG_BUMPS;
 	}
-	RCT2_GLOBAL(0x013CE952, uint16) = stringId;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = stringId;
 
 	if (RCT2_GLOBAL(0x00F440D3, uint8) == 1)
 		RCT2_GLOBAL(0x013CE952 + 2, uint16) = ((RCT2_GLOBAL(0x00F440CD, uint8) * 9) >> 2) & 0xFFFF;
@@ -3495,7 +3495,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 
 			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
 
-			RCT2_GLOBAL(0x00141E9AE, rct_string_id) = 927;
+			RCT2_GLOBAL(0x00141E9AE, rct_string_id) = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 			RCT2_GLOBAL(0x00F44074, money32) = game_do_command(
 				_currentTrackBeginX,
 				GAME_COMMAND_FLAG_APPLY | (4 << 8),
@@ -3524,7 +3524,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 					w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 					if (w != NULL){
 						tool_set(w, 23, 12);
-						RCT2_GLOBAL(0x009DE518, uint32) |= (1 << 6);
+						RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= (1 << 6);
 						RCT2_GLOBAL(0x00F44159, uint8) = 0;
 						RCT2_GLOBAL(0x00F4415C, uint8) = 0;
 					}

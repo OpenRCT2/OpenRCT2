@@ -51,12 +51,12 @@ typedef struct {
 // static int _climateNextWeatherGloom;
 // static int _climateNextRainLevel;
 
-#define _climateCurrentWeatherEffect	RCT2_GLOBAL(0x013CA74E, uint8)
+#define _climateCurrentWeatherEffect	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, uint8)
 
-#define _climateNextTemperature			RCT2_GLOBAL(0x013CA74D, uint8)
-#define _climateNextWeatherEffect		RCT2_GLOBAL(0x013CA74F, uint8)
-#define _climateNextWeatherGloom		RCT2_GLOBAL(0x013CA751, uint8)
-#define _climateNextRainLevel			RCT2_GLOBAL(0x013CA753, uint8)
+#define _climateNextTemperature			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, uint8)
+#define _climateNextWeatherEffect		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_EFFECT, uint8)
+#define _climateNextWeatherGloom		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, uint8)
+#define _climateNextRainLevel			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RAIN_LEVEL, uint8)
 
 static const rct_weather_transition* climate_transitions[4];
 

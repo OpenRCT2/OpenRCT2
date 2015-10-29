@@ -216,17 +216,17 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, int widgetIndex, r
 
 	switch (widgetIndex) {
 	case WIDX_MONEY:
-		RCT2_GLOBAL(0x013CE952, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, sint32);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, sint32);
 		RCT2_GLOBAL(0x013CE956, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
 		break;
 	case WIDX_PARK_RATING:
-		RCT2_GLOBAL(0x013CE952, short) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16);
 		break;
 	case WIDX_DATE:
 		month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
 		day = ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) * days_in_month[month]) >> 16) & 0xFF;
 
-		RCT2_GLOBAL(0x013CE952, short) = STR_DATE_DAY_1 + day;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = STR_DATE_DAY_1 + day;
 		RCT2_GLOBAL(0x013CE954, short) = STR_MONTH_MARCH + month;
 		break;
 	}
@@ -379,10 +379,10 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 
 	// Draw money
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
-		RCT2_GLOBAL(0x013CE952, int) = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32));
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32));
 		gfx_draw_string_centred(
 			dpi,
-			(RCT2_GLOBAL(0x013CE952, int) < 0 ? 1391 : 1390),
+			(RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) < 0 ? 1391 : 1390),
 			x, y - 3,
 			(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) == 2 && RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, sint32) == WIDX_MONEY ? 2 : w->colours[0] & 0x7F),
 			(void*)0x013CE952
@@ -454,7 +454,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	int day = ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) * days_in_month[month]) >> 16) & 0xFF;
 
 	rct_string_id stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
-	RCT2_GLOBAL(0x013CE952, short) = STR_DATE_DAY_1 + day;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = STR_DATE_DAY_1 + day;
 	RCT2_GLOBAL(0x013CE954, short) = month;
 	RCT2_GLOBAL(0x013CE956, short) = year;
 	gfx_draw_string_centred(
@@ -476,7 +476,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 		temperature = climate_celsius_to_fahrenheit(temperature);
 		format = STR_FAHRENHEIT_VALUE;
 	}
-	RCT2_GLOBAL(0x013CE952, short) = temperature;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = temperature;
 	gfx_draw_string_left(dpi, format, (void*)0x013CE952, 0, x, y + 6);
 	x += 30;
 

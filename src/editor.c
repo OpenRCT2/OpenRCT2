@@ -460,7 +460,7 @@ static int editor_read_s6(const char *path)
 				MONEY(100,00)
 			);
 
-			RCT2_GLOBAL(0x013573DC, uint32) = min(RCT2_GLOBAL(0x013573DC, uint32), 100000);
+			RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, uint32) = min(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, uint32), 100000);
 			finance_reset_cash_to_initial();
 			finance_update_loan_hash();
 

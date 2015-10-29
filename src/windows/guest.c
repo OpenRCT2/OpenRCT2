@@ -1534,7 +1534,7 @@ void window_guest_rides_update(rct_window *w)
 /* rct2: 0x697844 */
 void window_guest_rides_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	RCT2_GLOBAL(0x013CE952, uint16) = STR_LIST;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_LIST;
 }
 
 /* rct2: 0x69784E */

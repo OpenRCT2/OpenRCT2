@@ -1195,13 +1195,13 @@ static void window_options_invalidate(rct_window *w)
 
 		// sound devices
 		if (currentSoundDevice == -1 || gAudioDeviceCount == 0) {
-			RCT2_GLOBAL(0x013CE952, uint16) = STR_SOUND_NONE;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_SOUND_NONE;
 		}
 		else {
 			if (currentSoundDevice == 0)
-				RCT2_GLOBAL(0x013CE952, uint16) = 5510;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = 5510;
 			else
-				RCT2_GLOBAL(0x013CE952, uint16) = 1170;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = 1170;
 
 			RCT2_GLOBAL(0x013CE952 + 2, uint32) = (uint32)gAudioDevices[currentSoundDevice].name;
 		}

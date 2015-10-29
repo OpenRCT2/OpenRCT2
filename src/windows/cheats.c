@@ -1078,10 +1078,10 @@ static void window_cheats_invalidate(rct_window *w)
 
 	switch (w->page) {
 	case WINDOW_CHEATS_PAGE_MONEY:
-		RCT2_GLOBAL(0x013CE952, int) = 50000;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = 50000;
 		break;
 	case WINDOW_CHEATS_PAGE_GUESTS:
-		RCT2_GLOBAL(0x013CE952, int) = 10000;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = 10000;
 		widget_set_checkbox_value(w, WIDX_GUEST_IGNORE_RIDE_INTENSITY, gConfigCheat.ignore_ride_intensity);
 		widget_set_checkbox_value(w, WIDX_DISABLE_VANDALISM, gConfigCheat.disable_vandalism);
 		break;

@@ -4558,10 +4558,10 @@ void map_clear_all_elements()
 money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direction) {
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LAND_PURCHASE * 4;
 
-	RCT2_GLOBAL(0x009DEA5E, sint16) = x;
-	RCT2_GLOBAL(0x009DEA60, sint16) = y;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, sint16) = x;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, sint16) = y;
 	// ??
-	RCT2_GLOBAL(0x009DEA62, sint16) = (z & 0xFF) << 4;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, sint16) = (z & 0xFF) << 4;
 
 	if (!sub_68B044()) {
 		return MONEY32_UNDEFINED;

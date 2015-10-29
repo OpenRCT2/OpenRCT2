@@ -1660,15 +1660,15 @@ static void window_ride_main_mouseup(rct_window *w, int widgetIndex)
 		switch (widgetIndex - WIDX_CLOSE_LIGHT) {
 		case 0:
 			status = RIDE_STATUS_CLOSED;
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1004;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_CLOSE;
 			break;
 		case 1:
 			status = RIDE_STATUS_TESTING;
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1003;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_TEST;
 			break;
 		case 2:
 			status = RIDE_STATUS_OPEN;
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1002;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_OPEN;
 			break;
 		}
 
@@ -1901,15 +1901,15 @@ static void window_ride_main_dropdown(rct_window *w, int widgetIndex, int dropdo
 		switch (dropdownIndex) {
 		case 0:
 			status = RIDE_STATUS_CLOSED;
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1004;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_CLOSE;
 			break;
 		case 1:
 			status = RIDE_STATUS_TESTING;
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1003;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_TEST;
 			break;
 		case 2:
 			status = RIDE_STATUS_OPEN;
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 1002;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_OPEN;
 			break;
 		}
 
@@ -2236,7 +2236,7 @@ static void window_ride_main_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			RCT2_GLOBAL(0x013CE952 + 2, uint16) = w->ride.view;
 		}
 	}
-	RCT2_GLOBAL(0x013CE952, uint16) = stringId;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = stringId;
 
 	widget = &window_ride_main_widgets[WIDX_VIEW];
 	gfx_draw_string_centred(
@@ -5153,7 +5153,7 @@ static void window_ride_graphs_tooltip(rct_window* w, int widgetIndex, rct_strin
 	rct_string_id message;
 
 	if (widgetIndex == WIDX_GRAPH) {
-		RCT2_GLOBAL(0x013CE952, uint16) = 3158;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = 3158;
 		measurement = ride_get_measurement(w->number, &message);
 		if (measurement != NULL && (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING)) {
 			RCT2_GLOBAL(0x013CE952 + 4, uint16) = measurement->vehicle_index + 1;

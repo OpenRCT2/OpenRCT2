@@ -171,7 +171,7 @@ void finance_init() {
 	RCT2_GLOBAL(0x01358334, money32) = 0;
 	RCT2_GLOBAL(0x01358338, uint16) = 0;
 
-	RCT2_GLOBAL(0x013573DC, money32) = MONEY(10000,00); // Cheat detection
+	RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = MONEY(10000,00); // Cheat detection
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(MONEY(10000,00));
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = MONEY(10000,00);
@@ -317,7 +317,7 @@ void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* 
 		finance_update_loan_hash();
 
 		window_invalidate_by_class(WC_FINANCES);
-		RCT2_GLOBAL(0x009A9804, uint16) |= 1;
+		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= 1;
 	}
 
 	*ebx = 0;

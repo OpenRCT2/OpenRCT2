@@ -364,7 +364,7 @@ static void window_ride_list_scrollmouseover(rct_window *w, int scrollIndex, int
  */
 static void window_ride_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	RCT2_GLOBAL(0x013CE952, uint16) = STR_LIST;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_LIST;
 }
 
 /**
@@ -536,7 +536,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 		if (formatSecondary == STR_BROKEN_DOWN || formatSecondary == STR_CRASHED)
 			format = 1192;
 
-		RCT2_GLOBAL(0x013CE952, uint16) = formatSecondary;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = formatSecondary;
 		gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 160, y - 1, 157);
 		y += 10;
 	}

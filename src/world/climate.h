@@ -49,7 +49,7 @@ typedef struct {
 
 // This still needs to be read / written when loading and saving
 // extern int gClimateNextWeather;
-#define gClimateNextWeather RCT2_GLOBAL(0x013CA74B, uint8)
+#define gClimateNextWeather RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, uint8)
 
 extern const rct_weather climate_weather_data[6];
 

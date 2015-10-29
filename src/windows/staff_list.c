@@ -475,7 +475,7 @@ void window_staff_list_scrollmouseover(rct_window *w, int scrollIndex, int x, in
 */
 void window_staff_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	RCT2_GLOBAL(0x013CE952, uint16) = STR_LIST;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_LIST;
 }
 
 /**
@@ -590,7 +590,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
-		RCT2_GLOBAL(0x013CE952, uint32) = RCT2_ADDRESS(0x00992A00, uint16)[selectedTab];
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = RCT2_ADDRESS(0x00992A00, uint16)[selectedTab];
 		gfx_draw_string_left(dpi, 1858, (void*)0x013CE952, 0, w->x + 0xA5, w->y + 0x20);
 	}
 
@@ -604,7 +604,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		staffTypeStringId += 4;
 	}
 
-	RCT2_GLOBAL(0x013CE952, uint16) = _window_staff_list_selected_type_count;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = _window_staff_list_selected_type_count;
 	RCT2_GLOBAL(0x013CE952 + 2, uint16) = staffTypeStringId;
 
 	gfx_draw_string_left(dpi, STR_STAFF_LIST_COUNTER, (void*)0x013CE952, 0, w->x + 4, window_staff_list_widgets[WIDX_STAFF_LIST_LIST].bottom + w->y + 2);
@@ -640,12 +640,12 @@ void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
 					format = (_quick_fire_mode ? 5299 : 1193);
 				}
 
-				RCT2_GLOBAL(0x013CE952, uint16) = peep->name_string_idx;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
 				RCT2_GLOBAL(0x013CE952 + 2, uint32) = peep->id;
 				gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 0, y - 1, 107);
 
 				get_arguments_from_action(peep, &argument_1, &argument_2);
-				RCT2_GLOBAL(0x013CE952, uint32) = argument_1;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = argument_1;
 				RCT2_GLOBAL(0x013CE952 + 4, uint32) = argument_2;
 				gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 175, y - 1, 305);
 
