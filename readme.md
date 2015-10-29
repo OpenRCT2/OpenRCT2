@@ -50,11 +50,13 @@ The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-p
 - Editing available objects
 - Improved title sequence
 - Translation into more languages
+	- [Translation Repo](https://github.com/OpenRCT2/Localisation) 
 - Re-introduction of RollerCoaster Tycoon 1 mechanics:
-	- Shuttle Loop compatibility
-	- Have Fun! objective
-	- Finish building five coasters objective
-	- Using the mountain tool during the game
+	- ~~Shuttle Loop compatibility~~
+	- ~~Have Fun! objective~~
+	- ~~Finish building five coasters objective~~
+	- ~~Using the mountain tool during the game~~
+	- All of these goals have been completed!
 
 # 2 Downloading the game / Building the source code
 
