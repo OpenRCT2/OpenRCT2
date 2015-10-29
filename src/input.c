@@ -543,6 +543,8 @@ static void input_scroll_continue(rct_window *w, int widgetIndex, int state, int
 	int scroll_part, scroll_id;
 	int x2, y2;
 
+	assert(w != NULL);
+
 	widget = &w->widgets[widgetIndex];
 	if (widgetIndex != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32)){
 		invalidate_scroll();
@@ -662,6 +664,7 @@ static void input_scroll_part_update_hthumb(rct_window *w, int widgetIndex, int 
  */
 static void input_scroll_part_update_vthumb(rct_window *w, int widgetIndex, int y, int scroll_id)
 {
+	assert(w != NULL);
 	rct_widget *widget = &w->widgets[widgetIndex];
 	int newTop;
 
@@ -699,6 +702,7 @@ static void input_scroll_part_update_vthumb(rct_window *w, int widgetIndex, int 
  */
 static void input_scroll_part_update_hleft(rct_window *w, int widgetIndex, int scroll_id)
 {
+	assert(w != NULL);
 	if (window_find_by_number(w->classification, w->number)) {
 		w->scrolls[scroll_id].flags |= HSCROLLBAR_LEFT_PRESSED;
 		if (w->scrolls[scroll_id].h_left < 0)
@@ -716,6 +720,7 @@ static void input_scroll_part_update_hleft(rct_window *w, int widgetIndex, int s
  */
 static void input_scroll_part_update_hright(rct_window *w, int widgetIndex, int scroll_id)
 {
+	assert(w != NULL);
 	rct_widget *widget = &w->widgets[widgetIndex];
 	if (window_find_by_number(w->classification, w->number)) {
 		w->scrolls[scroll_id].flags |= HSCROLLBAR_RIGHT_PRESSED;
@@ -739,7 +744,8 @@ static void input_scroll_part_update_hright(rct_window *w, int widgetIndex, int 
  * rct: 0x006E9C37
  */
 static void input_scroll_part_update_vtop(rct_window *w, int widgetIndex, int scroll_id)
-{;
+{
+	assert(w != NULL);
 	if (window_find_by_number(w->classification, w->number)) {
 		w->scrolls[scroll_id].flags |= VSCROLLBAR_UP_PRESSED;
 		if (w->scrolls[scroll_id].v_top < 0)
@@ -757,6 +763,7 @@ static void input_scroll_part_update_vtop(rct_window *w, int widgetIndex, int sc
  */
 static void input_scroll_part_update_vbottom(rct_window *w, int widgetIndex, int scroll_id)
 {
+	assert(w != NULL);
 	rct_widget *widget = &w->widgets[widgetIndex];
 	if (window_find_by_number(w->classification, w->number)) {
 		w->scrolls[scroll_id].flags |= VSCROLLBAR_DOWN_PRESSED;

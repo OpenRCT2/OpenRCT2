@@ -59,7 +59,7 @@ if (UNIX)
 	# force 32bit build for now and set necessary flags to compile code as is
 	set(CMAKE_C_FLAGS "-m32 -std=gnu99")
 	set(CMAKE_CXX_FLAGS "-m32 -std=gnu++11")
-	set(CMAKE_SHARED_LINKER_FLAGS "-m32 -Wl,-melf_i386")
+	set(CMAKE_SHARED_LINKER_FLAGS "-m32")
 	set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_SHARED_LINKER_FLAGS})
 endif (UNIX)
 

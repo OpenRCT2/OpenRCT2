@@ -96,7 +96,7 @@ bool platform_file_exists(const utf8 *path)
 	wcstombs(buffer, wPath, len);
 	buffer[len] = '\0';
 	free(wPath);
-	int exists = access(buffer, F_OK) != -1;
+	bool exists = access(buffer, F_OK) != -1;
 	log_warning("file '%s' exists = %i", buffer, exists);
 	return exists;
 }
@@ -114,9 +114,9 @@ bool platform_directory_exists(const utf8 *path)
 	log_verbose("checking dir %s, result = %d, is_dir = %d", buffer, result, S_ISDIR(dirinfo.st_mode));
 	if ((result != 0) || !S_ISDIR(dirinfo.st_mode))
 	{
-		return 0;
+		return false;
 	}
-	return 1;
+	return true;
 }
 
 bool platform_original_game_data_exists(const utf8 *path)
@@ -159,13 +159,13 @@ bool platform_ensure_directory_exists(const utf8 *path)
 bool platform_directory_delete(const utf8 *path)
 {
 	STUB();
-	return 1;
+	return true;
 }
 
 bool platform_lock_single_instance()
 {
 	STUB();
-	return 1;
+	return true;
 }
 
 typedef struct {
@@ -203,7 +203,6 @@ static int winfilter(const struct dirent *d)
 
 int platform_enumerate_files_begin(const utf8 *pattern)
 {
-	int i;
 	enumerate_file_info *enumFileInfo;
 	wchar_t *wpattern = utf8_to_widechar(pattern);
 	int length = min(utf8_length(pattern), MAX_PATH);
@@ -266,7 +265,7 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 	}
 	log_warning("looking for file matching %s", g_file_pattern);
 	int cnt;
-	for (i = 0; i < countof(_enumerateFileInfoList); i++) {
+	for (int i = 0; i < countof(_enumerateFileInfoList); i++) {
 		enumFileInfo = &_enumerateFileInfoList[i];
 		if (!enumFileInfo->active) {
 			strncpy(enumFileInfo->pattern, npattern, length);
@@ -317,16 +316,15 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 
 bool platform_enumerate_files_next(int handle, file_info *outFileInfo)
 {
-	bool result = true;
-	enumerate_file_info *enumFileInfo;
 
 	if (handle < 0)
 	{
-		result = false;
+		return false;
 	}
-	enumFileInfo = &_enumerateFileInfoList[handle];
+	enumerate_file_info *enumFileInfo = &_enumerateFileInfoList[handle];
+	bool result;
 
-	if (result && (enumFileInfo->handle < enumFileInfo->cnt)) {
+	if (enumFileInfo->handle < enumFileInfo->cnt) {
 		result = true;
 	} else {
 		result = false;
@@ -341,29 +339,26 @@ bool platform_enumerate_files_next(int handle, file_info *outFileInfo)
 		statRes = stat(fileName, &fileInfo);
 		if (statRes == -1) {
 			log_error("failed to stat file '%s'! errno = %i", fileName, errno);
-			return 0;
+			return false;
 		}
 		outFileInfo->path = basename(fileName);
 		outFileInfo->size = fileInfo.st_size;
 		outFileInfo->last_modified = fileInfo.st_mtime;
-		return 1;
+		return true;
 	} else {
-		return 0;
+		return false;
 	}
 }
 
 void platform_enumerate_files_end(int handle)
 {
-	int i;
-	enumerate_file_info *enumFileInfo;
-
 	if (handle < 0)
 	{
 		return;
 	}
-	enumFileInfo = &_enumerateFileInfoList[handle];
+	enumerate_file_info *enumFileInfo = &_enumerateFileInfoList[handle];
 	int cnt = enumFileInfo->cnt;
-	for (i = 0; i < cnt; i++) {
+	for (int i = 0; i < cnt; i++) {
 		free(enumFileInfo->fileListTemp[i]);
 		free(enumFileInfo->paths[i]);
 	}
@@ -380,7 +375,7 @@ static int dirfilter(const struct dirent *d)
 	if (d->d_name[0] == '.') {
 		return 0;
 	}
-#ifdef _DIRENT_HAVE_D_TYPE
+#if defined(_DIRENT_HAVE_D_TYPE) || defined(DT_UNKNOWN)
 	if (d->d_type == DT_DIR)
 	{
 		return 1;
@@ -389,12 +384,11 @@ static int dirfilter(const struct dirent *d)
 	}
 #else
 #error implement dirfilter!
-#endif // _DIRENT_HAVE_D_TYPE
+#endif // defined(_DIRENT_HAVE_D_TYPE) || defined(DT_UNKNOWN)
 }
 
 int platform_enumerate_directories_begin(const utf8 *directory)
 {
-	int i;
 	enumerate_file_info *enumFileInfo;
 	wchar_t *wpattern = utf8_to_widechar(directory);
 	int length = min(utf8_length(directory), MAX_PATH);
@@ -410,7 +404,7 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 	// TODO: add some checking for stringness and directoryness
 
 	int cnt;
-	for (i = 0; i < countof(_enumerateFileInfoList); i++) {
+	for (int i = 0; i < countof(_enumerateFileInfoList); i++) {
 		enumFileInfo = &_enumerateFileInfoList[i];
 		if (!enumFileInfo->active) {
 			strncpy(enumFileInfo->pattern, npattern, length);
@@ -455,13 +449,16 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 
 bool platform_enumerate_directories_next(int handle, utf8 *path)
 {
-	bool result;
-	enumerate_file_info *enumFileInfo;
+	if (handle < 0)
+	{
+		return false;
+	}
 
-	enumFileInfo = &_enumerateFileInfoList[handle];
+	bool result;
+	enumerate_file_info *enumFileInfo = &_enumerateFileInfoList[handle];
 
 	log_verbose("handle = %d", handle);
-	if ((handle >= 0) && (enumFileInfo->handle < enumFileInfo->cnt)) {
+	if (enumFileInfo->handle < enumFileInfo->cnt) {
 		result = true;
 	} else {
 		result = false;
@@ -470,36 +467,32 @@ bool platform_enumerate_directories_next(int handle, utf8 *path)
 	if (result) {
 		int entryIdx = enumFileInfo->handle++;
 		struct stat fileInfo;
-		log_verbose("trying handle %d", entryIdx);
 		char *fileName = enumFileInfo->paths[entryIdx];
 		int statRes;
 		statRes = stat(fileName, &fileInfo);
 		if (statRes == -1) {
 			log_error("failed to stat file '%s'! errno = %i", fileName, errno);
-			return 0;
+			return false;
 		}
 		// so very, very wrong…
 		strncpy(path, basename(fileName), MAX_PATH);
 		strncat(path, "/", MAX_PATH);
 		path[MAX_PATH - 1] = '\0';
-		return 1;
+		return true;
 	} else {
-		return 0;
+		return false;
 	}
 }
 
 void platform_enumerate_directories_end(int handle)
 {
-	int i;
-	enumerate_file_info *enumFileInfo;
-
 	if (handle < 0)
 	{
 		return;
 	}
-	enumFileInfo = &_enumerateFileInfoList[handle];
+	enumerate_file_info *enumFileInfo = &_enumerateFileInfoList[handle];
 	int cnt = enumFileInfo->cnt;
-	for (i = 0; i < cnt; i++) {
+	for (int i = 0; i < cnt; i++) {
 		free(enumFileInfo->fileListTemp[i]);
 		free(enumFileInfo->paths[i]);
 	}
