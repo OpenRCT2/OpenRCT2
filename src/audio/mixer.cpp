@@ -199,14 +199,6 @@ bool Source_Sample::Convert(AudioFormat format)
 	return false;
 }
 
-Source_SampleStream::Source_SampleStream()
-{
-	length = 0;
-	rw = NULL;
-	buffer = 0;
-	buffersize = 0;
-}
-
 Source_SampleStream::~Source_SampleStream()
 {
 	Unload();
@@ -349,18 +341,9 @@ void Source_SampleStream::Unload()
 
 Channel::Channel()
 {
-	resampler = 0;
 	SetRate(1);
 	SetVolume(SDL_MIX_MAXVOLUME);
-	oldvolume = 0;
-	oldvolume_l = 0;
-	oldvolume_r = 0;
 	SetPan(0.5f);
-	done = true;
-	stopping = false;
-	source = 0;
-	deletesourceondone = false;
-	group = MIXER_GROUP_NONE;
 }
 
 Channel::~Channel()
