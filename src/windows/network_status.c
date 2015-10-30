@@ -22,6 +22,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../util/util.h"
 #include "../network/network.h"
 
 enum WINDOW_NETWORK_STATUS_WIDGET_IDX {
@@ -79,7 +80,7 @@ void window_network_status_open(const char* text)
 {
 	rct_window* window;
 
-	strncpy(window_network_status_text, text, sizeof(window_network_status_text));
+	safe_strncpy(window_network_status_text, text, sizeof(window_network_status_text));
 
 	// Check if window is already open
 	window = window_bring_to_front_by_class(WC_NETWORK_STATUS);

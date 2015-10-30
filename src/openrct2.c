@@ -87,7 +87,7 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 	}
 
 	// Create filter path
-	strcpy(filter, originalDirectory);
+	safe_strncpy(filter, originalDirectory, MAX_PATH);
 	ch = strchr(filter, '*');
 	if (ch != NULL)
 		*ch = 0;
@@ -96,10 +96,10 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 
 	fileEnumHandle = platform_enumerate_files_begin(filter);
 	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
-		strcpy(newPath, newDirectory);
+		safe_strncpy(newPath, newDirectory, MAX_PATH);
 		strcat(newPath, fileInfo.path);
 
-		strcpy(oldPath, originalDirectory);
+		safe_strncpy(oldPath, originalDirectory, MAX_PATH);
 		ch = strchr(oldPath, '*');
 		if (ch != NULL)
 			*ch = 0;
@@ -112,10 +112,10 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 
 	fileEnumHandle = platform_enumerate_directories_begin(originalDirectory);
 	while (platform_enumerate_directories_next(fileEnumHandle, filter)) {
-		strcpy(newPath, newDirectory);
+		safe_strncpy(newPath, newDirectory, MAX_PATH);
 		strcat(newPath, filter);
 
-		strcpy(oldPath, originalDirectory);
+		safe_strncpy(oldPath, originalDirectory, MAX_PATH);
 		ch = strchr(oldPath, '*');
 		if (ch != NULL)
 			*ch = 0;
@@ -164,7 +164,7 @@ static void openrct2_set_exe_path()
 	}
 	int exeDelimiterIndex = (int)(exeDelimiter - exePath);
 
-	strncpy(gExePath, exePath, exeDelimiterIndex + 1);
+	safe_strncpy(gExePath, exePath, exeDelimiterIndex + 1);
 	gExePath[exeDelimiterIndex] = '\0';
 #endif // _WIN32
 }

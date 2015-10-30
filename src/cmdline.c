@@ -108,7 +108,7 @@ int cmdline_run(const char **argv, int argc)
 
 	if (server != NULL) {
 		gNetworkStart = NETWORK_MODE_CLIENT;
-		strncpy(gNetworkStartHost, server, sizeof(gNetworkStartHost));
+		safe_strncpy(gNetworkStartHost, server, sizeof(gNetworkStartHost));
 	}
 #endif // DISABLE_NETWORK
 
@@ -152,7 +152,7 @@ static int cmdline_for_edit(const char **argv, int argc)
 {
 	gOpenRCT2StartupAction = STARTUP_ACTION_EDIT;
 	if (argc >= 1)
-		strcpy(gOpenRCT2StartupActionPath, argv[0]);
+		safe_strncpy(gOpenRCT2StartupActionPath, argv[0], 512);
 
 	return 0;
 }
@@ -163,7 +163,7 @@ static int cmdline_for_none(const char **argv, int argc)
 
 	if (platform_file_exists(argv[0])) {
 		gOpenRCT2StartupAction = STARTUP_ACTION_OPEN;
-		strcpy(gOpenRCT2StartupActionPath, argv[0]);
+		safe_strncpy(gOpenRCT2StartupActionPath, argv[0], 512);
 		return 0;
 	} else {
 		fprintf(stderr, "error: %s does not exist\n", argv[0]);

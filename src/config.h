@@ -230,9 +230,10 @@ typedef struct {
 	uint8 rct1_scenario_font;
 } theme_features;
 
+#define THEME_PRESET_NAME_SIZE 256
 
 typedef struct theme_preset {
-	char name[256];
+	char name[THEME_PRESET_NAME_SIZE];
 	theme_window *windows;
 
 	// Add structures for any other settings here
@@ -260,8 +261,10 @@ typedef struct {
 	uint8 y;				// LOCATION
 } title_command;
 
+#define TITLE_SEQUENCE_NAME_SIZE 256
+
 typedef struct {
-	char name[256];
+	char name[TITLE_SEQUENCE_NAME_SIZE];
 	char path[MAX_PATH]; // Needed for non-modifiable presets
 	char (*saves)[TITLE_SEQUENCE_MAX_SAVE_LENGTH];
 	title_command *commands;

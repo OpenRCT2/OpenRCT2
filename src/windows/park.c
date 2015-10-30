@@ -1745,7 +1745,7 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Scenario description
 	x = w->x + window_park_objective_widgets[WIDX_PAGE_BACKGROUND].left + 4;
 	y = w->y + window_park_objective_widgets[WIDX_PAGE_BACKGROUND].top + 7;
-	strcpy((char*)0x009BC677, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_DETAILS, char));
+	safe_strncpy((char*)0x009BC677, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_DETAILS, char), 256);
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 3165;
 	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 222, 1191, 0);
 	y += 5;

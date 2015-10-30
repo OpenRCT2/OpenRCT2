@@ -758,7 +758,7 @@ static bool config_find_rct2_path(utf8 *resultPath)
 
 	for (i = 0; i < countof(searchLocations); i++) {
 		if (platform_original_game_data_exists(searchLocations[i])) {
-			strcpy(resultPath, searchLocations[i]);
+			safe_strncpy(resultPath, searchLocations[i], MAX_PATH);
 			return true;
 		}
 	}
@@ -774,7 +774,7 @@ bool config_find_or_browse_install_directory()
 	if (config_find_rct2_path(path)) {
 		SafeFree(gConfigGeneral.game_path);
 		gConfigGeneral.game_path = malloc(strlen(path) + 1);
-		strcpy(gConfigGeneral.game_path, path);
+		safe_strncpy(gConfigGeneral.game_path, path, MAX_PATH);
 	} else {
 		platform_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
 		installPath = platform_open_directory_browser("Please select your RCT2 directory");
@@ -1005,7 +1005,7 @@ void themes_set_default()
 	gConfigThemes.presets = malloc(sizeof(theme_preset) * gConfigThemes.num_presets);
 
 	// Set RCT2 theme
-	strcpy(gConfigThemes.presets[0].name, language_get_string(2741));
+	safe_strncpy(gConfigThemes.presets[0].name, language_get_string(2741), THEME_PRESET_NAME_SIZE);
 	gConfigThemes.presets[0].windows = malloc(sizeof(theme_window) * gNumThemeWindows);
 
 	// Define the defaults for RCT2 here
@@ -1019,7 +1019,7 @@ void themes_set_default()
 	}
 
 	// Set RCT1 theme
-	strcpy(gConfigThemes.presets[1].name, language_get_string(2740));
+	safe_strncpy(gConfigThemes.presets[1].name, language_get_string(2740), THEME_PRESET_NAME_SIZE);
 	gConfigThemes.presets[1].windows = malloc(sizeof(theme_window) * gNumThemeWindows);
 
 	// Define the defaults for RCT1 here
@@ -1113,7 +1113,7 @@ bool themes_open(const_utf8string path)
 	if (preset == gConfigThemes.num_presets) {
 		gConfigThemes.num_presets++;
 		gConfigThemes.presets = realloc(gConfigThemes.presets, sizeof(theme_preset) * gConfigThemes.num_presets);
-		strcpy(gConfigThemes.presets[preset].name, path_get_filename(path));
+		safe_strncpy(gConfigThemes.presets[preset].name, path_get_filename(path), THEME_PRESET_NAME_SIZE);
 		path_remove_extension(gConfigThemes.presets[preset].name);
 		gConfigThemes.presets[preset].windows = malloc(sizeof(theme_window) * gNumThemeWindows);
 		gConfigThemes.presets[preset].features.rct1_ride_lights = false;
@@ -1406,7 +1406,7 @@ static void title_sequence_open(const char *path, const char *customName)
 	char separator = platform_get_path_separator();
 
 	// Check for the script file
-	strcpy(scriptPath, path);
+	safe_strncpy(scriptPath, path, MAX_PATH);
 	strcat(scriptPath, "script.txt");
 	if (!platform_file_exists(scriptPath)) {
 		// No script file, title sequence is invalid
@@ -1427,7 +1427,7 @@ static void title_sequence_open(const char *path, const char *customName)
 
 		if (customName == NULL) {
 			char nameBuffer[MAX_PATH], *name;
-			strcpy(nameBuffer, path);
+			safe_strncpy(nameBuffer, path, MAX_PATH);
 			name = nameBuffer + strlen(nameBuffer) - 1;
 			while (*name == '\\' || *name == '/') {
 				*name = 0;
@@ -1436,12 +1436,12 @@ static void title_sequence_open(const char *path, const char *customName)
 			while (*(name - 1) != '\\' && *(name - 1) != '/') {
 				name--;
 			}
-			strcpy(gConfigTitleSequences.presets[preset].name, name);
+			safe_strncpy(gConfigTitleSequences.presets[preset].name, name, TITLE_SEQUENCE_NAME_SIZE);
 			gConfigTitleSequences.presets[preset].path[0] = 0;
 		}
 		else {
-			strcpy(gConfigTitleSequences.presets[preset].name, customName);
-			strcpy(gConfigTitleSequences.presets[preset].path, path);
+			safe_strncpy(gConfigTitleSequences.presets[preset].name, customName, TITLE_SEQUENCE_NAME_SIZE);
+			safe_strncpy(gConfigTitleSequences.presets[preset].path, path, MAX_PATH);
 		}
 
 		gConfigTitleSequences.presets[preset].saves = malloc(0);
@@ -1451,23 +1451,23 @@ static void title_sequence_open(const char *path, const char *customName)
 	}
 
 	// Get the save file list
-	strcpy(titlePath, path);
+	safe_strncpy(titlePath, path, MAX_PATH);
 	strcat(titlePath, "*.sv6");
 	fileEnumHandle = platform_enumerate_files_begin(titlePath);
 	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
 		gConfigTitleSequences.presets[preset].num_saves++;
 		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * (size_t)gConfigTitleSequences.presets[preset].num_saves);
-		strncpy(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], fileInfo.path, TITLE_SEQUENCE_MAX_SAVE_LENGTH);
+		safe_strncpy(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], fileInfo.path, TITLE_SEQUENCE_MAX_SAVE_LENGTH);
 		gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1][TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1] = '\0';
 	}
 	platform_enumerate_files_end(fileEnumHandle);
-	strcpy(titlePath, path);
+	safe_strncpy(titlePath, path, MAX_PATH);
 	strcat(titlePath, "*.sc6");
 	fileEnumHandle = platform_enumerate_files_begin(titlePath);
 	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
 		gConfigTitleSequences.presets[preset].num_saves++;
 		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * (size_t)gConfigTitleSequences.presets[preset].num_saves);
-		strncpy(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], fileInfo.path, TITLE_SEQUENCE_MAX_SAVE_LENGTH);
+		safe_strncpy(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], fileInfo.path, TITLE_SEQUENCE_MAX_SAVE_LENGTH);
 		gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1][TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1] = '\0';
 	}
 	platform_enumerate_files_end(fileEnumHandle);

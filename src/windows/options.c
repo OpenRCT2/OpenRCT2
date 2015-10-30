@@ -43,6 +43,7 @@
 #include "../title.h"
 #include "dropdown.h"
 #include "error.h"
+#include "../util/util.h"
 
 enum WINDOW_OPTIONS_PAGE {
 	WINDOW_OPTIONS_PAGE_DISPLAY,
@@ -1039,8 +1040,7 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 					char* devicename = gAudioDevices[dropdownIndex].name;
 					Mixer_Init(devicename);
 					SafeFree(gConfigSound.device);
-					gConfigSound.device = malloc(strlen(devicename) + 1);
-					strcpy(gConfigSound.device, devicename);
+					gConfigSound.device = strndup(devicename, AUDIO_DEVICE_NAME_SIZE);
 				}
 				config_save_default();
 			}

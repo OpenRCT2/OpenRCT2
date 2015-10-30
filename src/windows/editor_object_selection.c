@@ -35,6 +35,7 @@
 #include "../scenario.h"
 #include "dropdown.h"
 #include "error.h"
+#include "../util/util.h"
 
 
 enum {
@@ -1991,7 +1992,7 @@ static void window_editor_object_selection_textinput(rct_window *w, int widgetIn
 	}
 	else {
 		memset(_filter_string, 0, sizeof(_filter_string));
-		strcpy(_filter_string, text);
+		safe_strncpy(_filter_string, text, sizeof(_filter_string));
 	}
 
 	filter_update_counts();
@@ -2013,8 +2014,8 @@ static bool filter_string(rct_object_entry *entry)
 
 	char name_lower[MAX_PATH];
 	char filter_lower[sizeof(_filter_string)];
-	strcpy(name_lower, name);
-	strcpy(filter_lower, _filter_string);
+	safe_strncpy(name_lower, name, MAX_PATH);
+	safe_strncpy(filter_lower, _filter_string, sizeof(_filter_string));
 
 	for (int i = 0; i < (int)strlen(name_lower); i++)
 		name_lower[i] = (char)tolower(name_lower[i]);

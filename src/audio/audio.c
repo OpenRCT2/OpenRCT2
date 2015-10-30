@@ -30,6 +30,7 @@
 #include "audio.h"
 #include "mixer.h"
 #include "../openrct2.h"
+#include "../util/util.h"
 
 int gAudioDeviceCount;
 audio_device *gAudioDevices = NULL;
@@ -72,13 +73,13 @@ void audio_get_devices()
 		gAudioDeviceCount++;
 		gAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
 
-		strcpy(gAudioDevices[0].name, language_get_string(5510));
+		safe_strncpy(gAudioDevices[0].name, language_get_string(5510), AUDIO_DEVICE_NAME_SIZE);
 		for (i = 1; i < gAudioDeviceCount; i++) {
 			const char *utf8_name = SDL_GetAudioDeviceName(i - 1, SDL_FALSE);
 			if (utf8_name == NULL)
 				utf8_name = language_get_string(5511);
 
-			strcpy(gAudioDevices[i].name, utf8_name);
+			safe_strncpy(gAudioDevices[i].name, utf8_name, AUDIO_DEVICE_NAME_SIZE);
 		}
 	}
 }

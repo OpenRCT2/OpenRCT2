@@ -26,6 +26,7 @@
 #include "window.h"
 #include "../platform/platform.h"
 #include "../localisation/localisation.h"
+#include "../util/util.h"
 
 static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
@@ -1174,7 +1175,7 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	if (!active) {
 
 		if (w->widgets[widgetIndex].image != 0) {
-			strcpy(wrapped_string, (char*)w->widgets[widgetIndex].image);
+			safe_strncpy(wrapped_string, (char*)w->widgets[widgetIndex].image, 512);
 			gfx_wrap_string(wrapped_string, r - l - 5, &no_lines, &font_height);
 			gfx_draw_string(dpi, wrapped_string, w->colours[1], l + 2, t);
 		}
@@ -1182,7 +1183,7 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	}
 
 
-	strcpy(wrapped_string, gTextBoxInput);
+	safe_strncpy(wrapped_string, gTextBoxInput, 512);
 
 	// String length needs to add 12 either side of box
 	// +13 for cursor when max length.

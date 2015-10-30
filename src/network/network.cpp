@@ -43,6 +43,7 @@ extern "C" {
 #include "../localisation/localisation.h"
 #include "../scenario.h"
 #include "../windows/error.h"
+#include "../util/util.h"
 }
 
 #pragma comment(lib, "Ws2_32.lib")
@@ -147,7 +148,7 @@ void NetworkPacket::Clear()
 
 NetworkPlayer::NetworkPlayer(const char* name)
 {
-	strncpy((char*)NetworkPlayer::name, name, sizeof(NetworkPlayer::name));
+	safe_strncpy((char*)NetworkPlayer::name, name, sizeof(NetworkPlayer::name));
 	NetworkPlayer::name[sizeof(NetworkPlayer::name) - 1] = 0;
 	ping = 0;
 	flags = 0;
@@ -664,7 +665,7 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
 	if (fromplayer) {
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_BABYBLUE);
-		strcpy(lineCh, (const char*)fromplayer->name);
+		safe_strncpy(lineCh, (const char*)fromplayer->name, 1024);
 		strcat(lineCh, ": ");
 	}
 	strcat(formatted, text);

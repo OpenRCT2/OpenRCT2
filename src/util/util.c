@@ -181,6 +181,29 @@ int strcicmp(char const *a, char const *b)
 	}
 }
 
+char *safe_strncpy(char * destination, const char * source, size_t size)
+{
+	char *result = destination;
+	bool terminated = false;
+	for (size_t i = 0; i < size; i++)
+	{
+		if (*source != '\0')
+		{
+			*destination++ = *source++;
+		} else {
+			*destination = *source;
+			terminated = true;
+			break;
+		}
+	}
+	if (!terminated)
+	{
+		destination[size - 1] = '\0';
+		log_warning("Truncating string %s to %d bytes.", destination, size);
+	}
+	return result;
+}
+
 bool utf8_is_bom(const char *str)
 {
 	return str[0] == (char)0xEF && str[1] == (char)0xBB && str[2] == (char)0xBF;
