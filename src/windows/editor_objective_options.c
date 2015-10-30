@@ -29,6 +29,7 @@
 #include "dropdown.h"
 #include "error.h"
 #include "../interface/themes.h"
+#include "../util/util.h"
 
 #pragma region Widgets
 
@@ -405,11 +406,11 @@ static void window_editor_objective_options_main_mouseup(rct_window *w, int widg
 		window_text_input_open(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), 0, 32);
 		break;
 	case WIDX_SCENARIO_NAME:
-		strcpy((char*)0x009BC677, s6Info->name);
+		safe_strncpy((char*)0x009BC677, s6Info->name, 64);
 		window_text_input_open(w, WIDX_SCENARIO_NAME, 3313, 3314, 3165, 0, 32);
 		break;
 	case WIDX_DETAILS:
-		strcpy((char*)0x009BC677, s6Info->details);
+		safe_strncpy((char*)0x009BC677, s6Info->details, 256);
 		window_text_input_open(w, WIDX_DETAILS, 3315, 3316, 3165, 0, 256);
 		break;
 	}
@@ -1002,7 +1003,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	if (stex != NULL) {
 		RCT2_GLOBAL(0x013CE952 + 0, uint16) = stex->scenario_name;
 	} else {
-		strcpy((char*)0x009BC677, s6Info->name);
+		safe_strncpy((char*)0x009BC677, s6Info->name, 64);
 		RCT2_GLOBAL(0x013CE952 + 0, uint16) = 3165;
 	}
 	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x0013573D8, uint32);
@@ -1021,7 +1022,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	if (stex != NULL) {
 		RCT2_GLOBAL(0x013CE952 + 0, uint16) = stex->details;
 	} else {
-		strcpy((char*)0x009BC677, s6Info->details);
+		safe_strncpy((char*)0x009BC677, s6Info->details, 256);
 		RCT2_GLOBAL(0x013CE952 + 0, uint16) = 3165;
 	}
 	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x0013573D8, uint32);

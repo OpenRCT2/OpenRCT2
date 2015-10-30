@@ -20,6 +20,7 @@
 
 #include "addresses.h"
 #include "platform/platform.h"
+#include "util/util.h"
 #include "scenario.h"
 
 // Scenario list
@@ -102,8 +103,8 @@ static void scenario_list_add(const char *path)
 		scenario->objective_arg_1 = s6Info.objective_arg_1;
 		scenario->objective_arg_2 = s6Info.objective_arg_2;
 		scenario->objective_arg_3 = s6Info.objective_arg_3;
-		strcpy(scenario->name, s6Info.name);
-		strcpy(scenario->details, s6Info.details);
+		safe_strncpy(scenario->name, s6Info.name, 64);
+		safe_strncpy(scenario->details, s6Info.details, 256);
 	} else {
 		// Check if the scenario list buffer has room for another scenario
 		if (gScenarioListCount >= gScenarioListCapacity) {
@@ -117,7 +118,7 @@ static void scenario_list_add(const char *path)
 		gScenarioListCount++;
 
 		// Add this new scenario to the list
-		strcpy(scenario->path, path);
+		safe_strncpy(scenario->path, path, 256);
 		scenario->flags = SCENARIO_FLAGS_VISIBLE;
 		if (RCT2_GLOBAL(0x009AA00C, uint8) & 1)
 			scenario->flags |= SCENARIO_FLAGS_SIXFLAGS;
@@ -126,8 +127,8 @@ static void scenario_list_add(const char *path)
 		scenario->objective_arg_1 = s6Info.objective_arg_1;
 		scenario->objective_arg_2 = s6Info.objective_arg_2;
 		scenario->objective_arg_3 = s6Info.objective_arg_3;
-		strcpy(scenario->name, s6Info.name);
-		strcpy(scenario->details, s6Info.details);
+		safe_strncpy(scenario->name, s6Info.name, 64);
+		safe_strncpy(scenario->details, s6Info.details, 256);
 	}
 }
 

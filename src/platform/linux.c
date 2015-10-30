@@ -32,6 +32,7 @@
 #include "../localisation/currency.h"
 #include "../config.h"
 #include "platform.h"
+#include "../util/util.h"
 #include <dirent.h>
 #include <time.h>
 
@@ -268,7 +269,7 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 	for (int i = 0; i < countof(_enumerateFileInfoList); i++) {
 		enumFileInfo = &_enumerateFileInfoList[i];
 		if (!enumFileInfo->active) {
-			strncpy(enumFileInfo->pattern, npattern, length);
+			safe_strncpy(enumFileInfo->pattern, npattern, length);
 			cnt = scandir(dir_name, &enumFileInfo->fileListTemp, winfilter, alphasort);
 			if (cnt < 0)
 			{
@@ -407,7 +408,7 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 	for (int i = 0; i < countof(_enumerateFileInfoList); i++) {
 		enumFileInfo = &_enumerateFileInfoList[i];
 		if (!enumFileInfo->active) {
-			strncpy(enumFileInfo->pattern, npattern, length);
+			safe_strncpy(enumFileInfo->pattern, npattern, length);
 			cnt = scandir(npattern, &enumFileInfo->fileListTemp, dirfilter, alphasort);
 			if (cnt < 0)
 			{
@@ -475,7 +476,7 @@ bool platform_enumerate_directories_next(int handle, utf8 *path)
 			return false;
 		}
 		// so very, very wrong…
-		strncpy(path, basename(fileName), MAX_PATH);
+		safe_strncpy(path, basename(fileName), MAX_PATH);
 		strncat(path, "/", MAX_PATH);
 		path[MAX_PATH - 1] = '\0';
 		return true;
@@ -586,7 +587,7 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
 	w_buffer[len] = '\0';
 	utf8 *path = widechar_to_utf8(w_buffer);
 	free(w_buffer);
-	strcpy(outPath, path);
+	safe_strncpy(outPath, path, MAX_PATH);
 	free(path);
 	log_verbose("outPath + subDirectory = '%s'", buffer);
 }

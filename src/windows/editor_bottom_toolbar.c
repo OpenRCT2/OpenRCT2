@@ -341,7 +341,7 @@ static int show_save_scenario_dialog(char *resultPath)
 	unpause_sounds();
 
 	if (result)
-		strcpy(resultPath, filename);
+		safe_strncpy(resultPath, filename, MAX_PATH);
 	return result;
 }
 

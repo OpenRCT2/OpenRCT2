@@ -24,8 +24,10 @@
 #include "../common.h"
 #include "../world/sprite.h"
 
+#define AUDIO_DEVICE_NAME_SIZE 256
+
 typedef struct {
-	char name[256];
+	char name[AUDIO_DEVICE_NAME_SIZE];
 } audio_device;
 
 extern int gAudioDeviceCount;

@@ -364,7 +364,7 @@ void format_currency(char **dest, long long value)
 
 	// Prefix
 	if (currencySpec->affix == CURRENCY_PREFIX) {
-		strcpy(*dest, symbol);
+		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
 
@@ -372,7 +372,7 @@ void format_currency(char **dest, long long value)
 
 	// Currency symbol suffix
 	if (currencySpec->affix == CURRENCY_SUFFIX) {
-		strcpy(*dest, symbol);
+		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
 }
@@ -395,7 +395,7 @@ void format_currency_2dp(char **dest, long long value)
 
 	// Prefix
 	if (currencySpec->affix == CURRENCY_PREFIX) {
-		strcpy(*dest, symbol);
+		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
 
@@ -408,7 +408,7 @@ void format_currency_2dp(char **dest, long long value)
 
 	// Currency symbol suffix
 	if (currencySpec->affix == CURRENCY_SUFFIX) {
-		strcpy(*dest, symbol);
+		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
 }
@@ -860,7 +860,7 @@ int win1252_to_utf8(utf8string dst, const char *src, int maxBufferLength)
 	// we need one byte for null terminator
 	int result = strnlen(src, maxBufferLength) + 1;
 	result = min(result, maxBufferLength);
-	strncpy(dst, src, maxBufferLength);
+	safe_strncpy(dst, src, maxBufferLength);
 	dst[maxBufferLength - 1] = '\0';
 #endif // _WIN32
 

@@ -28,6 +28,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../interface/themes.h"
+#include "../util/util.h"
 
 enum {
 	WIDX_BACKGROUND,
@@ -285,13 +286,13 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Scenario name
 	x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
 	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
-	strcpy((char*)0x009BC677, scenario->name);
+	safe_strncpy((char*)0x009BC677, scenario->name, 64);
 	RCT2_GLOBAL(0x013CE952 + 0, short) = 3165;
 	gfx_draw_string_centred_clipped(dpi, 1193, (void*)0x013CE952, 0, x + 85, y, 170);
 	y += 15;
 
 	// Scenario details
-	strcpy((char*)0x009BC677, scenario->details);
+	safe_strncpy((char*)0x009BC677, scenario->details, 256);
 	RCT2_GLOBAL(0x013CE952 + 0, short) = 3165;
 	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, 1191, 0) + 5;
 
@@ -304,7 +305,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Scenario score
 	if (scenario->flags & SCENARIO_FLAGS_COMPLETED) {
-		strcpy((char*)0x009BC677, scenario->completed_by);
+		safe_strncpy((char*)0x009BC677, scenario->completed_by, 64);
 		RCT2_GLOBAL(0x013CE952 + 0, short) = 3165;
 		RCT2_GLOBAL(0x013CE952 + 2, int) = scenario->company_value;
 		y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);
@@ -341,7 +342,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			gfx_fill_rect(dpi, 0, y, w->width, y + 23, 0x02000031);
 
 		// Draw scenario name
-		strcpy((char*)0x009BC677, scenario->name);
+		safe_strncpy((char*)0x009BC677, scenario->name, 64);
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 3165;
 		gfx_draw_string_centred(dpi, highlighted ? highlighted_format : unhighlighted_format, 210, y + 1, 0, (void*)0x013CE952);
 
@@ -351,7 +352,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			gfx_draw_sprite(dpi, 0x5A9F, 395, y + 1, 0);
 
 			// Draw completion score
-			strcpy((char*)0x009BC677, scenario->completed_by);
+			safe_strncpy((char*)0x009BC677, scenario->completed_by, 64);
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 2793;
 			RCT2_GLOBAL(0x013CE954, short) = 3165;
 			gfx_draw_string_centred(dpi, highlighted ? 1193 : 1191, 210, y + 11, 0, (void*)0x013CE952);

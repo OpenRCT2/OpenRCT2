@@ -24,6 +24,7 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../sprites.h"
+#include "../util/util.h"
 #include "error.h"
 
 #define WWIDTH_MIN 500
@@ -158,7 +159,7 @@ void window_server_list_open()
 
 	window_set_resize(window, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
 
-	strncpy(_playerName, gConfigNetwork.player_name, sizeof(_playerName));
+	safe_strncpy(_playerName, gConfigNetwork.player_name, sizeof(_playerName));
 
 	server_list_load_saved_servers();
 	window->no_list_items = _numSavedServers;
@@ -277,7 +278,7 @@ static void window_server_list_textinput(rct_window *w, int widgetIndex, char *t
 			memset(_playerName, 0, sizeof(_playerName));
 		} else {
 			memset(_playerName, 0, sizeof(_playerName));
-			strcpy(_playerName, text);
+			safe_strncpy(_playerName, text, sizeof(_playerName));
 		}
 
 		widget_invalidate(w, WIDX_PLAYER_NAME_INPUT);

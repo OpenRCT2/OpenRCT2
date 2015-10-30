@@ -1,5 +1,5 @@
 /*****************************************************************************
-* Copyright (c) 2014 Maciek Baron, Dániel Tar
+* Copyright (c) 2014 Maciek Baron, Dï¿½niel Tar
 * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
 *
 * This file is part of OpenRCT2.
@@ -360,7 +360,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_TITLE_EDITOR_LOAD:
 		if (w->selected_list_item != -1) {
 			if (gConfigTitleSequences.presets[gCurrentTitleSequence].path[0]) {
-				strcpy(path, gConfigTitleSequences.presets[gCurrentTitleSequence].path);
+				safe_strncpy(path, gConfigTitleSequences.presets[gCurrentTitleSequence].path, MAX_PATH);
 			}
 			else {
 				platform_get_user_directory(path, "title sequences");

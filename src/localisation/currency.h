@@ -44,11 +44,13 @@ typedef enum {
 	CURRENCY_SUFFIX
 } CURRENCY_AFFIX;
 
+#define CURRENCY_SYMBOL_MAX_SIZE 8
+
 // Currency format specification - inspired by OpenTTD
 typedef struct {
 	// Rate is relative to 0.1 GBP
 	int rate;
-	utf8 symbol[8];
+	utf8 symbol[CURRENCY_SYMBOL_MAX_SIZE];
 	int affix;
 } rct_currency_spec;
 

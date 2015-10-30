@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "localisation.h"
 #include "../ride/ride.h"
+#include "../util/util.h"
 
 utf8 *gUserStrings = (char*)0x0135A8F4;
 
@@ -54,7 +55,7 @@ rct_string_id user_string_allocate(int base, const utf8 *text)
 		if (userString[0] != 0)
 			continue;
 
-		strncpy(userString, text, USER_STRING_MAX_LENGTH - 1);
+		safe_strncpy(userString, text, USER_STRING_MAX_LENGTH - 1);
 		return 0x8000 + (i | highBits);
 	}
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_MANY_NAMES_DEFINED;

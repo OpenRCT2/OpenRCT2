@@ -22,6 +22,7 @@ extern "C" {
 	#include "../management/news_item.h"
 	#include "../peep/peep.h"
 	#include "../world/sprite.h"
+	#include "../util/util.h"
 	#include "http.h"
 	#include "twitch.h"
 
@@ -406,14 +407,14 @@ static void twitch_parse_chat_message(const char *message)
 
 	message++;
 	ch = strchrm(message, " \t");
-	strncpy(buffer, message, ch - message);
+	safe_strncpy(buffer, message, ch - message);
 	buffer[ch - message] = 0;
 	if (_strcmpi(buffer, "news") == 0) {
 		if (gConfigTwitch.enable_news) {
 			ch = strskipwhitespace(ch);
 
 			buffer[0] = (char)FORMAT_TOPAZ;
-			strncpy(buffer + 1, ch, sizeof(buffer) - 2);
+			safe_strncpy(buffer + 1, ch, sizeof(buffer) - 2);
 			buffer[sizeof(buffer) - 2] = 0;
 
 			// Remove unsupport characters

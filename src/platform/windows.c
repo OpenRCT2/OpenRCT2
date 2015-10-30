@@ -30,6 +30,7 @@
 #include "../openrct2.h"
 #include "../localisation/language.h"
 #include "../localisation/currency.h"
+#include "../util/util.h"
 #include "../config.h"
 #include "platform.h"
 
@@ -386,7 +387,7 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
 
 	if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, wOutPath))) {
 		utf8 *outPathTemp = widechar_to_utf8(wOutPath);
-		strcpy(outPath, outPathTemp);
+		safe_strncpy(outPath, outPathTemp, MAX_PATH);
 		free(outPathTemp);
 
 		strcat(outPath, separator);

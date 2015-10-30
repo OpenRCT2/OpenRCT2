@@ -31,6 +31,7 @@
 #include "../input.h"
 #include "../localisation/localisation.h"
 #include "../openrct2.h"
+#include "../util/util.h"
 #include "platform.h"
 
 typedef void(*update_palette_func)(const uint8*, int, int);
@@ -589,7 +590,7 @@ void platform_process_messages()
 			}
 			break;
 		case SDL_TEXTEDITING:
-			strcpy(gTextInputComposition, e.edit.text);
+			safe_strncpy(gTextInputComposition, e.edit.text, min(e.edit.length, 32));
 			gTextInputCompositionStart = e.edit.start;
 			gTextInputCompositionLength = e.edit.length;
 			gTextInputCompositionActive = gTextInputComposition[0] != 0;

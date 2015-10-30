@@ -590,7 +590,7 @@ static int open_landscape_file_dialog()
 {
 	int result;
 	format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, STR_LOAD_LANDSCAPE_DIALOG_TITLE, 0);
-	strcpy((char*)0x0141EF68, (char*)RCT2_ADDRESS_LANDSCAPES_PATH);
+	safe_strncpy((char*)0x0141EF68, (char*)RCT2_ADDRESS_LANDSCAPES_PATH, MAX_PATH);
 	format_string((char*)0x0141EE68, STR_RCT2_LANDSCAPE_FILE, 0);
 	pause_sounds();
 	result = platform_open_common_file_dialog(1, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68, "*.SV6;*.SV4;*.SC6", (char*)0x0141EE68);
@@ -607,7 +607,7 @@ static int open_load_game_dialog()
 {
 	int result;
 	format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, STR_LOAD_GAME_DIALOG_TITLE, 0);
-	strcpy((char*)0x0141EF68, (char*)RCT2_ADDRESS_SAVED_GAMES_PATH);
+	safe_strncpy((char*)0x0141EF68, (char*)RCT2_ADDRESS_SAVED_GAMES_PATH, MAX_PATH);
 	format_string((char*)0x0141EE68, STR_RCT2_SAVED_GAME, 0);
 	pause_sounds();
 	result = platform_open_common_file_dialog(1, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68, "*.SV6", (char*)0x0141EE68);
@@ -639,7 +639,7 @@ static void load_landscape()
 			strcpy(esi, ".SC6");
 			break;
 		}
-		strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)0x0141EF68);
+		safe_strncpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)0x0141EF68, MAX_PATH);
 
 		editor_load_landscape((char*)0x0141EF68);
 		if (1) {
@@ -874,10 +874,10 @@ int game_load_save(const char *path)
 {
 	log_verbose("loading saved game, %s", path);
 
-	strcpy((char*)0x0141EF68, path);
-	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, path);
+	safe_strncpy((char*)0x0141EF68, path, MAX_PATH);
+	safe_strncpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, path, MAX_PATH);
 
-	strcpy(gScenarioSaveName, path_get_filename(path));
+	safe_strncpy(gScenarioSaveName, path_get_filename(path), MAX_PATH);
 	path_remove_extension(gScenarioSaveName);
 
 	SDL_RWops* rw = SDL_RWFromFile(path, "rb");
@@ -983,7 +983,7 @@ static void load_game()
 			strcpy(esi, ".SV6");
 			break;
 		}
-		strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)0x0141EF68);
+		safe_strncpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)0x0141EF68, MAX_PATH);
 
 		if (game_load_save((char *)0x0141EF68)) {
 			gfx_invalidate_screen();
@@ -1009,7 +1009,7 @@ static int show_save_game_dialog(char *resultPath)
 	char filterName[256];
 
 	format_string(title, STR_SAVE_GAME_1040, NULL);
-	strcpy(filename, RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH_2, char));
+	safe_strncpy(filename, RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH_2, char), MAX_PATH);
 	format_string(filterName, STR_RCT2_SAVED_GAME, NULL);
 
 	pause_sounds();
@@ -1017,7 +1017,7 @@ static int show_save_game_dialog(char *resultPath)
 	unpause_sounds();
 
 	if (result)
-		strcpy(resultPath, filename);
+		safe_strncpy(resultPath, filename, MAX_PATH);
 	return result;
 }
 
@@ -1056,7 +1056,7 @@ void game_autosave()
 	utf8 backupPath[MAX_PATH];
 
 	platform_get_user_directory(path, "save");
-	strcpy(backupPath, path);
+	safe_strncpy(backupPath, path, MAX_PATH);
 
 	strcat(path, "autosave.sv6");
 	strcat(backupPath, "autosave.sv6.bak");
