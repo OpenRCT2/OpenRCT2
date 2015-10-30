@@ -815,21 +815,21 @@ void sub_688485(){
 }
 
 /* rct2: 0x006874B0, 0x00687618, 0x0068778C, 0x00687902, 0x0098199C */
-int sub_98199C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 length_x, sint16 length_y, uint32 rotation){
+int sub_98199C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 length_y, sint16 length_x, uint32 rotation){
 	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
 		al | (ah << 8), 
 		image_id, 
 		cl, 
 		height, 
-		length_x, 
 		length_y, 
+		length_x, 
 		rotation);
 	return 1;
 }
 
 /* rct2: 0x00686806, 0x006869B2, 0x00686B6F, 0x00686D31, 0x0098197C */
-int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 length_x, sint16 length_y, uint32 rotation){
-	int ebp = ah + RCT2_GLOBAL(0x9DEA56, uint16);
+int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 length_y, sint16 length_x, uint32 rotation){
+	int ebp = ah + RCT2_GLOBAL(0x9DEA56, sint16);
 
 	RCT2_GLOBAL(0xF1AD28, paint_struct*) = 0;
 	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
@@ -907,25 +907,25 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 le
 
 	// Unsure why rots 1 and 3 need to swap
 	switch (rotation){
-	case 0:
-		rotate_map_coordinates(&boundBox.x, &boundBox.y, 0);
-		rotate_map_coordinates(&s_unk.x, &s_unk.y, 0);
+	case 0:		
 		boundBox.x--;
 		boundBox.y--;
+		rotate_map_coordinates(&s_unk.x, &s_unk.y, 0);
+		rotate_map_coordinates(&boundBox.x, &boundBox.y, 0);
 		break;
 	case 1:
-		rotate_map_coordinates(&boundBox.x, &boundBox.y, 3);
+		boundBox.x--;
 		rotate_map_coordinates(&s_unk.x, &s_unk.y, 3);
-		boundBox.y--;
+		rotate_map_coordinates(&boundBox.x, &boundBox.y, 3);
 		break;
 	case 2:
 		rotate_map_coordinates(&boundBox.x, &boundBox.y, 2);
 		rotate_map_coordinates(&s_unk.x, &s_unk.y, 2);
 		break;
 	case 3:
+		boundBox.y--;
 		rotate_map_coordinates(&boundBox.x, &boundBox.y, 1);
 		rotate_map_coordinates(&s_unk.x, &s_unk.y, 1);
-		boundBox.x--;
 		break;
 	}
 
@@ -1227,7 +1227,10 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 
 	sint8 ah = is_exit ? 0x23 : 0x33;
 
-	sub_98197C(0, ah, image_id, 0, height, 2, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	sint16 lengthY = (direction & 1) ? 28 : 2;
+	sint16 lengthX = (direction & 1) ? 2 : 28;
+
+	sub_98197C(0, ah, image_id, 0, height, lengthY, lengthX, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 
 	if (transparant_image_id){
 		if (is_exit){
@@ -1240,24 +1243,24 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height;
 
-		sub_98199C(0, ah, transparant_image_id, 0, height, 2, 0x1C, 0);
+		sub_98199C(0, ah, transparant_image_id, 0, height, lengthY, lengthX, 0);
 	}
 
 	image_id += 4;
 
-	RCT2_GLOBAL(0x009DEA52, uint16) = 2;
-	RCT2_GLOBAL(0x009DEA54, uint16) = 28;
+	RCT2_GLOBAL(0x009DEA52, uint16) = (direction & 1) ? 28 : 2;
+	RCT2_GLOBAL(0x009DEA54, uint16) = (direction & 1) ? 2 : 28;
 	RCT2_GLOBAL(0x009DEA56, uint16) = height;
 
-	sub_98197C(0, ah, image_id, 0, height, 2, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	sub_98197C(0, ah, image_id, 0, height, lengthY, lengthX, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
 
 	if (transparant_image_id){
 		transparant_image_id += 4;
-		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 28;
+		RCT2_GLOBAL(0x009DEA52, uint16) = (direction & 1) ? 28 : 2;
+		RCT2_GLOBAL(0x009DEA54, uint16) = (direction & 1) ? 2 : 28;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height;
 
-		sub_98199C(0, ah, transparant_image_id, 0, height, 2, 0x1C, 0);
+		sub_98199C(0, ah, transparant_image_id, 0, height, lengthY, lengthX, 0);
 	}
 
 	uint32 eax = 0xFFFF0600 | ((height / 16) & 0xFF);
