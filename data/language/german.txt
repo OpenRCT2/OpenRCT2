@@ -880,8 +880,8 @@ STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP
 STR_0876    :{BLACK}{DOWN}
 STR_0877    :Zu niedrig!
 STR_0878    :Zu hoch!
-STR_0879    :Gelände kann hier nicht tiefer gemacht werden...
-STR_0880    :Gelände kann hier nicht höher gemacht werden...
+STR_0879    :Gelände kann hier nicht gesenkt werden...
+STR_0880    :Gelände kann hier nicht erhöht werden...
 STR_0881    :Objekt ist im Weg
 STR_0882    :Spiel laden
 STR_0883    :Spiel speichern
@@ -934,7 +934,7 @@ STR_0929    :S-Kurve (links)
 STR_0930    :S-Kurve (rechts)
 STR_0931    :Vertikale Schleife (l.)
 STR_0932    :Vertikale Schleife (r.)
-STR_0933    :Gelände zuerst höher bzw. niedriger machen
+STR_0933    :Gelände muss erhöht/gesenkt werden
 STR_0934    :Attraktionseingang im Weg
 STR_0935    :Attraktionsausgang im Weg
 STR_0936    :Parkeingang im Weg
@@ -1073,7 +1073,7 @@ STR_1068    :Rotationsliftmodus
 STR_1069    :Station-zu-Station-Modus
 STR_1070    :Einzelfahrt pro Eintritt
 STR_1071    :Unbegrenzte Fahrten pro Eintritt
-STR_1072    :Irrgartenmodus
+STR_1072    :Labyrinthmodus
 STR_1073    :Rennmodus
 STR_1074    :Autoskooter-Modus
 STR_1075    :Schwingmodus
@@ -1178,10 +1178,10 @@ STR_1173    :{SMALLFONT}{BLACK}Fußwege und Warteschlangenreihen anlegen
 STR_1174    :Banner im Weg
 STR_1175    :Kann nicht auf Fußweg mit Neigung angelegt werden
 STR_1176    :Fußweg kann hier nicht angelegt werden...
-STR_1177    :Fußweg kann von hier nicht entfernt werden...
+STR_1177    :Fußweg kann hier nicht entfernt werden...
 STR_1178    :Landneigung unpassend
 STR_1179    :Fußweg im Weg
-STR_1180    :Kann unter Wasser nicht gebaut werden!
+STR_1180    :Kann nicht unter Wasser gebaut werden!
 STR_1181    :Fußwege
 STR_1182    :Art
 STR_1183    :Richtung
@@ -1514,7 +1514,7 @@ STR_1509    :{SMALLFONT}{OPENQUOTES}Ich möchte aus {STRINGID} aussteigen{ENDQUO
 STR_1510    :{SMALLFONT}{OPENQUOTES}Ich gehe nicht auf {STRINGID} - Es ist nicht sicher{ENDQUOTES}
 STR_1511    :{SMALLFONT}{OPENQUOTES}Dieser Weg ist schrecklich{ENDQUOTES}
 STR_1512    :{SMALLFONT}{OPENQUOTES}Hier sind zu viele Leute{ENDQUOTES}
-STR_1513    :{SMALLFONT}{OPENQUOTES}Es sieht wirklich schlimm aus mit dem Vandalismus hier{ENDQUOTES}
+STR_1513    :{SMALLFONT}{OPENQUOTES}Der Vandalismus hier ist schrecklich{ENDQUOTES}
 STR_1514    :{SMALLFONT}{OPENQUOTES}Eine tolle Landschaft!{ENDQUOTES}
 STR_1515    :{SMALLFONT}{OPENQUOTES}Dieser Park ist wirklich sauber und aufgeräumt{ENDQUOTES}
 STR_1516    :{SMALLFONT}{OPENQUOTES}Die Springbrunnen sind großartig{ENDQUOTES}
@@ -1649,7 +1649,7 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}{OPENQUOTES}Hilfe! Bringt mich runter!{ENDQUOTES}
+STR_1648    :{SMALLFONT}{OPENQUOTES}Hilfe! Lasst mich runter!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}Mir geht das Geld aus!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! Eine neue Bahn im Bau!{ENDQUOTES}
 STR_1651    :{SMALLFONT}{OPENQUOTES}Gute Bahn! Doch nicht so gut wie die Phoenix...{ENDQUOTES}
@@ -1690,7 +1690,7 @@ STR_1685    :Grundflächengröße 2 x 4
 STR_1686    :Grundflächengröße 5 x 1
 STR_1687    :Wasser-Splash
 STR_1688    :Grundflächengröße 4 x 1
-STR_1689    :Klotzbremsen
+STR_1689    :Blockbremsen
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Kosten: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Kosten: {BLACK}ab {CURRENCY}
@@ -1736,7 +1736,7 @@ STR_1731    :{WHITE}{STRINGID} - -
 STR_1732    :Bauen
 STR_1733    :Modus
 STR_1734    :{WINDOW_COLOUR_2}Anzahl der Runden:
-STR_1735    :{SMALLFONT}{BLACK}Rundenanzahl der Rundfahrt
+STR_1735    :{SMALLFONT}{BLACK}Rundenanzahl
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1737    :{COMMA16}
 STR_1738    :Rundenanzahl kann nicht geändert werden...
@@ -1744,7 +1744,7 @@ STR_1739    :Rennen gewonnen von Besucher {INT32}
 STR_1740    :Rennen wurde gewonnen von {STRINGID}
 STR_1741    :Noch nicht gebaut!
 STR_1742    :{WINDOW_COLOUR_2}Max. Besucherzahl:
-STR_1743    :{SMALLFONT}{BLACK}Höchstzahl zulässiger Personen zu einem Zeitpunkt bei dieser Bahn
+STR_1743    :{SMALLFONT}{BLACK}Max. Anzahl von Personen zur selben Zeit auf dieser Bahn
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1745    :{COMMA16}
 STR_1746    :Dies kann nicht geändert werden...
@@ -1762,7 +1762,7 @@ STR_1757    :{WINDOW_COLOUR_2}Zuverlässigkeit: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Baumodus
 STR_1759    :{SMALLFONT}{BLACK}Verschiebemodus
 STR_1760    :{SMALLFONT}{BLACK}Ausfüllmodus
-STR_1761    :{SMALLFONT}{BLACK}Irrgarten in diese Richtung bauen
+STR_1761    :{SMALLFONT}{BLACK}Labyrinth in diese Richtung bauen
 STR_1762    :Wasserfälle
 STR_1763    :Stromschnellen
 STR_1764    :Baumstammstöße
@@ -1793,8 +1793,8 @@ STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriffkostüm
 STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Piratenkostüm
 STR_1790    :{SMALLFONT}{BLACK}Uniformfarbe für diesen{NEWLINE}Mitarbeiter auswählen
 STR_1791    :{WINDOW_COLOUR_2}Uniformfarbe:
-STR_1792    :Antwortet auf {STRINGID} -Störungsruf
-STR_1793    :Unterwegs zu {STRINGID} für eine Inspektion
+STR_1792    :Antwortet auf Störung von {STRINGID}
+STR_1793    :Unterwegs zur Inspektion von {STRINGID}
 STR_1794    :Repariert {STRINGID}
 STR_1795    :Beantwortet einen Funkspruch
 STR_1796    :Ist ausgefallen und erfordert Reparatur
@@ -1919,7 +1919,7 @@ STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Darlehen:
 STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
-STR_1918    :Es können keine weiteren Gelder geliehen werden!
+STR_1918    :Es kann kein weiteres Darlehnen aufgenommen werden!
 STR_1919    :Nicht genügend Geld verfügbar!
 STR_1920    :Darlehen kann nicht zurückgezahlt werden!
 STR_1921    :{SMALLFONT}{BLACK}Neues Spiel beginnen
@@ -2220,7 +2220,7 @@ STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}F
 STR_2218    :{RED}{STRINGID} bei {STRINGID} ist noch nicht zu {STRINGID} zurückgekehrt!{NEWLINE}Überprüfen Sie, ob es steckengeblieben ist oder angehalten hat
-STR_2219    :{RED}{COMMA16} Menschen sind in einem Unfall gestorben bei {STRINGID}
+STR_2219    :{RED}{COMMA16} Menschen sind in einem Unfall bei {STRINGID} gestorben
 STR_2220    :{WINDOW_COLOUR_2}Parkbewertung: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Parkbewertung: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
@@ -2269,7 +2269,7 @@ STR_2264    :Forschungsfinanzierung
 STR_2265    :{WINDOW_COLOUR_2}Kosten: {BLACK}{CURRENCY} pro Monat
 STR_2266    :Forschungsprioritäten
 STR_2267    :Zur Zeit in Entwicklung
-STR_2268    :Letzte Entwicklung
+STR_2268    :Zuletzt Entwickelt
 STR_2269    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID}
 STR_2270    :{WINDOW_COLOUR_2}Fortschritt: {BLACK}{STRINGID}
 STR_2271    :{WINDOW_COLOUR_2}Erwartet: {BLACK}{STRINGID}
@@ -2498,7 +2498,7 @@ STR_2492    :{SMALLFONT}{BLACK}Alle Tastenkürzel auf Standardeinstellung zurüc
 STR_2493    :Oberstes Fenster schließen
 STR_2494    :Alle freien Fenster schließen
 STR_2495    :Baumodus abbrechen
-STR_2496    :Spielpause
+STR_2496    :Spiel pausieren
 STR_2497    :Ansicht wegzoomen
 STR_2498    :Ansicht heranzoomen
 STR_2499    :Ansicht im Uhrzeigersinn drehen
@@ -2621,7 +2621,7 @@ STR_2614    :Y
 STR_2615    :Z
 STR_2616    :???
 STR_2617    :???
-STR_2618    :Menu
+STR_2618    :Menü
 STR_2619    :???
 STR_2620    :???
 STR_2621    :Zehnertastatur 0
@@ -2851,7 +2851,7 @@ STR_2842    :{TOPAZ}Ihr Park hat die Auszeichnung `Enttäuschendster Park des La
 STR_2843    :{TOPAZ}Ihr Park hat die Auszeichnung `Park mit den besten Wasserbahnen des Landes' erhalten!
 STR_2844    :{TOPAZ}Ihr Park hat die Auszeichnung `Park mit den besten eigenen Bahnentwürfen des Landes' erhalten!
 STR_2845    :{TOPAZ}Ihr Park hat die Auszeichnung `Park mit der buntesten Farbwahl' erhalten!
-STR_2846    :{TOPAZ}Ihr Park hat die Auszeichnung `Park mit der konfusesten Anordnung' erhalten!
+STR_2846    :{TOPAZ}Ihr Park hat die Auszeichnung `Park mit der verwirrensten Anordnung' erhalten!
 STR_2847    :{TOPAZ}Ihr Park hat die Auszeichnung `Park mit den besten gemäßigten Bahnen' erhalten!
 STR_2848    :{WINDOW_COLOUR_2}Keine aktuellen Auszeichnungen
 STR_2849    :Neues Szenario erfolgreich installiert
@@ -3126,7 +3126,7 @@ STR_3117    :{BLACK}Mechaniker rufen...
 STR_3118    :{BLACK}{STRINGID} geht zur Bahn
 STR_3119    :{BLACK}{STRINGID} repariert die Bahn
 STR_3120    :{SMALLFONT}{BLACK}Nächsten verfügbaren Mechaniker{NEWLINE}oder Mechaniker bei einer{NEWLINE}Bahnreparatur suchen
-STR_3121    :Örtlicher Mechaniker kann nicht gefunden werden, oder alle Mechaniker sind gerade beschäftigt
+STR_3121    :Es befindet sich kein Mechaniker in der Nähe, oder alle Mechaniker sind gerade beschäftigt
 STR_3122    :{WINDOW_COLOUR_2}Lieblingsbahn von: {BLACK}{COMMA16} Besucher
 STR_3123    :{WINDOW_COLOUR_2}Lieblingsbahn von: {BLACK}{COMMA16} Besuchern
 STR_3124    :Defekt {STRINGID}
@@ -3184,7 +3184,7 @@ STR_3175    :Dieses Objekt wird immer benötigt
 STR_3176    :Dieses Objekt kann nicht ausgewählt werden
 STR_3177    :Die Auswahl dieses Objekts kann nicht aufgehoben werden
 STR_3178    :Es muss mindestens ein Fußwegobjekt ausgewählt werden
-STR_3179    :Es muss mindestens ein Attraktionsobjekt ausgewählt werden
+STR_3179    :Es muss mindestens eine Attraktion ausgewählt werden
 STR_3180    :Ungültige Auswahl an Objekten
 STR_3181    :Objektauswahl - {STRINGID}
 STR_3182    :Parkeingangsart muss ausgewählt werden
@@ -3338,7 +3338,7 @@ STR_3329    :Parkeingang noch nicht gebaut
 STR_3330    :Park muss Gelände besitzen
 STR_3331    :Fußweg vom Parkeingang zum Kartenrand entweder nicht vollständig oder zu komplex - Fußweg darf nicht zu breit sein und sollte so wenige Kreuzungen und Biegungen wie möglich aufweisen
 STR_3332    :Parkeingang liegt verkehrt herum oder besitzt keinen Fußweg zum Kartenrand
-STR_3333    :Plugin-Objekte bei gespeich. Spielen exportieren
+STR_3333    :Zusatzobjekte bei gespeich. Spielen exportieren
 STR_3334    :{SMALLFONT}{BLACK}Wählen Sie aus, ob zusätzliche Plugin-Objektdaten (Zusatzdaten, die nicht zum Hauptprodukt gehören) in Spielständen oder Szenariodateien gespeichert werden sollen, damit jemand, der nicht über die zusätzlichen Objektdaten verfügt, die gespeicherten Daten laden kann
 STR_3335    :Achterbahn-Designer - Bahnarten & Fahrzeuge auswählen
 STR_3336    :Streckenentwurf-Manager - Bahnart auswählen
