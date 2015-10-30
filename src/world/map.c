@@ -4186,7 +4186,10 @@ static void sub_68AE2A(int x, int y)
 			mapElement->properties.surface.grass_length = 1;
 			mapElement->properties.surface.ownership = 0;
 			if (!map_element_is_last_for_tile(mapElement++))
+			{
+				map_element_remove(mapElement);
 				goto next_element;
+			}
 
 			return;
 		case MAP_ELEMENT_TYPE_ENTRANCE:
