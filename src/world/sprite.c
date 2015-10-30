@@ -451,7 +451,7 @@ void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite* sprite){
 		return;
 	}
 	sint16 new_x = x, new_y = y, start_x = x;
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)){
+	switch (get_current_rotation()){
 	case 0:
 		new_x = new_y - new_x;
 		new_y = (new_y + start_x) / 2 - z;

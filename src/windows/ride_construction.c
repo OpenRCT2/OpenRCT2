@@ -2152,7 +2152,7 @@ static void window_ride_construction_draw_track_piece(
 
 	z -= bx;
 	int start_x = x;
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)) {
+	switch (get_current_rotation()) {
 	case 0:
 		x = y - x;
 		y = (y + start_x) / 2 - z;

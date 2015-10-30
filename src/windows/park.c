@@ -1064,7 +1064,7 @@ static void window_park_init_viewport(rct_window *w)
 			x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[i] + 16;
 			y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[i] + 16;
 			z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, sint16)[i] + 32;
-			r = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+			r = get_current_rotation();
 
 			xy = 0x40000000 | (y << 16) | x;
 			zr = (z << 16) | (r << 8);

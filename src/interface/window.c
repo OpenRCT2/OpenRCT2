@@ -1301,7 +1301,7 @@ void window_scroll_to_location(rct_window *w, int x, int y, int z)
 			}
 		}
 
-		rct_xy16 map_coordinate = coordinate_3d_to_2d(&location_3d, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8));
+		rct_xy16 map_coordinate = coordinate_3d_to_2d(&location_3d, get_current_rotation());
 
 		int i = 0;
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)) {
@@ -1389,7 +1389,7 @@ void window_rotate_camera(rct_window *w, int direction)
 		z = map_element_height(x, y);
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) + direction) % 4;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = (get_current_rotation() + direction) % 4;
 
 	int new_x, new_y;
 	center_2d_coordinates(x, y, z, &new_x, &new_y, viewport);

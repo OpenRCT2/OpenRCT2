@@ -140,7 +140,7 @@ void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_view
 		.z = z
 	};
 
-	rct_xy16 coord_2d = coordinate_3d_to_2d(&coord_3d, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32));
+	rct_xy16 coord_2d = coordinate_3d_to_2d(&coord_3d, get_current_rotation());
 
 	// If the start location was invalid
 	// propagate the invalid location to the output.
@@ -259,7 +259,7 @@ void sub_689174(sint16* x, sint16* y, sint16 *z)
 		if (pos.x > max && pos.y > max) {
 			int x_corr[] = { -1, 1, 1, -1 };
 			int y_corr[] = { -1, -1, 1, 1 };
-			uint32 rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+			uint32 rotation = get_current_rotation();
 			pos.x += x_corr[rotation] * height;
 			pos.y += y_corr[rotation] * height;
 		}
@@ -816,7 +816,7 @@ void sub_688485(){
 
 /* rct2: 0x006874B0, 0x00687618, 0x0068778C, 0x00687902, 0x0098199C */
 int sub_98199C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 length_y, sint16 length_x, uint32 rotation){
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
+	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[get_current_rotation()],
 		al | (ah << 8), 
 		image_id, 
 		cl, 
@@ -858,7 +858,7 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 le
 	};
 
 	switch (rotation) {
-	case 0:	
+	case 0:
 		rotate_map_coordinates(&coord_3d.x, &coord_3d.y, 0);
 		break;
 	case 1:
@@ -1008,7 +1008,7 @@ void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
 		RCT2_GLOBAL(0x9DEA52, uint16) = 0;
 		RCT2_GLOBAL(0x9DEA54, uint16) = 0;
 		RCT2_GLOBAL(0x9DEA56, uint16) = z + 2;
-		sub_98197C(0, 0, ebx, 0, z, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32));
+		sub_98197C(0, 0, ebx, 0, z, 1, 1, get_current_rotation());
 		return;
 	}
 
@@ -1087,7 +1087,7 @@ void viewport_litter_paint_setup(rct_litter *litter, int imageDirection)
 	RCT2_GLOBAL(0x9DEA54, uint16) = 0xFFFC;
 	RCT2_GLOBAL(0x9DEA56, uint16) = litter->z + 2;
 
-	sub_98197C(0, 0xFF, image_id, 0, litter->z, 4, 4, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32));
+	sub_98197C(0, 0xFF, image_id, 0, litter->z, 4, 4, get_current_rotation());
 }
 
 
@@ -1125,7 +1125,7 @@ void sprite_paint_setup(uint16 eax, uint16 ecx){
 		if (dpi->x + dpi->width <= spr->unknown.sprite_left)continue;
 		if (spr->unknown.sprite_right <= dpi->x)continue;
 
-		int image_direction = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+		int image_direction = get_current_rotation();
 		image_direction <<= 3;
 		image_direction += spr->unknown.sprite_direction;
 		image_direction &= 0x1F;
@@ -1230,7 +1230,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 	sint16 lengthY = (direction & 1) ? 28 : 2;
 	sint16 lengthX = (direction & 1) ? 2 : 28;
 
-	sub_98197C(0, ah, image_id, 0, height, lengthY, lengthX, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	sub_98197C(0, ah, image_id, 0, height, lengthY, lengthX, get_current_rotation());
 
 	if (transparant_image_id){
 		if (is_exit){
@@ -1252,7 +1252,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 	RCT2_GLOBAL(0x009DEA54, uint16) = (direction & 1) ? 2 : 28;
 	RCT2_GLOBAL(0x009DEA56, uint16) = height;
 
-	sub_98197C(0, ah, image_id, 0, height, lengthY, lengthX, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	sub_98197C(0, ah, image_id, 0, height, lengthY, lengthX, get_current_rotation());
 
 	if (transparant_image_id){
 		transparant_image_id += 4;
@@ -1367,7 +1367,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height;
 
-		sub_98197C(0, 0, image_id, 0, height, 0x1C, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+		sub_98197C(0, 0, image_id, 0, height, 0x1C, 32, get_current_rotation());
 
 		entrance = (rct_entrance_type*)object_entry_groups[OBJECT_TYPE_PARK_ENTRANCE].chunks[0];
 		image_id = (entrance->image_id + direction * 3) | ghost_id;
@@ -1376,7 +1376,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height + 32;
 
-		sub_98197C(0, 0x2F, image_id, 0, height, 0x1C, 0x1C, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+		sub_98197C(0, 0x2F, image_id, 0, height, 0x1C, 0x1C, get_current_rotation());
 
 		if ((direction + 1) & (1 << 1))
 			break;
@@ -1423,7 +1423,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 		RCT2_GLOBAL(0x009DEA54, uint16) = 3;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height;
 
-		sub_98197C(0, 0x4F, image_id, 0, height, di, 0x1A, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+		sub_98197C(0, 0x4F, image_id, 0, height, di, 0x1A, get_current_rotation());
 		break;
 	}
 
@@ -1491,7 +1491,7 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 				RCT2_GLOBAL(0x009DEA52, uint16) = 1000;
 				RCT2_GLOBAL(0x009DEA54, uint16) = 1000;
 				RCT2_GLOBAL(0x009DEA56, uint16) = 2047;
-				sub_98197C(16, 0, ebx, 16, height + ax + 3, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32));
+				sub_98197C(16, 0, ebx, 16, height + ax + 3, 1, 1, get_current_rotation());
 			}
 		}
 
@@ -1571,7 +1571,7 @@ void viewport_entrance_paint_setup(uint8 direction, int height, rct_map_element*
 			RCT2_GLOBAL(0x009DEA56, sint16) = z;
 			RCT2_GLOBAL(0x009DEA56, uint16) += 64;
 
-			sub_98197C(16, 0, image_id, 16, height, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+			sub_98197C(16, 0, image_id, 16, height, 1, 1, get_current_rotation());
 		}
 	}
 
@@ -1620,11 +1620,11 @@ void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* m
 			0x20000000;
 	}
 
-	sub_98197C(0, 0x15, image_id, 0, height, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	sub_98197C(0, 0x15, image_id, 0, height, 1, 1, get_current_rotation());
 	RCT2_GLOBAL(0x9DEA52, uint32) = RCT2_ADDRESS(0x98D888, uint32)[direction * 2];
 
 	image_id++;
-	sub_98197C(0, 0x15, image_id, 0, height, 1, 1, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t));
+	sub_98197C(0, 0x15, image_id, 0, height, 1, 1, get_current_rotation());
 
 	// Opposite direction
 	direction ^= 2;
@@ -1678,7 +1678,7 @@ static void sub_68B3FB(int x, int y)
 	rct_map_element* map_element = map_get_first_element_at(x >> 5, y >> 5);
 
 	int dx = 0;
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)) {
+	switch (get_current_rotation()) {
 	case 0:
 		dx = x + y;
 		break;
@@ -1702,7 +1702,7 @@ static void sub_68B3FB(int x, int y)
 		RCT2_GLOBAL(0x9DE56A, uint16) == RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, uint16) &&
 		RCT2_GLOBAL(0x9DE56E, uint16) == RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, uint16)){
 		uint8 arrowRotation =
-			(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)
+			(get_current_rotation()
 			+ (RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) & 3)) & 3;
 
 		uint32 imageId =
@@ -1719,7 +1719,7 @@ static void sub_68B3FB(int x, int y)
 		RCT2_GLOBAL(0x9DEA54, uint16) = 0;
 		RCT2_GLOBAL(0x9DEA56, uint16) = arrowZ + 18;
 
-		sub_98197C(0, 0xFF, imageId, 0, arrowZ, 32, 32, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32));
+		sub_98197C(0, 0xFF, imageId, 0, arrowZ, 32, 32, get_current_rotation());
 	}
 	int bx = dx + 52;
 
@@ -1753,7 +1753,7 @@ static void sub_68B3FB(int x, int y)
 	RCT2_GLOBAL(0x9DE56C, sint16) = y;
 	RCT2_GLOBAL(0x9DE57C, uint16) = 0;
 	do {
-		int direction = (map_element->type + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)) & MAP_ELEMENT_DIRECTION_MASK;
+		int direction = (map_element->type + get_current_rotation()) & MAP_ELEMENT_DIRECTION_MASK;
 		int height = map_element->base_height * 8;
 
 		uint32_t dword_9DE574 = RCT2_GLOBAL(0x9DE574, uint32_t);
@@ -1806,7 +1806,7 @@ static void viewport_blank_tiles_paint_setup(int x, int y)
 	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
 
 	int dx;
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)) {
+	switch (get_current_rotation()) {
 	case 0:
 		dx = x + y;
 		break;
@@ -1835,14 +1835,14 @@ static void viewport_blank_tiles_paint_setup(int x, int y)
 	RCT2_GLOBAL(0x9DE56C, sint16) = y;
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_NONE;
 	RCT2_CALLPROC_X(
-		(int)RCT2_ADDRESS(0x98196C, uint32_t*)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)],
+		(int)RCT2_ADDRESS(0x98196C, uint32_t*)[get_current_rotation()],
 		0xFF00,
 		3123,
 		y & 0xFF00,
 		16,
 		32,
 		32,
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32_t)
+		get_current_rotation()
 	);
 }
 
@@ -1925,7 +1925,7 @@ void viewport_paint_setup()
 
 	uint16 num_vertical_quadrants = (dpi->height + 2128) >> 5;
 
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)){
+	switch (get_current_rotation()){
 	case 0:
 		mapTile.x = mapTile.y - half_x;
 		mapTile.y = mapTile.y + half_x;
@@ -2074,7 +2074,7 @@ void sub_688217_helper(uint16 ax, uint8 flag)
 			if (!(ps_next->var_1B & (1 << 1))) continue;
 
 			int yes = 0;
-			switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
+			switch (get_current_rotation()) {
 			case 0:
 				if (my_some_y >= ps_next->some_x && my_other_y >= ps_next->attached_y && my_other_x >= ps_next->attached_x
 					&& !(my_some_x < ps_next->some_y && my_attached_y < ps_next->other_y && my_attached_x < ps_next->other_x))
@@ -2339,7 +2339,7 @@ rct_xy16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, uint16
 rct_xy16 viewport_coord_to_map_coord(int x, int y, int z)
 {
 	rct_xy16 ret;
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
+	switch (get_current_rotation()) {
 	case 0:
 		ret.x = -x / 2 + y + z;
 		ret.y = x / 2 + y + z;
@@ -2853,4 +2853,24 @@ void screen_get_map_xy_side_with_z(sint16 screenX, sint16 screenY, sint16 z, sin
 	*side = map_get_tile_side(*mapX, *mapY);
 	*mapX = floor2(*mapX, 32);
 	*mapY = floor2(*mapY, 32);
+}
+
+/**
+ * Get current viewport rotation.
+ *
+ * If an invalid rotation is detected and DEBUG_LEVEL_1 is enabled, an error
+ * will be reported.
+ *
+ * @returns rotation in range 0-3 (inclusive)
+ */
+int get_current_rotation()
+{
+	int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	int rotation_masked = rotation & 3;
+#if DEBUG_LEVEL_1
+	if (rotation != rotation_masked) {
+	    log_error("Found wrong rotation %d! Will return %d instead.", rotation, rotation_masked);
+	}
+#endif // DEBUG_LEVEL_1
+	return rotation_masked;
 }

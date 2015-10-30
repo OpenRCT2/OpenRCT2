@@ -1488,7 +1488,7 @@ static void window_ride_init_viewport(rct_window *w)
 
 	focus.sprite.sprite_id = -1;
 	focus.coordinate.zoom = 0;
-	focus.coordinate.rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+	focus.coordinate.rotation = get_current_rotation();
 
 
 	if (eax >= 0 && eax < ride->num_vehicles && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK){

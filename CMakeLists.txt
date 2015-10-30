@@ -50,6 +50,10 @@ else (DISABLE_NETWORK)
 	endif (WIN32)
 endif (DISABLE_NETWORK)
 
+set(DEBUG_LEVEL 0 CACHE STRING "Select debug level for compilation. Use value in range 0–3.")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
+
 # include lib
 include_directories("lib/")
 # add source files
@@ -57,8 +61,8 @@ file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp" "lib/argparse/*.c" "lib/cu
 
 if (UNIX)
 	# force 32bit build for now and set necessary flags to compile code as is
-	set(CMAKE_C_FLAGS "-m32 -std=gnu99")
-	set(CMAKE_CXX_FLAGS "-m32 -std=gnu++11")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32 -std=gnu99")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -std=gnu++11")
 	set(CMAKE_SHARED_LINKER_FLAGS "-m32")
 	set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_SHARED_LINKER_FLAGS})
 endif (UNIX)
