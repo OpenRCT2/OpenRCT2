@@ -502,7 +502,6 @@ enum {
 
 extern const uint8 RCT1ColourConversionTable[32];
 
-char **gVehicleHierarchies[0x60];
 const uint8 gRideCategories[0x60];
 
 bool rct1_read_sc4(const char *path, rct1_s4 *s4);

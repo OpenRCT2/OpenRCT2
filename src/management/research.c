@@ -295,7 +295,9 @@ void sub_684AC3(){
 				ebp = inner_research;
 			}
 		} while ((inner_research++)->entryIndex != RESEARCHED_ITEMS_END);
+		assert(edx != NULL);
 		edx->entryIndex = research->entryIndex;
+		assert(ebp != NULL);
 		ebp->entryIndex = (research + 1)->entryIndex;
 
 		uint8 cat = edx->category;

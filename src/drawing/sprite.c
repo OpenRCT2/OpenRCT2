@@ -136,6 +136,7 @@ void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, ui
 	uint32 source_line_width = source_image->width * zoom_amount;
 	//Requires use of palette?
 	if (image_type & IMAGE_TYPE_USE_PALETTE){
+		assert(palette_pointer != NULL);
 
 		//Mix with another image?? and colour adjusted
 		if (unknown_pointer!= NULL){ //Not tested. I can't actually work out when this code runs.
@@ -182,6 +183,7 @@ void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, ui
 	//Mix with background. It only uses source pointer for
 	//telling if it needs to be drawn not for colour.
 	if (image_type & IMAGE_TYPE_MIX_BACKGROUND){//Not tested
+		assert(palette_pointer != NULL);
 		for (; height > 0; height -= zoom_amount){
 			uint8* next_source_pointer = source_pointer + source_line_width;
 			uint8* next_dest_pointer = dest_pointer + dest_line_width;
