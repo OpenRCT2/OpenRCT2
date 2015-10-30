@@ -181,4 +181,8 @@ bool platform_check_steam_overlay_attached();
 
 #endif // __linux__
 
+#if !(POSIX_C_SOURCE >= 200809L || _XOPEN_SOURCE >= 700)
+	char *strndup(const char *src, size_t size);
+#endif // !(POSIX_C_SOURCE >= 200809L || _XOPEN_SOURCE >= 700)
+
 #endif
