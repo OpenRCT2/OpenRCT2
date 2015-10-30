@@ -792,6 +792,19 @@ void game_fix_save_vars() {
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) = peepCount;
+
+	// Fixes broken saves where a surface element could be null
+	for (int y = 0; y < 256; y++) {
+		for (int x = 0; x < 256; x++) {
+			rct_map_element *mapElement = map_get_surface_element_at(x, y);
+
+			if (mapElement == NULL)
+			{
+				log_error("Null map element at x = %d and y = %d, fixing...", x, y);
+				map_element_insert(x, y, 14, 0);
+			}
+		}
+	}
 }
 
 // Load game state for multiplayer
