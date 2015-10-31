@@ -199,13 +199,7 @@ static void window_banner_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_BANNER_NO_ENTRY:
 		textinput_cancel();
-		banner->flags ^= BANNER_FLAG_NO_ENTRY;
-		window_invalidate(w);
-
-		map_element->properties.banner.flags = 0xFF;
-		if (banner->flags & BANNER_FLAG_NO_ENTRY){
-			map_element->properties.banner.flags &= ~(1 << map_element->properties.banner.position);
-		}
+		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, banner->colour, GAME_COMMAND_SET_BANNER_STYLE, banner->text_colour, banner->flags ^ BANNER_FLAG_NO_ENTRY);
 		break;
 	}
 }
@@ -254,35 +248,13 @@ static void window_banner_dropdown(rct_window *w, int widgetIndex, int dropdownI
 		if (dropdownIndex == -1)
 			break;
 
-		banner->colour = (uint8)dropdownIndex;
-		window_invalidate(w);
+		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_BANNER_STYLE, banner->text_colour, 0);
 		break;
 	case WIDX_TEXT_COLOR_DROPDOWN_BUTTON:
 		if (dropdownIndex == -1)
 			break;
 
-		banner->text_colour = dropdownIndex + 1;
-
-		int colourCodepoint = FORMAT_COLOUR_CODE_START + banner->text_colour;
-
-		uint8 buffer[256];
-		format_string(buffer, banner->string_idx, 0);
-		int firstCodepoint = utf8_get_next(buffer, NULL);
-		if (firstCodepoint >= FORMAT_COLOUR_CODE_START && firstCodepoint <= FORMAT_COLOUR_CODE_END) {
-			utf8_write_codepoint(buffer, colourCodepoint);
-		} else {
-			utf8_insert_codepoint(buffer, colourCodepoint);
-		}
-
-		rct_string_id stringId = user_string_allocate(128, buffer);
-		if (stringId != 0) {
-			rct_string_id prev_string_id = banner->string_idx;
-			banner->string_idx = stringId;
-			user_string_free(prev_string_id);
-			window_invalidate(w);
-		} else {
-			window_error_open(2984, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
-		}
+		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, banner->colour, GAME_COMMAND_SET_BANNER_STYLE, dropdownIndex + 1, 0);
 		break;
 	}
 }
@@ -291,22 +263,9 @@ static void window_banner_dropdown(rct_window *w, int widgetIndex, int dropdownI
 static void window_banner_textinput(rct_window *w, int widgetIndex, char *text)
 {
 	if (widgetIndex == WIDX_BANNER_TEXT && text != NULL) {
-		rct_banner* banner = &gBanners[w->number];
-
-		utf8 *buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, uint8);
-		utf8 *dst = buffer;
-		dst = utf8_write_codepoint(dst, FORMAT_COLOUR_CODE_START + banner->text_colour);
-		strncpy(dst, text, 32);
-
-		rct_string_id stringId = user_string_allocate(128, buffer);
-		if (stringId) {
-			rct_string_id prev_string_id = banner->string_idx;
-			banner->string_idx = stringId;
-			user_string_free(prev_string_id);
-			window_invalidate(w);
-		} else {
-			window_error_open(2984, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
-		}
+		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 0)), GAME_COMMAND_SET_BANNER_NAME, *((int*)(text + 8)), *((int*)(text + 4)));
+		game_do_command(2, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 12)), GAME_COMMAND_SET_BANNER_NAME, *((int*)(text + 20)), *((int*)(text + 16)));
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 24)), GAME_COMMAND_SET_BANNER_NAME, *((int*)(text + 32)), *((int*)(text + 28)));
 	}
 }
 
