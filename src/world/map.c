@@ -4716,6 +4716,216 @@ void game_command_place_park_entrance(int* eax, int* ebx, int* ecx, int* edx, in
 		(*ebx >> 8) & 0xFF);
 }
 
+void game_command_set_banner_name(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {
+	static char newName[128];
+
+	rct_banner* banner = &gBanners[*ecx];
+
+	int nameChunkIndex = *eax & 0xFFFF;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS * 4;
+	int nameChunkOffset = nameChunkIndex - 1;
+	if (nameChunkOffset < 0)
+		nameChunkOffset = 2;
+	nameChunkOffset *= 12;
+	RCT2_GLOBAL(newName + nameChunkOffset + 0, uint32) = *edx;
+	RCT2_GLOBAL(newName + nameChunkOffset + 4, uint32) = *ebp;
+	RCT2_GLOBAL(newName + nameChunkOffset + 8, uint32) = *edi;
+
+	if (nameChunkIndex != 0) {
+		*ebx = 0;
+		return;
+	}
+
+	utf8 *buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, uint8);
+	utf8 *dst = buffer;
+	dst = utf8_write_codepoint(dst, FORMAT_COLOUR_CODE_START + banner->text_colour);
+	strncpy(dst, newName, 32);
+
+	rct_string_id stringId = user_string_allocate(128, buffer);
+	if (stringId) {
+		rct_string_id prev_string_id = banner->string_idx;
+		banner->string_idx = stringId;
+		user_string_free(prev_string_id);
+		rct_window* w = window_bring_to_front_by_number(WC_BANNER, *ecx);
+		if (w) {
+			window_invalidate(w);
+		}
+	} else {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 2984;
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+
+	*ebx = 0;
+}
+
+void game_command_set_sign_name(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {
+	static char newName[128];
+
+	rct_banner* banner = &gBanners[*ecx];
+	int x = banner->x << 5;
+	int y = banner->y << 5;
+
+	int nameChunkIndex = *eax & 0xFFFF;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS * 4;
+	int nameChunkOffset = nameChunkIndex - 1;
+	if (nameChunkOffset < 0)
+		nameChunkOffset = 2;
+	nameChunkOffset *= 12;
+	RCT2_GLOBAL(newName + nameChunkOffset + 0, uint32) = *edx;
+	RCT2_GLOBAL(newName + nameChunkOffset + 4, uint32) = *ebp;
+	RCT2_GLOBAL(newName + nameChunkOffset + 8, uint32) = *edi;
+
+	if (nameChunkIndex != 0) {
+		*ebx = 0;
+		return;
+	}
+
+	if (newName[0] != 0) {
+		rct_string_id string_id = user_string_allocate(128, newName);
+		if (string_id != 0) {
+			rct_string_id prev_string_id = banner->string_idx;
+			banner->string_idx = string_id;
+			user_string_free(prev_string_id);
+
+			banner->flags &= ~(BANNER_FLAG_2);
+			gfx_invalidate_screen();
+		} else {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 2984;
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+	}
+	else{
+		int rideIndex = banner_get_closest_ride_index(x, y, 16);
+		if (rideIndex == -1) {
+			*ebx = 0;
+			return;
+		}
+
+		banner->colour = rideIndex;
+		banner->flags |= BANNER_FLAG_2;
+
+		rct_string_id prev_string_id = banner->string_idx;
+		banner->string_idx = 778;
+		user_string_free(prev_string_id);
+		gfx_invalidate_screen();
+	}
+
+	*ebx = 0;
+}
+
+void game_command_set_banner_style(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {
+	rct_banner* banner = &gBanners[*ecx];
+
+	banner->colour = (uint8)*edx;
+	banner->text_colour = (uint8)*edi;
+
+	banner->flags = (uint8)*ebp;
+
+	int x = banner->x << 5;
+	int y = banner->y << 5;
+
+	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+
+	while (1){
+		if ((map_element_get_type(map_element) == MAP_ELEMENT_TYPE_BANNER) &&
+			(map_element->properties.banner.index == *ecx)) break;
+		map_element++;
+	}
+
+	map_element->properties.banner.flags = 0xFF;
+	if (banner->flags & BANNER_FLAG_NO_ENTRY){
+		map_element->properties.banner.flags &= ~(1 << map_element->properties.banner.position);
+	}
+
+	int colourCodepoint = FORMAT_COLOUR_CODE_START + banner->text_colour;
+
+	uint8 buffer[256];
+	format_string(buffer, banner->string_idx, 0);
+	int firstCodepoint = utf8_get_next(buffer, NULL);
+	if (firstCodepoint >= FORMAT_COLOUR_CODE_START && firstCodepoint <= FORMAT_COLOUR_CODE_END) {
+		utf8_write_codepoint(buffer, colourCodepoint);
+	} else {
+		utf8_insert_codepoint(buffer, colourCodepoint);
+	}
+
+	rct_string_id stringId = user_string_allocate(128, buffer);
+	if (stringId != 0) {
+		rct_string_id prev_string_id = banner->string_idx;
+		banner->string_idx = stringId;
+		user_string_free(prev_string_id);
+		rct_window* w = window_bring_to_front_by_number(WC_BANNER, *ecx);
+		if (w) {
+			window_invalidate(w);
+		}
+	} else {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 2984;
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+
+	*ebx = 0;
+}
+
+void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {
+	rct_banner *banner = &gBanners[*ecx];
+	int x = banner->x << 5;
+	int y = banner->y << 5;
+
+	banner->colour = (uint8)*edx;
+	banner->text_colour = (uint8)*edi;
+	
+	if (*ebp == 0) { // small sign
+		
+		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+
+		while (1){
+			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_FENCE) {
+				rct_scenery_entry* scenery_entry = g_wallSceneryEntries[map_element->properties.fence.type];
+				if (scenery_entry->wall.var_0D != 0xFF){
+					if (map_element->properties.fence.item[0] == *ecx)
+						break;
+				}
+			}
+			map_element++;
+		}
+		map_element->flags &= 0x9F;
+		map_element->properties.fence.item[1] =
+			banner->colour |
+			((banner->text_colour & 0x7) << 5);
+		map_element->flags |= ((banner->text_colour & 0x18) << 2);
+
+		map_invalidate_tile(x, y, map_element->base_height * 8, map_element->clearance_height * 8);
+	} else { // large sign
+		rct_map_element *mapElement = banner_get_map_element(*ecx);
+		if (mapElement == NULL || map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 2984;
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+
+		sign_set_colour(
+			banner->x * 32,
+			banner->y * 32,
+			mapElement->base_height,
+			mapElement->type & 3,
+			mapElement->properties.scenerymultiple.type >> 10,
+			banner->colour,
+			banner->text_colour
+		);
+	}
+
+	rct_window* w = window_bring_to_front_by_number(WC_BANNER, *ecx);
+	if (w) {
+		window_invalidate(w);
+	}
+
+	*ebx = 0;
+}
+
 /**
  * Gets the map element at x, y, z.
  * @param x x units, not tiles.

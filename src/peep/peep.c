@@ -9021,12 +9021,12 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 	}
 
 	utf8* fullText = RCT2_ADDRESS(0x00F1AEF6, utf8);
-	if (flags & GAME_COMMAND_FLAG_APPLY) {
+	//if (flags & GAME_COMMAND_FLAG_APPLY) { // this check seems to be useless and causes problems in multiplayer
 		uint8 position = (state - 1) % 3;
 		memcpy(fullText + position * 12, text_1, 4);
 		memcpy(fullText + 4 + position * 12, text_2, 4);
 		memcpy(fullText + 8 + position * 12, text_3, 4);
-	}
+	//}
 
 	if (state != 0)
 		return 0;
