@@ -3844,6 +3844,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 		dropdown_set_checked(ride->track_colour_supports[colourSchemeIndex], true);
 		break;
 	case WIDX_ENTRANCE_STYLE_DROPDOWN:
+		gDropdownItemsChecked = 0;
 		for (i = 0; i < countof(window_ride_entrance_style_list); i++) {
 			gDropdownItemsFormat[i] = 1142;
 			gDropdownItemsArgs[i] = RideEntranceDefinitions[window_ride_entrance_style_list[i]].string_id;
