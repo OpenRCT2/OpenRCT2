@@ -812,5 +812,8 @@
     <ClInclude Include="..\src\ride\track_paint.h">
       <Filter>Source\Ride</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\interface\colour.h">
+      <Filter>Source\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

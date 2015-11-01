@@ -20,6 +20,7 @@
 
 #include "../addresses.h"
 #include "../game.h"
+#include "../interface/colour.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../management/award.h"
@@ -69,9 +70,9 @@ void park_init()
 
 	RCT2_GLOBAL(0x013CA740, uint8) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, uint16) = 777;
-	RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) = 28;
-	RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) = 7;
-	RCT2_GLOBAL(RCT2_ADDRESS_SECURITY_COLOUR, uint8) = 18;
+	RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) = COLOUR_BRIGHT_RED;
+	RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) = COLOUR_LIGHT_BLUE;
+	RCT2_GLOBAL(RCT2_ADDRESS_SECURITY_COLOUR, uint8) = COLOUR_YELLOW;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;

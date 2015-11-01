@@ -213,6 +213,7 @@
     <ClInclude Include="..\src\hook.h" />
     <ClInclude Include="..\src\input.h" />
     <ClInclude Include="..\src\interface\chat.h" />
+    <ClInclude Include="..\src\interface\colour.h" />
     <ClInclude Include="..\src\interface\themes.h" />
     <ClInclude Include="..\src\interface\console.h" />
     <ClInclude Include="..\src\interface\graph.h" />
