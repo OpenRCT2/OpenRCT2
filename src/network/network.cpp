@@ -51,10 +51,10 @@ extern "C" {
 Network gNetwork;
 
 enum {
-	NETWORK_SUCCESS,
-	NETWORK_NO_DATA,
-	NETWORK_MORE_DATA,
-	NETWORK_DISCONNECTED
+	NETWORK_READPACKET_SUCCESS,
+	NETWORK_READPACKET_NO_DATA,
+	NETWORK_READPACKET_MORE_DATA,
+	NETWORK_READPACKET_DISCONNECTED
 };
 
 enum {
@@ -66,6 +66,7 @@ enum {
 	NETWORK_COMMAND_PLAYERLIST,
 	NETWORK_COMMAND_PING,
 	NETWORK_COMMAND_PINGLIST,
+	NETWORK_COMMAND_SETDISCONNECTMSG,
 	NETWORK_COMMAND_MAX
 };
 
@@ -159,6 +160,8 @@ NetworkConnection::NetworkConnection()
 	authstatus = NETWORK_AUTH_NONE;
 	player = 0;
 	socket = INVALID_SOCKET;
+	ResetLastPacketTime();
+	last_disconnect_reason = NULL;
 }
 
 NetworkConnection::~NetworkConnection()
@@ -175,16 +178,16 @@ int NetworkConnection::ReadPacket()
 		int readBytes = recv(socket, &((char*)&inboundpacket.size)[inboundpacket.transferred], sizeof(inboundpacket.size) - inboundpacket.transferred, 0);
 		if (readBytes == SOCKET_ERROR || readBytes == 0) {
 			if (LAST_SOCKET_ERROR() != EWOULDBLOCK && LAST_SOCKET_ERROR() != EAGAIN) {
-				return NETWORK_DISCONNECTED;
+				return NETWORK_READPACKET_DISCONNECTED;
 			} else {
-				return NETWORK_NO_DATA;
+				return NETWORK_READPACKET_NO_DATA;
 			}
 		}
 		inboundpacket.transferred += readBytes;
 		if (inboundpacket.transferred == sizeof(inboundpacket.size)) {
 			inboundpacket.size = ntohs(inboundpacket.size);
 			if(inboundpacket.size == 0){ // Can't have a size 0 packet
-				return NETWORK_DISCONNECTED;
+				return NETWORK_READPACKET_DISCONNECTED;
 			}
 			inboundpacket.data->resize(inboundpacket.size);
 		}
@@ -194,18 +197,19 @@ int NetworkConnection::ReadPacket()
 			int readBytes = recv(socket, (char*)&inboundpacket.GetData()[inboundpacket.transferred - sizeof(inboundpacket.size)], sizeof(inboundpacket.size) + inboundpacket.size - inboundpacket.transferred, 0);
 			if (readBytes == SOCKET_ERROR || readBytes == 0) {
 				if (LAST_SOCKET_ERROR() != EWOULDBLOCK && LAST_SOCKET_ERROR() != EAGAIN) {
-					return NETWORK_DISCONNECTED;
+					return NETWORK_READPACKET_DISCONNECTED;
 				} else {
-					return NETWORK_NO_DATA;
+					return NETWORK_READPACKET_NO_DATA;
 				}
 			}
 			inboundpacket.transferred += readBytes;
 		}
 		if (inboundpacket.transferred == sizeof(inboundpacket.size) + inboundpacket.size) {
-			return NETWORK_SUCCESS;
+			last_packet_time = SDL_GetTicks();
+			return NETWORK_READPACKET_SUCCESS;
 		}
 	}
-	return NETWORK_MORE_DATA;
+	return NETWORK_READPACKET_MORE_DATA;
 }
 
 bool NetworkConnection::SendPacket(NetworkPacket& packet)
@@ -262,6 +266,19 @@ bool NetworkConnection::SetNonBlocking(SOCKET socket, bool on)
 	int flags = fcntl(socket, F_GETFL, 0);
 	return fcntl(socket, F_SETFL, on ? (flags | O_NONBLOCK) : (flags & ~O_NONBLOCK)) == 0;
 #endif
+}
+
+void NetworkConnection::ResetLastPacketTime()
+{
+	last_packet_time = SDL_GetTicks();
+}
+
+bool NetworkConnection::ReceivedPacketRecently()
+{
+	if (SDL_TICKS_PASSED(SDL_GetTicks(), last_packet_time + 7000)) {
+		return false;
+	}
+	return true;
 }
 
 NetworkAddress::NetworkAddress()
@@ -349,6 +366,7 @@ Network::Network()
 	client_command_handlers[NETWORK_COMMAND_PLAYERLIST] = &Network::Client_Handle_PLAYERLIST;
 	client_command_handlers[NETWORK_COMMAND_PING] = &Network::Client_Handle_PING;
 	client_command_handlers[NETWORK_COMMAND_PINGLIST] = &Network::Client_Handle_PINGLIST;
+	client_command_handlers[NETWORK_COMMAND_SETDISCONNECTMSG] = &Network::Client_Handle_SETDISCONNECTMSG;
 	server_command_handlers.resize(NETWORK_COMMAND_MAX, 0);
 	server_command_handlers[NETWORK_COMMAND_AUTH] = &Network::Server_Handle_AUTH;
 	server_command_handlers[NETWORK_COMMAND_CHAT] = &Network::Server_Handle_CHAT;
@@ -389,6 +407,7 @@ void Network::Close()
 	mode = NETWORK_MODE_NONE;
 	status = NETWORK_STATUS_NONE;
 	server_connection.authstatus = NETWORK_AUTH_NONE;
+	server_connection.last_disconnect_reason = NULL;
 
 	client_connection_list.clear();
 	game_command_queue.clear();
@@ -619,6 +638,7 @@ void Network::UpdateClient()
 			}
 			if (error == 0) {
 				status = NETWORK_STATUS_CONNECTED;
+				server_connection.ResetLastPacketTime();
 				Client_Send_AUTH(OPENRCT2_VERSION, gConfigNetwork.player_name, "");
 				window_network_status_open("Authenticating...");
 			}
@@ -626,7 +646,14 @@ void Network::UpdateClient()
 	}break;
 	case NETWORK_STATUS_CONNECTED:
 		if (!ProcessConnection(server_connection)) {
-			window_network_status_open("Connection closed");
+			char errormsg[256];
+			char reason[100];
+			reason[0] = 0;
+			if (server_connection.last_disconnect_reason) {
+				sprintf(reason, ": %s", server_connection.last_disconnect_reason);
+			}
+			sprintf(errormsg, "Disconnected%s", reason);
+			window_network_status_open(errormsg);
 			Close();
 		}
 		ProcessGameCommandQueue();
@@ -665,10 +692,13 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
 	if (fromplayer) {
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_BABYBLUE);
-		safe_strncpy(lineCh, (const char*)fromplayer->name, 1024);
+		safe_strncpy(lineCh, (const char*)fromplayer->name, sizeof(fromplayer->name));
 		strcat(lineCh, ": ");
+		lineCh = strchr(lineCh, '\0');
 	}
-	strcat(formatted, text);
+	lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
+	lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
+	safe_strncpy(lineCh, text, 800);
 	return formatted;
 }
 
@@ -806,37 +836,45 @@ void Network::Server_Send_PINGLIST()
 	SendPacketToClients(*packet);
 }
 
+void Network::Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const char* msg)
+{
+	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	*packet << (uint32)NETWORK_COMMAND_SETDISCONNECTMSG;
+	packet->WriteString(msg);
+	connection.QueuePacket(std::move(packet));
+}
+
 bool Network::ProcessConnection(NetworkConnection& connection)
 {
+	connection.SendQueuedPackets();
 	int packetStatus;
 	do {
 		packetStatus = connection.ReadPacket();
 		switch(packetStatus) {
-		case NETWORK_DISCONNECTED:
+		case NETWORK_READPACKET_DISCONNECTED:
 			// closed connection or network error
 			PrintError();
-			if (GetMode() == NETWORK_MODE_CLIENT) {
-				printf("Server disconnected...\n");
-				return false;
-			} else
-			if (GetMode() == NETWORK_MODE_SERVER) {
-				printf("Client disconnected...\n");
-				return false;
+			if (!connection.last_disconnect_reason) {
+				connection.last_disconnect_reason = "Connection Closed";
 			}
+			return false;
 			break;
-		case NETWORK_SUCCESS:
+		case NETWORK_READPACKET_SUCCESS:
 			// done reading in packet
 			ProcessPacket(connection, connection.inboundpacket);
 			break;
-		case NETWORK_MORE_DATA:
+		case NETWORK_READPACKET_MORE_DATA:
 			// more data required to be read
 			break;
-		case NETWORK_NO_DATA:
+		case NETWORK_READPACKET_NO_DATA:
 			// could not read anything from socket
 			break;
 		}
-	} while (packetStatus == NETWORK_MORE_DATA || packetStatus == NETWORK_SUCCESS);
-	connection.SendQueuedPackets();
+	} while (packetStatus == NETWORK_READPACKET_MORE_DATA || packetStatus == NETWORK_READPACKET_SUCCESS);
+	if (!connection.ReceivedPacketRecently()) {
+		connection.last_disconnect_reason = "No Data";
+		return false;
+	}
 	return true;
 }
 
@@ -893,7 +931,12 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
 		char* lineCh = text;
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_RED);
-		sprintf(lineCh, "%s has disconnected", connection_player->name);
+		char reasonstr[100];
+		reasonstr[0] = 0;
+		if (connection->last_disconnect_reason) {
+			sprintf(reasonstr, " (%s)", connection->last_disconnect_reason);
+		}
+		sprintf(lineCh, "%s has disconnected%s", connection_player->name, reasonstr);
 		chat_history_add(text);
 		gNetwork.Server_Send_CHAT(text);
 	}
@@ -1026,7 +1069,7 @@ int Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pac
 
 int Network::Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet)
 {
-	const char* text = (char*)packet.Read(packet.size - packet.read);
+	const char* text = packet.ReadString();
 	if (text) {
 		chat_history_add(text);
 	}
@@ -1035,7 +1078,7 @@ int Network::Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& pa
 
 int Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet)
 {
-	const char* text = (const char*)packet.Read(packet.size - packet.read);
+	const char* text = packet.ReadString();
 	if (text) {
 		const char* formatted = FormatChat(connection.player, text);
 		chat_history_add(formatted);
@@ -1131,6 +1174,17 @@ int Network::Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket
 		if (player) {
 			player->ping = ping;
 		}
+	}
+	return 1;
+}
+
+int Network::Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet)
+{
+	static char msg[256] = {0};
+	const char* disconnectmsg = packet.ReadString();
+	if (disconnectmsg) {
+		safe_strncpy(msg, disconnectmsg, sizeof(msg));
+		connection.last_disconnect_reason = msg;
 	}
 	return 1;
 }
@@ -1249,14 +1303,10 @@ void Network::KickPlayer(int playerId)
 	NetworkPlayer *player = GetPlayerByID(playerId);
 	for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
 		if ((*it)->player->id == playerId) {
-			char buffer[128];
-			sprintf(buffer, "%s has been kicked.", (*it)->player->name);
-
-			// Disconnect the client
-			closesocket((*it)->socket);
-
-			chat_history_add(buffer);
-			Server_Send_CHAT(buffer);
+			// Disconnect the client gracefully
+			(*it)->last_disconnect_reason = "Kicked";
+			Server_Send_SETDISCONNECTMSG(*(*it), "Get out of the server!");
+			shutdown((*it)->socket, SHUT_RD);
 			break;
 		}
 	}

@@ -66,6 +66,9 @@ extern "C" {
 	#define LAST_SOCKET_ERROR() WSAGetLastError()
 	#undef EWOULDBLOCK
 	#define EWOULDBLOCK WSAEWOULDBLOCK
+	#ifndef SHUT_RD
+		#define SHUT_RD SD_RECEIVE
+	#endif
 #else
 	#include <arpa/inet.h>
 	#include <netdb.h>
@@ -143,16 +146,20 @@ public:
 	bool SetTCPNoDelay(bool on);
 	bool SetNonBlocking(bool on);
 	static bool SetNonBlocking(SOCKET socket, bool on);
+	void ResetLastPacketTime();
+	bool ReceivedPacketRecently();
 
 	SOCKET socket;
 	NetworkPacket inboundpacket;
 	int authstatus;
 	NetworkPlayer* player;
 	uint32 ping_time;
+	const char* last_disconnect_reason;
 
 private:
 	bool SendPacket(NetworkPacket& packet);
 	std::list<std::unique_ptr<NetworkPacket>> outboundpackets;
+	uint32 last_packet_time;
 };
 
 class NetworkAddress
@@ -214,6 +221,7 @@ public:
 	void Client_Send_PING();
 	void Server_Send_PING();
 	void Server_Send_PINGLIST();
+	void Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const char* msg);
 
 	std::vector<std::unique_ptr<NetworkPlayer>> player_list;
 
@@ -257,7 +265,6 @@ private:
 	bool _desynchronised;
 	uint32 server_connect_time;
 
-
 	void UpdateServer();
 	void UpdateClient();
 
@@ -276,6 +283,7 @@ private:
 	int Client_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
 	int Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
 	int Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket& packet);
+	int Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet);
 };
 
 #endif // __cplusplus
