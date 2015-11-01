@@ -771,6 +771,38 @@ static void sub_6DAB4C_chunk_3(rct_vehicle *vehicle)
 	RCT2_GLOBAL(0x00F64E0C, sint32) = (nextVelocity >> 10) * 42;
 }
 
+static void loc_6DB1B0(rct_vehicle *vehicle, rct_map_element *mapElement)
+{
+	int x = vehicle->track_x;
+	int y = vehicle->track_y;
+	int z = vehicle->track_z;
+	track_begin_end trackBeginEnd;
+	do {
+		if (!track_block_get_previous(x, y, mapElement, &trackBeginEnd)) {
+			return;
+		}
+		if (trackBeginEnd.begin_x == vehicle->track_x && trackBeginEnd.begin_y == vehicle->track_y) {
+			return;
+		}
+
+		x = trackBeginEnd.begin_x;
+		y = trackBeginEnd.begin_y;
+		z = trackBeginEnd.begin_z;
+	} while (track_element_is_block_start(trackBeginEnd.begin_element));
+
+	mapElement = map_get_track_element_at(x, y, z >> 3);
+	mapElement->flags &= ~(1 << 5);
+	map_invalidate_element(x, y, mapElement);
+
+	int trackType = mapElement->properties.track.type;
+	if (trackType == 216 || trackType == TRACK_ELEM_END_STATION) {
+		rct_ride *ride = GET_RIDE(vehicle->ride);
+		if (ride_is_block_sectioned(ride)) {
+			sound_play_panned(SOUND_48, 0x8001, x, y, z);
+		}
+	}
+}
+
 /**
  *
  *  rct2: 0x006D6776
@@ -916,7 +948,6 @@ loc_6DAEB9:
 		}
 	}
 
-loc_6DB06B:
 	regs.ax = vehicle->var_34 + 1;
 	regs.ecx = vehicle->var_CD;
 	regs.ecx = RCT2_ADDRESS(0x008B8F30, uint32)[regs.ecx];
@@ -938,26 +969,18 @@ loc_6DB06B:
 		RCT2_GLOBAL(0x00F64E18, uint32) |= 0x800;
 	}
 
-	if (!track_element_is_block_start(mapElement)) {
-		goto loc_6DB2BD;
-	}
-
-	if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL) {
-		goto loc_6DB2BD;
-	}
-	RCT2_GLOBAL(regs.edi + 1, uint8) |= 0x20;
-	if (trackType == 216 || trackType == TRACK_ELEM_END_STATION) {
-		if (!(rideEntry->vehicles[0].var_14 & (1 << 3))) {
-			sound_play_panned(SOUND_49, 0x8001, vehicle->track_x, vehicle->track_y, vehicle->track_z);
+	if (track_element_is_block_start(mapElement)) {
+		if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
+			RCT2_GLOBAL(regs.edi + 1, uint8) |= 0x20;
+			if (trackType == 216 || trackType == TRACK_ELEM_END_STATION) {
+				if (!(rideEntry->vehicles[0].var_14 & (1 << 3))) {
+					sound_play_panned(SOUND_49, 0x8001, vehicle->track_x, vehicle->track_y, vehicle->track_z);
+				}
+			}
+			map_invalidate_element(vehicle->track_x, vehicle->track_z, mapElement);
+			loc_6DB1B0(vehicle, mapElement);
 		}
 	}
-	map_invalidate_tile(vehicle->track_x, vehicle->track_z, mapElement->base_height * 8, mapElement->clearance_height * 8);
-
-loc_6DB1B0:
-	regs.esi = vehicle;
-	regs.edi = mapElement;
-	RCT2_CALLFUNC_Y(0x006DB1B0, &regs);
-	goto end;
 
 loc_6DB2BD:
 	regs.eax = trackType;
