@@ -547,6 +547,7 @@ void track_get_back(rct_xy_element *input, rct_xy_element *output);
 void track_get_front(rct_xy_element *input, rct_xy_element *output);
 
 bool track_element_is_lift_hill(rct_map_element *trackElement);
+bool track_element_is_block_start(rct_map_element *trackElement);
 
 bool track_element_is_cable_lift(rct_map_element *trackElement);
 void track_element_set_cable_lift(rct_map_element *trackElement);

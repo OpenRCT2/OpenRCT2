@@ -917,9 +917,58 @@ loc_6DAEB9:
 	}
 
 loc_6DB06B:
+	regs.ax = vehicle->var_34 + 1;
+	regs.ecx = vehicle->var_CD;
+	regs.ecx = RCT2_ADDRESS(0x008B8F30, uint32)[regs.ecx];
+	regs.edi = RCT2_GLOBAL(regs.ecx + (vehicle->track_type * 4), uint32);
+	if (regs.ax < RCT2_GLOBAL(regs.edi - 2, uint16)) {
+		goto loc_6DB59A;
+	}
+
+	RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_end;
+	RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_end;
+	rct_map_element *mapElement = map_get_track_element_at_of_type_seq(
+		vehicle->track_x,
+		vehicle->track_y,
+		vehicle->track_z >> 3,
+		trackType,
+		0
+	);
+	if (trackType == TRACK_ELEM_CABLE_LIFT_HILL && vehicle == RCT2_GLOBAL(0x00F64E04, rct_vehicle*)) {
+		RCT2_GLOBAL(0x00F64E18, uint32) |= 0x800;
+	}
+
+	if (!track_element_is_block_start(mapElement)) {
+		goto loc_6DB2BD;
+	}
+
+	if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL) {
+		goto loc_6DB2BD;
+	}
+	RCT2_GLOBAL(regs.edi + 1, uint8) |= 0x20;
+	if (trackType == 216 || trackType == TRACK_ELEM_END_STATION) {
+		if (!(rideEntry->vehicles[0].var_14 & (1 << 3))) {
+			sound_play_panned(SOUND_49, 0x8001, vehicle->track_x, vehicle->track_y, vehicle->track_z);
+		}
+	}
+	map_invalidate_tile(vehicle->track_x, vehicle->track_z, mapElement->base_height * 8, mapElement->clearance_height * 8);
+
+loc_6DB1B0:
 	regs.esi = vehicle;
-	regs.edi = vehicle->track_type;
-	RCT2_CALLFUNC_Y(0x006DB06B, &regs);
+	regs.edi = mapElement;
+	RCT2_CALLFUNC_Y(0x006DB1B0, &regs);
+	goto end;
+
+loc_6DB2BD:
+	regs.eax = trackType;
+	regs.esi = vehicle;
+	regs.edi = mapElement;
+	RCT2_CALLFUNC_Y(0x006DB2BD, &regs);
+	goto end;
+
+loc_6DB59A:
+	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DB59A, &regs);
 	goto end;
 
 loc_6DBA13:

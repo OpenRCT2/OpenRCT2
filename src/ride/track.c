@@ -4922,6 +4922,30 @@ bool track_element_is_lift_hill(rct_map_element *trackElement)
 	return trackElement->type & 0x80;
 }
 
+/**
+ * Checks if a track element is recognised as the beginning of a block.
+ * A beginning of a block can be the end of a station, the end of a lift hill,
+ * or a block brake.
+ */
+bool track_element_is_block_start(rct_map_element *trackElement)
+{
+	switch (trackElement->properties.track.type) {
+	case TRACK_ELEM_END_STATION:
+	case TRACK_ELEM_CABLE_LIFT_HILL:
+	case 216:
+		return true;
+	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+	case TRACK_ELEM_60_DEG_UP_TO_FLAT:
+	case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
+	case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+		if (track_element_is_lift_hill(trackElement)) {
+			return true;
+		}
+		break;
+	}
+	return false;
+}
+
 bool track_element_is_cable_lift(rct_map_element *trackElement) {
 	return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
 }
