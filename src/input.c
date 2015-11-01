@@ -1036,14 +1036,19 @@ void process_mouse_over(int x, int y)
 				RCT2_GLOBAL(0x9DE558, uint16) = x;
 				RCT2_GLOBAL(0x9DE55A, uint16) = y;
 				int output_scroll_area, scroll_id;
-				widget_scroll_get_part(window, &window->widgets[widgetId], x, y, &x, &y, &output_scroll_area, &scroll_id);
+				int scroll_x, scroll_y;
+				widget_scroll_get_part(window, &window->widgets[widgetId], x, y, &scroll_x, &scroll_y, &output_scroll_area, &scroll_id);
 				cursorId = scroll_id;
 				if (output_scroll_area != SCROLL_PART_VIEW)
 				{
 					cursorId = CURSOR_ARROW;
 					break;
 				}
-				//Fall through to default
+				// Same as default but with scroll_x/y
+				cursorId = window_event_cursor_call(window, widgetId, scroll_x, scroll_y);
+				if (cursorId == -1)
+					cursorId = CURSOR_ARROW;
+				break;
 			default:
 				cursorId = window_event_cursor_call(window, widgetId, x, y);
 				if (cursorId == -1)
