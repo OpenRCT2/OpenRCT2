@@ -843,8 +843,10 @@ void window_scenery_tooltip(rct_window* w, int widgetIndex, rct_string_id *strin
 	case WIDX_SCENERY_TAB_17:
 	case WIDX_SCENERY_TAB_18:
 	case WIDX_SCENERY_TAB_19:
-	case WIDX_SCENERY_TAB_20:
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = g_scenerySetEntries[widgetIndex - WIDX_SCENERY_TAB_1]->name;
+		break;
+	case WIDX_SCENERY_TAB_20:
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = 1813;
 		break;
 	}
 }
