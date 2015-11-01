@@ -67,7 +67,9 @@ typedef struct {
 	uint8 no_seating_rows;			// 0x54 , 0x6E
 	uint8 spinning_inertia;			// 0x55 , 0x6F
 	uint8 spinning_friction;		// 0x56 , 0x70
-	uint8 pad_57[0x3];
+	uint8 pad_57;					// 0x57 , 0x71
+	uint8 var_58;					// 0x58 , 0x72
+	uint8 pad_59;					// 0x59 , 0x73
 	uint8 var_5A;					// 0x5A , 0x74
 	uint8 powered_acceleration;		// 0x5B , 0x75
 	uint8 powered_max_speed;		// 0x5C , 0x76
@@ -162,7 +164,8 @@ typedef struct {
 		uint8 var_CE;
 		uint8 num_laps;				// 0xCE
 	};
-	uint8 pad_CF[0x03];
+	uint8 var_CF;
+	uint8 pad_D0[0x02];
 	sint8 var_D2;
 	uint8 var_D3;
 	uint8 var_D4;

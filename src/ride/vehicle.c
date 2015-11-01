@@ -777,7 +777,8 @@ static void sub_6DAB4C_chunk_3(rct_vehicle *vehicle)
  */
 static void sub_6D6776(rct_vehicle *vehicle)
 {
-	RCT2_CALLPROC_X(0x006D6776, 0, 0, 0, 0, (int)vehicle, 0, 0);
+	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+	RCT2_CALLPROC_X(0x006D6776, 0, 0, 0, 0, (int)vehicle, (int)vehicleEntry, 0);
 }
 
 /**
@@ -808,8 +809,8 @@ int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
 
 	rct_ride *ride = GET_RIDE(vehicle->ride);
 	rct_ride_type *rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
-	rct_ride_type_vehicle *vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
-
+	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+	
 	// esi = vehicle
 	// eax = rideEntry
 	// edi = vehicleEntry
@@ -854,8 +855,71 @@ loc_6DAE27:
 	invalidate_sprite_2((rct_sprite*)vehicle);
 
 loc_6DAEB9:
+	regs.edi = vehicle->track_type;
+	regs.cx = vehicle->track_type >> 2;
+	
+	int trackType = vehicle->track_type >> 2;
+	if (trackType == 197 || trackType == 198) {
+		if (vehicle->var_34 == 80) {
+			vehicle->vehicle_type ^= 1;
+			vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+		}
+		if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0x40000) {
+			vehicle->var_2C = -RCT2_GLOBAL(0x00F64E08, sint32) * 8;
+		} else if (RCT2_GLOBAL(0x00F64E08, sint32) < 0x20000) {
+			vehicle->var_2C = 0x50000;
+		}
+	} else if (trackType == TRACK_ELEM_BRAKES) {
+		if (!(
+			ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN &&
+			ride->breakdown_reason_pending != BREAKDOWN_BRAKES_FAILURE &&
+			ride->mechanic_status == RIDE_MECHANIC_STATUS_4
+		)) {
+			regs.eax = vehicle->var_CF << 16;
+			if (regs.eax < RCT2_GLOBAL(0x00F64E08, sint32)) {
+				vehicle->var_2C = -RCT2_GLOBAL(0x00F64E08, sint32) * 16;
+			} else if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x0F)) {
+				if (RCT2_GLOBAL(0x00F64E2C, uint8) == 0) {
+					RCT2_GLOBAL(0x00F64E2C, uint8)++;
+					sound_play_panned(SOUND_51, 0x8001, vehicle->x, vehicle->y, vehicle->z);
+				}
+			}
+		}
+	}
+
+	if ((trackType == TRACK_ELEM_FLAT && ride->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER) ||
+		(trackType == TRACK_ELEM_POWERED_LIFT)
+	) {
+		vehicle->var_2C = RCT2_GLOBAL(0x0097CF40 + (ride->type * 8) + 7, uint8) << 10;
+	}
+	if (trackType == TRACK_ELEM_BRAKE_FOR_DROP) {
+		if (!vehicle->is_child) {
+			if (!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_10)) {
+				if (vehicle->var_34 >= 8) {
+					vehicle->var_2C = -RCT2_GLOBAL(0x00F64E08, sint32) * 16;
+					if (vehicle->var_34 >= 24) {
+						vehicle->update_flags |= VEHICLE_UPDATE_FLAG_10;
+						vehicle->var_D2 = 90;
+					}
+				}
+			}
+		}
+	}
+	if (trackType == TRACK_ELEM_LOG_FLUME_REVERSER) {
+		if (vehicle->var_34 != 16 || vehicle->velocity < 0x40000) {
+			if (vehicle->var_34 == 32) {
+				vehicle->vehicle_type = vehicleEntry->var_58;
+				vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+			}
+		} else {
+			vehicle->var_34 += 17;
+		}
+	}
+
+loc_6DB06B:
 	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DAEB9, &regs);
+	regs.edi = vehicle->track_type;
+	RCT2_CALLFUNC_Y(0x006DB06B, &regs);
 	goto end;
 
 loc_6DBA13:
