@@ -1182,7 +1182,7 @@ int Network::Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket
 
 int Network::Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet)
 {
-	static char msg[256] = {0};
+	static char msg[100] = {0};
 	const char* disconnectmsg = packet.ReadString();
 	if (disconnectmsg) {
 		safe_strncpy(msg, disconnectmsg, sizeof(msg));
