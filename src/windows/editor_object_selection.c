@@ -578,6 +578,8 @@ static void setup_in_use_selection_flags(){
 			break;
 		case MAP_ELEMENT_TYPE_PATH:
 			type = iter.element->properties.path.type;
+			type >>= 4;
+			assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
 			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_PATHS][type] |= (1 << 0);
 
 			path_additions = iter.element->properties.path.additions & 0xF;
@@ -588,6 +590,7 @@ static void setup_in_use_selection_flags(){
 			break;
 		case MAP_ELEMENT_TYPE_SCENERY:
 			type = iter.element->properties.scenery.type;
+			assert(type < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]);
 			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_SMALL_SCENERY][type] |= (1 << 0);
 			break;
 		case MAP_ELEMENT_TYPE_ENTRANCE:
@@ -597,19 +600,23 @@ static void setup_in_use_selection_flags(){
 			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_PARK_ENTRANCE][0] |= (1 << 0);
 
 			type = iter.element->properties.entrance.path_type;
+			assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
 			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_PATHS][type] |= (1 << 0);
 			break;
 		case MAP_ELEMENT_TYPE_FENCE:
 			type = iter.element->properties.fence.type;
+			assert(type < object_entry_group_counts[OBJECT_TYPE_WALLS]);
 			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_WALLS][type] |= (1 << 0);
 			break;
 		case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
 			type = iter.element->properties.scenerymultiple.type & 0x3FF;
+			assert(type < object_entry_group_counts[OBJECT_TYPE_LARGE_SCENERY]);
 			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_LARGE_SCENERY][type] |= (1 << 0);
 			break;
 		case MAP_ELEMENT_TYPE_BANNER:
 			banner = &gBanners[iter.element->properties.banner.index];
 			type = banner->type;
+			assert(type < object_entry_group_counts[OBJECT_TYPE_BANNERS]);
 			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_BANNERS][type] |= (1 << 0);
 			break;
 		}
