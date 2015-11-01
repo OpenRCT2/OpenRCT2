@@ -292,11 +292,11 @@ static void window_sign_dropdown(rct_window *w, int widgetIndex, int dropdownInd
 	switch (widgetIndex){
 	case WIDX_MAIN_COLOR:
 		if (dropdownIndex == -1) return;
-		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, banner->text_colour, GAME_COMMAND_SET_SIGN_STYLE, dropdownIndex, 1);
+		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_SIGN_STYLE, banner->text_colour, 1);
 		break;
 	case WIDX_TEXT_COLOR:
 		if (dropdownIndex == -1) return;
-		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_SIGN_STYLE, banner->colour, 1);
+		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, banner->colour, GAME_COMMAND_SET_SIGN_STYLE, dropdownIndex, 1);
 		break;
 	default:
 		return;
