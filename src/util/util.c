@@ -183,6 +183,10 @@ int strcicmp(char const *a, char const *b)
 
 char *safe_strncpy(char * destination, const char * source, size_t size)
 {
+	if (size == 0)
+	{
+		return destination;
+	}
 	char *result = destination;
 	bool terminated = false;
 	for (size_t i = 0; i < size; i++)
@@ -198,7 +202,7 @@ char *safe_strncpy(char * destination, const char * source, size_t size)
 	}
 	if (!terminated)
 	{
-		destination[size - 1] = '\0';
+		result[size - 1] = '\0';
 		log_warning("Truncating string %s to %d bytes.", destination, size);
 	}
 	return result;
