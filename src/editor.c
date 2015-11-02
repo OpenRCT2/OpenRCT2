@@ -45,6 +45,7 @@
 #include "world/scenery.h"
 #include "world/sprite.h"
 
+void editor_convert_save_to_scenario_callback(int result);
 static void set_all_land_owned();
 static int editor_load_landscape_from_sv4(const char *path);
 static int editor_load_landscape_from_sc4(const char *path);
@@ -95,46 +96,22 @@ void editor_load()
 
 /**
  *
- *  rct2: 0x0067505F
- */
-static int show_convert_saved_game_to_scenario_dialog(char *resultPath)
-{
-	int result;
-	char title[256];
-	char filename[MAX_PATH];
-	char filterName[256];
-
-	format_string(title, STR_CONVERT_SAVED_GAME_TO_SCENARIO_1038, NULL);
-	safe_strncpy(filename, RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char), MAX_PATH);
-	format_string(filterName, STR_RCT2_SAVED_GAME, NULL);
-
-	pause_sounds();
-	result = platform_open_common_file_dialog(1, title, filename, "*.SV6", filterName);
-	unpause_sounds();
-
-	if (result)
-		safe_strncpy(resultPath, filename, MAX_PATH);
-	return result;
-}
-
-/**
- *
  *  rct2: 0x00672781
  */
 void editor_convert_save_to_scenario()
 {
-	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
-	char savedGamePath[MAX_PATH];
-
 	tool_cancel();
-	if (!show_convert_saved_game_to_scenario_dialog(savedGamePath))
-		return;
+	window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
+	gLoadSaveCallback = editor_convert_save_to_scenario_callback;
+}
 
-	path_set_extension(savedGamePath, ".SV6");
-
-	// Load the saved game
-	if (!game_load_save(savedGamePath))
+void editor_convert_save_to_scenario_callback(int result)
+{
+	if (result != MODAL_RESULT_OK) {
 		return;
+	}
+
+	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY_SCENARIO;
