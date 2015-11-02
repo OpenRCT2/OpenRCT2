@@ -2154,6 +2154,9 @@ enum {
 	STR_INSERT_CORRUPT = 5564,
 	STR_INSERT_CORRUPT_TIP = 5565,
 
+	STR_PASSWORD = 5566,
+	STR_ADVERTISE = 5567,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

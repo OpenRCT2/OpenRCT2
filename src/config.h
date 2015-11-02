@@ -214,6 +214,7 @@ typedef struct {
 	utf8string player_name;
 	uint32 default_port;
 	uint8 stay_connected;
+	uint8 advertise;
 } network_configuration;
 
 typedef struct theme_window {
