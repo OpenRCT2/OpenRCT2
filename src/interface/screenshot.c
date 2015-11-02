@@ -357,7 +357,7 @@ bool screenshot_write_png(rct_drawpixelinfo *dpi, const char *path)
 
 void screenshot_giant()
 {
-	int originalRotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+	int originalRotation = get_current_rotation();
 	int originalZoom = 0;
 
 	rct_window *mainWindow = window_get_main();

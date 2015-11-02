@@ -225,7 +225,7 @@ static void window_maze_construction_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_MAZE_DIRECTION_SE:
 	case WIDX_MAZE_DIRECTION_SW:
 		window_maze_construction_construct(
-			((widgetIndex - WIDX_MAZE_DIRECTION_NW) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) & 3
+			((widgetIndex - WIDX_MAZE_DIRECTION_NW) - get_current_rotation()) & 3
 		);
 		break;
 	}

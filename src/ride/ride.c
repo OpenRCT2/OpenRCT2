@@ -1986,7 +1986,7 @@ static void ride_spiral_slide_update(rct_ride *ride)
 		z = ride->station_heights[i];
 
 		mapElement = ride_get_station_start_track_element(ride, i);
-		int rotation = ((mapElement->type & 3) << 2) | RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		int rotation = ((mapElement->type & 3) << 2) | get_current_rotation();
 		x *= 32;
 		y *= 32;
 		x += RCT2_GLOBAL(0x0098DDB8 + (rotation * 4), sint16);
@@ -3231,7 +3231,7 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 		RCT2_GLOBAL(0x009AF47C, uint16) = sampleRate;
 		sint16 v11;
 		sint16 v12;
-		switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
+		switch (get_current_rotation()) {
 			case 0:
 				v11 = y - x;
 				v12 = ((y + x) / 2) - z;

@@ -119,7 +119,7 @@ void window_viewport_open()
 		(1 << WIDX_LOCATE);
 	w->number = _viewportNumber++;
 
-	rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32);
+	rotation = get_current_rotation();
 
 	// Create viewport
 	viewport_create(w, w->x, w->y, w->width, w->height, 0, 128 * 32, 128 * 32, 0, 1, -1);

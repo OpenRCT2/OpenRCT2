@@ -105,7 +105,7 @@ protected:
 class Source_SampleStream : public Source
 {
 public:
-	Source_SampleStream();
+	Source_SampleStream() = default;
 	~Source_SampleStream();
 	bool LoadWAV(SDL_RWops* rw);
 
@@ -113,10 +113,10 @@ private:
 	Uint32 FindChunk(SDL_RWops* rw, Uint32 wanted_id);
 	void Unload();
 
-	SDL_RWops* rw;
-	Uint64 databegin;
-	uint8* buffer;
-	unsigned long buffersize;
+	SDL_RWops* rw = nullptr;
+	Uint64 databegin = 0;
+	uint8* buffer = nullptr;
+	unsigned long buffersize = 0;
 
 protected:
 	unsigned long Read(unsigned long offset, const uint8** data, unsigned long length);
@@ -139,21 +139,21 @@ public:
 	friend class Mixer;
 
 private:
-	int loop;
-	unsigned long offset;
-	double rate;
-	int volume;
-	float volume_l, volume_r;
-	float oldvolume_l, oldvolume_r;
-	float pan;
-	bool done;
-	bool deleteondone;
-	bool deletesourceondone;
-	bool stopping;
-	int oldvolume;
-	int group;
-	SpeexResamplerState* resampler;
-	Source* source;
+	int loop = 0;
+	unsigned long offset = 0;
+	double rate = 0;
+	int volume = 1;
+	float volume_l = 0.f, volume_r = 0.f;
+	float oldvolume_l = 0.f, oldvolume_r = 0.f;
+	float pan = 0;
+	bool done = true;
+	bool deleteondone = false;
+	bool deletesourceondone = false;
+	bool stopping = false;
+	int oldvolume = 0;
+	int group = MIXER_GROUP_NONE;
+	SpeexResamplerState* resampler = nullptr;
+	Source* source = nullptr;
 };
 
 class Mixer

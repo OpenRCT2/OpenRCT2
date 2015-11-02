@@ -224,7 +224,7 @@ void window_map_open()
 
 	window_init_scroll_widgets(w);
 
-	w->map.rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint16);
+	w->map.rotation = get_current_rotation();
 
 	window_map_init_map();
 	RCT2_GLOBAL(0x00F64F05, uint8) = 0;
@@ -394,8 +394,8 @@ static void window_map_mousedown(int widgetIndex, rct_window *w, rct_widget *wid
  */
 static void window_map_update(rct_window *w)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) != w->map.rotation) {
-		w->map.rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+	if (get_current_rotation() != w->map.rotation) {
+		w->map.rotation = get_current_rotation();
 		window_map_init_map();
 		window_map_center_on_view_point();
 	}
@@ -885,7 +885,7 @@ static void window_map_center_on_view_point()
 	if (w_map == NULL)
 		return;
 
-	rct_xy16 offset = MiniMapOffsets[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) & 3];
+	rct_xy16 offset = MiniMapOffsets[get_current_rotation()];
 
 	// calculate center view point of viewport and transform it to minimap coordinates
 
@@ -975,7 +975,7 @@ static void window_map_transform_to_map_coords(sint16 *left, sint16 *top)
 	sint16 x = *left, y = *top;
 	sint16 temp;
 
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
+	switch (get_current_rotation()) {
 	case 3:
 		temp = x;
 		x = y;
@@ -1097,7 +1097,7 @@ static void window_map_paint_hud_rectangle(rct_drawpixelinfo *dpi)
 	if (viewport == NULL)
 		return;
 
-	rct_xy16 offset = MiniMapOffsets[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) & 3];
+	rct_xy16 offset = MiniMapOffsets[get_current_rotation()];
 	sint16 left = (viewport->view_x >> 5) + offset.x;
 	sint16 right = ((viewport->view_x + viewport->view_width) >> 5) + offset.x;
 	sint16 top = (viewport->view_y >> 4) + offset.y;
@@ -1176,7 +1176,7 @@ void sub_666EEF(int x, int y, sint16 *mapX, sint16 *mapY, sint16 *mapZ, int *dir
 			}
 		}
 	}
-	*direction = (window_scenery_rotation - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) & 3;
+	*direction = (window_scenery_rotation - get_current_rotation()) & 3;
 }
 
 /**
@@ -1604,7 +1604,7 @@ static void map_window_set_pixels(rct_window *w)
 	int x, y, dx, dy;
 
 	destination = (uint16*)((RCT2_GLOBAL(0x00F1AD6C, uint32) * 511) + RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32) + 255);
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) {
+	switch (get_current_rotation()) {
 	case 0:
 		x = RCT2_GLOBAL(0x00F1AD6C, uint32) * 32;
 		y = 0;
@@ -1665,7 +1665,7 @@ static void map_window_screen_to_map(int screenX, int screenY, int *mapX, int *m
 	screenY = ((screenY + 8)      ) / 2;
 	x = (screenY - screenX) * 32;
 	y = (screenX + screenY) * 32;
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) & 3) {
+	switch (get_current_rotation()) {
 	case 0:
 		*mapX = x;
 		*mapY = y;

@@ -428,6 +428,7 @@ static void input_viewport_drag_continue()
 	dx = newDragX - _dragX;
 	dy = newDragY - _dragY;
 	w = window_find_by_number(_dragWindowClass, _dragWindowNumber);
+	assert(w != NULL);
 
 	viewport = w->viewport;
 	RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_DRAG_START, sint16) += RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, sint16);

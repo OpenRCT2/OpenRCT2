@@ -1188,7 +1188,7 @@ void window_staff_viewport_init(rct_window* w){
 	}
 	else{
 		focus.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
-		focus.rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		focus.rotation = get_current_rotation();
 	}
 
 	uint16 viewport_flags;

@@ -22,6 +22,7 @@
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
+#include "../interface/viewport.h"
 #include "map_animation.h"
 #include "map.h"
 #include "scenery.h"
@@ -150,7 +151,7 @@ static bool map_animation_invalidate_queue_banner(int x, int y, int baseZ)
 		if (!(mapElement->properties.path.type & PATH_FLAG_QUEUE_BANNER))
 			continue;
 
-		int direction = ((mapElement->type >> 6) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)) & 3;
+		int direction = ((mapElement->type >> 6) + get_current_rotation()) & 3;
 		if (direction == MAP_ELEMENT_DIRECTION_NORTH || direction == MAP_ELEMENT_DIRECTION_EAST) {
 			baseZ = mapElement->base_height * 8;
 			map_invalidate_tile_zoom1(x, y, baseZ + 16, baseZ + 30);

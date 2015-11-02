@@ -537,7 +537,7 @@ static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (!(w->disabled_widgets & (1 << WIDX_CONSTRUCT))) {
 		// Get construction image
-		image = (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8) + RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) % 4;
+		image = (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8) + get_current_rotation()) % 4;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_SLOPE, uint8) == 2)
 			image += 4;
 		else if (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_SLOPE, uint8) == 6)
@@ -618,7 +618,7 @@ static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget
 static void window_footpath_mousedown_direction(int direction)
 {
 	footpath_provisional_update();
-	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8) = (direction - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) & 3;
+	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8) = (direction - get_current_rotation()) & 3;
 	_window_footpath_cost = MONEY32_UNDEFINED;
 	window_footpath_set_enabled_and_pressed_widgets();
 }
@@ -1012,7 +1012,7 @@ static void window_footpath_set_enabled_and_pressed_widgets()
 
 	pressedWidgets = w->pressed_widgets & 0xFFFF887F;
 	disabledWidgets = 0;
-	currentRotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+	currentRotation = get_current_rotation();
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) >= PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL) {
 		// Set pressed directional widget
 		direction = (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_DIRECTION, uint8) + currentRotation) & 3;

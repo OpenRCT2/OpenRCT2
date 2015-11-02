@@ -108,7 +108,7 @@ int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z)
 			}
 			sint16 rx;
 			sint16 ry;
-			switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
+			switch (get_current_rotation()) {
 				case 0:
 					rx = y - x;
 					ry = ((y + x) / 2) - z;

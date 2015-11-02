@@ -732,7 +732,7 @@ void window_guest_viewport_init(rct_window* w){
 			focus.sprite.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
 			focus.sprite.pad_486 &= 0xFFFF;
 		}
-		focus.coordinate.rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		focus.coordinate.rotation = get_current_rotation();
 	}
 
 	uint16 viewport_flags;

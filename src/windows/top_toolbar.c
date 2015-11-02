@@ -1117,7 +1117,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 				rotation = scenario_rand() & 0xFF;
 			}
 
-			rotation -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+			rotation -= get_current_rotation();
 			rotation &= 0x3;
 
 			// Also places it in lower but think thats for clobering
@@ -1195,7 +1195,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			rotation = scenario_rand() & 0xFF;
 		}
 
-		rotation -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		rotation -= get_current_rotation();
 		rotation &= 0x3;
 
 		// Also places it in lower but think thats for clobering
@@ -1344,7 +1344,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		*grid_y &= 0xFFE0;
 
 		uint8 rotation = window_scenery_rotation;
-		rotation -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		rotation -= get_current_rotation();
 		rotation &= 0x3;
 
 		*parameter_1 = (rotation << 8);
@@ -1371,7 +1371,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		}
 
 		uint8 rotation = window_scenery_rotation;
-		rotation -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		rotation -= get_current_rotation();
 		rotation &= 0x3;
 
 		sint16 z = map_element->base_height;

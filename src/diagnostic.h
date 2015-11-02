@@ -30,6 +30,49 @@ enum {
 	DIAGNOSTIC_LEVEL_COUNT
 };
 
+/*
+ * Compile-time debug levels.
+ *
+ * When compiling, just add -DDEBUG={0,1,2,3} (where 0 means disabled)
+ * Regardless of DEBUG value, a set of defines will be created:
+ * - DEBUG_LEVEL_1
+ * - DEBUG_LEVEL_2
+ * - DEBUG_LEVEL_3
+ * which you would use like so:
+ *
+ * #if DEBUG_LEVEL_1
+ *     (... some debug code ...)
+ *     #if DEBUG_LEVEL_2
+ *         (... more debug code ...)
+ *    #endif // DEBUG_LEVEL_2
+ * #endif // DEBUG_LEVEL_1
+ *
+ * The defines will be either 0 or 1 so compiler will complain about undefined
+ * macro if you forget to include the file, which would not happen if we were
+ * only checking whether the define is present or not.
+ */
+
+#if defined(DEBUG)
+	#if DEBUG > 0
+		#define DEBUG_LEVEL_1 1
+		#if DEBUG > 1
+			#define DEBUG_LEVEL_2 1
+			#if DEBUG > 2
+				#define DEBUG_LEVEL_3 1
+			#else
+				#define DEBUG_LEVEL_3 0
+			#endif // DEBUG > 2
+		#else
+			#define DEBUG_LEVEL_3 0
+			#define DEBUG_LEVEL_2 0
+		#endif // DEBUG > 1
+	#endif // DEBUG > 0
+#else
+	#define DEBUG_LEVEL_3 0
+	#define DEBUG_LEVEL_2 0
+	#define DEBUG_LEVEL_1 0
+#endif // defined(DEBUG)
+
 extern int _log_levels[DIAGNOSTIC_LEVEL_COUNT];
 
 void diagnostic_log(int diagnosticLevel, const char *format, ...);

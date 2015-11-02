@@ -991,7 +991,7 @@ int scenario_save(SDL_RWops* rw, int flags)
 		viewX = viewport->view_width / 2 + viewport->view_x;
 		viewY = viewport->view_height / 2 + viewport->view_y;
 		viewZoom = viewport->zoom;
-		viewRotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		viewRotation = get_current_rotation();
 	} else {
 		viewX = 0;
 		viewY = 0;
@@ -1064,7 +1064,7 @@ int scenario_save_network(SDL_RWops* rw)
 		viewX = viewport->view_width / 2 + viewport->view_x;
 		viewY = viewport->view_height / 2 + viewport->view_y;
 		viewZoom = viewport->zoom;
-		viewRotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		viewRotation = get_current_rotation();
 	} else {
 		viewX = 0;
 		viewY = 0;

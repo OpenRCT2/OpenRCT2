@@ -96,8 +96,8 @@ void money_effect_update(rct_money_effect *moneyEffect)
 		return;
 
 	moneyEffect->move_delay = 0;
-	int x = moneyEffect->x + _moneyEffectMoveOffset[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)].x;
-	int y = moneyEffect->y + _moneyEffectMoveOffset[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)].y;
+	int x = moneyEffect->x + _moneyEffectMoveOffset[get_current_rotation()].x;
+	int y = moneyEffect->y + _moneyEffectMoveOffset[get_current_rotation()].y;
 	int z = moneyEffect->z;
 	sprite_move(x, y, z, (rct_sprite*)moneyEffect);
 

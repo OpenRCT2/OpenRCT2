@@ -3539,28 +3539,28 @@ void map_get_bounding_box(int ax, int ay, int bx, int by, int *left, int *top, i
 	int x, y;
 	x = ax;
 	y = ay;
-	translate_3d_to_2d(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32), &x, &y);
+	translate_3d_to_2d(get_current_rotation(), &x, &y);
 	*left = x;
 	*right = x;
 	*top = y;
 	*bottom = y;
 	x = bx;
 	y = ay;
-	translate_3d_to_2d(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32), &x, &y);
+	translate_3d_to_2d(get_current_rotation(), &x, &y);
 	if (x < *left) *left = x;
 	if (x > *right) *right = x;
 	if (y > *bottom) *bottom = y;
 	if (y < *top) *top = y;
 	x = bx;
 	y = by;
-	translate_3d_to_2d(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32), &x, &y);
+	translate_3d_to_2d(get_current_rotation(), &x, &y);
 	if (x < *left) *left = x;
 	if (x > *right) *right = x;
 	if (y > *bottom) *bottom = y;
 	if (y < *top) *top = y;
 	x = ax;
 	y = by;
-	translate_3d_to_2d(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32), &x, &y);
+	translate_3d_to_2d(get_current_rotation(), &x, &y);
 	if (x < *left) *left = x;
 	if (x > *right) *right = x;
 	if (y > *bottom) *bottom = y;
@@ -4431,7 +4431,7 @@ void map_invalidate_tile_under_zoom(int x, int y, int z0, int z1, int maxZoom)
 
 	x += 16;
 	y += 16;
-	translate_3d_to_2d(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32), &x, &y);
+	translate_3d_to_2d(get_current_rotation(), &x, &y);
 
 	x1 = x - 32;
 	y1 = y - 32 - z1;
