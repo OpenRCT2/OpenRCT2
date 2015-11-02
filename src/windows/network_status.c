@@ -25,10 +25,13 @@
 #include "../util/util.h"
 #include "../network/network.h"
 
+char _password[33];
+
 enum WINDOW_NETWORK_STATUS_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
+	WIDX_PASSWORD
 };
 
 static rct_widget window_network_status_widgets[] = {
@@ -42,6 +45,7 @@ static char window_network_status_text[1024];
 
 static void window_network_status_mouseup(rct_window *w, int widgetIndex);
 static void window_network_status_update(rct_window *w);
+static void window_network_status_textinput(rct_window *w, int widgetIndex, char *text);
 static void window_network_status_invalidate(rct_window *w);
 static void window_network_status_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -65,7 +69,7 @@ static rct_window_event_list window_network_status_events = {
 	NULL,
 	NULL,
 	NULL,
-	NULL,
+	window_network_status_textinput,
 	NULL,
 	NULL,
 	NULL,
@@ -112,6 +116,16 @@ void window_network_status_close()
 	window_close_by_class(WC_NETWORK_STATUS);
 }
 
+void window_network_status_open_password()
+{
+	rct_window* window;
+	window = window_bring_to_front_by_class(WC_NETWORK_STATUS);
+	if (window == NULL)
+		return;
+
+	window_text_input_raw_open(window, WIDX_PASSWORD, STR_PASSWORD_REQUIRED, STR_PASSWORD_REQUIRED_DESC, _password, 32);
+}
+
 static void window_network_status_mouseup(rct_window *w, int widgetIndex)
 {
 	switch (widgetIndex) {
@@ -124,6 +138,18 @@ static void window_network_status_mouseup(rct_window *w, int widgetIndex)
 static void window_network_status_update(rct_window *w)
 {
 	widget_invalidate(w, WIDX_BACKGROUND);
+}
+
+static void window_network_status_textinput(rct_window *w, int widgetIndex, char *text)
+{
+	strcpy(_password, "");
+	switch (widgetIndex) {
+	case WIDX_PASSWORD:
+		if (text != NULL)
+			safe_strncpy(_password, text, sizeof(_password));
+		break;
+	}
+	network_send_password(_password);
 }
 
 static void window_network_status_invalidate(rct_window *w)

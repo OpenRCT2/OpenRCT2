@@ -629,6 +629,7 @@ void window_cheats_open();
 void window_player_list_open();
 void window_network_status_open(const char* text);
 void window_network_status_close();
+void window_network_status_open_password();
 void window_server_list_open();
 void window_server_start_open();
 
