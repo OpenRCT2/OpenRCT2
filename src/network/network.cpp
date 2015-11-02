@@ -779,6 +779,21 @@ void Network::Client_Send_AUTH(const char* gameversion, const char* name, const 
 	server_connection.QueuePacket(std::move(packet));
 }
 
+void Network::Server_Send_AUTH(NetworkConnection& connection)
+{
+	uint8 new_playerid = 0;
+	if (connection.player) {
+		new_playerid = connection.player->id;
+	}
+	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	*packet << (uint32)NETWORK_COMMAND_AUTH << (uint32)connection.authstatus << (uint8)new_playerid;
+	connection.QueuePacket(std::move(packet));
+	if (connection.authstatus != NETWORK_AUTH_OK && connection.authstatus != NETWORK_AUTH_REQUIREPASSWORD) {
+		shutdown(connection.socket, SHUT_RD);
+		connection.SendQueuedPackets();
+	}
+}
+
 void Network::Server_Send_MAP(NetworkConnection* connection)
 {
 	int buffersize = 0x600000;
@@ -1042,6 +1057,9 @@ int Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& pa
 		connection.last_disconnect_reason = "Bad Password";
 		shutdown(connection.socket, SHUT_RDWR);
 		break;
+	case NETWORK_AUTH_REQUIREPASSWORD:
+		window_network_status_open_password();
+		break;
 	}
 	return 1;
 }
@@ -1052,21 +1070,22 @@ int Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& pa
 		const char* gameversion = packet.ReadString();
 		const char* name = packet.ReadString();
 		const char* password = packet.ReadString();
-		uint8 playerid = 0;
 		if (!gameversion || strcmp(gameversion, OPENRCT2_VERSION) != 0) {
 			connection.authstatus = NETWORK_AUTH_BADVERSION;
 		} else
 		if (!name) {
 			connection.authstatus = NETWORK_AUTH_BADNAME;
 		} else
-		if (!password || strcmp(password, Network::password) != 0) {
+		if (!password || strlen(password) == 0) {
+			connection.authstatus = NETWORK_AUTH_REQUIREPASSWORD;
+		} else
+		if (strcmp(password, Network::password) != 0) {
 			connection.authstatus = NETWORK_AUTH_BADPASSWORD;
 		} else {
 			connection.authstatus = NETWORK_AUTH_OK;
 			NetworkPlayer* player = AddPlayer(name);
 			connection.player = player;
 			if (player) {
-				playerid = player->id;
 				char text[256];
 				char* lineCh = text;
 				lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
@@ -1077,13 +1096,7 @@ int Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& pa
 				Server_Send_MAP(&connection);
 			}
 		}
-		std::unique_ptr<NetworkPacket> responsepacket = std::move(NetworkPacket::Allocate());
-		*responsepacket << (uint32)NETWORK_COMMAND_AUTH << (uint32)connection.authstatus << (uint8)playerid;
-		connection.QueuePacket(std::move(responsepacket));
-		if (connection.authstatus != NETWORK_AUTH_OK) {
-			shutdown(connection.socket, SHUT_RD);
-			connection.SendQueuedPackets();
-		}
+		Server_Send_AUTH(connection);
 	}
 	return 1;
 }
@@ -1354,6 +1367,11 @@ void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32
 		gNetwork.Client_Send_GAMECMD(eax, ebx, ecx, edx, esi, edi, ebp, callback);
 		break;
 	}
+}
+
+void network_send_password(const char* password)
+{
+	gNetwork.Client_Send_AUTH(OPENRCT2_VERSION, gConfigNetwork.player_name, password);
 }
 
 void network_kick_player(int playerId)

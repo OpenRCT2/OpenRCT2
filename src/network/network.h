@@ -37,7 +37,8 @@ enum {
 	NETWORK_AUTH_OK,
 	NETWORK_AUTH_BADVERSION,
 	NETWORK_AUTH_BADNAME,
-	NETWORK_AUTH_BADPASSWORD
+	NETWORK_AUTH_BADPASSWORD,
+	NETWORK_AUTH_REQUIREPASSWORD
 };
 
 enum {
@@ -217,6 +218,7 @@ public:
 	void SetPassword(const char* password);
 
 	void Client_Send_AUTH(const char* gameversion, const char* name, const char* password);
+	void Server_Send_AUTH(NetworkConnection& connection);
 	void Server_Send_MAP(NetworkConnection* connection = nullptr);
 	void Client_Send_CHAT(const char* text);
 	void Server_Send_CHAT(const char* text);
@@ -318,6 +320,7 @@ int network_get_player_id(unsigned int index);
 void network_send_map();
 void network_send_chat(const char* text);
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
+void network_send_password(const char* password);
 
 void network_kick_player(int playerId);
 void network_set_password(const char* password);
