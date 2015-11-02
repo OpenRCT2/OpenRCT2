@@ -430,6 +430,12 @@ static void window_footpath_update_provisional_path_for_bridge_mode(rct_window *
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) != PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
 		return;
 
+	// Recheck area for construction. Set by ride_construction window
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) & (1 << 2)) {
+		footpath_provisional_remove();
+		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) &= ~(1 << 2);
+	}
+
 	// Update provisional bridge mode path
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) & (1 << 1))) {
 		footpath_get_next_path_info(&type, &x, &y, &z, &slope);

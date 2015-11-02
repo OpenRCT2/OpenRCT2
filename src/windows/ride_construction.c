@@ -612,6 +612,8 @@ static void window_ride_construction_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_CONSTRUCT:
 		window_ride_construction_construct(w);
+		// Force any footpath construction to recheck the area.
+		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) |= (1 << 2);
 		break;
 	case WIDX_DEMOLISH:
 		window_ride_construction_mouseup_demolish(w);
@@ -2435,6 +2437,13 @@ money32 sub_6CA162(int rideIndex, int trackType, int trackDirection, int edxRS16
 void sub_6C94D8()
 {
 	int x, y, z, direction, type, rideIndex, edxRS16;
+
+	// Recheck if area is fine for new track.
+	// Set by footpath placement
+	if (_currentTrackSelectionFlags & 8) {
+		sub_6C9627();
+		_currentTrackSelectionFlags &= ~8;
+	}
 
 	switch (_rideConstructionState) {
 	case RIDE_CONSTRUCTION_STATE_FRONT:
