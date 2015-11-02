@@ -485,8 +485,16 @@ enum {
 	LOADSAVETYPE_NETWORK = 1 << 4,
 };
 
-extern bool gLoadSaveTitleSequenceSave;
+enum {
+	MODAL_RESULT_FAIL = -1,
+	MODAL_RESULT_CANCEL,
+	MODAL_RESULT_OK
+};
 
+typedef void (*modal_callback)(int result);
+
+extern bool gLoadSaveTitleSequenceSave;
+extern modal_callback gLoadSaveCallback;
 
 // rct2: 0x01420078
 extern rct_window* g_window_list;

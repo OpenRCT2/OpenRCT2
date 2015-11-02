@@ -124,6 +124,8 @@ typedef struct {
 	uint8 type;
 } loadsave_list_item;
 
+modal_callback gLoadSaveCallback;
+
 int _listItemsCount = 0;
 loadsave_list_item *_listItems = NULL;
 char _directory[MAX_PATH];
@@ -145,6 +147,7 @@ static rct_window *window_overwrite_prompt_open(const char *name, const char *pa
 
 rct_window *window_loadsave_open(int type, char *defaultName)
 {
+	gLoadSaveCallback = NULL;
 	gLoadSaveTitleSequenceSave = false;
 	char path[MAX_PATH], *ch;
 	int includeNewItem;
@@ -731,6 +734,13 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 	window_loadsave_sort_list(sortStartIndex, _listItemsCount - 1);
 }
 
+static void window_loadsave_invoke_callback(int result)
+{
+	if (gLoadSaveCallback != NULL) {
+		gLoadSaveCallback(result);
+	}
+}
+
 static void window_loadsave_select(rct_window *w, const char *path)
 {
 	SDL_RWops* rw;
@@ -750,6 +760,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 				title_sequence_add_save(gCurrentTitleSequence, path, newName);
 				window_close(w);
 			}
+			window_loadsave_invoke_callback(MODAL_RESULT_OK);
 		}
 		else if (game_load_save(path)) {
 			if (_loadsaveType & LOADSAVETYPE_NETWORK) {
@@ -762,11 +773,13 @@ static void window_loadsave_select(rct_window *w, const char *path)
 
 			window_close(w);
 			gfx_invalidate_screen();
+			window_loadsave_invoke_callback(MODAL_RESULT_OK);
 			rct2_endupdate();
 		}
 		else {
 			// 1050, not the best message...
 			window_error_open(STR_LOAD_GAME, 1050);
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
 		}
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
@@ -783,22 +796,28 @@ static void window_loadsave_select(rct_window *w, const char *path)
 				window_close_by_class(WC_LOADSAVE);
 				game_do_command(0, 1047, 0, -1, GAME_COMMAND_SET_RIDE_APPEARANCE, 0, 0);
 				gfx_invalidate_screen();
+
+				window_loadsave_invoke_callback(MODAL_RESULT_OK);
 			} else {
 				window_error_open(STR_SAVE_GAME, 1047);
+				window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
 			}
 		} else {
 			window_error_open(STR_SAVE_GAME, 1047);
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
 		}
 		break;
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
 		editor_load_landscape(path);
 		if (1) {
 			gfx_invalidate_screen();
+			window_loadsave_invoke_callback(MODAL_RESULT_OK);
 			rct2_endupdate();
 		}
 		else {
 			// 1050, not the best message...
 			window_error_open(STR_LOAD_LANDSCAPE, 1050);
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
 		}
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
@@ -810,11 +829,14 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			if (success) {
 				window_close_by_class(WC_LOADSAVE);
 				gfx_invalidate_screen();
+				window_loadsave_invoke_callback(MODAL_RESULT_OK);
 			} else {
 				window_error_open(STR_SAVE_LANDSCAPE, 1049);
+				window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
 			}
 		} else {
 			window_error_open(STR_SAVE_LANDSCAPE, 1049);
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
 		}
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
@@ -834,16 +856,19 @@ static void window_loadsave_select(rct_window *w, const char *path)
 
 		if (success) {
 			window_close_by_class(WC_LOADSAVE);
+			window_loadsave_invoke_callback(MODAL_RESULT_OK);
 			title_load();
 		} else {
 			window_error_open(STR_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED);
 			s6Info->editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
 		}
 		break;
 	}
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
 		window_install_track_open(path);
 		window_close_by_class(WC_LOADSAVE);
+		window_loadsave_invoke_callback(MODAL_RESULT_OK);
 		break;
 	}
 }
