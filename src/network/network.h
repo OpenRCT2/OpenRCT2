@@ -69,6 +69,9 @@ extern "C" {
 	#ifndef SHUT_RD
 		#define SHUT_RD SD_RECEIVE
 	#endif
+	#ifndef SHUT_RDWR
+		#define SHUT_RDWR SD_BOTH
+	#endif
 #else
 	#include <arpa/inet.h>
 	#include <netdb.h>
@@ -109,6 +112,7 @@ public:
 	static std::unique_ptr<NetworkPacket> Allocate();
 	static std::unique_ptr<NetworkPacket> Duplicate(NetworkPacket& packet);
 	uint8* GetData();
+	uint32 GetCommand();
 	template <typename T>
 	NetworkPacket& operator<<(T value) { T swapped = ByteSwapBE(value); uint8* bytes = (uint8*)&swapped; data->insert(data->end(), bytes, bytes + sizeof(value)); return *this; }
 	void Write(uint8* bytes, unsigned int size);
@@ -118,6 +122,7 @@ public:
 	const uint8* Read(unsigned int size);
 	const char* ReadString();
 	void Clear();
+	bool CommandRequiresAuth();
 
 	uint16 size;
 	std::shared_ptr<std::vector<uint8>> data;
@@ -209,6 +214,7 @@ public:
 	void SendPacketToClients(NetworkPacket& packet);
 	bool CheckSRAND(uint32 tick, uint32 srand0);
 	void KickPlayer(int playerId);
+	void SetPassword(const char* password);
 
 	void Client_Send_AUTH(const char* gameversion, const char* name, const char* password);
 	void Server_Send_MAP(NetworkConnection* connection = nullptr);
@@ -314,6 +320,7 @@ void network_send_chat(const char* text);
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
 
 void network_kick_player(int playerId);
+void network_set_password(const char* password);
 
 void network_print_error();
 

@@ -2147,6 +2147,8 @@ enum {
 
     STR_RESTART_REQUIRED = 5558,
 
+	STR_PASSWORD = 5561,
+	STR_ADVERTISE = 5562,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

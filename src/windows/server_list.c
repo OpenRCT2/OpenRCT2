@@ -185,7 +185,7 @@ static void window_server_list_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_START_SERVER:
 		server_list_update_player_name();
-		window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME | LOADSAVETYPE_NETWORK, NULL);
+		window_server_start_open();
 		break;
 	}
 }

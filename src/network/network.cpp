@@ -67,7 +67,8 @@ enum {
 	NETWORK_COMMAND_PING,
 	NETWORK_COMMAND_PINGLIST,
 	NETWORK_COMMAND_SETDISCONNECTMSG,
-	NETWORK_COMMAND_MAX
+	NETWORK_COMMAND_MAX,
+	NETWORK_COMMAND_INVALID = -1
 };
 
 const char *NetworkCommandNames[] = {
@@ -102,6 +103,15 @@ std::unique_ptr<NetworkPacket> NetworkPacket::Duplicate(NetworkPacket& packet)
 uint8* NetworkPacket::GetData()
 {
 	return &(*data)[0];
+}
+
+uint32 NetworkPacket::GetCommand()
+{
+	if (data->size() >= sizeof(uint32)) {
+		return ByteSwapBE(*(uint32*)(&(*data)[0]));
+	} else {
+		return NETWORK_COMMAND_INVALID;
+	}
 }
 
 void NetworkPacket::Write(uint8* bytes, unsigned int size)
@@ -145,6 +155,18 @@ void NetworkPacket::Clear()
 	transferred = 0;
 	read = 0;
 	data->clear();
+}
+
+bool NetworkPacket::CommandRequiresAuth()
+{
+	switch (GetCommand()) {
+	case NETWORK_COMMAND_PING:
+		return false;
+	case NETWORK_COMMAND_AUTH:
+		return false;
+	default:
+		return true;
+	}
 }
 
 NetworkPlayer::NetworkPlayer(const char* name)
@@ -234,7 +256,7 @@ bool NetworkConnection::SendPacket(NetworkPacket& packet)
 
 void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet)
 {
-	if (authstatus == NETWORK_AUTH_OK || authstatus == NETWORK_AUTH_REQUESTED) {
+	if (authstatus == NETWORK_AUTH_OK || !packet->CommandRequiresAuth()) {
 		packet->size = (uint16)packet->data->size();
 		outboundpackets.push_back(std::move(packet));
 	}
@@ -573,7 +595,7 @@ void Network::UpdateClient()
 	bool connectfailed = false;
 	switch(status){
 	case NETWORK_STATUS_RESOLVING:{
-		if(server_address.GetResolveStatus() == NetworkAddress::RESOLVE_OK){
+		if (server_address.GetResolveStatus() == NetworkAddress::RESOLVE_OK) {
 			server_connection.socket = socket(server_address.ss->ss_family, SOCK_STREAM, IPPROTO_TCP);
 			if (server_connection.socket == INVALID_SOCKET) {
 				log_error("Unable to create socket.");
@@ -606,8 +628,7 @@ void Network::UpdateClient()
 		int error = 0;
 		socklen_t len = sizeof(error);
 		int result = getsockopt(server_connection.socket, SOL_SOCKET, SO_ERROR, (char*)&error, &len);
-		if (result != 0)
-		{
+		if (result != 0) {
 			log_error("getsockopt failed with error %d", LAST_SOCKET_ERROR());
 			break;
 		}
@@ -631,8 +652,7 @@ void Network::UpdateClient()
 			error = 0;
 			socklen_t len = sizeof(error);
 			result = getsockopt(server_connection.socket, SOL_SOCKET, SO_ERROR, (char*)&error, &len);
-			if (result != 0)
-			{
+			if (result != 0) {
 				log_error("getsockopt failed with error %d", LAST_SOCKET_ERROR());
 				break;
 			}
@@ -726,6 +746,26 @@ bool Network::CheckSRAND(uint32 tick, uint32 srand0)
 		}
 	}
 	return true;
+}
+
+void Network::KickPlayer(int playerId)
+{
+	NetworkPlayer *player = GetPlayerByID(playerId);
+	for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
+		if ((*it)->player->id == playerId) {
+			// Disconnect the client gracefully
+			(*it)->last_disconnect_reason = "Kicked";
+			Server_Send_SETDISCONNECTMSG(*(*it), "Get out of the server!");
+			shutdown((*it)->socket, SHUT_RD);
+			(*it)->SendQueuedPackets();
+			break;
+		}
+	}
+}
+
+void Network::SetPassword(const char* password)
+{
+	safe_strncpy(Network::password, password, sizeof(Network::password));
 }
 
 void Network::Client_Send_AUTH(const char* gameversion, const char* name, const char* password)
@@ -846,7 +886,6 @@ void Network::Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const 
 
 bool Network::ProcessConnection(NetworkConnection& connection)
 {
-	connection.SendQueuedPackets();
 	int packetStatus;
 	do {
 		packetStatus = connection.ReadPacket();
@@ -871,12 +910,11 @@ bool Network::ProcessConnection(NetworkConnection& connection)
 			break;
 		}
 	} while (packetStatus == NETWORK_READPACKET_MORE_DATA || packetStatus == NETWORK_READPACKET_SUCCESS);
-#if !DEBUG
+	connection.SendQueuedPackets();
 	if (!connection.ReceivedPacketRecently()) {
 		connection.last_disconnect_reason = "No Data";
 		return false;
 	}
-#endif
 	return true;
 }
 
@@ -991,6 +1029,20 @@ void Network::PrintError()
 int Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet)
 {
 	packet >> (uint32&)connection.authstatus >> (uint8&)player_id;
+	switch(connection.authstatus) {
+	case NETWORK_AUTH_BADNAME:
+		connection.last_disconnect_reason = "Bad Player Name";
+		shutdown(connection.socket, SHUT_RDWR);
+		break;
+	case NETWORK_AUTH_BADVERSION:
+		connection.last_disconnect_reason = "Incorrect Software Version";
+		shutdown(connection.socket, SHUT_RDWR);
+		break;
+	case NETWORK_AUTH_BADPASSWORD:
+		connection.last_disconnect_reason = "Bad Password";
+		shutdown(connection.socket, SHUT_RDWR);
+		break;
+	}
 	return 1;
 }
 
@@ -1028,6 +1080,10 @@ int Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& pa
 		std::unique_ptr<NetworkPacket> responsepacket = std::move(NetworkPacket::Allocate());
 		*responsepacket << (uint32)NETWORK_COMMAND_AUTH << (uint32)connection.authstatus << (uint8)playerid;
 		connection.QueuePacket(std::move(responsepacket));
+		if (connection.authstatus != NETWORK_AUTH_OK) {
+			shutdown(connection.socket, SHUT_RD);
+			connection.SendQueuedPackets();
+		}
 	}
 	return 1;
 }
@@ -1300,23 +1356,14 @@ void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32
 	}
 }
 
-void Network::KickPlayer(int playerId)
-{
-	NetworkPlayer *player = GetPlayerByID(playerId);
-	for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
-		if ((*it)->player->id == playerId) {
-			// Disconnect the client gracefully
-			(*it)->last_disconnect_reason = "Kicked";
-			Server_Send_SETDISCONNECTMSG(*(*it), "Get out of the server!");
-			shutdown((*it)->socket, SHUT_RD);
-			break;
-		}
-	}
-}
-
 void network_kick_player(int playerId)
 {
 	gNetwork.KickPlayer(playerId);
+}
+
+void network_set_password(const char* password)
+{
+	gNetwork.SetPassword(password);
 }
 
 #else
@@ -1335,6 +1382,7 @@ int network_get_player_ping(unsigned int index) { return 0; }
 int network_get_player_id(unsigned int index) { return 0; }
 void network_send_chat(const char* text) {}
 void network_close() {}
-void network_kick_player(int playerId) { }
+void network_kick_player(int playerId) {}
+void network_set_password(const char* password) {}
 uint8 network_get_current_player_id() { return 0; }
 #endif /* DISABLE_NETWORK */
