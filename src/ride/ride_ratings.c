@@ -794,18 +794,21 @@ static void ride_ratings_apply_adjustments(rct_ride *ride, rating_tuple *ratings
 	ratings->intensity +=  ((ratings->intensity  * rideEntry->intensity_multipler ) >> 7);
 	ratings->nausea +=     ((ratings->nausea     * rideEntry->nausea_multipler    ) >> 7);
 
+#ifdef ORIGINAL_RATINGS
 	// Apply total air time
 	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_AIR_TIME) {
 		ratings->nausea += ride->total_air_time / 16;
-#ifdef ORIGINAL_RATINGS
-		if (rideEntry->flags & RIDE_ENTRY_FLAG_11) {
-			if (ride->total_air_time >= 96) ratings->excitement -= (ride->total_air_time - 96) / 8;
-		}
-#else
-		if (rideEntry->flags & RIDE_ENTRY_FLAG_11) ratings->excitement += min(ride->total_air_time, 96) / 8;
-#endif
+		if (rideEntry->flags & RIDE_ENTRY_FLAG_11 && ride->total_air_time >= 96) ratings->excitement -= (ride->total_air_time - 96) / 8;
 		else ratings->excitement += ride->total_air_time / 8;
 	}
+#else
+	// Apply total air time
+	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_AIR_TIME) {
+		ratings->nausea += ride->total_air_time / 16;
+		if (rideEntry->flags & RIDE_ENTRY_FLAG_11) ratings->excitement += min(ride->total_air_time, 96) / 8;
+		else ratings->excitement += ride->total_air_time / 8;
+	}
+#endif
 }
 
 /**
