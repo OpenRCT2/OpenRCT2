@@ -642,15 +642,14 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 		if (!topLevel){
 			listItem = &_listItems[_listItemsCount];
 			safe_strncpy(listItem->name, language_get_string(2718), sizeof(listItem->name));
-			memset(listItem->path, '\0', MAX_PATH);
-			safe_strncpy(listItem->path, directory, lastSlash + 1);
+			safe_strncpy(listItem->path, directory, sizeof(listItem->path));
 			listItem->type = TYPE_UP;
 			_listItemsCount++;
 		} else if (platform_get_drives() != 0 && directory[0] != '\0'){
 			includeNewItem = false;
 			listItem = &_listItems[_listItemsCount];
 			safe_strncpy(listItem->name, language_get_string(2718), sizeof(listItem->name));
-			memset(listItem->path, '\0', MAX_PATH);
+			memset(listItem->path, '\0', sizeof(listItem->path));
 			listItem->type = TYPE_UP;
 			_listItemsCount++;
 		}

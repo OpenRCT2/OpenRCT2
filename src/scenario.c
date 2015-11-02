@@ -317,27 +317,19 @@ void scenario_begin()
 	{
 		// Get filename
 		utf8 filename[MAX_PATH];
-		int len = strnlen(_scenarioFileName, MAX_PATH);
-		safe_strncpy(filename, _scenarioFileName, len);
-		if (len == MAX_PATH)
-		{
-			filename[MAX_PATH - 1] = '\0';
-			log_warning("truncated string %s", filename);
-		}
+		safe_strncpy(filename, _scenarioFileName, sizeof(filename));
 		path_remove_extension(filename);
 
 		rct_string_id localisedStringIds[3];
 		if (language_get_localised_scenario_strings(filename, localisedStringIds)) {
 			if (localisedStringIds[0] != (rct_string_id)STR_NONE) {
-				safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(localisedStringIds[0]), 31);
-				((char*)RCT2_ADDRESS_SCENARIO_NAME)[31] = '\0';
+				safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(localisedStringIds[0]), 32);
 			}
 			if (localisedStringIds[1] != (rct_string_id)STR_NONE) {
 				park_set_name(language_get_string(localisedStringIds[1]));
 			}
 			if (localisedStringIds[2] != (rct_string_id)STR_NONE) {
-				safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, language_get_string(localisedStringIds[2]), 255);
-				((char*)RCT2_ADDRESS_SCENARIO_DETAILS)[255] = '\0';
+				safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, language_get_string(localisedStringIds[2]), 256);
 			}
 		} else {
 			rct_stex_entry* stex = g_stexEntries[0];
