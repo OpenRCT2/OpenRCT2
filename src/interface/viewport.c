@@ -270,15 +270,56 @@ void sub_689174(sint16* x, sint16* y, sint16 *z)
 	*z = height;
 }
 
-// ax = viewport->x
-// bx = viewport->y;
-// cx = viewport->width;
-// dx = viewport->height;
+void sub_683326(int left, int top, int right, int bottom)
+{
+	RCT2_CALLPROC_X(0x00683359, left, top, right, bottom, 0, 0, 0);
+}
+
+// shifts pixels from the region in a direction. Used when a viewport moves;
+// consider putting in src/drawing/drawing.c or src/drawing/rect.c
+// 
+// 0x00683359
+// ax = x
+// bx = y;
+// cx = width;
+// dx = height;
 // di = dx;
 // si = dy;
-void sub_683359(int x, int y, int width, int height, int dx, int dy)
+void gfx_move_screen_rect(int x, int y, int width, int height, int dx, int dy)
 {
-	RCT2_CALLPROC_X(0x00683359, x, y, width, height, dy, dx, 0);
+	// nothing to do
+	if (dx == 0 && dy == 0)
+		return;
+
+	// I have seen no advantages of having this function nor disadvantages from
+	// leaving it out. Kept in for completeness
+	sub_683326(x, y, x + width - 1, y + height - 1);
+
+	// get screen info
+	rct_drawpixelinfo *screenDPI = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
+
+	sint32 stride = screenDPI->width + screenDPI->pitch;
+	uint8* to   = screenDPI->bits + y * stride + x;
+	uint8* from = screenDPI->bits + (y - dy) * stride + x - dx;
+
+	if (dy > 0)
+	{
+		// if positive dy, reverse directions
+		to   += (height - 1) * stride;
+		from += (height - 1) * stride;
+		stride = -stride;
+	}
+
+	// move bits
+	for (int i = 0; i < height; i++, to += stride, from += stride)
+	{
+		// when zooming, there can be x, y, dx, dy combinations that go off the 
+		// screen; hence the condition. This code should ultimately not be
+		// called when zooming because this function is specific to updating the
+		// screen on move
+		if (from >= screenDPI->bits && from + width < screenDPI->bits + RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) * RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16))
+			memmove(to, from, width);
+	}
 }
 
 void sub_6E7FF3(rct_window *window, rct_viewport *viewport, int x, int y)
@@ -361,7 +402,7 @@ void sub_6E7FF3(rct_window *window, rct_viewport *viewport, int x, int y)
 		if (abs(x) < viewport->width && abs(y) < viewport->height)
 		{
 			// update whole block ?
-			sub_683359(viewport->x, viewport->y, viewport->width, viewport->height, x, y);
+			gfx_move_screen_rect(viewport->x, viewport->y, viewport->width, viewport->height, x, y);
 
 			if (x > 0)
 			{
