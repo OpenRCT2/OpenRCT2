@@ -128,6 +128,12 @@ static const int RideInspectionInterval[] = {
 
 rct_ride_type **gRideTypeList = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, rct_ride_type*);
 rct_ride* g_ride_list = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride);
+bool gGotoStartPlacementMode = false;
+int gRideRemoveTrackPieceCallbackX;
+int gRideRemoveTrackPieceCallbackY;
+int gRideRemoveTrackPieceCallbackZ;
+int gRideRemoveTrackPieceCallbackDirection;
+int gRideRemoveTrackPieceCallbackType;
 
 // Static function declarations
 rct_peep *find_closest_mechanic(int x, int y, int forInspection);
@@ -5537,6 +5543,27 @@ void game_command_callback_ride_construct_placed_front(int eax, int ebx, int ecx
 }
 
 /**
+*
+* Network client callback when removing ride pieces
+*   Client does execute placing the piece on the same tick as mouse_up - waits for server command
+* Re-executes function from ride_construction - window_ride_construction_mouseup_demolish()
+* Only uses part that deals with construction state
+*/
+
+void game_command_callback_ride_remove_track_piece(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	int x, y, z, direction, type;
+
+	x = gRideRemoveTrackPieceCallbackX;
+	y = gRideRemoveTrackPieceCallbackY;
+	z = gRideRemoveTrackPieceCallbackZ;
+	direction = gRideRemoveTrackPieceCallbackDirection;
+	type = gRideRemoveTrackPieceCallbackType;
+	
+	window_ride_construction_mouseup_demolish_next_piece(x, y, z, direction, type);
+}
+
+/**
  *
  *  rct2: 0x006B49D9
  */
@@ -6287,6 +6314,10 @@ bool ride_select_forwards_from_back()
 money32 ride_remove_track_piece(int x, int y, int z, int direction, int type)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS;
+	if (network_get_mode() == NETWORK_MODE_CLIENT)
+	{
+		game_command_callback = game_command_callback_ride_remove_track_piece;
+	}
 	return game_do_command(x, (GAME_COMMAND_FLAG_APPLY) | ((direction & 3) << 8), y, type, GAME_COMMAND_REMOVE_TRACK, z, 0);
 }
 
