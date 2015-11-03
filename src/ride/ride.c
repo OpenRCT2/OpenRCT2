@@ -129,6 +129,11 @@ static const int RideInspectionInterval[] = {
 rct_ride_type **gRideTypeList = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, rct_ride_type*);
 rct_ride* g_ride_list = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride);
 bool gGotoStartPlacementMode = false;
+int gRideRemoveTrackPieceCallbackX;
+int gRideRemoveTrackPieceCallbackY;
+int gRideRemoveTrackPieceCallbackZ;
+int gRideRemoveTrackPieceCallbackDirection;
+int gRideRemoveTrackPieceCallbackType;
 
 // Static function declarations
 rct_peep *find_closest_mechanic(int x, int y, int forInspection);
@@ -5548,15 +5553,14 @@ void game_command_callback_ride_construct_placed_front(int eax, int ebx, int ecx
 void game_command_callback_ride_remove_track_piece(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 {
 	int x, y, z, direction, type;
-	rct_xy_element outputElement;
 
-	x = _currentTrackBeginX;
-	y = _currentTrackBeginY;
-	z = _currentTrackBeginZ;
-	direction = _currentTrackPieceDirection;
-	type = _currentTrackPieceType;
-
-	window_ride_construction_mouseup_demolish_next_piece(x, y, z, direction, type, outputElement);
+	x = gRideRemoveTrackPieceCallbackX;
+	y = gRideRemoveTrackPieceCallbackY;
+	z = gRideRemoveTrackPieceCallbackZ;
+	direction = gRideRemoveTrackPieceCallbackDirection;
+	type = gRideRemoveTrackPieceCallbackType;
+	
+	window_ride_construction_mouseup_demolish_next_piece(x, y, z, direction, type);
 }
 
 /**

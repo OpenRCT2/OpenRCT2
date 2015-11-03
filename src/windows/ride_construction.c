@@ -1753,10 +1753,18 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 		return;
 	}
 
-	window_ride_construction_mouseup_demolish_next_piece(x, y, z, direction, type, outputElement);
+	if (network_get_mode() == NETWORK_MODE_CLIENT) {
+		gRideRemoveTrackPieceCallbackX = x;
+		gRideRemoveTrackPieceCallbackY = y;
+		gRideRemoveTrackPieceCallbackZ = z;
+		gRideRemoveTrackPieceCallbackDirection = direction;
+		gRideRemoveTrackPieceCallbackType = type;
+	} else {
+		window_ride_construction_mouseup_demolish_next_piece(x, y, z, direction, type);
+	}
 }
 
-void window_ride_construction_mouseup_demolish_next_piece(int x, int y, int z, int direction, int type, rct_xy_element outputElement)
+void window_ride_construction_mouseup_demolish_next_piece(int x, int y, int z, int direction, int type)
 {
 	int slope, slopeEnd, b2, bankEnd, bankStart, b5, b4;
 	if (gGotoStartPlacementMode) {
@@ -1775,7 +1783,7 @@ void window_ride_construction_mouseup_demolish_next_piece(int x, int y, int z, i
 		b4 = _currentTrackLiftHill;
 		ride_construction_set_default_next_piece();
 		sub_6C84CE();
-		if (!sub_6CAF80(_currentRideIndex, &outputElement)) {
+		if (!sub_6CAF80(_currentRideIndex, NULL)) {
 			sub_6CC3FB(_currentRideIndex);
 			_currentTrackPieceDirection = direction;
 			if (!(slope & 0x100)) {

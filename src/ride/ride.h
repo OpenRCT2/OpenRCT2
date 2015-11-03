@@ -877,6 +877,11 @@ extern const uint8 gRideClassifications[255];
 #define _currentSeatRotationAngle					RCT2_GLOBAL(0x00F440CF, uint8)
 
 extern bool gGotoStartPlacementMode;
+extern int gRideRemoveTrackPieceCallbackX;
+extern int gRideRemoveTrackPieceCallbackY;
+extern int gRideRemoveTrackPieceCallbackZ;
+extern int gRideRemoveTrackPieceCallbackDirection;
+extern int gRideRemoveTrackPieceCallbackType;
 
 int ride_get_count();
 int ride_get_total_queue_length(rct_ride *ride);
@@ -1012,6 +1017,6 @@ bool shop_item_is_souvenir(int shopItem);
 void ride_reset_all_names();
 const uint8* ride_seek_available_modes(rct_ride *ride);
 
-void window_ride_construction_mouseup_demolish_next_piece(int x, int y, int z, int direction, int type, rct_xy_element outputElement);
+void window_ride_construction_mouseup_demolish_next_piece(int x, int y, int z, int direction, int type);
 
 #endif

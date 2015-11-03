@@ -871,10 +871,12 @@ bool Network::ProcessConnection(NetworkConnection& connection)
 			break;
 		}
 	} while (packetStatus == NETWORK_READPACKET_MORE_DATA || packetStatus == NETWORK_READPACKET_SUCCESS);
+#if !DEBUG
 	if (!connection.ReceivedPacketRecently()) {
 		connection.last_disconnect_reason = "No Data";
 		return false;
 	}
+#endif
 	return true;
 }
 
