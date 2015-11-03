@@ -624,12 +624,14 @@ static void ride_ratings_calculate(rct_ride *ride)
 		calcFunc(ride);
 	}
 
+	#ifdef ORIGINAL_RATINGS
 	if (ride->ratings.excitement != -1) {
-		// Prevent negative ratings
+		// Address underflows allowed by original RCT2 code
 		ride->ratings.excitement = max(0, ride->ratings.excitement);
 		ride->ratings.intensity = max(0, ride->ratings.intensity);
 		ride->ratings.nausea = max(0, ride->ratings.nausea);
 	}
+	#endif
 
 	// Original ride calculation
 	// calcFunc = RCT2_ADDRESS(0x0097E050, ride_ratings_calculation)[ride->type];
@@ -793,6 +795,7 @@ static void ride_ratings_apply_adjustments(rct_ride *ride, rating_tuple *ratings
 	ratings->nausea +=     ((ratings->nausea     * rideEntry->nausea_multipler    ) >> 7);
 
 	// Apply total air time
+	#ifdef ORIGINAL_RATINGS
 	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_AIR_TIME) {
 		uint16 totalAirTime = ride->total_air_time;
 		if (rideEntry->flags & RIDE_ENTRY_FLAG_11) {
@@ -806,6 +809,17 @@ static void ride_ratings_apply_adjustments(rct_ride *ride, rating_tuple *ratings
 			ratings->nausea += totalAirTime / 16;
 		}
 	}
+	#else
+	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_AIR_TIME) {
+		if (rideEntry->flags & RIDE_ENTRY_FLAG_11) {
+			// Limit airtime bonus for heartline twister coaster (see issues #2031 and #2064)
+			ratings->excitement += min(ride->total_air_time, 96) / 8;
+		} else {
+			ratings->excitement += ride->total_air_time / 8;
+		}
+		ratings->nausea += ride->total_air_time / 16;
+	}
+	#endif
 }
 
 /**
