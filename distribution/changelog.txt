@@ -7,8 +7,31 @@
 - Feature: Load/save window can be sorted on date.
 - Feature: Cheats for guest parameters like hunger, energy, nausea etc.
 - Feature: Cheats for park parameters like guest generation, loan settings and switching to and from not using money.
-- Fix: Launched TD4 rides will now always use the RCT1 launch mode (that doesn't pass the station).
-- Fix: Guests will no longer ignore no entry signs if the tile contains more than one fence.
+- Feature: Cheats for showing vehicles from other track types and enabling all operating modes.
+- Feature: Clear Scenery can now be used for sizes up to 64x64.
+- Feature: The mountain tool can now be used for sizes up to 64x64.
+- Feature: Built-in load/save window is now used for converting saved games to scenarios.
+- Feature: Multiplayer (has some game-breaking bugs).
+- Feature: Native Linux support.
+- Feature: Console commands for fixing 'Name already in use' and banner count errors.
+- Feature: Scenario and object descriptions are now translatable.
+- Feature: UI stays responsive in pause mode.
+- Feature: Hacked rides no longer have their reliability set to 0.
+- Feature: Marketing campaign can now be run for up to 12 weeks.
+- Feature: Day/night cycle.
+- Technical: DirectDraw, DirectInput, DirectPlay and DirectSound are no longer used.
+- Removed: Six Flags branding and limitations.
+- Removed: Infogrames disclaimer.
+- Fix: When placing a track, the preview will now use the same orientation as the ghost.
+- Fix: Grouping vehicles by track type no longer interferes with research.
+- Fix: Fix corrupt map elements when loading a game.
+- Fix: Fix corrupt peep counter when loading a game.
+- Fix: Launched TD4 rides will now always use the RCT1 launch mode (that doesn't pass the station) (original bug).
+- Fix: Guests will no longer ignore no entry signs if the tile contains more than one fence (original bug).
+- Fix: Right-clicking a piece of launched lift will no longer crash the game (original bug).
+- Fix: Underflow in Heartline Twister ratings (original bug).
+- Fix: Map window now display the usable map size, not the technical one (original bug).
+- Fix: TD4 River Rapids will now have the correct seat colour (original bug).
 
 0.0.2-beta (2015-06-21)
 ------------------------------------------------------------------------
