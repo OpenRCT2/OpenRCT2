@@ -1670,11 +1670,11 @@ static void window_ride_construction_construct(rct_window *w)
  */
 static void window_ride_construction_mouseup_demolish(rct_window* w)
 {
-	int x, y, z, direction, type, slope, slopeEnd, b2, bankEnd, bankStart, b5, b4;
+	int x, y, z, direction, type;
 	rct_map_element *mapElement;
 	rct_xy_element inputElement, outputElement;
 	track_begin_end trackBeginEnd;
-	bool gotoStartPlacementMode;
+	//bool gotoStartPlacementMode;
 
 	_currentTrackPrice = MONEY32_UNDEFINED;
 	sub_6C9627();
@@ -1716,14 +1716,14 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 		z = trackBeginEnd.begin_z;
 		direction = trackBeginEnd.begin_direction;
 		type = trackBeginEnd.begin_element->properties.track.type;
-		gotoStartPlacementMode = false;
+		gGotoStartPlacementMode = false;
 	}
 	else if (track_block_get_next(&inputElement, &outputElement, &z, &direction)) {
 		x = outputElement.x;
 		y = outputElement.y;
 		direction = outputElement.element->type & MAP_ELEMENT_DIRECTION_MASK;
 		type = outputElement.element->properties.track.type;
-		gotoStartPlacementMode = false;
+		gGotoStartPlacementMode = false;
 	} else {
 		x = _currentTrackBeginX;
 		y = _currentTrackBeginY;
@@ -1738,7 +1738,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 
 		const rct_preview_track *trackBlock = get_track_def_from_ride_index(_currentRideIndex, mapElement->properties.track.type);
 		z = (mapElement->base_height * 8) - trackBlock->z;
-		gotoStartPlacementMode = true;
+		gGotoStartPlacementMode = true;
 	}
 
 	money32 cost = ride_remove_track_piece(
@@ -1753,7 +1753,13 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 		return;
 	}
 
-	if (gotoStartPlacementMode) {
+	window_ride_construction_mouseup_demolish_next_piece(x, y, z, direction, type, outputElement);
+}
+
+void window_ride_construction_mouseup_demolish_next_piece(int x, int y, int z, int direction, int type, rct_xy_element outputElement)
+{
+	int slope, slopeEnd, b2, bankEnd, bankStart, b5, b4;
+	if (gGotoStartPlacementMode) {
 		z &= 0xFFF0;
 		_currentTrackBeginZ = z;
 		_rideConstructionState = RIDE_CONSTRUCTION_STATE_FRONT;
@@ -1783,7 +1789,8 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 				sub_6C84CE();
 			}
 		}
-	} else {
+	}
+	else {
 		if (RCT2_GLOBAL(0x00F440B8, uint8) == 3 || RCT2_GLOBAL(0x00F440B8, uint8) == 1) {
 			if (type == TRACK_ELEM_MIDDLE_STATION || type == TRACK_ELEM_BEGIN_STATION) {
 				type = TRACK_ELEM_END_STATION;
@@ -1794,6 +1801,11 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 				type = TRACK_ELEM_BEGIN_STATION;
 			}
 		}
+		if (network_get_mode() == NETWORK_MODE_CLIENT)
+		{
+			// rideConstructionState needs to be set again to the proper value, this only affects the client
+			_rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
+		}
 		_currentTrackBeginX = x;
 		_currentTrackBeginY = y;
 		_currentTrackBeginZ = z;
@@ -1803,7 +1815,8 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 		_rideConstructionArrowPulseTime = 0;
 		if (RCT2_GLOBAL(0x00F440B8, uint8) == 1) {
 			ride_select_next_section();
-		} else if (RCT2_GLOBAL(0x00F440B8, uint8) == 2) {
+		}
+		else if (RCT2_GLOBAL(0x00F440B8, uint8) == 2) {
 			ride_select_previous_section();
 		}
 		sub_6C84CE();

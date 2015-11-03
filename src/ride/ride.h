@@ -876,6 +876,8 @@ extern const uint8 gRideClassifications[255];
 
 #define _currentSeatRotationAngle					RCT2_GLOBAL(0x00F440CF, uint8)
 
+extern bool gGotoStartPlacementMode;
+
 int ride_get_count();
 int ride_get_total_queue_length(rct_ride *ride);
 int ride_get_max_queue_time(rct_ride *ride);
@@ -929,6 +931,7 @@ void game_command_create_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, 
 void game_command_callback_ride_construct_new(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
 void game_command_callback_ride_construct_placed_front(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
 void game_command_callback_ride_construct_placed_back(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
+void game_command_callback_ride_remove_track_piece(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
 void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
@@ -1008,5 +1011,7 @@ bool shop_item_is_drink(int shopItem);
 bool shop_item_is_souvenir(int shopItem);
 void ride_reset_all_names();
 const uint8* ride_seek_available_modes(rct_ride *ride);
+
+void window_ride_construction_mouseup_demolish_next_piece(int x, int y, int z, int direction, int type, rct_xy_element outputElement);
 
 #endif
