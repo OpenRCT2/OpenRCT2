@@ -241,6 +241,9 @@ config_property_definition _networkDefinitions[] = {
 	{ offsetof(network_configuration, default_port),					"default_port",					CONFIG_VALUE_TYPE_UINT32,		NETWORK_DEFAULT_PORT,			NULL					},
 	{ offsetof(network_configuration, stay_connected),					"stay_connected",				CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
 	{ offsetof(network_configuration, advertise),						"advertise",					CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(network_configuration, maxplayers),						"maxplayers",					CONFIG_VALUE_TYPE_UINT8,		16,								NULL					},
+	{ offsetof(network_configuration, server_name),						"server_name",					CONFIG_VALUE_TYPE_STRING,		{.value_string = "Server" },	NULL					},
+	{ offsetof(network_configuration, master_url),						"master_url",					CONFIG_VALUE_TYPE_STRING,		{.value_string = OPENRCT2_MASTER_URL },	NULL			}
 };
 
 config_section_definition _sectionDefinitions[] = {

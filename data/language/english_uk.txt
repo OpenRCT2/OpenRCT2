@@ -3903,6 +3903,13 @@ STR_5561    :Password:
 STR_5562    :Advertise
 STR_5563    :Password Required
 STR_5564    :This server requires a password
+STR_5565    :Fetch Servers
+STR_5566    :Join Game
+STR_5567    :Add To Favorites
+STR_5568    :Remove From Favorites
+STR_5569    :Server Name:
+STR_5570    :Max Players:
+STR_5571    :Port:
 
 
 #####################

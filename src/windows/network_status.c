@@ -149,7 +149,11 @@ static void window_network_status_textinput(rct_window *w, int widgetIndex, char
 			safe_strncpy(_password, text, sizeof(_password));
 		break;
 	}
-	network_send_password(_password);
+	if (text == NULL) {
+		network_shutdown_client();
+	} else {
+		network_send_password(_password);
+	}
 }
 
 static void window_network_status_invalidate(rct_window *w)
