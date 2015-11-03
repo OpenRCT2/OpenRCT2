@@ -575,6 +575,7 @@ void platform_resolve_user_data_path()
 		return;
 	}
 
+	const char separator[2] = { platform_get_path_separator(), 0 };
 	char buffer[MAX_PATH];
 	buffer[0] = '\0';
 	log_verbose("buffer = '%s'", buffer);
@@ -590,11 +591,15 @@ void platform_resolve_user_data_path()
 			exit(-1);
 			return;
 		}
+
+		strncat(buffer, homedir, MAX_PATH);
+		strncat(buffer, separator, MAX_PATH);
+		strncat(buffer, ".config", MAX_PATH);
 	}
-	char separator[2] = { platform_get_path_separator(), 0 };
-	strncat(buffer, homedir, MAX_PATH);
-	strncat(buffer, separator, MAX_PATH);
-	strncat(buffer, ".config", MAX_PATH);
+	else
+	{
+		strncat(buffer, homedir, MAX_PATH);
+	}
 	strncat(buffer, separator, MAX_PATH);
 	strncat(buffer, "OpenRCT2", MAX_PATH);
 	strncat(buffer, separator, MAX_PATH);
@@ -610,6 +615,7 @@ void platform_resolve_user_data_path()
 
 void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
 {
+	const char separator[2] = { platform_get_path_separator(), 0 };
 	char buffer[MAX_PATH];
 	safe_strncpy(buffer, _userDataDirectoryPath, sizeof(buffer));
 	if (subDirectory != NULL && subDirectory[0] != 0) {
