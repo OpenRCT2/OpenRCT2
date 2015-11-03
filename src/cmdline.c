@@ -73,6 +73,7 @@ int cmdline_run(const char **argv, int argc)
 	//
 	int version = 0, headless = 0, verbose = 0, width = 0, height = 0, port = 0;
 	char *server = NULL;
+	char *userDataPath = NULL;
 
 	argparse_option_t options[] = {
 		OPT_HELP(),
@@ -82,6 +83,7 @@ int cmdline_run(const char **argv, int argc)
 		OPT_INTEGER('m', "mode", &sprite_mode, "the type of sprite conversion. 0 = default, 1 = simple closest pixel match, 2 = dithering"),
 		OPT_STRING(0, "server", &server, "server to connect to"),
 		OPT_INTEGER(0, "port", &port, "port"),
+		OPT_STRING(0, "user-data-path", &userDataPath, "path to the user data directory (containing config.ini)"),
 		OPT_END()
 	};
 
@@ -99,6 +101,10 @@ int cmdline_run(const char **argv, int argc)
 
 	if (verbose)
 		_log_levels[DIAGNOSTIC_LEVEL_VERBOSE] = 1;
+
+	if (userDataPath != NULL) {
+		safe_strncpy(gCustomUserDataPath, userDataPath, sizeof(gCustomUserDataPath));
+	}
 
 #ifndef DISABLE_NETWORK
 	if (port != 0) {

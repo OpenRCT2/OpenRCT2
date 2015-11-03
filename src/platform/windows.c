@@ -37,6 +37,8 @@
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
 
+utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
+
 LPSTR *CommandLineToArgvA(LPSTR lpCmdLine, int *argc);
 
 /**
@@ -380,25 +382,49 @@ bool platform_file_delete(const utf8 *path)
 	return success == TRUE;
 }
 
-void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
+/**
+ * Default directory fallback is:
+ *   - (command line argument)
+ *   - C:\Users\%USERNAME%\OpenRCT2 (as from SHGetFolderPathW)
+ */
+void platform_resolve_user_data_path()
 {
 	wchar_t wOutPath[MAX_PATH];
-	char separator[2] = { platform_get_path_separator(), 0 };
+	const char separator[2] = { platform_get_path_separator(), 0 };
+
+	if (gCustomUserDataPath[0] != 0) {
+		safe_strncpy(_userDataDirectoryPath, gCustomUserDataPath, sizeof(_userDataDirectoryPath));
+		
+		// Ensure path ends with separator
+		int len = strlen(_userDataDirectoryPath);
+		if (_userDataDirectoryPath[len - 1] != separator[0]) {
+			strcat(_userDataDirectoryPath, separator);
+		}
+		return;
+	}
 
 	if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, wOutPath))) {
 		utf8 *outPathTemp = widechar_to_utf8(wOutPath);
-		safe_strncpy(outPath, outPathTemp, MAX_PATH);
+		safe_strncpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
 		free(outPathTemp);
 
-		strcat(outPath, separator);
-		strcat(outPath, "OpenRCT2");
-		strcat(outPath, separator);
-		if (subDirectory != NULL && subDirectory[0] != 0) {
-			strcat(outPath, subDirectory);
-			strcat(outPath, separator);
-		}
+		strcat(_userDataDirectoryPath, separator);
+		strcat(_userDataDirectoryPath, "OpenRCT2");
+		strcat(_userDataDirectoryPath, separator);
 	} else {
-		outPath[0] = 0;
+		log_fatal("Unable to resolve user data path.");
+		exit(-1);
+	}
+}
+
+void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
+{
+	const char separator[2] = { platform_get_path_separator(), 0 };
+
+	strcpy(outPath, _userDataDirectoryPath);
+	if (subDirectory != NULL && subDirectory[0] != 0) {
+		strcat(outPath, subDirectory);
+		strcat(outPath, separator);
 	}
 }
 

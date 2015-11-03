@@ -39,6 +39,8 @@
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
 
+utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
+
 /**
  * The function that is called directly from the host application (rct2.exe)'s WinMain. This will be removed when OpenRCT2 can
  * be built as a stand alone application.
@@ -554,8 +556,25 @@ wchar_t *regular_to_wchar(const char* src)
 	return w_buffer;
 }
 
-void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
+/**
+ * Default directory fallback is:
+ *   - (command line argument)
+ *   - $XDG_CONFIG_HOME/.config/OpenRCT2
+ *   - /home/[uid]/.config/OpenRCT2
+ */
+void platform_resolve_user_data_path()
 {
+	if (gCustomUserDataPath[0] != 0) {
+		safe_strncpy(_userDataDirectoryPath, gCustomUserDataPath, sizeof(_userDataDirectoryPath));
+
+		// Ensure path ends with separator
+		int len = strlen(_userDataDirectoryPath);
+		if (_userDataDirectoryPath[len - 1] != separator[0]) {
+			strcat(_userDataDirectoryPath, separator);
+		}
+		return;
+	}
+
 	char buffer[MAX_PATH];
 	buffer[0] = '\0';
 	log_verbose("buffer = '%s'", buffer);
@@ -567,16 +586,32 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
 		log_verbose("homedir was null, used getuid, now is = '%s'", homedir);
 		if (homedir == NULL)
 		{
-			log_error("Couldn't find user home directory");
+			log_fatal("Couldn't find user data directory");
+			exit(-1);
 			return;
 		}
 	}
 	char separator[2] = { platform_get_path_separator(), 0 };
 	strncat(buffer, homedir, MAX_PATH);
 	strncat(buffer, separator, MAX_PATH);
+	strncat(buffer, ".config", MAX_PATH);
+	strncat(buffer, separator, MAX_PATH);
 	strncat(buffer, "OpenRCT2", MAX_PATH);
 	strncat(buffer, separator, MAX_PATH);
-	log_verbose("outPath + OpenRCT2 = '%s'", buffer);
+	log_verbose("OpenRCT2 user data directory = '%s'", buffer);
+	int len = strnlen(buffer, MAX_PATH);
+	wchar_t *w_buffer = regular_to_wchar(buffer);
+	w_buffer[len] = '\0';
+	utf8 *path = widechar_to_utf8(w_buffer);
+	free(w_buffer);
+	safe_strncpy(_userDataDirectoryPath, path, MAX_PATH);
+	free(path);
+}
+
+void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
+{
+	char buffer[MAX_PATH];
+	safe_strncpy(buffer, _userDataDirectoryPath, sizeof(buffer));
 	if (subDirectory != NULL && subDirectory[0] != 0) {
 		log_verbose("adding subDirectory '%s'", subDirectory);
 		strcat(buffer, subDirectory);

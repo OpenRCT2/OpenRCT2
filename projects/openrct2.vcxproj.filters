@@ -543,6 +543,9 @@
     <ClCompile Include="..\src\ride\track_paint.c">
       <Filter>Source\Ride</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\platform\linux.c">
+      <Filter>Source\Platform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">

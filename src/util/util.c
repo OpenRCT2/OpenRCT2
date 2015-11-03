@@ -183,6 +183,9 @@ int strcicmp(char const *a, char const *b)
 
 char *safe_strncpy(char * destination, const char * source, size_t size)
 {
+	assert(destination != NULL);
+	assert(source != NULL);
+
 	if (size == 0)
 	{
 		return destination;
