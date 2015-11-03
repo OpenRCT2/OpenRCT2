@@ -261,7 +261,7 @@ void game_update()
 		numUpdates = clamp(1, numUpdates, 4);
 	}
 
-	if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED) {
+	if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {
 		if (network_get_server_tick() - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >= 10) {
 			// make sure client doesn't fall behind the server too much
 			numUpdates += 10;
@@ -340,7 +340,7 @@ void game_logic_update()
 	gInUpdateCode = true;
 	///////////////////////////
 	network_update();
-	if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED) {
+	if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >= network_get_server_tick()) {
 			// dont run past the server
 			return;
