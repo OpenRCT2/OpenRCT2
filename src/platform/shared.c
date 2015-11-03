@@ -31,6 +31,7 @@
 #include "../input.h"
 #include "../localisation/localisation.h"
 #include "../openrct2.h"
+#include "../title.h"
 #include "../util/util.h"
 #include "platform.h"
 
@@ -312,12 +313,14 @@ static void platform_resize(int width, int height)
 		window_relocate_windows(width, height);
 	}
 
+	title_fix_location();
 	gfx_invalidate_screen();
 
 	// Check if the window has been resized in windowed mode and update the config file accordingly
 	// This is called in rct2_update_2 and is only called after resizing a window has finished
-	if ((flags & (SDL_WINDOW_MAXIMIZED | SDL_WINDOW_MINIMIZED |
-		SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP)) == 0) {
+	const int nonWindowFlags =
+		SDL_WINDOW_MAXIMIZED | SDL_WINDOW_MINIMIZED | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP;
+	if (!(flags & nonWindowFlags)) {
 		if (width != gConfigGeneral.window_width || height != gConfigGeneral.window_height) {
 			gConfigGeneral.window_width = width;
 			gConfigGeneral.window_height = height;

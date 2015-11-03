@@ -47,6 +47,7 @@ void title_update();
 void title_skip_from_beginning();
 void title_script_get_line(SDL_RWops *file, char *parts);
 bool title_refresh_sequence();
+void title_fix_location();
 void DrawOpenRCT2(int x, int y);
 
 #endif

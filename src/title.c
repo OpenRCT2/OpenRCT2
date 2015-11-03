@@ -53,6 +53,7 @@ sint32 gTitleScriptCommand = -1;
 uint8 gTitleScriptSave = 0xFF;
 sint32 gTitleScriptSkipTo = -1;
 sint32 gTitleScriptSkipLoad = -1;
+rct_xy16 _titleScriptCurrentCentralPosition = { -1, -1 };
 
 #pragma region Showcase script
 
@@ -222,6 +223,39 @@ static int title_load_park(const char *path)
 	return 1;
 }
 
+/**
+ * Sets the map location to the given tile coordinates. Z is automatic.
+ * @param x X position in map tiles.
+ * @param y Y position in map tiles.
+ */
+static void title_set_location(int x, int y)
+{
+	int z = map_element_height(x, y);
+
+	// Update viewport
+	rct_window* w = window_get_main();
+	if (w != NULL) {
+		window_scroll_to_location(w, x, y, z);
+		w->flags &= ~WF_SCROLLING_TO_LOCATION;
+		viewport_update_position(w);
+	}
+
+	// Save known tile position in case of window resize
+	_titleScriptCurrentCentralPosition.x = (sint16)x;
+	_titleScriptCurrentCentralPosition.y = (sint16)y;
+}
+
+/**
+ * Re-centres the map location to the last scripted tile position.
+ */
+void title_fix_location()
+{
+	rct_xy16 position = _titleScriptCurrentCentralPosition;
+	if (position.x != -1) {
+		title_set_location(position.x, position.y);
+	}
+}
+
 static void title_skip_opcode()
 {
 	uint8 script_opcode;
@@ -255,7 +289,7 @@ static void title_skip_opcode()
 static void title_do_next_script_opcode()
 {
 	int i;
-	short x, y, z;
+	short x, y;
 	uint8 script_opcode, script_operand;
 	rct_window* w;
 	gTitleScriptCommand++;
@@ -295,15 +329,7 @@ static void title_do_next_script_opcode()
 	case TITLE_SCRIPT_LOCATION:
 		x = (*_currentScript++) * 32 + 16;
 		y = (*_currentScript++) * 32 + 16;
-		z = map_element_height(x, y);
-
-		// Update viewport
-		w = window_get_main();
-		if (w != NULL) {
-			window_scroll_to_location(w, x, y, z);
-			w->flags &= ~WF_SCROLLING_TO_LOCATION;
-			viewport_update_position(w);
-		}
+		title_set_location(x, y);
 		break;
 	case TITLE_SCRIPT_ROTATE:
 		script_operand = (*_currentScript++);
