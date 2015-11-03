@@ -4754,8 +4754,8 @@ bool track_circuit_iterator_previous(track_circuit_iterator *it)
 		it->last = it->current;
 
 		if (track_block_get_previous(it->last.x, it->last.y, it->last.element, &trackBeginEnd)) {
-			it->current.x = trackBeginEnd.begin_x;
-			it->current.y = trackBeginEnd.begin_y;
+			it->current.x = trackBeginEnd.end_x;
+			it->current.y = trackBeginEnd.end_y;
 			it->current.element = trackBeginEnd.begin_element;
 			it->currentZ = trackBeginEnd.begin_z;
 			it->currentDirection = trackBeginEnd.begin_direction;
