@@ -834,8 +834,8 @@ STR_0829    :{SMALLFONT}{BLACK}Fenstertitel - Ziehen Sie hier, um das Fenster zu
 STR_0830    :{SMALLFONT}{BLACK}Ansicht heranzoomen
 STR_0831    :{SMALLFONT}{BLACK}Ansicht wegzoomen
 STR_0832    :{SMALLFONT}{BLACK}Ansicht um 90{DEGREE} im Uhrzeigersinn drehen
-STR_0833    :{SMALLFONT}{BLACK}Spielpause
-STR_0834    :{SMALLFONT}{BLACK}Festplatten- und Spieloptionen
+STR_0833    :{SMALLFONT}{BLACK}Spiel pausieren
+STR_0834    :{SMALLFONT}{BLACK}Speicher- und Spieloptionen
 STR_0835    :Spielinitialisierung fehlgeschlagen
 STR_0836    :Spiel kann nicht im minimierten Zustand gestartet werden
 STR_0837    :Grafiksystem kann nicht initialisiert werden
@@ -3789,7 +3789,7 @@ STR_5452    :Symbolleiste ein-/ausblenden
 STR_5453    :Andere Attraktion auswählen
 STR_5454    :FPS-Limit aufheben
 STR_5455    :Sandkastenmodus aktivieren
-STR_5456    :Höhenüberprüfung deaktivieren
+STR_5456    :Konstruktionsüberschneidungen erlauben
 STR_5457    :Stützenlimit deaktivieren
 STR_5458    :Im Uhrzeigersinn drehen
 STR_5459    :Gegen den Uhrzeigersinn drehen
