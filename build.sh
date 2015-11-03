@@ -12,6 +12,8 @@ if [[ ! -d build ]]; then
 	mkdir -p build
 fi
 
+source transfer.sh
+
 # keep in sync with version in install.sh
 sha256sum=69ff98c9544838fb16384bc78af9dc1c452b9d01d919e43f5fec686d02c9bdd8
 libVFile="./libversion"
@@ -63,6 +65,12 @@ pushd build
 		make
 		make install
 		tree -lpFh package
+		if [[ -f openrct2 ]]; then
+			transfer openrct2
+		fi
+		tree -lpFh ../
+		sha256sum package/data/g2.dat
+		transfer package/data/g2.dat
 	fi
 popd
 
