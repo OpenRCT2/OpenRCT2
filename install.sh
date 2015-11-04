@@ -7,7 +7,7 @@ cachedir=.cache
 liburl=https://openrct.net/launcher/libs/orctlibs.zip
 mkdir -p $cachedir
 
-echo `uname`
+echo $(uname)
 
 # Sets default target to "linux", if none specified
 TARGET=${TARGET-linux}
@@ -104,7 +104,7 @@ function install_local_libs {
 
 echo TARGET = $TARGET
 
-if [[ `uname` == "Darwin" ]]; then
+if [[ $(uname) == "Darwin" ]]; then
     echo "Installation of OpenRCT2 assumes you have homebrew and use it to install packages."
 
     echo "Check if brew is installed"
@@ -162,7 +162,7 @@ if [[ `uname` == "Darwin" ]]; then
             popd
         popd
     fi
-elif [[ `uname` == "Linux" ]]; then
+elif [[ $(uname) == "Linux" ]]; then
 	if [[ -z "$TRAVIS" ]]; then
 	    sudo apt-get install -y binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 cmake
 		if [[ -z "$DISABLE_G2_BUILD" ]]; then
@@ -197,7 +197,11 @@ fi
 
 download_libs
 # mind the gap (trailing space)
-sha256sum $cachedir/orctlibs.zip | cut -f1 -d\  > $libVFile
+if [[ $(uname) == "Darwin" ]]; then
+	shasum -a 256 $cachedir/orctlibs.zip | cut -f1 -d\  > $libVFile
+else
+	sha256sum $cachedir/orctlibs.zip | cut -f1 -d\  > $libVFile
+fi
 echo "Downloaded library with sha256sum: $(cat $libVFile)"
 # Local libs are required for all targets
 install_local_libs

@@ -54,9 +54,9 @@ pushd build
 	echo OPENRCT2_CMAKE_OPTS = $OPENRCT2_CMAKE_OPTS
 	if [[ $TARGET == "docker32" ]]
 	then
-		PARENT=`readlink -f ../`
-		chmod a+rwx `pwd`
-		chmod g+s `pwd`
+		PARENT=$(readlink -f ../)
+		chmod a+rwx $(pwd)
+		chmod g+s $(pwd)
 		docker run -u travis -v $PARENT:/work/openrct2 -w /work/openrct2/build -i -t openrct2/openrct2:32bit-only bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && make"
 	else
 		cmake -DCMAKE_BUILD_TYPE=Debug $OPENRCT2_CMAKE_OPTS ..

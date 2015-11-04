@@ -91,6 +91,9 @@ typedef utf16* utf16string;
 #ifdef __linux__
 	#define OPENRCT2_PLATFORM		"Linux"
 #endif
+#ifdef __APPLE__
+	#define OPENRCT2_PLATFORM		"OS X"
+#endif
 #ifndef OPENRCT2_PLATFORM
 	#error Unknown platform!
 #endif
