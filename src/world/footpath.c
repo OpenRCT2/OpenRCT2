@@ -344,6 +344,9 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 		return MONEY32_UNDEFINED;
 	}
 
+	// Force ride construction to recheck area
+	RCT2_GLOBAL(0x00F440B0, uint8) |= 8;
+
 	footpath_provisional_remove();
 	mapElement = map_get_footpath_element_slope((x / 32), (y / 32), z, slope);
 	if (mapElement == NULL) {
