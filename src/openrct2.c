@@ -225,7 +225,11 @@ bool openrct2_initialise()
 		audio_init();
 		audio_get_devices();
 	}
-	language_open(gConfigGeneral.language);
+	if (!language_open(gConfigGeneral.language))
+	{
+		log_fatal("Failed to open language, exiting.");
+		return false;
+	}
 	http_init();
 
 	themes_set_default();

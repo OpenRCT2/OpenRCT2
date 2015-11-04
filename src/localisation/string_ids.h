@@ -2146,6 +2146,7 @@ enum {
 	STR_STAY_CONNECTED_AFTER_DESYNC = 5557,
 
     STR_RESTART_REQUIRED = 5558,
+    STR_LANGUAGE_LOAD_FAILED = 5561,
 
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working

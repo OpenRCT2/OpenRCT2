@@ -1010,11 +1010,27 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 			}
 			break;
 		case WIDX_LANGUAGE_DROPDOWN:
-			if (dropdownIndex != gCurrentLanguage - 1) {
-				language_open(dropdownIndex + 1);
-				gConfigGeneral.language = dropdownIndex + 1;
-				config_save_default();
-				gfx_invalidate_screen();
+			{
+				int fallbackLanguage = gCurrentLanguage;
+				if (dropdownIndex != gCurrentLanguage - 1) {
+					if (!language_open(dropdownIndex + 1))
+					{
+						// Failed to open language file, try to recover by falling
+						// back to previously used language
+						if (language_open(fallbackLanguage))
+						{
+							// It worked, so we can say it with error message in-game
+							window_error_open(STR_LANGUAGE_LOAD_FAILED, STR_NONE);
+						}
+						// report error to console regardless
+						log_error("Failed to open language file.");
+						dropdownIndex = fallbackLanguage - 1;
+					} else {
+						gConfigGeneral.language = dropdownIndex + 1;
+						config_save_default();
+						gfx_invalidate_screen();
+					}
+				}
 			}
 			break;
 		case WIDX_DATE_FORMAT_DROPDOWN:
