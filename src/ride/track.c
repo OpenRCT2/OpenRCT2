@@ -4754,8 +4754,8 @@ bool track_circuit_iterator_previous(track_circuit_iterator *it)
 		it->last = it->current;
 
 		if (track_block_get_previous(it->last.x, it->last.y, it->last.element, &trackBeginEnd)) {
-			it->current.x = trackBeginEnd.begin_x;
-			it->current.y = trackBeginEnd.begin_y;
+			it->current.x = trackBeginEnd.end_x;
+			it->current.y = trackBeginEnd.end_y;
 			it->current.element = trackBeginEnd.begin_element;
 			it->currentZ = trackBeginEnd.begin_z;
 			it->currentDirection = trackBeginEnd.begin_direction;
@@ -4823,4 +4823,16 @@ void track_get_front(rct_xy_element *input, rct_xy_element *output)
 bool track_element_is_lift_hill(rct_map_element *trackElement)
 {
 	return trackElement->type & 0x80;
+}
+
+bool track_element_is_cable_lift(rct_map_element *trackElement) {
+	return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+}
+
+void track_element_set_cable_lift(rct_map_element *trackElement) {
+	trackElement->properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+}
+
+void track_element_clear_cable_lift(rct_map_element *trackElement) {
+	trackElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
 }
