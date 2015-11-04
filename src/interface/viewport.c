@@ -2908,10 +2908,10 @@ void screen_get_map_xy_side_with_z(sint16 screenX, sint16 screenY, sint16 z, sin
  *
  * @returns rotation in range 0-3 (inclusive)
  */
-int get_current_rotation()
+uint32 get_current_rotation()
 {
-	int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
-	int rotation_masked = rotation & 3;
+	uint32 rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	uint32 rotation_masked = rotation & 3;
 #if DEBUG_LEVEL_1
 	if (rotation != rotation_masked) {
 	    log_error("Found wrong rotation %d! Will return %d instead.", rotation, rotation_masked);
