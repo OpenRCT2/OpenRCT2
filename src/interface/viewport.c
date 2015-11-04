@@ -300,6 +300,19 @@ void gfx_move_screen_rect(int x, int y, int width, int height, int dx, int dy)
 	// get screen info
 	rct_drawpixelinfo *screenDPI = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
 
+	// adjust for move off screen
+	// NOTE: when zooming, there can be x, y, dx, dy combinations that go off the 
+	// screen; hence the checks. This code should ultimately not be called when
+	// zooming because this function is specific to updating the screen on move
+	int lmargin = min(x - dx, 0);
+	int rmargin = min(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - (x - dx + width), 0);
+	int tmargin = min(y - dy, 0);
+	int bmargin = min(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - (y - dy + height), 0);
+	x -= lmargin;
+	y -= tmargin;
+	width  += lmargin + rmargin;
+	height += tmargin + bmargin;
+
 	sint32 stride = screenDPI->width + screenDPI->pitch;
 	uint8* to   = screenDPI->bits + y * stride + x;
 	uint8* from = screenDPI->bits + (y - dy) * stride + x - dx;
@@ -314,14 +327,7 @@ void gfx_move_screen_rect(int x, int y, int width, int height, int dx, int dy)
 
 	// move bits
 	for (int i = 0; i < height; i++, to += stride, from += stride)
-	{
-		// when zooming, there can be x, y, dx, dy combinations that go off the 
-		// screen; hence the condition. This code should ultimately not be
-		// called when zooming because this function is specific to updating the
-		// screen on move
-		if (from >= screenDPI->bits && from + width < screenDPI->bits + RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) * RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16))
-			memmove(to, from, width);
-	}
+		memmove(to, from, width);
 }
 
 void sub_6E7FF3(rct_window *window, rct_viewport *viewport, int x, int y)
