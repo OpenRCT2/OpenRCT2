@@ -275,16 +275,18 @@ void sub_683326(int left, int top, int right, int bottom)
 	RCT2_CALLPROC_X(0x00683359, left, top, right, bottom, 0, 0, 0);
 }
 
-// shifts pixels from the region in a direction. Used when a viewport moves;
-// consider putting in src/drawing/drawing.c or src/drawing/rect.c
-// 
-// 0x00683359
-// ax = x
-// bx = y;
-// cx = width;
-// dx = height;
-// di = dx;
-// si = dy;
+/**
+ * shifts pixels from the region in a direction. Used when a viewport moves;
+ * consider putting in src/drawing/drawing.c or src/drawing/rect.c
+ * 
+ * rct2: 0x00683359
+ * ax = x
+ * bx = y;
+ * cx = width;
+ * dx = height;
+ * di = dx;
+ * si = dy;
+ */
 void gfx_move_screen_rect(int x, int y, int width, int height, int dx, int dy)
 {
 	// nothing to do
