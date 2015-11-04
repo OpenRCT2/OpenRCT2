@@ -293,10 +293,6 @@ void gfx_move_screen_rect(int x, int y, int width, int height, int dx, int dy)
 	if (dx == 0 && dy == 0)
 		return;
 
-	// I have seen no advantages of having this function nor disadvantages from
-	// leaving it out. Kept in for completeness
-	sub_683326(x, y, x + width - 1, y + height - 1);
-
 	// get screen info
 	rct_drawpixelinfo *screenDPI = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
 
