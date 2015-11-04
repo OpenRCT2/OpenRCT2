@@ -888,7 +888,11 @@ void ride_construct(int rideIndex)
 
 		w = window_get_main();
 		if (w != NULL && ride_modify(&trackElement))
+		{
 			window_scroll_to_location(w, trackElement.x, trackElement.y, trackElement.element->base_height * 8);
+			// removes vehicles for all multiplayer clients by setting the ride to close again
+			game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, rideIndex | (RIDE_STATUS_CLOSED << 8), GAME_COMMAND_SET_RIDE_STATUS, 0, 0);
+		}
 	} else {
 		sub_6CC3FB(rideIndex);
 	}
