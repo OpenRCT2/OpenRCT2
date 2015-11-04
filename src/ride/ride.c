@@ -1190,12 +1190,10 @@ int sub_6C683D(int* x, int* y, int* z, int direction, int type, uint16 extra_par
 		}
 		
 		if (flags & (1 << 3)) {
-			// Cable lift hill track
-			mapElement->properties.track.colour |= (1 << 3);
+			track_element_set_cable_lift(mapElement);
 		}
 		if (flags & (1 << 4)) {
-			// Clear Cable lift hill track
-			mapElement->properties.track.colour &= ~(1 << 3);
+			track_element_clear_cable_lift(mapElement);
 		}
 	}
 
@@ -4306,8 +4304,10 @@ bool ride_create_vehicles(rct_ride *ride, int rideIndex, rct_xy_element *element
 /**
  *
  *  rct2: 0x006D31A6
+ *  Checks and initialises the cable lift track
+ *  returns false if unable to find appropriate track.
  */
-static bool sub_6D31A6(rct_ride *ride, bool isApplying)
+static bool ride_initialise_cable_lift_track(rct_ride *ride, bool isApplying)
 {
 	uint16 xy;
 	int stationIndex;
@@ -4426,7 +4426,7 @@ bool ride_create_cable_lift(int rideIndex, bool isApplying)
 		return false;
 	}
 
-	if (!sub_6D31A6(ride, isApplying)) {
+	if (!ride_initialise_cable_lift_track(ride, isApplying)) {
 		return false;
 	}
 

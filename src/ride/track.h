@@ -109,6 +109,12 @@ enum{
 	TRACK_ELEMENT_FLAG_TERMINAL_STATION = (1<<3),
 };
 
+enum {
+	// Not anything to do with colour but uses
+	// that field in the map element
+	TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT = (1 << 3),
+};
+
 #define TRACK_ELEMENT_FLAG_MAGNITUDE_MASK 0x0F
 #define TRACK_ELEMENT_FLAG_COLOUR_MASK 0x30
 #define TRACK_ELEMENT_FLAG_STATION_NO_MASK 0x02
@@ -541,5 +547,9 @@ void track_get_back(rct_xy_element *input, rct_xy_element *output);
 void track_get_front(rct_xy_element *input, rct_xy_element *output);
 
 bool track_element_is_lift_hill(rct_map_element *trackElement);
+
+bool track_element_is_cable_lift(rct_map_element *trackElement);
+void track_element_set_cable_lift(rct_map_element *trackElement);
+void track_element_clear_cable_lift(rct_map_element *trackElement);
 
 #endif
