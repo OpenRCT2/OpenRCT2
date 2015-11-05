@@ -393,7 +393,7 @@ void window_track_place_open()
 	show_gridlines();
 	_window_track_place_last_cost = MONEY32_UNDEFINED;
 	_window_track_place_last_x = 0xFFFF;
-	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = (-get_current_rotation() + 2) & 3;
+	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = (2 - get_current_rotation()) & 3;
 	window_track_place_draw_mini_preview();
 }
 
