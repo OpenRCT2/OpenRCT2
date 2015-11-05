@@ -1097,17 +1097,7 @@ void window_staff_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 			}
 		}
 
-		rct_peep* peep = GET_PEEP(w->number);
-		sprite_move(dest_x, dest_y, dest_z, (rct_sprite*)peep);
-		invalidate_sprite_2((rct_sprite*)peep);
-		peep_decrement_num_riders(peep);
-		peep->state = PEEP_STATE_FALLING;
-		peep_window_state_update(peep);
-		peep->action = 0xFF;
-		peep->var_6D = 0;
-		peep->action_sprite_image_offset = 0;
-		peep->action_sprite_type = 0;
-		peep->var_C4 = 0;
+		game_do_command(dest_x, 1, dest_y, w->number, GAME_COMMAND_MOVE_STAFF_MEMBER, dest_z, 0);
 
 		tool_cancel();
 		RCT2_GLOBAL(0x9DE550, sint32) = -1;
