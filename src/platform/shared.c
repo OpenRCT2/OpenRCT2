@@ -909,6 +909,10 @@ void platform_refresh_video()
 		SDL_QueryTexture(gBufferTexture, &format, 0, 0, 0);
 		gBufferTextureFormat = SDL_AllocFormat(format);
 		platform_refresh_screenbuffer(width, height, width);
+		// Load the current palette into the HWmapped version.
+		for (int i = 0; i < 256; ++i) {
+			gPaletteHWMapped[i] = SDL_MapRGB(gBufferTextureFormat, gPalette[i].r, gPalette[i].g, gPalette[i].b);
+		}
 	} else {
 		if (_surface != NULL)
 			SDL_FreeSurface(_surface);
