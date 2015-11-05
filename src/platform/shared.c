@@ -356,8 +356,9 @@ void platform_update_palette(const uint8* colours, int start_index, int num_colo
 {
 	SDL_Surface *surface;
 	int i;
+	colours += start_index * 4;
 
-	for (i = 0; i < 256; i++) {
+	for (i = start_index; i < num_colours + start_index; i++) {
 		gPalette[i].r = colours[2];
 		gPalette[i].g = colours[1];
 		gPalette[i].b = colours[0];
@@ -651,6 +652,14 @@ void platform_init()
 	platform_create_window();
 	gKeysPressed = malloc(sizeof(unsigned char) * 256);
 	memset(gKeysPressed, 0, sizeof(unsigned char) * 256);
+
+	// Set the highest palette entry to white.
+	// This fixes a bug with the TT:rainbow road due to the
+	// image not using the correct white palette entry.
+	gPalette[255].a = 0;
+	gPalette[255].r = 255;
+	gPalette[255].g = 255;
+	gPalette[255].b = 255;
 }
 
 static void platform_create_window()
