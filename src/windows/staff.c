@@ -1097,7 +1097,7 @@ void window_staff_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 			}
 		}
 
-		game_do_command(dest_x, 1, dest_y, w->number, GAME_COMMAND_MOVE_STAFF_MEMBER, dest_z, 0);
+		game_do_command(dest_x, 1, dest_y, GET_PEEP(w->number).staff_id, GAME_COMMAND_MOVE_STAFF_MEMBER, dest_z, 0);
 
 		tool_cancel();
 		RCT2_GLOBAL(0x9DE550, sint32) = -1;

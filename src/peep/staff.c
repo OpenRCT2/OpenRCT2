@@ -379,8 +379,11 @@ void game_command_move_staff_member(int *eax, int *ebx, int *ecx, int *edx, int 
 		int y = *ecx;
 		int z = *edi;
 
-		uint16 sprite_id = *edx;
-		rct_peep *peep = GET_PEEP(sprite_id);
+		uint16 spriteIndex;
+		rct_peep *peep = NULL;
+		FOR_ALL_STAFF(spriteIndex, peep)
+			if (peep->staff_id == *edx)
+				break;
 
 		// move the guy
 		sprite_move(x, y, z, (rct_sprite*)peep);
