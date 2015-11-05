@@ -37,7 +37,9 @@ enum {
 	NETWORK_AUTH_OK,
 	NETWORK_AUTH_BADVERSION,
 	NETWORK_AUTH_BADNAME,
-	NETWORK_AUTH_BADPASSWORD
+	NETWORK_AUTH_BADPASSWORD,
+	NETWORK_AUTH_FULL,
+	NETWORK_AUTH_REQUIREPASSWORD
 };
 
 enum {
@@ -68,6 +70,9 @@ extern "C" {
 	#define EWOULDBLOCK WSAEWOULDBLOCK
 	#ifndef SHUT_RD
 		#define SHUT_RD SD_RECEIVE
+	#endif
+	#ifndef SHUT_RDWR
+		#define SHUT_RDWR SD_BOTH
 	#endif
 #else
 	#include <arpa/inet.h>
@@ -109,6 +114,7 @@ public:
 	static std::unique_ptr<NetworkPacket> Allocate();
 	static std::unique_ptr<NetworkPacket> Duplicate(NetworkPacket& packet);
 	uint8* GetData();
+	uint32 GetCommand();
 	template <typename T>
 	NetworkPacket& operator<<(T value) { T swapped = ByteSwapBE(value); uint8* bytes = (uint8*)&swapped; data->insert(data->end(), bytes, bytes + sizeof(value)); return *this; }
 	void Write(uint8* bytes, unsigned int size);
@@ -118,6 +124,7 @@ public:
 	const uint8* Read(unsigned int size);
 	const char* ReadString();
 	void Clear();
+	bool CommandRequiresAuth();
 
 	uint16 size;
 	std::shared_ptr<std::vector<uint8>> data;
@@ -141,7 +148,7 @@ public:
 	NetworkConnection();
 	~NetworkConnection();
 	int ReadPacket();
-	void QueuePacket(std::unique_ptr<NetworkPacket> packet);
+	void QueuePacket(std::unique_ptr<NetworkPacket> packet, bool front = false);
 	void SendQueuedPackets();
 	bool SetTCPNoDelay(bool on);
 	bool SetNonBlocking(bool on);
@@ -206,11 +213,15 @@ public:
 	void Update();
 	NetworkPlayer* GetPlayerByID(int id);
 	const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
-	void SendPacketToClients(NetworkPacket& packet);
+	void SendPacketToClients(NetworkPacket& packet, bool front = false);
 	bool CheckSRAND(uint32 tick, uint32 srand0);
 	void KickPlayer(int playerId);
+	void SetPassword(const char* password);
+	void ShutdownClient();
+	void Advertise();
 
-	void Client_Send_AUTH(const char* gameversion, const char* name, const char* password);
+	void Client_Send_AUTH(const char* name, const char* password);
+	void Server_Send_AUTH(NetworkConnection& connection);
 	void Server_Send_MAP(NetworkConnection* connection = nullptr);
 	void Client_Send_CHAT(const char* text);
 	void Server_Send_CHAT(const char* text);
@@ -222,6 +233,7 @@ public:
 	void Server_Send_PING();
 	void Server_Send_PINGLIST();
 	void Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const char* msg);
+	void Server_Send_GAMEINFO(NetworkConnection& connection);
 
 	std::vector<std::unique_ptr<NetworkPlayer>> player_list;
 
@@ -251,6 +263,7 @@ private:
 	NetworkAddress server_address;
 	bool wsa_initialized;
 	SOCKET listening_socket;
+	unsigned short listening_port;
 	NetworkConnection server_connection;
 	uint32 last_tick_sent_time;
 	uint32 last_ping_sent_time;
@@ -261,9 +274,10 @@ private:
 	std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
 	std::multiset<GameCommand> game_command_queue;
 	std::vector<uint8> chunk_buffer;
-	char password[33];
+	std::string password;
 	bool _desynchronised;
 	uint32 server_connect_time;
+	uint32 last_advertise_time;
 
 	void UpdateServer();
 	void UpdateClient();
@@ -284,6 +298,7 @@ private:
 	int Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
 	int Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket& packet);
 	int Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet);
+	int Server_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet);
 };
 
 #endif // __cplusplus
@@ -294,6 +309,7 @@ extern "C" {
 #endif // __cplusplus
 int network_init();
 void network_close();
+void network_shutdown_client();
 int network_begin_client(const char *host, int port);
 int network_begin_server(int port);
 
@@ -312,8 +328,10 @@ int network_get_player_id(unsigned int index);
 void network_send_map();
 void network_send_chat(const char* text);
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
+void network_send_password(const char* password);
 
 void network_kick_player(int playerId);
+void network_set_password(const char* password);
 
 void network_print_error();
 
