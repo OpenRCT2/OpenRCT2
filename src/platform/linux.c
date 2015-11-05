@@ -564,8 +564,10 @@ wchar_t *regular_to_wchar(const char* src)
  */
 void platform_resolve_user_data_path()
 {
+	const char separator[2] = { platform_get_path_separator(), 0 };
+
 	if (gCustomUserDataPath[0] != 0) {
-		safe_strncpy(_userDataDirectoryPath, gCustomUserDataPath, sizeof(_userDataDirectoryPath));
+		realpath(gCustomUserDataPath, _userDataDirectoryPath);
 
 		// Ensure path ends with separator
 		int len = strlen(_userDataDirectoryPath);
@@ -575,7 +577,6 @@ void platform_resolve_user_data_path()
 		return;
 	}
 
-	const char separator[2] = { platform_get_path_separator(), 0 };
 	char buffer[MAX_PATH];
 	buffer[0] = '\0';
 	log_verbose("buffer = '%s'", buffer);

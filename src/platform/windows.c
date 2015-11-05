@@ -39,7 +39,7 @@
 
 utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
 
-LPSTR *CommandLineToArgvA(LPSTR lpCmdLine, int *argc);
+utf8 **windows_get_command_line_args(int *outNumArgs);
 
 /**
  * Windows entry point to OpenRCT2 without a console window.
@@ -77,16 +77,41 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE) = hInstance;
 	RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, LPSTR) = lpCmdLine;
 
-	// Get command line arguments in standard form
-	argv = CommandLineToArgvA(lpCmdLine, &argc);
+	// argv = CommandLineToArgvA(lpCmdLine, &argc);
+	argv = (char**)windows_get_command_line_args(&argc);
 	runGame = cmdline_run((const char **)argv, argc);
-	GlobalFree(argv);
 
-	if (runGame)
+	// Free argv
+	for (int i = 0; i < argc; i++) {
+		free(argv[i]);
+	}
+	free(argv);
+
+	if (runGame) {
 		openrct2_launch();
+	}
 
 	exit(gExitCode);
 	return gExitCode;
+}
+
+utf8 **windows_get_command_line_args(int *outNumArgs)
+{
+	int argc;
+
+	// Get command line arguments as widechar
+	LPWSTR commandLine = GetCommandLineW();
+	LPWSTR *argvW = CommandLineToArgvW(commandLine, &argc);
+
+	// Convert to UTF-8
+	utf8 **argvUtf8 = (utf8**)malloc(argc * sizeof(utf8*));
+	for (int i = 0; i < argc; i++) {
+		argvUtf8[i] = widechar_to_utf8(argvW[i]);
+	}
+	LocalFree(argvW);
+
+	*outNumArgs = argc;
+	return argvUtf8;
 }
 
 void platform_get_date(rct2_date *out_date)
@@ -393,7 +418,15 @@ void platform_resolve_user_data_path()
 	const char separator[2] = { platform_get_path_separator(), 0 };
 
 	if (gCustomUserDataPath[0] != 0) {
-		safe_strncpy(_userDataDirectoryPath, gCustomUserDataPath, sizeof(_userDataDirectoryPath));
+		wchar_t *customUserDataPathW = utf8_to_widechar(gCustomUserDataPath);
+		if (GetFullPathNameW(customUserDataPathW, countof(wOutPath), wOutPath, NULL) == 0) {
+			log_fatal("Unable to resolve path '%s'.", gCustomUserDataPath);
+			exit(-1);
+		}
+		utf8 *outPathTemp = widechar_to_utf8(wOutPath);
+		safe_strncpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
+		free(outPathTemp);
+		free(customUserDataPathW);
 		
 		// Ensure path ends with separator
 		int len = strlen(_userDataDirectoryPath);
@@ -628,91 +661,6 @@ HWND windows_get_window_handle()
 	HWND result = handle;
 	#endif // __MINGW32__
 	return result;
-}
-
-/**
- * http://alter.org.ua/en/docs/win/args/
- */
-PCHAR *CommandLineToArgvA(PCHAR CmdLine, int *_argc)
-{
-	PCHAR* argv;
-	PCHAR  _argv;
-	ULONG   len;
-	ULONG   argc;
-	CHAR   a;
-	ULONG   i, j;
-
-	BOOLEAN  in_QM;
-	BOOLEAN  in_TEXT;
-	BOOLEAN  in_SPACE;
-
-	len = strlen(CmdLine);
-	i = ((len + 2) / 2)*sizeof(PVOID) + sizeof(PVOID);
-
-	argv = (PCHAR*)GlobalAlloc(GMEM_FIXED,
-		i + (len + 2)*sizeof(CHAR) + 1);
-
-	_argv = (PCHAR)(((PUCHAR)argv) + i);
-
-	// Add in virtual 1st command line argument, process path, for arg_parse's sake.
-	argv[0] = 0;
-	argc = 1;
-	argv[argc] = _argv;
-	in_QM = FALSE;
-	in_TEXT = FALSE;
-	in_SPACE = TRUE;
-	i = 0;
-	j = 0;
-
-	while (a = CmdLine[i]) {
-		if (in_QM) {
-			if (a == '\"') {
-				in_QM = FALSE;
-			} else {
-				_argv[j] = a;
-				j++;
-			}
-		} else {
-			switch (a) {
-			case '\"':
-				in_QM = TRUE;
-				in_TEXT = TRUE;
-				if (in_SPACE) {
-					argv[argc] = _argv + j;
-					argc++;
-				}
-				in_SPACE = FALSE;
-				break;
-			case ' ':
-			case '\t':
-			case '\n':
-			case '\r':
-				if (in_TEXT) {
-					_argv[j] = '\0';
-					j++;
-				}
-				in_TEXT = FALSE;
-				in_SPACE = TRUE;
-				break;
-			default:
-				in_TEXT = TRUE;
-				if (in_SPACE) {
-					argv[argc] = _argv + j;
-					argc++;
-				}
-				_argv[j] = a;
-				j++;
-				in_SPACE = FALSE;
-				break;
-			}
-		}
-		i++;
-	}
-	_argv[j] = '\0';
-	argv[argc] = NULL;
-
-	(*_argc) = argc;
-	return argv;
 }
 
 uint16 platform_get_locale_language()
