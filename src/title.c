@@ -250,9 +250,11 @@ static void title_set_location(int x, int y)
  */
 void title_fix_location()
 {
-	rct_xy16 position = _titleScriptCurrentCentralPosition;
-	if (position.x != -1) {
-		title_set_location(position.x, position.y);
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_TITLE_DEMO) {
+		rct_xy16 position = _titleScriptCurrentCentralPosition;
+		if (position.x != -1) {
+			title_set_location(position.x, position.y);
+		}
 	}
 }
 
