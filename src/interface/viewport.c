@@ -336,8 +336,10 @@ void sub_6E7FF3(rct_window *window, rct_viewport *viewport, int x, int y)
 			viewport->x + viewport->width  <= window->x                 ||
 			viewport->x                    >= window->x + window->width ||
 			viewport->y + viewport->height <= window->y                 ||
-			viewport->y                    >= window->y + window->height)
+			viewport->y                    >= window->y + window->height){
 			sub_6E7FF3(window + 1, viewport, x, y);
+			return;
+		}
 
 		// save viewport
 		rct_viewport view_copy;
