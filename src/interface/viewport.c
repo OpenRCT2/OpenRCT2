@@ -337,7 +337,7 @@ void sub_6E7FF3(rct_window *window, rct_viewport *viewport, int x, int y)
 			viewport->x                    >= window->x + window->width ||
 			viewport->y + viewport->height <= window->y                 ||
 			viewport->y                    >= window->y + window->height)
-			return sub_6E7FF3(window + 1, viewport, x, y);
+			sub_6E7FF3(window + 1, viewport, x, y);
 
 		// save viewport
 		rct_viewport view_copy;
@@ -2908,7 +2908,7 @@ void screen_get_map_xy_side_with_z(sint16 screenX, sint16 screenY, sint16 z, sin
  *
  * @returns rotation in range 0-3 (inclusive)
  */
-uint32 get_current_rotation()
+uint8 get_current_rotation()
 {
 	uint32 rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
 	uint32 rotation_masked = rotation & 3;
@@ -2917,5 +2917,5 @@ uint32 get_current_rotation()
 	    log_error("Found wrong rotation %d! Will return %d instead.", rotation, rotation_masked);
 	}
 #endif // DEBUG_LEVEL_1
-	return rotation_masked;
+	return (uint8)rotation_masked;
 }

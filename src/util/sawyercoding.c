@@ -408,7 +408,7 @@ static size_t encode_chunk_repeat(const uint8 *src_buffer, uint8 *dst_buffer, si
 	*dst_buffer++ = src_buffer[0];
 	outLength += 2;
 
-	// Itereate through remainder of the source buffer
+	// Iterate through remainder of the source buffer
 	for (i = 1; i < length; ) {
 		searchIndex = max(0, i - 32);
 		searchEnd = i - 1;
@@ -440,7 +440,7 @@ static size_t encode_chunk_repeat(const uint8 *src_buffer, uint8 *dst_buffer, si
 			outLength += 2;
 			i++;
 		} else {
-			*dst_buffer++ = (bestRepeatCount - 1) | ((32 - (i - bestRepeatIndex)) << 3);
+			*dst_buffer++ = (uint8)((bestRepeatCount - 1) | ((32 - (i - bestRepeatIndex)) << 3));
 			outLength++;
 			i += bestRepeatCount;
 		}

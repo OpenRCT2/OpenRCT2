@@ -144,6 +144,6 @@ void screen_get_map_xy_quadrant_with_z(sint16 screenX, sint16 screenY, sint16 z,
 void screen_get_map_xy_side(sint16 screenX, sint16 screenY, sint16 *mapX, sint16 *mapY, uint8 *side);
 void screen_get_map_xy_side_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY, uint8 *side);
 
-uint32 get_current_rotation();
+uint8 get_current_rotation();
 
 #endif
