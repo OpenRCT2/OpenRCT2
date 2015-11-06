@@ -2148,6 +2148,8 @@ enum {
     STR_RESTART_REQUIRED = 5558,
     STR_LANGUAGE_LOAD_FAILED = 5561,
 
+	STR_WARNING_IN_CAPS = 5562,
+	STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE = 5563,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

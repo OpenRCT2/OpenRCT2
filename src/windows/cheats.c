@@ -36,6 +36,7 @@
 #include "../world/scenery.h"
 #include "../interface/themes.h"
 #include "../cheats.h"
+#include "error.h"
 
 #define CHEATS_MONEY_INCREMENT MONEY(5000,00)
 #define CHEATS_TRAM_INCREMENT 250
@@ -1030,9 +1031,15 @@ static void window_cheats_rides_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_SHOW_ALL_OPERATING_MODES:
 		gCheatsShowAllOperatingModes = !gCheatsShowAllOperatingModes;
+		if (gCheatsShowAllOperatingModes) {
+			window_error_open(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
+		}
 		break;
 	case WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES:
 		gCheatsShowVehiclesFromOtherTrackTypes = !gCheatsShowVehiclesFromOtherTrackTypes;
+		if (gCheatsShowVehiclesFromOtherTrackTypes) {
+			window_error_open(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
+		}
 		break;
 	}
 }
