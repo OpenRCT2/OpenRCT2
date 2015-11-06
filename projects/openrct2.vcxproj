@@ -378,7 +378,7 @@
       <AdditionalDependencies>winmm.lib;sdl2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>"$(TargetDir)\openrct2.exe" sprite build "$(SolutionDir)\..\Data\g2.dat" "$(SolutionDir)\..\Resources\g2\"
+      <Command>"$(TargetDir)\openrct2.exe" sprite build "$(SolutionDir)\\..\\Data\\g2.dat" "$(SolutionDir)\\..\\Resources\\g2\\"
 xcopy /YS "$(SolutionDir)\..\Data" "$(TargetDir)\Data"</Command>
       <Message>Build g2.dat and copy the Data directory.</Message>
     </PostBuildEvent>
