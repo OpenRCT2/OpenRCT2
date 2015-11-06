@@ -52,6 +52,7 @@
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 utf8 gOpenRCT2StartupActionPath[512] = { 0 };
 utf8 gExePath[MAX_PATH];
+utf8 gCustomUserDataPath[MAX_PATH] = { 0 };
 
 // This should probably be changed later and allow a custom selection of things to initialise like SDL_INIT
 bool gOpenRCT2Headless = false;
@@ -187,6 +188,7 @@ bool openrct2_initialise()
 {
 	utf8 userPath[MAX_PATH];
 
+	platform_resolve_user_data_path();
 	platform_get_user_directory(userPath, NULL);
 	if (!platform_ensure_directory_exists(userPath)) {
 		log_fatal("Could not create user directory (do you have write access to your documents folder?)");

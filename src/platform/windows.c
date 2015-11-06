@@ -37,7 +37,9 @@
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
 
-LPSTR *CommandLineToArgvA(LPSTR lpCmdLine, int *argc);
+utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
+
+utf8 **windows_get_command_line_args(int *outNumArgs);
 
 /**
  * Windows entry point to OpenRCT2 without a console window.
@@ -75,16 +77,41 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE) = hInstance;
 	RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, LPSTR) = lpCmdLine;
 
-	// Get command line arguments in standard form
-	argv = CommandLineToArgvA(lpCmdLine, &argc);
+	// argv = CommandLineToArgvA(lpCmdLine, &argc);
+	argv = (char**)windows_get_command_line_args(&argc);
 	runGame = cmdline_run((const char **)argv, argc);
-	GlobalFree(argv);
 
-	if (runGame)
+	// Free argv
+	for (int i = 0; i < argc; i++) {
+		free(argv[i]);
+	}
+	free(argv);
+
+	if (runGame) {
 		openrct2_launch();
+	}
 
 	exit(gExitCode);
 	return gExitCode;
+}
+
+utf8 **windows_get_command_line_args(int *outNumArgs)
+{
+	int argc;
+
+	// Get command line arguments as widechar
+	LPWSTR commandLine = GetCommandLineW();
+	LPWSTR *argvW = CommandLineToArgvW(commandLine, &argc);
+
+	// Convert to UTF-8
+	utf8 **argvUtf8 = (utf8**)malloc(argc * sizeof(utf8*));
+	for (int i = 0; i < argc; i++) {
+		argvUtf8[i] = widechar_to_utf8(argvW[i]);
+	}
+	LocalFree(argvW);
+
+	*outNumArgs = argc;
+	return argvUtf8;
 }
 
 void platform_get_date(rct2_date *out_date)
@@ -380,25 +407,57 @@ bool platform_file_delete(const utf8 *path)
 	return success == TRUE;
 }
 
-void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
+/**
+ * Default directory fallback is:
+ *   - (command line argument)
+ *   - C:\Users\%USERNAME%\OpenRCT2 (as from SHGetFolderPathW)
+ */
+void platform_resolve_user_data_path()
 {
 	wchar_t wOutPath[MAX_PATH];
-	char separator[2] = { platform_get_path_separator(), 0 };
+	const char separator[2] = { platform_get_path_separator(), 0 };
+
+	if (gCustomUserDataPath[0] != 0) {
+		wchar_t *customUserDataPathW = utf8_to_widechar(gCustomUserDataPath);
+		if (GetFullPathNameW(customUserDataPathW, countof(wOutPath), wOutPath, NULL) == 0) {
+			log_fatal("Unable to resolve path '%s'.", gCustomUserDataPath);
+			exit(-1);
+		}
+		utf8 *outPathTemp = widechar_to_utf8(wOutPath);
+		safe_strncpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
+		free(outPathTemp);
+		free(customUserDataPathW);
+		
+		// Ensure path ends with separator
+		int len = strlen(_userDataDirectoryPath);
+		if (_userDataDirectoryPath[len - 1] != separator[0]) {
+			strcat(_userDataDirectoryPath, separator);
+		}
+		return;
+	}
 
 	if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, wOutPath))) {
 		utf8 *outPathTemp = widechar_to_utf8(wOutPath);
-		safe_strncpy(outPath, outPathTemp, MAX_PATH);
+		safe_strncpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
 		free(outPathTemp);
 
-		strcat(outPath, separator);
-		strcat(outPath, "OpenRCT2");
-		strcat(outPath, separator);
-		if (subDirectory != NULL && subDirectory[0] != 0) {
-			strcat(outPath, subDirectory);
-			strcat(outPath, separator);
-		}
+		strcat(_userDataDirectoryPath, separator);
+		strcat(_userDataDirectoryPath, "OpenRCT2");
+		strcat(_userDataDirectoryPath, separator);
 	} else {
-		outPath[0] = 0;
+		log_fatal("Unable to resolve user data path.");
+		exit(-1);
+	}
+}
+
+void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
+{
+	const char separator[2] = { platform_get_path_separator(), 0 };
+
+	strcpy(outPath, _userDataDirectoryPath);
+	if (subDirectory != NULL && subDirectory[0] != 0) {
+		strcat(outPath, subDirectory);
+		strcat(outPath, separator);
 	}
 }
 
@@ -602,91 +661,6 @@ HWND windows_get_window_handle()
 	HWND result = handle;
 	#endif // __MINGW32__
 	return result;
-}
-
-/**
- * http://alter.org.ua/en/docs/win/args/
- */
-PCHAR *CommandLineToArgvA(PCHAR CmdLine, int *_argc)
-{
-	PCHAR* argv;
-	PCHAR  _argv;
-	ULONG   len;
-	ULONG   argc;
-	CHAR   a;
-	ULONG   i, j;
-
-	BOOLEAN  in_QM;
-	BOOLEAN  in_TEXT;
-	BOOLEAN  in_SPACE;
-
-	len = strlen(CmdLine);
-	i = ((len + 2) / 2)*sizeof(PVOID) + sizeof(PVOID);
-
-	argv = (PCHAR*)GlobalAlloc(GMEM_FIXED,
-		i + (len + 2)*sizeof(CHAR) + 1);
-
-	_argv = (PCHAR)(((PUCHAR)argv) + i);
-
-	// Add in virtual 1st command line argument, process path, for arg_parse's sake.
-	argv[0] = 0;
-	argc = 1;
-	argv[argc] = _argv;
-	in_QM = FALSE;
-	in_TEXT = FALSE;
-	in_SPACE = TRUE;
-	i = 0;
-	j = 0;
-
-	while (a = CmdLine[i]) {
-		if (in_QM) {
-			if (a == '\"') {
-				in_QM = FALSE;
-			} else {
-				_argv[j] = a;
-				j++;
-			}
-		} else {
-			switch (a) {
-			case '\"':
-				in_QM = TRUE;
-				in_TEXT = TRUE;
-				if (in_SPACE) {
-					argv[argc] = _argv + j;
-					argc++;
-				}
-				in_SPACE = FALSE;
-				break;
-			case ' ':
-			case '\t':
-			case '\n':
-			case '\r':
-				if (in_TEXT) {
-					_argv[j] = '\0';
-					j++;
-				}
-				in_TEXT = FALSE;
-				in_SPACE = TRUE;
-				break;
-			default:
-				in_TEXT = TRUE;
-				if (in_SPACE) {
-					argv[argc] = _argv + j;
-					argc++;
-				}
-				_argv[j] = a;
-				j++;
-				in_SPACE = FALSE;
-				break;
-			}
-		}
-		i++;
-	}
-	_argv[j] = '\0';
-	argv[argc] = NULL;
-
-	(*_argc) = argc;
-	return argv;
 }
 
 uint16 platform_get_locale_language()

@@ -82,6 +82,7 @@
     <ClCompile Include="..\src\openrct2.c" />
     <ClCompile Include="..\src\peep\peep.c" />
     <ClCompile Include="..\src\peep\staff.c" />
+    <ClCompile Include="..\src\platform\linux.c" />
     <ClCompile Include="..\src\platform\shared.c" />
     <ClCompile Include="..\src\platform\unix.c" />
     <ClCompile Include="..\src\platform\osx.c" />
