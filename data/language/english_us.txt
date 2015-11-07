@@ -3904,7 +3904,9 @@ STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on
 STR_5561    :Failed to load language file
 STR_5562    :WARNING!
 STR_5563    :This feature is currently unstable, take extra caution.
-STR_5564	:Guests ignore rain when entering queues
+STR_5564    :Insert Corrupt Element
+STR_5565    :{SMALLFONT}{BLACK}Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element.
+STR_5566	:Guests ignore rain when entering queues
 
 #########
 # Rides #

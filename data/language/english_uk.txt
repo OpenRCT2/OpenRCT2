@@ -3826,7 +3826,7 @@ STR_5484    :{BLACK}({COMMA16} week remaining)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Show recent messages
-STR_5488    :No entrance
+STR_5488    :No entrance (OpenRCT2 Only!)
 STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
 STR_5490    :Disable audio on focus loss
 STR_5491    :Inventions list
@@ -3902,6 +3902,9 @@ STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on
 STR_5561    :Failed to load language file
 STR_5562    :WARNING!
 STR_5563    :This feature is currently unstable, take extra caution.
+STR_5564    :Insert Corrupt Element
+STR_5565    :{SMALLFONT}{BLACK}Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element.
+STR_5566	:Guests ignore rain when entering queues
 
 #####################
 # Rides/attractions # 
