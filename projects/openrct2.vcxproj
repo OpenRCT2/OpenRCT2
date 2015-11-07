@@ -378,8 +378,8 @@
       <AdditionalDependencies>winmm.lib;sdl2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>"$(TargetDir)\openrct2.exe" sprite build "$(SolutionDir)\\..\\Data\\g2.dat" "$(SolutionDir)\\..\\Resources\\g2\\"
-xcopy /YS "$(SolutionDir)\..\Data" "$(TargetDir)\Data"</Command>
+      <Command>"$(TargetDir)openrct2.exe" sprite build "$(SolutionDir)..\Data\g2.dat" "$(SolutionDir)..\Resources\g2"
+xcopy /YS "$(SolutionDir)..\Data" "$(TargetDir)Data"</Command>
       <Message>Build g2.dat and copy the Data directory.</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -410,8 +410,8 @@ xcopy /YS "$(SolutionDir)\..\Data" "$(TargetDir)\Data"</Command>
       <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>"$(TargetDir)\openrct2.exe" sprite build "$(SolutionDir)\..\Data\g2.dat" "$(SolutionDir)\..\Resources\g2\"
-xcopy /YS "$(SolutionDir)\..\Data" "$(TargetDir)\Data"</Command>
+      <Command>"$(TargetDir)openrct2.exe" sprite build "$(SolutionDir)..\Data\g2.dat" "$(SolutionDir)..\Resources\g2"
+xcopy /YS "$(SolutionDir)..\Data" "$(TargetDir)Data"</Command>
       <Message>Build g2.dat and copy the Data directory.</Message>
     </PostBuildEvent>
     <CustomBuildStep>
@@ -451,8 +451,8 @@ xcopy /YS "$(SolutionDir)\..\Data" "$(TargetDir)\Data"</Command>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>"$(TargetDir)\openrct2.exe" sprite build "$(SolutionDir)\..\Data\g2.dat" "$(SolutionDir)\..\Resources\g2\"
-xcopy /YS "$(SolutionDir)\..\Data" "$(TargetDir)\Data"</Command>
+      <Command>"$(TargetDir)openrct2.exe" sprite build "$(SolutionDir)..\Data\g2.dat" "$(SolutionDir)..\Resources\g2"
+xcopy /YS "$(SolutionDir)..\Data" "$(TargetDir)Data"</Command>
       <Message>Build g2.dat and copy the Data directory.</Message>
     </PostBuildEvent>
     <CustomBuildStep>
@@ -490,8 +490,8 @@ xcopy /YS "$(SolutionDir)\..\Data" "$(TargetDir)\Data"</Command>
       <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>"$(TargetDir)\openrct2.exe" sprite build "$(SolutionDir)\..\Data\g2.dat" "$(SolutionDir)\..\Resources\g2\"
-xcopy /YS "$(SolutionDir)\..\Data" "$(TargetDir)\Data"</Command>
+      <Command>"$(TargetDir)openrct2.exe" sprite build "$(SolutionDir)..\Data\g2.dat" "$(SolutionDir)..\Resources\g2"
+xcopy /YS "$(SolutionDir)..\Data" "$(TargetDir)Data"</Command>
       <Message>Build g2.dat and copy the Data directory.</Message>
     </PostBuildEvent>
     <CustomBuildStep>
