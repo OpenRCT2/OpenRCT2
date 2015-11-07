@@ -31,6 +31,7 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
+	WIDX_CORRUPT,
 	WIDX_CONTENT_PANEL,
 	WIDX_SCROLL
 };
@@ -44,6 +45,7 @@ rct_widget window_tile_inspector_widgets[] = {
 	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		0x0FFFFFFFF,						STR_NONE },				// panel / background
 	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			STR_TILE_INSPECTOR_TITLE,			STR_WINDOW_TITLE_TIP },	// title bar
 	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,			STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },	// close x button
+	{ WWT_CLOSEBOX,			1,	WW - 150,	WW - 3,	18,		39,			STR_INSERT_CORRUPT,					STR_INSERT_CORRUPT_TIP },
 	{ WWT_RESIZE,			1,	0,			WW - 1,	43,		WH - 1,		0x0FFFFFFFF,						STR_NONE },				// content panel
 	{ WWT_SCROLL,			1,	3,			WW - 3,	65,		WH - 30,	2,									STR_NONE },				// scroll area
 	{ WIDGETS_END },
@@ -116,6 +118,7 @@ void window_tile_inspector_open()
 	);
 	window->widgets = window_tile_inspector_widgets;
 	window->enabled_widgets = (1 << WIDX_CLOSE);
+	window->disabled_widgets = (1 << WIDX_CORRUPT);
 
 	window_init_scroll_widgets(window);
 	window->colours[0] = 7;
@@ -137,11 +140,28 @@ static void window_tile_inspector_close(rct_window *w)
 	tool_cancel();
 }
 
+void corrupt_element(int x, int y) {
+	rct_map_element* mapElement;
+	mapElement = map_get_first_element_at(x, y);
+
+	while (!map_element_is_last_for_tile(mapElement++));
+	mapElement--;
+
+	mapElement = map_element_insert(x, y, mapElement->base_height, 0);
+	mapElement->type = (8 << 2);
+}
+
 static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
+		break;
+	case WIDX_CORRUPT:
+		corrupt_element(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
+		window_tile_inspector_item_count++;
+		w->scrolls[0].v_top = 0;
+		window_invalidate(w);
 		break;
 	}
 }
@@ -208,6 +228,9 @@ static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int 
 	} while (!map_element_is_last_for_tile(element++));
 
 	window_tile_inspector_item_count = numItems;
+
+	w->enabled_widgets |= (1 << WIDX_CORRUPT);
+	w->disabled_widgets &= ~(1ULL << WIDX_CORRUPT);
 
 	w->scrolls[0].v_top = 0;
 	window_invalidate(w);
