@@ -1668,8 +1668,8 @@ int ride_modify(rct_xy_element *input)
 		return 0;
 	}
 
-	ride_clear_for_construction(rideIndex);
-	ride_remove_peeps(rideIndex);
+	// Stop the ride again to clear all vehicles and peeps (compatible with network games)
+	ride_set_status(rideIndex, RIDE_STATUS_CLOSED);
 
 	// Check if element is a station entrance or exit
 	if (map_element_get_type(mapElement.element) == MAP_ELEMENT_TYPE_ENTRANCE)
