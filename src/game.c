@@ -69,6 +69,7 @@ GAME_COMMAND_CALLBACK_POINTER* game_command_callback_table[] = {
 	game_command_callback_ride_construct_placed_front,
 	game_command_callback_ride_construct_placed_back,
 	game_command_callback_ride_remove_track_piece,
+	game_command_callback_hire_staff_member
 };
 
 int game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback)

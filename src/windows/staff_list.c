@@ -194,6 +194,23 @@ void window_staff_list_close(rct_window *w)
 	window_staff_list_cancel_tools(w);
 }
 
+
+void game_command_callback_hire_staff_member(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	// TODO: remove debug print
+	printf("callback: %d, %d, %d, %d, %d, %d, %d\n", eax, ebx, ecx, edx, esi, edi, ebp);
+
+	int sprite_index = edi;
+
+	if (sprite_index == 0xFFFF) {
+		rct_window* window = window_find_by_class(WC_STAFF_LIST);
+		window_invalidate(window);
+	}
+	else {
+		window_staff_open(&g_sprite_list[sprite_index].peep);
+	}
+}
+
 /**
 *
 *  rct2: 0x006BD94C
@@ -207,14 +224,15 @@ static void window_staff_list_mouseup(rct_window *w, int widgetIndex)
 		window_close(w);
 		break;
 	case WIDX_STAFF_LIST_HIRE_BUTTON:
+		game_command_callback = game_command_callback_hire_staff_member;
 		newStaffId = hire_new_staff_member(RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8));
 
-		if (newStaffId == 0xFFFF) {
-			rct_window* window = window_find_by_class(WC_STAFF_LIST);
-			window_invalidate(window);
-		} else {
-			window_staff_open(&g_sprite_list[newStaffId].peep);
-		}
+		//if (newStaffId == 0xFFFF) {
+		//	rct_window* window = window_find_by_class(WC_STAFF_LIST);
+		//	window_invalidate(window);
+		//} else {
+		//	window_staff_open(&g_sprite_list[newStaffId].peep);
+		//}
 
 		break;
 	case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
