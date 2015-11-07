@@ -638,17 +638,20 @@ static void join_server(char *address)
 static void fetch_servers()
 {
 #ifndef DISABLE_HTTP
-	if(strlen(gConfigNetwork.master_url) > 0){
-		SDL_LockMutex(_mutex);
-		for (int i = 0; i < _numSavedServers; i++) {
-			if (!_savedServers[i].favorite) {
-				remove_saved_server(i);
-				i = 0;
-			}
-		}
-		SDL_UnlockMutex(_mutex);
-		http_request_json_async(gConfigNetwork.master_url, fetch_servers_callback);
+	const char *masterServerUrl = OPENRCT2_MASTER_SERVER_URL;
+	if (!str_is_null_or_empty(gConfigNetwork.master_server_url)) {
+		masterServerUrl = gConfigNetwork.master_server_url;
 	}
+
+	SDL_LockMutex(_mutex);
+	for (int i = 0; i < _numSavedServers; i++) {
+		if (!_savedServers[i].favorite) {
+			remove_saved_server(i);
+			i = 0;
+		}
+	}
+	SDL_UnlockMutex(_mutex);
+	http_request_json_async(masterServerUrl, fetch_servers_callback);
 #endif
 }
 
