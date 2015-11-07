@@ -940,11 +940,11 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
 #ifndef DISABLE_HTTP
 	json_t* obj = json_object();
 	json_object_set(obj, "name", json_string(gConfigNetwork.server_name));
-	json_object_set(obj, "haspassword", json_integer(password.size() > 0 ? 1 : 0));
-	json_object_set(obj, "description", json_string(""));
+	json_object_set(obj, "requiresPassword", json_boolean(password.size() > 0));
 	json_object_set(obj, "version", json_string(OPENRCT2_VERSION));
 	json_object_set(obj, "players", json_integer(player_list.size()));
-	json_object_set(obj, "maxplayers", json_integer(gConfigNetwork.maxplayers));
+	json_object_set(obj, "maxPlayers", json_integer(gConfigNetwork.maxplayers));
+	json_object_set(obj, "description", json_string(gConfigNetwork.server_description));
 	packet->WriteString(json_dumps(obj, 0));
  	json_object_clear(obj);
 #endif

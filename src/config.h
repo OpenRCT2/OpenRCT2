@@ -217,6 +217,7 @@ typedef struct {
 	uint8 advertise;
 	uint8 maxplayers;
 	utf8string server_name;
+	utf8string server_description;
 	utf8string master_url;
 } network_configuration;
 

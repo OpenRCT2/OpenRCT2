@@ -39,7 +39,7 @@
 typedef struct {
 	char *address;
 	utf8 *name;
-	bool haspassword;
+	bool requiresPassword;
 	utf8 *description;
 	char *version;
 	bool favorite;
@@ -479,7 +479,7 @@ static void server_list_load_saved_servers()
 
 		serverInfo->address = freadstralloc(file);
 		serverInfo->name = freadstralloc(file);
-		serverInfo->haspassword = false;
+		serverInfo->requiresPassword = false;
 		serverInfo->description = freadstralloc(file);
 		serverInfo->version = _strdup("");
 		serverInfo->favorite = true;
@@ -573,7 +573,7 @@ static saved_server* add_saved_server(char *address)
 	saved_server* newserver = &_savedServers[index];
 	newserver->address = _strdup(address);
 	newserver->name = _strdup(address);
-	newserver->haspassword = false;
+	newserver->requiresPassword = false;
 	newserver->description = _strdup("");
 	newserver->version = _strdup("");
 	newserver->favorite = false;
@@ -664,17 +664,17 @@ static void fetch_servers_callback(http_json_response* response)
 
 			json_t *address = json_object_get(server, "address");
 			json_t *name = json_object_get(server, "name");
-			json_t *haspassword = json_object_get(server, "haspassword");
-			json_t *description = json_object_get(server, "description");
+			json_t *requiresPassword = json_object_get(server, "requiresPassword");
 			json_t *version = json_object_get(server, "version");
 			json_t *players = json_object_get(server, "players");
-			json_t *maxplayers = json_object_get(server, "maxplayers");
+			json_t *maxplayers = json_object_get(server, "maxPlayers");
+			json_t *description = json_object_get(server, "description");
 
 			SDL_LockMutex(_mutex);
 			saved_server* newserver = add_saved_server((char*)json_string_value(address));
 			SafeFree(newserver->name);
 			newserver->name = _strdup(json_string_value(name));
-			newserver->haspassword = (uint8)json_integer_value(haspassword);
+			newserver->requiresPassword = json_boolean_value(requiresPassword);
 			SafeFree(newserver->description);
 			newserver->description = _strdup(json_string_value(description));
 			SafeFree(newserver->version);
