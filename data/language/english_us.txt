@@ -3855,7 +3855,7 @@ STR_5511    :(UNKNOWN)
 STR_5512    :Save Game As
 STR_5513    :(Quick) save game
 STR_5514    :Disable vandalism
-STR_5515    :{SMALLFONT}{BLACK}Stops guests from vandalising your park when they're angry
+STR_5515    :{SMALLFONT}{BLACK}Stops guests from vandalizing your park when they're angry
 STR_5516    :{SMALLFONT}{BLACK}Black
 STR_5517    :{SMALLFONT}{BLACK}Gray
 STR_5518    :{SMALLFONT}{BLACK}White
@@ -3896,6 +3896,15 @@ STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {M
 STR_5553    :Pause game when Steam overlay is open
 STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
 STR_5555    :Show vehicles from other track types
+STR_5556    :Kick Player
+STR_5557    :Stay connected after desynchronization (Multiplayer)
+STR_5558    :A restart is required for this setting to take effect
+STR_5559    :10 min. inspections
+STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on all rides
+STR_5561    :Failed to load language file
+STR_5562    :WARNING!
+STR_5563    :This feature is currently unstable, take extra caution.
+STR_5564	:Guests ignore rain when entering queues
 
 #########
 # Rides #

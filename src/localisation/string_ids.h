@@ -2151,8 +2151,7 @@ enum {
 	STR_WARNING_IN_CAPS = 5562,
 	STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE = 5563,
 
-	STR_INSERT_CORRUPT = 5564,
-	STR_INSERT_CORRUPT_TIP = 5565,
+	STR_CHEAT_IGNORE_RAIN = 5564,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
