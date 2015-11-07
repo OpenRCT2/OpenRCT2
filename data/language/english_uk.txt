@@ -3826,7 +3826,7 @@ STR_5484    :{BLACK}({COMMA16} week remaining)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Show recent messages
-STR_5488    :No entrance (OpenRCT2 Only!)
+STR_5488    :No entrance (OpenRCT2 only!)
 STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
 STR_5490    :Disable audio on focus loss
 STR_5491    :Inventions list
