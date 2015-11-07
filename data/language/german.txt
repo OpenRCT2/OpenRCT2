@@ -2710,7 +2710,7 @@ STR_2703    :Alle 15 Minuten
 STR_2704    :Alle 30 Minuten
 STR_2705    :Jede Stunde
 STR_2706    :Nie
-STR_2707    :Neues Fenster
+STR_2707    :Systemdialogfeld verwenden
 STR_2708    :{WINDOW_COLOUR_1}Sind Sie sicher, dass Sie {STRINGID} überschreiben möchten?
 STR_2709    :Überschreiben
 STR_2710    :Geben Sie den Dateinamen ein:
@@ -3894,6 +3894,9 @@ STR_5557    :Nach Desync. verbunden bleiben (Mehrspieler)
 STR_5558    :Damit diese Einstellung wirksam wird, ist ein Neustart erforderlich
 STR_5559    :10 Min. Inspektionen
 STR_5560    :{SMALLFONT}{BLACK}Setzt die Inspektionszeit aller Bahnen{NEWLINE}auf 'Alle 10 Minuten'
+STR_5561    :Sprachdatei konnte nicht geladen werden
+STR_5562    :WARNUNG!
+STR_5563    :Diese Funktion ist derzeit instabil und mit erhöhter Vorsicht zu verwenden.
 
 #######################
 # Bahnen/Attraktionen # 
