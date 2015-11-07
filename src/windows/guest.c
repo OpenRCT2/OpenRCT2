@@ -1184,7 +1184,7 @@ void window_guest_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 		window_error_open(0x785,-1);
 		return;
 	}
-
+	
 	if (!map_can_construct_at(tile_x, tile_y, dest_z / 8, (dest_z / 8) + 1, 15)){
 		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) != 0x3A5 ){
 			if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) != 0x49B){
