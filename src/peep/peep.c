@@ -1325,6 +1325,9 @@ void peep_update_falling(rct_peep* peep){
 	rct_map_element *saved_map = NULL;
 	int saved_height = 0;
 
+	if (map_element == NULL)
+		return;
+
 	do {
 		// If a path check if we are on it
 		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH){
