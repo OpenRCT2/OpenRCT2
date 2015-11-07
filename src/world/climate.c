@@ -23,6 +23,7 @@
 #include "../audio/mixer.h"
 #include "../config.h"
 #include "../drawing/drawing.h"
+#include "../game.h"
 #include "../localisation/date.h"
 #include "../scenario.h"
 #include "../interface/window.h"
@@ -69,7 +70,7 @@ static unsigned int _thunderSoundId;
 static int _thunderVolume;
 static int _thunderStereoEcho = 0;
 
-static void climate_determine_future_weather();
+static void climate_determine_future_weather(int randomDistribution);
 
 static void climate_update_rain_sound();
 static void climate_update_thunder_sound();
@@ -114,7 +115,7 @@ void climate_reset(int climate)
 		_rainVolume = 1;
 	}
 
-	climate_determine_future_weather();
+	climate_determine_future_weather(rand());
 }
 
 sint8 step_weather_level(sint8 cur_weather_level, sint8 next_weather_level) {
@@ -171,7 +172,7 @@ void climate_update()
 
 				if (cur_rain == next_rain) {
 					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = gClimateNextWeather;
-					climate_determine_future_weather();
+					climate_determine_future_weather(scenario_rand());
 					RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_CLIMATE;
 				} else if (next_rain <= 2) { // Safe-guard
 					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = step_weather_level(cur_rain, next_rain);
@@ -209,7 +210,7 @@ void climate_force_weather(uint8 weather){
  *
  * rct2: 0x006C461C
  */
-static void climate_determine_future_weather()
+static void climate_determine_future_weather(int randomDistribution)
 {
 	sint8 climate = RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8);
 	const rct_weather_transition* climate_table = climate_transitions[climate];
@@ -217,7 +218,7 @@ static void climate_determine_future_weather()
 	rct_weather_transition transition = climate_table[month];
 
 	// Generate a random variable with values 0 upto distribution_size-1 and chose weather from the distribution table accordingly
-	sint8 next_weather = transition.distribution[ ((scenario_rand() & 0xFF) * transition.distribution_size) >> 8 ];
+	sint8 next_weather = transition.distribution[ ((randomDistribution & 0xFF) * transition.distribution_size) >> 8 ];
 	gClimateNextWeather = next_weather;
 
 	_climateNextTemperature = transition.base_temperature + climate_weather_data[next_weather].temp_delta;

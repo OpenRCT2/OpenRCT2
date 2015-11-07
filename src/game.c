@@ -60,6 +60,7 @@
 
 int gGameSpeed = 1;
 float gDayNightCycle = 0;
+bool gInUpdateCode = false;
 
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback = 0;
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback_table[] = {
@@ -335,6 +336,9 @@ void game_update()
 
 void game_logic_update()
 {
+	///////////////////////////
+	gInUpdateCode = true;
+	///////////////////////////
 	network_update();
 	if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED) {
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >= network_get_server_tick()) {
@@ -361,6 +365,10 @@ void game_logic_update()
 	research_update();
 	ride_ratings_update_all();
 	ride_measurements_update();
+	///////////////////////////
+	gInUpdateCode = false;
+	///////////////////////////
+
 	map_animation_invalidate_all();
 	vehicle_sounds_update();
 	peep_update_crowd_noise();
