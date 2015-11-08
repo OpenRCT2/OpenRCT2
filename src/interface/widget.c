@@ -853,12 +853,12 @@ static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 {
 	colour &= 0x7F;
 	// Trough
-	gfx_fill_rect(dpi, l + 10, t, r - 10, b, *((char*)(0x0141FC4B + (colour * 8))));
-	gfx_fill_rect(dpi, l + 10, t, r - 10, b, 0x1000000 | *((char*)(0x0141FC47 + (colour * 8))));
-	gfx_fill_rect(dpi, l + 10, t + 2, r - 10, t + 2, *((char*)(0x0141FC47 + (colour * 8))));
-	gfx_fill_rect(dpi, l + 10, t + 3, r - 10, t + 3, *((char*)(0x0141FC4B + (colour * 8))));
-	gfx_fill_rect(dpi, l + 10, t + 7, r - 10, t + 7, *((char*)(0x0141FC47 + (colour * 8))));
-	gfx_fill_rect(dpi, l + 10, t + 8, r - 10, t + 8, *((char*)(0x0141FC4B + (colour * 8))));
+	gfx_fill_rect(dpi, l + 10, t, r - 10, b, *((uint8*)(0x0141FC4B + (colour * 8))));
+	gfx_fill_rect(dpi, l + 10, t, r - 10, b, 0x1000000 | *((uint8*)(0x0141FC47 + (colour * 8))));
+	gfx_fill_rect(dpi, l + 10, t + 2, r - 10, t + 2, *((uint8*)(0x0141FC47 + (colour * 8))));
+	gfx_fill_rect(dpi, l + 10, t + 3, r - 10, t + 3, *((uint8*)(0x0141FC4B + (colour * 8))));
+	gfx_fill_rect(dpi, l + 10, t + 7, r - 10, t + 7, *((uint8*)(0x0141FC47 + (colour * 8))));
+	gfx_fill_rect(dpi, l + 10, t + 8, r - 10, t + 8, *((uint8*)(0x0141FC4B + (colour * 8))));
 
 	// Left button
 	gfx_fill_rect_inset(dpi, l, t, l + 9, b, colour, (scroll->flags & HSCROLLBAR_LEFT_PRESSED ? 0x20 : 0));
@@ -879,12 +879,12 @@ static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 {
 	colour &= 0x7F;
 	// Trough
-	gfx_fill_rect(dpi, l, t + 10, r, b - 10, *((char*)(0x0141FC4B + (colour * 8))));
-	gfx_fill_rect(dpi, l, t + 10, r, b - 10, 0x1000000 | *((char*)(0x0141FC47 + (colour * 8))));
-	gfx_fill_rect(dpi, l + 2, t + 10, l + 2, b - 10, *((char*)(0x0141FC47 + (colour * 8))));
-	gfx_fill_rect(dpi, l + 3, t + 10, l + 3, b - 10, *((char*)(0x0141FC4B + (colour * 8))));
-	gfx_fill_rect(dpi, l + 7, t + 10, l + 7, b - 10, *((char*)(0x0141FC47 + (colour * 8))));
-	gfx_fill_rect(dpi, l + 8, t + 10, l + 8, b - 10, *((char*)(0x0141FC4B + (colour * 8))));
+	gfx_fill_rect(dpi, l, t + 10, r, b - 10, *((uint8*)(0x0141FC4B + (colour * 8))));
+	gfx_fill_rect(dpi, l, t + 10, r, b - 10, 0x1000000 | *((uint8*)(0x0141FC47 + (colour * 8))));
+	gfx_fill_rect(dpi, l + 2, t + 10, l + 2, b - 10, *((uint8*)(0x0141FC47 + (colour * 8))));
+	gfx_fill_rect(dpi, l + 3, t + 10, l + 3, b - 10, *((uint8*)(0x0141FC4B + (colour * 8))));
+	gfx_fill_rect(dpi, l + 7, t + 10, l + 7, b - 10, *((uint8*)(0x0141FC47 + (colour * 8))));
+	gfx_fill_rect(dpi, l + 8, t + 10, l + 8, b - 10, *((uint8*)(0x0141FC4B + (colour * 8))));
 
 	// Up button
 	gfx_fill_rect_inset(dpi, l, t, r, t + 9, colour, (scroll->flags & VSCROLLBAR_UP_PRESSED ? 0x20 : 0));
