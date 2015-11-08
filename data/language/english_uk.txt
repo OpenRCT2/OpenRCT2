@@ -3915,6 +3915,8 @@ STR_5573    :Remove From Favorites
 STR_5574    :Server Name:
 STR_5575    :Max Players:
 STR_5576    :Port:
+STR_5577    :South Korean Won (W)
+STR_5578    :Russian Rouble (R)
 
 #####################
 # Rides/attractions # 

@@ -124,6 +124,8 @@ config_enum_definition _currencyEnum[] = {
 	{ "NLG", CURRENCY_GUILDERS },
 	{ "SEK", CURRENCY_KRONA },
 	{ "EUR", CURRENCY_EUROS },
+	{ "KRW", CURRENCY_WON },
+	{ "RUB", CURRENCY_ROUBLE },
 	END_OF_ENUM
 };
 
