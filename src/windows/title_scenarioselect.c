@@ -317,7 +317,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 	int i, y, colour, highlighted, highlighted_format, unhighlighted_format;
 	rct_scenario_basic *scenario;
 
-	colour = ((char*)0x0141FC48)[w->colours[1] * 8];
+	colour = ColourMapA[w->colours[1]].mid_light;
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
 	gfx_clear(dpi, colour);
 

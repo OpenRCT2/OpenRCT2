@@ -19,16 +19,19 @@
  *****************************************************************************/
 
 #include "currency.h"
+#include "string_ids.h"
 
 const rct_currency_spec g_currency_specs[CURRENCY_END] = {
-	{ 10	, "\xC2\xA3"		, CURRENCY_PREFIX },	// British Pound
-	{ 10	, "$"				, CURRENCY_PREFIX },	// US Dollar
-	{ 10	, "F"				, CURRENCY_SUFFIX },	// French Franc
-	{ 10	, "DM"				, CURRENCY_PREFIX },	// Deutsche Mark
-	{ 1000	, "\xC2\xA5"		, CURRENCY_PREFIX },	// Japanese Yen
-	{ 10	, "Pts"				, CURRENCY_SUFFIX },	// Spanish Peseta
-	{ 1000	, "L"				, CURRENCY_PREFIX },	// Italian Lira
-	{ 10	, "fl. "			, CURRENCY_PREFIX },	// Dutch Guilder
-	{ 10	, "kr."				, CURRENCY_SUFFIX },	// Swedish Krona
-	{ 10	, "\xE2\x82\xAC"	, CURRENCY_PREFIX },	// Euro
+	{ 10	, "\xC2\xA3"		, CURRENCY_PREFIX, STR_POUNDS },		// British Pound
+	{ 10	, "$"				, CURRENCY_PREFIX, STR_DOLLARS},		// US Dollar
+	{ 10	, "F"				, CURRENCY_SUFFIX, STR_FRANC },			// French Franc
+	{ 10	, "DM"				, CURRENCY_PREFIX, STR_DEUTSCHMARK },	// Deutschmark
+	{ 1000	, "\xC2\xA5"		, CURRENCY_PREFIX, STR_YEN },			// Japanese Yen
+	{ 10	, "Pts"				, CURRENCY_SUFFIX, STR_PESETA },		// Spanish Peseta
+	{ 1000	, "L"				, CURRENCY_PREFIX, STR_LIRA },			// Italian Lira
+	{ 10	, "fl. "			, CURRENCY_PREFIX, STR_GUILDERS },		// Dutch Guilder
+	{ 10	, "kr."				, CURRENCY_SUFFIX, STR_KRONA },			// Swedish Krona
+	{ 10	, "\xE2\x82\xAC"	, CURRENCY_PREFIX, STR_EUROS },			// Euro
+	{ 10000 , "W"				, CURRENCY_PREFIX, STR_WON },			// South Korean Won
+	{ 1000  , "R "				, CURRENCY_PREFIX, STR_ROUBLE },		// Russian Rouble
 };

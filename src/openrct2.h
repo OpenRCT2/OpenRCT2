@@ -37,6 +37,7 @@ extern utf8 gCustomUserDataPath[MAX_PATH];
 extern bool gOpenRCT2Headless;
 extern bool gOpenRCT2ShowChangelog;
 
+void openrct2_write_full_version_info(utf8 *buffer, size_t bufferSize);
 bool openrct2_initialise();
 void openrct2_launch();
 void openrct2_dispose();

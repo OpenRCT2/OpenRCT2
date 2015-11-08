@@ -3863,8 +3863,8 @@ STR_5521    :{SMALLFONT}{BLACK}Bright purple
 STR_5522    :{SMALLFONT}{BLACK}Dark blue
 STR_5523    :{SMALLFONT}{BLACK}Light blue
 STR_5524    :{SMALLFONT}{BLACK}Icy blue
-STR_5525    :{SMALLFONT}{BLACK}Teal
-STR_5526    :{SMALLFONT}{BLACK}Aquamarine
+STR_5525    :{SMALLFONT}{BLACK}Dark water
+STR_5526    :{SMALLFONT}{BLACK}Light water
 STR_5527    :{SMALLFONT}{BLACK}Saturated green
 STR_5528    :{SMALLFONT}{BLACK}Dark green
 STR_5529    :{SMALLFONT}{BLACK}Moss green
@@ -3917,7 +3917,10 @@ STR_5575    :Max Players:
 STR_5576    :Port:
 STR_5577    :South Korean Won (W)
 STR_5578    :Russian Rouble (R)
+<<<<<<< HEAD
 STR_5579    :Guests ignore rain when entering queues
+=======
+>>>>>>> refs/remotes/OpenRCT2/develop
 
 #####################
 # Rides/attractions # 

@@ -32,6 +32,7 @@
 #include "../world/entrance.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"
+#include "colour.h"
 #include "viewport.h"
 #include "window.h"
 
@@ -87,26 +88,16 @@ struct paint_struct{
  */
 void viewport_init_all()
 {
-	int i, d;
-	rct_g1_element *g1_element;
-
-	// Palette from sprites?
-	d = 0;
-	for (i = 4915; i < 4947; i++) {
-		g1_element = &g1Elements[i];
-		*((int*)(0x0141FC44 + d)) = *((int*)(&g1_element->offset[0xF5]));
-		*((int*)(0x0141FC48 + d)) = *((int*)(&g1_element->offset[0xF9]));
-		*((int*)(0x0141FD44 + d)) = *((int*)(&g1_element->offset[0xFD]));
-		d += 8;
-	}
+	colours_init_maps();
 
 	// Setting up windows
 	RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*) = g_window_list;
 	RCT2_GLOBAL(0x01423604, sint32) = 0;
 
 	// Setting up viewports
-	for (i = 0; i < 9; i++)
+	for (int i = 0; i < 9; i++) {
 		g_viewport_list[i].width = 0;
+	}
 	RCT2_NEW_VIEWPORT = NULL;
 
 	// ?

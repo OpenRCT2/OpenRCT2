@@ -1,5 +1,6 @@
 #include "../addresses.h"
 #include "../config.h"
+#include "../interface/colour.h"
 #include "../localisation/localisation.h"
 #include "drawing.h"
 
@@ -88,10 +89,12 @@ static int scrolling_text_get_matching_or_oldest(rct_string_id stringId, uint16 
 
 static uint8 scrolling_text_get_colour(uint32 character)
 {
-	int edi = character & 0x7F;
-	int offset = 0;
-	if (character >= 0x80) offset = 2;
-	return RCT2_ADDRESS(0x0141FC47, uint8)[offset + (edi * 8)];
+	int colour = character & 0x7F;
+	if (colour & (1 << 7)) {
+		return ColourMapA[colour].light;
+	} else {
+		return ColourMapA[colour].mid_dark;
+	}
 }
 
 static void scrolling_text_format(utf8 *dst, rct_draw_scroll_text *scrollText)

@@ -49,6 +49,7 @@
     <ClCompile Include="..\src\hook.c" />
     <ClCompile Include="..\src\input.c" />
     <ClCompile Include="..\src\interface\chat.c" />
+    <ClCompile Include="..\src\interface\colour.c" />
     <ClCompile Include="..\src\interface\themes.c" />
     <ClCompile Include="..\src\interface\console.c" />
     <ClCompile Include="..\src\interface\graph.c" />
@@ -103,6 +104,7 @@
     <ClCompile Include="..\src\windows\network_status.c" />
     <ClCompile Include="..\src\windows\player_list.c" />
     <ClCompile Include="..\src\windows\server_list.c" />
+    <ClCompile Include="..\src\windows\server_start.c" />
     <ClCompile Include="..\src\windows\title_command_editor.c" />
     <ClCompile Include="..\src\windows\title_editor.c" />
     <ClCompile Include="..\src\windows\maze_construction.c" />
@@ -366,7 +368,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
-      <PreprocessorDefinitions>DEBUG;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG;DEBUG_DESYNC;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)fake\%(RelativeDir)</ObjectFileName>

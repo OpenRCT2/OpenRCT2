@@ -532,7 +532,7 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 	rct_string_id stringId, templateStringId = 3165;
 	char *templateString;
 
-	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, RCT2_ADDRESS(0x0141FC48,uint8)[w->colours[1] * 8]);
+	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
 	templateString = (char*)language_get_string(templateStringId);
 	for (i = 0; i < w->no_list_items; i++) {
@@ -600,7 +600,7 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 	file_info fileInfo;
 	loadsave_list_item *listItem;
 	const char *src;
-	char *dst, filter[MAX_PATH], subDir[MAX_PATH];
+	char *dst, *last_dot_in_filename, filter[MAX_PATH], subDir[MAX_PATH];
 
 	safe_strncpy(_directory, directory, sizeof(_directory));
 	if (_extension != extension) {
@@ -701,12 +701,14 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 
 			src = fileInfo.path;
 			dst = listItem->name;
+			last_dot_in_filename = strrchr(fileInfo.path, '.');
+			assert(last_dot_in_filename != NULL);
 			i = 0;
-			while (*src != 0 && *src != '.' && i < sizeof(listItem->name) - 1) {
+			while (src < last_dot_in_filename && i < sizeof(listItem->name) - 1) {
 				*dst++ = *src++;
 				i++;
 			}
-			*dst = 0;
+			*dst = '\0';
 
 			_listItemsCount++;
 		}

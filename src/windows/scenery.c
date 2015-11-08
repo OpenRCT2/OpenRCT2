@@ -1046,7 +1046,7 @@ void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 */
 void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	gfx_clear(dpi, ((char*)0x0141FC48)[w->colours[1] * 8] * 0x1010101);
+	gfx_clear(dpi, ColourMapA[w->colours[1]].mid_light * 0x1010101);
 
 	uint8 tabIndex = window_scenery_active_tab_index;
 

@@ -1292,6 +1292,10 @@ void title_handle_keyboard_input()
 	rct_window *w;
 	int key;
 
+	if (gOpenRCT2Headless) {
+		return;
+	}
+
 	if (!gConsoleOpen) {
 		// Handle modifier keys and key scrolling
 		RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
