@@ -600,7 +600,7 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 	file_info fileInfo;
 	loadsave_list_item *listItem;
 	const char *src;
-	char *dst, filter[MAX_PATH], subDir[MAX_PATH];
+	char *dst, *last_dot_in_filename, filter[MAX_PATH], subDir[MAX_PATH];
 
 	safe_strncpy(_directory, directory, sizeof(_directory));
 	if (_extension != extension) {
@@ -701,12 +701,14 @@ static void window_loadsave_populate_list(int includeNewItem, bool browsable, co
 
 			src = fileInfo.path;
 			dst = listItem->name;
+			last_dot_in_filename = strrchr(fileInfo.path, '.');
+			assert(last_dot_in_filename != NULL);
 			i = 0;
-			while (*src != 0 && *src != '.' && i < sizeof(listItem->name) - 1) {
+			while (src < last_dot_in_filename && i < sizeof(listItem->name) - 1) {
 				*dst++ = *src++;
 				i++;
 			}
-			*dst = 0;
+			*dst = '\0';
 
 			_listItemsCount++;
 		}
