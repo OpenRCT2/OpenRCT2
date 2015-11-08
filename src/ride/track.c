@@ -4002,11 +4002,11 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			return MONEY32_UNDEFINED;
 		}
 	}
-
-	uint16 *hmm = (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ?
-		(uint16*)0x0099443C :
-		(uint16*)0x0099423C;
-	if (hmm[type] & 0x100) {
+	
+	uint16 *trackFlags = (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ?
+		RCT2_ADDRESS(0x0099443C, uint16) :
+		RCT2_ADDRESS(0x0099423C, uint16);
+	if (trackFlags[type] & 0x100) {
 		if ((originZ & 0x0F) != 8) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = 954;
 			return MONEY32_UNDEFINED;
