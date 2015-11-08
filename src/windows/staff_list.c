@@ -226,14 +226,6 @@ static void window_staff_list_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_STAFF_LIST_HIRE_BUTTON:
 		game_command_callback = game_command_callback_hire_staff_member;
 		newStaffId = hire_new_staff_member(RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8));
-
-		//if (newStaffId == 0xFFFF) {
-		//	rct_window* window = window_find_by_class(WC_STAFF_LIST);
-		//	window_invalidate(window);
-		//} else {
-		//	window_staff_open(&g_sprite_list[newStaffId].peep);
-		//}
-
 		break;
 	case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
 		if (!tool_set(w, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, 12)) {
