@@ -65,8 +65,9 @@ bool gHardwareDisplay;
 
 bool gSteamOverlayActive = false;
 
-static SDL_Surface *_surface;
-static SDL_Palette *_palette;
+static SDL_Surface *_surface = NULL;
+static SDL_Surface *_RGBASurface = NULL;
+static SDL_Palette *_palette = NULL;
 
 static void *_screenBuffer;
 static int _screenBufferSize;
@@ -285,9 +286,24 @@ void platform_draw()
 				SDL_UnlockSurface(_surface);
 
 			// Copy the surface to the window
-			if (SDL_BlitSurface(_surface, NULL, SDL_GetWindowSurface(gWindow), NULL)) {
-				log_fatal("SDL_BlitSurface %s", SDL_GetError());
-				exit(1);
+			if (gConfigGeneral.scale == 1 || gConfigGeneral.scale <= 0)
+			{
+				if (SDL_BlitSurface(_surface, NULL, SDL_GetWindowSurface(gWindow), NULL)) {
+					log_fatal("SDL_BlitSurface %s", SDL_GetError());
+					exit(1);
+				}
+			} else {
+				// first blit to rgba surface to change the pixel format
+				if (SDL_BlitSurface(_surface, NULL, _RGBASurface, NULL)) {
+					log_fatal("SDL_BlitSurface %s", SDL_GetError());
+					exit(1);
+				}
+				// then scale to window size. Without changing to RGBA first, SDL complains
+				// about blit configurations being incompatible.
+				if (SDL_BlitScaled(_RGBASurface, NULL, SDL_GetWindowSurface(gWindow), NULL)) {
+					log_fatal("SDL_BlitScaled %s", SDL_GetError());
+					exit(1);
+				}
 			}
 			if (SDL_UpdateWindowSurface(gWindow)) {
 				log_fatal("SDL_UpdateWindowSurface %s", SDL_GetError());
@@ -300,17 +316,19 @@ void platform_draw()
 static void platform_resize(int width, int height)
 {
 	uint32 flags;
+	int dst_w = width / gConfigGeneral.scale;
+	int dst_h = height / gConfigGeneral.scale;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) = width;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) = height;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) = dst_w;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) = dst_h;
 
 	platform_refresh_video();
 
 	flags = SDL_GetWindowFlags(gWindow);
 
 	if ((flags & SDL_WINDOW_MINIMIZED) == 0) {
-		window_resize_gui(width, height);
-		window_relocate_windows(width, height);
+		window_resize_gui(dst_w, dst_h);
+		window_relocate_windows(dst_w, dst_h);
 	}
 
 	title_fix_location();
@@ -421,11 +439,11 @@ void platform_process_messages()
 			}
 			break;
 		case SDL_MOUSEMOTION:
-			RCT2_GLOBAL(0x0142406C, int) = e.motion.x;
-			RCT2_GLOBAL(0x01424070, int) = e.motion.y;
+			RCT2_GLOBAL(0x0142406C, int) = e.motion.x / gConfigGeneral.scale;
+			RCT2_GLOBAL(0x01424070, int) = e.motion.y / gConfigGeneral.scale;
 
-			gCursorState.x = e.motion.x;
-			gCursorState.y = e.motion.y;
+			gCursorState.x = e.motion.x / gConfigGeneral.scale;
+			gCursorState.y = e.motion.y / gConfigGeneral.scale;
 			break;
 		case SDL_MOUSEWHEEL:
 			if (gConsoleOpen) {
@@ -435,8 +453,8 @@ void platform_process_messages()
 			gCursorState.wheel += e.wheel.y * 128;
 			break;
 		case SDL_MOUSEBUTTONDOWN:
-			RCT2_GLOBAL(0x01424318, int) = e.button.x;
-			RCT2_GLOBAL(0x0142431C, int) = e.button.y;
+			RCT2_GLOBAL(0x01424318, int) = e.button.x / gConfigGeneral.scale;
+			RCT2_GLOBAL(0x0142431C, int) = e.button.y / gConfigGeneral.scale;
 			switch (e.button.button) {
 			case SDL_BUTTON_LEFT:
 				store_mouse_input(1);
@@ -454,8 +472,8 @@ void platform_process_messages()
 			}
 			break;
 		case SDL_MOUSEBUTTONUP:
-			RCT2_GLOBAL(0x01424318, int) = e.button.x;
-			RCT2_GLOBAL(0x0142431C, int) = e.button.y;
+			RCT2_GLOBAL(0x01424318, int) = e.button.x / gConfigGeneral.scale;
+			RCT2_GLOBAL(0x0142431C, int) = e.button.y / gConfigGeneral.scale;
 			switch (e.button.button) {
 			case SDL_BUTTON_LEFT:
 				store_mouse_input(2);
@@ -644,6 +662,8 @@ static void platform_close_window()
 		SDL_FreeSurface(_surface);
 	if (_palette != NULL)
 		SDL_FreePalette(_palette);
+	if (_RGBASurface != NULL)
+		SDL_FreeSurface(_RGBASurface);
 	platform_unload_cursors();
 }
 
@@ -916,14 +936,18 @@ void platform_refresh_video()
 	} else {
 		if (_surface != NULL)
 			SDL_FreeSurface(_surface);
+		if (_RGBASurface != NULL)
+			SDL_FreeSurface(_RGBASurface);
 		if (_palette != NULL)
 			SDL_FreePalette(_palette);
 
 		_surface = SDL_CreateRGBSurface(0, width, height, 8, 0, 0, 0, 0);
+		_RGBASurface = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
+		SDL_SetSurfaceBlendMode(_RGBASurface, SDL_BLENDMODE_NONE);
 		_palette = SDL_AllocPalette(256);
 
-		if (!_surface || !_palette) {
-			log_fatal("%p || %p == NULL %s", _surface, _palette, SDL_GetError());
+		if (!_surface || !_palette || !_RGBASurface) {
+			log_fatal("%p || %p || %p == NULL %s", _surface, _palette, _RGBASurface, SDL_GetError());
 			exit(-1);
 		}
 
