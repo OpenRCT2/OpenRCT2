@@ -2154,6 +2154,18 @@ enum {
 	STR_INSERT_CORRUPT = 5564,
 	STR_INSERT_CORRUPT_TIP = 5565,
 
+	STR_PASSWORD = 5566,
+	STR_ADVERTISE = 5567,
+	STR_PASSWORD_REQUIRED = 5568,
+	STR_PASSWORD_REQUIRED_DESC = 5569,
+	STR_FETCH_SERVERS = 5570,
+	STR_JOIN_GAME = 5571,
+	STR_ADD_TO_FAVORITES = 5572,
+	STR_REMOVE_FROM_FAVORITES = 5573,
+	STR_SERVER_NAME = 5574,
+	STR_MAX_PLAYERS = 5575,
+	STR_PORT = 5576,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

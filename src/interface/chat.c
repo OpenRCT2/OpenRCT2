@@ -60,7 +60,8 @@ void chat_update()
 
 void chat_draw()
 {
-	if (network_get_mode() == NETWORK_MODE_NONE) {
+	if (network_get_mode() == NETWORK_MODE_NONE || network_get_status() != NETWORK_STATUS_CONNECTED || network_get_authstatus() != NETWORK_AUTH_OK) {
+		gChatOpen = false;
 		return;
 	}
 	rct_drawpixelinfo *dpi = (rct_drawpixelinfo*)RCT2_ADDRESS_SCREEN_DPI;
@@ -102,7 +103,7 @@ void chat_history_add(const char *src)
 {
 	int index = _chatHistoryIndex % CHAT_HISTORY_SIZE;
 	memset(_chatHistory[index], 0, CHAT_INPUT_SIZE);
-	memcpy(_chatHistory[index], src, min(strlen(src), CHAT_INPUT_SIZE));
+	memcpy(_chatHistory[index], src, min(strlen(src), CHAT_INPUT_SIZE - 1));
 	_chatHistoryTime[index] = SDL_GetTicks();
 	_chatHistoryIndex++;
 	Mixer_Play_Effect(SOUND_NEWS_ITEM, 0, SDL_MIX_MAXVOLUME, 0, 1.5f, true);
