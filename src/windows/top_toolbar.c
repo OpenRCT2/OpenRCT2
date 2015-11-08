@@ -286,7 +286,9 @@ static void window_top_toolbar_mouseup(rct_window *w, int widgetIndex)
 
 	switch (widgetIndex) {
 	case WIDX_PAUSE:
-		game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
+		if (network_get_mode() != NETWORK_MODE_CLIENT) {
+			game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
+		}
 		break;
 	case WIDX_ZOOM_OUT:
 		if ((mainWindow = window_get_main()) != NULL)

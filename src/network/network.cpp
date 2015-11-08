@@ -1360,8 +1360,17 @@ int Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket&
 		playerid = connection.player->id;
 	}
 	packet >> tick >> args[0] >> args[1] >> args[2] >> args[3] >> args[4] >> args[5] >> args[6] >> callback;
-	Server_Send_GAMECMD(args[0], args[1], args[2], args[3], args[4], args[5], args[6], playerid, callback);
-	game_do_command(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
+
+	int commandCommand = args[4];
+	
+	// Don't let clients send pause or quit
+	if (commandCommand != GAME_COMMAND_TOGGLE_PAUSE &&
+		commandCommand != GAME_COMMAND_LOAD_OR_QUIT
+	) {
+		Server_Send_GAMECMD(args[0], args[1], args[2], args[3], args[4], args[5], args[6], playerid, callback);
+		game_do_command(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
+	}
+	
 	return 1;
 }
 
