@@ -3282,7 +3282,7 @@ void ride_construction_toolupdate_construct(int screenX, int screenY)
 		return;
 	}
 
-	z = RCT2_GLOBAL(0x00F44163, uint16);
+	z = _trackPlaceZ;
 	if (z == 0)
 		z = map_get_highest_z(x >> 5, y >> 5);
 
@@ -3313,7 +3313,7 @@ void ride_construction_toolupdate_construct(int screenX, int screenY)
 	window_ride_construction_select_map_tiles(ride, trackType, trackDirection, x, y);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16) = z;
-	if (RCT2_GLOBAL(0x00F44163, uint16) == 0) {
+	if (_trackPlaceZ == 0) {
 		// Raise z above all slopes and water
 		highestZ = 0;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & 2) {
@@ -3480,20 +3480,21 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 			selectedTile++;
 		}
 	}
+
 	RCT2_GLOBAL(0x00F440E2, uint16) = z;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 | 2 | 4);
 	if (!ride_get_place_position_from_screen_position(screenX, screenY, &x, &y))
 		return;
 
-	z = RCT2_GLOBAL(0x00F44163, uint16);
+	z = _trackPlaceZ;
 	if (z == 0)
 		z = map_get_highest_z(x >> 5, y >> 5);
 
 	tool_cancel();
 
 	rct_ride *ride = GET_RIDE(_currentRideIndex);
-	if (RCT2_GLOBAL(0x00F44163, uint16) == 0) {
+	if (_trackPlaceZ == 0) {
 		const rct_preview_track *trackBlock = get_track_def_from_ride(ride, _currentTrackPieceType);
 		int bx = 0;
 		do {
@@ -3507,7 +3508,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 			z -= 16;
 		}
 	} else {
-		z = RCT2_GLOBAL(0x00F44163, uint16);
+		z = _trackPlaceZ;
 	}
 
 	if (ride->type == RIDE_TYPE_MAZE) {
