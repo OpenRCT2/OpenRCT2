@@ -591,24 +591,24 @@ static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	colour = w->colours[widget->colour] & 0x7F;
 
 	// Border left of text
-	gfx_fill_rect(dpi, l, t, l + 4, t, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
-	gfx_fill_rect(dpi, l + 1, t + 1, l + 4, t + 1, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, l, t, l + 4, t, ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, l + 1, t + 1, l + 4, t + 1, ColourMapA[colour].lighter);
 
 	// Border right of text
-	gfx_fill_rect(dpi, textRight, t, r - 1, t, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
-	gfx_fill_rect(dpi, textRight, t + 1, r - 2, t + 1, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, textRight, t, r - 1, t, ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, textRight, t + 1, r - 2, t + 1, ColourMapA[colour].lighter);
 
 	// Border right
-	gfx_fill_rect(dpi, r - 1, t + 1, r - 1, b - 1, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
-	gfx_fill_rect(dpi, r, t, r, b, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, r - 1, t + 1, r - 1, b - 1, ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, r, t, r, b, ColourMapA[colour].lighter);
 
 	// Border bottom
-	gfx_fill_rect(dpi, l, b - 1, r - 2, b - 1, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
-	gfx_fill_rect(dpi, l, b, r - 1, b, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, l, b - 1, r - 2, b - 1, ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, l, b, r - 1, b, ColourMapA[colour].lighter);
 
 	// Border left
-	gfx_fill_rect(dpi, l, t + 1, l, b - 2, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
-	gfx_fill_rect(dpi, l + 1, t + 2, l + 1, b - 2, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, l, t + 1, l, b - 2, ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, l + 1, t + 2, l + 1, b - 2, ColourMapA[colour].lighter);
 }
 
 /**
@@ -650,7 +650,7 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 			press |= 0x80;
 
 		gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
-		gfx_fill_rect(dpi, r + 1, t, r + 1, b, *((char*)(0x0141FC47 + (colour * 8))));
+		gfx_fill_rect(dpi, r + 1, t, r + 1, b, ColourMapA[colour].mid_dark);
 	} else {
 		//
 		press = 0x60;
@@ -661,7 +661,7 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 
 		// Black caption bars look slightly green, this fixes that
 		if (colour == 0)
-			gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, *((char*)(0x0141FC46 + (colour * 8))));
+			gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, ColourMapA[colour].dark);
 		else
 			gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, 0x2000000 | 47);
 	}
@@ -853,12 +853,12 @@ static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 {
 	colour &= 0x7F;
 	// Trough
-	gfx_fill_rect(dpi, l + 10, t, r - 10, b, *((uint8*)(0x0141FC4B + (colour * 8))));
-	gfx_fill_rect(dpi, l + 10, t, r - 10, b, 0x1000000 | *((uint8*)(0x0141FC47 + (colour * 8))));
-	gfx_fill_rect(dpi, l + 10, t + 2, r - 10, t + 2, *((uint8*)(0x0141FC47 + (colour * 8))));
-	gfx_fill_rect(dpi, l + 10, t + 3, r - 10, t + 3, *((uint8*)(0x0141FC4B + (colour * 8))));
-	gfx_fill_rect(dpi, l + 10, t + 7, r - 10, t + 7, *((uint8*)(0x0141FC47 + (colour * 8))));
-	gfx_fill_rect(dpi, l + 10, t + 8, r - 10, t + 8, *((uint8*)(0x0141FC4B + (colour * 8))));
+	gfx_fill_rect(dpi, l + 10, t, r - 10, b, ColourMapA[colour].lighter);
+	gfx_fill_rect(dpi, l + 10, t, r - 10, b, 0x1000000 | ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, l + 10, t + 2, r - 10, t + 2, ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, l + 10, t + 3, r - 10, t + 3, ColourMapA[colour].lighter);
+	gfx_fill_rect(dpi, l + 10, t + 7, r - 10, t + 7, ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, l + 10, t + 8, r - 10, t + 8, ColourMapA[colour].lighter);
 
 	// Left button
 	gfx_fill_rect_inset(dpi, l, t, l + 9, b, colour, (scroll->flags & HSCROLLBAR_LEFT_PRESSED ? 0x20 : 0));
@@ -879,12 +879,12 @@ static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 {
 	colour &= 0x7F;
 	// Trough
-	gfx_fill_rect(dpi, l, t + 10, r, b - 10, *((uint8*)(0x0141FC4B + (colour * 8))));
-	gfx_fill_rect(dpi, l, t + 10, r, b - 10, 0x1000000 | *((uint8*)(0x0141FC47 + (colour * 8))));
-	gfx_fill_rect(dpi, l + 2, t + 10, l + 2, b - 10, *((uint8*)(0x0141FC47 + (colour * 8))));
-	gfx_fill_rect(dpi, l + 3, t + 10, l + 3, b - 10, *((uint8*)(0x0141FC4B + (colour * 8))));
-	gfx_fill_rect(dpi, l + 7, t + 10, l + 7, b - 10, *((uint8*)(0x0141FC47 + (colour * 8))));
-	gfx_fill_rect(dpi, l + 8, t + 10, l + 8, b - 10, *((uint8*)(0x0141FC4B + (colour * 8))));
+	gfx_fill_rect(dpi, l, t + 10, r, b - 10, ColourMapA[colour].lighter);
+	gfx_fill_rect(dpi, l, t + 10, r, b - 10, 0x1000000 | ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, l + 2, t + 10, l + 2, b - 10, ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, l + 3, t + 10, l + 3, b - 10, ColourMapA[colour].lighter);
+	gfx_fill_rect(dpi, l + 7, t + 10, l + 7, b - 10, ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, l + 8, t + 10, l + 8, b - 10, ColourMapA[colour].lighter);
 
 	// Up button
 	gfx_fill_rect_inset(dpi, l, t, r, t + 9, colour, (scroll->flags & VSCROLLBAR_UP_PRESSED ? 0x20 : 0));
@@ -934,7 +934,7 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	if (widget_is_disabled(w, widgetIndex)) {
 		// Draw greyed out (light border bottom right shadow)
 		colour = w->colours[widget->colour];
-		colour = RCT2_ADDRESS(0x00141FC4A, uint8)[(colour & 0x7F) * 8] & 0xFF;
+		colour = ColourMapA[colour & 0x7F].lighter;
 
 		uint8 palette[256];
 		memset(palette, colour, 256);
@@ -946,7 +946,7 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 
 		// Draw greyed out (dark)
 		colour = w->colours[widget->colour];
-		colour = RCT2_ADDRESS(0x00141FC48, uint8)[(colour & 0x7F) * 8] & 0xFF;
+		colour = ColourMapA[colour & 0x7F].mid_light;
 		memset(palette, colour, 256);
 		palette[0] = 0;
 
@@ -1210,7 +1210,7 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	}
 
 	if (gTextBoxFrameNo <= 15){
-		uint8 colour = RCT2_ADDRESS(0x0141FC48, uint8)[w->colours[1] * 8];
+		uint8 colour = ColourMapA[w->colours[1]].mid_light;
 		gfx_fill_rect(dpi, cur_x, t + 9, cur_x + width, t + 9, colour + 5);
 	}
 }

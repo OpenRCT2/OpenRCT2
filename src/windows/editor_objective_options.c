@@ -1187,7 +1187,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct
 	rct_string_id stringId;
 	rct_ride *ride;
 
-	colour = RCT2_GLOBAL(0x0141FC48 + (w->colours[1] * 8), uint8);
+	colour = ColourMapA[w->colours[1]].mid_light;
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, colour);
 
 	for (i = 0; i < w->no_list_items; i++) {

@@ -378,7 +378,7 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 {
 	uint32 colour;
 
-	colour = ((char*)0x0141FC48)[w->colours[1] * 8];
+	colour = ColourMapA[w->colours[1]].mid_light;
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
 	gfx_clear(dpi, colour);
 

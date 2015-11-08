@@ -1669,7 +1669,7 @@ void window_guest_rides_scroll_paint(rct_window *w, rct_drawpixelinfo *dpi, int 
 	// dx
 	int bottom = dpi->y + dpi->height - 1;
 
-	int colour = RCT2_ADDRESS(0x141FC48, uint8)[w->colours[1] * 8];
+	int colour = ColourMapA[w->colours[1]].mid_light;
 	gfx_fill_rect(dpi, left, top, right, bottom, colour);
 
 	for (int list_index = 0; list_index < w->no_list_items; list_index++){

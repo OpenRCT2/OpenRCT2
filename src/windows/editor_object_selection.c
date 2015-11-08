@@ -1269,7 +1269,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 		w->y + widget->top + 1,
 		w->x + widget->right - 1,
 		w->y + widget->bottom - 1,
-		RCT2_ADDRESS(0x0141FC44, uint8)[w->colours[1] * 8]
+		ColourMapA[w->colours[1]].darkest
 	);
 
 	// Draw number of selected items
@@ -1425,7 +1425,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 
 	bool ridePage = (w->selected_tab == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS);
 
-	colour = RCT2_ADDRESS(0x0141FC48, uint8)[w->colours[1] * 8];
+	colour = ColourMapA[w->colours[1]].mid_light;
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
 	gfx_clear(dpi, colour);
 

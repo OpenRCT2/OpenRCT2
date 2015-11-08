@@ -21,8 +21,9 @@
 #include <limits.h>
 #include "../addresses.h"
 #include "../common.h"
-#include "drawing.h"
+#include "../interface/colour.h"
 #include "../platform/platform.h"
+#include "drawing.h"
 
 /**
  *
@@ -283,13 +284,13 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 		}
 	} else {
 		if (flags & 0x80) {
-			shadow	= RCT2_ADDRESS(0x0141FC46, uint8)[colour * 8];
-			fill	= RCT2_ADDRESS(0x0141FC48, uint8)[colour * 8];
-			hilight	= RCT2_ADDRESS(0x0141FC4A, uint8)[colour * 8];
+			shadow	= ColourMapA[colour].dark;
+			fill	= ColourMapA[colour].mid_light;
+			hilight	= ColourMapA[colour].lighter;
 		} else {
-			shadow	= RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8];
-			fill	= RCT2_ADDRESS(0x0141FC49, uint8)[colour * 8];
-			hilight	= RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8];
+			shadow	= ColourMapA[colour].mid_dark;
+			fill	= ColourMapA[colour].light;
+			hilight	= ColourMapA[colour].lighter;
 		}
 
 		if (flags & no_border) {
@@ -304,9 +305,9 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 			if (!(flags & no_fill)) {
 				if (!(flags & 0x40)) {
 					if (flags & 0x04) {
-						fill = RCT2_ADDRESS(0x0141FC49, uint8)[0];
+						fill = ColourMapA[COLOUR_BLACK].light;
 					} else {
-						fill = RCT2_ADDRESS(0x0141FC4A, uint8)[colour * 8];
+						fill = ColourMapA[colour].lighter;
 					}
 				}
 				gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, fill);
@@ -320,7 +321,7 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 
 			if (!(flags & no_fill)) {
 				if (flags & 0x04) {
-					fill = RCT2_ADDRESS(0x0141FC49, uint8)[0];
+					fill = ColourMapA[COLOUR_BLACK].light;
 				}
 				gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, fill);
 			}

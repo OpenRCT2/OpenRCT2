@@ -27,6 +27,7 @@
 #include "../ride/ride.h"
 #include "../ride/vehicle.h"
 #include "../world/park.h"
+#include "colour.h"
 
 struct rct_window;
 union rct_window_event;
