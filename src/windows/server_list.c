@@ -658,36 +658,62 @@ static void fetch_servers()
 #ifndef DISABLE_HTTP
 static void fetch_servers_callback(http_json_response* response)
 {
-	if (response && json_is_array(response->root)) {
-		int count = json_array_size(response->root);
-		for (int i = 0; i < count; i++) {
-			json_t *server = json_array_get(response->root, i);
-			if (!json_is_object(server))
-				continue;
-
-			json_t *address = json_object_get(server, "address");
-			json_t *name = json_object_get(server, "name");
-			json_t *requiresPassword = json_object_get(server, "requiresPassword");
-			json_t *version = json_object_get(server, "version");
-			json_t *players = json_object_get(server, "players");
-			json_t *maxplayers = json_object_get(server, "maxPlayers");
-			json_t *description = json_object_get(server, "description");
-
-			SDL_LockMutex(_mutex);
-			saved_server* newserver = add_saved_server((char*)json_string_value(address));
-			SafeFree(newserver->name);
-			newserver->name = _strdup(json_string_value(name));
-			newserver->requiresPassword = json_boolean_value(requiresPassword);
-			SafeFree(newserver->description);
-			newserver->description = _strdup(json_string_value(description));
-			SafeFree(newserver->version);
-			newserver->version = _strdup(json_string_value(version));
-			newserver->players = (uint8)json_integer_value(players);
-			newserver->maxplayers = (uint8)json_integer_value(maxplayers);
-			SDL_UnlockMutex(_mutex);
-		}
-		http_request_json_dispose(response);
+	if (response == NULL) {
+		log_warning("Unable to connect to master server");
+		return;
 	}
+
+	json_t *jsonStatus = json_object_get(response->root, "status");
+	if (!json_is_number(jsonStatus)) {
+		http_request_json_dispose(response);
+		log_warning("Invalid response from master server");
+		return;
+	}
+
+	int status = (int)json_integer_value(jsonStatus);
+	if (status != 200) {
+		http_request_json_dispose(response);
+		log_warning("Master server failed to return servers");
+		return;
+	}
+
+	json_t *jsonServers = json_object_get(response->root, "servers");
+	if (!json_is_array(jsonServers)) {
+		http_request_json_dispose(response);
+		log_warning("Invalid response from master server");
+		return;
+	}
+
+	int count = json_array_size(response->root);
+	for (int i = 0; i < count; i++) {
+		json_t *server = json_array_get(response->root, i);
+		if (!json_is_object(server)) {
+			continue;
+		}
+
+		json_t *address = json_object_get(server, "address");
+		json_t *name = json_object_get(server, "name");
+		json_t *requiresPassword = json_object_get(server, "requiresPassword");
+		json_t *version = json_object_get(server, "version");
+		json_t *players = json_object_get(server, "players");
+		json_t *maxplayers = json_object_get(server, "maxPlayers");
+		json_t *description = json_object_get(server, "description");
+
+		SDL_LockMutex(_mutex);
+		saved_server* newserver = add_saved_server((char*)json_string_value(address));
+		SafeFree(newserver->name);
+		newserver->name = _strdup(json_string_value(name));
+		newserver->requiresPassword = json_boolean_value(requiresPassword);
+		SafeFree(newserver->description);
+		newserver->description = _strdup(json_string_value(description));
+		SafeFree(newserver->version);
+		newserver->version = _strdup(json_string_value(version));
+		newserver->players = (uint8)json_integer_value(players);
+		newserver->maxplayers = (uint8)json_integer_value(maxplayers);
+		SDL_UnlockMutex(_mutex);
+	}
+	http_request_json_dispose(response);
+
 	rct_window* window = window_bring_to_front_by_class(WC_SERVER_LIST);
 	if (window != NULL) {
 		window_invalidate(window);

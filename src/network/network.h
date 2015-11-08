@@ -218,7 +218,8 @@ public:
 	void KickPlayer(int playerId);
 	void SetPassword(const char* password);
 	void ShutdownClient();
-	void Advertise();
+	void AdvertiseRegister();
+	void AdvertiseHeartbeat();
 
 	void Client_Send_AUTH(const char* name, const char* password);
 	void Server_Send_AUTH(NetworkConnection& connection);
@@ -245,6 +246,8 @@ private:
 	void RemoveClient(std::unique_ptr<NetworkConnection>& connection);
 	NetworkPlayer* AddPlayer(const char* name);
 	void PrintError();
+	const char *GetMasterServerUrl();
+	std::string GenerateAdvertiseKey();
 
 	struct GameCommand
 	{
@@ -278,6 +281,10 @@ private:
 	bool _desynchronised;
 	uint32 server_connect_time;
 	uint32 last_advertise_time;
+	std::string advertise_token;
+	std::string advertise_key;
+	int advertise_status;
+	uint32 last_heartbeat_time;
 
 	void UpdateServer();
 	void UpdateClient();

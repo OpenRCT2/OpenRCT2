@@ -84,6 +84,22 @@ const char *NetworkCommandNames[] = {
 	"NETWORK_COMMAND_PINGLIST",
 };
 
+enum {
+	ADVERTISE_STATUS_DISABLED,
+	ADVERTISE_STATUS_UNREGISTERED,
+	ADVERTISE_STATUS_REGISTERED
+};
+
+enum {
+	MASTER_SERVER_STATUS_OK = 200,
+	MASTER_SERVER_STATUS_INVALID_TOKEN = 401,
+	MASTER_SERVER_STATUS_SERVER_NOT_FOUND = 404,
+	MASTER_SERVER_STATUS_INTERNAL_ERROR = 500
+};
+
+constexpr int MASTER_SERVER_REGISTER_TIME = 2 * 1000;	// 2 seconds
+constexpr int MASTER_SERVER_HEARTBEAT_TIME = 1 * 1000;	// 1 second
+
 NetworkPacket::NetworkPacket()
 {
 	transferred = 0;
@@ -521,8 +537,17 @@ bool Network::BeginServer(unsigned short port, const char* address)
 	mode = NETWORK_MODE_SERVER;
 	status = NETWORK_STATUS_CONNECTED;
 	listening_port = port;
+	advertise_status = ADVERTISE_STATUS_DISABLED;
+	last_advertise_time = 0;
+	last_heartbeat_time = 0;
+	advertise_token = "";
+	advertise_key = GenerateAdvertiseKey();
 
-	Advertise();
+#ifndef DISABLE_HTTP
+	if (gConfigNetwork.advertise) {
+		advertise_status = ADVERTISE_STATUS_UNREGISTERED;
+	}
+#endif
 	return true;
 }
 
@@ -587,9 +612,20 @@ void Network::UpdateServer()
 		Server_Send_PING();
 		Server_Send_PINGLIST();
 	}
-	if (SDL_TICKS_PASSED(SDL_GetTicks(), last_advertise_time + 60000)) {
-		Advertise();
+
+	switch (advertise_status) {
+	case ADVERTISE_STATUS_UNREGISTERED:
+		if (SDL_TICKS_PASSED(SDL_GetTicks(), last_advertise_time + MASTER_SERVER_REGISTER_TIME)) {
+			AdvertiseRegister();
+		}
+		break;
+	case ADVERTISE_STATUS_REGISTERED:
+		if (SDL_TICKS_PASSED(SDL_GetTicks(), last_heartbeat_time + MASTER_SERVER_HEARTBEAT_TIME)) {
+			AdvertiseHeartbeat();
+		}
+		break;
 	}
+
 	SOCKET socket = accept(listening_socket, NULL, NULL);
 	if (socket == INVALID_SOCKET) {
 		if (LAST_SOCKET_ERROR() != EWOULDBLOCK) {
@@ -789,21 +825,98 @@ void Network::ShutdownClient()
 	}
 }
 
-void Network::Advertise()
+std::string Network::GenerateAdvertiseKey()
 {
-	if (gConfigNetwork.advertise) {
-		last_advertise_time = SDL_GetTicks();
+	// Generate a string of 16 random hex characters (64-integer key as a hex formatted string)
+	static char hexChars[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+	char key[17];
+	for (int i = 0; i < 16; i++) {
+		int hexCharIndex = rand() % countof(hexChars);
+		key[i] = hexChars[hexCharIndex];
+	}
+	key[countof(key) - 1] = 0;
 
+	return key;
+}
+
+const char *Network::GetMasterServerUrl()
+{
+	if (str_is_null_or_empty(gConfigNetwork.master_server_url)) {
+		return OPENRCT2_MASTER_SERVER_URL;
+	} else {
+		return gConfigNetwork.master_server_url;
+	}
+}
+
+void Network::AdvertiseRegister()
+{
 #ifndef DISABLE_HTTP
-		const char *masterServerUrl = OPENRCT2_MASTER_SERVER_URL;
-		if (!str_is_null_or_empty(gConfigNetwork.master_server_url)) {
-			masterServerUrl = gConfigNetwork.master_server_url;
+	last_advertise_time = SDL_GetTicks();
+
+	// Send the registration request
+	std::string url = GetMasterServerUrl()
+		+ std::string("?command=register&port=") + std::to_string(listening_port)
+		+ std::string("key=") + advertise_key;
+	http_request_json_async(url.c_str(), [](http_json_response *response) -> void {
+		if (response == NULL) {
+			log_warning("Unable to connect to master server");
+			return;
 		}
 
-		std::string url = masterServerUrl + std::string("?port=") + std::to_string(listening_port);
-		http_request_json_async(url.c_str(), [](http_json_response *response)->void { });
+		json_t *jsonStatus = json_object_get(response->root, "status");
+		if (json_is_integer(jsonStatus)) {
+			int status = (int)json_integer_value(jsonStatus);
+			if (status == MASTER_SERVER_STATUS_OK) {
+				json_t *jsonToken = json_object_get(response->root, "token");
+				if (json_is_string(jsonToken)) {
+					gNetwork.advertise_token = json_string_value(jsonToken);
+					gNetwork.advertise_status = ADVERTISE_STATUS_REGISTERED;
+				}
+			} else {
+				const char *message = "Invalid response from server";
+				json_t *jsonMessage = json_object_get(response->root, "message");
+				if (json_is_string(jsonMessage)) {
+					message = json_string_value(jsonMessage);
+				}
+				log_warning("Unable to advertise: %s", message);
+			}
+		}
+		http_request_json_dispose(response);
+	});
 #endif
-	}
+}
+
+void Network::AdvertiseHeartbeat()
+{
+#ifndef DISABLE_HTTP
+	// Send the heartbeat request
+	std::string url = GetMasterServerUrl()
+		+ std::string("?command=heartbeat&token=") + advertise_token
+		+ std::string("key=") + advertise_key
+		+ std::string("players=") + std::to_string(network_get_num_players());
+
+	// TODO send status data (e.g. players) via JSON body
+
+	gNetwork.last_heartbeat_time = SDL_GetTicks();
+	http_request_json_async(url.c_str(), [](http_json_response *response) -> void {
+		if (response == NULL) {
+			log_warning("Unable to connect to master server");
+			return;
+		}
+
+		json_t *jsonStatus = json_object_get(response->root, "status");
+		if (json_is_integer(jsonStatus)) {
+			int status = (int)json_integer_value(jsonStatus);
+			if (status == MASTER_SERVER_STATUS_OK) {
+				// Master server has successfully updated our server status
+			} else if (status == MASTER_SERVER_STATUS_INVALID_TOKEN) {
+				gNetwork.advertise_status = ADVERTISE_STATUS_UNREGISTERED;
+				log_warning("Master server heartbeat failed: Invalid Token");
+			}
+		}
+		http_request_json_dispose(response);
+	});
+#endif
 }
 
 void Network::Client_Send_AUTH(const char* name, const char* password)
