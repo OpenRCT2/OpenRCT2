@@ -854,10 +854,16 @@ void Network::AdvertiseRegister()
 	last_advertise_time = SDL_GetTicks();
 
 	// Send the registration request
-	std::string url = GetMasterServerUrl()
-		+ std::string("?command=register&port=") + std::to_string(listening_port)
-		+ std::string("&key=") + advertise_key;
-	http_request_json_async(url.c_str(), [](http_json_response *response) -> void {
+	http_json_request request;
+	request.url = GetMasterServerUrl();
+	request.method = HTTP_METHOD_POST;
+
+	json_t *body = json_object();
+	json_object_set(body, "key", json_string(advertise_key.c_str()));
+	json_object_set(body, "port", json_integer(listening_port));
+	request.body = body;
+
+	http_request_json_async(&request, [](http_json_response *response) -> void {
 		if (response == NULL) {
 			log_warning("Unable to connect to master server");
 			return;
@@ -883,6 +889,8 @@ void Network::AdvertiseRegister()
 		}
 		http_request_json_dispose(response);
 	});
+
+	json_decref(body);
 #endif
 }
 
@@ -891,13 +899,18 @@ void Network::AdvertiseHeartbeat()
 #ifndef DISABLE_HTTP
 	// Send the heartbeat request
 	std::string url = GetMasterServerUrl()
-		+ std::string("?command=heartbeat&token=") + advertise_token
+		+ std::string("?token=") + advertise_token
 		+ std::string("&players=") + std::to_string(network_get_num_players());
 
 	// TODO send status data (e.g. players) via JSON body
 
 	gNetwork.last_heartbeat_time = SDL_GetTicks();
-	http_request_json_async(url.c_str(), [](http_json_response *response) -> void {
+
+	http_json_request request;
+	request.url = url.c_str();
+	request.method = HTTP_METHOD_PUT;
+	request.body = NULL;
+	http_request_json_async(&request, [](http_json_response *response) -> void {
 		if (response == NULL) {
 			log_warning("Unable to connect to master server");
 			return;
@@ -1064,7 +1077,7 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
 	json_object_set(obj, "maxPlayers", json_integer(gConfigNetwork.maxplayers));
 	json_object_set(obj, "description", json_string(gConfigNetwork.server_description));
 	packet->WriteString(json_dumps(obj, 0));
- 	json_object_clear(obj);
+	json_decref(obj);
 #endif
 	connection.QueuePacket(std::move(packet));
 }
