@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 extern "C" {
+#include "../openrct2.h"
 #include "../platform/platform.h"
 }
 
@@ -854,10 +855,16 @@ void Network::AdvertiseRegister()
 	last_advertise_time = SDL_GetTicks();
 
 	// Send the registration request
-	std::string url = GetMasterServerUrl()
-		+ std::string("?command=register&port=") + std::to_string(listening_port)
-		+ std::string("&key=") + advertise_key;
-	http_request_json_async(url.c_str(), [](http_json_response *response) -> void {
+	http_json_request request;
+	request.url = GetMasterServerUrl();
+	request.method = HTTP_METHOD_POST;
+
+	json_t *body = json_object();
+	json_object_set(body, "key", json_string(advertise_key.c_str()));
+	json_object_set(body, "port", json_integer(listening_port));
+	request.body = body;
+
+	http_request_json_async(&request, [](http_json_response *response) -> void {
 		if (response == NULL) {
 			log_warning("Unable to connect to master server");
 			return;
@@ -883,6 +890,8 @@ void Network::AdvertiseRegister()
 		}
 		http_request_json_dispose(response);
 	});
+
+	json_decref(body);
 #endif
 }
 
@@ -890,14 +899,31 @@ void Network::AdvertiseHeartbeat()
 {
 #ifndef DISABLE_HTTP
 	// Send the heartbeat request
-	std::string url = GetMasterServerUrl()
-		+ std::string("?command=heartbeat&token=") + advertise_token
-		+ std::string("&players=") + std::to_string(network_get_num_players());
+	http_json_request request;
+	request.url = GetMasterServerUrl();
+	request.method = HTTP_METHOD_PUT;
 
-	// TODO send status data (e.g. players) via JSON body
+	json_t *body = json_object();
+	json_object_set(body, "token", json_string(advertise_token.c_str()));
+	json_object_set(body, "dedicated", json_boolean(gOpenRCT2Headless));
+	json_object_set(body, "players", json_integer(network_get_num_players()));
+
+	json_t *gameInfo = json_object();
+	json_object_set(gameInfo, "mapSize", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint8) - 2));
+	json_object_set(gameInfo, "day", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)));
+	json_object_set(gameInfo, "month", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16)));
+	json_object_set(gameInfo, "guests", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)));
+	json_object_set(gameInfo, "parkValue", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32)));
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+		money32 cash = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32));
+		json_object_set(gameInfo, "cash", json_integer(cash));
+	}
+
+	json_object_set(body, "gameInfo", gameInfo);
+	request.body = body;
 
 	gNetwork.last_heartbeat_time = SDL_GetTicks();
-	http_request_json_async(url.c_str(), [](http_json_response *response) -> void {
+	http_request_json_async(&request, [](http_json_response *response) -> void {
 		if (response == NULL) {
 			log_warning("Unable to connect to master server");
 			return;
@@ -915,6 +941,8 @@ void Network::AdvertiseHeartbeat()
 		}
 		http_request_json_dispose(response);
 	});
+
+	json_decref(body);
 #endif
 }
 
@@ -1064,7 +1092,7 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
 	json_object_set(obj, "maxPlayers", json_integer(gConfigNetwork.maxplayers));
 	json_object_set(obj, "description", json_string(gConfigNetwork.server_description));
 	packet->WriteString(json_dumps(obj, 0));
- 	json_object_clear(obj);
+	json_decref(obj);
 #endif
 	connection.QueuePacket(std::move(packet));
 }
