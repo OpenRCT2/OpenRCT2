@@ -460,30 +460,20 @@ static void title_update_showcase()
 
 void DrawOpenRCT2(int x, int y)
 {
-	char buffer[256];
+	utf8 buffer[256];
 	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
 
 	// Draw background
 	gfx_fill_rect_inset(dpi, x, y, x + 128, y + 20, 0x80 | 12, 0x8);
 
-	// Format text (name and version)
-	char *ch = buffer;;
+	// Write format codes
+	utf8 *ch = buffer;
 	ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
 	ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
 	ch = utf8_write_codepoint(ch, FORMAT_WHITE);
-	strcpy(ch, OPENRCT2_NAME);
-	strcat(buffer, ", v");
-	strcat(buffer, OPENRCT2_VERSION);
 
-	// sprintf(buffer, "%c%c%c%s, v%s", FORMAT_MEDIUMFONT, FORMAT_OUTLINE, FORMAT_WHITE, OPENRCT2_NAME, OPENRCT2_VERSION);
-	if (!str_is_null_or_empty(OPENRCT2_BRANCH))
-		sprintf(strchr(buffer, 0), "-%s", OPENRCT2_BRANCH);
-	if (!str_is_null_or_empty(OPENRCT2_BUILD_NUMBER))
-		sprintf(strchr(buffer, 0), " build %s", OPENRCT2_BUILD_NUMBER);
-	if (!str_is_null_or_empty(OPENRCT2_COMMIT_SHA1_SHORT))
-		sprintf(strchr(buffer, 0), " (%s)", OPENRCT2_COMMIT_SHA1_SHORT);
-	if (!str_is_null_or_empty(OPENRCT2_BUILD_SERVER))
-		sprintf(strchr(buffer, 0), " provided by %s", OPENRCT2_BUILD_SERVER);
+	// Write name and version information
+	openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
 
 	// Draw Text
 	gfx_draw_string(dpi, buffer, 0, x + 5, y + 5);
