@@ -76,6 +76,30 @@ static bool openrct2_setup_rct2_segment();
 static bool openrct2_release_rct2_segment();
 static void openrct2_setup_rct2_hooks();
 
+void openrct2_write_full_version_info(utf8 *buffer, size_t bufferSize)
+{
+	utf8 *ch = buffer;
+
+	// Name and version
+	strcpy(ch, OPENRCT2_NAME);
+	strcat(buffer, ", v");
+	strcat(buffer, OPENRCT2_VERSION);
+
+	// Build information
+	if (!str_is_null_or_empty(OPENRCT2_BRANCH)) {
+		sprintf(strchr(buffer, 0), "-%s", OPENRCT2_BRANCH);
+	}
+	if (!str_is_null_or_empty(OPENRCT2_BUILD_NUMBER)) {
+		sprintf(strchr(buffer, 0), " build %s", OPENRCT2_BUILD_NUMBER);
+	}
+	if (!str_is_null_or_empty(OPENRCT2_COMMIT_SHA1_SHORT)) {
+		sprintf(strchr(buffer, 0), " (%s)", OPENRCT2_COMMIT_SHA1_SHORT);
+	}
+	if (!str_is_null_or_empty(OPENRCT2_BUILD_SERVER)) {
+		sprintf(strchr(buffer, 0), " provided by %s", OPENRCT2_BUILD_SERVER);
+	}
+}
+
 static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *newDirectory, const utf8 *extension)
 {
 	utf8 *ch, filter[MAX_PATH], oldPath[MAX_PATH], newPath[MAX_PATH];

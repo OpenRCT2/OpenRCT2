@@ -215,6 +215,11 @@ typedef struct {
 	utf8string player_name;
 	uint32 default_port;
 	uint8 stay_connected;
+	uint8 advertise;
+	uint8 maxplayers;
+	utf8string server_name;
+	utf8string server_description;
+	utf8string master_server_url;
 } network_configuration;
 
 typedef struct theme_window {

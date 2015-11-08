@@ -310,7 +310,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			}
 
 			if (w->frame_no > 15){
-				uint8 colour = RCT2_ADDRESS(0x0141FC48, uint8)[w->colours[1] * 8];
+				uint8 colour = ColourMapA[w->colours[1]].mid_light;
 				gfx_fill_rect(dpi, cursorX, y + 9, cursorX + width, y + 9, colour + 5);
 			}
 

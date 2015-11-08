@@ -318,7 +318,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 		int clearance_height = element->clearance_height;
 
 		if ((i & 1) != 0)
-			gfx_fill_rect(dpi, x - 15, y, x + WW - 20, y + 11, RCT2_GLOBAL(0x0141FC4A + (w->colours[1] * 8), uint8) | 0x1000000);
+			gfx_fill_rect(dpi, x - 15, y, x + WW - 20, y + 11, ColourMapA[w->colours[1]].lighter | 0x1000000);
 
 		switch (type) {
 			case MAP_ELEMENT_TYPE_SURFACE:

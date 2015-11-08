@@ -3863,8 +3863,8 @@ STR_5521    :{SMALLFONT}{BLACK}Bright purple
 STR_5522    :{SMALLFONT}{BLACK}Dark blue
 STR_5523    :{SMALLFONT}{BLACK}Light blue
 STR_5524    :{SMALLFONT}{BLACK}Icy blue
-STR_5525    :{SMALLFONT}{BLACK}Teal
-STR_5526    :{SMALLFONT}{BLACK}Aquamarine
+STR_5525    :{SMALLFONT}{BLACK}Dark water
+STR_5526    :{SMALLFONT}{BLACK}Light water
 STR_5527    :{SMALLFONT}{BLACK}Saturated green
 STR_5528    :{SMALLFONT}{BLACK}Dark green
 STR_5529    :{SMALLFONT}{BLACK}Moss green
@@ -3904,7 +3904,20 @@ STR_5562    :WARNING!
 STR_5563    :This feature is currently unstable, take extra caution.
 STR_5564    :Insert Corrupt Element
 STR_5565    :{SMALLFONT}{BLACK}Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element.
-STR_5566    :Guests ignore rain when entering queues
+STR_5566    :Password:
+STR_5567    :Advertise
+STR_5568    :Password Required
+STR_5569    :This server requires a password
+STR_5570    :Fetch Servers
+STR_5571    :Join Game
+STR_5572    :Add To Favourites
+STR_5573    :Remove From Favourites
+STR_5574    :Server Name:
+STR_5575    :Max Players:
+STR_5576    :Port:
+STR_5577    :South Korean Won (W)
+STR_5578    :Russian Rouble (R)
+STR_5579    :Guests ignore rain when entering queues
 
 #####################
 # Rides/attractions # 

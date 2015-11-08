@@ -302,7 +302,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	widget = &window_install_track_widgets[WIDX_TRACK_PREVIEW];
 	x = w->x + widget->left + 1;
 	y = w->y + widget->top + 1;
-	colour = RCT2_GLOBAL(0x0141FC44 + (w->colours[0] * 8), uint8);
+	colour = ColourMapA[w->colours[0]].darkest;
 	gfx_fill_rect(dpi, x, y, x + 369, y + 216, colour);
 
 	//call 6d3993 (load track)

@@ -1,6 +1,8 @@
 #ifndef _COLOUR_H_
 #define _COLOUR_H_
 
+#include "../common.h"
+
 /**
  * Colour IDs as used by the colour dropdown, NOT palette indices.
  */
@@ -49,5 +51,34 @@ enum {
 
 #define COLOUR_FLAG_TRANSLUCENT (1 << 7)
 #define TRANSLUCENT(x) ((x) | COLOUR_FLAG_TRANSLUCENT)
+
+#define NUM_COLOURS 32
+
+typedef struct {
+	uint8 darkest;
+	uint8 darker;
+	uint8 dark;
+	uint8 mid_dark;
+	uint8 mid_light;
+	uint8 light;
+	uint8 lighter;
+	uint8 lightest;
+} rct_colour_map_a;
+
+typedef struct {
+	uint8 a;
+	uint8 b;
+	uint8 c;
+	uint8 d;
+	uint8 e;
+	uint8 f;
+	uint8 g;
+	uint8 h;
+} rct_colour_map_b;
+
+extern rct_colour_map_a *ColourMapA;
+extern rct_colour_map_b *ColourMapB;
+
+void colours_init_maps();
 
 #endif
