@@ -28,6 +28,8 @@
 - Feature: Custom user data path specified by command line argument.
 - Feature: Full UTF-8 language support.
 - Feature: TTF font integration for non-Latin languages.
+- Feature: Added support for Traditional Chinese, Simplified Chinese, Korean, Russian, Finnish and Brazilian Portuguese. 
+- Feature: Added South Korean Won and Russian Rouble as currencies.
 - Feature: Allow different date formats.
 - Feature: Option to automatically pause the game on minimise from fullscreen.
 - Feature: Option to automatically pause when Steam overlay is activated.
