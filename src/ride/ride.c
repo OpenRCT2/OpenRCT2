@@ -3632,7 +3632,7 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 		if (*available_modes == 0xFF) new_value = default_mode;
 
 		if (available_modes[1] == 0xFF){
-			if ((ride_entry->flags & RIDE_ENTRY_HIDE_LAST_OPERATING_MODE) && !gCheatsShowAllOperatingModes)
+			if ((ride_entry->flags & RIDE_ENTRY_DISABLE_LAST_OPERATING_MODE) && !gCheatsShowAllOperatingModes)
 				new_value = default_mode;
 		}
 

@@ -2794,7 +2794,7 @@ static void window_ride_mode_dropdown(rct_window *w, rct_widget *widget)
 	} while (*(mode++) != 255);
 
 	// Hide the last operating mode if the vehicle is not intended for it.
-	if (rideEntry->flags & RIDE_ENTRY_HIDE_LAST_OPERATING_MODE && !gCheatsShowAllOperatingModes)
+	if (rideEntry->flags & RIDE_ENTRY_DISABLE_LAST_OPERATING_MODE && !gCheatsShowAllOperatingModes)
 		numAvailableModes--;
 
 	// If the vehicle is not intended for them, hide those two modes (these are usually (or perhaps always) both continuous circuit modes).
