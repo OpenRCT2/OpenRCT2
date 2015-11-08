@@ -35,6 +35,8 @@ typedef enum {
 	CURRENCY_GUILDERS,			// Dutch Gilder
 	CURRENCY_KRONA,				// Swedish Krona
 	CURRENCY_EUROS,				// Euro
+	CURRENCY_WON,				// South Korean Won
+	CURRENCY_ROUBLE,			// Russian Rouble
 
 	CURRENCY_END				// Last item
 } CURRENCY_TYPE;
@@ -52,6 +54,7 @@ typedef struct {
 	int rate;
 	utf8 symbol[CURRENCY_SYMBOL_MAX_SIZE];
 	int affix;
+	int stringId;
 } rct_currency_spec;
 
 // List of currency formats
