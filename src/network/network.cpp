@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 extern "C" {
+#include "../openrct2.h"
 #include "../platform/platform.h"
 }
 
@@ -904,6 +905,7 @@ void Network::AdvertiseHeartbeat()
 
 	json_t *body = json_object();
 	json_object_set(body, "token", json_string(advertise_token.c_str()));
+	json_object_set(body, "dedicated", json_boolean(gOpenRCT2Headless));
 	json_object_set(body, "players", json_integer(network_get_num_players()));
 
 	json_t *gameInfo = json_object();
