@@ -3910,8 +3910,8 @@ STR_5568    :Password Required
 STR_5569    :This server requires a password
 STR_5570    :Fetch Servers
 STR_5571    :Join Game
-STR_5572    :Add To Favorites
-STR_5573    :Remove From Favorites
+STR_5572    :Add To Favourites
+STR_5573    :Remove From Favourites
 STR_5574    :Server Name:
 STR_5575    :Max Players:
 STR_5576    :Port:
