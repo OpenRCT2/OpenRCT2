@@ -144,6 +144,8 @@ config_enum_definition _languageEnum[] = {
 	{ "zh-Hant", LANGUAGE_CHINESE_TRADITIONAL },
 	{ "zh-Hans", LANGUAGE_CHINESE_SIMPLIFIED },
 	{ "fi-FI", LANGUAGE_FINNISH },
+	{ "ko", LANGUAGE_KOREAN },
+	{ "ru-RU", LANUGAGE_RUSSIAN },
 	END_OF_ENUM
 };
 
