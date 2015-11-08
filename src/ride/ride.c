@@ -3619,7 +3619,7 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 		rct_ride_type* ride_entry = GET_RIDE_ENTRY(ride->subtype);
 		const uint8* available_modes = ride_seek_available_modes(ride);
 
-		if (ride_entry->flags & RIDE_ENTRY_FLAG_17){
+		if ((ride_entry->flags & RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES) && !gCheatsShowAllOperatingModes){
 			available_modes += 2;
 		}
 
@@ -3632,7 +3632,7 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 		if (*available_modes == 0xFF) new_value = default_mode;
 
 		if (available_modes[1] == 0xFF){
-			if (ride_entry->flags & RIDE_ENTRY_FLAG_15)
+			if ((ride_entry->flags & RIDE_ENTRY_DISABLE_LAST_OPERATING_MODE) && !gCheatsShowAllOperatingModes)
 				new_value = default_mode;
 		}
 
@@ -5104,7 +5104,7 @@ static int ride_get_default_mode(rct_ride *ride)
 	for (int i = 0; i < ride->type; i++) {
 		while (*(availableModes++) != 255) {}
 	}
-	if (rideEntry->flags & RIDE_ENTRY_FLAG_17) {
+	if (rideEntry->flags & RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES) {
 		availableModes += 2;
 	}
 	return availableModes[0];
