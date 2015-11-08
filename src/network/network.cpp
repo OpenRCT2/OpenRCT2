@@ -97,8 +97,8 @@ enum {
 	MASTER_SERVER_STATUS_INTERNAL_ERROR = 500
 };
 
-constexpr int MASTER_SERVER_REGISTER_TIME = 2 * 1000;	// 2 seconds
-constexpr int MASTER_SERVER_HEARTBEAT_TIME = 1 * 1000;	// 1 second
+constexpr int MASTER_SERVER_REGISTER_TIME = 120 * 1000;	// 2 minutes
+constexpr int MASTER_SERVER_HEARTBEAT_TIME = 60 * 1000;	// 1 minute
 
 NetworkPacket::NetworkPacket()
 {
