@@ -69,6 +69,10 @@ http_json_response *http_request_json(const char *url)
 	writeBuffer.length = 0;
 	writeBuffer.capacity = 0;
 
+	curl_slist *headers = NULL;
+	headers = curl_slist_append(headers, "Accept: application/json");
+
+	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
 	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
 	curl_easy_setopt(curl, CURLOPT_CAINFO, "curl-ca-bundle.crt");

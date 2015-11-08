@@ -684,32 +684,39 @@ static void fetch_servers_callback(http_json_response* response)
 		return;
 	}
 
-	int count = json_array_size(response->root);
+	int count = json_array_size(jsonServers);
 	for (int i = 0; i < count; i++) {
-		json_t *server = json_array_get(response->root, i);
+		json_t *server = json_array_get(jsonServers, i);
 		if (!json_is_object(server)) {
 			continue;
 		}
 
-		json_t *address = json_object_get(server, "address");
+		json_t *port = json_object_get(server, "port");
 		json_t *name = json_object_get(server, "name");
+		json_t *description = json_object_get(server, "description");
 		json_t *requiresPassword = json_object_get(server, "requiresPassword");
 		json_t *version = json_object_get(server, "version");
 		json_t *players = json_object_get(server, "players");
-		json_t *maxplayers = json_object_get(server, "maxPlayers");
-		json_t *description = json_object_get(server, "description");
+		json_t *maxPlayers = json_object_get(server, "maxPlayers");
+		json_t *ip = json_object_get(server, "ip");
+		json_t *ip4 = json_object_get(ip, "v4");
+		json_t *ip6 = json_object_get(ip, "v6");
+		json_t *addressIp = json_array_get(ip4, 0);
+
+		char address[256];
+		snprintf(address, sizeof(address), "%s:%d", json_string_value(addressIp), (int)json_integer_value(port));
 
 		SDL_LockMutex(_mutex);
-		saved_server* newserver = add_saved_server((char*)json_string_value(address));
+		saved_server* newserver = add_saved_server(address);
 		SafeFree(newserver->name);
+		SafeFree(newserver->description);
+		SafeFree(newserver->version);
 		newserver->name = _strdup(json_string_value(name));
 		newserver->requiresPassword = json_boolean_value(requiresPassword);
-		SafeFree(newserver->description);
 		newserver->description = _strdup(json_string_value(description));
-		SafeFree(newserver->version);
 		newserver->version = _strdup(json_string_value(version));
 		newserver->players = (uint8)json_integer_value(players);
-		newserver->maxplayers = (uint8)json_integer_value(maxplayers);
+		newserver->maxplayers = (uint8)json_integer_value(maxPlayers);
 		SDL_UnlockMutex(_mutex);
 	}
 	http_request_json_dispose(response);
