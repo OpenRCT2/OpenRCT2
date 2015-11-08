@@ -50,6 +50,7 @@
 - Fix: Underflow in Heartline Twister ratings (original bug).
 - Fix: Map window now display the usable map size, not the technical one (original bug).
 - Fix: TD4 River Rapids will now have the correct seat colour (original bug).
+- Fix: Message sound will no longer play in the editor modes (original bug).
 
 0.0.2-beta (2015-06-21)
 ------------------------------------------------------------------------
