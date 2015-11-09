@@ -197,9 +197,6 @@ void window_staff_list_close(rct_window *w)
 
 void game_command_callback_hire_staff_member(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
 {
-	// TODO: remove debug print
-	printf("callback: %d, %d, %d, %d, %d, %d, %d\n", eax, ebx, ecx, edx, esi, edi, ebp);
-
 	int sprite_index = edi;
 
 	if (sprite_index == 0xFFFF) {
