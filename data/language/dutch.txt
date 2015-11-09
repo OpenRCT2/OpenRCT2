@@ -3857,8 +3857,8 @@ STR_5521    :{SMALLFONT}{BLACK}Helder paars
 STR_5522    :{SMALLFONT}{BLACK}Darkblauw
 STR_5523    :{SMALLFONT}{BLACK}Lichtblauw
 STR_5524    :{SMALLFONT}{BLACK}IJzig blauw
-STR_5525    :{SMALLFONT}{BLACK}Turquoise
-STR_5526    :{SMALLFONT}{BLACK}Aquamarijn
+STR_5525    :{SMALLFONT}{BLACK}Donkere waterkleur
+STR_5526    :{SMALLFONT}{BLACK}Lichte waterkleur
 STR_5527    :{SMALLFONT}{BLACK}Verzadigd groen
 STR_5528    :{SMALLFONT}{BLACK}Donkergroen
 STR_5529    :{SMALLFONT}{BLACK}Mosgroen
@@ -3898,6 +3898,19 @@ STR_5562    :WAARSCHUWING:
 STR_5563    :Deze functie is momenteel niet helemaal stabiel, wees voorzichtig.
 STR_5564    :Ongeldig element invoegen
 STR_5565    :{SMALLFONT}{BLACK}Plaatst een ongeldig element boven de andere elementen van dit vakje. Alle elementen die boven dit ongeldige element worden geplaatst worden onzichtbaar.
+STR_5566    :Wachtwoord:
+STR_5567    :Bekendmaken
+STR_5568    :Wachtwoord vereist
+STR_5569    :Deze server vereist een wachtwoord.
+STR_5570    :Serverlijst ophalen
+STR_5571    :Meedoen
+STR_5572    :Toev. aan favorieten
+STR_5573    :Verw. uit favorieten
+STR_5574    :Servernaame:
+STR_5575    :Max. aant. spelers:
+STR_5576    :Poort:
+STR_5577    :Zuid-Koreaanse won (W)
+STR_5578    :Russische roebel (R)
 
 #############
 # Scenarios #
@@ -4034,8 +4047,11 @@ STR_SCNR   :Bouw je eigen Six Flags-park
 STR_PARK   :Six Flags
 STR_DTLS   :Maak je eigen Six Flags-park, door gebruik te maken van attracties uit andere Six Flags-parken of door zelf nieuwe attracties te ontwerpen.
 
-[NITROENT]
-STR_NAME    :'Nitro'-bord
+#TT
+<Mythological - Animatronic Film Set>
+STR_SCNR   :  Mythologie - Animatronic-filmset
+STR_PARK   :Animatronic Antics
+STR_DTLS   :Je moet een bestaand pretpark, gebouwd op een oude filmset, beheren en verbeteren. Bouw een eerbetoon aan de pioniers van de stop-motionanimatie, die de wezens uit de mythologie tot leven brachten op het witte doek.
 
 ##################################
 # Rides/attractions / Attracties #
@@ -5908,3 +5924,9 @@ STR_NAME    :  'Donkere eeuwen'-thema
 #TT
 [SCGMYTHO]
 STR_NAME    :  Mythologisch thema
+
+#################
+# Large objects #
+#################
+[NITROENT]
+STR_NAME    :'Nitro'-bord
