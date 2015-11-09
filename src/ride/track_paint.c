@@ -221,56 +221,11 @@ rct_xy16 loc_7667AC[] = {
  * Can be calculated as Rounddown(34*sin(x)+0.5)
  * where x is in 7.5 deg segments.
  */
-sint8 SeatPositionOffset[] = {
-	0,
-	4,
-	9,
-	13,
-	17,
-	21,
-	24,
-	27,
-	29,
-	31,
-	33,
-	34,
-	34,
-	34,
-	33,
-	31,
-	29,
-	27,
-	24,
-	21,
-	17,
-	13,
-	9,
-	4,
-	0,
-	-3,
-	-8,
-	-12,
-	-16,
-	-20,
-	-23,
-	-26,
-	-28,
-	-30,
-	-32,
-	-33,
-	-33,
-	-33,
-	-32,
-	-30,
-	-28,
-	-26,
-	-23,
-	-20,
-	-16,
-	-12,
-	-8,
-	-3,
-	0
+static sint8 TopSpinSeatPositionOffset[] = {
+	  0,   4,   9,  13,  17,  21,  24,  27,  29,  31,  33,  34,  34,  34,  33,  31,
+	 29,  27,  24,  21,  17,  13,   9,   4,   0,  -3,  -8, -12, -16, -20, -23, -26,
+	-28, -30, -32, -33, -33, -33, -32, -30, -28, -26, -23, -20, -16, -12,  -8,  -3,
+	  0
 };
 
 /* rct2: 0x0076750D */
@@ -387,19 +342,19 @@ void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction
 	};
 	seatCoords.z += RCT2_ADDRESS(0x14280BC, sint16)[armRotation];
 
-	assert(armRotation < sizeof(SeatPositionOffset));
+	assert(armRotation < sizeof(TopSpinSeatPositionOffset));
 	switch (direction) {
 	case 0:
-		seatCoords.x -= SeatPositionOffset[armRotation];
+		seatCoords.x -= TopSpinSeatPositionOffset[armRotation];
 		break;
 	case 1:
-		seatCoords.y += SeatPositionOffset[armRotation];
+		seatCoords.y += TopSpinSeatPositionOffset[armRotation];
 		break;
 	case 2:
-		seatCoords.x += SeatPositionOffset[armRotation];
+		seatCoords.x += TopSpinSeatPositionOffset[armRotation];
 		break;
 	case 3:
-		seatCoords.y -= SeatPositionOffset[armRotation];
+		seatCoords.y -= TopSpinSeatPositionOffset[armRotation];
 		break;
 	}
 
