@@ -994,6 +994,7 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 	firstTile.x = x - firstTile.x;
 	firstTile.y = y - firstTile.y;
 
+	bool calculate_cost = true;
 	for (int i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; i++){
 
 		rct_xyz16 currentTile = {
@@ -1016,8 +1017,14 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 		}
 
 		// If not applying then no need to delete the actual element
-		if (!(*ebx & GAME_COMMAND_FLAG_APPLY))
+		if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
+			if (*ebx & (1 << 7)) {
+				if (map_element->flags & (1 << 6))
+					calculate_cost = false;
+				map_element->flags |= (1 << 6);
+			}
 			continue;
+		}
 
 		rct_map_element* sceneryElement = map_get_first_element_at(currentTile.x / 32, currentTile.y / 32);
 		uint8 tile_not_found = 1;
@@ -1051,7 +1058,8 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 	}
 
 	*ebx = scenery_entry->large_scenery.removal_price * 10;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY || 
+		calculate_cost == false){
 		*ebx = 0;
 	}
 	return;
@@ -1448,7 +1456,7 @@ restart_from_beginning:
 				int ecx = y * 32;
 				int edx = mapElement->base_height | ((mapElement->properties.scenerymultiple.type >> 10) << 8);
 				int edi = 0, ebp = 0;
-				cost = game_do_command(eax, ebx, ecx, edx, GAME_COMMAND_REMOVE_LARGE_SCENERY, edi, ebp);
+				cost = game_do_command(eax, ebx | (1 << 7), ecx, edx, GAME_COMMAND_REMOVE_LARGE_SCENERY, edi, ebp);
 
 				if (cost == MONEY32_UNDEFINED)
 					return MONEY32_UNDEFINED;
@@ -1463,6 +1471,23 @@ restart_from_beginning:
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 	return totalCost;
+}
+
+/* Function to clear the flag that is set to prevent cost duplication
+ * when using the clear scenery tool with large scenery.
+ */
+void map_reset_clear_large_scenery_flag(int x0, int y0, int x1, int y1){
+	rct_map_element* mapElement;
+	for (int y = y0; y <= y1; y += 32) {
+		for (int x = x0; x <= x1; x += 32) {
+			mapElement = map_get_first_element_at(x / 32, y / 32);
+			do {
+				if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
+					mapElement->flags &= ~(1 << 6);
+				}
+			} while (!map_element_is_last_for_tile(mapElement++));
+		}
+	}
 }
 
 money32 map_clear_scenery(int x0, int y0, int x1, int y1, int clear, int flags)
@@ -1499,6 +1524,10 @@ money32 map_clear_scenery(int x0, int y0, int x1, int y1, int clear, int flags)
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_LAND_NOT_OWNED_BY_PARK;
 			}
 		}
+	}
+
+	if (clear & (1 << 1)) {
+		map_reset_clear_large_scenery_flag(x0, y0, x1, y1);
 	}
 
 	return noValidTiles ? MONEY32_UNDEFINED : totalCost;
