@@ -286,7 +286,7 @@ void platform_draw()
 				SDL_UnlockSurface(_surface);
 
 			// Copy the surface to the window
-			if (gConfigGeneral.scale == 1 || gConfigGeneral.scale <= 0)
+			if (gConfigGeneral.window_scale == 1 || gConfigGeneral.window_scale <= 0)
 			{
 				if (SDL_BlitSurface(_surface, NULL, SDL_GetWindowSurface(gWindow), NULL)) {
 					log_fatal("SDL_BlitSurface %s", SDL_GetError());
@@ -316,8 +316,8 @@ void platform_draw()
 static void platform_resize(int width, int height)
 {
 	uint32 flags;
-	int dst_w = width / gConfigGeneral.scale;
-	int dst_h = height / gConfigGeneral.scale;
+	int dst_w = (int)(width / gConfigGeneral.window_scale);
+	int dst_h = (int)(height / gConfigGeneral.window_scale);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) = dst_w;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) = dst_h;
@@ -439,11 +439,11 @@ void platform_process_messages()
 			}
 			break;
 		case SDL_MOUSEMOTION:
-			RCT2_GLOBAL(0x0142406C, int) = e.motion.x / gConfigGeneral.scale;
-			RCT2_GLOBAL(0x01424070, int) = e.motion.y / gConfigGeneral.scale;
+			RCT2_GLOBAL(0x0142406C, int) = (int)(e.motion.x / gConfigGeneral.window_scale);
+			RCT2_GLOBAL(0x01424070, int) = (int)(e.motion.y / gConfigGeneral.window_scale);
 
-			gCursorState.x = e.motion.x / gConfigGeneral.scale;
-			gCursorState.y = e.motion.y / gConfigGeneral.scale;
+			gCursorState.x = (int)(e.motion.x / gConfigGeneral.window_scale);
+			gCursorState.y = (int)(e.motion.y / gConfigGeneral.window_scale);
 			break;
 		case SDL_MOUSEWHEEL:
 			if (gConsoleOpen) {
@@ -453,8 +453,8 @@ void platform_process_messages()
 			gCursorState.wheel += e.wheel.y * 128;
 			break;
 		case SDL_MOUSEBUTTONDOWN:
-			RCT2_GLOBAL(0x01424318, int) = e.button.x / gConfigGeneral.scale;
-			RCT2_GLOBAL(0x0142431C, int) = e.button.y / gConfigGeneral.scale;
+			RCT2_GLOBAL(0x01424318, int) = (int)(e.button.x / gConfigGeneral.window_scale);
+			RCT2_GLOBAL(0x0142431C, int) = (int)(e.button.y / gConfigGeneral.window_scale);
 			switch (e.button.button) {
 			case SDL_BUTTON_LEFT:
 				store_mouse_input(1);
@@ -472,8 +472,8 @@ void platform_process_messages()
 			}
 			break;
 		case SDL_MOUSEBUTTONUP:
-			RCT2_GLOBAL(0x01424318, int) = e.button.x / gConfigGeneral.scale;
-			RCT2_GLOBAL(0x0142431C, int) = e.button.y / gConfigGeneral.scale;
+			RCT2_GLOBAL(0x01424318, int) = (int)(e.button.x / gConfigGeneral.window_scale);
+			RCT2_GLOBAL(0x0142431C, int) = (int)(e.button.y / gConfigGeneral.window_scale);
 			switch (e.button.button) {
 			case SDL_BUTTON_LEFT:
 				store_mouse_input(2);
