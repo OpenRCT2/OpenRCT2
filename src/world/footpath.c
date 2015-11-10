@@ -1326,6 +1326,17 @@ void footpath_chain_ride_queue(int rideIndex, int entranceIndex, int x, int y, r
 
 	foundNextPath:
 		if (footpath_element_is_queue(mapElement)) {
+			// Fix #2051: Stop queue paths that are already connected to two other tiles
+			//            from connecting to the tile we are coming from.
+			int edges = mapElement->properties.path.edges;
+			int numEdges = bitcount(edges);
+			if (numEdges >= 2) {
+				int requiredEdgeMask = 1 << (direction ^ 2);
+				if (!(edges & requiredEdgeMask)) {
+					break;
+				}
+			}
+
 			mapElement->properties.path.type &= ~(1 << 3);
 			mapElement->properties.path.edges |= (1 << (direction ^ 2));
 			mapElement->properties.path.ride_index = rideIndex;
