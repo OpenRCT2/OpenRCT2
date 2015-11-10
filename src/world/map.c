@@ -1476,11 +1476,12 @@ restart_from_beginning:
 /* Function to clear the flag that is set to prevent cost duplication
  * when using the clear scenery tool with large scenery.
  */
-void map_reset_clear_large_scenery_flag(int x0, int y0, int x1, int y1){
+void map_reset_clear_large_scenery_flag(){
 	rct_map_element* mapElement;
-	for (int y = y0; y <= y1; y += 32) {
-		for (int x = x0; x <= x1; x += 32) {
-			mapElement = map_get_first_element_at(x / 32, y / 32);
+	// TODO: Improve efficiency of this
+	for (int y = 0; y <= 255; y++) {
+		for (int x = 0; x <= 255; x++) {
+			mapElement = map_get_first_element_at(x, y);
 			do {
 				if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
 					mapElement->flags &= ~(1 << 6);
@@ -1527,7 +1528,7 @@ money32 map_clear_scenery(int x0, int y0, int x1, int y1, int clear, int flags)
 	}
 
 	if (clear & (1 << 1)) {
-		map_reset_clear_large_scenery_flag(x0, y0, x1, y1);
+		map_reset_clear_large_scenery_flag();
 	}
 
 	return noValidTiles ? MONEY32_UNDEFINED : totalCost;
