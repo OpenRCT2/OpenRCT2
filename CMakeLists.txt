@@ -100,6 +100,8 @@ else (WIN32)
 	# this will install the launcher script and replace the path to package in it
 	configure_file(distribution/openrct2.sh openrct2.sh)
 	install(PROGRAMS ${CMAKE_BINARY_DIR}/openrct2.sh DESTINATION bin)
+	add_custom_target(g2 ALL DEPENDS ${PROJECT} COMMAND ./openrct2 sprite build ${CMAKE_BINARY_DIR}/g2.dat ${CMAKE_CURRENT_SOURCE_DIR}/resources WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+	install(FILES ${CMAKE_BINARY_DIR}/g2.dat DESTINATION data)
 endif (WIN32)
 
 if (APPLE)
