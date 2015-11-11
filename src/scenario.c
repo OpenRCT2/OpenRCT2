@@ -47,7 +47,7 @@
 static char _scenarioPath[MAX_PATH];
 static const char *_scenarioFileName = "";
 
-char gScenarioSaveName[MAX_PATH];
+char gScenarioSavePath[MAX_PATH];
 int gFirstTimeSave = 1;
 
 static int scenario_create_ducks();
@@ -354,9 +354,15 @@ void scenario_begin()
 	}
 
 	// Set the last saved game path
-	format_string(gScenarioSaveName, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), (void*)RCT2_ADDRESS_PARK_NAME_ARGS);
+	char parkName[128];
+	format_string(parkName, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), (void*)RCT2_ADDRESS_PARK_NAME_ARGS);
+
+	platform_get_user_directory(gScenarioSavePath, "save");
+	strncat(gScenarioSavePath, parkName, sizeof(gScenarioSavePath));
+	strncat(gScenarioSavePath, ".sv6", sizeof(gScenarioSavePath));
+
 	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)RCT2_ADDRESS_SAVED_GAMES_PATH);
-	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2 + strlen((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2), gScenarioSaveName);
+	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2 + strlen((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2), gScenarioSavePath);
 	strcat((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, ".SV6");
 
 	memset((void*)0x001357848, 0, 56);
