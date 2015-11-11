@@ -97,6 +97,9 @@ if (WIN32)
 	add_library(${PROJECT} SHARED ${ORCT2_SOURCES} ${SPEEX_SOURCES})
 else (WIN32)
 	add_executable(${PROJECT} ${ORCT2_SOURCES})
+	# this will install the launcher script and replace the path to package in it
+	configure_file(distribution/openrct2.sh openrct2.sh)
+	install(PROGRAMS ${CMAKE_BINARY_DIR}/openrct2.sh DESTINATION bin)
 endif (WIN32)
 
 if (APPLE)
@@ -129,3 +132,6 @@ endif (APPLE)
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 
 TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCTLIBS_LIB} ${JANSSON_LIBRARIES} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB})
+install(TARGETS ${PROJECT} RUNTIME DESTINATION data)
+install(DIRECTORY data DESTINATION data)
+install(FILES openrct2.exe DESTINATION data)
