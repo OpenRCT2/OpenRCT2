@@ -97,6 +97,12 @@ if (WIN32)
 	add_library(${PROJECT} SHARED ${ORCT2_SOURCES} ${SPEEX_SOURCES})
 else (WIN32)
 	add_executable(${PROJECT} ${ORCT2_SOURCES})
+	add_custom_command(
+		OUTPUT g2.dat
+		COMMAND ./openrct2 sprite build ${CMAKE_BINARY_DIR}/g2.dat ${CMAKE_CURRENT_SOURCE_DIR}/resources/g2/
+		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+		)
+	add_custom_target(g2 DEPENDS ${PROJECT} g2.dat)
 endif (WIN32)
 
 if (APPLE)
