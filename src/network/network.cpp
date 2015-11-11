@@ -905,7 +905,6 @@ void Network::AdvertiseHeartbeat()
 
 	json_t *body = json_object();
 	json_object_set(body, "token", json_string(advertise_token.c_str()));
-	json_object_set(body, "dedicated", json_boolean(gOpenRCT2Headless));
 	json_object_set(body, "players", json_integer(network_get_num_players()));
 
 	json_t *gameInfo = json_object();
@@ -1091,6 +1090,15 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
 	json_object_set(obj, "players", json_integer(player_list.size()));
 	json_object_set(obj, "maxPlayers", json_integer(gConfigNetwork.maxplayers));
 	json_object_set(obj, "description", json_string(gConfigNetwork.server_description));
+	json_object_set(obj, "dedicated", json_boolean(gOpenRCT2Headless));
+
+	// Provider details
+	json_t* jsonProvider = json_object();
+	json_object_set(jsonProvider, "name", json_string(gConfigNetwork.provider_name));
+	json_object_set(jsonProvider, "email", json_string(gConfigNetwork.provider_email));
+	json_object_set(jsonProvider, "website", json_string(gConfigNetwork.provider_website));
+	json_object_set(obj, "provider", jsonProvider);
+
 	packet->WriteString(json_dumps(obj, 0));
 	json_decref(obj);
 #endif

@@ -5110,13 +5110,14 @@ static int ride_get_default_mode(rct_ride *ride)
 	return availableModes[0];
 }
 
-static bool ride_with_colour_config_exists(int rideType, const track_colour *colours)
+static bool ride_with_colour_config_exists(rct_ride *srcRide, const track_colour *colours)
 {
 	rct_ride *ride;
 	int i;
 
 	FOR_ALL_RIDES(i, ride) {
-		if (ride->type != rideType) continue;
+		if (ride != srcRide) continue;
+		if (ride->type != srcRide->type) continue;
 		if (ride->track_colour_main[0] != colours->main) continue;
 		if (ride->track_colour_additional[0] != colours->additional) continue;
 		if (ride->track_colour_supports[0] != colours->supports) continue;
@@ -5158,7 +5159,7 @@ static void ride_set_to_random_colour_preset(rct_ride *ride)
 		int listIndex = scenario_rand() % colourPresets->count;
 		colours = &colourPresets->list[listIndex];
 
-		if (!ride_with_colour_config_exists(ride->type, colours)) {
+		if (!ride_with_colour_config_exists(ride, colours)) {
 			break;
 		}
 	}
