@@ -347,6 +347,13 @@ static void platform_resize(int width, int height)
 	}
 }
 
+void platform_trigger_resize()
+{
+	int w, h;
+	SDL_GetWindowSize(gWindow, &w, &h);
+	platform_resize(w, h);
+}
+
 static uint8 soft_light(uint8 a, uint8 b)
 {
 	float fa = a / 255.0f;
