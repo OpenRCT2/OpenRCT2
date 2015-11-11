@@ -80,6 +80,7 @@ static const uint8 _magicMountainScript[] = {
 
 static uint8* _loadedScript;
 static const uint8* _currentScript;
+static uint8 _lastOpcode;
 static int _scriptNoLoadsSinceRestart;
 static int _scriptWaitCounter;
 static int _scriptCurrentPreset;
@@ -264,6 +265,8 @@ static void title_skip_opcode()
 
 	script_opcode = *_currentScript++;
 	gTitleScriptCommand++;
+	_lastOpcode = script_opcode;
+
 	switch (script_opcode) {
 	case TITLE_SCRIPT_WAIT:
 		_currentScript++;
@@ -314,6 +317,9 @@ static void title_do_next_script_opcode()
 			return;
 		}
 	}
+
+	_lastOpcode = script_opcode;
+
 	switch (script_opcode) {
 	case TITLE_SCRIPT_END:
 		_scriptWaitCounter = 1;
@@ -439,7 +445,7 @@ static void title_update_showcase()
 
 			if (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad != -1)
 				_scriptWaitCounter = 0;
-			else if (*(_currentScript - 1) != TITLE_SCRIPT_END)
+			else if (_lastOpcode != TITLE_SCRIPT_END)
 				_scriptWaitCounter--;
 		} while (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad != -1);
 
