@@ -2654,14 +2654,22 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 	}
 
 	int z = 0;
-	//6ce69e
+	// Find the start of the track.
+	// It has to do this as a backwards loop incase this is an incomplete track.
 	if (track_block_get_previous(trackElement.x, trackElement.y, trackElement.element, &trackBeginEnd)) {
 		rct_map_element* initial_map = trackElement.element;
 		do {
+			rct_xy_element lastGood = {
+				.element = trackBeginEnd.begin_element,
+				.x = trackBeginEnd.begin_x,
+				.y = trackBeginEnd.begin_y 
+			};
+
 			if (!track_block_get_previous(trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_element, &trackBeginEnd)) {
+				trackElement = lastGood;
 				break;
 			}
-		} while (initial_map != trackElement.element);
+		} while (initial_map != trackBeginEnd.begin_element);
 	}
 
 	z = trackElement.element->base_height * 8;
