@@ -199,7 +199,6 @@ typedef struct {
 	uint8 build_in_pause_mode;
 	uint8 ignore_ride_intensity;
 	uint8 disable_vandalism;
-	uint8 ignore_rain_rides;
 } cheat_configuration;
 
 typedef struct {
@@ -220,7 +219,9 @@ typedef struct {
 	utf8string server_name;
 	utf8string server_description;
 	utf8string master_server_url;
-	utf8string master_url;
+	utf8string provider_name;
+	utf8string provider_email;
+	utf8string provider_website;
 } network_configuration;
 
 typedef struct theme_window {

@@ -222,9 +222,6 @@ public:
 	void AdvertiseHeartbeat();
 
 	void Client_Send_AUTH(const char* name, const char* password);
-	void Advertise();
-
-	void Client_Send_AUTH(const char* name, const char* password);
 	void Server_Send_AUTH(NetworkConnection& connection);
 	void Server_Send_MAP(NetworkConnection* connection = nullptr);
 	void Client_Send_CHAT(const char* text);
@@ -295,7 +292,9 @@ private:
 private:
 	std::vector<int (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> client_command_handlers;
 	std::vector<int (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> server_command_handlers;
+	int Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
 	int Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
+	int Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& packet);
 	int Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
 	int Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
 	int Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);

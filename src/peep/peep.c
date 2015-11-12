@@ -4147,7 +4147,7 @@ static void peep_update_using_bin(rct_peep* peep){
 		uint32 empty_containers = peep_empty_container_standard_flag(peep);
 
 		for (uint8 cur_container = 0; cur_container < 32; cur_container++){
-			if (!(empty_containers & (1 << cur_container))) continue;
+			if (!(empty_containers & (1u << cur_container))) continue;
 
 			if (rubbish_in_bin != 0){
 				// OpenRCT2 modification: This previously used
@@ -4177,7 +4177,7 @@ static void peep_update_using_bin(rct_peep* peep){
 		empty_containers = peep_empty_container_extra_flag(peep);
 
 		for (uint8 cur_container = 0; cur_container < 32; cur_container++){
-			if (!(empty_containers & (1 << cur_container))) continue;
+			if (!(empty_containers & (1u << cur_container))) continue;
 
 			if (rubbish_in_bin != 0){
 				// OpenRCT2 modification: This previously used
@@ -5741,9 +5741,9 @@ int peep_is_mechanic(rct_peep *peep)
 bool peep_has_item(rct_peep *peep, int peepItem)
 {
 	if (peepItem < 32) {
-		return peep->item_standard_flags & (1 << peepItem);
+		return peep->item_standard_flags & (1u << peepItem);
 	} else {
-		return peep->item_extra_flags & (1 << peepItem);
+		return peep->item_extra_flags & (1u << (peepItem - 32));
 	}
 }
 
@@ -8343,20 +8343,19 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 							return false;
 						}
 					}
-					if (!gConfigCheat.ignore_rain_rides) {
-						// Peeps won't go on rides that aren't sufficiently undercover while it's raining.
-						// The threshold is fairly low and only requires about 10-15% of the ride to be undercover.
-						if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8) != 0 && (ride->undercover_portion >> 5) < 3) {
-							if (peepAtRide) {
-								peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NOT_WHILE_RAINING, rideIndex);
-								if (peep->happiness_growth_rate >= 64) {
-									peep->happiness_growth_rate -= 8;
-								}
-								ride_update_popularity(ride, 0);
+
+					// Peeps won't go on rides that aren't sufficiently undercover while it's raining.
+					// The threshold is fairly low and only requires about 10-15% of the ride to be undercover.
+					if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8) != 0 && (ride->undercover_portion >> 5) < 3) {
+						if (peepAtRide) {
+							peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NOT_WHILE_RAINING, rideIndex);
+							if (peep->happiness_growth_rate >= 64) {
+								peep->happiness_growth_rate -= 8;
 							}
-							peep_chose_not_to_go_on_ride(peep, rideIndex, peepAtRide, true);
-							return false;
+							ride_update_popularity(ride, 0);
 						}
+						peep_chose_not_to_go_on_ride(peep, rideIndex, peepAtRide, true);
+						return false;
 					}
 
 					if (!gConfigCheat.ignore_ride_intensity) {
@@ -8609,7 +8608,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 		int i;
 		FOR_ALL_RIDES(i, ride) {
 			if (!peep_has_ridden(peep, i)) {
-				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= (1 << (i & 0x1F));
+				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= (1u << (i & 0x1F));
 			}
 		}
 	} else {
@@ -8624,7 +8623,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 						if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
 
 						int rideIndex = mapElement->properties.track.ride_index;
-						RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (1 << (rideIndex & 0x1F));
+						RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
 					} while (!map_element_is_last_for_tile(mapElement++));
 				}
 			}
@@ -8637,7 +8636,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 			if (ride->excitement == (ride_rating)0xFFFF) continue;
 			if (ride->highest_drop_height <= 66 && ride->excitement < RIDE_RATING(8,00)) continue;
 
-			RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= (1 << (i & 0x1F));
+			RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= (1u << (i & 0x1F));
 		}
 	}
 
@@ -8646,7 +8645,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 	uint8 *nextPotentialRide = potentialRides;
 	int numPotentialRides = 0;
 	for (int i = 0; i < MAX_RIDES; i++) {
-		if (!(RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] & (1 << (i & 0x1F))))
+		if (!(RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] & (1u << (i & 0x1F))))
 			continue;
 
 		rct_ride *ride = GET_RIDE(i);
@@ -8725,7 +8724,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 		int i;
 		FOR_ALL_RIDES(i, ride) {
 			if (ride->type == rideType) {
-				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= (1 << (i & 0x1F));
+				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= (1u << (i & 0x1F));
 			}
 		}
 	} else {
@@ -8742,7 +8741,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 						int rideIndex = mapElement->properties.track.ride_index;
 						ride = GET_RIDE(rideIndex);
 						if (ride->type == rideType) {
-							RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (1 << (rideIndex & 0x1F));
+							RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
 						}
 					} while (!map_element_is_last_for_tile(mapElement++));
 				}
@@ -8755,7 +8754,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 	uint8 *nextPotentialRide = potentialRides;
 	int numPotentialRides = 0;
 	for (int i = 0; i < MAX_RIDES; i++) {
-		if (!(RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] & (1 << (i & 0x1F))))
+		if (!(RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] & (1u << (i & 0x1F))))
 			continue;
 
 		rct_ride *ride = GET_RIDE(i);
@@ -8837,7 +8836,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 		int i;
 		FOR_ALL_RIDES(i, ride) {
 			if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & rideTypeFlags) {
-				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= (1 << (i & 0x1F));
+				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= (1u << (i & 0x1F));
 			}
 		}
 	} else {
@@ -8854,7 +8853,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 						int rideIndex = mapElement->properties.track.ride_index;
 						ride = GET_RIDE(rideIndex);
 						if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & rideTypeFlags) {
-							RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (1 << (rideIndex & 0x1F));
+							RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
 						}
 					} while (!map_element_is_last_for_tile(mapElement++));
 				}
@@ -8867,7 +8866,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 	uint8 *nextPotentialRide = potentialRides;
 	int numPotentialRides = 0;
 	for (int i = 0; i < MAX_RIDES; i++) {
-		if (!(RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] & (1 << (i & 0x1F))))
+		if (!(RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] & (1u << (i & 0x1F))))
 			continue;
 
 		rct_ride *ride = GET_RIDE(i);

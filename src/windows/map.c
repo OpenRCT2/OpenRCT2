@@ -1597,7 +1597,7 @@ static uint16 map_window_get_pixel_colour_ride(int x, int y)
 
 static void map_window_set_pixels(rct_window *w)
 {
-	uint16 colour, *destination;
+	uint16 colour = 0, *destination;
 	int x, y, dx, dy;
 
 	destination = (uint16*)((RCT2_GLOBAL(0x00F1AD6C, uint32) * 511) + RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32) + 255);

@@ -3858,8 +3858,8 @@ STR_5521    :{SMALLFONT}{BLACK}Lila
 STR_5522    :{SMALLFONT}{BLACK}Dunkelblau
 STR_5523    :{SMALLFONT}{BLACK}Hellblau
 STR_5524    :{SMALLFONT}{BLACK}Himmelblau
-STR_5525    :{SMALLFONT}{BLACK}Blaugrün
-STR_5526    :{SMALLFONT}{BLACK}Aquamarinblau
+STR_5525    :{SMALLFONT}{BLACK}Dunkles Wasser
+STR_5526    :{SMALLFONT}{BLACK}Helles Wasser
 STR_5527    :{SMALLFONT}{BLACK}Gesättigtes Grün
 STR_5528    :{SMALLFONT}{BLACK}Dunkelgrün
 STR_5529    :{SMALLFONT}{BLACK}Moosgrün
@@ -3899,6 +3899,19 @@ STR_5562    :WARNUNG!
 STR_5563    :Diese Funktion ist derzeit instabil und mit erhöhter Vorsicht zu verwenden.
 STR_5564    :Fehlerhaftes Element einf.
 STR_5565    :{SMALLFONT}{BLACK}Fügt ein fehlerhaftes Kartenelement auf der Kachel ein, dadurch werden alle Elemente darüber versteckt.
+STR_5566    :Passwort:
+STR_5567    :Veröffentlichen
+STR_5568    :Passwort benötigt
+STR_5569    :Dieser Server benötigt ein Passwort
+STR_5570    :Server abrufen
+STR_5571    :Spiel beitreten
+STR_5572    :Zu Favoriten hinzufügen
+STR_5573    :Aus Favoriten entfernen
+STR_5574    :Servername:
+STR_5575    :Max. Spieler:
+STR_5576    :Port:
+STR_5577    :Südkoreanischer Won (W)
+STR_5578    :Russischer Rubel (R)
 
 #######################
 # Bahnen/Attraktionen # 

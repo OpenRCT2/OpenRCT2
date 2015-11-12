@@ -146,7 +146,7 @@ int bitscanforward(int source)
 		return success != 0 ? i : -1;
 	#else
 	for (i = 0; i < 32; i++)
-		if (source & (1 << i))
+		if (source & (1u << i))
 			return i;
 
 	return -1;
@@ -157,7 +157,7 @@ int bitcount(int source)
 {
 	int result = 0;
 	for (int i = 0; i < 32; i++) {
-		if (source & (1 << i)) {
+		if (source & (1u << i)) {
 			result++;
 		}
 	}

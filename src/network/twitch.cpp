@@ -130,7 +130,12 @@ static void twitch_join()
 
 	_twitchState = TWITCH_STATE_JOINING;
 	_twitchIdle = false;
-	http_request_json_async(url, [](http_json_response *jsonResponse) -> void {
+
+	http_json_request request;
+	request.url = url;
+	request.method = HTTP_METHOD_GET;
+	request.body = NULL;
+	http_request_json_async(&request, [](http_json_response *jsonResponse) -> void {
 		if (jsonResponse == NULL) {
 			_twitchState = TWITCH_STATE_LEFT;
 			console_writeline("Unable to connect to twitch channel.");
@@ -191,7 +196,12 @@ static void twitch_get_followers()
 
 	_twitchState = TWITCH_STATE_WAITING;
 	_twitchIdle = false;
-	http_request_json_async(url, [](http_json_response *jsonResponse) -> void {
+
+	http_json_request request;
+	request.url = url;
+	request.method = HTTP_METHOD_GET;
+	request.body = NULL;
+	http_request_json_async(&request, [](http_json_response *jsonResponse) -> void {
 		if (jsonResponse == NULL) {
 			_twitchState = TWITCH_STATE_JOINED;
 		} else {
@@ -212,7 +222,12 @@ static void twitch_get_messages()
 
 	_twitchState = TWITCH_STATE_WAITING;
 	_twitchIdle = false;
-	http_request_json_async(url, [](http_json_response *jsonResponse) -> void {
+
+	http_json_request request;
+	request.url = url;
+	request.method = HTTP_METHOD_GET;
+	request.body = NULL;
+	http_request_json_async(&request, [](http_json_response *jsonResponse) -> void {
 		if (jsonResponse == NULL) {
 			_twitchState = TWITCH_STATE_JOINED;
 		} else {
