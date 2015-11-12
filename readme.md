@@ -5,8 +5,12 @@ An open source clone of RollerCoaster Tycoon 2 built by decompiling the original
 - [Screenshot 3, high resolution](http://i.imgur.com/yFzNyVu.jpg)
 - [Screenshot 4, resizable window](http://imgur.com/a/3GDuT)
 
-[![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg)](https://travis-ci.org/OpenRCT2/OpenRCT2) [![AppVeyor](https://ci.appveyor.com/api/projects/status/fib6re830brysuo2?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2)
+Linux Build:  
+[![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg)](https://travis-ci.org/OpenRCT2/OpenRCT2)  
+Windows Build:  
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/fib6re830brysuo2?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2)
 
+Come talk with us if you have any questions:  
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/OpenRCT2/OpenRCT2?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # Contents

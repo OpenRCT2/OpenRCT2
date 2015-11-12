@@ -886,8 +886,7 @@ int game_load_save(const char *path)
 	safe_strncpy((char*)0x0141EF68, path, MAX_PATH);
 	safe_strncpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, path, MAX_PATH);
 
-	safe_strncpy(gScenarioSaveName, path_get_filename(path), MAX_PATH);
-	path_remove_extension(gScenarioSaveName);
+	safe_strncpy(gScenarioSavePath, path, MAX_PATH);
 
 	SDL_RWops* rw = SDL_RWFromFile(path, "rb");
 	if (rw == NULL) {
@@ -1033,19 +1032,12 @@ static int show_save_game_dialog(char *resultPath)
 void save_game()
 {
 	if (!gFirstTimeSave) {
-		utf8 path[MAX_PATH];
+		log_verbose("Saving to %s", gScenarioSavePath);
 
-		log_verbose("Saving to %s", gScenarioSaveName);
-
-		platform_get_user_directory(path, "save");
-
-		strcat(path, gScenarioSaveName);
-		strcat(path, ".sv6");
-
-		SDL_RWops* rw = SDL_RWFromFile(path, "wb+");
+		SDL_RWops* rw = SDL_RWFromFile(gScenarioSavePath, "wb+");
 		if (rw != NULL) {
 			scenario_save(rw, 0x80000000);
-			log_verbose("Saved to %s", gScenarioSaveName);
+			log_verbose("Saved to %s", gScenarioSavePath);
 			SDL_RWclose(rw);
 		}
 	} else {
@@ -1055,7 +1047,7 @@ void save_game()
 }
 void save_game_as()
 {
-	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, gScenarioSaveName);
+	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, gScenarioSavePath);
 }
 
 

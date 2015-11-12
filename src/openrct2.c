@@ -501,7 +501,8 @@ static bool openrct2_setup_rct2_segment()
 	// Linux will run OpenRCT2 as a native application and then load in the Windows PE, mapping the appropriate addresses as
 	// necessary. Windows does not need to do this as OpenRCT2 runs as a DLL loaded from the Windows PE.
 #ifdef __linux__
-	#define DATA_OFFSET 0x004A4000
+	#define RDATA_OFFSET 0x004A4000
+	#define DATASEG_OFFSET 0x005E2000
 
 	const char *exepath = "openrct2.exe";
 	gExeFd = open(exepath, O_RDONLY);
@@ -567,7 +568,9 @@ static bool openrct2_setup_rct2_segment()
 	}
 	// .rdata and real part of .data
 	// 0x9e2000 - 0x8a4000 = 0x13e000
-	memcpy(gDataSegment, fbase + DATA_OFFSET, 0x13e000);
+	memcpy(gDataSegment, fbase + RDATA_OFFSET, 0x13e000);
+	// 0x8a4000 + 0xb84000 = 0x1428000 aka DATASEG
+	memcpy(gDataSegment + 0xB84000, fbase + DATASEG_OFFSET, 0x1000);
 	err = munmap(fbase, file_size);
 	if (err != 0)
 	{
@@ -577,13 +580,15 @@ static bool openrct2_setup_rct2_segment()
 #endif // __linux__
 
 	// Check that the expected data is at various addresses.
-	const uint32 c1 = sawyercoding_calculate_checksum((void *)0x009ACFA4, 128);
-	const uint32 c2 = sawyercoding_calculate_checksum((void *)0x009ACFA4, 720 * 4);
-	const uint32 exp_c1 = 32640;
-	const uint32 exp_c2 = 734400;
+	// Start at 0x9a6000, which is start of .data, to skip the region containing addresses to DLL
+	// calls, which can be changed by windows/wine loader.
+	const uint32 c1 = sawyercoding_calculate_checksum((void *)0x009A6000, 0x009E0000 - 0x009A6000);
+	const uint32 c2 = sawyercoding_calculate_checksum((void *)0x01428000, 0x014282BC - 0x01428000);
+	const uint32 exp_c1 = 10114815;
+	const uint32 exp_c2 = 23564;
 	if (c1 != exp_c1 || c2 != exp_c2) {
 		log_warning("c1 = %u, expected %u, match %d", c1, exp_c1, c1 == exp_c1);
-		log_warning("c1 = %u, expected %u, match %d", c2, exp_c2, c2 == exp_c2);
+		log_warning("c2 = %u, expected %u, match %d", c2, exp_c2, c2 == exp_c2);
 		return false;
 	}
 

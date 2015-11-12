@@ -131,7 +131,7 @@ loadsave_list_item *_listItems = NULL;
 char _directory[MAX_PATH];
 char _shortenedDirectory[MAX_PATH];
 char _extension[32];
-char *_defaultName = NULL;
+char _defaultName[MAX_PATH];
 int _loadsaveType;
 int _type;
 
@@ -153,7 +153,12 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	int includeNewItem;
 	rct_window* w;
 	_type = type;
-	_defaultName = defaultName;
+	_defaultName[0] = 0;
+
+	if (!str_is_null_or_empty(defaultName)) {
+		safe_strncpy(_defaultName, path_get_filename(defaultName), sizeof(_defaultName));
+		path_remove_extension(_defaultName);
+	}
 
 	w = window_bring_to_front_by_class(WC_LOADSAVE);
 	if (w == NULL) {
@@ -769,8 +774,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 				network_begin_server(gConfigNetwork.default_port);
 			}
 
-			safe_strncpy(gScenarioSaveName, path_get_filename(path), MAX_PATH);
-			path_remove_extension(gScenarioSaveName);
+			safe_strncpy(gScenarioSavePath, path, MAX_PATH);
 			gFirstTimeSave = 0;
 
 			window_close(w);
@@ -791,8 +795,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			SDL_RWclose(rw);
 			if (success) {
 
-				safe_strncpy(gScenarioSaveName, path_get_filename(path), MAX_PATH);
-				path_remove_extension(gScenarioSaveName);
+				safe_strncpy(gScenarioSavePath, path, MAX_PATH);
 				gFirstTimeSave = 0;
 
 				window_close_by_class(WC_LOADSAVE);

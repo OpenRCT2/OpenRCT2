@@ -651,7 +651,12 @@ static void fetch_servers()
 		}
 	}
 	SDL_UnlockMutex(_mutex);
-	http_request_json_async(masterServerUrl, fetch_servers_callback);
+
+	http_json_request request;
+	request.url = masterServerUrl;
+	request.method = HTTP_METHOD_GET;
+	request.body = NULL;
+	http_request_json_async(&request, fetch_servers_callback);
 #endif
 }
 
@@ -721,7 +726,7 @@ static void fetch_servers_callback(http_json_response* response)
 	}
 	http_request_json_dispose(response);
 
-	rct_window* window = window_bring_to_front_by_class(WC_SERVER_LIST);
+	rct_window *window = window_find_by_class(WC_SERVER_LIST);
 	if (window != NULL) {
 		window_invalidate(window);
 	}

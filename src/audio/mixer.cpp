@@ -26,6 +26,7 @@ extern "C" {
 	#include "audio.h"
 }
 #include "mixer.h"
+#include <cmath>
 
 Mixer gMixer;
 
@@ -393,7 +394,7 @@ void Channel::SetPan(float pan)
 	if (pan < 0) {
 		Channel::pan = 0;
 	}
-	double decibels = (abs(Channel::pan - 0.5) * 2.0) * 100.0;
+	double decibels = (std::abs(Channel::pan - 0.5) * 2.0) * 100.0;
 	double attenuation = pow(10, decibels / 20.0);
 	if (Channel::pan <= 0.5) {
 		volume_l = 1.0;

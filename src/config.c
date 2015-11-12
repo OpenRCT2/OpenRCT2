@@ -229,7 +229,7 @@ config_property_definition _cheatDefinitions[] = {
 	{ offsetof(cheat_configuration, build_in_pause_mode),				"build_in_pause_mode",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(cheat_configuration, ignore_ride_intensity),				"ignore_ride_intensity",		CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(cheat_configuration, disable_vandalism),					"disable_vandalism",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
-	{ offsetof(cheat_configuration, ignore_rain_rides),					"ignore_rain_rides",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(cheat_configuration, ignore_rain_guest),					"ignore_rain_guest",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 };
 
 config_property_definition _twitchDefinitions[] = {
@@ -249,7 +249,10 @@ config_property_definition _networkDefinitions[] = {
 	{ offsetof(network_configuration, maxplayers),						"maxplayers",					CONFIG_VALUE_TYPE_UINT8,		16,								NULL					},
 	{ offsetof(network_configuration, server_name),						"server_name",					CONFIG_VALUE_TYPE_STRING,		{.value_string = "Server" },	NULL					},
 	{ offsetof(network_configuration, server_description),				"server_description",			CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL					},
-	{ offsetof(network_configuration, master_server_url),				"master_server_url",			CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL					}
+	{ offsetof(network_configuration, master_server_url),				"master_server_url",			CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL					},
+	{ offsetof(network_configuration, provider_name),					"provider_name",				CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL					},
+	{ offsetof(network_configuration, provider_email),					"provider_email",				CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL					},
+	{ offsetof(network_configuration, provider_website),				"provider_website",				CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL					}
 };
 
 config_section_definition _sectionDefinitions[] = {
@@ -1491,7 +1494,7 @@ static void title_sequence_open(const char *path, const char *customName)
 		token = &parts[0 * 128];
 		part1 = &parts[1 * 128];
 		part2 = &parts[2 * 128];
-		title_command command;
+		title_command command = { 0 };
 		command.command = 0xFF;
 
 		if (token[0] != 0) {

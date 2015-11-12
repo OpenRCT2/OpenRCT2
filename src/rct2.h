@@ -106,7 +106,6 @@ typedef utf16* utf16string;
 #define OPENRCT2_COMMIT_SHA1		""
 #define OPENRCT2_COMMIT_SHA1_SHORT	""
 #define OPENRCT2_MASTER_SERVER_URL	"https://servers.openrct2.website"
-#define OPENRCT2_MASTER_URL			""
 
 // Represent fixed point numbers. dp = decimal point
 typedef uint8 fixed8_1dp;
