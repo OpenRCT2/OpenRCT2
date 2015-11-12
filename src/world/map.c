@@ -1667,6 +1667,265 @@ const uint8 map_element_lower_styles[5][32] = {
 	{ 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x0B, 0x00, 0x0D, 0x0E, 0x00 },
 };
 
+//Hack: pushes variables to the stack before jumping to address
+//These functions are temporary and are used for debugging the decompiled code.
+static int callcode_push3(int address, int stackvar1, int stackvar2, int stackvar3, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
+{
+	int result;
+	
+	__asm__ ( "\
+		\n\
+		/* Store C's base pointer*/     \n\
+		push %%ebp        \n\
+		push %%ebx        \n\
+		\n\
+		/* Store %[address] to call*/   \n\
+		push %[address]         \n\
+		\n\
+		/* Set all registers to the input values*/      \n\
+		mov %[_eax], %%eax      \n\
+		mov (%%eax), %%eax  \n\
+		mov %[_ebx], %%ebx      \n\
+		mov (%%ebx), %%ebx  \n\
+		mov %[_ecx], %%ecx      \n\
+		mov (%%ecx), %%ecx  \n\
+		mov %[_edx], %%edx      \n\
+		mov (%%edx), %%edx  \n\
+		mov %[_esi], %%esi      \n\
+		mov (%%esi), %%esi  \n\
+		mov %[_edi], %%edi      \n\
+		mov (%%edi), %%edi  \n\
+		push $_foo \n\
+		push %[stackvar1] \n\
+		push %[stackvar2] \n\
+		push %[stackvar3] \n\
+		mov %[_ebp], %%ebp      \n\
+		mov (%%ebp), %%ebp  \n\
+		\n\
+		/* Call function*/      \n\
+		/* Push registers required by function */ \n\
+		/* call *(%%esp) */     \n\
+		jmp *16(%%esp)	\n\
+		_foo: \n\
+		\n\
+		/* Store output eax */ \n\
+		push %%eax \n\
+		push %%ebp \n\
+		push %%ebx \n\
+		mov 20(%%esp), %%ebp \n\
+		mov 16(%%esp), %%ebx \n\
+		/* Get resulting ecx, edx, esi, edi registers*/       \n\
+		mov %[_edi], %%eax      \n\
+		mov %%edi, (%%eax)  \n\
+		mov %[_esi], %%eax      \n\
+		mov %%esi, (%%eax)  \n\
+		mov %[_edx], %%eax      \n\
+		mov %%edx, (%%eax)  \n\
+		mov %[_ecx], %%eax      \n\
+		mov %%ecx, (%%eax)  \n\
+		/* Pop ebx reg into ecx*/ \n\
+		pop %%ecx		\n\
+		mov %[_ebx], %%eax \n\
+		mov %%ecx, (%%eax) \n\
+		\n\
+		/* Pop ebp reg into ecx */\n\
+		pop %%ecx \n\
+		mov %[_ebp], %%eax \n\
+		mov %%ecx, (%%eax) \n\
+		\n\
+		pop %%eax \n\
+		/* Get resulting eax register*/ \n\
+		mov %[_eax], %%ecx \n\
+		mov %%eax, (%%ecx) \n\
+		\n\
+		/* Save flags as return in eax*/  \n\
+		lahf \n\
+		/* Pop address*/ \n\
+		pop %%ebp \n\
+		\n\
+		pop %%ebx \n\
+		pop %%ebp \n\
+		/* Load result with flags */ \n\
+		mov %%eax, %[result] \n\
+		" : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp), [result] "+m" (result)
+
+		: [stackvar1] "m" (stackvar1), [stackvar2] "m" (stackvar2), [stackvar3] "m" (stackvar3)
+		: "eax","ecx","edx","esi","edi"
+	);
+	return result&0xFF00;
+}
+
+static int callcode_push2(int address, int stackvar1, int stackvar2, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
+{
+	int result;
+	
+	__asm__ ( "\
+		\n\
+		/* Store C's base pointer*/     \n\
+		push %%ebp        \n\
+		push %%ebx        \n\
+		\n\
+		/* Store %[address] to call*/   \n\
+		push %[address]         \n\
+		\n\
+		/* Set all registers to the input values*/      \n\
+		mov %[_eax], %%eax      \n\
+		mov (%%eax), %%eax  \n\
+		mov %[_ebx], %%ebx      \n\
+		mov (%%ebx), %%ebx  \n\
+		mov %[_ecx], %%ecx      \n\
+		mov (%%ecx), %%ecx  \n\
+		mov %[_edx], %%edx      \n\
+		mov (%%edx), %%edx  \n\
+		mov %[_esi], %%esi      \n\
+		mov (%%esi), %%esi  \n\
+		mov %[_edi], %%edi      \n\
+		mov (%%edi), %%edi  \n\
+		push $foo \n\
+		push %[stackvar1] \n\
+		push %[stackvar2] \n\
+		mov %[_ebp], %%ebp      \n\
+		mov (%%ebp), %%ebp  \n\
+		\n\
+		/* Call function*/      \n\
+		/* Push registers required by function */ \n\
+		/* call *(%%esp) */     \n\
+		jmp *12(%%esp)	\n\
+		foo: \n\
+		\n\
+		/* Store output eax */ \n\
+		push %%eax \n\
+		push %%ebp \n\
+		push %%ebx \n\
+		mov 20(%%esp), %%ebp \n\
+		mov 16(%%esp), %%ebx \n\
+		/* Get resulting ecx, edx, esi, edi registers*/       \n\
+		mov %[_edi], %%eax      \n\
+		mov %%edi, (%%eax)  \n\
+		mov %[_esi], %%eax      \n\
+		mov %%esi, (%%eax)  \n\
+		mov %[_edx], %%eax      \n\
+		mov %%edx, (%%eax)  \n\
+		mov %[_ecx], %%eax      \n\
+		mov %%ecx, (%%eax)  \n\
+		/* Pop ebx reg into ecx*/ \n\
+		pop %%ecx		\n\
+		mov %[_ebx], %%eax \n\
+		mov %%ecx, (%%eax) \n\
+		\n\
+		/* Pop ebp reg into ecx */\n\
+		pop %%ecx \n\
+		mov %[_ebp], %%eax \n\
+		mov %%ecx, (%%eax) \n\
+		\n\
+		pop %%eax \n\
+		/* Get resulting eax register*/ \n\
+		mov %[_eax], %%ecx \n\
+		mov %%eax, (%%ecx) \n\
+		\n\
+		/* Save flags as return in eax*/  \n\
+		lahf \n\
+		/* Pop address*/ \n\
+		pop %%ebp \n\
+		\n\
+		pop %%ebx \n\
+		pop %%ebp \n\
+		/* Load result with flags */ \n\
+		mov %%eax, %[result] \n\
+		" : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp), [result] "+m" (result)
+
+		: [stackvar1] "m" (stackvar1), [stackvar2] "m" (stackvar2)
+		: "eax","ecx","edx","esi","edi"
+	);
+	return result&0xFF00;
+}
+
+static int callcode_push1(int address, int stackvar, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
+{
+	int result;
+	
+	__asm__ ( "\
+		\n\
+		/* Store C's base pointer*/     \n\
+		push %%ebp        \n\
+		push %%ebx        \n\
+		\n\
+		/* Store %[address] to call*/   \n\
+		push %[address]         \n\
+		\n\
+		/* Set all registers to the input values*/      \n\
+		mov %[_eax], %%eax      \n\
+		mov (%%eax), %%eax  \n\
+		mov %[_ebx], %%ebx      \n\
+		mov (%%ebx), %%ebx  \n\
+		mov %[_ecx], %%ecx      \n\
+		mov (%%ecx), %%ecx  \n\
+		mov %[_edx], %%edx      \n\
+		mov (%%edx), %%edx  \n\
+		mov %[_esi], %%esi      \n\
+		mov (%%esi), %%esi  \n\
+		mov %[_edi], %%edi      \n\
+		mov (%%edi), %%edi  \n\
+		/* Hack: called code should return back to this function */ \n\
+		push $__foo \n\
+		/* Push variable */\n\
+		push %[stackvar] \n\
+		mov %[_ebp], %%ebp      \n\
+		mov (%%ebp), %%ebp  \n\
+		\n\
+		/* Call function*/      \n\
+		/* call *(%%esp) */     \n\
+		/* int $3 */\n\
+		jmp *8(%%esp)	\n\
+		__foo: \n\
+		\n\
+		/* Store output eax */ \n\
+		push %%eax \n\
+		push %%ebp \n\
+		push %%ebx \n\
+		mov 20(%%esp), %%ebp \n\
+		mov 16(%%esp), %%ebx \n\
+		/* Get resulting ecx, edx, esi, edi registers*/       \n\
+		mov %[_edi], %%eax      \n\
+		mov %%edi, (%%eax)  \n\
+		mov %[_esi], %%eax      \n\
+		mov %%esi, (%%eax)  \n\
+		mov %[_edx], %%eax      \n\
+		mov %%edx, (%%eax)  \n\
+		mov %[_ecx], %%eax      \n\
+		mov %%ecx, (%%eax)  \n\
+		/* Pop ebx reg into ecx*/ \n\
+		pop %%ecx		\n\
+		mov %[_ebx], %%eax \n\
+		mov %%ecx, (%%eax) \n\
+		\n\
+		/* Pop ebp reg into ecx */\n\
+		pop %%ecx \n\
+		mov %[_ebp], %%eax \n\
+		mov %%ecx, (%%eax) \n\
+		\n\
+		pop %%eax \n\
+		/* Get resulting eax register*/ \n\
+		mov %[_eax], %%ecx \n\
+		mov %%eax, (%%ecx) \n\
+		\n\
+		/* Save flags as return in eax*/  \n\
+		lahf \n\
+		/* Pop address*/ \n\
+		pop %%ebp \n\
+		\n\
+		pop %%ebx \n\
+		pop %%ebp \n\
+		/* Load result with flags */ \n\
+		mov %%eax, %[result] \n\
+		" : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp), [result] "+m" (result)
+
+		: [stackvar] "m" (stackvar)
+		: "eax","ecx","edx","esi","edi"
+	);
+	return result&0xFF00;
+}
+
 static money32 map_set_land_height(int flags, int x, int y, int height, int style, int selectionType)
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
@@ -1709,10 +1968,261 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 			return MONEY32_UNDEFINED;
 		}
 	}
+	
+	/*	Continuing dissassembly - work in progress
+	 *	Known bugs:
+	 *		Raising the corner of a piece of land doesn't remove walls.
+	 *		Small scenery elements (ones that take up 1/4 of a tile) are not removed when changing land height.
+	 *	Original bugs:
+	 *		Lowering the land tile underneath a wall removes the wall.
+	 *		Land can be raised over flat scenery items (gardens, for example) without removing them.
+	 */
+	
+	int eax = x, ebx = flags, ecx = y, edi = selectionType << 5, ebp = 0;
+	uint32 edx = (style << 8) | height;
+	uint32 esi = 0;
+	
+	//Uncomment to use vanilla code
+	//RCT2_CALLFUNC_X(0x006639FE, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
+	
+	RCT2_GLOBAL(0x9E2E18, uint32) = 0;
+	if(ebx&GAME_COMMAND_FLAG_APPLY)
+	{
+		footpath_remove_litter(eax, ebx, map_element_height(eax, ecx));
+		//Hmmm... I have a bug in here where raising the corner of a tile doesn't remove walls on it.
+		map_remove_walls_at(eax, ecx, edx*8-16, edx*8+32);
+	}
+	
+	RCT2_GLOBAL(0x9E2E18, uint32) += 0xC8;
+	
+	//RCT2_CALLFUNC_X(0x663A3A, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
+	
+	int saved_eax = eax;
+	int saved_ecx = ecx;
+	unsigned int saved_edx = edx;
+	
+	/*
+	esi = ecx&0xFFFF; //movzx esi, cx
+	esi <<= 8;
+	esi |= eax;
+	esi >>= 3;
+	esi = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, uint32)[(int)esi/4];
+	*/
+	esi = (int)map_get_first_element_at(eax/32, ecx/32);
+	
+	uint8 *pdl = (uint8 *)&edx;
+	uint8 *pdh = (uint8 *)&edx+1;
+	uint8 *pbl = (uint8 *)&ebx;
+	uint8 *pbh = (uint8 *)&ebx+1;
+	
+	*pdh = *pdl;
+	*pdh += 4;
+	
+loc_663A54:
+	eax = map_element_get_type((rct_map_element *)esi);
+	if(eax!=MAP_ELEMENT_TYPE_SCENERY)
+		goto loc_663AA3;
+	if(*pdl>((rct_map_element *)esi)->clearance_height)
+		goto loc_663AA3;
+	if(*pdh<((rct_map_element *)esi)->base_height)
+		goto loc_663AA3;
+	eax = ((rct_map_element *)esi)->properties.scenery.type;
+	eax = RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES, uint32)[eax];
+	if(((rct_scenery_entry *)eax)->small_scenery.height>0x40) //cmp byte ptr [eax+0Ah], 40h; jbe short loc_663A87
+	{
+		if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32)&PARK_FLAGS_FORBID_TREE_REMOVAL)
+		{
+			//rct2: 0x663C45
+			map_obstruction_set_error_text((rct_map_element *)esi);
+			return MONEY32_UNDEFINED;
+		}
+	}
+	//rct2: 0x663A87
+	//callcode_push3(0x663A87, saved_eax, saved_ecx, saved_edx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
+	ecx = ((rct_scenery_entry *)eax)->small_scenery.removal_price*10;
+	RCT2_GLOBAL(0x9E2E18, uint32) += ecx;
+	//rct2: 0x663A94
+	if((ebx&GAME_COMMAND_FLAG_APPLY))
+	{
+		map_element_remove((rct_map_element *)esi);
+		esi = esi-8;
+	}
+loc_663AA3:
+	esi = esi+8;
+	if(!((*(uint8 *)esi-7)&MAP_ELEMENT_FLAG_LAST_TILE))
+		goto loc_663A54;
+	edx = saved_edx;
+	ecx = saved_ecx;
+	eax = saved_eax;
+	saved_eax = eax;
+	int saved_ebx = ebx;
+	saved_ecx = ecx;
+	
+	//callcode_push3(0x663AB2, saved_eax, saved_ebx, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
+	
+	/*
+	esi = ecx&0xFFFF; //movzx esi, cx
+	esi <<= 8;
+	esi |= eax&0xFFFF; //or si, ax
+	esi >>= 3;
+	esi = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, uint32)[esi/4];
+	*/
+	esi = (int)map_get_first_element_at(eax/32, ecx/32);
+	//callcode_push3(0x663AC4, saved_eax, saved_ebx, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
+	
+loc_663AC4:
+	eax = ((rct_map_element *)esi)->type;
+	eax &= 0x3C;
+	if(eax==8)
+	{
+		ebp = ((rct_map_element *)esi)->properties.track.ride_index; //not sure what union member we need here. [esi+7]
+		ebp *= 0x260;
+		eax = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[ebp/0x260].subtype;
+		eax = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, uint32)[eax];
+		
+		eax = ((rct_ride_type *)eax)->max_height;
+		if(eax==0)
+		{
+			eax = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[ebp/0x260].type;
+			eax = RCT2_GLOBAL(0x97D218+eax*8, uint8);
+		}
+		//rct2: 0x663AFC
+		ebx = ((rct_map_element *)esi)->clearance_height;
+		ebx -= *pdl;
+		if(ebx>=0)
+		{
+			ebx >>= 1;
+			if(ebx>eax)
+			{
+				//rct2: 0x663B09
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_SUPPORTS_CANT_BE_EXTENDED;
+				return MONEY32_UNDEFINED;
+			}
+		}
+	}
+loc_663B1A:
+	esi += 8;
+	if(!((*(uint8 *)esi-7)&MAP_ELEMENT_FLAG_LAST_TILE))
+		goto loc_663AC4;
+	
+	ecx = saved_ecx;
+	ebx = saved_ebx;
+	eax = saved_eax;
+	saved_ecx = ecx;
+	
+	//callcode_push1(0x663B27, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
+	
+	esi = ecx&0xFFFF;
+	esi <<= 8;
+	esi |= eax&0xFFFF;
+	esi >>= 3;
+	esi = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, uint32)[esi/4];
+	
+	//callcode_push1(0x663B39, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
+	
+	while((((rct_map_element *)esi)->type&0x3C))
+		esi += 8;
+	if(!((rct_map_element *)esi)->type&0x40)
+		goto loc_663B72;
+	ecx = *((uint8 *)esi+5); //Don't know which union member to use yet.
+	ecx &= 0x1F;
+	if(ecx==0)
+		goto loc_663B72;
+	ecx <<= 1;
+	ecx -= 2;
+	*pbh = *pdl;
+	if((*pdh&0x1F))
+	{
+		*pbh += 2;
+		if((*pdh&0x10))
+		{
+			*pbh += 2;
+		}
+	}
+loc_663B6A:
+	if(*pbh>ecx)
+	{
+		//rct2: 0x663C5A
+		ecx = saved_ecx;
+		esi += 8;
+		map_obstruction_set_error_text((rct_map_element *)esi);
+		return MONEY32_UNDEFINED;
+	}
+loc_663B72:
+	ecx = saved_ecx;
+	
+	//RCT2_CALLFUNC_X(0x663B73, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
 
-	int eax = x, ebx = flags, ecx = y, edx = (style << 8) | height, esi = 0, edi = selectionType << 5, ebp = 0;
-	RCT2_CALLFUNC_X(0x006639FE, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	*pbh = *pdl;
+	if((*pdh&0xF))
+	{
+		*pbh += 2;
+		if((*pdh&0x10))
+		{
+			*pbh += 2;
+		}
+	}
+loc_663B85:
+	saved_ebx = ebx;
+	saved_edx = edx;
+	int saved_ebp = ebp;
+	
+	//callcode_push3(0x663B88, saved_ebx, saved_edx, saved_ebp, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
+	
+	*pbl = *pdh;
+	*pdh = *pbh;
+	*pbl = 0xF;
+	ebp = (int)RCT2_ADDRESS(0x663CB9, void);
+	if(map_can_construct_with_clear_at(eax&0xFFFF, ecx&0xFFFF, *pdl, *pdh, (void *)ebp, *pbl)==false)
+		return MONEY32_UNDEFINED;
+	ebp = saved_ebp;
+	edx = saved_edx;
+	ebx = saved_ebx;
+	saved_eax = eax;
+	saved_ecx = ecx;
+	
+	//callcode_push2(0x663BA3, saved_eax, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
+	
+	edi = ecx&0xFFFF;
+	edi <<= 8;
+	edi = (edi|eax)&0xFFFF;
+	edi >>= 3;
+	edi = (uint32)RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element *)[edi/4];
+loc_663BB5:
+	//callcode_push2(0x663BB5, saved_eax, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
+	eax = ((rct_map_element *)edi)->type;
+	eax &= 0x3C;
+	if(eax==0x14)
+		goto loc_663BD9;
+	if(eax==0xC)
+		goto loc_663BD9;
+	if(((rct_map_element *)edi)->flags&0x10)
+		goto loc_663BD9;
+	if(edi==esi)
+		goto loc_663BD9;
+	if(edi>esi)
+		goto loc_663BD4;
+	if(*pdl<((rct_map_element *)edi)->clearance_height)
+		goto loc_663C4F;
+	goto loc_663BD9;
+loc_663BD4:
+	if(*pbh>((rct_map_element *)edi)->base_height)
+		goto loc_663C4F;
+loc_663BD9:
+	edi += 8;
+	if(!(*((uint8 *)edi-7)&MAP_ELEMENT_FLAG_LAST_TILE))
+		goto loc_663BB5;
+	ecx = saved_ecx;
+	eax = saved_eax;
+	
+	//To be continued...
+	RCT2_CALLFUNC_X(0x663BE4, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp);
 	return ebx;
+	
+loc_663C4F:
+	esi = edi;
+	map_obstruction_set_error_text((rct_map_element *)esi);
+	return MONEY32_UNDEFINED;
 }
 
 void game_command_set_land_height(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
