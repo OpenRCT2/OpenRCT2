@@ -40,6 +40,7 @@ typedef struct {
 	char *address;
 	utf8 *name;
 	bool requiresPassword;
+	bool haspassword;
 	utf8 *description;
 	char *version;
 	bool favorite;
@@ -218,10 +219,7 @@ static void window_server_list_mouseup(rct_window *w, int widgetIndex)
 		window_text_input_open(w, widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, STR_NONE, 0, 128);
 		break;
 	case WIDX_START_SERVER:
-<<<<<<< HEAD
-=======
 		server_list_update_player_name();
->>>>>>> 3b639ce... allow host to specify password #2072
 		window_server_start_open();
 		break;
 	}
@@ -484,6 +482,7 @@ static void server_list_load_saved_servers()
 		serverInfo->address = freadstralloc(file);
 		serverInfo->name = freadstralloc(file);
 		serverInfo->requiresPassword = false;
+		serverInfo->haspassword = false;
 		serverInfo->description = freadstralloc(file);
 		serverInfo->version = _strdup("");
 		serverInfo->favorite = true;
@@ -578,6 +577,7 @@ static saved_server* add_saved_server(char *address)
 	newserver->address = _strdup(address);
 	newserver->name = _strdup(address);
 	newserver->requiresPassword = false;
+	newserver->haspassword = false;
 	newserver->description = _strdup("");
 	newserver->version = _strdup("");
 	newserver->favorite = false;
@@ -656,6 +656,17 @@ static void fetch_servers()
 	}
 	SDL_UnlockMutex(_mutex);
 	http_request_json_async(masterServerUrl, fetch_servers_callback);
+	if(strlen(gConfigNetwork.master_url) > 0){
+		SDL_LockMutex(_mutex);
+		for (int i = 0; i < _numSavedServers; i++) {
+			if (!_savedServers[i].favorite) {
+				remove_saved_server(i);
+				i = 0;
+			}
+		}
+		SDL_UnlockMutex(_mutex);
+		http_request_json_async(gConfigNetwork.master_url, fetch_servers_callback);
+	}
 #endif
 }
 
@@ -725,6 +736,36 @@ static void fetch_servers_callback(http_json_response* response)
 	}
 	http_request_json_dispose(response);
 
+	if (response && json_is_array(response->root)) {
+		int count = json_array_size(response->root);
+		for (int i = 0; i < count; i++) {
+			json_t *server = json_array_get(response->root, i);
+			if (!json_is_object(server))
+				continue;
+
+			json_t *address = json_object_get(server, "address");
+			json_t *name = json_object_get(server, "name");
+			json_t *haspassword = json_object_get(server, "haspassword");
+			json_t *description = json_object_get(server, "description");
+			json_t *version = json_object_get(server, "version");
+			json_t *players = json_object_get(server, "players");
+			json_t *maxplayers = json_object_get(server, "maxplayers");
+
+			SDL_LockMutex(_mutex);
+			saved_server* newserver = add_saved_server((char*)json_string_value(address));
+			SafeFree(newserver->name);
+			newserver->name = _strdup(json_string_value(name));
+			newserver->haspassword = (uint8)json_integer_value(haspassword);
+			SafeFree(newserver->description);
+			newserver->description = _strdup(json_string_value(description));
+			SafeFree(newserver->version);
+			newserver->version = _strdup(json_string_value(version));
+			newserver->players = (uint8)json_integer_value(players);
+			newserver->maxplayers = (uint8)json_integer_value(maxplayers);
+			SDL_UnlockMutex(_mutex);
+		}
+		http_request_json_dispose(response);
+	}
 	rct_window* window = window_bring_to_front_by_class(WC_SERVER_LIST);
 	if (window != NULL) {
 		window_invalidate(window);

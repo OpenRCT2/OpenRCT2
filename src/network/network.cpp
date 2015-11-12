@@ -548,6 +548,8 @@ bool Network::BeginServer(unsigned short port, const char* address)
 		advertise_status = ADVERTISE_STATUS_UNREGISTERED;
 	}
 #endif
+
+	Advertise();
 	return true;
 }
 
@@ -626,6 +628,9 @@ void Network::UpdateServer()
 		break;
 	}
 
+	if (SDL_TICKS_PASSED(SDL_GetTicks(), last_advertise_time + 60000)) {
+		Advertise();
+	}
 	SOCKET socket = accept(listening_socket, NULL, NULL);
 	if (socket == INVALID_SOCKET) {
 		if (LAST_SOCKET_ERROR() != EWOULDBLOCK) {
@@ -923,7 +928,18 @@ void Network::Client_Send_AUTH(const char* name, const char* password)
 	safe_strncpy(Network::password, password, sizeof(Network::password));
 }
 
-void Network::Client_Send_AUTH(const char* gameversion, const char* name, const char* password)
+void Network::Advertise()
+{
+	if (gConfigNetwork.advertise && strlen(gConfigNetwork.master_url) > 0) {
+		last_advertise_time = SDL_GetTicks();
+#ifndef DISABLE_HTTP
+		std::string url = gConfigNetwork.master_url + std::string("?port=") + std::to_string(listening_port);
+		http_request_json_async(url.c_str(), [](http_json_response *response)->void{});
+#endif
+	}
+}
+
+void Network::Client_Send_AUTH(const char* name, const char* password)
 {
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_AUTH;
@@ -1068,6 +1084,11 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
 	json_object_set(obj, "players", json_integer(player_list.size()));
 	json_object_set(obj, "maxPlayers", json_integer(gConfigNetwork.maxplayers));
 	json_object_set(obj, "description", json_string(gConfigNetwork.server_description));
+	json_object_set(obj, "haspassword", json_integer(password.size() > 0 ? 1 : 0));
+	json_object_set(obj, "description", json_string(""));
+	json_object_set(obj, "version", json_string(OPENRCT2_VERSION));
+	json_object_set(obj, "players", json_integer(player_list.size()));
+	json_object_set(obj, "maxplayers", json_integer(gConfigNetwork.maxplayers));
 	packet->WriteString(json_dumps(obj, 0));
  	json_object_clear(obj);
 #endif
@@ -1257,14 +1278,14 @@ int Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& pa
 		if (!name) {
 			connection.authstatus = NETWORK_AUTH_BADNAME;
 		} else
-		if ((!password || strlen(password) == 0) && Network::password.size() > 0) {
+		if ((!password || strlen(password) == 0) && Network::password.size() > 0) {\
 			connection.authstatus = NETWORK_AUTH_REQUIREPASSWORD;
 		} else
 		if (password && Network::password != password) {
 		if (!password || strlen(password) == 0) {
 			connection.authstatus = NETWORK_AUTH_REQUIREPASSWORD;
 		} else
-		if (strcmp(password, Network::password) != 0) {
+		if (password && Network::password != password) {
 			connection.authstatus = NETWORK_AUTH_BADPASSWORD;
 		} else
 		if (gConfigNetwork.maxplayers <= player_list.size()) {
@@ -1456,10 +1477,12 @@ int Network::Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket
 
 int Network::Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet)
 {
-	static char msg[100] = {0};
+	static std::string msg;
 	const char* disconnectmsg = packet.ReadString();
 	if (disconnectmsg) {
 		safe_strncpy(msg, disconnectmsg, sizeof(msg));
+		msg = disconnectmsg;
+		connection.last_disconnect_reason = msg.c_str();
 	}
 	return 1;
 }
@@ -1621,10 +1644,8 @@ int network_get_player_id(unsigned int index) { return 0; }
 void network_send_chat(const char* text) {}
 void network_send_password(const char* password) {}
 void network_close() {}
-<<<<<<< HEAD
 void network_shutdown_client() {}
-=======
->>>>>>> 3b639ce... allow host to specify password #2072
+void network_shutdown_client() {}
 void network_kick_player(int playerId) {}
 void network_set_password(const char* password) {}
 uint8 network_get_current_player_id() { return 0; }

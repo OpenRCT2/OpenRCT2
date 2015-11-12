@@ -220,6 +220,7 @@ typedef struct {
 	utf8string server_name;
 	utf8string server_description;
 	utf8string master_server_url;
+	utf8string master_url;
 } network_configuration;
 
 typedef struct theme_window {

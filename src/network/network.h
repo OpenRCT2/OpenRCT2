@@ -222,8 +222,9 @@ public:
 	void AdvertiseHeartbeat();
 
 	void Client_Send_AUTH(const char* name, const char* password);
+	void Advertise();
 
-	void Client_Send_AUTH(const char* gameversion, const char* name, const char* password);
+	void Client_Send_AUTH(const char* name, const char* password);
 	void Server_Send_AUTH(NetworkConnection& connection);
 	void Server_Send_MAP(NetworkConnection* connection = nullptr);
 	void Client_Send_CHAT(const char* text);
