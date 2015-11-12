@@ -1493,7 +1493,7 @@ static void title_sequence_open(const char *path, const char *customName)
 		token = &parts[0 * 128];
 		part1 = &parts[1 * 128];
 		part2 = &parts[2 * 128];
-		title_command command;
+		title_command command = { 0 };
 		command.command = 0xFF;
 
 		if (token[0] != 0) {

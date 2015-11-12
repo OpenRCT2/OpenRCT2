@@ -497,7 +497,7 @@ void scenario_success_submit_name(const char *name)
  **/
 void scenario_entrance_fee_too_high_check()
 {
-	uint16 x, y;
+	uint16 x = 0, y = 0;
 	uint16 totalRideValue = RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, uint16);
 	uint16 park_entrance_fee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
 	int max_fee = totalRideValue + (totalRideValue / 2);

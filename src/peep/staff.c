@@ -389,6 +389,7 @@ uint16 hire_new_staff_member(uint8 staffType)
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_HIRE_NEW_STAFF;
 
 	int eax, ebx, ecx, edx, esi, edi, ebp;
+	ecx = edx = esi = edi = ebp = 0;
 	eax = 0x8000;
 	ebx = staffType << 8 | GAME_COMMAND_FLAG_APPLY;
 

@@ -5341,6 +5341,9 @@ static void window_ride_graphs_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 			top = measurement->lateral[x] + 52;
 			bottom = measurement->lateral[x + 1] + 52;
 			break;
+		default:
+			log_error("Wrong graph type %d", listType);
+			top = bottom = 0;
 		}
 
 		top = widget->bottom - widget->top - top - 13;
