@@ -1088,7 +1088,8 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
 	json_object_set(obj, "description", json_string(""));
 	json_object_set(obj, "version", json_string(OPENRCT2_VERSION));
 	json_object_set(obj, "players", json_integer(player_list.size()));
-	json_object_set(obj, "maxplayers", json_integer(gConfigNetwork.maxplayers));
+	json_object_set(obj, "maxPlayers", json_integer(gConfigNetwork.maxplayers));
+	json_object_set(obj, "description", json_string(gConfigNetwork.server_description));
 	packet->WriteString(json_dumps(obj, 0));
  	json_object_clear(obj);
 #endif
