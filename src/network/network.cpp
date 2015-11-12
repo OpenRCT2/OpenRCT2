@@ -615,7 +615,7 @@ void Network::UpdateServer()
 
 	switch (advertise_status) {
 	case ADVERTISE_STATUS_UNREGISTERED:
-		if (SDL_TICKS_PASSED(SDL_GetTicks(), last_advertise_time + MASTER_SERVER_REGISTER_TIME)) {
+		if (last_advertise_time == 0 || SDL_TICKS_PASSED(SDL_GetTicks(), last_advertise_time + MASTER_SERVER_REGISTER_TIME)) {
 			AdvertiseRegister();
 		}
 		break;
@@ -994,8 +994,7 @@ void Network::AdvertiseHeartbeat()
 	// Send the heartbeat request
 	std::string url = GetMasterServerUrl()
 		+ std::string("?command=heartbeat&token=") + advertise_token
-		+ std::string("key=") + advertise_key
-		+ std::string("players=") + std::to_string(network_get_num_players());
+		+ std::string("&players=") + std::to_string(network_get_num_players());
 
 	// TODO send status data (e.g. players) via JSON body
 
