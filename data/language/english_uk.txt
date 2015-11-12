@@ -3917,6 +3917,7 @@ STR_5575    :Max Players:
 STR_5576    :Port:
 STR_5577    :South Korean Won (W)
 STR_5578    :Russian Rouble (R)
+STR_5579    :Guests ignore rain when visiting attractions
 
 #####################
 # Rides/attractions # 

@@ -7917,7 +7917,7 @@ static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 pric
 
 	if ((shopItem == SHOP_ITEM_BALLOON) || (shopItem == SHOP_ITEM_ICE_CREAM)
 		|| (shopItem == SHOP_ITEM_COTTON_CANDY) || (shopItem == SHOP_ITEM_SUNGLASSES)) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) != 0)
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) != 0 && !gConfigCheat.ignore_rain_guest)
 			return 0;
 	}
 
@@ -8344,18 +8344,20 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 						}
 					}
 
-					// Peeps won't go on rides that aren't sufficiently undercover while it's raining.
-					// The threshold is fairly low and only requires about 10-15% of the ride to be undercover.
-					if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8) != 0 && (ride->undercover_portion >> 5) < 3) {
-						if (peepAtRide) {
-							peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NOT_WHILE_RAINING, rideIndex);
-							if (peep->happiness_growth_rate >= 64) {
-								peep->happiness_growth_rate -= 8;
+					if (!gConfigCheat.ignore_rain_guest) {
+						// Peeps won't go on rides that aren't sufficiently undercover while it's raining.
+						// The threshold is fairly low and only requires about 10-15% of the ride to be undercover.
+						if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8) != 0 && (ride->undercover_portion >> 5) < 3) {
+							if (peepAtRide) {
+								peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NOT_WHILE_RAINING, rideIndex);
+								if (peep->happiness_growth_rate >= 64) {
+									peep->happiness_growth_rate -= 8;
+								}
+								ride_update_popularity(ride, 0);
 							}
-							ride_update_popularity(ride, 0);
+							peep_chose_not_to_go_on_ride(peep, rideIndex, peepAtRide, true);
+							return false;
 						}
-						peep_chose_not_to_go_on_ride(peep, rideIndex, peepAtRide, true);
-						return false;
 					}
 
 					if (!gConfigCheat.ignore_ride_intensity) {

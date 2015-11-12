@@ -229,6 +229,7 @@ config_property_definition _cheatDefinitions[] = {
 	{ offsetof(cheat_configuration, build_in_pause_mode),				"build_in_pause_mode",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(cheat_configuration, ignore_ride_intensity),				"ignore_ride_intensity",		CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(cheat_configuration, disable_vandalism),					"disable_vandalism",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(cheat_configuration, ignore_rain_guest),					"ignore_rain_guest",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 };
 
 config_property_definition _twitchDefinitions[] = {
