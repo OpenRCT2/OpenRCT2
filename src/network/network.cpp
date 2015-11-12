@@ -924,104 +924,6 @@ void Network::AdvertiseHeartbeat()
 
 void Network::Client_Send_AUTH(const char* name, const char* password)
 {
-	safe_strncpy(Network::password, password, sizeof(Network::password));
-}
-
-void Network::Advertise()
-{
-	// Generate a string of 16 random hex characters (64-integer key as a hex formatted string)
-	static char hexChars[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
-	char key[17];
-	for (int i = 0; i < 16; i++) {
-		int hexCharIndex = rand() % countof(hexChars);
-		key[i] = hexChars[hexCharIndex];
-	}
-	key[countof(key) - 1] = 0;
-
-	return key;
-}
-
-const char *Network::GetMasterServerUrl()
-{
-	if (str_is_null_or_empty(gConfigNetwork.master_server_url)) {
-		return OPENRCT2_MASTER_SERVER_URL;
-	} else {
-		return gConfigNetwork.master_server_url;
-	}
-}
-
-void Network::AdvertiseRegister()
-{
-#ifndef DISABLE_HTTP
-	last_advertise_time = SDL_GetTicks();
-
-	// Send the registration request
-	std::string url = GetMasterServerUrl()
-		+ std::string("?command=register&port=") + std::to_string(listening_port)
-		+ std::string("key=") + advertise_key;
-	http_request_json_async(url.c_str(), [](http_json_response *response) -> void {
-		if (response == NULL) {
-			log_warning("Unable to connect to master server");
-			return;
-		}
-
-		json_t *jsonStatus = json_object_get(response->root, "status");
-		if (json_is_integer(jsonStatus)) {
-			int status = (int)json_integer_value(jsonStatus);
-			if (status == MASTER_SERVER_STATUS_OK) {
-				json_t *jsonToken = json_object_get(response->root, "token");
-				if (json_is_string(jsonToken)) {
-					gNetwork.advertise_token = json_string_value(jsonToken);
-					gNetwork.advertise_status = ADVERTISE_STATUS_REGISTERED;
-				}
-			} else {
-				const char *message = "Invalid response from server";
-				json_t *jsonMessage = json_object_get(response->root, "message");
-				if (json_is_string(jsonMessage)) {
-					message = json_string_value(jsonMessage);
-				}
-				log_warning("Unable to advertise: %s", message);
-			}
-		}
-		http_request_json_dispose(response);
-	});
-#endif
-}
-
-void Network::AdvertiseHeartbeat()
-{
-#ifndef DISABLE_HTTP
-	// Send the heartbeat request
-	std::string url = GetMasterServerUrl()
-		+ std::string("?command=heartbeat&token=") + advertise_token
-		+ std::string("&players=") + std::to_string(network_get_num_players());
-
-	// TODO send status data (e.g. players) via JSON body
-
-	gNetwork.last_heartbeat_time = SDL_GetTicks();
-	http_request_json_async(url.c_str(), [](http_json_response *response) -> void {
-		if (response == NULL) {
-			log_warning("Unable to connect to master server");
-			return;
-		}
-
-		json_t *jsonStatus = json_object_get(response->root, "status");
-		if (json_is_integer(jsonStatus)) {
-			int status = (int)json_integer_value(jsonStatus);
-			if (status == MASTER_SERVER_STATUS_OK) {
-				// Master server has successfully updated our server status
-			} else if (status == MASTER_SERVER_STATUS_INVALID_TOKEN) {
-				gNetwork.advertise_status = ADVERTISE_STATUS_UNREGISTERED;
-				log_warning("Master server heartbeat failed: Invalid Token");
-			}
-		}
-		http_request_json_dispose(response);
-	});
-#endif
-}
-
-void Network::Client_Send_AUTH(const char* name, const char* password)
-{
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_AUTH;
 	packet->WriteString(OPENRCT2_VERSION);
@@ -1029,10 +931,6 @@ void Network::Client_Send_AUTH(const char* name, const char* password)
 	packet->WriteString(password);
 	server_connection.authstatus = NETWORK_AUTH_REQUESTED;
 	server_connection.QueuePacket(std::move(packet));
-}
-
-void Network::Server_Send_AUTH(NetworkConnection& connection)
-{
 	uint8 new_playerid = 0;
 	if (connection.player) {
 		new_playerid = connection.player->id;
@@ -1161,12 +1059,6 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
 	json_t* obj = json_object();
 	json_object_set(obj, "name", json_string(gConfigNetwork.server_name));
 	json_object_set(obj, "requiresPassword", json_boolean(password.size() > 0));
-	json_object_set(obj, "version", json_string(OPENRCT2_VERSION));
-	json_object_set(obj, "players", json_integer(player_list.size()));
-	json_object_set(obj, "maxPlayers", json_integer(gConfigNetwork.maxplayers));
-	json_object_set(obj, "description", json_string(gConfigNetwork.server_description));
-	json_object_set(obj, "haspassword", json_integer(password.size() > 0 ? 1 : 0));
-	json_object_set(obj, "description", json_string(""));
 	json_object_set(obj, "version", json_string(OPENRCT2_VERSION));
 	json_object_set(obj, "players", json_integer(player_list.size()));
 	json_object_set(obj, "maxPlayers", json_integer(gConfigNetwork.maxplayers));
@@ -1360,11 +1252,7 @@ int Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& pa
 		if (!name) {
 			connection.authstatus = NETWORK_AUTH_BADNAME;
 		} else
-		if ((!password || strlen(password) == 0) && Network::password.size() > 0) {\
-			connection.authstatus = NETWORK_AUTH_REQUIREPASSWORD;
-		} else
-		if (password && Network::password != password) {
-		if (!password || strlen(password) == 0) {
+		if ((!password || strlen(password) == 0) && Network::password.size() > 0) {
 			connection.authstatus = NETWORK_AUTH_REQUIREPASSWORD;
 		} else
 		if (password && Network::password != password) {
@@ -1386,14 +1274,6 @@ int Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& pa
 				gNetwork.Server_Send_CHAT(text);
 				Server_Send_MAP(&connection);
 			}
-		}
-		Server_Send_AUTH(connection);
-		std::unique_ptr<NetworkPacket> responsepacket = std::move(NetworkPacket::Allocate());
-		*responsepacket << (uint32)NETWORK_COMMAND_AUTH << (uint32)connection.authstatus << (uint8)playerid;
-		connection.QueuePacket(std::move(responsepacket));
-		if (connection.authstatus != NETWORK_AUTH_OK) {
-			shutdown(connection.socket, SHUT_RD);
-			connection.SendQueuedPackets();
 		}
 		Server_Send_AUTH(connection);
 	}
@@ -1562,7 +1442,6 @@ int Network::Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, Netwo
 	static std::string msg;
 	const char* disconnectmsg = packet.ReadString();
 	if (disconnectmsg) {
-		safe_strncpy(msg, disconnectmsg, sizeof(msg));
 		msg = disconnectmsg;
 		connection.last_disconnect_reason = msg.c_str();
 	}
@@ -1688,9 +1567,6 @@ void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32
 void network_send_password(const char* password)
 {
 	gNetwork.Client_Send_AUTH(gConfigNetwork.player_name, password);
-void network_send_password(const char* password)
-{
-	gNetwork.Client_Send_AUTH(OPENRCT2_VERSION, gConfigNetwork.player_name, password);
 }
 
 void network_kick_player(int playerId)
@@ -1702,12 +1578,6 @@ void network_set_password(const char* password)
 {
 	gNetwork.SetPassword(password);
 }
-
-void network_set_password(const char* password)
-{
-	gNetwork.SetPassword(password);
-}
-
 #else
 int network_get_mode() { return NETWORK_MODE_NONE; }
 int network_get_status() { return NETWORK_STATUS_NONE; }
@@ -1726,7 +1596,6 @@ int network_get_player_id(unsigned int index) { return 0; }
 void network_send_chat(const char* text) {}
 void network_send_password(const char* password) {}
 void network_close() {}
-void network_shutdown_client() {}
 void network_shutdown_client() {}
 void network_kick_player(int playerId) {}
 void network_set_password(const char* password) {}

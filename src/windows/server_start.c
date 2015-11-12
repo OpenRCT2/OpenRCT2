@@ -42,7 +42,6 @@ enum {
 	WIDX_MAXPLAYERS,
 	WIDX_MAXPLAYERS_INCREASE,
 	WIDX_MAXPLAYERS_DECREASE,
-	WIDX_PASSWORD_INPUT,
 	WIDX_ADVERTISE_CHECKBOX,
 	WIDX_START_SERVER
 };
@@ -61,8 +60,6 @@ static rct_widget window_server_start_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	68,			72,		STR_NUMERIC_UP,			STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	72,			76,		STR_NUMERIC_DOWN,		STR_NONE },
 	{ WWT_CHECKBOX,			1,	6,		WW-8,	85,			91,		STR_ADVERTISE,			STR_NONE },					// advertise checkbox
-	{ WWT_TEXT_BOX,			1,	150,	WW-8,	20,			32,		(uint32)_password,		STR_NONE },					// password text box
-	{ WWT_CHECKBOX,			1,	6,		WW-8,	36,			45,		STR_ADVERTISE,			STR_NONE },					// advertise checkbox
 	{ WWT_DROPDOWN_BUTTON,	1,	6,		106,	WH-6-11,	WH-6,	STR_START_SERVER,		STR_NONE },					// start server button
 	{ WIDGETS_END },
 };
@@ -125,7 +122,6 @@ void window_server_start_open()
 		(1 << WIDX_MAXPLAYERS) |
 		(1 << WIDX_MAXPLAYERS_INCREASE) |
 		(1 << WIDX_MAXPLAYERS_DECREASE) |
-		(1 << WIDX_PASSWORD_INPUT) |
 		(1 << WIDX_ADVERTISE_CHECKBOX) |
 		(1 << WIDX_START_SERVER)
 	);
@@ -267,5 +263,4 @@ static void window_server_start_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	gfx_draw_string_left(dpi, STR_SERVER_NAME, NULL, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_NAME_INPUT].top);
 	gfx_draw_string_left(dpi, STR_PASSWORD, NULL, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_PASSWORD_INPUT].top);
 	gfx_draw_string_left(dpi, STR_MAX_PLAYERS, NULL, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_MAXPLAYERS].top);
-	gfx_draw_string_left(dpi, STR_PASSWORD, NULL, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_PASSWORD_INPUT].top);
 }
