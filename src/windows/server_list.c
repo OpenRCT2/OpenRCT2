@@ -664,9 +664,9 @@ static void fetch_servers()
 				i = 0;
 			}
 		}
-		SDL_UnlockMutex(_mutex);
-		http_request_json_async(gConfigNetwork.master_url, fetch_servers_callback);
 	}
+	SDL_UnlockMutex(_mutex);
+	http_request_json_async(masterServerUrl, fetch_servers_callback);
 #endif
 }
 

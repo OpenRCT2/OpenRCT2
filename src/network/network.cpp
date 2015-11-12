@@ -930,11 +930,17 @@ void Network::Client_Send_AUTH(const char* name, const char* password)
 
 void Network::Advertise()
 {
-	if (gConfigNetwork.advertise && strlen(gConfigNetwork.master_url) > 0) {
+	if (gConfigNetwork.advertise) {
 		last_advertise_time = SDL_GetTicks();
+
 #ifndef DISABLE_HTTP
-		std::string url = gConfigNetwork.master_url + std::string("?port=") + std::to_string(listening_port);
-		http_request_json_async(url.c_str(), [](http_json_response *response)->void{});
+		const char *masterServerUrl = OPENRCT2_MASTER_SERVER_URL;
+		if (!str_is_null_or_empty(gConfigNetwork.master_server_url)) {
+			masterServerUrl = gConfigNetwork.master_server_url;
+		}
+
+		std::string url = masterServerUrl + std::string("?port=") + std::to_string(listening_port);
+		http_request_json_async(url.c_str(), [](http_json_response *response)->void { });
 #endif
 	}
 }
