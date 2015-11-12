@@ -1123,13 +1123,14 @@ void game_command_set_scenery_colour(int* eax, int* ebx, int* ecx, int* edx, int
 	int y = *ecx;
 	uint8 base_height = *edx;
 	uint8 scenery_type = *edx >> 8;
-	uint8 map_element_type = *ebx >> 8;
 	uint8 color1 = *ebp;
 	uint8 color2 = *ebp >> 8;
+	uint8 flags = *ebx & 0xFF;
 	int z = base_height * 8;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
+
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode){
 		if (!map_is_location_owned(x, y, z)){
 			*ebx = MONEY32_UNDEFINED;
@@ -1137,22 +1138,21 @@ void game_command_set_scenery_colour(int* eax, int* ebx, int* ecx, int* edx, int
 		}
 	}
 
-	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
-	while(map_element->type != map_element_type ||
-		map_element->base_height != base_height ||
-		map_element->properties.scenery.type != scenery_type){
-		map_element++;
-		if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
-			*ebx = 0;
-			return;
-		}
-	}
-
-	if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST)){
+	// Previously it would do a search for type of bh (set from calling function) instead of just small scenery
+	// Unsure if this was a mistake.
+	rct_map_element* map_element = map_get_small_scenery_element_at(x, y, base_height, scenery_type);
+	
+	if (map_element == NULL) {
 		*ebx = 0;
 		return;
 	}
-	if(*ebx & GAME_COMMAND_FLAG_APPLY){
+
+	if((flags & GAME_COMMAND_FLAG_GHOST) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST)){
+		*ebx = 0;
+		return;
+	}
+
+	if(flags & GAME_COMMAND_FLAG_APPLY){
 		map_element->properties.scenery.colour_1 &= 0xE0;
 		map_element->properties.scenery.colour_1 |= color1;
 		map_element->properties.scenery.colour_2 &= 0xE0;
@@ -1177,43 +1177,50 @@ void game_command_set_fence_colour(int* eax, int* ebx, int* ecx, int* edx, int* 
 	uint8 color1 = *ebx >> 8;
 	uint8 color2 = *ebp;
 	uint8 color3 = *ebp >> 8;
+	uint8 flags = *ebx & 0xFF;
 	int z = base_height * 8;
+
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
-	if((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || map_is_location_in_park(x, y) || gCheatsSandboxMode){
-		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
-		while(map_element_get_type(map_element) != MAP_ELEMENT_TYPE_FENCE ||
-			map_element->base_height != base_height ||
-			(map_element->type & MAP_ELEMENT_DIRECTION_MASK) != map_element_direction||
-			((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST))){
-			map_element++;
-			if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
-				*ebx = 0;
-				return;
-			}
-		}
-		if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST)){
-			*ebx = 0;
-			return;
-		}
-		if(*ebx & GAME_COMMAND_FLAG_APPLY){
-			rct_scenery_entry* scenery_entry = RCT2_ADDRESS(RCT2_ADDRESS_WALL_SCENERY_ENTRIES, rct_scenery_entry*)[map_element->properties.fence.type];
-			map_element->properties.fence.item[1] &= 0xE0;
-			map_element->properties.fence.item[1] |= color1;
-			map_element->flags &= 0x9F;
-			map_element->properties.fence.item[1] &= 0x1F;
-			map_element->properties.fence.item[1] |= (color2 & 0x7) * 32;
-			map_element->flags |= (color2 & 0x18) * 4;
-			if(scenery_entry->wall.flags & 0x80){
-				map_element->properties.fence.item[0] = color3;
-			}
-			map_invalidate_tile_zoom1(x, y, z, z + 0x48);
-		}
-		*ebx = 0;
-	} else {
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) &&
+		!map_is_location_in_park(x, y) &&
+		!gCheatsSandboxMode) {
+
 		*ebx = MONEY32_UNDEFINED;
+		return;
 	}
+
+	bool fence_found = false;
+	rct_map_element* map_element = map_get_fence_element_at(x, y, base_height, map_element_direction);
+
+	if (map_element == NULL) {
+		*ebx = 0;
+		return;
+	}
+
+	if ((flags & GAME_COMMAND_FLAG_GHOST) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST)) {
+		*ebx = 0;
+		return;
+	}
+
+	if(flags & GAME_COMMAND_FLAG_APPLY){
+		rct_scenery_entry* scenery_entry = g_wallSceneryEntries[map_element->properties.fence.type];
+		map_element->properties.fence.item[1] &= 0xE0;
+		map_element->properties.fence.item[1] |= color1;
+		map_element->properties.fence.item[1] &= 0x1F;		
+		map_element->flags &= 0x9F;
+		map_element->properties.fence.item[1] |= (color2 & 0x7) * 32;
+		map_element->flags |= (color2 & 0x18) * 4;
+
+		if(scenery_entry->wall.flags & 0x80){
+			map_element->properties.fence.item[0] = color3;
+		}
+		map_invalidate_tile_zoom1(x, y, z, z + 72);
+	}
+
+	*ebx = 0;
 }
 
 /**
@@ -4300,6 +4307,38 @@ rct_map_element *map_get_large_scenery_segment(int x, int y, int z, int directio
 		if ((mapElement->properties.scenerymultiple.type >> 10) != sequence)
 			continue;
 		if ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) != direction)
+			continue;
+
+		return mapElement;
+	} while (!map_element_is_last_for_tile(mapElement++));
+	return NULL;
+}
+
+rct_map_element *map_get_fence_element_at(int x, int y, int z, int direction)
+{
+	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE)
+			continue;
+		if (mapElement->base_height != z)
+			continue;
+		if (map_element_get_direction(mapElement) != direction)
+			continue;
+
+		return mapElement;
+	} while (!map_element_is_last_for_tile(mapElement++));
+	return NULL;
+}
+
+rct_map_element *map_get_small_scenery_element_at(int x, int y, int z, int type)
+{
+	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
+			continue;
+		if (mapElement->base_height != z)
+			continue;
+		if (mapElement->properties.scenery.type != type)
 			continue;
 
 		return mapElement;
