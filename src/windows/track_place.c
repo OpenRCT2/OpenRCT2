@@ -352,6 +352,7 @@ static void window_track_place_attempt_placement(int x, int y, int z, int bl, mo
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	money32 result;
 
+	edx = esi = ebp = 0;
 	eax = x;
 	ebx = bl;
 	ecx = y;

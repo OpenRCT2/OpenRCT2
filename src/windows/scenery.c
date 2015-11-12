@@ -188,7 +188,7 @@ void window_scenery_update_scroll(rct_window *w);
  * The same code repeated five times for every scenery entry type
  */
 void init_scenery_entry(rct_scenery_entry *sceneryEntry, int index, uint8 sceneryTabId) {
-	if (RCT2_ADDRESS(0x01357BD0, sint32)[index >> 5] & (1 << (index & 0x1F))) {
+	if (RCT2_ADDRESS(0x01357BD0, sint32)[index >> 5] & (1u << (index & 0x1F))) {
 		if (sceneryTabId != 0xFF) {
 			for (int i = 0; i < SCENERY_ENTRIES_BY_TAB; i++) {
 				if (window_scenery_tab_entries[sceneryTabId][i] == -1)
@@ -246,7 +246,7 @@ void init_scenery()
 		for (int i = 0; i < scenerySetEntry->entry_count; i++) {
 			uint16 sceneryEntryId = scenerySetEntry->scenery_entries[i];
 			uint32 ecx = RCT2_ADDRESS(0x01357BD0, uint32)[sceneryEntryId >> 5];
-			uint32 edx = 1 << (sceneryEntryId & 0x1F);
+			uint32 edx = 1u << (sceneryEntryId & 0x1F);
 			if (ecx & edx) {
 				window_scenery_tab_entries[scenerySetIndex][sceneryTabEntryCount] = sceneryEntryId;
 				window_scenery_tab_entries[scenerySetIndex][++sceneryTabEntryCount] = -1;
