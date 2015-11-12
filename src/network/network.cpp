@@ -1440,11 +1440,9 @@ int Network::Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket
 int Network::Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet)
 {
 	static char msg[100] = {0};
-	static std::string msg;
 	const char* disconnectmsg = packet.ReadString();
 	if (disconnectmsg) {
-		msg = disconnectmsg;
-		connection.last_disconnect_reason = msg.c_str();
+		safe_strncpy(msg, disconnectmsg, sizeof(msg));
 	}
 	return 1;
 }
