@@ -2156,7 +2156,6 @@ enum {
 
 	STR_PASSWORD = 5566,
 	STR_ADVERTISE = 5567,
-<<<<<<< HEAD
 	STR_PASSWORD_REQUIRED = 5568,
 	STR_PASSWORD_REQUIRED_DESC = 5569,
 	STR_FETCH_SERVERS = 5570,
@@ -2171,8 +2170,6 @@ enum {
 	STR_ROUBLE = 5578,
 
 	STR_CHEAT_IGNORE_RAIN = 5579,
-=======
->>>>>>> 3b639ce... allow host to specify password #2072
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

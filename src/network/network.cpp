@@ -68,10 +68,7 @@ enum {
 	NETWORK_COMMAND_PING,
 	NETWORK_COMMAND_PINGLIST,
 	NETWORK_COMMAND_SETDISCONNECTMSG,
-<<<<<<< HEAD
 	NETWORK_COMMAND_GAMEINFO,
-=======
->>>>>>> 3b639ce... allow host to specify password #2072
 	NETWORK_COMMAND_MAX,
 	NETWORK_COMMAND_INVALID = -1
 };
@@ -182,13 +179,8 @@ bool NetworkPacket::CommandRequiresAuth()
 {
 	switch (GetCommand()) {
 	case NETWORK_COMMAND_PING:
-<<<<<<< HEAD
 	case NETWORK_COMMAND_AUTH:
 	case NETWORK_COMMAND_GAMEINFO:
-=======
-		return false;
-	case NETWORK_COMMAND_AUTH:
->>>>>>> 3b639ce... allow host to specify password #2072
 		return false;
 	default:
 		return true;
@@ -823,7 +815,6 @@ void Network::KickPlayer(int playerId)
 
 void Network::SetPassword(const char* password)
 {
-<<<<<<< HEAD
 	Network::password = password;
 }
 
@@ -928,12 +919,11 @@ void Network::AdvertiseHeartbeat()
 }
 
 void Network::Client_Send_AUTH(const char* name, const char* password)
-=======
+{
 	safe_strncpy(Network::password, password, sizeof(Network::password));
 }
 
 void Network::Client_Send_AUTH(const char* gameversion, const char* name, const char* password)
->>>>>>> 3b639ce... allow host to specify password #2072
 {
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_AUTH;
@@ -1244,7 +1234,6 @@ int Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& pa
 		connection.last_disconnect_reason = "Bad Password";
 		shutdown(connection.socket, SHUT_RDWR);
 		break;
-<<<<<<< HEAD
 	case NETWORK_AUTH_FULL:
 		connection.last_disconnect_reason = "Server Full";
 		shutdown(connection.socket, SHUT_RDWR);
@@ -1252,8 +1241,6 @@ int Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& pa
 	case NETWORK_AUTH_REQUIREPASSWORD:
 		window_network_status_open_password();
 		break;
-=======
->>>>>>> 3b639ce... allow host to specify password #2072
 	}
 	return 1;
 }
@@ -1274,6 +1261,10 @@ int Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& pa
 			connection.authstatus = NETWORK_AUTH_REQUIREPASSWORD;
 		} else
 		if (password && Network::password != password) {
+		if (!password || strlen(password) == 0) {
+			connection.authstatus = NETWORK_AUTH_REQUIREPASSWORD;
+		} else
+		if (strcmp(password, Network::password) != 0) {
 			connection.authstatus = NETWORK_AUTH_BADPASSWORD;
 		} else
 		if (gConfigNetwork.maxplayers <= player_list.size()) {
@@ -1293,9 +1284,7 @@ int Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& pa
 				Server_Send_MAP(&connection);
 			}
 		}
-<<<<<<< HEAD
 		Server_Send_AUTH(connection);
-=======
 		std::unique_ptr<NetworkPacket> responsepacket = std::move(NetworkPacket::Allocate());
 		*responsepacket << (uint32)NETWORK_COMMAND_AUTH << (uint32)connection.authstatus << (uint8)playerid;
 		connection.QueuePacket(std::move(responsepacket));
@@ -1303,7 +1292,7 @@ int Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& pa
 			shutdown(connection.socket, SHUT_RD);
 			connection.SendQueuedPackets();
 		}
->>>>>>> 3b639ce... allow host to specify password #2072
+		Server_Send_AUTH(connection);
 	}
 	return 1;
 }
@@ -1591,15 +1580,17 @@ void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32
 	}
 }
 
-<<<<<<< HEAD
 void network_send_password(const char* password)
 {
 	gNetwork.Client_Send_AUTH(gConfigNetwork.player_name, password);
-=======
+void network_send_password(const char* password)
+{
+	gNetwork.Client_Send_AUTH(OPENRCT2_VERSION, gConfigNetwork.player_name, password);
+}
+
 void network_kick_player(int playerId)
 {
 	gNetwork.KickPlayer(playerId);
->>>>>>> 3b639ce... allow host to specify password #2072
 }
 
 void network_set_password(const char* password)
