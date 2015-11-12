@@ -209,10 +209,10 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 	enumerate_file_info *enumFileInfo;
 	wchar_t *wpattern = utf8_to_widechar(pattern);
 	int length = min(utf8_length(pattern), MAX_PATH);
-	char *npattern = malloc(length);
+	char *npattern = malloc(length+1);
 	int converted;
 	converted = wcstombs(npattern, wpattern, length);
-	npattern[length - 1] = '\0';
+	npattern[length] = '\0';
 	if (converted == MAX_PATH) {
 		log_warning("truncated string %s", npattern);
 	}
@@ -271,7 +271,7 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 	for (int i = 0; i < countof(_enumerateFileInfoList); i++) {
 		enumFileInfo = &_enumerateFileInfoList[i];
 		if (!enumFileInfo->active) {
-			safe_strncpy(enumFileInfo->pattern, npattern, length);
+			safe_strncpy(enumFileInfo->pattern, npattern, sizeof(enumFileInfo->pattern));
 			cnt = scandir(dir_name, &enumFileInfo->fileListTemp, winfilter, alphasort);
 			if (cnt < 0)
 			{
@@ -395,10 +395,10 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 	enumerate_file_info *enumFileInfo;
 	wchar_t *wpattern = utf8_to_widechar(directory);
 	int length = min(utf8_length(directory), MAX_PATH);
-	char *npattern = malloc(length);
+	char *npattern = malloc(length+1);
 	int converted;
 	converted = wcstombs(npattern, wpattern, length);
-	npattern[length - 1] = '\0';
+	npattern[length] = '\0';
 	if (converted == MAX_PATH) {
 		log_warning("truncated string %s", npattern);
 	}
@@ -477,7 +477,7 @@ bool platform_enumerate_directories_next(int handle, utf8 *path)
 			log_error("failed to stat file '%s'! errno = %i", fileName, errno);
 			return false;
 		}
-		// so very, very wrong…
+		// so very, very wrong
 		safe_strncpy(path, basename(fileName), MAX_PATH);
 		strncat(path, "/", MAX_PATH);
 		path[MAX_PATH - 1] = '\0';
