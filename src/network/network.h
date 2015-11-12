@@ -217,9 +217,12 @@ public:
 	bool CheckSRAND(uint32 tick, uint32 srand0);
 	void KickPlayer(int playerId);
 	void SetPassword(const char* password);
+<<<<<<< HEAD
 	void ShutdownClient();
 	void AdvertiseRegister();
 	void AdvertiseHeartbeat();
+=======
+>>>>>>> 3b639ce... allow host to specify password #2072
 
 	void Client_Send_AUTH(const char* name, const char* password);
 	void Server_Send_AUTH(NetworkConnection& connection);

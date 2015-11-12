@@ -549,9 +549,12 @@
     <ClCompile Include="..\src\windows\server_start.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="..\src\interface\colour.c">
       <Filter>Source\Interface</Filter>
     </ClCompile>
+=======
+>>>>>>> 3b639ce... allow host to specify password #2072
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">

@@ -218,6 +218,10 @@ static void window_server_list_mouseup(rct_window *w, int widgetIndex)
 		window_text_input_open(w, widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, STR_NONE, 0, 128);
 		break;
 	case WIDX_START_SERVER:
+<<<<<<< HEAD
+=======
+		server_list_update_player_name();
+>>>>>>> 3b639ce... allow host to specify password #2072
 		window_server_start_open();
 		break;
 	}

@@ -216,10 +216,13 @@ typedef struct {
 	uint32 default_port;
 	uint8 stay_connected;
 	uint8 advertise;
+<<<<<<< HEAD
 	uint8 maxplayers;
 	utf8string server_name;
 	utf8string server_description;
 	utf8string master_server_url;
+=======
+>>>>>>> 3b639ce... allow host to specify password #2072
 } network_configuration;
 
 typedef struct theme_window {
