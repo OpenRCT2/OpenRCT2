@@ -286,7 +286,9 @@ static void window_top_toolbar_mouseup(rct_window *w, int widgetIndex)
 
 	switch (widgetIndex) {
 	case WIDX_PAUSE:
-		game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
+		if (network_get_mode() != NETWORK_MODE_CLIENT) {
+			game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
+		}
 		break;
 	case WIDX_ZOOM_OUT:
 		if ((mainWindow = window_get_main()) != NULL)
@@ -1114,7 +1116,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			uint8 rotation = window_scenery_rotation;
 
 			if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
-				rotation = scenario_rand() & 0xFF;
+				rotation = rand() & 0xFF;
 			}
 
 			rotation -= get_current_rotation();
@@ -1192,7 +1194,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		uint8 rotation = window_scenery_rotation;
 
 		if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
-			rotation = scenario_rand() & 0xFF;
+			rotation = rand() & 0xFF;
 		}
 
 		rotation -= get_current_rotation();
@@ -1438,11 +1440,11 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 			if (window_scenery_is_build_cluster_tool_on){
 				if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)){
 					parameter_2 &= 0xFF00;
-					parameter_2 |= scenario_rand() & 3;
+					parameter_2 |= rand() & 3;
 				}
 
-				cur_grid_x += ((scenario_rand() % 16) - 8) * 32;
-				cur_grid_y += ((scenario_rand() % 16) - 8) * 32;
+				cur_grid_x += ((rand() % 16) - 8) * 32;
+				cur_grid_y += ((rand() % 16) - 8) * 32;
 
 				if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
 					RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint16)++;

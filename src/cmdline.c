@@ -53,6 +53,7 @@ int gNetworkStartPort = NETWORK_DEFAULT_PORT;
 #endif // DISABLE_NETWORK
 
 static void print_launch_information();
+static void print_version();
 static int cmdline_call_action(const char **argv, int argc);
 
 static const char *const usage[] = {
@@ -92,7 +93,7 @@ int cmdline_run(const char **argv, int argc)
 	argc = argparse_parse(&argparse, argc, argv);
 
 	if (version) {
-		print_launch_information();
+		print_version();
 		return 0;
 	}
 
@@ -120,32 +121,53 @@ int cmdline_run(const char **argv, int argc)
 
 	if (argc != 0) {
 		gExitCode = cmdline_call_action(argv, argc);
-		if (gExitCode != 0)
+		if (gExitCode != 0) {
 			return 0;
+		}
 	}
 
-	print_launch_information();
+	// Headless mode requires a park to open
+	if (gOpenRCT2Headless) {
+		if (str_is_null_or_empty(gOpenRCT2StartupActionPath)) {
+			printf("You must specify a park to open in headless mode.\n");
+			gExitCode = -1;
+			return 0;
+		}
+	}
+
+	if (verbose) {
+		print_launch_information();
+	}
 	return 1;
 }
 
 static void print_launch_information()
 {
-	char buffer[32];
+	char buffer[256];
 	time_t timer;
 	tm_t* tmInfo;
 
-	// Print version information
-	printf("Starting %s v%s\n", OPENRCT2_NAME, OPENRCT2_VERSION);
-	printf("  %s (%s)\n", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
-	printf("  %s\n\n", OPENRCT2_TIMESTAMP);
+	// Print name and version information
+	openrct2_write_full_version_info(buffer, sizeof(buffer));
+	printf("%s\n", buffer);
+	printf("%s (%s)\n", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
+	printf("@ %s\n\n", OPENRCT2_TIMESTAMP);
 
 	// Print current time
 	time(&timer);
 	tmInfo = localtime(&timer);
 	strftime(buffer, sizeof(buffer), "%Y/%m/%d %H:%M:%S", tmInfo);
-	printf("Time: %s\n", buffer);
+	printf("VERBOSE: time is %s\n", buffer);
 
 	// TODO Print other potential information (e.g. user, hardware)
+}
+
+static void print_version()
+{
+	char buffer[256];
+	openrct2_write_full_version_info(buffer, sizeof(buffer));
+	printf("%s\n", buffer);
+	printf("%s (%s)\n", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
 }
 
 static int cmdline_for_intro(const char **argv, int argc)

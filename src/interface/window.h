@@ -27,6 +27,7 @@
 #include "../ride/ride.h"
 #include "../ride/vehicle.h"
 #include "../world/park.h"
+#include "colour.h"
 
 struct rct_window;
 union rct_window_event;
@@ -450,6 +451,7 @@ enum {
 	WC_PLAYER_LIST = 125,
 	WC_NETWORK_STATUS = 126,
 	WC_SERVER_LIST = 127,
+	WC_SERVER_START = 128,
 
 	// Only used for colour schemes
 	WC_STAFF = 220,
@@ -628,7 +630,9 @@ void window_cheats_open();
 void window_player_list_open();
 void window_network_status_open(const char* text);
 void window_network_status_close();
+void window_network_status_open_password();
 void window_server_list_open();
+void window_server_start_open();
 
 void window_research_open();
 void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dpi, int baseWidgetIndex);

@@ -403,7 +403,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	widget = &window_track_list_widgets[WIDX_TRACK_PREVIEW];
 	x = w->x + widget->left + 1;
 	y = w->y + widget->top + 1;
-	colour = RCT2_GLOBAL(0x0141FC44 + (w->colours[0] * 8), uint8);
+	colour = ColourMapA[w->colours[0]].darkest;
 	gfx_fill_rect(dpi, x, y, x + 369, y + 216, colour);
 
 	trackDesign = track_get_info(trackIndex, &image);
@@ -562,7 +562,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 	int i, x, y, colour;
 	utf8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, utf8);
 
-	colour = RCT2_GLOBAL(0x00141FC48 + (w->colours[0] * 8), uint8);
+	colour = ColourMapA[w->colours[0]].mid_light;
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
 	gfx_clear(dpi, colour);
 

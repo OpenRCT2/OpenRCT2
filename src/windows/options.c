@@ -36,6 +36,7 @@
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../localisation/currency.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
@@ -773,14 +774,14 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			window_options_show_dropdown(w, widget, 2);
 
-			dropdown_set_checked(gConfigGeneral.show_height_as_units ? 1 : 2, true);
+			dropdown_set_checked(gConfigGeneral.show_height_as_units ? 0 : 1, true);
 			break;
 		case WIDX_CURRENCY_DROPDOWN:
-			num_items = 10;
+			num_items = CURRENCY_END;
 
 			for (i = 0; i < num_items; i++) {
 				gDropdownItemsFormat[i] = 1142;
-				gDropdownItemsArgs[i] = STR_POUNDS + i;
+				gDropdownItemsArgs[i] = g_currency_specs[i].stringId;
 			}
 
 			window_options_show_dropdown(w, widget, num_items);
@@ -1181,7 +1182,7 @@ static void window_options_invalidate(rct_window *w)
 
 	case WINDOW_OPTIONS_PAGE_CULTURE:
 		// currency: pounds, dollars, etc. (10 total)
-		RCT2_GLOBAL(0x013CE952 + 12, uint16) = STR_POUNDS + gConfigGeneral.currency_format;
+		RCT2_GLOBAL(0x013CE952 + 12, uint16) = g_currency_specs[gConfigGeneral.currency_format].stringId;
 
 		// distance: metric/imperial
 		RCT2_GLOBAL(0x013CE952 + 14, uint16) = STR_IMPERIAL + gConfigGeneral.measurement_format;

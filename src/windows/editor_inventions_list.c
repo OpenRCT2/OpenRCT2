@@ -760,7 +760,7 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
 		w->y + widget->top + 1,
 		w->x + widget->right - 1,
 		w->y + widget->bottom - 1,
-		RCT2_GLOBAL(0x0141FC44 + (w->colours[1] * 8), uint8)
+		ColourMapA[w->colours[1]].darkest
 	);
 
 	researchItem = _editorInventionsListDraggedItem;
@@ -814,7 +814,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
 	utf8 buffer[256], *ptr;
 
 	// Draw background
-	colour = RCT2_GLOBAL(0x0141FC48 + (w->colours[1] * 8), uint8);
+	colour = ColourMapA[w->colours[1]].mid_light;
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
 	gfx_clear(dpi, colour);
 

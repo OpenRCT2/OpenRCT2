@@ -114,6 +114,7 @@ GAME_COMMAND_CALLBACK_POINTER* game_command_callback_get_callback(int index);
 
 extern int gGameSpeed;
 extern float gDayNightCycle;
+extern bool gInUpdateCode;
 
 void game_increase_game_speed();
 void game_reduce_game_speed();

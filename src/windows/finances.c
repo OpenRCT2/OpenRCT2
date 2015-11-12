@@ -665,7 +665,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	for (i = 0; i < 14; i++) {
 		// Darken every even row
 		if (i % 2 == 0)
-			gfx_fill_rect(dpi, x, y, x + 513 - 2, y + 9, RCT2_GLOBAL(0x0141FC4A + (w->colours[1] * 8), uint8) | 0x1000000);
+			gfx_fill_rect(dpi, x, y, x + 513 - 2, y + 9, ColourMapA[w->colours[1]].lighter | 0x1000000);
 
 		gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_RIDE_CONSTRUCTION + i, NULL, 0, x, y - 1);
 		y += 10;

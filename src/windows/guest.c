@@ -23,6 +23,7 @@
 #include "../game.h"
 #include "../input.h"
 #include "../management/marketing.h"
+#include "../network/network.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
 #include "../ride/ride.h"
@@ -1083,13 +1084,16 @@ void window_guest_overview_update(rct_window* w){
 	else
 		w->var_494++;
 
-	// Create the "I have the strangest feeling I am being watched thought"
-	if ((w->var_494 & 0xFFFF) >= 3840){
-		if (!(w->var_494 & 0x3FF)){
-			int rand = scenario_rand() & 0xFFFF;
-			if (rand <= 0x2AAA){
-				rct_peep* peep = GET_PEEP(w->number);
-				peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WATCHED, 0xFF);
+	// Disable peep watching thought for multiplayer as its client specific
+	if (network_get_mode() == NETWORK_MODE_NONE) {
+		// Create the "I have the strangest feeling I am being watched thought"
+		if ((w->var_494 & 0xFFFF) >= 3840) {
+			if (!(w->var_494 & 0x3FF)) {
+				int random = rand() & 0xFFFF;
+				if (random <= 0x2AAA) {
+					rct_peep* peep = GET_PEEP(w->number);
+					peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WATCHED, 0xFF);
+				}
 			}
 		}
 	}
@@ -1665,7 +1669,7 @@ void window_guest_rides_scroll_paint(rct_window *w, rct_drawpixelinfo *dpi, int 
 	// dx
 	int bottom = dpi->y + dpi->height - 1;
 
-	int colour = RCT2_ADDRESS(0x141FC48, uint8)[w->colours[1] * 8];
+	int colour = ColourMapA[w->colours[1]].mid_light;
 	gfx_fill_rect(dpi, left, top, right, bottom, colour);
 
 	for (int list_index = 0; list_index < w->no_list_items; list_index++){

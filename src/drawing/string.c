@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../interface/colour.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "../world/map.h"
@@ -509,7 +510,7 @@ void colour_char_window(uint8 colour, uint16* current_font_flags,uint8* palette_
 
 	int eax;
 
-	eax = RCT2_ADDRESS(0x0141FD45, uint8)[colour * 8];
+	eax = ColourMapB[colour].b;
 	if (*current_font_flags & 2) {
 		eax |= 0x0A0A00;
 	}
@@ -1246,18 +1247,18 @@ static void ttf_process_initial_colour(int colour, text_draw_info *info)
 			uint32 eax;
 			if (info->flags & 4) {
 				if (info->flags & 8) {
-					eax = RCT2_ADDRESS(0x0141FC48, uint8)[colour * 8];
+					eax = ColourMapA[colour].mid_light;
 					eax = eax << 16;
-					eax = eax | RCT2_ADDRESS(0x0141FC46, uint8)[colour * 8];
+					eax = eax | ColourMapA[colour].dark;
 				} else {
-					eax = RCT2_ADDRESS(0x0141FC49, uint8)[colour * 8];
+					eax = ColourMapA[colour].light;
 					eax = eax << 16;
-					eax = eax | RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8];
+					eax = eax | ColourMapA[colour].mid_dark;
 				}
 			} else {
-				eax = RCT2_ADDRESS(0x0141FC4A, uint8)[colour * 8];
+				eax = ColourMapA[colour].lighter;
 				eax = eax << 16;
-				eax = eax | RCT2_ADDRESS(0x0141FC48, uint8)[colour * 8];
+				eax = eax | ColourMapA[colour].mid_light;
 			}
 
 			// Adjust text palette. Store current colour? ;
