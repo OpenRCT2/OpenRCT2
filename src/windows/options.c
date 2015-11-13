@@ -82,6 +82,9 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_UNCAP_FPS_CHECKBOX,
 	WIDX_MINIMIZE_FOCUS_LOSS,
 	WIDX_STEAM_OVERLAY_PAUSE,
+	WIDX_SCALE,
+	WIDX_SCALE_UP,
+	WIDX_SCALE_DOWN,
 	WIDX_RENDERING_GROUP,
 	WIDX_TILE_SMOOTHING_CHECKBOX,
 	WIDX_GRIDLINES_CHECKBOX,
@@ -156,7 +159,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 };
 
 #define WW 			310
-#define WH 			265
+#define WH 			280
 
 #define MAIN_OPTIONS_WIDGETS \
 	{ WWT_FRAME,			0,	0,		WW-1,	0,		WH-1,	STR_NONE,			STR_NONE }, \
@@ -172,7 +175,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 
 static rct_widget window_options_display_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
-	{ WWT_GROUPBOX,			1,	5,      304,	53,		160,	STR_HARDWARE_GROUP,		STR_NONE },					// Hardware group
+	{ WWT_GROUPBOX,			1,	5,      304,	53,		175,	STR_HARDWARE_GROUP,		STR_NONE },					// Hardware group
 	{ WWT_DROPDOWN,			1,	155,	299,	68,		79,		STR_RESOLUTION_X_BY_Y,	STR_NONE },					// resolution
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	69,		78,		STR_DROPDOWN_GLYPH,		STR_NONE },
 	{ WWT_DROPDOWN,			1,	155,	299,	83,		94,		871,					STR_NONE },					// fullscreen
@@ -181,14 +184,17 @@ static rct_widget window_options_display_widgets[] = {
 	{ WWT_CHECKBOX,			1,	10,		290,	114,	125,	STR_UNCAP_FPS,			STR_NONE },					// uncap fps
 	{ WWT_CHECKBOX,			1,	10,		290,	129,	140,	STR_MININISE_FULL_SCREEN_ON_FOCUS_LOSS,	STR_NONE },	// minimise fullscreen focus loss
 	{ WWT_CHECKBOX,			1,	10,		290,	144,	155,	STR_STEAM_OVERLAY_PAUSE,	STR_NONE },				// minimise fullscreen focus loss
+	{ WWT_SPINNER,			1,	155,	299,	159,	170,	STR_NONE,				STR_NONE },					// scale spinner
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	160,	164,	STR_NUMERIC_UP,			STR_NONE },					// scale spinner up
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	165,	169,	STR_NUMERIC_DOWN,		STR_NONE },					// scale spinner down
 
-	{ WWT_GROUPBOX,			1,	5,      304,	164,	255,	STR_RENDERING_GROUP,	STR_NONE },					// Rendering group
-	{ WWT_CHECKBOX,			1,	10,		290,	179,	190,	STR_TILE_SMOOTHING, 	STR_TILE_SMOOTHING_TIP },	// landscape smoothing
-	{ WWT_CHECKBOX,			1,	10,		290,	194,	205,	STR_GRIDLINES,			STR_GRIDLINES_TIP },		// gridlines
-	{ WWT_DROPDOWN,			1,	155,	299,	208,	219,	STR_NONE,				STR_NONE },					// construction marker
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	209,	218,	STR_DROPDOWN_GLYPH,		STR_NONE },
-	{ WWT_CHECKBOX,			1,	10,		290,	224,	235,	STR_CYCLE_DAY_NIGHT,	STR_NONE },					// cycle day-night
-	{ WWT_CHECKBOX,			1,	10,		290,	239,	250,	STR_UPPER_CASE_BANNERS,	STR_NONE },					// upper case banners
+	{ WWT_GROUPBOX,			1,	5,      304,	179,	270,	STR_RENDERING_GROUP,	STR_NONE },					// Rendering group
+	{ WWT_CHECKBOX,			1,	10,		290,	194,	205,	STR_TILE_SMOOTHING, 	STR_TILE_SMOOTHING_TIP },	// landscape smoothing
+	{ WWT_CHECKBOX,			1,	10,		290,	209,	220,	STR_GRIDLINES,			STR_GRIDLINES_TIP },		// gridlines
+	{ WWT_DROPDOWN,			1,	155,	299,	224,	234,	STR_NONE,				STR_NONE },					// construction marker
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	225,	233,	STR_DROPDOWN_GLYPH,		STR_NONE },
+	{ WWT_CHECKBOX,			1,	10,		290,	239,	250,	STR_CYCLE_DAY_NIGHT,	STR_NONE },					// cycle day-night
+	{ WWT_CHECKBOX,			1,	10,		290,	254,	265,	STR_UPPER_CASE_BANNERS,	STR_NONE },					// upper case banners
 	{ WIDGETS_END },
 };
 
@@ -362,6 +368,9 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_UNCAP_FPS_CHECKBOX) |
 	(1 << WIDX_MINIMIZE_FOCUS_LOSS) |
 	(1 << WIDX_STEAM_OVERLAY_PAUSE) |
+	(1 << WIDX_SCALE) |
+	(1 << WIDX_SCALE_UP) |
+	(1 << WIDX_SCALE_DOWN) |
 	(1 << WIDX_CONSTRUCTION_MARKER) |
 	(1 << WIDX_CONSTRUCTION_MARKER_DROPDOWN) |
 	(1 << WIDX_DAY_NIGHT_CHECKBOX) |
@@ -760,6 +769,19 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			window_options_show_dropdown(w, widget, 2);
 
 			dropdown_set_checked(gConfigGeneral.construction_marker_colour, true);
+			break;
+		case WIDX_SCALE_UP:
+			gConfigGeneral.window_scale += 0.25f;
+			config_save_default();
+			gfx_invalidate_screen();
+			platform_trigger_resize();
+			break;
+		case WIDX_SCALE_DOWN:
+			gConfigGeneral.window_scale -= 0.25f;
+			gConfigGeneral.window_scale = max(0.5f, gConfigGeneral.window_scale);
+			config_save_default();
+			gfx_invalidate_screen();
+			platform_trigger_resize();
 			break;
 		}
 		break;
@@ -1363,6 +1385,10 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		gfx_draw_string_left(dpi, STR_DISPLAY_RESOLUTION, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_RESOLUTION].top + 1);
 		gfx_draw_string_left(dpi, STR_FULLSCREEN_MODE, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_FULLSCREEN].top + 1);
 		gfx_draw_string_left(dpi, STR_CONSTRUCTION_MARKER, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_CONSTRUCTION_MARKER].top + 1);
+		gfx_draw_string_left(dpi, STR_UI_SCALING_DESC, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_SCALE].top + 1);
+
+		int scale = (int)(gConfigGeneral.window_scale * 100);
+		gfx_draw_string_left(dpi, 3311, &scale, w->colours[1], w->x + w->widgets[WIDX_SCALE].left + 1, w->y + w->widgets[WIDX_SCALE].top + 1);
 		break;
 	case WINDOW_OPTIONS_PAGE_CULTURE:
 		gfx_draw_string_left(dpi, 2776, w, w->colours[1], w->x + 10, w->y + window_options_culture_widgets[WIDX_LANGUAGE].top + 1);
@@ -1380,7 +1406,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		gfx_draw_string_left(dpi, STR_DISTANCE_AND_SPEED, w, w->colours[1], w->x + 10, w->y + window_options_culture_widgets[WIDX_DISTANCE].top + 1);
 		gfx_draw_string_left(dpi, STR_TEMPERATURE, w, w->colours[1], w->x + 10, w->y + window_options_culture_widgets[WIDX_TEMPERATURE].top + 1);
 		gfx_draw_string_left(dpi, STR_HEIGHT_LABELS, w, w->colours[1], w->x + 10, w->y + window_options_culture_widgets[WIDX_HEIGHT_LABELS].top + 1);
-		gfx_draw_string_left(dpi, 5161, w, w->colours[1], w->x + 10, w->y + window_options_culture_widgets[WIDX_DATE_FORMAT].top + 1);
+		gfx_draw_string_left(dpi, STR_DATE_FORMAT, w, w->colours[1], w->x + 10, w->y + window_options_culture_widgets[WIDX_DATE_FORMAT].top + 1);
 		gfx_draw_string_left(
 			dpi,
 			DateFormatStringIds[gConfigGeneral.date_format],

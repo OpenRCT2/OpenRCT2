@@ -2169,6 +2169,8 @@ enum {
 	STR_WON = 5577,
 	STR_ROUBLE = 5578,
 
+	STR_UI_SCALING_DESC = 5579,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

@@ -28,7 +28,7 @@
 - Feature: Custom user data path specified by command line argument.
 - Feature: Full UTF-8 language support.
 - Feature: TTF font integration for non-Latin languages.
-- Feature: Added support for Traditional Chinese, Simplified Chinese, Korean, Russian, Finnish and Brazilian Portuguese. 
+- Feature: Added support for Traditional Chinese, Simplified Chinese, Korean, Russian, Finnish and Brazilian Portuguese.
 - Feature: Added South Korean Won and Russian Rouble as currencies.
 - Feature: Allow different date formats.
 - Feature: Option to automatically pause the game on minimise from fullscreen.
@@ -38,6 +38,7 @@
 - Feature: Option to automatically place staff after hire.
 - Feature: Option to enable 'mow grass' by default for handymen (RCT1 style)
 - Feature: Option to ignore invalid checksums on loaded parks.
+- Feature: Option to scale game display for better compatibility with high DPI screens.
 - Alteration: Autosave is now measured in real-time rather than in-game date.
 - Technical: DirectDraw, DirectInput, DirectPlay and DirectSound dependencies are no longer used.
 - Removed: Six Flags branding and limitations.
