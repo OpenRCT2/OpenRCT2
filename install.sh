@@ -4,7 +4,7 @@ SDL2_PV=2.0.3
 SDL2_TTF_PV=2.0.12
 
 cachedir=.cache
-liburl=https://openrct.net/launcher/libs/orctlibs.zip
+liburl=https://openrct2.website/files/orctlibs.zip
 mkdir -p $cachedir
 
 echo $(uname)
