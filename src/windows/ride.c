@@ -1597,7 +1597,7 @@ static void window_ride_init_viewport(rct_window *w)
  */
 void window_ride_construct(rct_window *w)
 {
-	// Window may be closed by close by class so 
+	// Window may be closed by close by class so
 	// make backup before calling.
 	uint8 rideIndex = w->number;
 	window_close_by_class(WC_RIDE_CONSTRUCTION);
@@ -3468,7 +3468,7 @@ static void window_ride_maintenance_dropdown(rct_window *w, int widgetIndex, int
 					do {
 						vehicle = GET_VEHICLE(spriteId);
 						vehicle->update_flags &= ~(
-							VEHICLE_UPDATE_FLAG_BROKEN_CAR | 
+							VEHICLE_UPDATE_FLAG_BROKEN_CAR |
 							VEHICLE_UPDATE_FLAG_7 |
 							VEHICLE_UPDATE_FLAG_BROKEN_TRAIN
 							);
@@ -5413,12 +5413,12 @@ static void window_ride_income_toggle_primary_price(rct_window *w)
 	else {
 		if (shop_item < 32) {
 			newFlags = RCT2_GLOBAL(0x01358838, uint32);
-			newFlags ^= (1 << shop_item);
+			newFlags ^= (1u << shop_item);
 			game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
 		}
 		else {
 			newFlags = RCT2_GLOBAL(0x0135934C, uint32);
-			newFlags ^= (1 << (shop_item - 32));
+			newFlags ^= (1u << (shop_item - 32));
 			game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
 		}
 	}
@@ -5456,12 +5456,12 @@ static void window_ride_income_toggle_secondary_price(rct_window *w)
 	else {
 		if (shop_item < 32) {
 			newFlags = RCT2_GLOBAL(0x01358838, uint32);
-			newFlags ^= (1 << shop_item);
+			newFlags ^= (1u << shop_item);
 			game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
 		}
 		else {
 			newFlags = RCT2_GLOBAL(0x0135934C, uint32);
-			newFlags ^= (1 << (shop_item - 32));
+			newFlags ^= (1u << (shop_item - 32));
 			game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
 		}
 	}
@@ -5689,7 +5689,7 @@ static void window_ride_income_invalidate(rct_window *w)
 	if (ride->type == RIDE_TYPE_TOILETS || ((primaryItem = (sint8)rideEntry->shop_item) != -1)) {
 		window_ride_income_widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WWT_CHECKBOX;
 		if (primaryItem < 32) {
-			if (RCT2_GLOBAL(0x01358838, uint32) & (1 << primaryItem))
+			if (RCT2_GLOBAL(0x01358838, uint32) & (1u << primaryItem))
 				w->pressed_widgets |= (1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
 
 			if (primaryItem != 31)
@@ -5697,7 +5697,7 @@ static void window_ride_income_invalidate(rct_window *w)
 		}
 		else {
 			primaryItem -= 32;
-			if (RCT2_GLOBAL(0x0135934C, uint32) & (1 << primaryItem))
+			if (RCT2_GLOBAL(0x0135934C, uint32) & (1u << primaryItem))
 				w->pressed_widgets |= (1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
 
 			window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].image = 2100 + primaryItem;
@@ -5729,11 +5729,11 @@ static void window_ride_income_invalidate(rct_window *w)
 		// Set same price throughout park checkbox
 		w->pressed_widgets &= ~(1 << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
 		if (secondaryItem < 32) {
-			if (RCT2_GLOBAL(0x01358838, uint32) & (1 << secondaryItem))
+			if (RCT2_GLOBAL(0x01358838, uint32) & (1u << secondaryItem))
 				w->pressed_widgets |= (1 << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
 		} else {
 			secondaryItem -= 32;
-			if (RCT2_GLOBAL(0x0135934C, uint32) & (1 << secondaryItem))
+			if (RCT2_GLOBAL(0x0135934C, uint32) & (1u << secondaryItem))
 				w->pressed_widgets |= (1 << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
 		}
 

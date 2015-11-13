@@ -176,7 +176,7 @@ void research_finish_item(sint32 entryIndex)
 		base_ride_type = (entryIndex >> 8) & 0xFF;
 		rideEntryIndex = entryIndex & 0xFF;
 		rideEntry = GET_RIDE_ENTRY(rideEntryIndex);
-		RCT2_ADDRESS(0x01357404, uint32)[base_ride_type >> 5] |= (1 << (base_ride_type & 0x1F));
+		RCT2_ADDRESS(0x01357404, uint32)[base_ride_type >> 5] |= (1u << (base_ride_type & 0x1F));
 		RCT2_ADDRESS(0x01357444, uint32)[base_ride_type] = RCT2_ADDRESS(0x0097C468, uint32)[base_ride_type];
 		RCT2_ADDRESS(0x01357644, uint32)[base_ride_type] = RCT2_ADDRESS(0x0097C5D4, uint32)[base_ride_type];
 		if (RideData4[base_ride_type].flags & RIDE_TYPE_FLAG4_3) {
@@ -184,7 +184,7 @@ void research_finish_item(sint32 entryIndex)
 			RCT2_ADDRESS(0x01357444, uint32)[ebx] = RCT2_ADDRESS(0x0097C468, uint32)[ebx];
 			RCT2_ADDRESS(0x01357644, uint32)[ebx] = RCT2_ADDRESS(0x0097C5D4, uint32)[ebx];
 		}
-		RCT2_ADDRESS(0x001357424, uint32)[rideEntryIndex >> 5] |= 1 << (rideEntryIndex & 0x1F);
+		RCT2_ADDRESS(0x001357424, uint32)[rideEntryIndex >> 5] |= 1u << (rideEntryIndex & 0x1F);
 		if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) {
 			for (i = 0; i < 128; i++) {
 				rideEntry2 = GET_RIDE_ENTRY(i);
@@ -194,7 +194,7 @@ void research_finish_item(sint32 entryIndex)
 					continue;
 
 				if (rideEntry2->ride_type[0] == base_ride_type || rideEntry2->ride_type[1] == base_ride_type || rideEntry2->ride_type[2] == base_ride_type)
-					RCT2_ADDRESS(0x001357424, uint32)[i >> 5] |= 1 << (i & 0x1F);
+					RCT2_ADDRESS(0x001357424, uint32)[i >> 5] |= 1u << (i & 0x1F);
 			}
 		}
 
@@ -212,7 +212,7 @@ void research_finish_item(sint32 entryIndex)
 		scenerySetEntry = g_scenerySetEntries[entryIndex & 0xFFFF];
 		for (i = 0; i < scenerySetEntry->entry_count; i++) {
 			subSceneryEntryIndex = scenerySetEntry->scenery_entries[i];
-			RCT2_ADDRESS(0x01357BD0, sint32)[subSceneryEntryIndex >> 5] |= 1 << (subSceneryEntryIndex & 0x1F);
+			RCT2_ADDRESS(0x01357BD0, sint32)[subSceneryEntryIndex >> 5] |= 1u << (subSceneryEntryIndex & 0x1F);
 		}
 
 		// I don't think 0x009AC06C is ever not 0, so probably redundant
