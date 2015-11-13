@@ -2226,7 +2226,7 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) = map_tile.x;
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) = map_tile.y;
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) = (parameter_2 & 0xFF);
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) = (parameter_2 & 0xFF) * 2 + 2;
 		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint8) = ((parameter_2 >> 8) & 0xFF);
 		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) |= (1 << 4);
 		break;

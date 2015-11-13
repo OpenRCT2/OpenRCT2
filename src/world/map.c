@@ -260,7 +260,6 @@ rct_map_element* map_get_path_element_at(int x, int y, int z){
 	if (mapElement == NULL)
 		return NULL;
 
-	uint8 mapFound = 0;
 	// Find the path element at known z
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
@@ -273,6 +272,28 @@ rct_map_element* map_get_path_element_at(int x, int y, int z){
 
 	return NULL;
 }
+
+rct_map_element* map_get_banner_element_at(int x, int y, int z, uint8 position) {
+	rct_map_element *mapElement = map_get_first_element_at(x, y);
+
+	if (mapElement == NULL)
+		return NULL;
+
+	// Find the banner element at known z and position
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_BANNER)
+			continue;
+		if (mapElement->base_height != z)
+			continue;
+		if (mapElement->properties.banner.position != position)
+			continue;
+
+		return mapElement;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	return NULL;
+}
+
 /**
  *
  *  rct2: 0x0068AB4C
@@ -1075,38 +1096,43 @@ void game_command_remove_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	int y = *ecx;
 	uint8 base_height = *edx;
 	uint8 banner_position = *edx >> 8;
+	uint8 flags = *ebx & 0xFF;
 	int z = base_height * 8;
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
  	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
-	if(!(*ebx & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode){
+
+	if(!(flags & GAME_COMMAND_FLAG_GHOST) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode){
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
+
 	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode && !map_is_location_owned(x, y, z - 16)){
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
-	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
-	while(map_element->type != MAP_ELEMENT_TYPE_BANNER ||
-		map_element->properties.banner.position != banner_position){
-		map_element++;
-		if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
-			*ebx = MONEY32_UNDEFINED;
-			return;
-		}
+
+	// Slight modification to the code so that it now checks height as well
+	// This was causing a bug with banners on two paths stacked.
+	rct_map_element* map_element = map_get_banner_element_at(x / 32, y / 32, base_height, banner_position);
+	if (map_element == NULL){
+		*ebx = MONEY32_UNDEFINED;
+		return;
 	}
+
 	rct_banner *banner = &gBanners[map_element->properties.banner.index];
-	uint8 bannerType = banner->type;
-	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+	rct_scenery_entry *scenery_entry = g_bannerSceneryEntries[banner->type];
+
+	if (flags & GAME_COMMAND_FLAG_APPLY) {
 		map_element_remove_banner_entry(map_element);
 		map_invalidate_tile_zoom1(x, y, z, z + 32);
 		map_element_remove(map_element);
 	}
-	rct_scenery_entry *scenery_entry = (rct_scenery_entry*)object_entry_groups[OBJECT_TYPE_BANNERS].chunks[bannerType];
+
 	*ebx = (scenery_entry->banner.price * -3) / 4;
+
 	if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
 		*ebx = 0;
 	}

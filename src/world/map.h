@@ -285,6 +285,7 @@ int map_element_get_terrain_edge(rct_map_element *element);
 void map_element_set_terrain(rct_map_element *element, int terrain);
 void map_element_set_terrain_edge(rct_map_element *element, int terrain);
 int map_height_from_slope(int x, int y, int slope);
+rct_map_element* map_get_banner_element_at(int x, int y, int z, uint8 direction);
 rct_map_element *map_get_surface_element_at(int x, int y);
 rct_map_element* map_get_path_element_at(int x, int y, int z);
 rct_map_element *map_get_fence_element_at(int x, int y, int z, int direction);
