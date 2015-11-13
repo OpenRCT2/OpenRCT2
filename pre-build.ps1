@@ -4,7 +4,7 @@ $path = Split-Path $Script:MyInvocation.MyCommand.Path
 $zip = $path+'\orctlibs.zip'
 $libs = $path+'\lib'
 $libsVFile = $path+'\libversion'
-$liburl = 'https://openrct.net/launcher/libs/orctlibs_vs.zip'
+$liburl = 'https://openrct2.website/files/orctlibs-vs.zip'
 $libsTest = Test-Path $libs
 
 #libs version test
