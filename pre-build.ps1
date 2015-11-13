@@ -1,5 +1,5 @@
 #init
-$libversion = 3
+$libversion = 4
 $path = Split-Path $Script:MyInvocation.MyCommand.Path
 $zip = $path+'\orctlibs.zip'
 $libs = $path+'\lib'

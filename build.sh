@@ -13,7 +13,7 @@ if [[ ! -d build ]]; then
 fi
 
 # keep in sync with version in install.sh
-sha256sum=0a7b5ea46e9cb4b19000b69690eae0b75929752f7db192c78bd7ffb61d696835
+sha256sum=69ff98c9544838fb16384bc78af9dc1c452b9d01d919e43f5fec686d02c9bdd8
 libVFile="./libversion"
 libdir="./lib"
 currentversion=0
