@@ -1669,6 +1669,7 @@ const uint8 map_element_lower_styles[5][32] = {
 
 //Hack: pushes variables to the stack before jumping to address
 //These functions are temporary and are used for debugging the decompiled code.
+#ifdef __GNUC__
 static int callcode_push3(int address, int stackvar1, int stackvar2, int stackvar3, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
 {
 	int result;
@@ -1925,6 +1926,7 @@ static int callcode_push1(int address, int stackvar, int *_eax, int *_ebx, int *
 	);
 	return result&0xFF00;
 }
+#endif //__GNUC__
 
 static money32 map_set_land_height(int flags, int x, int y, int height, int style, int selectionType)
 {
@@ -2001,6 +2003,11 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 	int saved_ecx = ecx;
 	unsigned int saved_edx = edx;
 	
+	uint8 *pdl = (uint8 *)&edx;
+	uint8 *pdh = (uint8 *)&edx+1;
+	uint8 *pbl = (uint8 *)&ebx;
+	uint8 *pbh = (uint8 *)&ebx+1;
+	
 	/*
 	esi = ecx&0xFFFF; //movzx esi, cx
 	esi <<= 8;
@@ -2010,21 +2017,12 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 	*/
 	esi = (int)map_get_first_element_at(eax/32, ecx/32);
 	
-	uint8 *pdl = (uint8 *)&edx;
-	uint8 *pdh = (uint8 *)&edx+1;
-	uint8 *pbl = (uint8 *)&ebx;
-	uint8 *pbh = (uint8 *)&ebx+1;
-	
 	*pdh = *pdl;
 	*pdh += 4;
 	
 loc_663A54:
 	eax = map_element_get_type((rct_map_element *)esi);
-	if(eax!=MAP_ELEMENT_TYPE_SCENERY)
-		goto loc_663AA3;
-	if(*pdl>((rct_map_element *)esi)->clearance_height)
-		goto loc_663AA3;
-	if(*pdh<((rct_map_element *)esi)->base_height)
+	if(eax!=MAP_ELEMENT_TYPE_SCENERY || *pdl>((rct_map_element *)esi)->clearance_height || *pdh<((rct_map_element *)esi)->base_height)
 		goto loc_663AA3;
 	eax = ((rct_map_element *)esi)->properties.scenery.type;
 	eax = RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES, uint32)[eax];
@@ -2067,27 +2065,27 @@ loc_663AA3:
 	esi >>= 3;
 	esi = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, uint32)[esi/4];
 	*/
-	esi = (int)map_get_first_element_at(eax/32, ecx/32);
+	rct_map_element *mapElement = map_get_first_element_at(eax/32, ecx/32); //esi
+	esi = (int)mapElement;
 	//callcode_push3(0x663AC4, saved_eax, saved_ebx, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
 	
 loc_663AC4:
-	eax = ((rct_map_element *)esi)->type;
+	eax = mapElement->type;
 	eax &= 0x3C;
 	if(eax==8)
 	{
-		ebp = ((rct_map_element *)esi)->properties.track.ride_index; //not sure what union member we need here. [esi+7]
-		ebp *= 0x260;
-		eax = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[ebp/0x260].subtype;
+		ebp = ((rct_map_element *)mapElement)->properties.track.ride_index; //not sure what union member we need here. [esi+7]
+		eax = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[ebp].subtype;
 		eax = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, uint32)[eax];
 		
 		eax = ((rct_ride_type *)eax)->max_height;
 		if(eax==0)
 		{
-			eax = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[ebp/0x260].type;
+			eax = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[ebp].type;
 			eax = RCT2_GLOBAL(0x97D218+eax*8, uint8);
 		}
 		//rct2: 0x663AFC
-		ebx = ((rct_map_element *)esi)->clearance_height;
+		ebx = mapElement->clearance_height;
 		ebx -= *pdl;
 		if(ebx>=0)
 		{
@@ -2101,56 +2099,61 @@ loc_663AC4:
 		}
 	}
 loc_663B1A:
-	esi += 8;
-	if(!((*(uint8 *)esi-7)&MAP_ELEMENT_FLAG_LAST_TILE))
+	mapElement++;
+	if((mapElement-1)->flags&MAP_ELEMENT_FLAG_LAST_TILE)
 		goto loc_663AC4;
-	
 	ecx = saved_ecx;
 	ebx = saved_ebx;
 	eax = saved_eax;
 	saved_ecx = ecx;
 	
+	ebp *= 0x260;
+	esi = (int)mapElement;
 	//callcode_push1(0x663B27, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
 	
+	/*
 	esi = ecx&0xFFFF;
 	esi <<= 8;
 	esi |= eax&0xFFFF;
 	esi >>= 3;
 	esi = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, uint32)[esi/4];
-	
+	*/
+	mapElement = map_get_first_element_at(eax/32, ecx/32); //esi
+	esi = (int)mapElement;
 	//callcode_push1(0x663B39, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
 	
-	while((((rct_map_element *)esi)->type&0x3C))
-		esi += 8;
-	if(!((rct_map_element *)esi)->type&0x40)
-		goto loc_663B72;
-	ecx = *((uint8 *)esi+5); //Don't know which union member to use yet.
-	ecx &= 0x1F;
-	if(ecx==0)
-		goto loc_663B72;
-	ecx <<= 1;
-	ecx -= 2;
-	*pbh = *pdl;
-	if((*pdh&0x1F))
+	while(mapElement->type&MAP_ELEMENT_TYPE_MASK)
+		mapElement++;
+	if(mapElement->type&0x40)
 	{
-		*pbh += 2;
-		if((*pdh&0x10))
+		//ecx = *((uint8 *)esi+5)&0x1F; //Don't know which union member to use yet.
+		ecx = mapElement->properties.scenery.age&0x1F; //Don't know if this is the correct union member.
+		if(ecx!=0)
 		{
-			*pbh += 2;
+			ecx = ecx*2-2;
+			*pbh = *pdl;
+			if((*pdh&0x1F))
+			{
+				*pbh += 2;
+				if((*pdh&0x10))
+				{
+					*pbh += 2;
+				}
+			}
+		loc_663B6A:
+			if(*pbh>ecx)
+			{
+				//rct2: 0x663C5A
+				mapElement++;
+				map_obstruction_set_error_text(mapElement);
+				return MONEY32_UNDEFINED;
+			}
 		}
-	}
-loc_663B6A:
-	if(*pbh>ecx)
-	{
-		//rct2: 0x663C5A
-		ecx = saved_ecx;
-		esi += 8;
-		map_obstruction_set_error_text((rct_map_element *)esi);
-		return MONEY32_UNDEFINED;
 	}
 loc_663B72:
 	ecx = saved_ecx;
 	
+	esi = (int)mapElement;
 	//RCT2_CALLFUNC_X(0x663B73, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
 
 	*pbh = *pdl;
@@ -2183,22 +2186,18 @@ loc_663B85:
 	
 	//callcode_push2(0x663BA3, saved_eax, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
 	
+	/*
 	edi = ecx&0xFFFF;
 	edi <<= 8;
 	edi = (edi|eax)&0xFFFF;
 	edi >>= 3;
 	edi = (uint32)RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element *)[edi/4];
+	*/
+	edi = (int)map_get_first_element_at(eax/32, ecx/32);
 loc_663BB5:
 	//callcode_push2(0x663BB5, saved_eax, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
-	eax = ((rct_map_element *)edi)->type;
-	eax &= 0x3C;
-	if(eax==0x14)
-		goto loc_663BD9;
-	if(eax==0xC)
-		goto loc_663BD9;
-	if(((rct_map_element *)edi)->flags&0x10)
-		goto loc_663BD9;
-	if(edi==esi)
+	eax = ((rct_map_element *)edi)->type&MAP_ELEMENT_TYPE_MASK;
+	if(eax==0x14 || eax==0xC || ((rct_map_element *)edi)->flags&0x10 || edi==esi)
 		goto loc_663BD9;
 	if(edi>esi)
 		goto loc_663BD4;
