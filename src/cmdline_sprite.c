@@ -260,6 +260,7 @@ bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **ou
 	}
 
 	uint8 *buffer = malloc((height * 2) + (width * height * 16));
+	memset(buffer, 0, (height * 2) + (width * height * 16));
 	uint16 *yOffsets = (uint16*)buffer;
 
 	// A larger range is needed for proper dithering
