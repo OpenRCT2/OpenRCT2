@@ -167,6 +167,7 @@ typedef struct {
 	uint8 upper_case_banners;
 	uint8 allow_loading_with_incorrect_checksum;
 	uint8 steam_overlay_pause;
+	float window_scale;
 } general_configuration;
 
 typedef struct {
