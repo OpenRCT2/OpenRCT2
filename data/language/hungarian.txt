@@ -2722,8 +2722,8 @@ STR_2714    :-
 STR_2715    :.
 STR_2716    :/
 STR_2717    :'
-STR_2718    :Up
-STR_2719    :New file
+STR_2718    :(up)
+STR_2719    :(new file)
 STR_2720    :{UINT16}sec
 STR_2721    :{UINT16}secs
 STR_2722    :{UINT16}min:{UINT16}sec
