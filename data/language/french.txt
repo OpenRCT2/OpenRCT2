@@ -2723,8 +2723,8 @@ STR_2714    :-
 STR_2715    :.
 STR_2716    :/
 STR_2717    :'
-STR_2718    :(up)
-STR_2719    :(nouveau fichier)
+STR_2718    :Up
+STR_2719    :Nouveau fichier
 STR_2720    :{UINT16}s
 STR_2721    :{UINT16}s
 STR_2722    :{UINT16}m {UINT16}s

@@ -2760,8 +2760,8 @@ STR_2715    :.
 STR_2716    :/
 STR_2717    :'
 # New strings (previously these were ???)
-STR_2718    :(..)
-STR_2719    :(nowy plik)
+STR_2718    :..
+STR_2719    :Nowy plik
 # sec, secs
 STR_2720    :{UINT16}sek
 STR_2721    :{UINT16}sek

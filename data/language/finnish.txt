@@ -2725,8 +2725,8 @@ STR_2714    :-
 STR_2715    :.
 STR_2716    :/
 STR_2717    :'
-STR_2718    :(ylös)
-STR_2719    :(uusi tiedosto)
+STR_2718    :Ylös
+STR_2719    :Uusi tiedosto
 STR_2720    :{UINT16}sek
 STR_2721    :{UINT16}sekuntia
 STR_2722    :{UINT16}min:{UINT16}sek
