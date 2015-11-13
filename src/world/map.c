@@ -1974,7 +1974,6 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 	/*	Continuing dissassembly - work in progress
 	 *	Known bugs:
 	 *		Raising the corner of a piece of land doesn't remove walls.
-	 *		Small scenery elements (ones that take up 1/4 of a tile) are not removed when changing land height.
 	 *	Original bugs:
 	 *		Lowering the land tile underneath a wall removes the wall.
 	 *		Land can be raised over flat scenery items (gardens, for example) without removing them.
@@ -1990,7 +1989,7 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 	RCT2_GLOBAL(0x9E2E18, uint32) = 0;
 	if(ebx&GAME_COMMAND_FLAG_APPLY)
 	{
-		footpath_remove_litter(eax, ebx, map_element_height(eax, ecx));
+		footpath_remove_litter(eax, ecx, map_element_height(eax, ecx));
 		//Hmmm... I have a bug in here where raising the corner of a tile doesn't remove walls on it.
 		map_remove_walls_at(eax, ecx, edx*8-16, edx*8+32);
 	}
@@ -2008,47 +2007,41 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 	uint8 *pbl = (uint8 *)&ebx;
 	uint8 *pbh = (uint8 *)&ebx+1;
 	
-	/*
-	esi = ecx&0xFFFF; //movzx esi, cx
-	esi <<= 8;
-	esi |= eax;
-	esi >>= 3;
-	esi = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, uint32)[(int)esi/4];
-	*/
-	esi = (int)map_get_first_element_at(eax/32, ecx/32);
+	rct_map_element *mapElement = map_get_first_element_at(eax/32, ecx/32); //esi
 	
 	*pdh = *pdl;
 	*pdh += 4;
 	
-loc_663A54:
-	eax = map_element_get_type((rct_map_element *)esi);
-	if(eax!=MAP_ELEMENT_TYPE_SCENERY || *pdl>((rct_map_element *)esi)->clearance_height || *pdh<((rct_map_element *)esi)->base_height)
-		goto loc_663AA3;
-	eax = ((rct_map_element *)esi)->properties.scenery.type;
-	eax = RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES, uint32)[eax];
-	if(((rct_scenery_entry *)eax)->small_scenery.height>0x40) //cmp byte ptr [eax+0Ah], 40h; jbe short loc_663A87
-	{
-		if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32)&PARK_FLAGS_FORBID_TREE_REMOVAL)
+//loc_663A54:
+	do{
+		int type = map_element_get_type(mapElement); //eax
+		rct_scenery_entry *sceneryEntry; //eax
+		
+		if(type!=MAP_ELEMENT_TYPE_SCENERY || *pdl>(mapElement)->clearance_height || *pdh<(mapElement)->base_height)
+			continue;
+		type = mapElement->properties.scenery.type;
+		sceneryEntry = RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES, rct_scenery_entry *)[type];
+		if(sceneryEntry->small_scenery.height>0x40) //cmp byte ptr [eax+0Ah], 40h; jbe short loc_663A87
 		{
-			//rct2: 0x663C45
-			map_obstruction_set_error_text((rct_map_element *)esi);
-			return MONEY32_UNDEFINED;
+			if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32)&PARK_FLAGS_FORBID_TREE_REMOVAL)
+			{
+				//rct2: 0x663C45
+				map_obstruction_set_error_text(mapElement);
+				return MONEY32_UNDEFINED;
+			}
 		}
-	}
-	//rct2: 0x663A87
-	//callcode_push3(0x663A87, saved_eax, saved_ecx, saved_edx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
-	ecx = ((rct_scenery_entry *)eax)->small_scenery.removal_price*10;
-	RCT2_GLOBAL(0x9E2E18, uint32) += ecx;
-	//rct2: 0x663A94
-	if((ebx&GAME_COMMAND_FLAG_APPLY))
-	{
-		map_element_remove((rct_map_element *)esi);
-		esi = esi-8;
-	}
-loc_663AA3:
-	esi = esi+8;
-	if(!((*(uint8 *)esi-7)&MAP_ELEMENT_FLAG_LAST_TILE))
-		goto loc_663A54;
+		//rct2: 0x663A87
+		RCT2_GLOBAL(0x9E2E18, money32) += ((rct_scenery_entry *)sceneryEntry)->small_scenery.removal_price*10;
+		//rct2: 0x663A94
+		if((ebx&GAME_COMMAND_FLAG_APPLY))
+		{
+			map_element_remove(mapElement);
+			mapElement--;
+		}
+	//loc_663AA3:
+	}while(!((mapElement++)->flags&MAP_ELEMENT_FLAG_LAST_TILE));
+
+	esi =(int)mapElement;
 	edx = saved_edx;
 	ecx = saved_ecx;
 	eax = saved_eax;
@@ -2058,35 +2051,28 @@ loc_663AA3:
 	
 	//callcode_push3(0x663AB2, saved_eax, saved_ebx, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
 	
-	/*
-	esi = ecx&0xFFFF; //movzx esi, cx
-	esi <<= 8;
-	esi |= eax&0xFFFF; //or si, ax
-	esi >>= 3;
-	esi = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, uint32)[esi/4];
-	*/
-	rct_map_element *mapElement = map_get_first_element_at(eax/32, ecx/32); //esi
+	mapElement = map_get_first_element_at(eax/32, ecx/32); //esi
 	esi = (int)mapElement;
 	//callcode_push3(0x663AC4, saved_eax, saved_ebx, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
 	
-loc_663AC4:
-	eax = mapElement->type;
-	eax &= 0x3C;
-	if(eax==8)
-	{
-		ebp = ((rct_map_element *)mapElement)->properties.track.ride_index; //not sure what union member we need here. [esi+7]
-		eax = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[ebp].subtype;
+	do{
+	//loc_663AC4:
+		//eax = mapElement->type&0x3C;
+		int type = mapElement->type&0x3C; //eax
+		if(type!=8)
+			continue;
+		int rideIndex = mapElement->properties.track.ride_index; //ebp
+		eax = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[rideIndex].subtype;
 		eax = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, uint32)[eax];
 		
 		eax = ((rct_ride_type *)eax)->max_height;
 		if(eax==0)
 		{
-			eax = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[ebp].type;
+			eax = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[rideIndex].type;
 			eax = RCT2_GLOBAL(0x97D218+eax*8, uint8);
 		}
 		//rct2: 0x663AFC
-		ebx = mapElement->clearance_height;
-		ebx -= *pdl;
+		ebx = mapElement->clearance_height-*pdl;
 		if(ebx>=0)
 		{
 			ebx >>= 1;
@@ -2097,18 +2083,14 @@ loc_663AC4:
 				return MONEY32_UNDEFINED;
 			}
 		}
-	}
-loc_663B1A:
-	mapElement++;
-	if((mapElement-1)->flags&MAP_ELEMENT_FLAG_LAST_TILE)
-		goto loc_663AC4;
+	loc_663B1A:;
+	}while(!((mapElement++)->flags&MAP_ELEMENT_FLAG_LAST_TILE));
+
 	ecx = saved_ecx;
 	ebx = saved_ebx;
 	eax = saved_eax;
 	saved_ecx = ecx;
 	
-	ebp *= 0x260;
-	esi = (int)mapElement;
 	//callcode_push1(0x663B27, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
 	
 	/*
