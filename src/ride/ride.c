@@ -850,6 +850,7 @@ int ride_create_ride(ride_list_item listItem)
 	ebx = GAME_COMMAND_FLAG_APPLY;
 	edi = 0;
 	esi = 0;
+	ebp = 0;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 0x3DC;
 
@@ -1194,7 +1195,7 @@ int sub_6C683D(int* x, int* y, int* z, int direction, int type, uint16 extra_par
 			mapElement->properties.track.colour &= 0x0F;
 			mapElement->properties.track.colour |= (extra_params & 0xFF) << 4;
 		}
-		
+
 		if (flags & (1 << 3)) {
 			track_element_set_cable_lift(mapElement);
 		}
@@ -5562,7 +5563,7 @@ void game_command_callback_ride_remove_track_piece(int eax, int ebx, int ecx, in
 	z = gRideRemoveTrackPieceCallbackZ;
 	direction = gRideRemoveTrackPieceCallbackDirection;
 	type = gRideRemoveTrackPieceCallbackType;
-	
+
 	window_ride_construction_mouseup_demolish_next_piece(x, y, z, direction, type);
 }
 
@@ -6412,9 +6413,9 @@ static void ride_update_vehicle_colours(int rideIndex)
 {
 	rct_ride *ride;
 	rct_vehicle *vehicle;
-	rct_vehicle_colour colours;
+	rct_vehicle_colour colours = { 0 };
 	uint16 spriteIndex;
-	uint8 coloursExtended;
+	uint8 coloursExtended = 0;
 
 	ride = GET_RIDE(rideIndex);
 	if (ride->type == RIDE_TYPE_SPACE_RINGS || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_16)) {

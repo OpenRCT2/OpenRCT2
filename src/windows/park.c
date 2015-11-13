@@ -1053,6 +1053,7 @@ static void window_park_entrance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 static void window_park_init_viewport(rct_window *w)
 {
 	int i, x, y, z, r, xy, zr, viewportFlags;
+	x = y = z = r = xy = zr = 0;
 	rct_viewport *viewport;
 	rct_widget *viewportWidget;
 

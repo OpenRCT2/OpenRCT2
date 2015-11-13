@@ -260,10 +260,12 @@ bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **ou
 	}
 
 	uint8 *buffer = malloc((height * 2) + (width * height * 16));
+	memset(buffer, 0, (height * 2) + (width * height * 16));
 	uint16 *yOffsets = (uint16*)buffer;
 
 	// A larger range is needed for proper dithering
 	sint16 *src = malloc(height * width * 4 * 2);
+	sint16 *src_orig = src;
 	for (uint32 x = 0; x < height * width * 4; x++){
 		src[x] = (sint16) pixels[x];
 	}
@@ -375,7 +377,7 @@ bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **ou
 		}
 	}
 	free(pixels);
-	free(src);
+	free(src_orig);
 
 	int bufferLength = (int)(dst - buffer);
 	buffer = realloc(buffer, bufferLength);

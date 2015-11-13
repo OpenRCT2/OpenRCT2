@@ -2273,7 +2273,7 @@ static void sub_6CBCE2(
 			offsetX = -trackBlock->y;
 			offsetY =  trackBlock->x;
 			bl = rol8(bl, 3);
-			bh |= bl;
+			bh = bl;
 			bh = ror8(bh, 4);
 			bl &= 0x88;
 			bh &= 0x77;

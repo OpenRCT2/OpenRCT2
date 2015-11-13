@@ -943,7 +943,7 @@ void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int 
 				gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH + 100, y + ROW_HEIGHT - 1, ColourMapA[w->colours[1]].lighter | 0x1000000);
 			}
 
-			rct_string_id commandName;
+			rct_string_id commandName = STR_NONE;
 			switch (command->command) {
 			case TITLE_SCRIPT_LOAD:
 				commandName = 5415;
@@ -984,6 +984,8 @@ void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int 
 			case TITLE_SCRIPT_END:
 				commandName = 5426;
 				break;
+			default:
+				log_warning("Unknown command %d", command->command);
 			}
 
 			if ((selected || hover) && !error) {
