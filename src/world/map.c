@@ -66,7 +66,6 @@ bool gClearLargeScenery;
 bool gClearFootpath;
 
 static void tiles_init();
-static void update_path_wide_flags(int x, int y);
 static void map_update_grass_length(int x, int y, rct_map_element *mapElement);
 static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int length);
 static void sub_68AE2A(int x, int y);
@@ -589,7 +588,7 @@ int map_coord_is_connected(int x, int y, int z, uint8 faceDirection)
  *
  *  rct2: 0x006A876D
  */
-void sub_6A876D()
+void map_update_path_wide_flags()
 {
 	int i, x, y;
 
@@ -615,196 +614,6 @@ void sub_6A876D()
 	}
 	RCT2_GLOBAL(0x013CE774, sint16) = x;
 	RCT2_GLOBAL(0x013CE776, sint16) = y;
-}
-
-/**
- *
- *  rct2: 0x006A8B12
- */
-static void sub_6A8B12(int x, int y)
-{
-	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
-	do {
-		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
-			mapElement->type &= ~0x2;
-		}
-	} while (!map_element_is_last_for_tile(mapElement++));
-}
-
-/**
- *
- *  rct2: 0x006A8ACF
- */
-static void sub_6A8ACF(int x, int y, uint8 height, rct_map_element **l)
-{
-	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
-	do {
-		if ((map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) &&
-			!footpath_element_is_queue(mapElement) && !footpath_element_is_sloped(mapElement) &&
-			(height == mapElement->base_height)) {
-			*l = mapElement;
-			return;
-		}
-	} while (!map_element_is_last_for_tile(mapElement++));
-	*l = (rct_map_element*)0xFFFFFFFF;
-}
-
-
-/**
- *
- *  rct2: 0x006A87BB
- */
-static void update_path_wide_flags(int x, int y)
-{
-	if (x < 0x20)
-		return;
-	if (y < 0x20)
-		return;
-	if (x > 0x1FDF)
-		return;
-	if (y > 0x1FDF)
-		return;
-
-	sub_6A8B12(x, y);
-	x += 0x20;
-	sub_6A8B12(x, y);
-	y += 0x20;
-	sub_6A8B12(x, y);
-	x -= 0x20;
-	sub_6A8B12(x, y);
-	y -= 0x20;
-
-	if (!(x & 0xE0))
-		return;
-	if (!(y & 0xE0))
-		return;
-
-	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
-	do {
-		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
-			continue;
-
-		if (footpath_element_is_queue(mapElement))
-			continue;
-
-		if (footpath_element_is_sloped(mapElement))
-			continue;
-
-		uint8 height = mapElement->base_height;
-
-		// pathList is a list of elements, set by sub_6A8ACF adjacent to x,y
-		// Spanned from 0x00F3EFA8 to 0x00F3EFC7 (8 elements) in the original
-		rct_map_element *pathList[8];
-
-		x -= 0x20;
-		y -= 0x20;
-		sub_6A8ACF(x, y, height, pathList + 0);
-		y += 0x20;
-		sub_6A8ACF(x, y, height, pathList + 1);
-		y += 0x20;
-		sub_6A8ACF(x, y, height, pathList + 2);
-		x += 0x20;
-		sub_6A8ACF(x, y, height, pathList + 3);
-		x += 0x20;
-		sub_6A8ACF(x, y, height, pathList + 4);
-		y -= 0x20;
-		sub_6A8ACF(x, y, height, pathList + 5);
-		y -= 0x20;
-		sub_6A8ACF(x, y, height, pathList + 6);
-		x -= 0x20;
-		sub_6A8ACF(x, y, height, pathList + 7);
-		y += 0x20;
-
-		uint8 F3EFA5 = 0;
-		const rct_map_element *invalidPointer = (rct_map_element*)0xFFFFFFFF;
-
-		if (mapElement->properties.path.edges & 8) {
-			F3EFA5 |= 0x80;
-			if (pathList[7] != invalidPointer) {
-				if (footpath_element_is_wide(pathList[7])) {
-					F3EFA5 &= ~0x80;
-				}
-			}
-		}
-
-		if (mapElement->properties.path.edges & 1) {
-			F3EFA5 |= 0x2;
-			if (pathList[1] != invalidPointer) {
-				if (footpath_element_is_wide(pathList[1])) {
-					F3EFA5 &= ~0x2;
-				}
-			}
-		}
-
-		if (mapElement->properties.path.edges & 2) {
-			F3EFA5 |= 0x8;
-			if (pathList[3] != invalidPointer) {
-				if (footpath_element_is_wide(pathList[3])) {
-					F3EFA5 &= ~0x8;
-				}
-			}
-		}
-
-		if (mapElement->properties.path.edges & 4) {
-			F3EFA5 |= 0x20;
-			if (pathList[5] != invalidPointer) {
-				if (footpath_element_is_wide(pathList[5])) {
-					F3EFA5 &= ~0x20;
-				}
-			}
-		}
-
-		if ((F3EFA5 & 0x80) && (pathList[7] != invalidPointer) && !(footpath_element_is_wide(pathList[7])))	{
-			if ((F3EFA5 & 2) &&
-				(pathList[0] != invalidPointer) && (!footpath_element_is_wide(pathList[0])) &&
-				((pathList[0]->properties.path.edges & 6) == 6) && // N E
-				(pathList[1] != invalidPointer) && (!footpath_element_is_wide(pathList[1]))) {
-				F3EFA5 |= 0x1;
-			}
-
-			if ((F3EFA5 & 0x20) &&
-				(pathList[6] != invalidPointer) && (!footpath_element_is_wide(pathList[6])) &&
-				((pathList[6]->properties.path.edges & 3) == 3) && // N W
-				(pathList[5] != invalidPointer) && (!footpath_element_is_wide(pathList[5]))) {
-				F3EFA5 |= 0x40;
-			}
-		}
-
-
-		if ((F3EFA5 & 0x8) && (pathList[3] != invalidPointer) && !(pathList[3]->type & 2))	{
-			if ((F3EFA5 & 2) &&
-				(pathList[2] != invalidPointer) && (!footpath_element_is_wide(pathList[2])) &&
-				((pathList[2]->properties.path.edges & 0xC) == 0xC) &&
-				(pathList[1] != invalidPointer) && (!footpath_element_is_wide(pathList[1]))) {
-				F3EFA5 |= 0x4;
-			}
-
-			if ((F3EFA5 & 0x20) &&
-				(pathList[4] != invalidPointer) && (!footpath_element_is_wide(pathList[4])) &&
-				((pathList[4]->properties.path.edges & 9) == 9) &&
-				(pathList[5] != invalidPointer) && (!footpath_element_is_wide(pathList[5]))) {
-				F3EFA5 |= 0x10;
-			}
-		}
-
-		if ((F3EFA5 & 0x80) && (F3EFA5 & (0x40 | 0x1)))
-			F3EFA5 &= ~0x80;
-
-		if ((F3EFA5 & 0x2) && (F3EFA5 & (0x4 | 0x1)))
-			F3EFA5 &= ~0x2;
-
-		if ((F3EFA5 & 0x8) && (F3EFA5 & (0x10 | 0x4)))
-			F3EFA5 &= ~0x8;
-
-		if ((F3EFA5 & 0x20) && (F3EFA5 & (0x40 | 0x10)))
-			F3EFA5 &= ~0x20;
-
-		if (!(F3EFA5 & (0x2 | 0x8 | 0x20 | 0x80))) {
-			uint8 e = mapElement->properties.path.edges;
-			if ((e != 0xAF) && (e != 0x5F) && (e != 0xEF))
-				mapElement->type |= 2;
-		}
-	} while (!map_element_is_last_for_tile(mapElement++));
 }
 
 /**
@@ -896,6 +705,7 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 	uint8 base_height = *edx;
 	uint8 scenery_type = *edx >> 8;
 	uint8 map_element_type = *ebx >> 8;
+	uint8 flags = *ebx & 0xFF;
 	money32 cost;
 
 	rct_scenery_entry *entry = g_smallSceneryEntries[scenery_type];
@@ -906,13 +716,13 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint32) = y + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint32) = base_height * 8;
 
-	if (!(*ebx & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
+	if (!(flags & GAME_COMMAND_FLAG_GHOST) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !(*ebx & 0x40) && !gCheatsSandboxMode) {
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !(flags & GAME_COMMAND_FLAG_GHOST) && !gCheatsSandboxMode) {
 		// Check if allowed to remove item
 		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL) {
 			if (entry->small_scenery.height > 64) {
@@ -929,20 +739,29 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 		}
 	}
 
+	bool sceneryFound = false;
 	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
-	while(map_element->type != map_element_type ||
-		map_element->base_height != base_height ||
-		map_element->properties.scenery.type != scenery_type ||
-		((*ebx & GAME_COMMAND_FLAG_GHOST) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST))){
-		map_element++;
-		if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
-			*ebx = 0;
-			return;
-		}
+	do {
+		if (map_element->type != map_element_type)
+			continue;
+		if (map_element->base_height != base_height)
+			continue;
+		if (map_element->properties.scenery.type != scenery_type)
+			continue;
+		if ((flags & GAME_COMMAND_FLAG_GHOST) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST))
+			continue;
+
+		sceneryFound = true;
+		break;
+	} while (!map_element_is_last_for_tile(map_element++));
+
+	if (sceneryFound == false){
+		*ebx = 0;
+		return;
 	}
 
 	// Remove element
-	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+	if (flags & GAME_COMMAND_FLAG_APPLY) {
 		map_invalidate_tile_full(x, y);
 		map_element_remove(map_element);
 	}
@@ -956,23 +775,24 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
 	uint8 base_height = *edx;
-	uint8 scenerymultiple_index = *edx >> 8;
+	uint8 tileIndex = *edx >> 8;
 	uint8 map_element_direction = *ebx >> 8;
 	int x = *eax;
 	int y = *ecx;
 	int z = map_element_height(x, y);
+	uint8 flags = *ebx & 0xFF;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 
-	if (!(*ebx & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
+	if (!(flags & GAME_COMMAND_FLAG_GHOST) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
 
-	uint8 element_found = 0;
+	bool element_found = false;
 	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 	do {
 		if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
@@ -981,33 +801,32 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 		if (map_element->base_height != base_height)
 			continue;
 
-		if ((map_element->properties.scenerymultiple.type >> 10) != scenerymultiple_index)
+		if ((map_element->properties.scenerymultiple.type >> 10) != tileIndex)
 			continue;
 
 		if ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) != map_element_direction)
 			continue;
 
 		// If we are removing ghost elements
-		if((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST))
+		if((flags & GAME_COMMAND_FLAG_GHOST) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST))
 			continue;
 
-		element_found = 1;
+		element_found = true;
 		break;
 	} while (!map_element_is_last_for_tile(map_element++));
 
-	if (!element_found){
+	if (element_found == false){
 		*ebx = 0;
 		return;
 	}
 
 	map_element_remove_banner_entry(map_element);
 
-	int ecx2 = map_element->properties.scenerymultiple.type >> 10;
 	rct_scenery_entry* scenery_entry = g_largeSceneryEntries[map_element->properties.scenerymultiple.type & 0x3FF];
 	rct_xyz16 firstTile = {
-		.x = scenery_entry->large_scenery.tiles[ecx2].x_offset,
-		.y = scenery_entry->large_scenery.tiles[ecx2].y_offset,
-		.z = (base_height * 8) - scenery_entry->large_scenery.tiles[ecx2].z_offset
+		.x = scenery_entry->large_scenery.tiles[tileIndex].x_offset,
+		.y = scenery_entry->large_scenery.tiles[tileIndex].y_offset,
+		.z = (base_height * 8) - scenery_entry->large_scenery.tiles[tileIndex].z_offset
 	};
 
 	rotate_map_coordinates(&firstTile.x, &firstTile.y, map_element_direction);
@@ -1038,8 +857,8 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 		}
 
 		// If not applying then no need to delete the actual element
-		if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
-			if (*ebx & (1 << 7)) {
+		if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
+			if (flags & (1 << 7)) {
 				if (map_element->flags & (1 << 6))
 					calculate_cost = false;
 				map_element->flags |= (1 << 6);
@@ -1048,7 +867,7 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 		}
 
 		rct_map_element* sceneryElement = map_get_first_element_at(currentTile.x / 32, currentTile.y / 32);
-		uint8 tile_not_found = 1;
+		element_found = false;
 		do
 		{
 			if (map_element_get_type(sceneryElement) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
@@ -1064,16 +883,16 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 				continue;
 
 			// If we are removing ghost elements
-			if ((*ebx & 0x40) && !(sceneryElement->flags & MAP_ELEMENT_FLAG_GHOST))
+			if ((flags & GAME_COMMAND_FLAG_GHOST) && !(sceneryElement->flags & MAP_ELEMENT_FLAG_GHOST))
 				continue;
 
 			map_invalidate_tile_full(currentTile.x, currentTile.y);
 			map_element_remove(sceneryElement);
-			tile_not_found = 0;
+			element_found = true;
 			break;
 		} while (!map_element_is_last_for_tile(sceneryElement++));
 
-		if (tile_not_found){
+		if (element_found == false){
 			log_error("Tile not found when trying to remove element!");
 		}
 	}

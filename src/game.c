@@ -356,7 +356,7 @@ void game_logic_update()
 	scenario_update();
 	climate_update();
 	map_update_tiles();
-	sub_6A876D();
+	map_update_path_wide_flags();
 	peep_update_all();
 	vehicle_update_all();
 	sprite_misc_update_all();
