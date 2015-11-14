@@ -121,7 +121,10 @@ int cmdline_run(const char **argv, int argc)
 
 	if (argc != 0) {
 		gExitCode = cmdline_call_action(argv, argc);
-		if (gExitCode != 0) {
+		if (gExitCode < 0) {
+			return 0;
+		} else if (gExitCode > 0) {
+			gExitCode = 0;
 			return 0;
 		}
 	}
