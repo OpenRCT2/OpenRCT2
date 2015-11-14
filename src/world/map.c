@@ -601,7 +601,7 @@ void map_update_path_wide_flags()
 	x = RCT2_GLOBAL(0x013CE774, sint16);
 	y = RCT2_GLOBAL(0x013CE776, sint16);
 	for (i = 0; i < 128; i++) {
-		update_path_wide_flags(x, y);
+		footpath_update_path_wide_flags(x, y);
 
 		// Next x, y tile
 		x += 32;
