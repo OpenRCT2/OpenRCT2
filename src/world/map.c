@@ -350,12 +350,11 @@ void map_update_tile_pointers()
 	for (y = 0; y < 256; y++) {
 		for (x = 0; x < 256; x++) {
 			*tile++ = mapElement;
-			do { } while (!map_element_is_last_for_tile(mapElement++));
+			while (!map_element_is_last_for_tile(mapElement++));
 		}
 	}
 
-	// Possible next free map element
-	RCT2_GLOBAL(0x0140E9A4, rct_map_element*) = mapElement;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*) = mapElement;
 }
 
 /**
@@ -538,17 +537,15 @@ void sub_68B089()
 		*mapElement = *mapElementFirst;
 		mapElementFirst->base_height = 255;
 
-		mapElement++;
 		mapElementFirst++;
-	} while (!map_element_is_last_for_tile(mapElement - 1));
+	} while (!map_element_is_last_for_tile(mapElement++));
 
-	// Update next free element?
-	mapElement = RCT2_GLOBAL(0x0140E9A4, rct_map_element*);
+	mapElement = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*);
 	do {
 		mapElement--;
 	} while (mapElement->base_height == 255);
 	mapElement++;
-	RCT2_GLOBAL(0x0140E9A4, rct_map_element*) = mapElement;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*) = mapElement;
 }
 
 
@@ -3357,8 +3354,8 @@ void map_element_remove(rct_map_element *mapElement)
 	(mapElement - 1)->flags |= MAP_ELEMENT_FLAG_LAST_TILE;
 	mapElement->base_height = 0xFF;
 
-	if ((mapElement + 1) == RCT2_GLOBAL(0x00140E9A4, rct_map_element*)){
-		RCT2_GLOBAL(0x00140E9A4, rct_map_element*)--;
+	if ((mapElement + 1) == RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*)){
+		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*)--;
 	}
 }
 
@@ -3516,18 +3513,18 @@ void map_reorganise_elements()
  */
 int sub_68B044()
 {
-	if (RCT2_GLOBAL(0x00140E9A4, rct_map_element*) <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
+	if (RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*) <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
 		return 1;
 
 	for (int i = 1000; i != 0; --i)
 		sub_68B089();
 
-	if (RCT2_GLOBAL(0x00140E9A4, rct_map_element*) <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
+	if (RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*) <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
 		return 1;
 
 	map_reorganise_elements();
 
-	if (RCT2_GLOBAL(0x00140E9A4, rct_map_element*) <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
+	if (RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*) <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
 		return 1;
 	else{
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = 894;
@@ -3545,7 +3542,7 @@ rct_map_element *map_element_insert(int x, int y, int z, int flags)
 
 	sub_68B044();
 
-	newMapElement = RCT2_GLOBAL(0x00140E9A4, rct_map_element*);
+	newMapElement = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*);
 	originalMapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
 
 	// Set tile index pointer to point to new element block
@@ -3586,7 +3583,7 @@ rct_map_element *map_element_insert(int x, int y, int z, int flags)
 		} while (!((newMapElement - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
 	}
 
-	RCT2_GLOBAL(0x00140E9A4, rct_map_element*) = newMapElement;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*) = newMapElement;
 	return insertedElement;
 }
 
@@ -4777,8 +4774,9 @@ void game_command_set_banner_style(int* eax, int* ebx, int* ecx, int* edx, int* 
 	*ebx = 0;
 }
 
-void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {
-	rct_banner *banner = &gBanners[*ecx];
+void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {	
+	uint8 bannerId = *ecx & 0xFF;
+	rct_banner *banner = &gBanners[bannerId];
 	int x = banner->x << 5;
 	int y = banner->y << 5;
 
@@ -4788,16 +4786,23 @@ void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* es
 	if (*ebp == 0) { // small sign
 		
 		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+		bool fence_found = false;
+		do{
+			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_FENCE)
+				continue;
 
-		while (1){
-			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_FENCE) {
-				rct_scenery_entry* scenery_entry = g_wallSceneryEntries[map_element->properties.fence.type];
-				if (scenery_entry->wall.var_0D != 0xFF){
-					if (map_element->properties.fence.item[0] == *ecx)
-						break;
-				}
-			}
-			map_element++;
+			rct_scenery_entry* scenery_entry = g_wallSceneryEntries[map_element->properties.fence.type];
+			if (scenery_entry->wall.var_0D == 0xFF)
+				continue;
+			if (map_element->properties.fence.item[0] != bannerId)
+				continue;
+			fence_found = true;
+			break;
+		} while (!map_element_is_last_for_tile(map_element++));
+
+		if (fence_found == false) {
+			*ebx = MONEY32_UNDEFINED;
+			return;
 		}
 		map_element->flags &= 0x9F;
 		map_element->properties.fence.item[1] =
@@ -4807,7 +4812,7 @@ void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* es
 
 		map_invalidate_tile(x, y, map_element->base_height * 8, map_element->clearance_height * 8);
 	} else { // large sign
-		rct_map_element *mapElement = banner_get_map_element(*ecx);
+		rct_map_element *mapElement = banner_get_map_element(bannerId);
 		if (mapElement == NULL || map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 2984;
 			*ebx = MONEY32_UNDEFINED;
