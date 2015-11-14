@@ -3188,7 +3188,6 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 		curTile.y += y;
 
 		if(curTile.x >= 0x1FFF || curTile.y >= 0x1FFF || curTile.x < 0 || curTile.y < 0){
-			tile++;
 			continue;
 		}
 
@@ -3207,7 +3206,6 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 				maxHeight = height;
 			}
 		}
-		tile++;
 	}
 
 	if(z != 0){
