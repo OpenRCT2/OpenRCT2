@@ -1971,148 +1971,100 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 		}
 	}
 	
-	/*	Continuing dissassembly - work in progress
-	 *	Known bugs:
-	 *		Raising the corner of a piece of land doesn't remove walls.
+	/*	Continuing decompilation - work in progress
+	 *	Known bugs (introduced by disassembly):
+	 *		none! Still requires testing, though.
 	 *	Original bugs:
 	 *		Lowering the land tile underneath a wall removes the wall.
 	 *		Land can be raised over flat scenery items (gardens, for example) without removing them.
+	 *		Removal price of walls is not added.
+	 *		Removal price of flat scenery is not counted when raising the center of a tile.
 	 */
 	
 	int eax = x, ebx = flags, ecx = y, edi = selectionType << 5, ebp = 0;
 	uint32 edx = (style << 8) | height;
+	//dl: height
+	//dh: flags
 	uint32 esi = 0;
+	
+	int saved_eax;
+	int saved_ebx;
+	int saved_ecx;
+	unsigned int saved_edx;
 	
 	//Uncomment to use vanilla code
 	//RCT2_CALLFUNC_X(0x006639FE, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
 	
-	RCT2_GLOBAL(0x9E2E18, uint32) = 0;
+	RCT2_GLOBAL(0x9E2E18, money32) = MONEY(0, 0);
 	if(ebx&GAME_COMMAND_FLAG_APPLY)
 	{
-		footpath_remove_litter(eax, ecx, map_element_height(eax, ecx));
-		//Hmmm... I have a bug in here where raising the corner of a tile doesn't remove walls on it.
-		map_remove_walls_at(eax, ecx, edx*8-16, edx*8+32);
+		footpath_remove_litter(x, y, map_element_height(x, y));
+		map_remove_walls_at(x, y, height*8-16, height*8+32);
 	}
+	RCT2_GLOBAL(0x9E2E18, money32) += MONEY(20, 0);
 	
-	RCT2_GLOBAL(0x9E2E18, uint32) += 0xC8;
+	rct_map_element *mapElement = map_get_first_element_at(x/32, y/32); //mapElement = esi
 	
-	//RCT2_CALLFUNC_X(0x663A3A, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
+	int zHigh = height+4; //zHigh = dh
 	
-	int saved_eax = eax;
-	int saved_ecx = ecx;
-	unsigned int saved_edx = edx;
+//loc_663A54:
+	do{
+		int elementType = map_element_get_type(mapElement); //elementType = eax
+		rct_scenery_entry *sceneryEntry; //eax
+		
+		if(elementType!=MAP_ELEMENT_TYPE_SCENERY || height>mapElement->clearance_height || zHigh<(mapElement)->base_height)
+			continue;
+		elementType = mapElement->properties.scenery.type;
+		sceneryEntry = RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES, rct_scenery_entry *)[elementType];
+		if(sceneryEntry->small_scenery.height>64 && RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32)&PARK_FLAGS_FORBID_TREE_REMOVAL)
+		{
+				map_obstruction_set_error_text(mapElement);
+				return MONEY32_UNDEFINED;
+		}
+		RCT2_GLOBAL(0x9E2E18, money32) += MONEY(sceneryEntry->small_scenery.removal_price, 0);
+		if(flags&GAME_COMMAND_FLAG_APPLY)
+			map_element_remove(mapElement--);
+	}while(!map_element_is_last_for_tile(mapElement++));
+	
+	mapElement = map_get_first_element_at(x/32, y/32); //mapElement = esi
+	
+//loc_663AC4:
+	do{
+		if(map_element_get_type(mapElement)!=8) //eax
+			continue;
+		int rideIndex = mapElement->properties.track.ride_index; //rideIndex = ebp
+		int maxHeight = GET_RIDE_ENTRY(GET_RIDE(rideIndex)->subtype)->max_height; //maxHeight = eax
+		if(maxHeight==0)
+			maxHeight = RCT2_GLOBAL(0x97D218+8*GET_RIDE(rideIndex)->type, uint8);
+		int zDelta = mapElement->clearance_height-height; //zDelta = ebx
+		if(zDelta>=0 && zDelta/2>maxHeight && gCheatsDisableSupportLimits==false)
+		{
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_SUPPORTS_CANT_BE_EXTENDED;
+			return MONEY32_UNDEFINED;
+		}
+	}while(!map_element_is_last_for_tile(mapElement++));
+
+	//Save variables on the stack
+	//saved_ecx = ecx;
+	//callcode_push1(0x663B27, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
+	
+	mapElement = map_get_first_element_at(x/32, y/32); //esi
+	esi = (int)mapElement;
+	//callcode_push1(0x663B39, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
 	
 	uint8 *pdl = (uint8 *)&edx;
 	uint8 *pdh = (uint8 *)&edx+1;
 	uint8 *pbl = (uint8 *)&ebx;
 	uint8 *pbh = (uint8 *)&ebx+1;
 	
-	rct_map_element *mapElement = map_get_first_element_at(eax/32, ecx/32); //esi
-	
-	*pdh = *pdl;
-	*pdh += 4;
-	
-//loc_663A54:
-	do{
-		int type = map_element_get_type(mapElement); //eax
-		rct_scenery_entry *sceneryEntry; //eax
-		
-		if(type!=MAP_ELEMENT_TYPE_SCENERY || *pdl>(mapElement)->clearance_height || *pdh<(mapElement)->base_height)
-			continue;
-		type = mapElement->properties.scenery.type;
-		sceneryEntry = RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES, rct_scenery_entry *)[type];
-		if(sceneryEntry->small_scenery.height>0x40) //cmp byte ptr [eax+0Ah], 40h; jbe short loc_663A87
-		{
-			if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32)&PARK_FLAGS_FORBID_TREE_REMOVAL)
-			{
-				//rct2: 0x663C45
-				map_obstruction_set_error_text(mapElement);
-				return MONEY32_UNDEFINED;
-			}
-		}
-		//rct2: 0x663A87
-		RCT2_GLOBAL(0x9E2E18, money32) += ((rct_scenery_entry *)sceneryEntry)->small_scenery.removal_price*10;
-		//rct2: 0x663A94
-		if((ebx&GAME_COMMAND_FLAG_APPLY))
-		{
-			map_element_remove(mapElement);
-			mapElement--;
-		}
-	//loc_663AA3:
-	}while(!((mapElement++)->flags&MAP_ELEMENT_FLAG_LAST_TILE));
-
-	esi =(int)mapElement;
-	edx = saved_edx;
-	ecx = saved_ecx;
-	eax = saved_eax;
-	saved_eax = eax;
-	int saved_ebx = ebx;
-	saved_ecx = ecx;
-	
-	//callcode_push3(0x663AB2, saved_eax, saved_ebx, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
-	
-	mapElement = map_get_first_element_at(eax/32, ecx/32); //esi
-	esi = (int)mapElement;
-	//callcode_push3(0x663AC4, saved_eax, saved_ebx, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
-	
-	do{
-	//loc_663AC4:
-		//eax = mapElement->type&0x3C;
-		int type = mapElement->type&0x3C; //eax
-		if(type!=8)
-			continue;
-		int rideIndex = mapElement->properties.track.ride_index; //ebp
-		eax = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[rideIndex].subtype;
-		eax = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, uint32)[eax];
-		
-		eax = ((rct_ride_type *)eax)->max_height;
-		if(eax==0)
-		{
-			eax = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[rideIndex].type;
-			eax = RCT2_GLOBAL(0x97D218+eax*8, uint8);
-		}
-		//rct2: 0x663AFC
-		ebx = mapElement->clearance_height-*pdl;
-		if(ebx>=0)
-		{
-			ebx >>= 1;
-			if(ebx>eax)
-			{
-				//rct2: 0x663B09
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_SUPPORTS_CANT_BE_EXTENDED;
-				return MONEY32_UNDEFINED;
-			}
-		}
-	loc_663B1A:;
-	}while(!((mapElement++)->flags&MAP_ELEMENT_FLAG_LAST_TILE));
-
-	ecx = saved_ecx;
-	ebx = saved_ebx;
-	eax = saved_eax;
-	saved_ecx = ecx;
-	
-	//callcode_push1(0x663B27, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
-	
-	/*
-	esi = ecx&0xFFFF;
-	esi <<= 8;
-	esi |= eax&0xFFFF;
-	esi >>= 3;
-	esi = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, uint32)[esi/4];
-	*/
-	mapElement = map_get_first_element_at(eax/32, ecx/32); //esi
-	esi = (int)mapElement;
-	//callcode_push1(0x663B39, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
-	
 	while(mapElement->type&MAP_ELEMENT_TYPE_MASK)
 		mapElement++;
 	if(mapElement->type&0x40)
 	{
-		//ecx = *((uint8 *)esi+5)&0x1F; //Don't know which union member to use yet.
-		ecx = mapElement->properties.scenery.age&0x1F; //Don't know if this is the correct union member.
-		if(ecx!=0)
+		int waterHeight = mapElement->properties.surface.terrain&MAP_ELEMENT_WATER_HEIGHT_MASK; //waterHeight = ecx
+		if(waterHeight!=0)
 		{
-			ecx = ecx*2-2;
+			waterHeight = waterHeight*2-2;
 			*pbh = *pdl;
 			if((*pdh&0x1F))
 			{
@@ -2123,7 +2075,7 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 				}
 			}
 		loc_663B6A:
-			if(*pbh>ecx)
+			if(*pbh>waterHeight)
 			{
 				//rct2: 0x663C5A
 				mapElement++;
@@ -2133,7 +2085,6 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 		}
 	}
 loc_663B72:
-	ecx = saved_ecx;
 	
 	esi = (int)mapElement;
 	//RCT2_CALLFUNC_X(0x663B73, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
@@ -2168,14 +2119,7 @@ loc_663B85:
 	
 	//callcode_push2(0x663BA3, saved_eax, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
 	
-	/*
-	edi = ecx&0xFFFF;
-	edi <<= 8;
-	edi = (edi|eax)&0xFFFF;
-	edi >>= 3;
-	edi = (uint32)RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element *)[edi/4];
-	*/
-	edi = (int)map_get_first_element_at(eax/32, ecx/32);
+	edi = (int)map_get_first_element_at(eax/32, ecx/32); //mapElement = edi
 loc_663BB5:
 	//callcode_push2(0x663BB5, saved_eax, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
 	eax = ((rct_map_element *)edi)->type&MAP_ELEMENT_TYPE_MASK;
@@ -2204,6 +2148,7 @@ loc_663C4F:
 	esi = edi;
 	map_obstruction_set_error_text((rct_map_element *)esi);
 	return MONEY32_UNDEFINED;
+
 }
 
 void game_command_set_land_height(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
