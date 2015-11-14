@@ -4780,8 +4780,8 @@ void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* es
 	int x = banner->x << 5;
 	int y = banner->y << 5;
 
-	banner->colour = (uint8)*edx;
-	banner->text_colour = (uint8)*edi;
+	uint8 mainColour = (uint8)*edx;
+	uint8 textColour = (uint8)*edi;
 	
 	if (*ebp == 0) { // small sign
 		
@@ -4806,9 +4806,9 @@ void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* es
 		}
 		map_element->flags &= 0x9F;
 		map_element->properties.fence.item[1] =
-			banner->colour |
-			((banner->text_colour & 0x7) << 5);
-		map_element->flags |= ((banner->text_colour & 0x18) << 2);
+			mainColour |
+			((textColour & 0x7) << 5);
+		map_element->flags |= ((textColour & 0x18) << 2);
 
 		map_invalidate_tile(x, y, map_element->base_height * 8, map_element->clearance_height * 8);
 	} else { // large sign
@@ -4825,8 +4825,8 @@ void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* es
 			mapElement->base_height,
 			mapElement->type & 3,
 			mapElement->properties.scenerymultiple.type >> 10,
-			banner->colour,
-			banner->text_colour
+			mainColour,
+			textColour
 		);
 	}
 
