@@ -5129,3 +5129,4 @@ rct_map_element *map_get_track_element_at_of_type(int x, int y, int z, int track
 
 	return NULL;
 }
+
