@@ -575,8 +575,11 @@ static void window_ride_construction_close(rct_window *w)
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 1);
 
 	// In order to cancel the yellow arrow correctly the
-	// selection tool should be cancelled.
-	tool_cancel();
+	// selection tool should be cancelled. Don't do a tool cancel if
+	// another window has already taken control of tool.
+	if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) &&
+		w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
+		tool_cancel();
 
 	hide_gridlines();
 
