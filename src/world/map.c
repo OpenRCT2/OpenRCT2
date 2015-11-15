@@ -2044,17 +2044,8 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 		}
 	}while(!map_element_is_last_for_tile(mapElement++));
 
-	//Save variables on the stack
-	//saved_ecx = ecx;
-	//callcode_push1(0x663B27, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
+	mapElement = map_get_surface_element_at(x/32, y/32);
 	
-	mapElement = map_get_first_element_at(x/32, y/32); //esi
-	esi = (int)mapElement;
-	//callcode_push1(0x663B39, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
-	
-	//Hmm... Not really sure what's going on here.
-	while(mapElement->type&MAP_ELEMENT_TYPE_MASK)
-		mapElement++;
 	if(mapElement->type&MAP_ELEMENT_TYPE_FLAG_HIGHLIGHT)
 	{
 		int waterHeight = mapElement->properties.surface.terrain&MAP_ELEMENT_WATER_HEIGHT_MASK; //waterHeight = ecx
@@ -2082,10 +2073,8 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 	}
 //loc_663B72:
 	
-	esi = (int)mapElement;
-	//RCT2_CALLFUNC_X(0x663B73, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
 	uint8 unk = height; //unk = bh
-	unk = height;
+	
 	if((style&0xF))
 	{
 		unk += 2;
@@ -2094,68 +2083,49 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 			unk += 2;
 		}
 	}
-loc_663B85:
-	//saved_ebx = ebx;
-	//saved_edx = edx;
 	
-	//int saved_ebp = ebp;
-	//callcode_push3(0x663B88, saved_ebx, saved_edx, saved_ebp, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
-	
-	/* mov bl, dh	; Hmm, odd...
-	 * mov dh, bh
-	 * mov bl, 0Fh
-	 */
-	
+	//rct2: 0x663B93
 	if(map_can_construct_with_clear_at(eax&0xFFFF, ecx&0xFFFF, height, unk, RCT2_ADDRESS(0x663CB9, void), 0xF)==false)
 		return MONEY32_UNDEFINED;
-	//ebp = saved_ebp;
-	//edx = saved_edx;
-	//ebx = saved_ebx;
-	saved_eax = eax;
-	saved_ecx = ecx;
-	
-	//callcode_push2(0x663BA3, saved_eax, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
 	
 	rct_map_element *mapElement2 = map_get_first_element_at(x/32, y/32); //mapElement2 = edi
 	
-
+	
+//loc_663BB5:
+	do{	
+		int elementType = map_element_get_type(mapElement2); //elementType = al
+		
+		if(elementType==MAP_ELEMENT_TYPE_FENCE || elementType==MAP_ELEMENT_TYPE_SCENERY || mapElement2->flags&0x10 || mapElement2==mapElement)
+			continue;
+		if(mapElement2>mapElement)
+		{
+			if(unk > mapElement2->base_height)
+			{
+				map_obstruction_set_error_text(mapElement2);
+				return MONEY32_UNDEFINED;
+			}
+			continue;
+		}
+		if(height < mapElement2->clearance_height)
+		{
+			map_obstruction_set_error_text(mapElement2);
+			return MONEY32_UNDEFINED;
+		}
+	}while(!map_element_is_last_for_tile(mapElement2++));
+	
+	
 	uint8 *pdl = (uint8 *)&edx;
 	uint8 *pdh = (uint8 *)&edx+1;
 	uint8 *pbl = (uint8 *)&ebx;
 	uint8 *pbh = (uint8 *)&ebx+1;
 	
-//loc_663BB5:
-	
-	//callcode_push2(0x663BB5, saved_eax, saved_ecx, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
-do{	
-	eax = ((rct_map_element *)mapElement2)->type&MAP_ELEMENT_TYPE_MASK;
-	if(eax==MAP_ELEMENT_TYPE_FENCE || eax==MAP_ELEMENT_TYPE_SCENERY || mapElement2->flags&0x10 || mapElement2==(rct_map_element *)esi)
-		continue;
-	if(mapElement2>(rct_map_element *)esi)
-		goto loc_663BD4;
-	if(*pdl<((rct_map_element *)mapElement2)->clearance_height)
-		goto loc_663C4F;
-	continue;
-loc_663BD4:
-	if(*pbh>((rct_map_element *)mapElement2)->base_height)
-		goto loc_663C4F;
-loc_663BD9:
-	;
-}while(!map_element_is_last_for_tile(mapElement2++));
-	
-	edi = (int)mapElement2;
-	ecx = saved_ecx;
-	eax = saved_eax;
+	esi = (int)mapElement;
+	edi = (int)mapElement2;	
+	*pbh = unk;
 	
 	//To be continued...
 	RCT2_CALLFUNC_X(0x663BE4, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp);
 	return ebx;
-	
-loc_663C4F:
-	esi = edi;
-	map_obstruction_set_error_text((rct_map_element *)esi);
-	return MONEY32_UNDEFINED;
-
 }
 
 void game_command_set_land_height(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
