@@ -20,6 +20,9 @@
 
 #ifdef _WIN32
 #include <windows.h>
+#else
+#include <iconv.h>
+#include <errno.h>
 #endif // _WIN32
 #include "../addresses.h"
 #include "../config.h"
@@ -835,38 +838,80 @@ utf8 *win1252_to_utf8_alloc(const char *src)
 	return (utf8*)realloc(result, actualSpace);
 }
 
-int win1252_to_utf8(utf8string dst, const char *src, int maxBufferLength)
+int win1252_to_utf8(utf8string dst, const char *src, size_t maxBufferLength)
 {
+	size_t srcLength = strlen(src);
+
+#ifdef _WIN32
 	utf16 stackBuffer[256];
 	utf16 *heapBuffer = NULL;
 	utf16 *intermediateBuffer = stackBuffer;
-	int bufferCount = countof(stackBuffer);
-
+	size_t bufferCount = countof(stackBuffer);
 	if (maxBufferLength > bufferCount) {
-		int srcLength = strlen(src);
 		if (srcLength > bufferCount) {
 			bufferCount = srcLength + 4;
 			heapBuffer = malloc(bufferCount * sizeof(utf16));
 			intermediateBuffer = heapBuffer;
 		}
 	}
-
-#ifdef _WIN32
 	MultiByteToWideChar(CP_ACP, 0, src, -1, intermediateBuffer, bufferCount);
 	int result = WideCharToMultiByte(CP_UTF8, 0, intermediateBuffer, -1, dst, maxBufferLength, NULL, NULL);
-#else
-	//STUB();
-	// we cannot walk past maxBufferLength, but in case we have still space left
-	// we need one byte for null terminator
-	int result = strnlen(src, maxBufferLength) + 1;
-	result = min(result, maxBufferLength);
-	safe_strncpy(dst, src, maxBufferLength);
-	dst[maxBufferLength - 1] = '\0';
-#endif // _WIN32
 
 	if (heapBuffer != NULL) {
 		free(heapBuffer);
 	}
+#else
+	//log_warning("converting %s of size %d", src, srcLength);
+	char *buffer_conv = strndup(src, srcLength);
+	char *buffer_orig = buffer_conv;
+	const char *to_charset = "UTF8";
+	const char *from_charset = "CP1252";
+	iconv_t cd = iconv_open(to_charset, from_charset);
+	if ((iconv_t)-1 == cd)
+	{
+		int error = errno;
+		switch (error)
+		{
+			case EINVAL:
+				log_error("Unsupported conversion from %s to %s, errno = %d", from_charset, to_charset, error);
+				break;
+			default:
+				log_error("Unknown error while initializing iconv, errno = %d", error);
+		}
+		return 0;
+	}
+	size_t obl = maxBufferLength;
+	char *outBuf = dst;
+	size_t conversion_result = iconv(cd, &buffer_conv, &srcLength, &outBuf, &obl);
+	if (conversion_result == (size_t)-1)
+	{
+		int error = errno;
+		switch (error)
+		{
+			case EILSEQ:
+				log_error("Encountered invalid sequence");
+				break;
+			case EINVAL:
+				log_error("Encountered incomplete sequence");
+				break;
+			case E2BIG:
+				log_error("Ran out of space");
+				break;
+			default:
+				log_error("Unknown error encountered, errno = %d", error);
+		}
+	}
+	int close_result = iconv_close(cd);
+	if (close_result == -1)
+	{
+		log_error("Failed to close iconv, errno = %d", errno);
+	}
+	size_t byte_diff = maxBufferLength - obl + 1;
+	dst[byte_diff - 1] = '\0';
+	//log_warning("converted %s of size %d, %d", dst, byte_diff, strlen(dst));
+	int result = byte_diff;
+	free(buffer_orig);
+#endif // _WIN32
 
 	return result;
 }
