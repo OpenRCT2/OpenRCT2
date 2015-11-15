@@ -47,7 +47,7 @@
 static int _dragX, _dragY;
 static rct_windowclass _dragWindowClass;
 static rct_windownumber _dragWindowNumber;
-static int _dragWidgetIndex;
+static int _dragWidgetIndex, _dragScrollIndex;
 static int _originalWindowWidth, _originalWindowHeight;
 
 typedef struct {
@@ -180,6 +180,83 @@ static rct_mouse_data* get_mouse_input()
 	return &mouse_buffer[read_index];
 }
 
+/* rct2: 0x006E957F
+ */
+static void input_scroll_drag_begin(int x, int y, rct_window* w, rct_widget* widget, int widgetIndex) {
+	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_SCROLL_RIGHT;
+	_dragX = x;
+	_dragY = y;
+	_dragWindowClass = w->classification;
+	_dragWindowNumber = w->number;
+	_dragWidgetIndex = widgetIndex;
+	RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_DRAG_START, sint16) = 0;
+
+	_dragScrollIndex = window_get_scroll_data_index(w, widgetIndex);
+	platform_hide_cursor();
+}
+
+/* Based on (heavily changed) rct2: 0x006E9E0E & 0x006E9ED0 */
+static void input_scroll_drag_continue(int x, int y, rct_window* w) {
+	uint8 widgetIndex = _dragWidgetIndex;
+	uint8 scrollIndex = _dragScrollIndex;
+
+	rct_widget* widget = &w->widgets[widgetIndex];
+	rct_scroll* scroll = &w->scrolls[scrollIndex];
+
+	int dx, dy;
+	dx = x - _dragX;
+	dy = y - _dragY;
+
+	if (scroll->flags & HSCROLLBAR_VISIBLE) {
+		sint16 size = widget->right - widget->left - 1;
+		if (scroll->flags & VSCROLLBAR_VISIBLE)
+			size -= 11;
+		size = max(0, scroll->h_right - size);
+		scroll->h_left = min(max(0, scroll->h_left + dx), size);
+	}
+
+	if (scroll->flags & VSCROLLBAR_VISIBLE) {
+		sint16 	size = widget->bottom - widget->top - 1;
+		if (scroll->flags & HSCROLLBAR_VISIBLE)
+			size -= 11;
+		size = max(0, scroll->v_bottom - size);
+		scroll->v_top = min(max(0, scroll->v_top + dy), size);
+	}
+
+	widget_scroll_update_thumbs(w, widgetIndex);
+	window_invalidate_by_number(w->classification, w->number);
+	platform_set_cursor_position(_dragX, _dragY);
+}
+
+/* rct2: 0x006E8ACB*/
+static void input_scroll_right(int x, int y, int state) {
+	rct_window* w = window_find_by_number(
+		_dragWindowClass,
+		_dragWindowNumber
+		);
+	
+	if (w == NULL) {
+		platform_show_cursor();
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_RESET;
+		return;
+	}
+
+	switch (state) {
+	case 0:
+		RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_DRAG_START, sint16) += RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, sint16);
+		if (x == 0 && y == 0)
+			return;
+		RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_DRAG_START, sint16) = 1000;
+
+		input_scroll_drag_continue(x, y, w);
+		break;
+	case 4:
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_RESET;
+		platform_show_cursor();
+		break;
+	}
+}
+
 /**
  *
  *  rct2: 0x006E8655
@@ -221,7 +298,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 					input_viewport_drag_begin(w, x, y);
 			}
 			else if (widget->type == WWT_SCROLL) {
-
+				input_scroll_drag_begin(x, y, w, widget, widgetIndex);
 			}
 			break;
 		}
@@ -325,8 +402,8 @@ static void game_handle_input_mouse(int x, int y, int state)
 				input_window_resize_continue(w, x, y);
 		}
 		break;
-	case 9:
-		RCT2_CALLPROC_X(0x006E8ACB, x, y, state, widgetIndex, (int)w, (int)widget, 0);
+	case INPUT_STATE_SCROLL_RIGHT:
+		input_scroll_right(x, y, state);
 		break;
 	}
 }
