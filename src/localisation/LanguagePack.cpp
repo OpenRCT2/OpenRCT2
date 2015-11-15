@@ -71,7 +71,8 @@ LanguagePack::LanguagePack(int id, const utf8 *text)
 
 	size_t stringDataBaseAddress = (size_t)_stringData;
 	for (size_t i = 0; i < _strings.size(); i++) {
-		_strings[i] = (utf8*)(stringDataBaseAddress + (size_t)_strings[i]);
+		if (_strings[i] != nullptr)
+			_strings[i] = (utf8*)(stringDataBaseAddress + (size_t)_strings[i]);
 	}
 	for (size_t i = 0; i < _objectOverrides.size(); i++) {
 		for (int j = 0; j < ObjectOverrideMaxStringCount; j++) {

@@ -188,7 +188,7 @@ void console_draw(rct_drawpixelinfo *dpi)
 		int lineLength = min(sizeof(lineBuffer) - (size_t)utf8_get_codepoint_length(FORMAT_GREEN), (size_t)(nextLine - ch));
 		lineCh = lineBuffer;
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_GREEN);
-		safe_strncpy(lineCh, ch, CONSOLE_BUFFER_SIZE);
+		strncpy(lineCh, ch, lineLength);
 		lineCh[lineLength] = 0;
 
 		gfx_draw_string(dpi, lineBuffer, 255, x, y);

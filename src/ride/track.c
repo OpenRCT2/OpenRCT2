@@ -3523,7 +3523,7 @@ static void track_save_add_large_scenery(int x, int y, rct_map_element *mapEleme
 	direction = mapElement->type & 3;
 	sequence = mapElement->properties.scenerymultiple.type >> 10;
 
-	if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0)) {
+	if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, NULL)) {
 		return;
 	}
 
@@ -3703,7 +3703,7 @@ static void track_save_remove_large_scenery(int x, int y, rct_map_element *mapEl
 	direction = mapElement->type & 3;
 	sequence = mapElement->properties.scenerymultiple.type >> 10;
 
-	if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0)) {
+	if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, NULL)) {
 		return;
 	}
 

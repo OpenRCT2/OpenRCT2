@@ -68,7 +68,7 @@ typedef struct {
 	sint16 x_offset;
 	sint16 y_offset;
 	sint16 z_offset;
-	uint8 var_6;
+	uint8 z_clearance;
 	uint16 var_7;
 } rct_large_scenery_tile;
 

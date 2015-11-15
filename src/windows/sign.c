@@ -187,10 +187,8 @@ void window_sign_open(rct_windownumber number)
 	int view_z = map_element->base_height << 3;
 	w->frame_no = view_z;
 
-	rct_banner* banner = &gBanners[w->number];
-
-	banner->colour = map_element->properties.scenerymultiple.colour[0] & 0x1F;
-	banner->text_colour = map_element->properties.scenerymultiple.colour[1] & 0x1F;
+	w->list_information_type = map_element->properties.scenerymultiple.colour[0] & 0x1F;
+	w->var_492 = map_element->properties.scenerymultiple.colour[1] & 0x1F;
 	w->var_48C = map_element->properties.scenerymultiple.type;
 
 	view_x += 16;
@@ -272,14 +270,12 @@ static void window_sign_mouseup(rct_window *w, int widgetIndex)
 /* rct2: 0x6B9784 & 0x6E6164 */
 static void window_sign_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
-	rct_banner* banner = &gBanners[w->number];
-
 	switch (widgetIndex) {
 	case WIDX_MAIN_COLOR:
-		window_dropdown_show_colour(w, widget, w->colours[1] | 0x80, (uint8)banner->colour);
+		window_dropdown_show_colour(w, widget, w->colours[1] | 0x80, (uint8)w->list_information_type);
 		break;
 	case WIDX_TEXT_COLOR:
-		window_dropdown_show_colour(w, widget, w->colours[1] | 0x80, (uint8)banner->text_colour);
+		window_dropdown_show_colour(w, widget, w->colours[1] | 0x80, (uint8)w->var_492);
 		break;
 	}
 }
@@ -287,16 +283,16 @@ static void window_sign_mousedown(int widgetIndex, rct_window*w, rct_widget* wid
 /* rct2: 0x6B979C */
 static void window_sign_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	rct_banner *banner = &gBanners[w->number];
-
 	switch (widgetIndex){
 	case WIDX_MAIN_COLOR:
 		if (dropdownIndex == -1) return;
-		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_SIGN_STYLE, banner->text_colour, 1);
+		w->list_information_type = dropdownIndex;
+		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_SIGN_STYLE, w->var_492, 1);
 		break;
 	case WIDX_TEXT_COLOR:
 		if (dropdownIndex == -1) return;
-		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, banner->colour, GAME_COMMAND_SET_SIGN_STYLE, dropdownIndex, 1);
+		w->var_492 = dropdownIndex;
+		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, w->list_information_type, GAME_COMMAND_SET_SIGN_STYLE, dropdownIndex, 1);
 		break;
 	default:
 		return;
@@ -335,10 +331,8 @@ static void window_sign_invalidate(rct_window *w)
 		text_colour_btn->type = WWT_COLORBTN;
 	}
 
-	rct_banner* banner = &gBanners[w->number];
-
-	main_colour_btn->image = (banner->colour << 19) | 0x600013C3;
-	text_colour_btn->image = (banner->text_colour << 19) | 0x600013C3;
+	main_colour_btn->image = (w->list_information_type << 19) | 0x600013C3;
+	text_colour_btn->image = (w->var_492 << 19) | 0x600013C3;
 }
 
 /* rct2: 0x006B9754 & 0x006E6134 */
@@ -433,9 +427,9 @@ void window_sign_small_open(rct_windownumber number){
 	int view_z = map_element->base_height << 3;
 	w->frame_no = view_z;
 
-	rct_banner* banner = &gBanners[w->number];
-	banner->colour = map_element->properties.fence.item[1] & 0x1F;
-	banner->text_colour = (map_element->properties.fence.item[1] >> 5) | ((map_element->flags&0x60) >> 2);
+	w->list_information_type = map_element->properties.fence.item[1] & 0x1F;
+	w->var_492 =
+		((map_element->properties.fence.item[1] >> 5) | ((map_element->flags & 0x60) >> 2));
 	w->var_48C = map_element->properties.fence.type;
 
 	view_x += 16;
@@ -521,11 +515,13 @@ static void window_sign_small_dropdown(rct_window *w, int widgetIndex, int dropd
 	switch (widgetIndex){
 	case WIDX_MAIN_COLOR:
 		if (dropdownIndex == -1) return;
-		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_SIGN_STYLE, banner->text_colour, 0);
+		w->list_information_type = dropdownIndex;
+		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_SIGN_STYLE, w->var_492, 0);
 		break;
 	case WIDX_TEXT_COLOR:
 		if (dropdownIndex == -1) return;
-		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, banner->colour, GAME_COMMAND_SET_SIGN_STYLE, dropdownIndex, 0);
+		w->var_492 = dropdownIndex;
+		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, w->list_information_type, GAME_COMMAND_SET_SIGN_STYLE, dropdownIndex, 0);
 		break;
 	default:
 		return;
@@ -554,8 +550,6 @@ static void window_sign_small_invalidate(rct_window *w)
 		text_colour_btn->type = WWT_COLORBTN;
 	}
 
-	rct_banner* banner = &gBanners[w->number];
-
-	main_colour_btn->image = (banner->colour << 19) | 0x600013C3;
-	text_colour_btn->image = (banner->text_colour << 19) | 0x600013C3;
+	main_colour_btn->image = (w->list_information_type << 19) | 0x600013C3;
+	text_colour_btn->image = (w->var_492 << 19) | 0x600013C3;
 }

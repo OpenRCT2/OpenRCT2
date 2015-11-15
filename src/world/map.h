@@ -293,7 +293,7 @@ rct_map_element *map_get_small_scenery_element_at(int x, int y, int z, int type)
 int map_element_height(int x, int y);
 void sub_68B089();
 int map_coord_is_connected(int x, int y, int z, uint8 faceDirection);
-void sub_6A876D();
+void map_update_path_wide_flags();
 int map_is_location_owned(int x, int y, int z);
 int map_is_location_in_park(int x, int y);
 bool map_is_location_owned_or_has_rights(int x, int y);
@@ -387,7 +387,7 @@ void map_clear_all_elements();
 rct_map_element *map_get_large_scenery_segment(int x, int y, int z, int direction, int sequence);
 bool map_large_scenery_get_origin(
 	int x, int y, int z, int direction, int sequence,
-	int *outX, int *outY, int *outZ
+	int *outX, int *outY, int *outZ, rct_map_element** outElement
 );
 
 rct_map_element *map_get_track_element_at(int x, int y, int z);

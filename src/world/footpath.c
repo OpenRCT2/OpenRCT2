@@ -1582,6 +1582,203 @@ bool footpath_element_is_wide(rct_map_element *mapElement)
 }
 
 /**
+*
+*  rct2: 0x006A8B12
+*  clears the wide footpath flag for all footpaths
+*  at location
+*/
+static void footpath_clear_wide(int x, int y)
+{
+	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+			continue;
+		mapElement->type &= ~0x2;
+	} while (!map_element_is_last_for_tile(mapElement++));
+}
+
+/**
+*
+*  rct2: 0x006A8ACF
+*  returns footpath element if it can be made wide
+*  returns NULL if it can not be made wide
+*/
+static rct_map_element* footpath_can_be_wide(int x, int y, uint8 height)
+{
+	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+			continue;
+		if (height != mapElement->base_height)
+			continue;
+		if (footpath_element_is_queue(mapElement))
+			continue;
+		if (footpath_element_is_sloped(mapElement))
+			continue;
+		return mapElement;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	return NULL;
+}
+
+
+/**
+*
+*  rct2: 0x006A87BB
+*/
+void footpath_update_path_wide_flags(int x, int y)
+{
+	if (x < 0x20)
+		return;
+	if (y < 0x20)
+		return;
+	if (x > 0x1FDF)
+		return;
+	if (y > 0x1FDF)
+		return;
+
+	footpath_clear_wide(x, y);
+	x += 0x20;
+	footpath_clear_wide(x, y);
+	y += 0x20;
+	footpath_clear_wide(x, y);
+	x -= 0x20;
+	footpath_clear_wide(x, y);
+	y -= 0x20;
+
+	if (!(x & 0xE0))
+		return;
+	if (!(y & 0xE0))
+		return;
+
+	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+			continue;
+
+		if (footpath_element_is_queue(mapElement))
+			continue;
+
+		if (footpath_element_is_sloped(mapElement))
+			continue;
+
+		uint8 height = mapElement->base_height;
+
+		// pathList is a list of elements, set by sub_6A8ACF adjacent to x,y
+		// Spanned from 0x00F3EFA8 to 0x00F3EFC7 (8 elements) in the original
+		rct_map_element *pathList[8];
+
+		x -= 0x20;
+		y -= 0x20;
+		pathList[0] = footpath_can_be_wide(x, y, height);
+		y += 0x20;
+		pathList[1] = footpath_can_be_wide(x, y, height);
+		y += 0x20;
+		pathList[2] = footpath_can_be_wide(x, y, height);
+		x += 0x20;
+		pathList[3] = footpath_can_be_wide(x, y, height);
+		x += 0x20;
+		pathList[4] = footpath_can_be_wide(x, y, height);
+		y -= 0x20;
+		pathList[5] = footpath_can_be_wide(x, y, height);
+		y -= 0x20;
+		pathList[6] = footpath_can_be_wide(x, y, height);
+		x -= 0x20;
+		pathList[7] = footpath_can_be_wide(x, y, height);
+		y += 0x20;
+
+		uint8 F3EFA5 = 0;
+		if (mapElement->properties.path.edges & 8) {
+			F3EFA5 |= 0x80;
+			if (pathList[7] != NULL) {
+				if (footpath_element_is_wide(pathList[7])) {
+					F3EFA5 &= ~0x80;
+				}
+			}
+		}
+
+		if (mapElement->properties.path.edges & 1) {
+			F3EFA5 |= 0x2;
+			if (pathList[1] != NULL) {
+				if (footpath_element_is_wide(pathList[1])) {
+					F3EFA5 &= ~0x2;
+				}
+			}
+		}
+
+		if (mapElement->properties.path.edges & 2) {
+			F3EFA5 |= 0x8;
+			if (pathList[3] != NULL) {
+				if (footpath_element_is_wide(pathList[3])) {
+					F3EFA5 &= ~0x8;
+				}
+			}
+		}
+
+		if (mapElement->properties.path.edges & 4) {
+			F3EFA5 |= 0x20;
+			if (pathList[5] != NULL) {
+				if (footpath_element_is_wide(pathList[5])) {
+					F3EFA5 &= ~0x20;
+				}
+			}
+		}
+
+		if ((F3EFA5 & 0x80) && (pathList[7] != NULL) && !(footpath_element_is_wide(pathList[7]))) {
+			if ((F3EFA5 & 2) &&
+				(pathList[0] != NULL) && (!footpath_element_is_wide(pathList[0])) &&
+				((pathList[0]->properties.path.edges & 6) == 6) && // N E
+				(pathList[1] != NULL) && (!footpath_element_is_wide(pathList[1]))) {
+				F3EFA5 |= 0x1;
+			}
+
+			if ((F3EFA5 & 0x20) &&
+				(pathList[6] != NULL) && (!footpath_element_is_wide(pathList[6])) &&
+				((pathList[6]->properties.path.edges & 3) == 3) && // N W
+				(pathList[5] != NULL) && (!footpath_element_is_wide(pathList[5]))) {
+				F3EFA5 |= 0x40;
+			}
+		}
+
+
+		if ((F3EFA5 & 0x8) && (pathList[3] != NULL) && !(pathList[3]->type & 2)) {
+			if ((F3EFA5 & 2) &&
+				(pathList[2] != NULL) && (!footpath_element_is_wide(pathList[2])) &&
+				((pathList[2]->properties.path.edges & 0xC) == 0xC) &&
+				(pathList[1] != NULL) && (!footpath_element_is_wide(pathList[1]))) {
+				F3EFA5 |= 0x4;
+			}
+
+			if ((F3EFA5 & 0x20) &&
+				(pathList[4] != NULL) && (!footpath_element_is_wide(pathList[4])) &&
+				((pathList[4]->properties.path.edges & 9) == 9) &&
+				(pathList[5] != NULL) && (!footpath_element_is_wide(pathList[5]))) {
+				F3EFA5 |= 0x10;
+			}
+		}
+
+		if ((F3EFA5 & 0x80) && (F3EFA5 & (0x40 | 0x1)))
+			F3EFA5 &= ~0x80;
+
+		if ((F3EFA5 & 0x2) && (F3EFA5 & (0x4 | 0x1)))
+			F3EFA5 &= ~0x2;
+
+		if ((F3EFA5 & 0x8) && (F3EFA5 & (0x10 | 0x4)))
+			F3EFA5 &= ~0x8;
+
+		if ((F3EFA5 & 0x20) && (F3EFA5 & (0x40 | 0x10)))
+			F3EFA5 &= ~0x20;
+
+		if (!(F3EFA5 & (0x2 | 0x8 | 0x20 | 0x80))) {
+			uint8 e = mapElement->properties.path.edges;
+			if ((e != 0xAF) && (e != 0x5F) && (e != 0xEF))
+				mapElement->type |= 2;
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
+}
+
+
+/**
  *
  *  rct2: 0x006A76E9
  */

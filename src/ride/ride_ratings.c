@@ -1788,7 +1788,7 @@ static void ride_ratings_calculate_wooden_wild_mouse(rct_ride *ride)
 	ride_ratings_apply_65E1C2(&ratings, ride, 16705, 30583, 35108);
 	ride_ratings_apply_proximity(&ratings, ride, 17893);
 	ride_ratings_apply_scenery(&ratings, ride, 5577);
-	ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 6, 2, 2, 2);
+	ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 8, 2, 2, 2);
 	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0x70000, 2, 2, 2);
 	ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0,10), 2, 2, 2);
 	ride_ratings_apply_max_lateral_g_penalty(&ratings, ride, FIXED_2DP(1,50), 2, 2, 2);
