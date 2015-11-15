@@ -2719,8 +2719,8 @@ STR_2714    :-
 STR_2715    :.
 STR_2716    :/
 STR_2717    :'
-STR_2718    :(één map omhoog)
-STR_2719    :(nieuw bestand)
+STR_2718    :Eén map omhoog
+STR_2719    :Nieuw bestand
 STR_2720    :{UINT16}s
 STR_2721    :{UINT16}s
 STR_2722    :{UINT16}m {UINT16}s

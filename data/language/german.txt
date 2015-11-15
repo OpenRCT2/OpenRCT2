@@ -2721,8 +2721,8 @@ STR_2714    :-
 STR_2715    :.
 STR_2716    :/
 STR_2717    :'
-STR_2718    :(Hoch)
-STR_2719    :(Neue Datei)
+STR_2718    :Hoch
+STR_2719    :Neue Datei
 STR_2720    :{UINT16}Sek.
 STR_2721    :{UINT16}Sek.
 STR_2722    :{UINT16}Min:{UINT16}Sek.
