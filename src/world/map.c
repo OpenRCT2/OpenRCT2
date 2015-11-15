@@ -1667,267 +1667,6 @@ const uint8 map_element_lower_styles[5][32] = {
 	{ 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x0B, 0x00, 0x0D, 0x0E, 0x00 },
 };
 
-//Hack: pushes variables to the stack before jumping to address
-//These functions are temporary and are used for debugging the decompiled code.
-#ifdef __GNUC__
-static int callcode_push3(int address, int stackvar1, int stackvar2, int stackvar3, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
-{
-	int result;
-	
-	__asm__ ( "\
-		\n\
-		/* Store C's base pointer*/     \n\
-		push %%ebp        \n\
-		push %%ebx        \n\
-		\n\
-		/* Store %[address] to call*/   \n\
-		push %[address]         \n\
-		\n\
-		/* Set all registers to the input values*/      \n\
-		mov %[_eax], %%eax      \n\
-		mov (%%eax), %%eax  \n\
-		mov %[_ebx], %%ebx      \n\
-		mov (%%ebx), %%ebx  \n\
-		mov %[_ecx], %%ecx      \n\
-		mov (%%ecx), %%ecx  \n\
-		mov %[_edx], %%edx      \n\
-		mov (%%edx), %%edx  \n\
-		mov %[_esi], %%esi      \n\
-		mov (%%esi), %%esi  \n\
-		mov %[_edi], %%edi      \n\
-		mov (%%edi), %%edi  \n\
-		push $_foo \n\
-		push %[stackvar1] \n\
-		push %[stackvar2] \n\
-		push %[stackvar3] \n\
-		mov %[_ebp], %%ebp      \n\
-		mov (%%ebp), %%ebp  \n\
-		\n\
-		/* Call function*/      \n\
-		/* Push registers required by function */ \n\
-		/* call *(%%esp) */     \n\
-		jmp *16(%%esp)	\n\
-		_foo: \n\
-		\n\
-		/* Store output eax */ \n\
-		push %%eax \n\
-		push %%ebp \n\
-		push %%ebx \n\
-		mov 20(%%esp), %%ebp \n\
-		mov 16(%%esp), %%ebx \n\
-		/* Get resulting ecx, edx, esi, edi registers*/       \n\
-		mov %[_edi], %%eax      \n\
-		mov %%edi, (%%eax)  \n\
-		mov %[_esi], %%eax      \n\
-		mov %%esi, (%%eax)  \n\
-		mov %[_edx], %%eax      \n\
-		mov %%edx, (%%eax)  \n\
-		mov %[_ecx], %%eax      \n\
-		mov %%ecx, (%%eax)  \n\
-		/* Pop ebx reg into ecx*/ \n\
-		pop %%ecx		\n\
-		mov %[_ebx], %%eax \n\
-		mov %%ecx, (%%eax) \n\
-		\n\
-		/* Pop ebp reg into ecx */\n\
-		pop %%ecx \n\
-		mov %[_ebp], %%eax \n\
-		mov %%ecx, (%%eax) \n\
-		\n\
-		pop %%eax \n\
-		/* Get resulting eax register*/ \n\
-		mov %[_eax], %%ecx \n\
-		mov %%eax, (%%ecx) \n\
-		\n\
-		/* Save flags as return in eax*/  \n\
-		lahf \n\
-		/* Pop address*/ \n\
-		pop %%ebp \n\
-		\n\
-		pop %%ebx \n\
-		pop %%ebp \n\
-		/* Load result with flags */ \n\
-		mov %%eax, %[result] \n\
-		" : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp), [result] "+m" (result)
-
-		: [stackvar1] "m" (stackvar1), [stackvar2] "m" (stackvar2), [stackvar3] "m" (stackvar3)
-		: "eax","ecx","edx","esi","edi"
-	);
-	return result&0xFF00;
-}
-
-static int callcode_push2(int address, int stackvar1, int stackvar2, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
-{
-	int result;
-	
-	__asm__ ( "\
-		\n\
-		/* Store C's base pointer*/     \n\
-		push %%ebp        \n\
-		push %%ebx        \n\
-		\n\
-		/* Store %[address] to call*/   \n\
-		push %[address]         \n\
-		\n\
-		/* Set all registers to the input values*/      \n\
-		mov %[_eax], %%eax      \n\
-		mov (%%eax), %%eax  \n\
-		mov %[_ebx], %%ebx      \n\
-		mov (%%ebx), %%ebx  \n\
-		mov %[_ecx], %%ecx      \n\
-		mov (%%ecx), %%ecx  \n\
-		mov %[_edx], %%edx      \n\
-		mov (%%edx), %%edx  \n\
-		mov %[_esi], %%esi      \n\
-		mov (%%esi), %%esi  \n\
-		mov %[_edi], %%edi      \n\
-		mov (%%edi), %%edi  \n\
-		push $foo \n\
-		push %[stackvar1] \n\
-		push %[stackvar2] \n\
-		mov %[_ebp], %%ebp      \n\
-		mov (%%ebp), %%ebp  \n\
-		\n\
-		/* Call function*/      \n\
-		/* Push registers required by function */ \n\
-		/* call *(%%esp) */     \n\
-		jmp *12(%%esp)	\n\
-		foo: \n\
-		\n\
-		/* Store output eax */ \n\
-		push %%eax \n\
-		push %%ebp \n\
-		push %%ebx \n\
-		mov 20(%%esp), %%ebp \n\
-		mov 16(%%esp), %%ebx \n\
-		/* Get resulting ecx, edx, esi, edi registers*/       \n\
-		mov %[_edi], %%eax      \n\
-		mov %%edi, (%%eax)  \n\
-		mov %[_esi], %%eax      \n\
-		mov %%esi, (%%eax)  \n\
-		mov %[_edx], %%eax      \n\
-		mov %%edx, (%%eax)  \n\
-		mov %[_ecx], %%eax      \n\
-		mov %%ecx, (%%eax)  \n\
-		/* Pop ebx reg into ecx*/ \n\
-		pop %%ecx		\n\
-		mov %[_ebx], %%eax \n\
-		mov %%ecx, (%%eax) \n\
-		\n\
-		/* Pop ebp reg into ecx */\n\
-		pop %%ecx \n\
-		mov %[_ebp], %%eax \n\
-		mov %%ecx, (%%eax) \n\
-		\n\
-		pop %%eax \n\
-		/* Get resulting eax register*/ \n\
-		mov %[_eax], %%ecx \n\
-		mov %%eax, (%%ecx) \n\
-		\n\
-		/* Save flags as return in eax*/  \n\
-		lahf \n\
-		/* Pop address*/ \n\
-		pop %%ebp \n\
-		\n\
-		pop %%ebx \n\
-		pop %%ebp \n\
-		/* Load result with flags */ \n\
-		mov %%eax, %[result] \n\
-		" : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp), [result] "+m" (result)
-
-		: [stackvar1] "m" (stackvar1), [stackvar2] "m" (stackvar2)
-		: "eax","ecx","edx","esi","edi"
-	);
-	return result&0xFF00;
-}
-
-static int callcode_push1(int address, int stackvar, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
-{
-	int result;
-	
-	__asm__ ( "\
-		\n\
-		/* Store C's base pointer*/     \n\
-		push %%ebp        \n\
-		push %%ebx        \n\
-		\n\
-		/* Store %[address] to call*/   \n\
-		push %[address]         \n\
-		\n\
-		/* Set all registers to the input values*/      \n\
-		mov %[_eax], %%eax      \n\
-		mov (%%eax), %%eax  \n\
-		mov %[_ebx], %%ebx      \n\
-		mov (%%ebx), %%ebx  \n\
-		mov %[_ecx], %%ecx      \n\
-		mov (%%ecx), %%ecx  \n\
-		mov %[_edx], %%edx      \n\
-		mov (%%edx), %%edx  \n\
-		mov %[_esi], %%esi      \n\
-		mov (%%esi), %%esi  \n\
-		mov %[_edi], %%edi      \n\
-		mov (%%edi), %%edi  \n\
-		/* Hack: called code should return back to this function */ \n\
-		push $__foo \n\
-		/* Push variable */\n\
-		push %[stackvar] \n\
-		mov %[_ebp], %%ebp      \n\
-		mov (%%ebp), %%ebp  \n\
-		\n\
-		/* Call function*/      \n\
-		/* call *(%%esp) */     \n\
-		/* int $3 */\n\
-		jmp *8(%%esp)	\n\
-		__foo: \n\
-		\n\
-		/* Store output eax */ \n\
-		push %%eax \n\
-		push %%ebp \n\
-		push %%ebx \n\
-		mov 20(%%esp), %%ebp \n\
-		mov 16(%%esp), %%ebx \n\
-		/* Get resulting ecx, edx, esi, edi registers*/       \n\
-		mov %[_edi], %%eax      \n\
-		mov %%edi, (%%eax)  \n\
-		mov %[_esi], %%eax      \n\
-		mov %%esi, (%%eax)  \n\
-		mov %[_edx], %%eax      \n\
-		mov %%edx, (%%eax)  \n\
-		mov %[_ecx], %%eax      \n\
-		mov %%ecx, (%%eax)  \n\
-		/* Pop ebx reg into ecx*/ \n\
-		pop %%ecx		\n\
-		mov %[_ebx], %%eax \n\
-		mov %%ecx, (%%eax) \n\
-		\n\
-		/* Pop ebp reg into ecx */\n\
-		pop %%ecx \n\
-		mov %[_ebp], %%eax \n\
-		mov %%ecx, (%%eax) \n\
-		\n\
-		pop %%eax \n\
-		/* Get resulting eax register*/ \n\
-		mov %[_eax], %%ecx \n\
-		mov %%eax, (%%ecx) \n\
-		\n\
-		/* Save flags as return in eax*/  \n\
-		lahf \n\
-		/* Pop address*/ \n\
-		pop %%ebp \n\
-		\n\
-		pop %%ebx \n\
-		pop %%ebp \n\
-		/* Load result with flags */ \n\
-		mov %%eax, %[result] \n\
-		" : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp), [result] "+m" (result)
-
-		: [stackvar] "m" (stackvar)
-		: "eax","ecx","edx","esi","edi"
-	);
-	return result&0xFF00;
-}
-#endif //__GNUC__
-
 static money32 map_set_land_height(int flags, int x, int y, int height, int style, int selectionType)
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
@@ -1971,160 +1710,143 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 		}
 	}
 	
-	/*	Continuing decompilation - work in progress
-	 *	Known bugs (introduced by disassembly):
-	 *		none! Still requires testing, though.
-	 *	Original bugs:
-	 *		Lowering the land tile underneath a wall removes the wall.
-	 *		Land can be raised over flat scenery items (gardens, for example) without removing them.
-	 *		Removal price of walls is not added.
-	 *		Removal price of flat scenery is not counted when raising the center of a tile.
-	 */
-	
-	int eax = x, ebx = flags, ecx = y, edi = selectionType << 5, ebp = 0;
-	uint32 edx = (style << 8) | height;
-	//dl: height
-	//dh: style
-	uint32 esi = 0;
-	
 	//Uncomment to use vanilla code
-	//RCT2_CALLFUNC_X(0x006639FE, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
+	/*
+	registers regs = {0};
+	regs.eax = x;
+	regs.ebx = flags;
+	regs.ecx = y;
+	regs.dl = height;
+	regs.dh = style;
+	regs.esi = 0;
+	regs.edi = selectionType << 5;
+	regs.ebp = 0;
+	RCT2_CALLFUNC_Y(0x006639FE, &regs); return regs.ebx;
+	*/
 	
 	RCT2_GLOBAL(0x9E2E18, money32) = MONEY(0, 0);
-	if(ebx&GAME_COMMAND_FLAG_APPLY)
+	if(flags & GAME_COMMAND_FLAG_APPLY)
 	{
 		footpath_remove_litter(x, y, map_element_height(x, y));
-		map_remove_walls_at(x, y, height*8-16, height*8+32);
+		map_remove_walls_at(x, y, height * 8 - 16, height * 8 + 32);
 	}
 	RCT2_GLOBAL(0x9E2E18, money32) += MONEY(20, 0);
 	
-	rct_map_element *mapElement = map_get_first_element_at(x/32, y/32); //mapElement = esi
-	
-	int zHigh = height+4; //zHigh = dh
-	
-//loc_663A54:
-	do{
-		int elementType = map_element_get_type(mapElement); //elementType = eax
-		rct_scenery_entry *sceneryEntry; //eax
-		
-		if(elementType!=MAP_ELEMENT_TYPE_SCENERY || height>mapElement->clearance_height || zHigh<(mapElement)->base_height)
+	//Check for obstructing scenery
+	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);	
+	do{		
+		if(map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
 			continue;
-		elementType = mapElement->properties.scenery.type;
-		sceneryEntry = RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES, rct_scenery_entry *)[elementType];
-		if(sceneryEntry->small_scenery.height>64 && RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32)&PARK_FLAGS_FORBID_TREE_REMOVAL)
+		if(height > mapElement->clearance_height)
+			continue;
+		if(height + 4 < mapElement->base_height)
+			continue;
+		rct_scenery_entry *sceneryEntry = RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES, rct_scenery_entry *)[mapElement->properties.scenery.type]; //sceneryEntry = eax
+		if(sceneryEntry->small_scenery.height > 64 && RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL)
 		{
 				map_obstruction_set_error_text(mapElement);
 				return MONEY32_UNDEFINED;
 		}
 		RCT2_GLOBAL(0x9E2E18, money32) += MONEY(sceneryEntry->small_scenery.removal_price, 0);
-		if(flags&GAME_COMMAND_FLAG_APPLY)
+		if(flags & GAME_COMMAND_FLAG_APPLY)
 			map_element_remove(mapElement--);
 	}while(!map_element_is_last_for_tile(mapElement++));
 	
-	mapElement = map_get_first_element_at(x/32, y/32); //mapElement = esi
-	
-//loc_663AC4:
+	//Check for obstructing rides
+	mapElement = map_get_first_element_at(x / 32, y / 32);
 	do{
-		if(map_element_get_type(mapElement)!=8) //eax
+		if(map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
 			continue;
-		int rideIndex = mapElement->properties.track.ride_index; //rideIndex = ebp
-		int maxHeight = GET_RIDE_ENTRY(GET_RIDE(rideIndex)->subtype)->max_height; //maxHeight = eax
-		if(maxHeight==0)
-			maxHeight = RCT2_GLOBAL(0x97D218+8*GET_RIDE(rideIndex)->type, uint8);
-		int zDelta = mapElement->clearance_height-height; //zDelta = ebx
-		if(zDelta>=0 && zDelta/2>maxHeight && gCheatsDisableSupportLimits==false)
+		int rideIndex = mapElement->properties.track.ride_index;
+		int maxHeight = GET_RIDE_ENTRY(GET_RIDE(rideIndex)->subtype)->max_height;
+		if(maxHeight == 0)
+			maxHeight = RCT2_GLOBAL(0x97D218 + 8 * GET_RIDE(rideIndex)->type, uint8);
+		int zDelta = mapElement->clearance_height - height;
+		if(zDelta >= 0 && zDelta/2 > maxHeight && gCheatsDisableSupportLimits == false)
 		{
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_SUPPORTS_CANT_BE_EXTENDED;
 			return MONEY32_UNDEFINED;
 		}
 	}while(!map_element_is_last_for_tile(mapElement++));
 
-	mapElement = map_get_surface_element_at(x/32, y/32);
-	
-	if(mapElement->type&MAP_ELEMENT_TYPE_FLAG_HIGHLIGHT)
+	uint8 zCorner = height; //z position of highest corner of tile
+	rct_map_element *surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+	if(surfaceElement->type & MAP_ELEMENT_TYPE_FLAG_HIGHLIGHT)
 	{
-		int waterHeight = mapElement->properties.surface.terrain&MAP_ELEMENT_WATER_HEIGHT_MASK; //waterHeight = ecx
-		if(waterHeight!=0)
+		int waterHeight = surfaceElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+		if(waterHeight != 0)
 		{
-			waterHeight = waterHeight*2-2;
-			uint8 unk = height; //unk = bh
-			if((style&0x1F))
+			if(style & 0x1F)
 			{
-				unk += 2;
-				if((style&0x10))
+				zCorner += 2;
+				if(style & 0x10)
 				{
-					unk += 2;
+					zCorner += 2;
 				}
 			}
-		//loc_663B6A:
-			if(unk>waterHeight)
+			if(zCorner > waterHeight * 2 - 2)
 			{
-				//rct2: 0x663C5A
-				mapElement++;
+				surfaceElement++;
+				map_obstruction_set_error_text(surfaceElement);
+				return MONEY32_UNDEFINED;
+			}
+		}
+	}
+	
+	zCorner = height;
+	if(style & 0xF)
+	{
+		zCorner += 2;
+		if(style & 0x10)
+		{
+			zCorner += 2;
+		}
+	}
+	
+	if(map_can_construct_with_clear_at(x, y, height, zCorner, RCT2_ADDRESS(0x663CB9, void), 0xF) == false)
+		return MONEY32_UNDEFINED;
+	
+	mapElement = map_get_first_element_at(x / 32, y / 32);
+	do{	
+		int elementType = map_element_get_type(mapElement);
+		
+		if(elementType == MAP_ELEMENT_TYPE_FENCE)
+			continue;
+		if(elementType == MAP_ELEMENT_TYPE_SCENERY)
+			continue;
+		if(mapElement->flags & 0x10)
+			continue;
+		if(mapElement == surfaceElement)
+			continue;
+		if(mapElement > surfaceElement)
+		{
+			if(zCorner > mapElement->base_height)
+			{
 				map_obstruction_set_error_text(mapElement);
 				return MONEY32_UNDEFINED;
 			}
-		}
-	}
-//loc_663B72:
-	
-	uint8 unk = height; //unk = bh
-	
-	if((style&0xF))
-	{
-		unk += 2;
-		if((style&0x10))
-		{
-			unk += 2;
-		}
-	}
-	
-	//rct2: 0x663B93
-	if(map_can_construct_with_clear_at(x, y, height, unk, RCT2_ADDRESS(0x663CB9, void), 0xF)==false)
-		return MONEY32_UNDEFINED;
-	
-	rct_map_element *mapElement2 = map_get_first_element_at(x/32, y/32); //mapElement2 = edi
-	
-	
-//loc_663BB5:
-	do{	
-		int elementType = map_element_get_type(mapElement2); //elementType = al
-		
-		if(elementType==MAP_ELEMENT_TYPE_FENCE || elementType==MAP_ELEMENT_TYPE_SCENERY || mapElement2->flags&0x10 || mapElement2==mapElement)
-			continue;
-		if(mapElement2>mapElement)
-		{
-			if(unk > mapElement2->base_height)
-			{
-				map_obstruction_set_error_text(mapElement2);
-				return MONEY32_UNDEFINED;
-			}
 			continue;
 		}
-		if(height < mapElement2->clearance_height)
+		if(height < mapElement->clearance_height)
 		{
-			map_obstruction_set_error_text(mapElement2);
+			map_obstruction_set_error_text(mapElement);
 			return MONEY32_UNDEFINED;
 		}
-	}while(!map_element_is_last_for_tile(mapElement2++));
+	}while(!map_element_is_last_for_tile(mapElement++));
 	
-	//rct2: 0x663BE4
-	if((flags&GAME_COMMAND_FLAG_APPLY))
+	if(flags & GAME_COMMAND_FLAG_APPLY)
 	{
-		//rct2: 0x663BEB
-		mapElement = map_get_surface_element_at(x/32, y/32);
-		mapElement->base_height = height;
-		mapElement->clearance_height = height;
-		mapElement->properties.surface.slope &= MAP_ELEMENT_SLOPE_EDGE_STYLE_MASK;
-		mapElement->properties.surface.slope |= style;
-		//rct2: 0x663C17
-		int slope = mapElement->properties.surface.terrain&MAP_ELEMENT_SLOPE_MASK; //slope = bh
-		if(slope!=0 && slope<=height/2)
-			mapElement->properties.surface.terrain &= MAP_ELEMENT_SURFACE_TERRAIN_MASK;
+		surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+		surfaceElement->base_height = height;
+		surfaceElement->clearance_height = height;
+		surfaceElement->properties.surface.slope &= MAP_ELEMENT_SLOPE_EDGE_STYLE_MASK;
+		surfaceElement->properties.surface.slope |= style;
+		int slope = surfaceElement->properties.surface.terrain & MAP_ELEMENT_SLOPE_MASK;
+		if(slope != 0 && slope <= height / 2)
+			surfaceElement->properties.surface.terrain &= MAP_ELEMENT_SURFACE_TERRAIN_MASK;
 		map_invalidate_tile_full(x, y);
 	}
-	//rct2: 0x663C30
-	if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32)&0x800)
+	if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
 		return 0;
 	return RCT2_GLOBAL(0x9E2E18, money32);
 }
