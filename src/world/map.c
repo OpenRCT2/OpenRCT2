@@ -25,6 +25,7 @@
 #include "../cursors.h"
 #include "../game.h"
 #include "../interface/window.h"
+#include "../interface/viewport.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
@@ -1079,7 +1080,7 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 	}
 
 	*ebx = scenery_entry->large_scenery.removal_price * 10;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY || 
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ||
 		calculate_cost == false){
 		*ebx = 0;
 	}
@@ -1167,7 +1168,7 @@ void game_command_set_scenery_colour(int* eax, int* ebx, int* ecx, int* edx, int
 	// Previously it would do a search for type of bh (set from calling function) instead of just small scenery
 	// Unsure if this was a mistake.
 	rct_map_element* map_element = map_get_small_scenery_element_at(x, y, base_height, scenery_type);
-	
+
 	if (map_element == NULL) {
 		*ebx = 0;
 		return;
@@ -1235,7 +1236,7 @@ void game_command_set_fence_colour(int* eax, int* ebx, int* ecx, int* edx, int* 
 		rct_scenery_entry* scenery_entry = g_wallSceneryEntries[map_element->properties.fence.type];
 		map_element->properties.fence.item[1] &= 0xE0;
 		map_element->properties.fence.item[1] |= color1;
-		map_element->properties.fence.item[1] &= 0x1F;		
+		map_element->properties.fence.item[1] &= 0x1F;
 		map_element->flags &= 0x9F;
 		map_element->properties.fence.item[1] |= (color2 & 0x7) * 32;
 		map_element->flags |= (color2 & 0x18) * 4;
@@ -1275,7 +1276,7 @@ void game_command_set_large_scenery_colour(int* eax, int* ebx, int* ecx, int* ed
 		*ebx = 0;
 		return;
 	}
-	
+
 	if((flags & GAME_COMMAND_FLAG_GHOST) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST)){
 		*ebx = 0;
 		return;
@@ -1316,10 +1317,10 @@ void game_command_set_large_scenery_colour(int* eax, int* ebx, int* ecx, int* ed
 
 		if(flags & GAME_COMMAND_FLAG_APPLY){
 			rct_map_element* mapElement = map_get_large_scenery_segment(
-				currentTile.x, 
-				currentTile.y, 
-				base_height, 
-				map_element_direction, 
+				currentTile.x,
+				currentTile.y,
+				base_height,
+				map_element_direction,
 				i);
 
 			mapElement->properties.scenerymultiple.colour[0] &= 0xE0;
@@ -4526,8 +4527,8 @@ void map_invalidate_tile_under_zoom(int x, int y, int z0, int z1, int maxZoom)
 	x2 = x + 32;
 	y2 = y + 32 - z0;
 
-	viewport = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*);
-	while (!gOpenRCT2Headless && viewport->width != 0) {
+	viewport = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport);
+	while (!gOpenRCT2Headless && viewport->width != 0 && viewport <= RCT2_LAST_VIEWPORT) {
 		if (maxZoom == -1 || viewport->zoom <= maxZoom) {
 			viewport_invalidate(viewport, x1, y1, x2, y2);
 		}
@@ -4965,9 +4966,9 @@ void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* es
 
 	banner->colour = (uint8)*edx;
 	banner->text_colour = (uint8)*edi;
-	
+
 	if (*ebp == 0) { // small sign
-		
+
 		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 
 		while (1){

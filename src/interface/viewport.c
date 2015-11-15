@@ -36,10 +36,6 @@
 #include "viewport.h"
 #include "window.h"
 
-#define RCT2_FIRST_VIEWPORT		(RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport))
-#define RCT2_LAST_VIEWPORT		(RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport) - 1)
-#define RCT2_NEW_VIEWPORT		(RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*))
-
 //#define DEBUG_SHOW_DIRTY_BOX
 
 rct_viewport* g_viewport_list = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport);
@@ -269,7 +265,7 @@ void sub_683326(int left, int top, int right, int bottom)
 /**
  * shifts pixels from the region in a direction. Used when a viewport moves;
  * consider putting in src/drawing/drawing.c or src/drawing/rect.c
- * 
+ *
  * rct2: 0x00683359
  * ax = x
  * bx = y;
@@ -288,7 +284,7 @@ void gfx_move_screen_rect(int x, int y, int width, int height, int dx, int dy)
 	rct_drawpixelinfo *screenDPI = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
 
 	// adjust for move off screen
-	// NOTE: when zooming, there can be x, y, dx, dy combinations that go off the 
+	// NOTE: when zooming, there can be x, y, dx, dy combinations that go off the
 	// screen; hence the checks. This code should ultimately not be called when
 	// zooming because this function is specific to updating the screen on move
 	int lmargin = min(x - dx, 0);
@@ -855,12 +851,12 @@ void sub_688485(){
 /* rct2: 0x006874B0, 0x00687618, 0x0068778C, 0x00687902, 0x0098199C */
 int sub_98199C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 length_y, sint16 length_x, uint32 rotation){
 	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[get_current_rotation()],
-		al | (ah << 8), 
-		image_id, 
-		cl, 
-		height, 
-		length_y, 
-		length_x, 
+		al | (ah << 8),
+		image_id,
+		cl,
+		height,
+		length_y,
+		length_x,
 		rotation);
 	return 1;
 }
@@ -945,7 +941,7 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 le
 
 	// Unsure why rots 1 and 3 need to swap
 	switch (rotation){
-	case 0:		
+	case 0:
 		boundBox.x--;
 		boundBox.y--;
 		rotate_map_coordinates(&s_unk.x, &s_unk.y, 0);
