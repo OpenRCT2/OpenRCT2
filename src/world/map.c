@@ -1987,11 +1987,6 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 	//dh: style
 	uint32 esi = 0;
 	
-	int saved_eax;
-	int saved_ebx;
-	int saved_ecx;
-	unsigned int saved_edx;
-	
 	//Uncomment to use vanilla code
 	//RCT2_CALLFUNC_X(0x006639FE, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp); return ebx;
 	
@@ -2085,7 +2080,7 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 	}
 	
 	//rct2: 0x663B93
-	if(map_can_construct_with_clear_at(eax&0xFFFF, ecx&0xFFFF, height, unk, RCT2_ADDRESS(0x663CB9, void), 0xF)==false)
+	if(map_can_construct_with_clear_at(x, y, height, unk, RCT2_ADDRESS(0x663CB9, void), 0xF)==false)
 		return MONEY32_UNDEFINED;
 	
 	rct_map_element *mapElement2 = map_get_first_element_at(x/32, y/32); //mapElement2 = edi
@@ -2113,19 +2108,25 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 		}
 	}while(!map_element_is_last_for_tile(mapElement2++));
 	
-	
-	uint8 *pdl = (uint8 *)&edx;
-	uint8 *pdh = (uint8 *)&edx+1;
-	uint8 *pbl = (uint8 *)&ebx;
-	uint8 *pbh = (uint8 *)&ebx+1;
-	
-	esi = (int)mapElement;
-	edi = (int)mapElement2;	
-	*pbh = unk;
-	
-	//To be continued...
-	RCT2_CALLFUNC_X(0x663BE4, &eax, &ebx, &ecx, (int *)&edx, (int *)&esi, &edi, &ebp);
-	return ebx;
+	//rct2: 0x663BE4
+	if((flags&GAME_COMMAND_FLAG_APPLY))
+	{
+		//rct2: 0x663BEB
+		mapElement = map_get_surface_element_at(x/32, y/32);
+		mapElement->base_height = height;
+		mapElement->clearance_height = height;
+		mapElement->properties.surface.slope &= MAP_ELEMENT_SLOPE_EDGE_STYLE_MASK;
+		mapElement->properties.surface.slope |= style;
+		//rct2: 0x663C17
+		int slope = mapElement->properties.surface.terrain&MAP_ELEMENT_SLOPE_MASK; //slope = bh
+		if(slope!=0 && slope<=height/2)
+			mapElement->properties.surface.terrain &= MAP_ELEMENT_SURFACE_TERRAIN_MASK;
+		map_invalidate_tile_full(x, y);
+	}
+	//rct2: 0x663C30
+	if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32)&0x800)
+		return 0;
+	return RCT2_GLOBAL(0x9E2E18, money32);
 }
 
 void game_command_set_land_height(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
