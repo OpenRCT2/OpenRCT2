@@ -38,7 +38,6 @@
 
 #define RCT2_FIRST_VIEWPORT		(RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport))
 #define RCT2_LAST_VIEWPORT		(RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport) - 1)
-#define RCT2_NEW_VIEWPORT		(RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*))
 
 //#define DEBUG_SHOW_DIRTY_BOX
 
@@ -98,7 +97,7 @@ void viewport_init_all()
 	for (int i = 0; i < 9; i++) {
 		g_viewport_list[i].width = 0;
 	}
-	RCT2_NEW_VIEWPORT = NULL;
+	RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*) = NULL;
 
 	// ?
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, sint32) = 0;

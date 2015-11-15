@@ -3432,7 +3432,7 @@ void map_get_bounding_box(int ax, int ay, int bx, int by, int *left, int *top, i
 void map_invalidate_selection_rect()
 {
 	int x0, y0, x1, y1, left, right, top, bottom;
-	rct_viewport *viewport;
+	rct_viewport **vp;
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0)))
 		return;
@@ -3447,10 +3447,10 @@ void map_invalidate_selection_rect()
 	bottom += 32;
 	top -= 32 + 2080;
 
-	viewport = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*);
-	while (viewport->width != 0) {
-		viewport_invalidate(viewport, left, top, right, bottom);
-		viewport++;
+	vp = RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*);
+	while (*vp != NULL) {
+		viewport_invalidate(*vp, left, top, right, bottom);
+		vp++;
 	}
 }
 
@@ -4308,7 +4308,7 @@ static void translate_3d_to_2d(int rotation, int *x, int *y)
 void map_invalidate_tile_under_zoom(int x, int y, int z0, int z1, int maxZoom)
 {
 	int x1, y1, x2, y2;
-	rct_viewport *viewport;
+	rct_viewport **vp;
 
 	x += 16;
 	y += 16;
@@ -4319,12 +4319,12 @@ void map_invalidate_tile_under_zoom(int x, int y, int z0, int z1, int maxZoom)
 	x2 = x + 32;
 	y2 = y + 32 - z0;
 
-	viewport = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*);
-	while (!gOpenRCT2Headless && viewport->width != 0) {
-		if (maxZoom == -1 || viewport->zoom <= maxZoom) {
-			viewport_invalidate(viewport, x1, y1, x2, y2);
+	vp = RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*);
+	while (!gOpenRCT2Headless && *vp != 0) {
+		if (maxZoom == -1 || (*vp)->zoom <= maxZoom) {
+			viewport_invalidate(*vp, x1, y1, x2, y2);
 		}
-		viewport++;
+		vp++;
 	}
 }
 
