@@ -336,9 +336,9 @@ static int show_save_scenario_dialog(char *resultPath)
 	strcat(filename, ".SC6");
 	format_string(filterName, STR_RCT2_SCENARIO_FILE, NULL);
 
-	pause_sounds();
+	audio_pause_sounds();
 	result = platform_open_common_file_dialog(0, title, filename, "*.SC6", filterName);
-	unpause_sounds();
+	audio_unpause_sounds();
 
 	if (result)
 		safe_strncpy(resultPath, filename, MAX_PATH);

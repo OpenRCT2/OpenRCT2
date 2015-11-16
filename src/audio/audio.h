@@ -25,20 +25,38 @@
 #include "../world/sprite.h"
 
 #define AUDIO_DEVICE_NAME_SIZE 256
+#define AUDIO_MAX_RIDE_MUSIC 2
+#define AUDIO_MAX_VEHICLE_SOUNDS 14
+#define NUM_DEFAULT_MUSIC_TRACKS 46
 
 typedef struct {
 	char name[AUDIO_DEVICE_NAME_SIZE];
 } audio_device;
 
-extern int gAudioDeviceCount;
-extern audio_device *gAudioDevices;
+typedef struct {
+	uint8 ride_id;
+	uint8 tune_id;
+	sint16 volume;
+	sint16 pan;
+	uint16 frequency;
+	void* sound_channel;
+} rct_ride_music;
 
-#define AUDIO_MAX_VEHICLE_SOUNDS 14
-#define AUDIO_MAX_RIDE_MUSIC 2
+typedef struct {
+	uint32 length;
+	uint32 offset;
+	uint8 path_id;
+	uint8 var_9;
+} rct_ride_music_info;
 
-void audio_init();
-void audio_quit();
-void audio_get_devices();
+typedef struct {
+	uint8 ride_id;
+	uint8 tune_id;
+	sint32 offset;
+	sint16 volume;
+	sint16 pan;
+	uint16 frequency;
+} rct_ride_music_params;
 
 typedef struct {
 	uint16 id;
@@ -57,63 +75,12 @@ typedef struct {
 
 typedef struct {
 	uint16 id;
-	sint16 panx;
-	sint16 pany;
+	sint16 pan_x;
+	sint16 pan_y;
 	uint16 frequency;
 	sint16 volume;
 	uint16 var_A;
 } rct_vehicle_sound_params;
-
-typedef struct {
-	uint8 rideid;
-	uint8 tuneid;
-	sint32 offset;
-	sint16 volume;
-	sint16 pan;
-	uint16 freq;
-} rct_ride_music_params;
-
-typedef struct {
-	uint8 rideid;
-	uint8 tuneid;
-	sint16 volume;
-	sint16 pan;
-	uint16 freq;
-	void* sound_channel;
-} rct_ride_music;
-
-typedef struct {
-	uint32 length;
-	uint32 offset;
-	uint8 pathid;
-	uint8 var_9;
-} rct_ride_music_info;
-
-#define NUM_DEFAULT_MUSIC_TRACKS 46
-extern rct_ride_music_info* ride_music_info_list[NUM_DEFAULT_MUSIC_TRACKS];
-extern rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
-extern rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
-extern rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
-extern rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
-extern rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
-extern rct_ride_music_params *gRideMusicParamsListEnd;
-extern void *gCrowdSoundChannel;
-extern void *gTitleMusicChannel;
-extern void *gRainSoundChannel;
-extern bool gGameSoundsOff;
-
-int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z);
-void start_title_music();
-void stop_ride_music();
-void stop_crowd_sound();
-void stop_title_music();
-void audio_init1();
-void audio_init2(int device);
-void audio_close();
-void pause_sounds();
-void toggle_all_sounds();
-void unpause_sounds();
-void stop_vehicle_sounds();
 
 typedef enum {
 	SOUND_LIFT_1 = 0,
@@ -181,5 +148,35 @@ typedef enum {
 	SOUND_62 = 62,
 	SOUND_MAXID
 } RCT2_SOUND;
+
+extern audio_device *gAudioDevices;
+extern int gAudioDeviceCount;
+extern void *gCrowdSoundChannel;
+extern bool gGameSoundsOff;
+extern void *gRainSoundChannel;
+extern rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
+extern rct_ride_music_info* gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS];
+extern rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
+extern rct_ride_music_params *gRideMusicParamsListEnd;
+extern void *gTitleMusicChannel;
+extern rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
+extern rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
+extern rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
+
+void audio_close();
+void audio_get_devices();
+void audio_init();
+void audio_init1();
+void audio_init2(int device);
+void audio_pause_sounds();
+void audio_quit();
+int audio_sound_play_panned(int soundId, int ebx, sint16 x, sint16 y, sint16 z);
+void audio_start_title_music();
+void audio_stop_crowd_sound();
+void audio_stop_ride_music();
+void audio_stop_title_music();
+void audio_stop_vehicle_sounds();
+void audio_toggle_all_sounds();
+void audio_unpause_sounds();
 
 #endif

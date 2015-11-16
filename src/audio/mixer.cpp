@@ -530,20 +530,20 @@ void Mixer::Stop(Channel& channel)
 	Unlock();
 }
 
-bool Mixer::LoadMusic(int pathid)
+bool Mixer::LoadMusic(int pathId)
 {
-	if (pathid >= countof(musicsources)) {
+	if (pathId >= countof(musicsources)) {
 		return false;
 	}
-	if (!musicsources[pathid]) {
-		const char* filename = get_file_path(pathid);
+	if (!musicsources[pathId]) {
+		const char* filename = get_file_path(pathId);
 		Source_Sample* source_sample = new Source_Sample;
 		if (source_sample->LoadWAV(filename)) {
-			musicsources[pathid] = source_sample;
+			musicsources[pathId] = source_sample;
 			return true;
 		} else {
 			delete source_sample;
-			musicsources[pathid] = &source_null;
+			musicsources[pathId] = &source_null;
 			return false;
 		}
 	} else {
@@ -880,7 +880,7 @@ void Mixer_Channel_SetGroup(void* channel, int group)
 	((Channel*)channel)->SetGroup(group);
 }
 
-void* Mixer_Play_Music(int pathid, int loop, int streaming)
+void* Mixer_Play_Music(int pathId, int loop, int streaming)
 {
 	if (gOpenRCT2Headless) return 0;
 
@@ -888,7 +888,7 @@ void* Mixer_Play_Music(int pathid, int loop, int streaming)
 		return 0;
 	}
 	if (streaming) {
-		const utf8 *filename = get_file_path(pathid);
+		const utf8 *filename = get_file_path(pathId);
 
 		SDL_RWops* rw = SDL_RWFromFile(filename, "rb");
 		if (rw == NULL) {
@@ -908,8 +908,8 @@ void* Mixer_Play_Music(int pathid, int loop, int streaming)
 			return 0;
 		}
 	} else {
-		if (gMixer.LoadMusic(pathid)) {
-			Channel* channel = gMixer.Play(*gMixer.musicsources[pathid], MIXER_LOOP_INFINITE, false, false);
+		if (gMixer.LoadMusic(pathId)) {
+			Channel* channel = gMixer.Play(*gMixer.musicsources[pathId], MIXER_LOOP_INFINITE, false, false);
 			if (channel) {
 				channel->SetGroup(MIXER_GROUP_MUSIC);
 			}

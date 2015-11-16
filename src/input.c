@@ -1021,7 +1021,7 @@ static void input_widget_left(int x, int y, rct_window *w, int widgetIndex)
 		break;
 	default:
 		if (widget_is_enabled(w, widgetIndex) && !widget_is_disabled(w, widgetIndex)) {
-			sound_play_panned(SOUND_CLICK_1, w->x + (widget->left + widget->right) / 2, 0, 0, 0);
+			audio_sound_play_panned(SOUND_CLICK_1, w->x + (widget->left + widget->right) / 2, 0, 0, 0);
 
 			// Set new cursor down widget
 			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass) = windowClass;
@@ -1267,7 +1267,7 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 			break;
 
 		int mid_point_x = (widget->left + widget->right) / 2 + w->x;
-		sound_play_panned(5, mid_point_x, 0, 0, 0);
+		audio_sound_play_panned(5, mid_point_x, 0, 0, 0);
 		if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
 			break;
 

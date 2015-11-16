@@ -210,7 +210,7 @@ int Mixer_Channel_IsPlaying(void* channel);
 unsigned long Mixer_Channel_GetOffset(void* channel);
 int Mixer_Channel_SetOffset(void* channel, unsigned long offset);
 void Mixer_Channel_SetGroup(void* channel, int group);
-void* Mixer_Play_Music(int pathid, int loop, int streaming);
+void* Mixer_Play_Music(int pathId, int loop, int streaming);
 void Mixer_SetVolume(float volume);
 
 static int DStoMixerVolume(int volume) { return (int)(SDL_MIX_MAXVOLUME * (SDL_pow(10, (float)volume / 2000))); };

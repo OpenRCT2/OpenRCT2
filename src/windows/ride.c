@@ -4433,9 +4433,9 @@ static void window_ride_music_mousedown(int widgetIndex, rct_window *w, rct_widg
 		for (i = 0; i < countof(MusicStyleOrder); i++)
 			window_ride_current_music_style_order[numItems++] = MusicStyleOrder[i];
 
-		if (ride_music_info_list[36]->length != 0)
+		if (gRideMusicInfoList[36]->length != 0)
 			window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_CUSTOM_MUSIC_1;
-		if (ride_music_info_list[37]->length != 0)
+		if (gRideMusicInfoList[37]->length != 0)
 			window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_CUSTOM_MUSIC_2;
 	}
 
@@ -4550,7 +4550,7 @@ static void window_ride_music_paint(rct_window *w, rct_drawpixelinfo *dpi)
 static void cancel_scenery_selection(){
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) &= ~(1 << 2);
 	RCT2_GLOBAL(0x9DEA6F, uint8) &= ~(1 << 0);
-	unpause_sounds();
+	audio_unpause_sounds();
 
 	rct_window* main_w = window_get_main();
 
@@ -4579,7 +4579,7 @@ static void setup_scenery_selection(rct_window* w){
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) |= (1 << 2);
 	RCT2_GLOBAL(0x009DEA6F, uint8) |= 1;
 
-	pause_sounds();
+	audio_pause_sounds();
 
 	rct_window* w_main = window_get_main();
 

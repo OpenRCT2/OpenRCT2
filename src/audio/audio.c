@@ -94,7 +94,7 @@ void audio_get_devices()
 * @param y (dx)
 * @param z (bp)
 */
-int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z)
+int audio_sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z)
 {
 	if (!gGameSoundsOff) {
 		int volumedown = 0;
@@ -164,7 +164,7 @@ int sound_play_panned(int sound_id, int ebx, sint16 x, sint16 y, sint16 z)
 *
 *  rct2: 0x006BD0F8
 */
-void start_title_music()
+void audio_start_title_music()
 {
 	int musicPathId;
 	switch (gConfigSound.title_music) {
@@ -189,7 +189,7 @@ void start_title_music()
 			gTitleMusicChannel = Mixer_Play_Music(musicPathId, MIXER_LOOP_INFINITE, true);
 		}
 	} else {
-		stop_title_music();
+		audio_stop_title_music();
 	}
 }
 
@@ -197,15 +197,15 @@ void start_title_music()
 *
 *  rct2: 0x006BCA9F
 */
-void stop_ride_music()
+void audio_stop_ride_music()
 {
 	for (int i = 0; i < AUDIO_MAX_RIDE_MUSIC; i++) {
 		rct_ride_music* ride_music = &gRideMusicList[i];
-		if (ride_music->rideid != (uint8)-1) {
+		if (ride_music->ride_id != (uint8)-1) {
 			if (ride_music->sound_channel) {
 				Mixer_Stop_Channel(ride_music->sound_channel);
 			}
-			ride_music->rideid = -1;
+			ride_music->ride_id = -1;
 		}
 	}
 }
@@ -214,7 +214,7 @@ void stop_ride_music()
 *
 *  rct2: 0x006BD07F
 */
-void stop_crowd_sound()
+void audio_stop_crowd_sound()
 {
 	if (gCrowdSoundChannel) {
 		Mixer_Stop_Channel(gCrowdSoundChannel);
@@ -226,7 +226,7 @@ void stop_crowd_sound()
 *
 *  rct2: 0x006BD0BD
 */
-void stop_title_music()
+void audio_stop_title_music()
 {
 	if (gTitleMusicChannel) {
 		Mixer_Stop_Channel(gTitleMusicChannel);
@@ -251,9 +251,9 @@ void audio_init1()
 	int devicenum = 0;
 	audio_init2(devicenum);
 
-	for(int m = 0; m < countof(ride_music_info_list); m++) {
-		rct_ride_music_info* ride_music_info = ride_music_info_list[m];
-		const utf8* path = get_file_path(ride_music_info->pathid);
+	for(int m = 0; m < countof(gRideMusicInfoList); m++) {
+		rct_ride_music_info* ride_music_info = gRideMusicInfoList[m];
+		const utf8* path = get_file_path(ride_music_info->path_id);
 		SDL_RWops *file = SDL_RWFromFile(path, "rb");
 		if (file != NULL) {
 			uint32 head;
@@ -282,7 +282,7 @@ void audio_init2(int device)
 	config_save_default();
 	for (int i = 0; i < AUDIO_MAX_RIDE_MUSIC; i++) {
 		rct_ride_music* ride_music = &gRideMusicList[i];
-		ride_music->rideid = -1;
+		ride_music->ride_id = -1;
 	}
 }
 
@@ -292,21 +292,21 @@ void audio_init2(int device)
 */
 void audio_close()
 {
-	stop_crowd_sound();
-	stop_title_music();
-	stop_ride_music();
+	audio_stop_crowd_sound();
+	audio_stop_title_music();
+	audio_stop_ride_music();
 	stop_rain_sound();
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) = -1;
 }
 
 /* rct2: 0x006BAB8A */
-void toggle_all_sounds(){
+void audio_toggle_all_sounds(){
 	gConfigSound.sound = !gConfigSound.sound;
 	if (!gConfigSound.sound) {
-		stop_title_music();
-		pause_sounds();
+		audio_stop_title_music();
+		audio_pause_sounds();
 	} else {
-		unpause_sounds();
+		audio_unpause_sounds();
 	}
 }
 
@@ -314,12 +314,12 @@ void toggle_all_sounds(){
 *
 *  rct2: 0x006BABB4
 */
-void pause_sounds()
+void audio_pause_sounds()
 {
 	gGameSoundsOff = true;
-	stop_vehicle_sounds();
-	stop_ride_music();
-	stop_crowd_sound();
+	audio_stop_vehicle_sounds();
+	audio_stop_ride_music();
+	audio_stop_crowd_sound();
 	stop_rain_sound();
 }
 
@@ -327,7 +327,7 @@ void pause_sounds()
 *
 *  rct2: 0x006BABD8
 */
-void unpause_sounds()
+void audio_unpause_sounds()
 {
 	gGameSoundsOff = false;
 }
@@ -336,7 +336,7 @@ void unpause_sounds()
 *
 *  rct2: 0x006BABDF
 */
-void stop_vehicle_sounds()
+void audio_stop_vehicle_sounds()
 {
 	if (!gOpenRCT2Headless && RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) != -1) {
 		for (int i = 0; i < countof(gVehicleSoundList); i++) {

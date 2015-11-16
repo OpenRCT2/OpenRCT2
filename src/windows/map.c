@@ -1289,7 +1289,7 @@ static void window_map_place_park_entrance_tool_down(int x, int y)
 	if (price == MONEY32_UNDEFINED)
 		return;
 
-	sound_play_panned(
+	audio_sound_play_panned(
 		SOUND_PLACE_ITEM,
 		0x8001,
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16),

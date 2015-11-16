@@ -60,8 +60,8 @@ void editor_load()
 {
 	rct_window *mainWindow;
 
-	pause_sounds();
-	unpause_sounds();
+	audio_pause_sounds();
+	audio_unpause_sounds();
 	object_unload_all();
 	map_init(150);
 	banner_init();

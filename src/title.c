@@ -125,8 +125,8 @@ void title_load()
 	window_staff_list_init_vars();
 	map_update_tile_pointers();
 	reset_0x69EBE4();
-	stop_ride_music();
-	stop_crowd_sound();
+	audio_stop_ride_music();
+	audio_stop_crowd_sound();
 	//stop_other_sounds();
 	viewport_init_all();
 	news_item_init_queue();
@@ -505,7 +505,7 @@ void title_update()
 		for (i = 0; i < numUpdates; i++) {
 			game_logic_update();
 		}
-		start_title_music();
+		audio_start_title_music();
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~0x80;
