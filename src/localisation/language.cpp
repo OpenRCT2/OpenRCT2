@@ -60,14 +60,7 @@ static TTFFontSetDescriptor TTFFontSimSun = {{
 	{ "simsun.ttc",		12,		1,		-2,		14,		nullptr },
 	{ "simsun.ttc",		13,		1,		0,		20,		nullptr },
 }};
-/*
-static TTFFontSetDescriptor TTFFontMalgun = {{
-	{ "malgun.ttf",		8,		-1,		-3,		6,		nullptr },
-	{ "malgun.ttf",		11,		1,		-2,		14,		nullptr },
-	{ "malgun.ttf",		12,		1,		-4,		14,		nullptr },
-	{ "malgun.ttf",		13,		1,		0,		20,		nullptr },
-}};
-*/
+
 static TTFFontSetDescriptor TTFFontGulim = {{
 	{ "gulim.ttc",		11,		1,		0,		15,		nullptr },
 	{ "gulim.ttc",		12,		1,		0,		17,		nullptr },
