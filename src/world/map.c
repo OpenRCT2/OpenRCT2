@@ -2952,9 +2952,10 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 
 	if (!(bp & 0xC0)){
 		uint8 new_edge = (edge + 2) & 3;
-		bp += 2;
+		uint8 new_base_height = map_element->base_height;
+		new_base_height += 2;
 		if (map_element->properties.surface.slope & (1 << new_edge)){
-			if (position.z / 8 < bp){
+			if (position.z / 8 < new_base_height){
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 				*ebx = MONEY32_UNDEFINED;
 				return;
@@ -2966,13 +2967,13 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 				if (map_element->properties.surface.slope & (1 << new_edge)){
 					new_edge = (new_edge + 2) & 3;
 					if (map_element->properties.surface.slope & (1 << new_edge)){
-						bp += 2;
-						if (position.z / 8 < bp){
+						new_base_height += 2;
+						if (position.z / 8 < new_base_height){
 							RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 							*ebx = MONEY32_UNDEFINED;
 							return;
 						}
-						bp -= 2;
+						new_base_height -= 2;
 					}
 				}
 			}
@@ -2980,7 +2981,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 
 		new_edge = (edge + 3) & 3;
 		if (map_element->properties.surface.slope & (1 << new_edge)){
-			if (position.z / 8 < bp){
+			if (position.z / 8 < new_base_height){
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 				*ebx = MONEY32_UNDEFINED;
 				return;
@@ -2992,8 +2993,8 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 				if (map_element->properties.surface.slope & (1 << new_edge)){
 					new_edge = (new_edge + 2) & 3;
 					if (map_element->properties.surface.slope & (1 << new_edge)){
-						bp += 2;
-						if (position.z / 8 < bp){
+						new_base_height += 2;
+						if (position.z / 8 < new_base_height){
 							RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 							*ebx = MONEY32_UNDEFINED;
 							return;
