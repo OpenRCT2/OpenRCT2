@@ -79,7 +79,7 @@ extern "C" {
 	#include <netdb.h>
 	#include <netinet/tcp.h>
 	#include <sys/socket.h>
-	#include <sys/fcntl.h>
+	#include <fcntl.h>
 	typedef int SOCKET;
 	#define SOCKET_ERROR -1
 	#define INVALID_SOCKET -1
