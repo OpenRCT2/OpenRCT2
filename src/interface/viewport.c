@@ -1493,6 +1493,145 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 	}
 }
 
+#ifdef __GNUC__
+static int callcode_push1(int address, int stackvar, registers *regs)
+{
+	int result;
+	
+	int *_eax = &regs->eax;
+	int *_ebx = &regs->ebx;
+	int *_ecx = &regs->ecx;
+	int *_edx = &regs->edx;
+	int *_esi = &regs->esi;
+	int *_edi = &regs->edi;
+	int *_ebp = &regs->ebp;
+	
+	__asm__ ( "\
+		\n\
+		/* Store C's base pointer*/     \n\
+		push %%ebp        \n\
+		push %%ebx        \n\
+		\n\
+		/* Store %[address] to call*/   \n\
+		push %[address]         \n\
+		\n\
+		/* Set all registers to the input values*/      \n\
+		mov %[_eax], %%eax      \n\
+		mov (%%eax), %%eax  \n\
+		mov %[_ebx], %%ebx      \n\
+		mov (%%ebx), %%ebx  \n\
+		mov %[_ecx], %%ecx      \n\
+		mov (%%ecx), %%ecx  \n\
+		mov %[_edx], %%edx      \n\
+		mov (%%edx), %%edx  \n\
+		mov %[_esi], %%esi      \n\
+		mov (%%esi), %%esi  \n\
+		mov %[_edi], %%edi      \n\
+		mov (%%edi), %%edi  \n\
+		/* Hack: called code should return back to this function */ \n\
+		push $__foo \n\
+		/* Push variable */\n\
+		push %[stackvar] \n\
+		mov %[_ebp], %%ebp      \n\
+		mov (%%ebp), %%ebp  \n\
+		\n\
+		/* Call function*/      \n\
+		/* call *(%%esp) */     \n\
+		/* int $3 */\n\
+		jmp *8(%%esp)	\n\
+		__foo: \n\
+		\n\
+		/* Store output eax */ \n\
+		push %%eax \n\
+		push %%ebp \n\
+		push %%ebx \n\
+		mov 20(%%esp), %%ebp \n\
+		mov 16(%%esp), %%ebx \n\
+		/* Get resulting ecx, edx, esi, edi registers*/       \n\
+		mov %[_edi], %%eax      \n\
+		mov %%edi, (%%eax)  \n\
+		mov %[_esi], %%eax      \n\
+		mov %%esi, (%%eax)  \n\
+		mov %[_edx], %%eax      \n\
+		mov %%edx, (%%eax)  \n\
+		mov %[_ecx], %%eax      \n\
+		mov %%ecx, (%%eax)  \n\
+		/* Pop ebx reg into ecx*/ \n\
+		pop %%ecx		\n\
+		mov %[_ebx], %%eax \n\
+		mov %%ecx, (%%eax) \n\
+		\n\
+		/* Pop ebp reg into ecx */\n\
+		pop %%ecx \n\
+		mov %[_ebp], %%eax \n\
+		mov %%ecx, (%%eax) \n\
+		\n\
+		pop %%eax \n\
+		/* Get resulting eax register*/ \n\
+		mov %[_eax], %%ecx \n\
+		mov %%eax, (%%ecx) \n\
+		\n\
+		/* Save flags as return in eax*/  \n\
+		lahf \n\
+		/* Pop address*/ \n\
+		pop %%ebp \n\
+		\n\
+		pop %%ebx \n\
+		pop %%ebp \n\
+		/* Load result with flags */ \n\
+		mov %%eax, %[result] \n\
+		" : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp), [result] "+m" (result)
+		: [stackvar] "m" (stackvar)
+		: "eax","ecx","edx","esi","edi"
+	);
+	return result&0xFF00;
+}
+#endif //__GNUC__
+
+/**
+ * rct2: 0x66062C
+ * edx = height
+ * esi = mapElement
+ */
+void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element *mapElement, int ebp)
+{
+	registers regs;
+	
+	regs.eax = eax;
+	regs.ebx = ebx;
+	regs.ecx = 0;
+	regs.edx = height;
+	regs.esi = (int)mapElement;
+	regs.edi = 0;
+	regs.ebp = ebp;
+	
+	int saved_esi;
+	
+	//RCT2_CALLFUNC_Y(0x66062C, &regs); return;
+	rct_drawpixelinfo *dpi = RCT2_ADDRESS(0x140E9A8, rct_drawpixelinfo); //dpi = edi
+	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 1;
+	RCT2_GLOBAL(0x9DE57C, uint16) |= 1;
+	RCT2_GLOBAL(0x9E3250, rct_map_element *) = mapElement;
+	RCT2_GLOBAL(0x9E3296, uint16) = dpi->zoom_level; //This line of code seems to cause an assertion failure in drawing.c:553. Strangely, it does not happen in vanilla code. I'll investigate this more later.
+	regs.ecx = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	//RCT2_CALLFUNC_Y(0x660657, &regs); return;
+	
+	//SAVE
+	saved_esi = regs.esi;
+	
+	//callcode_push1(0x660658, saved_esi, &regs); return;
+	regs.al = mapElement->type;
+	regs.ah = mapElement->properties.surface.terrain;
+	//callcode_push1(0x66065D, saved_esi, &regs); return;
+	regs.al &= 3;
+	regs.ah = (uint8)regs.ah >> 5;
+	regs.al <<= 3;
+	regs.al |= regs.ah;
+	regs.eax &= 0xFF;
+	RCT2_GLOBAL(0x9E3264, uint32) = regs.eax;
+	callcode_push1(0x660671, saved_esi, &regs); return;
+}
+
 /**
  *
  *  rct2: 0x006C4794
@@ -1799,7 +1938,7 @@ static void sub_68B3FB(int x, int y)
 		switch (map_element_get_type(map_element))
 		{
 		case MAP_ELEMENT_TYPE_SURFACE:
-			RCT2_CALLPROC_X(0x66062C, 0, 0, direction, height, (int)map_element, 0, 0);
+			viewport_surface_paint_setup(0, 0, height, map_element, 0);
 			break;
 		case MAP_ELEMENT_TYPE_PATH:
 			RCT2_CALLPROC_X(0x6A3590, 0, 0, direction, height, (int)map_element, 0, 0);
