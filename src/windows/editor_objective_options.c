@@ -407,7 +407,7 @@ static void window_editor_objective_options_main_mouseup(rct_window *w, int widg
 		break;
 	case WIDX_SCENARIO_NAME:
 		safe_strncpy((char*)0x009BC677, s6Info->name, 64);
-		window_text_input_open(w, WIDX_SCENARIO_NAME, 3313, 3314, 3165, 0, 32);
+		window_text_input_open(w, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, 3165, 0, 64);
 		break;
 	case WIDX_DETAILS:
 		safe_strncpy((char*)0x009BC677, s6Info->details, 256);
