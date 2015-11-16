@@ -1,8 +1,29 @@
+/*****************************************************************************
+ * Copyright (c) 2015 Ted John
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * This file is part of OpenRCT2.
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *****************************************************************************/
+
 #include <lodepng/lodepng.h>
 #include "cmdline.h"
 #include "drawing/drawing.h"
 #include "platform/platform.h"
 #include "util/util.h"
+#include "openrct2.h"
 
 #define MODE_DEFAULT 0
 #define MODE_CLOSEST 1
@@ -397,6 +418,7 @@ bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **ou
 
 int cmdline_for_sprite(const char **argv, int argc)
 {
+	gOpenRCT2Headless = true;
 	if (argc == 0)
 		return -1;
 

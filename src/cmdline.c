@@ -120,10 +120,19 @@ int cmdline_run(const char **argv, int argc)
 #endif // DISABLE_NETWORK
 
 	if (argc != 0) {
+		// see comment next to cmdline_call_action for expected return codes
 		gExitCode = cmdline_call_action(argv, argc);
-		if (gExitCode != 0) {
+		if (gExitCode < 0) {
+			// action failed, don't change exit code
+			// and don't start the game
+			return 0;
+		} else if (gExitCode > 0) {
+			// action successful, but don't start the game
+			// change exit code to success
+			gExitCode = 0;
 			return 0;
 		}
+		// start the game, so far exit code means success.
 	}
 
 	// Headless mode requires a park to open
@@ -199,6 +208,7 @@ static int cmdline_for_none(const char **argv, int argc)
 	}
 }
 
+// see comment next to cmdline_call_action for expected return codes
 struct { const char *firstArg; cmdline_action action; } cmdline_table[] = {
 	{ "intro", cmdline_for_intro },
 	{ "edit", cmdline_for_edit },
@@ -212,6 +222,19 @@ struct { const char *firstArg; cmdline_action action; } cmdline_table[] = {
 #endif
 };
 
+/**
+ * This function delegates starting the game to different handlers, if found.
+ * 
+ * Three cases of return values are supported:
+ * - result < 0 means failure, will exit with error code
+ *   This case is useful when user provided wrong arguments or the requested
+ *   action failed
+ * - result > 0 means success, won't start game, will exit program with success code
+ *   This case is useful when you want to do some batch action and signalize
+ *   success to the user.
+ * - result == 0 means success, will launch the game.
+ *   This is default when ran with no arguments.
+ */
 static int cmdline_call_action(const char **argv, int argc)
 {
 	for (int i = 0; i < countof(cmdline_table); i++) {
