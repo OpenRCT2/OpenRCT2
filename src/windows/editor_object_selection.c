@@ -218,7 +218,7 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 static int get_object_from_object_selection(uint8 object_type, int y, uint8 *object_selection_flags, rct_object_entry **installed_entry);
 static void window_editor_object_selection_manage_tracks();
 static void editor_load_selected_objects();
-static bool filter_string(rct_object_entry *entry);
+static bool filter_string(rct_object_entry *entry, rct_object_filters *filter);
 static bool filter_source(rct_object_entry *entry);
 static bool filter_chunks(rct_object_entry *entry, rct_object_filters *filter);
 static void filter_update_counts();
@@ -333,7 +333,7 @@ static void visible_list_refresh(rct_window *w)
 		rct_object_filters *filter = get_object_filter(i);
 		int type = entry->flags & 0x0F;
 		int source = (entry->flags & 0xF0) >> 4;
-		if (type == w->selected_tab && !(*itemFlags & OBJECT_SELECTION_FLAG_6) && filter_source(entry) && filter_string(entry) && filter_chunks(entry, filter)) {
+		if (type == w->selected_tab && !(*itemFlags & OBJECT_SELECTION_FLAG_6) && filter_source(entry) && filter_string(entry, filter) && filter_chunks(entry, filter)) {
 			currentListItem->entry = entry;
 			currentListItem->filter = filter;
 			currentListItem->flags = itemFlags;
@@ -2010,26 +2010,37 @@ static void window_editor_object_selection_textinput(rct_window *w, int widgetIn
 	window_invalidate(w);
 }
 
-static bool filter_string(rct_object_entry *entry)
+static bool filter_string(rct_object_entry *entry, rct_object_filters *filter)
 {
-	if (_filter_string[0] == 0)
+	// Nothing to search for
+	if (_filter_string[0] == '\0')
 		return true;
 
+	// Object doesn't have a name
 	char *name = object_get_name(entry);
 	if (name[0] == 0)
 		return false;
 
+	// Get ride type
+	char *ride_type = language_get_string(2 + filter->ride.ride_type);
+
+	// Get object name (ride/vehicle for rides) and type name (rides only)
 	char name_lower[MAX_PATH];
+	char type_lower[MAX_PATH];
 	char filter_lower[sizeof(_filter_string)];
 	safe_strncpy(name_lower, name, MAX_PATH);
+	safe_strncpy(type_lower, ride_type, MAX_PATH);
 	safe_strncpy(filter_lower, _filter_string, sizeof(_filter_string));
 
+	// Make use of lowercase characters only
 	for (int i = 0; i < (int)strlen(name_lower); i++)
 		name_lower[i] = (char)tolower(name_lower[i]);
+	for (int i = 0; i < (int)strlen(type_lower); i++)
+		type_lower[i] = (char)tolower(type_lower[i]);
 	for (int i = 0; i < (int)strlen(filter_lower); i++)
 		filter_lower[i] = (char)tolower(filter_lower[i]);
 
-	return strstr(name_lower, filter_lower) != NULL;
+	return strstr(name_lower, filter_lower) != NULL || (((entry->flags & 0x0F) == OBJECT_TYPE_RIDE) && strstr(type_lower, filter_lower) != NULL);
 }
 
 static bool filter_source(rct_object_entry *entry)
@@ -2072,7 +2083,7 @@ static void filter_update_counts()
 		for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i) {
 			filter = get_object_filter(RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) - i);
 			type = installed_entry->flags & 0xF;
-			if (filter_source(installed_entry) && filter_string(installed_entry) && filter_chunks(installed_entry, filter)) {
+			if (filter_source(installed_entry) && filter_string(installed_entry, filter) && filter_chunks(installed_entry, filter)) {
 				_filter_object_counts[type]++;
 			}
 			installed_entry = object_get_next(installed_entry);
