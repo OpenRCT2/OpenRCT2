@@ -2326,18 +2326,18 @@ void game_command_set_water_height(int* eax, int* ebx, int* ecx, int* edx, int* 
 	}
 
 	rct_map_element* map_element = map_get_surface_element_at(x / 32, y / 32);
-	int z1 = map_element->base_height;
-	int z2 = base_height;
+	int zHigh = map_element->base_height;
+	int zLow = base_height;
 	if(map_element->properties.surface.terrain & 0x1F){
-		z1 = (map_element->properties.surface.terrain & 0x1F) * 2;
+		zHigh = (map_element->properties.surface.terrain & 0x1F) * 2;
 	}
-	if(z2 > z1){
-		int temp = z1;
-		z1 = z2;
-		z2 = temp;
+	if(zLow > zHigh){
+		int temp = zHigh;
+		zHigh = zLow;
+		zLow = temp;
 	}
 
-	if(map_can_construct_at(x, y, z1, z2, 0xFF)){
+	if(map_can_construct_at(x, y, zLow, zHigh, 0xFF)){
 		if(map_element->type & 0x40){
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0;
 			*ebx = MONEY32_UNDEFINED;
