@@ -3912,6 +3912,7 @@ STR_5575    :Max. Spieler:
 STR_5576    :Port:
 STR_5577    :Südkoreanischer Won (W)
 STR_5578    :Russischer Rubel (R)
+STR_5579    :Fensterskalierungsfaktor:
 
 #######################
 # Bahnen/Attraktionen # 

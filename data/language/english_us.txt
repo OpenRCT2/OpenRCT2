@@ -3919,6 +3919,7 @@ STR_5575    :Max Players:
 STR_5576    :Port:
 STR_5577    :South Korean Won (W)
 STR_5578    :Russian Ruble (R)
+STR_5579    :Window scale factor:
 
 #########
 # Rides #

@@ -3911,6 +3911,7 @@ STR_5575    :Max. aant. spelers:
 STR_5576    :Poort:
 STR_5577    :Zuid-Koreaanse won (W)
 STR_5578    :Russische roebel (R)
+STR_5579    :Vergrotingsfactor:
 
 #############
 # Scenarios #
