@@ -438,11 +438,18 @@ bool Network::Init()
 		wsa_initialized = true;
 	}
 #endif
+	status = NETWORK_STATUS_READY;
 	return true;
 }
 
 void Network::Close()
 {
+	if (status == NETWORK_STATUS_NONE)
+	{
+		// Already closed. This prevents a call in ~Network() to gfx_invalidate_screen()
+		// which may no longer be valid on Linux and would cause a segfault.
+		return;
+	}
 	if (mode == NETWORK_MODE_CLIENT) {
 		closesocket(server_connection.socket);
 	} else
@@ -1398,7 +1405,7 @@ int Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket&
 	packet >> tick >> args[0] >> args[1] >> args[2] >> args[3] >> args[4] >> args[5] >> args[6] >> callback;
 
 	int commandCommand = args[4];
-	
+
 	// Don't let clients send pause or quit
 	if (commandCommand != GAME_COMMAND_TOGGLE_PAUSE &&
 		commandCommand != GAME_COMMAND_LOAD_OR_QUIT
@@ -1406,7 +1413,7 @@ int Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket&
 		Server_Send_GAMECMD(args[0], args[1], args[2], args[3], args[4], args[5], args[6], playerid, callback);
 		game_do_command(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
 	}
-	
+
 	return 1;
 }
 
