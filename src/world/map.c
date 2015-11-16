@@ -1752,22 +1752,25 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 			map_element_remove(mapElement--);
 	}while(!map_element_is_last_for_tile(mapElement++));
 	
-	//Check for obstructing rides
-	mapElement = map_get_first_element_at(x / 32, y / 32);
-	do{
-		if(map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
-			continue;
-		int rideIndex = mapElement->properties.track.ride_index;
-		int maxHeight = GET_RIDE_ENTRY(GET_RIDE(rideIndex)->subtype)->max_height;
-		if(maxHeight == 0)
-			maxHeight = RCT2_GLOBAL(0x97D218 + 8 * GET_RIDE(rideIndex)->type, uint8);
-		int zDelta = mapElement->clearance_height - height;
-		if(zDelta >= 0 && zDelta/2 > maxHeight && gCheatsDisableSupportLimits == false)
-		{
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_SUPPORTS_CANT_BE_EXTENDED;
-			return MONEY32_UNDEFINED;
-		}
-	}while(!map_element_is_last_for_tile(mapElement++));
+	//Check for ride support limits
+	if(gCheatsDisableSupportLimits==false)
+	{
+		mapElement = map_get_first_element_at(x / 32, y / 32);
+		do{
+			if(map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+				continue;
+			int rideIndex = mapElement->properties.track.ride_index;
+			int maxHeight = GET_RIDE_ENTRY(GET_RIDE(rideIndex)->subtype)->max_height;
+			if(maxHeight == 0)
+				maxHeight = RCT2_GLOBAL(0x97D218 + 8 * GET_RIDE(rideIndex)->type, uint8);
+			int zDelta = mapElement->clearance_height - height;
+			if(zDelta >= 0 && zDelta/2 > maxHeight)
+			{
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_SUPPORTS_CANT_BE_EXTENDED;
+				return MONEY32_UNDEFINED;
+			}
+		}while(!map_element_is_last_for_tile(mapElement++));
+	}
 
 	uint8 zCorner = height; //z position of highest corner of tile
 	rct_map_element *surfaceElement = map_get_surface_element_at(x / 32, y / 32);
