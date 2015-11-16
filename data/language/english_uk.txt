@@ -2294,7 +2294,7 @@ STR_2286    :Designing
 STR_2287    :Completing design
 STR_2288    :Unknown
 STR_2289    :{STRINGID} {STRINGID}
-STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
+STR_2290    :<not used anymore>
 STR_2291    :Select scenario for new game
 STR_2292    :{WINDOW_COLOUR_2}Rides been on:
 STR_2293    :{BLACK} Nothing
