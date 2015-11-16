@@ -33,6 +33,7 @@
 #include "../openrct2.h"
 #include "../title.h"
 #include "../util/util.h"
+#include "../util/xbrz.h"
 #include "platform.h"
 
 typedef void(*update_palette_func)(const uint8*, int, int);
@@ -67,6 +68,7 @@ bool gSteamOverlayActive = false;
 
 static SDL_Surface *_surface = NULL;
 static SDL_Surface *_RGBASurface = NULL;
+static SDL_Surface *_XBRZSurface = NULL;
 static SDL_Palette *_palette = NULL;
 
 static void *_screenBuffer;
@@ -222,6 +224,67 @@ static void overlay_post_render_check(int width, int height) {
 	overlayActive = newOverlayActive;
 }
 
+uint32_t SDL_GetPixel(SDL_Surface *surface, int x, int y)
+{
+    int bpp = surface->format->BytesPerPixel;
+    /* Here p is the address to the pixel we want to retrieve */
+    uint8_t *p = (uint8_t *)surface->pixels + y * surface->pitch + x * bpp;
+
+    switch(bpp) {
+    case 1:
+        return *p;
+
+    case 2:
+        return *(uint16_t *)p;
+
+    case 3:
+        if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+            return p[0] << 16 | p[1] << 8 | p[2];
+        else
+            return p[0] | p[1] << 8 | p[2] << 16;
+
+    case 4:
+        return *(uint32_t *)p;
+
+    default:
+		assert(false);
+        return 0;       /* shouldn't happen, but avoids warnings */
+    }
+}
+
+void SDL_PutPixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
+{
+    int bpp = surface->format->BytesPerPixel;
+    /* Here p is the address to the pixel we want to set */
+    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+
+    switch(bpp) {
+    case 1:
+        *p = pixel;
+        break;
+
+    case 2:
+        *(Uint16 *)p = pixel;
+        break;
+
+    case 3:
+        if(SDL_BYTEORDER == SDL_BIG_ENDIAN) {
+            p[0] = (pixel >> 16) & 0xff;
+            p[1] = (pixel >> 8) & 0xff;
+            p[2] = pixel & 0xff;
+        } else {
+            p[0] = pixel & 0xff;
+            p[1] = (pixel >> 8) & 0xff;
+            p[2] = (pixel >> 16) & 0xff;
+        }
+        break;
+
+    case 4:
+        *(Uint32 *)p = pixel;
+        break;
+    }
+}
+
 void platform_draw()
 {
 	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
@@ -298,11 +361,56 @@ void platform_draw()
 					log_fatal("SDL_BlitSurface %s", SDL_GetError());
 					exit(1);
 				}
-				// then scale to window size. Without changing to RGBA first, SDL complains
-				// about blit configurations being incompatible.
-				if (SDL_BlitScaled(_RGBASurface, NULL, SDL_GetWindowSurface(gWindow), NULL)) {
-					log_fatal("SDL_BlitScaled %s", SDL_GetError());
-					exit(1);
+				if (gConfigGeneral.window_scale == 2)
+				{
+					log_warning("scale = 2 ok");
+					size_t offset = 0;
+					uint8_t r, g, b, a;
+					size_t w = _RGBASurface->w, h = _RGBASurface->h;
+					uint32_t *in_data = _XBRZSurface->pixels;
+					for(size_t y = 0; y < h; y++) {
+						for(size_t x = 0; x < w; x++) {
+							uint32_t c = SDL_GetPixel(_RGBASurface, x, y);
+							SDL_GetRGBA(c, _RGBASurface->format, &r, &g, &b, &a);
+							//fprintf(stdout, "%02x%02x%02x%02x ", a, r, g, b);
+							in_data[offset] = (
+										((uint32_t)(a) << 24)
+										| ((uint32_t)(r) << 16)
+										| ((uint32_t)(g) << 8)
+										| ((uint32_t)(b))
+									);
+				//			fprintf(stdout, "%08x ", in_data[offset]);
+							offset++;
+						}
+				//		fprintf(stdout, "\n");
+					}
+					xbrz_scale_2x(in_data, SDL_GetWindowSurface(gWindow)->pixels, _RGBASurface->w, _RGBASurface->h);
+					SDL_Surface *dst_img = _XBRZSurface;
+					const uint32_t *dest = SDL_GetWindowSurface(gWindow)->pixels;
+					//log_warning("scaled with xbrz");
+					offset = 0;
+					for(size_t y = 0; y < h * 2; y++) {
+						for(size_t x = 0; x < w * 2; x++) {
+							a = ((dest[offset] >> 24) & 0xff);
+							r = (dest[offset] >> 16) & 0xff;
+							g = (dest[offset] >> 8) & 0xff;
+							b = (dest[offset]) & 0xff;
+							uint32_t c = SDL_MapRGBA(dst_img->format, r, g, b, a);
+				//			fprintf(stdout, "%02x%02x%02x%02x ", a, r, g, b);
+				//			fprintf(stdout, "%08x ", c);
+				//			fprintf(stdout, "%08x ", dest[offset]);
+							SDL_PutPixel(dst_img, x, y, c);
+				//			SDL_PutPixel(dst_img, x, y, (a || r || g || b) ? 0xffffffffU : 0);
+							offset++;
+						}
+				//		fprintf(stdout, "\n");
+					}
+					if (SDL_BlitSurface(_XBRZSurface, NULL, SDL_GetWindowSurface(gWindow), NULL)) {
+						log_fatal("SDL_BlitSurface %s", SDL_GetError());
+						exit(1);
+					} else {
+						log_warning("blit ok");
+					}
 				}
 			}
 			if (SDL_UpdateWindowSurface(gWindow)) {
@@ -671,6 +779,8 @@ static void platform_close_window()
 		SDL_FreePalette(_palette);
 	if (_RGBASurface != NULL)
 		SDL_FreeSurface(_RGBASurface);
+	if (_XBRZSurface != NULL)
+		SDL_FreeSurface(_XBRZSurface);
 	platform_unload_cursors();
 }
 
@@ -904,6 +1014,11 @@ void platform_refresh_video()
 	log_verbose("HardwareDisplay: %s", gHardwareDisplay ? "true" : "false");
 
 	if (gHardwareDisplay) {
+
+		if (_XBRZSurface != NULL)
+			SDL_FreeSurface(_XBRZSurface);
+		_XBRZSurface = SDL_CreateRGBSurface(0, width * 2, height * 2, 32, 0, 0, 0, 0);
+		SDL_SetSurfaceBlendMode(_XBRZSurface, SDL_BLENDMODE_NONE);
 		if (gRenderer == NULL)
 			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
@@ -945,15 +1060,19 @@ void platform_refresh_video()
 			SDL_FreeSurface(_surface);
 		if (_RGBASurface != NULL)
 			SDL_FreeSurface(_RGBASurface);
+		if (_XBRZSurface != NULL)
+			SDL_FreeSurface(_XBRZSurface);
 		if (_palette != NULL)
 			SDL_FreePalette(_palette);
 
 		_surface = SDL_CreateRGBSurface(0, width, height, 8, 0, 0, 0, 0);
 		_RGBASurface = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
 		SDL_SetSurfaceBlendMode(_RGBASurface, SDL_BLENDMODE_NONE);
+		_XBRZSurface = SDL_CreateRGBSurface(0, width * 2, height * 2, 32, 0, 0, 0, 0);
+		SDL_SetSurfaceBlendMode(_XBRZSurface, SDL_BLENDMODE_NONE);
 		_palette = SDL_AllocPalette(256);
 
-		if (!_surface || !_palette || !_RGBASurface) {
+		if (!_surface || !_palette || !_RGBASurface || !_XBRZSurface) {
 			log_fatal("%p || %p || %p == NULL %s", _surface, _palette, _RGBASurface, SDL_GetError());
 			exit(-1);
 		}
