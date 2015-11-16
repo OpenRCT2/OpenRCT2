@@ -249,7 +249,7 @@ bool openrct2_initialise()
 	get_system_info();
 	if (!gOpenRCT2Headless) {
 		audio_init();
-		audio_get_devices();
+		audio_populate_devices();
 	}
 	if (!language_open(gConfigGeneral.language))
 	{

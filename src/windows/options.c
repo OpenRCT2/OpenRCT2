@@ -852,7 +852,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 	case WINDOW_OPTIONS_PAGE_AUDIO:
 		switch (widgetIndex) {
 		case WIDX_SOUND_DROPDOWN:
-			audio_get_devices();
+			audio_populate_devices();
 
 			// populate the list with the sound devices
 			for (i = 0; i < gAudioDeviceCount; i++) {

@@ -155,7 +155,7 @@ extern void *gCrowdSoundChannel;
 extern bool gGameSoundsOff;
 extern void *gRainSoundChannel;
 extern rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
-extern rct_ride_music_info* gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS];
+extern rct_ride_music_info *gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS];
 extern rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
 extern rct_ride_music_params *gRideMusicParamsListEnd;
 extern void *gTitleMusicChannel;
@@ -164,11 +164,11 @@ extern rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS
 extern rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
 
 void audio_close();
-void audio_get_devices();
 void audio_init();
 void audio_init1();
 void audio_init2(int device);
 void audio_pause_sounds();
+void audio_populate_devices();
 void audio_quit();
 int audio_sound_play_panned(int soundId, int ebx, sint16 x, sint16 y, sint16 z);
 void audio_start_title_music();
