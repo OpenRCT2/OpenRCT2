@@ -34,6 +34,7 @@
 #include "platform.h"
 #include "../util/util.h"
 #include <dirent.h>
+#include <fnmatch.h>
 #include <time.h>
 
 // The name of the mutex used to prevent multiple instances of the game from running
@@ -198,7 +199,7 @@ static int winfilter(const struct dirent *d)
 		name_upper[i] = (char)toupper(d->d_name[i]);
 	}
 	name_upper[entry_length] = '\0';
-	bool match = strstr(name_upper, g_file_pattern) != NULL;
+	bool match = fnmatch(g_file_pattern, name_upper, FNM_PATHNAME) == 0;
 	//log_warning("trying matching filename %s, result = %d", name_upper, match);
 	free(name_upper);
 	return match;
@@ -229,39 +230,9 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 		dir_name = strdup(".");
 	}
 
-	char *smatch = strchr(file_name, '*');
-	if ((smatch != file_name) && (smatch != NULL))
-	{
-		log_error("Sorry, can only match '*' at start of filename.");
-		return -1;
-	} else {
-		// '*' found
-		if (smatch != NULL)
-		{
-			// some boundary checking needed
-			// skip the '*'
-			smatch = &smatch[1];
-			char *match2 = strchr(&smatch[1], '*');
-			if (match2 != NULL)
-			{
-				log_error("Sorry, can only match one '*' wildcard.");
-				return -1;
-			}
-		} else {
-			// '*' not found
-			smatch = file_name;
-		}
-	}
-	char *qmatch = strchr(file_name, '?');
-	if ((qmatch != &npattern[length - 1]) && (qmatch != NULL))
-	{
-		log_error("Sorry, can only match '?' at end of filename.");
-		return -1;
-	} else {
-		qmatch = &npattern[length];
-	}
-	int pattern_length = qmatch - smatch;
-	g_file_pattern = strndup(smatch, pattern_length);
+
+	int pattern_length = strlen(file_name);
+	g_file_pattern = strndup(file_name, pattern_length);
 	for (int j = 0; j < pattern_length; j++)
 	{
 		g_file_pattern[j] = (char)toupper(g_file_pattern[j]);
