@@ -662,7 +662,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 			ride->time[var_E0]++;
 		}
 
-		sint32 distance = abs(((vehicle->velocity + vehicle->var_2C) / 1024) * 42);
+		sint32 distance = abs(((vehicle->velocity + vehicle->var_2C) >> 10) * 42);
 		if (vehicle->var_CE == 0){
 			ride->length[var_E0] += distance;
 		}
@@ -673,8 +673,8 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 
 			vertical_g += ride->previous_vertical_g;
 			lateral_g += ride->previous_lateral_g;
-			vertical_g /= 2;
-			lateral_g /= 2;
+			vertical_g >>= 1;
+			lateral_g >>= 1;
 
 			ride->previous_vertical_g = vertical_g;
 			ride->previous_lateral_g = lateral_g;
@@ -705,7 +705,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 			return;
 
 		uint16 track_elem_type = vehicle->track_type / 4;
-		if (track_elem_type == TRACK_ELEM_POWERED_LIFT || !(vehicle->update_flags & VEHICLE_UPDATE_FLAG_0)){
+		if (track_elem_type == TRACK_ELEM_POWERED_LIFT || (vehicle->update_flags & VEHICLE_UPDATE_FLAG_0)){
 			if (!(ride->testing_flags & RIDE_TESTING_POWERED_LIFT)){
 				ride->testing_flags |= RIDE_TESTING_POWERED_LIFT;
 				if (ride->drops + 64 < 0xFF){
@@ -864,7 +864,6 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 			ride->drops |= drops;
 
 			ride->start_drop_height = vehicle->z / 8;
-			testing_flags &= ~RIDE_TESTING_DROP_UP;
 		}
 
 		if (track_flags & TRACK_ELEM_FLAG_INVERSION){
@@ -941,7 +940,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 		}
 	}
 
-	sint32 distance = ((vehicle->velocity + vehicle->var_2C) / 1024) * 42;
+	sint32 distance = ((vehicle->velocity + vehicle->var_2C) >> 10) * 42;
 	if (distance < 0)return;
 
 	ride->sheltered_length += distance;
