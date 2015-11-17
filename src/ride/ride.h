@@ -101,7 +101,7 @@ typedef struct {
 	sint8 excitement_multipler;				// 0x1B2
 	sint8 intensity_multipler;				// 0x1B3
 	sint8 nausea_multipler;					// 0x1B4
-	uint8 additional_max_height;			// 0x1B5
+	uint8 max_height;			// 0x1B5
 	union {
 		uint64 enabledTrackPieces;						// 0x1B6
 		struct {

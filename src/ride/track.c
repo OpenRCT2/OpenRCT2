@@ -4241,7 +4241,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		if (!gCheatsDisableSupportLimits){
 			int ride_height = clearanceZ - mapElement->base_height;
 			if (ride_height >= 0) {
-				int maxHeight = rideEntry->additional_max_height;
+				int maxHeight = rideEntry->max_height;
 				if (maxHeight == 0) {
 					maxHeight = RCT2_GLOBAL(0x0097D218 + (ride->type * 8), uint8);
 				}
