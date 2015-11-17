@@ -2741,8 +2741,8 @@ STR_2732    :{COMMA16}ft
 STR_2733    :{COMMA16}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
-STR_2736    :{COMMA16}년 {MONTH}
-STR_2737    :{COMMA16}년 {MONTH} {STRINGID}
+STR_2736    :{POP16}{COMMA16}년 {PUSH16}{PUSH16}{MONTH}
+STR_2737    :{STRINGID} {POP16}{COMMA16}년 {PUSH16}{PUSH16}{MONTH}
 STR_2738    :타이틀 스크린 음악:
 STR_2739    :없음
 STR_2740    :롤러코스터 타이쿤 1
@@ -3915,6 +3915,7 @@ STR_5575    :최대 플레이어 수:
 STR_5576    :포트:
 STR_5577    :대한민국 원 (₩)
 STR_5578    :러시아 루블 (R)
+STR_5579    :창 크기 조절 배수:
 
 #####################
 # Rides/attractions #
