@@ -46,6 +46,8 @@ rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
 
+void audio_stop_channel(void **channel);
+
 void audio_init()
 {
 	int result = SDL_Init(SDL_INIT_AUDIO);
@@ -240,10 +242,7 @@ void audio_stop_ride_music()
 */
 void audio_stop_crowd_sound()
 {
-	if (gCrowdSoundChannel) {
-		Mixer_Stop_Channel(gCrowdSoundChannel);
-		gCrowdSoundChannel = 0;
-	}
+	audio_stop_channel(&gCrowdSoundChannel);
 }
 
 /**
@@ -252,28 +251,35 @@ void audio_stop_crowd_sound()
 */
 void audio_stop_title_music()
 {
-	if (gTitleMusicChannel) {
-		Mixer_Stop_Channel(gTitleMusicChannel);
-		gTitleMusicChannel = 0;
-	}
+	audio_stop_channel(&gTitleMusicChannel);
 }
 
-void stop_rain_sound()
+void audio_stop_rain_sound()
 {
-	if (gRainSoundChannel) {
-		Mixer_Stop_Channel(gRainSoundChannel);
-		gRainSoundChannel = 0;
-	}
+	audio_stop_channel(&gRainSoundChannel);
+}
+
+/**
+* Stops the specified audio channel from playing.
+* @param channel The channel to stop.
+*/
+void audio_stop_channel(void **channel)
+{
+	if (!*channel)
+		return;
+
+	Mixer_Stop_Channel(*channel);
+	*channel = 0;
 }
 
 /**
 *
 *  rct2: 0x006BA8E0
 */
-void audio_init1()
+void audio_init_ride_sounds_and_info()
 {
 	int deviceNum = 0;
-	audio_init2(deviceNum);
+	audio_init_ride_sounds(deviceNum);
 
 	for (int m = 0; m < countof(gRideMusicInfoList); m++) {
 		rct_ride_music_info *rideMusicInfo = gRideMusicInfoList[m];
@@ -295,7 +301,7 @@ void audio_init1()
 *
 *  rct2: 0x006BA9B5
 */
-void audio_init2(int device)
+void audio_init_ride_sounds(int device)
 {
 	audio_close();
 	for (int i = 0; i < AUDIO_MAX_VEHICLE_SOUNDS; i++) {
@@ -320,7 +326,7 @@ void audio_close()
 	audio_stop_crowd_sound();
 	audio_stop_title_music();
 	audio_stop_ride_music();
-	stop_rain_sound();
+	audio_stop_rain_sound();
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) = -1;
 }
 
@@ -345,7 +351,7 @@ void audio_pause_sounds()
 	audio_stop_vehicle_sounds();
 	audio_stop_ride_music();
 	audio_stop_crowd_sound();
-	stop_rain_sound();
+	audio_stop_rain_sound();
 }
 
 /**

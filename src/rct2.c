@@ -104,7 +104,7 @@ int rct2_init()
 	font_sprite_initialise_characters();
 	if (!gOpenRCT2Headless) {
 		platform_init();
-		audio_init1();
+		audio_init_ride_sounds_and_info();
 	}
 	viewport_init_all();
 	news_item_init_queue();

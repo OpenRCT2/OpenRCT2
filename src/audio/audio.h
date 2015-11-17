@@ -29,11 +29,11 @@
 #define AUDIO_MAX_VEHICLE_SOUNDS 14
 #define NUM_DEFAULT_MUSIC_TRACKS 46
 
-typedef struct {
+typedef struct audio_device {
 	char name[AUDIO_DEVICE_NAME_SIZE];
 } audio_device;
 
-typedef struct {
+typedef struct rct_ride_music {
 	uint8 ride_id;
 	uint8 tune_id;
 	sint16 volume;
@@ -42,14 +42,14 @@ typedef struct {
 	void* sound_channel;
 } rct_ride_music;
 
-typedef struct {
+typedef struct rct_ride_music_info {
 	uint32 length;
 	uint32 offset;
 	uint8 path_id;
 	uint8 var_9;
 } rct_ride_music_info;
 
-typedef struct {
+typedef struct rct_ride_music_params {
 	uint8 ride_id;
 	uint8 tune_id;
 	sint32 offset;
@@ -58,7 +58,7 @@ typedef struct {
 	uint16 frequency;
 } rct_ride_music_params;
 
-typedef struct {
+typedef struct rct_vehicle_sound {
 	uint16 id;
 	sint16 volume;
 	uint16 sound1_id;
@@ -73,7 +73,7 @@ typedef struct {
 	void* sound2_channel;
 } rct_vehicle_sound;
 
-typedef struct {
+typedef struct rct_vehicle_sound_params {
 	uint16 id;
 	sint16 pan_x;
 	sint16 pan_y;
@@ -82,7 +82,7 @@ typedef struct {
 	uint16 var_A;
 } rct_vehicle_sound_params;
 
-typedef enum {
+typedef enum RCT2_SOUND {
 	SOUND_LIFT_1 = 0,
 	SOUND_TRACK_FRICTION_1 = 1,
 	SOUND_LIFT_2 = 2,
@@ -163,20 +163,79 @@ extern rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 extern rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
 extern rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
 
+/**
+* Deregisters the audio device.
+*/
 void audio_close();
+/*
+* Initialises the audio subsystem.
+*/
 void audio_init();
-void audio_init1();
-void audio_init2(int device);
+/**
+* Loads the ride sounds and info.
+*/
+void audio_init_ride_sounds_and_info();
+/**
+Loads the ride sounds.
+*/
+void audio_init_ride_sounds(int device);
+/**
+* Temporarily stops playing sounds until audio_unpause_sounds() is called.
+*/
 void audio_pause_sounds();
+/**
+* Populates the gAudioDevices array with the available audio devices.
+*/
 void audio_populate_devices();
+/**
+* Terminates the audio subsystem.
+* This appears to be unused.
+*/
 void audio_quit();
-int audio_sound_play_panned(int soundId, int ebx, sint16 x, sint16 y, sint16 z);
+/** Plays the specified sound effect at the specified virtual location.
+* @param soundId The sound effect to play.
+* @param mode If set to 0x8001, play the sound at the specified location; if
+* set to 0x8000, play the sound at the center of the viewport; if set to
+* anything else, use the value of mode as a relative position to the center of
+* the viewport.
+* @param x The x coordinate of the location.
+* @param y The y coordinate of the location.
+* @param z The z coordinate of the location.
+* @return 0 if the sound was played successfully, otherwise, soundId.
+*/
+int audio_sound_play_panned(int soundId, int mode, sint16 x, sint16 y, sint16 z);
+/**
+* Starts playing the title music.
+*/
 void audio_start_title_music();
+/**
+* Stops the crowd sound effect from playing.
+*/
 void audio_stop_crowd_sound();
+/**
+* Stops the rain sound effect from playing.
+*/
+void audio_stop_rain_sound();
+/**
+* Stops ride music from playing.
+*/
 void audio_stop_ride_music();
+/**
+* Stops the title music from playing.
+*/
 void audio_stop_title_music();
+/**
+* Stops vehicle sounds from playing.
+*/
 void audio_stop_vehicle_sounds();
+/**
+* Toggles whether all sounds should be played.
+*/
 void audio_toggle_all_sounds();
+/**
+* Resumes playing sounds that had been paused by a call to
+* audio_pause_sounds().
+*/
 void audio_unpause_sounds();
 
 #endif

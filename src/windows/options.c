@@ -1069,7 +1069,7 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 	case WINDOW_OPTIONS_PAGE_AUDIO:
 		switch (widgetIndex) {
 		case WIDX_SOUND_DROPDOWN:
-			audio_init2(dropdownIndex);
+			audio_init_ride_sounds(dropdownIndex);
 			if (dropdownIndex < gAudioDeviceCount) {
 				if (dropdownIndex == 0) {
 					Mixer_Init(NULL);
