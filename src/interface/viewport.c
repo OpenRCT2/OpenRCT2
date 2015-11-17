@@ -1607,13 +1607,18 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	
 	int saved_esi;
 	
+	//Uncomment this to use vanilla code.
 	//RCT2_CALLFUNC_Y(0x66062C, &regs); return;
-	rct_drawpixelinfo *dpi = RCT2_ADDRESS(0x140E9A8, rct_drawpixelinfo); //dpi = edi
+	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo *); //dpi = edi	
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 1;
+	regs.ax = dpi->zoom_level;
 	RCT2_GLOBAL(0x9DE57C, uint16) |= 1;
 	RCT2_GLOBAL(0x9E3250, rct_map_element *) = mapElement;
-	RCT2_GLOBAL(0x9E3296, uint16) = dpi->zoom_level; //This line of code seems to cause an assertion failure in drawing.c:553. Strangely, it does not happen in vanilla code. I'll investigate this more later.
+	RCT2_GLOBAL(0x9E3296, uint16) = dpi->zoom_level;
+	
 	regs.ecx = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	
+	//regs.edi = (int)dpi;
 	//RCT2_CALLFUNC_Y(0x660657, &regs); return;
 	
 	//SAVE
