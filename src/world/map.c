@@ -1606,7 +1606,7 @@ money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 x2, sin
 	y += 16;
 
 	sint16 z = map_element_height(x, y) & 0xFFFF;
-	audio_sound_play_panned(SOUND_PLACE_ITEM, 0x8001, x, y, z);
+	audio_play_sound_panned(SOUND_PLACE_ITEM, 0x8001, x, y, z);
 	return 0;
 }
 
@@ -1629,7 +1629,7 @@ money32 raise_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 	money32 cost = 0;
 
 	if ((flags & GAME_COMMAND_FLAG_APPLY) && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
-		audio_sound_play_panned(SOUND_PLACE_ITEM, 0x8001, x, y, z);
+		audio_play_sound_panned(SOUND_PLACE_ITEM, 0x8001, x, y, z);
 	}
 
 	uint8 min_height = 0xFF;
@@ -1685,7 +1685,7 @@ money32 lower_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 	money32 cost = 0;
 
 	if ((flags & GAME_COMMAND_FLAG_APPLY) && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
-		audio_sound_play_panned(SOUND_PLACE_ITEM, 0x8001, x, y, z);
+		audio_play_sound_panned(SOUND_PLACE_ITEM, 0x8001, x, y, z);
 	}
 
 	uint8 max_height = 0;
@@ -1808,7 +1808,7 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint32) = x;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint32) = y;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint32) = z;
-		audio_sound_play_panned(SOUND_LAYING_OUT_WATER, 0x8001, x, y, z);
+		audio_play_sound_panned(SOUND_LAYING_OUT_WATER, 0x8001, x, y, z);
 	}
 
 	// Force ride construction to recheck area
@@ -1873,7 +1873,7 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint32) = x;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint32) = y;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint32) = z;
-		audio_sound_play_panned(SOUND_LAYING_OUT_WATER, 0x8001, x, y, z);
+		audio_play_sound_panned(SOUND_LAYING_OUT_WATER, 0x8001, x, y, z);
 	}
 
 	// Force ride construction to recheck area
@@ -2030,7 +2030,7 @@ money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int mapTop
 
 	// Play sound (only once)
 	if ((flags & GAME_COMMAND_FLAG_APPLY) && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
-		audio_sound_play_panned(SOUND_PLACE_ITEM, 0x8001, centreX, centreY, centreZ);
+		audio_play_sound_panned(SOUND_PLACE_ITEM, 0x8001, centreX, centreY, centreZ);
 	}
 
 	money32 totalCost = 0;

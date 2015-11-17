@@ -46,6 +46,7 @@ rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
 
+bool audio_get_pan_from_location(int soundId, const rct_xyz16 *location, int *volume, int *pan);
 void audio_stop_channel(void **channel);
 
 void audio_init()
@@ -85,63 +86,87 @@ void audio_populate_devices()
 	}
 }
 
-/**
-*
-*  rct2: 0x006BB76E
-*
-* @param sound_id (eax)
-* @param ebx (ebx)
-* @param x (cx)
-* @param y (dx)
-* @param z (bp)
-*/
-int audio_sound_play_panned(int soundId, int ebx, sint16 x, sint16 y, sint16 z)
+int audio_play_sound_panned(int soundId, int pan, sint16 x, sint16 y, sint16 z)
+{
+	if (pan == AUDIO_PLAY_AT_LOCATION)
+		return audio_play_sound_at_location(soundId, x, y, z);
+
+	return audio_play_sound(soundId, 0, pan);
+}
+
+int audio_play_sound_at_location(int soundId, sint16 x, sint16 y, sint16 z)
 {
 	if (gGameSoundsOff)
 		return 0;
 
 	int volume = 0;
-	if (ebx == 0x8001) {
-		int volumeDown = 0;
-		rct_map_element *element = map_get_surface_element_at(x / 32, y / 32);
-		if (element && (element->base_height * 8) - 5 > z)
-			volumeDown = 10;
-
-		uint8 rotation = get_current_rotation();
-		rct_xyz16 pos3;
-		pos3.x = x;
-		pos3.y = y;
-		pos3.z = z;
-
-		rct_xy16 pos2 = coordinate_3d_to_2d(&pos3, rotation);
-
-		rct_window *window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);
-		while (true) {
-			window--;
-			if (window < RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window))
-				break;
-
-			rct_viewport *viewport = window->viewport;
-			if (viewport && viewport->flags & VIEWPORT_FLAG_SOUND_ON) {
-				sint16 vy = pos2.y - viewport->view_y;
-				sint16 vx = pos2.x - viewport->view_x;
-				ebx = viewport->x + (vx >> viewport->zoom);
-				volume = RCT2_ADDRESS(0x0099282C, int)[soundId] + ((-1024 * viewport->zoom - 1) << volumeDown) + 1;
-
-				if (vy < 0 || vy >= viewport->view_height || vx < 0 || vx >= viewport->view_width || volume < -10000)
-					return soundId;
-			}
-		}
-	}
-
 	int pan = 0;
-	if (ebx != (sint16)0x8000) {
-		int x2 = ebx << 16;
-		uint16 screenWidth = max(64, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
-		pan = ((x2 / screenWidth) - 0x8000) >> 4;
+	rct_xyz16 location;
+	location.x = x;
+	location.y = y;
+	location.z = z;
+
+	bool success = audio_get_pan_from_location(soundId, &location, &volume, &pan);
+	if (!success)
+		return soundId;
+
+	return audio_play_sound(soundId, volume, pan);
+}
+
+/**
+* Returns the pan to use when playing the specified sound at a virtual location.
+* @param soundId The sound effect to be played.
+* @param location The location at which the sound effect is to be played.
+* @param volume [out] The volume at which the sound effect should be played.
+* @param pan [out] The pan at which the sound effection should be played.
+* @return true if the sound is in range and should be played; otherwise, false.
+*/
+bool audio_get_pan_from_location(int soundId, const rct_xyz16 *location, int *volume, int *pan)
+{
+	*volume = 0;
+	*pan = 0;
+	int volumeDown = 0;
+	rct_map_element *element = map_get_surface_element_at(location->x / 32, location->y / 32);
+	if (element && (element->base_height * 8) - 5 > location->z)
+		volumeDown = 10;
+
+	uint8 rotation = get_current_rotation();
+	rct_xy16 pos2 = coordinate_3d_to_2d(location, rotation);
+	rct_window *window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);
+	while (true) {
+		window--;
+		if (window < RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window))
+			break;
+
+		rct_viewport *viewport = window->viewport;
+		if (!viewport || !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
+			continue;
+
+		sint16 vy = pos2.y - viewport->view_y;
+		sint16 vx = pos2.x - viewport->view_x;
+		*pan = viewport->x + (vx >> viewport->zoom);
+		*volume = RCT2_ADDRESS(0x0099282C, int)[soundId] + ((-1024 * viewport->zoom - 1) << volumeDown) + 1;
+
+		if (vy < 0 || vy >= viewport->view_height || vx < 0 || vx >= viewport->view_width || *volume < -10000)
+			return false;
 	}
 
-	Mixer_Play_Effect(soundId, MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), 1, 1);
+	return true;
+}
+
+int audio_play_sound(int soundId, int volume, int pan)
+{
+	if (gGameSoundsOff)
+		return 0;
+
+	int mixerPan = 0;
+	if (pan != AUDIO_PLAY_AT_CENTRE) {
+		int x2 = pan << 16;
+		uint16 screenWidth = max(64, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
+		mixerPan = ((x2 / screenWidth) - 0x8000) >> 4;
+	}
+
+	Mixer_Play_Effect(soundId, MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(mixerPan), 1, 1);
 	return 0;
 }
 

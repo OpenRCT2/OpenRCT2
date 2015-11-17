@@ -795,7 +795,7 @@ void window_scenery_scrollmousedown(rct_window *w, int scrollIndex, int x, int y
 	window_scenery_selected_scenery_by_tab[tabIndex] = sceneryId;
 
 	window_scenery_is_repaint_scenery_tool_on &= 0xFE;
-	audio_sound_play_panned(4, (w->width >> 1) + w->x, 0, 0, 0);
+	audio_play_sound_panned(4, (w->width >> 1) + w->x, 0, 0, 0);
 	w->scenery.hover_counter = -16;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_COST, uint32) = MONEY32_UNDEFINED;
 	window_invalidate(w);

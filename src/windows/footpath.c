@@ -768,7 +768,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 		// bp = RCT2_ADDRESS_COMMAND_MAP_Z
 		// dx = RCT2_ADDRESS_COMMAND_MAP_Y
 		// cx = RCT2_ADDRESS_COMMAND_MAP_X
-		audio_sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
+		audio_play_sound_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
 	}
 }
 
@@ -852,7 +852,7 @@ static void window_footpath_construct()
 	cost = footpath_place(type, x, y, z, slope, GAME_COMMAND_FLAG_APPLY);
 
 	if (cost != MONEY32_UNDEFINED) {
-		audio_sound_play_panned(
+		audio_play_sound_panned(
 			SOUND_PLACE_ITEM,
 			0x8001,
 			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16),

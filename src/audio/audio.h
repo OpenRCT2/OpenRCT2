@@ -28,6 +28,8 @@
 #define AUDIO_MAX_RIDE_MUSIC 2
 #define AUDIO_MAX_VEHICLE_SOUNDS 14
 #define NUM_DEFAULT_MUSIC_TRACKS 46
+#define AUDIO_PLAY_AT_CENTRE 0x8000
+#define AUDIO_PLAY_AT_LOCATION 0x8001
 
 typedef struct audio_device {
 	char name[AUDIO_DEVICE_NAME_SIZE];
@@ -184,6 +186,36 @@ void audio_init_ride_sounds(int device);
 */
 void audio_pause_sounds();
 /**
+* Plays the specified sound.
+* @param soundId The sound effect to play.
+* @param volume The volume at which the sound effect should be played.
+* @param pan The pan at which the sound effect should be played. If set to anything other than AUDIO_PLAY_AT_CENTRE, plays the
+* sound at a position relative to the centre of the viewport.
+*/
+int audio_play_sound(int soundId, int volume, int pan);
+/**
+* Plays the specified sound at a virtual location.
+* @param soundId The sound effect to play.
+* @param x The x coordinate of the location.
+* @param y The y coordinate of the location.
+* @param z The z coordinate of the location.
+*/
+int audio_play_sound_at_location(int soundId, sint16 x, sint16 y, sint16 z);
+/**
+* rct2: 0x006BB76E
+* @deprecated Use audio_play_sound_at_location or audio_play_sound instead.
+* Plays the specified sound effect at a location specified by the pan parameter.
+* @param soundId (eax) The sound effect to play.
+* @param pan (ebx) If set to AUDIO_PLAY_AT_LOCATION, play the sound at the specified location; if set to AUDIO_PLAY_AT_CENTRE, play
+* the sound at the centre of the viewport; if set to anything else, use the value of pan as a relative position to the centre
+* of the viewport.
+* @param x (cx) The x coordinate of the location.
+* @param y (dx) The y coordinate of the location.
+* @param z (bp) The z coordinate of the location.
+* @return 0 if the sound was not out of range; otherwise, soundId.
+*/
+int audio_play_sound_panned(int soundId, int pan, sint16 x, sint16 y, sint16 z);
+/**
 * Populates the gAudioDevices array with the available audio devices.
 */
 void audio_populate_devices();
@@ -192,18 +224,6 @@ void audio_populate_devices();
 * This appears to be unused.
 */
 void audio_quit();
-/** Plays the specified sound effect at the specified virtual location.
-* @param soundId The sound effect to play.
-* @param mode If set to 0x8001, play the sound at the specified location; if
-* set to 0x8000, play the sound at the center of the viewport; if set to
-* anything else, use the value of mode as a relative position to the center of
-* the viewport.
-* @param x The x coordinate of the location.
-* @param y The y coordinate of the location.
-* @param z The z coordinate of the location.
-* @return 0 if the sound was played successfully, otherwise, soundId.
-*/
-int audio_sound_play_panned(int soundId, int mode, sint16 x, sint16 y, sint16 z);
 /**
 * Starts playing the title music.
 */
@@ -233,8 +253,7 @@ void audio_stop_vehicle_sounds();
 */
 void audio_toggle_all_sounds();
 /**
-* Resumes playing sounds that had been paused by a call to
-* audio_pause_sounds().
+* Resumes playing sounds that had been paused by a call to audio_pause_sounds().
 */
 void audio_unpause_sounds();
 

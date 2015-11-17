@@ -215,7 +215,7 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex
 		if (y >= 0)
 			continue;
 
-		audio_sound_play_panned(SOUND_CLICK_1, w->width / 2 + w->x, 0, 0, 0);
+		audio_play_sound_panned(SOUND_CLICK_1, w->width / 2 + w->x, 0, 0, 0);
 		scenario_load_and_play(scenario);
 		break;
 	}

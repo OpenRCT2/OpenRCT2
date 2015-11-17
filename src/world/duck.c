@@ -288,7 +288,7 @@ static void duck_update_fly_away(rct_duck *duck)
  */
 void duck_press(rct_duck *duck)
 {
-	audio_sound_play_panned(SOUND_QUACK, 0x8001, duck->x, duck->y, duck->z);
+	audio_play_sound_panned(SOUND_QUACK, 0x8001, duck->x, duck->y, duck->z);
 }
 
 /**
