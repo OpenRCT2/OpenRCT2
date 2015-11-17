@@ -4721,6 +4721,7 @@ void game_command_set_banner_style(int* eax, int* ebx, int* ecx, int* edx, int* 
 			continue;
 
 		bannerFound = true;
+		break;
 	} while (!map_element_is_last_for_tile(map_element++));
 
 	if (bannerFound == false) {
