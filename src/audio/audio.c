@@ -111,26 +111,13 @@ int audio_sound_play_panned(int soundId, int ebx, sint16 x, sint16 y, sint16 z)
 		if (element && (element->base_height * 8) - 5 > z)
 			volumeDown = 10;
 
-		sint16 rx;
-		sint16 ry;
-		switch (get_current_rotation()) {
-			case 0:
-				rx = y - x;
-				ry = ((y + x) / 2) - z;
-				break;
-			case 1:
-				rx = -x - y;
-				ry = ((y - x) / 2) - z;
-				break;
-			case 2:
-				rx = x - y;
-				ry = ((-y - x) / 2) - z;
-				break;
-			case 3:
-				rx = y + x;
-				ry = ((x - y) / 2) - z;
-				break;
-		}
+		uint8 rotation = get_current_rotation();
+		rct_xyz16 pos3;
+		pos3.x = x;
+		pos3.y = y;
+		pos3.z = z;
+
+		rct_xy16 pos2 = coordinate_3d_to_2d(&pos3, rotation);
 
 		rct_window *window = RCT2_GLOBAL(
 			RCT2_ADDRESS_NEW_WINDOW_PTR,
@@ -143,8 +130,8 @@ int audio_sound_play_panned(int soundId, int ebx, sint16 x, sint16 y, sint16 z)
 			}
 			rct_viewport *viewport = window->viewport;
 			if (viewport && viewport->flags & VIEWPORT_FLAG_SOUND_ON) {
-				sint16 vy = ry - viewport->view_y;
-				sint16 vx = rx - viewport->view_x;
+				sint16 vy = pos2.y - viewport->view_y;
+				sint16 vx = pos2.x - viewport->view_x;
 				ebx = viewport->x + (vx >> viewport->zoom);
 				volume = RCT2_ADDRESS(0x0099282C, int)[soundId]
 					+ ((-1024 * viewport->zoom - 1) << volumeDown) + 1;
@@ -188,7 +175,7 @@ int audio_sound_play_panned(int soundId, int ebx, sint16 x, sint16 y, sint16 z)
 */
 void audio_start_title_music()
 {
-	if (gGameSoundsOff || !RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
+	if (gGameSoundsOff || !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)) {
 		audio_stop_title_music();
 		return;
 	}
