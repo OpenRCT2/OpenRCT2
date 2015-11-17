@@ -2033,11 +2033,11 @@ static bool filter_string(rct_object_entry *entry, rct_object_filters *filter)
 	safe_strncpy(filter_lower, _filter_string, sizeof(_filter_string));
 
 	// Make use of lowercase characters only
-	for (int i = 0; i < (int)strlen(name_lower); i++)
+	for (int i = 0; name_lower[i] != '\0'; i++)
 		name_lower[i] = (char)tolower(name_lower[i]);
-	for (int i = 0; i < (int)strlen(type_lower); i++)
+	for (int i = 0; type_lower[i] != '\0'; i++)
 		type_lower[i] = (char)tolower(type_lower[i]);
-	for (int i = 0; i < (int)strlen(filter_lower); i++)
+	for (int i = 0; filter_lower[i] != '\0'; i++)
 		filter_lower[i] = (char)tolower(filter_lower[i]);
 
 	return strstr(name_lower, filter_lower) != NULL || (((entry->flags & 0x0F) == OBJECT_TYPE_RIDE) && strstr(type_lower, filter_lower) != NULL);
