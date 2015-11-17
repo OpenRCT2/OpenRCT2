@@ -2018,11 +2018,11 @@ static bool filter_string(rct_object_entry *entry, rct_object_filters *filter)
 
 	// Object doesn't have a name
 	char *name = object_get_name(entry);
-	if (name[0] == 0)
+	if (name[0] == '\0')
 		return false;
 
 	// Get ride type
-	char *ride_type = language_get_string(2 + filter->ride.ride_type);
+	const char *ride_type = language_get_string(2 + filter->ride.ride_type);
 
 	// Get object name (ride/vehicle for rides) and type name (rides only)
 	char name_lower[MAX_PATH];
