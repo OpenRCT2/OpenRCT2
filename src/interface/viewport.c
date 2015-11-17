@@ -1629,12 +1629,19 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	regs.ah = mapElement->properties.surface.terrain;
 	//callcode_push1(0x66065D, saved_esi, &regs); return;
 	regs.al &= 3;
-	regs.ah = (uint8)regs.ah >> 5;
+	regs.ah = (uint8)regs.ah >> 5; //I really wish registers was unsigned.
 	regs.al <<= 3;
 	regs.al |= regs.ah;
 	regs.eax &= 0xFF;
 	RCT2_GLOBAL(0x9E3264, uint32) = regs.eax;
-	callcode_push1(0x660671, saved_esi, &regs); return;
+	//callcode_push1(0x660671, saved_esi, &regs); return;
+	regs.bl = mapElement->properties.surface.slope;
+	regs.di = (regs.bx & 0xF) << regs.cl;
+	regs.ebx &= 0x10;
+	regs.si = (uint16)regs.di >> 4;
+	regs.di = (regs.di | regs.si) & 0xF;
+	regs.bx |= regs.di;
+	callcode_push1(0x660692, saved_esi, &regs); return;
 }
 
 /**
