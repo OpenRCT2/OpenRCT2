@@ -2326,18 +2326,18 @@ void game_command_set_water_height(int* eax, int* ebx, int* ecx, int* edx, int* 
 	}
 
 	rct_map_element* map_element = map_get_surface_element_at(x / 32, y / 32);
-	int z1 = map_element->base_height;
-	int z2 = base_height;
+	int zHigh = map_element->base_height;
+	int zLow = base_height;
 	if(map_element->properties.surface.terrain & 0x1F){
-		z1 = (map_element->properties.surface.terrain & 0x1F) * 2;
+		zHigh = (map_element->properties.surface.terrain & 0x1F) * 2;
 	}
-	if(z2 > z1){
-		int temp = z1;
-		z1 = z2;
-		z2 = temp;
+	if(zLow > zHigh){
+		int temp = zHigh;
+		zHigh = zLow;
+		zLow = temp;
 	}
 
-	if(map_can_construct_at(x, y, z1, z2, 0xFF)){
+	if(map_can_construct_at(x, y, zLow, zHigh, 0xFF)){
 		if(map_element->type & 0x40){
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0;
 			*ebx = MONEY32_UNDEFINED;
@@ -2952,9 +2952,10 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 
 	if (!(bp & 0xC0)){
 		uint8 new_edge = (edge + 2) & 3;
-		bp += 2;
+		uint8 new_base_height = map_element->base_height;
+		new_base_height += 2;
 		if (map_element->properties.surface.slope & (1 << new_edge)){
-			if (position.z / 8 < bp){
+			if (position.z / 8 < new_base_height){
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 				*ebx = MONEY32_UNDEFINED;
 				return;
@@ -2966,13 +2967,13 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 				if (map_element->properties.surface.slope & (1 << new_edge)){
 					new_edge = (new_edge + 2) & 3;
 					if (map_element->properties.surface.slope & (1 << new_edge)){
-						bp += 2;
-						if (position.z / 8 < bp){
+						new_base_height += 2;
+						if (position.z / 8 < new_base_height){
 							RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 							*ebx = MONEY32_UNDEFINED;
 							return;
 						}
-						bp -= 2;
+						new_base_height -= 2;
 					}
 				}
 			}
@@ -2980,7 +2981,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 
 		new_edge = (edge + 3) & 3;
 		if (map_element->properties.surface.slope & (1 << new_edge)){
-			if (position.z / 8 < bp){
+			if (position.z / 8 < new_base_height){
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 				*ebx = MONEY32_UNDEFINED;
 				return;
@@ -2992,8 +2993,8 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 				if (map_element->properties.surface.slope & (1 << new_edge)){
 					new_edge = (new_edge + 2) & 3;
 					if (map_element->properties.surface.slope & (1 << new_edge)){
-						bp += 2;
-						if (position.z / 8 < bp){
+						new_base_height += 2;
+						if (position.z / 8 < new_base_height){
 							RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 							*ebx = MONEY32_UNDEFINED;
 							return;
@@ -4720,6 +4721,7 @@ void game_command_set_banner_style(int* eax, int* ebx, int* ecx, int* edx, int* 
 			continue;
 
 		bannerFound = true;
+		break;
 	} while (!map_element_is_last_for_tile(map_element++));
 
 	if (bannerFound == false) {
