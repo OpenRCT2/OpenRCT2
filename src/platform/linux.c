@@ -199,7 +199,7 @@ static int winfilter(const struct dirent *d)
 		name_upper[i] = (char)toupper(d->d_name[i]);
 	}
 	name_upper[entry_length] = '\0';
-	bool match = fnmatch(g_file_pattern, name_upper, 0) == 0;
+	bool match = fnmatch(g_file_pattern, name_upper, FNM_PATHNAME) == 0;
 	//log_warning("trying matching filename %s, result = %d", name_upper, match);
 	free(name_upper);
 	return match;
