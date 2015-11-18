@@ -61,8 +61,8 @@ file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp" "lib/argparse/*.c" "lib/cu
 
 if (UNIX)
 	# force 32bit build for now and set necessary flags to compile code as is
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32 -std=gnu99")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -std=gnu++11")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32 -std=gnu99 -fno-omit-frame-pointer")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -std=gnu++11 -fno-omit-frame-pointer")
 	set(CMAKE_SHARED_LINKER_FLAGS "-m32")
 	set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_SHARED_LINKER_FLAGS})
 endif (UNIX)
