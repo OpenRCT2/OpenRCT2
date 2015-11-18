@@ -35,6 +35,7 @@
 #include "../util/util.h"
 #include <dirent.h>
 #include <fnmatch.h>
+#include <locale.h>
 #include <time.h>
 
 // The name of the mutex used to prevent multiple instances of the game from running
@@ -629,51 +630,58 @@ utf8 *platform_open_directory_browser(utf8 *title)
 }
 
 uint16 platform_get_locale_language(){
-	/*
-	CHAR langCode[4];
+	const char *langString = setlocale(LC_MESSAGES, "");
+	if(langString != NULL){
+		// The locale has the following form:
+		// language[_territory[.codeset]][@modifier] (see https://www.gnu.org/software/libc/manual/html_node/Locale-Names.html)
+		char pattern[32]; // longest on my system is 29 with codeset and modifier, so 32 for the pattern should be more than enough
+		//strip the codeset and modifier part
+		int length = strlen(langString);
+		{
+			for(int i = 0; i < length; ++i){
+				if(langString[i] == '.' || langString[i] == '@'){
+					length = i;
+					break;
+				}
+			}
+		} //end strip
+		strncpy(pattern,langString, length); //copy all until first '.' or '@'
+		pattern[length] = '\0';
+		//find _ if present
+		const char *strip = strchr(pattern, '_');
+		if(strip != NULL){
+			pattern[strip - pattern] = '?'; // could also use '-', but '?' is more flexible. Maybe LanguagesDescriptors will change. pattern is now "language?territory"
+		}
 
-	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
-		LOCALE_SABBREVLANGNAME,
-		(LPSTR)&langCode,
-		sizeof(langCode)) == 0){
-		return LANGUAGE_UNDEFINED;
-	}
+		// Iterate through all available languages
+		for(int i = 1; i < LANGUAGE_COUNT; ++i){
+			if(!fnmatch(pattern, LanguagesDescriptors[i].locale, 0)){
+				return i;
+			}
+		}
 
-	if (strcmp(langCode, "ENG") == 0){
-		return LANGUAGE_ENGLISH_UK;
+		//special cases :(
+		if(!fnmatch(pattern, "en_CA", 0)){
+			return LANGUAGE_ENGLISH_US;
+		}
+		else if (!fnmatch(pattern, "zn_CA", 0)){
+			return LANGUAGE_CHINESE_SIMPLIFIED;
+		}
+		else if (!fnmatch(pattern, "zn_TW", 0)){
+			return LANGUAGE_CHINESE_TRADITIONAL;
+		}
+
+		//no exact match found trying only language part
+		if(strip != NULL){
+			pattern[strip - pattern] = '*';
+			pattern[strip - pattern +1] = '\0'; // pattern is now "language*"
+			for(int i = 1; i < LANGUAGE_COUNT; ++i){
+				if(!fnmatch(pattern, LanguagesDescriptors[i].locale, 0)){
+					return i;
+				}
+			}
+		}
 	}
-	else if (strcmp(langCode, "ENU") == 0){
-		return LANGUAGE_ENGLISH_US;
-	}
-	else if (strcmp(langCode, "DEU") == 0){
-		return LANGUAGE_GERMAN;
-	}
-	else if (strcmp(langCode, "NLD") == 0){
-		return LANGUAGE_DUTCH;
-	}
-	else if (strcmp(langCode, "FRA") == 0){
-		return LANGUAGE_FRENCH;
-	}
-	else if (strcmp(langCode, "HUN") == 0){
-		return LANGUAGE_HUNGARIAN;
-	}
-	else if (strcmp(langCode, "PLK") == 0){
-		return LANGUAGE_POLISH;
-	}
-	else if (strcmp(langCode, "ESP") == 0){
-		return LANGUAGE_SPANISH;
-	}
-	else if (strcmp(langCode, "SVE") == 0){
-		return LANGUAGE_SWEDISH;
-	}
-	else if (strcmp(langCode, "ITA") == 0){
-		return LANGUAGE_ITALIAN;
-	}
-	else if (strcmp(langCode, "POR") == 0){
-		return LANGUAGE_PORTUGUESE_BR;
-	}
-	*/
-	STUB();
 	return LANGUAGE_ENGLISH_UK;
 }
 
