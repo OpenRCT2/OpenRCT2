@@ -3,86 +3,86 @@
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
-STR_0002    :Spiral Roller Coaster
-STR_0003    :Stand-up Roller Coaster
-STR_0004    :Suspended Swinging Coaster
-STR_0005    :Inverted Roller Coaster
-STR_0006    :Junior Roller Coaster
-STR_0007    :Miniature Railway
-STR_0008    :Monorail
-STR_0009    :Mini Suspended Coaster
-STR_0010    :Boat Ride
-STR_0011    :Wooden Wild Mouse
-STR_0012    :Steeplechase
-STR_0013    :Car Ride
-STR_0014    :Launched Freefall
-STR_0015    :Bobsleigh Coaster
-STR_0016    :Observation Tower
-STR_0017    :Looping Roller Coaster
-STR_0018    :Dinghy Slide
-STR_0019    :Mine Train Coaster
-STR_0020    :Chairlift
-STR_0021    :Corkscrew Roller Coaster
-STR_0022    :Maze
-STR_0023    :Spiral Slide
-STR_0024    :Go Karts
-STR_0025    :Log Flume
-STR_0026    :River Rapids
-STR_0027    :Dodgems
-STR_0028    :Pirate Ship
-STR_0029    :Swinging Inverter Ship
-STR_0030    :Food Stall
+STR_0002    :Spirálová horská dráha
+STR_0003    :Horská dráha ve stoje
+STR_0004    :Závěsná houpající se horská dráha
+STR_0005    :Obrácená horská dráha
+STR_0006    :Dorostenecká horská dráha
+STR_0007    :Miniaturní železnice
+STR_0008    :Vysutá jednokolejka
+STR_0009    :Malá zavěsná dráha
+STR_0010    :Lodní dráha
+STR_0011    :Divoká myš
+STR_0012    :Překážkový dostih
+STR_0013    :Automobilová dráha
+STR_0014    :Vystřelovaný volný pád
+STR_0015    :Bobová dráha
+STR_0016    :Vyhlídková věž
+STR_0017    :Smyčkující horská dráha
+STR_0018    :Sjezd na člunech
+STR_0019    :Dráha důlního vlaku
+STR_0020    :Lanovka
+STR_0021    :Vývrtková horská dráha
+STR_0022    :Bludiště
+STR_0023    :Točitá skluzavka
+STR_0024    :Motokáry
+STR_0025    :Žlab s kládamy
+STR_0026    :Říční peřeje
+STR_0027    :Autodrom
+STR_0028    :Pirátská loď
+STR_0029    :Houpací obracecí loď
+STR_0030    :Stánek s jídlem
 STR_0031    :Neznámý obchod (1D)
-STR_0032    :Drink Stall
+STR_0032    :Stánek s pitím
 STR_0033    :Neznámý obchod (1F)
 STR_0034    :Obchod
 STR_0035    :Merry-Go-Round
 STR_0036    :Neznámý obchod (22)
 STR_0037    :Informačí kiosek
 STR_0038    :Toalety
-STR_0039    :Ferris Wheel
-STR_0040    :Motion Simulator
+STR_0039    :Ruské kolo
+STR_0040    :Simulátor pohybu
 STR_0041    :3D Kino
 STR_0042    :Top Spin
 STR_0043    :Space Rings
 STR_0044    :Reverse Freefall Coaster
-STR_0045    :Lift
+STR_0045    :Výtah
 STR_0046    :Vertical Drop Roller Coaster
 STR_0047    :Bankomat
 STR_0048    :Twist
-STR_0049    :Haunted House
+STR_0049    :Strašidelný dům
 STR_0050    :První pomoc
 STR_0051    :Cirkus
 STR_0052    :Vlak duchů
 STR_0053    :Steel Twister Roller Coaster
-STR_0054    :Wooden Roller Coaster
+STR_0054    :Dřevěná horská dráha
 STR_0055    :Side-Friction Roller Coaster
-STR_0056    :Wild Mouse
-STR_0057    :Multi-Dimension Roller Coaster
+STR_0056    :Divoká myš
+STR_0057    :Mnohorozměrná horská dráha
 STR_0058    :Neznámá atrakce (38)
-STR_0059    :Flying Roller Coaster
+STR_0059    :Létající horská dráha
 STR_0060    :Neznámá atrakce (3A)
-STR_0061    :Virginia Reel
-STR_0062    :Splash Boats
-STR_0063    :Mini Helicopters
-STR_0064    :Lay-down Roller Coaster
-STR_0065    :Suspended Monorail
+STR_0061    :VIrginský moták
+STR_0062    :Cákající lodě
+STR_0063    :Mini helikoptéra
+STR_0064    :HOrská dráha v leže
+STR_0065    :Vysutá jednokolejka
 STR_0066    :Neznámá atrakce (40)
-STR_0067    :Reverser Roller Coaster
+STR_0067    :Obrácená horská dráha
 STR_0068    :Heartline Twister Coaster
 STR_0069    :Mini Golf
-STR_0070    :Giga Coaster
+STR_0070    :Obří dráha
 STR_0071    :Roto-Drop
-STR_0072    :Flying Saucers
-STR_0073    :Crooked House
-STR_0074    :Monorail Cycles
+STR_0072    :Létající talíř
+STR_0073    :Křivý dům
+STR_0074    :Jenostopá kola
 STR_0075    :Compact Inverted Coaster
-STR_0076    :Water Coaster
+STR_0076    :Vodní dráha
 STR_0077    :Air Powered Vertical Coaster
 STR_0078    :Inverted Hairpin Coaster
-STR_0079    :Magic Carpet
-STR_0080    :Submarine Ride
-STR_0081    :River Rafts
+STR_0079    :Kouzelný koberec
+STR_0080    :Podmořská jízda
+STR_0081    :Rafty
 STR_0082    :Neznámá atrakce (50)
 STR_0083    :Enterprise
 STR_0084    :Neznámá atrakce (52)
@@ -90,8 +90,8 @@ STR_0085    :Neznámá atrakce (53)
 STR_0086    :Neznámá atrakce (54)
 STR_0087    :Neznámá atrakce (55)
 STR_0088    :Inverted Impulse Coaster
-STR_0089    :Mini Roller Coaster
-STR_0090    :Mine Ride
+STR_0089    :Malá horská dráha
+STR_0090    :Mini dráha
 STR_0091    :Neznámá atrakce (59)
 STR_0092    :LIM Launched Roller Coaster
 STR_0093    :
@@ -514,30 +514,30 @@ STR_0509    :
 STR_0510    :
 STR_0511    :
 STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
-STR_0513    :A looping roller coaster where the riders ride in a standing position
-STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
-STR_0515    :A steel roller coaster with trains that are held beneath the track, with many complex and twisting track elements
-STR_0516    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
-STR_0517    :Passengers ride in miniature trains along a narrow-gauge railway track
-STR_0518    :Passengers travel in electric trains along a monorail track
-STR_0519    :Passengers ride in small cars hanging beneath the single-rail track, swinging freely from side to side around corners
-STR_0520    :A dock platform where guests can drive/row personal watercraft on a body of water
-STR_0521    :A fast and twisting roller coaster with tight turns and steep drops. Intensity is bound to be high.
-STR_0522    :A smaller roller coaster where the riders sit above the track with no car around them
-STR_0523    :Riders travel slowly in powered vehicles along a track-based route
-STR_0524    :Freefall car is pneumatically launched up a tall steel tower and then allowed to freefall down
+STR_0513    :Horská dráha se smyčkami na které se jezdí ve stoje
+STR_0514    :Vlaky zavješené pod kolejí se v zatáčkách houpají do stran
+STR_0515    :Ocelová horská dráha s vlaky držícími zespod tratí, s mnoha složitími a otáčivímy prvky
+STR_0516    :Pozvolná horská dráha pro ty kdo se zatím neodvažují na větší dráhy
+STR_0517    :Pasažeři jedou v miniaturních vlacích po úzkorozchodné koleji.
+STR_0518    :Cestujíci jedou v elektických vlacích po vysuté jednokolejné dráze.
+STR_0519    :Cestujíci jedou zavěšení pod jednou kolejí  v malích kabinách, volně se houpajících ze strany na stranu
+STR_0520    :Přístavní molo kde hosté mohou řídit osobní plavidlo na vodní hladině
+STR_0521    :Rychlá a mrštná horská dráha s ostrými zákrutami a strmími svahy. Dráha je předurčená k vysoké intensitě.
+STR_0522    :Menší horská dráha na které hosté sedí nad dráhou bez kabiny kolem sebe
+STR_0523    :Hosté jedou pomalu v hnaných vozidlech po určené trati.
+STR_0524    :Kabina Freefall je pneumaticky vstřelena nahorů po vysoké ocelové věži a pak padá zpět volným pádem
 STR_0525    :Riders career down a twisting track guided only by the curvature and banking of the semi-circular track
-STR_0526    :Passengers travel in a rotating observation cabin which travels up a tall tower
-STR_0527    :A smooth steel-tracked roller coaster capable of vertical loops
-STR_0528    :Riders travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
-STR_0529    :Mine train themed roller coaster trains career along steel roller coaster track made to look like old railway track
-STR_0530    :Cars hang from a steel cable which runs continuously from one end of the ride to the other and back again
-STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
+STR_0526    :Pasažéři jsou v otáčející se rozhledně která vyjede na vysokou věž
+STR_0527    :Plynulá ocelová pásová horská dráha schopná vertikálních smyček
+STR_0528    :Hosté sjíždí v nafukovacích člunech zatáčejícím korytem nebo uzavřenou trubicí
+STR_0529    :Ocelová horská dráha ve stylu důlního vlaku s věrnými důlními kolejemi.
+STR_0530    :Kabiny vysí na ocelovém laně které nepřetržitě jede z jednoho konce na druhý a zpět
+STR_0531    :Kompaktní ocelová horská dráha na které vlak projíždí smyčky a vývrtky
 STR_0532    :
 STR_0533    :
-STR_0534    :Self-drive petrol-engined go karts
-STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
-STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
+STR_0534    :Hosté sami řídí benzínové motokáry
+STR_0535    :Lodě ve tvaru klády jedou po vodní kanále, splavujíse se po strmích kopcích. Žádny host nezůstane suchý.
+STR_0536    :Loď pluje po šírokých maeandrech, přes stříkající vodpoády a po vzrušujících pěnících přejích
 STR_0537    :
 STR_0538    :
 STR_0539    :
@@ -556,36 +556,36 @@ STR_0551    :
 STR_0552    :
 STR_0553    :
 STR_0554    :The car is accelerated out of the station along a long level track using Linear Induction Motors, then heads straight up a vertical spike of track, freefalling back down to return to the station
-STR_0555    :Guests ride in an elevator up or down a vertical tower to get from one level to another
-STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
+STR_0555    :Hosté jedou ve výtahu nahoů nebo dolů ve svislé věži aby se dostaly z jedné výsky do jiné
+STR_0556    :Extra široké vozy se vrhaji střemhlav dolů za zážitky úplného volného pádu na horské dráze
 STR_0557    :
 STR_0558    :
 STR_0559    :
 STR_0560    :
 STR_0561    :
-STR_0562    :Powered cars travel along a multi-level track past spooky scenery and special effects
+STR_0562    :Hnané vozy jedou po několika-patrové dráze plné strašidelných kulis a speciálních efektů
 STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
-STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
-STR_0565    :A simple wooden roller coaster capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
+STR_0564    :Při jízdou po dřevěné dráze je tato horská dráha rychlá, drsná, hlučná a poskytuje pocit „vymuknutí řízení“ s mnoha „pocity beztíže“
+STR_0565    :Jednoduchá dřevěná horská tráha schopná jen mírných kopců a zatáček, na které je vůz držen jen bočnímy kolečky a gravitací
 STR_0566    :Individual roller coaster cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
 STR_0567    :Sitting in seats suspended either side of the track, riders are pitched head-over-heels while they plunge down steep drops and travel through various inversions
 STR_0568    :
-STR_0569    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air
+STR_0569    :Jíza ve speciálních postrojích zavěšených pod tratí, poskytuje pocit letu, jako když se vrhnete do prázdna
 STR_0570    :
-STR_0571    :Circular cars spin around as they travel along the zig-zagging wooden track
-STR_0572    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyer belt, accelerating down steep slopes to soak the riders with a gaint splash
-STR_0573    :Powered helicoper shaped cars running on a steel track, controlled by the pedalling of the riders
-STR_0574    :Riders are held in special harnesses in a lying-down position, travlling through twisted track and inversions either on their backs or facing the ground
-STR_0575    :Powered trains hanging from a single rail transport people around the park
+STR_0571    :Kulaté vozy se otáčeí dokola tím jak projíždějí dřevěnou klikatou tratí
+STR_0572    :Lodě s velkou kapacitou jedou po širokém vodním kanále, vzhůru poháněné bežícím pásem, zrychlují z prudkých svahů aby obrovským šplouchnutím namočili všechny hosty
+STR_0573    :Hnané vozy ve tvaru helikoptér jedou na ocelové trati
+STR_0574    :Hosté ve speciálních postrojích zavěšení v leže pod tratí, jedou přes zákruty a obraty pozadu nebo čelem k zemi
+STR_0575    :Poháněné vlaky vysící pod vysuto kolejí převážejí lidi po parku
 STR_0576    :
-STR_0577    :Bogied cars run on wooden tracks, turning around on special reversing sections
+STR_0577    :Vozy s dvěma podvozky jedou po dřevěné trati, otáčející se dokola na speciálních místech
 STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
 STR_0579    :
-STR_0580    :A giant steel roller coaster capable of smooth drops and hills of over 300ft
-STR_0581    :A ring of seats is pulled to the top of a tall tower while gently rotating, then allowed to free-fall down, stopping gently at the bottom using magnetic brakes
+STR_0580    :Obrovská ocelová horská dráha s hladkými obraty a svahy přes 90 metrů
+STR_0581    :Kruh sedadel je za pomalého otáčení vyzdvyhnut na vrchol věže, poté se vrátí volným pádem a postupně zastaví ve stanici pomocí magnetických brzd
 STR_0582    :
 STR_0583    :
-STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
+STR_0584    :Speciální kola jezdí po ocelové koleji, poháněná šlapáním jezdců
 STR_0585    :Riders sit in pairs of seats suspended beneath the track as they loop and twist through tight inversions
 STR_0586    :Boat shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
 STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
@@ -893,55 +893,55 @@ STR_0887    :Ukončit Scenario Editor
 STR_0888    :Ukončit Roller Coaster Designer
 STR_0889    :Ukončit Track Designs Manager
 STR_0890    :SCR{COMMA16}.BMP
-STR_0891    :Screenshot
-STR_0892    :Screenshot byl uložen jako '{STRINGID}'
-STR_0893    :Screenshot selhal !
+STR_0891    :Snímek obrazovky
+STR_0892    :Snímek obrazovky byl uložen jako '{STRINGID}'
+STR_0893    :Snímaní obrazovky selhalo !
 STR_0894    :Landscape data area full !
-STR_0895    :Can't build partly above and partly below ground
+STR_0895    :Nelze stavět částečně pod a nad zemí
 STR_0896    :{POP16}{POP16}{STRINGID} Construction
 STR_0897    :Direction
-STR_0898    :{SMALLFONT}{BLACK}Left-hand curve
-STR_0899    :{SMALLFONT}{BLACK}Right-hand curve
-STR_0900    :{SMALLFONT}{BLACK}Left-hand curve (small radius)
-STR_0901    :{SMALLFONT}{BLACK}Right-hand curve (small radius)
-STR_0902    :{SMALLFONT}{BLACK}Left-hand curve (very small radius)
-STR_0903    :{SMALLFONT}{BLACK}Right-hand curve (very small radius)
-STR_0904    :{SMALLFONT}{BLACK}Left-hand curve (large radius)
-STR_0905    :{SMALLFONT}{BLACK}Right-hand curve (large radius)
-STR_0906    :{SMALLFONT}{BLACK}Straight
-STR_0907    :Slope
+STR_0898    :{SMALLFONT}{BLACK}Zatáčka vlevo
+STR_0899    :{SMALLFONT}{BLACK}Zatáčka vpravo
+STR_0900    :{SMALLFONT}{BLACK}Zatáčka vlevo (malý poloměr)
+STR_0901    :{SMALLFONT}{BLACK}Zatáčka vpravo (malý poloměr)
+STR_0902    :{SMALLFONT}{BLACK}Zatáčka vlevo (velmi malý poloměr)
+STR_0903    :{SMALLFONT}{BLACK}Zatáčka vpravo (velmi malý poloměr)
+STR_0904    :{SMALLFONT}{BLACK}Zatáčka vlevo (velký poloměr)
+STR_0905    :{SMALLFONT}{BLACK}Zatáčka vpravo (velký poloměr)
+STR_0906    :{SMALLFONT}{BLACK}Rovinka
+STR_0907    :Svah
 STR_0908    :Roll/Banking
-STR_0909    :Seat Rot.
+STR_0909    :Otáčení sedadel
 STR_0910    :{SMALLFONT}{BLACK}Roll for left-hand curve
 STR_0911    :{SMALLFONT}{BLACK}Roll for right-hand curve
 STR_0912    :{SMALLFONT}{BLACK}No roll
-STR_0913    :{SMALLFONT}{BLACK}Move to previous section
-STR_0914    :{SMALLFONT}{BLACK}Move to next section
-STR_0915    :{SMALLFONT}{BLACK}Construct the selected section
-STR_0916    :{SMALLFONT}{BLACK}Remove the highlighted section
-STR_0917    :{SMALLFONT}{BLACK}Vertical drop
-STR_0918    :{SMALLFONT}{BLACK}Steep slope down
-STR_0919    :{SMALLFONT}{BLACK}Slope down
-STR_0920    :{SMALLFONT}{BLACK}Level
-STR_0921    :{SMALLFONT}{BLACK}Slope up
-STR_0922    :{SMALLFONT}{BLACK}Steep slope up
-STR_0923    :{SMALLFONT}{BLACK}Vertical rise
-STR_0924    :{SMALLFONT}{BLACK}Helix down
-STR_0925    :{SMALLFONT}{BLACK}Helix up
+STR_0913    :{SMALLFONT}{BLACK}Posunout na předchozí část
+STR_0914    :{SMALLFONT}{BLACK}Posunout na následující část
+STR_0915    :{SMALLFONT}{BLACK}Postavit vybranou část
+STR_0916    :{SMALLFONT}{BLACK}Odstranit vybranou část
+STR_0917    :{SMALLFONT}{BLACK}Kolmo dolů
+STR_0918    :{SMALLFONT}{BLACK}Strmý svah dolů
+STR_0919    :{SMALLFONT}{BLACK}Svah dolů
+STR_0920    :{SMALLFONT}{BLACK}Vodorovně
+STR_0921    :{SMALLFONT}{BLACK}Svah vzhůtu
+STR_0922    :{SMALLFONT}{BLACK}Prudce vzhůru
+STR_0923    :{SMALLFONT}{BLACK}Kolmo nahorů
+STR_0924    :{SMALLFONT}{BLACK}Šroubovice dolů
+STR_0925    :{SMALLFONT}{BLACK}Šroubovice vzhůru
 STR_0926    :Tohle nelze odstranit...
 STR_0927    :Tohle zde nejde postavit...
-STR_0928    :{SMALLFONT}{BLACK}Chain lift, to pull cars up slopes
-STR_0929    :'S' Bend (left)
-STR_0930    :'S' Bend (right)
-STR_0931    :Vertical Loop (left)
-STR_0932    :Vertical Loop (right)
-STR_0933    :Raise or lower land first
-STR_0934    :Ride entrance in the way
-STR_0935    :Ride exit in the way
-STR_0936    :Park entrance in the way
+STR_0928    :{SMALLFONT}{BLACK}Řetězový vlek, pro pohon vozů do svahu
+STR_0929    :'S' Ohyb (levý)
+STR_0930    :'S' Ohyb (pravý)
+STR_0931    :Svislá Smyčka (levá)
+STR_0932    :Svislá Smyčka (pravá)
+STR_0933    :Nejdříve zvyš nebo sniž povrch
+STR_0934    :Vstup na atrakci v cestě
+STR_0935    :Výtup z atrakce v cestě
+STR_0936    :Vchod do parku v cestě
 STR_0937    :{SMALLFONT}{BLACK}View options
 STR_0938    :{SMALLFONT}{BLACK}Adjust land height and slope
-STR_0939    :Underground/Inside View
+STR_0939    :POdzemní/Vnitří pohled
 STR_0940    :Remove Base Land
 STR_0941    :Remove Vertical Faces
 STR_0942    :Průhledné atrakce
@@ -957,7 +957,7 @@ STR_0951    :Ukončit hru
 STR_0952    :Ukončit hru
 STR_0953    :Nahrát krajinu
 STR_0954    :
-STR_0955    :{SMALLFONT}{BLACK}Select seat rotation angle for this track section
+STR_0955    :{SMALLFONT}{BLACK}Vyberte úhel otočení sedadel pro tuto část trati
 STR_0956    :-180{DEGREE}
 STR_0957    :-135{DEGREE}
 STR_0958    :-90{DEGREE}
@@ -1223,8 +1223,8 @@ STR_1217    :{COMMA16} sekund
 STR_1218    :{BLACK}{SMALLUP}
 STR_1219    :{BLACK}{SMALLDOWN}
 STR_1220    :Jen východ
-STR_1221    :No entrance
-STR_1222    :No exit
+STR_1221    :Nemá vchod
+STR_1222    :Chybí východ
 STR_1223    :{SMALLFONT}{BLACK}Transport rides
 STR_1224    :{SMALLFONT}{BLACK}Gentle rides
 STR_1225    :{SMALLFONT}{BLACK}Roller coasters
@@ -1245,13 +1245,13 @@ STR_1239    :Loďe
 STR_1240    :{COMMA16} loď
 STR_1241    :{COMMA16} loďe
 STR_1242    :Loď {COMMA16}
-STR_1243    :track
-STR_1244    :tracks
-STR_1245    :Track
-STR_1246    :Tracks
-STR_1247    :{COMMA16} track
-STR_1248    :{COMMA16} tracks
-STR_1249    :Track {COMMA16}
+STR_1243    :dráha
+STR_1244    :dráhy
+STR_1245    :Dráha
+STR_1246    :Dráhy
+STR_1247    :{COMMA16} dráha
+STR_1248    :{COMMA16} dráhy
+STR_1249    :Dráha {COMMA16}
 STR_1250    :docking platform
 STR_1251    :docking platforms
 STR_1252    :Docking platform
@@ -1287,27 +1287,27 @@ STR_1281    :Structures
 STR_1282    :{COMMA16} structure
 STR_1283    :{COMMA16} structures
 STR_1284    :Structure {COMMA16}
-STR_1285    :ship
-STR_1286    :ships
-STR_1287    :Ship
-STR_1288    :Ships
-STR_1289    :{COMMA16} ship
-STR_1290    :{COMMA16} ships
-STR_1291    :Ship {COMMA16}
-STR_1292    :cabin
-STR_1293    :cabins
-STR_1294    :Cabin
-STR_1295    :Cabins
-STR_1296    :{COMMA16} cabin
-STR_1297    :{COMMA16} cabins
-STR_1298    :Cabin {COMMA16}
-STR_1299    :wheel
-STR_1300    :wheels
-STR_1301    :Wheel
-STR_1302    :Wheels
-STR_1303    :{COMMA16} wheel
-STR_1304    :{COMMA16} wheels
-STR_1305    :Wheel {COMMA16}
+STR_1285    :loď
+STR_1286    :lodě
+STR_1287    :Loď
+STR_1288    :Lodě
+STR_1289    :{COMMA16} loď
+STR_1290    :{COMMA16} lodě
+STR_1291    :Loď {COMMA16}
+STR_1292    :kabina
+STR_1293    :kabiny
+STR_1294    :Kabina
+STR_1295    :Kabiny
+STR_1296    :{COMMA16} kabina
+STR_1297    :{COMMA16} kabin
+STR_1298    :Kabina {COMMA16}
+STR_1299    :kolo
+STR_1300    :kol
+STR_1301    :Kolo
+STR_1302    :Kol
+STR_1303    :{COMMA16} kolo
+STR_1304    :{COMMA16} kol
+STR_1305    :Kolo {COMMA16}
 STR_1306    :ring
 STR_1307    :rings
 STR_1308    :Ring
@@ -1315,13 +1315,13 @@ STR_1309    :Rings
 STR_1310    :{COMMA16} ring
 STR_1311    :{COMMA16} rings
 STR_1312    :Ring {COMMA16}
-STR_1313    :player
-STR_1314    :players
-STR_1315    :Player
-STR_1316    :Players
-STR_1317    :{COMMA16} player
-STR_1318    :{COMMA16} players
-STR_1319    :Player {COMMA16}
+STR_1313    :hráč
+STR_1314    :hráči
+STR_1315    :Hráč
+STR_1316    :Hráči
+STR_1317    :{COMMA16} hráč
+STR_1318    :{COMMA16} hráči
+STR_1319    :Hráč {COMMA16}
 STR_1320    :course
 STR_1321    :courses
 STR_1322    :Course
@@ -1356,39 +1356,39 @@ STR_1350    :{WINDOW_COLOUR_2}Max. negative vertical G's: {BLACK}{COMMA2DP32}g
 STR_1351    :{WINDOW_COLOUR_2}Max. negative vertical G's: {OUTLINE}{RED}{COMMA2DP32}g
 STR_1352    :{WINDOW_COLOUR_2}Max. lateral G's: {BLACK}{COMMA2DP32}g
 STR_1353    :{WINDOW_COLOUR_2}Max. lateral G's: {OUTLINE}{RED}{COMMA2DP32}g
-STR_1354    :{WINDOW_COLOUR_2}Highest drop height: {BLACK}{LENGTH}
-STR_1355    :{WINDOW_COLOUR_2}Drops: {BLACK}{COMMA16}
-STR_1356    :{WINDOW_COLOUR_2}Inversions: {BLACK}{COMMA16}
+STR_1354    :{WINDOW_COLOUR_2}Nejvyšší pád: {BLACK}{LENGTH}
+STR_1355    :{WINDOW_COLOUR_2}Pádů: {BLACK}{COMMA16}
+STR_1356    :{WINDOW_COLOUR_2}Obratů: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}Holes: {BLACK}{COMMA16}
-STR_1358    :{WINDOW_COLOUR_2}Total 'air' time: {BLACK}{COMMA2DP32}secs
+STR_1358    :{WINDOW_COLOUR_2}Celkem ve stav beztíže: {BLACK}{COMMA2DP32}sekund
 STR_1359    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minute
 STR_1360    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minutes
 STR_1361    :Can't change speed...
 STR_1362    :Can't change launch speed...
 STR_1363    :Too high for supports!
 STR_1364    :Supports for track above can't be extended any further!
-STR_1365    :In-line Twist (left)
-STR_1366    :In-line Twist (right)
-STR_1367    :Half Loop
-STR_1368    :Half Corkscrew (left)
-STR_1369    :Half Corkscrew (right)
-STR_1370    :Barrel Roll (left)
-STR_1371    :Barrel Roll (right)
+STR_1365    :Otočka kolem trati (levá)
+STR_1366    :Otočka kolem trati (pravá)
+STR_1367    :Poloviční smyčka
+STR_1368    :Poloviční Vývrtka (levá)
+STR_1369    :Poloviční Vývrtka (pravá)
+STR_1370    :Sudový výkrut (levý)
+STR_1371    :Sudový výkrut (pravý)
 STR_1372    :Launched Lift Hill
-STR_1373    :Large Half Loop (left)
-STR_1374    :Large Half Loop (right)
-STR_1375    :Upper Transfer
-STR_1376    :Lower Transfer
-STR_1377    :Heartline Roll (left)
-STR_1378    :Heartline Roll (right)
-STR_1379    :Reverser (left)
-STR_1380    :Reverser (right)
-STR_1381    :Curved Lift Hill (left)
-STR_1382    :Curved Lift Hill (right)
-STR_1383    :Quarter Loop
+STR_1373    :Velká Poloviční Vývrtka (levá)
+STR_1374    :Velká Poloviční Vývrtka (pravá)
+STR_1375    :Přechod vzhůru
+STR_1376    :Přechod dolů
+STR_1377    :Otočka kolem těla (levá)
+STR_1378    :Otočka kolem těla (pravá)
+STR_1379    :Obrat (levý)
+STR_1380    :Obrat (Pravy)
+STR_1381    :Zahnutý vlečný svah (vlevo)
+STR_1382    :Zahnutý vlečný svah (vpravo)
+STR_1383    :Čtvrt smyčky
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :{SMALLFONT}{BLACK}Other track configurations
-STR_1386    :Special...
+STR_1386    :Zvláštní...
 STR_1387    :Can't change land type...
 STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
 STR_1389    :{OUTLINE}{RED}- {CURRENCY}
@@ -1402,17 +1402,17 @@ STR_1396    :{SMALLFONT}{BLACK}Colour scheme options
 STR_1397    :{SMALLFONT}{BLACK}Sound & music options
 STR_1398    :{SMALLFONT}{BLACK}Measurements and test data
 STR_1399    :{SMALLFONT}{BLACK}Graphs
-STR_1400    :Entrance
-STR_1401    :Exit
+STR_1400    :Vchod
+STR_1401    :Východ
 STR_1402    :{SMALLFONT}{BLACK}Build or move entrance to ride/attraction
 STR_1403    :{SMALLFONT}{BLACK}Build or move exit from ride/attraction
-STR_1404    :{SMALLFONT}{BLACK}Rotate 90{DEGREE}
-STR_1405    :{SMALLFONT}{BLACK}Mirror image
+STR_1404    :{SMALLFONT}{BLACK}Otočit o 90{DEGREE}
+STR_1405    :{SMALLFONT}{BLACK}Zrcadlový obraz
 STR_1406    :{SMALLFONT}{BLACK}Toggle scenery on/off (if available for this design)
 STR_1407    :{WINDOW_COLOUR_2}Build this...
-STR_1408    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY}
+STR_1408    :{WINDOW_COLOUR_2}Cena: {BLACK}{CURRENCY}
 STR_1409    :Entry/Exit Platform
-STR_1410    :Vertical Tower
+STR_1410    :Svislá věž
 STR_1411    :{STRINGID} v cestě
 STR_1412    :{WINDOW_COLOUR_3}Data logging not available for this type of ride
 STR_1413    :{WINDOW_COLOUR_3}Data logging will start when next {STRINGID} leaves {STRINGID}
@@ -1442,38 +1442,38 @@ STR_1436    :In {STRINGID}
 STR_1437    :At {STRINGID}
 STR_1438    :Sitting
 STR_1439    :(select location)
-STR_1440    :Mowing grass
-STR_1441    :Sweeping footpath
-STR_1442    :Emptying litter bin
-STR_1443    :Watering gardens
-STR_1444    :Watching {STRINGID}
-STR_1445    :Watching construction of {STRINGID}
-STR_1446    :Looking at scenery
-STR_1447    :Leaving the park
-STR_1448    :Watching new ride being constructed
+STR_1440    :Seká trávu
+STR_1441    :Zametá cestu
+STR_1442    :Vynáši odpadkový koš
+STR_1443    :Zalévá záhon
+STR_1444    :Sleduje {STRINGID}
+STR_1445    :Sleduje vystavbu {STRINGID}
+STR_1446    :Prohlíží si prostředí
+STR_1447    :Opouští park
+STR_1448    :Sleduje výstavbu nové trti
 STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
-STR_1452    :Guest's name
-STR_1453    :Enter name for this guest:
-STR_1454    :Can't name guest...
-STR_1455    :Invalid name for guest
-STR_1456    :{WINDOW_COLOUR_2}Cash spent: {BLACK}{CURRENCY2DP}
-STR_1457    :{WINDOW_COLOUR_2}Cash in pocket: {BLACK}{CURRENCY2DP}
-STR_1458    :{WINDOW_COLOUR_2}Time in park: {BLACK}{REALTIME}
+STR_1452    :Jméno hosta
+STR_1453    :Vložte jméno tohoto hosta:
+STR_1454    :Nelze pojmenovat hosta...
+STR_1455    :Neplatné jméno pro hosta
+STR_1456    :{WINDOW_COLOUR_2}Utracených peněz: {BLACK}{CURRENCY2DP}
+STR_1457    :{WINDOW_COLOUR_2}Peněz v kapse: {BLACK}{CURRENCY2DP}
+STR_1458    :{WINDOW_COLOUR_2}Čas strávený v parku: {BLACK}{REALTIME}
 STR_1459    :Track style
-STR_1460    :{SMALLFONT}{BLACK}'U' shaped open track
-STR_1461    :{SMALLFONT}{BLACK}'O' shaped enclosed track
-STR_1462    :Too steep for lift hill
-STR_1463    :Guests
-STR_1464    :Helix up (small)
-STR_1465    :Helix up (large)
-STR_1466    :Helix down (small)
-STR_1467    :Helix down (large)
-STR_1468    :Staff
-STR_1469    :Ride must start and end with stations
-STR_1470    :Station not long enough
-STR_1471    :{WINDOW_COLOUR_2}Speed:
+STR_1460    :{SMALLFONT}{BLACK}otevřená trať ve tvaru 'U'
+STR_1461    :{SMALLFONT}{BLACK}uzavřená trať ve tvaru 'O'
+STR_1462    :Svah je pro vlečení příliš strmí
+STR_1463    :Hostů
+STR_1464    :Šroubovice vzhůru (small)
+STR_1465    :Šroubovice vzhůru (large)
+STR_1466    :Šroubovice dolů (small)
+STR_1467    :Šroubovice dolů (large)
+STR_1468    :Personál
+STR_1469    :Dráha musí začínat a končit stanicí
+STR_1470    :Stanice není dost dlouhá
+STR_1471    :{WINDOW_COLOUR_2}Rychlost:
 STR_1472    :{SMALLFONT}{BLACK}Speed of this ride
 STR_1473    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1474    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}Not yet available
@@ -1554,16 +1554,16 @@ STR_1548    :
 STR_1549    :
 STR_1550    :{SMALLFONT}{OPENQUOTES}Wow!{ENDQUOTES}
 STR_1551    :{SMALLFONT}{OPENQUOTES}I have the strangest feeling someone is watching me{ENDQUOTES}
-STR_1552    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a balloon from {STRINGID}{ENDQUOTES}
-STR_1553    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cuddly toy from {STRINGID}{ENDQUOTES}
-STR_1554    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a park map from {STRINGID}{ENDQUOTES}
-STR_1555    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1556    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an umbrella from {STRINGID}{ENDQUOTES}
-STR_1557    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a drink from {STRINGID}{ENDQUOTES}
-STR_1558    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a burger from {STRINGID}{ENDQUOTES}
-STR_1559    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for chips from {STRINGID}{ENDQUOTES}
-STR_1560    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an ice cream from {STRINGID}{ENDQUOTES}
-STR_1561    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for candyfloss from {STRINGID}{ENDQUOTES}
+STR_1552    :{SMALLFONT}{OPENQUOTES}Nezaplatím tak moc za a balloon from {STRINGID}{ENDQUOTES}
+STR_1553    :{SMALLFONT}{OPENQUOTES}Nezaplatím tak moc za a cuddly toy from {STRINGID}{ENDQUOTES}
+STR_1554    :{SMALLFONT}{OPENQUOTES}Nezaplatím tak moc za a park map from {STRINGID}{ENDQUOTES}
+STR_1555    :{SMALLFONT}{OPENQUOTES}Nezaplatím tak moc za an on-ride photo from {STRINGID}{ENDQUOTES}
+STR_1556    :{SMALLFONT}{OPENQUOTES}Nezaplatím tak moc za an umbrella from {STRINGID}{ENDQUOTES}
+STR_1557    :{SMALLFONT}{OPENQUOTES}Nezaplatím tak moc za a drink from {STRINGID}{ENDQUOTES}
+STR_1558    :{SMALLFONT}{OPENQUOTES}Nezaplatím tak moc za a burger from {STRINGID}{ENDQUOTES}
+STR_1559    :{SMALLFONT}{OPENQUOTES}Nezaplatím tak moc za chips from {STRINGID}{ENDQUOTES}
+STR_1560    :{SMALLFONT}{OPENQUOTES}Nezaplatím tak moc za an ice cream from {STRINGID}{ENDQUOTES}
+STR_1561    :{SMALLFONT}{OPENQUOTES}Nezaplatím tak moc za candyfloss from {STRINGID}{ENDQUOTES}
 STR_1562    :
 STR_1563    :
 STR_1564    :
