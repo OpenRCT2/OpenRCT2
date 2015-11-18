@@ -567,7 +567,7 @@ static int vehicle_open_restraints(rct_vehicle* vehicle){
 			continue;
 		}
 
-		if (vehicleEntry->var_12 == 6 &&
+		if (vehicleEntry->var_11 == 6 &&
 			vehicle->var_C5 != 0){
 
 			if (vehicle->var_C8 + 0x3333 < 0xFFFF){
@@ -924,8 +924,8 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 		} while (!map_element_is_last_for_tile(map_element++));
 
 		if (cover_found == false) {
-				ride->testing_flags &= ~RIDE_TESTING_SHELTERED;
-				return;
+			ride->testing_flags &= ~RIDE_TESTING_SHELTERED;
+			return;
 		}
 	}
 
