@@ -1609,9 +1609,9 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	
 	//Uncomment this to use vanilla code.
 	//RCT2_CALLFUNC_Y(0x66062C, &regs); return;
+	
 	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo *); //dpi = edi	
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 1;
-	regs.ax = dpi->zoom_level;
 	RCT2_GLOBAL(0x9DE57C, uint16) |= 1;
 	RCT2_GLOBAL(0x9E3250, rct_map_element *) = mapElement;
 	RCT2_GLOBAL(0x9E3296, uint16) = dpi->zoom_level;
@@ -1624,24 +1624,15 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	//SAVE
 	saved_esi = regs.esi;
 	
-	//callcode_push1(0x660658, saved_esi, &regs); return;
-	regs.al = mapElement->type;
-	regs.ah = mapElement->properties.surface.terrain;
-	//callcode_push1(0x66065D, saved_esi, &regs); return;
-	regs.al &= 3;
-	regs.ah = (uint8)regs.ah >> 5; //I really wish registers was unsigned.
-	regs.al <<= 3;
-	regs.al |= regs.ah;
-	regs.eax &= 0xFF;
-	RCT2_GLOBAL(0x9E3264, uint32) = regs.eax;
+	RCT2_GLOBAL(0x9E3264, uint32) = ((mapElement->type & 3) << 3) | (mapElement->properties.surface.terrain >> 5);
+	
 	//callcode_push1(0x660671, saved_esi, &regs); return;
-	regs.bl = mapElement->properties.surface.slope;
-	regs.di = (regs.bx & 0xF) << regs.cl;
-	regs.ebx &= 0x10;
-	regs.si = (uint16)regs.di >> 4;
-	regs.di = (regs.di | regs.si) & 0xF;
-	regs.bx |= regs.di;
-	callcode_push1(0x660692, saved_esi, &regs); return;
+	
+	uint16 unk = (mapElement->properties.surface.slope & 0xF) << regs.cl; //unk = di
+	
+	RCT2_GLOBAL(0x9E3278, uint32) = (mapElement->properties.surface.slope & 0x10) | ((unk | (unk >> 4)) & 0xF);
+	
+	callcode_push1(0x660698, saved_esi, &regs); return;
 }
 
 /**
