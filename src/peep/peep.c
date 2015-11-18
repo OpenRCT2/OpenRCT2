@@ -7851,7 +7851,7 @@ static void peep_on_exit_ride(rct_peep *peep, int rideIndex)
 
 		int laugh = scenario_rand() & 7;
 		if (laugh < 3) {
-			audio_play_sound_panned(SOUND_LAUGH_1 + laugh, 0x8001, peep->x, peep->y, peep->z);
+			audio_play_sound_at_location(SOUND_LAUGH_1 + laugh, peep->x, peep->y, peep->z);
 		}
 	}
 
