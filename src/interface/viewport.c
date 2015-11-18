@@ -1709,12 +1709,13 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	
 	//callcode_push1(0x660698, saved_esi, &regs); return;
 	
-	//Something's not quite right in these few lines of code, causing landscape smoothing to not be as smooth as it should be.
 	regs.esi = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
 	uint16 x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B464, uint16)[regs.esi*2]; //x = ax
 	uint16 y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B466, uint16)[regs.esi*2]; //y = bp
 	RCT2_GLOBAL(0x9E3248, rct_map_element *) = NULL;
-	
+
+	regs.ax = x;
+	regs.bp = y;
 	//callcode_push1(0x6606C5, saved_esi, &regs); return;
 	
 	if(x >= 0x2000 || y >= 0x2000)
@@ -1733,6 +1734,8 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	regs.ah = mapElement2->properties.surface.terrain >> 5;
 	regs.al |= regs.ah;
 	//callcode_push1(0x66070E, saved_esi, &regs); return;
+	
+	//Now, there's another landscape smoothing bug in the following lines of code.
 	regs.eax &= 0xFF;
 	RCT2_GLOBAL(0x9E325C, uint32) = regs.eax;
 	
@@ -1756,11 +1759,12 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	//callcode_push1(0x66073F, saved_esi, &regs); return;
 	regs.ax = regs.dx;
 	regs.edi = RCT2_GLOBAL(0x9E3278, uint32);
+	//callcode_push1(0x660748, saved_esi, &regs); return;
 	regs.ax = (uint16)regs.ax >> 4;
 	assert(regs.ax == height/16);
 	mapElement2 = RCT2_GLOBAL(0x9E3248, rct_map_element *);
 	
-	//regs.esi = (int)mapElement2;
+	regs.esi = (int)mapElement2;
 	//callcode_push1(0x660752, saved_esi, &regs); return;
 	
 	//SAVE
