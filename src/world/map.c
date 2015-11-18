@@ -3137,7 +3137,7 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 	// Supports cost
 	RCT2_GLOBAL(0x00F4389A, money32) = 0;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && gConfigCheat.build_in_pause_mode) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
