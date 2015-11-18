@@ -901,24 +901,31 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 	rct_map_element* map_element = map_get_surface_element_at(x / 32, y / 32);
 	if (map_element->base_height * 8 <= vehicle->z){
 
-		for (;; map_element++){
-			if (map_element_is_last_for_tile(map_element)){
-				ride->testing_flags &= ~RIDE_TESTING_SHELTERED;
-				return;
+		bool cover_found = false;
+		do{
+			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
+				cover_found = true;
+				break;
 			}
 
-			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
+			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH) {
+				cover_found = true;
 				break;
-
-			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH)
-				break;
+			}
 
 			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY)
 				continue;
 
-			rct_scenery_entry* scenery = (rct_scenery_entry*)object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].chunks[map_element->properties.scenery.type];
-			if (scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)
+			rct_scenery_entry* scenery = g_smallSceneryEntries[map_element->properties.scenery.type];
+			if (scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) {
+				cover_found = true;
 				break;
+			}
+		} while (!map_element_is_last_for_tile(map_element++));
+
+		if (cover_found == false) {
+				ride->testing_flags &= ~RIDE_TESTING_SHELTERED;
+				return;
 		}
 	}
 
