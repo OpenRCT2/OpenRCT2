@@ -195,6 +195,7 @@ void audio_pause_sounds();
 * @param volume The volume at which the sound effect should be played.
 * @param pan The pan at which the sound effect should be played. If set to anything other than AUDIO_PLAY_AT_CENTRE, plays the
 * sound at a position relative to the centre of the viewport.
+* @return 0 if the sound was not out of range; otherwise, soundId.
 */
 int audio_play_sound(int soundId, int volume, int pan);
 /**
@@ -203,6 +204,7 @@ int audio_play_sound(int soundId, int volume, int pan);
 * @param x The x coordinate of the location.
 * @param y The y coordinate of the location.
 * @param z The z coordinate of the location.
+* @return 0 if the sound was not out of range; otherwise, soundId.
 */
 int audio_play_sound_at_location(int soundId, sint16 x, sint16 y, sint16 z);
 /**
@@ -210,9 +212,9 @@ int audio_play_sound_at_location(int soundId, sint16 x, sint16 y, sint16 z);
 * @deprecated Use audio_play_sound_at_location or audio_play_sound instead.
 * Plays the specified sound effect at a location specified by the pan parameter.
 * @param soundId (eax) The sound effect to play.
-* @param pan (ebx) If set to AUDIO_PLAY_AT_LOCATION, play the sound at the specified location; if set to AUDIO_PLAY_AT_CENTRE, play
-* the sound at the centre of the viewport; if set to anything else, use the value of pan as a relative position to the centre
-* of the viewport.
+* @param pan (ebx) If set to AUDIO_PLAY_AT_LOCATION, play the sound at the specified location; if set to AUDIO_PLAY_AT_CENTRE,
+* play the sound at the centre of the viewport; if set to anything else, use the value of pan as a relative position to the
+* centre of the viewport.
 * @param x (cx) The x coordinate of the location.
 * @param y (dx) The y coordinate of the location.
 * @param z (bp) The z coordinate of the location.
