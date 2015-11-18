@@ -28,7 +28,7 @@
     <None Include="..\openrct2.exe" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\addresses.c" />
+    <ClCompile Include="..\src\addresses.c" />
     <ClCompile Include="..\src\audio\audio.c" />
     <ClCompile Include="..\src\audio\mixer.cpp" />
     <ClCompile Include="..\src\cheats.c" />
