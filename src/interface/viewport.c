@@ -1632,7 +1632,34 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	
 	RCT2_GLOBAL(0x9E3278, uint32) = (mapElement->properties.surface.slope & 0x10) | ((unk | (unk >> 4)) & 0xF);
 	
-	callcode_push1(0x660698, saved_esi, &regs); return;
+	//callcode_push1(0x660698, saved_esi, &regs); return;
+	
+	regs.esi = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	uint16 x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B464, uint16)[regs.esi*2]; //x = ax
+	uint16 y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B466, uint16)[regs.esi*2]; //y = bp
+	RCT2_GLOBAL(0x9E3248, uint32) = 0;
+	
+	//callcode_push1(0x6606C5, saved_esi, &regs); return;
+	
+	if(x >= 0x2000 || y >= 0x2000)
+		goto loc_660781;
+	
+	//callcode_push1(0x6606DA, saved_esi, &regs); return;
+	
+	rct_map_element *mapElement2 = map_get_surface_element_at(x/32, y/32);
+	
+	regs.esi = (int)mapElement2;
+	
+	//callcode_push1(0x6606F9, saved_esi, &regs); return;
+	
+	RCT2_GLOBAL(0x9E3248, rct_map_element *) = mapElement2;
+	regs.al = mapElement2->type & 3;
+	regs.ah = mapElement2->properties.surface.terrain >> 5;
+	regs.al |= regs.ah;
+	callcode_push1(0x66070E, saved_esi, &regs); return;
+	
+loc_660781:
+	callcode_push1(0x660781, saved_esi, &regs); return;
 }
 
 /**
