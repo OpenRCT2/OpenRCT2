@@ -1703,7 +1703,7 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	int saved_esi, saved_ecx;
 	
 	//Uncomment this to use vanilla code.
-	//RCT2_CALLFUNC_Y(0x66062C, &regs); return;
+	RCT2_CALLFUNC_Y(0x66062C, &regs); return;
 	
 	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo *); //dpi = edi	
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 1;
@@ -1741,19 +1741,19 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	{	
 		//callcode_push1(0x6606DA, saved_esi, &regs); return;
 		
-		rct_map_element *mapElement2 = map_get_surface_element_at(x/32, y/32);
+		rct_map_element *mapElement2 = map_get_surface_element_at(x/32, y/32); //mapElement2 = esi
 		
 		regs.esi = (int)mapElement2;
 		
 		//callcode_push1(0x6606F9, saved_esi, &regs); return;
 		
 		RCT2_GLOBAL(0x9E3248, rct_map_element *) = mapElement2;
-		regs.al = mapElement2->type & 3;
+		regs.al = (mapElement2->type & 3) << 3;
+		
 		regs.ah = mapElement2->properties.surface.terrain >> 5;
 		regs.al |= regs.ah;
 		//callcode_push1(0x66070E, saved_esi, &regs); return;
 		
-		//Now, there's another landscape smoothing bug in the following lines of code.
 		regs.eax &= 0xFF;
 		RCT2_GLOBAL(0x9E325C, uint32) = regs.eax;
 
@@ -1787,7 +1787,136 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 		regs.ecx = saved_ecx;
 	}
 //loc_660781:
-	callcode_push1(0x660781, saved_esi, &regs); return;
+	//callcode_push1(0x660781, saved_esi, &regs); return;
+	regs.ax = RCT2_GLOBAL(0x9DE568, uint16);
+	regs.esi = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	regs.bp = RCT2_GLOBAL(0x9DE56C, uint16);
+	regs.ax += RCT2_ADDRESS(0x97B474, uint16)[regs.esi*2];
+	RCT2_GLOBAL(0x9E3244, rct_map_element *) = NULL;
+	regs.bp += RCT2_ADDRESS(0x97B476, uint16)[regs.esi*2];
+	//callcode_push1(0x6607AE, saved_esi, &regs); return;
+	if(regs.ax < 0x2000 && regs.bp < 0x2000)
+	{
+		rct_map_element *mapElement2 = map_get_surface_element_at(regs.ax/32, regs.bp/32); //mapElement2 = esi
+		regs.esi = (int)mapElement2;
+		//rct2: loc_6607E2
+		//callcode_push1(0x6607E2, saved_esi, &regs); return;
+		RCT2_GLOBAL(0x9E3244, rct_map_element *) = mapElement2;
+		regs.al = (mapElement2->type & 3) << 3;
+		regs.ah = mapElement2->properties.surface.terrain >> 5;
+		regs.al |= regs.ah;
+		regs.eax &= 0xFF;
+		RCT2_GLOBAL(0x9E3258, uint32) = regs.eax;
+		regs.ebx = helper(mapElement2, &regs);
+		RCT2_GLOBAL(0x9E326C, uint32) = regs.ebx;
+		regs.ax = regs.dx;
+		regs.edi = RCT2_GLOBAL(0x9E3278, uint32);
+		regs.ax = (uint16)regs.ax >> 4;
+		mapElement2 = RCT2_GLOBAL(0x9E3244, rct_map_element *);
+		regs.esi = (int)mapElement2;
+		
+		//SAVE
+		saved_ecx = regs.ecx;
+		
+		regs.ah = mapElement2->base_height >> 1;
+		regs.cx = regs.ax;
+		regs.al += RCT2_ADDRESS(0x97B4A4, uint8)[regs.edi];
+		regs.cl += RCT2_ADDRESS(0x97B504, uint8)[regs.edi];
+		regs.ah += RCT2_ADDRESS(0x97B4C4, uint8)[regs.ebx];
+		regs.ch += RCT2_ADDRESS(0x97B4E4, uint8)[regs.ebx];
+		RCT2_GLOBAL(0x9E327E, uint16) = regs.ax;
+		RCT2_GLOBAL(0x9E3286, uint16) = regs.cx;
+		
+		//RESTORE
+		regs.ecx = saved_ecx;
+	}
+//loc_66086A:
+	//callcode_push1(0x66086A, saved_esi, &regs); return;
+	regs.ax = RCT2_GLOBAL(0x9DE568, uint16);
+	regs.esi = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	regs.bp = RCT2_GLOBAL(0x9DE56C, uint16);
+	regs.ax += RCT2_ADDRESS(0x97B484, uint16)[regs.esi*2];
+	RCT2_GLOBAL(0x9E324C, rct_map_element *) = NULL;
+	regs.bp += RCT2_ADDRESS(0x97B486, uint16)[regs.esi*2];
+	if(regs.ax < 0x2000 && regs.bp < 0x2000)
+	{
+		rct_map_element *mapElement2 = map_get_surface_element_at(regs.ax/32, regs.bp/32); //mapElement2 = esi
+		regs.esi = (int)mapElement2;
+		RCT2_GLOBAL(0x9E324C, rct_map_element *) = mapElement2;
+		regs.al = (mapElement2->type & 3) << 3;
+		regs.ah = mapElement2->properties.surface.terrain >> 5;
+		regs.al |= regs.ah;
+		regs.eax &= 0xFF;
+		RCT2_GLOBAL(0x9E3260, uint32) = regs.eax;
+		regs.ebx = helper(mapElement2, &regs);
+		RCT2_GLOBAL(0x9E3274, uint32) = regs.ebx;
+		regs.ax = regs.dx;
+		regs.edi = RCT2_GLOBAL(0x9E3278, uint32);
+		regs.ax = (uint16)regs.ax >> 4;
+		mapElement2 = RCT2_GLOBAL(0x9E324C, rct_map_element *);
+		regs.esi = (int)mapElement2;
+		
+		//SAVE
+		saved_ecx = regs.ecx;
+		
+		regs.ah = mapElement2->base_height >> 1;
+		regs.cx = regs.ax;
+		regs.al += RCT2_ADDRESS(0x97B4C4, uint8)[regs.edi];
+		regs.cl += RCT2_ADDRESS(0x97B4E4, uint8)[regs.edi];
+		regs.ah += RCT2_ADDRESS(0x97B4A4, uint8)[regs.ebx];
+		regs.ch += RCT2_ADDRESS(0x97B504, uint8)[regs.ebx];
+		RCT2_GLOBAL(0x9E3282, uint16) = regs.ax;
+		RCT2_GLOBAL(0x9E328A, uint16) = regs.cx;
+		
+		//RESTORE
+		regs.ecx = saved_ecx;
+	}
+//loc_660953:
+	//callcode_push1(0x660953, saved_esi, &regs); return;
+	regs.ax = RCT2_GLOBAL(0x9DE568, uint16);
+	regs.esi = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	regs.bp = RCT2_GLOBAL(0x9DE56C, uint16);
+	regs.ax += RCT2_ADDRESS(0x97B494, uint16)[regs.esi*2];
+	RCT2_GLOBAL(0x9E3240, rct_map_element *) = NULL;
+	regs.bp += RCT2_ADDRESS(0x97B496, uint16)[regs.esi*2];
+	if(regs.ax >= 0x2000 || regs.bp >= 0x2000)
+		goto loc_660A3C;
+	rct_map_element *mapElement2 = map_get_surface_element_at(regs.ax/32, regs.bp/32); //mapElement2 = esi
+	regs.esi = (int)mapElement2;
+	RCT2_GLOBAL(0x9E3240, rct_map_element *) = mapElement2;
+	regs.al = (mapElement2->type & 3) << 3;
+	regs.ah = mapElement2->properties.surface.terrain >> 5;
+	regs.al |= regs.ah;
+	regs.eax &= 0xFF;
+	RCT2_GLOBAL(0x9E3254, uint32) = regs.eax;
+	regs.ebx = helper(mapElement2, &regs);
+	RCT2_GLOBAL(0x9E3268, uint32) = regs.ebx;
+	regs.ax = regs.dx;
+	regs.edi = RCT2_GLOBAL(0x9E3278, uint32);
+	regs.ax = (uint16)regs.ax >> 4;
+	mapElement2 = RCT2_GLOBAL(0x9E3240, rct_map_element *);
+	regs.esi = (int)mapElement2;
+	
+	//SAVE
+	saved_ecx = regs.ecx;
+	
+	regs.ah = mapElement2->base_height >> 1;
+	regs.cx = regs.ax;
+	regs.al += RCT2_ADDRESS(0x97B4C4, uint8)[regs.edi];
+	regs.cl += RCT2_ADDRESS(0x97B4A4, uint8)[regs.edi];
+	regs.ah += RCT2_ADDRESS(0x97B4E4, uint8)[regs.ebx];
+	regs.ch += RCT2_ADDRESS(0x97B504, uint8)[regs.ebx];
+	RCT2_GLOBAL(0x9E327C, uint16) = regs.ax;
+	RCT2_GLOBAL(0x9E3284, uint16) = regs.cx;
+	
+	//RESTORE
+	regs.ecx = saved_ecx;
+	
+loc_660A3C:
+	//RESTORE
+	regs.esi = saved_esi;
+	
+	RCT2_CALLFUNC_Y(0x660A3C, &regs); return;
 }
 
 /**
