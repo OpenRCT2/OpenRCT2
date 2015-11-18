@@ -541,7 +541,7 @@ static void window_track_place_tooldown(rct_window* w, int widgetIndex, int x, i
 
 		if (cost != MONEY32_UNDEFINED) {
 			window_close_by_class(WC_ERROR);
-			audio_play_sound_panned(SOUND_PLACE_ITEM, 0x8001, mapX, mapY, mapZ);
+			audio_play_sound_at_location(SOUND_PLACE_ITEM, mapX, mapY, mapZ);
 
 			RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
 			if (RCT2_GLOBAL(0x00F4414E, uint8) & 1) {
@@ -563,7 +563,7 @@ static void window_track_place_tooldown(rct_window* w, int widgetIndex, int x, i
 	}
 
 	// Unable to build track
-	audio_play_sound_panned(SOUND_ERROR, 0x8001, mapX, mapY, mapZ);
+	audio_play_sound_at_location(SOUND_ERROR, mapX, mapY, mapZ);
 }
 
 /**

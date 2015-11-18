@@ -32,6 +32,12 @@
 #include "../openrct2.h"
 #include "../util/util.h"
 
+typedef struct rct_audio_params {
+	bool in_range;
+	int volume;
+	int pan;
+} rct_audio_params;
+
 audio_device *gAudioDevices = NULL;
 int gAudioDeviceCount;
 void *gCrowdSoundChannel = 0;
@@ -46,7 +52,7 @@ rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
 
-bool audio_get_pan_from_location(int soundId, const rct_xyz16 *location, int *volume, int *pan);
+rct_audio_params audio_get_params_from_location(int soundId, const rct_xyz16 *location);
 void audio_stop_channel(void **channel);
 
 void audio_init()
@@ -99,33 +105,30 @@ int audio_play_sound_at_location(int soundId, sint16 x, sint16 y, sint16 z)
 	if (gGameSoundsOff)
 		return 0;
 
-	int volume = 0;
-	int pan = 0;
 	rct_xyz16 location;
 	location.x = x;
 	location.y = y;
 	location.z = z;
 
-	bool success = audio_get_pan_from_location(soundId, &location, &volume, &pan);
-	if (!success)
+	rct_audio_params params = audio_get_params_from_location(soundId, &location);
+	if (!params.in_range)
 		return soundId;
 
-	return audio_play_sound(soundId, volume, pan);
+	return audio_play_sound(soundId, params.volume, params.pan);
 }
 
 /**
-* Returns the pan to use when playing the specified sound at a virtual location.
+* Returns the audio parameters to use when playing the specified sound at a virtual location.
 * @param soundId The sound effect to be played.
 * @param location The location at which the sound effect is to be played.
-* @param volume [out] The volume at which the sound effect should be played.
-* @param pan [out] The pan at which the sound effection should be played.
-* @return true if the sound is in range and should be played; otherwise, false.
+* @return The audio parameters to be used when playing this sound effect.
 */
-bool audio_get_pan_from_location(int soundId, const rct_xyz16 *location, int *volume, int *pan)
+rct_audio_params audio_get_params_from_location(int soundId, const rct_xyz16 *location)
 {
-	*volume = 0;
-	*pan = 0;
 	int volumeDown = 0;
+	rct_audio_params params;
+	params.in_range = true;
+
 	rct_map_element *element = map_get_surface_element_at(location->x / 32, location->y / 32);
 	if (element && (element->base_height * 8) - 5 > location->z)
 		volumeDown = 10;
@@ -144,14 +147,16 @@ bool audio_get_pan_from_location(int soundId, const rct_xyz16 *location, int *vo
 
 		sint16 vy = pos2.y - viewport->view_y;
 		sint16 vx = pos2.x - viewport->view_x;
-		*pan = viewport->x + (vx >> viewport->zoom);
-		*volume = RCT2_ADDRESS(0x0099282C, int)[soundId] + ((-1024 * viewport->zoom - 1) << volumeDown) + 1;
+		params.pan = viewport->x + (vx >> viewport->zoom);
+		params.volume = RCT2_ADDRESS(0x0099282C, int)[soundId] + ((-1024 * viewport->zoom - 1) << volumeDown) + 1;
 
-		if (vy < 0 || vy >= viewport->view_height || vx < 0 || vx >= viewport->view_width || *volume < -10000)
-			return false;
+		if (vy < 0 || vy >= viewport->view_height || vx < 0 || vx >= viewport->view_width || params.volume < -10000) {
+			params.in_range = false;
+			return params;
+		}
 	}
 
-	return true;
+	return params;
 }
 
 int audio_play_sound(int soundId, int volume, int pan)
