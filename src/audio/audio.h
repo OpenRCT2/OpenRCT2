@@ -167,6 +167,7 @@ extern rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
 
 /**
 * Deregisters the audio device.
+* rct2: 0x006BAB21
 */
 void audio_close();
 /*
@@ -175,14 +176,17 @@ void audio_close();
 void audio_init();
 /**
 * Loads the ride sounds and info.
+* rct2: 0x006BA8E0
 */
 void audio_init_ride_sounds_and_info();
 /**
-Loads the ride sounds.
+* Loads the ride sounds.
+* rct2: 0x006BA9B5
 */
 void audio_init_ride_sounds(int device);
 /**
 * Temporarily stops playing sounds until audio_unpause_sounds() is called.
+* rct2: 0x006BABB4
 */
 void audio_pause_sounds();
 /**
@@ -226,10 +230,12 @@ void audio_populate_devices();
 void audio_quit();
 /**
 * Starts playing the title music.
+* rct2: 0x006BD0F8
 */
 void audio_start_title_music();
 /**
 * Stops the crowd sound effect from playing.
+* rct2: 0x006BD07F
 */
 void audio_stop_crowd_sound();
 /**
@@ -238,22 +244,27 @@ void audio_stop_crowd_sound();
 void audio_stop_rain_sound();
 /**
 * Stops ride music from playing.
+* rct2: 0x006BCA9F
 */
 void audio_stop_ride_music();
 /**
 * Stops the title music from playing.
+* rct2: 0x006BD0BD
 */
 void audio_stop_title_music();
 /**
 * Stops vehicle sounds from playing.
+* rct2: 0x006BABDF
 */
 void audio_stop_vehicle_sounds();
 /**
 * Toggles whether all sounds should be played.
+* rct2: 0x006BAB8A
 */
 void audio_toggle_all_sounds();
 /**
 * Resumes playing sounds that had been paused by a call to audio_pause_sounds().
+* rct2: 0x006BABD8
 */
 void audio_unpause_sounds();
 

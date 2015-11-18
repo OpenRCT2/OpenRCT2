@@ -175,10 +175,6 @@ int audio_play_sound(int soundId, int volume, int pan)
 	return 0;
 }
 
-/**
-*
-*  rct2: 0x006BD0F8
-*/
 void audio_start_title_music()
 {
 	if (gGameSoundsOff || !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)) {
@@ -210,10 +206,6 @@ void audio_start_title_music()
 	gTitleMusicChannel = Mixer_Play_Music(pathId, MIXER_LOOP_INFINITE, true);
 }
 
-/**
-*
-*  rct2: 0x006BCA9F
-*/
 void audio_stop_ride_music()
 {
 	for (int i = 0; i < AUDIO_MAX_RIDE_MUSIC; i++) {
@@ -228,19 +220,11 @@ void audio_stop_ride_music()
 	}
 }
 
-/**
-*
-*  rct2: 0x006BD07F
-*/
 void audio_stop_crowd_sound()
 {
 	audio_stop_channel(&gCrowdSoundChannel);
 }
 
-/**
-*
-*  rct2: 0x006BD0BD
-*/
 void audio_stop_title_music()
 {
 	audio_stop_channel(&gTitleMusicChannel);
@@ -264,10 +248,6 @@ void audio_stop_channel(void **channel)
 	*channel = 0;
 }
 
-/**
-*
-*  rct2: 0x006BA8E0
-*/
 void audio_init_ride_sounds_and_info()
 {
 	int deviceNum = 0;
@@ -289,10 +269,6 @@ void audio_init_ride_sounds_and_info()
 	}
 }
 
-/**
-*
-*  rct2: 0x006BA9B5
-*/
 void audio_init_ride_sounds(int device)
 {
 	audio_close();
@@ -309,10 +285,6 @@ void audio_init_ride_sounds(int device)
 	}
 }
 
-/**
-*
-*  rct2: 0x006BAB21
-*/
 void audio_close()
 {
 	audio_stop_crowd_sound();
@@ -322,7 +294,6 @@ void audio_close()
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) = -1;
 }
 
-/* rct2: 0x006BAB8A */
 void audio_toggle_all_sounds(){
 	gConfigSound.sound = !gConfigSound.sound;
 	if (gConfigSound.sound)
@@ -333,10 +304,6 @@ void audio_toggle_all_sounds(){
 	}
 }
 
-/**
-*
-*  rct2: 0x006BABB4
-*/
 void audio_pause_sounds()
 {
 	gGameSoundsOff = true;
@@ -346,19 +313,11 @@ void audio_pause_sounds()
 	audio_stop_rain_sound();
 }
 
-/**
-*
-*  rct2: 0x006BABD8
-*/
 void audio_unpause_sounds()
 {
 	gGameSoundsOff = false;
 }
 
-/**
-*
-*  rct2: 0x006BABDF
-*/
 void audio_stop_vehicle_sounds()
 {
 	if (gOpenRCT2Headless || RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) == -1)
