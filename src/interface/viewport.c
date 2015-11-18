@@ -1680,7 +1680,7 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	regs.edi = 0;
 	regs.ebp = ebp;
 	
-	int saved_esi;
+	int saved_esi, saved_ecx;
 	
 	//Uncomment this to use vanilla code.
 	//RCT2_CALLFUNC_Y(0x66062C, &regs); return;
@@ -1709,10 +1709,11 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	
 	//callcode_push1(0x660698, saved_esi, &regs); return;
 	
+	//Something's not quite right in these few lines of code, causing landscape smoothing to not be as smooth as it should be.
 	regs.esi = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
 	uint16 x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B464, uint16)[regs.esi*2]; //x = ax
 	uint16 y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B466, uint16)[regs.esi*2]; //y = bp
-	RCT2_GLOBAL(0x9E3248, uint32) = 0;
+	RCT2_GLOBAL(0x9E3248, rct_map_element *) = NULL;
 	
 	//callcode_push1(0x6606C5, saved_esi, &regs); return;
 	
@@ -1731,7 +1732,51 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	regs.al = mapElement2->type & 3;
 	regs.ah = mapElement2->properties.surface.terrain >> 5;
 	regs.al |= regs.ah;
-	callcode_push1(0x66070E, saved_esi, &regs); return;
+	//callcode_push1(0x66070E, saved_esi, &regs); return;
+	regs.eax &= 0xFF;
+	RCT2_GLOBAL(0x9E325C, uint32) = regs.eax;
+	
+	/*
+	regs.bl = mapElement2->properties.surface.slope;
+	regs.di = regs.bx;
+	regs.di &= 0xF;
+	regs.di <<= regs.cl;
+	regs.ebx &= 0x10;
+	regs.si = regs.di;
+	regs.si = (uint16)regs.si >> 4;
+	regs.di |= regs.si;
+	regs.di &= 0xF;
+	regs.bx |= regs.di;
+	RCT2_GLOBAL(0x9E3270, uint32) = regs.ebx;
+	*/
+	
+	unk = (mapElement2->properties.surface.slope & 0xF) << regs.cl; //unk = di
+	
+	RCT2_GLOBAL(0x9E3270, uint32) = (mapElement2->properties.surface.slope & 0x10) | ((unk | (unk >> 4)) & 0xF);
+	//callcode_push1(0x66073F, saved_esi, &regs); return;
+	regs.ax = regs.dx;
+	regs.edi = RCT2_GLOBAL(0x9E3278, uint32);
+	regs.ax = (uint16)regs.ax >> 4;
+	assert(regs.ax == height/16);
+	mapElement2 = RCT2_GLOBAL(0x9E3248, rct_map_element *);
+	
+	//regs.esi = (int)mapElement2;
+	//callcode_push1(0x660752, saved_esi, &regs); return;
+	
+	//SAVE
+	saved_ecx = regs.ecx;
+	
+	regs.ah = mapElement2->base_height >> 1;
+	regs.cx = regs.ax;
+	regs.al += RCT2_ADDRESS(0x97B4E4, uint8)[regs.edi];
+	regs.cl += RCT2_ADDRESS(0x97B504, uint8)[regs.edi];
+	regs.ah += RCT2_ADDRESS(0x97B4C4, uint8)[regs.ebx];
+	regs.ch += RCT2_ADDRESS(0x97B4A4, uint8)[regs.ebx];
+	RCT2_GLOBAL(0x9E3280, uint16) = regs.ax;
+	RCT2_GLOBAL(0x9E3288, uint16) = regs.cx;
+	
+	//RESTORE
+	regs.ecx = saved_ecx;
 	
 loc_660781:
 	callcode_push1(0x660781, saved_esi, &regs); return;
