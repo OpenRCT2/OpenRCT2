@@ -3047,7 +3047,7 @@ int save_track_design(uint8 rideIndex){
 	// Track design files
 	format_string(RCT2_ADDRESS(0x141EE68, char), 2305, NULL);
 
-	pause_sounds();
+	audio_pause_sounds();
 
 	int result = platform_open_common_file_dialog(
 		0,
@@ -3056,7 +3056,7 @@ int save_track_design(uint8 rideIndex){
 		"*.TD?",
 		RCT2_ADDRESS(0x141EE68, char));
 
-	unpause_sounds();
+	audio_unpause_sounds();
 
 	if (result == 0){
 		ride_list_item item = { .type = 0xFD, .entry_index = 0 };

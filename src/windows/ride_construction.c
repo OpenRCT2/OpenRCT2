@@ -1594,7 +1594,7 @@ static void window_ride_construction_construct(rct_window *w)
 		return;
 	}
 
-	sound_play_panned(SOUND_PLACE_ITEM, 0x8001, x, y, z);
+	audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_ABOVE_GROUND_FLAGS, uint8) & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) {
 		viewport_set_visibility(1);
@@ -3554,7 +3554,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 					zAttempts == 0 ||
 					z < 0
 					) {
-					sound_play_panned(SOUND_ERROR, RCT2_GLOBAL(0x0142406C, sint32), x, y, z);
+					audio_play_sound_panned(SOUND_ERROR, RCT2_GLOBAL(0x0142406C, sint32), x, y, z);
 					w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 					if (w != NULL){
 						tool_set(w, 23, 12);
@@ -3571,7 +3571,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 			}
 			else {
 				window_close_by_class(WC_ERROR);
-				sound_play_panned(SOUND_PLACE_ITEM, 0x8001, _currentTrackBeginX, _currentTrackBeginY, _currentTrackBeginZ);
+				audio_play_sound_at_location(SOUND_PLACE_ITEM, _currentTrackBeginX, _currentTrackBeginY, _currentTrackBeginZ);
 				break;
 			}
 		}
@@ -3626,7 +3626,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 				_currentTrackCovered = saveCurrentTrackCovered;
 				_currentTrackLiftHill = saveCurrentTrackLiftHill;
 
-				sound_play_panned(SOUND_ERROR, RCT2_GLOBAL(0x0142406C, sint32), x, y, z);
+				audio_play_sound_panned(SOUND_ERROR, RCT2_GLOBAL(0x0142406C, sint32), x, y, z);
 				break;
 			} else if (zAttempts >= 0) {
 				z += 16;
@@ -3680,9 +3680,8 @@ static void ride_construction_tooldown_entrance_exit(int screenX, int screenY)
 		return;
 	}
 
-	sound_play_panned(
+	audio_play_sound_at_location(
 		SOUND_PLACE_ITEM,
-		0x8001,
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16),
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16),
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16)

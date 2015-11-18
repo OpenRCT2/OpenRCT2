@@ -973,7 +973,7 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, int s
 
 	window_invalidate(w);
 
-	sound_play_panned(SOUND_CLICK_1, RCT2_GLOBAL(0x142406C,uint32), 0, 0, 0);
+	audio_play_sound_panned(SOUND_CLICK_1, RCT2_GLOBAL(0x142406C,uint32), 0, 0, 0);
 
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {

@@ -3278,7 +3278,7 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 		if (screenwidth < 64) {
 			screenwidth = 64;
 		}
-		int panx = ((x2 / screenwidth) - 0x8000) >> 4;
+		int pan_x = ((x2 / screenwidth) - 0x8000) >> 4;
 
 		int y2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->y + ((RCT2_GLOBAL(0x009AF5A2, sint16) - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y) >> RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom);
 		y2 <<= 16;
@@ -3286,12 +3286,12 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 		if (screenheight < 64) {
 			screenheight = 64;
 		}
-		int pany = ((y2 / screenheight) - 0x8000) >> 4;
+		int pan_y = ((y2 / screenheight) - 0x8000) >> 4;
 
 		uint8 vol1 = -1;
 		uint8 vol2 = -1;
-		int panx2 = panx;
-		int pany2 = pany;
+		int panx2 = pan_x;
+		int pany2 = pan_y;
 		if (pany2 < 0) {
 			pany2 = -pany2;
 		}
@@ -3331,20 +3331,20 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 		}
 		int v32 = -(((uint8)(-vol1 - 1) * (uint8)(-vol1 - 1)) / 16) - 700;
 		if (vol1 && v32 >= -4000) {
-			if (panx > 10000) {
-				panx = 10000;
+			if (pan_x > 10000) {
+				pan_x = 10000;
 			}
-			if (panx < -10000) {
-				panx = -10000;
+			if (pan_x < -10000) {
+				pan_x = -10000;
 			}
 			rct_ride_music* ride_music = &gRideMusicList[0];
 			int channel = 0;
 			uint32 a1;
-			while (ride_music->rideid != rideIndex || ride_music->tuneid != *tuneId) {
+			while (ride_music->ride_id != rideIndex || ride_music->tune_id != *tuneId) {
 				ride_music++;
 				channel++;
 				if (channel >= AUDIO_MAX_RIDE_MUSIC) {
-					rct_ride_music_info* ride_music_info = ride_music_info_list[*tuneId];
+					rct_ride_music_info* ride_music_info = gRideMusicInfoList[*tuneId];
 					a1 = position + ride_music_info->offset;
 					goto label51;
 				}
@@ -3356,16 +3356,16 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 			}
 			a1 = Mixer_Channel_GetOffset(gRideMusicList[channel].sound_channel);
 		label51:
-			if (a1 < ride_music_info_list[*tuneId]->length) {
+			if (a1 < gRideMusicInfoList[*tuneId]->length) {
 				position = a1;
 				rct_ride_music_params* ride_music_params = gRideMusicParamsListEnd;
 				if (ride_music_params < &gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC]) {
-					ride_music_params->rideid = rideIndex;
-					ride_music_params->tuneid = *tuneId;
+					ride_music_params->ride_id = rideIndex;
+					ride_music_params->tune_id = *tuneId;
 					ride_music_params->offset = a1;
 					ride_music_params->volume = v32;
-					ride_music_params->pan = panx;
-					ride_music_params->freq = RCT2_GLOBAL(0x009AF47C, uint16);
+					ride_music_params->pan = pan_x;
+					ride_music_params->frequency = RCT2_GLOBAL(0x009AF47C, uint16);
 					gRideMusicParamsListEnd++;
 				}
 			} else {
@@ -3375,7 +3375,7 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 		} else {
 		label58:
 			;
-			rct_ride_music_info* ride_music_info = ride_music_info_list[*tuneId];
+			rct_ride_music_info* ride_music_info = gRideMusicInfoList[*tuneId];
 			position += ride_music_info->offset;
 			if (position < ride_music_info->length) {
 				return position;
@@ -3388,10 +3388,10 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 	return position;
 }
 
-#define INIT_MUSIC_INFO(pathid, offset, length, unknown) (rct_ride_music_info[]){length, offset, pathid, unknown}
+#define INIT_MUSIC_INFO(path_id, offset, length, unknown) (rct_ride_music_info[]){length, offset, path_id, unknown}
 
 //0x009AF1C8
-rct_ride_music_info* ride_music_info_list[NUM_DEFAULT_MUSIC_TRACKS] = {
+rct_ride_music_info* gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS] = {
 	INIT_MUSIC_INFO(PATH_ID_CSS4, 1378, 8139054, 0),
 	INIT_MUSIC_INFO(PATH_ID_CSS5, 1378, 7796656, 0),
 	INIT_MUSIC_INFO(PATH_ID_CSS6, 1378, 15787850, 0),
@@ -3456,9 +3456,9 @@ void ride_music_update_final()
 				int v9 = 1;
 				rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0];
 				while (ride_music_params < gRideMusicParamsListEnd) {
-					if (ride_music_params->rideid != (uint8)-1) {
-						rct_ride_music_info* ride_music_info = ride_music_info_list[ride_music_params->tuneid];
-						if (RCT2_ADDRESS(0x009AA0B1, uint8*)[ride_music_info->pathid]) { // file_on_cdrom[]
+					if (ride_music_params->ride_id != (uint8)-1) {
+						rct_ride_music_info* ride_music_info = gRideMusicInfoList[ride_music_params->tune_id];
+						if (RCT2_ADDRESS(0x009AA0B1, uint8*)[ride_music_info->path_id]) { // file_on_cdrom[]
 							v8++;
 							if (v9 >= ride_music_params->volume) {
 								v9 = ride_music_params->volume;
@@ -3471,14 +3471,14 @@ void ride_music_update_final()
 				if (v8 <= 1) {
 					break;
 				}
-				edi->rideid = -1;
+				edi->ride_id = -1;
 			}
 			while (1) {
 				int v8 = 0;
 				int v9 = 1;
 				rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0];
 				while (ride_music_params < gRideMusicParamsListEnd) {
-					if (ride_music_params->rideid != (uint8)-1) {
+					if (ride_music_params->ride_id != (uint8)-1) {
 						v8++;
 						if (v9 >= ride_music_params->volume) {
 							v9 = ride_music_params->volume;
@@ -3490,17 +3490,17 @@ void ride_music_update_final()
 				if (v8 <= 2) {
 					break;
 				}
-				edi->rideid = -1;
+				edi->ride_id = -1;
 			}
 
 			// stop currently playing music that is not in music params list or not playing?
 			rct_ride_music* ride_music = &gRideMusicList[0];
 			int channel = 0;
 			do {
-				if (ride_music->rideid != (uint8)-1) {
+				if (ride_music->ride_id != (uint8)-1) {
 					rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0];
 					while (ride_music_params < gRideMusicParamsListEnd) {
-						if (ride_music_params->rideid == ride_music->rideid && ride_music_params->tuneid == ride_music->tuneid) {
+						if (ride_music_params->ride_id == ride_music->ride_id && ride_music_params->tune_id == ride_music->tune_id) {
 							int isplaying = Mixer_Channel_IsPlaying(gRideMusicList[channel].sound_channel);
 							if (isplaying) {
 								goto label32;
@@ -3510,7 +3510,7 @@ void ride_music_update_final()
 						ride_music_params++;
 					}
 					Mixer_Stop_Channel(gRideMusicList[channel].sound_channel);
-					ride_music->rideid = -1;
+					ride_music->ride_id = -1;
 				}
 			label32:
 				ride_music++;
@@ -3518,28 +3518,28 @@ void ride_music_update_final()
 			} while(channel < AUDIO_MAX_RIDE_MUSIC);
 
 			for (rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0]; ride_music_params < gRideMusicParamsListEnd; ride_music_params++) {
-				if (ride_music_params->rideid != (uint8)-1) {
+				if (ride_music_params->ride_id != (uint8)-1) {
 					rct_ride_music* ride_music = &gRideMusicList[0];
 					int channel = 0;
-					while (ride_music_params->rideid != ride_music->rideid || ride_music_params->tuneid != ride_music->tuneid) {
-						if (ride_music->rideid == (uint8)-1) {
+					while (ride_music_params->ride_id != ride_music->ride_id || ride_music_params->tune_id != ride_music->tune_id) {
+						if (ride_music->ride_id == (uint8)-1) {
 							ebx = channel;
 						}
 						ride_music++;
 						channel++;
 						if (channel >= AUDIO_MAX_RIDE_MUSIC) {
-							rct_ride_music_info* ride_music_info = ride_music_info_list[ride_music_params->tuneid];
+							rct_ride_music_info* ride_music_info = gRideMusicInfoList[ride_music_params->tune_id];
 							rct_ride_music* ride_music = &gRideMusicList[ebx];
-							ride_music->sound_channel = Mixer_Play_Music(ride_music_info->pathid, MIXER_LOOP_NONE, true);
+							ride_music->sound_channel = Mixer_Play_Music(ride_music_info->path_id, MIXER_LOOP_NONE, true);
 							if (ride_music->sound_channel) {
 								ride_music->volume = ride_music_params->volume;
 								ride_music->pan = ride_music_params->pan;
-								ride_music->freq = ride_music_params->freq;
-								ride_music->rideid = ride_music_params->rideid;
-								ride_music->tuneid = ride_music_params->tuneid;
+								ride_music->frequency = ride_music_params->frequency;
+								ride_music->ride_id = ride_music_params->ride_id;
+								ride_music->tune_id = ride_music_params->tune_id;
 								Mixer_Channel_Volume(ride_music->sound_channel, DStoMixerVolume(ride_music->volume));
 								Mixer_Channel_Pan(ride_music->sound_channel, DStoMixerPan(ride_music->pan));
-								Mixer_Channel_Rate(ride_music->sound_channel, DStoMixerRate(ride_music->freq));
+								Mixer_Channel_Rate(ride_music->sound_channel, DStoMixerRate(ride_music->frequency));
 								int offset = ride_music_params->offset - 10000;
 								if (offset < 0) {
 									offset = 0;
@@ -3558,9 +3558,9 @@ void ride_music_update_final()
 						ride_music->pan = ride_music_params->pan;
 						Mixer_Channel_Pan(ride_music->sound_channel, DStoMixerPan(ride_music->pan));
 					}
-					if (ride_music_params->freq != ride_music->freq) {
-						ride_music->freq = ride_music_params->freq;
-						Mixer_Channel_Rate(ride_music->sound_channel, DStoMixerRate(ride_music->freq));
+					if (ride_music_params->frequency != ride_music->frequency) {
+						ride_music->frequency = ride_music_params->frequency;
+						Mixer_Channel_Rate(ride_music->sound_channel, DStoMixerRate(ride_music->frequency));
 					}
 
 				}

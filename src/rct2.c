@@ -104,7 +104,7 @@ int rct2_init()
 	font_sprite_initialise_characters();
 	if (!gOpenRCT2Headless) {
 		platform_init();
-		audio_init1();
+		audio_init_ride_sounds_and_info();
 	}
 	viewport_init_all();
 	news_item_init_queue();
@@ -326,12 +326,12 @@ int check_file_path(int pathId)
 
 	case PATH_ID_CUSTOM1:
 		if (file != NULL)
-			ride_music_info_list[36]->length = (uint32)SDL_RWsize(file); // Store file size in music_custom1_size @ 0x009AF164
+			gRideMusicInfoList[36]->length = (uint32)SDL_RWsize(file); // Store file size in music_custom1_size @ 0x009AF164
 		break;
 
 	case PATH_ID_CUSTOM2:
 		if (file != NULL)
-			ride_music_info_list[37]->length = (uint32)SDL_RWsize(file); // Store file size in music_custom2_size @ 0x009AF16E
+			gRideMusicInfoList[37]->length = (uint32)SDL_RWsize(file); // Store file size in music_custom2_size @ 0x009AF16E
 		break;
 	}
 

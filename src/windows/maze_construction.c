@@ -371,9 +371,8 @@ static void window_maze_construction_entrance_tooldown(int x, int y, rct_window*
 	if (cost == MONEY32_UNDEFINED)
 		return;
 
-	sound_play_panned(
+	audio_play_sound_at_location(
 		SOUND_PLACE_ITEM,
-		0x8001,
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, sint16),
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, sint16),
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
@@ -509,6 +508,6 @@ static void window_maze_construction_construct(int direction)
 	_currentTrackBeginX = x;
 	_currentTrackBeginY = y;
 	if (_rideConstructionState != 7) {
-		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, x, y, z);
+		audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
 	}
 }

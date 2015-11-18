@@ -275,7 +275,7 @@ void game_update()
 	// Update the game one or more times
 	for (i = 0; i < numUpdates; i++) {
 		game_logic_update();
-		start_title_music();
+		audio_start_title_music();
 
 		if (gGameSpeed > 1)
 			continue;
@@ -549,10 +549,10 @@ void pause_toggle()
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) ^= 1;
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1) {
-		pause_sounds();
-		unpause_sounds();
+		audio_pause_sounds();
+		audio_unpause_sounds();
 	} else {
-		unpause_sounds();
+		audio_unpause_sounds();
 	}
 }
 
@@ -601,9 +601,9 @@ static int open_landscape_file_dialog()
 	format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, STR_LOAD_LANDSCAPE_DIALOG_TITLE, 0);
 	safe_strncpy((char*)0x0141EF68, (char*)RCT2_ADDRESS_LANDSCAPES_PATH, MAX_PATH);
 	format_string((char*)0x0141EE68, STR_RCT2_LANDSCAPE_FILE, 0);
-	pause_sounds();
+	audio_pause_sounds();
 	result = platform_open_common_file_dialog(1, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68, "*.SV6;*.SV4;*.SC6", (char*)0x0141EE68);
-	unpause_sounds();
+	audio_unpause_sounds();
 	// window_proc
 	return result;
 }
@@ -618,9 +618,9 @@ static int open_load_game_dialog()
 	format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, STR_LOAD_GAME_DIALOG_TITLE, 0);
 	safe_strncpy((char*)0x0141EF68, (char*)RCT2_ADDRESS_SAVED_GAMES_PATH, MAX_PATH);
 	format_string((char*)0x0141EE68, STR_RCT2_SAVED_GAME, 0);
-	pause_sounds();
+	audio_pause_sounds();
 	result = platform_open_common_file_dialog(1, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68, "*.SV6", (char*)0x0141EE68);
-	unpause_sounds();
+	audio_unpause_sounds();
 	// window_proc
 	return result;
 }
@@ -1020,9 +1020,9 @@ static int show_save_game_dialog(char *resultPath)
 	safe_strncpy(filename, RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH_2, char), MAX_PATH);
 	format_string(filterName, STR_RCT2_SAVED_GAME, NULL);
 
-	pause_sounds();
+	audio_pause_sounds();
 	result = platform_open_common_file_dialog(0, title, filename, "*.SV6", filterName);
-	unpause_sounds();
+	audio_unpause_sounds();
 
 	if (result)
 		safe_strncpy(resultPath, filename, MAX_PATH);

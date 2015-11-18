@@ -108,10 +108,7 @@ void climate_reset(int climate)
 	_lightningTimer = 0;
 	_thunderTimer = 0;
 	if (_rainVolume != 1){
-		if (gRainSoundChannel) {
-			Mixer_Stop_Channel(gRainSoundChannel);
-			gRainSoundChannel = 0;
-		}
+		audio_stop_rain_sound();
 		_rainVolume = 1;
 	}
 
@@ -272,10 +269,7 @@ static void climate_update_rain_sound()
 				Mixer_Channel_Volume(gRainSoundChannel, DStoMixerVolume(_rainVolume));
 			}
 		} else {
-			if (gRainSoundChannel) {
-				Mixer_Stop_Channel(gRainSoundChannel);
-				gRainSoundChannel = 0;
-			}
+			audio_stop_rain_sound();
 			_rainVolume = 1;
 		}
 	}

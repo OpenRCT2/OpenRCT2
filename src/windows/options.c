@@ -552,14 +552,14 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 	case WINDOW_OPTIONS_PAGE_AUDIO:
 		switch (widgetIndex) {
 		case WIDX_SOUND_CHECKBOX:
-			toggle_all_sounds();
+			audio_toggle_all_sounds();
 			config_save_default();
 			window_invalidate(w);
 			break;
 		case WIDX_MUSIC_CHECKBOX:
 			gConfigSound.ride_music = !gConfigSound.ride_music;
 			if (!gConfigSound.ride_music) {
-				stop_ride_music();
+				audio_stop_ride_music();
 			}
 			config_save_default();
 			window_invalidate(w);
@@ -852,7 +852,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 	case WINDOW_OPTIONS_PAGE_AUDIO:
 		switch (widgetIndex) {
 		case WIDX_SOUND_DROPDOWN:
-			audio_get_devices();
+			audio_populate_devices();
 
 			// populate the list with the sound devices
 			for (i = 0; i < gAudioDeviceCount; i++) {
@@ -1069,7 +1069,7 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 	case WINDOW_OPTIONS_PAGE_AUDIO:
 		switch (widgetIndex) {
 		case WIDX_SOUND_DROPDOWN:
-			audio_init2(dropdownIndex);
+			audio_init_ride_sounds(dropdownIndex);
 			if (dropdownIndex < gAudioDeviceCount) {
 				if (dropdownIndex == 0) {
 					Mixer_Init(NULL);
@@ -1095,9 +1095,9 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 				window_invalidate(w);
 			}
 
-			stop_title_music();
+			audio_stop_title_music();
 			if (dropdownIndex != 0)
-				start_title_music();
+				audio_start_title_music();
 			break;
 		}
 		break;

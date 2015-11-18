@@ -158,7 +158,7 @@ static void window_track_list_select(rct_window *w, int index)
 
 	w->track_list.var_480 = index;
 
-	sound_play_panned(SOUND_CLICK_1, w->x + (w->width / 2), 0, 0, 0);
+	audio_play_sound_panned(SOUND_CLICK_1, w->x + (w->width / 2), 0, 0, 0);
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && index == 0) {
 		window_close(w);
 		ride_construct_new(_window_track_list_item);

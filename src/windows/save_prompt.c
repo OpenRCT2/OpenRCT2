@@ -192,7 +192,7 @@ void window_save_prompt_open()
 
 	// Pause the game
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) |= 2;
-	pause_sounds();
+	audio_pause_sounds();
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 
 	stringId = prompt_mode + STR_LOAD_GAME_PROMPT_TITLE;
@@ -212,7 +212,7 @@ static void window_save_prompt_close(rct_window *w)
 {
 	// Unpause the game
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) &= ~2;
-	unpause_sounds();
+	audio_unpause_sounds();
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 }
 

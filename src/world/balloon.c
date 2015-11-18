@@ -26,7 +26,7 @@ void balloon_pop(rct_balloon *balloon)
 {
 	balloon->popped = 1;
 	balloon->var_26 = 0;
-	sound_play_panned(SOUND_BALLOON_POP, 0x8001, balloon->x, balloon->y, balloon->z);
+	audio_play_sound_at_location(SOUND_BALLOON_POP, balloon->x, balloon->y, balloon->z);
 }
 
 /**

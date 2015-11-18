@@ -392,7 +392,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 		}
 
 		if (peep->flags & PEEP_FLAGS_EXPLODE && peep->x != (sint16)0x8000){
-			sound_play_panned(SOUND_CRASH, 0x8001, peep->x, peep->y, peep->z);
+			audio_play_sound_at_location(SOUND_CRASH, peep->x, peep->y, peep->z);
 
 			sprite_misc_3_create(peep->x, peep->y, peep->z + 16);
 			sprite_misc_5_create(peep->x, peep->y, peep->z + 16);
@@ -1029,7 +1029,7 @@ int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep
 	litter_create(peep->x, peep->y, peep->z, peep->sprite_direction, peep->sprite_index & 1);
 
 	int sound_id = SOUND_COUGH_1 + (scenario_rand() & 3);
-	sound_play_panned(sound_id, 0x8001, peep->x, peep->y, peep->z);
+	audio_play_sound_at_location(sound_id, peep->x, peep->y, peep->z);
 
 	invalidate_sprite_2((rct_sprite*)peep);
 	*x = peep->x;
@@ -1141,7 +1141,7 @@ void peep_update_sprite_type(rct_peep* peep)
 		) {
 
 			bl = 1;
-			sound_play_panned(SOUND_BALLOON_POP, 0x8001, peep->x, peep->y, peep->z);
+			audio_play_sound_at_location(SOUND_BALLOON_POP, peep->x, peep->y, peep->z);
 		}
 
 		if (peep->x != SPRITE_LOCATION_NULL) {
@@ -3161,7 +3161,7 @@ static void peep_update_ride_sub_state_20(rct_peep* peep){
 		return;
 	}
 
-	sound_play_panned(SOUND_TOILET_FLUSH, 0x8001, peep->x, peep->y, peep->z);
+	audio_play_sound_at_location(SOUND_TOILET_FLUSH, peep->x, peep->y, peep->z);
 
 	peep->sub_state++;
 
@@ -5265,7 +5265,7 @@ void peep_applause()
 	}
 
 	// Play applause noise
-	sound_play_panned(SOUND_APPLAUSE, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2, 0, 0, 0);
+	audio_play_sound_panned(SOUND_APPLAUSE, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2, 0, 0, 0);
 }
 
 /**
@@ -7523,7 +7523,7 @@ static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 
 	RCT2_GLOBAL(0x00141F568, uint8) = RCT2_GLOBAL(0x0013CA740, uint8);
 	finance_payment(-amount, RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) / 4);
 
-	sound_play_panned(SOUND_PURCHASE, 0x8001, peep->x, peep->y, peep->z);
+	audio_play_sound_at_location(SOUND_PURCHASE, peep->x, peep->y, peep->z);
 }
 
 static void peep_set_has_ridden(rct_peep *peep, int rideIndex)
@@ -7851,7 +7851,7 @@ static void peep_on_exit_ride(rct_peep *peep, int rideIndex)
 
 		int laugh = scenario_rand() & 7;
 		if (laugh < 3) {
-			sound_play_panned(SOUND_LAUGH_1 + laugh, 0x8001, peep->x, peep->y, peep->z);
+			audio_play_sound_at_location(SOUND_LAUGH_1 + laugh, peep->x, peep->y, peep->z);
 		}
 	}
 
