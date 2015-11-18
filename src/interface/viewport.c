@@ -1493,7 +1493,6 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 	}
 }
 
-#ifdef __GNUC__
 static int callcode_push1(int address, int stackvar, registers *regs)
 {
 	int result;
@@ -1505,7 +1504,7 @@ static int callcode_push1(int address, int stackvar, registers *regs)
 	int *_esi = &regs->esi;
 	int *_edi = &regs->edi;
 	int *_ebp = &regs->ebp;
-	
+#ifdef __GNUC__
 	__asm__ ( "\
 		\n\
 		/* Store C's base pointer*/     \n\
@@ -1584,9 +1583,85 @@ static int callcode_push1(int address, int stackvar, registers *regs)
 		: [stackvar] "m" (stackvar)
 		: "eax","ecx","edx","esi","edi"
 	);
+#else
+	//This is untested since I don't use Visual Studio for development.
+	__asm {
+		// Store C's base pointer
+		push ebp
+		push ebx
+		// Store address to call
+		push address
+
+		// Set all registers to the input values
+		mov eax, [_eax]
+		mov eax, [eax]
+		mov ebx, [_ebx]
+		mov ebx, [ebx]
+		mov ecx, [_ecx]
+		mov ecx, [ecx]
+		mov edx, [_edx]
+		mov edx, [edx]
+		mov esi, [_esi]
+		mov esi, [esi]
+		mov edi, [_edi]
+		mov edi, [edi]
+		
+		push OFFSET foo
+		push stackvar
+		
+		mov ebp, [_ebp]
+		mov ebp, [ebp]
+
+		// Call function
+		//call [esp]
+		jmp [esp + 8]
+	foo:
+		// Store output eax
+		push eax
+		push ebp
+		push ebx
+		mov ebp, [esp + 20]
+		mov ebx, [esp + 16]
+
+		// Get resulting ecx, edx, esi, edi registers
+
+		mov eax, [_edi]
+		mov [eax], edi
+		mov eax, [_esi]
+		mov [eax], esi
+		mov eax, [_edx]
+		mov [eax], edx
+		mov eax, [_ecx]
+		mov [eax], ecx
+
+		// Pop ebx reg into ecx
+		pop ecx
+		mov eax, [_ebx]
+		mov[eax], ecx
+
+		// Pop ebp reg into ecx
+		pop ecx
+		mov eax, [_ebp]
+		mov[eax], ecx
+
+		pop eax
+		// Get resulting eax register
+		mov ecx, [_eax]
+		mov [ecx], eax
+
+		// Save flags as return in eax
+		lahf
+		// Pop address
+		pop ebp
+
+		pop ebx
+		pop ebp
+		/* Load result with flags */
+		mov result, eax
+	}
+#endif
 	return result&0xFF00;
 }
-#endif //__GNUC__
 
 /**
  * rct2: 0x66062C
