@@ -46,6 +46,7 @@ static void vehicle_update_showing_film(rct_vehicle *vehicle);
 static void vehicle_update_doing_circus_show(rct_vehicle *vehicle);
 static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle);
 static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle);
+static void vehicle_update_waiting_for_cable_lift(rct_vehicle *vehicle);
 
 static void vehicle_update_sound(rct_vehicle *vehicle);
 static int vehicle_update_scream_sound(rct_vehicle *vehicle);
@@ -1053,12 +1054,14 @@ static void vehicle_update(rct_vehicle *vehicle)
 	case VEHICLE_STATUS_OPERATING_11:
 	case VEHICLE_STATUS_OPERATING_12:
 	case VEHICLE_STATUS_OPERATING_13:
-	case VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT:
 	case VEHICLE_STATUS_TRAVELLING_15:
 		{
 			int *addressSwitchPtr = (int*)(0x006D7B70 + (vehicle->status * 4));
 			RCT2_CALLPROC_X(*addressSwitchPtr, 0, 0, 0, (vehicle->sub_state << 8) | ride->mode, (int)vehicle, 0, 0);
 		}
+		break;
+	case VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT:
+		vehicle_update_waiting_for_cable_lift(vehicle);
 		break;
 	case VEHICLE_STATUS_SHOWING_FILM:
 		vehicle_update_showing_film(vehicle);
@@ -1425,6 +1428,23 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 	}
 
 	vehicle_invalidate_window(vehicle);
+}
+
+/**
+*
+*  rct2: 0x006D9CE9
+*/
+static void vehicle_update_waiting_for_cable_lift(rct_vehicle *vehicle)
+{
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+
+	rct_vehicle* cableLift = GET_VEHICLE(ride->cable_lift);
+
+	if (cableLift->status != VEHICLE_STATUS_WAITING_FOR_PASSENGERS)
+		return;
+
+	cableLift->status = VEHICLE_STATUS_WAITING_TO_DEPART;
+	cableLift->var_C0 = vehicle->sprite_index;
 }
 
 /**
