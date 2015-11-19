@@ -1699,7 +1699,7 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	regs.edi = 0;
 	regs.ebp = ebp;
 	
-	int saved_esi, saved_ecx;
+	int saved_esi, saved_ecx, saved_edx;
 	
 	//Uncomment this to use vanilla code.
 	//RCT2_CALLFUNC_Y(0x66062C, &regs); return;
@@ -1708,6 +1708,7 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 1;
 	RCT2_GLOBAL(0x9DE57C, uint16) |= 1;
 	RCT2_GLOBAL(0x9E3250, rct_map_element *) = mapElement;
+	//0x9E3296: possibly zoom level for current viewport
 	RCT2_GLOBAL(0x9E3296, uint16) = dpi->zoom_level;
 	
 	regs.ecx = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
@@ -1876,7 +1877,54 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	//RESTORE
 	regs.esi = saved_esi;
 	
-	RCT2_CALLFUNC_Y(0x660A3D, &regs); return;
+	//ToDo: refactor this
+	//RCT2_CALLFUNC_Y(0x660A3D, &regs); return;
+	if(!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_HEIGHTS))
+		goto loc_660AAB;
+	if(RCT2_GLOBAL(0x9E3296, uint16)!=0)
+		goto loc_660AAB;
+	//RCT2_CALLFUNC_Y(0x660A52, &regs); return;
+	
+	//SAVE
+	saved_ecx = regs.ecx;
+	saved_edx = regs.edx;
+	saved_esi = regs.esi;
+	
+	regs.ax = RCT2_GLOBAL(0x9DE56A, uint16) + 0x10;
+	regs.cx = RCT2_GLOBAL(0x9DE56E, uint16) + 0x10;
+	regs.dx = map_element_height(regs.ax, regs.cx) + 3;
+	regs.ebx = regs.dx;
+	regs.ebx = (unsigned)regs.ebx >> 4;
+	regs.ebx += 0x20781689;
+	regs.bx += RCT2_GLOBAL(0x9AACBD, uint16);
+	regs.bx -= RCT2_GLOBAL(0x1359208, uint16);
+	
+	regs.al = 0x10;
+	regs.cl = 0x10;
+	regs.di = 1;
+	regs.si = 1;
+	regs.ah = 0;
+	regs.ebp = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	
+	//I think the function being called returns void, but I can never be absolutely sure.
+	RCT2_CALLPROC_X(
+		(int)RCT2_ADDRESS(0x98196C, uint32*)[regs.ebp],
+		regs.eax,
+		regs.ebx,
+		regs.ecx,
+		regs.edx,
+		regs.esi,
+		regs.edi,
+		regs.ebp
+	);
+	
+	//RESTORE
+	regs.esi = saved_esi;
+	regs.edx = saved_edx;
+	regs.ecx = saved_ecx;
+	
+loc_660AAB:
+	RCT2_CALLFUNC_Y(0x660AAB, &regs); return;
 }
 
 /**
