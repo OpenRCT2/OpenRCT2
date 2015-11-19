@@ -310,9 +310,9 @@ void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction
 
 	uint32 seatImageId;
 
-	if (vehicle != NULL && vehicle->var_B5 >= 64) {
+	if (vehicle != NULL && vehicle->restraints_position >= 64) {
 		// Open Restraints
-		image_id = (vehicle->var_B5 - 64) >> 6;
+		image_id = (vehicle->restraints_position - 64) >> 6;
 		image_id += direction * 3;
 		image_id += rideEntry->vehicles[0].base_image_id;
 		image_id += 64;

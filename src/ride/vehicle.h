@@ -136,13 +136,13 @@ typedef struct {
 	uint16 var_4C;
 	uint16 var_4E;
 	uint8 status;					// 0x50
-	uint8 var_51;
+	uint8 sub_state;				// 0x51
 	uint16 peep[32];				// 0x52
 	uint8 peep_tshirt_colours[32];	// 0x92
 	uint8 num_seats;				// 0xB2
 	uint8 num_peeps;				// 0xB3
 	uint8 next_free_seat;			// 0xB4
-	uint8 var_B5;
+	uint8 restraints_position;		// 0xB5 0 == Close, 255 == Open
 	sint16 var_B6;
 	uint16 var_B8;
 	uint8 var_BA;
