@@ -1666,21 +1666,20 @@ static int callcode_push1(int address, int stackvar, registers *regs)
 /**
  * Helper function for viewport_surface_paint_setup
  * mapElement = esi;
- * unk = cl
+ * shift = cl
  */
-static inline int helper(rct_map_element *mapElement, registers *regs)
+static inline int helper(rct_map_element *mapElement, uint8 shift)
 {	
-	regs->bl = mapElement->properties.surface.slope;
-	regs->di = regs->bx;
-	regs->di &= 0xF;
-	regs->di <<= regs->cl;
-	regs->ebx &= 0x10;
-	regs->si = regs->di;
-	regs->si = (uint16)regs->si >> 4;
-	regs->di |= regs->si;
-	regs->di &= 0xF;
-	regs->bx |= regs->di;
-	return regs->ebx;
+	uint16 di;
+	uint32 ebx;
+	
+	ebx = mapElement->properties.surface.slope;
+	di = (ebx & 0xF) << shift;
+	di |= di >> 4;
+	di &= 0xF;
+	ebx &= 0x10;
+	ebx |= di;
+	return ebx;
 }
 
 /**
@@ -1723,7 +1722,7 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	
 	//callcode_push1(0x660671, saved_esi, &regs); return;
 	
-	regs.ebx = helper(mapElement, &regs);
+	regs.ebx = helper(mapElement, regs.cl);
 	RCT2_GLOBAL(0x9E3278, uint32) = regs.ebx;
 	
 	//callcode_push1(0x660698, saved_esi, &regs); return;
@@ -1741,45 +1740,27 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	{	
 		//callcode_push1(0x6606DA, saved_esi, &regs); return;
 		
-		rct_map_element *mapElement2 = map_get_surface_element_at(x/32, y/32); //mapElement2 = esi
+		rct_map_element *surfaceElement = map_get_surface_element_at(x/32, y/32); //surfaceElement = esi
 		
-		regs.esi = (int)mapElement2;
+		RCT2_GLOBAL(0x9E3248, rct_map_element *) = surfaceElement;
 		
-		//callcode_push1(0x6606F9, saved_esi, &regs); return;
-		
-		RCT2_GLOBAL(0x9E3248, rct_map_element *) = mapElement2;
-		regs.al = (mapElement2->type & 3) << 3;
-		
-		regs.ah = mapElement2->properties.surface.terrain >> 5;
-		regs.al |= regs.ah;
-		//callcode_push1(0x66070E, saved_esi, &regs); return;
-		
-		regs.eax &= 0xFF;
-		RCT2_GLOBAL(0x9E325C, uint32) = regs.eax;
+		RCT2_GLOBAL(0x9E325C, uint32) = ((surfaceElement->type & 3) << 3) | (surfaceElement->properties.surface.terrain >> 5);
 
-		regs.ebx = helper(mapElement2, &regs);	
+		regs.ebx = helper(surfaceElement, regs.cl);	
 		RCT2_GLOBAL(0x9E3270, uint32) = regs.ebx;
 		
-		//callcode_push1(0x66073F, saved_esi, &regs); return;
-		regs.ax = regs.dx;
+		regs.ax = height/16;
 		regs.edi = RCT2_GLOBAL(0x9E3278, uint32);
-		//callcode_push1(0x660748, saved_esi, &regs); return;
-		regs.ax = (uint16)regs.ax >> 4;
-		assert(regs.ax == height/16);
-		mapElement2 = RCT2_GLOBAL(0x9E3248, rct_map_element *);
-		
-		regs.esi = (int)mapElement2;
-		//callcode_push1(0x660752, saved_esi, &regs); return;
+		surfaceElement = RCT2_GLOBAL(0x9E3248, rct_map_element *);
 		
 		//SAVE
 		saved_ecx = regs.ecx;
 		
-		regs.ah = mapElement2->base_height >> 1;
-		regs.cx = regs.ax;
+		regs.ah = surfaceElement->base_height / 2;
+		regs.cl = regs.al + RCT2_ADDRESS(0x97B504, uint8)[regs.edi];
+		regs.ch = regs.ah + RCT2_ADDRESS(0x97B4A4, uint8)[regs.ebx];
 		regs.al += RCT2_ADDRESS(0x97B4E4, uint8)[regs.edi];
-		regs.cl += RCT2_ADDRESS(0x97B504, uint8)[regs.edi];
 		regs.ah += RCT2_ADDRESS(0x97B4C4, uint8)[regs.ebx];
-		regs.ch += RCT2_ADDRESS(0x97B4A4, uint8)[regs.ebx];
 		RCT2_GLOBAL(0x9E3280, uint16) = regs.ax;
 		RCT2_GLOBAL(0x9E3288, uint16) = regs.cx;
 		
@@ -1788,42 +1769,35 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	}
 //loc_660781:
 	//callcode_push1(0x660781, saved_esi, &regs); return;
-	regs.ax = RCT2_GLOBAL(0x9DE568, uint16);
 	regs.esi = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
-	regs.bp = RCT2_GLOBAL(0x9DE56C, uint16);
-	regs.ax += RCT2_ADDRESS(0x97B474, uint16)[regs.esi*2];
+	x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B474, uint16)[regs.esi*2];
+	y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B476, uint16)[regs.esi*2];
 	RCT2_GLOBAL(0x9E3244, rct_map_element *) = NULL;
-	regs.bp += RCT2_ADDRESS(0x97B476, uint16)[regs.esi*2];
 	//callcode_push1(0x6607AE, saved_esi, &regs); return;
-	if(regs.ax < 0x2000 && regs.bp < 0x2000)
+	if(x < 0x2000 && y < 0x2000)
 	{
-		rct_map_element *mapElement2 = map_get_surface_element_at(regs.ax/32, regs.bp/32); //mapElement2 = esi
-		regs.esi = (int)mapElement2;
+		rct_map_element *surfaceElement = map_get_surface_element_at(x/32, y/32); //surfaceElement = esi
+		
 		//rct2: loc_6607E2
 		//callcode_push1(0x6607E2, saved_esi, &regs); return;
-		RCT2_GLOBAL(0x9E3244, rct_map_element *) = mapElement2;
-		regs.al = (mapElement2->type & 3) << 3;
-		regs.ah = mapElement2->properties.surface.terrain >> 5;
-		regs.al |= regs.ah;
-		regs.eax &= 0xFF;
-		RCT2_GLOBAL(0x9E3258, uint32) = regs.eax;
-		regs.ebx = helper(mapElement2, &regs);
+		RCT2_GLOBAL(0x9E3244, rct_map_element *) = surfaceElement;
+		
+		RCT2_GLOBAL(0x9E3258, uint32) = ((surfaceElement->type & 3) << 3) | (surfaceElement->properties.surface.terrain >> 5);
+		
+		regs.ebx = helper(surfaceElement, regs.cl);
 		RCT2_GLOBAL(0x9E326C, uint32) = regs.ebx;
-		regs.ax = regs.dx;
+		regs.ax = height/16;
 		regs.edi = RCT2_GLOBAL(0x9E3278, uint32);
-		regs.ax = (uint16)regs.ax >> 4;
-		mapElement2 = RCT2_GLOBAL(0x9E3244, rct_map_element *);
-		regs.esi = (int)mapElement2;
+		surfaceElement = RCT2_GLOBAL(0x9E3244, rct_map_element *);
 		
 		//SAVE
 		saved_ecx = regs.ecx;
 		
-		regs.ah = mapElement2->base_height >> 1;
-		regs.cx = regs.ax;
+		regs.ah = surfaceElement->base_height / 2;
+		regs.cl = regs.al + RCT2_ADDRESS(0x97B504, uint8)[regs.edi];
+		regs.ch = regs.ah + RCT2_ADDRESS(0x97B4E4, uint8)[regs.ebx];
 		regs.al += RCT2_ADDRESS(0x97B4A4, uint8)[regs.edi];
-		regs.cl += RCT2_ADDRESS(0x97B504, uint8)[regs.edi];
 		regs.ah += RCT2_ADDRESS(0x97B4C4, uint8)[regs.ebx];
-		regs.ch += RCT2_ADDRESS(0x97B4E4, uint8)[regs.ebx];
 		RCT2_GLOBAL(0x9E327E, uint16) = regs.ax;
 		RCT2_GLOBAL(0x9E3286, uint16) = regs.cx;
 		
@@ -1832,39 +1806,32 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	}
 //loc_66086A:
 	//callcode_push1(0x66086A, saved_esi, &regs); return;
-	regs.ax = RCT2_GLOBAL(0x9DE568, uint16);
 	regs.esi = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
-	regs.bp = RCT2_GLOBAL(0x9DE56C, uint16);
-	regs.ax += RCT2_ADDRESS(0x97B484, uint16)[regs.esi*2];
+	x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B484, uint16)[regs.esi*2];
+	y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B486, uint16)[regs.esi*2];
 	RCT2_GLOBAL(0x9E324C, rct_map_element *) = NULL;
-	regs.bp += RCT2_ADDRESS(0x97B486, uint16)[regs.esi*2];
-	if(regs.ax < 0x2000 && regs.bp < 0x2000)
+	if(x < 0x2000 && y < 0x2000)
 	{
-		rct_map_element *mapElement2 = map_get_surface_element_at(regs.ax/32, regs.bp/32); //mapElement2 = esi
-		regs.esi = (int)mapElement2;
-		RCT2_GLOBAL(0x9E324C, rct_map_element *) = mapElement2;
-		regs.al = (mapElement2->type & 3) << 3;
-		regs.ah = mapElement2->properties.surface.terrain >> 5;
-		regs.al |= regs.ah;
-		regs.eax &= 0xFF;
-		RCT2_GLOBAL(0x9E3260, uint32) = regs.eax;
-		regs.ebx = helper(mapElement2, &regs);
+		rct_map_element *surfaceElement = map_get_surface_element_at(x/32, y/32); //surfaceElement = esi
+		
+		RCT2_GLOBAL(0x9E324C, rct_map_element *) = surfaceElement;
+		
+		RCT2_GLOBAL(0x9E3260, uint32) = ((surfaceElement->type & 3) << 3) | (surfaceElement->properties.surface.terrain >> 5);
+		
+		regs.ebx = helper(surfaceElement, regs.cl);
 		RCT2_GLOBAL(0x9E3274, uint32) = regs.ebx;
-		regs.ax = regs.dx;
+		regs.ax = height/16;
 		regs.edi = RCT2_GLOBAL(0x9E3278, uint32);
-		regs.ax = (uint16)regs.ax >> 4;
-		mapElement2 = RCT2_GLOBAL(0x9E324C, rct_map_element *);
-		regs.esi = (int)mapElement2;
+		surfaceElement = RCT2_GLOBAL(0x9E324C, rct_map_element *);
 		
 		//SAVE
 		saved_ecx = regs.ecx;
 		
-		regs.ah = mapElement2->base_height >> 1;
-		regs.cx = regs.ax;
+		regs.ah = surfaceElement->base_height / 2;
+		regs.cl = regs.al + RCT2_ADDRESS(0x97B4E4, uint8)[regs.edi];
+		regs.ch = regs.ah + RCT2_ADDRESS(0x97B504, uint8)[regs.ebx];
 		regs.al += RCT2_ADDRESS(0x97B4C4, uint8)[regs.edi];
-		regs.cl += RCT2_ADDRESS(0x97B4E4, uint8)[regs.edi];
 		regs.ah += RCT2_ADDRESS(0x97B4A4, uint8)[regs.ebx];
-		regs.ch += RCT2_ADDRESS(0x97B504, uint8)[regs.ebx];
 		RCT2_GLOBAL(0x9E3282, uint16) = regs.ax;
 		RCT2_GLOBAL(0x9E328A, uint16) = regs.cx;
 		
@@ -1873,39 +1840,32 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	}
 //loc_660953:
 	//callcode_push1(0x660953, saved_esi, &regs); return;
-	regs.ax = RCT2_GLOBAL(0x9DE568, uint16);
 	regs.esi = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
-	regs.bp = RCT2_GLOBAL(0x9DE56C, uint16);
-	regs.ax += RCT2_ADDRESS(0x97B494, uint16)[regs.esi*2];
+	x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B494, uint16)[regs.esi*2];
+	y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B496, uint16)[regs.esi*2];
 	RCT2_GLOBAL(0x9E3240, rct_map_element *) = NULL;
-	regs.bp += RCT2_ADDRESS(0x97B496, uint16)[regs.esi*2];
-	if(regs.ax < 0x2000 && regs.bp < 0x2000)
+	if(x < 0x2000 && y < 0x2000)
 	{
-		rct_map_element *mapElement2 = map_get_surface_element_at(regs.ax/32, regs.bp/32); //mapElement2 = esi
-		regs.esi = (int)mapElement2;
-		RCT2_GLOBAL(0x9E3240, rct_map_element *) = mapElement2;
-		regs.al = (mapElement2->type & 3) << 3;
-		regs.ah = mapElement2->properties.surface.terrain >> 5;
-		regs.al |= regs.ah;
-		regs.eax &= 0xFF;
-		RCT2_GLOBAL(0x9E3254, uint32) = regs.eax;
-		regs.ebx = helper(mapElement2, &regs);
+		rct_map_element *surfaceElement = map_get_surface_element_at(x/32, y/32); //surfaceElement = esi
+		
+		RCT2_GLOBAL(0x9E3240, rct_map_element *) = surfaceElement;
+		
+		RCT2_GLOBAL(0x9E3254, uint32) = ((surfaceElement->type & 3) << 3) | (surfaceElement->properties.surface.terrain >> 5);
+		
+		regs.ebx = helper(surfaceElement, regs.cl);
 		RCT2_GLOBAL(0x9E3268, uint32) = regs.ebx;
-		regs.ax = regs.dx;
+		regs.ax = height/16;
 		regs.edi = RCT2_GLOBAL(0x9E3278, uint32);
-		regs.ax = (uint16)regs.ax >> 4;
-		mapElement2 = RCT2_GLOBAL(0x9E3240, rct_map_element *);
-		regs.esi = (int)mapElement2;
+		surfaceElement = RCT2_GLOBAL(0x9E3240, rct_map_element *);
 		
 		//SAVE
 		saved_ecx = regs.ecx;
 		
-		regs.ah = mapElement2->base_height >> 1;
-		regs.cx = regs.ax;
+		regs.ah = surfaceElement->base_height / 2;
+		regs.cl = regs.al + RCT2_ADDRESS(0x97B4A4, uint8)[regs.edi];
+		regs.ch = regs.ah + RCT2_ADDRESS(0x97B504, uint8)[regs.ebx];
 		regs.al += RCT2_ADDRESS(0x97B4C4, uint8)[regs.edi];
-		regs.cl += RCT2_ADDRESS(0x97B4A4, uint8)[regs.edi];
 		regs.ah += RCT2_ADDRESS(0x97B4E4, uint8)[regs.ebx];
-		regs.ch += RCT2_ADDRESS(0x97B504, uint8)[regs.ebx];
 		RCT2_GLOBAL(0x9E327C, uint16) = regs.ax;
 		RCT2_GLOBAL(0x9E3284, uint16) = regs.cx;
 		
