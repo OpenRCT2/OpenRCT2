@@ -783,15 +783,15 @@ uint8 platform_get_locale_measurement_format()
 		(LPSTR)&measurement_system,
 		sizeof(measurement_system)) == 0
 	) {
-		return MEASUREMENT_FORMAT_IMPERIAL;
+		return MEASUREMENT_FORMAT_METRIC;
 	}
 
 	switch (measurement_system) {
-	case 0:
-		return MEASUREMENT_FORMAT_METRIC;
 	case 1:
-	default:
 		return MEASUREMENT_FORMAT_IMPERIAL;
+	case 0:
+	default:
+		return MEASUREMENT_FORMAT_METRIC;
 	}
 }
 
