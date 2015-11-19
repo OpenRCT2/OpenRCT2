@@ -2099,11 +2099,9 @@ loc_660AAB:
 		regs.edi = 4;
 	//callcode_push3(0x660AE3, saved_esi, saved_ebx, saved_ecx, &regs); return;
 	
-	//This code causes a segfault.
-	
 	regs.esi = saved_esi; //mov esi, [esp+0Ch+var_4]; mapElement = esi
 	assert(regs.esi = (int)mapElement);
-	mapElement = regs.esi;
+	mapElement = (rct_map_element *)regs.esi;
 	if(mapElement->properties.surface.terrain & 0xE0)
 		goto loc_660C9F;
 	if(mapElement->type & 3)
@@ -2114,7 +2112,7 @@ loc_660AAB:
 		goto loc_660C9F;
 	regs.si = mapElement->properties.surface.grass_length;
 	regs.esi &= 7;
-	callcode_push3(0x660C28, saved_esi, saved_ebx, saved_ecx, &regs); return;
+	callcode_push3(0x660B1E, saved_esi, saved_ebx, saved_ecx, &regs); return;
 loc_660C9F:
 	callcode_push3(0x660C9F, saved_esi, saved_ebx, saved_ecx, &regs); return;
 	
