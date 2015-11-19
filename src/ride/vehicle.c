@@ -42,6 +42,7 @@ static void vehicle_ride_null_update_departing(rct_vehicle *vehicle);
 static void vehicle_ride_null_update_travelling(rct_vehicle *vehicle);
 static void vehicle_ride_null_update_arriving(rct_vehicle *vehicle);
 
+static void vehicle_update_showing_film(rct_vehicle *vehicle);
 static void vehicle_update_doing_circus_show(rct_vehicle *vehicle);
 static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle);
 static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle);
@@ -1048,7 +1049,6 @@ static void vehicle_update(rct_vehicle *vehicle)
 	case VEHICLE_STATUS_ROTATING:
 	case VEHICLE_STATUS_ROTATING_0D:
 	case VEHICLE_STATUS_OPERATING:
-	case VEHICLE_STATUS_SHOWING_FILM:
 	case VEHICLE_STATUS_ROTATING_10:
 	case VEHICLE_STATUS_OPERATING_11:
 	case VEHICLE_STATUS_OPERATING_12:
@@ -1060,7 +1060,9 @@ static void vehicle_update(rct_vehicle *vehicle)
 			RCT2_CALLPROC_X(*addressSwitchPtr, 0, 0, 0, (vehicle->sub_state << 8) | ride->mode, (int)vehicle, 0, 0);
 		}
 		break;
-
+	case VEHICLE_STATUS_SHOWING_FILM:
+		vehicle_update_showing_film(vehicle);
+		break;
 	case VEHICLE_STATUS_DOING_CIRCUS_SHOW:
 		vehicle_update_doing_circus_show(vehicle);
 	}
@@ -1426,6 +1428,30 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 }
 
 /**
+*
+*  rct2: 0x006D95AD
+*/
+static void vehicle_update_showing_film(rct_vehicle *vehicle)
+{
+	int currentTime, totalTime;
+
+	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+		return;
+
+	totalTime = RideFilmLength[vehicle->sub_state];
+	currentTime = vehicle->var_4C + 1;
+	if (currentTime <= totalTime) {
+		vehicle->var_4C = currentTime;
+	}
+	else {
+		vehicle->status = VEHICLE_STATUS_ARRIVING;
+		vehicle_invalidate_window(vehicle);
+		vehicle->sub_state = 0;
+		vehicle->var_C0 = 0;
+	}
+}
+
+/**
  * 
  *  rct2: 0x006D95F7
  */
@@ -1459,7 +1485,8 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 	// PROBLEMS
 	rct_ride *ride;
 	rct_ride_type *rideEntry;
-	uint8 bl, dl = 255;
+	// bl should be set before hand
+	uint8 bl = 255, dl = 255;
 	uint8 screamId, screamVolume;
 	uint16 soundIdVolume;
 
@@ -1472,9 +1499,10 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 	if (ecx >= 0) {
 		dl = vehicleEntry->var_57;
 		ecx >>= 15;
-		bl = 208 + (ecx & 0xFF);
-		if (bl < 0)
+		if (208 + (ecx & 0xFF) > 255)
 			bl = 255;
+		else
+			bl = 208 + (ecx & 0xFF);
 	}
 
 	switch (vehicleEntry->sound_range) {

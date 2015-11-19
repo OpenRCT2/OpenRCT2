@@ -97,4 +97,6 @@ extern const uint32 ShopItemImage[SHOP_ITEM_COUNT];
 
 extern const rct_ride_type_vehicle CableLiftVehicle;
 
+extern const uint16 RideFilmLength[3];
+
 #endif

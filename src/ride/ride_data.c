@@ -1298,3 +1298,10 @@ const rct_ride_type_vehicle CableLiftVehicle = {
 	.special_frames = 0,
 	.peep_loading_positions = NULL
 };
+
+/* rct2: 0x009A0AA0 */
+const uint16 RideFilmLength[3] = {
+	5000, // MOUSE_TAILS
+	6000, // STORM_CHASERS
+	7000  // SPACE_RAIDERS
+};
