@@ -978,7 +978,7 @@ static void scenario_fix_ghosts(rct_s6_data *s6)
  *  rct2: 0x006754F5
  * @param flags bit 0: pack objects, 1: save as scenario
  */
-int scenario_save(SDL_RWops* rw, int flags, const long maxSize)
+long scenario_save(SDL_RWops* rw, int flags, const long maxSize)
 {
 	rct_window *w;
 	rct_viewport *viewport;
@@ -1046,7 +1046,7 @@ int scenario_save(SDL_RWops* rw, int flags, const long maxSize)
 
 	scenario_fix_ghosts(s6);
 	game_convert_strings_to_rct2(s6);
-	scenario_save_s6(rw, s6, maxSize);
+	long scenario_size = scenario_save_s6(rw, s6, maxSize);
 
 	free(s6);
 
@@ -1056,7 +1056,7 @@ int scenario_save(SDL_RWops* rw, int flags, const long maxSize)
 	gfx_invalidate_screen();
 	if (!(flags & 0x80000000))
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
-	return 1;
+	return scenario_size;
 }
 
 // Save game state without modifying any of the state for multiplayer

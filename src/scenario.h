@@ -427,7 +427,7 @@ void scenario_update();
 unsigned int scenario_rand();
 unsigned int scenario_rand_max(unsigned int max);
 int scenario_prepare_for_save();
-int scenario_save(SDL_RWops* rw, int flags, const long maxSize);
+long scenario_save(SDL_RWops* rw, int flags, const long maxSize);
 int scenario_save_network(SDL_RWops* rw);
 long scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6, const long maxSize);
 void scenario_set_filename(const char *value);

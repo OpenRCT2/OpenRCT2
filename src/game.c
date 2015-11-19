@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#include <lodepng/lodepng.h>
 #include "addresses.h"
 #include "audio/audio.h"
 #include "config.h"
@@ -888,11 +889,48 @@ int game_load_save(const char *path)
 
 	safe_strncpy(gScenarioSavePath, path, MAX_PATH);
 
-	SDL_RWops* rw = SDL_RWFromFile(path, "rb");
+	SDL_RWops* rw;
+	unsigned char* png = NULL;
+
+	char *extension = (char*)path_get_extension(path_get_filename(path));
+	if (_stricmp(extension, ".png") == 0)
+	{
+		LodePNGState state;
+		unsigned char* png;
+		size_t pngsize;
+		lodepng_state_init(&state);
+		lodepng_load_file(&png, &pngsize, path);
+		unsigned char* image;
+		unsigned width, height;
+		int error = lodepng_decode(&image, &width, &height, &state, png, pngsize);
+		if (error)
+			log_error("error %u: %s\n", error, lodepng_error_text(error));
+		char *chunk_type = "oRCt";
+		unsigned char *chunk = png + 8;
+		bool reachedEnd = false;
+		while (!lodepng_chunk_type_equals(chunk, chunk_type))
+		{
+			if (lodepng_chunk_type_equals(chunk, "IEND"))
+			{
+				reachedEnd = true;
+				break;
+			}
+			chunk = lodepng_chunk_next(chunk);
+		}
+		if (reachedEnd)
+		{
+			log_error("This file has no savegame!");
+			return 0;
+		}
+		rw = SDL_RWFromMem(lodepng_chunk_data(chunk), lodepng_chunk_length(chunk));
+	} else {
+		rw = SDL_RWFromFile(path, "rb");
+	}
 	if (rw == NULL) {
 		log_error("unable to open %s", path);
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+		free(png);
 		return 0;
 	}
 
@@ -900,9 +938,11 @@ int game_load_save(const char *path)
 		title_load();
 		rct2_endupdate();
 		SDL_RWclose(rw);
+		free(png);
 		return 0;
 	}
 	SDL_RWclose(rw);
+	free(png);
 
 	game_load_init();
 	if (network_get_mode() == NETWORK_MODE_SERVER) {

@@ -268,7 +268,7 @@ int rct2_open_file(const char *path)
 		return 0;
 	extension++;
 
-	if (_stricmp(extension, "sv6") == 0) {
+	if ((_stricmp(extension, "sv6") == 0) || (_stricmp(extension, "png") == 0)) {
 		strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, path);
 		game_load_save(path);
 		return 1;
