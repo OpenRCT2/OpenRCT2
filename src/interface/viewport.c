@@ -1877,52 +1877,26 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	//RESTORE
 	regs.esi = saved_esi;
 	
-	//ToDo: refactor this
+	//Handle height marks on land
 	//RCT2_CALLFUNC_Y(0x660A3D, &regs); return;
-	if(!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_HEIGHTS))
-		goto loc_660AAB;
-	if(RCT2_GLOBAL(0x9E3296, uint16)!=0)
-		goto loc_660AAB;
-	//RCT2_CALLFUNC_Y(0x660A52, &regs); return;
-	
-	//SAVE
-	saved_ecx = regs.ecx;
-	saved_edx = regs.edx;
-	saved_esi = regs.esi;
-	
-	regs.ax = RCT2_GLOBAL(0x9DE56A, uint16) + 0x10;
-	regs.cx = RCT2_GLOBAL(0x9DE56E, uint16) + 0x10;
-	regs.dx = map_element_height(regs.ax, regs.cx) + 3;
-	regs.ebx = regs.dx;
-	regs.ebx = (unsigned)regs.ebx >> 4;
-	regs.ebx += 0x20781689;
-	regs.bx += RCT2_GLOBAL(0x9AACBD, uint16);
-	regs.bx -= RCT2_GLOBAL(0x1359208, uint16);
-	
-	regs.al = 0x10;
-	regs.cl = 0x10;
-	regs.di = 1;
-	regs.si = 1;
-	regs.ah = 0;
-	regs.ebp = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
-	
-	//I think the function being called returns void, but I can never be absolutely sure.
-	RCT2_CALLPROC_X(
-		(int)RCT2_ADDRESS(0x98196C, uint32*)[regs.ebp],
-		regs.eax,
-		regs.ebx,
-		regs.ecx,
-		regs.edx,
-		regs.esi,
-		regs.edi,
-		regs.ebp
-	);
-	
-	//RESTORE
-	regs.esi = saved_esi;
-	regs.edx = saved_edx;
-	regs.ecx = saved_ecx;
-	
+	if((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_HEIGHTS) && RCT2_GLOBAL(0x9E3296, uint16)==0)
+	{
+		//RCT2_CALLFUNC_Y(0x660A52, &regs); return;
+		uint16 elementHeight = 3 + map_element_height(RCT2_GLOBAL(0x9DE56A, uint16) + 0x10, RCT2_GLOBAL(0x9DE56E, uint16) + 0x10); //elementHeight = dx
+		unsigned int imageId = (elementHeight >> 4) + 0x20781689 + RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, uint16) - RCT2_GLOBAL(0x1359208, uint16); //imageId = ebx
+		unsigned int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32); //rotation = ebp
+		
+		RCT2_CALLPROC_X(
+			(int)RCT2_ADDRESS(0x98196C, uint32*)[rotation],
+			(0x10) | ((0) << 8), //These are actually two separate parameters, but I have to OR them together for now.
+			imageId,
+			0x10,
+			elementHeight,
+			1,
+			1,
+			rotation
+		);
+	}
 loc_660AAB:
 	RCT2_CALLFUNC_Y(0x660AAB, &regs); return;
 }
