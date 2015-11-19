@@ -1663,6 +1663,180 @@ static int callcode_push1(int address, int stackvar, registers *regs)
 	return result&0xFF00;
 }
 
+static int callcode_push3(int address, int stackvar1, int stackvar2, int stackvar3, registers *regs)
+{
+	int result;
+	
+	int *_eax = &regs->eax;
+	int *_ebx = &regs->ebx;
+	int *_ecx = &regs->ecx;
+	int *_edx = &regs->edx;
+	int *_esi = &regs->esi;
+	int *_edi = &regs->edi;
+	int *_ebp = &regs->ebp;
+#ifdef __GNUC__
+	__asm__ ( "\
+		\n\
+		/* Store C's base pointer*/     \n\
+		push %%ebp        \n\
+		push %%ebx        \n\
+		\n\
+		/* Store %[address] to call*/   \n\
+		push %[address]         \n\
+		\n\
+		/* Set all registers to the input values*/      \n\
+		mov %[_eax], %%eax      \n\
+		mov (%%eax), %%eax  \n\
+		mov %[_ebx], %%ebx      \n\
+		mov (%%ebx), %%ebx  \n\
+		mov %[_ecx], %%ecx      \n\
+		mov (%%ecx), %%ecx  \n\
+		mov %[_edx], %%edx      \n\
+		mov (%%edx), %%edx  \n\
+		mov %[_esi], %%esi      \n\
+		mov (%%esi), %%esi  \n\
+		mov %[_edi], %%edi      \n\
+		mov (%%edi), %%edi  \n\
+		/* Hack: called code should return back to this function */ \n\
+		push $_foo \n\
+		/* Push variable */\n\
+		push %[stackvar1] \n\
+		push %[stackvar2] \n\
+		push %[stackvar3] \n\
+		mov %[_ebp], %%ebp      \n\
+		mov (%%ebp), %%ebp  \n\
+		\n\
+		/* Call function*/      \n\
+		/* call *(%%esp) */     \n\
+		/* int $3 */\n\
+		jmp *16(%%esp)	\n\
+		_foo: \n\
+		\n\
+		/* Store output eax */ \n\
+		push %%eax \n\
+		push %%ebp \n\
+		push %%ebx \n\
+		mov 20(%%esp), %%ebp \n\
+		mov 16(%%esp), %%ebx \n\
+		/* Get resulting ecx, edx, esi, edi registers*/       \n\
+		mov %[_edi], %%eax      \n\
+		mov %%edi, (%%eax)  \n\
+		mov %[_esi], %%eax      \n\
+		mov %%esi, (%%eax)  \n\
+		mov %[_edx], %%eax      \n\
+		mov %%edx, (%%eax)  \n\
+		mov %[_ecx], %%eax      \n\
+		mov %%ecx, (%%eax)  \n\
+		/* Pop ebx reg into ecx*/ \n\
+		pop %%ecx		\n\
+		mov %[_ebx], %%eax \n\
+		mov %%ecx, (%%eax) \n\
+		\n\
+		/* Pop ebp reg into ecx */\n\
+		pop %%ecx \n\
+		mov %[_ebp], %%eax \n\
+		mov %%ecx, (%%eax) \n\
+		\n\
+		pop %%eax \n\
+		/* Get resulting eax register*/ \n\
+		mov %[_eax], %%ecx \n\
+		mov %%eax, (%%ecx) \n\
+		\n\
+		/* Save flags as return in eax*/  \n\
+		lahf \n\
+		/* Pop address*/ \n\
+		pop %%ebp \n\
+		\n\
+		pop %%ebx \n\
+		pop %%ebp \n\
+		/* Load result with flags */ \n\
+		mov %%eax, %[result] \n\
+		" : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp), [result] "+m" (result)
+		: [stackvar1] "m" (stackvar1), [stackvar2] "m" (stackvar2), [stackvar3] "m" (stackvar3)
+		: "eax","ecx","edx","esi","edi"
+	);
+#else
+	//This is untested since I don't use Visual Studio for development.
+	__asm {
+		// Store C's base pointer
+		push ebp
+		push ebx
+		// Store address to call
+		push address
+
+		// Set all registers to the input values
+		mov eax, [_eax]
+		mov eax, [eax]
+		mov ebx, [_ebx]
+		mov ebx, [ebx]
+		mov ecx, [_ecx]
+		mov ecx, [ecx]
+		mov edx, [_edx]
+		mov edx, [edx]
+		mov esi, [_esi]
+		mov esi, [esi]
+		mov edi, [_edi]
+		mov edi, [edi]
+		
+		push OFFSET foo
+		push stackvar1
+		push stackvar2
+		push stackvar3
+		
+		mov ebp, [_ebp]
+		mov ebp, [ebp]
+
+		// Call function
+		//call [esp]
+		jmp [esp + 16]
+	foo:
+		// Store output eax
+		push eax
+		push ebp
+		push ebx
+		mov ebp, [esp + 20]
+		mov ebx, [esp + 16]
+
+		// Get resulting ecx, edx, esi, edi registers
+
+		mov eax, [_edi]
+		mov [eax], edi
+		mov eax, [_esi]
+		mov [eax], esi
+		mov eax, [_edx]
+		mov [eax], edx
+		mov eax, [_ecx]
+		mov [eax], ecx
+
+		// Pop ebx reg into ecx
+		pop ecx
+		mov eax, [_ebx]
+		mov[eax], ecx
+
+		// Pop ebp reg into ecx
+		pop ecx
+		mov eax, [_ebp]
+		mov[eax], ecx
+
+		pop eax
+		// Get resulting eax register
+		mov ecx, [_eax]
+		mov [ecx], eax
+
+		// Save flags as return in eax
+		lahf
+		// Pop address
+		pop ebp
+
+		pop ebx
+		pop ebp
+		/* Load result with flags */
+		mov result, eax
+	}
+#endif
+	return result&0xFF00;
+}
+
 /**
  * Helper function for viewport_surface_paint_setup
  * mapElement = esi;
@@ -1699,7 +1873,7 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 	regs.edi = 0;
 	regs.ebp = ebp;
 	
-	int saved_esi, saved_ecx, saved_edx;
+	int saved_ebx, saved_ecx, saved_edx, saved_esi;
 	
 	//Uncomment this to use vanilla code.
 	//RCT2_CALLFUNC_Y(0x66062C, &regs); return;
@@ -1898,7 +2072,54 @@ void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element 
 		);
 	}
 loc_660AAB:
-	RCT2_CALLFUNC_Y(0x660AAB, &regs); return;
+	//RCT2_CALLFUNC_Y(0x660AAB, &regs); return;
+	
+	//SAVE
+	saved_esi = regs.esi;
+	
+	regs.ebp = RCT2_GLOBAL(0x9E3264, uint32);
+	regs.ebx = RCT2_GLOBAL(0x9E3278, uint32);
+	regs.di = RCT2_GLOBAL(0x9E323C, uint8);
+	
+	//SAVE
+	saved_ebx = regs.ebx;
+	saved_ecx = regs.ecx;
+	
+	regs.di <<= 4;
+	
+	//callcode_push3(0x660AC6, saved_esi, saved_ebx, saved_ecx, &regs); return;
+	
+	assert(height == regs.dx);
+	if(height == regs.di)
+		goto loc_660B25;
+	//callcode_push3(0x660ACB, saved_esi, saved_ebx, saved_ecx, &regs); return;
+	regs.bl = RCT2_ADDRESS(0x97B444, uint8)[regs.ebx];
+	regs.edi = 0;
+	if(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_GRIDLINES)
+		regs.edi = 4;
+	//callcode_push3(0x660AE3, saved_esi, saved_ebx, saved_ecx, &regs); return;
+	
+	//This code causes a segfault.
+	
+	regs.esi = saved_esi; //mov esi, [esp+0Ch+var_4]; mapElement = esi
+	assert(regs.esi = (int)mapElement);
+	mapElement = regs.esi;
+	if(mapElement->properties.surface.terrain & 0xE0)
+		goto loc_660C9F;
+	if(mapElement->type & 3)
+		goto loc_660C9F;
+	if(RCT2_GLOBAL(0x9E3296, uint16) != 0)
+		goto loc_660C9F;
+	if(RCT2_GLOBAL(0x141E9E4, uint16) & 0x1001)
+		goto loc_660C9F;
+	regs.si = mapElement->properties.surface.grass_length;
+	regs.esi &= 7;
+	callcode_push3(0x660C28, saved_esi, saved_ebx, saved_ecx, &regs); return;
+loc_660C9F:
+	callcode_push3(0x660C9F, saved_esi, saved_ebx, saved_ecx, &regs); return;
+	
+loc_660B25:
+	callcode_push3(0x660AC6, saved_esi, saved_ebx, saved_ecx, &regs); return;
 }
 
 /**
