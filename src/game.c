@@ -1036,7 +1036,7 @@ void save_game()
 
 		SDL_RWops* rw = SDL_RWFromFile(gScenarioSavePath, "wb+");
 		if (rw != NULL) {
-			scenario_save(rw, 0x80000000);
+			scenario_save(rw, 0x80000000, -1);
 			log_verbose("Saved to %s", gScenarioSavePath);
 			SDL_RWclose(rw);
 		}
@@ -1068,7 +1068,7 @@ void game_autosave()
 
 	SDL_RWops* rw = SDL_RWFromFile(path, "wb+");
 	if (rw != NULL) {
-		scenario_save(rw, 0x80000000);
+		scenario_save(rw, 0x80000000, -1);
 		SDL_RWclose(rw);
 	}
 }

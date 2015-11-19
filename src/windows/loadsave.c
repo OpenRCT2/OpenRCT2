@@ -287,7 +287,7 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 	{
 		char directory[MAX_PATH];
 		int includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
-		
+
 		safe_strncpy(directory, _parentDirectory, sizeof(directory));
 		window_loadsave_populate_list(w, includeNewItem, directory, _extension);
 		window_init_scroll_widgets(w);
@@ -295,10 +295,10 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 		break;
 	}
 	case WIDX_NEW:
-	{		
+	{
 		rct_string_id templateStringId = 3165;
 		char *templateString;
-		
+
 		templateString = (char *)language_get_string(templateStringId);
 		strcpy(templateString, _defaultName);
 		window_text_input_open(w, WIDX_NEW, STR_NONE, 2710, templateStringId, 0, 64);
@@ -620,7 +620,7 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 	int listItemCapacity = 8;
 	loadsave_list_item *listItem;
 	char filter[MAX_PATH];
-	
+
 	safe_strncpy(_directory, directory, sizeof(_directory));
 	if (_extension != extension) {
 		safe_strncpy(_extension, extension, sizeof(_extension));
@@ -636,7 +636,7 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 		free(_listItems);
 	_listItems = (loadsave_list_item*)malloc(listItemCapacity * sizeof(loadsave_list_item));
 	_listItemsCount = 0;
-	
+
 	window_loadsave_widgets[WIDX_NEW].type = includeNewItem?WWT_CLOSEBOX:WWT_EMPTY; // Hide/Show "new" button
 	if(directory[0]=='\0' && platform_get_drives()!=0) // List Windows drives
 	{
@@ -682,7 +682,7 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 		char *dst;
 		char *last_dot_in_filename;
 		char subDir[MAX_PATH];
-		
+
 		fileEnumHandle = platform_enumerate_directories_begin(directory);
 		while (platform_enumerate_directories_next(fileEnumHandle, subDir)){
 			if (listItemCapacity <= _listItemsCount) {
@@ -781,7 +781,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
 		rw = SDL_RWFromFile(path, "wb+");
 		if (rw != NULL) {
-			int success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 1 : 0);
+			int success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 1 : 0, -1);
 			SDL_RWclose(rw);
 			if (success) {
 
@@ -819,7 +819,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		rw = SDL_RWFromFile(path, "wb+");
 		if (rw != NULL) {
 			scenario_set_filename(path);
-			int success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2);
+			int success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2, -1);
 			SDL_RWclose(rw);
 			if (success) {
 				window_close_by_class(WC_LOADSAVE);
@@ -844,7 +844,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		int success = 0;
 		if (rw != NULL) {
 			scenario_set_filename(path);
-			success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2);
+			success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2, -1);
 			SDL_RWclose(rw);
 		}
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = parkFlagsBackup;

@@ -179,11 +179,12 @@ int object_load(int groupIndex, rct_object_entry *entry, int* chunkSize)
  *  ebx : file
  *  ebp : entry
  */
-int write_object_file(SDL_RWops *rw, rct_object_entry* entry){
+int write_object_file(SDL_RWops *rw, rct_object_entry* entry, const long maxSize){
 	uint8 entryGroupIndex = 0, type = 0;
 	uint8* chunk = 0;
 
-	if (!find_object_in_entry_group(entry, &type, &entryGroupIndex))return 0;
+	if (!find_object_in_entry_group(entry, &type, &entryGroupIndex))
+		return -1;
 
 	chunk = object_entry_groups[type].chunks[entryGroupIndex];
 
@@ -203,10 +204,16 @@ int write_object_file(SDL_RWops *rw, rct_object_entry* entry){
 	chunkHeader.length = installed_entry->chunk_size;
 
 	size_dst += sawyercoding_write_chunk_buffer(dst_buffer + sizeof(rct_object_entry), chunk, chunkHeader);
+	if (maxSize != -1 && size_dst > maxSize)
+	{
+		free(dst_buffer);
+		// -2 for consistency with other save-related functions
+		return -2;
+	}
 	SDL_RWwrite(rw, dst_buffer, 1, size_dst);
 
 	free(dst_buffer);
-	return 1;
+	return size_dst;
 }
 
 /**
@@ -319,7 +326,7 @@ int object_load_packed(SDL_RWops* rw)
 	// Actually write the object to the file
 	SDL_RWops* rw_out = SDL_RWFromFile(path, "wb");
 	if (rw_out != NULL){
-		uint8 result = write_object_file(rw_out, &entry);
+		uint8 result = write_object_file(rw_out, &entry, -1);
 
 		SDL_RWclose(rw_out);
 		object_unload_all();
