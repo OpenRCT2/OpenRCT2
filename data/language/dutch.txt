@@ -3189,7 +3189,7 @@ STR_3184    :Attracties/voertuigen
 STR_3185    :Klein decor
 STR_3186    :Groot decor
 STR_3187    :Muren/hekken
-STR_3188    :Borden voor paden
+STR_3188    :Lichtkranten
 STR_3189    :Voetpaden
 STR_3190    :Extra's voor paden
 STR_3191    :Decorgroepen
@@ -4973,6 +4973,12 @@ STR_CPTY    :1 bezoeker per stoel
 STR_NAME    :Tijdmachine
 STR_DESC    :Bezoekers zitten in een speciaal ontwerpen bol en krijgen de illusie dat ze door de tijd reizen.
 STR_CPTY    :1 bezoeker per tijdmachine
+
+#CC
+[RIDE7MKY]
+STR_NAME    :Springkussens
+STR_DESC    :Bezoekers springen op en neer op met lucht gevulde kussens.
+STR_CPTY    :1 bezoeker per kussen
 # End of Space rings / Ruimteringen
 
 # Swinging ship / Schommelschip
@@ -5625,6 +5631,12 @@ STR_DESC    :Toiletten in een gebouw in blokhutstijl.
 [INFOK]
 STR_NAME    :Informatiekiosk
 STR_DESC    :Een kiosk waar gasten kaarten van het park en paraplu's kunnen kopen.
+
+#CC
+[INFO1MKY]
+STR_NAME    :Informatiekiosk
+STR_DESC    :Een kiosk waar gasten kaarten van het park en paraplu's kunnen kopen.
+
 # End of Information Kiosks
 
 # Cash Machines
@@ -5929,5 +5941,76 @@ STR_NAME    :  Mythologisch thema
 #################
 # Large objects #
 #################
+[GLTHENT]
+STR_NAME    :'Goliath'-bord
+
+[MDSAENT]
+STR_NAME    :'Medusa'-bord
+
 [NITROENT]
 STR_NAME    :'Nitro'-bord
+
+[SHS1]
+STR_NAME    :Rijtjeshuis
+
+#########
+# Walls #
+#########
+[WALLTXGT]
+STR_NAME    :'Texas Giant'-bord
+
+##################
+# Path additions #
+##################
+[BENCHPL]
+STR_NAME    :Stadionstoeltjes
+
+[BENCHSTN]
+STR_NAME    :Stenen bank
+
+[JUMPSNW1]
+STR_NAME    :Springende sneeuwballen
+
+[LAMPDSY]
+STR_NAME    :Lamp in madeliefjesvorm
+
+[QTV1]
+STR_NAME    :Wachtrij-tv
+
+#TT
+[MEDBENCH]
+STR_NAME    :Krukjes
+
+#OCC
+[LITTERPA]
+STR_NAME    :Vuilnisbak in pandavorm
+
+###########
+# Banners #
+###########
+[BN1]
+STR_NAME    :Lichtkrant
+
+[BN2]
+STR_NAME    :Lichtkrant in junglestijl
+
+[BN3]
+STR_NAME    :Lichtkrant in Romeinse stijl
+
+[BN4]
+STR_NAME    :Lichtkrant in Egyptische stijl
+
+[BN5]
+STR_NAME    :Lichtkrant in mijnstijl
+
+[BN6]
+STR_NAME    :Lichtkrant in Jurastijl
+
+[BN7]
+STR_NAME    :Lichtkrant in pagodestijl
+
+[BN8]
+STR_NAME    :Besneeuwde lichtkrant
+
+[BN9]
+STR_NAME    :Lichtkrant in ruimtestijl
