@@ -5499,14 +5499,14 @@ const uint32 RideTypeTrackPaintFunctionsOld[91] = {
 	0x0075C9D0,						// RIDE_TYPE_DODGEMS
 	0x008A83E0,						// RIDE_TYPE_PIRATE_SHIP
 	0x00760070,						// RIDE_TYPE_SWINGING_INVERTER_SHIP
-	0x00761160,						// RIDE_TYPE_FOOD_STALL
-	0x00761160,						// RIDE_TYPE_1D
-	0x00761160,						// RIDE_TYPE_DRINK_STALL
-	0x00761160,						// RIDE_TYPE_1F
-	0x00761160,						// RIDE_TYPE_SHOP
+	0,						// RIDE_TYPE_FOOD_STALL
+	0,						// RIDE_TYPE_1D
+	0,						// RIDE_TYPE_DRINK_STALL
+	0,						// RIDE_TYPE_1F
+	0,						// RIDE_TYPE_SHOP
 	0x0076190C,						// RIDE_TYPE_MERRY_GO_ROUND
-	0x00761160,						// RIDE_TYPE_22
-	0x00761160,						// RIDE_TYPE_INFORMATION_KIOSK
+	0,						// RIDE_TYPE_22
+	0,						// RIDE_TYPE_INFORMATION_KIOSK
 	0x00762D44,						// RIDE_TYPE_TOILETS
 	0x008A8CC8,						// RIDE_TYPE_FERRIS_WHEEL
 	0x00763520,						// RIDE_TYPE_MOTION_SIMULATOR
@@ -5516,7 +5516,7 @@ const uint32 RideTypeTrackPaintFunctionsOld[91] = {
 	0x00768BAC,						// RIDE_TYPE_REVERSE_FREEFALL_COASTER
 	0x0076C5BC,						// RIDE_TYPE_LIFT
 	0x008A9C08,						// RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
-	0x00761160,						// RIDE_TYPE_CASH_MACHINE
+	0,						// RIDE_TYPE_CASH_MACHINE
 	0x0076D658,						// RIDE_TYPE_TWIST
 	0x0076E7B0,						// RIDE_TYPE_HAUNTED_HOUSE
 	0x00762D44,						// RIDE_TYPE_FIRST_AID
@@ -5594,15 +5594,15 @@ const uint32 RideTypeTrackPaintFunctions[91] = {
 	0,						// RIDE_TYPE_DODGEMS
 	0,						// RIDE_TYPE_PIRATE_SHIP
 	0,						// RIDE_TYPE_SWINGING_INVERTER_SHIP
-	0,						// RIDE_TYPE_FOOD_STALL
-	0,						// RIDE_TYPE_1D
-	0,						// RIDE_TYPE_DRINK_STALL
-	0,						// RIDE_TYPE_1F
-	0,						// RIDE_TYPE_SHOP
+	(uint32)shop_track_paint_functions,			// RIDE_TYPE_FOOD_STALL
+	(uint32)shop_track_paint_functions,			// RIDE_TYPE_1D
+	(uint32)shop_track_paint_functions,			// RIDE_TYPE_DRINK_STALL
+	(uint32)shop_track_paint_functions,			// RIDE_TYPE_1F
+	(uint32)shop_track_paint_functions,			// RIDE_TYPE_SHOP
 	0,						// RIDE_TYPE_MERRY_GO_ROUND
-	0,						// RIDE_TYPE_22
-	0,						// RIDE_TYPE_INFORMATION_KIOSK
-	0,						// RIDE_TYPE_TOILETS
+	(uint32)shop_track_paint_functions,			// RIDE_TYPE_22
+	(uint32)shop_track_paint_functions,			// RIDE_TYPE_INFORMATION_KIOSK
+	(uint32)shop_track_paint_functions,			// RIDE_TYPE_TOILETS
 	0,						// RIDE_TYPE_FERRIS_WHEEL
 	0,						// RIDE_TYPE_MOTION_SIMULATOR
 	0,						// RIDE_TYPE_3D_CINEMA
@@ -5611,7 +5611,7 @@ const uint32 RideTypeTrackPaintFunctions[91] = {
 	0,						// RIDE_TYPE_REVERSE_FREEFALL_COASTER
 	0,						// RIDE_TYPE_LIFT
 	0,						// RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
-	0,						// RIDE_TYPE_CASH_MACHINE
+	(uint32)shop_track_paint_functions,			// RIDE_TYPE_CASH_MACHINE
 	0,						// RIDE_TYPE_TWIST
 	0,						// RIDE_TYPE_HAUNTED_HOUSE
 	0,						// RIDE_TYPE_FIRST_AID
