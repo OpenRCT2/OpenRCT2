@@ -739,44 +739,24 @@ uint8 platform_get_locale_currency(){
 }
 
 uint8 platform_get_locale_measurement_format(){
-	/*
-	UINT measurement_system;
-	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
-		LOCALE_IMEASURE | LOCALE_RETURN_NUMBER,
-		(LPSTR)&measurement_system,
-		sizeof(measurement_system)) == 0){
+	//FIXME: LC_MEASUREMENT is GNU specific.
+	const char *langstring = setlocale(LC_MEASUREMENT, "");
+
+	//using https://en.wikipedia.org/wiki/Metrication#Chronology_and_status_of_conversion_by_country as reference
+	if(!fnmatch("*_US*", langstring, 0) || !fnmatch("*_MM*", langstring, 0) || !fnmatch("*_LR*", langstring, 0)){
 		return MEASUREMENT_FORMAT_IMPERIAL;
 	}
-	switch (measurement_system){
-	case 0:
-		return MEASUREMENT_FORMAT_METRIC;
-	case 1:
-	default:
-		return MEASUREMENT_FORMAT_IMPERIAL;
-	}*/
-	STUB();
+
 	return MEASUREMENT_FORMAT_METRIC;
 }
 
 uint8 platform_get_locale_temperature_format(){
-	/*
-	// There does not seem to be a function to obtain this, just check the countries
-	UINT country;
-	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
-		LOCALE_IMEASURE | LOCALE_RETURN_NUMBER,
-		(LPSTR)&country,
-		sizeof(country)) == 0){
-		return TEMPERATURE_FORMAT_C;
-	}
-	switch (country){
-	case CTRY_UNITED_STATES:
-	case CTRY_BELIZE:
+	const char *langstring = setlocale(LC_MEASUREMENT, "");
+
+	if(!fnmatch("*_US*", langstring, 0) || !fnmatch("*_BS*", langstring, 0) || !fnmatch("*_BZ*", langstring, 0) || !fnmatch("*_PW*", langstring, 0)){
 		return TEMPERATURE_FORMAT_F;
-	default:
-		return TEMPERATURE_FORMAT_C;
 	}
-	*/
-	STUB();
+
 	return TEMPERATURE_FORMAT_C;
 }
 
