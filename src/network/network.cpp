@@ -860,8 +860,8 @@ void Network::AdvertiseRegister()
 	request.method = HTTP_METHOD_POST;
 
 	json_t *body = json_object();
-	json_object_set(body, "key", json_string(advertise_key.c_str()));
-	json_object_set(body, "port", json_integer(listening_port));
+	json_object_set_new(body, "key", json_string(advertise_key.c_str()));
+	json_object_set_new(body, "port", json_integer(listening_port));
 	request.body = body;
 
 	http_request_json_async(&request, [](http_json_response *response) -> void {
@@ -904,21 +904,21 @@ void Network::AdvertiseHeartbeat()
 	request.method = HTTP_METHOD_PUT;
 
 	json_t *body = json_object();
-	json_object_set(body, "token", json_string(advertise_token.c_str()));
-	json_object_set(body, "players", json_integer(network_get_num_players()));
+	json_object_set_new(body, "token", json_string(advertise_token.c_str()));
+	json_object_set_new(body, "players", json_integer(network_get_num_players()));
 
 	json_t *gameInfo = json_object();
-	json_object_set(gameInfo, "mapSize", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint8) - 2));
-	json_object_set(gameInfo, "day", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)));
-	json_object_set(gameInfo, "month", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16)));
-	json_object_set(gameInfo, "guests", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)));
-	json_object_set(gameInfo, "parkValue", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32)));
+	json_object_set_new(gameInfo, "mapSize", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint8) - 2));
+	json_object_set_new(gameInfo, "day", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)));
+	json_object_set_new(gameInfo, "month", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16)));
+	json_object_set_new(gameInfo, "guests", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)));
+	json_object_set_new(gameInfo, "parkValue", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32)));
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
 		money32 cash = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32));
-		json_object_set(gameInfo, "cash", json_integer(cash));
+		json_object_set_new(gameInfo, "cash", json_integer(cash));
 	}
 
-	json_object_set(body, "gameInfo", gameInfo);
+	json_object_set_new(body, "gameInfo", gameInfo);
 	request.body = body;
 
 	gNetwork.last_heartbeat_time = SDL_GetTicks();
@@ -1084,20 +1084,20 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
 	*packet << (uint32)NETWORK_COMMAND_GAMEINFO;
 #ifndef DISABLE_HTTP
 	json_t* obj = json_object();
-	json_object_set(obj, "name", json_string(gConfigNetwork.server_name));
-	json_object_set(obj, "requiresPassword", json_boolean(password.size() > 0));
-	json_object_set(obj, "version", json_string(OPENRCT2_VERSION));
-	json_object_set(obj, "players", json_integer(player_list.size()));
-	json_object_set(obj, "maxPlayers", json_integer(gConfigNetwork.maxplayers));
-	json_object_set(obj, "description", json_string(gConfigNetwork.server_description));
-	json_object_set(obj, "dedicated", json_boolean(gOpenRCT2Headless));
+	json_object_set_new(obj, "name", json_string(gConfigNetwork.server_name));
+	json_object_set_new(obj, "requiresPassword", json_boolean(password.size() > 0));
+	json_object_set_new(obj, "version", json_string(OPENRCT2_VERSION));
+	json_object_set_new(obj, "players", json_integer(player_list.size()));
+	json_object_set_new(obj, "maxPlayers", json_integer(gConfigNetwork.maxplayers));
+	json_object_set_new(obj, "description", json_string(gConfigNetwork.server_description));
+	json_object_set_new(obj, "dedicated", json_boolean(gOpenRCT2Headless));
 
 	// Provider details
 	json_t* jsonProvider = json_object();
-	json_object_set(jsonProvider, "name", json_string(gConfigNetwork.provider_name));
-	json_object_set(jsonProvider, "email", json_string(gConfigNetwork.provider_email));
-	json_object_set(jsonProvider, "website", json_string(gConfigNetwork.provider_website));
-	json_object_set(obj, "provider", jsonProvider);
+	json_object_set_new(jsonProvider, "name", json_string(gConfigNetwork.provider_name));
+	json_object_set_new(jsonProvider, "email", json_string(gConfigNetwork.provider_email));
+	json_object_set_new(jsonProvider, "website", json_string(gConfigNetwork.provider_website));
+	json_object_set_new(obj, "provider", jsonProvider);
 
 	packet->WriteString(json_dumps(obj, 0));
 	json_decref(obj);
