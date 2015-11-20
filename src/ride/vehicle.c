@@ -1641,6 +1641,58 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle) {
 	vehicle->var_4E = 0;
 }
 
+static void vehicle_crash_on_water(rct_vehicle* vehicle) {
+	vehicle->status = VEHICLE_STATUS_CRASHED;
+	vehicle_invalidate_window(vehicle);
+
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)) {
+
+		rct_vehicle* frontVehicle = vehicle;
+		while (frontVehicle->is_child != 0)frontVehicle = GET_VEHICLE(frontVehicle->prev_vehicle_on_ride);
+
+		uint8 trainIndex = 0;
+		while (ride->vehicles[trainIndex] != frontVehicle->sprite_index)
+			trainIndex++;
+
+		ride_crash(vehicle->ride, trainIndex);
+
+		if (ride->status != RIDE_STATUS_CLOSED) {
+			ride_set_status(vehicle->ride, RIDE_STATUS_CLOSED);
+		}
+	}
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+
+	if (vehicle->is_child == 0) {
+		vehicle_kill_all_passengers(vehicle);
+	}
+
+	vehicle->sub_state = 2;
+	audio_play_sound_at_location(SOUND_WATER_1, vehicle->x, vehicle->y, vehicle->z);
+
+	crash_splash_create(vehicle->x, vehicle->y, vehicle->z);
+	crash_splash_create(vehicle->x - 8, vehicle->y - 9, vehicle->z);
+	crash_splash_create(vehicle->x + 11, vehicle->y - 9, vehicle->z);
+	crash_splash_create(vehicle->x + 11, vehicle->y + 8, vehicle->z);
+	crash_splash_create(vehicle->x - 4, vehicle->y + 8, vehicle->z);
+
+	for (int i = 0; i < 10; ++i)
+		crashed_vehicle_particle_create(vehicle->colours, vehicle->x - 4, vehicle->y + 8, vehicle->z);
+	
+	vehicle->var_0C |= (1 << 7);
+	vehicle->var_C5 = 0;
+	vehicle->var_C8 = 0;
+	vehicle->sprite_width = 13;
+	vehicle->sprite_height_negative = 45;
+	vehicle->sprite_height_positive = 5;
+
+	sprite_move(vehicle->x, vehicle->y, vehicle->z, (rct_sprite*)vehicle);
+	invalidate_sprite_2((rct_sprite*)vehicle);
+
+	vehicle->var_4E = 0xFFFF;
+}
+
 /**
 *
 *  rct2: 0x006D98CA
@@ -1683,14 +1735,16 @@ static void vehicle_update_crash(rct_vehicle *vehicle){
 		int z = map_element_height(curVehicle->x, curVehicle->y);
 		sint16 waterHeight = (z >> 16) & 0xFFFF;
 		z = (sint16)(z & 0xFFFF);
-
+		sint16 zDiff;
 		if (waterHeight != 0) {
-			waterHeight -= curVehicle->z;
-			if (waterHeight <= 20) {
-				// 0x6D99C4 crash on water
+			zDiff = curVehicle->z - waterHeight;
+			if (zDiff <= 0 && zDiff >= -20) {
+				vehicle_crash_on_water(curVehicle);
+				continue;
 			}
 		}
-		sint16 zDiff = curVehicle->z - z;
+		
+		zDiff = curVehicle->z - z;
 		if ((zDiff <= 0 && zDiff >= -20) || curVehicle->z < 16){
 			vehicle_crash_on_land(curVehicle);
 			continue;
