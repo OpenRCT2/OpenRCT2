@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../game.h"
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
 #include "../config.h"
@@ -47,6 +48,7 @@ static void vehicle_update_doing_circus_show(rct_vehicle *vehicle);
 static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle);
 static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle);
 static void vehicle_update_waiting_for_cable_lift(rct_vehicle *vehicle);
+static void vehicle_update_crash(rct_vehicle *vehicle);
 
 static void vehicle_update_sound(rct_vehicle *vehicle);
 static int vehicle_update_scream_sound(rct_vehicle *vehicle);
@@ -1036,6 +1038,10 @@ static void vehicle_update(rct_vehicle *vehicle)
 		break;
 	case VEHICLE_STATUS_WAITING_FOR_PASSENGERS:
 		vehicle_update_waiting_for_passengers(vehicle);
+		break;	
+	case VEHICLE_STATUS_CRASHING:
+	case VEHICLE_STATUS_CRASHED:
+		vehicle_update_crash(vehicle);
 		break;
 	case VEHICLE_STATUS_WAITING_TO_DEPART:
 	case VEHICLE_STATUS_DEPARTING:
@@ -1043,8 +1049,7 @@ static void vehicle_update(rct_vehicle *vehicle)
 	case VEHICLE_STATUS_ARRIVING:
 	case VEHICLE_STATUS_UNLOADING_PASSENGERS:
 	case VEHICLE_STATUS_TRAVELLING_07:
-	case VEHICLE_STATUS_CRASHING:
-	case VEHICLE_STATUS_CRASHED:
+
 	case VEHICLE_STATUS_TRAVELLING_0A:
 	case VEHICLE_STATUS_SWINGING:
 	case VEHICLE_STATUS_ROTATING:
@@ -1494,6 +1499,174 @@ static void vehicle_update_doing_circus_show(rct_vehicle *vehicle)
 	}
 }
 
+/* rct2: 0x0068B8BD 
+ * returns the map element that the vehicle will collide with
+ * returns NULL if no collisions.
+ */
+static rct_map_element* vehicle_check_collision(sint16 x, sint16 y, sint16 z) {
+	rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+
+	uint8 bl;
+	if ((x & 0x1F) >= 16) {
+		bl = 1;
+		if ((y & 0x1F) < 16)
+			bl = 2;
+	}
+	else {
+		bl = 4;
+		if ((y & 0x1F) >= 16)
+			bl = 8;
+	}
+
+	do {
+		if (z / 8 < mapElement->base_height)
+			continue;
+
+		if (z / 8 >= mapElement->clearance_height)
+			continue;
+
+		if (mapElement->flags & bl)
+			return mapElement;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	return NULL;
+}
+
+static void vehicle_crash_on_land(rct_vehicle* vehicle) {
+	vehicle->status = VEHICLE_STATUS_CRASHED;
+	vehicle_invalidate_window(vehicle);
+
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)) {
+
+		rct_vehicle* frontVehicle = vehicle;
+		while (frontVehicle->is_child != 0)frontVehicle = GET_VEHICLE(frontVehicle->prev_vehicle_on_ride);
+
+		uint8 trainIndex = 0;
+		while (ride->vehicles[trainIndex] != frontVehicle->sprite_index)
+			trainIndex++;
+
+		ride_crash(vehicle->ride, trainIndex);
+
+		if (ride->status != RIDE_STATUS_CLOSED) {
+			ride_set_status(vehicle->ride, RIDE_STATUS_CLOSED);
+		}
+	}
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+
+	if (vehicle->is_child == 0) {
+		RCT2_CALLPROC_X(0x006DE6C6, 0, 0, 0, 0, (int)vehicle, 0, 0);
+	}
+
+	vehicle->sub_state = 2;
+	audio_play_sound_at_location(SOUND_CRASH, vehicle->x, vehicle->y, vehicle->z);
+
+	sprite_misc_3_create(vehicle->x, vehicle->y, vehicle->z);
+	sprite_misc_5_create(vehicle->x, vehicle->y, vehicle->z);
+
+	uint8 numParticles = min(vehicle->sprite_width, 7);
+
+	while (numParticles-- != 0)
+		crashed_vehicle_particle_create(vehicle->colours, vehicle->x, vehicle->y, vehicle->z);
+
+	vehicle->var_0C |= (1 << 7);
+	vehicle->var_C5 = 0;
+	vehicle->var_C8 = 0;
+	vehicle->sprite_width = 13;
+	vehicle->sprite_height_negative = 45;
+	vehicle->sprite_height_positive = 5;
+
+	sprite_move(vehicle->x, vehicle->y, vehicle->z, (rct_sprite*)vehicle);
+	invalidate_sprite_2((rct_sprite*)vehicle);
+
+	vehicle->var_4E = 0;
+}
+
+/**
+*
+*  rct2: 0x006D98CA
+*/
+static void vehicle_update_crash(rct_vehicle *vehicle){
+	uint16 spriteId = vehicle->sprite_index;
+	rct_vehicle* curVehicle;
+	do {
+		curVehicle = GET_VEHICLE(spriteId);
+		if (curVehicle->sub_state > 1) {
+			if (curVehicle->var_4E <= 96) {
+				curVehicle->var_4E++;
+				if ((scenario_rand() & 0xFFFF) <= 0x1555) {
+					sprite_misc_3_create(
+						curVehicle->x + (scenario_rand() & 2 - 1),
+						curVehicle->y + (scenario_rand() & 2 - 1),
+						curVehicle->z
+						);
+				}
+			}
+			if (curVehicle->var_C8 + 7281 > 0xFFFF) {
+				curVehicle->var_C5++;
+				if (curVehicle->var_C5 >= 8)
+					curVehicle->var_C5 = 0;
+				invalidate_sprite_2((rct_sprite*)curVehicle);
+			}
+			curVehicle->var_C8 += 7281;
+			continue;
+		}
+
+		rct_map_element* collideElement = vehicle_check_collision(curVehicle->x, curVehicle->y, curVehicle->z);
+		if (collideElement == NULL) {
+			curVehicle->sub_state = 1;
+		}
+		else if (curVehicle->sub_state == 1){
+			vehicle_crash_on_land(curVehicle);
+			continue;
+		}
+
+		int z = map_element_height(curVehicle->x, curVehicle->y);
+		sint16 waterHeight = (z >> 16) & 0xFFFF;
+		z = (sint16)(z & 0xFFFF);
+
+		if (waterHeight != 0) {
+			waterHeight -= curVehicle->z;
+			if (waterHeight <= 20) {
+				// 0x6D99C4 crash on water
+			}
+		}
+
+		if (z + 20 > curVehicle->z || curVehicle->z < 16){
+			vehicle_crash_on_land(curVehicle);
+			continue;
+		}
+
+		invalidate_sprite_2((rct_sprite*)curVehicle);
+
+		rct_xyz16 curPosition = {
+			.x = curVehicle->x,
+			.y = curVehicle->y,
+			.z = curVehicle->z
+		};
+
+		curPosition.x += (sint8)(curVehicle->var_B6 >> 8);
+		curPosition.y += (sint8)(curVehicle->var_C0 >> 8);
+		curPosition.z += (sint8)(curVehicle->var_4E >> 8);
+		curVehicle->track_x += (sint16)(curVehicle->var_B6 << 8);
+		curVehicle->track_y += (sint16)(curVehicle->var_B6 << 8);
+		curVehicle->track_z += (sint16)(curVehicle->var_B6 << 8);
+
+		if (curPosition.x > 0x1FFF ||
+			curPosition.y > 0x1FFF) {
+			vehicle_crash_on_land(curVehicle);
+			continue;
+		}
+
+		sprite_move(curPosition.x, curPosition.y, curPosition.z, (rct_sprite*)curVehicle);
+		invalidate_sprite_2((rct_sprite*)curVehicle);
+
+		if (curVehicle->sub_state == 1) {
+			curVehicle->var_4E += 0xFFEC;
+		}
+	} while ((spriteId = curVehicle->next_vehicle_on_train) != 0xFFFF);
+}
 /**
  * 
  *  rct2: 0x006D7888
