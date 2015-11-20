@@ -1532,6 +1532,64 @@ static rct_map_element* vehicle_check_collision(sint16 x, sint16 y, sint16 z) {
 	return NULL;
 }
 
+/* rct2: 0x006DE6C6 */
+static void vehicle_kill_all_passengers(rct_vehicle* vehicle) {
+	uint16 numFatalities = 0;
+	for (rct_vehicle* curVehicle = vehicle;
+		curVehicle->next_vehicle_on_train != 0xFFFF;
+		curVehicle = GET_VEHICLE(curVehicle->next_vehicle_on_train)) {
+		numFatalities += curVehicle->num_peeps;
+	}
+
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = numFatalities;
+
+	uint8 crashType = numFatalities == 0 ?
+		RIDE_CRASH_TYPE_NO_FATALITIES :
+		RIDE_CRASH_TYPE_FATALITIES;
+	
+	if (crashType >= ride->last_crash_type)
+		ride->last_crash_type = crashType;
+
+	if (numFatalities != 0) {
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SIX_FLAGS_DEPRECATED)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride->name;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = ride->name_arguments;
+
+			news_item_add_to_queue(NEWS_ITEM_RIDE, 2219, vehicle->ride);
+		}
+
+		if (RCT2_GLOBAL(0x135882E, uint16) < 500) {
+			RCT2_GLOBAL(0x135882E, uint16) += 200;
+		}
+	}
+
+	for (rct_vehicle* curVehicle = vehicle;
+		curVehicle->next_vehicle_on_train != 0xFFFF;
+		curVehicle = GET_VEHICLE(curVehicle->next_vehicle_on_train)) {
+		
+		if (curVehicle->num_peeps != curVehicle->next_free_seat)
+			continue;
+
+		if (curVehicle->num_peeps == 0)
+			continue;
+
+		for (uint8 i = 0; i < curVehicle->num_peeps; i++) {
+			rct_peep* peep = GET_PEEP(curVehicle->peep[i]);
+			if (peep->outside_of_park == 0) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)--;
+				RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |=
+					BTM_TB_DIRTY_FLAG_PEEP_COUNT;
+			}
+			ride->num_riders--;
+			peep_sprite_remove(peep);
+		}
+
+		curVehicle->num_peeps = 0;
+		curVehicle->next_free_seat = 0;
+	}
+}
+
 static void vehicle_crash_on_land(rct_vehicle* vehicle) {
 	vehicle->status = VEHICLE_STATUS_CRASHED;
 	vehicle_invalidate_window(vehicle);
@@ -1556,7 +1614,7 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle) {
 	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 
 	if (vehicle->is_child == 0) {
-		RCT2_CALLPROC_X(0x006DE6C6, 0, 0, 0, 0, (int)vehicle, 0, 0);
+		vehicle_kill_all_passengers(vehicle);
 	}
 
 	vehicle->sub_state = 2;
@@ -1632,8 +1690,8 @@ static void vehicle_update_crash(rct_vehicle *vehicle){
 				// 0x6D99C4 crash on water
 			}
 		}
-
-		if (z + 20 > curVehicle->z || curVehicle->z < 16){
+		sint16 zDiff = curVehicle->z - z;
+		if ((zDiff <= 0 && zDiff >= -20) || curVehicle->z < 16){
 			vehicle_crash_on_land(curVehicle);
 			continue;
 		}
@@ -1650,8 +1708,8 @@ static void vehicle_update_crash(rct_vehicle *vehicle){
 		curPosition.y += (sint8)(curVehicle->var_C0 >> 8);
 		curPosition.z += (sint8)(curVehicle->var_4E >> 8);
 		curVehicle->track_x += (sint16)(curVehicle->var_B6 << 8);
-		curVehicle->track_y += (sint16)(curVehicle->var_B6 << 8);
-		curVehicle->track_z += (sint16)(curVehicle->var_B6 << 8);
+		curVehicle->track_y += (sint16)(curVehicle->var_C0 << 8);
+		curVehicle->track_z += (sint16)(curVehicle->var_4E << 8);
 
 		if (curPosition.x > 0x1FFF ||
 			curPosition.y > 0x1FFF) {
