@@ -47,6 +47,7 @@ static void vehicle_update_showing_film(rct_vehicle *vehicle);
 static void vehicle_update_doing_circus_show(rct_vehicle *vehicle);
 static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle);
 static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle);
+static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle);
 static void vehicle_update_waiting_for_cable_lift(rct_vehicle *vehicle);
 static void vehicle_update_crash(rct_vehicle *vehicle);
 
@@ -1039,17 +1040,19 @@ static void vehicle_update(rct_vehicle *vehicle)
 	case VEHICLE_STATUS_WAITING_FOR_PASSENGERS:
 		vehicle_update_waiting_for_passengers(vehicle);
 		break;	
+	case VEHICLE_STATUS_WAITING_TO_DEPART:	
+		vehicle_update_waiting_to_depart(vehicle);
+		break;
 	case VEHICLE_STATUS_CRASHING:
 	case VEHICLE_STATUS_CRASHED:
 		vehicle_update_crash(vehicle);
 		break;
-	case VEHICLE_STATUS_WAITING_TO_DEPART:
+
 	case VEHICLE_STATUS_DEPARTING:
 	case VEHICLE_STATUS_TRAVELLING:
 	case VEHICLE_STATUS_ARRIVING:
 	case VEHICLE_STATUS_UNLOADING_PASSENGERS:
 	case VEHICLE_STATUS_TRAVELLING_07:
-
 	case VEHICLE_STATUS_TRAVELLING_0A:
 	case VEHICLE_STATUS_SWINGING:
 	case VEHICLE_STATUS_ROTATING:
@@ -1435,6 +1438,223 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 	vehicle_invalidate_window(vehicle);
 }
 
+/* rct2: 0x006D808BE */
+static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+	bool shouldBreak = false;
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
+		switch (ride->breakdown_reason_pending) {
+		case BREAKDOWN_RESTRAINTS_STUCK_CLOSED:
+		case BREAKDOWN_RESTRAINTS_STUCK_OPEN:
+		case BREAKDOWN_DOORS_STUCK_CLOSED:
+		case BREAKDOWN_DOORS_STUCK_OPEN:
+			break;
+		default:
+			shouldBreak = true;
+			break;
+		}
+	}
+
+	bool skipCheck = false;
+	if (shouldBreak != false || ride->status != RIDE_STATUS_OPEN) {
+		if (ride->mode == RIDE_MODE_FORWARD_ROTATION ||
+			ride->mode == RIDE_MODE_BACKWARD_ROTATION) {
+			uint8 bl = ((-vehicle->var_1F) >> 3) & 0xF;
+			if (vehicle->peep[bl] == 0xFFFF) {
+				if (vehicle->num_peeps == 0) {
+					skipCheck = true;
+				}
+			}
+			else {
+				if (ride->exits[vehicle->current_station] != 0xFFFF) {
+					vehicle->status = VEHICLE_STATUS_UNLOADING_PASSENGERS;
+					vehicle->sub_state = 0;
+					vehicle_invalidate_window(vehicle);
+					return;
+				}
+			}
+		}
+		else {
+			uint16 spriteId = vehicle->sprite_index;
+			for (rct_vehicle* curVehicle; spriteId != 0xFFFF; spriteId = curVehicle->next_vehicle_on_train) {
+				curVehicle = GET_VEHICLE(spriteId);
+
+				if (curVehicle->num_peeps != 0) {
+					if (ride->exits[vehicle->current_station] != 0xFFFF) {
+						vehicle->status = VEHICLE_STATUS_UNLOADING_PASSENGERS;
+						vehicle->sub_state = 0;
+						vehicle_invalidate_window(vehicle);
+						return;
+					}
+					break;
+				}
+			}
+		}
+	}
+
+	if (skipCheck == false) {
+		if (!(ride->station_depart[vehicle->current_station] & STATION_DEPART_FLAG))
+			return;
+	}
+
+	if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2]
+		& RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS) {
+		if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) {
+			if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT) {
+				if (RCT2_CALLPROC_X(0x006DE287, 0, 0, 0, 0, (int)vehicle, 0, 0) & 0x100)
+					return;
+			}
+		}
+	}
+
+	vehicle->status = VEHICLE_STATUS_DEPARTING;
+	vehicle->sub_state = 0;
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT) {
+		RCT2_GLOBAL(0x00F441D2, uint8) = vehicle->ride;
+		rct_xy_element track;
+		int z;
+		int direction;
+
+		if (track_block_get_next_from_zero(
+			vehicle->track_x,
+			vehicle->track_y,
+			vehicle->track_z,
+			vehicle->ride,
+			vehicle->track_direction,
+			&track,
+			&z,
+			&direction)) {
+
+			if (track_element_is_cable_lift(track.element)) {
+				vehicle->status = VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT;
+			}
+		}
+	}
+
+	switch (ride->mode) {
+	case RIDE_MODE_BUMPERCAR:
+		vehicle->status = VEHICLE_STATUS_TRAVELLING_0A;
+		vehicle->sub_state = 0;
+		vehicle_invalidate_window(vehicle);
+		vehicle->var_CE = 0;
+		//6d91bf
+		break;
+	case RIDE_MODE_SWING:
+		vehicle->status = VEHICLE_STATUS_SWINGING;
+		vehicle->sub_state = 0;
+		vehicle_invalidate_window(vehicle);
+		vehicle->var_CE = 0;
+		vehicle->var_4C = 0xFFFF;
+		//6d9249
+		break;
+	case RIDE_MODE_ROTATION:
+		vehicle->status = VEHICLE_STATUS_ROTATING;
+		vehicle->sub_state = 0;
+		vehicle_invalidate_window(vehicle);
+		vehicle->var_CE = 0;
+		vehicle->var_4C = 0xFFFF;
+		//6d92ff
+		break;
+	case RIDE_MODE_FILM_AVENGING_AVIATORS:
+	case RIDE_MODE_FILM_THRILL_RIDERS:
+		vehicle->status = VEHICLE_STATUS_OPERATING;
+		vehicle->sub_state = 0;
+		if (ride->mode == RIDE_MODE_FILM_THRILL_RIDERS)
+			vehicle->sub_state = 1;
+		vehicle_invalidate_window(vehicle);
+		vehicle->var_4C = 0xFFFF;
+		//6d94f2
+		break;
+	case RIDE_MODE_BEGINNERS:
+	case RIDE_MODE_INTENSE:
+	case RIDE_MODE_BERSERK:
+		vehicle->status = VEHICLE_STATUS_OPERATING_11;
+		vehicle_invalidate_window(vehicle);
+
+		switch (ride->mode) {
+		case RIDE_MODE_BEGINNERS:
+			vehicle->sub_state = 0;
+			break;
+		case RIDE_MODE_INTENSE:
+			vehicle->sub_state = 1;
+			break;
+		case RIDE_MODE_BERSERK:
+			vehicle->sub_state = 2;
+			break;
+		}
+		vehicle->var_4C = 0xFFFF;
+		vehicle->var_1F = 0;
+		vehicle->var_20 = 0;
+		//6d9547
+		break;
+	case RIDE_MODE_FORWARD_ROTATION:
+	case RIDE_MODE_BACKWARD_ROTATION:
+		vehicle->status = VEHICLE_STATUS_ROTATING_0D;
+		vehicle->sub_state = vehicle->var_1F;
+		vehicle_invalidate_window(vehicle);
+		vehicle->var_CE = 0;
+		vehicle->var_4C = 0x808;
+		//6d9413
+		break;
+	case RIDE_MODE_3D_FILM_MOUSE_TAILS:
+	case RIDE_MODE_3D_FILM_STORM_CHASERS:
+	case RIDE_MODE_3D_FILM_SPACE_RAIDERS:
+		vehicle->status = VEHICLE_STATUS_SHOWING_FILM;
+		vehicle_invalidate_window(vehicle);
+		switch (ride->mode) {
+		case RIDE_MODE_3D_FILM_MOUSE_TAILS:
+			vehicle->sub_state = 0;
+			break;
+		case RIDE_MODE_3D_FILM_STORM_CHASERS:
+			vehicle->sub_state = 1;
+			break;
+		case RIDE_MODE_3D_FILM_SPACE_RAIDERS:
+			vehicle->sub_state = 2;
+			break;
+		}
+		vehicle->var_4C = 0xFFFF;
+		//6d95ad
+		break;
+	case RIDE_MODE_CIRCUS_SHOW:
+		vehicle->status = VEHICLE_STATUS_DOING_CIRCUS_SHOW;
+		vehicle->sub_state = 0;
+		vehicle_invalidate_window(vehicle);
+		vehicle->var_4C = 0xFFFF;
+		//6d95f7
+		break;
+	case RIDE_MODE_SPACE_RINGS:
+		vehicle->status = VEHICLE_STATUS_ROTATING_10;
+		vehicle->sub_state = 0;
+		vehicle_invalidate_window(vehicle);
+		vehicle->var_1F = 0;
+		vehicle->var_4C = 0xFFFF;
+		//6d97cb
+		break;
+	case RIDE_MODE_HAUNTED_HOUSE:
+		vehicle->status = VEHICLE_STATUS_OPERATING_12;
+		vehicle->sub_state = 0;
+		vehicle_invalidate_window(vehicle);
+		vehicle->var_1F = 0;
+		vehicle->var_4C = 0xFFFF;
+		//6d9641
+		break;
+	case RIDE_MODE_CROOKED_HOUSE:
+		vehicle->status = VEHICLE_STATUS_OPERATING_13;
+		vehicle->sub_state = 0;
+		vehicle_invalidate_window(vehicle);
+		vehicle->var_1F = 0;
+		vehicle->var_4C = 0xFFFF;
+		//6d9781
+		break;
+	default:
+		vehicle->sub_state = 0;
+		vehicle_invalidate_window(vehicle);
+		vehicle->var_CE = 0;
+		break;
+	}
+}
+
 /**
 *
 *  rct2: 0x006D9CE9
@@ -1535,9 +1755,10 @@ static rct_map_element* vehicle_check_collision(sint16 x, sint16 y, sint16 z) {
 /* rct2: 0x006DE6C6 */
 static void vehicle_kill_all_passengers(rct_vehicle* vehicle) {
 	uint16 numFatalities = 0;
-	for (rct_vehicle* curVehicle = vehicle;
-		curVehicle->next_vehicle_on_train != 0xFFFF;
-		curVehicle = GET_VEHICLE(curVehicle->next_vehicle_on_train)) {
+
+	uint16 spriteId = vehicle->sprite_index;
+	for (rct_vehicle* curVehicle; spriteId != 0xFFFF; spriteId = curVehicle->next_vehicle_on_train) {
+		curVehicle = GET_VEHICLE(spriteId);
 		numFatalities += curVehicle->num_peeps;
 	}
 
@@ -1564,10 +1785,10 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle) {
 		}
 	}
 
-	for (rct_vehicle* curVehicle = vehicle;
-		curVehicle->next_vehicle_on_train != 0xFFFF;
-		curVehicle = GET_VEHICLE(curVehicle->next_vehicle_on_train)) {
-		
+	spriteId = vehicle->sprite_index;
+	for (rct_vehicle* curVehicle; spriteId != 0xFFFF; spriteId = curVehicle->next_vehicle_on_train) {
+		curVehicle = GET_VEHICLE(spriteId);
+
 		if (curVehicle->num_peeps != curVehicle->next_free_seat)
 			continue;
 
