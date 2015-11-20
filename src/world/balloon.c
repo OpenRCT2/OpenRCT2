@@ -1,5 +1,6 @@
 #include "../audio/audio.h"
 #include "../scenario.h"
+#include "../util/util.h"
 #include "sprite.h"
 
 /**
@@ -68,7 +69,7 @@ void balloon_press(rct_balloon *balloon)
 	if (balloon->popped == 1)
 		return;
 
-	uint32 random = rand();
+	uint32 random = util_rand();
 	if ((balloon->var_0A & 7) || (random & 0xFFFF) < 0x2000) {
 		balloon_pop(balloon);
 		return;

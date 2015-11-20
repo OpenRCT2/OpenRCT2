@@ -832,7 +832,7 @@ std::string Network::GenerateAdvertiseKey()
 	static char hexChars[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 	char key[17];
 	for (int i = 0; i < 16; i++) {
-		int hexCharIndex = rand() % countof(hexChars);
+		int hexCharIndex = util_rand() % countof(hexChars);
 		key[i] = hexChars[hexCharIndex];
 	}
 	key[countof(key) - 1] = 0;

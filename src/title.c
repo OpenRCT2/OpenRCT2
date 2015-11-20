@@ -524,24 +524,24 @@ static uint8 *generate_random_script()
 	int i, j;
 	const int views = 16;
 
-	srand((unsigned int)time(NULL));
+	util_srand((unsigned int)time(NULL));
 
 	uint8 *script = malloc(views * 8 + 2);
 	i = 0;
 	script[i++] = TITLE_SCRIPT_LOAD;
 	for (j = 0; j < views; j++) {
 		script[i++] = TITLE_SCRIPT_LOCATION;
-		script[i++] = 64 + (rand() % 128);
-		script[i++] = 64 + (rand() % 128);
+		script[i++] = 64 + (util_rand() % 128);
+		script[i++] = 64 + (util_rand() % 128);
 
-		int rotationCount = rand() % 4;
+		int rotationCount = util_rand() % 4;
 		if (rotationCount > 0) {
 			script[i++] = TITLE_SCRIPT_ROTATE;
 			script[i++] = rotationCount;
 		}
 
 		script[i++] = TITLE_SCRIPT_WAIT;
-		script[i++] = 8 + (rand() % 6);
+		script[i++] = 8 + (util_rand() % 6);
 	}
 	script[i] = TITLE_SCRIPT_RESTART;
 

@@ -44,4 +44,7 @@ char *safe_strncpy(char * destination, const char * source, size_t num);
 bool utf8_is_bom(const char *str);
 bool str_is_null_or_empty(const char *str);
 
+void util_srand(int source);
+uint32 util_rand();
+
 #endif

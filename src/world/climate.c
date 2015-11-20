@@ -27,6 +27,7 @@
 #include "../localisation/date.h"
 #include "../scenario.h"
 #include "../interface/window.h"
+#include "../util/util.h"
 #include "climate.h"
 
 enum {
@@ -115,7 +116,7 @@ void climate_reset(int climate)
 		_rainVolume = 1;
 	}
 
-	climate_determine_future_weather(rand());
+	climate_determine_future_weather(util_rand());
 }
 
 sint8 step_weather_level(sint8 cur_weather_level, sint8 next_weather_level) {

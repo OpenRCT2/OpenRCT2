@@ -177,7 +177,7 @@ void start_title_music()
 		musicPathId = PATH_ID_CSS17;
 		break;
 	case 3:
-		if (rand() & 1)
+		if (util_rand() & 1)
 			musicPathId = PATH_ID_CSS50;
 		else
 			musicPathId = PATH_ID_CSS17;

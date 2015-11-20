@@ -47,6 +47,7 @@
 #include "ride/track.h"
 #include "scenario.h"
 #include "title.h"
+#include "util/util.h"
 #include "world/map.h"
 #include "world/park.h"
 #include "world/climate.h"
@@ -79,7 +80,7 @@ int rct2_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) = 0;
 	RCT2_GLOBAL(0x009AC310, char*) = RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, char*);
 	get_system_time();
-	srand((unsigned int)time(0));
+	util_srand((unsigned int)time(0));
 	RCT2_GLOBAL(0x009DEA69, short) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, short);
 	RCT2_GLOBAL(0x009DEA6B, short) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, short);
 	if (!rct2_init_directories())
