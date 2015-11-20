@@ -2108,16 +2108,79 @@ loc_660AAB:
 		goto loc_660C9F;
 	if(RCT2_GLOBAL(0x9E3296, uint16) != 0)
 		goto loc_660C9F;
-	if(RCT2_GLOBAL(0x141E9E4, uint16) & 0x1001)
+	if(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x1001)
 		goto loc_660C9F;
 	regs.si = mapElement->properties.surface.grass_length;
 	regs.esi &= 7;
-	callcode_push3(0x660B1E, saved_esi, saved_ebx, saved_ecx, &regs); return;
+	//callcode_push3(0x660B1E, saved_esi, saved_ebx, saved_ecx, &regs); return;
+	switch(regs.esi)
+	{
+		case 0:
+			//Mowed grass
+			regs.ebp = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+			regs.ebx += RCT2_ADDRESS(0x97B898, uint32)[(regs.edi+regs.ebp*8)/4];
+			break;
+		case 1: case 2: case 3:
+			//Clear grass
+			goto loc_660C9F;
+		case 4: case 5:
+			//Clumpy grass
+			regs.bp = RCT2_GLOBAL(0x9DE56A, uint16);
+			regs.ax = RCT2_GLOBAL(0x9DE56E, uint16);
+			regs.ebp &= 0x20;
+			regs.ax &= 0x20;
+			regs.ax <<= 1;
+			regs.bp |= regs.ax;
+			regs.ebp /= 32;
+			regs.ebx += RCT2_ADDRESS(0x97B858, uint32)[(regs.edi+regs.ebp*8)/4];
+			break;
+		case 6:
+			//Very clumpy grass
+			regs.bp = RCT2_GLOBAL(0x9DE56A, uint16);
+			regs.ax = RCT2_GLOBAL(0x9DE56E, uint16);
+			regs.ebp &= 0x20;
+			regs.ax &= 0x20;
+			regs.ax <<= 1;
+			regs.bp |= regs.ax;
+			regs.ebp /= 32;
+			regs.ebx += RCT2_ADDRESS(0x97B878, uint32)[(regs.edi+regs.ebp*8)/4];
+			break;
+		default:
+			assert(false); //should not happen.
+			return;
+		
+	}
+//loc_660CDE:
+	//callcode_push3(0x660CDE, saved_esi, saved_ebx, saved_ecx, &regs); return;
+	regs.al = 0;
+	regs.cl = 0;
+	regs.di = 0x20;
+	regs.si = 0x20;
+	regs.ah = 0xFF;
+	regs.ebp = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	RCT2_CALLPROC_X(
+			(int)RCT2_ADDRESS(0x98196C, uint32*)[regs.ebp],
+			regs.eax, 
+			regs.ebx,
+			regs.ecx,
+			regs.edx,
+			regs.esi,
+			regs.edi,
+			regs.ebp
+	);
+	RCT2_GLOBAL(0x9E329A, uint8) = 1;
+	
+	//RESTORE
+	regs.ecx = saved_ecx;
+	regs.ebx = saved_ebx;
+	callcode_push1(0x660D02, saved_esi, &regs);
+	return;
+	
 loc_660C9F:
 	callcode_push3(0x660C9F, saved_esi, saved_ebx, saved_ecx, &regs); return;
 	
 loc_660B25:
-	callcode_push3(0x660AC6, saved_esi, saved_ebx, saved_ecx, &regs); return;
+	callcode_push3(0x660B25, saved_esi, saved_ebx, saved_ecx, &regs); return;
 }
 
 /**
