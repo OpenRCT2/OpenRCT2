@@ -833,6 +833,15 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 
 /**
  *
+ *  rct2: 0x006DEE93
+ */
+static void vehicle_update_scenery_door(rct_vehicle *vehicle)
+{
+	RCT2_CALLPROC_X(0x006DEE93, 0, 0, 0, 0, (int)vehicle, 0, 0);
+}
+
+/**
+ *
  *  rct2: 0x006DAB4C
  */
 int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
@@ -983,15 +992,87 @@ loc_6DAEB9:
 	}
 
 loc_6DB2BD:
-	regs.eax = trackType;
+	// TODO check if getting the vehicle entry again is necessary
+	vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+
+	if (vehicleEntry->var_12 & (1 << 8)) {
+		vehicle_update_scenery_door(vehicle);
+	}
+
+	switch (vehicle->var_CD) {
+	default:
+		goto loc_6DB358;
+	case 2:
+	case 3:
+		vehicle->var_CD = 2;
+		goto loc_6DB32A;
+	case 4:
+		vehicle->var_CD = 1;
+		goto loc_6DB358;
+	case 7:
+		vehicle->var_CD = 6;
+		goto loc_6DB358;
+	case 8:
+		vehicle->var_CD = 5;
+		goto loc_6DB358;
+	}
+
+loc_6DB32A:
+	{
+		track_begin_end trackBeginEnd;
+		if (!track_block_get_previous(vehicle->track_x, vehicle->track_y, mapElement, &trackBeginEnd)) {
+			goto loc_6DB94A;
+		}
+		regs.eax = trackBeginEnd.begin_x;
+		regs.ecx = trackBeginEnd.begin_y;
+		regs.edx = trackBeginEnd.begin_z;
+		regs.bl = trackBeginEnd.begin_direction;
+	}
+	goto loc_6DB41D;
+
+loc_6DB358:
+	{
+		rct_xy_element xyElement;
+		int z, direction;
+		xyElement.x = vehicle->track_x;
+		xyElement.y = vehicle->track_y;
+		xyElement.element = mapElement;
+		if (!track_block_get_next(&xyElement, &xyElement, &z, &direction)) {
+			goto loc_6DB94A;
+		}
+		mapElement = xyElement.element;
+		regs.eax = xyElement.x;
+		regs.ecx = xyElement.y;
+		regs.edx = z;
+		regs.bl = direction;
+	}
+	if (mapElement->properties.track.type == 211 ||
+		mapElement->properties.track.type == 212
+	) {
+		if (!vehicle->is_child && vehicle->velocity <= 0x30000) {
+			vehicle->velocity = 0;
+		}
+	}
+
+// loc_6DB38B:
 	regs.esi = vehicle;
 	regs.edi = mapElement;
-	RCT2_CALLFUNC_Y(0x006DB2BD, &regs);
+	RCT2_CALLFUNC_Y(0x006DB38B, &regs);
+	goto end;
+
+loc_6DB41D:
+	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DB41D, &regs);
 	goto end;
 
 loc_6DB59A:
 	regs.esi = vehicle;
 	RCT2_CALLFUNC_Y(0x006DB59A, &regs);
+	goto end;
+
+loc_6DB94A:
+	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DB94A, &regs);
 	goto end;
 
 loc_6DBA13:
