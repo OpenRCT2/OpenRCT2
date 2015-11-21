@@ -798,7 +798,7 @@ static void loc_6DB1B0(rct_vehicle *vehicle, rct_map_element *mapElement)
 	if (trackType == 216 || trackType == TRACK_ELEM_END_STATION) {
 		rct_ride *ride = GET_RIDE(vehicle->ride);
 		if (ride_is_block_sectioned(ride)) {
-			sound_play_panned(SOUND_48, 0x8001, x, y, z);
+			audio_play_sound_at_location(SOUND_48, x, y, z);
 		}
 	}
 }
@@ -913,7 +913,7 @@ loc_6DAEB9:
 			} else if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x0F)) {
 				if (RCT2_GLOBAL(0x00F64E2C, uint8) == 0) {
 					RCT2_GLOBAL(0x00F64E2C, uint8)++;
-					sound_play_panned(SOUND_51, 0x8001, vehicle->x, vehicle->y, vehicle->z);
+					audio_play_sound_at_location(SOUND_51, vehicle->x, vehicle->y, vehicle->z);
 				}
 			}
 		}
@@ -974,7 +974,7 @@ loc_6DAEB9:
 			RCT2_GLOBAL(regs.edi + 1, uint8) |= 0x20;
 			if (trackType == 216 || trackType == TRACK_ELEM_END_STATION) {
 				if (!(rideEntry->vehicles[0].var_14 & (1 << 3))) {
-					sound_play_panned(SOUND_49, 0x8001, vehicle->track_x, vehicle->track_y, vehicle->track_z);
+					audio_play_sound_at_location(SOUND_49, vehicle->track_x, vehicle->track_y, vehicle->track_z);
 				}
 			}
 			map_invalidate_element(vehicle->track_x, vehicle->track_z, mapElement);
