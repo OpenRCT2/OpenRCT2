@@ -49,6 +49,7 @@ static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle);
 static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle);
 static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle);
 static void vehicle_update_bumpcar_mode(rct_vehicle* vehicle);
+static void vehicle_update_swinging(rct_vehicle* vehicle);
 static void vehicle_update_waiting_for_cable_lift(rct_vehicle *vehicle);
 static void vehicle_update_crash(rct_vehicle *vehicle);
 
@@ -1050,13 +1051,16 @@ static void vehicle_update(rct_vehicle *vehicle)
 		break;
 	case VEHICLE_STATUS_TRAVELING_BUMPER_CARS:
 		vehicle_update_bumpcar_mode(vehicle);
+		break;	
+	case VEHICLE_STATUS_SWINGING:
+		vehicle_update_swinging(vehicle);
 		break;
 	case VEHICLE_STATUS_DEPARTING:
 	case VEHICLE_STATUS_TRAVELLING:
 	case VEHICLE_STATUS_ARRIVING:
 	case VEHICLE_STATUS_UNLOADING_PASSENGERS:
 	case VEHICLE_STATUS_TRAVELLING_07:
-	case VEHICLE_STATUS_SWINGING:
+
 	case VEHICLE_STATUS_ROTATING:
 	case VEHICLE_STATUS_FERRIS_WHEEL_ROTATING:
 	case VEHICLE_STATUS_SIMULATOR_OPERATING:
@@ -1580,7 +1584,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		vehicle_invalidate_window(vehicle);
 		vehicle->var_CE = 0;
 		vehicle->var_4C = 0xFFFF;
-		//6d9249
+		vehicle_update_swinging(vehicle);
 		break;
 	case RIDE_MODE_ROTATION:
 		vehicle->status = VEHICLE_STATUS_ROTATING;
@@ -1687,6 +1691,65 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		vehicle->var_CE = 0;
 		break;
 	}
+}
+
+/* rct2: 0x006D9249 */
+static void vehicle_update_swinging(rct_vehicle* vehicle) {
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+	rct_ride_type* rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+
+	// SubState for this ride means swinging state
+	// 0 == first swing
+	// 3 == full swing
+	uint8 swingState = vehicle->sub_state;
+	if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1) {
+		swingState += 4;
+		if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2)
+			swingState += 4;
+	}
+	uint8* edi = RCT2_ADDRESS(0x0099F9D0, uint8*)[swingState];
+	uint8 al = edi[(uint16)(vehicle->var_4C + 1)];
+
+	// 0x80 indicates that a complete swing has been
+	// completed and the next swing can start
+	if (al != 0x80) {
+		vehicle->var_4C++;
+		if (al == vehicle->var_1F)
+			return;
+		// Used to know which sprite to draw
+		vehicle->var_1F = al;
+		invalidate_sprite_2((rct_sprite*)vehicle);
+		return;
+	}
+
+	vehicle->var_4C = 0xFFFF;
+	vehicle->var_CE++;
+	if (ride->status != RIDE_STATUS_CLOSED) {
+		// It takes 3 swings to get into full swing
+		// ride->rotations already takes this into account
+		if (vehicle->var_CE + 3 < ride->rotations) {
+			// Go to the next swing state until we
+			// are at full swing.
+			if (vehicle->sub_state != 3) {
+				vehicle->sub_state++;
+			}
+			vehicle_update_swinging(vehicle);
+			return;
+		}
+	}
+
+	// To get to this part of the code the
+	// swing has to be in slowing down phase
+	if (vehicle->sub_state == 0) {
+		vehicle->status = VEHICLE_STATUS_ARRIVING;
+		vehicle_invalidate_window(vehicle);
+		vehicle->sub_state = 0;
+		vehicle->var_C0 = 0;
+		return;
+	}
+	// Go towards first swing state
+	vehicle->sub_state--;
+	vehicle_update_swinging(vehicle);
 }
 
 /**
