@@ -664,10 +664,10 @@ uint16 platform_get_locale_language(){
 		if(!fnmatch(pattern, "en_CA", 0)){
 			return LANGUAGE_ENGLISH_US;
 		}
-		else if (!fnmatch(pattern, "zn_CA", 0)){
+		else if (!fnmatch(pattern, "zh_CN", 0)){
 			return LANGUAGE_CHINESE_SIMPLIFIED;
 		}
-		else if (!fnmatch(pattern, "zn_TW", 0)){
+		else if (!fnmatch(pattern, "zh_TW", 0)){
 			return LANGUAGE_CHINESE_TRADITIONAL;
 		}
 
@@ -694,47 +694,24 @@ time_t platform_file_get_modified_time(const utf8* path){
 }
 
 uint8 platform_get_locale_currency(){
-	/*
-	CHAR currCode[4];
+	char *langstring = setlocale(LC_MONETARY, "");
+	struct lconv *lc = localeconv();
 
-	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
-		LOCALE_SINTLSYMBOL,
-		(LPSTR)&currCode,
-		sizeof(currCode)) == 0){
-		return CURRENCY_POUNDS;
+	//Only works if g_currency_specs contains the actual (local) symbol
+	for(int i = 0; i < CURRENCY_END; ++i){
+		if(!strcmp(lc->currency_symbol, g_currency_specs[i].symbol)){
+			return i;
+		}
 	}
-	if (strcmp(currCode, "GBP") == 0){
-		return CURRENCY_POUNDS;
+	//TODO: can be removed when g_currency_specs contains the actual symbols for won and rubel
+	if(!strncmp(lc->int_curr_symbol, "KRW", 3)){
+		return CURRENCY_WON;
 	}
-	else if (strcmp(currCode, "USD") == 0){
-		return CURRENCY_DOLLARS;
+	else if(!strncmp(lc->int_curr_symbol, "RUB", 3)){
+		return CURRENCY_ROUBLE;
 	}
-	else if (strcmp(currCode, "EUR") == 0){
-		return CURRENCY_EUROS;
-	}
-	else if (strcmp(currCode, "SEK") == 0){
-		return CURRENCY_KRONA;
-	}
-	else if (strcmp(currCode, "DEM") == 0){
-		return CURRENCY_DEUTSCHMARK;
-	}
-	else if (strcmp(currCode, "ITL") == 0){
-		return CURRENCY_LIRA;
-	}
-	else if (strcmp(currCode, "JPY") == 0){
-		return CURRENCY_YEN;
-	}
-	else if (strcmp(currCode, "ESP") == 0){
-		return CURRENCY_PESETA;
-	}
-	else if (strcmp(currCode, "FRF") == 0){
-		return CURRENCY_FRANC;
-	}
-	else if (strcmp(currCode, "NLG") == 0){
-		return CURRENCY_GUILDERS;
-	}
-	*/
-	STUB();
+
+	//All other currencies are historic
 	return CURRENCY_POUNDS;
 }
 
