@@ -51,6 +51,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle);
 static void vehicle_update_bumpcar_mode(rct_vehicle* vehicle);
 static void vehicle_update_swinging(rct_vehicle* vehicle);
 static void vehicle_update_simulator_operating(rct_vehicle* vehicle);
+static void vehicle_update_top_spin_operating(rct_vehicle* vehicle);
 static void vehicle_update_waiting_for_cable_lift(rct_vehicle *vehicle);
 static void vehicle_update_crash(rct_vehicle *vehicle);
 
@@ -1059,6 +1060,9 @@ static void vehicle_update(rct_vehicle *vehicle)
 	case VEHICLE_STATUS_SIMULATOR_OPERATING:
 		vehicle_update_simulator_operating(vehicle);
 		break;
+	case VEHICLE_STATUS_TOP_SPIN_OPERATING:
+		vehicle_update_top_spin_operating(vehicle);
+		break;
 	case VEHICLE_STATUS_DEPARTING:
 	case VEHICLE_STATUS_TRAVELLING:
 	case VEHICLE_STATUS_ARRIVING:
@@ -1067,7 +1071,7 @@ static void vehicle_update(rct_vehicle *vehicle)
 	case VEHICLE_STATUS_ROTATING:
 	case VEHICLE_STATUS_FERRIS_WHEEL_ROTATING:
 	case VEHICLE_STATUS_SPACE_RINGS_OPERATING:
-	case VEHICLE_STATUS_TOP_SPIN_OPERATING:
+
 	case VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING:
 	case VEHICLE_STATUS_CROOKED_HOUSE_OPERATING:
 	case VEHICLE_STATUS_TRAVELLING_15:
@@ -1626,7 +1630,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		vehicle->var_4C = 0xFFFF;
 		vehicle->var_1F = 0;
 		vehicle->var_20 = 0;
-		//6d9547
+		vehicle_update_top_spin_operating(vehicle);
 		break;
 	case RIDE_MODE_FORWARD_ROTATION:
 	case RIDE_MODE_BACKWARD_ROTATION:
@@ -1771,6 +1775,34 @@ static void vehicle_update_simulator_operating(rct_vehicle* vehicle) {
 		return;
 	}
 	
+	vehicle->status = VEHICLE_STATUS_ARRIVING;
+	vehicle_invalidate_window(vehicle);
+	vehicle->sub_state = 0;
+	vehicle->var_C0 = 0;
+}
+
+/* rct2: 0x006D9547 */
+static void vehicle_update_top_spin_operating(rct_vehicle* vehicle) {
+	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+		return;
+
+	uint8* edi = RCT2_ADDRESS(0x009A12E0, uint8*)[vehicle->sub_state];
+
+	uint8 al = edi[((sint16)vehicle->var_4C + 1) * 2];
+	if (al != 0xFF) {
+		vehicle->var_4C = (sint16)vehicle->var_4C + 1;
+		if (al != vehicle->var_1F) {
+			vehicle->var_1F = al;
+			invalidate_sprite_2((rct_sprite*)vehicle);
+		}
+		al = edi[vehicle->var_4C * 2 + 1];
+		if (al != vehicle->var_20) {
+			vehicle->var_20 = al;
+			invalidate_sprite_2((rct_sprite*)vehicle);
+		}
+		return;
+	}
+
 	vehicle->status = VEHICLE_STATUS_ARRIVING;
 	vehicle_invalidate_window(vehicle);
 	vehicle->sub_state = 0;
