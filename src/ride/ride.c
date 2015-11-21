@@ -7150,9 +7150,12 @@ void ride_crash(int rideIndex, int vehicleIndex)
 	ride = GET_RIDE(rideIndex);
 	vehicle = GET_VEHICLE(ride->vehicles[vehicleIndex]);
 
-	w = window_ride_open_vehicle(vehicle);
-	if (w->viewport != NULL) {
-		w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)) {
+		// Open ride window for crashed vehicle
+		w = window_ride_open_vehicle(vehicle);
+		if (w->viewport != NULL) {
+			w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+		}
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, rct_string_id) = ride->name;
