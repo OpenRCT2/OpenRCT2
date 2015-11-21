@@ -2197,12 +2197,12 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 
 	loc_6D7A97:
 		vehicle->scream_sound_id = 255;
-		screamId = RCT2_GLOBAL(0x0097D7C8 + (ride->type * 4), uint8);
+		// Get lift hill sound
+		screamId = RideLiftData[ride->type].sound_id;
 		screamVolume = 243;
 		if (!(vehicle->var_B8 & 2))
 			screamId = 255;
 	}
-
 
 	// Friction sound
 	soundIdVolume = sub_6D7AC0(vehicle->sound1_id, vehicle->sound1_volume, dl, bl);

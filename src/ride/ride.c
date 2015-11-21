@@ -5367,7 +5367,7 @@ foundRideEntry:
 		RCT2_GLOBAL(0x0097CF40 + 5 + (ride->type * 8), uint8)
 	) / 4;
 
-	ride->lift_hill_speed = RCT2_ADDRESS(0x0097D7C9, uint8)[ride->type * 4];
+	ride->lift_hill_speed = RideLiftData[ride->type].minimum_speed;
 
 	ride->measurement_index = 255;
 	ride->excitement = (ride_rating)-1;

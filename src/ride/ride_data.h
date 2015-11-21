@@ -54,6 +54,12 @@ typedef struct {
 	uint8 pad[4];
 } rct_ride_data_4;
 
+typedef struct {
+	uint8 sound_id;
+	uint8 minimum_speed;
+	uint8 maximum_speed;
+} rct_ride_lift_data;
+
 enum {
 	RIDE_TYPE_FLAG4_0 = (1 << 0),
 	RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT = (1 << 1),
@@ -87,7 +93,7 @@ extern const uint8 AllRideModesAvailable[];
 extern const uint8 RideAvailableBreakdowns[];
 
 extern const rct_ride_entrance_definition RideEntranceDefinitions[RIDE_ENTRANCE_STYLE_COUNT];
-extern const uint8 RideLiftHillAdjustments[0x60];
+extern const rct_ride_lift_data RideLiftData[90];
 
 extern const rct_ride_data_4 RideData4[91];
 

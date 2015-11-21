@@ -843,11 +843,8 @@ static void ride_ratings_apply_intensity_penalty(rating_tuple *ratings)
  */
 static void set_unreliability_factor(rct_ride *ride)
 {
-    // The higher the number, the lower the breakdown
-    // possibility. Range is [3, 7]. values are here:
-    // https://gist.github.com/kevinburke/123977c4884ccadbec70. Consider
-    // inlining this per ride
-	uint8 lift_speed_adjustment = RideLiftHillAdjustments[ride->type];
+	// The bigger the difference in lift speed and minimum the higher the unreliability
+	uint8 lift_speed_adjustment = RideLiftData[ride->type].minimum_speed;
     ride->unreliability_factor += (ride->lift_hill_speed - lift_speed_adjustment) * 2;
 }
 

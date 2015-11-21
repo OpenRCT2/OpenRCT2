@@ -2937,12 +2937,12 @@ static void window_ride_operating_mousedown(int widgetIndex, rct_window *w, rct_
 		if(gConfigCheat.fast_lift_hill)
 			max_lift_hill_speed = 255;
 		else
-			max_lift_hill_speed = RCT2_GLOBAL(0x0097D7CA + (ride->type * 4), uint8);
+			max_lift_hill_speed = RideLiftData[ride->type].maximum_speed;
 
 		set_operating_setting(w->number, 8, min(ride->lift_hill_speed + 1, max_lift_hill_speed));
 		break;
 	case WIDX_LIFT_HILL_SPEED_DECREASE:
-		set_operating_setting(w->number, 8, max(RCT2_GLOBAL(0x0097D7C9 + (ride->type * 4), uint8), ride->lift_hill_speed - 1));
+		set_operating_setting(w->number, 8, max(RideLiftData[ride->type].minimum_speed, ride->lift_hill_speed - 1));
 		break;
 	case WIDX_MINIMUM_LENGTH_INCREASE:
 		set_operating_setting(w->number, 2, min(ride->min_waiting_time + 1, 250));
