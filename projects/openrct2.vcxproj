@@ -51,6 +51,7 @@
     <ClCompile Include="..\src\input.c" />
     <ClCompile Include="..\src\interface\chat.c" />
     <ClCompile Include="..\src\interface\colour.c" />
+    <ClCompile Include="..\src\interface\gif.cpp" />
     <ClCompile Include="..\src\interface\themes.c" />
     <ClCompile Include="..\src\interface\console.c" />
     <ClCompile Include="..\src\interface\graph.c" />
@@ -214,6 +215,7 @@
     <ClInclude Include="..\src\drawing\font.h" />
     <ClInclude Include="..\src\editor.h" />
     <ClInclude Include="..\src\game.h" />
+    <ClInclude Include="..\src\gif.h" />
     <ClInclude Include="..\src\hook.h" />
     <ClInclude Include="..\src\input.h" />
     <ClInclude Include="..\src\interface\chat.h" />

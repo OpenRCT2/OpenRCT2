@@ -22,6 +22,7 @@
 #include "../config.h"
 #include "../game.h"
 #include "../interface/chat.h"
+#include "../interface/screenshot.h"
 #include "../input.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
@@ -513,6 +514,15 @@ static void shortcut_quick_save_game()
 	}
 }
 
+static void shortcut_toggle_recording()
+{
+	if (!gGifRecordingActive) {
+		screenshot_gif_begin();
+	} else {
+		screenshot_gif_end();
+	}
+}
+
 static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_close_top_most_window,
 	shortcut_close_all_floating_windows,
@@ -559,6 +569,7 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	NULL,
 	shortcut_open_chat_window,
 	shortcut_quick_save_game,
+	shortcut_toggle_recording
 };
 
 #pragma endregion

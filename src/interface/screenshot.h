@@ -21,10 +21,16 @@
 #ifndef _SCREENSHOT_H_
 #define _SCREENSHOT_H_
 
+extern bool gGifRecordingActive;
+
 void screenshot_check();
 int screenshot_dump();
 
 void screenshot_giant();
 int cmdline_for_screenshot(const char **argv, int argc);
+
+void screenshot_gif_begin();
+void screenshot_gif_update();
+void screenshot_gif_end();
 
 #endif

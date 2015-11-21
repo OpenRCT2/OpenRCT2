@@ -31,6 +31,7 @@
 #include "game.h"
 #include "interface/chat.h"
 #include "interface/console.h"
+#include "interface/screenshot.h"
 #include "interface/viewport.h"
 #include "intro.h"
 #include "localisation/date.h"
@@ -259,6 +260,8 @@ void rct2_draw()
 	}
 
 	gCurrentDrawCount++;
+
+	screenshot_gif_update();
 }
 
 int rct2_open_file(const char *path)
