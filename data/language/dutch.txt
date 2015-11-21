@@ -2291,7 +2291,7 @@ STR_2286    :Ontwerpen
 STR_2287    :Ontwerp voltooien
 STR_2288    :Onbekend
 STR_2289    :{STRINGID} {STRINGID}
-STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
+STR_2290    :<not used anymore>
 STR_2291    :Selecteer een scenario voor een nieuw spel
 STR_2292    :{WINDOW_COLOUR_2}Bezochte attracties:
 STR_2293    :{BLACK} Niets
@@ -3498,15 +3498,15 @@ STR_5162    :Dag/maand/jaar
 STR_5163    :Maand/dag/jaar
 STR_5164    :Twitch-kanaalnaam
 STR_5165    :Bezoekers namen van volgers geven
-STR_5166    :Geeft bezoekers namen van gebruikers die het Twitch-kanaal volgen.
+STR_5166    :{SMALLFONT}{BLACK}Geeft bezoekers namen van gebruikers die het Twitch-kanaal volgen.
 STR_5167    :Bez. met Twitch-volgersnamen volgen in berichtengeb.
-STR_5168    :Zet het bezoekersvolgsysteem aan voor bezoekers die naar Twitch-volgers zijn genoemd.
+STR_5168    :{SMALLFONT}{BLACK}Zet het bezoekersvolgsysteem aan voor bezoekers die naar Twitch-volgers zijn genoemd.
 STR_5169    :Bez. namen van gebruikers in de Twitch-chat geven
-STR_5170    :Geeft bezoekers namen van gebruikers in de Twitch-chat.
+STR_5170    :{SMALLFONT}{BLACK}Geeft bezoekers namen van gebruikers in de Twitch-chat.
 STR_5171    :Bez. met Twitch-chatnamen volgen in berichtengebied
-STR_5172    :Zet het bezoekersvolgsysteem aan voor bezoekers die naar Twitch-chatters zijn genoemd.
+STR_5172    :{SMALLFONT}{BLACK}Zet het bezoekersvolgsysteem aan voor bezoekers die naar Twitch-chatters zijn genoemd.
 STR_5173    :Twitch-chat als nieuws weergeven
-STR_5174    :Zal chatberichten op Twitch die beginnen met !news in het berichtengebied tonen.
+STR_5174    :{SMALLFONT}{BLACK}Zal chatberichten op Twitch die beginnen met !news in het berichtengebied tonen.
 STR_5175    :Voer de naam van je Twitch-kanaal in
 STR_5176    :Twitch-integratie inschakelen
 STR_5177    :Schermmodus:
@@ -3840,7 +3840,7 @@ STR_5504    :{SMALLFONT}{BLACK}Status multiplayer tonen
 STR_5505    :Kan niet met de server verbinden.
 STR_5506    :Bezoekers negeren intensiteit
 STR_5507    :Klusjesmannen standaard gras laten maaien
-STR_5508    :Laden van bestanden met incorrecte checksum toestaan
+STR_5508    :Bestanden met incorrecte checksum toch laden
 STR_5509    :{SMALLFONT}{BLACK}Maakt het mogelijk om scenario's en opgeslagen spellen met een incorrecte checksum te laden, zoals scenario's uit de demo of beschadigde opgeslagen parken.
 STR_5510    :Standaard geluidsapparaat
 STR_5511    :(ONBEKEND)
