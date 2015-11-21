@@ -48,6 +48,7 @@ static void vehicle_update_doing_circus_show(rct_vehicle *vehicle);
 static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle);
 static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle);
 static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle);
+static void vehicle_update_bumpcar_mode(rct_vehicle* vehicle);
 static void vehicle_update_waiting_for_cable_lift(rct_vehicle *vehicle);
 static void vehicle_update_crash(rct_vehicle *vehicle);
 
@@ -1047,21 +1048,22 @@ static void vehicle_update(rct_vehicle *vehicle)
 	case VEHICLE_STATUS_CRASHED:
 		vehicle_update_crash(vehicle);
 		break;
-
+	case VEHICLE_STATUS_TRAVELING_BUMPER_CARS:
+		vehicle_update_bumpcar_mode(vehicle);
+		break;
 	case VEHICLE_STATUS_DEPARTING:
 	case VEHICLE_STATUS_TRAVELLING:
 	case VEHICLE_STATUS_ARRIVING:
 	case VEHICLE_STATUS_UNLOADING_PASSENGERS:
 	case VEHICLE_STATUS_TRAVELLING_07:
-	case VEHICLE_STATUS_TRAVELLING_0A:
 	case VEHICLE_STATUS_SWINGING:
 	case VEHICLE_STATUS_ROTATING:
-	case VEHICLE_STATUS_ROTATING_0D:
-	case VEHICLE_STATUS_OPERATING:
-	case VEHICLE_STATUS_ROTATING_10:
-	case VEHICLE_STATUS_OPERATING_11:
-	case VEHICLE_STATUS_OPERATING_12:
-	case VEHICLE_STATUS_OPERATING_13:
+	case VEHICLE_STATUS_FERRIS_WHEEL_ROTATING:
+	case VEHICLE_STATUS_SIMULATOR_OPERATING:
+	case VEHICLE_STATUS_SPACE_RINGS_OPERATING:
+	case VEHICLE_STATUS_TOP_SPIN_OPERATING:
+	case VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING:
+	case VEHICLE_STATUS_CROOKED_HOUSE_OPERATING:
 	case VEHICLE_STATUS_TRAVELLING_15:
 		{
 			int *addressSwitchPtr = (int*)(0x006D7B70 + (vehicle->status * 4));
@@ -1438,6 +1440,36 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 	vehicle_invalidate_window(vehicle);
 }
 
+/* rct2: 0x006D91BF */
+static void vehicle_update_bumpcar_mode(rct_vehicle* vehicle) {
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+	rct_ride_type* rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+	rct_ride_type_vehicle* vehicleEntry = &rideEntry[vehicle->vehicle_type];
+
+	if (vehicleEntry->var_12 & (1 << 7) && vehicle->var_C5 != 1) {
+		vehicle->var_C5 = 1;
+		invalidate_sprite_2((rct_sprite*)vehicle);
+	}
+
+	RCT2_CALLPROC_X(0x006DA44E, 0, 0, 0, 0, (int)vehicle, 0, 0);
+
+	// Update the length of time vehicle has been in bumper mode
+	if (vehicle->sub_state++ == 0xFF) {
+		vehicle->var_CE++;
+	}
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+		return;
+
+	vehicle->var_C5 = 0;
+	invalidate_sprite_2((rct_sprite*)vehicle);
+	vehicle->velocity = 0;
+	vehicle->var_2C = 0;
+	vehicle->status = VEHICLE_STATUS_UNLOADING_PASSENGERS;
+	vehicle->sub_state = 0;
+	vehicle_invalidate_window(vehicle);
+}
+
 /* rct2: 0x006D808BE */
 static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 	rct_ride* ride = GET_RIDE(vehicle->ride);
@@ -1456,7 +1488,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 	}
 
 	bool skipCheck = false;
-	if (shouldBreak != false || ride->status != RIDE_STATUS_OPEN) {
+	if (shouldBreak == true || ride->status != RIDE_STATUS_OPEN) {
 		if (ride->mode == RIDE_MODE_FORWARD_ROTATION ||
 			ride->mode == RIDE_MODE_BACKWARD_ROTATION) {
 			uint8 bl = ((-vehicle->var_1F) >> 3) & 0xF;
@@ -1521,7 +1553,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 			vehicle->track_y,
 			vehicle->track_z,
 			vehicle->ride,
-			vehicle->track_direction,
+			(uint8)(vehicle->track_direction & 0x3),
 			&track,
 			&z,
 			&direction)) {
@@ -1534,11 +1566,13 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 
 	switch (ride->mode) {
 	case RIDE_MODE_BUMPERCAR:
-		vehicle->status = VEHICLE_STATUS_TRAVELLING_0A;
-		vehicle->sub_state = 0;
+		vehicle->status = VEHICLE_STATUS_TRAVELING_BUMPER_CARS;
 		vehicle_invalidate_window(vehicle);
+		// Bumper mode uses sub_state / var_CE to tell how long
+		// the vehicle has been ridden.
+		vehicle->sub_state = 0;
 		vehicle->var_CE = 0;
-		//6d91bf
+		vehicle_update_bumpcar_mode(vehicle);
 		break;
 	case RIDE_MODE_SWING:
 		vehicle->status = VEHICLE_STATUS_SWINGING;
@@ -1558,7 +1592,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		break;
 	case RIDE_MODE_FILM_AVENGING_AVIATORS:
 	case RIDE_MODE_FILM_THRILL_RIDERS:
-		vehicle->status = VEHICLE_STATUS_OPERATING;
+		vehicle->status = VEHICLE_STATUS_SIMULATOR_OPERATING;
 		vehicle->sub_state = 0;
 		if (ride->mode == RIDE_MODE_FILM_THRILL_RIDERS)
 			vehicle->sub_state = 1;
@@ -1569,7 +1603,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 	case RIDE_MODE_BEGINNERS:
 	case RIDE_MODE_INTENSE:
 	case RIDE_MODE_BERSERK:
-		vehicle->status = VEHICLE_STATUS_OPERATING_11;
+		vehicle->status = VEHICLE_STATUS_TOP_SPIN_OPERATING;
 		vehicle_invalidate_window(vehicle);
 
 		switch (ride->mode) {
@@ -1590,7 +1624,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		break;
 	case RIDE_MODE_FORWARD_ROTATION:
 	case RIDE_MODE_BACKWARD_ROTATION:
-		vehicle->status = VEHICLE_STATUS_ROTATING_0D;
+		vehicle->status = VEHICLE_STATUS_FERRIS_WHEEL_ROTATING;
 		vehicle->sub_state = vehicle->var_1F;
 		vehicle_invalidate_window(vehicle);
 		vehicle->var_CE = 0;
@@ -1614,17 +1648,17 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 			break;
 		}
 		vehicle->var_4C = 0xFFFF;
-		//6d95ad
+		vehicle_update_showing_film(vehicle);
 		break;
 	case RIDE_MODE_CIRCUS_SHOW:
 		vehicle->status = VEHICLE_STATUS_DOING_CIRCUS_SHOW;
 		vehicle->sub_state = 0;
 		vehicle_invalidate_window(vehicle);
 		vehicle->var_4C = 0xFFFF;
-		//6d95f7
+		vehicle_update_doing_circus_show(vehicle);
 		break;
 	case RIDE_MODE_SPACE_RINGS:
-		vehicle->status = VEHICLE_STATUS_ROTATING_10;
+		vehicle->status = VEHICLE_STATUS_SPACE_RINGS_OPERATING;
 		vehicle->sub_state = 0;
 		vehicle_invalidate_window(vehicle);
 		vehicle->var_1F = 0;
@@ -1632,7 +1666,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		//6d97cb
 		break;
 	case RIDE_MODE_HAUNTED_HOUSE:
-		vehicle->status = VEHICLE_STATUS_OPERATING_12;
+		vehicle->status = VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING;
 		vehicle->sub_state = 0;
 		vehicle_invalidate_window(vehicle);
 		vehicle->var_1F = 0;
@@ -1640,7 +1674,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		//6d9641
 		break;
 	case RIDE_MODE_CROOKED_HOUSE:
-		vehicle->status = VEHICLE_STATUS_OPERATING_13;
+		vehicle->status = VEHICLE_STATUS_CROOKED_HOUSE_OPERATING;
 		vehicle->sub_state = 0;
 		vehicle_invalidate_window(vehicle);
 		vehicle->var_1F = 0;
