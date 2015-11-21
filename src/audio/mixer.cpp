@@ -805,6 +805,7 @@ void* Mixer_Play_Effect(int id, int loop, int volume, float pan, double rate, in
 		return 0;
 	}
 	if (id >= countof(gMixer.css1sources)) {
+		log_error("Tried to play an invalid sound id. %i", id);
 		return 0;
 	}
 	gMixer.Lock();

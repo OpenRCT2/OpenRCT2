@@ -1450,7 +1450,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 static void vehicle_update_bumpcar_mode(rct_vehicle* vehicle) {
 	rct_ride* ride = GET_RIDE(vehicle->ride);
 	rct_ride_type* rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
-	rct_ride_type_vehicle* vehicleEntry = &rideEntry[vehicle->vehicle_type];
+	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
 	if (vehicleEntry->var_12 & (1 << 7) && vehicle->var_C5 != 1) {
 		vehicle->var_C5 = 1;
@@ -1767,7 +1767,7 @@ static void vehicle_update_simulator_operating(rct_vehicle* vehicle) {
 		if (al == vehicle->var_1F)
 			return;
 		vehicle->var_1F = al;
-		invalidate_sprite_2((rct_vehicle*)vehicle);
+		invalidate_sprite_2((rct_sprite*)vehicle);
 		return;
 	}
 	
@@ -2128,14 +2128,15 @@ static void vehicle_update_crash(rct_vehicle *vehicle){
  */
 static void vehicle_update_sound(rct_vehicle *vehicle)
 {
-	RCT2_CALLPROC_X(0x006D7888, 0, 0, 0, 0, (int)vehicle, 0, 0); return;
+	//RCT2_CALLPROC_X(0x006D7888, 0, 0, 0, 0, (int)vehicle, 0, 0); return;
 
 	// PROBLEMS
 	rct_ride *ride;
 	rct_ride_type *rideEntry;
 	// bl should be set before hand
 	uint8 bl = 255, dl = 255;
-	uint8 screamId, screamVolume;
+	// bh screamVolume should be set before hand
+	uint8 screamId, screamVolume = 255;
 	uint16 soundIdVolume;
 
 	ride = GET_RIDE(vehicle->ride);
@@ -2155,35 +2156,35 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 
 	switch (vehicleEntry->sound_range) {
 	case 3:
-		screamVolume = vehicle->scream_sound_id;
+		screamId = vehicle->scream_sound_id;
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
 			if (vehicle->velocity < 0x40000 || vehicle->scream_sound_id != 255)
 				goto loc_6D7A97;
 
 			if ((scenario_rand() & 0xFFFF) <= 0x5555) {
 				vehicle->scream_sound_id = SOUND_TRAIN_WHISTLE;
-				screamId = 255;
+				screamVolume = 255;
 				break;
 			}
 		}
-		if (screamVolume != 254) screamVolume = 255;
-		screamId = 255;
+		if (screamId != 254) screamId = 255;
+		screamVolume = 255;
 		break;
 
 	case 4:
-		screamVolume = vehicle->scream_sound_id;
+		screamId = vehicle->scream_sound_id;
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
 			if (vehicle->velocity < 0x40000 || vehicle->scream_sound_id != 255)
 				goto loc_6D7A97;
 
 			if ((scenario_rand() & 0xFFFF) <= 0x5555) {
 				vehicle->scream_sound_id = SOUND_TRAM;
-				screamId = 255;
+				screamVolume = 255;
 				break;
 			}
 		}
-		if (screamVolume != 254) screamVolume = 255;
-		screamId = 255;
+		if (screamId != 254) screamId = 255;
+		screamVolume = 255;
 		break;
 
 	default:
@@ -2191,22 +2192,20 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 			screamId = vehicle_update_scream_sound(vehicle);
 			if (screamId == 255)
 				goto loc_6D7A97;
-
-			screamVolume = 255;
 			break;
 		}
 
 	loc_6D7A97:
 		vehicle->scream_sound_id = 255;
-		screamVolume = RCT2_GLOBAL(0x0097D7C8 + (ride->type * 4), uint8);
-		screamId = 243;
+		screamId = RCT2_GLOBAL(0x0097D7C8 + (ride->type * 4), uint8);
+		screamVolume = 243;
 		if (!(vehicle->var_B8 & 2))
-			screamVolume = 255;
+			screamId = 255;
 	}
 
 
 	// Friction sound
-	soundIdVolume = sub_6D7AC0(vehicle->sound1_id, vehicle->sound1_volume, bl, dl);
+	soundIdVolume = sub_6D7AC0(vehicle->sound1_id, vehicle->sound1_volume, dl, bl);
 	vehicle->sound1_id = soundIdVolume & 0xFF;
 	vehicle->sound1_volume = (soundIdVolume >> 8) & 0xFF;
 
