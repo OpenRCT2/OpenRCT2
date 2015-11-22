@@ -2385,33 +2385,16 @@ int track_delete()
 int track_is_connected_by_shape(rct_map_element *a, rct_map_element *b)
 {
 	int trackType, aBank, aAngle, bBank, bAngle;
-	rct_ride *ride;
 
-	ride = GET_RIDE(a->properties.track.ride_index);
 	trackType = a->properties.track.type;
 	aBank = gTrackDefinitions[trackType].bank_end;
 	aAngle = gTrackDefinitions[trackType].vangle_end;
-	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_3) {
-		if (a->properties.track.colour & 4) {
-			if (aBank == TRACK_BANK_NONE)
-				aBank = TRACK_BANK_UPSIDE_DOWN;
-			else if (aBank == TRACK_BANK_UPSIDE_DOWN)
-				aBank = TRACK_BANK_NONE;
-		}
-	}
+	aBank = track_get_actual_bank(a, aBank);
 
-	ride = GET_RIDE(b->properties.track.ride_index);
 	trackType = b->properties.track.type;
 	bBank = gTrackDefinitions[trackType].bank_start;
 	bAngle = gTrackDefinitions[trackType].vangle_start;
-	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_3) {
-		if (b->properties.track.colour & 4) {
-			if (bBank == TRACK_BANK_NONE)
-				bBank = TRACK_BANK_UPSIDE_DOWN;
-			else if (bBank == TRACK_BANK_UPSIDE_DOWN)
-				bBank = TRACK_BANK_NONE;
-		}
-	}
+	bBank = track_get_actual_bank(b, bBank);
 
 	return aBank == bBank && aAngle == bAngle;
 }
@@ -4956,4 +4939,25 @@ void track_element_set_cable_lift(rct_map_element *trackElement) {
 
 void track_element_clear_cable_lift(rct_map_element *trackElement) {
 	trackElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+}
+
+int track_get_actual_bank(rct_map_element *mapElement, int bank)
+{
+	rct_ride *ride = GET_RIDE(mapElement->properties.track.ride_index);
+	int trackColour = mapElement->properties.track.colour;
+	return track_get_actual_bank_2(ride->type, trackColour, bank);
+}
+
+int track_get_actual_bank_2(int rideType, int trackColour, int bank)
+{
+	if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_3) {
+		if (trackColour & 4) {
+			if (bank == TRACK_BANK_NONE) {
+				bank = TRACK_BANK_UPSIDE_DOWN;
+			} else if (bank == TRACK_BANK_UPSIDE_DOWN) {
+				bank = TRACK_BANK_NONE;
+			}
+		}
+	}
+	return bank;
 }

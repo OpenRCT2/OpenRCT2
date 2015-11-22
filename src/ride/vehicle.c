@@ -842,6 +842,33 @@ static void vehicle_update_scenery_door(rct_vehicle *vehicle)
 
 /**
  *
+ *  rct2: 0x006DB38B
+ */
+static bool loc_6DB38B(rct_vehicle *vehicle, rct_map_element *mapElement)
+{
+	uint8 colourThingToXor = (vehicle->update_flags >> 9) & 8;
+	int trackType = mapElement->properties.track.type;
+
+	// Get bank
+	int rideType = GET_RIDE(mapElement->properties.track.ride_index)->type;
+	int trackColour = mapElement->properties.track.colour ^ colourThingToXor;
+	int bankStart = gTrackDefinitions[trackType].bank_start;
+	bankStart = track_get_actual_bank_2(rideType, trackColour, bankStart);
+	
+	// Get vangle
+	int vangleStart = gTrackDefinitions[trackType].vangle_start;
+
+	// ?
+	uint16 angleAndBank = vangleStart | (bankStart << 8);
+	if (angleAndBank != RCT2_GLOBAL(0x00F64E36, uint16)) {
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ *
  *  rct2: 0x006DAB4C
  */
 int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
@@ -1054,14 +1081,22 @@ loc_6DB358:
 		}
 	}
 
-// loc_6DB38B:
-	regs.esi = vehicle;
-	regs.edi = mapElement;
-	RCT2_CALLFUNC_Y(0x006DB38B, &regs);
-	goto end;
+	if (!loc_6DB38B(vehicle, mapElement)) {
+		goto loc_6DB94A;
+	}
+
+	// Update VEHICLE_UPDATE_FLAG_11 flag
+	vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_11;
+	int rideType = GET_RIDE(mapElement->properties.track.ride_index)->type;
+	if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_3) {
+		if (mapElement->properties.track.colour & 4) {
+			vehicle->update_flags |= VEHICLE_UPDATE_FLAG_11;
+		}
+	}
 
 loc_6DB41D:
 	regs.esi = vehicle;
+	regs.edi = mapElement;
 	RCT2_CALLFUNC_Y(0x006DB41D, &regs);
 	goto end;
 

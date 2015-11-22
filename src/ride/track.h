@@ -553,4 +553,7 @@ bool track_element_is_cable_lift(rct_map_element *trackElement);
 void track_element_set_cable_lift(rct_map_element *trackElement);
 void track_element_clear_cable_lift(rct_map_element *trackElement);
 
+int track_get_actual_bank(rct_map_element *mapElement, int bank);
+int track_get_actual_bank_2(int rideType, int trackColour, int bank);
+
 #endif
