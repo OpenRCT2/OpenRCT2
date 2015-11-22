@@ -25,6 +25,8 @@
 #include "../hook.h"
 #include "../interface/viewport.h"
 #include "../openrct2.h"
+#include "../scenario.h"
+#include "../world/map_animation.h"
 #include "../world/sprite.h"
 #include "ride.h"
 #include "ride_data.h"
@@ -867,6 +869,44 @@ static bool loc_6DB38B(rct_vehicle *vehicle, rct_map_element *mapElement)
 	return true;
 }
 
+void loc_6DB481(rct_vehicle *vehicle)
+{
+	uint16 probability = 0x8000;
+	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_6) {
+		vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_6;
+	} else {
+		probability = 0x0A3D;
+	}
+	if ((scenario_rand() & 0xFFFF) <= probability) {
+		vehicle->var_CD += 2;
+	}
+}
+
+/**
+ *
+ *  rct2: 0x006DB545
+ */
+static void vehicle_trigger_on_ride_photo(rct_vehicle *vehicle, rct_map_element *mapElement)
+{
+	mapElement->properties.track.sequence &= 0x0F;
+	mapElement->properties.track.sequence |= 0x30;
+	map_animation_create(
+		MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO,
+		vehicle->track_x,
+		vehicle->track_y,
+		mapElement->base_height
+	);
+}
+
+/**
+ *
+ *  rct2: 0x006DEDE8
+ */
+static void sub_6DEDE8(rct_vehicle *vehicle)
+{
+	RCT2_CALLPROC_X(0x006DEDE8, 0, 0, 0, 0, (int)vehicle, 0, 0);
+}
+
 /**
  *
  *  rct2: 0x006DAB4C
@@ -1095,10 +1135,62 @@ loc_6DB358:
 	}
 
 loc_6DB41D:
-	regs.esi = vehicle;
-	regs.edi = mapElement;
-	RCT2_CALLFUNC_Y(0x006DB41D, &regs);
-	goto end;
+	vehicle->track_x = regs.ax;
+	vehicle->track_y = regs.cx;
+	vehicle->track_z = regs.dx;
+
+	// TODO check if getting the vehicle entry again is necessary
+	vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+
+	if ((vehicleEntry->var_14 & (1 << 14)) && vehicle->var_CD < 7) {
+		trackType = mapElement->properties.track.type;
+		if (trackType == TRACK_ELEM_FLAT) {
+			loc_6DB481(vehicle);
+		} else if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) {
+			if (track_element_is_station(mapElement)) {
+				loc_6DB481(vehicle);
+			}
+		}
+	}
+
+	if (vehicle->var_CD != 0 && vehicle->var_CD < 5) {
+		regs.ax >>= 5;
+		regs.cx >>= 5;
+		regs.ah = regs.cl;
+		regs.dx >>= 3;
+		if (regs.ax != ride->var_13C || regs.dl != ride->var_13F) {
+			if (regs.ax == ride->var_13A && regs.dl == ride->var_13E) {
+				vehicle->var_CD = 4;
+			}
+		} else {
+			vehicle->var_CD = 3;
+		}
+	}
+
+loc_6DB500:
+	// Update VEHICLE_UPDATE_FLAG_0
+	vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_0;
+	if (track_element_is_lift_hill(mapElement)) {
+		vehicle->update_flags |= VEHICLE_UPDATE_FLAG_0;
+	}
+
+	trackType = mapElement->properties.track.type;
+	if (trackType != TRACK_ELEM_BRAKES) {
+		vehicle->var_D9 = mapElement->properties.track.colour >> 4;
+	}
+	vehicle->track_direction = regs.bl & 3;
+	vehicle->track_type |= trackType << 2;
+	vehicle->var_CF = (mapElement->properties.track.sequence >> 3) & 0x1E;
+	if (trackType == TRACK_ELEM_ON_RIDE_PHOTO) {
+		vehicle_trigger_on_ride_photo(vehicle, mapElement);
+	}
+	if (trackType == TRACK_ELEM_ROTATION_CONTROL_TOGGLE) {
+		vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_13;
+	}
+	if (vehicleEntry->var_12 & (1 << 8)) {
+		sub_6DEDE8(vehicle);
+	}
+	regs.ax = 0;
 
 loc_6DB59A:
 	regs.esi = vehicle;

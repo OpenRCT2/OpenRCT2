@@ -4961,3 +4961,15 @@ int track_get_actual_bank_2(int rideType, int trackColour, int bank)
 	}
 	return bank;
 }
+
+bool track_element_is_station(rct_map_element *trackElement)
+{
+	switch (trackElement->properties.track.type) {
+	case TRACK_ELEM_END_STATION:
+	case TRACK_ELEM_BEGIN_STATION:
+	case TRACK_ELEM_MIDDLE_STATION:
+		return true;
+	default:
+		return false;
+	}
+}
