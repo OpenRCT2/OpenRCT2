@@ -1903,7 +1903,16 @@ static void ride_ratings_calculate_launched_freefall(rct_ride *ride)
 	}
 
 	ratings.excitement += ((ride_get_total_length(ride) >> 16) * 32768) >> 16;
+
+	#ifdef ORIGINAL_RATINGS
 	ride_ratings_apply_operation_option(&ratings, ride, 0, 1355917, 451972);
+	#else
+	// Only apply "launch speed" effects when the setting can be modified
+	if (ride->mode == RIDE_MODE_UPWARD_LAUNCH) {
+		ride_ratings_apply_operation_option(&ratings, ride, 0, 1355917, 451972);
+	}
+	#endif
+
 	ride_ratings_apply_proximity(&ratings, ride, 20130);
 	ride_ratings_apply_scenery(&ratings, ride, 25098);
 
