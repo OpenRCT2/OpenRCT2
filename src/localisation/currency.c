@@ -34,5 +34,5 @@ const rct_currency_spec g_currency_specs[CURRENCY_END] = {
 	{ 10	, "\xE2\x82\xAC"	, CURRENCY_PREFIX, STR_EUROS },			// Euro
 	{ 10000 , "W"				, CURRENCY_PREFIX, STR_WON },			// South Korean Won
 	{ 1000  , "R "				, CURRENCY_PREFIX, STR_ROUBLE },		// Russian Rouble
-	{ 38,	  "K\xC4\x8D"		, CURRENCY_SUFFIX, STR_CZKORUNA }		// Czech koruna
+	{ 380,	  "K\xC4\x8D"		, CURRENCY_SUFFIX, STR_CZKORUNA }		// Czech koruna
 };
