@@ -32,6 +32,7 @@
 #include "../world/entrance.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"
+#include "../peep/staff.h"
 #include "colour.h"
 #include "viewport.h"
 #include "window.h"
@@ -1837,6 +1838,33 @@ static int callcode_push3(int address, int stackvar1, int stackvar2, int stackva
 	return result&0xFF00;
 }
 
+//This isn't thoroughly tested, but should work.
+/**
+ * return value is carry flag
+ * x = ax
+ * imageId = ebx
+ * y = cx
+ */
+bool sub_68818E(int x, int imageId, int y)
+{
+	paint_struct *ps = RCT2_GLOBAL(0xEE7888, paint_struct *); //ps = ebp
+	
+	if((uint32)ps >= RCT2_GLOBAL(0xEE7880, uint32))
+		return true;
+	ps->image_id = imageId;
+	ps->attached_x = x;
+	ps->attached_y = y;
+	ps->var_0C = 0;
+	paint_struct *ebx = RCT2_GLOBAL(0xF1AD28, paint_struct *); //ebx
+	if(ebx == NULL)
+		return true;
+	RCT2_GLOBAL(0xEE7888, uint32) += 0x12; //odd...
+	ps->next_attached_ps = ebx->attached_ps;
+	ebx->attached_ps = ps;
+	RCT2_GLOBAL(0xF1AD2C, paint_struct *) = ps;
+	return false;
+}
+
 /**
  * Helper function for viewport_surface_paint_setup
  * mapElement = esi;
@@ -1861,17 +1889,17 @@ static inline int helper(rct_map_element *mapElement, uint8 shift)
  * edx = height
  * esi = mapElement
  */
-void viewport_surface_paint_setup(int eax, int ebx, int height, rct_map_element *mapElement, int ebp)
+void viewport_surface_paint_setup(int height, rct_map_element *mapElement)
 {
 	registers regs;
 	
-	regs.eax = eax;
-	regs.ebx = ebx;
-	regs.ecx = 0;
+	regs.eax = 0; //unused
+	regs.ebx = 0; //unused
+	regs.ecx = 0; //unused
 	regs.edx = height;
 	regs.esi = (int)mapElement;
-	regs.edi = 0;
-	regs.ebp = ebp;
+	regs.edi = 0; //unused
+	regs.ebp = 0; //unused
 	
 	int saved_ebx, saved_ecx, saved_edx, saved_esi;
 	
@@ -2089,8 +2117,9 @@ loc_660AAB:
 	assert(height == regs.dx);
 	if(height == (RCT2_GLOBAL(0x9E323C, uint8) * 16))
 	{
-		//goto loc_660B25;
-		callcode_push3(0x660B25, saved_esi, saved_ebx, saved_ecx, &regs); return;
+		//Not sure what this is for, yet.
+		log_warning("loc_660B25");
+		callcode_push3(0x660B25, saved_esi, saved_ebx, saved_ecx, &regs); return;		
 	}
 	else
 	{		
@@ -2104,7 +2133,7 @@ loc_660AAB:
 		
 		assert(saved_esi == (int)mapElement);
 		
-		if(/*(mapElement->properties.surface.terrain & 0xE0) ||*/
+		if((mapElement->properties.surface.terrain & 0xE0) ||
 		   (mapElement->type & 3) ||
 		   (RCT2_GLOBAL(0x9E3296, uint16) != 0) ||
 		   (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x1001))
@@ -2167,8 +2196,68 @@ loc_660AAB:
 		regs.ebx = saved_ebx;
 	}
 loc_660D02:
-	callcode_push1(0x660D02, saved_esi, &regs); return;
-	
+	//callcode_push1(0x660D02, saved_esi, &regs); return;
+	if(RCT2_GLOBAL(0x9DEA50, uint16) != 0xFFFF)
+	{
+		//SAVE
+		saved_ebx = regs.ebx;
+		saved_ecx = regs.ecx;
+		
+		regs.di = RCT2_GLOBAL(0x9DEA50, uint16);
+		
+		x = RCT2_GLOBAL(0x9DE56A, uint16); //x = ax
+		y = RCT2_GLOBAL(0x9DE56E, uint16); //y = cx
+		
+		regs.ax = RCT2_GLOBAL(0x9DE56A, uint16);
+		regs.cx = RCT2_GLOBAL(0x9DE56E, uint16);
+		regs.eax &= 0x1F80;
+		regs.ecx &= 0x1F80;
+		regs.eax >>= 7;
+		regs.ecx >>= 1;
+		regs.eax |= regs.ecx;
+		regs.bx = regs.di;
+		regs.ecx = regs.eax;
+		regs.ebx &= 0x7FFF;
+		regs.ecx &= 0x1F;
+		regs.eax >>= 5;
+		regs.ebp = 0x20380000;
+		//callcode_push3(0x660D4E, saved_esi, saved_ebx, saved_ecx, &regs); return;
+		if(regs.di >= 0)
+		{
+			//callcode_push3(0x660D53, saved_esi, saved_ebx, saved_ecx, &regs); return;
+			rct_peep *peep = &g_sprite_list[RCT2_GLOBAL(0x9DEA50, uint16)].peep; //peep = edi;
+			regs.edi = (int)peep;
+			regs.ebx = peep->staff_id;
+			regs.ebx <<= 9;
+			//callcode_push3(0x660D6D, saved_esi, saved_ebx, saved_ecx, &regs); return;
+			//if(gStaffPatrolAreas[regs.ebx/4 + regs.eax] & (1 << regs.ecx))
+			if(staff_is_patrol_area_set(peep->staff_id, x, y))
+				goto loc_660D93;
+			regs.ebx = peep->staff_type;
+			regs.ebp = 0x20080000;
+		}
+//loc_660D80:
+		//callcode_push3(0x660D80, saved_esi, saved_ebx, saved_ecx, &regs); return;
+		regs.ebx += 0xC8;
+		//regs.ebx <<= 9;
+		//if((gStaffPatrolAreas[regs.ebx/4 + regs.eax] & (1 << regs.ecx)))
+		if(staff_is_patrol_area_set(regs.ebx, x, y))
+		{
+loc_660D93:
+			//callcode_push3(0x660D93, saved_esi, saved_ebx, saved_ecx, &regs); return;
+			regs.ebx = saved_ebx;
+			regs.bl = RCT2_ADDRESS(0x97B444, uint8)[regs.ebx];
+			regs.ebx += 0xA27;
+			sub_68818E(0, regs.ebx | regs.ebp, 0);
+		}
+//loc_660DB0:
+
+		//RESTORE
+		regs.ecx = saved_ecx;
+		regs.ebx = saved_ebx;
+	}
+//loc_660DB2:
+	callcode_push1(0x660DB2, saved_esi, &regs); return;
 }
 
 /**
@@ -2477,7 +2566,7 @@ static void sub_68B3FB(int x, int y)
 		switch (map_element_get_type(map_element))
 		{
 		case MAP_ELEMENT_TYPE_SURFACE:
-			viewport_surface_paint_setup(0, 0, height, map_element, 0);
+			viewport_surface_paint_setup(height, map_element);
 			break;
 		case MAP_ELEMENT_TYPE_PATH:
 			RCT2_CALLPROC_X(0x6A3590, 0, 0, direction, height, (int)map_element, 0, 0);
