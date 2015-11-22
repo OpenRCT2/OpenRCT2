@@ -1132,18 +1132,18 @@ STR_1126    :정지하는 중
 STR_1127    :승객 하차 중
 STR_1128    :블록 브레이크에 의해 정지함
 STR_1129    :모든 차량을 같은 색으로
-STR_1130    :{STRINGID} 마다 다른 색
-STR_1131    :차량 마다 다른 색
+STR_1130    :{STRINGID}마다 다른 색
+STR_1131    :차량마다 다른 색
 STR_1132    :차량 {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1133    :차량 {POP16}{COMMA16}
 STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
-STR_1136    :{SMALLFONT}{BLACK}주요 색상 선택하세요
-STR_1137    :{SMALLFONT}{BLACK}1번 추가 색상 선택하세요
-STR_1138    :{SMALLFONT}{BLACK}2번 추가 색상 선택하세요
-STR_1139    :{SMALLFONT}{BLACK}트랙 지지대 색상 선택하세요
+STR_1136    :{SMALLFONT}{BLACK}주요 색상을 선택하세요
+STR_1137    :{SMALLFONT}{BLACK}1번 추가 색상을 선택하세요
+STR_1138    :{SMALLFONT}{BLACK}2번 추가 색상을 선택하세요
+STR_1139    :{SMALLFONT}{BLACK}트랙 지지대 색상을 선택하세요
 STR_1140    :{SMALLFONT}{BLACK}차량 색상을 선택하세요
-STR_1141    :{SMALLFONT}{BLACK}어떤 차량/열차를 수정할 지 선택하세요
+STR_1141    :{SMALLFONT}{BLACK}어떤 차량/열차를 수정할지 선택하세요
 STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1144    :이 놀이기구/시설의 입구를 건설/파괴할 수 없습니다...
@@ -1208,7 +1208,7 @@ STR_1202    :대기 중인 손님: 1명
 STR_1203    :대기 중인 손님: {COMMA16}명
 STR_1204    :대기 시간: {COMMA16}분
 STR_1205    :대기 시간: {COMMA16}분
-STR_1206    :{WINDOW_COLOUR_2}출발 대기:
+STR_1206    :{WINDOW_COLOUR_2}출발:
 STR_1207    :{WINDOW_COLOUR_2}다른 열차가 탑승장에 도착하면 열차를 출발시킴
 STR_1208    :{WINDOW_COLOUR_2}다른 보트가 탑승장에 도착하면 보트를 출발시킴
 STR_1209    :{SMALLFONT}{BLACK}출발하기 전에 승객을 기다릴지 여부를 선택하세요
@@ -1694,7 +1694,7 @@ STR_1688    :기본 크기 4 x 1
 STR_1689    :블록 브레이크
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  비용: {BLACK}{CURRENCY}
-STR_1692    :{WINDOW_COLOUR_2}  비용: {BLACK}{CURRENCY}으로부터
+STR_1692    :{WINDOW_COLOUR_2}  비용: {BLACK}{CURRENCY} 이상
 STR_1693    :{SMALLFONT}{BLACK}손님
 STR_1694    :{SMALLFONT}{BLACK}직원
 STR_1695    :{SMALLFONT}{BLACK}수익 및 지출
@@ -2281,7 +2281,7 @@ STR_2273    :{WINDOW_COLOUR_2}풍경/테마:{NEWLINE}{BLACK}{STRINGID}
 STR_2274    :{SMALLFONT}{BLACK}이 개발에 대한 상세 내역을 보여줍니다
 STR_2275    :{SMALLFONT}{BLACK}연구 & 개발을 위한 투자 설정 창을 보여줍니다
 STR_2276    :{SMALLFONT}{BLACK}연구 & 개발 상황을 보여줍니다
-STR_2277    :알 수 없는
+STR_2277    :알 수 없음
 STR_2278    :운송용 놀이기구
 STR_2279    :얌전한 놀이기구
 STR_2280    :롤러코스터
