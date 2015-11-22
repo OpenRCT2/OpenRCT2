@@ -557,5 +557,6 @@ int track_get_actual_bank(rct_map_element *mapElement, int bank);
 int track_get_actual_bank_2(int rideType, int trackColour, int bank);
 
 bool track_element_is_station(rct_map_element *trackElement);
+bool track_element_is_covered(int trackElementType);
 
 #endif

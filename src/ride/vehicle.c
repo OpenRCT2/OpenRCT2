@@ -907,6 +907,59 @@ static void sub_6DEDE8(rct_vehicle *vehicle)
 	RCT2_CALLPROC_X(0x006DEDE8, 0, 0, 0, 0, (int)vehicle, 0, 0);
 }
 
+static void vehicle_update_play_water_splash_sound()
+{
+	if (RCT2_GLOBAL(0x00F64E08, sint32) <= 0x20364) {
+		return;
+	}
+
+	audio_play_sound_at_location(
+		SOUND_WATER_SPLASH,
+		RCT2_GLOBAL(0x00F64E20, uint16),
+		RCT2_GLOBAL(0x00F64E22, uint16),
+		RCT2_GLOBAL(0x00F64E24, uint16)
+	);
+}
+
+/**
+ *
+ *  rct2: 0x006DB59E
+ */
+static void vehicle_update_handle_water_splash(rct_vehicle *vehicle)
+{
+	rct_ride_type *rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+	int trackType = vehicle->track_type >> 2;
+
+	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_8)) {
+		if (rideEntry->flags & RIDE_ENTRY_FLAG_9) {
+			if (!vehicle->is_child) {
+				if (track_element_is_covered(trackType)) {
+					rct_vehicle *nextVehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
+					rct_vehicle *nextNextVehicle = GET_VEHICLE(nextVehicle->next_vehicle_on_ride);
+					if (!track_element_is_covered(nextNextVehicle->track_type >> 2)) {
+						if (vehicle->var_34 == 4) {
+							vehicle_update_play_water_splash_sound();
+						}
+					}
+				}
+			}
+		}
+	} else {
+		if (trackType == TRACK_ELEM_25_DEG_DOWN_TO_FLAT) {
+			if (vehicle->var_34 == 12) {
+				vehicle_update_play_water_splash_sound();
+			}
+		}
+	}
+	if (!vehicle->is_child) {
+		if (trackType == TRACK_ELEM_WATER_SPLASH) {
+			if (vehicle->var_34 == 48) {
+				vehicle_update_play_water_splash_sound();
+			}
+		}
+	}
+}
+
 /**
  *
  *  rct2: 0x006DAB4C
@@ -1193,8 +1246,12 @@ loc_6DB500:
 	regs.ax = 0;
 
 loc_6DB59A:
+	vehicle->var_34 = regs.ax;
+	vehicle_update_handle_water_splash(vehicle);
+
+loc_6DB706:
 	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DB59A, &regs);
+	RCT2_CALLFUNC_Y(0x006DB706, &regs);
 	goto end;
 
 loc_6DB94A:
