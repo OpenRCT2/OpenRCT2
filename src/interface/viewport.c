@@ -2124,7 +2124,7 @@ loc_660AAB:
 	else
 	{		
 		//callcode_push3(0x660ACB, saved_esi, saved_ebx, saved_ecx, &regs); return;
-		unsigned int imageId = RCT2_ADDRESS(0x97B444, uint8)[regs.ebx]; //imageId = ebx;
+		unsigned int imageId = RCT2_ADDRESS(0x97B444, uint8)[RCT2_GLOBAL(0x9E3278, uint32)]; //imageId = ebx;
 		
 		if(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_GRIDLINES)
 			regs.edi = 1;
@@ -2177,7 +2177,6 @@ loc_660AAB:
 			
 		}
 	//loc_660CDE:
-		//callcode_push3(0x660CDE, saved_esi, saved_ebx, saved_ecx, &regs); return;
 		int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32); //rotation = ebp
 		RCT2_CALLPROC_X(
 				(int)RCT2_ADDRESS(0x98196C, uint32*)[rotation],
@@ -2195,66 +2194,29 @@ loc_660AAB:
 		regs.ecx = saved_ecx;
 		regs.ebx = saved_ebx;
 	}
-loc_660D02:
+//loc_660D02:
 	//callcode_push1(0x660D02, saved_esi, &regs); return;
 	if(RCT2_GLOBAL(0x9DEA50, uint16) != 0xFFFF)
 	{
-		//SAVE
-		saved_ebx = regs.ebx;
-		saved_ecx = regs.ecx;
-		
-		regs.di = RCT2_GLOBAL(0x9DEA50, uint16);
-		
 		x = RCT2_GLOBAL(0x9DE56A, uint16); //x = ax
 		y = RCT2_GLOBAL(0x9DE56E, uint16); //y = cx
+		int staffIndex = RCT2_GLOBAL(0x9DEA50, uint16) & 0x7FFF; //staffIndex = ebx
+		uint32 unk = 0x20380000; //unk = ebp
 		
-		regs.ax = RCT2_GLOBAL(0x9DE56A, uint16);
-		regs.cx = RCT2_GLOBAL(0x9DE56E, uint16);
-		regs.eax &= 0x1F80;
-		regs.ecx &= 0x1F80;
-		regs.eax >>= 7;
-		regs.ecx >>= 1;
-		regs.eax |= regs.ecx;
-		regs.bx = regs.di;
-		regs.ecx = regs.eax;
-		regs.ebx &= 0x7FFF;
-		regs.ecx &= 0x1F;
-		regs.eax >>= 5;
-		regs.ebp = 0x20380000;
-		//callcode_push3(0x660D4E, saved_esi, saved_ebx, saved_ecx, &regs); return;
-		if(regs.di >= 0)
+		if(RCT2_GLOBAL(0x9DEA50, uint16) >= 0)
 		{
-			//callcode_push3(0x660D53, saved_esi, saved_ebx, saved_ecx, &regs); return;
 			rct_peep *peep = &g_sprite_list[RCT2_GLOBAL(0x9DEA50, uint16)].peep; //peep = edi;
-			regs.edi = (int)peep;
-			regs.ebx = peep->staff_id;
-			regs.ebx <<= 9;
-			//callcode_push3(0x660D6D, saved_esi, saved_ebx, saved_ecx, &regs); return;
-			//if(gStaffPatrolAreas[regs.ebx/4 + regs.eax] & (1 << regs.ecx))
+			
 			if(staff_is_patrol_area_set(peep->staff_id, x, y))
 				goto loc_660D93;
-			regs.ebx = peep->staff_type;
-			regs.ebp = 0x20080000;
+			staffIndex = peep->staff_type;
+			unk = 0x20080000;
 		}
-//loc_660D80:
-		//callcode_push3(0x660D80, saved_esi, saved_ebx, saved_ecx, &regs); return;
-		regs.ebx += 0xC8;
-		//regs.ebx <<= 9;
-		//if((gStaffPatrolAreas[regs.ebx/4 + regs.eax] & (1 << regs.ecx)))
-		if(staff_is_patrol_area_set(regs.ebx, x, y))
+		if(staff_is_patrol_area_set(staffIndex + 0xC8, x, y))
 		{
 loc_660D93:
-			//callcode_push3(0x660D93, saved_esi, saved_ebx, saved_ecx, &regs); return;
-			regs.ebx = saved_ebx;
-			regs.bl = RCT2_ADDRESS(0x97B444, uint8)[regs.ebx];
-			regs.ebx += 0xA27;
-			sub_68818E(0, regs.ebx | regs.ebp, 0);
+			sub_68818E(0, (RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0xA27) | unk, 0);
 		}
-//loc_660DB0:
-
-		//RESTORE
-		regs.ecx = saved_ecx;
-		regs.ebx = saved_ebx;
 	}
 //loc_660DB2:
 	callcode_push1(0x660DB2, saved_esi, &regs); return;
