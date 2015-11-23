@@ -418,6 +418,12 @@ static void research_insert_researched(int entryIndex, int category)
 	rct_research_item *researchItem, *researchItem2;
 
 	researchItem = gResearchItems;
+	// First check to make sure that entry is not already accounted for
+	for (; researchItem->entryIndex != RESEARCHED_ITEMS_END; researchItem++) {
+		if (researchItem->entryIndex == entryIndex)
+			return;
+	}
+	researchItem = gResearchItems;
 	do {
 		if (researchItem->entryIndex == RESEARCHED_ITEMS_SEPARATOR) {
 			// Insert slot
