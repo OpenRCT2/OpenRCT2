@@ -49,9 +49,9 @@ enum {
 
 static TTFFontSetDescriptor TTFFontMingLiu = {{
 	{ "msjh.ttc",		9,		-1,		-3,		6,		nullptr },
-	{ "mingliub.ttc",	11,		1,		1,		12,		nullptr },
-	{ "mingliub.ttc",	12,		1,		0,		12,		nullptr },
-	{ "mingliub.ttc",	13,		1,		0,		20,		nullptr },
+	{ "mingliu.ttc",	11,		1,		1,		12,		nullptr },
+	{ "mingliu.ttc",	12,		1,		0,		12,		nullptr },
+	{ "mingliu.ttc",	13,		1,		0,		20,		nullptr },
 }};
 
 static TTFFontSetDescriptor TTFFontSimSun = {{
