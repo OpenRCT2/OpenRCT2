@@ -731,7 +731,11 @@ void Network::UpdateClient()
 				errormsg += ": ";
 				errormsg += server_connection.last_disconnect_reason;
 			}
-			window_network_status_open(errormsg.c_str());
+			if (server_connection.authstatus == NETWORK_AUTH_REQUIREPASSWORD) { // Do not show disconnect message window when password window closed/canceled
+				window_network_status_close();
+			} else {
+				window_network_status_open(errormsg.c_str());
+			}
 			Close();
 		}
 		ProcessGameCommandQueue();
@@ -1120,7 +1124,6 @@ bool Network::ProcessConnection(NetworkConnection& connection)
 		switch(packetStatus) {
 		case NETWORK_READPACKET_DISCONNECTED:
 			// closed connection or network error
-			PrintError();
 			if (!connection.last_disconnect_reason) {
 				connection.last_disconnect_reason = "Connection Closed";
 			}
