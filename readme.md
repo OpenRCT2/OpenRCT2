@@ -143,9 +143,9 @@ Translations are in progress for German, Dutch, French, Hungarian, Polish, Spani
 
 # 5 More information
 - [GitHub](https://github.com/OpenRCT2/OpenRCT2)
+- [Forums](https://openrct2.org/forums/)
 - [Facebook](https://www.facebook.com/OpenRCT2)
 - [OpenRCT2.com](https://openrct2.com)
 - [OpenRCT.net](https://openrct.net)
-- [rct2 subreddit](http://www.reddit.com/r/rct/)
-- [openrct2 subreddit](http://www.reddit.com/r/openrct2)
-- [openrct2 subverse](http://www.voat.co/v/openrct2)
+- [rct subreddit](http://www.reddit.com/r/rct/)
+- [openrct2 subreddit](http://www.reddit.com/r/openrct2/)
