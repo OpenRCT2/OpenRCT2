@@ -147,4 +147,5 @@ Translations are in progress for German, Dutch, French, Hungarian, Polish, Spani
 - [Facebook](https://www.facebook.com/OpenRCT2)
 - [OpenRCT2.com](https://openrct2.com)
 - [OpenRCT.net](https://openrct.net)
-- [openrct2 subreddit](http://www.reddit.com/r/openrct2)
+- [rct subreddit](http://www.reddit.com/r/rct/)
+- [openrct2 subreddit](http://www.reddit.com/r/openrct2/)
