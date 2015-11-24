@@ -1028,6 +1028,27 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 le
 	return 0;
 }
 
+/*
+ * rct2: 0x6861AC, 0x686337, 0x6864D0, 0x68666B, 0x98196C
+ * returns contents of carry flag
+ * imageId = ebx
+ * rotation = ebp
+ */
+static int sub_98196C(uint8 al, uint8 ah, uint32 imageId, uint8 cl, uint16 dx, uint16 si, uint16 di, uint16 rotation)
+{
+	int flags = RCT2_CALLPROC_X(
+		(int)RCT2_ADDRESS(0x98196C, uint32*)[rotation],
+		al | (ah << 8),
+		imageId,
+		cl,
+		dx,
+		si,
+		di,
+		rotation
+	);
+	return (flags >> 8) & 1;
+}
+
 /**
  *
  *  rct2: 0x006D4244
@@ -1884,37 +1905,6 @@ static inline int helper(rct_map_element *mapElement, uint8 shift)
 	return ebx;
 }
 
-static void loc_660E42(unsigned int ebx, unsigned int dx) //dx is already shifted
-{
-	unsigned int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint16); //ebp
-	
-	RCT2_CALLPROC_X(
-				(int)RCT2_ADDRESS(0x98196C, uint32*)[rotation],
-				0 | (0x10 << 8),
-				0xA40,
-				0,
-				dx,
-				0x20,
-				0x20,
-				rotation
-	);
-	ebx ^= 2;
-	ebx += RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
-	ebx &= 3;
-	ebx += 0x20380C27;
-	
-	RCT2_CALLPROC_X(
-				(int)RCT2_ADDRESS(0x98196C, uint32*)[rotation],
-				0 | (0x13 << 8),
-				ebx,
-				0,
-				dx,
-				0x20,
-				0x20,
-				rotation
-	);
-}
-
 /**
  * rct2: 0x66062C
  * edx = height
@@ -2119,16 +2109,7 @@ void viewport_surface_paint_setup(int height, rct_map_element *mapElement)
 		unsigned int imageId = (elementHeight >> 4) + 0x20781689 + RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, uint16) - RCT2_GLOBAL(0x1359208, uint16); //imageId = ebx
 		unsigned int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32); //rotation = ebp
 		
-		RCT2_CALLPROC_X(
-			(int)RCT2_ADDRESS(0x98196C, uint32*)[rotation],
-			(0x10) | ((0) << 8), //These are actually two separate parameters, but I have to OR them together for now.
-			imageId,
-			0x10,
-			elementHeight,
-			1,
-			1,
-			rotation
-		);
+		sub_98196C(0x10, 0, imageId, 0x10, elementHeight, 1, 1, rotation);
 	}
 loc_660AAB:
 	//RCT2_CALLFUNC_Y(0x660AAB, &regs); return;
@@ -2209,16 +2190,8 @@ loc_660AAB:
 		}
 	//loc_660CDE:
 		int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32); //rotation = ebp
-		RCT2_CALLPROC_X(
-				(int)RCT2_ADDRESS(0x98196C, uint32*)[rotation],
-				0 | (0xFF << 8),
-				imageId,
-				0,
-				height,
-				0x20,
-				0x20,
-				rotation
-		);
+		
+		sub_98196C(0, 0xFF, imageId, 0, height, 0x20, 0x20, rotation);
 		RCT2_GLOBAL(0x9E329A, uint8) = 1;
 		
 		//RESTORE
@@ -2255,22 +2228,37 @@ loc_660D93:
 	if((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_OWNERSHIP))
 	{
 		//callcode_push1(0x660DCE, saved_esi, &regs); return;
+		//Check if this square is one of the two peep spawn locations
 		
-		/* 	RCT2_ADDRESS_PEEP_SPAWNS = x coordinate of first peep spawn.
-		 *	0x13573F4 = y coordinate of first peep spawn.
-		 *	0x13573F8 = x coordinate of second peep spawn.
-		 *	0x13573FA = y coordinate of second peep spawn.
-		 */
-		//Check both peep spawn locations
-		if((RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS, uint16) & 0xFFE0) == RCT2_GLOBAL(0x9DE56A, uint16) &&
-		(RCT2_GLOBAL(0x13573F4, uint16) & 0xFFE0) == RCT2_GLOBAL(0x9DE56E, uint16))
+		rct2_peep_spawn *spawn = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_SPAWNS, rct2_peep_spawn);
+		
+		if((spawn->x & 0xFFE0) == RCT2_GLOBAL(0x9DE56A, uint16) &&
+		(spawn->y & 0xFFE0) == RCT2_GLOBAL(0x9DE56E, uint16))
 		{
-			loc_660E42(RCT2_GLOBAL(0x13573F7, uint8), RCT2_GLOBAL(0x13573F6, uint8) << 4);
+			unsigned int rotation = get_current_rotation();
+			unsigned int dx = RCT2_GLOBAL(0x13573F6, uint8) << 4;
+			unsigned int imageId = (((RCT2_GLOBAL(0x13573F7, uint8) ^ 2) + rotation) & 3) + 0x20380C27;
+			
+			//Add blue square
+			sub_98196C(0, 0x10, 0xA40, 0, dx, 0x20, 0x20, rotation);
+			//Add blue arrow
+			sub_98196C(0, 0x13, imageId, 0, dx, 0x20, 0x20, rotation);
 		}
-		else if((RCT2_GLOBAL(0x13573F8, uint16) & 0xFFE0) == RCT2_GLOBAL(0x9DE56A, uint16) &&
-		(RCT2_GLOBAL(0x13573FA, uint16) & 0xFFE0) == RCT2_GLOBAL(0x9DE56E, uint16))
+		else
 		{
-			loc_660E42(RCT2_GLOBAL(0x13573FD, uint8), RCT2_GLOBAL(0x13573FC, uint8) << 4);
+			spawn++;
+			if((spawn->x & 0xFFE0) == RCT2_GLOBAL(0x9DE56A, uint16) &&
+			(spawn->y & 0xFFE0) == RCT2_GLOBAL(0x9DE56E, uint16))
+			{
+				unsigned int rotation = get_current_rotation();
+				unsigned int dx = RCT2_GLOBAL(0x13573FC, uint8) << 4;
+				unsigned int imageId = (((RCT2_GLOBAL(0x13573FD, uint8) ^ 2) + rotation) & 3) + 0x20380C27;
+				
+				//Add blue square
+				sub_98196C(0, 0x10, 0xA40, 0, dx, 0x20, 0x20, rotation);
+				//Add blue arrow
+				sub_98196C(0, 0x13, imageId, 0, dx, 0x20, 0x20, rotation);
+			}
 		}
 	}
 	
@@ -2294,19 +2282,8 @@ loc_660D93:
 				//0x660ED4
 				//Put a sign if land is for sale
 				paint_struct *saved_F1AD28 = RCT2_GLOBAL(0xF1AD28, paint_struct *);
-				unsigned int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint16);
 				
-				RCT2_CALLPROC_X(
-					(int)RCT2_ADDRESS(0x98196C, uint32*)[rotation],
-					0x10 | (0 << 8),
-					0x59AB,
-					0x10,
-					map_element_height(RCT2_GLOBAL(0x9DE56A, uint16) + 0x10, RCT2_GLOBAL(0x9DE56E, uint16) + 0x10) + 3,
-					1,
-					1,
-					rotation
-				);
-				
+				sub_98196C(0x10, 0, 0x59AB, 0x10, map_element_height(RCT2_GLOBAL(0x9DE56A, uint16) + 0x10, RCT2_GLOBAL(0x9DE56E, uint16) + 0x10) + 3, 1, 1, get_current_rotation());
 				RCT2_GLOBAL(0xF1AD28, paint_struct *) = saved_F1AD28;
 			}
 		}
