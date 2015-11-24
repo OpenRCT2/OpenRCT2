@@ -1884,6 +1884,37 @@ static inline int helper(rct_map_element *mapElement, uint8 shift)
 	return ebx;
 }
 
+static void loc_660E42(unsigned int ebx, unsigned int dx) //dx is already shifted
+{
+	unsigned int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint16); //ebp
+	
+	RCT2_CALLPROC_X(
+				(int)RCT2_ADDRESS(0x98196C, uint32*)[rotation],
+				0 | (0x10 << 8),
+				0xA40,
+				0,
+				dx,
+				0x20,
+				0x20,
+				rotation
+	);
+	ebx ^= 2;
+	ebx += RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+	ebx &= 3;
+	ebx += 0x20380C27;
+	
+	RCT2_CALLPROC_X(
+				(int)RCT2_ADDRESS(0x98196C, uint32*)[rotation],
+				0 | (0x13 << 8),
+				ebx,
+				0,
+				dx,
+				0x20,
+				0x20,
+				rotation
+	);
+}
+
 /**
  * rct2: 0x66062C
  * edx = height
@@ -2219,7 +2250,69 @@ loc_660D93:
 		}
 	}
 //loc_660DB2:
-	callcode_push1(0x660DB2, saved_esi, &regs); return;
+	//callcode_push1(0x660DB2, saved_esi, &regs); return;
+	
+	if((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_OWNERSHIP))
+	{
+		//callcode_push1(0x660DCE, saved_esi, &regs); return;
+		
+		/* 	RCT2_ADDRESS_PEEP_SPAWNS = x coordinate of first peep spawn.
+		 *	0x13573F4 = y coordinate of first peep spawn.
+		 *	0x13573F8 = x coordinate of second peep spawn.
+		 *	0x13573FA = y coordinate of second peep spawn.
+		 */
+		//Check both peep spawn locations
+		if((RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS, uint16) & 0xFFE0) == RCT2_GLOBAL(0x9DE56A, uint16) &&
+		(RCT2_GLOBAL(0x13573F4, uint16) & 0xFFE0) == RCT2_GLOBAL(0x9DE56E, uint16))
+		{
+			loc_660E42(RCT2_GLOBAL(0x13573F7, uint8), RCT2_GLOBAL(0x13573F6, uint8) << 4);
+		}
+		else if((RCT2_GLOBAL(0x13573F8, uint16) & 0xFFE0) == RCT2_GLOBAL(0x9DE56A, uint16) &&
+		(RCT2_GLOBAL(0x13573FA, uint16) & 0xFFE0) == RCT2_GLOBAL(0x9DE56E, uint16))
+		{
+			loc_660E42(RCT2_GLOBAL(0x13573FD, uint8), RCT2_GLOBAL(0x13573FC, uint8) << 4);
+		}
+	}
+	
+//loc_660E9A:
+	//callcode_push1(0x660E9A, saved_esi, &regs); return;
+	assert(0x100 == VIEWPORT_FLAG_LAND_OWNERSHIP);
+	if(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_OWNERSHIP)
+	{
+		assert(saved_esi == (int)mapElement);
+		if(mapElement->properties.surface.ownership & 0x20)
+		{
+			//0x660EAE
+			//Draw blue square if land is owned
+			sub_68818E(0, RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0xA41, 0);
+		}
+		else
+		{
+			//loc_660ECB:
+			if(mapElement->properties.surface.ownership & 0x80)
+			{
+				//0x660ED4
+				//Put a sign if land is for sale
+				paint_struct *saved_F1AD28 = RCT2_GLOBAL(0xF1AD28, paint_struct *);
+				unsigned int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint16);
+				
+				RCT2_CALLPROC_X(
+					(int)RCT2_ADDRESS(0x98196C, uint32*)[rotation],
+					0x10 | (0 << 8),
+					0x59AB,
+					0x10,
+					map_element_height(RCT2_GLOBAL(0x9DE56A, uint16) + 0x10, RCT2_GLOBAL(0x9DE56E, uint16) + 0x10) + 3,
+					1,
+					1,
+					rotation
+				);
+				
+				RCT2_GLOBAL(0xF1AD28, paint_struct *) = saved_F1AD28;
+			}
+		}
+	}
+loc_660F24:
+	callcode_push1(0x660F24, saved_esi, &regs); return;
 }
 
 /**
