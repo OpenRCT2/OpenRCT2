@@ -400,8 +400,10 @@ enum {
 	RIDE_ENTRY_FLAG_NO_BANKED_TRACK = 1 << 2, // 0x4
 	RIDE_ENTRY_FLAG_3 = 1 << 3, // 0x8
 	RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1 = 1 << 4, // 0x10
-	RIDE_ENTRY_FLAG_5 = 1 << 5, // 0x20
-	RIDE_ENTRY_FLAG_6 = 1 << 6, // 0x40
+	// Twist type rotation ride
+	RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1 = 1 << 5, // 0x20
+	// Lifting arm rotation ride (enterprise)
+	RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2 = 1 << 6, // 0x40
 	RIDE_ENTRY_FLAG_7 = 1 << 7, // 0x80
 	RIDE_ENTRY_FLAG_8 = 1 << 8, // 0x100
 	RIDE_ENTRY_FLAG_9 = 1 << 9, // 0x200
