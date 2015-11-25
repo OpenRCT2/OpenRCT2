@@ -345,9 +345,9 @@ void format_comma_separated_fixed_2dp(char **dest, long long value)
 
 void format_currency(char **dest, long long value)
 {
-	const rct_currency_spec *currencySpec = &g_currency_specs[gConfigGeneral.currency_format];
+	const currency_descriptor *currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
 
-	int rate = currencySpec->rate;
+	int rate = currencyDesc->rate;
 	value *= rate;
 
 	// Negative sign
@@ -363,10 +363,15 @@ void format_currency(char **dest, long long value)
 	}
 
 	// Currency symbol
-	const utf8 *symbol = currencySpec->symbol;
+	const utf8 *symbol = currencyDesc->symbol_unicode;
+	uint8 affix = currencyDesc->affix_unicode;
+	if (!font_supports_string(symbol, FONT_SIZE_MEDIUM)) {
+		symbol = currencyDesc->symbol_ascii;
+		affix = currencyDesc->affix_ascii;
+	}
 
 	// Prefix
-	if (currencySpec->affix == CURRENCY_PREFIX) {
+	if (affix == CURRENCY_PREFIX) {
 		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
@@ -374,7 +379,7 @@ void format_currency(char **dest, long long value)
 	format_comma_separated_integer(dest, value);
 
 	// Currency symbol suffix
-	if (currencySpec->affix == CURRENCY_SUFFIX) {
+	if (affix == CURRENCY_SUFFIX) {
 		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
@@ -382,9 +387,9 @@ void format_currency(char **dest, long long value)
 
 void format_currency_2dp(char **dest, long long value)
 {
-	const rct_currency_spec *currencySpec = &g_currency_specs[gConfigGeneral.currency_format];
+	const currency_descriptor *currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
 
-	int rate = currencySpec->rate;
+	int rate = currencyDesc->rate;
 	value *= rate;
 
 	// Negative sign
@@ -394,10 +399,15 @@ void format_currency_2dp(char **dest, long long value)
 	}
 
 	// Currency symbol
-	const utf8 *symbol = currencySpec->symbol;
+	const utf8 *symbol = currencyDesc->symbol_unicode;
+	uint8 affix = currencyDesc->affix_unicode;
+	if (!font_supports_string(symbol, FONT_SIZE_MEDIUM)) {
+		symbol = currencyDesc->symbol_ascii;
+		affix = currencyDesc->affix_ascii;
+	}
 
 	// Prefix
-	if (currencySpec->affix == CURRENCY_PREFIX) {
+	if (affix == CURRENCY_PREFIX) {
 		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
@@ -410,7 +420,7 @@ void format_currency_2dp(char **dest, long long value)
 	}
 
 	// Currency symbol suffix
-	if (currencySpec->affix == CURRENCY_SUFFIX) {
+	if (affix == CURRENCY_SUFFIX) {
 		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}

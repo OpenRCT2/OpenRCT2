@@ -21,17 +21,18 @@
 #include "currency.h"
 #include "string_ids.h"
 
-const rct_currency_spec g_currency_specs[CURRENCY_END] = {
-	{ 10	, "\xC2\xA3"		, CURRENCY_PREFIX, STR_POUNDS },		// British Pound
-	{ 10	, "$"				, CURRENCY_PREFIX, STR_DOLLARS},		// US Dollar
-	{ 10	, "F"				, CURRENCY_SUFFIX, STR_FRANC },			// French Franc
-	{ 10	, "DM"				, CURRENCY_PREFIX, STR_DEUTSCHMARK },	// Deutschmark
-	{ 1000	, "\xC2\xA5"		, CURRENCY_PREFIX, STR_YEN },			// Japanese Yen
-	{ 10	, "Pts"				, CURRENCY_SUFFIX, STR_PESETA },		// Spanish Peseta
-	{ 1000	, "L"				, CURRENCY_PREFIX, STR_LIRA },			// Italian Lira
-	{ 10	, "fl. "			, CURRENCY_PREFIX, STR_GUILDERS },		// Dutch Guilder
-	{ 10	, "kr."				, CURRENCY_SUFFIX, STR_KRONA },			// Swedish Krona
-	{ 10	, "\xE2\x82\xAC"	, CURRENCY_PREFIX, STR_EUROS },			// Euro
-	{ 10000 , "W"				, CURRENCY_PREFIX, STR_WON },			// South Korean Won
-	{ 1000  , "R "				, CURRENCY_PREFIX, STR_ROUBLE },		// Russian Rouble
+const currency_descriptor CurrencyDescriptors[CURRENCY_END] = {
+	{ 10	, CURRENCY_PREFIX, "\xC2\xA3"		,	CURRENCY_SUFFIX,	"GBP"	, STR_POUNDS		},		// British Pound
+	{ 10	, CURRENCY_PREFIX, "$"				,	CURRENCY_PREFIX,	"$"		, STR_DOLLARS		},		// US Dollar
+	{ 10	, CURRENCY_SUFFIX, "F"				,	CURRENCY_SUFFIX,	"F"		, STR_FRANC			},		// French Franc
+	{ 10	, CURRENCY_PREFIX, "DM"				,	CURRENCY_PREFIX,	"DM"	, STR_DEUTSCHMARK	},		// Deutschmark
+	{ 1000	, CURRENCY_PREFIX, "\xC2\xA5"		,	CURRENCY_SUFFIX,	"YEN"	, STR_YEN			},		// Japanese Yen
+	{ 10	, CURRENCY_SUFFIX, "Pts"			,	CURRENCY_SUFFIX,	"Pts"	, STR_PESETA		},		// Spanish Peseta
+	{ 1000	, CURRENCY_PREFIX, "L"				,	CURRENCY_PREFIX,	"L"		, STR_LIRA			},		// Italian Lira
+	{ 10	, CURRENCY_PREFIX, "fl. "			,	CURRENCY_PREFIX,	"fl."	, STR_GUILDERS		},		// Dutch Guilder
+	{ 10	, CURRENCY_SUFFIX, "kr."			,	CURRENCY_SUFFIX,	"kr."	, STR_KRONA			},		// Swedish Krona
+	{ 10	, CURRENCY_PREFIX, "\xE2\x82\xAC"	,	CURRENCY_SUFFIX,	"EUR"	, STR_EUROS			},		// Euro
+	{ 10000 , CURRENCY_PREFIX, "\xE2\x82\xA9"	,	CURRENCY_PREFIX,	"W"		, STR_WON			},		// South Korean Won
+	{ 1000  , CURRENCY_PREFIX, "R "				,	CURRENCY_PREFIX,	"R "	, STR_ROUBLE		},		// Russian Rouble
+	{ 100	, CURRENCY_SUFFIX, "K\xC4\x8D"		,	CURRENCY_SUFFIX,	"Kc"	, STR_CZECH_KORUNA	},		// Czech koruna
 };
