@@ -1213,6 +1213,11 @@ const uint16 RideFilmLength[3] = {
 	7000  // SPACE_RAIDERS
 };
 
+/* rct2: 0x009A0AC4 */
+const uint16 RideCrookedHouseLength[1] = {
+	600
+};
+
 /* rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
 const rct_ride_lift_data RideLiftData[] = { 
 	{ SOUND_LIFT_3, 7, 7 }, // Spiral Roller coaster

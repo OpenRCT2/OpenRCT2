@@ -51,6 +51,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle);
 static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle);
 static void vehicle_update_space_rings_operating(rct_vehicle* vehicle);
 static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle);
+static void vehicle_update_crooked_house_operating(rct_vehicle* vehicle);
 static void vehicle_update_bumpcar_mode(rct_vehicle* vehicle);
 static void vehicle_update_swinging(rct_vehicle* vehicle);
 static void vehicle_update_simulator_operating(rct_vehicle* vehicle);
@@ -1075,13 +1076,15 @@ static void vehicle_update(rct_vehicle *vehicle)
 	case VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING:
 		vehicle_update_haunted_house_operating(vehicle);
 		break;	
+	case VEHICLE_STATUS_CROOKED_HOUSE_OPERATING:
+		vehicle_update_crooked_house_operating(vehicle);
+		break;	
 	case VEHICLE_STATUS_DEPARTING:
 	case VEHICLE_STATUS_TRAVELLING:
 	case VEHICLE_STATUS_ARRIVING:
 	case VEHICLE_STATUS_UNLOADING_PASSENGERS:
 	case VEHICLE_STATUS_TRAVELLING_07:
 	case VEHICLE_STATUS_ROTATING:
-	case VEHICLE_STATUS_CROOKED_HOUSE_OPERATING:
 	case VEHICLE_STATUS_TRAVELLING_15:
 		{
 			int *addressSwitchPtr = (int*)(0x006D7B70 + (vehicle->status * 4));
@@ -1697,7 +1700,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		vehicle_invalidate_window(vehicle);
 		vehicle->var_1F = 0;
 		vehicle->var_4C = 0xFFFF;
-		//6d9781
+		vehicle_update_crooked_house_operating(vehicle);
 		break;
 	default:
 		vehicle->sub_state = 0;
@@ -1955,6 +1958,22 @@ static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle) {
 			vehicle->z);
 		break;
 	}
+}
+
+/* rct2: 0x006d9781 */
+static void vehicle_update_crooked_house_operating(rct_vehicle* vehicle) {
+	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+		return;
+
+	if ((uint16)(vehicle->var_4C + 1) >  RideCrookedHouseLength[vehicle->sub_state]) {
+		vehicle->status = VEHICLE_STATUS_ARRIVING;
+		vehicle_invalidate_window(vehicle);
+		vehicle->sub_state = 0;
+		vehicle->var_C0 = 0;
+		return;
+	}
+
+	vehicle->var_4C++;
 }
 
 /* rct2: 0x006D9547 */
