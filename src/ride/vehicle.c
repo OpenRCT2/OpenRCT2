@@ -48,6 +48,7 @@ static void vehicle_update_doing_circus_show(rct_vehicle *vehicle);
 static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle);
 static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle);
 static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle);
+static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle);
 static void vehicle_update_bumpcar_mode(rct_vehicle* vehicle);
 static void vehicle_update_swinging(rct_vehicle* vehicle);
 static void vehicle_update_simulator_operating(rct_vehicle* vehicle);
@@ -1063,15 +1064,16 @@ static void vehicle_update(rct_vehicle *vehicle)
 	case VEHICLE_STATUS_TOP_SPIN_OPERATING:
 		vehicle_update_top_spin_operating(vehicle);
 		break;
+	case VEHICLE_STATUS_FERRIS_WHEEL_ROTATING:
+		vehicle_update_ferris_wheel_rotating(vehicle);
+		break;	
 	case VEHICLE_STATUS_DEPARTING:
 	case VEHICLE_STATUS_TRAVELLING:
 	case VEHICLE_STATUS_ARRIVING:
 	case VEHICLE_STATUS_UNLOADING_PASSENGERS:
 	case VEHICLE_STATUS_TRAVELLING_07:
 	case VEHICLE_STATUS_ROTATING:
-	case VEHICLE_STATUS_FERRIS_WHEEL_ROTATING:
 	case VEHICLE_STATUS_SPACE_RINGS_OPERATING:
-
 	case VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING:
 	case VEHICLE_STATUS_CROOKED_HOUSE_OPERATING:
 	case VEHICLE_STATUS_TRAVELLING_15:
@@ -1639,7 +1641,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		vehicle_invalidate_window(vehicle);
 		vehicle->var_CE = 0;
 		vehicle->var_4C = 0x808;
-		//6d9413
+		vehicle_update_ferris_wheel_rotating(vehicle);
 		break;
 	case RIDE_MODE_3D_FILM_MOUSE_TAILS:
 	case RIDE_MODE_3D_FILM_STORM_CHASERS:
@@ -1756,6 +1758,84 @@ static void vehicle_update_swinging(rct_vehicle* vehicle) {
 	// Go towards first swing state
 	vehicle->sub_state--;
 	vehicle_update_swinging(vehicle);
+}
+
+/* rct2: 0x006D9413 */
+static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle) {
+	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+		return;
+
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+	if (((vehicle->var_4C -= 0x100) & 0xFF00) != 0)
+		return;
+
+	sint8 var_4C = vehicle->var_4C & 0xFF;
+
+	if (var_4C == 3) {
+		vehicle->var_4C = (0xFF & var_4C) | (0xFF00 & (var_4C << 8));
+	}
+	else if (var_4C < 3) {
+		if (var_4C != -8)
+			var_4C--;
+		vehicle->var_4C = (0xFF & var_4C) | (0xFF00 & (-var_4C << 8));
+	}
+	else {
+		var_4C--;
+		vehicle->var_4C = (0xFF & var_4C) | (0xFF00 & (var_4C << 8));
+	}
+
+	uint8 rotation = vehicle->var_1F;
+	if (ride->mode & RIDE_MODE_FORWARD_ROTATION)
+		rotation++;
+	else
+		rotation--;
+
+	rotation &= 0x7F;
+	vehicle->var_1F = rotation;
+	
+	if (rotation == vehicle->sub_state)
+		vehicle->var_CE++;
+
+	invalidate_sprite_2((rct_sprite*)vehicle);
+
+	uint8 subState = vehicle->sub_state;
+	if (ride->mode & RIDE_MODE_FORWARD_ROTATION)
+		subState++;
+	else
+		subState--;
+	subState &= 0x7F;
+
+	if (subState == vehicle->var_1F) {
+		bool shouldStop = true;
+		if (ride->status != RIDE_STATUS_CLOSED) {
+			if (vehicle->var_CE <= ride->rotations)
+				shouldStop = false;
+		}
+
+		if (shouldStop) {
+			var_4C = vehicle->var_4C;
+			vehicle->var_4C &= 0xFF00;
+			vehicle->var_4C |= 0xFF & (-abs(var_4C));
+		}
+	}
+
+	if ((sint8)(vehicle->var_4C & 0xFF) != -8)
+		return;
+
+	subState = vehicle->sub_state;
+	if (ride->mode & RIDE_MODE_FORWARD_ROTATION)
+		subState += 8;
+	else
+		subState -= 8;
+	subState &= 0x7F;
+
+	if (subState != vehicle->var_1F)
+		return;
+
+	vehicle->status = VEHICLE_STATUS_ARRIVING;
+	vehicle_invalidate_window(vehicle);
+	vehicle->sub_state = 0;
+	vehicle->var_C0 = 0;
 }
 
 /* rct2: 0x006D94F2 */
