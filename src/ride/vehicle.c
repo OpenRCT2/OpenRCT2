@@ -2495,6 +2495,8 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 	default:
 		if ((vehicleEntry->var_14 & 0x10)) {
 			screamId = vehicle_update_scream_sound(vehicle);
+			if (screamId == NO_SCREAM)
+				screamId = 255;
 			if (screamId == 255)
 				goto loc_6D7A97;
 			break;
