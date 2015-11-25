@@ -49,6 +49,8 @@ static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle);
 static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle);
 static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle);
 static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle);
+static void vehicle_update_space_rings_operating(rct_vehicle* vehicle);
+static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle);
 static void vehicle_update_bumpcar_mode(rct_vehicle* vehicle);
 static void vehicle_update_swinging(rct_vehicle* vehicle);
 static void vehicle_update_simulator_operating(rct_vehicle* vehicle);
@@ -1067,14 +1069,18 @@ static void vehicle_update(rct_vehicle *vehicle)
 	case VEHICLE_STATUS_FERRIS_WHEEL_ROTATING:
 		vehicle_update_ferris_wheel_rotating(vehicle);
 		break;	
+	case VEHICLE_STATUS_SPACE_RINGS_OPERATING:
+		vehicle_update_space_rings_operating(vehicle);
+		break;	
+	case VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING:
+		vehicle_update_haunted_house_operating(vehicle);
+		break;	
 	case VEHICLE_STATUS_DEPARTING:
 	case VEHICLE_STATUS_TRAVELLING:
 	case VEHICLE_STATUS_ARRIVING:
 	case VEHICLE_STATUS_UNLOADING_PASSENGERS:
 	case VEHICLE_STATUS_TRAVELLING_07:
 	case VEHICLE_STATUS_ROTATING:
-	case VEHICLE_STATUS_SPACE_RINGS_OPERATING:
-	case VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING:
 	case VEHICLE_STATUS_CROOKED_HOUSE_OPERATING:
 	case VEHICLE_STATUS_TRAVELLING_15:
 		{
@@ -1675,7 +1681,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		vehicle_invalidate_window(vehicle);
 		vehicle->var_1F = 0;
 		vehicle->var_4C = 0xFFFF;
-		//6d97cb
+		vehicle_update_space_rings_operating(vehicle);
 		break;
 	case RIDE_MODE_HAUNTED_HOUSE:
 		vehicle->status = VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING;
@@ -1683,7 +1689,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		vehicle_invalidate_window(vehicle);
 		vehicle->var_1F = 0;
 		vehicle->var_4C = 0xFFFF;
-		//6d9641
+		vehicle_update_haunted_house_operating(vehicle);
 		break;
 	case RIDE_MODE_CROOKED_HOUSE:
 		vehicle->status = VEHICLE_STATUS_CROOKED_HOUSE_OPERATING;
@@ -1813,7 +1819,7 @@ static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle) {
 		}
 
 		if (shouldStop) {
-			var_4C = vehicle->var_4C;
+			var_4C = (sint8)(vehicle->var_4C & 0xFF);
 			vehicle->var_4C &= 0xFF00;
 			vehicle->var_4C |= 0xFF & (-abs(var_4C));
 		}
@@ -1859,6 +1865,96 @@ static void vehicle_update_simulator_operating(rct_vehicle* vehicle) {
 	vehicle_invalidate_window(vehicle);
 	vehicle->sub_state = 0;
 	vehicle->var_C0 = 0;
+}
+
+/* rct2: 0x006D97CB */
+static void vehicle_update_space_rings_operating(rct_vehicle* vehicle) {
+	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+		return;
+
+	uint8* edi = RCT2_ADDRESS(0x009A0ACC, uint8*)[vehicle->sub_state];
+
+	uint8 al = edi[(uint16)(vehicle->var_4C + 1)];
+	if (al != 0xFF) {
+		vehicle->var_4C++;
+		if (al == vehicle->var_1F)
+			return;
+		vehicle->var_1F = al;
+		invalidate_sprite_2((rct_sprite*)vehicle);
+		return;
+	}
+
+	vehicle->status = VEHICLE_STATUS_ARRIVING;
+	vehicle_invalidate_window(vehicle);
+	vehicle->sub_state = 0;
+	vehicle->var_C0 = 0;
+}
+
+/* rct2: 0x006D9641*/
+static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle) {
+	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+		return;
+
+	if (vehicle->var_1F != 0) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 1) {
+			vehicle->var_1F++;
+			invalidate_sprite_2((rct_sprite*)vehicle);
+
+			if (vehicle->var_1F == 19)
+				vehicle->var_1F = 0;
+		}
+	}
+
+	uint16* edi = RCT2_ADDRESS(0x009A0ABC, uint16*)[vehicle->sub_state];
+
+	uint16 ax = *edi;
+	if ((uint16)(vehicle->var_4C + 1) > ax) {
+		vehicle->status = VEHICLE_STATUS_ARRIVING;
+		vehicle_invalidate_window(vehicle);
+		vehicle->sub_state = 0;
+		vehicle->var_C0 = 0;
+		return;
+	}
+
+	vehicle->var_4C++;
+	switch (vehicle->var_4C) {
+	case 45:
+		audio_play_sound_at_location(
+			SOUND_HAUNTED_HOUSE_SCARE, 
+			vehicle->x, 
+			vehicle->y, 
+			vehicle->z);
+		break;
+	case 75:
+		vehicle->var_1F = 1;
+		invalidate_sprite_2((rct_sprite*)vehicle);
+		break;
+	case 400:
+		audio_play_sound_at_location(
+			SOUND_HAUNTED_HOUSE_SCREAM_1,
+			vehicle->x,
+			vehicle->y,
+			vehicle->z);
+		break;
+	case 745:
+		audio_play_sound_at_location(
+			SOUND_HAUNTED_HOUSE_SCARE,
+			vehicle->x,
+			vehicle->y,
+			vehicle->z);
+		break;
+	case 775:
+		vehicle->var_1F = 1;
+		invalidate_sprite_2((rct_sprite*)vehicle);
+		break;
+	case 1100:
+		audio_play_sound_at_location(
+			SOUND_HAUNTED_HOUSE_SCREAM_2,
+			vehicle->x,
+			vehicle->y,
+			vehicle->z);
+		break;
+	}
 }
 
 /* rct2: 0x006D9547 */
