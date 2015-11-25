@@ -1868,6 +1868,7 @@ static int callcode_push3(int address, int stackvar1, int stackvar2, int stackva
  */
 bool sub_68818E(int x, int imageId, int y)
 {
+	//This is not really a paint_struct.
 	paint_struct *ps = RCT2_GLOBAL(0xEE7888, paint_struct *); //ps = ebp
 	
 	if((uint32)ps >= RCT2_GLOBAL(0xEE7880, uint32))
@@ -2289,7 +2290,136 @@ loc_660D93:
 		}
 	}
 loc_660F24:
-	callcode_push1(0x660F24, saved_esi, &regs); return;
+	//callcode_push1(0x660F24, saved_esi, &regs); return;
+	assert(saved_esi==(int)mapElement);
+	if((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x200) && !(mapElement->properties.surface.ownership & 0x20))
+	{
+		if(mapElement->properties.surface.ownership & 0x10)
+		{
+			//0x660F42
+			assert(regs.bl == regs.ebx); //Just being pedantic.
+			sub_68818E(0, RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0xA54, 0);
+		}
+		else
+		{
+			if(mapElement->properties.surface.ownership & 0x40)
+			{
+				//0x660F68
+				paint_struct *saved_F1AD28 = RCT2_GLOBAL(0xF1AD28, paint_struct *);
+				unsigned int elementHeight = map_element_height(RCT2_GLOBAL(0x9DE56A, uint16) + 0x10, RCT2_GLOBAL(0x9DE56E, uint16) + 0x10) + 3; //edx
+				sub_98196C(0x10, 0, 0x59AC, 0x10, elementHeight, 1, 1, get_current_rotation());
+				RCT2_GLOBAL(0xF1AD28, paint_struct *) = saved_F1AD28;
+				//restore edx, ecx, and ebx
+			}
+		}
+	}
+loc_660FB8:
+	//callcode_push1(0x660FB8, saved_esi, &regs); return;
+	if((RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & 1) && 
+	(RCT2_GLOBAL(0x9DE56A, sint16) >= RCT2_GLOBAL(0x9DE58C, sint16)) &&
+	(RCT2_GLOBAL(0x9DE56A, sint16) <= RCT2_GLOBAL(0x9DE58E, sint16)) &&
+	(RCT2_GLOBAL(0x9DE56E, sint16) >= RCT2_GLOBAL(0x9DE590, sint16)) &&
+	(RCT2_GLOBAL(0x9DE56E, sint16) <= RCT2_GLOBAL(0x9DE592, sint16)))
+	{
+		//0x661009
+		//Highlight tiles on map (selected by land tools, path placement, scenery placement, etc.)
+		//callcode_push1(0x661009, saved_esi, &regs); return;
+		
+		//save ebx and ecx
+		saved_ebx = regs.ebx;
+		
+		uint16 mapSelectionType = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16); //mapSelectionType = ax
+		
+		if(mapSelectionType < 6)
+		{
+			//0x661017
+			if(mapSelectionType > 4)
+			{
+				//loc_6610B8
+				regs.esi = saved_esi;
+				assert(saved_esi = (int)mapElement);
+				
+				//save edx
+				
+				assert(height == regs.dx);
+				uint16 myHeight = regs.dx; //myHeight = dx
+				
+				uint16 waterHeight = mapElement->properties.surface.terrain & 0x1F; //waterHeight = ax
+				if(waterHeight != 0)
+				{
+					//0x6610C3
+					waterHeight <<= 4;
+					if(waterHeight > myHeight)
+					{
+						//0x6610D3;
+						myHeight += 0x10;
+						
+						if(waterHeight == myHeight && (regs.bl & 0x10))
+						{
+							regs.bl ^= 0xF;
+							regs.bl = (uint8)regs.bl << 2;
+							regs.bh = regs.bl >> 4;
+							regs.bx &= 0x30C;
+							regs.bl |= regs.bh;
+							regs.bh = 0;
+						}
+						else
+						{
+							//loc_6610F7
+							myHeight = waterHeight;
+							regs.ebx = 0;
+						}
+					}
+				}
+				//loc_6610FC
+				assert(regs.bl == regs.ebx);
+				unsigned int imageId = RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0x21300BE3;
+				paint_struct *saved_F1AD28 = RCT2_GLOBAL(0xF1AD28, paint_struct *);
+				sub_98196C(0, 1, imageId, 0, myHeight, 0x20, 0x20, get_current_rotation());
+				RCT2_GLOBAL(0xF1AD28, paint_struct *) = saved_F1AD28;
+				
+				regs.ebx = saved_ebx;
+			}
+			else
+			{
+				//0x661021
+				if(mapSelectionType != 4)
+					mapSelectionType = (mapSelectionType + regs.cx) & 3;
+				//loc_66102A
+				assert(regs.ax == regs.eax);
+				regs.eax = (mapSelectionType + 0x21) << 0x13;
+				assert(regs.bl == regs.ebx);
+				unsigned int imageId = (RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0x20000BE3) | regs.eax;
+				sub_68818E(0, imageId, 0);
+			}
+		}
+		else
+		{
+			//loc_661051
+			if(mapSelectionType < 10)
+			{
+				//0x661057
+				//Quarter-tile selection (placement of quarter-tile scenery)
+				assert(regs.ax == regs.eax);
+				regs.eax = (unsigned int)(((mapSelectionType - 6 + regs.cx) & 3) + 0x27) << 0x13;
+				assert(regs.bl == regs.ebx);
+				unsigned int imageId = (RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0x20000C09) | regs.eax;
+				sub_68818E(0, imageId, 0);
+			}
+			else
+			{
+				//loc_661089
+				//Tile-edge selection (placement of fences and walls)
+				assert(regs.ax == regs.eax);
+				regs.eax = (unsigned int)(((mapSelectionType - 9 + regs.cx) & 3) + 0x21) << 0x13; 
+				assert(regs.bl == regs.ebx);
+				unsigned int imageId = (RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0x20000BF6) | regs.eax;
+				sub_68818E(0, imageId, 0);
+			}
+		}
+	}
+loc_661132:
+	callcode_push1(0x661132, saved_esi, &regs); return;
 }
 
 /**
