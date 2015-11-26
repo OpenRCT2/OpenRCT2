@@ -221,7 +221,7 @@
 // Types:
 // 0-3   Corners
 // 4     Whole tile
-// 5     ?
+// 5     Water tool
 // 6-9   Quarters
 // 10-13 Edges
 #define RCT2_ADDRESS_MAP_SELECTION_TYPE				0x009DE594

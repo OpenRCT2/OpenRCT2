@@ -1032,16 +1032,17 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 le
  * rct2: 0x6861AC, 0x686337, 0x6864D0, 0x68666B, 0x98196C
  * returns contents of carry flag
  * imageId = ebx
+ * height = dx
  * rotation = ebp
  */
-static int sub_98196C(uint8 al, uint8 ah, uint32 imageId, uint8 cl, uint16 dx, uint16 si, uint16 di, uint16 rotation)
+static int sub_98196C(uint8 al, uint8 ah, uint32 imageId, uint8 cl, uint16 height, uint16 si, uint16 di, uint16 rotation)
 {
 	int flags = RCT2_CALLPROC_X(
 		(int)RCT2_ADDRESS(0x98196C, uint32*)[rotation],
 		al | (ah << 8),
 		imageId,
 		cl,
-		dx,
+		height,
 		si,
 		di,
 		rotation
@@ -1928,6 +1929,8 @@ void viewport_surface_paint_setup(int height, rct_map_element *mapElement)
 	//Uncomment this to use vanilla code.
 	//RCT2_CALLFUNC_Y(0x66062C, &regs); return;
 	
+	unsigned int rotation = get_current_rotation();
+	
 	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo *); //dpi = edi	
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 1;
 	RCT2_GLOBAL(0x9DE57C, uint16) |= 1;
@@ -1935,7 +1938,7 @@ void viewport_surface_paint_setup(int height, rct_map_element *mapElement)
 	//0x9E3296: possibly zoom level for current viewport
 	RCT2_GLOBAL(0x9E3296, uint16) = dpi->zoom_level;
 	
-	regs.ecx = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
+	regs.ecx = rotation;
 	
 	//regs.edi = (int)dpi;
 	//RCT2_CALLFUNC_Y(0x660657, &regs); return;
@@ -1952,9 +1955,9 @@ void viewport_surface_paint_setup(int height, rct_map_element *mapElement)
 	
 	//callcode_push1(0x660698, saved_esi, &regs); return;
 	
-	regs.esi = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
-	uint16 x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B464, uint16)[regs.esi*2]; //x = ax
-	uint16 y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B466, uint16)[regs.esi*2]; //y = bp
+	//regs.esi = rotation;
+	uint16 x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B464, uint16)[rotation * 2]; //x = ax
+	uint16 y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B466, uint16)[rotation * 2]; //y = bp
 	RCT2_GLOBAL(0x9E3248, rct_map_element *) = NULL;
 
 	regs.ax = x;
@@ -1965,7 +1968,7 @@ void viewport_surface_paint_setup(int height, rct_map_element *mapElement)
 	{	
 		//callcode_push1(0x6606DA, saved_esi, &regs); return;
 		
-		rct_map_element *surfaceElement = map_get_surface_element_at(x/32, y/32); //surfaceElement = esi
+		rct_map_element *surfaceElement = map_get_surface_element_at(x / 32, y / 32); //surfaceElement = esi
 		
 		RCT2_GLOBAL(0x9E3248, rct_map_element *) = surfaceElement;
 		
@@ -1994,14 +1997,14 @@ void viewport_surface_paint_setup(int height, rct_map_element *mapElement)
 	}
 //loc_660781:
 	//callcode_push1(0x660781, saved_esi, &regs); return;
-	regs.esi = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
-	x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B474, uint16)[regs.esi*2];
-	y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B476, uint16)[regs.esi*2];
+	//regs.esi = rotation;
+	x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B474, uint16)[rotation * 2];
+	y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B476, uint16)[rotation * 2];
 	RCT2_GLOBAL(0x9E3244, rct_map_element *) = NULL;
 	//callcode_push1(0x6607AE, saved_esi, &regs); return;
 	if(x < 0x2000 && y < 0x2000)
 	{
-		rct_map_element *surfaceElement = map_get_surface_element_at(x/32, y/32); //surfaceElement = esi
+		rct_map_element *surfaceElement = map_get_surface_element_at(x / 32, y / 32); //surfaceElement = esi
 		
 		//rct2: loc_6607E2
 		//callcode_push1(0x6607E2, saved_esi, &regs); return;
@@ -2031,13 +2034,13 @@ void viewport_surface_paint_setup(int height, rct_map_element *mapElement)
 	}
 //loc_66086A:
 	//callcode_push1(0x66086A, saved_esi, &regs); return;
-	regs.esi = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
-	x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B484, uint16)[regs.esi*2];
-	y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B486, uint16)[regs.esi*2];
+	//regs.esi = rotation;
+	x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B484, uint16)[rotation * 2];
+	y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B486, uint16)[rotation * 2];
 	RCT2_GLOBAL(0x9E324C, rct_map_element *) = NULL;
 	if(x < 0x2000 && y < 0x2000)
 	{
-		rct_map_element *surfaceElement = map_get_surface_element_at(x/32, y/32); //surfaceElement = esi
+		rct_map_element *surfaceElement = map_get_surface_element_at(x / 32, y / 32); //surfaceElement = esi
 		
 		RCT2_GLOBAL(0x9E324C, rct_map_element *) = surfaceElement;
 		
@@ -2065,13 +2068,13 @@ void viewport_surface_paint_setup(int height, rct_map_element *mapElement)
 	}
 //loc_660953:
 	//callcode_push1(0x660953, saved_esi, &regs); return;
-	regs.esi = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
-	x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B494, uint16)[regs.esi*2];
-	y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B496, uint16)[regs.esi*2];
+	//regs.esi = rotation;
+	x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B494, uint16)[rotation * 2];
+	y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B496, uint16)[rotation * 2];
 	RCT2_GLOBAL(0x9E3240, rct_map_element *) = NULL;
 	if(x < 0x2000 && y < 0x2000)
 	{
-		rct_map_element *surfaceElement = map_get_surface_element_at(x/32, y/32); //surfaceElement = esi
+		rct_map_element *surfaceElement = map_get_surface_element_at(x / 32, y / 32); //surfaceElement = esi
 		
 		RCT2_GLOBAL(0x9E3240, rct_map_element *) = surfaceElement;
 		
@@ -2103,12 +2106,12 @@ void viewport_surface_paint_setup(int height, rct_map_element *mapElement)
 	
 	//Handle height marks on land
 	//RCT2_CALLFUNC_Y(0x660A3D, &regs); return;
-	if((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_HEIGHTS) && RCT2_GLOBAL(0x9E3296, uint16)==0)
+	if((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_HEIGHTS) &&
+	RCT2_GLOBAL(0x9E3296, uint16) == 0)
 	{
 		//RCT2_CALLFUNC_Y(0x660A52, &regs); return;
 		uint16 elementHeight = 3 + map_element_height(RCT2_GLOBAL(0x9DE56A, uint16) + 0x10, RCT2_GLOBAL(0x9DE56E, uint16) + 0x10); //elementHeight = dx
 		unsigned int imageId = (elementHeight >> 4) + 0x20781689 + RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, uint16) - RCT2_GLOBAL(0x1359208, uint16); //imageId = ebx
-		unsigned int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32); //rotation = ebp
 		
 		sub_98196C(0x10, 0, imageId, 0x10, elementHeight, 1, 1, rotation);
 	}
@@ -2147,21 +2150,21 @@ loc_660AAB:
 		assert(saved_esi == (int)mapElement);
 		
 		if((mapElement->properties.surface.terrain & 0xE0) ||
-		   (mapElement->type & 3) ||
-		   (RCT2_GLOBAL(0x9E3296, uint16) != 0) ||
-		   (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x1001))
+		(mapElement->type & 3) ||
+		(RCT2_GLOBAL(0x9E3296, uint16) != 0) ||
+		(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x1001))
 			goto loc_660C9F;
 		switch(mapElement->properties.surface.grass_length & 7) //si
 		{
 			case 0:
 				//Mowed grass
-				regs.ebp = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
-				imageId += RCT2_ADDRESS(0x97B898, uint32)[regs.edi + regs.ebp*2];
+				regs.ebp = rotation;
+				imageId += RCT2_ADDRESS(0x97B898, uint32)[regs.edi + rotation * 2];
 				break;
 			case 1: case 2: case 3:
 	loc_660C9F:
 				//Clear grass
-				if(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) & 1)
+				if(rotation & 1)
 					regs.ebp = RCT2_ADDRESS(0x97B84A, uint8)[regs.ebp];
 				imageId += RCT2_ADDRESS(0x97B750, uint32)[regs.edi + regs.ebp*2];
 				if(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0xC)
@@ -2190,8 +2193,6 @@ loc_660AAB:
 			
 		}
 	//loc_660CDE:
-		int rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32); //rotation = ebp
-		
 		sub_98196C(0, 0xFF, imageId, 0, height, 0x20, 0x20, rotation);
 		RCT2_GLOBAL(0x9E329A, uint8) = 1;
 		
@@ -2226,134 +2227,111 @@ loc_660D93:
 //loc_660DB2:
 	//callcode_push1(0x660DB2, saved_esi, &regs); return;
 	
-	if((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_OWNERSHIP))
+	if((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) &&
+	(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_OWNERSHIP))
 	{
-		//callcode_push1(0x660DCE, saved_esi, &regs); return;
+		//0x660DCE
 		//Check if this square is one of the two peep spawn locations
+		rct2_peep_spawn *peepSpawn1 = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_SPAWNS, rct2_peep_spawn);
+		rct2_peep_spawn *peepSpawn2 = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_SPAWNS, rct2_peep_spawn) + 1;
 		
-		rct2_peep_spawn *spawn = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_SPAWNS, rct2_peep_spawn);
-		
-		if((spawn->x & 0xFFE0) == RCT2_GLOBAL(0x9DE56A, uint16) &&
-		(spawn->y & 0xFFE0) == RCT2_GLOBAL(0x9DE56E, uint16))
+		if((peepSpawn1->x & 0xFFE0) == RCT2_GLOBAL(0x9DE56A, uint16) &&
+		(peepSpawn1->y & 0xFFE0) == RCT2_GLOBAL(0x9DE56E, uint16))
 		{
-			unsigned int rotation = get_current_rotation();
-			unsigned int dx = RCT2_GLOBAL(0x13573F6, uint8) << 4;
-			unsigned int imageId = (((RCT2_GLOBAL(0x13573F7, uint8) ^ 2) + rotation) & 3) + 0x20380C27;
+			unsigned int imageId = (((peepSpawn1->direction ^ 2) + rotation) & 3) + 0x20380C27;
 			
-			//Add blue square
-			sub_98196C(0, 0x10, 0xA40, 0, dx, 0x20, 0x20, rotation);
-			//Add blue arrow
-			sub_98196C(0, 0x13, imageId, 0, dx, 0x20, 0x20, rotation);
+			//Add blue highlight and blue arrow
+			sub_98196C(0, 0x10, 0xA40, 0, peepSpawn1->z * 16, 0x20, 0x20, rotation);
+			sub_98196C(0, 0x13, imageId, 0, peepSpawn1->z * 16, 0x20, 0x20, rotation);
 		}
-		else
+		else if((peepSpawn2->x & 0xFFE0) == RCT2_GLOBAL(0x9DE56A, uint16) &&
+		(peepSpawn2->y & 0xFFE0) == RCT2_GLOBAL(0x9DE56E, uint16))
 		{
-			spawn++;
-			if((spawn->x & 0xFFE0) == RCT2_GLOBAL(0x9DE56A, uint16) &&
-			(spawn->y & 0xFFE0) == RCT2_GLOBAL(0x9DE56E, uint16))
-			{
-				unsigned int rotation = get_current_rotation();
-				unsigned int dx = RCT2_GLOBAL(0x13573FC, uint8) << 4;
-				unsigned int imageId = (((RCT2_GLOBAL(0x13573FD, uint8) ^ 2) + rotation) & 3) + 0x20380C27;
-				
-				//Add blue square
-				sub_98196C(0, 0x10, 0xA40, 0, dx, 0x20, 0x20, rotation);
-				//Add blue arrow
-				sub_98196C(0, 0x13, imageId, 0, dx, 0x20, 0x20, rotation);
-			}
+			unsigned int imageId = (((peepSpawn2->direction ^ 2) + rotation) & 3) + 0x20380C27;
+			
+			//Add blue highlight and blue arrow
+			sub_98196C(0, 0x10, 0xA40, 0,  peepSpawn2->z * 16, 0x20, 0x20, rotation);
+			sub_98196C(0, 0x13, imageId, 0,  peepSpawn2->z * 16, 0x20, 0x20, rotation);
 		}
 	}
 	
 //loc_660E9A:
 	//callcode_push1(0x660E9A, saved_esi, &regs); return;
-	assert(0x100 == VIEWPORT_FLAG_LAND_OWNERSHIP);
 	if(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_OWNERSHIP)
 	{
 		assert(saved_esi == (int)mapElement);
-		if(mapElement->properties.surface.ownership & 0x20)
+		if(mapElement->properties.surface.ownership & OWNERSHIP_OWNED)
 		{
 			//0x660EAE
-			//Draw blue square if land is owned
+			//Add blue higlight
 			sub_68818E(0, RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0xA41, 0);
 		}
-		else
+		else if(mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE)
 		{
-			//loc_660ECB:
-			if(mapElement->properties.surface.ownership & 0x80)
-			{
-				//0x660ED4
-				//Put a sign if land is for sale
-				paint_struct *saved_F1AD28 = RCT2_GLOBAL(0xF1AD28, paint_struct *);
-				
-				sub_98196C(0x10, 0, 0x59AB, 0x10, map_element_height(RCT2_GLOBAL(0x9DE56A, uint16) + 0x10, RCT2_GLOBAL(0x9DE56E, uint16) + 0x10) + 3, 1, 1, get_current_rotation());
-				RCT2_GLOBAL(0xF1AD28, paint_struct *) = saved_F1AD28;
-			}
+			//0x660ED4
+			//Add for-sale sign
+			paint_struct *saved_F1AD28 = RCT2_GLOBAL(0xF1AD28, paint_struct *);
+			unsigned int elementHeight = map_element_height(RCT2_GLOBAL(0x9DE56A, uint16) + 0x10, RCT2_GLOBAL(0x9DE56E, uint16) + 0x10) + 3;
+			
+			sub_98196C(0x10, 0, 0x59AB, 0x10, elementHeight, 1, 1, rotation);
+			RCT2_GLOBAL(0xF1AD28, paint_struct *) = saved_F1AD28;
 		}
 	}
-loc_660F24:
+//loc_660F24:
 	//callcode_push1(0x660F24, saved_esi, &regs); return;
 	assert(saved_esi==(int)mapElement);
-	if((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x200) && !(mapElement->properties.surface.ownership & 0x20))
+	if((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS) && !(mapElement->properties.surface.ownership & OWNERSHIP_OWNED))
 	{
-		if(mapElement->properties.surface.ownership & 0x10)
+		if(mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
 		{
 			//0x660F42
-			assert(regs.bl == regs.ebx); //Just being pedantic.
+			//Add hatched blue highlight
 			sub_68818E(0, RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0xA54, 0);
 		}
-		else
+		else if(mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
 		{
-			if(mapElement->properties.surface.ownership & 0x40)
-			{
-				//0x660F68
-				paint_struct *saved_F1AD28 = RCT2_GLOBAL(0xF1AD28, paint_struct *);
-				unsigned int elementHeight = map_element_height(RCT2_GLOBAL(0x9DE56A, uint16) + 0x10, RCT2_GLOBAL(0x9DE56E, uint16) + 0x10) + 3; //edx
-				sub_98196C(0x10, 0, 0x59AC, 0x10, elementHeight, 1, 1, get_current_rotation());
-				RCT2_GLOBAL(0xF1AD28, paint_struct *) = saved_F1AD28;
-				//restore edx, ecx, and ebx
-			}
+			//0x660F68
+			//Add hatched for-sale sign
+			paint_struct *saved_F1AD28 = RCT2_GLOBAL(0xF1AD28, paint_struct *);
+			unsigned int elementHeight = map_element_height(RCT2_GLOBAL(0x9DE56A, uint16) + 0x10, RCT2_GLOBAL(0x9DE56E, uint16) + 0x10) + 3; //edx
+			
+			sub_98196C(0x10, 0, 0x59AC, 0x10, elementHeight, 1, 1, rotation);
+			RCT2_GLOBAL(0xF1AD28, paint_struct *) = saved_F1AD28;
 		}
 	}
 loc_660FB8:
 	//callcode_push1(0x660FB8, saved_esi, &regs); return;
 	if((RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & 1) && 
-	(RCT2_GLOBAL(0x9DE56A, sint16) >= RCT2_GLOBAL(0x9DE58C, sint16)) &&
-	(RCT2_GLOBAL(0x9DE56A, sint16) <= RCT2_GLOBAL(0x9DE58E, sint16)) &&
-	(RCT2_GLOBAL(0x9DE56E, sint16) >= RCT2_GLOBAL(0x9DE590, sint16)) &&
-	(RCT2_GLOBAL(0x9DE56E, sint16) <= RCT2_GLOBAL(0x9DE592, sint16)))
+	(RCT2_GLOBAL(0x9DE56A, sint16) >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16)) &&
+	(RCT2_GLOBAL(0x9DE56A, sint16) <= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16)) &&
+	(RCT2_GLOBAL(0x9DE56E, sint16) >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16)) &&
+	(RCT2_GLOBAL(0x9DE56E, sint16) <= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)))
 	{
+		//callcode_push1(0x661009, saved_esi, &regs); return;
 		//0x661009
 		//Highlight tiles on map (selected by land tools, path placement, scenery placement, etc.)
-		//callcode_push1(0x661009, saved_esi, &regs); return;
 		
-		//save ebx and ecx
-		saved_ebx = regs.ebx;
+		uint16 mapSelectionType = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16); //mapSelectionType = ax		
+		unsigned int imageId;
 		
-		uint16 mapSelectionType = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16); //mapSelectionType = ax
-		
-		if(mapSelectionType < 6)
+		switch(mapSelectionType)
 		{
-			//0x661017
-			if(mapSelectionType > 4)
-			{
-				//loc_6610B8
-				regs.esi = saved_esi;
-				assert(saved_esi = (int)mapElement);
-				
-				//save edx
-				
-				assert(height == regs.dx);
+			case 0: case 1: case 2: case 3: //0-3 Corners
+				mapSelectionType = (mapSelectionType + regs.cx) & 3;
+			case 4: //4 Whole tile
+				regs.eax = (mapSelectionType + 0x21) << 0x13;
+				imageId = (RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0x20000BE3) | regs.eax;
+				sub_68818E(0, imageId, 0);
+				break;
+			case 5: //5 Water tool
+				saved_ebx = regs.ebx;
 				uint16 myHeight = regs.dx; //myHeight = dx
-				
-				uint16 waterHeight = mapElement->properties.surface.terrain & 0x1F; //waterHeight = ax
+				uint16 waterHeight = (mapElement->properties.surface.terrain & 0x1F) * 16; //waterHeight = ax
 				if(waterHeight != 0)
 				{
-					//0x6610C3
-					waterHeight <<= 4;
 					if(waterHeight > myHeight)
 					{
-						//0x6610D3;
-						myHeight += 0x10;
-						
+						myHeight += 16;
 						if(waterHeight == myHeight && (regs.bl & 0x10))
 						{
 							regs.bl ^= 0xF;
@@ -2365,60 +2343,32 @@ loc_660FB8:
 						}
 						else
 						{
-							//loc_6610F7
 							myHeight = waterHeight;
 							regs.ebx = 0;
 						}
 					}
 				}
-				//loc_6610FC
-				assert(regs.bl == regs.ebx);
-				unsigned int imageId = RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0x21300BE3;
+				imageId = RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0x21300BE3;
 				paint_struct *saved_F1AD28 = RCT2_GLOBAL(0xF1AD28, paint_struct *);
-				sub_98196C(0, 1, imageId, 0, myHeight, 0x20, 0x20, get_current_rotation());
+				sub_98196C(0, 1, imageId, 0, myHeight, 0x20, 0x20, rotation);
 				RCT2_GLOBAL(0xF1AD28, paint_struct *) = saved_F1AD28;
-				
 				regs.ebx = saved_ebx;
-			}
-			else
-			{
-				//0x661021
-				if(mapSelectionType != 4)
-					mapSelectionType = (mapSelectionType + regs.cx) & 3;
-				//loc_66102A
-				assert(regs.ax == regs.eax);
-				regs.eax = (mapSelectionType + 0x21) << 0x13;
-				assert(regs.bl == regs.ebx);
-				unsigned int imageId = (RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0x20000BE3) | regs.eax;
+				break;
+			default:
+				if(mapSelectionType < 10) //6-9 Quarter tile
+				{
+					regs.eax = (unsigned int)(((mapSelectionType - 6 + regs.cx) & 3) + 0x27) << 0x13;
+					imageId = (RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0x20000C09) | regs.eax;
+				}
+				else //10-13 Edges
+				{
+					regs.eax = (unsigned int)(((mapSelectionType - 9 + regs.cx) & 3) + 0x21) << 0x13; 
+					imageId = (RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0x20000BF6) | regs.eax;
+				}
 				sub_68818E(0, imageId, 0);
-			}
-		}
-		else
-		{
-			//loc_661051
-			if(mapSelectionType < 10)
-			{
-				//0x661057
-				//Quarter-tile selection (placement of quarter-tile scenery)
-				assert(regs.ax == regs.eax);
-				regs.eax = (unsigned int)(((mapSelectionType - 6 + regs.cx) & 3) + 0x27) << 0x13;
-				assert(regs.bl == regs.ebx);
-				unsigned int imageId = (RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0x20000C09) | regs.eax;
-				sub_68818E(0, imageId, 0);
-			}
-			else
-			{
-				//loc_661089
-				//Tile-edge selection (placement of fences and walls)
-				assert(regs.ax == regs.eax);
-				regs.eax = (unsigned int)(((mapSelectionType - 9 + regs.cx) & 3) + 0x21) << 0x13; 
-				assert(regs.bl == regs.ebx);
-				unsigned int imageId = (RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0x20000BF6) | regs.eax;
-				sub_68818E(0, imageId, 0);
-			}
 		}
 	}
-loc_661132:
+//loc_661132:
 	callcode_push1(0x661132, saved_esi, &regs); return;
 }
 
