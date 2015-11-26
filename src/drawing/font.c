@@ -134,7 +134,10 @@ bool font_supports_string(const utf8 *text, int fontSize)
 	uint32 codepoint;
 	while ((codepoint = utf8_get_next(src, &src)) != 0) {
 		if (gUseTrueTypeFont) {
-			return TTF_GlyphIsProvided(gCurrentTTFFontSet->size[fontSize].font, (uint16)codepoint);
+			bool supported = TTF_GlyphIsProvided(gCurrentTTFFontSet->size[fontSize].font, (uint16)codepoint);
+			if (!supported) {
+				return false;
+			}
 		} else {
 			bool supported = false;
 			switch (codepoint) {

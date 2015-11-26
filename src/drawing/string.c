@@ -881,8 +881,9 @@ static uint32 _ttf_getwidth_cache_get_or_add(TTF_Font *font, const utf8 *text)
 bool ttf_initialise()
 {
 	if (!_ttfInitialised) {
-		if (TTF_Init() != 0)
+		if (TTF_Init() != 0) {
 			return false;
+		}
 
 		for (int i = 0; i < 4; i++) {
 			TTFFontDescriptor *fontDesc = &(gCurrentTTFFontSet->size[i]);
@@ -893,6 +894,7 @@ bool ttf_initialise()
 			fontDesc->font = TTF_OpenFont(fontPath, fontDesc->ptSize);
 			if (fontDesc->font == NULL) {
 				log_error("Unable to load '%s'", fontPath);
+				return false;
 			}
 		}
 
