@@ -32,6 +32,6 @@ const rct_currency_spec g_currency_specs[CURRENCY_END] = {
 	{ 10	, "fl. "			, CURRENCY_PREFIX, STR_GUILDERS },		// Dutch Guilder
 	{ 10	, "kr."				, CURRENCY_SUFFIX, STR_KRONA },			// Swedish Krona
 	{ 10	, "\xE2\x82\xAC"	, CURRENCY_PREFIX, STR_EUROS },			// Euro
-	{ 10000 , "W"				, CURRENCY_PREFIX, STR_WON },			// South Korean Won
+	{ 10000 , "\xE2\x82\xA9"		, CURRENCY_PREFIX, STR_WON },			// South Korean Won
 	{ 1000  , "R "				, CURRENCY_PREFIX, STR_ROUBLE },		// Russian Rouble
 };
