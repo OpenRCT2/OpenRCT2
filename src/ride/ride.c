@@ -5111,14 +5111,13 @@ static int ride_get_default_mode(rct_ride *ride)
 	return availableModes[0];
 }
 
-static bool ride_with_colour_config_exists(rct_ride *srcRide, const track_colour *colours)
+static bool ride_with_colour_config_exists(uint8 ride_type, const track_colour *colours)
 {
 	rct_ride *ride;
 	int i;
 
 	FOR_ALL_RIDES(i, ride) {
-		if (ride != srcRide) continue;
-		if (ride->type != srcRide->type) continue;
+		if (ride->type != ride_type) continue;
 		if (ride->track_colour_main[0] != colours->main) continue;
 		if (ride->track_colour_additional[0] != colours->additional) continue;
 		if (ride->track_colour_supports[0] != colours->supports) continue;
@@ -5146,25 +5145,37 @@ static bool ride_name_exists(char *name)
 
 /**
  *
- *  rct2: 0x006B4776
+ *  Based on rct2: 0x006B4776
  */
-static void ride_set_to_random_colour_preset(rct_ride *ride)
+static int ride_get_random_colour_preset_index(uint8 ride_type)
 {
 	const track_colour_preset_list *colourPresets;
 	const track_colour *colours;
 
-	colourPresets = RCT2_ADDRESS(0x0097D934, track_colour_preset_list*)[ride->type];
+	colourPresets = RCT2_ADDRESS(0x0097D934, track_colour_preset_list*)[ride_type];
 
 	// 200 attempts to find a colour preset that hasn't already been used in the park for this ride type
 	for (int i = 0; i < 200; i++) {
-		int listIndex = scenario_rand() % colourPresets->count;
+		int listIndex = util_rand() % colourPresets->count;
 		colours = &colourPresets->list[listIndex];
 
-		if (!ride_with_colour_config_exists(ride, colours)) {
-			break;
+		if (!ride_with_colour_config_exists(ride_type, colours)) {
+			return listIndex;
 		}
 	}
+	return 0;
+}
 
+/**
+ *
+ *  Based on rct2: 0x006B4776
+ */
+static void ride_set_colour_preset(rct_ride *ride, uint8 index) {
+	const track_colour_preset_list *colourPresets;
+	const track_colour *colours;
+
+	colourPresets = RCT2_ADDRESS(0x0097D934, track_colour_preset_list*)[ride->type];
+	colours = &colourPresets->list[index];
 	for (int i = 0; i < 4; i++) {
 		ride->track_colour_main[i] = colours->main;
 		ride->track_colour_additional[i] = colours->additional;
@@ -5221,7 +5232,7 @@ static bool shop_item_has_common_price(int shopItem)
  *
  *  rct2: 0x006B3F0F
  */
-money32 ride_create(int type, int subType, int flags, int *outRideIndex)
+money32 ride_create(int type, int subType, int flags, int *outRideIndex, int *outRideColour)
 {
 	char rideNameBuffer[256];
 	rct_ride *ride;
@@ -5249,6 +5260,12 @@ foundRideEntry:
 	}
 	*outRideIndex = rideIndex;
 
+	// Ride colour is calcualted before applying to ensure 
+	// correct colour is passed over the network.
+	if (!(flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_NETWORKED)) {
+		*outRideColour = ride_get_random_colour_preset_index(type);
+	}
+
 	if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = 0x8000;
@@ -5259,7 +5276,7 @@ foundRideEntry:
 	rideEntry = GET_RIDE_ENTRY(rideEntryIndex);
 	ride->type = type;
 	ride->subtype = rideEntryIndex;
-	ride_set_to_random_colour_preset(ride);
+	ride_set_colour_preset(ride, *outRideColour);
 	ride->overall_view = 0xFFFF;
 
 	// Ride name
@@ -5462,7 +5479,7 @@ foundRideEntry:
  */
 void game_command_create_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	*ebx = ride_create(*edx & 0xFF, (*edx >> 8) & 0xFF, *ebx & 0xFF, edi);
+	*ebx = ride_create(*edx & 0xFF, (*edx >> 8) & 0xFF, *ebx, edi, eax);
 }
 
 void game_command_callback_ride_construct_new(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
