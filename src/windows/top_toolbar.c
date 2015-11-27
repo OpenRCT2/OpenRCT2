@@ -34,6 +34,7 @@
 #include "../network/network.h"
 #include "../network/twitch.h"
 #include "../scenario.h"
+#include "../util/util.h"
 #include "../world/scenery.h"
 #include "../world/banner.h"
 #include "dropdown.h"
@@ -1116,7 +1117,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			uint8 rotation = window_scenery_rotation;
 
 			if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
-				rotation = rand() & 0xFF;
+				rotation = util_rand() & 0xFF;
 			}
 
 			rotation -= get_current_rotation();
@@ -1194,7 +1195,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		uint8 rotation = window_scenery_rotation;
 
 		if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
-			rotation = rand() & 0xFF;
+			rotation = util_rand() & 0xFF;
 		}
 
 		rotation -= get_current_rotation();
@@ -1440,11 +1441,11 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 			if (window_scenery_is_build_cluster_tool_on){
 				if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)){
 					parameter_2 &= 0xFF00;
-					parameter_2 |= rand() & 3;
+					parameter_2 |= util_rand() & 3;
 				}
 
-				cur_grid_x += ((rand() % 16) - 8) * 32;
-				cur_grid_y += ((rand() % 16) - 8) * 32;
+				cur_grid_x += ((util_rand() % 16) - 8) * 32;
+				cur_grid_y += ((util_rand() % 16) - 8) * 32;
 
 				if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
 					RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint16)++;

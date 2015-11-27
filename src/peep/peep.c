@@ -1768,7 +1768,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 			}
 
 			if (ride->price > peep->cash_in_pocket){
-				peep_insert_new_thought(peep, 0, peep->current_ride);
+				peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_AFFORD_0, peep->current_ride);
 				if (peep->destination_tolerence == 0){
 					remove_peep_from_queue(peep);
 					peep_decrement_num_riders(peep);
@@ -7983,7 +7983,7 @@ loc_69B119:
 			if (value > ((money16)(scenario_rand() & 0x07))) {
 				// "I'm not paying that much for x"
 				uint8 thought_type = (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2_MUCH + (shopItem - 32)) : (PEEP_THOUGHT_TYPE_BALLOON_MUCH + shopItem));
-				peep_insert_new_thought(peep, shopItem, rideIndex);
+				peep_insert_new_thought(peep, thought_type, rideIndex);
 				return 0;
 			}
 		}

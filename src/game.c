@@ -269,6 +269,9 @@ void game_update()
 	} else {
 		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
 			numUpdates = 0;
+			// Update the animation list. Note this does not 
+			// increment the map animation.
+			map_animation_invalidate_all();
 		}
 	}
 

@@ -29,6 +29,7 @@
 #include "../world/scenery.h"
 #include "../interface/themes.h"
 #include "../rct1.h"
+#include "../util/util.h"
 
 #pragma region Widgets
 
@@ -344,7 +345,7 @@ static void research_items_shuffle()
 
 	// Shuffle list
 	for (i = 0; i < numNonResearchedItems; i++) {
-		ri = rand() % numNonResearchedItems;
+		ri = util_rand() % numNonResearchedItems;
 		if (ri == i)
 			continue;
 

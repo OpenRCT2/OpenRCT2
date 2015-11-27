@@ -35,6 +35,7 @@
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../util/util.h"
 #include "../world/footpath.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
@@ -1089,7 +1090,7 @@ void window_guest_overview_update(rct_window* w){
 		// Create the "I have the strangest feeling I am being watched thought"
 		if ((w->var_494 & 0xFFFF) >= 3840) {
 			if (!(w->var_494 & 0x3FF)) {
-				int random = rand() & 0xFFFF;
+				int random = util_rand() & 0xFFFF;
 				if (random <= 0x2AAA) {
 					rct_peep* peep = GET_PEEP(w->number);
 					peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WATCHED, 0xFF);

@@ -103,7 +103,7 @@ typedef utf16* utf16string;
 // The following constants are for automated build servers
 #define OPENRCT2_BUILD_NUMBER		""
 #define OPENRCT2_BUILD_SERVER		""
-#define OPENRCT2_BRANCH				"develop"
+#define OPENRCT2_BRANCH				"pre-release-0.0.3"
 #define OPENRCT2_COMMIT_SHA1		""
 #define OPENRCT2_COMMIT_SHA1_SHORT	""
 #define OPENRCT2_MASTER_SERVER_URL	"https://servers.openrct2.website"

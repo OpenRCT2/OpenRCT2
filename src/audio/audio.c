@@ -61,9 +61,9 @@ void audio_init()
 	if (result >= 0)
 		return;
 
-	log_fatal("SDL_Init %s", SDL_GetError());
-	exit(-1);
-}
+		log_fatal("SDL_Init %s", SDL_GetError());
+		exit(-1);
+	}
 
 void audio_quit()
 {
@@ -79,9 +79,9 @@ void audio_populate_devices()
 	if (gAudioDeviceCount <= 0)
 		return;
 
-	gAudioDeviceCount++;
-	gAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
-	safe_strncpy(gAudioDevices[0].name, language_get_string(5510), AUDIO_DEVICE_NAME_SIZE);
+		gAudioDeviceCount++;
+		gAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
+		safe_strncpy(gAudioDevices[0].name, language_get_string(5510), AUDIO_DEVICE_NAME_SIZE);
 
 	for (int i = 1; i < gAudioDeviceCount; i++) {
 		const char *utf8Name = SDL_GetAudioDeviceName(i - 1, SDL_FALSE);
@@ -89,8 +89,8 @@ void audio_populate_devices()
 			utf8Name = language_get_string(5511);
 
 		safe_strncpy(gAudioDevices[i].name, utf8Name, AUDIO_DEVICE_NAME_SIZE);
+		}
 	}
-}
 
 int audio_play_sound_panned(int soundId, int pan, sint16 x, sint16 y, sint16 z)
 {
@@ -137,9 +137,9 @@ rct_audio_params audio_get_params_from_location(int soundId, const rct_xyz16 *lo
 	rct_xy16 pos2 = coordinate_3d_to_2d(location, rotation);
 	rct_window *window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);
 	while (true) {
-		window--;
+				window--;
 		if (window < RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window))
-			break;
+					break;
 
 		rct_viewport *viewport = window->viewport;
 		if (!viewport || !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
@@ -153,11 +153,11 @@ rct_audio_params audio_get_params_from_location(int soundId, const rct_xyz16 *lo
 		if (vy < 0 || vy >= viewport->view_height || vx < 0 || vx >= viewport->view_width || params.volume < -10000) {
 			params.in_range = false;
 			return params;
-		}
-	}
+				}
+					}
 
 	return params;
-}
+				}
 
 int audio_play_sound(int soundId, int volume, int pan)
 {
@@ -169,7 +169,7 @@ int audio_play_sound(int soundId, int volume, int pan)
 		int x2 = pan << 16;
 		uint16 screenWidth = max(64, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
 		mixerPan = ((x2 / screenWidth) - 0x8000) >> 4;
-	}
+			}
 
 	Mixer_Play_Effect(soundId, MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(mixerPan), 1, 1);
 	return 0;
@@ -194,7 +194,7 @@ void audio_start_title_music()
 		pathId = PATH_ID_CSS17;
 		break;
 	case 3:
-		if (rand() & 1)
+		if (util_rand() & 1)
 			pathId = PATH_ID_CSS50;
 		else
 			pathId = PATH_ID_CSS17;
@@ -260,10 +260,10 @@ void audio_init_ride_sounds_and_info()
 		if (file == NULL)
 			continue;
 
-		uint32 head;
-		SDL_RWread(file, &head, sizeof(head), 1);
-		SDL_RWclose(file);
-		RCT2_GLOBAL(0x014241BC, uint32) = 0;
+			uint32 head;
+			SDL_RWread(file, &head, sizeof(head), 1);
+			SDL_RWclose(file);
+			RCT2_GLOBAL(0x014241BC, uint32) = 0;
 		if (head == 0x78787878)
 			rideMusicInfo->length = 0;
 	}
@@ -323,7 +323,7 @@ void audio_stop_vehicle_sounds()
 	if (gOpenRCT2Headless || RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) == -1)
 		return;
 
-	for (int i = 0; i < countof(gVehicleSoundList); i++) {
+		for (int i = 0; i < countof(gVehicleSoundList); i++) {
 		rct_vehicle_sound *vehicleSound = &gVehicleSoundList[i];
 		if (vehicleSound->id == 0xFFFF)
 			continue;

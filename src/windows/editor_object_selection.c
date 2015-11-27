@@ -861,9 +861,9 @@ static void window_editor_object_selection_mouseup(rct_window *w, int widgetInde
 		break;
 	case WIDX_FILTER_CLEAR_BUTTON:
 		memset(_filter_string, 0, sizeof(_filter_string));
-
+		filter_update_counts();
 		w->scrolls->v_top = 0;
-
+		visible_list_refresh(w);
 		window_invalidate(w);
 		break;
 	case WIDX_LIST_SORT_TYPE:

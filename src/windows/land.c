@@ -45,7 +45,7 @@ enum WINDOW_LAND_WIDGET_IDX {
 };
 
 static rct_widget window_land_widgets[] = {
-	{ WWT_FRAME,	0,	0,	97,	0,	143,		-1,										STR_NONE },						// panel / background
+	{ WWT_FRAME,	0,	0,	97,	0,	159,		-1,										STR_NONE },						// panel / background
 	{ WWT_CAPTION,	0,	1,	96,	1,	14,			STR_LAND,								STR_WINDOW_TITLE_TIP },			// title bar
 	{ WWT_CLOSEBOX,	0,	85,	95,	2,	13,			824,									STR_CLOSE_WINDOW_TIP },			// close x button
 
@@ -133,7 +133,7 @@ void window_land_open()
 	if (window_find_by_class(WC_LAND) != NULL)
 		return;
 
-	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 98, 29, 98, 144, &window_land_events, WC_LAND, 0);
+	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 98, 29, 98, 160, &window_land_events, WC_LAND, 0);
 	window->widgets = window_land_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_CLOSE) |
