@@ -194,7 +194,7 @@ static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ)
 
 		if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_IS_CLOCK) {
 			// Peep, looking at scenery
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x3FF)) {
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x3FF) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
 				int direction = mapElement->type & 3;
 				int x2 = x - TileDirectionDelta[direction].x;
 				int y2 = y - TileDirectionDelta[direction].y;
@@ -324,6 +324,9 @@ static bool map_animation_invalidate_track_onridephoto(int x, int y, int baseZ)
 		if (mapElement->properties.track.type == TRACK_ELEM_ON_RIDE_PHOTO) {
 			int z = mapElement->base_height * 8;
 			map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+			if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
+				return false;
+			}
 			if (mapElement->properties.track.sequence & 0xF0) {
 				mapElement->properties.track.sequence -= 0x10;
 				return false;
@@ -450,7 +453,7 @@ static bool map_animation_invalidate_large_scenery(int x, int y, int baseZ)
  *
  *  rct2: 0x006E5B50
  */
-static bool map_animation_invalidate_wall_unknown(int x, int y, int baseZ)
+static bool map_animation_invalidate_wall_door(int x, int y, int baseZ)
 {
 	rct_map_element *mapElement;
 	rct_scenery_entry *sceneryEntry;
@@ -489,7 +492,9 @@ static bool map_animation_invalidate_wall_unknown(int x, int y, int baseZ)
 				}
 			}
 		}
-
+		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
+			return false;
+		}
 		mapElement->properties.fence.item[2] = bl;
 		if (di & 1) {
 			int z = mapElement->base_height * 8;
@@ -545,6 +550,6 @@ static const map_animation_invalidate_event_handler _animatedObjectEventHandlers
 	map_animation_invalidate_remove,
 	map_animation_invalidate_banner,
 	map_animation_invalidate_large_scenery,
-	map_animation_invalidate_wall_unknown,
+	map_animation_invalidate_wall_door,
 	map_animation_invalidate_wall
 };
