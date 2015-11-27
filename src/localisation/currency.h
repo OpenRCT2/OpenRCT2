@@ -37,6 +37,7 @@ typedef enum {
 	CURRENCY_EUROS,				// Euro
 	CURRENCY_WON,				// South Korean Won
 	CURRENCY_ROUBLE,			// Russian Rouble
+	CURRENCY_CZKORUNA,			// Czech koruna
 
 	CURRENCY_END				// Last item
 } CURRENCY_TYPE;
