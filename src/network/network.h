@@ -76,6 +76,7 @@ extern "C" {
 		#define SHUT_RDWR SD_BOTH
 	#endif
 #else
+	#include <errno.h>
 	#include <arpa/inet.h>
 	#include <netdb.h>
 	#include <netinet/tcp.h>
@@ -94,6 +95,7 @@ extern "C" {
 #include <list>
 #include <set>
 #include <memory>
+#include <string>
 #include <vector>
 #include <SDL.h>
 

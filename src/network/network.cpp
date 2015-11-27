@@ -31,7 +31,8 @@ extern "C" {
 
 #ifndef DISABLE_NETWORK
 
-#include <math.h>
+#include <cmath>
+#include <cerrno>
 #include <algorithm>
 #include <set>
 #include <string>

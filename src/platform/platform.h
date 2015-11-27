@@ -162,9 +162,8 @@ bool platform_check_steam_overlay_attached();
 	HWND windows_get_window_handle();
 #endif // _WIN32
 
-#ifdef __linux__
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 #include <unistd.h>
-#include <limits.h>
 #define STUB() log_warning("Function %s at %s:%d is a stub.\n", __PRETTY_FUNCTION__, __FILE__, __LINE__)
 #define _strcmpi _stricmp
 #define _stricmp(x, y) strcasecmp((x), (y))
@@ -181,7 +180,7 @@ bool platform_check_steam_overlay_attached();
 #error Unknown endianess!
 #endif // RCT2_ENDIANESS
 
-#endif // __linux__
+#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
 #if !(_POSIX_C_SOURCE >= 200809L || _XOPEN_SOURCE >= 700)
 	char *strndup(const char *src, size_t size);
