@@ -1347,6 +1347,7 @@ void footpath_chain_ride_queue(int rideIndex, int entranceIndex, int x, int y, r
 			mapElement->properties.path.ride_index = rideIndex;
 			mapElement->properties.path.additions &= 0x8F;
 			mapElement->properties.path.additions |= (entranceIndex & 7) << 4;
+			
 			if (lastQueuePathElement == NULL) {
 				lastQueuePathElement = mapElement;
 			}
@@ -1842,7 +1843,7 @@ static void footpath_remove_edges_towards_here(int x, int y, int z, int directio
 	mapElement->properties.path.edges &= ~(1 << d);
 	d = (((d - 4) + 1) & 3) + 4;
 	mapElement->properties.path.edges &= ~(1 << d);
-	map_invalidate_tile(x, y, mapElement->base_height, mapElement->clearance_height);
+	map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 
 	if (isQueue) footpath_disconnect_queue_from_path(x, y, mapElement, -1);
 
@@ -1862,7 +1863,7 @@ static void footpath_remove_edges_towards_here(int x, int y, int z, int directio
 
 		d = ((direction + 1) & 3) + 4;
 		mapElement->properties.path.edges &= ~(1 << d);
-		map_invalidate_tile(x, y, mapElement->base_height, mapElement->clearance_height);
+		map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 		break;
 	} while (!map_element_is_last_for_tile(mapElement++));
 }

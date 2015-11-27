@@ -4263,7 +4263,7 @@ repeat:
 			continue;
 
 		map_element_remove_banner_entry(mapElement);
-		map_invalidate_tile_zoom1(x, y, mapElement->base_height, mapElement->base_height + 72);
+		map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->base_height * 8 + 72);
 		map_element_remove(mapElement);
 		goto repeat;
 	} while (!map_element_is_last_for_tile(mapElement++));
@@ -4367,7 +4367,7 @@ void map_invalidate_tile_full(int x, int y)
 
 void map_invalidate_element(int x, int y, rct_map_element *mapElement)
 {
-	map_invalidate_tile(x, y, mapElement->base_height, mapElement->clearance_height);
+	map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 }
 
 int map_get_tile_side(int mapX, int mapY)
@@ -4510,7 +4510,7 @@ money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direc
 		update_park_fences(x, y - 32);
 		update_park_fences(x, y + 32);
 
-		map_invalidate_tile(x, y, newElement->base_height, newElement->clearance_height);
+		map_invalidate_tile(x, y, newElement->base_height * 8, newElement->clearance_height * 8);
 
 		map_animation_create(MAP_ANIMATION_TYPE_PARK_ENTRANCE, x, y, zLow);
 	}
@@ -4547,7 +4547,7 @@ money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direc
 		update_park_fences(x, y - 32);
 		update_park_fences(x, y + 32);
 
-		map_invalidate_tile(x, y, newElement->base_height, newElement->clearance_height);
+		map_invalidate_tile(x, y, newElement->base_height * 8, newElement->clearance_height * 8);
 	}
 
 	x += TileDirectionDelta[(direction + 1) & 0x3].x * 2;
@@ -4582,7 +4582,7 @@ money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direc
 		update_park_fences(x, y - 32);
 		update_park_fences(x, y + 32);
 
-		map_invalidate_tile(x, y, newElement->base_height, newElement->clearance_height);
+		map_invalidate_tile(x, y, newElement->base_height * 8, newElement->clearance_height * 8);
 	}
 
 	return 0;
