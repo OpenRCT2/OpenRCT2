@@ -300,7 +300,7 @@
     <ClCompile Include="..\src\platform\osx.c">
       <Filter>Source\Platform</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\unix.c">
+    <ClCompile Include="..\src\platform\posix.c">
       <Filter>Source\Platform</Filter>
     </ClCompile>
     <ClCompile Include="..\src\platform\shared.c">
