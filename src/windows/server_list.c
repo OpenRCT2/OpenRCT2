@@ -410,13 +410,38 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 		}
 		//gfx_draw_string(dpi, serverDetails->description, w->colours[1], 3, y + 14);
 
+
+		int right = width - 3 - 14;
+
+		// Draw compatibility icon
+		right -= 10;
+		int compatibilitySpriteId;
+		if (str_is_null_or_empty(serverDetails->version)) {
+			// Server not online...
+			compatibilitySpriteId = SPR_G2_RCT1_CLOSE_BUTTON_0;
+		} else {
+			// Server online... check version
+			bool correctVersion = strcmp(serverDetails->version, OPENRCT2_VERSION) == 0;
+			compatibilitySpriteId = correctVersion ? SPR_G2_RCT1_OPEN_BUTTON_2 : SPR_G2_RCT1_CLOSE_BUTTON_2;
+		}
+		gfx_draw_sprite(dpi, compatibilitySpriteId, right, y + 1, 0);
+		right -= 4;
+
+		// Draw lock icon
+		right -= 8;
+		if (serverDetails->requiresPassword) {
+			gfx_draw_sprite(dpi, SPR_G2_LOCKED, right, y + 4, 0);
+		}
+		right -= 6;
+
 		// Draw number of players
 		char players[32];
 		players[0] = 0;
 		if (serverDetails->maxplayers > 0) {
 			sprintf(players, "%d/%d", serverDetails->players, serverDetails->maxplayers);
 		}
-		gfx_draw_string(dpi, players, w->colours[1], width - 3 - 14 - gfx_get_string_width(players), y + 3);
+		int numPlayersStringWidth = gfx_get_string_width(players);
+		gfx_draw_string(dpi, players, w->colours[1], right - numPlayersStringWidth, y + 3);
 
 		y += ITEM_HEIGHT;
 	}
