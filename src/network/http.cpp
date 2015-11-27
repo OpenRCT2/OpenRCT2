@@ -116,7 +116,10 @@ http_json_response *http_request_json(const http_json_request *request)
 	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
 	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
+#ifndef __linux__
+        // On GNU/Linux, curl will use the system certs by default
 	curl_easy_setopt(curl, CURLOPT_CAINFO, "curl-ca-bundle.crt");
+#endif
 	curl_easy_setopt(curl, CURLOPT_URL, request->url);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &writeBuffer);
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, http_request_write_func);
