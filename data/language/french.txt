@@ -2222,7 +2222,7 @@ STR_2213    :{SMALLFONT}{BLACK}Afficher la liste des animateurs dans le parc
 STR_2214    :Construction impossible durant la pause!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}F
+STR_2217    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}F
 STR_2218    :{RED}{STRINGID} sur {STRINGID} n'est pas encore revenu à {STRINGID}!{NEWLINE}Vérifiez si il est coinçé ou au point mort
 STR_2219    :{RED}{COMMA16} personnes sont mortes dans un accident sur {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Notation du parc: {BLACK}{COMMA16}
@@ -2372,7 +2372,7 @@ STR_2363    :Gridlines on Landscape
 STR_2364    :{SMALLFONT}{BLACK}Toggle gridlines on landscape on/off
 STR_2365    :The bank refuses to increase your loan!
 STR_2366    :Celsius ({DEGREE}C)
-STR_2367    :Fahrenheit (F)
+STR_2367    :Fahrenheit ({DEGREE}F)
 STR_2368    :None
 STR_2369    :Low
 STR_2370    :Average

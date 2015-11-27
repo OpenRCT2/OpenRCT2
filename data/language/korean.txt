@@ -2221,7 +2221,7 @@ STR_2213    :{SMALLFONT}{BLACK}공원의 엔터테이너 목록을 보여줍니�
 STR_2214    :게임 일시정지 중에는 건설할 수 없습니다!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}F
+STR_2217    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}F
 STR_2218    :{RED}{STRINGID}(놀이기구: {STRINGID})(이)가 {STRINGID}(으)로 아직 돌아오지 않았습니다!{NEWLINE}놀이기구가 멈춰있거나 Check whether it is stuck or has 상점ed
 STR_2219    :{RED}{COMMA16}명의 손님이 {STRINGID} 사고로 사망하였습니다!
 STR_2220    :{WINDOW_COLOUR_2}공원 등급: {BLACK}{COMMA16}
@@ -2371,7 +2371,7 @@ STR_2363    :땅에 격자선 보이기
 STR_2364    :{SMALLFONT}{BLACK}땅에 격자선을 보여줍니다
 STR_2365    :은행이 대출을 증가시키는 것을 거절했습니다!
 STR_2366    :섭씨 ({DEGREE}C)
-STR_2367    :화씨 (F)
+STR_2367    :화씨 ({DEGREE}F)
 STR_2368    :없음
 STR_2369    :낮음
 STR_2370    :평균
