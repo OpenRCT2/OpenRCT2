@@ -2369,7 +2369,44 @@ loc_660FB8:
 		}
 	}
 //loc_661132:
-	callcode_push1(0x661132, saved_esi, &regs); return;
+	//callcode_push1(0x661132, saved_esi, &regs); return;
+	if(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & 2)
+	{
+		//Check if this tile is selected by ride placement.
+		for(int i = 0; ; i++) //i = edi
+		{
+			rct_xy16 selectedTilePos = gMapSelectionTiles[i]; //selectedTilePos = eax;
+			if(selectedTilePos.x == -1)
+				goto loc_661194;
+			if(selectedTilePos.x == RCT2_GLOBAL(0x9DE56A, sint16) && selectedTilePos.y == RCT2_GLOBAL(0x9DE56E, sint16))
+				break;
+		}
+		//This map selection flag changes quite a bit and causes the highlight to flicker between white and yellow when moving the object.
+		uint32 imageId = (RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0x20000BE3) | ((RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & 8)?0x1580000:0x1280000);
+		sub_68818E(0, imageId, 0);
+	}
+loc_661194:
+	//callcode_push1(0x661194, saved_esi, &regs); return;
+	if(RCT2_GLOBAL(0x9E3296, uint16) == 0 &&
+	RCT2_GLOBAL(0x9E329A, uint8) != 0 &&
+	!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & (VIEWPORT_FLAG_UNDERGROUND_INSIDE|VIEWPORT_FLAG_GRIDLINES)) &&
+	!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE))
+	{
+		callcode_push1(0x6611BB, saved_esi, &regs); return;
+		regs.edi = (int)mapElement;
+		
+		saved_edx = regs.edx;
+		
+		regs.edx >>= 4;
+		RCT2_CALLFUNC_Y(0x65E9FC, &regs);
+		RCT2_CALLFUNC_Y(0x65EAB2, &regs);
+		RCT2_CALLFUNC_Y(0x65E890, &regs);
+		RCT2_CALLFUNC_Y(0x65E946, &regs);
+		
+		regs.edx = saved_edx;
+	}
+//loc_6611D8
+	callcode_push1(0x6611D8, saved_esi, &regs); return;
 }
 
 /**
