@@ -699,11 +699,12 @@ uint8 platform_get_locale_currency(){
 
 	//Only works if g_currency_specs contains the actual (local) symbol
 	for(int i = 0; i < CURRENCY_END; ++i){
-		if(!strcmp(lc->currency_symbol, g_currency_specs[i].symbol)){
+		if(!strcmp(lc->currency_symbol, CurrencyDescriptors[i].symbol_unicode)){
 			return i;
 		}
 	}
-	//TODO: can be removed when g_currency_specs contains the actual symbols for won and rubel
+	//TODO: can be removed when CurrencyDescriptors contains the actual symbols for won and rubel
+	//Won should remain a special case, beacause some (or all?) systems use the full width won sign (e.g. Gentoo)
 	if(!strncmp(lc->int_curr_symbol, "KRW", 3)){
 		return CURRENCY_WON;
 	}
