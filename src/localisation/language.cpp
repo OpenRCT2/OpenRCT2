@@ -173,6 +173,11 @@ int language_open(int id)
 			gCurrentTTFFontSet = LanguagesDescriptors[id].font;
 			if (!ttf_initialise()) {
 				log_warning("Unable to initialise TrueType fonts.");
+
+				// Fall back to sprite font
+				gUseTrueTypeFont = false;
+				gCurrentTTFFontSet = nullptr;
+				return 0;
 			}
 		}
 

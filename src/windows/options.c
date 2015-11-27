@@ -803,7 +803,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			for (i = 0; i < num_items; i++) {
 				gDropdownItemsFormat[i] = 1142;
-				gDropdownItemsArgs[i] = g_currency_specs[i].stringId;
+				gDropdownItemsArgs[i] = CurrencyDescriptors[i].stringId;
 			}
 
 			window_options_show_dropdown(w, widget, num_items);
@@ -1204,7 +1204,7 @@ static void window_options_invalidate(rct_window *w)
 
 	case WINDOW_OPTIONS_PAGE_CULTURE:
 		// currency: pounds, dollars, etc. (10 total)
-		RCT2_GLOBAL(0x013CE952 + 12, uint16) = g_currency_specs[gConfigGeneral.currency_format].stringId;
+		RCT2_GLOBAL(0x013CE952 + 12, uint16) = CurrencyDescriptors[gConfigGeneral.currency_format].stringId;
 
 		// distance: metric/imperial
 		RCT2_GLOBAL(0x013CE952 + 14, uint16) = STR_IMPERIAL + gConfigGeneral.measurement_format;

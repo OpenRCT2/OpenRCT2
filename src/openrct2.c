@@ -251,10 +251,13 @@ bool openrct2_initialise()
 		audio_init();
 		audio_populate_devices();
 	}
-	if (!language_open(gConfigGeneral.language))
-	{
-		log_fatal("Failed to open language, exiting.");
-		return false;
+	if (!language_open(gConfigGeneral.language)) {
+		log_error("Failed to open configured language...");
+
+		if (!language_open(LANGUAGE_ENGLISH_UK)) {
+			log_fatal("Failed to open fallback language...");
+			return false;
+		}
 	}
 	http_init();
 
