@@ -2221,7 +2221,14 @@ static void viewport_draw_money_effects()
 	do {
 		format_string(buffer, ps->string_id, &ps->args);
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
-		gfx_draw_string_with_y_offsets(&dpi, buffer, 0, ps->x, ps->y, (sint8 *)ps->y_offsets);
+
+		bool forceSpriteFont = false;
+		const currency_descriptor *currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
+		if (gUseTrueTypeFont && font_supports_string_sprite(currencyDesc->symbol_unicode)) {
+			forceSpriteFont = true;
+		}
+
+		gfx_draw_string_with_y_offsets(&dpi, buffer, 0, ps->x, ps->y, (sint8 *)ps->y_offsets, forceSpriteFont);
 	} while ((ps = ps->next) != NULL);
 }
 

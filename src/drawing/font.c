@@ -127,60 +127,77 @@ int font_get_line_height_small(int fontSpriteBase)
 	return font_get_line_height(fontSpriteBase) / 2;
 }
 
-bool font_supports_string(const utf8 *text, int fontSize)
+bool font_supports_string_sprite(const utf8 *text)
 {
 	const utf8 *src = text;
 
 	uint32 codepoint;
 	while ((codepoint = utf8_get_next(src, &src)) != 0) {
-		if (gUseTrueTypeFont) {
-			bool supported = TTF_GlyphIsProvided(gCurrentTTFFontSet->size[fontSize].font, (uint16)codepoint);
-			if (!supported) {
-				return false;
-			}
-		} else {
-			bool supported = false;
-			switch (codepoint) {
-			case FORMAT_ENDQUOTES:
-			case FORMAT_AMINUSCULE:
-			case FORMAT_UP:
-			case FORMAT_SYMBOL_i:
-			case FORMAT_CENT:
-			case FORMAT_POUND:
-			case FORMAT_YEN:
-			case FORMAT_COPYRIGHT:
-			case FORMAT_DOWN:
-			case FORMAT_LEFTGUILLEMET:
-			case FORMAT_TICK:
-			case FORMAT_CROSS:
-			case FORMAT_RIGHT:
-			case FORMAT_DEGREE:
-			case FORMAT_SYMBOL_RAILWAY:
-			case FORMAT_SQUARED:
-			case FORMAT_OPENQUOTES:
-			case FORMAT_EURO:
-			case FORMAT_SYMBOL_ROAD:
-			case FORMAT_SYMBOL_FLAG:
-			case FORMAT_APPROX:
-			case FORMAT_POWERNEGATIVEONE:
-			case FORMAT_BULLET:
-			case FORMAT_RIGHTGUILLEMET:
-			case FORMAT_SMALLUP:
-			case FORMAT_SMALLDOWN:
-			case FORMAT_LEFT:
-			case FORMAT_INVERTEDQUESTION:
+		bool supported = false;
+		switch (codepoint) {
+		case FORMAT_ENDQUOTES:
+		case FORMAT_AMINUSCULE:
+		case FORMAT_UP:
+		case FORMAT_SYMBOL_i:
+		case FORMAT_CENT:
+		case FORMAT_POUND:
+		case FORMAT_YEN:
+		case FORMAT_COPYRIGHT:
+		case FORMAT_DOWN:
+		case FORMAT_LEFTGUILLEMET:
+		case FORMAT_TICK:
+		case FORMAT_CROSS:
+		case FORMAT_RIGHT:
+		case FORMAT_DEGREE:
+		case FORMAT_SYMBOL_RAILWAY:
+		case FORMAT_SQUARED:
+		case FORMAT_OPENQUOTES:
+		case FORMAT_EURO:
+		case FORMAT_SYMBOL_ROAD:
+		case FORMAT_SYMBOL_FLAG:
+		case FORMAT_APPROX:
+		case FORMAT_POWERNEGATIVEONE:
+		case FORMAT_BULLET:
+		case FORMAT_RIGHTGUILLEMET:
+		case FORMAT_SMALLUP:
+		case FORMAT_SMALLDOWN:
+		case FORMAT_LEFT:
+		case FORMAT_INVERTEDQUESTION:
+			supported = true;
+			break;
+		default:
+			if (codepoint >= 32 && codepoint < 256) {
 				supported = true;
-				break;
-			default:
-				if (codepoint >= 32 && codepoint < 256) {
-					supported = true;
-				}
-				break;
 			}
-			if (!supported) {
-				return false;
-			}
+			break;
+		}
+		if (!supported) {
+			return false;
 		}
 	}
 	return true;
+}
+
+bool font_supports_string_ttf(const utf8 *text, int fontSize)
+{
+	const utf8 *src = text;
+	const TTF_Font *font = gCurrentTTFFontSet->size[fontSize].font;
+
+	uint32 codepoint;
+	while ((codepoint = utf8_get_next(src, &src)) != 0) {
+		bool supported = TTF_GlyphIsProvided(font, (uint16)codepoint);
+		if (!supported) {
+			return false;
+		}
+	}
+	return true;
+}
+
+bool font_supports_string(const utf8 *text, int fontSize)
+{
+	if (gUseTrueTypeFont) {
+		return font_supports_string_ttf(text, fontSize);
+	} else {
+		return font_supports_string_sprite(text);
+	}
 }

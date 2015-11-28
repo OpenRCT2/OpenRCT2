@@ -1324,7 +1324,7 @@ static int ttf_get_string_width(const utf8 *text)
  *
  *  rct2: 0x00682F28
  */
-void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, utf8 *text, int colour, int x, int y, const sint8 *yOffsets)
+void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, const utf8 *text, int colour, int x, int y, const sint8 *yOffsets, bool forceSpriteFont)
 {
 	text_draw_info info;
 	info.font_sprite_base = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
@@ -1337,7 +1337,9 @@ void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, utf8 *text, int colo
 
 	info.flags |= TEXT_DRAW_FLAG_Y_OFFSET_EFFECT;
 
-	// if (gUseTrueTypeFont) info.flags |= TEXT_DRAW_FLAG_TTF;
+	if (!forceSpriteFont && gUseTrueTypeFont) {
+		info.flags |= TEXT_DRAW_FLAG_TTF;
+	}
 
 	memcpy(info.palette, text_palette, sizeof(info.palette));
 	ttf_process_initial_colour(colour, &info);
