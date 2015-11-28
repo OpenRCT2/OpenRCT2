@@ -21,6 +21,7 @@
 #include "addresses.h"
 #include "config.h"
 #include "game.h"
+#include "world/climate.h"
 #include "interface/viewport.h"
 #include "localisation/date.h"
 #include "localisation/localisation.h"
@@ -808,6 +809,9 @@ int scenario_prepare_for_save()
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_GUESTS_AND_RATING)
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_OPEN;
+
+	// Fix #2385: saved scenarios did not initialise temperatures to selected climate
+	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
 
 	return 1;
 }
