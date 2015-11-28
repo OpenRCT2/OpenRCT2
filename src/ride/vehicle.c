@@ -1324,10 +1324,6 @@ loc_6DB59A:
 	vehicle_update_handle_water_splash(vehicle);
 
 loc_6DB706:;
-	// regs.esi = vehicle;
-	// RCT2_CALLFUNC_Y(0x006DB706, &regs);
-	// goto end;
-	
 	const rct_vehicle_info *moveInfo = vehicle_get_move_info(
 		vehicle->var_CD,
 		vehicle->track_type,
@@ -1403,9 +1399,12 @@ loc_6DB8A5:
 	goto loc_6DAEB9;
 
 loc_6DB94A:
-	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DB94A, &regs);
-	goto end;
+	RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 5);
+	regs.eax = vehicle->var_24 + 1;
+	RCT2_GLOBAL(0x00F64E0C, uint32) -= regs.eax;
+	vehicle->var_24 = 0xFFFFFFFF;
+	regs.ebx = vehicle->var_1F;
+	goto loc_6DBE3F;
 
 loc_6DB967:
 	regs.esi = vehicle;
@@ -1417,6 +1416,20 @@ loc_6DBA13:
 	regs.esi = vehicle;
 	RCT2_CALLFUNC_Y(0x006DBA13, &regs);
 	goto end;
+
+loc_6DBA33:
+	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DBA33, &regs);
+	goto end;
+
+loc_6DBE3F:
+	if ((sint32)vehicle->var_24 >= 0) {
+		goto loc_6DBF20;
+	}
+	regs.ebx = RCT2_ADDRESS(0x009A2970, uint32)[regs.ebx];
+	vehicle->var_2C = regs.ebx;
+	RCT2_GLOBAL(0x00F64E10, uint32)++;
+	goto loc_6DBA33;
 
 loc_6DBF20:
 	sprite_move(unk_F64E20->x, unk_F64E20->y, unk_F64E20->z, (rct_sprite*)vehicle);
