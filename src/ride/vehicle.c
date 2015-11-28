@@ -40,7 +40,9 @@ typedef struct {
 	uint16 x;			// 0x00
 	uint16 y;			// 0x02
 	uint16 z;			// 0x04
-	uint8 pad_06[3];	// 0x06
+	uint8 direction;	// 0x06
+	uint8 var_07;
+	uint8 var_08;
 } rct_vehicle_info;
 
 static void vehicle_update(rct_vehicle *vehicle);
@@ -996,6 +998,17 @@ static void sub_6DB807(rct_vehicle *vehicle)
 
 /**
  *
+ *  rct2: 0x006DD078
+ * @param vehicle (esi)
+ * @param otherVehicleIndex (bp)
+ */
+static bool sub_6DD078(rct_vehicle *vehicle, uint16 otherVehicleIndex)
+{
+	return RCT2_CALLPROC_X(0x006DD078, 0, 0, 0, 0, (int)vehicle, 0, otherVehicleIndex) & 0x100;
+}
+
+/**
+ *
  *  rct2: 0x006DB7D6
  */
 static void sub_6DB7D6(rct_vehicle *vehicle)
@@ -1354,16 +1367,49 @@ loc_6DB706:;
 	}
 
 loc_6DB8A5:
-	regs.ax = x;
-	regs.cx = y;
-	regs.dx = z;
-	regs.esi = vehicle;
-	regs.edi = moveInfo;
-	RCT2_CALLFUNC_Y(0x006DB8A5, &regs);
-	goto end;
+	regs.ebx = RCT2_ADDRESS(0x009A2930, uint32)[regs.ebx];
+	vehicle->var_24 -= regs.ebx;
+	unk_F64E20->x = x;
+	unk_F64E20->y = y;
+	unk_F64E20->z = z;
+	vehicle->sprite_direction = moveInfo->direction;
+	vehicle->var_20 = moveInfo->var_08;
+	vehicle->var_1F = moveInfo->var_07;
+
+	regs.ebx = moveInfo->var_07;
+
+	if ((vehicleEntry->var_14 & 0x200) && moveInfo->var_07 != 0) {
+		vehicle->var_4A = 0;
+		vehicle->var_4C = 0;
+		vehicle->var_4E = 0;
+	}
+
+	if (vehicle == RCT2_GLOBAL(0x00F64E00, rct_vehicle*)) {
+		if (RCT2_GLOBAL(0x00F64E08, uint32) >= 0) {
+			regs.bp = vehicle->prev_vehicle_on_ride;
+			if (sub_6DD078(vehicle, vehicle->prev_vehicle_on_ride)) {
+				goto loc_6DB967;
+			}
+		}
+	}
+
+	if (vehicle->var_24 < 0x368A) {
+		goto loc_6DBF20;
+	}
+
+	regs.ebx = RCT2_ADDRESS(0x009A2970, uint32)[regs.ebx];
+	vehicle->var_2C += regs.ebx;
+	RCT2_GLOBAL(0x00F64E10, uint32)++;
+	goto loc_6DAEB9;
 
 loc_6DB94A:
 	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DB94A, &regs);
+	goto end;
+
+loc_6DB967:
+	regs.esi = vehicle;
+	// regs.bp = regs.bp
 	RCT2_CALLFUNC_Y(0x006DB94A, &regs);
 	goto end;
 
@@ -1371,6 +1417,10 @@ loc_6DBA13:
 	regs.esi = vehicle;
 	RCT2_CALLFUNC_Y(0x006DBA13, &regs);
 	goto end;
+
+loc_6DBF20:
+	sprite_move(unk_F64E20->x, unk_F64E20->y, unk_F64E20->z, (rct_sprite*)vehicle);
+	invalidate_sprite_2((rct_sprite*)vehicle);
 
 loc_6DBF3E:
 	regs.esi = vehicle;
