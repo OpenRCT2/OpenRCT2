@@ -3458,6 +3458,8 @@ static void window_ride_maintenance_dropdown(rct_window *w, int widgetIndex, int
 		if (dropdownIndex == 0) {
 			switch (ride->breakdown_reason_pending) {
 			case BREAKDOWN_SAFETY_CUT_OUT:
+				if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+					break;
 				for (int i = 0; i < ride->num_vehicles; ++i) {
 					uint16 spriteId = ride->vehicles[i];
 					do {
