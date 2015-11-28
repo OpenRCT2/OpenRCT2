@@ -1908,6 +1908,38 @@ static inline int helper(rct_map_element *mapElement, uint8 shift)
 }
 
 /**
+ *	rct2: 0x65E9FC
+ */
+static void viewport_surface_smooth_west_edge(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	RCT2_CALLPROC_X(0x65E9FC, eax, ebx, ecx, edx, esi, edi, ebp);
+}
+
+/**
+ *	rct2: 0x65EAB2
+ */
+static void viewport_surface_smooth_north_edge(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	RCT2_CALLPROC_X(0x65EAB2, eax, ebx, ecx, edx, esi, edi, ebp);
+}
+
+/**
+ *	rct2: 0x65E890
+ */
+static void viewport_surface_smooth_south_edge(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	RCT2_CALLPROC_X(0x65E890, eax, ebx, ecx, edx, esi, edi, ebp);
+}
+
+/**
+ *	rct2: 0x65E946
+ */
+static void viewport_surface_smooth_east_edge(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	RCT2_CALLPROC_X(0x65E946, eax, ebx, ecx, edx, esi, edi, ebp);
+}
+
+/**
  * rct2: 0x66062C
  * edx = height
  * esi = mapElement
@@ -1935,7 +1967,7 @@ void viewport_surface_paint_setup(int height, rct_map_element *mapElement)
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 1;
 	RCT2_GLOBAL(0x9DE57C, uint16) |= 1;
 	RCT2_GLOBAL(0x9E3250, rct_map_element *) = mapElement;
-	//0x9E3296: possibly zoom level for current viewport
+	//This global does not appear to be used outside of this function. I'm just keeping this here just in case.
 	RCT2_GLOBAL(0x9E3296, uint16) = dpi->zoom_level;
 	
 	regs.ecx = rotation;
@@ -1954,87 +1986,48 @@ void viewport_surface_paint_setup(int height, rct_map_element *mapElement)
 	RCT2_GLOBAL(0x9E3278, uint32) = regs.ebx;
 	
 	//callcode_push1(0x660698, saved_esi, &regs); return;
-	
-	//regs.esi = rotation;
 	uint16 x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B464, uint16)[rotation * 2]; //x = ax
 	uint16 y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B466, uint16)[rotation * 2]; //y = bp
 	RCT2_GLOBAL(0x9E3248, rct_map_element *) = NULL;
-
-	regs.ax = x;
-	regs.bp = y;
-	//callcode_push1(0x6606C5, saved_esi, &regs); return;
-	
 	if(x < 0x2000 && y < 0x2000)
 	{	
-		//callcode_push1(0x6606DA, saved_esi, &regs); return;
-		
 		rct_map_element *surfaceElement = map_get_surface_element_at(x / 32, y / 32); //surfaceElement = esi
 		
 		RCT2_GLOBAL(0x9E3248, rct_map_element *) = surfaceElement;
-		
 		RCT2_GLOBAL(0x9E325C, uint32) = ((surfaceElement->type & 3) << 3) | (surfaceElement->properties.surface.terrain >> 5);
 
 		regs.ebx = helper(surfaceElement, regs.cl);	
 		RCT2_GLOBAL(0x9E3270, uint32) = regs.ebx;
-		
-		regs.ax = height/16;
 		regs.edi = RCT2_GLOBAL(0x9E3278, uint32);
-		surfaceElement = RCT2_GLOBAL(0x9E3248, rct_map_element *);
 		
-		//SAVE
-		saved_ecx = regs.ecx;
-		
-		regs.ah = surfaceElement->base_height / 2;
-		regs.cl = regs.al + RCT2_ADDRESS(0x97B504, uint8)[regs.edi];
-		regs.ch = regs.ah + RCT2_ADDRESS(0x97B4A4, uint8)[regs.ebx];
-		regs.al += RCT2_ADDRESS(0x97B4E4, uint8)[regs.edi];
-		regs.ah += RCT2_ADDRESS(0x97B4C4, uint8)[regs.ebx];
-		RCT2_GLOBAL(0x9E3280, uint16) = regs.ax;
-		RCT2_GLOBAL(0x9E3288, uint16) = regs.cx;
-		
-		//RESTORE
-		regs.ecx = saved_ecx;
+		RCT2_GLOBAL(0x9E3280, uint8) = height / 16 + RCT2_ADDRESS(0x97B4E4, uint8)[regs.edi];
+		RCT2_GLOBAL(0x9E3281, uint8) = surfaceElement->base_height / 2 + RCT2_ADDRESS(0x97B4C4, uint8)[regs.ebx];
+		RCT2_GLOBAL(0x9E3288, uint8) = height / 16 + RCT2_ADDRESS(0x97B504, uint8)[regs.edi];
+		RCT2_GLOBAL(0x9E3289, uint8) = surfaceElement->base_height / 2 + RCT2_ADDRESS(0x97B4A4, uint8)[regs.ebx];
 	}
 //loc_660781:
 	//callcode_push1(0x660781, saved_esi, &regs); return;
-	//regs.esi = rotation;
 	x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B474, uint16)[rotation * 2];
 	y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B476, uint16)[rotation * 2];
 	RCT2_GLOBAL(0x9E3244, rct_map_element *) = NULL;
-	//callcode_push1(0x6607AE, saved_esi, &regs); return;
 	if(x < 0x2000 && y < 0x2000)
 	{
 		rct_map_element *surfaceElement = map_get_surface_element_at(x / 32, y / 32); //surfaceElement = esi
 		
-		//rct2: loc_6607E2
-		//callcode_push1(0x6607E2, saved_esi, &regs); return;
 		RCT2_GLOBAL(0x9E3244, rct_map_element *) = surfaceElement;
-		
 		RCT2_GLOBAL(0x9E3258, uint32) = ((surfaceElement->type & 3) << 3) | (surfaceElement->properties.surface.terrain >> 5);
 		
 		regs.ebx = helper(surfaceElement, regs.cl);
 		RCT2_GLOBAL(0x9E326C, uint32) = regs.ebx;
-		regs.ax = height/16;
 		regs.edi = RCT2_GLOBAL(0x9E3278, uint32);
-		surfaceElement = RCT2_GLOBAL(0x9E3244, rct_map_element *);
 		
-		//SAVE
-		saved_ecx = regs.ecx;
-		
-		regs.ah = surfaceElement->base_height / 2;
-		regs.cl = regs.al + RCT2_ADDRESS(0x97B504, uint8)[regs.edi];
-		regs.ch = regs.ah + RCT2_ADDRESS(0x97B4E4, uint8)[regs.ebx];
-		regs.al += RCT2_ADDRESS(0x97B4A4, uint8)[regs.edi];
-		regs.ah += RCT2_ADDRESS(0x97B4C4, uint8)[regs.ebx];
-		RCT2_GLOBAL(0x9E327E, uint16) = regs.ax;
-		RCT2_GLOBAL(0x9E3286, uint16) = regs.cx;
-		
-		//RESTORE
-		regs.ecx = saved_ecx;
+		RCT2_GLOBAL(0x9E327E, uint8) = height / 16 + RCT2_ADDRESS(0x97B4A4, uint8)[regs.edi];
+		RCT2_GLOBAL(0x9E327F, uint8) = surfaceElement->base_height / 2 + RCT2_ADDRESS(0x97B4C4, uint8)[regs.ebx];
+		RCT2_GLOBAL(0x9E3286, uint8) = height / 16 + RCT2_ADDRESS(0x97B504, uint8)[regs.edi];
+		RCT2_GLOBAL(0x9E3287, uint8) = surfaceElement->base_height / 2 + RCT2_ADDRESS(0x97B4E4, uint8)[regs.ebx];
 	}
 //loc_66086A:
 	//callcode_push1(0x66086A, saved_esi, &regs); return;
-	//regs.esi = rotation;
 	x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B484, uint16)[rotation * 2];
 	y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B486, uint16)[rotation * 2];
 	RCT2_GLOBAL(0x9E324C, rct_map_element *) = NULL;
@@ -2043,32 +2036,19 @@ void viewport_surface_paint_setup(int height, rct_map_element *mapElement)
 		rct_map_element *surfaceElement = map_get_surface_element_at(x / 32, y / 32); //surfaceElement = esi
 		
 		RCT2_GLOBAL(0x9E324C, rct_map_element *) = surfaceElement;
-		
 		RCT2_GLOBAL(0x9E3260, uint32) = ((surfaceElement->type & 3) << 3) | (surfaceElement->properties.surface.terrain >> 5);
 		
 		regs.ebx = helper(surfaceElement, regs.cl);
 		RCT2_GLOBAL(0x9E3274, uint32) = regs.ebx;
-		regs.ax = height/16;
 		regs.edi = RCT2_GLOBAL(0x9E3278, uint32);
-		surfaceElement = RCT2_GLOBAL(0x9E324C, rct_map_element *);
 		
-		//SAVE
-		saved_ecx = regs.ecx;
-		
-		regs.ah = surfaceElement->base_height / 2;
-		regs.cl = regs.al + RCT2_ADDRESS(0x97B4E4, uint8)[regs.edi];
-		regs.ch = regs.ah + RCT2_ADDRESS(0x97B504, uint8)[regs.ebx];
-		regs.al += RCT2_ADDRESS(0x97B4C4, uint8)[regs.edi];
-		regs.ah += RCT2_ADDRESS(0x97B4A4, uint8)[regs.ebx];
-		RCT2_GLOBAL(0x9E3282, uint16) = regs.ax;
-		RCT2_GLOBAL(0x9E328A, uint16) = regs.cx;
-		
-		//RESTORE
-		regs.ecx = saved_ecx;
+		RCT2_GLOBAL(0x9E3282, uint8) = height / 16 + RCT2_ADDRESS(0x97B4C4, uint8)[regs.edi];
+		RCT2_GLOBAL(0x9E3283, uint8) = surfaceElement->base_height / 2 + RCT2_ADDRESS(0x97B4A4, uint8)[regs.ebx];
+		RCT2_GLOBAL(0x9E328A, uint8) = height / 16 + RCT2_ADDRESS(0x97B4E4, uint8)[regs.edi];
+		RCT2_GLOBAL(0x9E328B, uint8) = surfaceElement->base_height / 2 + RCT2_ADDRESS(0x97B504, uint8)[regs.ebx];
 	}
 //loc_660953:
 	//callcode_push1(0x660953, saved_esi, &regs); return;
-	//regs.esi = rotation;
 	x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B494, uint16)[rotation * 2];
 	y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B496, uint16)[rotation * 2];
 	RCT2_GLOBAL(0x9E3240, rct_map_element *) = NULL;
@@ -2077,28 +2057,16 @@ void viewport_surface_paint_setup(int height, rct_map_element *mapElement)
 		rct_map_element *surfaceElement = map_get_surface_element_at(x / 32, y / 32); //surfaceElement = esi
 		
 		RCT2_GLOBAL(0x9E3240, rct_map_element *) = surfaceElement;
-		
 		RCT2_GLOBAL(0x9E3254, uint32) = ((surfaceElement->type & 3) << 3) | (surfaceElement->properties.surface.terrain >> 5);
 		
 		regs.ebx = helper(surfaceElement, regs.cl);
 		RCT2_GLOBAL(0x9E3268, uint32) = regs.ebx;
-		regs.ax = height/16;
 		regs.edi = RCT2_GLOBAL(0x9E3278, uint32);
-		surfaceElement = RCT2_GLOBAL(0x9E3240, rct_map_element *);
 		
-		//SAVE
-		saved_ecx = regs.ecx;
-		
-		regs.ah = surfaceElement->base_height / 2;
-		regs.cl = regs.al + RCT2_ADDRESS(0x97B4A4, uint8)[regs.edi];
-		regs.ch = regs.ah + RCT2_ADDRESS(0x97B504, uint8)[regs.ebx];
-		regs.al += RCT2_ADDRESS(0x97B4C4, uint8)[regs.edi];
-		regs.ah += RCT2_ADDRESS(0x97B4E4, uint8)[regs.ebx];
-		RCT2_GLOBAL(0x9E327C, uint16) = regs.ax;
-		RCT2_GLOBAL(0x9E3284, uint16) = regs.cx;
-		
-		//RESTORE
-		regs.ecx = saved_ecx;
+		RCT2_GLOBAL(0x9E327C, uint8) = height / 16 + RCT2_ADDRESS(0x97B4C4, uint8)[regs.edi];
+		RCT2_GLOBAL(0x9E327D, uint8) = surfaceElement->base_height / 2 + RCT2_ADDRESS(0x97B4E4, uint8)[regs.ebx];
+		RCT2_GLOBAL(0x9E3284, uint8) = height / 16 + RCT2_ADDRESS(0x97B4A4, uint8)[regs.edi];
+		RCT2_GLOBAL(0x9E3285, uint8) = surfaceElement->base_height / 2 + RCT2_ADDRESS(0x97B504, uint8)[regs.ebx];
 	}
 //loc_660A3C:
 	//RESTORE
@@ -2107,7 +2075,7 @@ void viewport_surface_paint_setup(int height, rct_map_element *mapElement)
 	//Handle height marks on land
 	//RCT2_CALLFUNC_Y(0x660A3D, &regs); return;
 	if((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_HEIGHTS) &&
-	RCT2_GLOBAL(0x9E3296, uint16) == 0)
+	dpi->zoom_level == 0)
 	{
 		//RCT2_CALLFUNC_Y(0x660A52, &regs); return;
 		uint16 elementHeight = 3 + map_element_height(RCT2_GLOBAL(0x9DE56A, uint16) + 0x10, RCT2_GLOBAL(0x9DE56E, uint16) + 0x10); //elementHeight = dx
@@ -2151,8 +2119,8 @@ loc_660AAB:
 		
 		if((mapElement->properties.surface.terrain & 0xE0) ||
 		(mapElement->type & 3) ||
-		(RCT2_GLOBAL(0x9E3296, uint16) != 0) ||
-		(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x1001))
+		(dpi->zoom_level != 0) ||
+		(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & (VIEWPORT_FLAG_UNDERGROUND_INSIDE|VIEWPORT_FLAG_HIDE_BASE)))
 			goto loc_660C9F;
 		switch(mapElement->properties.surface.grass_length & 7) //si
 		{
@@ -2387,21 +2355,24 @@ loc_660FB8:
 	}
 loc_661194:
 	//callcode_push1(0x661194, saved_esi, &regs); return;
-	if(RCT2_GLOBAL(0x9E3296, uint16) == 0 &&
+	if(dpi->zoom_level == 0 &&
 	RCT2_GLOBAL(0x9E329A, uint8) != 0 &&
-	!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & (VIEWPORT_FLAG_UNDERGROUND_INSIDE|VIEWPORT_FLAG_GRIDLINES)) &&
+	!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & (VIEWPORT_FLAG_UNDERGROUND_INSIDE|VIEWPORT_FLAG_HIDE_BASE)) &&
 	!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE))
 	{
-		callcode_push1(0x6611BB, saved_esi, &regs); return;
-		regs.edi = (int)mapElement;
+		//callcode_push1(0x6611BB, saved_esi, &regs); return;
 		
 		saved_edx = regs.edx;
 		
+		//The smoothing functions don't appear to take any parameters. I have no idea what this is for.
+		regs.edi = (int)mapElement;
 		regs.edx >>= 4;
-		RCT2_CALLFUNC_Y(0x65E9FC, &regs);
-		RCT2_CALLFUNC_Y(0x65EAB2, &regs);
-		RCT2_CALLFUNC_Y(0x65E890, &regs);
-		RCT2_CALLFUNC_Y(0x65E946, &regs);
+		
+		//Smooth each edge of land tile
+		viewport_surface_smooth_west_edge(regs.eax, regs.ebx, regs.ecx, regs.edx, regs.esi, regs.edi, regs.ebp); //smooth west edge of tile
+		viewport_surface_smooth_north_edge(regs.eax, regs.ebx, regs.ecx, regs.edx, regs.esi, regs.edi, regs.ebp); //smooth north edge of tile
+		viewport_surface_smooth_south_edge(regs.eax, regs.ebx, regs.ecx, regs.edx, regs.esi, regs.edi, regs.ebp); //smooth south edge of tile
+		viewport_surface_smooth_east_edge(regs.eax, regs.ebx, regs.ecx, regs.edx, regs.esi, regs.edi, regs.ebp); //smooth east edge of tile
 		
 		regs.edx = saved_edx;
 	}
