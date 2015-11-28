@@ -1512,7 +1512,8 @@ loc_6DBB08:
 		}
 	}
 
-loc_6DBB7E:
+loc_6DBB7E:;
+	int direction;
 	{
 		track_begin_end trackBeginEnd;
 		if (track_block_get_previous(x, y, mapElement, &trackBeginEnd)) {
@@ -1546,16 +1547,70 @@ loc_6DBB7E:
 		x = trackBeginEnd.begin_x;
 		y = trackBeginEnd.begin_y;
 		z = trackBeginEnd.begin_z;
+		direction = trackBeginEnd.begin_direction;
 	}
 
 loc_6DBC3B:
-	regs.ax = x;
-	regs.cx = y;
-	regs.dx = z;
-	regs.esi = vehicle;
-	regs.edi = mapElement;
-	RCT2_CALLFUNC_Y(0x006DBC3B, &regs);
-	goto end;
+	vehicle->track_x = x;
+	vehicle->track_y = y;
+	vehicle->track_z = z;
+
+	if (vehicle->var_CD != 0 &&
+		vehicle->var_CD < 5
+	) {
+		sint16 xy = (x >> 5) | ((y >> 5) << 8);
+		if (ride->var_13C == xy &&
+			ride->var_13F == (z >> 3)
+		) {
+			vehicle->var_CD = 3;
+		} else if (
+			ride->var_13A == xy &&
+			ride->var_13E == (z >> 3)
+		) {
+			vehicle->var_CD = 4;
+		}
+	}
+
+	if (track_element_is_lift_hill(mapElement)) {
+		if (RCT2_GLOBAL(0x00F64E08, uint32) < 0) {
+			if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
+				trackType = mapElement->properties.track.type;
+				if (RCT2_ADDRESS(0x0099423C, uint16)[trackType] & 0x20) {
+					RCT2_GLOBAL(0x00F64E18, uint32) |= 0x200;
+				}
+			}
+			vehicle->update_flags |= VEHICLE_UPDATE_FLAG_0;
+		}
+	} else {
+		if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_0) {
+			vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_0;
+			if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
+				if (RCT2_GLOBAL(0x00F64E08, uint32) < 0) {
+					RCT2_GLOBAL(0x00F64E18, uint32) |= 0x100;
+				}
+			}
+		}
+	}
+
+	trackType = mapElement->properties.track.type;
+	if (trackType != TRACK_ELEM_BRAKES) {
+		vehicle->var_D9 = mapElement->properties.track.colour >> 4;
+	}
+	direction &= 3;
+	vehicle->track_type = trackType << 2;
+	vehicle->track_direction |= direction;
+	vehicle->var_CF = (mapElement->properties.track.sequence >> 4) << 1;
+
+	moveInfo = vehicle_get_move_info(
+		vehicle->var_CD,
+		vehicle->track_type,
+		0
+	);
+
+	// There are two bytes before the move info list
+	uint16 unk16 = *((uint16*)((int)moveInfo - 2));
+	unk16--;
+	regs.ax = unk16;
 
 loc_6DBD42:
 	// regs.ax = regs.ax
