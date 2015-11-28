@@ -48,6 +48,7 @@ static void vehicle_update_doing_circus_show(rct_vehicle *vehicle);
 static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle);
 static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle);
 static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle);
+static void vehicle_update_departing(rct_vehicle* vehicle);
 static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle);
 static void vehicle_update_rotating(rct_vehicle* vehicle);
 static void vehicle_update_space_rings_operating(rct_vehicle* vehicle);
@@ -659,9 +660,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 
 	uint8 entrance = ride->var_1F6;
 	if (ride->entrances[entrance] != 0xFFFF){
-
-		//ecx
-		uint8 var_E0 = ride->var_0E0;
+		uint8 test_segment = ride->current_test_segment;
 
 		ride->var_0E1++;
 		if (ride->var_0E1 >= 32)ride->var_0E1 = 0;
@@ -673,12 +672,12 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 
 		if (ride->var_0E1 == 0 && velocity > 0x8000){
 			ride->average_speed += velocity;
-			ride->time[var_E0]++;
+			ride->time[test_segment]++;
 		}
 
 		sint32 distance = abs(((vehicle->velocity + vehicle->var_2C) >> 10) * 42);
 		if (vehicle->var_CE == 0){
-			ride->length[var_E0] += distance;
+			ride->length[test_segment] += distance;
 		}
 
 		if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_HAS_G_FORCES){
@@ -1084,6 +1083,8 @@ static void vehicle_update(rct_vehicle *vehicle)
 		vehicle_update_rotating(vehicle);
 		break;	
 	case VEHICLE_STATUS_DEPARTING:
+		vehicle_update_departing(vehicle);
+		break;
 	case VEHICLE_STATUS_TRAVELLING:
 	case VEHICLE_STATUS_ARRIVING:
 	case VEHICLE_STATUS_UNLOADING_PASSENGERS:
@@ -1711,6 +1712,187 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		vehicle->var_CE = 0;
 		break;
 	}
+}
+
+/* rct2: 0x006D9EB0 */
+static void vehicle_peep_easteregg_here_we_are(rct_vehicle* vehicle) {
+	uint16 spriteId = vehicle->sprite_index;
+	do {
+		vehicle = GET_VEHICLE(spriteId);
+		for (int i = 0; i < vehicle->num_peeps; ++i) {
+			rct_peep* peep = GET_PEEP(vehicle->peep[i]);
+			if (peep->flags & PEEP_FLAGS_HERE_WE_ARE) {
+				peep_insert_new_thought(peep, PEEP_THOUGHT_HERE_WE_ARE, peep->current_ride);
+			}
+		}
+	} while ((spriteId = vehicle->next_vehicle_on_train) != 0xFFFF);
+}
+
+/* rct2: 0x006D845B */
+static void vehicle_update_departing(rct_vehicle* vehicle) {
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+	rct_ride_type* rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+
+	if (vehicle->sub_state == 0) {
+		if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_BROKEN_TRAIN) {
+			if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+				return;
+
+			ride->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
+			ride_breakdown_add_news_item(vehicle->ride);
+
+			ride->window_invalidate_flags |=
+				RIDE_INVALIDATE_RIDE_MAIN |
+				RIDE_INVALIDATE_RIDE_LIST |
+				RIDE_INVALIDATE_RIDE_MAINTENANCE;
+			ride->inspection_station = vehicle->current_station;
+			ride->breakdown_reason = ride->breakdown_reason_pending;
+			vehicle->velocity = 0;
+			return;
+		}
+
+		vehicle->sub_state = 1;
+		vehicle_peep_easteregg_here_we_are(vehicle);
+
+		if (rideEntry->flags & RIDE_ENTRY_FLAG_3) {
+			uint8 soundId = (rideEntry->vehicles[0].sound_range == 4) ?
+				SOUND_TRAM :
+				SOUND_TRAIN_CHUGGING;
+
+			audio_play_sound_at_location(
+				soundId, 
+				vehicle->x,
+				vehicle->y,
+				vehicle->z);
+		}
+
+		if (ride->mode == RIDE_MODE_UPWARD_LAUNCH ||
+			(ride->mode == RIDE_MODE_DOWNWARD_LAUNCH && vehicle->var_CE > 1)) {
+
+			audio_play_sound_at_location(
+				SOUND_RIDE_LAUNCH_2,
+				vehicle->x,
+				vehicle->y,
+				vehicle->z
+			);
+		}
+
+		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)) {
+			if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_TESTING) {
+				if (ride->current_test_segment + 1 < ride->num_stations) {
+					ride->current_test_segment++;
+					ride->var_1F6 = vehicle->current_station;
+				}
+				else {
+					// Update test data for this segment
+					RCT2_CALLPROC_X(0x006D7338, 0, 0, 0, 0, (int)vehicle, vehicle->ride * 0x260, 0);
+				}
+			}
+			else if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS)) {
+				// Reset all test data
+				RCT2_CALLPROC_X(0x006D6BE7, 0, 0, 0, 0, (int)vehicle, vehicle->ride * 0x260, 0);	
+			}
+		}
+	}
+
+	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+
+	switch (ride->mode) {
+	case RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE:
+		if (vehicle->velocity >= -131940)
+			vehicle->var_2C = -3298;
+		break;
+	case RIDE_MODE_POWERED_LAUNCH_PASSTROUGH:
+	case RIDE_MODE_POWERED_LAUNCH:
+	case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
+	case RIDE_MODE_LIM_POWERED_LAUNCH:
+	case RIDE_MODE_UPWARD_LAUNCH:
+		if (ride->type == RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER) {
+			if ((ride->launch_speed << 16) > vehicle->velocity) {
+				vehicle->var_2C = ride->launch_speed << 13;
+			}
+			break;
+		}
+
+		if ((ride->launch_speed << 16) > vehicle->velocity)
+			vehicle->var_2C = ride->launch_speed << 12;
+		break;
+	case RIDE_MODE_DOWNWARD_LAUNCH:
+		if (vehicle->sub_state >= 1) {
+			if ((14 << 16) > vehicle->velocity)
+				vehicle->var_2C = 14 << 12;
+			break;
+		}
+		// Fall through	
+	case RIDE_MODE_CONTINUOUS_CIRCUIT:
+	case RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED:
+	case RIDE_MODE_ROTATING_LIFT:
+	case RIDE_MODE_FREEFALL_DROP:
+	case RIDE_MODE_BOAT_HIRE:
+		if (vehicleEntry->var_14 & (1 << 3)) 
+			break;
+			
+		if (vehicle->velocity <= 131940)
+				vehicle->var_2C = 3298;
+		break;
+	}
+	int edx;
+	uint32 flags = sub_6DAB4C(vehicle, &edx);
+
+	if (flags & (1 << 8)) {
+		if ((edx & 0xFF) == 2) {
+			vehicle->velocity = -vehicle->velocity;
+			// jmp 0x6D8858
+		}
+	}
+	
+	if (flags & ((1 << 5) | (1 << 12))) {
+		if ((edx & 0xFF) == 5) {
+			// jmp 0x6d982f
+		}
+		else if ((edx & 0xFF) == 2) {
+			vehicle->velocity = -vehicle->velocity;
+			// jmp 0x6D8858
+		}
+		else if ((edx & 0xFF) == 4) {
+			vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_3;
+			vehicle->velocity = 0;
+		}
+	}
+	
+	if (flags & (1 << 4)) {
+		vehicle->var_B8 |= (1 << 1);
+		if ((edx & 0xFF) != 2) {
+			sint32 speed = ride->lift_hill_speed * 31079;
+			if (vehicle->velocity <= speed) {
+				vehicle->var_2C = 15539;
+				if (vehicle->velocity != 0) {
+					if (RCT2_GLOBAL(0x00F64E34, uint8) == BREAKDOWN_SAFETY_CUT_OUT) {
+						vehicle->update_flags |= VEHICLE_UPDATE_FLAG_7;
+						vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
+					}
+				}
+				else
+					vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
+			}
+		}
+		else {
+			sint32 speed = ride->lift_hill_speed * -31079;
+			if (vehicle->velocity >= speed) {
+				vehicle->var_2C = -15539;
+				if (vehicle->velocity != 0) {
+					if (RCT2_GLOBAL(0x00F64E34, uint8) == BREAKDOWN_SAFETY_CUT_OUT) {
+						vehicle->update_flags |= VEHICLE_UPDATE_FLAG_7;
+						vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
+					}
+				}
+				else
+					vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
+			}
+		}
+	}
+
+	//6d8772
 }
 
 /* rct2: 0x006D9249 */

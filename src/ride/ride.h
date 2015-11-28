@@ -184,7 +184,7 @@ typedef struct {
 	// (in RCT2, display_speed = (max_speed * 9) >> 18)
 	sint32 max_speed;				// 0x0D8
 	sint32 average_speed;			// 0x0DC
-	uint8 var_0E0;
+	uint8 current_test_segment;		// 0x0E0
 	uint8 var_0E1;
 	uint8 pad_0E2[0x2];
 	sint32 length[4];				// 0x0E4
