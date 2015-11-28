@@ -1042,11 +1042,14 @@ void save_game()
 			scenario_save(rw, 0x80000000);
 			log_verbose("Saved to %s", gScenarioSavePath);
 			SDL_RWclose(rw);
+
+			// Setting screen age to zero, so no prompt will pop up when closing the
+			// game shortly after saving.
+			RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
 		}
 	} else {
 		save_game_as();
 	}
-
 }
 void save_game_as()
 {
