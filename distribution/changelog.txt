@@ -54,6 +54,7 @@
 - Fix: Map window now display the usable map size, not the technical one (original bug).
 - Fix: TD4 River Rapids will now have the correct seat colour (original bug).
 - Fix: Message sound will no longer play in the editor modes (original bug).
+- Fix: Scenarios created with the Scenario Editor will now have the correct inital temperature for their climate (original bug).
 
 0.0.2-beta (2015-06-21)
 ------------------------------------------------------------------------
