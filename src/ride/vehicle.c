@@ -1433,13 +1433,105 @@ loc_6DB967:
 	goto loc_6DBE3F;
 
 loc_6DBA13:
-	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DBA13, &regs);
-	goto end;
+	vehicle->var_B8 &= ~(1 << 1);
+	unk_F64E20->x = vehicle->x;
+	unk_F64E20->y = vehicle->y;
+	unk_F64E20->z = vehicle->z;
+	invalidate_sprite_2((rct_sprite*)vehicle);
 
 loc_6DBA33:
+	trackType = vehicle->track_type >> 2;
+	if (trackType == TRACK_ELEM_FLAT && ride->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER) {
+		sint32 unkVelocity = RCT2_GLOBAL(0x00F64E08, sint32);
+		if (unkVelocity > 0xFFF80000) {
+			unkVelocity = abs(unkVelocity);
+			vehicle->var_2C = unkVelocity * 2;
+		}
+	}
+
+	if (trackType == TRACK_ELEM_BRAKES) {
+		regs.eax = -(vehicle->var_CF << 16);
+		if (regs.eax <= RCT2_GLOBAL(0x00F64E08, sint32)) {
+			regs.eax = RCT2_GLOBAL(0x00F64E08, sint32) * -4;
+			vehicle->var_2C = regs.eax;
+		}
+	}
+
+	regs.ax = vehicle->var_34 - 1;
+	if (regs.ax != -1) {
+		goto loc_6DBD42;
+	}
+
+	RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_end;
+	RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_end;
+	mapElement = map_get_track_element_at_of_type_seq(
+		vehicle->track_x,
+		vehicle->track_y,
+		vehicle->track_z >> 3,
+		trackType,
+		0
+	);
+
+loc_6DBB08:
+	x = vehicle->track_x;
+	y = vehicle->track_y;
+	switch (vehicle->var_CD) {
+	case 3:
+		vehicle->var_CD = 1;
+		break;
+	case 7:
+		vehicle->var_CD = 5;
+		break;
+	case 8:
+		vehicle->var_CD = 6;
+		break;
+	case 2:
+	case 9:
+	case 10:
+	case 11:
+	case 12:
+	case 13:
+	case 14:
+		vehicle->var_CD = 2;
+	loc_6DBB4F:
+		{
+			rct_xy_element input;
+			rct_xy_element output;
+			int outputZ;
+			int outputDirection;
+
+			input.x = x;
+			input.y = y;
+			input.element = mapElement;
+			if (track_block_get_next(&input, &output, &outputZ, &outputDirection)) {
+				regs.edi = output.element;
+				goto loc_6DBE5E;
+			}
+			regs.bh = outputDirection;
+			goto loc_6DBC3B;
+		}
+	}
+
+loc_6DBB7E:
+	regs.ax = x;
+	regs.cx = y;
 	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DBA33, &regs);
+	regs.edi = mapElement;
+	RCT2_CALLFUNC_Y(0x006DBB7E, &regs);
+	goto end;
+
+loc_6DBC3B:
+	regs.ax = x;
+	regs.cx = x;
+	regs.dx = z;
+	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DBC3B, &regs);
+	goto end;
+
+loc_6DBD42:
+	// regs.ax = regs.ax
+	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DBD42, &regs);
 	goto end;
 
 loc_6DBE3F:
@@ -1450,6 +1542,11 @@ loc_6DBE3F:
 	vehicle->var_2C = regs.ebx;
 	RCT2_GLOBAL(0x00F64E10, uint32)++;
 	goto loc_6DBA33;
+
+loc_6DBE5E:
+	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DBE5E, &regs);
+	goto end;
 
 loc_6DBF20:
 	sprite_move(unk_F64E20->x, unk_F64E20->y, unk_F64E20->z, (rct_sprite*)vehicle);
