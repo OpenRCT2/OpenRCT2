@@ -33,6 +33,16 @@
 #include "track.h"
 #include "vehicle.h"
 
+rct_xyz16 *unk_F64E20 = (rct_xyz16*)0x00F64E20;
+
+// Size: 0x09
+typedef struct {
+	uint16 x;			// 0x00
+	uint16 y;			// 0x02
+	uint16 z;			// 0x04
+	uint8 pad_06[3];	// 0x06
+} rct_vehicle_info;
+
 static void vehicle_update(rct_vehicle *vehicle);
 
 /**
@@ -915,9 +925,9 @@ static void vehicle_update_play_water_splash_sound()
 
 	audio_play_sound_at_location(
 		SOUND_WATER_SPLASH,
-		RCT2_GLOBAL(0x00F64E20, uint16),
-		RCT2_GLOBAL(0x00F64E22, uint16),
-		RCT2_GLOBAL(0x00F64E24, uint16)
+		unk_F64E20->x,
+		unk_F64E20->y,
+		unk_F64E20->z
 	);
 }
 
@@ -958,6 +968,49 @@ static void vehicle_update_handle_water_splash(rct_vehicle *vehicle)
 			}
 		}
 	}
+}
+
+static const rct_vehicle_info *vehicle_get_move_info(int cd, int typeAndDirection, int offset)
+{
+	const rct_vehicle_info **infoListList = RCT2_ADDRESS(0x008B8F30, rct_vehicle_info**)[cd];
+	const rct_vehicle_info *infoList = infoListList[typeAndDirection];
+	return &infoList[offset];
+}
+
+/**
+ *
+ *  rct2: 0x006DB807
+ */
+static void sub_6DB807(rct_vehicle *vehicle)
+{
+	const rct_vehicle_info *moveInfo = vehicle_get_move_info(
+		vehicle->var_CD,
+		vehicle->track_type,
+		vehicle->var_34
+	);
+	int x = vehicle->track_x + moveInfo->x;
+	int y = vehicle->track_y + moveInfo->y;
+	int z = vehicle->z;
+	sprite_move(x, y, z, (rct_sprite*)vehicle);
+}
+
+/**
+ *
+ *  rct2: 0x006DB7D6
+ */
+static void sub_6DB7D6(rct_vehicle *vehicle)
+{
+	rct_vehicle *previousVehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
+	rct_vehicle *nextVehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
+
+	vehicle->var_34 = 168;
+	vehicle->vehicle_type ^= 1;
+
+	previousVehicle->var_34 = 86;
+	nextVehicle->var_34 = 158;
+
+	sub_6DB807(nextVehicle);
+	sub_6DB807(previousVehicle);
 }
 
 /**
@@ -1011,8 +1064,9 @@ loc_6DAE27:
 		goto loc_6DBF3E;
 	}
 	vehicle->var_B8 &= ~(1 << 1);
-	RCT2_GLOBAL(0x00F64E20, uint32) = vehicle->x | (vehicle->y << 16);
-	RCT2_GLOBAL(0x00F64E24, uint16) = vehicle->z;
+	unk_F64E20->x = vehicle->x;
+	unk_F64E20->y = vehicle->y;
+	unk_F64E20->z = vehicle->z;
 	invalidate_sprite_2((rct_sprite*)vehicle);
 
 loc_6DAEB9:
@@ -1078,11 +1132,18 @@ loc_6DAEB9:
 	}
 
 	regs.ax = vehicle->var_34 + 1;
-	regs.ecx = vehicle->var_CD;
-	regs.ecx = RCT2_ADDRESS(0x008B8F30, uint32)[regs.ecx];
-	regs.edi = RCT2_GLOBAL(regs.ecx + (vehicle->track_type * 4), uint32);
-	if (regs.ax < RCT2_GLOBAL(regs.edi - 2, uint16)) {
-		goto loc_6DB59A;
+	{
+		const rct_vehicle_info *moveInfo = vehicle_get_move_info(
+			vehicle->var_CD,
+			vehicle->track_type,
+			0
+		);
+
+		// There are two bytes before the move info list
+		uint16 unk16 = *((uint16*)((int)moveInfo - 2));
+		if (regs.ax < unk16) {
+			goto loc_6DB59A;
+		}
 	}
 
 	RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_end;
@@ -1100,7 +1161,7 @@ loc_6DAEB9:
 
 	if (track_element_is_block_start(mapElement)) {
 		if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
-			RCT2_GLOBAL(regs.edi + 1, uint8) |= 0x20;
+			mapElement->flags |= (1 << 5);
 			if (trackType == 216 || trackType == TRACK_ELEM_END_STATION) {
 				if (!(rideEntry->vehicles[0].var_14 & (1 << 3))) {
 					audio_play_sound_at_location(SOUND_49, vehicle->track_x, vehicle->track_y, vehicle->track_z);
@@ -1249,9 +1310,56 @@ loc_6DB59A:
 	vehicle->var_34 = regs.ax;
 	vehicle_update_handle_water_splash(vehicle);
 
-loc_6DB706:
+loc_6DB706:;
+	// regs.esi = vehicle;
+	// RCT2_CALLFUNC_Y(0x006DB706, &regs);
+	// goto end;
+	
+	const rct_vehicle_info *moveInfo = vehicle_get_move_info(
+		vehicle->var_CD,
+		vehicle->track_type,
+		vehicle->var_34
+	);
+	sint16 x = vehicle->track_x + moveInfo->x;
+	sint16 y = vehicle->track_y + moveInfo->y;
+	sint16 z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
+
+	regs.ebx = 0;
+	if (x != unk_F64E20->x) { regs.ebx |= 1; }
+	if (y != unk_F64E20->y) { regs.ebx |= 2; }
+	if (z != unk_F64E20->z) { regs.ebx |= 4; }
+	if (vehicle->var_CD == 15 &&
+		vehicle->track_type >= 844 &&
+		vehicle->track_type < 852 &&
+		vehicle->var_34 >= 30 &&
+		vehicle->var_34 <= 66
+	) {
+		regs.ebx |= 8;
+	}
+
+	if (vehicle->var_CD == 16 &&
+		vehicle->track_type >= 844 &&
+		vehicle->track_type < 852 &&
+		vehicle->var_34 == 96
+	) {
+		sub_6DB7D6(vehicle);
+
+		const rct_vehicle_info *moveInfo2 = vehicle_get_move_info(
+			vehicle->var_CD,
+			vehicle->track_type,
+			vehicle->var_34
+		);
+		x = vehicle->x + moveInfo2->x;
+		y = vehicle->y + moveInfo2->y;
+	}
+
+loc_6DB8A5:
+	regs.ax = x;
+	regs.cx = y;
+	regs.dx = z;
 	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DB706, &regs);
+	regs.edi = moveInfo;
+	RCT2_CALLFUNC_Y(0x006DB8A5, &regs);
 	goto end;
 
 loc_6DB94A:
