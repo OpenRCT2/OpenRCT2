@@ -1507,24 +1507,53 @@ loc_6DBB08:
 				regs.edi = output.element;
 				goto loc_6DBE5E;
 			}
-			regs.bh = outputDirection;
+			mapElement = output.element;
 			goto loc_6DBC3B;
 		}
 	}
 
 loc_6DBB7E:
-	regs.ax = x;
-	regs.cx = y;
-	regs.esi = vehicle;
-	regs.edi = mapElement;
-	RCT2_CALLFUNC_Y(0x006DBB7E, &regs);
-	goto end;
+	{
+		track_begin_end trackBeginEnd;
+		if (track_block_get_previous(x, y, mapElement, &trackBeginEnd)) {
+			goto loc_6DBE5E;
+		}
+		mapElement = trackBeginEnd.begin_element;
+
+		trackType = mapElement->properties.track.type;
+		if (trackType == 211 || trackType == 212) {
+			goto loc_6DBE5E;
+		}
+
+		int trackColour = vehicle->update_flags >> 9;
+		int bank = gTrackDefinitions[trackType].bank_end;;
+		bank = track_get_actual_bank_2(ride->type, regs.al, bank);
+		int vAngle = gTrackDefinitions[trackType].vangle_end;
+		if (RCT2_GLOBAL(0x00F64E36, uint16) != vAngle ||
+			RCT2_GLOBAL(0x00F64E37, uint16) != bank
+		) {
+			goto loc_6DBE5E;
+		}
+
+		// Update VEHICLE_UPDATE_FLAG_11
+		vehicle->update_flags &= VEHICLE_UPDATE_FLAG_11;
+		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_3) {
+			if (mapElement->properties.track.colour & 4) {
+				vehicle->update_flags |= VEHICLE_UPDATE_FLAG_11;
+			}
+		}
+
+		x = trackBeginEnd.begin_x;
+		y = trackBeginEnd.begin_y;
+		z = trackBeginEnd.begin_z;
+	}
 
 loc_6DBC3B:
 	regs.ax = x;
-	regs.cx = x;
+	regs.cx = y;
 	regs.dx = z;
 	regs.esi = vehicle;
+	regs.edi = mapElement;
 	RCT2_CALLFUNC_Y(0x006DBC3B, &regs);
 	goto end;
 
