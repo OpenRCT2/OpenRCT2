@@ -1836,25 +1836,26 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 				vehicle->var_2C = 3298;
 		break;
 	}
-	int edx;
-	uint32 flags = sub_6DAB4C(vehicle, &edx);
+
+	uint32 flags = sub_6DAB4C(vehicle, NULL);
 
 	if (flags & (1 << 8)) {
-		if ((edx & 0xFF) == 2) {
+		if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE) {
 			vehicle->velocity = -vehicle->velocity;
 			// jmp 0x6D8858
 		}
 	}
 	
 	if (flags & ((1 << 5) | (1 << 12))) {
-		if ((edx & 0xFF) == 5) {
-			// jmp 0x6d982f
+		if (ride->mode == RIDE_MODE_BOAT_HIRE) {
+			RCT2_CALLPROC_X(0x006D982F, 0, 0, 0, 0, (int)vehicle, 0, 0);
+			return;
 		}
-		else if ((edx & 0xFF) == 2) {
+		else if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE) {
 			vehicle->velocity = -vehicle->velocity;
 			// jmp 0x6D8858
 		}
-		else if ((edx & 0xFF) == 4) {
+		else if (ride->mode == RIDE_MODE_SHUTTLE) {
 			vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_3;
 			vehicle->velocity = 0;
 		}
@@ -1862,7 +1863,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 	
 	if (flags & (1 << 4)) {
 		vehicle->var_B8 |= (1 << 1);
-		if ((edx & 0xFF) != 2) {
+		if (ride->mode != RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE) {
 			sint32 speed = ride->lift_hill_speed * 31079;
 			if (vehicle->velocity <= speed) {
 				vehicle->var_2C = 15539;
@@ -1892,7 +1893,66 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 		}
 	}
 
-	//6d8772
+	if (ride->mode == RIDE_MODE_FREEFALL_DROP) {
+		vehicle->var_C5++;
+	}else{
+		bool shouldLaunch = true;
+		if (ride->mode == RIDE_MODE_DOWNWARD_LAUNCH) {
+			if (vehicle->var_CE < 1)
+				shouldLaunch = false;
+		}
+
+		if (shouldLaunch) {
+			if (!(flags & (1 << 3)) || (RCT2_GLOBAL(0x00F64E1C, uint8) != vehicle->current_station)) {
+				//jmp 6d8858
+			}
+
+			if (!flags & (1 << 5))
+				return;
+			if (ride->mode == RIDE_MODE_BOAT_HIRE ||
+				ride->mode == RIDE_MODE_ROTATING_LIFT ||
+				ride->mode == RIDE_MODE_SHUTTLE)
+				return;
+
+			if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED)
+				return;
+			
+			RCT2_CALLPROC_X(0x006D9EFE, 0, 0, 0, 0, (int)vehicle, 0, 0);
+			return;
+		}
+	}
+
+	rct_map_element* mapElement = map_get_track_element_at_of_type(
+		vehicle->track_x, 
+		vehicle->track_y, 
+		vehicle->track_z / 8, 
+		vehicle->track_type >> 2);
+
+	if (mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE) {
+		//jmp 6d8858
+	}
+
+	if (mapElement->clearance_height == (mapElement + 1)->clearance_height) {
+		if ((mapElement + 1)->properties.track.type == TRACK_ELEM_TOWER_SECTION) {
+			if (ride->mode == RIDE_MODE_FREEFALL_DROP)
+				invalidate_sprite_2((rct_sprite*)vehicle);
+			return;
+		}
+	}
+
+	if ((mapElement + 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE)
+		;// jmp 6d8858
+
+	if (mapElement->clearance_height != vehicle->z)
+		;// jmp 6d8858
+
+	if ((mapElement + 2)->properties.track.type == TRACK_ELEM_TOWER_SECTION) {
+		if (ride->mode == RIDE_MODE_FREEFALL_DROP)
+			invalidate_sprite_2((rct_sprite*)vehicle);
+		return;
+	}
+	
+	//6d8858
 }
 
 /* rct2: 0x006D9249 */
