@@ -1407,10 +1407,30 @@ loc_6DB94A:
 	goto loc_6DBE3F;
 
 loc_6DB967:
-	regs.esi = vehicle;
-	// regs.bp = regs.bp
-	RCT2_CALLFUNC_Y(0x006DB94A, &regs);
-	goto end;
+	regs.eax = vehicle->var_24 + 1;
+	RCT2_GLOBAL(0x00F64E0C, uint32) -= regs.eax;
+	vehicle->var_24 -= regs.eax;
+
+	// Might need to be bp rather than vehicle, but hopefully not
+	rct_vehicle *head = vehicle_get_head(vehicle);
+
+	regs.eax = abs(vehicle->velocity - head->velocity);
+	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_18)) {
+		if (regs.eax > 0xE0000) {
+			if (!(vehicleEntry->var_14 & (1 << 6))) {
+				RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 7);
+			}
+		}
+	}
+
+	if (vehicleEntry->var_14 & (1 << 14)) {
+		vehicle->velocity -= vehicle->velocity >> 2;
+	} else {
+		vehicle->velocity = head->velocity >> 1;
+		head->velocity = vehicle->velocity >> 1;
+	}
+	RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 1);
+	goto loc_6DBE3F;
 
 loc_6DBA13:
 	regs.esi = vehicle;
