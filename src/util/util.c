@@ -58,7 +58,13 @@ const char *path_get_filename(const utf8 *path)
 	// Find last slash or backslash in the path
 	char *filename = strrchr(path, platform_get_path_separator());
 
-	assert(filename != NULL);
+	// Checks if the path is valid (e.g. not just a file name)
+	if (filename == NULL)
+	{
+		log_warning("Invalid path given: %s", path);
+		// Return the input string to keep things working
+		return path;
+	}
 
 	// Increase pointer by one, to get rid of the slashes
 	filename++;
@@ -68,12 +74,15 @@ const char *path_get_filename(const utf8 *path)
 
 const char *path_get_extension(const utf8 *path)
 {
-	// Try to find the most-right dot in the path
-	char *extension = strrchr(path, '.');
+	// Get the filename from the path
+	char *filename = path_get_filename(path);
 
-	// When NULL was returned, return a pointer to the null-terminator
+	// Try to find the most-right dot in the filename
+	char *extension = strrchr(filename, '.');
+
+	// When no dot was found, return a pointer to the null-terminator
 	if (extension == NULL)
-		extension = strrchr(path, '\0');
+		extension = strrchr(filename, '\0');
 
 	return extension;
 }

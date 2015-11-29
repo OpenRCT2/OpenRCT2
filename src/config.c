@@ -1440,16 +1440,13 @@ static void title_sequence_open(const char *path, const char *customName)
 		gConfigTitleSequences.presets = realloc(gConfigTitleSequences.presets, sizeof(title_sequence) * (size_t)gConfigTitleSequences.num_presets);
 
 		if (customName == NULL) {
-			char nameBuffer[MAX_PATH], *name;
+			char nameBuffer[MAX_PATH];
 			safe_strncpy(nameBuffer, path, MAX_PATH);
-			name = nameBuffer + strlen(nameBuffer) - 1;
-			while (*name == '\\' || *name == '/') {
-				*name = 0;
-				name--;
-			}
-			while (*(name - 1) != '\\' && *(name - 1) != '/') {
-				name--;
-			}
+			// Get folder name
+			// First strip off the last folder separator
+			*strrchr(nameBuffer, platform_get_path_separator()) = '\0';
+			// Then find the name of the folder
+			char *name = strrchr(nameBuffer, platform_get_path_separator()) + 1;
 			safe_strncpy(gConfigTitleSequences.presets[preset].name, name, TITLE_SEQUENCE_NAME_SIZE);
 			gConfigTitleSequences.presets[preset].path[0] = 0;
 		}
@@ -1548,7 +1545,7 @@ void title_sequence_save_preset_script(int preset)
 
 
 	platform_get_user_directory(path, "title sequences");
-	strcat(path, path_get_filename(gConfigTitleSequences.presets[preset].name));
+	strcat(path, gConfigTitleSequences.presets[preset].name);
 	strncat(path, &separator, 1);
 	strcat(path, "script.txt");
 

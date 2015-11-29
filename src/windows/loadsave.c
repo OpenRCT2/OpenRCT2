@@ -159,7 +159,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	_defaultName[0] = 0;
 
 	if (!str_is_null_or_empty(defaultName)) {
-		safe_strncpy(_defaultName, path_get_filename(defaultName), sizeof(_defaultName));
+		safe_strncpy(_defaultName, defaultName, sizeof(_defaultName));
 		path_remove_extension(_defaultName);
 	}
 
@@ -745,7 +745,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
 		if (gLoadSaveTitleSequenceSave) {
 			utf8 newName[MAX_PATH];
-			char *extension = (char*)path_get_extension(path_get_filename(path));
+			char *extension = (char*)path_get_extension(path);
 			safe_strncpy(newName, path_get_filename(path), MAX_PATH);
 			if (_stricmp(extension, ".sv6") != 0 && _stricmp(extension, ".sc6") != 0)
 				strcat(newName, ".sv6");
