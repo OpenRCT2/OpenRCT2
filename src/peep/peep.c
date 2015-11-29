@@ -3161,7 +3161,10 @@ static void peep_update_ride_sub_state_20(rct_peep* peep){
 		return;
 	}
 
-	audio_play_sound_at_location(SOUND_TOILET_FLUSH, peep->x, peep->y, peep->z);
+	// Do not play toilet flush sound on title screen as its considered loud and annoying
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)) {
+		audio_play_sound_at_location(SOUND_TOILET_FLUSH, peep->x, peep->y, peep->z);
+	}
 
 	peep->sub_state++;
 
