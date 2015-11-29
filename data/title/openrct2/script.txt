@@ -1,108 +1,81 @@
-# OpenRCT2 0.0.2 Title Sequence Script
-# Arranged by IntelOrca
+# OpenRCT2 0.0.3 Title Sequence Script
+# Arranged by Gymnasiast (Michael Steenbeek).
+# Based on the 0.0.2 script, which was arranged by IntelOrca.
 
-# PFCKrutonium
+
 LOAD pfckrutonium1.sv6
 LOCATION 7 41
-WAIT 15
-LOCATION 49 15
-ROTATE 1
 WAIT 10
 
-# Achilleshiel
+LOAD netgrouppark.sv6
+LOCATION 91 10
+WAIT 9
+
+LOCATION 25 15
+WAIT 9
+
+LOAD bigfoot.sv6
+LOCATION 58 29
+WAIT 10
+
+ROTATE 1
+LOCATION 29 63
+WAIT 10
+
+LOAD gymnasiast2.sv6
+LOCATION 39 79
+WAIT 11
+
 LOAD achilleshiel.sv6
 LOCATION 25 77
 WAIT 10
 
 LOCATION 36 58
 ROTATE 3
-WAIT 12
-
-LOCATION 64 40
-ROTATE 1
 WAIT 8
 
-# DUSTY GREENS
-LOAD triggerdeath.sv6
-LOCATION 63 68
-WAIT 14
-
-ROTATE 1
-WAIT 16
-
-LOCATION 28 26
-ROTATE 2
-WAIT 10
-
-LOCATION 61 33
-ROTATE 2
-WAIT 8
-
-# PFCKrutonium
-LOAD pfckrutonium2.sv6
-LOCATION 116 58
-WAIT 14
-
-ROTATE 1
-WAIT 12
-
-# Shotguns (http://www.nedesigns.com/park/3107/rougarou/)
-LOAD shotguns.sv6
-LOCATION 20 13
-WAIT 16
-
-# Faas (http://www.nedesigns.com/park/2996/lucky-lake-amusement-park/)
-LOAD faas.sv6
-LOCATION 42 11
-WAIT 10
-
-LOCATION 30 18
-ROTATE 1
-WAIT 16
-
-LOCATION 17 71
-ROTATE 2
-WAIT 12
-
-LOCATION 88 68
-WAIT 12
-
-# MCI (http://www.nedesigns.com/park/2973/maerchen-paradies/)
 LOAD mci.sv6
 LOCATION 46 60
-WAIT 16
-
-LOCATION 78 43
-ROTATE 2
-WAIT 12
+WAIT 6
 
 LOCATION 76 32
 ROTATE 1
+WAIT 11
+
+LOAD phann.sv6
+LOCATION 96 73
 WAIT 8
 
-# Ride6 (http://www.nedesigns.com/park/2545/banana-valley/)
 LOAD rid6.sv6
 LOCATION 56 34
-WAIT 10
-
-LOCATION 48 4
-WAIT 4
+WAIT 8
 
 LOCATION 10 29
 ROTATE 1
-WAIT 12
+WAIT 8
 
-# Poke (http://www.nedesigns.com/park/2967/mystic-mountain/)
+LOAD gymnasiast1.sv6
+LOCATION 51 46
+WAIT 11
+
+LOAD alexfablelake.SV6
+LOCATION 50 25
+WAIT 9
+
+ROTATE 1
+LOCATION 35 74
+WAIT 9
+
 LOAD poke.sv6
 LOCATION 43 83
-WAIT 16
+WAIT 9
 
 LOCATION 63 35
 ROTATE 3
-WAIT 12
+WAIT 9
 
 LOCATION 12 47
 ROTATE 3
-WAIT 20
+WAIT 6
 
 RESTART
