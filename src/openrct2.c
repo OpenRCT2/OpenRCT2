@@ -178,7 +178,7 @@ static void openrct2_set_exe_path()
 	if (bytesRead == -1) {
 		log_fatal("failed to read /proc/self/exe");
 	}
-	exePath[bytesRead] = '\0';
+	exePath[bytesRead - 1] = '\0';
 	log_verbose("######################################## Setting exe path to %s", exePath);
 	char *exeDelimiter = strrchr(exePath, platform_get_path_separator());
 	if (exeDelimiter == NULL)

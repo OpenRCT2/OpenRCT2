@@ -46,10 +46,12 @@ bool platform_check_steam_overlay_attached() {
 
 	while (pl != NULL) {
 		if (strstr(pl->path, "gameoverlayrenderer.so") != NULL) {
+			dlclose(processHandle);
 			return true;
 		}
 		pl = pl->next;
 	}
+	dlclose(processHandle);
 
 	return false;
 }

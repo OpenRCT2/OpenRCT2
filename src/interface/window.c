@@ -940,6 +940,7 @@ void widget_invalidate(rct_window *w, int widgetIndex)
 {
 	rct_widget* widget;
 
+	assert(w != NULL);
 	widget = &w->widgets[widgetIndex];
 	if (widget->left == -2)
 		return;
@@ -1032,6 +1033,7 @@ void window_update_scroll_widgets(rct_window *w)
 
 	widgetIndex = 0;
 	scrollIndex = 0;
+	assert(w != NULL);
 	for (widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++) {
 		if (widget->type != WWT_SCROLL)
 			continue;
@@ -1073,6 +1075,7 @@ int window_get_scroll_data_index(rct_window *w, int widget_index)
 	int i, result;
 
 	result = 0;
+	assert(w != NULL);
 	for (i = 0; i < widget_index; i++) {
 		if (w->widgets[i].type == WWT_SCROLL)
 			result++;
@@ -1251,6 +1254,7 @@ void window_scroll_to_viewport(rct_window *w)
 {
 	int x, y, z;
 	rct_window *mainWindow;
+	assert(w != NULL);
 	// In original checked to make sure x and y were not -1 as well.
 	if (w->viewport == NULL || w->viewport_focus_coordinates.y == -1)
 		return;
@@ -1287,6 +1291,7 @@ void window_scroll_to_location(rct_window *w, int x, int y, int z)
 		.z = z
 	};
 
+	assert(w != NULL);
 	if (w->viewport) {
 		sint16 height = map_element_height(x, y);
 		if (z < height - 16) {

@@ -95,7 +95,7 @@ char platform_get_path_separator()
 bool platform_file_exists(const utf8 *path)
 {
 	wchar_t *wPath = utf8_to_widechar(path);
-	int len = min(MAX_PATH, utf8_length(path));
+	int len = min(MAX_PATH - 1, utf8_length(path));
 	char buffer[MAX_PATH];
 	wcstombs(buffer, wPath, len);
 	buffer[len] = '\0';
@@ -108,7 +108,7 @@ bool platform_file_exists(const utf8 *path)
 bool platform_directory_exists(const utf8 *path)
 {
 	wchar_t *wPath = utf8_to_widechar(path);
-	int len = min(MAX_PATH, utf8_length(path));
+	int len = min(MAX_PATH - 1, utf8_length(path));
 	char buffer[MAX_PATH];
 	wcstombs(buffer, wPath, len);
 	buffer[len] = '\0';
@@ -126,7 +126,7 @@ bool platform_directory_exists(const utf8 *path)
 bool platform_original_game_data_exists(const utf8 *path)
 {
 	wchar_t *wPath = utf8_to_widechar(path);
-	int len = min(MAX_PATH, utf8_length(path));
+	int len = min(MAX_PATH - 1, utf8_length(path));
 	char buffer[MAX_PATH];
 	wcstombs(buffer, wPath, len);
 	buffer[len] = '\0';
@@ -530,7 +530,7 @@ wchar_t *regular_to_wchar(const char* src)
 /**
  * Default directory fallback is:
  *   - (command line argument)
- *   - $XDG_CONFIG_HOME/.config/OpenRCT2
+ *   - $XDG_CONFIG_HOME/OpenRCT2
  *   - /home/[uid]/.config/OpenRCT2
  */
 void platform_resolve_user_data_path()
@@ -592,8 +592,8 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
 	safe_strncpy(buffer, _userDataDirectoryPath, sizeof(buffer));
 	if (subDirectory != NULL && subDirectory[0] != 0) {
 		log_verbose("adding subDirectory '%s'", subDirectory);
-		strcat(buffer, subDirectory);
-		strcat(buffer, separator);
+		strncat(buffer, subDirectory, MAX_PATH);
+		strncat(buffer, separator, MAX_PATH);
 	}
 	int len = strnlen(buffer, MAX_PATH);
 	wchar_t *w_buffer = regular_to_wchar(buffer);

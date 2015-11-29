@@ -359,8 +359,8 @@ void scenario_begin()
 	format_string(parkName, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), (void*)RCT2_ADDRESS_PARK_NAME_ARGS);
 
 	platform_get_user_directory(gScenarioSavePath, "save");
-	strncat(gScenarioSavePath, parkName, sizeof(gScenarioSavePath));
-	strncat(gScenarioSavePath, ".sv6", sizeof(gScenarioSavePath));
+	strncat(gScenarioSavePath, parkName, sizeof(gScenarioSavePath) - strlen(gScenarioSavePath) - 1);
+	strncat(gScenarioSavePath, ".sv6", sizeof(gScenarioSavePath) - strlen(gScenarioSavePath) - 1);
 
 	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)RCT2_ADDRESS_SAVED_GAMES_PATH);
 	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2 + strlen((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2), gScenarioSavePath);
