@@ -2093,10 +2093,51 @@ static void vehicle_finish_departing(rct_vehicle* vehicle) {
 		vehicle->sub_state = 0;
 }
 
+/* rct2: 0x006DE5CB */
+static void vehicle_check_if_missing(rct_vehicle* vehicle) {
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+
+	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
+		return;
+
+	if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED ||
+		ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
+		return;
+
+	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_27))
+		return;
+
+	vehicle->var_D0++;
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_11)
+		return;
+
+	uint16 limit = ride->type == RIDE_TYPE_BOAT_RIDE ? 15360 : 9600;
+
+	if (vehicle->var_D0 <= limit)
+		return;
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_11;
+
+	RCT2_GLOBAL(0x0013CE952, rct_string_id) 
+		= RCT2_ADDRESS(0x0097C98E, rct_string_id)[ride->type * 4] + 6;
+
+	uint8 vehicleIndex = 0;
+	for (; vehicleIndex < ride->num_vehicles; ++vehicleIndex)
+		if (ride->vehicles[vehicleIndex] == vehicle->sprite_index) break;
+
+	vehicleIndex++;
+	RCT2_GLOBAL(0x0013CE954, uint16) = vehicleIndex;
+	RCT2_GLOBAL(0x0013CE956, rct_string_id) = ride->name;
+	RCT2_GLOBAL(0x0013CE958, uint32) = ride->name_arguments;
+	RCT2_GLOBAL(0x0013CE95C, rct_string_id) =
+		RCT2_ADDRESS(0x0097C98E, rct_string_id)[ride->type * 4 + 2];
+
+	news_item_add_to_queue(NEWS_ITEM_RIDE, 2218, vehicle->ride);
+}
+
 /* rct2: 0x006D8937 */
 static void vehicle_update_travelling(rct_vehicle* vehicle) {
-	// Check to see if vehicle is lost
-	RCT2_CALLPROC_X(0x006DE5CB, 0, 0, 0, 0, (int)vehicle, 0, 0);
+	vehicle_check_if_missing(vehicle);
 
 	rct_ride* ride = GET_RIDE(vehicle->ride);
 	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0 && ride->mode == RIDE_MODE_ROTATING_LIFT)
@@ -2142,7 +2183,7 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 			return;
 		}
 
-		if (flags & ((1 << 9) | (1 << 12))) {
+		if (flags & ((1 << 5) | (1 << 12))) {
 			if (ride->mode == RIDE_MODE_ROTATING_LIFT) {
 				if (vehicle->sub_state <= 1) {
 					vehicle->status = VEHICLE_STATUS_ARRIVING;
@@ -2207,13 +2248,13 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 					vehicle->var_B8 |= (1 << 1);
 
 				if (!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_12)) {
-					if (vehicle->velocity > ride->lift_hill_speed * -31079) {
+					if (vehicle->velocity >= ride->lift_hill_speed * -31079) {
 						vehicle->var_2C = -15539;
 						
-						if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
-							vehicle->var_B8 |= (1 << 7);
-						
-						vehicle->var_B8 &= ~(1 << 1);
+						if (RCT2_GLOBAL(0x00F64E34, uint8) == 0) {
+							vehicle->var_B8 &= ~(1 << 1);
+							vehicle->update_flags |= VEHICLE_UPDATE_FLAG_7;
+						}
 					}
 				}
 			}
@@ -2223,10 +2264,14 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 			if (vehicle->velocity <= ride->lift_hill_speed * 31079) {
 				vehicle->var_2C = 15539;
 				if (vehicle->velocity != 0) {
-					if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
-						vehicle->var_B8 |= (1 << 7);
+					if (RCT2_GLOBAL(0x00F64E34, uint8) == 0) {
+						vehicle->update_flags |= VEHICLE_UPDATE_FLAG_7;
+						vehicle->var_B8 &= ~(1 << 1);
+					}
 				}
-				vehicle->var_B8 &= ~(1 << 1);
+				else {
+					vehicle->var_B8 &= ~(1 << 1);
+				}
 			}
 		}
 	}

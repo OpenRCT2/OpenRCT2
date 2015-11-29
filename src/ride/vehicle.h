@@ -166,8 +166,7 @@ typedef struct {
 		uint8 num_laps;				// 0xCE
 	};
 	uint8 pad_CF;
-	uint8 var_D0;
-	uint8 pad_D1;
+	uint16 var_D0;
 	sint8 var_D2;
 	uint8 var_D3;
 	uint8 var_D4;
