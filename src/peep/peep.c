@@ -6586,6 +6586,7 @@ static int peep_interact_with_shop(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 
 /* rct2: 0x0069524E */
 static int peep_move_one_tile(uint8 direction, rct_peep* peep){
+	assert(direction <= 7);
 	sint16 x = peep->next_x;
 	sint16 y = peep->next_y;
 	x += TileDirectionDelta[direction].x;

@@ -95,7 +95,7 @@ char platform_get_path_separator()
 bool platform_file_exists(const utf8 *path)
 {
 	wchar_t *wPath = utf8_to_widechar(path);
-	int len = min(MAX_PATH, utf8_length(path));
+	int len = min(MAX_PATH - 1, utf8_length(path));
 	char buffer[MAX_PATH];
 	wcstombs(buffer, wPath, len);
 	buffer[len] = '\0';
@@ -108,7 +108,7 @@ bool platform_file_exists(const utf8 *path)
 bool platform_directory_exists(const utf8 *path)
 {
 	wchar_t *wPath = utf8_to_widechar(path);
-	int len = min(MAX_PATH, utf8_length(path));
+	int len = min(MAX_PATH - 1, utf8_length(path));
 	char buffer[MAX_PATH];
 	wcstombs(buffer, wPath, len);
 	buffer[len] = '\0';
@@ -126,7 +126,7 @@ bool platform_directory_exists(const utf8 *path)
 bool platform_original_game_data_exists(const utf8 *path)
 {
 	wchar_t *wPath = utf8_to_widechar(path);
-	int len = min(MAX_PATH, utf8_length(path));
+	int len = min(MAX_PATH - 1, utf8_length(path));
 	char buffer[MAX_PATH];
 	wcstombs(buffer, wPath, len);
 	buffer[len] = '\0';
@@ -261,12 +261,13 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 				struct dirent *d = enumFileInfo->fileListTemp[idx];
 				const int entry_len = strnlen(d->d_name, MAX_PATH);
 				// 1 for separator, 1 for trailing null
-				paths[idx] = malloc(sizeof(char) * min(MAX_PATH, entry_len + dir_name_len + 2));
+				size_t path_len = sizeof(char) * min(MAX_PATH, entry_len + dir_name_len + 2);
+				paths[idx] = malloc(path_len);
 				paths[idx][0] = '\0';
 				log_verbose("dir_name: %s", dir_name);
-				strncat(paths[idx], dir_name, MAX_PATH);
-				strncat(paths[idx], separator, MAX_PATH);
-				strncat(paths[idx], d->d_name, MAX_PATH);
+				strncat(paths[idx], dir_name, path_len - 2);
+				strncat(paths[idx], separator, path_len - strnlen(paths[idx], path_len) - 1);
+				strncat(paths[idx], d->d_name, path_len - strnlen(paths[idx], path_len) - 1);
 				log_verbose("paths[%d] = %s", idx, paths[idx]);
 			}
 			enumFileInfo->handle = 0;
@@ -400,12 +401,13 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 				struct dirent *d = enumFileInfo->fileListTemp[idx];
 				const int entry_len = strnlen(d->d_name, MAX_PATH);
 				// 1 for separator, 1 for trailing null
-				paths[idx] = malloc(sizeof(char) * min(MAX_PATH, entry_len + dir_name_len + 2));
+				size_t path_len = sizeof(char) * min(MAX_PATH, entry_len + dir_name_len + 2);
+				paths[idx] = malloc(path_len);
 				paths[idx][0] = '\0';
 				log_verbose("dir_name: %s", npattern);
-				strncat(paths[idx], npattern, MAX_PATH);
-				strncat(paths[idx], separator, MAX_PATH);
-				strncat(paths[idx], d->d_name, MAX_PATH);
+				strncat(paths[idx], npattern, path_len - 2);
+				strncat(paths[idx], separator, path_len - strnlen(paths[idx], path_len) - 1);
+				strncat(paths[idx], d->d_name, path_len - strnlen(paths[idx], path_len) - 1);
 				log_verbose("paths[%d] = %s", idx, paths[idx]);
 			}
 			enumFileInfo->handle = 0;
@@ -450,8 +452,7 @@ bool platform_enumerate_directories_next(int handle, utf8 *path)
 		}
 		// so very, very wrong
 		safe_strncpy(path, basename(fileName), MAX_PATH);
-		strncat(path, "/", MAX_PATH);
-		path[MAX_PATH - 1] = '\0';
+		strncat(path, "/", MAX_PATH - strlen(path) - 1);
 		return true;
 	} else {
 		return false;
@@ -530,7 +531,7 @@ wchar_t *regular_to_wchar(const char* src)
 /**
  * Default directory fallback is:
  *   - (command line argument)
- *   - $XDG_CONFIG_HOME/.config/OpenRCT2
+ *   - $XDG_CONFIG_HOME/OpenRCT2
  *   - /home/[uid]/.config/OpenRCT2
  */
 void platform_resolve_user_data_path()
@@ -543,7 +544,7 @@ void platform_resolve_user_data_path()
 		// Ensure path ends with separator
 		int len = strlen(_userDataDirectoryPath);
 		if (_userDataDirectoryPath[len - 1] != separator[0]) {
-			strcat(_userDataDirectoryPath, separator);
+			strncat(_userDataDirectoryPath, separator, MAX_PATH - 1);
 		}
 		return;
 	}
@@ -564,17 +565,17 @@ void platform_resolve_user_data_path()
 			return;
 		}
 
-		strncat(buffer, homedir, MAX_PATH);
-		strncat(buffer, separator, MAX_PATH);
-		strncat(buffer, ".config", MAX_PATH);
+		strncat(buffer, homedir, MAX_PATH - 1);
+		strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+		strncat(buffer, ".config", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
 	}
 	else
 	{
-		strncat(buffer, homedir, MAX_PATH);
+		strncat(buffer, homedir, MAX_PATH - 1);
 	}
-	strncat(buffer, separator, MAX_PATH);
-	strncat(buffer, "OpenRCT2", MAX_PATH);
-	strncat(buffer, separator, MAX_PATH);
+	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	strncat(buffer, "OpenRCT2", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
 	log_verbose("OpenRCT2 user data directory = '%s'", buffer);
 	int len = strnlen(buffer, MAX_PATH);
 	wchar_t *w_buffer = regular_to_wchar(buffer);
@@ -592,8 +593,8 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
 	safe_strncpy(buffer, _userDataDirectoryPath, sizeof(buffer));
 	if (subDirectory != NULL && subDirectory[0] != 0) {
 		log_verbose("adding subDirectory '%s'", subDirectory);
-		strcat(buffer, subDirectory);
-		strcat(buffer, separator);
+		strncat(buffer, subDirectory, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+		strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
 	}
 	int len = strnlen(buffer, MAX_PATH);
 	wchar_t *w_buffer = regular_to_wchar(buffer);
