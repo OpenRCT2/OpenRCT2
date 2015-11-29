@@ -1801,8 +1801,190 @@ loc_6DC0F7:
 	goto loc_6DAE27;
 
 loc_6DC144:
-	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DC144, &regs);
+	vehicle = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
+	regs.eax = 0;
+	regs.ebp = 0;
+	regs.dx = 0;
+	regs.ebx = 0;
+
+	for (;;) {
+		regs.ebx++;
+		regs.dx |= vehicle->update_flags;
+		regs.bp += vehicle->friction;
+		regs.eax += vehicle->var_2C;
+
+		uint16 spriteIndex = vehicle->next_vehicle_on_train;
+		if (spriteIndex == SPRITE_INDEX_NULL) {
+			break;
+		}
+		vehicle = GET_VEHICLE(spriteIndex);
+	}
+
+	vehicle = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
+	regs.eax = (regs.eax / regs.ebx) * 21;
+	if (regs.eax < 0) {
+		regs.eax += 511;
+	}
+	regs.eax >>= 9;
+	regs.ecx = regs.eax;
+	regs.eax = vehicle->velocity;
+	if (regs.eax < 0) {
+		regs.eax = -regs.eax;
+		regs.eax >>= 12;
+		regs.eax = -regs.eax;
+	} else {
+		regs.eax >>= 12;
+	}
+
+	regs.ecx -= regs.eax;
+	regs.edx = vehicle->velocity;
+	regs.ebx = regs.edx;
+	regs.edx >>= 8;
+	regs.edx *= regs.edx;
+	if (regs.ebx < 0) {
+		regs.edx = -regs.edx;
+	}
+	regs.edx >>= 4;
+	regs.eax = regs.edx;
+	regs.eax = regs.eax / regs.ebp;
+	regs.ecx -= regs.eax;
+	
+	if (!(vehicleEntry->var_14 & (1 << 3))) {
+		goto loc_6DC2FA;
+	}
+	if (vehicleEntry->var_12 & (1 << 0)) {
+		regs.eax = vehicle->speed * 0x4000;
+		if (regs.eax < vehicle->velocity) {
+			goto loc_6DC2FA;
+		}
+	}
+	regs.eax = vehicle->speed;
+	trackType = vehicle->track_direction >> 2;
+	if (trackType == TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE) {
+		goto loc_6DC22F;
+	}
+	if (trackType != TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE) {
+		goto loc_6DC23A;
+	}
+	if (vehicle->var_CD == 6) {
+		goto loc_6DC238;
+	}
+
+loc_6DC226:
+	regs.ebx = regs.eax >> 2;
+	regs.eax -= regs.ebx;
+	goto loc_6DC23A;
+
+loc_6DC22F:
+	if (vehicle->var_CD != 5) {
+		goto loc_6DC226;
+	}
+
+loc_6DC238:
+	regs.eax >>= 1;
+
+loc_6DC23A:
+	regs.ebx = regs.eax;
+	regs.eax <<= 14;
+	regs.ebx *= regs.ebp;
+	regs.ebx >>= 2;
+	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_3) {
+		regs.eax = -regs.eax;
+	}
+	regs.eax -= vehicle->velocity;
+	regs.edx = vehicle->acceleration;
+	regs.edx <<= 1;
+	regs.eax *= regs.edx;
+	regs.eax /= regs.ebx;
+
+	if (vehicleEntry->var_12 & (1 << 15)) {
+		regs.eax <<= 2;
+	}
+
+	if (!(vehicleEntry->var_14 & (1 << 13))) {
+		goto loc_6DC2E3;
+	}
+
+	if (regs.eax < 0) {
+		regs.eax >>= 4;
+	}
+
+	if (vehicleEntry->var_14 & (1 << 2)) {
+		regs.bx = vehicle->var_B6;
+		if (regs.bx > 512) {
+			regs.bx = 512;
+		}
+		if (regs.bx < -512) {
+			regs.bx = -512;
+		}
+		vehicle->var_B6 = regs.bx;
+	}
+
+	if (vehicle->var_1F != 0) {
+		if (regs.eax < 0) {
+			regs.eax = 0;
+		}
+
+		if (!(vehicleEntry->var_14 & (1 << 2))) {
+			if (vehicle->var_1F == 2) {
+				vehicle->var_B6 = 0;
+			}
+		}
+		goto loc_6DC2F6;
+	}
+
+loc_6DC2E3:
+	regs.ebx = vehicle->velocity;
+	if (regs.ebx < 0) {
+		regs.ebx = -regs.ebx;
+	}
+	if (regs.ebx <= 0x10000) {
+		regs.ecx = 0;
+	}
+
+loc_6DC2F6:
+	regs.ecx += regs.eax;
+	goto loc_6DC316;
+
+loc_6DC2FA:
+	if (regs.ecx <= 0) {
+		if (regs.ecx >= -500) {
+			if (vehicle->velocity <= 0x8000) {
+				regs.ecx += 400;
+			}
+		}
+	}
+
+loc_6DC316:
+	regs.bx = vehicle->track_type >> 2;
+	if (regs.bx == TRACK_ELEM_WATER_SPLASH) {
+		if (vehicle->var_34 >= 48 &&
+			vehicle->var_34 <= 128
+		) {
+			regs.eax = vehicle->velocity >> 6;
+			regs.ecx -= regs.eax;
+		}
+	}
+
+	if (rideEntry->flags & RIDE_ENTRY_FLAG_9) {
+		if (!vehicle->is_child) {
+			regs.bx = vehicle->track_type >> 2;
+			if (track_element_is_covered(regs.bx)) {
+				if (vehicle->velocity > 0x20000) {
+					regs.eax = vehicle->velocity >> 6;
+					regs.ecx -= regs.eax;
+				}
+			}
+		}
+	}
+
+	vehicle->var_2C = regs.ecx;
+
+	regs.eax = RCT2_GLOBAL(0x00F64E18, uint32);
+	regs.ebx = RCT2_GLOBAL(0x00F64E1C, uint32);
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED) {
+		regs.eax &= 0xC0;
+	}
 	goto end;
 
 loc_6DC3A7:
