@@ -1729,6 +1729,76 @@ static void vehicle_peep_easteregg_here_we_are(rct_vehicle* vehicle) {
 	} while ((spriteId = vehicle->next_vehicle_on_train) != 0xFFFF);
 }
 
+/* rct2: 0x006D7338 
+ * Performed when vehicle has completed a full circuit
+ */
+static void vehicle_update_test_finish(rct_vehicle* vehicle) {
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+	ride->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
+	vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_TESTING;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+
+	for (int i = ride->num_stations - 1; i >= 1; i--) {
+		if (ride->time[i - 1] != 0)
+			continue;
+
+		uint16 oldTime = ride->time[i - 1];
+		ride->time[i - 1] = ride->time[i];
+		ride->time[i] = oldTime;
+
+		sint32 oldLength = ride->length[i - 1];
+		ride->length[i - 1] = ride->length[i];
+		ride->length[i] = oldLength;
+	}
+
+	uint32 totalTime = 0;
+	for (uint8 i = 0; i < ride->num_stations; ++i) {
+		totalTime += ride->time[i];
+	}
+
+	totalTime = min(totalTime, 1);
+	ride->average_speed = ride->average_speed / totalTime;
+
+	window_invalidate_by_number(WC_RIDE, vehicle->ride);
+}
+
+/* rct2: 0x006D6BE7
+ * 
+ */
+static void vehicle_test_reset(rct_vehicle* vehicle) {
+	vehicle->update_flags |= VEHICLE_UPDATE_FLAG_TESTING;	
+	
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_TEST_IN_PROGRESS;
+	ride->lifecycle_flags &= ~RIDE_LIFECYCLE_NO_RAW_STATS;
+	ride->max_speed = 0;
+	ride->average_speed = 0;
+	ride->current_test_segment = 0;
+	ride->var_0E1 = 0;
+	ride->max_positive_vertical_g = FIXED_2DP(1, 0);
+	ride->max_negative_vertical_g = FIXED_2DP(1, 0);
+	ride->max_lateral_g = 0;
+	ride->previous_vertical_g = 0;
+	ride->previous_lateral_g = 0;
+	ride->testing_flags = 0;
+	ride->var_10C = 0xFFFF;
+	ride->var_11F = 0xFF;
+	ride->turn_count_default = 0;
+	ride->turn_count_banked = 0;
+	ride->turn_count_sloped = 0;
+	ride->inversions = 0;
+	ride->drops = 0;
+	ride->sheltered_length = 0;
+	ride->var_11C = 0;
+	ride->num_sheltered_sections = 0;
+	ride->highest_drop_height = 0;
+	ride->special_track_elements = 0;
+	memset(&ride->length, 0, 4 * 4);
+	memset(&ride->time, 0, 4 * 2);
+	ride->var_1F6 = vehicle->current_station;
+	window_invalidate_by_number(WC_RIDE, vehicle->ride);
+}
+
 /* rct2: 0x006D845B */
 static void vehicle_update_departing(rct_vehicle* vehicle) {
 	rct_ride* ride = GET_RIDE(vehicle->ride);
@@ -1785,13 +1855,11 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 					ride->var_1F6 = vehicle->current_station;
 				}
 				else {
-					// Update test data for this segment
-					RCT2_CALLPROC_X(0x006D7338, 0, 0, 0, 0, (int)vehicle, vehicle->ride * 0x260, 0);
+					vehicle_update_test_finish(vehicle);
 				}
 			}
 			else if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS)) {
-				// Reset all test data
-				RCT2_CALLPROC_X(0x006D6BE7, 0, 0, 0, 0, (int)vehicle, vehicle->ride * 0x260, 0);	
+				vehicle_test_reset(vehicle);
 			}
 		}
 	}
