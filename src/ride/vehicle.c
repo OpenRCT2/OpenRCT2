@@ -1389,6 +1389,7 @@ loc_6DB8A5:
 		}
 	}
 
+loc_6DB928:
 	if (vehicle->var_24 < 0x368A) {
 		goto loc_6DBF20;
 	}
@@ -1613,10 +1614,45 @@ loc_6DBC3B:
 	regs.ax = unk16;
 
 loc_6DBD42:
-	// regs.ax = regs.ax
-	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DBD42, &regs);
-	goto end;
+	vehicle->var_34 = regs.ax;
+	moveInfo = vehicle_get_move_info(
+		vehicle->var_CD,
+		vehicle->track_type,
+		0
+	);
+
+	x = vehicle->track_x + moveInfo->x;
+	y = vehicle->track_y + moveInfo->y;
+	z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
+	
+	regs.ebx = 0;
+	if (x == unk_F64E20->x) { regs.ebx |= 1; }
+	if (y == unk_F64E20->y) { regs.ebx |= 2; }
+	if (z == unk_F64E20->z) { regs.ebx |= 4; }
+	vehicle->var_24 += RCT2_ADDRESS(0x009A2930, uint32)[regs.ebx];
+
+	unk_F64E20->x = x;
+	unk_F64E20->y = y;
+	unk_F64E20->z = z;
+	vehicle->sprite_direction = moveInfo->direction;
+	vehicle->var_20 = moveInfo->var_08;
+	regs.ebx = moveInfo->var_07;
+	vehicle->var_1F = regs.bl;
+
+	if ((vehicleEntry->var_14 & 0x200) && regs.bl != 0) {
+		vehicle->var_4A = 0;
+		vehicle->var_4C = 0;
+		vehicle->var_4E = 0;
+	}
+
+	if (vehicle == RCT2_GLOBAL(0x00F64E00, rct_vehicle*)) {
+		if (RCT2_GLOBAL(0x00F64E08, uint32) >= 0) {
+			regs.bp = vehicle->next_vehicle_on_ride;
+			if (sub_6DD078(vehicle, regs.bp)) {
+				goto loc_6DBE7F;
+			}
+		}
+	}
 
 loc_6DBE3F:
 	if ((sint32)vehicle->var_24 >= 0) {
@@ -1628,8 +1664,17 @@ loc_6DBE3F:
 	goto loc_6DBA33;
 
 loc_6DBE5E:
+	RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 5);
+	regs.eax = (sint32)vehicle->var_24 - 0x368A;
+	RCT2_GLOBAL(0x00F64E0C, uint32) -= regs.eax;
+	vehicle->var_24 -= regs.eax;
+	regs.ebx = vehicle->var_1F;
+	goto loc_6DB928;
+
+loc_6DBE7F:
+	// regs.bp = regs.bp;
 	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DBE5E, &regs);
+	RCT2_CALLFUNC_Y(0x006DBE7F, &regs);
 	goto end;
 
 loc_6DBF20:
