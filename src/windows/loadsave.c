@@ -277,7 +277,7 @@ static void window_loadsave_close(rct_window *w)
 static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 {
 	int result;
-	char filename[MAX_PATH], filter[MAX_PATH];
+	char path[MAX_PATH], filter[MAX_PATH];
 
 	switch (widgetIndex){
 	case WIDX_CLOSE:
@@ -305,9 +305,9 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 		break;
 	}
 	case WIDX_BROWSE:
-		safe_strncpy(filename, _directory, MAX_PATH);
+		safe_strncpy(path, _directory, MAX_PATH);
 		if (_type & LOADSAVETYPE_SAVE)
-			strcat(filename, (char*)RCT2_ADDRESS_SCENARIO_NAME);
+			strcat(path, (char*)RCT2_ADDRESS_SCENARIO_NAME);
 
 		memset(filter, '\0', MAX_PATH);
 		safe_strncpy(filter, "*", MAX_PATH);
@@ -315,30 +315,30 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 
 		switch (_type) {
 		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
-			result = platform_open_common_file_dialog(1, (char*)language_get_string(STR_LOAD_GAME), filename, filter, _extension);
+			result = platform_open_common_file_dialog(1, (char*)language_get_string(STR_LOAD_GAME), path, filter, _extension);
 			break;
 		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
-			result = platform_open_common_file_dialog(0, (char*)language_get_string(STR_SAVE_GAME), filename, filter, _extension);
+			result = platform_open_common_file_dialog(0, (char*)language_get_string(STR_SAVE_GAME), path, filter, _extension);
 			break;
 		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
-			result = platform_open_common_file_dialog(1, (char*)language_get_string(STR_LOAD_LANDSCAPE), filename, filter, _extension);
+			result = platform_open_common_file_dialog(1, (char*)language_get_string(STR_LOAD_LANDSCAPE), path, filter, _extension);
 			break;
 		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
-			result = platform_open_common_file_dialog(0, (char*)language_get_string(STR_SAVE_LANDSCAPE), filename, filter, _extension);
+			result = platform_open_common_file_dialog(0, (char*)language_get_string(STR_SAVE_LANDSCAPE), path, filter, _extension);
 			break;
 		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
-			result = platform_open_common_file_dialog(0, (char*)language_get_string(STR_SAVE_SCENARIO), filename, filter, _extension);
+			result = platform_open_common_file_dialog(0, (char*)language_get_string(STR_SAVE_SCENARIO), path, filter, _extension);
 			break;
 		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
-			result = platform_open_common_file_dialog(1, (char*)language_get_string(1039), filename, filter, _extension);
+			result = platform_open_common_file_dialog(1, (char*)language_get_string(1039), path, filter, _extension);
 			break;
 		}
 
 		if (result) {
-			if (!has_extension(filename, _extension)) {
-				strncat(filename, _extension, MAX_PATH);
+			if (!has_extension(path, _extension)) {
+				strncat(path, _extension, MAX_PATH);
 			}
-			window_loadsave_select(w, filename);
+			window_loadsave_select(w, path);
 		}
 		break;
 	case WIDX_SORT_NAME:
