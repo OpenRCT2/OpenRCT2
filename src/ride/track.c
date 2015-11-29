@@ -3039,8 +3039,6 @@ int save_track_design(uint8 rideIndex){
 	char path[MAX_PATH];
 	subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), track_name);
 
-	strcat(path, ".TD6");
-
 	// Save track design
 	format_string(RCT2_ADDRESS(0x141ED68, char), 2306, NULL);
 
