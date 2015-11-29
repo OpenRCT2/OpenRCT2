@@ -1,34 +1,49 @@
 language: c
 
 before_install:
-    - bash install.sh
+  - if [[ $TRAVIS_OS_NAME == "osx" ]]; then brew update; fi
+  - bash install.sh
 
 script:
-    - bash build.sh
+  - bash build.sh
 
 notifications:
-    on_failure: change
-    on_success: change
+  on_failure: change
+  on_success: change
 
 cache:
-    directories:
-        - .cache
-    apt: true
-
-env:
-    - OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8"
-    - OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++"
-    - OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=OFF -DDISABLE_HTTP_TWITCH=ON -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8"
-    - OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=OFF -DDISABLE_HTTP_TWITCH=OFF -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8"
-    - OPENRCT2_CMAKE_OPTS="-DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt" TARGET=windows
-    - OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=ON -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt" TARGET=windows
-    - OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt" TARGET=windows
-    - OPENRCT2_CMAKE_OPTS="-DDISABLE_HTTP_TWITCH=ON -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt" TARGET=windows
-    - TARGET=docker32
-    - OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON" TARGET=docker32
+  directories:
+    - .cache
+  apt: true
 
 sudo: required
 dist: trusty
 
-services:
-    - docker
+matrix:
+  include:
+    - os: osx
+      sudo: false
+    - os: linux
+      env: OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8"
+    - os: linux
+      env: OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++"
+    - os: linux
+      env: OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=OFF -DDISABLE_HTTP_TWITCH=ON -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8"
+    - os: linux
+      env: OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=OFF -DDISABLE_HTTP_TWITCH=OFF -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8"
+    - os: linux
+      env: OPENRCT2_CMAKE_OPTS="-DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt" TARGET=windows
+    - os: linux
+      env: OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=ON -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt" TARGET=windows
+    - os: linux
+      env: OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt" TARGET=windows
+    - os: linux
+      env: OPENRCT2_CMAKE_OPTS="-DDISABLE_HTTP_TWITCH=ON -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt" TARGET=windows
+    - os: linux
+      env: TARGET=docker32
+      services:
+        - docker
+    - os: linux
+      env: OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON" TARGET=docker32
+      services:
+        - docker
