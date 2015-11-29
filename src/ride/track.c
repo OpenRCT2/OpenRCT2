@@ -3147,6 +3147,7 @@ void window_track_list_format_name(utf8 *dst, const utf8 *src, int colour, bool 
 {
 	const utf8 *ch;
 	int codepoint;
+	char *lastDot = strrchr(src, '.');
 
 	if (colour != 0) {
 		dst = utf8_write_codepoint(dst, colour);
@@ -3155,8 +3156,8 @@ void window_track_list_format_name(utf8 *dst, const utf8 *src, int colour, bool 
 	if (quotes) dst = utf8_write_codepoint(dst, FORMAT_OPENQUOTES);
 
 	ch = src;
-	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
-		if (codepoint == '.') break;
+	while (lastDot > ch) {
+		codepoint = utf8_get_next(ch, &ch);
 		dst = utf8_write_codepoint(dst, codepoint);
 	}
 
