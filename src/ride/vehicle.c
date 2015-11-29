@@ -49,7 +49,7 @@ static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle);
 static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle);
 static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle);
 static void vehicle_update_departing(rct_vehicle* vehicle);
-static void sub_6D8858(rct_vehicle* vehicle);
+static void vehicle_finish_departing(rct_vehicle* vehicle);
 static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle);
 static void vehicle_update_rotating(rct_vehicle* vehicle);
 static void vehicle_update_space_rings_operating(rct_vehicle* vehicle);
@@ -1843,7 +1843,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 	if (flags & (1 << 8)) {
 		if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE) {
 			vehicle->velocity = -vehicle->velocity;
-			sub_6D8858(vehicle);
+			vehicle_finish_departing(vehicle);
 			return;
 		}
 	}
@@ -1855,7 +1855,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 		}
 		else if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE) {
 			vehicle->velocity = -vehicle->velocity;
-			sub_6D8858(vehicle);
+			vehicle_finish_departing(vehicle);
 			return;
 		}
 		else if (ride->mode == RIDE_MODE_SHUTTLE) {
@@ -1907,7 +1907,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 
 		if (shouldLaunch) {
 			if (!(flags & (1 << 3)) || (RCT2_GLOBAL(0x00F64E1C, uint8) != vehicle->current_station)) {
-				sub_6D8858(vehicle);
+				vehicle_finish_departing(vehicle);
 				return;
 			}
 
@@ -1933,7 +1933,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 		vehicle->track_type >> 2);
 
 	if (mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE) {
-		sub_6D8858(vehicle);
+		vehicle_finish_departing(vehicle);
 		return;
 	}
 
@@ -1946,12 +1946,12 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 	}
 
 	if ((mapElement + 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE) {
-		sub_6D8858(vehicle);
+		vehicle_finish_departing(vehicle);
 		return;
 	}
 
 	if (mapElement->clearance_height != (mapElement + 2)->base_height) {
-		sub_6D8858(vehicle);
+		vehicle_finish_departing(vehicle);
 		return;
 	}
 
@@ -1961,11 +1961,18 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 		return;
 	}
 	
-	sub_6D8858(vehicle);
+	vehicle_finish_departing(vehicle);
 }
 
-/* Part of vehicle_update_departing */
-static void sub_6D8858(rct_vehicle* vehicle) {
+/* rct2: 0x006D8858 
+ * Part of vehicle_update_departing 
+ * Called after finishing departing sequence to enter 
+ * traveling state.
+ * Vertical rides class the lift to the top of the tower
+ * as the departing sequence. After this point station
+ * boosters do not affect the ride.
+ */
+static void vehicle_finish_departing(rct_vehicle* vehicle) {
 	rct_ride* ride = GET_RIDE(vehicle->ride);
 
 	if (ride->mode == RIDE_MODE_DOWNWARD_LAUNCH ) {
