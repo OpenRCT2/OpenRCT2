@@ -18,19 +18,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifdef __APPLE__
+#if defined(__APPLE__) && defined(__MACH__)
 
-/**
- * OSX entry point to OpenRCT2.
- */
-// int main(char *argv[], int argc)
-// {
-//     return 0;
-// }
+#include "platform.h"
 
-char platform_get_path_separator()
-{
-	return '/';
+bool platform_check_steam_overlay_attached() {
+	STUB();
+	return false;
 }
 
 #endif

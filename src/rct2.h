@@ -92,7 +92,7 @@ typedef utf16* utf16string;
 #ifdef __linux__
 	#define OPENRCT2_PLATFORM		"Linux"
 #endif
-#ifdef __APPLE__
+#if defined(__APPLE__) && defined(__MACH__)
 	#define OPENRCT2_PLATFORM		"OS X"
 #endif
 #ifndef OPENRCT2_PLATFORM
