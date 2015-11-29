@@ -1028,6 +1028,83 @@ static void sub_6DB7D6(rct_vehicle *vehicle)
 
 /**
  *
+ *  rct2: 0x006DBF3E
+ */
+void sub_6DBF3E(rct_vehicle *vehicle)
+{
+	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+
+	vehicle->var_2C = (uint32)((sint32)vehicle->var_2C / RCT2_GLOBAL(0x00F64E10, sint32));
+	if (vehicle->var_CD == 2) {
+		return;
+	}
+
+	int trackType = vehicle->track_type >> 2;
+	if (!(RCT2_GLOBAL(0x0099BA64 + (trackType * 16), uint32) & 0x10)) {
+		return;
+	}
+
+	RCT2_GLOBAL(0x00F64E18, uint32) |= 8;
+
+	rct_map_element *mapElement = map_get_track_element_at_of_type_seq(
+		vehicle->track_x,
+		vehicle->track_y,
+		vehicle->track_z >> 3,
+		trackType,
+		0
+	);
+	if (RCT2_GLOBAL(0x00F64E1C, uint32) == 0xFFFFFFFF) {
+		RCT2_GLOBAL(0x00F64E1C, uint32) = (mapElement->properties.track.sequence >> 4) & 7;
+	}
+
+	if (trackType == TRACK_ELEM_TOWER_BASE &&
+		vehicle == RCT2_GLOBAL(0x00F64E04, rct_vehicle*)
+	) {
+		if (vehicle->var_34 > 3 && !(vehicle->update_flags & VEHICLE_UPDATE_FLAG_3)) {
+			rct_xy_element input, output;
+			int outputZ, outputDirection;
+
+			input.x = vehicle->track_x;
+			input.y = vehicle->track_y;
+			input.element = mapElement;
+			if (track_block_get_next(&input, &output, &outputZ, &outputDirection)) {
+				RCT2_GLOBAL(0x00F64E18, uint32) |= 0x1000;
+			}
+		}
+
+		if (vehicle->var_34 <= 3) {
+			RCT2_GLOBAL(0x00F64E18, uint32) |= 1;
+		}
+	}
+
+	if (trackType != TRACK_ELEM_END_STATION ||
+		vehicle != RCT2_GLOBAL(0x00F64E04, rct_vehicle*)
+	) {
+		return;
+	}
+
+	uint16 ax = vehicle->var_34;
+	if (RCT2_GLOBAL(0x00F64E08, uint32) < 0) {
+		if (ax <= 22) {
+			RCT2_GLOBAL(0x00F64E18, uint32) |= 1;
+		}
+	} else {
+		uint16 cx = 17;
+		if (vehicleEntry->var_14 & (1 << 12)) {
+			cx = 6;
+		}
+		if (vehicleEntry->var_14 & (1 << 14)) {
+			cx = vehicle->var_CD == 6 ? 18 : 20;
+		}
+
+		if (ax > cx) {
+			RCT2_GLOBAL(0x00F64E18, uint32) |= 1;
+		}
+	}
+}
+
+/**
+ *
  *  rct2: 0x006DAB4C
  */
 int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
@@ -1704,8 +1781,28 @@ loc_6DBF20:
 	invalidate_sprite_2((rct_sprite*)vehicle);
 
 loc_6DBF3E:
+	sub_6DBF3E(vehicle);
+
+loc_6DC0F7:
+	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_0) {
+		RCT2_GLOBAL(0x00F64E18, uint32) |= 4;
+	}
+	if (RCT2_GLOBAL(0x00F64E08, uint32) >= 0) {
+		if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
+			goto loc_6DC144;
+		}
+	
+		vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+	} else {
+		if (vehicle == RCT2_GLOBAL(0x00F64E04, rct_vehicle*)) {
+			goto loc_6DC144;
+		}
+	}
+	goto loc_6DAE27;
+
+loc_6DC144:
 	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DBF3E, &regs);
+	RCT2_CALLFUNC_Y(0x006DC144, &regs);
 	goto end;
 
 loc_6DC3A7:
