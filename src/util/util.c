@@ -56,9 +56,7 @@ bool filename_valid_characters(const utf8 *filename)
 const char *path_get_filename(const utf8 *path)
 {
 	// Find last slash or backslash in the path
-	char *filename = strrchr(path, '/');
-	if (filename == NULL)
-		filename = strrchr(path, '\\');
+	char *filename = strrchr(path, platform_get_path_separator());
 
 	assert(filename != NULL);
 
