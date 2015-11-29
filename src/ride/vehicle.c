@@ -1672,10 +1672,32 @@ loc_6DBE5E:
 	goto loc_6DB928;
 
 loc_6DBE7F:
-	// regs.bp = regs.bp;
-	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DBE7F, &regs);
-	goto end;
+	regs.eax = vehicle->var_24 - 0x368A;
+	RCT2_GLOBAL(0x00F64E0C, uint32) -= regs.eax;
+	vehicle->var_24 -= regs.eax;
+
+	rct_vehicle *v3 = GET_VEHICLE(regs.bp);
+	rct_vehicle *v4 = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
+	regs.eax = abs(v4->velocity - v3->velocity);
+
+	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_18)) {
+		if (regs.eax > 0xE0000) {
+			if (!(vehicleEntry->var_14 & (1 << 6))) {
+				RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 7);
+			}
+		}
+	}
+
+	if (vehicleEntry->var_14 & (1 << 14)) {
+		vehicle->velocity -= vehicle->velocity >> 2;
+		RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 2);
+	} else {
+		vehicle->velocity = v3->velocity >> 1;
+		v3->velocity = v4->velocity >> 1;
+		RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 2);
+	}
+	
+	goto loc_6DB928;
 
 loc_6DBF20:
 	sprite_move(unk_F64E20->x, unk_F64E20->y, unk_F64E20->z, (rct_sprite*)vehicle);
