@@ -50,6 +50,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle);
 static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle);
 static void vehicle_update_departing(rct_vehicle* vehicle);
 static void vehicle_finish_departing(rct_vehicle* vehicle);
+static void vehicle_update_travelling(rct_vehicle* vehicle);
 static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle);
 static void vehicle_update_rotating(rct_vehicle* vehicle);
 static void vehicle_update_space_rings_operating(rct_vehicle* vehicle);
@@ -1087,6 +1088,8 @@ static void vehicle_update(rct_vehicle *vehicle)
 		vehicle_update_departing(vehicle);
 		break;
 	case VEHICLE_STATUS_TRAVELLING:
+		vehicle_update_travelling(vehicle);
+		break;
 	case VEHICLE_STATUS_ARRIVING:
 	case VEHICLE_STATUS_UNLOADING_PASSENGERS:
 	case VEHICLE_STATUS_TRAVELLING_07:
@@ -1799,6 +1802,37 @@ static void vehicle_test_reset(rct_vehicle* vehicle) {
 	window_invalidate_by_number(WC_RIDE, vehicle->ride);
 }
 
+static bool vehicle_next_tower_element_is_top(rct_vehicle* vehicle) {
+	rct_map_element* mapElement = map_get_track_element_at_of_type(
+		vehicle->track_x,
+		vehicle->track_y,
+		vehicle->track_z / 8,
+		vehicle->track_type >> 2);
+
+	if (mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE) {
+		return true;
+	}
+
+	if (mapElement->clearance_height == (mapElement + 1)->base_height) {
+		if ((mapElement + 1)->properties.track.type == TRACK_ELEM_TOWER_SECTION) {
+			return false;
+		}
+	}
+
+	if ((mapElement + 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE) {
+		return true;
+	}
+
+	if (mapElement->clearance_height != (mapElement + 2)->base_height) {
+		return true;
+	}
+
+	if ((mapElement + 2)->properties.track.type == TRACK_ELEM_TOWER_SECTION) {
+		return false;
+	}
+	return true;
+}
+
 /* rct2: 0x006D845B */
 static void vehicle_update_departing(rct_vehicle* vehicle) {
 	rct_ride* ride = GET_RIDE(vehicle->ride);
@@ -1994,36 +2028,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 		}
 	}
 
-	rct_map_element* mapElement = map_get_track_element_at_of_type(
-		vehicle->track_x, 
-		vehicle->track_y, 
-		vehicle->track_z / 8, 
-		vehicle->track_type >> 2);
-
-	if (mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE) {
-		vehicle_finish_departing(vehicle);
-		return;
-	}
-
-	if (mapElement->clearance_height == (mapElement + 1)->base_height) {
-		if ((mapElement + 1)->properties.track.type == TRACK_ELEM_TOWER_SECTION) {
-			if (ride->mode == RIDE_MODE_FREEFALL_DROP)
-				invalidate_sprite_2((rct_sprite*)vehicle);
-			return;
-		}
-	}
-
-	if ((mapElement + 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE) {
-		vehicle_finish_departing(vehicle);
-		return;
-	}
-
-	if (mapElement->clearance_height != (mapElement + 2)->base_height) {
-		vehicle_finish_departing(vehicle);
-		return;
-	}
-
-	if ((mapElement + 2)->properties.track.type == TRACK_ELEM_TOWER_SECTION) {
+	if (vehicle_next_tower_element_is_top(vehicle) == false) {
 		if (ride->mode == RIDE_MODE_FREEFALL_DROP)
 			invalidate_sprite_2((rct_sprite*)vehicle);
 		return;
@@ -2086,6 +2091,167 @@ static void vehicle_finish_departing(rct_vehicle* vehicle) {
 	vehicle->sub_state = 1;
 	if (vehicle->velocity < 0)
 		vehicle->sub_state = 0;
+}
+
+/* rct2: 0x006D8937 */
+static void vehicle_update_travelling(rct_vehicle* vehicle) {
+	// Check to see if vehicle is lost
+	RCT2_CALLPROC_X(0x006DE5CB, 0, 0, 0, 0, (int)vehicle, 0, 0);
+
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0 && ride->mode == RIDE_MODE_ROTATING_LIFT)
+		return;
+
+	if (vehicle->sub_state == 2) {
+		vehicle->velocity = 0;
+		vehicle->var_2C = 0;
+		vehicle->var_C0--;
+		if (vehicle->var_C0 == 0)
+			vehicle->sub_state = 0;
+	}
+
+	if (ride->mode == RIDE_MODE_FREEFALL_DROP &&
+		vehicle->var_C5 != 0) {
+
+		vehicle->var_C5++;
+		vehicle->velocity = 0;
+		vehicle->var_2C = 0;
+		invalidate_sprite_2((rct_sprite*)vehicle);
+		return;
+	}
+
+	uint32 flags = sub_6DAB4C(vehicle, NULL);
+
+	bool skipCheck = false;
+	if (flags & ((1 << 8) | (1 << 9)) && 
+		ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE &&
+		vehicle->sub_state == 0) {
+		vehicle->sub_state = 1;
+		vehicle->velocity = 0;
+		skipCheck = true;
+	}
+
+	if (!skipCheck) {
+		if (flags & (1 << 6)) {
+			RCT2_CALLPROC_X(0x006D9EFE, 0, 0, 0, 0, (int)vehicle, 0, 0);
+			return;
+		}
+
+		if (flags & (1 << 7)) {
+			RCT2_CALLPROC_X(0x006DA059, 0, 0, 0, 0, (int)vehicle, 0, 0);
+			return;
+		}
+
+		if (flags & ((1 << 9) | (1 << 12))) {
+			if (ride->mode == RIDE_MODE_ROTATING_LIFT) {
+				if (vehicle->sub_state <= 1) {
+					vehicle->status = VEHICLE_STATUS_ARRIVING;
+					vehicle_invalidate_window(vehicle);
+					vehicle->sub_state = 1;
+					vehicle->var_C0 = 0;
+					return;
+				}
+			}
+			else if (ride->mode == RIDE_MODE_SHUTTLE) {
+				vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_3;
+				vehicle->velocity = 0;
+			}
+			else {
+				if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED) {
+					if (vehicle->sub_state != 0) {
+						vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_3;
+						vehicle->velocity = 0;
+					}
+					else {
+						vehicle->sub_state = 1;
+						vehicle->velocity = 0;
+					}
+				}
+				else {
+					if (vehicle->sub_state != 0) {
+						RCT2_CALLPROC_X(0x006D9EFE, 0, 0, 0, 0, (int)vehicle, 0, 0);
+						return;
+					}
+					vehicle->sub_state = 1;
+					vehicle->velocity = 0;
+				}
+			}
+		}
+	}
+
+	if (ride->mode == RIDE_MODE_ROTATING_LIFT &&
+		vehicle->sub_state <= 1) {
+
+		if (vehicle->sub_state == 0) {
+			if (vehicle->velocity >= -131940)
+				vehicle->var_2C = -3298;
+			vehicle->velocity = max(vehicle->velocity, -131940);
+		}
+		else {
+			if (vehicle_next_tower_element_is_top(vehicle) == true) {
+				vehicle->velocity = 0;
+				vehicle->sub_state = 2;
+				vehicle->var_C0 = 150;
+			}
+			else {
+				if (vehicle->velocity <= 131940)
+					vehicle->var_2C = 3298;
+			}
+		}
+	}
+
+	if (flags & (1 << 4)) {
+		if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE) {
+			if (vehicle->sub_state == 0) {
+				if (vehicle->velocity != 0)
+					vehicle->var_B8 |= (1 << 1);
+
+				if (!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_12)) {
+					if (vehicle->velocity > ride->lift_hill_speed * -31079) {
+						vehicle->var_2C = -15539;
+						
+						if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+							vehicle->var_B8 |= (1 << 7);
+						
+						vehicle->var_B8 &= ~(1 << 1);
+					}
+				}
+			}
+		}
+		else {
+			vehicle->var_B8 |= (1 << 1);
+			if (vehicle->velocity <= ride->lift_hill_speed * 31079) {
+				vehicle->var_2C = 15539;
+				if (vehicle->velocity != 0) {
+					if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+						vehicle->var_B8 |= (1 << 7);
+				}
+				vehicle->var_B8 &= ~(1 << 1);
+			}
+		}
+	}
+
+	if (!(flags & (1 << 3)))
+		return;
+
+	if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE &&
+		vehicle->velocity >= 0 &&
+		!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_12)) {
+		return;
+	}
+
+	if (ride->mode == RIDE_MODE_POWERED_LAUNCH_PASSTROUGH &&
+		vehicle->velocity < 0)
+		return;
+
+	vehicle->status = VEHICLE_STATUS_ARRIVING;
+	vehicle->current_station = RCT2_GLOBAL(0x00F64E1C, uint8);
+	vehicle_invalidate_window(vehicle);
+	vehicle->var_C0 = 0;
+
+	vehicle->sub_state = 0;
+	if (vehicle->velocity < 0)
+		vehicle->sub_state = 1;
 }
 
 /* rct2: 0x006D9249 */
