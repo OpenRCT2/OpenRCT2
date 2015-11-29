@@ -49,6 +49,7 @@ static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle);
 static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle);
 static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle);
 static void vehicle_update_departing(rct_vehicle* vehicle);
+static void sub_6D8858(rct_vehicle* vehicle);
 static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle);
 static void vehicle_update_rotating(rct_vehicle* vehicle);
 static void vehicle_update_space_rings_operating(rct_vehicle* vehicle);
@@ -1818,7 +1819,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 			vehicle->var_2C = ride->launch_speed << 12;
 		break;
 	case RIDE_MODE_DOWNWARD_LAUNCH:
-		if (vehicle->sub_state >= 1) {
+		if (vehicle->var_CE >= 1) {
 			if ((14 << 16) > vehicle->velocity)
 				vehicle->var_2C = 14 << 12;
 			break;
@@ -1842,7 +1843,8 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 	if (flags & (1 << 8)) {
 		if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE) {
 			vehicle->velocity = -vehicle->velocity;
-			// jmp 0x6D8858
+			sub_6D8858(vehicle);
+			return;
 		}
 	}
 	
@@ -1853,7 +1855,8 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 		}
 		else if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE) {
 			vehicle->velocity = -vehicle->velocity;
-			// jmp 0x6D8858
+			sub_6D8858(vehicle);
+			return;
 		}
 		else if (ride->mode == RIDE_MODE_SHUTTLE) {
 			vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_3;
@@ -1904,10 +1907,11 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 
 		if (shouldLaunch) {
 			if (!(flags & (1 << 3)) || (RCT2_GLOBAL(0x00F64E1C, uint8) != vehicle->current_station)) {
-				//jmp 6d8858
+				sub_6D8858(vehicle);
+				return;
 			}
 
-			if (!flags & (1 << 5))
+			if (!(flags & (1 << 5)))
 				return;
 			if (ride->mode == RIDE_MODE_BOAT_HIRE ||
 				ride->mode == RIDE_MODE_ROTATING_LIFT ||
@@ -1929,10 +1933,11 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 		vehicle->track_type >> 2);
 
 	if (mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE) {
-		//jmp 6d8858
+		sub_6D8858(vehicle);
+		return;
 	}
 
-	if (mapElement->clearance_height == (mapElement + 1)->clearance_height) {
+	if (mapElement->clearance_height == (mapElement + 1)->base_height) {
 		if ((mapElement + 1)->properties.track.type == TRACK_ELEM_TOWER_SECTION) {
 			if (ride->mode == RIDE_MODE_FREEFALL_DROP)
 				invalidate_sprite_2((rct_sprite*)vehicle);
@@ -1940,11 +1945,15 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 		}
 	}
 
-	if ((mapElement + 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE)
-		;// jmp 6d8858
+	if ((mapElement + 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE) {
+		sub_6D8858(vehicle);
+		return;
+	}
 
-	if (mapElement->clearance_height != vehicle->z)
-		;// jmp 6d8858
+	if (mapElement->clearance_height != (mapElement + 2)->base_height) {
+		sub_6D8858(vehicle);
+		return;
+	}
 
 	if ((mapElement + 2)->properties.track.type == TRACK_ELEM_TOWER_SECTION) {
 		if (ride->mode == RIDE_MODE_FREEFALL_DROP)
@@ -1952,7 +1961,56 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 		return;
 	}
 	
-	//6d8858
+	sub_6D8858(vehicle);
+}
+
+/* Part of vehicle_update_departing */
+static void sub_6D8858(rct_vehicle* vehicle) {
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+
+	if (ride->mode == RIDE_MODE_DOWNWARD_LAUNCH ) {
+		if (vehicle->var_CE >= 1 && (14 << 16) > vehicle->velocity)
+			return;
+
+		audio_play_sound_at_location(
+			SOUND_RIDE_LAUNCH_1,
+			vehicle->x,
+			vehicle->y,
+			vehicle->z);
+	}
+
+	if (ride->mode == RIDE_MODE_UPWARD_LAUNCH) {
+		if ((ride->launch_speed << 16) > vehicle->velocity)
+			return;
+
+		audio_play_sound_at_location(
+			SOUND_RIDE_LAUNCH_1,
+			vehicle->x,
+			vehicle->y,
+			vehicle->z);
+	}
+
+	if (ride->mode != RIDE_MODE_RACE &&
+		ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED &&
+		ride->mode != RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED) {
+
+		ride->station_depart[vehicle->current_station] &= STATION_DEPART_FLAG;
+		uint8 waitingTime = 3;
+		if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH) {
+			waitingTime = max(ride->min_waiting_time, 3);
+			waitingTime = min(waitingTime, 127);
+		}
+
+		ride->station_depart[vehicle->current_station] |= waitingTime;
+	}
+
+	vehicle->status = VEHICLE_STATUS_TRAVELLING;
+	vehicle_invalidate_window(vehicle);	
+	vehicle->var_D0 = 0;
+
+	vehicle->sub_state = 1;
+	if (vehicle->velocity < 0)
+		vehicle->sub_state = 0;
 }
 
 /* rct2: 0x006D9249 */
