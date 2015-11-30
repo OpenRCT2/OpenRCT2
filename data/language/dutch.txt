@@ -3893,7 +3893,7 @@ STR_5557    :Verbinding behouden na desynchronisatie (multiplayer)
 STR_5558    :Om deze instelling van kracht te laten worden is een herstart vereist.
 STR_5559    :Elke 10 min. inspect.
 STR_5560    :{SMALLFONT}{BLACK}Stelt het inspectieinterval van alle attracties in op 'Elke 10 minuten'.
-STR_5561    :Kon taalbestand niet laden
+STR_5561    :Kon taal niet laden
 STR_5562    :WAARSCHUWING:
 STR_5563    :Deze functie is momenteel niet helemaal stabiel, wees voorzichtig.
 STR_5564    :Ongeldig element invoegen
@@ -3912,6 +3912,7 @@ STR_5576    :Poort:
 STR_5577    :Zuid-Koreaanse won (W)
 STR_5578    :Russische roebel (R)
 STR_5579    :Vergrotingsfactor:
+STR_5580    :Tsjechische kroon (Kc)
 
 #############
 # Scenarios #
