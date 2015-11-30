@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -21,10 +21,15 @@
 #ifndef _MIXER_H_
 #define _MIXER_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
 #include "../common.h"
 #include <SDL.h>
-
-#define USE_MIXER
+#include "../platform/platform.h"
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #define MIXER_LOOP_NONE			0
 #define MIXER_LOOP_INFINITE		-1
@@ -100,7 +105,7 @@ protected:
 class Source_SampleStream : public Source
 {
 public:
-	Source_SampleStream();
+	Source_SampleStream() = default;
 	~Source_SampleStream();
 	bool LoadWAV(SDL_RWops* rw);
 
@@ -108,10 +113,10 @@ private:
 	Uint32 FindChunk(SDL_RWops* rw, Uint32 wanted_id);
 	void Unload();
 
-	SDL_RWops* rw;
-	Uint64 databegin;
-	uint8* buffer;
-	unsigned long buffersize;
+	SDL_RWops* rw = nullptr;
+	Uint64 databegin = 0;
+	uint8* buffer = nullptr;
+	unsigned long buffersize = 0;
 
 protected:
 	unsigned long Read(unsigned long offset, const uint8** data, unsigned long length);
@@ -134,21 +139,21 @@ public:
 	friend class Mixer;
 
 private:
-	int loop;
-	unsigned long offset;
-	double rate;
-	int volume;
-	float volume_l, volume_r;
-	float oldvolume_l, oldvolume_r;
-	float pan;
-	bool done;
-	bool deleteondone;
-	bool deletesourceondone;
-	bool stopping;
-	int oldvolume;
-	int group;
-	SpeexResamplerState* resampler;
-	Source* source;
+	int loop = 0;
+	unsigned long offset = 0;
+	double rate = 0;
+	int volume = 1;
+	float volume_l = 0.f, volume_r = 0.f;
+	float oldvolume_l = 0.f, oldvolume_r = 0.f;
+	float pan = 0;
+	bool done = true;
+	bool deleteondone = false;
+	bool deletesourceondone = false;
+	bool stopping = false;
+	int oldvolume = 0;
+	int group = MIXER_GROUP_NONE;
+	SpeexResamplerState* resampler = nullptr;
+	Source* source = nullptr;
 };
 
 class Mixer
@@ -162,6 +167,7 @@ public:
 	Channel* Play(Source& source, int loop, bool deleteondone, bool deletesourceondone);
 	void Stop(Channel& channel);
 	bool LoadMusic(int pathid);
+	void SetVolume(float volume);
 
 	Source* css1sources[SOUND_MAXID];
 	Source* musicsources[PATH_ID_END];
@@ -180,10 +186,18 @@ private:
 	uint8* effectbuffer;
 	std::list<Channel*> channels;
 	Source_Null source_null;
+	float volume;
 };
 
 extern "C"
 {
+#endif
+
+#ifndef DSBPAN_LEFT
+#define DSBPAN_LEFT -10000
+#endif
+#ifndef DSBPAN_RIGHT
+#define DSBPAN_RIGHT 10000
 #endif
 
 void Mixer_Init(const char* device);
@@ -196,7 +210,8 @@ int Mixer_Channel_IsPlaying(void* channel);
 unsigned long Mixer_Channel_GetOffset(void* channel);
 int Mixer_Channel_SetOffset(void* channel, unsigned long offset);
 void Mixer_Channel_SetGroup(void* channel, int group);
-void* Mixer_Play_Music(int pathid, int loop, int streaming);
+void* Mixer_Play_Music(int pathId, int loop, int streaming);
+void Mixer_SetVolume(float volume);
 
 static int DStoMixerVolume(int volume) { return (int)(SDL_MIX_MAXVOLUME * (SDL_pow(10, (float)volume / 2000))); };
 static float DStoMixerPan(int pan) { return (((float)pan + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2; };

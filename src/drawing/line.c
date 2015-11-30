@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -53,13 +53,13 @@ void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, int y, int x, 
 		if (no_pixels <= 0)return;
 	}
 
-	char* bits_pointer;
+	uint8* bits_pointer;
 	//Get the buffer we are drawing to and move to the first coordinate.
 	bits_pointer = dpi->bits + y*(dpi->pitch + dpi->width) + x;
 
 	//Draw the line to the specified colour
 	for (; no_pixels > 0; --no_pixels, ++bits_pointer){
-		*((uint8*)bits_pointer) = colour;
+		*bits_pointer = colour;
 	}
 }
 

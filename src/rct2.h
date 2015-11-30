@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,12 +17,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
- 
+
 #ifndef _RCT2_H_
 #define _RCT2_H_
 
+#ifndef _USE_MATH_DEFINES
+	#define _USE_MATH_DEFINES
+#endif
+#undef M_PI
+
 #include <assert.h>
 #include <ctype.h>
+#include <limits.h>
+#include <math.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -66,6 +73,9 @@ typedef utf16* utf16string;
 #define sgn(x)				((x > 0) ? 1 : ((x < 0) ? -1 : 0))
 #define clamp(l, x, h)		(min(h, max(l, x)))
 
+// Rounds an integer down to the given power of 2. y must be a power of 2.
+#define floor2(x, y)		((x) & (~((y) - 1)))
+
 #define countof(x)			((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
 
 #ifndef _MSC_VER
@@ -74,24 +84,40 @@ typedef utf16* utf16string;
 #endif
 
 #define OPENRCT2_NAME				"OpenRCT2"
-#define OPENRCT2_VERSION			"0.0.2"
+#define OPENRCT2_VERSION			"0.0.3"
 #define OPENRCT2_ARCHITECTURE		"x86"
-#define OPENRCT2_PLATFORM			"Windows"
+#ifdef _WIN32
+	#define OPENRCT2_PLATFORM		"Windows"
+#endif // _WIN32
+#ifdef __linux__
+	#define OPENRCT2_PLATFORM		"Linux"
+#endif
+#if defined(__APPLE__) && defined(__MACH__)
+	#define OPENRCT2_PLATFORM		"OS X"
+#endif
+#ifndef OPENRCT2_PLATFORM
+	#error Unknown platform!
+#endif
 #define OPENRCT2_TIMESTAMP			__DATE__ " " __TIME__
 
 // The following constants are for automated build servers
+#define OPENRCT2_BUILD_NUMBER		""
 #define OPENRCT2_BUILD_SERVER		""
 #define OPENRCT2_BRANCH				""
 #define OPENRCT2_COMMIT_SHA1		""
 #define OPENRCT2_COMMIT_SHA1_SHORT	""
+#define OPENRCT2_MASTER_SERVER_URL	"https://servers.openrct2.website"
 
 // Represent fixed point numbers. dp = decimal point
+typedef uint8 fixed8_1dp;
+typedef uint8 fixed8_2dp;
 typedef sint16 fixed16_1dp;
 typedef sint16 fixed16_2dp;
 typedef sint32 fixed32_1dp;
 typedef sint32 fixed32_2dp;
 
 // Money is stored as a multiple of 0.10.
+typedef fixed8_1dp money8;
 typedef fixed16_1dp money16;
 typedef fixed32_1dp money32;
 
@@ -146,22 +172,12 @@ enum {
 	PATH_ID_CSS7,
 	PATH_ID_CSS8,
 	PATH_ID_CSS9,
-	PATH_ID_CSS10,
 	PATH_ID_CSS11,
 	PATH_ID_CSS12,
 	PATH_ID_CSS13,
 	PATH_ID_CSS14,
 	PATH_ID_CSS15,
-	PATH_ID_CSS16,
 	PATH_ID_CSS3,
-	PATH_ID_GAMECFG,
-	PATH_ID_TUT640A,
-	PATH_ID_TUT640B,
-	PATH_ID_TUT640C,
-	PATH_ID_TUT800A,
-	PATH_ID_TUT800B,
-	PATH_ID_TUT800C,
-	PATH_ID_KANJI,
 	PATH_ID_CSS17,
 	PATH_ID_CSS18,
 	PATH_ID_CSS19,
@@ -189,10 +205,8 @@ enum {
 	PATH_ID_CUSTOM2,
 	PATH_ID_CSS39,
 	PATH_ID_CSS40,
-	PATH_ID_TRACKSIDX,
 	PATH_ID_CSS41,
 	PATH_ID_SIXFLAGS_MAGICMOUNTAIN,
-	PATH_ID_SIXFLAGS_BUILDYOUROWN,
 	PATH_ID_CSS42,
 	PATH_ID_CSS43,
 	PATH_ID_CSS44,
@@ -205,69 +219,57 @@ enum {
 // rct2 @ 0x0097F67C
 static const char * const file_paths[] =
 {
-	"Data\\G1.DAT",
-	"Data\\PLUGIN.DAT",
-	"Data\\CSS1.DAT",
-	"Data\\CSS2.DAT",
-	"Data\\CSS4.DAT",
-	"Data\\CSS5.DAT",
-	"Data\\CSS6.DAT",
-	"Data\\CSS7.DAT",
-	"Data\\CSS8.DAT",
-	"Data\\CSS9.DAT",
-	"Data\\CSS10.DAT",
-	"Data\\CSS11.DAT",
-	"Data\\CSS12.DAT",
-	"Data\\CSS13.DAT",
-	"Data\\CSS14.DAT",
-	"Data\\CSS15.DAT",
-	"Data\\CSS16.DAT",
-	"Data\\CSS3.DAT",
-	"Data\\GAME.CFG",
-	"Data\\TUT640A.DAT",
-	"Data\\TUT640B.DAT",
-	"Data\\TUT640C.DAT",
-	"Data\\TUT800A.DAT",
-	"Data\\TUT800B.DAT",
-	"Data\\TUT800C.DAT",
-	"Data\\KANJI.DAT",
-	"Data\\CSS17.DAT",
-	"Data\\CSS18.DAT",
-	"Data\\CSS19.DAT",
-	"Data\\CSS20.DAT",
-	"Data\\CSS21.DAT",
-	"Data\\CSS22.DAT",
-	"Saved Games\\scores.DAT",
-	"Data\\CSS23.DAT",
-	"Data\\CSS24.DAT",
-	"Data\\CSS25.DAT",
-	"Data\\CSS26.DAT",
-	"Data\\CSS27.DAT",
-	"Data\\CSS28.DAT",
-	"Data\\CSS29.DAT",
-	"Data\\CSS30.DAT",
-	"Data\\CSS31.DAT",
-	"Data\\CSS32.DAT",
-	"Data\\CSS33.DAT",
-	"Data\\CSS34.DAT",
-	"Data\\CSS35.DAT",
-	"Data\\CSS36.DAT",
-	"Data\\CSS37.DAT",
-	"Data\\CSS38.DAT",
+	"Data\\g1.dat",
+	"Data\\plugin.dat",
+	"Data\\css1.dat",
+	"Data\\css2.dat",
+	"Data\\css4.dat",
+	"Data\\css5.dat",
+	"Data\\css6.dat",
+	"Data\\css7.dat",
+	"Data\\css8.dat",
+	"Data\\css9.dat",
+	"Data\\css11.dat",
+	"Data\\css12.dat",
+	"Data\\css13.dat",
+	"Data\\css14.dat",
+	"Data\\css15.dat",
+	"Data\\css3.dat",
+	"Data\\css17.dat",
+	"Data\\css18.dat",
+	"Data\\css19.dat",
+	"Data\\css20.dat",
+	"Data\\css21.dat",
+	"Data\\css22.dat",
+	"Saved Games\\scores.dat",
+	"Data\\css23.dat",
+	"Data\\css24.dat",
+	"Data\\css25.dat",
+	"Data\\css26.dat",
+	"Data\\css27.dat",
+	"Data\\css28.dat",
+	"Data\\css29.dat",
+	"Data\\css30.dat",
+	"Data\\css31.dat",
+	"Data\\css32.dat",
+	"Data\\css33.dat",
+	"Data\\css34.dat",
+	"Data\\css35.dat",
+	"Data\\css36.dat",
+	"Data\\css37.dat",
+	"Data\\css38.dat",
 	"Data\\CUSTOM1.WAV",
 	"Data\\CUSTOM2.WAV",
-	"Data\\CSS39.DAT",
-	"Data\\CSS40.DAT",
-	"Tracks\\Tracks.IDX",
-	"Data\\CSS41.DAT",
+	"Data\\css39.dat",
+	"Data\\css40.dat",
+	"Data\\css41.dat",
 	"Scenarios\\Six Flags Magic Mountain.SC6",
-	"Scenarios\\Build your own Six Flags Park.SC6",
-	"Data\\CSS42.DAT",
-	"Data\\CSS43.DAT",
-	"Data\\CSS44.DAT",
-	"Data\\CSS45.DAT",
-	"Data\\CSS46.DAT",
-	"Data\\CSS50.DAT"
+	"Data\\css42.dat",
+	"Data\\css43.dat",
+	"Data\\css44.dat",
+	"Data\\css45.dat",
+	"Data\\css46.dat",
+	"Data\\css50.dat"
 };
 
 // Files to check (rct2 @ 0x0097FB5A)
@@ -276,34 +278,14 @@ static const struct file_to_check
 	int pathId; // ID of file
 	unsigned int fileSize; // Expected size in bytes
 } files_to_check[] = {
-	{ PATH_ID_CSS18,  8429568 },
-	{ PATH_ID_CSS19, 10143784 },
-	{ PATH_ID_CSS20, 12271656 },
-	{ PATH_ID_CSS21,  9680968 },
-	{ PATH_ID_CSS22, 10062056 },
-	{ PATH_ID_CSS23, 11067432 },
-	{ PATH_ID_CSS24, 12427456 },
-	{ PATH_ID_CSS25, 15181512 },
-	{ PATH_ID_CSS26, 10694816 },
-	{ PATH_ID_CSS27, 10421232 },
-	{ PATH_ID_CSS28, 13118376 },
-	{ PATH_ID_CSS29, 15310892 },
-	{ PATH_ID_CSS30, 10215464 },
-	{ PATH_ID_CSS31, 11510316 },
-	{ PATH_ID_CSS32, 11771944 },
-	{ PATH_ID_CSS33, 10759724 },
-	{ PATH_ID_CSS34, 14030716 },
-	{ PATH_ID_CSS35, 11642576 },
-	{ PATH_ID_CSS36,  8953764 },
-	{ PATH_ID_CSS37, 13303852 },
-	{ PATH_ID_CSS38, 10093888 },
-	{ PATH_ID_CSS39,  7531564 },
-	{ PATH_ID_CSS40,  5291306 },
 	{ PATH_ID_END,          0 }
 };
 
+extern uint32 gCurrentDrawCount;
+
 int rct2_init();
 void rct2_update();
+void rct2_draw();
 void rct2_endupdate();
 void subsitute_path(char *dest, const char *path, const char *filename);
 int check_mutex();

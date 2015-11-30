@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -35,7 +35,7 @@ static void graph_draw_months_uint8(rct_drawpixelinfo *dpi, uint8 *history, int 
 	for (i = count - 1; i >= 0; i--) {
 		if (history[i] != 0 && history[i] != 255 && yearOver32 % 4 == 0) {
 			// Draw month text
-			RCT2_GLOBAL(0x013CE952, uint32) = ((yearOver32 / 4) + 8) % 8 + STR_MONTH_SHORT_MAR;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = ((yearOver32 / 4) + 8) % 8 + STR_MONTH_SHORT_MAR;
 			gfx_draw_string_centred(dpi, 2222, x, y - 10, 0, (void*)0x013CE952);
 
 			// Draw month mark

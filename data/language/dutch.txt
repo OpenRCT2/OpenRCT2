@@ -22,7 +22,7 @@ STR_0020    :Kabelbaan
 STR_0021    :Stalen schroefachtbaan
 STR_0022    :Doolhof
 STR_0023    :Spiraalglijbaan
-STR_0024    :Go Karts
+STR_0024    :Go-karts
 STR_0025    :Boomstamattractie
 STR_0026    :Wildwaterbaan
 STR_0027    :Botsauto's
@@ -42,7 +42,7 @@ STR_0040    :Bewegingssimulator
 STR_0041    :3D-bioscoop
 STR_0042    :Topspin
 STR_0043    :Ruimteringen
-STR_0044    :Omgekeerde vrijevalachtbaan
+STR_0044    :Achterwaartsevrijevalachtbaan
 STR_0045    :Lift
 STR_0046    :Verticale achtbaan
 STR_0047    :Geldautomaat
@@ -51,17 +51,17 @@ STR_0049    :Spookhuis
 STR_0050    :Eerste hulp
 STR_0051    :Circus
 STR_0052    :Spooktrein
-STR_0053    :Hyper-twisterachtbaan
+STR_0053    :Stalen twisterachtbaan
 STR_0054    :Houten achtbaan
 STR_0055    :Zijfrictie-achtbaan
 STR_0056    :Wilde muis
 STR_0057    :Multidimensie-achtbaan
 STR_0058    :Onbekende attractie (38)
-STR_0059    :Omgekeerde luchtachtbaan
+STR_0059    :Vliegachtbaan
 STR_0060    :Onbekende attractie (3A)
 STR_0061    :Virginia Reel
 STR_0062    :Plonsboten
-STR_0063    :Minihelikopters
+STR_0063    :Minihelicopters
 STR_0064    :Liggende achtbaan
 STR_0065    :Omgekeerde monorail
 STR_0066    :Onbekende attractie (40)
@@ -88,7 +88,7 @@ STR_0086    :Onbekende attractie (54)
 STR_0087    :Onbekende attractie (55)
 STR_0088    :Omgekeerde Impulse-achtbaan
 STR_0089    :Mini-achtbaan
-STR_0090    :Aandreven mijntrein
+STR_0090    :Aangedreven mijntrein
 STR_0091    :Onbekende attractie (59)
 STR_0092    :LIM-lanceringsachtbaan
 STR_0093    :
@@ -510,31 +510,31 @@ STR_0508    :
 STR_0509    :
 STR_0510    :
 STR_0511    :
-STR_0512    :
-STR_0513    :
-STR_0514    :Treinen hangen onder de baan en zwaaien naar buiten in de bochten
-STR_0515    :
-STR_0516    :Een rustige achtbaan voor bezoekers die nog niet in engere attracties durven
-STR_0517    :Passagiers rijden in miniatuurtreinen over een smalspoorweg
-STR_0518    :Passagiers rijden in elektrische treinen over een monorailbaan
-STR_0519    :Passagiers zitten in kleine karretjes die onder een enkele rail hangen en naar buiten zwaaien in de bochten
-STR_0520    :
-STR_0521    :
-STR_0522    :
-STR_0523    :Bezoekers rijden langzaam over een baan in aangedreven karretjes
-STR_0524    :
-STR_0525    :
-STR_0526    :
-STR_0527    :Een soepele stalen achtbaan die verticale loopings kan maken
-STR_0528    :
-STR_0529    :
-STR_0530    :Stoeltjes hangen aan een continu draaiende stalen kabel die van het ene uiteinde van de baan naar het andere loopt, en daarna weer terug
-STR_0531    :
+STR_0512    :Een compacte achtbaan met een spiraalvormige kettingheuvel en soepele, kronkelende afdalingen.
+STR_0513    :Een achtbaan met loopings waar de passagiers in de karretjes staan.
+STR_0514    :Treinen hangen onder de baan en zwaaien naar buiten in de bochten.
+STR_0515    :Een stalen achtbaan met treinen die onder de baan hangen, met veel complexe en kronkelende baanelementen.
+STR_0516    :Een rustige achtbaan voor bezoekers die nog niet in engere attracties durven.
+STR_0517    :Passagiers rijden in miniatuurtreinen over een smalspoorweg.
+STR_0518    :Passagiers rijden in elektrische treinen over een monorailbaan.
+STR_0519    :Passagiers zitten in kleine karretjes die onder een enkele rail hangen en naar buiten zwaaien in de bochten.
+STR_0520    :Een aanlegsteiger waar bezoekers in een bootje kunnen gaan om over het water te varen.
+STR_0521    :Een intense, snelle en kronkelende achtbaan met scherpe bochten en afdalingen.
+STR_0522    :Een kleinere achtbaan waar de passagiers boven de baan en op het karretje zitten.
+STR_0523    :Bezoekers rijden langzaam over een baan in aangedreven karretjes.
+STR_0524    :Een vrijevalwagen wordt pneumatisch langs een hoge stalen toren gelanceerd en gaat daarna in een vrije val weer naar beneden.
+STR_0525    :Passagiers rijden over een kronkelende baan, waarbij ze enkel worden geleid door de ronding en banking van de halfronde baan.
+STR_0526    :Bezoekers gaan in een roterende observatiecabine langs een toren omhoog
+STR_0527    :Een soepele stalen achtbaan die verticale loopings kan maken.
+STR_0528    :Passagiers glijden in opblaasboten door een kronkelende halfopen of compleet gesloten glijbaan.
+STR_0529    :Achtbaantreinen in de vorm van een mijntrein razen over stalen achtbaanrails die er uitziet als een oude spoorbaan.
+STR_0530    :Stoeltjes hangen aan een continu draaiende stalen kabel die van het ene uiteinde van de baan naar het andere loopt, en daarna weer terug.
+STR_0531    :Een compacte stalen achtbaan waar de trein door schroeven en loopings gaat.
 STR_0532    :
 STR_0533    :
-STR_0534    :
-STR_0535    :
-STR_0536    :
+STR_0534    :Go-karts met benzinemotor die de passagiers zelf besturen.
+STR_0535    :Boten in de vorm van een boomstam varen door een waterbak, waarbij ze van steile hellingen afdalen om de passagiers te doorweken.
+STR_0536    :Ronde boten varen door een brede waterbak, waarbij ze de passagiers opwinden door watervallen en schuimende stroomversnellingen.
 STR_0537    :
 STR_0538    :
 STR_0539    :
@@ -552,55 +552,55 @@ STR_0550    :
 STR_0551    :
 STR_0552    :
 STR_0553    :
-STR_0554    :Het karretje wordt het station uitgelanceerd over een lange rechte baan door middel van lineaire inductiemotoren, om daarna recht omhoog te gaan en weer terug te vallen richting het station
-STR_0555    :
-STR_0556    :
+STR_0554    :Het karretje wordt het station uitgelanceerd over een lange rechte baan door middel van lineaire inductiemotoren, om daarna recht omhoog te gaan en weer terug te vallen richting het station.
+STR_0555    :Bezoekers gaan in een lift in een toren omhoog of omlaag om naar een ander hoogteniveau te komen.
+STR_0556    :Extra brede karretjes rijden over een compleet verticale baan voor de ultieme vrijevalbeleving.
 STR_0557    :
 STR_0558    :
 STR_0559    :
 STR_0560    :
 STR_0561    :
-STR_0562    :
-STR_0563    :Bezoekers zitten in comfortabele treinen met enkel een schootbeugel en gaan soepel door grote afdalingen en kronkelende stukken baan, met veel 'airtime' in de heuvels
-STR_0564    :Deze over een houten baan lopende achtbaan is snel, ruw, luidruchting en geeft het gevoel van controleverlies met veel 'airtime'
-STR_0565    :Een simpele houten achtbaan die enkel in staat is rustige hellingen en bochten te bedwingen, de karretjes worden enkel op de baan gehouden door middel van zijfrictiewielen en zwaartekracht
-STR_0566    :Losse karretjes rijden over een kronkelende baan met scherpe bochten en korte felle afdalingen
-STR_0567    :Bezoekers zitten in stoelen aan beide kanten van de baan, en draaien alle kanten op terwijl ze door diepe afdalingen en diverse omkeringen gaan 
+STR_0562    :Aangedreven karretjes rijden langs eng decor en special effects over een baan met hoogteverschillen.
+STR_0563    :Bezoekers zitten in comfortabele treinen met enkel een schootbeugel en gaan soepel door grote afdalingen en kronkelende stukken baan, met veel 'airtime' in de heuvels.
+STR_0564    :Deze over een houten baan lopende achtbaan is snel, ruw, luidruchting en geeft het gevoel van controleverlies met veel 'airtime'.
+STR_0565    :Een simpele houten achtbaan die enkel in staat is rustige hellingen en bochten te bedwingen, de karretjes worden enkel op de baan gehouden door middel van zijfrictiewielen en zwaartekracht.
+STR_0566    :Losse karretjes rijden over een kronkelende baan met scherpe bochten en korte felle afdalingen.
+STR_0567    :Bezoekers zitten in stoelen aan beide kanten van de baan, en draaien alle kanten op terwijl ze door diepe afdalingen en diverse omkeringen gaan.
 STR_0568    :
-STR_0569    :Bezoekers hangen in treinen onder de baan met enkel schouderbeugels en krijgen zo de ervaring dat ze vliegen
+STR_0569    :Bezoekers hangen in treinen onder de baan met enkel schouderbeugels en krijgen zo de ervaring dat ze vliegen.
 STR_0570    :
-STR_0571    :
-STR_0572    :
-STR_0573    :
-STR_0574    :
-STR_0575    :Aangedreven treinen hangen aan een enkele rail en vervoeren mensen door het park heen
+STR_0571    :Ronde karretjes gaan over een zigzaggende houten baan en draaien daarbij rond.
+STR_0572    :Boten met een hoge capaciteit varen door een brede waterbak, worden naar boven vervoerd door een lopende band, en gaan met hoge snelheid steile heuvels af om met een grote plons de passagiers te doorweken.
+STR_0573    :Aangedreven karretjes in de vorm van een helicopter rijden over een stalen baan, bestuurd door het trappen van de passagiers.
+STR_0574    :Passagiers worden door middel van een speciale beugel in een liggende positie vastgehouden, waarna ze op hun rug of met hun gezicht naar de grond door kronkelende stukken baan en omkeringen heen gaan.
+STR_0575    :Aangedreven treinen hangen aan een enkele rail en vervoeren mensen door het park heen.
 STR_0576    :
-STR_0577    :
-STR_0578    :Karretjes rijden in een baan omgeven door hoepels en gaan door steile afdalingen en heartline-twists
+STR_0577    :Karretjes met draaistellen rijden op een houten baan en kunnen omkeren op speciale stukken baan.
+STR_0578    :Karretjes rijden in een baan omgeven door hoepels en gaan door steile afdalingen en heartline-twists.
 STR_0579    :
-STR_0580    :
-STR_0581    :
+STR_0580    :Een gigantische stalen achtbaan die in staat is tot soepele afdalingen en heuvels die hoger zijn dan 90 meter.
+STR_0581    :Een ring van stoelen wordt naar de bovenkant van een hoge toren getrokken terwijl hij rustig ronddraait, waarna hij losgelaten wordt in een vrije val, waarna hij beneden rustig wordt afgeremd door middel van magnetische remmen.
 STR_0582    :
 STR_0583    :
-STR_0584    :
-STR_0585    :
-STR_0586    :Bootvormige karretjes rijden over achtbaanrails, waardoor ze hellende bochten en diepe afdalingen kunnen maken, waarna ze in bakken water neerplonzen en rustig een stukje kunnen varen
-STR_0587    :
-STR_0588    :
+STR_0584    :Speciale fietsen rijden over een stalen monorail, voortbewogen door het trappen van de passagiers.
+STR_0585    :Passagiers zitten in stoelparen die onder de baan hangen terwijl ze door kronkelende en scherpe omkeringen gaan.
+STR_0586    :Bootvormige karretjes rijden over achtbaanrails, waardoor ze hellende bochten en diepe afdalingen kunnen maken, waarna ze in bakken water neerplonzen en rustig een stukje kunnen varen.
+STR_0587    :Na een enerverende pneumatische lancering rijdt de trein met hogere snelheid over een verticale baan, over de top, en vervolgens over de andere kant weer naar beneden om terug te keren naar het station.
+STR_0588    :Losse karretjes hangen onder een zigzaggende baan met haarspeldbochten en scherpe afdalingen.
 STR_0589    :
-STR_0590    :
-STR_0591    :
+STR_0590    :Passagiers rijden over een onderwaterparcours in onderzeeërs.
+STR_0591    :Boten in de vorm van een vlot varen rustig door een waterbak.
 STR_0592    :
 STR_0593    :
 STR_0594    :
 STR_0595    :
 STR_0596    :
 STR_0597    :
-STR_0598    :
-STR_0599    :Een compacte achtbaan met individuele karretjes en steile, kronkelende afdalingen
-STR_0600    :
+STR_0598    :Een omgekeerde achtbaantrein wordt het station uit gelanceerd en gaat een verticale kronkelende baan op, waarna deze terugzakt, door het station heengaat en achteruit een ander stuk verticale baan opgaat.
+STR_0599    :Een compacte achtbaan met individuele karretjes en steile, kronkelende afdalingen.
+STR_0600    :Aangedreven mijntreinen rijden over een soepele en kronkelende baan.
 STR_0601    :
-STR_0602    :
+STR_0602    :Achtbaantreinen worden door lineaire inductiemotoren het station uit gelanceerd en razen door een kronkelende baan die vaak over de kop gaat.
 STR_0603    :Bezoeker {INT32}
 STR_0604    :Bezoeker {INT32}
 STR_0605    :Bezoeker {INT32}
@@ -836,16 +836,17 @@ STR_0834    :{SMALLFONT}{BLACK}Schijf- en spelopties
 STR_0835    :Kan het spel niet initialiseren
 STR_0836    :Kan het spel niet in geminimaliseerde toestand starten
 STR_0837    :Kan het grafisch systeem niet starten
-STR_0838    :CD-code {INT32} is niet geldig voor deze CD van RollerCoaster Tycoon 2!{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Deïnstalleer RollerCoaster Tycoon 2% en installeer het opnieuw met de correcte CD-code
+STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-STR_0841    :Bureaubladvenster
-STR_0842    :640x480 (volledig scherm)
-STR_0843    :800x600 (volledig scherm)
-STR_0844    :1024x768 (volledig scherm)
-STR_0845    :1152x864 (volledig scherm)
-STR_0846    :1280x1024 (volledig scherm)
-STR_0847    :Over 'RollerCoaster Tycoon 2'
+# The following six strings were used for display resolutions, but have been replaced.
+STR_0841    :<not used anymore>
+STR_0842    :<not used anymore>
+STR_0843    :<not used anymore>
+STR_0844    :<not used anymore>
+STR_0845    :<not used anymore>
+STR_0846    :<not used anymore>
+STR_0847    :Over 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Versie 2.01.028
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, alle rechten voorbehouden
@@ -894,7 +895,7 @@ STR_0892    :Screenshot opgeslagen als '{STRINGID}'
 STR_0893    :Screenshot maken mislukt!
 STR_0894    :"Landscape data area" zit vol!
 STR_0895    :Kan niet gedeeltelijk onder en boven de grond bouwen
-STR_0896    :{POP16}{POP16}{STRINGID} Constructie
+STR_0896    :{POP16}{POP16}Constructie {STRINGID} 
 STR_0897    :Richting
 STR_0898    :{SMALLFONT}{BLACK}Bocht naar links
 STR_0899    :{SMALLFONT}{BLACK}Bocht naar rechts
@@ -903,7 +904,7 @@ STR_0901    :{SMALLFONT}{BLACK}Bocht naar rechts (kleine straal)
 STR_0902    :{SMALLFONT}{BLACK}Bocht naar links (zeer kleine straal)
 STR_0903    :{SMALLFONT}{BLACK}Bocht naar rechts (zeer kleine straal)
 STR_0904    :{SMALLFONT}{BLACK}Bocht naar links (grote straal)
-STR_0905    :{SMALLFONT}{BLACK}Bocht naar rechts (straal)
+STR_0905    :{SMALLFONT}{BLACK}Bocht naar rechts (grote straal)
 STR_0906    :{SMALLFONT}{BLACK}Recht stuk
 STR_0907    :Helling
 STR_0908    :Roll/Banking
@@ -1041,10 +1042,10 @@ STR_1039    :Nieuw baanontwerp installeren
 STR_1040    :Spel opslaan
 STR_1041    :Scenario opslaan
 STR_1042    :Landschap opslaan
-STR_1043    :Opgeslagen spel van RollerCoaster Tycoon 2
-STR_1044    :Scenario voor RollerCoaster Tycoon 2
-STR_1045    :Landschap voor RollerCoaster Tycoon 2
-STR_1046    :Baanontwerp voor RollerCoaster Tycoon 2
+STR_1043    :Opgeslagen spel van OpenRCT2
+STR_1044    :Scenario voor OpenRCT2
+STR_1045    :Landschap voor OpenRCT2
+STR_1046    :Baanontwerp voor OpenRCT2
 STR_1047    :Spel opslaan mislukt!
 STR_1048    :Scenario opslaan mislukt!
 STR_1049    :Landschap opslaan mislukt!
@@ -1170,7 +1171,7 @@ STR_1168    :Opties
 STR_1169    :(Geen)
 STR_1170    :{STRING}
 STR_1171    :{RED}Gesloten - - 
-STR_1172    :{YELLLOW}{STRINGID} - - 
+STR_1172    :{YELLOW}{STRINGID} - - 
 STR_1173    :{SMALLFONT}{BLACK}Voetpaden en wachtrijen aanleggen
 STR_1174    :Lichtkrant in de weg
 STR_1175    :Kan dit niet op hellend voetpad neerzetten
@@ -1535,7 +1536,7 @@ STR_1533    :{SMALLFONT}{OPENQUOTES}Deze popcorn van {STRINGID} is erg goedkoop{
 STR_1534    :{SMALLFONT}{OPENQUOTES}Deze hotdog van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1535    :{SMALLFONT}{OPENQUOTES}Deze tentakel van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1536    :{SMALLFONT}{OPENQUOTES}Deze hoed van {STRINGID} is erg goedkoop{ENDQUOTES}
-STR_1537    :{SMALLFONT}{OPENQUOTES}Deze toffeeappel van {STRINGID} is erg goedkoop{ENDQUOTES}
+STR_1537    :{SMALLFONT}{OPENQUOTES}Deze gevulde appel van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1538    :{SMALLFONT}{OPENQUOTES}Dit T-shirt van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1539    :{SMALLFONT}{OPENQUOTES}Deze donut van {STRINGID} is erg goedkoop{ENDQUOTES}
 STR_1540    :{SMALLFONT}{OPENQUOTES}Deze koffie van {STRINGID} is erg goedkoop{ENDQUOTES}
@@ -1569,7 +1570,7 @@ STR_1567    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor popcorn van {STRI
 STR_1568    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een hotdog van {STRINGID}{ENDQUOTES}
 STR_1569    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een tentakel van {STRINGID}{ENDQUOTES}
 STR_1570    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een hoed van {STRINGID}{ENDQUOTES}
-STR_1571    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een toffeeappel van {STRINGID}{ENDQUOTES}
+STR_1571    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een gevulde appel van {STRINGID}{ENDQUOTES}
 STR_1572    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een T-shirt van {STRINGID}{ENDQUOTES}
 STR_1573    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor een donut van {STRINGID}{ENDQUOTES}
 STR_1574    :{SMALLFONT}{OPENQUOTES}Zoveel betaal ik niet voor koffie van {STRINGID}{ENDQUOTES}
@@ -1890,8 +1891,10 @@ STR_1888    :{WINDOW_COLOUR_2}Tijd sinds laatste inspectie: {BLACK}meer dan 4 uu
 STR_1889    :{WINDOW_COLOUR_2}Stilstandtijd: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Selecteer hoe vaak een monteur deze attractie moet inspecteren
 STR_1891    :Nog geen {STRINGID} in het park!
-STR_1892    :RollerCoaster Tycoon 2
-STR_1893    :Voer je CD van RollerCoaster Tycoon 2 in het volgende station in:
+# The following two strings were used to display an error when the disc was missing.
+# This has been replaced in OpenRCT2.
+STR_1892    :<not used anymore>
+STR_1893    :<not used anymore>
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} verkocht: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Nieuwe attractie bouwen
 STR_1896    :{WINDOW_COLOUR_2}Uitgaven/Inkomsten
@@ -1977,7 +1980,7 @@ STR_1975    :{WINDOW_COLOUR_2}Prijs popcorn:
 STR_1976    :{WINDOW_COLOUR_2}Prijs hotdog:
 STR_1977    :{WINDOW_COLOUR_2}Prijs tentakel:
 STR_1978    :{WINDOW_COLOUR_2}Prijs hoed:
-STR_1979    :{WINDOW_COLOUR_2}Prijs toffeeappel:
+STR_1979    :{WINDOW_COLOUR_2}Prijs gevulde appel:
 STR_1980    :{WINDOW_COLOUR_2}Prijs T-shirt:
 STR_1981    :{WINDOW_COLOUR_2}Prijs donut:
 STR_1982    :{WINDOW_COLOUR_2}Prijs koffie:
@@ -2005,7 +2008,7 @@ STR_2003    :Popcorn
 STR_2004    :Hotdog
 STR_2005    :Tentakel
 STR_2006    :Hoed
-STR_2007    :Toffeeappel
+STR_2007    :Gevulde appel
 STR_2008    :T-shirt
 STR_2009    :Donut
 STR_2010    :Koffie
@@ -2033,7 +2036,7 @@ STR_2031    :Bakjes popcorn
 STR_2032    :Hotdogs
 STR_2033    :Tentakels
 STR_2034    :Hoeden
-STR_2035    :Toffeeappels
+STR_2035    :Gevulde appels
 STR_2036    :T-shirts
 STR_2037    :Donuts
 STR_2038    :Kopjes koffie
@@ -2061,7 +2064,7 @@ STR_2059    :popcorn
 STR_2060    :een hotdog
 STR_2061    :een tentakel
 STR_2062    :een hoed
-STR_2063    :een toffeeappel
+STR_2063    :een gevulde appel
 STR_2064    :een T-shirt
 STR_2065    :een donut
 STR_2066    :een kop koffie
@@ -2089,7 +2092,7 @@ STR_2087    :Popcorn
 STR_2088    :Hotdog
 STR_2089    :Tentakel
 STR_2090    :Hoed van {OPENQUOTES}{STRINGID}{ENDQUOTES}
-STR_2091    :Toffeeappel
+STR_2091    :Gevulde appel
 STR_2092    :T-shirt van {OPENQUOTES}{STRINGID}{ENDQUOTES}
 STR_2093    :Donut
 STR_2094    :Koffie
@@ -2215,7 +2218,7 @@ STR_2213    :{SMALLFONT}{BLACK}Toon lijst van entertainers in het park
 STR_2214    :Bouwen is niet mogelijk wanneer het spel is gepauzeerd!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}F
+STR_2217    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}F
 STR_2218    :{RED}{STRINGID} van {STRINGID} is nog niet teruggekeerd naar de opstapplaats ({STRINGID})!{NEWLINE}Controleer of het is vastgelopen of stil komen te staan
 STR_2219    :{RED}{COMMA16} personen zijn om het leven gekomen bij een ongeluk in {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Parkwaardering: {BLACK}{COMMA16}
@@ -2288,10 +2291,10 @@ STR_2286    :Ontwerpen
 STR_2287    :Ontwerp voltooien
 STR_2288    :Onbekend
 STR_2289    :{STRINGID} {STRINGID}
-STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
+STR_2290    :<not used anymore>
 STR_2291    :Selecteer een scenario voor een nieuw spel
 STR_2292    :{WINDOW_COLOUR_2}Bezochte attracties:
-STR_2293    :{BLACK} Geen
+STR_2293    :{BLACK} Niets
 STR_2294    :{SMALLFONT}{BLACK}Bovenkant land aanpassen
 STR_2295    :{SMALLFONT}{BLACK}Zijkant land aanpassen
 STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} betaald voor entree
@@ -2315,10 +2318,10 @@ STR_2313    :{WINDOW_COLOUR_2}Misselijkheidswaarde: {BLACK}{COMMA2DP32} (ongevee
 STR_2314    :{WINDOW_COLOUR_2}Lengte: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kosten: {BLACK}ongeveer {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Vereiste ruimte: {BLACK}{COMMA16} x {COMMA16} blokken
-STR_2317    :{WINDOW_COLOUR_2}Geluidskwaliteit:
-STR_2318    :Laag
-STR_2319    :Gemiddeld
-STR_2320    :Hoog
+STR_2317    :<not used anymore>
+STR_2318    :<not used anymore>
+STR_2319    :<not used anymore>
+STR_2320    :<not used anymore>
 STR_2321    :{WINDOW_COLOUR_2}Aantal attracties: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Werknemers: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Parkgrootte: {BLACK}{COMMA32}m{SQUARED}
@@ -2365,7 +2368,7 @@ STR_2363    :Raster weergeven op landschap
 STR_2364    :{SMALLFONT}{BLACK}Rasterlijnen op land aan- of uitzetten
 STR_2365    :De bank wil je lening niet verhogen!
 STR_2366    :Celsius ({DEGREE}C)
-STR_2367    :Fahrenheit (F)
+STR_2367    :Fahrenheit ({DEGREE}F)
 STR_2368    :Geen
 STR_2369    :Laag
 STR_2370    :Gemiddeld
@@ -2434,13 +2437,13 @@ STR_2432    :{BLACK}Bonnen voor 50% korting op entree voor {STRINGID}
 STR_2433    :{BLACK}Bonnen voor gratis {STRINGID}
 STR_2434    :{BLACK}Advertentiecampagne voor {STRINGID}
 STR_2435    :{BLACK}Advertentiecampagne voor {STRINGID}
-STR_2436    :1 week
-STR_2437    :2 weken
-STR_2438    :3 weken
-STR_2439    :4 weken
-STR_2440    :5 weken
-STR_2441    :6 weken
-STR_2442    :{BLACK}({STRINGID} resterend)
+STR_2436    :<not used anymore>
+STR_2437    :<not used anymore>
+STR_2438    :<not used anymore>
+STR_2439    :<not used anymore>
+STR_2440    :<not used anymore>
+STR_2441    :<not used anymore>
+STR_2442    :<not used anymore>
 STR_2443    :{WINDOW_COLOUR_2}Kosten per week: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Totale kosten: {BLACK}{CURRENCY2DP}
 STR_2445    :Start deze marketingcampagne
@@ -2679,10 +2682,10 @@ STR_2677    :???
 STR_2678    :???
 STR_2679    :???
 STR_2680    :Alle onderzoeken zijn voltooid
-STR_2681    :{MEDIUMFONT}{BLACK}Krijg 5.000 extra geld
-STR_2682    :{MEDIUMFONT}{BLACK}Wissel tussen betaalde en gratis entree
-STR_2683    :{MEDIUMFONT}{BLACK}Alle bezoekers hebben een maximale tevredenheid
-STR_2684    :{MEDIUMFONT}{BLACK}Er arriveert een grote groep bezoekers
+STR_2681    :{MEDIUMFONT}{BLACK}Verhoog je saldo met {CURRENCY}
+STR_2682    :<not used anymore>
+STR_2683    :<not used anymore>
+STR_2684    :{SMALLFONT}{BLACK}Er arriveert een grote groep bezoekers
 STR_2685    :Parameters voor Simplex noise
 STR_2686    :Minimum:
 STR_2687    :Maximum:
@@ -2699,11 +2702,11 @@ STR_2697    :???
 STR_2698    :???
 STR_2699    :???
 STR_2700    :Automatisch opslaan:
-STR_2701    :Elke week
-STR_2702    :Elke 2 weken
-STR_2703    :Elke maand
-STR_2704    :Elke 4 maanden
-STR_2705    :Elk jaar
+STR_2701    :Elke minuut
+STR_2702    :Elke 5 minuten
+STR_2703    :Elke 15 minuten
+STR_2704    :Elke 30 minuten
+STR_2705    :Elk uur
 STR_2706    :Nooit
 STR_2707    :Open nieuw scherm
 STR_2708    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} wilt vervangen?
@@ -2716,8 +2719,8 @@ STR_2714    :-
 STR_2715    :.
 STR_2716    :/
 STR_2717    :'
-STR_2718    :(één map omhoog)
-STR_2719    :(nieuw bestand)
+STR_2718    :Eén map omhoog
+STR_2719    :Nieuw bestand
 STR_2720    :{UINT16}s
 STR_2721    :{UINT16}s
 STR_2722    :{UINT16}m {UINT16}s
@@ -2754,15 +2757,15 @@ STR_2752    :Onkruid weg
 STR_2753    :Gras maaien
 STR_2754    :Bloemen water geven
 STR_2755    :Vandalisme repareren
-STR_2756    :Afval op paden weghalen
+STR_2756    :Afval verwijderen
 STR_2757    :Mooi weer
 STR_2758    :Regen
 STR_2759    :Hoogtes op nul
-STR_2760    :+5000 geld
-STR_2761    :Betaalde entree
-STR_2762    :Betalen per rit
+STR_2760    :+{CURRENCY}
+STR_2761    :<not used anymore>
+STR_2762    :<not used anymore>
 STR_2763    :???
-STR_2764    :Tevreden gasten
+STR_2764    :<not used anymore>
 STR_2765    :Grote groep
 STR_2766    :Win scenario
 STR_2767    :Weer vastzetten
@@ -2779,7 +2782,7 @@ STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Kijkvenster {COMMA16}
 STR_2780    :Extra kijkvenster
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
+STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Sneltoets wijzigen
@@ -2857,7 +2860,7 @@ STR_2855    :{RED}{STRINGID} heeft geen pad vanaf de uitgang!{NEWLINE}Bouw een p
 STR_2856    :{WINDOW_COLOUR_2}Tutorial
 STR_2857    :{WINDOW_COLOUR_2}(Druk op een toets of muisknop om de controle over te nemen)
 STR_2858    :Kan marketingcampagne niet starten...
-STR_2859    :RollerCoaster Tycoon 2 draait al
+STR_2859    :OpenRCT2 draait al
 STR_2860    :Credits voor Infogrames Interactive...
 STR_2861    :{WINDOW_COLOUR_2}In licentie geven aan Infogrames Interactive Inc.
 STR_2862    :Muziekdankwoord...
@@ -2967,8 +2970,8 @@ STR_2965    :{WINDOW_COLOUR_2}
 STR_2966    :
 STR_2967    :
 STR_2968    :
-STR_2969    :Het gebruik van dit product is onderhevig aan de bepalingen in de gebruikersovereenkomst
-STR_2970    :die te raadplegen is in de {OPENQUOTES}ReadMe{ENDQUOTES} of de handleiding.
+STR_2969    :<not used anymore>
+STR_2970    :<not used anymore>
 STR_2971    :Standaard kleurenschema
 STR_2972    :Alternatief kleurenschema 1
 STR_2973    :Alternatief kleurenschema 2
@@ -3158,8 +3161,8 @@ STR_3156    :
 STR_3157    :kaart
 STR_3158    :grafiek
 STR_3159    :lijst
-STR_3160    :RollerCoaster Tycoon 2: Eerste start...
-STR_3161    :RollerCoaster Tycoon 2: Objectbestanden controleren...
+STR_3160    :<not used anymore>
+STR_3161    :<not used anymore>
 STR_3162    :Kan niet voldoende geheugen toewijzen
 STR_3163    :Nieuwe data installeren: 
 STR_3164    :{BLACK}{COMMA16} geselecteerd (maximum: {COMMA16})
@@ -3168,25 +3171,25 @@ STR_3166    :{BLACK}(ID:
 STR_3167    :{WINDOW_COLOUR_2}Bevat {BLACK}{COMMA16} objecten
 STR_3168    :{WINDOW_COLOUR_2}Tekst: {BLACK}{STRINGID}
 STR_3169    :Data voor de volgende objecten niet gevonden: 
-STR_3170    :Niet genoeg ruimte voor graphics
-STR_3171    :Te veel objecten van dit type geselecteerd
+STR_3170    :Niet genoeg ruimte voor graphics.
+STR_3171    :er zijn teveel objecten van dit type geselecteerd.
 STR_3172    :De volgende objecten moeten eerst geselecteerd worden:
-STR_3173    :Dit object is momenteel in gebruik
-STR_3174    :Een ander object is afhankelijk van dit object
-STR_3175    :Dit object is altijd benodigd
-STR_3176    :Kan object niet selecteren
-STR_3177    :Kan object niet deselecteren
-STR_3178    :Er moet minstens één voetpad worden geselecteerd
-STR_3179    :Er moet minstens één attractie worden geselecteerd
-STR_3180    :Ongeldige selectie van objecten
+STR_3173    :dit object is momenteel in gebruik.
+STR_3174    :een ander object is afhankelijk van dit object.
+STR_3175    :dit object is altijd benodigd.
+STR_3176    :Kan object niet selecteren:
+STR_3177    :Kan object niet deselecteren:
+STR_3178    :er moet minstens één voetpad worden geselecteerd.
+STR_3179    :er moet minstens één attractie worden geselecteerd.
+STR_3180    :Ongeldige selectie van objecten:
 STR_3181    :Objectselectie - {STRINGID}
-STR_3182    :Er moet een parkingang worden geselecteerd
-STR_3183    :Er moet een watertype worden geselecteerd
+STR_3182    :er moet een parkingang worden geselecteerd.
+STR_3183    :er moet een watertype worden geselecteerd.
 STR_3184    :Attracties/voertuigen
 STR_3185    :Klein decor
 STR_3186    :Groot decor
 STR_3187    :Muren/hekken
-STR_3188    :Borden voor paden
+STR_3188    :Lichtkranten
 STR_3189    :Voetpaden
 STR_3190    :Extra's voor paden
 STR_3191    :Decorgroepen
@@ -3335,7 +3338,7 @@ STR_3333    :Plug-inobjecten meeleveren in opgeslagen spellen
 STR_3334    :{SMALLFONT}{BLACK}Selecteer of toegevoegde (niet-standaard) objecten in opgeslagen spellen en scenario's moeten worden meegeleverd, zodat ze geopend kunnen worden door iemand die deze objecten nog niet heeft
 STR_3335    :Achtbaanontwerper - Attractietypes en -voertuigen selecteren
 STR_3336    :Baanontwerpbeheer - Attractietype selecteren
-STR_3337    :Six Flags-park
+STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Eigen ontwerp
 STR_3339    :{BLACK}{COMMA16} ontwerp beschikbaar, of maak een eigen ontwerp
 STR_3340    :{BLACK}{COMMA16} ontwerpen beschikbaar, of maak een eigen ontwerp
@@ -3346,7 +3349,7 @@ STR_3344    :Achtbaanontwerper
 STR_3345    :Baanontwerpbeheer
 STR_3346    :Kan baanontwerp niet opslaan
 STR_3347    :Attractie is te groot, bevat teveel elementen of het decor is te ver verspreid
-STR_3348    :Naam wijzigen
+STR_3348    :Hernoemen
 STR_3349    :Verwijderen
 STR_3350    :Naam baanontwerp
 STR_3351    :Voer een nieuwe naam in voor dit baanontwerp:
@@ -3360,8 +3363,8 @@ STR_3358    :Kan het baanontwerp niet verwijderen...
 STR_3359    :{BLACK}Geen baanontwerpen van dit type
 STR_3360    :Waarschuwing!
 STR_3361    :Te veel baanontwerpen van dit type; sommige staan niet in de lijst
-STR_3362    :Mixen via softwarebuffer forceren
-STR_3363    :{SMALLFONT}{BLACK}Selecteer deze optie om de prestaties te verbeteren als het spel vertraagt bij het afspelen van geluiden of als er ruis hoorbaar is
+STR_3362    :<not used anymore>
+STR_3363    :<not used anymore>
 STR_3364    :Meer opties
 STR_3365    :{SMALLFONT}{BLACK}Maakt naast selectie van decorgroepen ook selectie van losse items mogelijk
 STR_3366    :{BLACK}= Attractie
@@ -3447,11 +3450,11 @@ STR_3445    :Werkgebied instellen
 STR_3446    :Werkgebied wissen
 
 #Start van OpenRCT2-indices
-STR_5120    :'Financiën'-knop in de werkbalk tonen
-STR_5121    :'Onderzoek'-knop in de werkbalk tonen
-STR_5122    :Alle voertuigen met hetzelfde baan- of attractietype tonen
+STR_5120    :Financiën
+STR_5121    :Onderzoek
+STR_5122    :Attracties op baantype sorteren
 STR_5123    :Attr. vernieuwen
-STR_5124    :Six Flags weg
+STR_5124    :<not used anymore>
 STR_5125    :Afbreekbaar maken
 STR_5126    :Willekeurige titelmuziek
 STR_5127    :{SMALLFONT}{BLACK}Landtype i.p.v. landhoogte aanpassen bij slepen
@@ -3474,7 +3477,7 @@ STR_5143    :Vlot
 STR_5144    :Hard
 STR_5145    :Turbo
 STR_5146    :Nitro
-STR_5147    :'Cheats'-knop in de werkbalk tonen
+STR_5147    :Cheats
 STR_5148    :{SMALLFONT}{BLACK}Spelsnelheid veranderen
 STR_5149    :{SMALLFONT}{BLACK}Het cheatsvenster openen
 STR_5150    :Debugging-hulpmiddelen inschakelen
@@ -3489,33 +3492,33 @@ STR_5156    :{SMALLFONT}{BLACK}Maakt het mogelijk om de meeste attractietypes te
 STR_5157    :Alle prijzen ontgrendelen
 STR_5158    :Terug naar het hoofdmenu
 STR_5159    :OpenRCT2 afsluiten
-STR_5160    :{MONTH} {STRINGID}, jaar {COMMA16}
+STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, jaar {POP16}{COMMA16}
 STR_5161    :Datumnotatie:
 STR_5162    :Dag/maand/jaar
 STR_5163    :Maand/dag/jaar
 STR_5164    :Twitch-kanaalnaam
 STR_5165    :Bezoekers namen van volgers geven
-STR_5166    :Geeft bezoekers namen van gebruikers die het Twitch-kanaal volgen.
-STR_5167    :Bezoekers met Twitch-volgersnamen volgen in berichtengebied
-STR_5168    :Zet het bezoekersvolgsysteem aan voor bezoekers die naar Twitch-volgers zijn genoemd.
-STR_5169    :Bezoekers namen van gebruikers in de Twitch-chat geven
-STR_5170    :Geeft bezoekers namen van gebruikers in de Twitch-chat.
-STR_5171    :Bezoekers met Twitch-chatnamen volgen in berichtengebied
-STR_5172    :Zet het bezoekersvolgsysteem aan voor bezoekers die naar Twitch-chatters zijn genoemd.
+STR_5166    :{SMALLFONT}{BLACK}Geeft bezoekers namen van gebruikers die het Twitch-kanaal volgen.
+STR_5167    :Bez. met Twitch-volgersnamen volgen in berichtengeb.
+STR_5168    :{SMALLFONT}{BLACK}Zet het bezoekersvolgsysteem aan voor bezoekers die naar Twitch-volgers zijn genoemd.
+STR_5169    :Bez. namen van gebruikers in de Twitch-chat geven
+STR_5170    :{SMALLFONT}{BLACK}Geeft bezoekers namen van gebruikers in de Twitch-chat.
+STR_5171    :Bez. met Twitch-chatnamen volgen in berichtengebied
+STR_5172    :{SMALLFONT}{BLACK}Zet het bezoekersvolgsysteem aan voor bezoekers die naar Twitch-chatters zijn genoemd.
 STR_5173    :Twitch-chat als nieuws weergeven
-STR_5174    :Zal chatberichten op Twitch die beginnen met !news in het berichtengebied tonen.
+STR_5174    :{SMALLFONT}{BLACK}Zal chatberichten op Twitch die beginnen met !news in het berichtengebied tonen.
 STR_5175    :Voer de naam van je Twitch-kanaal in
 STR_5176    :Twitch-integratie inschakelen
 STR_5177    :Schermmodus:
-STR_5178    :{SMALLFONT}{BLACK}Show financial cheats
-STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
-STR_5180    :{SMALLFONT}{BLACK}Show park cheats
-STR_5181    :{SMALLFONT}{BLACK}Show ride cheats
+STR_5178    :{SMALLFONT}{BLACK}Cheats voor financiën
+STR_5179    :{SMALLFONT}{BLACK}Cheats voor gasten
+STR_5180    :{SMALLFONT}{BLACK}Cheats voor park
+STR_5181    :{SMALLFONT}{BLACK}Cheats voor attracties
 STR_5182    :{INT32}
 STR_5183    :Basishoogte
-STR_5184    :Enter base height between {COMMA16} and {COMMA16}
+STR_5184    :Voer een basishoogte tussen {COMMA16} en {COMMA16} in
 STR_5185    :Waterniveau
-STR_5186    :Enter water level between {COMMA16} and {COMMA16} 
+STR_5186    :Voer een waterniveau tussen {COMMA16} en {COMMA16} in
 STR_5187    :Financiën
 STR_5188    :Nieuwe advertentiecampagne
 STR_5189    :Onderzoek
@@ -3570,9 +3573,9 @@ STR_5237    :Palet:
 STR_5238    :Huidig thema:
 STR_5239    :Kopiëren
 STR_5240    :Voer een naam in voor dit thema
-STR_5241    :Kan dit thema niet wijzigen
-STR_5242    :Themanaam bestaat al
-STR_5243    :Er zijn ongeldige tekens gebruikt
+STR_5241    :Kan dit thema niet wijzigen.
+STR_5242    :Themanaam bestaat al.
+STR_5243    :Er zijn ongeldige tekens gebruikt.
 STR_5244    :Thema's
 STR_5245    :Bovenste werkbalk
 STR_5246    :Onderste werkbalk
@@ -3583,9 +3586,9 @@ STR_5250    :Afsluitknop titelscherm
 STR_5251    :Optiesknop titelscherm
 STR_5252    :Scenarioselectie titelscherm
 STR_5253    :Parkinformatie
-STR_5254    :Misselijk maken
-STR_5255    :{MEDIUMFONT}{BLACK}Zal alle bezoekers misselijk maken
-STR_5256    :Een nieuw thema aanmaken om wijzigingen aan te brengen
+STR_5254    :Aanmaken
+STR_5255    :{SMALLFONT}{BLACK}Begint een nieuwe, lege titelpresentatie
+STR_5256    :Maak een nieuw thema aan om wijzigingen aan te brengen.
 STR_5257    :{SMALLFONT}{BLACK}Een nieuw thema aanmaken dat is gebaseerd op het huidige
 STR_5258    :{SMALLFONT}{BLACK}Het huidige thema verwijderen
 STR_5259    :{SMALLFONT}{BLACK}Het huidige thema hernoemen
@@ -3598,7 +3601,7 @@ STR_5265    :{SMALLFONT}{BLACK}Selecteer uit welke bronnen objecten zichtbaar zi
 STR_5266    :{SMALLFONT}{BLACK}Weergave
 STR_5267    :{SMALLFONT}{BLACK}Landinstellingen
 STR_5268    :{SMALLFONT}{BLACK}Audio
-STR_5269    :{SMALLFONT}{BLACK}Bediening
+STR_5269    :{SMALLFONT}{BLACK}Bediening en interface
 STR_5270    :{SMALLFONT}{BLACK}Overig
 STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Klein decor
@@ -3615,7 +3618,7 @@ STR_5282    :Attracties openen/sluiten via RCT1-stoplichten
 STR_5283    :Park openen/sluiten via RCT1-stoplichten
 STR_5284    :Scenarioselectie-lettertype in RCT1-stijl
 STR_5285    :KABOEM!
-STR_5286    :{MEDIUMFONT}{BLACK}Laat alle gasten exploderen
+STR_5286    :{SMALLFONT}{BLACK}Laat sommige gasten exploderen
 STR_5287    :Attractie is al defect
 STR_5288    :Attractie is gesloten
 STR_5289    :Deze attractie kan niet defect raken
@@ -3668,9 +3671,2347 @@ STR_5335    :Attractie-ingang
 STR_5336    :Attractie-uitgang
 STR_5337    :Parkingang
 STR_5338    :Elementtype
-STR_5339    :Hoogte onderkant
-STR_5340    :Hoogte bovenkant
+STR_5339    :Hoogte onderk.
+STR_5340    :Hoogte bovenk.
 STR_5341    :Eigenschappen
 STR_5342    :Kies een vakje op de kaart
 STR_5343    :Werknemers automatisch plaatsen
 STR_5344    :Wijzigingsoverzicht
+STR_5345    :Cheats voor geld
+STR_5346    :Cheats voor bezoekers
+STR_5347    :Cheats voor het park
+STR_5348    :Cheats voor attracties
+STR_5349    :{SMALLFONT}{BLACK}Alle attracties
+STR_5350    :Max
+STR_5351    :Min
+STR_5352    :{BLACK}Stemming:
+STR_5353    :{BLACK}Energie:
+STR_5354    :{BLACK}Honger:
+STR_5355    :{BLACK}Dorst:
+STR_5356    :{BLACK}Misselijkh.:
+STR_5357    :{BLACK}Misselijkheidstol.:
+STR_5358    :{BLACK}WC:
+STR_5359    :Bez. verwijderen
+STR_5360    :{SMALLFONT}{BLACK}Verwijdert alle bezoekers van de kaart
+STR_5361    :Geef alle bez.:
+STR_5362    :{BLACK}Zet de voorkeursintensiteit van alle bez. op:
+STR_5363    :Meer dan 1
+STR_5364    :Minder dan 15
+STR_5365    :{BLACK}Snelheid werknemers:
+STR_5366    :Normaal
+STR_5367    :Snel
+STR_5368    :Crashstatus weg
+STR_5369    :Parkparameters...
+STR_5370    :{SMALLFONT}{BLACK}Klik op deze knop om park-{NEWLINE}parameters zoals verboden,{NEWLINE}bezoekersgenerering en geld{NEWLINE}aan te passen.
+STR_5371    :Objectselectie
+STR_5372    :Sleeprichting van rechtermuisknop omkeren
+STR_5373    :Naam {STRINGID}
+STR_5374    :Datum {STRINGID}
+STR_5375    :{UP}
+STR_5376    :{DOWN}
+STR_5377    :{SMALLFONT}{BLACK}Opgeslagen spellen
+STR_5378    :{SMALLFONT}{BLACK}Script
+STR_5379    :{SMALLFONT}{BLACK}Ga naar volgend Wacht-commando
+STR_5380    :{SMALLFONT}{BLACK}Start het afspelen van de titelpresentatie
+STR_5381    :{SMALLFONT}{BLACK}Stopt het afspelen van de titelpresentatie
+STR_5382    :{SMALLFONT}{BLACK}Titelpresentatie herstarten
+STR_5383    :{SMALLFONT}{BLACK}Een nieuwe titelpresentatie aanmaken die is gebaseerd op de huidige
+STR_5384    :{SMALLFONT}{BLACK}Huidige titelpresentatie verwijderen
+STR_5385    :{SMALLFONT}{BLACK}Huidige titelpresentatie hernoemen
+STR_5386    :{SMALLFONT}{BLACK}Nieuw commando invoegen
+STR_5387    :{SMALLFONT}{BLACK}Geselecteerd commando bewerken
+STR_5388    :{SMALLFONT}{BLACK}Geselecteerd commando verwijderen
+STR_5389    :{SMALLFONT}{BLACK}Naar geselecteerd commando titelpresentatie springen
+STR_5390    :{SMALLFONT}{BLACK}Geselecteerd commando naar beneden verplaatsen
+STR_5391    :{SMALLFONT}{BLACK}Geselecteerd commando naar boven verplaatsen
+STR_5392    :{SMALLFONT}{BLACK}Opgeslagen spel aan titelpresentatie toevoegen
+STR_5393    :{SMALLFONT}{BLACK}Geselecteerd opgeslagen spel uit titelpresentatie verwijderen
+STR_5394    :{SMALLFONT}{BLACK}Opgeslagen spel hernoemen
+STR_5395    :{SMALLFONT}{BLACK}Opgeslagen spel laden
+STR_5396    :{SMALLFONT}{BLACK}Titelpresentatie herladen als ze buiten het spel om is aangepast
+STR_5397    :Kan enkel in het titelscherm worden gebruikt
+STR_5398    :Kan de titelpresentatie niet aanpassen wanneer deze wordt afgespeeld
+STR_5399    :Klik op Stop om verder te gaan met aanpassen
+STR_5400    :Kan deze titelpresentatie niet aanpassen
+STR_5401    :Een nieuwe titelpresentatie aanmaken om wijzigingen aan te brengen
+STR_5402    :Kan titelpresentatie niet laden
+STR_5403    :Er is mogelijk geen Laad- or Wacht-commando of één van de opgeslagen spellen is mogelijk beschadigd
+STR_5404    :Naam bestaat al
+STR_5405    :Voer een naam in voor het opgeslagen spel
+STR_5406    :Voer een naam in voor de titelpresentatie
+STR_5407    :Toevoegen
+STR_5408    :Verwijderen
+STR_5409    :Invoegen
+STR_5410    :Bewerken
+STR_5411    :Herladen
+STR_5412    :Spring naar
+STR_5413    :Laad
+STR_5414    :Laad{MOVE_X}{87}Six Flags Magic Mountain.SC6
+STR_5415    :Laad{MOVE_X}{87}{STRING}
+STR_5416    :Laad{MOVE_X}{87}Geen opgeslagen spel geselecteerd
+STR_5417    :Locatie
+STR_5418    :Locatie{MOVE_X}{87}{COMMA16}   {COMMA16}
+STR_5419    :Draai
+STR_5420    :Draai{MOVE_X}{87}{COMMA16}
+STR_5421    :Zoom
+STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
+STR_5423    :Wacht
+STR_5424    :Wacht{MOVE_X}{87}{COMMA16}
+STR_5425    :Herstarten
+STR_5426    :Einde
+STR_5427    :Coördinaten:
+STR_5428    :Aant. draaiingen tegen de klok:
+STR_5429    :Zoomniveau:
+STR_5430    :Te wachten seconden:
+STR_5431    :Te laden opgeslagen spel:
+STR_5432    :Commando:
+STR_5433    :Titelpresentaties
+STR_5434    :Commandobewerker
+STR_5435    :Opgeslagen spel hernoemen
+STR_5436    :Titelpresentaties bewerken...
+STR_5437    :Geen opgeslagen spel geselecteerd
+STR_5438    :Kan geen wijzigingen aanbrengen wanneer de commandobewerker open is
+STR_5439    :Een Herstart-commando moet worden voorafgegaan door een Wacht-commando van minstens vier seconden.
+STR_5440    :Volledig scherm minimaliseren bij focusverlies
+STR_5441    :{SMALLFONT}{BLACK}Sorteert attracties per baantype,{NEWLINE}zodat achteraf wisselen van treintypes mogelijk{NEWLINE}wordt, zoals in RCT1.
+STR_5442    :Parkwaardering forc.:
+STR_5443    :Snelheid{MOVE_X}{87}{STRINGID}
+STR_5444    :Snelheid:
+STR_5445    :Snelheid
+STR_5446    :Ophalen
+STR_5447    :Type {STRINGID}
+STR_5448    :Attractie/voertuig {STRINGID}
+STR_5449    :Spelsnelheid verlagen
+STR_5450    :Spelsnelheid verhogen
+STR_5451    :Cheatsvenster openen
+STR_5452    :Zichtbaarheid werkbalken schakelen
+STR_5453    :Andere attractie selecteren
+STR_5454    :FPS-limiet opheffen
+STR_5455    :Zandboxmodus inschakelen
+STR_5456    :Hoogtecontroles uitschakelen
+STR_5457    :Ondersteuningslimieten uitschakelen
+STR_5458    :Met de klok mee draaien
+STR_5459    :Tegen de klok in draaien
+STR_5460    :Beeld tegen de klok in draaien
+STR_5461    :Bezoekersparameters aanpassen
+STR_5462    :{CURRENCY}
+STR_5463    :Doel: Plezier hebben!
+STR_5464    :Algemeen
+STR_5465    :Weer
+STR_5466    :Werknemers
+STR_5467    :ALT + 
+STR_5468    :Recente berichten
+STR_5469    :Kaart naar boven scrollen
+STR_5470    :Kaart naar links scrollen
+STR_5471    :Kaart naar beneden scrollen
+STR_5472    :Kaart naar rechts scrollen
+STR_5473    :Dag-nachtcyclus
+STR_5474    :Teksten op lichtkranten in hoofdletters tonen
+STR_5475    :{COMMA16} weken
+STR_5476    :Hardware
+STR_5477    :Kaartrendering
+STR_5478    :Bediening
+STR_5479    :Werkbalk
+STR_5480    :Knoppen in de werkbalk tonen voor:
+STR_5481    :Thema's
+STR_5482    :{WINDOW_COLOUR_2}Tijd sinds laatste inspectie: {BLACK}1 minuut
+STR_5483    :{BLACK}({COMMA16} weken resterend)
+STR_5484    :{BLACK}({COMMA16} week resterend)
+STR_5485    :{SMALLFONT}{STRING}
+STR_5486    :{BLACK}{COMMA16}
+STR_5487    :{SMALLFONT}{BLACK}Recente berichten tonen
+STR_5488    :Geen ingang (alleen in OpenRCT2!)
+STR_5489    :{SMALLFONT}{BLACK}Enkel bezoekers die gevolgd worden weergeven
+STR_5490    :Geluid dempen bij focusverlies
+STR_5491    :Uitvindingenlijst
+STR_5492    :Scenario-opties
+STR_5493    :Bericht verzenden
+STR_5494    :<not used anymore>
+STR_5495    :Spelerslijst
+STR_5496    :Speler:
+STR_5497    :Ping:
+STR_5498    :Serverlijst
+STR_5499    :Spelersnaam:
+STR_5500    :Server toevoegen
+STR_5501    :Server starten
+STR_5502    :Multiplayer
+STR_5503    :Hostnaam of IP-adres invoeren:
+STR_5504    :{SMALLFONT}{BLACK}Status multiplayer tonen
+STR_5505    :Kan niet met de server verbinden.
+STR_5506    :Bezoekers negeren intensiteit
+STR_5507    :Klusjesmannen standaard gras laten maaien
+STR_5508    :Bestanden met incorrecte checksum toch laden
+STR_5509    :{SMALLFONT}{BLACK}Maakt het mogelijk om scenario's en opgeslagen spellen met een incorrecte checksum te laden, zoals scenario's uit de demo of beschadigde opgeslagen parken.
+STR_5510    :Standaard geluidsapparaat
+STR_5511    :(ONBEKEND)
+STR_5512    :Spel opslaan als...
+STR_5513    :Spel (snel) opslaan
+STR_5514    :Vandalisme uitschakelen
+STR_5515    :{SMALLFONT}{BLACK}Voorkomt dat bezoekers objecten in je park vernielen als ze kwaad zijn
+STR_5516    :{SMALLFONT}{BLACK}Zwart
+STR_5517    :{SMALLFONT}{BLACK}Grijs
+STR_5518    :{SMALLFONT}{BLACK}Wit
+STR_5519    :{SMALLFONT}{BLACK}Donkerpaars
+STR_5520    :{SMALLFONT}{BLACK}Lichtpaars
+STR_5521    :{SMALLFONT}{BLACK}Helder paars
+STR_5522    :{SMALLFONT}{BLACK}Darkblauw
+STR_5523    :{SMALLFONT}{BLACK}Lichtblauw
+STR_5524    :{SMALLFONT}{BLACK}IJzig blauw
+STR_5525    :{SMALLFONT}{BLACK}Donkere waterkleur
+STR_5526    :{SMALLFONT}{BLACK}Lichte waterkleur
+STR_5527    :{SMALLFONT}{BLACK}Verzadigd groen
+STR_5528    :{SMALLFONT}{BLACK}Donkergroen
+STR_5529    :{SMALLFONT}{BLACK}Mosgroen
+STR_5530    :{SMALLFONT}{BLACK}Helder groen
+STR_5531    :{SMALLFONT}{BLACK}Olijfgroen
+STR_5532    :{SMALLFONT}{BLACK}Donker olijfgroen
+STR_5533    :{SMALLFONT}{BLACK}Helder geel
+STR_5534    :{SMALLFONT}{BLACK}Geel
+STR_5535    :{SMALLFONT}{BLACK}Donkergeel
+STR_5536    :{SMALLFONT}{BLACK}Lichtoranje
+STR_5537    :{SMALLFONT}{BLACK}Donkeroranje
+STR_5538    :{SMALLFONT}{BLACK}Lichtbruin
+STR_5539    :{SMALLFONT}{BLACK}Verzadigd bruin
+STR_5540    :{SMALLFONT}{BLACK}Donkerbruin
+STR_5541    :{SMALLFONT}{BLACK}Zalmroze
+STR_5542    :{SMALLFONT}{BLACK}Bordeauxrood
+STR_5543    :{SMALLFONT}{BLACK}Verzadigd rood
+STR_5544    :{SMALLFONT}{BLACK}Helder rood
+STR_5545    :{SMALLFONT}{BLACK}Donkerroze
+STR_5546    :{SMALLFONT}{BLACK}Helder roze
+STR_5547    :{SMALLFONT}{BLACK}Lichtroze
+STR_5548    :Alle bedrijfsmodi tonen
+STR_5549    :Jaar/maand/dag
+STR_5550    :{POP16}{POP16}Jaar {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_5551    :Jaar/dag/maand
+STR_5552    :{POP16}{POP16}Jaar {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
+STR_5553    :Spel pauzeren als de Steam-overlay open staat
+STR_5554    :{SMALLFONT}{BLACK}Overgangen met omringend land gladstrijken
+STR_5555    :Voertuigen van andere baantypen tonen
+STR_5556    :Speler verwijderen
+STR_5557    :Verbinding behouden na desynchronisatie (multiplayer)
+STR_5558    :Om deze instelling van kracht te laten worden is een herstart vereist.
+STR_5559    :Elke 10 min. inspect.
+STR_5560    :{SMALLFONT}{BLACK}Stelt het inspectieinterval van alle attracties in op 'Elke 10 minuten'.
+STR_5561    :Kon taal niet laden
+STR_5562    :WAARSCHUWING:
+STR_5563    :Deze functie is momenteel niet helemaal stabiel, wees voorzichtig.
+STR_5564    :Ongeldig element invoegen
+STR_5565    :{SMALLFONT}{BLACK}Plaatst een ongeldig element boven de andere elementen van dit vakje. Alle elementen die boven dit ongeldige element worden geplaatst worden onzichtbaar.
+STR_5566    :Wachtwoord:
+STR_5567    :Bekendmaken
+STR_5568    :Wachtwoord vereist
+STR_5569    :Deze server vereist een wachtwoord.
+STR_5570    :Lijst verversen
+STR_5571    :Meedoen
+STR_5572    :Toev. aan favorieten
+STR_5573    :Verw. uit favorieten
+STR_5574    :Servernaam:
+STR_5575    :Max. aant. spelers:
+STR_5576    :Poort:
+STR_5577    :Zuid-Koreaanse won (W)
+STR_5578    :Russische roebel (R)
+STR_5579    :Vergrotingsfactor:
+STR_5580    :Tsjechische kroon (Kc)
+
+#############
+# Scenarios #
+#############
+
+## RCT2 Original
+<Alpine Adventures>
+STR_SCNR   :Alpine Adventures
+STR_PARK   :Alpine Adventures
+STR_DTLS   :Maak van een klein skistation in de bergen een amusementspark met een sneeuwthema.
+
+<Amity Airfield>
+STR_SCNR   :Amity Airfield
+STR_PARK   :Amity Airfield
+STR_DTLS   :Bouw een amusementspark met een luchtvaartthema op dit verlaten vliegveld.
+
+<Botany Breakers>
+STR_SCNR   :Botany Breakers
+STR_PARK   :Botany Breakers
+STR_DTLS   :Het is je uitdaging om een zeer winstgevend park te bouwen op dit paradijselijke eiland.
+
+<Bumbly Bazaar>
+STR_SCNR   :Bumbly Bazaar
+STR_PARK   :Bumbly Bazaar
+STR_DTLS   :Beginnend met een klein marktkraampje, is het je uitdaging om de winst van winkels en kraampjes te vergroten door attracties en achtbanen te bouwen en zo meer klanten te trekken.
+
+<Crazy Castle>
+STR_SCNR   :Crazy Castle
+STR_PARK   :Crazy Castle
+STR_DTLS   :Je hebt een groot kasteel geërfd - het is je opdracht er een klein themapark van te maken.
+
+<Dusty Greens>
+STR_SCNR   :Dusty Greens
+STR_PARK   :Dusty Greens
+STR_DTLS   :Dusty Greens ligt aan een snelwegknooppunt in de woestijn, en is een gelegenheid om van een kleine golfbaan een succesvol themapark te maken.
+
+<Electric Fields>
+STR_SCNR   :Electric Fields
+STR_PARK   :Electric Fields
+STR_DTLS   :Je hebt een kleine boerderij geërfd, en het is je uitdaging een klein themapark tussen de velden en de boerderijen te bouwen.
+
+<Extreme Heights>
+STR_SCNR   :Extreme Heights
+STR_PARK   :Extreme Heights
+STR_DTLS   :Vrij van financiële beperkingen, is het je uitdaging om dit woestijnpark uit te breiden om mensen te trekken die de extreemste sensaties zoeken.
+
+<Factory Capers>
+STR_SCNR   :Factory Capers
+STR_PARK   :Factory Capers
+STR_DTLS   :Een verlaten fabriekscomplex is een gelegenheid om een amusementspark met een mechanisch thema te bouwen.
+
+<Fungus Woods>
+STR_SCNR   :Fungus Woods
+STR_PARK   :Fungus Woods
+STR_DTLS   :Beperkt tot uitsluitend de ouderwetse houten attracties, is het je uitdaging om een succesvol themapark in Fungus Woods te bouwen.
+
+<Ghost Town>
+STR_SCNR   :Ghost Town
+STR_PARK   :Ghost Town
+STR_DTLS   :Je wordt aangenomen door een grote keten van amusementsparken en het is je taak een gigantisch park met achtbanen te bouwen rond een verlaten mijnstadje.
+
+<Gravity Gardens>
+STR_SCNR   :Gravity Gardens
+STR_PARK   :Gravity Gardens
+STR_DTLS   :Het is je uitdaging een park met achtbanen in de prachtige Gravity Gardens te bouwen... geen andere attracties, alleen maar achtbanen!
+
+<Infernal Views>
+STR_SCNR   :Infernal Views
+STR_PARK   :Infernal Views
+STR_DTLS   :Een park dat op een hachelijke plaats is gevestigd: op een vulkaanse, naast stromende lava.
+
+<Lucky Lake>
+STR_SCNR   :Lucky Lake
+STR_PARK   :Lucky Lake
+STR_DTLS   :Met een onbeperkt budget, maar gesitueerd op een veeleisende locatie is het een uitdaging dit park uit te breiden en te beheren.
+
+<Rainbow Summit>
+STR_SCNR   :Rainbow Summit
+STR_PARK   :Rainbow Summit
+STR_DTLS   :In dit park, gelegen op een heuvel, zijn hoge bouwwerken verboden. Kun je het park uitbreiden en het succesvol maken?
+
+<Six Flags Belgium>
+STR_SCNR   :Six Flags Belgium
+STR_PARK   :Six Flags Belgium
+STR_DTLS   :Probeer dit Six Flags-park op je eigen manier te beheren en te verbeteren.
+
+<Six Flags Great Adventure>
+STR_SCNR   :Six Flags Great Adventure
+STR_PARK   :Six Flags Great Adventure
+STR_DTLS   :Bouw de ontbrekende Six Flags-attracties, of maak je eigen ontwerpen om het park te verbeteren! Maar vergeet je uiteindelijke doel niet: meer bezoekers naar het park halen!
+
+<Six Flags Holland>
+STR_SCNR   :Six Flags Holland
+STR_PARK   :Six Flags Holland
+STR_DTLS   :Probeer dit Six Flags-park op je eigen manier te beheren en te verbeteren.
+
+<Six Flags Magic Mountain>
+STR_SCNR   :Six Flags Magic Mountain
+STR_PARK   :Six Flags Magic Mountain
+STR_DTLS   :Bouw de ontbrekende Six Flags-attracties, of maak je eigen ontwerpen om het park te verbeteren! Maar vergeet je uiteindelijke doel niet: je lening terugbetalen terwijl je de waarde van je park laat stijgen!
+
+<Six Flags over Texas>
+STR_SCNR   :Six Flags over Texas
+STR_PARK   :Six Flags over Texas
+STR_DTLS   :Bouw de ontbrekende Six Flags-attracties, of maak je eigen ontwerpen om het park te verbeteren! Maar vergeet je uiteindelijke doel niet: meer bezoekers naar het park halen!
+
+<Build your own Six Flags Belgium>
+STR_SCNR   :Bouw je eigen Six Flags Belgium
+STR_PARK   :Six Flags Belgium
+STR_DTLS   :Bouw je eigen versie van dit Europese Six Flags-park.
+
+<Build your own Six Flags Great Adventure>
+STR_SCNR   :Bouw je eigen Six Flags Great Adventure
+STR_PARK   :Six Flags Great Adventure
+STR_DTLS   :Gebruik je ontwerpvaardigheden om dit Six Flags-park opnieuw te maken.
+
+<Build your own Six Flags Holland>
+STR_SCNR   :Bouw je eigen Six Flags Holland
+STR_PARK   :Six Flags Holland
+STR_DTLS   :Bouw je eigen versie van dit Europese Six Flags-park.
+
+<Build your own Six Flags Magic Mountain>
+STR_SCNR   :Bouw je eigen Six Flags Magic Mountain
+STR_PARK   :Six Flags Magic Mountain
+STR_DTLS   :Maak je eigen versie van dit enorme Six Flags-park.
+
+<Build your own Six Flags over Texas>
+STR_SCNR   :Bouw je eigen Six Flags over Texas
+STR_PARK   :Six Flags over Texas
+STR_DTLS   :Maak je eigen versie van dit Six Flags-park.
+
+<Build your own Six Flags Park>
+STR_SCNR   :Bouw je eigen Six Flags-park
+STR_PARK   :Six Flags
+STR_DTLS   :Maak je eigen Six Flags-park, door gebruik te maken van attracties uit andere Six Flags-parken of door zelf nieuwe attracties te ontwerpen.
+
+#TT
+<Mythological - Animatronic Film Set>
+STR_SCNR   :  Mythologie - Animatronic-filmset
+STR_PARK   :Animatronic Antics
+STR_DTLS   :Je moet een bestaand pretpark, gebouwd op een oude filmset, beheren en verbeteren. Bouw een eerbetoon aan de pioniers van de stop-motionanimatie, die de wezens uit de mythologie tot leven brachten op het witte doek.
+
+##################################
+# Rides/attractions / Attracties #
+##################################
+
+# 3D Cinema / 3d-bioscoop
+[C3D]
+STR_NAME   :3D-bioscoop
+STR_DESC   :Bioscoop in een bolvormig gebouw waarin 3D-films worden getoond.
+STR_CPTY   :20 passagiers
+# End of 3D Cinema / 3d-bioscoop
+
+# Mine Ride / Aangedreven mijntrein
+[PMT1]
+STR_NAME   :Aangedreven mijntrein
+STR_DESC   :Aangedreven mijntreinen rijden over een soepele en kronkelende baan.
+STR_CPTY   :4 passagiers per karretje (voorste karretje 2)
+# End of Mine Ride / Aangedreven mijntrein
+
+# Reverse Freefall Coaster / Achterwaartsevrijevalachtbaan
+[REVF1]
+STR_NAME   :Wagen voor achterwaartse vrije val
+STR_DESC   :Grote wagen voor de achterwaartstevrijevalachtbaan.
+STR_CPTY   :8 passagiers
+
+#WW
+[KOLARIDE]
+STR_NAME    :Koalabaan
+STR_DESC    :Grote wagen voor de achterwaartstevrijevalachtbaan.
+STR_CPTY    :8 passagiers
+
+#TT
+[JETPACKX]
+STR_NAME    :Jetpack-booster
+STR_DESC    :Passagiers zitten in een voertuig dat gelanceerd wordt over een verticale baan.
+STR_CPTY    :8 passagiers
+# End of Reverse Freefall Coaster / Achterwaartsevrijevalachtbaan
+
+# Car Ride / Autorondrit
+[TRUCK1]
+STR_NAME   :Pickuptrucks
+STR_DESC   :Elektrische voertuigen in de vorm van een pickuptruck.
+STR_CPTY   :1 passagier per truck
+
+[RCR]
+STR_NAME   :Raceauto's
+STR_DESC   :Elektrische voertuigen in de vorm van een raceauto.
+STR_CPTY   :1 passagier per karretje
+
+[SPCAR]
+STR_NAME   :Sportauto's
+STR_DESC   :Elektrische voertuigen in de vorm van een sportauto.
+STR_CPTY   :1 passagier per karretje
+
+[VCR]
+STR_NAME   :Oldtimers
+STR_DESC   :Elektrische voertuigen in de vorm van een oldtimer.
+STR_CPTY   :1 passagier per karretje
+
+[CTCAR]
+STR_NAME   :Cheshire Cats
+STR_DESC   :Elektrische voertuigen in de vorm van een kat.
+STR_CPTY   :1 passagier per karretje
+
+[4X4]
+STR_NAME   :Monstertrucks
+STR_DESC   :Gigantische elektrische 4x4-trucks die steile hellingen kunnen nemen.
+STR_CPTY   :2 passagiers per truck
+
+#WW
+[CRNVBFLY]
+STR_NAME    :Vlinderwagentjes
+STR_DESC    :Elektrische carnivalsoptochtwagentjes in de vorm van een vlinder.
+STR_CPTY    :2 passagiers per karretje
+
+#WW
+[CRNVFROG]
+STR_NAME    :Kikkerwagentjes
+STR_DESC    :Elektrische carnivalsoptochtwagentjes in de vorm van een kikker.
+STR_CPTY    :2 passagiers per karretje
+
+#WW
+[CRNVLZRD]
+STR_NAME    :Hagediswagentjes
+STR_DESC    :Elektrische carnivalsoptochtwagentjes in de vorm van een hagedis.
+STR_CPTY    :2 passagiers per karretje
+
+#WW
+[BLACKCAB]
+STR_NAME    :Londonse taxi's
+STR_DESC    :Elektrische voertuigen in de vorm van een Londense taxi.
+STR_CPTY    :2 passagiers per karretje
+
+#WW
+[HUSKIE]
+STR_NAME    :Huskiewagentjes
+STR_DESC    :Elektrische voertuigen in de vorm van een huskieslee.
+STR_CPTY    :2 passagiers per karretje
+
+#TT
+[PEGASUSX]
+STR_NAME    :Pegasuskarretjes
+STR_DESC    :Elektrische voertuigen in de vorm van een kar die wordt voortgetrokken door Pegasus.
+STR_CPTY    :2 passagiers per karretje
+
+#TT
+[HOVERCAR]
+STR_NAME    :Zweefwagens
+STR_DESC    :Door middel van maglev-technologie wordt de illusie van futuristische zweefwagens gecreëerd.
+STR_CPTY    :2 passagiers per karretje
+# End of Car Ride / Autorondrit
+
+# Motion Simulator / Bewegingssimulator
+[SIMPOD]
+STR_NAME   :Bewegingssimulator
+STR_DESC   :Passagiers bekijken een film in de cabine van een bewegingssimulator die wordt gedraaid en bewogen door een hydraulische arm.
+STR_CPTY   :8 passagiers
+
+#TT
+[MICROBUS]
+STR_NAME   :Hippiebus
+STR_DESC   :Passagiers bekijken een film in de cabine van een bewegingssimulator die wordt gedraaid en bewogen door een hydraulische arm.
+STR_CPTY   :8 passagiers
+# End of Motion Simulator / Bewegingssimulator
+
+# Bobsleigh Coaster / Bobslee-achtbaan
+[BOB1]
+STR_NAME   :Bobslee-achtbaan
+STR_DESC   :Passagiers rijden over een kronkelende baan, waarbij ze enkel worden geleid door de ronding en banking van de halfronde baan.
+STR_CPTY   :2 passagiers per karretje
+
+[INTBOB]
+STR_NAME   :Zespersoonsbob
+STR_DESC   :Passagiers rijden over een kronkelende baan, waarbij ze enkel worden geleid door de ronding en banking van de halfronde baan.
+STR_CPTY   :6 passagiers per bob
+
+#WW
+[PENGUINB]
+STR_NAME    :Pinguïnbobslee
+STR_DESC    :Passagiers rijden over een kronkelende baan, waarbij ze enkel worden geleid door de ronding en banking van de halfronde baan.
+STR_CPTY    :2 passagiers per karretje
+
+#TT
+[BLCKDETH]
+STR_NAME    :Zwartedoodbobslee
+STR_DESC    :Passagiers rijden over een kronkelende baan in ratvormige karretjes, waarbij ze enkel worden geleid door de ronding en banking van de halfronde baan.
+STR_CPTY    :2 passagiers per karretje
+# End of Bobsleigh Coaster / Bobslee-achtbaan
+
+# Log Flume / Boomstamattractie
+[LFB1]
+STR_NAME   :Boomstamattractie
+STR_DESC   :Boten in de vorm van een boomstam varen door een waterbak, waarbij ze van steile hellingen afdalen om de passagiers te doorweken.
+STR_CPTY   :4 passagiers per boot
+
+#WW
+[CROCFLUM]
+STR_NAME    :Krokillenrivier
+STR_DESC    :Boten in de vorm van een krokodil varen door een waterbak, waarbij ze van steile hellingen afdalen om de passagiers te doorweken.
+STR_CPTY    :4 passagiers per boot
+# End of Log Flume / Boomstamattractie
+
+# Boat Ride / Bootverhuur
+[RBOAT]
+STR_NAME   :Roeiboten
+STR_DESC   :Boten waarin passagiers zelf roeien.
+STR_CPTY   :2 passagiers per boot
+
+[BBOAT]
+STR_NAME   :Botsboten
+STR_DESC   :Kleine ronde bootjes, aangedreven door een centrale motor en bestuurd door de passagiers.
+STR_CPTY   :2 passagiers per boot
+
+[JSKI]
+STR_NAME   :Jetski's
+STR_DESC   :Eénpersoons jetski's die de bezoekers zelf kunnen besturen.
+STR_CPTY   :1 persoon per jetski
+
+[CBOAT]
+STR_NAME   :Kano's
+STR_DESC   :Lange kano's waarin de passagiers zelf roeien.
+STR_CPTY   :2 passagiers per kano
+
+[TRIKE]
+STR_NAME   :Waterfietsen
+STR_DESC   :Driewielige waterfietsen met grote raderwielen.
+STR_CPTY   :2 passagiers per waterfiets
+
+[SWANS]
+STR_NAME   :Zwanenbootjes
+STR_DESC   :Boten in de vorm van een zwaan, voortgestuwd door het trappen van de passagiers op de eerste rij.
+STR_CPTY   :4 passagiers per boot
+
+#WW
+[DOLPHINR]
+STR_NAME    :Dolfijnenbootjes
+STR_DESC    :Eénpersoonsvoertuigen in de vorm van een dolfijn die de bezoekers zelf kunnen besturen.
+STR_CPTY    :1 persoon per voertuig
+
+#WW
+[OUTRIGGR]
+STR_NAME    :Outriggerkano's
+STR_DESC    :Lange kano's waarin de passagiers zelf roeien.
+STR_CPTY    :2 passagiers per kano
+
+#WW
+[TUTLBOAT]
+STR_NAME    :Schildpadbootjes
+STR_DESC    :Kleine ronde opblaasbootjes, aangedreven door een centrale motor en bestuurd door de passagiers.
+STR_CPTY    :2 passagiers per boot
+
+#WW
+[MANDARIN]
+STR_NAME    :Mandarijneendbootjes
+STR_DESC    :Boot in de vorm van een mandarijneend, die wordt voortbewogen door het trappen van de passagiers op de eerste rij.
+STR_CPTY    :4 passagiers per boot
+
+#WW
+[DHOWWATR]
+STR_NAME    :Dhowbootjes
+STR_DESC    :Decoratieve visserboot waarbij de passagiers zelf trappen.
+STR_CPTY    :2 passagiers per boot
+
+#CC
+[AE-SWIM]
+STR_NAME    :Zwembad
+STR_DESC    :Een steiger waarvan gasten het water in kunnen om een stukje te zwemmen. Door "The Amazing Earl".
+STR_CPTY    :1 bezoeker per "boot"
+# End of Boat Ride / Bootverhuur
+
+# Dodgems / Botsauto's
+[DODG1]
+STR_NAME   :Botsauto's
+STR_DESC   :Elektrische wagentjes die de passagiers zelf besturen.
+STR_CPTY   :1 passagier per botsauto
+
+#TT
+[TRICATOP]
+STR_NAME    :Triceratopsbotsauto's
+STR_DESC    :De passagiers vatten elkaar bij de horens in triceratopsvormige botsauto's.
+STR_CPTY    :1 passagier per botsauto
+
+#TT
+[FIGTKNIT]
+STR_NAME    :Riddergevecht-botsauto's
+STR_DESC    :De passagiers strijden om de eer in paardvormige botsauto's.
+STR_CPTY    :1 passagier per botsauto
+# End of Dodgems / Botsauto's
+
+# Circus
+[CIRCUS1]
+STR_NAME   :Circus
+STR_DESC   :Een dierennummer in een circustent.
+STR_CPTY   :30 bezoekers
+# End of Circus
+
+# Compact Inverted Coaster / Compacte omgekeerde achtbaan
+[SLCT]
+STR_NAME   :Compacte omgekeerde achtbaan
+STR_DESC   :Passagiers zitten in stoelparen die onder de baan hangen terwijl ze door kronkelende en scherpe omkeringen gaan.
+STR_CPTY   :2 passagiers per karretje
+
+[VEKDV]
+STR_NAME   :Omgekeerde verticale shuttle
+STR_DESC   :Passagiers zitten in karretjes die onder de baan hangen, worden achteruit een verticale baan opgetrokken en vervolgens losgelaten, waarna ze door kronkelende en scherpe omkeringen gaan.
+STR_CPTY   :4 passagiers per karretje
+
+[SLCFO]
+STR_NAME   :Omgekeerde shuttle
+STR_DESC   :Passagiers zitten in stoelparen die onder de baan hangen terwijl ze door kronkelende en scherpe omkeringen gaan.
+STR_CPTY   :4 passagiers per karretje
+
+#WW
+[POLARBER]
+STR_NAME    :IJsbeerachtbaan
+STR_DESC    :Passagiers zitten in paren, met het gezicht naar voren of achteren, en gaan door scherpe omkeringen.
+STR_CPTY    :4 passagiers per karretje
+# End of Compact Inverted Coaster / Compacte omgekeerde achtbaan
+
+# Crooked House
+[CHBUILD]
+STR_NAME    :Crooked House
+STR_DESC    :Gebouw met scheve kamers en gangen die de bezoekers desoriënteren.
+STR_CPTY    :5 bezoekers
+
+#TT
+[FUNHOUSE]
+STR_NAME    :Fun House
+STR_DESC    :Gebouw met bewegende muren en vloeren om de bezoekers te desoriënteren.
+STR_CPTY    :5 bezoekers
+
+#TT
+[HALOFMRS]
+STR_NAME    :Spiegelpaleis
+STR_DESC    :Gebouw met gebogen spiegels die de weerspiegeling van de bezoekers vervormen.
+STR_CPTY    :5 bezoekers
+
+#TT
+[SPOKPRSN]
+STR_NAME    :Spookgevangenis
+STR_DESC    :Gebouw met kerkers en poppen van opgesloten mensen, om de bezoekers die er doorheen lopen angst aan te jagen.
+STR_CPTY    :5 bezoekers
+# End of Crooked House
+
+# Maze / Doolhof
+[HMAZE]
+STR_NAME    :Doolhof
+STR_DESC    :Bezoekers lopen door een doolhof van 1,8m hoge heggen of muren, en kunnen er pas uit wanneer ze de uitgang vinden.
+# End of Maze / Doolhof
+
+# Merry-go-round / Draaimolen
+[MGR1]
+STR_NAME    :Draaimolen
+STR_DESC    :Traditionele draaimolen met uit hout gesneden paarden.
+STR_CPTY    :16 passagiers
+
+#TT
+[MGR2]
+STR_NAME    :Dubbeldekscarrousel
+STR_DESC    :Traditionele overdekte dubbeldekscarrousel met uit hout gesneden paarden.
+STR_CPTY    :32 passagiers
+# End of Merry-go-round / Draaimolen
+
+# Enterprise
+[ENTERP]
+STR_NAME    :Enterprise
+STR_DESC    :Draaiend wiel met hangende passagierscabines, dat eerst gaat draaien en vervolgens wordt opgetild door een steunarm.
+STR_CPTY    :16 passagiers
+
+#WW
+[FIRECRAK]
+STR_NAME    :Voetzoekerenterprise
+STR_DESC    :Draaiend wiel met hangende passagierscabines, dat eerst gaat draaien en vervolgens wordt opgetild door een steunarm.
+STR_CPTY    :16 passagiers
+# End of Enterprise
+
+# Monorail Cycles / Fietsbaan
+[MONBK]
+STR_NAME    :Fietsbaan
+STR_DESC    :Speciale fietsen rijden over een stalen monorail, voortbewogen door het trappen van de passagiers.
+STR_CPTY    :1 persoon per fiets
+# End of Monorail Cycles / Fietsbaan
+
+# Launched Freefall / Gelanceerde vrije val
+[SSC1]
+STR_NAME    :Gelanceerde vrije val
+STR_DESC    :Een vrijevalwagen wordt pneumatisch langs een hoge stalen toren gelanceerd en gaat daarna in een vrije val weer naar beneden.
+STR_CPTY    :8 passagiers
+# End of Launched Freefall / Gelanceerde vrije val
+
+# Giga Coaster / Giga-achtbaan
+[INTST]
+STR_NAME    :Giga-achtbaan
+STR_DESC    :Een gigantische stalen achtbaan die in staat is tot soepele afdalingen en heuvels die hoger zijn dan 90 meter.
+STR_CPTY    :4 passagiers per karretje
+
+#WW
+[TAXICSTR]
+STR_NAME    :Taxi-achtbaan
+STR_DESC    :Een gigantische stalen achtbaan met treinen in de vorm van een taxi die in staat is tot soepele afdalingen en heuvels die hoger zijn dan 90 meter.
+STR_CPTY    :4 passagiers per karretje
+# End of Giga Coaster / Giga-achtbaan
+
+# Go-karts
+[KART1]
+STR_NAME    :Go-karts
+STR_DESC    :Go-karts met benzinemotor die de passagiers zelf besturen.
+STR_CPTY    :1 persoon per kart
+
+#TT
+[CAVMNCAR]
+STR_NAME    :Holbewoners-go-karts
+STR_DESC    :Passagiers racen in go-karts met een steentijdthema.
+STR_CPTY    :1 persoon per kart
+
+#TT
+[1920RACR]
+STR_NAME    :Jarentwintig-raceauto's
+STR_DESC    :Passagiers racen in go-karts die er uitzien als raceauto's uit de jaren '20.
+STR_CPTY    :1 persoon per kart
+# End of Go-karts
+
+# Heartline Twister
+[UTCAR]
+STR_NAME    :Twisterkarretjes
+STR_DESC    :Achtbaankarretjes die geschikt zijn voor heartline twists.
+STR_CPTY    :4 passagiers per karretje
+
+[UTCARR]
+STR_NAME    :Twisterkarretjes (achterstevoren starten)
+STR_DESC    :Achtbaankarretjes die geschikt zijn voor heartline twists.
+STR_CPTY    :4 passagiers per karretje
+
+#WW
+[TIGRTWST]
+STR_NAME    :Bengaalsetijgerkarretjes
+STR_DESC    :Achtbaankarretjes die geschikt zijn voor heartline twists.
+STR_CPTY    :4 passagiers per karretje
+# End of Heartline Twister
+
+# Wooden Roller Coaster / Houten achtbaan
+[PTCT1]
+STR_NAME    :Houten achtbaantrein
+STR_DESC    :Houten achtbaantrein met gevoerde zittingen en schootbeugels.
+STR_CPTY    :4 passagiers per karretje
+
+[PTCT2]
+STR_NAME    :Houten achtbaantrein (zespersoons)
+STR_DESC    :Houten achtbaantrein met gevoerde zittingen en schootbeugels.
+STR_CPTY    :6 passagiers per karretje
+
+[PTCT2R]
+STR_NAME    :Houten achtbaantrein (zespersoons, achteruit)
+STR_DESC    :Houten achtbaantrein met gevoerde zittingen en schootbeugels, die rijdt met de zittingen naar achteren.
+STR_CPTY    :6 passagiers per karretje
+
+[MFT]
+STR_NAME    :Gelede achtbaantrein
+STR_DESC    :Achtbaantrein met korte karretjes van één rij en een open voorkant.
+STR_CPTY    :2 passagiers per karretje
+
+#WW
+[MINECART]
+STR_NAME    :Mijnkarretjes
+STR_DESC    :Houten achtbaantrein met gevoerde zittingen en schootbeugels.
+STR_CPTY    :4 passagiers per karretje
+
+#WW
+[STGCCSTR]
+STR_NAME    :Postkoetsen
+STR_DESC    :Houten achtbaantrein met gevoerde zittingen en schootbeugels.
+STR_CPTY    :4 passagiers per karretje
+# End of Wooden Roller Coaster / Houten achtbaan
+
+# Reverser Roller Coaster / Houten achteruitachtbaan
+[REVCAR]
+STR_NAME    :Houten achteruitachtbaan
+STR_DESC    :Karretjes met draaistellen rijden op een houten baan en kunnen omkeren op speciale stukken baan.
+STR_CPTY    :6 passagiers per karretje
+
+#TT
+[POLICECR]
+STR_NAME    :Politieautobaan
+STR_DESC    :Karretjes die er uitzien als een Amerikaanse politieauto uit de jaren '60 rijden op een houten baan en kunnen omkeren op speciale stukken baan.
+STR_CPTY    :6 passagiers per karretje
+# End of Reverser Roller Coaster / Houten achteruitachtbaan
+
+# Wooden Wild Mouse / Houten wildemuisachtbaan
+[WMMINE]
+STR_NAME    :Houten wildemijnachtbaan
+STR_DESC    :Kleine mijnkarretjes rijden op een zigzaggende baan en hellen gevaarlijk over in de haarspeldbochten en scherpe afdalingen.
+STR_CPTY    :2 passagiers per karretje
+
+[WMOUSE]
+STR_NAME    :Houten wildemuisachtbaan
+STR_DESC    :Kleine muisvormige karretjes rijden op een zigzaggende baan en hellen gevaarlijk over in de haarspeldbochten en scherpe afdalingen.
+STR_CPTY    :2 passagiers per karretje
+# End of Wooden Wild Mouse / Houten wildemuisachtbaan
+
+# Junior Roller Coaster / Juniorachtbaan
+[ZLDB]
+STR_NAME    :Lieveheersbeestjestreinen
+STR_DESC    :Achtbaantrein met kleine karretjes in de vorm van een lieveheersbeestje.
+STR_CPTY    :2 passagiers per karretje
+
+[ZLOG]
+STR_NAME    :Boomstronktreinen
+STR_DESC    :Achtbaantrein met kleine karretjes in de vorm van een boomstronk.
+STR_CPTY    :2 passagiers per karretje
+
+#WW
+[WHICGRUB]
+STR_NAME    :Rupstreinen
+STR_DESC    :Achtbaantrein met kleine karretjes in de vorm van een grote rups.
+STR_CPTY    :2 passagiers per karretje
+
+#OCC
+[ZPANDA]
+STR_NAME    :Pandatreinen
+STR_DESC    :Achtbaantrein met kleine karretjes in de vorm van een panda.
+STR_CPTY    :1 passagier per karretje
+# End of Junior Roller Coaster / Juniorachtbaan
+
+# Chairlift / Kabelbaan
+[CLIFT1]
+STR_NAME    :Stoeltjesliftkarretjes
+STR_DESC    :Open stoeltjesliftkarretjes.
+STR_CPTY    :2 passagiers per karretje
+
+[CLIFT2]
+STR_NAME    :Skiliftkarretjes
+STR_DESC    :Open karretjes in skiliftstijl.
+STR_CPTY    :2 passagiers per karretje
+# End of Chairlift / Kabelbaan
+
+# LIM Launched RC / LIM-lanceringsachtbaan
+[PREMT1]
+STR_NAME    :LIM-lanceringsachtbaan
+STR_DESC    :Achtbaantreinen worden door lineaire inductiemotoren het station uit gelanceerd en razen door een kronkelende baan die vaak over de kop gaat.
+STR_CPTY    :4 passagiers per karretje
+
+#WW
+[TGVTRAIN]
+STR_NAME    :TGV-achtbaan
+STR_DESC    :Achtbaantreinen worden door lineaire inductiemotoren het station uit gelanceerd en razen door een kronkelende baan die vaak over de kop gaat.
+STR_CPTY    :4 passagiers per karretje
+
+#TT
+[GANSTRCR]
+STR_NAME    :Gangsterauto-achtbaan
+STR_DESC    :Achtbaantreinen in de stijl van een gansterauto uit de jaren '20 worden door lineaire inductiemotoren het station uit gelanceerd en razen door een kronkelende baan die vaak over de kop gaat.
+STR_CPTY    :4 passagiers per karretje
+# End of LIM Launched RC / LIM-lanceringsachtbaan
+
+# Lift
+[LIFT1]
+STR_NAME    :Lift
+STR_DESC    :Bezoekers gaan in een lift in een toren omhoog of omlaag om naar een ander hoogteniveau te komen.
+STR_CPTY    :16 passagiers
+
+#WW
+[MINELIFT]
+STR_NAME    :Mijnlift
+STR_DESC    :Bezoekers gaan in een lift in een toren omhoog of omlaag om naar een ander hoogteniveau te komen.
+STR_CPTY    :16 passagiers
+
+#TT
+[TELEPTER]
+STR_NAME    :Teleporter
+STR_DESC    :Bezoekers gaan in een lift in een toren omhoog of omlaag om naar een ander hoogteniveau te komen.
+STR_CPTY    :16 passagiers
+# End of Lift
+
+# Lay-down RC / Liggende achtbaan
+[VEKST]
+STR_NAME    :Liggende achtbaan
+STR_DESC    :Passagiers worden door middel van een speciale beugel in een liggende positie vastgehouden, waarna ze op hun rug of met hun gezicht naar de grond door kronkelende stukken baan en omkeringen heen gaan.
+STR_CPTY    :4 passagiers per karretje
+
+#TT
+[HARPIESX]
+STR_NAME    :Harpijenbaan
+STR_DESC    :Passagiers worden door middel van een speciale beugel in een liggende positie vastgehouden, waarna ze op hun rug of met hun gezicht naar de grond door kronkelende stukken baan en omkeringen heen gaan.
+STR_CPTY    :4 passagiers per karretje
+# End of Lay-down RC / Liggende achtbaan
+
+# Air powered vertical RC / Luchtaangedreven verticale achtbaan
+[THCAR]
+STR_NAME    :Luchtaangedreven verticale achtbaan
+STR_DESC    :Na een enerverende pneumatische lancering rijdt de trein met hogere snelheid over een verticale baan, over de top, en vervolgens over de andere kant weer naar beneden om terug te keren naar het station.
+STR_CPTY    :2 passagiers per karretje
+
+#WW
+[BOMERANG]
+STR_NAME    :Boemerangachtbaan
+STR_DESC    :Na een enerverende pneumatische lancering rijdt de trein met hogere snelheid over een verticale baan, over de top, en vervolgens over de andere kant weer naar beneden om terug te keren naar het station.
+STR_CPTY    :2 passagiers per karretje
+
+#TT
+[HOTRODXX]
+STR_NAME    :Hotrod-achtbaan
+STR_DESC    :Na een enerverende pneumatische lancering rijdt de trein met hogere snelheid over een verticale baan, over de top, en vervolgens over de andere kant weer naar beneden om terug te keren naar het station.
+STR_CPTY    :2 passagiers per karretje
+# End of Air powered vertical RC / Luchtaangedreven verticale achtbaan
+
+# Mine train RC / Mijntreinachtbaan
+[AMT1]
+STR_NAME    :Mijntreinachtbaan
+STR_DESC    :Achtbaantreinen in de vorm van een mijntrein razen over stalen achtbaanrails die er uitziet als een oude spoorbaan.
+STR_CPTY    :4 passagiers per karretje (voorste karretje 2)
+# End of Mine train RC / Mijntreinachtbaan
+
+# Mini RC / Mini-achtbaan
+[WCATC]
+STR_NAME    :Autokarretjes
+STR_DESC    :Achtbaankarretjes in de vorm van een auto.
+STR_CPTY    :4 passagiers per karretje
+
+[RCKC]
+STR_NAME    :Raketkarretjes
+STR_DESC    :Achtbaankarretjes in de vorm van een raket.
+STR_CPTY    :4 passagiers per karretje
+
+[JSTAR1]
+STR_NAME    :Rodelsleekarretjes
+STR_DESC    :Achtbaankarretjes in de vorm van een rodelslee, waarin de passagiers achter elkaar zitten.
+STR_CPTY    :4 passagiers per karretje
+
+#WW
+[JAGUARRD]
+STR_NAME    :Jaguarkarretjes
+STR_DESC    :Achtbaankarretjes in de vorm van een jaguar.
+STR_CPTY    4 passagiers per karretje
+
+#WW
+[LIONRIDE]
+STR_NAME    :Leeuwenkarretjes
+STR_DESC    :Achtbaankarretjes in de vorm van een leeuw.
+STR_CPTY    :4 passagiers per karretje
+
+#WW
+[RSSNCRRD]
+STR_NAME    :Russische auto's
+STR_DESC    :Achtbaankarretjes in de vorm van een Russische auto.
+STR_CPTY    :4 passagiers per auto
+
+#TT
+[JETPLANE]
+STR_NAME    :Straalvliegtuigachtbaan
+STR_DESC    :Een compacte achtbaan met individuele karretjes en steile, kronkelende afdalingen.
+STR_CPTY    :4 passagiers per karretje
+# End of Mini RC / Mini-achtbaan
+
+# Miniature railway / Miniatuurspoorweg
+[NRL]
+STR_NAME    :Stoomtrein
+STR_DESC    :Miniatuurstroomtrein bestaande uit een replicastoomlocomotief en tender, die open houten wagons voorttrekt.
+STR_CPTY    :6 passagiers per wagon
+
+[NRL2]
+STR_NAME    :Stroomtrein met overdekte wagons
+STR_DESC    :Miniatuurstroomtrein bestaande uit een replicastoomlocomotief en tender, die wagons met stoffen overdekking voorttrekt.
+STR_CPTY    :6 passagiers per wagon
+
+[AML1]
+STR_NAME    :Amerikaanse stoomtrein
+STR_DESC    :Miniatuurstroomtrein bestaande uit een replicastoomlocomotief en tender, die wagons met stoffen overdekking voorttrekt.
+STR_CPTY    :6 passagiers per wagon
+
+[TRAM1]
+STR_NAME    :Trams
+STR_DESC    :Replica's van oude trams
+STR_CPTY    :10 passagiers per tram
+
+#WW
+[LONDONBS]
+STR_NAME    :Londense bus
+STR_DESC    :Replica van de beroemde Londense Routemasters.
+STR_CPTY    :10 passagiers per bus
+
+#WW
+[STEAMTRN]
+STR_NAME    :Maharadja-stoomtrein
+STR_DESC    :Miniatuurstroomtrein bestaande uit een replicastoomlocomotief en tender, die dichte houten wagons voorttrekt.
+STR_CPTY    :6 passagiers per wagon
+
+#WW
+[SANFTRAM]
+STR_NAME    :Trams uit San Francisco
+STR_DESC    :Replica's van oude trams uit San Francisco
+STR_CPTY    :10 passagiers per tram
+
+#TT
+[SCHOOLBS]
+STR_NAME    :Schoolbussen
+STR_DESC    :Replica's van Amerikaanse gele schoolbussen.
+STR_CPTY    :10 passagiers per bus
+# End of Miniature railway / Miniatuurspoorweg
+
+# Mini Golf / Minigolf
+[GOLF1]
+STR_NAME    :Miniholf
+STR_DESC    :Een rustig spelletje minigolf.
+# End of Mini Golf / Minigolf
+
+# Mini Helicopters / Minihelicopters
+[HELICAR]
+STR_NAME    :Minihelicopters
+STR_DESC    :Aangedreven karretjes in de vorm van een helicopter rijden over een stalen baan, bestuurd door het trappen van de passagiers.
+STR_CPTY    :2 passagiers per karretje
+# End of Mini Helicopters / Minihelicopters
+
+# Monorail
+[MONO1]
+STR_NAME    :Gestroomlijnde monorailtrein
+STR_DESC    :Monorailtrein met gestroomlijnde voor- en achterkant en een hoge capaciteit.
+STR_CPTY    :10 passagiers per karretje (voor en achter 5)
+
+[MONO2]
+STR_NAME    :Kleine monorailkarretjes
+STR_DESC    :Kleine monorailkarretjes met open zijkanten.
+STR_CPTY    :4 passagiers per karretje
+
+[MONO3]
+STR_NAME    :Retro-monorailtreinen
+STR_DESC    :Monorailtreinen met open karretjes.
+STR_CPTY    :4 passagiers per karretje
+# End of Monorail
+
+# Multi-dimension RC / Multidimensieachtbaan
+[ARRX]
+STR_NAME    :Multidimensieachtbaantrein
+STR_DESC    :Karretjes met stoelen die de passagiers halsoverkop kunnen laten tollen.
+STR_CPTY    :4 passagiers per karretje
+# End of Multi-dimension RC / Multidimensieachtbaan
+
+# Observation Tower / Observatietoren
+[OBS1]
+STR_NAME    :Observatietoren
+STR_DESC    :Draaiende observatiecabine die langs een verticale toren omhoog gaat.
+STR_CPTY    :20 passagiers
+
+[OBS2]
+STR_NAME    :Dubbelsdeks observatietoren
+STR_DESC    :Draaiende observatiecabine met twee dekken die langs een verticale toren omhoog gaat.
+STR_CPTY    :32 passagiers
+
+#TT
+[BMVOCTPS]
+STR_NAME    :Klodder uit de ruimte
+STR_DESC    :Draaiende gethematiseerde observatiecabine die langs een verticale toren omhoog gaat.
+STR_CPTY    :20 passagiers
+# End of Observation Tower / Observatietoren
+
+# Inverted Impulse RC / Omgekeerde Impulse-achtbaan
+[INTINV]
+STR_NAME    :Omgekeerde Impulse-achtbaan
+STR_DESC    :Een omgekeerde achtbaantrein wordt het station uit gelanceerd en gaat een verticale kronkelende baan op, waarna deze terugzakt, door het station heengaat en achteruit een ander stuk verticale baan opgaat.
+STR_CPTY    :4 passagiers per karretje
+
+#TT
+[BARNSTRM]
+STR_NAME    :Stuntvliegersachtbaan
+STR_DESC    :Een omgekeerde achtbaantrein wordt het station uit gelanceerd en gaat een verticale kronkelende baan op, waarna deze terugzakt, door het station heengaat en achteruit een ander stuk verticale baan opgaat.
+STR_CPTY    :4 passagiers per karretje
+# End of Inverted Impulse RC / Omgekeerde Impulse-achtbaan
+
+# Inverted RC / Omgekeerde achtbaan
+[NEMT]
+STR_NAME    :Omgekeerde achtbaan
+STR_DESC    :Passagiers zitten in stoelen die onder de baan hangen terwijl ze door grote loopings, twists en grote adembenemende afdelingen gaan.
+STR_CPTY    :4 passagiers per karretje
+# End of Inverted RC / Omgekeerde achtbaan
+
+# Inverted Hairpin RC / Omgekeerde haarspeldachtbaan
+[IVMC1]
+STR_NAME    :Omgekeerde haarspeldachtbaan
+STR_DESC    :Losse karretjes hangen onder een zigzaggende baan met haarspeldbochten en scherpe afdalingen.
+STR_CPTY    :4 passagiers per karretje
+# End of Inverted Hairpin RC / Omgekeerde haarspeldachtbaan
+
+# Flying RC / Vliegachtbaan
+[BMAIR]
+STR_NAME    :Vliegachtbaan
+STR_DESC    :Bezoekers hangen in treinen onder de baan met enkel schouderbeugels en krijgen zo de ervaring dat ze vliegen.
+STR_CPTY    :4 passagiers per karretje
+
+#WW
+[CONDORRD]
+STR_NAME    :Condorbaan
+STR_DESC    :Bezoekers hangen in Condorvormige treinen onder de baan met enkel schouderbeugels en krijgen zo de ervaring dat ze vliegen.
+STR_CPTY    :4 passagiers per karretje
+
+#TT
+[PTERODAC]
+STR_NAME    :Pterodactyl Coaster
+STR_DESC    :Bezoekers hangen in confortabele treinen onder de baan met enkel schouderbeugels en krijgen zo de ultieme prehistorische vliegervaring.
+STR_CPTY    :4 passagiers per karretje
+# End of Flying RC / Vliegachtbaan
+
+# Inverted Mini RC / Omgekeerde mini-achtbaan
+[BATFL]
+STR_NAME    :Schommelkarretjes
+STR_DESC    :Kleine karretjes die aan de rail erboven schommelen.
+STR_CPTY    :2 passagiers per karretje
+
+[SKYTR]
+STR_NAME    :Omgekeerde mini-achtbaan
+STR_DESC    :Passagiers zitten in kleine karretjes die onder een enkele rail hangen en naar buiten zwaaien in de bochten.
+STR_CPTY    :1 passagier per karretje
+
+#WW
+[SPUTNIKR]
+STR_NAME    :Spoetnikbaan
+STR_DESC    :Passagiers zitten in karretjes in de vorm van de Spoetnik, die onder een enkele rail hangen en naar buiten zwaaien in de bochten.
+STR_CPTY    :2 passagiers per karretje
+
+#TT
+[DRAGNFLY]
+STR_NAME    :Libellenbaan
+STR_DESC    :Passagiers zitten in kleine karretjes die onder een enkele rail hangen en naar buiten zwaaien in de bochten.
+STR_CPTY    :2 passagiers per karretje
+
+#TT
+[HOVRBORD]
+STR_NAME    :Hoverboard Coaster
+STR_DESC    :Passagiers zitten op een futurisch hoverboard die onder een enkele rail hangt en naar buiten zwaait in de bochten.
+STR_CPTY    :2 passagiers per karretje
+# End of Inverted Mini RC / Omgekeerde mini-achtbaan
+
+# Suspended monorail / Omgekeerde monorail
+[SMONO]
+STR_NAME    :Hangende monorailtreinen
+STR_DESC    :Monorailtreinen met een hoge capaciteit.
+STR_CPTY    :8 passagiers per karretje
+
+#TT
+[ZEPLELIN]
+STR_NAME    :Zeppelin
+STR_DESC    :Monorailtreinen met een hoge capaciteit.
+STR_CPTY    :8 passagiers per karretje
+# End of Suspended monorail / Omgekeerde monorail
+
+# Suspended Swinging Coaster / Omgekeerde schommelachtbaan
+[ARRSW1]
+STR_NAME    :Normale karretjes
+STR_DESC    :Omgekeerde achtbaantrein bestaande uit karretjes die vrijuit kunnen schommelen als de trein door een bocht gaat.
+STR_CPTY    :4 passagiers per karretje
+
+[ARRSW2]
+STR_NAME    :Vliegtuigkarretjes
+STR_DESC    :Omgekeerde achtbaantrein bestaande uit karretjes in de vorm van een vliegtuig, die vrijuit kunnen schommelen als de trein door een bocht gaat.
+STR_CPTY    :4 passagiers per karretje
+
+[VEKVAMP]
+STR_NAME    :Karretjes zonder bodem
+STR_DESC    :Omgekeerde achtbaantrein bestaande uit stoeltjesliftachtige karretjes die vrijuit kunnen schommelen als de trein door een bocht gaat.
+STR_CPTY    :2 passagiers per karretje
+
+#WW
+[ROCKET]
+STR_NAME    :Raketten uit de jaren '50
+STR_DESC    :Omgekeerde achtbaantrein bestaande uit karretjes in de vorm van een raket uit de jaren '50, die vrijuit kunnen schommelen als de trein door een bocht gaat.
+STR_CPTY    :4 passagiers per karretje
+
+#WW
+[GORILLA]
+STR_NAME    :Gorillakarretjes
+STR_DESC    :Omgekeerde achtbaantrein bestaande uit karretjes in de vorm van een gorilla, die vrijuit kunnen schommelen als de trein door een bocht gaat.
+STR_CPTY    :4 passagiers per karretje
+
+#WW
+[SLOTH]
+STR_NAME    :Luiaardkarretjes
+STR_DESC    :Omgekeerde achtbaantrein bestaande uit karretjes in de vorm van een luiaard, die vrijuit kunnen schommelen als de trein door een bocht gaat.
+STR_CPTY    :4 passagiers per karretje
+
+#WW
+[FOOTBALL]
+STR_NAME    :Voetbalkarretjes
+STR_DESC    :Omgekeerde achtbaantrein bestaande uit karretjes in de vorm van een enorme voetbal, die vrijuit kunnen schommelen als de trein door een bocht gaat.
+STR_CPTY    :4 passagiers per karretje
+
+#TT
+[SEAPLANE]
+STR_NAME    :Watervliegtuigbaan
+STR_DESC    :Omgekeerde achtbaantrein bestaande uit karretjes die vrijuit kunnen schommelen als de trein door een bocht gaat.
+STR_CPTY    :4 passagiers per karretje
+# End of Suspended Swinging Coaster / Omgekeerde schommelachtbaan
+
+# Submarine ride / Onderzeeërattractie
+[SUBMAR]
+STR_NAME    :Onderzeeërattractie
+STR_DESC    :Passagiers rijden over een onderwaterparcours in onderzeeërs.
+STR_CPTY    :4 passagiers per onderzeeër
+
+#WW
+[HIPPORID]
+STR_NAME    :Nijlpaardonderzeeërs
+STR_DESC    :Passagiers rijden over een onderwaterparcours in onderzeeërs.
+STR_CPTY    :5 passagiers per onderzeeër
+
+#WW
+[KILLWHAL]
+STR_NAME    :Orka-onderzeeërs
+STR_DESC    :Passagiers rijden over een onderwaterparcours in onderzeeërs.
+STR_CPTY    :5 passagiers per onderzeeër
+# End of Submarine ride / Onderzeeërattractie
+
+# Splash boats / Plonsboten
+[SPBOAT]
+STR_NAME    :Plonsboten
+STR_DESC    :Boten met een hoge capaciteit varen door een brede waterbak, worden naar boven vervoerd door een lopende band, en gaan met hoge snelheid steile heuvels af om met een grote plons de passagiers te doorweken.
+STR_CPTY    :16 passagiers per boot
+# End of Splash boats / Plonsboten
+
+# Ferris Wheel / Reuzenrad
+[FWH1]
+STR_NAME    :Reuzenrad
+STR_DESC    :Groot draaiend rad met open stoeltjes.
+STR_CPTY    :32 passagiers
+# End of Ferris Wheel / Reuzenrad
+
+# River Rafts / Riviertocht
+[RFTBOAT]
+STR_NAME    :Riviertocht
+STR_DESC    :Boten in de vorm van een vlot varen rustig door een waterbak.
+STR_CPTY    :4 passagiers per vlot
+
+#TT
+[RIVRSTYX]
+STR_NAME    :De Styx
+STR_DESC    :Bezoekers varen in het bootje van Charon door een waterbak.
+STR_CPTY    :4 passagiers per bootje
+# End of River Rafts / Riviertocht
+
+# Roto-drop
+[GDROP1]
+STR_NAME    :Roto-drop
+STR_DESC    :Een ring van stoelen wordt naar de bovenkant van een hoge toren getrokken terwijl hij rustig ronddraait, waarna hij losgelaten wordt in een vrije val, waarna hij beneden rustig wordt afgeremd door middel van magnetische remmen.
+STR_CPTY    :16 passagiers
+# End of Roto-drop
+
+# Space rings / Ruimteringen
+[SRINGS]
+STR_NAME    :Ruimteringen
+STR_DESC    :Concentrische draaiende ringen waarmee de passagiers vrij kunnen draaien in alle richtingen.
+STR_CPTY    :1 bezoeker per ring
+
+#TT
+[FLALMACE]
+STR_NAME    :Goedendags
+STR_DESC    :Passagiers zitten op stoel in de vorm van een goedendag die ronddraait aan een paal.
+STR_CPTY    :1 bezoeker per stoel
+
+#TT
+[TIMEMACH]
+STR_NAME    :Tijdmachine
+STR_DESC    :Bezoekers zitten in een speciaal ontwerpen bol en krijgen de illusie dat ze door de tijd reizen.
+STR_CPTY    :1 bezoeker per tijdmachine
+
+#CC
+[RIDE7MKY]
+STR_NAME    :Springkussens
+STR_DESC    :Bezoekers springen op en neer op met lucht gevulde kussens.
+STR_CPTY    :1 bezoeker per kussen
+# End of Space rings / Ruimteringen
+
+# Swinging ship / Schommelschip
+[SWSH1]
+STR_NAME    :Schommelschip
+STR_DESC    :Groot schommelend piratenschip
+STR_CPTY    :16 passagiers
+# End of Swinging ship / Schommelschip
+
+# Swinging Inverter Ship / Schommelschip dat over de kop gaat
+[SWSH2]
+STR_NAME    :Schommelschip dat over de kop gaat
+STR_DESC    :Schip dat is bevestigd aan een arm met een contragewicht, en 360 graden kan draaien.
+STR_CPTY    :12 passagiers
+
+#WW
+[JUNKSWNG]
+STR_NAME    :Chinese jonk
+STR_DESC    :Chinese jonk die is bevestigd aan een arm met een contragewicht, en 360 graden kan draaien.
+STR_CPTY    :12 passagiers
+# End of Swinging Inverter Ship / Schommelschip dat over de kop gaat
+
+# Spiral RC / Spiraalachtbaan
+[SPDRCR]
+STR_NAME    :Spiraalachtbaan
+STR_DESC    :Een compacte achtbaan met een spiraalvormige kettingheuvel en karretjes waarin de passagiers achter elkaar zitten.
+STR_CPTY    :6 passagiers per karretje
+
+#WW
+[RHINORID]
+STR_NAME    :Neushoornbaan
+STR_DESC    :Een compacte achtbaan met een spiraalvormige kettingheuvel en karretjes waarin de passagiers achter elkaar zitten.
+STR_CPTY    :6 passagiers per karretje
+
+#TT
+[BATTRRAM]
+STR_NAME    :Stormrambaan
+STR_DESC    :Een compacte achtbaan met een spiraalvormige kettingheuvel en karretjes waarin de passagiers achter elkaar zitten.
+STR_CPTY    :6 passagiers per karretje
+# End of Spiral RC / Spiraalachtbaan
+
+# Spiral Slide / Spiraalglijbaan
+[HSKELT]
+STR_NAME    :Spiraalglijbaan
+STR_DESC    :Houten gebouw met van binnen een trap en van buiten een spiraalglijbaan voor glijmatten.
+# End of Spiral Slide / Spiraalglijbaan
+
+# Haunted House / Spookhuis
+[HHBUILD]
+STR_NAME    :Spookhuis
+STR_DESC    :Groot gethematiseerd gebouw met enge gangen en spookachtige kamers.
+STR_CPTY    :15 bezoekers
+# End of Haunted House / Spookhuis
+
+# Ghost train / Spooktrein
+[GTC]
+STR_NAME    :Spooktrein
+STR_DESC    :Aangedreven monstervormige karretjes rijden over een baan, die over meerdere hoogteniveau loopt, langs spookachtig decor en special effects.
+STR_CPTY    :2 passagiers per karretje
+
+[HMCAR]
+STR_NAME    :Spookachtig landhuis
+STR_DESC    :Aangedreven karretjes rijden over een baan, die over meerdere hoogteniveau loopt, langs decor en special effects.
+STR_CPTY    :2 passagiers per karretje
+# End of Ghost train / Spooktrein
+
+# Stand-Up RC / Staande achtbaan
+[TOGST]
+STR_NAME    :Staande achtbaan
+STR_DESC    :Een achtbaan met loopings waar de passagiers in de karretjes staan.
+STR_CPTY    :4 passagiers per karretje
+
+#WW
+[OSTRICH]
+STR_NAME    :Struisvogelbaan
+STR_DESC    :Een achtbaan met loopings waar de passagiers in de karretjes staan.
+STR_CPTY    :4 passagiers per karretje
+# End of Stand-Up RC / Staande achtbaan
+
+# Looping RC / Stalen achtbaan
+[SCHT1]
+STR_NAME    :Achtbaantrein
+STR_DESC    :Achtbaantrein met schootbeugels, die door loopings kan rijden.
+STR_CPTY    :4 passagiers per karretje
+
+#TT
+[POLCHASE]
+STR_NAME    :Politieachtervolging
+STR_DESC    :Achtbaantrein met schootbeugels, die door loopings kan rijden.
+STR_CPTY    :4 passagiers per karretje
+
+#CC
+[AE-MTRHN]
+STR_NAME    :Matterhorntrein
+STR_DESC    :Achtbaantrein in de stijl van de beroemde Matterhorn voor de 50e verjaardag van Disneyland. Door "The Amazing Earl".
+STR_CPTY    :4 passagiers per karretje
+# End of Looping RC / Stalen achtbaan
+
+# Corkscrew RC / Stalen schroefachtbaan
+[ARRT1]
+STR_NAME    :Stalen schroefachtbaan
+STR_DESC    :Een compacte stalen achtbaan waar de trein door schroeven en loopings gaat.
+STR_CPTY    :4 passagiers per karretje
+
+[ARRT2]
+STR_NAME    :Hypercoaster
+STR_DESC    :Een achtbaan zonder omkeringen met grote heuvels, een hoge snelheid, en comfortabele treinen met enkel schootbeugels.
+STR_CPTY    :6 passagiers per karretje
+
+#WW
+[ANACONDA]
+STR_NAME    :Anacondabaan
+STR_DESC    :Een achtbaan zonder omkeringen met grote heuvels, een hoge snelheid, en comfortabele treinen met enkel schootbeugels.
+STR_CPTY    :6 passagiers per karretje
+
+#WW
+[GRATWHTE]
+STR_NAME    :Grote-witte-haaibaan
+STR_DESC    :Een achtbaan zonder omkeringen met grote heuvels, een hoge snelheid, en comfortabele treinen met enkel schootbeugels.
+STR_CPTY    :4 passagiers per karretje
+
+#WW
+[CONGAEEL]
+STR_NAME    :Palingbaan
+STR_DESC    :Een compacte stalen achtbaan waar de palingvormige trein door schroeven en loopings gaat.
+STR_CPTY    :4 passagiers per karretje
+
+#WW
+[BULLET]
+STR_NAME    :Shinkansenbaan
+STR_DESC    :Achtbaan met treinen in de vorm van de Japanse Shinkansen (kogeltrein).
+STR_CPTY    :4 passagiers per karretje
+
+#WW
+[CADDILAC]
+STR_NAME    :Limousinebaan
+STR_DESC    :Achtbaan met treinen in de vorm van een limousine
+STR_CPTY    :4 passagiers per karretje
+
+#WW
+[SEALS]
+STR_NAME    :Zeehondenbaan
+STR_DESC    :Een compacte stalen achtbaan waar de trein door schroeven en loopings gaat.
+STR_CPTY    :4 passagiers per karretje
+# End of Corkscrew RC / Stalen schroefachtbaan
+
+# Steel Twister RC / Stalen twisterachtbaan
+[BMSD]
+STR_NAME    :Twisterachtbaan
+STR_DESC    :Brede achtbaantrein die langs de soepele stalen baan glijdt en door diverse soorten omkeringen gaat.
+STR_CPTY    :4 passagiers per karretje
+
+[BMSU]
+STR_NAME    :Staande twisterachtbaan
+STR_DESC    :Passagiers staan in de brede achtbaantrein met speciaal ontworpen beugels terwijl ze door soepele afdalingen en meerdere omkeringen razen.
+STR_CPTY    :4 passagiers per karretje
+
+[BMFL]
+STR_NAME    :Achtbaan zonder bodem
+STR_DESC    :Brede achtbaantreinen zonder bodem, die de passagiers het gevoel geeft in de open lucht te zijn terwijl ze langs de kronkelende baan en door meerdere omkeringen glijden.
+STR_CPTY    :4 passagiers per karretje
+
+[GOLTR]
+STR_NAME    :Hyper-twistertreinen
+STR_DESC    :Ruime treinen met eenvoudige schootbeugels.
+STR_CPTY    :6 passagiers per karretje
+
+[BMRB]
+STR_NAME    :Hyper-twistertreinen (brede karretjes)
+STR_DESC    :Brede karretjes met vier verhoogde stoelen naast elkaar en eenvoudige schootbeugels.
+STR_CPTY    :4 passagiers per karretje
+
+#WW
+[SURFBRDC]
+STR_NAME    :Surfbaan
+STR_DESC    :Passagiers staan in de brede achtbaantrein met speciaal ontworpen beugels terwijl ze door soepele afdalingen en meerdere omkeringen razen.
+STR_CPTY    :4 passagiers per karretje
+
+#TT
+[CERBERUS]
+STR_NAME    :Cerberusbaan
+STR_DESC    :Bezoekers zitten in comfortabele treinen met enkel eenvoudige schootbeugels terwijl ze door door soepele afdalingen gaan.
+STR_CPTY    :4 passagiers per karretje
+# End of Steel Twister RC / Stalen twisterachtbaan
+
+# Steeplechase (Singel Rail RC)
+[STEEP1]
+STR_NAME    :Steeplechase
+STR_DESC    :Passagiers zitten op paardvormige voertuigen die over een enkele rail lopen.
+STR_CPTY    :2 passagiers per paard
+
+[STEEP2]
+STR_NAME    :Motorfietsrace
+STR_DESC    :Passagiers zitten op voertuigen in de vorm van een motorgiets die over een enkele rail lopen.
+STR_CPTY    :2 rassagiers per motorfiets
+
+[SBOX]
+STR_NAME    :Zeepkistenrace
+STR_DESC    :Passagiers zitten in voertuigen in de vorm van een zeepkist die over een enkele rail lopen.
+STR_CPTY    :4 passagiers per zeepkist
+
+#TT
+[JOUSTING]
+STR_NAME    :Duellerende ridders
+STR_DESC    :Passagiers zitten op paardvormige voertuigen die over een enkele rail lopen.
+STR_CPTY    :2 passagiers per paard
+
+#TT
+[RAPTORXX]
+STR_NAME    :Velociraptorrace
+STR_DESC    :Passagiers zitten op velociraptorvormige voertuigen die over een enkele rail lopen.
+STR_CPTY    :2 passagiers per velociraptor
+
+#TT
+[HOVERBKE]
+STR_NAME    :Zweeffietsen
+STR_DESC    :Passagiers zitten op futuristische fietsvormige voertuigen die over een enkele rail lopen.
+STR_CPTY    :2 passagiers per zweeffiets
+
+#CC
+[AE-REIND]
+STR_NAME    :Runaway Reindeer
+STR_DESC    :Passagiers zitten in paren op rendiervormige karretjes - compleet met knipperende rode neuzen. Door "The Amazing Earl".
+STR_CPTY    :2 passagiers per rendier
+# End of Steeplechase (Singel Rail RC)
+
+# Topspin
+[TOPSP1]
+STR_NAME    :Topspin
+STR_DESC    :Passagiers zitten in een gondel die is opgehangen aan grote roterende armen, en worden halsoverkop vooruit en achteruit gedraaid.
+STR_CPTY    :8 passagiers
+
+#TT
+[TREBUCHT]
+STR_NAME    :Trebuchet-topspin
+STR_DESC    :Passagiers zitten in een gondel die is opgehangen aan grote roterende armen, gebaseerd op een middeleeuws belegeringswapen.
+STR_CPTY    :8 passagiers
+# End of Topspin
+
+# Twist
+[TWIST1]
+STR_NAME    :Twist
+STR_DESC    :Passagiers zitten per twee in stoelen die ronddraaien aan de uiteinden van drie lange draaiarmen.
+STR_CPTY    :18 passagiers
+
+[TWIST2]
+STR_NAME    :Sneeuwkopjes
+STR_DESC    :Passagiers zitten per twee in stoelen die om een sneeuwpop heendraaien.
+STR_CPTY    :18 passagiers
+
+#WW
+[FABERGE]
+STR_NAME    :Fabergé-twist
+STR_DESC    :Passagiers zitten per twee in stoelen die ronddraaien aan de uiteinden van drie lange draaiarmen.
+STR_CPTY    :18 passagiers
+
+#WW
+[DIAMONDR]
+STR_NAME    :Diamant-twist
+STR_DESC    :Passagiers zitten per twee in stoelen die ronddraaien aan de uiteinden van drie lange draaiarmen.
+STR_CPTY    :18 passagiers
+
+#WW
+[ITALYPOR]
+STR_NAME    :Carabinieri-twist
+STR_DESC    :Passagiers zitten per twee in stoelen die ronddraaien aan de uiteinden van drie lange draaiarmen.
+STR_CPTY    :18 passagiers
+
+#WW
+[COFFEECU]
+STR_NAME    :Koffiepot-twist
+STR_DESC    :Passagiers zitten per twee in stoelen die ronddraaien aan de uiteinden van drie lange draaiarmen.
+STR_CPTY    :18 passagiers
+
+#WW
+[FIGHTKIT]
+STR_NAME    :Havik-twist
+STR_DESC    :Passagiers zitten per twee in stoelen die ronddraaien aan de uiteinden van drie lange draaiarmen.
+STR_CPTY    :18 passagiers
+
+#TT
+[GINTSPDR]
+STR_NAME    :B-filmspin-twist
+STR_DESC    :Passagiers zitten per twee in stoelen die rond een reuzenspin uit een B-film draaien.
+STR_CPTY    :18 passagiers
+
+#TT
+[DINOEGGS]
+STR_NAME    :Dinosaurei-twist
+STR_DESC    :Passagiers zitten per twee in stoelen die rond een bewegende moederdinosaurus draaien.
+STR_CPTY    :18 passagiers
+
+#TT
+[NEPTUNEX]
+STR_NAME    :Neptunus-twist
+STR_DESC    :Passagiers zitten per twee in stoelen die rond een bewegend standbeeld van Neptunus draaien.
+STR_CPTY    :18 passagiers
+
+#TT
+[TOMMYGUN]
+STR_NAME    :Tommygun-twist
+STR_DESC    :Passagiers zitten per twee in stoelen die rond een grote replica van een 'Tommy gun' draaien.
+STR_CPTY    :18 passagiers
+
+#CC
+[RIDE4MKY]
+STR_NAME    :Zweefmolen
+STR_DESC    :Passagiers zitten in stoeltjes die onder een molen hangen en naar buiten vliegen als deze gaat draaien.
+STR_CPTY    :18 passagiers
+
+#CC
+[AE-SWING]
+STR_NAME    :Zweefmolen
+STR_DESC    :Passagiers zitten in stoeltjes die onder een molen hangen en naar buiten vliegen als deze gaat draaien. Door "The Amazing Earl".
+STR_CPTY    :18 passagiers
+# End of Twist
+
+# Vertical drop RC / Verticale achtbaan
+[BMVD]
+STR_NAME    :Verticale achtbaan
+STR_DESC    :Extra brede karretjes rijden over een compleet verticale baan voor de ultieme vrijevalbeleving.
+STR_CPTY    :6 passagiers per karretje
+
+#TT
+[VALKYRIE]
+STR_NAME    :Walkürenbaan
+STR_DESC    :Extra brede karretjes rijden over een compleet verticale baan voor de ultieme vrijevalbeleving.
+STR_CPTY    :6 passagiers per karretje
+# End of Vertical drop RC / Verticale achtbaan
+
+# Virginia Reel
+[VREEL]
+STR_NAME    :Virginia Reel
+STR_DESC    :Ronde karretjes gaan over een zigzaggende houten baan en draaien daarbij rond.
+STR_CPTY    :4 passagiers per karretje
+# End of Virginia Reel
+
+# Magic Carpet / Vliegend tapijt
+[MCARPET1]
+STR_NAME    :Vliegend tapijt
+STR_DESC    :Een grote wagen in de vorm van een vliegend tapijt draait rond aan de uiteinden van vier draaiarmen.
+STR_CPTY    :12 passagiers
+# End of Magic Carpet / Vliegend tapijt
+
+# Flying saucers / Vliegende schotels
+[FSAUC]
+STR_NAME    :Vliegende schotels
+STR_DESC    :Vliegende schotels die de passagiers zelf besturen
+STR_CPTY    :1 passagier per karretje
+
+#WW
+[DRAGDODG]
+STR_NAME    :Chinese drakenkoppen
+STR_DESC    :Vliegende schotels die de passagiers zelf besturen
+STR_CPTY    :1 passagier per karretje
+
+#WW
+[SKIDOO]
+STR_NAME    :Sneeuwscooters
+STR_DESC    :Elektrische sneeuwscooters die de passagiers zelf besturen
+STR_CPTY    :1 passagier per karretje
+
+#TT
+[CYCLOPSX]
+STR_NAME    :Cyclopenogen
+STR_DESC    :Passagiers rijden in het oog van een grote cycloop.
+STR_CPTY    :1 passagier per karretje
+
+#TT
+[FLWRPOWR]
+STR_NAME    :Flowerpower-schotels
+STR_DESC    :Vliegende schotels in de vorm van een bloem die de passagiers zelf besturen
+STR_CPTY    :1 passagier per karretje
+# End of Flying saucers / Vliegende schotels
+
+# Water Coaster / Waterachtbaan
+[CSTBOAT]
+STR_NAME    :Boten
+STR_DESC    :Achtbaankarretjes in de vorm van een boot.
+STR_CPTY    :6 passagiers per boot
+
+#WW
+[MANTARAY]
+STR_NAME    :Manta's
+STR_DESC    :Achtbaankarretjes in de vorm van een manta (adelaarsrog).
+STR_CPTY    :6 passagiers per boot
+
+#TT
+[TRILOBTE]
+STR_NAME    :Trilobietenbaan
+STR_DESC    :Bootvormige karretjes in de vorm van trilobiet rijden over achtbaanrails, waardoor ze hellende bochten en diepe afdalingen kunnen maken, waarna ze in bakken water neerplonzen en rustig een stukje kunnen varen.
+STR_CPTY    :6 passagiers per boot
+
+#TT
+[FLYGBOAT]
+STR_NAME    :Vliegende boten
+STR_DESC    :Bootvormige karretjes rijden over achtbaanrails, waardoor ze hellende bochten en diepe afdalingen kunnen maken, waarna ze in bakken water neerplonzen en rustig een stukje kunnen varen.
+STR_CPTY    :6 passagiers per boot
+# End of Water Coaster / Waterachtbaan
+
+# Dinghy Slide / Waterglijbaan
+[DING1]
+STR_NAME    :Waterglijbaan
+STR_DESC    :Passagiers glijden in opblaasboten door een kronkelende halfopen of compleet gesloten glijbaan.
+STR_CPTY    :2 passagiers per bootje
+# End of Dinghy Slide / Waterglijbaan
+
+# (Steel) Wild Mouse / (Stalen) Wilde muis
+[SMC1]
+STR_NAME    :Muiskarretjes
+STR_DESC    :Losse karretjes in de vorm van een muis.
+STR_CPTY    :4 passagiers per karretje
+
+[SMC2]
+STR_NAME    :Mijnkarretjes
+STR_DESC    :Losse karretjes in de vorm van een houten mijnkarretje.
+STR_CPTY    :4 passagiers per karretje
+
+[WMSPIN]
+STR_NAME    :Draaiende wilde muis
+STR_DESC    :Muisvormige karretjes rijden snel door scherpe bochten en korte afdalingen, en draaien daarbij zachtjes rond om de passagiers te desoriënteren.
+STR_CPTY    :4 passagiers per karretje
+# End of (Steel) Wild Mouse / (Stalen) Wilde muis
+
+# River Rapids / Wildwaterbaan
+[RAPBOAT]
+STR_NAME    :Wildwaterbaan
+STR_DESC    :Ronde boten varen door een brede waterbak, waarbij ze de passagiers opwinden door watervallen en schuimende stroomversnellingen.
+STR_CPTY    :8 passagiers per boot
+
+#TT
+[OAKBAREL]
+STR_NAME    :Eikenvatwildwaterbaan
+STR_DESC    :Eikenhouten vaten varen door een brede waterbak, waarbij ze de passagiers opwinden door watervallen en schuimende stroomversnellingen.
+STR_CPTY    :8 passagiers per boot
+# End of River Rapids / Wildwaterbaan
+
+# Side-Friction RC / Zijfrictieachtbaan
+[SFRIC1]
+STR_NAME    :Houten zijfrictiekarretjes
+STR_DESC    :Eenvoudige karretjes voor de zijfrictieachtbaan.
+STR_CPTY    :4 passagiers per karretjes
+# End of Side-Friction RC / Zijfrictieachtbaan
+
+####################################
+# Shops/stalls / Winkels/kraampjes #
+####################################
+
+# Food stalls
+[BURGB]
+STR_NAME    :Hamburgerbar
+STR_DESC    :Een hamburgervormig gebouw dat hamburgers verkoopt.
+
+[COOKST]
+STR_NAME    :Koekwinkel
+STR_DESC    :Een kraam waar grote koeken worden verkocht.
+
+[RSAUS]
+STR_NAME    :Gebradenworstkraam
+STR_DESC    :Een kraam waar Chinese gebraden worst wordt verkocht.
+
+[CHKNUG]
+STR_NAME    :Kipnuggetskraam
+STR_DESC    :Een kraam waar kipnuggets worden verkocht.
+
+[FRNOOD]
+STR_NAME    :Rijstnoedelkraam
+STR_DESC    :Een kraam waar Chinese gebakken rijstnoedels worden verkocht.
+
+[BNOODLES]
+STR_NAME    :Rundernoedelkraam
+STR_DESC    :Een kraam waar Chinese rundernoedels worden verkocht.
+
+[CHCKS]
+STR_NAME    :Gebakkenkipkraam
+STR_DESC    :Een kraam waar bakjes gebakken kip worden verkocht.
+
+[HOTDS]
+STR_NAME    :Hotdogkraam
+STR_DESC    :Een kraam waar hotdogs worden verkocht.
+
+[PIZZS]
+STR_NAME    :Pizzakraam
+STR_DESC    :Een kraam waar stukken pizza worden verkocht.
+
+[SUBSTL]
+STR_NAME    :Broodjeskraam
+STR_DESC    :Een kraam waar broodjes worden verkocht.
+
+[ICECR1]
+STR_NAME    :Vruchtenijskraam
+STR_DESC    :Een gethematiseerde kraam waar vruchtenijs wordt verkocht.
+
+[ICECR2]
+STR_NAME    :Roomijskraam
+STR_DESC    :Een kraam waar roomijs wordt verkocht.
+
+[SQDST]
+STR_NAME    :Zeevruchtenkraam
+STR_DESC    :Een kraam waar gebakken tentakel wordt verkocht.
+
+[WONTON]
+STR_NAME    :Wantansoepkraam
+STR_DESC    :Een kraam waar wantansoep wordt verkocht.
+
+[PRETST]
+STR_NAME    :Krakelingenkraam
+STR_DESC    :Een kraam waar knapperige zoute krakelingen worden verkocht.
+
+[TOFFS]
+STR_NAME    :Kraam met gevulde appels
+STR_DESC    :Een appelvormige kraam waar gevulde appels op een stokje worden verkocht.
+
+[CHPSH]
+STR_NAME    :Frietkot
+STR_DESC    :Een kraam waar friet wordt verkocht.
+
+[CHPSH2]
+STR_NAME    :Frietkraam
+STR_DESC    :Een kraam waar friet wordt verkocht.
+
+[CNDYF]
+STR_NAME    :Suikerspinkraam
+STR_DESC    :Een suikerspinvormige kraam waar roze suikerspinnen worden verkocht.
+
+[MBSOUP]
+STR_NAME    :Soep-met-balletjeskraam
+STR_DESC    :Een kraam waar Chinese soep met balletjes wordt verkocht.
+
+[FUNCAKE]
+STR_NAME    :Oliebollenkraam
+STR_DESC    :Een kraam waar oliebollen worden verkocht.
+
+[DOUGH]
+STR_NAME    :Donutkraam
+STR_DESC    :Een kraam waar donuts worden verkocht.
+
+[POPCS]
+STR_NAME    :Popcornkraam
+STR_DESC    :Een kraam waar grote emmers popcorn worden verkocht.
+
+#TT
+[1920SAND]
+STR_NAME    :Artdeco-kraam
+STR_DESC    :Een kraam waar noedels en frisse limonade worden verkocht.
+
+#TT
+[MEDISOUP]
+STR_NAME    :Heksensoep
+STR_DESC    :Een kraam waar dikke gebonden soep wordt verkocht.
+
+#TT
+[MKTSTAL1]
+STR_NAME    :Marktkraam met gevulde appels
+STR_DESC    :Een marktkraam waar gevulde appels worden verkocht.
+
+#TT
+[MYTHOSEA]
+STR_NAME    :Neptunus' zeevruchtenkraam
+STR_DESC    :Een kraam met Neptunus' zoute lekkernijen.
+# End of Food stalls
+
+# Drink stalls
+[COFFS]
+STR_NAME    :Koffiewinkel
+STR_DESC    :Een winkel in art-decostijl waar kopjes koffie worden verkocht.
+
+[CINDR]
+STR_NAME    :Sujeonggwakraam
+STR_DESC    :Een kraam waar Koreaanse sujeonggwa-drankjes worden verkocht.
+
+[HCHOC]
+STR_NAME    :Warmechocolademelkkraam
+STR_DESC    :Een kraam waar warme chocolademelk wordt verkocht.
+
+[DRNKS]
+STR_NAME    :Frisdrankkraam
+STR_DESC    :Een kraam in de vorm van vier blikjes waar frisdrank wordt verkocht.
+
+[ICETST]
+STR_NAME    :IJstheekraam
+STR_DESC    :Een kraam waar ijsthee wordt verkocht.
+
+[LEMST]
+STR_NAME    :Limonadekraam
+STR_DESC    :Een kraam waar verfrissende limonade wordt verkocht.
+
+[SOYBEAN]
+STR_NAME    :Sojamelkkraam
+STR_DESC    :Een kraam waar pakjes sojamelk worden verkocht.
+
+[STARFRDR]
+STR_NAME    :Vruchtendrankkraam
+STR_DESC    :Een kraam waar vruchtendrankjes worden verkocht.
+
+#TT
+[MKTSTAL2]
+STR_NAME    :Marktkraam met limonade
+STR_DESC    :Een marktkraam waar ouderwetse, frisse limonade wordt verkocht.
+
+#TT
+[MOONJUCE]
+STR_NAME    :Maansap
+STR_DESC    :Een waar de nieuwste soorten frisdrank worden verkocht.
+# End of Drink stalls
+
+# Shops
+[BALLN]
+STR_NAME    :Ballonnenkraam
+STR_DESC    :Een souvenirkraam waar met helium gevulde ballonnen worden verkocht.
+
+[HATST]
+STR_NAME    :Hoedenkraam
+STR_DESC    :Een souvenirkraam waar grote piepschuimen hoeden worden verkocht.
+
+[TSHRT]
+STR_NAME    :T-shirtkraam
+STR_DESC    :Een souvenirkraam waar T-shirts worden verkocht.
+
+[SUNGST]
+STR_NAME    :Zonnebrillenkraam
+STR_DESC    :Een kraam waar allerlei soorten zonnebrillen worden verkocht.
+
+[SOUVS]
+STR_NAME    :Souvenirkraam
+STR_DESC    :Een souvenirkraam waar knuffels en paraplu's worden verkocht.
+
+#TT
+[SOFTOYST]
+STR_NAME    :Knuffelkraam
+STR_DESC    :Een kraam waar schattige zachtige dinosaurusknuffels worden verkocht.
+
+#TT
+[1960TSRT]
+STR_NAME    :'Flower Power'-t-shirtkraam
+STR_DESC    :Een kraam waar t-shirts met bloemmotief worden verkocht.
+# End of Shops
+
+# Toilets
+[TLT1]
+STR_NAME    :Toiletten
+STR_DESC    :Eenvoudige toiletten in een prefab betonnen gebouw.
+
+[TLT2]
+STR_NAME    :Toiletten
+STR_DESC    :Toiletten in een gebouw in blokhutstijl.
+# End of Toilets
+
+# Information Kiosks
+[INFOK]
+STR_NAME    :Informatiekiosk
+STR_DESC    :Een kiosk waar gasten kaarten van het park en paraplu's kunnen kopen.
+
+#CC
+[INFO1MKY]
+STR_NAME    :Informatiekiosk
+STR_DESC    :Een kiosk waar gasten kaarten van het park en paraplu's kunnen kopen.
+
+# End of Information Kiosks
+
+# Cash Machines
+[ATM1]
+STR_NAME    :Geldautomaat
+STR_DESC    :Een geldautomaat die de bezoekers kunnen gebruiken als ze bijna door hun contante geld heen zijn.
+# End of Cash Machines
+
+# First Aid
+[FAID1]
+STR_NAME    :Eerste hulp
+STR_DESC    :Een gebouw waar misselijke gasten sneller kunnen opknappen.
+# End of First Aid
+
+#################################
+# Park Entrances / Parkingangen #
+#################################
+
+[PKENT1]
+STR_NAME    :Traditionele parkingang
+
+[PKEMM]
+STR_NAME    :Parkingang met ijzeren poorten
+
+[PKESFH]
+STR_NAME    :Parkingang met gebouw
+
+#WW
+[AFRICENT]
+STR_NAME    :Parkingang in Afrikaanse stijl
+
+#WW
+[EUROENT]
+STR_NAME    :Parkingang in Europese stijl
+
+#WW
+[ICEENT]
+STR_NAME    :Parkingang in ijsstijl
+
+#WW
+[JAPENT]
+STR_NAME    :Parkingang in Japanse stijl
+
+#WW
+[NAENT]
+STR_NAME    :Parkingang in Noord-Amerikaanse stijl
+
+#WW
+[OZENTRAN]
+STR_NAME    :Parkingang in Australische stijl
+
+#WW
+[SAMERENT]
+STR_NAME    :Parkingang in Zuid-Amerikaanse stijl
+
+#TT
+[1920SENT]
+STR_NAME    :Parkingang in 'Roaring Twenties'-stijl
+
+#TT
+[FUTURENT]
+STR_NAME    :Futuristische parkingang
+
+#TT
+[GLDYRENT]
+STR_NAME    :Parkingang in 'rock 'n' roll'-stijl
+
+#TT
+[JURASENT]
+STR_NAME    :Parkingang in prehistorische stijl
+
+#TT
+[MEDIENTR]
+STR_NAME    :Parkingang in middeleeuwse stijl
+
+#TT
+[MYTHENTR]
+STR_NAME    :Parkingang in mythologische stijl
+#########
+# Water #
+#########
+
+[WTRCYAN]
+STR_NAME    :Natuurlijk water
+
+[WTRGREEN]
+STR_NAME    :Gifgroen water
+
+[WTRGRN]
+STR_NAME    :Groen water
+
+[WTRORNG]
+STR_NAME    :Oranje water
+
+#OCC
+[WTRPINK]
+STR_NAME    :Roze water
+
+#################
+# Paths / Paden #
+#################
+
+[PATHASH]
+STR_NAME    :Voetpad met aslaag
+
+[PATHCRZY]
+STR_NAME    :Voetpad met onregelmatig plaveisel
+
+[PATHDIRT]
+STR_NAME    :Onverhard voetpad
+
+[PATHSPCE]
+STR_NAME    :Voetpad in ruimtestijl
+
+[ROAD]
+STR_NAME    :Weg
+
+[TARMAC]
+STR_NAME    :Voetpad van asfalt
+
+[TARMACB]
+STR_NAME    :Voetpad van bruin asfalt
+
+[TARMACG]
+STR_NAME    :Voetpad van groen asfalt
+
+#TT
+[1920PATH]
+STR_NAME    :Stoep
+
+#TT
+[FUTRPAT2]
+STR_NAME    :Printplaat-voetpad zonder leuningen
+
+#TT
+[FUTRPATH]
+STR_NAME    :Printplaat-voetpad
+
+#TT
+[JURRPATH]
+STR_NAME    :Rotsachtig voetpad
+
+#TT
+[MEDIPATH]
+STR_NAME    :Houten voetpad
+
+#TT
+[MYTHPATH]
+STR_NAME    :Mozaiek-voetpad
+
+#TT
+[RANBPATH]
+STR_NAME    :Regenboogvoetpad
+
+#################################
+# Scenery groups / Decorgroepen #
+#################################
+
+[SCGABSTR]
+STR_NAME    :Abstract thema
+
+[SCGCANDY]
+STR_NAME    :Gigantisch-snoep-thema
+
+[SCGCLASS]
+STR_NAME    :Klassiek/Romeins thema
+
+[SCGEGYPT]
+STR_NAME    :Egyptisch thema
+
+[SCGFENCE]
+STR_NAME    :Hekken en muren
+
+[SCGGARDN]
+STR_NAME    :Bloemen
+
+[SCGGIANT]
+STR_NAME    :Gigantische-tuin-thema
+
+[SCGHALLO]
+STR_NAME    :Eng thema
+
+[SCGINDUS]
+STR_NAME    :Mechanisch thema
+
+[SCGJUNGL]
+STR_NAME    :Junglethema
+
+[SCGJURAS]
+STR_NAME    :Jurassisch thema
+
+[SCGMART]
+STR_NAME    :Marsthema
+
+[SCGMEDIE]
+STR_NAME    :Middeleeuws thema
+
+[SCGMINE]
+STR_NAME    :Mijnthema
+
+[SCGORIEN]
+STR_NAME    :Pagodethema
+
+[SCGPATHX]
+STR_NAME    :Borden en onderdelen voor voetpaden
+
+[SCGPIRAT]
+STR_NAME    :Piratenthema
+
+[SCGSHRUB]
+STR_NAME    :Struiken en ornamenten
+
+[SCGSIXFL]
+STR_NAME    :Six Flags-thema
+
+[SCGSNOW]
+STR_NAME    :Sneeuw- en ijsthema
+
+[SCGSPACE]
+STR_NAME    :Ruimtethema
+
+[SCGSPOOK]
+STR_NAME    :Spookthema
+
+[SCGSPORT]
+STR_NAME    :Sportthema
+
+[SCGTREES]
+STR_NAME    :Bomen
+
+[SCGURBAN]
+STR_NAME    :Stadsthema
+
+[SCGWALLS]
+STR_NAME    :Muren en daken
+
+[SCGWATER]
+STR_NAME    :Waterthema
+
+[SCGWOND]
+STR_NAME    :Wonderlandthema
+
+[SCGWWEST]
+STR_NAME    :Wildwestthema
+
+#WW
+[SCGAFRIC]
+STR_NAME    : Afrikaans thema
+
+#WW
+[SCGARTIC]
+STR_NAME    : Antarcticathema
+
+#WW
+[SCGASIA]
+STR_NAME    : Aziatisch thema
+
+#WW
+[SCGAUSTR]
+STR_NAME    : Australisch thema
+
+#WW
+[SCGEUROP]
+STR_NAME    : Europees thema
+
+#WW
+[SCGNAMRC]
+STR_NAME    : Noord-Amerikaans thema
+
+#WW
+[SCGSAMER]
+STR_NAME    : Zuid-Amerikaans thema
+
+#TT
+[SCG1920S]
+STR_NAME    :  'Roaring Twenties'-thema
+
+#TT
+[SCG1920W]
+STR_NAME    :  'Roaring Twenties'-muren
+
+#TT
+[SCG1960S]
+STR_NAME    :  'Rock 'n' roll'-thema
+
+#TT
+[SCGFUTUR]
+STR_NAME    :  Toekomstthema
+
+#TT
+[SCGJURRA]
+STR_NAME    :  Prehistorisch thema
+
+#TT
+[SCGMEDIV]
+STR_NAME    :  'Donkere eeuwen'-thema
+
+#TT
+[SCGMYTHO]
+STR_NAME    :  Mythologisch thema
+
+#################
+# Large objects #
+#################
+[GLTHENT]
+STR_NAME    :'Goliath'-bord
+
+[MDSAENT]
+STR_NAME    :'Medusa'-bord
+
+[NITROENT]
+STR_NAME    :'Nitro'-bord
+
+[SHS1]
+STR_NAME    :Rijtjeshuis
+
+#########
+# Walls #
+#########
+[WALLTXGT]
+STR_NAME    :'Texas Giant'-bord
+
+##################
+# Path additions #
+##################
+[BENCHPL]
+STR_NAME    :Stadionstoeltjes
+
+[BENCHSTN]
+STR_NAME    :Stenen bank
+
+[JUMPSNW1]
+STR_NAME    :Springende sneeuwballen
+
+[LAMPDSY]
+STR_NAME    :Lamp in madeliefjesvorm
+
+[QTV1]
+STR_NAME    :Wachtrij-tv
+
+#TT
+[MEDBENCH]
+STR_NAME    :Krukjes
+
+#OCC
+[LITTERPA]
+STR_NAME    :Vuilnisbak in pandavorm
+
+###########
+# Banners #
+###########
+[BN1]
+STR_NAME    :Lichtkrant
+
+[BN2]
+STR_NAME    :Lichtkrant in junglestijl
+
+[BN3]
+STR_NAME    :Lichtkrant in Romeinse stijl
+
+[BN4]
+STR_NAME    :Lichtkrant in Egyptische stijl
+
+[BN5]
+STR_NAME    :Lichtkrant in mijnstijl
+
+[BN6]
+STR_NAME    :Lichtkrant in Jurastijl
+
+[BN7]
+STR_NAME    :Lichtkrant in pagodestijl
+
+[BN8]
+STR_NAME    :Besneeuwde lichtkrant
+
+[BN9]
+STR_NAME    :Lichtkrant in ruimtestijl

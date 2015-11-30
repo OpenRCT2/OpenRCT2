@@ -48,6 +48,10 @@ enum {
 
 extern const money32 research_cost_table[4];
 
+extern money32 *gCashHistory;
+extern money32 *gWeeklyProfitHistory;
+extern money32 *gParkValueHistory;
+
 void finance_payment(money32 amount, rct_expenditure_type type);
 void finance_pay_wages();
 void finance_pay_research();
@@ -57,7 +61,8 @@ void finance_reset_history();
 void finance_init();
 void finance_update_daily_profit();
 void finance_shift_expenditure_table();
-void sub_69E869();
+void finance_update_loan_hash();
+void finance_reset_cash_to_initial();
 
 void finance_set_loan(money32 loan);
 money32 finance_get_initial_cash();

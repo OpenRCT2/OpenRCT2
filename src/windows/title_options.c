@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -31,40 +31,39 @@ static rct_widget window_title_options_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_title_options_emptysub() {}
-static void window_title_options_paint();
-static void window_title_options_mouseup();
-static void window_title_options_invalidate();
+static void window_title_options_mouseup(rct_window *w, int widgetIndex);
+static void window_title_options_invalidate(rct_window *w);
+static void window_title_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void* window_title_options_events[] = {
-	window_title_options_emptysub,
+static rct_window_event_list window_title_options_events = {
+	NULL,
 	window_title_options_mouseup,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
-	window_title_options_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_title_options_invalidate,
 	window_title_options_paint,
-	window_title_options_emptysub
+	NULL
 };
 
 /**
@@ -75,9 +74,9 @@ void window_title_options_open()
 	rct_window* window;
 
 	window = window_create(
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 80, 0,
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 80, 0,
 		80, 12,
-		(uint32*)window_title_options_events,
+		&window_title_options_events,
 		WC_TITLE_OPTIONS,
 		WF_STICK_TO_BACK | WF_TRANSPARENT
 	);
@@ -86,13 +85,8 @@ void window_title_options_open()
 	window_init_scroll_widgets(window);
 }
 
-static void window_title_options_mouseup()
+static void window_title_options_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0)
 		return;
 
@@ -100,19 +94,12 @@ static void window_title_options_mouseup()
 		window_options_open();
 }
 
-static void window_title_options_paint()
+static void window_title_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 }
 
-static void window_title_options_invalidate()
+static void window_title_options_invalidate(rct_window *w)
 {
-	rct_window *w;
-	window_get_register(w);
 	colour_scheme_update(w);
 }

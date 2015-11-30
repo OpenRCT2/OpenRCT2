@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
@@ -49,16 +49,21 @@ enum STAFF_ORDERS{
 	STAFF_ORDERS_FIX_RIDES = (1 << 1)
 };
 
+extern uint32 *gStaffPatrolAreas;
+extern uint8 *gStaffModes;
+
 void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_hire_new_staff_member(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_staff_order(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_staff_patrol(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_fire_staff_member(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
+void staff_reset_modes();
 void update_staff_colour(uint8 staffType, uint16 color);
 uint16 hire_new_staff_member(uint8 staffType);
 void staff_update_greyed_patrol_areas();
 int mechanic_is_location_in_patrol(rct_peep *mechanic, int x, int y);
 void staff_reset_stats();
+bool staff_is_patrol_area_set(int staffIndex, int x, int y);
 
 #endif

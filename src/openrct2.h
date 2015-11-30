@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -31,14 +31,17 @@ enum {
 };
 
 extern int gOpenRCT2StartupAction;
-extern char gOpenRCT2StartupActionPath[512];
-extern char gExePath[MAX_PATH];
+extern utf8 gOpenRCT2StartupActionPath[512];
+extern utf8 gExePath[MAX_PATH];
+extern utf8 gCustomUserDataPath[MAX_PATH];
 extern bool gOpenRCT2Headless;
 extern bool gOpenRCT2ShowChangelog;
 
+void openrct2_write_full_version_info(utf8 *buffer, size_t bufferSize);
 bool openrct2_initialise();
 void openrct2_launch();
 void openrct2_dispose();
 void openrct2_finish();
+void openrct2_reset_object_tween_locations();
 
 #endif

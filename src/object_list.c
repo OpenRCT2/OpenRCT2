@@ -8,23 +8,29 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
 #include "addresses.h"
+#include "config.h"
 #include "localisation/localisation.h"
 #include "object.h"
 #include "platform/platform.h"
 #include "ride/track.h"
 #include "util/sawyercoding.h"
 #include "game.h"
+#include "rct1.h"
+#include "world/entrance.h"
+#include "world/footpath.h"
+#include "world/scenery.h"
+#include "world/water.h"
 
 #define OBJECT_ENTRY_GROUP_COUNT 11
 #define OBJECT_ENTRY_COUNT 721
@@ -92,7 +98,7 @@ static void load_object_filter(rct_object_entry* entry, uint8* chunk, rct_object
 
 static rct_object_filters *_installedObjectFilters = NULL;
 
-static void get_plugin_path(char *outPath)
+static void get_plugin_path(utf8 *outPath)
 {
 	platform_get_user_directory(outPath, NULL);
 	strcat(outPath, "plugin.dat");
@@ -100,8 +106,8 @@ static void get_plugin_path(char *outPath)
 
 static void object_list_sort()
 {
-	rct_object_entry **objectBuffer, *newBuffer, *entry, *destEntry, *lowestEntry;
-	rct_object_filters *newFilters, *destFilter;
+	rct_object_entry **objectBuffer, *newBuffer, *entry, *destEntry, *lowestEntry = NULL;
+	rct_object_filters *newFilters = NULL, *destFilter = NULL;
 	int numObjects, i, j, bufferSize, entrySize, lowestIndex;
 	char *objectName, *lowestString;
 	uint8 *copied;
@@ -109,7 +115,7 @@ static void object_list_sort()
 	objectBuffer = &RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
 	numObjects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32);
 	copied = calloc(numObjects, sizeof(uint8));
-	
+
 	// Get buffer size
 	entry = *objectBuffer;
 	for (i = 0; i < numObjects; i++)
@@ -160,7 +166,7 @@ static void object_list_sort()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A93CD
  */
 static void object_list_examine()
@@ -231,7 +237,7 @@ static int object_list_query_directory(int *outTotalFiles, uint64 *outTotalFileS
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A8B40
  */
 void object_list_load()
@@ -276,6 +282,7 @@ void object_list_load()
 	uint32 fileCount = 0;
 	uint32 objectCount = 0;
 	uint32 current_item_offset = 0;
+	uint32 next_offset = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_ORIGINAL_RCT2_OBJECT_COUNT, uint32) = 0;
 
 	log_verbose("building cache of available objects...");
@@ -284,17 +291,17 @@ void object_list_load()
 		free(_installedObjectFilters);
 		_installedObjectFilters = NULL;
 	}
-	
+
 	enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char));
 	if (enumFileHandle != INVALID_HANDLE) {
 		uint32 installed_buffer_size = 0x1000;
-		
+
 		while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo)) {
 			fileCount++;
 
 			if ((installed_buffer_size - current_item_offset) <= 2842){
 				installed_buffer_size += 0x1000;
-				RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*) = rct2_realloc(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*), installed_buffer_size);			
+				RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*) = rct2_realloc(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*), installed_buffer_size);
 				if (RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, int) == -1){
 					log_error("Failed to allocate memory for object list");
 					rct2_exit_reason(835, 3162);
@@ -317,10 +324,13 @@ void object_list_load()
 			rct_object_entry* installed_entry = (rct_object_entry*)(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, uint8*) + current_item_offset);
 			rct_object_filters filter;
 
-			current_item_offset += install_object_entry(&entry, installed_entry, enumFileInfo.path, &filter);
-			_installedObjectFilters[objectCount] = filter;
+			next_offset = install_object_entry(&entry, installed_entry, enumFileInfo.path, &filter);
+			if (next_offset) {
+				current_item_offset += next_offset;
 
-			objectCount++;
+				_installedObjectFilters[objectCount] = filter;
+				objectCount++;
+			}
 		}
 		platform_enumerate_files_end(enumFileHandle);
 	}
@@ -341,20 +351,20 @@ void object_list_load()
 static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int fileDateModifiedChecksum)
 {
 	char path[MAX_PATH];
-	FILE *file;
+	SDL_RWops *file;
 	rct_plugin_header pluginHeader;
 	uint32 filterVersion = 0;
 
 	log_verbose("loading object list cache (plugin.dat)");
 
 	get_plugin_path(path);
-	file = fopen(path, "rb");
+	file = SDL_RWFromFile(path, "rb");
 	if (file == NULL) {
 		log_verbose("Unable to load %s", path);
 		return 0;
 	}
 
-	if (fread(&pluginHeader, sizeof(rct_plugin_header), 1, file) == 1) {
+	if (SDL_RWread(file, &pluginHeader, sizeof(rct_plugin_header), 1) == 1) {
 		// Check if object repository has changed in anyway
 		if (
 			pluginHeader.total_files == totalFiles &&
@@ -369,20 +379,20 @@ static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int file
 
 			// Read installed object list
 			RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*) = rct2_malloc(pluginHeader.object_list_size);
-			if (fread(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*), pluginHeader.object_list_size, 1, file) == 1) {
+			if (SDL_RWread(file, RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*), pluginHeader.object_list_size, 1) == 1) {
 				RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) = pluginHeader.object_list_no_items;
 
 				if (pluginHeader.object_list_no_items != (pluginHeader.total_files & 0xFFFFFF))
 					log_error("Potential mismatch in file numbers. Possible corrupt file. Consider deleting plugin.dat.");
 
-				if (fread(&filterVersion, sizeof(filterVersion), 1, file) == 1) {
+				if (SDL_RWread(file, &filterVersion, sizeof(filterVersion), 1) == 1) {
 					if (filterVersion == FILTER_VERSION) {
 						if (_installedObjectFilters)
 							free(_installedObjectFilters);
 						_installedObjectFilters = malloc(sizeof(rct_object_filters) * pluginHeader.object_list_no_items);
-						if (fread(_installedObjectFilters, sizeof(rct_object_filters) * pluginHeader.object_list_no_items, 1, file) == 1) {
-							
-							fclose(file);
+						if (SDL_RWread(file, _installedObjectFilters, sizeof(rct_object_filters) * pluginHeader.object_list_no_items, 1) == 1) {
+
+							SDL_RWclose(file);
 							reset_loaded_objects();
 							object_list_examine();
 							return 1;
@@ -405,11 +415,11 @@ static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int file
 			log_info("Objects files have been updated... updating object list cache");
 		}
 
-		fclose(file);
+		SDL_RWclose(file);
 		return 0;
 	}
 
-	fclose(file);
+	SDL_RWclose(file);
 
 	log_error("loading object list cache failed");
 	return 0;
@@ -417,11 +427,11 @@ static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int file
 
 static int object_list_cache_save(int fileCount, uint64 totalFileSize, int fileDateModifiedChecksum, int currentItemOffset)
 {
-	char path[MAX_PATH];
-	FILE *file;
+	utf8 path[MAX_PATH];
+	SDL_RWops *file;
 	rct_plugin_header pluginHeader;
 	uint32 filterVersion = FILTER_VERSION;
-	
+
 	log_verbose("saving object list cache (plugin.dat)");
 
 	pluginHeader.total_files = fileCount | 0x01000000;
@@ -431,17 +441,17 @@ static int object_list_cache_save(int fileCount, uint64 totalFileSize, int fileD
 	pluginHeader.object_list_no_items = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32);
 
 	get_plugin_path(path);
-	file = fopen(path,"wb");
+	file = SDL_RWFromFile(path,"wb");
 	if (file == NULL) {
 		log_error("Failed to save %s", path);
 		return 0;
 	}
 
-	fwrite(&pluginHeader, sizeof(rct_plugin_header), 1, file);
-	fwrite(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, uint8*), pluginHeader.object_list_size, 1, file);
-	fwrite(&filterVersion, sizeof(filterVersion), 1, file);
-	fwrite(_installedObjectFilters, sizeof(rct_object_filters) * RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32), 1, file);
-	fclose(file);
+	SDL_RWwrite(file, &pluginHeader, sizeof(rct_plugin_header), 1);
+	SDL_RWwrite(file, RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, uint8*), pluginHeader.object_list_size, 1);
+	SDL_RWwrite(file, &filterVersion, sizeof(filterVersion), 1);
+	SDL_RWwrite(file, _installedObjectFilters, sizeof(rct_object_filters) * RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32), 1);
+	SDL_RWclose(file);
 	return 1;
 }
 
@@ -449,6 +459,30 @@ int check_object_entry(rct_object_entry *entry)
 {
 	uint32 *dwords = (uint32*)entry;
 	return (0xFFFFFFFF & dwords[0] & dwords[1] & dwords[2] & dwords[3]) + 1 != 0;
+}
+
+/* rct2: 0x006AB344 */
+void object_create_identifier_name(char* string_buffer, const rct_object_entry* object){
+	for (uint8 i = 0; i < 8; ++i){
+		if (object->name[i] != ' '){
+			*string_buffer++ = object->name[i];
+		}
+	}
+
+	*string_buffer++ = '/';
+
+	for (uint8 i = 0; i < 4; ++i){
+		uint8 flag_part = (object->flags >> (i * 8)) & 0xFF;
+		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, char)[flag_part >> 4];
+		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, char)[flag_part & 0xF];
+	}
+
+	for (uint8 i = 0; i < 4; ++i){
+		uint8 checksum_part = (object->checksum >> (i * 8)) & 0xFF;
+		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, char)[checksum_part >> 4];
+		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, char)[checksum_part & 0xF];
+	}
+	*string_buffer++ = '\0';
 }
 
 /* rct2: 0x675827 */
@@ -463,7 +497,7 @@ void set_load_objects_fail_reason(){
 
 		format_string(string_buffer, 3323, 0); //Missing object data, ID:
 
-		RCT2_CALLPROC_X(0x6AB344, 0, 0, 0, 0, 0, (int)string_buffer, 0x13CE952);
+		object_create_identifier_name(string_buffer, object);
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 0xFF;
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3165;
 		return;
@@ -485,10 +519,10 @@ void set_load_objects_fail_reason(){
 }
 
 /**
- * 
+ *
  *  rct2: 0x006AA0C6
  */
-int object_read_and_load_entries(FILE *file)
+int object_read_and_load_entries(SDL_RWops* rw)
 {
 	object_unload_all();
 
@@ -499,7 +533,7 @@ int object_read_and_load_entries(FILE *file)
 
 	// Read all the object entries
 	entries = malloc(OBJECT_ENTRY_COUNT * sizeof(rct_object_entry));
-	sawyercoding_read_chunk(file, (uint8*)entries);
+	sawyercoding_read_chunk(rw, (uint8*)entries);
 
 	uint8 load_fail = 0;
 	// Load each object
@@ -523,7 +557,7 @@ int object_read_and_load_entries(FILE *file)
 		}
 	}
 
-	free(entries);	
+	free(entries);
 	if (load_fail){
 		object_unload_all();
 		RCT2_GLOBAL(0x14241BC, uint32) = 0;
@@ -537,7 +571,7 @@ int object_read_and_load_entries(FILE *file)
 
 
 /**
- * 
+ *
  *  rct2: 0x006A9CE8
  */
 void object_unload_all()
@@ -547,7 +581,7 @@ void object_unload_all()
 	for (i = 0; i < OBJECT_ENTRY_GROUP_COUNT; i++)
 		for (j = 0; j < object_entry_group_counts[i]; j++)
 			if (object_entry_groups[i].chunks[j] != (uint8*)0xFFFFFFFF)
-				object_unload(j, &object_entry_groups[i].entries[j]);
+				object_unload((rct_object_entry*)&object_entry_groups[i].entries[j]);
 
 	reset_loaded_objects();
 }
@@ -597,7 +631,7 @@ void object_list_create_hash_table()
 
 		// Set hash table slot
 		_installedObjectHashTable[index] = installedObject;
-		
+
 		// Next installed object
 		installedObject = object_get_next(installedObject);
 	}
@@ -611,8 +645,8 @@ int find_object_in_entry_group(rct_object_entry* entry, uint8* entry_type, uint8
 	*entry_type = entry->flags & 0xF;
 
 	rct_object_entry_group entry_group = object_entry_groups[*entry_type];
-	for (*entry_index = 0; 
-		*entry_index < object_entry_group_counts[*entry_type]; 
+	for (*entry_index = 0;
+		*entry_index < object_entry_group_counts[*entry_type];
 		++(*entry_index),
 		entry_group.chunks++,
 		entry_group.entries++){
@@ -643,6 +677,33 @@ rct_object_entry *object_list_find(rct_object_entry *entry)
 	return NULL;
 }
 
+rct_string_id object_get_name_string_id(rct_object_entry *entry, const void *chunk)
+{
+	int objectType = entry->flags & 0x0F;
+	switch (objectType) {
+	case OBJECT_TYPE_RIDE:
+		return ((rct_ride_type*)chunk)->name;
+	case OBJECT_TYPE_SMALL_SCENERY:
+	case OBJECT_TYPE_LARGE_SCENERY:
+	case OBJECT_TYPE_WALLS:
+	case OBJECT_TYPE_BANNERS:
+	case OBJECT_TYPE_PATH_BITS:
+		return ((rct_scenery_entry*)chunk)->name;
+	case OBJECT_TYPE_PATHS:
+		return ((rct_path_type*)chunk)->string_idx;
+	case OBJECT_TYPE_SCENERY_SETS:
+		return ((rct_scenery_set_entry*)chunk)->name;
+	case OBJECT_TYPE_PARK_ENTRANCE:
+		return ((rct_entrance_type*)chunk)->string_idx;
+	case OBJECT_TYPE_WATER:
+		return ((rct_water_type*)chunk)->string_idx;
+	case OBJECT_TYPE_SCENARIO_TEXT:
+		return ((rct_stex_entry*)chunk)->scenario_name;
+	default:
+		return STR_NONE;
+	}
+}
+
 /* Installs an  object_entry at the desired installed_entry address
  * Returns the size of the new entry. Will return 0 on failure.
  */
@@ -653,7 +714,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 	memcpy(installed_entry_pointer, entry, sizeof(rct_object_entry));
 	installed_entry_pointer += sizeof(rct_object_entry);
 
-	strcpy(installed_entry_pointer, path);
+	strcpy((char *)installed_entry_pointer, path);
 	while (*installed_entry_pointer++);
 
 	// Chunk size is set to unknown
@@ -698,7 +759,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 			log_error("Incorrect number of vanilla RCT2 objects.");
 			RCT2_GLOBAL(RCT2_ADDRESS_ORIGINAL_RCT2_OBJECT_COUNT, uint32)--;
 			RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32)--;
-			object_unload(objectType, (rct_object_entry_extended*)entry);
+			object_unload(entry);
 			return 0;
 		}
 	}
@@ -709,28 +770,14 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 	load_object_filter(entry, chunk, filter);
 
-
-	// When made of two parts i.e Wooden Roller Coaster (Dream Woodie Cars)
-	if ((objectType == OBJECT_TYPE_RIDE) && !((((rct_ride_type*)chunk)->flags) & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME)) {
-		rct_ride_type* ride_type = (rct_ride_type*)chunk;
-		rct_string_id obj_string = ride_type->ride_type[0];
-		if (obj_string == 0xFF){
-			obj_string = ride_type->ride_type[1];
-			if (obj_string == 0xFF) {
-				obj_string = ride_type->ride_type[2];
-			}
-		}
-
-		format_string(installed_entry_pointer, obj_string + 2, 0);
-		strcat(installed_entry_pointer, "\t (");
-		strcat(installed_entry_pointer, language_get_string((rct_string_id)RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32)));
-		strcat(installed_entry_pointer, ")");
-		while (*installed_entry_pointer++);
+	// Always extract only the vehicle type, since the track type is always displayed in the left column, to prevent duplicate track names.
+	rct_string_id nameStringId = object_get_name_string_id(entry, chunk);
+	if (nameStringId == (rct_string_id)STR_NONE) {
+		nameStringId = (rct_string_id)RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32);
 	}
-	else{
-		strcpy(installed_entry_pointer, language_get_string((rct_string_id)RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32)));
-		while (*installed_entry_pointer++);
-	}
+
+	strcpy((char *)installed_entry_pointer, language_get_string(nameStringId));
+	while (*installed_entry_pointer++);
 
 	// This is deceptive. Due to setting the total no images earlier to 0xF26E
 	// this is actually the no_images in this entry.
@@ -758,17 +805,29 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 	uint32 size_of_object = installed_entry_pointer - (uint8*)installed_entry;
 
-	object_unload(objectType, (rct_object_entry_extended*)entry);
+	object_unload(entry);
 
 	return size_of_object;
 }
 
 static void load_object_filter(rct_object_entry* entry, uint8* chunk, rct_object_filters* filter)
 {
+	rct_ride_type *rideType;
+	rct_ride_filters *rideFilter;
+
 	switch (entry->flags & 0xF) {
 	case OBJECT_TYPE_RIDE:
-		filter->ride.category[0] = ((rct_ride_type*)chunk)->category[0];
-		filter->ride.category[1] = ((rct_ride_type*)chunk)->category[1];
+		rideType = ((rct_ride_type*)chunk);
+		rideFilter = &(filter->ride);
+
+		rideFilter->category[0] = rideType->category[0];
+		rideFilter->category[1] = rideType->category[1];
+
+		for (int i = 0; i < 3; i++) {
+			rideFilter->ride_type = rideType->ride_type[i];
+			if (rideFilter->ride_type != 255)
+				break;
+		}
 		break;
 	case OBJECT_TYPE_SMALL_SCENERY:
 	case OBJECT_TYPE_LARGE_SCENERY:

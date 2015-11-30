@@ -46,6 +46,10 @@ const money32 research_cost_table[4] = {
 
 int dword_988E60[] = { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0 };
 
+money32 *gCashHistory = RCT2_ADDRESS(RCT2_ADDRESS_BALANCE_HISTORY, money32);
+money32 *gWeeklyProfitHistory = RCT2_ADDRESS(RCT2_ADDRESS_WEEKLY_PROFIT_HISTORY, money32);
+money32 *gParkValueHistory = RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, money32);
+
 /**
  * Pay an amount of money.
  * rct2: 0x069C674
@@ -62,7 +66,7 @@ void finance_payment(money32 amount, rct_expenditure_type type)
 	RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[type] -= amount;
 	if (dword_988E60[type] & 1)
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32) -= amount; // Cumulative amount of money spent this day
-	
+
 
 	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_MONEY;
 	window_invalidate_by_class(WC_FINANCES);
@@ -143,11 +147,10 @@ void finance_pay_ride_upkeep()
 
 void finance_reset_history()
 {
-	int i;
-	for (i = 0; i < 128; i++) {
-		RCT2_ADDRESS(RCT2_ADDRESS_BALANCE_HISTORY, money32)[i] = MONEY32_UNDEFINED;
-		RCT2_ADDRESS(RCT2_ADDRESS_WEEKLY_PROFIT_HISTORY, money32)[i] = MONEY32_UNDEFINED;
-		RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, money32)[i] = MONEY32_UNDEFINED;
+	for (int i = 0; i < 128; i++) {
+		gCashHistory[i] = MONEY32_UNDEFINED;
+		gWeeklyProfitHistory[i] = MONEY32_UNDEFINED;
+		gParkValueHistory[i] = MONEY32_UNDEFINED;
 	}
 }
 
@@ -168,7 +171,7 @@ void finance_init() {
 	RCT2_GLOBAL(0x01358334, money32) = 0;
 	RCT2_GLOBAL(0x01358338, uint16) = 0;
 
-	RCT2_GLOBAL(0x013573DC, money32) = MONEY(10000,00); // Cheat detection
+	RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = MONEY(10000,00); // Cheat detection
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(MONEY(10000,00));
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = MONEY(10000,00);
@@ -185,7 +188,7 @@ void finance_init() {
 
 	RCT2_GLOBAL(0x013587D8, uint16) = 0x3F;
 
-	sub_69E869();
+	finance_update_loan_hash();
 }
 
 /**
@@ -240,9 +243,9 @@ void finance_update_daily_profit()
 	window_invalidate_by_class(WC_FINANCES);
 }
 
-void sub_69E869()
+// This subroutine is used to mark loan changes as 'legitimate', to prevent cheat detection from incorrectly interfering
+void finance_update_loan_hash()
 {
-	// This subroutine is loan related and is used for cheat detection
 	sint32 value = 0x70093A;
 	value -= RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32);
 	value = ror32(value, 5);
@@ -311,10 +314,10 @@ void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* 
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = newLoan;
 		RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = money;
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(money);
-		sub_69E869();
+		finance_update_loan_hash();
 
 		window_invalidate_by_class(WC_FINANCES);
-		RCT2_GLOBAL(0x009A9804, uint16) |= 1;
+		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= 1;
 	}
 
 	*ebx = 0;
@@ -347,4 +350,13 @@ void finance_shift_expenditure_table() {
 	}
 	// Invalidate the expenditure table window
 	window_invalidate_by_number(0x1C, 0);
+}
+
+/**
+ *
+ *  rct2: 0x0069E89B
+ */
+void finance_reset_cash_to_initial()
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32));
 }

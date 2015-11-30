@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John, Kevin Burke, Matthias Lanzinger
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -27,6 +27,7 @@
 
 #define RCT2_ADDRESS(address, type)				((type*)(address))
 #define RCT2_GLOBAL(address, type)				(*((type*)(address)))
+#ifdef _WIN32
 #define RCT2_CALLPROC(address)					(((void(*)())(address))())
 #define RCT2_CALLFUNC(address, returnType)		(((returnType(*)())(address))())
 
@@ -36,6 +37,16 @@
 #define RCT2_CALLFUNC_4(address, returnType, a1, a2, a3, a4, v1, v2, v3, v4)	(((returnType(*)(a1, a2, a3, a4))(address))(v1, v2, v3, v4))
 #define RCT2_CALLFUNC_5(address, returnType, a1, a2, a3, a4, a5, v1, v2, v3, v4, v5)	(((returnType(*)(a1, a2, a3, a4, a5))(address))(v1, v2, v3, v4, v5))
 #define RCT2_CALLFUNC_6(address, returnType, a1, a2, a3, a4, a5, a6, v1, v2, v3, v4, v5, v6)	(((returnType(*)(a1, a2, a3, a4, a5, a6))(address))(v1, v2, v3, v4, v5, v6))
+#else
+#define RCT2_CALLPROC(address)
+#define RCT2_CALLFUNC(address, returnType)
+#define RCT2_CALLFUNC_1(address, returnType, a1, v1)
+#define RCT2_CALLFUNC_2(address, returnType, a1, a2, v1, v2)
+#define RCT2_CALLFUNC_3(address, returnType, a1, a2, a3, v1, v2, v3)
+#define RCT2_CALLFUNC_4(address, returnType, a1, a2, a3, a4, v1, v2, v3, v4)
+#define RCT2_CALLFUNC_5(address, returnType, a1, a2, a3, a4, a5, v1, v2, v3, v4, v5)
+#define RCT2_CALLFUNC_6(address, returnType, a1, a2, a3, a4, a5, a6, v1, v2, v3, v4, v5, v6)
+#endif // _WIN32
 
 #define RCT2_CALLPROC_1(address, a1, v1)									RCT2_CALLFUNC_1(address, void, a1, v1)
 #define RCT2_CALLPROC_2(address, a1, a2, v1, v2)							RCT2_CALLFUNC_2(address, void, a1, a2, v1, v2)
@@ -55,30 +66,19 @@
 
 #define RCT2_ADDRESS_EASTEREGG_NAMES				0x00988C20
 
-#define RCT2_ADDRESS_RIDE_PROPERTIES				0x00997C9D
+// An array of pointers to the start of a way to
+// translate between scroll positions for drawing
+#define RCT2_ADDRESS_SCROLLING_MODE_POSITIONS		0x00992FB8
+
 #define RCT2_ADDRESS_LAND_TOOL_SIZE					0x009A9800
 #define RCT2_ADDRESS_SAVE_PROMPT_MODE				0x009A9802
 #define RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS		0x009A9804
 #define RCT2_ADDRESS_MAP_TOOLTIP_ARGS				0x009A9808
 
-// #define RCT2_ADDRESS_SCENARIO_LIST				0x009A9FF4
-// #define RCT2_ADDRESS_NUM_SCENARIOS				0x009AA008
-
 #define RCT2_ADDRESS_APP_PATH						0x009AA214
-
-#define RCT2_ADDRESS_DSOUND_GUID					0x009AAC5D
-
-#define RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER			0x009AAC6E
-// When all sounds reversed replace with gConfigSound.ride_music
-#define RCT2_ADDRESS_CONFIG_MUSIC					0x009AAC72
 
 #define RCT2_ADDRESS_CONFIG_FLAGS					0x009AAC74
 
-// MAX vehicle sounds not used anymore
-#define RCT2_ADDRESS_CONFIG_MAX_VEHICLE_SOUNDS		0x009AAC75
-
-#define RCT2_ADDRESS_CONFIG_MAX_NO_SOUNDS			0x009AAC76
-#define RCT2_ADDRESS_CONFIG_SOUND_QUALITY			0x009AAC77
 #define RCT2_ADDRESS_CONFIG_METRIC					0x009AAC78
 #define RCT2_ADDRESS_CONFIG_TEMPERATURE				0x009AAC79
 #define RCT2_ADDRESS_CONFIG_KEYBOARD_SHORTCUTS		0x009AAC7A
@@ -158,6 +158,10 @@
 
 #define RCT2_ADDRESS_VEHICLE_SOUND_LIST				0x009AF288
 
+#define RCT2_ADDRESS_DRAW_SCROLL_LIST				0x009C3840
+
+#define RCT2_ADDRESS_DRAW_SCROLL_NEXT_ID			0x009D7A80
+
 #define RCT2_ADDRESS_INPUT_FLAGS					0x009DE518
 #define RCT2_ADDRESS_CURENT_CURSOR					0x009DE51C
 #define RCT2_ADDRESS_INPUT_STATE					0x009DE51D
@@ -185,6 +189,8 @@
 #define RCT2_ADDRESS_CURRENT_SCROLL_AREA			0x009DE548
 #define RCT2_ADDRESS_CURRENT_SCROLL_ID				0x009DE54C
 
+#define RCT2_ADDRESS_TICKS_SINCE_DRAG_START         0x009DE540
+
 #define RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE			0x009DE550
 #define RCT2_ADDRESS_PICKEDUP_PEEP_X				0x009DE554
 #define RCT2_ADDRESS_PICKEDUP_PEEP_Y				0x009DE556
@@ -193,7 +199,14 @@
 #define RCT2_ADDRESS_CURSOR_OVER_WINDOWNUMBER		0x009DE55E
 #define RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX		0x009DE560
 
+// Of type viewport interaction
+#define RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE		0x009DE570
+
+#define RCT2_ADDRESS_LAST_TICK_COUNT                0x009DE580
+
 #define RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO		0x009DE584
+
+#define RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE        0x009DE588
 
 // Flags:
 // 0x1 Enable selection
@@ -218,6 +231,12 @@
 #define RCT2_ADDRESS_MAP_ARROW_Z					0x009DEA4C
 #define RCT2_ADDRESS_MAP_ARROW_DIRECTION			0x009DEA4E
 
+#define RCT2_ADDRESS_COMMAND_MAP_X					0x009DEA5E
+#define RCT2_ADDRESS_COMMAND_MAP_Y					0x009DEA60
+#define RCT2_ADDRESS_COMMAND_MAP_Z					0x009DEA62
+
+//Counts how many ticks the current screen has been open for
+#define RCT2_ADDRESS_SCREEN_AGE						0x009DEA66
 #define RCT2_ADDRESS_SCREEN_FLAGS					0x009DEA68
 #define RCT2_ADDRESS_SCREENSHOT_COUNTDOWN			0x009DEA6D
 // Note: not only the zeroth bit can be set to control pause
@@ -230,18 +249,11 @@
 
 #define RCT2_ADDRESS_WINDOW_DPI						0x009DEA74
 
+#define RCT2_ADDRESS_WINDOW_UPDATE_TICKS            0x009DEB7C
+
 #define RCT2_ADDRESS_TEXTINPUT_WIDGETINDEX			0x009DEB88
 #define RCT2_ADDRESS_TEXTINPUT_WINDOWNUMBER			0x009DEB8A
 #define RCT2_ADDRESS_TEXTINPUT_WINDOWCLASS			0x009DEB8C
-
-#define RCT2_ADDRESS_DSOUND_BUFFERS					0x009E1AB0
-#define RCT2_ADDRESS_NUM_DSOUND_DEVICES				0x009E2B88
-#define RCT2_ADDRESS_DSOUND_DEVICES					0x009E2B8C
-#define RCT2_ADDRESS_SOUND_EFFECTS_MAPPING			0x009E2B94
-#define RCT2_ADDRESS_SOUNDLIST_BEGIN				0x009E2B98
-#define RCT2_ADDRESS_SOUNDLIST_END					0x009E2B9C
-#define RCT2_ADDRESS_DIRECTSOUND					0x009E2BA0
-#define RCT2_ADDRESS_DSOUND_DEVICES_COUNTER			0x009E2BAC
 
 #define RCT2_ADDRESS_CMDLINE						0x009E2D98
 
@@ -256,6 +268,12 @@
 #define RCT2_ADDRESS_SELECTED_TERRAIN_EDGE			0x009E2E24
 #define RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE		0x009E2E25
 
+#define RCT2_ADDRESS_PARK_ENTRANCE_GHOST_X			0x009E32CC
+#define RCT2_ADDRESS_PARK_ENTRANCE_GHOST_Y			0x009E32CE
+#define RCT2_ADDRESS_PARK_ENTRANCE_GHOST_DIRECTION	0x009E32D1
+#define RCT2_ADDRESS_PARK_ENTRANCE_GHOST_EXISTS		0x009E32D2
+#define RCT2_ADDRESS_PARK_ENTRANCE_GHOST_PRICE		0x009E32D3
+
 #define RCT2_ADDRESS_G1_ELEMENTS					0x009EBD28
 
 //Every pixel changed by rain is stored.
@@ -264,6 +282,8 @@
 #define RCT2_ADDRESS_RAIN_PIXEL_STORE				0x00EDF850
 
 #define RCT2_ADDRESS_UNCOMPLETED_RESEARCH_TYPES		0x00EE787C
+
+#define RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER	0x00F1AD60
 
 #define RCT2_ADDRESS_MAP_IMAGE_DATA					0x00F1AD68
 
@@ -298,9 +318,16 @@
 // 1 if custom objects installed, 0 otherwise
 #define RCT2_ADDRESS_CUSTOM_OBJECTS_INSTALLED		0x00F42BDA
 
+#define RCT2_ADDRESS_SELECTED_OBJECTS_FILE_SIZE		0x00F4340D
+
 #define RCT2_ADDRESS_VOLUME_ADJUST_ZOOM				0x00F438AC
 
 #define RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX		0x00F43908
+
+// Each character is painted onto a drawing surface
+// any coloured pixels are marked in this bitmap
+// 8 x 8 in size.
+#define RCT2_ADDRESS_CHARACTER_BITMAP				0x00F4393C
 
 #define RCT2_ADDRESS_TRACK_PREVIEW_ROTATION			0x00F440AE
 
@@ -318,14 +345,27 @@
 
 #define RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE	0x00F44152
 
+#define RCT2_ADDRESS_ABOVE_GROUND_FLAGS				0x00F441D4
 #define RCT2_ADDRESS_TRACK_LIST						0x00F441EC
 
+#define RCT2_ADDRESS_SCENERY_COST					0x00F64EB4
+#define RCT2_ADDRESS_SCENERY_MAP_ELEMENT			0x00F64EBC
+#define RCT2_ADDRESS_SCENERY_ROTATION				0x00F64EC0
+#define RCT2_ADDRESS_GHOST_SCENERY_X				0x00F64EC4
+#define RCT2_ADDRESS_GHOST_SCENERY_Y				0x00F64EC6
+#define RCT2_ADDRESS_GHOST_SCENERY_Z				0x00F64F09
+#define RCT2_ADDRESS_SCENERY_MAP_ELEMENT_TYPE		0x00F64F0C
+#define RCT2_ADDRESS_GHOST_SCENERY_TYPE				0x00F64F0D
+#define RCT2_ADDRESS_SCENERY_TARGET_PATH_INCLINE	0x00F64F0F
+#define RCT2_ADDRESS_GHOST_SCENERY_PATH_OBJECT_TYPE 0x00F64EAC
 #define RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE		0x00F64ECC
 #define RCT2_ADDRESS_SHIFT_PRESS_X_COORDINATE		0x00F64ECE
 #define RCT2_ADDRESS_SHIFT_PRESS_Y_COORDINATE		0x00F64ED0
 #define RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR			0x00F64ED2
 #define RCT2_ADDRESS_SCENERY_Z_COORDINATE			0x00F64ED4
-
+#define RCT2_ADDRESS_SCENERY_SELECTED_OBJECT		0x00F64EDA
+#define RCT2_ADDRESS_SCENERY_TARGET_PATH_TYPE		0x00F64F10
+#define RCT2_ADDRESS_GHOST_SCENERY_WALL_ROTATION	0x00F64F11
 #define RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED		0x00F64F12
 #define RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED		0x00F64F13
 
@@ -336,6 +376,7 @@
 #define RCT2_ADDRESS_SCENARIO_SRAND_0				0x00F663B0
 #define RCT2_ADDRESS_SCENARIO_SRAND_1				0x00F663B4
 #define RCT2_ADDRESS_MAP_ELEMENTS					0x00F663B8
+#define RCT2_ADDRESS_MAP_ELEMENTS_END				0x010E53B8
 
 #define RCT2_ADDRESS_SPRITE_LIST					0x010E63BC
 #define RCT2_ADDRESS_SPRITES_NEXT_INDEX				0x013573BC
@@ -343,6 +384,11 @@
 #define RCT2_ADDRESS_SPRITES_START_PEEP				0x013573C0
 #define RCT2_ADDRESS_SPRITES_START_MISC				0x013573C2
 #define RCT2_ADDRESS_SPRITES_START_LITTER			0x013573C4
+
+#define RCT2_ADDRESS_SPRITES_COUNT_VEHICLE			0x013573CA
+#define RCT2_ADDRESS_SPRITES_COUNT_PEEP				0x013573CC
+#define RCT2_ADDRESS_SPRITES_COUNT_MISC				0x013573CE
+#define RCT2_ADDRESS_SPRITES_COUNT_LITTER			0x013573D0
 
 #define RCT2_ADDRESS_PARK_NAME						0x013573D4
 #define RCT2_ADDRESS_PARK_NAME_ARGS					0x013573D8
@@ -386,9 +432,11 @@
 
 #define RCT2_ADDRESS_PEEP_SPAWNS					0x013573F2
 
+#define RCT2_ADDRESS_GUEST_CHANGE_MODIFIER			0x013573FE
 #define RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL			0x013573FF
 #define RCT2_ADDRESS_EXPENDITURE_TABLE				0x01357848
 
+#define RCT2_ADDRESS_LAST_GUESTS_IN_PARK			0x01357BC8
 #define RCT2_ADDRESS_HANDYMAN_COLOUR				0x01357BCD
 #define RCT2_ADDRESS_MECHANIC_COLOUR				0x01357BCE
 #define RCT2_ADDRESS_SECURITY_COLOUR				0x01357BCF
@@ -425,12 +473,16 @@
 #define RCT2_ADDRESS_RIDE_LIST						0x013628F8
 #define RCT2_ADDRESS_RIDE_COUNT						0x013587C8
 #define RCT2_ADDRESS_RIDE_FLAGS						0x0097CF40
+
+//How many ticks the scenario has existed for
+#define RCT2_ADDRESS_SAVED_AGE						0x01388698
 #define RCT2_ADDRESS_SAVED_VIEW_X					0x0138869A
 #define RCT2_ADDRESS_SAVED_VIEW_Y					0x0138869C
 #define RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION	0x0138869E
 #define RCT2_ADDRESS_RIDE_MEASUREMENTS				0x0138B60C
 
 #define RCT2_ADDRESS_GRASS_SCENERY_TILEPOS			0x013B0E70
+#define RCT2_ADDRESS_STAFF_PATROL_AREAS				0x013B0E72
 
 #define RCT2_ADDRESS_CLIMATE						0x013CA746
 #define RCT2_ADDRESS_CURRENT_WEATHER				0x013CA74A
@@ -451,10 +503,10 @@
 #define RCT2_ADDRESS_CURRENT_FONT_FLAGS				0x013CE9A2
 
 #define RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS		0x013CE9A4
+#define RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT			0x0140E9A4
 #define RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT		0x0141E9AC
 #define RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE		0x0141E9AE
 
-#define RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID	0x0141E9AE
 #define RCT2_ADDRESS_CURRENT_ROTATION				0x0141E9E0
 
 #define RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS			0x0141E9E4
@@ -463,6 +515,7 @@
 
 #define RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER	0x0141ED68
 
+// This value is always 4 times the actual type
 #define RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE			0x0141F56C
 
 #define RCT2_ADDRESS_WATER_RAISE_COST				0x0141F738
@@ -481,7 +534,7 @@
 #define RCT2_ADDRESS_NEW_WINDOW_PTR					0x014234B8
 
 #define RCT2_ADDRESS_VIEWPORT_LIST					0x014234BC
-// Null Terminated list of active viewport pointers. 
+// Null Terminated list of active viewport pointers.
 // This is also the end of RCT2_ADDRESS_VIEWPORT_LIST.
 #define RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY		0x01423570
 
@@ -557,9 +610,9 @@
 
 #define RCT2_ADDRESS_INPUT_QUEUE					0x01424340
 
-#define RCT2_ADDRESS_AUDIO_INFO						0x01425B40
+#define RCT2_ADDRESS_PALETTE						0x01424680
 
-#define RCT2_ADDRESS_SOUND_CHANNEL_LIST				0x014262E0
+#define RCT2_ADDRESS_AUDIO_INFO						0x01425B40
 
 #define RCT2_ADDRESS_COMMON_FORMAT_ARGS             0x013CE952
 
@@ -582,6 +635,7 @@
 #define RCT2_ADDRESS_DPI_LINE_LENGTH_GLOBAL			0x9ABDB0	//uint16 width+pitch
 #define RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS 0x009AA00D
 #define RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_CONFIG	0x009AB4C6
+#define RCT2_ADDRESS_NAUSEA_THRESHOLDS				0x00982390  //uint16
 
 #pragma endregion
 
@@ -596,48 +650,7 @@
  *P = Parity flag
  *All other bits are undefined.
  */
-static int RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp)
-{
-	#ifdef _MSC_VER
-	__asm {
-		push ebp
-		push address
-		mov eax, _eax
-		mov ebx, _ebx
-		mov ecx, _ecx
-		mov edx, _edx
-		mov esi, _esi
-		mov edi, _edi
-		mov ebp, _ebp
-		call [esp]
-		lahf
-		pop ebp
-		pop ebp
-	}
-	#else
-	__asm__ ( "\
-	\n\
-		push ebx \n\
-		push ebp \n\
-		push %[address] 	\n\
-		mov eax, %[_eax] 	\n\
-		mov ebx, %[_ebx] 	\n\
-		mov ecx, %[_ecx] 	\n\
-		mov edx, %[_edx] 	\n\
-		mov esi, %[_esi] 	\n\
-		mov edi, %[_edi] 	\n\
-		mov ebp, %[_ebp] 	\n\
-		call [esp] 	\n\
-		lahf \n\
-		add esp, 4 	\n\
-		pop ebp \n\
-		pop ebx \n\
-	 " : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp) 
-		:
-		: "eax","ecx","edx","esi","edi"
-	);
-	#endif
-}
+int RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp);
 
 static int RCT2_CALLPROC_EBPSAFE(int address)
 {
@@ -655,147 +668,64 @@ static int RCT2_CALLPROC_EBPSAFE(int address)
  *P = Parity flag
  *All other bits are undefined.
  */
-static int RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
+int RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp);
+
+typedef struct {
+	union {
+		int eax;
+		short ax;
+		struct {
+			char al;
+			char ah;
+		};
+	};
+	union {
+		int ebx;
+		short bx;
+		struct {
+			char bl;
+			char bh;
+		};
+	};
+	union {
+		int ecx;
+		short cx;
+		struct {
+			char cl;
+			char ch;
+		};
+	};
+	union {
+		int edx;
+		short dx;
+		struct {
+			char dl;
+			char dh;
+		};
+	};
+	union {
+		int esi;
+		short si;
+	};
+	union {
+		int edi;
+		short di;
+	};
+	union {
+		int ebp;
+		short bp;
+	};
+} registers;
+
+static int RCT2_CALLFUNC_Y(int address, registers *inOut)
 {
-	#ifdef _MSC_VER
-	__asm {
-		// Store C's base pointer
-		push ebp
-		push ebx
-		// Store address to call
-		push address
+	return RCT2_CALLFUNC_X(address, &inOut->eax, &inOut->ebx, &inOut->ecx, &inOut->edx, &inOut->esi, &inOut->edi, &inOut->ebp);
+}
 
-		// Set all registers to the input values
-		mov eax, [_eax]
-		mov eax, [eax]
-		mov ebx, [_ebx]
-		mov ebx, [ebx]
-		mov ecx, [_ecx]
-		mov ecx, [ecx]
-		mov edx, [_edx]
-		mov edx, [edx]
-		mov esi, [_esi]
-		mov esi, [esi]
-		mov edi, [_edi]
-		mov edi, [edi]
-		mov ebp, [_ebp]
-		mov ebp, [ebp]
-
-		// Call function
-		call [esp]
-		
-		// Store output eax
-		push eax
-		push ebp
-		push ebx
-		mov ebp, [esp + 20]
-		mov ebx, [esp + 16]
-
-		// Get resulting ecx, edx, esi, edi registers
-
-		mov eax, [_edi]
-		mov [eax], edi
-		mov eax, [_esi]
-		mov [eax], esi
-		mov eax, [_edx]
-		mov [eax], edx
-		mov eax, [_ecx]
-		mov [eax], ecx
-
-		// Pop ebx reg into ecx
-		pop ecx		
-		mov eax, [_ebx]
-		mov[eax], ecx
-
-		// Pop ebp reg into ecx
-		pop ecx
-		mov eax, [_ebp]
-		mov[eax], ecx
-
-		pop eax
-		// Get resulting eax register
-		mov ecx, [_eax]
-		mov [ecx], eax
-
-		// Save flags as return in eax
-		lahf
-		// Pop address
-		pop ebp
-		
-		pop ebx
-		pop ebp
-	}
-	#else
-	__asm__ ( "\
-	       \n\
-                /* Store C's base pointer*/     \n\
-                push ebp        \n\
-                push ebx        \n\
-        \n\
-                /* Store %[address] to call*/   \n\
-                push %[address]         \n\
-        \n\
-                /* Set all registers to the input values*/      \n\
-                mov eax, [%[_eax]]      \n\
-                mov eax, [eax]  \n\
-                mov ebx, [%[_ebx]]      \n\
-                mov ebx, [ebx]  \n\
-                mov ecx, [%[_ecx]]      \n\
-                mov ecx, [ecx]  \n\
-                mov edx, [%[_edx]]      \n\
-                mov edx, [edx]  \n\
-                mov esi, [%[_esi]]      \n\
-                mov esi, [esi]  \n\
-                mov edi, [%[_edi]]      \n\
-                mov edi, [edi]  \n\
-                mov ebp, [%[_ebp]]      \n\
-                mov ebp, [ebp]  \n\
-        \n\
-                /* Call function*/      \n\
-                call [esp]      \n\
-        \n\
-				/* Store output eax */ \n\
-				push eax \n\
-				push ebp \n\
-				push ebx \n\
-				mov ebp, [esp + 20] \n\
-				mov ebx, [esp + 16] \n\
-                /* Get resulting ecx, edx, esi, edi registers*/       \n\
-                mov eax, [%[_edi]]      \n\
-                mov [eax], edi  \n\
-                mov eax, [%[_esi]]      \n\
-                mov [eax], esi  \n\
-                mov eax, [%[_edx]]      \n\
-                mov [eax], edx  \n\
-                mov eax, [%[_ecx]]      \n\
-                mov [eax], ecx  \n\
-				/* Pop ebx reg into ecx*/ \n\
-				pop ecx		\n\
-				mov eax, [%[_ebx]] \n\
-				mov [eax], ecx \n\
-				\n\
-				/* Pop ebp reg into ecx */\n\
-				pop ecx \n\
-				mov eax, [%[_ebp]] \n\
-				mov [eax], ecx \n\
-				\n\
-				pop eax \n\
-				/* Get resulting eax register*/ \n\
-				mov ecx, [%[_eax]] \n\
-				mov [ecx], eax \n\
-				\n\
-				/* Save flags as return in eax*/  \n\
-				lahf \n\
-				/* Pop address*/ \n\
-				pop ebp \n\
-				\n\
-				pop ebx \n\
-				pop ebp \n\
-	 " : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp) 
-		:
-		: "eax","ecx","edx","esi","edi"
-	);
-	#endif
+static int RCT2_CALLFUNC_Z(int address, const registers *in, registers *out)
+{
+	*out = *in;
+	return RCT2_CALLFUNC_Y(address, out);
 }
 
 #endif

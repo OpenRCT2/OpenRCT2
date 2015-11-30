@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John, Matthias Lanzinger
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -21,6 +21,7 @@
 #pragma warning(disable : 4996) // GetVersionExA deprecated
 
 #include <setjmp.h>
+#include <time.h>
 #include "addresses.h"
 #include "audio/audio.h"
 #include "audio/mixer.h"
@@ -28,25 +29,32 @@
 #include "drawing/drawing.h"
 #include "editor.h"
 #include "game.h"
+#include "interface/chat.h"
 #include "interface/console.h"
 #include "interface/viewport.h"
 #include "intro.h"
 #include "localisation/date.h"
 #include "localisation/localisation.h"
 #include "management/news_item.h"
+#include "network/network.h"
 #include "network/twitch.h"
 #include "object.h"
 #include "openrct2.h"
+#include "peep/staff.h"
 #include "platform/platform.h"
+#include "rct1.h"
 #include "ride/ride.h"
 #include "ride/track.h"
 #include "scenario.h"
 #include "title.h"
+#include "util/util.h"
 #include "world/map.h"
 #include "world/park.h"
 #include "world/climate.h"
 #include "world/scenery.h"
 #include "world/sprite.h"
+
+uint32 gCurrentDrawCount = 0;
 
 typedef struct tm tm_t;
 
@@ -69,10 +77,10 @@ int rct2_init()
 {
 	log_verbose("initialising game");
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, int) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) = 0;
 	RCT2_GLOBAL(0x009AC310, char*) = RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, char*);
 	get_system_time();
-	srand((unsigned int)time(0));
+	util_srand((unsigned int)time(0));
 	RCT2_GLOBAL(0x009DEA69, short) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, short);
 	RCT2_GLOBAL(0x009DEA6B, short) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, short);
 	if (!rct2_init_directories())
@@ -94,10 +102,10 @@ int rct2_init()
 
 	gfx_load_g1();
 	gfx_load_g2();
-	gfx_load_character_widths();
+	font_sprite_initialise_characters();
 	if (!gOpenRCT2Headless) {
 		platform_init();
-		audio_init1();
+		audio_init_ride_sounds_and_info();
 	}
 	viewport_init_all();
 	news_item_init_queue();
@@ -107,7 +115,7 @@ int rct2_init()
 	reset_sprite_list();
 	ride_init_all();
 	window_guest_list_init_vars_a();
-	sub_6BD3A4();
+	staff_reset_modes();
 	map_init(150);
 	park_init();
 	if (!gOpenRCT2Headless)
@@ -130,7 +138,7 @@ int rct2_init()
 }
 
 /**
- * 
+ *
  *  rct2: 0x00683499
  */
 int rct2_init_directories()
@@ -138,33 +146,49 @@ int rct2_init_directories()
 	// windows_get_registry_install_info((rct2_install_info*)0x009AA10C, "RollerCoaster Tycoon 2 Setup", "MS Sans Serif", 0);
 
 	// check install directory
-	if (!platform_directory_exists(gConfigGeneral.game_path)) {
-		log_verbose("install directory does not exist, %s", gConfigGeneral.game_path);
+	if (!platform_original_game_data_exists(gConfigGeneral.game_path)) {
+		log_verbose("install directory does not exist or invalid directory selected, %s", gConfigGeneral.game_path);
 		if (!config_find_or_browse_install_directory()) {
 			log_fatal("Invalid RCT2 installation path. Please correct in config.ini.");
 			return 0;
 	}
 	}
 
+	char separator[] = {platform_get_path_separator(), 0};
+
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), gConfigGeneral.game_path);
 
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), "\\");
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), separator);
 
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char), "\\Saved Games\\");
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char), separator);
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char), "Saved Games");
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char), separator);
 
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), "\\Scenarios\\*.SC6");
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), separator);
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), "Scenarios");
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), separator);
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), "*.SC6");
 
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), "\\Landscapes\\*.SC6");
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), separator);
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), "Landscapes");
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), separator);
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), "*.SC6");
 
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), "\\ObjData\\*.DAT");
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), separator);
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), "ObjData");
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), separator);
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), "*.DAT");
 
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), "\\Tracks\\*.TD?");
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), separator);
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), "Tracks");
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), separator);
+	strcat(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), "*.TD?");
 
 	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH_2, char), RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char));
 	return 1;
@@ -179,7 +203,7 @@ void subsitute_path(char *dest, const char *path, const char *filename)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00674B42
  */
 int rct2_startup_checks()
@@ -189,7 +213,7 @@ int rct2_startup_checks()
 
 	if (!check_files_integrity())
 		return 0;
-	
+
 	return 1;
 }
 
@@ -205,13 +229,37 @@ void rct2_update()
 	#else
 	__asm__ ( "\
 	\n\
-		mov eax, 0x009DE564 	\n\
-		mov [eax], esp 	\n\
+		movl $0x009DE564, %%eax 	\n\
+		movl %%esp, (%%eax) 	\n\
 	 " : : : "eax" );
 	#endif
 
 	if (!setjmp(_end_update_jump))
 		rct2_update_2();
+}
+
+void rct2_draw()
+{
+	redraw_rain();
+	window_update_all();
+	gfx_invalidate_pickedup_peep();
+	gfx_draw_pickedup_peep();
+	update_rain_animation();
+	update_palette_effects();
+
+	chat_draw();
+	console_draw(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo));
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0) {
+		//intro
+	} else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
+		//title
+		DrawOpenRCT2(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 20);
+	} else {
+		//game
+	}
+
+	gCurrentDrawCount++;
 }
 
 int rct2_open_file(const char *path)
@@ -241,7 +289,7 @@ int rct2_open_file(const char *path)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00674C95
  */
 int check_file_paths()
@@ -254,21 +302,21 @@ int check_file_paths()
 }
 
 /**
- * 
+ *
  *  rct2: 0x00674CA5
  */
 int check_file_path(int pathId)
 {
-	const char * path = get_file_path(pathId);
-	HANDLE file = CreateFile(path, FILE_GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS, NULL);
+	const utf8* path = get_file_path(pathId);
+	SDL_RWops *file = SDL_RWFromFile(path, "rb");
 
 	switch (pathId) {
 	case PATH_ID_G1:
-		if (file == INVALID_HANDLE_VALUE) {
+		if (file == NULL) {
 			// A data file is missing from the installation directory. The original implementation
 			// asks for a CD-ROM path at this point and stores it in cdrom_path @ 0x9AA318.
 			// The file_on_cdrom[pathId] @ 0x009AA0B flag is set to 1 as well.
-			// For PATH_ID_SIXFLAGS_MAGICMOUNTAIN and PATH_ID_SIXFLAGS_BUILDYOUROWN,
+			// For PATH_ID_SIXFLAGS_MAGICMOUNTAIN (and the now removed PATH_ID_SIXFLAGS_BUILDYOUROWN),
 			// the original implementation always assumes they are stored on CD-ROM.
 			// This has been removed for now for the sake of simplicity and could be added
 			// later in a more convenient way using the INI file.
@@ -278,30 +326,31 @@ int check_file_path(int pathId)
 		break;
 
 	case PATH_ID_CUSTOM1:
-		if (file != INVALID_HANDLE_VALUE)
-			ride_music_info_list[36]->length = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom1_size @ 0x009AF164
+		if (file != NULL)
+			gRideMusicInfoList[36]->length = (uint32)SDL_RWsize(file); // Store file size in music_custom1_size @ 0x009AF164
 		break;
 
 	case PATH_ID_CUSTOM2:
-		if (file != INVALID_HANDLE_VALUE)
-			ride_music_info_list[37]->length = SetFilePointer(file, 0, 0, FILE_END); // Store file size in music_custom2_size @ 0x009AF16E
+		if (file != NULL)
+			gRideMusicInfoList[37]->length = (uint32)SDL_RWsize(file); // Store file size in music_custom2_size @ 0x009AF16E
 		break;
 	}
 
-	if (file != INVALID_HANDLE_VALUE)
-		CloseHandle(file);
+	if (file != NULL)
+		SDL_RWclose(file);
 
 	return 1;
 }
 
 /**
- * 
+ *
  *  rct2: 0x00674C0B
  */
 int check_files_integrity()
 	{
 	int i;
 	const char *path;
+#ifdef _WIN32
 	HANDLE file;
 		WIN32_FIND_DATA find_data;
 
@@ -319,6 +368,9 @@ int check_files_integrity()
 
 		FindClose(file);
 	}
+#else
+	STUB();
+#endif // _WIN32
 
 	return 1;
 }
@@ -327,32 +379,36 @@ void rct2_update_2()
 {
 	int tick, tick2;
 
-	tick = timeGetTime();
+	tick = SDL_GetTicks();
 
-	tick2 = tick - RCT2_GLOBAL(0x009DE580, sint32);
-	RCT2_GLOBAL(0x009DE588, sint16) = tick2 = min(tick2, 500);
+	tick2 = tick - RCT2_GLOBAL(RCT2_ADDRESS_LAST_TICK_COUNT, sint32);
+	RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, sint16) = tick2 = min(tick2, 500);
 
-	RCT2_GLOBAL(0x009DE580, sint32) = tick;
+	RCT2_GLOBAL(RCT2_ADDRESS_LAST_TICK_COUNT, sint32) = tick;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0)
 		RCT2_GLOBAL(RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO, sint32) += tick2;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 0)
-		RCT2_GLOBAL(0x009DE588, sint16) = 31;
+		RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, sint16) = 31;
 
 	// TODO: screenshot countdown process
+
+	network_update();
 
 	// check_cmdline_arg();
 	// Screens
 	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0)
 		intro_update();
-	else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)
+	else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)
 		title_update();
 	else
 		game_update();
 
+	//stop_completed_sounds(); // removes other sounds that are no longer playing in directsound
+
 	twitch_update();
+	chat_update();
 	console_update();
-	console_draw(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo));
 }
 
 void rct2_endupdate()
@@ -361,12 +417,12 @@ void rct2_endupdate()
 }
 
 /**
- * 
+ *
  *  rct2: 0x00674E6C
  */
-const char *get_file_path(int pathId)
+const utf8 *get_file_path(int pathId)
 {
-	static char path[MAX_PATH]; // get_file_path_buffer @ 0x009E3605
+	static utf8 path[MAX_PATH]; // get_file_path_buffer @ 0x009E3605
 
 	// The original implementation checks if the file is on CD-ROM here (file_on_cdrom[pathId] @ 0x009AA0B1).
 	// If so, the CD-ROM path (cdrom_path @ 0x9AA318) is used instead. This has been removed for now for
@@ -374,7 +430,7 @@ const char *get_file_path(int pathId)
 	strcpy(path, gConfigGeneral.game_path);
 
 	// Make sure base path is terminated with a slash
-	if (strlen(path) == 0 || path[strlen(path) - 1] != '\\')
+	if (strlen(path) == 0 || path[strlen(path) - 1] != platform_get_path_separator())
 	{
 		if (strlen(path) >= MAX_PATH - 1)
 		{
@@ -383,7 +439,8 @@ const char *get_file_path(int pathId)
 			return path;
 		}
 
-		strcat(path, "\\");
+		char separator[] = {platform_get_path_separator(), 0};
+		strcat(path, separator);
 	}
 
 	// Concatenate file path
@@ -393,7 +450,14 @@ const char *get_file_path(int pathId)
 		return path;
 	}
 
+	char *pathp = path + strnlen(path, sizeof(path));
+
 	strcat(path, file_paths[pathId]);
+
+	while (*pathp) {
+		if (*pathp == '\\') *pathp = platform_get_path_separator();
+		pathp++;
+	}
 
 	return path;
 }
@@ -404,6 +468,7 @@ const char *get_file_path(int pathId)
  */
 void get_system_info()
 {
+#ifdef _WIN32
 	OSVERSIONINFO versionInfo;
 	SYSTEM_INFO sysInfo;
 	MEMORYSTATUS memInfo;
@@ -415,10 +480,12 @@ void get_system_info()
 		RCT2_GLOBAL(RCT2_ADDRESS_OS_MINOR_VERSION, uint32) = versionInfo.dwMinorVersion;
 		RCT2_GLOBAL(RCT2_ADDRESS_OS_BUILD_NUMBER, uint32) = versionInfo.dwBuildNumber;
 	} else {
+#endif // _WIN32
 		RCT2_GLOBAL(RCT2_ADDRESS_OS_PLATFORM_ID, uint32) = -1;
 		RCT2_GLOBAL(RCT2_ADDRESS_OS_MAJOR_VERSION, uint32) = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_OS_MINOR_VERSION, uint32) = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_OS_BUILD_NUMBER, uint32) = 0;
+#ifdef _WIN32
 	}
 
 	GetSystemInfo(&sysInfo);
@@ -445,7 +512,7 @@ void get_system_info()
 	HDC screenHandle = GetDC(NULL);
 	if (screenHandle) {
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_CAP_BPP, sint32) = GetDeviceCaps(screenHandle, BITSPIXEL);
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_CAP_RASTER_STRETCH, sint32) = GetDeviceCaps(screenHandle, RASTERCAPS) >> 8; 
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_CAP_RASTER_STRETCH, sint32) = GetDeviceCaps(screenHandle, RASTERCAPS) >> 8;
 		ReleaseDC(NULL, screenHandle);
 	} else {
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_CAP_BPP, sint32) = 0;
@@ -459,6 +526,9 @@ void get_system_info()
 		RCT2_GLOBAL(0x1423C18, sint32) = 1;
 
 	RCT2_GLOBAL(0x01423C20, uint32) = (SDL_HasMMX() == SDL_TRUE);
+#else
+	STUB();
+#endif // _WIN32
 }
 
 
@@ -468,13 +538,12 @@ void get_system_info()
  */
 void get_system_time()
 {
-	SYSTEMTIME systime;
-
-	GetSystemTime(&systime);
-	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, sint16) = systime.wDay;
-	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, sint16) = systime.wMonth;
-	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_YEAR, sint16) = systime.wYear;
-	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAYOFWEEK, sint16) = systime.wDayOfWeek;
+	rct2_date date;
+	platform_get_date(&date);
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, sint16) = date.day;
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, sint16) = date.month;
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_YEAR, sint16) = date.year;
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAYOFWEEK, sint16) = date.day_of_week;
 }
 
 /**
@@ -483,11 +552,10 @@ void get_system_time()
  */
 void get_local_time()
 {
-	SYSTEMTIME systime;
-	GetLocalTime(&systime);
-
-	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_HOUR, sint16) = systime.wHour;
-	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MINUTE, sint16) = systime.wMinute;
+	rct2_time t;
+	platform_get_time(&t);
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_HOUR, sint16) = t.hour;
+	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MINUTE, sint16) = t.minute;
 }
 
 /**
@@ -497,7 +565,12 @@ void get_local_time()
  */
 void *rct2_malloc(size_t numBytes)
 {
+	#ifdef _WIN32
 	return RCT2_CALLFUNC_1(0x004068B2, void*, size_t, numBytes);
+	#else
+	//log_warning("call rct's function");
+	return malloc(numBytes);
+	#endif // _WIN32
 }
 
 /**
@@ -507,14 +580,24 @@ void *rct2_malloc(size_t numBytes)
  */
 void *rct2_realloc(void *block, size_t numBytes)
 {
+	#ifdef _WIN32
 	return RCT2_CALLFUNC_2(0x004068BD, void*, void*, size_t, block, numBytes);
+	#else
+	//log_warning("call rct's function");
+	return realloc(block, numBytes);
+	#endif // _WIN32
 }
 
 /**
  * RCT2 and this DLL can not free each other's allocated memory blocks. Use this to free memory that was allocated by RCT2.
- *  rct2: 0x004068DE
+ *  rct2: 0x004068CD
  */
 void rct2_free(void *block)
 {
-	RCT2_CALLPROC_1(0x004068DE, void*, block);
+	#ifdef _WIN32
+	RCT2_CALLPROC_1(0x004068CD, void*, block);
+	#else
+	//log_warning("call rct's function");
+	free(block);
+	#endif // _WIN32
 }

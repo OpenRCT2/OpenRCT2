@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -68,41 +68,41 @@ static rct_widget window_quit_prompt_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_save_prompt_emptysub() { }
-static void window_save_prompt_close();
-static void window_save_prompt_mouseup();
-static void window_save_prompt_invalidate();
-static void window_save_prompt_paint();
+static void window_save_prompt_close(rct_window *w);
+static void window_save_prompt_mouseup(rct_window *w, int widgetIndex);
+static void window_save_prompt_invalidate(rct_window *w);
+static void window_save_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_save_prompt_callback(int result);
 
-static void* window_save_prompt_events[] = {
+static rct_window_event_list window_save_prompt_events = {
 	window_save_prompt_close,
 	window_save_prompt_mouseup,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
-	window_save_prompt_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_save_prompt_invalidate,
 	window_save_prompt_paint,
-	window_save_prompt_emptysub
+	NULL
 };
 
 /**
@@ -147,7 +147,7 @@ void window_save_prompt_open()
 			}
 		}
 
-		if (RCT2_GLOBAL(0x009DEA66, uint16) < 3840) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) < 3840) {
 			game_load_or_quit_no_save_prompt();
 			return;
 		}
@@ -181,7 +181,7 @@ void window_save_prompt_open()
 	window = window_create_centred(
 		width,
 		height,
-		(uint32*)window_save_prompt_events,
+		&window_save_prompt_events,
 		WC_SAVE_PROMPT,
 		WF_TRANSPARENT | WF_STICK_TO_FRONT
 	);
@@ -192,7 +192,7 @@ void window_save_prompt_open()
 
 	// Pause the game
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) |= 2;
-	pause_sounds();
+	audio_pause_sounds();
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 
 	stringId = prompt_mode + STR_LOAD_GAME_PROMPT_TITLE;
@@ -208,11 +208,11 @@ void window_save_prompt_open()
  *
  *  rct2: 0x0066DF17
  */
-static void window_save_prompt_close()
+static void window_save_prompt_close(rct_window *w)
 {
 	// Unpause the game
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) &= ~2;
-	unpause_sounds();
+	audio_unpause_sounds();
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 }
 
@@ -220,13 +220,8 @@ static void window_save_prompt_close()
  *
  *  rct2: 0x0066DDF2
  */
-static void window_save_prompt_mouseup()
+static void window_save_prompt_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		switch (widgetIndex) {
 		case WQIDX_OK:
@@ -241,11 +236,9 @@ static void window_save_prompt_mouseup()
 	} else {
 		switch (widgetIndex) {
 		case WIDX_SAVE:
-			if (!save_game()) {
-				// user pressed cancel
-				window_close(w);
-				return;
-			}
+			save_game_as();
+			window_close(w);
+			gLoadSaveCallback = window_save_prompt_callback;
 			break;
 		case WIDX_DONT_SAVE:
 			game_load_or_quit_no_save_prompt();
@@ -268,27 +261,21 @@ static void window_save_prompt_mouseup()
 			return;
 		}
 	}
-
-	if (RCT2_GLOBAL(0x009DEA66, uint16) < 3840) {
-		game_load_or_quit_no_save_prompt();
-		return;
-	}
 }
 
-static void window_save_prompt_invalidate()
+static void window_save_prompt_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 }
 
-static void window_save_prompt_paint()
+static void window_save_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
+}
+
+static void window_save_prompt_callback(int result)
+{
+	if (result == MODAL_RESULT_OK) {
+		game_load_or_quit_no_save_prompt();
+	}
 }

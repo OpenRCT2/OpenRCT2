@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -21,10 +21,13 @@
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
+#include "../config.h"
 #include "../drawing/drawing.h"
+#include "../game.h"
 #include "../localisation/date.h"
 #include "../scenario.h"
 #include "../interface/window.h"
+#include "../util/util.h"
 #include "climate.h"
 
 enum {
@@ -42,36 +45,33 @@ typedef struct {
 
 // These still need to be read / written when loading and saving
 // int gClimateNextWeather;
-// 
+//
 // static int _climateCurrentWeatherEffect;
-// 
+//
 // static int _climateNextTemperature;
 // static int _climateNextWeatherEffect;
 // static int _climateNextWeatherGloom;
 // static int _climateNextRainLevel;
 
-#define _climateCurrentWeatherEffect	RCT2_GLOBAL(0x013CA74E, uint8)
+#define _climateCurrentWeatherEffect	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, uint8)
 
-#define _climateNextTemperature			RCT2_GLOBAL(0x013CA74D, uint8)
-#define _climateNextWeatherEffect		RCT2_GLOBAL(0x013CA74F, uint8)
-#define _climateNextWeatherGloom		RCT2_GLOBAL(0x013CA751, uint8)
-#define _climateNextRainLevel			RCT2_GLOBAL(0x013CA753, uint8)
+#define _climateNextTemperature			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, uint8)
+#define _climateNextWeatherEffect		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_EFFECT, uint8)
+#define _climateNextWeatherGloom		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, uint8)
+#define _climateNextRainLevel			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RAIN_LEVEL, uint8)
 
 static const rct_weather_transition* climate_transitions[4];
 
 // Sound data
 static int _rainVolume = 1;
-static rct_sound _rainSoundInstance;
-static void* _rainSoundChannel = 0;
 static unsigned int _lightningTimer, _thunderTimer;
-static rct_sound _thunderSoundInstance[MAX_THUNDER_INSTANCES];
 static void* _thunderSoundChannels[MAX_THUNDER_INSTANCES];
 static int _thunderStatus[MAX_THUNDER_INSTANCES] = { THUNDER_STATUS_NULL, THUNDER_STATUS_NULL };
 static unsigned int _thunderSoundId;
 static int _thunderVolume;
 static int _thunderStereoEcho = 0;
 
-static void climate_determine_future_weather();
+static void climate_determine_future_weather(int randomDistribution);
 
 static void climate_update_rain_sound();
 static void climate_update_thunder_sound();
@@ -105,22 +105,15 @@ void climate_reset(int climate)
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, sint8) = climate_weather_data[weather].effect_level;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8) = climate_weather_data[weather].gloom_level;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = climate_weather_data[weather].rain_level;
-	
+
 	_lightningTimer = 0;
 	_thunderTimer = 0;
 	if (_rainVolume != 1){
-#ifdef USE_MIXER
-		if (_rainSoundChannel) {
-			Mixer_Stop_Channel(_rainSoundChannel);
-			_rainSoundChannel = 0;
-		}
-#else
-		sound_stop(&_rainSoundInstance);
-#endif
+		audio_stop_rain_sound();
 		_rainVolume = 1;
 	}
 
-	climate_determine_future_weather();
+	climate_determine_future_weather(util_rand());
 }
 
 sint8 step_weather_level(sint8 cur_weather_level, sint8 next_weather_level) {
@@ -141,7 +134,7 @@ void toggle_climate_lock()
 /**
  * Weather & climate update iteration.
  * Gradually changes the weather parameters towards their determined next values.
- * 
+ *
  * rct2: 0x006C46B1
  */
 void climate_update()
@@ -167,8 +160,8 @@ void climate_update()
 
 		RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16)--;
 
-	} else if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, sint32) & 0x7F)) {
-		
+	} else if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
+
 		if (temperature == target_temperature) {
 			if (cur_gloom == next_gloom) {
 				_climateCurrentWeatherEffect = _climateNextWeatherEffect;
@@ -177,7 +170,7 @@ void climate_update()
 
 				if (cur_rain == next_rain) {
 					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = gClimateNextWeather;
-					climate_determine_future_weather();
+					climate_determine_future_weather(scenario_rand());
 					RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_CLIMATE;
 				} else if (next_rain <= 2) { // Safe-guard
 					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = step_weather_level(cur_rain, next_rain);
@@ -202,49 +195,49 @@ void climate_force_weather(uint8 weather){
 	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) = 1920;
 
 	climate_update();
-	
+
 	// Incase of change in gloom level force a complete redraw
 	gfx_invalidate_screen();
 }
 
 /**
  * Calculates future weather development.
- * RCT2 implements this as discrete probability distributions dependant on month and climate 
+ * RCT2 implements this as discrete probability distributions dependant on month and climate
  * for next_weather. The other weather parameters are then looked up depending only on the
  * next weather.
  *
  * rct2: 0x006C461C
  */
-static void climate_determine_future_weather()
+static void climate_determine_future_weather(int randomDistribution)
 {
 	sint8 climate = RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8);
 	const rct_weather_transition* climate_table = climate_transitions[climate];
 	sint8 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
 	rct_weather_transition transition = climate_table[month];
-	
+
 	// Generate a random variable with values 0 upto distribution_size-1 and chose weather from the distribution table accordingly
-	sint8 next_weather = transition.distribution[ ((rand() & 0xFF) * transition.distribution_size) >> 8 ];
+	sint8 next_weather = transition.distribution[ ((randomDistribution & 0xFF) * transition.distribution_size) >> 8 ];
 	gClimateNextWeather = next_weather;
 
 	_climateNextTemperature = transition.base_temperature + climate_weather_data[next_weather].temp_delta;
 	_climateNextWeatherEffect = climate_weather_data[next_weather].effect_level;
 	_climateNextWeatherGloom = climate_weather_data[next_weather].gloom_level;
 	_climateNextRainLevel = climate_weather_data[next_weather].rain_level;
-	
+
 	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) = 1920;
 }
 
 /**
- * 
+ *
  * rct2: 0x006BCB91
  */
 void climate_update_sound()
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) == 0xFFFFFFFF)
 		return;
-	if (RCT2_GLOBAL(0x009AF59C, uint8) != 0)
+	if (gGameSoundsOff)
 		return;
-	if (!(RCT2_GLOBAL(0x009AF59D, uint8) & 1))
+	if (!gConfigSound.sound)
 		return;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)
 		return;
@@ -256,48 +249,28 @@ void climate_update_sound()
 static void climate_update_rain_sound()
 {
 	if (_climateCurrentWeatherEffect == 1 || _climateCurrentWeatherEffect == 2) {
+		// Start playing the rain sound
+		if (!gRainSoundChannel) {
+			gRainSoundChannel = Mixer_Play_Effect(SOUND_RAIN_1, MIXER_LOOP_INFINITE, DStoMixerVolume(-4000), 0.5f, 1, 0);
+		}
 		if (_rainVolume == 1) {
-			// Start playing the rain sound
-#ifdef USE_MIXER
-			if (!_rainSoundChannel) {
-				_rainSoundChannel = Mixer_Play_Effect(SOUND_RAIN_1, MIXER_LOOP_INFINITE, DStoMixerVolume(-4000), 0.5f, 1, 0);
-			}
-#else
-			if (sound_prepare(SOUND_RAIN_1, &_rainSoundInstance, 1, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32)))
-				sound_play(&_rainSoundInstance, 1, -4000, 0, 0);
-#endif
 			_rainVolume = -4000;
 		} else {
 			// Increase rain sound
 			_rainVolume = min(-1400, _rainVolume + 80);
-#ifdef USE_MIXER
-			if (_rainSoundChannel) {
-				Mixer_Channel_Volume(_rainSoundChannel, DStoMixerVolume(_rainVolume));
+			if (gRainSoundChannel) {
+				Mixer_Channel_Volume(gRainSoundChannel, DStoMixerVolume(_rainVolume));
 			}
-#else
-			sound_set_volume(&_rainSoundInstance, _rainVolume);
-#endif
 		}
 	} else if (_rainVolume != 1) {
 		// Decrease rain sound
 		_rainVolume -= 80;
 		if (_rainVolume > -4000) {
-#ifdef USE_MIXER
-			if (_rainSoundChannel) {
-				Mixer_Channel_Volume(_rainSoundChannel, DStoMixerVolume(_rainVolume));
+			if (gRainSoundChannel) {
+				Mixer_Channel_Volume(gRainSoundChannel, DStoMixerVolume(_rainVolume));
 			}
-#else
-			sound_set_volume(&_rainSoundInstance, _rainVolume);
-#endif
 		} else {
-#ifdef USE_MIXER
-			if (_rainSoundChannel) {
-				Mixer_Stop_Channel(_rainSoundChannel);
-				_rainSoundChannel = 0;
-			}
-#else
-			sound_stop(&_rainSoundInstance);
-#endif
+			audio_stop_rain_sound();
 			_rainVolume = 1;
 		}
 	}
@@ -327,17 +300,10 @@ static void climate_update_thunder_sound()
 		if (_thunderStatus[i] == THUNDER_STATUS_NULL)
 			continue;
 
-#ifdef USE_MIXER
 		if (!Mixer_Channel_IsPlaying(_thunderSoundChannels[i])) {
 			Mixer_Stop_Channel(_thunderSoundChannels[i]);
 			_thunderStatus[i] = THUNDER_STATUS_NULL;
 		}
-#else
-		if (!sound_is_playing(&_thunderSoundInstance[i])) {
-			sound_stop(&_thunderSoundInstance[i]);
-			_thunderStatus[i] = THUNDER_STATUS_NULL;
-		}
-#endif
 	}
 }
 
@@ -380,20 +346,11 @@ static void climate_update_thunder()
 
 static int climate_play_thunder(int instanceIndex, int soundId, int volume, int pan)
 {
-#ifdef USE_MIXER
 	_thunderSoundChannels[instanceIndex] = Mixer_Play_Effect(soundId, MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), 1, 0);
 	if (_thunderSoundChannels[instanceIndex]) {
 		_thunderStatus[instanceIndex] = THUNDER_STATUS_PLAYING;
 		return 1;
 	}
-#else
-	if (sound_prepare(soundId, &_thunderSoundInstance[instanceIndex], 1, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_SOUND_SW_BUFFER, uint32))) {
-		sound_play(&_thunderSoundInstance[instanceIndex], 0, volume, pan, 0);
-
-		_thunderStatus[instanceIndex] = THUNDER_STATUS_PLAYING;
-		return 1;
-	}
-#endif
 
 	return 0;
 }

@@ -8,18 +8,19 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
 #include "addresses.h"
 #include "platform/platform.h"
+#include "util/util.h"
 #include "scenario.h"
 
 // Scenario list
@@ -43,7 +44,7 @@ rct_scenario_basic *get_scenario_by_filename(const char *filename)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006775A8
  */
 void scenario_load_list()
@@ -89,7 +90,7 @@ static void scenario_list_add(const char *path)
 		return;
 
 	// Ignore scenarios where first header byte is not 255
-	if (s6Info.var_000 != 255)
+	if (s6Info.editor_step != 255)
 		return;
 
 	// Check if scenario already exists in list, likely if in scores
@@ -102,8 +103,8 @@ static void scenario_list_add(const char *path)
 		scenario->objective_arg_1 = s6Info.objective_arg_1;
 		scenario->objective_arg_2 = s6Info.objective_arg_2;
 		scenario->objective_arg_3 = s6Info.objective_arg_3;
-		strcpy(scenario->name, s6Info.name);
-		strcpy(scenario->details, s6Info.details);
+		safe_strncpy(scenario->name, s6Info.name, 64);
+		safe_strncpy(scenario->details, s6Info.details, 256);
 	} else {
 		// Check if the scenario list buffer has room for another scenario
 		if (gScenarioListCount >= gScenarioListCapacity) {
@@ -117,7 +118,7 @@ static void scenario_list_add(const char *path)
 		gScenarioListCount++;
 
 		// Add this new scenario to the list
-		strcpy(scenario->path, path);
+		safe_strncpy(scenario->path, path, 256);
 		scenario->flags = SCENARIO_FLAGS_VISIBLE;
 		if (RCT2_GLOBAL(0x009AA00C, uint8) & 1)
 			scenario->flags |= SCENARIO_FLAGS_SIXFLAGS;
@@ -126,8 +127,8 @@ static void scenario_list_add(const char *path)
 		scenario->objective_arg_1 = s6Info.objective_arg_1;
 		scenario->objective_arg_2 = s6Info.objective_arg_2;
 		scenario->objective_arg_3 = s6Info.objective_arg_3;
-		strcpy(scenario->name, s6Info.name);
-		strcpy(scenario->details, s6Info.details);
+		safe_strncpy(scenario->name, s6Info.name, 64);
+		safe_strncpy(scenario->details, s6Info.details, 256);
 	}
 }
 
@@ -154,19 +155,19 @@ static int scenario_list_sort_compare(const void *a, const void *b)
 /**
  * Gets the path for the scenario scores path.
  */
-static void scenario_scores_get_path(char *outPath)
+static void scenario_scores_get_path(utf8 *outPath)
 {
 	platform_get_user_directory(outPath, NULL);
 	strcat(outPath, "scores.dat");
 }
 
 /**
- * 
+ *
  *  rct2: 0x006775A8
  */
 static int scenario_scores_load()
 {
-	FILE *file;
+	SDL_RWops *file;
 	char scoresPath[MAX_PATH];
 
 	scenario_scores_get_path(scoresPath);
@@ -180,9 +181,9 @@ static int scenario_scores_load()
 	// Try and load the scores file
 
 	// First check user folder and then fallback to install directory
-	file = fopen(scoresPath, "rb");
+	file = SDL_RWFromFile(scoresPath, "rb");
 	if (file == NULL) {
-		file = fopen(get_file_path(PATH_ID_SCORES), "rb");
+		file = SDL_RWFromFile(get_file_path(PATH_ID_SCORES), "rb");
 		if (file == NULL) {
 			log_error("Unable to load scenario scores.");
 			return 0;
@@ -191,8 +192,8 @@ static int scenario_scores_load()
 
 	// Load header
 	rct_scenario_scores_header header;
-	if (fread(&header, 16, 1, file) != 1) {
-		fclose(file);
+	if (SDL_RWread(file, &header, 16, 1) != 1) {
+		SDL_RWclose(file);
 		log_error("Invalid header in scenario scores file.");
 		return 0;
 	}
@@ -202,13 +203,13 @@ static int scenario_scores_load()
 	int scenarioListBufferSize = gScenarioListCount * sizeof(rct_scenario_basic);
 	gScenarioListCapacity = gScenarioListCount;
 	gScenarioList = malloc(scenarioListBufferSize);
-	if (fread(gScenarioList, scenarioListBufferSize, 1, file) == 1) {
-		fclose(file);
+	if (SDL_RWread(file, gScenarioList, scenarioListBufferSize, 1) == 1) {
+		SDL_RWclose(file);
 		return 1;
 	}
 
 	// Unable to load scores, free scenario list
-	fclose(file);
+	SDL_RWclose(file);
 	gScenarioListCount = 0;
 	gScenarioListCapacity = 0;
 	free(gScenarioList);
@@ -217,17 +218,17 @@ static int scenario_scores_load()
 }
 
 /**
- * 
+ *
  *  rct2: 0x00677B50
  */
 int scenario_scores_save()
 {
-	FILE *file;
-	char scoresPath[MAX_PATH];
+	SDL_RWops *file;
+	utf8 scoresPath[MAX_PATH];
 
 	scenario_scores_get_path(scoresPath);
 
-	file = fopen(scoresPath, "wb");
+	file = SDL_RWFromFile(scoresPath, "wb");
 	if (file == NULL) {
 		log_error("Unable to save scenario scores.");
 		return 0;
@@ -236,10 +237,10 @@ int scenario_scores_save()
 	rct_scenario_scores_header header;
 	header.scenario_count = gScenarioListCount;
 
-	fwrite(&header, sizeof(header), 1, file);
+	SDL_RWwrite(file, &header, sizeof(header), 1);
 	if (gScenarioListCount > 0)
-		fwrite(gScenarioList, gScenarioListCount * sizeof(rct_scenario_basic), 1, file);
+		SDL_RWwrite(file, gScenarioList, gScenarioListCount * sizeof(rct_scenario_basic), 1);
 
-	fclose(file);
+	SDL_RWclose(file);
 	return 1;
 }

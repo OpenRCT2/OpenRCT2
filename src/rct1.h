@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -36,6 +36,131 @@ typedef struct {
 	uint16 z;
 	uint8 direction;
 } rct1_entrance;
+
+/**
+ * RCT1 ride structure
+ * size: 0x260
+ */
+typedef struct {
+	uint8 type;
+	uint8 vehicle_type;
+	uint16 lifecycle_flags;
+	uint8 operating_mode;
+	uint8 colour_scheme;
+	uint16 vehicle_colours[12];
+	uint8 track_primary_colour;
+	uint8 track_secondary_colour;
+	uint8 track_support_colour;
+	uint8 status;
+	uint16 name;
+	uint16 name_argument_ride;
+	uint16 name_argument_number;
+	uint16 overall_view;
+	uint16 station_starts[4];
+	uint8 station_height[4];
+	uint8 station_length[4];
+	uint8 station_light[4];
+	uint8 station_depart[4];
+	uint16 entrance[4];
+	uint16 exit[4];
+	uint16 last_peep_in_queue[4];
+	uint8 num_peeps_in_queue[4];
+	uint16 vehicles[12];
+	uint8 depart_flags;
+	uint8 num_stations;
+	uint8 num_trains;
+	uint8 num_cars_per_train;
+	uint8 unk_7A;
+	uint8 unk_7B;
+	uint8 max_trains;
+	uint8 unk_7D;
+	uint8 min_waiting_time;
+	uint8 max_waiting_time;
+	uint8 operation_option;
+	uint8 unk_081[0x3];
+	uint8 data_logging_index;
+	uint8 special_track_elements;
+	uint16 unk_86;
+	sint32 max_speed;
+	sint32 average_speed;
+	uint8 pad_090[4];
+	sint32 length[4];
+	uint16 time[4];
+	fixed16_2dp max_positive_vertical_g;
+	fixed16_2dp max_negative_vertical_g;
+	fixed16_2dp max_lateral_g;
+	uint8 unk_B2[18];
+	union {
+		uint8 num_inversions;
+		uint8 num_holes;
+	};
+	uint8 num_drops;
+	uint8 unk_C6;
+	uint8 highest_drop_height;
+	sint32 sheltered_length;
+	uint8 unk_CC[2];
+	uint8 num_sheltered_sections;
+	uint8 unk_CF;
+	sint16 unk_D0;
+	sint16 unk_D2;
+	sint16 customers_per_hour;
+	sint16 unk_D6;
+	sint16 unk_D8;
+	sint16 unk_DA;
+	sint16 unk_DC;
+	sint16 unk_DE;
+	uint16 age;
+	sint16 running_cost;
+	sint16 unk_E4;
+	sint16 unk_E6;
+	money16 price;
+	sint16 var_EA;
+	sint16 var_EC;
+	uint8 var_EE;
+	uint8 var_EF;
+	union {
+		rating_tuple ratings;
+		struct {
+			ride_rating excitement;
+			ride_rating intensity;
+			ride_rating nausea;
+		};
+	};
+	uint16 value;
+	uint16 var_F8;
+	uint8 satisfaction;
+	uint8 satisfaction_time_out;
+	uint8 satisfaction_next;
+	uint8 window_invalidate_flags;
+	uint8 unk_FE[2];
+	uint32 total_customers;
+	money32 total_profit;
+	uint8 popularity;
+	uint8 popularity_time_out;
+	uint8 popularity_next;
+	uint8 num_riders;
+	uint8 unk_10C[36];
+	sint16 build_date;
+	money16 upkeep_cost;
+	uint8 unk_134[15];
+	uint8 breakdown_reason;
+	uint8 unk_144[2];
+	uint16 reliability;
+	uint8 unreliability_factor;
+	uint8 unk_148;
+	uint8 inspection_interval;
+	uint8 last_inspection;
+	uint8 unk_14C[20];
+	money32 income_per_hour;
+	money32 profit;
+	uint8 queue_time[4];
+	uint8 track_colour_main[4];
+	uint8 track_colour_additional[4];
+	uint8 track_colour_supports[4];
+	uint8 music;
+	uint8 entrance_style;
+	uint8 unk_17A[230];
+} rct1_ride;
 
 /**
  * RCT1,AA,LL scenario / saved game structure.
@@ -166,9 +291,9 @@ typedef struct {
 	rct_research_item research_items_LL[180];
 	uint8 unk_19A020[5468];
 	rct_banner banners[100];
-	char string_table[32][1024];
+	char string_table[1024][32];
 	uint32 game_time_counter;
-	rct_ride rides[255];
+	rct1_ride rides[255];
 	uint16 unk_game_time_counter;
 	uint16 view_x;
 	uint16 view_y;
@@ -352,10 +477,38 @@ typedef struct{
 	uint16 start_track_data_AA_CF;					// 0xC4
 }rct_track_td4; // Information based off RCTTechDepot
 
+enum {
+	RCT1_SCENARIO_FLAG_0 = 1 << 0,
+	RCT1_SCENARIO_FLAG_1 = 1 << 1,
+	RCT1_SCENARIO_FLAG_2 = 1 << 2,
+	RCT1_SCENARIO_FLAG_3 = 1 << 3,
+	RCT1_SCENARIO_FLAG_ENABLE_BANNERS = 1 << 4,
+	RCT1_SCENARIO_FLAG_5 = 1 << 5,
+	RCT1_SCENARIO_FLAG_6 = 1 << 6,
+	RCT1_SCENARIO_FLAG_7 = 1 << 7,
+	RCT1_SCENARIO_FLAG_CUSTOM_PARK_ENTRANCE_PATH = 1 << 8,
+	RCT1_SCENARIO_FLAG_NO_CASH_RESET = 1 << 9,
+	RCT1_SCENARIO_FLAG_10 = 1 << 10,
+	RCT1_SCENARIO_FLAG_11 = 1 << 11,
+	RCT1_SCENARIO_FLAG_12 = 1 << 12,
+	RCT1_SCENARIO_FLAG_CUSTOM_MAP_SIZE = 1 << 13,
+	RCT1_SCENARIO_FLAG_14 = 1 << 14,
+	RCT1_SCENARIO_FLAG_15 = 1 << 15,
+	RCT1_SCENARIO_FLAG_16 = 1 << 16,
+	RCT1_SCENARIO_FLAG_17 = 1 << 17,
+	RCT1_SCENARIO_FLAG_18 = 1 << 18,
+	RCT1_SCENARIO_FLAG_19 = 1 << 19,
+};
+
+extern const uint8 RCT1ColourConversionTable[32];
+
+const uint8 gRideCategories[0x60];
+
 bool rct1_read_sc4(const char *path, rct1_s4 *s4);
 bool rct1_read_sv4(const char *path, rct1_s4 *s4);
 void rct1_import_s4(rct1_s4 *s4);
 void rct1_fix_landscape();
+bool vehicleIsHigherInHierarchy(int track_type, char *currentVehicleName, char *comparedVehicleName);
+bool rideTypeShouldLoseSeparateFlag(rct_ride_type *ride);
 
 #endif
- 

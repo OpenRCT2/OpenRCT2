@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -56,7 +56,8 @@ enum {
 	VIEWPORT_INTERACTION_ITEM_PARK,
 	VIEWPORT_INTERACTION_ITEM_WALL,
 	VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY,
-	VIEWPORT_INTERACTION_ITEM_BANNER = 12,
+	VIEWPORT_INTERACTION_ITEM_LABEL,
+	VIEWPORT_INTERACTION_ITEM_BANNER,
 
 };
 
@@ -95,6 +96,7 @@ void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_view
 void viewport_create(rct_window *w, int x, int y, int width, int height, int zoom, int center_x, int center_y, int center_z, char flags, sint16 sprite);
 void viewport_update_pointers();
 void viewport_update_position(rct_window *window);
+void viewport_update_sprite_follow(rct_window *window);
 void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, int top, int right, int bottom);
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom);
 
@@ -102,7 +104,6 @@ void sub_689174(sint16* x, sint16* y, sint16 *z);
 
 rct_xy16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, uint16 y);
 rct_xy16 viewport_coord_to_map_coord(int x, int y, int z);
-void sub_688972(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **viewport);
 void screen_pos_to_map_pos(sint16 *x, sint16 *y, int *direction);
 
 void show_gridlines();
@@ -122,5 +123,27 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 int viewport_interaction_right_over(int x, int y);
 int viewport_interaction_right_click(int x, int y);
 void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rct_map_element **mapElement);
+
+void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int x, int y);
+
+void sub_68B2B7(int x, int y);
+void painter_setup();
+void sub_688485();
+void sub_688217();
+
+int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 length_y, sint16 length_x, uint32 rotation);
+int sub_98199C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 length_y, sint16 length_x, uint32 rotation);
+bool sub_6629BC(int height, uint16 ax, uint32 image_id, int edi);
+
+void viewport_invalidate(rct_viewport *viewport, int left, int top, int right, int bottom);
+
+void screen_get_map_xy(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **viewport);
+void screen_get_map_xy_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY);
+void screen_get_map_xy_quadrant(sint16 screenX, sint16 screenY, sint16 *mapX, sint16 *mapY, uint8 *quadrant);
+void screen_get_map_xy_quadrant_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY, uint8 *quadrant);
+void screen_get_map_xy_side(sint16 screenX, sint16 screenY, sint16 *mapX, sint16 *mapY, uint8 *side);
+void screen_get_map_xy_side_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY, uint8 *side);
+
+uint8 get_current_rotation();
 
 #endif

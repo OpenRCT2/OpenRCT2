@@ -25,15 +25,16 @@
 #include "../scenario.h"
 #include "../sprites.h"
 #include "../localisation/localisation.h"
+#include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../platform/platform.h"
 #include "../title.h"
 #include "../util/util.h"
+#include "../world/footpath.h"
 #include "../world/scenery.h"
 #include "error.h"
-#include "../interface/themes.h"
 
 enum {
 	WIDX_PREVIOUS_IMAGE,		// 1
@@ -50,11 +51,9 @@ static rct_widget window_editor_bottom_toolbar_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_editor_bottom_toolbar_emptysub() { }
-
-static void window_editor_bottom_toolbar_mouseup();
-static void window_editor_bottom_toolbar_invalidate();
-static void window_editor_bottom_toolbar_paint();
+static void window_editor_bottom_toolbar_mouseup(rct_window *w, int widgetIndex);
+static void window_editor_bottom_toolbar_invalidate(rct_window *w);
+static void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static void window_editor_bottom_toolbar_jump_back_to_object_selection();
 static void window_editor_bottom_toolbar_jump_back_to_landscape_editor();
@@ -67,58 +66,60 @@ static void window_editor_bottom_toolbar_jump_forward_to_options_selection();
 static void window_editor_bottom_toolbar_jump_forward_to_objective_selection();
 static void window_editor_bottom_toolbar_jump_forward_to_save_scenario();
 
-static void* window_editor_bottom_toolbar_events[] = {
-	window_editor_bottom_toolbar_emptysub,
+static rct_window_event_list window_editor_bottom_toolbar_events = {
+	NULL,
 	window_editor_bottom_toolbar_mouseup,	//0x0066f5ae,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_editor_bottom_toolbar_invalidate, //0x0066f1c9,
 	window_editor_bottom_toolbar_paint, //0x0066f25c,
-	window_editor_bottom_toolbar_emptysub
+	NULL
 };
 
-static EMPTY_ARGS_VOID_POINTER* previous_button_mouseup_events[] = {
-	window_editor_bottom_toolbar_emptysub,
+static EMPTY_ARGS_VOID_POINTER *previous_button_mouseup_events[] = {
+	NULL,
 	window_editor_bottom_toolbar_jump_back_to_object_selection,
 	window_editor_bottom_toolbar_jump_back_to_landscape_editor,
 	window_editor_bottom_toolbar_jump_back_to_invention_list_set_up,
 	window_editor_bottom_toolbar_jump_back_to_options_selection,
-	window_editor_bottom_toolbar_emptysub,
+	NULL,
 	window_editor_bottom_toolbar_jump_back_to_object_selection,
-	window_editor_bottom_toolbar_emptysub
+	NULL
 };
 
-static EMPTY_ARGS_VOID_POINTER* next_button_mouseup_events[] = {
-	window_editor_bottom_toolbar_jump_forward_from_object_selection, 
+static EMPTY_ARGS_VOID_POINTER *next_button_mouseup_events[] = {
+	window_editor_bottom_toolbar_jump_forward_from_object_selection,
 	window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up,
 	window_editor_bottom_toolbar_jump_forward_to_options_selection,
 	window_editor_bottom_toolbar_jump_forward_to_objective_selection,
 	window_editor_bottom_toolbar_jump_forward_to_save_scenario,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub,
-	window_editor_bottom_toolbar_emptysub
+	NULL,
+	NULL,
+	NULL
 };
+
+static void sub_6DFED0();
 
 /**
 * Creates the main editor top toolbar window.
@@ -128,10 +129,10 @@ void window_editor_bottom_toolbar_open()
 {
 	rct_window* window;
 
-	window = window_create(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - 32,
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16), 32,
-		(uint32*)window_editor_bottom_toolbar_events,
-		WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_5);
+	window = window_create(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 32,
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16), 32,
+		&window_editor_bottom_toolbar_events,
+		WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
 	window->widgets = window_editor_bottom_toolbar_widgets;
 
 	window->enabled_widgets |=
@@ -141,6 +142,7 @@ void window_editor_bottom_toolbar_open()
 		(1 << WIDX_NEXT_IMAGE);
 
 	window_init_scroll_widgets(window);
+	sub_6DFED0();
 }
 
 /**
@@ -154,12 +156,22 @@ void window_editor_bottom_toolbar_jump_back_to_object_selection() {
 }
 
 /**
+ *
+ *  rct2: 0x006DFED0
+ */
+static void sub_6DFED0()
+{
+	for (int i = 0; i < 56; i++)
+		RCT2_ADDRESS(0x01357BD0, sint32)[i] = -1;
+}
+
+/**
 *
 *  rct2: 0x0066F62C
 */
 void window_editor_bottom_toolbar_jump_back_to_landscape_editor() {
 	window_close_all();
-	RCT2_CALLPROC_EBPSAFE(0x006DFED0);
+	sub_6DFED0();
 	scenery_set_default_placement_configuration();
 	g_editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 	window_map_open();
@@ -203,9 +215,48 @@ void window_editor_bottom_toolbar_jump_back_to_options_selection() {
  *
  *  rct2: 0x006AB1CE
  */
-int window_editor_bottom_toolbar_check_object_selection()
+bool window_editor_bottom_toolbar_check_object_selection()
 {
-	return RCT2_CALLPROC_EBPSAFE(0x006AB1CE) & 0x100;
+	rct_window *w;
+
+	int missingObjectType = editor_check_object_selection();
+	if (missingObjectType < 0) {
+		window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
+		return true;
+	}
+
+	window_error_open(STR_INVALID_SELECTION_OF_OBJECTS, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
+	w = window_find_by_class(WC_EDITOR_OBJECT_SELECTION);
+	if (w != NULL) {
+		// Click tab with missing object
+		window_event_mouse_up_call(w, 4 + missingObjectType);
+	}
+	return false;
+}
+
+/**
+ *
+ *  rct2: 0x0066F6E3
+ */
+static void sub_66F6E3()
+{
+	RCT2_GLOBAL(0x01357404, uint32) = 0xFFFFFFFF;
+	RCT2_GLOBAL(0x01357408, uint32) = 0xFFFFFFFF;
+	RCT2_GLOBAL(0x0135740C, uint32) = 0xFFFFFFFF;
+	RCT2_GLOBAL(0x01357410, uint32) = 0xFFFFFFFF;
+
+	for (int i = 0; i < 128; i++) {
+		RCT2_ADDRESS(0x01357444, uint32)[i] = RCT2_ADDRESS(0x0097C468, uint32)[i];
+		RCT2_ADDRESS(0x01357644, uint32)[i] = RCT2_ADDRESS(0x0097C5D4, uint32)[i];
+	}
+
+	for (int i = 0; i < 8; i++) {
+		RCT2_ADDRESS(0x01357424, uint32)[i] = 0xFFFFFFFF;
+	}
+
+	window_new_ride_open();
+	RCT2_GLOBAL(0x0141F570, uint8) = 6;
+	gfx_invalidate_screen();
 }
 
 /**
@@ -214,13 +265,13 @@ int window_editor_bottom_toolbar_check_object_selection()
  */
 void window_editor_bottom_toolbar_jump_forward_from_object_selection()
 {
-	if (window_editor_bottom_toolbar_check_object_selection())
+	if (!window_editor_bottom_toolbar_check_object_selection())
 		return;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) {
-		RCT2_CALLPROC_EBPSAFE(0x0066F6E3);
+		sub_66F6E3();
 	} else {
-		RCT2_CALLPROC_EBPSAFE(0x006DFED0);
+		sub_6DFED0();
 		scenery_set_default_placement_configuration();
 		RCT2_GLOBAL(0x00141F570, uint8) = 1;
 		window_map_open();
@@ -230,12 +281,10 @@ void window_editor_bottom_toolbar_jump_forward_from_object_selection()
 
 /**
 *
-*  rct2: 0x0066f758
+*  rct2: 0x0066F758
 */
 void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up() {
-	uint32 flags = RCT2_CALLPROC_X(0x0066FEAC, 0, 0, 0, 0, 0, 0, 0);
-
-	if (!(flags & 0x100)) {
+	if (editor_check_park()) {
 		window_close_all();
 		window_editor_inventions_list_open();
 		g_editor_step = EDITOR_STEP_INVENTIONS_LIST_SET_UP;
@@ -287,12 +336,12 @@ static int show_save_scenario_dialog(char *resultPath)
 	strcat(filename, ".SC6");
 	format_string(filterName, STR_RCT2_SCENARIO_FILE, NULL);
 
-	pause_sounds();
+	audio_pause_sounds();
 	result = platform_open_common_file_dialog(0, title, filename, "*.SC6", filterName);
-	unpause_sounds();
+	audio_unpause_sounds();
 
 	if (result)
-		strcpy(resultPath, filename);
+		safe_strncpy(resultPath, filename, MAX_PATH);
 	return result;
 }
 
@@ -322,8 +371,8 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 		return;
 	}
 
-	// 
-	s6Info->var_000 = 255;
+	//
+	s6Info->editor_step = 255;
 
 	// Ensure path has .SC6 extension
 	path_set_extension(path, ".SC6");
@@ -331,14 +380,18 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 	// Save the scenario
 	parkFlagsBackup = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_18;
-	success = scenario_save(path, gConfigGeneral.save_plugin_data ? 3 : 2);
+	SDL_RWops* rw = SDL_RWFromFile(path, "wb+");
+	if (rw != NULL) {
+		success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2);
+		SDL_RWclose(rw);
+	}
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = parkFlagsBackup;
 
 	if (success) {
 		title_load();
 	} else {
 		window_error_open(STR_SCENARIO_SAVE_FAILED, -1);
-		s6Info->var_000 = 4;
+		s6Info->editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
 	}
 }
 
@@ -346,16 +399,11 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 *
 *  rct2: 0x0066F5AE
 */
-static void window_editor_bottom_toolbar_mouseup()
+static void window_editor_bottom_toolbar_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON) {
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) ||
-			RCT2_GLOBAL(0x13573C8, uint16) == 0x2710 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_18)) {
+			(RCT2_GLOBAL(0x13573C8, uint16) == 0x2710 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_18))) {
 			previous_button_mouseup_events[g_editor_step]();
 		}
 	} else if (widgetIndex == WIDX_NEXT_STEP_BUTTON) {
@@ -377,14 +425,11 @@ void hide_next_step_button() {
 *
 *  rct2: 0x0066F1C9
 */
-void window_editor_bottom_toolbar_invalidate() {
-	rct_window* w;
-
-	window_get_register(w);
-
+void window_editor_bottom_toolbar_invalidate(rct_window *w)
+{
 	colour_scheme_update_by_class(w, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) ? WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR : WC_EDITOR_TRACK_BOTTOM_TOOLBAR);
 
-	sint16 screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
+	uint16 screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
 	window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left = screenWidth - 200;
 	window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right = screenWidth - 1;
 	window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].left = screenWidth - 198;
@@ -415,27 +460,23 @@ void window_editor_bottom_toolbar_invalidate() {
 *
 *  rct2: 0x0066F25C
 */
-void window_editor_bottom_toolbar_paint() {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
+void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
+{
 	bool drawPreviousButton = false;
 	bool drawNextButton = false;
 
 	if (g_editor_step == EDITOR_STEP_OBJECT_SELECTION) {
 		drawNextButton = true;
-	} 
+	}
 	else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) {
 		drawPreviousButton = true;
-	} 
+	}
 	else if (RCT2_GLOBAL(0x13573C8, uint16) != 0x2710) {
 		drawNextButton = true;
 	}
 	else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_18) {
 		drawNextButton = true;
-	} 
+	}
 	else {
 		drawPreviousButton = true;
 	}
@@ -461,7 +502,7 @@ void window_editor_bottom_toolbar_paint() {
 	window_draw_widgets(w, dpi);
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER)) {
-		
+
 
 		if (drawPreviousButton) {
 			gfx_fill_rect_inset(dpi,
@@ -525,7 +566,7 @@ void window_editor_bottom_toolbar_paint() {
 			short textX = (window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left +
 				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 30) / 2 + w->x;
 			short textY = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 + w->y;
-			
+
 			short stringId = STR_OBJECT_SELECTION_STEP + g_editor_step + 1;
 			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
 				stringId = STR_ROLLERCOASTER_DESIGNER_STEP;

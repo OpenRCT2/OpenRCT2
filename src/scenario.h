@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -49,7 +49,7 @@ typedef struct {
  * size: 0x198
  */
 typedef struct {
-	uint8 var_000;
+	uint8 editor_step;
 	uint8 category;				// 0x01
 	uint8 objective_type;		// 0x02
 	uint8 objective_arg_1;		// 0x03
@@ -134,9 +134,10 @@ typedef struct {
 	uint16 sprites_start_litter;
 	uint8 pad_013573C6[2];
 	uint16 word_013573C8;
-	uint8 pad_013573CA[4];
-	uint16 word_013573CE;
-	uint16 word_013573D0;
+	uint16 sprites_count_vehicle;
+	uint16 sprites_count_peep;
+	uint16 sprites_count_misc;
+	uint16 sprites_count_litter;
 	uint8 pad_013573D2[2];
 	rct_string_id park_name;
 	uint8 pad_013573D6[2];
@@ -174,7 +175,7 @@ typedef struct {
 	uint32 dword_0135789C;
 	uint32 dword_013578A0;
 	uint32 dword_013578A4[201];
-	
+
 	// SC6[8]
 	uint16 last_guests_in_park;
 	uint8 pad_01357BCA[3];
@@ -282,7 +283,7 @@ typedef struct {
 	uint16 park_entrance_y[4];
 	uint16 park_entrance_z[4];
 	uint8 park_entrance_direction[4];
-	uint8 scenario_filename[256];
+	char scenario_filename[256];
 	uint8 saved_expansion_pack_names[3256];
 	rct_banner banners[250];
 	char custom_strings[0x8000];
@@ -411,7 +412,8 @@ extern int gScenarioListCount;
 extern int gScenarioListCapacity;
 extern rct_scenario_basic *gScenarioList;
 
-extern char gScenarioSaveName[MAX_PATH];
+extern char gScenarioSavePath[MAX_PATH];
+extern int gFirstTimeSave;
 
 int scenario_scores_save();
 void scenario_load_list();
@@ -420,14 +422,18 @@ int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *in
 int scenario_load(const char *path);
 int scenario_load_and_play(const rct_scenario_basic *scenario);
 int scenario_load_and_play_from_path(const char *path);
+void scenario_begin();
 void scenario_update();
 unsigned int scenario_rand();
+unsigned int scenario_rand_max(unsigned int max);
 int scenario_prepare_for_save();
-int scenario_save(char *path, int flags);
-bool scenario_save_s6(char *path, rct_s6_data *s6);
+int scenario_save(SDL_RWops* rw, int flags);
+int scenario_save_network(SDL_RWops* rw);
+bool scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6);
 void scenario_set_filename(const char *value);
 void scenario_failure();
 void scenario_success();
 void scenario_success_submit_name(const char *name);
+void scenario_autosave_check();
 
 #endif

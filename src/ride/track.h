@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -39,14 +39,24 @@ typedef struct {
 * Size: 0x0A
 */
 typedef struct {
-	uint8 var_00;
+	uint8 index;	// 0x00
 	sint16 x;		// 0x01
 	sint16 y;		// 0x03
-	sint16 z;
-	uint8 pad_07;
+	sint16 z;		// 0x05
+	uint8 var_07;
 	uint8 var_08;
 	uint8 var_09;
 } rct_preview_track;
+
+/* size 0x0A */
+typedef struct{
+	sint8 rotation_begin;	// 0x00
+	sint8 rotation_end;		// 0x01
+	sint16 z_begin;			// 0x02
+	sint16 z_end;			// 0x04
+	sint16 x;				// 0x06
+	sint16 y;				// 0x08
+}rct_track_coordinates;
 
 /**
 * Size: 0x04
@@ -99,6 +109,12 @@ enum{
 	TRACK_ELEMENT_FLAG_TERMINAL_STATION = (1<<3),
 };
 
+enum {
+	// Not anything to do with colour but uses
+	// that field in the map element
+	TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT = (1 << 3),
+};
+
 #define TRACK_ELEMENT_FLAG_MAGNITUDE_MASK 0x0F
 #define TRACK_ELEMENT_FLAG_COLOUR_MASK 0x30
 #define TRACK_ELEMENT_FLAG_STATION_NO_MASK 0x02
@@ -119,7 +135,7 @@ typedef struct {
 		uint32 flags;								// 0x02
 	};
 	union{
-		// After loading the track this is converted to 
+		// After loading the track this is converted to
 		// a flags register
 		uint8 ride_mode;							// 0x06
 		uint8 track_flags;							// 0x06
@@ -163,7 +179,7 @@ typedef struct {
 	uint8 track_spine_colour[4];					// 0x60
 	uint8 track_rail_colour[4];						// 0x64
 	uint8 track_support_colour[4];					// 0x68
-	uint32 var_6C;
+	uint32 flags2;									// 0x6C
 	rct_object_entry vehicle_object;				// 0x70
 	uint8 space_required_x;							// 0x80
 	uint8 space_required_y;							// 0x81
@@ -176,45 +192,95 @@ typedef struct{
 	uint8 preview[4][TRACK_PREVIEW_IMAGE_SIZE];		// 0xA3
 } rct_track_design;
 
+enum {
+	TRACK_FLAGS2_CONTAINS_LOG_FLUME_REVERSER = (1 << 1),
+	TRACK_FLAGS2_SIX_FLAGS_RIDE_DEPRECATED = (1 << 31)		// Not used anymore.
+};
 
 enum {
 	TRACK_NONE = 0,
 
 	TRACK_FLAT = 0,
-	TRACK_STATION_END = 2,
-	TRACK_VERTICAL_LOOP = 7,
-	TRACK_S_BEND = 13,
-	TRACK_TWIST = 17,
-	TRACK_HALF_LOOP = 18,
-	TRACK_CORKSCREW = 19,
-	TRACK_TOWER_BASE = 20,
-	TRACK_HELIX_SMALL= 21,
-	TRACK_HELIX_LARGE= 22,
-	TRACK_HELIX_LARGE_UNBANKED = 23, 
-	TRACK_BRAKES = 24,
-	TRACK_ON_RIDE_PHOTO = 26,
-	TRACK_WATER_SPLASH = 27,
-	TRACK_BARREL_ROLL = 29,
-	TRACK_POWERED_LIFT = 30,
-	TRACK_HALF_LOOP_2 = 31, // ?
-	TRACK_LOG_FLUME_REVERSER = 33,
-	TRACK_WHOA_BELLY = 36,
-	TRACK_LIFT_HILL = 43,
-	TRACK_SPINNING_TUNNEL = 46,
-	TRACK_ROTATION_CONTROL_TOGGLE = 47,
-	TRACK_RAPIDS = 52,
+	TRACK_STRAIGHT,
+	TRACK_STATION_END,
+	TRACK_LIFT_HILL,
+	TRACK_LIFT_HILL_STEEP,
+	TRACK_LIFT_HILL_CURVE,
+	TRACK_FLAT_ROLL_BANKING,
+	TRACK_VERTICAL_LOOP,
+	TRACK_SLOPE,
+	TRACK_SLOPE_STEEP,
+	TRACK_SLOPE_LONG,
+	TRACK_SLOPE_CURVE,
+	TRACK_SLOPE_CURVE_STEEP,
+	TRACK_S_BEND,
+	TRACK_CURVE_VERY_SMALL,
+	TRACK_CURVE_SMALL,
+	TRACK_CURVE,
+	TRACK_TWIST,
+	TRACK_HALF_LOOP,
+	TRACK_CORKSCREW,
+	TRACK_TOWER_BASE,
+	TRACK_HELIX_SMALL,
+	TRACK_HELIX_LARGE,
+	TRACK_HELIX_LARGE_UNBANKED,
+	TRACK_BRAKES,
+	TRACK_25,
+	TRACK_ON_RIDE_PHOTO,
+	TRACK_WATER_SPLASH,
+	TRACK_SLOPE_VERTICAL,
+	TRACK_BARREL_ROLL,
+	TRACK_POWERED_LIFT,
+	TRACK_HALF_LOOP_LARGE,
+	TRACK_SLOPE_CURVE_BANKED,
+	TRACK_LOG_FLUME_REVERSER,
+	TRACK_HEARTLINE_ROLL,
+	TRACK_REVERSER,
+	TRACK_WHOA_BELLY,
+	TRACK_SLOPE_TO_FLAT,
+	TRACK_BLOCK_BRAKES,
+	TRACK_SLOPE_ROLL_BANKING,
+	TRACK_SLOPE_STEEP_LONG,
+	TRACK_CURVE_VERTICAL,
+	TRACK_42,
+	TRACK_LIFT_HILL_CABLE,
+	TRACK_LIFT_HILL_CURVED,
+	TRACK_QUARTER_LOOP,
+	TRACK_SPINNING_TUNNEL,
+	TRACK_ROTATION_CONTROL_TOGGLE,
+	TRACK_INLINE_TWIST_UNINVERTED,
+	TRACK_INLINE_TWIST_INVERTED,
+	TRACK_QUARTER_LOOP_UNINVERTED,
+	TRACK_QUARTER_LOOP_INVERTED,
+	TRACK_RAPIDS,
+	TRACK_HALF_LOOP_UNINVERTED,
+	TRACK_HALF_LOOP_INVERTED,
+
 	TRACK_WATERFALL = 152,
 	TRACK_WHIRLPOOL = 152,
 	TRACK_BRAKE_FOR_DROP = 172
 };
 
 enum {
-	TRACK_UP_25 = 2,
-	TRACK_UP_60 = 4,
-	TRACK_DOWN_25 = 6,
-	TRACK_DOWN_60 = 8,
-	TRACK_UP_90 = 10,
-	TRACK_DOWN_90 = 18,
+	TRACK_CURVE_LEFT_VERY_SMALL = 5,
+	TRACK_CURVE_LEFT_SMALL = 3,
+	TRACK_CURVE_LEFT = 1,
+	TRACK_CURVE_LEFT_LARGE = 7,
+	TRACK_CURVE_NONE = 0,
+	TRACK_CURVE_RIGHT_LARGE = 8,
+	TRACK_CURVE_RIGHT = 2,
+	TRACK_CURVE_RIGHT_SMALL = 4,
+	TRACK_CURVE_RIGHT_VERY_SMALL = 6
+};
+
+enum {
+	TRACK_SLOPE_NONE = 0,
+	TRACK_SLOPE_UP_25 = 2,
+	TRACK_SLOPE_UP_60 = 4,
+	TRACK_SLOPE_DOWN_25 = 6,
+	TRACK_SLOPE_DOWN_60 = 8,
+	TRACK_SLOPE_UP_90 = 10,
+	TRACK_SLOPE_DOWN_90 = 18,
 
 	TRACK_VANGLE_TOWER = 10,
 	TRACK_VANGLE_WHOA_BELLY = 10
@@ -424,7 +490,24 @@ enum {
 	TRACK_ELEM_LEFT_LARGE_HALF_LOOP_DOWN
 };
 
+enum {
+	TRACK_ELEMENT_LOCATION_IS_UNDERGROUND = 2,
+};
+
+typedef struct {
+	rct_xy_element last;
+	rct_xy_element current;
+	int currentZ;
+	int currentDirection;
+	rct_map_element *first;
+	bool firstIteration;
+	bool looped;
+} track_circuit_iterator;
+
+extern const rct_trackdefinition *gFlatRideTrackDefinitions;
 extern const rct_trackdefinition *gTrackDefinitions;
+
+extern rct_map_element **gTrackSavedMapElements;
 
 void track_load_list(ride_list_item item);
 int sub_67726A(const char *path);
@@ -439,10 +522,34 @@ int track_is_connected_by_shape(rct_map_element *a, rct_map_element *b);
 int sub_6D01B3(uint8 bl, uint8 rideIndex, int x, int y, int z);
 int save_track_design(uint8 rideIndex);
 int install_track(char* source_path, char* dest_name);
-void window_track_list_format_name(char *dst, const char *src, char colour, char quotes);
-void game_command_place_track(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void window_track_list_format_name(utf8 *dst, const utf8 *src, int colour, bool quotes);
+void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void game_command_place_maze_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
 void track_save_reset_scenery();
 void track_save_select_nearby_scenery(int rideIndex);
+void track_save_toggle_map_element(int interactionType, int x, int y, rct_map_element *mapElement);
+
+const rct_preview_track *get_track_def_from_ride(rct_ride *ride, int trackType);
+const rct_preview_track *get_track_def_from_ride_index(int rideIndex, int trackType);
+const rct_track_coordinates *get_track_coord_from_ride(rct_ride *ride, int trackType);
+
+void game_command_place_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_remove_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_set_maze_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_set_brakes_speed(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+
+void track_circuit_iterator_begin(track_circuit_iterator *it, rct_xy_element first);
+bool track_circuit_iterator_previous(track_circuit_iterator *it);
+bool track_circuit_iterator_next(track_circuit_iterator *it);
+
+void track_get_back(rct_xy_element *input, rct_xy_element *output);
+void track_get_front(rct_xy_element *input, rct_xy_element *output);
+
+bool track_element_is_lift_hill(rct_map_element *trackElement);
+
+bool track_element_is_cable_lift(rct_map_element *trackElement);
+void track_element_set_cable_lift(rct_map_element *trackElement);
+void track_element_clear_cable_lift(rct_map_element *trackElement);
 
 #endif

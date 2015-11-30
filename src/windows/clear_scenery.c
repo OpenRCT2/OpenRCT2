@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -26,6 +26,9 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../interface/themes.h"
+
+#define MINIMUM_TOOL_SIZE 1
+#define MAXIMUM_TOOL_SIZE 64
 
 enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -52,51 +55,49 @@ rct_widget window_clear_scenery_widgets[] = {
 	{ WIDGETS_END },
 };
 
-
 static int window_clear_scenery_should_close();
 
-static void window_clear_scenery_emptysub() { }
-static void window_clear_scenery_close();
-static void window_clear_scenery_mouseup();
+static void window_clear_scenery_close(rct_window *w);
+static void window_clear_scenery_mouseup(rct_window *w, int widgetIndex);
 static void window_clear_scenery_update(rct_window *w);
-static void window_clear_scenery_invalidate();
-static void window_clear_scenery_paint();
-static void window_clear_scenery_textinput();
+static void window_clear_scenery_invalidate(rct_window *w);
+static void window_clear_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_clear_scenery_textinput(rct_window *w, int widgetIndex, char *text);
 static void window_clear_scenery_inputsize(rct_window *w);
 
-static void* window_clear_scenery_events[] = {
+static rct_window_event_list window_clear_scenery_events = {
 	window_clear_scenery_close,
 	window_clear_scenery_mouseup,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_clear_scenery_update,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_clear_scenery_textinput,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
-	window_clear_scenery_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_clear_scenery_invalidate,
 	window_clear_scenery_paint,
-	window_clear_scenery_emptysub
+	NULL
 };
 
 /**
- * 
+ *
  *  rct2: 0x0068E0A7
  */
 void window_clear_scenery_open()
@@ -107,7 +108,7 @@ void window_clear_scenery_open()
 	if (window_find_by_class(WC_CLEAR_SCENERY) != NULL)
 		return;
 
-	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 98, 29, 98, 94, (uint32*)window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
+	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 98, 29, 98, 94, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
 	window->widgets = window_clear_scenery_widgets;
 	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_PREVIEW) |
 		(1 << WIDX_SMALL_SCENERY) | (1 << WIDX_LARGE_SCENERY) | (1 << WIDX_FOOTPATH);
@@ -125,7 +126,7 @@ void window_clear_scenery_open()
  *
  *  rct2: 0x006E6B65
  */
-static void window_clear_scenery_close()
+static void window_clear_scenery_close(rct_window *w)
 {
 	// If the tool wasn't changed, turn tool off
 	if (!window_clear_scenery_should_close())
@@ -136,39 +137,22 @@ static void window_clear_scenery_close()
  *
  *  rct2: 0x0068E185
  */
-static void window_clear_scenery_mouseup()
+static void window_clear_scenery_mouseup(rct_window *w, int widgetIndex)
 {
-	rct_window *w;
-	int limit;
-	short widgetIndex;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
 		break;
 	case WIDX_DECREMENT:
-		// Decrement land tool size
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)--;
-		limit = 1;
-
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) < limit)
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = limit;
+		// Decrement land tool size, if it stays within the limit
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = max(MINIMUM_TOOL_SIZE,RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)-1);
 
 		// Invalidate the window
 		window_invalidate(w);
 		break;
 	case WIDX_INCREMENT:
-		// Increment land tool size
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)++;
-
-		// FEATURE: maximum size is always 7
-		limit = 7;
-		// limit = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2 ? 7 : 5);
-		
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > limit)
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = limit;
+		// Increment land tool size, if it stays within the limit
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = min(MAXIMUM_TOOL_SIZE,RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)+1);
 
 		// Invalidate the window
 		window_invalidate(w);
@@ -191,24 +175,18 @@ static void window_clear_scenery_mouseup()
 	}
 }
 
-static void window_clear_scenery_textinput()
+static void window_clear_scenery_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	uint8 result;
-	short widgetIndex;
-	rct_window *w;
-	char *text;
 	int size;
 	char* end;
 
-	window_textinput_get_registers(w, widgetIndex, result, text);
-
-	if (widgetIndex != WIDX_PREVIEW || !result)
+	if (widgetIndex != WIDX_PREVIEW || text == NULL)
 		return;
 
 	size = strtol(text, &end, 10);
 	if (*end == '\0') {
-		if (size < 1) size = 1;
-		if (size > 7) size = 7;
+		size=max(MINIMUM_TOOL_SIZE,size);
+		size=min(MAXIMUM_TOOL_SIZE,size);
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
 		window_invalidate(w);
 	}
@@ -216,8 +194,8 @@ static void window_clear_scenery_textinput()
 
 static void window_clear_scenery_inputsize(rct_window *w)
 {
-	((uint16*)TextInputDescriptionArgs)[0] = 1;
-	((uint16*)TextInputDescriptionArgs)[1] = 7;
+	((uint16*)TextInputDescriptionArgs)[0] = MINIMUM_TOOL_SIZE;
+	((uint16*)TextInputDescriptionArgs)[1] = MAXIMUM_TOOL_SIZE;
 	window_text_input_open(w, WIDX_PREVIEW, 5128, 5129, STR_NONE, STR_NONE, 3);
 }
 
@@ -236,36 +214,37 @@ static void window_clear_scenery_update(rct_window *w)
  *
  *  rct2: 0x0068E115
  */
-static void window_clear_scenery_invalidate()
+static void window_clear_scenery_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	// Set the preview image button to be pressed down
 	w->pressed_widgets = (1 << WIDX_PREVIEW) |
 		(gClearSmallScenery ? (1 << WIDX_SMALL_SCENERY) : 0) |
-		(gClearLargeScenery ? (1 << WIDX_LARGE_SCENERY) : 0) | 
+		(gClearLargeScenery ? (1 << WIDX_LARGE_SCENERY) : 0) |
 		(gClearFootpath     ? (1 << WIDX_FOOTPATH)      : 0);
 
-	// Update the preview image
-	window_clear_scenery_widgets[WIDX_PREVIEW].image = SPR_LAND_TOOL_SIZE_0 + RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+	// Update the preview image (for tool sizes up to 7)
+	window_clear_scenery_widgets[WIDX_PREVIEW].image = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) <= 7 ?
+		SPR_LAND_TOOL_SIZE_0 + RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) : 0xFFFFFFFF;
 }
 
 /**
  *
  *  rct2: 0x0068E130
  */
-static void window_clear_scenery_paint()
+static void window_clear_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	int x, y;
 
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
+
+	// Draw number for tool sizes bigger than 7
+	x = w->x + (window_clear_scenery_widgets[WIDX_PREVIEW].left + window_clear_scenery_widgets[WIDX_PREVIEW].right) / 2;
+	y = w->y + (window_clear_scenery_widgets[WIDX_PREVIEW].top + window_clear_scenery_widgets[WIDX_PREVIEW].bottom) / 2;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > 7) {
+		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, 0, &RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16));
+	}
 
 	// Draw cost amount
 	x = (window_clear_scenery_widgets[WIDX_PREVIEW].left + window_clear_scenery_widgets[WIDX_PREVIEW].right) / 2 + w->x;

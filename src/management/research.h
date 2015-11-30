@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -29,14 +29,14 @@ typedef struct {
 	uint8 category;
 } rct_research_item;
 
-enum{	
+enum{
 	RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED = (1 << 29),
 	RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED = (1 << 30),
 };
 
 // Everything before this point has been researched
-#define RESEARCHED_ITEMS_SEPERATOR -1
-// Everything before this point and after seperator still requires research
+#define RESEARCHED_ITEMS_SEPARATOR -1
+// Everything before this point and after separator still requires research
 #define RESEARCHED_ITEMS_END -2
 // Extra end of list entry. Unsure why?
 #define RESEARCHED_ITEMS_END_2 -3
@@ -83,5 +83,6 @@ void research_set_priority(int activeCategories);
 void game_command_set_research_funding(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void research_finish_item(sint32 entryIndex);
 void research_insert(int researched, int entryIndex, int category);
+void research_remove(sint32 entryIndex);
 
 #endif

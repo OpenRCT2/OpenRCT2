@@ -11,10 +11,9 @@ distribution/windows/*.exe
 # Build artifacts
 .cache
 
-#libcurl
-lib/libcurl/
-#libjansson
-lib/jansson/
+#lib
+lib
+libversion
 
 #################
 ## Eclipse
@@ -58,6 +57,7 @@ local.properties
 *.suo
 *.user
 *.sln.docstates
+.vs/
 
 # Build results
 
@@ -65,6 +65,7 @@ local.properties
 [Rr]elease/
 x64/
 build/
+build_*/
 [Bb]in/
 [Oo]bj/
 

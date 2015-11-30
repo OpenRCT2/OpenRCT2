@@ -4,10 +4,11 @@
  *
  * Data source is 0x0097E3AC
  *
- * Generating function is here 
+ * Generating function is here
  * https://gist.github.com/kevinburke/eaeb1d8149a6eef0dcc1
  */
 
+#include "../localisation/localisation.h"
 #include "ride.h"
 #include "ride_data.h"
 
@@ -20,7 +21,7 @@ const bool hasRunningTrack[0x60] = {
 	true,	// 5 Mini Railroad
 	true,	// 6 Monorail
 	true,	// 7 Mini Suspended Coaster
-	false,	// 8 Bumper Boats
+	false,	// 8 Boat Ride
 	true,	// 9 Wooden Wild Mine/Mouse
 	true,	// a Steeplechase/Motorbike/Soap Box Derby
 	true,	// b Car Ride
@@ -52,7 +53,7 @@ const bool hasRunningTrack[0x60] = {
 	false,	// 25 Ferris Wheel
 	false,	// 26 Motion Simulator
 	false,	// 27 3D Cinema
-	false,	// 28 Gravitron
+	false,	// 28 Topspin
 	false,	// 29 Space Rings
 	true,	// 2a Reverse Freefall Coaster
 	true,	// 2b Elevator
@@ -120,7 +121,7 @@ const uint8 initialUpkeepCosts[0x60] = {
 	60,	// 05 Mini Railroad
 	65,	// 06 Monorail
 	40,	// 07 Mini Suspended Coaster
-	50,	// 08 Bumper Boats
+	50,	// 08 Boat Ride
 	40,	// 09 Wooden Wild Mine/Mouse
 	40,	// 0a Steeplechase/Motorbike/Soap Box Derby
 	70,	// 0b Car Ride
@@ -152,7 +153,7 @@ const uint8 initialUpkeepCosts[0x60] = {
 	50,	// 25 Ferris Wheel
 	50,	// 26 Motion Simulator
 	50,	// 27 3D Cinema
-	50,	// 28 Gravitron
+	50,	// 28 Topspin
 	50,	// 29 Space Rings
 	80,	// 2a Reverse Freefall Coaster
 	50,	// 2b Elevator
@@ -213,7 +214,7 @@ const uint8 costPerTrackPiece[0x60] = {
 	0,	// 05 Mini Railroad
 	0,	// 06 Monorail
 	80,	// 07 Mini Suspended Coaster
-	0,	// 08 Bumper Boats
+	0,	// 08 Boat Ride
 	80,	// 09 Wooden Wild Mine/Mouse
 	80,	// 0a Steeplechase/Motorbike/Soap Box Derby
 	0,	// 0b Car Ride
@@ -245,7 +246,7 @@ const uint8 costPerTrackPiece[0x60] = {
 	0,	// 25 Ferris Wheel
 	0,	// 26 Motion Simulator
 	0,	// 27 3D Cinema
-	0,	// 28 Gravitron
+	0,	// 28 Topspin
 	0,	// 29 Space Rings
 	0,	// 2a Reverse Freefall Coaster
 	0,	// 2b Elevator
@@ -309,7 +310,7 @@ const uint8 rideUnknownData1[0x60] = {
 	10,	// 05 Mini Railroad
 	10,	// 06 Monorail
 	10,	// 07 Mini Suspended Coaster
-	4,	// 08 Bumper Boats
+	4,	// 08 Boat Ride
 	9,	// 09 Wooden Wild Mine/Mouse
 	10,	// 0a Steeplechase/Motorbike/Soap Box Derby
 	8,	// 0b Car Ride
@@ -341,7 +342,7 @@ const uint8 rideUnknownData1[0x60] = {
 	0,	// 25 Ferris Wheel
 	0,	// 26 Motion Simulator
 	0,	// 27 3D Cinema
-	0,	// 28 Gravitron
+	0,	// 28 Topspin
 	0,	// 29 Space Rings
 	0,	// 2a Reverse Freefall Coaster
 	10,	// 2b Elevator
@@ -406,7 +407,7 @@ const bool rideUnknownData2[0x60] = {
 	true,	// 05 Mini Railroad
 	true,	// 06 Monorail
 	true,	// 07 Mini Suspended Coaster
-	false,	// 08 Bumper Boats
+	false,	// 08 Boat Ride
 	true,	// 09 Wooden Wild Mine/Mouse
 	true,	// 0a Steeplechase/Motorbike/Soap Box Derby
 	true,	// 0b Car Ride
@@ -438,7 +439,7 @@ const bool rideUnknownData2[0x60] = {
 	false,	// 25 Ferris Wheel
 	false,	// 26 Motion Simulator
 	false,	// 27 3D Cinema
-	false,	// 28 Gravitron
+	false,	// 28 Topspin
 	false,	// 29 Space Rings
 	false,	// 2a Reverse Freefall Coaster
 	false,	// 2b Elevator
@@ -500,7 +501,7 @@ const uint8 rideUnknownData3[0x60] = {
 	5,	// 05 Mini Railroad
 	10,	// 06 Monorail
 	10,	// 07 Mini Suspended Coaster
-	0,	// 08 Bumper Boats
+	0,	// 08 Boat Ride
 	10,	// 09 Wooden Wild Mine/Mouse
 	10,	// 0a Steeplechase/Motorbike/Soap Box Derby
 	5,	// 0b Car Ride
@@ -532,7 +533,7 @@ const uint8 rideUnknownData3[0x60] = {
 	0,	// 25 Ferris Wheel
 	0,	// 26 Motion Simulator
 	0,	// 27 3D Cinema
-	0,	// 28 Gravitron
+	0,	// 28 Topspin
 	0,	// 29 Space Rings
 	10,	// 2a Reverse Freefall Coaster
 	0,	// 2b Elevator
@@ -593,7 +594,7 @@ const rct_ride_name_convention RideNameConvention[96] = {
 	{ 1229,    1243,    1257,       0 }, // 05 Mini Railroad
 	{ 1229,    1243,    1257,       0 }, // 06 Monorail
 	{ 1264,    1243,    1257,       0 }, // 07 Mini Suspended Coaster
-	{ 1236,    1250,    1250,       0 }, // 08 Bumper Boats
+	{ 1236,    1250,    1250,       0 }, // 08 Boat Ride
 	{ 1264,    1243,    1257,       0 }, // 09 Wooden Wild Mine/Mouse
 	{ 1264,    1243,    1257,       0 }, // 0a Steeplechase/Motorbike/Soap Box Derby
 	{ 1264,    1243,    1257,       0 }, // 0b Car Ride
@@ -625,7 +626,7 @@ const rct_ride_name_convention RideNameConvention[96] = {
 	{ 1299,    1278,    1257,       0 }, // 25 Ferris Wheel
 	{ 1264,    1278,    1257,       0 }, // 26 Motion Simulator
 	{ 1271,    1278,    1257,       0 }, // 27 3D Cinema
-	{ 1264,    1278,    1257,       0 }, // 28 Gravitron
+	{ 1264,    1278,    1257,       0 }, // 28 Topspin
 	{ 1306,    1278,    1257,       0 }, // 29 Space Rings
 	{ 1264,    1243,    1257,       0 }, // 2a Reverse Freefall Coaster
 	{ 1292,    1243,    1257,       0 }, // 2b Elevator
@@ -684,11 +685,11 @@ const uint8 RideAvailableModes[] = {
 	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 01 Stand Up Coaster
 	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 02 Suspended Swinging
 	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 03 Inverted
-	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 04 Steel Mini Coaster
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE, 0xFF,							// 04 Steel Mini Coaster
 	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_SHUTTLE, 0xFF,																									// 05 Mini Railroad
 	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_SHUTTLE, 0xFF,																									// 06 Monorail
 	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 07 Mini Suspended Coaster
-	RIDE_MODE_BOAT_HIRE, 0xFF,																																// 08 Bumper Boats
+	RIDE_MODE_BOAT_HIRE, 0xFF,																																// 08 Boat Ride
 	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 09 Wooden Wild Mine/Mouse
 	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 0A Steeplechase/Motorbike/Soap Box Derby
 	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 0B Car Ride
@@ -720,7 +721,7 @@ const uint8 RideAvailableModes[] = {
 	RIDE_MODE_FORWARD_ROTATION, RIDE_MODE_BACKWARD_ROTATION, 0xFF,																							// 25 Ferris Wheel
 	RIDE_MODE_FILM_AVENGING_AVIATORS, RIDE_MODE_FILM_THRILL_RIDERS, 0xFF,																					// 26 Motion Simulator
 	RIDE_MODE_3D_FILM_MOUSE_TAILS, RIDE_MODE_3D_FILM_STORM_CHASERS, RIDE_MODE_3D_FILM_SPACE_RAIDERS, 0xFF,													// 27 3D Cinema
-	RIDE_MODE_BEGINNERS, RIDE_MODE_INTENSE, RIDE_MODE_BERSERK, 0xFF,																						// 28 Gravitron
+	RIDE_MODE_BEGINNERS, RIDE_MODE_INTENSE, RIDE_MODE_BERSERK, 0xFF,																						// 28 Topspin
 	RIDE_MODE_SPACE_RINGS, 0xFF,																															// 29 Space Rings
 	RIDE_MODE_LIM_POWERED_LAUNCH, 0xFF,																														// 2A Reverse Freefall Coaster
 	RIDE_MODE_SHUTTLE, 0xFF,																																// 2B Elevator
@@ -769,8 +770,12 @@ const uint8 RideAvailableModes[] = {
 	RIDE_MODE_POWERED_LAUNCH_PASSTROUGH, RIDE_MODE_POWERED_LAUNCH, 0xFF,																					// 56 Inverted Impulse Coaster
 	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 57 Mini Roller Coaster
 	RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,																														// 58 Mine Ride
-	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 59 LIM Launched Roller Coaster
-	RIDE_MODE_POWERED_LAUNCH_PASSTROUGH, RIDE_MODE_POWERED_LAUNCH, RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED, 0xFF																				// 60 (none)
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 59 Unknown
+	RIDE_MODE_POWERED_LAUNCH_PASSTROUGH, RIDE_MODE_POWERED_LAUNCH, RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED, 0xFF											// 60 LIM Launched Roller Coaster
+};
+
+const uint8 AllRideModesAvailable[] = {
+	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE, RIDE_MODE_POWERED_LAUNCH_PASSTROUGH, RIDE_MODE_SHUTTLE, RIDE_MODE_NORMAL, RIDE_MODE_BOAT_HIRE, RIDE_MODE_UPWARD_LAUNCH, RIDE_MODE_ROTATING_LIFT, RIDE_MODE_STATION_TO_STATION, RIDE_MODE_SINGLE_RIDE_PER_ADMISSION, RIDE_MODE_UNLIMITED_RIDES_PER_ADMISSION, RIDE_MODE_MAZE, RIDE_MODE_RACE, RIDE_MODE_BUMPERCAR, RIDE_MODE_SWING, RIDE_MODE_SHOP_STALL, RIDE_MODE_ROTATION, RIDE_MODE_FORWARD_ROTATION, RIDE_MODE_BACKWARD_ROTATION, RIDE_MODE_FILM_AVENGING_AVIATORS, RIDE_MODE_3D_FILM_MOUSE_TAILS, RIDE_MODE_SPACE_RINGS, RIDE_MODE_BEGINNERS, RIDE_MODE_LIM_POWERED_LAUNCH, RIDE_MODE_FILM_THRILL_RIDERS, RIDE_MODE_3D_FILM_STORM_CHASERS, RIDE_MODE_3D_FILM_SPACE_RAIDERS, RIDE_MODE_INTENSE, RIDE_MODE_BERSERK, RIDE_MODE_HAUNTED_HOUSE, RIDE_MODE_CIRCUS_SHOW, RIDE_MODE_DOWNWARD_LAUNCH, RIDE_MODE_CROOKED_HOUSE, RIDE_MODE_FREEFALL_DROP, RIDE_MODE_POWERED_LAUNCH, RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED, 0xFF
 };
 
 const uint8 RideAvailableBreakdowns[] = {
@@ -782,7 +787,7 @@ const uint8 RideAvailableBreakdowns[] = {
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),																															// 05 Mini Railroad
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_DOORS_STUCK_CLOSED) | (1 << BREAKDOWN_DOORS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),												// 06 Monorail
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),	// 07 Mini Suspended Coaster
-	(1 << BREAKDOWN_VEHICLE_MALFUNCTION),																																							// 08 Bumper Boats
+	(1 << BREAKDOWN_VEHICLE_MALFUNCTION),																																							// 08 Boat Ride
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),																						// 09 Wooden Wild Mine/Mouse
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),																						// 0A Steeplechase/Motorbike/Soap Box Derby
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),																															// 0B Car Ride
@@ -814,7 +819,7 @@ const uint8 RideAvailableBreakdowns[] = {
 	(1 << BREAKDOWN_SAFETY_CUT_OUT),																																								// 25 Ferris Wheel
 	(1 << BREAKDOWN_SAFETY_CUT_OUT),																																								// 26 Motion Simulator
 	(1 << BREAKDOWN_SAFETY_CUT_OUT),																																								// 27 3D Cinema
-	(1 << BREAKDOWN_SAFETY_CUT_OUT),																																								// 28 Gravitron
+	(1 << BREAKDOWN_SAFETY_CUT_OUT),																																								// 28 Topspin
 	(1 << BREAKDOWN_SAFETY_CUT_OUT),																																								// 29 Space Rings
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),										// 2A Reverse Freefall Coaster
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_DOORS_STUCK_CLOSED) | (1 << BREAKDOWN_DOORS_STUCK_OPEN),																						// 2B Elevator
@@ -863,115 +868,431 @@ const uint8 RideAvailableBreakdowns[] = {
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),										// 56 Inverted Impulse Coaster
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),	// 57 Mini Roller Coaster
 	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),										// 58 Mine Ride
-	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),	// 59 LIM Launched Roller Coaster
-	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)	// 60 (none)
+	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),	// 59 Unknown
+	(1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)	// 60 LIM Launched Roller Coaster
 };
 
-const rct_ride_entrance_definition RideEntranceDefinitions[12] = {
-	{ 22664, 32,  2 },		// RIDE_ENTRANCE_STYLE_PLAIN
-	{ 22760, 31, 21 },		// RIDE_ENTRANCE_STYLE_WOODEN
-	{ 22680, 43,  2 },		// RIDE_ENTRANCE_STYLE_CANVAS_TENT
-	{ 22728, 43, 19 },		// RIDE_ENTRANCE_STYLE_CASTLE_GREY
-	{ 22712, 33, 19 },		// RIDE_ENTRANCE_STYLE_CASTLE_BROWN
-	{ 22776, 32, 19 },		// RIDE_ENTRANCE_STYLE_JUNGLE
-	{ 22744, 32, 20 },		// RIDE_ENTRANCE_STYLE_LOG_CABIN
-	{ 22696, 34, 19 },		// RIDE_ENTRANCE_STYLE_CLASSICAL_ROMAN
-	{ 22792, 40, 22 },		// RIDE_ENTRANCE_STYLE_ABSTRACT
-	{ 22824, 35, 23 },		// RIDE_ENTRANCE_STYLE_SNOW_ICE
-	{ 22840, 33, 19 },		// RIDE_ENTRANCE_STYLE_PAGODA
-	{ 22856, 33,  2 }		// RIDE_ENTRANCE_STYLE_SPACE
+// rct2: 0x00993E7C and 0x00993E1C
+const rct_ride_entrance_definition RideEntranceDefinitions[RIDE_ENTRANCE_STYLE_COUNT] = {
+	{ 22664,	32,		2,		STR_PLAIN_ENTRANCE,				0x00000000,			0,	},		// RIDE_ENTRANCE_STYLE_PLAIN
+	{ 22760,	31,		21,		STR_WOODEN_ENTRANCE,			0x000057A1,			0,	},		// RIDE_ENTRANCE_STYLE_WOODEN
+	{ 22680,	43,		2,		STR_CANVAS_TENT_ENTRANCE,		0x800057AD,			3,	},		// RIDE_ENTRANCE_STYLE_CANVAS_TENT
+	{ 22728,	43,		19,		STR_CASTLE_ENTRANCE_GREY,		0x000057B9,			0,	},		// RIDE_ENTRANCE_STYLE_CASTLE_GREY
+	{ 22712,	43,		19,		STR_CASTLE_ENTRANCE_BROWN,		0x000057C5,			0,	},		// RIDE_ENTRANCE_STYLE_CASTLE_BROWN
+	{ 22776,	33,		19,		STR_JUNGLE_ENTRANCE,			0x000057D1,			0,	},		// RIDE_ENTRANCE_STYLE_JUNGLE
+	{ 22744,	32,		20,		STR_LOG_CABIN_ENTRANCE,			0x000057DD,			0,	},		// RIDE_ENTRANCE_STYLE_LOG_CABIN
+	{ 22696,	34,		19,		STR_CLASSICAL_ROMAN_ENTRANCE,	0x000057E9,			0,	},		// RIDE_ENTRANCE_STYLE_CLASSICAL_ROMAN
+	{ 22792,	40,		22,		STR_ABSTRACT_ENTRANCE,			0x400057F5,			1,	},		// RIDE_ENTRANCE_STYLE_ABSTRACT
+	{ 22824,	35,		23,		STR_SNOW_ICE_ENTRANCE,			0x0000580D,			0,	},		// RIDE_ENTRANCE_STYLE_SNOW_ICE
+	{ 22840,	33,		19,		STR_PAGODA_ENTRANCE,			0x00005819,			0,	},		// RIDE_ENTRANCE_STYLE_PAGODA
+	{ 22856,	33,		2,		STR_SPACE_ENTRANCE,				0x00005825,			0,	},		// RIDE_ENTRANCE_STYLE_SPACE
+	{ 0,		0,		2,		STR_ENTRANCE_NONE,				0x00000000,			0,	}		// RIDE_ENTRANCE_STYLE_NONE
 };
 
 // Data read from 0x0097D7C9 4 bytes at a time
 const uint8 RideLiftHillAdjustments[0x60] = {
-		7,		 // Spiral Roller coaster     
-		4,		 // Stand Up Coaster     
-		4,		 // Suspended Swinging     
-		5,		 // Inverted     
-		4,		 // Steel Mini Coaster     
-		5,		 // Mini Railroad     
-		5,		 // Monorail     
-		4,		 // Mini Suspended Coaster     
-		5,		 // Bumper Boats     
-		4,		 // Wooden Wild Mine/Mouse     
-		4,		 // Steeplechase/Motorbike/Soap Box Derby     
-		5,		 // Car Ride     
-		5,		 // Launched Freefall     
-		4,		 // Bobsleigh Coaster     
-		5,		 // Observation Tower     
-		4,		 // Looping Roller Coaster     
-		4,		 // Dinghy Slide     
-		4,		 // Mine Train Coaster     
-		5,		 // Chairlift     
-		4,		 // Corkscrew Roller Coaster     
-		5,		 // Maze     
-		5,		 // Spiral Slide     
-		5,		 // Go Karts     
-		5,		 // Log Flume     
-		5,		 // River Rapids     
-		5,		 // Bumper Cars     
-		5,		 // Pirate Ship     
-		5,		 // Swinging Inverter Ship     
-		5,		 // Food Stall     
-		5,		 // (none)     
-		5,		 // Drink Stall     
-		5,		 // (none)     
-		5,		 // Shop (all types)     
-		5,		 // Merry Go Round     
-		5,		 // Balloon Stall (maybe)     
-		5,		 // Information Kiosk     
-		5,		 // Bathroom     
-		5,		 // Ferris Wheel     
-		5,		 // Motion Simulator     
-		5,		 // 3D Cinema     
-		5,		 // Gravitron     
-		5,		 // Space Rings     
-		5,		 // Reverse Freefall Coaster     
-		5,		 // Elevator     
-		4,		 // Vertical Drop Roller Coaster     
-		5,		 // ATM     
-		5,		 // Twist     
-		5,		 // Haunted House     
-		5,		 // First Aid     
-		5,		 // Circus Show     
-		5,		 // Ghost Train     
-		5,		 // Twister Roller Coaster     
-		5,		 // Wooden Roller Coaster     
-		3,		 // Side-Friction Roller Coaster     
-		4,		 // Wild Mouse     
-		4,		 // Multi Dimension Coaster     
-		4,		 // (none)     
-		4,		 // Flying Roller Coaster     
-		4,		 // (none)     
-		3,		 // Virginia Reel     
-		5,		 // Splash Boats     
-		5,		 // Mini Helicopters     
-		4,		 // Lay-down Roller Coaster     
-		5,		 // Suspended Monorail     
-		4,		 // (none)     
-		3,		 // Reverser Roller Coaster     
-		4,		 // Heartline Twister Roller Coaster     
-		5,		 // Mini Golf     
-		5,		 // Giga Coaster     
-		5,		 // Roto-Drop     
-		5,		 // Flying Saucers     
-		5,		 // Crooked House     
-		5,		 // Monorail Cycles     
-		4,		 // Compact Inverted Coaster     
-		4,		 // Water Coaster     
-		5,		 // Air Powered Vertical Coaster     
-		4,		 // Inverted Hairpin Coaster     
-		5,		 // Magic Carpet     
-		5,		 // Submarine Ride     
-		5,		 // River Rafts     
-		5,		 // (none)     
-		5,		 // Enterprise     
-		5,		 // (none)     
-		5,		 // (none)     
-		5,		 // (none)     
-		4,		 // (none)     
-		4,		 // Inverted Impulse Coaster     
-		4,		 // Mini Roller Coaster     
-		5,		 // Mine Ride     
-		4		 // LIM Launched Roller Coaster     
+		7,		 // Spiral Roller coaster
+		4,		 // Stand Up Coaster
+		4,		 // Suspended Swinging
+		5,		 // Inverted
+		4,		 // Steel Mini Coaster
+		5,		 // Mini Railroad
+		5,		 // Monorail
+		4,		 // Mini Suspended Coaster
+		5,		 // Boat Ride
+		4,		 // Wooden Wild Mine/Mouse
+		4,		 // Steeplechase/Motorbike/Soap Box Derby
+		5,		 // Car Ride
+		5,		 // Launched Freefall
+		4,		 // Bobsleigh Coaster
+		5,		 // Observation Tower
+		4,		 // Looping Roller Coaster
+		4,		 // Dinghy Slide
+		4,		 // Mine Train Coaster
+		5,		 // Chairlift
+		4,		 // Corkscrew Roller Coaster
+		5,		 // Maze
+		5,		 // Spiral Slide
+		5,		 // Go Karts
+		5,		 // Log Flume
+		5,		 // River Rapids
+		5,		 // Bumper Cars
+		5,		 // Pirate Ship
+		5,		 // Swinging Inverter Ship
+		5,		 // Food Stall
+		5,		 // (none)
+		5,		 // Drink Stall
+		5,		 // (none)
+		5,		 // Shop (all types)
+		5,		 // Merry Go Round
+		5,		 // Balloon Stall (maybe)
+		5,		 // Information Kiosk
+		5,		 // Bathroom
+		5,		 // Ferris Wheel
+		5,		 // Motion Simulator
+		5,		 // 3D Cinema
+		5,		 // Topspin
+		5,		 // Space Rings
+		5,		 // Reverse Freefall Coaster
+		5,		 // Elevator
+		4,		 // Vertical Drop Roller Coaster
+		5,		 // ATM
+		5,		 // Twist
+		5,		 // Haunted House
+		5,		 // First Aid
+		5,		 // Circus Show
+		5,		 // Ghost Train
+		5,		 // Twister Roller Coaster
+		5,		 // Wooden Roller Coaster
+		3,		 // Side-Friction Roller Coaster
+		4,		 // Wild Mouse
+		4,		 // Multi Dimension Coaster
+		4,		 // (none)
+		4,		 // Flying Roller Coaster
+		4,		 // (none)
+		3,		 // Virginia Reel
+		5,		 // Splash Boats
+		5,		 // Mini Helicopters
+		4,		 // Lay-down Roller Coaster
+		5,		 // Suspended Monorail
+		4,		 // (none)
+		3,		 // Reverser Roller Coaster
+		4,		 // Heartline Twister Roller Coaster
+		5,		 // Mini Golf
+		5,		 // Giga Coaster
+		5,		 // Roto-Drop
+		5,		 // Flying Saucers
+		5,		 // Crooked House
+		5,		 // Monorail Cycles
+		4,		 // Compact Inverted Coaster
+		4,		 // Water Coaster
+		5,		 // Air Powered Vertical Coaster
+		4,		 // Inverted Hairpin Coaster
+		5,		 // Magic Carpet
+		5,		 // Submarine Ride
+		5,		 // River Rafts
+		5,		 // (none)
+		5,		 // Enterprise
+		5,		 // (none)
+		5,		 // (none)
+		5,		 // (none)
+		4,		 // (none)
+		4,		 // Inverted Impulse Coaster
+		4,		 // Mini Roller Coaster
+		5,		 // Mine Ride
+		4		 // LIM Launched Roller Coaster
+};
+
+// rct2: 0x0097D4F2
+const rct_ride_data_4 RideData4[91] = {
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,									MUSIC_STYLE_ROCK_STYLE_3,		0,		0,		0,		20,		20		},		// RIDE_TYPE_SPIRAL_ROLLER_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,									MUSIC_STYLE_TECHNO,				0,		0,		0,		20,		20		},		// RIDE_TYPE_STAND_UP_ROLLER_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,																			MUSIC_STYLE_ROCK,				0,		0,		0,		20,		20		},		// RIDE_TYPE_SUSPENDED_SWINGING_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,									MUSIC_STYLE_TECHNO,				0,		0,		0,		20,		20		},		// RIDE_TYPE_INVERTED_ROLLER_COASTER
+	{ RIDE_TYPE_FLAG4_0 | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,				MUSIC_STYLE_SUMMER,				0,		0,		0,		10,		0		},		// RIDE_TYPE_JUNIOR_ROLLER_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_6 | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_TRANSPORT_RIDE,																							MUSIC_STYLE_SUMMER,				0,		0,		0,		10,		0		},		// RIDE_TYPE_MINIATURE_RAILWAY
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_6 | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_TRANSPORT_RIDE,																							MUSIC_STYLE_SUMMER,				0,		0,		0,		20,		20		},		// RIDE_TYPE_MONORAIL
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,																			MUSIC_STYLE_WILD_WEST,			0,		0,		0,		10,		0		},		// RIDE_TYPE_MINI_SUSPENDED_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT,																																															MUSIC_STYLE_WATER,				0,		0,		0,		20,		20		},		// RIDE_TYPE_BOAT_RIDE
+	{ RIDE_TYPE_FLAG4_0 | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,														MUSIC_STYLE_WILD_WEST,			0,		0,		0,		20,		20		},		// RIDE_TYPE_WOODEN_WILD_MOUSE
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,																			MUSIC_STYLE_ROCK,				0,		0,		0,		15,		0		},		// RIDE_TYPE_STEEPLECHASE
+	{ RIDE_TYPE_FLAG4_0 | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_6 | RIDE_TYPE_FLAG4_14,																																MUSIC_STYLE_SUMMER,				0,		0,		0,		20,		0		},		// RIDE_TYPE_CAR_RIDE
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_13,																																										MUSIC_STYLE_TECHNO,				0,		0,		0,		20,		20		},		// RIDE_TYPE_LAUNCHED_FREEFALL
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,									MUSIC_STYLE_ROCK,				0,		0,		0,		10,		0		},		// RIDE_TYPE_BOBSLEIGH_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_14,																																										MUSIC_STYLE_SUMMER,				0,		0,		0,		20,		20		},		// RIDE_TYPE_OBSERVATION_TOWER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,									MUSIC_STYLE_ROCK,				0,		0,		0,		20,		20		},		// RIDE_TYPE_LOOPING_ROLLER_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,																													MUSIC_STYLE_WATER,				0,		0,		0,		20,		20		},		// RIDE_TYPE_DINGHY_SLIDE
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,									MUSIC_STYLE_WILD_WEST,			0,		0,		0,		10,		0		},		// RIDE_TYPE_MINE_TRAIN_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_6 | RIDE_TYPE_FLAG4_TRANSPORT_RIDE | RIDE_TYPE_FLAG4_14,																												MUSIC_STYLE_SUMMER,				0,		0,		0,		20,		20		},		// RIDE_TYPE_CHAIRLIFT
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,									MUSIC_STYLE_ROCK,				0,		0,		0,		10,		0		},		// RIDE_TYPE_CORKSCREW_ROLLER_COASTER
+	{ RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT,																																																						MUSIC_STYLE_SUMMER,				0,		0,		0,		15,		0		},		// RIDE_TYPE_MAZE
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_13,																																										MUSIC_STYLE_SUMMER,				0,		0,		0,		20,		0		},		// RIDE_TYPE_SPIRAL_SLIDE
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_13,																																										MUSIC_STYLE_TECHNO,				0,		0,		0,		20,		20		},		// RIDE_TYPE_GO_KARTS
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_6 | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_13,																													MUSIC_STYLE_WATER,				0,		0,		0,		20,		20		},		// RIDE_TYPE_LOG_FLUME
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_6 | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_13,																													MUSIC_STYLE_WATER,				0,		0,		0,		15,		0		},		// RIDE_TYPE_RIVER_RAPIDS
+	{ RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_14,																																	MUSIC_STYLE_DODGEMS_BEAT,		0,		0,		0,		15,		0		},		// RIDE_TYPE_DODGEMS
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_13,																																	MUSIC_STYLE_PIRATES,			0,		0,		0,		15,		0		},		// RIDE_TYPE_PIRATE_SHIP
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_13,																																	MUSIC_STYLE_TECHNO,				0,		0,		0,		9,		0		},		// RIDE_TYPE_SWINGING_INVERTER_SHIP
+	{ 0,																																																														MUSIC_STYLE_GENTLE,				0,		0,		0,		15,		0		},		// RIDE_TYPE_FOOD_STALL
+	{ 0,																																																														MUSIC_STYLE_GENTLE,				0,		0,		0,		12,		0		},		// RIDE_TYPE_1D
+	{ 0,																																																														MUSIC_STYLE_GENTLE,				0,		0,		0,		8,		0		},		// RIDE_TYPE_DRINK_STALL
+	{ 0,																																																														MUSIC_STYLE_GENTLE,				0,		0,		0,		15,		0		},		// RIDE_TYPE_1F
+	{ 0,																																																														MUSIC_STYLE_GENTLE,				0,		0,		0,		10,		0		},		// RIDE_TYPE_SHOP
+	{ RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_13,																									MUSIC_STYLE_FAIRGROUND_ORGAN,	0,		0,		0,		9,		0		},		// RIDE_TYPE_MERRY_GO_ROUND
+	{ 0,																																																														MUSIC_STYLE_GENTLE,				0,		0,		0,		6,		25		},		// RIDE_TYPE_22
+	{ 0,																																																														MUSIC_STYLE_GENTLE,				0,		0,		0,		0,		0		},		// RIDE_TYPE_INFORMATION_KIOSK
+	{ 0,																																																														MUSIC_STYLE_GENTLE,				0,		0,		0,		10,		0		},		// RIDE_TYPE_TOILETS
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_14,																																	MUSIC_STYLE_SUMMER,				0,		0,		0,		20,		0		},		// RIDE_TYPE_FERRIS_WHEEL
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_14,																																	MUSIC_STYLE_ROCK,				0,		0,		0,		20,		0		},		// RIDE_TYPE_MOTION_SIMULATOR
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION,																																							MUSIC_STYLE_ROCK,				0,		0,		0,		20,		0		},		// RIDE_TYPE_3D_CINEMA
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_13,																																	MUSIC_STYLE_ROCK,				0,		0,		0,		5,		0		},		// RIDE_TYPE_TOP_SPIN
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_14,																																	MUSIC_STYLE_GENTLE,				0,		0,		0,		20,		0		},		// RIDE_TYPE_SPACE_RINGS
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,																													MUSIC_STYLE_ROCK,				0,		0,		0,		10,		0		},		// RIDE_TYPE_REVERSE_FREEFALL_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_TRANSPORT_RIDE,																																							MUSIC_STYLE_SUMMER,				0,		0,		0,		20,		20		},		// RIDE_TYPE_LIFT
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,																			MUSIC_STYLE_ROCK,				0,		0,		0,		0,		0		},		// RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
+	{ 0,																																																														MUSIC_STYLE_GENTLE,				0,		0,		0,		10,		0		},		// RIDE_TYPE_CASH_MACHINE
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_13,																																	MUSIC_STYLE_GENTLE,				0,		0,		0,		10,		0		},		// RIDE_TYPE_TWIST
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION,																																							MUSIC_STYLE_HORROR,				0,		0,		0,		0,		0		},		// RIDE_TYPE_HAUNTED_HOUSE
+	{ 0,																																																														MUSIC_STYLE_GENTLE,				0,		0,		0,		15,		0		},		// RIDE_TYPE_FIRST_AID
+	{ RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION,																																					MUSIC_STYLE_CIRCUS_SHOW,		0,		0,		0,		15,		0		},		// RIDE_TYPE_CIRCUS_SHOW
+	{ RIDE_TYPE_FLAG4_0 | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_6 | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_13,																								MUSIC_STYLE_HORROR,				0,		0,		0,		20,		20		},		// RIDE_TYPE_GHOST_TRAIN
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,									MUSIC_STYLE_ROCK,				0,		0,		0,		20,		20		},		// RIDE_TYPE_TWISTER_ROLLER_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,									MUSIC_STYLE_WILD_WEST,			0,		0,		0,		20,		20		},		// RIDE_TYPE_WOODEN_ROLLER_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,									MUSIC_STYLE_GENTLE,				0,		0,		0,		20,		20		},		// RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
+	{ RIDE_TYPE_FLAG4_0 | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,														MUSIC_STYLE_ROCK,				0,		0,		0,		20,		20		},		// RIDE_TYPE_WILD_MOUSE
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | (1 << 3) | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,						MUSIC_STYLE_ROCK_STYLE_3,		56,		0,		0,		20,		20		},		// RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_13,																																																			MUSIC_STYLE_GENTLE,				0,		0,		0,		20,		20		},		// RIDE_TYPE_38
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | (1 << 3) | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13 | RIDE_TYPE_FLAG4_15,	MUSIC_STYLE_ROCK,				58,		0,		0,		20,		20		},		// RIDE_TYPE_FLYING_ROLLER_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_13 | (1 << 15),																																																MUSIC_STYLE_GENTLE,				0,		0,		0,		20,		20		},		// RIDE_TYPE_3A
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,																			MUSIC_STYLE_ROCK,				0,		0,		0,		20,		20		},		// RIDE_TYPE_VIRGINIA_REEL
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_6 | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_14,																													MUSIC_STYLE_WATER,				0,		0,		0,		15,		0		},		// RIDE_TYPE_SPLASH_BOATS
+	{ RIDE_TYPE_FLAG4_0 | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_6 | RIDE_TYPE_FLAG4_14,																																MUSIC_STYLE_SUMMER,				0,		0,		0,		20,		20		},		// RIDE_TYPE_MINI_HELICOPTERS
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | (1 << 3) | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,						MUSIC_STYLE_ROCK,				64,		0,		0,		10,		0		},		// RIDE_TYPE_LAY_DOWN_ROLLER_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_6 | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_TRANSPORT_RIDE,																							MUSIC_STYLE_SUMMER,				0,		0,		0,		20,		20		},		// RIDE_TYPE_SUSPENDED_MONORAIL
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_13,																																																			MUSIC_STYLE_GENTLE,				0,		0,		0,		20,		20		},		// RIDE_TYPE_40
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,																			MUSIC_STYLE_TECHNO,				0,		0,		0,		15,		20		},		// RIDE_TYPE_REVERSER_ROLLER_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,																			MUSIC_STYLE_TECHNO,				0,		0,		0,		10,		0		},		// RIDE_TYPE_HEARTLINE_TWISTER_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_14,																																										MUSIC_STYLE_SUMMER,				0,		0,		0,		20,		20		},		// RIDE_TYPE_MINI_GOLF
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_10 | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,				MUSIC_STYLE_ROCK_STYLE_3,		0,		0,		0,		20,		0		},		// RIDE_TYPE_GIGA_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_13,																																	MUSIC_STYLE_ROCK,				0,		0,		0,		15,		0		},		// RIDE_TYPE_ROTO_DROP
+	{ RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_13,																									MUSIC_STYLE_ROCK,				0,		0,		0,		10,		0		},		// RIDE_TYPE_FLYING_SAUCERS
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION,																																							MUSIC_STYLE_GENTLE,				0,		0,		0,		15,		0		},		// RIDE_TYPE_CROOKED_HOUSE
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_14,																																										MUSIC_STYLE_SUMMER,				0,		0,		0,		20,		20		},		// RIDE_TYPE_MONORAIL_CYCLES
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,									MUSIC_STYLE_TECHNO,				0,		0,		0,		20,		20		},		// RIDE_TYPE_COMPACT_INVERTED_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,																			MUSIC_STYLE_WATER,				0,		0,		0,		20,		0		},		// RIDE_TYPE_WATER_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,																			MUSIC_STYLE_ROCK_STYLE_2,		0,		0,		0,		20,		20		},		// RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,																			MUSIC_STYLE_ROCK_STYLE_2,		0,		0,		0,		15,		0		},		// RIDE_TYPE_INVERTED_HAIRPIN_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_13,																																	MUSIC_STYLE_EGYPTIAN,			0,		0,		0,		10,		0		},		// RIDE_TYPE_MAGIC_CARPET
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_6,																																	MUSIC_STYLE_WATER,				0,		0,		0,		10,		20		},		// RIDE_TYPE_SUBMARINE_RIDE
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_6 | RIDE_TYPE_FLAG4_14,																																					MUSIC_STYLE_GENTLE,				0,		0,		0,		7,		0		},		// RIDE_TYPE_RIVER_RAFTS
+	{ 0,																																																														MUSIC_STYLE_GENTLE,				0,		0,		0,		20,		0		},		// RIDE_TYPE_50
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_13,																																	MUSIC_STYLE_ROCK_STYLE_2,		0,		0,		0,		12,		0		},		// RIDE_TYPE_ENTERPRISE
+	{ 0,																																																														MUSIC_STYLE_GENTLE,				0,		0,		0,		15,		0		},		// RIDE_TYPE_52
+	{ 0,																																																														MUSIC_STYLE_GENTLE,				0,		0,		0,		12,		0		},		// RIDE_TYPE_53
+	{ 0,																																																														MUSIC_STYLE_GENTLE,				0,		0,		0,		20,		20		},		// RIDE_TYPE_54
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,									MUSIC_STYLE_ROCK,				0,		0,		0,		20,		20		},		// RIDE_TYPE_55
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,									MUSIC_STYLE_ROCK,				0,		0,		0,		20,		20		},		// RIDE_TYPE_INVERTED_IMPULSE_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,									MUSIC_STYLE_SUMMER,				0,		0,		0,		20,		20		},		// RIDE_TYPE_MINI_ROLLER_COASTER
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,									MUSIC_STYLE_WILD_WEST,			0,		0,		0,		20,		20		},		// RIDE_TYPE_MINE_RIDE
+	{ RIDE_TYPE_FLAG4_0 | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_13,																				MUSIC_STYLE_ROCK_STYLE_2,		0,		0,		0,		20,		20		},		// RIDE_TYPE_59
+	{ RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_11 | RIDE_TYPE_FLAG4_13,									MUSIC_STYLE_ROCK,				0,		0,		0,		12,		7		},		// RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
+};
+
+// rct2: 0x00982358
+const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT] = {
+	MONEY(0,90),						// SHOP_ITEM_BALLOON
+	MONEY(2,50),						// SHOP_ITEM_TOY
+	MONEY(0,60),						// SHOP_ITEM_MAP
+	MONEY(0,00),						// SHOP_ITEM_PHOTO
+	MONEY(2,50),						// SHOP_ITEM_UMBRELLA
+	MONEY(1,20),						// SHOP_ITEM_DRINK
+	MONEY(1,50),						// SHOP_ITEM_BURGER
+	MONEY(1,50),						// SHOP_ITEM_FRIES
+	MONEY(0,90),						// SHOP_ITEM_ICE_CREAM
+	MONEY(0,80),						// SHOP_ITEM_COTTON_CANDY
+	MONEY(0,00),						// SHOP_ITEM_EMPTY_CAN
+	MONEY(0,00),						// SHOP_ITEM_RUBBISH
+	MONEY(0,00),						// SHOP_ITEM_EMPTY_BURGER_BOX
+	MONEY(1,60),						// SHOP_ITEM_PIZZA
+	MONEY(0,00),						// SHOP_ITEM_VOUCHER
+	MONEY(1,20),						// SHOP_ITEM_POPCORN
+	MONEY(1,00),						// SHOP_ITEM_HOT_DOG
+	MONEY(1,50),						// SHOP_ITEM_TENTACLE
+	MONEY(1,50),						// SHOP_ITEM_HAT
+	MONEY(0,70),						// SHOP_ITEM_CANDY_APPLE
+	MONEY(3,00),						// SHOP_ITEM_TSHIRT
+	MONEY(0,70),						// SHOP_ITEM_DONUT
+	MONEY(1,20),						// SHOP_ITEM_COFFEE
+	MONEY(0,00),						// SHOP_ITEM_EMPTY_CUP
+	MONEY(1,50),						// SHOP_ITEM_CHICKEN
+	MONEY(1,20),						// SHOP_ITEM_LEMONADE
+	MONEY(0,00),						// SHOP_ITEM_EMPTY_BOX
+	MONEY(0,00),						// SHOP_ITEM_EMPTY_BOTTLE
+	MONEY(0,00),						// 28
+	MONEY(0,00),						// 29
+	MONEY(0,00),						// 30
+	MONEY(0,00),						// 31
+	MONEY(0,00),						// SHOP_ITEM_PHOTO2
+	MONEY(0,00),						// SHOP_ITEM_PHOTO3
+	MONEY(0,00),						// SHOP_ITEM_PHOTO4
+	MONEY(1,10),						// SHOP_ITEM_PRETZEL
+	MONEY(1,20),						// SHOP_ITEM_CHOCOLATE
+	MONEY(1,10),						// SHOP_ITEM_ICED_TEA
+	MONEY(1,20),						// SHOP_ITEM_FUNNEL_CAKE
+	MONEY(1,50),						// SHOP_ITEM_SUNGLASSES
+	MONEY(1,50),						// SHOP_ITEM_BEEF_NOODLES
+	MONEY(1,50),						// SHOP_ITEM_FRIED_RICE_NOODLES
+	MONEY(1,50),						// SHOP_ITEM_WONTON_SOUP
+	MONEY(1,50),						// SHOP_ITEM_MEATBALL_SOUP
+	MONEY(1,20),						// SHOP_ITEM_FRUIT_JUICE
+	MONEY(1,20),						// SHOP_ITEM_SOYBEAN_MILK
+	MONEY(1,20),						// SHOP_ITEM_SU_JONGKWA
+	MONEY(1,50),						// SHOP_ITEM_SUB_SANDWICH
+	MONEY(0,70),						// SHOP_ITEM_COOKIE
+	MONEY(0,00),						// SHOP_ITEM_EMPTY_BOWL_RED
+	MONEY(0,00),						// SHOP_ITEM_EMPTY_DRINK_CARTON
+	MONEY(0,00),						// SHOP_ITEM_EMPTY_JUICE_CUP
+	MONEY(1,50),						// SHOP_ITEM_ROAST_SAUSAGE
+	MONEY(0,00),						// SHOP_ITEM_EMPTY_BOWL_BLUE
+	MONEY(0,00),						// 54
+	MONEY(0,00),						// 55
+};
+
+const rct_shop_item_string_types ShopItemStringIds[SHOP_ITEM_COUNT] = {
+	{ STR_SHOP_ITEM_SINGULAR_BALLOON,				STR_SHOP_ITEM_PLURAL_BALLOON,				STR_SHOP_ITEM_INDEFINITE_BALLOON,				STR_SHOP_ITEM_DISPLAY_BALLOON				},
+	{ STR_SHOP_ITEM_SINGULAR_CUDDLY_TOY,			STR_SHOP_ITEM_PLURAL_CUDDLY_TOY,			STR_SHOP_ITEM_INDEFINITE_CUDDLY_TOY,			STR_SHOP_ITEM_DISPLAY_CUDDLY_TOY			},
+	{ STR_SHOP_ITEM_SINGULAR_PARK_MAP,				STR_SHOP_ITEM_PLURAL_PARK_MAP,				STR_SHOP_ITEM_INDEFINITE_PARK_MAP,				STR_SHOP_ITEM_DISPLAY_PARK_MAP				},
+	{ STR_SHOP_ITEM_SINGULAR_ON_RIDE_PHOTO,			STR_SHOP_ITEM_PLURAL_ON_RIDE_PHOTO,			STR_SHOP_ITEM_INDEFINITE_ON_RIDE_PHOTO,			STR_SHOP_ITEM_DISPLAY_ON_RIDE_PHOTO			},
+	{ STR_SHOP_ITEM_SINGULAR_UMBRELLA,				STR_SHOP_ITEM_PLURAL_UMBRELLA,				STR_SHOP_ITEM_INDEFINITE_UMBRELLA,				STR_SHOP_ITEM_DISPLAY_UMBRELLA				},
+	{ STR_SHOP_ITEM_SINGULAR_DRINK,					STR_SHOP_ITEM_PLURAL_DRINK,					STR_SHOP_ITEM_INDEFINITE_DRINK,					STR_SHOP_ITEM_DISPLAY_DRINK					},
+	{ STR_SHOP_ITEM_SINGULAR_BURGER,				STR_SHOP_ITEM_PLURAL_BURGER,				STR_SHOP_ITEM_INDEFINITE_BURGER,				STR_SHOP_ITEM_DISPLAY_BURGER				},
+	{ STR_SHOP_ITEM_SINGULAR_CHIPS,					STR_SHOP_ITEM_PLURAL_CHIPS,					STR_SHOP_ITEM_INDEFINITE_CHIPS,					STR_SHOP_ITEM_DISPLAY_CHIPS					},
+	{ STR_SHOP_ITEM_SINGULAR_ICE_CREAM,				STR_SHOP_ITEM_PLURAL_ICE_CREAM,				STR_SHOP_ITEM_INDEFINITE_ICE_CREAM,				STR_SHOP_ITEM_DISPLAY_ICE_CREAM				},
+	{ STR_SHOP_ITEM_SINGULAR_CANDYFLOSS,			STR_SHOP_ITEM_PLURAL_CANDYFLOSS,			STR_SHOP_ITEM_INDEFINITE_CANDYFLOSS,			STR_SHOP_ITEM_DISPLAY_CANDYFLOSS			},
+	{ STR_SHOP_ITEM_SINGULAR_EMPTY_CAN,				STR_SHOP_ITEM_PLURAL_EMPTY_CAN,				STR_SHOP_ITEM_INDEFINITE_EMPTY_CAN,				STR_SHOP_ITEM_DISPLAY_EMPTY_CAN				},
+	{ STR_SHOP_ITEM_SINGULAR_RUBBISH,				STR_SHOP_ITEM_PLURAL_RUBBISH,				STR_SHOP_ITEM_INDEFINITE_RUBBISH,				STR_SHOP_ITEM_DISPLAY_RUBBISH				},
+	{ STR_SHOP_ITEM_SINGULAR_EMPTY_BURGER_BOX,		STR_SHOP_ITEM_PLURAL_EMPTY_BURGER_BOX,		STR_SHOP_ITEM_INDEFINITE_EMPTY_BURGER_BOX,		STR_SHOP_ITEM_DISPLAY_EMPTY_BURGER_BOX		},
+	{ STR_SHOP_ITEM_SINGULAR_PIZZA,					STR_SHOP_ITEM_PLURAL_PIZZA,					STR_SHOP_ITEM_INDEFINITE_PIZZA,					STR_SHOP_ITEM_DISPLAY_PIZZA					},
+	{ STR_SHOP_ITEM_SINGULAR_VOUCHER,				STR_SHOP_ITEM_PLURAL_VOUCHER,				STR_SHOP_ITEM_INDEFINITE_VOUCHER,				STR_SHOP_ITEM_DISPLAY_VOUCHER				},
+	{ STR_SHOP_ITEM_SINGULAR_POPCORN,				STR_SHOP_ITEM_PLURAL_POPCORN,				STR_SHOP_ITEM_INDEFINITE_POPCORN,				STR_SHOP_ITEM_DISPLAY_POPCORN				},
+	{ STR_SHOP_ITEM_SINGULAR_HOT_DOG,				STR_SHOP_ITEM_PLURAL_HOT_DOG,				STR_SHOP_ITEM_INDEFINITE_HOT_DOG,				STR_SHOP_ITEM_DISPLAY_HOT_DOG				},
+	{ STR_SHOP_ITEM_SINGULAR_TENTACLE,				STR_SHOP_ITEM_PLURAL_TENTACLE,				STR_SHOP_ITEM_INDEFINITE_TENTACLE,				STR_SHOP_ITEM_DISPLAY_TENTACLE				},
+	{ STR_SHOP_ITEM_SINGULAR_HAT,					STR_SHOP_ITEM_PLURAL_HAT,					STR_SHOP_ITEM_INDEFINITE_HAT,					STR_SHOP_ITEM_DISPLAY_HAT					},
+	{ STR_SHOP_ITEM_SINGULAR_TOFFEE_APPLE,			STR_SHOP_ITEM_PLURAL_TOFFEE_APPLE,			STR_SHOP_ITEM_INDEFINITE_TOFFEE_APPLE,			STR_SHOP_ITEM_DISPLAY_TOFFEE_APPLE			},
+	{ STR_SHOP_ITEM_SINGULAR_T_SHIRT,				STR_SHOP_ITEM_PLURAL_T_SHIRT,				STR_SHOP_ITEM_INDEFINITE_T_SHIRT,				STR_SHOP_ITEM_DISPLAY_T_SHIRT				},
+	{ STR_SHOP_ITEM_SINGULAR_DOUGHNUT,				STR_SHOP_ITEM_PLURAL_DOUGHNUT,				STR_SHOP_ITEM_INDEFINITE_DOUGHNUT,				STR_SHOP_ITEM_DISPLAY_DOUGHNUT				},
+	{ STR_SHOP_ITEM_SINGULAR_COFFEE,				STR_SHOP_ITEM_PLURAL_COFFEE,				STR_SHOP_ITEM_INDEFINITE_COFFEE,				STR_SHOP_ITEM_DISPLAY_COFFEE				},
+	{ STR_SHOP_ITEM_SINGULAR_EMPTY_CUP,				STR_SHOP_ITEM_PLURAL_EMPTY_CUP,				STR_SHOP_ITEM_INDEFINITE_EMPTY_CUP,				STR_SHOP_ITEM_DISPLAY_EMPTY_CUP				},
+	{ STR_SHOP_ITEM_SINGULAR_FRIED_CHICKEN,			STR_SHOP_ITEM_PLURAL_FRIED_CHICKEN,			STR_SHOP_ITEM_INDEFINITE_FRIED_CHICKEN,			STR_SHOP_ITEM_DISPLAY_FRIED_CHICKEN			},
+	{ STR_SHOP_ITEM_SINGULAR_LEMONADE,				STR_SHOP_ITEM_PLURAL_LEMONADE,				STR_SHOP_ITEM_INDEFINITE_LEMONADE,				STR_SHOP_ITEM_DISPLAY_LEMONADE				},
+	{ STR_SHOP_ITEM_SINGULAR_EMPTY_BOX,				STR_SHOP_ITEM_PLURAL_EMPTY_BOX,				STR_SHOP_ITEM_INDEFINITE_EMPTY_BOX,				STR_SHOP_ITEM_DISPLAY_EMPTY_BOX				},
+	{ STR_SHOP_ITEM_SINGULAR_EMPTY_BOTTLE,			STR_SHOP_ITEM_PLURAL_EMPTY_BOTTLE,			STR_SHOP_ITEM_INDEFINITE_EMPTY_BOTTLE,			STR_SHOP_ITEM_DISPLAY_EMPTY_BOTTLE			},
+	{ STR_NONE,										STR_NONE,									STR_NONE,										STR_NONE									},
+	{ STR_NONE,										STR_NONE,									STR_NONE,										STR_NONE									},
+	{ STR_NONE,										STR_NONE,									STR_NONE,										STR_NONE									},
+	{ STR_NONE,										STR_NONE,									STR_NONE,										STR_NONE									},
+	{ STR_SHOP_ITEM_SINGULAR_ON_RIDE_PHOTO,			STR_SHOP_ITEM_PLURAL_ON_RIDE_PHOTO,			STR_SHOP_ITEM_INDEFINITE_ON_RIDE_PHOTO,			STR_SHOP_ITEM_DISPLAY_ON_RIDE_PHOTO			},
+	{ STR_SHOP_ITEM_SINGULAR_ON_RIDE_PHOTO,			STR_SHOP_ITEM_PLURAL_ON_RIDE_PHOTO,			STR_SHOP_ITEM_INDEFINITE_ON_RIDE_PHOTO,			STR_SHOP_ITEM_DISPLAY_ON_RIDE_PHOTO			},
+	{ STR_SHOP_ITEM_SINGULAR_ON_RIDE_PHOTO,			STR_SHOP_ITEM_PLURAL_ON_RIDE_PHOTO,			STR_SHOP_ITEM_INDEFINITE_ON_RIDE_PHOTO,			STR_SHOP_ITEM_DISPLAY_ON_RIDE_PHOTO			},
+	{ STR_SHOP_ITEM_SINGULAR_PRETZEL,				STR_SHOP_ITEM_PLURAL_PRETZEL,				STR_SHOP_ITEM_INDEFINITE_PRETZEL,				STR_SHOP_ITEM_DISPLAY_PRETZEL				},
+	{ STR_SHOP_ITEM_SINGULAR_HOT_CHOCOLATE,			STR_SHOP_ITEM_PLURAL_HOT_CHOCOLATE,			STR_SHOP_ITEM_INDEFINITE_HOT_CHOCOLATE,			STR_SHOP_ITEM_DISPLAY_HOT_CHOCOLATE			},
+	{ STR_SHOP_ITEM_SINGULAR_ICED_TEA,				STR_SHOP_ITEM_PLURAL_ICED_TEA,				STR_SHOP_ITEM_INDEFINITE_ICED_TEA,				STR_SHOP_ITEM_DISPLAY_ICED_TEA				},
+	{ STR_SHOP_ITEM_SINGULAR_FUNNEL_CAKE,			STR_SHOP_ITEM_PLURAL_FUNNEL_CAKE,			STR_SHOP_ITEM_INDEFINITE_FUNNEL_CAKE,			STR_SHOP_ITEM_DISPLAY_FUNNEL_CAKE			},
+	{ STR_SHOP_ITEM_SINGULAR_SUNGLASSES,			STR_SHOP_ITEM_PLURAL_SUNGLASSES,			STR_SHOP_ITEM_INDEFINITE_SUNGLASSES,			STR_SHOP_ITEM_DISPLAY_SUNGLASSES			},
+	{ STR_SHOP_ITEM_SINGULAR_BEEF_NOODLES,			STR_SHOP_ITEM_PLURAL_BEEF_NOODLES,			STR_SHOP_ITEM_INDEFINITE_BEEF_NOODLES,			STR_SHOP_ITEM_DISPLAY_BEEF_NOODLES			},
+	{ STR_SHOP_ITEM_SINGULAR_FRIED_RICE_NOODLES,	STR_SHOP_ITEM_PLURAL_FRIED_RICE_NOODLES,	STR_SHOP_ITEM_INDEFINITE_FRIED_RICE_NOODLES,	STR_SHOP_ITEM_DISPLAY_FRIED_RICE_NOODLES	},
+	{ STR_SHOP_ITEM_SINGULAR_WONTON_SOUP,			STR_SHOP_ITEM_PLURAL_WONTON_SOUP,			STR_SHOP_ITEM_INDEFINITE_WONTON_SOUP,			STR_SHOP_ITEM_DISPLAY_WONTON_SOUP			},
+	{ STR_SHOP_ITEM_SINGULAR_MEATBALL_SOUP,			STR_SHOP_ITEM_PLURAL_MEATBALL_SOUP,			STR_SHOP_ITEM_INDEFINITE_MEATBALL_SOUP,			STR_SHOP_ITEM_DISPLAY_MEATBALL_SOUP			},
+	{ STR_SHOP_ITEM_SINGULAR_FRUIT_JUICE,			STR_SHOP_ITEM_PLURAL_FRUIT_JUICE,			STR_SHOP_ITEM_INDEFINITE_FRUIT_JUICE,			STR_SHOP_ITEM_DISPLAY_FRUIT_JUICE			},
+	{ STR_SHOP_ITEM_SINGULAR_SOYBEAN_MILK,			STR_SHOP_ITEM_PLURAL_SOYBEAN_MILK,			STR_SHOP_ITEM_INDEFINITE_SOYBEAN_MILK,			STR_SHOP_ITEM_DISPLAY_SOYBEAN_MILK			},
+	{ STR_SHOP_ITEM_SINGULAR_SUJONGKWA,				STR_SHOP_ITEM_PLURAL_SUJONGKWA,				STR_SHOP_ITEM_INDEFINITE_SUJONGKWA,				STR_SHOP_ITEM_DISPLAY_SUJONGKWA				},
+	{ STR_SHOP_ITEM_SINGULAR_SUB_SANDWICH,			STR_SHOP_ITEM_PLURAL_SUB_SANDWICH,			STR_SHOP_ITEM_INDEFINITE_SUB_SANDWICH,			STR_SHOP_ITEM_DISPLAY_SUB_SANDWICH			},
+	{ STR_SHOP_ITEM_SINGULAR_COOKIE,				STR_SHOP_ITEM_PLURAL_COOKIE,				STR_SHOP_ITEM_INDEFINITE_COOKIE,				STR_SHOP_ITEM_DISPLAY_COOKIE				},
+	{ STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_RED,		STR_SHOP_ITEM_PLURAL_EMPTY_BOWL_RED,		STR_SHOP_ITEM_INDEFINITE_EMPTY_BOWL_RED,		STR_SHOP_ITEM_DISPLAY_EMPTY_BOWL_RED		},
+	{ STR_SHOP_ITEM_SINGULAR_EMPTY_DRINK_CARTON,	STR_SHOP_ITEM_PLURAL_EMPTY_DRINK_CARTON,	STR_SHOP_ITEM_INDEFINITE_EMPTY_DRINK_CARTON,	STR_SHOP_ITEM_DISPLAY_EMPTY_DRINK_CARTON	},
+	{ STR_SHOP_ITEM_SINGULAR_EMPTY_JUICE_CUP,		STR_SHOP_ITEM_PLURAL_EMPTY_JUICE_CUP,		STR_SHOP_ITEM_INDEFINITE_EMPTY_JUICE_CUP,		STR_SHOP_ITEM_DISPLAY_EMPTY_JUICE_CUP		},
+	{ STR_SHOP_ITEM_SINGULAR_ROAST_SAUSAGE,			STR_SHOP_ITEM_PLURAL_ROAST_SAUSAGE,			STR_SHOP_ITEM_INDEFINITE_ROAST_SAUSAGE,			STR_SHOP_ITEM_DISPLAY_ROAST_SAUSAGE			},
+	{ STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE,		STR_SHOP_ITEM_PLURAL_EMPTY_BOWL_BLUE,		STR_SHOP_ITEM_INDEFINITE_EMPTY_BOWL_BLUE,		STR_SHOP_ITEM_DISPLAY_EMPTY_BOWL_BLUE		},
+};
+
+const uint32 ShopItemImage[SHOP_ITEM_COUNT] = {
+	5061,									// SHOP_ITEM_BALLOON
+	5062,									// SHOP_ITEM_TOY
+	5063,									// SHOP_ITEM_MAP
+	5064,									// SHOP_ITEM_PHOTO
+	5065,									// SHOP_ITEM_UMBRELLA
+	5066,									// SHOP_ITEM_DRINK
+	5067,									// SHOP_ITEM_BURGER
+	5068,									// SHOP_ITEM_FRIES
+	5069,									// SHOP_ITEM_ICE_CREAM
+	5070,									// SHOP_ITEM_COTTON_CANDY
+	5071,									// SHOP_ITEM_EMPTY_CAN
+	5072,									// SHOP_ITEM_RUBBISH
+	5073,									// SHOP_ITEM_EMPTY_BURGER_BOX
+	5074,									// SHOP_ITEM_PIZZA
+	5075,									// SHOP_ITEM_VOUCHER
+	5076,									// SHOP_ITEM_POPCORN
+	5077,									// SHOP_ITEM_HOT_DOG
+	5078,									// SHOP_ITEM_TENTACLE
+	5079,									// SHOP_ITEM_HAT
+	5080,									// SHOP_ITEM_CANDY_APPLE
+	5081,									// SHOP_ITEM_TSHIRT
+	5082,									// SHOP_ITEM_DONUT
+	5083,									// SHOP_ITEM_COFFEE
+	5084,									// SHOP_ITEM_EMPTY_CUP
+	5085,									// SHOP_ITEM_CHICKEN
+	5086,									// SHOP_ITEM_LEMONADE
+	5087,									// SHOP_ITEM_EMPTY_BOX
+	5088,									// SHOP_ITEM_EMPTY_BOTTLE
+	0,										// 28
+	0,										// 29
+	0,										// 30
+	0,										// 31
+	5089,									// SHOP_ITEM_PHOTO2
+	5090,									// SHOP_ITEM_PHOTO3
+	5091,									// SHOP_ITEM_PHOTO4
+	5092,									// SHOP_ITEM_PRETZEL
+	5093,									// SHOP_ITEM_CHOCOLATE
+	5094,									// SHOP_ITEM_ICED_TEA
+	5095,									// SHOP_ITEM_FUNNEL_CAKE
+	5096,									// SHOP_ITEM_SUNGLASSES
+	5097,									// SHOP_ITEM_BEEF_NOODLES
+	5098,									// SHOP_ITEM_FRIED_RICE_NOODLES
+	5099,									// SHOP_ITEM_WONTON_SOUP
+	5100,									// SHOP_ITEM_MEATBALL_SOUP
+	5101,									// SHOP_ITEM_FRUIT_JUICE
+	5102,									// SHOP_ITEM_SOYBEAN_MILK
+	5103,									// SHOP_ITEM_SU_JONGKWA
+	5104,									// SHOP_ITEM_SUB_SANDWICH
+	5105,									// SHOP_ITEM_COOKIE
+	5106,									// SHOP_ITEM_EMPTY_BOWL_RED
+	5107,									// SHOP_ITEM_EMPTY_DRINK_CARTON
+	5108,									// SHOP_ITEM_EMPTY_JUICE_CUP
+	5109,									// SHOP_ITEM_ROAST_SAUSAGE
+	5110,									// SHOP_ITEM_EMPTY_BOWL_BLUE
+};
+
+const rct_ride_type_vehicle CableLiftVehicle = {
+	.rotation_frame_mask = 31,
+	.var_02 = 0,
+	.var_03 = 0,
+	.var_04 = 0,
+	.car_friction = 0,
+	.tab_height = 0,
+	.num_seats = 0,
+	.sprite_flags = 0x7,
+	.sprite_width = 0,
+	.sprite_height_negative = 0,
+	.sprite_height_positive = 0,
+	.var_11 = 0,
+	.var_12 = 0,
+	.var_14 = 0,
+	.var_16 = 1,
+	.base_image_id = 29110,
+	.var_1C = 0,
+	.var_20 = 29142,
+	.var_24 = 29214,
+	.var_28 = 0,
+	.var_2C = 0,
+	.var_30 = 0,
+	.var_34 = 0,
+	.var_38 = 0,
+	.var_3C = 0,
+	.var_40 = 0,
+	.var_44 = 0,
+	.var_48 = 0,
+	.var_4C = 0,
+	.no_vehicle_images = 0,
+	.no_seating_rows = 0,
+	.spinning_inertia = 0,
+	.spinning_friction = 255,
+	.pad_57 = { 0,0,0 },
+	.var_5A = 0,
+	.powered_acceleration = 0,
+	.powered_max_speed = 0,
+	.car_visual = 0,
+	.pad_5E = 1,
+	.draw_order = 14,
+	.special_frames = 0,
+	.peep_loading_positions = NULL
 };

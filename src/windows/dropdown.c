@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -47,47 +47,70 @@ int _dropdown_num_columns;
 int _dropdown_num_rows;
 int _dropdown_item_width;
 int _dropdown_item_height;
-int _dropdown_highlighted_index;
 
 int gDropdownNumItems;
 uint16 gDropdownItemsFormat[64];
 sint64 gDropdownItemsArgs[64];
-// Replaces 0x009DED38
-uint32 gDropdownItemsChecked;
-uint32 *gDropdownItemsDisabled = RCT2_ADDRESS(0x009DED34, uint32);
+uint64 gDropdownItemsChecked;
+uint64 gDropdownItemsDisabled;
+bool gDropdownIsColour;
+int gDropdownLastColourHover;
+int gDropdownHighlightedIndex;
 
-static void window_dropdown_emptysub() { }
-static void window_dropdown_paint();
+bool dropdown_is_checked(int index)
+{
+	return gDropdownItemsChecked & (1ULL << index);
+}
 
-static void* window_dropdown_events[] = {
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
-	window_dropdown_emptysub,
+void dropdown_set_checked(int index, bool value)
+{
+	if (value) {
+		gDropdownItemsChecked |= 1ULL << index;
+	} else {
+		gDropdownItemsChecked &= ~(1ULL << index);
+	}
+}
+
+void dropdown_set_disabled(int index, bool value)
+{
+	if (value) {
+		gDropdownItemsDisabled |= 1ULL << index;
+	} else {
+		gDropdownItemsDisabled &= ~(1ULL << index);
+	}
+}
+
+static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi);
+
+static rct_window_event_list window_dropdown_events = {
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_dropdown_paint,
-	window_dropdown_emptysub
+	NULL
 };
 
 /**
@@ -147,17 +170,17 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 	_dropdown_item_height = 10;
 	if (flags & 0x40)
 		_dropdown_item_height = flags & 0x3F;
-	
+
 	// Set the widgets
 	gDropdownNumItems = num_items;
 	_dropdown_num_rows = num_items;
 
 	width = _dropdown_item_width * _dropdown_num_columns + 3;
 	int height = _dropdown_item_height * _dropdown_num_rows + 3;
-	if (x + width > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16))
-		x = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - width);
-	if (y + height > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16))
-		y = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - height);
+	if (x + width > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16))
+		x = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - width);
+	if (y + height > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16))
+		y = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height);
 
 	window_dropdown_widgets[WIDX_BACKGROUND].bottom = _dropdown_item_height * num_items + 3;
 	window_dropdown_widgets[WIDX_BACKGROUND].right = _dropdown_item_width + 3;
@@ -167,7 +190,7 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 		x, y + extray,
 		window_dropdown_widgets[WIDX_BACKGROUND].right + 1,
 		window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1,
-		(uint32*)window_dropdown_events,
+		&window_dropdown_events,
 		WC_DROPDOWN,
 		0x02
 	);
@@ -177,18 +200,11 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 	w->colours[0] = colour;
 
 	// Input state
-	_dropdown_highlighted_index = -1;
-	RCT2_GLOBAL(0x009DED34, sint32) = 0;
+	gDropdownHighlightedIndex = -1;
+	gDropdownItemsDisabled = 0;
 	gDropdownItemsChecked = 0;
+	gDropdownIsColour = false;
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, sint8) = INPUT_STATE_DROPDOWN_ACTIVE;
-
-	// Copy the following properties until all use of it is decompiled
-	RCT2_GLOBAL(0x009DEBA0, sint16) = gDropdownNumItems;
-	RCT2_GLOBAL(0x009DED44, sint32) = _dropdown_num_columns;
-	RCT2_GLOBAL(0x009DED48, sint32) = _dropdown_num_rows;
-	RCT2_GLOBAL(0x009DED40, sint32) = _dropdown_item_width;
-	RCT2_GLOBAL(0x009DED3C, sint32) = _dropdown_item_height;
-	RCT2_GLOBAL(0x009DEBA2, sint16) = _dropdown_highlighted_index;
 }
 
 /**
@@ -233,10 +249,10 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 	// Calculate position and size
 	width = _dropdown_item_width * _dropdown_num_columns + 3;
 	height = _dropdown_item_height * _dropdown_num_rows + 3;
-	if (x + width > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16))
-		x = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - width);
-	if (y + height > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16))
-		y = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - height);
+	if (x + width > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16))
+		x = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - width);
+	if (y + height > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16))
+		y = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height);
 	window_dropdown_widgets[WIDX_BACKGROUND].right = width;
 	window_dropdown_widgets[WIDX_BACKGROUND].bottom = height;
 
@@ -245,7 +261,7 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 		x, y + extray,
 		window_dropdown_widgets[WIDX_BACKGROUND].right + 1,
 		window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1,
-		(uint32*)window_dropdown_events,
+		&window_dropdown_events,
 		WC_DROPDOWN,
 		WF_STICK_TO_FRONT
 	);
@@ -255,18 +271,14 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 	w->colours[0] = colour;
 
 	// Input state
-	_dropdown_highlighted_index = -1;
-	RCT2_GLOBAL(0x009DED34, sint32) = 0;
+	gDropdownHighlightedIndex = -1;
+	gDropdownItemsDisabled = 0;
 	gDropdownItemsChecked = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, sint8) = INPUT_STATE_DROPDOWN_ACTIVE;
 
 	// Copy the following properties until all use of it is decompiled
-	RCT2_GLOBAL(0x009DEBA0, sint16) = gDropdownNumItems;
-	RCT2_GLOBAL(0x009DED44, sint32) = _dropdown_num_columns;
-	RCT2_GLOBAL(0x009DED48, sint32) = _dropdown_num_rows;
-	RCT2_GLOBAL(0x009DED40, sint32) = _dropdown_item_width;
-	RCT2_GLOBAL(0x009DED3C, sint32) = _dropdown_item_height;
-	RCT2_GLOBAL(0x009DEBA2, sint16) = _dropdown_highlighted_index;
+	gDropdownHighlightedIndex = gDropdownHighlightedIndex;
+	gDropdownIsColour = false;
 }
 
 void window_dropdown_close()
@@ -274,94 +286,89 @@ void window_dropdown_close()
 	window_close_by_class(WC_DROPDOWN);
 }
 
-static void window_dropdown_paint()
+static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
+	int cell_x, cell_y, l, t, r, b, item, image, colour;
 
 	window_draw_widgets(w, dpi);
 
-	_dropdown_highlighted_index = RCT2_GLOBAL(0x009DEBA2, sint16);
-	{
-		int i, cell_x, cell_y, l, t, r, b, item, image, colour;
-		for (i = 0; i < gDropdownNumItems; i++) {
-			cell_x = i % _dropdown_num_columns;
-			cell_y = i / _dropdown_num_columns;
+	gDropdownHighlightedIndex = gDropdownHighlightedIndex;
+	for (int i = 0; i < gDropdownNumItems; i++) {
+		cell_x = i % _dropdown_num_columns;
+		cell_y = i / _dropdown_num_columns;
 
-			if (gDropdownItemsFormat[i] == DROPDOWN_SEPARATOR) {
+		if (gDropdownItemsFormat[i] == DROPDOWN_SEPARATOR) {
+			l = w->x + 2 + (cell_x * _dropdown_item_width);
+			t = w->y + 2 + (cell_y * _dropdown_item_height);
+			r = l + _dropdown_item_width - 1;
+			t += (_dropdown_item_height / 2);
+			b = t;
+
+			if (w->colours[0] & 0x80) {
+				gfx_fill_rect(dpi, l, t, r, b, (RCT2_ADDRESS(0x009DEDF4, uint8)[w->colours[0]] | 0x02000000) + 1);
+				gfx_fill_rect(dpi, l, t + 1, r, b + 1, (RCT2_ADDRESS(0x009DEDF4, uint8)[w->colours[0]] | 0x02000000) + 2);
+			} else {
+				gfx_fill_rect(dpi, l, t, r, b, ColourMapA[w->colours[0]].mid_dark);
+				gfx_fill_rect(dpi, l, t + 1, r, b + 1, ColourMapA[w->colours[0]].lightest);
+			}
+		} else {
+			//
+			if (i == gDropdownHighlightedIndex) {
 				l = w->x + 2 + (cell_x * _dropdown_item_width);
 				t = w->y + 2 + (cell_y * _dropdown_item_height);
 				r = l + _dropdown_item_width - 1;
-				t += (_dropdown_item_height / 2);
-				b = t;
+				b = t + _dropdown_item_height - 1;
+				gfx_fill_rect(dpi, l, t, r, b, 0x2000000 | 0x2F);
+			}
 
-				if (w->colours[0] & 0x80) {
-					gfx_fill_rect(dpi, l, t, r, b, (RCT2_ADDRESS(0x009DEDF4, uint8)[w->colours[0]] | 0x02000000) + 1);
-					gfx_fill_rect(dpi, l, t + 1, r, b + 1, (RCT2_ADDRESS(0x009DEDF4, uint8)[w->colours[0]] | 0x02000000) + 2);
-				} else {
-					gfx_fill_rect(dpi, l, t, r, b,
-						*((char*)(0x00141FC47 + (w->colours[0] * 8))));
-					gfx_fill_rect(dpi, l, t + 1, r, b + 1,
-						*((char*)(0x00141FC4B + (w->colours[0] * 8))));
-				}
+			item = gDropdownItemsFormat[i];
+			if (item == (uint16)-1 || item == (uint16)-2) {
+				// Image item
+				image = *((uint32*)&gDropdownItemsArgs[i]);
+				if (item == (uint16)-2 && gDropdownHighlightedIndex == i)
+					image++;
+
+				gfx_draw_sprite(
+					dpi,
+					image,
+					w->x + 2 + (cell_x * _dropdown_item_width),
+					w->y + 2 + (cell_y * _dropdown_item_height), 0
+				);
 			} else {
-				// 
-				if (i == _dropdown_highlighted_index) {
-					l = w->x + 2 + (cell_x * _dropdown_item_width);
-					t = w->y + 2 + (cell_y * _dropdown_item_height);
-					r = l + _dropdown_item_width - 1;
-					b = t + _dropdown_item_height - 1;
-					gfx_fill_rect(dpi, l, t, r, b, 0x2000000 | 0x2F);
+				// Text item
+				if (i < 64) {
+					if (dropdown_is_checked(i)) {
+						item++;
+					}
 				}
 
-				item = gDropdownItemsFormat[i];
-				if (item == (uint16)-1 || item == (uint16)-2) {
-					// Image item
-					image = *((uint32*)&gDropdownItemsArgs[i]);
-					if (item == (uint16)-2 && _dropdown_highlighted_index == i)
-						image++;
+				// Calculate colour
+				colour = w->colours[0] & 0x7F;
+				if (i == gDropdownHighlightedIndex)
+					colour = 2;
+				if (gDropdownItemsDisabled & (1ULL << i))
+					if (i < 64)
+						colour = (w->colours[0] & 0x7F) | 0x40;
 
-					gfx_draw_sprite(
-						dpi,
-						image,
-						w->x + 2 + (cell_x * _dropdown_item_width),
-						w->y + 2 + (cell_y * _dropdown_item_height), 0
-					);
-				} else {
-					// Text item
-					if (i < 32)
-						if (gDropdownItemsChecked & (1 << i))
-							item++;
-
-					// Calculate colour
-					colour = w->colours[0] & 0x7F;
-					if (i == _dropdown_highlighted_index)
-						colour = 2;
-					if (RCT2_GLOBAL(0x009DED34, uint32) & (1 << i))
-						if (i < 32)
-							colour = (w->colours[0] & 0x7F) | 0x40;
-
-					// Draw item string
-					gfx_draw_string_left_clipped(
-						dpi,
-						item,
-						(void*)(&gDropdownItemsArgs[i]), colour,
-						w->x + 2 + (cell_x * _dropdown_item_width),
-						w->y + 1 + (cell_y * _dropdown_item_height),
-						w->width - 5
-					);
-				}
+				// Draw item string
+				gfx_draw_string_left_clipped(
+					dpi,
+					item,
+					(void*)(&gDropdownItemsArgs[i]), colour,
+					w->x + 2 + (cell_x * _dropdown_item_width),
+					w->y + 1 + (cell_y * _dropdown_item_height),
+					w->width - 5
+				);
 			}
 		}
 	}
 }
 
-/* New function based on 6e914e 
+/* New function based on 6e914e
  * returns -1 if index is invalid
  */
-int dropdown_index_from_point(int x, int y, rct_window* w){
+int dropdown_index_from_point(int x, int y, rct_window *w)
+{
 	int top = y - w->y - 2;
 	if (top < 0) return -1;
 
@@ -370,20 +377,14 @@ int dropdown_index_from_point(int x, int y, rct_window* w){
 	left -= 2;
 	if (left < 0) return -1;
 
-	// _dropdown_item_width
-	int column_no = left / RCT2_GLOBAL(0x009DED40, sint32);
-	// _dropdown_no_columns
-	if (column_no >= RCT2_GLOBAL(0x009DED44, sint32)) return -1;	
-	
-	// _dropdown_item_height
-	int row_no = top / RCT2_GLOBAL(0x9DED3C, uint8);
-	// _dropdown_no_rows
-	if (row_no >= RCT2_GLOBAL(0x009DED48, sint32)) return -1;
+	int column_no = left / _dropdown_item_width;
+	if (column_no >= _dropdown_num_columns) return -1;
 
-	// _dropdown_no_columns
-	int dropdown_index = row_no * RCT2_GLOBAL(0x009DED44, sint32) + column_no;
-	// _dropdown_no_items
-	if (dropdown_index >= RCT2_GLOBAL(0x009DEBA0, sint16)) return -1;
+	int row_no = top / _dropdown_item_height;
+	if (row_no >= _dropdown_num_rows) return -1;
+
+	int dropdown_index = row_no * _dropdown_num_columns + column_no;
+	if (dropdown_index >= gDropdownNumItems) return -1;
 
 	return dropdown_index;
 }
@@ -405,7 +406,7 @@ void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, ui
 	uint32 availableColours)
 {
 	int i, numItems;
-	
+
 	// Count number of available colours
 	numItems = 0;
 	for (i = 0; i < 32; i++)
@@ -416,7 +417,7 @@ void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, ui
 	for (i = 0; i < 32; i++) {
 		if (availableColours & (1 << i)) {
 			if (selectedColour == i)
-				RCT2_GLOBAL(0x009DEBA2, sint16) = i;
+				gDropdownHighlightedIndex = i;
 
 			gDropdownItemsFormat[i] = 0xFFFE;
 			gDropdownItemsArgs[i] = ((uint64)i << 32) | (0x20000000 | (i << 19) | 5059);
@@ -436,4 +437,6 @@ void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, ui
 		gAppropriateImageDropdownItemsPerRow[numItems]
 	);
 
+	gDropdownIsColour = true;
+	gDropdownLastColourHover = -1;
 }

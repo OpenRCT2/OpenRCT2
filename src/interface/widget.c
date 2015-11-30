@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -26,6 +26,7 @@
 #include "window.h"
 #include "../platform/platform.h"
 #include "../localisation/localisation.h"
+#include "../util/util.h"
 
 static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
@@ -48,7 +49,7 @@ static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 
 /**
- * 
+ *
  *  rct2: 0x006EAF26
  */
 void widget_scroll_update_thumbs(rct_window *w, int widget_index)
@@ -102,7 +103,7 @@ void widget_scroll_update_thumbs(rct_window *w, int widget_index)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EB2A8
  */
 void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -170,7 +171,7 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EB6CE
  */
 static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -188,7 +189,7 @@ static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	r = w->x + widget->right;
 	b = w->y + widget->bottom;
 
-	// 
+	//
 	press = (w->flags & WF_10 ? 0x80 : 0);
 
 	// Get the colour
@@ -210,7 +211,7 @@ static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EB765
  */
 static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -247,7 +248,7 @@ static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EB8E5
  */
 static void widget_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -297,7 +298,7 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetInd
 	// Get the widget
 	widget = &w->widgets[widgetIndex];
 
-	// 
+	//
 	if (widget->image == -1)
 		return;
 
@@ -330,7 +331,7 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetInd
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EB861
  */
 static void widget_flat_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -373,7 +374,7 @@ static void widget_flat_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int w
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EBBEB
  */
 static void widget_text_button(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -403,7 +404,7 @@ static void widget_text_button(rct_drawpixelinfo *dpi, rct_window *w, int widget
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EBC41
  */
 static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -462,7 +463,7 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widge
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EBD52
  */
 static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -492,7 +493,7 @@ static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EBD1F
  */
 static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -518,7 +519,7 @@ static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EC1A6
  */
 static void widget_text_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -546,12 +547,12 @@ static void widget_text_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIn
 	gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
 
 	// TODO
-	
+
 	gfx_fill_rect(dpi, l, t, r, b, colour);
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EB535
  */
 static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -590,28 +591,28 @@ static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	colour = w->colours[widget->colour] & 0x7F;
 
 	// Border left of text
-	gfx_fill_rect(dpi, l, t, l + 4, t, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
-	gfx_fill_rect(dpi, l + 1, t + 1, l + 4, t + 1, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, l, t, l + 4, t, ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, l + 1, t + 1, l + 4, t + 1, ColourMapA[colour].lighter);
 
 	// Border right of text
-	gfx_fill_rect(dpi, textRight, t, r - 1, t, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
-	gfx_fill_rect(dpi, textRight, t + 1, r - 2, t + 1, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, textRight, t, r - 1, t, ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, textRight, t + 1, r - 2, t + 1, ColourMapA[colour].lighter);
 
 	// Border right
-	gfx_fill_rect(dpi, r - 1, t + 1, r - 1, b - 1, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
-	gfx_fill_rect(dpi, r, t, r, b, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, r - 1, t + 1, r - 1, b - 1, ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, r, t, r, b, ColourMapA[colour].lighter);
 
 	// Border bottom
-	gfx_fill_rect(dpi, l, b - 1, r - 2, b - 1, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
-	gfx_fill_rect(dpi, l, b, r - 1, b, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, l, b - 1, r - 2, b - 1, ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, l, b, r - 1, b, ColourMapA[colour].lighter);
 
 	// Border left
-	gfx_fill_rect(dpi, l, t + 1, l, b - 2, RCT2_ADDRESS(0x0141FC47, uint8)[colour * 8]);
-	gfx_fill_rect(dpi, l + 1, t + 2, l + 1, b - 2, RCT2_ADDRESS(0x0141FC4B, uint8)[colour * 8]);
+	gfx_fill_rect(dpi, l, t + 1, l, b - 2, ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, l + 1, t + 2, l + 1, b - 2, ColourMapA[colour].lighter);
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EB2F9
  */
 static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -632,7 +633,7 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 	// Get the colour
 	colour = w->colours[widget->colour];
 
-	// 
+	//
 	if (w->var_4B8 != -1) {
 		gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B8)) << 19, l + 1, t + 1, 0);
 		if (w->width > 638)
@@ -643,15 +644,15 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 				gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B9)) << 19, l + 1 + 638, t + 1, 0);
 		}
 
-		// 
+		//
 		press = 0x70;
 		if (w->flags & WF_10)
 			press |= 0x80;
 
 		gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
-		gfx_fill_rect(dpi, r + 1, t, r + 1, b, *((char*)(0x0141FC47 + (colour * 8))));
+		gfx_fill_rect(dpi, r + 1, t, r + 1, b, ColourMapA[colour].mid_dark);
 	} else {
-		// 
+		//
 		press = 0x60;
 		if (w->flags & WF_10)
 			press |= 0x80;
@@ -660,7 +661,7 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 
 		// Black caption bars look slightly green, this fixes that
 		if (colour == 0)
-			gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, *((char*)(0x0141FC46 + (colour * 8))));
+			gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, ColourMapA[colour].dark);
 		else
 			gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, 0x2000000 | 47);
 	}
@@ -682,7 +683,7 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EBB85
  */
 static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -726,13 +727,13 @@ static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 }
 
 /**
- * 
+ *
 *  rct2: 0x006EBAD9
 */
 static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 {
 	rct_widget* widget;
-	int l, t, b;
+	int l, t, b, yMid;
 	uint8 colour;
 
 	// Get the widget
@@ -742,18 +743,19 @@ static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	l = w->x + widget->left;
 	t = w->y + widget->top;
 	b = w->y + widget->bottom;
+	yMid = (b + t) / 2;
 
 	// Get the colour
 	colour = w->colours[widget->colour];
 
 	if (widget->type != WWT_24) {
 		// checkbox
-		gfx_fill_rect_inset(dpi, l, t, l + 9, b - 1, colour, 0x60);
+		gfx_fill_rect_inset(dpi, l, yMid - 5, l + 9, yMid + 4, colour, 0x60);
 
 		// fill it when checkbox is pressed
 		if (widget_is_pressed(w, widgetIndex)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
-			gfx_draw_string(dpi, (char*)0x009DED72, colour & 0x7F, l, t);
+			gfx_draw_string(dpi, (char*)CheckBoxMarkString, colour & 0x7F, l, yMid - 5);
 		}
 	}
 
@@ -764,11 +766,12 @@ static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	if (widget_is_disabled(w, widgetIndex)) {
 		colour |= 0x40;
 	}
-	gfx_draw_string_left(dpi, widget->image, (char*)0x013CE952, colour, l + 14, t);
+
+	gfx_draw_string_left_centred(dpi, (rct_string_id)widget->image, (void*)0x013CE952, colour, l + 14, yMid);
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EBD96
  */
 static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -850,17 +853,17 @@ static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 {
 	colour &= 0x7F;
 	// Trough
-	gfx_fill_rect(dpi, l + 10, t, r - 10, b, *((char*)(0x0141FC4B + (colour * 8))));
-	gfx_fill_rect(dpi, l + 10, t, r - 10, b, 0x1000000 | *((char*)(0x0141FC47 + (colour * 8))));
-	gfx_fill_rect(dpi, l + 10, t + 2, r - 10, t + 2, *((char*)(0x0141FC47 + (colour * 8))));
-	gfx_fill_rect(dpi, l + 10, t + 3, r - 10, t + 3, *((char*)(0x0141FC4B + (colour * 8))));
-	gfx_fill_rect(dpi, l + 10, t + 7, r - 10, t + 7, *((char*)(0x0141FC47 + (colour * 8))));
-	gfx_fill_rect(dpi, l + 10, t + 8, r - 10, t + 8, *((char*)(0x0141FC4B + (colour * 8))));
-	
+	gfx_fill_rect(dpi, l + 10, t, r - 10, b, ColourMapA[colour].lighter);
+	gfx_fill_rect(dpi, l + 10, t, r - 10, b, 0x1000000 | ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, l + 10, t + 2, r - 10, t + 2, ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, l + 10, t + 3, r - 10, t + 3, ColourMapA[colour].lighter);
+	gfx_fill_rect(dpi, l + 10, t + 7, r - 10, t + 7, ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, l + 10, t + 8, r - 10, t + 8, ColourMapA[colour].lighter);
+
 	// Left button
 	gfx_fill_rect_inset(dpi, l, t, l + 9, b, colour, (scroll->flags & HSCROLLBAR_LEFT_PRESSED ? 0x20 : 0));
-	gfx_draw_string(dpi, (char*)0x009DED6C, 0, l + 1, t);
-	
+	gfx_draw_string(dpi, (char*)BlackLeftArrowString, 0, l + 1, t);
+
 	// Thumb
 	gfx_fill_rect_inset(dpi,
 		max(l + 10, l + scroll->h_thumb_left - 1), t,
@@ -869,23 +872,23 @@ static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 
 	// Right button
 	gfx_fill_rect_inset(dpi, r - 9, t, r, b, colour, (scroll->flags & HSCROLLBAR_RIGHT_PRESSED ? 0x20 : 0));
-	gfx_draw_string(dpi, (char*)0x009DED6F, 0, r - 6, t);
+	gfx_draw_string(dpi, (char*)BlackRightArrowString, 0, r - 6, t);
 }
 
 static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, int l, int t, int r, int b, int colour)
 {
 	colour &= 0x7F;
 	// Trough
-	gfx_fill_rect(dpi, l, t + 10, r, b - 10, *((char*)(0x0141FC4B + (colour * 8))));
-	gfx_fill_rect(dpi, l, t + 10, r, b - 10, 0x1000000 | *((char*)(0x0141FC47 + (colour * 8))));
-	gfx_fill_rect(dpi, l + 2, t + 10, l + 2, b - 10, *((char*)(0x0141FC47 + (colour * 8))));
-	gfx_fill_rect(dpi, l + 3, t + 10, l + 3, b - 10, *((char*)(0x0141FC4B + (colour * 8))));
-	gfx_fill_rect(dpi, l + 7, t + 10, l + 7, b - 10, *((char*)(0x0141FC47 + (colour * 8))));
-	gfx_fill_rect(dpi, l + 8, t + 10, l + 8, b - 10, *((char*)(0x0141FC4B + (colour * 8))));
+	gfx_fill_rect(dpi, l, t + 10, r, b - 10, ColourMapA[colour].lighter);
+	gfx_fill_rect(dpi, l, t + 10, r, b - 10, 0x1000000 | ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, l + 2, t + 10, l + 2, b - 10, ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, l + 3, t + 10, l + 3, b - 10, ColourMapA[colour].lighter);
+	gfx_fill_rect(dpi, l + 7, t + 10, l + 7, b - 10, ColourMapA[colour].mid_dark);
+	gfx_fill_rect(dpi, l + 8, t + 10, l + 8, b - 10, ColourMapA[colour].lighter);
 
 	// Up button
 	gfx_fill_rect_inset(dpi, l, t, r, t + 9, colour, (scroll->flags & VSCROLLBAR_UP_PRESSED ? 0x20 : 0));
-	gfx_draw_string(dpi, (char*)0x009DED66, 0, l + 1, t - 1);
+	gfx_draw_string(dpi, (char*)BlackUpArrowString, 0, l + 1, t - 1);
 
 	// Thumb
 	gfx_fill_rect_inset(dpi,
@@ -895,11 +898,11 @@ static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 
 	// Down button
 	gfx_fill_rect_inset(dpi, l, b - 9, r, b, colour, (scroll->flags & VSCROLLBAR_DOWN_PRESSED ? 0x20 : 0));
-	gfx_draw_string(dpi, (char*)0x009DED69, 0, l + 1, b - 9);
+	gfx_draw_string(dpi, (char*)BlackDownArrowString, 0, l + 1, b - 9);
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EB951
  */
 static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
@@ -931,7 +934,7 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	if (widget_is_disabled(w, widgetIndex)) {
 		// Draw greyed out (light border bottom right shadow)
 		colour = w->colours[widget->colour];
-		colour = RCT2_ADDRESS(0x00141FC4A, uint8)[(colour & 0x7F) * 8] & 0xFF;
+		colour = ColourMapA[colour & 0x7F].lighter;
 
 		uint8 palette[256];
 		memset(palette, colour, 256);
@@ -943,7 +946,7 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 
 		// Draw greyed out (dark)
 		colour = w->colours[widget->colour];
-		colour = RCT2_ADDRESS(0x00141FC48, uint8)[(colour & 0x7F) * 8] & 0xFF;
+		colour = ColourMapA[colour & 0x7F].mid_light;
 		memset(palette, colour, 256);
 		palette[0] = 0;
 
@@ -1172,7 +1175,7 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	if (!active) {
 
 		if (w->widgets[widgetIndex].image != 0) {
-			strcpy(wrapped_string, (char*)w->widgets[widgetIndex].image);
+			safe_strncpy(wrapped_string, (char*)w->widgets[widgetIndex].image, 512);
 			gfx_wrap_string(wrapped_string, r - l - 5, &no_lines, &font_height);
 			gfx_draw_string(dpi, wrapped_string, w->colours[1], l + 2, t);
 		}
@@ -1180,7 +1183,7 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	}
 
 
-	strcpy(wrapped_string, gTextBoxInput);
+	safe_strncpy(wrapped_string, gTextBoxInput, 512);
 
 	// String length needs to add 12 either side of box
 	// +13 for cursor when max length.
@@ -1190,7 +1193,7 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	gfx_draw_string(dpi, wrapped_string, w->colours[1], l + 2, t);
 
 
-	int string_length = get_string_length(wrapped_string);
+	int string_length = get_string_size(wrapped_string) - 1;
 
 	// Make a copy of the string for measuring the width.
 	char temp_string[512] = { 0 };
@@ -1207,7 +1210,7 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	}
 
 	if (gTextBoxFrameNo <= 15){
-		uint8 colour = RCT2_ADDRESS(0x0141FC48, uint8)[w->colours[1] * 8];
+		uint8 colour = ColourMapA[w->colours[1]].mid_light;
 		gfx_fill_rect(dpi, cur_x, t + 9, cur_x + width, t + 9, colour + 5);
 	}
 }

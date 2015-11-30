@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -43,8 +43,9 @@ void trackdesigner_load();
 void trackmanager_load();
 void editor_load_landscape(const char *path);
 
-void sub_6BD3A4();
-
 void editor_open_windows_for_current_step();
+
+bool editor_check_park();
+int editor_check_object_selection();
 
 #endif

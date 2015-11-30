@@ -34,6 +34,7 @@
 #include "dropdown.h"
 #include "../interface/themes.h"
 #include "error.h"
+#include "../util/util.h"
 
 enum {
 	WINDOW_THEMES_TAB_SETTINGS,
@@ -48,49 +49,47 @@ enum {
 	WINDOW_THEMES_TAB_COUNT
 } WINDOW_THEMES_TAB;
 
-static void window_themes_emptysub() { }
-static void window_themes_close();
-static void window_themes_mouseup();
-static void window_themes_resize();
+static void window_themes_mouseup(rct_window *w, int widgetIndex);
+static void window_themes_resize(rct_window *w);
 static void window_themes_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_themes_dropdown();
+static void window_themes_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
 static void window_themes_update(rct_window *w);
-static void window_themes_scrollgetsize();
-static void window_themes_scrollmousedown();
-static void window_themes_scrollmouseover();
-static void window_themes_textinput();
-static void window_themes_tooltip();
-static void window_themes_invalidate();
-static void window_themes_paint();
-static void window_themes_scrollpaint();
+static void window_themes_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_themes_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
+static void window_themes_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
+static void window_themes_textinput(rct_window *w, int widgetIndex, char *text);
+static void window_themes_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_themes_invalidate(rct_window *w);
+static void window_themes_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_themes_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 static void window_themes_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
 
-static void* window_themes_events[] = {
-	window_themes_close,
+static rct_window_event_list window_themes_events = {
+	NULL,
 	window_themes_mouseup,
 	window_themes_resize,
 	window_themes_mousedown,
 	window_themes_dropdown,
-	window_themes_emptysub,
+	NULL,
 	window_themes_update,
-	window_themes_emptysub,
-	window_themes_emptysub,
-	window_themes_emptysub,
-	window_themes_emptysub,
-	window_themes_emptysub,
-	window_themes_emptysub,
-	window_themes_emptysub,
-	window_themes_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_themes_scrollgetsize,
 	window_themes_scrollmousedown,
-	window_themes_emptysub,
+	NULL,
 	window_themes_scrollmouseover,
 	window_themes_textinput,
-	window_themes_emptysub,
-	window_themes_emptysub,
+	NULL,
+	NULL,
 	window_themes_tooltip,
-	window_themes_emptysub,
-	window_themes_emptysub,
+	NULL,
+	NULL,
 	window_themes_invalidate,
 	window_themes_paint,
 	window_themes_scrollpaint,
@@ -240,6 +239,7 @@ static rct_windowclass window_themes_tab_5_classes[] = {
 static rct_windowclass window_themes_tab_6_classes[] = {
 	WC_CHEATS,
 	WC_THEMES,
+	WC_TITLE_EDITOR,
 	WC_OPTIONS,
 	WC_KEYBOARD_SHORTCUT_LIST,
 	WC_CHANGE_KEYBOARD_SHORTCUT,
@@ -368,7 +368,7 @@ void window_themes_open()
 	if (window != NULL)
 		return;
 
-	window = window_create_auto_pos(320, 107, (uint32*)window_themes_events, WC_THEMES, WF_10 | WF_RESIZABLE);
+	window = window_create_auto_pos(320, 107, &window_themes_events, WC_THEMES, WF_10 | WF_RESIZABLE);
 	window->widgets = window_themes_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_THEMES_CLOSE) |
@@ -403,19 +403,8 @@ void window_themes_open()
 	window->max_height = 107;
 }
 
-void window_themes_close() {
-	rct_window *w;
-
-	window_get_register(w);
-}
-
-static void window_themes_mouseup()
+static void window_themes_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_THEMES_CLOSE:
 		window_close(w);
@@ -442,12 +431,8 @@ static void window_themes_mouseup()
 	}
 }
 
-static void window_themes_resize()
+static void window_themes_resize(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
-
 	if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS) {
 		w->min_width = 320;
 		w->min_height = 107;
@@ -548,13 +533,13 @@ static void window_themes_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 
 		widget--;
 		gDropdownItemsFormat[0] = 2777;
-		gDropdownItemsArgs[0] = (uint64)&gConfigThemes.presets[1].name;
+		gDropdownItemsArgs[0] = (uint32)&gConfigThemes.presets[1].name;
 		gDropdownItemsFormat[1] = 2777;
-		gDropdownItemsArgs[1] = (uint64)&gConfigThemes.presets[0].name;
+		gDropdownItemsArgs[1] = (uint32)&gConfigThemes.presets[0].name;
 
 		for (i = 2; i < num_items; i++) {
 			gDropdownItemsFormat[i] = 2777;
-			gDropdownItemsArgs[i] = (uint64)&gConfigThemes.presets[i].name;
+			gDropdownItemsArgs[i] = (uint32)&gConfigThemes.presets[i].name;
 		}
 
 		window_dropdown_show_text_custom_width(
@@ -567,10 +552,11 @@ static void window_themes_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 			widget->right - widget->left - 3
 			);
 
-		if (gCurrentTheme == 0 || gCurrentTheme == 1)
-			gDropdownItemsChecked = 1 << (gCurrentTheme ^ 1);
-		else
-			gDropdownItemsChecked = 1 << (gCurrentTheme);
+		if (gCurrentTheme == 0 || gCurrentTheme == 1) {
+			dropdown_set_checked(gCurrentTheme ^ 1, true);
+		} else {
+			dropdown_set_checked(gCurrentTheme, true);
+		}
 		break;
 	case WIDX_THEMES_RCT1_RIDE_LIGHTS:
 		if (gCurrentTheme >= 2) {
@@ -605,16 +591,12 @@ static void window_themes_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 	}
 }
 
-static void window_themes_dropdown()
+static void window_themes_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	rct_window* w;
-	short widgetIndex, dropdownIndex;
-	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
-
 	switch (widgetIndex) {
 	case WIDX_THEMES_LIST:
 		if (dropdownIndex != -1) {
-			get_colour_scheme_tab()->colours[_color_index_2] = dropdownIndex | get_colour_scheme_tab()->colours[_color_index_2] & 0x80;
+			get_colour_scheme_tab()->colours[_color_index_2] = dropdownIndex | (get_colour_scheme_tab()->colours[_color_index_2] & 0x80);
 			window_invalidate_all();
 			_color_index_1 = -1;
 			_color_index_2 = -1;
@@ -645,11 +627,8 @@ void window_themes_update(rct_window *w)
 
 }
 
-void window_themes_scrollgetsize() {
-	rct_window *w;
-
-	window_get_register(w);
-
+void window_themes_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
+{
 	if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS || _selected_tab == WINDOW_THEMES_TAB_FEATURES)
 		return;
 
@@ -662,25 +641,12 @@ void window_themes_scrollgetsize() {
 		window_invalidate(w);
 	}
 
-	#ifdef _MSC_VER
-		__asm mov ecx, 420
-	#else
-		__asm__("mov ecx, 420 ");
-	#endif
-
-	#ifdef _MSC_VER
-		__asm mov edx, scrollHeight
-	#else
-		__asm__("mov edx, %[scrollHeight] " : [scrollHeight] "+m" (scrollHeight));
-	#endif
+	*width = 420;
+	*height = scrollHeight;
 }
 
-void window_themes_scrollmousedown() {
-	short x, y, scrollIndex;
-	rct_window *w;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
-
+void window_themes_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
+{
 	if (y / _row_height < get_colour_scheme_tab_count()) {
 		int y2 = y % _row_height;
 		_color_index_1 = y / _row_height;
@@ -718,41 +684,21 @@ void window_themes_scrollmousedown() {
 	}
 }
 
-void window_themes_scrollmouseover() {
-	short x, y, scrollIndex;
-	rct_window *w;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
-
+void window_themes_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
+{
 	//if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
 	//	return;
 }
 
-static bool valid_characters(const char *name)
+static void window_themes_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	for (int i = 0; name[i] != '\0'; i++) {
-		if (name[i] == '\\' || name[i] == '/' || name[i] == ':' || name[i] == '?' || name[i] == '*' || name[i] == '<' || name[i] == '>' || name[i] == '|')
-			return false;
-	}
-	return true;
-}
-
-static void window_themes_textinput()
-{
-	rct_window *w;
-	short widgetIndex;
-	uint8 result;
-	char *text;
-
-	window_textinput_get_registers(w, widgetIndex, result, text);
-
-	if (!result || text[0] == 0)
+	if (text == NULL || text[0] == 0)
 		return;
 
 	switch (widgetIndex) {
 	case WIDX_THEMES_DUPLICATE_BUTTON:
 	case WIDX_THEMES_RENAME_BUTTON:
-		if (valid_characters(text)) {
+		if (filename_valid_characters(text)) {
 			bool nameTaken = false;
 			for (int i = 0; i < gConfigThemes.num_presets; i++) {
 				if (strcmp(gConfigThemes.presets[i].name, text) == 0) {
@@ -779,16 +725,13 @@ static void window_themes_textinput()
 	}
 }
 
-void window_themes_tooltip()
+void window_themes_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	RCT2_GLOBAL(0x013CE952, uint16) = STR_LIST;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_LIST;
 }
 
-void window_themes_invalidate()
+void window_themes_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	int pressed_widgets = w->pressed_widgets & 0xFFFFE00F;
@@ -811,7 +754,7 @@ void window_themes_invalidate()
 	window_themes_widgets[WIDX_THEMES_LIST].right = w->width - 4;
 	window_themes_widgets[WIDX_THEMES_LIST].bottom = w->height - 0x0F;
 
-	
+
 	window_themes_widgets[WIDX_THEMES_LIST].type = WWT_EMPTY;
 	window_themes_widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WWT_EMPTY;
 	window_themes_widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WWT_EMPTY;
@@ -861,12 +804,8 @@ void window_themes_invalidate()
 	}
 }
 
-void window_themes_paint() {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
+void window_themes_paint(rct_window *w, rct_drawpixelinfo *dpi)
+{
 	// Widgets
 	window_draw_widgets(w, dpi);
 	window_themes_draw_tab_images(dpi, w);
@@ -897,20 +836,16 @@ void window_themes_paint() {
 *
 *  rct2: 0x006BD785
 */
-void window_themes_scrollpaint()
+void window_themes_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
 	int y;
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
 
 	if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS || _selected_tab == WINDOW_THEMES_TAB_FEATURES)
 		return;
 
 	if ((w->colours[1] & 0x80) == 0)
-		//gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ((char*)0x0141FC48)[w->colours[1] * 8]);
-		gfx_clear(dpi, ((char*)0x0141FC48)[w->colours[1] * 8] * 0x1010101);
+		//gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
+		gfx_clear(dpi, ColourMapA[w->colours[1]].mid_light * 0x1010101);
 	y = 0;
 	for (int i = 0; i < get_colour_scheme_tab_count(); i++) {
 		if (y > dpi->y + dpi->height) {
@@ -927,9 +862,9 @@ void window_themes_scrollpaint()
 					gfx_fill_rect(dpi, 0, y + _row_height - 1, window_themes_widgets[WIDX_THEMES_LIST].right, y + _row_height - 1, colour + 2);
 				}
 				else {
-					colour = RCT2_ADDRESS(0x0141FC47, uint8)[w->colours[1] * 8];
+					colour = ColourMapA[w->colours[1]].mid_dark;
 					gfx_fill_rect(dpi, 0, y + _row_height - 2, window_themes_widgets[WIDX_THEMES_LIST].right, y + _row_height - 2, colour);
-					colour = RCT2_ADDRESS(0x0141FC4B, uint8)[w->colours[1] * 8];
+					colour = ColourMapA[w->colours[1]].lightest;
 					gfx_fill_rect(dpi, 0, y + _row_height - 1, window_themes_widgets[WIDX_THEMES_LIST].right, y + _row_height - 1, colour);
 				}
 			}
@@ -947,7 +882,7 @@ void window_themes_scrollpaint()
 				gfx_fill_rect_inset(dpi, _button_offset_x + 12 * j, y + _check_offset_y, _button_offset_x + 12 * j + 9, y + _check_offset_y + 10, w->colours[1], 0xE0);
 				if (get_colour_scheme_tab_by_index(i)->colours[j] & 0x80) {
 					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = -1;
-					gfx_draw_string(dpi, (char*)0x009DED72, w->colours[1] & 0x7F, _button_offset_x + 12 * j, y + _check_offset_y);
+					gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1] & 0x7F, _button_offset_x + 12 * j, y + _check_offset_y);
 				}
 
 			}

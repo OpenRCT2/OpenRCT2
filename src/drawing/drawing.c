@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -31,13 +31,14 @@
 int gLastDrawStringX;
 int gLastDrawStringY;
 
-uint8 _screenDirtyBlocks[5120];
+uint8* _screenDirtyBlocks = NULL;
+int _screenDirtyBlocksSize = 0;
 
 #define MAX_RAIN_PIXELS 0xFFFE
 uint32 rainPixels[MAX_RAIN_PIXELS];
 
 //Originally 0x9ABE0C, 12 elements from 0xF3 are the peep top colour, 12 elements from 0xCA are peep trouser colour
-const uint8 peep_palette[0x100] = { 
+const uint8 peep_palette[0x100] = {
 	0x00, 0xF3, 0xF4, 0xF5, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
 	0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
 	0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F,
@@ -110,7 +111,7 @@ static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows);
 void gfx_clear(rct_drawpixelinfo *dpi, int colour)
 {
 	int y, w, h;
-	char* ptr;
+	uint8* ptr;
 
 	w = dpi->width >> dpi->zoom_level;
 	h = dpi->height >> dpi->zoom_level;
@@ -137,8 +138,8 @@ void gfx_transpose_palette(int pal, unsigned char product)
 {
 	rct_g1_element g1 = g1Elements[pal];
 	int width = g1.width;
-	int x = g1.x_offset;  
-	uint8* dest_pointer = (uint8*)&(RCT2_ADDRESS(0x01424680, uint8)[x * 4]);
+	int x = g1.x_offset;
+	uint8* dest_pointer = (uint8*)&(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[x * 4]);
 	uint8* source_pointer = g1.offset;
 
 	for (; width > 0; width--) {
@@ -148,7 +149,7 @@ void gfx_transpose_palette(int pal, unsigned char product)
 		source_pointer += 3;
 		dest_pointer += 4;
 	}
-	platform_update_palette((char*)0x01424680, 10, 236);
+	platform_update_palette((uint8*)RCT2_ADDRESS_PALETTE, 10, 236);
 }
 
 /* rct2: 0x006837E3 */
@@ -164,7 +165,7 @@ void load_palette(){
 	rct_g1_element g1 = g1Elements[palette];
 	int width = g1.width;
 	int x = g1.x_offset;
-	uint8* dest_pointer = (uint8*)&(RCT2_ADDRESS(0x01424680, uint8)[x * 4]);
+	uint8* dest_pointer = (uint8*)&(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[x * 4]);
 	uint8* source_pointer = g1.offset;
 
 	for (; width > 0; width--) {
@@ -174,75 +175,7 @@ void load_palette(){
 		source_pointer += 3;
 		dest_pointer += 4;
 	}
-	platform_update_palette((char*)0x01424680, 10, 236);
-}
-
-/**
-*
-*  rct2: 0x006EC9CE
-* @param x (ax)
-* @param y (cx)
-* @param base_height (di)
-* @param clearance_height (si)
-*/
-void gfx_invalidate_tile_if_zoomed(int x, int y, int base_height, int clearance_height)
-{
-	x += 16;
-	y += 16;
-	int left, top, right, bottom;
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32)) {
-		case 0:
-			left = (-x + y) - 32;
-			right = (-x + y) + 32;
-			top = ((y + x) / 2) - 32 - clearance_height;
-			bottom = ((y + x) / 2) + 32 - base_height;
-			break;
-		case 1:
-			left = (-x - y) - 32;
-			right = (-x - y) + 32;
-			top = ((y - x) / 2) - 32 - clearance_height;
-			bottom = ((y - x) / 2) + 32 - base_height;
-			break;
-		case 2:
-			left = (x - y) - 32;
-			right = (x - y) + 32;
-			top = ((-y - x) / 2) - 32 - clearance_height;
-			bottom = ((-y - x) / 2) + 32 - base_height;
-			break;
-		case 3:
-			left = (x + y) - 32;
-			right = (x + y) + 32;
-			top = ((-y + x) / 2) - 32 - clearance_height;
-			bottom = ((-y + x) / 2) + 32 - base_height;
-			break;
-	}
-	for (rct_viewport** viewport_p = RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*); *viewport_p; ++viewport_p)
-	{
-		rct_viewport* viewport = *viewport_p;
-		if (viewport->zoom < 1) {
-			if (right > viewport->view_x && bottom > viewport->view_y && left < viewport->view_x + viewport->view_width) {
-				if (left < viewport->view_x) {
-					left = viewport->view_x;
-				}
-				if (right > viewport->view_x + viewport->view_width) {
-					right = viewport->view_x + viewport->view_width;
-				}
-				if (top < viewport->view_y + viewport->view_height) {
-					if (top < viewport->view_y) {
-						top = viewport->view_y;
-					}
-					if (bottom > viewport->view_y + viewport->view_height) {
-						bottom = viewport->view_y + viewport->view_height;
-					}
-					left = ((left - viewport->view_x) >> viewport->zoom) + viewport->x;
-					top = ((top - viewport->view_y) >> viewport->zoom) + viewport->y;
-					right = ((right - viewport->view_x) >> viewport->zoom) + viewport->x;
-					bottom = ((bottom - viewport->view_y) >> viewport->zoom) + viewport->y;
-					gfx_set_dirty_blocks(left, top, right, bottom);
-				}
-			}
-		}
-	}
+	platform_update_palette((uint8*)RCT2_ADDRESS_PALETTE, 10, 236);
 }
 
 /**
@@ -251,28 +184,42 @@ void gfx_invalidate_tile_if_zoomed(int x, int y, int base_height, int clearance_
  */
 void gfx_invalidate_screen()
 {
-	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16);
-	int height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16);
+	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+	int height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
 	gfx_set_dirty_blocks(0, 0, width, height);
 }
 
+uint8* gfx_get_dirty_blocks()
+{
+	int size = RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, uint32);
+	if (_screenDirtyBlocksSize != size) {
+		if (_screenDirtyBlocks) {
+			_screenDirtyBlocks = realloc(_screenDirtyBlocks, size);
+		} else {
+			_screenDirtyBlocks = malloc(size);
+		}
+		_screenDirtyBlocksSize = size;
+	}
+	return _screenDirtyBlocks;
+}
+
 /**
- * 
+ *
  *  rct2: 0x006E732D
  * left (ax)
  * top (bx)
  * right (dx)
  * bottom (bp)
  */
-void gfx_set_dirty_blocks(int left, int top, int right, int bottom)
+void gfx_set_dirty_blocks(sint16 left, sint16 top, sint16 right, sint16 bottom)
 {
 	int x, y;
-	uint8 *screenDirtyBlocks = RCT2_ADDRESS(0x00EDE408, uint8);
+	uint8 *screenDirtyBlocks = gfx_get_dirty_blocks();
 
 	left = max(left, 0);
 	top = max(top, 0);
-	right = min(right, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16));
-	bottom = min(bottom, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16));
+	right = min(right, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
+	bottom = min(bottom, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16));
 
 	if (left >= right)
 		return;
@@ -289,7 +236,7 @@ void gfx_set_dirty_blocks(int left, int top, int right, int bottom)
 
 	for (y = top; y <= bottom; y++)
 		for (x = left; x <= right; x++)
-			screenDirtyBlocks[y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) + x] = 0xFF;
+			screenDirtyBlocks[y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) + x] = 0xFF;
 }
 
 /**
@@ -298,26 +245,26 @@ void gfx_set_dirty_blocks(int left, int top, int right, int bottom)
  */
 void gfx_draw_all_dirty_blocks()
 {
-	int x, y, xx, yy, columns, rows;
-	uint8 *screenDirtyBlocks = RCT2_ADDRESS(0x00EDE408, uint8);
+	unsigned int x, y, xx, yy, columns, rows;
+	uint8 *screenDirtyBlocks = gfx_get_dirty_blocks();
 
-	for (x = 0; x < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32); x++) {
-		for (y = 0; y < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, sint32); y++) {
-			if (screenDirtyBlocks[y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) + x] == 0)
+	for (x = 0; x < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32); x++) {
+		for (y = 0; y < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, uint32); y++) {
+			if (screenDirtyBlocks[y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) + x] == 0)
 				continue;
 
 			// Determine columns
-			for (xx = x; xx < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32); xx++)
-				if (screenDirtyBlocks[y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) + xx] == 0)
+			for (xx = x; xx < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32); xx++)
+				if (screenDirtyBlocks[y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) + xx] == 0)
 					break;
 			columns = xx - x;
 
 			// Check rows
-			for (yy = y; yy < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, sint32); yy++)
+			for (yy = y; yy < RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, uint32); yy++)
 				for (xx = x; xx < x + columns; xx++)
-					if (screenDirtyBlocks[yy * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) + xx] == 0)
+					if (screenDirtyBlocks[yy * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) + xx] == 0)
 						goto endRowCheck;
-			
+
 		endRowCheck:
 			rows = yy - y;
 			gfx_draw_dirty_blocks(x, y, columns, rows);
@@ -328,18 +275,18 @@ void gfx_draw_all_dirty_blocks()
 static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows)
 {
 	int left, top, right, bottom;
-	uint8 *screenDirtyBlocks = RCT2_ADDRESS(0x00EDE408, uint8);
+	uint8 *screenDirtyBlocks = gfx_get_dirty_blocks();
 
 	// Unset dirty blocks
 	for (top = y; top < y + rows; top++)
 		for (left = x; left < x + columns; left++)
-			screenDirtyBlocks[top * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, sint32) + left] = 0;
+			screenDirtyBlocks[top * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) + left] = 0;
 
 	// Determine region in pixels
-	left = max(0, x * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, sint16));
-	top = max(0, y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, sint16));
-	right = min(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16), left + (columns * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, sint16)));
-	bottom = min(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16), top + (rows * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, sint16)));
+	left = max(0, x * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, uint16));
+	top = max(0, y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, uint16));
+	right = min(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16), left + (columns * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, uint16)));
+	bottom = min(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16), top + (rows * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, uint16)));
 	if (right <= left || bottom <= top)
 		return;
 
@@ -348,8 +295,8 @@ static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows)
 }
 
 /**
- * 
- *  rct2: 0x006E7499 
+ *
+ *  rct2: 0x006E7499
  * left (ax)
  * top (bx)
  * right (dx)
@@ -360,9 +307,6 @@ void gfx_redraw_screen_rect(short left, short top, short right, short bottom)
 	rct_window* w;
 	rct_drawpixelinfo *screenDPI = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
 	rct_drawpixelinfo *windowDPI = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_DPI, rct_drawpixelinfo);
-
-	// Unsure what this does
-	RCT2_CALLPROC_X(0x00683326, left, top, right - 1, bottom - 1, 0, 0, 0);
 
 	windowDPI->bits = screenDPI->bits + left + ((screenDPI->width + screenDPI->pitch) * top);
 	windowDPI->x = left;
@@ -491,7 +435,7 @@ void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sin
 
 					//Store colour and position
 					*pixel_store++ = (x_pixel_offset << 8) | current_pixel;
-					
+
 				}
 			}
 		}
@@ -507,29 +451,16 @@ void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sin
 *
 *  rct2: 0x006843DC
 */
-void redraw_peep_and_rain()
+void redraw_rain()
 {
 	if (RCT2_GLOBAL(0x009ABDF2, uint32) != 0) {
-		int sprite = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32);
-		if (sprite != -1) {
-			sprite = sprite & 0x7FFFF;
-			
-			rct_g1_element *g1_elements = &g1Elements[sprite];
-			int left = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, sint16) + g1_elements->x_offset;
-			int top = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16) + g1_elements->y_offset;
-			int right = left + g1_elements->width;
-			int bottom = top + g1_elements->height;
-			
-			gfx_set_dirty_blocks(left, top, right, bottom);
-		}
-
 		int rain_no_pixels = RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32);
 		if (rain_no_pixels == 0) {
 			return;
 		}
 		rct_window *window = window_get_main();
 		uint32 numPixels = window->width * window->height;
-		
+
 		uint32 *rain_pixels = rainPixels;
 		if (rain_pixels) {
 			uint8 *screen_pixels = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo)->bits;
@@ -546,4 +477,102 @@ void redraw_peep_and_rain()
 		}
 	}
 	RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32) = 0;
+}
+
+void gfx_invalidate_pickedup_peep()
+{
+	if (RCT2_GLOBAL(0x009ABDF2, uint32) != 0) {
+		int sprite = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32);
+		if (sprite != -1) {
+			sprite = sprite & 0x7FFFF;
+
+			rct_g1_element *g1_elements = &g1Elements[sprite];
+			int left = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, sint16) + g1_elements->x_offset;
+			int top = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16) + g1_elements->y_offset;
+			int right = left + g1_elements->width;
+			int bottom = top + g1_elements->height;
+
+			gfx_set_dirty_blocks(left, top, right, bottom);
+		}
+	}
+}
+
+void gfx_draw_pickedup_peep()
+{
+	if (RCT2_GLOBAL(0x009ABDF2, uint8) == 0)
+		return;
+
+	// Draw picked-up peep
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32) != 0xFFFFFFFF) {
+		gfx_draw_sprite(
+			(rct_drawpixelinfo*)RCT2_ADDRESS_SCREEN_DPI,
+			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32),
+			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, sint16),
+			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16), 0
+		);
+	}
+}
+
+/**
+ * Draws the given colour image masked out by the given mask image. This can currently only cope with bitmap formatted mask and
+ * colour images. Presumebly the original game never used RLE images for masking. Colour 0 represents transparent.
+ *
+ *  rct2: 0x00681DE2
+ */
+void gfx_draw_sprite_raw_masked(rct_drawpixelinfo *dpi, int x, int y, int maskImage, int colourImage)
+{
+	int left, top, right, bottom, width, height;
+	rct_g1_element *imgMask = &g1Elements[maskImage & 0x7FFFF];
+	rct_g1_element *imgColour = &g1Elements[colourImage & 0x7FFFF];
+
+	assert(imgMask->flags & 1);
+	assert(imgColour->flags & 1);
+
+	if (dpi->zoom_level != 0) {
+		// TODO implement other zoom levels (probably not used though)
+		assert(false);
+		return;
+	}
+
+	width = min(imgMask->width, imgColour->width);
+	height = min(imgMask->height, imgColour->height);
+
+	x += imgMask->x_offset;
+	y += imgMask->y_offset;
+
+	left = max(dpi->x, x);
+	top = max(dpi->y, y);
+	right = min(dpi->x + dpi->width, x + width);
+	bottom = min(dpi->y + dpi->height, y + height);
+
+	width = right - left;
+	height = bottom - top;
+	if (width < 0 || height < 0)
+		return;
+
+	int skipX = left - x;
+	int skipY = top - y;
+
+	uint8 *maskSrc = imgMask->offset + (skipY * imgMask->width) + skipX;
+	uint8 *colourSrc = imgColour->offset + (skipY * imgColour->width) + skipX;
+	uint8 *dst = dpi->bits + (left - dpi->x) + ((top - dpi->y) * (dpi->width + dpi->pitch));
+
+	int maskWrap = imgMask->width - width;
+	int colourWrap = imgColour->width - width;
+	int dstWrap = ((dpi->width + dpi->pitch) - width);
+	for (int y = top; y < bottom; y++) {
+		for (int x = left; x < right; x++) {
+			uint8 colour = (*colourSrc) & (*maskSrc);
+			if (colour != 0) {
+				*dst = colour;
+			}
+
+			maskSrc++;
+			colourSrc++;
+			dst++;
+		}
+		maskSrc += maskWrap;
+		colourSrc += colourWrap;
+		dst += dstWrap;
+	}
 }

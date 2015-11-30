@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -35,15 +35,23 @@ enum {
 	PARK_FLAGS_FORBID_HIGH_CONSTRUCTION = (1 << 5), // below tree height
 	PARK_FLAGS_PREF_LESS_INTENSE_RIDES = (1 << 6),
 	PARK_FLAGS_FORBID_MARKETING_CAMPAIGN = (1 << 7),
+	PARK_FLAGS_8 = (1 << 8),
 	PARK_FLAGS_PREF_MORE_INTENSE_RIDES = (1 << 9),
 	PARK_FLAGS_NO_MONEY = (1 << 11),
 	PARK_FLAGS_DIFFICULT_GUEST_GENERATION = (1 << 12),
 	PARK_FLAGS_PARK_FREE_ENTRY = (1 << 13),
 	PARK_FLAGS_DIFFICULT_PARK_RATING = (1 << 14),
+	PARK_FLAGS_LOCK_REAL_NAMES_OPTION = (1 << 15),
 	PARK_FLAGS_NO_MONEY_SCENARIO = (1 << 17),  // equivalent to PARK_FLAGS_NO_MONEY, but used in scenario editor
 	PARK_FLAGS_18 = (1 << 18),
-	PARK_FLAGS_SIX_FLAGS = (1 << 19)
+	PARK_FLAGS_SIX_FLAGS_DEPRECATED = (1 << 19)
 };
+
+extern uint8 *gParkRatingHistory;
+extern uint8 *gGuestsInParkHistory;
+
+void set_forced_park_rating();
+int get_forced_park_rating();
 
 int park_is_open();
 void park_init();
@@ -58,6 +66,7 @@ void generate_new_guest();
 
 void park_update();
 void park_update_histories();
+void update_park_fences(int x, int y);
 
 uint8 calculate_guest_initial_happiness(uint8 percentage);
 
@@ -66,12 +75,17 @@ int park_get_entrance_index(int x, int y, int z);
 void park_set_name(const char *name);
 void park_set_entrance_fee(money32 value);
 
+int map_buy_land_rights(int x0, int y0, int x1, int y1, int setting, int flags);
+
 void game_command_set_park_entrance_fee(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_park_open(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_remove_park_entrance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_buy_land_rights(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
-void gfx_invalidate_viewport_tile(int x, int y, int z0, int z1);
+void map_invalidate_tile(int x, int y, int z0, int z1);
+
+void park_remove_ghost_entrance();
+money32 park_place_ghost_entrance(int x, int y, int z, int direction);
 
 #endif

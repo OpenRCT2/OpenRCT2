@@ -24,6 +24,7 @@
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
+#include "../interface/keyboard_shortcut.h"
 #include "../interface/themes.h"
 
 #define WW 340
@@ -47,45 +48,90 @@ static rct_widget window_shortcut_widgets[] = {
 	{ WIDGETS_END }
 };
 
-void window_shortcut_emptysub() { }
-static void window_shortcut_mouseup();
-static void window_shortcut_invalidate();
-static void window_shortcut_paint();
-static void window_shortcut_tooltip();
-static void window_shortcut_scrollgetsize();
-static void window_shortcut_scrollmousedown();
-static void window_shortcut_scrollmouseover();
-static void window_shortcut_scrollpaint();
+static void window_shortcut_mouseup(rct_window *w, int widgetIndex);
+static void window_shortcut_invalidate(rct_window *w);
+static void window_shortcut_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_shortcut_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_shortcut_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_shortcut_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
+static void window_shortcut_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
+static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 
-static void* window_shortcut_events[] = {
-	window_shortcut_emptysub,
+static rct_window_event_list window_shortcut_events = {
+	NULL,
 	window_shortcut_mouseup,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_shortcut_scrollgetsize,
 	window_shortcut_scrollmousedown,
-	window_shortcut_emptysub,
+	NULL,
 	window_shortcut_scrollmouseover,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
+	NULL,
+	NULL,
+	NULL,
 	window_shortcut_tooltip,
-	window_shortcut_emptysub,
-	window_shortcut_emptysub,
+	NULL,
+	NULL,
 	window_shortcut_invalidate,
 	window_shortcut_paint,
 	window_shortcut_scrollpaint
+};
+
+const rct_string_id ShortcutStringIds[] = {
+	STR_SHORTCUT_CLOSE_TOP_MOST_WINDOW,
+	STR_SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS,
+	STR_SHORTCUT_CANCEL_CONSTRUCTION_MODE,
+	STR_SHORTCUT_PAUSE_GAME,
+	STR_SHORTCUT_ZOOM_VIEW_OUT,
+	STR_SHORTCUT_ZOOM_VIEW_IN,
+	STR_SHORTCUT_ROTATE_VIEW_CLOCKWISE,
+	STR_SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE,
+	STR_SHORTCUT_ROTATE_CONSTRUCTION_OBJECT,
+	STR_SHORTCUT_UNDERGROUND_VIEW_TOGGLE,
+	STR_SHORTCUT_REMOVE_BASE_LAND_TOGGLE,
+	STR_SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE,
+	STR_SHORTCUT_SEE_THROUGH_RIDES_TOGGLE,
+	STR_SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE,
+	STR_SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE,
+	STR_SHORTCUT_INVISIBLE_PEOPLE_TOGGLE,
+	STR_SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE,
+	STR_SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE,
+	STR_SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE,
+	STR_SHORTCUT_ADJUST_LAND,
+	STR_SHORTCUT_ADJUST_WATER,
+	STR_SHORTCUT_BUILD_SCENERY,
+	STR_SHORTCUT_BUILD_PATHS,
+	STR_SHORTCUT_BUILD_NEW_RIDE,
+	STR_SHORTCUT_SHOW_FINANCIAL_INFORMATION,
+	STR_SHORTCUT_SHOW_RESEARCH_INFORMATION,
+	STR_SHORTCUT_SHOW_RIDES_LIST,
+	STR_SHORTCUT_SHOW_PARK_INFORMATION,
+	STR_SHORTCUT_SHOW_GUEST_LIST,
+	STR_SHORTCUT_SHOW_STAFF_LIST,
+	STR_SHORTCUT_SHOW_RECENT_MESSAGES,
+	STR_SHORTCUT_SHOW_MAP,
+	STR_SHORTCUT_SCREENSHOT,
+	STR_SHORTCUT_REDUCE_GAME_SPEED,
+	STR_SHORTCUT_INCREASE_GAME_SPEED,
+	STR_SHORTCUT_OPEN_CHEATS_WINDOW,
+	STR_SHORTCUT_TOGGLE_VISIBILITY_OF_TOOLBARS,
+	STR_SHORTCUT_SCROLL_MAP_UP,
+	STR_SHORTCUT_SCROLL_MAP_LEFT,
+	STR_SHORTCUT_SCROLL_MAP_DOWN,
+	STR_SHORTCUT_SCROLL_MAP_RIGHT,
+	STR_SEND_MESSAGE,
+	STR_SHORTCUT_QUICK_SAVE_GAME,
 };
 
 /**
@@ -100,13 +146,13 @@ void window_shortcut_keys_open()
 
 	if (w) return;
 
-	w = window_create_auto_pos(WW, WH, (uint32*)window_shortcut_events, WC_KEYBOARD_SHORTCUT_LIST, 0);
+	w = window_create_auto_pos(WW, WH, &window_shortcut_events, WC_KEYBOARD_SHORTCUT_LIST, 0);
 
 	w->widgets = window_shortcut_widgets;
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RESET);
 	window_init_scroll_widgets(w);
 
-	w->no_list_items = 32;
+	w->no_list_items = SHORTCUT_COUNT;
 	w->selected_list_item = -1;
 }
 
@@ -114,13 +160,8 @@ void window_shortcut_keys_open()
 *
 *  rct2: 0x006E39E4
 */
-static void window_shortcut_mouseup()
+static void window_shortcut_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex){
 	case WIDX_CLOSE:
 		window_close(w);
@@ -133,11 +174,8 @@ static void window_shortcut_mouseup()
 	}
 }
 
-static void window_shortcut_invalidate()
+static void window_shortcut_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 }
 
@@ -145,13 +183,8 @@ static void window_shortcut_invalidate()
 *
 *  rct2: 0x006E38E0
 */
-static void window_shortcut_paint()
+static void window_shortcut_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 }
 
@@ -159,39 +192,26 @@ static void window_shortcut_paint()
 *
 *  rct2: 0x006E3A0C
 */
-static void window_shortcut_tooltip()
+static void window_shortcut_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	RCT2_GLOBAL(0x013CE952, uint16) = STR_LIST;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_LIST;
 }
 
 /**
 *
 *  rct2: 0x006E3A07
 */
-static void window_shortcut_scrollgetsize()
+static void window_shortcut_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
-	rct_window *w;
-	int width, height;
-
-	window_get_register(w);
-
-	width = 0;
-	height = 32 * 10;
-
-	window_scrollsize_set_registers(width, height);
+	*height = w->no_list_items * 10;
 }
 
 /**
 *
 *  rct2: 0x006E3A3E
 */
-static void window_shortcut_scrollmousedown()
+static void window_shortcut_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 {
-	short x, y, scrollIndex;
-	rct_window *w;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
-
 	int selected_item = y / 10;
 	if (selected_item >= w->no_list_items)
 		return;
@@ -203,35 +223,25 @@ static void window_shortcut_scrollmousedown()
 *
 *  rct2: 0x006E3A16
 */
-static void window_shortcut_scrollmouseover()
+static void window_shortcut_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
 {
-	short x, y, scrollIndex;
-	rct_window *w;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
-
 	int selected_item = y / 10;
 	if (selected_item >= w->no_list_items)
 		return;
-	
+
 	w->selected_list_item = selected_item;
 
 	window_invalidate(w);
 }
 
 /**
- * 
+ *
  *  rct2: 0x006E38E6
  */
-static void window_shortcut_scrollpaint()
+static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
+	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
-	window_paint_get_registers(w, dpi);
-
-	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, RCT2_ADDRESS(0x0141FC48,uint8)[w->colours[1] * 8]);
-	
 	for (int i = 0; i < w->no_list_items; ++i) {
 		int y = i * 10;
 		if (y > dpi->y + dpi->height)
@@ -244,27 +254,13 @@ static void window_shortcut_scrollpaint()
 			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
 		}
 
-		RCT2_GLOBAL(0x13CE954, uint16) = i + STR_SHORTCUT_DESCRIPTION_0;
-		RCT2_GLOBAL(0x13CE956, uint16) = 0;
-		RCT2_GLOBAL(0x13CE958, uint16) = 0;
-
-		uint16 shortcut_entry = gShortcutKeys[i];
-		if (shortcut_entry != 0xFFFF) {
-			rct_string_id templateStringId = 2525;
-			const char *scanCodeName = SDL_GetScancodeName(shortcut_entry & 0xFF);
-			char *templateString = (char*)language_get_string(templateStringId);
-			strcpy(templateString, scanCodeName);
-
-			RCT2_GLOBAL(0x13CE958, uint16) = templateStringId;
-			
-			// Display the modifer
-			if (shortcut_entry & 0x100)
-				RCT2_GLOBAL(0x13CE956, uint16) = STR_SHIFT_PLUS;
-			else if (shortcut_entry & 0x200)
-				RCT2_GLOBAL(0x13CE956, uint16) = STR_CTRL_PLUS;
-		}
+		rct_string_id templateStringId = 2525;
+		char *templateString = (char*)language_get_string(templateStringId);
+		keyboard_shortcut_format_string(templateString, gShortcutKeys[i]);
 
 		RCT2_GLOBAL(0x13CE952, uint16) = STR_SHORTCUT_ENTRY_FORMAT;
+		RCT2_GLOBAL(0x13CE954, uint16) = ShortcutStringIds[i];
+		RCT2_GLOBAL(0x13CE956, uint16) = templateStringId;
 		gfx_draw_string_left(dpi, format, (void*)0x13CE952, 0, 0, y - 1);
 	}
 }

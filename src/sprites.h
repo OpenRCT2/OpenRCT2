@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -32,7 +32,7 @@ enum {
 	SPR_HOT_AND_DRY = 3292,
 	SPR_COLD = 3293,
 
-	// This is the start of every character there are 
+	// This is the start of every character there are
 	// 224 characters per font (first 32 are control codes hence why it doesn't go to 255)
 	// 4 fonts
 	// = 896 sprites
@@ -63,6 +63,10 @@ enum {
 	SPR_OPEN = 5180,
 	SPR_TESTING = 5181,
 	SPR_TOGGLE_OPEN_CLOSE = 5182,
+
+	SPR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION = 5184,
+	SPR_SHOW_GUESTS_QUEUING_FOR_THIS_RIDE_ATTRACTION = 5185,
+	SPR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION = 5186,
 
 	SPR_RIDE = 5187,
 	SPR_TRACK_PEEP = 5188,
@@ -339,7 +343,6 @@ enum {
 	SPR_INTRO_LOGO_11 = SPR_INTRO_LOGO_00 + 4,
 	SPR_INTRO_LOGO_21 = SPR_INTRO_LOGO_00 + 5,
 
-	SPR_SIX_FLAGS = 23225,
 	SPR_INTRO_INFOGRAMES_00 = 23226,
 	SPR_INTRO_INFOGRAMES_10 = SPR_INTRO_INFOGRAMES_00 + 1,
 	SPR_INTRO_INFOGRAMES_01 = SPR_INTRO_INFOGRAMES_00 + 2,
@@ -380,6 +383,16 @@ enum {
 	SPR_G2_RCT1_OPEN_BUTTON_1 = SPR_G2_BEGIN + 26,
 	SPR_G2_RCT1_OPEN_BUTTON_2 = SPR_G2_BEGIN + 27,
 	SPR_G2_RCT1_OPEN_BUTTON_3 = SPR_G2_BEGIN + 28,
+
+	SPR_G2_TITLE_RESTART = SPR_G2_BEGIN + 29,
+	SPR_G2_TITLE_STOP = SPR_G2_BEGIN + 30,
+	SPR_G2_TITLE_PLAY = SPR_G2_BEGIN + 31,
+	SPR_G2_TITLE_SKIP = SPR_G2_BEGIN + 32,
+
+	SPR_G2_SANDBOX = SPR_G2_BEGIN + 33,
+
+	SPR_G2_TAB_NEWS = SPR_G2_BEGIN + 58,
+	SPR_G2_LOCKED = SPR_G2_BEGIN + 59,
 };
 
 #endif

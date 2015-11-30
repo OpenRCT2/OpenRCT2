@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -29,42 +29,41 @@ static rct_widget window_map_tooltip_widgets[] = {
 	{ WIDGETS_END }
 };
 
-static void window_map_tooltip_emptysub() { }
 static void window_map_tooltip_update(rct_window *w);
-static void window_map_tooltip_paint();
+static void window_map_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void* window_map_tooltip_events[] = {
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
+static rct_window_event_list window_map_tooltip_events = {
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_map_tooltip_update,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
-	window_map_tooltip_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_map_tooltip_paint,
-	window_map_tooltip_emptysub
+	NULL
 };
 
-#define MAP_TOOLTIP_ARGS 
+#define MAP_TOOLTIP_ARGS
 
 static int _lastCursorX;
 static int _lastCursorY;
@@ -106,7 +105,7 @@ void window_map_tooltip_update_visibility()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006A7C43
  */
 static void window_map_tooltip_open()
@@ -122,7 +121,7 @@ static void window_map_tooltip_open()
 	w = window_find_by_class(WC_MAP_TOOLTIP);
 	if (w == NULL) {
 		w = window_create(
-			x, y, width, height, (uint32*)window_map_tooltip_events, WC_MAP_TOOLTIP, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_5
+			x, y, width, height, &window_map_tooltip_events, WC_MAP_TOOLTIP, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND
 		);
 		w->widgets = window_map_tooltip_widgets;
 	} else {
@@ -135,7 +134,7 @@ static void window_map_tooltip_open()
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EE8CE
  */
 static void window_map_tooltip_update(rct_window *w)
@@ -144,18 +143,13 @@ static void window_map_tooltip_update(rct_window *w)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006EE894
  */
-static void window_map_tooltip_paint()
+static void window_map_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS, rct_string_id) == (rct_string_id)STR_NONE)
 		return;
 
-	gfx_draw_string_centred_wrapped(dpi, (void*)0x009A9808, w->x + (w->width / 2), w->y + (w->height / 2), w->width, 1162, 0);
+	gfx_draw_string_centred_wrapped(dpi, (void*)RCT2_ADDRESS_MAP_TOOLTIP_ARGS, w->x + (w->width / 2), w->y + (w->height / 2), w->width, 1162, 0);
 }

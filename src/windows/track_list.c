@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -29,6 +29,8 @@
 #include "../sprites.h"
 #include "error.h"
 #include "../interface/themes.h"
+#include "../rct1.h"
+#include "../network/network.h"
 
 enum {
 	WIDX_BACKGROUND,
@@ -37,60 +39,61 @@ enum {
 	WIDX_TRACK_LIST,
 	WIDX_TRACK_PREVIEW,
 	WIDX_ROTATE,
-	WIDX_TOGGLE_SCENERY
+	WIDX_TOGGLE_SCENERY,
+	WIDX_BACK,
 };
 
 static rct_widget window_track_list_widgets[] = {
 	{ WWT_FRAME,			0,	0,		599,	0,		399,	0xFFFFFFFF,				STR_NONE								},
 	{ WWT_CAPTION,			0,	1,		598,	1,		14,		STR_SELECT_DESIGN,		STR_WINDOW_TITLE_TIP					},
 	{ WWT_CLOSEBOX,			0,	587,	597,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP					},
-	{ WWT_SCROLL,			0,	4,		221,	18,		395,	2,						STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP		},
+	{ WWT_SCROLL,			0,	4,		221,	33,		395,	2,						STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP		},
 	{ WWT_FLATBTN,			0,	224,	595,	18,		236,	0xFFFFFFFF,				STR_NONE								},
 	{ WWT_FLATBTN,			0,	574,	597,	374,	397,	5169,					STR_ROTATE_90_TIP						},
 	{ WWT_FLATBTN,			0,	574,	597,	350,	373,	5171,					STR_TOGGLE_SCENERY_TIP					},
+	{ WWT_13,				0,	4,		221,	18,		29,		STR_SELECT_OTHER_RIDE,	STR_NONE								},
 	{ WIDGETS_END },
 };
 
-static void window_track_list_emptysub() { }
-static void window_track_list_close();
-static void window_track_list_mouseup();
-static void window_track_list_scrollgetsize();
-static void window_track_list_scrollmousedown();
-static void window_track_list_scrollmouseover();
-static void window_track_list_tooltip();
-static void window_track_list_invalidate();
-static void window_track_list_paint();
-static void window_track_list_scrollpaint();
+static void window_track_list_close(rct_window *w);
+static void window_track_list_mouseup(rct_window *w, int widgetIndex);
+static void window_track_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_track_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
+static void window_track_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
+static void window_track_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_track_list_invalidate(rct_window *w);
+static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 
-static void* window_track_list_events[] = {
-	(uint32*)window_track_list_close,
-	(uint32*)window_track_list_mouseup,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_scrollgetsize,
-	(uint32*)window_track_list_scrollmousedown,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_scrollmouseover,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_tooltip,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_emptysub,
-	(uint32*)window_track_list_invalidate,
-	(uint32*)window_track_list_paint,
-	(uint32*)window_track_list_scrollpaint
+static rct_window_event_list window_track_list_events = {
+	window_track_list_close,
+	window_track_list_mouseup,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	window_track_list_scrollgetsize,
+	window_track_list_scrollmousedown,
+	NULL,
+	window_track_list_scrollmouseover,
+	NULL,
+	NULL,
+	NULL,
+	window_track_list_tooltip,
+	NULL,
+	NULL,
+	window_track_list_invalidate,
+	window_track_list_paint,
+	window_track_list_scrollpaint
 };
 
 ride_list_item _window_track_list_item;
@@ -130,12 +133,12 @@ void window_track_list_open(ride_list_item item)
 		y,
 		600,
 		400,
-		(uint32*)window_track_list_events,
+		&window_track_list_events,
 		WC_TRACK_DESIGN_LIST,
 		0
 	);
 	w->widgets = window_track_list_widgets;
-	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY);
+	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY) | (1 << WIDX_BACK);
 	window_init_scroll_widgets(w);
 	w->track_list.var_480 = 0xFFFF;
 	w->track_list.var_482 = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 1;
@@ -143,6 +146,13 @@ void window_track_list_open(ride_list_item item)
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) = 0;
 	window_push_others_right(w);
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = 2;
+
+#ifndef NETWORK_DISABLE
+	// TODO: FIX NETWORK TRACKS
+	// Until tracks work with the network this will disable them
+	if (network_get_mode() != NETWORK_MODE_NONE)
+		RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, utf8)[0] = 0;
+#endif
 }
 
 /**
@@ -151,12 +161,12 @@ void window_track_list_open(ride_list_item item)
  */
 static void window_track_list_select(rct_window *w, int index)
 {
-	uint8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
+	utf8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, utf8);
 	rct_track_design *trackDesign;
 
 	w->track_list.var_480 = index;
 
-	sound_play_panned(SOUND_CLICK_1, w->x + (w->width / 2), 0, 0, 0);
+	audio_play_sound_panned(SOUND_CLICK_1, w->x + (w->width / 2), 0, 0, 0);
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && index == 0) {
 		window_close(w);
 		ride_construct_new(_window_track_list_item);
@@ -170,7 +180,7 @@ static void window_track_list_select(rct_window *w, int index)
 		index--;
 
 	trackDesignItem = trackDesignList + (index * 128);
-	RCT2_GLOBAL(0x00F4403C, uint8*) = trackDesignItem;
+	RCT2_GLOBAL(0x00F4403C, utf8*) = trackDesignItem;
 
 	window_track_list_format_name(
 		(char*)0x009BC313,
@@ -230,7 +240,7 @@ static int window_track_list_get_list_item_index_from_position(int x, int y)
  *
  *  rct2: 0x006CFD76
  */
-static void window_track_list_close()
+static void window_track_list_close(rct_window *w)
 {
 	free(RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_CACHE, void*));
 }
@@ -239,13 +249,8 @@ static void window_track_list_close()
  *
  *  rct2: 0x006CFA31
  */
-static void window_track_list_mouseup()
+static void window_track_list_mouseup(rct_window *w, int widgetIndex)
 {
-	rct_window *w;
-	short widgetIndex;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
@@ -265,6 +270,16 @@ static void window_track_list_mouseup()
 		reset_track_list_cache();
 		window_invalidate(w);
 		break;
+	case WIDX_BACK:
+		window_close(w);
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+			window_close_by_number(WC_MANAGE_TRACK_DESIGN, w->number);
+			window_close_by_number(WC_TRACK_DELETE_PROMPT, w->number);
+			trackmanager_load();
+		} else {
+			window_new_ride_open();
+		}
+		break;
 	}
 }
 
@@ -272,38 +287,25 @@ static void window_track_list_mouseup()
  *
  *  rct2: 0x006CFAB0
  */
-static void window_track_list_scrollgetsize()
+static void window_track_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
-	rct_window *w;
-	int width, height;
 	uint8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
 
-	window_get_register(w);
-
-	width = 0;
-	height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 10;
+	*height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 10;
 	for (trackDesignItem = trackDesignList; *trackDesignItem != 0; trackDesignItem += 128)
-		height += 10;
-
-	window_scrollsize_set_registers(width, height);
+		*height += 10;
 }
 
 /**
  *
  *  rct2: 0x006CFB39
  */
-static void window_track_list_scrollmousedown()
+static void window_track_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 {
-	rct_window *w;
-	short i, x, y, scrollIndex;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
+	int i;
 
 	if (w->track_list.var_484 & 1)
 		return;
-	// Made it impossible to click a design in pause mode. Since the UI now stays responsive in pause mode, always allow clicking a design.
-	/*if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0)
-		return;*/
 
 	i = window_track_list_get_list_item_index_from_position(x, y);
 	if (i != -1)
@@ -314,16 +316,11 @@ static void window_track_list_scrollmousedown()
  *
  *  rct2: 0x006CFAD7
  */
-static void window_track_list_scrollmouseover()
+static void window_track_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
 {
-	rct_window *w;
-	short i, x, y, scrollIndex;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
+	int i;
 
 	if (w->track_list.var_484 & 1)
-		return;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0)
 		return;
 
 	i = window_track_list_get_list_item_index_from_position(x, y);
@@ -337,31 +334,29 @@ static void window_track_list_scrollmouseover()
  *
  *  rct2: 0x006CFD6C
  */
-static void window_track_list_tooltip()
+static void window_track_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	RCT2_GLOBAL(0x013CE952, uint16) = STR_LIST;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_LIST;
 }
 
 /**
  *
  *  rct2: 0x006CF2D6
  */
-static void window_track_list_invalidate()
+static void window_track_list_invalidate(rct_window *w)
 {
-	rct_window *w;
 	rct_ride_type *entry;
 	rct_string_id stringId;
 
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	entry = GET_RIDE_ENTRY(_window_track_list_item.entry_index);
 
 	stringId = entry->name;
-	if (!(entry->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME))
+	if (!(entry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(entry))
 		stringId = _window_track_list_item.type + 2;
 
-	RCT2_GLOBAL(0x013CE952, uint16) = stringId;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = stringId;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
 		window_track_list_widgets[WIDX_TITLE].image = STR_TRACK_DESIGNS;
 		window_track_list_widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_RENAME_OR_DELETE_IT;
@@ -391,19 +386,16 @@ static void window_track_list_invalidate()
  *
  *  rct2: 0x006CF387
  */
-static void window_track_list_paint()
+static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	rct_widget *widget;
 	rct_track_design *trackDesign = NULL;
-	uint8 *image, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
+	uint8 *image;
+	utf8 *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, utf8);
 	uint16 holes, speed, drops, dropHeight, inversions;
 	fixed32_2dp rating;
 	int trackIndex, x, y, colour, gForces, airTime;
 	rct_g1_element tmpElement, *subsituteElement;
-
-	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 
@@ -419,7 +411,7 @@ static void window_track_list_paint()
 	widget = &window_track_list_widgets[WIDX_TRACK_PREVIEW];
 	x = w->x + widget->left + 1;
 	y = w->y + widget->top + 1;
-	colour = RCT2_GLOBAL(0x0141FC44 + (w->colours[0] * 8), uint8);
+	colour = ColourMapA[w->colours[0]].darkest;
 	gfx_fill_rect(dpi, x, y, x + 369, y + 216, colour);
 
 	trackDesign = track_get_info(trackIndex, &image);
@@ -466,11 +458,6 @@ static void window_track_list_paint()
 	// Information
 	x = w->x + widget->left + 1;
 	y = w->y + widget->bottom + 2;
-
-	if (track_td6->var_6C & 0x80000000) {
-		// Six flags logo
-		gfx_draw_sprite(dpi, SPR_SIX_FLAGS, w->x + widget->right - 50, y + 4, 0);
-	}
 
 	// Stats
 	rating = track_td6->excitement * 10;
@@ -536,7 +523,7 @@ static void window_track_list_paint()
 			}
 		}
 	}
-	
+
 	if (ride_type_has_flag(track_td6->type, RIDE_TYPE_FLAG_HAS_DROPS)) {
 		// Drops
 		drops = track_td6->drops & 0x3F;
@@ -577,17 +564,13 @@ static void window_track_list_paint()
  *
  *  rct2: 0x006CF8CD
  */
-static void window_track_list_scrollpaint()
+static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	rct_string_id stringId, stringId2;
 	int i, x, y, colour;
-	uint8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
+	utf8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, utf8);
 
-	window_paint_get_registers(w, dpi);
-
-	colour = RCT2_GLOBAL(0x00141FC48 + (w->colours[0] * 8), uint8);
+	colour = ColourMapA[w->colours[0]].mid_light;
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
 	gfx_clear(dpi, colour);
 

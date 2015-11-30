@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -39,11 +39,13 @@
 #include "util/util.h"
 #include "world/banner.h"
 #include "world/climate.h"
+#include "world/footpath.h"
 #include "world/map.h"
 #include "world/park.h"
 #include "world/scenery.h"
 #include "world/sprite.h"
 
+void editor_convert_save_to_scenario_callback(int result);
 static void set_all_land_owned();
 static int editor_load_landscape_from_sv4(const char *path);
 static int editor_load_landscape_from_sc4(const char *path);
@@ -58,8 +60,8 @@ void editor_load()
 {
 	rct_window *mainWindow;
 
-	pause_sounds();
-	unpause_sounds();
+	audio_pause_sounds();
+	audio_unpause_sounds();
 	object_unload_all();
 	map_init(150);
 	banner_init();
@@ -68,7 +70,7 @@ void editor_load()
 	reset_sprite_list();
 	ride_init_all();
 	window_guest_list_init_vars_a();
-	sub_6BD3A4();
+	staff_reset_modes();
 	park_init();
 	finance_init();
 	date_reset();
@@ -87,33 +89,9 @@ void editor_load()
 	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
 	load_palette();
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
 
-	strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(2749));
-}
-
-/**
- *
- *  rct2: 0x0067505F
- */
-static int show_convert_saved_game_to_scenario_dialog(char *resultPath)
-{
-	int result;
-	char title[256];
-	char filename[MAX_PATH];
-	char filterName[256];
-
-	format_string(title, STR_CONVERT_SAVED_GAME_TO_SCENARIO_1038, NULL);
-	strcpy(filename, RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char));
-	format_string(filterName, STR_RCT2_SAVED_GAME, NULL);
-
-	pause_sounds();
-	result = platform_open_common_file_dialog(1, title, filename, "*.SV6", filterName);
-	unpause_sounds();
-
-	if (result)
-		strcpy(resultPath, filename);
-	return result;
+	safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(2749), 0x40);
 }
 
 /**
@@ -122,18 +100,18 @@ static int show_convert_saved_game_to_scenario_dialog(char *resultPath)
  */
 void editor_convert_save_to_scenario()
 {
-	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
-	char savedGamePath[MAX_PATH];
-
 	tool_cancel();
-	if (!show_convert_saved_game_to_scenario_dialog(savedGamePath))
-		return;
+	window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
+	gLoadSaveCallback = editor_convert_save_to_scenario_callback;
+}
 
-	path_set_extension(savedGamePath, ".SV6");
-
-	// Load the saved game
-	if (!game_load_save(savedGamePath))
+void editor_convert_save_to_scenario_callback(int result)
+{
+	if (result != MODAL_RESULT_OK) {
 		return;
+	}
+
+	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY_SCENARIO;
@@ -141,8 +119,8 @@ void editor_convert_save_to_scenario()
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY;
 
-	strcpy(s6Info->name, (const char*)RCT2_ADDRESS_SCENARIO_NAME);
-	strcpy(s6Info->details, (const char*)RCT2_ADDRESS_SCENARIO_DETAILS);
+	safe_strncpy(s6Info->name, (const char*)RCT2_ADDRESS_SCENARIO_NAME, 64);
+	safe_strncpy(s6Info->details, (const char*)RCT2_ADDRESS_SCENARIO_DETAILS, 256);
 	s6Info->objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
 	s6Info->objective_arg_1 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
 	s6Info->objective_arg_2 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32);
@@ -151,7 +129,7 @@ void editor_convert_save_to_scenario()
 
 	rct_stex_entry* stex = g_stexEntries[0];
 	if ((int)stex != 0xFFFFFFFF) {
-		object_unload(0, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
+		object_unload((rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
 		reset_loaded_objects();
 
 		format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
@@ -159,13 +137,13 @@ void editor_convert_save_to_scenario()
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
-	s6Info->var_000 = 4;
+	s6Info->editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
 	s6Info->category = SCENARIO_CATEGORY_BUILDYOUROWN;
 	viewport_init_all();
 	news_item_init_queue();
 	window_editor_main_open();
 	editor_finalise_main_view();
-	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
 }
 
 /**
@@ -182,10 +160,10 @@ void trackdesigner_load()
 	banner_init();
 	reset_park_entrances();
 	user_string_clear_all();
-	reset_sprite_list(); 
+	reset_sprite_list();
 	ride_init_all();
 	window_guest_list_init_vars_a();
-	sub_6BD3A4();
+	staff_reset_modes();
 	park_init();
 	finance_init();
 	date_reset();
@@ -202,7 +180,7 @@ void trackdesigner_load()
 	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
 	load_palette();
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
 }
 
 /**
@@ -222,7 +200,7 @@ void trackmanager_load()
 	reset_sprite_list();
 	ride_init_all();
 	window_guest_list_init_vars_a();
-	sub_6BD3A4();
+	staff_reset_modes();
 	park_init();
 	finance_init();
 	date_reset();
@@ -239,7 +217,7 @@ void trackmanager_load()
 	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
 	load_palette();
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(0x009DEA66, sint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
 }
 
 /**
@@ -250,22 +228,7 @@ static void set_all_land_owned()
 {
 	int mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16);
 
-	game_do_command(64, 1, 64, 2, GAME_COMMAND_56, (mapSize - 2) * 32, (mapSize - 2) * 32);
-}
-
-/**
- *
- *  rct2: 0x006BD3A4
- */
-void sub_6BD3A4()
-{
-	for (int i = 0; i < 200; i++)
-		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[i] = STAFF_MODE_NONE;
-
-	for (int i = 200; i < 204; i++)
-		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[i] = STAFF_MODE_WALK;
-
-	staff_update_greyed_patrol_areas();
+	game_do_command(64, 1, 64, 2, GAME_COMMAND_SET_LAND_OWNERSHIP, (mapSize - 2) * 32, (mapSize - 2) * 32);
 }
 
 /**
@@ -275,7 +238,7 @@ void sub_6BD3A4()
 void editor_load_landscape(const char *path)
 {
 	window_close_construction_windows();
-	
+
 	char *extension = strrchr(path, '.');
 	if (extension != NULL) {
 		if (_stricmp(extension, ".sv4") == 0) {
@@ -309,7 +272,7 @@ static int editor_load_landscape_from_sv4(const char *path)
 
 	rct1_fix_landscape();
 	editor_finalise_main_view();
-	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
 	return 1;
 }
 
@@ -327,7 +290,7 @@ static int editor_load_landscape_from_sc4(const char *path)
 
 	rct1_fix_landscape();
 	editor_finalise_main_view();
-	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
 	return 1;
 }
 
@@ -338,16 +301,16 @@ static int editor_load_landscape_from_sc4(const char *path)
 static int editor_read_s6(const char *path)
 {
 	int i, j;
-	FILE *file;
+	SDL_RWops* rw;
 	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
 	log_verbose("loading landscape, %s", path);
 
-	file = fopen(path, "rb");
-	if (file != NULL) {
-		if (!sawyercoding_validate_checksum(file)) {
-			fclose(file);
+	rw = SDL_RWFromFile(path, "rb");
+	if (rw != NULL) {
+		if (!sawyercoding_validate_checksum(rw)) {
+			SDL_RWclose(rw);
 			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
 			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 
@@ -356,15 +319,15 @@ static int editor_read_s6(const char *path)
 		}
 
 		// Read first chunk
-		sawyercoding_read_chunk(file, (uint8*)s6Header);
+		sawyercoding_read_chunk(rw, (uint8*)s6Header);
 		if (s6Header->type == S6_TYPE_SCENARIO) {
 			// Read second chunk
-			sawyercoding_read_chunk(file, (uint8*)s6Info);
+			sawyercoding_read_chunk(rw, (uint8*)s6Info);
 
-			if (s6Info->var_000 == 255)
-				s6Info->var_000 = 1;
+			if (s6Info->editor_step == 255)
+				s6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 		} else {
-			s6Info->var_000 = 1;
+			s6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 			s6Info->category = SCENARIO_CATEGORY_BUILDYOUROWN;
 			format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
 		}
@@ -373,50 +336,50 @@ static int editor_read_s6(const char *path)
 		if (s6Header->num_packed_objects > 0) {
 			j = 0;
 			for (i = 0; i < s6Header->num_packed_objects; i++)
-				j += object_load_packed(file);
+				j += object_load_packed(rw);
 			if (j > 0)
 				object_list_load();
 		}
 
-		uint8 load_success = object_read_and_load_entries(file);
+		uint8 load_success = object_read_and_load_entries(rw);
 
 		// Read flags (16 bytes). Loads:
 		//	RCT2_ADDRESS_CURRENT_MONTH_YEAR
 		//	RCT2_ADDRESS_CURRENT_MONTH_TICKS
 		//	RCT2_ADDRESS_SCENARIO_TICKS
-		sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
+		sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
 
 		// Read map elements
 		memset((void*)RCT2_ADDRESS_MAP_ELEMENTS, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
-		sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
+		sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
 
 		// Read game data, including sprites
-		sawyercoding_read_chunk(file, (uint8*)0x010E63B8);
+		sawyercoding_read_chunk(rw, (uint8*)0x010E63B8);
 
 		if (s6Header->type == S6_TYPE_SCENARIO) {
 			// Read number of guests in park and something else
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_GUESTS_IN_PARK);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_GUESTS_IN_PARK);
 
 			// Read ?
-			sawyercoding_read_chunk(file, (uint8*)0x01357BC8);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_LAST_GUESTS_IN_PARK);
 
 			// Read park rating
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_PARK_RATING);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_PARK_RATING);
 
 			// Read ?
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES);
 
 			// Read ?
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_EXPENDITURE);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_EXPENDITURE);
 
 			// Read ?
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_PARK_VALUE);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_PARK_VALUE);
 
 			// Read more game data, including research items and rides
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_COMPLETED_COMPANY_VALUE);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_COMPLETED_COMPANY_VALUE);
 		}
 
-		fclose(file);
+		SDL_RWclose(rw);
 		if (!load_success){
 			log_error("failed to load all entries.");
 			set_load_objects_fail_reason();
@@ -427,30 +390,30 @@ static int editor_read_s6(const char *path)
 		map_update_tile_pointers();
 		map_remove_all_rides();
 
-		// 
+		//
 		for (i = 0; i < MAX_BANNERS; i++)
 			if (gBanners[i].type == 255)
 				gBanners[i].flags &= ~BANNER_FLAG_2;
 
-		// 
+		//
 		rct_ride *ride;
 		FOR_ALL_RIDES(i, ride)
 			user_string_free(ride->name);
 
 		ride_init_all();
 
-		// 
+		//
 		for (i = 0; i < MAX_SPRITES; i++) {
 			rct_sprite *sprite = &g_sprite_list[i];
 			user_string_free(sprite->unknown.name_string_idx);
 		}
 
 		reset_sprite_list();
-		sub_6BD3A4();
+		staff_reset_modes();
 		RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
-		RCT2_GLOBAL(0x01357BC8, uint16) = 0;
-		RCT2_GLOBAL(0x013573FE, uint16) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint16) = 0;
 		if (s6Header->type != S6_TYPE_SCENARIO) {
 			research_populate_list_random();
 			research_remove_non_separate_vehicle_types();
@@ -474,9 +437,9 @@ static int editor_read_s6(const char *path)
 				MONEY(100,00)
 			);
 
-			RCT2_GLOBAL(0x013573DC, uint32) = min(RCT2_GLOBAL(0x013573DC, uint32), 100000);
-			RCT2_CALLPROC_EBPSAFE(0x0069E89B);
-			sub_69E869();
+			RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, uint32) = min(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, uint32), 100000);
+			finance_reset_cash_to_initial();
+			finance_update_loan_hash();
 
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = clamp(
 				MONEY(0,00),
@@ -501,7 +464,7 @@ static int editor_read_s6(const char *path)
 
 		rct_stex_entry* stex = g_stexEntries[0];
 		if ((int)stex != 0xFFFFFFFF) {
-			object_unload(0, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
+			object_unload((rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
 			reset_loaded_objects();
 
 			format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
@@ -513,6 +476,7 @@ static int editor_read_s6(const char *path)
 		news_item_init_queue();
 		window_editor_main_open();
 		editor_finalise_main_view();
+		game_convert_strings_to_utf8();
 		return 1;
 	}
 
@@ -575,10 +539,10 @@ static void editor_finalise_main_view()
 	w->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
 	w->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
 
-	viewport->zoom = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) & 0xFF;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) >> 8;
 
 	int zoom_difference = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) - viewport->zoom;
+	viewport->zoom = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) & 0xFF;
 	if (zoom_difference != 0) {
 		if (zoom_difference >= 0) {
 			viewport->view_width <<= zoom_difference;
@@ -596,7 +560,112 @@ static void editor_finalise_main_view()
 	reset_all_sprite_quadrant_placements();
 	scenery_set_default_placement_configuration();
 	window_new_ride_init_vars();
-	RCT2_GLOBAL(0x009DEB7C, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, uint16) = 0;
 	load_palette();
 	gfx_invalidate_screen();
+}
+
+static bool editor_check_object_group_at_least_one_selected(int objectType)
+{
+	uint32 numObjects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32);
+	rct_object_entry *entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	uint8 *objectFlag = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
+	for (uint32 i = 0; i < numObjects; i++) {
+		if ((entry->flags & 0x0F) == objectType && (*objectFlag & 1)) {
+			return true;
+		}
+		entry = object_get_next(entry);
+		objectFlag++;
+	}
+	return false;
+}
+
+/**
+ *
+ *  rct2: 0x006AB9B8
+ */
+int editor_check_object_selection()
+{
+	bool isTrackDesignerManager =
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
+
+	if (!isTrackDesignerManager) {
+		if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_PATHS)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_AT_LEAST_ONE_PATH_OBJECT_MUST_BE_SELECTED;
+			return OBJECT_TYPE_PATHS;
+		}
+	}
+
+	if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_RIDE)) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_AT_LEAST_ONE_RIDE_OBJECT_MUST_BE_SELECTED;
+		return OBJECT_TYPE_RIDE;
+	}
+
+	if (!isTrackDesignerManager) {
+		if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_PARK_ENTRANCE)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PARK_ENTRANCE_TYPE_MUST_BE_SELECTED;
+			return OBJECT_TYPE_PARK_ENTRANCE;
+		}
+
+		if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_WATER)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_WATER_TYPE_MUST_BE_SELECTED;
+			return OBJECT_TYPE_WATER;
+		}
+	}
+
+	return -1;
+}
+
+/**
+ *
+ *  rct2: 0x0066FEAC
+ */
+bool editor_check_park()
+{
+	int parkSize = park_calculate_size();
+	if (parkSize == 0) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PARK_MUST_OWN_SOME_LAND;
+		return false;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] != 0x8000)
+			break;
+
+		if (i == 3) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NO_PARK_ENTRANCES;
+			return false;
+		}
+	}
+
+	for (int i = 0; i < 4; i++) {
+		if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] == 0x8000)
+			continue;
+
+		int x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i];
+		int y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, uint16)[i];
+		int z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, uint16)[i] / 8;
+		int direction = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[i] ^ 2;
+
+		switch (footpath_is_connected_to_map_edge(x, y, z, direction, 0)) {
+		case FOOTPATH_SEARCH_NOT_FOUND:
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PARK_ENTRANCE_WRONG_DIRECTION_OR_NO_PATH;
+			return false;
+		case FOOTPATH_SEARCH_INCOMPLETE:
+		case FOOTPATH_SEARCH_TOO_COMPLEX:
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PARK_ENTRANCE_PATH_INCOMPLETE_OR_COMPLEX;
+			return false;
+		case FOOTPATH_SEARCH_SUCCESS:
+			// Run the search again and unown the path
+			footpath_is_connected_to_map_edge(x, y, z, direction, 0x20);
+			break;
+		}
+	}
+
+	if (gPeepSpawns[0].x == 0xFFFF && gPeepSpawns[1].x == 0xFFFF) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PEEP_SPAWNS_NOT_SET;
+		return false;
+	}
+
+	return true;
 }

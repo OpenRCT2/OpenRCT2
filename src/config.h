@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -39,7 +39,8 @@ enum {
 	SHORTCUT_PAUSE_GAME,
 	SHORTCUT_ZOOM_VIEW_OUT,
 	SHORTCUT_ZOOM_VIEW_IN,
-	SHORTCUT_ROTATE_VIEW,
+	SHORTCUT_ROTATE_VIEW_CLOCKWISE,
+	SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE,
 	SHORTCUT_ROTATE_CONSTRUCTION_OBJECT,
 	SHORTCUT_UNDERGROUND_VIEW_TOGGLE,
 	SHORTCUT_REMOVE_BASE_LAND_TOGGLE,
@@ -70,6 +71,13 @@ enum {
 	SHORTCUT_REDUCE_GAME_SPEED,
 	SHORTCUT_INCREASE_GAME_SPEED,
 	SHORTCUT_OPEN_CHEAT_WINDOW,
+	SHORTCUT_REMOVE_TOP_BOTTOM_TOOLBAR_TOGGLE,
+	SHORTCUT_SCROLL_MAP_UP,
+	SHORTCUT_SCROLL_MAP_LEFT,
+	SHORTCUT_SCROLL_MAP_DOWN,
+	SHORTCUT_SCROLL_MAP_RIGHT,
+	SHORTCUT_OPEN_CHAT_WINDOW,
+	SHORTCUT_QUICK_SAVE_GAME,
 
 	SHORTCUT_COUNT
 };
@@ -90,11 +98,11 @@ enum {
 };
 
 enum {
-	AUTOSAVE_EVERY_WEEK,
-	AUTOSAVE_EVERY_2_WEEKS,
-	AUTOSAVE_EVERY_MONTH,
-	AUTOSAVE_EVERY_4_MONTHS,
-	AUTOSAVE_EVERY_YEAR,
+	AUTOSAVE_EVERY_MINUTE,
+	AUTOSAVE_EVERY_5MINUTES,
+	AUTOSAVE_EVERY_15MINUTES,
+	AUTOSAVE_EVERY_30MINUTES,
+	AUTOSAVE_EVERY_HOUR,
 	AUTOSAVE_NEVER
 };
 
@@ -110,6 +118,13 @@ enum {
 	TITLE_SEQUENCE_RCT2,
 	TITLE_SEQUENCE_OPENRCT2,
 	TITLE_SEQUENCE_RANDOM
+};
+
+enum {
+	SORT_NAME_ASCENDING,
+	SORT_NAME_DESCENDING,
+	SORT_DATE_ASCENDING,
+	SORT_DATE_DESCENDING,
 };
 
 typedef struct {
@@ -138,29 +153,43 @@ typedef struct {
 	uint8 window_snap_proximity;
 	uint8 autosave_frequency;
 	uint8 hardware_display;
+	uint8 uncap_fps;
 	uint8 test_unfinished_tracks;
 	uint8 no_test_crashes;
 	uint8 date_format;
 	uint8 auto_staff_placement;
+	uint8 handymen_mow_default;
 	utf8string last_run_version;
-	uint8 title_sequence;
+	uint8 invert_viewport_drag;
+	uint8 load_save_sort;
+	uint8 minimize_fullscreen_focus_loss;
+	uint8 day_night_cycle;
+	uint8 upper_case_banners;
+	uint8 allow_loading_with_incorrect_checksum;
+	uint8 steam_overlay_pause;
+	float window_scale;
 } general_configuration;
 
 typedef struct {
 	uint8 toolbar_show_finances;
 	uint8 toolbar_show_research;
 	uint8 toolbar_show_cheats;
-	uint8 allow_subtype_switching;
+	uint8 toolbar_show_news;
+	uint8 select_by_track_type;
 	uint8 console_small_font;
 	utf8string current_theme_preset;
+	utf8string current_title_sequence_preset;
+	uint32 object_selection_filter_flags;
 } interface_configuration;
 
 typedef struct {
 	uint8 title_music;
 	uint8 sound;
 	uint8 ride_music;
+	uint8 audio_focus;
 	uint8 master_volume;
 	uint8 music_volume;
+	utf8string device;
 } sound_configuration;
 
 typedef struct {
@@ -169,6 +198,8 @@ typedef struct {
 	uint8 disable_all_breakdowns;
 	uint8 unlock_all_prices;
 	uint8 build_in_pause_mode;
+	uint8 ignore_ride_intensity;
+	uint8 disable_vandalism;
 } cheat_configuration;
 
 typedef struct {
@@ -179,6 +210,20 @@ typedef struct {
 	uint8 enable_chat_peep_tracking;
 	uint8 enable_news;
 } twitch_configuration;
+
+typedef struct {
+	utf8string player_name;
+	uint32 default_port;
+	uint8 stay_connected;
+	uint8 advertise;
+	uint8 maxplayers;
+	utf8string server_name;
+	utf8string server_description;
+	utf8string master_server_url;
+	utf8string provider_name;
+	utf8string provider_email;
+	utf8string provider_website;
+} network_configuration;
 
 typedef struct theme_window {
 	uint8 colours[6];
@@ -194,9 +239,10 @@ typedef struct {
 	uint8 rct1_scenario_font;
 } theme_features;
 
+#define THEME_PRESET_NAME_SIZE 256
 
 typedef struct theme_preset {
-	char name[256];
+	char name[THEME_PRESET_NAME_SIZE];
 	theme_window *windows;
 
 	// Add structures for any other settings here
@@ -209,6 +255,39 @@ typedef struct {
 	uint16 num_presets;
 } themes_configuration;
 
+#define TITLE_SEQUENCE_MAX_SAVE_LENGTH 51
+
+typedef struct {
+	uint8 command;
+	union {
+		uint8 saveIndex;	// LOAD (this index is internal only)
+		uint8 x;			// LOCATION
+		uint8 rotations;	// ROTATE (counter-clockwise)
+		uint8 zoom;			// ZOOM
+		uint8 speed;		// SPEED
+		uint8 seconds;		// WAIT
+	};
+	uint8 y;				// LOCATION
+} title_command;
+
+#define TITLE_SEQUENCE_NAME_SIZE 256
+
+typedef struct {
+	char name[TITLE_SEQUENCE_NAME_SIZE];
+	char path[MAX_PATH]; // Needed for non-modifiable presets
+	char (*saves)[TITLE_SEQUENCE_MAX_SAVE_LENGTH];
+	title_command *commands;
+	uint8 num_saves;
+	uint16 num_commands;
+
+} title_sequence;
+
+typedef struct {
+	title_sequence *presets;
+	uint16 num_presets;
+
+} title_sequences_configuration;
+
 typedef struct {
 	uint8 key;
 	uint8 modifier;
@@ -219,7 +298,9 @@ extern interface_configuration gConfigInterface;
 extern sound_configuration gConfigSound;
 extern cheat_configuration gConfigCheat;
 extern twitch_configuration gConfigTwitch;
+extern network_configuration gConfigNetwork;
 extern themes_configuration gConfigThemes;
+extern title_sequences_configuration gConfigTitleSequences;
 
 extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 
@@ -238,5 +319,9 @@ bool config_find_or_browse_install_directory();
 void themes_set_default();
 void themes_load_presets();
 bool themes_save_preset(int preset);
+
+void title_sequences_set_default();
+void title_sequences_load_presets();
+void title_sequence_save_preset_script(int preset);
 
 #endif

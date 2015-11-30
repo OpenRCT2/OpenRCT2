@@ -8,17 +8,22 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
+#ifdef _WIN32
 #include <windows.h>
+#else
+#include <iconv.h>
+#include <errno.h>
+#endif // _WIN32
 #include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
@@ -29,8 +34,8 @@
 #pragma region Format codes
 
 typedef struct {
-	char code;
-	char *token;
+	uint32 code;
+	const char *token;
 } format_code_token;
 
 format_code_token format_code_tokens[] = {
@@ -107,7 +112,7 @@ format_code_token format_code_tokens[] = {
 	{ FORMAT_INVERTEDQUESTION,			"INVERTEDQUESTION"		}
 };
 
-char format_get_code(const char *token)
+uint32 format_get_code(const char *token)
 {
 	int i;
 	for (i = 0; i < countof(format_code_tokens); i++)
@@ -116,13 +121,59 @@ char format_get_code(const char *token)
 	return 0;
 }
 
-const char *format_get_token(char code)
+const char *format_get_token(uint32 code)
 {
 	int i;
 	for (i = 0; i < countof(format_code_tokens); i++)
 		if (code == format_code_tokens[i].code)
 			return format_code_tokens[i].token;
 	return 0;
+}
+
+bool utf8_is_format_code(int codepoint)
+{
+	if (codepoint < 32) return true;
+	if (codepoint >= FORMAT_ARGUMENT_CODE_START && codepoint <= FORMAT_ARGUMENT_CODE_END) return true;
+	if (codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END) return true;
+	return false;
+}
+
+bool utf8_should_use_sprite_for_codepoint(int codepoint)
+{
+	switch (codepoint) {
+	case FORMAT_UP:
+	case FORMAT_DOWN:
+	case FORMAT_LEFTGUILLEMET:
+	case FORMAT_TICK:
+	case FORMAT_CROSS:
+	case FORMAT_RIGHT:
+	case FORMAT_RIGHTGUILLEMET:
+	case FORMAT_SMALLUP:
+	case FORMAT_SMALLDOWN:
+	case FORMAT_LEFT:
+	case FORMAT_OPENQUOTES:
+	case FORMAT_ENDQUOTES:
+		return true;
+	default:
+		return false;
+	}
+}
+
+int utf8_get_format_code_arg_length(int codepoint)
+{
+	switch (codepoint) {
+	case FORMAT_MOVE_X:
+	case FORMAT_ADJUST_PALETTE:
+	case 3:
+	case 4:
+		return 1;
+	case FORMAT_NEWLINE_X_Y:
+		return 2;
+	case FORMAT_INLINE_SPRITE:
+		return 4;
+	default:
+		return 0;
+	}
 }
 
 #pragma endregion
@@ -193,10 +244,10 @@ void format_comma_separated_integer(char **dest, long long value)
 		// Groups of three digits, right to left
 		groupIndex = 0;
 		while (value > 0) {
-			// Append group seperator
+			// Append group separator
 			if (groupIndex == 3) {
 				groupIndex = 0;
-				
+
 				ch = commaMark;
 				while (*ch != 0) {
 					*dst++ = *ch++;
@@ -261,10 +312,10 @@ void format_comma_separated_fixed_2dp(char **dest, long long value)
 		// Groups of three digits, right to left
 		groupIndex = 0;
 		while (value > 0) {
-			// Append group seperator
+			// Append group separator
 			if (groupIndex == 3) {
 				groupIndex = 0;
-				
+
 				ch = commaMark;
 				while (*ch != 0) {
 					*dst++ = *ch++;
@@ -294,9 +345,9 @@ void format_comma_separated_fixed_2dp(char **dest, long long value)
 
 void format_currency(char **dest, long long value)
 {
-	const rct_currency_spec *currencySpec = &g_currency_specs[gConfigGeneral.currency_format];
+	const currency_descriptor *currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
 
-	int rate = currencySpec->rate;
+	int rate = currencyDesc->rate;
 	value *= rate;
 
 	// Negative sign
@@ -312,28 +363,33 @@ void format_currency(char **dest, long long value)
 	}
 
 	// Currency symbol
-	const char *symbol = currencySpec->symbol;
+	const utf8 *symbol = currencyDesc->symbol_unicode;
+	uint8 affix = currencyDesc->affix_unicode;
+	if (!font_supports_string(symbol, FONT_SIZE_MEDIUM)) {
+		symbol = currencyDesc->symbol_ascii;
+		affix = currencyDesc->affix_ascii;
+	}
 
 	// Prefix
-	if (currencySpec->affix == CURRENCY_PREFIX) {
-		strcpy(*dest, symbol);
+	if (affix == CURRENCY_PREFIX) {
+		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
 
 	format_comma_separated_integer(dest, value);
 
 	// Currency symbol suffix
-	if (currencySpec->affix == CURRENCY_SUFFIX) {
-		strcpy(*dest, symbol);
+	if (affix == CURRENCY_SUFFIX) {
+		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
 }
 
 void format_currency_2dp(char **dest, long long value)
 {
-	const rct_currency_spec *currencySpec = &g_currency_specs[gConfigGeneral.currency_format];
+	const currency_descriptor *currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
 
-	int rate = currencySpec->rate;
+	int rate = currencyDesc->rate;
 	value *= rate;
 
 	// Negative sign
@@ -343,11 +399,16 @@ void format_currency_2dp(char **dest, long long value)
 	}
 
 	// Currency symbol
-	const char *symbol = currencySpec->symbol;
+	const utf8 *symbol = currencyDesc->symbol_unicode;
+	uint8 affix = currencyDesc->affix_unicode;
+	if (!font_supports_string(symbol, FONT_SIZE_MEDIUM)) {
+		symbol = currencyDesc->symbol_ascii;
+		affix = currencyDesc->affix_ascii;
+	}
 
 	// Prefix
-	if (currencySpec->affix == CURRENCY_PREFIX) {
-		strcpy(*dest, symbol);
+	if (affix == CURRENCY_PREFIX) {
+		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
 
@@ -359,8 +420,8 @@ void format_currency_2dp(char **dest, long long value)
 	}
 
 	// Currency symbol suffix
-	if (currencySpec->affix == CURRENCY_SUFFIX) {
-		strcpy(*dest, symbol);
+	if (affix == CURRENCY_SUFFIX) {
+		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
 }
@@ -382,7 +443,7 @@ void format_length(char **dest, sint16 value)
 		stringId--;
 	}
 
-	uint16 *argRef = &value;
+	sint16 *argRef = &value;
 	format_string_part(dest, stringId, (char**)&argRef);
 	(*dest)--;
 }
@@ -579,11 +640,11 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 	}
 }
 
-void format_string_part_from_raw(char **dest, const char *src, char **args)
+void format_string_part_from_raw(utf8 **dest, const utf8 *src, char **args)
 {
-	unsigned char code;
+	unsigned int code;
 	while (1) {
-		code = *src++;
+		code = utf8_get_next(src, &src);
 		if (code < ' ') {
 			if (code == 0) {
 				*(*dest)++ = code;
@@ -609,12 +670,12 @@ void format_string_part_from_raw(char **dest, const char *src, char **args)
 		} else if (code < 142) {
 			format_string_code(code, dest, args);
 		} else {
-			*(*dest)++ = code;
+			*dest = utf8_write_codepoint(*dest, code);
 		}
 	}
 }
 
-void format_string_part(char **dest, rct_string_id format, char **args)
+void format_string_part(utf8 **dest, rct_string_id format, char **args)
 {
 	if (format == (rct_string_id)STR_NONE) {
 		**dest = 0;
@@ -654,14 +715,32 @@ void format_string_part(char **dest, rct_string_id format, char **args)
  * format (ax)
  * args (ecx)
  */
-void format_string(char *dest, rct_string_id format, void *args)
+void format_string(utf8 *dest, rct_string_id format, void *args)
 {
 	format_string_part(&dest, format, (char**)&args);
 }
 
-void format_string_raw(char *dest, char *src, void *args)
+void format_string_raw(utf8 *dest, utf8 *src, void *args)
 {
 	format_string_part_from_raw(&dest, src, (char**)&args);
+}
+
+/**
+ * Writes a formatted string to a buffer and converts it to upper case.
+ *  rct2: 0x006C2538
+ * dest (edi)
+ * format (ax)
+ * args (ecx)
+ */
+void format_string_to_upper(utf8 *dest, rct_string_id format, void *args)
+{
+	format_string(dest, format, args);
+
+	char *ch = dest;
+	while (*ch != 0) {
+		*ch = toupper(*ch);
+		ch++;
+	}
 }
 
 /**
@@ -720,65 +799,129 @@ void generate_string_file()
 }
 
 /**
-*  Return the length of the string in buffer.
-*  note you can't use strlen as there can be inline sprites!
-*
-* buffer (esi)
-*/
-int get_string_length(char* buffer)
+ *  Returns a pointer to the null terminator of the given UTF-8 string.
+ */
+utf8 *get_string_end(const utf8 *text)
 {
-	// Length of string
-	int length = 0;
+	int codepoint;
+	const utf8 *ch = text;
 
-	for (uint8* curr_char = (uint8*)buffer; *curr_char != (uint8)0; curr_char++) {
-		length++;
-		if (*curr_char >= 0x20) {
-			continue;
-		}
-		switch (*curr_char) {
-		case FORMAT_MOVE_X:
-		case FORMAT_ADJUST_PALETTE:
-		case 3:
-		case 4:
-			curr_char++;
-			length++;
-			break;
-		case FORMAT_NEWLINE:
-		case FORMAT_NEWLINE_SMALLER:
-		case FORMAT_TINYFONT:
-		case FORMAT_BIGFONT:
-		case FORMAT_MEDIUMFONT:
-		case FORMAT_SMALLFONT:
-		case FORMAT_OUTLINE:
-		case FORMAT_OUTLINE_OFF:
-		case FORMAT_WINDOW_COLOUR_1:
-		case FORMAT_WINDOW_COLOUR_2:
-		case FORMAT_WINDOW_COLOUR_3:
-		case 0x10:
-			continue;
-		case FORMAT_INLINE_SPRITE:
-			length += 4;
-			curr_char += 4;
-			break;
-		default:
-			if (*curr_char <= 0x16) { //case 0x11? FORMAT_NEW_LINE_X_Y
-				length += 2;
-				curr_char += 2;
-				continue;
-			}
-			length += 4;
-			curr_char += 4;//never happens?
-			break;
-		}
+	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
+		int argLength = utf8_get_format_code_arg_length(codepoint);
+		ch += argLength;
 	}
-	return length;
+	return (utf8*)(ch - 1);
 }
 
-int win1252_to_utf8(utf8string dst, const char *src, int maxBufferLength)
+/**
+ *  Return the number of bytes (including the null terminator) in the given UTF-8 string.
+ */
+size_t get_string_size(const utf8 *text)
 {
-	utf16 intermediateBuffer[512];
+	return get_string_end(text) - text + 1;
+}
 
-	// TODO this supports only a maximum of 512 characters
-	MultiByteToWideChar(CP_ACP, 0, src, -1, intermediateBuffer, 512);
-	return WideCharToMultiByte(CP_UTF8, 0, intermediateBuffer, -1, dst, maxBufferLength, NULL, NULL);
+/**
+ *  Return the number of visible characters (excludes format codes) in the given UTF-8 string.
+ */
+int get_string_length(const utf8 *text)
+{
+	int codepoint;
+	const utf8 *ch = text;
+
+	int count = 0;
+	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
+		if (utf8_is_format_code(codepoint)) {
+			ch += utf8_get_format_code_arg_length(codepoint);
+		} else {
+			count++;
+		}
+	}
+	return count;
+}
+
+utf8 *win1252_to_utf8_alloc(const char *src)
+{
+	int reservedSpace = (strlen(src) * 4) + 1;
+	utf8 *result = malloc(reservedSpace);
+	int actualSpace = win1252_to_utf8(result, src, reservedSpace);
+	return (utf8*)realloc(result, actualSpace);
+}
+
+int win1252_to_utf8(utf8string dst, const char *src, size_t maxBufferLength)
+{
+	size_t srcLength = strlen(src);
+
+#ifdef _WIN32
+	utf16 stackBuffer[256];
+	utf16 *heapBuffer = NULL;
+	utf16 *intermediateBuffer = stackBuffer;
+	size_t bufferCount = countof(stackBuffer);
+	if (maxBufferLength > bufferCount) {
+		if (srcLength > bufferCount) {
+			bufferCount = srcLength + 4;
+			heapBuffer = malloc(bufferCount * sizeof(utf16));
+			intermediateBuffer = heapBuffer;
+		}
+	}
+	MultiByteToWideChar(CP_ACP, 0, src, -1, intermediateBuffer, bufferCount);
+	int result = WideCharToMultiByte(CP_UTF8, 0, intermediateBuffer, -1, dst, maxBufferLength, NULL, NULL);
+
+	if (heapBuffer != NULL) {
+		free(heapBuffer);
+	}
+#else
+	//log_warning("converting %s of size %d", src, srcLength);
+	char *buffer_conv = strndup(src, srcLength);
+	char *buffer_orig = buffer_conv;
+	const char *to_charset = "UTF8";
+	const char *from_charset = "CP1252";
+	iconv_t cd = iconv_open(to_charset, from_charset);
+	if ((iconv_t)-1 == cd)
+	{
+		int error = errno;
+		switch (error)
+		{
+			case EINVAL:
+				log_error("Unsupported conversion from %s to %s, errno = %d", from_charset, to_charset, error);
+				break;
+			default:
+				log_error("Unknown error while initializing iconv, errno = %d", error);
+		}
+		return 0;
+	}
+	size_t obl = maxBufferLength;
+	char *outBuf = dst;
+	size_t conversion_result = iconv(cd, &buffer_conv, &srcLength, &outBuf, &obl);
+	if (conversion_result == (size_t)-1)
+	{
+		int error = errno;
+		switch (error)
+		{
+			case EILSEQ:
+				log_error("Encountered invalid sequence");
+				break;
+			case EINVAL:
+				log_error("Encountered incomplete sequence");
+				break;
+			case E2BIG:
+				log_error("Ran out of space");
+				break;
+			default:
+				log_error("Unknown error encountered, errno = %d", error);
+		}
+	}
+	int close_result = iconv_close(cd);
+	if (close_result == -1)
+	{
+		log_error("Failed to close iconv, errno = %d", errno);
+	}
+	size_t byte_diff = maxBufferLength - obl + 1;
+	dst[byte_diff - 1] = '\0';
+	//log_warning("converted %s of size %d, %d", dst, byte_diff, strlen(dst));
+	int result = byte_diff;
+	free(buffer_orig);
+#endif // _WIN32
+
+	return result;
 }

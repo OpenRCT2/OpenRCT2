@@ -8,17 +8,18 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../cheats.h"
 #include "../config.h"
 #include "../editor.h"
 #include "../game.h"
@@ -30,8 +31,10 @@
 #include "../interface/window.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
+#include "../network/network.h"
 #include "../network/twitch.h"
 #include "../scenario.h"
+#include "../util/util.h"
 #include "../world/scenery.h"
 #include "../world/banner.h"
 #include "dropdown.h"
@@ -63,6 +66,8 @@ enum {
 	WIDX_DEBUG,
 	WIDX_FINANCES,
 	WIDX_RESEARCH,
+	WIDX_NEWS,
+	WIDX_NETWORK,
 
 	WIDX_SEPARATOR,
 };
@@ -70,16 +75,17 @@ enum {
 typedef enum {
 	DDIDX_LOAD_GAME = 0,
 	DDIDX_SAVE_GAME = 1,
-	// seperator
-	DDIDX_ABOUT = 3,
-	DDIDX_OPTIONS = 4,
-	DDIDX_SCREENSHOT = 5,
-	DDIDX_GIANT_SCREENSHOT = 6,
-	// seperator
-	DDIDX_QUIT_TO_MENU = 8,
-	DDIDX_EXIT_OPENRCT2 = 9,
-	// seperator
-	DDIDX_ENABLE_TWITCH = 11
+	DDIDX_SAVE_GAME_AS = 2,
+	// separator
+	DDIDX_ABOUT = 4,
+	DDIDX_OPTIONS = 5,
+	DDIDX_SCREENSHOT = 6,
+	DDIDX_GIANT_SCREENSHOT = 7,
+	// separator
+	DDIDX_QUIT_TO_MENU = 9,
+	DDIDX_EXIT_OPENRCT2 = 10,
+	// separator
+	DDIDX_ENABLE_TWITCH = 12
 } FILE_MENU_DDIDX;
 
 typedef enum {
@@ -97,8 +103,22 @@ typedef enum {
 
 typedef enum {
 	DDIDX_CONSOLE = 0,
-	DDIDX_TILE_INSPECTOR = 1
+	DDIDX_TILE_INSPECTOR = 1,
+	DDIDX_OBJECT_SELECTION = 2,
+	DDIDX_INVENTIONS_LIST = 3,
+	DDIDX_SCENARIO_OPTIONS = 4
 } TOP_TOOLBAR_DEBUG_DDIDX;
+
+typedef enum {
+	DDIDX_PLAYER_LIST = 0
+} TOP_TOOLBAR_NETWORK_DDIDX;
+
+enum {
+	DDIDX_CHEATS,
+	DDIDX_ENABLE_SANDBOX_MODE = 2,
+	DDIDX_DISABLE_CLEARANCE_CHECKS,
+	DDIDX_DISABLE_SUPPORT_LIMITS
+};
 
 #pragma region Toolbar_widget_ordering
 
@@ -107,6 +127,7 @@ static const int left_aligned_widgets_order[] = {
 	WIDX_PAUSE,
 	WIDX_FASTFORWARD,
 	WIDX_FILE_MENU,
+	WIDX_NETWORK,
 	WIDX_CHEATS,
 	WIDX_DEBUG,
 
@@ -121,6 +142,7 @@ static const int left_aligned_widgets_order[] = {
 
 // from right to left
 static const int right_aligned_widgets_order[] = {
+	WIDX_NEWS,
 	WIDX_GUESTS,
 	WIDX_STAFF,
 	WIDX_PARK,
@@ -135,7 +157,7 @@ static const int right_aligned_widgets_order[] = {
 	WIDX_SCENERY,
 	WIDX_WATER,
 	WIDX_LAND,
-	WIDX_CLEAR_SCENERY,
+	WIDX_CLEAR_SCENERY
 };
 
 #pragma endregion
@@ -160,63 +182,70 @@ static rct_widget window_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	3,	0x0230,	0x024D,	0,						27,		0x20000000 | SPR_TOOLBAR_GUESTS,			STR_GUESTS_TIP },					// Guests
 	{ WWT_TRNBTN,	2,	0x0230,	0x024D,	0,						27,		0x20000000 | SPR_TOOLBAR_CLEAR_SCENERY,		STR_CLEAR_SCENERY_TIP },			// Clear scenery
 
-	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						5148 },								// Fast forward
-	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						5149 },								// Cheats
-	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_DEBUG_TIP },								// Debug
-	{ WWT_TRNBTN,	3,	0x001E,	0x003B, 0,						27,		0x20000000 | 0x15F9,						3235 },								// Finances
-	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						2275 },								// Research
-	
+	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_GAME_SPEED_TIP },				// Fast forward
+	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_CHEATS_TIP },					// Cheats
+	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_DEBUG_TIP },					// Debug
+	{ WWT_TRNBTN,	3,	0x001E,	0x003B, 0,						27,		0x20000000 | 0x15F9,						STR_SCENARIO_OPTIONS_FINANCIAL_TIP },// Finances
+	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_FINANCES_RESEARCH_TIP },		// Research
+	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_SHOW_RECENT_MESSAGES_TIP },		// News
+	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_SHOW_MULTIPLAYER_STATUS_TIP },	// Network
+
 	{ WWT_EMPTY,	0,	0,		10-1,	0,						0,		0xFFFFFFFF,									STR_NONE },							// Artificial widget separator
 	{ WIDGETS_END },
 };
 
-static void window_top_toolbar_emptysub() { }
-static void window_top_toolbar_mouseup();
+static void window_top_toolbar_mouseup(rct_window *w, int widgetIndex);
 static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_top_toolbar_dropdown();
-static void window_top_toolbar_tool_update();
-static void window_top_toolbar_tool_down();
-static void window_top_toolbar_tool_drag();
-static void window_top_toolbar_invalidate();
-static void window_top_toolbar_paint();
+static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_top_toolbar_tool_update(rct_window* w, int widgetIndex, int x, int y);
+static void window_top_toolbar_tool_down(rct_window* w, int widgetIndex, int x, int y);
+static void window_top_toolbar_tool_drag(rct_window* w, int widgetIndex, int x, int y);
+static void window_top_toolbar_tool_up(rct_window* w, int widgetIndex, int x, int y);
+static void window_top_toolbar_tool_abort(rct_window *w, int widgetIndex);
+static void window_top_toolbar_invalidate(rct_window *w);
+static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void* window_top_toolbar_events[] = {
-	window_top_toolbar_emptysub,
+static rct_window_event_list window_top_toolbar_events = {
+	NULL,
 	window_top_toolbar_mouseup,
-	window_top_toolbar_emptysub,
+	NULL,
 	window_top_toolbar_mousedown,
 	window_top_toolbar_dropdown,
-	window_top_toolbar_emptysub,
-	window_top_toolbar_emptysub,
-	window_top_toolbar_emptysub,
-	window_top_toolbar_emptysub,					// check if editor versions are significantly different...
+	NULL,
+	NULL,
+	NULL,
+	NULL,											// check if editor versions are significantly different...
 	window_top_toolbar_tool_update,					// editor: 0x0066fB0E
 	window_top_toolbar_tool_down,					// editor: 0x0066fB5C
 	window_top_toolbar_tool_drag,					// editor: 0x0066fB37
-	(void*)0x0066CC5B,								// editor: 0x0066fC44
-	(void*)0x0066CA58,								// editor: 0x0066fA74
-	window_top_toolbar_emptysub,
-	window_top_toolbar_emptysub,
-	window_top_toolbar_emptysub,
-	window_top_toolbar_emptysub,
-	window_top_toolbar_emptysub,
-	window_top_toolbar_emptysub,
-	window_top_toolbar_emptysub,
-	window_top_toolbar_emptysub,
-	window_top_toolbar_emptysub,
-	window_top_toolbar_emptysub,
-	window_top_toolbar_emptysub,
+	window_top_toolbar_tool_up,						// editor: 0x0066fC44 (Exactly the same)
+	window_top_toolbar_tool_abort,					// editor: 0x0066fA74 (Exactly the same)
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_top_toolbar_invalidate,
 	window_top_toolbar_paint,
-	window_top_toolbar_emptysub
+	NULL
 };
 
 void top_toolbar_init_view_menu(rct_window *window, rct_widget *widget);
 void top_toolbar_view_menu_dropdown(short dropdownIndex);
 void top_toolbar_init_fastforward_menu(rct_window *window, rct_widget *widget);
 void top_toolbar_fastforward_menu_dropdown(short dropdownIndex);
+void top_toolbar_init_rotate_menu(rct_window *window, rct_widget *widget);
+void top_toolbar_rotate_menu_dropdown(short dropdownIndex);
 void top_toolbar_init_debug_menu(rct_window *window, rct_widget *widget);
 void top_toolbar_debug_menu_dropdown(short dropdownIndex);
+void top_toolbar_init_network_menu(rct_window *window, rct_widget *widget);
+void top_toolbar_network_menu_dropdown(short dropdownIndex);
 
 void toggle_footpath_window();
 void toggle_land_window(rct_window *topToolbar, int widgetIndex);
@@ -238,10 +267,10 @@ void window_top_toolbar_open()
 
 	window = window_create(
 		0, 0,
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16), 28,
-		(uint32*)window_top_toolbar_events,
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16), 28,
+		&window_top_toolbar_events,
 		WC_TOP_TOOLBAR,
-		WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_5
+		WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND
 	);
 	window->widgets = window_top_toolbar_widgets;
 
@@ -249,19 +278,18 @@ void window_top_toolbar_open()
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066C957
  */
-static void window_top_toolbar_mouseup()
+static void window_top_toolbar_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w, *mainWindow;
-
-	window_widget_get_registers(w, widgetIndex);
+	rct_window *mainWindow;
 
 	switch (widgetIndex) {
 	case WIDX_PAUSE:
-		game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
+		if (network_get_mode() != NETWORK_MODE_CLIENT) {
+			game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
+		}
 		break;
 	case WIDX_ZOOM_OUT:
 		if ((mainWindow = window_get_main()) != NULL)
@@ -270,10 +298,6 @@ static void window_top_toolbar_mouseup()
 	case WIDX_ZOOM_IN:
 		if ((mainWindow = window_get_main()) != NULL)
 			window_zoom_in(mainWindow);
-		break;
-	case WIDX_ROTATE:
-		if ((mainWindow = window_get_main()) != NULL)
-			window_rotate_camera(mainWindow);
 		break;
 	case WIDX_CLEAR_SCENERY:
 		toggle_clear_scenery_window(w, WIDX_CLEAR_SCENERY);
@@ -314,14 +338,14 @@ static void window_top_toolbar_mouseup()
 	case WIDX_RESEARCH:
 		window_research_open();
 		break;
-	case WIDX_CHEATS:
-		window_cheats_open();
+	case WIDX_NEWS:
+		window_news_open();
 		break;
 	}
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066CA3B
  */
 static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
@@ -359,23 +383,24 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 		} else {
 			gDropdownItemsFormat[0] = STR_LOAD_GAME;
 			gDropdownItemsFormat[1] = STR_SAVE_GAME;
-			gDropdownItemsFormat[2] = 0;
-			gDropdownItemsFormat[3] = STR_ABOUT;
-			gDropdownItemsFormat[4] = STR_OPTIONS;
-			gDropdownItemsFormat[5] = STR_SCREENSHOT;
-			gDropdownItemsFormat[6] = STR_GIANT_SCREENSHOT;
-			gDropdownItemsFormat[7] = 0;
-			gDropdownItemsFormat[8] = STR_QUIT_TO_MENU;
-			gDropdownItemsFormat[9] = STR_EXIT_OPENRCT2;
-			numItems = 10;
+			gDropdownItemsFormat[2] = STR_SAVE_GAME_AS;
+			gDropdownItemsFormat[3] = 0;
+			gDropdownItemsFormat[4] = STR_ABOUT;
+			gDropdownItemsFormat[5] = STR_OPTIONS;
+			gDropdownItemsFormat[6] = STR_SCREENSHOT;
+			gDropdownItemsFormat[7] = STR_GIANT_SCREENSHOT;
+			gDropdownItemsFormat[8] = 0;
+			gDropdownItemsFormat[9] = STR_QUIT_TO_MENU;
+			gDropdownItemsFormat[10] = STR_EXIT_OPENRCT2;
+			numItems = 11;
 
 		#ifndef DISABLE_TWITCH
 			if (gConfigTwitch.channel != NULL && gConfigTwitch.channel[0] != 0) {
 				_menuDropdownIncludesTwitch = true;
-				gDropdownItemsFormat[10] = 0;
-				gDropdownItemsFormat[11] = 1156;
-				gDropdownItemsArgs[11] = STR_TWITCH_ENABLE;
-				numItems = 12;
+				gDropdownItemsFormat[11] = 0;
+				gDropdownItemsFormat[12] = 1156;
+				gDropdownItemsArgs[12] = STR_TWITCH_ENABLE;
+				numItems = 13;
 			}
 		#endif
 		}
@@ -389,9 +414,39 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 		);
 
 #ifndef DISABLE_TWITCH
-		if (_menuDropdownIncludesTwitch && gTwitchEnable)
-			gDropdownItemsChecked |= (1 << 11);
+		if (_menuDropdownIncludesTwitch && gTwitchEnable) {
+			dropdown_set_checked(11, true);
+		}
 #endif
+		break;
+	case WIDX_CHEATS:
+		gDropdownItemsFormat[0] = 1156;
+		gDropdownItemsFormat[1] = 0;
+		gDropdownItemsFormat[2] = 1156;
+		gDropdownItemsFormat[3] = 1156;
+		gDropdownItemsFormat[4] = 1156;
+		gDropdownItemsArgs[0] = 5217;
+		gDropdownItemsArgs[2] = STR_ENABLE_SANDBOX_MODE;
+		gDropdownItemsArgs[3] = STR_DISABLE_CLEARANCE_CHECKS;
+		gDropdownItemsArgs[4] = STR_DISABLE_SUPPORT_LIMITS;
+		window_dropdown_show_text(
+			w->x + widget->left,
+			w->y + widget->top,
+			widget->bottom - widget->top + 1,
+			w->colours[0] | 0x80,
+			0,
+			5
+		);
+		if (gCheatsSandboxMode) {
+			dropdown_set_checked(DDIDX_ENABLE_SANDBOX_MODE, true);
+		}
+		if (gCheatsDisableClearanceChecks) {
+			dropdown_set_checked(DDIDX_DISABLE_CLEARANCE_CHECKS, true);
+		}
+		if (gCheatsDisableSupportLimits) {
+			dropdown_set_checked(DDIDX_DISABLE_SUPPORT_LIMITS, true);
+		}
+		RCT2_GLOBAL(0x009DEBA2, uint16) = 0;
 		break;
 	case WIDX_VIEW_MENU:
 		top_toolbar_init_view_menu(w, widget);
@@ -413,31 +468,38 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			w->colours[1] | 0x80,
 			0,
 			numItems
-		);
+			);
 		RCT2_GLOBAL(0x009DEBA2, uint16) = 0;
 		break;
 	case WIDX_FASTFORWARD:
 		top_toolbar_init_fastforward_menu(w, widget);
 		break;
+	case WIDX_ROTATE:
+		top_toolbar_init_rotate_menu(w, widget);
+		break;
 	case WIDX_DEBUG:
 		top_toolbar_init_debug_menu(w, widget);
+		break;
+	case WIDX_NETWORK:
+		top_toolbar_init_network_menu(w, widget);
 		break;
 	}
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066C9EA
  */
-static void window_top_toolbar_dropdown()
+static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	short widgetIndex, dropdownIndex;
-	rct_window* w;
-
-	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
-
 	switch (widgetIndex) {
 	case WIDX_FILE_MENU:
+
+		// Quicksave is only available in the normal game. Skip one position to avoid incorrect mappings in the menus of the other modes.
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_SCENARIO_EDITOR) && dropdownIndex > DDIDX_LOAD_GAME)
+			dropdownIndex += 1;
+
+		// Track designer and track designs manager start with About, not Load/save
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
 			dropdownIndex += DDIDX_ABOUT;
 
@@ -446,12 +508,17 @@ static void window_top_toolbar_dropdown()
 			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 			break;
 		case DDIDX_SAVE_GAME:
+			tool_cancel();
+			save_game();
+			break;
+		case DDIDX_SAVE_GAME_AS:
 			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
 				rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 				window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE, s6Info->name);
-			} else {
+			}
+			else {
 				tool_cancel();
-				save_game();
+				save_game_as();
 			}
 			break;
 		case DDIDX_ABOUT:
@@ -481,6 +548,23 @@ static void window_top_toolbar_dropdown()
 #endif
 		}
 		break;
+	case WIDX_CHEATS:
+		if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x009DEBA2, uint16);
+		switch (dropdownIndex) {
+		case DDIDX_CHEATS:
+			window_cheats_open();
+			break;
+		case DDIDX_ENABLE_SANDBOX_MODE:
+			gCheatsSandboxMode = !gCheatsSandboxMode;
+			break;
+		case DDIDX_DISABLE_CLEARANCE_CHECKS:
+			gCheatsDisableClearanceChecks = !gCheatsDisableClearanceChecks;
+			break;
+		case DDIDX_DISABLE_SUPPORT_LIMITS:
+			gCheatsDisableSupportLimits = !gCheatsDisableSupportLimits;
+			break;
+		}
+		break;
 	case WIDX_VIEW_MENU:
 		top_toolbar_view_menu_dropdown(dropdownIndex);
 		break;
@@ -503,23 +587,27 @@ static void window_top_toolbar_dropdown()
 	case WIDX_FASTFORWARD:
 		top_toolbar_fastforward_menu_dropdown(dropdownIndex);
 		break;
+	case WIDX_ROTATE:
+		top_toolbar_rotate_menu_dropdown(dropdownIndex);
+		break;
 	case WIDX_DEBUG:
 		top_toolbar_debug_menu_dropdown(dropdownIndex);
+		break;
+	case WIDX_NETWORK:
+		top_toolbar_network_menu_dropdown(dropdownIndex);
 		break;
 	}
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066C810
  */
-static void window_top_toolbar_invalidate()
+static void window_top_toolbar_invalidate(rct_window *w)
 {
 	int i, x, enabledWidgets, widgetIndex, widgetWidth, firstAlignment;
-	rct_window *w;
 	rct_widget *widget;
 
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	// Enable / disable buttons
@@ -545,6 +633,8 @@ static void window_top_toolbar_invalidate()
 	window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_DEBUG].type = gConfigGeneral.debugging_tools ? WWT_TRNBTN : WWT_EMPTY;
+	window_top_toolbar_widgets[WIDX_NEWS].type = WWT_TRNBTN;
+	window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_TRNBTN;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
@@ -555,6 +645,8 @@ static void window_top_toolbar_invalidate()
 		window_top_toolbar_widgets[WIDX_FINANCES].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_EMPTY;
+		window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
+		window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
 
 		if (g_editor_step != EDITOR_STEP_LANDSCAPE_EDITOR) {
 			window_top_toolbar_widgets[WIDX_MAP].type = WWT_EMPTY;
@@ -564,7 +656,7 @@ static void window_top_toolbar_invalidate()
 			window_top_toolbar_widgets[WIDX_PATH].type = WWT_EMPTY;
 			window_top_toolbar_widgets[WIDX_CLEAR_SCENERY].type = WWT_EMPTY;
 		}
-		
+
 		if (g_editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
 			window_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].type = WWT_EMPTY;
 			window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
@@ -585,10 +677,25 @@ static void window_top_toolbar_invalidate()
 
 		if (!gConfigInterface.toolbar_show_cheats)
 			window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_EMPTY;
+
+		if (!gConfigInterface.toolbar_show_news)
+			window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
+
+		switch (network_get_mode()) {
+		case NETWORK_MODE_SERVER:
+			window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
+			break;
+		case NETWORK_MODE_CLIENT:
+			window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
+			window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
+			break;
+		default:
+			window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
+		}
 	}
 
 	enabledWidgets = 0;
-	for (i = WIDX_PAUSE; i <= WIDX_RESEARCH; i++)
+	for (i = WIDX_PAUSE; i <= WIDX_NETWORK; i++)
 		if (window_top_toolbar_widgets[i].type != WWT_EMPTY)
 			enabledWidgets |= (1 << i);
 	w->enabled_widgets = enabledWidgets;
@@ -615,7 +722,7 @@ static void window_top_toolbar_invalidate()
 
 	// Align right hand side toolbar buttons
 	firstAlignment = 1;
-	x = max(640, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16));
+	x = max(640, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
 	for (int i = 0; i < countof(right_aligned_widgets_order); ++i) {
 		widgetIndex = right_aligned_widgets_order[i];
 		widget = &window_top_toolbar_widgets[widgetIndex];
@@ -639,12 +746,6 @@ static void window_top_toolbar_invalidate()
 	else
 		w->pressed_widgets |= (1 << WIDX_PATH);
 
-	// Fast forward button pressed down
-	// if (0)
-	// 	w->pressed_widgets |= (1 << WIDX_FASTFORWARD);
-	// else
-	// 	w->pressed_widgets &= ~(1 << WIDX_FASTFORWARD);
-
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1))
 		w->pressed_widgets &= ~(1 << WIDX_PAUSE);
 	else
@@ -661,16 +762,12 @@ static void window_top_toolbar_invalidate()
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066C8EC
  */
-static void window_top_toolbar_paint()
+static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	int x, y, imgId;
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
 
 	window_draw_widgets(w, dpi);
 
@@ -701,9 +798,6 @@ static void window_top_toolbar_paint()
 		for (int i = 0; i < 3 && i < gGameSpeed - 4 && gGameSpeed >= 5; i++) {
 			gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROW, x + 5 + i * 6, y + 15, 0);
 		}
-		/*if (gGameSpeed >= 8) {
-			gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROWS, x + 5, y + 15, 0);
-		}*/
 	}
 
 	// Draw cheats button
@@ -712,7 +806,7 @@ static void window_top_toolbar_paint()
 		y = w->y + window_top_toolbar_widgets[WIDX_CHEATS].top - 1;
 		if (widget_is_pressed(w, WIDX_CHEATS))
 			y++;
-		imgId = SPR_TAB_OBJECTIVE_0;
+		imgId = SPR_G2_SANDBOX;
 		gfx_draw_sprite(dpi, imgId, x, y, 3);
 	}
 
@@ -743,6 +837,26 @@ static void window_top_toolbar_paint()
 		if (widget_is_pressed(w, WIDX_FINANCES))
 			y++;
 		imgId = SPR_FINANCE;
+		gfx_draw_sprite(dpi, imgId, x, y, 0);
+	}
+
+	// Draw news button
+	if (window_top_toolbar_widgets[WIDX_NEWS].type != WWT_EMPTY) {
+		x = w->x + window_top_toolbar_widgets[WIDX_NEWS].left + 3;
+		y = w->y + window_top_toolbar_widgets[WIDX_NEWS].top + 0;
+		if (widget_is_pressed(w, WIDX_NEWS))
+			y++;
+		imgId = SPR_G2_TAB_NEWS;
+		gfx_draw_sprite(dpi, imgId, x, y, 0);
+	}
+
+	// Draw network button
+	if (window_top_toolbar_widgets[WIDX_NETWORK].type != WWT_EMPTY) {
+		x = w->x + window_top_toolbar_widgets[WIDX_NETWORK].left + 3;
+		y = w->y + window_top_toolbar_widgets[WIDX_NETWORK].top + 0;
+		if (widget_is_pressed(w, WIDX_NETWORK))
+			y++;
+		imgId = SPR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION;
 		gfx_draw_sprite(dpi, imgId, x, y, 0);
 	}
 }
@@ -776,13 +890,13 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			SMALL_SCENERY_FLAG10)))
 			return;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 3103;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_REPAINT_THIS;
 		game_do_command(
 			grid_x,
 			1 | (map_element->type << 8),
 			grid_y,
 			map_element->base_height | (map_element->properties.scenery.type << 8),
-			GAME_COMMAND_52,
+			GAME_COMMAND_SET_SCENERY_COLOUR,
 			0,
 			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
 		break;
@@ -797,13 +911,13 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			WALL_SCENERY_FLAG2)))
 			return;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 3103;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_REPAINT_THIS;
 		game_do_command(
 			grid_x,
 			1 | (window_scenery_primary_colour << 8),
 			grid_y,
 			(map_element->type & MAP_ELEMENT_DIRECTION_MASK) | (map_element->base_height << 8),
-			GAME_COMMAND_53,
+			GAME_COMMAND_SET_FENCE_COLOUR,
 			0,
 			window_scenery_secondary_colour | (window_scenery_tertiary_colour << 8));
 		break;
@@ -817,13 +931,13 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			(1 << 0)))
 			return;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 3103;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_REPAINT_THIS;
 		game_do_command(
 			grid_x,
 			1 | ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) << 8),
 			grid_y,
 			map_element->base_height | ((map_element->properties.scenerymultiple.type >> 10) << 8),
-			GAME_COMMAND_54,
+			GAME_COMMAND_SET_LARGE_SCENERY_COLOUR,
 			0,
 			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
 		break;
@@ -838,13 +952,13 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			(1 << 0)))
 			return;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 3103;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_REPAINT_THIS;
 		game_do_command(
 			grid_x,
 			1,
 			grid_y,
 			map_element->base_height | ((map_element->properties.banner.position & 0x3) << 8),
-			GAME_COMMAND_55,
+			GAME_COMMAND_SET_BANNER_COLOUR,
 			0,
 			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
 		break;
@@ -854,56 +968,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	}
 }
 
-void sub_689604(sint16 x, sint16 y, sint16* grid_x, sint16* grid_y, uint8* cl){
-	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
-
-	RCT2_CALLFUNC_X(0x00689604, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-
-	*grid_x = eax;
-	*grid_y = ebx;
-	*cl = ecx;
-}
-
-void sub_68964B(sint16 x, sint16 y, sint16 z, sint16* grid_x, sint16* grid_y, uint8* cl){
-	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = z;
-
-	RCT2_CALLFUNC_X(0x0068964B, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-
-	*grid_x = eax;
-	*grid_y = ebx;
-	*cl = ecx;
-}
-
-void sub_689692(sint16 x, sint16 y, sint16* grid_x, sint16* grid_y, uint8* cl){
-	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
-
-	RCT2_CALLFUNC_X(0x00689692, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-
-	*grid_x = eax;
-	*grid_y = ebx;
-	*cl = ecx;
-}
-
-void sub_6896DC(sint16 x, sint16 y, sint16 z, sint16* grid_x, sint16* grid_y, uint8* cl){
-	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = z;
-
-	RCT2_CALLFUNC_X(0x006896DC, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-
-	*grid_x = eax;
-	*grid_y = ebx;
-	*cl = ecx;
-}
-
-void sub_6894D4(sint16 x, sint16 y, sint16 z, sint16* grid_x, sint16* grid_y){
-	int eax = x, ebx = y, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = z;
-
-	RCT2_CALLFUNC_X(0x006894D4, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-
-	*grid_x = eax;
-	*grid_y = ebx;
-}
-
-/* rct2: 0x006E1F34 
+/* rct2: 0x006E1F34
  * Outputs
  * eax : grid_x
  * ebx : parameter_1
@@ -935,7 +1000,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		type = 1;
 	}
 
-	if (type == 0){
+	if (type == 0 && !gCheatsDisableSupportLimits) {
 		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) = 0;
 	}
@@ -991,7 +1056,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			}
 		}
 	}
-	
+
 	switch (scenery_type){
 	case 0:
 	{
@@ -1002,7 +1067,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 
 			// If CTRL not pressed
 			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
-				sub_689604(x, y, grid_x, grid_y, &cl);
+				screen_get_map_xy_quadrant(x, y, grid_x, grid_y, &cl);
 
 				if (*grid_x == (sint16)0x8000)
 					return;
@@ -1032,7 +1097,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			else{
 				sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
 
-				sub_68964B(x, y, z, grid_x, grid_y, &cl);
+				screen_get_map_xy_quadrant_with_z(x, y, z, grid_x, grid_y, &cl);
 
 				// If SHIFT pressed
 				if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
@@ -1052,10 +1117,10 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			uint8 rotation = window_scenery_rotation;
 
 			if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
-				rotation = scenario_rand() & 0xFF;
+				rotation = util_rand() & 0xFF;
 			}
 
-			rotation -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+			rotation -= get_current_rotation();
 			rotation &= 0x3;
 
 			// Also places it in lower but think thats for clobering
@@ -1067,7 +1132,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 
 		// If CTRL not pressed
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
-			uint16 flags = 
+			uint16 flags =
 				VIEWPORT_INTERACTION_MASK_TERRAIN &
 				VIEWPORT_INTERACTION_MASK_WATER;
 			int interaction_type = 0;
@@ -1108,7 +1173,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		}
 		else{
 			sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
-			sub_6894D4(x, y, z, grid_x, grid_y);
+			screen_get_map_xy_with_z(x, y, z, grid_x, grid_y);
 
 			// If SHIFT pressed
 			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
@@ -1130,10 +1195,10 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		uint8 rotation = window_scenery_rotation;
 
 		if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
-			rotation = scenario_rand() & 0xFF;
+			rotation = util_rand() & 0xFF;
 		}
 
-		rotation -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		rotation -= get_current_rotation();
 		rotation &= 0x3;
 
 		// Also places it in lower but think thats for clobering
@@ -1146,7 +1211,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 	{
 		// Path bits
 
-		uint16 flags = 
+		uint16 flags =
 			VIEWPORT_INTERACTION_MASK_FOOTPATH &
 			VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
 		int interaction_type = 0;
@@ -1174,7 +1239,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		uint8 cl;
 		// If CTRL not pressed
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
-			sub_689692(x, y, grid_x, grid_y, &cl);
+			screen_get_map_xy_side(x, y, grid_x, grid_y, &cl);
 
 			if (*grid_x == (sint16)0x8000)
 				return;
@@ -1202,7 +1267,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		}
 		else{
 			sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
-			sub_6896DC(x, y, z, grid_x, grid_y, &cl);
+			screen_get_map_xy_side_with_z(x, y, z, grid_x, grid_y, &cl);
 
 			// If SHIFT pressed
 			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
@@ -1261,7 +1326,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		}
 		else{
 			sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
-			sub_6894D4(x, y, z, grid_x, grid_y);
+			screen_get_map_xy_with_z(x, y, z, grid_x, grid_y);
 
 			// If SHIFT pressed
 			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
@@ -1282,7 +1347,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		*grid_y &= 0xFFE0;
 
 		uint8 rotation = window_scenery_rotation;
-		rotation -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		rotation -= get_current_rotation();
 		rotation &= 0x3;
 
 		*parameter_1 = (rotation << 8);
@@ -1309,9 +1374,9 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		}
 
 		uint8 rotation = window_scenery_rotation;
-		rotation -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		rotation -= get_current_rotation();
 		rotation &= 0x3;
-		
+
 		sint16 z = map_element->base_height;
 
 		if (map_element->properties.path.type & (1 << 2)){
@@ -1332,222 +1397,226 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 }
 
 /**
- * rct2: 0x6e2cc6
+ *
+ *  rct2: 0x006E2CC6
  */
-static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window* w, short widgetIndex){
+static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w, short widgetIndex)
+{
 	scenery_remove_ghost_tool_placement();
-	if (window_scenery_is_repaint_scenery_tool_on & 1){
+	if (window_scenery_is_repaint_scenery_tool_on & 1) {
 		repaint_scenery_tool_down(x, y, widgetIndex);
 		return;
 	}
 
-	int selected_tab = window_scenery_selected_scenery_by_tab[window_scenery_active_tab_index];
-	uint8 scenery_type = (selected_tab & 0xFF00) >> 8;
-	uint8 selected_scenery = selected_tab & 0xFF;
+	int selectedTab = window_scenery_selected_scenery_by_tab[window_scenery_active_tab_index];
+	uint8 sceneryType = (selectedTab & 0xFF00) >> 8;
+	uint8 selectedScenery = selectedTab & 0xFF;
 
-	if (selected_tab == -1) return;
+	if (selectedTab == -1) return;
 
-	sint16 grid_x, grid_y;
-	int ebp = selected_tab;
+	sint16 gridX, gridY;
+	int ebp = selectedTab;
 	uint32 parameter_1, parameter_2, parameter_3;
 
-	sub_6E1F34(x, y, selected_tab, &grid_x, &grid_y, &parameter_1, &parameter_2, &parameter_3);
+	sub_6E1F34(x, y, selectedTab, &gridX, &gridY, &parameter_1, &parameter_2, &parameter_3);
 
-	if (grid_x == (sint16)0x8000)return;
-	
-	switch (scenery_type){
-	case 0:
+	if (gridX == (sint16)0x8000) return;
+
+	switch (sceneryType){
+	case SCENERY_TYPE_SMALL:
 	{
-		int cluster_size = 1;
-		if (window_scenery_is_build_cluster_tool_on){
-			cluster_size = 35;
+		int quantity = 1;
+		if (window_scenery_is_build_cluster_tool_on) {
+			quantity = 35;
 		}
 
-		for (; cluster_size > 0; cluster_size--){
-
-			int cluster_z_coordinate = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16);
+		int successfulPlacements = 0;
+		for (int q = 0; q < quantity; q++) {
+			int zCoordinate = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16);
 			rct_scenery_entry* scenery = g_smallSceneryEntries[(parameter_1 >> 8) & 0xFF];
 
-			sint16 cur_grid_x = grid_x;
-			sint16 cur_grid_y = grid_y;
+			sint16 cur_grid_x = gridX;
+			sint16 cur_grid_y = gridY;
 
 			if (window_scenery_is_build_cluster_tool_on){
 				if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)){
 					parameter_2 &= 0xFF00;
-					parameter_2 |= scenario_rand() & 3;
+					parameter_2 |= util_rand() & 3;
 				}
 
-				cur_grid_x += ((scenario_rand() % 16) - 8) * 32;
-				cur_grid_y += ((scenario_rand() % 16) - 8) * 32;
+				cur_grid_x += ((util_rand() % 16) - 8) * 32;
+				cur_grid_y += ((util_rand() % 16) - 8) * 32;
 
 				if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
-					RCT2_GLOBAL(0x00F64EC0, uint16)++;
-					RCT2_GLOBAL(0x00F64EC0, uint16) &= 3;
+					RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint16)++;
+					RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint16) &= 3;
 				}
 			}
 
-			uint8 bl = 1;
-			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
-				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
-				bl = 20;
+			uint8 zAttemptRange = 1;
+			if (
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
+				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0
+			) {
+				zAttemptRange = 20;
 			}
-			uint8 success = 0;
 
-			for (; bl != 0; bl--){
+			bool success = false;
+			for (; zAttemptRange != 0; zAttemptRange--){
+				int flags = GAME_COMMAND_FLAG_APPLY | (parameter_1 & 0xFF00);
+
 				RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
-
-				int ebx = parameter_1;
-				ebx &= 0xFF00;
-				if (window_scenery_is_build_cluster_tool_on){
-					ebx |= 0x9;
-				}
-				else{
-					ebx |= GAME_COMMAND_FLAG_APPLY;
-				}
-
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
-
-				int cost = game_do_command(cur_grid_x, ebx, cur_grid_y, parameter_2, GAME_COMMAND_PLACE_SCENERY, RCT2_GLOBAL(0x00F64EC0, uint8) | (parameter_3 & 0xFFFF0000), RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
-
-
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_POSITION_THIS_HERE;
+				int cost = game_do_command(
+					cur_grid_x,
+					flags,
+					cur_grid_y,
+					parameter_2,
+					GAME_COMMAND_PLACE_SCENERY,
+					RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint8) | (parameter_3 & 0xFFFF0000),
+					RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16)
+				);
 				RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
 
 				if (cost != MONEY32_UNDEFINED){
 					window_close_by_class(WC_ERROR);
-					sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
-					success = 1;
+					audio_play_sound_at_location(SOUND_PLACE_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
+					success = true;
 					break;
 				}
 
-				if (RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 827 ||
-					RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 1032){
+				if (
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_NOT_ENOUGH_CASH_REQUIRES ||
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_CAN_ONLY_BUILD_THIS_ON_WATER
+				) {
 					break;
 				}
 
 				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
 			}
 
-			if (!success && !window_scenery_is_build_cluster_tool_on){
-				sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
-				return;
+			if (success) {
+				successfulPlacements++;
+			} else {
+				if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_NOT_ENOUGH_CASH_REQUIRES) {
+					break;
+				}
 			}
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = zCoordinate;
+		}
 
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = cluster_z_coordinate;
+		if (successfulPlacements > 0) {
+			window_close_by_class(WC_ERROR);
+		} else {
+			audio_play_sound_at_location(SOUND_ERROR, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
 		}
 		break;
 	}
-	case 1:
+	case SCENERY_TYPE_PATH_ITEM:
 	{
-		// Path Bits
-		int ebx = parameter_1;
-		ebx &= 0xFF00;
-		ebx |= 0x81;
+		int flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_7 | (parameter_1 & 0xFF00);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
-
-		int cost = game_do_command(grid_x, ebx, grid_y, parameter_2, GAME_COMMAND_PLACE_PATH, parameter_3, 0);
-
-		if (cost == MONEY32_UNDEFINED){
-			return;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_POSITION_THIS_HERE;
+		int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_PATH, parameter_3, 0);
+		if (cost != MONEY32_UNDEFINED) {
+			audio_play_sound_at_location(SOUND_PLACE_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
 		}
-
-		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
 		break;
 	}
-	case 2:
+	case SCENERY_TYPE_WALL:
 	{
-		// Walls
-		uint8 bl = 1;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
-			bl = 20;
+		uint8 zAttemptRange = 1;
+		if (
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0
+		) {
+			zAttemptRange = 20;
 		}
 
-		for (; bl != 0; bl--){
+		for (; zAttemptRange != 0; zAttemptRange--) {
+			int flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
+
 			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
-
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1811;
-
-			int ebx = (parameter_1 & 0xFF00) | 1;
-
-			int cost = game_do_command(grid_x, ebx, grid_y, parameter_2, GAME_COMMAND_41, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16), RCT2_GLOBAL(0x00F64F15, uint16));
-
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
+			int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_FENCE, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16), RCT2_GLOBAL(0x00F64F15, uint16));
 			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
 
 			if (cost != MONEY32_UNDEFINED){
 				window_close_by_class(WC_ERROR);
-				sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+				audio_play_sound_at_location(SOUND_PLACE_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
 				return;
 			}
 
-			if (RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 827 ||
-				RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 1032){
+			if (
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_NOT_ENOUGH_CASH_REQUIRES ||
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_CAN_ONLY_BUILD_THIS_ON_WATER
+			) {
 				break;
 			}
 
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
 		}
 
-		sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+		audio_play_sound_at_location(SOUND_ERROR, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
 		break;
 	}
-	case 3:
+	case SCENERY_TYPE_LARGE:
 	{
-		// Large Scenery
-		uint8 bl = 1;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
-			bl = 20;
+		uint8 zAttemptRange = 1;
+		if (
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0
+		) {
+			zAttemptRange = 20;
 		}
 
-		for (; bl != 0; bl--){
+		for (; zAttemptRange != 0; zAttemptRange--) {
+			int flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
+
 			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
-
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
-
-			int ebx = (parameter_1 & 0xFF00) | 1;
-
-			int cost = game_do_command(grid_x, ebx, grid_y, parameter_2, GAME_COMMAND_PLACE_LARGE_SCENERY, parameter_3, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
-
-
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_POSITION_THIS_HERE;
+			int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_LARGE_SCENERY, parameter_3, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
 			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
 
 			if (cost != MONEY32_UNDEFINED){
 				window_close_by_class(WC_ERROR);
-				sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
+				audio_play_sound_at_location(SOUND_PLACE_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
 				return;
 			}
 
-			if (RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 827 ||
-				RCT2_GLOBAL(0x00141E9AC, rct_string_id) == 1032){
+			if (
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_NOT_ENOUGH_CASH_REQUIRES ||
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_CAN_ONLY_BUILD_THIS_ON_WATER
+			) {
 				break;
 			}
 
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
 		}
 
-		sound_play_panned(SOUND_ERROR, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
-	}
+		audio_play_sound_at_location(SOUND_ERROR, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
 		break;
-	case 4:
+	}
+	case SCENERY_TYPE_BANNER:
 	{
-		// Banners
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1161;
+		int flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
 
-		// The return value will be banner id but the input is colour (param 3)
-		int banner_id = parameter_3;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_POSITION_THIS_HERE;
+		registers regs = {
+			.eax = gridX,
+			.ebx = flags,
+			.ecx = gridY,
+			.edx = parameter_2,
+			.esi = GAME_COMMAND_PLACE_BANNER,
+			.edi = parameter_3
+		};
+		money32 cost = game_do_command_p(GAME_COMMAND_PLACE_BANNER, &regs.eax, &regs.ebx, &regs.ecx, &regs.edx, &regs.esi, &regs.edi, &regs.ebp);
+		if (cost != MONEY32_UNDEFINED) {
+			int bannerId = regs.edi;
 
-		int cost;
-		{
-			int esi = 0, eax = grid_x, ecx = grid_y, edx = parameter_2, ebx = (parameter_1 & 0xFF00) | 1;
-			cost = game_do_command_p(GAME_COMMAND_PLACE_BANNER, &eax, &ebx, &ecx, &edx, &esi, &banner_id, &ebp); 
+			audio_play_sound_at_location(SOUND_PLACE_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
+			window_banner_open(bannerId);
 		}
-
-		if (cost == MONEY32_UNDEFINED)return;
-
-		sound_play_panned(SOUND_PLACE_ITEM, 0x8001, RCT2_GLOBAL(0x009DEA5E, uint16), RCT2_GLOBAL(0x009DEA60, uint16), RCT2_GLOBAL(0x009DEA62, uint16));
-
-		window_banner_open(banner_id);
 		break;
 	}
 	}
@@ -1562,7 +1631,7 @@ void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
 
 	rct_xy16 mapTile = { 0 };
-	sub_688972(x, y, &mapTile.x, &mapTile.y, NULL);
+	screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
 
 	if (mapTile.x == (sint16)0x8000){
 		if (RCT2_GLOBAL(0x00F1AD62, money32) != MONEY32_UNDEFINED){
@@ -1623,13 +1692,11 @@ void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
 	if (!state_changed)
 		return;
 
-	money32 cost = map_clear_scenery(
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16),
-		0
-	);
+	int eax = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16);
+	int ecx = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16);
+	int edi = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16);
+	int ebp = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16);
+	money32 cost = game_do_command(eax, 0, ecx, 0, GAME_COMMAND_CLEAR_SCENERY, edi, ebp);
 
 	if (RCT2_GLOBAL(0x00F1AD62, money32) != cost){
 		RCT2_GLOBAL(0x00F1AD62, money32) = cost;
@@ -1643,7 +1710,7 @@ void top_toolbar_tool_update_land_paint(sint16 x, sint16 y){
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
 
 	rct_xy16 mapTile = { 0 };
-	sub_688972(x, y, &mapTile.x, &mapTile.y, NULL);
+	screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
 
 	if (mapTile.x == (sint16)0x8000){
 		if (RCT2_GLOBAL(0x00F1AD62, money32) != MONEY32_UNDEFINED){
@@ -1719,7 +1786,7 @@ void top_toolbar_tool_update_land(sint16 x, sint16 y){
 		money32 lower_cost = selection_lower_land(0);
 		money32 raise_cost = selection_raise_land(0);
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) != raise_cost || 
+		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) != raise_cost ||
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) != lower_cost){
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) = raise_cost;
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) = lower_cost;
@@ -1732,7 +1799,7 @@ void top_toolbar_tool_update_land(sint16 x, sint16 y){
 	rct_xy16 mapTile = { .x = x, .y = y };
 
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
-	if (tool_size == 1){
+	if (tool_size == 1 && !gLandMountainMode){
 		int direction;
 		screen_pos_to_map_pos(&mapTile.x, &mapTile.y, &direction);
 
@@ -1798,7 +1865,7 @@ void top_toolbar_tool_update_land(sint16 x, sint16 y){
 		return;
 	}
 
-	sub_688972(x, y, &mapTile.x, &mapTile.y, NULL);
+	screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
 
 	if (mapTile.x == (sint16)0x8000){
 		money32 lower_cost = MONEY32_UNDEFINED;
@@ -1825,7 +1892,7 @@ void top_toolbar_tool_update_land(sint16 x, sint16 y){
 		state_changed++;
 	}
 
-	
+
 	if (tool_size == 0)
 		tool_size = 1;
 
@@ -1914,11 +1981,11 @@ void top_toolbar_tool_update_water(sint16 x, sint16 y){
 	rct_xy16 mapTile = { 0 };
 	int interaction_type = 0;
 	get_map_coordinates_from_pos(
-		x, 
-		y, 
-		VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, 
-		&mapTile.x, 
-		&mapTile.y, 
+		x,
+		y,
+		VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER,
+		&mapTile.x,
+		&mapTile.y,
 		&interaction_type,
 		NULL,
 		NULL);
@@ -1943,8 +2010,8 @@ void top_toolbar_tool_update_water(sint16 x, sint16 y){
 		state_changed++;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) != 4){
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) != 5){
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 5;
 		state_changed++;
 	}
 
@@ -2009,7 +2076,7 @@ void top_toolbar_tool_update_water(sint16 x, sint16 y){
 	}
 }
 
-/* rct2: 0x006E24F6 
+/* rct2: 0x006E24F6
  * On failure returns MONEY32_UNDEFINED
  * On success places ghost scenery and returns cost to place proper
  */
@@ -2026,40 +2093,48 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 		// Small Scenery
 		//6e252b
 		cost = game_do_command(
-			map_tile.x, 
+			map_tile.x,
 			parameter_1 | 0x69,
-			map_tile.y, 
-			parameter_2, 
-			GAME_COMMAND_PLACE_SCENERY, 
-			parameter_3, 
-			RCT2_GLOBAL(0x00F64ED4, sint16));
+			map_tile.y,
+			parameter_2,
+			GAME_COMMAND_PLACE_SCENERY,
+			parameter_3,
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
 
 		if (cost == MONEY32_UNDEFINED)
 			return cost;
 
-		RCT2_GLOBAL(0x00F64EC4, sint16) = map_tile.x;
-		RCT2_GLOBAL(0x00F64EC6, sint16) = map_tile.y;
-		RCT2_GLOBAL(0x00F64EC0, uint16) = (uint16)(parameter_3 & 0xFFFF);
-		RCT2_GLOBAL(0x00F64EDA, sint16) = selected_tab;
-		
-		mapElement = RCT2_GLOBAL(0x00F64EBC, rct_map_element*);
-		RCT2_GLOBAL(0x00F64F09, uint8) = mapElement->base_height;
-		RCT2_GLOBAL(0x00F64F0C, uint8) = mapElement->type;
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) = map_tile.x;
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) = map_tile.y;
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint16) = (uint16)(parameter_3 & 0xFFFF);
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_SELECTED_OBJECT, sint16) = selected_tab;
+
+		mapElement = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT, rct_map_element*);
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) = mapElement->base_height;
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT_TYPE, uint8) = mapElement->type;
 		if (RCT2_GLOBAL(0x00F64F14, uint8) & (1 << 1)){
+			//Set underground on
 			viewport_set_visibility(4);
 		}
 		else{
+			//Set underground off
 			viewport_set_visibility(5);
 		}
 
-		RCT2_GLOBAL(0x00F64F0D, uint8) |= (1 << 0);
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) |= (1 << 0);
 		break;
 	case 1:
 		// Path Bits
 		//6e265b
 		cost = game_do_command(
 			map_tile.x,
-			parameter_1 | 0xE9,
+			(parameter_1 & 0xFF00) | (
+				GAME_COMMAND_FLAG_APPLY |
+				GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED |
+				GAME_COMMAND_FLAG_5 |
+				GAME_COMMAND_FLAG_GHOST |
+				GAME_COMMAND_FLAG_7
+			),
 			map_tile.y,
 			parameter_2,
 			GAME_COMMAND_PLACE_PATH,
@@ -2069,14 +2144,14 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 		if (cost == MONEY32_UNDEFINED)
 			return cost;
 
-		RCT2_GLOBAL(0x00F64EC4, sint16) = map_tile.x;
-		RCT2_GLOBAL(0x00F64EC6, sint16) = map_tile.y;
-		RCT2_GLOBAL(0x00F64F09, uint8) = (parameter_2 & 0xFF);
-		RCT2_GLOBAL(0x00F64F0F, uint8) = ((parameter_1 >> 8) & 0xFF);
-		RCT2_GLOBAL(0x00F64F10, uint8) = ((parameter_2 >> 8) & 0xFF);
-		RCT2_GLOBAL(0x00F64EAC, uint32) = parameter_3;
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) = map_tile.x;
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) = map_tile.y;
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) = (parameter_2 & 0xFF);
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TARGET_PATH_INCLINE, uint8) = ((parameter_1 >> 8) & 0xFF);
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TARGET_PATH_TYPE, uint8) = ((parameter_2 >> 8) & 0xFF);
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_PATH_OBJECT_TYPE, uint32) = parameter_3;
 
-		RCT2_GLOBAL(0x00F64F0D, uint8) |= (1 << 1);
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) |= (1 << 1);
 		break;
 	case 2:
 		// Walls
@@ -2086,21 +2161,21 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 			parameter_1 | 0x69,
 			map_tile.y,
 			parameter_2,
-			GAME_COMMAND_41,
-			RCT2_GLOBAL(0x00F64ED4, uint16),
+			GAME_COMMAND_PLACE_FENCE,
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, uint16),
 			RCT2_GLOBAL(0x00F64F15, uint16));
 
 		if (cost == MONEY32_UNDEFINED)
 			return cost;
 
-		RCT2_GLOBAL(0x00F64EC4, sint16) = map_tile.x;
-		RCT2_GLOBAL(0x00F64EC6, sint16) = map_tile.y;
-		RCT2_GLOBAL(0x00F64F11, uint8) = (parameter_2 & 0xFF);
-		
-		mapElement = RCT2_GLOBAL(0x00F64EBC, rct_map_element*);
-		RCT2_GLOBAL(0x00F64F09, uint8) = mapElement->base_height;
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) = map_tile.x;
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) = map_tile.y;
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_WALL_ROTATION, uint8) = (parameter_2 & 0xFF);
 
-		RCT2_GLOBAL(0x00F64F0D, uint8) |= (1 << 2);
+		mapElement = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT, rct_map_element*);
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) = mapElement->base_height;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) |= (1 << 2);
 		break;
 	case 3:
 		// Large Scenery
@@ -2112,26 +2187,28 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 			parameter_2,
 			GAME_COMMAND_PLACE_LARGE_SCENERY,
 			parameter_3,
-			RCT2_GLOBAL(0x00F64ED4, uint16));
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, uint16));
 
 		if (cost == MONEY32_UNDEFINED)
 			return cost;
 
-		RCT2_GLOBAL(0x00F64EC4, sint16) = map_tile.x;
-		RCT2_GLOBAL(0x00F64EC6, sint16) = map_tile.y;
-		RCT2_GLOBAL(0x00F64EC0, uint8) = ((parameter_1 >> 8) & 0xFF);
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) = map_tile.x;
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) = map_tile.y;
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint8) = ((parameter_1 >> 8) & 0xFF);
 
-		mapElement = RCT2_GLOBAL(0x00F64EBC, rct_map_element*);
-		RCT2_GLOBAL(0x00F64F09, uint8) = mapElement->base_height;
+		mapElement = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT, rct_map_element*);
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) = mapElement->base_height;
 
 		if (RCT2_GLOBAL(0x00F64F14, uint8) & (1 << 1)){
+			//Set underground on
 			viewport_set_visibility(4);
 		}
 		else{
+			//Set underground off
 			viewport_set_visibility(5);
 		}
 
-		RCT2_GLOBAL(0x00F64F0D, uint8) |= (1 << 3);
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) |= (1 << 3);
 		break;
 	case 4:
 		// Banners
@@ -2148,11 +2225,11 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 		if (cost == MONEY32_UNDEFINED)
 			return cost;
 
-		RCT2_GLOBAL(0x00F64EC4, sint16) = map_tile.x;
-		RCT2_GLOBAL(0x00F64EC6, sint16) = map_tile.y;
-		RCT2_GLOBAL(0x00F64F09, uint8) = (parameter_2 & 0xFF);
-		RCT2_GLOBAL(0x00F64EC0, uint8) = ((parameter_2 >> 8) & 0xFF);
-		RCT2_GLOBAL(0x00F64F0D, uint8) |= (1 << 4);
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) = map_tile.x;
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) = map_tile.y;
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) = (parameter_2 & 0xFF) * 2 + 2;
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint8) = ((parameter_2 >> 8) & 0xFF);
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) |= (1 << 4);
 		break;
 	}
 
@@ -2190,7 +2267,7 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		scenery_remove_ghost_tool_placement();
 		return;
 	}
-	
+
 	rct_scenery_entry* scenery;
 	uint8 bl;
 	money32 cost;
@@ -2213,13 +2290,13 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		map_invalidate_selection_rect();
 
 		// If no change in ghost placement
-		if ((RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 0)) &&
-			mapTile.x == RCT2_GLOBAL(0x00F64EC4, sint16) &&
-			mapTile.y == RCT2_GLOBAL(0x00F64EC6, sint16) &&
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 0)) &&
+			mapTile.x == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) &&
+			mapTile.y == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) &&
 			(parameter2 & 0xFF) == RCT2_GLOBAL(0x00F64F0E, uint8)&&
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) == RCT2_GLOBAL(0x00F64F0A, sint16) &&
-			RCT2_GLOBAL(0x00F64EDA, uint16) == selected_tab){
-			return;		
+			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_SELECTED_OBJECT, uint16) == selected_tab){
+			return;
 		}
 
 		scenery_remove_ghost_tool_placement();
@@ -2246,7 +2323,7 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
 		}
 
-		RCT2_GLOBAL(0x00F64EB4, money32) = cost;
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_COST, money32) = cost;
 		break;
 	case 1:
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
@@ -2259,10 +2336,10 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		map_invalidate_selection_rect();
 
 		// If no change in ghost placement
-		if ((RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 1)) &&
-			mapTile.x == RCT2_GLOBAL(0x00F64EC4, sint16) &&
-			mapTile.y == RCT2_GLOBAL(0x00F64EC6, sint16) &&
-			(parameter2 & 0xFF) == RCT2_GLOBAL(0x00F64F09, uint8)){
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 1)) &&
+			mapTile.x == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) &&
+			mapTile.y == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) &&
+			(parameter2 & 0xFF) == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8)){
 			return;
 		}
 
@@ -2275,7 +2352,7 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 			parameter3,
 			selected_tab);
 
-		RCT2_GLOBAL(0x00F64EB4, money32) = cost;
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_COST, money32) = cost;
 		break;
 	case 2:
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
@@ -2288,10 +2365,10 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		map_invalidate_selection_rect();
 
 		// If no change in ghost placement
-		if ((RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 2)) &&
-			mapTile.x == RCT2_GLOBAL(0x00F64EC4, sint16) &&
-			mapTile.y == RCT2_GLOBAL(0x00F64EC6, sint16) &&
-			(parameter2 & 0xFF) == RCT2_GLOBAL(0x00F64F11, uint8) &&
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 2)) &&
+			mapTile.x == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) &&
+			mapTile.y == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) &&
+			(parameter2 & 0xFF) == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_WALL_ROTATION, uint8) &&
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) == RCT2_GLOBAL(0x00F64F0A, sint16)
 			){
 			return;
@@ -2299,7 +2376,7 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 
 		scenery_remove_ghost_tool_placement();
 
-		RCT2_GLOBAL(0x00F64F11, uint8) = (parameter2 & 0xFF);
+		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_WALL_ROTATION, uint8) = (parameter2 & 0xFF);
 		RCT2_GLOBAL(0x00F64F0A, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16);
 
 		bl = 1;
@@ -2322,16 +2399,16 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
 		}
 
-		RCT2_GLOBAL(0x00F64EB4, money32) = cost;
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_COST, money32) = cost;
 		break;
 	case 3:
 		scenery = g_largeSceneryEntries[selected_scenery];
 		rct_xy16* selectedTile = gMapSelectionTiles;
 
 		for (rct_large_scenery_tile* tile = scenery->large_scenery.tiles; tile->x_offset != (sint16)0xFFFF; tile++){
-			rct_xy16 tileLocation = { 
-				.x = tile->x_offset, 
-				.y = tile->y_offset 
+			rct_xy16 tileLocation = {
+				.x = tile->x_offset,
+				.y = tile->y_offset
 			};
 
 			rotate_map_coordinates(&tileLocation.x, &tileLocation.y, (parameter1 >> 8) & 0xFF);
@@ -2349,17 +2426,17 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		map_invalidate_map_selection_tiles();
 
 		// If no change in ghost placement
-		if ((RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 3)) &&
-			mapTile.x == RCT2_GLOBAL(0x00F64EC4, sint16) &&
-			mapTile.y == RCT2_GLOBAL(0x00F64EC6, sint16) &&
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 3)) &&
+			mapTile.x == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) &&
+			mapTile.y == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) &&
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) == RCT2_GLOBAL(0x00F64F0A, sint16) &&
-			(parameter3 & 0xFFFF) == RCT2_GLOBAL(0x00F64EDA, uint16)){
+			(parameter3 & 0xFFFF) == RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_SELECTED_OBJECT, uint16)){
 			return;
 		}
 
 		scenery_remove_ghost_tool_placement();
 
-		RCT2_GLOBAL(0x00F64EDA, uint16) = (parameter3 & 0xFFFF);
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_SELECTED_OBJECT, uint16) = (parameter3 & 0xFFFF);
 		RCT2_GLOBAL(0x00F64F0A, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16);
 
 		bl = 1;
@@ -2382,7 +2459,7 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
 		}
 
-		RCT2_GLOBAL(0x00F64EB4, money32) = cost;
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_COST, money32) = cost;
 		break;
 	case 4:
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
@@ -2395,11 +2472,11 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		map_invalidate_selection_rect();
 
 		// If no change in ghost placement
-		if ((RCT2_GLOBAL(0x00F64F0D, uint8) & (1 << 4)) &&
-			mapTile.x == RCT2_GLOBAL(0x00F64EC4, sint16) &&
-			mapTile.y == RCT2_GLOBAL(0x00F64EC6, sint16) &&
-			(parameter2 & 0xFF) == RCT2_GLOBAL(0x00F64F09, uint8) &&
-			((parameter2 >> 8) & 0xFF) == RCT2_GLOBAL(0x00F64EC0, uint8)){
+		if ((RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 4)) &&
+			mapTile.x == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) &&
+			mapTile.y == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) &&
+			(parameter2 & 0xFF) == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) &&
+			((parameter2 >> 8) & 0xFF) == RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint8)){
 			return;
 		}
 
@@ -2412,7 +2489,7 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 			parameter3,
 			selected_tab);
 
-		RCT2_GLOBAL(0x00F64EB4, money32) = cost;
+		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_COST, money32) = cost;
 		break;
 	}
 }
@@ -2421,20 +2498,14 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
  *
  *  rct2: 0x0066CB25
  */
-static void window_top_toolbar_tool_update()
+static void window_top_toolbar_tool_update(rct_window* w, int widgetIndex, int x, int y)
 {
-	short widgetIndex;
-	rct_window *w;
-	short x, y;
-
-	window_tool_get_registers(w, widgetIndex, x, y);
-
-	switch (widgetIndex){
+	switch (widgetIndex) {
 	case WIDX_CLEAR_SCENERY:
 		top_toolbar_tool_update_scenery_clear(x, y);
 		break;
 	case WIDX_LAND:
-		if (LandPaintMode)
+		if (gLandPaintMode)
 			top_toolbar_tool_update_land_paint(x, y);
 		else
 			top_toolbar_tool_update_land(x, y);
@@ -2451,25 +2522,20 @@ static void window_top_toolbar_tool_update()
 /**
  * rct2: 0x0066CB73
  */
-static void window_top_toolbar_tool_down(){
-	short widgetIndex;
-	rct_window* w;
-	short x, y;
-
-	window_tool_get_registers(w, widgetIndex, x, y);
-
+static void window_top_toolbar_tool_down(rct_window* w, int widgetIndex, int x, int y)
+{
 	switch (widgetIndex){
 	case WIDX_CLEAR_SCENERY:
 		if (!RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0))
 			break;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 3438;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
 
 		game_do_command(
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 			1,
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
-			0,
+			(gClearSmallScenery | gClearLargeScenery << 1 | gClearFootpath << 2),
 			GAME_COMMAND_CLEAR_SCENERY,
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
@@ -2478,7 +2544,7 @@ static void window_top_toolbar_tool_down(){
 		break;
 	case WIDX_LAND:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16)&(1 << 0)){
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1387;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_CHANGE_LAND_TYPE;
 			game_do_command(
 				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 				1,
@@ -2503,7 +2569,7 @@ static void window_top_toolbar_tool_down(){
 }
 
 /**
-*  
+*
 *  rct2: 0x006644DD
 */
 money32 selection_raise_land(uint8 flags)
@@ -2516,8 +2582,8 @@ money32 selection_raise_land(uint8 flags)
 	uint32 xBounds = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) & 0xFFFF) | (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) << 16);
 	uint32 yBounds = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) & 0xFFFF) | (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) << 16);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_RAISE_LAND_HERE;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) == 0) {
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_RAISE_LAND_HERE;
+	if (gLandMountainMode) {
 		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_EDIT_LAND_SMOOTH, 1, yBounds);
 	} else {
 		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_RAISE_LAND, RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16), yBounds);
@@ -2538,8 +2604,8 @@ money32 selection_lower_land(uint8 flags)
 	uint32 xBounds = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) & 0xFFFF) | (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) << 16);
 	uint32 yBounds = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) & 0xFFFF) | (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) << 16);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_LOWER_LAND_HERE;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) == 0) {
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_LOWER_LAND_HERE;
+	if (gLandMountainMode) {
 		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_EDIT_LAND_SMOOTH, 0xFFFF, yBounds);
 	} else {
 		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_LOWER_LAND, RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16), yBounds);
@@ -2618,7 +2684,7 @@ void window_top_toolbar_water_tool_drag(short x, short y)
 	if (y <= dx) {
 		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) += dx;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_RAISE_WATER_LEVEL_HERE;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_RAISE_WATER_LEVEL_HERE;
 
 		game_do_command(
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
@@ -2640,7 +2706,7 @@ void window_top_toolbar_water_tool_drag(short x, short y)
 	if (y >= dx) {
 		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) += dx;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = STR_CANT_LOWER_WATER_LEVEL_HERE;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_LOWER_WATER_LEVEL_HERE;
 
 		game_do_command(
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
@@ -2662,14 +2728,8 @@ void window_top_toolbar_water_tool_drag(short x, short y)
  *
  *  rct2: 0x0066CB4E
  */
-static void window_top_toolbar_tool_drag()
+static void window_top_toolbar_tool_drag(rct_window* w, int widgetIndex, int x, int y)
 {
-	short widgetIndex;
-	rct_window *w;
-	short x, y;
-
-	window_tool_get_registers(w, widgetIndex, x, y);
-
 	switch (widgetIndex){
 	case WIDX_CLEAR_SCENERY:
 		if (window_find_by_class(WC_ERROR) != NULL)
@@ -2678,13 +2738,13 @@ static void window_top_toolbar_tool_drag()
 		if (!RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0))
 			break;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 3438;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
 
 		game_do_command(
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 			1,
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
-			0,
+			(gClearSmallScenery | gClearLargeScenery << 1 | gClearFootpath << 2),
 			GAME_COMMAND_CLEAR_SCENERY,
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
@@ -2693,9 +2753,9 @@ static void window_top_toolbar_tool_drag()
 		break;
 	case WIDX_LAND:
 		// Custom setting to only change land style instead of raising or lowering land
-		if (LandPaintMode) {
+		if (gLandPaintMode) {
 			if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16)&(1 << 0)){
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_STRING_ID, rct_string_id) = 1387;
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_CHANGE_LAND_TYPE;
 				game_do_command(
 					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 					1,
@@ -2722,6 +2782,45 @@ static void window_top_toolbar_tool_drag()
 	}
 }
 
+/**
+ *
+ *  rct2: 0x0066CC5B
+ */
+static void window_top_toolbar_tool_up(rct_window* w, int widgetIndex, int x, int y)
+{
+	switch (widgetIndex) {
+	case WIDX_LAND:
+		map_invalidate_selection_rect();
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= 0xFFFE;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x12;
+		break;
+	case WIDX_WATER:
+		map_invalidate_selection_rect();
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= 0xFFFE;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x13;
+		break;
+	case WIDX_CLEAR_SCENERY:
+		map_invalidate_selection_rect();
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= 0xFFFE;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x0C;
+		break;
+	}
+}
+
+/**
+ *
+ *  rct2: 0x0066CA58
+ */
+static void window_top_toolbar_tool_abort(rct_window *w, int widgetIndex)
+{
+	switch (widgetIndex) {
+	case WIDX_LAND:
+	case WIDX_WATER:
+	case WIDX_CLEAR_SCENERY:
+		hide_gridlines();
+		break;
+	}
+}
 
 void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget) {
 	int num_items = 4;
@@ -2740,7 +2839,7 @@ void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget) {
 	gDropdownItemsArgs[1] = 5143;
 	gDropdownItemsArgs[2] = 5144;
 	gDropdownItemsArgs[3] = 5145;
-	
+
 
 	window_dropdown_show_text(
 		w->x + widget->left,
@@ -2752,10 +2851,12 @@ void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget) {
 		);
 
 	// Set checkmarks
-	if (gGameSpeed <= 4)
-		gDropdownItemsChecked |= (1 << (gGameSpeed - 1));
-	if (gGameSpeed == 8)
-		gDropdownItemsChecked |= (1 << 5);
+	if (gGameSpeed <= 4) {
+		dropdown_set_checked(gGameSpeed - 1, true);
+	}
+	if (gGameSpeed == 8) {
+		dropdown_set_checked(5, true);
+	}
 
 	if (gConfigGeneral.debugging_tools)
 		RCT2_GLOBAL(0x9DEBA2, uint16) = (gGameSpeed == 8 ? 0 : gGameSpeed);
@@ -2776,9 +2877,9 @@ void top_toolbar_fastforward_menu_dropdown(short dropdownIndex) {
 	}
 }
 
-void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget) {
-	gDropdownItemsFormat[0] = STR_DEBUG_DROPDOWN_CONSOLE;
-	gDropdownItemsFormat[1] = STR_DEBUG_DROPDOWN_TILE_INSPECTOR;
+void top_toolbar_init_rotate_menu(rct_window* w, rct_widget* widget) {
+	gDropdownItemsFormat[0] = STR_ROTATE_CLOCKWISE;
+	gDropdownItemsFormat[1] = STR_ROTATE_ANTI_CLOCKWISE;
 
 	window_dropdown_show_text(
 		w->x + widget->left,
@@ -2787,6 +2888,55 @@ void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget) {
 		w->colours[1] | 0x80,
 		0,
 		2
+		);
+
+	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
+}
+
+void top_toolbar_rotate_menu_dropdown(short dropdownIndex) {
+	if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+	rct_window* w = window_get_main();
+	if (w) {
+		if (dropdownIndex == 0) {
+			window_rotate_camera(w, 1);
+			window_invalidate(w);
+		}
+		else if (dropdownIndex == 1){
+			window_rotate_camera(w, -1);
+			window_invalidate(w);
+		}
+	}
+}
+
+void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget) {
+	gDropdownItemsFormat[0] = STR_DEBUG_DROPDOWN_CONSOLE;
+	gDropdownItemsFormat[1] = STR_DEBUG_DROPDOWN_TILE_INSPECTOR;
+	gDropdownItemsFormat[2] = STR_DEBUG_DROPDOWN_OBJECT_SELECTION;
+	gDropdownItemsFormat[3] = STR_DEBUG_DROPDOWN_INVENTIONS_LIST;
+	gDropdownItemsFormat[4] = STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS;
+
+	window_dropdown_show_text(
+		w->x + widget->left,
+		w->y + widget->top,
+		widget->bottom - widget->top + 1,
+		w->colours[0] | 0x80,
+		0,
+		5
+	);
+
+	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
+}
+
+void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget) {
+	gDropdownItemsFormat[0] = STR_PLAYER_LIST;
+
+	window_dropdown_show_text(
+		w->x + widget->left,
+		w->y + widget->top,
+		widget->bottom - widget->top + 1,
+		w->colours[0] | 0x80,
+		0,
+		1
 	);
 
 	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
@@ -2802,6 +2952,28 @@ void top_toolbar_debug_menu_dropdown(short dropdownIndex) {
 			break;
 		case DDIDX_TILE_INSPECTOR:
 			window_tile_inspector_open();
+			break;
+		case DDIDX_OBJECT_SELECTION:
+			window_close_all();
+			window_editor_object_selection_open();
+			break;
+		case DDIDX_INVENTIONS_LIST:
+			window_editor_inventions_list_open();
+			break;
+		case DDIDX_SCENARIO_OPTIONS:
+			window_editor_scenario_options_open();
+			break;
+		}
+	}
+}
+
+void top_toolbar_network_menu_dropdown(short dropdownIndex) {
+	if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+	rct_window* w = window_get_main();
+	if (w) {
+		switch (dropdownIndex) {
+		case DDIDX_PLAYER_LIST:
+			window_player_list_open();
 			break;
 		}
 	}
@@ -2848,25 +3020,25 @@ void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
 	// Set checkmarks
 	rct_viewport* mainViewport = window_get_main()->viewport;
 	if (mainViewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-		gDropdownItemsChecked |= (1 << 0);
+		dropdown_set_checked(0, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_HIDE_BASE)
-		gDropdownItemsChecked |= (1 << 1);
+		dropdown_set_checked(1, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_HIDE_VERTICAL)
-		gDropdownItemsChecked |= (1 << 2);
+		dropdown_set_checked(2, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
-		gDropdownItemsChecked |= (1 << 4);
+		dropdown_set_checked(4, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
-		gDropdownItemsChecked |= (1 << 5);
+		dropdown_set_checked(5, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
-		gDropdownItemsChecked |= (1 << 6);
+		dropdown_set_checked(6, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
-		gDropdownItemsChecked |= (1 << 7);
+		dropdown_set_checked(7, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_LAND_HEIGHTS)
-		gDropdownItemsChecked |= (1 << 9);
+		dropdown_set_checked(9, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_TRACK_HEIGHTS)
-		gDropdownItemsChecked |= (1 << 10);
+		dropdown_set_checked(10, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_PATH_HEIGHTS)
-		gDropdownItemsChecked |= (1 << 11);
+		dropdown_set_checked(11, true);
 
 	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
 }
@@ -2980,4 +3152,19 @@ void toggle_water_window(rct_window *topToolbar, int widgetIndex)
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 		window_water_open();
 	}
+}
+
+/**
+ *
+ *  rct2: 0x0066D104
+ */
+bool land_tool_is_active()
+{
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE))
+		return false;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_TOP_TOOLBAR)
+		return false;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, sint16) != WIDX_LAND)
+		return false;
+	return true;
 }

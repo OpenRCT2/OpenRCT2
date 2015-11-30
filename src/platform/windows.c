@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -21,20 +21,25 @@
 #ifdef _WIN32
 
 #include <windows.h>
+#include <psapi.h>
 #include <shlobj.h>
 #include <SDL_syswm.h>
+#include <sys/stat.h>
 #include "../addresses.h"
 #include "../cmdline.h"
 #include "../openrct2.h"
 #include "../localisation/language.h"
 #include "../localisation/currency.h"
+#include "../util/util.h"
 #include "../config.h"
 #include "platform.h"
 
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
 
-LPSTR *CommandLineToArgvA(LPSTR lpCmdLine, int *argc);
+utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
+
+utf8 **windows_get_command_line_args(int *outNumArgs);
 
 /**
  * Windows entry point to OpenRCT2 without a console window.
@@ -72,16 +77,63 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE) = hInstance;
 	RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, LPSTR) = lpCmdLine;
 
-	// Get command line arguments in standard form
-	argv = CommandLineToArgvA(lpCmdLine, &argc);
-	runGame = cmdline_run(argv, argc);
-	GlobalFree(argv);
+	// argv = CommandLineToArgvA(lpCmdLine, &argc);
+	argv = (char**)windows_get_command_line_args(&argc);
+	runGame = cmdline_run((const char **)argv, argc);
 
-	if (runGame)
+	// Free argv
+	for (int i = 0; i < argc; i++) {
+		free(argv[i]);
+	}
+	free(argv);
+
+	if (runGame) {
 		openrct2_launch();
+	}
 
 	exit(gExitCode);
 	return gExitCode;
+}
+
+utf8 **windows_get_command_line_args(int *outNumArgs)
+{
+	int argc;
+
+	// Get command line arguments as widechar
+	LPWSTR commandLine = GetCommandLineW();
+	LPWSTR *argvW = CommandLineToArgvW(commandLine, &argc);
+
+	// Convert to UTF-8
+	utf8 **argvUtf8 = (utf8**)malloc(argc * sizeof(utf8*));
+	for (int i = 0; i < argc; i++) {
+		argvUtf8[i] = widechar_to_utf8(argvW[i]);
+	}
+	LocalFree(argvW);
+
+	*outNumArgs = argc;
+	return argvUtf8;
+}
+
+void platform_get_date(rct2_date *out_date)
+{
+	assert(out_date != NULL);
+	SYSTEMTIME systime;
+
+	GetSystemTime(&systime);
+	out_date->day = systime.wDay;
+	out_date->month = systime.wMonth;
+	out_date->year = systime.wYear;
+	out_date->day_of_week = systime.wDayOfWeek;
+}
+
+void platform_get_time(rct2_time *out_time)
+{
+	assert(out_time != NULL);
+	SYSTEMTIME systime;
+	GetLocalTime(&systime);
+	out_time->hour = systime.wHour;
+	out_time->minute = systime.wMinute;
+	out_time->second = systime.wSecond;
 }
 
 char platform_get_path_separator()
@@ -89,26 +141,68 @@ char platform_get_path_separator()
 	return '\\';
 }
 
-int platform_file_exists(const char *path)
+bool platform_file_exists(const utf8 *path)
 {
-	return !(GetFileAttributes(path) == INVALID_FILE_ATTRIBUTES && GetLastError() == ERROR_FILE_NOT_FOUND);
+	wchar_t *wPath = utf8_to_widechar(path);
+	DWORD result = GetFileAttributesW(wPath);
+	DWORD error = GetLastError();
+	free(wPath);
+	return !(result == INVALID_FILE_ATTRIBUTES && (error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND));
 }
 
-int platform_directory_exists(const char *path)
+bool platform_directory_exists(const utf8 *path)
 {
-	DWORD dwAttrib = GetFileAttributes(path);
+	wchar_t *wPath = utf8_to_widechar(path);
+	DWORD dwAttrib = GetFileAttributesW(wPath);
+	free(wPath);
 	return dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
 }
 
-int platform_ensure_directory_exists(const char *path)
+bool platform_original_game_data_exists(const utf8 *path)
+{
+	utf8 checkPath[MAX_PATH];
+	sprintf(checkPath, "%s%c%s%c%s", path, platform_get_path_separator(), "Data", platform_get_path_separator(), "g1.dat");
+	return platform_file_exists(checkPath);
+}
+
+bool platform_ensure_directory_exists(const utf8 *path)
 {
 	if (platform_directory_exists(path))
 		return 1;
 
-	return CreateDirectory(path, NULL);
+	wchar_t *wPath = utf8_to_widechar(path);
+	BOOL success = CreateDirectoryW(wPath, NULL);
+	free(wPath);
+	return success == TRUE;
 }
 
-int platform_lock_single_instance()
+bool platform_directory_delete(const utf8 *path)
+{
+	wchar_t pszFrom[MAX_PATH];
+
+	wchar_t *wPath = utf8_to_widechar(path);
+	wcsncpy(pszFrom, wPath, MAX_PATH);
+	free(wPath);
+
+	// Needs to be double-null terminated for some weird reason
+	pszFrom[wcslen(wPath) + 1] = 0;
+
+	SHFILEOPSTRUCTW fileop;
+	fileop.hwnd   = NULL;    // no status display
+	fileop.wFunc  = FO_DELETE;  // delete operation
+	fileop.pFrom  = pszFrom;  // source file name as double null terminated string
+	fileop.pTo    = NULL;    // no destination needed
+	fileop.fFlags = FOF_NOCONFIRMATION | FOF_SILENT;  // do not prompt the user
+
+	fileop.fAnyOperationsAborted = FALSE;
+	fileop.lpszProgressTitle     = NULL;
+	fileop.hNameMappings         = NULL;
+
+	int ret = SHFileOperationW(&fileop);
+	return (ret == 0);
+}
+
+bool platform_lock_single_instance()
 {
 	HANDLE mutex, status;
 
@@ -120,67 +214,74 @@ int platform_lock_single_instance()
 		if (status == NULL)
 			log_error("unable to create mutex\n");
 
-		return 1;
+		return true;
 	} else {
 		// Already running
 		CloseHandle(mutex);
-		return 0;
+		return false;
 	}
 }
 
 typedef struct {
-	char active;
-	char pattern[MAX_PATH];
+	bool active;
+	wchar_t pattern[MAX_PATH];
 	HANDLE handle;
-	WIN32_FIND_DATAA data;
+	WIN32_FIND_DATAW data;
+	utf8 *outFilename;
 } enumerate_file_info;
 static enumerate_file_info _enumerateFileInfoList[8] = { 0 };
 
-int platform_enumerate_files_begin(const char *pattern)
+int platform_enumerate_files_begin(const utf8 *pattern)
 {
 	int i;
 	enumerate_file_info *enumFileInfo;
 
+	wchar_t *wPattern = utf8_to_widechar(pattern);
+
 	for (i = 0; i < countof(_enumerateFileInfoList); i++) {
 		enumFileInfo = &_enumerateFileInfoList[i];
 		if (!enumFileInfo->active) {
-			strncpy(enumFileInfo->pattern, pattern, MAX_PATH);
+			wcsncpy(enumFileInfo->pattern, wPattern, MAX_PATH);
 			enumFileInfo->handle = NULL;
-			enumFileInfo->active = 1;
+			enumFileInfo->active = true;
+			enumFileInfo->outFilename = NULL;
+
+			free(wPattern);
 			return i;
 		}
 	}
 
+	free(wPattern);
 	return INVALID_HANDLE;
 }
 
-int platform_enumerate_files_next(int handle, file_info *outFileInfo)
+bool platform_enumerate_files_next(int handle, file_info *outFileInfo)
 {
-	int result;
+	bool result;
 	enumerate_file_info *enumFileInfo;
 	HANDLE findFileHandle;
 
 	enumFileInfo = &_enumerateFileInfoList[handle];
 
 	if (enumFileInfo->handle == NULL) {
-		findFileHandle = FindFirstFile(enumFileInfo->pattern, &enumFileInfo->data);
+		findFileHandle = FindFirstFileW(enumFileInfo->pattern, &enumFileInfo->data);
 		if (findFileHandle != INVALID_HANDLE_VALUE) {
 			enumFileInfo->handle = findFileHandle;
-			result = 1;
+			result = true;
 		} else {
-			result = 0;
+			result = false;
 		}
 	} else {
-		result = FindNextFile(enumFileInfo->handle, &enumFileInfo->data);
+		result = FindNextFileW(enumFileInfo->handle, &enumFileInfo->data);
 	}
 
 	if (result) {
-		outFileInfo->path = enumFileInfo->data.cFileName;
+		outFileInfo->path = enumFileInfo->outFilename = widechar_to_utf8(enumFileInfo->data.cFileName);
 		outFileInfo->size = ((uint64)enumFileInfo->data.nFileSizeHigh << 32ULL) | (uint64)enumFileInfo->data.nFileSizeLow;
 		outFileInfo->last_modified = ((uint64)enumFileInfo->data.ftLastWriteTime.dwHighDateTime << 32ULL) | (uint64)enumFileInfo->data.ftLastWriteTime.dwLowDateTime;
-		return 1;
+		return true;
 	} else {
-		return 0;
+		return false;
 	}
 }
 
@@ -193,32 +294,39 @@ void platform_enumerate_files_end(int handle)
 		FindClose(enumFileInfo->handle);
 		enumFileInfo->handle = NULL;
 	}
-	enumFileInfo->active = 0;
+	enumFileInfo->active = false;
+	SafeFree(enumFileInfo->outFilename);
 }
 
-int platform_enumerate_directories_begin(const char *directory)
+int platform_enumerate_directories_begin(const utf8 *directory)
 {
 	int i;
 	enumerate_file_info *enumFileInfo;
 
-	if (strlen(directory) + 3 >= MAX_PATH)
+	wchar_t *wDirectory = utf8_to_widechar(directory);
+
+	if (wcslen(wDirectory) + 3 >= MAX_PATH)
 		return INVALID_HANDLE;
 
 	for (i = 0; i < countof(_enumerateFileInfoList); i++) {
 		enumFileInfo = &_enumerateFileInfoList[i];
 		if (!enumFileInfo->active) {
-			strncpy(enumFileInfo->pattern, directory, MAX_PATH);
-			strncat(enumFileInfo->pattern, "*", MAX_PATH);
+			wcsncpy(enumFileInfo->pattern, wDirectory, MAX_PATH);
+			wcsncat(enumFileInfo->pattern, L"*", MAX_PATH);
 			enumFileInfo->handle = NULL;
-			enumFileInfo->active = 1;
+			enumFileInfo->active = true;
+			enumFileInfo->outFilename = NULL;
+
+			free(wDirectory);
 			return i;
 		}
 	}
 
+	free(wDirectory);
 	return INVALID_HANDLE;
 }
 
-int platform_enumerate_directories_next(int handle, char *path)
+bool platform_enumerate_directories_next(int handle, utf8 *path)
 {
 	enumerate_file_info *enumFileInfo;
 	HANDLE fileHandle;
@@ -226,31 +334,32 @@ int platform_enumerate_directories_next(int handle, char *path)
 	enumFileInfo = &_enumerateFileInfoList[handle];
 
 	if (enumFileInfo->handle == NULL) {
-		fileHandle = FindFirstFile(enumFileInfo->pattern, &enumFileInfo->data);
+		fileHandle = FindFirstFileW(enumFileInfo->pattern, &enumFileInfo->data);
 		if (fileHandle != 0) {
 			enumFileInfo->handle = fileHandle;
 		} else {
-			return 0;
+			return false;
 		}
 	} else {
-		if (!FindNextFile(enumFileInfo->handle, &enumFileInfo->data)) {
-			return 0;
+		if (!FindNextFileW(enumFileInfo->handle, &enumFileInfo->data)) {
+			return false;
 		}
 	}
 
 	while (
-		(enumFileInfo->data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0 
-		|| strchr(enumFileInfo->data.cFileName, '.') != NULL
+		(enumFileInfo->data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0 ||
+		wcschr(enumFileInfo->data.cFileName, '.') != NULL
 	) {
-		if (!FindNextFile(enumFileInfo->handle, &enumFileInfo->data)) {
-			return 0;
+		if (!FindNextFileW(enumFileInfo->handle, &enumFileInfo->data)) {
+			return false;
 		}
 	}
-	
-	memset(path, '\0', MAX_PATH);
-	strncpy(path, enumFileInfo->data.cFileName, MAX_PATH);
+
+	utf8 *filename = widechar_to_utf8(enumFileInfo->data.cFileName);
+	strncpy(path, filename, MAX_PATH);
 	strncat(path, "\\", MAX_PATH);
-	return 1;
+	free(filename);
+	return true;
 }
 
 void platform_enumerate_directories_end(int handle)
@@ -262,71 +371,93 @@ void platform_enumerate_directories_end(int handle)
 		FindClose(enumFileInfo->handle);
 		enumFileInfo->handle = NULL;
 	}
-	enumFileInfo->active = 0;
+	enumFileInfo->active = false;
 }
 
-int platform_file_copy(const char *srcPath, const char *dstPath)
+int platform_get_drives()
 {
-	return CopyFileA(srcPath, dstPath, TRUE);
+	return GetLogicalDrives();
 }
 
-int platform_file_move(const char *srcPath, const char *dstPath)
+bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite)
 {
-	return MoveFileA(srcPath, dstPath);
+	wchar_t *wSrcPath = utf8_to_widechar(srcPath);
+	wchar_t *wDstPath = utf8_to_widechar(dstPath);
+	BOOL success = CopyFileW(wSrcPath, wDstPath, overwrite ? FALSE : TRUE);
+	free(wSrcPath);
+	free(wDstPath);
+	return success == TRUE;
 }
 
-int platform_file_delete(const char *path)
+bool platform_file_move(const utf8 *srcPath, const utf8 *dstPath)
 {
-	return DeleteFileA(path);
+	wchar_t *wSrcPath = utf8_to_widechar(srcPath);
+	wchar_t *wDstPath = utf8_to_widechar(dstPath);
+	BOOL success = MoveFileW(wSrcPath, wDstPath);
+	free(wSrcPath);
+	free(wDstPath);
+	return success == TRUE;
 }
 
-void platform_hide_cursor()
+bool platform_file_delete(const utf8 *path)
 {
-	ShowCursor(FALSE);
+	wchar_t *wPath = utf8_to_widechar(path);
+	BOOL success = DeleteFileW(wPath);
+	free(wPath);
+	return success == TRUE;
 }
 
-void platform_show_cursor()
+/**
+ * Default directory fallback is:
+ *   - (command line argument)
+ *   - C:\Users\%USERNAME%\OpenRCT2 (as from SHGetFolderPathW)
+ */
+void platform_resolve_user_data_path()
 {
-	ShowCursor(TRUE);
-}
+	wchar_t wOutPath[MAX_PATH];
+	const char separator[2] = { platform_get_path_separator(), 0 };
 
-void platform_get_cursor_position(int *x, int *y)
-{
-	POINT point;
+	if (gCustomUserDataPath[0] != 0) {
+		wchar_t *customUserDataPathW = utf8_to_widechar(gCustomUserDataPath);
+		if (GetFullPathNameW(customUserDataPathW, countof(wOutPath), wOutPath, NULL) == 0) {
+			log_fatal("Unable to resolve path '%s'.", gCustomUserDataPath);
+			exit(-1);
+		}
+		utf8 *outPathTemp = widechar_to_utf8(wOutPath);
+		safe_strncpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
+		free(outPathTemp);
+		free(customUserDataPathW);
+		
+		// Ensure path ends with separator
+		int len = strlen(_userDataDirectoryPath);
+		if (_userDataDirectoryPath[len - 1] != separator[0]) {
+			strcat(_userDataDirectoryPath, separator);
+		}
+		return;
+	}
 
-	if (GetCursorPos(&point)) {
-		*x = point.x;
-		*y = point.y;
+	if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, wOutPath))) {
+		utf8 *outPathTemp = widechar_to_utf8(wOutPath);
+		safe_strncpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
+		free(outPathTemp);
+
+		strcat(_userDataDirectoryPath, separator);
+		strcat(_userDataDirectoryPath, "OpenRCT2");
+		strcat(_userDataDirectoryPath, separator);
 	} else {
-		*x = INT32_MIN;
-		*y = INT32_MIN;
+		log_fatal("Unable to resolve user data path.");
+		exit(-1);
 	}
 }
 
-void platform_set_cursor_position(int x, int y)
+void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
 {
-	SetCursorPos(x, y);
-}
+	const char separator[2] = { platform_get_path_separator(), 0 };
 
-unsigned int platform_get_ticks()
-{
-	return GetTickCount();
-}
-
-void platform_get_user_directory(char *outPath, const char *subDirectory)
-{
-	char seperator[2] = { platform_get_path_separator(), 0 };
-
-	if (SUCCEEDED(SHGetFolderPathA(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, outPath))) {
-		strcat(outPath, seperator);
-		strcat(outPath, "OpenRCT2");
-		strcat(outPath, seperator);
-		if (subDirectory != NULL && subDirectory[0] != 0) {
-			strcat(outPath, subDirectory);
-			strcat(outPath, seperator);
-		}
-	} else {
-		outPath[0] = 0;
+	strcpy(outPath, _userDataDirectoryPath);
+	if (subDirectory != NULL && subDirectory[0] != 0) {
+		strcat(outPath, subDirectory);
+		strcat(outPath, separator);
 	}
 }
 
@@ -336,48 +467,57 @@ void platform_show_messagebox(char *message)
 }
 
 /**
- * 
+ *
  *  rct2: 0x004080EA
  */
-int platform_open_common_file_dialog(int type, char *title, char *filename, char *filterPattern, char *filterName)
+int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName)
 {
-	char initialDirectory[MAX_PATH], *dotAddress, *slashAddress;
-	OPENFILENAME openFileName;
+	wchar_t wctitle[256], wcfilename[MAX_PATH], wcfilterPattern[256], wcfilterName[256];
+	wchar_t initialDirectory[MAX_PATH], *dotAddress, *slashAddress;
+	OPENFILENAMEW openFileName;
 	BOOL result;
 	int tmp;
 	DWORD commonFlags;
 
+	MultiByteToWideChar(CP_UTF8, 0, title, -1, wctitle, countof(wctitle));
+	MultiByteToWideChar(CP_UTF8, 0, filename, -1, wcfilename, countof(wcfilename));
+	MultiByteToWideChar(CP_UTF8, 0, filterPattern, -1, wcfilterPattern, countof(wcfilterPattern));
+	MultiByteToWideChar(CP_UTF8, 0, filterName, -1, wcfilterName, countof(wcfilterName));
+
 	// Get directory path from given filename
-	strcpy(initialDirectory, filename);
-	dotAddress = strrchr(initialDirectory, '.');
+	lstrcpyW(initialDirectory, wcfilename);
+	dotAddress = wcsrchr(initialDirectory, '.');
 	if (dotAddress != NULL) {
-		slashAddress = strrchr(initialDirectory, '\\');
+		slashAddress = wcsrchr(initialDirectory, '\\');
 		if (slashAddress < dotAddress)
 			*(slashAddress + 1) = 0;
 	}
 
 	// Clear filename
 	if (type != 0)
-	*filename = 0;
+	wcfilename[0] = 0;
 
 	// Set open file name options
-	memset(&openFileName, 0, sizeof(OPENFILENAME));
-	openFileName.lStructSize = sizeof(OPENFILENAME);
+	memset(&openFileName, 0, sizeof(OPENFILENAMEW));
+	openFileName.lStructSize = sizeof(OPENFILENAMEW);
 	openFileName.hwndOwner = windows_get_window_handle();
-	openFileName.lpstrFile = filename;
+	openFileName.lpstrFile = wcfilename;
 	openFileName.nMaxFile = MAX_PATH;
 	openFileName.lpstrInitialDir = initialDirectory;
-	openFileName.lpstrTitle = title;
+	openFileName.lpstrTitle = wctitle;
 
 	// Copy filter name
-	strcpy((char*)0x01423800, filterName);
+	lstrcpyW((wchar_t*)0x01423800, wcfilterName);
 
 	// Copy filter pattern
-	strcpy((char*)0x01423800 + strlen(filterName) + 1, filterPattern);
-	*((char*)(0x01423800 + strlen(filterName) + 1 + strlen(filterPattern) + 1)) = 0;
-	openFileName.lpstrFilter = (char*)0x01423800;
+	int wcfilterNameLength = lstrlenW(wcfilterName);
+	int wcfilterPatternLength = lstrlenW(wcfilterPattern);
 
-	// 
+	lstrcpyW((wchar_t*)0x01423800 + wcfilterNameLength + 1, wcfilterPattern);
+	*((wchar_t*)((wchar_t*)0x01423800 + wcfilterNameLength + 1 + wcfilterPatternLength + 1)) = 0;
+	openFileName.lpstrFilter = (wchar_t*)0x01423800;
+
+	//
 	tmp = RCT2_GLOBAL(0x009E2C74, uint32);
 	if (RCT2_GLOBAL(0x009E2BB8, uint32) == 2 && RCT2_GLOBAL(0x009E1AF8, uint32) == 1)
 		RCT2_GLOBAL(0x009E2C74, uint32) = 1;
@@ -386,24 +526,28 @@ int platform_open_common_file_dialog(int type, char *title, char *filename, char
 	commonFlags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
 	if (type == 0) {
 		openFileName.Flags = commonFlags | OFN_CREATEPROMPT | OFN_OVERWRITEPROMPT;
-		result = GetSaveFileName(&openFileName);
+		result = GetSaveFileNameW(&openFileName);
 	} else if (type == 1) {
 		openFileName.Flags = commonFlags | OFN_NONETWORKBUTTON | OFN_FILEMUSTEXIST;
-		result = GetOpenFileName(&openFileName);
+		result = GetOpenFileNameW(&openFileName);
 	}
 
-	// 
+	//
 	RCT2_GLOBAL(0x009E2C74, uint32) = tmp;
+
+	WideCharToMultiByte(CP_UTF8, 0, wcfilename, countof(wcfilename), filename, MAX_PATH, NULL, NULL);
 
 	return result;
 }
 
-char *platform_open_directory_browser(char *title)
+utf8 *platform_open_directory_browser(utf8 *title)
 {
-	BROWSEINFO bi;
-	char pszBuffer[MAX_PATH];
+	BROWSEINFOW bi;
+	wchar_t pszBuffer[MAX_PATH], wctitle[256];
 	LPITEMIDLIST pidl;
 	LPMALLOC lpMalloc;
+
+	MultiByteToWideChar(CP_UTF8, 0, title, -1, wctitle, countof(wctitle));
 
 	// Initialize COM
 	if (FAILED(CoInitializeEx(0, COINIT_APARTMENTTHREADED))) {
@@ -424,19 +568,20 @@ char *platform_open_directory_browser(char *title)
 	bi.hwndOwner = NULL;
 	bi.pidlRoot = NULL;
 	bi.pszDisplayName = pszBuffer;
-	bi.lpszTitle = title;
+	bi.lpszTitle = wctitle;
 	bi.ulFlags = BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 	bi.lpfn = NULL;
 	bi.lParam = 0;
 
-	char *outPath = NULL;
+	utf8 *outPath = NULL;
 
-	if (pidl = SHBrowseForFolder(&bi)) {
+	if (pidl = SHBrowseForFolderW(&bi)) {
 		// Copy the path directory to the buffer
-		if (SHGetPathFromIDList(pidl, pszBuffer)) {
+		if (SHGetPathFromIDListW(pidl, pszBuffer)) {
 			// Store pszBuffer (and the path) in the outPath
-			outPath = (char*) malloc(strlen(pszBuffer)+1);
-			strcpy(outPath, pszBuffer);
+			int outPathCapacity = lstrlenW(pszBuffer) * 4 + 1;
+			outPath = (utf8*)malloc(outPathCapacity);
+			WideCharToMultiByte(CP_UTF8, 0, pszBuffer, countof(pszBuffer), outPath, outPathCapacity, NULL, NULL);
 		}
 	}
 	CoUninitialize();
@@ -444,7 +589,7 @@ char *platform_open_directory_browser(char *title)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00407978
  */
 int windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset)
@@ -458,7 +603,7 @@ int windows_get_registry_install_info(rct2_install_info *installInfo, char *sour
 	strcat(subkeyInfogrames, source);
 	strcpy(subkeyFishTechGroup, "Software\\Fish Technology Group\\");
 	strcat(subkeyFishTechGroup, source);
-	
+
 	memset(&lf, 0, sizeof(lf));
 	lf.lfCharSet = charset;
 	lf.lfHeight = 12;
@@ -466,22 +611,22 @@ int windows_get_registry_install_info(rct2_install_info *installInfo, char *sour
 	strcpy(lf.lfFaceName, font);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_HFONT, HFONT) = CreateFontIndirectA(&lf);
-	
+
 	if (RegOpenKeyA(HKEY_LOCAL_MACHINE, subkeyInfogrames, &hKey) != ERROR_SUCCESS)
 		return 0;
 
 	if (RegOpenKeyA(HKEY_LOCAL_MACHINE, subkeyFishTechGroup, &hKey) != ERROR_SUCCESS)
 		return 0;
 
-	
+
 	size = 260;
 	RegQueryValueExA(hKey, "Title", 0, &type, installInfo->title, &size);
 
 	size = 260;
 	RegQueryValueExA(hKey, "Path", 0, &type, installInfo->path, &size);
-	
+
 	installInfo->var_20C = 235960;
-	
+
 	size = 4;
 	RegQueryValueExA(hKey, "InstallLevel", 0, &type, (LPBYTE)&installInfo->installLevel, &size);
 	for (int i = 0; i <= 15; i++) {
@@ -507,95 +652,19 @@ HWND windows_get_window_handle()
 		log_error("SDL_GetWindowWMInfo failed %s", SDL_GetError());
 		exit(-1);
 	}
-	return wmInfo.info.win.window;
+	HWND handle = wmInfo.info.win.window;
+	#ifdef __MINGW32__
+	assert(sizeof(HWND) == sizeof(uint32));
+	HWND result = (((uint32)handle & 0xff000000) >> 8) | (((uint32)handle & 0xff0000) << 8) | (((uint32)handle & 0xff00) >> 8) | (((uint32)handle & 0xff) << 8);
+	log_warning("twisting bits of handle, a workaround for mingw/sdl bug");
+	#else
+	HWND result = handle;
+	#endif // __MINGW32__
+	return result;
 }
 
-/**
- * http://alter.org.ua/en/docs/win/args/
- */
-PCHAR *CommandLineToArgvA(PCHAR CmdLine, int *_argc)
+uint16 platform_get_locale_language()
 {
-	PCHAR* argv;
-	PCHAR  _argv;
-	ULONG   len;
-	ULONG   argc;
-	CHAR   a;
-	ULONG   i, j;
-
-	BOOLEAN  in_QM;
-	BOOLEAN  in_TEXT;
-	BOOLEAN  in_SPACE;
-
-	len = strlen(CmdLine);
-	i = ((len + 2) / 2)*sizeof(PVOID) + sizeof(PVOID);
-
-	argv = (PCHAR*)GlobalAlloc(GMEM_FIXED,
-		i + (len + 2)*sizeof(CHAR) + 1);
-
-	_argv = (PCHAR)(((PUCHAR)argv) + i);
-
-	// Add in virtual 1st command line argument, process path, for arg_parse's sake.
-	argv[0] = 0;
-	argc = 1;
-	argv[argc] = _argv;
-	in_QM = FALSE;
-	in_TEXT = FALSE;
-	in_SPACE = TRUE;
-	i = 0;
-	j = 0;
-
-	while (a = CmdLine[i]) {
-		if (in_QM) {
-			if (a == '\"') {
-				in_QM = FALSE;
-			} else {
-				_argv[j] = a;
-				j++;
-			}
-		} else {
-			switch (a) {
-			case '\"':
-				in_QM = TRUE;
-				in_TEXT = TRUE;
-				if (in_SPACE) {
-					argv[argc] = _argv + j;
-					argc++;
-				}
-				in_SPACE = FALSE;
-				break;
-			case ' ':
-			case '\t':
-			case '\n':
-			case '\r':
-				if (in_TEXT) {
-					_argv[j] = '\0';
-					j++;
-				}
-				in_TEXT = FALSE;
-				in_SPACE = TRUE;
-				break;
-			default:
-				in_TEXT = TRUE;
-				if (in_SPACE) {
-					argv[argc] = _argv + j;
-					argc++;
-				}
-				_argv[j] = a;
-				j++;
-				in_SPACE = FALSE;
-				break;
-			}
-		}
-		i++;
-	}
-	_argv[j] = '\0';
-	argv[argc] = NULL;
-
-	(*_argc) = argc;
-	return argv;
-}
-
-uint16 platform_get_locale_language(){
 	CHAR langCode[4];
 
 	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
@@ -635,16 +704,42 @@ uint16 platform_get_locale_language(){
 	else if (strcmp(langCode, "ITA") == 0){
 		return LANGUAGE_ITALIAN;
 	}
+	else if (strcmp(langCode, "POR") == 0){
+		return LANGUAGE_PORTUGUESE_BR;
+	}
+	else if (strcmp(langCode, "FIN") == 0){
+		return LANGUAGE_FINNISH;
+	}
 	return LANGUAGE_UNDEFINED;
 }
 
-uint8 platform_get_locale_currency(){
+time_t platform_file_get_modified_time(const utf8* path)
+{
+	WIN32_FILE_ATTRIBUTE_DATA data;
+
+	wchar_t *wPath = utf8_to_widechar(path);
+	BOOL result = GetFileAttributesExW(wPath, GetFileExInfoStandard, &data);
+	free(wPath);
+
+	if (result) {
+		ULARGE_INTEGER ull;
+		ull.LowPart = data.ftLastWriteTime.dwLowDateTime;
+		ull.HighPart = data.ftLastWriteTime.dwHighDateTime;
+		return ull.QuadPart / 10000000ULL - 11644473600ULL;
+	} else {
+		return 0;
+	}
+}
+
+uint8 platform_get_locale_currency()
+{
 	CHAR currCode[4];
 
 	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
 		LOCALE_SINTLSYMBOL,
 		(LPSTR)&currCode,
-		sizeof(currCode)) == 0){
+		sizeof(currCode)) == 0
+	) {
 		return CURRENCY_POUNDS;
 	}
 	if (strcmp(currCode, "GBP") == 0){
@@ -680,15 +775,18 @@ uint8 platform_get_locale_currency(){
 	return CURRENCY_POUNDS;
 }
 
-uint8 platform_get_locale_measurement_format(){
+uint8 platform_get_locale_measurement_format()
+{
 	UINT measurement_system;
 	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
 		LOCALE_IMEASURE | LOCALE_RETURN_NUMBER,
 		(LPSTR)&measurement_system,
-		sizeof(measurement_system)) == 0){
+		sizeof(measurement_system)) == 0
+	) {
 		return MEASUREMENT_FORMAT_IMPERIAL;
 	}
-	switch (measurement_system){
+
+	switch (measurement_system) {
 	case 0:
 		return MEASUREMENT_FORMAT_METRIC;
 	case 1:
@@ -697,21 +795,44 @@ uint8 platform_get_locale_measurement_format(){
 	}
 }
 
-uint8 platform_get_locale_temperature_format(){
+uint8 platform_get_locale_temperature_format()
+{
 	// There does not seem to be a function to obtain this, just check the countries
 	UINT country;
 	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
 		LOCALE_IMEASURE | LOCALE_RETURN_NUMBER,
 		(LPSTR)&country,
-		sizeof(country)) == 0){
+		sizeof(country)) == 0
+	) {
 		return TEMPERATURE_FORMAT_C;
 	}
-	switch (country){
+
+	switch (country) {
 	case CTRY_UNITED_STATES:
 	case CTRY_BELIZE:
 		return TEMPERATURE_FORMAT_F;
 	default:
 		return TEMPERATURE_FORMAT_C;
 	}
+}
+
+bool platform_check_steam_overlay_attached()
+{
+	return GetModuleHandle("GameOverlayRenderer.dll") != NULL;
+}
+
+char *strndup(const char *src, size_t size)
+{
+	size_t len = strnlen(src, size);
+	char *dst = (char *)malloc(len + 1);
+
+	if (dst == NULL)
+	{
+		return NULL;
+	}
+
+	dst = memcpy(dst, src, len);
+	dst[len] = '\0';
+	return (char *)dst;
 }
 #endif

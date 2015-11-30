@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -26,12 +26,40 @@
 #include "../localisation/localisation.h"
 #include "../ride/ride.h"
 #include "../world/sprite.h"
+#include "../util/util.h"
 #include "news_item.h"
 
-rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
-
+rct_news_item *gNewsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 void window_game_bottom_toolbar_invalidate_news_item();
 static int news_item_get_new_history_slot();
+
+bool news_item_is_valid_idx(int index)
+{
+	if (index > MAX_NEWS_ITEMS) {
+		log_error("Tried to get news item past MAX_NEWS.");
+		return false;
+	}
+	return true;
+}
+
+rct_news_item *news_item_get(int index)
+{
+	if (news_item_is_valid_idx(index)) {
+		return &gNewsItems[index];
+	} else {
+		return NULL;
+	}
+}
+
+bool news_item_is_empty(int index)
+{
+	return news_item_get(index)->type == NEWS_ITEM_NULL;
+}
+
+bool news_item_is_queue_empty()
+{
+	return news_item_is_empty(0);
+}
 
 /**
  *
@@ -40,24 +68,49 @@ static int news_item_get_new_history_slot();
 void news_item_init_queue()
 {
 	int i;
-	rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 
-	newsItems[0].type = NEWS_ITEM_NULL;
-	newsItems[11].type = NEWS_ITEM_NULL;
+	news_item_get(0)->type = NEWS_ITEM_NULL;
+	news_item_get(11)->type = NEWS_ITEM_NULL;
+	// Throttles for warning types (PEEP_*_WARNING)
 	for (i = 0; i < 16; i++)
 		RCT2_ADDRESS(0x01358750, uint8)[i] = 0;
 
 	window_game_bottom_toolbar_invalidate_news_item();
 }
 
+static void news_item_tick_current()
+{
+	int ticks;
+	ticks = ++news_item_get(0)->ticks;
+	// Only play news item sound when in normal playing mode
+	if (ticks == 1 && (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_PLAYING)) {
+		// Play sound
+		audio_play_sound_panned(SOUND_NEWS_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2, 0, 0, 0);
+	}
+}
+
+static bool news_item_is_current_old()
+{
+	int remove_time = 320;
+	if (!news_item_is_empty(5) &&
+		!news_item_is_empty(4) &&
+		!news_item_is_empty(3) &&
+		!news_item_is_empty(2))
+		remove_time = 256;
+
+	if (news_item_get(0)->ticks >= remove_time)
+		return true;
+
+	return false;
+}
+
 /**
- * 
+ *
  *  rct2: 0x0066E252
  */
 void news_item_update_current()
 {
-	short ax, bx, remove_time;
-	rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
+	short ax, bx;
 
 	get_system_time();
 
@@ -71,18 +124,18 @@ void news_item_update_current()
 			bx = 12;
 		if (bx != RCT2_GLOBAL(0x009DEA6B, sint16) || ax != 1) {
 			// loc_66E2AE
-			RCT2_GLOBAL(0x013573DC, sint32) -= 10000;
-			if (RCT2_GLOBAL(0x013573DC, sint32) >= 0)
-				RCT2_GLOBAL(0x013573DC, sint32) = -RCT2_GLOBAL(0x013573DC, sint32);
+			RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32) -= 10000;
+			if (RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32) >= 0)
+				RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32) = -RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32);
 		}
 	} else {
 		if (ax != RCT2_GLOBAL(0x009DEA69, sint16)) {
 			ax--;
 			if (ax != RCT2_GLOBAL(0x009DEA69, sint16)) {
 				// loc_66E2AE
-				RCT2_GLOBAL(0x013573DC, sint32) -= 10000;
-				if (RCT2_GLOBAL(0x013573DC, sint32) >= 0)
-					RCT2_GLOBAL(0x013573DC, sint32) = -RCT2_GLOBAL(0x013573DC, sint32);
+				RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32) -= 10000;
+				if (RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32) >= 0)
+					RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32) = -RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32);
 			}
 		}
 	}
@@ -91,32 +144,21 @@ void news_item_update_current()
 	RCT2_GLOBAL(0x009DEA6B, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, sint16);
 
 	// Check if there is a current news item
-	if (newsItems[0].type == 0)
+	if (news_item_is_queue_empty())
 		return;
 
 	window_game_bottom_toolbar_invalidate_news_item();
 
 	// Update the current news item
-	newsItems[0].ticks++;
-	if (newsItems[0].ticks == 1 && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)) {
-		// Play sound
-		sound_play_panned(SOUND_NEWS_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) / 2, 0, 0, 0);
-	}
+	news_item_tick_current();
 
 	// Removal of current news item
-	remove_time = 320;
-	if (newsItems[2].type != 0 &&
-		newsItems[3].type != 0 &&
-		newsItems[4].type != 0 &&
-		newsItems[5].type != 0)
-		remove_time = 256;
-
-	if (newsItems[0].ticks >= remove_time)
+	if (news_item_is_current_old())
 		news_item_close_current();
 }
 
 /**
- * 
+ *
  *  rct2: 0x0066E377
  */
 void news_item_close_current()
@@ -125,7 +167,7 @@ void news_item_close_current()
 	rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 
 	// Check if there is a current message
-	if (newsItems[0].type == NEWS_ITEM_NULL)
+	if (news_item_is_queue_empty())
 		return;
 
 	// Find an available history news item slot for current message
@@ -135,7 +177,7 @@ void news_item_close_current()
 	newsItems[i] = newsItems[0];
 
 	// Set the end of the end of the history list
-	if (i < 60)
+	if (i < MAX_NEWS_ITEMS)
 		newsItems[i + 1].type = NEWS_ITEM_NULL;
 
 	// Invalidate the news window
@@ -150,6 +192,15 @@ void news_item_close_current()
 	window_game_bottom_toolbar_invalidate_news_item();
 }
 
+static void news_item_shift_history_up()
+{
+	const int history_idx = 11;
+	rct_news_item *history_start = news_item_get(history_idx);
+	const size_t count = sizeof(rct_news_item) * (MAX_NEWS_ITEMS - 1 - history_idx);
+	memmove(history_start, history_start + 1, count);
+}
+
+
 /**
  * Finds a spare history slot or replaces an existing one if there are no spare
  * slots available.
@@ -157,17 +208,15 @@ void news_item_close_current()
 static int news_item_get_new_history_slot()
 {
 	int i;
-	rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 
 	// Find an available history news item slot
-	for (i = 11; i < 61; i++)
-		if (newsItems[i].type == NEWS_ITEM_NULL)
+	for (i = 11; i < MAX_NEWS_ITEMS; i++)
+		if (news_item_is_empty(i))
 			return i;
 
 	// Dequeue the first history news item, shift history up
-	for (i = 11; i < 60; i++)
-		newsItems[i] = newsItems[i + 1];
-	return 60;
+	news_item_shift_history_up();
+	return MAX_NEWS_ITEMS - 1;
 }
 
 /**
@@ -199,7 +248,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		*x = peep->x;
 		*y = peep->y;
 		*z = peep->z;
-		if (*((uint16*)x) != SPRITE_LOCATION_NULL)
+		if (*x != SPRITE_LOCATION_NULL)
 			break;
 
 		if (peep->state != 3 && peep->state != 7) {
@@ -250,21 +299,21 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
  **/
 void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 {
-	char *buffer = (char*)0x0141EF68;
+	utf8 *buffer = (char*)0x0141EF68;
 	void *args = (void*)0x013CE952;
 
 	format_string(buffer, string_id, args); // overflows possible?
 	news_item_add_to_queue_raw(type, buffer, assoc);
 }
 
-void news_item_add_to_queue_raw(uint8 type, const char *text, uint32 assoc)
+void news_item_add_to_queue_raw(uint8 type, const utf8 *text, uint32 assoc)
 {
 	int i = 0;
 	rct_news_item *newsItem = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 
 	// find first open slot
 	while (newsItem->type != NEWS_ITEM_NULL) {
-		if (newsItem + 1 >= (rct_news_item*)0x13CB1CC)
+		if (newsItem + 1 >= (rct_news_item*)0x13CB1CC) // &news_list[10]
 			news_item_close_current();
 		else
 			newsItem++;
@@ -277,8 +326,7 @@ void news_item_add_to_queue_raw(uint8 type, const char *text, uint32 assoc)
 	newsItem->ticks = 0;
 	newsItem->month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
 	newsItem->day = ((days_in_month[(newsItem->month_year & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16) + 1;
-	newsItem->colour = text[0];
-	strncpy(newsItem->text, text + 1, 254);
+	safe_strncpy(newsItem->text, text, 255);
 	newsItem->text[254] = 0;
 
 	// blatant disregard for what happens on the last element.
@@ -335,7 +383,7 @@ void news_item_open_subject(int type, int subject)
 				}
 			}
 		}
-		
+
 		// Switch to new scenery tab
 		window = window_find_by_class(WC_SCENERY);
 		if (window != NULL)
@@ -355,27 +403,53 @@ void news_item_open_subject(int type, int subject)
 }
 
 /**
- * rct2: 0x0066E407
+ *
+ *  rct2: 0x0066E407
  */
-void news_item_disable_news(uint8 type, uint32 assoc) {
-        rct_news_item* newsItem = newsItems;
-        while (newsItem->type != NEWS_ITEM_NULL) {
-                if (type == newsItem->type && assoc == newsItem->assoc) {
-                        newsItem->flags |= 0x1;
-                        if (newsItem == RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item)) {
-                                window_game_bottom_toolbar_invalidate_news_item();
-                        }
-                }
-                newsItem++;
-        }
+void news_item_disable_news(uint8 type, uint32 assoc)
+{
+	// TODO: write test invalidating windows
+	for (int i = 0; i < 11; i++) {
+		if (!news_item_is_empty(i)) {
+			rct_news_item * const newsItem = news_item_get(i);
+			if (type == newsItem->type && assoc == newsItem->assoc) {
+				newsItem->flags |= 0x1;
+				if (i == 0) {
+					window_game_bottom_toolbar_invalidate_news_item();
+				}
+			}
+		} else {
+			break;
+		}
+	}
 
-        newsItem = &newsItems[11]; //0x13CB2D8
-        while (newsItem->type != NEWS_ITEM_NULL) {
-                if (type == newsItem->type && assoc == newsItem->assoc) {
-                        newsItem->flags |= 0x1;
-                        window_invalidate_by_class(WC_RECENT_NEWS);
-                }
-		newsItem++;
-        }
+	for (int i = 11; i <= MAX_NEWS_ITEMS; i++) {
+		if (!news_item_is_empty(i)) {
+			rct_news_item * const newsItem = news_item_get(i);
+			if (type == newsItem->type && assoc == newsItem->assoc) {
+				newsItem->flags |= 0x1;
+				window_invalidate_by_class(WC_RECENT_NEWS);
+			}
+		} else {
+			break;
+		}
+	}
 }
 
+void news_item_add_to_queue_custom(rct_news_item *newNewsItem)
+{
+	int i = 0;
+	rct_news_item *newsItem = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
+
+	// Find first open slot
+	while (newsItem->type != NEWS_ITEM_NULL) {
+		if (newsItem + 1 >= (rct_news_item*)0x013CB1CC)
+			news_item_close_current();
+		else
+			newsItem++;
+	}
+
+	*newsItem = *newNewsItem;
+	newsItem++;
+	newsItem->type = 0;
+}

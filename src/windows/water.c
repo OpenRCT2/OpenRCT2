@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -26,6 +26,9 @@
 #include "../sprites.h"
 #include "../world/map.h"
 #include "../interface/themes.h"
+
+#define MINIMUM_TOOL_SIZE 1
+#define MAXIMUM_TOOL_SIZE 64
 
 enum WINDOW_WATER_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -48,48 +51,47 @@ static rct_widget window_water_widgets[] = {
 
 static int window_water_should_close();
 
-static void window_water_emptysub() { }
-static void window_water_close();
-static void window_water_mouseup();
-static void window_water_update();
-static void window_water_invalidate();
-static void window_water_paint();
-static void window_water_textinput();
+static void window_water_close(rct_window *w);
+static void window_water_mouseup(rct_window *w, int widgetIndex);
+static void window_water_update(rct_window *w);
+static void window_water_invalidate(rct_window *w);
+static void window_water_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_water_textinput(rct_window *w, int widgetIndex, char *text);
 static void window_water_inputsize(rct_window *w);
 
-static void* window_water_events[] = {
+static rct_window_event_list window_water_events = {
 	window_water_close,
 	window_water_mouseup,
-	window_water_emptysub,
-	window_water_emptysub,
-	window_water_emptysub,
-	window_water_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_water_update,
-	window_water_emptysub,
-	window_water_emptysub,
-	window_water_emptysub,
-	window_water_emptysub,
-	window_water_emptysub,
-	window_water_emptysub,
-	window_water_emptysub,
-	window_water_emptysub,
-	window_water_emptysub,
-	window_water_emptysub,
-	window_water_emptysub,
-	window_water_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_water_textinput,
-	window_water_emptysub,
-	window_water_emptysub,
-	window_water_emptysub,
-	window_water_emptysub,
-	window_water_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_water_invalidate,
 	window_water_paint,
-	window_water_emptysub
+	NULL
 };
 
 /**
- * 
+ *
  *  rct2: 0x006E6A40
  */
 void window_water_open()
@@ -101,11 +103,11 @@ void window_water_open()
 		return;
 
 	window = window_create(
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16) - 76,
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 76,
 		29,
 		76,
 		77,
-		(uint32*)window_water_events,
+		&window_water_events,
 		WC_WATER,
 		0
 	);
@@ -122,7 +124,7 @@ void window_water_open()
  *
  *  rct2: 0x006E6B65
  */
-static void window_water_close()
+static void window_water_close(rct_window *w)
 {
 	// If the tool wasn't changed, turn tool off
 	if (!window_water_should_close())
@@ -133,39 +135,22 @@ static void window_water_close()
  *
  *  rct2: 0x006E6B4E
  */
-static void window_water_mouseup()
+static void window_water_mouseup(rct_window *w, int widgetIndex)
 {
-	rct_window *w;
-	int limit;
-	short widgetIndex;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
 		break;
 	case WIDX_DECREMENT:
 		// Decrement land tool size
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)--;
-		limit = 1;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) < limit)
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = limit;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = max(MINIMUM_TOOL_SIZE, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)-1);
 
 		// Invalidate the window
 		window_invalidate(w);
 		break;
 	case WIDX_INCREMENT:
 		// Increment land tool size
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)++;
-
-		// FEATURE: maximum size is always 7
-		//limit = 7;
-		limit = 64;
-		// limit = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2 ? 7 : 5);
-		
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > limit)
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = limit;
+		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = min(MAXIMUM_TOOL_SIZE, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)+1);
 
 		// Invalidate the window
 		window_invalidate(w);
@@ -176,33 +161,28 @@ static void window_water_mouseup()
 	}
 }
 
-static void window_water_textinput()
+static void window_water_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	uint8 result;
-	short widgetIndex;
-	rct_window *w;
-	char *text;
 	int size;
 	char* end;
 
-	window_textinput_get_registers(w, widgetIndex, result, text);
-
-	if (widgetIndex != WIDX_PREVIEW || !result)
+	if (widgetIndex != WIDX_PREVIEW || text == NULL)
 		return;
 
 	size = strtol(text, &end, 10);
 	if (*end == '\0') {
-		if (size < 1) size = 1;
-		if (size > 64) size = 64;
+		size = max(MINIMUM_TOOL_SIZE,size);
+		size = min(MAXIMUM_TOOL_SIZE,size);
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
+
 		window_invalidate(w);
 	}
 }
 
 static void window_water_inputsize(rct_window *w)
 {
-	((uint16*)TextInputDescriptionArgs)[0] = 1;
-	((uint16*)TextInputDescriptionArgs)[1] = 64;
+	((uint16*)TextInputDescriptionArgs)[0] = MINIMUM_TOOL_SIZE;
+	((uint16*)TextInputDescriptionArgs)[1] = MAXIMUM_TOOL_SIZE;
 	window_text_input_open(w, WIDX_PREVIEW, 5128, 5129, STR_NONE, STR_NONE, 3);
 }
 
@@ -221,11 +201,8 @@ static void window_water_update(rct_window *w)
  *
  *  rct2: 0x006E6AB8
  */
-static void window_water_invalidate()
+static void window_water_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	// Set the preview image button to be pressed down
@@ -244,25 +221,17 @@ static void window_water_invalidate()
  *
  *  rct2: 0x006E6ACF
  */
-static void window_water_paint()
+static void window_water_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	int x, y;
-
-	window_paint_get_registers(w, dpi);
 
 	x = w->x + (window_water_widgets[WIDX_PREVIEW].left + window_water_widgets[WIDX_PREVIEW].right) / 2;
 	y = w->y + (window_water_widgets[WIDX_PREVIEW].top + window_water_widgets[WIDX_PREVIEW].bottom) / 2;
 
 	window_draw_widgets(w, dpi);
-	// FEATURE larger land tool size support
+	// Draw number for tool sizes bigger than 7
 	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > 7) {
-		RCT2_GLOBAL(0x009BC677, char) = FORMAT_BLACK;
-		RCT2_GLOBAL(0x009BC678, char) = FORMAT_COMMA16;
-		RCT2_GLOBAL(0x009BC679, char) = 0;
-		RCT2_GLOBAL(0x013CE952, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
-		gfx_draw_string_centred(dpi, 3165, x, y - 2, 0, (void*)0x013CE952);
+		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, 0, &RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16));
 	}
 	y = w->y + window_water_widgets[WIDX_PREVIEW].bottom + 5;
 

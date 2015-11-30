@@ -1,9 +1,9 @@
 /*****************************************************************************
  * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- * 
+ *
  * This file is part of OpenRCT2.
- * 
+ *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -18,19 +18,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifdef __APPLE__
+#if defined(__APPLE__) && defined(__MACH__)
 
-/**
- * OSX entry point to OpenRCT2.
- */
-// int main(char *argv[], int argc)
-// {
-//     return 0;
-// }
+#include "platform.h"
 
-char platform_get_path_separator()
-{
-	return '/';
+bool platform_check_steam_overlay_attached() {
+	STUB();
+	return false;
 }
 
 #endif

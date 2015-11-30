@@ -28,6 +28,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../interface/themes.h"
+#include "../util/util.h"
 
 enum {
 	WIDX_BACKGROUND,
@@ -58,49 +59,48 @@ static rct_widget window_scenarioselect_widgets[] = {
 
 static void window_scenarioselect_init_tabs();
 
-static void window_scenarioselect_emptysub() { }
-static void window_scenarioselect_mouseup();
+static void window_scenarioselect_mouseup(rct_window *w, int widgetIndex);
 static void window_scenarioselect_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_scenarioselect_scrollgetsize();
-static void window_scenarioselect_scrollmousedown();
-static void window_scenarioselect_scrollmouseover();
-static void window_scenarioselect_invalidate();
-static void window_scenarioselect_paint();
-static void window_scenarioselect_scrollpaint();
+static void window_scenarioselect_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
+static void window_scenarioselect_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
+static void window_scenarioselect_invalidate(rct_window *w);
+static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 
-static void* window_scenarioselect_events[] = {
-	window_scenarioselect_emptysub,
+static rct_window_event_list window_scenarioselect_events = {
+	NULL,
 	window_scenarioselect_mouseup,
-	window_scenarioselect_emptysub,
+	NULL,
 	window_scenarioselect_mousedown,
-	window_scenarioselect_emptysub,
-	window_scenarioselect_emptysub,
-	window_scenarioselect_emptysub,
-	window_scenarioselect_emptysub,
-	window_scenarioselect_emptysub,
-	window_scenarioselect_emptysub,
-	window_scenarioselect_emptysub,
-	window_scenarioselect_emptysub,
-	window_scenarioselect_emptysub,
-	window_scenarioselect_emptysub,
-	window_scenarioselect_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_scenarioselect_scrollgetsize,
 	window_scenarioselect_scrollmousedown,
-	window_scenarioselect_emptysub,
+	NULL,
 	window_scenarioselect_scrollmouseover,
-	window_scenarioselect_emptysub,
-	window_scenarioselect_emptysub,
-	window_scenarioselect_emptysub,
-	window_scenarioselect_emptysub,
-	window_scenarioselect_emptysub,
-	window_scenarioselect_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_scenarioselect_invalidate,
 	window_scenarioselect_paint,
 	window_scenarioselect_scrollpaint
 };
 
 /**
- * 
+ *
  *  rct2: 0x006781B5
  */
 void window_scenarioselect_open()
@@ -116,12 +116,12 @@ void window_scenarioselect_open()
 	window = window_create_centred(
 		610,
 		334,
-		(uint32*)window_scenarioselect_events,
+		&window_scenarioselect_events,
 		WC_SCENARIO_SELECT,
 		WF_10
 	);
 	window->widgets = window_scenarioselect_widgets;
-	
+
 	window->enabled_widgets = 0x04 | 0x10 | 0x20 | 0x40 | 0x80 | 0x100;
 	window_init_scroll_widgets(window);
 	window->viewport_focus_coordinates.var_480 = -1;
@@ -133,7 +133,7 @@ void window_scenarioselect_open()
 }
 
 /**
- * 
+ *
  *  rct2: 0x00677C8A
  */
 static void window_scenarioselect_init_tabs()
@@ -164,13 +164,8 @@ static void window_scenarioselect_init_tabs()
 	}
 }
 
-static void window_scenarioselect_mouseup()
+static void window_scenarioselect_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	if (widgetIndex == WIDX_CLOSE)
 		window_close(w);
 }
@@ -188,36 +183,26 @@ static void window_scenarioselect_mousedown(int widgetIndex, rct_window*w, rct_w
 	}
 }
 
-static void window_scenarioselect_scrollgetsize()
+static void window_scenarioselect_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
-	int i, width, height;
-	rct_window *w;
+	int i;
 	rct_scenario_basic *scenario;
 
-	window_get_register(w);
-
-	width = 0;
-	height = 0;
+	*height = 0;
 	for (i = 0; i < gScenarioListCount; i++) {
 		scenario = &gScenarioList[i];
 		if (scenario->category != w->selected_tab)
 			continue;
 		if (scenario->flags & SCENARIO_FLAGS_VISIBLE)
-			height += 24;
+			*height += 24;
 	}
-
-	window_scrollsize_set_registers(width, height);
 }
 
 /* rct2: 0x6780FE */
-static void window_scenarioselect_scrollmousedown()
+static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 {
 	int i;
-	short x, y, scrollIndex;
-	rct_window *w;
 	rct_scenario_basic *scenario;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	for (i = 0; i < gScenarioListCount; i++) {
 		scenario = &gScenarioList[i];
@@ -230,21 +215,17 @@ static void window_scenarioselect_scrollmousedown()
 		if (y >= 0)
 			continue;
 
-		sound_play_panned(SOUND_CLICK_1, w->width / 2 + w->x, 0, 0, 0);
+		audio_play_sound_panned(SOUND_CLICK_1, w->width / 2 + w->x, 0, 0, 0);
 		scenario_load_and_play(scenario);
 		break;
 	}
 }
 
 /* rct2: 0x678162 */
-static void window_scenarioselect_scrollmouseover()
+static void window_scenarioselect_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
 {
 	int i;
-	short x, y, scrollIndex;
-	rct_window *w;
 	rct_scenario_basic *scenario, *selected;
-
-	window_scrollmouse_get_registers(w, scrollIndex, x, y);
 
 	selected = NULL;
 	for (i = 0; i < gScenarioListCount; i++) {
@@ -267,29 +248,22 @@ static void window_scenarioselect_scrollmouseover()
 	}
 }
 
-static void window_scenarioselect_invalidate()
+static void window_scenarioselect_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	w->pressed_widgets &= ~(0x10 | 0x20 | 0x40 | 0x80 | 0x100);
 	w->pressed_widgets |= 1LL << (w->selected_tab + 4);
 }
 
-static void window_scenarioselect_paint()
+static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	int i, x, y, format;
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	rct_widget *widget;
 	rct_scenario_basic *scenario;
 
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
-	
+
 	format = (theme_get_preset()->features.rct1_scenario_font) ? 5138 : 1193;
 
 	// Text for each tab
@@ -309,20 +283,16 @@ static void window_scenarioselect_paint()
 	if (scenario == NULL)
 		return;
 
-	// Draw SixFlags image
-	if (scenario->flags & SCENARIO_FLAGS_SIXFLAGS)
-		gfx_draw_sprite(dpi, SPR_SIX_FLAGS, w->x + w->width - 55, w->y + w->height - 75, 0);
-
 	// Scenario name
 	x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
 	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
-	strcpy((char*)0x009BC677, scenario->name);
+	safe_strncpy((char*)0x009BC677, scenario->name, 64);
 	RCT2_GLOBAL(0x013CE952 + 0, short) = 3165;
 	gfx_draw_string_centred_clipped(dpi, 1193, (void*)0x013CE952, 0, x + 85, y, 170);
 	y += 15;
 
 	// Scenario details
-	strcpy((char*)0x009BC677, scenario->details);
+	safe_strncpy((char*)0x009BC677, scenario->details, 256);
 	RCT2_GLOBAL(0x013CE952 + 0, short) = 3165;
 	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, 1191, 0) + 5;
 
@@ -335,23 +305,19 @@ static void window_scenarioselect_paint()
 
 	// Scenario score
 	if (scenario->flags & SCENARIO_FLAGS_COMPLETED) {
-		strcpy((char*)0x009BC677, scenario->completed_by);
+		safe_strncpy((char*)0x009BC677, scenario->completed_by, 64);
 		RCT2_GLOBAL(0x013CE952 + 0, short) = 3165;
 		RCT2_GLOBAL(0x013CE952 + 2, int) = scenario->company_value;
 		y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);
 	}
 }
 
-static void window_scenarioselect_scrollpaint()
+static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
 	int i, y, colour, highlighted, highlighted_format, unhighlighted_format;
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	rct_scenario_basic *scenario;
 
-	window_paint_get_registers(w, dpi);
-
-	colour = ((char*)0x0141FC48)[w->colours[1] * 8];
+	colour = ColourMapA[w->colours[1]].mid_light;
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
 	gfx_clear(dpi, colour);
 
@@ -376,8 +342,8 @@ static void window_scenarioselect_scrollpaint()
 			gfx_fill_rect(dpi, 0, y, w->width, y + 23, 0x02000031);
 
 		// Draw scenario name
-		strcpy((char*)0x009BC677, scenario->name);
-		RCT2_GLOBAL(0x013CE952, short) = 3165;
+		safe_strncpy((char*)0x009BC677, scenario->name, 64);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 3165;
 		gfx_draw_string_centred(dpi, highlighted ? highlighted_format : unhighlighted_format, 210, y + 1, 0, (void*)0x013CE952);
 
 		// Check if scenario is completed
@@ -386,8 +352,8 @@ static void window_scenarioselect_scrollpaint()
 			gfx_draw_sprite(dpi, 0x5A9F, 395, y + 1, 0);
 
 			// Draw completion score
-			strcpy((char*)0x009BC677, scenario->completed_by);
-			RCT2_GLOBAL(0x013CE952, short) = 2793;
+			safe_strncpy((char*)0x009BC677, scenario->completed_by, 64);
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 2793;
 			RCT2_GLOBAL(0x013CE954, short) = 3165;
 			gfx_draw_string_centred(dpi, highlighted ? 1193 : 1191, 210, y + 11, 0, (void*)0x013CE952);
 		}

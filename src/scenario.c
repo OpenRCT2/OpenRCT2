@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -21,6 +21,7 @@
 #include "addresses.h"
 #include "config.h"
 #include "game.h"
+#include "world/climate.h"
 #include "interface/viewport.h"
 #include "localisation/date.h"
 #include "localisation/localisation.h"
@@ -30,6 +31,7 @@
 #include "management/research.h"
 #include "management/news_item.h"
 #include "object.h"
+#include "openrct2.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
 #include "ride/ride.h"
@@ -44,9 +46,10 @@
 #include "world/water.h"
 
 static char _scenarioPath[MAX_PATH];
-static const char *_scenarioFileName;
+static const char *_scenarioFileName = "";
 
-char gScenarioSaveName[MAX_PATH];
+char gScenarioSavePath[MAX_PATH];
+int gFirstTimeSave = 1;
 
 static int scenario_create_ducks();
 static void scenario_objective_check();
@@ -57,33 +60,55 @@ static void scenario_objective_check();
  */
 int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info)
 {
-	FILE *file;
+	SDL_RWops* rw;
 
 	log_verbose("loading scenario details, %s", path);
 
-	file = fopen(path, "rb");
-	if (file != NULL) {
+	rw = SDL_RWFromFile(path, "rb");
+	if (rw != NULL) {
 		// Read first chunk
-		sawyercoding_read_chunk(file, (uint8*)header);
+		sawyercoding_read_chunk(rw, (uint8*)header);
 		if (header->type == S6_TYPE_SCENARIO) {
 			// Read second chunk
-			sawyercoding_read_chunk(file, (uint8*)info);
-			fclose(file);
+			sawyercoding_read_chunk(rw, (uint8*)info);
+			SDL_RWclose(rw);
 			RCT2_GLOBAL(0x009AA00C, uint8) = 0;
 
-			// Checks for a scenario string object (possibly for localisation)
-			if ((info->entry.flags & 0xFF) != 255) {
-				if (object_get_scenario_text(&info->entry)) {
-					rct_stex_entry* stex_entry = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, rct_stex_entry*);
-					format_string(info->name, stex_entry->scenario_name, NULL);
-					format_string(info->details, stex_entry->details, NULL);
-					RCT2_GLOBAL(0x009AA00C, uint8) = stex_entry->var_06;
-					object_free_scenario_text();
+			// Get filename
+			utf8 filename[MAX_PATH];
+			const char *temp_filename = path_get_filename(path);
+			int len = strnlen(temp_filename, MAX_PATH);
+			safe_strncpy(filename, temp_filename, MAX_PATH);
+			if (len == MAX_PATH)
+			{
+				filename[MAX_PATH - 1] = '\0';
+				log_warning("truncated string %s", filename);
+			}
+			path_remove_extension(filename);
+
+			rct_string_id localisedStringIds[3];
+			if (language_get_localised_scenario_strings(filename, localisedStringIds)) {
+				if (localisedStringIds[0] != (rct_string_id)STR_NONE) {
+					safe_strncpy(info->name, language_get_string(localisedStringIds[0]), 64);
+				}
+				if (localisedStringIds[2] != (rct_string_id)STR_NONE) {
+					safe_strncpy(info->details, language_get_string(localisedStringIds[2]), 256);
+				}
+			} else {
+				// Checks for a scenario string object (possibly for localisation)
+				if ((info->entry.flags & 0xFF) != 255) {
+					if (object_get_scenario_text(&info->entry)) {
+						rct_stex_entry* stex_entry = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, rct_stex_entry*);
+						format_string(info->name, stex_entry->scenario_name, NULL);
+						format_string(info->details, stex_entry->details, NULL);
+						RCT2_GLOBAL(0x009AA00C, uint8) = stex_entry->var_06;
+						object_free_scenario_text();
+					}
 				}
 			}
 			return 1;
 		}
-		fclose(file);
+		SDL_RWclose(rw);
 	}
 
 	log_error("invalid scenario, %s", path);
@@ -93,7 +118,7 @@ int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *in
 }
 
 /**
- * 
+ *
  *  rct2: 0x00676053
  * scenario (ebx)
  */
@@ -101,15 +126,15 @@ int scenario_load(const char *path)
 {
 	log_verbose("loading scenario, %s", path);
 
-	FILE *file;
+	SDL_RWops* rw;
 	int i, j;
 	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
-	file = fopen(path, "rb");
-	if (file != NULL) {
-		if (!sawyercoding_validate_checksum(file)) {
-			fclose(file);
+	rw = SDL_RWFromFile(path, "rb");
+	if (rw != NULL) {
+		if (!sawyercoding_validate_checksum(rw) && !gConfigGeneral.allow_loading_with_incorrect_checksum) {
+			SDL_RWclose(rw);
 			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
 			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 
@@ -118,57 +143,57 @@ int scenario_load(const char *path)
 		}
 
 		// Read first chunk
-		sawyercoding_read_chunk(file, (uint8*)s6Header);
+		sawyercoding_read_chunk(rw, (uint8*)s6Header);
 		if (s6Header->type == S6_TYPE_SCENARIO) {
 			// Read second chunk
-			sawyercoding_read_chunk(file, (uint8*)s6Info);
+			sawyercoding_read_chunk(rw, (uint8*)s6Info);
 
 			// Read packed objects
 			if (s6Header->num_packed_objects > 0) {
 				j = 0;
 				for (i = 0; i < s6Header->num_packed_objects; i++)
-					j += object_load_packed(file);
+					j += object_load_packed(rw);
 				if (j > 0)
 					object_list_load();
 			}
 
-			uint8 load_success = object_read_and_load_entries(file);
+			uint8 load_success = object_read_and_load_entries(rw);
 
 			// Read flags (16 bytes). Loads:
 			//	RCT2_ADDRESS_CURRENT_MONTH_YEAR
 			//	RCT2_ADDRESS_CURRENT_MONTH_TICKS
 			//	RCT2_ADDRESS_SCENARIO_TICKS
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
 
 			// Read map elements
 			memset((void*)RCT2_ADDRESS_MAP_ELEMENTS, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
 
 			// Read game data, including sprites
-			sawyercoding_read_chunk(file, (uint8*)0x010E63B8);
+			sawyercoding_read_chunk(rw, (uint8*)0x010E63B8);
 
 			// Read number of guests in park and something else
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_GUESTS_IN_PARK);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_GUESTS_IN_PARK);
 
 			// Read ?
-			sawyercoding_read_chunk(file, (uint8*)0x01357BC8);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_LAST_GUESTS_IN_PARK);
 
 			// Read park rating
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_PARK_RATING);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_PARK_RATING);
 
 			// Read ?
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES);
 
 			// Read ?
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_EXPENDITURE);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_EXPENDITURE);
 
 			// Read ?
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_CURRENT_PARK_VALUE);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_PARK_VALUE);
 
 			// Read more game data, including research items and rides
-			sawyercoding_read_chunk(file, (uint8*)RCT2_ADDRESS_COMPLETED_COMPANY_VALUE);
+			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_COMPLETED_COMPANY_VALUE);
 
-			fclose(file);
+			SDL_RWclose(rw);
 			if (!load_success){
 				log_error("failed to load all entries.");
 				set_load_objects_fail_reason();
@@ -178,10 +203,14 @@ int scenario_load(const char *path)
 			reset_loaded_objects();
 			map_update_tile_pointers();
 			reset_0x69EBE4();
+			openrct2_reset_object_tween_locations();
+			game_convert_strings_to_utf8();
+			game_fix_save_vars(); // OpenRCT2 fix broken save games
+
 			return 1;
 		}
 
-		fclose(file);
+		SDL_RWclose(rw);
 	}
 
 	log_error("failed to find scenario file.");
@@ -191,7 +220,7 @@ int scenario_load(const char *path)
 }
 
 /**
- * 
+ *
  *  rct2: 0x00678282
  * scenario (ebx)
  */
@@ -205,23 +234,32 @@ int scenario_load_and_play(const rct_scenario_basic *scenario)
 
 int scenario_load_and_play_from_path(const char *path)
 {
-	rct_window *mainWindow;
-	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
-
-	// Create the scenario pseduo-random seeds using the current time
-	uint32 srand0, srand1;
-	srand0 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) ^ platform_get_ticks();
-	srand1 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) ^ platform_get_ticks();
-
 	window_close_construction_windows();
 
 	if (!scenario_load(path))
 		return 0;
 
-	strcpy(_scenarioPath, path);
+	int len = strnlen(path, MAX_PATH) + 1;
+	safe_strncpy(_scenarioPath, path, len);
+	if (len - 1 == MAX_PATH)
+	{
+		_scenarioPath[MAX_PATH - 1] = '\0';
+		log_warning("truncated string %s", _scenarioPath);
+	}
 	_scenarioFileName = path_get_filename(_scenarioPath);
 
+	gFirstTimeSave = 1;
+
 	log_verbose("starting scenario, %s", path);
+	scenario_begin();
+
+	return 1;
+}
+
+void scenario_begin()
+{
+	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+	rct_window *mainWindow;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
 	viewport_init_all();
@@ -232,9 +270,9 @@ int scenario_load_and_play_from_path(const char *path)
 	mainWindow->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
 	mainWindow->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
 
-	uint8 _cl = (RCT2_GLOBAL(0x0138869E, sint16) & 0xFF) - mainWindow->viewport->zoom;
-	mainWindow->viewport->zoom = RCT2_GLOBAL(0x0138869E, sint16) & 0xFF;
-	*((char*)(&RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32))) = RCT2_GLOBAL(0x0138869E, sint16) >> 8;
+	uint8 _cl = (RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) & 0xFF) - mainWindow->viewport->zoom;
+	mainWindow->viewport->zoom = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) & 0xFF;
+	*((char*)(&RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32))) = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) >> 8;
 	if (_cl != 0) {
 		if (_cl < 0) {
 			_cl = -_cl;
@@ -253,10 +291,10 @@ int scenario_load_and_play_from_path(const char *path)
 	window_new_ride_init_vars();
 
 	// Set the scenario pseduo-random seeds
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, sint32) = srand0;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, sint32) = srand1;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, sint32) ^= platform_get_ticks();
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, sint32) ^= platform_get_ticks();
 
-	RCT2_GLOBAL(0x009DEB7C, sint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) &= 0xFFFFF7FF;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) & PARK_FLAGS_NO_MONEY_SCENARIO)
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) |= PARK_FLAGS_NO_MONEY;
@@ -269,37 +307,63 @@ int scenario_load_and_play_from_path(const char *path)
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16) = calculate_park_rating();
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = calculate_park_value();
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = calculate_company_value();
-	RCT2_GLOBAL(0x013587D0, money32) = RCT2_GLOBAL(0x013573DC, money32) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(RCT2_GLOBAL(0x013573DC, sint32));
+	RCT2_GLOBAL(0x013587D0, money32) = RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32));
 
-	sub_69E869(); // (loan related)
+	finance_update_loan_hash();
 
-	strcpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, s6Info->details);
-	strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, s6Info->name);
+	safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, s6Info->details, 256);
+	safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, s6Info->name, 64);
 
-	rct_stex_entry* stex = g_stexEntries[0];
-	if ((int)stex != -1) {
-		char *buffer = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
+	{
+		// Get filename
+		utf8 filename[MAX_PATH];
+		safe_strncpy(filename, _scenarioFileName, sizeof(filename));
+		path_remove_extension(filename);
 
-		// Set localised park name
-		format_string(buffer, stex->park_name, 0);
-		park_set_name(buffer);
+		rct_string_id localisedStringIds[3];
+		if (language_get_localised_scenario_strings(filename, localisedStringIds)) {
+			if (localisedStringIds[0] != (rct_string_id)STR_NONE) {
+				safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(localisedStringIds[0]), 32);
+			}
+			if (localisedStringIds[1] != (rct_string_id)STR_NONE) {
+				park_set_name(language_get_string(localisedStringIds[1]));
+			}
+			if (localisedStringIds[2] != (rct_string_id)STR_NONE) {
+				safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, language_get_string(localisedStringIds[2]), 256);
+			}
+		} else {
+			rct_stex_entry* stex = g_stexEntries[0];
+			if ((int)stex != -1) {
+				char *buffer = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
 
-		// Set localised scenario name
-		format_string(buffer, stex->scenario_name, 0);
-		strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, buffer, 31);
-		((char*)RCT2_ADDRESS_SCENARIO_NAME)[31] = '\0';
+				// Set localised park name
+				format_string(buffer, stex->park_name, 0);
+				park_set_name(buffer);
 
-		// Set localised scenario details
-		format_string(buffer, stex->details, 0);
-		strncpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, buffer, 255);
-		((char*)RCT2_ADDRESS_SCENARIO_DETAILS)[255] = '\0';
+				// Set localised scenario name
+				format_string(buffer, stex->scenario_name, 0);
+				safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, buffer, 31);
+				((char*)RCT2_ADDRESS_SCENARIO_NAME)[31] = '\0';
+
+				// Set localised scenario details
+				format_string(buffer, stex->details, 0);
+				safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, buffer, 255);
+				((char*)RCT2_ADDRESS_SCENARIO_DETAILS)[255] = '\0';
+			}
+		}
 	}
 
 	// Set the last saved game path
-	format_string(gScenarioSaveName, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), (void*)RCT2_ADDRESS_PARK_NAME_ARGS);
+	char parkName[128];
+	format_string(parkName, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), (void*)RCT2_ADDRESS_PARK_NAME_ARGS);
+
+	platform_get_user_directory(gScenarioSavePath, "save");
+	strncat(gScenarioSavePath, parkName, sizeof(gScenarioSavePath) - strlen(gScenarioSavePath) - 1);
+	strncat(gScenarioSavePath, ".sv6", sizeof(gScenarioSavePath) - strlen(gScenarioSavePath) - 1);
+
 	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)RCT2_ADDRESS_SAVED_GAMES_PATH);
-	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2 + strlen((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2), gScenarioSaveName);
+	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2 + strlen((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2), gScenarioSavePath);
 	strcat((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, ".SV6");
 
 	memset((void*)0x001357848, 0, 56);
@@ -311,7 +375,7 @@ int scenario_load_and_play_from_path(const char *path)
 	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(0x013587D8, uint16) = 63;
-	sub_69E869(); // (loan related, called above already)
+	finance_update_loan_hash();
 	park_reset_history();
 	finance_reset_history();
 	award_reset();
@@ -335,16 +399,15 @@ int scenario_load_and_play_from_path(const char *path)
 	load_palette();
 
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA5C, uint16) = 62000; // (doesn't appear to ever be read)
-	return 1;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
+	gGameSpeed = 1;
 }
 
 void scenario_end()
 {
 	rct_window* w;
 	window_close_by_class(WC_DROPDOWN);
-	
+
 	for (w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++){
 		if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
 			window_close(w);
@@ -377,7 +440,7 @@ void scenario_success()
 	int i;
 	rct_scenario_basic* scenario;
 	uint32 current_val = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, uint32);
-	
+
 	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = current_val;
 	peep_applause();
 
@@ -411,21 +474,21 @@ void scenario_success_submit_name(const char *name)
 	int i;
 	rct_scenario_basic* scenario;
 	uint32 scenarioWinCompanyValue;
-	
+
 	for (i = 0; i < gScenarioListCount; i++) {
 		scenario = &gScenarioList[i];
 
 		if (strequals(scenario->path, _scenarioFileName, 256, true)) {
 			scenarioWinCompanyValue = RCT2_GLOBAL(0x013587C0, uint32);
 			if (scenario->company_value == scenarioWinCompanyValue) {
-				strncpy(scenario->completed_by, name, 64);
-				strncpy((char*)0x013587D8, name, 32);
+				safe_strncpy(scenario->completed_by, name, 64);
+				safe_strncpy((char*)0x013587D8, name, 32);
 				scenario_scores_save();
 			}
 			break;
 		}
 	}
-	
+
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 }
 
@@ -435,16 +498,16 @@ void scenario_success_submit_name(const char *name)
  **/
 void scenario_entrance_fee_too_high_check()
 {
-	uint16 x, y;
+	uint16 x = 0, y = 0;
 	uint16 totalRideValue = RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, uint16);
 	uint16 park_entrance_fee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
 	int max_fee = totalRideValue + (totalRideValue / 2);
 	uint32 game_flags = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), packed_xy;
 
-	if ((game_flags & PARK_FLAGS_PARK_OPEN) && park_entrance_fee > max_fee) {
-		for (int i = 0; RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] != SPRITE_LOCATION_NULL; ++i) {
-			x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] + 16;
-			y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, uint16)[i] + 16;
+	if ((game_flags & PARK_FLAGS_PARK_OPEN) && !(game_flags & PARK_FLAGS_NO_MONEY) && park_entrance_fee > max_fee) {
+		for (int i = 0; RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[i] != SPRITE_LOCATION_NULL; i++) {
+			x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[i] + 16;
+			y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[i] + 16;
 		}
 
 		packed_xy = (y << 16) | x;
@@ -452,34 +515,38 @@ void scenario_entrance_fee_too_high_check()
 	}
 }
 
-static void scenario_autosave_check()
+void scenario_autosave_check()
 {
-	uint32 next_month_tick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) + 4;
-	uint16 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+	// Timestamp in milliseconds
+	static uint32 last_save = 0;
+
 	bool shouldSave = 0;
 
+	// Milliseconds since last save
+	uint32_t time_since_save = SDL_GetTicks() - last_save;
+
 	switch (gConfigGeneral.autosave_frequency) {
-	case AUTOSAVE_EVERY_WEEK:
-		shouldSave = (next_month_tick % 0x4000 == 0);
+	case AUTOSAVE_EVERY_MINUTE:
+		shouldSave = time_since_save >= 1 * 60 * 1000;
 		break;
-	case AUTOSAVE_EVERY_2_WEEKS:
-		shouldSave = (next_month_tick % 0x8000 == 0);
+	case AUTOSAVE_EVERY_5MINUTES:
+		shouldSave = time_since_save >= 5 * 60 * 1000;
 		break;
-	case AUTOSAVE_EVERY_MONTH:
-		shouldSave = (next_month_tick >= 0x10000);
+	case AUTOSAVE_EVERY_15MINUTES:
+		shouldSave = time_since_save >= 15 * 60 * 1000;
 		break;
-	case AUTOSAVE_EVERY_4_MONTHS:
-		if (next_month_tick >= 0x10000)
-			shouldSave = (((month + 1) & 3) == 0);
+	case AUTOSAVE_EVERY_30MINUTES:
+		shouldSave = time_since_save >= 30 * 60 * 1000;
 		break;
-	case AUTOSAVE_EVERY_YEAR:
-		if (next_month_tick >= 0x10000)
-			shouldSave = (((month + 1) & 7) == 0);
+	case AUTOSAVE_EVERY_HOUR:
+		shouldSave = time_since_save >= 60 * 60 * 1000;
 		break;
 	}
 
-	if (shouldSave)
+	if (shouldSave) {
+		last_save = SDL_GetTicks();
 		game_autosave();
+	}
 }
 
 static void scenario_day_update()
@@ -541,36 +608,57 @@ static void scenario_month_update()
 	award_update_all();
 }
 
+static void scenario_update_daynight_cycle()
+{
+	gDayNightCycle = 0;
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) != SCREEN_FLAGS_PLAYING) return;
+	if (!gConfigGeneral.day_night_cycle) return;
+
+	float monthFraction = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) / (float)0x10000;
+	if (monthFraction < (1 / 8.0f)) {
+		gDayNightCycle = 0.0f;
+	} else if (monthFraction < (3 / 8.0f)) {
+		gDayNightCycle = (monthFraction - (1 / 8.0f)) / (2 / 8.0f);
+	} else if (monthFraction < (5 / 8.0f)) {
+		gDayNightCycle = 1.0f;
+	} else if (monthFraction < (7 / 8.0f)) {
+		gDayNightCycle = 1.0f - ((monthFraction - (5 / 8.0f)) / (2 / 8.0f));
+	} else {
+		gDayNightCycle = 0.0f;
+	}
+}
+
 /*
  * Scenario and finance related update iteration.
  * rct2: 0x006C44B1
  **/
 void scenario_update()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & ~SCREEN_FLAGS_PLAYING)
-		return;
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & ~SCREEN_FLAGS_PLAYING)) {
+		uint32 currentMonthTick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16);
+		uint32 nextMonthTick = currentMonthTick + 4;
+		uint8 currentMonth = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
+		uint8 currentDaysInMonth = (uint8)days_in_month[currentMonth];
 
-	uint32 currentMonthTick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16);
-	uint32 nextMonthTick = currentMonthTick + 4;
-	uint8 currentMonth = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
-	uint8 currentDaysInMonth = (uint8)days_in_month[currentMonth];
+		if ((currentDaysInMonth * nextMonthTick) >> 16 != (currentDaysInMonth * currentMonthTick) >> 16) {
+			scenario_day_update();
+		}
+		if (nextMonthTick % 0x4000 == 0) {
+			scenario_week_update();
+		}
+		if (nextMonthTick % 0x8000 == 0) {
+			scenario_fortnight_update();
+		}
 
-	scenario_autosave_check();
-	if ((currentDaysInMonth * nextMonthTick) >> 16 != (currentDaysInMonth * currentMonthTick) >> 16) {
-		scenario_day_update();
-	}
-	if (nextMonthTick % 0x4000 == 0) {
-		scenario_week_update();
-	}
-	if (nextMonthTick % 0x8000 == 0) {
-		scenario_fortnight_update();
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = (uint16)nextMonthTick;
+		if (nextMonthTick >= 0x10000) {
+			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)++;
+			scenario_month_update();
+		}
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = (uint16)nextMonthTick;
-	if (nextMonthTick >= 0x10000) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)++;
-		scenario_month_update();
-	}
+	scenario_update_daynight_cycle();
 }
 
 /**
@@ -634,9 +722,28 @@ static int scenario_create_ducks()
  */
 unsigned int scenario_rand()
 {
+#if DEBUG_DESYNC
+	if (!gInUpdateCode) {
+		log_warning("scenario_rand called from outside game update");
+		assert(false);
+	}
+#endif
+
 	int eax = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32);
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) += ror32(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) ^ 0x1234567F, 7);
 	return RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) = ror32(eax, 3);
+}
+
+unsigned int scenario_rand_max(unsigned int max)
+{
+	if (max < 2) return 0;
+	if ((max & (max - 1)) == 0)
+		return scenario_rand() & (max - 1);
+	unsigned int rand, cap = ~((unsigned int)0) - (~((unsigned int)0) % max) - 1;
+	do {
+		rand = scenario_rand();
+	} while (rand > cap);
+	return rand % max;
 }
 
 /**
@@ -685,8 +792,8 @@ int scenario_prepare_for_save()
 	rct_stex_entry* stex = g_stexEntries[0];
 	if ((int)stex != 0xFFFFFFFF) {
 		format_string(buffer, stex->scenario_name, NULL);
-		strncpy(s6Info->name, buffer, sizeof(s6Info->name));
-		
+		safe_strncpy(s6Info->name, buffer, sizeof(s6Info->name));
+
 		memcpy(&s6Info->entry, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0], sizeof(rct_object_entry));
 	}
 
@@ -703,6 +810,9 @@ int scenario_prepare_for_save()
 	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_GUESTS_AND_RATING)
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_OPEN;
 
+	// Fix #2385: saved scenarios did not initialise temperatures to selected climate
+	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
+
 	return 1;
 }
 
@@ -716,7 +826,7 @@ int scenario_get_num_packed_objects_to_write()
 	rct_object_entry_extended *entry = (rct_object_entry_extended*)0x00F3F03C;
 
 	for (i = 0; i < 721; i++, entry++) {
-		if (RCT2_ADDRESS(0x009ACFA4, uint32)[i] == 0xFFFFFFFF || (entry->flags & 0xF0))
+		if (GET_RIDE_ENTRY(i) == (void *)0xFFFFFFFF || (entry->flags & 0xF0))
 			continue;
 
 		count++;
@@ -729,15 +839,15 @@ int scenario_get_num_packed_objects_to_write()
  *
  *  rct2: 0x006AA26E
  */
-int scenario_write_packed_objects(FILE *file)
+int scenario_write_packed_objects(SDL_RWops* rw)
 {
 	int i;
 	rct_object_entry_extended *entry = (rct_object_entry_extended*)0x00F3F03C;
 	for (i = 0; i < 721; i++, entry++) {
-		if (RCT2_ADDRESS(0x009ACFA4, uint32)[i] == 0xFFFFFFFF || (entry->flags & 0xF0))
+		if (GET_RIDE_ENTRY(i) == (void *)0xFFFFFFFF || (entry->flags & 0xF0))
 			continue;
 
-		if (!write_object_file(file, (rct_object_entry*)entry))
+		if (!write_object_file(rw, (rct_object_entry*)entry))
 			return 0;
 	}
 
@@ -750,7 +860,7 @@ int scenario_write_packed_objects(FILE *file)
  */
 int scenario_write_available_objects(FILE *file)
 {
-	char *buffer, *dstBuffer;
+	uint8 *buffer, *dstBuffer;
 	int i, encodedLength;
 	sawyercoding_chunk_header chunkHeader;
 
@@ -759,19 +869,26 @@ int scenario_write_available_objects(FILE *file)
 
 	// Initialise buffers
 	buffer = malloc(bufferLength);
-	dstBuffer = malloc(bufferLength + sizeof(sawyercoding_chunk_header));
-	if (buffer == NULL || dstBuffer == NULL)
+	if (buffer == NULL) {
+		log_error("out of memory");
 		return 0;
+	}
+	dstBuffer = malloc(bufferLength + sizeof(sawyercoding_chunk_header));
+	if (dstBuffer == NULL) {
+		free(buffer);
+		log_error("out of memory");
+		return 0;
+	}
 
 	// Write entries
 	rct_object_entry_extended *srcEntry = (rct_object_entry_extended*)0x00F3F03C;
 	rct_object_entry *dstEntry = (rct_object_entry*)buffer;
 	for (i = 0; i < 721; i++) {
-		if (RCT2_ADDRESS(0x009ACFA4, uint32)[i] == 0xFFFFFFFF)
+		if (GET_RIDE_ENTRY(i) == (void *)0xFFFFFFFF)
 			memset(dstEntry, 0xFF, sizeof(rct_object_entry));
 		else
 			*dstEntry = *((rct_object_entry*)srcEntry);
-		
+
 		srcEntry++;
 		dstEntry++;
 	}
@@ -802,7 +919,7 @@ static void sub_674BCF()
 		char *dst = &savedExpansionPackNames[i * 128];
 		if (RCT2_GLOBAL(RCT2_ADDRESS_EXPANSION_FLAGS, uint16) & (1 << i)) {
 			char *src = &(RCT2_ADDRESS(RCT2_ADDRESS_EXPANSION_NAMES, char)[i * 128]);
-			strncpy(dst, src, 128);
+			safe_strncpy(dst, src, 128);
 		} else {
 			*dst = 0;
 		}
@@ -812,7 +929,7 @@ static void sub_674BCF()
 /**
  * Modifys the given S6 data so that ghost elements, rides with no track elements or unused banners / user strings are saved.
  */
-static scenario_fix_ghosts(rct_s6_data *s6)
+static void scenario_fix_ghosts(rct_s6_data *s6)
 {
 	// Remove all ghost elements
 	size_t mapElementTotalSize = MAX_MAP_ELEMENTS * sizeof(rct_map_element);
@@ -862,21 +979,16 @@ static scenario_fix_ghosts(rct_s6_data *s6)
  *  rct2: 0x006754F5
  * @param flags bit 0: pack objects, 1: save as scenario
  */
-int scenario_save(char *path, int flags)
+int scenario_save(SDL_RWops* rw, int flags)
 {
 	rct_window *w;
 	rct_viewport *viewport;
 	int viewX, viewY, viewZoom, viewRotation;
 
-	if (strcmp(path_get_filename(path), "autosave.sv6")) {
-		strcpy(gScenarioSaveName, path_get_filename(path));
-		path_remove_extension(gScenarioSaveName);
-	}
-
 	if (flags & 2)
-		log_verbose("saving scenario, %s", path);
+		log_verbose("saving scenario");
 	else
-		log_verbose("saving game, %s", path);
+		log_verbose("saving game");
 
 
 	if (!(flags & 0x80000000))
@@ -896,7 +1008,7 @@ int scenario_save(char *path, int flags)
 		viewX = viewport->view_width / 2 + viewport->view_x;
 		viewY = viewport->view_height / 2 + viewport->view_y;
 		viewZoom = viewport->zoom;
-		viewRotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8);
+		viewRotation = get_current_rotation();
 	} else {
 		viewX = 0;
 		viewY = 0;
@@ -918,10 +1030,82 @@ int scenario_save(char *path, int flags)
 	memcpy(&s6->info, (rct_s6_info*)0x0141F570, sizeof(rct_s6_info));
 
 	for (int i = 0; i < 721; i++) {
-		uint32 chunkPtr = RCT2_ADDRESS(0x009ACFA4, uint32)[i];
 		rct_object_entry_extended *entry = &(RCT2_ADDRESS(0x00F3F03C, rct_object_entry_extended)[i]);
 
-		if (RCT2_ADDRESS(0x009ACFA4, uint32)[i] == 0xFFFFFFFF) {
+		if (GET_RIDE_ENTRY(i) == (void *)0xFFFFFFFF) {
+			memset(&s6->objects[i], 0xFF, sizeof(rct_object_entry));
+		} else {
+			s6->objects[i] = *((rct_object_entry*)entry);
+		}
+	}
+
+	memcpy(&s6->elapsed_months, (void*)0x00F663A8, 16);
+	memcpy(s6->map_elements, (void*)0x00F663B8, 0x180000);
+	memcpy(&s6->dword_010E63B8, (void*)0x010E63B8, 0x2E8570);
+
+	safe_strncpy(s6->scenario_filename, _scenarioFileName, sizeof(s6->scenario_filename));
+
+	scenario_fix_ghosts(s6);
+	game_convert_strings_to_rct2(s6);
+	scenario_save_s6(rw, s6);
+
+	free(s6);
+
+	if (!(flags & 0x80000000))
+		reset_loaded_objects();
+
+	gfx_invalidate_screen();
+	if (!(flags & 0x80000000))
+		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
+	return 1;
+}
+
+// Save game state without modifying any of the state for multiplayer
+int scenario_save_network(SDL_RWops* rw)
+{
+	rct_window *w;
+	rct_viewport *viewport;
+	int viewX, viewY, viewZoom, viewRotation;
+
+	/*map_reorganise_elements();
+	reset_0x69EBE4();
+	sprite_clear_all_unused();
+	sub_677552();
+	sub_674BCF();*/
+
+	// Set saved view
+	w = window_get_main();
+	if (w != NULL) {
+		viewport = w->viewport;
+
+		viewX = viewport->view_width / 2 + viewport->view_x;
+		viewY = viewport->view_height / 2 + viewport->view_y;
+		viewZoom = viewport->zoom;
+		viewRotation = get_current_rotation();
+	} else {
+		viewX = 0;
+		viewY = 0;
+		viewZoom = 0;
+		viewRotation = 0;
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, uint16) = viewX;
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, uint16) = viewY;
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) = viewZoom | (viewRotation << 8);
+
+	// Prepare S6
+	rct_s6_data *s6 = malloc(sizeof(rct_s6_data));
+	s6->header.type = S6_TYPE_SAVEDGAME;
+	s6->header.num_packed_objects = scenario_get_num_packed_objects_to_write();
+	s6->header.version = S6_RCT2_VERSION;
+	s6->header.magic_number = S6_MAGIC_NUMBER;
+
+	memcpy(&s6->info, (rct_s6_info*)0x0141F570, sizeof(rct_s6_info));
+
+	for (int i = 0; i < 721; i++) {
+		rct_object_entry_extended *entry = &(RCT2_ADDRESS(0x00F3F03C, rct_object_entry_extended)[i]);
+
+		if (GET_RIDE_ENTRY(i) == (void *)0xFFFFFFFF) {
 			memset(&s6->objects[i], 0xFF, sizeof(rct_object_entry));
 		} else {
 			s6->objects[i] = *((rct_object_entry*)entry);
@@ -933,37 +1117,28 @@ int scenario_save(char *path, int flags)
 	memcpy(&s6->dword_010E63B8, (void*)0x010E63B8, 0x2E8570);
 
 	scenario_fix_ghosts(s6);
-	scenario_save_s6(path, s6);
+	scenario_save_s6(rw, s6);
 
 	free(s6);
 
-	if (!(flags & 0x80000000))
-		reset_loaded_objects();
+	// Write other data not in normal save files
+	SDL_WriteLE32(rw, RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32));
 
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(0x009DEA66, uint16) = 0;
 	return 1;
 }
 
-bool scenario_save_s6(char *path, rct_s6_data *s6)
+bool scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6)
 {
-	FILE *file;
-	char *buffer;
+	uint8 *buffer;
 	sawyercoding_chunk_header chunkHeader;
 	int encodedLength;
 	long fileSize;
 	uint32 checksum;
 
-	file = fopen(path, "wb+");
-	if (file == NULL) {
-		log_error("Unable to write to %s", path);
-		return false;
-	}
-
 	buffer = malloc(0x600000);
 	if (buffer == NULL) {
 		log_error("Unable to allocate enough space for a write buffer.");
-		fclose(file);
 		return false;
 	}
 
@@ -971,21 +1146,20 @@ bool scenario_save_s6(char *path, rct_s6_data *s6)
 	chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
 	chunkHeader.length = sizeof(rct_s6_header);
 	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->header, chunkHeader);
-	fwrite(buffer, encodedLength, 1, file);
+	SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 	// 1: Write scenario info chunk
 	if (s6->header.type == S6_TYPE_SCENARIO) {
 		chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
 		chunkHeader.length = sizeof(rct_s6_info);
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->info, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 	}
 
 	// 2: Write packed objects
 	if (s6->header.num_packed_objects > 0) {
-		if (!scenario_write_packed_objects(file)) {
+		if (!scenario_write_packed_objects(rw)) {
 			free(buffer);
-			fclose(file);
 			return false;
 		}
 	}
@@ -994,92 +1168,91 @@ bool scenario_save_s6(char *path, rct_s6_data *s6)
 	chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
 	chunkHeader.length = 721 * sizeof(rct_object_entry);
 	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)s6->objects, chunkHeader);
-	fwrite(buffer, encodedLength, 1, file);
+	SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 	// 4: Misc fields (data, rand...) chunk
 	chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 	chunkHeader.length = 16;
 	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->elapsed_months, chunkHeader);
-	fwrite(buffer, encodedLength, 1, file);
+	SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 	// 5: Map elements + sprites and other fields chunk
 	chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 	chunkHeader.length = 0x180000;
 	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)s6->map_elements, chunkHeader);
-	fwrite(buffer, encodedLength, 1, file);
+	SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 	if (s6->header.type == S6_TYPE_SCENARIO) {
 		// 6:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 0x27104C;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->dword_010E63B8, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 7:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 4;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->guests_in_park, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 8:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 8;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->last_guests_in_park, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 9:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 2;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->park_rating, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 10:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 1082;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->active_research_types, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 11:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 16;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->current_expenditure, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 12:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 4;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->park_value, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 13:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 0x761E8;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->completed_company_value, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 	} else {
 		// 6: Everything else...
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 0x2E8570;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->dword_010E63B8, chunkHeader);
-		fwrite(buffer, encodedLength, 1, file);
+		SDL_RWwrite(rw, buffer, encodedLength, 1);
 	}
 
 	free(buffer);
 
 	// Determine number of bytes written
-	fileSize = ftell(file);
-	fseek(file, 0, SEEK_SET);
+	fileSize = (long)SDL_RWtell(rw);
+	SDL_RWseek(rw, 0, RW_SEEK_SET);
 
 	// Read all written bytes back into a single buffer
 	buffer = malloc(fileSize);
-	fread(buffer, fileSize, 1, file);
+	SDL_RWread(rw, buffer, fileSize, 1);
 	checksum = sawyercoding_calculate_checksum(buffer, fileSize);
 	free(buffer);
 
 	// Append the checksum
-	fseek(file, fileSize, SEEK_SET);
-	fwrite(&checksum, sizeof(uint32), 1, file);
-	fclose(file);
+	SDL_RWseek(rw, fileSize, RW_SEEK_SET);
+	SDL_RWwrite(rw, &checksum, sizeof(uint32), 1);
 	return true;
 }
 
@@ -1169,10 +1342,9 @@ static void scenario_objective_check_guests_and_rating()
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) = 0;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32) != MONEY32_UNDEFINED)
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) >= 700)
-			if (RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) >= RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16))
-				scenario_success();
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) >= 700)
+		if (RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) >= RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16))
+			scenario_success();
 }
 
 static void scenario_objective_check_monthly_ride_income()

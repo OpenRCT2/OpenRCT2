@@ -54,7 +54,7 @@ STR_0049    :Haunted House
 STR_0050    :First Aid Room
 STR_0051    :Circus Show
 STR_0052    :Tunnel Of Horror
-STR_0053    :Twister Roller Coaster
+STR_0053    :Steel Twister Roller Coaster
 STR_0054    :Wooden Roller Coaster
 STR_0055    :Side-Friction Roller Coaster
 STR_0056    :Wild Mouse
@@ -513,31 +513,31 @@ STR_0508    :
 STR_0509    :
 STR_0510    :
 STR_0511    :
-STR_0512    :
-STR_0513    :
+STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
+STR_0513    :A looping roller coaster where the riders ride in a standing position
 STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
-STR_0515    :
+STR_0515    :A steel roller coaster with trains that are held beneath the track, with many complex and twisting track elements
 STR_0516    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
 STR_0517    :Passengers ride in miniature trains along a narrow-gauge railway track
 STR_0518    :Passengers travel in electric trains along a monorail track
 STR_0519    :Passengers ride in small cars hanging beneath the single-rail track, swinging freely from side to side around corners
-STR_0520    :
-STR_0521    :
-STR_0522    :
+STR_0520    :A dock platform where guests can drive/row personal watercraft on a body of water
+STR_0521    :A fast and twisting roller coaster with tight turns and steep drops. Intensity is bound to be high.
+STR_0522    :A smaller roller coaster where the riders sit above the track with no car around them
 STR_0523    :Riders travel slowly in powered vehicles along a track-based route
-STR_0524    :
-STR_0525    :
-STR_0526    :
+STR_0524    :Freefall car is pneumatically launched up a tall steel tower and then allowed to freefall down
+STR_0525    :Riders career down a twisting track guided only by the curvature and banking of the semi-circular track
+STR_0526    :Passengers travel in a rotating observation cabin which travels up a tall tower
 STR_0527    :A smooth steel-tracked roller coaster capable of vertical loops
-STR_0528    :
-STR_0529    :
+STR_0528    :Riders travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
+STR_0529    :Mine train themed roller coaster trains career along steel roller coaster track made to look like old railway track
 STR_0530    :Cars hang from a steel cable which runs continuously from one end of the ride to the other and back again
-STR_0531    :
+STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
 STR_0532    :
 STR_0533    :
-STR_0534    :
-STR_0535    :
-STR_0536    :
+STR_0534    :Self-drive petrol-engined go karts
+STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
+STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
 STR_0537    :
 STR_0538    :
 STR_0539    :
@@ -556,14 +556,14 @@ STR_0551    :
 STR_0552    :
 STR_0553    :
 STR_0554    :The car is accelerated out of the station along a long level track using Linear Induction Motors, then heads straight up a vertical spike of track, freefalling back down to return to the station
-STR_0555    :
-STR_0556    :
+STR_0555    :Guests ride in an elevator up or down a vertical tower to get from one level to another
+STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
 STR_0557    :
 STR_0558    :
 STR_0559    :
 STR_0560    :
 STR_0561    :
-STR_0562    :
+STR_0562    :Powered cars travel along a multi-level track past spooky scenery and special effects
 STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
 STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
 STR_0565    :A simple wooden roller coaster capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
@@ -572,38 +572,38 @@ STR_0567    :Sitting in seats suspended either side of the track, riders are pit
 STR_0568    :
 STR_0569    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air
 STR_0570    :
-STR_0571    :
-STR_0572    :
-STR_0573    :
-STR_0574    :
+STR_0571    :Circular cars spin around as they travel along the zig-zagging wooden track
+STR_0572    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyer belt, accelerating down steep slopes to soak the riders with a gaint splash
+STR_0573    :Powered helicoper shaped cars running on a steel track, controlled by the pedalling of the riders
+STR_0574    :Riders are held in special harnesses in a lying-down position, travlling through twisted track and inversions either on their backs or facing the ground
 STR_0575    :Powered trains hanging from a single rail transport people around the park
 STR_0576    :
-STR_0577    :
+STR_0577    :Bogied cars run on wooden tracks, turning around on special reversing sections
 STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
 STR_0579    :
-STR_0580    :
-STR_0581    :
+STR_0580    :A giant steel roller coaster capable of smooth drops and hills of over 300ft
+STR_0581    :A ring of seats is pulled to the top of a tall tower while gently rotating, then allowed to free-fall down, stopping gently at the bottom using magnetic brakes
 STR_0582    :
 STR_0583    :
-STR_0584    :
-STR_0585    :
+STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
+STR_0585    :Riders sit in pairs of seats suspended beneath the track as they loop and twist through tight inversions
 STR_0586    :Boat shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
-STR_0587    :
-STR_0588    :
+STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
+STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
 STR_0589    :
-STR_0590    :
-STR_0591    :
+STR_0590    :Riders ride in a submerged submarine through an underwater course
+STR_0591    :Raft-shaped boats gently meander around a river track
 STR_0592    :
 STR_0593    :
 STR_0594    :
 STR_0595    :
 STR_0596    :
 STR_0597    :
-STR_0598    :
+STR_0598    :Inverted roller coaster trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
 STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
-STR_0600    :
+STR_0600    :Powered mine trains career along a smooth and twisted track layout
 STR_0601    :
-STR_0602    :
+STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
 STR_0603    :Guest {INT32}
 STR_0604    :Guest {INT32}
 STR_0605    :Guest {INT32}
@@ -839,16 +839,17 @@ STR_0834    :{SMALLFONT}{BLACK}Disk and game options
 STR_0835    :Game initialization failed
 STR_0836    :Unable to start game in a minimized state
 STR_0837    :Unable to initialize graphics system
-STR_0838    :CD key code {INT32} is not valid for your RollerCoaster Tycoon 2 CD !{WINDOW_COLOUR_1}{WINDOW_COLOUR_1}Please un-install RollerCoaster Tycoon 2% and re-install with the correct CD Key Code
+STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-STR_0841    :Desktop window
-STR_0842    :640x480 full screen
-STR_0843    :800x600 full screen
-STR_0844    :1024x768 full screen
-STR_0845    :1152x864 full screen
-STR_0846    :1280x1024 full screen
-STR_0847    :About 'RollerCoaster Tycoon 2'
+# The following six strings were used for display resolutions, but have been replaced.
+STR_0841    :<not used anymore>
+STR_0842    :<not used anymore>
+STR_0843    :<not used anymore>
+STR_0844    :<not used anymore>
+STR_0845    :<not used anymore>
+STR_0846    :<not used anymore>
+STR_0847    :About 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, all rights reserved
@@ -1044,10 +1045,10 @@ STR_1039    :Install new track design
 STR_1040    :Save Game
 STR_1041    :Save Scenario
 STR_1042    :Save Landscape
-STR_1043    :RollerCoaster Tycoon 2 Saved Game
-STR_1044    :RollerCoaster Tycoon 2 Scenario File
-STR_1045    :RollerCoaster Tycoon 2 Landscape File
-STR_1046    :RollerCoaster Tycoon 2 Track Design File
+STR_1043    :OpenRCT2 Saved Game
+STR_1044    :OpenRCT2 Scenario File
+STR_1045    :OpenRCT2 Landscape File
+STR_1046    :OpenRCT2 Track Design File
 STR_1047    :Game save failed!
 STR_1048    :Scenario save failed!
 STR_1049    :Landscape save failed!
@@ -1781,7 +1782,7 @@ STR_1776    :On
 STR_1777    :{WINDOW_COLOUR_2}Music
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigre costume
+STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger costume
 STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elephant costume
 STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Roman costume
 STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilla costume
@@ -1893,8 +1894,10 @@ STR_1888    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}more than 4 hou
 STR_1889    :{WINDOW_COLOUR_2}Down-Time: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Select how often a mechanic should check this ride
 STR_1891    :No {STRINGID} in park yet!
-STR_1892    :RollerCoaster Tycoon 2
-STR_1893    :Please insert your RollerCoaster Tycoon 2 CD in the following drive:
+# The following two strings were used to display an error when the disc was missing.
+# This has been replaced in OpenRCT2.
+STR_1892    :<not used anymore>
+STR_1893    :<not used anymore>
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sold: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Build new ride/attraction
 STR_1896    :{WINDOW_COLOUR_2}Expenditure/Income
@@ -2218,7 +2221,7 @@ STR_2213    :{SMALLFONT}{BLACK}Show list of entertainers in park
 STR_2214    :Construction not possible while game is paused!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}F
+STR_2217    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}F
 STR_2218    :{RED}{STRINGID} on {STRINGID} hasn't returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
 STR_2219    :{RED}{COMMA16} people have died in an accident on {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Rating: {BLACK}{COMMA16}
@@ -2291,7 +2294,7 @@ STR_2286    :Designing
 STR_2287    :Completing design
 STR_2288    :Unknown
 STR_2289    :{STRINGID} {STRINGID}
-STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
+STR_2290    :<not used anymore>
 STR_2291    :Select scenario for new game
 STR_2292    :{WINDOW_COLOUR_2}Rides been on:
 STR_2293    :{BLACK} Nothing
@@ -2318,10 +2321,10 @@ STR_2313    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32} (approx.)
 STR_2314    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Cost: {BLACK}around {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Space required: {BLACK}{COMMA16} x {COMMA16} blocks
-STR_2317    :{WINDOW_COLOUR_2}Sound Quality:
-STR_2318    :Low
-STR_2319    :Medium
-STR_2320    :High
+STR_2317    :<not used anymore>
+STR_2318    :<not used anymore>
+STR_2319    :<not used anymore>
+STR_2320    :<not used anymore>
 STR_2321    :{WINDOW_COLOUR_2}Number of rides/attractions: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Staff: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m{SQUARED}
@@ -2368,7 +2371,7 @@ STR_2363    :Gridlines on Landscape
 STR_2364    :{SMALLFONT}{BLACK}Toggle gridlines on landscape on/off
 STR_2365    :The bank refuses to increase your loan!
 STR_2366    :Celsius ({DEGREE}C)
-STR_2367    :Fahrenheit (F)
+STR_2367    :Fahrenheit ({DEGREE}F)
 STR_2368    :None
 STR_2369    :Low
 STR_2370    :Average
@@ -2438,12 +2441,12 @@ STR_2433    :{BLACK}Vouchers for free {STRINGID}
 STR_2434    :{BLACK}Advertising campaign for {STRINGID}
 STR_2435    :{BLACK}Advertising campaign for {STRINGID}
 STR_2436    :1 week
-STR_2437    :2 weeks
-STR_2438    :3 weeks
-STR_2439    :4 weeks
-STR_2440    :5 weeks
-STR_2441    :6 weeks
-STR_2442    :{BLACK}({STRINGID} remaining)
+STR_2437    :<not used anymore>
+STR_2438    :<not used anymore>
+STR_2439    :<not used anymore>
+STR_2440    :<not used anymore>
+STR_2441    :<not used anymore>
+STR_2442    :<not used anymore>
 STR_2443    :{WINDOW_COLOUR_2}Cost per week: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Total cost: {BLACK}{CURRENCY2DP}
 STR_2445    :Start this marketing campaign
@@ -2683,10 +2686,10 @@ STR_2677    :???
 STR_2678    :???
 STR_2679    :???
 STR_2680    :All research complete
-STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by 5,000
-STR_2682    :{MEDIUMFONT}{BLACK}Toggle between Free and Paid Entry
-STR_2683    :{MEDIUMFONT}{BLACK}Increases every peeps happiness to max
-STR_2684    :{MEDIUMFONT}{BLACK}Large group of peeps arrive
+STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by {CURRENCY}
+STR_2682    :<not used anymore>
+STR_2683    :<not used anymore>
+STR_2684    :{SMALLFONT}{BLACK}Large group of peeps arrive
 STR_2685    :Simplex Noise Parameters
 STR_2686    :{WINDOW_COLOUR_2}Low:
 STR_2687    :{WINDOW_COLOUR_2}High:
@@ -2703,13 +2706,13 @@ STR_2697    :???
 STR_2698    :???
 STR_2699    :???
 STR_2700    :Autosave frequency:
-STR_2701    :Every week
-STR_2702    :Every 2 weeks
-STR_2703    :Every month
-STR_2704    :Every 4 months
-STR_2705    :Every year
+STR_2701    :Every minute
+STR_2702    :Every 5 minutes
+STR_2703    :Every 15 minutes
+STR_2704    :Every 30 minutes
+STR_2705    :Every hour
 STR_2706    :Never
-STR_2707    :Open new window
+STR_2707    :Use system dialog window
 STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
 STR_2709    :Overwrite
 STR_2710    :Type the name of the file.
@@ -2720,8 +2723,8 @@ STR_2714    :-
 STR_2715    :.
 STR_2716    :/
 STR_2717    :'
-STR_2718    :(up)
-STR_2719    :(new file)
+STR_2718    :Up
+STR_2719    :New file
 STR_2720    :{UINT16}sec
 STR_2721    :{UINT16}secs
 STR_2722    :{UINT16}min:{UINT16}sec
@@ -2764,11 +2767,11 @@ STR_2756    :Remove litter
 STR_2757    :Force Sun
 STR_2758    :Force Thunder
 STR_2759    :Zero Clearance
-STR_2760    :+5K Money
-STR_2761    :Pay For Entrance
-STR_2762    :Pay For Rides
+STR_2760    :+{CURRENCY}
+STR_2761    :<not used anymore>
+STR_2762    :<not used anymore>
 STR_2763    :???
-STR_2764    :Happy Guests
+STR_2764    :<not used anymore>
 STR_2765    :Large Tram
 STR_2766    :Win scenario
 STR_2767    :Freeze Climate
@@ -2787,8 +2790,7 @@ STR_2779    :Viewport #{COMMA16}
 STR_2780    :Extra viewport
 # End of new strings
 
-
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}{STRINGID}
+STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Change keyboard shortcut
@@ -2866,7 +2868,7 @@ STR_2855    :{RED}{STRINGID} has no path leading from its exit !{NEWLINE}Constru
 STR_2856    :{WINDOW_COLOUR_2}Tutorial
 STR_2857    :{WINDOW_COLOUR_2}(Press a key or mouse button to take control)
 STR_2858    :Can't start marketing campaign...
-STR_2859    :Another instance of RollerCoaster Tycoon 2 is already running
+STR_2859    :Another instance of OpenRCT2 is already running
 STR_2860    :Infogrames Interactive credits...
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
 STR_2862    :Music acknowledgements...
@@ -2976,8 +2978,8 @@ STR_2965    :{WINDOW_COLOUR_2}
 STR_2966    :
 STR_2967    :
 STR_2968    :
-STR_2969    :Use of this product is subject to the terms of a license agreement
-STR_2970    :found in the product's {OPENQUOTES}ReadMe{ENDQUOTES} file and in the manual
+STR_2969    :<not used anymore>
+STR_2970    :<not used anymore>
 STR_2971    :Main color scheme
 STR_2972    :Alternative color scheme 1
 STR_2973    :Alternative color scheme 2
@@ -3167,8 +3169,8 @@ STR_3156    :
 STR_3157    :map
 STR_3158    :graph
 STR_3159    :list
-STR_3160    :RollerCoaster Tycoon 2: Starting for the first time...
-STR_3161    :RollerCoaster Tycoon 2: Checking object files...
+STR_3160    :<not used anymore>
+STR_3161    :<not used anymore>
 STR_3162    :Unable to allocate enough memory
 STR_3163    :Installing new data: 
 STR_3164    :{BLACK}{COMMA16} selected (maximum {COMMA16})
@@ -3179,7 +3181,7 @@ STR_3168    :{WINDOW_COLOUR_2}Text: {BLACK}{STRINGID}
 STR_3169    :Data for the following object not found: 
 STR_3170    :Not enough space for graphics
 STR_3171    :Too many objects of this type selected
-STR_3172    :The following object must be selected first: 
+STR_3172    :The following object must be selected first: {STRING}
 STR_3173    :This object is currently in use
 STR_3174    :This object is required by another object
 STR_3175    :This object is always required
@@ -3344,7 +3346,7 @@ STR_3333    :Export plug-in objects with saved games
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
 STR_3335    :Roller Coaster Designer - Select Ride Types & Vehicles
 STR_3336    :Track Designs Manager - Select Ride Type
-STR_3337    :Six Flags Park
+STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Custom-designed layout
 STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
 STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
@@ -3369,8 +3371,8 @@ STR_3358    :Can't delete track design...
 STR_3359    :{BLACK}No track designs of this type
 STR_3360    :Warning!
 STR_3361    :Too many track designs of this type - Some will not be listed.
-STR_3362    :Forced Software Buffer Mixing
-STR_3363    :{SMALLFONT}{BLACK}Select this option to improve performance if the game pauses slightly when sounds start or interference is heard
+STR_3362    :<not used anymore>
+STR_3363    :<not used anymore>
 STR_3364    :Advanced
 STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of scenery in addition to scenery groups
 STR_3366    :{BLACK}= Ride
@@ -3456,11 +3458,11 @@ STR_3445    :Set Patrol Area
 STR_3446    :Cancel Patrol Area
 
 # New strings, cleaner
-STR_5120    :Show finances button on toolbar
-STR_5121    :Show research button on toolbar
-STR_5122    :Show all vehicles sharing a track/ride type
+STR_5120    :Finances
+STR_5121    :Research
+STR_5122    :Select rides by track type (like in RCT1)
 STR_5123    :Renew rides
-STR_5124    :No Six Flags
+STR_5124    :<not used anymore>
 STR_5125    :All destructable
 STR_5126    :Random title music
 STR_5127    :{SMALLFONT}{BLACK}Disable land elevation
@@ -3483,7 +3485,7 @@ STR_5143    :Quick Speed
 STR_5144    :Fast Speed
 STR_5145    :Turbo Speed
 STR_5146    :Hyper Speed
-STR_5147    :Show cheats button on toolbar
+STR_5147    :Cheats
 STR_5148    :{SMALLFONT}{BLACK}Change the game speed
 STR_5149    :{SMALLFONT}{BLACK}Open the cheats window
 STR_5150    :Enable debugging tools
@@ -3491,14 +3493,14 @@ STR_5150    :Enable debugging tools
 STR_5151    :,
 #Decimals separator
 STR_5152    :.
-STR_5153    :Color schemes...
+STR_5153    :Edit Themes...
 STR_5154    :Hardware display
 STR_5155    :Allow testing of unfinished tracks
 STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
 STR_5157    :Unlock all prices
 STR_5158    :Quit to menu
 STR_5159    :Exit OpenRCT2
-STR_5160    :{MONTH} {STRINGID}, Year {COMMA16}
+STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Year {POP16}{COMMA16}
 STR_5161    :Date Format:
 STR_5162    :Day/Month/Year
 STR_5163    :Month/Day/Year
@@ -3592,8 +3594,8 @@ STR_5250    :Title Exit Button
 STR_5251    :Title Options Button
 STR_5252    :Title Scenario Selection
 STR_5253    :Park Information
-STR_5254    :Add nausea
-STR_5255    :{MEDIUMFONT}{BLACK}All peeps become nauseous
+STR_5254    :Create
+STR_5255    :{SMALLFONT}{BLACK}Create a new title sequence from scratch
 STR_5256    :Create a new theme to make changes to
 STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
 STR_5258    :{SMALLFONT}{BLACK}Delete the current theme
@@ -3607,7 +3609,7 @@ STR_5265    :{SMALLFONT}{BLACK}Select which content sources are visible
 STR_5266    :{SMALLFONT}{BLACK}Display
 STR_5267    :{SMALLFONT}{BLACK}Culture and Units
 STR_5268    :{SMALLFONT}{BLACK}Audio
-STR_5269    :{SMALLFONT}{BLACK}Controls
+STR_5269    :{SMALLFONT}{BLACK}Controls and interface
 STR_5270    :{SMALLFONT}{BLACK}Miscellaneous
 STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Small Scenery
@@ -3624,7 +3626,7 @@ STR_5282    :RCT1 Ride Open/Close Lights
 STR_5283    :RCT1 Park Open/Close Lights
 STR_5284    :RCT1 Scenario Selection Font
 STR_5285    :EXPLODE!!!
-STR_5286    :{MEDIUMFONT}{BLACK}Makes guests explode
+STR_5286    :{SMALLFONT}{BLACK}Makes some guests explode
 STR_5287    :Ride is already broken down
 STR_5288    :Ride is closed
 STR_5289    :No breakdowns available for this ride
@@ -3683,3 +3685,249 @@ STR_5341    :Flags
 STR_5342    :Choose a map tile
 STR_5343    :Automatically place staff
 STR_5344    :Changelog
+STR_5345    :Financial cheats
+STR_5346    :Guest cheats
+STR_5347    :Park cheats
+STR_5348    :Ride cheats
+STR_5349    :{SMALLFONT}{BLACK}All Rides
+STR_5350    :Max
+STR_5351    :Min
+STR_5352    :{BLACK}Happiness:
+STR_5353    :{BLACK}Energy:
+STR_5354    :{BLACK}Hunger:
+STR_5355    :{BLACK}Thirst:
+STR_5356    :{BLACK}Nausea:
+STR_5357    :{BLACK}Nausea tolerance:
+STR_5358    :{BLACK}Bathroom:
+STR_5359    :Remove guests
+STR_5360    :{SMALLFONT}{BLACK}Removes all guests from the map
+STR_5361    :Give all guests:
+STR_5362    :{BLACK}Set all guests' preferred ride intensity to:
+STR_5363    :More than 1
+STR_5364    :Less than 15
+STR_5365    :{BLACK}Staff speed:
+STR_5366    :Normal
+STR_5367    :Fast
+STR_5368    :Reset crash status
+STR_5369    :Park parameters...
+STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
+STR_5371    :Object Selection
+STR_5372    :Invert right mouse dragging
+STR_5373    :Name {STRINGID}
+STR_5374    :Date {STRINGID}
+STR_5375    :{UP}
+STR_5376    :{DOWN}
+STR_5377    :{SMALLFONT}{BLACK}Saves
+STR_5378    :{SMALLFONT}{BLACK}Script
+STR_5379    :{SMALLFONT}{BLACK}Skip to next wait command
+STR_5380    :{SMALLFONT}{BLACK}Start playing title sequence
+STR_5381    :{SMALLFONT}{BLACK}Stop playing title sequence
+STR_5382    :{SMALLFONT}{BLACK}Restart title sequence
+STR_5383    :{SMALLFONT}{BLACK}Create a new title sequence based on the current one
+STR_5384    :{SMALLFONT}{BLACK}Delete the current title sequence
+STR_5385    :{SMALLFONT}{BLACK}Rename the current title sequence
+STR_5386    :{SMALLFONT}{BLACK}Insert a new command
+STR_5387    :{SMALLFONT}{BLACK}Edit the selected command
+STR_5388    :{SMALLFONT}{BLACK}Delete the selected command
+STR_5389    :{SMALLFONT}{BLACK}Skip to the selected command in the title sequence
+STR_5390    :{SMALLFONT}{BLACK}Move the selected command down
+STR_5391    :{SMALLFONT}{BLACK}Move the selected command up
+STR_5392    :{SMALLFONT}{BLACK}Add a save to the title sequence
+STR_5393    :{SMALLFONT}{BLACK}Remove the selected save from the title sequence
+STR_5394    :{SMALLFONT}{BLACK}Rename the selected save
+STR_5395    :{SMALLFONT}{BLACK}Load the selected save in game
+STR_5396    :{SMALLFONT}{BLACK}Reload the title sequence if changes have been made to it outside of the game
+STR_5397    :Can only be used on the title screen
+STR_5398    :Cannot edit title sequence while it's playing
+STR_5399    :Press the stop button to continue editing
+STR_5400    :Can't change this title sequence
+STR_5401    :Create a new title sequence to make changes to
+STR_5402    :Failed to load title sequence
+STR_5403    :There may be no Load or Wait command or a save may be invalid
+STR_5404    :Name already exists
+STR_5405    :Enter a name for the save
+STR_5406    :Enter a name for the title sequence
+STR_5407    :Add
+STR_5408    :Remove
+STR_5409    :Insert
+STR_5410    :Edit
+STR_5411    :Reload
+STR_5412    :Skip to
+STR_5413    :Load
+STR_5414    :Load{MOVE_X}{87}Six Flags Magic Mountain.SC6
+STR_5415    :Load{MOVE_X}{87}{STRING}
+STR_5416    :Load{MOVE_X}{87}No save selected
+STR_5417    :Location
+STR_5418    :Location{MOVE_X}{87}{COMMA16}   {COMMA16}
+STR_5419    :Rotate
+STR_5420    :Rotate{MOVE_X}{87}{COMMA16}
+STR_5421    :Zoom
+STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
+STR_5423    :Wait
+STR_5424    :Wait{MOVE_X}{87}{COMMA16}
+STR_5425    :Restart
+STR_5426    :End
+STR_5427    :Coordinates:
+STR_5428    :Counter-clockwise rotations:
+STR_5429    :Zoom level:
+STR_5430    :Seconds to wait:
+STR_5431    :Save to load:
+STR_5432    :Command:
+STR_5433    :Title Sequences
+STR_5434    :Command Editor
+STR_5435    :Rename save
+STR_5436    :Edit Title Sequences...
+STR_5437    :No save selected
+STR_5438    :Can't make changes while command editor is open
+STR_5439    :A wait command with at least 4 seconds is required with a restart command
+STR_5440    :Minimize fullscreen on focus loss
+STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type,{NEWLINE}so vehicles can be changed{NEWLINE}afterwards, like in RCT1.
+STR_5442    :Force park rating:
+STR_5443    :Speed{MOVE_X}{87}{STRINGID}
+STR_5444    :Speed:
+STR_5445    :Speed
+STR_5446    :Get
+STR_5447    :Type {STRINGID}
+STR_5448    :Ride / Vehicle {STRINGID}
+STR_5449    :Reduce game speed
+STR_5450    :Increase game speed
+STR_5451    :Open cheats window
+STR_5452    :Toggle visibility of toolbars
+STR_5453    :Select another ride
+STR_5454    :Uncap FPS
+STR_5455    :Enable sandbox mode
+STR_5456    :Disable clearance checks
+STR_5457    :Disable support limits
+STR_5458    :Rotate clockwise
+STR_5459    :Rotate counterclockwise
+STR_5460    :Rotate view counterclockwise
+STR_5461    :Set guests' parameters
+STR_5462    :{CURRENCY}
+STR_5463    :Goal: Have fun!
+STR_5464    :General
+STR_5465    :Climate
+STR_5466    :Staff
+STR_5467    :ALT + 
+STR_5468    :Recent messages
+STR_5469    :Scroll map up
+STR_5470    :Scroll map left
+STR_5471    :Scroll map down
+STR_5472    :Scroll map right
+STR_5473    :Cycle day / night
+STR_5474    :Display text on banners in upper case
+STR_5475    :{COMMA16} weeks
+STR_5476    :Hardware
+STR_5477    :Map rendering
+STR_5478    :Controls
+STR_5479    :Toolbar
+STR_5480    :Show toolbar buttons for:
+STR_5481    :Themes
+STR_5482    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}1 minute
+STR_5483    :{BLACK}({COMMA16} weeks remaining)
+STR_5484    :{BLACK}({COMMA16} week remaining)
+STR_5485    :{SMALLFONT}{STRING}
+STR_5486    :{BLACK}{COMMA16}
+STR_5487    :{SMALLFONT}{BLACK}Show recent messages
+STR_5488    :No entrance (OpenRCT2 only!)
+STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
+STR_5490    :Disable audio on focus loss
+STR_5491    :Inventions list
+STR_5492    :Scenario options
+STR_5493    :Send Message
+STR_5494    :<not used anymore>
+STR_5495    :Player List
+STR_5496    :Player:
+STR_5497    :Ping:
+STR_5498    :Server List
+STR_5499    :Player Name:
+STR_5500    :Add Server
+STR_5501    :Start Server
+STR_5502    :Multiplayer
+STR_5503    :Enter hostname or IP address:
+STR_5504    :{SMALLFONT}{BLACK}Show multiplayer status
+STR_5505    :Unable to connect to server.
+STR_5506    :Guests ignore intensities
+STR_5507    :Handymen mow grass by default
+STR_5508    :Allow loading files with incorrect checksums
+STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves that have an incorrect checksum, like the scenarios from the demo or damaged saves.
+STR_5510    :Default sound device
+STR_5511    :(UNKNOWN)
+STR_5512    :Save Game As
+STR_5513    :(Quick) save game
+STR_5514    :Disable vandalism
+STR_5515    :{SMALLFONT}{BLACK}Stops guests from vandalizing your park when they're angry
+STR_5516    :{SMALLFONT}{BLACK}Black
+STR_5517    :{SMALLFONT}{BLACK}Gray
+STR_5518    :{SMALLFONT}{BLACK}White
+STR_5519    :{SMALLFONT}{BLACK}Dark purple
+STR_5520    :{SMALLFONT}{BLACK}Light purple
+STR_5521    :{SMALLFONT}{BLACK}Bright purple
+STR_5522    :{SMALLFONT}{BLACK}Dark blue
+STR_5523    :{SMALLFONT}{BLACK}Light blue
+STR_5524    :{SMALLFONT}{BLACK}Icy blue
+STR_5525    :{SMALLFONT}{BLACK}Dark water
+STR_5526    :{SMALLFONT}{BLACK}Light water
+STR_5527    :{SMALLFONT}{BLACK}Saturated green
+STR_5528    :{SMALLFONT}{BLACK}Dark green
+STR_5529    :{SMALLFONT}{BLACK}Moss green
+STR_5530    :{SMALLFONT}{BLACK}Bright green
+STR_5531    :{SMALLFONT}{BLACK}Olive green
+STR_5532    :{SMALLFONT}{BLACK}Dark olive green
+STR_5533    :{SMALLFONT}{BLACK}Bright yellow
+STR_5534    :{SMALLFONT}{BLACK}Yellow
+STR_5535    :{SMALLFONT}{BLACK}Dark yellow
+STR_5536    :{SMALLFONT}{BLACK}Light orange
+STR_5537    :{SMALLFONT}{BLACK}Dark orange
+STR_5538    :{SMALLFONT}{BLACK}Light brown
+STR_5539    :{SMALLFONT}{BLACK}Saturated brown
+STR_5540    :{SMALLFONT}{BLACK}Dark brown
+STR_5541    :{SMALLFONT}{BLACK}Salmon pink
+STR_5542    :{SMALLFONT}{BLACK}Bordeaux red
+STR_5543    :{SMALLFONT}{BLACK}Saturated red
+STR_5544    :{SMALLFONT}{BLACK}Bright red
+STR_5545    :{SMALLFONT}{BLACK}Dark pink
+STR_5546    :{SMALLFONT}{BLACK}Bright pink
+STR_5547    :{SMALLFONT}{BLACK}Light pink
+STR_5548    :Show all operating modes
+STR_5549    :Year/Month/Day
+STR_5550    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_5551    :Year/Day/Month
+STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
+STR_5553    :Pause game when Steam overlay is open
+STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
+STR_5555    :Show vehicles from other track types
+STR_5556    :Kick Player
+STR_5557    :Stay connected after desynchronization (Multiplayer)
+STR_5558    :A restart is required for this setting to take effect
+STR_5559    :10 min. inspections
+STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on all rides
+STR_5561    :Failed to load language
+STR_5562    :WARNING!
+STR_5563    :This feature is currently unstable, take extra caution.
+STR_5564    :Insert Corrupt Element
+STR_5565    :{SMALLFONT}{BLACK}Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element.
+STR_5566    :Password:
+STR_5567    :Advertise
+STR_5568    :Password Required
+STR_5569    :This server requires a password
+STR_5570    :Fetch Servers
+STR_5571    :Join Game
+STR_5572    :Add To Favorites
+STR_5573    :Remove From Favorites
+STR_5574    :Server Name:
+STR_5575    :Max Players:
+STR_5576    :Port:
+STR_5577    :South Korean Won (W)
+STR_5578    :Russian Ruble (R)
+STR_5579    :Window scale factor:
+STR_5580    :Czech koruna (Kc)
+
+#########
+# Rides #
+#########
+
+#WW
+[CONDORRD]
+STR_NAME    :Condor Ride
+STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
+STR_CPTY    :4 passengers per car

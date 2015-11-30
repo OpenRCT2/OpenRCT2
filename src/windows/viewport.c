@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -57,42 +57,41 @@ static rct_widget window_viewport_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_viewport_empty(){}
-static void window_viewport_mouseup();
-static void window_viewport_resize();
+static void window_viewport_mouseup(rct_window *w, int widgetIndex);
+static void window_viewport_resize(rct_window *w);
 static void window_viewport_update(rct_window *w);
-static void window_viewport_invalidate();
-static void window_viewport_paint();
+static void window_viewport_invalidate(rct_window *w);
+static void window_viewport_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-void* window_viewport_events[] = {
-	window_viewport_empty,
+static rct_window_event_list window_viewport_events = {
+	NULL,
 	window_viewport_mouseup,
 	window_viewport_resize,
-	window_viewport_empty,
-	window_viewport_empty,
-	window_viewport_empty,
+	NULL,
+	NULL,
+	NULL,
 	window_viewport_update,
-	window_viewport_empty,
-	window_viewport_empty,
-	window_viewport_empty,
-	window_viewport_empty,
-	window_viewport_empty,
-	window_viewport_empty,
-	window_viewport_empty,
-	window_viewport_empty,
-	window_viewport_empty,
-	window_viewport_empty,
-	window_viewport_empty,
-	window_viewport_empty,
-	window_viewport_empty,
-	window_viewport_empty,
-	window_viewport_empty,
-	window_viewport_empty,
-	window_viewport_empty,
-	window_viewport_empty,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_viewport_invalidate,
 	window_viewport_paint,
-	window_viewport_empty
+	NULL
 };
 
 static int _viewportNumber = 1;
@@ -108,7 +107,7 @@ void window_viewport_open()
 
 	w = window_create_auto_pos(
 		INITIAL_WIDTH, INITIAL_HEIGHT,
-		(uint32*)window_viewport_events,
+		&window_viewport_events,
 		WC_VIEWPORT,
 		WF_RESIZABLE
 	);
@@ -120,7 +119,7 @@ void window_viewport_open()
 		(1 << WIDX_LOCATE);
 	w->number = _viewportNumber++;
 
-	rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32);
+	rotation = get_current_rotation();
 
 	// Create viewport
 	viewport_create(w, w->x, w->y, w->width, w->height, 0, 128 * 32, 128 * 32, 0, 1, -1);
@@ -147,13 +146,10 @@ static void window_viewport_anchor_border_widgets(rct_window *w)
 	w->widgets[WIDX_CLOSE].right = w->width - 3;
 }
 
-static void window_viewport_mouseup()
+static void window_viewport_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w, *mainWindow;
+	rct_window *mainWindow;
 	sint16 x, y;
-
-	window_widget_get_registers(w, widgetIndex);
 
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -181,12 +177,8 @@ static void window_viewport_mouseup()
 	}
 }
 
-static void window_viewport_resize()
+static void window_viewport_resize(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
-
 	w->flags |= WF_RESIZABLE;
 	window_set_resize(w, 200, 200, 2000, 2000);
 }
@@ -208,14 +200,12 @@ static void window_viewport_update(rct_window *w)
 	//widget_invalidate(w, WIDX_VIEWPORT);
 }
 
-static void window_viewport_invalidate()
+static void window_viewport_invalidate(rct_window *w)
 {
-	rct_window *w;
 	rct_widget *viewportWidget;
 	rct_viewport *viewport;
 	int i;
 
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	viewportWidget = &window_viewport_widgets[WIDX_VIEWPORT];
@@ -239,7 +229,7 @@ static void window_viewport_invalidate()
 		w->disabled_widgets |= 1 << WIDX_ZOOM_IN;
 	if (viewport->zoom >= 3)
 		w->disabled_widgets |= 1 << WIDX_ZOOM_OUT;
-	
+
 	viewport->x = w->x + viewportWidget->left;
 	viewport->y = w->y + viewportWidget->top;
 	viewport->width = viewportWidget->right - viewportWidget->left;
@@ -248,13 +238,8 @@ static void window_viewport_invalidate()
 	viewport->view_height = viewport->height << viewport->zoom;
 }
 
-static void window_viewport_paint()
+static void window_viewport_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 
 	// Draw viewport

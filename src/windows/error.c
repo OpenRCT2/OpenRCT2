@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -34,46 +34,45 @@ static rct_widget window_error_widgets[] = {
 	{ WIDGETS_END }
 };
 
-static void window_error_emptysub() { }
-static void window_error_unknown5();
-static void window_error_paint();
+static void window_error_unknown5(rct_window *w);
+static void window_error_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void* window_error_events[] = {
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_unknown5,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_emptysub,
-	(uint32*)window_error_paint,
-	(uint32*)window_error_emptysub
+static rct_window_event_list window_error_events = {
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	window_error_unknown5,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	window_error_paint,
+	NULL
 };
 
 static char _window_error_text[512];
 static uint16 _window_error_num_lines;
 
 /**
- * 
+ *
  *  rct2: 0x0066792F
  *
  * bx: title
@@ -81,7 +80,8 @@ static uint16 _window_error_num_lines;
  */
 void window_error_open(rct_string_id title, rct_string_id message)
 {
-	char *dst, *args;
+	utf8 *dst;
+	char *args;
 	int numLines, fontHeight, x, y, width, height, maxY;
 	rct_window *w;
 
@@ -90,17 +90,17 @@ void window_error_open(rct_string_id title, rct_string_id message)
 	args = (char*)0x0013CE952;
 
 	// Format the title
-	*dst++ = FORMAT_BLACK;
+	dst = utf8_write_codepoint(dst, FORMAT_BLACK);
 	if (title != (rct_string_id)STR_NONE) {
 		format_string(dst, title, args);
-		dst += get_string_length(dst);
+		dst = get_string_end(dst);
 	}
 
 	// Format the message
 	if (message != (rct_string_id)STR_NONE) {
-		*dst++ = FORMAT_NEWLINE;
+		dst = utf8_write_codepoint(dst, FORMAT_NEWLINE);
 		format_string(dst, message, args);
-		dst += get_string_length(dst);
+		dst = get_string_end(dst);
 	}
 
 	log_verbose("show error, %s", _window_error_text + 1);
@@ -124,49 +124,41 @@ void window_error_open(rct_string_id title, rct_string_id message)
 	window_error_widgets[WIDX_BACKGROUND].bottom = height;
 
 	x = RCT2_GLOBAL(0x0142406C, sint32) - (width / 2);
-	x = clamp(0, x, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, sint16));
+	x = clamp(0, x, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
 
 	y = RCT2_GLOBAL(0x01424070, sint32) + 26;
 	y = max(22, y);
-	maxY = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, sint16) - height;
+	maxY = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height;
 	if (y > maxY) {
 		y = y - height - 40;
 		y = min(y, maxY);
 	}
-		
-	w = window_create(x, y, width, height, (uint32*)window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
+
+	w = window_create(x, y, width, height, &window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
 	w->widgets = window_error_widgets;
 	w->error.var_480 = 0;
 	if (!(RCT2_GLOBAL(0x009A8C29, uint8) & 1))
-		sound_play_panned(SOUND_ERROR, 0, w->x + (w->width / 2), 0, 0);
+		audio_play_sound_panned(SOUND_ERROR, 0, w->x + (w->width / 2), 0, 0);
 }
 
 /**
- * 
+ *
  *  rct2: 0x00667BFE
  */
-static void window_error_unknown5()
+static void window_error_unknown5(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
-
 	w->error.var_480++;
 	if (w->error.var_480 >= 8)
 		window_close(w);
 }
 
 /**
- * 
+ *
  *  rct2: 0x00667AA3
  */
-static void window_error_paint()
+static void window_error_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
 	int t, l, r, b;
-
-	window_paint_get_registers(w, dpi);
 
 	l = w->x;
 	t = w->y;

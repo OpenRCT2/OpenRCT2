@@ -38,39 +38,38 @@ rct_widget window_publisher_credits_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_publisher_credits_emptysub() { }
-static void window_publisher_credits_mouseup();
-static void window_publisher_credits_scrollgetsize();
-static void window_publisher_credits_paint();
-static void window_publisher_credits_scrollpaint();
+static void window_publisher_credits_mouseup(rct_window *w, int widgetIndex);
+static void window_publisher_credits_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_publisher_credits_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_publisher_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 
-static void* window_publisher_credits_events[] = {
-	window_publisher_credits_emptysub,
+static rct_window_event_list window_publisher_credits_events = {
+	NULL,
 	window_publisher_credits_mouseup,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_publisher_credits_scrollgetsize,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
-	window_publisher_credits_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_publisher_credits_paint,
 	window_publisher_credits_scrollpaint
 };
@@ -91,7 +90,7 @@ void window_publisher_credits_open()
 	window = window_create_centred(
 		420,
 		384,
-		(uint32*)window_publisher_credits_events,
+		&window_publisher_credits_events,
 		WC_PUBLISHER_CREDITS,
 		0
 	);
@@ -110,13 +109,8 @@ void window_publisher_credits_open()
 *
 *  rct2: 0x0066D7A8
 */
-static void window_publisher_credits_mouseup()
+static void window_publisher_credits_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
@@ -128,26 +122,17 @@ static void window_publisher_credits_mouseup()
 *
 *  rct2: 0x0066D7B3
 */
-static void window_publisher_credits_scrollgetsize()
+static void window_publisher_credits_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
-	int width, height;
-
-	width = 0;
-	height = 820;
-	window_scrollsize_set_registers(width, height);
+	*height = 820;
 }
 
 /**
 *
 *  rct2: 0x0066D5CB
 */
-static void window_publisher_credits_paint()
+static void window_publisher_credits_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 }
 
@@ -180,12 +165,8 @@ int credits_order[] = {
 *
 *  rct2: 0x0066D5D1
 */
-static void window_publisher_credits_scrollpaint()
+static void window_publisher_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-	window_paint_get_registers(w, dpi);
-
 	int x = 200;
 	int y = 2;
 

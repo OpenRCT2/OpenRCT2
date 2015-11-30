@@ -8,17 +8,19 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
 #include "util.h"
+#include <SDL.h>
+#include "../platform/platform.h"
 
 int squaredmetres_to_squaredfeet(int squaredMetres)
 {
@@ -41,7 +43,17 @@ int mph_to_kmph(int mph)
 	return (mph * 1648) / 1024;
 }
 
-const char *path_get_filename(const char *path)
+bool filename_valid_characters(const utf8 *filename)
+{
+	for (int i = 0; filename[i] != '\0'; i++) {
+		if (filename[i] == '\\' || filename[i] == '/' || filename[i] == ':' || filename[i] == '?' ||
+			filename[i] == '*' || filename[i] == '<' || filename[i] == '>' || filename[i] == '|')
+			return false;
+	}
+	return true;
+}
+
+const char *path_get_filename(const utf8 *path)
 {
 	const char *result, *ch;
 
@@ -56,7 +68,7 @@ const char *path_get_filename(const char *path)
 	return result;
 }
 
-const char *path_get_extension(const char *path)
+const char *path_get_extension(const utf8 *path)
 {
 	const char *extension = NULL;
 	const char *ch = path;
@@ -71,7 +83,7 @@ const char *path_get_extension(const char *path)
 	return extension;
 }
 
-void path_set_extension(char *path, const char *newExtension)
+void path_set_extension(utf8 *path, const utf8 *newExtension)
 {
 	char *extension = NULL;
 	char *ch = path;
@@ -90,7 +102,7 @@ void path_set_extension(char *path, const char *newExtension)
 	strcpy(extension, newExtension);
 }
 
-void path_remove_extension(char *path)
+void path_remove_extension(utf8 *path)
 {
 	char *ch = path + strlen(path);
 	for (--ch; ch >= path; --ch) {
@@ -101,38 +113,24 @@ void path_remove_extension(char *path)
 	}
 }
 
-long fsize(FILE *fp)
+bool readentirefile(const utf8 *path, void **outBuffer, int *outLength)
 {
-	long originalPosition, size;
-
-	originalPosition = ftell(fp);
-	fseek(fp, 0, SEEK_END);
-	size = ftell(fp);
-	fseek(fp, originalPosition, SEEK_SET);
-
-	return size;
-}
-
-bool readentirefile(const char *path, void **outBuffer, long *outLength)
-{
-	FILE *fp;
-	long fpLength;
+	SDL_RWops *fp;
+	int fpLength;
 	void *fpBuffer;
 
 	// Open file
-	fp = fopen(path, "rb");
+	fp = SDL_RWFromFile(path, "rb");
 	if (fp == NULL)
 		return 0;
 
 	// Get length
-	fseek(fp, 0, SEEK_END);
-	fpLength = ftell(fp);
-	rewind(fp);
+	fpLength = (int)SDL_RWsize(fp);
 
 	// Read whole file into a buffer
 	fpBuffer = malloc(fpLength);
-	fread(fpBuffer, fpLength, 1, fp);
-	fclose(fp);
+	SDL_RWread(fp, fpBuffer, fpLength, 1);
+	SDL_RWclose(fp);
 
 	*outBuffer = fpBuffer;
 	*outLength = fpLength;
@@ -143,11 +141,27 @@ int bitscanforward(int source)
 {
 	int i;
 
+	#if _MSC_VER >= 1400 // Visual Studio 2005
+		uint8 success = _BitScanForward(&i, source);
+		return success != 0 ? i : -1;
+	#else
 	for (i = 0; i < 32; i++)
-		if (source & (1 << i))
+		if (source & (1u << i))
 			return i;
 
 	return -1;
+	#endif
+}
+
+int bitcount(int source)
+{
+	int result = 0;
+	for (int i = 0; i < 32; i++) {
+		if (source & (1u << i)) {
+			result++;
+		}
+	}
+	return result;
 }
 
 bool strequals(const char *a, const char *b, int length, bool caseInsensitive)
@@ -167,12 +181,60 @@ int strcicmp(char const *a, char const *b)
 	}
 }
 
+char *safe_strncpy(char * destination, const char * source, size_t size)
+{
+	assert(destination != NULL);
+	assert(source != NULL);
+
+	if (size == 0)
+	{
+		return destination;
+	}
+	char *result = destination;
+	bool terminated = false;
+	for (size_t i = 0; i < size; i++)
+	{
+		if (*source != '\0')
+		{
+			*destination++ = *source++;
+		} else {
+			*destination = *source;
+			terminated = true;
+			break;
+		}
+	}
+	if (!terminated)
+	{
+		result[size - 1] = '\0';
+		log_warning("Truncating string %s to %d bytes.", destination, size);
+	}
+	return result;
+}
+
 bool utf8_is_bom(const char *str)
 {
-	return str[0] == 0xEF && str[1] == 0xBB && str[2] == 0xBF;
+	return str[0] == (char)0xEF && str[1] == (char)0xBB && str[2] == (char)0xBF;
 }
 
 bool str_is_null_or_empty(const char *str)
 {
 	return str == NULL || str[0] == 0;
+}
+
+uint32 srand0, srand1, srand2, srand3;
+
+void util_srand(int source) {
+	srand0 = source;
+	srand1 = srand0 ^ (source >> 24);
+	srand2 = srand1 ^ (source >> 16);
+	srand3 = srand2 ^ (source >> 8);
+}
+
+uint32 util_rand() {
+	uint32 temp = srand0 ^ (srand0 << 11);
+	srand0 = srand1;
+	srand1 = srand2;
+	srand2 = srand3;
+	srand3 = srand3 ^ (srand3 >> 19) ^ temp ^ (temp >> 8);
+	return srand3;
 }

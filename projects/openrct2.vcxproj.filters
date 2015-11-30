@@ -53,6 +53,9 @@
     <Filter Include="Test\Ride">
       <UniqueIdentifier>{c6b9c169-ff2a-41df-9b1c-47d15763c3e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Core">
+      <UniqueIdentifier>{28a808eb-9017-44cc-939b-f828fd1e2e7d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\openrct2.exe">
@@ -213,9 +216,6 @@
     <ClCompile Include="..\src\localisation\currency.c">
       <Filter>Source\Localisation</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\localisation\language.c">
-      <Filter>Source\Localisation</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ride\ride.c">
       <Filter>Source\Ride</Filter>
     </ClCompile>
@@ -300,7 +300,7 @@
     <ClCompile Include="..\src\platform\osx.c">
       <Filter>Source\Platform</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\unix.c">
+    <ClCompile Include="..\src\platform\posix.c">
       <Filter>Source\Platform</Filter>
     </ClCompile>
     <ClCompile Include="..\src\platform\shared.c">
@@ -479,6 +479,78 @@
     </ClCompile>
     <ClCompile Include="..\src\windows\changelog.c">
       <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\title_editor.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interface\title_sequences.c">
+      <Filter>Source\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\title_command_editor.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\maze_construction.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cheats.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\localisation\convert.c">
+      <Filter>Source\Localisation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\scrolling_text.c">
+      <Filter>Source\Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\font.c">
+      <Filter>Source\Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\localisation\utf8.c">
+      <Filter>Source\Localisation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\network\network.cpp">
+      <Filter>Source\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\network_status.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\player_list.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interface\chat.c">
+      <Filter>Source\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\server_list.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\world\duck.c">
+      <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\world\balloon.c">
+      <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\world\money_effect.c">
+      <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\world\particle.c">
+      <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\localisation\LanguagePack.cpp">
+      <Filter>Source\Localisation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\localisation\language.cpp">
+      <Filter>Source\Localisation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ride\track_paint.c">
+      <Filter>Source\Ride</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\platform\linux.c">
+      <Filter>Source\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\windows\server_start.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interface\colour.c">
+      <Filter>Source\Interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -703,6 +775,54 @@
     </ClInclude>
     <ClInclude Include="..\test\ride\ride_ratings_test.h">
       <Filter>Test\Ride</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\interface\title_sequences.h">
+      <Filter>Source\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cheats.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\font.h">
+      <Filter>Source\Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\network\network.h">
+      <Filter>Source\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\interface\chat.h">
+      <Filter>Source\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\IStream.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\IDisposable.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\FileStream.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\Exception.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\localisation\LanguagePack.h">
+      <Filter>Source\Localisation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\Memory.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\StringBuilder.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\StringReader.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\Math.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ride\track_paint.h">
+      <Filter>Source\Ride</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\interface\colour.h">
+      <Filter>Source\Interface</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

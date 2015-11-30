@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -31,7 +31,7 @@
 #define NEGATIVE 0
 #define POSITIVE 1
 
-int _awardPositiveMap[] = {
+static const uint8 AwardPositiveMap[] = {
 	NEGATIVE, // PARK_AWARD_MOST_UNTIDY
 	POSITIVE, // PARK_AWARD_MOST_TIDY
 	POSITIVE, // PARK_AWARD_BEST_ROLLERCOASTERS
@@ -53,9 +53,9 @@ int _awardPositiveMap[] = {
 
 rct_award *gCurrentAwards = (rct_award*)RCT2_ADDRESS_AWARD_LIST;
 
-int award_is_positive(int type)
+bool award_is_positive(int type)
 {
-	return _awardPositiveMap[type];
+	return AwardPositiveMap[type];
 }
 
 #pragma region Award checks
@@ -76,7 +76,7 @@ static int award_is_deserved_most_untidy(int awardType, int activeAwardTypes)
 
 	negativeCount = 0;
 	FOR_ALL_GUESTS(spriteIndex, peep) {
-		if (peep->var_2A != 0)
+		if (peep->outside_of_park != 0)
 			continue;
 
 		if (peep->thoughts[0].var_2 > 5)
@@ -109,7 +109,7 @@ static int award_is_deserved_most_tidy(int awardType, int activeAwardTypes)
 	positiveCount = 0;
 	negativeCount = 0;
 	FOR_ALL_GUESTS(spriteIndex, peep) {
-		if (peep->var_2A != 0)
+		if (peep->outside_of_park != 0)
 			continue;
 
 		if (peep->thoughts[0].var_2 > 5)
@@ -183,7 +183,7 @@ static int award_is_deserved_most_beautiful(int awardType, int activeAwardTypes)
 	positiveCount = 0;
 	negativeCount = 0;
 	FOR_ALL_GUESTS(spriteIndex, peep) {
-		if (peep->var_2A != 0)
+		if (peep->outside_of_park != 0)
 			continue;
 
 		if (peep->thoughts[0].var_2 > 5)
@@ -227,7 +227,7 @@ static int award_is_deserved_safest(int awardType, int activeAwardTypes)
 
 	peepsWhoDislikeVandalism = 0;
 	FOR_ALL_GUESTS(spriteIndex, peep) {
-		if (peep->var_2A != 0)
+		if (peep->outside_of_park != 0)
 			continue;
 		if (peep->thoughts[0].var_2 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
 			peepsWhoDislikeVandalism++;
@@ -238,7 +238,7 @@ static int award_is_deserved_safest(int awardType, int activeAwardTypes)
 
 	// Check for rides that have crashed maybe?
 	FOR_ALL_RIDES(i, ride)
-		if (ride->var_1AE != 0)
+		if (ride->last_crash_type != RIDE_CRASH_TYPE_NONE)
 			return 0;
 
 	return 1;
@@ -290,7 +290,7 @@ static int award_is_deserved_best_food(int awardType, int activeAwardTypes)
 	FOR_ALL_RIDES(i, ride) {
 		if (ride->status != RIDE_STATUS_OPEN)
 			continue;
-		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_23))
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_SELLS_FOOD))
 			continue;
 
 		shops++;
@@ -307,7 +307,7 @@ static int award_is_deserved_best_food(int awardType, int activeAwardTypes)
 	// Count hungry peeps
 	hungryPeeps = 0;
 	FOR_ALL_GUESTS(spriteIndex, peep) {
-		if (peep->var_2A != 0)
+		if (peep->outside_of_park != 0)
 			continue;
 
 		if (peep->thoughts[0].var_2 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_HUNGRY)
@@ -336,7 +336,7 @@ static int award_is_deserved_worst_food(int awardType, int activeAwardTypes)
 	FOR_ALL_RIDES(i, ride) {
 		if (ride->status != RIDE_STATUS_OPEN)
 			continue;
-		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_23))
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_SELLS_FOOD))
 			continue;
 
 		shops++;
@@ -353,7 +353,7 @@ static int award_is_deserved_worst_food(int awardType, int activeAwardTypes)
 	// Count hungry peeps
 	hungryPeeps = 0;
 	FOR_ALL_GUESTS(spriteIndex, peep) {
-		if (peep->var_2A != 0)
+		if (peep->outside_of_park != 0)
 			continue;
 
 		if (peep->thoughts[0].var_2 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_HUNGRY)
@@ -388,7 +388,7 @@ static int award_is_deserved_best_restrooms(int awardType, int activeAwardTypes)
 	// Count number of guests who are thinking they need the restroom
 	guestsWhoNeedRestroom = 0;
 	FOR_ALL_GUESTS(spriteIndex, peep) {
-		if (peep->var_2A != 0)
+		if (peep->outside_of_park != 0)
 			continue;
 
 		if (peep->thoughts[0].var_2 <= 5 && peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BATHROOM)
@@ -414,9 +414,9 @@ static int award_is_deserved_most_disappointing(int awardType, int activeAwardTy
 	disappointingRides = 0;
 
 	FOR_ALL_RIDES(i, ride) {
-		if (ride->excitement == 0xFFFF || ride->popularity == 0xFF)
+		if (ride->excitement == (ride_rating)0xFFFF || ride->popularity == 0xFF)
 			continue;
-		
+
 		countedRides++;
 
 		// Unpopular
@@ -463,7 +463,7 @@ static int award_is_deserved_best_custom_designed_rides(int awardType, int activ
 	FOR_ALL_RIDES(i, ride) {
 		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
 			continue;
-		if (ride->lifecycle_flags & RIDE_LIFECYCLE_18)
+		if (ride->lifecycle_flags & RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN)
 			continue;
 		if (ride->excitement < RIDE_RATING(5, 50))
 			continue;
@@ -517,7 +517,7 @@ static int award_is_deserved_most_confusing_layout(int awardType, int activeAwar
 	peepsCounted = 0;
 	peepsLost = 0;
 	FOR_ALL_GUESTS(spriteIndex, peep) {
-		if (peep->var_2A != 0)
+		if (peep->outside_of_park != 0)
 			continue;
 
 		peepsCounted++;

@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "config.h"
 #include "localisation/localisation.h"
 #include "object.h"
 #include "platform/platform.h"
@@ -30,21 +31,24 @@
 #include "world/entrance.h"
 #include "world/scenery.h"
 #include "scenario.h"
+#include "rct1.h"
 
-int object_load_entry(const char *path, rct_object_entry *outEntry)
+char gTempObjectLoadName[9] = { 0 };
+
+int object_load_entry(const utf8 *path, rct_object_entry *outEntry)
 {
-	FILE *file;
+	SDL_RWops *file;
 
-	file = fopen(path, "rb");
+	file = SDL_RWFromFile(path, "rb");
 	if (file == NULL)
 		return 0;
 
-	if (fread(outEntry, sizeof(rct_object_entry), 1, file) != 1) {
-		fclose(file);
+	if (SDL_RWread(file, outEntry, sizeof(rct_object_entry), 1) != 1) {
+		SDL_RWclose(file);
 		return 0;
 	}
 
-	fclose(file);
+	SDL_RWclose(file);
 	return 1;
 }
 
@@ -52,20 +56,20 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 {
 	uint8 objectType;
 	rct_object_entry openedEntry;
-	char path[260];
-	FILE *file;
+	char path[MAX_PATH];
+	SDL_RWops* rw;
 
 	subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), (char*)installedObject + 16);
 
 	log_verbose("loading object, %s", path);
 
-	file = fopen(path, "rb");
-	if (file == NULL)
+	rw = SDL_RWFromFile(path, "rb");
+	if (rw == NULL)
 		return 0;
 
-	fread(&openedEntry, sizeof(rct_object_entry), 1, file);
+	SDL_RWread(rw, &openedEntry, sizeof(rct_object_entry), 1);
 	if (!object_entry_compare(&openedEntry, entry)) {
-		fclose(file);
+		SDL_RWclose(rw);
 		return 0;
 	}
 
@@ -76,18 +80,18 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 
 	// Read chunk size
 	*chunkSize = *((uint32*)installedObject_pointer);
-	char *chunk;
+	uint8 *chunk;
 
 	if (*chunkSize == 0xFFFFFFFF) {
 		chunk = rct2_malloc(0x600000);
-		*chunkSize = sawyercoding_read_chunk(file, chunk);
+		*chunkSize = sawyercoding_read_chunk(rw, chunk);
 		chunk = rct2_realloc(chunk, *chunkSize);
 	}
 	else {
 		chunk = rct2_malloc(*chunkSize);
-		*chunkSize = sawyercoding_read_chunk(file, chunk);
+		*chunkSize = sawyercoding_read_chunk(rw, chunk);
 	}
-	fclose(file);
+	SDL_RWclose(rw);
 
 
 
@@ -133,7 +137,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 	memcpy(extended_entry, &openedEntry, sizeof(rct_object_entry));
 	extended_entry->chunk_size = *chunkSize;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_CHUNK_POINTER, char*) = chunk;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_CHUNK_POINTER, uint8*) = chunk;
 
 	if (RCT2_GLOBAL(0x9ADAFD, uint8) != 0)
 		object_paint(objectType, 0, groupIndex, objectType, 0, (int)chunk, 0, 0);
@@ -175,7 +179,7 @@ int object_load(int groupIndex, rct_object_entry *entry, int* chunkSize)
  *  ebx : file
  *  ebp : entry
  */
-int write_object_file(FILE *file, rct_object_entry* entry){
+int write_object_file(SDL_RWops *rw, rct_object_entry* entry){
 	uint8 entryGroupIndex = 0, type = 0;
 	uint8* chunk = 0;
 
@@ -199,7 +203,7 @@ int write_object_file(FILE *file, rct_object_entry* entry){
 	chunkHeader.length = installed_entry->chunk_size;
 
 	size_dst += sawyercoding_write_chunk_buffer(dst_buffer + sizeof(rct_object_entry), chunk, chunkHeader);
-	fwrite(dst_buffer, 1, size_dst, file);
+	SDL_RWwrite(rw, dst_buffer, 1, size_dst);
 
 	free(dst_buffer);
 	return 1;
@@ -209,16 +213,16 @@ int write_object_file(FILE *file, rct_object_entry* entry){
 *
 *  rct2: 0x006AA2B7
 */
-int object_load_packed(FILE *file)
+int object_load_packed(SDL_RWops* rw)
 {
 	object_unload_all();
 
 	rct_object_entry entry;
 
-	fread(&entry, 16, 1, file);
+	SDL_RWread(rw, &entry, 16, 1);
 
 	uint8* chunk = rct2_malloc(0x600000);
-	uint32 chunkSize = sawyercoding_read_chunk(file, chunk);
+	uint32 chunkSize = sawyercoding_read_chunk(rw, chunk);
 	chunk = rct2_realloc(chunk, chunkSize);
 
 	if (chunk == NULL){
@@ -255,7 +259,7 @@ int object_load_packed(FILE *file)
 	}
 
 	if (entryGroupIndex == object_entry_group_counts[type]){
-		// This should never occur. Objects are not loaded before installing a 
+		// This should never occur. Objects are not loaded before installing a
 		// packed object. So there is only one object loaded at this point.
 		log_error("Too many objects of the same type loaded.");
 		rct2_free(chunk);
@@ -281,7 +285,7 @@ int object_load_packed(FILE *file)
 	}
 
 	// Convert the entry name to a upper case path name
-	char path[260];
+	char path[MAX_PATH];
 	char objectPath[9] = { 0 };
 	for (int i = 0; i < 8; ++i){
 		if (entry.name[i] != ' ')
@@ -313,11 +317,11 @@ int object_load_packed(FILE *file)
 	}
 
 	// Actually write the object to the file
-	FILE* obj_file = fopen(path, "wb");
-	if (obj_file){
-		uint8 result = write_object_file(obj_file, &entry);
+	SDL_RWops* rw_out = SDL_RWFromFile(path, "wb");
+	if (rw_out != NULL){
+		uint8 result = write_object_file(rw_out, &entry);
 
-		fclose(obj_file);
+		SDL_RWclose(rw_out);
 		object_unload_all();
 
 		return result;
@@ -331,9 +335,19 @@ int object_load_packed(FILE *file)
  *
  *  rct2: 0x006A9CAF
  */
-void object_unload(int groupIndex, rct_object_entry_extended *entry)
+void object_unload(rct_object_entry *entry)
 {
-	RCT2_CALLPROC_X(0x006A9CAF, 0, groupIndex, 0, 0, 0, 0, (int)entry);
+	uint8 object_type, object_index;
+	if (!find_object_in_entry_group(entry, &object_type, &object_index)){
+		return;
+	}
+
+	uint8* chunk = object_entry_groups[object_type].chunks[object_index];
+
+	object_paint(object_type, 1, 0, 0, 0, (int)chunk, 0, 0);
+
+	rct2_free(chunk);
+	object_entry_groups[object_type].chunks[object_index] = (uint8*)-1;
 }
 
 int object_entry_compare(const rct_object_entry *a, const rct_object_entry *b)
@@ -361,7 +375,7 @@ int object_entry_compare(const rct_object_entry *a, const rct_object_entry *b)
 	return 1;
 }
 
-int object_calculate_checksum(const rct_object_entry *entry, const char *data, int dataLength)
+int object_calculate_checksum(const rct_object_entry *entry, const uint8 *data, int dataLength)
 {
 	int i;
 	const char *eee = (char*)entry;
@@ -386,7 +400,7 @@ int object_calculate_checksum(const rct_object_entry *entry, const char *data, i
 int object_chunk_load_image_directory(uint8_t** chunk)
 {
 	int image_start_no = RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32_t);
-	
+
 	// First dword of chunk is no_images
 	int no_images = *((uint32_t*)(*chunk));
 	*chunk += 4;
@@ -425,9 +439,14 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 		uint8_t* chunk = (uint8*)(ride_type + 1);
 		ride_type->name = object_get_localised_text(&chunk, ecx, ebx, 0);
 		ride_type->description = object_get_localised_text(&chunk, ecx, ebx, 1);
+
+		//TODO: Move to its own function when ride construction window is merged.
+		if(gConfigInterface.select_by_track_type) {
+			ride_type->enabledTrackPieces = 0xFFFFFFFFFFFFFFFF;
+		}
+
 		object_get_localised_text(&chunk, ecx, ebx, 2);
-		// Offset to Unknown struct
-		ride_type->var_1AE = (uint32_t)chunk;
+		ride_type->vehicle_preset_list = (vehicle_colour_preset_list*)chunk;
 
 		// If Unknown struct size is 0xFF then there are 32 3 byte structures
 		uint8 unknown_size = *chunk++;
@@ -439,7 +458,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 			chunk += 0x60;
 		}
 
-		sint8* peep_loading_positions = chunk;
+		sint8* peep_loading_positions = (sint8 *)chunk;
 		// Peep loading positions variable size
 		// 4 different vehicle subtypes are available
 		for (int i = 0; i < 4; ++i){
@@ -461,20 +480,18 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 		for (int i = 0; i < 4; ++i){
 			rct_ride_type_vehicle* rideVehicleEntry = &ride_type->vehicles[i];
 
-			if (rideVehicleEntry->var_0C & 1){
+			if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT) {
 				int al = 1;
-				if (rideVehicleEntry->var_14 & 2)
-				{
+				if (rideVehicleEntry->var_14 & 2) {
 					al = 13;
-					if ((rideVehicleEntry->var_14 & 0x820) != 0x820)
-					{
+					if ((rideVehicleEntry->var_14 & 0x820) != 0x820) {
 						al = 7;
-						if (!(rideVehicleEntry->var_14 & 0x20))
-						{
-							if (!(rideVehicleEntry->var_14 & 0x800))
-							{
+						if (!(rideVehicleEntry->var_14 & 0x20)) {
+							if (!(rideVehicleEntry->var_14 & 0x800)) {
 								al = 5;
-								if (rideVehicleEntry->var_14 & 0x200) al = 3;
+								if (rideVehicleEntry->var_14 & 0x200) {
+									al = 3;
+								}
 							}
 						}
 					}
@@ -495,7 +512,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 						}
 					}
 				}
-				if (rideVehicleEntry->var_12 & 0x1000) al = rideVehicleEntry->var_60;
+				if (rideVehicleEntry->var_12 & 0x1000) al = rideVehicleEntry->special_frames;
 				rideVehicleEntry->var_02 = al;
 				// 0x6DE946
 
@@ -503,16 +520,16 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 				rideVehicleEntry->base_image_id = cur_vehicle_images_offset;
 				int image_index = rideVehicleEntry->base_image_id;
 
-				if (rideVehicleEntry->var_5D != 4){
+				if (rideVehicleEntry->car_visual != VEHICLE_VISUAL_RIVER_RAPIDS) {
 					int b = rideVehicleEntry->var_16 * 32;
 
 					if (rideVehicleEntry->var_12 & 0x800) b /= 2;
-					if (rideVehicleEntry->var_0C & 0x8000) b /= 8;
+					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15) b /= 8;
 
 					image_index += b;
 
 					// Incline 25
-					if (rideVehicleEntry->var_0C & 0x2){
+					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES) {
 						rideVehicleEntry->var_20 = image_index;
 						b = rideVehicleEntry->var_16 * 72;
 						if (rideVehicleEntry->var_12 & 0x4000)
@@ -522,81 +539,81 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 					}
 
 					// Incline 60
-					if (rideVehicleEntry->var_0C & 0x4){
+					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_STEEP_SLOPES) {
 						rideVehicleEntry->var_24 = image_index;
 						b = rideVehicleEntry->var_16 * 80;
 						image_index += b;
 					}
 					// Verticle
-					if (rideVehicleEntry->var_0C & 0x8){
+					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
 						rideVehicleEntry->var_28 = image_index;
 						b = rideVehicleEntry->var_16 * 116;
 						image_index += b;
 					}
 					// Unknown
-					if (rideVehicleEntry->var_0C & 0x10){
+					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES) {
 						rideVehicleEntry->var_2C = image_index;
 						b = rideVehicleEntry->var_16 * 24;
 						image_index += b;
 					}
 
 					// Bank
-					if (rideVehicleEntry->var_0C & 0x20){
+					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED) {
 						rideVehicleEntry->var_30 = image_index;
 						b = rideVehicleEntry->var_16 * 80;
 						image_index += b;
 					}
 
-					if (rideVehicleEntry->var_0C & 0x40){
+					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS) {
 						rideVehicleEntry->var_34 = image_index;
 						b = rideVehicleEntry->var_16 * 40;
 						image_index += b;
 					}
 
 					// Track half? Up/Down
-					if (rideVehicleEntry->var_0C & 0x80){
+					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS) {
 						rideVehicleEntry->var_38 = image_index;
 						b = rideVehicleEntry->var_16 * 128;
 						image_index += b;
 					}
 					// Unknown
-					if (rideVehicleEntry->var_0C & 0x100){
+					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS) {
 						rideVehicleEntry->var_3C = image_index;
 						b = rideVehicleEntry->var_16 * 16;
 						image_index += b;
 					}
 					// Unknown
-					if (rideVehicleEntry->var_0C & 0x200){
+					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS) {
 						rideVehicleEntry->var_40 = image_index;
 						b = rideVehicleEntry->var_16 * 16;
 						image_index += b;
 					}
 
-					if (rideVehicleEntry->var_0C & 0x400){
+					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS) {
 						rideVehicleEntry->var_44 = image_index;
 						b = rideVehicleEntry->var_16 * 128;
 						image_index += b;
 					}
 
-					if (rideVehicleEntry->var_0C & 0x800){
+					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS) {
 						rideVehicleEntry->var_48 = image_index;
 						b = rideVehicleEntry->var_16 * 16;
 						image_index += b;
 					}
 
-					if (rideVehicleEntry->var_0C & 0x1000){
+					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_CORKSCREWS) {
 						rideVehicleEntry->var_4C = image_index;
 						b = rideVehicleEntry->var_16 * 80;
 						image_index += b;
 					}
 					// Unknown
-					if (rideVehicleEntry->var_0C & 0x2000){
+					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION) {
 						rideVehicleEntry->var_1C = image_index;
 						b = rideVehicleEntry->var_16 * 12;
 						image_index += b;
 					}
 
-					if (rideVehicleEntry->var_0C & 0x4000){
+					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_14) {
 						// Same offset as above???
 						rideVehicleEntry->var_4C = image_index;
 						b = rideVehicleEntry->var_16 * 32;
@@ -615,31 +632,16 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 				// 0x6DEB0D
 
 				if (!(rideVehicleEntry->var_12 & 0x400)){
-					int ecx = cur_vehicle_images_offset - rideVehicleEntry->base_image_id;
+					int num_images = cur_vehicle_images_offset - rideVehicleEntry->base_image_id;
 					if (rideVehicleEntry->var_12 & 0x2000){
-						ecx *= 2;
+						num_images *= 2;
 					}
 
-					int bl, bh, eax = 0;
-					{
-						int ebx = rideVehicleEntry->base_image_id;
-						int edx = 0, esi = 0, ebp = 0, edi = 0;
-						RCT2_CALLFUNC_X(0x6847BA, &eax, &ebx, &ecx, &edx, &esi, &ebp, &edi);
-						bl = ebx & 0xFF;
-						bh = (ebx >> 8) & 0xFF;
-					}
-
-					if (rideVehicleEntry->var_12 & 0x2000){
-						bl += 16;
-					}
-
-					rideVehicleEntry->var_0E = eax & 0xFF;
-					rideVehicleEntry->var_0F = bl;
-					rideVehicleEntry->var_10 = bh;
+					set_vehicle_type_image_max_sizes(rideVehicleEntry, num_images);
 				}
 
-				uint8 no_positions = *peep_loading_positions++;
-				if (no_positions == 0xFF)
+				sint8 no_positions = *peep_loading_positions++;
+				if (no_positions == -1)
 				{
 					// The no_positions is 16 bit skip over
 					peep_loading_positions += 2;
@@ -677,7 +679,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 
 		int di = ride_type->ride_type[0] | (ride_type->ride_type[1] << 8) | (ride_type->ride_type[2] << 16);
 
-		if (ride_type->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME) di |= 0x1000000;
+		if ((ride_type->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) && !rideTypeShouldLoseSeparateFlag(ride_type)) di |= 0x1000000;
 
 		RCT2_GLOBAL(0xF433DD, uint32) = di;
 		return 0;// flags;
@@ -711,16 +713,16 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 			rideVehicleEntry->var_16 = 0;
 
 			if (!(rideVehicleEntry->var_12 & 0x400)){
-				rideVehicleEntry->var_0E = 0;
-				rideVehicleEntry->var_0F = 0;
-				rideVehicleEntry->var_10 = 0;
+				rideVehicleEntry->sprite_width = 0;
+				rideVehicleEntry->sprite_height_negative = 0;
+				rideVehicleEntry->sprite_height_positive = 0;
 			}
 			rideVehicleEntry->var_02 = 0;
 			rideVehicleEntry->var_03 = 0;
 			rideVehicleEntry->peep_loading_positions = 0;
 		}
 
-		ride_type->var_1AE = 0;
+		ride_type->vehicle_preset_list = NULL;
 		return flags;
 	}
 	else if ((flags & 0xFF) == 2){
@@ -750,12 +752,12 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 			return flags;
 		}
 		else
-		{	
+		{
 			rct_window* w = (rct_window*)esi;
 			int width = w->x + w->width - x - 4;
 
 			int format_args = ride_type->description;
-			if (!(ride_type->flags & RIDE_ENTRY_FLAG_SEPERATE_RIDE_NAME))
+			if (!(ride_type->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(ride_type))
 			{
 				format_args = ride_type->ride_type[0];
 				if ((format_args & 0xFF) == 0xFF)
@@ -1411,7 +1413,7 @@ int paint_water_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* d
 		return 0;
 	}
 	else if ((flags & 0xFF) == 3){
-		if (!((flags >> 8) & 0xFF)) 
+		if (!((flags >> 8) & 0xFF))
 			gfx_draw_string_centred(dpi, 3326, ecx, edx, 0, (void*)esi);
 	}
 	return flags;
@@ -1463,7 +1465,7 @@ int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi,
 	switch (type)
 	{
 	case OBJECT_TYPE_RIDE:
-		return paint_ride_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);			
+		return paint_ride_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
 	case OBJECT_TYPE_SMALL_SCENERY:
 		return paint_small_scenery(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
 	case OBJECT_TYPE_LARGE_SCENERY:
@@ -1473,7 +1475,7 @@ int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi,
 	case OBJECT_TYPE_BANNERS:
 		return paint_banner(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
 	case OBJECT_TYPE_PATHS:
-		return paint_path_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);	
+		return paint_path_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
 	case OBJECT_TYPE_PATH_BITS:
 		return paint_path_bit(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
 	case OBJECT_TYPE_SCENERY_SETS:
@@ -1499,21 +1501,21 @@ int object_get_scenario_text(rct_object_entry *entry)
 	rct_object_entry *installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
 
 	installedObject = object_list_find(entry);
-	
+
 	if (installedObject == NULL){
 		log_error("Object not found: %.8s", entry->name);
 		RCT2_GLOBAL(0x00F42BD9, uint8) = 0;
 		return 0;
 	}
 
-	char path[260];
+	char path[MAX_PATH];
 	char *objectPath = (char*)installedObject + 16;
 	subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), objectPath);
 
 	rct_object_entry openedEntry;
-	FILE *file = fopen(path, "rb");
-	if (file != NULL) {
-		fread(&openedEntry, sizeof(rct_object_entry), 1, file);
+	SDL_RWops* rw = SDL_RWFromFile(path, "rb");
+	if (rw != NULL) {
+		SDL_RWread(rw, &openedEntry, sizeof(rct_object_entry), 1);
 		if (object_entry_compare(&openedEntry, entry)) {
 
 			// Skip over the object entry
@@ -1524,17 +1526,17 @@ int object_get_scenario_text(rct_object_entry *entry)
 			// Read chunk
 			int chunkSize = *((uint32*)pos);
 
-			char *chunk;
+			uint8 *chunk;
 			if (chunkSize == 0xFFFFFFFF) {
 				chunk = malloc(0x600000);
-				chunkSize = sawyercoding_read_chunk(file, chunk);
+				chunkSize = sawyercoding_read_chunk(rw, chunk);
 				chunk = realloc(chunk, chunkSize);
 			}
 			else {
 				chunk = malloc(chunkSize);
-				sawyercoding_read_chunk(file, chunk);
+				sawyercoding_read_chunk(rw, chunk);
 			}
-			fclose(file);
+			SDL_RWclose(rw);
 
 			// Calculate and check checksum
 			if (object_calculate_checksum(&openedEntry, chunk, chunkSize) != openedEntry.checksum) {
@@ -1564,9 +1566,10 @@ int object_get_scenario_text(rct_object_entry *entry)
 
 			// Tell text to be loaded into a different address
 			RCT2_GLOBAL(0x009ADAFC, uint8) = 255;
+			memcpy(gTempObjectLoadName, openedEntry.name, 8);
 			// Not used??
 			RCT2_GLOBAL(0x009ADAFD, uint8) = 1;
-			object_paint(openedEntry.flags & 0x0F, 0, 0, 0, 0, (int)chunk, 0, 0);			
+			object_paint(openedEntry.flags & 0x0F, 0, 0, 0, 0, (int)chunk, 0, 0);
 			// Tell text to be loaded into normal address
 			RCT2_GLOBAL(0x009ADAFC, uint8) = 0;
 			// Not used??
@@ -1575,7 +1578,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 			return 1;
 		}
 		log_error("Opened object didn't match.");
-		fclose(file);
+		SDL_RWclose(rw);
 		return 0;
 	}
 	log_error("File failed to open.");
@@ -1590,7 +1593,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 void object_free_scenario_text()
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, void*) != NULL) {
-		rct2_free(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, void*));
+		free(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, void*));
 		RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, void*) = NULL;
 	}
 }
@@ -1619,13 +1622,13 @@ rct_object_entry *object_get_next(rct_object_entry *entry)
 	// Skip size of chunk
 	pos += 4;
 
-	// Skip 
+	// Skip required objects
 	pos += *pos * 16 + 1;
 
 	// Skip theme objects
 	pos += *pos * 16 + 1;
 
-	// Skip 
+	// Skip
 	pos += 4;
 
 	return (rct_object_entry*)pos;
@@ -1644,5 +1647,5 @@ char *object_get_name(rct_object_entry *entry)
 	// Skip no of images
 	pos += 4;
 
-	return pos;
+	return (char *)pos;
 }

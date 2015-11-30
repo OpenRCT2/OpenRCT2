@@ -54,7 +54,7 @@ typedef enum {
 	SMALL_SCENERY_FLAG16 = (1 << 15),							// 0x8000
 	SMALL_SCENERY_FLAG17 = (1 << 16),							// 0x10000
 	SMALL_SCENERY_FLAG18 = (1 << 17),							// 0x20000
-	SMALL_SCENERY_FLAG19 = (1 << 18),							// 0x40000
+	SMALL_SCENERY_FLAG_ALLOW_WALLS = (1 << 18),					// 0x40000
 	SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR = (1 << 19),		// 0x80000
 	SMALL_SCENERY_FLAG20 = (1 << 20),							// 0x100000
 	SMALL_SCENERY_FLAG21 = (1 << 21),							// 0x200000
@@ -68,7 +68,7 @@ typedef struct {
 	sint16 x_offset;
 	sint16 y_offset;
 	sint16 z_offset;
-	uint8 var_6;
+	uint8 z_clearance;
 	uint16 var_7;
 } rct_large_scenery_tile;
 
@@ -92,7 +92,7 @@ typedef struct {
 	uint8 flags2;			// 0x09
 	sint16 price;			// 0x0A
 	uint8 scenery_tab_id;	// 0x0C
-	uint8 var_0D; 
+	uint8 var_0D;
 } rct_wall_scenery_entry;
 
 typedef enum {
@@ -115,7 +115,7 @@ typedef struct {
 } rct_path_bit_scenery_entry;
 
 typedef struct {
-	uint8 var_06;
+	uint8 scrolling_mode;	// 0x06
 	uint8 flags;			// 0x07
 	sint16 price;			// 0x08
 	uint8 scenery_tab_id;	// 0x0A
@@ -149,6 +149,14 @@ enum {
 	PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW = 1 << 5
 };
 
+enum {
+	SCENERY_TYPE_SMALL,
+	SCENERY_TYPE_PATH_ITEM,
+	SCENERY_TYPE_WALL,
+	SCENERY_TYPE_LARGE,
+	SCENERY_TYPE_BANNER
+};
+
 #define SCENERY_ENTRIES_BY_TAB 128
 
 #define g_smallSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].chunks)
@@ -156,7 +164,7 @@ enum {
 #define g_wallSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_WALLS].chunks)
 #define g_bannerSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_BANNERS].chunks)
 
-// Often 0x009ADA50 is used for pathBits this is 1 entry before g_pathBitSceneryEntries and is used 
+// Often 0x009ADA50 is used for pathBits this is 1 entry before g_pathBitSceneryEntries and is used
 // because 0 represents no path bits on a path. So remember to remove 1 when using it for 0x009ADA50
 #define g_pathBitSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_PATH_BITS].chunks)
 #define g_scenerySetEntries ((rct_scenery_set_entry**)object_entry_groups[OBJECT_TYPE_SCENERY_SETS].chunks)

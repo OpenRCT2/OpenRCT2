@@ -1,15 +1,34 @@
+#init
+$libversion = 4
 $path = Split-Path $Script:MyInvocation.MyCommand.Path
-$zip = $path+'\lib\orcalibs.zip'
+$zip = $path+'\orctlibs.zip'
 $libs = $path+'\lib'
-$libcurl = Test-Path $path\lib\libcurl\
-$jansson = Test-Path $path\lib\jansson\
-$sdl = Test-Path $path\lib\sdl\
-if (!$libcurl -or !$jansson -or !$sdl) {
-	Invoke-WebRequest http://misozmiric.com/ted/openrct2/orcalibs-vs.zip -OutFile $path\lib\orcalibs.zip
-	rm $path\lib\libcurl -r -Force -ErrorAction SilentlyContinue
-	rm $path\lib\jansson -r -Force -ErrorAction SilentlyContinue
-	rm $path\lib\sdl -r -Force -ErrorAction SilentlyContinue
+$libsVFile = $path+'\libversion'
+$liburl = 'https://openrct2.website/files/orctlibs-vs.zip'
+$libsTest = Test-Path $libs
+
+#libs version test
+$libsVersionTest = Test-Path $libsVFile
+$currentVersion = 0
+$needsdownload = $true
+if ($libsVersionTest) {
+    $currentVersion = [IO.File]::ReadAllText($libsVFile)
+}
+if ($currentVersion -ge $libversion) {
+    $needsdownload = $false
+}
+
+#download
+if (!$libsTest -or $needsdownload) {
+	if ($libsTest) {
+        rm $libs -Recurse -Force
+    }
+    mkdir $libs
+	Invoke-WebRequest $liburl -OutFile $path\orctlibs.zip
 	[System.Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem') > $null
 	[System.IO.Compression.ZipFile]::ExtractToDirectory($zip, $libs)
-	rm $path\lib\orcalibs.zip -Force -ErrorAction SilentlyContinue
+	rm $path\orctlibs.zip -Force -ErrorAction SilentlyContinue
+    $libversion | Set-Content $libsVFile
+} else {
+    echo 'All libs up to date'
 }

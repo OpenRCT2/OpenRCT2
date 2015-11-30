@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -22,6 +22,7 @@
 #define _BANNER_H_
 
 #include "../common.h"
+#include "../world/map.h"
 
 #define BANNER_NULL 255
 #define MAX_BANNERS 250
@@ -46,5 +47,8 @@ extern rct_banner *gBanners;
 
 void banner_init();
 int create_new_banner(uint8 flags);
+rct_map_element *banner_get_map_element(int bannerIndex);
+int banner_get_closest_ride_index(int x, int y, int z);
+void fix_banner_count();
 
 #endif

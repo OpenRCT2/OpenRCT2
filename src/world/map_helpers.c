@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -61,8 +61,8 @@ int map_smooth(int l, int t, int r, int b)
 					if (cornerHeights[i] == highest){
 						count++;
 
-						// Check if surrounding corners aren't too high. The current tile 
-						// can't compensate for all the height differences anymore if it has 
+						// Check if surrounding corners aren't too high. The current tile
+						// can't compensate for all the height differences anymore if it has
 						// the extra height slope.
 						int highestOnLowestSide;
 						switch (i){
@@ -297,14 +297,14 @@ int map_smooth_wavy(int l, int t, int r, int b)
 					map_get_corner_height(x + 0, y + 1, 3) > mapElement->base_height
 				)
 					mapElement->properties.surface.slope |= 8;
-				
+
 				if (
 					map_get_corner_height(x + 1, y - 1, 1) > mapElement->base_height ||
 					map_get_corner_height(x + 1, y + 0, 3) > mapElement->base_height ||
 					map_get_corner_height(x + 0, y - 1, 0) > mapElement->base_height
 				)
 					mapElement->properties.surface.slope |= 2;
-				
+
 				if (
 					map_get_corner_height(x - 1, y - 1, 0) > mapElement->base_height ||
 					map_get_corner_height(x - 1, y + 0, 2) > mapElement->base_height ||

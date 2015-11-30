@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -222,7 +222,7 @@ static void ride_update_station_race(rct_ride *ride, int stationIndex)
 				return;
 			}
 		}
-		
+
 		// Begin the race
 		ride_race_init_vehicle_speeds(ride);
 		ride->lifecycle_flags |= RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
@@ -248,11 +248,11 @@ static void ride_race_init_vehicle_speeds(rct_ride *ride)
 
 	for (i = 0; i < ride->num_vehicles; i++) {
 		vehicle = &g_sprite_list[ride->vehicles[i]].vehicle;
-		vehicle->var_48 &= ~(1 << 6);
+		vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_6;
 
 		rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
 
-		vehicle->speed = (scenario_rand() & 16) - 8 + rideEntry->vehicles[vehicle->vehicle_type].var_5C;
+		vehicle->speed = (scenario_rand() & 16) - 8 + rideEntry->vehicles[vehicle->vehicle_type].powered_max_speed;
 
 		if (vehicle->num_peeps != 0) {
 			rct_peep *peep = &g_sprite_list[vehicle->peep[0]].peep;
@@ -300,7 +300,7 @@ static void ride_invalidate_station_start(rct_ride *ride, int stationIndex, int 
 		mapElement->properties.track.sequence |= 0x80;
 
 	// Invalidate map tile
-	map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+	map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 }
 
 rct_map_element *ride_get_station_start_track_element(rct_ride *ride, int stationIndex)

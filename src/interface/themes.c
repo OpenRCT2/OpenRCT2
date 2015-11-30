@@ -19,6 +19,8 @@
 *****************************************************************************/
 
 #include "../localisation/string_ids.h"
+#include "../util/util.h"
+#include "colour.h"
 #include "window.h"
 #include "themes.h"
 
@@ -29,82 +31,83 @@
 #define COLOURS_5(c0, c1, c2, c3, c4) 5, { { (c0), (c1), (c2), (c3), (c4), 0 } }
 #define COLOURS_6(c0, c1, c2, c3, c4, c5) 6, { { (c0), (c1), (c2), (c3), (c4), (c5) } }
 
+#define THEME_DEF_END { 0xFF, { 0, 0, 0, 0, 0, 0 } }
+
 #define TWINDOW(window_class, window_name, window_string_id, theme) { window_class, window_name, window_string_id, theme }
 
 theme_window_definition gThemeWindowDefinitions[] = {
 	/* Window Class                        ini section name                    stringid  window defaults               */
-	{ WC_TOP_TOOLBAR,						"top_toolbar",						5245,	COLOURS_4(7, 12, 24, 1)			},
-	{ WC_BOTTOM_TOOLBAR,					"bottom_toolbar",					5246,	COLOURS_4(140, 140, 0, 14)		},
-	{ WC_RIDE,								"ride",								5203,	COLOURS_3(1, 26, 1)				},
-	{ WC_RIDE_CONSTRUCTION,					"ride_construction",				5199,	COLOURS_3(24, 24, 24)			},
-	{ WC_RIDE_LIST,							"ride_list",						5204,	COLOURS_3(1, 26, 26)			},
-	{ WC_SAVE_PROMPT,						"save_prompt",						5223,	COLOURS_1(154)					},
-	{ WC_CONSTRUCT_RIDE,					"new_ride",							5201,	COLOURS_3(24, 26, 26)			},
-	{ WC_DEMOLISH_RIDE_PROMPT,				"demolish_ride_prompt",				5224,	COLOURS_1(154)					},
-	{ WC_SCENERY,							"scenery",							5197,	COLOURS_3(24, 12, 12)			},
-	{ WC_OPTIONS,							"options",							5219,	COLOURS_3(7, 7, 7)				},
-	{ WC_FOOTPATH,							"footpath",							5198,	COLOURS_3(24, 24, 24)			},
-	{ WC_LAND,								"land",								5193, 	COLOURS_3(24, 24, 24)			},
-	{ WC_WATER,								"water",							5194,	COLOURS_3(24, 24, 24)			},
-	{ WC_PEEP,								"guest",							5205,	COLOURS_3(1, 15, 15)			},
-	{ WC_GUEST_LIST,						"guest_list",						5206,	COLOURS_3(1, 15, 15)			},
-	{ WC_STAFF_LIST,						"staff_list",						5208,	COLOURS_3(1, 4, 4)				},
-	{ WC_FIRE_PROMPT,						"staff_fire_prompt",				5225,	COLOURS_1(154)					},
-	{ WC_PARK_INFORMATION,					"park_information",					5253,	COLOURS_3(1, 19, 19)			},
-	{ WC_FINANCES,							"finances",							5187,	COLOURS_3(1, 19, 19)			},
-	{ WC_TITLE_MENU,						"title_menu",						5249,	COLOURS_3(140, 140, 140)		},
-	{ WC_TITLE_EXIT,						"title_exit",						5250,	COLOURS_3(140, 140, 140)		},
-	{ WC_RECENT_NEWS,						"recent_news",						5192,	COLOURS_3(1, 1, 0)				},
-	{ WC_SCENARIO_SELECT,					"scenario_select",					5252,	COLOURS_3(1, 26, 26)			},
-	{ WC_TRACK_DESIGN_LIST,					"track_design_list",				5202,	COLOURS_3(26, 26, 26)			},
-	{ WC_TRACK_DESIGN_PLACE,				"track_design_place",				5200,	COLOURS_3(24, 24, 24)			},
-	{ WC_NEW_CAMPAIGN,						"new_campaign",						5188,	COLOURS_3(19, 19, 19)			},
-	{ WC_KEYBOARD_SHORTCUT_LIST,			"keyboard_shortcuts",				5220,	COLOURS_3(7, 7, 7)				},
-	{ WC_CHANGE_KEYBOARD_SHORTCUT,			"change_keyboard_shortcut",			5221,	COLOURS_3(7, 7, 7)				},
-	{ WC_MAP,								"map",								5190,	COLOURS_2(12, 24)				},
-	{ WC_BANNER,							"banner",							5209,	COLOURS_3(24, 24, 24)			},
-	{ WC_EDITOR_OBJECT_SELECTION,			"editor_object_selection",			5210,	COLOURS_3(4, 1, 1)				},
-	{ WC_EDITOR_INVENTION_LIST,				"editor_invention_list",			5211,	COLOURS_3(4, 1, 1)				},
-	{ WC_EDITOR_SCENARIO_OPTIONS,			"editor_scenario_options",			5212,	COLOURS_3(4, 1, 1)				},
-	{ WC_EDTIOR_OBJECTIVE_OPTIONS,			"editor_objection_options",			5213,	COLOURS_3(4, 1, 1)				},
-	{ WC_MANAGE_TRACK_DESIGN,				"manage_track_design",				5215,	COLOURS_3(1, 1, 1)				},
-	{ WC_TRACK_DELETE_PROMPT,				"track_delete_prompt",				5226,	COLOURS_3(26, 26, 26)			},
-	{ WC_INSTALL_TRACK,						"install_track",					5216,	COLOURS_3(26, 26, 26)			},
-	{ WC_CLEAR_SCENERY,						"clear_scenery",					5195,	COLOURS_3(24, 24, 24)			},
-	{ WC_CHEATS,							"cheats",							5217,	COLOURS_3(1, 19, 19)			},
-	{ WC_RESEARCH,							"research",							5189,	COLOURS_3(1, 19, 19)			},
-	{ WC_VIEWPORT,							"viewport",							5191,	COLOURS_3(24, 24, 24)			},
-	{ WC_MAPGEN,							"map_generation",					5214,	COLOURS_3(12, 24, 24)			},
-	{ WC_LOADSAVE,							"loadsave",							5222,	COLOURS_3(7, 7, 7)				},
-	{ WC_LOADSAVE_OVERWRITE_PROMPT,			"loadsave_overwrite_prompt",		5227,	COLOURS_1(154)					},
-	{ WC_TITLE_OPTIONS,						"title_options",					5251,	COLOURS_3(140, 140, 140)		},
-	{ WC_LAND_RIGHTS,						"land_rights",						5196,	COLOURS_3(19, 19, 19)			},
-	{ WC_THEMES,							"themes",							5218, 	COLOURS_3(1, 12, 12)			},
-	{ WC_STAFF,								"staff",							5207,	COLOURS_3(1, 4, 4)				},
-	{ WC_EDITOR_TRACK_BOTTOM_TOOLBAR,		"editor_track_bottom_toolbar",		5247,	COLOURS_3(135, 135, 135)		},
-	{ WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR,	"editor_scenario_bottom_toolbar",	5248,	COLOURS_3(150, 150, 141)		},
+	{ WC_TOP_TOOLBAR,						"top_toolbar",						5245,	COLOURS_4(COLOUR_LIGHT_BLUE,					COLOUR_DARK_GREEN,					COLOUR_DARK_BROWN,					COLOUR_GREY				) },
+	{ WC_BOTTOM_TOOLBAR,					"bottom_toolbar",					5246,	COLOURS_4(TRANSLUCENT(COLOUR_DARK_GREEN),		TRANSLUCENT(COLOUR_DARK_GREEN),		COLOUR_BLACK,						COLOUR_BRIGHT_GREEN		) },
+	{ WC_RIDE,								"ride",								5203,	COLOURS_3(COLOUR_GREY,							COLOUR_BORDEAUX_RED,				COLOUR_GREY													) },
+	{ WC_RIDE_CONSTRUCTION,					"ride_construction",				5199,	COLOURS_3(COLOUR_DARK_BROWN,					COLOUR_DARK_BROWN,					COLOUR_DARK_BROWN											) },
+	{ WC_RIDE_LIST,							"ride_list",						5204,	COLOURS_3(COLOUR_GREY,							COLOUR_BORDEAUX_RED,				COLOUR_BORDEAUX_RED											) },
+	{ WC_SAVE_PROMPT,						"save_prompt",						5223,	COLOURS_1(TRANSLUCENT(COLOUR_BORDEAUX_RED)																										) },
+	{ WC_CONSTRUCT_RIDE,					"new_ride",							5201,	COLOURS_3(COLOUR_DARK_BROWN,					COLOUR_BORDEAUX_RED,				COLOUR_BORDEAUX_RED											) },
+	{ WC_DEMOLISH_RIDE_PROMPT,				"demolish_ride_prompt",				5224,	COLOURS_1(TRANSLUCENT(COLOUR_BORDEAUX_RED)																										) },
+	{ WC_SCENERY,							"scenery",							5197,	COLOURS_3(COLOUR_DARK_BROWN,					COLOUR_DARK_GREEN,					COLOUR_DARK_GREEN											) },
+	{ WC_OPTIONS,							"options",							5219,	COLOURS_3(COLOUR_LIGHT_BLUE,					COLOUR_LIGHT_BLUE,					COLOUR_LIGHT_BLUE											) },
+	{ WC_FOOTPATH,							"footpath",							5198,	COLOURS_3(COLOUR_DARK_BROWN,					COLOUR_DARK_BROWN,					COLOUR_DARK_BROWN											) },
+	{ WC_LAND,								"land",								5193, 	COLOURS_3(COLOUR_DARK_BROWN,					COLOUR_DARK_BROWN,					COLOUR_DARK_BROWN											) },
+	{ WC_WATER,								"water",							5194,	COLOURS_3(COLOUR_DARK_BROWN,					COLOUR_DARK_BROWN,					COLOUR_DARK_BROWN											) },
+	{ WC_PEEP,								"guest",							5205,	COLOURS_3(COLOUR_GREY,							COLOUR_OLIVE_GREEN,					COLOUR_OLIVE_GREEN											) },
+	{ WC_GUEST_LIST,						"guest_list",						5206,	COLOURS_3(COLOUR_GREY,							COLOUR_OLIVE_GREEN,					COLOUR_OLIVE_GREEN											) },
+	{ WC_STAFF_LIST,						"staff_list",						5208,	COLOURS_3(COLOUR_GREY,							COLOUR_LIGHT_PURPLE,				COLOUR_LIGHT_PURPLE											) },
+	{ WC_FIRE_PROMPT,						"staff_fire_prompt",				5225,	COLOURS_1(TRANSLUCENT(COLOUR_BORDEAUX_RED)																										) },
+	{ WC_PARK_INFORMATION,					"park_information",					5253,	COLOURS_3(COLOUR_GREY,							COLOUR_DARK_YELLOW,					COLOUR_DARK_YELLOW											) },
+	{ WC_FINANCES,							"finances",							5187,	COLOURS_3(COLOUR_GREY,							COLOUR_DARK_YELLOW,					COLOUR_DARK_YELLOW											) },
+	{ WC_TITLE_MENU,						"title_menu",						5249,	COLOURS_3(TRANSLUCENT(COLOUR_DARK_GREEN),		TRANSLUCENT(COLOUR_DARK_GREEN),		TRANSLUCENT(COLOUR_DARK_GREEN)								) },
+	{ WC_TITLE_EXIT,						"title_exit",						5250,	COLOURS_3(TRANSLUCENT(COLOUR_DARK_GREEN),		TRANSLUCENT(COLOUR_DARK_GREEN),		TRANSLUCENT(COLOUR_DARK_GREEN)								) },
+	{ WC_RECENT_NEWS,						"recent_news",						5192,	COLOURS_3(COLOUR_GREY,							COLOUR_GREY,						COLOUR_BLACK												) },
+	{ WC_SCENARIO_SELECT,					"scenario_select",					5252,	COLOURS_3(COLOUR_GREY,							COLOUR_BORDEAUX_RED,				COLOUR_BORDEAUX_RED											) },
+	{ WC_TRACK_DESIGN_LIST,					"track_design_list",				5202,	COLOURS_3(COLOUR_BORDEAUX_RED,					COLOUR_BORDEAUX_RED,				COLOUR_BORDEAUX_RED											) },
+	{ WC_TRACK_DESIGN_PLACE,				"track_design_place",				5200,	COLOURS_3(COLOUR_DARK_BROWN,					COLOUR_DARK_BROWN,					COLOUR_DARK_BROWN											) },
+	{ WC_NEW_CAMPAIGN,						"new_campaign",						5188,	COLOURS_3(COLOUR_DARK_YELLOW,					COLOUR_DARK_YELLOW,					COLOUR_DARK_YELLOW											) },
+	{ WC_KEYBOARD_SHORTCUT_LIST,			"keyboard_shortcuts",				5220,	COLOURS_3(COLOUR_LIGHT_BLUE,					COLOUR_LIGHT_BLUE,					COLOUR_LIGHT_BLUE											) },
+	{ WC_CHANGE_KEYBOARD_SHORTCUT,			"change_keyboard_shortcut",			5221,	COLOURS_3(COLOUR_LIGHT_BLUE,					COLOUR_LIGHT_BLUE,					COLOUR_LIGHT_BLUE											) },
+	{ WC_MAP,								"map",								5190,	COLOURS_2(COLOUR_DARK_GREEN,					COLOUR_DARK_BROWN																				) },
+	{ WC_BANNER,							"banner",							5209,	COLOURS_3(COLOUR_DARK_BROWN,					COLOUR_DARK_BROWN,					COLOUR_DARK_BROWN											) },
+	{ WC_EDITOR_OBJECT_SELECTION,			"editor_object_selection",			5210,	COLOURS_3(COLOUR_LIGHT_PURPLE,					COLOUR_GREY,						COLOUR_GREY													) },
+	{ WC_EDITOR_INVENTION_LIST,				"editor_invention_list",			5211,	COLOURS_3(COLOUR_LIGHT_PURPLE,					COLOUR_GREY,						COLOUR_GREY													) },
+	{ WC_EDITOR_SCENARIO_OPTIONS,			"editor_scenario_options",			5212,	COLOURS_3(COLOUR_LIGHT_PURPLE,					COLOUR_GREY,						COLOUR_GREY													) },
+	{ WC_EDTIOR_OBJECTIVE_OPTIONS,			"editor_objection_options",			5213,	COLOURS_3(COLOUR_LIGHT_PURPLE,					COLOUR_GREY,						COLOUR_GREY													) },
+	{ WC_MANAGE_TRACK_DESIGN,				"manage_track_design",				5215,	COLOURS_3(COLOUR_GREY,							COLOUR_GREY,						COLOUR_GREY													) },
+	{ WC_TRACK_DELETE_PROMPT,				"track_delete_prompt",				5226,	COLOURS_3(COLOUR_BORDEAUX_RED,					COLOUR_BORDEAUX_RED,				COLOUR_BORDEAUX_RED											) },
+	{ WC_INSTALL_TRACK,						"install_track",					5216,	COLOURS_3(COLOUR_BORDEAUX_RED,					COLOUR_BORDEAUX_RED,				COLOUR_BORDEAUX_RED											) },
+	{ WC_CLEAR_SCENERY,						"clear_scenery",					5195,	COLOURS_3(COLOUR_DARK_BROWN,					COLOUR_DARK_BROWN,					COLOUR_DARK_BROWN											) },
+	{ WC_CHEATS,							"cheats",							5217,	COLOURS_3(COLOUR_GREY,							COLOUR_DARK_YELLOW,					COLOUR_DARK_YELLOW											) },
+	{ WC_RESEARCH,							"research",							5189,	COLOURS_3(COLOUR_GREY,							COLOUR_DARK_YELLOW,					COLOUR_DARK_YELLOW											) },
+	{ WC_VIEWPORT,							"viewport",							5191,	COLOURS_3(COLOUR_DARK_BROWN,					COLOUR_DARK_BROWN,					COLOUR_DARK_BROWN											) },
+	{ WC_MAPGEN,							"map_generation",					5214,	COLOURS_3(COLOUR_DARK_GREEN,					COLOUR_DARK_BROWN,					COLOUR_DARK_BROWN											) },
+	{ WC_LOADSAVE,							"loadsave",							5222,	COLOURS_3(COLOUR_LIGHT_BLUE,					COLOUR_LIGHT_BLUE,					COLOUR_LIGHT_BLUE											) },
+	{ WC_LOADSAVE_OVERWRITE_PROMPT,			"loadsave_overwrite_prompt",		5227,	COLOURS_1(TRANSLUCENT(COLOUR_BORDEAUX_RED)																										) },
+	{ WC_TITLE_OPTIONS,						"title_options",					5251,	COLOURS_3(TRANSLUCENT(COLOUR_DARK_GREEN),		TRANSLUCENT(COLOUR_DARK_GREEN),		TRANSLUCENT(COLOUR_DARK_GREEN)								) },
+	{ WC_LAND_RIGHTS,						"land_rights",						5196,	COLOURS_3(COLOUR_DARK_YELLOW,					COLOUR_DARK_YELLOW,					COLOUR_DARK_YELLOW											) },
+	{ WC_THEMES,							"themes",							5218, 	COLOURS_3(COLOUR_GREY,							COLOUR_DARK_GREEN,					COLOUR_DARK_GREEN											) },
+	{ WC_STAFF,								"staff",							5207,	COLOURS_3(COLOUR_GREY,							COLOUR_LIGHT_PURPLE,				COLOUR_LIGHT_PURPLE											) },
+	{ WC_EDITOR_TRACK_BOTTOM_TOOLBAR,		"editor_track_bottom_toolbar",		5247,	COLOURS_3(TRANSLUCENT(COLOUR_LIGHT_BLUE),		TRANSLUCENT(COLOUR_LIGHT_BLUE),		TRANSLUCENT(COLOUR_LIGHT_BLUE)								) },
+	{ WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR,	"editor_scenario_bottom_toolbar",	5248,	COLOURS_3(TRANSLUCENT(COLOUR_LIGHT_BROWN),		TRANSLUCENT(COLOUR_LIGHT_BROWN),	TRANSLUCENT(COLOUR_MOSS_GREEN)								) },
+	{ WC_TITLE_EDITOR,						"title_sequences",					5433,	COLOURS_3(COLOUR_GREY,							COLOUR_OLIVE_GREEN,					COLOUR_OLIVE_GREEN											) },
 };
 
 #define COLOURS_RCT1(c0, c1, c2, c3, c4, c5) { { (c0), (c1), (c2), (c3), (c4), (c5) } }
 
 theme_window_preset gThemeWindowsRCT1[] = {
-	{ WC_TOP_TOOLBAR,		COLOURS_RCT1(1, 1, 1, 1, 0, 0)				},
-	{ WC_BOTTOM_TOOLBAR,	COLOURS_RCT1(129, 129, 0, 18, 0, 0)			},
-	{ WC_RIDE,				COLOURS_RCT1(26, 1, 11, 0, 0, 0)			},
-	{ WC_RIDE_LIST,			COLOURS_RCT1(26, 1, 1, 0, 0, 0)				},
-	{ WC_CONSTRUCT_RIDE,	COLOURS_RCT1(26, 1, 1, 0, 0, 0)				},
-	{ WC_PEEP,				COLOURS_RCT1(22, 26, 26, 0, 0, 0)			},
-	{ WC_GUEST_LIST,		COLOURS_RCT1(22, 26, 26, 0, 0, 0)			},
-	{ WC_STAFF_LIST,		COLOURS_RCT1(12, 4, 4, 0, 0, 0)				},
-	{ WC_FINANCES,			COLOURS_RCT1(4, 1, 1, 0, 0, 0)				},
-	{ WC_TITLE_MENU,		COLOURS_RCT1(129, 129, 129, 0, 0, 0)		}, 
-	{ WC_TITLE_EXIT,		COLOURS_RCT1(129, 129, 129, 0, 0, 0)		},
-	{ WC_NEW_CAMPAIGN,		COLOURS_RCT1(4, 4, 1, 0, 0, 0)				},
-	{ WC_TITLE_OPTIONS,		COLOURS_RCT1(129, 129, 129, 0, 0, 0)		},
-	{ WC_STAFF,				COLOURS_RCT1(12, 4, 4, 0, 0, 0)				},
-
-
-	{ 0xFF, { 0, 0, 0, 0, 0, 0 } } // End
+	{ WC_TOP_TOOLBAR,		COLOURS_RCT1(COLOUR_GREY,				COLOUR_GREY,				COLOUR_GREY,				COLOUR_GREY,	COLOUR_BLACK,	COLOUR_BLACK)	},
+	{ WC_BOTTOM_TOOLBAR,	COLOURS_RCT1(TRANSLUCENT(COLOUR_GREY),	TRANSLUCENT(COLOUR_GREY),	COLOUR_BLACK,				COLOUR_YELLOW,	COLOUR_BLACK,	COLOUR_BLACK)	},
+	{ WC_RIDE,				COLOURS_RCT1(COLOUR_BORDEAUX_RED,		COLOUR_GREY,				COLOUR_SATURATED_GREEN,		COLOUR_BLACK,	COLOUR_BLACK,	COLOUR_BLACK)	},
+	{ WC_RIDE_LIST,			COLOURS_RCT1(COLOUR_BORDEAUX_RED,		COLOUR_GREY,				COLOUR_GREY,				COLOUR_BLACK,	COLOUR_BLACK,	COLOUR_BLACK)	},
+	{ WC_CONSTRUCT_RIDE,	COLOURS_RCT1(COLOUR_BORDEAUX_RED,		COLOUR_GREY,				COLOUR_GREY,				COLOUR_BLACK,	COLOUR_BLACK,	COLOUR_BLACK)	},
+	{ WC_PEEP,				COLOURS_RCT1(COLOUR_LIGHT_BROWN,		COLOUR_BORDEAUX_RED,		COLOUR_BORDEAUX_RED,		COLOUR_BLACK,	COLOUR_BLACK,	COLOUR_BLACK)	},
+	{ WC_GUEST_LIST,		COLOURS_RCT1(COLOUR_LIGHT_BROWN,		COLOUR_BORDEAUX_RED,		COLOUR_BORDEAUX_RED,		COLOUR_BLACK,	COLOUR_BLACK,	COLOUR_BLACK)	},
+	{ WC_STAFF_LIST,		COLOURS_RCT1(COLOUR_DARK_GREEN,			COLOUR_LIGHT_PURPLE,		COLOUR_LIGHT_PURPLE,		COLOUR_BLACK,	COLOUR_BLACK,	COLOUR_BLACK)	},
+	{ WC_FINANCES,			COLOURS_RCT1(COLOUR_LIGHT_PURPLE,		COLOUR_GREY,				COLOUR_GREY,				COLOUR_BLACK,	COLOUR_BLACK,	COLOUR_BLACK)	},
+	{ WC_TITLE_MENU,		COLOURS_RCT1(TRANSLUCENT(COLOUR_GREY),	TRANSLUCENT(COLOUR_GREY),	TRANSLUCENT(COLOUR_GREY),	COLOUR_BLACK,	COLOUR_BLACK,	COLOUR_BLACK)	},
+	{ WC_TITLE_EXIT,		COLOURS_RCT1(TRANSLUCENT(COLOUR_GREY),	TRANSLUCENT(COLOUR_GREY),	TRANSLUCENT(COLOUR_GREY),	COLOUR_BLACK,	COLOUR_BLACK,	COLOUR_BLACK)	},
+	{ WC_NEW_CAMPAIGN,		COLOURS_RCT1(COLOUR_LIGHT_PURPLE,		COLOUR_LIGHT_PURPLE,		COLOUR_GREY,				COLOUR_BLACK,	COLOUR_BLACK,	COLOUR_BLACK)	},
+	{ WC_TITLE_OPTIONS,		COLOURS_RCT1(TRANSLUCENT(COLOUR_GREY),	TRANSLUCENT(COLOUR_GREY),	TRANSLUCENT(COLOUR_GREY),	COLOUR_BLACK,	COLOUR_BLACK,	COLOUR_BLACK)	},
+	{ WC_STAFF,				COLOURS_RCT1(COLOUR_DARK_GREEN,			COLOUR_LIGHT_PURPLE,		COLOUR_LIGHT_PURPLE,		COLOUR_BLACK,	COLOUR_BLACK,	COLOUR_BLACK)	},
+	THEME_DEF_END
 };
 
 uint16 gCurrentTheme = 0;
@@ -155,7 +158,7 @@ void colour_scheme_update(rct_window *window)
 void colour_scheme_update_by_class(rct_window *window, rct_windowclass classification)
 {
 	theme_window* theme = theme_window_get_by_class(classification);
-	
+
 	bool transparent = false;
 	for (int i = 0; i < 6; i++) {
 		window->colours[i] = theme->colours[i];
@@ -192,11 +195,12 @@ void theme_create_preset(int duplicate, const char *name)
 	int preset = gConfigThemes.num_presets;
 	gConfigThemes.num_presets++;
 	gConfigThemes.presets = realloc(gConfigThemes.presets, sizeof(theme_preset) * gConfigThemes.num_presets);
-	strcpy(gConfigThemes.presets[preset].name, name);
+	safe_strncpy(gConfigThemes.presets[preset].name, name, THEME_PRESET_NAME_SIZE);
 	gConfigThemes.presets[preset].windows = malloc(sizeof(theme_window) * gNumThemeWindows);
 	for (int i = 0; i < (int)gNumThemeWindows; i++) {
 		gConfigThemes.presets[preset].windows[i] = gConfigThemes.presets[duplicate].windows[i];
 	}
+	gConfigThemes.presets[preset].features = gConfigThemes.presets[duplicate].features;
 	themes_save_preset(preset);
 	theme_change_preset(preset);
 }
@@ -232,10 +236,10 @@ void theme_rename_preset(int preset, const char *newName)
 		strcat(dest, ".ini");
 		platform_file_move(src, dest);
 
-		strcpy(gConfigThemes.presets[gCurrentTheme].name, newName);
+		safe_strncpy(gConfigThemes.presets[preset].name, newName, THEME_PRESET_NAME_SIZE);
 
 		if (preset == gCurrentTheme) {
-			gConfigInterface.current_theme_preset = gConfigThemes.presets[gCurrentTheme].name;
+			gConfigInterface.current_theme_preset = gConfigThemes.presets[preset].name;
 		}
 	}
 }

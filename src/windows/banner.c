@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -63,44 +63,43 @@ rct_widget window_banner_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_banner_emptysub() { }
-static void window_banner_mouseup();
+static void window_banner_mouseup(rct_window *w, int widgetIndex);
 static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_banner_dropdown();
-static void window_banner_textinput();
-static void window_banner_invalidate();
-static void window_banner_paint();
-static void window_banner_unknown_14();
+static void window_banner_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_banner_textinput(rct_window *w, int widgetIndex, char *text);
+static void window_banner_unknown_14(rct_window *w);
+static void window_banner_invalidate(rct_window *w);
+static void window_banner_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void* window_banner_events[] = {
-	window_banner_emptysub,
+static rct_window_event_list window_banner_events = {
+	NULL,
 	window_banner_mouseup,
-	window_banner_emptysub,
-	window_banner_mousedown, 
-	window_banner_dropdown, 
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
+	NULL,
+	window_banner_mousedown,
+	window_banner_dropdown,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_banner_textinput,
 	window_banner_unknown_14,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
-	window_banner_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_banner_invalidate,
-	window_banner_paint, 
-	window_banner_emptysub
+	window_banner_paint,
+	NULL
 };
 
 /**
@@ -118,7 +117,7 @@ void window_banner_open(rct_windownumber number)
 	if (w != NULL)
 		return;
 
-	w = window_create_auto_pos(WW, WH, (uint32*)window_banner_events, WC_BANNER, WF_2);
+	w = window_create_auto_pos(WW, WH, &window_banner_events, WC_BANNER, WF_NO_SCROLLING);
 	w->widgets = window_banner_widgets;
 	w->enabled_widgets =
 		(1 << WIDX_CLOSE) |
@@ -134,7 +133,7 @@ void window_banner_open(rct_windownumber number)
 
 	int view_x = gBanners[w->number].x << 5;
 	int view_y = gBanners[w->number].y << 5;
-	
+
 	rct_map_element* map_element = map_get_first_element_at(view_x / 32, view_y / 32);
 	while(1) {
 		if (
@@ -174,13 +173,8 @@ void window_banner_open(rct_windownumber number)
 }
 
 /* rct2: 0x6ba4d6*/
-static void window_banner_mouseup()
+static void window_banner_mouseup(rct_window *w, int widgetIndex)
 {
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
 	rct_banner* banner = &gBanners[w->number];
 	int x = banner->x << 5;
 	int y = banner->y << 5;
@@ -205,13 +199,7 @@ static void window_banner_mouseup()
 		break;
 	case WIDX_BANNER_NO_ENTRY:
 		textinput_cancel();
-		banner->flags ^= BANNER_FLAG_NO_ENTRY;
-		window_invalidate(w);
-
-		map_element->properties.banner.flags = 0xFF;
-		if (banner->flags & BANNER_FLAG_NO_ENTRY){
-			map_element->properties.banner.flags &= ~(1 << map_element->properties.banner.position);
-		}
+		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, banner->colour, GAME_COMMAND_SET_BANNER_STYLE, banner->text_colour, banner->flags ^ BANNER_FLAG_NO_ENTRY);
 		break;
 	}
 }
@@ -226,115 +214,64 @@ static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* w
 		window_dropdown_show_colour(w, widget, w->colours[1] | 0x80, banner->colour);
 		break;
 	case WIDX_TEXT_COLOR_DROPDOWN_BUTTON:
-	
+
 		for( int i = 0; i < 13; ++i){
 			gDropdownItemsFormat[i] = 1142;
 			gDropdownItemsArgs[i] = 2997 + i;
 
 		}
-		
+
 		//Switch to the dropdown box widget.
 		widget--;
 
 		window_dropdown_show_text_custom_width(
-			widget->left + w->x, 
-			widget->top + w->y, 
+			widget->left + w->x,
+			widget->top + w->y,
 			widget->bottom - widget->top + 1,
-			w->colours[1], 
+			w->colours[1],
 			DROPDOWN_FLAG_STAY_OPEN,
-			13, 
+			13,
 			widget->right - widget->left - 3);
-		
-		gDropdownItemsChecked = 1 << (banner->text_colour - 1);
+
+		dropdown_set_checked(banner->text_colour - 1, true);
 		break;
 	}
 }
 
 /* rct2: 0x6ba517 */
-static void window_banner_dropdown()
+static void window_banner_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	short widgetIndex, dropdownIndex;
-	rct_window* w;
-
-	window_dropdown_get_registers(w, widgetIndex, dropdownIndex);
-	
 	rct_banner* banner = &gBanners[w->number];
 
 	switch(widgetIndex){
 	case WIDX_MAIN_COLOR:
-		if ( dropdownIndex == 0xFFFF) return;
-		banner->colour = (uint8)dropdownIndex;
-		window_invalidate(w);
+		if (dropdownIndex == -1)
+			break;
+
+		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_BANNER_STYLE, banner->text_colour, 0);
 		break;
 	case WIDX_TEXT_COLOR_DROPDOWN_BUTTON:
-		if ( dropdownIndex == 0xFFFF) return;
-		banner->text_colour = dropdownIndex + 1;
+		if (dropdownIndex == -1)
+			break;
 
-		//Can be replaced with a buffer 34 chars wide ( 32 character + 1 colour_format + 1 '\0')
-		uint8* text_buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, uint8);
-		
-		format_string(text_buffer, banner->string_idx, 0);
-		
-		if (text_buffer[0] < FORMAT_COLOUR_CODE_START 
-			|| text_buffer[0] > FORMAT_COLOUR_CODE_END){
-			int end_point = strlen(text_buffer) + 1;
-			strncpy(text_buffer + 1, text_buffer, 32);
-			text_buffer[end_point] = '\0';
-		}
-
-		text_buffer[0] = banner->text_colour + FORMAT_COLOUR_CODE_START;
-
-		rct_string_id stringId = user_string_allocate(128, text_buffer);
-		if (stringId != 0) {
-			rct_string_id prev_string_id = banner->string_idx;
-			banner->string_idx = stringId;
-			user_string_free(prev_string_id);
-			window_invalidate(w);
-		} else {
-			window_error_open(2984, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
-		}
+		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, banner->colour, GAME_COMMAND_SET_BANNER_STYLE, dropdownIndex + 1, 0);
 		break;
 	}
 }
 
 /* rct2: 0x6ba50c */
-static void window_banner_textinput()
+static void window_banner_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	short widgetIndex;
-	rct_window *w;
-	uint8 result;
-	uint8* text;
-
-	window_text_input_get_registers(w, widgetIndex, result, text);
-
-
-	if (widgetIndex == WIDX_BANNER_TEXT && result) {
-
-		rct_banner* banner = &gBanners[w->number];
-
-		uint8* text_buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, uint8);
-
-		text_buffer[0] = banner->text_colour + FORMAT_COLOUR_CODE_START;
-		strncpy(text_buffer + 1, text, 32);
-
-		rct_string_id stringId = user_string_allocate(128, text_buffer);
-		if (stringId) {
-			rct_string_id prev_string_id = banner->string_idx;
-			banner->string_idx = stringId;
-			user_string_free(prev_string_id);
-			window_invalidate(w);
-		} else {
-			window_error_open(2984, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
-		}
+	if (widgetIndex == WIDX_BANNER_TEXT && text != NULL) {
+		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 0)), GAME_COMMAND_SET_BANNER_NAME, *((int*)(text + 8)), *((int*)(text + 4)));
+		game_do_command(2, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 12)), GAME_COMMAND_SET_BANNER_NAME, *((int*)(text + 20)), *((int*)(text + 16)));
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 24)), GAME_COMMAND_SET_BANNER_NAME, *((int*)(text + 32)), *((int*)(text + 28)));
 	}
 }
 
 /* rct2: 0x006BA44D */
-static void window_banner_invalidate()
+static void window_banner_invalidate(rct_window *w)
 {
-	rct_window* w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 
 	rct_banner* banner = &gBanners[w->number];
@@ -345,16 +282,16 @@ static void window_banner_invalidate()
 	rct_scenery_entry* sceneryEntry = g_bannerSceneryEntries[banner->type];
 
 	if (sceneryEntry->banner.flags & 1) colour_btn->type = WWT_COLORBTN;
-	
+
 	w->pressed_widgets &= ~(1ULL<<WIDX_BANNER_NO_ENTRY);
 	w->disabled_widgets &= ~(
 		(1ULL<<WIDX_BANNER_TEXT)|
 		(1ULL<<WIDX_TEXT_COLOR_DROPDOWN)|
 		(1ULL<<WIDX_TEXT_COLOR_DROPDOWN_BUTTON));
-	
+
 	if (banner->flags & BANNER_FLAG_NO_ENTRY){
 		w->pressed_widgets |= (1ULL<<WIDX_BANNER_NO_ENTRY);
-		w->disabled_widgets |= 	
+		w->disabled_widgets |=
 			(1ULL<<WIDX_BANNER_TEXT)|
 			(1ULL<<WIDX_TEXT_COLOR_DROPDOWN)|
 			(1ULL<<WIDX_TEXT_COLOR_DROPDOWN_BUTTON);
@@ -367,13 +304,8 @@ static void window_banner_invalidate()
 }
 
 /* rct2:0x006BA4C5 */
-static void window_banner_paint()
+static void window_banner_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
 	window_draw_widgets(w, dpi);
 
 	// Draw viewport
@@ -383,11 +315,8 @@ static void window_banner_paint()
 }
 
 /* rct2: 0x6BA7B5 */
-static void window_banner_unknown_14()
+static void window_banner_unknown_14(rct_window *w)
 {
-	rct_window* w;
-	window_get_register(w);
-	
 	rct_viewport* view = w->viewport;
 	w->viewport = 0;
 

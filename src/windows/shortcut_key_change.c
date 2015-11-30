@@ -25,6 +25,8 @@
 #include "../localisation/localisation.h"
 #include "../interface/themes.h"
 
+extern const rct_string_id ShortcutStringIds[];
+
 #define WW 250
 #define WH 60
 
@@ -42,41 +44,40 @@ static rct_widget window_shortcut_change_widgets[] = {
 	{ WIDGETS_END }
 };
 
-static void window_shortcut_change_emptysub(){}
-static void window_shortcut_change_mouseup();
-static void window_shortcut_change_invalidate();
-static void window_shortcut_change_paint();
+static void window_shortcut_change_mouseup(rct_window *w, int widgetIndex);
+static void window_shortcut_change_invalidate(rct_window *w);
+static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //0x9A3F7C
-static void* window_shortcut_change_events[] = {
-	window_shortcut_change_emptysub,
+static rct_window_event_list window_shortcut_change_events = {
+	NULL,
 	window_shortcut_change_mouseup,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
-	window_shortcut_change_emptysub,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	window_shortcut_change_invalidate,
 	window_shortcut_change_paint,
-	window_shortcut_change_emptysub
+	NULL
 };
 
 void window_shortcut_change_open(int selected_key){
@@ -84,7 +85,7 @@ void window_shortcut_change_open(int selected_key){
 	window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
 	// Save the item we are selecting for new window
 	RCT2_GLOBAL(0x9DE511, uint8) = selected_key;
-	rct_window* w = window_create_auto_pos(WW, WH, (uint32*)window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
+	rct_window* w = window_create_auto_pos(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
 
 	w->widgets = window_shortcut_change_widgets;
 	w->enabled_widgets = (1 << 2);
@@ -95,23 +96,17 @@ void window_shortcut_change_open(int selected_key){
 *
 *  rct2: 0x006E3AE0
 */
-static void window_shortcut_change_mouseup(){
-	short widgetIndex;
-	rct_window *w;
-
-	window_widget_get_registers(w, widgetIndex);
-
+static void window_shortcut_change_mouseup(rct_window *w, int widgetIndex)
+{
 	switch (widgetIndex){
 	case WIDX_CLOSE:
 		window_close(w);
+		break;
 	}
 }
 
-static void window_shortcut_change_invalidate()
+static void window_shortcut_change_invalidate(rct_window *w)
 {
-	rct_window *w;
-
-	window_get_register(w);
 	colour_scheme_update(w);
 }
 
@@ -119,17 +114,13 @@ static void window_shortcut_change_invalidate()
 *
 *  rct2: 0x006E3A9F
 */
-static void window_shortcut_change_paint(){
-	rct_window *w;
-	rct_drawpixelinfo *dpi;
-
-	window_paint_get_registers(w, dpi);
-
+static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi)
+{
 	window_draw_widgets(w, dpi);
 
 	int x = w->x + 125;
 	int y = w->y + 30;
 
-	RCT2_GLOBAL(0x13CE952, uint16) = 2493 + RCT2_GLOBAL(0x9DE511, uint8);
-	gfx_draw_string_centred_wrapped(dpi, (void*)0x13CE952, x, y, 242, 2785, RCT2_GLOBAL(0x9DEB8D, uint8));
+	RCT2_GLOBAL(0x13CE952, uint16) = ShortcutStringIds[RCT2_GLOBAL(0x009DE511, uint8)];
+	gfx_draw_string_centred_wrapped(dpi, (void*)0x013CE952, x, y, 242, 2785, RCT2_GLOBAL(0x9DEB8D, uint8));
 }

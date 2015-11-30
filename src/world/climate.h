@@ -8,12 +8,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- 
+
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -49,7 +49,7 @@ typedef struct {
 
 // This still needs to be read / written when loading and saving
 // extern int gClimateNextWeather;
-#define gClimateNextWeather RCT2_GLOBAL(0x013CA74B, uint8)
+#define gClimateNextWeather RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, uint8)
 
 extern const rct_weather climate_weather_data[6];
 
