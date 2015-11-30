@@ -152,6 +152,11 @@ uint8 platform_get_locale_temperature_format();
 
 bool platform_check_steam_overlay_attached();
 
+// BSD and OS X has MAP_ANON instead of MAP_ANONYMOUS
+#ifndef MAP_ANONYMOUS
+	#define MAP_ANONYMOUS MAP_ANON
+#endif
+
 // Windows specific definitions
 #ifdef _WIN32
 	#ifndef WIN32_LEAN_AND_MEAN
