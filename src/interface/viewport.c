@@ -1201,7 +1201,7 @@ void sprite_paint_setup(uint16 eax, uint16 ecx){
  * dx : height
  * edi : unknown
  */
-int sub_6629BC(int height, uint16 ax, uint32 image_id, int edi){
+bool sub_6629BC(int height, uint16 ax, uint32 image_id, int edi){
 	int eax = ax, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = edi, ebp = image_id;
 
 	RCT2_CALLFUNC_X(0x006629BC, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
