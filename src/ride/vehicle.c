@@ -2086,7 +2086,7 @@ static void vehicle_finish_departing(rct_vehicle* vehicle) {
 
 	vehicle->status = VEHICLE_STATUS_TRAVELLING;
 	vehicle_invalidate_window(vehicle);	
-	vehicle->var_D0 = 0;
+	vehicle->lost_time_out = 0;
 
 	vehicle->sub_state = 1;
 	if (vehicle->velocity < 0)
@@ -2107,13 +2107,13 @@ static void vehicle_check_if_missing(rct_vehicle* vehicle) {
 	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_27))
 		return;
 
-	vehicle->var_D0++;
+	vehicle->lost_time_out++;
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_11)
 		return;
 
 	uint16 limit = ride->type == RIDE_TYPE_BOAT_RIDE ? 15360 : 9600;
 
-	if (vehicle->var_D0 <= limit)
+	if (vehicle->lost_time_out <= limit)
 		return;
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_11;
