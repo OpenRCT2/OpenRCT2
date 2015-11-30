@@ -40,6 +40,7 @@
 - Feature: Option to ignore invalid checksums on loaded parks.
 - Feature: Option to scale game display for better compatibility with high DPI screens.
 - Alteration: Autosave is now measured in real-time rather than in-game date.
+- Alteration: On-ride photos are now factored into the calculations of a ride's income and profit per hour.
 - Technical: DirectDraw, DirectInput, DirectPlay and DirectSound dependencies are no longer used.
 - Removed: Six Flags branding and limitations.
 - Removed: Infogrames disclaimer.
@@ -55,6 +56,10 @@
 - Fix: TD4 River Rapids will now have the correct seat colour (original bug).
 - Fix: Message sound will no longer play in the editor modes (original bug).
 - Fix: Scenarios created with the Scenario Editor will now have the correct initial temperature for their climate (original bug).
+- Fix: Financial information can no longer be accessed from the rides/attractions menu in parks that don't use money (original bug).
+- Fix: Launched freefalls in downward launch mode no longer use launch speed setting to determine ratings (original bug).
+- Fix: The path tool and tracked-ride construction tool no longer interfere with one another in certain situations (original bug).
+- Fix: Building a flat ride partially out of park boundaries will no longer trigger a spurious "too high for supports" message (original bug).
 
 0.0.2-beta (2015-06-21)
 ------------------------------------------------------------------------
