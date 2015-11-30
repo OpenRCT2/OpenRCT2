@@ -60,6 +60,7 @@
 - Fix: Launched freefalls in downward launch mode no longer use launch speed setting to determine ratings (original bug).
 - Fix: The path tool and tracked-ride construction tool no longer interfere with one another in certain situations (original bug).
 - Fix: Building a flat ride partially out of park boundaries will no longer trigger a spurious "too high for supports" message (original bug).
+- Fix: Parks created in the Scenario Editor now select the standard staff uniform colors by default (original bug).
 
 0.0.2-beta (2015-06-21)
 ------------------------------------------------------------------------
