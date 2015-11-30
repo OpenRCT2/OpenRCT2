@@ -37,11 +37,11 @@
 
 static void vehicle_update(rct_vehicle *vehicle);
 
-static void vehicle_ride_null_update_moving_to_end_of_station(rct_vehicle *vehicle);
-static void vehicle_ride_null_update_waiting_to_depart(rct_vehicle *vehicle);
-static void vehicle_ride_null_update_departing(rct_vehicle *vehicle);
-static void vehicle_ride_null_update_travelling(rct_vehicle *vehicle);
-static void vehicle_ride_null_update_arriving(rct_vehicle *vehicle);
+static void vehicle_update_cable_lift_moving_to_end_of_station(rct_vehicle *vehicle);
+static void vehicle_update_cable_lift_waiting_to_depart(rct_vehicle *vehicle);
+static void vehicle_update_cable_lift_departing(rct_vehicle *vehicle);
+static void vehicle_update_cable_lift_travelling(rct_vehicle *vehicle);
+static void vehicle_update_cable_lift_arriving(rct_vehicle *vehicle);
 
 static void vehicle_update_showing_film(rct_vehicle *vehicle);
 static void vehicle_update_doing_circus_show(rct_vehicle *vehicle);
@@ -999,22 +999,23 @@ static void vehicle_update(rct_vehicle *vehicle)
 	rct_ride *ride;
 	rct_ride_type *rideEntry;
 
+	// The cable lift uses the ride type of NULL
 	if (vehicle->ride_subtype == RIDE_TYPE_NULL) {
 		switch (vehicle->status) {
 		case VEHICLE_STATUS_MOVING_TO_END_OF_STATION:
-			vehicle_ride_null_update_moving_to_end_of_station(vehicle);
+			vehicle_update_cable_lift_moving_to_end_of_station(vehicle);
 			break;
 		case VEHICLE_STATUS_WAITING_TO_DEPART:
-			vehicle_ride_null_update_waiting_to_depart(vehicle);
+			vehicle_update_cable_lift_waiting_to_depart(vehicle);
 			break;
 		case VEHICLE_STATUS_DEPARTING:
-			vehicle_ride_null_update_departing(vehicle);
+			vehicle_update_cable_lift_departing(vehicle);
 			break;
 		case VEHICLE_STATUS_TRAVELLING:
-			vehicle_ride_null_update_travelling(vehicle);
+			vehicle_update_cable_lift_travelling(vehicle);
 			break;
 		case VEHICLE_STATUS_ARRIVING:
-			vehicle_ride_null_update_arriving(vehicle);
+			vehicle_update_cable_lift_arriving(vehicle);
 			break;
 		}
 		return;
@@ -1057,7 +1058,7 @@ static void vehicle_update(rct_vehicle *vehicle)
 	case VEHICLE_STATUS_CRASHED:
 		vehicle_update_crash(vehicle);
 		break;
-	case VEHICLE_STATUS_TRAVELING_BUMPER_CARS:
+	case VEHICLE_STATUS_TRAVELLING_BUMPER_CARS:
 		vehicle_update_bumpcar_mode(vehicle);
 		break;	
 	case VEHICLE_STATUS_SWINGING:
@@ -1093,7 +1094,7 @@ static void vehicle_update(rct_vehicle *vehicle)
 	case VEHICLE_STATUS_ARRIVING:
 	case VEHICLE_STATUS_UNLOADING_PASSENGERS:
 	case VEHICLE_STATUS_TRAVELLING_07:
-	case VEHICLE_STATUS_TRAVELLING_15:
+	case VEHICLE_STATUS_TRAVELLING_CABLE_LIFT:
 		{
 			int *addressSwitchPtr = (int*)(0x006D7B70 + (vehicle->status * 4));
 			RCT2_CALLPROC_X(*addressSwitchPtr, 0, 0, 0, (vehicle->sub_state << 8) | ride->mode, (int)vehicle, 0, 0);
@@ -1112,27 +1113,48 @@ static void vehicle_update(rct_vehicle *vehicle)
 	vehicle_update_sound(vehicle);
 }
 
-static void vehicle_ride_null_update_moving_to_end_of_station(rct_vehicle *vehicle)
+static void vehicle_update_cable_lift_moving_to_end_of_station(rct_vehicle *vehicle)
 {
 	RCT2_CALLPROC_X(0x006DF8A4, 0, 0, 0, 0, (int)vehicle, 0, 0);
 }
 
-static void vehicle_ride_null_update_waiting_to_depart(rct_vehicle *vehicle)
+static void vehicle_update_cable_lift_waiting_to_depart(rct_vehicle *vehicle)
 {
 	RCT2_CALLPROC_X(0x006DF8F1, 0, 0, 0, 0, (int)vehicle, 0, 0);
 }
 
-static void vehicle_ride_null_update_departing(rct_vehicle *vehicle)
+static void vehicle_update_cable_lift_departing(rct_vehicle *vehicle)
 {
-	RCT2_CALLPROC_X(0x006DF97A, 0, 0, 0, 0, (int)vehicle, 0, 0);
+	vehicle->sub_state++;
+	if (vehicle->sub_state < 16)
+		return;
+
+	rct_vehicle* passengerVehicle = GET_VEHICLE(vehicle->var_C0);
+	vehicle->status = VEHICLE_STATUS_TRAVELLING;
+	passengerVehicle->status = VEHICLE_STATUS_TRAVELLING_CABLE_LIFT;
 }
 
-static void vehicle_ride_null_update_travelling(rct_vehicle *vehicle)
+static void vehicle_update_cable_lift_travelling(rct_vehicle *vehicle)
 {
-	RCT2_CALLPROC_X(0x006DF99C, 0, 0, 0, 0, (int)vehicle, 0, 0);
+	rct_vehicle* passengerVehicle = GET_VEHICLE(vehicle->var_C0);
+
+	vehicle->velocity = min(passengerVehicle->velocity, 439800);
+	vehicle->var_2C = 0;
+	if (passengerVehicle->update_flags & VEHICLE_UPDATE_FLAG_BROKEN_TRAIN)
+		return;
+
+	int eax = 0;
+	sub_6DEF56(vehicle, &eax, NULL);
+	if (!(eax & (1 << 1)))
+		return;
+
+	vehicle->velocity = 0;
+	vehicle->var_2C = 0;
+	vehicle->status = VEHICLE_STATUS_ARRIVING;
+	vehicle->sub_state = 0;
 }
 
-static void vehicle_ride_null_update_arriving(rct_vehicle *vehicle)
+static void vehicle_update_cable_lift_arriving(rct_vehicle *vehicle)
 {
 	vehicle->sub_state++;
 	if (vehicle->sub_state >= 64)
@@ -1595,7 +1617,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 
 	switch (ride->mode) {
 	case RIDE_MODE_BUMPERCAR:
-		vehicle->status = VEHICLE_STATUS_TRAVELING_BUMPER_CARS;
+		vehicle->status = VEHICLE_STATUS_TRAVELLING_BUMPER_CARS;
 		vehicle_invalidate_window(vehicle);
 		// Bumper mode uses sub_state / var_CE to tell how long
 		// the vehicle has been ridden.
@@ -3277,9 +3299,12 @@ int vehicle_is_used_in_pairs(rct_vehicle *vehicle)
  *
  *  rct2: 0x006DEF56
  */
-void sub_6DEF56(rct_vehicle *cableLift)
+void sub_6DEF56(rct_vehicle *cableLift, int* eax, int* ebx)
 {
-	RCT2_CALLPROC_X(0x006DEF56, 0, 0, 0, 0, (int)cableLift, 0, 0);
+	int _eax, _ebx, ecx, edx, ebp, edi;
+	RCT2_CALLFUNC_X(0x006DEF56, &_eax, &_ebx, &ecx, &edx, (int*)&cableLift, &edi, &ebp);
+	if (eax != NULL)*eax = _eax;
+	if (ebx != NULL)*ebx = _ebx;
 }
 
 rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int direction, uint16 var_44, uint32 var_24, bool head)

@@ -193,7 +193,7 @@ enum {
 	VEHICLE_STATUS_TRAVELLING_07,
 	VEHICLE_STATUS_CRASHING,
 	VEHICLE_STATUS_CRASHED,
-	VEHICLE_STATUS_TRAVELING_BUMPER_CARS,
+	VEHICLE_STATUS_TRAVELLING_BUMPER_CARS,
 	VEHICLE_STATUS_SWINGING,
 	VEHICLE_STATUS_ROTATING,
 	VEHICLE_STATUS_FERRIS_WHEEL_ROTATING,
@@ -205,7 +205,7 @@ enum {
 	VEHICLE_STATUS_DOING_CIRCUS_SHOW,
 	VEHICLE_STATUS_CROOKED_HOUSE_OPERATING,
 	VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT,
-	VEHICLE_STATUS_TRAVELLING_15,
+	VEHICLE_STATUS_TRAVELLING_CABLE_LIFT,
 	VEHICLE_STATUS_STOPPING,
 	VEHICLE_STATUS_WAITING_FOR_PASSENGERS_17,
 	VEHICLE_STATUS_WAITING_TO_START,
@@ -280,7 +280,7 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG);
 void vehicle_set_map_toolbar(rct_vehicle *vehicle);
 int vehicle_is_used_in_pairs(rct_vehicle *vehicle);
 rct_vehicle *vehicle_get_head(rct_vehicle *vehicle);
-void sub_6DEF56(rct_vehicle *cableLift);
+void sub_6DEF56(rct_vehicle *cableLift, int* eax, int* ebx);
 rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int direction, uint16 var_44, uint32 var_24, bool head);
 bool sub_6DD365(rct_vehicle *vehicle);
 int sub_6DAB4C(rct_vehicle *vehicle, int *outStation);

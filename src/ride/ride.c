@@ -4486,7 +4486,7 @@ bool ride_create_cable_lift(int rideIndex, bool isApplying)
 	tail->next_vehicle_on_ride = head->sprite_index;
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT;
-	sub_6DEF56(head);
+	sub_6DEF56(head, NULL, NULL);
 	return true;
 }
 
