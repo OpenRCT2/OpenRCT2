@@ -1558,10 +1558,149 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 			return MONEY32_UNDEFINED;
 		}
 	}
+	
+	//Uncomment to use vanilla code
+	/*
+	registers regs = {0};
+	regs.eax = x;
+	regs.ebx = flags;
+	regs.ecx = y;
+	regs.dl = height;
+	regs.dh = style;
+	regs.esi = 0;
+	regs.edi = selectionType << 5;
+	regs.ebp = 0;
+	RCT2_CALLFUNC_Y(0x006639FE, &regs); return regs.ebx;
+	*/
+	
+	RCT2_GLOBAL(0x9E2E18, money32) = MONEY(0, 0);
+	if(flags & GAME_COMMAND_FLAG_APPLY)
+	{
+		footpath_remove_litter(x, y, map_element_height(x, y));
+		map_remove_walls_at(x, y, height * 8 - 16, height * 8 + 32);
+	}
+	RCT2_GLOBAL(0x9E2E18, money32) += MONEY(20, 0);
+	
+	//Check for obstructing scenery
+	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);	
+	do{		
+		if(map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
+			continue;
+		if(height > mapElement->clearance_height)
+			continue;
+		if(height + 4 < mapElement->base_height)
+			continue;
+		rct_scenery_entry *sceneryEntry = RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES, rct_scenery_entry *)[mapElement->properties.scenery.type]; //sceneryEntry = eax
+		if(sceneryEntry->small_scenery.height > 64 && RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL)
+		{
+				map_obstruction_set_error_text(mapElement);
+				return MONEY32_UNDEFINED;
+		}
+		RCT2_GLOBAL(0x9E2E18, money32) += MONEY(sceneryEntry->small_scenery.removal_price, 0);
+		if(flags & GAME_COMMAND_FLAG_APPLY)
+			map_element_remove(mapElement--);
+	}while(!map_element_is_last_for_tile(mapElement++));
+	
+	//Check for ride support limits
+	if(gCheatsDisableSupportLimits==false)
+	{
+		mapElement = map_get_first_element_at(x / 32, y / 32);
+		do{
+			if(map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+				continue;
+			int rideIndex = mapElement->properties.track.ride_index;
+			int maxHeight = GET_RIDE_ENTRY(GET_RIDE(rideIndex)->subtype)->max_height;
+			if(maxHeight == 0)
+				maxHeight = RCT2_GLOBAL(0x97D218 + 8 * GET_RIDE(rideIndex)->type, uint8);
+			int zDelta = mapElement->clearance_height - height;
+			if(zDelta >= 0 && zDelta/2 > maxHeight)
+			{
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_SUPPORTS_CANT_BE_EXTENDED;
+				return MONEY32_UNDEFINED;
+			}
+		}while(!map_element_is_last_for_tile(mapElement++));
+	}
 
-	int eax = x, ebx = flags, ecx = y, edx = (style << 8) | height, esi = 0, edi = selectionType << 5, ebp = 0;
-	RCT2_CALLFUNC_X(0x006639FE, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return ebx;
+	uint8 zCorner = height; //z position of highest corner of tile
+	rct_map_element *surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+	if(surfaceElement->type & MAP_ELEMENT_TYPE_FLAG_HIGHLIGHT)
+	{
+		int waterHeight = surfaceElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+		if(waterHeight != 0)
+		{
+			if(style & 0x1F)
+			{
+				zCorner += 2;
+				if(style & 0x10)
+				{
+					zCorner += 2;
+				}
+			}
+			if(zCorner > waterHeight * 2 - 2)
+			{
+				surfaceElement++;
+				map_obstruction_set_error_text(surfaceElement);
+				return MONEY32_UNDEFINED;
+			}
+		}
+	}
+	
+	zCorner = height;
+	if(style & 0xF)
+	{
+		zCorner += 2;
+		if(style & 0x10)
+		{
+			zCorner += 2;
+		}
+	}
+	
+	if(map_can_construct_with_clear_at(x, y, height, zCorner, RCT2_ADDRESS(0x663CB9, void), 0xF) == false)
+		return MONEY32_UNDEFINED;
+	
+	mapElement = map_get_first_element_at(x / 32, y / 32);
+	do{	
+		int elementType = map_element_get_type(mapElement);
+		
+		if(elementType == MAP_ELEMENT_TYPE_FENCE)
+			continue;
+		if(elementType == MAP_ELEMENT_TYPE_SCENERY)
+			continue;
+		if(mapElement->flags & 0x10)
+			continue;
+		if(mapElement == surfaceElement)
+			continue;
+		if(mapElement > surfaceElement)
+		{
+			if(zCorner > mapElement->base_height)
+			{
+				map_obstruction_set_error_text(mapElement);
+				return MONEY32_UNDEFINED;
+			}
+			continue;
+		}
+		if(height < mapElement->clearance_height)
+		{
+			map_obstruction_set_error_text(mapElement);
+			return MONEY32_UNDEFINED;
+		}
+	}while(!map_element_is_last_for_tile(mapElement++));
+	
+	if(flags & GAME_COMMAND_FLAG_APPLY)
+	{
+		surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+		surfaceElement->base_height = height;
+		surfaceElement->clearance_height = height;
+		surfaceElement->properties.surface.slope &= MAP_ELEMENT_SLOPE_EDGE_STYLE_MASK;
+		surfaceElement->properties.surface.slope |= style;
+		int slope = surfaceElement->properties.surface.terrain & MAP_ELEMENT_SLOPE_MASK;
+		if(slope != 0 && slope <= height / 2)
+			surfaceElement->properties.surface.terrain &= MAP_ELEMENT_SURFACE_TERRAIN_MASK;
+		map_invalidate_tile_full(x, y);
+	}
+	if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+		return 0;
+	return RCT2_GLOBAL(0x9E2E18, money32);
 }
 
 void game_command_set_land_height(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
@@ -3634,6 +3773,12 @@ static void map_obstruction_set_error_text(rct_map_element *mapElement)
 /**
  *
  *  rct2: 0x0068B932
+ *	ax = x
+ *	cx = y
+ *	dl = zLow
+ *	dh = zHigh
+ *	ebp = clearFunc
+ *	bl = bl
  */
 int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *clearFunc, uint8 bl)
 {
@@ -4865,3 +5010,4 @@ rct_map_element *map_get_track_element_at_of_type(int x, int y, int z, int track
 
 	return NULL;
 }
+
