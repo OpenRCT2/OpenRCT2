@@ -15,10 +15,14 @@ TARGET=${TARGET-linux}
 libversion=3
 libVFile="./libversion"
 
+function has_cmd {
+	command -v "$1" >/dev/null 2>&1
+}
+
 function download {
-	if command -v curl > /dev/null 2>&1; then
+	if has_cmd "curl"; then
 		curl -L -o "$2" "$1"
-	elif command -v wget > /dev/null 2>&1; then
+	elif has_cmd "wget"; then
 		wget -O "$2" "$1"
 	else
 		echo "Please install either wget or curl to continue"
@@ -102,66 +106,50 @@ function install_local_libs {
 	cp -rf $cachedir/orctlibs/local/* ./lib/.
 }
 
+function install_mingw_32 {
+	mingw_name=mingw-w32-bin_i686-darwin
+	mingw_tar=$mingw_name"_20130531".tar.bz2
+	mingw_path=/usr/local/$mingw_name
+
+	if [[ ! -f $cachedir/$mingw_tar ]]; then
+		download "https://downloads.sourceforge.net/project/mingw-w64/Toolchains targetting Win32/Automated Builds/$mingw_tar" $cachedir/$mingw_tar
+	fi
+
+	if [[ ! -d "$mingw_path" ]]; then
+		echo "Extracting contents of $mingw_tar to $mingw_path"
+		echo "Don't forget to add $mingw_path/bin to your PATH variable!"
+
+		mkdir $mingw_path
+		tar -xyf $cachedir/$mingw_tar -C $mingw_path
+
+		pushd $mingw_path
+			find . -type d -exec chmod 755 {} \;
+		popd
+	fi
+}
+
 echo TARGET = $TARGET
 
 if [[ $(uname) == "Darwin" ]]; then
-    echo "Installation of OpenRCT2 assumes you have homebrew and use it to install packages."
+	echo "Installation of OpenRCT2 assumes you have homebrew and use it to install packages."
 
-    echo "Check if brew is installed"
-    package_command="brew"
-    which -s brew
-    if [ $? -eq 1 ]; then
-        echo "brew is not installed, or is not in your \$PATH"
-        echo "Check if MacPorts is installed"
-        which -s port
-        if [ $? -eq 1 ]; then
-            echo "MacPorts not found either, abort"
-            exit
-        else
-            echo "MacPorts found"
-            package_command="sudo port"
-        fi
-    else
-        echo "brew was found"
-    fi
+	if ! has_cmd "brew"; then
+		echo "brew is not installed, or is not in your \$PATH"
+		echo "install instructions: http://brew.sh/"
+		exit 1
+	fi
 
-    # Install packages with whatever command was found.
-    # Very possible I'm missing some dependencies here.
-    eval "$package_command install cmake wine"
+	# Very possible I'm missing some dependencies here.
+	brew install cmake
+	brew install jansson --universal
+	brew install sdl2 --universal
+	brew install sdl2_ttf --universal
+	brew install speex --universal
 
-    if [[ ! -d /usr/include/wine ]]; then
-        # This will almost certainly break as brew changes. Better ideas
-        # welcome.
-        wine_path="/usr/local/Cellar/wine/1.6.2/include/wine"
-        if [ $package_command == "sudo port" ]; then
-            wine_path="/opt/local/include/wine"
-        fi
-        sudo ln -s $wine_path /usr/include
-    fi
-
-    mingw_name=mingw-w32-bin_i686-darwin
-    mingw_tar=$mingw_name"_20130531".tar.bz2
-    mingw_path=/usr/local/$mingw_name
-    if [[ ! -f $cachedir/$mingw_tar ]]; then
-        download "https://downloads.sourceforge.net/project/mingw-w64/Toolchains targetting Win32/Automated Builds/$mingw_tar" $cachedir/$mingw_tar
-    fi
-    if [[ ! -d "$mingw_path" ]]; then
-
-        pushd /usr/local/
-            sudo mkdir $mingw_name
-        popd
-
-        echo "Extracting contents of $mingw_tar to $mingw_path"
-        echo "Don't forget to add $mingw_path/bin to your PATH variable!"
-        sudo tar -xyf $cachedir/$mingw_tar -C $mingw_path
-
-        pushd /usr/local
-            sudo chmod 755 $mingw_name
-            pushd $mingw_name
-                sudo find . -type d -exec chmod 755 {} \;
-            popd
-        popd
-    fi
+	if [[ $TARGET == "windows" ]]; then
+		brew install wine
+		install_mingw_32
+	fi
 elif [[ $(uname) == "Linux" ]]; then
 	if [[ -z "$TRAVIS" ]]; then
 	    sudo apt-get install -y binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 cmake
