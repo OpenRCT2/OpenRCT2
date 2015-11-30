@@ -1211,7 +1211,7 @@ TRACK_PAINT_FUNCTION* shop_track_paint_functions[] = {
  */
 void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
 {
-	int al = sub_6629BC(height, 0, RCT2_GLOBAL(0x00F441A4, uint32), direction & 1);
+	bool hasSupports = sub_6629BC(height, 0, RCT2_GLOBAL(0x00F441A4, uint32), direction & 1);
 
 	RCT2_GLOBAL(0x0141E9D0, sint16) = -1;
 	RCT2_GLOBAL(0x0141E9C4, sint16) = -1;
@@ -1236,12 +1236,7 @@ void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int
 
 	sint16 height16 = (sint16)height;
 	int rotation = get_current_rotation();
-	if (al) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-		sub_98197C(0, 45, imageId, 0, height, 28, 28, rotation);
-	} else {
+	if (hasSupports) {
 		uint32 foundationImageId = RCT2_GLOBAL(0x00F441A4, uint32);
 		foundationImageId |= 3395;
 
@@ -1253,7 +1248,12 @@ void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int
 		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-		sub_98199C(0, 45, imageId, 0, height, 28, 28, rotation);
+		sub_98199C(0, 45, imageId, 0, height, 28, 28, rotation);	
+	} else {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
+		sub_98197C(0, 45, imageId, 0, height, 28, 28, rotation);
 	}
 
 	height16 += 48;

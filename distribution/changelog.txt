@@ -1,4 +1,4 @@
-0.0.3-beta (not yet released)
+0.0.3-beta (2015-11-30)
 ------------------------------------------------------------------------
 - Feature: Adding extra title sequences.
 - Feature: Title sequences can be edited in-game.

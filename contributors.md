@@ -55,6 +55,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (nean)
 * Ed Foley (e-foley)
 * Michael Pham (nightroan)
+* Hielke Morsink (Broxzier)
 
 ## Toolchain
 * (Balletie) - OSX

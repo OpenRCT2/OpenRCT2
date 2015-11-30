@@ -1597,8 +1597,11 @@ static void window_ride_init_viewport(rct_window *w)
  */
 void window_ride_construct(rct_window *w)
 {
+	// Window may be closed by close by class so 
+	// make backup before calling.
+	uint8 rideIndex = w->number;
 	window_close_by_class(WC_RIDE_CONSTRUCTION);
-	ride_construct(w->number);
+	ride_construct(rideIndex);
 }
 
 /**
@@ -3457,6 +3460,21 @@ static void window_ride_maintenance_dropdown(rct_window *w, int widgetIndex, int
 	case WIDX_FORCE_BREAKDOWN:
 		if (dropdownIndex == 0) {
 			switch (ride->breakdown_reason_pending) {
+			case BREAKDOWN_SAFETY_CUT_OUT:
+				if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+					break;
+				for (int i = 0; i < ride->num_vehicles; ++i) {
+					uint16 spriteId = ride->vehicles[i];
+					do {
+						vehicle = GET_VEHICLE(spriteId);
+						vehicle->update_flags &= ~(
+							VEHICLE_UPDATE_FLAG_BROKEN_CAR | 
+							VEHICLE_UPDATE_FLAG_7 |
+							VEHICLE_UPDATE_FLAG_BROKEN_TRAIN
+							);
+					} while ((spriteId = vehicle->next_vehicle_on_train) != 0xFFFF);
+				}
+				break;
 			case BREAKDOWN_RESTRAINTS_STUCK_CLOSED:
 			case BREAKDOWN_RESTRAINTS_STUCK_OPEN:
 			case BREAKDOWN_DOORS_STUCK_CLOSED:
