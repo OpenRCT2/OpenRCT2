@@ -2291,7 +2291,7 @@ STR_2286    :Design
 STR_2287    :Abschluss des Designs
 STR_2288    :Unbekannt
 STR_2289    :{STRINGID} {STRINGID}
-STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
+STR_2290    :<not used anymore>
 STR_2291    :Szenario für neues Spiel auswählen
 STR_2292    :{WINDOW_COLOUR_2}Fahrten auf:
 STR_2293    :{BLACK} Nichts
@@ -3894,7 +3894,7 @@ STR_5557    :Nach Desync. verbunden bleiben (Mehrspieler)
 STR_5558    :Damit diese Einstellung wirksam wird, ist ein Neustart erforderlich
 STR_5559    :10 Min. Inspektionen
 STR_5560    :{SMALLFONT}{BLACK}Setzt die Inspektionszeit aller Bahnen{NEWLINE}auf 'Alle 10 Minuten'
-STR_5561    :Sprachdatei konnte nicht geladen werden
+STR_5561    :Sprache konnte nicht geladen werden
 STR_5562    :WARNUNG!
 STR_5563    :Diese Funktion ist derzeit instabil und mit erhöhter Vorsicht zu verwenden.
 STR_5564    :Fehlerhaftes Element einf.
@@ -3912,7 +3912,8 @@ STR_5575    :Max. Spieler:
 STR_5576    :Port:
 STR_5577    :Südkoreanischer Won (W)
 STR_5578    :Russischer Rubel (R)
-STR_5579    :Fensterskalierungsfaktor:
+STR_5579    :Skalierungsfaktor:
+STR_5580    :Tschechische Krone (Kc)
 
 #######################
 # Bahnen/Attraktionen # 

@@ -2294,7 +2294,7 @@ STR_2286    :Designing
 STR_2287    :Completing design
 STR_2288    :Unknown
 STR_2289    :{STRINGID} {STRINGID}
-STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
+STR_2290    :<not used anymore>
 STR_2291    :Select scenario for new game
 STR_2292    :{WINDOW_COLOUR_2}Rides been on:
 STR_2293    :{BLACK} Nothing
@@ -3901,7 +3901,7 @@ STR_5557    :Stay connected after desynchronization (Multiplayer)
 STR_5558    :A restart is required for this setting to take effect
 STR_5559    :10 min. inspections
 STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on all rides
-STR_5561    :Failed to load language file
+STR_5561    :Failed to load language
 STR_5562    :WARNING!
 STR_5563    :This feature is currently unstable, take extra caution.
 STR_5564    :Insert Corrupt Element
@@ -3920,6 +3920,7 @@ STR_5576    :Port:
 STR_5577    :South Korean Won (W)
 STR_5578    :Russian Ruble (R)
 STR_5579    :Window scale factor:
+STR_5580    :Czech koruna (Kc)
 
 #########
 # Rides #
