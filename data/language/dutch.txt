@@ -3171,20 +3171,20 @@ STR_3166    :{BLACK}(ID:
 STR_3167    :{WINDOW_COLOUR_2}Bevat {BLACK}{COMMA16} objecten
 STR_3168    :{WINDOW_COLOUR_2}Tekst: {BLACK}{STRINGID}
 STR_3169    :Data voor de volgende objecten niet gevonden: 
-STR_3170    :Niet genoeg ruimte voor graphics
-STR_3171    :Te veel objecten van dit type geselecteerd
+STR_3170    :Niet genoeg ruimte voor graphics.
+STR_3171    :er zijn teveel objecten van dit type geselecteerd.
 STR_3172    :De volgende objecten moeten eerst geselecteerd worden:
-STR_3173    :Dit object is momenteel in gebruik
-STR_3174    :Een ander object is afhankelijk van dit object
-STR_3175    :Dit object is altijd benodigd
-STR_3176    :Kan object niet selecteren
-STR_3177    :Kan object niet deselecteren
-STR_3178    :Er moet minstens één voetpad worden geselecteerd
-STR_3179    :Er moet minstens één attractie worden geselecteerd
-STR_3180    :Ongeldige selectie van objecten
+STR_3173    :dit object is momenteel in gebruik.
+STR_3174    :een ander object is afhankelijk van dit object.
+STR_3175    :dit object is altijd benodigd.
+STR_3176    :Kan object niet selecteren:
+STR_3177    :Kan object niet deselecteren:
+STR_3178    :er moet minstens één voetpad worden geselecteerd.
+STR_3179    :er moet minstens één attractie worden geselecteerd.
+STR_3180    :Ongeldige selectie van objecten:
 STR_3181    :Objectselectie - {STRINGID}
-STR_3182    :Er moet een parkingang worden geselecteerd
-STR_3183    :Er moet een watertype worden geselecteerd
+STR_3182    :er moet een parkingang worden geselecteerd.
+STR_3183    :er moet een watertype worden geselecteerd.
 STR_3184    :Attracties/voertuigen
 STR_3185    :Klein decor
 STR_3186    :Groot decor
@@ -5588,7 +5588,7 @@ STR_DESC    :Een waar de nieuwste soorten frisdrank worden verkocht.
 
 # Shops
 [BALLN]
-STR_NAME    :Balloon Stall
+STR_NAME    :Ballonnenkraam
 STR_DESC    :Een souvenirkraam waar met helium gevulde ballonnen worden verkocht.
 
 [HATST]
