@@ -627,6 +627,8 @@ static void scenario_update_daynight_cycle()
 	} else {
 		gDayNightCycle = 0.0f;
 	}
+
+	platform_update_palette(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8), 10, 236);
 }
 
 /*
