@@ -16,6 +16,7 @@ void chat_draw();
 
 void chat_history_add(const char *src);
 void chat_input(int c);
+void chat_clear_input();
 
 
 #endif
