@@ -573,15 +573,6 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 	}
 }
 
-static int compare_string_case_insensitive(char const *a, char const *b)
-{
-	for (;; a++, b++) {
-		int d = tolower(*a) - tolower(*b);
-		if (d != 0 || !*a)
-			return d;
-	}
-}
-
 static int list_item_sort(const void *a, const void *b)
 {
 	const loadsave_list_item *itemA = (loadsave_list_item*)a;
@@ -592,15 +583,15 @@ static int list_item_sort(const void *a, const void *b)
 
 	switch (gConfigGeneral.load_save_sort){
 	case SORT_NAME_ASCENDING:
-		return compare_string_case_insensitive(itemA->name, itemB->name);
+		return strcicmp(itemA->name, itemB->name);
 	case SORT_NAME_DESCENDING:
-		return -compare_string_case_insensitive(itemA->name, itemB->name);
+		return -strcicmp(itemA->name, itemB->name);
 	case SORT_DATE_DESCENDING:
 		return (int) -difftime(itemA->date_modified, itemB->date_modified);
 	case SORT_DATE_ASCENDING:
 		return (int) difftime(itemA->date_modified, itemB->date_modified);
 	default:
-		return compare_string_case_insensitive(itemA->name, itemB->name);
+		return strcicmp(itemA->name, itemB->name);
 	}
 }
 

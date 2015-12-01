@@ -75,7 +75,7 @@ const char *path_get_filename(const utf8 *path)
 const char *path_get_extension(const utf8 *path)
 {
 	// Get the filename from the path
-	char *filename = path_get_filename(path);
+	const char *filename = path_get_filename(path);
 
 	// Try to find the most-right dot in the filename
 	char *extension = strrchr(filename, '.');
