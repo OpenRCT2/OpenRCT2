@@ -22,9 +22,33 @@
 
 #include "platform.h"
 
+#include <mach-o/dyld.h>
+
 bool platform_check_steam_overlay_attached() {
 	STUB();
 	return false;
+}
+
+void platform_get_exe_path(utf8 *outPath)
+{
+	char exePath[MAX_PATH];
+	int size = MAX_PATH;
+	int result = _NSGetExecutablePath(exePath, &size);
+	if (result != 0) {
+		log_fatal("failed to get path");
+	}
+	exePath[MAX_PATH - 1] = '\0';
+	char *exeDelimiter = strrchr(exePath, platform_get_path_separator());
+	if (exeDelimiter == NULL)
+	{
+		log_error("should never happen here");
+		outPath[0] = '\0';
+		return;
+	}
+	int exeDelimiterIndex = (int)(exeDelimiter - exePath);
+
+	safe_strncpy(outPath, exePath, exeDelimiterIndex + 1);
+	outPath[exeDelimiterIndex] = '\0';
 }
 
 #endif

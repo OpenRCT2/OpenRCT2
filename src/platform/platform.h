@@ -113,6 +113,7 @@ void platform_get_date(rct2_date *out_date);
 void platform_get_time(rct2_time *out_time);
 
 // Platform specific definitions
+void platform_get_exe_path(utf8 *outPath);
 char platform_get_path_separator();
 bool platform_file_exists(const utf8 *path);
 bool platform_directory_exists(const utf8 *path);

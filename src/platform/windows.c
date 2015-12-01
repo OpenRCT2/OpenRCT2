@@ -427,7 +427,7 @@ void platform_resolve_user_data_path()
 		safe_strncpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
 		free(outPathTemp);
 		free(customUserDataPathW);
-		
+
 		// Ensure path ends with separator
 		int len = strlen(_userDataDirectoryPath);
 		if (_userDataDirectoryPath[len - 1] != separator[0]) {
@@ -834,5 +834,21 @@ char *strndup(const char *src, size_t size)
 	dst = memcpy(dst, src, len);
 	dst[len] = '\0';
 	return (char *)dst;
+}
+
+void platform_get_exe_path(utf8 *outPath)
+{
+	wchar_t exePath[MAX_PATH];
+	wchar_t tempPath[MAX_PATH];
+	wchar_t *exeDelimiter;
+	int exeDelimiterIndex;
+
+	GetModuleFileNameW(NULL, exePath, MAX_PATH);
+	exeDelimiter = wcsrchr(exePath, platform_get_path_separator());
+	exeDelimiterIndex = (int)(exeDelimiter - exePath);
+	lstrcpynW(tempPath, exePath, exeDelimiterIndex + 1);
+	tempPath[exeDelimiterIndex] = L'\0';
+	_wfullpath(exePath, tempPath, MAX_PATH);
+	WideCharToMultiByte(CP_UTF8, 0, exePath, countof(exePath), outPath, MAX_PATH, NULL, NULL);
 }
 #endif

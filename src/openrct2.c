@@ -47,9 +47,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#if defined(__APPLE__) && defined(__MACH__)
-#include <mach-o/dyld.h>
-#endif // defined(__APPLE__) && defined(__MACH__)
 #endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
@@ -161,49 +158,8 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 // TODO move to platform
 static void openrct2_set_exe_path()
 {
-#ifdef _WIN32
-	wchar_t exePath[MAX_PATH];
-	wchar_t tempPath[MAX_PATH];
-	wchar_t *exeDelimiter;
-	int exeDelimiterIndex;
-
-	GetModuleFileNameW(NULL, exePath, MAX_PATH);
-	exeDelimiter = wcsrchr(exePath, platform_get_path_separator());
-	exeDelimiterIndex = (int)(exeDelimiter - exePath);
-	lstrcpynW(tempPath, exePath, exeDelimiterIndex + 1);
-	tempPath[exeDelimiterIndex] = L'\0';
-	_wfullpath(exePath, tempPath, MAX_PATH);
-	WideCharToMultiByte(CP_UTF8, 0, exePath, countof(exePath), gExePath, countof(gExePath), NULL, NULL);
-#else // _WIN32
-	char exePath[MAX_PATH];
-#if defined(__APPLE__) && defined(__MACH__)
-	int size = MAX_PATH;
-	int result = _NSGetExecutablePath(exePath, &size);
-	if (result != 0) {
-		log_fatal("failed to get path");
-	}
-	exePath[MAX_PATH - 1] = '\0';
-#else // defined(__APPLE__) && defined(__MACH__)
-	ssize_t bytesRead;
-	bytesRead = readlink("/proc/self/exe", exePath, MAX_PATH);
-	if (bytesRead == -1) {
-		log_fatal("failed to read /proc/self/exe");
-	}
-	exePath[bytesRead - 1] = '\0';
-#endif // defined(__APPLE__) && defined(__MACH__)
-	log_verbose("######################################## Setting exe path to %s", exePath);
-	char *exeDelimiter = strrchr(exePath, platform_get_path_separator());
-	if (exeDelimiter == NULL)
-	{
-		log_error("should never happen here");
-		gExePath[0] = '\0';
-		return;
-	}
-	int exeDelimiterIndex = (int)(exeDelimiter - exePath);
-
-	safe_strncpy(gExePath, exePath, exeDelimiterIndex + 1);
-	gExePath[exeDelimiterIndex] = '\0';
-#endif // _WIN32
+	platform_get_exe_path(gExePath);
+	log_verbose("Setting exe path to %s", gExePath);
 }
 
 /**
