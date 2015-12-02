@@ -332,21 +332,23 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				break;
 			case MAP_ELEMENT_TYPE_PATH:
 			{
-				// TODO: use these
-				uint8 pathType, pathDirection;
-				pathType = element->properties.path.type >> 2;
-				pathDirection = element->properties.path.type & 3;
+				rct_map_element_path_properties *path = &element->properties.path;
+				uint8 pathType = path->type >> 4;
+				uint8 pathDirection = path->type & 3;
+				uint8 pathAdditionType = path->additions & 0xF;
 				if (footpath_element_is_queue(element)) {
 					sprintf(
 						buffer,
 						"Queue for (%d)",
-						element->properties.path.ride_index
+						path->ride_index
 					);
 				} else {
 					sprintf(
 						buffer,
-						"Path (%s)",
-						"" // TODO: queue? has bins? has benches? e.t.c.
+						"Path (%s)%s%s",
+						language_get_string(g_pathSceneryEntries[pathType]->name),
+						(path->additions & 0xF)  ? " with " : "",
+						(path->additions & 0xF) ? language_get_string(g_pathBitSceneryEntries[pathAdditionType - 1]->name) : ""
 					);
 				}
 			}

@@ -249,12 +249,15 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		if (flags & GAME_COMMAND_FLAG_4)
 			return MONEY32_UNDEFINED;
 
+		// Try placing a ghost
 		if (flags & GAME_COMMAND_FLAG_GHOST) {
+			// Check if there is something on the path already
 			if (mapElement->properties.path.additions & 0x0F) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NONE;
 				return MONEY32_UNDEFINED;
 			}
 
+			// There is nothing yet - check if we should place a ghost
 			if (flags & GAME_COMMAND_FLAG_APPLY)
 				mapElement->properties.path.additions |= 0x80;
 		}
