@@ -178,7 +178,7 @@ void window_new_campaign_open(sint16 campaignType)
 
 	// Take top 40 most reliable rides
 	if (numApplicableRides > 40) {
-		qsort(window_new_campaign_rides, countof(window_new_campaign_rides), sizeof(uint8), ride_value_compare);
+		qsort(window_new_campaign_rides, numApplicableRides, sizeof(uint8), ride_value_compare);
 		numApplicableRides = 40;
 	}
 
