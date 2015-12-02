@@ -833,5 +833,8 @@
     <ClInclude Include="..\src\drawing\supports.h">
       <Filter>Source\Drawing</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\version.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

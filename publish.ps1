@@ -14,9 +14,9 @@ function do-prepareSource($build_server = "", $build_number = "")
     Write-Output "Setting build #defines..."
     # $build_number = "";
     # $build_server = "";
-    $build_branch = (git rev-parse --abbrev-ref HEAD);
-    $build_commit_sha1 = (git rev-parse HEAD);
-    $build_commit_sha1_short = $build_commit_sha1.Substring(0, [System.Math]::Min($build_commit_sha1.Length, 7));
+    $build_branch = (git rev-parse --abbrev-ref HEAD)
+    $build_commit_sha1 = (git rev-parse HEAD)
+    $build_commit_sha1_short = (git rev-parse --short HEAD)
 
     $defines = @{ }
     $defines["OPENRCT2_BUILD_NUMBER"]      = $build_number;
@@ -25,21 +25,17 @@ function do-prepareSource($build_server = "", $build_number = "")
     $defines["OPENRCT2_COMMIT_SHA1"]       = $build_commit_sha1;
     $defines["OPENRCT2_COMMIT_SHA1_SHORT"] = $build_commit_sha1_short;
 
-    $rct2path = ".\src\rct2.h";
-    $lines = Get-Content $rct2path
-    $newLines = @( )
-    foreach ($line in $lines) {
-        if ($line -ne $null -and $line.Contains("#define") -eq $true) {
-            foreach ($key in $defines.Keys) {
-	            if ($line.Contains($key + "`t") -or $line.Contains($key + " ")) {
-                    $line = "#define " + $key + " """ + $defines[$key] + """"
-                    break;
-                }
-            }
+    $defineString = ""
+    foreach ($key in $defines.Keys) {
+        $value = $defines[$key]
+        if ($value -is [System.String]) {
+            $value = $value.Replace('"', '\"')
         }
-        $newLines += $line
+        $defineString += "$key=""$value"";";
     }
-    $newLines | Set-Content $rct2path
+
+    # Set the environment variable which the msbuild project will use
+    $env:OPENRCT2_DEFINES = $defineString;
 }
 
 # Building OpenRCT2
