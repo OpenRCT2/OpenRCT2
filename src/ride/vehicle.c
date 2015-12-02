@@ -1113,16 +1113,44 @@ static void vehicle_update(rct_vehicle *vehicle)
 	vehicle_update_sound(vehicle);
 }
 
+/* rct2: 0x006DF8A4 */
 static void vehicle_update_cable_lift_moving_to_end_of_station(rct_vehicle *vehicle)
 {
 	RCT2_CALLPROC_X(0x006DF8A4, 0, 0, 0, 0, (int)vehicle, 0, 0);
 }
 
+/* rct2: 0x006DF8F1 */
 static void vehicle_update_cable_lift_waiting_to_depart(rct_vehicle *vehicle)
 {
-	RCT2_CALLPROC_X(0x006DF8F1, 0, 0, 0, 0, (int)vehicle, 0, 0);
+	if (vehicle->velocity >= -58640)
+		vehicle->var_2C = -14660;
+
+	if (vehicle->velocity < -58640) {
+		vehicle->velocity -= vehicle->velocity / 16;
+		vehicle->var_2C = 0;
+	}
+
+	sub_6DEF56(vehicle, NULL, NULL);
+
+	// Next check to see if the second part of the cable lift
+	// is at the front of the passenger vehicle to simulate the
+	// cable being attached underneath the train.
+	rct_vehicle* passengerVehicle = GET_VEHICLE(vehicle->var_C0);
+	rct_vehicle* cableLiftSecondPart = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
+
+	sint16 dist_x = abs(passengerVehicle->x - cableLiftSecondPart->x);
+	sint16 dist_y = abs(passengerVehicle->y - cableLiftSecondPart->y);
+
+	if (dist_x + dist_y > 2)
+		return;
+
+	vehicle->velocity = 0;
+	vehicle->var_2C = 0;
+	vehicle->status = VEHICLE_STATUS_DEPARTING;
+	vehicle->sub_state = 0;
 }
 
+/* rct2: 0x006DF97A */
 static void vehicle_update_cable_lift_departing(rct_vehicle *vehicle)
 {
 	vehicle->sub_state++;
@@ -1134,6 +1162,7 @@ static void vehicle_update_cable_lift_departing(rct_vehicle *vehicle)
 	passengerVehicle->status = VEHICLE_STATUS_TRAVELLING_CABLE_LIFT;
 }
 
+/* rct2: 0x006DF99C */
 static void vehicle_update_cable_lift_travelling(rct_vehicle *vehicle)
 {
 	rct_vehicle* passengerVehicle = GET_VEHICLE(vehicle->var_C0);
@@ -1154,6 +1183,7 @@ static void vehicle_update_cable_lift_travelling(rct_vehicle *vehicle)
 	vehicle->sub_state = 0;
 }
 
+/* rct2: 0x006DF9F0 */
 static void vehicle_update_cable_lift_arriving(rct_vehicle *vehicle)
 {
 	vehicle->sub_state++;
