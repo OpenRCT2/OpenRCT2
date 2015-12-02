@@ -260,6 +260,7 @@
     <ClInclude Include="..\src\ride\vehicle.h" />
     <ClInclude Include="..\src\scenario.h" />
     <ClInclude Include="..\src\sprites.h" />
+    <ClInclude Include="..\src\version.h" />
     <ClInclude Include="..\test\management\finance_test.h" />
     <ClInclude Include="..\test\ride\ride_ratings_test.h" />
     <ClInclude Include="..\test\tests.h" />
@@ -369,7 +370,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
-      <PreprocessorDefinitions>DEBUG;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>$(OpenRCT2_DEFINES);DEBUG;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)fake\%(RelativeDir)</ObjectFileName>
@@ -400,7 +401,7 @@ xcopy /YS "$(SolutionDir)..\Data" "$(TargetDir)Data"</Command>
       <OmitFramePointers>
       </OmitFramePointers>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>$(OpenRCT2_DEFINES);_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)fake\%(RelativeDir)</ObjectFileName>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -440,7 +441,7 @@ xcopy /YS "$(SolutionDir)..\Data" "$(TargetDir)Data"</Command>
       <OmitFramePointers>
       </OmitFramePointers>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <PreprocessorDefinitions>DISABLE_NETWORK;DISABLE_HTTP;DISABLE_TWITCH;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>$(OpenRCT2_DEFINES);DISABLE_NETWORK;DISABLE_HTTP;DISABLE_TWITCH;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)fake\%(RelativeDir)</ObjectFileName>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -481,7 +482,7 @@ xcopy /YS "$(SolutionDir)..\Data" "$(TargetDir)Data"</Command>
       <OmitFramePointers>
       </OmitFramePointers>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;ENABLE_TESTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>$(OpenRCT2_DEFINES);_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;ENABLE_TESTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)fake\%(RelativeDir)</ObjectFileName>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>

@@ -552,6 +552,9 @@
     <ClCompile Include="..\src\interface\colour.c">
       <Filter>Source\Interface</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\addresses.c">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">
@@ -823,6 +826,9 @@
     </ClInclude>
     <ClInclude Include="..\src\interface\colour.h">
       <Filter>Source\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\version.h">
+      <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
