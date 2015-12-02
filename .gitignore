@@ -9,6 +9,7 @@ openrct2.dll
 distribution/windows/*.exe
 
 # Build artifacts
+artifacts
 .cache
 
 #lib
