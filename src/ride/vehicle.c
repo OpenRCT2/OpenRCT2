@@ -1005,6 +1005,9 @@ static void vehicle_update(rct_vehicle *vehicle)
 		case VEHICLE_STATUS_MOVING_TO_END_OF_STATION:
 			vehicle_update_cable_lift_moving_to_end_of_station(vehicle);
 			break;
+		case VEHICLE_STATUS_WAITING_FOR_PASSENGERS:
+			// Stays in this state until a train puts it into next state
+			break;
 		case VEHICLE_STATUS_WAITING_TO_DEPART:
 			vehicle_update_cable_lift_waiting_to_depart(vehicle);
 			break;
@@ -1116,7 +1119,23 @@ static void vehicle_update(rct_vehicle *vehicle)
 /* rct2: 0x006DF8A4 */
 static void vehicle_update_cable_lift_moving_to_end_of_station(rct_vehicle *vehicle)
 {
-	RCT2_CALLPROC_X(0x006DF8A4, 0, 0, 0, 0, (int)vehicle, 0, 0);
+	if (vehicle->velocity >= -439800)
+		vehicle->var_2C = -2932;
+
+	if (vehicle->velocity < -439800) {
+		vehicle->velocity -= vehicle->velocity / 16;
+		vehicle->var_2C = 0;
+	}
+
+	int flags;
+	sub_6DEF56(vehicle, &flags, NULL);
+
+	if (!(flags & (1 << 0)))
+		return;
+
+	vehicle->velocity = 0;
+	vehicle->var_2C = 0;
+	vehicle->status = VEHICLE_STATUS_WAITING_FOR_PASSENGERS;
 }
 
 /* rct2: 0x006DF8F1 */
@@ -3331,7 +3350,7 @@ int vehicle_is_used_in_pairs(rct_vehicle *vehicle)
  */
 void sub_6DEF56(rct_vehicle *cableLift, int* eax, int* ebx)
 {
-	int _eax, _ebx, ecx, edx, ebp, edi;
+	int _eax = 0, _ebx = 0, ecx = 0, edx = 0, ebp = 0, edi = 0;
 	RCT2_CALLFUNC_X(0x006DEF56, &_eax, &_ebx, &ecx, &edx, (int*)&cableLift, &edi, &ebp);
 	if (eax != NULL)*eax = _eax;
 	if (ebx != NULL)*ebx = _ebx;
