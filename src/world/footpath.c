@@ -1582,7 +1582,7 @@ bool footpath_element_is_sloped(rct_map_element *mapElement)
 	return mapElement->properties.path.type & 4;
 }
 
-int footpath_element_get_slope_direction(rct_map_element *mapElement)
+uint8 footpath_element_get_slope_direction(rct_map_element *mapElement)
 {
 	return mapElement->properties.path.type & 3;
 }
@@ -1597,19 +1597,24 @@ bool footpath_element_is_wide(rct_map_element *mapElement)
 	return mapElement->type & 2;
 }
 
-uint8 footpath_element_get_type(rct_map_element_path_properties *pathProperties)
+bool footpath_element_has_path_scenery(rct_map_element *mapElement)
 {
-	return pathProperties->type >> 4;
+	return (mapElement->properties.path.additions & 0xF) > 0;
 }
 
-uint8 footpath_element_get_direction(rct_map_element_path_properties *pathProperties)
+uint8 footpath_element_get_path_scenery(rct_map_element *mapElement)
 {
-	return pathProperties->type & 3;
+	return mapElement->properties.path.additions & 0xF;
 }
 
-uint8 footpath_element_get_addition_type(rct_map_element_path_properties *pathProperties)
+uint8 footpath_element_get_path_scenery_index(rct_map_element *mapElement)
 {
-	return pathProperties->additions & 0xF;
+	return footpath_element_get_path_scenery(mapElement) - 1;
+}
+
+uint8 footpath_element_get_type(rct_map_element *mapElement)
+{
+	return mapElement->properties.path.type >> 4;
 }
 
 /**

@@ -332,23 +332,23 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				break;
 			case MAP_ELEMENT_TYPE_PATH:
 			{
-				rct_map_element_path_properties *pathProperties = &element->properties.path;
-				uint8 pathType = footpath_element_get_type(pathProperties);
-				uint8 pathAdditionType = footpath_element_get_addition_type(pathProperties);
+				const uint8 pathType = footpath_element_get_type(element);
+				const uint8 pathHasScenery = footpath_element_has_path_scenery(element);
+				const uint8 pathAdditionType = footpath_element_get_path_scenery_index(element);
 				if (footpath_element_is_queue(element)) {
 					sprintf(
 						buffer, "Queue (%s)%s%s for (%d)",
 						language_get_string(g_pathSceneryEntries[pathType]->name), // Path name
-						pathAdditionType ? " with " : "", // Adds " with " when there is something on the path
-						pathAdditionType ? language_get_string(g_pathBitSceneryEntries[pathAdditionType - 1]->name) : "", // Path addition name
-						pathProperties->ride_index // Ride index for queue
+						pathHasScenery ? " with " : "", // Adds " with " when there is something on the path
+						pathHasScenery ? language_get_string(g_pathBitSceneryEntries[pathAdditionType]->name) : "", // Path addition name
+						element->properties.path.ride_index // Ride index for queue
 					);
 				} else {
 					sprintf(
 						buffer, "Path (%s)%s%s",
 						language_get_string(g_pathSceneryEntries[pathType]->name), // Path name
-						pathAdditionType  ? " with " : "", // Adds " with " when there is something on the path
-						pathAdditionType ? language_get_string(g_pathBitSceneryEntries[pathAdditionType - 1]->name) : "" // Path addition name
+						pathHasScenery ? " with " : "", // Adds " with " when there is something on the path
+						pathHasScenery ? language_get_string(g_pathBitSceneryEntries[pathAdditionType]->name) : "" // Path addition name
 					);
 				}
 			}
