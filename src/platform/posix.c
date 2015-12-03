@@ -351,7 +351,7 @@ static int dirfilter(const struct dirent *d)
 		return 0;
 	}
 #if defined(_DIRENT_HAVE_D_TYPE) || defined(DT_UNKNOWN)
-	if (d->d_type == DT_DIR)
+	if (d->d_type == DT_DIR || d->d_type == DT_LNK)
 	{
 		return 1;
 	} else {
