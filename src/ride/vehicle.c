@@ -1127,10 +1127,7 @@ static void vehicle_update_cable_lift_moving_to_end_of_station(rct_vehicle *vehi
 		vehicle->var_2C = 0;
 	}
 
-	int flags;
-	sub_6DEF56(vehicle, &flags, NULL);
-
-	if (!(flags & (1 << 0)))
+	if (!(sub_6DEF56(vehicle) & (1 << 0)))
 		return;
 
 	vehicle->velocity = 0;
@@ -1149,7 +1146,7 @@ static void vehicle_update_cable_lift_waiting_to_depart(rct_vehicle *vehicle)
 		vehicle->var_2C = 0;
 	}
 
-	sub_6DEF56(vehicle, NULL, NULL);
+	sub_6DEF56(vehicle);
 
 	// Next check to see if the second part of the cable lift
 	// is at the front of the passenger vehicle to simulate the
@@ -1191,9 +1188,7 @@ static void vehicle_update_cable_lift_travelling(rct_vehicle *vehicle)
 	if (passengerVehicle->update_flags & VEHICLE_UPDATE_FLAG_BROKEN_TRAIN)
 		return;
 
-	int eax = 0;
-	sub_6DEF56(vehicle, &eax, NULL);
-	if (!(eax & (1 << 1)))
+	if (!(sub_6DEF56(vehicle) & (1 << 1)))
 		return;
 
 	vehicle->velocity = 0;
@@ -3348,12 +3343,47 @@ int vehicle_is_used_in_pairs(rct_vehicle *vehicle)
  *
  *  rct2: 0x006DEF56
  */
-void sub_6DEF56(rct_vehicle *cableLift, int* eax, int* ebx)
+int sub_6DEF56(rct_vehicle *cableLift)
 {
-	int _eax = 0, _ebx = 0, ecx = 0, edx = 0, ebp = 0, edi = 0;
-	RCT2_CALLFUNC_X(0x006DEF56, &_eax, &_ebx, &ecx, &edx, (int*)&cableLift, &edi, &ebp);
-	if (eax != NULL)*eax = _eax;
-	if (ebx != NULL)*ebx = _ebx;
+	rct_ride_type* rideEntry = GET_RIDE_ENTRY(cableLift->ride_subtype);
+	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[cableLift->vehicle_type];
+	rct_ride* ride = GET_RIDE(cableLift->ride);
+
+	RCT2_GLOBAL(0x00F64E2C, uint8) = 0;
+	RCT2_GLOBAL(0x00F64E04, rct_vehicle*) = cableLift;
+	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
+	RCT2_GLOBAL(0x00F64E1C, uint32) = (uint32)-1;
+
+	// After -1 assignment
+	cableLift->velocity += cableLift->var_2C;
+	RCT2_GLOBAL(0x00F64E08, sint32) = cableLift->velocity;
+	RCT2_GLOBAL(0x00F64E0C, sint32) = (cableLift->velocity / 1024) * 42;
+
+	rct_vehicle* frontVehicle = cableLift;
+	if (cableLift->velocity < 0) {
+		frontVehicle = vehicle_get_tail(cableLift);
+	}
+
+	RCT2_GLOBAL(0x00F64E00, rct_vehicle*) = frontVehicle;
+
+	rct_vehicle* vehicle = frontVehicle;
+	// start of loop
+	vehicle->var_2C = RCT2_ADDRESS(0x009A2970, sint32)[vehicle->var_1F];
+	RCT2_GLOBAL(0x00F64E10, uint32) = 1;
+	vehicle->var_24 += RCT2_GLOBAL(0x00F64E0C, sint32);
+
+	if (vehicle->var_24 < 0) {
+		//6df203
+	}
+
+	if (vehicle->var_24 < 13962) {
+		// 6df413 (basically loops)
+	}
+	//6df002
+
+	int eax = 0, ebx = 0, ecx = 0, edx = 0, ebp = 0, edi = 0;
+	RCT2_CALLFUNC_X(0x006DEF56, &eax, &ebx, &ecx, &edx, (int*)&cableLift, &edi, &ebp);
+	return eax;
 }
 
 rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int direction, uint16 var_44, uint32 var_24, bool head)
