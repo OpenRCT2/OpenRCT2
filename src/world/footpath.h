@@ -73,6 +73,10 @@ bool footpath_element_is_sloped(rct_map_element *mapElement);
 int footpath_element_get_slope_direction(rct_map_element *mapElement);
 bool footpath_element_is_queue(rct_map_element *mapElement);
 bool footpath_element_is_wide(rct_map_element *mapElement);
+uint8 footpath_element_get_type(rct_map_element_path_properties *pathProperties);
+uint8 footpath_element_get_direction(rct_map_element_path_properties *pathProperties);
+uint8 footpath_element_get_addition_type(rct_map_element_path_properties *pathProperties);
+uint8 footpath_element_get_addition_type(rct_map_element_path_properties *pathProperties);
 void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement);
 
 #endif

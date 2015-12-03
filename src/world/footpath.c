@@ -1597,6 +1597,21 @@ bool footpath_element_is_wide(rct_map_element *mapElement)
 	return mapElement->type & 2;
 }
 
+uint8 footpath_element_get_type(rct_map_element_path_properties *pathProperties)
+{
+	return pathProperties->type >> 4;
+}
+
+uint8 footpath_element_get_direction(rct_map_element_path_properties *pathProperties)
+{
+	return pathProperties->type & 3;
+}
+
+uint8 footpath_element_get_addition_type(rct_map_element_path_properties *pathProperties)
+{
+	return pathProperties->additions & 0xF;
+}
+
 /**
 *
 *  rct2: 0x006A8B12

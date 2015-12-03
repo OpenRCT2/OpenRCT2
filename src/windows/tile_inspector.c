@@ -332,23 +332,25 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				break;
 			case MAP_ELEMENT_TYPE_PATH:
 			{
-				rct_map_element_path_properties *path = &element->properties.path;
-				uint8 pathType = path->type >> 4;
-				uint8 pathDirection = path->type & 3;
-				uint8 pathAdditionType = path->additions & 0xF;
+				rct_map_element_path_properties *pathProperties = &element->properties.path;
+				uint8 pathType = footpath_element_get_type(pathProperties);
+				uint8 pathAdditionType = footpath_element_get_addition_type(pathProperties);
 				if (footpath_element_is_queue(element)) {
 					sprintf(
 						buffer,
-						"Queue for (%d)",
-						path->ride_index
+						"Queue (%s)%s%s for (%d)",
+						language_get_string(g_pathSceneryEntries[pathType]->name),
+						pathAdditionType ? " with " : "",
+						pathAdditionType ? language_get_string(g_pathBitSceneryEntries[pathAdditionType - 1]->name) : "",
+						pathProperties->ride_index
 					);
 				} else {
 					sprintf(
 						buffer,
 						"Path (%s)%s%s",
 						language_get_string(g_pathSceneryEntries[pathType]->name),
-						(path->additions & 0xF)  ? " with " : "",
-						(path->additions & 0xF) ? language_get_string(g_pathBitSceneryEntries[pathAdditionType - 1]->name) : ""
+						pathAdditionType  ? " with " : "",
+						pathAdditionType ? language_get_string(g_pathBitSceneryEntries[pathAdditionType - 1]->name) : ""
 					);
 				}
 			}
