@@ -337,20 +337,18 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				uint8 pathAdditionType = footpath_element_get_addition_type(pathProperties);
 				if (footpath_element_is_queue(element)) {
 					sprintf(
-						buffer,
-						"Queue (%s)%s%s for (%d)",
-						language_get_string(g_pathSceneryEntries[pathType]->name),
-						pathAdditionType ? " with " : "",
-						pathAdditionType ? language_get_string(g_pathBitSceneryEntries[pathAdditionType - 1]->name) : "",
-						pathProperties->ride_index
+						buffer, "Queue (%s)%s%s for (%d)",
+						language_get_string(g_pathSceneryEntries[pathType]->name), // Path name
+						pathAdditionType ? " with " : "", // Adds " with " when there is something on the path
+						pathAdditionType ? language_get_string(g_pathBitSceneryEntries[pathAdditionType - 1]->name) : "", // Path addition name
+						pathProperties->ride_index // Ride index for queue
 					);
 				} else {
 					sprintf(
-						buffer,
-						"Path (%s)%s%s",
-						language_get_string(g_pathSceneryEntries[pathType]->name),
-						pathAdditionType  ? " with " : "",
-						pathAdditionType ? language_get_string(g_pathBitSceneryEntries[pathAdditionType - 1]->name) : ""
+						buffer, "Path (%s)%s%s",
+						language_get_string(g_pathSceneryEntries[pathType]->name), // Path name
+						pathAdditionType  ? " with " : "", // Adds " with " when there is something on the path
+						pathAdditionType ? language_get_string(g_pathBitSceneryEntries[pathAdditionType - 1]->name) : "" // Path addition name
 					);
 				}
 			}
