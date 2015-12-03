@@ -14,8 +14,8 @@ function do-prepareSource($build_server = "", $build_number = "")
     Write-Output "Setting build #defines..."
     # $build_number = "";
     # $build_server = "";
-    $build_branch = (git rev-parse --abbrev-ref HEAD)
-    $build_commit_sha1 = (git rev-parse HEAD)
+    $build_branch = $Env:APPVEYOR_REPO_BRANCH
+    $build_commit_sha1 = $Env:APPVEYOR_REPO_COMMIT
     $build_commit_sha1_short = (git rev-parse --short HEAD)
 
     $defines = @{ }
@@ -42,7 +42,7 @@ function do-prepareSource($build_server = "", $build_number = "")
 function do-build()
 {
     Write-Output "Building OpenRCT2..."
-    msbuild .\projects\openrct2.sln /p:Configuration=Release /p:Platform=Win32 /t:rebuild /v:minimal
+    msbuild .\projects\openrct2.sln /p:Configuration=$Env:CONFIGURATION /p:Platform=Win32 /t:rebuild /v:minimal
 }
 
 # Package
@@ -68,10 +68,12 @@ function do-package()
     Copy-Item -Force "$distDir\readme.txt"            $tempDir -ErrorAction Stop
 
     # Create archive
-    7za a -tzip -mx9 $outZip "$tempDir\*"
+    7z a -tzip -mx9 $outZip "$tempDir\*"
 
     # Remove temp directory
     Remove-Item -Force -Recurse $tempDir -ErrorAction SilentlyContinue
+
+	Push-AppveyorArtifact $outZip
 }
 
 do-prepareSource $server $buildNo
