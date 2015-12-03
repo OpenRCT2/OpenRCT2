@@ -1,4 +1,7 @@
-version: 0.0.3.{build}
+version: 0.0.4.{build}
 build_script:
-- set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
-- .\build.bat
+    - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
+    - ps: .\publish.ps1 %APPVEYOR_PROJECT_SLUG% %APPVEYOR_BUILD_ID%
+configuration:
+- Release
+- Release XP
