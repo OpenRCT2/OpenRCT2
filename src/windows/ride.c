@@ -1599,7 +1599,7 @@ void window_ride_construct(rct_window *w)
 {
 	// Window may be closed by close by class so 
 	// make backup before calling.
-	uint8 rideIndex = w->number;
+	uint8 rideIndex = (uint8)w->number;
 	window_close_by_class(WC_RIDE_CONSTRUCTION);
 	ride_construct(rideIndex);
 }

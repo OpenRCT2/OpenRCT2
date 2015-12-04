@@ -1,3 +1,12 @@
+0.0.3.1-beta (2015-12-04)
+------------------------------------------------------------------------
+- Fix: [#2407] save game prompt delay is not reset on start scenario
+- Fix: [#2415] day / night cycle did not update colours during gameplay
+- Fix: [#2425] new campaign for ride shows invalid list when over 40 rides
+- Fix: [#2417] peep direction assertion somtimes during pathfinding
+- Fix: [#2158] video freeze when window is maximised, minimised and then restored
+- Fix: [#2434] dropdown menus linger when toolbars are hidden
+
 0.0.3-beta (2015-11-30)
 ------------------------------------------------------------------------
 - Feature: Adding extra title sequences.

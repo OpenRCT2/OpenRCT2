@@ -84,7 +84,7 @@ typedef utf16* utf16string;
 #endif
 
 #define OPENRCT2_NAME				"OpenRCT2"
-#define OPENRCT2_VERSION			"0.0.3"
+#define OPENRCT2_VERSION			"0.0.3.1"
 #define OPENRCT2_ARCHITECTURE		"x86"
 #ifdef _WIN32
 	#define OPENRCT2_PLATFORM		"Windows"

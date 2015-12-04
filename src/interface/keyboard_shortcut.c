@@ -259,6 +259,7 @@ static void shortcut_remove_top_bottom_toolbar_toggle()
 		return;
 
 	if (window_find_by_class(WC_TOP_TOOLBAR) != NULL) {
+		window_close(window_find_by_class(WC_DROPDOWN));
 		window_close(window_find_by_class(WC_TOP_TOOLBAR));
 		window_close(window_find_by_class(WC_BOTTOM_TOOLBAR));
 	} else {
