@@ -426,6 +426,7 @@ void platform_process_messages()
 	gCursorState.middle &= ~CURSOR_CHANGED;
 	gCursorState.right &= ~CURSOR_CHANGED;
 	gCursorState.old = 0;
+        gCursorState.touch = false;
 
 	while (SDL_PollEvent(&e)) {
 		switch (e.type) {
@@ -451,6 +452,13 @@ void platform_process_messages()
 
 			gCursorState.x = (int)(e.motion.x / gConfigGeneral.window_scale);
 			gCursorState.y = (int)(e.motion.y / gConfigGeneral.window_scale);
+			break;
+                case SDL_FINGERMOTION:
+			RCT2_GLOBAL(0x0142406C, int) = (int)(e.tfinger.x / gConfigGeneral.window_scale);
+			RCT2_GLOBAL(0x01424070, int) = (int)(e.tfinger.y / gConfigGeneral.window_scale);
+
+			gCursorState.x = (int)(e.tfinger.x / gConfigGeneral.window_scale);
+			gCursorState.y = (int)(e.tfinger.y / gConfigGeneral.window_scale);
 			break;
 		case SDL_MOUSEWHEEL:
 			if (gConsoleOpen) {
@@ -478,6 +486,25 @@ void platform_process_messages()
 				break;
 			}
 			break;
+                case SDL_FINGERDOWN:
+			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x / gConfigGeneral.window_scale);
+			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y / gConfigGeneral.window_scale);
+
+                        gCursorState.touchIsDouble = (!gCursorState.touchIsDouble
+                            && e.tfinger.timestamp - gCursorState.touchDownTimestamp < TOUCH_DOUBLE_TIMEOUT);
+
+                        if (gCursorState.touchIsDouble) {
+                            store_mouse_input(3);
+                            gCursorState.right = CURSOR_PRESSED;
+                            gCursorState.old = 2;
+                        } else {
+                            store_mouse_input(1);
+                            gCursorState.left = CURSOR_PRESSED;
+                            gCursorState.old = 1;
+                        }
+                        gCursorState.touch = true;
+                        gCursorState.touchDownTimestamp = e.tfinger.timestamp;
+			break;
 		case SDL_MOUSEBUTTONUP:
 			RCT2_GLOBAL(0x01424318, int) = (int)(e.button.x / gConfigGeneral.window_scale);
 			RCT2_GLOBAL(0x0142431C, int) = (int)(e.button.y / gConfigGeneral.window_scale);
@@ -497,6 +524,21 @@ void platform_process_messages()
 				break;
 			}
 			break;
+		case SDL_FINGERUP:
+			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x / gConfigGeneral.window_scale);
+			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y / gConfigGeneral.window_scale);
+
+                        if (gCursorState.touchIsDouble) {
+                            store_mouse_input(4);
+                            gCursorState.left = CURSOR_RELEASED;
+                            gCursorState.old = 4;
+                        } else {
+                            store_mouse_input(2);
+                            gCursorState.left = CURSOR_RELEASED;
+                            gCursorState.old = 3;
+                        }
+                        gCursorState.touch = true;
+                        break;
 		case SDL_KEYDOWN:
 			if (gTextInputCompositionActive) break;
 

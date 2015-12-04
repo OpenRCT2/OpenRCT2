@@ -35,6 +35,8 @@
 
 #define INVALID_HANDLE -1
 
+#define TOUCH_DOUBLE_TIMEOUT 300
+
 typedef struct {
 	int width, height;
 } resolution;
@@ -63,6 +65,8 @@ typedef struct {
 	unsigned char left, middle, right, any;
 	int wheel;
 	int old;
+        bool touch, touchIsDouble;
+        unsigned int touchDownTimestamp;
 } openrct2_cursor;
 
 enum {
