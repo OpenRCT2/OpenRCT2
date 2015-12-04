@@ -76,6 +76,7 @@ bool footpath_element_is_wide(rct_map_element *mapElement);
 uint8 footpath_element_get_type(rct_map_element *mapElement);
 bool footpath_element_has_path_scenery(rct_map_element *mapElement);
 uint8 footpath_element_get_path_scenery(rct_map_element *mapElement);
+void footpath_element_set_path_scenery(rct_map_element *mapElement, uint8 pathSceneryType);
 uint8 footpath_element_get_path_scenery_index(rct_map_element *mapElement);
 bool footpath_element_path_scenery_is_ghost(rct_map_element *mapElement);
 void footpath_scenery_set_is_ghost(rct_map_element *mapElement, bool isGhost);

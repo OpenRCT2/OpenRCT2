@@ -783,16 +783,15 @@ static void rct1_fix_paths()
 			mapElement->properties.path.type |= pathType << 4;
 
 			// Additions
-			additions = mapElement->properties.path.additions & 0x0F;
-			additions = RCT1PathAdditionConversionTable[additions];
+			additions = RCT1PathAdditionConversionTable[footpath_element_get_path_scenery(mapElement)];
 			if (footpath_element_path_scenery_is_ghost(mapElement)) {
 				footpath_scenery_set_is_ghost(mapElement, false);
 				mapElement->flags |= MAP_ELEMENT_FLAG_BROKEN;
 			} else {
 				mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
 			}
-			mapElement->properties.path.additions &= 0xF0;
-			mapElement->properties.path.additions |= additions;
+
+			footpath_element_set_path_scenery(mapElement, additions);
 			break;
 		case MAP_ELEMENT_TYPE_ENTRANCE:
 			if (mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE) {

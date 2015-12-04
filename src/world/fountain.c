@@ -301,11 +301,11 @@ static bool is_jumping_fountain(int type, int x, int y, int z)
 		if (footpath_element_path_scenery_is_ghost(mapElement))
 			continue;
 
-		int additions = mapElement->properties.path.additions & 0x0F;
-		if (additions == 0)
+		if (!footpath_element_has_path_scenery(mapElement))
 			continue;
 
-		rct_scenery_entry *sceneryEntry = g_pathBitSceneryEntries[additions - 1];
+		uint8 additionIndex = footpath_element_get_path_scenery_index(mapElement);
+		rct_scenery_entry *sceneryEntry = g_pathBitSceneryEntries[additionIndex];
 		if (!(sceneryEntry->path_bit.var_06 & pathBitFlagMask))
 			continue;
 

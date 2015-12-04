@@ -210,7 +210,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 	} else if (pathItemType != 0) {
 		if (
 			!(flags & GAME_COMMAND_FLAG_GHOST) &&
-			(mapElement->properties.path.additions & 0x0F) == pathItemType &&
+			footpath_element_get_path_scenery(mapElement) == pathItemType &&
 			!(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)
 		) {
 			if (flags & GAME_COMMAND_FLAG_4)
@@ -272,7 +272,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 			footpath_scenery_set_is_ghost(mapElement, false);
 		}
 
-		mapElement->properties.path.additions = (mapElement->properties.path.additions & 0xF0) | pathItemType;
+		footpath_element_set_path_scenery(mapElement, pathItemType);
 		mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
 		if (pathItemType != 0) {
 			rct_scenery_entry* scenery_entry = g_pathBitSceneryEntries[pathItemType - 1];
@@ -295,7 +295,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 
 		mapElement->properties.path.type = (mapElement->properties.path.type & 0x0F) | (type << 4);
 		mapElement->type = (mapElement->type & 0xFE) | (type >> 7);
-		mapElement->properties.path.additions = (mapElement->properties.path.additions & 0xF0) | pathItemType;
+		footpath_element_set_path_scenery(mapElement, pathItemType);
 		mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
 
 		loc_6A6620(flags, x, y, mapElement);
@@ -1605,6 +1605,11 @@ bool footpath_element_has_path_scenery(rct_map_element *mapElement)
 uint8 footpath_element_get_path_scenery(rct_map_element *mapElement)
 {
 	return mapElement->properties.path.additions & 0xF;
+}
+
+void footpath_element_set_path_scenery(rct_map_element *mapElement, uint8 pathSceneryType)
+{
+	mapElement->properties.path.additions = (mapElement->properties.path.additions & 0xF0) | pathSceneryType;
 }
 
 uint8 footpath_element_get_path_scenery_index(rct_map_element *mapElement)
