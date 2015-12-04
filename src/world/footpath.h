@@ -77,6 +77,8 @@ uint8 footpath_element_get_type(rct_map_element *mapElement);
 bool footpath_element_has_path_scenery(rct_map_element *mapElement);
 uint8 footpath_element_get_path_scenery(rct_map_element *mapElement);
 uint8 footpath_element_get_path_scenery_index(rct_map_element *mapElement);
+bool footpath_element_path_scenery_is_ghost(rct_map_element *mapElement);
+void footpath_scenery_set_is_ghost(rct_map_element *mapElement, bool isGhost);
 void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement);
 
 #endif

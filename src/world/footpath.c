@@ -249,17 +249,17 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		if (flags & GAME_COMMAND_FLAG_4)
 			return MONEY32_UNDEFINED;
 
-		// Try placing a ghost
+		// Should place a ghost?
 		if (flags & GAME_COMMAND_FLAG_GHOST) {
 			// Check if there is something on the path already
-			if (mapElement->properties.path.additions & 0x0F) {
+			if (footpath_element_has_path_scenery(mapElement)) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NONE;
 				return MONEY32_UNDEFINED;
 			}
 
 			// There is nothing yet - check if we should place a ghost
 			if (flags & GAME_COMMAND_FLAG_APPLY)
-				mapElement->properties.path.additions |= 0x80;
+				footpath_scenery_set_is_ghost(mapElement, true);
 		}
 
 		if (!(flags & GAME_COMMAND_FLAG_APPLY))
@@ -267,9 +267,9 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 
 		if (
 			(pathItemType != 0 && !(flags & GAME_COMMAND_FLAG_GHOST)) ||
-			(pathItemType == 0 && (mapElement->properties.path.additions & 0x80))
+			(pathItemType == 0 && footpath_element_path_scenery_is_ghost(mapElement))
 		) {
-			mapElement->properties.path.additions &= ~0x80;
+			footpath_scenery_set_is_ghost(mapElement, false);
 		}
 
 		mapElement->properties.path.additions = (mapElement->properties.path.additions & 0xF0) | pathItemType;
@@ -1610,6 +1610,20 @@ uint8 footpath_element_get_path_scenery(rct_map_element *mapElement)
 uint8 footpath_element_get_path_scenery_index(rct_map_element *mapElement)
 {
 	return footpath_element_get_path_scenery(mapElement) - 1;
+}
+
+bool footpath_element_path_scenery_is_ghost(rct_map_element *mapElement)
+{
+	return (mapElement->properties.path.additions & 0x80) == 0x80;
+}
+
+void footpath_scenery_set_is_ghost(rct_map_element *mapElement, bool isGhost)
+{
+	// Remove ghost flag
+	mapElement->properties.path.additions &= ~0x80;
+	// Set flag if it should be a ghost
+	if (isGhost)
+		mapElement->properties.path.additions |= 0x80;
 }
 
 uint8 footpath_element_get_type(rct_map_element *mapElement)

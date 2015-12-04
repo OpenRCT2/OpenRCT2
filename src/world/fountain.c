@@ -24,6 +24,7 @@
 #include "map.h"
 #include "scenery.h"
 #include "sprite.h"
+#include "footpath.h"
 
 enum {
 	PATTERN_CYCLIC_SQUARES,
@@ -297,7 +298,7 @@ static bool is_jumping_fountain(int type, int x, int y, int z)
 			continue;
 		if (mapElement->base_height != z)
 			continue;
-		if (mapElement->properties.path.additions & 0x80)
+		if (footpath_element_path_scenery_is_ghost(mapElement))
 			continue;
 
 		int additions = mapElement->properties.path.additions & 0x0F;

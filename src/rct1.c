@@ -776,7 +776,7 @@ static void rct1_fix_paths()
 			mapElement->type &= 0xFC;
 			mapElement->flags &= ~0x60;
 			mapElement->properties.path.type &= 0x0F;
-			mapElement->properties.path.additions &= 0x7F;
+			footpath_scenery_set_is_ghost(mapElement, false);
 			if (pathType & 0x80) {
 				mapElement->type |= 1;
 			}
@@ -785,8 +785,8 @@ static void rct1_fix_paths()
 			// Additions
 			additions = mapElement->properties.path.additions & 0x0F;
 			additions = RCT1PathAdditionConversionTable[additions];
-			if (additions & 0x80) {
-				additions &= ~0x80;
+			if (footpath_element_path_scenery_is_ghost(mapElement)) {
+				footpath_scenery_set_is_ghost(mapElement, false);
 				mapElement->flags |= MAP_ELEMENT_FLAG_BROKEN;
 			} else {
 				mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
