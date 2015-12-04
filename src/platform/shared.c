@@ -434,6 +434,20 @@ void platform_process_messages()
 			rct2_quit();
 			break;
 		case SDL_WINDOWEVENT:
+			// HACK: Fix #2158, OpenRCT2 does not draw if it does not think that the window is
+			//                  visible - due a bug in SDL2.0.3 this hack is required if the
+			//                  window is maximised, minimised and then restored again.
+			if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
+				if (SDL_GetWindowFlags(gWindow) & SDL_WINDOW_MAXIMIZED) {
+					SDL_RestoreWindow(gWindow);
+					SDL_MaximizeWindow(gWindow);
+				}
+				if (SDL_GetWindowFlags(gWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) {
+					SDL_RestoreWindow(gWindow);
+					SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+				}
+			}
+
 			if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
 				platform_resize(e.window.data1, e.window.data2);
 			if (gConfigSound.audio_focus && gConfigSound.sound) {
