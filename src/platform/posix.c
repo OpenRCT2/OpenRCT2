@@ -695,23 +695,25 @@ time_t platform_file_get_modified_time(const utf8* path){
 
 uint8 platform_get_locale_currency(){
 	char *langstring = setlocale(LC_MONETARY, "");
-	struct lconv *lc = localeconv();
 
-	//Only works if g_currency_specs contains the actual (local) symbol
-	for(int i = 0; i < CURRENCY_END; ++i){
-		if(!strcmp(lc->currency_symbol, CurrencyDescriptors[i].symbol_unicode)){
-			return i;
+	if(langstring != NULL){
+		struct lconv *lc = localeconv();
+
+		//Only works if g_currency_specs contains the actual (local) symbol
+		for(int i = 0; i < CURRENCY_END; ++i){
+			if(!strcmp(lc->currency_symbol, CurrencyDescriptors[i].symbol_unicode)){
+				return i;
+			}
+		}
+		//TODO: can be removed when CurrencyDescriptors contains the actual symbols for won and rubel
+		//Won should remain a special case, beacause some (or all?) systems use the full width won sign (e.g. Gentoo)
+		if(!strncmp(lc->int_curr_symbol, "KRW", 3)){
+			return CURRENCY_WON;
+		}
+		else if(!strncmp(lc->int_curr_symbol, "RUB", 3)){
+			return CURRENCY_ROUBLE;
 		}
 	}
-	//TODO: can be removed when CurrencyDescriptors contains the actual symbols for won and rubel
-	//Won should remain a special case, beacause some (or all?) systems use the full width won sign (e.g. Gentoo)
-	if(!strncmp(lc->int_curr_symbol, "KRW", 3)){
-		return CURRENCY_WON;
-	}
-	else if(!strncmp(lc->int_curr_symbol, "RUB", 3)){
-		return CURRENCY_ROUBLE;
-	}
-
 	//All other currencies are historic
 	return CURRENCY_POUNDS;
 }
@@ -720,21 +722,23 @@ uint8 platform_get_locale_measurement_format(){
 	//FIXME: LC_MEASUREMENT is GNU specific.
 	const char *langstring = setlocale(LC_MEASUREMENT, "");
 
-	//using https://en.wikipedia.org/wiki/Metrication#Chronology_and_status_of_conversion_by_country as reference
-	if(!fnmatch("*_US*", langstring, 0) || !fnmatch("*_MM*", langstring, 0) || !fnmatch("*_LR*", langstring, 0)){
-		return MEASUREMENT_FORMAT_IMPERIAL;
+	if(langstring != NULL){
+		//using https://en.wikipedia.org/wiki/Metrication#Chronology_and_status_of_conversion_by_country as reference
+		if(!fnmatch("*_US*", langstring, 0) || !fnmatch("*_MM*", langstring, 0) || !fnmatch("*_LR*", langstring, 0)){
+			return MEASUREMENT_FORMAT_IMPERIAL;
+		}
 	}
-
 	return MEASUREMENT_FORMAT_METRIC;
 }
 
 uint8 platform_get_locale_temperature_format(){
 	const char *langstring = setlocale(LC_MEASUREMENT, "");
 
-	if(!fnmatch("*_US*", langstring, 0) || !fnmatch("*_BS*", langstring, 0) || !fnmatch("*_BZ*", langstring, 0) || !fnmatch("*_PW*", langstring, 0)){
-		return TEMPERATURE_FORMAT_F;
+	if(langstring != NULL){
+		if(!fnmatch("*_US*", langstring, 0) || !fnmatch("*_BS*", langstring, 0) || !fnmatch("*_BZ*", langstring, 0) || !fnmatch("*_PW*", langstring, 0)){
+			return TEMPERATURE_FORMAT_F;
+		}
 	}
-
 	return TEMPERATURE_FORMAT_C;
 }
 
