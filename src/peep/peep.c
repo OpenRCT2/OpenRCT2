@@ -4724,8 +4724,10 @@ static void peep_update_walking(rct_peep* peep){
 			}
 			else{
 				uint8 pos_extr = 0;
-				for (int container = peep_empty_container_extra_flag(peep); pos_extr < 32; pos_extr++)if (container&(1 << pos_extr))break;
-				peep->item_extra_flags &= ~(1 << pos_extr);
+				for (int container = peep_empty_container_extra_flag(peep); pos_extr < 32; pos_extr++)
+					if (container & (1u << pos_extr))
+						break;
+				peep->item_extra_flags &= ~(1u << pos_extr);
 				bp = RCT2_ADDRESS(0x97EFE8, uint8)[pos_extr];
 			}
 
@@ -8037,9 +8039,9 @@ loc_69B221:
 	// The peep has now decided to buy the item (or, specifically, has not been
 	// dissuaded so far).
 	if (shopItem >= 32)
-		peep->item_extra_flags |= (1 << (shopItem - 32));
+		peep->item_extra_flags |= (1u << (shopItem - 32));
 	else
-		peep->item_standard_flags |= (1 << shopItem);
+		peep->item_standard_flags |= (1u << shopItem);
 
 	if (shopItem == SHOP_ITEM_TSHIRT)
 		peep->tshirt_colour = ride->track_colour_main[0];

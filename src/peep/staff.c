@@ -329,7 +329,7 @@ void game_command_set_staff_patrol(int *eax, int *ebx, int *ecx, int *edx, int *
 		rct_peep *peep = &g_sprite_list[sprite_id].peep;
 		int patrolOffset = peep->staff_id * (64 * 64 / 8);
 		int patrolIndex = ((x & 0x1F80) >> 7) | ((y & 0x1F80) >> 1);
-		int mask = 1 << (patrolIndex & 0x1F);
+		int mask = 1u << (patrolIndex & 0x1F);
 		int base = patrolIndex >> 5;
 
 		uint32 *patrolBits = (uint32*)(RCT2_ADDRESS_STAFF_PATROL_AREAS + patrolOffset + (base * 4));
@@ -435,7 +435,7 @@ int staff_is_location_in_patrol_area(rct_peep *peep, int x, int y)
 	// Therefore there are in total 64 x 64 patrol quads in the 256 x 256 map
 	int patrolOffset = peep->staff_id * (64 * 64 / 8);
 	int patrolIndex = ((x & 0x1F80) >> 7) | ((y & 0x1F80) >> 1);
-	int mask = 1 << (patrolIndex & 0x1F);
+	int mask = 1u << (patrolIndex & 0x1F);
 	int base = patrolIndex >> 5;
 
 	uint32 *patrolBits = (uint32*)(RCT2_ADDRESS_STAFF_PATROL_AREAS + patrolOffset + (base * 4));

@@ -5225,9 +5225,9 @@ static money32 shop_item_get_common_price(rct_ride *forRide, int shopItem)
 static bool shop_item_has_common_price(int shopItem)
 {
 	if (shopItem < 32) {
-		return RCT2_GLOBAL(0x01358838, uint32) & (1 << shopItem);
+		return RCT2_GLOBAL(0x01358838, uint32) & (1u << shopItem);
 	} else {
-		return RCT2_GLOBAL(0x0135934C, uint32) & (1 << (shopItem - 32));
+		return RCT2_GLOBAL(0x0135934C, uint32) & (1u << (shopItem - 32));
 	}
 }
 
@@ -5263,11 +5263,11 @@ foundRideEntry:
 	}
 	*outRideIndex = rideIndex;
 
-	// Ride/vehicle colour is calcualted before applying to ensure 
+	// Ride/vehicle colour is calcualted before applying to ensure
 	// correct colour is passed over the network.
 	if (!(flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_NETWORKED)) {
-		*outRideColour = 
-			ride_get_random_colour_preset_index(type) | 
+		*outRideColour =
+			ride_get_random_colour_preset_index(type) |
 			(ride_get_unused_preset_vehicle_colour(type, subType) << 8);
 	}
 
