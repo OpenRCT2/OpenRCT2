@@ -36,6 +36,28 @@ struct dummy {
 	struct dummy* ptr;
 };
 
+void platform_get_exe_path(utf8 *outPath)
+{
+	char exePath[MAX_PATH];
+	ssize_t bytesRead;
+	bytesRead = readlink("/proc/self/exe", exePath, MAX_PATH);
+	if (bytesRead == -1) {
+		log_fatal("failed to read /proc/self/exe");
+	}
+	exePath[bytesRead - 1] = '\0';
+	char *exeDelimiter = strrchr(exePath, platform_get_path_separator());
+	if (exeDelimiter == NULL)
+	{
+		log_error("should never happen here");
+		outPath[0] = '\0';
+		return;
+	}
+	int exeDelimiterIndex = (int)(exeDelimiter - exePath);
+
+	safe_strncpy(outPath, exePath, exeDelimiterIndex + 1);
+	outPath[exeDelimiterIndex] = '\0';
+}
+
 bool platform_check_steam_overlay_attached() {
 	void* processHandle = dlopen(NULL, RTLD_NOW);
 
