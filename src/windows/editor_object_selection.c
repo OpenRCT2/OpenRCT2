@@ -1107,15 +1107,12 @@ static void window_editor_object_selection_invalidate(rct_window *w)
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS + w->selected_tab;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
 		w->widgets[WIDX_TITLE].image = STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE;
-		w->widgets[WIDX_CLOSE].type = WWT_EMPTY;
 		w->widgets[WIDX_INSTALL_TRACK].type = WWT_DROPDOWN_BUTTON;
 	} else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) {
 		w->widgets[WIDX_TITLE].image = STR_ROLLER_COASTER_DESIGNER_SELECT_RIDE_TYPES_VEHICLES;
-		w->widgets[WIDX_CLOSE].type = WWT_CLOSEBOX;
 		w->widgets[WIDX_INSTALL_TRACK].type = WWT_EMPTY;
 	} else {
 		w->widgets[WIDX_TITLE].image = STR_OBJECT_SELECTION;
-		w->widgets[WIDX_CLOSE].type = WWT_CLOSEBOX;
 		w->widgets[WIDX_INSTALL_TRACK].type = WWT_EMPTY;
 	}
 
