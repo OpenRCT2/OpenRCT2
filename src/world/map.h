@@ -392,5 +392,6 @@ bool map_large_scenery_get_origin(
 
 rct_map_element *map_get_track_element_at(int x, int y, int z);
 rct_map_element *map_get_track_element_at_of_type(int x, int y, int z, int trackType);
+rct_map_element *map_get_track_element_at_of_type_seq(int x, int y, int z, int trackType, int sequence);
 
 #endif
