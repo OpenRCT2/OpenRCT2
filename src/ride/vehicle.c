@@ -3446,7 +3446,7 @@ bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 	rct_ride* ride = GET_RIDE(vehicle->ride);
 	rct_xyz16 *unk_F64E20 = RCT2_ADDRESS(0x00F64E20, rct_xyz16);
 
-	for (; (sint16)vehicle->var_24 < 0; RCT2_GLOBAL(0x00F64E10, uint32)++) {
+	for (; (sint32)vehicle->var_24 < 0; RCT2_GLOBAL(0x00F64E10, uint32)++) {
 		uint16 var_34 = vehicle->var_34 - 1;
 		const rct_vehicle_info *moveInfo;
 
@@ -3601,7 +3601,7 @@ int sub_6DEF56(rct_vehicle *cableLift)
 				unk_F64E20->z,
 				(rct_sprite*)vehicle);
 
-			invalidate_sprite_2((rct_vehicle*)vehicle);
+			invalidate_sprite_2((rct_sprite*)vehicle);
 		}
 		vehicle->var_2C /= RCT2_GLOBAL(0x00F64E10, uint32);
 		if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0) {
@@ -3618,7 +3618,7 @@ int sub_6DEF56(rct_vehicle *cableLift)
 
 	uint32 vehicleCount = 0;
 	uint16 frictionTotal = 0;
-	uint16 var2CTotal = 0;
+	sint32 var2CTotal = 0;
 
 	for (uint16 spriteId = cableLift->sprite_index; spriteId != 0xFFFF;) {
 		rct_vehicle* vehicle = GET_VEHICLE(spriteId);
