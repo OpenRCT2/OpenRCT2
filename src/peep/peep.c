@@ -2290,8 +2290,9 @@ void peep_update_ride_sub_state_7(rct_peep* peep){
 		vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
 	}
 
-	// Unsure why backward rotation is missing.
-	if (ride->mode != RIDE_MODE_FORWARD_ROTATION){
+	// Check if ride is NOT Ferris Wheel.
+	if (ride->mode != RIDE_MODE_FORWARD_ROTATION &&
+	        ride->mode != RIDE_MODE_BACKWARD_ROTATION){
 		if (vehicle->num_peeps - 1 != peep->current_seat)
 			return;
 	}
