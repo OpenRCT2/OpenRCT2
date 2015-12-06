@@ -339,7 +339,7 @@ static uint8* track_list_cache_load(int totalFiles)
 void track_list_populate(ride_list_item item, uint8* track_list_cache){
 	uint8* track_pointer = track_list_cache;
 
-	uint8 cur_track_entry_index = 0;
+	int cur_track_entry_index = 0;
 	for (uint8 track_type = *track_pointer++; track_type != 0xFE;
 		track_pointer += strlen((const char *)track_pointer) + 1,
 		track_type = *track_pointer++){
@@ -376,7 +376,7 @@ void track_list_populate(ride_list_item item, uint8* track_list_cache){
 			break;
 		}
 
-		uint8 track_entry_index = 0;
+		int track_entry_index = 0;
 		uint8 isBelow = 0;
 		for (; track_entry_index != cur_track_entry_index; track_entry_index++){
 			if (strcicmp((const char *)track_pointer, &RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, const char)[track_entry_index * 128]) < 0){
@@ -2662,7 +2662,7 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 			rct_xy_element lastGood = {
 				.element = trackBeginEnd.begin_element,
 				.x = trackBeginEnd.begin_x,
-				.y = trackBeginEnd.begin_y 
+				.y = trackBeginEnd.begin_y
 			};
 
 			if (!track_block_get_previous(trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_element, &trackBeginEnd)) {
@@ -4010,7 +4010,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			return MONEY32_UNDEFINED;
 		}
 	}
-	
+
 	uint16 *trackFlags = (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ?
 		RCT2_ADDRESS(0x0099443C, uint16) :
 		RCT2_ADDRESS(0x0099423C, uint16);
