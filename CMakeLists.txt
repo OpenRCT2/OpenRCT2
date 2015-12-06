@@ -63,7 +63,10 @@ if (UNIX)
 	# force 32bit build for now and set necessary flags to compile code as is
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32 -std=gnu99 -fno-omit-frame-pointer")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -std=gnu++11 -fno-omit-frame-pointer")
-	set(CMAKE_SHARED_LINKER_FLAGS "-m32")
+	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -m32")
+	if (APPLE)
+		set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-image_base,0x3401000")
+	endif (APPLE)
 	set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_SHARED_LINKER_FLAGS})
 endif (UNIX)
 
