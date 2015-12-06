@@ -21,6 +21,7 @@
 #if defined(__APPLE__) && defined(__MACH__)
 
 #include "platform.h"
+#include "../util/util.h"
 
 #include <mach-o/dyld.h>
 
@@ -32,7 +33,7 @@ bool platform_check_steam_overlay_attached() {
 void platform_get_exe_path(utf8 *outPath)
 {
 	char exePath[MAX_PATH];
-	int size = MAX_PATH;
+	uint32_t size = MAX_PATH;
 	int result = _NSGetExecutablePath(exePath, &size);
 	if (result != 0) {
 		log_fatal("failed to get path");
