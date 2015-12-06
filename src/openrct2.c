@@ -566,7 +566,7 @@ static bool openrct2_setup_rct2_segment()
 		exit(1);
 	}
 
-	void *fbase = mmap(NULL, file_size, PROT_READ, MAP_PRIVATE, gExeFd, 0);
+	void *fbase = mmap(NULL, file_size, PROT_READ, MAP_PRIVATE | MAP_FILE, gExeFd, 0);
 	err = errno;
 	log_warning("mmapped file to %p", fbase);
 	if (fbase == MAP_FAILED)
