@@ -106,7 +106,7 @@ function install_local_libs {
 	cp -rf $cachedir/orctlibs/local/* ./lib/.
 }
 
-function install_mingw_32 {
+function os_x_install_mingw_32 {
 	mingw_name=mingw-w32-bin_i686-darwin
 	mingw_tar=$mingw_name"_20130531".tar.bz2
 	mingw_path=/usr/local/$mingw_name
@@ -141,14 +141,11 @@ if [[ $(uname) == "Darwin" ]]; then
 
 	# Very possible I'm missing some dependencies here.
 	brew install cmake
-	brew install jansson --universal
-	brew install sdl2 --universal
-	brew install sdl2_ttf --universal
-	brew install speex --universal
+	brew install jansson sdl2 sdl2_ttf speex --universal
 
 	if [[ $TARGET == "windows" ]]; then
 		brew install wine
-		install_mingw_32
+		os_x_install_mingw_32
 	fi
 elif [[ $(uname) == "Linux" ]]; then
 	if [[ -z "$TRAVIS" ]]; then
