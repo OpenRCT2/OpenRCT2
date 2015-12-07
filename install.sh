@@ -19,6 +19,17 @@ function has_cmd {
 	command -v "$1" >/dev/null 2>&1
 }
 
+function calculate_sha256 {
+	if has_cmd "sha256sum"; then
+		command sha256sum "$1" | cut -f1 -d" "
+	elif has_cmd "shasum"; then
+		command shasum -a 256 "$1" | cut -f1 -d" "
+	else
+		echo "Please install either sha256sum or shasum to continue"
+		exit 1
+	fi
+}
+
 function download {
 	if has_cmd "curl"; then
 		curl -L -o "$2" "$1"
@@ -128,6 +139,25 @@ function os_x_install_mingw_32 {
 	fi
 }
 
+function os_x_install_bottle {
+	local checksum=$1
+	local url=$2
+	local target="$cachedir/$(basename "$url")"
+
+	download "$url" "$target"
+	local fingerprint=$(calculate_sha256 "$target")
+
+	if [[ "$fingerprint" != "$checksum" ]]; then
+		echo "Bottle sha256 sum missmatch!"
+		echo " url:      $url"
+		echo " expected: $checksum"
+		echo " actual:   $fingerprint"
+		exit 1
+	fi
+
+	brew install "$target"
+}
+
 echo TARGET = $TARGET
 
 if [[ $(uname) == "Darwin" ]]; then
@@ -139,9 +169,15 @@ if [[ $(uname) == "Darwin" ]]; then
 		exit 1
 	fi
 
-	# Very possible I'm missing some dependencies here.
-	brew install cmake
-	brew install jansson sdl2 sdl2_ttf speex --universal
+	if [[ -z "$TRAVIS" ]]; then
+		brew install cmake
+		brew install jansson sdl2 sdl2_ttf speex --universal
+	else
+		os_x_install_bottle "85ccc126f06b33f211b4ec1910c68b5338ba8673aded33848faee4be1db31436" "https://www.dropbox.com/s/9anb2fiphhinzh1/jansson-2.7.el_capitan.bottle.1.tar.gz"
+		os_x_install_bottle "9c3a0d420e4b4f94e9313ea8613750cccff6a4854947eab6857606c6ad56ed98" "https://www.dropbox.com/s/11mulewbqocxhbv/sdl2_ttf-2.0.12.el_capitan.bottle.tar.gz"
+		os_x_install_bottle "0cc4f89cc534839b575ad8c4dffbf03bd5904e04168fcef6a7342adbab93e79e" "https://www.dropbox.com/s/bvowsics73vqnyy/sdl2-2.0.3.el_capitan.bottle.2.tar.gz"
+		os_x_install_bottle "7d2817ec382334b52a577201266df037101a5c35812e887a32613c13976f07ae" "https://www.dropbox.com/s/bo6eao0uf4di6k4/speex-1.2rc1.el_capitan.bottle.3.tar.gz"
+	fi
 
 	if [[ $TARGET == "windows" ]]; then
 		brew install wine
@@ -182,11 +218,7 @@ fi
 
 download_libs
 # mind the gap (trailing space)
-if [[ $(uname) == "Darwin" ]]; then
-	shasum -a 256 $cachedir/orctlibs.zip | cut -f1 -d\  > $libVFile
-else
-	sha256sum $cachedir/orctlibs.zip | cut -f1 -d\  > $libVFile
-fi
+calculate_sha256 $cachedir/orctlibs.zip > $libVFile
 echo "Downloaded library with sha256sum: $(cat $libVFile)"
 # Local libs are required for all targets
 install_local_libs
