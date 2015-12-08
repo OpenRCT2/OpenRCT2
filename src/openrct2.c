@@ -60,8 +60,8 @@ bool gOpenRCT2Headless = false;
 bool gOpenRCT2ShowChangelog;
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-void *gDataSegment;
-void *gTextSegment;
+//unsigned char __attribute__((section ("rct2_text,__text"))) gTextSegment[0x004A3000];
+//unsigned char __attribute__((section ("rct2_data,__data"))) gDataSegment[0x01429000 - 0x8a4000];
 int gExeFd;
 #endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
@@ -472,7 +472,7 @@ static bool openrct2_setup_rct2_segment()
 	// POSIX OSes will run OpenRCT2 as a native application and then load in the Windows PE, mapping the appropriate addresses as
 	// necessary. Windows does not need to do this as OpenRCT2 runs as a DLL loaded from the Windows PE.
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-	#define RDATA_OFFSET 0x004A4000
+	/*#define RDATA_OFFSET 0x004A4000
 	#define DATASEG_OFFSET 0x005E2000
 
 	const char *exepath = "openrct2.exe";
@@ -551,19 +551,20 @@ static bool openrct2_setup_rct2_segment()
 		log_error("Found already mapped pages in region we want to claim. This means something accessed memory before we got to and following mmap (or next malloc) call will likely fail.");
 	}
 	// section: rw data
-	gDataSegment = mmap((void *)0x8a4000, len, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_ANONYMOUS | MAP_SHARED, 0, 0);
-	if (gDataSegment != (void *)0x8a4000) {
-		log_fatal("mmap failed to get required offset for data segment! got %p, expected %p, errno = %d", gDataSegment, (void *)(0x8a4000), errno);
-		exit(1);
+
+	void* asdf = mmap((void *)0x8a4000, len, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_ANON | MAP_SHARED, 0, 0);
+	if (asdf != (void *)0x8a4000) {
+	    log_fatal("mmap failed to get required offset for data segment! got %p, expected %p, errno = %d", gDataSegment, (void *)(0x8a4000), errno);
+	    exit(1);
 	}
 
 	len = 0x004A3000;
 	// section: text
-	gTextSegment = mmap((void *)(0x401000), len, PROT_EXEC | PROT_WRITE | PROT_READ, MAP_FIXED | MAP_PRIVATE, gExeFd, 0x1000);
-	if (gTextSegment != (void *)(0x401000))
+	void* ffaa = mmap((void *)(0x401000), len, PROT_EXEC | PROT_WRITE | PROT_READ, MAP_FIXED | MAP_PRIVATE, gExeFd, 0x1000);
+	if (ffaa != (void *)(0x401000))
 	{
-		log_fatal("mmap failed to get required offset for text segment! got %p, expected %p, errno = %d", gTextSegment, (void *)(0x401000), errno);
-		exit(1);
+	    log_fatal("mmap failed to get required offset for text segment! got %p, expected %p, errno = %d", gTextSegment, (void *)(0x401000), errno);
+	    exit(1);
 	}
 
 	void *fbase = mmap(NULL, file_size, PROT_READ, MAP_PRIVATE | MAP_FILE, gExeFd, 0);
@@ -584,7 +585,7 @@ static bool openrct2_setup_rct2_segment()
 	{
 		err = errno;
 		log_error("Failed to unmap file! errno = %d", err);
-	}
+	}*/
 #endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
 	// Check that the expected data is at various addresses.
@@ -610,30 +611,6 @@ static bool openrct2_release_rct2_segment()
 {
 	bool result = true;
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-	int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
-	int err;
-	err = munmap(gDataSegment, len);
-	if (err != 0)
-	{
-		err = errno;
-		log_error("Failed to unmap data segment! errno = %d", err);
-		result = false;
-	}
-	len = 0x004A3000;
-	err = munmap(gTextSegment, len);
-	if (err != 0)
-	{
-		err = errno;
-		log_error("Failed to unmap text segment! errno = %d", err);
-		result = false;
-	}
-	err = close(gExeFd);
-	if (err != 0)
-	{
-		err = errno;
-		log_error("Failed to close file! errno = %d", err);
-		result = false;
-	}
 #endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 	return result;
 }
