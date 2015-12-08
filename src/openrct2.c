@@ -513,6 +513,43 @@ static bool openrct2_setup_rct2_segment()
 	off_t file_size = 6750208;
 
 	int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
+	int pageSize = getpagesize();
+	int numPages = (len + pageSize - 1) / pageSize;
+	unsigned char *dummy = malloc(numPages);
+	int err = mincore((void *)0x8a4000, len, dummy);
+	bool pagesDirty = false;
+	if (err != 0)
+	{
+		err = errno;
+#ifdef __linux__
+		// On Linux ENOMEM means all requested range is unmapped
+		if (err != ENOMEM)
+		{
+			pagesDirty = true;
+			perror("mincore");
+		}
+#else
+		pagesDirty = true;
+		perror("mincore");
+#endif // __linux__
+	} else {
+		log_warning("mincore ok");
+		for (int i = 0; i < numPages; i++)
+		{
+			if (dummy[i] != 0)
+			{
+				pagesDirty = true;
+				void *start = (void *)0x8a4000 + i * pageSize;
+				void *end = (void *)0x8a4000 + (i + 1) * pageSize - 1;
+				log_warning("page %p - %p has flags: %x, you're in for bad time!", start, end, dummy[i]);
+			}
+		}
+	}
+	free(dummy);
+	if (pagesDirty)
+	{
+		log_error("Found already mapped pages in region we want to claim. This means something accessed memory before we got to and following mmap (or next malloc) call will likely fail.");
+	}
 	// section: rw data
 	gDataSegment = mmap((void *)0x8a4000, len, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_ANONYMOUS | MAP_SHARED, 0, 0);
 	if (gDataSegment != (void *)0x8a4000) {
@@ -530,7 +567,7 @@ static bool openrct2_setup_rct2_segment()
 	}
 
 	void *fbase = mmap(NULL, file_size, PROT_READ, MAP_PRIVATE, gExeFd, 0);
-	int err = errno;
+	err = errno;
 	log_warning("mmapped file to %p", fbase);
 	if (fbase == MAP_FAILED)
 	{
