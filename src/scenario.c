@@ -610,25 +610,28 @@ static void scenario_month_update()
 
 static void scenario_update_daynight_cycle()
 {
+	float currentDayNightCycle = gDayNightCycle;
 	gDayNightCycle = 0;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) != SCREEN_FLAGS_PLAYING) return;
-	if (!gConfigGeneral.day_night_cycle) return;
-
-	float monthFraction = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) / (float)0x10000;
-	if (monthFraction < (1 / 8.0f)) {
-		gDayNightCycle = 0.0f;
-	} else if (monthFraction < (3 / 8.0f)) {
-		gDayNightCycle = (monthFraction - (1 / 8.0f)) / (2 / 8.0f);
-	} else if (monthFraction < (5 / 8.0f)) {
-		gDayNightCycle = 1.0f;
-	} else if (monthFraction < (7 / 8.0f)) {
-		gDayNightCycle = 1.0f - ((monthFraction - (5 / 8.0f)) / (2 / 8.0f));
-	} else {
-		gDayNightCycle = 0.0f;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_PLAYING && gConfigGeneral.day_night_cycle) {
+		float monthFraction = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) / (float)0x10000;
+		if (monthFraction < (1 / 8.0f)) {
+			gDayNightCycle = 0.0f;
+		} else if (monthFraction < (3 / 8.0f)) {
+			gDayNightCycle = (monthFraction - (1 / 8.0f)) / (2 / 8.0f);
+		} else if (monthFraction < (5 / 8.0f)) {
+			gDayNightCycle = 1.0f;
+		} else if (monthFraction < (7 / 8.0f)) {
+			gDayNightCycle = 1.0f - ((monthFraction - (5 / 8.0f)) / (2 / 8.0f));
+		} else {
+			gDayNightCycle = 0.0f;
+		}
 	}
 
-	platform_update_palette(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8), 10, 236);
+	// Only update palette if day / night cycle has changed
+	if (gDayNightCycle != currentDayNightCycle) {
+		platform_update_palette(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8), 10, 236);
+	}
 }
 
 /*
