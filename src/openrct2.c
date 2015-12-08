@@ -514,7 +514,7 @@ static bool openrct2_setup_rct2_segment()
 
 	int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
 	// section: rw data
-	gDataSegment = mmap((void *)0x8a4000, len, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_ANONYMOUS | MAP_SHARED, 0, 0);
+	gDataSegment = mmap((void *)0x8a4000, len, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_ANONYMOUS | MAP_SHARED, -1, 0);
 	if (gDataSegment != (void *)0x8a4000) {
 		log_fatal("mmap failed to get required offset for data segment! got %p, expected %p, errno = %d", gDataSegment, (void *)(0x8a4000), errno);
 		exit(1);
