@@ -1143,7 +1143,7 @@ static void vehicle_update_cable_lift_moving_to_end_of_station(rct_vehicle *vehi
 		vehicle->var_2C = 0;
 	}
 
-	if (!(sub_6DEF56(vehicle) & (1 << 0)))
+	if (!(vehicle_update_track_motion_cable_lift(vehicle) & (1 << 0)))
 		return;
 
 	vehicle->velocity = 0;
@@ -1162,7 +1162,7 @@ static void vehicle_update_cable_lift_waiting_to_depart(rct_vehicle *vehicle)
 		vehicle->var_2C = 0;
 	}
 
-	sub_6DEF56(vehicle);
+	vehicle_update_track_motion_cable_lift(vehicle);
 
 	// Next check to see if the second part of the cable lift
 	// is at the front of the passenger vehicle to simulate the
@@ -1204,7 +1204,7 @@ static void vehicle_update_cable_lift_travelling(rct_vehicle *vehicle)
 	if (passengerVehicle->update_flags & VEHICLE_UPDATE_FLAG_BROKEN_TRAIN)
 		return;
 
-	if (!(sub_6DEF56(vehicle) & (1 << 1)))
+	if (!(vehicle_update_track_motion_cable_lift(vehicle) & (1 << 1)))
 		return;
 
 	vehicle->velocity = 0;
@@ -3362,15 +3362,15 @@ bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 	for (; vehicle->var_24 >= 13962; RCT2_GLOBAL(0x00F64E10, uint32)++) {
 		uint8 trackType = vehicle->track_type >> 2;
 		if (trackType == TRACK_ELEM_CABLE_LIFT_HILL &&
-			vehicle->var_34 == 160) {
+			vehicle->track_progress == 160) {
 			RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 1);
 		}
 
-		uint16 var_34 = vehicle->var_34 + 1;
+		uint16 trackProgress = vehicle->track_progress + 1;
 
 		const rct_vehicle_info *moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, 0);
-		uint16 unk16 = *((uint16*)((int)moveInfo - 2));
-		if (var_34 >= unk16) {
+		uint16 trackTotalProgress = *((uint16*)((int)moveInfo - 2));
+		if (trackProgress >= trackTotalProgress) {
 			RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_end;
 			RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_end;
 			rct_map_element* trackElement =
@@ -3402,11 +3402,11 @@ bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 			vehicle->track_z = outputZ;
 			vehicle->track_direction = outputDirection;
 			vehicle->track_type |= output.element->properties.track.type << 2;
-			var_34 = 0;
+			trackProgress = 0;
 		}
 
-		vehicle->var_34 = var_34;
-		moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, var_34);
+		vehicle->track_progress = trackProgress;
+		moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, trackProgress);
 		rct_xyz16 unk = {
 			.x = moveInfo->x,
 			.y = moveInfo->y,
@@ -3447,10 +3447,10 @@ bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 	rct_xyz16 *unk_F64E20 = RCT2_ADDRESS(0x00F64E20, rct_xyz16);
 
 	for (; (sint32)vehicle->var_24 < 0; RCT2_GLOBAL(0x00F64E10, uint32)++) {
-		uint16 var_34 = vehicle->var_34 - 1;
+		uint16 trackProgress = vehicle->track_progress - 1;
 		const rct_vehicle_info *moveInfo;
 
-		if ((sint16)var_34 == -1) {
+		if ((sint16)trackProgress == -1) {
 			uint8 trackType = vehicle->track_type >> 2;
 			RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_start;
 			RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_start;
@@ -3487,14 +3487,12 @@ bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 			}
 
 			moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, 0);
-			uint16 unk16 = *((uint16*)((int)moveInfo - 2));
-			var_34 = unk16 - 1;
+			uint16 trackTotalProgress = *((uint16*)((int)moveInfo - 2));
+			trackProgress = trackTotalProgress - 1;
 		}
-		vehicle->var_34 = var_34;
+		vehicle->track_progress = trackProgress;
 
-
-		vehicle->var_34 = var_34;
-		moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, var_34);
+		moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, trackProgress);
 		rct_xyz16 unk = {
 			.x = moveInfo->x,
 			.y = moveInfo->y,
@@ -3534,7 +3532,7 @@ bool sub_6DF21B_loop(rct_vehicle* vehicle) {
  *
  *  rct2: 0x006DEF56
  */
-int sub_6DEF56(rct_vehicle *cableLift)
+int vehicle_update_track_motion_cable_lift(rct_vehicle *cableLift)
 {
 	rct_ride_type* rideEntry = GET_RIDE_ENTRY(cableLift->ride_subtype);
 	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[cableLift->vehicle_type];
@@ -3700,7 +3698,7 @@ rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int d
 
 	sprite_move(16, 16, z, (rct_sprite*)current);
 	current->track_type = (TRACK_ELEM_CABLE_LIFT_HILL << 2) | (current->sprite_direction >> 3);
-	current->var_34 = 164;
+	current->track_progress = 164;
 	current->update_flags = VEHICLE_UPDATE_FLAG_1;
 	current->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
 	current->sub_state = 0;

@@ -112,7 +112,7 @@ typedef struct {
 	uint8 ride;						// 0x30
 	uint8 vehicle_type;				// 0x31
 	rct_vehicle_colour colours;		// 0x32
-	uint16 var_34;
+	uint16 track_progress;			// 0x34
 	union {
 		sint16 track_direction;		// 0x36 (0000 0000 0000 0011)
 		sint16 track_type;			// 0x36 (0000 0011 1111 1100)
@@ -280,7 +280,7 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG);
 void vehicle_set_map_toolbar(rct_vehicle *vehicle);
 int vehicle_is_used_in_pairs(rct_vehicle *vehicle);
 rct_vehicle *vehicle_get_head(rct_vehicle *vehicle);
-int sub_6DEF56(rct_vehicle *cableLift);
+int vehicle_update_track_motion_cable_lift(rct_vehicle *cableLift);
 rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int direction, uint16 var_44, uint32 var_24, bool head);
 bool sub_6DD365(rct_vehicle *vehicle);
 int sub_6DAB4C(rct_vehicle *vehicle, int *outStation);
