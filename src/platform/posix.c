@@ -101,7 +101,7 @@ bool platform_file_exists(const utf8 *path)
 	buffer[len] = '\0';
 	free(wPath);
 	bool exists = access(buffer, F_OK) != -1;
-	log_warning("file '%s' exists = %i", buffer, exists);
+	log_verbose("file '%s' exists = %i", buffer, exists);
 	return exists;
 }
 
@@ -200,7 +200,7 @@ static int winfilter(const struct dirent *d)
 	}
 	name_upper[entry_length] = '\0';
 	bool match = fnmatch(g_file_pattern, name_upper, FNM_PATHNAME) == 0;
-	//log_warning("trying matching filename %s, result = %d", name_upper, match);
+	//log_verbose("trying matching filename %s, result = %d", name_upper, match);
 	free(name_upper);
 	return match;
 }
@@ -217,7 +217,7 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 	if (converted == MAX_PATH) {
 		log_warning("truncated string %s", npattern);
 	}
-	log_warning("begin file search, pattern: %s", npattern);
+	log_verbose("begin file search, pattern: %s", npattern);
 
 	char *file_name = strrchr(npattern, platform_get_path_separator());
 	char *dir_name;
@@ -237,7 +237,7 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 	{
 		g_file_pattern[j] = (char)toupper(g_file_pattern[j]);
 	}
-	log_warning("looking for file matching %s", g_file_pattern);
+	log_verbose("looking for file matching %s", g_file_pattern);
 	int cnt;
 	for (int i = 0; i < countof(_enumerateFileInfoList); i++) {
 		enumFileInfo = &_enumerateFileInfoList[i];
@@ -248,7 +248,7 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 			{
 				break;
 			}
-			log_warning("found %d files matching in dir '%s'", cnt, dir_name);
+			log_verbose("found %d files matching in dir '%s'", cnt, dir_name);
 			enumFileInfo->cnt = cnt;
 			enumFileInfo->paths = malloc(cnt * sizeof(char *));
 			char **paths = enumFileInfo->paths;
@@ -374,7 +374,7 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 	if (converted == MAX_PATH) {
 		log_warning("truncated string %s", npattern);
 	}
-	log_warning("begin directory listing, path: %s", npattern);
+	log_verbose("begin directory listing, path: %s", npattern);
 
 	// TODO: add some checking for stringness and directoryness
 
@@ -388,7 +388,7 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 			{
 				break;
 			}
-			log_warning("found %d files in dir '%s'", cnt, npattern);
+			log_verbose("found %d files in dir '%s'", cnt, npattern);
 			enumFileInfo->cnt = cnt;
 			enumFileInfo->paths = malloc(cnt * sizeof(char *));
 			char **paths = enumFileInfo->paths;
@@ -609,7 +609,7 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
 void platform_show_messagebox(char *message)
 {
 	STUB();
-	log_warning(message);
+	log_verbose(message);
 }
 
 /**
