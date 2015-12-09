@@ -531,7 +531,7 @@ static int cc_get(const utf8 **argv, int argc)
 			}
 		}
 		else if (strcmp(argv[0], "window_scale") == 0) {
-			console_printf("window_scale %f", gConfigGeneral.window_scale);
+			console_printf("window_scale %.3f", gConfigGeneral.window_scale);
 		}
 		else {
 			console_writeline_warning("Invalid variable.");
@@ -690,7 +690,8 @@ static int cc_set(const utf8 **argv, int argc)
 			}
 		}
 		else if (strcmp(argv[0], "window_scale") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			gConfigGeneral.window_scale = clamp((float)double_val[0], 0.1f, 5.0f);
+			float newScale = (float)(0.001*trunc(1000*double_val[0]));
+			gConfigGeneral.window_scale = clamp(newScale, 0.1f, 5.0f);
 			config_save_default();
 			gfx_invalidate_screen();
 			platform_trigger_resize();
