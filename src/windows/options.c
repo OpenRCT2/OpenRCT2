@@ -80,6 +80,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_FULLSCREEN_DROPDOWN,
 	WIDX_HARDWARE_DISPLAY_CHECKBOX,
 	WIDX_UNCAP_FPS_CHECKBOX,
+	WIDX_SHOW_FPS_CHECKBOX,
 	WIDX_MINIMIZE_FOCUS_LOSS,
 	WIDX_STEAM_OVERLAY_PAUSE,
 	WIDX_SCALE,
@@ -182,6 +183,7 @@ static rct_widget window_options_display_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	84,		93,		STR_DROPDOWN_GLYPH,		STR_NONE },
 	{ WWT_CHECKBOX,			1,	10,		290,	99,		110,	STR_HARDWARE_DISPLAY,	STR_NONE },					// hardware display
 	{ WWT_CHECKBOX,			1,	10,		290,	114,	125,	STR_UNCAP_FPS,			STR_NONE },					// uncap fps
+	{ WWT_CHECKBOX,			1,	155,	299,	114,	125,	STR_SHOW_FPS,			STR_NONE },					// show fps
 	{ WWT_CHECKBOX,			1,	10,		290,	129,	140,	STR_MININISE_FULL_SCREEN_ON_FOCUS_LOSS,	STR_NONE },	// minimise fullscreen focus loss
 	{ WWT_CHECKBOX,			1,	10,		290,	144,	155,	STR_STEAM_OVERLAY_PAUSE,	STR_NONE },				// minimise fullscreen focus loss
 	{ WWT_SPINNER,			1,	155,	299,	159,	170,	STR_NONE,				STR_NONE },					// scale spinner
@@ -366,6 +368,7 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_GRIDLINES_CHECKBOX) |
 	(1 << WIDX_HARDWARE_DISPLAY_CHECKBOX) |
 	(1 << WIDX_UNCAP_FPS_CHECKBOX) |
+	(1 << WIDX_SHOW_FPS_CHECKBOX) |
 	(1 << WIDX_MINIMIZE_FOCUS_LOSS) |
 	(1 << WIDX_STEAM_OVERLAY_PAUSE) |
 	(1 << WIDX_SCALE) |
@@ -519,6 +522,11 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 			break;
 		case WIDX_UNCAP_FPS_CHECKBOX:
 			gConfigGeneral.uncap_fps ^= 1;
+			config_save_default();
+			window_invalidate(w);
+			break;
+		case WIDX_SHOW_FPS_CHECKBOX:
+			gConfigGeneral.show_fps ^= 1;
 			config_save_default();
 			window_invalidate(w);
 			break;
@@ -1178,6 +1186,7 @@ static void window_options_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_GRIDLINES_CHECKBOX, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES);
 		widget_set_checkbox_value(w, WIDX_HARDWARE_DISPLAY_CHECKBOX, gConfigGeneral.hardware_display);
 		widget_set_checkbox_value(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
+		widget_set_checkbox_value(w, WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.show_fps);
 		widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
 		widget_set_checkbox_value(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
 		widget_set_checkbox_value(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
@@ -1196,6 +1205,7 @@ static void window_options_invalidate(rct_window *w)
 		window_options_display_widgets[WIDX_CONSTRUCTION_MARKER_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_display_widgets[WIDX_HARDWARE_DISPLAY_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_display_widgets[WIDX_UNCAP_FPS_CHECKBOX].type = WWT_CHECKBOX;
+		window_options_display_widgets[WIDX_SHOW_FPS_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_display_widgets[WIDX_MINIMIZE_FOCUS_LOSS].type = WWT_CHECKBOX;
 		window_options_display_widgets[WIDX_STEAM_OVERLAY_PAUSE].type = WWT_CHECKBOX;
 		window_options_display_widgets[WIDX_DAY_NIGHT_CHECKBOX].type = WWT_CHECKBOX;

@@ -3919,6 +3919,7 @@ STR_5577    :South Korean Won (W)
 STR_5578    :Russian Rouble (R)
 STR_5579    :Window scale factor:
 STR_5580    :Czech koruna (Kc)
+STR_5581    :Show FPS
 
 #####################
 # Rides/attractions #
