@@ -1,10 +1,11 @@
-# Publish script for OpenRCT2
+#########################################################
+# Script to build and package OpenRCT2
 # - Sets the source code preprocessor defines
 # - Builds a clean release of OpenRCT2
 # - Creates a ZIP for distribution
-
+#########################################################
 param (
-    [string]$server = "",
+    [string]$server  = "",
     [string]$buildNo = ""
 )
 
@@ -42,30 +43,31 @@ function do-prepareSource($build_server = "", $build_number = "")
 function do-build()
 {
     Write-Output "Building OpenRCT2..."
-    msbuild .\projects\openrct2.sln /p:Configuration=Release /p:Platform=Win32 /t:rebuild /v:minimal
+    msbuild ..\projects\openrct2.sln /p:Configuration=Release /p:Platform=Win32 /t:rebuild /v:minimal
 }
 
 # Package
 function do-package()
 {
     Write-Output "Publishing OpenRCT2..."
-    $releaseDir = ".\build\Release"
-    $distDir = ".\distribution"
-    $tempDir = ".\artifacts\temp"
-    $outZip = ".\artifacts\openrct2.zip"
+    $releaseDir = "..\build\Release"
+    $distDir    = "..\distribution"
+    $tempDir    = "..\artifacts\temp"
+    $outZip     = "..\artifacts\openrct2.zip"
 
     # Create new temp directory
     Remove-Item -Force -Recurse $tempDir -ErrorAction SilentlyContinue
     New-Item -Force -ItemType Directory $tempDir > $null
 
     # Copy files to be archived
-    Copy-Item -Force "$releaseDir\openrct2.exe"       $tempDir -ErrorAction Stop
-    Copy-Item -Force "$releaseDir\openrct2.dll"       $tempDir -ErrorAction Stop
-    Copy-Item -Force "$releaseDir\curl-ca-bundle.crt" $tempDir -ErrorAction Stop
-    Copy-Item -Force "$releaseDir\SDL2.dll"           $tempDir -ErrorAction Stop
-    Copy-Item -Force "$distDir\changelog.txt"         $tempDir -ErrorAction Stop
-    Copy-Item -Force "$distDir\known_issues.txt"      $tempDir -ErrorAction Stop
-    Copy-Item -Force "$distDir\readme.txt"            $tempDir -ErrorAction Stop
+    Copy-Item -Force -Recurse "$releaseDir\data"               $tempDir -ErrorAction Stop
+    Copy-Item -Force          "$releaseDir\openrct2.exe"       $tempDir -ErrorAction Stop
+    Copy-Item -Force          "$releaseDir\openrct2.dll"       $tempDir -ErrorAction Stop
+    Copy-Item -Force          "$releaseDir\curl-ca-bundle.crt" $tempDir -ErrorAction Stop
+    Copy-Item -Force          "$releaseDir\SDL2.dll"           $tempDir -ErrorAction Stop
+    Copy-Item -Force          "$distDir\changelog.txt"         $tempDir -ErrorAction Stop
+    Copy-Item -Force          "$distDir\known_issues.txt"      $tempDir -ErrorAction Stop
+    Copy-Item -Force          "$distDir\readme.txt"            $tempDir -ErrorAction Stop
 
     # Create archive
     7za a -tzip -mx9 $outZip "$tempDir\*"
@@ -74,6 +76,6 @@ function do-package()
     Remove-Item -Force -Recurse $tempDir -ErrorAction SilentlyContinue
 }
 
-do-prepareSource $server $buildNo
-do-build
+# do-prepareSource $server $buildNo
+# do-build
 do-package

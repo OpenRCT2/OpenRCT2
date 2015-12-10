@@ -106,9 +106,6 @@
       <AdditionalDependencies>libcurl.lib;Ws2_32.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
     </Lib>
-    <PreBuildEvent>
-      <Command>Powershell -NonInteractive -ExecutionPolicy "ByPass" -File "$(ProjectDir)../../pre-build.ps1"</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -131,9 +128,6 @@
     <Lib>
       <AdditionalDependencies>libcurl.lib;Ws2_32.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
-    <PreBuildEvent>
-      <Command>Powershell -NonInteractive -ExecutionPolicy "ByPass" -File "$(ProjectDir)../../pre-build.ps1"</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release XP|Win32'">
     <ClCompile>
@@ -156,9 +150,6 @@
     <Lib>
       <AdditionalDependencies>libcurl.lib;Ws2_32.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
-    <PreBuildEvent>
-      <Command>Powershell -NonInteractive -ExecutionPolicy "ByPass" -File "$(ProjectDir)../../pre-build.ps1"</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release with Tests|Win32'">
     <ClCompile>
@@ -181,9 +172,6 @@
     <Lib>
       <AdditionalDependencies>libcurl.lib;Ws2_32.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
-    <PreBuildEvent>
-      <Command>Powershell -NonInteractive -ExecutionPolicy "ByPass" -File "$(ProjectDir)../../pre-build.ps1"</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\lib\argparse\argparse.c">
