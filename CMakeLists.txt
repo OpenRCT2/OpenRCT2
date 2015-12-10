@@ -96,6 +96,11 @@ else (WIN32)
 	add_executable(${PROJECT} ${ORCT2_SOURCES})
 endif (WIN32)
 
+if (APPLE)
+	FIND_LIBRARY(ICONV_LIBRARIES NAMES iconv libiconv libiconv-2 c)
+	TARGET_LINK_LIBRARIES(${PROJECT} ${ICONV_LIBRARIES})
+endif (APPLE)
+
 # install into ${CMAKE_INSTALL_PREFIX}/bin/
 #install (TARGETS ${PROJECT} DESTINATION bin)
 
