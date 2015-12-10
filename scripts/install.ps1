@@ -4,7 +4,7 @@
 param (
     [switch]$Force
 )
-Write-Output "Installing OpenRCT2 development environment for Windows"
+Write-Host "Installing OpenRCT2 development environment for Windows" -ForegroundColor Cyan
 Import-Module ".\common.psm1" -DisableNameChecking
 
 # Settings
@@ -49,7 +49,7 @@ else
 
 # Download latest version of the dependencies
 if ($updateLibs) {
-    Write-Output "Updating dependencies..."
+    Write-Host "Updating dependencies..." -ForegroundColor Cyan
 
     Remove-Item -Force -Recurse $libsPath -ErrorAction SilentlyContinue
     New-Item -Force -ItemType Directory $libsPath > $null

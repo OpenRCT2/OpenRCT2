@@ -9,10 +9,15 @@ param (
     [string]$buildNo = ""
 )
 
+# Get paths
+$scriptPath   = $Script:MyInvocation.MyCommand.Path
+$scriptsPath  = Split-Path $scriptPath
+$rootPath     = Split-Path $scriptsPath
+
 # Set build attributes
 function do-prepareSource($build_server = "", $build_number = "")
 {
-    Write-Output "Setting build #defines..."
+    Write-Host "Setting build #defines..." -ForegroundColor Cyan
     # $build_number = "";
     # $build_server = "";
     $build_branch = (git rev-parse --abbrev-ref HEAD)
@@ -42,18 +47,18 @@ function do-prepareSource($build_server = "", $build_number = "")
 # Building OpenRCT2
 function do-build()
 {
-    Write-Output "Building OpenRCT2..."
-    msbuild ..\projects\openrct2.sln /p:Configuration=Release /p:Platform=Win32 /t:rebuild /v:minimal
+    Write-Host "Building OpenRCT2..." -ForegroundColor Cyan
+    msbuild $rootPath\projects\openrct2.sln /p:Configuration=Release /p:Platform=Win32 /t:rebuild /v:minimal
 }
 
 # Package
 function do-package()
 {
-    Write-Output "Publishing OpenRCT2..."
-    $releaseDir = "..\build\Release"
-    $distDir    = "..\distribution"
-    $tempDir    = "..\artifacts\temp"
-    $outZip     = "..\artifacts\openrct2.zip"
+    Write-Host "Publishing OpenRCT2..." -ForegroundColor Cyan
+    $releaseDir = "$rootPath\bin"
+    $distDir    = "$rootPath\distribution"
+    $tempDir    = "$rootPath\artifacts\temp"
+    $outZip     = "$rootPath\artifacts\openrct2.zip"
 
     # Create new temp directory
     Remove-Item -Force -Recurse $tempDir -ErrorAction SilentlyContinue
@@ -76,6 +81,6 @@ function do-package()
     Remove-Item -Force -Recurse $tempDir -ErrorAction SilentlyContinue
 }
 
-# do-prepareSource $server $buildNo
-# do-build
+do-prepareSource $server $buildNo
+do-build
 do-package
