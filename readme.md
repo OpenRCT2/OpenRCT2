@@ -112,7 +112,7 @@ wine openrct2.exe
 
 ### Linux:
 We support native builds for Linux (limited to i386 only for now).
-As the easiest approach depends on your distribution, please take a look at the [wiki](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linuxhttps://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
+As the easiest approach depends on your distribution, please take a look at the [wiki](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
 
 
 # 3 Contributing
