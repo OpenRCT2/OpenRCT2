@@ -15,10 +15,25 @@ TARGET=${TARGET-linux}
 libversion=3
 libVFile="./libversion"
 
+function has_cmd {
+	command -v "$1" >/dev/null 2>&1
+}
+
+function calculate_sha256 {
+	if has_cmd "sha256sum"; then
+		command sha256sum "$1" | cut -f1 -d" "
+	elif has_cmd "shasum"; then
+		command shasum -a 256 "$1" | cut -f1 -d" "
+	else
+		echo "Please install either sha256sum or shasum to continue"
+		exit 1
+	fi
+}
+
 function download {
-	if command -v curl > /dev/null 2>&1; then
+	if has_cmd "curl"; then
 		curl -L -o "$2" "$1"
-	elif command -v wget > /dev/null 2>&1; then
+	elif has_cmd "wget"; then
 		wget -O "$2" "$1"
 	else
 		echo "Please install either wget or curl to continue"
@@ -102,66 +117,72 @@ function install_local_libs {
 	cp -rf $cachedir/orctlibs/local/* ./lib/.
 }
 
+function os_x_install_mingw_32 {
+	mingw_name=mingw-w32-bin_i686-darwin
+	mingw_tar=$mingw_name"_20130531".tar.bz2
+	mingw_path=/usr/local/$mingw_name
+
+	if [[ ! -f $cachedir/$mingw_tar ]]; then
+		download "https://downloads.sourceforge.net/project/mingw-w64/Toolchains targetting Win32/Automated Builds/$mingw_tar" $cachedir/$mingw_tar
+	fi
+
+	if [[ ! -d "$mingw_path" ]]; then
+		echo "Extracting contents of $mingw_tar to $mingw_path"
+		echo "Don't forget to add $mingw_path/bin to your PATH variable!"
+
+		mkdir $mingw_path
+		tar -xyf $cachedir/$mingw_tar -C $mingw_path
+
+		pushd $mingw_path
+			find . -type d -exec chmod 755 {} \;
+		popd
+	fi
+}
+
+function os_x_install_bottle {
+	local checksum=$1
+	local url=$2
+	local target="$cachedir/$(basename "$url")"
+
+	download "$url" "$target"
+	local fingerprint=$(calculate_sha256 "$target")
+
+	if [[ "$fingerprint" != "$checksum" ]]; then
+		echo "Bottle sha256 sum missmatch!"
+		echo " url:      $url"
+		echo " expected: $checksum"
+		echo " actual:   $fingerprint"
+		exit 1
+	fi
+
+	brew install "$target"
+}
+
 echo TARGET = $TARGET
 
 if [[ $(uname) == "Darwin" ]]; then
-    echo "Installation of OpenRCT2 assumes you have homebrew and use it to install packages."
+	echo "Installation of OpenRCT2 assumes you have homebrew and use it to install packages."
 
-    echo "Check if brew is installed"
-    package_command="brew"
-    which -s brew
-    if [ $? -eq 1 ]; then
-        echo "brew is not installed, or is not in your \$PATH"
-        echo "Check if MacPorts is installed"
-        which -s port
-        if [ $? -eq 1 ]; then
-            echo "MacPorts not found either, abort"
-            exit
-        else
-            echo "MacPorts found"
-            package_command="sudo port"
-        fi
-    else
-        echo "brew was found"
-    fi
+	if ! has_cmd "brew"; then
+		echo "brew is not installed, or is not in your \$PATH"
+		echo "install instructions: http://brew.sh/"
+		exit 1
+	fi
 
-    # Install packages with whatever command was found.
-    # Very possible I'm missing some dependencies here.
-    eval "$package_command install cmake wine"
+	if [[ -z "$TRAVIS" ]]; then
+		brew install cmake
+		brew install jansson sdl2 sdl2_ttf speex --universal
+	else
+		os_x_install_bottle "85ccc126f06b33f211b4ec1910c68b5338ba8673aded33848faee4be1db31436" "https://www.dropbox.com/s/9anb2fiphhinzh1/jansson-2.7.el_capitan.bottle.1.tar.gz"
+		os_x_install_bottle "9c3a0d420e4b4f94e9313ea8613750cccff6a4854947eab6857606c6ad56ed98" "https://www.dropbox.com/s/11mulewbqocxhbv/sdl2_ttf-2.0.12.el_capitan.bottle.tar.gz"
+		os_x_install_bottle "0cc4f89cc534839b575ad8c4dffbf03bd5904e04168fcef6a7342adbab93e79e" "https://www.dropbox.com/s/bvowsics73vqnyy/sdl2-2.0.3.el_capitan.bottle.2.tar.gz"
+		os_x_install_bottle "7d2817ec382334b52a577201266df037101a5c35812e887a32613c13976f07ae" "https://www.dropbox.com/s/bo6eao0uf4di6k4/speex-1.2rc1.el_capitan.bottle.3.tar.gz"
+	fi
 
-    if [[ ! -d /usr/include/wine ]]; then
-        # This will almost certainly break as brew changes. Better ideas
-        # welcome.
-        wine_path="/usr/local/Cellar/wine/1.6.2/include/wine"
-        if [ $package_command == "sudo port" ]; then
-            wine_path="/opt/local/include/wine"
-        fi
-        sudo ln -s $wine_path /usr/include
-    fi
-
-    mingw_name=mingw-w32-bin_i686-darwin
-    mingw_tar=$mingw_name"_20130531".tar.bz2
-    mingw_path=/usr/local/$mingw_name
-    if [[ ! -f $cachedir/$mingw_tar ]]; then
-        download "https://downloads.sourceforge.net/project/mingw-w64/Toolchains targetting Win32/Automated Builds/$mingw_tar" $cachedir/$mingw_tar
-    fi
-    if [[ ! -d "$mingw_path" ]]; then
-
-        pushd /usr/local/
-            sudo mkdir $mingw_name
-        popd
-
-        echo "Extracting contents of $mingw_tar to $mingw_path"
-        echo "Don't forget to add $mingw_path/bin to your PATH variable!"
-        sudo tar -xyf $cachedir/$mingw_tar -C $mingw_path
-
-        pushd /usr/local
-            sudo chmod 755 $mingw_name
-            pushd $mingw_name
-                sudo find . -type d -exec chmod 755 {} \;
-            popd
-        popd
-    fi
+	if [[ $TARGET == "windows" ]]; then
+		brew install wine
+		os_x_install_mingw_32
+	fi
 elif [[ $(uname) == "Linux" ]]; then
 	if [[ -z "$TRAVIS" ]]; then
 	    sudo apt-get install -y binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 cmake
@@ -197,11 +218,7 @@ fi
 
 download_libs
 # mind the gap (trailing space)
-if [[ $(uname) == "Darwin" ]]; then
-	shasum -a 256 $cachedir/orctlibs.zip | cut -f1 -d\  > $libVFile
-else
-	sha256sum $cachedir/orctlibs.zip | cut -f1 -d\  > $libVFile
-fi
+calculate_sha256 $cachedir/orctlibs.zip > $libVFile
 echo "Downloaded library with sha256sum: $(cat $libVFile)"
 # Local libs are required for all targets
 install_local_libs
