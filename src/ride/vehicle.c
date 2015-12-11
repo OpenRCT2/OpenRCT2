@@ -2073,7 +2073,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 	
 	if (flags & ((1 << 5) | (1 << 12))) {
 		if (ride->mode == RIDE_MODE_BOAT_HIRE) {
-			RCT2_CALLPROC_X(0x006D982F, 0, 0, 0, 0, (int)vehicle, 0, 0);
+			vehicle_update_departing_boat_hire(vehicle);
 			return;
 		}
 		else if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE) {
@@ -2422,6 +2422,212 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 	vehicle->sub_state = 0;
 	if (vehicle->velocity < 0)
 		vehicle->sub_state = 1;
+}
+
+/* rct2: 0x006D8C36 */
+static void vehicle_update_arriving(rct_vehicle* vehicle) {
+	RCT2_GLOBAL(0x00F64E35, uint8) = 1;
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+
+	switch (ride->mode) {
+	case RIDE_MODE_SWING:
+	case RIDE_MODE_ROTATION:
+	case RIDE_MODE_FORWARD_ROTATION:
+	case RIDE_MODE_BACKWARD_ROTATION:
+	case RIDE_MODE_FILM_AVENGING_AVIATORS:
+	case RIDE_MODE_FILM_THRILL_RIDERS:
+	case RIDE_MODE_BEGINNERS:
+	case RIDE_MODE_INTENSE:
+	case RIDE_MODE_BERSERK:
+	case RIDE_MODE_3D_FILM_MOUSE_TAILS:
+	case RIDE_MODE_3D_FILM_STORM_CHASERS:
+	case RIDE_MODE_3D_FILM_SPACE_RAIDERS:
+	case RIDE_MODE_CIRCUS_SHOW:
+	case RIDE_MODE_SPACE_RINGS:
+	case RIDE_MODE_HAUNTED_HOUSE:
+	case RIDE_MODE_CROOKED_HOUSE:
+		vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_12;
+		vehicle->velocity = 0;
+		vehicle->var_2C = 0;
+		vehicle->status = VEHICLE_STATUS_UNLOADING_PASSENGERS;
+		vehicle->sub_state = 0;
+		vehicle_invalidate_window(vehicle);
+		return;
+	}
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN &&
+		ride->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE &&
+		ride->inspection_station == vehicle->current_station &&
+		ride->mechanic_status != RIDE_MECHANIC_STATUS_4)
+		RCT2_GLOBAL(0x00F64E35, uint8) = 0;
+
+	rct_ride_type* rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+
+	if (vehicle->sub_state == 0) {
+		if (ride->mode == RIDE_MODE_RACE &&
+			ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) {
+			goto loc_6D8E36;
+		}
+
+		if (vehicle->velocity <= 131940) {
+			vehicle->var_2C = 3298;
+			goto loc_6D8E36;
+		}
+
+		sint32 velocity_diff = vehicle->velocity;
+		if (velocity_diff >= 1572864)
+			velocity_diff /= 8;
+		else 
+			velocity_diff /= 16;
+
+		if (RCT2_GLOBAL(0x00F64E35, uint8) == 0) {
+			goto loc_6D8E36;
+		}
+
+		if (ride->num_circuits != 1) {
+			if (vehicle->num_laps + 1 < ride->num_circuits) {
+				goto loc_6D8E36;
+			}
+		}
+		vehicle->velocity -= velocity_diff;
+		vehicle->var_2C = 0;
+	}
+	else {
+		if (!(vehicleEntry->var_14 & (1 << 3)) &&
+			vehicle->velocity >= -131940) {
+			vehicle->var_2C = -3298;
+		}
+
+		if (vehicle->velocity >= -131940) {
+			goto loc_6D8E36;
+		}
+
+		sint32 velocity_diff = vehicle->velocity;
+		if (velocity_diff < -1572864)
+			velocity_diff /= 8;
+		else
+			velocity_diff /= 16;
+
+		if (RCT2_GLOBAL(0x00F64E35, uint8) == 0) {
+			goto loc_6D8E36;
+		}
+
+		if (vehicle->num_laps + 1 < ride->num_circuits) {
+			goto loc_6D8E36;
+		}
+		
+		if (vehicle->num_laps + 1 != ride->num_circuits) {
+			vehicle->velocity -= velocity_diff;
+			vehicle->var_2C = 0;
+			goto loc_6D8E36;
+		}
+
+		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS &&
+			ride->mode != RIDE_MODE_SHUTTLE &&
+			ride->mode != RIDE_MODE_POWERED_LAUNCH) {
+			vehicle->update_flags |= VEHICLE_UPDATE_FLAG_0;
+		}
+		else{
+			vehicle->velocity -= velocity_diff;
+			vehicle->var_2C = 0;
+		}
+	}
+
+	uint32 flags;
+ loc_6D8E36:
+	flags = sub_6DAB4C(vehicle, NULL);
+	if (flags & (1 << 7) &&
+		RCT2_GLOBAL(0x00F64E35, uint8) == 0) {
+		RCT2_CALLPROC_X(0x006DA059, 0, 0, 0, 0, (int)vehicle, 0, 0);
+		return;
+	}
+
+	if (flags & (1 << 0) &&
+		RCT2_GLOBAL(0x00F64E35, uint8) == 0) {
+		vehicle->status = VEHICLE_STATUS_DEPARTING;
+		vehicle->sub_state = 1;
+		vehicle_invalidate_window(vehicle);
+		return;
+	}
+
+	if (!(flags & ((1 << 0) | (1 << 1) | (1 << 5)))) {
+		if (vehicle->velocity > 98955)
+			vehicle->var_C0 = 0;
+		return;
+	}
+
+	vehicle->var_C0++;
+	if (flags & (1 << 1) &&
+		vehicleEntry->var_14 & (1 << 13) &&
+		vehicle->var_C0 < 40){
+		return;
+	}
+
+	rct_map_element* mapElement = map_get_track_element_at(
+		vehicle->track_x,
+		vehicle->track_y,
+		vehicle->track_z / 8
+		);
+
+	vehicle->current_station = map_get_station(mapElement);
+	vehicle->num_laps++;
+
+	if (vehicle->sub_state != 0) {
+		if (vehicle->num_laps < ride->num_circuits) {
+			vehicle->status = VEHICLE_STATUS_DEPARTING;
+			vehicle->sub_state = 1;
+			vehicle_invalidate_window(vehicle);
+			return;
+		}
+
+		if (vehicle->num_laps == ride->num_circuits &&
+			vehicle->update_flags & VEHICLE_UPDATE_FLAG_12) {
+			vehicle->status = VEHICLE_STATUS_DEPARTING;
+			vehicle->sub_state = 1;
+			vehicle_invalidate_window(vehicle);
+			return;
+		}
+	}
+
+	if (ride->num_circuits != 1 &&
+		vehicle->num_laps < ride->num_circuits) {
+		vehicle->status = VEHICLE_STATUS_DEPARTING;
+		vehicle->sub_state = 1;
+		vehicle_invalidate_window(vehicle);
+		return;
+	}
+
+	if ((ride->mode == RIDE_MODE_UPWARD_LAUNCH ||
+		ride->mode == RIDE_MODE_DOWNWARD_LAUNCH) &&
+		vehicle->var_CE < 2) {
+		audio_play_sound_at_location(
+			SOUND_RIDE_LAUNCH_2,
+			vehicle->x, 
+			vehicle->y, 
+			vehicle->z);
+		vehicle->velocity = 0;
+		vehicle->var_2C = 0;
+		vehicle->status = VEHICLE_STATUS_DEPARTING;
+		vehicle->sub_state = 1;
+		vehicle_invalidate_window(vehicle);
+		return;
+	}
+
+	if (ride->mode == RIDE_MODE_RACE &&
+		ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) {
+		vehicle->status = VEHICLE_STATUS_DEPARTING;
+		vehicle->sub_state = 1;
+		vehicle_invalidate_window(vehicle);
+		return;
+	}
+
+	vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_12;
+	vehicle->velocity = 0;
+	vehicle->var_2C = 0;
+	vehicle->status = VEHICLE_STATUS_UNLOADING_PASSENGERS;
+	vehicle->sub_state = 0;
+	vehicle_invalidate_window(vehicle);
 }
 
 /* rct2: 0x006D9820 */
