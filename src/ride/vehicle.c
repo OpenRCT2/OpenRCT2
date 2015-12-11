@@ -64,6 +64,7 @@ static void vehicle_update_waiting_for_cable_lift(rct_vehicle *vehicle);
 static void vehicle_update_crash(rct_vehicle *vehicle);
 static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle);
 static void vehicle_update_travelling_boat(rct_vehicle* vehicle);
+static void vehicle_update_arriving(rct_vehicle* vehicle);
 
 static void vehicle_update_sound(rct_vehicle *vehicle);
 static int vehicle_update_scream_sound(rct_vehicle *vehicle);
@@ -1119,6 +1120,8 @@ static void vehicle_update(rct_vehicle *vehicle)
 		vehicle_update_travelling_boat(vehicle);
 		break;	
 	case VEHICLE_STATUS_ARRIVING:
+		vehicle_update_arriving(vehicle);
+		break;
 	case VEHICLE_STATUS_UNLOADING_PASSENGERS:
 		{
 			int *addressSwitchPtr = (int*)(0x006D7B70 + (vehicle->status * 4));
@@ -2526,7 +2529,7 @@ static void vehicle_update_arriving(rct_vehicle* vehicle) {
 		if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS &&
 			ride->mode != RIDE_MODE_SHUTTLE &&
 			ride->mode != RIDE_MODE_POWERED_LAUNCH) {
-			vehicle->update_flags |= VEHICLE_UPDATE_FLAG_0;
+			vehicle->update_flags |= VEHICLE_UPDATE_FLAG_12;
 		}
 		else{
 			vehicle->velocity -= velocity_diff;
@@ -2559,7 +2562,7 @@ static void vehicle_update_arriving(rct_vehicle* vehicle) {
 
 	vehicle->var_C0++;
 	if (flags & (1 << 1) &&
-		vehicleEntry->var_14 & (1 << 13) &&
+		vehicleEntry->var_14 & (1 << 14) &&
 		vehicle->var_C0 < 40){
 		return;
 	}
