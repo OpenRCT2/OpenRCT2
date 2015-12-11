@@ -112,10 +112,17 @@ typedef struct {
 	uint8 ride;						// 0x30
 	uint8 vehicle_type;				// 0x31
 	rct_vehicle_colour colours;		// 0x32
-	uint16 track_progress;			// 0x34
+	union {
+		uint16 track_progress;			// 0x34
+		struct {
+			uint8 var_34;
+			uint8 var_35;
+		};
+	};
 	union {
 		sint16 track_direction;		// 0x36 (0000 0000 0000 0011)
 		sint16 track_type;			// 0x36 (0000 0011 1111 1100)
+		rct_xy8 boat_location;		// 0x36
 	};
 	uint16 track_x;					// 0x38
 	uint16 track_y;					// 0x3A
@@ -190,7 +197,7 @@ enum {
 	VEHICLE_STATUS_TRAVELLING,
 	VEHICLE_STATUS_ARRIVING,
 	VEHICLE_STATUS_UNLOADING_PASSENGERS,
-	VEHICLE_STATUS_TRAVELLING_07,
+	VEHICLE_STATUS_TRAVELLING_BOAT,
 	VEHICLE_STATUS_CRASHING,
 	VEHICLE_STATUS_CRASHED,
 	VEHICLE_STATUS_TRAVELLING_BUMPER_CARS,

@@ -62,6 +62,8 @@ static void vehicle_update_simulator_operating(rct_vehicle* vehicle);
 static void vehicle_update_top_spin_operating(rct_vehicle* vehicle);
 static void vehicle_update_waiting_for_cable_lift(rct_vehicle *vehicle);
 static void vehicle_update_crash(rct_vehicle *vehicle);
+static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle);
+static void vehicle_update_travelling_boat(rct_vehicle* vehicle);
 
 static void vehicle_update_sound(rct_vehicle *vehicle);
 static int vehicle_update_scream_sound(rct_vehicle *vehicle);
@@ -667,7 +669,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 	//RCT2_CALLPROC_X(0x006D6D1F, 0, 0, 0, 0, (int)vehicle, (int)vehicle->ride * sizeof(rct_ride), 0);
 	//return;
 
-	if (vehicle->status == VEHICLE_STATUS_TRAVELLING_07){
+	if (vehicle->status == VEHICLE_STATUS_TRAVELLING_BOAT){
 		ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 		ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 		ride->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
@@ -1110,10 +1112,14 @@ static void vehicle_update(rct_vehicle *vehicle)
 	case VEHICLE_STATUS_TRAVELLING:
 		vehicle_update_travelling(vehicle);
 		break;
+	case VEHICLE_STATUS_TRAVELLING_CABLE_LIFT:
+		vehicle_update_travelling_cable_lift(vehicle);
+		break;	
+	case VEHICLE_STATUS_TRAVELLING_BOAT:
+		vehicle_update_travelling_boat(vehicle);
+		break;	
 	case VEHICLE_STATUS_ARRIVING:
 	case VEHICLE_STATUS_UNLOADING_PASSENGERS:
-	case VEHICLE_STATUS_TRAVELLING_07:
-	case VEHICLE_STATUS_TRAVELLING_CABLE_LIFT:
 		{
 			int *addressSwitchPtr = (int*)(0x006D7B70 + (vehicle->status * 4));
 			RCT2_CALLPROC_X(*addressSwitchPtr, 0, 0, 0, (vehicle->sub_state << 8) | ride->mode, (int)vehicle, 0, 0);
@@ -1915,6 +1921,39 @@ static bool vehicle_next_tower_element_is_top(rct_vehicle* vehicle) {
 	return true;
 }
 
+/* rct2: 0x006D986C */
+static void vehicle_update_travelling_boat_hire_setup(rct_vehicle* vehicle) {
+	vehicle->var_34 = vehicle->sprite_direction;
+	vehicle->track_x = vehicle->x & 0xFFE0;
+	vehicle->track_y = vehicle->y & 0xFFE0;
+
+	rct_xy8 location = {
+		.x = (vehicle->track_x + RCT2_ADDRESS(0x00993CCC, sint16)[2 * (vehicle->sprite_direction >> 3)]) / 32,
+		.y = (vehicle->track_y + RCT2_ADDRESS(0x00993CCE, sint16)[2 * (vehicle->sprite_direction >> 3)]) / 32
+	};
+
+	vehicle->boat_location = location;
+	vehicle->var_35 = 0;
+	vehicle->status = VEHICLE_STATUS_TRAVELLING_BOAT;
+	vehicle_invalidate_window(vehicle);
+	vehicle->sub_state = 0;
+	vehicle->var_24 += 27924;
+
+	vehicle_update_travelling_boat(vehicle);
+}
+
+/* rct2: 0x006D982F */
+static void vehicle_update_departing_boat_hire(rct_vehicle* vehicle) {
+	vehicle->lost_time_out = 0;
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+
+	ride->station_depart[vehicle->current_station] &= STATION_DEPART_FLAG;
+	uint8 waitingTime = max(ride->min_waiting_time, 3);
+	waitingTime = min(waitingTime, 127);
+	ride->station_depart[vehicle->current_station] |= waitingTime;
+	vehicle_update_travelling_boat_hire_setup(vehicle);
+}
+
 /* rct2: 0x006D845B */
 static void vehicle_update_departing(rct_vehicle* vehicle) {
 	rct_ride* ride = GET_RIDE(vehicle->ride);
@@ -2275,6 +2314,10 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 					return;
 				}
 			}
+			else if (ride->mode == RIDE_MODE_BOAT_HIRE) {
+				vehicle_update_travelling_boat_hire_setup(vehicle);
+				return;
+			}
 			else if (ride->mode == RIDE_MODE_SHUTTLE) {
 				vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_3;
 				vehicle->velocity = 0;
@@ -2379,6 +2422,12 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 	vehicle->sub_state = 0;
 	if (vehicle->velocity < 0)
 		vehicle->sub_state = 1;
+}
+
+/* rct2: 0x006D9820 */
+static void vehicle_update_travelling_boat(rct_vehicle* vehicle) {
+	vehicle_check_if_missing(vehicle);
+	RCT2_CALLPROC_X(0x006DA717, 0, 0, 0, 0, (int)vehicle, 0, 0);
 }
 
 /* rct2: 0x006D9249 */
@@ -3007,6 +3056,92 @@ static void vehicle_crash_on_water(rct_vehicle* vehicle) {
 	invalidate_sprite_2((rct_sprite*)vehicle);
 
 	vehicle->var_4E = 0xFFFF;
+}
+
+/**
+*
+*  rct2: 0x006D9D21
+*/
+static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle) {
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+
+	if (vehicle->sub_state == 0) {
+		if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_BROKEN_TRAIN) {
+			if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+				return;
+
+			ride->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
+			ride_breakdown_add_news_item(vehicle->ride);
+			ride->window_invalidate_flags |= 
+				RIDE_INVALIDATE_RIDE_MAIN | 
+				RIDE_INVALIDATE_RIDE_LIST | 
+				RIDE_INVALIDATE_RIDE_MAINTENANCE;
+
+			ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
+			ride->inspection_station = vehicle->current_station;
+			ride->breakdown_reason = ride->breakdown_reason_pending;
+			vehicle->velocity = 0;
+			return;
+		}
+
+		vehicle->sub_state = 1;
+		vehicle_peep_easteregg_here_we_are(vehicle);
+		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)) {
+			if (!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_TESTING)) {
+				if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS)) {
+					vehicle_test_reset(vehicle);
+				}
+				else {
+					uint8 currentSegment = ride->current_test_segment + 1;
+					if (currentSegment >= ride->num_stations) {
+						vehicle_update_test_finish(vehicle);
+					}
+					else {
+						ride->current_test_segment = currentSegment;
+						ride->var_1F6 = vehicle->current_station;
+					}
+				}
+			}
+		}
+	}
+
+	rct_ride_type* rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+
+	if (vehicle->velocity <= 439800) {
+		vehicle->var_2C = 4398;
+	}
+	int flags = sub_6DAB4C(vehicle, NULL);
+
+	if (flags & (1 << 11)) {
+		vehicle->status = VEHICLE_STATUS_TRAVELLING;
+		vehicle_invalidate_window(vehicle);
+		vehicle->sub_state = 1;
+		vehicle->lost_time_out = 0;
+		return;
+	}
+
+	if (vehicle->sub_state == 2)
+		return;
+
+	if (flags & (1 << 3) && vehicle->current_station == RCT2_GLOBAL(0x00F64E1C, uint8))
+		return;
+
+	vehicle->sub_state = 2;
+
+	if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED ||
+		ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
+		return;
+
+	// This is slightly different to the vanilla function
+	ride->station_depart[vehicle->current_station] &= STATION_DEPART_FLAG;
+	uint8 waitingTime = 3;
+	if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH) {
+		waitingTime = max(ride->min_waiting_time, 3);
+		waitingTime = min(waitingTime, 127);
+	}
+
+	ride->station_depart[vehicle->current_station] |= waitingTime;
 }
 
 /**
