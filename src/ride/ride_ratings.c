@@ -771,7 +771,7 @@ static uint16 ride_compute_upkeep(rct_ride *ride)
 	// multiply by 5/8
 	upkeep = upkeep * 10;
 	upkeep = upkeep >> 4;
-    return upkeep;
+	return upkeep;
 }
 
 /**
@@ -843,12 +843,12 @@ static void ride_ratings_apply_intensity_penalty(rating_tuple *ratings)
  */
 static void set_unreliability_factor(rct_ride *ride)
 {
-    // The higher the number, the lower the breakdown
-    // possibility. Range is [3, 7]. values are here:
-    // https://gist.github.com/kevinburke/123977c4884ccadbec70. Consider
-    // inlining this per ride
+	// The higher the number, the lower the breakdown
+	// possibility. Range is [3, 7]. values are here:
+	// https://gist.github.com/kevinburke/123977c4884ccadbec70. Consider
+	// inlining this per ride
 	uint8 lift_speed_adjustment = RideLiftHillAdjustments[ride->type];
-    ride->unreliability_factor += (ride->lift_hill_speed - lift_speed_adjustment) * 2;
+	ride->unreliability_factor += (ride->lift_hill_speed - lift_speed_adjustment) * 2;
 }
 
 static uint32 get_proximity_score_helper_1(uint16 x, uint16 max, uint32 multiplier)

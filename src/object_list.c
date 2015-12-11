@@ -600,9 +600,9 @@ uint32 object_get_hash_code(rct_object_entry *object)
 	int i;
 
 	for (i = 0; i < 8; i++)
-        hash = ((hash << 5) + hash) + object->name[i];
+		hash = ((hash << 5) + hash) + object->name[i];
 
-    return hash;
+	return hash;
 }
 
 void object_list_create_hash_table()

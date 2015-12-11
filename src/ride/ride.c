@@ -3053,7 +3053,7 @@ static void ride_shop_connected(rct_ride* ride, int ride_idx)
 	int x, y, count;
 	rct_map_element *mapElement;
 
-    uint16 coordinate = ride->station_starts[0];
+	uint16 coordinate = ride->station_starts[0];
 	if (coordinate == 0xFFFF)
 		return;
 
