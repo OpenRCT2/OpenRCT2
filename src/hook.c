@@ -53,73 +53,6 @@ void hookfunc(int address, int newaddress, int stacksize, int registerargs[], in
 
 	int rargssize = numrargs * 4;
 
-	data[i++] = 0x50; // push eax
-
-	// move stack down for possible existing arguments
-	for (int j = 0; j < stacksize; j++) {
-		data[i++] = 0x8B; // mov eax, [esp+x]
-		data[i++] = 0x44;
-		data[i++] = 0xE4;
-		data[i++] = (signed char)((4 * (stacksize - j)) + 4);
-
-		data[i++] = 0x89; // mov [esp+x], eax
-		data[i++] = 0x44;
-		data[i++] = 0xE4;
-		data[i++] = (signed char)((4 * (stacksize - j)) - ((registerssaved + stacksize) * 4));
-	}
-
-	if (numrargs > 0) {
-		// push the registers to be on the stack to access as arguments
-		data[i++] = 0x83; // add esp, x
-		data[i++] = 0xC4;
-		data[i++] = -((registerssaved + stacksize) * 4) + 4;
-
-		for (signed int j = numrargs - 1; j >= 0; j--) {
-			switch (registerargs[j]) {
-				case EAX: data[i++] = 0x50; break;
-				case EBX: data[i++] = 0x53; break;
-				case ECX: data[i++] = 0x51; break;
-				case EDX: data[i++] = 0x52; break;
-				case ESI: data[i++] = 0x56; break;
-				case EDI: data[i++] = 0x57; break;
-				case EBP: data[i++] = 0x55; break;
-			}
-		}
-
-		data[i++] = 0x83; // add esp, x
-		data[i++] = 0xC4;
-		data[i++] = rargssize + ((registerssaved + stacksize) * 4) - 4;
-	}
-
-
-	data[i++] = 0xE8; // call
-	data[i++] = 0x00;
-	data[i++] = 0x00;
-	data[i++] = 0x00;
-	data[i++] = 0x00;
-
-	int sizec = i;
-
-	data[i++] = 0x8B; // push eax, [esp]  - puts eip in eax
-	data[i++] = 0x04;
-	data[i++] = 0xE4;
-
-	data[i++] = 0x83; // add eax, x
-	data[i++] = 0xC0;
-	int sizeoffset = i;
-	data[i++] = 0; // set to returnlocation offset later
-
-	data[i++] = 0x89; // mov [esp-20h], eax  - put return address on stack
-	data[i++] = 0x44;
-	data[i++] = 0xE4;
-	data[i++] = (signed char)(-(registerssaved * 4) - rargssize - (stacksize * 4)) + 4;
-
-	data[i++] = 0x83; // add esp, x
-	data[i++] = 0xC4;
-	data[i++] = 4;
-
-	data[i++] = 0x58; // pop eax
-
 	if (!(registersreturned & EAX)) {
 		data[i++] = 0x50; // push eax
 	}
@@ -142,14 +75,50 @@ void hookfunc(int address, int newaddress, int stacksize, int registerargs[], in
 		data[i++] = 0x57; // push edi
 	}
 
-	data[i++] = 0x83; // sub esp, x
-	data[i++] = 0xEC;
-	data[i++] = 4 + (stacksize * 4) + rargssize;
+	data[i++] = 0x50; //push eax
+	data[i++] = 0x89; //mov eax, esp
+	data[i++] = 0xE0;
+	data[i++] = 0x83; //sub eax, (0xC + numargs*4) & 0xF
+	data[i++] = 0xE8; 
+	data[i++] = (0xC + numrargs * 4) & 0xF;
+	data[i++] = 0x83; //and eax, 0xC
+	data[i++] = 0xE0;
+	data[i++] = 0x0C;
+	data[i++] = 0xA3; //mov [0x9ABDA8], eax
+	data[i++] = 0xA8;
+	data[i++] = 0xBD;
+	data[i++] = 0x9A; 
+	data[i++] = 0x00;
+	data[i++] = 0x58; //pop eax
+	data[i++] = 0x2B; //sub esp, [0x9ABDA8]
+	data[i++] = 0x25;
+	data[i++] = 0xA8;
+	data[i++] = 0xBD;
+	data[i++] = 0x9A;
+	data[i++] = 0x00;
 
-	data[i++] = 0xE9; // jmp
+	// work out distance to nearest 0xC
+	// (esp - numargs * 4) & 0xC
+	// move to align - 4
+	// save that amount
+
+	if (numrargs > 0) {
+		// push the registers to be on the stack to access as arguments
+		for (signed int j = numrargs - 1; j >= 0; j--) {
+			switch (registerargs[j]) {
+				case EAX: data[i++] = 0x50; break;
+				case EBX: data[i++] = 0x53; break;
+				case ECX: data[i++] = 0x51; break;
+				case EDX: data[i++] = 0x52; break;
+				case ESI: data[i++] = 0x56; break;
+				case EDI: data[i++] = 0x57; break;
+				case EBP: data[i++] = 0x55; break;
+			}
+		}
+	}
+
+	data[i++] = 0xE8; // call
 	*((int *)&data[i]) = (newaddress - address - i - 4); i += 4;
-
-	data[sizeoffset] = i - sizec;
 
 	// returnlocation:
 
@@ -189,6 +158,13 @@ void hookfunc(int address, int newaddress, int stacksize, int registerargs[], in
 	data[i++] = 0x83; // sub esp, x
 	data[i++] = 0xEC;
 	data[i++] = (signed char)(stacksize * -4) - rargssize;
+
+	data[i++] = 0x03; //add esp, [0x9ABDA8]
+	data[i++] = 0x25;
+	data[i++] = 0xA8;
+	data[i++] = 0xBD;
+	data[i++] = 0x9A;
+	data[i++] = 0x00;
 
 	if (!(registersreturned & EDI)) {
 		data[i++] = 0x5F; // pop edi

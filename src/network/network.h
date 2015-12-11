@@ -90,6 +90,12 @@ extern "C" {
 	#define ioctlsocket ioctl
 #endif // _WIN32
 
+// Fixes issues on OS X
+#if defined(_RCT2_H_) && !defined(_MSC_VER)
+// use similar struct packing as MSVC for our structs
+#pragma pack(1)
+#endif
+
 #ifdef __cplusplus
 
 #include <list>
