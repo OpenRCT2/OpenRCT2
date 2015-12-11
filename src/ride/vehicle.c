@@ -66,6 +66,7 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle);
 static void vehicle_update_travelling_boat(rct_vehicle* vehicle);
 static void vehicle_update_arriving(rct_vehicle* vehicle);
 static void vehicle_update_unloading_passengers(rct_vehicle* vehicle);
+static void vehicle_update_crash_setup(rct_vehicle* vehicle);
 
 static void vehicle_update_sound(rct_vehicle *vehicle);
 static int vehicle_update_scream_sound(rct_vehicle *vehicle);
@@ -2145,7 +2146,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 			if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED)
 				return;
 			
-			RCT2_CALLPROC_X(0x006D9EFE, 0, 0, 0, 0, (int)vehicle, 0, 0);
+			vehicle_update_crash_setup(vehicle);
 			return;
 		}
 	}
@@ -2257,6 +2258,63 @@ static void vehicle_check_if_missing(rct_vehicle* vehicle) {
 	news_item_add_to_queue(NEWS_ITEM_RIDE, 2218, vehicle->ride);
 }
 
+/* rct2: 0x006D9EFE */
+static void vehicle_update_crash_setup(rct_vehicle* vehicle) {
+	vehicle->status = VEHICLE_STATUS_CRASHING;
+	vehicle_invalidate_window(vehicle);
+
+	int num_peeps = vehicle_get_total_num_peeps(vehicle);
+	if (num_peeps != 0) {
+		audio_play_sound_at_location(
+			SOUND_HAUNTED_HOUSE_SCREAM_2,
+			vehicle->x,
+			vehicle->y,
+			vehicle->z
+			);
+	}
+
+	int edx = vehicle->velocity >> 10;
+
+	rct_vehicle* lastVehicle = vehicle;
+	uint16 spriteId = vehicle->sprite_index;
+	for (rct_vehicle* trainVehicle; spriteId != 0xFFFF; spriteId = trainVehicle->next_vehicle_on_train) {
+		trainVehicle = GET_VEHICLE(spriteId);
+		lastVehicle = trainVehicle;
+
+		trainVehicle->sub_state = 0;
+		int x = RCT2_ADDRESS(0x009A3AC4, sint16)[trainVehicle->sprite_direction * 2];
+		int	y = RCT2_ADDRESS(0x009A3AC6, sint16)[trainVehicle->sprite_direction * 2];
+
+		int ecx = RCT2_ADDRESS(0x009A37E4, uint32)[trainVehicle->var_1F] >> 15;
+		x *= ecx;
+		y *= ecx;
+		x >>= 16;
+		y >>= 16;
+		ecx = RCT2_ADDRESS(0x009A38D4, uint32)[trainVehicle->var_1F] >> 23;
+		x *= edx;
+		y *= edx;
+		ecx *= edx;
+		x >>= 8;
+		y >>= 8;
+		ecx >>= 8;
+
+		trainVehicle->var_B6 = x;
+		trainVehicle->var_C0 = y;
+		trainVehicle->var_4E = ecx;
+		trainVehicle->var_B6 += (scenario_rand() & 0xF) - 8;
+		trainVehicle->var_C0 += (scenario_rand() & 0xF) - 8;
+		trainVehicle->var_4E += (scenario_rand() & 0xF) - 8;
+
+		trainVehicle->track_x = 0;
+		trainVehicle->track_y = 0;
+		trainVehicle->track_z = 0;
+	}
+
+	(GET_VEHICLE(vehicle->prev_vehicle_on_ride))->next_vehicle_on_ride = lastVehicle->next_vehicle_on_ride;
+	(GET_VEHICLE(lastVehicle->next_vehicle_on_ride))->prev_vehicle_on_ride = vehicle->prev_vehicle_on_ride;
+	vehicle->velocity = 0;
+}
+
 /* rct2: 0x006D8937 */
 static void vehicle_update_travelling(rct_vehicle* vehicle) {
 	vehicle_check_if_missing(vehicle);
@@ -2296,7 +2354,7 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 
 	if (!skipCheck) {
 		if (flags & (1 << 6)) {
-			RCT2_CALLPROC_X(0x006D9EFE, 0, 0, 0, 0, (int)vehicle, 0, 0);
+			vehicle_update_crash_setup(vehicle);
 			return;
 		}
 
@@ -2336,7 +2394,7 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 				}
 				else {
 					if (vehicle->sub_state != 0) {
-						RCT2_CALLPROC_X(0x006D9EFE, 0, 0, 0, 0, (int)vehicle, 0, 0);
+						vehicle_update_crash_setup(vehicle);
 						return;
 					}
 					vehicle->sub_state = 1;
