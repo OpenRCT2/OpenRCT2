@@ -962,9 +962,9 @@ void game_load_init()
 	scenario_set_filename((char*)0x0135936C);
 }
 
-/*
+/**
  *
- * rct2: 0x0069E9A7
+ *  rct2: 0x0069E9A7
  * Call after a rotation or loading of a save to reset sprite quadrants
  */
 void reset_all_sprite_quadrant_placements()

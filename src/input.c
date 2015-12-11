@@ -180,7 +180,9 @@ static rct_mouse_data* get_mouse_input()
 	return &mouse_buffer[read_index];
 }
 
-/* rct2: 0x006E957F
+/**
+ *
+ *  rct2: 0x006E957F
  */
 static void input_scroll_drag_begin(int x, int y, rct_window* w, rct_widget* widget, int widgetIndex) {
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_SCROLL_RIGHT;
@@ -228,7 +230,10 @@ static void input_scroll_drag_continue(int x, int y, rct_window* w) {
 	platform_set_cursor_position(_dragX, _dragY);
 }
 
-/* rct2: 0x006E8ACB*/
+/**
+ *
+ *  rct2: 0x006E8ACB
+ */
 static void input_scroll_right(int x, int y, int state) {
 	rct_window* w = window_find_by_number(
 		_dragWindowClass,
@@ -701,7 +706,7 @@ static void input_scroll_end()
 
 /**
  *
- * rct: 0x006E98F2
+ *  rct2: 0x006E98F2
  */
 static void input_scroll_part_update_hthumb(rct_window *w, int widgetIndex, int x, int scroll_id)
 {
@@ -738,7 +743,7 @@ static void input_scroll_part_update_hthumb(rct_window *w, int widgetIndex, int 
 
 /**
  *
- * rct: 0x006E99A9
+ *  rct2: 0x006E99A9
  */
 static void input_scroll_part_update_vthumb(rct_window *w, int widgetIndex, int y, int scroll_id)
 {
@@ -776,7 +781,7 @@ static void input_scroll_part_update_vthumb(rct_window *w, int widgetIndex, int 
 
 /**
  *
- * rct: 0x006E9A60
+ *  rct2: 0x006E9A60
  */
 static void input_scroll_part_update_hleft(rct_window *w, int widgetIndex, int scroll_id)
 {
@@ -794,7 +799,7 @@ static void input_scroll_part_update_hleft(rct_window *w, int widgetIndex, int s
 
 /**
  *
- * rct: 0x006E9ABF
+ *  rct2: 0x006E9ABF
  */
 static void input_scroll_part_update_hright(rct_window *w, int widgetIndex, int scroll_id)
 {
@@ -819,7 +824,7 @@ static void input_scroll_part_update_hright(rct_window *w, int widgetIndex, int 
 
 /**
  *
- * rct: 0x006E9C37
+ *  rct2: 0x006E9C37
  */
 static void input_scroll_part_update_vtop(rct_window *w, int widgetIndex, int scroll_id)
 {
@@ -837,7 +842,7 @@ static void input_scroll_part_update_vtop(rct_window *w, int widgetIndex, int sc
 
 /**
  *
- * rct: 0x006E9C96
+ *  rct2: 0x006E9C96
  */
 static void input_scroll_part_update_vbottom(rct_window *w, int widgetIndex, int scroll_id)
 {
@@ -1754,7 +1759,8 @@ void game_handle_key_scroll()
 }
 
 /**
- * rct2: 0x006E8346
+ *
+ *  rct2: 0x006E8346
  */
 static void update_cursor_position()
 {

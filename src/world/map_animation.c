@@ -536,7 +536,10 @@ static bool map_animation_invalidate_wall(int x, int y, int baseZ)
 	return !wasInvalidated;
 }
 
-/** rct2: 0x009819DC */
+/**
+ *
+ *  rct2: 0x009819DC
+ */
 static const map_animation_invalidate_event_handler _animatedObjectEventHandlers[MAP_ANIMATION_TYPE_COUNT] = {
 	map_animation_invalidate_ride_entrance,
 	map_animation_invalidate_queue_banner,

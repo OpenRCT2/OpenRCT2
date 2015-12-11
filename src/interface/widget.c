@@ -1021,6 +1021,7 @@ int widget_is_active_tool(rct_window *w, int widgetIndex)
 }
 
 /**
+ *
  *  rct2: 0x006E9F92
  *	eax: x / output_x
  *	ebx: y / output_y

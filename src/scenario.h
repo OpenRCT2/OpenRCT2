@@ -61,7 +61,7 @@ typedef struct {
 	rct_object_entry entry;		// 0x188
 } rct_s6_info;
 
-/*
+/**
  * Scenario scores file header.
  * size: 0x10
  */

@@ -372,7 +372,7 @@ void game_command_fire_staff_member(int *eax, int *ebx, int *ecx, int *edx, int 
 	*ebx = 0;
 }
 
-/*
+/**
  * Updates the colour of the given staff type.
  */
 void update_staff_colour(uint8 staffType, uint16 colour)
@@ -380,7 +380,7 @@ void update_staff_colour(uint8 staffType, uint16 colour)
 	game_do_command(0, (staffType << 8) | GAME_COMMAND_FLAG_APPLY, 0, (colour << 8) | 4, GAME_COMMAND_SET_STAFF_COLOUR, 0, 0);
 }
 
-/*
+/**
  * Hires a new staff member of the given type. If the hire cannot be completed (eg. the maximum
  * number of staff is reached or there are too many people in the game) it returns 0xFFFF.
  */

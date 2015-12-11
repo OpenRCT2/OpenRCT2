@@ -513,7 +513,7 @@ const utf8 *get_file_path(int pathId)
 }
 
 /**
- *  Obtains basic system versions and capabilities.
+ * Obtains basic system versions and capabilities.
  *  rct2: 0x004076B1
  */
 void get_system_info()

@@ -498,7 +498,7 @@ static int ride_get_alternative_type(rct_ride *ride)
 
 /**
  *
- * rct2: 0x006CB481
+ *  rct2: 0x006CB481
  */
 rct_window *window_ride_construction_open()
 {
@@ -562,7 +562,7 @@ rct_window *window_ride_construction_open()
 
 /**
  *
- * rct2: 0x006C845D
+ *  rct2: 0x006C845D
  */
 static void window_ride_construction_close(rct_window *w)
 {
@@ -598,7 +598,7 @@ static void window_ride_construction_close(rct_window *w)
 
 /**
  *
- * rct2: 0x006C6E14
+ *  rct2: 0x006C6E14
  */
 static void window_ride_construction_mouseup(rct_window *w, int widgetIndex)
 {
@@ -635,7 +635,7 @@ static void window_ride_construction_mouseup(rct_window *w, int widgetIndex)
 
 /**
  *
- * rct2: 0x006C7934
+ *  rct2: 0x006C7934
  */
 static void window_ride_construction_resize(rct_window *w)
 {
@@ -1196,7 +1196,7 @@ static void window_ride_construction_resize(rct_window *w)
 
 /**
  *
- * rct2: 0x006C6E6A
+ *  rct2: 0x006C6E6A
  */
 static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
 {
@@ -1523,7 +1523,7 @@ static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, r
 
 /**
  *
- * rct2: 0x006C78CD
+ *  rct2: 0x006C78CD
  */
 static void window_ride_construction_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
@@ -1553,7 +1553,7 @@ static void window_ride_construction_dropdown(rct_window *w, int widgetIndex, in
 
 /**
  *
- * rct2: 0x006C9F72
+ *  rct2: 0x006C9F72
  */
 static void window_ride_construction_construct(rct_window *w)
 {
@@ -1671,7 +1671,7 @@ static void window_ride_construction_construct(rct_window *w)
 
 /**
  *
- * rct2: 0x006C9BA5
+ *  rct2: 0x006C9BA5
  */
 static void window_ride_construction_mouseup_demolish(rct_window* w)
 {
@@ -1838,7 +1838,7 @@ void window_ride_construction_mouseup_demolish_next_piece(int x, int y, int z, i
 
 /**
  *
- * rct2: 0x006C78AA
+ *  rct2: 0x006C78AA
  */
 static void window_ride_construction_rotate(rct_window *w)
 {
@@ -1850,7 +1850,7 @@ static void window_ride_construction_rotate(rct_window *w)
 
 /**
  *
- * rct2: 0x006C7802
+ *  rct2: 0x006C7802
  */
 static void window_ride_construction_entrance_click(rct_window *w)
 {
@@ -1874,7 +1874,7 @@ static void window_ride_construction_entrance_click(rct_window *w)
 
 /**
  *
- * rct2: 0x006C7866
+ *  rct2: 0x006C7866
  */
 static void window_ride_construction_exit_click(rct_window *w)
 {
@@ -1898,7 +1898,7 @@ static void window_ride_construction_exit_click(rct_window *w)
 
 /**
  *
- * rct2: 0x006C8374
+ *  rct2: 0x006C8374
  */
 static void window_ride_construction_update(rct_window *w)
 {
@@ -1943,7 +1943,7 @@ static void window_ride_construction_update(rct_window *w)
 
 /**
  *
- * rct2: 0x006CC538
+ *  rct2: 0x006CC538
  */
 static bool ride_get_place_position_from_screen_position(int screenX, int screenY, int *outX, int *outY)
 {
@@ -2015,7 +2015,7 @@ static bool ride_get_place_position_from_screen_position(int screenX, int screen
 
 /**
  *
- * rct2: 0x006C8229
+ *  rct2: 0x006C8229
  */
 static void window_ride_construction_toolupdate(rct_window* w, int widgetIndex, int x, int y)
 {
@@ -2049,7 +2049,7 @@ static void window_ride_construction_tooldown(rct_window* w, int widgetIndex, in
 
 /**
  *
- * rct2: 0x006C6AD5
+ *  rct2: 0x006C6AD5
  */
 static void window_ride_construction_invalidate(rct_window *w)
 {
@@ -2082,7 +2082,7 @@ static void window_ride_construction_invalidate(rct_window *w)
 
 /**
  *
- * rct2: 0x006C6B86
+ *  rct2: 0x006C6B86
  */
 static void window_ride_construction_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
@@ -2212,7 +2212,7 @@ static rct_map_element *_backupMapElementArrays[5];
 
 /**
  *
- * rct2: 0x006CBCE2
+ *  rct2: 0x006CBCE2
  * bh: trackDirection
  * dl: rideIndex
  * dh: trackType
@@ -2336,7 +2336,7 @@ static void sub_6CBCE2(
 
 /**
  *
- * rct2: 0x006C84CE
+ *  rct2: 0x006C84CE
  */
 void sub_6C84CE()
 {
@@ -2369,7 +2369,7 @@ void sub_6C84CE()
 
 /**
  *
- * rct2: 0x006CA2DF
+ *  rct2: 0x006CA2DF
  * bh: trackRotation (out)
  * dl: ??? (out)
  * dh: trackType (out)
@@ -2394,7 +2394,7 @@ static bool sub_6CA2DF(int *trackType, int *trackDirection, int *rideIndex, int 
 
 /**
  *
- * rct2: 0x006C6A77
+ *  rct2: 0x006C6A77
  */
 static void window_ride_construction_update_enabled_track_pieces()
 {
@@ -2408,7 +2408,7 @@ static void window_ride_construction_update_enabled_track_pieces()
 
 /**
  *
- * rct2: 0x006CA162
+ *  rct2: 0x006CA162
  */
 money32 sub_6CA162(int rideIndex, int trackType, int trackDirection, int edxRS16, int x, int y, int z)
 {
@@ -2456,7 +2456,7 @@ money32 sub_6CA162(int rideIndex, int trackType, int trackDirection, int edxRS16
 
 /**
  *
- * rct2: 0x006C94D8
+ *  rct2: 0x006C94D8
  */
 void sub_6C94D8()
 {
@@ -2555,7 +2555,7 @@ void sub_6C94D8()
 
 /**
  *
- * rct2: 0x006C84E2
+ *  rct2: 0x006C84E2
  */
 static void window_ride_construction_update_map_selection()
 {
@@ -2595,7 +2595,7 @@ static void window_ride_construction_update_map_selection()
 
 /**
  *
- * rct2: 0x006C8648
+ *  rct2: 0x006C8648
  */
 static void window_ride_construction_update_possible_ride_configurations()
 {
@@ -2686,7 +2686,7 @@ static void window_ride_construction_update_possible_ride_configurations()
 
 /**
  *
- * rct2: 0x006C87F5
+ *  rct2: 0x006C87F5
  */
 static void window_ride_construction_update_widgets(rct_window *w)
 {
@@ -3180,7 +3180,7 @@ static void window_ride_construction_select_map_tiles(rct_ride *ride, int trackT
 
 /**
  *
- * rct2: 0x006C776D
+ *  rct2: 0x006C776D
  */
 static void window_ride_construction_show_special_track_dropdown(rct_window *w, rct_widget *widget)
 {
@@ -3213,7 +3213,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
 
 /**
  *
- * rct2: 0x006C7630
+ *  rct2: 0x006C7630
  */
 static void ride_selected_track_set_seat_rotation(int seatRotation)
 {
@@ -3227,7 +3227,7 @@ static void ride_selected_track_set_seat_rotation(int seatRotation)
 
 /**
  *
- * rct2: 0x006C7502
+ *  rct2: 0x006C7502
  */
 static void loc_6C7502(int al)
 {
@@ -3243,7 +3243,7 @@ static void loc_6C7502(int al)
 
 /**
  *
- * rct2: 0x006C76E9
+ *  rct2: 0x006C76E9
  */
 static void ride_construction_set_brakes_speed(int brakesSpeed)
 {
@@ -3269,7 +3269,7 @@ static void ride_construction_set_brakes_speed(int brakesSpeed)
 
 /**
  *
- * rct2: 0x006CC6A8
+ *  rct2: 0x006CC6A8
  */
 void ride_construction_toolupdate_construct(int screenX, int screenY)
 {
@@ -3408,7 +3408,7 @@ void ride_construction_toolupdate_construct(int screenX, int screenY)
 
 /**
  *
- * rct2: 0x006CD354
+ *  rct2: 0x006CD354
  */
 void ride_construction_toolupdate_entrance_exit(int screenX, int screenY)
 {
@@ -3453,7 +3453,7 @@ void ride_construction_toolupdate_entrance_exit(int screenX, int screenY)
 
 /**
  *
- * rct2: 0x006CCA73
+ *  rct2: 0x006CCA73
  */
 void ride_construction_tooldown_construct(int screenX, int screenY)
 {
@@ -3650,7 +3650,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 
 /**
  *
- * rct2: 0x006CCA73
+ *  rct2: 0x006CCA73
  */
 static void ride_construction_tooldown_entrance_exit(int screenX, int screenY)
 {

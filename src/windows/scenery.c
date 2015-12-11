@@ -553,7 +553,7 @@ static void window_scenery_mouseup(rct_window *w, int widgetIndex)
 	}
 }
 
-/*
+/**
  *
  *  rct2: 0x006E1EB4
  */

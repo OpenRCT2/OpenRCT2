@@ -753,7 +753,7 @@ rct_window *window_find_by_number(rct_windowclass cls, rct_windownumber number)
 }
 
 /**
- *  Closes the top-most window
+ * Closes the top-most window
  *
  *  rct2: 0x006E403C
  */
@@ -776,7 +776,7 @@ void window_close_top()
 }
 
 /**
- *  Closes all open windows
+ * Closes all open windows
  *
  *  rct2: 0x006EE927
  */
@@ -922,8 +922,8 @@ void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number)
 }
 
 /**
-  * Invalidates all windows.
-  */
+ * Invalidates all windows.
+ */
 void window_invalidate_all()
 {
 	rct_window* w;
@@ -1157,7 +1157,7 @@ rct_window *window_bring_to_front_by_number(rct_windowclass cls, rct_windownumbe
 
 /**
  *
- * rct2: 0x006EE65A
+ *  rct2: 0x006EE65A
  */
 void window_push_others_right(rct_window* window)
 {
@@ -1247,8 +1247,7 @@ rct_window *window_get_main()
 
 /**
  * Based on
- * rct2: 0x696ee9 & 0x66842F & 0x006AF3B3
- *
+ *  rct2: 0x696ee9, 0x66842F, 0x006AF3B3
  */
 void window_scroll_to_viewport(rct_window *w)
 {
@@ -1364,7 +1363,7 @@ void sub_688956()
 /**
  *
  *  rct2: 0x0068881A
- *  direction can be used to alter the camera rotation:
+ * direction can be used to alter the camera rotation:
  *		1: clockwise
  *		-1: anti-clockwise
  */
@@ -2001,9 +2000,9 @@ void window_event_scroll_paint_call(rct_window *w, rct_drawpixelinfo *dpi, int s
 }
 
 /**
+ * Bubbles an item one position up in the window list.  This is done by swapping
+ * the two locations.
  *  rct2: New function not from rct2
- *  Bubbles an item one position up in the window list.
- *  This is done by swapping the two locations.
  */
 void window_bubble_list_item(rct_window* w, int item_position){
 	char swap = w->list_item_positions[item_position];
@@ -2011,7 +2010,9 @@ void window_bubble_list_item(rct_window* w, int item_position){
 	w->list_item_positions[item_position + 1] = swap;
 }
 
-/* rct2: 0x006ED710
+/**
+ *
+ *  rct2: 0x006ED710
  * Called after a window resize to move windows if they
  * are going to be out of sight.
  */

@@ -33,7 +33,7 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, int x, int y, i
 
 /**
  *
- *  rct: 0x00673298
+ *  rct2: 0x00673298
  */
 void crashed_vehicle_particle_update(rct_crashed_vehicle_particle *particle)
 {
@@ -112,7 +112,7 @@ void crash_splash_create(int x, int y, int z)
 
 /**
  *
- *  rct: 0x0067339D
+ *  rct2: 0x0067339D
  */
 void crash_splash_update(rct_crash_splash *splash)
 {

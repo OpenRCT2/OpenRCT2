@@ -486,7 +486,9 @@ static void copy(void *dst, uint8 **src, int length)
 	*src += length;
 }
 
-/* rct2: 0x00677530
+/**
+ *
+ *  rct2: 0x00677530
  * Returns 1 if it has booster track elements
  */
 uint8 td4_track_has_boosters(rct_track_td6* track_design, uint8* track_elements){
@@ -678,7 +680,10 @@ rct_track_td6* load_track_design(const char *path)
 	return track_design;
 }
 
-/* rct2: 0x006D1DCE*/
+/**
+ *
+ *  rct2: 0x006D1DCE
+ */
 void reset_track_list_cache(){
 	int* track_list_cache = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_DESIGN_INDEX_CACHE, int);
 	for (int i = 0; i < 4; ++i){
@@ -687,7 +692,10 @@ void reset_track_list_cache(){
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_NEXT_INDEX_CACHE, uint32) = 0;
 }
 
-/* rct2: 0x006D1C68 */
+/**
+ *
+ *  rct2: 0x006D1C68
+ */
 int backup_map(){
 	RCT2_GLOBAL(0xF440ED, uint8*) = malloc(0xED600);
 	if (RCT2_GLOBAL(0xF440ED, uint32) == 0) return 0;
@@ -720,7 +728,10 @@ int backup_map(){
 	return 1;
 }
 
-/* rct2: 0x006D2378 */
+/**
+ *
+ *  rct2: 0x006D2378
+ */
 void reload_map_backup(){
 	uint32* map_elements = RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, uint32);
 	memcpy(map_elements, RCT2_GLOBAL(0xF440ED, uint32*), 0xED600);
@@ -740,7 +751,10 @@ void reload_map_backup(){
 	free(RCT2_GLOBAL(0xF440F5, uint8*));
 }
 
-/* rct2: 0x006D1D9A */
+/**
+ *
+ *  rct2: 0x006D1D9A
+ */
 void blank_map(){
 
 	// These values were previously allocated in backup map but
@@ -764,7 +778,10 @@ void blank_map(){
 	map_update_tile_pointers();
 }
 
-/* rct2: 0x006ABDB0 */
+/**
+ *
+ *  rct2: 0x006ABDB0
+ */
 void load_track_scenery_objects(){
 	uint8 entry_index = RCT2_GLOBAL(0xF44157, uint8);
 	rct_object_entry_extended* object_entry = &object_entry_groups[0].entries[entry_index];
@@ -809,7 +826,10 @@ void load_track_scenery_objects(){
 	reset_loaded_objects();
 }
 
-/* rct2: 0x006D247A */
+/**
+ *
+ *  rct2: 0x006D247A
+ */
 void track_mirror_scenery(uint8** track_elements){
 	rct_track_scenery* scenery = (rct_track_scenery*)*track_elements;
 	for (; (scenery->scenery_object.flags & 0xFF) != 0xFF; scenery++){
@@ -898,7 +918,10 @@ void track_mirror_scenery(uint8** track_elements){
 	}
 }
 
-/* rct2: 0x006D2443 */
+/**
+ *
+ *  rct2: 0x006D2443
+ */
 void track_mirror_ride(uint8** track_elements){
 	rct_track_element* track = (rct_track_element*)*track_elements;
 	for (; track->type != 0xFF; track++){
@@ -916,7 +939,10 @@ void track_mirror_ride(uint8** track_elements){
 	*track_elements = (uint8*)entrance + 1;
 }
 
-/* rct2: 0x006D25FA */
+/**
+ *
+ *  rct2: 0x006D25FA
+ */
 void track_mirror_maze(uint8** track_elements){
 	rct_maze_element* maze = (rct_maze_element*)*track_elements;
 	for (; maze->all != 0; maze++){
@@ -942,7 +968,10 @@ void track_mirror_maze(uint8** track_elements){
 	*track_elements = (uint8*)maze + 4;
 }
 
-/* rct2: 0x006D2436 */
+/**
+ *
+ *  rct2: 0x006D2436
+ */
 void track_mirror(){
 	uint8* track_elements = RCT2_ADDRESS(0x009D821B, uint8);
 
@@ -984,7 +1013,10 @@ void track_update_max_min_coordinates(sint16 x, sint16 y, sint16 z){
 	}
 }
 
-/* rct2: 0x006D0964 */
+/**
+ *
+ *  rct2: 0x006D0964
+ */
 int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int originX, int originY, int originZ){
 	RCT2_GLOBAL(0x00F44050, rct_track_scenery*) = scenery_start;
 
@@ -1971,7 +2003,9 @@ int sub_6D01B3(uint8 bl, uint8 rideIndex, int x, int y, int z)
 	return ebx;
 }
 
-/* rct2: 0x006D2189
+/**
+ *
+ *  rct2: 0x006D2189
  * ebx = ride_id
  * cost = edi
  */
@@ -2065,14 +2099,20 @@ int sub_6D2189(int* cost, uint8* ride_id){
 	}
 }
 
-/* rct2: 0x006D235B */
+/**
+ *
+ *  rct2: 0x006D235B
+ */
 void sub_6D235B(uint8 ride_id){
 	rct_ride* ride = GET_RIDE(ride_id);
 	user_string_free(ride->name);
 	ride->type = RIDE_TYPE_NULL;
 }
 
-/* rct2: 0x006D1EF0 */
+/**
+ *
+ *  rct2: 0x006D1EF0
+ */
 void draw_track_preview(uint8** preview){
 	// Make a copy of the map
 	if (!backup_map())return;
@@ -2480,7 +2520,10 @@ int copy_scenery_to_track(uint8** track_pointer){
 	return 1;
 }
 
-/* rct2: 0x006CEAAE */
+/**
+ *
+ *  rct2: 0x006CEAAE
+ */
 int maze_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* track_elements){
 	rct_map_element* map_element = NULL;
 	uint8 map_found = 0;
@@ -2641,7 +2684,10 @@ int maze_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* track_
 	return 1;
 }
 
-/* rct2: 0x006CE68D */
+/**
+ *
+ *  rct2: 0x006CE68D
+ */
 int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* track_elements)
 {
 	rct_ride* ride = GET_RIDE(rideIndex);
@@ -2899,7 +2945,10 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 	return 1;
 }
 
-/* rct2: 0x006CE44F */
+/**
+ *
+ *  rct2: 0x006CE44F
+ */
 int ride_to_td6(uint8 rideIndex){
 	rct_ride* ride = GET_RIDE(rideIndex);
 	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
@@ -2972,8 +3021,10 @@ int ride_to_td6(uint8 rideIndex){
 	return tracked_ride_to_td6(rideIndex, track_design, track_elements);
 }
 
-/* rct2: 0x006771DC but not really its branched from that
- * quite far.
+/**
+ *
+ *  rct2: 0x006771DC but not really its branched from that
+ *  quite far.
  */
 int save_track_to_file(rct_track_td6* track_design, char* path)
 {
@@ -3000,7 +3051,10 @@ int save_track_to_file(rct_track_td6* track_design, char* path)
 	return 1;
 }
 
-/* rct2: 0x006D2804 & 0x006D264D */
+/**
+ *
+ *  rct2: 0x006D2804, 0x006D264D
+ */
 int save_track_design(uint8 rideIndex){
 	rct_ride* ride = GET_RIDE(rideIndex);
 
@@ -3206,7 +3260,10 @@ int install_track(char* source_path, char* dest_name){
 	return platform_file_copy(source_path, dest_path, false);
 }
 
-/* rct2: 0x006D13FE */
+/**
+ *
+ *  rct2: 0x006D13FE
+ */
 void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp){
 	int x = *eax;
 	int y = *ecx;
@@ -3350,7 +3407,7 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 
 /**
  *
- * rct2: 0x006CDEE4
+ *  rct2: 0x006CDEE4
  */
 void game_command_place_maze_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
@@ -3359,7 +3416,7 @@ void game_command_place_maze_design(int* eax, int* ebx, int* ecx, int* edx, int*
 
 /**
  *
- * rct2: 0x006D3026
+ *  rct2: 0x006D3026
  */
 void track_save_reset_scenery()
 {
@@ -3429,7 +3486,7 @@ static rct_map_element **track_get_next_spare_saved_map_element()
 
 /**
  *
- * rct2: 0x006D2ED2
+ *  rct2: 0x006D2ED2
  */
 static bool track_save_can_add_map_element(rct_map_element *mapElement)
 {
@@ -3461,7 +3518,7 @@ static bool track_save_can_add_map_element(rct_map_element *mapElement)
 
 /**
  *
- * rct2: 0x006D2F4C
+ *  rct2: 0x006D2F4C
  */
 static void track_save_push_map_element(int x, int y, rct_map_element *mapElement)
 {
@@ -3475,7 +3532,7 @@ static void track_save_push_map_element(int x, int y, rct_map_element *mapElemen
 
 /**
  *
- * rct2: 0x006D2FA7
+ *  rct2: 0x006D2FA7
  */
 static void track_save_push_map_element_desc(rct_object_entry *entry, int x, int y, int z, uint8 flags, uint8 primaryColour, uint8 secondaryColour)
 {
@@ -3584,7 +3641,7 @@ static void track_save_add_footpath(int x, int y, rct_map_element *mapElement)
 
 /**
  *
- * rct2: 0x006D2B3C
+ *  rct2: 0x006D2B3C
  */
 static bool track_save_add_map_element(int interactionType, int x, int y, rct_map_element *mapElement)
 {
@@ -3612,7 +3669,7 @@ static bool track_save_add_map_element(int interactionType, int x, int y, rct_ma
 
 /**
  *
- * rct2: 0x006D2F78
+ *  rct2: 0x006D2F78
  */
 static void track_save_pop_map_element(int x, int y, rct_map_element *mapElement)
 {
@@ -3643,7 +3700,7 @@ static void track_save_pop_map_element(int x, int y, rct_map_element *mapElement
 
 /**
  *
- * rct2: 0x006D2FDD
+ *  rct2: 0x006D2FDD
  */
 static void track_save_pop_map_element_desc(rct_object_entry *entry, int x, int y, int z, uint8 flags, uint8 primaryColour, uint8 secondaryColour)
 {
@@ -3764,7 +3821,7 @@ static void track_save_remove_footpath(int x, int y, rct_map_element *mapElement
 
 /**
  *
- * rct2: 0x006D2B3C
+ *  rct2: 0x006D2B3C
  */
 static void track_save_remove_map_element(int interactionType, int x, int y, rct_map_element *mapElement)
 {
@@ -3786,7 +3843,7 @@ static void track_save_remove_map_element(int interactionType, int x, int y, rct
 
 /**
  *
- * rct2: 0x006D2B07
+ *  rct2: 0x006D2B07
  */
 void track_save_toggle_map_element(int interactionType, int x, int y, rct_map_element *mapElement)
 {
@@ -3804,7 +3861,7 @@ void track_save_toggle_map_element(int interactionType, int x, int y, rct_map_el
 
 /**
  *
- * rct2: 0x006D303D
+ *  rct2: 0x006D303D
  */
 void track_save_select_nearby_scenery(int rideIndex)
 {

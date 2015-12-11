@@ -198,7 +198,10 @@ static void window_scenarioselect_scrollgetsize(rct_window *w, int scrollIndex, 
 	}
 }
 
-/* rct2: 0x6780FE */
+/**
+ *
+ *  rct2: 0x6780FE
+ */
 static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 {
 	int i;
@@ -221,7 +224,10 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex
 	}
 }
 
-/* rct2: 0x678162 */
+/**
+ *
+ *  rct2: 0x678162
+ */
 static void window_scenarioselect_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
 {
 	int i;

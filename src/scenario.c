@@ -424,7 +424,7 @@ void scenario_set_filename(const char *value)
 /**
  *
  *  rct2: 0x0066A752
- **/
+ */
 void scenario_failure()
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = 0x80000001;
@@ -492,10 +492,10 @@ void scenario_success_submit_name(const char *name)
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 }
 
-/*
+/**
  * Send a warning when entrance price is too high.
- * rct2: 0x0066A80E
- **/
+ *  rct2: 0x0066A80E
+ */
 void scenario_entrance_fee_too_high_check()
 {
 	uint16 x = 0, y = 0;
@@ -634,10 +634,10 @@ static void scenario_update_daynight_cycle()
 	}
 }
 
-/*
+/**
  * Scenario and finance related update iteration.
- * rct2: 0x006C44B1
- **/
+ *  rct2: 0x006C44B1
+ */
 void scenario_update()
 {
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & ~SCREEN_FLAGS_PLAYING)) {
@@ -1323,7 +1323,7 @@ static void scenario_objective_check_10_rollercoasters()
 
 /**
  *
- * rct2: 0x0066A13C
+ *  rct2: 0x0066A13C
  */
 static void scenario_objective_check_guests_and_rating()
 {
@@ -1363,8 +1363,8 @@ static void scenario_objective_check_monthly_ride_income()
 /**
  * Checks if there are 10 rollercoasters of different subtype with
  * excitement > 700 and a minimum length;
- * rct2: 0x0066A6B5
- **/
+ *  rct2: 0x0066A6B5
+ */
 static void scenario_objective_check_10_rollercoasters_length()
 {
 	int i, rcs = 0;
@@ -1434,10 +1434,10 @@ static void scenario_objective_check_monthly_food_income()
 		scenario_success();
 }
 
-/*
+/**
  * Checks the win/lose conditions of the current objective.
- * rct2: 0x0066A4B2
- **/
+ *  rct2: 0x0066A4B2
+ */
 static void scenario_objective_check()
 {
 	uint8 objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8),

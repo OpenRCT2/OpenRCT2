@@ -30,7 +30,7 @@ enum {
 	DIAGNOSTIC_LEVEL_COUNT
 };
 
-/*
+/**
  * Compile-time debug levels.
  *
  * When compiling, just add -DDEBUG={0,1,2,3} (where 0 means disabled)

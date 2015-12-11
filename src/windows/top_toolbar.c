@@ -861,7 +861,10 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 }
 
-/* rct2: 0x006E3158 */
+/**
+ *
+ *  rct2: 0x006E3158
+ */
 static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	// ax, cx, bl
 	sint16 grid_x, grid_y;
@@ -968,7 +971,9 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	}
 }
 
-/* rct2: 0x006E1F34
+/**
+ *
+ *  rct2: 0x006E1F34
  * Outputs
  * eax : grid_x
  * ebx : parameter_1
@@ -2076,7 +2081,9 @@ void top_toolbar_tool_update_water(sint16 x, sint16 y){
 	}
 }
 
-/* rct2: 0x006E24F6
+/**
+ *
+ *  rct2: 0x006E24F6
  * On failure returns MONEY32_UNDEFINED
  * On success places ghost scenery and returns cost to place proper
  */
@@ -2520,7 +2527,8 @@ static void window_top_toolbar_tool_update(rct_window* w, int widgetIndex, int x
 }
 
 /**
- * rct2: 0x0066CB73
+ *
+ *  rct2: 0x0066CB73
  */
 static void window_top_toolbar_tool_down(rct_window* w, int widgetIndex, int x, int y)
 {
@@ -3105,7 +3113,7 @@ void toggle_footpath_window()
 
 /**
  *
- * rct2: 0x0066CD54
+ *  rct2: 0x0066CD54
  */
 void toggle_land_window(rct_window *topToolbar, int widgetIndex)
 {
@@ -3122,7 +3130,7 @@ void toggle_land_window(rct_window *topToolbar, int widgetIndex)
 
 /**
  *
- * rct2: 0x0066CD0C
+ *  rct2: 0x0066CD0C
  */
 void toggle_clear_scenery_window(rct_window *topToolbar, int widgetIndex)
 {
@@ -3139,7 +3147,7 @@ void toggle_clear_scenery_window(rct_window *topToolbar, int widgetIndex)
 
 /**
  *
- * rct2: 0x0066CD9C
+ *  rct2: 0x0066CD9C
  */
 void toggle_water_window(rct_window *topToolbar, int widgetIndex)
 {

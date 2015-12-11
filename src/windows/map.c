@@ -636,7 +636,7 @@ static void window_map_textinput(rct_window *w, int widgetIndex, char *text)
 	}
 }
 
-/*
+/**
  *
  *  rct2: 0x0068D140
  */
@@ -968,7 +968,7 @@ static void window_map_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi)
 
 /**
  *
- *  part of window_map_paint_peep_overlay and window_map_paint_train_overlay
+ * part of window_map_paint_peep_overlay and window_map_paint_train_overlay
  */
 static void window_map_transform_to_map_coords(sint16 *left, sint16 *top)
 {
@@ -1082,8 +1082,8 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi)
 }
 
 /**
- *  The call to gfx_fill_rect was originally wrapped in sub_68DABD which made sure that arguments were ordered correctly,
- *  but it doesn't look like it's ever necessary here so the call was removed.
+ * The call to gfx_fill_rect was originally wrapped in sub_68DABD which made sure that arguments were ordered correctly,
+ * but it doesn't look like it's ever necessary here so the call was removed.
  *
  *  rct2: 0x0068D8CE
  */
