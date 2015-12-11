@@ -48,7 +48,7 @@ function do-prepareSource($build_server = "", $build_number = "")
 function do-build()
 {
     Write-Host "Building OpenRCT2..." -ForegroundColor Cyan
-    msbuild $rootPath\projects\openrct2.sln /p:Configuration=Release /p:Platform=Win32 /t:rebuild /v:minimal
+    & "$scriptsPath\build.ps1" all -Rebuild
 }
 
 # Package

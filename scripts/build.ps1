@@ -7,7 +7,10 @@ param (
     [string]$Task = "openrct2",
 
     [Parameter(Mandatory = $false)]
-    [string]$Configuration = "Release"
+    [string]$Configuration = "Release",
+
+    [Parameter(Mandatory = $false)]
+    [switch]$Rebuild = $false
 )
 
 # Get paths
@@ -28,7 +31,13 @@ function Build-Data()
 function Build-OpenRCT2()
 {
     Write-Host "Building OpenRCT2 ($Configuration)..." -ForegroundColor Cyan
-    msbuild ..\projects\openrct2.sln /p:Configuration=$Configuration /p:Platform=Win32 /v:minimal | Write-Host
+    
+    $target = ""
+    if ($Rebuild)
+    {
+        $target = "/t:rebuild"
+    }
+    msbuild ..\projects\openrct2.sln /p:Configuration=$Configuration /p:Platform=Win32 $target /v:minimal | Write-Host
     return $LASTEXITCODE
 }
 
