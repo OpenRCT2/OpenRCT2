@@ -65,6 +65,7 @@ static void vehicle_update_crash(rct_vehicle *vehicle);
 static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle);
 static void vehicle_update_travelling_boat(rct_vehicle* vehicle);
 static void vehicle_update_arriving(rct_vehicle* vehicle);
+static void vehicle_update_unloading_passengers(rct_vehicle* vehicle);
 
 static void vehicle_update_sound(rct_vehicle *vehicle);
 static int vehicle_update_scream_sound(rct_vehicle *vehicle);
@@ -1123,10 +1124,7 @@ static void vehicle_update(rct_vehicle *vehicle)
 		vehicle_update_arriving(vehicle);
 		break;
 	case VEHICLE_STATUS_UNLOADING_PASSENGERS:
-		{
-			int *addressSwitchPtr = (int*)(0x006D7B70 + (vehicle->status * 4));
-			RCT2_CALLPROC_X(*addressSwitchPtr, 0, 0, 0, (vehicle->sub_state << 8) | ride->mode, (int)vehicle, 0, 0);
-		}
+		vehicle_update_unloading_passengers(vehicle);
 		break;
 	case VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT:
 		vehicle_update_waiting_for_cable_lift(vehicle);
@@ -2629,6 +2627,95 @@ static void vehicle_update_arriving(rct_vehicle* vehicle) {
 	vehicle->velocity = 0;
 	vehicle->var_2C = 0;
 	vehicle->status = VEHICLE_STATUS_UNLOADING_PASSENGERS;
+	vehicle->sub_state = 0;
+	vehicle_invalidate_window(vehicle);
+}
+
+/* rct2: 0x006D9002 */
+static void vehicle_update_unloading_passengers(rct_vehicle* vehicle) {
+	if (vehicle->sub_state == 0) {
+		if (!vehicle_open_restraints(vehicle)) {
+			vehicle->sub_state = 1;
+		}
+	}
+
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+	if (ride->mode == RIDE_MODE_FORWARD_ROTATION ||
+		ride->mode == RIDE_MODE_BACKWARD_ROTATION) {
+		uint8 seat = ((-vehicle->var_1F) >> 3) & 0xF;
+		if (vehicle->restraints_position == 255 &&
+			(vehicle->peep[seat * 2] != 0xFFFF)) {
+			vehicle->next_free_seat -= 2;
+
+			rct_peep* peep = GET_PEEP(vehicle->peep[seat * 2]);
+			vehicle->peep[seat * 2] = 0xFFFF;
+
+			peep_decrement_num_riders(peep);
+			peep->sub_state = 7;
+			peep->state = PEEP_STATE_LEAVING_RIDE;
+			peep_window_state_update(peep);
+
+			peep = GET_PEEP(vehicle->peep[seat * 2 + 1]);
+			vehicle->peep[seat * 2 + 1] = 0xFFFF;
+
+			peep_decrement_num_riders(peep);
+			peep->sub_state = 7;
+			peep->state = PEEP_STATE_LEAVING_RIDE;
+			peep_window_state_update(peep);
+		}
+	}
+	else {
+		if (ride->exits[vehicle->current_station] == 0xFFFF) {
+			if (vehicle->sub_state != 1)
+				return;
+
+			if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED) &&
+				vehicle->update_flags & VEHICLE_UPDATE_FLAG_TESTING &&
+				ride->current_test_segment + 1 >= ride->num_stations) {
+				vehicle_update_test_finish(vehicle);
+			}
+			vehicle->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
+			vehicle->sub_state = 0;
+			vehicle_invalidate_window(vehicle);
+			return;
+		}
+
+		uint16 spriteId = vehicle->sprite_index;
+		for (rct_vehicle* train; spriteId != 0xFFFF; spriteId = train->next_vehicle_on_train) {
+			train = GET_VEHICLE(spriteId);
+			if (train->restraints_position != 255)
+				continue;
+
+			if (train->next_free_seat == 0)
+				continue;
+
+			train->next_free_seat = 0;
+			for (uint8 peepIndex = 0; peepIndex < train->num_peeps; peepIndex++) {
+				rct_peep* peep = GET_PEEP(train->peep[peepIndex]);
+				peep_decrement_num_riders(peep);
+				peep->sub_state = 7;
+				peep->state = PEEP_STATE_LEAVING_RIDE;
+				peep_window_state_update(peep);
+			}
+		}
+	}
+	
+	if (vehicle->sub_state != 1)
+		return;
+
+	uint16 spriteId = vehicle->sprite_index;
+	for (rct_vehicle* train; spriteId != 0xFFFF; spriteId = train->next_vehicle_on_train) {
+		train = GET_VEHICLE(spriteId);
+		if (train->num_peeps != train->next_free_seat)
+			return;
+	}
+
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED) &&
+		vehicle->update_flags & VEHICLE_UPDATE_FLAG_TESTING &&
+		ride->current_test_segment + 1 >= ride->num_stations) {
+		vehicle_update_test_finish(vehicle);
+	}
+	vehicle->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
 	vehicle->sub_state = 0;
 	vehicle_invalidate_window(vehicle);
 }
