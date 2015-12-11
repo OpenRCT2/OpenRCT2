@@ -85,7 +85,7 @@ const uint8 byte_9A3A14[] = { SOUND_SCREAM_8, SOUND_SCREAM_1 };
 const uint8 byte_9A3A16[] = { SOUND_SCREAM_1, SOUND_SCREAM_6 };
 const uint8 byte_9A3A18[] = {
 	SOUND_SCREAM_3, SOUND_SCREAM_1, SOUND_SCREAM_5, SOUND_SCREAM_6,
-	SOUND_SCREAM_7, SOUND_SCREAM_2, SOUND_SCREAM_4, SOUND_LIFT_1
+	SOUND_SCREAM_7, SOUND_SCREAM_2, SOUND_SCREAM_4
 };
 
 static const rct_vehicle_info *vehicle_get_move_info(int cd, int typeAndDirection, int offset)
@@ -3532,9 +3532,6 @@ static void vehicle_update_crash(rct_vehicle *vehicle){
  */
 static void vehicle_update_sound(rct_vehicle *vehicle)
 {
-	//RCT2_CALLPROC_X(0x006D7888, 0, 0, 0, 0, (int)vehicle, 0, 0); return;
-
-	// PROBLEMS
 	rct_ride *ride;
 	rct_ride_type *rideEntry;
 	// bl should be set before hand
@@ -3552,10 +3549,7 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 	if (ecx >= 0) {
 		dl = vehicleEntry->var_57;
 		ecx >>= 15;
-		if (208 + (ecx & 0xFF) > 255)
-			bl = 255;
-		else
-			bl = 208 + (ecx & 0xFF);
+		bl = min(208 + ecx & 0xFF, 255);
 	}
 
 	switch (vehicleEntry->sound_range) {
@@ -3571,7 +3565,7 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 				break;
 			}
 		}
-		if (screamId != 254) screamId = 255;
+		if (screamId == NO_SCREAM) screamId = 255;
 		screamVolume = 255;
 		break;
 
@@ -3587,7 +3581,7 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 				break;
 			}
 		}
-		if (screamId != 254) screamId = 255;
+		if (screamId == NO_SCREAM) screamId = 255;
 		screamVolume = 255;
 		break;
 
@@ -3623,8 +3617,8 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 	{
 		int ebx = RCT2_ADDRESS(0x009A3684, sint16)[vehicle->sprite_direction];
 		int eax = ((vehicle->velocity >> 14) * ebx) >> 14;
-		eax = max(eax, 0xFF81);
-		eax = min(eax, 0x7F);
+		eax = clamp(-127, eax, 127);
+		
 		vehicle->var_BF = eax & 0xFF;
 	}
 }
@@ -3636,7 +3630,7 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
  */
 static int vehicle_update_scream_sound(rct_vehicle *vehicle)
 {
-	int r;
+	uint32 r;
 	uint16 spriteIndex;
 	rct_ride_type *rideEntry;
 	rct_vehicle *vehicle2;
@@ -3694,7 +3688,7 @@ produceScream:
 				vehicle->scream_sound_id = byte_9A3A14[r % 2];
 				break;
 			case 1:
-				vehicle->scream_sound_id = byte_9A3A18[r % 8];
+				vehicle->scream_sound_id = byte_9A3A18[r % 7];
 				break;
 			case 2:
 				vehicle->scream_sound_id = byte_9A3A16[r % 2];
