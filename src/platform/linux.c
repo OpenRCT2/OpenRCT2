@@ -22,6 +22,7 @@
 
 #include "platform.h"
 #include <dlfcn.h>
+#include <stdlib.h>
 
 // See http://syprog.blogspot.ru/2011/12/listing-loaded-shared-objects-in-linux.html
 struct lmap {
@@ -76,6 +77,38 @@ bool platform_check_steam_overlay_attached() {
 	dlclose(processHandle);
 
 	return false;
+}
+
+/**
+ * Default directory fallback is:
+ *   - (command line argument)
+ *   - $XDG_CONFIG_HOME/OpenRCT2
+ *   - /home/[uid]/.config/OpenRCT2
+ */
+void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const char *separator) {
+	const char *configdir = getenv("XDG_CONFIG_HOME");
+	log_verbose("configdir = '%s'", configdir);
+	if (configdir == NULL)
+	{
+		log_verbose("configdir was null, used getuid, now is = '%s'", homedir);
+		if (homedir == NULL)
+		{
+			log_fatal("Couldn't find user data directory");
+			exit(-1);
+			return;
+		}
+		
+		strncat(buffer, homedir, MAX_PATH - 1);
+		strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+		strncat(buffer, ".config", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	}
+	else
+	{
+		strncat(buffer, configdir, MAX_PATH - 1);
+	}
+	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	strncat(buffer, "OpenRCT2", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
 }
 
 #endif

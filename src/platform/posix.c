@@ -528,11 +528,12 @@ wchar_t *regular_to_wchar(const char* src)
 	return w_buffer;
 }
 
+void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const char *separator);
+
 /**
  * Default directory fallback is:
  *   - (command line argument)
- *   - $XDG_CONFIG_HOME/OpenRCT2
- *   - /home/[uid]/.config/OpenRCT2
+ *   - <platform dependent>
  */
 void platform_resolve_user_data_path()
 {
@@ -552,30 +553,10 @@ void platform_resolve_user_data_path()
 	char buffer[MAX_PATH];
 	buffer[0] = '\0';
 	log_verbose("buffer = '%s'", buffer);
-	const char *homedir = getenv("XDG_CONFIG_HOME");
-	log_verbose("homedir = '%s'", homedir);
-	if (homedir == NULL)
-	{
-		homedir = getpwuid(getuid())->pw_dir;
-		log_verbose("homedir was null, used getuid, now is = '%s'", homedir);
-		if (homedir == NULL)
-		{
-			log_fatal("Couldn't find user data directory");
-			exit(-1);
-			return;
-		}
-
-		strncat(buffer, homedir, MAX_PATH - 1);
-		strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
-		strncat(buffer, ".config", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
-	}
-	else
-	{
-		strncat(buffer, homedir, MAX_PATH - 1);
-	}
-	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
-	strncat(buffer, "OpenRCT2", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
-	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	
+	const char *homedir = getpwuid(getuid())->pw_dir;
+	platform_posix_sub_user_data_path(buffer, homedir, separator);
+	
 	log_verbose("OpenRCT2 user data directory = '%s'", buffer);
 	int len = strnlen(buffer, MAX_PATH);
 	wchar_t *w_buffer = regular_to_wchar(buffer);
