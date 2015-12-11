@@ -3914,6 +3914,7 @@ STR_5577    :Südkoreanischer Won (W)
 STR_5578    :Russischer Rubel (R)
 STR_5579    :Skalierungsfaktor:
 STR_5580    :Tschechische Krone (Kc)
+STR_5581    :FPS anzeigen
 
 #######################
 # Bahnen/Attraktionen # 

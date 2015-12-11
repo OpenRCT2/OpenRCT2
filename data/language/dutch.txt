@@ -1462,7 +1462,7 @@ STR_1459    :Baansoort
 STR_1460    :{SMALLFONT}{BLACK}Open baan in U-vorm
 STR_1461    :{SMALLFONT}{BLACK}Gesloten baan in O-vorm
 STR_1462    :Te steil voor een kettinglift
-STR_1463    :Bezoekers
+STR_1463    :bezoekers
 STR_1464    :Spiraal omhoog (klein)
 STR_1465    :Spiraal omhoog (groot)
 STR_1466    :Spiraal omlaag (klein)
@@ -1858,10 +1858,10 @@ STR_1855    :{WINDOW_COLOUR_2}Bouw: {BLACK}{COMMA16} jaar geleden
 STR_1856    :{WINDOW_COLOUR_2}Winst per verkocht artikel: {BLACK}{CURRENCY2DP}
 STR_1857    :{WINDOW_COLOUR_2}Verlies per verkocht artikel: {BLACK}{CURRENCY2DP}
 STR_1858    :{WINDOW_COLOUR_2}Kosten: {BLACK}{CURRENCY2DP} per maand
-STR_1859    :Klusjesmannen
-STR_1860    :Monteurs
-STR_1861    :Bewakers
-STR_1862    :Entertainers
+STR_1859    :klusjesmannen
+STR_1860    :monteurs
+STR_1861    :bewakers
+STR_1862    :entertainers
 STR_1863    :Klusjesman
 STR_1864    :Monteur
 STR_1865    :Bewaker
