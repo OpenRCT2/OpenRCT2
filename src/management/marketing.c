@@ -67,10 +67,10 @@ int marketing_get_campaign_guest_generation_probability(int campaign)
 	return probability;
 }
 
-/*
+/**
  * Update status of marketing campaigns and send produce a news item when they have finished.
- * rct2: 0x0069E0C1
- **/
+ *  rct2: 0x0069E0C1
+ */
 void marketing_update()
 {
 	for (int campaign = 0; campaign < ADVERTISING_CAMPAIGN_COUNT; campaign++) {
@@ -144,7 +144,7 @@ void marketing_start_campaign(int type, int rideOrItem, int numWeeks)
 
 /**
  *
- * rct2: 0x0069E73C
+ *  rct2: 0x0069E73C
  */
 void game_command_start_campaign(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {

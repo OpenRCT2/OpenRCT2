@@ -32,7 +32,7 @@ void balloon_pop(rct_balloon *balloon)
 
 /**
  *
- *  rct: 0x0067342C
+ *  rct2: 0x0067342C
  */
 void balloon_update(rct_balloon *balloon)
 {

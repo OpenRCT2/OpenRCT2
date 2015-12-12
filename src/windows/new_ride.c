@@ -281,7 +281,7 @@ void window_new_ride_init_vars() {
 /**
  *	rct2: 0x006B6F3E
  *
- *  Note: When the user has selection by track type enabled, the categories are determined by the track type, not those in the rct_ride_type.
+ * Note: When the user has selection by track type enabled, the categories are determined by the track type, not those in the rct_ride_type.
  */
 static void window_new_ride_populate_list()
 {

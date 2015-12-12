@@ -52,10 +52,10 @@ money32 *gParkValueHistory = RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, money
 
 /**
  * Pay an amount of money.
- * rct2: 0x069C674
+ *  rct2: 0x069C674
  * @param amount (eax)
  * @param type passed via global var 0x0141F56C, our type is that var/4.
- **/
+ */
 void finance_payment(money32 amount, rct_expenditure_type type)
 {
 	money32 cur_money = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32));
@@ -74,8 +74,8 @@ void finance_payment(money32 amount, rct_expenditure_type type)
 
 /**
  * Pays the wages of all active staff members in the park.
- * rct2: 0x006C18A9
- **/
+ *  rct2: 0x006C18A9
+ */
 void finance_pay_wages()
 {
 	rct_peep* peep;
@@ -105,8 +105,8 @@ void finance_pay_research()
 
 /**
  * Pay interest on current loans.
- * rct2: 0x0069E092
- **/
+ *  rct2: 0x0069E092
+ */
 void finance_pay_interest()
 {
 	money32 current_loan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint32);
@@ -121,7 +121,7 @@ void finance_pay_interest()
 
 /**
  *
- * rct2: 0x006AC885
+ *  rct2: 0x006AC885
  */
 void finance_pay_ride_upkeep()
 {

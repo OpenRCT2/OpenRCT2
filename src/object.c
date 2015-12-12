@@ -175,9 +175,11 @@ int object_load(int groupIndex, rct_object_entry *entry, int* chunkSize)
 	return 0;
 }
 
-/** rct2: 0x006a9f42
- *  ebx : file
- *  ebp : entry
+/**
+ *
+ *  rct2: 0x006a9f42
+ *  ebx: file
+ *  ebp: entry
  */
 int write_object_file(SDL_RWops *rw, rct_object_entry* entry){
 	uint8 entryGroupIndex = 0, type = 0;
@@ -396,7 +398,10 @@ int object_calculate_checksum(const rct_object_entry *entry, const uint8 *data, 
 	return checksum;
 }
 
-/* rct2: 0x006A9ED1 */
+/**
+ *
+ *  rct2: 0x006A9ED1
+ */
 int object_chunk_load_image_directory(uint8_t** chunk)
 {
 	int image_start_no = RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32_t);
@@ -428,7 +433,10 @@ int object_chunk_load_image_directory(uint8_t** chunk)
 	return image_start_no;
 }
 
-/* rct2: 0x006DE83E */
+/**
+ *
+ *  rct2: 0x006DE83E
+ */
 int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
 	if ((flags & 0xFF) == 0){
@@ -776,7 +784,10 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 	return flags;
 }
 
-/* rct2: 0x006E3466 */
+/**
+ *
+ *  rct2: 0x006E3466
+ */
 int paint_small_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
 	if ((flags & 0xFF) == 0){
@@ -882,7 +893,10 @@ int paint_small_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo*
 	return flags;
 }
 
-/* rct2: 0x006B92A7 */
+/**
+ *
+ *  rct2: 0x006B92A7
+ */
 int paint_large_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
 	if ((flags & 0xFF) == 0){
@@ -971,7 +985,10 @@ int paint_large_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo*
 	return flags;
 }
 
-/* rct2: 0x006E5A25 */
+/**
+ *
+ *  rct2: 0x006E5A25
+ */
 int paint_wall(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
 	if ((flags & 0xFF) == 0){
@@ -1052,7 +1069,10 @@ int paint_wall(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int
 	return flags;
 }
 
-/* rct2: 0x006BA84E */
+/**
+ *
+ *  rct2: 0x006BA84E
+ */
 int paint_banner(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
 	if ((flags & 0xFF) == 0){
@@ -1174,7 +1194,10 @@ int paint_path_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 	return flags;
 }
 
-/* rct2: 0x006A86E2 */
+/**
+ *
+ *  rct2: 0x006A86E2
+ */
 int paint_path_bit(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
 	if ((flags & 0xFF) == 0){
@@ -1233,7 +1256,10 @@ int paint_path_bit(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi,
 	return flags;
 }
 
-/* rct2: 0x006B93AA */
+/**
+ *
+ *  rct2: 0x006B93AA
+ */
 int paint_scenery_set(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
 {
 	if ((flags & 0xFF) == 0){

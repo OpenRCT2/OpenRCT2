@@ -227,7 +227,7 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 }
 
 /**
- *  Draw a rectangle, with optional border or fill
+ * Draw a rectangle, with optional border or fill
  *
  *  rct2: 0x006E6F81
  * dpi (edi)

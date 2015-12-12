@@ -770,7 +770,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
 
 /**
- *  returns 0 for in filter and 1 for not in filter
+ * returns 0 for in filter and 1 for not in filter
  *  rct2: 0x0069B865
  */
 static int window_guest_list_is_peep_in_filter(rct_peep* peep)
@@ -793,8 +793,8 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep)
 }
 
 /**
- * rct2:0x0069B7EA
  * Calculates a hash value (arguments) for comparing peep actions/thoughts
+ *  rct2: 0x0069B7EA
  * peep (esi)
  * argument_1 (0x013CE952)
  * argument_2 (0x013CE954)

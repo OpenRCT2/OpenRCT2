@@ -212,8 +212,9 @@ int ride_get_max_queue_time(rct_ride *ride)
 }
 
 /**
-  * rct2: 0x006AC916
-  */
+ *
+ *  rct2: 0x006AC916
+ */
 void ride_update_favourited_stat()
 {
 	int i;
@@ -269,7 +270,7 @@ money16 get_shop_hot_value(int shopItem)
 
 /**
  *
- * rct2: 0x006AC3AB
+ *  rct2: 0x006AC3AB
  */
 money32 ride_calculate_income_per_hour(rct_ride *ride)
 {
@@ -315,7 +316,7 @@ money32 ride_calculate_income_per_hour(rct_ride *ride)
 
 /**
  *
- * rct2: 0x006CAF80
+ *  rct2: 0x006CAF80
  * ax result x
  * bx result y
  * dl ride index
@@ -434,7 +435,7 @@ bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 ri
 
 /**
  *
- * rct2: 0x006C60C2
+ *  rct2: 0x006C60C2
  */
 bool track_block_get_next(rct_xy_element *input, rct_xy_element *output, int *z, int *direction)
 {
@@ -489,12 +490,13 @@ bool track_block_get_next(rct_xy_element *input, rct_xy_element *output, int *z,
 	return track_block_get_next_from_zero(x, y, OriginZ, rideIndex, directionStart, output, z, direction);
 }
 
-/* rct2: 0x006C63D6
- * Returns the begin position / direction and end position / direction of the track piece that procedes the given location.
- * Gets the previous track block coordinates from the
- * coordinates of the first of element of a track block.
- * Use track_block_get_previous if you are unsure if you are
- * on the first element of a track block
+/**
+ * Returns the begin position / direction and end position / direction of the
+ * track piece that procedes the given location. Gets the previous track block
+ * coordinates from the coordinates of the first of element of a track block.
+ * Use track_block_get_previous if you are unsure if you are on the first
+ * element of a track block
+ *  rct2: 0x006C63D6
  */
 bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8 direction, track_begin_end *outTrackBeginEnd){
 	rct_ride* ride = GET_RIDE(rideIndex);
@@ -590,10 +592,11 @@ bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 ride
 
 /**
  *
- * rct2: 0x006C6402
+ *  rct2: 0x006C6402
  *
- * @remarks outTrackBeginEnd.begin_x and outTrackBeginEnd.begin_y will be in the higher two bytes of ecx and edx where as
-            outTrackBeginEnd.end_x and outTrackBeginEnd.end_y will be in the lower two bytes (cx and dx).
+ * @remarks outTrackBeginEnd.begin_x and outTrackBeginEnd.begin_y will be in the
+ * higher two bytes of ecx and edx where as outTrackBeginEnd.end_x and
+ * outTrackBeginEnd.end_y will be in the lower two bytes (cx and dx).
  */
 bool track_block_get_previous(int x, int y, rct_map_element *mapElement, track_begin_end *outTrackBeginEnd)
 {
@@ -642,7 +645,7 @@ bool track_block_get_previous(int x, int y, rct_map_element *mapElement, track_b
 /**
  *
  * Make sure to pass in the x and y of the start track element too.
- * rct2: 0x006CB02F
+ *  rct2: 0x006CB02F
  * ax result x
  * bx result y
  * esi input / output map element
@@ -861,7 +864,7 @@ int ride_create_ride(ride_list_item listItem)
 
 /**
  *
- * rct2: 0x006B4800
+ *  rct2: 0x006B4800
  */
 void ride_construct_new(ride_list_item listItem)
 {
@@ -877,7 +880,7 @@ void ride_construct_new(ride_list_item listItem)
 
 /**
  *
- * rct2: 0x006B4857
+ *  rct2: 0x006B4857
  */
 void ride_construct(int rideIndex)
 {
@@ -897,7 +900,7 @@ void ride_construct(int rideIndex)
 
 /**
  *
- * rct2: 0x006DD4D5
+ *  rct2: 0x006DD4D5
  */
 static void ride_remove_cable_lift(rct_ride *ride)
 {
@@ -918,7 +921,7 @@ static void ride_remove_cable_lift(rct_ride *ride)
 
 /**
  *
- * rct2: 0x006DD506
+ *  rct2: 0x006DD506
  */
 static void ride_remove_vehicles(rct_ride *ride)
 {
@@ -949,7 +952,7 @@ static void ride_remove_vehicles(rct_ride *ride)
 
 /**
  *
- * rct2: 0x006DD4AC
+ *  rct2: 0x006DD4AC
  */
 void ride_clear_for_construction(int rideIndex)
 {
@@ -973,7 +976,7 @@ void ride_clear_for_construction(int rideIndex)
 
 /**
  *
- * rct2: 0x006664DF
+ *  rct2: 0x006664DF
  */
 void ride_remove_peeps(int rideIndex)
 {
@@ -1063,7 +1066,7 @@ void ride_remove_peeps(int rideIndex)
 
 /**
  * Gets the origin track element (sequence 0). Seems to do more than that though and even invalidates track.
- * rct2: 0x006C683D
+ *  rct2: 0x006C683D
  * ax : x
  * bx : direction << 8, type
  * cx : y
@@ -1209,7 +1212,7 @@ int sub_6C683D(int* x, int* y, int* z, int direction, int type, uint16 extra_par
 
 /**
  *
- * rct2: 0x006C96C0
+ *  rct2: 0x006C96C0
  */
 void sub_6C96C0()
 {
@@ -1311,7 +1314,7 @@ void sub_6C9627()
 
 /**
  *
- * rct2: 0x006C9B19
+ *  rct2: 0x006C9B19
  */
 static void ride_construction_reset_current_piece()
 {
@@ -1337,7 +1340,7 @@ static void ride_construction_reset_current_piece()
 
 /**
  *
- * rct2: 0x006C9800
+ *  rct2: 0x006C9800
  */
 void ride_construction_set_default_next_piece()
 {
@@ -1463,7 +1466,7 @@ void ride_construction_set_default_next_piece()
 
 /**
  *
- * rct2: 0x006C9296
+ *  rct2: 0x006C9296
  */
 void ride_select_next_section()
 {
@@ -1521,7 +1524,7 @@ void ride_select_next_section()
 
 /**
  *
- * rct2: 0x006C93B8
+ *  rct2: 0x006C93B8
  */
 void ride_select_previous_section()
 {
@@ -1571,7 +1574,7 @@ void ride_select_previous_section()
 
 /**
  *
- * rct2: 0x006CC2CA
+ *  rct2: 0x006CC2CA
  */
 static int ride_modify_entrance_or_exit(rct_map_element *mapElement, int x, int y)
 {
@@ -1629,7 +1632,7 @@ static int ride_modify_entrance_or_exit(rct_map_element *mapElement, int x, int 
 
 /**
  *
- * rct2: 0x006CC287
+ *  rct2: 0x006CC287
  */
 int ride_modify_maze(rct_map_element *mapElement, int x, int y)
 {
@@ -1646,7 +1649,7 @@ int ride_modify_maze(rct_map_element *mapElement, int x, int y)
 
 /**
  *
- * rct2: 0x006CC056
+ *  rct2: 0x006CC056
  */
 int ride_modify(rct_xy_element *input)
 {
@@ -1744,7 +1747,7 @@ int ride_modify(rct_xy_element *input)
 
 /**
  *
- * rct2: 0x006CC3FB
+ *  rct2: 0x006CC3FB
  */
 int sub_6CC3FB(int rideIndex)
 {
@@ -1928,7 +1931,8 @@ static void ride_chairlift_update(rct_ride *ride)
 }
 
 /**
- * rct2: 0x0069A3A2
+ *
+ *  rct2: 0x0069A3A2
  * edi: ride (in code as bytes offset from start of rides list)
  * bl: happiness
  */
@@ -1944,7 +1948,9 @@ void ride_update_satisfaction(rct_ride* ride, uint8 happiness) {
 	}
 }
 
-/* rct2: 0x0069A3D7
+/**
+ *
+ *  rct2: 0x0069A3D7
  * Updates the ride popularity
  * edi : ride
  * bl  : pop_amount
@@ -2672,6 +2678,7 @@ void ride_measurement_clear(rct_ride *ride)
 }
 
 /**
+ *
  *  rct2: 0x006B64F2
  */
 void ride_measurement_update(rct_ride_measurement *measurement)
@@ -2742,6 +2749,7 @@ void ride_measurement_update(rct_ride_measurement *measurement)
 }
 
 /**
+ *
  *  rct2: 0x006B6456
  */
 void ride_measurements_update()
@@ -2819,7 +2827,7 @@ int ride_get_free_measurement()
 
 /**
  *
- * rct2: 0x006B66D9
+ *  rct2: 0x006B66D9
  */
 rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message)
 {
@@ -2965,8 +2973,9 @@ static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride, uint8 pres
 #pragma region Reachability
 
 /**
- * rct2: 0x006B7A5E
- **/
+ *
+ *  rct2: 0x006B7A5E
+ */
 void ride_check_all_reachable()
 {
 	rct_ride *ride;
@@ -2986,7 +2995,8 @@ void ride_check_all_reachable()
 }
 
 /**
- * rct2: 0x006B7C59
+ *
+ *  rct2: 0x006B7C59
  * @return 1 if the coordinate is reachable or has no entrance, 0 otherwise
  */
 static int ride_entrance_exit_is_reachable(uint16 coordinate, rct_ride* ride, int index)
@@ -3053,7 +3063,7 @@ static void ride_shop_connected(rct_ride* ride, int ride_idx)
 	int x, y, count;
 	rct_map_element *mapElement;
 
-    uint16 coordinate = ride->station_starts[0];
+	uint16 coordinate = ride->station_starts[0];
 	if (coordinate == 0xFFFF)
 		return;
 
@@ -3574,7 +3584,10 @@ void ride_music_update_final()
 
 #pragma endregion
 
-/* rct2: 0x006B5559 */
+/**
+ *
+ *  rct2: 0x006B5559
+ */
 void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS * 4;
@@ -3725,7 +3738,8 @@ int ride_mode_check_valid_station_numbers(rct_ride *ride)
 	return 1;
 }
 
-/* returns stationIndex of first station on success
+/**
+ * returns stationIndex of first station on success
  * -1 on failure.
  */
 int ride_mode_check_station_present(rct_ride* ride){
@@ -4312,10 +4326,9 @@ bool ride_create_vehicles(rct_ride *ride, int rideIndex, rct_xy_element *element
 }
 
 /**
- *
+ * Checks and initialises the cable lift track returns false if unable to find
+ * appropriate track.
  *  rct2: 0x006D31A6
- *  Checks and initialises the cable lift track
- *  returns false if unable to find appropriate track.
  */
 static bool ride_initialise_cable_lift_track(rct_ride *ride, bool isApplying)
 {
@@ -5874,7 +5887,7 @@ bool ride_type_has_flag(int rideType, int flag)
 	return (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (rideType * 8), uint32) & flag) != 0;
 }
 
-/*
+/**
  * The next six functions are helpers to access ride data at the offset 10E &
  * 110. We believe it stores three distinct values in the following format:
  *
@@ -6003,7 +6016,10 @@ void ride_all_has_any_track_elements(bool *rideIndexArray)
 	}
 }
 
-/* rct2: 0x006847BA */
+/**
+ *
+ *  rct2: 0x006847BA
+ */
 void set_vehicle_type_image_max_sizes(rct_ride_type_vehicle* vehicle_type, int num_images){
 	uint8 bitmap[200][200] = { 0 };
 
@@ -6087,7 +6103,7 @@ void set_vehicle_type_image_max_sizes(rct_ride_type_vehicle* vehicle_type, int n
 
 /**
  *
- * rct2: 0x006CA28C
+ *  rct2: 0x006CA28C
  */
 money32 ride_get_entrance_or_exit_price(int rideIndex, int x, int y, int direction, int dh, int di)
 {
@@ -6142,7 +6158,7 @@ int loc_6CD18E(short mapX, short mapY, short entranceMinX, short entranceMinY, s
 
 /**
  *
- * rct2: 0x006CCF70
+ *  rct2: 0x006CCF70
  */
 void ride_get_entrance_or_exit_position_from_screen_position(int screenX, int screenY, int *outX, int *outY, int *outDirection)
 {
@@ -6349,7 +6365,7 @@ money32 ride_remove_track_piece(int x, int y, int z, int direction, int type)
 
 /**
  *
- * rct2: 0x006B58EF
+ *  rct2: 0x006B58EF
  */
 bool ride_are_all_possible_entrances_and_exits_built(rct_ride *ride)
 {
@@ -6372,7 +6388,7 @@ bool ride_are_all_possible_entrances_and_exits_built(rct_ride *ride)
 
 /**
  *
- * rct2: 0x006B59C6
+ *  rct2: 0x006B59C6
  */
 void invalidate_test_results(int rideIndex)
 {
@@ -6396,7 +6412,7 @@ void invalidate_test_results(int rideIndex)
 
 /**
  *
- * rct2: 0x006B7481
+ *  rct2: 0x006B7481
  */
 void ride_fix_breakdown(int rideIndex, int reliabilityIncreaseFactor)
 {
@@ -6429,7 +6445,7 @@ void ride_fix_breakdown(int rideIndex, int reliabilityIncreaseFactor)
 
 /**
  *
- * rct2: 0x006DE102
+ *  rct2: 0x006DE102
  */
 static void ride_update_vehicle_colours(int rideIndex)
 {
@@ -6475,7 +6491,7 @@ static void ride_update_vehicle_colours(int rideIndex)
 
 /**
  *
- * rct2: 0x006DE4CD
+ *  rct2: 0x006DE4CD
  * trainLayout: Originally fixed to 0x00F64E38. This no longer postfixes with 255.
  */
 void ride_entry_get_train_layout(int rideEntryIndex, int numCarsPerTrain, uint8 *trainLayout)
@@ -6824,9 +6840,8 @@ void sub_6CB945(int rideIndex)
 }
 
 /**
- *
+ * Removes the hedge walls for an entrance placement.
  *  rct2: 0x00666CBE
- *  Removes the hedge walls for an entrance placement.
  */
 static void maze_entrance_hedge_removal(int x, int y, rct_map_element *mapElement)
 {
@@ -6862,9 +6877,8 @@ static void maze_entrance_hedge_removal(int x, int y, rct_map_element *mapElemen
 }
 
 /**
- *
+ * Replaces the outer hedge walls for an entrance placement removal.
  *  rct2: 0x00666D6F
- *  Replaces the outer hedge walls for an entrance placement removal.
  */
 static void maze_entrance_hedge_replacement(int x, int y, rct_map_element *mapElement)
 {
@@ -7071,7 +7085,10 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 	return RCT2_GLOBAL(0x009E32B8, money32);
 }
 
-/* rct2: 0x006660A8 */
+/**
+ *
+ *  rct2: 0x006660A8
+ */
 void game_command_place_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp){
 	*ebx = place_ride_entrance_or_exit(
 		*eax & 0xFFFF,
@@ -7149,7 +7166,10 @@ money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex, uint8 
 	return 0;
 }
 
-/* rct2: 0x0066640B */
+/**
+ *
+ *  rct2: 0x0066640B
+ */
 void game_command_remove_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp){
 	*ebx = remove_ride_entrance_or_exit(
 		*eax & 0xFFFF,

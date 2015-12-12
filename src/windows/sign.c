@@ -214,7 +214,10 @@ void window_sign_open(rct_windownumber number)
 	window_invalidate(w);
 }
 
-/* rct2: 0x6B9765*/
+/**
+ *
+ *  rct2: 0x6B9765
+ */
 static void window_sign_mouseup(rct_window *w, int widgetIndex)
 {
 	rct_banner* banner = &gBanners[w->number];
@@ -267,7 +270,10 @@ static void window_sign_mouseup(rct_window *w, int widgetIndex)
 	}
 }
 
-/* rct2: 0x6B9784 & 0x6E6164 */
+/**
+ *
+ *  rct2: 0x6B9784
+  & 0x6E6164 */
 static void window_sign_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
 	switch (widgetIndex) {
@@ -280,7 +286,10 @@ static void window_sign_mousedown(int widgetIndex, rct_window*w, rct_widget* wid
 	}
 }
 
-/* rct2: 0x6B979C */
+/**
+ *
+ *  rct2: 0x6B979C
+ */
 static void window_sign_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
 	switch (widgetIndex){
@@ -301,7 +310,10 @@ static void window_sign_dropdown(rct_window *w, int widgetIndex, int dropdownInd
 	window_invalidate(w);
 }
 
-/* rct2: 0x6B9791 & 0x6E6171*/
+/**
+ *
+ *  rct2: 0x6B9791, 0x6E6171
+ */
 static void window_sign_textinput(rct_window *w, int widgetIndex, char *text)
 {
 	if (widgetIndex == WIDX_SIGN_TEXT && text != NULL) {
@@ -311,7 +323,10 @@ static void window_sign_textinput(rct_window *w, int widgetIndex, char *text)
 	}
 }
 
-/* rct2: 0x006B96F5 */
+/**
+ *
+ *  rct2: 0x006B96F5
+ */
 static void window_sign_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
@@ -335,7 +350,10 @@ static void window_sign_invalidate(rct_window *w)
 	text_colour_btn->image = (w->var_492 << 19) | 0x600013C3;
 }
 
-/* rct2: 0x006B9754 & 0x006E6134 */
+/**
+ *
+ *  rct2: 0x006B9754, 0x006E6134
+ */
 static void window_sign_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
@@ -346,7 +364,10 @@ static void window_sign_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 }
 
-/* rct2: 0x6B9A6C & 0x6E6424 */
+/**
+ *
+ *  rct2: 0x6B9A6C, 0x6E6424
+ */
 static void window_sign_unknown_14(rct_window *w)
 {
 	rct_viewport* view = w->viewport;
@@ -382,7 +403,10 @@ static void window_sign_unknown_14(rct_window *w)
 }
 
 
-/* rct2: 0x6E5F52 */
+/**
+ *
+ *  rct2: 0x6E5F52
+ */
 void window_sign_small_open(rct_windownumber number){
 	rct_window* w;
 	rct_widget *viewportWidget;
@@ -456,7 +480,10 @@ void window_sign_small_open(rct_windownumber number){
 	window_invalidate(w);
 }
 
-/* rct2: 0x6E6145 */
+/**
+ *
+ *  rct2: 0x6E6145
+ */
 static void window_sign_small_mouseup(rct_window *w, int widgetIndex)
 {
 	rct_banner* banner = &gBanners[w->number];
@@ -507,7 +534,10 @@ static void window_sign_small_mouseup(rct_window *w, int widgetIndex)
 	}
 }
 
-/* rct2: 0x6E617C */
+/**
+ *
+ *  rct2: 0x6E617C
+ */
 static void window_sign_small_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
 	rct_banner* banner = &gBanners[w->number];
@@ -530,7 +560,10 @@ static void window_sign_small_dropdown(rct_window *w, int widgetIndex, int dropd
 	window_invalidate(w);
 }
 
-/* rct2: 0x006E60D5 */
+/**
+ *
+ *  rct2: 0x006E60D5
+ */
 static void window_sign_small_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);

@@ -441,7 +441,10 @@ static void research_insert_researched(int entryIndex, int category)
 	} while (entryIndex != (researchItem++)->entryIndex);
 }
 
-/* rct2: 0x006857CF */
+/**
+ *
+ *  rct2: 0x006857CF
+ */
 void research_remove(sint32 entryIndex){
 	for (rct_research_item *researchItem = gResearchItems; researchItem->entryIndex != RESEARCHED_ITEMS_END; researchItem++){
 		if (researchItem->entryIndex == entryIndex){

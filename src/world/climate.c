@@ -89,7 +89,7 @@ extern int g_climate_locked;
 extern void toggle_climate_lock();
 
 /**
- *  Set climate and determine start weather.
+ * Set climate and determine start weather.
  *  rct2: 0x006C45ED
  */
 void climate_reset(int climate)
@@ -135,7 +135,7 @@ void toggle_climate_lock()
  * Weather & climate update iteration.
  * Gradually changes the weather parameters towards their determined next values.
  *
- * rct2: 0x006C46B1
+ *  rct2: 0x006C46B1
  */
 void climate_update()
 {
@@ -206,7 +206,7 @@ void climate_force_weather(uint8 weather){
  * for next_weather. The other weather parameters are then looked up depending only on the
  * next weather.
  *
- * rct2: 0x006C461C
+ *  rct2: 0x006C461C
  */
 static void climate_determine_future_weather(int randomDistribution)
 {
@@ -229,7 +229,7 @@ static void climate_determine_future_weather(int randomDistribution)
 
 /**
  *
- * rct2: 0x006BCB91
+ *  rct2: 0x006BCB91
  */
 void climate_update_sound()
 {

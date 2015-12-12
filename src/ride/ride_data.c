@@ -1,4 +1,4 @@
-/*
+/**
  * Whether a particular ride has a running track or not. Will probably end up
  * being used in various places in the game.
  *
@@ -679,7 +679,10 @@ const rct_ride_name_convention RideNameConvention[96] = {
 	{ 1229,    1243,    1257,       0 }
 };
 
-/* rct2: 0x0097C8AC */
+/**
+ *
+ *  rct2: 0x0097C8AC
+ */
 const uint8 RideAvailableModes[] = {
 	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 00 Spiral Roller coaster
 	RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,																		// 01 Stand Up Coaster

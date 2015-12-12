@@ -41,7 +41,9 @@
 #include "park.h"
 #include "scenery.h"
 
-/* Replaces 0x00993CCC & 0x00993CCE */
+/**
+ * Replaces 0x00993CCC, 0x00993CCE
+ */
 const rct_xy16 TileDirectionDelta[] = {
 	{ -32,   0 },
 	{   0, +32 },
@@ -360,9 +362,9 @@ void map_update_tile_pointers()
 /**
  * Return the absolute height of an element, given its (x,y) coordinates
  *
- *  ax: x
- *  cx: y
- *  dx: return remember to & with 0xFFFF if you don't want water affecting results
+ * ax: x
+ * cx: y
+ * dx: return remember to & with 0xFFFF if you don't want water affecting results
  *  rct2: 0x00662783
  */
 int map_element_height(int x, int y)
@@ -1299,7 +1301,8 @@ restart_from_beginning:
 	return totalCost;
 }
 
-/* Function to clear the flag that is set to prevent cost duplication
+/**
+ * Function to clear the flag that is set to prevent cost duplication
  * when using the clear scenery tool with large scenery.
  */
 void map_reset_clear_large_scenery_flag(){
@@ -1376,7 +1379,10 @@ void game_command_clear_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	);
 }
 
-/* rct2: 0x00663CCD */
+/**
+ *
+ *  rct2: 0x00663CCD
+ */
 money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surfaceStyle, uint8 edgeStyle, uint8 flags)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
@@ -1484,7 +1490,10 @@ money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surfaceSt
 	return (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) ? 0 : cost;
 }
 
-/* rct2: 0x00663CCD */
+/**
+ *
+ *  rct2: 0x00663CCD
+ */
 void game_command_change_surface_style(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
 	*ebx = map_change_surface_style(
@@ -1749,7 +1758,10 @@ money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 x2, sin
 	return 0;
 }
 
-/* rct2: 0x006648E3*/
+/**
+ *
+ *  rct2: 0x006648E3
+ */
 void game_command_set_land_ownership(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
 	*ebx = map_set_land_ownership(
@@ -4533,7 +4545,10 @@ int map_get_tile_quadrant(int mapX, int mapY)
 		(subMapY < 16 ? 2 : 3);
 }
 
-/* rct2: 0x00693BFF */
+/**
+ *
+ *  rct2: 0x00693BFF
+ */
 bool map_surface_is_blocked(sint16 x, sint16 y){
 	rct_map_element *mapElement;
 	if (x >= 8192 || y >= 8192)
@@ -4733,7 +4748,10 @@ money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direc
 	return 0;
 }
 
-/* rct2: 0x006666E7 */
+/**
+ *
+ *  rct2: 0x006666E7
+ */
 void game_command_place_park_entrance(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {
 	*ebx = place_park_entrance(
 		*ebx & 0xFF,

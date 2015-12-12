@@ -81,8 +81,8 @@ struct paint_struct{
 };
 
 /**
- *  This is not a viewport function. It is used to setup many variables for
- *  multiple things.
+ * This is not a viewport function. It is used to setup many variables for
+ * multiple things.
  *  rct2: 0x006E6EAC
  */
 void viewport_init_all()
@@ -113,13 +113,14 @@ void viewport_init_all()
 }
 
 /**
- *  rct:0x006EB0C1
- *  x : ax
- *  y : bx
- *  z : cx
- *  out_x : ax
- *  out_y : bx
- *  Converts between 3d point of a sprite to 2d coordinates for centering on that sprite
+ * Converts between 3d point of a sprite to 2d coordinates for centering on that
+ * sprite
+ *  rct2: 0x006EB0C1
+ * x : ax
+ * y : bx
+ * z : cx
+ * out_x : ax
+ * out_y : bx
  */
 void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_viewport* viewport){
 	int start_x = x;
@@ -146,21 +147,21 @@ void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_view
 }
 
 /**
+* Viewport will look at sprite or at coordinates as specified in flags 0b_1X
+* for sprite 0b_0X for coordinates
 *
 *  rct2: 0x006EB009
 *  x:      ax
 *  y:      eax (top 16)
 *  width:  bx
 *  height: ebx (top 16)
-*  zoom:    cl (8 bits)
+*  zoom:   cl (8 bits)
 *  center_x: edx lower 16 bits
 *  center_y: edx upper 16 bits
 *  center_z: ecx upper 16 bits
 *  sprite: edx lower 16 bits
 *  flags:  edx top most 2 bits 0b_X1 for zoom clear see below for 2nd bit.
 *  w:      esi
-*
-*  Viewport will look at sprite or at coordinates as specified in flags 0b_1X for sprite 0b_0X for coordinates
 */
 void viewport_create(rct_window *w, int x, int y, int width, int height, int zoom, int center_x, int center_y, int center_z, char flags, sint16 sprite)
 {
@@ -229,8 +230,10 @@ void viewport_update_pointers()
 }
 
 /**
- * edx is assumed to be (and always is) the current rotation, so it is not needed as parameter.
- * rct2: 0x00689174
+ *
+ *  rct2: 0x0068914
+ * edx is assumed to be (and always is) the current rotation, so it is not
+ * needed as parameter.
  */
 void sub_689174(sint16* x, sint16* y, sint16 *z)
 {
@@ -269,7 +272,7 @@ void sub_683326(int left, int top, int right, int bottom)
  * shifts pixels from the region in a direction. Used when a viewport moves;
  * consider putting in src/drawing/drawing.c or src/drawing/rect.c
  * 
- * rct2: 0x00683359
+ *  rct2: 0x00683359
  * ax = x
  * bx = y;
  * cx = width;
@@ -753,10 +756,10 @@ void painter_setup(){
 	RCT2_GLOBAL(0xF1AD24, uint32) = 0;
 }
 
-/***
+/**
  *
- * rct2: 0x00688596
- * Part of 0x688485
+ *  rct2: 0x00688596
+ *  Part of 0x688485
  */
 void paint_attached_ps(paint_struct* ps, paint_struct* attached_ps, rct_drawpixelinfo* dpi){
 	for (; attached_ps; attached_ps = attached_ps->next_attached_ps){
@@ -851,7 +854,10 @@ void sub_688485(){
 
 }
 
-/* rct2: 0x006874B0, 0x00687618, 0x0068778C, 0x00687902, 0x0098199C */
+/**
+ *
+ *  rct2: 0x006874B0, 0x00687618, 0x0068778C, 0x00687902, 0x0098199C
+ */
 int sub_98199C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 length_y, sint16 length_x, uint32 rotation){
 	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[get_current_rotation()],
 		al | (ah << 8), 
@@ -864,7 +870,10 @@ int sub_98199C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 le
 	return 1;
 }
 
-/* rct2: 0x00686806, 0x006869B2, 0x00686B6F, 0x00686D31, 0x0098197C */
+/**
+ *
+ *  rct2: 0x00686806, 0x006869B2, 0x00686B6F, 0x00686D31, 0x0098197C
+ */
 int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 length_y, sint16 length_x, uint32 rotation){
 	int ebp = ah + RCT2_GLOBAL(0x9DEA56, sint16);
 
@@ -1102,7 +1111,7 @@ void viewport_misc_paint_setup(rct_sprite *misc, int imageDirection)
 }
 
 /**
-*  Litter Paint Setup
+* Litter Paint Setup
 *  rct2: 0x006736FC
 */
 void viewport_litter_paint_setup(rct_litter *litter, int imageDirection)
@@ -1129,7 +1138,7 @@ void viewport_litter_paint_setup(rct_litter *litter, int imageDirection)
 
 
 /**
-*  Paint Quadrant
+* Paint Quadrant
 *  rct2: 0x0069E8B0
 */
 void sprite_paint_setup(uint16 eax, uint16 ecx){
@@ -1194,12 +1203,14 @@ void sprite_paint_setup(uint16 eax, uint16 ecx){
 	}
 }
 
-/* rct2: 0x006629BC
- * returns al
- * ebp : image_id
- * ax : unknown
- * dx : height
- * edi : unknown
+/**
+ *
+ *  rct2: 0x006629BC
+ *  returns al
+ *  ebp: image_id
+ *  ax: unknown
+ *  dx: height
+ *  edi: unknown
  */
 bool sub_6629BC(int height, uint16 ax, uint32 image_id, int edi){
 	int eax = ax, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = edi, ebp = image_id;
@@ -1209,7 +1220,10 @@ bool sub_6629BC(int height, uint16 ax, uint32 image_id, int edi){
 	return eax & 0xFF;
 }
 
-/* rct2: 0x0066508C & 0x00665540 */
+/**
+ *
+ *  rct2: 0x0066508C, 0x00665540
+ */
 void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_map_element* map_element)
 {
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
@@ -1375,7 +1389,10 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 	}
 }
 
-/* rct2: 0x006658ED */
+/**
+ *
+ *  rct2: 0x006658ED
+ */
 void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_element* map_element){
 	if (RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1)
 		return;
@@ -1581,7 +1598,10 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 	}
 }
 
-/* rct2: 0x00664FD4 */
+/**
+ *
+ *  rct2: 0x00664FD4
+ */
 void viewport_entrance_paint_setup(uint8 direction, int height, rct_map_element* map_element){
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_LABEL;
 
@@ -1623,7 +1643,10 @@ void viewport_entrance_paint_setup(uint8 direction, int height, rct_map_element*
 	}
 }
 
-/* rct2: 0x006B9CC4 */
+/**
+ *
+ *  rct2: 0x006B9CC4
+ */
 void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* map_element)
 {
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
@@ -2205,7 +2228,7 @@ static void draw_pixel_info_crop_by_zoom(rct_drawpixelinfo *dpi)
 
 /**
  *
- *  rct2:0x006860C3
+ *  rct2: 0x006860C3
  */
 static void viewport_draw_money_effects()
 {
@@ -2234,7 +2257,7 @@ static void viewport_draw_money_effects()
 
 /**
  *
- *  rct2:0x00685CBF
+ *  rct2: 0x00685CBF
  *  eax: left
  *  ebx: top
  *  edx: right
@@ -2520,7 +2543,7 @@ void hide_construction_rights()
 
 /**
  *
- * rct2: 0x006CB70A
+ *  rct2: 0x006CB70A
  */
 void viewport_set_visibility(uint8 mode)
 {
@@ -2567,7 +2590,7 @@ void viewport_set_visibility(uint8 mode)
 
 /**
  * Stores some info about the element pointed at, if requested for this particular type through the interaction mask.
- * rct2: 0x00688697
+ *  rct2: 0x00688697
  */
 void store_interaction_info(paint_struct *ps)
 {
@@ -2774,10 +2797,10 @@ rct_viewport *viewport_find_from_point(int screenX, int screenY)
 /**
  *
  *  rct2: 0x00688972
- *  In:
+ * In:
  *		screen_x: eax
  *		screen_y: ebx
- *  Out:
+ * Out:
  *		x: ax
  *		y: bx
  *		map_element: edx ?

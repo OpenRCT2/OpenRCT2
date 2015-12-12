@@ -428,7 +428,10 @@ void window_editor_object_selection_open()
 	visible_list_refresh(window);
 }
 
-/* rct2: 0x006ABCD1 */
+/**
+ *
+ *  rct2: 0x006ABCD1
+ */
 static void setup_track_manager_objects(){
 	uint8 ride_list[128] = { 0 };
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
@@ -493,7 +496,10 @@ static void setup_track_manager_objects(){
 	RCT2_GLOBAL(0x00F43412, uint16) = num_objects;
 }
 
-/* rct2: 0x006ABC1E */
+/**
+ *
+ *  rct2: 0x006ABC1E
+ */
 static void setup_track_designer_objects(){
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 	rct_object_entry* installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
@@ -547,7 +553,10 @@ static void setup_track_designer_objects(){
 	RCT2_GLOBAL(0x00F43412, uint16) = num_objects;
 }
 
-/* rct2: 0x006AA82B */
+/**
+ *
+ *  rct2: 0x006AA82B
+ */
 static void setup_in_use_selection_flags(){
 
 	for (uint8 object_type = 0; object_type < 11; object_type++){
@@ -653,7 +662,10 @@ static void setup_in_use_selection_flags(){
 	}
 }
 
-/* rct2: 0x006AB211 */
+/**
+ *
+ *  rct2: 0x006AB211
+ */
 static int sub_6AB211(){
 	uint32 total_objects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32);
 
@@ -703,7 +715,10 @@ static int sub_6AB211(){
 	return 1;
 }
 
-/* rct2: 0x006AB316 */
+/**
+ *
+ *  rct2: 0x006AB316
+ */
 static void editor_object_flags_free(){
 	if (RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) == NULL){
 		return;
@@ -712,7 +727,10 @@ static void editor_object_flags_free(){
 	RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) = NULL;
 }
 
-/* rct2: 0x00685791 */
+/**
+ *
+ *  rct2: 0x00685791
+ */
 void remove_selected_objects_from_research(rct_object_entry* installedObject){
 	uint8 entry_type, entry_index;
 	if (!find_object_in_entry_group(installedObject, &entry_type, &entry_index))
@@ -729,7 +747,10 @@ void remove_selected_objects_from_research(rct_object_entry* installedObject){
 	}
 }
 
-/* rct2: 0x006ABB66 */
+/**
+ *
+ *  rct2: 0x006ABB66
+ */
 void unload_unselected_objects(){
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 	rct_object_entry* installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
@@ -1545,7 +1566,10 @@ static void window_editor_object_selection_select_required_objects()
 		window_editor_object_selection_select_object(0, 0xF, &RequiredSelectedObjects[i]);
 }
 
-/* rct2: 0x006AA770 */
+/**
+ *
+ *  rct2: 0x006AA770
+ */
 void reset_selected_object_count_and_size(){
 	for (uint8 object_type = 0; object_type < 11; object_type++){
 		RCT2_ADDRESS(0x00F433F7, uint16)[object_type] = 0;
@@ -1584,7 +1608,10 @@ void reset_selected_object_count_and_size(){
 	RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_OBJECTS_FILE_SIZE, uint32) = total_object_size;
 }
 
-/* rct2: 0x006AB863 */
+/**
+ *
+ *  rct2: 0x006AB863
+ */
 void set_required_object_flags(rct_object_entry* required_object){
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 	rct_object_entry* installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
@@ -1624,7 +1651,10 @@ void set_required_object_flags(rct_object_entry* required_object){
 	}
 }
 
-/* rct2: 0x006AB923 */
+/**
+ *
+ *  rct2: 0x006AB923
+ */
 void reset_required_object_flags(){
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
@@ -1668,7 +1698,7 @@ void reset_required_object_flags(){
 	}
 }
 
-/*
+/**
  * Master objects are objects that are not
  * optional / required dependants of an
  * object.
@@ -1882,7 +1912,7 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
  * Returns the position in the list.
  * Object_selection_flags, installed_entry also populated
  *
- * rct2: 0x006AA703
+ *  rct2: 0x006AA703
  */
 static int get_object_from_object_selection(uint8 object_type, int y, uint8 *object_selection_flags, rct_object_entry **installed_entry)
 {
