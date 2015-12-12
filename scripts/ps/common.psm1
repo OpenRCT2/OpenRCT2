@@ -3,6 +3,17 @@
 #########################################################
 $scriptsPath = Split-Path $Script:MyInvocation.MyCommand.Path
 
+function AppExists($app)
+{
+    $result = (Get-Command $app -CommandType Application -ErrorAction SilentlyContinue)
+    return ($result -ne $null -and $result.Count -gt 0)
+}
+
+function AddPath($path)
+{
+    $env:path = "$path;$env:path"
+}
+
 function Get-RootPath()
 {
     return Split-Path (Split-Path $scriptsPath)
