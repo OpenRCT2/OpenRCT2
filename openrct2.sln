@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openrct2", "openrct2.vcxproj", "{D24D94F6-2A74-480C-B512-629C306CE92F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libs", "libs\libs.vcxproj", "{074DC930-05C6-4B7F-B5DD-DD237E6E44DB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libs", "libs.vcxproj", "{074DC930-05C6-4B7F-B5DD-DD237E6E44DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
