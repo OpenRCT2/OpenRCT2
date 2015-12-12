@@ -714,6 +714,8 @@ void window_cancel_textbox();
 void window_update_textbox_caret();
 void window_update_textbox();
 
+void game_command_callback_hire_staff_member(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
+
 bool land_tool_is_active();
 
 //Cheat: in-game land ownership editor

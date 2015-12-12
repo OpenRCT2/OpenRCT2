@@ -372,6 +372,35 @@ void game_command_fire_staff_member(int *eax, int *ebx, int *ecx, int *edx, int 
 	*ebx = 0;
 }
 
+void game_command_move_staff_member(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		int x = *eax;
+		int y = *ecx;
+		int z = *edi;
+
+		uint16 spriteIndex;
+		rct_peep *peep = NULL;
+		FOR_ALL_STAFF(spriteIndex, peep)
+			if (peep->staff_id == *edx)
+				break;
+
+		// move the guy
+		sprite_move(x, y, z, (rct_sprite*)peep);
+		invalidate_sprite_2((rct_sprite*)peep);
+		peep->state = PEEP_STATE_FALLING;
+
+		peep_decrement_num_riders(peep);
+		peep_window_state_update(peep);
+		peep->action = 0xFF;
+		peep->var_6D = 0;
+		peep->action_sprite_image_offset = 0;
+		peep->action_sprite_type = 0;
+		peep->var_C4 = 0;
+	}
+	*ebx = 0;
+}
+
 /*
  * Updates the colour of the given staff type.
  */
