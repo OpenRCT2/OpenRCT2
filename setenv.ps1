@@ -1,4 +1,6 @@
+###########################################################
 # Setups a PowerShell environment for OpenRCT2 development
+###########################################################
 
 function AppExists($app)
 {
@@ -12,7 +14,7 @@ function AddPath($path)
 }
 
 $rootPath = Split-Path $Script:MyInvocation.MyCommand.Path
-$scriptsPath = "$rootPath\scripts"
+$scriptsPath = "$rootPath\scripts\ps"
 Write-Host "Setting up OpenRCT2 development environment for Windows" -ForegroundColor Cyan
 
 $appExists = @{}
