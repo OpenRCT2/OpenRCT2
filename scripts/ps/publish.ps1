@@ -5,8 +5,9 @@
 # - Creates a ZIP for distribution
 #########################################################
 param (
-    [string]$server  = "",
-    [string]$buildNo = ""
+    [string]$Server  = "",
+    [string]$BuildNumber = "",
+    [string]$GitBranch = ""
 )
 
 # Setup
@@ -18,21 +19,22 @@ Import-Module "$scriptsPath\common.psm1" -DisableNameChecking
 $rootPath = Get-RootPath
 
 # Set build attributes
-function do-prepareSource($build_server = "", $build_number = "")
+function do-prepareSource()
 {
     Write-Host "Setting build #defines..." -ForegroundColor Cyan
-    # $build_number = "";
-    # $build_server = "";
-    $build_branch = (git rev-parse --abbrev-ref HEAD)
-    $build_commit_sha1 = (git rev-parse HEAD)
-    $build_commit_sha1_short = (git rev-parse --short HEAD)
+    if ($GitBranch -eq "")
+    {
+        $GitBranch = (git rev-parse --abbrev-ref HEAD)
+    }
+    $GitCommitSha1 = (git rev-parse HEAD)
+    $GitCommitSha1Short = (git rev-parse --short HEAD)
 
     $defines = @{ }
-    $defines["OPENRCT2_BUILD_NUMBER"]      = $build_number;
-    $defines["OPENRCT2_BUILD_SERVER"]      = $build_server;
-    $defines["OPENRCT2_BRANCH"]            = $build_branch;
-    $defines["OPENRCT2_COMMIT_SHA1"]       = $build_commit_sha1;
-    $defines["OPENRCT2_COMMIT_SHA1_SHORT"] = $build_commit_sha1_short;
+    $defines["OPENRCT2_BUILD_NUMBER"]      = $BuildNumber;
+    $defines["OPENRCT2_BUILD_SERVER"]      = $Server;
+    $defines["OPENRCT2_BRANCH"]            = $GitBranch;
+    $defines["OPENRCT2_COMMIT_SHA1"]       = $GitCommitSha1;
+    $defines["OPENRCT2_COMMIT_SHA1_SHORT"] = $GitCommitSha1Short;
 
     $defineString = ""
     foreach ($key in $defines.Keys) {
@@ -77,13 +79,24 @@ function do-package()
     Copy-Item -Force          "$distDir\known_issues.txt"      $tempDir -ErrorAction Stop
     Copy-Item -Force          "$distDir\readme.txt"            $tempDir -ErrorAction Stop
 
-    # Create archive
-    7za a -tzip -mx9 $outZip "$tempDir\*"
+    # Create archive using 7z (renowned for speed and compression)
+    $7zcmd = "7za"
+    if (-not (AppExists($7zcmd)))
+    {
+        # AppVeyor in particular uses '7z' instead
+        $7zcmd = "7z"
+        if (-not (AppExists($7zcmd)))
+        {
+            Write-Host "Publish script requires 7z to be in PATH" -ForegroundColor Red
+            exit 1
+        }
+    }
+    & $7zcmd a -tzip -mx9 $outZip "$tempDir\*"
 
     # Remove temp directory
     Remove-Item -Force -Recurse $tempDir -ErrorAction SilentlyContinue
 }
 
-do-prepareSource $server $buildNo
+do-prepareSource
 do-build
 do-package
