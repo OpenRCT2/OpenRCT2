@@ -551,7 +551,7 @@ static bool openrct2_setup_rct2_segment()
 		log_error("Found already mapped pages in region we want to claim. This means something accessed memory before we got to and following mmap (or next malloc) call will likely fail.");
 	}
 	// section: rw data
-	gDataSegment = mmap((void *)0x8a4000, len, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_ANONYMOUS | MAP_SHARED, 0, 0);
+	gDataSegment = mmap((void *)0x8a4000, len, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_ANONYMOUS | MAP_SHARED, -1, 0);
 	if (gDataSegment != (void *)0x8a4000) {
 		log_fatal("mmap failed to get required offset for data segment! got %p, expected %p, errno = %d", gDataSegment, (void *)(0x8a4000), errno);
 		exit(1);
