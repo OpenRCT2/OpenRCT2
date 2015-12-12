@@ -13,10 +13,13 @@ param (
     [switch]$Rebuild = $false
 )
 
+# Setup
+$ErrorActionPreference = "Stop"
+$scriptsPath = Split-Path $Script:MyInvocation.MyCommand.Path
+Import-Module "$scriptsPath\common.psm1" -DisableNameChecking
+
 # Get paths
-$scriptPath   = $Script:MyInvocation.MyCommand.Path
-$scriptsPath  = Split-Path $scriptPath
-$rootPath     = Split-Path $scriptsPath
+$rootPath     = Get-RootPath
 $binPath      = Join-Path $rootPath "bin"
 $openrct2Path = Join-Path $binPath "openrct2.exe"
 

@@ -9,10 +9,13 @@ param (
     [string]$buildNo = ""
 )
 
+# Setup
+$ErrorActionPreference = "Stop"
+$scriptsPath = Split-Path $Script:MyInvocation.MyCommand.Path
+Import-Module "$scriptsPath\common.psm1" -DisableNameChecking
+
 # Get paths
-$scriptPath   = $Script:MyInvocation.MyCommand.Path
-$scriptsPath  = Split-Path $scriptPath
-$rootPath     = Split-Path $scriptsPath
+$rootPath = Get-RootPath
 
 # Set build attributes
 function do-prepareSource($build_server = "", $build_number = "")

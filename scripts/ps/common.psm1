@@ -1,6 +1,12 @@
 #########################################################
 # Common functions for OpenRCT2 PowerShell scripts
 #########################################################
+$scriptsPath = Split-Path $Script:MyInvocation.MyCommand.Path
+
+function Get-RootPath()
+{
+    return Split-Path (Split-Path $scriptsPath)
+}
 
 function Prompt-User($message)
 {
