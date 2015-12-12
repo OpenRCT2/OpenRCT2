@@ -588,28 +588,6 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
 	log_verbose("outPath + subDirectory = '%s'", buffer);
 }
 
-void platform_show_messagebox(char *message)
-{
-	STUB();
-	log_verbose(message);
-}
-
-/**
- *
- *  rct2: 0x004080EA
- */
-int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName)
-{
-	STUB();
-	return 0;
-}
-
-utf8 *platform_open_directory_browser(utf8 *title)
-{
-	STUB();
-	return NULL;
-}
-
 uint16 platform_get_locale_language(){
 	const char *langString = setlocale(LC_MESSAGES, "");
 	if(langString != NULL){

@@ -112,4 +112,26 @@ void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const 
 	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
 }
 
+utf8 *platform_open_directory_browser(utf8 *title)
+{
+	STUB();
+	return NULL;
+}
+
+void platform_show_messagebox(char *message)
+{
+	STUB();
+	log_verbose(message);
+}
+
+/**
+ *
+ *  rct2: 0x004080EA
+ */
+int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName)
+{
+	STUB();
+	return 0;
+}
+
 #endif
