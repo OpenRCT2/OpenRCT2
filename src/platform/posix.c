@@ -567,7 +567,16 @@ void platform_resolve_user_data_path()
 
 		strncat(buffer, homedir, MAX_PATH - 1);
 		strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+
+		// Use the 'Application Support' directory to store config files on OS X.
+#if defined(__APPLE__) && defined(__MACH__)
+		strncat(buffer, "Library", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+		strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+		strncat(buffer, "Application Support", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+#else
+		// Use '.config' on other POSIX platforms.
 		strncat(buffer, ".config", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+#endif
 	}
 	else
 	{
