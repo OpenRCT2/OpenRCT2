@@ -5,7 +5,6 @@ param (
     [switch]$Force
 )
 Write-Host "Installing OpenRCT2 development environment for Windows" -ForegroundColor Cyan
-Import-Module ".\common.psm1" -DisableNameChecking
 
 # Settings
 $libsUrl = "https://openrct2.website/files/orctlibs-vs.zip"
@@ -20,6 +19,8 @@ $rootPath        = Split-Path $scriptsPath
 $libsPath        = Join-Path $rootPath "lib"
 $zipPath         = Join-Path $libsPath "orctlibs.zip"
 $libsVersionPath = Join-Path $libsPath "libversion"
+
+Import-Module "$scriptsPath\common.psm1" -DisableNameChecking
 
 # Check if we need to update the dependencies
 $currentLibsVersion = 0

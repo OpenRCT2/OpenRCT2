@@ -37,7 +37,7 @@ function Build-OpenRCT2()
     {
         $target = "/t:rebuild"
     }
-    msbuild ..\projects\openrct2.sln /p:Configuration=$Configuration /p:Platform=Win32 $target /v:minimal | Write-Host
+    msbuild $rootPath\openrct2.sln /p:Configuration=$Configuration /p:Platform=Win32 $target /v:minimal | Write-Host
     return $LASTEXITCODE
 }
 
