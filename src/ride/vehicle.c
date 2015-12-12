@@ -4440,15 +4440,62 @@ rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int d
  */
 static bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId)
 {
-	registers regs;
-	regs.esi = (int)vehicle;
-	regs.eax = x;
-	regs.ecx = y;
+	uint16 bp = (vehicle->var_44 * 30) >> 9;
+	uint32 trackType = vehicle->track_type >> 2;
+	
+	sint16 rideLeft = vehicle->track_x + RCT2_ADDRESS(0x0099E228, uint8)[trackType * 4];
+	sint16 rideRight = vehicle->track_x + RCT2_ADDRESS(0x0099E22A, uint8)[trackType * 4];
+	sint16 rideTop = vehicle->track_y + RCT2_ADDRESS(0x0099E229, uint8)[trackType * 4];
+	sint16 rideBottom = vehicle->track_y + RCT2_ADDRESS(0x0099E22B, uint8)[trackType * 4];
 
-	bool result = RCT2_CALLFUNC_Y(0x006DD365, &regs) & 0x100;
-	if (spriteId != NULL)
-		*spriteId = regs.bp;
-	return result;
+	if (x - bp < rideLeft ||
+		y - bp < rideTop ||
+		x + bp > rideRight ||
+		y + bp > rideBottom) {
+		if (spriteId != NULL)
+			*spriteId = 0xFFFF;
+		return true;
+	}
+
+	uint16 location = (y / 32) | ((x / 32) << 8);
+
+
+	uint8 rideIndex = vehicle->ride;
+	for (sint32* ebp = RCT2_ADDRESS(0x009A37C4, sint32); ebp <= RCT2_ADDRESS(0x009A37E4, sint32); ebp++) {
+		uint16 spriteIdx = RCT2_ADDRESS(0xF1EF60, uint16)[location];
+		for (rct_vehicle* vehicle2 = GET_VEHICLE(spriteIdx); spriteIdx != 0xFFFF; spriteIdx = vehicle2->next_in_quadrant) {
+			vehicle2 = GET_VEHICLE(spriteIdx);
+
+			if (vehicle2 == vehicle)
+				continue;
+
+			if (vehicle2->sprite_identifier != SPRITE_IDENTIFIER_VEHICLE)
+				continue;
+
+			if (vehicle2->ride != rideIndex)
+				continue;
+
+			int distX = abs(x - vehicle2->x);
+			if (distX > 32768)
+				continue;
+
+			int distY = abs(y - vehicle2->y);
+			if (distY > 32768)
+				continue;
+
+			int ecx = (vehicle->var_44 + vehicle2->var_44) / 2;
+			ecx *= 30;
+			ecx >>= 8;
+			if (max(distX, distY) < ecx) {
+				if (spriteId != NULL)
+					*spriteId = vehicle2->sprite_index;
+				return true;
+			}
+		}
+		location += *ebp;
+	}
+
+	return false;
 }
 
 /**
