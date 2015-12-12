@@ -197,7 +197,10 @@ static void input_scroll_drag_begin(int x, int y, rct_window* w, rct_widget* wid
 	platform_hide_cursor();
 }
 
-/* Based on (heavily changed) rct2: 0x006E9E0E & 0x006E9ED0 */
+/**
+ * Based on (heavily changed)
+ *  rct2: 0x006E9E0E,  0x006E9ED0
+ */
 static void input_scroll_drag_continue(int x, int y, rct_window* w) {
 	uint8 widgetIndex = _dragWidgetIndex;
 	uint8 scrollIndex = _dragScrollIndex;

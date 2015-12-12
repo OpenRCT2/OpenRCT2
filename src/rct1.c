@@ -899,7 +899,10 @@ static void sub_69E891()
 
 #pragma region Tables
 
-// rct2: 0x0097F0BC & 0x0098BC60
+/**
+ *
+ *  rct2: 0x0097F0BC, 0x0098BC60
+ */
 const uint8 RCT1ColourConversionTable[32] = {
 	 0,  1,  2,  4,  5,  6,  7,  9,
 	11, 12, 13, 14, 15, 16, 18, 19,
