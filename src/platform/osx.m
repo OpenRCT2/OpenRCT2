@@ -20,10 +20,10 @@
 
 #if defined(__APPLE__) && defined(__MACH__)
 
+@import AppKit;
+#include <mach-o/dyld.h>
 #include "platform.h"
 #include "../util/util.h"
-
-#include <mach-o/dyld.h>
 
 bool platform_check_steam_overlay_attached() {
 	STUB();
@@ -73,6 +73,88 @@ void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const 
 	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
 	strncat(buffer, "OpenRCT2", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
 	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+}
+
+void platform_show_messagebox(char *message)
+{
+	@autoreleasepool
+	{
+		NSAlert *alert = [[NSAlert alloc] init];
+		[alert addButtonWithTitle:@"OK"];
+		[alert setMessageText:[NSString stringWithUTF8String:message]];
+		[alert setAlertStyle:NSWarningAlertStyle];
+		[alert runModal];
+		[alert release];
+	}
+}
+
+utf8 *platform_open_directory_browser(utf8 *title)
+{
+	@autoreleasepool
+	{
+		NSOpenPanel *panel = [NSOpenPanel openPanel];
+		panel.canChooseFiles = false;
+		panel.canChooseDirectories = true;
+		panel.allowsMultipleSelection = false;
+		utf8 *url = NULL;
+		if ([panel runModal] == NSFileHandlingPanelOKButton)
+		{
+			NSString *selectedPath = [[[panel URLs] firstObject] path];
+			const char *path = [selectedPath UTF8String];
+			url = (utf8*)malloc(strlen(path) + 1);
+			strcpy(url,path);
+		}
+		return url;
+	}
+}
+
+int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName)
+{
+	@autoreleasepool
+	{
+		NSArray *extensions = [
+			[
+				[NSString stringWithUTF8String:filterPattern]
+				stringByReplacingOccurrencesOfString:@"*." withString:@""
+			]
+			componentsSeparatedByString:@";"
+		];
+		NSString *filePath = [NSString stringWithUTF8String:filename];
+		NSString *directory = [filePath stringByDeletingLastPathComponent];
+		NSString *basename = [filePath lastPathComponent];
+		if (type == 0)
+		{
+			NSSavePanel *panel = [NSSavePanel savePanel];
+			panel.title = [NSString stringWithUTF8String:title];
+			panel.nameFieldStringValue = [NSString stringWithFormat:@"%@.%@",basename,[extensions firstObject]];
+			panel.allowedFileTypes = extensions;
+			panel.directoryURL = [NSURL fileURLWithPath:directory];
+			if ([panel runModal] == NSFileHandlingPanelCancelButton){
+				return 0;
+			} else {
+				strcpy(filename,[[[panel URL] path] UTF8String]);
+				return 1;
+			}
+		}
+		else if (type == 1)
+		{
+			NSOpenPanel *panel = [NSOpenPanel openPanel];
+			panel.title = [NSString stringWithUTF8String:title];
+			panel.allowedFileTypes = extensions;
+			panel.canChooseDirectories = false;
+			panel.canChooseFiles = true;
+			panel.allowsMultipleSelection = false;
+			panel.directoryURL = [NSURL fileURLWithPath:filePath];
+			if ([panel runModal] == NSFileHandlingPanelCancelButton){
+				return 0;
+			} else {
+				strcpy(filename,[[[[panel URLs] firstObject] path] UTF8String]);
+				return 1;
+			}
+		} else {
+			return 0;
+		}
+	}
 }
 
 #endif
