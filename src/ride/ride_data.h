@@ -93,7 +93,7 @@ extern const uint8 AllRideModesAvailable[];
 extern const uint8 RideAvailableBreakdowns[];
 
 extern const rct_ride_entrance_definition RideEntranceDefinitions[RIDE_ENTRANCE_STYLE_COUNT];
-extern const rct_ride_lift_data RideLiftData[90];
+extern const rct_ride_lift_data RideLiftData[91];
 
 extern const rct_ride_data_4 RideData4[91];
 

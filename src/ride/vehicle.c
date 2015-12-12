@@ -3741,7 +3741,7 @@ static int vehicle_update_scream_sound(rct_vehicle *vehicle)
 produceScream:
 	if (vehicle->scream_sound_id == 255) {
 		r = scenario_rand();
-		if (totalNumPeeps >= r % 16) {
+		if (totalNumPeeps >= (int)(r % 16)) {
 			switch (vehicleEntry->sound_range) {
 			case 0:
 				vehicle->scream_sound_id = byte_9A3A14[r % 2];
@@ -3930,7 +3930,7 @@ bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 	rct_ride* ride = GET_RIDE(vehicle->ride);
 	rct_xyz16 *unk_F64E20 = RCT2_ADDRESS(0x00F64E20, rct_xyz16);
 
-	for (; (sint32)vehicle->var_24 < 0; RCT2_GLOBAL(0x00F64E10, uint32)++) {
+	for (; vehicle->var_24 < 0; RCT2_GLOBAL(0x00F64E10, uint32)++) {
 		uint16 trackProgress = vehicle->track_progress - 1;
 		const rct_vehicle_info *moveInfo;
 
@@ -4005,7 +4005,7 @@ bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 		vehicle->var_20 = moveInfo->var_08;
 		vehicle->var_1F = moveInfo->var_07;
 
-		if ((sint32)vehicle->var_24 < 0) {
+		if (vehicle->var_24 < 0) {
 			vehicle->var_2C += RCT2_ADDRESS(0x009A2970, sint32)[vehicle->var_1F];
 		}
 	}
@@ -4051,7 +4051,7 @@ int vehicle_update_track_motion_cable_lift(rct_vehicle *cableLift)
 			invalidate_sprite_2((rct_sprite*)vehicle);
 
 			while (true) {
-				if ((sint32)vehicle->var_24 < 0) {
+				if (vehicle->var_24 < 0) {
 					if (sub_6DF21B_loop(vehicle) == true) {
 						break;
 					}
@@ -4071,7 +4071,7 @@ int vehicle_update_track_motion_cable_lift(rct_vehicle *cableLift)
 					else {
 						RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 5);
 						RCT2_GLOBAL(0x00F64E0C, uint32) -= vehicle->var_24 + 1;
-						vehicle->var_24 = (uint32)-1;
+						vehicle->var_24 = -1;
 						vehicle->var_2C += RCT2_ADDRESS(0x009A2970, uint32)[vehicle->var_1F];
 						RCT2_GLOBAL(0x00F64E10, uint32)++;
 					}
@@ -4128,7 +4128,7 @@ int vehicle_update_track_motion_cable_lift(rct_vehicle *cableLift)
 	//return eax;
 }
 
-rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int direction, uint16 var_44, uint32 var_24, bool head)
+rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int direction, uint16 var_44, sint32 var_24, bool head)
 {
 	rct_ride *ride = GET_RIDE(rideIndex);
 	rct_vehicle *current = &(create_sprite(1)->vehicle);

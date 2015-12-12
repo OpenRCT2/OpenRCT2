@@ -1309,5 +1309,6 @@ const rct_ride_lift_data RideLiftData[] = {
 	{ SOUND_LIFT_1, 4, 7 }, // Inverted Impulse Coaster
 	{ SOUND_LIFT_1, 4, 6 }, // Mini Roller Coaster
 	{ 255,			5, 5 }, // Mine Ride
-	{ SOUND_LIFT_6, 4, 6 }  // LIM Launched Roller Coaster
+	{ SOUND_LIFT_6, 4, 6 }, // (none)
+	{ 255,			4, 6 }  // LIM Launched Roller Coaster
 };

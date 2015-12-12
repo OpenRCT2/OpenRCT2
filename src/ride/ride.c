@@ -4468,7 +4468,7 @@ bool ride_create_cable_lift(int rideIndex, bool isApplying)
 		uint16 var_44 = edx & 0xFFFF;
 		edx = rol32(edx, 10) >> 1;
 		ebx -= edx;
-		uint32 var_24 = ebx;
+		sint32 var_24 = ebx;
 		ebx -= edx;
 
 		rct_vehicle *current = cable_lift_segment_create(rideIndex, x, y, z, direction, var_44, var_24, i == 0);

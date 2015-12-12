@@ -106,7 +106,7 @@ typedef struct {
 	uint8 var_1F;
 	uint8 var_20;
 	uint8 pad_21[3];
-	uint32 var_24;
+	sint32 var_24;
 	sint32 velocity;				// 0x28
 	sint32 var_2C;
 	uint8 ride;						// 0x30
@@ -288,7 +288,7 @@ void vehicle_set_map_toolbar(rct_vehicle *vehicle);
 int vehicle_is_used_in_pairs(rct_vehicle *vehicle);
 rct_vehicle *vehicle_get_head(rct_vehicle *vehicle);
 int vehicle_update_track_motion_cable_lift(rct_vehicle *cableLift);
-rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int direction, uint16 var_44, uint32 var_24, bool head);
+rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int direction, uint16 var_44, sint32 var_24, bool head);
 bool sub_6DD365(rct_vehicle *vehicle);
 int sub_6DAB4C(rct_vehicle *vehicle, int *outStation);
 rct_ride_type_vehicle *vehicle_get_vehicle_entry(rct_vehicle *vehicle);
