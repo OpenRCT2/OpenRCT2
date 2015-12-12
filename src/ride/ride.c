@@ -7298,15 +7298,11 @@ void game_command_remove_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int
  *
  *  rct2: 0x006B752C
  */
-void ride_crash(int rideIndex, int vehicleIndex)
+void ride_crash(uint8 rideIndex, uint8 vehicleIndex)
 {
 	rct_ride *ride;
 	rct_vehicle *vehicle;
 	rct_window *w;
-
-	// TODO Remove these when hook is no longer used
-	rideIndex &= 0xFF;
-	vehicleIndex &= 0xFF;
 
 	ride = GET_RIDE(rideIndex);
 	vehicle = GET_VEHICLE(ride->vehicles[vehicleIndex]);

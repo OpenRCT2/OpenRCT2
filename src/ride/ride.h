@@ -1041,7 +1041,7 @@ void game_command_place_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int 
 void game_command_remove_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
 void sub_6CB945(int rideIndex);
-void ride_crash(int rideIndex, int vehicleIndex);
+void ride_crash(uint8 rideIndex, uint8 vehicleIndex);
 
 bool ride_type_is_intamin(int rideType);
 void sub_6C94D8();

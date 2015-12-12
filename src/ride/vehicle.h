@@ -165,7 +165,7 @@ typedef struct {
 	uint8 var_C5;
 	uint8 pad_C6[0x2];
 	uint16 var_C8;
-	uint8 pad_CA[0x2];
+	uint16 var_CA;
 	uint8 scream_sound_id;			// 0xCC
 	uint8 var_CD;
 	union {

@@ -67,9 +67,12 @@ static void vehicle_update_travelling_boat(rct_vehicle* vehicle);
 static void vehicle_update_arriving(rct_vehicle* vehicle);
 static void vehicle_update_unloading_passengers(rct_vehicle* vehicle);
 static void vehicle_update_crash_setup(rct_vehicle* vehicle);
+static void vehicle_update_collision_setup(rct_vehicle* vehicle);
 
 static void vehicle_update_sound(rct_vehicle *vehicle);
 static int vehicle_update_scream_sound(rct_vehicle *vehicle);
+
+static void vehicle_kill_all_passengers(rct_vehicle* vehicle);
 
 #define NO_SCREAM 254
 
@@ -566,8 +569,6 @@ static int vehicle_close_restraints(rct_vehicle* vehicle){
  * returns 0 when all open
  */
 static int vehicle_open_restraints(rct_vehicle* vehicle){
-	//return (RCT2_CALLPROC_X(0x006d6a2c, 0, 0, 0, 0, (int)vehicle, 0, 0) & 0x100);
-
 	int ebp = 0;
 	uint16 vehicle_id = vehicle->sprite_index;
 
@@ -669,8 +670,6 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 	rct_ride *ride;
 
 	ride = GET_RIDE(vehicle->ride);
-	//RCT2_CALLPROC_X(0x006D6D1F, 0, 0, 0, 0, (int)vehicle, (int)vehicle->ride * sizeof(rct_ride), 0);
-	//return;
 
 	if (vehicle->status == VEHICLE_STATUS_TRAVELLING_BOAT){
 		ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
@@ -1015,8 +1014,6 @@ static uint16 sub_6D7AC0(int currentSoundId, int currentVolume, int targetSoundI
  */
 static void vehicle_update(rct_vehicle *vehicle)
 {
-	// RCT2_CALLPROC_X(0x006D77F2, 0, 0, 0, 0, (int)vehicle, 0, 0);
-
 	rct_ride *ride;
 	rct_ride_type *rideEntry;
 
@@ -2258,6 +2255,86 @@ static void vehicle_check_if_missing(rct_vehicle* vehicle) {
 	news_item_add_to_queue(NEWS_ITEM_RIDE, 2218, vehicle->ride);
 }
 
+/**
+ * Setup function for a vehicle colliding with 
+ * another vehicle.
+ *
+ *  rct2: 0x006DA059
+ */
+static void vehicle_update_collision_setup(rct_vehicle* vehicle) {
+	vehicle->status = VEHICLE_STATUS_CRASHED;
+	vehicle_invalidate_window(vehicle);
+
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)) {
+		rct_vehicle* frontVehicle = vehicle;
+		while (frontVehicle->is_child != 0)frontVehicle = GET_VEHICLE(frontVehicle->prev_vehicle_on_ride);
+
+		uint8 trainIndex = 0;
+		while (ride->vehicles[trainIndex] != frontVehicle->sprite_index)
+			trainIndex++;
+
+		ride_crash(vehicle->ride, trainIndex);
+
+		if (ride->status != RIDE_STATUS_CLOSED) {
+			ride_set_status(vehicle->ride, RIDE_STATUS_CLOSED);
+		}
+	}
+
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+	vehicle_kill_all_passengers(vehicle);
+
+	rct_vehicle* lastVehicle = vehicle;
+	uint16 spriteId = vehicle->sprite_index;
+	for (rct_vehicle* train; spriteId != 0xFFFF; spriteId = train->next_vehicle_on_train) {
+		train = GET_VEHICLE(spriteId);
+		lastVehicle = train;
+
+		train->sub_state = 2;
+
+		audio_play_sound_at_location(
+			SOUND_CRASH,
+			train->x,
+			train->y,
+			train->z
+			);
+
+		sprite_misc_3_create(
+			train->x,
+			train->y,
+			train->z
+			);
+
+		for (int i = 0; i < 10; i++) {
+			crashed_vehicle_particle_create(
+				train->colours,
+				train->x,
+				train->y,
+				train->z
+				);
+		}
+
+		train->var_0C |= (1 << 7);
+		train->var_C8 = scenario_rand();
+		train->var_CA = scenario_rand();
+
+		train->var_C5 = train->var_CA & 0x7;
+		train->sprite_width = 13;
+		train->sprite_height_negative = 45;
+		train->sprite_height_positive = 5;
+
+		sprite_move(train->x, train->y, train->z, (rct_sprite*)train);
+		invalidate_sprite_2((rct_sprite*)train);
+
+		train->var_4E = 0;
+	}
+
+	(GET_VEHICLE(vehicle->prev_vehicle_on_ride))->next_vehicle_on_ride = lastVehicle->next_vehicle_on_ride;
+	(GET_VEHICLE(lastVehicle->next_vehicle_on_ride))->prev_vehicle_on_ride = vehicle->prev_vehicle_on_ride;
+	vehicle->velocity = 0;
+}
+
 /* rct2: 0x006D9EFE */
 static void vehicle_update_crash_setup(rct_vehicle* vehicle) {
 	vehicle->status = VEHICLE_STATUS_CRASHING;
@@ -2359,7 +2436,7 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 		}
 
 		if (flags & (1 << 7)) {
-			RCT2_CALLPROC_X(0x006DA059, 0, 0, 0, 0, (int)vehicle, 0, 0);
+			vehicle_update_collision_setup(vehicle);
 			return;
 		}
 
@@ -2598,7 +2675,7 @@ static void vehicle_update_arriving(rct_vehicle* vehicle) {
 	flags = sub_6DAB4C(vehicle, NULL);
 	if (flags & (1 << 7) &&
 		RCT2_GLOBAL(0x00F64E35, uint8) == 0) {
-		RCT2_CALLPROC_X(0x006DA059, 0, 0, 0, 0, (int)vehicle, 0, 0);
+		vehicle_update_collision_setup(vehicle);
 		return;
 	}
 
@@ -4163,8 +4240,7 @@ rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int d
 	current->var_C4 = 0;
 	current->var_C5 = 0;
 	current->var_C8 = 0;
-	current->pad_CA[0] = 0;
-	current->pad_CA[1] = 0;
+	current->var_CA = 0;
 	current->scream_sound_id = 0xFF;
 	current->var_1F = 0;
 	current->var_20 = 0;
