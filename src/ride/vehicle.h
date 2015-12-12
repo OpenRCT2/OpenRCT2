@@ -115,7 +115,7 @@ typedef struct {
 	union {
 		uint16 track_progress;			// 0x34
 		struct {
-			uint8 var_34;
+			sint8 var_34;
 			uint8 var_35;
 		};
 	};
@@ -289,7 +289,6 @@ int vehicle_is_used_in_pairs(rct_vehicle *vehicle);
 rct_vehicle *vehicle_get_head(rct_vehicle *vehicle);
 int vehicle_update_track_motion_cable_lift(rct_vehicle *cableLift);
 rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int direction, uint16 var_44, sint32 var_24, bool head);
-bool sub_6DD365(rct_vehicle *vehicle);
 int sub_6DAB4C(rct_vehicle *vehicle, int *outStation);
 rct_ride_type_vehicle *vehicle_get_vehicle_entry(rct_vehicle *vehicle);
 int vehicle_get_total_num_peeps(rct_vehicle *vehicle);

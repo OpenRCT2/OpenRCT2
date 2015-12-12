@@ -68,7 +68,8 @@ static void vehicle_update_arriving(rct_vehicle* vehicle);
 static void vehicle_update_unloading_passengers(rct_vehicle* vehicle);
 static void vehicle_update_crash_setup(rct_vehicle* vehicle);
 static void vehicle_update_collision_setup(rct_vehicle* vehicle);
-
+static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle);
+static bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId);
 static void vehicle_update_sound(rct_vehicle *vehicle);
 static int vehicle_update_scream_sound(rct_vehicle *vehicle);
 
@@ -1567,7 +1568,7 @@ static void vehicle_update_bumpcar_mode(rct_vehicle* vehicle) {
 		invalidate_sprite_2((rct_sprite*)vehicle);
 	}
 
-	RCT2_CALLPROC_X(0x006DA44E, 0, 0, 0, 0, (int)vehicle, 0, 0);
+	vehicle_update_motion_bumper_car(vehicle);
 
 	// Update the length of time vehicle has been in bumper mode
 	if (vehicle->sub_state++ == 0xFF) {
@@ -4205,6 +4206,172 @@ int vehicle_update_track_motion_cable_lift(rct_vehicle *cableLift)
 	//return eax;
 }
 
+/* rct2: 0x006DA44E */
+static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
+	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+
+	sint32 nextVelocity = vehicle->velocity + vehicle->var_2C;
+	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN) &&
+		ride->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT) {
+		nextVelocity = 0;
+	}
+	vehicle->velocity = nextVelocity;
+
+	RCT2_GLOBAL(0x00F64E08, sint32) = nextVelocity;
+	RCT2_GLOBAL(0x00F64E0C, sint32) = (nextVelocity / 1024) * 42;
+	RCT2_GLOBAL(0x00F64E10, uint32) = 1;
+
+	vehicle->var_2C = 0;
+	if (!(ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)) ||
+		ride->breakdown_reason_pending != BREAKDOWN_SAFETY_CUT_OUT) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 1 &&
+			vehicle->var_34 != 0) {
+
+			if (vehicle->var_34 > 0) {
+				vehicle->var_34--;
+				vehicle->sprite_direction += 2;
+			}
+			else {
+				vehicle->var_34++;
+				vehicle->sprite_direction -= 2;
+			}
+			vehicle->sprite_direction &= 0x1E;
+			invalidate_sprite_2((rct_sprite*)vehicle);
+		}
+		else if ((scenario_rand() & 0xFFFF) <= 2849) {
+			if (vehicle->var_35 & (1 << 6))
+				vehicle->sprite_direction -= 2;
+			else
+				vehicle->sprite_direction += 2;
+			vehicle->sprite_direction &= 0x1E;
+			invalidate_sprite_2((rct_sprite*)vehicle);
+		}
+	}
+
+	uint16 collideSprite = 0xFFFF;
+
+	if (vehicle->var_C4 != 0) {
+		uint8 oldC4 = vehicle->var_C4 & 0x1E;
+		vehicle->var_C4 = 0;
+
+		rct_xyz16 location = {
+			.x = vehicle->x,
+			.y = vehicle->y,
+			.z = vehicle->z
+		};
+		
+		location.x += RCT2_ADDRESS(0x009A36C4, sint16)[oldC4 * 4];
+		location.y += RCT2_ADDRESS(0x009A36C6, sint16)[oldC4 * 4];
+		location.x += RCT2_ADDRESS(0x009A36CC, sint16)[oldC4 * 4];
+		location.y += RCT2_ADDRESS(0x009A36CE, sint16)[oldC4 * 4];
+
+		if (!vehicle_update_bumper_car_collision(vehicle, location.x, location.y, &collideSprite)) {
+			invalidate_sprite_2((rct_sprite*)vehicle);
+			sprite_move(
+				location.x,
+				location.y,
+				location.z,
+				(rct_sprite*)vehicle
+				);
+			invalidate_sprite_2((rct_sprite*)vehicle);
+		}
+	}
+
+	vehicle->var_24 += RCT2_GLOBAL(0x00F64E0C, sint32);
+
+	if (vehicle->var_24 >= 13962) {
+		vehicle->var_B8 &= ~(1 << 1);
+		rct_xyz16 *unk_F64E20 = RCT2_ADDRESS(0x00F64E20, rct_xyz16);
+		unk_F64E20->x = vehicle->x;
+		unk_F64E20->y = vehicle->y;
+		unk_F64E20->z = vehicle->z;
+
+		invalidate_sprite_2((rct_sprite*)vehicle);
+
+		while (1) {
+			vehicle->var_35++;
+			uint8 direction = vehicle->sprite_direction;
+			direction |= vehicle->var_35 & 1;
+
+			rct_xyz16 location = *unk_F64E20;
+			location.x += RCT2_ADDRESS(0x009A36C4, sint16)[direction * 4];
+			location.y += RCT2_ADDRESS(0x009A36C6, sint16)[direction * 4];
+
+			if (vehicle_update_bumper_car_collision(vehicle, location.x, location.y, &collideSprite))
+				break;
+
+			vehicle->var_24 -= RCT2_ADDRESS(0x009A36C8, sint16)[direction * 4];
+			unk_F64E20->x = location.x;
+			unk_F64E20->y = location.y;
+			if (vehicle->var_24 < 13962) {
+				break;
+			}
+			RCT2_GLOBAL(0x00F64E10, uint32)++;
+		}
+
+		if (vehicle->var_24 >= 13962) {
+			sint32 oldVelocity = vehicle->velocity;
+			vehicle->var_24 = 0;
+			vehicle->velocity = 0;
+			uint8 direction = vehicle->sprite_direction | 1;
+
+			if (collideSprite != 0xFFFF) {
+				vehicle->var_34 = scenario_rand() & 1 ? 1 : -1;
+
+				if (oldVelocity >= 131072) {
+					rct_vehicle* collideVehicle = GET_VEHICLE(collideSprite);
+					collideVehicle->var_C4 = direction;
+					vehicle->var_C4 = direction ^ (1 << 4);
+				}
+			}
+			else {
+				vehicle->var_34 = scenario_rand() & 1 ? 6 : -6;
+
+				if (oldVelocity >= 131072) {
+					vehicle->var_C4 = direction ^ (1 << 4);
+				}
+			}
+		}
+		
+		sprite_move(
+			unk_F64E20->x,
+			unk_F64E20->y,
+			unk_F64E20->z,
+			(rct_sprite*)vehicle
+			);
+		invalidate_sprite_2((rct_sprite*)vehicle);
+	}
+	
+	sint32 eax = vehicle->velocity / 2;
+	sint32 edx = vehicle->velocity >> 8;
+	edx *= edx;
+	if (vehicle->velocity < 0)
+		edx = -edx;
+	edx >>= 5;
+	eax += edx;
+	eax /= vehicle->friction;
+	rct_ride_type* rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+
+	if (!(vehicleEntry->var_14 & (1 << 3))) {
+		vehicle->var_2C = -eax;
+		return RCT2_GLOBAL(0x00F64E18, uint32);
+	}
+
+	sint32 ebx = (vehicle->speed * vehicle->friction) >> 2;
+	sint32 _eax = vehicle->speed << 14;
+	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_3) {
+		_eax = -_eax;
+	}
+	_eax -= vehicle->velocity;
+	_eax *= vehicle->acceleration * 2;
+	_eax /= ebx;
+
+	vehicle->var_2C = _eax - eax;
+	return RCT2_GLOBAL(0x00F64E18, uint32);
+}
+
 rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int direction, uint16 var_44, sint32 var_24, bool head)
 {
 	rct_ride *ride = GET_RIDE(rideIndex);
@@ -4271,12 +4438,17 @@ rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int d
  *
  *  rct2: 0x006DD365
  */
-bool sub_6DD365(rct_vehicle *vehicle)
+static bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId)
 {
 	registers regs;
 	regs.esi = (int)vehicle;
+	regs.eax = x;
+	regs.ecx = y;
 
-	return RCT2_CALLFUNC_Y(0x006DD365, &regs) & 0x100;
+	bool result = RCT2_CALLFUNC_Y(0x006DD365, &regs) & 0x100;
+	if (spriteId != NULL)
+		*spriteId = regs.bp;
+	return result;
 }
 
 /**
