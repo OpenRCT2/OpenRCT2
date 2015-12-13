@@ -1989,8 +1989,113 @@ loc_6DC316:
 	goto end;
 
 loc_6DC3A7:
+	RCT2_GLOBAL(0x00F64E04, rct_vehicle*) = vehicle;
+	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
+	vehicle->velocity += vehicle->var_2C;
+	RCT2_GLOBAL(0x00F64E08, sint32) = vehicle->velocity;
+	RCT2_GLOBAL(0x00F64E0C, sint32) = (vehicle->velocity >> 10) * 42;
+	if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
+		vehicle = vehicle_get_tail(vehicle);
+	}
+	RCT2_GLOBAL(0x00F64E00, rct_vehicle*) = vehicle;
+
+loc_6DC40E:
+	regs.ebx = vehicle->var_1F;
+	RCT2_GLOBAL(0x00F64E10, uint32) = 1;
+	vehicle->var_2C = dword_9A2970[vehicle->var_1F];
+	vehicle->var_24 = RCT2_GLOBAL(0x00F64E0C, uint32) + vehicle->var_24;
+	if ((sint32)vehicle->var_24 < 0) {
+		goto loc_6DCA7A;
+	}
+	if ((sint32)vehicle->var_24 < 0x368A) {
+		goto loc_6DCE02;
+	}
+	vehicle->var_B8 &= ~(1 << 1);
+	unk_F64E20->x = vehicle->x;
+	unk_F64E20->y = vehicle->y;
+	unk_F64E20->z = vehicle->z;
+	invalidate_sprite_2((rct_sprite*)vehicle);
+
+loc_6DC462:
+	vehicle->var_D3 = 0;
+	if (vehicle->var_D3 == 0) {
+		goto loc_6DC476;
+	}
+	vehicle->var_D3--;
+	goto loc_6DC985;
+
+loc_6DC476:
+	if (!(vehicle->var_D5 & (1 << 2))) {
+		regs.edi = RCT2_ADDRESS(0x008B8F74, uint32)[vehicle->var_D4];
+		regs.al = vehicle->var_C5 + 1;
+		if ((uint8)regs.al < ((uint8*)regs.edi)[-1]) {
+			vehicle->var_C5 = regs.al;
+			goto loc_6DC985;
+		}
+		vehicle->var_D5 &= ~(1 << 2);
+	}
+
+	if (vehicle->var_D5 & (1 << 0)) {
+		regs.di = vehicle->is_child ? vehicle->prev_vehicle_on_ride : vehicle->next_vehicle_on_ride;
+		rct_vehicle *vEDI = GET_VEHICLE(regs.di);
+		if (!(vEDI->var_D5 & (1 << 0)) || (vEDI->var_D5 & (1 << 2))) {
+			goto loc_6DC985;
+		}
+		if (vEDI->var_D3 != 0) {
+			goto loc_6DC985;
+		}
+		vEDI->var_D5 &= ~(1 << 0);
+		vehicle->var_D5 &= ~(1 << 0);
+	}
+
+	if (vehicle->var_D5 & (1 << 1)) {
+		regs.di = vehicle->is_child ? vehicle->prev_vehicle_on_ride : vehicle->next_vehicle_on_ride;
+		rct_vehicle *vEDI = GET_VEHICLE(regs.di);
+		if (!(vEDI->var_D5 & (1 << 1)) || (vEDI->var_D5 & (1 << 2))) {
+			goto loc_6DC985;
+		}
+		if (vEDI->var_D3 != 0) {
+			goto loc_6DC985;
+		}
+		vEDI->var_D5 &= ~(1 << 1);
+		vehicle->var_D5 &= ~(1 << 1);
+	}
+
+	if (vehicle->var_D5 & (1 << 3)) {
+		rct_vehicle *vEDI = vehicle;
+
+		for (;;) {
+			vEDI = vEDI->prev_vehicle_on_ride;
+			if (vEDI == vehicle) {
+				break;
+			}
+			if (!vEDI->is_child) continue;
+			if (!(vEDI->var_D5 & (1 << 4))) continue;
+			if (vEDI->track_x != vehicle->track_x) continue;
+			if (vEDI->track_y != vehicle->track_y) continue;
+			if (vEDI->track_z != vehicle->track_z) continue;
+			goto loc_6DC985;
+		}
+
+		vehicle->var_D5 |= (1 << 4);
+		vehicle->var_D5 &= ~(1 << 3);
+	}
+
+loc_6DC5B8:
 	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DC3A7, &regs);
+	RCT2_CALLFUNC_Y(0x006DC5B8, &regs);
+
+loc_6DC985:
+	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DC985, &regs);
+
+loc_6DCA7A:
+	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DCA7A, &regs);
+
+loc_6DCE02:
+	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DCE02, &regs);
 
 end:
 	hook_setreturnregisters(&regs);
