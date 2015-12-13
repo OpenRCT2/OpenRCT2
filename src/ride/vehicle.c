@@ -1100,37 +1100,6 @@ void sub_6DBF3E(rct_vehicle *vehicle)
 
 /**
  *
- *  rct2: 0x006DB429
- */
-void sub_6DB429(rct_vehicle *vehicle, rct_map_element *mapElement)
-{
-	rct_ride *ride = GET_RIDE(vehicle->ride);
-	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
-
-	if (vehicleEntry->var_14 & (1 << 14)) {
-		if (vehicle->var_CD >= 7) {
-			if (mapElement->properties.track.type != 0) {
-				if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) ||
-					!track_element_is_station(mapElement->properties.track.type)
-				) {
-					return;
-				}
-			}
-			uint16 chance = 0x8000;
-			if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_6) {
-				vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_6;
-			} else {
-				chance = 0xA3D;
-			}
-			if ((scenario_rand() & 0xFFFF) <= chance) {
-				vehicle->var_CD = 2;
-			}
-		}
-	}
-}
-
-/**
- *
  *  rct2: 0x006DAB4C
  */
 int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
@@ -2137,14 +2106,15 @@ loc_6DC5B8:
 		x = output.x;
 		y = output.y;
 		z = outZ;
+		direction = outDirection;
 	}
 
 	if (!loc_6DB38B(vehicle, mapElement)) {
-		goto loc_6DB94A;
+		goto loc_6DC9BC;
 	}
 
 	rideType = GET_RIDE(mapElement->properties.track.ride_index)->type;
-	vehicle->update_flags &= VEHICLE_UPDATE_FLAG_11;
+	vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_11;
 	if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_3) {
 		if (mapElement->properties.track.colour & (1 << 2)) {
 			vehicle->update_flags |= VEHICLE_UPDATE_FLAG_11;
@@ -2154,29 +2124,20 @@ loc_6DC5B8:
 	vehicle->track_x = x;
 	vehicle->track_y = y;
 	vehicle->track_z = z;
-	sub_6DB429(vehicle, mapElement);
 
-	if (vehicle->var_CD != 0 && vehicle->var_CD != 5) {
-		regs.al = x >> 5;
-		regs.ah = y >> 5;
-		regs.dl = z >> 3;
-		if (regs.ax != ride->var_13C || regs.dl != ride->var_13E) {
-			if (regs.ax == ride->var_13A && regs.dl == ride->var_13E) {
-				vehicle->var_CD = 4;
-			}
-		} else {
-			vehicle->var_CD = 3;
+	if (vehicle->is_child) {
+		rct_vehicle *prevVehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
+		regs.al = prevVehicle->var_CD;
+		if (regs.al != 0) {
+			regs.al--;
 		}
+		vehicle->var_CD = regs.al;
 	}
 
 	vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_0;
-	if (track_element_is_lift_hill(mapElement)) {
-		vehicle->update_flags |= VEHICLE_UPDATE_FLAG_0;
-	}
-
-loc_6DB50F:
-	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DB50F, &regs);
+	vehicle->track_type = (mapElement->properties.track.type << 2) | (direction & 3);
+	vehicle->var_CF = (mapElement->properties.track.sequence >> 4) << 1;
+	regs.ax = 0;
 
 loc_6DC743:
 	// regs.ax = regs.ax;
