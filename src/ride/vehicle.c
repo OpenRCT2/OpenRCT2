@@ -1109,6 +1109,8 @@ int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
 	rct_ride *ride = GET_RIDE(vehicle->ride);
 	rct_ride_type *rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
 	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+	
+	rct_map_element *mapElement = NULL;
 
 	// esi = vehicle
 	// eax = rideEntry
@@ -1233,7 +1235,7 @@ loc_6DAEB9:
 
 	RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_end;
 	RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_end;
-	rct_map_element *mapElement = map_get_track_element_at_of_type_seq(
+	mapElement = map_get_track_element_at_of_type_seq(
 		vehicle->track_x,
 		vehicle->track_y,
 		vehicle->track_z >> 3,
@@ -2140,9 +2142,86 @@ loc_6DC5B8:
 	regs.ax = 0;
 
 loc_6DC743:
-	// regs.ax = regs.ax;
+	vehicle->var_34 = regs.ax;
+	if (vehicle->is_child) {
+		vehicle->var_C5++;
+		if (vehicle->var_C5 >= 6) {
+			vehicle->var_C5 = 0;
+		}
+	}
+
+	for (;;) {
+		moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, vehicle->var_34);
+		if (moveInfo->x != (uint16)0x8000) {
+			break;
+		}
+		switch (moveInfo->y) {
+		case 0: // loc_6DC7B4
+			if (vehicle->is_child) {
+				vehicle->var_D5 |= (1 << 3);
+			} else {
+				uint16 rand16 = scenario_rand() & 0xFFFF;
+				regs.bl = 14;
+				if (rand16 <= 0xA000) {
+					regs.bl = 12;
+					if (rand16 <= 0x900) {
+						regs.bl = 10;
+					}
+				}
+				vehicle->var_CD = regs.bl;
+			}
+			vehicle->var_34++;
+			break;
+		case 1: // loc_6DC7ED
+			vehicle->var_D3 = mapElement->properties.track.type;
+			vehicle->var_34++;
+			break;
+		case 2: // loc_6DC800
+			vehicle->var_D5 |= (1 << 0);
+			vehicle->var_34++;
+			break;
+		case 3: // loc_6DC810
+			vehicle->var_D5 |= (1 << 1);
+			vehicle->var_34++;
+			break;
+		case 4: // loc_6DC820
+			trackType = mapElement->properties.track.type;
+			if (trackType == TRACK_ELEM_BEGIN_STATION) {
+				rct_peep *peep = GET_PEEP(vehicle->peep[0]);
+				if (peep->id & 7) {
+					trackType = TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP;
+				}
+			}
+			if (trackType == TRACK_ELEM_FLAT_TO_25_DEG_UP) {
+				rct_peep *peep = GET_PEEP(vehicle->peep[0]);
+				if (peep->id & 7) {
+					trackType = TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP;
+				}
+			}
+			vehicle->var_D4 = trackType;
+			vehicle->var_C5 = 0;
+			vehicle->var_34++;
+			break;
+		case 5: // loc_6DC87A
+			vehicle->var_D5 |= (1 << 2);
+			vehicle->var_34++;
+			break;
+		case 6: // loc_6DC88A
+			vehicle->var_D5 &= ~(1 << 4);
+			vehicle->var_D5 |= (1 << 5);
+			vehicle->var_34++;
+			break;
+		default:
+			log_error("Invalid move info...");
+			assert(false);
+			break;
+		}
+	}
+
+loc_6DC8A1:
 	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DC743, &regs);
+	regs.edi = mapElement;
+	RCT2_CALLFUNC_Y(0x006DC8A1, &regs);
 
 loc_6DC985:
 	regs.esi = vehicle;
