@@ -2101,6 +2101,9 @@ loc_6DC5B8:
 	{
 		rct_xy_element input, output;
 		int outZ, outDirection;
+		input.x = vehicle->track_x;
+		input.y = vehicle->track_y;
+		input.element = mapElement;
 		if (!track_block_get_next(&input, &output, &outZ, &outDirection)) {
 			goto loc_6DC9BC;
 		}
@@ -2290,12 +2293,129 @@ loc_6DC9BC:
 	/////////////////////////////////////////
 
 loc_6DCA7A:
-	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DCA7A, &regs);
+	vehicle->var_B8 &= ~(1 << 1);
+	unk_F64E20->x = vehicle->x;
+	unk_F64E20->y = vehicle->y;
+	unk_F64E20->z = vehicle->z;
+	invalidate_sprite_2((rct_sprite*)vehicle);
+
+loc_6DCA9A:
+	regs.ax = vehicle->var_34 - 1;
+	if (regs.ax != (short)0xFFFF) {
+		goto loc_6DCC2C;
+	}
+	
+	trackType = vehicle->track_type >> 2;
+	RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_end;
+	RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_end;
+	mapElement = map_get_track_element_at_of_type_seq(
+		vehicle->track_x, vehicle->track_y, vehicle->track_z,
+		trackType, 0
+	);
+	{
+		track_begin_end trackBeginEnd;
+		if (!track_block_get_previous(vehicle->track_x, vehicle->track_y, mapElement, &trackBeginEnd)) {
+			goto loc_6DC9BC;
+		}
+		x = trackBeginEnd.begin_x;
+		y = trackBeginEnd.begin_y;
+		z = trackBeginEnd.begin_z;
+		direction = trackBeginEnd.begin_direction;
+		mapElement = trackBeginEnd.begin_element;
+	}
+
+	if (!loc_6DB38B(vehicle, mapElement)) {
+		goto loc_6DCD4A;
+	}
+
+	rideType = GET_RIDE(mapElement->properties.track.ride_index)->type;
+	vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_11;
+	if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_3) {
+		if (mapElement->properties.track.colour & (1 << 2)) {
+			vehicle->update_flags |= VEHICLE_UPDATE_FLAG_11;
+		}
+	}
+
+	vehicle->track_x = x;
+	vehicle->track_y = y;
+	vehicle->track_z = z;
+
+	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_0) {
+		vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_0;
+		if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
+			if (RCT2_GLOBAL(0x00F64E08, uint32) < 0) {
+				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_8;
+			}
+		}
+	}
+
+	vehicle->track_type = (mapElement->properties.track.type << 2) | (direction & 3);
+	vehicle->var_CF = (mapElement->properties.track.colour >> 4) << 1;
+	
+	moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, 0);
+	
+	// There are two bytes before the move info list
+	regs.ax = *((uint16*)((int)moveInfo - 2)) - 1;
+
+loc_6DCC2C:
+	vehicle->var_34 = regs.ax;
+
+	moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, vehicle->var_34);
+	x = vehicle->track_x + moveInfo->x;
+	y = vehicle->track_y + moveInfo->y;
+	z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
+
+	// Investigate redundant code
+	regs.ebx = 0;
+	if (regs.ax != unk_F64E20->x) {
+		regs.ebx |= 1;
+	}
+	if (regs.cx == unk_F64E20->y) {
+		regs.ebx |= 2;
+	}
+	if (regs.dx == unk_F64E20->z) {
+		regs.ebx |= 4;
+	}
+	regs.ebx = 0x368A;
+	vehicle->var_24 -= regs.ebx;
+	if ((sint32)vehicle->var_24 < 0) {
+		vehicle->var_24 = 0;
+	}
+
+	unk_F64E20->x = x;
+	unk_F64E20->y = y;
+	unk_F64E20->z = z;
+	vehicle->sprite_direction = moveInfo->direction;
+	vehicle->var_20 = moveInfo->var_08;
+	vehicle->var_1F = moveInfo->var_07;
+
+	if (rideEntry->vehicles[0].var_14 & (1 << 9)) {
+		if (vehicle->var_1F != 0) {
+			vehicle->var_4A = 0;
+			vehicle->var_4C = 0;
+			vehicle->var_4E = 0;
+		}
+	}
+
+	if (vehicle == RCT2_GLOBAL(0x00F64E00, rct_vehicle*)) {
+		if (RCT2_GLOBAL(0x00F64E08, uint32) >= 0) {
+			if (sub_6DD078(vehicle, vehicle->var_44)) {
+				goto loc_6DCD6B;
+			}
+		}
+	}
 
 loc_6DCD2B:
 	regs.esi = vehicle;
 	RCT2_CALLFUNC_Y(0x006DCD2B, &regs);
+
+loc_6DCD4A:
+	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DCD4A, &regs);
+
+loc_6DCD6B:
+	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DCD6B, &regs);
 
 loc_6DCDE4:
 	regs.esi = vehicle;
