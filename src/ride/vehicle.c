@@ -2400,26 +2400,48 @@ loc_6DCC2C:
 	if (vehicle == RCT2_GLOBAL(0x00F64E00, rct_vehicle*)) {
 		if (RCT2_GLOBAL(0x00F64E08, uint32) >= 0) {
 			if (sub_6DD078(vehicle, vehicle->var_44)) {
+				regs.bp = vehicle->var_44;
 				goto loc_6DCD6B;
 			}
 		}
 	}
 
 loc_6DCD2B:
-	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DCD2B, &regs);
+	if (vehicle->var_24 >= 0) {
+		goto loc_6DCDE4;
+	}
+	vehicle->var_2C += RCT2_ADDRESS(0x009A2970, uint32)[vehicle->var_1F];
+	RCT2_GLOBAL(0x00F64E10, uint32)++;
+	goto loc_6DCA9A;
 
 loc_6DCD4A:
-	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DCD4A, &regs);
+	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+	regs.eax = vehicle->var_24 - 0x368A;
+	RCT2_GLOBAL(0x00F64E0C, uint32) -= regs.eax;
+	vehicle->var_24 -= regs.eax;
+	regs.ebx = vehicle->var_1F;
+	goto loc_6DC99A;
 
 loc_6DCD6B:
-	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DCD6B, &regs);
+	regs.eax = vehicle->var_24 - 0x368A;
+	RCT2_GLOBAL(0x00F64E0C, uint32) -= regs.eax;
+	vehicle->var_24 -= regs.eax;
+	rct_vehicle *vEBP = GET_VEHICLE(regs.bp);
+	rct_vehicle *vEDI = RCT2_GLOBAL(0x00F64E04, uint32);
+	regs.eax = abs(vEDI->velocity - vEBP->velocity);
+	if (regs.eax > 0xE0000) {
+		if (!(vehicleEntry->var_14 & (1 << 6))) {
+			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
+		}
+	}
+	vEDI->velocity = vEBP->velocity >> 1;
+	vEBP->velocity = vEDI->velocity >> 1;
+	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
+	goto loc_6DC99A;
 
 loc_6DCDE4:
-	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DCDE4, &regs);
+	sprite_move(unk_F64E20->x, unk_F64E20->y, unk_F64E20->z, (rct_sprite*)vehicle);
+	invalidate_sprite_2((rct_sprite*)vehicle);
 
 loc_6DCE02:
 	regs.esi = vehicle;
