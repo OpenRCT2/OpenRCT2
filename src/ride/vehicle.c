@@ -2495,10 +2495,10 @@ loc_6DCEB2:
 	}
 	if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0) {
 		regs.si = vehicle->next_vehicle_on_train;
-		if (regs.si == SPRITE_INDEX_NULL) {
+		if ((uint16)regs.si == SPRITE_INDEX_NULL) {
 			goto loc_6DCEFF;
 		}
-		vehicle = GET_VEHICLE(regs.si);
+		vehicle = GET_VEHICLE((uint16)regs.si);
 		goto loc_6DC40E;
 	}
 
@@ -2509,8 +2509,95 @@ loc_6DCEB2:
 	goto loc_6DC40E;
 
 loc_6DCEFF:
-	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DCEFF, &regs);
+	vehicle = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
+	regs.eax = 0;
+	regs.ebp = 0;
+	regs.dx = 0;
+	regs.ebx = 0;
+
+	for (;;) {
+		regs.ebx++;
+		regs.dx |= vehicle->update_flags;
+		regs.bp += vehicle->friction;
+		regs.eax += vehicle->var_2C;
+		regs.si = vehicle->next_vehicle_on_train;
+		if ((uint16)regs.si == SPRITE_INDEX_NULL) {
+			break;
+		}
+		vehicle = GET_VEHICLE((uint16)regs.si);
+	}
+
+	vehicle = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
+	regs.ebx /= regs.eax;
+	regs.ecx = (regs.eax * 21) >> 9;
+	regs.eax = vehicle->velocity >> 12;
+	regs.ecx -= regs.eax;
+	regs.ebx = vehicle->velocity;
+	regs.edx = vehicle->velocity >> 8;
+	regs.edx *= regs.edx;
+	if (regs.ebx < 0) {
+		regs.edx = -regs.edx;
+	}
+	regs.edx >>= 4;
+	regs.eax = regs.edx / regs.ebp;
+	regs.ecx -= regs.eax;
+	
+	if (!(vehicleEntry->var_14 & (1 << 3))) {
+		goto loc_6DD069;
+	}
+	if (vehicleEntry->var_12 & (1 << 0)) {
+		regs.eax = vehicle->speed * 0x4000;
+		if (regs.eax < vehicle->velocity) {
+			goto loc_6DD069;
+		}
+	}
+	regs.eax = vehicle->speed;
+	regs.bx = vehicle->track_type >> 2;
+	regs.ebx = regs.eax;
+	regs.eax <<= 14;
+	regs.ebx *= regs.ebp;
+	regs.ebx >>= 2;
+	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_3) {
+		regs.eax = -regs.eax;
+	}
+	regs.eax -= vehicle->velocity;
+	regs.edx = vehicle->acceleration;
+	regs.edx <<= 1;
+	regs.eax *= regs.edx;
+	regs.eax = regs.eax / regs.ebx;
+	
+	if (!(vehicleEntry->var_14 & (1 << 13))) {
+		goto loc_6DD054;
+	}
+
+	if (regs.eax < 0) {
+		regs.eax >>= 4;
+	}
+
+	if (vehicleEntry->var_14 & (1 << 2)) {
+		vehicle->var_B6 = clamp(-0x200, (sint16)vehicle->var_B6, 0x200);
+	}
+
+	if (vehicle->var_1F != 0) {
+		regs.eax = max(0, regs.eax);
+		if (vehicleEntry->var_14 & (1 << 2)) {
+			if (vehicle->var_1F == 2) {
+				vehicle->var_B6 = 0;
+			}
+		}
+	} else {
+	loc_6DD054:
+		regs.ebx = abs(vehicle->velocity);
+		if (regs.ebx > 0x10000) {
+			regs.ecx = 0;
+		}
+	}
+	regs.ecx += regs.eax;
+
+loc_6DD069:
+	vehicle->var_2C = regs.ecx;
+	regs.eax = RCT2_GLOBAL(0x00F64E18, uint32);
+	regs.ebx = RCT2_GLOBAL(0x00F64E1C, uint32);
 
 end:
 	hook_setreturnregisters(&regs);
