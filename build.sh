@@ -12,6 +12,8 @@ if [[ ! -d build ]]; then
 	mkdir -p build
 fi
 
+source transfer.sh
+
 # keep in sync with version in install.sh
 sha256sum=69ff98c9544838fb16384bc78af9dc1c452b9d01d919e43f5fec686d02c9bdd8
 libVFile="./libversion"
@@ -59,8 +61,16 @@ pushd build
 		chmod g+s $(pwd)
 		docker run -u travis -v $PARENT:/work/openrct2 -w /work/openrct2/build -i -t openrct2/openrct2:32bit-only bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && make"
 	else
-		cmake -DCMAKE_BUILD_TYPE=Debug $OPENRCT2_CMAKE_OPTS ..
+		cmake -DCMAKE_BUILD_TYPE=Debug $OPENRCT2_CMAKE_OPTS -DCMAKE_INSTALL_PREFIX=package ..
 		make
+		make install
+		tree -lpFh package
+		if [[ -f openrct2 ]]; then
+			transfer openrct2
+		fi
+		tree -lpFh ../
+		sha256sum package/data/g2.dat
+		transfer package/data/g2.dat
 	fi
 popd
 
