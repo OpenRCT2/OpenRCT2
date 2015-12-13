@@ -23,6 +23,7 @@
 #include "platform.h"
 #include <dlfcn.h>
 #include <stdlib.h>
+#include "../util/util.h"
 
 // See http://syprog.blogspot.ru/2011/12/listing-loaded-shared-objects-in-linux.html
 struct lmap {
