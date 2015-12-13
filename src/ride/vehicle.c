@@ -860,16 +860,11 @@ static void vehicle_update_scenery_door(rct_vehicle *vehicle)
  */
 static bool loc_6DB38B(rct_vehicle *vehicle, rct_map_element *mapElement)
 {
-	uint8 colourThingToXor = (vehicle->update_flags >> 9) & 8;
-	int trackType = mapElement->properties.track.type;
-
 	// Get bank
-	int rideType = GET_RIDE(mapElement->properties.track.ride_index)->type;
-	int trackColour = mapElement->properties.track.colour ^ colourThingToXor;
-	int bankStart = gTrackDefinitions[trackType].bank_start;
-	bankStart = track_get_actual_bank_2(rideType, trackColour, bankStart);
+	int bankStart = track_get_actual_bank_3(vehicle, mapElement);
 	
 	// Get vangle
+	int trackType = mapElement->properties.track.type;
 	int vangleStart = gTrackDefinitions[trackType].vangle_start;
 
 	// ?
@@ -1105,6 +1100,37 @@ void sub_6DBF3E(rct_vehicle *vehicle)
 
 /**
  *
+ *  rct2: 0x006DB429
+ */
+void sub_6DB429(rct_vehicle *vehicle, rct_map_element *mapElement)
+{
+	rct_ride *ride = GET_RIDE(vehicle->ride);
+	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+
+	if (vehicleEntry->var_14 & (1 << 14)) {
+		if (vehicle->var_CD >= 7) {
+			if (mapElement->properties.track.type != 0) {
+				if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) ||
+					!track_element_is_station(mapElement->properties.track.type)
+				) {
+					return;
+				}
+			}
+			uint16 chance = 0x8000;
+			if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_6) {
+				vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_6;
+			} else {
+				chance = 0xA3D;
+			}
+			if ((scenario_rand() & 0xFFFF) <= chance) {
+				vehicle->var_CD = 2;
+			}
+		}
+	}
+}
+
+/**
+ *
  *  rct2: 0x006DAB4C
  */
 int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
@@ -1114,7 +1140,7 @@ int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
 	rct_ride *ride = GET_RIDE(vehicle->ride);
 	rct_ride_type *rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
 	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
-	
+
 	// esi = vehicle
 	// eax = rideEntry
 	// edi = vehicleEntry
@@ -1162,7 +1188,7 @@ loc_6DAE27:
 loc_6DAEB9:
 	regs.edi = vehicle->track_type;
 	regs.cx = vehicle->track_type >> 2;
-	
+
 	int trackType = vehicle->track_type >> 2;
 	if (trackType == 197 || trackType == 198) {
 		if (vehicle->var_34 == 80) {
@@ -1179,7 +1205,7 @@ loc_6DAEB9:
 			ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN &&
 			ride->breakdown_reason_pending != BREAKDOWN_BRAKES_FAILURE &&
 			ride->mechanic_status == RIDE_MECHANIC_STATUS_4
-		)) {
+			)) {
 			regs.eax = vehicle->var_CF << 16;
 			if (regs.eax < RCT2_GLOBAL(0x00F64E08, sint32)) {
 				vehicle->var_2C = -RCT2_GLOBAL(0x00F64E08, sint32) * 16;
@@ -1194,7 +1220,7 @@ loc_6DAEB9:
 
 	if ((trackType == TRACK_ELEM_FLAT && ride->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER) ||
 		(trackType == TRACK_ELEM_POWERED_LIFT)
-	) {
+		) {
 		vehicle->var_2C = RCT2_GLOBAL(0x0097CF40 + (ride->type * 8) + 7, uint8) << 10;
 	}
 	if (trackType == TRACK_ELEM_BRAKE_FOR_DROP) {
@@ -1227,7 +1253,7 @@ loc_6DAEB9:
 			vehicle->var_CD,
 			vehicle->track_type,
 			0
-		);
+			);
 
 		// There are two bytes before the move info list
 		uint16 unk16 = *((uint16*)((int)moveInfo - 2));
@@ -1244,7 +1270,7 @@ loc_6DAEB9:
 		vehicle->track_z >> 3,
 		trackType,
 		0
-	);
+		);
 	if (trackType == TRACK_ELEM_CABLE_LIFT_HILL && vehicle == RCT2_GLOBAL(0x00F64E04, rct_vehicle*)) {
 		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_11;
 	}
@@ -1319,7 +1345,7 @@ loc_6DB358:
 	}
 	if (mapElement->properties.track.type == 211 ||
 		mapElement->properties.track.type == 212
-	) {
+		) {
 		if (!vehicle->is_child && vehicle->velocity <= 0x30000) {
 			vehicle->velocity = 0;
 		}
@@ -1405,7 +1431,7 @@ loc_6DB706:;
 		vehicle->var_CD,
 		vehicle->track_type,
 		vehicle->var_34
-	);
+		);
 	sint16 x = vehicle->track_x + moveInfo->x;
 	sint16 y = vehicle->track_y + moveInfo->y;
 	sint16 z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
@@ -1419,7 +1445,7 @@ loc_6DB706:;
 		vehicle->track_type < 852 &&
 		vehicle->var_34 >= 30 &&
 		vehicle->var_34 <= 66
-	) {
+		) {
 		regs.ebx |= 8;
 	}
 
@@ -1427,14 +1453,14 @@ loc_6DB706:;
 		vehicle->track_type >= 844 &&
 		vehicle->track_type < 852 &&
 		vehicle->var_34 == 96
-	) {
+		) {
 		sub_6DB7D6(vehicle);
 
 		const rct_vehicle_info *moveInfo2 = vehicle_get_move_info(
 			vehicle->var_CD,
 			vehicle->track_type,
 			vehicle->var_34
-		);
+			);
 		x = vehicle->x + moveInfo2->x;
 		y = vehicle->y + moveInfo2->y;
 	}
@@ -1548,7 +1574,7 @@ loc_6DBA33:
 		vehicle->track_z >> 3,
 		trackType,
 		0
-	);
+		);
 
 loc_6DBB08:
 	x = vehicle->track_x;
@@ -1605,7 +1631,7 @@ loc_6DBB7E:;
 		}
 
 		int trackColour = vehicle->update_flags >> 9;
-		int bank = gTrackDefinitions[trackType].bank_end;;
+		int bank = gTrackDefinitions[trackType].bank_end;
 		bank = track_get_actual_bank_2(ride->type, regs.al, bank);
 		int vAngle = gTrackDefinitions[trackType].vangle_end;
 		if (RCT2_GLOBAL(0x00F64E36, uint16) != vAngle ||
@@ -1635,16 +1661,16 @@ loc_6DBC3B:
 
 	if (vehicle->var_CD != 0 &&
 		vehicle->var_CD < 5
-	) {
+		) {
 		sint16 xy = (x >> 5) | ((y >> 5) << 8);
 		if (ride->var_13C == xy &&
 			ride->var_13F == (z >> 3)
-		) {
+			) {
 			vehicle->var_CD = 3;
 		} else if (
 			ride->var_13A == xy &&
 			ride->var_13E == (z >> 3)
-		) {
+			) {
 			vehicle->var_CD = 4;
 		}
 	}
@@ -1683,7 +1709,7 @@ loc_6DBC3B:
 		vehicle->var_CD,
 		vehicle->track_type,
 		0
-	);
+		);
 
 	// There are two bytes before the move info list
 	uint16 unk16 = *((uint16*)((int)moveInfo - 2));
@@ -1696,12 +1722,12 @@ loc_6DBD42:
 		vehicle->var_CD,
 		vehicle->track_type,
 		0
-	);
+		);
 
 	x = vehicle->track_x + moveInfo->x;
 	y = vehicle->track_y + moveInfo->y;
 	z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
-	
+
 	regs.ebx = 0;
 	if (x == unk_F64E20->x) { regs.ebx |= 1; }
 	if (y == unk_F64E20->y) { regs.ebx |= 2; }
@@ -1773,7 +1799,7 @@ loc_6DBE7F:
 		v3->velocity = v4->velocity >> 1;
 		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
 	}
-	
+
 	goto loc_6DB928;
 
 loc_6DBF20:
@@ -1791,7 +1817,7 @@ loc_6DC0F7:
 		if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
 			goto loc_6DC144;
 		}
-	
+
 		vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
 	} else {
 		if (vehicle == RCT2_GLOBAL(0x00F64E04, rct_vehicle*)) {
@@ -1848,7 +1874,7 @@ loc_6DC144:
 	regs.eax = regs.edx;
 	regs.eax = regs.eax / regs.ebp;
 	regs.ecx -= regs.eax;
-	
+
 	if (!(vehicleEntry->var_14 & (1 << 3))) {
 		goto loc_6DC2FA;
 	}
@@ -1960,7 +1986,7 @@ loc_6DC316:
 	if (regs.bx == TRACK_ELEM_WATER_SPLASH) {
 		if (vehicle->var_34 >= 48 &&
 			vehicle->var_34 <= 128
-		) {
+			) {
 			regs.eax = vehicle->velocity >> 6;
 			regs.ecx -= regs.eax;
 		}
@@ -2082,12 +2108,88 @@ loc_6DC476:
 	}
 
 loc_6DC5B8:
+	moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, 0);
+
+	// There are two bytes before the move info list
+	{
+		uint16 unk16_v34 = vehicle->var_34 + 1;
+		uint16 unk16 = *((uint16*)((int)moveInfo - 2));
+		if (unk16_v34 < unk16) {
+			regs.ax = unk16_v34;
+			goto loc_6DC743;
+		}
+	}
+
+	trackType = vehicle->track_type >> 2;
+	RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_end;
+	RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_end;
+	mapElement = map_get_track_element_at_of_type_seq(
+		vehicle->track_x, vehicle->track_y, vehicle->track_z,
+		trackType, 0
+	);
+	{
+		rct_xy_element input, output;
+		int outZ, outDirection;
+		if (!track_block_get_next(&input, &output, &outZ, &outDirection)) {
+			goto loc_6DC9BC;
+		}
+		mapElement = output.element;
+		x = output.x;
+		y = output.y;
+		z = outZ;
+	}
+
+	if (!loc_6DB38B(vehicle, mapElement)) {
+		goto loc_6DB94A;
+	}
+
+	rideType = GET_RIDE(mapElement->properties.track.ride_index)->type;
+	vehicle->update_flags &= VEHICLE_UPDATE_FLAG_11;
+	if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_3) {
+		if (mapElement->properties.track.colour & (1 << 2)) {
+			vehicle->update_flags |= VEHICLE_UPDATE_FLAG_11;
+		}
+	}
+
+	vehicle->track_x = x;
+	vehicle->track_y = y;
+	vehicle->track_z = z;
+	sub_6DB429(vehicle, mapElement);
+
+	if (vehicle->var_CD != 0 && vehicle->var_CD != 5) {
+		regs.al = x >> 5;
+		regs.ah = y >> 5;
+		regs.dl = z >> 3;
+		if (regs.ax != ride->var_13C || regs.dl != ride->var_13E) {
+			if (regs.ax == ride->var_13A && regs.dl == ride->var_13E) {
+				vehicle->var_CD = 4;
+			}
+		} else {
+			vehicle->var_CD = 3;
+		}
+	}
+
+	vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_0;
+	if (track_element_is_lift_hill(mapElement)) {
+		vehicle->update_flags |= VEHICLE_UPDATE_FLAG_0;
+	}
+
+loc_6DB50F:
 	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DC5B8, &regs);
+	RCT2_CALLFUNC_Y(0x006DB50F, &regs);
+
+loc_6DC743:
+	// regs.ax = regs.ax;
+	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DC743, &regs);
 
 loc_6DC985:
 	regs.esi = vehicle;
 	RCT2_CALLFUNC_Y(0x006DC985, &regs);
+
+loc_6DC9BC:
+	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DC9BC, &regs);
 
 loc_6DCA7A:
 	regs.esi = vehicle;

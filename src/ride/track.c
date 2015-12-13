@@ -4962,6 +4962,16 @@ int track_get_actual_bank_2(int rideType, int trackColour, int bank)
 	return bank;
 }
 
+int track_get_actual_bank_3(rct_vehicle *vehicle, rct_map_element *mapElement)
+{
+	uint8 colourThingToXor = (vehicle->update_flags >> 9) & 8;
+	int trackType = mapElement->properties.track.type;
+	int rideType = GET_RIDE(mapElement->properties.track.ride_index)->type;
+	int trackColour = mapElement->properties.track.colour ^ colourThingToXor;
+	int bankStart = gTrackDefinitions[trackType].bank_start;
+	return track_get_actual_bank_2(rideType, trackColour, bankStart);
+}
+
 bool track_element_is_station(rct_map_element *trackElement)
 {
 	switch (trackElement->properties.track.type) {
