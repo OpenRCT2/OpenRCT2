@@ -663,7 +663,7 @@ static void sub_6DAB4C_chunk_1(rct_vehicle *vehicle)
 			}
 
 			if (vehicle->var_1F != 8) {
-				RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 6);
+				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
 			}
 		}
 	} else if (vehicleEntry->var_12 & (1 << 2)) {
@@ -682,7 +682,7 @@ static void sub_6DAB4C_chunk_1(rct_vehicle *vehicle)
 			}
 
 			if (vehicle->var_1F != 8 && vehicle->var_1F != 55) {
-				RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 6);
+				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
 			}
 		}
 	}
@@ -735,7 +735,7 @@ static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
 	);
 	if (trackType == 1) {
 		if (trackElement->flags & (1 << 5)) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= 0x400;
+			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
 		}
 	} else if (trackType == 123 || trackType == 216 || track_element_is_lift_hill(trackElement)) {
 		if (!(trackElement->flags & (1 << 5))) {
@@ -750,7 +750,7 @@ static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
 			}
 			return;
 		}
-		RCT2_GLOBAL(0x00F64E18, uint32) |= 0x400;
+		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
 		vehicle->var_2C = 0;
 		if (vehicle->velocity <= 0x20000) {
 			vehicle->velocity = 0;
@@ -1044,7 +1044,7 @@ void sub_6DBF3E(rct_vehicle *vehicle)
 		return;
 	}
 
-	RCT2_GLOBAL(0x00F64E18, uint32) |= 8;
+	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
 
 	rct_map_element *mapElement = map_get_track_element_at_of_type_seq(
 		vehicle->track_x,
@@ -1068,12 +1068,12 @@ void sub_6DBF3E(rct_vehicle *vehicle)
 			input.y = vehicle->track_y;
 			input.element = mapElement;
 			if (track_block_get_next(&input, &output, &outputZ, &outputDirection)) {
-				RCT2_GLOBAL(0x00F64E18, uint32) |= 0x1000;
+				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_12;
 			}
 		}
 
 		if (vehicle->var_34 <= 3) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= 1;
+			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_0;
 		}
 	}
 
@@ -1086,7 +1086,7 @@ void sub_6DBF3E(rct_vehicle *vehicle)
 	uint16 ax = vehicle->var_34;
 	if (RCT2_GLOBAL(0x00F64E08, uint32) < 0) {
 		if (ax <= 22) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= 1;
+			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_0;
 		}
 	} else {
 		uint16 cx = 17;
@@ -1098,7 +1098,7 @@ void sub_6DBF3E(rct_vehicle *vehicle)
 		}
 
 		if (ax > cx) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= 1;
+			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_0;
 		}
 	}
 }
@@ -1246,7 +1246,7 @@ loc_6DAEB9:
 		0
 	);
 	if (trackType == TRACK_ELEM_CABLE_LIFT_HILL && vehicle == RCT2_GLOBAL(0x00F64E04, rct_vehicle*)) {
-		RCT2_GLOBAL(0x00F64E18, uint32) |= 0x800;
+		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_11;
 	}
 
 	if (track_element_is_block_start(mapElement)) {
@@ -1477,7 +1477,7 @@ loc_6DB928:
 	goto loc_6DAEB9;
 
 loc_6DB94A:
-	RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 5);
+	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
 	regs.eax = vehicle->var_24 + 1;
 	RCT2_GLOBAL(0x00F64E0C, uint32) -= regs.eax;
 	vehicle->var_24 = 0xFFFFFFFF;
@@ -1496,7 +1496,7 @@ loc_6DB967:
 	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_18)) {
 		if (regs.eax > 0xE0000) {
 			if (!(vehicleEntry->var_14 & (1 << 6))) {
-				RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 7);
+				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
 			}
 		}
 	}
@@ -1507,7 +1507,7 @@ loc_6DB967:
 		vehicle->velocity = head->velocity >> 1;
 		head->velocity = vehicle->velocity >> 1;
 	}
-	RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 1);
+	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_1;
 	goto loc_6DBE3F;
 
 loc_6DBA13:
@@ -1654,7 +1654,7 @@ loc_6DBC3B:
 			if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
 				trackType = mapElement->properties.track.type;
 				if (RCT2_ADDRESS(0x0099423C, uint16)[trackType] & 0x20) {
-					RCT2_GLOBAL(0x00F64E18, uint32) |= 0x200;
+					RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_9;
 				}
 			}
 			vehicle->update_flags |= VEHICLE_UPDATE_FLAG_0;
@@ -1664,7 +1664,7 @@ loc_6DBC3B:
 			vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_0;
 			if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
 				if (RCT2_GLOBAL(0x00F64E08, uint32) < 0) {
-					RCT2_GLOBAL(0x00F64E18, uint32) |= 0x100;
+					RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_8;
 				}
 			}
 		}
@@ -1741,7 +1741,7 @@ loc_6DBE3F:
 	goto loc_6DBA33;
 
 loc_6DBE5E:
-	RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 5);
+	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
 	regs.eax = (sint32)vehicle->var_24 - 0x368A;
 	RCT2_GLOBAL(0x00F64E0C, uint32) -= regs.eax;
 	vehicle->var_24 -= regs.eax;
@@ -1760,18 +1760,18 @@ loc_6DBE7F:
 	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_18)) {
 		if (regs.eax > 0xE0000) {
 			if (!(vehicleEntry->var_14 & (1 << 6))) {
-				RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 7);
+				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
 			}
 		}
 	}
 
 	if (vehicleEntry->var_14 & (1 << 14)) {
 		vehicle->velocity -= vehicle->velocity >> 2;
-		RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 2);
+		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
 	} else {
 		vehicle->velocity = v3->velocity >> 1;
 		v3->velocity = v4->velocity >> 1;
-		RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 2);
+		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
 	}
 	
 	goto loc_6DB928;
@@ -1785,7 +1785,7 @@ loc_6DBF3E:
 
 loc_6DC0F7:
 	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_0) {
-		RCT2_GLOBAL(0x00F64E18, uint32) |= 4;
+		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
 	}
 	if (RCT2_GLOBAL(0x00F64E08, uint32) >= 0) {
 		if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
@@ -1983,7 +1983,8 @@ loc_6DC316:
 	regs.eax = RCT2_GLOBAL(0x00F64E18, uint32);
 	regs.ebx = RCT2_GLOBAL(0x00F64E1C, uint32);
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED) {
-		regs.eax &= 0xC0;
+		regs.eax &= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
+		regs.eax &= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
 	}
 	goto end;
 
