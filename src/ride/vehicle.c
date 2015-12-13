@@ -1104,7 +1104,7 @@ void sub_6DBF3E(rct_vehicle *vehicle)
  */
 int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
 {
-	registers regs;
+	registers regs = { 0 };
 
 	rct_ride *ride = GET_RIDE(vehicle->ride);
 	rct_ride_type *rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
@@ -2173,7 +2173,7 @@ loc_6DC743:
 			vehicle->var_34++;
 			break;
 		case 1: // loc_6DC7ED
-			vehicle->var_D3 = mapElement->properties.track.type;
+			vehicle->var_D3 = moveInfo->z;
 			vehicle->var_34++;
 			break;
 		case 2: // loc_6DC800
@@ -2185,20 +2185,20 @@ loc_6DC743:
 			vehicle->var_34++;
 			break;
 		case 4: // loc_6DC820
-			trackType = mapElement->properties.track.type;
-			if (trackType == TRACK_ELEM_BEGIN_STATION) {
+			z = moveInfo->z;
+			if (z == 2) {
 				rct_peep *peep = GET_PEEP(vehicle->peep[0]);
 				if (peep->id & 7) {
-					trackType = TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP;
+					z = 7;
 				}
 			}
-			if (trackType == TRACK_ELEM_FLAT_TO_25_DEG_UP) {
+			if (trackType == 6) {
 				rct_peep *peep = GET_PEEP(vehicle->peep[0]);
 				if (peep->id & 7) {
-					trackType = TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP;
+					z = 8;
 				}
 			}
-			vehicle->var_D4 = trackType;
+			vehicle->var_D4 = z;
 			vehicle->var_C5 = 0;
 			vehicle->var_34++;
 			break;
@@ -2219,13 +2219,63 @@ loc_6DC743:
 	}
 
 loc_6DC8A1:
-	regs.esi = vehicle;
-	regs.edi = mapElement;
-	RCT2_CALLFUNC_Y(0x006DC8A1, &regs);
+	x = vehicle->track_x + moveInfo->x;
+	y = vehicle->track_y + moveInfo->y;
+	z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
+
+	// Investigate redundant code
+	regs.ebx = 0;
+	if (regs.ax != unk_F64E20->x) {
+		regs.ebx |= 1;
+	}
+	if (regs.cx == unk_F64E20->y) {
+		regs.ebx |= 2;
+	}
+	if (regs.dx == unk_F64E20->z) {
+		regs.ebx |= 4;
+	}
+	regs.ebx = 0x368A;
+	vehicle->var_24 -= regs.ebx;
+	if ((sint32)vehicle->var_24 < 0) {
+		vehicle->var_24 = 0;
+	}
+
+	unk_F64E20->x = x;
+	unk_F64E20->y = y;
+	unk_F64E20->z = z;
+	vehicle->sprite_direction = moveInfo->direction;
+	vehicle->var_20 = moveInfo->var_08;
+	vehicle->var_1F = moveInfo->var_07;
+
+	if (rideEntry->vehicles[0].var_14 & (1 << 9)) {
+		if (vehicle->var_1F != 0) {
+			vehicle->var_4A = 0;
+			vehicle->var_4C = 0;
+			vehicle->var_4E = 0;
+		}
+	}
+
+	if (vehicle == RCT2_GLOBAL(0x00F64E00, rct_vehicle*)) {
+		if (RCT2_GLOBAL(0x00F64E08, uint32) >= 0) {
+			sub_6DD078(vehicle, vehicle->var_44);
+		}
+	}
+	goto loc_6DC99A;
 
 loc_6DC985:
-	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DC985, &regs);
+	regs.ebx = 0;
+	vehicle->var_24 -= 0x368A;
+	if ((sint32)vehicle->var_24 < 0) {
+		vehicle->var_24 = 0;
+	}
+
+loc_6DC99A:
+	if ((sint32)vehicle->var_24 < 0x368A) {
+		goto loc_6DCDE4;
+	}
+	vehicle->var_2C = dword_9A2970[vehicle->var_1F];
+	RCT2_GLOBAL(0x00F64E10, uint32)++;
+	goto loc_6DC462;
 
 loc_6DC9BC:
 	regs.esi = vehicle;
@@ -2234,6 +2284,10 @@ loc_6DC9BC:
 loc_6DCA7A:
 	regs.esi = vehicle;
 	RCT2_CALLFUNC_Y(0x006DCA7A, &regs);
+
+loc_6DCDE4:
+	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DCDE4, &regs);
 
 loc_6DCE02:
 	regs.esi = vehicle;
