@@ -2278,12 +2278,24 @@ loc_6DC99A:
 	goto loc_6DC462;
 
 loc_6DC9BC:
-	regs.esi = vehicle;
-	RCT2_CALLFUNC_Y(0x006DC9BC, &regs);
+	RCT2_GLOBAL(0x00F64E18, uint32) |= 0x20;
+	regs.eax = vehicle->var_24 + 1;
+	RCT2_GLOBAL(0x00F64E0C, uint32) -= regs.eax;
+	vehicle->var_24 -= regs.eax;
+	regs.ebx = vehicle->var_1F;
+	goto loc_6DCD2B;
+
+	/////////////////////////////////////////
+	// Dead code: 0x006DC9D9 to 0x006DCA79 //
+	/////////////////////////////////////////
 
 loc_6DCA7A:
 	regs.esi = vehicle;
 	RCT2_CALLFUNC_Y(0x006DCA7A, &regs);
+
+loc_6DCD2B:
+	regs.esi = vehicle;
+	RCT2_CALLFUNC_Y(0x006DCD2B, &regs);
 
 loc_6DCDE4:
 	regs.esi = vehicle;
