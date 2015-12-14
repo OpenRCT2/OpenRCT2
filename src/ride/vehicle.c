@@ -27,10 +27,12 @@
 #include "../openrct2.h"
 #include "../scenario.h"
 #include "../world/map_animation.h"
+#include "../world/scenery.h"
 #include "../world/sprite.h"
 #include "ride.h"
 #include "ride_data.h"
 #include "track.h"
+#include "track_data.h"
 #include "vehicle.h"
 
 rct_xyz16 *unk_F64E20 = (rct_xyz16*)0x00F64E20;
@@ -46,6 +48,17 @@ typedef struct {
 } rct_vehicle_info;
 
 static void vehicle_update(rct_vehicle *vehicle);
+
+const uint8 DoorOpenSoundIds[] = {
+	SOUND_WATER_2,
+	SOUND_DOOR_OPEN
+};
+
+const uint8 DoorCloseSoundIds[] = {
+	SOUND_62,
+	SOUND_DOOR_CLOSE,
+	SOUND_62
+};
 
 /**
 *
@@ -847,6 +860,38 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 
 /**
  *
+ *  rct2: 0x006DEDB1
+ */
+static vehicle_play_scenery_door_open_sound(rct_vehicle *vehicle, rct_map_element *mapElement)
+{
+	rct_scenery_entry *wallEntry = g_wallSceneryEntries[mapElement->properties.fence.type];
+	int doorSoundType = (wallEntry->wall.flags2 >> 1) & 3;
+	if (doorSoundType != 0) {
+		int soundId = DoorOpenSoundIds[doorSoundType];
+		if (soundId != 255) {
+			audio_play_sound_at_location(doorSoundType, vehicle->x, vehicle->track_y, vehicle->track_z);
+		}
+	}
+}
+
+/**
+ *
+ *  rct2: 0x006DED7A
+ */
+static vehicle_play_scenery_door_close_sound(rct_vehicle *vehicle, rct_map_element *mapElement)
+{
+	rct_scenery_entry *wallEntry = g_wallSceneryEntries[mapElement->properties.fence.type];
+	int doorSoundType = (wallEntry->wall.flags2 >> 1) & 3;
+	if (doorSoundType != 0) {
+		int soundId = DoorCloseSoundIds[doorSoundType];
+		if (soundId != 255) {
+			audio_play_sound_at_location(doorSoundType, vehicle->x, vehicle->track_y, vehicle->track_z);
+		}
+	}
+}
+
+/**
+ *
  *  rct2: 0x006DEE93
  */
 static void vehicle_update_scenery_door(rct_vehicle *vehicle)
@@ -911,7 +956,30 @@ static void vehicle_trigger_on_ride_photo(rct_vehicle *vehicle, rct_map_element 
  */
 static void sub_6DEDE8(rct_vehicle *vehicle)
 {
-	RCT2_CALLPROC_X(0x006DEDE8, 0, 0, 0, 0, (int)vehicle, 0, 0);
+	int trackType = vehicle->track_type >> 2;
+	rct_preview_track *trackBlock = TrackBlocks[trackType];
+	rct_track_coordinates *trackCoordinates = &TrackCoordinates[trackType];
+	int x = vehicle->x;
+	int y = vehicle->y;
+	int z = (vehicle->z - trackBlock->z + trackCoordinates->z_begin) >> 3;
+	int direction = (vehicle->track_direction + trackCoordinates->rotation_begin) & 3;
+	direction ^= 2;
+
+	rct_map_element *mapElement = map_get_fence_element_at(x, y, z, direction);
+	if (mapElement == NULL) {
+		return;
+	}
+
+	if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL) {
+		mapElement->properties.fence.item[3] &= 7;
+		mapElement->properties.fence.item[3] |= 0x88;
+		map_animation_create(MAP_ANIMATION_TYPE_WALL_UNKNOWN, x, y, z);
+		vehicle_play_scenery_door_open_sound(vehicle, mapElement);
+	} else {
+		mapElement->properties.fence.item[3] &= 7;
+		mapElement->properties.fence.item[3] |= 0xB0;
+		vehicle_play_scenery_door_close_sound(vehicle, mapElement);
+	}
 }
 
 static void vehicle_update_play_water_splash_sound()
