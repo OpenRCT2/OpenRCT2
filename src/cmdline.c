@@ -98,7 +98,7 @@ int cmdline_run(const char **argv, int argc)
 	 */
 	char** mutableArgv = malloc(argvsize);
 	memcpy(mutableArgv,argv,argvsize);
-	argc = argparse_parse(&argparse, argc, mutableArgv);
+	argc = argparse_parse(&argparse, argc, (const char**)mutableArgv);
 
 	if (version) {
 		print_version();
@@ -130,7 +130,7 @@ int cmdline_run(const char **argv, int argc)
 
 	if (argc != 0) {
 		// see comment next to cmdline_call_action for expected return codes
-		gExitCode = cmdline_call_action(mutableArgv, argc);
+		gExitCode = cmdline_call_action((const char**)mutableArgv, argc);
 		free(mutableArgv);
 		if (gExitCode < 0) {
 			// action failed, don't change exit code
@@ -236,7 +236,7 @@ struct { const char *firstArg; cmdline_action action; } cmdline_table[] = {
 
 /**
  * This function delegates starting the game to different handlers, if found.
- * 
+ *
  * Three cases of return values are supported:
  * - result < 0 means failure, will exit with error code
  *   This case is useful when user provided wrong arguments or the requested
