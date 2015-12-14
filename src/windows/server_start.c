@@ -140,7 +140,7 @@ void window_server_start_open()
 	window->colours[1] = 26;
 	window->colours[2] = 26;
 
-	sprintf(_port, "%lu", gConfigNetwork.default_port);
+	sprintf(_port, "%u", gConfigNetwork.default_port);
 	safe_strncpy(_name, gConfigNetwork.server_name, sizeof(_name));
 }
 

@@ -1343,7 +1343,7 @@ int Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pac
 			chunk_buffer.resize(offset + chunksize);
 		}
 		char status[256];
-		sprintf(status, "Downloading map ... (%lu / %lu)", (offset + chunksize) / 1000, size / 1000);
+		sprintf(status, "Downloading map ... (%u / %u)", (offset + chunksize) / 1000, size / 1000);
 		window_network_status_open(status);
 		memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
 		if (offset + chunksize == size) {

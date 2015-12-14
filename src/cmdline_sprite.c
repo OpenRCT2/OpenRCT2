@@ -434,8 +434,8 @@ int cmdline_for_sprite(const char **argv, int argc)
 				return -1;
 			}
 
-			printf("sprites: %lu\n", spriteFileHeader.num_entries);
-			printf("data size: %lu\n", spriteFileHeader.total_size);
+			printf("sprites: %u\n", spriteFileHeader.num_entries);
+			printf("data size: %u\n", spriteFileHeader.total_size);
 
 			sprite_file_close();
 			return 1;
@@ -459,7 +459,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 			printf("height: %d\n", g1->height);
 			printf("x offset: %d\n", g1->x_offset);
 			printf("y offset: %d\n", g1->y_offset);
-			printf("data offset: 0x%lX\n", (uint32)g1->offset);
+			printf("data offset: 0x%X\n", (uint32)g1->offset);
 
 			sprite_file_close();
 			return 1;
