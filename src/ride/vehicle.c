@@ -840,13 +840,370 @@ static void sub_6D6776(rct_vehicle *vehicle)
 	RCT2_CALLPROC_X(0x006D6776, 0, 0, 0, 0, (int)vehicle, (int)vehicleEntry, 0);
 }
 
+#pragma region off_9A2E84
+
+enum {
+	loc_6D673C,
+	loc_6D66F0,
+	loc_6D672B,
+	loc_6D6711,
+	loc_6D66D6,
+	loc_6D66C3,
+	loc_6D66B0,
+	loc_6D669A,
+	loc_6D6684,
+	loc_6D665A,
+	loc_6D6708,
+	loc_6D6703,
+	loc_6D66DD,
+	loc_6D6718
+};
+
+static const uint8 off_9A2E84[256] = {
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D66F0,
+	loc_6D672B,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D66F0,
+	loc_6D672B,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D66F0,
+	loc_6D672B,
+	loc_6D66F0,
+	loc_6D672B,
+	loc_6D6711,
+	loc_6D66D6,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D66C3,
+	loc_6D66B0,
+	loc_6D66C3,
+	loc_6D66B0,
+	loc_6D66C3,
+	loc_6D66B0,
+	loc_6D66C3,
+	loc_6D66B0,
+	loc_6D669A,
+	loc_6D6684,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D66F0,
+	loc_6D672B,
+	loc_6D6711,
+	loc_6D66D6,
+	loc_6D66C3,
+	loc_6D66B0,
+	loc_6D66C3,
+	loc_6D66B0,
+	loc_6D66C3,
+	loc_6D66B0,
+	loc_6D66F0,
+	loc_6D672B,
+	loc_6D66F0,
+	loc_6D672B,
+	loc_6D669A,
+	loc_6D6684,
+	loc_6D669A,
+	loc_6D6684,
+	loc_6D673C,
+	loc_6D665A,
+	loc_6D673C,
+	loc_6D66F0,
+	loc_6D672B,
+	loc_6D66F0,
+	loc_6D672B,
+	loc_6D66F0,
+	loc_6D672B,
+	loc_6D66F0,
+	loc_6D672B,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D6708,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D6703,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D66DD,
+	loc_6D6718,
+	loc_6D66DD,
+	loc_6D6718,
+	loc_6D66DD,
+	loc_6D6718,
+	loc_6D66DD,
+	loc_6D6718,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D66C3,
+	loc_6D66B0,
+	loc_6D66C3,
+	loc_6D66B0,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D66C3,
+	loc_6D66B0,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D66C3,
+	loc_6D66B0,
+	loc_6D66C3,
+	loc_6D66B0,
+	loc_6D66F0,
+	loc_6D672B,
+	loc_6D66F0,
+	loc_6D672B,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C,
+	loc_6D673C
+};
+
+#pragma endregion
+
 /**
  *
  *  rct2: 0x006D661F
  */
 static void sub_6D661F(rct_vehicle *vehicle)
 {
-	RCT2_CALLPROC_X(0x006D661F, 0, 0, 0, 0, (int)vehicle, 0, 0);
+	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_13) {
+		vehicle->var_B6 = 0;
+		return;
+	}
+
+	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+	int spinningInertia = vehicleEntry->spinning_inertia;
+	int trackType = vehicle->track_type >> 2;
+	sint32 dword_F64E08 = RCT2_GLOBAL(0x00F64E08, sint32);
+	int unk;
+	switch (off_9A2E84[trackType]) {
+	case loc_6D665A:
+		spinningInertia += 6;
+		unk = dword_F64E08 >> spinningInertia;
+		if (vehicle->sprite_index & 1) {
+			vehicle->var_B6 -= unk;
+		} else {
+			vehicle->var_B6 += unk;
+		}
+		break;
+	case loc_6D6684:
+	case loc_6D6703:
+		spinningInertia += 5;
+		vehicle->var_B6 -= dword_F64E08 >> spinningInertia;
+		break;
+	case loc_6D669A:
+		spinningInertia += 5;
+		vehicle->var_B6 += dword_F64E08 >> spinningInertia;
+		break;
+	case loc_6D66B0:
+		spinningInertia += 7;
+		vehicle->var_B6 -= dword_F64E08 >> spinningInertia;
+		break;
+	case loc_6D66C3:
+		spinningInertia += 7;
+		vehicle->var_B6 += dword_F64E08 >> spinningInertia;
+		break;
+	case loc_6D66D6:
+		if (vehicle->var_34 < 48) {
+			spinningInertia += 8;
+			vehicle->var_B6 += dword_F64E08 >> spinningInertia;
+			break;
+		}
+	case loc_6D66DD:
+		spinningInertia += 9;
+		vehicle->var_B6 += dword_F64E08 >> spinningInertia;
+		break;
+	case loc_6D66F0:
+		spinningInertia += 8;
+		vehicle->var_B6 += dword_F64E08 >> spinningInertia;
+		break;
+	case loc_6D6708:
+		if (vehicle->var_34 > 22) {
+			spinningInertia += 5;
+			vehicle->var_B6 += dword_F64E08 >> spinningInertia;
+		}
+		break;
+	case loc_6D6711:
+		if (vehicle->var_34 < 48) {
+			spinningInertia += 8;
+			vehicle->var_B6 += dword_F64E08 >> spinningInertia;
+			break;
+		}
+	case loc_6D6718:
+		spinningInertia += 9;
+		vehicle->var_B6 -= dword_F64E08 >> spinningInertia;
+		break;
+	case loc_6D672B:
+		spinningInertia += 8;
+		vehicle->var_B6 += dword_F64E08 >> spinningInertia;
+		break;
+	}
+
+	unk = clamp(-0x600, vehicle->var_B6, 0x600);
+	vehicle->var_B6 = unk;
+	vehicle->var_BA += unk >> 8;
+	vehicle->var_B6 -= unk >> vehicleEntry->spinning_friction;
+	invalidate_sprite_2((rct_sprite*)vehicle);
 }
 
 /**
