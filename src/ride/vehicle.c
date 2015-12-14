@@ -5927,6 +5927,13 @@ int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
 {
 	registers regs = { 0 };
 
+	//////////////////////////////////////////////////////////////////////////////////////////
+	regs.esi = (int)vehicle;
+	RCT2_CALLFUNC_Y(0x006DAB4C, &regs);
+	if (outStation != NULL) *outStation = regs.ebx;
+	return regs.eax;
+	//////////////////////////////////////////////////////////////////////////////////////////
+
 	rct_ride *ride = GET_RIDE(vehicle->ride);
 	rct_ride_type *rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
 	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
@@ -7421,7 +7428,7 @@ loc_6DD069:
 	regs.ebx = RCT2_GLOBAL(0x00F64E1C, uint32);
 
 end:
-	hook_setreturnregisters(&regs);
+	// hook_setreturnregisters(&regs);
 	return regs.eax;
 }
 
