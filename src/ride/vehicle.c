@@ -896,7 +896,32 @@ static vehicle_play_scenery_door_close_sound(rct_vehicle *vehicle, rct_map_eleme
  */
 static void vehicle_update_scenery_door(rct_vehicle *vehicle)
 {
-	RCT2_CALLPROC_X(0x006DEE93, 0, 0, 0, 0, (int)vehicle, 0, 0);
+	int trackType = vehicle->track_type >> 2;
+	rct_preview_track *trackBlock = TrackBlocks[trackType];
+	while ((trackBlock + 1)->index != 255) {
+		trackBlock++;
+	}
+	rct_track_coordinates *trackCoordinates = &TrackCoordinates[trackType];
+	int x = floor2(vehicle->x, 32);
+	int y = floor2(vehicle->y, 32);
+	int z = (vehicle->track_z - trackBlock->z + trackCoordinates->z_end) >> 3;
+	int direction = (vehicle->track_direction + trackCoordinates->rotation_end) & 3;
+
+	rct_map_element *mapElement = map_get_fence_element_at(x, y, z, direction);
+	if (mapElement == NULL) {
+		return;
+	}
+
+	if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL) {
+		mapElement->properties.fence.item[3] &= 7;
+		mapElement->properties.fence.item[3] |= 8;
+		map_animation_create(MAP_ANIMATION_TYPE_WALL_UNKNOWN, x, y, z);
+		vehicle_play_scenery_door_open_sound(vehicle, mapElement);
+	} else {
+		mapElement->properties.fence.item[3] &= 7;
+		mapElement->properties.fence.item[3] |= 0x30;
+		vehicle_play_scenery_door_close_sound(vehicle, mapElement);
+	}
 }
 
 /**
@@ -959,9 +984,9 @@ static void sub_6DEDE8(rct_vehicle *vehicle)
 	int trackType = vehicle->track_type >> 2;
 	rct_preview_track *trackBlock = TrackBlocks[trackType];
 	rct_track_coordinates *trackCoordinates = &TrackCoordinates[trackType];
-	int x = vehicle->x;
-	int y = vehicle->y;
-	int z = (vehicle->z - trackBlock->z + trackCoordinates->z_begin) >> 3;
+	int x = vehicle->track_x;
+	int y = vehicle->track_y;
+	int z = (vehicle->track_z - trackBlock->z + trackCoordinates->z_begin) >> 3;
 	int direction = (vehicle->track_direction + trackCoordinates->rotation_begin) & 3;
 	direction ^= 2;
 
