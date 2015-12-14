@@ -3852,6 +3852,7 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG)
 {
 	int _eax = (((sint64)0x280000) * RCT2_ADDRESS(0x009A37E4, sint32)[vehicle->var_1F]) >> 32;
 	_eax = (((sint64)_eax) * RCT2_ADDRESS(0x009A39C4, sint32)[vehicle->var_20]) >> 32;
+	int _ebp = 0, _ecx = 0, _edx = 0;
 
 	switch (vehicle->track_type >> 2) {
 	case TRACK_ELEM_FLAT:
@@ -3920,11 +3921,12 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG)
 	case TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN:
 	case TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN:
 	case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN:
-	case TRACK_ELEM_LEFT_QUATER_TURN_1_TILE_90_DEG_UP:
-	case TRACK_ELEM_RIGHT_QUATER_TURN_1_TILE_90_DEG_UP:
-	case TRACK_ELEM_LEFT_QUATER_TURN_1_TILE_90_DEG_DOWN:
-	case TRACK_ELEM_RIGHT_QUATER_TURN_1_TILE_90_DEG_DOWN:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_UP:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_UP:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_DOWN:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN:
 		//6d73FF
+		// Do nothing
 		break;
 	case TRACK_ELEM_FLAT_TO_25_DEG_UP://
 	case TRACK_ELEM_25_DEG_DOWN_TO_FLAT://
@@ -3942,19 +3944,8 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG)
 	case TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP:
 	case TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT:
 	case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT:
+		_ecx = 103;
 		//6d7509
-		break;
-	case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP://
-	case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN://
-	case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP_COVERED:
-	case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN_COVERED:
-		//6d7545
-		break;
-	case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP://
-	case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN://
-	case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP_COVERED:
-	case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN_COVERED:
-		//6d7551
 		break;
 	case TRACK_ELEM_25_DEG_UP_TO_FLAT://
 	case TRACK_ELEM_FLAT_TO_25_DEG_DOWN://
@@ -3973,7 +3964,22 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG)
 	case TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT:
 	case TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN:
 	case TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN:
+		_ecx = -103;
 		//6d7569
+		break;
+	case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP://
+	case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN://
+	case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP_COVERED:
+	case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN_COVERED:
+		_ecx = 82;
+		//6d7545
+		break;
+	case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP://
+	case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN://
+	case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP_COVERED:
+	case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN_COVERED:
+		_ecx = -82;
+		//6d7551
 		break;
 	case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES://
 	case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP:
@@ -3986,6 +3992,7 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG)
 	case TRACK_ELEM_LEFT_FLYER_TWIST_UP:
 	case TRACK_ELEM_LEFT_FLYER_TWIST_DOWN:
 	case TRACK_ELEM_LEFT_HEARTLINE_ROLL:
+		_ebp = 98;
 		//6d7590
 		break;
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES://
@@ -3999,6 +4006,7 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG)
 	case TRACK_ELEM_RIGHT_FLYER_TWIST_UP:
 	case TRACK_ELEM_RIGHT_FLYER_TWIST_DOWN:
 	case TRACK_ELEM_RIGHT_HEARTLINE_ROLL:
+		_ebp = -98;
 		//6d75B7
 		break;
 	case TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES:
@@ -4006,6 +4014,8 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG)
 	case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE:
 	case TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_UP:
 	case TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_DOWN:
+		_ecx = 200;
+		_ebp = 160;
 		//6d75E1
 		break;
 	case TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES:
@@ -4013,18 +4023,23 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG)
 	case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE:
 	case TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_UP:
 	case TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_DOWN:
+		_ecx = 200;
+		_ebp = -160;
 		//6d75F0
 		break;
 	case TRACK_ELEM_S_BEND_LEFT:
 	case TRACK_ELEM_S_BEND_LEFT_COVERED:
+		_ebp = (vehicle->track_progress < 48) ? 98 : -98;
 		//6d75FF
 		break;
 	case TRACK_ELEM_S_BEND_RIGHT:
 	case TRACK_ELEM_S_BEND_RIGHT_COVERED:
+		_ebp = (vehicle->track_progress < 48) ? -98 : 98;
 		//6d7608
 		break;
 	case TRACK_ELEM_LEFT_VERTICAL_LOOP:
 	case TRACK_ELEM_RIGHT_VERTICAL_LOOP:
+		_ecx = (abs(vehicle->track_progress - 155) / 2) + 28;
 		//6d7690
 		break;
 	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES:
@@ -4032,6 +4047,7 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG)
 	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
 	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_COVERED:
 	case TRACK_ELEM_LEFT_CURVED_LIFT_HILL:
+		_ebp = 59;
 		//6d7704
 		break;
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES:
@@ -4039,98 +4055,139 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG)
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_COVERED:
 	case TRACK_ELEM_RIGHT_CURVED_LIFT_HILL:
+		_ebp = -59;
 		//6d7710
 		break;
 	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK:
 	case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL:
 	case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL:
+		_ecx = 100;
+		_ebp = 100;
 		//6d7782
 		break;
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK:
 	case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL:
 	case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL:
+		_ecx = 100;
+		_ebp = -100;
 		//6d778E
 		break;
 	case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE:
+		_ebp = 45;
 		//6d779A
 		break;
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE:
+		_ebp = -45;
 		//6d77A3
 		break;
 	case TRACK_ELEM_HALF_LOOP_UP:
 	case TRACK_ELEM_FLYER_HALF_LOOP_UP:
+		_ecx = (-(vehicle->track_progress - 155) / 2) + 28;
 		//6d763E
 		break;
 	case TRACK_ELEM_HALF_LOOP_DOWN:
 	case TRACK_ELEM_FLYER_HALF_LOOP_DOWN:
+		_ecx = (vehicle->track_progress / 2) + 28;
 		//6d7656
 		break;
 	case TRACK_ELEM_LEFT_CORKSCREW_UP:
 	case TRACK_ELEM_RIGHT_CORKSCREW_DOWN:
 	case TRACK_ELEM_LEFT_FLYER_CORKSCREW_UP:
 	case TRACK_ELEM_RIGHT_FLYER_CORKSCREW_DOWN:
+		_ecx = 52;
+		_ebp = 70;
 		//6d76AA
 		break;
 	case TRACK_ELEM_RIGHT_CORKSCREW_UP:
 	case TRACK_ELEM_LEFT_CORKSCREW_DOWN:
 	case TRACK_ELEM_RIGHT_FLYER_CORKSCREW_UP:
 	case TRACK_ELEM_LEFT_FLYER_CORKSCREW_DOWN:
+		_ecx = 52;
+		_ebp = -70;
 		//6d76B9
 		break;
 	case TRACK_ELEM_FLAT_TO_60_DEG_UP:
 	case TRACK_ELEM_60_DEG_DOWN_TO_FLAT:
+		_ecx = 56;
 		//6d747C
 		break;
 	case TRACK_ELEM_60_DEG_UP_TO_FLAT:
 	case TRACK_ELEM_FLAT_TO_60_DEG_DOWN:
 	case TRACK_ELEM_BRAKE_FOR_DROP:
+		_ecx = -56;
 		//6d7488
 		break;
 	case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP:
 	case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN:
+		_ebp = 88;
 		//6d7770
 		break;
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP:
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN:
+		_ebp = -88;
 		//6d7779
 		break;
 	case TRACK_ELEM_WATER_SPLASH:
+		_ecx = -150;
+		if (vehicle->track_progress < 32)
+			break;
+		_ecx = 150;
+		if (vehicle->track_progress < 64)
+			break;
+		_ecx = 0;
+		if (vehicle->track_progress < 96)
+			break;
+		_ecx = 150;
+		if (vehicle->track_progress < 128)
+			break;
+		_ecx = -150;
 		//6d7408
 		break;
 	case TRACK_ELEM_FLAT_TO_60_DEG_UP_LONG_BASE:
 	case TRACK_ELEM_FLAT_TO_60_DEG_DOWN_LONG_BASE:
+		_ecx = 160;
 		//6d74F1
 		break;
 	case TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE:
 	case TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE_122:
+		_ecx = -160;
 		//6d74FD
 		break;
 	case TRACK_ELEM_REVERSE_WHOA_BELLY_SLOPE:
 	case TRACK_ELEM_AIR_THRUST_VERTICAL_DOWN_TO_LEVEL:
+		_ecx = 120;
 		//6d7458
 		break;
 	case TRACK_ELEM_60_DEG_UP_TO_90_DEG_UP:
 	case TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN:
+		_ecx = 110;
 		//6d7515
 		break;
 	case TRACK_ELEM_90_DEG_UP_TO_60_DEG_UP:
 	case TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN:
+		_ecx = -110;
 		//6d7521
 		break;
 	case TRACK_ELEM_LEFT_EIGHTH_TO_DIAG:
 	case TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL:
+		_ebp = 137;
 		//6d7575
 		break;
 	case TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG:
 	case TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL:
+		_ebp = -137;
 		//6d759C
 		break;
 	case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG:
 	case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL:
+		_ecx = 270;
+		_ebp = 200;
 		//6d75C3
 		break;
 	case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG:
 	case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL:
+		_ecx = 270;
+		_ebp = -200;
 		//6d75D2
 		break;
 	case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP:
@@ -4139,15 +4196,8 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG)
 	case TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP:
 	case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK:
 	case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK:
+		_ecx = 113;
 		//6d7494
-		break;
-	case TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP:
-	case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN:
-		//6D752D
-		break;
-	case TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP:
-	case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN:
-		//6D7539
 		break;
 	case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
 	case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN:
@@ -4155,88 +4205,169 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG)
 	case TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK:
 	case TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN:
 	case TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN:
+		_ecx = -113;
 		//6d755D
+		break;	
+	case TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP:
+	case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN:
+		_ecx = 95;
+		//6D752D
+		break;
+	case TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP:
+	case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN:
+		_ecx = -95;
+		//6D7539
 		break;
 	case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_UP:
 	case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_FLAT:
+		_ecx = 60;
 		//6D7464
 		break;
 	case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
 	case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_DOWN:
+		_ecx = -60;
 		//6d7470
 		break;
 	case TRACK_ELEM_LEFT_BARREL_ROLL_UP_TO_DOWN:
 	case TRACK_ELEM_LEFT_BARREL_ROLL_DOWN_TO_UP:
+		_ecx = 170;
+		_ebp = 115;
 		//6d7581
 		break;
 	case TRACK_ELEM_RIGHT_BARREL_ROLL_UP_TO_DOWN:
 	case TRACK_ELEM_RIGHT_BARREL_ROLL_DOWN_TO_UP:
+		_ecx = 170;
+		_ebp = -115;
 		//6d75A8
 		break;
 	case TRACK_ELEM_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP:
+		_ecx = -(vehicle->track_progress / 2) + 134;
+		_ebp = 90;
 		//6d771C
 		break;
 	case TRACK_ELEM_RIGHT_BANK_TO_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP:
+		_ecx = -(vehicle->track_progress / 2) + 134;
+		_ebp = -90;
 		//6D7746
 		break;
 	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_LEFT_BANK:
-		//6D7731
+		_ecx = -(vehicle->track_progress / 2) + 134;
+		_ebp = 90;
+		//6D7731 identical to 6d771c
 		break;
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_RIGHT_BANK:
-		//6D775B
+		_ecx = -(vehicle->track_progress / 2) + 134;
+		_ebp = -90;
+		//6D775B identical to 6d7746
 		break;
 	case TRACK_ELEM_LEFT_LARGE_HALF_LOOP_UP:
 	case TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_UP:
+		_ecx = (-(vehicle->track_progress - 311) / 4) + 46;
 		//6d7666
 		break;
 	case TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_DOWN:
 	case TRACK_ELEM_LEFT_LARGE_HALF_LOOP_DOWN:
+		_ecx = (vehicle->track_progress / 4) + 46;
 		//6d767F
 		break;
 	case TRACK_ELEM_HEARTLINE_TRANSFER_UP:
+		_ecx = 103;
+		if (vehicle->track_progress < 32)
+			break;
+		_ecx = -103;
+		if (vehicle->track_progress < 64)
+			break;
+		_ecx = 0;
+		if (vehicle->track_progress < 96)
+			break;
+		_ecx = 103;
+		if (vehicle->track_progress < 128)
+			break;
+		_ecx = -103;
 		//6d74A0
 		break;
 	case TRACK_ELEM_HEARTLINE_TRANSFER_DOWN:
+		_ecx = -103;
+		if (vehicle->track_progress < 32)
+			break;
+		_ecx = 103;
+		if (vehicle->track_progress < 64)
+			break;
+		_ecx = 0;
+		if (vehicle->track_progress < 96)
+			break;
+		_ecx = -103;
+		if (vehicle->track_progress < 128)
+			break;
+		_ecx = 103;
 		//6D74CA
 		break;
-	case TRACK_ELEM_MULTIDIM_INVERTED_FLAT_TO_90_DEG_QUATER_LOOP_DOWN:
-	case TRACK_ELEM_INVERTED_FLAT_TO_90_DEG_QUATER_LOOP_DOWN:
-	case TRACK_ELEM_MULTIDIM_FLAT_TO_90_DEG_DOWN_QUATER_LOOP:
+	case TRACK_ELEM_MULTIDIM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN:
+	case TRACK_ELEM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN:
+	case TRACK_ELEM_MULTIDIM_FLAT_TO_90_DEG_DOWN_QUARTER_LOOP:
+		_ecx = (vehicle->track_progress / 4) + 55;
 		//6d762D
 		break;
-	case TRACK_ELEM_90_DEG_TO_INVERTED_FLAT_QUATER_LOOP_UP:
-	case TRACK_ELEM_MULTIDIM_90_DEG_UP_TO_INVERTED_FLAT_QUATER_LOOP:
+	case TRACK_ELEM_90_DEG_TO_INVERTED_FLAT_QUARTER_LOOP_UP:
+	case TRACK_ELEM_MULTIDIM_90_DEG_UP_TO_INVERTED_FLAT_QUARTER_LOOP:
 	case 255:
+		_ecx = (-(vehicle->track_progress - 137) / 4) + 55;
 		//6D7614
 		break;
 	case TRACK_ELEM_AIR_THRUST_TOP_CAP:
+		_ecx = -60;
 		//6D744C
 		break;
-	case TRACK_ELEM_LEFT_BANKED_QUATER_TURN_3_TILE_25_DEG_UP:
-	case TRACK_ELEM_LEFT_BANKED_QUATER_TURN_3_TILE_25_DEG_DOWN:
+	case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP:
+	case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN:
+		_ecx = 200;
+		_ebp = 100;
 		//6d76C8
 		break;
-	case TRACK_ELEM_RIGHT_BANKED_QUATER_TURN_3_TILE_25_DEG_UP:
-	case TRACK_ELEM_RIGHT_BANKED_QUATER_TURN_3_TILE_25_DEG_DOWN:
+	case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP:
+	case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN:
+		_ecx = 200;
+		_ebp = -100;
 		//6d76d7
 		break;
-	case TRACK_ELEM_LEFT_BANKED_QUATER_TURN_5_TILE_25_DEG_UP:
-	case TRACK_ELEM_LEFT_BANKED_QUATER_TURN_5_TILE_25_DEG_DOWN:
+	case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP:
+	case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN:
+		_ecx = 200;
+		_ebp = 160;
 		//6D76E6
 		break;
-	case TRACK_ELEM_RIGHT_BANKED_QUATER_TURN_5_TILE_25_DEG_UP:
-	case TRACK_ELEM_RIGHT_BANKED_QUATER_TURN_5_TILE_25_DEG_DOWN:
+	case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP:
+	case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN:
+		_ecx = 200;
+		_ebp = -160;
 		//6d76F5
 		break;
 	}
 
+	if (_ecx != 0) {
+		_eax += abs(vehicle->velocity) * 98 / _ecx;
+	}
+
+	if (_ebp != 0) {
+		_edx += abs(vehicle->velocity) * 98 / _ebp;
+	}
+
+	_eax *= 10;
+	_edx *= 10;
+	_eax >>= 16;
+	_edx >>= 16;
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 
 	esi = (int)vehicle;
 	RCT2_CALLFUNC_X(0x006D73D0, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
-	if (verticalG != NULL) *verticalG = (sint16)(eax & 0xFFFF);
-	if (lateralG != NULL) *lateralG = (sint16)(edx & 0xFFFF);
+	// Note shr causing this to assert on all loops
+	if (_eax != (sint16)(eax & 0xFFFF))
+		assert(_eax == (sint16)(eax & 0xFFFF));
+	if (_edx != (sint16)(edx & 0xFFFF))
+		assert(_edx == (sint16)(edx & 0xFFFF));
+	if (verticalG != NULL) *verticalG = (sint16)(_eax & 0xFFFF);
+	if (lateralG != NULL) *lateralG = (sint16)(_edx & 0xFFFF);
 }
 
 void vehicle_set_map_toolbar(rct_vehicle *vehicle)
