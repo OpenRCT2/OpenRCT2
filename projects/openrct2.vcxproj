@@ -208,6 +208,7 @@
     <ClInclude Include="..\src\core\Memory.hpp" />
     <ClInclude Include="..\src\core\StringBuilder.hpp" />
     <ClInclude Include="..\src\core\StringReader.hpp" />
+    <ClInclude Include="..\src\core\Util.hpp" />
     <ClInclude Include="..\src\cursors.h" />
     <ClInclude Include="..\src\diagnostic.h" />
     <ClInclude Include="..\src\drawing\drawing.h" />
