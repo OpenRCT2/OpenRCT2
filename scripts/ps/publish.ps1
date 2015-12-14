@@ -7,7 +7,8 @@
 param (
     [string]$Server  = "",
     [string]$BuildNumber = "",
-    [string]$GitBranch = ""
+    [string]$GitBranch = "",
+    [switch]$Installer = $false
 )
 
 # Setup
@@ -97,6 +98,41 @@ function do-package()
     Remove-Item -Force -Recurse $tempDir -ErrorAction SilentlyContinue
 }
 
+# Installer
+function do-installer()
+{
+    Write-Host "Publishing OpenRCT2..." -ForegroundColor Cyan
+    $artifactsDir = "$rootPath\artifacts"
+    $installerDir = "$rootPath\distribution\windows"
+
+    # Create artifacts directory
+    New-Item -Force -ItemType Directory $artifactsDir > $null
+
+    # Create installer
+    & "$installerDir\build.ps1"
+    if ($LASTEXITCODE -ne 0)
+    {
+        Write-Host "Failed to create installer." -ForegroundColor Red
+        exit 1
+    }
+
+    $binaries = (Get-ChildItem "$installerDir\*.exe" | Sort-Object -Property LastWriteTime -Descending)
+    if ($binaries -eq 0)
+    {
+        Write-Host "Unable to find created installer." -ForegroundColor Red
+        exit 1
+    }
+
+    Copy-Item $binaries[0].FullName $artifactsDir
+}
+
 do-prepareSource
 do-build
-do-package
+if ($Installer)
+{
+    do-installer
+}
+else
+{
+    do-package
+}
