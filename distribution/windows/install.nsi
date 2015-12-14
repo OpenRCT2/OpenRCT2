@@ -2,7 +2,7 @@
 !define /ifndef APPV_MAJOR 0
 !define /ifndef APPV_MINOR 0
 !define /ifndef APPV_MAINT 4
-!define /ifndef APPV_BUILD 1
+!define /ifndef APPV_BUILD 0
 !define /ifndef APPV_EXTRA "-beta"
 
 !define APPNAME "OpenRCT2"   ; Define application name
