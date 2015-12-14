@@ -531,6 +531,17 @@ void platform_process_messages()
 
 			// Text input
 
+                        // Clear the input on <CTRL>Backspace
+                        if (gTextInput != NULL
+                                && e.key.keysym.sym == SDLK_BACKSPACE
+                                && e.key.keysym.mod & KMOD_CTRL) {
+                            memset(gTextInput, '\0', gTextInputMaxLength);
+                            gTextInputCursorPosition = 0;
+                            gTextInputLength = 0;
+                            console_refresh_caret();
+                            window_update_textbox();
+                        }
+
 			// If backspace and we have input text with a cursor position none zero
 			if (e.key.keysym.sym == SDLK_BACKSPACE && gTextInputLength > 0 && gTextInput != NULL && gTextInputCursorPosition) {
 				int dstIndex = gTextInputCursorPosition;
