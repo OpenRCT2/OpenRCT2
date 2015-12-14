@@ -27,6 +27,7 @@ extern "C" {
 }
 #include "mixer.h"
 #include <cmath>
+#include "../core/Util.hpp"
 
 Mixer gMixer;
 
@@ -434,10 +435,10 @@ Mixer::Mixer()
 {
 	effectbuffer = 0;
 	volume = 1;
-	for (int i = 0; i < countof(css1sources); i++) {
+	for (size_t i = 0; i < Util::CountOf(css1sources); i++) {
 		css1sources[i] = 0;
 	}
-	for (int i = 0; i < countof(musicsources); i++) {
+	for (size_t i = 0; i < Util::CountOf(musicsources); i++) {
 		musicsources[i] = 0;
 	}
 }
@@ -458,7 +459,7 @@ void Mixer::Init(const char* device)
 	format.channels = have.channels;
 	format.freq = have.freq;
 	const char* filename = get_file_path(PATH_ID_CSS1);
-	for (int i = 0; i < countof(css1sources); i++) {
+	for (size_t i = 0; i < Util::CountOf(css1sources); i++) {
 		Source_Sample* source_sample = new Source_Sample;
 		if (source_sample->LoadCSS1(filename, i)) {
 			source_sample->Convert(format); // convert to audio output format, saves some cpu usage but requires a bit more memory, optional
@@ -481,13 +482,13 @@ void Mixer::Close()
 	}
 	Unlock();
 	SDL_CloseAudioDevice(deviceid);
-	for (int i = 0; i < countof(css1sources); i++) {
+	for (size_t i = 0; i < Util::CountOf(css1sources); i++) {
 		if (css1sources[i] && css1sources[i] != &source_null) {
 			delete css1sources[i];
 			css1sources[i] = 0;
 		}
 	}
-	for (int i = 0; i < countof(musicsources); i++) {
+	for (size_t i = 0; i < Util::CountOf(musicsources); i++) {
 		if (musicsources[i] && musicsources[i] != &source_null) {
 			delete musicsources[i];
 			musicsources[i] = 0;
@@ -530,9 +531,9 @@ void Mixer::Stop(Channel& channel)
 	Unlock();
 }
 
-bool Mixer::LoadMusic(int pathId)
+bool Mixer::LoadMusic(size_t pathId)
 {
-	if (pathId >= countof(musicsources)) {
+	if (pathId >= Util::CountOf(musicsources)) {
 		return false;
 	}
 	if (!musicsources[pathId]) {
@@ -797,14 +798,14 @@ void Mixer_Init(const char* device)
 	gMixer.Init(device);
 }
 
-void* Mixer_Play_Effect(int id, int loop, int volume, float pan, double rate, int deleteondone)
+void* Mixer_Play_Effect(size_t id, int loop, int volume, float pan, double rate, int deleteondone)
 {
 	if (gOpenRCT2Headless) return 0;
 
 	if (!gConfigSound.sound) {
 		return 0;
 	}
-	if (id >= countof(gMixer.css1sources)) {
+	if (id >= Util::CountOf(gMixer.css1sources)) {
 		return 0;
 	}
 	gMixer.Lock();

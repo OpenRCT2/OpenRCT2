@@ -554,10 +554,10 @@ void platform_resolve_user_data_path()
 	char buffer[MAX_PATH];
 	buffer[0] = '\0';
 	log_verbose("buffer = '%s'", buffer);
-	
+
 	const char *homedir = getpwuid(getuid())->pw_dir;
 	platform_posix_sub_user_data_path(buffer, homedir, separator);
-	
+
 	log_verbose("OpenRCT2 user data directory = '%s'", buffer);
 	int len = strnlen(buffer, MAX_PATH);
 	wchar_t *w_buffer = regular_to_wchar(buffer);
