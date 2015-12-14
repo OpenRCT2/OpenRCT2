@@ -88,7 +88,7 @@ int gfx_get_string_width_new_lined(utf8 *text)
 }
 
 /**
- *  Return the width of the string in buffer
+ * Return the width of the string in buffer
  *
  *  rct2: 0x006C2321
  * buffer (esi)
@@ -99,7 +99,7 @@ int gfx_get_string_width(char* buffer)
 }
 
 /**
- *  Clip the text in buffer to width, add ellipsis and return the new width of the clipped string
+ * Clip the text in buffer to width, add ellipsis and return the new width of the clipped string
  *
  *  rct2: 0x006C2460
  * buffer (esi)
@@ -152,11 +152,11 @@ int gfx_clip_string(utf8 *text, int width)
 }
 
 /**
- *  Wrap the text in buffer to width, returns width of longest line.
+ * Wrap the text in buffer to width, returns width of longest line.
  *
- *  Inserts NULL where line should break (as \n is used for something else),
- *  so the number of lines is returned in num_lines. font_height seems to be
- *  a control character for line height.
+ * Inserts NULL where line should break (as \n is used for something else),
+ * so the number of lines is returned in num_lines. font_height seems to be
+ * a control character for line height.
  *
  *  rct2: 0x006C21E2
  * buffer (esi)
@@ -504,7 +504,7 @@ void colour_char(uint8 colour, uint16* current_font_flags, uint8* palette_pointe
 
 /**
  * Changes the palette so that the next character changes colour
- *  This is specific to changing to a predefined window related colour
+ * This is specific to changing to a predefined window related colour
  */
 void colour_char_window(uint8 colour, uint16* current_font_flags,uint8* palette_pointer) {
 
@@ -582,7 +582,7 @@ void draw_string_centred_underline(rct_drawpixelinfo *dpi, int format, void *arg
 
 /**
  *
- * rct2: 0x006C1DB7
+ *  rct2: 0x006C1DB7
  *
  * left     : cx
  * top      : dx
@@ -682,7 +682,7 @@ int string_get_height_raw(char *buffer)
 
 /**
  *
- * rct2: 0x006C1F57
+ *  rct2: 0x006C1F57
  *
  * colour   : al
  * format   : bx

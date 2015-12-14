@@ -531,6 +531,17 @@ void platform_process_messages()
 
 			// Text input
 
+                        // Clear the input on <CTRL>Backspace
+                        if (gTextInput != NULL
+                                && e.key.keysym.sym == SDLK_BACKSPACE
+                                && e.key.keysym.mod & KMOD_CTRL) {
+                            memset(gTextInput, '\0', gTextInputMaxLength);
+                            gTextInputCursorPosition = 0;
+                            gTextInputLength = 0;
+                            console_refresh_caret();
+                            window_update_textbox();
+                        }
+
 			// If backspace and we have input text with a cursor position none zero
 			if (e.key.keysym.sym == SDLK_BACKSPACE && gTextInputLength > 0 && gTextInput != NULL && gTextInputCursorPosition) {
 				int dstIndex = gTextInputCursorPosition;
@@ -828,8 +839,8 @@ void platform_set_fullscreen_mode(int mode)
 }
 
 /**
- *  This is not quite the same as the below function as we don't want to
- *  derfererence the cursor before the function.
+ * This is not quite the same as the below function as we don't want to
+ * derfererence the cursor before the function.
  *  rct2: 0x0407956
  */
 void platform_set_cursor(char cursor)
@@ -839,7 +850,7 @@ void platform_set_cursor(char cursor)
 }
 /**
  *
- * rct2: 0x0068352C
+ *  rct2: 0x0068352C
  */
 static void platform_load_cursors()
 {

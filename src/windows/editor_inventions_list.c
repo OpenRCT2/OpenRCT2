@@ -165,7 +165,9 @@ static int research_item_is_always_researched(rct_research_item *researchItem)
 	return (researchItem->entryIndex & (RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED | RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED)) != 0;
 }
 
-/* rct2: 0x0068596F
+/**
+ *
+ *  rct2: 0x0068596F
  * Sets rides that are in use to be always researched
  */
 static void research_rides_setup(){
@@ -240,7 +242,9 @@ static void research_rides_setup(){
 	}
 }
 
-/* rct2: 0x0068590C
+/**
+ *
+ *  rct2: 0x0068590C
  * Sets the critical scenery sets to always researched
  */
 static void research_scenery_sets_setup(){

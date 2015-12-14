@@ -639,16 +639,17 @@
 
 #pragma endregion
 
-/* Returns the flags register
+/**
+ * Returns the flags register
  *
- *Flags register is as follows:
- *0bSZ0A_0P0C_0000_0000
- *S = Signed flag
- *Z = Zero flag
- *C = Carry flag
- *A = Adjust flag
- *P = Parity flag
- *All other bits are undefined.
+ * Flags register is as follows:
+ * 0bSZ0A_0P0C_0000_0000
+ * S = Signed flag
+ * Z = Zero flag
+ * C = Carry flag
+ * A = Adjust flag
+ * P = Parity flag
+ * All other bits are undefined.
  */
 int RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp);
 
@@ -657,16 +658,17 @@ static int RCT2_CALLPROC_EBPSAFE(int address)
 	return RCT2_CALLPROC_X(address, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB);
 }
 
-/* Returns the flags register
+/**
+ * Returns the flags register
  *
- *Flags register is as follows:
- *0bSZ0A_0P0C_0000_00000
- *S = Signed flag
- *Z = Zero flag
- *C = Carry flag
- *A = Adjust flag
- *P = Parity flag
- *All other bits are undefined.
+ * Flags register is as follows:
+ * 0bSZ0A_0P0C_0000_00000
+ * S = Signed flag
+ * Z = Zero flag
+ * C = Carry flag
+ * A = Adjust flag
+ * P = Parity flag
+ * All other bits are undefined.
  */
 int RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp);
 

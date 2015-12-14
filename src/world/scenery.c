@@ -111,7 +111,7 @@ void scenery_increase_age(int x, int y, rct_map_element *mapElement)
 	}
 }
 
-/*
+/**
  *
  *  rct2: 0x006E2712
  */

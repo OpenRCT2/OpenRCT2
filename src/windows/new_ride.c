@@ -281,7 +281,7 @@ void window_new_ride_init_vars() {
 /**
  *	rct2: 0x006B6F3E
  *
- *  Note: When the user has selection by track type enabled, the categories are determined by the track type, not those in the rct_ride_type.
+ * Note: When the user has selection by track type enabled, the categories are determined by the track type, not those in the rct_ride_type.
  */
 static void window_new_ride_populate_list()
 {
@@ -847,9 +847,9 @@ static int get_num_track_designs(ride_list_item item)
 {
 	track_load_list(item);
 
-	uint8 *trackDesignList = (uint8*)0x00F441EC;
+	char *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char);
 	int count = 0;
-	while (*trackDesignList != 0 && trackDesignList < (uint8*)0x00F635EC) {
+	while (*trackDesignList != 0 && trackDesignList < (char*)0x00F635EC) {
 		trackDesignList += 128;
 		count++;
 	}
@@ -936,7 +936,7 @@ static void window_new_ride_select(rct_window *w)
 	if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
 		track_load_list(item);
 
-		uint8 *trackDesignList = (uint8*)0x00F441EC;
+		char *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char);
 		if (*trackDesignList != 0) {
 			window_track_list_open(item);
 			return;

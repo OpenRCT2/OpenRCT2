@@ -68,7 +68,7 @@ typedef struct {
 	uint8 spinning_inertia;			// 0x55 , 0x6F
 	uint8 spinning_friction;		// 0x56 , 0x70
 	uint8 var_57;					// 0x57 , 0x71
-	uint8 pad_58;
+	uint8 var_58;					// 0x58 , 0x72
 	uint8 sound_range;				// 0x59 , 0x73
 	uint8 var_5A;					// 0x5A , 0x74
 	uint8 powered_acceleration;		// 0x5B , 0x75
@@ -172,7 +172,7 @@ typedef struct {
 		uint8 var_CE;
 		uint8 num_laps;				// 0xCE
 	};
-	uint8 pad_CF;
+	uint8 var_CF;
 	uint16 lost_time_out;			// 0xD0
 	sint8 var_D2;
 	uint8 var_D3;
@@ -274,6 +274,22 @@ enum {
 	VEHICLE_VISUAL_ROTO_DROP,
 	VEHICLE_VISUAL_VIRGINIA_REEL = 15,
 	VEHICLE_VISUAL_SUBMARINE
+};
+
+enum {
+	VEHICLE_UPDATE_MOTION_TRACK_FLAG_0 = 1 << 0,
+	VEHICLE_UPDATE_MOTION_TRACK_FLAG_1 = 1 << 1,
+	VEHICLE_UPDATE_MOTION_TRACK_FLAG_2 = 1 << 2,
+	VEHICLE_UPDATE_MOTION_TRACK_FLAG_3 = 1 << 3,
+	VEHICLE_UPDATE_MOTION_TRACK_FLAG_4 = 1 << 4,
+	VEHICLE_UPDATE_MOTION_TRACK_FLAG_5 = 1 << 5,
+	VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED = 1 << 6,
+	VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION = 1 << 7,
+	VEHICLE_UPDATE_MOTION_TRACK_FLAG_8 = 1 << 8,
+	VEHICLE_UPDATE_MOTION_TRACK_FLAG_9 = 1 << 9,
+	VEHICLE_UPDATE_MOTION_TRACK_FLAG_10 = 1 << 10,
+	VEHICLE_UPDATE_MOTION_TRACK_FLAG_11 = 1 << 11,
+	VEHICLE_UPDATE_MOTION_TRACK_FLAG_12 = 1 << 12,
 };
 
 #define VEHICLE_SEAT_PAIR_FLAG	0x80

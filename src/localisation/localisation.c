@@ -744,6 +744,7 @@ void format_string_to_upper(utf8 *dest, rct_string_id format, void *args)
 }
 
 /**
+ *
  *  rct2: 0x006E37F7
  *  error  (eax)
  *  format (bx)
@@ -799,7 +800,7 @@ void generate_string_file()
 }
 
 /**
- *  Returns a pointer to the null terminator of the given UTF-8 string.
+ * Returns a pointer to the null terminator of the given UTF-8 string.
  */
 utf8 *get_string_end(const utf8 *text)
 {
@@ -814,7 +815,7 @@ utf8 *get_string_end(const utf8 *text)
 }
 
 /**
- *  Return the number of bytes (including the null terminator) in the given UTF-8 string.
+ * Return the number of bytes (including the null terminator) in the given UTF-8 string.
  */
 size_t get_string_size(const utf8 *text)
 {
@@ -822,7 +823,7 @@ size_t get_string_size(const utf8 *text)
 }
 
 /**
- *  Return the number of visible characters (excludes format codes) in the given UTF-8 string.
+ * Return the number of visible characters (excludes format codes) in the given UTF-8 string.
  */
 int get_string_length(const utf8 *text)
 {

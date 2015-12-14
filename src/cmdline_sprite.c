@@ -424,7 +424,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 
 	if (_strcmpi(argv[0], "details") == 0) {
 		if (argc < 2) {
-			fprintf(stderr, "usage: sprite details <spritefile> [idx]\n");
+			fprintf(stdout, "usage: sprite details <spritefile> [idx]\n");
 			return -1;
 		} else if (argc == 2) {
 			const char *spriteFilePath = argv[1];
@@ -466,7 +466,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		}
 	} else if (_strcmpi(argv[0], "export") == 0) {
 		if (argc < 4) {
-			fprintf(stderr, "usage: sprite export <spritefile> <idx> <output>\n");
+			fprintf(stdout, "usage: sprite export <spritefile> <idx> <output>\n");
 			return -1;
 		}
 
@@ -494,7 +494,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		return 1;
 	} else if (_strcmpi(argv[0], "exportall") == 0) {
 		if (argc < 3) {
-			fprintf(stderr, "usage: sprite exportall <spritefile> <output directory>\n");
+			fprintf(stdout, "usage: sprite exportall <spritefile> <output directory>\n");
 			return -1;
 		}
 
@@ -607,7 +607,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		return 1;
 	} else if (_strcmpi(argv[0], "build") == 0) {
 		if (argc < 3) {
-			fprintf(stderr, "usage: sprite build <spritefile> <resourcedir> [silent]\n");
+			fprintf(stdout, "usage: sprite build <spritefile> <resourcedir> [silent]\n");
 			return -1;
 		}
 
@@ -624,7 +624,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		spriteFileHeader.total_size = 0;
 		sprite_file_save(spriteFilePath);
 
-		fprintf(stderr, "Building: %s\n", spriteFilePath);
+		fprintf(stdout, "Building: %s\n", spriteFilePath);
 		int i = 0;
 		do {
 			// Create image path
@@ -668,13 +668,13 @@ int cmdline_for_sprite(const char **argv, int argc)
 					return -1;
 				}
 				if (!silent)
-					fprintf(stderr, "Added: %s\n", imagePath);
+					fprintf(stdout, "Added: %s\n", imagePath);
 			}
 			i++;
 		} while (file != NULL);
 
 
-		fprintf(stderr, "Finished\n");
+		fprintf(stdout, "Finished\n");
 		return 1;
 	} else {
 		fprintf(stderr, "Unknown sprite command.");

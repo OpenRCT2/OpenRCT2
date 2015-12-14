@@ -29,7 +29,7 @@ rct_banner *gBanners = (rct_banner*)0x0135A124;
 
 /**
  *
- * rct2: 0x006B9CB0
+ *  rct2: 0x006B9CB0
  */
 void banner_init()
 {

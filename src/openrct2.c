@@ -158,40 +158,8 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 // TODO move to platform
 static void openrct2_set_exe_path()
 {
-#ifdef _WIN32
-	wchar_t exePath[MAX_PATH];
-	wchar_t tempPath[MAX_PATH];
-	wchar_t *exeDelimiter;
-	int exeDelimiterIndex;
-
-	GetModuleFileNameW(NULL, exePath, MAX_PATH);
-	exeDelimiter = wcsrchr(exePath, platform_get_path_separator());
-	exeDelimiterIndex = (int)(exeDelimiter - exePath);
-	lstrcpynW(tempPath, exePath, exeDelimiterIndex + 1);
-	tempPath[exeDelimiterIndex] = L'\0';
-	_wfullpath(exePath, tempPath, MAX_PATH);
-	WideCharToMultiByte(CP_UTF8, 0, exePath, countof(exePath), gExePath, countof(gExePath), NULL, NULL);
-#else
-	char exePath[MAX_PATH];
-	ssize_t bytesRead;
-	bytesRead = readlink("/proc/self/exe", exePath, MAX_PATH);
-	if (bytesRead == -1) {
-		log_fatal("failed to read /proc/self/exe");
-	}
-	exePath[bytesRead - 1] = '\0';
-	log_verbose("######################################## Setting exe path to %s", exePath);
-	char *exeDelimiter = strrchr(exePath, platform_get_path_separator());
-	if (exeDelimiter == NULL)
-	{
-		log_error("should never happen here");
-		gExePath[0] = '\0';
-		return;
-	}
-	int exeDelimiterIndex = (int)(exeDelimiter - exePath);
-
-	safe_strncpy(gExePath, exePath, exeDelimiterIndex + 1);
-	gExePath[exeDelimiterIndex] = '\0';
-#endif // _WIN32
+	platform_get_exe_path(gExePath);
+	log_verbose("Setting exe path to %s", gExePath);
 }
 
 /**
@@ -638,13 +606,14 @@ static bool openrct2_release_rct2_segment()
  */
 static void openrct2_setup_rct2_hooks()
 {
-	addhook(0x006E732D, (int)gfx_set_dirty_blocks, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0, 0);			// remove when all callers are decompiled
-	addhook(0x006E7499, (int)gfx_redraw_screen_rect, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0, 0);			// remove when 0x6E7FF3 is decompiled
-	addhook(0x0069A42F, (int)peep_window_state_update, 0, (int[]){ ESI, END }, 0, 0);						// remove when all callers are decompiled
-	addhook(0x006BB76E, (int)audio_play_sound_panned, 0, (int[]){EAX, EBX, ECX, EDX, EBP, END}, EAX, 0);	// remove when all callers are decompiled
-	addhook(0x006C42D9, (int)scrolling_text_setup, 0, (int[]){EAX, ECX, EBP, END}, 0, EBX);					// remove when all callers are decompiled
-	addhook(0x006C2321, (int)gfx_get_string_width, 0, (int[]){ESI, END}, 0, ECX);							// remove when all callers are decompiled
-	addhook(0x006C2555, (int)format_string, 0, (int[]){EDI, EAX, ECX, END}, 0, 0);							// remove when all callers are decompiled
+	addhook(0x006E732D, (int)gfx_set_dirty_blocks, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0, 0, false);		// remove when all callers are decompiled
+	addhook(0x006E7499, (int)gfx_redraw_screen_rect, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0, 0, false);	// remove when 0x6E7FF3 is decompiled
+	addhook(0x0069A42F, (int)peep_window_state_update, 0, (int[]){ ESI, END }, 0, 0, false);				// remove when all callers are decompiled
+	addhook(0x006BB76E, (int)audio_play_sound_panned, 0, (int[]){EAX, EBX, ECX, EDX, EBP, END}, EAX, 0, false);	// remove when all callers are decompiled
+	addhook(0x006C42D9, (int)scrolling_text_setup, 0, (int[]){EAX, ECX, EBP, END}, 0, EBX, false);			// remove when all callers are decompiled
+	addhook(0x006C2321, (int)gfx_get_string_width, 0, (int[]){ESI, END}, 0, ECX, false);					// remove when all callers are decompiled
+	addhook(0x006C2555, (int)format_string, 0, (int[]){EDI, EAX, ECX, END}, 0, 0, false);					// remove when all callers are decompiled
+	addhook(0x006DAB4C, (int)sub_6DAB4C, 0, (int[]){ESI, END}, 0, EAX, true);								// remove when all callers are decompiled
 }
 
 #if _MSC_VER >= 1900

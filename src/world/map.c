@@ -41,7 +41,9 @@
 #include "park.h"
 #include "scenery.h"
 
-/* Replaces 0x00993CCC & 0x00993CCE */
+/**
+ * Replaces 0x00993CCC, 0x00993CCE
+ */
 const rct_xy16 TileDirectionDelta[] = {
 	{ -32,   0 },
 	{   0, +32 },
@@ -360,9 +362,9 @@ void map_update_tile_pointers()
 /**
  * Return the absolute height of an element, given its (x,y) coordinates
  *
- *  ax: x
- *  cx: y
- *  dx: return remember to & with 0xFFFF if you don't want water affecting results
+ * ax: x
+ * cx: y
+ * dx: return remember to & with 0xFFFF if you don't want water affecting results
  *  rct2: 0x00662783
  */
 int map_element_height(int x, int y)
@@ -1299,7 +1301,8 @@ restart_from_beginning:
 	return totalCost;
 }
 
-/* Function to clear the flag that is set to prevent cost duplication
+/**
+ * Function to clear the flag that is set to prevent cost duplication
  * when using the clear scenery tool with large scenery.
  */
 void map_reset_clear_large_scenery_flag(){
@@ -1376,7 +1379,10 @@ void game_command_clear_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	);
 }
 
-/* rct2: 0x00663CCD */
+/**
+ *
+ *  rct2: 0x00663CCD
+ */
 money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surfaceStyle, uint8 edgeStyle, uint8 flags)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
@@ -1484,7 +1490,10 @@ money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surfaceSt
 	return (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) ? 0 : cost;
 }
 
-/* rct2: 0x00663CCD */
+/**
+ *
+ *  rct2: 0x00663CCD
+ */
 void game_command_change_surface_style(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
 	*ebx = map_change_surface_style(
@@ -1749,7 +1758,10 @@ money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 x2, sin
 	return 0;
 }
 
-/* rct2: 0x006648E3*/
+/**
+ *
+ *  rct2: 0x006648E3
+ */
 void game_command_set_land_ownership(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
 	*ebx = map_set_land_ownership(
@@ -4352,7 +4364,7 @@ bool map_large_scenery_get_origin(
  *
  *  rct2: 0x006B9B05
  */
-void sign_set_colour(int x, int y, int z, int direction, int sequence, uint8 mainColour, uint8 textColour)
+bool sign_set_colour(int x, int y, int z, int direction, int sequence, uint8 mainColour, uint8 textColour)
 {
 	rct_map_element *mapElement;
 	rct_scenery_entry *sceneryEntry;
@@ -4360,7 +4372,9 @@ void sign_set_colour(int x, int y, int z, int direction, int sequence, uint8 mai
 	sint16 offsetX, offsetY;
 	int x0, y0, z0;
 
-	if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, &mapElement));
+	if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, &mapElement)) {
+		return false;
+	}
 
 	sceneryEntry = g_largeSceneryEntries[(mapElement->properties.scenerymultiple.type) & 0x3FF];
 	sceneryTiles = sceneryEntry->large_scenery.tiles;
@@ -4385,6 +4399,8 @@ void sign_set_colour(int x, int y, int z, int direction, int sequence, uint8 mai
 			map_invalidate_tile(x, y, mapElement->base_height * 8 , mapElement->clearance_height * 8);
 		}
 	}
+
+	return true;
 }
 
 /**
@@ -4533,7 +4549,10 @@ int map_get_tile_quadrant(int mapX, int mapY)
 		(subMapY < 16 ? 2 : 3);
 }
 
-/* rct2: 0x00693BFF */
+/**
+ *
+ *  rct2: 0x00693BFF
+ */
 bool map_surface_is_blocked(sint16 x, sint16 y){
 	rct_map_element *mapElement;
 	if (x >= 8192 || y >= 8192)
@@ -4733,7 +4752,10 @@ money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direc
 	return 0;
 }
 
-/* rct2: 0x006666E7 */
+/**
+ *
+ *  rct2: 0x006666E7
+ */
 void game_command_place_park_entrance(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {
 	*ebx = place_park_entrance(
 		*ebx & 0xFF,
@@ -4764,7 +4786,7 @@ void game_command_set_banner_name(int* eax, int* ebx, int* ecx, int* edx, int* e
 		return;
 	}
 
-	utf8 *buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, uint8);
+	utf8 *buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, utf8);
 	utf8 *dst = buffer;
 	dst = utf8_write_codepoint(dst, FORMAT_COLOUR_CODE_START + banner->text_colour);
 	strncpy(dst, newName, 32);
@@ -4881,7 +4903,7 @@ void game_command_set_banner_style(int* eax, int* ebx, int* ecx, int* edx, int* 
 
 	int colourCodepoint = FORMAT_COLOUR_CODE_START + banner->text_colour;
 
-	uint8 buffer[256];
+	utf8 buffer[256];
 	format_string(buffer, banner->string_idx, 0);
 	int firstCodepoint = utf8_get_next(buffer, NULL);
 	if (firstCodepoint >= FORMAT_COLOUR_CODE_START && firstCodepoint <= FORMAT_COLOUR_CODE_END) {
@@ -4953,7 +4975,7 @@ void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* es
 			return;
 		}
 
-		sign_set_colour(
+		if (!sign_set_colour(
 			banner->x * 32,
 			banner->y * 32,
 			mapElement->base_height,
@@ -4961,7 +4983,10 @@ void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* es
 			mapElement->properties.scenerymultiple.type >> 10,
 			mainColour,
 			textColour
-		);
+		)) {
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
 	}
 
 	rct_window* w = window_bring_to_front_by_number(WC_BANNER, *ecx);
@@ -4973,7 +4998,7 @@ void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* es
 }
 
 /**
- * Gets the map element at x, y, z.
+ * Gets the track element at x, y, z.
  * @param x x units, not tiles.
  * @param y y units, not tiles.
  * @param z Base height.
@@ -4992,10 +5017,11 @@ rct_map_element *map_get_track_element_at(int x, int y, int z)
 }
 
 /**
- * Gets the map element at x, y, z.
+ * Gets the track element at x, y, z that is the given track type.
  * @param x x units, not tiles.
  * @param y y units, not tiles.
  * @param z Base height.
+ * @param trackType
  */
 rct_map_element *map_get_track_element_at_of_type(int x, int y, int z, int trackType)
 {

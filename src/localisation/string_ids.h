@@ -2177,6 +2177,8 @@ enum {
 
 	STR_CZECH_KORUNA = 5580,
 
+	STR_SHOW_FPS = 5581,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

@@ -113,6 +113,7 @@ void platform_get_date(rct2_date *out_date);
 void platform_get_time(rct2_time *out_time);
 
 // Platform specific definitions
+void platform_get_exe_path(utf8 *outPath);
 char platform_get_path_separator();
 bool platform_file_exists(const utf8 *path);
 bool platform_directory_exists(const utf8 *path);
@@ -150,6 +151,11 @@ uint8 platform_get_locale_measurement_format();
 uint8 platform_get_locale_temperature_format();
 
 bool platform_check_steam_overlay_attached();
+
+// BSD and OS X has MAP_ANON instead of MAP_ANONYMOUS
+#ifndef MAP_ANONYMOUS
+	#define MAP_ANONYMOUS MAP_ANON
+#endif
 
 // Windows specific definitions
 #ifdef _WIN32

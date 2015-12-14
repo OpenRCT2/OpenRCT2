@@ -22,6 +22,8 @@
 
 #include "platform.h"
 #include <dlfcn.h>
+#include <stdlib.h>
+#include "../util/util.h"
 
 // See http://syprog.blogspot.ru/2011/12/listing-loaded-shared-objects-in-linux.html
 struct lmap {
@@ -35,6 +37,28 @@ struct dummy {
 	void* pointers[3];
 	struct dummy* ptr;
 };
+
+void platform_get_exe_path(utf8 *outPath)
+{
+	char exePath[MAX_PATH];
+	ssize_t bytesRead;
+	bytesRead = readlink("/proc/self/exe", exePath, MAX_PATH);
+	if (bytesRead == -1) {
+		log_fatal("failed to read /proc/self/exe");
+	}
+	exePath[bytesRead - 1] = '\0';
+	char *exeDelimiter = strrchr(exePath, platform_get_path_separator());
+	if (exeDelimiter == NULL)
+	{
+		log_error("should never happen here");
+		outPath[0] = '\0';
+		return;
+	}
+	int exeDelimiterIndex = (int)(exeDelimiter - exePath);
+
+	safe_strncpy(outPath, exePath, exeDelimiterIndex + 1);
+	outPath[exeDelimiterIndex] = '\0';
+}
 
 bool platform_check_steam_overlay_attached() {
 	void* processHandle = dlopen(NULL, RTLD_NOW);
@@ -54,6 +78,38 @@ bool platform_check_steam_overlay_attached() {
 	dlclose(processHandle);
 
 	return false;
+}
+
+/**
+ * Default directory fallback is:
+ *   - (command line argument)
+ *   - $XDG_CONFIG_HOME/OpenRCT2
+ *   - /home/[uid]/.config/OpenRCT2
+ */
+void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const char *separator) {
+	const char *configdir = getenv("XDG_CONFIG_HOME");
+	log_verbose("configdir = '%s'", configdir);
+	if (configdir == NULL)
+	{
+		log_verbose("configdir was null, used getuid, now is = '%s'", homedir);
+		if (homedir == NULL)
+		{
+			log_fatal("Couldn't find user data directory");
+			exit(-1);
+			return;
+		}
+		
+		strncat(buffer, homedir, MAX_PATH - 1);
+		strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+		strncat(buffer, ".config", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	}
+	else
+	{
+		strncat(buffer, configdir, MAX_PATH - 1);
+	}
+	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	strncat(buffer, "OpenRCT2", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
 }
 
 #endif

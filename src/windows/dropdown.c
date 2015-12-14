@@ -364,7 +364,8 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 }
 
-/* New function based on 6e914e
+/**
+ * New function based on 6e914e
  * returns -1 if index is invalid
  */
 int dropdown_index_from_point(int x, int y, rct_window *w)
@@ -395,6 +396,7 @@ void window_dropdown_show_colour(rct_window *w, rct_widget *widget, uint8 dropdo
 }
 
 /**
+ *
  *  rct2: 0x006ED43D
  * al: dropdown colour
  * ah: selected colour

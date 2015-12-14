@@ -168,6 +168,7 @@ typedef struct {
 	uint8 allow_loading_with_incorrect_checksum;
 	uint8 steam_overlay_pause;
 	float window_scale;
+	uint8 show_fps;
 } general_configuration;
 
 typedef struct {

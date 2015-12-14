@@ -1,3 +1,10 @@
+0.0.4 (not yet released)
+------------------------------------------------------------------------
+- Feature: Add displaying of frames per second (FPS).
+- Fix: [#2126] Ferris Wheels set to "backward rotation" stop working (original
+bug)
+- Fix: [#2449] Turning off Day/Night Circle while it is night doesn't reset back to day
+
 0.0.3.1-beta (2015-12-04)
 ------------------------------------------------------------------------
 - Fix: [#2407] save game prompt delay is not reset on start scenario

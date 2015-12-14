@@ -683,10 +683,8 @@ static void ride_ratings_calculate_value(rct_ride *ride)
 }
 
 /**
- * rct2: sub_65E621
- *
  * I think this function computes ride upkeep? Though it is weird that the
- *
+ *  rct2: sub_65E621
  * inputs
  * - edi: ride ptr
  */
@@ -771,11 +769,12 @@ static uint16 ride_compute_upkeep(rct_ride *ride)
 	// multiply by 5/8
 	upkeep = upkeep * 10;
 	upkeep = upkeep >> 4;
-    return upkeep;
+	return upkeep;
 }
 
 /**
- * rct2: 0x0065E7FB
+ *
+ *  rct2: 0x0065E7FB
  *
  * inputs
  * - bx: excitement
@@ -839,6 +838,7 @@ static void ride_ratings_apply_intensity_penalty(rating_tuple *ratings)
 }
 
 /**
+ *
  *  rct2: 0x00655FD6
  */
 static void set_unreliability_factor(rct_ride *ride)
@@ -950,7 +950,8 @@ static rating_tuple get_flat_turns_rating(rct_ride* ride) {
 }
 
 /**
- * rct2: 0x0065DF72
+ *
+ *  rct2: 0x0065DF72
  */
 static rating_tuple get_banked_turns_rating(rct_ride* ride) {
 	rating_tuple rating;
@@ -975,7 +976,8 @@ static rating_tuple get_banked_turns_rating(rct_ride* ride) {
 }
 
 /**
- * rct2: 0x0065E047
+ *
+ *  rct2: 0x0065E047
  */
 static rating_tuple get_sloped_turns_rating(rct_ride* ride) {
 	rating_tuple rating;
@@ -996,7 +998,8 @@ static rating_tuple get_sloped_turns_rating(rct_ride* ride) {
 }
 
 /**
- * rct2: 0x0065E0F2
+ *
+ *  rct2: 0x0065E0F2
  */
 static rating_tuple get_inversions_ratings(uint8 inversions) {
 	rating_tuple rating;
@@ -1008,9 +1011,6 @@ static rating_tuple get_inversions_ratings(uint8 inversions) {
 	return rating;
 }
 
-/*
- *
- */
 static rating_tuple get_special_track_elements_rating(uint8 type, rct_ride *ride) {
 	int excitement = 0, intensity = 0, nausea = 0;
 	if (type == RIDE_TYPE_GHOST_TRAIN) {
@@ -1058,6 +1058,7 @@ static rating_tuple get_special_track_elements_rating(uint8 type, rct_ride *ride
 }
 
 /**
+ *
  *  rct2: 0x0065DDD1
  */
 static rating_tuple sub_65DDD1(rct_ride *ride)

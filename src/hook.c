@@ -30,7 +30,9 @@ void* g_hooktableaddress = 0;
 int g_hooktableoffset = 0;
 int g_maxhooks = 1000;
 
-void hookfunc(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister)
+registers _returnRegisters;
+
+void hookfunc(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister, bool useReturnRegisters)
 {
 	int i = 0;
 	char data[100];
@@ -186,6 +188,15 @@ void hookfunc(int address, int newaddress, int stacksize, int registerargs[], in
 		break;
 	}
 
+	if (useReturnRegisters) {
+		// mov ebx, [_returnRegisters.ebx]
+		data[i++] = 0x8B;
+		data[i++] = 0x1C;
+		data[i++] = 0x25;
+		*((uint32*)&data[i]) = (uint32)(&_returnRegisters.ebx);
+		i += 4;
+	}
+
 	data[i++] = 0x83; // sub esp, x
 	data[i++] = 0xEC;
 	data[i++] = (signed char)(stacksize * -4) - rargssize;
@@ -222,7 +233,7 @@ void hookfunc(int address, int newaddress, int stacksize, int registerargs[], in
 #endif // _WIN32
 }
 
-void addhook(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister)
+void addhook(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister, bool useReturnRegisters)
 {
 	if (!g_hooktableaddress) {
 		size_t size = g_maxhooks * 100;
@@ -252,6 +263,11 @@ void addhook(int address, int newaddress, int stacksize, int registerargs[], int
 	// We own the pages with PROT_WRITE | PROT_EXEC, we can simply just memcpy the data
 	memcpy((void *)address, data, i);
 #endif // _WIN32
-	hookfunc(hookaddress, newaddress, stacksize, registerargs, registersreturned, eaxDestinationRegister);
+	hookfunc(hookaddress, newaddress, stacksize, registerargs, registersreturned, eaxDestinationRegister, useReturnRegisters);
 	g_hooktableoffset++;
+}
+
+void hook_setreturnregisters(registers *regs)
+{
+	_returnRegisters = *regs;
 }
