@@ -35,6 +35,7 @@
 #include "../util/util.h"
 #include <dirent.h>
 #include <fnmatch.h>
+#include <locale.h>
 #include <time.h>
 
 // The name of the mutex used to prevent multiple instances of the game from running
@@ -610,51 +611,58 @@ utf8 *platform_open_directory_browser(utf8 *title)
 }
 
 uint16 platform_get_locale_language(){
-	/*
-	CHAR langCode[4];
+	const char *langString = setlocale(LC_MESSAGES, "");
+	if(langString != NULL){
+		// The locale has the following form:
+		// language[_territory[.codeset]][@modifier] (see https://www.gnu.org/software/libc/manual/html_node/Locale-Names.html)
+		char pattern[32]; // longest on my system is 29 with codeset and modifier, so 32 for the pattern should be more than enough
+		//strip the codeset and modifier part
+		int length = strlen(langString);
+		{
+			for(int i = 0; i < length; ++i){
+				if(langString[i] == '.' || langString[i] == '@'){
+					length = i;
+					break;
+				}
+			}
+		} //end strip
+		strncpy(pattern,langString, length); //copy all until first '.' or '@'
+		pattern[length] = '\0';
+		//find _ if present
+		const char *strip = strchr(pattern, '_');
+		if(strip != NULL){
+			pattern[strip - pattern] = '?'; // could also use '-', but '?' is more flexible. Maybe LanguagesDescriptors will change. pattern is now "language?territory"
+		}
 
-	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
-		LOCALE_SABBREVLANGNAME,
-		(LPSTR)&langCode,
-		sizeof(langCode)) == 0){
-		return LANGUAGE_UNDEFINED;
-	}
+		// Iterate through all available languages
+		for(int i = 1; i < LANGUAGE_COUNT; ++i){
+			if(!fnmatch(pattern, LanguagesDescriptors[i].locale, 0)){
+				return i;
+			}
+		}
 
-	if (strcmp(langCode, "ENG") == 0){
-		return LANGUAGE_ENGLISH_UK;
+		//special cases :(
+		if(!fnmatch(pattern, "en_CA", 0)){
+			return LANGUAGE_ENGLISH_US;
+		}
+		else if (!fnmatch(pattern, "zh_CN", 0)){
+			return LANGUAGE_CHINESE_SIMPLIFIED;
+		}
+		else if (!fnmatch(pattern, "zh_TW", 0)){
+			return LANGUAGE_CHINESE_TRADITIONAL;
+		}
+
+		//no exact match found trying only language part
+		if(strip != NULL){
+			pattern[strip - pattern] = '*';
+			pattern[strip - pattern +1] = '\0'; // pattern is now "language*"
+			for(int i = 1; i < LANGUAGE_COUNT; ++i){
+				if(!fnmatch(pattern, LanguagesDescriptors[i].locale, 0)){
+					return i;
+				}
+			}
+		}
 	}
-	else if (strcmp(langCode, "ENU") == 0){
-		return LANGUAGE_ENGLISH_US;
-	}
-	else if (strcmp(langCode, "DEU") == 0){
-		return LANGUAGE_GERMAN;
-	}
-	else if (strcmp(langCode, "NLD") == 0){
-		return LANGUAGE_DUTCH;
-	}
-	else if (strcmp(langCode, "FRA") == 0){
-		return LANGUAGE_FRENCH;
-	}
-	else if (strcmp(langCode, "HUN") == 0){
-		return LANGUAGE_HUNGARIAN;
-	}
-	else if (strcmp(langCode, "PLK") == 0){
-		return LANGUAGE_POLISH;
-	}
-	else if (strcmp(langCode, "ESP") == 0){
-		return LANGUAGE_SPANISH;
-	}
-	else if (strcmp(langCode, "SVE") == 0){
-		return LANGUAGE_SWEDISH;
-	}
-	else if (strcmp(langCode, "ITA") == 0){
-		return LANGUAGE_ITALIAN;
-	}
-	else if (strcmp(langCode, "POR") == 0){
-		return LANGUAGE_PORTUGUESE_BR;
-	}
-	*/
-	STUB();
 	return LANGUAGE_ENGLISH_UK;
 }
 
@@ -667,89 +675,51 @@ time_t platform_file_get_modified_time(const utf8* path){
 }
 
 uint8 platform_get_locale_currency(){
-	/*
-	CHAR currCode[4];
+	char *langstring = setlocale(LC_MONETARY, "");
 
-	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
-		LOCALE_SINTLSYMBOL,
-		(LPSTR)&currCode,
-		sizeof(currCode)) == 0){
-		return CURRENCY_POUNDS;
+	if(langstring != NULL){
+		struct lconv *lc = localeconv();
+
+		//Only works if g_currency_specs contains the actual (local) symbol
+		for(int i = 0; i < CURRENCY_END; ++i){
+			if(!strcmp(lc->currency_symbol, CurrencyDescriptors[i].symbol_unicode)){
+				return i;
+			}
+		}
+		//TODO: can be removed when CurrencyDescriptors contains the actual symbols for won and rubel
+		//Won should remain a special case, beacause some (or all?) systems use the full width won sign (e.g. Gentoo)
+		if(!strncmp(lc->int_curr_symbol, "KRW", 3)){
+			return CURRENCY_WON;
+		}
+		else if(!strncmp(lc->int_curr_symbol, "RUB", 3)){
+			return CURRENCY_ROUBLE;
+		}
 	}
-	if (strcmp(currCode, "GBP") == 0){
-		return CURRENCY_POUNDS;
-	}
-	else if (strcmp(currCode, "USD") == 0){
-		return CURRENCY_DOLLARS;
-	}
-	else if (strcmp(currCode, "EUR") == 0){
-		return CURRENCY_EUROS;
-	}
-	else if (strcmp(currCode, "SEK") == 0){
-		return CURRENCY_KRONA;
-	}
-	else if (strcmp(currCode, "DEM") == 0){
-		return CURRENCY_DEUTSCHMARK;
-	}
-	else if (strcmp(currCode, "ITL") == 0){
-		return CURRENCY_LIRA;
-	}
-	else if (strcmp(currCode, "JPY") == 0){
-		return CURRENCY_YEN;
-	}
-	else if (strcmp(currCode, "ESP") == 0){
-		return CURRENCY_PESETA;
-	}
-	else if (strcmp(currCode, "FRF") == 0){
-		return CURRENCY_FRANC;
-	}
-	else if (strcmp(currCode, "NLG") == 0){
-		return CURRENCY_GUILDERS;
-	}
-	*/
-	STUB();
+	//All other currencies are historic
 	return CURRENCY_POUNDS;
 }
 
 uint8 platform_get_locale_measurement_format(){
-	/*
-	UINT measurement_system;
-	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
-		LOCALE_IMEASURE | LOCALE_RETURN_NUMBER,
-		(LPSTR)&measurement_system,
-		sizeof(measurement_system)) == 0){
-		return MEASUREMENT_FORMAT_IMPERIAL;
+	//FIXME: LC_MEASUREMENT is GNU specific.
+	const char *langstring = setlocale(LC_MEASUREMENT, "");
+
+	if(langstring != NULL){
+		//using https://en.wikipedia.org/wiki/Metrication#Chronology_and_status_of_conversion_by_country as reference
+		if(!fnmatch("*_US*", langstring, 0) || !fnmatch("*_MM*", langstring, 0) || !fnmatch("*_LR*", langstring, 0)){
+			return MEASUREMENT_FORMAT_IMPERIAL;
+		}
 	}
-	switch (measurement_system){
-	case 0:
-		return MEASUREMENT_FORMAT_METRIC;
-	case 1:
-	default:
-		return MEASUREMENT_FORMAT_IMPERIAL;
-	}*/
-	STUB();
 	return MEASUREMENT_FORMAT_METRIC;
 }
 
 uint8 platform_get_locale_temperature_format(){
-	/*
-	// There does not seem to be a function to obtain this, just check the countries
-	UINT country;
-	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
-		LOCALE_IMEASURE | LOCALE_RETURN_NUMBER,
-		(LPSTR)&country,
-		sizeof(country)) == 0){
-		return TEMPERATURE_FORMAT_C;
+	const char *langstring = setlocale(LC_MEASUREMENT, "");
+
+	if(langstring != NULL){
+		if(!fnmatch("*_US*", langstring, 0) || !fnmatch("*_BS*", langstring, 0) || !fnmatch("*_BZ*", langstring, 0) || !fnmatch("*_PW*", langstring, 0)){
+			return TEMPERATURE_FORMAT_F;
+		}
 	}
-	switch (country){
-	case CTRY_UNITED_STATES:
-	case CTRY_BELIZE:
-		return TEMPERATURE_FORMAT_F;
-	default:
-		return TEMPERATURE_FORMAT_C;
-	}
-	*/
-	STUB();
 	return TEMPERATURE_FORMAT_C;
 }
 
