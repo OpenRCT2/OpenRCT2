@@ -3862,8 +3862,8 @@ STR_5521    :{SMALLFONT}{BLACK}Roxo brilhante
 STR_5522    :{SMALLFONT}{BLACK}Azul escuro
 STR_5523    :{SMALLFONT}{BLACK}Azul claro
 STR_5524    :{SMALLFONT}{BLACK}Azul gelo
-STR_5525    :{SMALLFONT}{BLACK}Azul esverdeado
-STR_5526    :{SMALLFONT}{BLACK}Turquesa
+STR_5525    :{SMALLFONT}{BLACK}Água escura
+STR_5526    :{SMALLFONT}{BLACK}Água clara
 STR_5527    :{SMALLFONT}{BLACK}Verde saturado
 STR_5528    :{SMALLFONT}{BLACK}Verde escuro
 STR_5529    :{SMALLFONT}{BLACK}Verde musgo
