@@ -6538,9 +6538,8 @@ loc_6DBC3B:
 		);
 
 	// There are two bytes before the move info list
-	uint16 unk16 = *((uint16*)((int)moveInfo - 2));
-	unk16--;
-	regs.ax = unk16;
+	trackTotalProgress = *((uint16*)((int)moveInfo - 2));
+	regs.ax = trackTotalProgress - 1;
 
 loc_6DBD42:
 	vehicle->track_progress = regs.ax;
@@ -6649,9 +6648,12 @@ loc_6DC0F7:
 		if (vehicle == RCT2_GLOBAL(0x00F64E04, rct_vehicle*)) {
 			goto loc_6DC144;
 		}
+		if (vehicle->prev_vehicle_on_ride == SPRITE_INDEX_NULL) {
+			goto loc_6DC144;
+		}
+		vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
 	}
 	goto loc_6DAE27;
-
 loc_6DC144:
 	vehicle = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
 	regs.eax = 0;
