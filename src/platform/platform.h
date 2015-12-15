@@ -33,6 +33,12 @@
 #define MAX_PATH 260
 #endif
 
+#if defined(__APPLE__) && defined(__MACH__)
+#define KEYBOARD_PRIMARY_MODIFIER KMOD_GUI
+#else
+#define KEYBOARD_PRIMARY_MODIFIER KMOD_CTRL
+#endif
+
 #define INVALID_HANDLE -1
 
 typedef struct {

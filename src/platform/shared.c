@@ -531,16 +531,14 @@ void platform_process_messages()
 
 			// Text input
 
-                        // Clear the input on <CTRL>Backspace
-                        if (gTextInput != NULL
-                                && e.key.keysym.sym == SDLK_BACKSPACE
-                                && e.key.keysym.mod & KMOD_CTRL) {
-                            memset(gTextInput, '\0', gTextInputMaxLength);
-                            gTextInputCursorPosition = 0;
-                            gTextInputLength = 0;
-                            console_refresh_caret();
-                            window_update_textbox();
-                        }
+			// Clear the input on <CTRL>Backspace (Windows/Linux) or <MOD>Backspace (OS X)
+			if (gTextInput != NULL && e.key.keysym.sym == SDLK_BACKSPACE && (e.key.keysym.mod & KEYBOARD_PRIMARY_MODIFIER)) {
+				memset(gTextInput, '\0', gTextInputMaxLength);
+				gTextInputCursorPosition = 0;
+				gTextInputLength = 0;
+				console_refresh_caret();
+				window_update_textbox();
+			}
 
 			// If backspace and we have input text with a cursor position none zero
 			if (e.key.keysym.sym == SDLK_BACKSPACE && gTextInputLength > 0 && gTextInput != NULL && gTextInputCursorPosition) {
@@ -601,12 +599,7 @@ void platform_process_messages()
 				} while (!utf8_is_codepoint_start(&gTextInput[gTextInputCursorPosition]));
 				console_refresh_caret();
 			}
-			// Checks GUI modifier key for MACs otherwise CTRL key
-#ifdef MAC
-			else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_GUI && gTextInput != NULL) {
-#else
-			else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL && gTextInput != NULL) {
-#endif
+			else if (e.key.keysym.sym == SDLK_v && (SDL_GetModState() & KEYBOARD_PRIMARY_MODIFIER) && gTextInput != NULL) {
 				if (SDL_HasClipboardText()) {
 					utf8 *text = SDL_GetClipboardText();
 					for (int i = 0; text[i] != '\0' && gTextInputLength < gTextInputMaxLength; i++) {
