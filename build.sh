@@ -85,6 +85,20 @@ if [[ -z "$DISABLE_G2_BUILD" ]]; then
     ./build_g2.sh > /dev/null 2>&1
 fi
 
+if [[ $TARGET == "linux" ]] && [[ $(uname -s) == "Darwin" ]] && [[ -z "$DISABLE_MAC_APPBUNDLE" ]]; then
+	echo Building: OS X bundle
+	mkdir -p build/OpenRCT2.app/Contents/MacOS
+	mkdir -p build/OpenRCT2.app/Contents/Resources
+	cp build/openrct2 build/OpenRCT2.app/Contents/MacOS
+	cp -r  data build/OpenRCT2.app/Contents/MacOS
+	cp resources/logo/icon.icns build/OpenRCT2.app/Contents/Resources/icon.icns
+	cp distribution/osx/Info.plist build/OpenRCT2.app/Contents/Info.plist
+	cp distribution/osx/PkgInfo build/OpenRCT2.app/Contents/PkgInfo
+	if [[ -n "$ENABLE_MAC_ZIP" ]]; then
+		zip -rq build/OpenRCT2-Mac.zip build/OpenRCT2.app
+	fi
+fi
+
 if [[ $TARGET == "windows" ]]; then
 	if [[ -t 1 ]]; then
 		echo -e "\nDone! Run OpenRCT2 by typing:\n\n\033[95mwine openrct2.exe\n\033[0m"
