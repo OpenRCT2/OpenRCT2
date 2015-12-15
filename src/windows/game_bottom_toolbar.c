@@ -87,7 +87,10 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_tutorial_text(rct_drawpixelinfo *dpi, rct_window *w);
 
-/* rct2: 0x0097BFDC */
+/**
+ *
+ *  rct2: 0x0097BFDC
+ */
 static rct_window_event_list window_game_bottom_toolbar_events = {
 	NULL,
 	window_game_bottom_toolbar_mouseup,
@@ -606,7 +609,10 @@ static void window_game_bottom_toolbar_draw_tutorial_text(rct_drawpixelinfo *dpi
 	gfx_draw_string_centred(dpi, STR_PRESS_KEY_OR_MOUSE_BUTTON_FOR_CONTROL, x, y + 10, 32, 0);
 }
 
-/* rct2: 0x0066C6D8 */
+/**
+ *
+ *  rct2: 0x0066C6D8
+ */
 static void window_game_bottom_toolbar_update(rct_window* w){
 
 	w->frame_no++;
@@ -616,7 +622,10 @@ static void window_game_bottom_toolbar_update(rct_window* w){
 	window_game_bottom_toolbar_invalidate_dirty_widgets(w);
 }
 
-/* rct2: 0x006C644 */
+/**
+ *
+ *  rct2: 0x006C644
+ */
 static void window_game_bottom_toolbar_cursor(rct_window *w, int widgetIndex, int x, int y, int *cursorId)
 {
 	switch (widgetIndex) {
@@ -629,13 +638,19 @@ static void window_game_bottom_toolbar_cursor(rct_window *w, int widgetIndex, in
 	}
 }
 
-/* rct2: 0x0066C6F2 */
+/**
+ *
+ *  rct2: 0x0066C6F2
+ */
 static void window_game_bottom_toolbar_unknown05(rct_window *w)
 {
 	window_game_bottom_toolbar_invalidate_dirty_widgets(w);
 }
 
-/* rct2: 0x0066C6F2 */
+/**
+ *
+ *  rct2: 0x0066C6F2
+ */
 static void window_game_bottom_toolbar_invalidate_dirty_widgets(rct_window *w)
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & BTM_TB_DIRTY_FLAG_MONEY){

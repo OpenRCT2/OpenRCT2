@@ -291,12 +291,13 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 
 
 /**
- * rct2: 0x0066DF55
+ *
+ *  rct2: 0x0066DF55
  *
  * @param  a (al)
  * @param string_id (ebx)
  * @param c (ecx)
- **/
+ */
 void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 {
 	utf8 *buffer = (char*)0x0141EF68;
@@ -338,9 +339,9 @@ void news_item_add_to_queue_raw(uint8 type, const utf8 *text, uint32 assoc)
 /**
  * Opens the window/tab for the subject of the news item
  *
- * rct2: 0x0066EBE6
+ *  rct2: 0x0066EBE6
  *
- **/
+ */
 void news_item_open_subject(int type, int subject)
 {
 	rct_peep* peep;

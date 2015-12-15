@@ -356,7 +356,10 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 	}
 }
 
-/* rct2: 0x006BA23E */
+/**
+ *
+ *  rct2: 0x006BA23E
+ */
 void remove_banners_at_element(int x, int y, rct_map_element* mapElement){
 	while (!map_element_is_last_for_tile(mapElement++)){
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH)return;
@@ -509,8 +512,9 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 	return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
 }
 
-/*
- * rct2: 0x006A68AE
+/**
+ *
+ *  rct2: 0x006A68AE
  */
 void game_command_place_footpath_from_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
@@ -604,9 +608,9 @@ void footpath_provisional_update()
 }
 
 /**
- *  Determines the location of the footpath at which we point with the cursor. If no footpath is underneath the cursor,
- *  then return the location of the ground tile. Besides the location it also computes the direction of the yellow arrow
- *  when we are going to build a footpath bridge/tunnel.
+ * Determines the location of the footpath at which we point with the cursor. If no footpath is underneath the cursor,
+ * then return the location of the ground tile. Besides the location it also computes the direction of the yellow arrow
+ * when we are going to build a footpath bridge/tunnel.
  *  rct2: 0x00689726
  *  In:
  *		screenX: eax
@@ -799,7 +803,10 @@ void footpath_interrupt_peeps(int x, int y, int z)
 	}
 }
 
-/* rct2: 0x006E59DC */
+/**
+ *
+ *  rct2: 0x006E59DC
+ */
 bool fence_in_the_way(int x, int y, int z0, int z1, int direction)
 {
 	rct_map_element *mapElement;

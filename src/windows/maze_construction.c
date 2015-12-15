@@ -139,7 +139,7 @@ static void window_maze_construction_construct(int direction);
 
 /**
  *
- * rct2: 0x006CB481
+ *  rct2: 0x006CB481
  */
 rct_window *window_maze_construction_open()
 {
@@ -159,7 +159,7 @@ rct_window *window_maze_construction_open()
 
 /**
  *
- * rct2: 0x006CD811
+ *  rct2: 0x006CD811
  */
 static void window_maze_construction_close(rct_window *w)
 {
@@ -208,7 +208,7 @@ static void window_maze_construction_entrance_mouseup(rct_window *w, int widgetI
 
 /**
  *
- * rct2: 0x006CD461
+ *  rct2: 0x006CD461
  */
 static void window_maze_construction_mouseup(rct_window *w, int widgetIndex)
 {
@@ -233,7 +233,7 @@ static void window_maze_construction_mouseup(rct_window *w, int widgetIndex)
 
 /**
  *
- * rct2: 0x006CD623
+ *  rct2: 0x006CD623
  */
 static void window_maze_construction_resize(rct_window *w)
 {
@@ -265,7 +265,7 @@ static void window_maze_construction_resize(rct_window *w)
 
 /**
  *
- * rct2: 0x006CD48C
+ *  rct2: 0x006CD48C
  */
 static void window_maze_construction_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
 {
@@ -287,7 +287,7 @@ static void window_maze_construction_mousedown(int widgetIndex, rct_window *w, r
 
 /**
  *
- * rct2: 0x006CD767
+ *  rct2: 0x006CD767
  */
 static void window_maze_construction_update(rct_window *w)
 {
@@ -323,7 +323,7 @@ static void window_maze_construction_update(rct_window *w)
 
 /**
  *
- * rct2: 0x006CD63E
+ *  rct2: 0x006CD63E
  */
 static void window_maze_construction_toolupdate(rct_window* w, int widgetIndex, int x, int y)
 {
@@ -409,7 +409,7 @@ static void window_maze_construction_tooldown(rct_window* w, int widgetIndex, in
 
 /**
  *
- * rct2: 0x006CD435
+ *  rct2: 0x006CD435
  */
 static void window_maze_construction_invalidate(rct_window *w)
 {
@@ -422,7 +422,7 @@ static void window_maze_construction_invalidate(rct_window *w)
 
 /**
  *
- * rct2: 0x006CD45B
+ *  rct2: 0x006CD45B
  */
 static void window_maze_construction_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
@@ -431,7 +431,7 @@ static void window_maze_construction_paint(rct_window *w, rct_drawpixelinfo *dpi
 
 /**
  *
- * rct2: 0x006CD887
+ *  rct2: 0x006CD887
  */
 void window_maze_construction_update_pressed_widgets()
 {
@@ -464,7 +464,7 @@ void window_maze_construction_update_pressed_widgets()
 
 /**
  *
- * rct2: 0x006CD4AB
+ *  rct2: 0x006CD4AB
  */
 static void window_maze_construction_construct(int direction)
 {

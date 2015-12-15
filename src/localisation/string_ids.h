@@ -228,6 +228,7 @@ enum {
 	STR_COST_AMOUNT = 986,
 
 	STR_TOO_MANY_RIDES = 987,
+	STR_CANT_CREATE_NEW_RIDE_ATTRACTION = 988,
 
 	STR_CONSTRUCTION = 990,
 
@@ -497,6 +498,7 @@ enum {
 	STR_QUEUE_TIME_MINUTES = 1360,
 
 	STR_TOO_HIGH_FOR_SUPPORTS = 1363,
+	STR_SUPPORTS_CANT_BE_EXTENDED = 1364,
 
 	STR_IN_LINE_TWIST_LEFT = 1365,
 	STR_IN_LINE_TWIST_RIGHT = 1366,
@@ -2175,6 +2177,8 @@ enum {
 	STR_UI_SCALING_DESC = 5579,
 
 	STR_CZECH_KORUNA = 5580,
+
+	STR_SHOW_FPS = 5581,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

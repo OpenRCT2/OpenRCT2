@@ -80,9 +80,9 @@ void invalidate_sprite_2(rct_sprite *sprite)
 	invalidate_sprite_max_zoom(sprite, 2);
 }
 
-/*
+/**
  *
- * rct2: 0x0069EB13
+ *  rct2: 0x0069EB13
  */
 void reset_sprite_list(){
 	RCT2_GLOBAL(0x1388698, uint16) = 0;
@@ -120,7 +120,8 @@ void reset_sprite_list(){
 }
 
 /**
- * rct2: 0x0069EBE4
+ *
+ *  rct2: 0x0069EBE4
  * This function looks as though it sets some sort of order for sprites.
  * Sprites can share thier position if this is the case.
  */
@@ -150,7 +151,7 @@ void reset_0x69EBE4(){
 
 /**
  * Clears all the unused sprite memory to zero. Probably so that it can be compressed better when saving.
- * rct2: 0x0069EBA4
+ *  rct2: 0x0069EBA4
  */
 void sprite_clear_all_unused()
 {
@@ -270,7 +271,7 @@ void move_sprite_to_list(rct_sprite *sprite, uint8 cl)
 
 /**
  *
- *  rct: 0x00673200
+ *  rct2: 0x00673200
  */
 static void sprite_misc_0_update(rct_sprite *sprite)
 {
@@ -307,7 +308,7 @@ void sprite_misc_3_create(int x, int y, int z)
 
 /**
  *
- *  rct: 0x00673385
+ *  rct2: 0x00673385
  */
 static void sprite_misc_3_update(rct_sprite *sprite)
 {
@@ -338,7 +339,7 @@ void sprite_misc_5_create(int x, int y, int z)
 
 /**
  *
- *  rct: 0x006733B4
+ *  rct2: 0x006733B4
  */
 static void sprite_misc_5_update(rct_sprite *sprite)
 {
@@ -351,7 +352,7 @@ static void sprite_misc_5_update(rct_sprite *sprite)
 
 /**
  *
- *  rct: 0x006731CD
+ *  rct2: 0x006731CD
  */
 void sprite_misc_update(rct_sprite *sprite)
 {
@@ -389,7 +390,7 @@ void sprite_misc_update(rct_sprite *sprite)
 
 /**
  *
- *  rct: 0x00672AA4
+ *  rct2: 0x00672AA4
  */
 void sprite_misc_update_all()
 {
@@ -405,8 +406,8 @@ void sprite_misc_update_all()
 }
 
 /**
+ * Moves a sprite to a new location.
  *  rct2: 0x0069E9D3
- *  Moves a sprite to a new location.
  * ax: x
  * cx: y
  * dx: z

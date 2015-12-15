@@ -6,6 +6,7 @@ extern "C" {
 }
 
 #include "../core/FileStream.hpp"
+#include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/StringBuilder.hpp"
 #include "LanguagePack.h"

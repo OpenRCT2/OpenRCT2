@@ -470,7 +470,7 @@ void DrawOpenRCT2(int x, int y)
 	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
 
 	// Draw background
-	gfx_fill_rect_inset(dpi, x, y, x + 128, y + 20, 0x80 | 12, 0x8);
+	gfx_fill_rect_inset(dpi, x, y, x + 128, y + 20, TRANSLUCENT(COLOUR_DARK_GREEN), 0x8);
 
 	// Write format codes
 	utf8 *ch = buffer;

@@ -170,7 +170,7 @@ extern rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
 * rct2: 0x006BAB21
 */
 void audio_close();
-/*
+/**
 * Initialises the audio subsystem.
 */
 void audio_init();

@@ -11,6 +11,7 @@ void http_dispose() { }
 #else
 
 #include <SDL.h>
+#include "../core/Math.hpp"
 
 // cURL includes windows.h, but we don't need all of it.
 #define WIN32_LEAN_AND_MEAN
@@ -65,7 +66,7 @@ static size_t http_request_write_func(void *ptr, size_t size, size_t nmemb, void
 		int newCapacity = writeBuffer->capacity;
 		int newLength = writeBuffer->length + newBytesLength;
 		while (newLength > newCapacity) {
-			newCapacity = max(4096, newCapacity * 2);
+			newCapacity = Math::Max(4096, newCapacity * 2);
 		}
 		if (newCapacity != writeBuffer->capacity) {
 			writeBuffer->ptr = (char*)realloc(writeBuffer->ptr, newCapacity);

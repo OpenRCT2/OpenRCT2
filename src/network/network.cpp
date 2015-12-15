@@ -36,6 +36,7 @@ extern "C" {
 #include <algorithm>
 #include <set>
 #include <string>
+#include "../core/Util.hpp"
 extern "C" {
 #include "../config.h"
 #include "../game.h"
@@ -844,10 +845,10 @@ std::string Network::GenerateAdvertiseKey()
 	static char hexChars[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 	char key[17];
 	for (int i = 0; i < 16; i++) {
-		int hexCharIndex = util_rand() % countof(hexChars);
+		int hexCharIndex = util_rand() % Util::CountOf(hexChars);
 		key[i] = hexChars[hexCharIndex];
 	}
-	key[countof(key) - 1] = 0;
+	key[Util::CountOf(key) - 1] = 0;
 
 	return key;
 }
@@ -1343,7 +1344,7 @@ int Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pac
 			chunk_buffer.resize(offset + chunksize);
 		}
 		char status[256];
-		sprintf(status, "Downloading map ... (%lu / %lu)", (offset + chunksize) / 1000, size / 1000);
+		sprintf(status, "Downloading map ... (%u / %u)", (offset + chunksize) / 1000, size / 1000);
 		window_network_status_open(status);
 		memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
 		if (offset + chunksize == size) {

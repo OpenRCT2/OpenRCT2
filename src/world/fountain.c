@@ -206,8 +206,8 @@ void jumping_fountain_create(int type, int x, int y, int z, int direction, int f
 
 /**
  *
- *  rct: 0x006733CB (water)
- *  rct: 0x00673407 (snow)
+ *  rct2: 0x006733CB (water)
+ *  rct2: 0x00673407 (snow)
  */
 void jumping_fountain_update(rct_jumping_fountain *jumpingFountain)
 {
@@ -316,7 +316,7 @@ static bool is_jumping_fountain(int type, int x, int y, int z)
 
 /**
  *
- *  rct: 0x00673B6E
+ *  rct2: 0x00673B6E
  */
 static void jumping_fountain_goto_edge(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int availableDirections)
 {
@@ -350,7 +350,7 @@ static void jumping_fountain_goto_edge(rct_jumping_fountain *jumpingFountain, in
 
 /**
  *
- *  rct: 0x00673B45
+ *  rct2: 0x00673B45
  */
 static void jumping_fountain_bounce(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int availableDirections)
 {
@@ -371,7 +371,7 @@ static void jumping_fountain_bounce(rct_jumping_fountain *jumpingFountain, int x
 
 /**
  *
- *  rct: 0x00673ACE
+ *  rct2: 0x00673ACE
  */
 static void jumping_fountain_split(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int availableDirections)
 {
@@ -412,7 +412,7 @@ static void jumping_fountain_split(rct_jumping_fountain *jumpingFountain, int x,
 
 /**
  *
- *  rct: 0x00673AAC
+ *  rct2: 0x00673AAC
  */
 static void jumping_fountain_random(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int availableDirections)
 {
@@ -429,7 +429,7 @@ static void jumping_fountain_random(rct_jumping_fountain *jumpingFountain, int x
 
 /**
  *
- *  rct: 0x00673B45
+ *  rct2: 0x00673B45
  */
 static void jumping_fountain_create_next(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int direction)
 {

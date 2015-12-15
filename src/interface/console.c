@@ -530,6 +530,9 @@ static int cc_get(const utf8 **argv, int argc)
 				console_printf("location %d %d", mapCoord.x, mapCoord.y);
 			}
 		}
+		else if (strcmp(argv[0], "window_scale") == 0) {
+			console_printf("window_scale %.3f", gConfigGeneral.window_scale);
+		}
 		else {
 			console_writeline_warning("Invalid variable.");
 		}
@@ -685,6 +688,14 @@ static int cc_set(const utf8 **argv, int argc)
 				viewport_update_position(w);
 				console_execute_silent("get location");
 			}
+		}
+		else if (strcmp(argv[0], "window_scale") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
+			float newScale = (float)(0.001*trunc(1000*double_val[0]));
+			gConfigGeneral.window_scale = clamp(newScale, 0.5f, 5.0f);
+			config_save_default();
+			gfx_invalidate_screen();
+			platform_trigger_resize();
+			console_execute_silent("get window_scale");
 		}
 		else if (invalidArgs) {
 			console_writeline_error("Invalid arguments.");
@@ -911,7 +922,8 @@ utf8* console_variable_table[] = {
 	"console_small_font",
 	"test_unfinished_tracks",
 	"no_test_crashes",
-	"location"
+	"location",
+	"window_scale"
 };
 utf8* console_window_table[] = {
 	"object_selection",

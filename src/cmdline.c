@@ -90,10 +90,19 @@ int cmdline_run(const char **argv, int argc)
 
 	argparse_t argparse;
 	argparse_init(&argparse, options, usage, 0);
-	argc = argparse_parse(&argparse, argc, argv);
+	size_t argvsize = sizeof(char**) * argc;
+	/**
+	 * argparse_parse ends up inadvertently mutating the argv variable, setting
+	 * a null pointer in the array. Because of this, AppKit in OS X 10.10 will
+	 * dereference it, causing a segmentation fault.
+	 */
+	char** mutableArgv = malloc(argvsize);
+	memcpy(mutableArgv,argv,argvsize);
+	argc = argparse_parse(&argparse, argc, (const char**)mutableArgv);
 
 	if (version) {
 		print_version();
+		free(mutableArgv);
 		return 0;
 	}
 
@@ -121,7 +130,8 @@ int cmdline_run(const char **argv, int argc)
 
 	if (argc != 0) {
 		// see comment next to cmdline_call_action for expected return codes
-		gExitCode = cmdline_call_action(argv, argc);
+		gExitCode = cmdline_call_action((const char**)mutableArgv, argc);
+		free(mutableArgv);
 		if (gExitCode < 0) {
 			// action failed, don't change exit code
 			// and don't start the game
@@ -133,6 +143,8 @@ int cmdline_run(const char **argv, int argc)
 			return 0;
 		}
 		// start the game, so far exit code means success.
+	} else {
+		free(mutableArgv);
 	}
 
 	// Headless mode requires a park to open
@@ -224,7 +236,7 @@ struct { const char *firstArg; cmdline_action action; } cmdline_table[] = {
 
 /**
  * This function delegates starting the game to different handlers, if found.
- * 
+ *
  * Three cases of return values are supported:
  * - result < 0 means failure, will exit with error code
  *   This case is useful when user provided wrong arguments or the requested

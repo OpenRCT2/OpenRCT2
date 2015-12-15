@@ -63,6 +63,7 @@ void print_launch_information();
 int rct2_init_directories();
 int rct2_startup_checks();
 
+static void rct2_draw_fps();
 static void rct2_update_2();
 
 static jmp_buf _end_update_jump;
@@ -259,7 +260,56 @@ void rct2_draw()
 		//game
 	}
 
+	if (gConfigGeneral.show_fps) {
+		rct2_draw_fps();
+	}
+
 	gCurrentDrawCount++;
+}
+
+static uint32 _lastFPSUpdateTicks;
+static uint32 _lastFPSTicks;
+static float _currentFPS;
+
+static float rct2_measure_fps()
+{
+	uint32 currentTicks = SDL_GetTicks();
+	if (currentTicks - _lastFPSUpdateTicks > 500) {
+		_lastFPSUpdateTicks = currentTicks;
+
+		uint32 frameDelta = currentTicks - _lastFPSTicks;
+		_currentFPS = 1000.0f / frameDelta;
+	}
+	_lastFPSTicks = currentTicks;
+	return _currentFPS;
+}
+
+static void rct2_draw_fps()
+{
+	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
+	int x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2;
+	int y = 2;
+
+	// Measure FPS
+	float fps = rct2_measure_fps();
+
+	// Format string
+	utf8 buffer[64];
+	utf8 *ch = buffer;
+	ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
+	ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
+	ch = utf8_write_codepoint(ch, FORMAT_WHITE);
+
+	const char *formatString = (_currentFPS >= 100.0f ? "%.0f" : "%.1f");
+	sprintf(ch, formatString, _currentFPS);
+
+	// Draw Text
+	int stringWidth = gfx_get_string_width(buffer);
+	x = x - (stringWidth / 2);
+	gfx_draw_string(dpi, buffer, 0, x, y);
+
+	// Make area dirty so the text doesn't get drawn over the last
+	gfx_set_dirty_blocks(x - 16, y - 4, gLastDrawStringX + 16, 16);
 }
 
 int rct2_open_file(const char *path)
@@ -463,7 +513,7 @@ const utf8 *get_file_path(int pathId)
 }
 
 /**
- *  Obtains basic system versions and capabilities.
+ * Obtains basic system versions and capabilities.
  *  rct2: 0x004076B1
  */
 void get_system_info()

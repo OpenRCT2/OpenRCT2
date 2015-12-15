@@ -40,14 +40,14 @@
 #include "util/util.h"
 #include "world/mapgen.h"
 
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#if defined(__unix__)
 #include <sys/mman.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#endif // defined(__unix__)
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 utf8 gOpenRCT2StartupActionPath[512] = { 0 };
@@ -59,11 +59,11 @@ bool gOpenRCT2Headless = false;
 
 bool gOpenRCT2ShowChangelog;
 
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#if defined(__unix__)
 void *gDataSegment;
 void *gTextSegment;
 int gExeFd;
-#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#endif // defined(__unix__)
 
 /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to 0. */
 int _finished;
@@ -158,40 +158,8 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 // TODO move to platform
 static void openrct2_set_exe_path()
 {
-#ifdef _WIN32
-	wchar_t exePath[MAX_PATH];
-	wchar_t tempPath[MAX_PATH];
-	wchar_t *exeDelimiter;
-	int exeDelimiterIndex;
-
-	GetModuleFileNameW(NULL, exePath, MAX_PATH);
-	exeDelimiter = wcsrchr(exePath, platform_get_path_separator());
-	exeDelimiterIndex = (int)(exeDelimiter - exePath);
-	lstrcpynW(tempPath, exePath, exeDelimiterIndex + 1);
-	tempPath[exeDelimiterIndex] = L'\0';
-	_wfullpath(exePath, tempPath, MAX_PATH);
-	WideCharToMultiByte(CP_UTF8, 0, exePath, countof(exePath), gExePath, countof(gExePath), NULL, NULL);
-#else
-	char exePath[MAX_PATH];
-	ssize_t bytesRead;
-	bytesRead = readlink("/proc/self/exe", exePath, MAX_PATH);
-	if (bytesRead == -1) {
-		log_fatal("failed to read /proc/self/exe");
-	}
-	exePath[bytesRead - 1] = '\0';
-	log_verbose("######################################## Setting exe path to %s", exePath);
-	char *exeDelimiter = strrchr(exePath, platform_get_path_separator());
-	if (exeDelimiter == NULL)
-	{
-		log_error("should never happen here");
-		gExePath[0] = '\0';
-		return;
-	}
-	int exeDelimiterIndex = (int)(exeDelimiter - exePath);
-
-	safe_strncpy(gExePath, exePath, exeDelimiterIndex + 1);
-	gExePath[exeDelimiterIndex] = '\0';
-#endif // _WIN32
+	platform_get_exe_path(gExePath);
+	log_verbose("Setting exe path to %s", gExePath);
 }
 
 /**
@@ -503,7 +471,7 @@ static bool openrct2_setup_rct2_segment()
 {
 	// POSIX OSes will run OpenRCT2 as a native application and then load in the Windows PE, mapping the appropriate addresses as
 	// necessary. Windows does not need to do this as OpenRCT2 runs as a DLL loaded from the Windows PE.
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#if defined(__unix__)
 	#define RDATA_OFFSET 0x004A4000
 	#define DATASEG_OFFSET 0x005E2000
 
@@ -545,8 +513,45 @@ static bool openrct2_setup_rct2_segment()
 	off_t file_size = 6750208;
 
 	int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
+	int pageSize = getpagesize();
+	int numPages = (len + pageSize - 1) / pageSize;
+	unsigned char *dummy = malloc(numPages);
+	int err = mincore((void *)0x8a4000, len, dummy);
+	bool pagesDirty = false;
+	if (err != 0)
+	{
+		err = errno;
+#ifdef __linux__
+		// On Linux ENOMEM means all requested range is unmapped
+		if (err != ENOMEM)
+		{
+			pagesDirty = true;
+			perror("mincore");
+		}
+#else
+		pagesDirty = true;
+		perror("mincore");
+#endif // __linux__
+	} else {
+		log_warning("mincore ok");
+		for (int i = 0; i < numPages; i++)
+		{
+			if (dummy[i] != 0)
+			{
+				pagesDirty = true;
+				void *start = (void *)0x8a4000 + i * pageSize;
+				void *end = (void *)0x8a4000 + (i + 1) * pageSize - 1;
+				log_warning("page %p - %p has flags: %x, you're in for bad time!", start, end, dummy[i]);
+			}
+		}
+	}
+	free(dummy);
+	if (pagesDirty)
+	{
+		log_error("Found already mapped pages in region we want to claim. This means something accessed memory before we got to and following mmap (or next malloc) call will likely fail.");
+	}
 	// section: rw data
-	gDataSegment = mmap((void *)0x8a4000, len, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_ANONYMOUS | MAP_SHARED, 0, 0);
+	gDataSegment = mmap((void *)0x8a4000, len, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_ANONYMOUS | MAP_SHARED, -1, 0);
 	if (gDataSegment != (void *)0x8a4000) {
 		log_fatal("mmap failed to get required offset for data segment! got %p, expected %p, errno = %d", gDataSegment, (void *)(0x8a4000), errno);
 		exit(1);
@@ -562,7 +567,7 @@ static bool openrct2_setup_rct2_segment()
 	}
 
 	void *fbase = mmap(NULL, file_size, PROT_READ, MAP_PRIVATE, gExeFd, 0);
-	int err = errno;
+	err = errno;
 	log_warning("mmapped file to %p", fbase);
 	if (fbase == MAP_FAILED)
 	{
@@ -580,7 +585,7 @@ static bool openrct2_setup_rct2_segment()
 		err = errno;
 		log_error("Failed to unmap file! errno = %d", err);
 	}
-#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#endif // defined(__unix__)
 
 	// Check that the expected data is at various addresses.
 	// Start at 0x9a6000, which is start of .data, to skip the region containing addresses to DLL
@@ -604,7 +609,7 @@ static bool openrct2_setup_rct2_segment()
 static bool openrct2_release_rct2_segment()
 {
 	bool result = true;
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#if defined(__unix__)
 	int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
 	int err;
 	err = munmap(gDataSegment, len);
@@ -629,7 +634,7 @@ static bool openrct2_release_rct2_segment()
 		log_error("Failed to close file! errno = %d", err);
 		result = false;
 	}
-#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#endif // defined(__unix__)
 	return result;
 }
 
@@ -642,7 +647,7 @@ static void openrct2_setup_rct2_hooks()
 	addhook(0x006E7499, (int)gfx_redraw_screen_rect, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0, 0);			// remove when 0x6E7FF3 is decompiled
 	addhook(0x006B752C, (int)ride_crash, 0, (int[]){ EDX, EBX, END }, 0, 0);								// remove when all callers are decompiled
 	addhook(0x0069A42F, (int)peep_window_state_update, 0, (int[]){ ESI, END }, 0, 0);						// remove when all callers are decompiled
-	addhook(0x006BB76E, (int)audio_play_sound_panned, 0, (int[]){EAX, EBX, ECX, EDX, EBP, END}, EAX, 0);	// remove when all callers are decompiled
+	addhook(0x006BB76E, (int)audio_play_sound_panned, 0, (int[]){EAX, EBX, ECX, EDX, EBP, END}, 0, EAX);	// remove when all callers are decompiled
 	addhook(0x006C42D9, (int)scrolling_text_setup, 0, (int[]){EAX, ECX, EBP, END}, 0, EBX);					// remove when all callers are decompiled
 	addhook(0x006C2321, (int)gfx_get_string_width, 0, (int[]){ESI, END}, 0, ECX);							// remove when all callers are decompiled
 	addhook(0x006C2555, (int)format_string, 0, (int[]){EDI, EAX, ECX, END}, 0, 0);							// remove when all callers are decompiled

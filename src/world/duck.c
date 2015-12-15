@@ -79,7 +79,7 @@ void create_duck(int targetX, int targetY)
 
 /**
  *
- *  rct: 0x006740E8
+ *  rct2: 0x006740E8
  */
 void duck_update(rct_duck *duck)
 {
@@ -109,7 +109,7 @@ static void duck_invalidate(rct_duck *duck)
 
 /**
  *
- *  rct: 0x00674108
+ *  rct2: 0x00674108
  */
 static void duck_update_fly_to_water(rct_duck *duck)
 {
@@ -163,7 +163,7 @@ static void duck_update_fly_to_water(rct_duck *duck)
 
 /**
  *
- *  rct: 0x00674282
+ *  rct2: 0x00674282
  */
 static void duck_update_swim(rct_duck *duck)
 {
@@ -225,7 +225,7 @@ static void duck_update_swim(rct_duck *duck)
 
 /**
  *
- *  rct: 0x00674357
+ *  rct2: 0x00674357
  */
 static void duck_update_drink(rct_duck *duck)
 {
@@ -241,7 +241,7 @@ static void duck_update_drink(rct_duck *duck)
 
 /**
  *
- *  rct: 0x00674372
+ *  rct2: 0x00674372
  */
 static void duck_update_double_drink(rct_duck *duck)
 {
@@ -257,7 +257,7 @@ static void duck_update_double_drink(rct_duck *duck)
 
 /**
  *
- *  rct: 0x0067438D
+ *  rct2: 0x0067438D
  */
 static void duck_update_fly_away(rct_duck *duck)
 {
@@ -284,7 +284,7 @@ static void duck_update_fly_away(rct_duck *duck)
 
 /**
  *
- *  rct: 0x006E895D
+ *  rct2: 0x006E895D
  */
 void duck_press(rct_duck *duck)
 {
@@ -293,7 +293,7 @@ void duck_press(rct_duck *duck)
 
 /**
  *
- *  rct: 0x00674576
+ *  rct2: 0x00674576
  */
 void duck_remove_all()
 {

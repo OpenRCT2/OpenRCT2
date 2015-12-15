@@ -7,9 +7,9 @@ STR_0002    :Spiral Roller Coaster
 STR_0003    :Stand-up Roller Coaster
 STR_0004    :Suspended Swinging Coaster
 STR_0005    :Inverted Roller Coaster
-STR_0006    :Junior Roller Coaster
+STR_0006    :ジュニアジェットコースター
 STR_0007    :Miniature Railway
-STR_0008    :Monorail
+STR_0008    :モノレール
 STR_0009    :Mini Suspended Coaster
 STR_0010    :Boat Ride
 STR_0011    :Wooden Wild Mouse
@@ -21,43 +21,43 @@ STR_0016    :Observation Tower
 STR_0017    :Looping Roller Coaster
 STR_0018    :Dinghy Slide
 STR_0019    :Mine Train Coaster
-STR_0020    :Chairlift
+STR_0020    :スキーリフト
 STR_0021    :Corkscrew Roller Coaster
-STR_0022    :Maze
+STR_0022    :迷路
 STR_0023    :Spiral Slide
-STR_0024    :Go Karts
+STR_0024    :ゴーカート
 STR_0025    :Log Flume
 STR_0026    :River Rapids
 STR_0027    :Dodgems
-STR_0028    :Pirate Ship
+STR_0028    :海賊船
 STR_0029    :Swinging Inverter Ship
 STR_0030    :Food Stall
 STR_0031    :Unknown Stall (1D)
 STR_0032    :Drink Stall
 STR_0033    :Unknown Stall (1F)
 STR_0034    :Shop
-STR_0035    :Merry-Go-Round
+STR_0035    :メリーゴーラウンド
 STR_0036    :Unknown Stall (22)
 STR_0037    :Information Kiosk
-STR_0038    :Toilets
-STR_0039    :Ferris Wheel
+STR_0038    :トイレ
+STR_0039    :観覧車
 STR_0040    :Motion Simulator
-STR_0041    :3D Cinema
+STR_0041    :3Dシネマ
 STR_0042    :Top Spin
 STR_0043    :Space Rings
 STR_0044    :Reverse Freefall Coaster
 STR_0045    :Lift
 STR_0046    :Vertical Drop Roller Coaster
-STR_0047    :Cash Machine
-STR_0048    :Twist
-STR_0049    :Haunted House
-STR_0050    :First Aid Room
+STR_0047    :ATM
+STR_0048    :ツイスト
+STR_0049    :お化け屋敷
+STR_0050    :救護所
 STR_0051    :Circus Show
 STR_0052    :Ghost Train
 STR_0053    :Steel Twister Roller Coaster
-STR_0054    :Wooden Roller Coaster
+STR_0054    :木製ジェットコースター
 STR_0055    :Side-Friction Roller Coaster
-STR_0056    :Wild Mouse
+STR_0056    :ワイルドマウス
 STR_0057    :Multi-Dimension Roller Coaster
 STR_0058    :Unknown Ride (38)
 STR_0059    :Flying Roller Coaster
@@ -70,8 +70,8 @@ STR_0065    :Suspended Monorail
 STR_0066    :Unknown Ride (40)
 STR_0067    :Reverser Roller Coaster
 STR_0068    :Heartline Twister Coaster
-STR_0069    :Mini Golf
-STR_0070    :Giga Coaster
+STR_0069    :ミニチュアゴルフ
+STR_0070    :ギガコースター
 STR_0071    :Roto-Drop
 STR_0072    :Flying Saucers
 STR_0073    :Crooked House
@@ -80,7 +80,7 @@ STR_0075    :Compact Inverted Coaster
 STR_0076    :Water Coaster
 STR_0077    :Air Powered Vertical Coaster
 STR_0078    :Inverted Hairpin Coaster
-STR_0079    :Magic Carpet
+STR_0079    :魔法のじゅうたん
 STR_0080    :Submarine Ride
 STR_0081    :River Rafts
 STR_0082    :Unknown Ride (50)
@@ -780,49 +780,49 @@ STR_0775    :Unnamed park{POP16}{POP16}
 STR_0776    :Unnamed park{POP16}{POP16}
 STR_0777    :Unnamed park{POP16}{POP16}
 STR_0778    :Sign
-STR_0779    :1st
-STR_0780    :2nd
-STR_0781    :3rd
-STR_0782    :4th
-STR_0783    :5th
-STR_0784    :6th
-STR_0785    :7th
-STR_0786    :8th
-STR_0787    :9th
-STR_0788    :10th
-STR_0789    :11th
-STR_0790    :12th
-STR_0791    :13th
-STR_0792    :14th
-STR_0793    :15th
-STR_0794    :16th
-STR_0795    :17th
-STR_0796    :18th
-STR_0797    :19th
-STR_0798    :20th
-STR_0799    :21st
-STR_0800    :22nd
-STR_0801    :23rd
-STR_0802    :24th
-STR_0803    :25th
-STR_0804    :26th
-STR_0805    :27th
-STR_0806    :28th
-STR_0807    :29th
-STR_0808    :30th
-STR_0809    :31st
-STR_0810    :Jan
-STR_0811    :Feb
-STR_0812    :Mar
-STR_0813    :Apr
-STR_0814    :May
-STR_0815    :Jun
-STR_0816    :Jul
-STR_0817    :Aug
-STR_0818    :Sep
-STR_0819    :Oct
-STR_0820    :Nov
-STR_0821    :Dec
+STR_0779    :1日
+STR_0780    :2日
+STR_0781    :3日
+STR_0782    :4日
+STR_0783    :5日
+STR_0784    :6日
+STR_0785    :7日
+STR_0786    :8日
+STR_0787    :9日
+STR_0788    :10日
+STR_0789    :11日
+STR_0790    :12日
+STR_0791    :13日
+STR_0792    :14日
+STR_0793    :15日
+STR_0794    :16日
+STR_0795    :17日
+STR_0796    :18日
+STR_0797    :19日
+STR_0798    :20日
+STR_0799    :21日
+STR_0800    :22日
+STR_0801    :23日
+STR_0802    :24日
+STR_0803    :25日
+STR_0804    :26日
+STR_0805    :27日
+STR_0806    :28日
+STR_0807    :29日
+STR_0808    :30日
+STR_0809    :31日
+STR_0810    :1月
+STR_0811    :2月
+STR_0812    :3月
+STR_0813    :4月
+STR_0814    :5月
+STR_0815    :6月
+STR_0816    :7月
+STR_0817    :8月
+STR_0818    :9月
+STR_0819    :10月
+STR_0820    :11月
+STR_0821    :12月
 STR_0822    :Unable to access graphic data file
 STR_0823    :Missing or inaccessible data file
 STR_0824    :{BLACK}{CROSS}
@@ -849,7 +849,7 @@ STR_0843    :<not used anymore>
 STR_0844    :<not used anymore>
 STR_0845    :<not used anymore>
 STR_0846    :<not used anymore>
-STR_0847    :About 'OpenRCT2'
+STR_0847    :OpenRCT2について
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, all rights reserved
@@ -879,8 +879,8 @@ STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}{DOWN}
-STR_0877    :Too low !
-STR_0878    :Too high !
+STR_0877    :低すぎる!
+STR_0878    :高すぎる!
 STR_0879    :Can't lower land here...
 STR_0880    :Can't raise land here...
 STR_0881    :Object in the way
@@ -1712,7 +1712,7 @@ STR_1706    :{SMALLFONT}{BLACK}Move this person to a new location
 STR_1707    :Too many staff in game
 STR_1708    :{SMALLFONT}{BLACK}Set patrol area for this staff member
 STR_1709    :Sack staff
-STR_1710    :Yes
+STR_1710    :はい
 STR_1711    :{WINDOW_COLOUR_1}Are you sure you want to sack {STRINGID}?
 STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Sweep footpaths
 STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Water gardens
@@ -1735,7 +1735,7 @@ STR_1729    :Land not owned by park!
 STR_1730    :{RED}Closed - - 
 STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Build
-STR_1733    :Mode
+STR_1733    :モード
 STR_1734    :{WINDOW_COLOUR_2}Number of laps:
 STR_1735    :{SMALLFONT}{BLACK}Number of laps of circuit
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1992,34 +1992,34 @@ STR_1984    :{WINDOW_COLOUR_2}Fried Chicken price:
 STR_1985    :{WINDOW_COLOUR_2}Lemonade price:
 STR_1986    :{WINDOW_COLOUR_2}
 STR_1987    :{WINDOW_COLOUR_2}
-STR_1988    :Balloon
+STR_1988    :風船
 STR_1989    :Cuddly Toy
-STR_1990    :Park Map
+STR_1990    :地図
 STR_1991    :On-Ride Photo
-STR_1992    :Umbrella
-STR_1993    :Drink
-STR_1994    :Burger
-STR_1995    :Chips
-STR_1996    :Ice Cream
-STR_1997    :Candyfloss
-STR_1998    :Empty Can
-STR_1999    :Rubbish
+STR_1992    :傘
+STR_1993    :飲み物
+STR_1994    :ハンバーガー
+STR_1995    :フライドポテト
+STR_1996    :ソフトクリーム
+STR_1997    :綿菓子
+STR_1998    :空き缶
+STR_1999    :ゴミ
 STR_2000    :Empty Burger Box
-STR_2001    :Pizza
+STR_2001    :ピザ
 STR_2002    :Voucher
-STR_2003    :Popcorn
-STR_2004    :Hot Dog
+STR_2003    :ポップコーン
+STR_2004    :ホットドッグ
 STR_2005    :Tentacle
-STR_2006    :Hat
+STR_2006    :帽子
 STR_2007    :Toffee Apple
-STR_2008    :T-Shirt
-STR_2009    :Doughnut
-STR_2010    :Coffee
-STR_2011    :Empty Cup
-STR_2012    :Fried Chicken
-STR_2013    :Lemonade
-STR_2014    :Empty Box
-STR_2015    :Empty Bottle
+STR_2008    :Tシャツ
+STR_2009    :ドーナツ
+STR_2010    :コーヒー
+STR_2011    :空のカップ
+STR_2012    :フライドチキン
+STR_2013    :レモネード
+STR_2014    :空の箱
+STR_2015    :空き瓶
 STR_2016    :Balloons
 STR_2017    :Cuddly Toys
 STR_2018    :Park Maps
@@ -2078,32 +2078,32 @@ STR_2070    :an Empty Box
 STR_2071    :an Empty Bottle
 STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Balloon
 STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Cuddly Toy
-STR_2074    :Map of {STRINGID}
+STR_2074    :{STRINGID}の地図
 STR_2075    :On-Ride Photo of {STRINGID}
 STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Umbrella
-STR_2077    :Drink
-STR_2078    :Burger
-STR_2079    :Chips
-STR_2080    :Ice Cream
-STR_2081    :Candyfloss
-STR_2082    :Empty Can
-STR_2083    :Rubbish
+STR_2077    :飲み物
+STR_2078    :ハンバーガー
+STR_2079    :フライドポテト
+STR_2080    :ソフトクリーム
+STR_2081    :綿菓子
+STR_2082    :空き缶
+STR_2083    :ゴミ
 STR_2084    :Empty Burger Box
-STR_2085    :Pizza
-STR_2086    :Voucher for {STRINGID}
-STR_2087    :Popcorn
-STR_2088    :Hot Dog
+STR_2085    :ピザ
+STR_2086    :{STRINGID}の無料券
+STR_2087    :ポップコーン
+STR_2088    :ホットドッグ
 STR_2089    :Tentacle
 STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Hat
 STR_2091    :Toffee Apple
 STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES} T-Shirt
-STR_2093    :Doughnut
-STR_2094    :Coffee
-STR_2095    :Empty Cup
-STR_2096    :Fried Chicken
-STR_2097    :Lemonade
-STR_2098    :Empty Box
-STR_2099    :Empty Bottle
+STR_2093    :ドーナツ
+STR_2094    :コーヒー
+STR_2095    :空のカップ
+STR_2096    :フライドチキン
+STR_2097    :レモネード
+STR_2098    :空の箱
+STR_2099    :空き瓶
 STR_2100    :{WINDOW_COLOUR_2}On-Ride Photo price:
 STR_2101    :{WINDOW_COLOUR_2}On-Ride Photo price:
 STR_2102    :{WINDOW_COLOUR_2}On-Ride Photo price:
@@ -2129,20 +2129,20 @@ STR_2121    :{WINDOW_COLOUR_2}
 STR_2122    :On-Ride Photo
 STR_2123    :On-Ride Photo
 STR_2124    :On-Ride Photo
-STR_2125    :Pretzel
-STR_2126    :Hot Chocolate
-STR_2127    :Iced Tea
+STR_2125    :プレッツェル
+STR_2126    :ホットココア
+STR_2127    :アイスティー
 STR_2128    :Funnel Cake
 STR_2129    :Sunglasses
 STR_2130    :Beef Noodles
 STR_2131    :Fried Rice Noodles
 STR_2132    :Wonton Soup
 STR_2133    :Meatball Soup
-STR_2134    :Fruit Juice
-STR_2135    :Soybean Milk
+STR_2134    :フルーツジュース
+STR_2135    :豆乳
 STR_2136    :Sujongkwa
 STR_2137    :Sub Sandwich
-STR_2138    :Cookie
+STR_2138    :クッキー
 STR_2139    :Empty Bowl
 STR_2140    :Empty Drink Carton
 STR_2141    :Empty Juice Cup
@@ -2195,20 +2195,20 @@ STR_2187    :an Empty Bowl
 STR_2188    :On-Ride Photo of {STRINGID}
 STR_2189    :On-Ride Photo of {STRINGID}
 STR_2190    :On-Ride Photo of {STRINGID}
-STR_2191    :Pretzel
-STR_2192    :Hot Chocolate
-STR_2193    :Iced Tea
+STR_2191    :プレッツェル
+STR_2192    :ホットココア
+STR_2193    :アイスティー
 STR_2194    :Funnel Cake
 STR_2195    :Sunglasses
 STR_2196    :Beef Noodles
 STR_2197    :Fried Rice Noodles
 STR_2198    :Wonton Soup
 STR_2199    :Meatball Soup
-STR_2200    :Fruit Juice
-STR_2201    :Soybean Milk
+STR_2200    :フルーツジュース
+STR_2201    :豆乳
 STR_2202    :Sujongkwa
 STR_2203    :Sub Sandwich
-STR_2204    :Cookie
+STR_2204    :クッキー
 STR_2205    :Empty Bowl
 STR_2206    :Empty Drink Carton
 STR_2207    :Empty Juice Cup
@@ -2240,18 +2240,18 @@ STR_2232    :Cable lift hill
 STR_2233    :{SMALLFONT}{BLACK}Park information
 STR_2234    :Recent Messages
 STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
-STR_2236    :January
-STR_2237    :February
-STR_2238    :March
-STR_2239    :April
-STR_2240    :May
-STR_2241    :June
-STR_2242    :July
-STR_2243    :August
-STR_2244    :September
-STR_2245    :October
-STR_2246    :November
-STR_2247    :December
+STR_2236    :1月
+STR_2237    :2月
+STR_2238    :3月
+STR_2239    :4月
+STR_2240    :5月
+STR_2241    :6月
+STR_2242    :7月
+STR_2243    :8月
+STR_2244    :9月
+STR_2245    :10月
+STR_2246    :11月
+STR_2247    :12月
 STR_2248    :Can't demolish ride/attraction...
 STR_2249    :{BABYBLUE}New ride/attraction now available:{NEWLINE}{STRINGID}
 STR_2250    :{BABYBLUE}New scenery/themeing now available:{NEWLINE}{STRINGID}
@@ -2338,16 +2338,16 @@ STR_2330    :{WINDOW_COLOUR_2}Temperature:
 STR_2331    :{WINDOW_COLOUR_2}Height Labels:
 STR_2332    :Units
 STR_2333    :Sound
-STR_2334    :Pounds ({POUND})
-STR_2335    :Dollars ($)
-STR_2336    :Franc (F)
-STR_2337    :Deutschmark (DM)
-STR_2338    :Yen ({YEN})
-STR_2339    :Peseta (Pts)
-STR_2340    :Lira (L)
+STR_2334    :パウンド ({POUND})
+STR_2335    :ドル ($)
+STR_2336    :フラン (F)
+STR_2337    :ドイツマルク (DM)
+STR_2338    :円 ({YEN})
+STR_2339    :ペセタ (Pts)
+STR_2340    :リラ (L)
 STR_2341    :Guilders (fl.)
-STR_2342    :Krona (kr)
-STR_2343    :Euros ({EURO})
+STR_2342    :クローナ (kr)
+STR_2343    :ユーロ ({EURO})
 STR_2344    :Imperial
 STR_2345    :Metric
 STR_2346    :Display
@@ -2725,18 +2725,18 @@ STR_2716    :/
 STR_2717    :'
 STR_2718    :Up
 STR_2719    :New file
-STR_2720    :{UINT16}sec
-STR_2721    :{UINT16}secs
-STR_2722    :{UINT16}min:{UINT16}sec
-STR_2723    :{UINT16}min:{UINT16}secs
-STR_2724    :{UINT16}mins:{UINT16}sec
-STR_2725    :{UINT16}mins:{UINT16}secs
-STR_2726    :{UINT16}min
-STR_2727    :{UINT16}mins
-STR_2728    :{UINT16}hour:{UINT16}min
-STR_2729    :{UINT16}hour:{UINT16}mins
-STR_2730    :{UINT16}hours:{UINT16}min
-STR_2731    :{UINT16}hours:{UINT16}mins
+STR_2720    :{UINT16}秒
+STR_2721    :{UINT16}秒
+STR_2722    :{UINT16}分:{UINT16}sec
+STR_2723    :{UINT16}分:{UINT16}secs
+STR_2724    :{UINT16}分:{UINT16}sec
+STR_2725    :{UINT16}分:{UINT16}secs
+STR_2726    :{UINT16}分
+STR_2727    :{UINT16}分
+STR_2728    :{UINT16}時間:{UINT16}min
+STR_2729    :{UINT16}時間:{UINT16}mins
+STR_2730    :{UINT16}時間:{UINT16}min
+STR_2731    :{UINT16}時間:{UINT16}mins
 STR_2732    :{COMMA16}ft
 STR_2733    :{COMMA16}m
 STR_2734    :{COMMA16}mph
@@ -3919,7 +3919,6 @@ STR_5577    :South Korean Won (W)
 STR_5578    :Russian Rouble (R)
 STR_5579    :Window scale factor:
 STR_5580    :Czech koruna (Kc)
-STR_5581    :Show FPS
 
 #####################
 # Rides/attractions #

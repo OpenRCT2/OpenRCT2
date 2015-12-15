@@ -1,7 +1,11 @@
 #include "addresses.h"
 
 #if defined(__GNUC__)
-#define DISABLE_OPT __attribute__((noinline,optimize("O0")))
+	#ifdef __clang__
+		#define DISABLE_OPT __attribute__((noinline,optnone))
+	#else
+		#define DISABLE_OPT __attribute__((noinline,optimize("O0")))
+	#endif // __clang__
 #else
 #define DISABLE_OPT
 #endif // defined(__GNUC__)

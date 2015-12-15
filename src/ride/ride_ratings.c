@@ -683,10 +683,8 @@ static void ride_ratings_calculate_value(rct_ride *ride)
 }
 
 /**
- * rct2: sub_65E621
- *
  * I think this function computes ride upkeep? Though it is weird that the
- *
+ *  rct2: sub_65E621
  * inputs
  * - edi: ride ptr
  */
@@ -771,11 +769,12 @@ static uint16 ride_compute_upkeep(rct_ride *ride)
 	// multiply by 5/8
 	upkeep = upkeep * 10;
 	upkeep = upkeep >> 4;
-    return upkeep;
+	return upkeep;
 }
 
 /**
- * rct2: 0x0065E7FB
+ *
+ *  rct2: 0x0065E7FB
  *
  * inputs
  * - bx: excitement
@@ -839,16 +838,17 @@ static void ride_ratings_apply_intensity_penalty(rating_tuple *ratings)
 }
 
 /**
+ *
  *  rct2: 0x00655FD6
  */
 static void set_unreliability_factor(rct_ride *ride)
 {
-    // The higher the number, the lower the breakdown
-    // possibility. Range is [3, 7]. values are here:
-    // https://gist.github.com/kevinburke/123977c4884ccadbec70. Consider
-    // inlining this per ride
+	// The higher the number, the lower the breakdown
+	// possibility. Range is [3, 7]. values are here:
+	// https://gist.github.com/kevinburke/123977c4884ccadbec70. Consider
+	// inlining this per ride
 	uint8 lift_speed_adjustment = RideLiftHillAdjustments[ride->type];
-    ride->unreliability_factor += (ride->lift_hill_speed - lift_speed_adjustment) * 2;
+	ride->unreliability_factor += (ride->lift_hill_speed - lift_speed_adjustment) * 2;
 }
 
 static uint32 get_proximity_score_helper_1(uint16 x, uint16 max, uint32 multiplier)
@@ -952,7 +952,8 @@ static rating_tuple get_var_10E_rating(rct_ride* ride) {
 }
 
 /**
- * rct2: 0x0065DF72
+ *
+ *  rct2: 0x0065DF72
  */
 static rating_tuple get_var_110_rating(rct_ride* ride) {
 	int var_110_unk_1 = get_var_110_unk_1(ride);
@@ -976,7 +977,8 @@ static rating_tuple get_var_110_rating(rct_ride* ride) {
 }
 
 /**
- * rct2: 0x0065E047
+ *
+ *  rct2: 0x0065E047
  */
 static rating_tuple get_var_112_rating(rct_ride *ride) {
 	int al;
@@ -1006,7 +1008,8 @@ static rating_tuple get_var_112_rating(rct_ride *ride) {
 }
 
 /**
- * rct2: 0x0065E0F2
+ *
+ *  rct2: 0x0065E0F2
  */
 static rating_tuple get_inversions_ratings(uint8 inversions) {
 	int excitement = (min(inversions, 6) * 0x1AAAAA) >> 16;
@@ -1017,9 +1020,6 @@ static rating_tuple get_inversions_ratings(uint8 inversions) {
 	return rating;
 }
 
-/*
- *
- */
 static rating_tuple get_special_track_elements_rating(uint8 type, rct_ride *ride) {
 	int excitement = 0, intensity = 0, nausea = 0;
 	if (type == RIDE_TYPE_GHOST_TRAIN) {
@@ -1067,6 +1067,7 @@ static rating_tuple get_special_track_elements_rating(uint8 type, rct_ride *ride
 }
 
 /**
+ *
  *  rct2: 0x0065DDD1
  */
 static rating_tuple sub_65DDD1(rct_ride *ride)

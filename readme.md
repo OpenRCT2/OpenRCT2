@@ -79,12 +79,17 @@ OpenRCT2 requires original files of Rollercoaster Tycoon 2 to play. It can be bo
 - [Powershell 4.0](http://social.technet.microsoft.com/wiki/contents/articles/21016.how-to-install-windows-powershell-4-0.aspx).
 
 ### Mac OS X:
-- [Homebrew](http://brew.sh) or [MacPorts](https://www.macports.org/)
+- [Homebrew](http://brew.sh)
 
 ### Mac OS X / Linux:
-- [MinGW-w64](http://mingw-w64.sourceforge.net/)
-- [Wine](http://www.winehq.org)
-- libsdl2 compiled with MinGW-w64
+- sdl2
+- sdl2-ttf
+- speexdsp
+- curl (only if building with network support)
+- jansson (only if building with network support)
+- iconv (part of glibc on Linux)
+- cmake
+All libs listed here (bar cmake) required in 32 bit variants.
 
 ## 2.2 Compiling and running
 ### Windows:
@@ -98,15 +103,22 @@ OpenRCT2 requires original files of Rollercoaster Tycoon 2 to play. It can be bo
 Alternatively, to simply build the project you can just execute ``build.bat`` within VS2015 Native Tools Command prompt or Github Windows prompt.
 
 ### Mac OS X:
-Providing Homebrew or MacPorts are installed (but not both!), OpenRCT2's dependencies and Wine can be installed automatically through `install.sh`.
+We support native builds OS X (limited to i386 only for now).
+Make sure that you have [Homebrew](http://brew.sh/) installed and than run the following commands to install all the needed libraries and build openrct2.
 ```
-bash install.sh
-bash build.sh
-wine openrct2.exe
+# Install libraries
+./install.sh
+
+# Build OpenRCT2
+./build.sh
+
+# Run the game
+./openrct2
 ```
 
 ### Linux:
-As the easiest approach depends on your distribution, please take a look at the [wiki](https://github.com/OpenRCT2/OpenRCT2/wiki).
+We support native builds for Linux (limited to i386 only for now).
+As the easiest approach depends on your distribution, please take a look at the [wiki](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
 
 
 # 3 Contributing

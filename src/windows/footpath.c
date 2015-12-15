@@ -821,7 +821,7 @@ static void window_footpath_start_bridge_at_point(int screenX, int screenY)
 }
 
 /**
- *  Construct a piece of footpath while in bridge building mode.
+ * Construct a piece of footpath while in bridge building mode.
  *  rct2: 0x006A79B7
  */
 static void window_footpath_construct()

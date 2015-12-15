@@ -189,7 +189,10 @@ static void object_list_examine()
 	object_list_create_hash_table();
 }
 
-/* rct2: 0x006A9FC0 */
+/**
+ *
+ *  rct2: 0x006A9FC0
+ */
 void reset_loaded_objects()
 {
 	reset_type_to_ride_entry_index_map();
@@ -461,7 +464,10 @@ int check_object_entry(rct_object_entry *entry)
 	return (0xFFFFFFFF & dwords[0] & dwords[1] & dwords[2] & dwords[3]) + 1 != 0;
 }
 
-/* rct2: 0x006AB344 */
+/**
+ *
+ *  rct2: 0x006AB344
+ */
 void object_create_identifier_name(char* string_buffer, const rct_object_entry* object){
 	for (uint8 i = 0; i < 8; ++i){
 		if (object->name[i] != ' '){
@@ -485,7 +491,10 @@ void object_create_identifier_name(char* string_buffer, const rct_object_entry* 
 	*string_buffer++ = '\0';
 }
 
-/* rct2: 0x675827 */
+/**
+ *
+ *  rct2: 0x675827
+ */
 void set_load_objects_fail_reason(){
 	rct_object_entry* object = RCT2_ADDRESS(0x13CE952, rct_object_entry);
 	int expansion = (object->flags & 0xFF) >> 4;
@@ -600,9 +609,9 @@ uint32 object_get_hash_code(rct_object_entry *object)
 	int i;
 
 	for (i = 0; i < 8; i++)
-        hash = ((hash << 5) + hash) + object->name[i];
+		hash = ((hash << 5) + hash) + object->name[i];
 
-    return hash;
+	return hash;
 }
 
 void object_list_create_hash_table()
@@ -637,7 +646,9 @@ void object_list_create_hash_table()
 	}
 }
 
-/* 0x006A9DA2
+/**
+ *
+ *  rct2: 0x006A9DA2
  * bl = entry_index
  * ecx = entry_type
  */
@@ -704,7 +715,8 @@ rct_string_id object_get_name_string_id(rct_object_entry *entry, const void *chu
 	}
 }
 
-/* Installs an  object_entry at the desired installed_entry address
+/**
+ * Installs an  object_entry at the desired installed_entry address
  * Returns the size of the new entry. Will return 0 on failure.
  */
 static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* installed_entry, const char* path, rct_object_filters* filter){
