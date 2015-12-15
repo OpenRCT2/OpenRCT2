@@ -5545,7 +5545,7 @@ static void sub_6D661F(rct_vehicle *vehicle)
 		vehicle->var_B6 += dword_F64E08 >> spinningInertia;
 		break;
 	case loc_6D66D6:
-		if (vehicle->var_34 < 48) {
+		if (vehicle->track_progress < 48) {
 			spinningInertia += 8;
 			vehicle->var_B6 += dword_F64E08 >> spinningInertia;
 			break;
@@ -5559,13 +5559,13 @@ static void sub_6D661F(rct_vehicle *vehicle)
 		vehicle->var_B6 += dword_F64E08 >> spinningInertia;
 		break;
 	case loc_6D6708:
-		if (vehicle->var_34 > 22) {
+		if (vehicle->track_progress > 22) {
 			spinningInertia += 5;
 			vehicle->var_B6 += dword_F64E08 >> spinningInertia;
 		}
 		break;
 	case loc_6D6711:
-		if (vehicle->var_34 < 48) {
+		if (vehicle->track_progress < 48) {
 			spinningInertia += 8;
 			vehicle->var_B6 += dword_F64E08 >> spinningInertia;
 			break;
@@ -5775,7 +5775,7 @@ static void vehicle_update_handle_water_splash(rct_vehicle *vehicle)
 					rct_vehicle *nextVehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
 					rct_vehicle *nextNextVehicle = GET_VEHICLE(nextVehicle->next_vehicle_on_ride);
 					if (!track_element_is_covered(nextNextVehicle->track_type >> 2)) {
-						if (vehicle->var_34 == 4) {
+						if (vehicle->track_progress == 4) {
 							vehicle_update_play_water_splash_sound();
 						}
 					}
@@ -5784,14 +5784,14 @@ static void vehicle_update_handle_water_splash(rct_vehicle *vehicle)
 		}
 	} else {
 		if (trackType == TRACK_ELEM_25_DEG_DOWN_TO_FLAT) {
-			if (vehicle->var_34 == 12) {
+			if (vehicle->track_progress == 12) {
 				vehicle_update_play_water_splash_sound();
 			}
 		}
 	}
 	if (!vehicle->is_child) {
 		if (trackType == TRACK_ELEM_WATER_SPLASH) {
-			if (vehicle->var_34 == 48) {
+			if (vehicle->track_progress == 48) {
 				vehicle_update_play_water_splash_sound();
 			}
 		}
@@ -5807,7 +5807,7 @@ static void sub_6DB807(rct_vehicle *vehicle)
 	const rct_vehicle_info *moveInfo = vehicle_get_move_info(
 		vehicle->var_CD,
 		vehicle->track_type,
-		vehicle->var_34
+		vehicle->track_progress
 	);
 	int x = vehicle->track_x + moveInfo->x;
 	int y = vehicle->track_y + moveInfo->y;
@@ -5835,11 +5835,11 @@ static void sub_6DB7D6(rct_vehicle *vehicle)
 	rct_vehicle *previousVehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
 	rct_vehicle *nextVehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
 
-	vehicle->var_34 = 168;
+	vehicle->track_progress = 168;
 	vehicle->vehicle_type ^= 1;
 
-	previousVehicle->var_34 = 86;
-	nextVehicle->var_34 = 158;
+	previousVehicle->track_progress = 86;
+	nextVehicle->track_progress = 158;
 
 	sub_6DB807(nextVehicle);
 	sub_6DB807(previousVehicle);
@@ -5879,7 +5879,7 @@ void sub_6DBF3E(rct_vehicle *vehicle)
 	if (trackType == TRACK_ELEM_TOWER_BASE &&
 		vehicle == RCT2_GLOBAL(0x00F64E04, rct_vehicle*)
 	) {
-		if (vehicle->var_34 > 3 && !(vehicle->update_flags & VEHICLE_UPDATE_FLAG_3)) {
+		if (vehicle->track_progress > 3 && !(vehicle->update_flags & VEHICLE_UPDATE_FLAG_3)) {
 			rct_xy_element input, output;
 			int outputZ, outputDirection;
 
@@ -5891,8 +5891,8 @@ void sub_6DBF3E(rct_vehicle *vehicle)
 			}
 		}
 
-		if (vehicle->var_34 <= 3) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_0;
+		if (vehicle->track_progress <= 3) {
+			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
 		}
 	}
 
@@ -5902,10 +5902,10 @@ void sub_6DBF3E(rct_vehicle *vehicle)
 		return;
 	}
 
-	uint16 ax = vehicle->var_34;
+	uint16 ax = vehicle->track_progress;
 	if (RCT2_GLOBAL(0x00F64E08, uint32) < 0) {
 		if (ax <= 22) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_0;
+			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
 		}
 	} else {
 		uint16 cx = 17;
@@ -5917,7 +5917,7 @@ void sub_6DBF3E(rct_vehicle *vehicle)
 		}
 
 		if (ax > cx) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_0;
+			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
 		}
 	}
 }
@@ -5993,7 +5993,7 @@ loc_6DAEB9:
 
 	int trackType = vehicle->track_type >> 2;
 	if (trackType == 197 || trackType == 198) {
-		if (vehicle->var_34 == 80) {
+		if (vehicle->track_progress == 80) {
 			vehicle->vehicle_type ^= 1;
 			vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 		}
@@ -6028,9 +6028,9 @@ loc_6DAEB9:
 	if (trackType == TRACK_ELEM_BRAKE_FOR_DROP) {
 		if (!vehicle->is_child) {
 			if (!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_10)) {
-				if (vehicle->var_34 >= 8) {
+				if (vehicle->track_progress >= 8) {
 					vehicle->var_2C = -RCT2_GLOBAL(0x00F64E08, sint32) * 16;
-					if (vehicle->var_34 >= 24) {
+					if (vehicle->track_progress >= 24) {
 						vehicle->update_flags |= VEHICLE_UPDATE_FLAG_10;
 						vehicle->var_D2 = 90;
 					}
@@ -6039,17 +6039,17 @@ loc_6DAEB9:
 		}
 	}
 	if (trackType == TRACK_ELEM_LOG_FLUME_REVERSER) {
-		if (vehicle->var_34 != 16 || vehicle->velocity < 0x40000) {
-			if (vehicle->var_34 == 32) {
+		if (vehicle->track_progress != 16 || vehicle->velocity < 0x40000) {
+			if (vehicle->track_progress == 32) {
 				vehicle->vehicle_type = vehicleEntry->var_58;
 				vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 			}
 		} else {
-			vehicle->var_34 += 17;
+			vehicle->track_progress += 17;
 		}
 	}
 
-	regs.ax = vehicle->var_34 + 1;
+	regs.ax = vehicle->track_progress + 1;
 	{
 		const rct_vehicle_info *moveInfo = vehicle_get_move_info(
 			vehicle->var_CD,
@@ -6225,14 +6225,14 @@ loc_6DB500:
 	regs.ax = 0;
 
 loc_6DB59A:
-	vehicle->var_34 = regs.ax;
+	vehicle->track_progress = regs.ax;
 	vehicle_update_handle_water_splash(vehicle);
 
 loc_6DB706:;
 	const rct_vehicle_info *moveInfo = vehicle_get_move_info(
 		vehicle->var_CD,
 		vehicle->track_type,
-		vehicle->var_34
+		vehicle->track_progress
 		);
 	sint16 x = vehicle->track_x + moveInfo->x;
 	sint16 y = vehicle->track_y + moveInfo->y;
@@ -6245,8 +6245,8 @@ loc_6DB706:;
 	if (vehicle->var_CD == 15 &&
 		vehicle->track_type >= 844 &&
 		vehicle->track_type < 852 &&
-		vehicle->var_34 >= 30 &&
-		vehicle->var_34 <= 66
+		vehicle->track_progress >= 30 &&
+		vehicle->track_progress <= 66
 		) {
 		regs.ebx |= 8;
 	}
@@ -6254,14 +6254,14 @@ loc_6DB706:;
 	if (vehicle->var_CD == 16 &&
 		vehicle->track_type >= 844 &&
 		vehicle->track_type < 852 &&
-		vehicle->var_34 == 96
+		vehicle->track_progress == 96
 		) {
 		sub_6DB7D6(vehicle);
 
 		const rct_vehicle_info *moveInfo2 = vehicle_get_move_info(
 			vehicle->var_CD,
 			vehicle->track_type,
-			vehicle->var_34
+			vehicle->track_progress
 			);
 		x = vehicle->x + moveInfo2->x;
 		y = vehicle->y + moveInfo2->y;
@@ -6363,7 +6363,7 @@ loc_6DBA33:
 		}
 	}
 
-	regs.ax = vehicle->var_34 - 1;
+	regs.ax = vehicle->track_progress - 1;
 	if (regs.ax != -1) {
 		goto loc_6DBD42;
 	}
@@ -6519,7 +6519,7 @@ loc_6DBC3B:
 	regs.ax = unk16;
 
 loc_6DBD42:
-	vehicle->var_34 = regs.ax;
+	vehicle->track_progress = regs.ax;
 	moveInfo = vehicle_get_move_info(
 		vehicle->var_CD,
 		vehicle->track_type,
@@ -6786,8 +6786,8 @@ loc_6DC2FA:
 loc_6DC316:
 	regs.bx = vehicle->track_type >> 2;
 	if (regs.bx == TRACK_ELEM_WATER_SPLASH) {
-		if (vehicle->var_34 >= 48 &&
-			vehicle->var_34 <= 128
+		if (vehicle->track_progress >= 48 &&
+			vehicle->track_progress <= 128
 			) {
 			regs.eax = vehicle->velocity >> 6;
 			regs.ecx -= regs.eax;
@@ -6914,7 +6914,7 @@ loc_6DC5B8:
 
 	// There are two bytes before the move info list
 	{
-		uint16 unk16_v34 = vehicle->var_34 + 1;
+		uint16 unk16_v34 = vehicle->track_progress + 1;
 		uint16 unk16 = *((uint16*)((int)moveInfo - 2));
 		if (unk16_v34 < unk16) {
 			regs.ax = unk16_v34;
@@ -6976,7 +6976,7 @@ loc_6DC5B8:
 	regs.ax = 0;
 
 loc_6DC743:
-	vehicle->var_34 = regs.ax;
+	vehicle->track_progress = regs.ax;
 	if (vehicle->is_child) {
 		vehicle->var_C5++;
 		if (vehicle->var_C5 >= 6) {
@@ -6985,7 +6985,7 @@ loc_6DC743:
 	}
 
 	for (;;) {
-		moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, vehicle->var_34);
+		moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, vehicle->track_progress);
 		if (moveInfo->x != (uint16)0x8000) {
 			break;
 		}
@@ -7004,19 +7004,19 @@ loc_6DC743:
 				}
 				vehicle->var_CD = regs.bl;
 			}
-			vehicle->var_34++;
+			vehicle->track_progress++;
 			break;
 		case 1: // loc_6DC7ED
 			vehicle->var_D3 = moveInfo->z;
-			vehicle->var_34++;
+			vehicle->track_progress++;
 			break;
 		case 2: // loc_6DC800
 			vehicle->var_D5 |= (1 << 0);
-			vehicle->var_34++;
+			vehicle->track_progress++;
 			break;
 		case 3: // loc_6DC810
 			vehicle->var_D5 |= (1 << 1);
-			vehicle->var_34++;
+			vehicle->track_progress++;
 			break;
 		case 4: // loc_6DC820
 			z = moveInfo->z;
@@ -7034,16 +7034,16 @@ loc_6DC743:
 			}
 			vehicle->var_D4 = z;
 			vehicle->var_C5 = 0;
-			vehicle->var_34++;
+			vehicle->track_progress++;
 			break;
 		case 5: // loc_6DC87A
 			vehicle->var_D5 |= (1 << 2);
-			vehicle->var_34++;
+			vehicle->track_progress++;
 			break;
 		case 6: // loc_6DC88A
 			vehicle->var_D5 &= ~(1 << 4);
 			vehicle->var_D5 |= (1 << 5);
-			vehicle->var_34++;
+			vehicle->track_progress++;
 			break;
 		default:
 			log_error("Invalid move info...");
@@ -7131,7 +7131,7 @@ loc_6DCA7A:
 	invalidate_sprite_2((rct_sprite*)vehicle);
 
 loc_6DCA9A:
-	regs.ax = vehicle->var_34 - 1;
+	regs.ax = vehicle->track_progress - 1;
 	if (regs.ax != (short)0xFFFF) {
 		goto loc_6DCC2C;
 	}
@@ -7189,9 +7189,9 @@ loc_6DCA9A:
 	regs.ax = *((uint16*)((int)moveInfo - 2)) - 1;
 
 loc_6DCC2C:
-	vehicle->var_34 = regs.ax;
+	vehicle->track_progress = regs.ax;
 
-	moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, vehicle->var_34);
+	moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, vehicle->track_progress);
 	x = vehicle->track_x + moveInfo->x;
 	y = vehicle->track_y + moveInfo->y;
 	z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
@@ -7290,7 +7290,7 @@ loc_6DCE02:
 	if (vehicle != RCT2_GLOBAL(0x00F64E04, rct_vehicle*)) {
 		goto loc_6DCEB2;
 	}
-	regs.ax = vehicle->var_34;
+	regs.ax = vehicle->track_progress;
 	if (RCT2_GLOBAL(0x00F64E08, uint32) < 0) {
 		goto loc_6DCE62;
 	}
@@ -7306,7 +7306,7 @@ loc_6DCE62:
 	}
 
 loc_6DCE68:
-	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_0;
+	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
 	regs.al = vehicle->track_x >> 5;
 	regs.ah = vehicle->track_y >> 5;
 	regs.dl = vehicle->track_z >> 3;
@@ -7432,6 +7432,7 @@ loc_6DD069:
 
 end:
 	// hook_setreturnregisters(&regs);
+	if (outStation != NULL) *outStation = regs.ebx;
 	return regs.eax;
 }
 
