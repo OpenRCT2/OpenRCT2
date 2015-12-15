@@ -4280,7 +4280,7 @@ void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement)
 	for (int i = 0; i < ride->num_vehicles; i++) {
 		train = GET_VEHICLE(ride->vehicles[i]);
 		if (i == 0) {
-			sub_6DAB4C(train, NULL);
+			vehicle_update_track_motion(train, NULL);
 			vehicle_unset_var_48_b1(train);
 			continue;
 		}
@@ -4300,7 +4300,7 @@ void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement)
 				}
 				car = GET_VEHICLE(spriteIndex);
 			}
-		} while (sub_6DAB4C(train, NULL) & 0x400);
+		} while (vehicle_update_track_motion(train, NULL) & 0x400);
 
 		mapElement->flags |= (1 << 5);
 		car = train;

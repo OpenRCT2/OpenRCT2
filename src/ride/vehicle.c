@@ -1264,7 +1264,7 @@ static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle){
 			vehicle->var_2C = 0;
 		}
 
-		eax = sub_6DAB4C(vehicle, &ebx);
+		eax = vehicle_update_track_motion(vehicle, &ebx);
 		if (!(eax&(1 << 5)))
 			break;
 		//Fall through to next case
@@ -1308,7 +1308,7 @@ static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle){
 		}
 
 		int station;
-		eax = sub_6DAB4C(vehicle, &station);
+		eax = vehicle_update_track_motion(vehicle, &station);
 
 		if (eax & (1 << 1)){
 			vehicle->velocity = 0;
@@ -2077,7 +2077,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 		break;
 	}
 
-	uint32 flags = sub_6DAB4C(vehicle, NULL);
+	uint32 flags = vehicle_update_track_motion(vehicle, NULL);
 
 	if (flags & (1 << 8)) {
 		if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE) {
@@ -2435,7 +2435,7 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 		return;
 	}
 
-	uint32 flags = sub_6DAB4C(vehicle, NULL);
+	uint32 flags = vehicle_update_track_motion(vehicle, NULL);
 
 	bool skipCheck = false;
 	if (flags & ((1 << 8) | (1 << 9)) &&
@@ -2689,7 +2689,7 @@ static void vehicle_update_arriving(rct_vehicle* vehicle) {
 
 	uint32 flags;
  loc_6D8E36:
-	flags = sub_6DAB4C(vehicle, NULL);
+	flags = vehicle_update_track_motion(vehicle, NULL);
 	if (flags & (1 << 7) &&
 		RCT2_GLOBAL(0x00F64E35, uint8) == 0) {
 		vehicle_update_collision_setup(vehicle);
@@ -3559,7 +3559,7 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle) {
 	if (vehicle->velocity <= 439800) {
 		vehicle->var_2C = 4398;
 	}
-	int flags = sub_6DAB4C(vehicle, NULL);
+	int flags = vehicle_update_track_motion(vehicle, NULL);
 
 	if (flags & (1 << 11)) {
 		vehicle->status = VEHICLE_STATUS_TRAVELLING;
@@ -5029,21 +5029,17 @@ const sint32 *dword_9A2970 = (sint32*)0x009A2970;
 
 /**
  *
- *  rct2: 0x006DAB6F
+ *  rct2: 0x006DAB90
  */
-static void sub_6DAB4C_chunk_1(rct_vehicle *vehicle)
+static void vehicle_update_track_motion_up_stop_check(rct_vehicle *vehicle)
 {
 	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 	int verticalG, lateralG;
 
-	RCT2_GLOBAL(0x00F64E2C, uint8) = 0;
-	RCT2_GLOBAL(0x00F64E04, rct_vehicle*) = vehicle;
-	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
-	RCT2_GLOBAL(0x00F64E1C, uint32) = 0xFFFFFFFF;
-
+	// No up stops (coaster types)
 	if (vehicleEntry->var_12 & (1 << 1)) {
 		int trackType = vehicle->track_type >> 2;
-		if (trackType < 68 || trackType >= 87) {
+		if (!track_element_is_covered(trackType)) {
 			vehicle_get_g_forces(vehicle, &verticalG, &lateralG);
 			lateralG = abs(lateralG);
 			if (lateralG <= 150) {
@@ -5061,8 +5057,9 @@ static void sub_6DAB4C_chunk_1(rct_vehicle *vehicle)
 			}
 		}
 	} else if (vehicleEntry->var_12 & (1 << 2)) {
+		// No up stops bobsleigh type
 		int trackType = vehicle->track_type >> 2;
-		if (trackType < 68 || trackType >= 87) {
+		if (!track_element_is_covered(trackType)) {
 			vehicle_get_g_forces(vehicle, &verticalG, &lateralG);
 
 			if (dword_9A2970[vehicle->var_1F] < 0) {
@@ -5926,7 +5923,7 @@ void sub_6DBF3E(rct_vehicle *vehicle)
  *
  *  rct2: 0x006DAB4C
  */
-int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
+int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 {
 	registers regs = { 0 };
 
@@ -5951,7 +5948,12 @@ int sub_6DAB4C(rct_vehicle *vehicle, int *outStation)
 		goto loc_6DC3A7;
 	}
 
-	sub_6DAB4C_chunk_1(vehicle);
+	RCT2_GLOBAL(0x00F64E2C, uint8) = 0;
+	RCT2_GLOBAL(0x00F64E04, rct_vehicle*) = vehicle;
+	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
+	RCT2_GLOBAL(0x00F64E1C, uint32) = 0xFFFFFFFF;
+
+	vehicle_update_track_motion_up_stop_check(vehicle);
 	sub_6DAB4C_chunk_2(vehicle);
 	sub_6DAB4C_chunk_3(vehicle);
 
@@ -6811,8 +6813,8 @@ loc_6DC316:
 	regs.eax = RCT2_GLOBAL(0x00F64E18, uint32);
 	regs.ebx = RCT2_GLOBAL(0x00F64E1C, uint32);
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED) {
-		regs.eax &= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
-		regs.eax &= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
+		regs.eax &= ~VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
+		regs.eax &= ~VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
 	}
 	goto end;
 
