@@ -700,8 +700,12 @@ uint8 platform_get_locale_currency(){
 }
 
 uint8 platform_get_locale_measurement_format(){
-	//FIXME: LC_MEASUREMENT is GNU specific.
+	// LC_MEASUREMENT is GNU specific.
+	#ifdef LC_MEASUREMENT
 	const char *langstring = setlocale(LC_MEASUREMENT, "");
+	#else
+	const char *langstring = setlocale(LC_ALL, "");
+	#endif
 
 	if(langstring != NULL){
 		//using https://en.wikipedia.org/wiki/Metrication#Chronology_and_status_of_conversion_by_country as reference
@@ -713,7 +717,12 @@ uint8 platform_get_locale_measurement_format(){
 }
 
 uint8 platform_get_locale_temperature_format(){
+	// LC_MEASUREMENT is GNU specific.
+	#ifdef LC_MEASUREMENT
 	const char *langstring = setlocale(LC_MEASUREMENT, "");
+	#else
+	const char *langstring = setlocale(LC_ALL, "");
+	#endif
 
 	if(langstring != NULL){
 		if(!fnmatch("*_US*", langstring, 0) || !fnmatch("*_BS*", langstring, 0) || !fnmatch("*_BZ*", langstring, 0) || !fnmatch("*_PW*", langstring, 0)){
