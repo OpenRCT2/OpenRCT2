@@ -6265,7 +6265,7 @@ loc_6DB706:;
 	if (y != unk_F64E20->y) { regs.ebx |= 2; }
 	if (z != unk_F64E20->z) { regs.ebx |= 4; }
 	if (vehicle->var_CD == 15 &&
-		(trackType >= TRACK_ELEM_LEFT_REVERSER ||
+		(trackType == TRACK_ELEM_LEFT_REVERSER ||
 		trackType == TRACK_ELEM_RIGHT_REVERSER) &&
 		vehicle->track_progress >= 30 &&
 		vehicle->track_progress <= 66
@@ -6274,7 +6274,7 @@ loc_6DB706:;
 	}
 
 	if (vehicle->var_CD == 16 &&
-		(trackType >= TRACK_ELEM_LEFT_REVERSER ||
+		(trackType == TRACK_ELEM_LEFT_REVERSER ||
 		trackType == TRACK_ELEM_RIGHT_REVERSER) &&
 		vehicle->track_progress == 96
 		) {
