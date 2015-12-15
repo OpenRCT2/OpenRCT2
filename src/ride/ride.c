@@ -3629,6 +3629,7 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 
 	switch (setting){
 	case 0:
+		// Alteration: only check if the ride mode exists, and fall back to the default if it doesn't.
 		invalidate_test_results(ride_id);
 		ride_clear_for_construction(ride_id);
 		ride_remove_peeps(ride_id);
@@ -3641,16 +3642,16 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 		}
 
 		uint8 default_mode = available_modes[0];
+
+		available_modes = AllRideModesAvailable;
 		for (; *available_modes != 0xFF; available_modes++){
 			if (*available_modes == new_value)
 				break;
 		}
 
-		if (*available_modes == 0xFF) new_value = default_mode;
-
-		if (available_modes[1] == 0xFF){
-			if ((ride_entry->flags & RIDE_ENTRY_DISABLE_LAST_OPERATING_MODE) && !gCheatsShowAllOperatingModes)
-				new_value = default_mode;
+		if (*available_modes == 0xFF) {
+			log_warning("Tried to use incorrect ride mode, using default for this ride type.");
+			new_value = default_mode;
 		}
 
 		ride->mode = new_value;

@@ -3290,7 +3290,7 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 		entry_index = 0xFF;
 	}
 
-	RCT2_GLOBAL(0x00141E9AE, rct_string_id) = 988;
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_CREATE_NEW_RIDE_ATTRACTION;
 	int rideIndex = 0;
 	{
 		int _eax = 0,
