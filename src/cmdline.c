@@ -45,6 +45,7 @@ typedef struct argparse argparse_t;
 typedef int (*cmdline_action)(const char **argv, int argc);
 
 int gExitCode = 0;
+int sprite_mode;
 
 #ifndef DISABLE_NETWORK
 int gNetworkStart = NETWORK_MODE_NONE;

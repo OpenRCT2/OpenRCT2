@@ -26,7 +26,7 @@
 /** The exit code for OpenRCT2 when it exits. */
 extern int gExitCode;
 
-int sprite_mode;
+extern int sprite_mode;
 
 extern int gNetworkStart;
 extern char gNetworkStartHost[128];

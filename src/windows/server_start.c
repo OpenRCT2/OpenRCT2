@@ -28,9 +28,9 @@
 #include "../util/util.h"
 #include "error.h"
 
-char _port[7];
-char _name[65];
-char _password[33];
+static char _port[7];
+static char _name[65];
+static char _password[33];
 
 enum {
 	WIDX_BACKGROUND,
