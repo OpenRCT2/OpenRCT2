@@ -6227,7 +6227,7 @@ void set_vehicle_type_image_max_sizes(rct_ride_type_vehicle* vehicle_type, int n
 
 	// Moved from object paint
 
-	if (vehicle_type->var_12 & 0x2000){
+	if (vehicle_type->flags_a & VEHICLE_ENTRY_FLAG_A_13){
 		bl += 16;
 	}
 

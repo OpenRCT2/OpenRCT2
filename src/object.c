@@ -490,14 +490,14 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 
 			if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT) {
 				int al = 1;
-				if (rideVehicleEntry->var_14 & 2) {
+				if (rideVehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_SWINGING) {
 					al = 13;
-					if ((rideVehicleEntry->var_14 & 0x820) != 0x820) {
+					if ((rideVehicleEntry->flags_b & (VEHICLE_ENTRY_FLAG_B_5 | VEHICLE_ENTRY_FLAG_B_11)) != (VEHICLE_ENTRY_FLAG_B_5 | VEHICLE_ENTRY_FLAG_B_11)) {
 						al = 7;
-						if (!(rideVehicleEntry->var_14 & 0x20)) {
-							if (!(rideVehicleEntry->var_14 & 0x800)) {
+						if (!(rideVehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_5)) {
+							if (!(rideVehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_11)) {
 								al = 5;
-								if (rideVehicleEntry->var_14 & 0x200) {
+								if (rideVehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_9) {
 									al = 3;
 								}
 							}
@@ -508,19 +508,19 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 				// 0x6DE90B
 
 				al = 0x20;
-				if (!(rideVehicleEntry->var_12 & 0x4000))
+				if (!(rideVehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_14))
 				{
 					al = 1;
-					if (rideVehicleEntry->var_14 & 0x80)
+					if (rideVehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_7)
 					{
 						if (rideVehicleEntry->var_11 != 6)
 						{
 							al = 2;
-							if (!(rideVehicleEntry->var_12 & 0x80)) al = 4;
+							if (!(rideVehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_7)) al = 4;
 						}
 					}
 				}
-				if (rideVehicleEntry->var_12 & 0x1000) al = rideVehicleEntry->special_frames;
+				if (rideVehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_12) al = rideVehicleEntry->special_frames;
 				rideVehicleEntry->var_02 = al;
 				// 0x6DE946
 
@@ -531,7 +531,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 				if (rideVehicleEntry->car_visual != VEHICLE_VISUAL_RIVER_RAPIDS) {
 					int b = rideVehicleEntry->var_16 * 32;
 
-					if (rideVehicleEntry->var_12 & 0x800) b /= 2;
+					if (rideVehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_11) b /= 2;
 					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15) b /= 8;
 
 					image_index += b;
@@ -540,7 +540,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES) {
 						rideVehicleEntry->var_20 = image_index;
 						b = rideVehicleEntry->var_16 * 72;
-						if (rideVehicleEntry->var_12 & 0x4000)
+						if (rideVehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_14)
 							b = rideVehicleEntry->var_16 * 16;
 
 						image_index += b;
@@ -644,9 +644,9 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 				cur_vehicle_images_offset = image_index + rideVehicleEntry->no_seating_rows * rideVehicleEntry->no_vehicle_images;
 				// 0x6DEB0D
 
-				if (!(rideVehicleEntry->var_12 & 0x400)){
+				if (!(rideVehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_10)){
 					int num_images = cur_vehicle_images_offset - rideVehicleEntry->base_image_id;
-					if (rideVehicleEntry->var_12 & 0x2000){
+					if (rideVehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_13){
 						num_images *= 2;
 					}
 
@@ -725,7 +725,7 @@ int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dp
 			rideVehicleEntry->no_vehicle_images = 0;
 			rideVehicleEntry->var_16 = 0;
 
-			if (!(rideVehicleEntry->var_12 & 0x400)){
+			if (!(rideVehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_10)){
 				rideVehicleEntry->sprite_width = 0;
 				rideVehicleEntry->sprite_height_negative = 0;
 				rideVehicleEntry->sprite_height_positive = 0;

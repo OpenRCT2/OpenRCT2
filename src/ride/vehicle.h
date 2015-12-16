@@ -46,8 +46,8 @@ typedef struct {
 	uint8 sprite_height_negative;	// 0x0F , 0x29
 	uint8 sprite_height_positive;	// 0x10 , 0x2A
 	uint8 var_11;					// 0x11 , 0x2B
-	uint16 var_12;					// 0x12 , 0x2C
-	uint16 var_14;					// 0x14 , 0x2E
+	uint16 flags_a;					// 0x12 , 0x2C
+	uint16 flags_b;					// 0x14 , 0x2E
 	uint16 var_16;					// 0x16 , 0x30
 	uint32 base_image_id;			// 0x18 , 0x32
 	uint32 var_1C;					// 0x1C , 0x36
@@ -190,6 +190,44 @@ typedef struct {
 } train_ref;
 
 enum {
+	VEHICLE_ENTRY_FLAG_A_0 = 1 << 0,
+	VEHICLE_ENTRY_FLAG_A_1 = 1 << 1,
+	VEHICLE_ENTRY_FLAG_A_2 = 1 << 2,
+	VEHICLE_ENTRY_FLAG_A_3 = 1 << 3,
+	VEHICLE_ENTRY_FLAG_A_4 = 1 << 4,
+	VEHICLE_ENTRY_FLAG_A_5 = 1 << 5,
+	VEHICLE_ENTRY_FLAG_A_6 = 1 << 6,
+	VEHICLE_ENTRY_FLAG_A_7 = 1 << 7,
+	VEHICLE_ENTRY_FLAG_A_8 = 1 << 8,
+	VEHICLE_ENTRY_FLAG_A_9 = 1 << 9,
+	VEHICLE_ENTRY_FLAG_A_10 = 1 << 10,
+	VEHICLE_ENTRY_FLAG_A_11 = 1 << 11,
+	VEHICLE_ENTRY_FLAG_A_12 = 1 << 12,
+	VEHICLE_ENTRY_FLAG_A_13 = 1 << 13,
+	VEHICLE_ENTRY_FLAG_A_14 = 1 << 14,
+	VEHICLE_ENTRY_FLAG_A_15 = 1 << 15,
+};
+
+enum {
+	VEHICLE_ENTRY_FLAG_B_0 = 1 << 0,
+	VEHICLE_ENTRY_FLAG_B_SWINGING = 1 << 1,
+	VEHICLE_ENTRY_FLAG_B_SPINNING = 1 << 2,
+	VEHICLE_ENTRY_FLAG_B_3 = 1 << 3,
+	VEHICLE_ENTRY_FLAG_B_4 = 1 << 4,
+	VEHICLE_ENTRY_FLAG_B_5 = 1 << 5,
+	VEHICLE_ENTRY_FLAG_B_6 = 1 << 6,
+	VEHICLE_ENTRY_FLAG_B_7 = 1 << 7,
+	VEHICLE_ENTRY_FLAG_B_8 = 1 << 8,
+	VEHICLE_ENTRY_FLAG_B_9 = 1 << 9,
+	VEHICLE_ENTRY_FLAG_B_10 = 1 << 10,
+	VEHICLE_ENTRY_FLAG_B_11 = 1 << 11,
+	VEHICLE_ENTRY_FLAG_B_12 = 1 << 12,
+	VEHICLE_ENTRY_FLAG_B_13 = 1 << 13,
+	VEHICLE_ENTRY_FLAG_B_14 = 1 << 14,
+	VEHICLE_ENTRY_FLAG_B_15 = 1 << 15,
+};
+
+enum {
 	VEHICLE_STATUS_MOVING_TO_END_OF_STATION,
 	VEHICLE_STATUS_WAITING_FOR_PASSENGERS,
 	VEHICLE_STATUS_WAITING_TO_DEPART,
@@ -297,7 +335,6 @@ enum {
 
 void vehicle_update_all();
 int sub_6BC2F3(rct_vehicle* vehicle);
-void sub_6BB9FF(rct_vehicle* vehicle);
 void vehicle_sounds_update();
 void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG);
 void vehicle_set_map_toolbar(rct_vehicle *vehicle);

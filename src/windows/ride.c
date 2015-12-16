@@ -1059,7 +1059,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 		spriteIndex = 32;
 		if (w->page == WINDOW_RIDE_PAGE_VEHICLE)
 			spriteIndex += w->frame_no;
-		spriteIndex /= (rideVehicleEntry->var_12 & 0x800) ? 4 : 2;
+		spriteIndex /= (rideVehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_11) ? 4 : 2;
 		spriteIndex &= rideVehicleEntry->rotation_frame_mask;
 		spriteIndex *= rideVehicleEntry->var_16;
 		spriteIndex += rideVehicleEntry->base_image_id;
@@ -2670,7 +2670,7 @@ static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
 			vehicleColour = ride_get_vehicle_colour(ride, vehicleColourIndex);
 
 			spriteIndex = 16;
-			if (rideVehicleEntry->var_12 & 0x800)
+			if (rideVehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_11)
 				spriteIndex /= 2;
 
 			spriteIndex &= rideVehicleEntry->rotation_frame_mask;
@@ -4143,9 +4143,9 @@ static void window_ride_colour_invalidate(rct_window *w)
 		for (int i = 0; i < ride->num_cars_per_train; i++) {
 			uint8 vehicleTypeIndex = trainLayout[i];
 
-			colourFlags |= rideEntry->vehicles[vehicleTypeIndex].var_14;
+			colourFlags |= rideEntry->vehicles[vehicleTypeIndex].flags_b;
 			colourFlags = ror32(colourFlags, 16);
-			colourFlags |= rideEntry->vehicles[vehicleTypeIndex].var_12;
+			colourFlags |= rideEntry->vehicles[vehicleTypeIndex].flags_a;
 			colourFlags = ror32(colourFlags, 16);
 		}
 
@@ -4335,7 +4335,7 @@ static void window_ride_colour_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 	y += rideVehicleEntry->tab_height;
 
 	// Draw the coloured spinning vehicle
-	spriteIndex = rideVehicleEntry->var_12 & 0x800 ? w->frame_no / 4 : w->frame_no / 2;
+	spriteIndex = rideVehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_11 ? w->frame_no / 4 : w->frame_no / 2;
 	spriteIndex &= rideVehicleEntry->rotation_frame_mask;
 	spriteIndex *= rideVehicleEntry->var_16;
 	spriteIndex += rideVehicleEntry->base_image_id;
