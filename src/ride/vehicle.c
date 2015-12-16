@@ -2015,7 +2015,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 		}
 	}
 
-	if (flags & (1 << 4)) {
+	if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL) {
 		vehicle->var_B8 |= (1 << 1);
 		if (ride->mode != RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE) {
 			sint32 speed = ride->lift_hill_speed * 31079;
@@ -2441,7 +2441,7 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 		}
 	}
 
-	if (flags & (1 << 4)) {
+	if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL) {
 		if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE) {
 			if (vehicle->sub_state == 0) {
 				if (vehicle->velocity != 0)
@@ -4830,7 +4830,7 @@ static void loc_6DB1B0(rct_vehicle *vehicle, rct_map_element *mapElement)
  *
  *  rct2: 0x006D6776
  */
-static void sub_6D6776(rct_vehicle *vehicle)
+static void vehicle_update_swinging_car(rct_vehicle *vehicle)
 {
 	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 	RCT2_CALLPROC_X(0x006D6776, 0, 0, 0, 0, (int)vehicle, (int)vehicleEntry, 0);
@@ -5120,7 +5120,7 @@ static const uint8 off_9A2E84[256] = {
  *
  *  rct2: 0x006D661F
  */
-static void sub_6D661F(rct_vehicle *vehicle)
+static void vehicle_update_spinning_car(rct_vehicle *vehicle)
 {
 	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_13) {
 		vehicle->var_B6 = 0;
@@ -5943,8 +5943,8 @@ loc_6DBA33:;
 		goto loc_6DBD42;
 	}
 
-	RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_end;
-	RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_end;
+	RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_start;
+	RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_start;
 	rct_map_element* mapElement = map_get_track_element_at_of_type_seq(
 		vehicle->track_x,
 		vehicle->track_y,
@@ -6058,7 +6058,7 @@ loc_6DBC3B:
 		if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
 			if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
 				trackType = mapElement->properties.track.type;
-				if (RCT2_ADDRESS(0x0099423C, uint16)[trackType] & 0x20) {
+				if (!(RCT2_ADDRESS(0x0099423C, uint16)[trackType] & 0x20)) {
 					RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_9;
 				}
 			}
@@ -6100,7 +6100,7 @@ loc_6DBD42:
 	moveInfo = vehicle_get_move_info(
 		vehicle->var_CD,
 		vehicle->track_type,
-		0
+		vehicle->track_progress
 		);
 
 	x = vehicle->track_x + moveInfo->x;
@@ -6232,11 +6232,11 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 	for (rct_vehicle* car = vehicle; spriteId != 0xFFFF; car = GET_VEHICLE(spriteId)) {
 		// Swinging cars
 		if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_SWINGING) {
-			sub_6D6776(car);
+			vehicle_update_swinging_car(car);
 		}
 		// Spinning cars
 		if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_SPINNING) {
-			sub_6D661F(car);
+			vehicle_update_spinning_car(car);
 		}
 		// Rider sprites?? animation??
 		if ((vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_7) || (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_8)) {
@@ -6296,7 +6296,7 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 
 	loc_6DC0F7:
 		if (car->update_flags & VEHICLE_UPDATE_FLAG_0) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
+			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
 		}
 		if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0) {
 			spriteId = car->next_vehicle_on_train;
@@ -7004,7 +7004,7 @@ loc_6DCE68:
 
 loc_6DCEB2:
 	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_0) {
-		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_4;
+		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
 	}
 	if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0) {
 		regs.si = vehicle->next_vehicle_on_train;
