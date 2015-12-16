@@ -54,7 +54,7 @@ typedef struct {
 extern const rct_weather climate_weather_data[6];
 
 // cheats
-int g_climate_locked;
+extern int g_climate_locked;
 void toggle_climate_lock();
 
 int climate_celsius_to_fahrenheit(int celsius);
