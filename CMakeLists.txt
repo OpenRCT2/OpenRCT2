@@ -32,13 +32,6 @@ INCLUDE(FindPkgConfig)
 option(DISABLE_HTTP_TWITCH "Disable HTTP and Twitch support.")
 if (DISABLE_HTTP_TWITCH)
 	add_definitions(-DDISABLE_HTTP -DDISABLE_TWITCH)
-else (DISABLE_HTTP_TWITCH)
-	PKG_CHECK_MODULES(LIBCURL REQUIRED libcurl)
-	PKG_CHECK_MODULES(JANSSON REQUIRED jansson)
-	SET(HTTPLIBS ${LIBCURL_LIBRARIES} ${JANSSON_LIBRARIES})
-	if (WIN32)
-		SET(HTTPLIBS ${HTTPLIBS} ssl crypto winmm.lib ws2_32)
-	endif (WIN32)
 endif (DISABLE_HTTP_TWITCH)
 
 option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
@@ -64,14 +57,20 @@ if (UNIX)
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32 -std=gnu99 -fno-omit-frame-pointer -fno-pie")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -std=gnu++11 -fno-omit-frame-pointer -fno-pie")
 	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -m32")
-	if (APPLE)
-		set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -sectcreate rct2_text __text ${CMAKE_CURRENT_SOURCE_DIR}/build/openrct2_text -sectcreate rct2_data __data ${CMAKE_CURRENT_SOURCE_DIR}/build/openrct2_data -segaddr rct2_data 0x8a4000 -segprot rct2_data rwx rwx -segaddr rct2_text 0x401000 -segprot rct2_text rwx rwx -fno-pie -read_only_relocs suppress")
-	endif (APPLE)
 	set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_SHARED_LINKER_FLAGS})
 endif (UNIX)
 
 # find and include SDL2
 PKG_CHECK_MODULES(SDL2 REQUIRED sdl2 SDL2_ttf)
+
+if (NOT DISABLE_HTTP_TWITCH)
+	PKG_CHECK_MODULES(LIBCURL REQUIRED libcurl)
+	PKG_CHECK_MODULES(JANSSON REQUIRED jansson)
+	SET(HTTPLIBS ${LIBCURL_LIBRARIES} ${JANSSON_LIBRARIES})
+	if (WIN32)
+		SET(HTTPLIBS ${HTTPLIBS} ssl crypto winmm.lib ws2_32)
+	endif (WIN32)
+endif (NOT DISABLE_HTTP_TWITCH)
 
 # speex v1.1.15 is supplied in our zipped library, but distributions provide
 # updated version, with required functions extracted out to libspeexdsp.
@@ -110,8 +109,10 @@ if (APPLE)
 	TARGET_LINK_LIBRARIES(${PROJECT} ${ICONV_LIBRARIES})
 endif (APPLE)
 
-# handle creating the rct2 text and data files on OS X
-if (APPLE)
+# Handle creating the rct2 text and data files on OS X and Linux
+# See details in src/openrct2.c:openrct2_setup_rct2_segment for how the values
+# were derived.
+if (UNIX)
   add_custom_command(
     OUTPUT openrct2_text
     COMMAND dd if=${CMAKE_CURRENT_SOURCE_DIR}/openrct2.exe of=${CMAKE_BINARY_DIR}/openrct2_text bs=4096 skip=1 count=1187
@@ -126,7 +127,37 @@ if (APPLE)
   )
   add_custom_target(segfiles DEPENDS openrct2_text openrct2_data)
   add_dependencies(${PROJECT} segfiles)
-endif (APPLE)
+	if (APPLE)
+		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -sectcreate rct2_text __text ${CMAKE_CURRENT_SOURCE_DIR}/build/openrct2_text -sectcreate rct2_data __data ${CMAKE_CURRENT_SOURCE_DIR}/build/openrct2_data -segaddr rct2_data 0x8a4000 -segprot rct2_data rwx rwx -segaddr rct2_text 0x401000 -segprot rct2_text rwx rwx -fno-pie -read_only_relocs suppress")
+	else (APPLE)
+		# For Linux we have to use objcopy to wrap regular binaries into a linkable
+		# format. We use specific section names which are then referenced in a
+		# bespoke linker script so they can be placed at predefined VMAs.
+		add_custom_command(
+			OUTPUT openrct2_text_section.o
+			COMMAND objcopy --input binary --output elf32-i386 --binary-architecture i386 openrct2_text openrct2_text_section.o --rename-section .data=.rct2_text,contents,alloc,load,readonly,code
+			DEPENDS segfiles
+			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+		)
+		add_custom_command(
+			OUTPUT openrct2_data_section.o
+			COMMAND objcopy --input binary --output elf32-i386 --binary-architecture i386 openrct2_data openrct2_data_section.o --rename-section .data=.rct2_data,contents,alloc,load,readonly,data
+			DEPENDS segfiles
+			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+		)
+		add_custom_target(linkable_sections DEPENDS openrct2_text_section.o openrct2_data_section.o)
+		add_dependencies(${PROJECT} linkable_sections)
+		SET_SOURCE_FILES_PROPERTIES(
+		    openrct2_text_section.o openrct2_data_section.o
+		    PROPERTIES
+		    EXTERNAL_OBJECT true
+		    GENERATED true
+		)
+		# can't use GLOB here, as the files don't exist yet at cmake-time
+		list(APPEND RCT2_SECTIONS "${CMAKE_BINARY_DIR}/openrct2_data_section.o" "${CMAKE_BINARY_DIR}/openrct2_text_section.o")
+		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-T,${CMAKE_CURRENT_SOURCE_DIR}/distribution/linux/ld_script.xc")
+	endif (APPLE)
+endif (UNIX)
 
 # install into ${CMAKE_INSTALL_PREFIX}/bin/
 #install (TARGETS ${PROJECT} DESTINATION bin)
@@ -134,4 +165,4 @@ endif (APPLE)
 # libopenrct2.dll -> openrct2.dll
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 
-TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCTLIBS_LIB} ${JANSSON_LIBRARIES} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB})
+TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCTLIBS_LIB} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB} ${RCT2_SECTIONS})

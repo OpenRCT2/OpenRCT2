@@ -59,12 +59,6 @@ bool gOpenRCT2Headless = false;
 
 bool gOpenRCT2ShowChangelog;
 
-#if defined(__unix__)
-void *gDataSegment;
-void *gTextSegment;
-int gExeFd;
-#endif // defined(__unix__)
-
 /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to 0. */
 int _finished;
 
@@ -73,7 +67,6 @@ static struct { sint16 x, y, z; } _spritelocations1[MAX_SPRITES], _spritelocatio
 
 static void openrct2_loop();
 static bool openrct2_setup_rct2_segment();
-static bool openrct2_release_rct2_segment();
 static void openrct2_setup_rct2_hooks();
 
 void openrct2_write_full_version_info(utf8 *buffer, size_t bufferSize)
@@ -317,7 +310,6 @@ void openrct2_dispose()
 	network_close();
 	http_dispose();
 	language_close_all();
-	openrct2_release_rct2_segment();
 	platform_free();
 }
 
@@ -469,18 +461,11 @@ void openrct2_reset_object_tween_locations()
  */
 static bool openrct2_setup_rct2_segment()
 {
-	// POSIX OSes will run OpenRCT2 as a native application and then load in the Windows PE, mapping the appropriate addresses as
+	// OpenRCT2 on Linux and OS X is wired to have the original Windows PE sections loaded
 	// necessary. Windows does not need to do this as OpenRCT2 runs as a DLL loaded from the Windows PE.
 #if defined(__unix__)
 	#define RDATA_OFFSET 0x004A4000
 	#define DATASEG_OFFSET 0x005E2000
-
-	const char *exepath = "openrct2.exe";
-	gExeFd = open(exepath, O_RDONLY);
-	if (gExeFd < 0) {
-		log_fatal("failed to open %s, errno = %d", exepath, errno);
-		exit(1);
-	}
 
 	// Using PE-bear I was able to figure out all the needed addresses to be filled.
 	// There are three sections to be loaded: .rdata, .data and .text, plus another
@@ -504,10 +489,9 @@ static bool openrct2_setup_rct2_segment()
 	// 0x9a6000 + 0xA81C3C = 0x1427C3C, which after alignment to page size becomes
 	// 0x1428000, which can be seen as next section, DATASEG
 	//
-	// Since mmap does not provide a way to create a mapping with virtual size,
-	// I resorted to creating a one large map for data and memcpy'ing data where
-	// required.
-	// Another section is needed for .text, as it requires PROT_EXEC flag.
+	// The data is now loaded into memory with a linker script, which proves to
+	// be more reliable, as mallocs that happen before we reach segment setup
+	// could have already taken the space we need.
 
 	// TODO: UGLY, UGLY HACK!
 	off_t file_size = 6750208;
@@ -517,7 +501,7 @@ static bool openrct2_setup_rct2_segment()
 	int numPages = (len + pageSize - 1) / pageSize;
 	unsigned char *dummy = malloc(numPages);
 	int err = mincore((void *)0x8a4000, len, dummy);
-	bool pagesDirty = false;
+	bool pagesMissing = false;
 	if (err != 0)
 	{
 		err = errno;
@@ -525,65 +509,41 @@ static bool openrct2_setup_rct2_segment()
 		// On Linux ENOMEM means all requested range is unmapped
 		if (err != ENOMEM)
 		{
-			pagesDirty = true;
+			pagesMissing = true;
 			perror("mincore");
 		}
 #else
-		pagesDirty = true;
+		pagesMissing = true;
 		perror("mincore");
 #endif // __linux__
 	} else {
-		log_warning("mincore ok");
 		for (int i = 0; i < numPages; i++)
 		{
-			if (dummy[i] != 0)
+			if (dummy[i] != 1)
 			{
-				pagesDirty = true;
+				pagesMissing = true;
 				void *start = (void *)0x8a4000 + i * pageSize;
 				void *end = (void *)0x8a4000 + (i + 1) * pageSize - 1;
-				log_warning("page %p - %p has flags: %x, you're in for bad time!", start, end, dummy[i]);
+				log_warning("required page %p - %p is not in memory!", start, end);
 			}
 		}
 	}
 	free(dummy);
-	if (pagesDirty)
+	if (pagesMissing)
 	{
-		log_error("Found already mapped pages in region we want to claim. This means something accessed memory before we got to and following mmap (or next malloc) call will likely fail.");
+		log_error("At least one of required pages was not found in memory. This can cause segfaults later on.");
 	}
-	// section: rw data
-	gDataSegment = mmap((void *)0x8a4000, len, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_ANONYMOUS | MAP_SHARED, -1, 0);
-	if (gDataSegment != (void *)0x8a4000) {
-		log_fatal("mmap failed to get required offset for data segment! got %p, expected %p, errno = %d", gDataSegment, (void *)(0x8a4000), errno);
-		exit(1);
-	}
-
-	len = 0x004A3000;
 	// section: text
-	gTextSegment = mmap((void *)(0x401000), len, PROT_EXEC | PROT_WRITE | PROT_READ, MAP_FIXED | MAP_PRIVATE, gExeFd, 0x1000);
-	if (gTextSegment != (void *)(0x401000))
-	{
-		log_fatal("mmap failed to get required offset for text segment! got %p, expected %p, errno = %d", gTextSegment, (void *)(0x401000), errno);
-		exit(1);
-	}
-
-	void *fbase = mmap(NULL, file_size, PROT_READ, MAP_PRIVATE, gExeFd, 0);
-	err = errno;
-	log_warning("mmapped file to %p", fbase);
-	if (fbase == MAP_FAILED)
-	{
-		log_fatal("mmap failed to get required offset! got %p, errno = %d", fbase, err);
-		exit(1);
-	}
-	// .rdata and real part of .data
-	// 0x9e2000 - 0x8a4000 = 0x13e000
-	memcpy(gDataSegment, fbase + RDATA_OFFSET, 0x13e000);
-	// 0x8a4000 + 0xb84000 = 0x1428000 aka DATASEG
-	memcpy(gDataSegment + 0xB84000, fbase + DATASEG_OFFSET, 0x1000);
-	err = munmap(fbase, file_size);
+	err = mprotect((void *)0x401000, 0x8a4000 - 0x401000, PROT_READ | PROT_WRITE | PROT_EXEC);
 	if (err != 0)
 	{
-		err = errno;
-		log_error("Failed to unmap file! errno = %d", err);
+		perror("mprotect");
+	}
+	// section: rw data
+	err = mprotect((void *)0x8a4000, 0x01429000 - 0x8a4000, PROT_READ | PROT_WRITE);
+	if (err != 0)
+	{
+		perror("mprotect");
 	}
 #endif // defined(__unix__)
 
@@ -601,41 +561,6 @@ static bool openrct2_setup_rct2_segment()
 	}
 
 	return true;
-}
-
-/**
- * Releases segments created with @ref openrct2_setup_rct2_segment, if any.
- */
-static bool openrct2_release_rct2_segment()
-{
-	bool result = true;
-#if defined(__unix__)
-	int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
-	int err;
-	err = munmap(gDataSegment, len);
-	if (err != 0)
-	{
-		err = errno;
-		log_error("Failed to unmap data segment! errno = %d", err);
-		result = false;
-	}
-	len = 0x004A3000;
-	err = munmap(gTextSegment, len);
-	if (err != 0)
-	{
-		err = errno;
-		log_error("Failed to unmap text segment! errno = %d", err);
-		result = false;
-	}
-	err = close(gExeFd);
-	if (err != 0)
-	{
-		err = errno;
-		log_error("Failed to close file! errno = %d", err);
-		result = false;
-	}
-#endif // defined(__unix__)
-	return result;
 }
 
 /**

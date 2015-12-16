@@ -1,3 +1,4 @@
+/* This script is based on elf_i386.xc with modifications for OpenRCT2 */
 /* Script for -z combreloc: combine and sort reloc sections */
 /* Copyright (C) 2014 Free Software Foundation, Inc.
    Copying and distribution of this script, with or without modification,
@@ -11,7 +12,8 @@ SEARCH_DIR("/usr/i386-unknown-linux-gnu/lib32"); SEARCH_DIR("/usr/x86_64-unknown
 SECTIONS
 {
   /* Read-only sections, merged into text segment: */
-  PROVIDE (__executable_start = SEGMENT_START("text-segment", 0x08048000)); . = SEGMENT_START("text-segment", 0x08048000) + SIZEOF_HEADERS;
+  PROVIDE (__executable_start = SEGMENT_START("text-segment", 0x010000)); . = SEGMENT_START("text-segment", 0x010000) + SIZEOF_HEADERS;
+
   .interp         : { *(.interp) }
   .note.gnu.build-id : { *(.note.gnu.build-id) }
   .hash           : { *(.hash) }
@@ -49,6 +51,8 @@ SECTIONS
     KEEP (*(SORT_NONE(.init)))
   }
   .plt            : { *(.plt) *(.iplt) }
+  .rct2_text      0x401000 : { *(.rct2_text) }
+  .rct2_data               : { *(.rct2_data) }
   .text           :
   {
     *(.text.unlikely .text.*_unlikely .text.unlikely.*)
@@ -206,4 +210,5 @@ SECTIONS
   .debug_macro    0 : { *(.debug_macro) }
   .gnu.attributes 0 : { KEEP (*(.gnu.attributes)) }
   /DISCARD/ : { *(.note.GNU-stack) *(.gnu_debuglink) *(.gnu.lto_*) }
+
 }
