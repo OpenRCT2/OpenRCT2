@@ -45,6 +45,7 @@
 #include "../world/map.h"
 #include "../world/map_animation.h"
 #include "../world/sprite.h"
+#include "cable_lift.h"
 #include "ride.h"
 #include "ride_data.h"
 #include "track.h"
@@ -4499,7 +4500,7 @@ bool ride_create_cable_lift(int rideIndex, bool isApplying)
 	tail->next_vehicle_on_ride = head->sprite_index;
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT;
-	vehicle_update_track_motion_cable_lift(head);
+	cable_lift_update_track_motion(head);
 	return true;
 }
 

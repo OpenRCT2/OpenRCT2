@@ -303,12 +303,17 @@ void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG);
 void vehicle_set_map_toolbar(rct_vehicle *vehicle);
 int vehicle_is_used_in_pairs(rct_vehicle *vehicle);
 rct_vehicle *vehicle_get_head(rct_vehicle *vehicle);
-int vehicle_update_track_motion_cable_lift(rct_vehicle *cableLift);
-rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int direction, uint16 var_44, sint32 var_24, bool head);
 int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation);
 rct_ride_type_vehicle *vehicle_get_vehicle_entry(rct_vehicle *vehicle);
 int vehicle_get_total_num_peeps(rct_vehicle *vehicle);
 void vehicle_invalidate_window(rct_vehicle *vehicle);
+void vehicle_update_test_finish(rct_vehicle* vehicle);
+void vehicle_test_reset(rct_vehicle* vehicle);
+void vehicle_peep_easteregg_here_we_are(rct_vehicle* vehicle);
+rct_vehicle *vehicle_get_head(rct_vehicle *vehicle);
+rct_vehicle *vehicle_get_tail(rct_vehicle *vehicle);
+bool sub_6DF21B_loop(rct_vehicle* vehicle);
+bool sub_6DF01A_loop(rct_vehicle* vehicle);
 
 /** Helper macro until rides are stored in this module. */
 #define GET_VEHICLE(sprite_index) &(g_sprite_list[sprite_index].vehicle)
