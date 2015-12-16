@@ -189,6 +189,16 @@ typedef struct {
 	rct_vehicle *tail;
 } train_ref;
 
+// Size: 0x09
+typedef struct {
+	uint16 x;			// 0x00
+	uint16 y;			// 0x02
+	uint16 z;			// 0x04
+	uint8 direction;	// 0x06
+	uint8 var_07;
+	uint8 var_08;
+} rct_vehicle_info;
+
 enum {
 	VEHICLE_ENTRY_FLAG_A_0 = 1 << 0,
 	VEHICLE_ENTRY_FLAG_A_1 = 1 << 1,
@@ -349,8 +359,7 @@ void vehicle_test_reset(rct_vehicle* vehicle);
 void vehicle_peep_easteregg_here_we_are(rct_vehicle* vehicle);
 rct_vehicle *vehicle_get_head(rct_vehicle *vehicle);
 rct_vehicle *vehicle_get_tail(rct_vehicle *vehicle);
-bool sub_6DF21B_loop(rct_vehicle* vehicle);
-bool sub_6DF01A_loop(rct_vehicle* vehicle);
+const rct_vehicle_info *vehicle_get_move_info(int cd, int typeAndDirection, int offset);
 
 /** Helper macro until rides are stored in this module. */
 #define GET_VEHICLE(sprite_index) &(g_sprite_list[sprite_index].vehicle)

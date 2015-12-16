@@ -74,16 +74,6 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle);
 
 #define NO_SCREAM 254
 
-// Size: 0x09
-typedef struct {
-	uint16 x;			// 0x00
-	uint16 y;			// 0x02
-	uint16 z;			// 0x04
-	uint8 direction;	// 0x06
-	uint8 var_07;
-	uint8 var_08;
-} rct_vehicle_info;
-
 rct_xyz16 *unk_F64E20 = (rct_xyz16*)0x00F64E20;
 
 const uint8 byte_9A3A14[] = { SOUND_SCREAM_8, SOUND_SCREAM_1 };
@@ -93,7 +83,7 @@ const uint8 byte_9A3A18[] = {
 	SOUND_SCREAM_7, SOUND_SCREAM_2, SOUND_SCREAM_4
 };
 
-static const rct_vehicle_info *vehicle_get_move_info(int cd, int typeAndDirection, int offset)
+const rct_vehicle_info *vehicle_get_move_info(int cd, int typeAndDirection, int offset)
 {
 	const rct_vehicle_info **infoListList = RCT2_ADDRESS(0x008B8F30, rct_vehicle_info**)[cd];
 	const rct_vehicle_info *infoList = infoListList[typeAndDirection];
@@ -4414,179 +4404,6 @@ rct_vehicle *vehicle_get_tail(rct_vehicle *vehicle)
 int vehicle_is_used_in_pairs(rct_vehicle *vehicle)
 {
 	return vehicle->num_seats & VEHICLE_SEAT_PAIR_FLAG;
-}
-
-bool sub_6DF01A_loop(rct_vehicle* vehicle) {
-	rct_ride* ride = GET_RIDE(vehicle->ride);
-	rct_xyz16 *unk_F64E20 = RCT2_ADDRESS(0x00F64E20, rct_xyz16);
-
-	for (; vehicle->var_24 >= 13962; RCT2_GLOBAL(0x00F64E10, uint32)++) {
-		uint8 trackType = vehicle->track_type >> 2;
-		if (trackType == TRACK_ELEM_CABLE_LIFT_HILL &&
-			vehicle->track_progress == 160) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 1);
-		}
-
-		uint16 trackProgress = vehicle->track_progress + 1;
-
-		const rct_vehicle_info *moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, 0);
-		uint16 trackTotalProgress = *((uint16*)((int)moveInfo - 2));
-		if (trackProgress >= trackTotalProgress) {
-			RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_end;
-			RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_end;
-			rct_map_element* trackElement =
-				map_get_track_element_at_of_type_seq(
-					vehicle->track_x,
-					vehicle->track_y,
-					vehicle->track_z / 8,
-					trackType,
-					0);
-
-			rct_xy_element input;
-			rct_xy_element output;
-			int outputZ;
-			int outputDirection;
-
-			input.x = vehicle->track_x;
-			input.y = vehicle->track_y;
-			input.element = trackElement;
-
-			if (!track_block_get_next(&input, &output, &outputZ, &outputDirection))
-				return false;
-
-			if (gTrackDefinitions[output.element->properties.track.type].vangle_start != RCT2_GLOBAL(0x00F64E36, uint8) ||
-				gTrackDefinitions[output.element->properties.track.type].bank_start != RCT2_GLOBAL(0x00F64E37, uint8))
-				return false;
-
-			vehicle->track_x = output.x;
-			vehicle->track_y = output.y;
-			vehicle->track_z = outputZ;
-			vehicle->track_direction = outputDirection;
-			vehicle->track_type |= output.element->properties.track.type << 2;
-			trackProgress = 0;
-		}
-
-		vehicle->track_progress = trackProgress;
-		moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, trackProgress);
-		rct_xyz16 unk = {
-			.x = moveInfo->x,
-			.y = moveInfo->y,
-			.z = moveInfo->z
-		};
-
-		unk.x += vehicle->track_x;
-		unk.y += vehicle->track_y;
-		unk.z += vehicle->track_z;
-
-		uint8 bx = 0;
-		unk.z += RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
-		if (unk.x != unk_F64E20->x)
-			bx |= (1 << 0);
-		if (unk.y != unk_F64E20->y)
-			bx |= (1 << 1);
-		if (unk.z != unk_F64E20->z)
-			bx |= (1 << 2);
-
-		vehicle->var_24 -= RCT2_ADDRESS(0x009A2930, sint32)[bx];
-		unk_F64E20->x = unk.x;
-		unk_F64E20->y = unk.y;
-		unk_F64E20->z = unk.z;
-
-		vehicle->sprite_direction = moveInfo->direction;
-		vehicle->var_20 = moveInfo->var_08;
-		vehicle->var_1F = moveInfo->var_07;
-
-		if (vehicle->var_24 >= 13962) {
-			vehicle->var_2C += RCT2_ADDRESS(0x009A2970, sint32)[vehicle->var_1F];
-		}
-	}
-	return true;
-}
-
-bool sub_6DF21B_loop(rct_vehicle* vehicle) {
-	rct_ride* ride = GET_RIDE(vehicle->ride);
-	rct_xyz16 *unk_F64E20 = RCT2_ADDRESS(0x00F64E20, rct_xyz16);
-
-	for (; vehicle->var_24 < 0; RCT2_GLOBAL(0x00F64E10, uint32)++) {
-		uint16 trackProgress = vehicle->track_progress - 1;
-		const rct_vehicle_info *moveInfo;
-
-		if ((sint16)trackProgress == -1) {
-			uint8 trackType = vehicle->track_type >> 2;
-			RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_start;
-			RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_start;
-			rct_map_element* trackElement =
-				map_get_track_element_at_of_type_seq(
-					vehicle->track_x,
-					vehicle->track_y,
-					vehicle->track_z / 8,
-					trackType,
-					0);
-
-			rct_xy_element input;
-
-			input.x = vehicle->track_x;
-			input.y = vehicle->track_y;
-			input.element = trackElement;
-			track_begin_end output;
-
-			if (!track_block_get_previous(input.x, input.y, input.element, &output))
-				return false;
-
-			if (gTrackDefinitions[output.begin_element->properties.track.type].vangle_end != RCT2_GLOBAL(0x00F64E36, uint8) ||
-				gTrackDefinitions[output.begin_element->properties.track.type].bank_end != RCT2_GLOBAL(0x00F64E37, uint8))
-				return false;
-
-			vehicle->track_x = output.begin_x;
-			vehicle->track_y = output.begin_y;
-			vehicle->track_z = output.begin_z;
-			vehicle->track_direction = output.begin_direction;
-			vehicle->track_type |= output.begin_element->properties.track.type << 2;
-
-			if (output.begin_element->properties.track.type == TRACK_ELEM_END_STATION) {
-				RCT2_GLOBAL(0x00F64E18, uint32) = (1 << 0);
-			}
-
-			moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, 0);
-			uint16 trackTotalProgress = *((uint16*)((int)moveInfo - 2));
-			trackProgress = trackTotalProgress - 1;
-		}
-		vehicle->track_progress = trackProgress;
-
-		moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, trackProgress);
-		rct_xyz16 unk = {
-			.x = moveInfo->x,
-			.y = moveInfo->y,
-			.z = moveInfo->z
-		};
-
-		unk.x += vehicle->track_x;
-		unk.y += vehicle->track_y;
-		unk.z += vehicle->track_z;
-
-		uint8 bx = 0;
-		unk.z += RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
-		if (unk.x != unk_F64E20->x)
-			bx |= (1 << 0);
-		if (unk.y != unk_F64E20->y)
-			bx |= (1 << 1);
-		if (unk.z != unk_F64E20->z)
-			bx |= (1 << 2);
-
-		vehicle->var_24 += RCT2_ADDRESS(0x009A2930, sint32)[bx];
-		unk_F64E20->x = unk.x;
-		unk_F64E20->y = unk.y;
-		unk_F64E20->z = unk.z;
-
-		vehicle->sprite_direction = moveInfo->direction;
-		vehicle->var_20 = moveInfo->var_08;
-		vehicle->var_1F = moveInfo->var_07;
-
-		if (vehicle->var_24 < 0) {
-			vehicle->var_2C += RCT2_ADDRESS(0x009A2970, sint32)[vehicle->var_1F];
-		}
-	}
-	return true;
 }
 
 /**
