@@ -5502,7 +5502,7 @@ void sub_6DBF3E(rct_vehicle *vehicle)
 			input.x = vehicle->track_x;
 			input.y = vehicle->track_y;
 			input.element = mapElement;
-			if (track_block_get_next(&input, &output, &outputZ, &outputDirection)) {
+			if (!track_block_get_next(&input, &output, &outputZ, &outputDirection)) {
 				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_12;
 			}
 		}
