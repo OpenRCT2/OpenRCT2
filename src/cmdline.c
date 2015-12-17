@@ -76,6 +76,7 @@ int cmdline_run(const char **argv, int argc)
 	int version = 0, headless = 0, verbose = 0, width = 0, height = 0, port = 0;
 	char *server = NULL;
 	char *userDataPath = NULL;
+	char *openrctDataPath = NULL;
 
 	argparse_option_t options[] = {
 		OPT_HELP(),
@@ -84,8 +85,9 @@ int cmdline_run(const char **argv, int argc)
 		OPT_BOOLEAN(0, "verbose", &verbose, "log verbose messages"),
 		OPT_INTEGER('m', "mode", &sprite_mode, "the type of sprite conversion. 0 = default, 1 = simple closest pixel match, 2 = dithering"),
 		OPT_STRING(0, "server", &server, "server to connect to"),
-		OPT_INTEGER(0, "port", &port, "port"),
+		OPT_INTEGER(0, "port", &port, "Port to use. If used with --server, it will connect to specified server at this port, otherwise it will start the server"),
 		OPT_STRING(0, "user-data-path", &userDataPath, "path to the user data directory (containing config.ini)"),
+		OPT_STRING(0, "openrct-data-path", &openrctDataPath, "path to the OpenRCT2 data directory (containing languages)"),
 		OPT_END()
 	};
 
@@ -115,6 +117,10 @@ int cmdline_run(const char **argv, int argc)
 
 	if (userDataPath != NULL) {
 		safe_strncpy(gCustomUserDataPath, userDataPath, sizeof(gCustomUserDataPath));
+	}
+
+	if (openrctDataPath != NULL) {
+		safe_strncpy(gCustomOpenrctDataPath, openrctDataPath, sizeof(gCustomOpenrctDataPath));
 	}
 
 #ifndef DISABLE_NETWORK

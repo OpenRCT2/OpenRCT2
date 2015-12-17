@@ -602,9 +602,11 @@ static uint8 *title_script_load()
 	char parts[3 * 128], *token, *part1, *part2, *src;
 
 	utf8 path[MAX_PATH];
-	utf8 filePath[] = "data/title/script.txt";
+	utf8 dataPath[MAX_PATH];
+	utf8 filePath[] = "title/script.txt";
 
-	sprintf(path, "%s%c%s", gExePath, platform_get_path_separator(), filePath);
+	platform_get_openrct_data_path(dataPath);
+	sprintf(path, "%s%c%s", dataPath, platform_get_path_separator(), filePath);
 	log_verbose("loading title script, %s", path);
 	file = SDL_RWFromFile(path, "r");
 	if (file == NULL) {

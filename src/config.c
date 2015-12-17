@@ -1359,6 +1359,7 @@ static void title_sequence_open(const char *path, const char *customName);
 void title_sequences_set_default()
 {
 	char path[MAX_PATH];
+	char dataPath[MAX_PATH];
 	char sep = platform_get_path_separator();
 
 	platform_get_user_directory(path, "title sequences");
@@ -1367,12 +1368,14 @@ void title_sequences_set_default()
 	gConfigTitleSequences.presets = malloc(0);
 	gConfigTitleSequences.num_presets = 0;
 
+	platform_get_openrct_data_path(dataPath);
+
 	// Load OpenRCT2 title sequence
-	sprintf(path, "%s%c%s%c%s%c%s%c", gExePath, sep, "data", sep, "title", sep, "rct2", sep);
+	sprintf(path, "%s%c%s%c%s%c", dataPath, sep, "title", sep, "rct2", sep);
 	title_sequence_open(path, language_get_string(5308));
 
 	// Load OpenRCT2 title sequence
-	sprintf(path, "%s%c%s%c%s%c%s%c", gExePath, sep, "data", sep, "title", sep, "openrct2", sep);
+	sprintf(path, "%s%c%s%c%s%c", dataPath, sep, "title", sep, "openrct2", sep);
 	title_sequence_open(path, language_get_string(5309));
 }
 
