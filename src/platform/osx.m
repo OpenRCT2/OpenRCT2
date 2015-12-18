@@ -79,12 +79,11 @@ void platform_show_messagebox(char *message)
 {
 	@autoreleasepool
 	{
-		NSAlert *alert = [[NSAlert alloc] init];
+		NSAlert *alert = [[[NSAlert alloc] init] autorelease];
 		[alert addButtonWithTitle:@"OK"];
-		[alert setMessageText:[NSString stringWithUTF8String:message]];
-		[alert setAlertStyle:NSWarningAlertStyle];
+		alert.messageText = [NSString stringWithUTF8String:message];
+		alert.alertStyle = NSWarningAlertStyle;
 		[alert runModal];
-		[alert release];
 	}
 }
 
@@ -99,8 +98,8 @@ utf8 *platform_open_directory_browser(utf8 *title)
 		utf8 *url = NULL;
 		if ([panel runModal] == NSFileHandlingPanelOKButton)
 		{
-			NSString *selectedPath = [[[panel URLs] firstObject] path];
-			const char *path = [selectedPath UTF8String];
+			NSString *selectedPath = panel.URL.path;
+			const char *path = selectedPath.UTF8String;
 			url = (utf8*)malloc(strlen(path) + 1);
 			strcpy(url,path);
 		}
@@ -112,47 +111,39 @@ int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8
 {
 	@autoreleasepool
 	{
-		NSArray *extensions = [
-			[
-				[NSString stringWithUTF8String:filterPattern]
-				stringByReplacingOccurrencesOfString:@"*." withString:@""
-			]
-			componentsSeparatedByString:@";"
-		];
+		NSString *fillPatternNS = [NSString stringWithUTF8String:filterPattern];
+		fillPatternNS = [fillPatternNS stringByReplacingOccurrencesOfString:@"*." withString:@""];
+		NSArray *extensions = [fillPatternNS componentsSeparatedByString:@";"];
+		
 		NSString *filePath = [NSString stringWithUTF8String:filename];
-		NSString *directory = [filePath stringByDeletingLastPathComponent];
-		NSString *basename = [filePath lastPathComponent];
+		NSString *directory = filePath.stringByDeletingLastPathComponent;
+		NSString *basename = filePath.lastPathComponent;
+		
+		NSSavePanel *panel;
 		if (type == 0)
 		{
-			NSSavePanel *panel = [NSSavePanel savePanel];
-			panel.title = [NSString stringWithUTF8String:title];
-			panel.nameFieldStringValue = [NSString stringWithFormat:@"%@.%@",basename,[extensions firstObject]];
-			panel.allowedFileTypes = extensions;
-			panel.directoryURL = [NSURL fileURLWithPath:directory];
-			if ([panel runModal] == NSFileHandlingPanelCancelButton){
-				return 0;
-			} else {
-				strcpy(filename,[[[panel URL] path] UTF8String]);
-				return 1;
-			}
+			panel = [NSSavePanel savePanel];
+			panel.nameFieldStringValue = [NSString stringWithFormat:@"%@.%@", basename, extensions.firstObject];
 		}
 		else if (type == 1)
 		{
-			NSOpenPanel *panel = [NSOpenPanel openPanel];
-			panel.title = [NSString stringWithUTF8String:title];
-			panel.allowedFileTypes = extensions;
-			panel.canChooseDirectories = false;
-			panel.canChooseFiles = true;
-			panel.allowsMultipleSelection = false;
-			panel.directoryURL = [NSURL fileURLWithPath:filePath];
-			if ([panel runModal] == NSFileHandlingPanelCancelButton){
-				return 0;
-			} else {
-				strcpy(filename,[[[[panel URLs] firstObject] path] UTF8String]);
-				return 1;
-			}
+			NSOpenPanel *open = [NSOpenPanel openPanel];
+			open.canChooseDirectories = false;
+			open.canChooseFiles = true;
+			open.allowsMultipleSelection = false;
+			panel = open;
 		} else {
 			return 0;
+		}
+		
+		panel.title = [NSString stringWithUTF8String:title];
+		panel.allowedFileTypes = extensions;
+		panel.directoryURL = [NSURL fileURLWithPath:directory];
+		if ([panel runModal] == NSFileHandlingPanelCancelButton){
+			return 0;
+		} else {
+			strcpy(filename, panel.URL.path.UTF8String);
+			return 1;
 		}
 	}
 }
