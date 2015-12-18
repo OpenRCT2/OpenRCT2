@@ -5269,13 +5269,13 @@ static void vehicle_update_scenery_door(rct_vehicle *vehicle)
 	}
 
 	if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL) {
-		mapElement->properties.fence.item[3] &= 7;
-		mapElement->properties.fence.item[3] |= 8;
+		mapElement->properties.fence.item[2] &= 7;
+		mapElement->properties.fence.item[2] |= 8;
 		map_animation_create(MAP_ANIMATION_TYPE_WALL_UNKNOWN, x, y, z);
 		vehicle_play_scenery_door_open_sound(vehicle, mapElement);
 	} else {
-		mapElement->properties.fence.item[3] &= 7;
-		mapElement->properties.fence.item[3] |= 0x30;
+		mapElement->properties.fence.item[2] &= 7;
+		mapElement->properties.fence.item[2] |= 0x30;
 		vehicle_play_scenery_door_close_sound(vehicle, mapElement);
 	}
 }
@@ -5352,13 +5352,13 @@ static void sub_6DEDE8(rct_vehicle *vehicle)
 	}
 
 	if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL) {
-		mapElement->properties.fence.item[3] &= 7;
-		mapElement->properties.fence.item[3] |= 0x88;
+		mapElement->properties.fence.item[2] &= 7;
+		mapElement->properties.fence.item[2] |= 0x88;
 		map_animation_create(MAP_ANIMATION_TYPE_WALL_UNKNOWN, x, y, z);
 		vehicle_play_scenery_door_open_sound(vehicle, mapElement);
 	} else {
-		mapElement->properties.fence.item[3] &= 7;
-		mapElement->properties.fence.item[3] |= 0xB0;
+		mapElement->properties.fence.item[2] &= 7;
+		mapElement->properties.fence.item[2] |= 0xB0;
 		vehicle_play_scenery_door_close_sound(vehicle, mapElement);
 	}
 }
