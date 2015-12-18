@@ -5088,6 +5088,7 @@ static void ride_stop_peeps_queuing(int rideIndex)
 	rct_peep *peep;
 
 	FOR_ALL_PEEPS(spriteIndex, peep) {
+		assert(peep != NULL);
 		if (peep->state != PEEP_STATE_QUEUING)
 			continue;
 		if (peep->current_ride != rideIndex)

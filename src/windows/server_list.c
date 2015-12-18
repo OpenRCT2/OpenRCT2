@@ -743,7 +743,11 @@ static void fetch_servers_callback(http_json_response* response)
 		SafeFree(newserver->version);
 		newserver->name = _strdup(json_string_value(name));
 		newserver->requiresPassword = json_boolean_value(requiresPassword);
-		newserver->description = _strdup(json_string_value(description));
+		if (description != NULL) {
+			newserver->description = _strdup(json_string_value(description));
+		} else {
+			newserver->description = _strdup("");
+		}
 		newserver->version = _strdup(json_string_value(version));
 		newserver->players = (uint8)json_integer_value(players);
 		newserver->maxplayers = (uint8)json_integer_value(maxPlayers);
