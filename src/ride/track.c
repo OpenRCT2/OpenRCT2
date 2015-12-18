@@ -4964,7 +4964,7 @@ int track_get_actual_bank_2(int rideType, int trackColour, int bank)
 
 int track_get_actual_bank_3(rct_vehicle *vehicle, rct_map_element *mapElement)
 {
-	uint8 colourThingToXor = (vehicle->update_flags >> 9) & 8;
+	uint8 colourThingToXor = (vehicle->update_flags >> 9) & 0xFF;
 	int trackType = mapElement->properties.track.type;
 	int rideType = GET_RIDE(mapElement->properties.track.ride_index)->type;
 	int trackColour = mapElement->properties.track.colour ^ colourThingToXor;
