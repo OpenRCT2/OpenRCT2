@@ -169,6 +169,7 @@ typedef struct {
 	uint8 steam_overlay_pause;
 	float window_scale;
 	uint8 show_fps;
+	uint8 trap_cursor;
 } general_configuration;
 
 typedef struct {

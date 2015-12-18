@@ -2180,6 +2180,8 @@ enum {
 
 	STR_SHOW_FPS = 5581,
 
+	STR_TRAP_MOUSE = 5582,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
