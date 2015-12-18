@@ -21,6 +21,7 @@
 #if defined(__APPLE__) && defined(__MACH__)
 
 @import AppKit;
+@import Foundation;
 #include <mach-o/dyld.h>
 #include "platform.h"
 #include "../util/util.h"
@@ -73,6 +74,29 @@ void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const 
 	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
 	strncat(buffer, "OpenRCT2", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
 	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+}
+
+/**
+ * Default directory fallback is:
+ *   - (command line argument)
+ *   - <exePath>/data
+ *   - <Resources Folder>
+ */
+void platform_posix_sub_resolve_openrct_data_path(utf8 *out) {
+	@autoreleasepool
+	{
+		NSBundle *bundle = [NSBundle mainBundle];
+		if (bundle)
+		{
+			const utf8 *resources = bundle.resourcePath.UTF8String;
+			if (platform_directory_exists(resources))
+			{
+				out[0] = '\0';
+				safe_strncpy(out, resources, MAX_PATH);
+				return;
+			}
+		}
+	}
 }
 
 void platform_show_messagebox(char *message)

@@ -574,9 +574,12 @@ void platform_get_openrct_data_path(utf8 *outPath)
 	safe_strncpy(outPath, _openrctDataDirectoryPath, sizeof(_openrctDataDirectoryPath));
 }
 
+void platform_posix_sub_resolve_openrct_data_path(utf8 *out);
+
 /**
  * Default directory fallback is:
  *   - (command line argument)
+ *   - <exePath>/data
  *   - <platform dependent>
  */
 void platform_resolve_openrct_data_path()
@@ -599,22 +602,14 @@ void platform_resolve_openrct_data_path()
 
 	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
 	strncat(buffer, "data", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
-	const utf8 *searchLocations[] = {
-		buffer,
-#ifdef __linux__
-		"/var/lib/openrct2",
-		"/usr/share/openrct2",
-#endif // __linux__
-	};
-	for (size_t i = 0; i < countof(searchLocations); i++)
+	if (platform_directory_exists(buffer))
 	{
-		if (platform_directory_exists(searchLocations[i]))
-		{
-			_openrctDataDirectoryPath[0] = '\0';
-			safe_strncpy(_openrctDataDirectoryPath, searchLocations[i], sizeof(_openrctDataDirectoryPath));
-			return;
-		}
+		_openrctDataDirectoryPath[0] = '\0';
+		safe_strncpy(_openrctDataDirectoryPath, buffer, MAX_PATH);
+		return;
 	}
+	
+	platform_posix_sub_resolve_openrct_data_path(_openrctDataDirectoryPath);
 }
 
 void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
