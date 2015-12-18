@@ -104,6 +104,7 @@ config_enum_definition _screenShotFormatEnum[] = {
 config_enum_definition _measurementFormatEnum[] = {
 	{ "IMPERIAL", MEASUREMENT_FORMAT_IMPERIAL },
 	{ "METRIC", MEASUREMENT_FORMAT_METRIC },
+	{ "SI", MEASUREMENT_FORMAT_SI },
 	END_OF_ENUM
 };
 

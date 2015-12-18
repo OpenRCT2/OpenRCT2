@@ -450,11 +450,20 @@ void format_length(char **dest, sint16 value)
 
 void format_velocity(char **dest, uint16 value)
 {
-	rct_string_id stringId = 2734;
+	rct_string_id stringId;
 
-	if (gConfigGeneral.measurement_format == MEASUREMENT_FORMAT_METRIC) {
+	switch (gConfigGeneral.measurement_format) {
+	default:
+		stringId = STR_UNIT_SUFFIX_MILES_PER_HOUR;
+		break;
+	case MEASUREMENT_FORMAT_METRIC:
 		value = mph_to_kmph(value);
-		stringId++;
+		stringId = STR_UNIT_SUFFIX_KILOMETRES_PER_HOUR;
+		break;
+	case MEASUREMENT_FORMAT_SI:
+		value = mph_to_mps(value);
+		stringId = STR_UNIT_SUFFIX_METRES_PER_SECOND;
+		break;
 	}
 
 	uint16 *argRef = &value;

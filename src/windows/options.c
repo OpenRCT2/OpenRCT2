@@ -830,10 +830,12 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		case WIDX_DISTANCE_DROPDOWN:
 			gDropdownItemsFormat[0] = 1142;
 			gDropdownItemsFormat[1] = 1142;
+			gDropdownItemsFormat[2] = 1142;
 			gDropdownItemsArgs[0] = STR_IMPERIAL;
 			gDropdownItemsArgs[1] = STR_METRIC;
+			gDropdownItemsArgs[2] = STR_SI;
 
-			window_options_show_dropdown(w, widget, 2);
+			window_options_show_dropdown(w, widget, 3);
 
 			dropdown_set_checked(gConfigGeneral.measurement_format, true);
 			break;
@@ -1225,8 +1227,17 @@ static void window_options_invalidate(rct_window *w)
 		// currency: pounds, dollars, etc. (10 total)
 		RCT2_GLOBAL(0x013CE952 + 12, uint16) = CurrencyDescriptors[gConfigGeneral.currency_format].stringId;
 
-		// distance: metric/imperial
-		RCT2_GLOBAL(0x013CE952 + 14, uint16) = STR_IMPERIAL + gConfigGeneral.measurement_format;
+		// distance: metric / imperial / si
+		{
+			rct_string_id stringId;
+			switch (gConfigGeneral.measurement_format) {
+			default:
+			case MEASUREMENT_FORMAT_IMPERIAL: stringId = STR_IMPERIAL; break;
+			case MEASUREMENT_FORMAT_METRIC: stringId = STR_METRIC; break;
+			case MEASUREMENT_FORMAT_SI: stringId = STR_SI; break;
+			}
+			RCT2_GLOBAL(0x013CE952 + 14, uint16) = stringId;
+		}
 
 		// temperature: celsius/fahrenheit
 		RCT2_GLOBAL(0x013CE952 + 20, uint16) = STR_CELSIUS + gConfigGeneral.temperature_format;

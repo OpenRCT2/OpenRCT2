@@ -40,7 +40,13 @@ int mph_to_kmph(int mph)
 {
 	// 1 mph = 1.60934 kmph
 	// RCT2 approximates as 1.609375
-	return (mph * 1648) / 1024;
+	return (mph * 1648) >> 10;
+}
+
+int mph_to_mps(int mph)
+{
+	// 1 mph = 0.44704 m/s
+	return (mph * 58594) >> 17;
 }
 
 bool filename_valid_characters(const utf8 *filename)
