@@ -596,12 +596,7 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 		case WIDX_TRAP_CURSOR:
 			gConfigGeneral.trap_cursor ^= 1;
 			config_save_default();
-
-			if (gConfigGeneral.trap_cursor)
-				SDL_SetWindowGrab(gWindow, SDL_TRUE);
-			else
-				SDL_SetWindowGrab(gWindow, SDL_FALSE);
-
+			SDL_SetWindowGrab(gWindow, gConfigGeneral.trap_cursor ? SDL_TRUE : SDL_FALSE);
 			window_invalidate(w);
 			break;
 		case WIDX_TOOLBAR_SHOW_FINANCES:
