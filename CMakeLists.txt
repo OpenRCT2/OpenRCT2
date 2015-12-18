@@ -51,6 +51,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 include_directories("lib/")
 # add source files
 file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp" "lib/argparse/*.c" "lib/cutest/*.c" "lib/lodepng/*.c")
+if (APPLE)
+	file(GLOB_RECURSE ORCT2_MM_SOURCES "src/*.m")
+	set_source_files_properties(${ORCT2_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c -fmodules")
+endif (APPLE)
 
 if (UNIX)
 	# force 32bit build for now and set necessary flags to compile code as is
@@ -95,7 +99,7 @@ if (WIN32)
 	# build as library for now, replace with add_executable
 	add_library(${PROJECT} SHARED ${ORCT2_SOURCES} ${SPEEX_SOURCES})
 else (WIN32)
-	add_executable(${PROJECT} ${ORCT2_SOURCES})
+	add_executable(${PROJECT} ${ORCT2_SOURCES} ${ORCT2_MM_SOURCES})
 	add_custom_command(
 		OUTPUT g2.dat
 		COMMAND ./openrct2 sprite build ${CMAKE_BINARY_DIR}/g2.dat ${CMAKE_CURRENT_SOURCE_DIR}/resources/g2/

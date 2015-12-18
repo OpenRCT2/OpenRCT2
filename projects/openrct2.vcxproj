@@ -87,7 +87,6 @@
     <ClCompile Include="..\src\platform\linux.c" />
     <ClCompile Include="..\src\platform\posix.c" />
     <ClCompile Include="..\src\platform\shared.c" />
-    <ClCompile Include="..\src\platform\osx.c" />
     <ClCompile Include="..\src\platform\windows.c" />
     <ClCompile Include="..\src\rct1.c" />
     <ClCompile Include="..\src\rct2.c" />
