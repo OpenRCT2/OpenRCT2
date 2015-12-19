@@ -5565,7 +5565,7 @@ const uint32 RideTypeTrackPaintFunctionsOld[91] = {
 };
 
 
-const uint32 RideTypeTrackPaintFunctions[91] = {
+const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	0,						// RIDE_TYPE_SPIRAL_ROLLER_COASTER
 	0,						// RIDE_TYPE_STAND_UP_ROLLER_COASTER
 	0,						// RIDE_TYPE_SUSPENDED_SWINGING_COASTER
@@ -5594,27 +5594,27 @@ const uint32 RideTypeTrackPaintFunctions[91] = {
 	0,						// RIDE_TYPE_DODGEMS
 	0,						// RIDE_TYPE_PIRATE_SHIP
 	0,						// RIDE_TYPE_SWINGING_INVERTER_SHIP
-	(uint32)shop_track_paint_functions,			// RIDE_TYPE_FOOD_STALL
-	(uint32)shop_track_paint_functions,			// RIDE_TYPE_1D
-	(uint32)shop_track_paint_functions,			// RIDE_TYPE_DRINK_STALL
-	(uint32)shop_track_paint_functions,			// RIDE_TYPE_1F
-	(uint32)shop_track_paint_functions,			// RIDE_TYPE_SHOP
+	get_track_paint_function_shop,			// RIDE_TYPE_FOOD_STALL
+	get_track_paint_function_shop,			// RIDE_TYPE_1D
+	get_track_paint_function_shop,			// RIDE_TYPE_DRINK_STALL
+	get_track_paint_function_shop,			// RIDE_TYPE_1F
+	get_track_paint_function_shop,			// RIDE_TYPE_SHOP
 	0,						// RIDE_TYPE_MERRY_GO_ROUND
-	(uint32)shop_track_paint_functions,			// RIDE_TYPE_22
-	(uint32)shop_track_paint_functions,			// RIDE_TYPE_INFORMATION_KIOSK
-	(uint32)facility_track_paint_functions,		// RIDE_TYPE_TOILETS
+	get_track_paint_function_shop,			// RIDE_TYPE_22
+	get_track_paint_function_shop,			// RIDE_TYPE_INFORMATION_KIOSK
+	get_track_paint_function_facility,		// RIDE_TYPE_TOILETS
 	0,						// RIDE_TYPE_FERRIS_WHEEL
 	0,						// RIDE_TYPE_MOTION_SIMULATOR
 	0,						// RIDE_TYPE_3D_CINEMA
-	(uint32)top_spin_track_paint_functions,		// RIDE_TYPE_TOP_SPIN
+	get_track_paint_function_topspin,		// RIDE_TYPE_TOP_SPIN
 	0,						// RIDE_TYPE_SPACE_RINGS
 	0,						// RIDE_TYPE_REVERSE_FREEFALL_COASTER
 	0,						// RIDE_TYPE_LIFT
 	0,						// RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
-	(uint32)shop_track_paint_functions,			// RIDE_TYPE_CASH_MACHINE
+	get_track_paint_function_shop,			// RIDE_TYPE_CASH_MACHINE
 	0,						// RIDE_TYPE_TWIST
 	0,						// RIDE_TYPE_HAUNTED_HOUSE
-	(uint32)facility_track_paint_functions,		// RIDE_TYPE_FIRST_AID
+	get_track_paint_function_facility,		// RIDE_TYPE_FIRST_AID
 	0,						// RIDE_TYPE_CIRCUS_SHOW
 	0,						// RIDE_TYPE_GHOST_TRAIN
 	0,						// RIDE_TYPE_TWISTER_ROLLER_COASTER

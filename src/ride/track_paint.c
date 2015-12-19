@@ -18,165 +18,24 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-
 #include "../addresses.h"
 #include "../config.h"
 #include "../drawing/drawing.h"
 #include "../localisation/localisation.h"
-#include "ride_data.h"
-#include "track_data.h"
 #include "../sprites.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
+#include "ride_data.h"
+#include "track_data.h"
 #include "track_paint.h"
-
-void top_spin_paint_setup_rot_0(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
-void top_spin_paint_setup_rot_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
-void top_spin_paint_setup_rot_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
-void top_spin_paint_setup_rot_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
-
-/* 0x0076679C */
-TRACK_PAINT_FUNCTION top_spin_base_functions[] = {
-	top_spin_paint_setup_rot_0,
-	top_spin_paint_setup_rot_1,
-	top_spin_paint_setup_rot_2,
-	top_spin_paint_setup_rot_3,
-};
-
-TRACK_PAINT_FUNCTION* top_spin_track_paint_functions[] = {
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	top_spin_base_functions  // 123
-};
 
 /**
  *
  *  rct2: 0x0076687C
  */
-void top_spin_paint_tile_0(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+static void top_spin_paint_tile_0(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	sub_6629BC(height, 0, image_id, direction & 1);
 
@@ -205,7 +64,7 @@ void top_spin_paint_tile_0(uint8 rideIndex, uint8 trackSequence, uint8 direction
 }
 
 /* rct2: 0x007667AE */
-rct_xy16 loc_7667AE[] = {
+static rct_xy16 loc_7667AE[] = {
 	{ .x = 0,  .y = -1 },
 	{ .x = 1,  .y = 0 },
 	{ .x = 0,  .y = 1},
@@ -213,7 +72,7 @@ rct_xy16 loc_7667AE[] = {
 };
 
 /* rct2: 0x007667AC */
-rct_xy16 loc_7667AC[] = {
+static rct_xy16 loc_7667AC[] = {
 	{ .x = -1, .y = 0 },
 	{ .x = 0,  .y = -1 },
 	{ .x = 1,  .y = 0 },
@@ -237,7 +96,7 @@ static sint8 TopSpinSeatPositionOffset[] = {
  *
  *  rct2: 0x0076750D
  */
-void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction, int height, rct_map_element* mapElement) {
+static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction, int height, rct_map_element* mapElement) {
 	// As we will be drawing a vehicle we need to backup the mapElement that
 	// is assigned to the drawings.
 	rct_map_element* curMapElement = RCT2_GLOBAL(0x009DE578, rct_map_element*);
@@ -480,7 +339,7 @@ void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction
  *
  *  rct2: 0x0076693F
  */
-void top_spin_paint_tile_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+static void top_spin_paint_tile_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	sub_6629BC(height, 0, image_id, direction & 1);
 
@@ -549,7 +408,7 @@ void top_spin_paint_tile_1(uint8 rideIndex, uint8 trackSequence, uint8 direction
  *
  *  rct2: 0x00767033
  */
-void top_spin_paint_tile_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+static void top_spin_paint_tile_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	sub_6629BC(height, 0, image_id, direction & 1);
 
@@ -599,7 +458,7 @@ void top_spin_paint_tile_2(uint8 rideIndex, uint8 trackSequence, uint8 direction
  *
  *  rct2: 0x0076718D
  */
-void top_spin_paint_tile_4(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+static void top_spin_paint_tile_4(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	sub_6629BC(height, 0, image_id, direction & 1);
 
@@ -649,7 +508,7 @@ void top_spin_paint_tile_4(uint8 rideIndex, uint8 trackSequence, uint8 direction
  *
  *  rct2: 0x00766B4C
  */
-void top_spin_paint_tile_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+static void top_spin_paint_tile_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	sub_6629BC(height, 0, image_id, direction & 1);
 
@@ -718,7 +577,7 @@ void top_spin_paint_tile_3(uint8 rideIndex, uint8 trackSequence, uint8 direction
  *
  *  rct2: 0x007672E7
  */
-void top_spin_paint_tile_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+static void top_spin_paint_tile_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	sub_6629BC(height, 0, image_id, direction & 1);
 
@@ -769,7 +628,7 @@ void top_spin_paint_tile_5(uint8 rideIndex, uint8 trackSequence, uint8 direction
  *
  *  rct2: 0x00766D09
  */
-void top_spin_paint_tile_6(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+static void top_spin_paint_tile_6(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	sub_6629BC(height, 0, image_id, direction & 1);
 
@@ -838,7 +697,7 @@ void top_spin_paint_tile_6(uint8 rideIndex, uint8 trackSequence, uint8 direction
  *
  *  rct2: 0x00766EC6
  */
-void top_spin_paint_tile_7(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+static void top_spin_paint_tile_7(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	sub_6629BC(height, 0, image_id, direction & 1);
 
@@ -907,7 +766,7 @@ void top_spin_paint_tile_7(uint8 rideIndex, uint8 trackSequence, uint8 direction
  *
  *  rct2: 0x007673FA
  */
-void top_spin_paint_tile_8(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+static void top_spin_paint_tile_8(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	sub_6629BC(height, 0, image_id, direction & 1);
 
@@ -958,7 +817,7 @@ void top_spin_paint_tile_8(uint8 rideIndex, uint8 trackSequence, uint8 direction
  *
  *  rct2: 0x007667BC
  */
-void top_spin_paint_setup_rot_0(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+static void top_spin_paint_setup_rot_0(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	switch (trackSequence)
 	{
 	case 0:
@@ -996,7 +855,7 @@ void top_spin_paint_setup_rot_0(uint8 rideIndex, uint8 trackSequence, uint8 dire
  *
  *  rct2: 0x007667EC
 */
-void top_spin_paint_setup_rot_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+static void top_spin_paint_setup_rot_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	switch (trackSequence)
 	{
 	case 0:
@@ -1034,7 +893,7 @@ void top_spin_paint_setup_rot_1(uint8 rideIndex, uint8 trackSequence, uint8 dire
  *
  *  rct2: 0x0076681C
 */
-void top_spin_paint_setup_rot_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+static void top_spin_paint_setup_rot_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	switch (trackSequence)
 	{
 	case 0:
@@ -1072,7 +931,7 @@ void top_spin_paint_setup_rot_2(uint8 rideIndex, uint8 trackSequence, uint8 dire
  *
  *  rct2: 0x0076684C
 */
-void top_spin_paint_setup_rot_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
+static void top_spin_paint_setup_rot_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	switch (trackSequence)
 	{
 	case 0:
@@ -1106,273 +965,21 @@ void top_spin_paint_setup_rot_3(uint8 rideIndex, uint8 trackSequence, uint8 dire
 	return;
 }
 
-void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
-void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
-
-/* 0x00761358 */
-TRACK_PAINT_FUNCTION shop_base_functions[] = {
-	shop_paint_setup,
-	shop_paint_setup,
-	shop_paint_setup,
-	shop_paint_setup,
-};
-
-/* 0x00761160 */
-TRACK_PAINT_FUNCTION* shop_track_paint_functions[] = {
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	shop_base_functions, // 118
-	NULL,
-	NULL,
-	shop_base_functions // 121
-};
-
-/* 0x00762F30 */
-TRACK_PAINT_FUNCTION facility_base_functions[] = {
-	facility_paint_setup,
-	facility_paint_setup,
-	facility_paint_setup,
-	facility_paint_setup,
-};
-
-/* 0x00762D44 */
-TRACK_PAINT_FUNCTION* facility_track_paint_functions[] = {
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	facility_base_functions, // 118
-};
+/* 0x0076659C */
+TRACK_PAINT_FUNCTION get_track_paint_function_topspin(int trackType, int direction)
+{
+	switch (trackType) {
+	case 123:
+		switch (direction) {
+		case 0: return top_spin_paint_setup_rot_0;
+		case 1: return top_spin_paint_setup_rot_1;
+		case 2: return top_spin_paint_setup_rot_2;
+		case 3: return top_spin_paint_setup_rot_3;
+		}
+		break;
+	}
+	return NULL;
+}
 
 /**
  *
@@ -1381,7 +988,7 @@ TRACK_PAINT_FUNCTION* facility_track_paint_functions[] = {
  *  rct2: 0x0076163F
  *  rct2: 0x007617A5
  */
-void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
+static void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
 {
 	bool hasSupports = sub_6629BC(height, 0, RCT2_GLOBAL(0x00F441A4, uint32), direction & 1);
 
@@ -1435,6 +1042,16 @@ void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int
 	}
 }
 
+/* 0x00761160 */
+TRACK_PAINT_FUNCTION get_track_paint_function_shop(int trackType, int direction)
+{
+	switch (trackType) {
+	case 118:
+	case 121: return shop_paint_setup;
+	}
+	return NULL;
+}
+
 /**
  *
  *  rct2: 0x00763234
@@ -1442,7 +1059,7 @@ void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int
  *  rct2: 0x00762F50
  *  rct2: 0x007630DE
  */
-void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
+static void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
 {
 	bool hasSupports = sub_6629BC(height, 0, RCT2_GLOBAL(0x00F441A4, uint32), direction & 1);
 
@@ -1511,4 +1128,13 @@ void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction,
 		RCT2_GLOBAL(0x00141E9D8, sint16) = height16;
 		RCT2_GLOBAL(0x00141E9DA, sint16) = 32;
 	}
+}
+
+/* 0x00762D44 */
+TRACK_PAINT_FUNCTION get_track_paint_function_facility(int trackType, int direction)
+{
+	switch (trackType) {
+	case 118: return facility_paint_setup;
+	}
+	return NULL;
 }

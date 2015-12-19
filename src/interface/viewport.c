@@ -1571,10 +1571,11 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 
 		TRACK_PAINT_FUNCTION **trackTypeList = (TRACK_PAINT_FUNCTION**)RideTypeTrackPaintFunctionsOld[ride->type];
 		if (trackTypeList == NULL) {
-			trackTypeList = (TRACK_PAINT_FUNCTION**)RideTypeTrackPaintFunctions[ride->type];
-
-			if (trackTypeList[trackType] != NULL)
-				trackTypeList[trackType][direction](rideIndex, trackSequence, direction, height, mapElement);
+			TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = RideTypeTrackPaintFunctions[ride->type];
+			TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType, direction);
+			if (paintFunction != NULL) {
+				paintFunction(rideIndex, trackSequence, direction, height, mapElement);
+			}
 		}
 		else {
 			uint32 *trackDirectionList = (uint32*)trackTypeList[trackType];
