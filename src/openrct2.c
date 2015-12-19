@@ -53,6 +53,7 @@ int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 utf8 gOpenRCT2StartupActionPath[512] = { 0 };
 utf8 gExePath[MAX_PATH];
 utf8 gCustomUserDataPath[MAX_PATH] = { 0 };
+utf8 gCustomOpenrctDataPath[MAX_PATH] = { 0 };
 
 // This should probably be changed later and allow a custom selection of things to initialise like SDL_INIT
 bool gOpenRCT2Headless = false;
@@ -148,7 +149,6 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 	platform_enumerate_directories_end(fileEnumHandle);
 }
 
-// TODO move to platform
 static void openrct2_set_exe_path()
 {
 	platform_get_exe_path(gExePath);
@@ -173,6 +173,7 @@ bool openrct2_initialise()
 {
 	utf8 userPath[MAX_PATH];
 
+	platform_resolve_openrct_data_path();
 	platform_resolve_user_data_path();
 	platform_get_user_directory(userPath, NULL);
 	if (!platform_ensure_directory_exists(userPath)) {

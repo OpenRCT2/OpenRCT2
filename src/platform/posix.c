@@ -42,6 +42,7 @@
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
 
 utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
+utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
 /**
  * The function that is called directly from the host application (rct2.exe)'s WinMain. This will be removed when OpenRCT2 can
@@ -566,6 +567,49 @@ void platform_resolve_user_data_path()
 	free(w_buffer);
 	safe_strncpy(_userDataDirectoryPath, path, MAX_PATH);
 	free(path);
+}
+
+void platform_get_openrct_data_path(utf8 *outPath)
+{
+	safe_strncpy(outPath, _openrctDataDirectoryPath, sizeof(_openrctDataDirectoryPath));
+}
+
+void platform_posix_sub_resolve_openrct_data_path(utf8 *out);
+
+/**
+ * Default directory fallback is:
+ *   - (command line argument)
+ *   - <exePath>/data
+ *   - <platform dependent>
+ */
+void platform_resolve_openrct_data_path()
+{
+	const char separator[2] = { platform_get_path_separator(), 0 };
+
+	if (gCustomOpenrctDataPath[0] != 0) {
+		realpath(gCustomOpenrctDataPath, _openrctDataDirectoryPath);
+
+		// Ensure path ends with separator
+		int len = strlen(_openrctDataDirectoryPath);
+		if (_openrctDataDirectoryPath[len - 1] != separator[0]) {
+			strncat(_openrctDataDirectoryPath, separator, MAX_PATH - 1);
+		}
+		return;
+	}
+
+	char buffer[MAX_PATH] = { 0 };
+	platform_get_exe_path(buffer);
+
+	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	strncat(buffer, "data", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	if (platform_directory_exists(buffer))
+	{
+		_openrctDataDirectoryPath[0] = '\0';
+		safe_strncpy(_openrctDataDirectoryPath, buffer, MAX_PATH);
+		return;
+	}
+	
+	platform_posix_sub_resolve_openrct_data_path(_openrctDataDirectoryPath);
 }
 
 void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)

@@ -147,6 +147,8 @@ void platform_get_cursor_position(int *x, int *y);
 void platform_set_cursor_position(int x, int y);
 unsigned int platform_get_ticks();
 void platform_resolve_user_data_path();
+void platform_resolve_openrct_data_path();
+void platform_get_openrct_data_path(utf8 *outPath);
 void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory);
 void platform_show_messagebox(utf8 *message);
 int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName);
