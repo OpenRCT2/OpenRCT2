@@ -1107,6 +1107,7 @@ void top_spin_paint_setup_rot_3(uint8 rideIndex, uint8 trackSequence, uint8 dire
 }
 
 void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
+void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
 
 /* 0x00761358 */
 TRACK_PAINT_FUNCTION shop_base_functions[] = {
@@ -1242,6 +1243,137 @@ TRACK_PAINT_FUNCTION* shop_track_paint_functions[] = {
 	shop_base_functions // 121
 };
 
+/* 0x00762F30 */
+TRACK_PAINT_FUNCTION facility_base_functions[] = {
+	facility_paint_setup,
+	facility_paint_setup,
+	facility_paint_setup,
+	facility_paint_setup,
+};
+
+/* 0x00762D44 */
+TRACK_PAINT_FUNCTION* facility_track_paint_functions[] = {
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	facility_base_functions, // 118
+};
+
 /**
  *
  *  rct2: 0x00761378
@@ -1297,6 +1429,84 @@ void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int
 	}
 
 	height16 += 48;
+	if (RCT2_GLOBAL(0x00141E9D8, sint16) < height16) {
+		RCT2_GLOBAL(0x00141E9D8, sint16) = height16;
+		RCT2_GLOBAL(0x00141E9DA, sint16) = 32;
+	}
+}
+
+/**
+ *
+ *  rct2: 0x00763234
+ *  rct2: 0x0076338C
+ *  rct2: 0x00762F50
+ *  rct2: 0x007630DE
+ */
+void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
+{
+	bool hasSupports = sub_6629BC(height, 0, RCT2_GLOBAL(0x00F441A4, uint32), direction & 1);
+
+	RCT2_GLOBAL(0x0141E9D0, sint16) = -1;
+	RCT2_GLOBAL(0x0141E9C4, sint16) = -1;
+	RCT2_GLOBAL(0x0141E9CC, sint16) = -1;
+	RCT2_GLOBAL(0x0141E9B8, sint16) = -1;
+	RCT2_GLOBAL(0x0141E9BC, sint16) = -1;
+	RCT2_GLOBAL(0x0141E9B4, sint16) = -1;
+	RCT2_GLOBAL(0x0141E9C0, sint16) = -1;
+	RCT2_GLOBAL(0x0141E9C8, sint16) = -1;
+	RCT2_GLOBAL(0x0141E9D4, sint16) = -1;
+
+	rct_ride *ride = GET_RIDE(rideIndex);
+	rct_ride_type *rideEntry = GET_RIDE_ENTRY(ride->subtype);
+	rct_ride_type_vehicle *firstVehicleEntry = &rideEntry->vehicles[0];
+
+	uint32 imageId = RCT2_GLOBAL(0x00F44198, uint32);
+	imageId |= firstVehicleEntry->base_image_id;
+	imageId += (direction + 2) & 3;
+
+	sint16 height16 = (sint16)height;
+	int rotation = get_current_rotation();
+	int lengthX = (direction & 1) == 0 ? 28 : 2;
+	int lengthY = (direction & 1) == 0 ? 2 : 28;
+	if (hasSupports) {
+		uint32 foundationImageId = RCT2_GLOBAL(0x00F441A4, uint32);
+		foundationImageId |= 3395;
+
+		RCT2_GLOBAL(0x009DEA52, uint16) = direction == 3 ? 28 : 2;
+		RCT2_GLOBAL(0x009DEA54, uint16) = direction == 0 ? 28 : 2;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
+		sub_98197C(0, 29, foundationImageId, 0, height, lengthY, lengthX, rotation);
+
+		// Door image or base
+		RCT2_GLOBAL(0x009DEA52, uint16) = direction == 3 ? 28 : 2;
+		RCT2_GLOBAL(0x009DEA54, uint16) = direction == 0 ? 28 : 2;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
+		sub_98199C(0, 29, imageId, 0, height, lengthY, lengthX, rotation);	
+	} else {
+		// Door image or base
+		RCT2_GLOBAL(0x009DEA52, uint16) = direction == 3 ? 28 : 2;
+		RCT2_GLOBAL(0x009DEA54, uint16) = direction == 0 ? 28 : 2;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
+
+		sub_98197C(0, 29, imageId, 0, height, lengthY, lengthX, rotation);
+	}
+
+	// Base image if door was drawn
+	if (direction == 1) {
+		imageId += 2;
+		RCT2_GLOBAL(0x009DEA52, uint16) = 28;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
+		sub_98197C(0, 29, imageId, 0, height, 28, 2, rotation);
+	} else if (direction == 2) {
+		imageId += 4;
+		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 28;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
+		sub_98197C(0, 29, imageId, 0, height, 2, 28, rotation);
+	}
+
+	height16 += 32;
 	if (RCT2_GLOBAL(0x00141E9D8, sint16) < height16) {
 		RCT2_GLOBAL(0x00141E9D8, sint16) = height16;
 		RCT2_GLOBAL(0x00141E9DA, sint16) = 32;

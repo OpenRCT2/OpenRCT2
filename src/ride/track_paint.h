@@ -7,5 +7,6 @@ typedef void (*TRACK_PAINT_FUNCTION)(uint8 rideIndex, uint8 trackSequence, uint8
 
 extern TRACK_PAINT_FUNCTION* top_spin_track_paint_functions[];
 extern TRACK_PAINT_FUNCTION* shop_track_paint_functions[];
+extern TRACK_PAINT_FUNCTION* facility_track_paint_functions[];
 
 #endif
