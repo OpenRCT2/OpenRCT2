@@ -3,6 +3,6 @@
 
 #include "../common.h"
 
-bool wooden_a_supports_paint_setup(int height, uint16 ax, uint32 image_id, int supportType);
+bool wooden_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags);
 
 #endif
