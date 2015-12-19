@@ -2711,7 +2711,7 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 				.y = trackBeginEnd.begin_y
 			};
 
-			if (!track_block_get_previous(trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_element, &trackBeginEnd)) {
+			if (!track_block_get_previous(trackBeginEnd.end_x, trackBeginEnd.end_y, trackBeginEnd.begin_element, &trackBeginEnd)) {
 				trackElement = lastGood;
 				break;
 			}
