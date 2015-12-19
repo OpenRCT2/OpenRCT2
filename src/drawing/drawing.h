@@ -69,6 +69,8 @@ typedef struct {
 	void *data;
 } rct_gx;
 
+#define SPRITE_ID_PALETTE_COLOUR_1(colourId) ((IMAGE_TYPE_USE_PALETTE << 28) | ((colourId) << 19))
+
 extern const uint16 palette_to_g1_offset[];
 extern const uint8 peep_palette[];
 extern uint8 text_palette[];

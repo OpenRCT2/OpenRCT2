@@ -45,6 +45,7 @@
     <ClCompile Include="..\src\drawing\scrolling_text.c" />
     <ClCompile Include="..\src\drawing\sprite.c" />
     <ClCompile Include="..\src\drawing\string.c" />
+    <ClCompile Include="..\src\drawing\supports.c" />
     <ClCompile Include="..\src\editor.c" />
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\hook.c" />
@@ -212,6 +213,7 @@
     <ClInclude Include="..\src\diagnostic.h" />
     <ClInclude Include="..\src\drawing\drawing.h" />
     <ClInclude Include="..\src\drawing\font.h" />
+    <ClInclude Include="..\src\drawing\supports.h" />
     <ClInclude Include="..\src\editor.h" />
     <ClInclude Include="..\src\game.h" />
     <ClInclude Include="..\src\hook.h" />
