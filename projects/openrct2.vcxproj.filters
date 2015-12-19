@@ -552,6 +552,9 @@
     <ClCompile Include="..\src\addresses.c">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\drawing\supports.c">
+      <Filter>Source\Drawing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\management\award.h">
@@ -826,6 +829,9 @@
     </ClInclude>
     <ClInclude Include="..\src\core\Util.hpp">
       <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\supports.h">
+      <Filter>Source\Drawing</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

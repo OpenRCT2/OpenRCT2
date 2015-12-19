@@ -21,12 +21,13 @@
 #include "../addresses.h"
 #include "../config.h"
 #include "../drawing/drawing.h"
+#include "../drawing/supports.h"
+#include "../interface/viewport.h"
+#include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
-#include "../interface/viewport.h"
-#include "../interface/window.h"
 #include "ride_data.h"
 #include "track_data.h"
 #include "track_paint.h"
@@ -37,7 +38,7 @@
  */
 static void top_spin_paint_tile_0(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	sub_6629BC(height, 0, image_id, direction & 1);
+	wooden_a_supports_paint_setup(height, 0, image_id, direction & 1);
 
 	image_id = 22137 | RCT2_GLOBAL(0x00F44198, uint32);
 
@@ -341,7 +342,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
  */
 static void top_spin_paint_tile_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	sub_6629BC(height, 0, image_id, direction & 1);
+	wooden_a_supports_paint_setup(height, 0, image_id, direction & 1);
 
 	image_id = 22137 | RCT2_GLOBAL(0x00F44198, uint32);
 
@@ -410,7 +411,7 @@ static void top_spin_paint_tile_1(uint8 rideIndex, uint8 trackSequence, uint8 di
  */
 static void top_spin_paint_tile_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	sub_6629BC(height, 0, image_id, direction & 1);
+	wooden_a_supports_paint_setup(height, 0, image_id, direction & 1);
 
 	image_id = 22137 | RCT2_GLOBAL(0x00F44198, uint32);
 
@@ -460,7 +461,7 @@ static void top_spin_paint_tile_2(uint8 rideIndex, uint8 trackSequence, uint8 di
  */
 static void top_spin_paint_tile_4(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	sub_6629BC(height, 0, image_id, direction & 1);
+	wooden_a_supports_paint_setup(height, 0, image_id, direction & 1);
 
 	image_id = 22137 | RCT2_GLOBAL(0x00F44198, uint32);
 
@@ -510,7 +511,7 @@ static void top_spin_paint_tile_4(uint8 rideIndex, uint8 trackSequence, uint8 di
  */
 static void top_spin_paint_tile_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	sub_6629BC(height, 0, image_id, direction & 1);
+	wooden_a_supports_paint_setup(height, 0, image_id, direction & 1);
 
 	image_id = 22136 | RCT2_GLOBAL(0x00F44198, uint32);
 
@@ -579,7 +580,7 @@ static void top_spin_paint_tile_3(uint8 rideIndex, uint8 trackSequence, uint8 di
  */
 static void top_spin_paint_tile_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	sub_6629BC(height, 0, image_id, direction & 1);
+	wooden_a_supports_paint_setup(height, 0, image_id, direction & 1);
 
 	image_id = 22136 | RCT2_GLOBAL(0x00F44198, uint32);
 
@@ -630,7 +631,7 @@ static void top_spin_paint_tile_5(uint8 rideIndex, uint8 trackSequence, uint8 di
  */
 static void top_spin_paint_tile_6(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	sub_6629BC(height, 0, image_id, direction & 1);
+	wooden_a_supports_paint_setup(height, 0, image_id, direction & 1);
 
 	image_id = 22135 | RCT2_GLOBAL(0x00F44198, uint32);
 
@@ -699,7 +700,7 @@ static void top_spin_paint_tile_6(uint8 rideIndex, uint8 trackSequence, uint8 di
  */
 static void top_spin_paint_tile_7(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	sub_6629BC(height, 0, image_id, direction & 1);
+	wooden_a_supports_paint_setup(height, 0, image_id, direction & 1);
 
 	image_id = 22134 | RCT2_GLOBAL(0x00F44198, uint32);
 
@@ -768,7 +769,7 @@ static void top_spin_paint_tile_7(uint8 rideIndex, uint8 trackSequence, uint8 di
  */
 static void top_spin_paint_tile_8(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
 	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	sub_6629BC(height, 0, image_id, direction & 1);
+	wooden_a_supports_paint_setup(height, 0, image_id, direction & 1);
 
 	image_id = 22135 | RCT2_GLOBAL(0x00F44198, uint32);
 
@@ -990,7 +991,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_topspin(int trackType, int directi
  */
 static void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
 {
-	bool hasSupports = sub_6629BC(height, 0, RCT2_GLOBAL(0x00F441A4, uint32), direction & 1);
+	bool hasSupports = wooden_a_supports_paint_setup(height, 0, RCT2_GLOBAL(0x00F441A4, uint32), direction & 1);
 
 	RCT2_GLOBAL(0x0141E9D0, sint16) = -1;
 	RCT2_GLOBAL(0x0141E9C4, sint16) = -1;
@@ -1052,6 +1053,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_shop(int trackType, int direction)
 	return NULL;
 }
 
+static int tempi = 0;
+
 /**
  *
  *  rct2: 0x00763234
@@ -1061,7 +1064,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_shop(int trackType, int direction)
  */
 static void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
 {
-	bool hasSupports = sub_6629BC(height, 0, RCT2_GLOBAL(0x00F441A4, uint32), direction & 1);
+	bool hasSupports = wooden_a_supports_paint_setup(height, 0, RCT2_GLOBAL(0x00F441A4, uint32), direction & 1);
 
 	RCT2_GLOBAL(0x0141E9D0, sint16) = -1;
 	RCT2_GLOBAL(0x0141E9C4, sint16) = -1;
