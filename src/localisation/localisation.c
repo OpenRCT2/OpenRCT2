@@ -136,6 +136,7 @@ bool utf8_is_format_code(int codepoint)
 	if (codepoint < 32) return true;
 	if (codepoint >= FORMAT_ARGUMENT_CODE_START && codepoint <= FORMAT_ARGUMENT_CODE_END) return true;
 	if (codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END) return true;
+	if (codepoint == FORMAT_COMMA1DP16) return true;
 	return false;
 }
 
