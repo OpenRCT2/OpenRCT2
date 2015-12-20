@@ -4,7 +4,11 @@ SDL2_PV=2.0.3
 SDL2_TTF_PV=2.0.12
 
 cachedir=.cache
-liburl=https://openrct2.website/files/orctlibs.zip
+if [[ $(uname -s) == "Darwin" ]]; then
+	liburl=https://openrct2.website/files/orctlibs-osx.zip
+else
+	liburl=https://openrct2.website/files/orctlibs.zip
+fi
 mkdir -p "$cachedir"
 
 # Sets default target to "linux", if none specified

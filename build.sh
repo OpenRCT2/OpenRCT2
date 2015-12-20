@@ -13,7 +13,12 @@ if [[ ! -d build ]]; then
 fi
 
 # keep in sync with version in install.sh
-sha256sum=69ff98c9544838fb16384bc78af9dc1c452b9d01d919e43f5fec686d02c9bdd8
+if [[ $(uname -s) == "Darwin" ]]; then
+	# keep in sync with version in Xcode project
+	sha256sum=2cec3958352477fbb876a5b6398722077084b5ff7e95a7d3cd67492abf5012fc
+else
+	sha256sum=69ff98c9544838fb16384bc78af9dc1c452b9d01d919e43f5fec686d02c9bdd8
+fi
 libVFile="./libversion"
 libdir="./lib"
 currentversion=0
