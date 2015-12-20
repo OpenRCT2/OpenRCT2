@@ -71,7 +71,7 @@ static void vehicle_update_sound(rct_vehicle *vehicle);
 static int vehicle_update_scream_sound(rct_vehicle *vehicle);
 
 static void vehicle_kill_all_passengers(rct_vehicle* vehicle);
-static bool sub_6DE287(rct_vehicle *vehicle);
+static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle);
 
 #define NO_SCREAM 254
 
@@ -1621,7 +1621,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		& RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS) {
 		if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) {
 			if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT) {
-				if (sub_6DE287(vehicle)) {
+				if (vehicle_can_depart_synchronised(vehicle)) {
 					return;
 				}
 			}
@@ -1780,11 +1780,146 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 
 /**
  *
- *  rct2: 0x006DE287
+ *  rct2: 0x006DE1A4
  */
-static bool sub_6DE287(rct_vehicle *vehicle)
+static bool sub_6DE1A4(int x, int y, int z)
 {
-	return RCT2_CALLPROC_X(0x006DE287, 0, 0, 0, 0, (int)vehicle, 0, 0) & 0x100;
+	return RCT2_CALLPROC_X(0x006DE1A4, x, 0, y, z, 0, 0, 0) & 0x100;
+}
+
+typedef struct {
+	uint8 ride_id;
+	uint8 station_id;
+	uint16 vehicle_id;
+} rct_synchrnoised_vehicle;
+
+// 8 synchrnoised vehicle info
+rct_synchrnoised_vehicle *_synchrnoisedVehicles = (rct_synchrnoised_vehicle*)0x00F64E4C;
+
+#define _lastSynchrnoisedVehicle	RCT2_GLOBAL(0x00F64E48, rct_synchrnoised_vehicle*)
+#define MaxSynchrnoisedVehicle		((rct_synchrnoised_vehicle*)0x00F64E6C)
+
+/**
+ * Checks whether a vehicle can depart a station when set to synchrnoise with adjacent stations.
+ *  rct2: 0x006DE287
+ * @param vehicle The vehicle waiting to depart.
+ * @returns true if the vehicle can depart (all adjacent trains are ready or broken down), otherwise false.
+ */
+static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
+{
+	rct_ride *ride = GET_RIDE(vehicle->ride);
+	int station = vehicle->current_station;
+	uint16 xy = ride->station_starts[station];
+	int x = (xy & 0xFF) * 32;
+	int y = (xy >> 8) * 32;
+	int z = ride->station_heights[station];
+
+	rct_map_element *mapElement = map_get_track_element_at(x, y, z);
+	int direction = (mapElement->type + 1) & 3;
+	_lastSynchrnoisedVehicle = _synchrnoisedVehicles;
+
+	while (_lastSynchrnoisedVehicle < MaxSynchrnoisedVehicle) {
+		x += TileDirectionDelta[direction].x;
+		y += TileDirectionDelta[direction].y;
+		if (!sub_6DE1A4(x, y, z)) {
+			break;
+		}
+	}
+
+	while (_lastSynchrnoisedVehicle < MaxSynchrnoisedVehicle) {
+		x += TileDirectionDelta[direction].x;
+		y += TileDirectionDelta[direction].y;
+		if (!sub_6DE1A4(x, y, z)) {
+			break;
+		}
+	}
+
+	if (_lastSynchrnoisedVehicle == _synchrnoisedVehicles) {
+		// No adjacent stations, allow depart
+		return true;
+	}
+
+	for (rct_synchrnoised_vehicle *sv = _synchrnoisedVehicles; sv < _lastSynchrnoisedVehicle; sv++) {
+		if (ride_is_block_sectioned(ride)) {
+			if (!(ride->station_depart[sv->station_id] & 0x80)) {
+				sv = _synchrnoisedVehicles;
+				uint8 rideId = 0xFF;
+				for (; sv < _lastSynchrnoisedVehicle; sv++) {
+					if (rideId == 0xFF) {
+						rideId = sv->ride_id;
+					}
+					if (rideId != sv->ride_id) {
+						return true;
+					}
+				}
+
+				ride = GET_RIDE(rideId);
+				for (int i = 0; i < ride->num_vehicles; i++) {
+					rct_vehicle *v = GET_VEHICLE(ride->vehicles[i]);
+					if (v->status != VEHICLE_STATUS_WAITING_TO_DEPART && v->velocity != 0) {
+						return true;
+					}
+				}
+
+				vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT;
+				return false;
+			}
+		}
+		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)) {
+			if (ride->status != RIDE_STATUS_CLOSED) {
+				if (sv->vehicle_id == SPRITE_INDEX_NULL) {
+					if (_lastSynchrnoisedVehicle > &_synchrnoisedVehicles[1]) {
+						return true;
+					}
+					uint8 someRideIndex = _synchrnoisedVehicles[0].ride_id;
+					// uint8 currentStation = _synchrnoisedVehicles[0].station_id
+					if (someRideIndex != vehicle->ride) {
+						return true;
+					}
+
+					ride = GET_RIDE(someRideIndex);
+					int numAdjacentTrainsAtStation = 0;
+					int numTravelingTrains = 0;
+					int currentStation = vehicle->current_station;
+					for (int i = 0; i < ride->num_vehicles; i++) {
+						uint16 spriteIndex = ride->vehicles[i];
+						if (spriteIndex != SPRITE_INDEX_NULL) {
+							rct_vehicle *otherVehicle = GET_VEHICLE(spriteIndex);
+							if (otherVehicle->status != VEHICLE_STATUS_TRAVELLING) {
+								if (currentStation == otherVehicle->current_station) {
+									if (otherVehicle->status == VEHICLE_STATUS_WAITING_TO_DEPART ||
+										otherVehicle->status == VEHICLE_STATUS_MOVING_TO_END_OF_STATION
+									) {
+										numAdjacentTrainsAtStation++;
+									}
+								}
+							} else {
+								numTravelingTrains++;
+							}
+						}
+					}
+
+					int totalTrains = numAdjacentTrainsAtStation + numTravelingTrains;
+					if (totalTrains != ride->num_vehicles || numTravelingTrains >= ride->num_vehicles / 2) {
+						return true;
+					} else {
+						vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT;
+						return false;
+					}
+				}
+			}
+		}
+	}
+
+	for (rct_synchrnoised_vehicle *sv = _synchrnoisedVehicles; sv < _lastSynchrnoisedVehicle; sv++) {
+		if (sv->vehicle_id != SPRITE_INDEX_NULL) {
+			rct_vehicle *v = GET_VEHICLE(sv->vehicle_id);
+			v->update_flags &= ~VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT;
+		}
+	}
+
+	vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT;
+	return false;
 }
 
 /**
