@@ -101,6 +101,11 @@ const uint8 DoorCloseSoundIds[] = {
 	SOUND_62
 };
 
+void vehicle_invalidate(rct_vehicle *vehicle)
+{
+	invalidate_sprite_2((rct_sprite*)vehicle);
+}
+
 /**
  *
  *  rct2: 0x006BB9FF
@@ -562,7 +567,7 @@ static int vehicle_close_restraints(rct_vehicle* vehicle){
 			}
 			vehicle->restraints_position -= 20;
 		}
-		invalidate_sprite_2((rct_sprite*)vehicle);
+		vehicle_invalidate(vehicle);
 		ebp++;
 	} while ((vehicle_id = vehicle->next_vehicle_on_train) != 0xFFFF);
 
@@ -608,7 +613,7 @@ static int vehicle_open_restraints(rct_vehicle* vehicle){
 				vehicle->var_BA += value;
 				vehicle->var_B6 -= value;
 
-				invalidate_sprite_2((rct_sprite*)vehicle);
+				vehicle_invalidate(vehicle);
 				continue;
 			}
 		}
@@ -619,7 +624,7 @@ static int vehicle_open_restraints(rct_vehicle* vehicle){
 				vehicle->var_C8 = vehicle->var_C8 + 0x3333 - 0xFFFF;
 				vehicle->var_C5++;
 				vehicle->var_C5 &= 7;
-				invalidate_sprite_2((rct_sprite*)vehicle);
+				vehicle_invalidate(vehicle);
 			}
 			else{
 				vehicle->var_C8 += 0x3333;
@@ -661,7 +666,7 @@ static int vehicle_open_restraints(rct_vehicle* vehicle){
 				continue;
 			}
 			vehicle->restraints_position += 20;
-			invalidate_sprite_2((rct_sprite*)vehicle);
+			vehicle_invalidate(vehicle);
 			ebp++;
 		}
 
@@ -1313,7 +1318,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 		vehicle->sub_state = 1;
 		vehicle->var_C0 = 0;
 
-		invalidate_sprite_2((rct_sprite*)vehicle);
+		vehicle_invalidate(vehicle);
 		return;
 	}
 	else if (vehicle->sub_state == 1){
@@ -1476,7 +1481,7 @@ static void vehicle_update_bumpcar_mode(rct_vehicle* vehicle) {
 
 	if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_7 && vehicle->var_C5 != 1) {
 		vehicle->var_C5 = 1;
-		invalidate_sprite_2((rct_sprite*)vehicle);
+		vehicle_invalidate(vehicle);
 	}
 
 	vehicle_update_motion_bumper_car(vehicle);
@@ -1490,7 +1495,7 @@ static void vehicle_update_bumpcar_mode(rct_vehicle* vehicle) {
 		return;
 
 	vehicle->var_C5 = 0;
-	invalidate_sprite_2((rct_sprite*)vehicle);
+	vehicle_invalidate(vehicle);
 	vehicle->velocity = 0;
 	vehicle->var_2C = 0;
 	vehicle->status = VEHICLE_STATUS_UNLOADING_PASSENGERS;
@@ -2079,7 +2084,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 
 	if (vehicle_next_tower_element_is_top(vehicle) == false) {
 		if (ride->mode == RIDE_MODE_FREEFALL_DROP)
-			invalidate_sprite_2((rct_sprite*)vehicle);
+			vehicle_invalidate(vehicle);
 		return;
 	}
 
@@ -2353,7 +2358,7 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 		vehicle->var_C5++;
 		vehicle->velocity = 0;
 		vehicle->var_2C = 0;
-		invalidate_sprite_2((rct_sprite*)vehicle);
+		vehicle_invalidate(vehicle);
 		return;
 	}
 
@@ -2940,7 +2945,7 @@ static void vehicle_update_swinging(rct_vehicle* vehicle) {
 			return;
 		// Used to know which sprite to draw
 		vehicle->var_1F = al;
-		invalidate_sprite_2((rct_sprite*)vehicle);
+		vehicle_invalidate(vehicle);
 		return;
 	}
 
@@ -3013,7 +3018,7 @@ static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle) {
 	if (rotation == vehicle->sub_state)
 		vehicle->var_CE++;
 
-	invalidate_sprite_2((rct_sprite*)vehicle);
+	vehicle_invalidate(vehicle);
 
 	uint8 subState = vehicle->sub_state;
 	if (ride->mode & RIDE_MODE_FORWARD_ROTATION)
@@ -3071,7 +3076,7 @@ static void vehicle_update_simulator_operating(rct_vehicle* vehicle) {
 		if (al == vehicle->var_1F)
 			return;
 		vehicle->var_1F = al;
-		invalidate_sprite_2((rct_sprite*)vehicle);
+		vehicle_invalidate(vehicle);
 		return;
 	}
 
@@ -3115,7 +3120,7 @@ static void vehicle_update_rotating(rct_vehicle* vehicle) {
 		if (al == vehicle->var_1F)
 			return;
 		vehicle->var_1F = al;
-		invalidate_sprite_2((rct_sprite*)vehicle);
+		vehicle_invalidate(vehicle);
 		return;
 	}
 
@@ -3175,7 +3180,7 @@ static void vehicle_update_space_rings_operating(rct_vehicle* vehicle) {
 		if (al == vehicle->var_1F)
 			return;
 		vehicle->var_1F = al;
-		invalidate_sprite_2((rct_sprite*)vehicle);
+		vehicle_invalidate(vehicle);
 		return;
 	}
 
@@ -3196,7 +3201,7 @@ static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle) {
 	if (vehicle->var_1F != 0) {
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 1) {
 			vehicle->var_1F++;
-			invalidate_sprite_2((rct_sprite*)vehicle);
+			vehicle_invalidate(vehicle);
 
 			if (vehicle->var_1F == 19)
 				vehicle->var_1F = 0;
@@ -3225,7 +3230,7 @@ static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle) {
 		break;
 	case 75:
 		vehicle->var_1F = 1;
-		invalidate_sprite_2((rct_sprite*)vehicle);
+		vehicle_invalidate(vehicle);
 		break;
 	case 400:
 		audio_play_sound_at_location(
@@ -3243,7 +3248,7 @@ static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle) {
 		break;
 	case 775:
 		vehicle->var_1F = 1;
-		invalidate_sprite_2((rct_sprite*)vehicle);
+		vehicle_invalidate(vehicle);
 		break;
 	case 1100:
 		audio_play_sound_at_location(
@@ -3289,12 +3294,12 @@ static void vehicle_update_top_spin_operating(rct_vehicle* vehicle) {
 		vehicle->var_4C = (sint16)vehicle->var_4C + 1;
 		if (al != vehicle->var_1F) {
 			vehicle->var_1F = al;
-			invalidate_sprite_2((rct_sprite*)vehicle);
+			vehicle_invalidate(vehicle);
 		}
 		al = edi[vehicle->var_4C * 2 + 1];
 		if (al != vehicle->var_20) {
 			vehicle->var_20 = al;
-			invalidate_sprite_2((rct_sprite*)vehicle);
+			vehicle_invalidate(vehicle);
 		}
 		return;
 	}
@@ -3496,7 +3501,7 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle) {
 	vehicle->sprite_height_positive = 5;
 
 	sprite_move(vehicle->x, vehicle->y, vehicle->z, (rct_sprite*)vehicle);
-	invalidate_sprite_2((rct_sprite*)vehicle);
+	vehicle_invalidate(vehicle);
 
 	vehicle->var_4E = 0;
 }
@@ -3548,7 +3553,7 @@ static void vehicle_crash_on_water(rct_vehicle* vehicle) {
 	vehicle->sprite_height_positive = 5;
 
 	sprite_move(vehicle->x, vehicle->y, vehicle->z, (rct_sprite*)vehicle);
-	invalidate_sprite_2((rct_sprite*)vehicle);
+	vehicle_invalidate(vehicle);
 
 	vehicle->var_4E = 0xFFFF;
 }
@@ -4442,7 +4447,7 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 				vehicle->sprite_direction -= 2;
 			}
 			vehicle->sprite_direction &= 0x1E;
-			invalidate_sprite_2((rct_sprite*)vehicle);
+			vehicle_invalidate(vehicle);
 		}
 		else if ((scenario_rand() & 0xFFFF) <= 2849) {
 			if (vehicle->var_35 & (1 << 6))
@@ -4450,7 +4455,7 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 			else
 				vehicle->sprite_direction += 2;
 			vehicle->sprite_direction &= 0x1E;
-			invalidate_sprite_2((rct_sprite*)vehicle);
+			vehicle_invalidate(vehicle);
 		}
 	}
 
@@ -4472,14 +4477,14 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 		location.y += RCT2_ADDRESS(0x009A36CE, sint16)[oldC4 * 4];
 
 		if (!vehicle_update_bumper_car_collision(vehicle, location.x, location.y, &collideSprite)) {
-			invalidate_sprite_2((rct_sprite*)vehicle);
+			vehicle_invalidate(vehicle);
 			sprite_move(
 				location.x,
 				location.y,
 				location.z,
 				(rct_sprite*)vehicle
 				);
-			invalidate_sprite_2((rct_sprite*)vehicle);
+			vehicle_invalidate(vehicle);
 		}
 	}
 
@@ -4492,7 +4497,7 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 		unk_F64E20->y = vehicle->y;
 		unk_F64E20->z = vehicle->z;
 
-		invalidate_sprite_2((rct_sprite*)vehicle);
+		vehicle_invalidate(vehicle);
 
 		while (1) {
 			vehicle->var_35++;
@@ -4545,7 +4550,7 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 			unk_F64E20->z,
 			(rct_sprite*)vehicle
 			);
-		invalidate_sprite_2((rct_sprite*)vehicle);
+		vehicle_invalidate(vehicle);
 	}
 	
 	sint32 eax = vehicle->velocity / 2;
@@ -5202,8 +5207,68 @@ static void vehicle_update_spinning_car(rct_vehicle *vehicle)
 	vehicle->var_B6 = unk;
 	vehicle->var_BA += unk >> 8;
 	vehicle->var_B6 -= unk >> vehicleEntry->spinning_friction;
-	invalidate_sprite_2((rct_sprite*)vehicle);
+	vehicle_invalidate(vehicle);
 }
+
+/**
+ *
+ *  rct2: 0x006734B2
+ */
+static void sub_6734B2(sint16 x, sint16 y, sint16 z)
+{
+	RCT2_CALLPROC_X(0x006734B2, x, 0, y, z, 0, 0, 0);
+}
+
+static const struct { sint8 x, y, z; } byte_9A3A20[] = {
+	{ -11,   0, 22 },
+	{ -10,   4, 22 },
+	{  -8,   8, 22 },
+	{  -4,  10, 22 },
+	{   0,  11, 22 },
+	{   4,  10, 22 },
+	{   8,   8, 22 },
+	{  10,   4, 22 },
+	{  11,   0, 22 },
+	{  10,  -4, 22 },
+	{   8,  -8, 22 },
+	{   4, -10, 22 },
+	{   0, -11, 22 },
+	{  -4, -10, 22 },
+	{  -8,  -8, 22 },
+	{ -10,  -4, 22 },
+	{  -9,   0, 27 },
+	{  -8,   4, 27 },
+	{  -6,   6, 27 },
+	{  -4,   8, 27 },
+	{   0,   9, 27 },
+	{   4,   8, 27 },
+	{   6,   6, 27 },
+	{   8,   4, 27 },
+	{   9,   0, 27 },
+	{   8,  -4, 27 },
+	{   6,  -6, 27 },
+	{   4,  -8, 27 },
+	{   0,  -9, 27 },
+	{  -4,  -8, 27 },
+	{  -6,  -6, 27 },
+	{  -8,  -4, 27 },
+	{ -13,   0, 18 },
+	{ -12,   4, 17 },
+	{  -9,   9, 17 },
+	{  -4,   8, 17 },
+	{   0,  13, 18 },
+	{   4,   8, 17 },
+	{   6,   6, 17 },
+	{   8,   4, 17 },
+	{  13,   0, 18 },
+	{   8,  -4, 17 },
+	{   6,  -6, 17 },
+	{   4,  -8, 17 },
+	{   0, -13, 18 },
+	{  -4,  -8, 17 },
+	{  -6,  -6, 17 },
+	{  -8,  -4, 17 }
+};
 
 /**
  *
@@ -5211,7 +5276,126 @@ static void vehicle_update_spinning_car(rct_vehicle *vehicle)
  */
 static void sub_6D63D4(rct_vehicle *vehicle)
 {
-	RCT2_CALLPROC_X(0x006D63D4, 0, 0, 0, 0, (int)vehicle, 0, 0);
+	uint8 al, ah;
+	uint32 eax;
+	
+	uint32 *var_C8 = (uint32*)&vehicle->var_C8;
+	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+	switch (vehicleEntry->var_11) {
+	case 1: // loc_6D652B
+		*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+		al = (*var_C8 >> 20) & 3;
+		if (vehicle->var_C5 != al) {
+			ah = al;
+			al = vehicle->var_C5;
+			vehicle->var_C5 = ah;
+			al &= 0x02;
+			ah &= 0x02;
+			if (al != ah) {
+				rct_ride *ride = GET_RIDE(vehicle->ride);
+				if (ride->entrance_style == RIDE_ENTRANCE_STYLE_PLAIN ||
+					(vehicle->status != VEHICLE_STATUS_MOVING_TO_END_OF_STATION &&
+					 vehicle->status != VEHICLE_STATUS_ARRIVING)
+				) {
+					int index = vehicle->sprite_direction >> 1;
+					if (vehicle->var_1F == 2) {
+						index += 16;
+					}
+					if (vehicle->var_1F == 6) {
+						index += 32;
+					}
+					sub_6734B2(
+						vehicle->x + byte_9A3A20[index].x,
+						vehicle->y + byte_9A3A20[index].y,
+						vehicle->z + byte_9A3A20[index].z
+					);
+				}
+			}
+			vehicle_invalidate(vehicle);
+		}
+		break;
+	case 2: // loc_6D6424
+		*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+		al = (*var_C8 >> 18) & 2;
+		if (vehicle->var_C5 != al) {
+			vehicle->var_C5 = al;
+			vehicle_invalidate(vehicle);
+		}
+		break;
+	case 3: // loc_6D6482
+		*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+		eax = ((*var_C8 >> 13) & 0xFF) * 6;
+		ah = (eax >> 8) & 0xFF;
+		if (vehicle->var_C5 != ah) {
+			vehicle->var_C5 = ah;
+			vehicle_invalidate(vehicle);
+		}
+		break;
+	case 4: // loc_6D64F7
+		*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+		eax = ((*var_C8 >> 13) & 0xFF) * 7;
+		ah = (eax >> 8) & 0xFF;
+		if (vehicle->var_C5 != ah) {
+			vehicle->var_C5 = ah;
+			vehicle_invalidate(vehicle);
+		}
+		break;
+	case 5: // loc_6D6453
+		*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+		al = (*var_C8 >> 19) & 1;
+		if (vehicle->var_C5 != al) {
+			vehicle->var_C5 = al;
+			vehicle_invalidate(vehicle);
+		}
+		break;
+	case 6: // loc_6D65C3
+		if (vehicle->var_C8 <= 0xCCCC) {
+			vehicle->var_C8 += 0x3333;
+		} else {
+			vehicle->var_C8 += 0x3333;
+			vehicle->var_C8 += 1;
+			vehicle->var_C8 &= 7;
+			vehicle_invalidate(vehicle);
+		}
+		break;
+	case 7: // loc_6D63F5
+		*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+		al = (*var_C8 >> 18) & 3;
+		if (vehicle->var_C5 != al) {
+			vehicle->var_C5 = al;
+			vehicle_invalidate(vehicle);
+		}
+		break;
+	case 8: // loc_6D64B6
+		if (vehicle->num_peeps != 0) {
+			*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+			eax = ((*var_C8 >> 13) & 0xFF) << 2;
+			ah = (eax >> 8) & 0xFF;
+			if (vehicle->var_C5 != ah) {
+				vehicle->var_C5 = ah;
+				vehicle_invalidate(vehicle);
+			}
+		}
+		break;
+	case 9: // loc_6D65E1
+		ah = vehicle->var_D9;
+		al = vehicle->var_D8;
+		if (al != ah) {
+			if (vehicle->var_C8 <= 0xCCCC) {
+				vehicle->var_C8 += 0x3333;
+			} else {
+				vehicle->var_C8 += 0x3333;
+				uint8 bl = al + 1;
+				if (al >= ah) {
+					bl -= 2;
+				}
+				vehicle->var_D8 = bl;
+				vehicle->var_C5 = (bl - 4) & 7;
+				vehicle_invalidate(vehicle);
+			}
+		}
+		break;
+	}
 }
 
 /**
@@ -6532,7 +6716,7 @@ loc_6DC40E:
 	unk_F64E20->x = vehicle->x;
 	unk_F64E20->y = vehicle->y;
 	unk_F64E20->z = vehicle->z;
-	invalidate_sprite_2((rct_sprite*)vehicle);
+	vehicle_invalidate(vehicle);
 
 loc_6DC462:
 	vehicle->var_D3 = 0;
@@ -6821,7 +7005,7 @@ loc_6DCA7A:
 	unk_F64E20->x = vehicle->x;
 	unk_F64E20->y = vehicle->y;
 	unk_F64E20->z = vehicle->z;
-	invalidate_sprite_2((rct_sprite*)vehicle);
+	vehicle_invalidate(vehicle);
 
 loc_6DCA9A:
 	regs.ax = vehicle->track_progress - 1;
@@ -6965,7 +7149,7 @@ loc_6DCD6B:
 
 loc_6DCDE4:
 	sprite_move(unk_F64E20->x, unk_F64E20->y, unk_F64E20->z, (rct_sprite*)vehicle);
-	invalidate_sprite_2((rct_sprite*)vehicle);
+	vehicle_invalidate(vehicle);
 
 loc_6DCE02:
 	vehicle->var_2C /= RCT2_GLOBAL(0x00F64E10, uint32);
