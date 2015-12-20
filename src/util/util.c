@@ -43,10 +43,10 @@ int mph_to_kmph(int mph)
 	return (mph * 1648) >> 10;
 }
 
-int mph_to_mps(int mph)
+int mph_to_dmps(int mph)
 {
-	// 1 mph = 0.44704 m/s
-	return (mph * 58594) >> 17;
+	// 1 mph = 4.4704 decimeters/s
+	return (mph * 73243) >> 14;
 }
 
 bool filename_valid_characters(const utf8 *filename)
