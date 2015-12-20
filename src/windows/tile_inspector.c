@@ -32,6 +32,7 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	WIDX_TITLE,
 	WIDX_CLOSE,
 	WIDX_CORRUPT,
+	WIDX_SWAP,
 	WIDX_CONTENT_PANEL,
 	WIDX_SCROLL
 };
@@ -41,11 +42,19 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 #define MIN_WH 150
 #define MAX_WH 800
 
+#define BTNW			160 // Button width
+#define BTNH			16 // Button height
+#define RXPL(COL)		((sint16)((WW - 3 - 6 * COL - BTNW * (COL + 1)))) // A button's left position, building up columns from the right
+#define RXPR(COL)		((sint16)(RXPL(COL) + BTNW))                       // A button's right position
+#define YPT(ROW)		((sint16)(18 + ROW * (BTNH + 5)))                 // 
+#define YPB(ROW)		((sint16)(YPT(ROW) + BTNH))                       // 
+
 rct_widget window_tile_inspector_widgets[] = {
 	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		0x0FFFFFFFF,						STR_NONE },				// panel / background
 	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			STR_TILE_INSPECTOR_TITLE,			STR_WINDOW_TITLE_TIP },	// title bar
 	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,			STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_CLOSEBOX,			1,	WW - 150,	WW - 3,	18,		39,			STR_INSERT_CORRUPT,					STR_INSERT_CORRUPT_TIP },
+	{ WWT_CLOSEBOX,			1,	RXPL(0),	RXPR(0),	YPT(0), YPB(0),	STR_INSERT_CORRUPT,					STR_INSERT_CORRUPT_TIP }, // Insert corrupt button
+	{ WWT_CLOSEBOX,			1,	RXPL(1), 	RXPR(1),	YPT(0), YPB(0),	STR_NONE,							STR_NONE },				// Swap top elements button
 	{ WWT_RESIZE,			1,	0,			WW - 1,	43,		WH - 1,		0x0FFFFFFFF,						STR_NONE },				// content panel
 	{ WWT_SCROLL,			1,	3,			WW - 3,	65,		WH - 30,	2,									STR_NONE },				// scroll area
 	{ WIDGETS_END },
@@ -118,7 +127,7 @@ void window_tile_inspector_open()
 	);
 	window->widgets = window_tile_inspector_widgets;
 	window->enabled_widgets = (1 << WIDX_CLOSE);
-	window->disabled_widgets = (1 << WIDX_CORRUPT);
+	window->disabled_widgets = (1 << WIDX_CORRUPT) | (1 << WIDX_SWAP);
 
 	window_init_scroll_widgets(window);
 	window->colours[0] = 7;
@@ -151,6 +160,30 @@ void corrupt_element(int x, int y) {
 	mapElement->type = (8 << 2);
 }
 
+void swap_top_elements(int x, int y)
+{
+	rct_map_element* mapElement;
+	mapElement = map_get_first_element_at(x, y);
+
+	// Quit when there's only one tile element
+	if (map_element_is_last_for_tile(mapElement))
+		return;
+
+	// Fine the last and second-last elements
+	while (!map_element_is_last_for_tile(++mapElement));
+	rct_map_element* lastmapElement = mapElement;
+	rct_map_element* secondLastmapElement = mapElement - 1;
+
+	// Swap their memory
+	rct_map_element temp = *lastmapElement;
+	*lastmapElement = *secondLastmapElement;
+	*secondLastmapElement = temp;
+
+	// Fix the 'last map element for tile' flag
+	lastmapElement->flags ^= MAP_ELEMENT_FLAG_LAST_TILE;
+	secondLastmapElement->flags ^= MAP_ELEMENT_FLAG_LAST_TILE;
+}
+
 static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 {
 	switch (widgetIndex) {
@@ -161,6 +194,10 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 		corrupt_element(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
 		window_tile_inspector_item_count++;
 		w->scrolls[0].v_top = 0;
+		window_invalidate(w);
+		break;
+	case WIDX_SWAP:
+		swap_top_elements(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
 		window_invalidate(w);
 		break;
 	}
@@ -229,8 +266,8 @@ static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int 
 
 	window_tile_inspector_item_count = numItems;
 
-	w->enabled_widgets |= (1 << WIDX_CORRUPT);
-	w->disabled_widgets &= ~(1ULL << WIDX_CORRUPT);
+	w->enabled_widgets |= (1 << WIDX_CORRUPT) | (1 << WIDX_SWAP);
+	w->disabled_widgets &= ~((1ULL << WIDX_CORRUPT) | (1ULL << WIDX_SWAP));
 
 	w->scrolls[0].v_top = 0;
 	window_invalidate(w);
