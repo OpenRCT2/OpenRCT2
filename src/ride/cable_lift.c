@@ -58,7 +58,7 @@ rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int d
 
 	z = z * 8;
 	current->track_z = z;
-	z += RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
+	z += RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
 
 	sprite_move(16, 16, z, (rct_sprite*)current);
 	current->track_type = (TRACK_ELEM_CABLE_LIFT_HILL << 2) | (current->sprite_direction >> 3);

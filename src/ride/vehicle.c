@@ -5142,6 +5142,7 @@ static int vehicle_get_swing_amount(rct_vehicle *vehicle)
 		// loc_6D67F6
 		return -15;
 	}
+	return 0;
 }
 
 /**
@@ -5155,7 +5156,8 @@ static void vehicle_update_swinging_car(rct_vehicle *vehicle)
 	int swingAmount = vehicle_get_swing_amount(vehicle);
 	if (swingAmount < 0) {
 		vehicle->var_4E -= dword_F64E08 >> (-swingAmount);
-	} else {
+	}
+	else if (swingAmount > 0){
 		vehicle->var_4E += dword_F64E08 >> swingAmount;
 	}
 
@@ -6378,7 +6380,7 @@ loc_6DB706:;
 		);
 	sint16 x = vehicle->track_x + moveInfo->x;
 	sint16 y = vehicle->track_y + moveInfo->y;
-	sint16 z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
+	sint16 z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
 
 	trackType = vehicle->track_type >> 2;
 	regs.ebx = 0;
@@ -6411,7 +6413,7 @@ loc_6DB706:;
 	}
 
 loc_6DB8A5:
-	regs.ebx = RCT2_ADDRESS(0x009A2930, uint32)[regs.ebx];
+	regs.ebx = RCT2_ADDRESS(0x009A2930, sint32)[regs.ebx];
 	vehicle->var_24 -= regs.ebx;
 	unk_F64E20->x = x;
 	unk_F64E20->y = y;
@@ -6443,7 +6445,7 @@ loc_6DB928:
 		return true;
 	}
 
-	regs.ebx = RCT2_ADDRESS(0x009A2970, uint32)[regs.ebx];
+	regs.ebx = dword_9A2970[regs.ebx];
 	vehicle->var_2C += regs.ebx;
 	RCT2_GLOBAL(0x00F64E10, uint32)++;
 	goto loc_6DAEB9;
@@ -6451,14 +6453,14 @@ loc_6DB928:
 loc_6DB94A:
 	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
 	regs.eax = vehicle->var_24 + 1;
-	RCT2_GLOBAL(0x00F64E0C, uint32) -= regs.eax;
+	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
 	vehicle->var_24 = 0xFFFFFFFF;
 	regs.ebx = vehicle->var_1F;
 	return false;
 
 loc_6DB967:
 	regs.eax = vehicle->var_24 + 1;
-	RCT2_GLOBAL(0x00F64E0C, uint32) -= regs.eax;
+	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
 	vehicle->var_24 -= regs.eax;
 
 	// Might need to be bp rather than vehicle, but hopefully not
@@ -6677,13 +6679,13 @@ loc_6DBD42:
 
 	x = vehicle->track_x + moveInfo->x;
 	y = vehicle->track_y + moveInfo->y;
-	z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
+	z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
 
 	regs.ebx = 0;
 	if (x == unk_F64E20->x) { regs.ebx |= 1; }
 	if (y == unk_F64E20->y) { regs.ebx |= 2; }
 	if (z == unk_F64E20->z) { regs.ebx |= 4; }
-	vehicle->var_24 += RCT2_ADDRESS(0x009A2930, uint32)[regs.ebx];
+	vehicle->var_24 += RCT2_ADDRESS(0x009A2930, sint32)[regs.ebx];
 
 	unk_F64E20->x = x;
 	unk_F64E20->y = y;
@@ -6712,22 +6714,22 @@ loc_6DBE3F:
 	if ((sint32)vehicle->var_24 >= 0) {
 		return true;
 	}
-	regs.ebx = RCT2_ADDRESS(0x009A2970, uint32)[regs.ebx];
-	vehicle->var_2C = regs.ebx;
+	regs.ebx = dword_9A2970[regs.ebx];
+	vehicle->var_2C += regs.ebx;
 	RCT2_GLOBAL(0x00F64E10, uint32)++;
 	goto loc_6DBA33;
 
 loc_6DBE5E:
 	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-	regs.eax = (sint32)vehicle->var_24 - 0x368A;
-	RCT2_GLOBAL(0x00F64E0C, uint32) -= regs.eax;
+	regs.eax = vehicle->var_24 - 0x368A;
+	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
 	vehicle->var_24 -= regs.eax;
 	regs.ebx = vehicle->var_1F;
 	return false;
 
 loc_6DBE7F:
 	regs.eax = vehicle->var_24 - 0x368A;
-	RCT2_GLOBAL(0x00F64E0C, uint32) -= regs.eax;
+	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
 	vehicle->var_24 -= regs.eax;
 
 	rct_vehicle *v3 = GET_VEHICLE(regs.bp);
@@ -6836,7 +6838,7 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 					if (car->var_24 < 0x368A) {
 						break;
 					}
-					regs.ebx = RCT2_ADDRESS(0x009A2970, uint32)[car->var_1F];
+					regs.ebx = dword_9A2970[car->var_1F];
 					car->var_2C += regs.ebx;
 					RCT2_GLOBAL(0x00F64E10, uint32)++;
 					continue;
@@ -6853,7 +6855,7 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 				if (car->var_24 >= 0) {
 					break;
 				}
-				regs.ebx = RCT2_ADDRESS(0x009A2970, uint32)[car->var_1F];
+				regs.ebx = dword_9A2970[car->var_1F];
 				car->var_2C = regs.ebx;
 				RCT2_GLOBAL(0x00F64E10, uint32)++;
 				continue;
@@ -7083,7 +7085,7 @@ loc_6DC40E:
 	regs.ebx = vehicle->var_1F;
 	RCT2_GLOBAL(0x00F64E10, uint32) = 1;
 	vehicle->var_2C = dword_9A2970[vehicle->var_1F];
-	vehicle->var_24 = RCT2_GLOBAL(0x00F64E0C, uint32) + vehicle->var_24;
+	vehicle->var_24 = RCT2_GLOBAL(0x00F64E0C, sint32) + vehicle->var_24;
 	if ((sint32)vehicle->var_24 < 0) {
 		goto loc_6DCA7A;
 	}
@@ -7309,7 +7311,7 @@ loc_6DC743:
 loc_6DC8A1:
 	x = vehicle->track_x + moveInfo->x;
 	y = vehicle->track_y + moveInfo->y;
-	z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
+	z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
 
 	// Investigate redundant code
 	regs.ebx = 0;
@@ -7369,7 +7371,7 @@ loc_6DC99A:
 loc_6DC9BC:
 	RCT2_GLOBAL(0x00F64E18, uint32) |= 0x20;
 	regs.eax = vehicle->var_24 + 1;
-	RCT2_GLOBAL(0x00F64E0C, uint32) -= regs.eax;
+	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
 	vehicle->var_24 -= regs.eax;
 	regs.ebx = vehicle->var_1F;
 	goto loc_6DCD2B;
@@ -7449,7 +7451,7 @@ loc_6DCC2C:
 	moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, vehicle->track_progress);
 	x = vehicle->track_x + moveInfo->x;
 	y = vehicle->track_y + moveInfo->y;
-	z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
+	z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
 
 	// Investigate redundant code
 	regs.ebx = 0;
@@ -7496,21 +7498,21 @@ loc_6DCD2B:
 	if (vehicle->var_24 >= 0) {
 		goto loc_6DCDE4;
 	}
-	vehicle->var_2C += RCT2_ADDRESS(0x009A2970, uint32)[vehicle->var_1F];
+	vehicle->var_2C += dword_9A2970[vehicle->var_1F];
 	RCT2_GLOBAL(0x00F64E10, uint32)++;
 	goto loc_6DCA9A;
 
 loc_6DCD4A:
 	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
 	regs.eax = vehicle->var_24 - 0x368A;
-	RCT2_GLOBAL(0x00F64E0C, uint32) -= regs.eax;
+	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
 	vehicle->var_24 -= regs.eax;
 	regs.ebx = vehicle->var_1F;
 	goto loc_6DC99A;
 
 loc_6DCD6B:
 	regs.eax = vehicle->var_24 - 0x368A;
-	RCT2_GLOBAL(0x00F64E0C, uint32) -= regs.eax;
+	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
 	vehicle->var_24 -= regs.eax;
 	rct_vehicle *vEBP = GET_VEHICLE(regs.bp);
 	rct_vehicle *vEDI = RCT2_GLOBAL(0x00F64E04, uint32);
