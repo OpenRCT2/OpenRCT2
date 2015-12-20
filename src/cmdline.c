@@ -99,9 +99,23 @@ int cmdline_run(const char **argv, int argc)
 	 * a null pointer in the array. Because of this, AppKit in OS X 10.10 will
 	 * dereference it, causing a segmentation fault.
 	 */
-	char** mutableArgv = malloc(argvsize);
+	const char** mutableArgv = malloc(argvsize);
+
+#ifdef __APPLE__
+	/**
+	 * Fixes problems with the default settings in the Xcode debugger
+	 * with it adding the option "-NSDocumentRevisionsDebugMode"
+	 */
+	int k=0;
+	for (int i=0; i < argc; ++i)
+		if (strcmp(argv[k], "-NSDocumentRevisionsDebugMode") != 0)
+			mutableArgv[k++] = argv[i];
+	argc = k;
+#else
 	memcpy(mutableArgv,argv,argvsize);
-	argc = argparse_parse(&argparse, argc, (const char**)mutableArgv);
+#endif
+
+	argc = argparse_parse(&argparse, argc, mutableArgv);
 
 	if (version) {
 		print_version();
