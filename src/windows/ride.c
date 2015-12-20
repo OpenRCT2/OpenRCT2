@@ -2764,7 +2764,10 @@ static void window_ride_mode_tweak_decrease(rct_window *w)
 {
 	rct_ride *ride = GET_RIDE(w->number);
 	uint8 value = ride->operation_option;
-	if (value > RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 4, uint8))
+	//fast_lift_hill is the cheat that allows maxing many limits on the Operating tab.
+	uint8 min_value = gConfigCheat.fast_lift_hill ? 0 : RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 4, uint8);
+
+	if (value > min_value)
 		value -= ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
 
 	window_ride_mode_tweak_set(w, value);
@@ -2918,7 +2921,7 @@ static void window_ride_operating_resize(rct_window *w)
 static void window_ride_operating_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
 {
 	rct_ride *ride = GET_RIDE(w->number);
-	uint8 max_lift_hill_speed;
+	uint8 parameter_check;
 
 	switch (widgetIndex) {
 	case WIDX_MODE_TWEAK_INCREASE:
@@ -2928,16 +2931,12 @@ static void window_ride_operating_mousedown(int widgetIndex, rct_window *w, rct_
 		window_ride_mode_tweak_decrease(w);
 		break;
 	case WIDX_LIFT_HILL_SPEED_INCREASE:
-
-		if(gConfigCheat.fast_lift_hill)
-			max_lift_hill_speed = 255;
-		else
-			max_lift_hill_speed = RCT2_GLOBAL(0x0097D7CA + (ride->type * 4), uint8);
-
-		set_operating_setting(w->number, 8, min(ride->lift_hill_speed + 1, max_lift_hill_speed));
+		parameter_check = gConfigCheat.fast_lift_hill ? 255 : RCT2_GLOBAL(0x0097D7CA + (ride->type * 4), uint8);
+		set_operating_setting(w->number, 8, min(ride->lift_hill_speed + 1, parameter_check));
 		break;
 	case WIDX_LIFT_HILL_SPEED_DECREASE:
-		set_operating_setting(w->number, 8, max(RCT2_GLOBAL(0x0097D7C9 + (ride->type * 4), uint8), ride->lift_hill_speed - 1));
+		parameter_check = gConfigCheat.fast_lift_hill ? 0 : RCT2_GLOBAL(0x0097D7C9 + (ride->type * 4), uint8);
+		set_operating_setting(w->number, 8, max(ride->lift_hill_speed - 1, parameter_check));
 		break;
 	case WIDX_MINIMUM_LENGTH_INCREASE:
 		set_operating_setting(w->number, 2, min(ride->min_waiting_time + 1, 250));
@@ -2958,10 +2957,11 @@ static void window_ride_operating_mousedown(int widgetIndex, rct_window *w, rct_
 		window_ride_load_dropdown(w, widget);
 		break;
 	case WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE:
-		set_operating_setting(w->number, 9, min(ride->num_circuits + 1, 20));
+		parameter_check = gConfigCheat.fast_lift_hill ? 255 : 20;
+		set_operating_setting(w->number, 9, min(ride->num_circuits + 1, parameter_check));
 		break;
 	case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
-		set_operating_setting(w->number, 9, max(1, ride->num_circuits - 1));
+		set_operating_setting(w->number, 9, max(ride->num_circuits - 1, 1));
 		break;
 	}
 }
