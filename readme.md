@@ -79,9 +79,10 @@ OpenRCT2 requires original files of Rollercoaster Tycoon 2 to play. It can be bo
 - [Powershell 4.0](http://social.technet.microsoft.com/wiki/contents/articles/21016.how-to-install-windows-powershell-4-0.aspx).
 
 ### Mac OS X:
-- [Homebrew](http://brew.sh)
+- [Xcode](https://developer.apple.com/xcode/)
+- [Homebrew](http://brew.sh) (only for cmake builds via the terminal)
 
-### Mac OS X / Linux:
+### Linux:
 - sdl2
 - sdl2-ttf
 - speexdsp
@@ -103,8 +104,9 @@ All libs listed here (bar cmake) required in 32 bit variants.
 Alternatively, to simply build the project you can just execute ``build.bat`` within VS2015 Native Tools Command prompt or Github Windows prompt.
 
 ### Mac OS X:
-We support native builds OS X (limited to i386 only for now).
-Make sure that you have [Homebrew](http://brew.sh/) installed and than run the following commands to install all the needed libraries and build openrct2.
+We support native builds OS X. All that's necessary is to build the [Xcode](https://developer.apple.com/xcode/) project and it will produce a fully functioning OS X app bundle.
+
+If you'd rather, you can use the terminal and [Homebrew](http://brew.sh), then simply run these steps, however this will not produce a distributable app bundle.
 ```
 # Install libraries
 ./install.sh
