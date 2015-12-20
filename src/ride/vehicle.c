@@ -101,6 +101,57 @@ const uint8 DoorCloseSoundIds[] = {
 	SOUND_62
 };
 
+static const struct { sint8 x, y, z; } SteamParticleOffsets[] = {
+	{ -11,   0, 22 },
+	{ -10,   4, 22 },
+	{  -8,   8, 22 },
+	{  -4,  10, 22 },
+	{   0,  11, 22 },
+	{   4,  10, 22 },
+	{   8,   8, 22 },
+	{  10,   4, 22 },
+	{  11,   0, 22 },
+	{  10,  -4, 22 },
+	{   8,  -8, 22 },
+	{   4, -10, 22 },
+	{   0, -11, 22 },
+	{  -4, -10, 22 },
+	{  -8,  -8, 22 },
+	{ -10,  -4, 22 },
+	{  -9,   0, 27 },
+	{  -8,   4, 27 },
+	{  -6,   6, 27 },
+	{  -4,   8, 27 },
+	{   0,   9, 27 },
+	{   4,   8, 27 },
+	{   6,   6, 27 },
+	{   8,   4, 27 },
+	{   9,   0, 27 },
+	{   8,  -4, 27 },
+	{   6,  -6, 27 },
+	{   4,  -8, 27 },
+	{   0,  -9, 27 },
+	{  -4,  -8, 27 },
+	{  -6,  -6, 27 },
+	{  -8,  -4, 27 },
+	{ -13,   0, 18 },
+	{ -12,   4, 17 },
+	{  -9,   9, 17 },
+	{  -4,   8, 17 },
+	{   0,  13, 18 },
+	{   4,   8, 17 },
+	{   6,   6, 17 },
+	{   8,   4, 17 },
+	{  13,   0, 18 },
+	{   8,  -4, 17 },
+	{   6,  -6, 17 },
+	{   4,  -8, 17 },
+	{   0, -13, 18 },
+	{  -4,  -8, 17 },
+	{  -6,  -6, 17 },
+	{  -8,  -4, 17 }
+};
+
 void vehicle_invalidate(rct_vehicle *vehicle)
 {
 	invalidate_sprite_2((rct_sprite*)vehicle);
@@ -5214,61 +5265,21 @@ static void vehicle_update_spinning_car(rct_vehicle *vehicle)
  *
  *  rct2: 0x006734B2
  */
-static void sub_6734B2(sint16 x, sint16 y, sint16 z)
+static void steam_particle_create(sint16 x, sint16 y, sint16 z)
 {
-	RCT2_CALLPROC_X(0x006734B2, x, 0, y, z, 0, 0, 0);
+	rct_map_element *mapElement = map_get_surface_element_at(x >> 5, y >> 5);
+	if (mapElement != NULL && z > mapElement->base_height * 8) {
+		rct_steam_particle *steam = (rct_steam_particle*)create_sprite(2);
+		steam->sprite_width = 20;
+		steam->sprite_height_negative = 18;
+		steam->sprite_height_positive = 16;
+		steam->sprite_identifier = SPRITE_IDENTIFIER_MISC;
+		steam->misc_identifier = SPRITE_MISC_STEAM_PARTICLE;
+		steam->var_26 = 256;
+		steam->var_24 = 0;
+		sprite_move(x, y, z, (rct_sprite*)steam);
+	}
 }
-
-static const struct { sint8 x, y, z; } byte_9A3A20[] = {
-	{ -11,   0, 22 },
-	{ -10,   4, 22 },
-	{  -8,   8, 22 },
-	{  -4,  10, 22 },
-	{   0,  11, 22 },
-	{   4,  10, 22 },
-	{   8,   8, 22 },
-	{  10,   4, 22 },
-	{  11,   0, 22 },
-	{  10,  -4, 22 },
-	{   8,  -8, 22 },
-	{   4, -10, 22 },
-	{   0, -11, 22 },
-	{  -4, -10, 22 },
-	{  -8,  -8, 22 },
-	{ -10,  -4, 22 },
-	{  -9,   0, 27 },
-	{  -8,   4, 27 },
-	{  -6,   6, 27 },
-	{  -4,   8, 27 },
-	{   0,   9, 27 },
-	{   4,   8, 27 },
-	{   6,   6, 27 },
-	{   8,   4, 27 },
-	{   9,   0, 27 },
-	{   8,  -4, 27 },
-	{   6,  -6, 27 },
-	{   4,  -8, 27 },
-	{   0,  -9, 27 },
-	{  -4,  -8, 27 },
-	{  -6,  -6, 27 },
-	{  -8,  -4, 27 },
-	{ -13,   0, 18 },
-	{ -12,   4, 17 },
-	{  -9,   9, 17 },
-	{  -4,   8, 17 },
-	{   0,  13, 18 },
-	{   4,   8, 17 },
-	{   6,   6, 17 },
-	{   8,   4, 17 },
-	{  13,   0, 18 },
-	{   8,  -4, 17 },
-	{   6,  -6, 17 },
-	{   4,  -8, 17 },
-	{   0, -13, 18 },
-	{  -4,  -8, 17 },
-	{  -6,  -6, 17 },
-	{  -8,  -4, 17 }
-};
 
 /**
  *
@@ -5304,10 +5315,10 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 					if (vehicle->var_1F == 6) {
 						index += 32;
 					}
-					sub_6734B2(
-						vehicle->x + byte_9A3A20[index].x,
-						vehicle->y + byte_9A3A20[index].y,
-						vehicle->z + byte_9A3A20[index].z
+					steam_particle_create(
+						vehicle->x + SteamParticleOffsets[index].x,
+						vehicle->y + SteamParticleOffsets[index].y,
+						vehicle->z + SteamParticleOffsets[index].z
 					);
 				}
 			}
