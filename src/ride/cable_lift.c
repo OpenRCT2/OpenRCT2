@@ -9,7 +9,7 @@ static void cable_lift_update_departing(rct_vehicle *vehicle);
 static void cable_lift_update_travelling(rct_vehicle *vehicle);
 static void cable_lift_update_arriving(rct_vehicle *vehicle);
 
-rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int direction, uint16 var_44, sint32 var_24, bool head)
+rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int direction, uint16 var_44, sint32 remaining_distance, bool head)
 {
 	rct_ride *ride = GET_RIDE(rideIndex);
 	rct_vehicle *current = &(create_sprite(1)->vehicle);
@@ -22,16 +22,16 @@ rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int d
 	}
 	current->is_child = head ? 0 : 1;
 	current->var_44 = var_44;
-	current->var_24 = var_24;
+	current->remaining_distance = remaining_distance;
 	current->sprite_width = 10;
 	current->sprite_height_negative = 10;
 	current->sprite_height_positive = 10;
 	current->friction = 100;
 	current->num_seats = 0;
 	current->speed = 20;
-	current->acceleration = 80;
+	current->powered_acceleration = 80;
 	current->velocity = 0;
-	current->var_2C = 0;
+	current->acceleration = 0;
 	current->var_4A = 0;
 	current->var_4C = 0;
 	current->var_4E = 0;
@@ -102,18 +102,18 @@ void cable_lift_update(rct_vehicle *vehicle)
 static void cable_lift_update_moving_to_end_of_station(rct_vehicle *vehicle)
 {
 	if (vehicle->velocity >= -439800)
-		vehicle->var_2C = -2932;
+		vehicle->acceleration = -2932;
 
 	if (vehicle->velocity < -439800) {
 		vehicle->velocity -= vehicle->velocity / 16;
-		vehicle->var_2C = 0;
+		vehicle->acceleration = 0;
 	}
 
 	if (!(cable_lift_update_track_motion(vehicle) & (1 << 0)))
 		return;
 
 	vehicle->velocity = 0;
-	vehicle->var_2C = 0;
+	vehicle->acceleration = 0;
 	vehicle->status = VEHICLE_STATUS_WAITING_FOR_PASSENGERS;
 }
 
@@ -124,11 +124,11 @@ static void cable_lift_update_moving_to_end_of_station(rct_vehicle *vehicle)
 static void cable_lift_update_waiting_to_depart(rct_vehicle *vehicle)
 {
 	if (vehicle->velocity >= -58640)
-		vehicle->var_2C = -14660;
+		vehicle->acceleration = -14660;
 
 	if (vehicle->velocity < -58640) {
 		vehicle->velocity -= vehicle->velocity / 16;
-		vehicle->var_2C = 0;
+		vehicle->acceleration = 0;
 	}
 
 	cable_lift_update_track_motion(vehicle);
@@ -146,7 +146,7 @@ static void cable_lift_update_waiting_to_depart(rct_vehicle *vehicle)
 		return;
 
 	vehicle->velocity = 0;
-	vehicle->var_2C = 0;
+	vehicle->acceleration = 0;
 	vehicle->status = VEHICLE_STATUS_DEPARTING;
 	vehicle->sub_state = 0;
 }
@@ -175,7 +175,7 @@ static void cable_lift_update_travelling(rct_vehicle *vehicle)
 	rct_vehicle* passengerVehicle = GET_VEHICLE(vehicle->var_C0);
 
 	vehicle->velocity = min(passengerVehicle->velocity, 439800);
-	vehicle->var_2C = 0;
+	vehicle->acceleration = 0;
 	if (passengerVehicle->update_flags & VEHICLE_UPDATE_FLAG_BROKEN_TRAIN)
 		return;
 
@@ -183,7 +183,7 @@ static void cable_lift_update_travelling(rct_vehicle *vehicle)
 		return;
 
 	vehicle->velocity = 0;
-	vehicle->var_2C = 0;
+	vehicle->acceleration = 0;
 	vehicle->status = VEHICLE_STATUS_ARRIVING;
 	vehicle->sub_state = 0;
 }
@@ -203,7 +203,7 @@ bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 	rct_ride* ride = GET_RIDE(vehicle->ride);
 	rct_xyz16 *unk_F64E20 = RCT2_ADDRESS(0x00F64E20, rct_xyz16);
 
-	for (; vehicle->var_24 >= 13962; RCT2_GLOBAL(0x00F64E10, uint32)++) {
+	for (; vehicle->remaining_distance >= 13962; RCT2_GLOBAL(0x00F64E10, uint32)++) {
 		uint8 trackType = vehicle->track_type >> 2;
 		if (trackType == TRACK_ELEM_CABLE_LIFT_HILL &&
 			vehicle->track_progress == 160) {
@@ -270,7 +270,7 @@ bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 		if (unk.z != unk_F64E20->z)
 			bx |= (1 << 2);
 
-		vehicle->var_24 -= RCT2_ADDRESS(0x009A2930, sint32)[bx];
+		vehicle->remaining_distance -= RCT2_ADDRESS(0x009A2930, sint32)[bx];
 		unk_F64E20->x = unk.x;
 		unk_F64E20->y = unk.y;
 		unk_F64E20->z = unk.z;
@@ -279,8 +279,8 @@ bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 		vehicle->var_20 = moveInfo->var_08;
 		vehicle->var_1F = moveInfo->var_07;
 
-		if (vehicle->var_24 >= 13962) {
-			vehicle->var_2C += RCT2_ADDRESS(0x009A2970, sint32)[vehicle->var_1F];
+		if (vehicle->remaining_distance >= 13962) {
+			vehicle->acceleration += RCT2_ADDRESS(0x009A2970, sint32)[vehicle->var_1F];
 		}
 	}
 	return true;
@@ -290,7 +290,7 @@ bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 	rct_ride* ride = GET_RIDE(vehicle->ride);
 	rct_xyz16 *unk_F64E20 = RCT2_ADDRESS(0x00F64E20, rct_xyz16);
 
-	for (; vehicle->var_24 < 0; RCT2_GLOBAL(0x00F64E10, uint32)++) {
+	for (; vehicle->remaining_distance < 0; RCT2_GLOBAL(0x00F64E10, uint32)++) {
 		uint16 trackProgress = vehicle->track_progress - 1;
 		const rct_vehicle_info *moveInfo;
 
@@ -356,7 +356,7 @@ bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 		if (unk.z != unk_F64E20->z)
 			bx |= (1 << 2);
 
-		vehicle->var_24 += RCT2_ADDRESS(0x009A2930, sint32)[bx];
+		vehicle->remaining_distance += RCT2_ADDRESS(0x009A2930, sint32)[bx];
 		unk_F64E20->x = unk.x;
 		unk_F64E20->y = unk.y;
 		unk_F64E20->z = unk.z;
@@ -365,8 +365,8 @@ bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 		vehicle->var_20 = moveInfo->var_08;
 		vehicle->var_1F = moveInfo->var_07;
 
-		if (vehicle->var_24 < 0) {
-			vehicle->var_2C += RCT2_ADDRESS(0x009A2970, sint32)[vehicle->var_1F];
+		if (vehicle->remaining_distance < 0) {
+			vehicle->acceleration += RCT2_ADDRESS(0x009A2970, sint32)[vehicle->var_1F];
 		}
 	}
 	return true;
@@ -387,7 +387,7 @@ int cable_lift_update_track_motion(rct_vehicle *cableLift)
 	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
 	RCT2_GLOBAL(0x00F64E1C, uint32) = (uint32)-1;
 
-	cableLift->velocity += cableLift->var_2C;
+	cableLift->velocity += cableLift->acceleration;
 	RCT2_GLOBAL(0x00F64E08, sint32) = cableLift->velocity;
 	RCT2_GLOBAL(0x00F64E0C, sint32) = (cableLift->velocity / 1024) * 42;
 
@@ -399,11 +399,11 @@ int cable_lift_update_track_motion(rct_vehicle *cableLift)
 	RCT2_GLOBAL(0x00F64E00, rct_vehicle*) = frontVehicle;
 
 	for (rct_vehicle* vehicle = frontVehicle;;) {
-		vehicle->var_2C = RCT2_ADDRESS(0x009A2970, sint32)[vehicle->var_1F];
+		vehicle->acceleration = RCT2_ADDRESS(0x009A2970, sint32)[vehicle->var_1F];
 		RCT2_GLOBAL(0x00F64E10, uint32) = 1;
-		vehicle->var_24 += RCT2_GLOBAL(0x00F64E0C, sint32);
+		vehicle->remaining_distance += RCT2_GLOBAL(0x00F64E0C, sint32);
 
-		if (vehicle->var_24 < 0 || vehicle->var_24 >= 13962) {
+		if (vehicle->remaining_distance < 0 || vehicle->remaining_distance >= 13962) {
 			rct_xyz16 *unk_F64E20 = RCT2_ADDRESS(0x00F64E20, rct_xyz16);
 			unk_F64E20->x = vehicle->x;
 			unk_F64E20->y = vehicle->y;
@@ -411,15 +411,15 @@ int cable_lift_update_track_motion(rct_vehicle *cableLift)
 			invalidate_sprite_2((rct_sprite*)vehicle);
 
 			while (true) {
-				if (vehicle->var_24 < 0) {
+				if (vehicle->remaining_distance < 0) {
 					if (sub_6DF21B_loop(vehicle) == true) {
 						break;
 					}
 					else {
 						RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 5);
-						RCT2_GLOBAL(0x00F64E0C, uint32) -= vehicle->var_24 - 13962;
-						vehicle->var_24 = 13962;
-						vehicle->var_2C += RCT2_ADDRESS(0x009A2970, uint32)[vehicle->var_1F];
+						RCT2_GLOBAL(0x00F64E0C, uint32) -= vehicle->remaining_distance - 13962;
+						vehicle->remaining_distance = 13962;
+						vehicle->acceleration += RCT2_ADDRESS(0x009A2970, uint32)[vehicle->var_1F];
 						RCT2_GLOBAL(0x00F64E10, uint32)++;
 						continue;
 					}
@@ -430,9 +430,9 @@ int cable_lift_update_track_motion(rct_vehicle *cableLift)
 					}
 					else {
 						RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 5);
-						RCT2_GLOBAL(0x00F64E0C, uint32) -= vehicle->var_24 + 1;
-						vehicle->var_24 = -1;
-						vehicle->var_2C += RCT2_ADDRESS(0x009A2970, uint32)[vehicle->var_1F];
+						RCT2_GLOBAL(0x00F64E0C, uint32) -= vehicle->remaining_distance + 1;
+						vehicle->remaining_distance = -1;
+						vehicle->acceleration += RCT2_ADDRESS(0x009A2970, uint32)[vehicle->var_1F];
 						RCT2_GLOBAL(0x00F64E10, uint32)++;
 					}
 				}
@@ -445,7 +445,7 @@ int cable_lift_update_track_motion(rct_vehicle *cableLift)
 
 			invalidate_sprite_2((rct_sprite*)vehicle);
 		}
-		vehicle->var_2C /= RCT2_GLOBAL(0x00F64E10, uint32);
+		vehicle->acceleration /= RCT2_GLOBAL(0x00F64E10, uint32);
 		if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0) {
 			if (vehicle->next_vehicle_on_train == 0xFFFF)
 				break;
@@ -466,7 +466,7 @@ int cable_lift_update_track_motion(rct_vehicle *cableLift)
 		rct_vehicle* vehicle = GET_VEHICLE(spriteId);
 		vehicleCount++;
 		frictionTotal += vehicle->friction;
-		var2CTotal += vehicle->var_2C;
+		var2CTotal += vehicle->acceleration;
 		spriteId = vehicle->next_vehicle_on_train;
 	}
 
@@ -480,6 +480,6 @@ int cable_lift_update_track_motion(rct_vehicle *cableLift)
 	edx >>= 4;
 	ecx -= edx / frictionTotal;
 
-	cableLift->var_2C = ecx;
+	cableLift->acceleration = ecx;
 	return RCT2_GLOBAL(0x00F64E18, uint32);
 }

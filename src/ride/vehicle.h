@@ -106,9 +106,9 @@ typedef struct {
 	uint8 var_1F;
 	uint8 var_20;
 	uint8 pad_21[3];
-	sint32 var_24;
+	sint32 remaining_distance;		// 0x24
 	sint32 velocity;				// 0x28
-	sint32 var_2C;
+	sint32 acceleration;			// 0x2C
 	uint8 ride;						// 0x30
 	uint8 vehicle_type;				// 0x31
 	rct_vehicle_colour colours;		// 0x32
@@ -160,7 +160,7 @@ typedef struct {
 	sint8 var_BF;
 	uint16 var_C0;
 	uint8 speed;					// 0xC2
-	uint8 acceleration;				// 0xC3
+	uint8 powered_acceleration;		// 0xC3
 	uint8 var_C4;
 	uint8 var_C5;
 	uint8 pad_C6[0x2];

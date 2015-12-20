@@ -4291,9 +4291,9 @@ void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement)
 			car = train;
 			while (true) {
 				car->velocity = 0;
-				car->var_2C = 0;
+				car->acceleration = 0;
 				car->var_4A = 0;
-				car->var_24 += 13962;
+				car->remaining_distance += 13962;
 
 				uint16 spriteIndex = car->next_vehicle_on_train;
 				if (spriteIndex == SPRITE_INDEX_NULL) {
@@ -4482,10 +4482,10 @@ bool ride_create_cable_lift(int rideIndex, bool isApplying)
 		uint16 var_44 = edx & 0xFFFF;
 		edx = rol32(edx, 10) >> 1;
 		ebx -= edx;
-		sint32 var_24 = ebx;
+		sint32 remaining_distance = ebx;
 		ebx -= edx;
 
-		rct_vehicle *current = cable_lift_segment_create(rideIndex, x, y, z, direction, var_44, var_24, i == 0);
+		rct_vehicle *current = cable_lift_segment_create(rideIndex, x, y, z, direction, var_44, remaining_distance, i == 0);
 		current->next_vehicle_on_train = SPRITE_INDEX_NULL;
 		if (i == 0) {
 			head = current;
