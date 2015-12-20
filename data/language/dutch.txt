@@ -3914,6 +3914,9 @@ STR_5578    :Russische roebel (R)
 STR_5579    :Vergrotingsfactor:
 STR_5580    :Tsjechische kroon (Kc)
 STR_5581    :FPS tonen
+STR_5582    :Aanwijzer in venster vasthouden
+STR_5583    :{COMMA16}m/s
+STR_5584    :SI
 
 #############
 # Scenarios #
