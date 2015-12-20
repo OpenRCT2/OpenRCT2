@@ -1620,8 +1620,9 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		& RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS) {
 		if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) {
 			if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT) {
-				if (RCT2_CALLPROC_X(0x006DE287, 0, 0, 0, 0, (int)vehicle, 0, 0) & 0x100)
+				if (sub_6DE287(vehicle)) {
 					return;
+				}
 			}
 		}
 	}
@@ -1774,6 +1775,15 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		vehicle->var_CE = 0;
 		break;
 	}
+}
+
+/**
+ *
+ *  rct2: 0x006DE287
+ */
+static bool sub_6DE287(rct_vehicle *vehicle)
+{
+	return RCT2_CALLPROC_X(0x006DE287, 0, 0, 0, 0, (int)vehicle, 0, 0) & 0x100;
 }
 
 /**
@@ -2963,7 +2973,8 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle) {
  *
  *  rct2: 0x006D9820
  */
-static void vehicle_update_travelling_boat(rct_vehicle* vehicle) {
+static void vehicle_update_travelling_boat(rct_vehicle* vehicle)
+{
 	vehicle_check_if_missing(vehicle);
 	RCT2_CALLPROC_X(0x006DA717, 0, 0, 0, 0, (int)vehicle, 0, 0);
 }
