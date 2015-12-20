@@ -71,6 +71,7 @@ static void vehicle_update_sound(rct_vehicle *vehicle);
 static int vehicle_update_scream_sound(rct_vehicle *vehicle);
 
 static void vehicle_kill_all_passengers(rct_vehicle* vehicle);
+static bool sub_6DE287(rct_vehicle *vehicle);
 
 #define NO_SCREAM 254
 
@@ -4896,14 +4897,234 @@ static void loc_6DB1B0(rct_vehicle *vehicle, rct_map_element *mapElement)
 	}
 }
 
+static int vehicle_get_swing_amount(rct_vehicle *vehicle)
+{
+	int trackType = vehicle->track_type >> 2;
+	switch (trackType) {
+	case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES:
+	case TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_COVERED:
+	case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE:
+	case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE:
+	case TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_UP:
+	case TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_DOWN:
+	case TRACK_ELEM_LEFT_QUARTER_HELIX_LARGE_UP:
+	case TRACK_ELEM_LEFT_QUARTER_HELIX_LARGE_DOWN:
+	case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP:
+	case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN:
+		// loc_6D67E1
+		return 14;
+
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES:
+	case TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_COVERED:
+	case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE:
+	case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE:
+	case TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_UP:
+	case TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_DOWN:
+	case TRACK_ELEM_RIGHT_QUARTER_HELIX_LARGE_UP:
+	case TRACK_ELEM_RIGHT_QUARTER_HELIX_LARGE_DOWN:
+	case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP:
+	case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN:
+		// loc_6D6804
+		return -14;
+
+	case TRACK_ELEM_S_BEND_LEFT:
+	case TRACK_ELEM_S_BEND_LEFT_COVERED:
+		// loc_6D67EF
+		if (vehicle->var_34 < 48) {
+			return 14;
+		} else {
+			return -15;
+		}
+
+	case TRACK_ELEM_S_BEND_RIGHT:
+	case TRACK_ELEM_S_BEND_RIGHT_COVERED:
+		// loc_6D67CC
+		if (vehicle->var_34 < 48) {
+			return -14;
+		} else {
+			return 15;
+		}
+
+	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_COVERED:
+	case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL:
+	case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL:
+	case TRACK_ELEM_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_LEFT_BANK:
+	case TRACK_ELEM_LEFT_CURVED_LIFT_HILL:
+	case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP:
+	case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN:
+		// loc_6D67BE
+		return 13;
+
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_COVERED:
+	case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL:
+	case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL:
+	case TRACK_ELEM_RIGHT_BANK_TO_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_RIGHT_BANK:
+	case TRACK_ELEM_RIGHT_CURVED_LIFT_HILL:
+	case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP:
+	case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN:
+		// loc_6D67B0
+		return -13;
+
+	case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN:
+		// loc_6D67A2
+		return 12;
+
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN:
+		// loc_6D6794
+		return -12;
+
+	case TRACK_ELEM_LEFT_EIGHTH_TO_DIAG:
+	case TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL:
+	case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG:
+	case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL:
+		// loc_6D67D3
+		return 15;
+
+	case TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG:
+	case TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL:
+	case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG:
+	case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL:
+		// loc_6D67F6
+		return -15;
+	}
+}
+
 /**
  *
  *  rct2: 0x006D6776
  */
 static void vehicle_update_swinging_car(rct_vehicle *vehicle)
 {
+	sint32 dword_F64E08 = RCT2_GLOBAL(0x00F64E08, sint32);
+	vehicle->var_4E = (-(sint16)vehicle->var_4C) >> 6;
+	int swingAmount = vehicle_get_swing_amount(vehicle);
+	if (swingAmount < 0) {
+		vehicle->var_4E -= dword_F64E08 >> (-swingAmount);
+	} else {
+		vehicle->var_4E += dword_F64E08 >> swingAmount;
+	}
+
 	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
-	RCT2_CALLPROC_X(0x006D6776, 0, 0, 0, 0, (int)vehicle, (int)vehicleEntry, 0);
+	sint16 dx = 3185;
+	if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_5) {
+		dx = 5006;
+	}
+	if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_9) {
+		dx = 1820;
+	}
+	sint16 cx = -dx;
+
+	if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_11) {
+		dx = 5370;
+		cx = -5370;
+
+		int trackType = vehicle->track_type >> 2;
+		switch (trackType) {
+		case TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES:
+		case TRACK_ELEM_LEFT_BANK:
+		case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK:
+			dx = 10831;
+			cx = -819;
+			break;
+		case TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES:
+		case TRACK_ELEM_RIGHT_BANK:
+		case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK:
+			dx = 819;
+			cx = -10831;
+			break;
+		}
+		
+		switch (trackType) {
+		case TRACK_ELEM_END_STATION:
+		case TRACK_ELEM_BEGIN_STATION:
+		case TRACK_ELEM_MIDDLE_STATION:
+		case TRACK_ELEM_BRAKES:
+		case TRACK_ELEM_BLOCK_BRAKES:
+			dx = 0;
+			cx = 0;
+			break;
+		}
+
+		if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_0) {
+			dx = 0;
+			cx = 0;
+		}
+	}
+
+	vehicle->var_4C += vehicle->var_4E;
+	vehicle->var_4E -= vehicle->var_4E >> 5;
+	sint16 ax = vehicle->var_4C;
+	if (ax > dx) {
+		ax = dx;
+		vehicle->var_4E = 0;
+	}
+	if (ax < cx) {
+		ax = cx;
+		vehicle->var_4E = 0;
+	}
+
+	vehicle->var_4C = ax;
+	uint8 bl = 11;
+	if (ax >= -10012) {
+		bl = 12;
+		if (ax <= 10012) {
+			bl = 9;
+			if (ax >= -8191) {
+				bl = 10;
+				if (ax <= 8191) {
+					bl = 7;
+					if (ax >= -6371) {
+						bl = 8;
+						if (ax <= 6371) {
+							bl = 5;
+							if (ax >= -4550) {
+								bl = 6;
+								if (ax <= 4550) {
+									bl = 3;
+									if (ax >= -2730) {
+										bl = 4;
+										if (ax <= 2730) {
+											ax = 1;
+											if (ax >= -910) {
+												bl = 2;
+												if (ax <= 910) {
+													bl = 0;
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	if (bl != vehicle->var_4A) {
+		vehicle->var_4A = bl;
+		vehicle_invalidate(vehicle);
+	}
 }
 
 #pragma region off_9A2E84
