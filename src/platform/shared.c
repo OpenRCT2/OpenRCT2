@@ -468,11 +468,11 @@ void platform_process_messages()
 			gCursorState.y = (int)(e.motion.y / gConfigGeneral.window_scale);
 			break;
 		case SDL_FINGERMOTION:
-			RCT2_GLOBAL(0x0142406C, int) = (int)(e.tfinger.x / gConfigGeneral.window_scale);
-			RCT2_GLOBAL(0x01424070, int) = (int)(e.tfinger.y / gConfigGeneral.window_scale);
+			RCT2_GLOBAL(0x0142406C, int) = (int)(e.tfinger.x * _screenBufferWidth);
+			RCT2_GLOBAL(0x01424070, int) = (int)(e.tfinger.y * _screenBufferHeight);
 
-			gCursorState.x = (int)(e.tfinger.x / gConfigGeneral.window_scale);
-			gCursorState.y = (int)(e.tfinger.y / gConfigGeneral.window_scale);
+			gCursorState.x = (int)(e.tfinger.x * _screenBufferWidth);
+			gCursorState.y = (int)(e.tfinger.y * _screenBufferHeight);
 			break;
 		case SDL_MOUSEWHEEL:
 			if (gConsoleOpen) {
@@ -501,8 +501,8 @@ void platform_process_messages()
 			}
 			break;
 		case SDL_FINGERDOWN:
-			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x / gConfigGeneral.window_scale);
-			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y / gConfigGeneral.window_scale);
+			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x * _screenBufferWidth);
+			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y * _screenBufferHeight);
 
 			gCursorState.touchIsDouble = (!gCursorState.touchIsDouble
 			&& e.tfinger.timestamp - gCursorState.touchDownTimestamp < TOUCH_DOUBLE_TIMEOUT);
@@ -539,8 +539,8 @@ void platform_process_messages()
 			}
 			break;
 		case SDL_FINGERUP:
-			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x / gConfigGeneral.window_scale);
-			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y / gConfigGeneral.window_scale);
+			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x * _screenBufferWidth);
+			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y * _screenBufferHeight);
 
 			if (gCursorState.touchIsDouble) {
 				store_mouse_input(4);
