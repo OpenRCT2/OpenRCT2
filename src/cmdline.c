@@ -109,7 +109,7 @@ int cmdline_run(const char **argv, int argc)
 	int k=0;
 	for (int i=0; i < argc; ++i)
 		if (strcmp(argv[k], "-NSDocumentRevisionsDebugMode") != 0)
-			mutableArgv[k++] = argv[i];
+			mutableArgv[k++] = (char *) argv[i];
 	argc = k;
 #else
 	memcpy(mutableArgv,argv,argvsize);

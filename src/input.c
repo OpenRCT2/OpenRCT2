@@ -1088,7 +1088,7 @@ void process_mouse_over(int x, int y)
 				if (subWindow == NULL)
 					break;
 
-				ebx = ebx & 0xFFFFFF00;
+				ebx = 0;
 				edi = cursorId;
 				esi = (int)subWindow;
 				// Not sure what this is for, no windows actually implement a handler
