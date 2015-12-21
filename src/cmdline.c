@@ -99,7 +99,7 @@ int cmdline_run(const char **argv, int argc)
 	 * a null pointer in the array. Because of this, AppKit in OS X 10.10 will
 	 * dereference it, causing a segmentation fault.
 	 */
-	const char** mutableArgv = malloc(argvsize);
+	char** mutableArgv = malloc(argvsize);
 
 #ifdef __APPLE__
 	/**
@@ -115,7 +115,7 @@ int cmdline_run(const char **argv, int argc)
 	memcpy(mutableArgv,argv,argvsize);
 #endif
 
-	argc = argparse_parse(&argparse, argc, mutableArgv);
+	argc = argparse_parse(&argparse, argc, (const char **)mutableArgv);
 
 	if (version) {
 		print_version();
