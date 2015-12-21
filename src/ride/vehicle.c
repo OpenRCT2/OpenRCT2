@@ -6488,35 +6488,10 @@ loc_6DB967:
 }
 
 /**
-*
-*  rct2: 0x006DBA33
-*/
-bool vehicle_update_track_motion_backwards(rct_vehicle *vehicle, rct_ride_type_vehicle* vehicleEntry, rct_ride* ride, rct_ride_type* rideEntry) {
-	registers regs = { 0 };
-
-loc_6DBA33:;
-	uint16 trackType = vehicle->track_type >> 2;
-	if (trackType == TRACK_ELEM_FLAT && ride->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER) {
-		sint32 unkVelocity = RCT2_GLOBAL(0x00F64E08, sint32);
-		if (unkVelocity > 0xFFF80000) {
-			unkVelocity = abs(unkVelocity);
-			vehicle->acceleration = unkVelocity * 2;
-		}
-	}
-
-	if (trackType == TRACK_ELEM_BRAKES) {
-		regs.eax = -(vehicle->var_CF << 16);
-		if (regs.eax <= RCT2_GLOBAL(0x00F64E08, sint32)) {
-			regs.eax = RCT2_GLOBAL(0x00F64E08, sint32) * -4;
-			vehicle->acceleration = regs.eax;
-		}
-	}
-
-	regs.ax = vehicle->track_progress - 1;
-	if (regs.ax != -1) {
-		goto loc_6DBD42;
-	}
-
+ *
+ *  rct2: 0x006DBAA6
+ */
+bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, uint16 trackType, rct_ride* ride, rct_ride_type* rideEntry, uint16* progress) {
 	RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_start;
 	RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_start;
 	rct_map_element* mapElement = map_get_track_element_at_of_type_seq(
@@ -6560,8 +6535,7 @@ loc_6DBB08:;
 			input.y = y;
 			input.element = mapElement;
 			if (track_block_get_next(&input, &output, &outputZ, &outputDirection)) {
-				regs.edi = output.element;
-				goto loc_6DBE5E;
+				return false;
 			}
 			mapElement = output.element;
 			goto loc_6DBC3B;
@@ -6573,23 +6547,24 @@ loc_6DBB7E:;
 	{
 		track_begin_end trackBeginEnd;
 		if (!track_block_get_previous(x, y, mapElement, &trackBeginEnd)) {
-			goto loc_6DBE5E;
+			return false;
 		}
 		mapElement = trackBeginEnd.begin_element;
 
 		trackType = mapElement->properties.track.type;
-		if (trackType == 211 || trackType == 212) {
-			goto loc_6DBE5E;
+		if (trackType == TRACK_ELEM_LEFT_REVERSER || 
+			trackType == TRACK_ELEM_RIGHT_REVERSER) {
+			return false;
 		}
 
 		int trackColour = vehicle->update_flags >> 9;
 		int bank = gTrackDefinitions[trackType].bank_end;
-		bank = track_get_actual_bank_2(ride->type, regs.al, bank);
+		bank = track_get_actual_bank_2(ride->type, trackColour, bank);
 		int vAngle = gTrackDefinitions[trackType].vangle_end;
 		if (RCT2_GLOBAL(0x00F64E36, uint8) != vAngle ||
 			RCT2_GLOBAL(0x00F64E37, uint8) != bank
 			) {
-			goto loc_6DBE5E;
+			return false;
 		}
 
 		// Update VEHICLE_UPDATE_FLAG_11
@@ -6667,19 +6642,52 @@ loc_6DBC3B:
 
 	// There are two bytes before the move info list
 	uint16 trackTotalProgress = *((uint16*)((int)moveInfo - 2));
-	regs.ax = trackTotalProgress - 1;
+	*progress = trackTotalProgress - 1;
+}
+
+/**
+ *
+ *  rct2: 0x006DBA33
+ */
+bool vehicle_update_track_motion_backwards(rct_vehicle *vehicle, rct_ride_type_vehicle* vehicleEntry, rct_ride* ride, rct_ride_type* rideEntry) {
+	registers regs = { 0 };
+
+loc_6DBA33:;
+	uint16 trackType = vehicle->track_type >> 2;
+	if (trackType == TRACK_ELEM_FLAT && ride->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER) {
+		sint32 unkVelocity = RCT2_GLOBAL(0x00F64E08, sint32);
+		if (unkVelocity > 0xFFF80000) {
+			unkVelocity = abs(unkVelocity);
+			vehicle->acceleration = unkVelocity * 2;
+		}
+	}
+
+	if (trackType == TRACK_ELEM_BRAKES) {
+		regs.eax = -(vehicle->var_CF << 16);
+		if (regs.eax <= RCT2_GLOBAL(0x00F64E08, sint32)) {
+			regs.eax = RCT2_GLOBAL(0x00F64E08, sint32) * -4;
+			vehicle->acceleration = regs.eax;
+		}
+	}
+
+	regs.ax = vehicle->track_progress - 1;
+	if (regs.ax == -1) {
+		if (!vehicle_update_track_motion_backwards_get_new_track(vehicle, trackType, ride, rideEntry, &regs.ax)) {
+			goto loc_6DBE5E;
+		}
+	}
 
 loc_6DBD42:
 	vehicle->track_progress = regs.ax;
-	moveInfo = vehicle_get_move_info(
+	const rct_vehicle_info* moveInfo = vehicle_get_move_info(
 		vehicle->var_CD,
 		vehicle->track_type,
 		vehicle->track_progress
 		);
 
-	x = vehicle->track_x + moveInfo->x;
-	y = vehicle->track_y + moveInfo->y;
-	z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
+	sint16 x = vehicle->track_x + moveInfo->x;
+	sint16 y = vehicle->track_y + moveInfo->y;
+	sint16 z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
 
 	regs.ebx = 0;
 	if (x == unk_F64E20->x) { regs.ebx |= 1; }
