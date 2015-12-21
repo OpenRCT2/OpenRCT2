@@ -2424,13 +2424,6 @@ void textinput_cancel()
 	// Close the new text input window
 	window_close_by_class(WC_TEXTINPUT);
 
-	// The following code is only necessary for the old Windows text input dialog. In theory this isn't used anymore, but can
-	// still be triggered via original code paths.
-#ifdef _WIN32
-	RCT2_CALLPROC_EBPSAFE(0x0040701D);
-#else
-	log_warning("there should be something called here (0x0040701D)");
-#endif // _WIN32
 	if (RCT2_GLOBAL(RCT2_ADDRESS_TEXTINPUT_WINDOWCLASS, uint8) != 255) {
 		RCT2_CALLPROC_EBPSAFE(0x006EE4E2);
 		w = window_find_by_number(
