@@ -64,7 +64,10 @@ static void ride_update_station_blocksection(rct_ride *ride, int stationIndex)
 {
 	rct_map_element *mapElement;
 
+	assert(ride != NULL);
 	mapElement = ride_get_station_start_track_element(ride, stationIndex);
+	assert(mapElement != NULL);
+
 
 	if ((ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0) || mapElement->flags & 0x20) {
 		ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
