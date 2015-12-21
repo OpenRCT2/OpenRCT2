@@ -7069,7 +7069,7 @@ loc_6DBD42:
 	}
 
 	if (vehicle == RCT2_GLOBAL(0x00F64E00, rct_vehicle*)) {
-		if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0) {
+		if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
 			regs.bp = vehicle->next_vehicle_on_ride;
 			if (sub_6DD078(vehicle, &regs.bp)) {
 				goto loc_6DBE7F;
@@ -7116,8 +7116,9 @@ loc_6DBE7F:
 		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
 	}
 	else {
-		vehicle->velocity = v3->velocity >> 1;
+		sint32 v3Velocity = v3->velocity;
 		v3->velocity = v4->velocity >> 1;
+		v4->velocity = v3Velocity >> 1;
 		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
 	}
 
