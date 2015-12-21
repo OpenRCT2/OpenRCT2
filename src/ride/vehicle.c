@@ -1778,15 +1778,6 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 	}
 }
 
-/**
- *
- *  rct2: 0x006DE1A4
- */
-static bool sub_6DE1A4(int x, int y, int z)
-{
-	return RCT2_CALLPROC_X(0x006DE1A4, x, 0, y, z, 0, 0, 0) & 0x100;
-}
-
 typedef struct {
 	uint8 ride_id;
 	uint8 station_id;
@@ -1798,6 +1789,66 @@ rct_synchrnoised_vehicle *_synchrnoisedVehicles = (rct_synchrnoised_vehicle*)0x0
 
 #define _lastSynchrnoisedVehicle	RCT2_GLOBAL(0x00F64E48, rct_synchrnoised_vehicle*)
 #define MaxSynchrnoisedVehicle		((rct_synchrnoised_vehicle*)0x00F64E6C)
+
+/**
+ * Checks if a map position contains a synchrnoised ride station and adds the vehicle
+ * to synchrnoise to the vehicle synchronisation list.
+ *  rct2: 0x006DE1A4
+ */
+static bool try_add_synchronised_station(int x, int y, int z)
+{
+	bool foundMapElement = false;
+	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	if (mapElement != NULL) {
+		do {
+			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
+			if (z != mapElement->base_height &&
+				z != mapElement->base_height - 2 &&
+				z != mapElement->base_height + 2
+			) {
+				continue;
+			}
+
+			foundMapElement = true;
+			break;
+		} while (!map_element_is_last_for_tile(mapElement++));
+	}
+	if (!foundMapElement) {
+		return false;
+	}
+	
+	int rideIndex = mapElement->properties.track.ride_index;
+	rct_ride *ride = GET_RIDE(rideIndex);
+	if (!(ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)) {
+		return false;
+	}
+
+	int stationIndex = map_get_station(mapElement);
+
+	rct_synchrnoised_vehicle *sv = _lastSynchrnoisedVehicle;
+	sv->ride_id = rideIndex;
+	sv->station_id = stationIndex;
+	sv->vehicle_id = SPRITE_INDEX_NULL;
+	_lastSynchrnoisedVehicle++;
+
+	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)) {
+		return false;
+	}
+
+	for (int i = 0; i < ride->num_vehicles; i++) {
+		uint16 spriteIndex = ride->vehicles[i];
+		if (spriteIndex == SPRITE_INDEX_NULL) continue;
+
+		rct_vehicle *vehicle = GET_VEHICLE(spriteIndex);
+		if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART) continue;
+		if (vehicle->sub_state != 0) continue;
+		if (!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT)) continue;
+		if (vehicle->current_station != stationIndex) continue;
+
+		sv->vehicle_id = spriteIndex;
+		return true;
+	}
+}
 
 /**
  * Checks whether a vehicle can depart a station when set to synchrnoise with adjacent stations.
@@ -1821,7 +1872,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
 	while (_lastSynchrnoisedVehicle < MaxSynchrnoisedVehicle) {
 		x += TileDirectionDelta[direction].x;
 		y += TileDirectionDelta[direction].y;
-		if (!sub_6DE1A4(x, y, z)) {
+		if (!try_add_synchronised_station(x, y, z)) {
 			break;
 		}
 	}
@@ -1829,7 +1880,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
 	while (_lastSynchrnoisedVehicle < MaxSynchrnoisedVehicle) {
 		x += TileDirectionDelta[direction].x;
 		y += TileDirectionDelta[direction].y;
-		if (!sub_6DE1A4(x, y, z)) {
+		if (!try_add_synchronised_station(x, y, z)) {
 			break;
 		}
 	}
