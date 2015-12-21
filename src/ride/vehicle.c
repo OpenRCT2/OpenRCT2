@@ -59,6 +59,9 @@ static void vehicle_update_simulator_operating(rct_vehicle* vehicle);
 static void vehicle_update_top_spin_operating(rct_vehicle* vehicle);
 static void vehicle_update_crash(rct_vehicle *vehicle);
 static void vehicle_update_travelling_boat(rct_vehicle* vehicle);
+static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle);
+static void sub_6DA280(rct_vehicle *vehicle);
+static bool vehicle_is_boat_on_water(rct_vehicle *vehicle, int x, int y);
 static void vehicle_update_arriving(rct_vehicle* vehicle);
 static void vehicle_update_unloading_passengers(rct_vehicle* vehicle);
 static void vehicle_update_waiting_for_cable_lift(rct_vehicle *vehicle);
@@ -67,6 +70,8 @@ static void vehicle_update_crash_setup(rct_vehicle* vehicle);
 static void vehicle_update_collision_setup(rct_vehicle* vehicle);
 static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle);
 static bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId);
+static void sub_6D63D4(rct_vehicle *vehicle);
+static bool sub_6DD078(rct_vehicle *vehicle, uint16* otherVehicleIndex);
 static void vehicle_update_sound(rct_vehicle *vehicle);
 static int vehicle_update_scream_sound(rct_vehicle *vehicle);
 
@@ -3163,7 +3168,307 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle) {
 static void vehicle_update_travelling_boat(rct_vehicle* vehicle)
 {
 	vehicle_check_if_missing(vehicle);
-	RCT2_CALLPROC_X(0x006DA717, 0, 0, 0, 0, (int)vehicle, 0, 0);
+	vehicle_update_motion_boat_hire(vehicle);
+}
+
+static void loc_6DA9F9(rct_vehicle *vehicle, int x, int y, int bx, int dx)
+{
+	vehicle->remaining_distance = 0;
+	// z = vehicle->z;
+	if (!sub_6DD078(vehicle, NULL)) {
+		vehicle->track_x = bx;
+		vehicle->track_y = dx;
+
+		rct_map_element *mapElement = map_get_track_element_at(
+			vehicle->track_x,
+			vehicle->track_y,
+			vehicle->track_z >> 3
+		);
+		
+		rct_ride *ride = GET_RIDE(vehicle->ride);
+		vehicle->track_type =
+			(mapElement->properties.track.type << 2) |
+			(ride->boat_hire_return_direction & 3);
+
+		vehicle->var_34 = 0;
+		vehicle->status = VEHICLE_STATUS_TRAVELLING;
+		unk_F64E20->x = x;
+		unk_F64E20->y = y;
+	}
+}
+
+/**
+ *
+ *  rct2: 0x006DA717
+ */
+static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
+{
+	// RCT2_CALLPROC_X(0x006DA717, 0, 0, 0, 0, (int)vehicle, 0, 0);
+
+	////////////////////////////////////////////////
+	// TODO fix bugs with this function
+	////////////////////////////////////////////////
+	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
+	vehicle->velocity += vehicle->acceleration;
+	RCT2_GLOBAL(0x00F64E08, sint32) = vehicle->velocity;
+	RCT2_GLOBAL(0x00F64E0C, sint32) = (vehicle->velocity >> 10) * 42;
+
+	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+	if (vehicleEntry->flags_b & (VEHICLE_ENTRY_FLAG_B_7 | VEHICLE_ENTRY_FLAG_B_8)) {
+		sub_6D63D4(vehicle);
+	}
+
+	RCT2_GLOBAL(0x00F64E10, uint32) = 1;
+	vehicle->acceleration = 0;
+	vehicle->remaining_distance += RCT2_GLOBAL(0x00F64E0C, sint32);
+	if (vehicle->remaining_distance >= 0x368A) {
+		vehicle->var_B8 &= ~(1 << 1);
+		unk_F64E20->x = vehicle->x;
+		unk_F64E20->y = vehicle->y;
+		unk_F64E20->z = vehicle->z;
+		vehicle_invalidate(vehicle);
+
+		for (;;) {
+		loc_6DA7A5:
+			vehicle->var_35++;
+			int x = (vehicle->boat_location.x * 32) + 16;
+			int y = (vehicle->boat_location.y * 32) + 16;
+			int z;
+			uint8 bl;
+
+			x -= vehicle->x;
+			if (x >= 0) {
+				y -= vehicle->y;
+				if (y < 0) {
+					// loc_6DA81A:
+					y = -y;
+					bl = 24;
+					if (y <= x * 4) {
+						bl = 16;
+						if (x <= y * 4) {
+							bl = 20;
+						}
+					}
+				} else {
+					bl = 8;
+					if (y <= x * 4) {
+						bl = 16;
+						if (x <= y * 4) {
+							bl = 12;
+						}
+					}
+				}
+			} else {
+				y -= vehicle->y;
+				if (y < 0) {
+					// loc_6DA83D:
+					x = -x;
+					y = -y;
+					bl = 24;
+					if (y <= x * 4) {
+						bl = 0;
+						if (x <= y * 4) {
+							bl = 28;
+						}
+					}
+				} else {
+					x = -x;
+					bl = 8;
+					if (y <= x * 4) {
+						bl = 0;
+						if (x <= y * 4) {
+							bl = 4;
+						}
+					}
+				}
+			}
+
+			// loc_6DA861:
+			vehicle->var_34 = bl;
+			x += y;
+			if (x <= 12) {
+				sub_6DA280(vehicle);
+			}
+
+			if (!(vehicle->var_35 & (1 << 0))) {
+				uint8 spriteDirection = vehicle->sprite_direction;
+				if (spriteDirection != vehicle->var_34) {
+					uint8 dl = (vehicle->var_34 + 16 - spriteDirection) & 0x1E;
+					if (dl >= 16) {
+						spriteDirection += 2;
+						if (dl > 24) {
+							vehicle->var_35--;
+						}
+					} else {
+						spriteDirection -= 2;
+						if (dl < 8) {
+							vehicle->var_35--;
+						}
+					}
+
+					vehicle->sprite_direction = spriteDirection & 0x1E;
+				}
+			}
+
+			int edi = (vehicle->sprite_direction | (vehicle->var_35 & 1)) & 0x1F;
+			x = vehicle->x + RCT2_ADDRESS(0x009A36C4, sint16)[edi * 4];
+			y = vehicle->y + RCT2_ADDRESS(0x009A36C6, sint16)[edi * 4];
+			z = vehicle->z;
+			if (sub_6DD078(vehicle, NULL)) {
+				goto loc_6DAA79;
+			}
+
+			int bx = floor2(x, 32);
+			int dx = floor2(y, 32);
+			if (bx != vehicle->track_x || dx != vehicle->track_y) {
+				if (vehicle_is_boat_on_water(vehicle, x, y)) {
+				// loc_6DA939:
+					rct_ride *ride = GET_RIDE(vehicle->ride);
+					
+					bool do_loc_6DAA97 = false;
+					if (vehicle->sub_state != 1) {
+						do_loc_6DAA97 = true;
+					} else {
+						uint16 xy = (((dx >> 5) << 8) | (bx >> 5));
+						if (xy != ride->boat_hire_return_position) {
+							do_loc_6DAA97 = true;
+						}
+					}
+
+				// loc_6DAA97:
+					if (do_loc_6DAA97) {
+						vehicle->remaining_distance = 0;
+						if (vehicle->sprite_direction == vehicle->var_34) {
+							sub_6DA280(vehicle);
+						}
+						goto loc_6DAAAB;
+					}
+
+					if (!(ride->boat_hire_return_direction & 1)) {
+						uint16 bp = y & 0x1F;
+						if (bp == 16) {
+							loc_6DA9F9(vehicle, x, y, bx, dx);
+							goto loc_6DAAAB;
+						}
+						if (bp <= 16) {
+							x = unk_F64E20->x;
+							y = unk_F64E20->y + 1;
+						} else {
+							x = unk_F64E20->x;
+							y = unk_F64E20->y - 1;
+						}
+					} else {
+					// loc_6DA9A2:
+						uint16 bp = x & 0x1F;
+						if (bp == 16) {
+							loc_6DA9F9(vehicle, x, y, bx, dx);
+							goto loc_6DAAAB;
+						}
+						if (bp <= 16) {
+							x = unk_F64E20->x + 1;
+							y = unk_F64E20->y;
+						} else {
+							x = unk_F64E20->x - 1;
+							y = unk_F64E20->y;
+						}
+					}
+
+				// loc_6DA9D1:
+					vehicle->remaining_distance = 0;
+					// z = vehicle->z;
+					if (!sub_6DD078(vehicle, NULL)) {
+						unk_F64E20->x = x;
+						unk_F64E20->y = y;
+					}
+					goto loc_6DAAAB;
+				}
+				vehicle->track_x = bx;
+				vehicle->track_y = dx;
+			}
+
+			vehicle->remaining_distance = RCT2_ADDRESS(0x009A36C8, uint32)[edi * 2];
+			unk_F64E20->x = x;
+			unk_F64E20->y = y;
+			if (vehicle->remaining_distance < 0x368A) {
+				goto loc_6DAAAB;
+			}
+			RCT2_GLOBAL(0x00F64E10, uint32)++;
+		}
+
+	loc_6DAA79:
+		vehicle->remaining_distance = 0;
+		if (vehicle->sprite_direction == vehicle->var_34) {
+			vehicle->sprite_direction ^= (1 << 4);
+			sub_6DA280(vehicle);
+			vehicle->sprite_direction ^= (1 << 4);
+		}
+
+	loc_6DAAAB:
+		sprite_move(
+			unk_F64E20->x,
+			unk_F64E20->y,
+			unk_F64E20->z,
+			(rct_sprite*)vehicle
+		);
+		vehicle_invalidate(vehicle);
+	}
+
+// loc_6DAAC9:
+	{
+		int edx = vehicle->velocity >> 8;
+		edx = (edx * edx);
+		if (vehicle->velocity < 0) {
+			edx = -edx;
+		}
+		edx >>= 5;
+		int eax = ((vehicle->velocity >> 1) + edx) / vehicle->friction;
+		int ecx = -eax;
+		if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_3) {
+			eax = vehicle->speed << 14;
+			int ebx = (vehicle->speed * vehicle->friction) >> 2;
+			if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_3) {
+				eax = -eax;
+			}
+			eax -= vehicle->velocity;
+			edx = vehicle->powered_acceleration * 2;
+			ecx += (eax * edx) / ebx;
+		}
+		vehicle->acceleration = ecx;
+	}
+	// eax = RCT2_GLOBAL(0x00F64E18, uint32);
+	// ebx = RCT2_GLOBAL(0x00F64E1C, uint32);
+}
+
+ /**
+  *
+  *  rct2: 0x006DA280
+  */
+static void sub_6DA280(rct_vehicle *vehicle)
+{
+	RCT2_CALLPROC_X(0x006DA280, 0, 0, 0, 0, (int)vehicle, 0, 0);
+}
+
+ /**
+  *
+  *  rct2: 0x006DA22A
+  */
+static bool vehicle_is_boat_on_water(rct_vehicle *vehicle, int x, int y)
+{
+	int z = vehicle->track_z >> 3;
+	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) {
+			int waterZ = (mapElement->properties.surface.terrain & 0x1F) * 2;
+			if (z != waterZ) {
+				return true;
+			}
+		} else {
+			if (z > mapElement->base_height - 2 && z < mapElement->clearance_height + 2) {
+				return true;
+			}
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
+	return false;
 }
 
  /**
@@ -6058,10 +6363,13 @@ static bool sub_6DD078(rct_vehicle *vehicle, uint16* otherVehicleIndex)
 {
 	registers regs = { 0 };
 	regs.esi = vehicle;
-	regs.bp = *otherVehicleIndex;
+	if (otherVehicleIndex != NULL) {
+		regs.bp = *otherVehicleIndex;
+	}
 	bool result = RCT2_CALLFUNC_Y(0x006DD078, &regs) & 0x100;
-
-	*otherVehicleIndex = regs.bp;
+	if (otherVehicleIndex != NULL) {
+		*otherVehicleIndex = regs.bp;
+	}
 	return result;
 }
 
