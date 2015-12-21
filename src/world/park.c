@@ -721,6 +721,12 @@ void update_park_fences(int x, int y)
 	if (y > 0x1FFF)
 		return;
 
+	// When setting the ownership of map edges
+	if (x <= 0 || x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16))
+		return;
+	if (y <= 0 || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16))
+		return;
+
 	rct_map_element* sufaceElement = map_get_surface_element_at(x / 32, y / 32);
 	if (sufaceElement == NULL)return;
 
@@ -932,7 +938,7 @@ money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 		}
 
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (surfaceElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) == 0) {
-			gGameCommandErrorText = 1726; // Land not for sale!
+			gGameCommandErrorText = STR_LAND_NOT_FOR_SALE;
 			return MONEY32_UNDEFINED;
 		}
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
@@ -960,7 +966,7 @@ money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 		}
 
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (surfaceElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0) {
-			gGameCommandErrorText = 1727; // Construction rights not for sale!
+			gGameCommandErrorText = STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE;
 			return MONEY32_UNDEFINED;
 		}
 
@@ -996,13 +1002,13 @@ money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 			return MONEY32_UNDEFINED;
 		}
 
-		if (x <= 32 || y <= 32) {
-			gGameCommandErrorText = 3215;
+		if (x <= 0 || y <= 0) {
+			gGameCommandErrorText = STR_TOO_CLOSE_TO_EDGE_OF_MAP;
 			return MONEY32_UNDEFINED;
 		}
 
-		if (x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) - 32 || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) - 32) {
-			gGameCommandErrorText = 3215;
+		if (x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)) {
+			gGameCommandErrorText = STR_TOO_CLOSE_TO_EDGE_OF_MAP;
 			return MONEY32_UNDEFINED;
 		}
 
