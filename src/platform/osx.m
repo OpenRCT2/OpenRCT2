@@ -172,4 +172,9 @@ int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8
 	}
 }
 
+void platform_get_font_directory(utf8 *buffer)
+{
+	strcpy(buffer, "/Library/Fonts/");
+}
+
 #endif
