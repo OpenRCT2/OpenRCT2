@@ -208,6 +208,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D4163F671C2A044D00B83136 /* version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = version.h; path = src/version.h; sourceTree = "<group>"; };
 		D41B73EE1C2101890080A7B9 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		D41B73F01C21018C0080A7B9 /* libssl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libssl.tbd; path = usr/lib/libssl.tbd; sourceTree = SDKROOT; };
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -620,6 +621,7 @@
 				D4EC47721C26342F0024B507 /* title.h */,
 				D4EC47731C26342F0024B507 /* tutorial.c */,
 				D4EC47741C26342F0024B507 /* tutorial.h */,
+				D4163F671C2A044D00B83136 /* version.h */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
