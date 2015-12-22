@@ -103,11 +103,17 @@ All libs listed here (bar cmake) required in 32 bit variants.
 Alternatively, to simply build the project you can just execute ``build.bat`` within VS2015 Native Tools Command prompt or Github Windows prompt.
 
 ### Mac OS X:
-Providing Homebrew or MacPorts are installed (but not both!), OpenRCT2's dependencies and Wine can be installed automatically through `install.sh`.
+We support native builds OS X (limited to i386 only for now).
+Make sure that you have [Homebrew](http://brew.sh/) installed and than run the following commands to install all the needed libraries and build openrct2.
 ```
-bash install.sh
-bash build.sh
-wine openrct2.exe
+# Install libraries
+./install.sh
+
+# Build OpenRCT2
+./build.sh
+
+# Run the game
+./openrct2
 ```
 
 ### Linux:

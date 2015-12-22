@@ -426,6 +426,7 @@ void platform_process_messages()
 	gCursorState.middle &= ~CURSOR_CHANGED;
 	gCursorState.right &= ~CURSOR_CHANGED;
 	gCursorState.old = 0;
+	gCursorState.touch = false;
 
 	while (SDL_PollEvent(&e)) {
 		switch (e.type) {
@@ -511,6 +512,50 @@ void platform_process_messages()
 				break;
 			}
 			break;
+// Apple sends touchscreen events for trackpads, so ignore these events on OS X
+#ifndef __MACOSX__
+		case SDL_FINGERMOTION:
+			RCT2_GLOBAL(0x0142406C, int) = (int)(e.tfinger.x * _screenBufferWidth);
+			RCT2_GLOBAL(0x01424070, int) = (int)(e.tfinger.y * _screenBufferHeight);
+
+			gCursorState.x = (int)(e.tfinger.x * _screenBufferWidth);
+			gCursorState.y = (int)(e.tfinger.y * _screenBufferHeight);
+			break;
+		case SDL_FINGERDOWN:
+			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x * _screenBufferWidth);
+			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y * _screenBufferHeight);
+
+			gCursorState.touchIsDouble = (!gCursorState.touchIsDouble
+										  && e.tfinger.timestamp - gCursorState.touchDownTimestamp < TOUCH_DOUBLE_TIMEOUT);
+
+			if (gCursorState.touchIsDouble) {
+				store_mouse_input(3);
+				gCursorState.right = CURSOR_PRESSED;
+				gCursorState.old = 2;
+			} else {
+				store_mouse_input(1);
+				gCursorState.left = CURSOR_PRESSED;
+				gCursorState.old = 1;
+			}
+			gCursorState.touch = true;
+			gCursorState.touchDownTimestamp = e.tfinger.timestamp;
+			break;
+		case SDL_FINGERUP:
+			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x * _screenBufferWidth);
+			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y * _screenBufferHeight);
+
+			if (gCursorState.touchIsDouble) {
+				store_mouse_input(4);
+				gCursorState.left = CURSOR_RELEASED;
+				gCursorState.old = 4;
+			} else {
+				store_mouse_input(2);
+				gCursorState.left = CURSOR_RELEASED;
+				gCursorState.old = 3;
+			}
+			gCursorState.touch = true;
+			break;
+#endif
 		case SDL_KEYDOWN:
 			if (gTextInputCompositionActive) break;
 
@@ -531,16 +576,14 @@ void platform_process_messages()
 
 			// Text input
 
-                        // Clear the input on <CTRL>Backspace
-                        if (gTextInput != NULL
-                                && e.key.keysym.sym == SDLK_BACKSPACE
-                                && e.key.keysym.mod & KMOD_CTRL) {
-                            memset(gTextInput, '\0', gTextInputMaxLength);
-                            gTextInputCursorPosition = 0;
-                            gTextInputLength = 0;
-                            console_refresh_caret();
-                            window_update_textbox();
-                        }
+			// Clear the input on <CTRL>Backspace (Windows/Linux) or <MOD>Backspace (OS X)
+			if (gTextInput != NULL && e.key.keysym.sym == SDLK_BACKSPACE && (e.key.keysym.mod & KEYBOARD_PRIMARY_MODIFIER)) {
+				memset(gTextInput, '\0', gTextInputMaxLength);
+				gTextInputCursorPosition = 0;
+				gTextInputLength = 0;
+				console_refresh_caret();
+				window_update_textbox();
+			}
 
 			// If backspace and we have input text with a cursor position none zero
 			if (e.key.keysym.sym == SDLK_BACKSPACE && gTextInputLength > 0 && gTextInput != NULL && gTextInputCursorPosition) {
@@ -601,12 +644,7 @@ void platform_process_messages()
 				} while (!utf8_is_codepoint_start(&gTextInput[gTextInputCursorPosition]));
 				console_refresh_caret();
 			}
-			// Checks GUI modifier key for MACs otherwise CTRL key
-#ifdef MAC
-			else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_GUI && gTextInput != NULL) {
-#else
-			else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL && gTextInput != NULL) {
-#endif
+			else if (e.key.keysym.sym == SDLK_v && (SDL_GetModState() & KEYBOARD_PRIMARY_MODIFIER) && gTextInput != NULL) {
 				if (SDL_HasClipboardText()) {
 					utf8 *text = SDL_GetClipboardText();
 					for (int i = 0; text[i] != '\0' && gTextInputLength < gTextInputMaxLength; i++) {
@@ -746,10 +784,13 @@ static void platform_create_window()
 	gWindow = SDL_CreateWindow(
 		"OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE
 	);
+
 	if (!gWindow) {
 		log_fatal("SDL_CreateWindow failed %s", SDL_GetError());
 		exit(-1);
 	}
+
+	SDL_SetWindowGrab(gWindow, gConfigGeneral.trap_cursor ? SDL_TRUE : SDL_FALSE);
 
 	// Set the update palette function pointer
 	RCT2_GLOBAL(0x009E2BE4, update_palette_func) = platform_update_palette;

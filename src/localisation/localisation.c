@@ -109,7 +109,8 @@ format_code_token format_code_tokens[] = {
 	{ FORMAT_SMALLUP,					"SMALLUP"				},
 	{ FORMAT_SMALLDOWN,					"SMALLDOWN"				},
 	{ FORMAT_LEFT,						"LEFT"					},
-	{ FORMAT_INVERTEDQUESTION,			"INVERTEDQUESTION"		}
+	{ FORMAT_INVERTEDQUESTION,			"INVERTEDQUESTION"		},
+	{ FORMAT_COMMA1DP16,				"COMMA1DP16"			}
 };
 
 uint32 format_get_code(const char *token)
@@ -135,6 +136,7 @@ bool utf8_is_format_code(int codepoint)
 	if (codepoint < 32) return true;
 	if (codepoint >= FORMAT_ARGUMENT_CODE_START && codepoint <= FORMAT_ARGUMENT_CODE_END) return true;
 	if (codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END) return true;
+	if (codepoint == FORMAT_COMMA1DP16) return true;
 	return false;
 }
 
@@ -237,6 +239,71 @@ void format_comma_separated_integer(char **dest, long long value)
 	}
 
 	*dest = dst;
+
+	if (value == 0) {
+		*dst++ = '0';
+	} else {
+		// Groups of three digits, right to left
+		groupIndex = 0;
+		while (value > 0) {
+			// Append group separator
+			if (groupIndex == 3) {
+				groupIndex = 0;
+
+				ch = commaMark;
+				while (*ch != 0) {
+					*dst++ = *ch++;
+				}
+			}
+
+			digit = value % 10;
+			value /= 10;
+
+			*dst++ = '0' + digit;
+			groupIndex++;
+		}
+	}
+	finish = dst;
+
+	// Reverse string
+	dst--;
+	while (*dest < dst) {
+		tmp = **dest;
+		**dest = *dst;
+		*dst = tmp;
+		(*dest)++;
+		dst--;
+	}
+	*dest = finish;
+}
+
+void format_comma_separated_fixed_1dp(char **dest, long long value)
+{
+	int digit, groupIndex;
+	char *dst = *dest;
+	char *finish;
+	char tmp;
+	const char *commaMark = language_get_string(5151);
+	const char *decimalMark = language_get_string(5152);
+	const char *ch;
+
+	// Negative sign
+	if (value < 0) {
+		*dst++ = '-';
+		value = -value;
+	}
+
+	*dest = dst;
+
+	// One decimal place
+	digit = value % 10;
+	value /= 10;
+	*dst++ = '0' + digit;
+
+	ch = decimalMark;
+	while (*ch != 0) {
+		*dst++ = *ch++;
+	}
 
 	if (value == 0) {
 		*dst++ = '0';
@@ -450,11 +517,20 @@ void format_length(char **dest, sint16 value)
 
 void format_velocity(char **dest, uint16 value)
 {
-	rct_string_id stringId = 2734;
+	rct_string_id stringId;
 
-	if (gConfigGeneral.measurement_format == MEASUREMENT_FORMAT_METRIC) {
+	switch (gConfigGeneral.measurement_format) {
+	default:
+		stringId = STR_UNIT_SUFFIX_MILES_PER_HOUR;
+		break;
+	case MEASUREMENT_FORMAT_METRIC:
 		value = mph_to_kmph(value);
-		stringId++;
+		stringId = STR_UNIT_SUFFIX_KILOMETRES_PER_HOUR;
+		break;
+	case MEASUREMENT_FORMAT_SI:
+		value = mph_to_dmps(value);
+		stringId = STR_UNIT_SUFFIX_METRES_PER_SECOND;
+		break;
 	}
 
 	uint16 *argRef = &value;
@@ -508,7 +584,7 @@ void format_realtime(char **dest, uint16 value)
 	(*dest)--;
 }
 
-void format_string_code(unsigned char format_code, char **dest, char **args)
+void format_string_code(unsigned int format_code, char **dest, char **args)
 {
 	int value;
 
@@ -533,6 +609,13 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		*args += 4;
 
 		format_comma_separated_fixed_2dp(dest, value);
+		break;
+		case FORMAT_COMMA1DP16:
+		// Pop argument
+		value = *((sint16*)*args);
+		*args += 2;
+
+		format_comma_separated_fixed_1dp(dest, value);
 		break;
 	case FORMAT_COMMA16:
 		// Pop argument
@@ -667,7 +750,7 @@ void format_string_part_from_raw(utf8 **dest, const utf8 *src, char **args)
 			}
 		} else if (code <= 'z') {
 			*(*dest)++ = code;
-		} else if (code < 142) {
+		} else if (code < 142 || code == FORMAT_COMMA1DP16) {
 			format_string_code(code, dest, args);
 		} else {
 			*dest = utf8_write_codepoint(*dest, code);

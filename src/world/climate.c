@@ -85,7 +85,7 @@ int climate_celsius_to_fahrenheit(int celsius)
 }
 
 // cheats
-extern int g_climate_locked;
+int g_climate_locked;
 extern void toggle_climate_lock();
 
 /**

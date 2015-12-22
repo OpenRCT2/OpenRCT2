@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "../config.h"
 #include "../drawing/drawing.h"
+#include "../drawing/supports.h"
 #include "../localisation/localisation.h"
 #include "../ride/ride_data.h"
 #include "../ride/track_data.h"
@@ -872,6 +873,24 @@ int sub_98199C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 le
 
 /**
  *
+ *  rct2: 0x006861AC, 0x00686337, 0x006864D0, 0x0068666B, 0x0098196C
+ */
+int sub_98196C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 length_y, sint16 length_x, uint32 rotation)
+{
+	RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098196C, uint32)[get_current_rotation()],
+		al | (ah << 8), 
+		image_id, 
+		cl, 
+		height, 
+		length_y, 
+		length_x, 
+		rotation
+	);
+	return 1;
+}
+
+/**
+ *
  *  rct2: 0x00686806, 0x006869B2, 0x00686B6F, 0x00686D31, 0x0098197C
  */
 int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 length_y, sint16 length_x, uint32 rotation){
@@ -1034,6 +1053,24 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 le
 
 	RCT2_GLOBAL(0xEE7888, paint_struct*) += 1;
 	return 0;
+}
+
+/**
+ *
+ *  rct2: 0x00686EF0, 0x00687056, 0x006871C8, 0x0068733C, 0x0098198C
+ */
+int sub_98198C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 length_y, sint16 length_x, uint32 rotation)
+{
+	RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098196C, uint32)[get_current_rotation()],
+		al | (ah << 8), 
+		image_id, 
+		cl, 
+		height, 
+		length_y, 
+		length_x, 
+		rotation
+	);
+	return 1;
 }
 
 /**
@@ -1205,23 +1242,6 @@ void sprite_paint_setup(uint16 eax, uint16 ecx){
 
 /**
  *
- *  rct2: 0x006629BC
- *  returns al
- *  ebp: image_id
- *  ax: unknown
- *  dx: height
- *  edi: unknown
- */
-bool sub_6629BC(int height, uint16 ax, uint32 image_id, int edi){
-	int eax = ax, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = edi, ebp = image_id;
-
-	RCT2_CALLFUNC_X(0x006629BC, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
-
-	return eax & 0xFF;
-}
-
-/**
- *
  *  rct2: 0x0066508C, 0x00665540
  */
 void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_map_element* map_element)
@@ -1361,16 +1381,10 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 	}
 
 	image_id = RCT2_GLOBAL(0x009E32BC, uint32);
-	if (!image_id){
-		image_id = 0x20B80000;
+	if (image_id == 0) {
+		image_id = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_SATURATED_BROWN);
 	}
-
-	if (direction & 1){
-		sub_6629BC(height, 0, image_id, 1);
-	}
-	else{
-		sub_6629BC(height, 0, image_id, 0);
-	}
+	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id);
 
 	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
 	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
@@ -1482,16 +1496,10 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 	}
 
 	image_id = ghost_id;
-	if (!image_id){
-		image_id = 0x20B80000;
+	if (image_id == 0) {
+		image_id = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_SATURATED_BROWN);
 	}
-
-	if (direction & 1){
-		sub_6629BC(height, 0, image_id, 1);
-	}
-	else{
-		sub_6629BC(height, 0, image_id, 0);
-	}
+	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id);
 
 	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
 	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
@@ -1571,10 +1579,11 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 
 		TRACK_PAINT_FUNCTION **trackTypeList = (TRACK_PAINT_FUNCTION**)RideTypeTrackPaintFunctionsOld[ride->type];
 		if (trackTypeList == NULL) {
-			trackTypeList = (TRACK_PAINT_FUNCTION**)RideTypeTrackPaintFunctions[ride->type];
-
-			if (trackTypeList[trackType] != NULL)
-				trackTypeList[trackType][direction](rideIndex, trackSequence, direction, height, mapElement);
+			TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = RideTypeTrackPaintFunctions[ride->type];
+			TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType, direction);
+			if (paintFunction != NULL) {
+				paintFunction(rideIndex, trackSequence, direction, height, mapElement);
+			}
 		}
 		else {
 			uint32 *trackDirectionList = (uint32*)trackTypeList[trackType];

@@ -733,6 +733,12 @@ static void fetch_servers_callback(http_json_response* response)
 		json_t *ip6 = json_object_get(ip, "v6");
 		json_t *addressIp = json_array_get(ip4, 0);
 
+		if (name == NULL || version == NULL)
+		{
+			log_verbose("Cowardly refusing to add server without name or version specified.");
+			continue;
+		}
+
 		char address[256];
 		snprintf(address, sizeof(address), "%s:%d", json_string_value(addressIp), (int)json_integer_value(port));
 
@@ -743,7 +749,7 @@ static void fetch_servers_callback(http_json_response* response)
 		SafeFree(newserver->version);
 		newserver->name = _strdup(json_string_value(name));
 		newserver->requiresPassword = json_boolean_value(requiresPassword);
-		newserver->description = _strdup(json_string_value(description));
+		newserver->description = _strdup(description == NULL ? "" : json_string_value(description));
 		newserver->version = _strdup(json_string_value(version));
 		newserver->players = (uint8)json_integer_value(players);
 		newserver->maxplayers = (uint8)json_integer_value(maxPlayers);

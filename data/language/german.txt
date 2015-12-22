@@ -3915,6 +3915,7 @@ STR_5578    :Russischer Rubel (R)
 STR_5579    :Skalierungsfaktor:
 STR_5580    :Tschechische Krone (Kc)
 STR_5581    :FPS anzeigen
+STR_5582    :Mauszeiger im Fenster fangen
 
 #######################
 # Bahnen/Attraktionen # 

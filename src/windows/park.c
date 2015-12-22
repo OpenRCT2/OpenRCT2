@@ -1585,7 +1585,7 @@ static void window_park_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Draw park size
 	parkSize = RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, uint16) * 10;
 	stringIndex = STR_PARK_SIZE_METRIC_LABEL;
-	if (!RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8)) {
+	if (gConfigGeneral.measurement_format == MEASUREMENT_FORMAT_IMPERIAL) {
 		stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
 		parkSize = squaredmetres_to_squaredfeet(parkSize);
 	}

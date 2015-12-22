@@ -104,6 +104,7 @@ config_enum_definition _screenShotFormatEnum[] = {
 config_enum_definition _measurementFormatEnum[] = {
 	{ "IMPERIAL", MEASUREMENT_FORMAT_IMPERIAL },
 	{ "METRIC", MEASUREMENT_FORMAT_METRIC },
+	{ "SI", MEASUREMENT_FORMAT_SI },
 	END_OF_ENUM
 };
 
@@ -200,6 +201,7 @@ config_property_definition _generalDefinitions[] = {
 	{ offsetof(general_configuration, steam_overlay_pause),				"steam_overlay_pause",			CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
 	{ offsetof(general_configuration, window_scale),					"window_scale",					CONFIG_VALUE_TYPE_FLOAT,		{ .value_float = 1.0f },		NULL					},
 	{ offsetof(general_configuration, show_fps),						"show_fps",						CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(general_configuration, trap_cursor),						"trap_cursor",					CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 };
 
 config_property_definition _interfaceDefinitions[] = {
@@ -816,10 +818,20 @@ void config_apply_to_old_addresses()
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gConfigGeneral.measurement_format;
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = gConfigGeneral.temperature_format;
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8) = gConfigGeneral.construction_marker_colour;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = (gConfigGeneral.measurement_format + 1) * 256;
-	if (gConfigGeneral.show_height_as_units)
+	if (gConfigGeneral.show_height_as_units) {
 		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 0;
-
+	} else {
+		switch (gConfigGeneral.measurement_format) {
+		default:
+		case MEASUREMENT_FORMAT_IMPERIAL:
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 1 * 256;
+			break;
+		case MEASUREMENT_FORMAT_METRIC:
+		case MEASUREMENT_FORMAT_SI:
+			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 2 * 256;
+			break;
+		}
+	}
 	int configFlags = 0;
 	if (gConfigGeneral.always_show_gridlines)
 		configFlags |= CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
@@ -1358,6 +1370,7 @@ static void title_sequence_open(const char *path, const char *customName);
 void title_sequences_set_default()
 {
 	char path[MAX_PATH];
+	char dataPath[MAX_PATH];
 	char sep = platform_get_path_separator();
 
 	platform_get_user_directory(path, "title sequences");
@@ -1366,12 +1379,14 @@ void title_sequences_set_default()
 	gConfigTitleSequences.presets = malloc(0);
 	gConfigTitleSequences.num_presets = 0;
 
+	platform_get_openrct_data_path(dataPath);
+
 	// Load OpenRCT2 title sequence
-	sprintf(path, "%s%c%s%c%s%c%s%c", gExePath, sep, "data", sep, "title", sep, "rct2", sep);
+	sprintf(path, "%s%c%s%c%s%c", dataPath, sep, "title", sep, "rct2", sep);
 	title_sequence_open(path, language_get_string(5308));
 
 	// Load OpenRCT2 title sequence
-	sprintf(path, "%s%c%s%c%s%c%s%c", gExePath, sep, "data", sep, "title", sep, "openrct2", sep);
+	sprintf(path, "%s%c%s%c%s%c", dataPath, sep, "title", sep, "openrct2", sep);
 	title_sequence_open(path, language_get_string(5309));
 }
 

@@ -94,7 +94,8 @@ enum {
 
 enum {
 	MEASUREMENT_FORMAT_IMPERIAL,
-	MEASUREMENT_FORMAT_METRIC
+	MEASUREMENT_FORMAT_METRIC,
+	MEASUREMENT_FORMAT_SI
 };
 
 enum {
@@ -169,6 +170,7 @@ typedef struct {
 	uint8 steam_overlay_pause;
 	float window_scale;
 	uint8 show_fps;
+	uint8 trap_cursor;
 } general_configuration;
 
 typedef struct {

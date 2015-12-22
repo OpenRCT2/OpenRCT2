@@ -45,6 +45,7 @@ typedef struct argparse argparse_t;
 typedef int (*cmdline_action)(const char **argv, int argc);
 
 int gExitCode = 0;
+int sprite_mode;
 
 #ifndef DISABLE_NETWORK
 int gNetworkStart = NETWORK_MODE_NONE;
@@ -75,6 +76,7 @@ int cmdline_run(const char **argv, int argc)
 	int version = 0, headless = 0, verbose = 0, width = 0, height = 0, port = 0;
 	char *server = NULL;
 	char *userDataPath = NULL;
+	char *openrctDataPath = NULL;
 
 	argparse_option_t options[] = {
 		OPT_HELP(),
@@ -83,8 +85,9 @@ int cmdline_run(const char **argv, int argc)
 		OPT_BOOLEAN(0, "verbose", &verbose, "log verbose messages"),
 		OPT_INTEGER('m', "mode", &sprite_mode, "the type of sprite conversion. 0 = default, 1 = simple closest pixel match, 2 = dithering"),
 		OPT_STRING(0, "server", &server, "server to connect to"),
-		OPT_INTEGER(0, "port", &port, "port"),
+		OPT_INTEGER(0, "port", &port, "Port to use. If used with --server, it will connect to specified server at this port, otherwise it will start the server"),
 		OPT_STRING(0, "user-data-path", &userDataPath, "path to the user data directory (containing config.ini)"),
+		OPT_STRING(0, "openrct-data-path", &openrctDataPath, "path to the OpenRCT2 data directory (containing languages)"),
 		OPT_END()
 	};
 
@@ -97,8 +100,22 @@ int cmdline_run(const char **argv, int argc)
 	 * dereference it, causing a segmentation fault.
 	 */
 	char** mutableArgv = malloc(argvsize);
+
+#ifdef __APPLE__
+	/**
+	 * Fixes problems with the default settings in the Xcode debugger
+	 * with it adding the option "-NSDocumentRevisionsDebugMode"
+	 */
+	int k=0;
+	for (int i=0; i < argc; ++i)
+		if (strcmp(argv[k], "-NSDocumentRevisionsDebugMode") != 0)
+			mutableArgv[k++] = (char *) argv[i];
+	argc = k;
+#else
 	memcpy(mutableArgv,argv,argvsize);
-	argc = argparse_parse(&argparse, argc, mutableArgv);
+#endif
+
+	argc = argparse_parse(&argparse, argc, (const char **)mutableArgv);
 
 	if (version) {
 		print_version();
@@ -116,6 +133,10 @@ int cmdline_run(const char **argv, int argc)
 		safe_strncpy(gCustomUserDataPath, userDataPath, sizeof(gCustomUserDataPath));
 	}
 
+	if (openrctDataPath != NULL) {
+		safe_strncpy(gCustomOpenrctDataPath, openrctDataPath, sizeof(gCustomOpenrctDataPath));
+	}
+
 #ifndef DISABLE_NETWORK
 	if (port != 0) {
 		gNetworkStart = NETWORK_MODE_SERVER;
@@ -130,7 +151,7 @@ int cmdline_run(const char **argv, int argc)
 
 	if (argc != 0) {
 		// see comment next to cmdline_call_action for expected return codes
-		gExitCode = cmdline_call_action(mutableArgv, argc);
+		gExitCode = cmdline_call_action((const char**)mutableArgv, argc);
 		free(mutableArgv);
 		if (gExitCode < 0) {
 			// action failed, don't change exit code
@@ -236,7 +257,7 @@ struct { const char *firstArg; cmdline_action action; } cmdline_table[] = {
 
 /**
  * This function delegates starting the game to different handlers, if found.
- * 
+ *
  * Three cases of return values are supported:
  * - result < 0 means failure, will exit with error code
  *   This case is useful when user provided wrong arguments or the requested

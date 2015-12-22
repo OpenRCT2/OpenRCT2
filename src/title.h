@@ -35,7 +35,7 @@ enum {
 	TITLE_SCRIPT_SPEED,
 	TITLE_SCRIPT_LOOP,
 	TITLE_SCRIPT_ENDLOOP
-} TITLE_SCRIPT_COMMANDS;
+};
 
 extern sint32 gTitleScriptCommand;
 extern uint8 gTitleScriptSave;
