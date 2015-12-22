@@ -147,6 +147,11 @@ void platform_show_messagebox(char *message)
 	log_verbose(message);
 }
 
+void platform_get_font_directory(utf8 *buffer)
+{
+	strcpy(buffer, "/usr/share/fonts/");
+}
+
 /**
  *
  *  rct2: 0x004080EA

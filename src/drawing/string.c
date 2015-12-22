@@ -888,7 +888,8 @@ bool ttf_initialise()
 		for (int i = 0; i < 4; i++) {
 			TTFFontDescriptor *fontDesc = &(gCurrentTTFFontSet->size[i]);
 
-			utf8 fontPath[MAX_PATH] = "C:\\Windows\\Fonts\\";
+			utf8 fontPath[MAX_PATH];
+			platform_get_font_directory(fontPath);
 			strcat(fontPath, fontDesc->filename);
 
 			fontDesc->font = TTF_OpenFont(fontPath, fontDesc->ptSize);

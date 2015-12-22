@@ -161,6 +161,7 @@ uint8 platform_get_locale_currency();
 uint16 platform_get_locale_language();
 uint8 platform_get_locale_measurement_format();
 uint8 platform_get_locale_temperature_format();
+void platform_get_font_directory();
 
 bool platform_check_steam_overlay_attached();
 

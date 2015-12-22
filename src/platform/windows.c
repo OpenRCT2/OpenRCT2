@@ -897,4 +897,10 @@ void platform_get_exe_path(utf8 *outPath)
 	_wfullpath(exePath, tempPath, MAX_PATH);
 	WideCharToMultiByte(CP_UTF8, 0, exePath, countof(exePath), outPath, MAX_PATH, NULL, NULL);
 }
+
+void platform_get_font_directory(utf8 *buffer)
+{
+	strcpy(buffer, "C:\\Windows\\Fonts\\");
+}
+
 #endif
