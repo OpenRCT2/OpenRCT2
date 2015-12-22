@@ -86,8 +86,10 @@ if [[ $TARGET == "linux" ]] || [[ $TARGET == "docker32" ]]; then
 fi
 
 if [[ -z "$DISABLE_G2_BUILD" ]]; then
-    echo Building: data/g2.dat
-    ./build_g2.sh > /dev/null 2>&1
+    echo Building: g2.dat
+	pushd build
+	    make g2
+	popd
 fi
 
 if [[ $TARGET == "windows" ]]; then
