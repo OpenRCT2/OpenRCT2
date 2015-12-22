@@ -82,7 +82,10 @@ int gfx_load_g2()
 	unsigned int i;
 
 	char path[MAX_PATH];
-	sprintf(path, "%s%cdata%cg2.dat", gExePath, platform_get_path_separator(), platform_get_path_separator());
+	char dataPath[MAX_PATH];
+
+	platform_get_openrct_data_path(dataPath);
+	sprintf(path, "%s%cg2.dat", dataPath, platform_get_path_separator());
 	file = SDL_RWFromFile(path, "rb");
 	if (file != NULL) {
 		if (SDL_RWread(file, &g2.header, 8, 1) == 1) {

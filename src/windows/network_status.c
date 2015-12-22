@@ -25,7 +25,7 @@
 #include "../util/util.h"
 #include "../network/network.h"
 
-char _password[33];
+static char _password[33];
 
 enum WINDOW_NETWORK_STATUS_WIDGET_IDX {
 	WIDX_BACKGROUND,

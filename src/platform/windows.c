@@ -38,6 +38,7 @@
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
 
 utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
+utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
 utf8 **windows_get_command_line_args(int *outNumArgs);
 
@@ -405,6 +406,51 @@ bool platform_file_delete(const utf8 *path)
 	BOOL success = DeleteFileW(wPath);
 	free(wPath);
 	return success == TRUE;
+}
+
+void platform_resolve_openrct_data_path()
+{
+	wchar_t wOutPath[MAX_PATH];
+	const char separator[2] = { platform_get_path_separator(), 0 };
+
+	if (gCustomOpenrctDataPath[0] != 0) {
+		wchar_t *customUserDataPathW = utf8_to_widechar(gCustomOpenrctDataPath);
+		if (GetFullPathNameW(customUserDataPathW, countof(wOutPath), wOutPath, NULL) == 0) {
+			log_fatal("Unable to resolve path '%s'.", gCustomOpenrctDataPath);
+			exit(-1);
+		}
+		utf8 *outPathTemp = widechar_to_utf8(wOutPath);
+		safe_strncpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
+		free(outPathTemp);
+		free(customUserDataPathW);
+
+		// Ensure path ends with separator
+		int len = strlen(_userDataDirectoryPath);
+		if (_userDataDirectoryPath[len - 1] != separator[0]) {
+			strcat(_userDataDirectoryPath, separator);
+		}
+		return;
+	}
+	char buffer[MAX_PATH] = { 0 };
+	platform_get_exe_path(buffer);
+
+	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	strncat(buffer, "data", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+
+	if (platform_directory_exists(buffer))
+	{
+		_openrctDataDirectoryPath[0] = '\0';
+		safe_strncpy(_openrctDataDirectoryPath, buffer, sizeof(_openrctDataDirectoryPath));
+		return;
+	} else {
+		log_fatal("Unable to resolve openrct data path.");
+		exit(-1);
+	}
+}
+
+void platform_get_openrct_data_path(utf8 *outPath)
+{
+	safe_strncpy(outPath, _openrctDataDirectoryPath, sizeof(_openrctDataDirectoryPath));
 }
 
 /**

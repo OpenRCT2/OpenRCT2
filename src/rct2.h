@@ -64,19 +64,47 @@ typedef utf16* utf16string;
 #define ror32(x, shift)		(((uint32)(x) >> (shift)) | ((uint32)(x) << (32 - (shift))))
 #define rol64(x, shift)		(((uint64)(x) << (shift)) | ((uint32)(x) >> (64 - (shift))))
 #define ror64(x, shift)		(((uint64)(x) >> (shift)) | ((uint32)(x) << (64 - (shift))))
+
+#ifndef __cplusplus
+// in C++ you should be using Math::Min and Math::Max
 #ifndef min
 	#define min(a,b)            (((a) < (b)) ? (a) : (b))
 #endif
 #ifndef max
 	#define max(a,b)            (((a) > (b)) ? (a) : (b))
 #endif
+#endif // __cplusplus
+
 #define sgn(x)				((x > 0) ? 1 : ((x < 0) ? -1 : 0))
 #define clamp(l, x, h)		(min(h, max(l, x)))
 
 // Rounds an integer down to the given power of 2. y must be a power of 2.
 #define floor2(x, y)		((x) & (~((y) - 1)))
 
-#define countof(x)			((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
+
+#ifndef __cplusplus
+// in C++ you should be using Util::CountOf
+#ifdef __GNUC__
+/**
+ * Force a compilation error if condition is true, but also produce a
+ * result (of value 0 and type size_t), so the expression can be used
+ * e.g. in a structure initializer (or where-ever else comma expressions
+ * aren't permitted).
+ */
+#define BUILD_BUG_ON_ZERO(e) (sizeof(struct { int:-!!(e); }))
+
+/* &a[0] degrades to a pointer: a different type from an array */
+#define __must_be_array(a) \
+        BUILD_BUG_ON_ZERO(__builtin_types_compatible_p(typeof(a), typeof(&a[0])))
+
+// based on http://lxr.free-electrons.com/source/include/linux/kernel.h#L54
+#define countof(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
+#elif defined (_MSC_VER)
+	#define countof(arr)			_countof(arr)
+#else
+	#define countof(arr)			(sizeof(arr) / sizeof((arr)[0]))
+#endif // __GNUC__
+#endif // __cplusplus
 
 #ifndef _MSC_VER
 // use similar struct packing as MSVC for our structs

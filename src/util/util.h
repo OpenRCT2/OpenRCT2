@@ -26,6 +26,7 @@
 int squaredmetres_to_squaredfeet(int squaredMetres);
 int metres_to_feet(int metres);
 int mph_to_kmph(int mph);
+int mph_to_dmps(int mph);
 
 bool filename_valid_characters(const utf8 *filename);
 

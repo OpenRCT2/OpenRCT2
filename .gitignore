@@ -5,6 +5,9 @@ sdl
 # Compiled dll
 openrct2.dll
 
+# Compiled linux executable
+openrct2
+
 # Distribution
 distribution/windows/*.exe
 
@@ -199,9 +202,38 @@ Desktop.ini
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
+#############
+## Xcode
+#############
+
+# Build generated
+build/
+DerivedData
+
+# Various settings
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+
+# Other
+*.xccheckout
+*.moved-aside
+*.xcuserstate
+
 # Mac crap
 .DS_Store
 
+# We link logo files to .xcassets in Xcode project, so don't sync them
+distribution/osx/Assets.xcassets/AppIcon.appiconset/*.png
+
+# Extra Xcode-specific lib files
+libxc
 
 #############
 ## Python

@@ -42,6 +42,7 @@
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
 
 utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
+utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
 /**
  * The function that is called directly from the host application (rct2.exe)'s WinMain. This will be removed when OpenRCT2 can
@@ -554,10 +555,10 @@ void platform_resolve_user_data_path()
 	char buffer[MAX_PATH];
 	buffer[0] = '\0';
 	log_verbose("buffer = '%s'", buffer);
-	
+
 	const char *homedir = getpwuid(getuid())->pw_dir;
 	platform_posix_sub_user_data_path(buffer, homedir, separator);
-	
+
 	log_verbose("OpenRCT2 user data directory = '%s'", buffer);
 	int len = strnlen(buffer, MAX_PATH);
 	wchar_t *w_buffer = regular_to_wchar(buffer);
@@ -566,6 +567,49 @@ void platform_resolve_user_data_path()
 	free(w_buffer);
 	safe_strncpy(_userDataDirectoryPath, path, MAX_PATH);
 	free(path);
+}
+
+void platform_get_openrct_data_path(utf8 *outPath)
+{
+	safe_strncpy(outPath, _openrctDataDirectoryPath, sizeof(_openrctDataDirectoryPath));
+}
+
+void platform_posix_sub_resolve_openrct_data_path(utf8 *out);
+
+/**
+ * Default directory fallback is:
+ *   - (command line argument)
+ *   - <exePath>/data
+ *   - <platform dependent>
+ */
+void platform_resolve_openrct_data_path()
+{
+	const char separator[2] = { platform_get_path_separator(), 0 };
+
+	if (gCustomOpenrctDataPath[0] != 0) {
+		realpath(gCustomOpenrctDataPath, _openrctDataDirectoryPath);
+
+		// Ensure path ends with separator
+		int len = strlen(_openrctDataDirectoryPath);
+		if (_openrctDataDirectoryPath[len - 1] != separator[0]) {
+			strncat(_openrctDataDirectoryPath, separator, MAX_PATH - 1);
+		}
+		return;
+	}
+
+	char buffer[MAX_PATH] = { 0 };
+	platform_get_exe_path(buffer);
+
+	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	strncat(buffer, "data", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	if (platform_directory_exists(buffer))
+	{
+		_openrctDataDirectoryPath[0] = '\0';
+		safe_strncpy(_openrctDataDirectoryPath, buffer, MAX_PATH);
+		return;
+	}
+	
+	platform_posix_sub_resolve_openrct_data_path(_openrctDataDirectoryPath);
 }
 
 void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
@@ -586,28 +630,6 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
 	safe_strncpy(outPath, path, MAX_PATH);
 	free(path);
 	log_verbose("outPath + subDirectory = '%s'", buffer);
-}
-
-void platform_show_messagebox(char *message)
-{
-	STUB();
-	log_verbose(message);
-}
-
-/**
- *
- *  rct2: 0x004080EA
- */
-int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName)
-{
-	STUB();
-	return 0;
-}
-
-utf8 *platform_open_directory_browser(utf8 *title)
-{
-	STUB();
-	return NULL;
 }
 
 uint16 platform_get_locale_language(){
@@ -700,8 +722,12 @@ uint8 platform_get_locale_currency(){
 }
 
 uint8 platform_get_locale_measurement_format(){
-	//FIXME: LC_MEASUREMENT is GNU specific.
+	// LC_MEASUREMENT is GNU specific.
+	#ifdef LC_MEASUREMENT
 	const char *langstring = setlocale(LC_MEASUREMENT, "");
+	#else
+	const char *langstring = setlocale(LC_ALL, "");
+	#endif
 
 	if(langstring != NULL){
 		//using https://en.wikipedia.org/wiki/Metrication#Chronology_and_status_of_conversion_by_country as reference
@@ -713,7 +739,12 @@ uint8 platform_get_locale_measurement_format(){
 }
 
 uint8 platform_get_locale_temperature_format(){
+	// LC_MEASUREMENT is GNU specific.
+	#ifdef LC_MEASUREMENT
 	const char *langstring = setlocale(LC_MEASUREMENT, "");
+	#else
+	const char *langstring = setlocale(LC_ALL, "");
+	#endif
 
 	if(langstring != NULL){
 		if(!fnmatch("*_US*", langstring, 0) || !fnmatch("*_BS*", langstring, 0) || !fnmatch("*_BZ*", langstring, 0) || !fnmatch("*_PW*", langstring, 0)){

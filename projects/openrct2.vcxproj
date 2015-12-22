@@ -45,6 +45,7 @@
     <ClCompile Include="..\src\drawing\scrolling_text.c" />
     <ClCompile Include="..\src\drawing\sprite.c" />
     <ClCompile Include="..\src\drawing\string.c" />
+    <ClCompile Include="..\src\drawing\supports.c" />
     <ClCompile Include="..\src\editor.c" />
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\hook.c" />
@@ -87,7 +88,6 @@
     <ClCompile Include="..\src\platform\linux.c" />
     <ClCompile Include="..\src\platform\posix.c" />
     <ClCompile Include="..\src\platform\shared.c" />
-    <ClCompile Include="..\src\platform\osx.c" />
     <ClCompile Include="..\src\platform\windows.c" />
     <ClCompile Include="..\src\rct1.c" />
     <ClCompile Include="..\src\rct2.c" />
@@ -209,10 +209,12 @@
     <ClInclude Include="..\src\core\Memory.hpp" />
     <ClInclude Include="..\src\core\StringBuilder.hpp" />
     <ClInclude Include="..\src\core\StringReader.hpp" />
+    <ClInclude Include="..\src\core\Util.hpp" />
     <ClInclude Include="..\src\cursors.h" />
     <ClInclude Include="..\src\diagnostic.h" />
     <ClInclude Include="..\src\drawing\drawing.h" />
     <ClInclude Include="..\src\drawing\font.h" />
+    <ClInclude Include="..\src\drawing\supports.h" />
     <ClInclude Include="..\src\editor.h" />
     <ClInclude Include="..\src\game.h" />
     <ClInclude Include="..\src\hook.h" />

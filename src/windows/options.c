@@ -122,6 +122,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	// Controls and interface
 	WIDX_CONTROLS_GROUP = WIDX_PAGE_START,
 	WIDX_SCREEN_EDGE_SCROLLING,
+	WIDX_TRAP_CURSOR,
 	WIDX_INVERT_DRAG,
 	WIDX_HOTKEY_DROPDOWN,
 	WIDX_THEMES_GROUP,
@@ -233,23 +234,24 @@ static rct_widget window_options_audio_widgets[] = {
 
 static rct_widget window_options_controls_and_interface_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
-	{ WWT_GROUPBOX,			1,	5,      304,	53,		114,	STR_CONTROLS_GROUP,						STR_NONE },							// Controls group
-	{ WWT_CHECKBOX,			2,	10,		299,	68,		79,		STR_SCREEN_EDGE_SCROLLING,				STR_SCREEN_EDGE_SCROLLING_TIP },	// Edge scrolling
-	{ WWT_CHECKBOX,			2,	10,		299,	83,		94,		STR_INVERT_RIGHT_MOUSE_DRAG,			STR_NONE },							// Invert right mouse dragging
-	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	98,		109,	STR_HOTKEY,								STR_HOTKEY_TIP },					// Set hotkeys buttons
+	{ WWT_GROUPBOX,			1,	5,      304,	53,			129,	STR_CONTROLS_GROUP,						STR_NONE },							// Controls group
+	{ WWT_CHECKBOX,			2,	10,		299,	68,			79,		STR_SCREEN_EDGE_SCROLLING,				STR_SCREEN_EDGE_SCROLLING_TIP },	// Edge scrolling
+	{ WWT_CHECKBOX,			2,	10,		299,	83,			94,		STR_TRAP_MOUSE,							STR_NONE },	// Trap mouse
+	{ WWT_CHECKBOX,			2,	10,		299,	98,			109,	STR_INVERT_RIGHT_MOUSE_DRAG,			STR_NONE },							// Invert right mouse dragging
+	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	113,		124,	STR_HOTKEY,								STR_HOTKEY_TIP },					// Set hotkeys buttons
 
-	{ WWT_GROUPBOX,			1,	5,      304,	118,	164,	STR_THEMES_GROUP,						STR_NONE },							// Toolbar buttons group
-	{ WWT_DROPDOWN,			1,	155,	299,	132,	143,	STR_NONE,								STR_NONE },							// Themes
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	133,	142,	STR_DROPDOWN_GLYPH,						STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	10,		145,	148,	159,	STR_EDIT_THEMES_BUTTON,					STR_NONE },							// Themes button
+	{ WWT_GROUPBOX,			1,	5,      304,	133,		179,	STR_THEMES_GROUP,						STR_NONE },							// Toolbar buttons group
+	{ WWT_DROPDOWN,			1,	155,	299,	147,		158,	STR_NONE,								STR_NONE },							// Themes
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	148,		157,	STR_DROPDOWN_GLYPH,						STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	10,		145,	163,		174,	STR_EDIT_THEMES_BUTTON,					STR_NONE },							// Themes button
 
-	{ WWT_GROUPBOX,			1,	5,      304,	168,	230,	STR_TOOLBAR_BUTTONS_GROUP,				STR_NONE },							// Toolbar buttons group
-	{ WWT_CHECKBOX,			2,	10,		145,	199,	210,	STR_FINANCES_BUTTON_ON_TOOLBAR,			STR_NONE },							// Finances
-	{ WWT_CHECKBOX,			2,	10,		145,	214,	225,	STR_RESEARCH_BUTTON_ON_TOOLBAR,			STR_NONE },							// Research
-	{ WWT_CHECKBOX,			2,	155,	299,	199,	210,	STR_CHEATS_BUTTON_ON_TOOLBAR,			STR_NONE },							// Cheats
-	{ WWT_CHECKBOX,			2,	155,	299,	214,	225,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,	STR_NONE },							// Recent messages
+	{ WWT_GROUPBOX,			1,	5,      304,	183,		245,	STR_TOOLBAR_BUTTONS_GROUP,				STR_NONE },							// Toolbar buttons group
+	{ WWT_CHECKBOX,			2,	10,		145,	214,		225,	STR_FINANCES_BUTTON_ON_TOOLBAR,			STR_NONE },							// Finances
+	{ WWT_CHECKBOX,			2,	10,		145,	229,		240,	STR_RESEARCH_BUTTON_ON_TOOLBAR,			STR_NONE },							// Research
+	{ WWT_CHECKBOX,			2,	155,	299,	214,		225,	STR_CHEATS_BUTTON_ON_TOOLBAR,			STR_NONE },							// Cheats
+	{ WWT_CHECKBOX,			2,	155,	299,	229,		240,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,	STR_NONE },							// Recent messages
 
-	{ WWT_CHECKBOX,			2,	10,		299,	239,	250,	STR_SELECT_BY_TRACK_TYPE,				STR_SELECT_BY_TRACK_TYPE_TIP },		// Select by track type
+	{ WWT_CHECKBOX,			2,	10,		299,	254,		265,	STR_SELECT_BY_TRACK_TYPE,				STR_SELECT_BY_TRACK_TYPE_TIP },		// Select by track type
 	{ WIDGETS_END },
 };
 
@@ -404,6 +406,7 @@ static uint32 window_options_page_enabled_widgets[] = {
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_SCREEN_EDGE_SCROLLING) |
+	(1 << WIDX_TRAP_CURSOR) |
 	(1 << WIDX_INVERT_DRAG) |
 	(1 << WIDX_HOTKEY_DROPDOWN) |
 	(1 << WIDX_TOOLBAR_SHOW_FINANCES) |
@@ -588,6 +591,12 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 		case WIDX_SCREEN_EDGE_SCROLLING:
 			gConfigGeneral.edge_scrolling ^= 1;
 			config_save_default();
+			window_invalidate(w);
+			break;
+		case WIDX_TRAP_CURSOR:
+			gConfigGeneral.trap_cursor ^= 1;
+			config_save_default();
+			SDL_SetWindowGrab(gWindow, gConfigGeneral.trap_cursor ? SDL_TRUE : SDL_FALSE);
 			window_invalidate(w);
 			break;
 		case WIDX_TOOLBAR_SHOW_FINANCES:
@@ -821,10 +830,12 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		case WIDX_DISTANCE_DROPDOWN:
 			gDropdownItemsFormat[0] = 1142;
 			gDropdownItemsFormat[1] = 1142;
+			gDropdownItemsFormat[2] = 1142;
 			gDropdownItemsArgs[0] = STR_IMPERIAL;
 			gDropdownItemsArgs[1] = STR_METRIC;
+			gDropdownItemsArgs[2] = STR_SI;
 
-			window_options_show_dropdown(w, widget, 2);
+			window_options_show_dropdown(w, widget, 3);
 
 			dropdown_set_checked(gConfigGeneral.measurement_format, true);
 			break;
@@ -1216,8 +1227,17 @@ static void window_options_invalidate(rct_window *w)
 		// currency: pounds, dollars, etc. (10 total)
 		RCT2_GLOBAL(0x013CE952 + 12, uint16) = CurrencyDescriptors[gConfigGeneral.currency_format].stringId;
 
-		// distance: metric/imperial
-		RCT2_GLOBAL(0x013CE952 + 14, uint16) = STR_IMPERIAL + gConfigGeneral.measurement_format;
+		// distance: metric / imperial / si
+		{
+			rct_string_id stringId;
+			switch (gConfigGeneral.measurement_format) {
+			default:
+			case MEASUREMENT_FORMAT_IMPERIAL: stringId = STR_IMPERIAL; break;
+			case MEASUREMENT_FORMAT_METRIC: stringId = STR_METRIC; break;
+			case MEASUREMENT_FORMAT_SI: stringId = STR_SI; break;
+			}
+			RCT2_GLOBAL(0x013CE952 + 14, uint16) = stringId;
+		}
 
 		// temperature: celsius/fahrenheit
 		RCT2_GLOBAL(0x013CE952 + 20, uint16) = STR_CELSIUS + gConfigGeneral.temperature_format;
@@ -1285,6 +1305,7 @@ static void window_options_invalidate(rct_window *w)
 
 	case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
 		widget_set_checkbox_value(w, WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
+		widget_set_checkbox_value(w, WIDX_TRAP_CURSOR, gConfigGeneral.trap_cursor);
 		widget_set_checkbox_value(w, WIDX_INVERT_DRAG, gConfigGeneral.invert_viewport_drag);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
@@ -1296,6 +1317,7 @@ static void window_options_invalidate(rct_window *w)
 		window_options_controls_and_interface_widgets[WIDX_THEMES_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_controls_and_interface_widgets[WIDX_THEMES_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		window_options_controls_and_interface_widgets[WIDX_SCREEN_EDGE_SCROLLING].type = WWT_CHECKBOX;
+		window_options_controls_and_interface_widgets[WIDX_TRAP_CURSOR].type = WWT_CHECKBOX;
 		window_options_controls_and_interface_widgets[WIDX_HOTKEY_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_FINANCES].type = WWT_CHECKBOX;
 		window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_RESEARCH].type = WWT_CHECKBOX;

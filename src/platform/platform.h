@@ -33,7 +33,15 @@
 #define MAX_PATH 260
 #endif
 
+#if defined(__APPLE__) && defined(__MACH__)
+#define KEYBOARD_PRIMARY_MODIFIER KMOD_GUI
+#else
+#define KEYBOARD_PRIMARY_MODIFIER KMOD_CTRL
+#endif
+
 #define INVALID_HANDLE -1
+
+#define TOUCH_DOUBLE_TIMEOUT 300
 
 typedef struct {
 	int width, height;
@@ -63,6 +71,8 @@ typedef struct {
 	unsigned char left, middle, right, any;
 	int wheel;
 	int old;
+	bool touch, touchIsDouble;
+	unsigned int touchDownTimestamp;
 } openrct2_cursor;
 
 enum {
@@ -141,6 +151,8 @@ void platform_get_cursor_position(int *x, int *y);
 void platform_set_cursor_position(int x, int y);
 unsigned int platform_get_ticks();
 void platform_resolve_user_data_path();
+void platform_resolve_openrct_data_path();
+void platform_get_openrct_data_path(utf8 *outPath);
 void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory);
 void platform_show_messagebox(utf8 *message);
 int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName);

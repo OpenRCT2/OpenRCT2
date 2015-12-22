@@ -28,9 +28,9 @@
 #include "../util/util.h"
 #include "error.h"
 
-char _port[7];
-char _name[65];
-char _password[33];
+static char _port[7];
+static char _name[65];
+static char _password[33];
 
 enum {
 	WIDX_BACKGROUND,
@@ -140,7 +140,7 @@ void window_server_start_open()
 	window->colours[1] = 26;
 	window->colours[2] = 26;
 
-	sprintf(_port, "%lu", gConfigNetwork.default_port);
+	sprintf(_port, "%u", gConfigNetwork.default_port);
 	safe_strncpy(_name, gConfigNetwork.server_name, sizeof(_name));
 }
 

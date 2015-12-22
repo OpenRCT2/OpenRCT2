@@ -297,9 +297,6 @@
     <ClCompile Include="..\src\platform\windows.c">
       <Filter>Source\Platform</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\platform\osx.c">
-      <Filter>Source\Platform</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\platform\posix.c">
       <Filter>Source\Platform</Filter>
     </ClCompile>
@@ -552,9 +549,14 @@
     <ClCompile Include="..\src\interface\colour.c">
       <Filter>Source\Interface</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\addresses.c" />
+    <ClCompile Include="..\src\addresses.c">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\ride\cable_lift.c">
       <Filter>Source\Ride</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawing\supports.c">
+      <Filter>Source\Drawing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -830,6 +832,12 @@
     </ClInclude>
     <ClInclude Include="..\src\ride\cable_lift.h">
       <Filter>Source\Ride</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\core\Util.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\drawing\supports.h">
+      <Filter>Source\Drawing</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

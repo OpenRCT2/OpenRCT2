@@ -3635,6 +3635,7 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 
 	switch (setting){
 	case 0:
+		// Alteration: only check if the ride mode exists, and fall back to the default if it doesn't.
 		invalidate_test_results(ride_id);
 		ride_clear_for_construction(ride_id);
 		ride_remove_peeps(ride_id);
@@ -3647,16 +3648,16 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 		}
 
 		uint8 default_mode = available_modes[0];
+
+		available_modes = AllRideModesAvailable;
 		for (; *available_modes != 0xFF; available_modes++){
 			if (*available_modes == new_value)
 				break;
 		}
 
-		if (*available_modes == 0xFF) new_value = default_mode;
-
-		if (available_modes[1] == 0xFF){
-			if ((ride_entry->flags & RIDE_ENTRY_DISABLE_LAST_OPERATING_MODE) && !gCheatsShowAllOperatingModes)
-				new_value = default_mode;
+		if (*available_modes == 0xFF) {
+			log_warning("Tried to use incorrect ride mode, using default for this ride type.");
+			new_value = default_mode;
 		}
 
 		ride->mode = new_value;
@@ -6926,7 +6927,6 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 		return;
 	}
 
-	invalidate_test_results(rideIndex);
 	ride_clear_for_construction(rideIndex);
 	ride_remove_peeps(rideIndex);
 	ride->var_1CA = 100;
@@ -6942,14 +6942,18 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 		}
 		break;
 	case RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_CARS_PER_TRAIN:
+		invalidate_test_results(rideIndex);
 		rideEntry = GET_RIDE_ENTRY(ride->subtype);
 		value = clamp(rideEntry->min_cars_in_train, value, rideEntry->max_cars_in_train);
 		ride->var_0CB = value;
 		break;
 	case RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY:
+		invalidate_test_results(rideIndex);
 		ride->subtype = value;
 		ride_set_vehicle_colours_to_random_preset(ride, *eax & 0xFF);
 		break;
+	default:
+		log_error("Unknown command!");
 	}
 
 	ride->num_circuits = 1;

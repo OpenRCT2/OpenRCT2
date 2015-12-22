@@ -112,4 +112,49 @@ void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const 
 	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
 }
 
+/**
+ * Default directory fallback is:
+ *   - (command line argument)
+ *   - <exePath>/data
+ *   - /var/lib/openrct2
+ *   - /usr/share/openrct2
+ */
+void platform_posix_sub_resolve_openrct_data_path(utf8 *out) {
+	static const utf8 *searchLocations[] = {
+		"/var/lib/openrct2",
+		"/usr/share/openrct2",
+	};
+	for (size_t i = 0; i < countof(searchLocations); i++)
+	{
+		if (platform_directory_exists(searchLocations[i]))
+		{
+			out[0] = '\0';
+			safe_strncpy(out, searchLocations[i], MAX_PATH);
+			return;
+		}
+	}
+}
+
+utf8 *platform_open_directory_browser(utf8 *title)
+{
+	STUB();
+	return NULL;
+}
+
+void platform_show_messagebox(char *message)
+{
+	STUB();
+	log_verbose(message);
+}
+
+/**
+ *
+ *  rct2: 0x004080EA
+ */
+int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName)
+{
+	STUB();
+	return 0;
+}
+
 #endif

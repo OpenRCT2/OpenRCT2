@@ -11,6 +11,7 @@ void http_dispose() { }
 #else
 
 #include <SDL.h>
+#include "../core/Math.hpp"
 
 // cURL includes windows.h, but we don't need all of it.
 #define WIN32_LEAN_AND_MEAN
@@ -65,7 +66,7 @@ static size_t http_request_write_func(void *ptr, size_t size, size_t nmemb, void
 		int newCapacity = writeBuffer->capacity;
 		int newLength = writeBuffer->length + newBytesLength;
 		while (newLength > newCapacity) {
-			newCapacity = max(4096, newCapacity * 2);
+			newCapacity = Math::Max(4096, newCapacity * 2);
 		}
 		if (newCapacity != writeBuffer->capacity) {
 			writeBuffer->ptr = (char*)realloc(writeBuffer->ptr, newCapacity);
@@ -116,8 +117,8 @@ http_json_response *http_request_json(const http_json_request *request)
 	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
 	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
-#ifndef __linux__
-        // On GNU/Linux, curl will use the system certs by default
+#ifdef _WIN32
+	// On GNU/Linux (and OS X), curl will use the system certs by default
 	curl_easy_setopt(curl, CURLOPT_CAINFO, "curl-ca-bundle.crt");
 #endif
 	curl_easy_setopt(curl, CURLOPT_URL, request->url);

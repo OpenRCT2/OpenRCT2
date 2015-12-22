@@ -146,8 +146,9 @@ static rct_window_event_list window_footpath_events = {
 	NULL
 };
 
-money32 _window_footpath_cost;
-sint8 _window_footpath_provisional_path_arrow_timer;
+static money32 _window_footpath_cost;
+static sint8 _window_footpath_provisional_path_arrow_timer;
+static uint8 _lastUpdatedCameraRotation = UINT8_MAX;
 
 static void window_footpath_mousedown_direction(int direction);
 static void window_footpath_mousedown_slope(int slope);
@@ -468,6 +469,13 @@ static void window_footpath_update(rct_window *w)
 {
 	widget_invalidate(w, WIDX_CONSTRUCT);
 	window_footpath_update_provisional_path_for_bridge_mode(w);
+
+	// #2502: The camera might have changed rotation, so we need to update which directional buttons are pressed
+	uint8 currentRotation = get_current_rotation();
+	if (_lastUpdatedCameraRotation != currentRotation) {
+		_lastUpdatedCameraRotation = currentRotation;
+		window_footpath_set_enabled_and_pressed_widgets();
+	}
 
 	// Check tool
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_LAND) {
