@@ -52,7 +52,7 @@ if [[ "$needsdownload" = "true" ]]; then
 	if [[ -d $cachedir/orctlibs ]]; then
 		rm -rf $cachedir/orctlibs
 	fi
-	./install.sh
+	scripts/linux/install.sh
 fi
 
 pushd build

@@ -1,10 +1,10 @@
 language: c
 
 before_install:
-    - bash install.sh
+    - bash scripts/linux/install.sh
 
 script:
-    - bash build.sh
+    - bash scripts/linux/build.sh
 
 notifications:
     on_failure: change
