@@ -28,6 +28,7 @@
 #include <SDL.h>
 
 #include "../common.h"
+#include "../drawing/font.h"
 
 #ifndef MAX_PATH
 #define MAX_PATH 260
@@ -161,6 +162,7 @@ uint8 platform_get_locale_currency();
 uint16 platform_get_locale_language();
 uint8 platform_get_locale_measurement_format();
 uint8 platform_get_locale_temperature_format();
+bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer);
 
 bool platform_check_steam_overlay_attached();
 

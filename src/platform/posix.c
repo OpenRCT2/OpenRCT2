@@ -37,6 +37,7 @@
 #include <fnmatch.h>
 #include <locale.h>
 #include <time.h>
+#include "fontconfig/fontconfig.h"
 
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
@@ -755,6 +756,33 @@ uint8 platform_get_locale_temperature_format(){
 		}
 	}
 	return TEMPERATURE_FORMAT_C;
+}
+
+bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
+{
+	FcConfig* config = FcInitLoadConfigAndFonts();
+	FcPattern* pat = FcNameParse((const FcChar8*) font->font_name);
+
+	FcConfigSubstitute(config, pat, FcMatchPattern);
+	FcDefaultSubstitute(pat);
+
+	bool found = false;
+	FcResult result = FcResultNoMatch;
+	FcPattern* match = FcFontMatch(config, pat, &result);
+
+	if (match)
+	{
+		FcChar8* filename = NULL;
+		if (FcPatternGetString(match, FC_FILE, 0, &filename) == FcResultMatch)
+		{
+			found = true;
+			strcpy(buffer, (utf8*) filename);
+		}
+		FcPatternDestroy(match);
+	}
+
+	FcPatternDestroy(pat);
+	return found;
 }
 
 #endif

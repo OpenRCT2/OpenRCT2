@@ -161,6 +161,11 @@ if (UNIX)
 		list(APPEND RCT2_SECTIONS "${CMAKE_BINARY_DIR}/openrct2_data_section.o" "${CMAKE_BINARY_DIR}/openrct2_text_section.o")
 		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-T,\"${CMAKE_CURRENT_SOURCE_DIR}/distribution/linux/ld_script.xc\"")
 	endif (APPLE)
+
+	# FontConfig for TrueType fonts.
+	find_path(FONTCONFIG_INCLUDE_DIR fontconfig/fontconfig.h)
+	find_library(FONTCONFIG_LIBRARY NAMES fontconfig)
+	TARGET_LINK_LIBRARIES(${PROJECT} ${FONTCONFIG_LIBRARY})
 endif (UNIX)
 
 # install into ${CMAKE_INSTALL_PREFIX}/bin/
