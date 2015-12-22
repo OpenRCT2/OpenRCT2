@@ -8,7 +8,7 @@ An open source clone of RollerCoaster Tycoon 2 built by decompiling the original
 Linux Build:  
 [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg)](https://travis-ci.org/OpenRCT2/OpenRCT2)  
 Windows Build:  
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/fib6re830brysuo2?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9)
 
 Come talk with us if you have any questions:  
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/OpenRCT2/OpenRCT2?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -95,7 +95,7 @@ All libs listed here (bar cmake) required in 32 bit variants.
 ### Windows:
 1. Check out the repository. This can be done using [GitHub Windows](https://windows.github.com/) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
 2. Open a new PowerShell window and navigate to the repository.
-3. Run the setenv.ps1 script in the repository to setup your PowerShell environment for OpenRCT2 development. This will warn you off any missing applications required to build OpenRCT2.
+3. Run the setenv.ps1 script in the repository to setup your PowerShell environment for OpenRCT2 development. This will warn you of any missing applications required to build OpenRCT2.
 4. Run ```install``` to download the required dependencies to build OpenRCT2.
 5. Run ```build all``` to build all the required components for OpenRCT2.
 6. Run ```run``` to run OpenRCT2.
