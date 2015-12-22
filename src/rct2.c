@@ -195,7 +195,7 @@ int rct2_init_directories()
 	return 1;
 }
 
-void subsitute_path(char *dest, const char *path, const char *filename)
+void substitute_path(char *dest, const char *path, const char *filename)
 {
 	while (*path != '*') {
 		*dest++ = *path++;

@@ -228,7 +228,7 @@ int scenario_load_and_play(const rct_scenario_basic *scenario)
 {
 	char path[MAX_PATH];
 
-	subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), scenario->path);
+	substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), scenario->path);
 	return scenario_load_and_play_from_path(path);
 }
 
@@ -417,7 +417,7 @@ void scenario_end()
 
 void scenario_set_filename(const char *value)
 {
-	subsitute_path(_scenarioPath, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), value);
+	substitute_path(_scenarioPath, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), value);
 	_scenarioFileName = path_get_filename(_scenarioPath);
 }
 
