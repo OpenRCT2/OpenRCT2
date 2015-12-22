@@ -748,7 +748,7 @@ static int cc_load_object(const utf8 **argv, int argc) {
 	if (argc > 0) {
 		utf8 path[260];
 
-		subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), argv[0]);
+		substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), argv[0]);
 		// Require pointer to start of filename
 		utf8* last_char = path + strlen(path);
 		strcat(path, ".DAT\0");

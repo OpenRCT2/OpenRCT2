@@ -315,7 +315,7 @@ int rct2_init();
 void rct2_update();
 void rct2_draw();
 void rct2_endupdate();
-void subsitute_path(char *dest, const char *path, const char *filename);
+void substitute_path(char *dest, const char *path, const char *filename);
 int check_mutex();
 int check_file_paths();
 int check_file_path(int pathId);

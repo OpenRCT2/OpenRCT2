@@ -313,7 +313,7 @@ void object_list_load()
 			}
 
 			char path[MAX_PATH];
-			subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), enumFileInfo.path);
+			substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), enumFileInfo.path);
 
 			rct_object_entry entry;
 			if (!object_load_entry(path, &entry))

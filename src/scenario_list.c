@@ -83,7 +83,7 @@ static void scenario_list_add(const char *path)
 	rct_s6_info s6Info;
 
 	// Get absolute path
-	subsitute_path(scenarioPath, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), path);
+	substitute_path(scenarioPath, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), path);
 
 	// Load the basic scenario information
 	if (!scenario_load_basic(scenarioPath, &s6Header, &s6Info))
