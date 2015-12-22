@@ -3470,7 +3470,7 @@ STR_5133    :{SMALLFONT}{BLACK}Kleineren Landbereich anpassen
 STR_5134    :{SMALLFONT}{BLACK}Größeren Landbereich anpassen
 STR_5135    :{SMALLFONT}{BLACK}Kaufe Land- und Baurechte
 STR_5136    :Landrechte
-STR_5137    :Erlaube Lifthügel- und Antriebsgeschw.{NEWLINE}bis zu {VELOCITY}
+STR_5137    :Betriebsbeschränkungen aufheben
 STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Deaktiviere Bremsenfehlfunktion
@@ -3916,6 +3916,9 @@ STR_5579    :Skalierungsfaktor:
 STR_5580    :Tschechische Krone (Kc)
 STR_5581    :FPS anzeigen
 STR_5582    :Mauszeiger im Fenster fangen
+STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
+STR_5584    :SI
+STR_5585    :{SMALLFONT}{BLACK}Hebt Beschränkungen von Attraktionen auf, um Dinge wie {VELOCITY} schnelle Lifthügel zu erlauben
 
 #######################
 # Bahnen/Attraktionen # 
