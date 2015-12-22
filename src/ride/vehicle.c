@@ -7252,16 +7252,21 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 	}
 loc_6DC144:
 	vehicle = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
-	regs.eax = 0;
-	regs.ebp = 0;
+	//eax
+	sint32 totalAcceleration = 0;
+	//ebp
+	sint32 totalFriction = 0;
+	//Not used
 	regs.dx = 0;
-	regs.ebx = 0;
+	//ebx
+	int numVehicles = 0;
 
 	for (;;) {
-		regs.ebx++;
+		numVehicles++;
+		// Not used?
 		regs.dx |= vehicle->update_flags;
-		regs.bp += vehicle->friction;
-		regs.eax += vehicle->acceleration;
+		totalFriction += vehicle->friction;
+		totalAcceleration += vehicle->acceleration;
 
 		uint16 spriteIndex = vehicle->next_vehicle_on_train;
 		if (spriteIndex == SPRITE_INDEX_NULL) {
@@ -7271,7 +7276,7 @@ loc_6DC144:
 	}
 
 	vehicle = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
-	regs.eax = (regs.eax / regs.ebx) * 21;
+	regs.eax = (totalAcceleration / numVehicles) * 21;
 	if (regs.eax < 0) {
 		regs.eax += 511;
 	}
@@ -7296,7 +7301,7 @@ loc_6DC144:
 	}
 	regs.edx >>= 4;
 	regs.eax = regs.edx;
-	regs.eax = regs.eax / regs.ebp;
+	regs.eax = regs.eax / totalFriction;
 	regs.ecx -= regs.eax;
 
 	if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_3)) {
@@ -7336,7 +7341,7 @@ loc_6DC238:
 loc_6DC23A:
 	regs.ebx = regs.eax;
 	regs.eax <<= 14;
-	regs.ebx *= regs.ebp;
+	regs.ebx *= totalFriction;
 	regs.ebx >>= 2;
 	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_3) {
 		regs.eax = -regs.eax;
