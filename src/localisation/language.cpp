@@ -48,31 +48,31 @@ enum {
 };
 
 static TTFFontSetDescriptor TTFFontMingLiu = {{
-	{ "msjh.ttc",		9,		-1,		-3,		6,		nullptr },
-	{ "mingliu.ttc",	11,		1,		1,		12,		nullptr },
-	{ "mingliu.ttc",	12,		1,		0,		12,		nullptr },
-	{ "mingliu.ttc",	13,		1,		0,		20,		nullptr },
+	{ "msjh.ttc",		"JhengHei",	9,		-1,		-3,		6,		nullptr },
+	{ "mingliu.ttc",	"MingLiU",	11,		1,		1,		12,		nullptr },
+	{ "mingliu.ttc",	"MingLiU",	12,		1,		0,		12,		nullptr },
+	{ "mingliu.ttc",	"MingLiU",	13,		1,		0,		20,		nullptr },
 }};
 
 static TTFFontSetDescriptor TTFFontSimSun = {{
-	{ "msyh.ttc",		9,		-1,		-3,		6,		nullptr },
-	{ "simsun.ttc",		11,		1,		-1,		14,		nullptr },
-	{ "simsun.ttc",		12,		1,		-2,		14,		nullptr },
-	{ "simsun.ttc",		13,		1,		0,		20,		nullptr },
+	{ "msyh.ttc",		"YaHei",	9,		-1,		-3,		6,		nullptr },
+	{ "simsun.ttc",		"SimSun",	11,		1,		-1,		14,		nullptr },
+	{ "simsun.ttc",		"SimSun",	12,		1,		-2,		14,		nullptr },
+	{ "simsun.ttc",		"SimSun",	13,		1,		0,		20,		nullptr },
 }};
 
 static TTFFontSetDescriptor TTFFontGulim = {{
-	{ "gulim.ttc",		11,		1,		0,		15,		nullptr },
-	{ "gulim.ttc",		12,		1,		0,		17,		nullptr },
-	{ "gulim.ttc",		12,		1,		0,		17,		nullptr },
-	{ "gulim.ttc",		13,		1,		0,		20,		nullptr },
+	{ "gulim.ttc",		"Gulim",	11,		1,		0,		15,		nullptr },
+	{ "gulim.ttc",		"Gulim",	12,		1,		0,		17,		nullptr },
+	{ "gulim.ttc",		"Gulim",	12,		1,		0,		17,		nullptr },
+	{ "gulim.ttc",		"Gulim",	13,		1,		0,		20,		nullptr },
 }};
 
 static TTFFontSetDescriptor TTFFontArial = {{
-	{ "arial.ttf",		8,		0,		-1,		6,		nullptr },
-	{ "arial.ttf",		10,		0,		-1,		12,		nullptr },
-	{ "arial.ttf",		11,		0,		-1,		12,		nullptr },
-	{ "arial.ttf",		12,		0,		-1,		20,		nullptr },
+	{ "arial.ttf",		"Arial",	8,		0,		-1,		6,		nullptr },
+	{ "arial.ttf",		"Arial",	10,		0,		-1,		12,		nullptr },
+	{ "arial.ttf",		"Arial",	11,		0,		-1,		12,		nullptr },
+	{ "arial.ttf",		"Arial",	12,		0,		-1,		20,		nullptr },
 }};
 
 const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {

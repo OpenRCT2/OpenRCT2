@@ -23,6 +23,7 @@ enum {
 
 typedef struct {
 	const utf8 *filename;
+	const utf8 *font_name;
 	int ptSize;
 	int offset_x;
 	int offset_y;
