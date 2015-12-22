@@ -602,14 +602,17 @@ void platform_resolve_openrct_data_path()
 
 	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
 	strncat(buffer, "data", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	log_verbose("Looking for OpenRCT2 data in %s", buffer);
 	if (platform_directory_exists(buffer))
 	{
 		_openrctDataDirectoryPath[0] = '\0';
 		safe_strncpy(_openrctDataDirectoryPath, buffer, MAX_PATH);
+		log_verbose("Found OpenRCT2 data in %s", _openrctDataDirectoryPath);
 		return;
 	}
-	
+
 	platform_posix_sub_resolve_openrct_data_path(_openrctDataDirectoryPath);
+	log_verbose("Trying to use OpenRCT2 data in %s", _openrctDataDirectoryPath);
 }
 
 void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
