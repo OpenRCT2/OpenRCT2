@@ -191,6 +191,7 @@
     <ClCompile Include="..\src\world\park.c" />
     <ClCompile Include="..\src\world\scenery.c" />
     <ClCompile Include="..\src\world\sprite.c" />
+    <ClCompile Include="..\src\util\xbrz.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\addresses.h" />
@@ -285,6 +286,8 @@
     <ClInclude Include="..\src\world\scenery.h" />
     <ClInclude Include="..\src\world\sprite.h" />
     <ClInclude Include="..\src\world\water.h" />
+    <ClInclude Include="..\src\util\xbrz.h" />
+    <ClInclude Include="..\src\util\config.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="libs\libs.vcxproj">
