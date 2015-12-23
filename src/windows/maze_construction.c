@@ -311,7 +311,7 @@ static void window_maze_construction_update(rct_window *w)
 	case RIDE_CONSTRUCTION_STATE_BACK:
 	case RIDE_CONSTRUCTION_STATE_SELECTED:
 		if (
-			(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint8) & INPUT_FLAG_TOOL_ACTIVE) &&
+			(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == WC_RIDE_CONSTRUCTION
 		) {
 			tool_cancel();
@@ -386,7 +386,7 @@ static void window_maze_construction_entrance_tooldown(int x, int y, rct_window*
 	else{
 		RCT2_GLOBAL(0x00F44191, uint8) = is_exit ^ 1;
 		window_invalidate_by_class(WC_RIDE_CONSTRUCTION);
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint8) = is_exit ? WIDX_MAZE_ENTRANCE : WIDX_MAZE_EXIT;
+		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) = is_exit ? WIDX_MAZE_ENTRANCE : WIDX_MAZE_EXIT;
 	}
 }
 

@@ -170,3 +170,15 @@ endif (UNIX)
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 
 TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCTLIBS_LIB} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB} ${RCT2_SECTIONS})
+
+# CMake does not allow specifying a dependency chain which includes built-in
+# targets, like `install`, so we have to trick it and execute dependency ourselves.
+install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_CURRENT_BINARY_DIR}\" --target g2)")
+install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/g2.dat" DESTINATION share/${PROJECT})
+install(DIRECTORY data/ DESTINATION share/${PROJECT})
+
+set(CPACK_PACKAGE_VERSION_MAJOR 0)
+set(CPACK_PACKAGE_VERSION_MINOR 0)
+set(CPACK_PACKAGE_VERSION_PATCH "3.1")
+INCLUDE(CPack)
