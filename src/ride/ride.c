@@ -811,15 +811,15 @@ void reset_all_ride_build_dates()
 static int ride_check_if_construction_allowed(rct_ride *ride)
 {
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
-		RCT2_GLOBAL(0x013CE952 + 6, uint16) = ride->name;
-		RCT2_GLOBAL(0x013CE952 + 8, uint32) = ride->name_arguments;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint16) = ride->name;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint32) = ride->name_arguments;
 		window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
 		return 0;
 	}
 
 	if (ride->status != RIDE_STATUS_CLOSED) {
-		RCT2_GLOBAL(0x013CE952 + 6, uint16) = ride->name;
-		RCT2_GLOBAL(0x013CE952 + 8, uint32) = ride->name_arguments;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint16) = ride->name;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint32) = ride->name_arguments;
 		window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_MUST_BE_CLOSED_FIRST);
 		return 0;
 	}
@@ -1666,8 +1666,8 @@ int ride_modify(rct_xy_element *input)
 		return 0;
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE) {
-		RCT2_GLOBAL(0x013CE952 + 6, uint16) = ride->name;
-		RCT2_GLOBAL(0x013CE952 + 8, uint32) = ride->name_arguments;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint16) = ride->name;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint32) = ride->name_arguments;
 		window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE);
 		return 0;
 	}
@@ -2884,7 +2884,7 @@ rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message
 		return measurement;
 	} else {
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = RideNameConvention[ride->type].vehicle_name;
-		RCT2_GLOBAL(0x013CE952 + 2, uint16) = RideNameConvention[ride->type].station_name;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = RideNameConvention[ride->type].station_name;
 		if (message != NULL) *message = STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES;
 		return NULL;
 	}

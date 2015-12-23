@@ -57,7 +57,7 @@ void screenshot_check()
 
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = stringId;
 				// RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_SCR_BMP;
-				// RCT2_GLOBAL(0x013CE952 + 2, uint16) = screenshotIndex;
+				// RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = screenshotIndex;
 				RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
 
 				window_error_open(STR_SCREENSHOT_SAVED_AS, -1);

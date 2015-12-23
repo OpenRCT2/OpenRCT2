@@ -1056,7 +1056,7 @@ void window_staff_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)){
 
 		RCT2_GLOBAL(0x13CE952,uint32) = RCT2_ADDRESS(0x992A00,uint16)[peep->staff_type];
-		gfx_draw_string_left(dpi, 2349, (void*)0x013CE952, 0,x, y);
+		gfx_draw_string_left(dpi, 2349, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0,x, y);
 
 		y += 10;
 	}

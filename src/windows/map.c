@@ -930,7 +930,7 @@ static void window_map_show_default_scenario_editor_buttons(rct_window *w) {
 	w->widgets[WIDX_MAP_SIZE_SPINNER].type = WWT_SPINNER;
 	w->widgets[WIDX_MAP_SIZE_SPINNER_UP].type = WWT_DROPDOWN_BUTTON;
 	w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].type = WWT_DROPDOWN_BUTTON;
-	RCT2_GLOBAL(0x013CE952 + 2, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 2;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 2;
 }
 
 static void window_map_inputsize_land(rct_window *w)

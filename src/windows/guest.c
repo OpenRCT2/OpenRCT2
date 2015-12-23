@@ -2186,7 +2186,7 @@ void window_guest_inventory_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (y >= maxY) break;
 		if (!peep_has_item(peep, item)) continue;
 
-		void *args = (void*)0x013CE952;
+		void *args = (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS;
 		rct_string_id stringId = window_guest_inventory_format_item(peep, item, (uint8*)args);
 		y += gfx_draw_string_left_wrapped(dpi, args, x, y, itemNameWidth, stringId, 0);
 		numItems++;

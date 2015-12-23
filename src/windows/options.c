@@ -1187,9 +1187,9 @@ static void window_options_invalidate(rct_window *w)
 
 	switch (w->page) {
 	case WINDOW_OPTIONS_PAGE_DISPLAY:
-		RCT2_GLOBAL(0x013CE952 + 16, uint16) = (uint16)gConfigGeneral.fullscreen_width;
-		RCT2_GLOBAL(0x013CE952 + 18, uint16) = (uint16)gConfigGeneral.fullscreen_height;
-		RCT2_GLOBAL(0x013CE952 + 12, uint16) = 2773 + gConfigGeneral.fullscreen_mode;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 16, uint16) = (uint16)gConfigGeneral.fullscreen_width;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 18, uint16) = (uint16)gConfigGeneral.fullscreen_height;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 12, uint16) = 2773 + gConfigGeneral.fullscreen_mode;
 
 		// disable resolution dropdown on "Fullscreen (desktop)"
 		if (gConfigGeneral.fullscreen_mode == 2){
@@ -1233,7 +1233,7 @@ static void window_options_invalidate(rct_window *w)
 
 	case WINDOW_OPTIONS_PAGE_CULTURE:
 		// currency: pounds, dollars, etc. (10 total)
-		RCT2_GLOBAL(0x013CE952 + 12, uint16) = CurrencyDescriptors[gConfigGeneral.currency_format].stringId;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 12, uint16) = CurrencyDescriptors[gConfigGeneral.currency_format].stringId;
 
 		// distance: metric / imperial / si
 		{
@@ -1244,14 +1244,14 @@ static void window_options_invalidate(rct_window *w)
 			case MEASUREMENT_FORMAT_METRIC: stringId = STR_METRIC; break;
 			case MEASUREMENT_FORMAT_SI: stringId = STR_SI; break;
 			}
-			RCT2_GLOBAL(0x013CE952 + 14, uint16) = stringId;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 14, uint16) = stringId;
 		}
 
 		// temperature: celsius/fahrenheit
-		RCT2_GLOBAL(0x013CE952 + 20, uint16) = STR_CELSIUS + gConfigGeneral.temperature_format;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 20, uint16) = STR_CELSIUS + gConfigGeneral.temperature_format;
 
 		// height: units/real values
-		RCT2_GLOBAL(0x013CE952 + 6, uint16) = gConfigGeneral.show_height_as_units ? STR_UNITS : STR_REAL_VALUES;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint16) = gConfigGeneral.show_height_as_units ? STR_UNITS : STR_REAL_VALUES;
 
 		window_options_culture_widgets[WIDX_LANGUAGE].type = WWT_DROPDOWN;
 		window_options_culture_widgets[WIDX_LANGUAGE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
@@ -1280,11 +1280,11 @@ static void window_options_invalidate(rct_window *w)
 			else
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = 1170;
 
-			RCT2_GLOBAL(0x013CE952 + 2, uint32) = (uint32)gAudioDevices[currentSoundDevice].name;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = (uint32)gAudioDevices[currentSoundDevice].name;
 		}
 
 		// music: on/off
-		RCT2_GLOBAL(0x013CE952 + 8, uint16) = STR_OFF + gConfigSound.ride_music;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint16) = STR_OFF + gConfigSound.ride_music;
 
 		widget_set_checkbox_value(w, WIDX_SOUND_CHECKBOX, gConfigSound.sound);
 		widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music);
