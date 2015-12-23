@@ -98,7 +98,7 @@ void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const 
 			exit(-1);
 			return;
 		}
-		
+
 		strncat(buffer, homedir, MAX_PATH - 1);
 		strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
 		strncat(buffer, ".config", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
@@ -121,11 +121,17 @@ void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const 
  */
 void platform_posix_sub_resolve_openrct_data_path(utf8 *out) {
 	static const utf8 *searchLocations[] = {
+		"../share/openrct2",
+#ifdef ORCT2_RESOURCE_DIR
+		// defined in CMakeLists.txt
+		ORCT2_RESOURCE_DIR,
+#endif // ORCT2_RESOURCE_DIR
 		"/var/lib/openrct2",
 		"/usr/share/openrct2",
 	};
 	for (size_t i = 0; i < countof(searchLocations); i++)
 	{
+		log_verbose("Looking for OpenRCT2 data in %s", searchLocations[i]);
 		if (platform_directory_exists(searchLocations[i]))
 		{
 			out[0] = '\0';

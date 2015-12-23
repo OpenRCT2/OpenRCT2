@@ -596,23 +596,23 @@ static void window_track_place_invalidate(rct_window *w)
 static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	rct_drawpixelinfo *clippedDpi;
-	rct_g1_element tmpElement, *subsituteElement;
+	rct_g1_element tmpElement, *substituteElement;
 
 	window_draw_widgets(w, dpi);
 
 	// Draw mini tile preview
 	clippedDpi = clip_drawpixelinfo(dpi, w->x + 4, 168, w->y + 18, 78);
 	if (clippedDpi != NULL) {
-		subsituteElement = &g1Elements[0];
-		tmpElement = *subsituteElement;
-		subsituteElement->offset = _window_track_place_mini_preview;
-		subsituteElement->width = TRACK_MINI_PREVIEW_WIDTH;
-		subsituteElement->height = TRACK_MINI_PREVIEW_HEIGHT;
-		subsituteElement->x_offset = 0;
-		subsituteElement->y_offset = 0;
-		subsituteElement->flags = 0;
+		substituteElement = &g1Elements[0];
+		tmpElement = *substituteElement;
+		substituteElement->offset = _window_track_place_mini_preview;
+		substituteElement->width = TRACK_MINI_PREVIEW_WIDTH;
+		substituteElement->height = TRACK_MINI_PREVIEW_HEIGHT;
+		substituteElement->x_offset = 0;
+		substituteElement->y_offset = 0;
+		substituteElement->flags = 0;
 		gfx_draw_sprite(clippedDpi, 0, 0, 0, 0);
-		*subsituteElement = tmpElement;
+		*substituteElement = tmpElement;
 
 		rct2_free(clippedDpi);
 	}

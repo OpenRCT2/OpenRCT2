@@ -1862,7 +1862,7 @@ static void window_ride_construction_entrance_click(rct_window *w)
 		RCT2_GLOBAL(0x00F44191, uint8) = 0;
 		RCT2_GLOBAL(0x00F44192, uint8) = w->number & 0xFF;
 		RCT2_GLOBAL(0x00F44193, uint8) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint8) |= INPUT_FLAG_6;
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
 		sub_6C9627();
 		if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT) {
 			RCT2_GLOBAL(0x00F440CC, uint8) = _rideConstructionState;
@@ -1886,7 +1886,7 @@ static void window_ride_construction_exit_click(rct_window *w)
 		RCT2_GLOBAL(0x00F44191, uint8) = 1;
 		RCT2_GLOBAL(0x00F44192, uint8) = w->number & 0xFF;
 		RCT2_GLOBAL(0x00F44193, uint8) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint8) |= INPUT_FLAG_6;
+		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
 		sub_6C9627();
 		if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT) {
 			RCT2_GLOBAL(0x00F440CC, uint8) = _rideConstructionState;

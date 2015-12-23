@@ -1,4 +1,11 @@
-version: 0.0.3.{build}
+version: 0.0.4.{build}
 build_script:
-- set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
-- .\build.bat
+- ps: >-
+    .\setenv.ps1
+
+    install
+
+    publish -Server AppVeyor -BuildNumber $env:APPVEYOR_BUILD_NUMBER -GitBranch $env:APPVEYOR_REPO_BRANCH
+artifacts:
+- path: .\artifacts\openrct2.zip
+  name: OpenRCT2

@@ -1014,7 +1014,7 @@ int widget_is_active_tool(rct_window *w, int widgetIndex)
 		return 0;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) != w->number)
 		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, sint32) != widgetIndex)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != widgetIndex)
 		return 0;
 
 	return 1;

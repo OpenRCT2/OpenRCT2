@@ -24,101 +24,101 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\lib\argparse\argparse.c">
+    <ClCompile Include="lib\argparse\argparse.c">
       <Filter>argparse</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\libspeex\resample.c">
+    <ClCompile Include="lib\libspeex\resample.c">
       <Filter>libspeex</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\lodepng\lodepng.c">
+    <ClCompile Include="lib\lodepng\lodepng.c">
       <Filter>lodepng</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\jansson\jansson\dump.c">
+    <ClCompile Include="lib\jansson\jansson\dump.c">
       <Filter>jansson</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\jansson\jansson\error.c">
+    <ClCompile Include="lib\jansson\jansson\error.c">
       <Filter>jansson</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\jansson\jansson\hashtable.c">
+    <ClCompile Include="lib\jansson\jansson\hashtable.c">
       <Filter>jansson</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\jansson\jansson\hashtable_seed.c">
+    <ClCompile Include="lib\jansson\jansson\hashtable_seed.c">
       <Filter>jansson</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\jansson\jansson\load.c">
+    <ClCompile Include="lib\jansson\jansson\load.c">
       <Filter>jansson</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\jansson\jansson\memory.c">
+    <ClCompile Include="lib\jansson\jansson\memory.c">
       <Filter>jansson</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\jansson\jansson\pack_unpack.c">
+    <ClCompile Include="lib\jansson\jansson\pack_unpack.c">
       <Filter>jansson</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\jansson\jansson\strbuffer.c">
+    <ClCompile Include="lib\jansson\jansson\strbuffer.c">
       <Filter>jansson</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\jansson\jansson\strconv.c">
+    <ClCompile Include="lib\jansson\jansson\strconv.c">
       <Filter>jansson</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\jansson\jansson\utf.c">
+    <ClCompile Include="lib\jansson\jansson\utf.c">
       <Filter>jansson</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\jansson\jansson\value.c">
+    <ClCompile Include="lib\jansson\jansson\value.c">
       <Filter>jansson</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\lib\cutest\CuTest.c">
+    <ClCompile Include="lib\cutest\CuTest.c">
       <Filter>cutest</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\lib\argparse\argparse.h">
+    <ClInclude Include="lib\argparse\argparse.h">
       <Filter>argparse</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\libspeex\arch.h">
+    <ClInclude Include="lib\libspeex\arch.h">
       <Filter>libspeex</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\libspeex\config.h">
+    <ClInclude Include="lib\libspeex\config.h">
       <Filter>libspeex</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\libspeex\os_support.h">
+    <ClInclude Include="lib\libspeex\os_support.h">
       <Filter>libspeex</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\libspeex\stack_alloc.h">
+    <ClInclude Include="lib\libspeex\stack_alloc.h">
       <Filter>libspeex</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\libspeex\speex\speex_resampler.h">
+    <ClInclude Include="lib\libspeex\speex\speex_resampler.h">
       <Filter>libspeex\speex</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\libspeex\speex\speex_types.h">
+    <ClInclude Include="lib\libspeex\speex\speex_types.h">
       <Filter>libspeex\speex</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\lodepng\lodepng.h">
+    <ClInclude Include="lib\lodepng\lodepng.h">
       <Filter>lodepng</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\jansson\jansson_config.h">
+    <ClInclude Include="lib\jansson\jansson_config.h">
       <Filter>jansson</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\jansson\jansson_private_config.h">
+    <ClInclude Include="lib\jansson\jansson_private_config.h">
       <Filter>jansson</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\jansson\jansson\hashtable.h">
+    <ClInclude Include="lib\jansson\jansson\hashtable.h">
       <Filter>jansson</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\jansson\jansson\jansson.h">
+    <ClInclude Include="lib\jansson\jansson\jansson.h">
       <Filter>jansson</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\jansson\jansson\jansson_private.h">
+    <ClInclude Include="lib\jansson\jansson\jansson_private.h">
       <Filter>jansson</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\jansson\jansson\lookup3.h">
+    <ClInclude Include="lib\jansson\jansson\lookup3.h">
       <Filter>jansson</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\jansson\jansson\strbuffer.h">
+    <ClInclude Include="lib\jansson\jansson\strbuffer.h">
       <Filter>jansson</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\jansson\jansson\utf.h">
+    <ClInclude Include="lib\jansson\jansson\utf.h">
       <Filter>jansson</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\lib\cutest\CuTest.h" />
+    <ClInclude Include="lib\cutest\CuTest.h" />
   </ItemGroup>
 </Project>

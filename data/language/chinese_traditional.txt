@@ -3475,7 +3475,7 @@ STR_5133    :{SMALLFONT}{BLACK}選擇較小的土地範圍
 STR_5134    :{SMALLFONT}{BLACK}選擇較大的土地範圍
 STR_5135    :{SMALLFONT}{BLACK}購買土地擁有權或建造權
 STR_5136    :土地擁有權
-STR_5137    :允許鏈條上拉及發車速度高至{VELOCITY}
+STR_5137    :移除遊樂設施的運行限制
 STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :去除煞車組件故障
@@ -3921,6 +3921,10 @@ STR_5578    :俄羅斯盧布 (R)
 STR_5579    :顥示縮放因子:
 STR_5580    :捷克克朗 (Kc)
 STR_5581    :顥示幀數
+STR_5582    :限制滑鼠游標於視窗中移動
+STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
+STR_5584    :SI
+STR_5585    :{SMALLFONT}{BLACK}移除遊樂設施的運行限制, 例如容許鏈條上拉速度高達{VELOCITY}
 
 
 #####################

@@ -1432,7 +1432,7 @@ STR_1426    :Queue Line
 STR_1427    :{WINDOW_COLOUR_2}Customers: {BLACK}{COMMA32} per hour
 STR_1428    :{WINDOW_COLOUR_2}Admission price:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
-STR_1430    :Free
+STR_1430    :無料
 STR_1431    :Walking
 STR_1432    :Heading for {STRINGID}
 STR_1433    :Queuing for {STRINGID}
@@ -1779,7 +1779,7 @@ STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
 STR_1775    :Off
 STR_1776    :On
-STR_1777    :{WINDOW_COLOUR_2}Music
+STR_1777    :{WINDOW_COLOUR_2}音楽
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger costume
@@ -2388,8 +2388,8 @@ STR_2380    :{SMALLFONT}{BLACK}Adjust smaller area of water
 STR_2381    :{SMALLFONT}{BLACK}Adjust larger area of water
 STR_2382    :Land
 STR_2383    :Water
-STR_2384    :{WINDOW_COLOUR_2}Your objective:
-STR_2385    :{BLACK}None
+STR_2384    :{WINDOW_COLOUR_2}あなたの目標:
+STR_2385    :{BLACK}なし
 STR_2386    :{BLACK}To have at least {COMMA16} guests in your park at the end of {MONTHYEAR}, with a park rating of at least 600
 STR_2387    :{BLACK}To achieve a park value of at least {POP16}{POP16}{CURRENCY} at the end of {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Have Fun!
@@ -2741,12 +2741,12 @@ STR_2732    :{COMMA16}ft
 STR_2733    :{COMMA16}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
-STR_2736    :{MONTH}, Year {COMMA16}
-STR_2737    :{STRINGID} {MONTH}, Year {COMMA16}
+STR_2736    :{MONTH}, 第{COMMA16}年
+STR_2737    :{STRINGID} {MONTH}, 第{COMMA16}年
 STR_2738    :Title screen music:
 STR_2739    :None
-STR_2740    :RollerCoaster Tycoon 1
-STR_2741    :RollerCoaster Tycoon 2
+STR_2740    :ローラーコースター タイクーン 1
+STR_2741    :ローラーコースター タイクーン 2
 STR_2742    :css50.dat not found
 STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat in your RCT2 installation.
 STR_2744    :[
@@ -3062,7 +3062,7 @@ STR_3051    :Golf hole C
 STR_3052    :Golf hole D
 STR_3053    :Golf hole E
 STR_3054    :Loading...
-STR_3055    :White
+STR_3055    :白
 STR_3056    :Translucent
 STR_3057    :{WINDOW_COLOUR_2}Construction Marker:
 STR_3058    :Brick walls
@@ -3643,24 +3643,24 @@ STR_5301    :{MEDIUMFONT}{BLACK}Clear your loan
 STR_5302    :Clear loan
 STR_5303    :Allow building in pause mode
 STR_5304    :Title Sequence:
-STR_5305    :RollerCoaster Tycoon 1
-STR_5306    :RollerCoaster Tycoon 1 (AA)
-STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
-STR_5308    :RollerCoaster Tycoon 2
+STR_5305    :ローラーコースター タイクーン  1
+STR_5306    :ローラーコースター タイクーン  1 (AA)
+STR_5307    :ローラーコースター タイクーン  1 (AA + 遊園地再生計画)
+STR_5308    :ローラーコースター タイクーン  2
 STR_5309    :OpenRCT2
-STR_5310    :Random
-STR_5311    :{SMALLFONT}{BLACK}Debug tools
+STR_5310    :ランダム
+STR_5311    :{SMALLFONT}{BLACK}デバグツール
 STR_5312    :Show console
 STR_5313    :Show tile inspector
 STR_5314    :Tile inspector
-STR_5315    :Grass
-STR_5316    :Sand
-STR_5317    :Dirt
-STR_5318    :Rock
-STR_5319    :Martian
-STR_5320    :Checkerboard
+STR_5315    :草
+STR_5316    :砂
+STR_5317    :土
+STR_5318    :石
+STR_5319    :火星
+STR_5320    :市松
 STR_5321    :Grass clumps
-STR_5322    :Ice
+STR_5322    :氷
 STR_5323    :Grid (red)
 STR_5324    :Grid (yellow)
 STR_5325    :Grid (blue)
@@ -3672,7 +3672,7 @@ STR_5330    :Underground view
 STR_5331    :Rock
 STR_5332    :Wood (red)
 STR_5333    :Wood (black)
-STR_5334    :Ice
+STR_5334    :氷
 STR_5335    :Ride entrance
 STR_5336    :Ride exit
 STR_5337    :Park entrance
@@ -3704,8 +3704,8 @@ STR_5362    :{BLACK}Set all guests' preferred ride intensity to:
 STR_5363    :More than 1
 STR_5364    :Less than 15
 STR_5365    :{BLACK}Staff speed:
-STR_5366    :Normal
-STR_5367    :Fast
+STR_5366    :普通
+STR_5367    :速い
 STR_5368    :Reset crash status
 STR_5369    :Park parameters...
 STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
@@ -3745,13 +3745,13 @@ STR_5403    :There may be no Load or Wait command or a save may be invalid
 STR_5404    :Name already exists
 STR_5405    :Enter a name for the save
 STR_5406    :Enter a name for the title sequence
-STR_5407    :Add
-STR_5408    :Remove
-STR_5409    :Insert
-STR_5410    :Edit
-STR_5411    :Reload
+STR_5407    :追加
+STR_5408    :削除
+STR_5409    :挿入
+STR_5410    :編集
+STR_5411    :リロード
 STR_5412    :Skip to
-STR_5413    :Load
+STR_5413    :ロード
 STR_5414    :Load{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :Load{MOVE_X}{87}{STRING}
 STR_5416    :Load{MOVE_X}{87}No save selected
@@ -3841,9 +3841,9 @@ STR_5499    :Player Name:
 STR_5500    :Add Server
 STR_5501    :Start Server
 STR_5502    :Multiplayer
-STR_5503    :Enter hostname or IP address:
+STR_5503    :ホスト名またはIPアドレスを入力してください:
 STR_5504    :{SMALLFONT}{BLACK}Show multiplayer status
-STR_5505    :Unable to connect to server.
+STR_5505    :サーバーに接続できない
 STR_5506    :Guests ignore intensities
 STR_5507    :Handymen mow grass by default
 STR_5508    :Allow loading files with incorrect checksums
@@ -3854,14 +3854,14 @@ STR_5512    :Save Game As
 STR_5513    :(Quick) save game
 STR_5514    :Disable vandalism
 STR_5515    :{SMALLFONT}{BLACK}Stops guests from vandalising your park when they're angry
-STR_5516    :{SMALLFONT}{BLACK}Black
-STR_5517    :{SMALLFONT}{BLACK}Grey
-STR_5518    :{SMALLFONT}{BLACK}White
+STR_5516    :{SMALLFONT}{BLACK}黒
+STR_5517    :{SMALLFONT}{BLACK}灰色
+STR_5518    :{SMALLFONT}{BLACK}白
 STR_5519    :{SMALLFONT}{BLACK}Dark purple
 STR_5520    :{SMALLFONT}{BLACK}Light purple
 STR_5521    :{SMALLFONT}{BLACK}Bright purple
-STR_5522    :{SMALLFONT}{BLACK}Dark blue
-STR_5523    :{SMALLFONT}{BLACK}Light blue
+STR_5522    :{SMALLFONT}{BLACK}紺色
+STR_5523    :{SMALLFONT}{BLACK}水色
 STR_5524    :{SMALLFONT}{BLACK}Icy blue
 STR_5525    :{SMALLFONT}{BLACK}Dark water
 STR_5526    :{SMALLFONT}{BLACK}Light water
@@ -3872,7 +3872,7 @@ STR_5530    :{SMALLFONT}{BLACK}Bright green
 STR_5531    :{SMALLFONT}{BLACK}Olive green
 STR_5532    :{SMALLFONT}{BLACK}Dark olive green
 STR_5533    :{SMALLFONT}{BLACK}Bright yellow
-STR_5534    :{SMALLFONT}{BLACK}Yellow
+STR_5534    :{SMALLFONT}{BLACK}黄色
 STR_5535    :{SMALLFONT}{BLACK}Dark yellow
 STR_5536    :{SMALLFONT}{BLACK}Light orange
 STR_5537    :{SMALLFONT}{BLACK}Dark orange
@@ -3887,10 +3887,10 @@ STR_5545    :{SMALLFONT}{BLACK}Dark pink
 STR_5546    :{SMALLFONT}{BLACK}Bright pink
 STR_5547    :{SMALLFONT}{BLACK}Light pink
 STR_5548    :Show all operating modes
-STR_5549    :Year/Month/Day
-STR_5550    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_5549    :年月日
+STR_5550    :{POP16}{POP16}第{COMMA16}年, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Year/Day/Month
-STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
+STR_5552    :{POP16}{POP16}第{COMMA16}年, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5553    :Pause game when Steam overlay is open
 STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
 STR_5555    :Show vehicles from other track types
@@ -3900,14 +3900,14 @@ STR_5558    :A restart is required for this setting to take effect
 STR_5559    :10 min. inspections
 STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on all rides
 STR_5561    :Failed to load language
-STR_5562    :WARNING!
+STR_5562    :注意!
 STR_5563    :This feature is currently unstable, take extra caution.
 STR_5564    :Insert Corrupt Element
 STR_5565    :{SMALLFONT}{BLACK}Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element.
-STR_5566    :Password:
+STR_5566    :パスワード:
 STR_5567    :Advertise
-STR_5568    :Password Required
-STR_5569    :This server requires a password
+STR_5568    :パスワードが必要
+STR_5569    :このサーバーはパスワードが必要
 STR_5570    :Fetch Servers
 STR_5571    :Join Game
 STR_5572    :Add To Favourites
