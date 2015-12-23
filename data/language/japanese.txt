@@ -1432,7 +1432,7 @@ STR_1426    :Queue Line
 STR_1427    :{WINDOW_COLOUR_2}Customers: {BLACK}{COMMA32} per hour
 STR_1428    :{WINDOW_COLOUR_2}Admission price:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
-STR_1430    :Free
+STR_1430    :無料
 STR_1431    :Walking
 STR_1432    :Heading for {STRINGID}
 STR_1433    :Queuing for {STRINGID}
@@ -1779,7 +1779,7 @@ STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
 STR_1775    :Off
 STR_1776    :On
-STR_1777    :{WINDOW_COLOUR_2}Music
+STR_1777    :{WINDOW_COLOUR_2}音楽
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger costume
@@ -2388,8 +2388,8 @@ STR_2380    :{SMALLFONT}{BLACK}Adjust smaller area of water
 STR_2381    :{SMALLFONT}{BLACK}Adjust larger area of water
 STR_2382    :Land
 STR_2383    :Water
-STR_2384    :{WINDOW_COLOUR_2}Your objective:
-STR_2385    :{BLACK}None
+STR_2384    :{WINDOW_COLOUR_2}あなたの目標:
+STR_2385    :{BLACK}なし
 STR_2386    :{BLACK}To have at least {COMMA16} guests in your park at the end of {MONTHYEAR}, with a park rating of at least 600
 STR_2387    :{BLACK}To achieve a park value of at least {POP16}{POP16}{CURRENCY} at the end of {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Have Fun!
@@ -2741,12 +2741,12 @@ STR_2732    :{COMMA16}ft
 STR_2733    :{COMMA16}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
-STR_2736    :{MONTH}, Year {COMMA16}
-STR_2737    :{STRINGID} {MONTH}, Year {COMMA16}
+STR_2736    :{MONTH}, 第{COMMA16}年
+STR_2737    :{STRINGID} {MONTH}, 第{COMMA16}年
 STR_2738    :Title screen music:
 STR_2739    :None
-STR_2740    :RollerCoaster Tycoon 1
-STR_2741    :RollerCoaster Tycoon 2
+STR_2740    :ローラーコースター タイクーン 1
+STR_2741    :ローラーコースター タイクーン 2
 STR_2742    :css50.dat not found
 STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat in your RCT2 installation.
 STR_2744    :[
@@ -3062,7 +3062,7 @@ STR_3051    :Golf hole C
 STR_3052    :Golf hole D
 STR_3053    :Golf hole E
 STR_3054    :Loading...
-STR_3055    :White
+STR_3055    :白
 STR_3056    :Translucent
 STR_3057    :{WINDOW_COLOUR_2}Construction Marker:
 STR_3058    :Brick walls
@@ -3643,10 +3643,10 @@ STR_5301    :{MEDIUMFONT}{BLACK}Clear your loan
 STR_5302    :Clear loan
 STR_5303    :Allow building in pause mode
 STR_5304    :Title Sequence:
-STR_5305    :RollerCoaster Tycoon 1
-STR_5306    :RollerCoaster Tycoon 1 (AA)
-STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
-STR_5308    :RollerCoaster Tycoon 2
+STR_5305    :ローラーコースター タイクーン  1
+STR_5306    :ローラーコースター タイクーン  1 (AA)
+STR_5307    :ローラーコースター タイクーン  1 (AA + 遊園地再生計画)
+STR_5308    :ローラーコースター タイクーン  2
 STR_5309    :OpenRCT2
 STR_5310    :ランダム
 STR_5311    :{SMALLFONT}{BLACK}デバグツール
@@ -3672,7 +3672,7 @@ STR_5330    :Underground view
 STR_5331    :Rock
 STR_5332    :Wood (red)
 STR_5333    :Wood (black)
-STR_5334    :Ice
+STR_5334    :氷
 STR_5335    :Ride entrance
 STR_5336    :Ride exit
 STR_5337    :Park entrance
@@ -3704,8 +3704,8 @@ STR_5362    :{BLACK}Set all guests' preferred ride intensity to:
 STR_5363    :More than 1
 STR_5364    :Less than 15
 STR_5365    :{BLACK}Staff speed:
-STR_5366    :Normal
-STR_5367    :Fast
+STR_5366    :普通
+STR_5367    :速い
 STR_5368    :Reset crash status
 STR_5369    :Park parameters...
 STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
@@ -3888,9 +3888,9 @@ STR_5546    :{SMALLFONT}{BLACK}Bright pink
 STR_5547    :{SMALLFONT}{BLACK}Light pink
 STR_5548    :Show all operating modes
 STR_5549    :年月日
-STR_5550    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_5550    :{POP16}{POP16}第{COMMA16}年, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Year/Day/Month
-STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
+STR_5552    :{POP16}{POP16}第{COMMA16}年, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5553    :Pause game when Steam overlay is open
 STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
 STR_5555    :Show vehicles from other track types
