@@ -86,12 +86,15 @@ else (WIN32)
 	PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
 endif (WIN32)
 
-# Include libdl for dlopen
 if (UNIX)
+	# Include libdl for dlopen
 	set(DLLIB dl)
+
+	# FontConfig for TrueType fonts.
+	PKG_CHECK_MODULES(FONTCONFIG REQUIRED fontconfig)
 endif (UNIX)
 
-INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLUDE_DIRS} ${SPEEX_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLUDE_DIRS} ${SPEEX_INCLUDE_DIRS} ${FONTCONFIG_INCLUDE_DIRS})
 
 LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${JANSSON_LIBRARY_DIRS} ${LIBCURL_LIBRARY_DIRS})
 
@@ -161,11 +164,6 @@ if (UNIX)
 		list(APPEND RCT2_SECTIONS "${CMAKE_BINARY_DIR}/openrct2_data_section.o" "${CMAKE_BINARY_DIR}/openrct2_text_section.o")
 		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-T,\"${CMAKE_CURRENT_SOURCE_DIR}/distribution/linux/ld_script.xc\"")
 	endif (APPLE)
-
-	# FontConfig for TrueType fonts.
-	find_path(FONTCONFIG_INCLUDE_DIR fontconfig/fontconfig.h)
-	find_library(FONTCONFIG_LIBRARY NAMES fontconfig)
-	TARGET_LINK_LIBRARIES(${PROJECT} ${FONTCONFIG_LIBRARY})
 endif (UNIX)
 
 # install into ${CMAKE_INSTALL_PREFIX}/bin/
@@ -174,7 +172,7 @@ endif (UNIX)
 # libopenrct2.dll -> openrct2.dll
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 
-TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCTLIBS_LIB} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB} ${RCT2_SECTIONS})
+TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCTLIBS_LIB} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB} ${RCT2_SECTIONS} ${FONTCONFIG_LIBRARIES})
 
 # CMake does not allow specifying a dependency chain which includes built-in
 # targets, like `install`, so we have to trick it and execute dependency ourselves.
