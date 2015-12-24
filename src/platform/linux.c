@@ -24,6 +24,7 @@
 #include <dlfcn.h>
 #include <stdlib.h>
 #include "../util/util.h"
+#include "fontconfig/fontconfig.h"
 
 // See http://syprog.blogspot.ru/2011/12/listing-loaded-shared-objects-in-linux.html
 struct lmap {
@@ -161,6 +162,33 @@ int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8
 {
 	STUB();
 	return 0;
+}
+
+bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
+{
+	FcConfig* config = FcInitLoadConfigAndFonts();
+	FcPattern* pat = FcNameParse((const FcChar8*) font->font_name);
+
+	FcConfigSubstitute(config, pat, FcMatchPattern);
+	FcDefaultSubstitute(pat);
+
+	bool found = false;
+	FcResult result = FcResultNoMatch;
+	FcPattern* match = FcFontMatch(config, pat, &result);
+
+	if (match)
+	{
+		FcChar8* filename = NULL;
+		if (FcPatternGetString(match, FC_FILE, 0, &filename) == FcResultMatch)
+		{
+			found = true;
+			strcpy(buffer, (utf8*) filename);
+		}
+		FcPatternDestroy(match);
+	}
+
+	FcPatternDestroy(pat);
+	return found;
 }
 
 #endif
