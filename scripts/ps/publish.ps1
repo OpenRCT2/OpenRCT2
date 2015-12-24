@@ -178,3 +178,4 @@ switch ($Task)
     default   { Write-Host "Unknown publish task." -ForegroundColor Red
                 $result = 1 }
 }
+exit $result
