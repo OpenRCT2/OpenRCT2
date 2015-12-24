@@ -1326,13 +1326,13 @@ void peep_update_falling(rct_peep* peep){
 
 		peep_update_action(&x, &y, &xy_distance, peep);
 		if (peep->action == PEEP_ACTION_DROWNING) return;
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x80000)){
+
+		if (gConfigNotifications.guest_died) {
 			RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
 			RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
-			if (gConfigNotifications.guest_died) {
-				news_item_add_to_queue(NEWS_ITEM_BLANK, STR_NEWS_ITEM_GUEST_DROWNED, peep->x | (peep->y << 16));
-			}
+			news_item_add_to_queue(NEWS_ITEM_BLANK, STR_NEWS_ITEM_GUEST_DROWNED, peep->x | (peep->y << 16));
 		}
+
 		RCT2_GLOBAL(0x135882E, uint16) += 25;
 		if (RCT2_GLOBAL(0x135882E, uint16) > 1000){
 			RCT2_GLOBAL(0x135882E, uint16) = 1000;
@@ -2126,8 +2126,8 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ri
 			msg_string = STR_PEEP_TRACKING_PEEP_IS_ON_X;
 
 		if (gConfigNotifications.guest_on_ride) {
-		news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, msg_string, peep->sprite_index);
-	}
+			news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, msg_string, peep->sprite_index);
+		}
 	}
 
 	if (ride->type == RIDE_TYPE_SPIRAL_SLIDE){
@@ -5271,8 +5271,8 @@ void peep_problem_warnings_update()
 	else if ( hunger_counter >= PEEP_HUNGER_WARNING_THRESHOLD && hunger_counter >= guests_in_park / 16) {
 		warning_throttle[0] = 4;
 		if (gConfigNotifications.guest_warnings) {
-		news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_ARE_HUNGRY, 20);
-	}
+			news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_ARE_HUNGRY, 20);
+		}
 	}
 
 	if (warning_throttle[1])
@@ -5280,8 +5280,8 @@ void peep_problem_warnings_update()
 	else if (thirst_counter >= PEEP_THIRST_WARNING_THRESHOLD && thirst_counter >= guests_in_park / 16) {
 		warning_throttle[1] = 4;
 		if (gConfigNotifications.guest_warnings) {
-		news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_ARE_THIRSTY, 21);
-	}
+			news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_ARE_THIRSTY, 21);
+		}
 	}
 
 	if (warning_throttle[2])
@@ -5289,8 +5289,8 @@ void peep_problem_warnings_update()
 	else if (bathroom_counter >= PEEP_BATHROOM_WARNING_THRESHOLD && bathroom_counter >= guests_in_park / 16) {
 		warning_throttle[2] = 4;
 		if (gConfigNotifications.guest_warnings) {
-		news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_CANT_FIND_BATHROOM, 22);
-	}
+			news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_CANT_FIND_BATHROOM, 22);
+		}
 	}
 
 	if (warning_throttle[3])
@@ -5298,8 +5298,8 @@ void peep_problem_warnings_update()
 	else if (litter_counter >= PEEP_LITTER_WARNING_THRESHOLD && litter_counter >= guests_in_park / 32) {
 		warning_throttle[3] = 4;
 		if (gConfigNotifications.guest_warnings) {
-		news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_DISLIKE_LITTER, 26);
-	}
+			news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_DISLIKE_LITTER, 26);
+		}
 	}
 
 	if (warning_throttle[4])
@@ -5307,8 +5307,8 @@ void peep_problem_warnings_update()
 	else if (disgust_counter >= PEEP_DISGUST_WARNING_THRESHOLD && disgust_counter >= guests_in_park / 32) {
 		warning_throttle[4] = 4;
 		if (gConfigNotifications.guest_warnings) {
-		news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_DISGUSTED_BY_PATHS, 31);
-	}
+			news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_DISGUSTED_BY_PATHS, 31);
+		}
 	}
 
 	if (warning_throttle[5])
@@ -5316,8 +5316,8 @@ void peep_problem_warnings_update()
 	else if (vandalism_counter >= PEEP_VANDALISM_WARNING_THRESHOLD && vandalism_counter >= guests_in_park / 32) {
 		warning_throttle[5] = 4;
 		if (gConfigNotifications.guest_warnings) {
-		news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_DISLIKE_VANDALISM, 33);
-	}
+			news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_DISLIKE_VANDALISM, 33);
+		}
 	}
 
 	if (warning_throttle[6])
@@ -5325,14 +5325,14 @@ void peep_problem_warnings_update()
 	else if (noexit_counter >= PEEP_NOEXIT_WARNING_THRESHOLD) {
 		warning_throttle[6] = 4;
 		if (gConfigNotifications.guest_warnings) {
-		news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_GETTING_LOST_OR_STUCK, 27);
+			news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_GETTING_LOST_OR_STUCK, 27);
 		}
 	} else if (lost_counter >= PEEP_LOST_WARNING_THRESHOLD) {
 		warning_throttle[6] = 4;
 		if (gConfigNotifications.guest_warnings) {
-		news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_GETTING_LOST_OR_STUCK, 16);
+			news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_GETTING_LOST_OR_STUCK, 16);
+		}
 	}
-}
 }
 
 /**
@@ -6775,8 +6775,8 @@ static int peep_interact_with_shop(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 			RCT2_GLOBAL(0x0013CE95A, uint32) = ride->name_arguments;
 			rct_string_id string_id = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? 1933 : 1932;
 			if (gConfigNotifications.guest_used_facility) {
-			news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, string_id, peep->sprite_index);
-		}
+				news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, string_id, peep->sprite_index);
+			}
 		}
 		return 1;
 	}
@@ -8318,8 +8318,8 @@ loc_69B221:
 		RCT2_GLOBAL((0x13CE952 + 2), uint32) = peep->id;
 		RCT2_GLOBAL((0x13CE956 + 2), uint16) = (shopItem >= 32 ? STR_SHOP_ITEM_INDEFINITE_PHOTO2 + (shopItem - 32) : STR_SHOP_ITEM_INDEFINITE_BALLOON + shopItem);
 		if (gConfigNotifications.guest_bought_item) {
-		news_item_add_to_queue(2, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, peep->sprite_index);
-	}
+			news_item_add_to_queue(2, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, peep->sprite_index);
+		}
 	}
 
 	if (shop_item_is_food(shopItem))
