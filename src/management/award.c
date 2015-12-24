@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../peep/peep.h"
@@ -619,7 +620,9 @@ void award_update_all()
 				// Add award
 				gCurrentAwards[freeAwardEntryIndex].type = awardType;
 				gCurrentAwards[freeAwardEntryIndex].time = 5;
-				news_item_add_to_queue(NEWS_ITEM_AWARD, STR_NEWS_ITEM_AWARD_MOST_UNTIDY + awardType, 0);
+				if (gConfigNotifications.park_award) {
+					news_item_add_to_queue(NEWS_ITEM_AWARD, STR_NEWS_ITEM_AWARD_MOST_UNTIDY + awardType, 0);
+				}
 				window_invalidate_by_class(WC_PARK_INFORMATION);
 			}
 		}

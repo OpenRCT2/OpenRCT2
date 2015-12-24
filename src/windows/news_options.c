@@ -27,7 +27,7 @@ static const notification_def NewsItemOptionDefinitions[] = {
 	{ NOTIFICATION_CATEGORY_RIDE,	STR_NOTIFICATION_RIDE_RESEARCHED,					offsetof(notification_configuration, ride_researched)					},
 	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_WARNINGS,					offsetof(notification_configuration, guest_warnings)					},
 	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_LOST,						offsetof(notification_configuration, guest_lost)						},
-	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_ENTERED_LEFT_PARK,			offsetof(notification_configuration, guest_entered_left_park)			},
+	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_LEFT_PARK,					offsetof(notification_configuration, guest_left_park)					},
 	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_QUEUING_FOR_RIDE,			offsetof(notification_configuration, guest_queuing_for_ride)			},
 	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_ON_RIDE,						offsetof(notification_configuration, guest_on_ride)						},
 	{ NOTIFICATION_CATEGORY_GUEST,	STR_NOTIFICATION_GUEST_LEFT_RIDE,					offsetof(notification_configuration, guest_left_ride)					},

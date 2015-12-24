@@ -240,7 +240,7 @@ typedef struct {
 	bool ride_researched;
 	bool guest_warnings;
 	bool guest_lost;
-	bool guest_entered_left_park;
+	bool guest_left_park;
 	bool guest_queuing_for_ride;
 	bool guest_on_ride;
 	bool guest_left_ride;

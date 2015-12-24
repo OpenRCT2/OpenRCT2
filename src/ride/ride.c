@@ -2299,7 +2299,9 @@ void ride_breakdown_add_news_item(int rideIndex)
 
 	RCT2_GLOBAL(0x0013CE952 + 0, uint16) = ride->name;
 	RCT2_GLOBAL(0x0013CE952 + 2, uint32) = ride->name_arguments;
-	news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_IS_BROKEN_DOWN, rideIndex);
+	if (gConfigNotifications.ride_broken_down) {
+		news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_IS_BROKEN_DOWN, rideIndex);
+	}
 }
 
 /**
@@ -2323,7 +2325,9 @@ static void ride_breakdown_status_update(int rideIndex)
 		) {
 			RCT2_GLOBAL(0x0013CE952 + 0, uint16) = ride->name;
 			RCT2_GLOBAL(0x0013CE952 + 2, uint32) = ride->name_arguments;
-			news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_IS_STILL_NOT_FIXED, rideIndex);
+			if (gConfigNotifications.ride_warnings) {
+				news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_IS_STILL_NOT_FIXED, rideIndex);
+			}
 		}
 	}
 
@@ -3043,7 +3047,9 @@ static void ride_entrance_exit_connected(rct_ride* ride, int ride_idx)
 			// name of ride is parameter of the format string
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ride->name;
 			RCT2_GLOBAL(0x013CE954, uint32) = ride->name_arguments;
+			if (gConfigNotifications.ride_warnings) {
 			news_item_add_to_queue(1, STR_ENTRANCE_NOT_CONNECTED, ride_idx);
+			}
 			ride->connected_message_throttle = 3;
 		}
 
@@ -3051,7 +3057,9 @@ static void ride_entrance_exit_connected(rct_ride* ride, int ride_idx)
 			// name of ride is parameter of the format string
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ride->name;
 			RCT2_GLOBAL(0x013CE954, uint32) = ride->name_arguments;
+			if (gConfigNotifications.ride_warnings) {
 			news_item_add_to_queue(1, STR_EXIT_NOT_CONNECTED, ride_idx);
+			}
 			ride->connected_message_throttle = 3;
 		}
 
@@ -3117,7 +3125,9 @@ static void ride_shop_connected(rct_ride* ride, int ride_idx)
 	// Name of ride is parameter of the format string
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ride->name;
 	RCT2_GLOBAL(0x013CE954, uint32) = ride->name_arguments;
+	if (gConfigNotifications.ride_warnings) {
 	news_item_add_to_queue(1, STR_ENTRANCE_NOT_CONNECTED, ride_idx);
+	}
 
 	ride->connected_message_throttle = 3;
 }
@@ -7211,7 +7221,9 @@ void ride_crash(int rideIndex, int vehicleIndex)
 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, rct_string_id) = ride->name;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
+	if (gConfigNotifications.ride_crashed) {
 	news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_HAS_CRASHED, rideIndex);
+}
 }
 
 bool ride_type_is_intamin(int rideType)
