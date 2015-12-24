@@ -30,7 +30,6 @@
 #include "error.h"
 #include "../interface/themes.h"
 #include "../rct1.h"
-#include "../network/network.h"
 
 enum {
 	WIDX_BACKGROUND,
@@ -146,13 +145,6 @@ void window_track_list_open(ride_list_item item)
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) = 0;
 	window_push_others_right(w);
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = 2;
-
-#ifndef NETWORK_DISABLE
-	// TODO: FIX NETWORK TRACKS
-	// Until tracks work with the network this will disable them
-	if (network_get_mode() != NETWORK_MODE_NONE)
-		RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, utf8)[0] = 0;
-#endif
 }
 
 /**
