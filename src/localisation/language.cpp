@@ -173,10 +173,18 @@ int language_open(int id)
 			ttf_dispose();
 			gUseTrueTypeFont = true;
 			gCurrentTTFFontSet = LanguagesDescriptors[id].font;
-			if (!ttf_initialise()) {
-				log_warning("Unable to initialise TrueType fonts.");
+			bool font_initialised = ttf_initialise();
 
-				// Fall back to sprite font
+			// Have we tried Arial yet?
+			if (!font_initialised && gCurrentTTFFontSet != &TTFFontArial) {
+				log_warning("Unable to initialise prefered TrueType font -- falling back to Arial.");
+				gCurrentTTFFontSet = &TTFFontArial;
+				font_initialised = ttf_initialise();
+			}
+
+			// Fall back to sprite font.
+			if (!font_initialised) {
+				log_warning("Falling back to sprite font.");
 				gUseTrueTypeFont = false;
 				gCurrentTTFFontSet = nullptr;
 				return 0;
