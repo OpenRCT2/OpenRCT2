@@ -1046,7 +1046,7 @@ void console_execute_silent(const utf8 *src)
 
 	// Aliases for hiding the console
 	if(strcmp(argv[0],"quit") == 0 || strcmp(argv[0],"exit") == 0)
-		argv[0]="hide";
+		strcpy(argv[0], "hide");
 
 	bool validCommand = false;
 	for (int i = 0; i < countof(console_command_table); i++) {
