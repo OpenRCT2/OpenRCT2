@@ -588,7 +588,7 @@ static void window_ride_construction_close(rct_window *w)
 
 		rct_ride *ride = GET_RIDE(rideIndex);
 		if (ride->mode == RIDE_MODE_SHOP_STALL && gConfigGeneral.auto_open_shops) {
-			ride->status = 1;
+			ride->status = RIDE_STATUS_OPEN;
 		}
 
 		window_ride_main_open(rideIndex);
