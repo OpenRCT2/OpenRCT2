@@ -171,6 +171,7 @@ typedef struct {
 	float window_scale;
 	uint8 show_fps;
 	uint8 trap_cursor;
+	uint8 auto_open_shops;
 } general_configuration;
 
 typedef struct {

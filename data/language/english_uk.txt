@@ -3924,6 +3924,8 @@ STR_5582    :Trap mouse cursor in window
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
+STR_5586    :Automatically open shops and stalls
+STR_5587    :{SMALLFONT}{BLACK}When enabled, shops and stalls will be automatically opened after placing then in the map
 
 #####################
 # Rides/attractions #
