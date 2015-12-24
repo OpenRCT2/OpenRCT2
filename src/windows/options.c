@@ -150,6 +150,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_TITLE_SEQUENCE_BUTTON,
 	WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM,
 	WIDX_STAY_CONNECTED_AFTER_DESYNC,
+	WIDX_AUTO_OPEN_SHOPS,
 
 	// Twitch
 	WIDX_CHANNEL_BUTTON = WIDX_PAGE_START,
@@ -270,6 +271,7 @@ static rct_widget window_options_misc_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	189,	200,	STR_EDIT_TITLE_SEQUENCES_BUTTON,			STR_NONE },											// Title sequences button
 	{ WWT_CHECKBOX,			2,	10,		299,	204,	215,	STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM,	STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM_TIP },	// Allow loading with incorrect checksum
 	{ WWT_CHECKBOX,			2,	10,		299,	219,	230,	STR_STAY_CONNECTED_AFTER_DESYNC,			STR_NONE },											// Do not disconnect after the client desynchronises with the server
+	{ WWT_CHECKBOX,			2,	10,		299,	234,	245,	STR_AUTO_OPEN_SHOPS,						STR_AUTO_OPEN_SHOPS_TIP },							// Automatically open shops & stalls
 	{ WIDGETS_END },
 };
 
@@ -431,7 +433,8 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_TITLE_SEQUENCE_DROPDOWN) |
 	(1 << WIDX_TITLE_SEQUENCE_BUTTON) |
 	(1 << WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM) |
-	(1 << WIDX_STAY_CONNECTED_AFTER_DESYNC),
+	(1 << WIDX_STAY_CONNECTED_AFTER_DESYNC) |
+	(1 << WIDX_AUTO_OPEN_SHOPS),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_CHANNEL_BUTTON) |
@@ -685,6 +688,11 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 			break;
 		case WIDX_STAY_CONNECTED_AFTER_DESYNC:
 			gConfigNetwork.stay_connected = !gConfigNetwork.stay_connected;
+			config_save_default();
+			window_invalidate(w);
+			break;
+		case WIDX_AUTO_OPEN_SHOPS:
+			gConfigGeneral.auto_open_shops = !gConfigGeneral.auto_open_shops;
 			config_save_default();
 			window_invalidate(w);
 		}
@@ -1345,6 +1353,7 @@ static void window_options_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
 		widget_set_checkbox_value(w, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
 		widget_set_checkbox_value(w, WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
+		widget_set_checkbox_value(w, WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.auto_open_shops);
 
 		window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
@@ -1359,6 +1368,7 @@ static void window_options_invalidate(rct_window *w)
 		window_options_misc_widgets[WIDX_TITLE_SEQUENCE_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		window_options_misc_widgets[WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_STAY_CONNECTED_AFTER_DESYNC].type = WWT_CHECKBOX;
+		window_options_misc_widgets[WIDX_AUTO_OPEN_SHOPS].type = WWT_CHECKBOX;
 		break;
 
 	case WINDOW_OPTIONS_PAGE_TWITCH:
