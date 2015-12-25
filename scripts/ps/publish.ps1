@@ -120,7 +120,7 @@ function Do-Installer()
     New-Item -Force -ItemType Directory $artifactsDir > $null
 
     # Create installer
-    & "$installerDir\build.ps1"
+    & "$installerDir\build.ps1" -BuildNumber $BuildNumber -GitBranch $GitBranch
     if ($LASTEXITCODE -ne 0)
     {
         Write-Host "Failed to create installer." -ForegroundColor Red
@@ -138,7 +138,7 @@ function Do-Installer()
         return 1
     }
 
-    Copy-Item $binaries[0].FullName $artifactsDir
+    Move-Item $binaries[0].FullName $artifactsDir
     return 0
 }
 
