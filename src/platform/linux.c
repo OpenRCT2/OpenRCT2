@@ -166,7 +166,17 @@ int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8
 
 bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
 {
+	assert(buffer != NULL);
+	assert(font != NULL);
+
+	log_verbose("Looking for font %s with FontConfig.", font->font_name);
 	FcConfig* config = FcInitLoadConfigAndFonts();
+	if (!config)
+	{
+		log_error("Failed to initialize FontConfig library");
+		FcFini();
+		return false;
+	}
 	FcPattern* pat = FcNameParse((const FcChar8*) font->font_name);
 
 	FcConfigSubstitute(config, pat, FcMatchPattern);
@@ -182,12 +192,17 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
 		if (FcPatternGetString(match, FC_FILE, 0, &filename) == FcResultMatch)
 		{
 			found = true;
-			strcpy(buffer, (utf8*) filename);
+			safe_strncpy(buffer, (utf8*) filename, MAX_PATH);
+			log_verbose("FontConfig provided font %s", filename);
 		}
 		FcPatternDestroy(match);
+	} else {
+		log_warning("Failed to find required font.");
 	}
 
 	FcPatternDestroy(pat);
+	FcConfigDestroy(config);
+	FcFini();
 	return found;
 }
 
