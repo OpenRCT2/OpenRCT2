@@ -138,7 +138,7 @@ function Do-Installer()
         return 1
     }
 
-    Copy-Item $binaries[0].FullName $artifactsDir
+    Move-Item $binaries[0].FullName $artifactsDir
     return 0
 }
 
