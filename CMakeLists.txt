@@ -89,12 +89,9 @@ endif (WIN32)
 if (UNIX)
 	# Include libdl for dlopen
 	set(DLLIB dl)
-
-	# FontConfig for TrueType fonts.
-	PKG_CHECK_MODULES(FONTCONFIG REQUIRED fontconfig)
 endif (UNIX)
 
-INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLUDE_DIRS} ${SPEEX_INCLUDE_DIRS} ${FONTCONFIG_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLUDE_DIRS} ${SPEEX_INCLUDE_DIRS})
 
 LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${JANSSON_LIBRARY_DIRS} ${LIBCURL_LIBRARY_DIRS})
 
@@ -115,6 +112,13 @@ if (APPLE)
 	FIND_LIBRARY(ICONV_LIBRARIES NAMES iconv libiconv libiconv-2 c)
 	TARGET_LINK_LIBRARIES(${PROJECT} ${ICONV_LIBRARIES})
 endif (APPLE)
+
+if (UNIX AND NOT APPLE)
+	# FontConfig for TrueType fonts.
+	PKG_CHECK_MODULES(FONTCONFIG REQUIRED fontconfig)
+	INCLUDE_DIRECTORIES(${FONTCONFIG_INCLUDE_DIRS})
+	TARGET_LINK_LIBRARIES(${PROJECT} ${FONTCONFIG_LIBRARIES})
+endif (UNIX AND NOT APPLE)
 
 # Handle creating the rct2 text and data files on OS X and Linux
 # See details in src/openrct2.c:openrct2_setup_rct2_segment for how the values
@@ -172,7 +176,7 @@ endif (UNIX)
 # libopenrct2.dll -> openrct2.dll
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 
-TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCTLIBS_LIB} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB} ${RCT2_SECTIONS} ${FONTCONFIG_LIBRARIES})
+TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCTLIBS_LIB} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB} ${RCT2_SECTIONS})
 
 # CMake does not allow specifying a dependency chain which includes built-in
 # targets, like `install`, so we have to trick it and execute dependency ourselves.
