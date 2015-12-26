@@ -1329,7 +1329,7 @@ void peep_update_falling(rct_peep* peep){
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x80000)){
 			RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
 			RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
-			news_item_add_to_queue(NEWS_ITEM_BLANK, 2347, peep->x | (peep->y << 16));
+			news_item_add_to_queue(NEWS_ITEM_BLANK, STR_NEWS_ITEM_GUEST_DROWNED, peep->x | (peep->y << 16));
 		}
 		RCT2_GLOBAL(0x135882E, uint16) += 25;
 		if (RCT2_GLOBAL(0x135882E, uint16) > 1000){
@@ -2119,9 +2119,9 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ri
 
 		rct_string_id msg_string;
 		if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_IN_RIDE)
-			msg_string = 1932;
+			msg_string = STR_PEEP_TRACKING_PEEP_IS_IN_X;
 		else
-			msg_string = 1933;
+			msg_string = STR_PEEP_TRACKING_PEEP_IS_ON_X;
 
 		news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, msg_string, peep->sprite_index);
 	}
@@ -3169,7 +3169,7 @@ static void peep_update_ride_sub_state_18(rct_peep* peep){
 		RCT2_GLOBAL(0x13CE958, uint16) = ride->name;
 		RCT2_GLOBAL(0x13CE95A, uint32) = ride->name_arguments;
 
-		news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, 1934, peep->sprite_index);
+		news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_LEFT_RIDE_X, peep->sprite_index);
 	}
 
 	peep->var_79 = 0xFF;
@@ -6297,7 +6297,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 			RCT2_GLOBAL(0x0013CE954, uint32) = peep->id;
 			RCT2_GLOBAL(0x0013CE958, rct_string_id) = ride->name;
 			RCT2_GLOBAL(0x0013CE95A, uint32) = ride->name_arguments;
-			news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, 1931, peep->sprite_index);
+			news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
 		}
 		return 1;
 	}
@@ -6339,7 +6339,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 			if (peep->flags & PEEP_FLAGS_TRACKING){
 				RCT2_GLOBAL(0x0013CE952, rct_string_id) = peep->name_string_idx;
 				RCT2_GLOBAL(0x0013CE954, uint32) = peep->id;
-				news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, 1935, peep->sprite_index);
+				news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_LEFT_PARK, peep->sprite_index);
 			}
 			return 1;
 		}
@@ -6674,7 +6674,7 @@ static int peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 			RCT2_GLOBAL(0x0013CE954, uint32) = peep->id;
 			RCT2_GLOBAL(0x0013CE958, rct_string_id) = ride->name;
 			RCT2_GLOBAL(0x0013CE95A, uint32) = ride->name_arguments;
-			news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, 1931, peep->sprite_index);
+			news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
 		}
 
 		return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
