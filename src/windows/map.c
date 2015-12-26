@@ -1547,9 +1547,13 @@ static uint16 map_window_get_pixel_colour_peep(int x, int y)
 	if (!(mapElement->properties.surface.ownership & OWNERSHIP_OWNED))
 		colour = 10 | (colour & 0xFF00);
 
+	const size_t count = countof(ElementTypeAddColour);
 	while (!map_element_is_last_for_tile(mapElement++)) {
 		int mapElementType = map_element_get_type(mapElement) >> 2;
-		assert(mapElementType < countof(ElementTypeMaskColour));
+		if (mapElementType >= count)
+		{
+			mapElementType = MAP_ELEMENT_TYPE_CORRUPT >> 2;
+		}
 		colour &= ElementTypeMaskColour[mapElementType];
 		colour |= ElementTypeAddColour[mapElementType];
 	}
