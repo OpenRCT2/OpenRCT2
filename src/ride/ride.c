@@ -2299,7 +2299,7 @@ void ride_breakdown_add_news_item(int rideIndex)
 
 	RCT2_GLOBAL(0x0013CE952 + 0, uint16) = ride->name;
 	RCT2_GLOBAL(0x0013CE952 + 2, uint32) = ride->name_arguments;
-	news_item_add_to_queue(NEWS_ITEM_RIDE, 1927, rideIndex);
+	news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_IS_BROKEN_DOWN, rideIndex);
 }
 
 /**
@@ -2323,7 +2323,7 @@ static void ride_breakdown_status_update(int rideIndex)
 		) {
 			RCT2_GLOBAL(0x0013CE952 + 0, uint16) = ride->name;
 			RCT2_GLOBAL(0x0013CE952 + 2, uint32) = ride->name_arguments;
-			news_item_add_to_queue(NEWS_ITEM_RIDE, 1929, rideIndex);
+			news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_IS_STILL_NOT_FIXED, rideIndex);
 		}
 	}
 
