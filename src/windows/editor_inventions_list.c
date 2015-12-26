@@ -155,7 +155,7 @@ static rct_window_event_list window_editor_inventions_list_drag_events = {
 
 rct_research_item *_editorInventionsListDraggedItem;
 
-#define WindowHighlightedItem(w) *((rct_research_item**)&(w->var_494))
+#define WindowHighlightedItem(w) *((rct_research_item**)&(w->highlighted_item))
 
 static void window_editor_inventions_list_drag_open(rct_research_item *researchItem);
 static void move_research_item(rct_research_item *beforeItem);

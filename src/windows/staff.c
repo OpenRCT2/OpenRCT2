@@ -309,8 +309,7 @@ rct_window *window_staff_open(rct_peep* peep)
 		w->page = 0;
 		w->viewport_focus_coordinates.y = 0;
 		w->frame_no = 0;
-
-		RCT2_GLOBAL((int*)w + 0x496, uint16) = 0; // missing, var_494 should perhaps be uint16?
+		w->highlighted_item = 0;
 
 		window_staff_disable_widgets(w);
 
@@ -993,7 +992,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 	int eax = 0;
 
 	if (w->page == WINDOW_STAFF_OVERVIEW){
-		eax = w->var_494 >> 16;
+		eax = w->highlighted_item >> 16;
 		eax &= 0xFFFC;
 	}
 	ebx += eax;

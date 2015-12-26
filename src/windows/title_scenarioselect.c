@@ -125,7 +125,7 @@ void window_scenarioselect_open()
 	window->enabled_widgets = 0x04 | 0x10 | 0x20 | 0x40 | 0x80 | 0x100;
 	window_init_scroll_widgets(window);
 	window->viewport_focus_coordinates.var_480 = -1;
-	window->var_494 = 0;
+	window->highlighted_item = 0;
 
 	window_scenarioselect_init_tabs();
 
@@ -174,7 +174,7 @@ static void window_scenarioselect_mousedown(int widgetIndex, rct_window*w, rct_w
 {
 	if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB5) {
 		w->selected_tab = widgetIndex - 4;
-		w->var_494 = 0;
+		w->highlighted_item = 0;
 		window_invalidate(w);
 		window_event_resize_call(w);
 		window_event_invalidate_call(w);
@@ -248,8 +248,8 @@ static void window_scenarioselect_scrollmouseover(rct_window *w, int scrollIndex
 		selected = scenario;
 		break;
 	}
-	if (w->var_494 != (uint32)selected) {
-		w->var_494 = (uint32)selected;
+	if (w->highlighted_item != (uint32)selected) {
+		w->highlighted_item = (uint32)selected;
 		window_invalidate(w);
 	}
 }
@@ -285,7 +285,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 
 	// Return if no scenario highlighted
-	scenario = (rct_scenario_basic*)w->var_494;
+	scenario = (rct_scenario_basic*)w->highlighted_item;
 	if (scenario == NULL)
 		return;
 
@@ -341,7 +341,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 		if (y > dpi->y + dpi->height)
 			continue;
 
-		highlighted = w->var_494 == (int)scenario;
+		highlighted = w->highlighted_item == (int)scenario;
 
 		// Draw hover highlight
 		if (highlighted)
