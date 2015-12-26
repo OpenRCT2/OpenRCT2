@@ -122,7 +122,9 @@ void window_scenarioselect_open()
 	);
 	window->widgets = window_scenarioselect_widgets;
 
-	window->enabled_widgets = 0x04 | 0x10 | 0x20 | 0x40 | 0x80 | 0x100;
+	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2)
+							| (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_TAB5);
+
 	window_init_scroll_widgets(window);
 	window->viewport_focus_coordinates.var_480 = -1;
 	window->highlighted_item = 0;
@@ -258,7 +260,9 @@ static void window_scenarioselect_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
 
-	w->pressed_widgets &= ~(0x10 | 0x20 | 0x40 | 0x80 | 0x100);
+	w->pressed_widgets &= ~( (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2)
+						   | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_TAB5) );
+
 	w->pressed_widgets |= 1LL << (w->selected_tab + 4);
 }
 
