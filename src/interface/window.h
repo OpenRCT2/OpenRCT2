@@ -434,6 +434,7 @@ enum {
 	WC_TRACK_DELETE_PROMPT = 48,
 	WC_INSTALL_TRACK = 49,
 	WC_CLEAR_SCENERY = 50,
+	WC_NOTIFICATION_OPTIONS = 109,
 	WC_CHEATS = 110,
 	WC_RESEARCH = 111,
 	WC_VIEWPORT = 112,
@@ -627,6 +628,7 @@ void window_install_track_open(const char* path);
 void window_banner_open(rct_windownumber number);
 void window_sign_open(rct_windownumber number);
 void window_sign_small_open(rct_windownumber number);
+void window_news_options_open();
 void window_cheats_open();
 void window_player_list_open();
 void window_network_status_open(const char* text);
