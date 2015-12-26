@@ -22,6 +22,7 @@
 #define _OPENRCT2_H_
 
 #include "common.h"
+#include "platform/platform.h"
 
 enum {
 	STARTUP_ACTION_INTRO,
