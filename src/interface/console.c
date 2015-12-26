@@ -746,7 +746,7 @@ static void editor_load_selected_objects_console()
 
 static int cc_load_object(const utf8 **argv, int argc) {
 	if (argc > 0) {
-		utf8 path[260];
+		utf8 path[MAX_PATH];
 
 		substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), argv[0]);
 		// Require pointer to start of filename
