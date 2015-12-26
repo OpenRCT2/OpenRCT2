@@ -92,6 +92,10 @@ void openrct2_write_full_version_info(utf8 *buffer, size_t bufferSize)
 	if (!str_is_null_or_empty(OPENRCT2_BUILD_SERVER)) {
 		sprintf(strchr(buffer, 0), " provided by %s", OPENRCT2_BUILD_SERVER);
 	}
+
+#if DEBUG
+	sprintf(strchr(buffer, 0), " (DEBUG)");
+#endif
 }
 
 static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *newDirectory, const utf8 *extension)
