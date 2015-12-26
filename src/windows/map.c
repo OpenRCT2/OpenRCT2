@@ -1546,9 +1546,10 @@ static uint16 map_window_get_pixel_colour_peep(int x, int y)
 		colour = 10 | (colour & 0xFF00);
 
 	while (!map_element_is_last_for_tile(mapElement++)) {
-		int mapElementType = map_element_get_type(mapElement);
-		colour &= ElementTypeMaskColour[mapElementType >> 2];
-		colour |= ElementTypeAddColour[mapElementType >> 2];
+		int mapElementType = map_element_get_type(mapElement) >> 2;
+		assert(mapElementType < countof(ElementTypeMaskColour));
+		colour &= ElementTypeMaskColour[mapElementType];
+		colour |= ElementTypeAddColour[mapElementType];
 	}
 
 	return colour;
