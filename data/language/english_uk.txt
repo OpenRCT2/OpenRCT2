@@ -3957,6 +3957,18 @@ STR_5615    :L
 STR_5616    :{SMALLFONT}{BLACK}Last element for tile flag
 STR_5617    :{SMALLFONT}{BLACK}Move selected element up.
 STR_5618    :{SMALLFONT}{BLACK}Move selected element down.
+STR_5619    :RCT1 Classic
+STR_5620    :Corkscrew Follies
+STR_5621    :Loopy Landscapes
+STR_5622    :RCT2 Vanilla
+STR_5623    :Wacky Worlds
+STR_5624    :Time Twister
+STR_5625    :{OPENQUOTES}Real{ENDQUOTES} Parks
+STR_5626    :Other Parks
+STR_5627    :Group scenario list by:
+STR_5628    :Source game
+STR_5629    :Difficulty level
+STR_5630    :Enable unlocking of scenarios
 
 #####################
 # Rides/attractions #
