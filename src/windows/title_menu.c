@@ -33,17 +33,17 @@
 enum {
 	WIDX_START_NEW_GAME,
 	WIDX_CONTINUE_SAVED_GAME,
+	WIDX_MULTIPLAYER,
 	WIDX_SHOW_TUTORIAL,
-	WIDX_GAME_TOOLS,
-	WIDX_MULTIPLAYER
+	WIDX_GAME_TOOLS
 };
 
 static rct_widget window_title_menu_widgets[] = {
-	{ WWT_IMGBTN, 2, 0, 81, 0, 81, SPR_MENU_NEW_GAME, STR_START_NEW_GAME_TIP },
-	{ WWT_IMGBTN, 2, 82, 163, 0, 81, SPR_MENU_LOAD_GAME, STR_CONTINUE_SAVED_GAME_TIP },
-	{ WWT_IMGBTN, 2, 164, 245, 0, 81, SPR_MENU_TUTORIAL, STR_SHOW_TUTORIAL_TIP },
-	{ WWT_IMGBTN, 2, 246, 327, 0, 81, SPR_MENU_TOOLBOX, STR_GAME_TOOLS },
-	{ WWT_DROPDOWN_BUTTON, 2, 82, 245, 88, 99, STR_MULTIPLAYER, STR_NONE },
+	{ WWT_IMGBTN, 2, 0, 0, 0, 81, SPR_MENU_NEW_GAME,		STR_START_NEW_GAME_TIP			},
+	{ WWT_IMGBTN, 2, 0, 0, 0, 81, SPR_MENU_LOAD_GAME,		STR_CONTINUE_SAVED_GAME_TIP		},
+	{ WWT_IMGBTN, 2, 0, 0, 0, 81, SPR_MENU_MULTIPLAYER,		STR_SHOW_MULTIPLAYER_TIP		},
+	{ WWT_IMGBTN, 2, 0, 0, 0, 81, SPR_MENU_TUTORIAL,		STR_SHOW_TUTORIAL_TIP			},
+	{ WWT_IMGBTN, 2, 0, 0, 0, 81, SPR_MENU_TOOLBOX,			STR_GAME_TOOLS					},
 	{ WIDGETS_END },
 };
 
@@ -94,8 +94,8 @@ void window_title_menu_open()
 	rct_window* window;
 
 	window = window_create(
-		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 328) / 2, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 142,
-		328, 100,
+		0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 142,
+		0, 100,
 		&window_title_menu_events,
 		WC_TITLE_MENU,
 		WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND
@@ -104,18 +104,29 @@ void window_title_menu_open()
 	window->enabled_widgets = (
 		(1 << WIDX_START_NEW_GAME) |
 		(1 << WIDX_CONTINUE_SAVED_GAME) |
-		(1 << WIDX_SHOW_TUTORIAL) |
-		(1 << WIDX_GAME_TOOLS) |
-		(1 << WIDX_MULTIPLAYER)
+#ifndef DISABLE_NETWORK
+		(1 << WIDX_MULTIPLAYER) |
+#endif
+		// Disable tutorial
+		// (1 << WIDX_SHOW_TUTORIAL) |
+		(1 << WIDX_GAME_TOOLS)
 	);
 
-	// Disable tutorial button
-	window->disabled_widgets = (1 << WIDX_SHOW_TUTORIAL);
+	int i = 0;
+	int x = 0;
+	for (rct_widget *widget = window->widgets; widget->type != WWT_LAST; widget++) {
+		if (widget_is_enabled(window, i)) {
+			widget->left = x;
+			widget->right = x + 81;
 
-#if DISABLE_NETWORK
-	// Disable multiplayer
-	window->widgets[WIDX_MULTIPLAYER].type = WWT_EMPTY;
-#endif
+			x += 82;
+		} else {
+			widget->type = WWT_EMPTY;
+		}
+		i++;
+	}
+	window->width = x;
+	window->x = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - window->width) / 2;
 
 	window_init_scroll_widgets(window);
 }
@@ -195,18 +206,6 @@ static void window_title_menu_cursor(rct_window *w, int widgetIndex, int x, int 
 static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	gfx_fill_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + 82 - 1, 0x2000000 | 51);
-
-	rct_widget *multiplayerButtonWidget = &window_title_menu_widgets[WIDX_MULTIPLAYER];
-	if (multiplayerButtonWidget->type != WWT_EMPTY) {
-		gfx_fill_rect(
-			dpi,
-			w->x + multiplayerButtonWidget->left,
-			w->y + multiplayerButtonWidget->top,
-			w->x + multiplayerButtonWidget->right,
-			w->y + multiplayerButtonWidget->bottom,
-			0x2000000 | 51
-		);
-	}
 	window_draw_widgets(w, dpi);
 }
 

@@ -2208,6 +2208,8 @@ enum {
 
 	STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP = 5585,
 
+	STR_SHOW_MULTIPLAYER_TIP = 5588,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
