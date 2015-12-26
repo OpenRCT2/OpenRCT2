@@ -576,7 +576,7 @@ static void window_park_set_disabled_tabs(rct_window *w)
 static void window_park_prepare_window_title_text()
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
-	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
 }
 
 #pragma region Entrance page
@@ -949,7 +949,7 @@ static void window_park_entrance_invalidate(rct_window *w)
 
 	// Set open / close park button state
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
-	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
 	window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].image = park_is_open() ? SPR_OPEN : SPR_CLOSED;
 	window_park_entrance_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !park_is_open() * 2 + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
 	window_park_entrance_widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + park_is_open() * 2 + widget_is_pressed(w, WIDX_OPEN_LIGHT);
@@ -1038,7 +1038,7 @@ static void window_park_entrance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	gfx_draw_string_centred_clipped(
 		dpi,
 		1191,
-		(void*)0x013CE952,
+		(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
 		0,
 		w->x + (labelWidget->left + labelWidget->right) / 2,
 		w->y + labelWidget->top,
@@ -1468,7 +1468,7 @@ static void window_park_price_invalidate(rct_window *w)
 		window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_DROPDOWN_BUTTON;
 	}
 
-	RCT2_GLOBAL(0x013CE952 + 6, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
 	window_park_price_widgets[WIDX_PRICE].image = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) == 0 ? STR_FREE : 1429;
 
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
@@ -1590,20 +1590,20 @@ static void window_park_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		parkSize = squaredmetres_to_squaredfeet(parkSize);
 	}
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = parkSize;
-	gfx_draw_string_left(dpi, stringIndex, (void*)0x013CE952, 0, x, y);
+	gfx_draw_string_left(dpi, stringIndex, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	y += 10;
 
 	// Draw number of rides / attractions
 	if (w->list_information_type != (uint16)-1) {
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = w->list_information_type;
-		gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, (void*)0x013CE952, 0, x, y);
+		gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	}
 	y += 10;
 
 	// Draw number of staff
 	if (w->var_48C != -1) {
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = w->var_48C;
-		gfx_draw_string_left(dpi, STR_STAFF_LABEL, (void*)0x013CE952, 0, x, y);
+		gfx_draw_string_left(dpi, STR_STAFF_LABEL, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	}
 	y += 10;
 
@@ -1748,7 +1748,7 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + window_park_objective_widgets[WIDX_PAGE_BACKGROUND].top + 7;
 	safe_strncpy((char*)0x009BC677, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_DETAILS, char), 256);
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 3165;
-	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 222, 1191, 0);
+	y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 222, 1191, 0);
 	y += 5;
 
 	// Your objective:
@@ -1760,7 +1760,7 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	RCT2_GLOBAL(0x013CE954, short) = date_get_total_months(MONTH_OCTOBER, RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8));
 	RCT2_GLOBAL(0x013CE956, int) = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32);
 
-	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 221, 2385 + RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8), 0);
+	y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 221, 2385 + RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8), 0);
 	y += 5;
 
 	// Objective outcome
@@ -1771,7 +1771,7 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		} else {
 			// Objective completed
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32);
-			gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 222, 2788, 0);
+			gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 222, 2788, 0);
 		}
 	}
 }

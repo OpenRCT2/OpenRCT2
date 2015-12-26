@@ -122,5 +122,5 @@ static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int y = w->y + 30;
 
 	RCT2_GLOBAL(0x13CE952, uint16) = ShortcutStringIds[RCT2_GLOBAL(0x009DE511, uint8)];
-	gfx_draw_string_centred_wrapped(dpi, (void*)0x013CE952, x, y, 242, 2785, RCT2_GLOBAL(0x9DEB8D, uint8));
+	gfx_draw_string_centred_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 242, 2785, RCT2_GLOBAL(0x9DEB8D, uint8));
 }

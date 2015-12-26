@@ -630,7 +630,7 @@ static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		x = w->x + 4;
 		y = w->y + window_guest_list_widgets[WIDX_GUEST_LIST].bottom + 2;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, sint16) = w->var_492;
-		gfx_draw_string_left(dpi, (w->var_492 == 1 ? 1755 : 1754), (void*)0x013CE952, 0, x, y);
+		gfx_draw_string_left(dpi, (w->var_492 == 1 ? 1755 : 1754), (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	}
 }
 
@@ -683,7 +683,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 				// Guest name
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
 				RCT2_GLOBAL(0x013CE954, uint32) = peep->id;
-				gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 0, y - 1, 113);
+				gfx_draw_string_left_clipped(dpi, format, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 0, y - 1, 113);
 
 				switch (_window_guest_list_selected_view) {
 				case VIEW_ACTIONS:
@@ -699,8 +699,8 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 					get_arguments_from_action(peep, &argument_1, &argument_2);
 
 					RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = argument_1;
-					RCT2_GLOBAL(0x013CE952 + 4, uint32) = argument_2;
-					gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 133, y - 1, 314);
+					RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = argument_2;
+					gfx_draw_string_left_clipped(dpi, format, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 133, y - 1, 314);
 					break;
 				case VIEW_THOUGHTS:
 					// For each thought
@@ -716,8 +716,8 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 						get_arguments_from_thought(peep->thoughts[j], &argument_1, &argument_2);
 
 						RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = argument_1;
-						RCT2_GLOBAL(0x013CE952 + 4, uint32) = argument_2;
-						gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 118, y - 1, 329);
+						RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = argument_2;
+						gfx_draw_string_left_clipped(dpi, format, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 118, y - 1, 329);
 						break;
 					}
 					break;
@@ -754,9 +754,9 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
 				// Draw action
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = _window_guest_list_groups_argument_1[i];
-				RCT2_GLOBAL(0x013CE952 + 4, uint32) = _window_guest_list_groups_argument_2[i];
-				RCT2_GLOBAL(0x013CE952 + 10, uint32) = numGuests;
-				gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 0, y - 1, 414);
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = _window_guest_list_groups_argument_2[i];
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 10, uint32) = numGuests;
+				gfx_draw_string_left_clipped(dpi, format, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 0, y - 1, 414);
 
 				// Draw guest count
 				RCT2_GLOBAL(0x013CE95A, uint16) = STR_GUESTS_COUNT_COMMA_SEP;

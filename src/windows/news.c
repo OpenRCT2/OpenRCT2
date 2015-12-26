@@ -291,8 +291,8 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 
 		// Date text
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_DATE_DAY_1 + newsItem->day - 1;
-		RCT2_GLOBAL(0x013CE952 + 2, uint16) = STR_MONTH_MARCH + (newsItem->month_year % 8);
-		gfx_draw_string_left(dpi, 2235, (void*)0x013CE952, 2, 4, y);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = STR_MONTH_MARCH + (newsItem->month_year % 8);
+		gfx_draw_string_left(dpi, 2235, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 2, 4, y);
 
 		// Item text
 		utf8 buffer[400];

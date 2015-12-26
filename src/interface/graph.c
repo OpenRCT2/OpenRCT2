@@ -36,7 +36,7 @@ static void graph_draw_months_uint8(rct_drawpixelinfo *dpi, uint8 *history, int 
 		if (history[i] != 0 && history[i] != 255 && yearOver32 % 4 == 0) {
 			// Draw month text
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = ((yearOver32 / 4) + 8) % 8 + STR_MONTH_SHORT_MAR;
-			gfx_draw_string_centred(dpi, 2222, x, y - 10, 0, (void*)0x013CE952);
+			gfx_draw_string_centred(dpi, 2222, x, y - 10, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
 
 			// Draw month mark
 			gfx_fill_rect(dpi, x, y, x, y + 3, 10);
