@@ -285,12 +285,7 @@ money32 calculate_ride_value(rct_ride *ride)
 		return 0;
 
 	// Fair value * (...)
-	return (ride->value * 10) * (
-		ride->var_124 + ride->var_126 + ride->var_128 + ride->var_12A +
-		ride->var_12C + ride->var_12E + ride->age + ride->running_cost +
-		ride->var_134 + ride->var_136 +
-		*((uint8*)(0x0097D21E + (ride->type * 8))) * 4
-	);
+	return (ride->value * 10) * (ride_customers_in_last_5_minutes(ride) + *((uint8*)(0x0097D21E + (ride->type * 8))) * 4);
 }
 
 /**

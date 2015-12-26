@@ -5970,9 +5970,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + window_ride_customer_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
 	// Customers per hour
-	customersPerHour = ride->var_124 + ride->var_126 + ride->var_128 + ride->var_12A + ride->var_12C +
-					   ride->var_12E + ride->age + ride->running_cost + ride->var_134 + ride->var_136;
-	customersPerHour *= 12;
+	customersPerHour = ride_customers_per_hour(ride);
 	gfx_draw_string_left(dpi, STR_CUSTOMERS_PER_HOUR, &customersPerHour, 0, x, y);
 	y += 10;
 
