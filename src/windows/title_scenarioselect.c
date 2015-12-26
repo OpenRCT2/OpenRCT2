@@ -40,20 +40,26 @@ enum {
 	WIDX_TAB3,
 	WIDX_TAB4,
 	WIDX_TAB5,
+	WIDX_TAB6,
+	WIDX_TAB7,
+	WIDX_TAB8,
 	WIDX_SCENARIOLIST
 };
 
 static rct_widget window_scenarioselect_widgets[] = {
-	{ WWT_FRAME,	0,	0,		609,	0,		333,	-1,						STR_NONE },				// panel / background
-	{ WWT_CAPTION,	0,	1,		608,	1,		14,		STR_SELECT_SCENARIO,	STR_WINDOW_TITLE_TIP },	// title bar
-	{ WWT_CLOSEBOX,	0,	597,	607,	2,		13,		824,					STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_IMGBTN,	1,	0,		609,	50,		333,	-1,						STR_NONE },				// tab content panel
+	{ WWT_FRAME,	0,	0,		733,	0,		333,	-1,						STR_NONE },				// panel / background
+	{ WWT_CAPTION,	0,	1,		732,	1,		14,		STR_SELECT_SCENARIO,	STR_WINDOW_TITLE_TIP },	// title bar
+	{ WWT_CLOSEBOX,	0,	721,	731,	2,		13,		824,					STR_CLOSE_WINDOW_TIP },	// close x button
+	{ WWT_IMGBTN,	1,	0,		733,	50,		333,	-1,						STR_NONE },				// tab content panel
 	{ WWT_TAB,		1,	3,		93,		17,		50,		0x200015BC,				STR_NONE },				// tab 1
 	{ WWT_TAB,		1,	94,		184,	17,		50,		0x200015BC,				STR_NONE },				// tab 2
 	{ WWT_TAB,		1,	185,	275,	17,		50,		0x200015BC,				STR_NONE },				// tab 3
 	{ WWT_TAB,		1,	276,	366,	17,		50,		0x200015BC,				STR_NONE },				// tab 4
 	{ WWT_TAB,		1,	367,	457,	17,		50,		0x200015BC,				STR_NONE },				// tab 5
-	{ WWT_SCROLL,	1,	3,		433,	54,		329,	2,						STR_NONE },				// level list
+	{ WWT_TAB,		1,	458,	593,	17,		50,		0x200015BC,				STR_NONE },				// tab 6
+	{ WWT_TAB,		1,	594,	684,	17,		50,		0x200015BC,				STR_NONE },				// tab 7
+	{ WWT_TAB,		1,	685,	775,	17,		50,		0x200015BC,				STR_NONE },				// tab 8
+	{ WWT_SCROLL,	1,	3,		555,	54,		329,	2,						STR_NONE },				// level list
 	{ WIDGETS_END },
 };
 
@@ -114,7 +120,7 @@ void window_scenarioselect_open()
 	scenario_load_list();
 
 	window = window_create_centred(
-		610,
+		733,
 		334,
 		&window_scenarioselect_events,
 		WC_SCENARIO_SELECT,
@@ -123,7 +129,8 @@ void window_scenarioselect_open()
 	window->widgets = window_scenarioselect_widgets;
 
 	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2)
-							| (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_TAB5);
+							| (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_TAB5)
+							| (1 << WIDX_TAB6) | (1 << WIDX_TAB7) | (1 << WIDX_TAB8);
 
 	window_init_scroll_widgets(window);
 	window->viewport_focus_coordinates.var_480 = -1;
@@ -140,23 +147,20 @@ void window_scenarioselect_open()
  */
 static void window_scenarioselect_init_tabs()
 {
-	int i, x, show_pages;
-	rct_widget* widget;
-	rct_scenario_basic* scenario;
-
-	show_pages = 0;
-	for (i = 0; i < gScenarioListCount; i++) {
-		scenario = &gScenarioList[i];
+	int show_pages = 0;
+	for (int i = 0; i < gScenarioListCount; i++) {
+		printf("%s\n", gScenarioList[i].name);
+		rct_scenario_basic* scenario = &gScenarioList[i];
 		if (scenario->flags & SCENARIO_FLAGS_VISIBLE)
 			show_pages |= 1 << scenario->category;
 	}
 
-	x = 3;
-	for (i = 0; i < 5; i++) {
-		widget = &window_scenarioselect_widgets[i + 4];
+	int x = 3;
+	for (int i = 0; i < 8; i++) {
+		rct_widget* widget = &window_scenarioselect_widgets[i + 4];
 		if (!(show_pages & (1 << i))) {
-			widget->type = WWT_EMPTY;
-			continue;
+//			widget->type = WWT_EMPTY;
+//			continue;
 		}
 
 		widget->type = WWT_TAB;
@@ -174,7 +178,7 @@ static void window_scenarioselect_mouseup(rct_window *w, int widgetIndex)
 
 static void window_scenarioselect_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
-	if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB5) {
+	if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB8) {
 		w->selected_tab = widgetIndex - 4;
 		w->highlighted_item = 0;
 		window_invalidate(w);
@@ -187,12 +191,9 @@ static void window_scenarioselect_mousedown(int widgetIndex, rct_window*w, rct_w
 
 static void window_scenarioselect_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
-	int i;
-	rct_scenario_basic *scenario;
-
 	*height = 0;
-	for (i = 0; i < gScenarioListCount; i++) {
-		scenario = &gScenarioList[i];
+	for (int i = 0; i < gScenarioListCount; i++) {
+		rct_scenario_basic *scenario = &gScenarioList[i];
 		if (scenario->category != w->selected_tab)
 			continue;
 		if (scenario->flags & SCENARIO_FLAGS_VISIBLE)
@@ -206,11 +207,8 @@ static void window_scenarioselect_scrollgetsize(rct_window *w, int scrollIndex, 
  */
 static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 {
-	int i;
-	rct_scenario_basic *scenario;
-
-	for (i = 0; i < gScenarioListCount; i++) {
-		scenario = &gScenarioList[i];
+	for (int i = 0; i < gScenarioListCount; i++) {
+		rct_scenario_basic *scenario = &gScenarioList[i];
 		if (scenario->category != w->selected_tab)
 			continue;
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
@@ -232,15 +230,10 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex
  */
 static void window_scenarioselect_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
 {
-	int i;
-	rct_scenario_basic *scenario, *selected;
-
-	selected = NULL;
-	for (i = 0; i < gScenarioListCount; i++) {
-		scenario = &gScenarioList[i];
-		if (scenario->category != w->selected_tab)
-			continue;
-		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
+	rct_scenario_basic *selected = NULL;
+	for (int i = 0; i < gScenarioListCount; i++) {
+		rct_scenario_basic *scenario = &gScenarioList[i];
+		if (scenario->category != w->selected_tab || !(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;
 
 		y -= 24;
@@ -261,10 +254,14 @@ static void window_scenarioselect_invalidate(rct_window *w)
 	colour_scheme_update(w);
 
 	w->pressed_widgets &= ~( (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2)
-						   | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_TAB5) );
+						   | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_TAB5)
+						   | (1 << WIDX_TAB6) | (1 << WIDX_TAB7) | (1 << WIDX_TAB8) );
 
 	w->pressed_widgets |= 1LL << (w->selected_tab + 4);
 }
+
+int gScenarioGroupingStyle = 1; // 1 = new, 2 = classic
+bool gScenarioEnableUnlocking = true;
 
 static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
@@ -277,15 +274,20 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	format = (theme_get_preset()->features.rct1_scenario_font) ? 5138 : 1193;
 
 	// Text for each tab
-	for (i = 0; i < 5; i++) {
+	for (i = 0; i < 8; i++) {
 		widget = &window_scenarioselect_widgets[WIDX_TAB1 + i];
 		if (widget->type == WWT_EMPTY)
 			continue;
 
 		x = (widget->left + widget->right) / 2 + w->x;
 		y = (widget->top + widget->bottom) / 2 + w->y - 3;
-		RCT2_GLOBAL(0x013CE952 + 0, short) = STR_BEGINNER_PARKS + i;
-		gfx_draw_string_centred_wrapped(dpi, (void*)0x013CE952, x, y, 87, format, 10);
+
+		if (gScenarioGroupingStyle == 1) {
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = STR_SCENARIO_CATEGORY_RCT1_CLASSIC + i;
+		} else { // old-style
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = STR_BEGINNER_PARKS + i;
+		}
+		gfx_draw_string_centred_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 87, format, 10);
 	}
 
 	// Return if no scenario highlighted
@@ -297,28 +299,28 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
 	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
 	safe_strncpy((char*)0x009BC677, scenario->name, 64);
-	RCT2_GLOBAL(0x013CE952 + 0, short) = 3165;
-	gfx_draw_string_centred_clipped(dpi, 1193, (void*)0x013CE952, 0, x + 85, y, 170);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = 3165; // empty string
+	gfx_draw_string_centred_clipped(dpi, 1193, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x + 85, y, 170);
 	y += 15;
 
 	// Scenario details
 	safe_strncpy((char*)0x009BC677, scenario->details, 256);
-	RCT2_GLOBAL(0x013CE952 + 0, short) = 3165;
-	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, 1191, 0) + 5;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = 3165; // empty string
+	y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 170, 1191, 0) + 5;
 
 	// Scenario objective
-	RCT2_GLOBAL(0x013CE952 + 0, short) = scenario->objective_type + STR_OBJECTIVE_NONE;
-	RCT2_GLOBAL(0x013CE952 + 2, short) = scenario->objective_arg_3;
-	RCT2_GLOBAL(0x013CE952 + 4, short) = date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1);
-	RCT2_GLOBAL(0x013CE952 + 6, int) = scenario->objective_arg_2;
-	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, STR_OBJECTIVE, 0) + 5;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = scenario->objective_type + STR_OBJECTIVE_NONE;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, short) = scenario->objective_arg_3;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, short) = date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, int) = scenario->objective_arg_2;
+	y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 170, STR_OBJECTIVE, 0) + 5;
 
 	// Scenario score
 	if (scenario->flags & SCENARIO_FLAGS_COMPLETED) {
 		safe_strncpy((char*)0x009BC677, scenario->completed_by, 64);
-		RCT2_GLOBAL(0x013CE952 + 0, short) = 3165;
-		RCT2_GLOBAL(0x013CE952 + 2, int) = scenario->company_value;
-		y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = 3165; // empty string
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, int) = scenario->company_value;
+		y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);
 	}
 }
 
@@ -354,18 +356,18 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 		// Draw scenario name
 		safe_strncpy((char*)0x009BC677, scenario->name, 64);
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 3165;
-		gfx_draw_string_centred(dpi, highlighted ? highlighted_format : unhighlighted_format, 210, y + 1, 0, (void*)0x013CE952);
+		gfx_draw_string_centred(dpi, highlighted ? highlighted_format : unhighlighted_format, 270, y + 1, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
 
 		// Check if scenario is completed
 		if (scenario->flags & SCENARIO_FLAGS_COMPLETED) {
 			// Draw completion tick
-			gfx_draw_sprite(dpi, 0x5A9F, 395, y + 1, 0);
+			gfx_draw_sprite(dpi, 0x5A9F, 500, y + 1, 0);
 
 			// Draw completion score
 			safe_strncpy((char*)0x009BC677, scenario->completed_by, 64);
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 2793;
 			RCT2_GLOBAL(0x013CE954, short) = 3165;
-			gfx_draw_string_centred(dpi, highlighted ? 1193 : 1191, 210, y + 11, 0, (void*)0x013CE952);
+			gfx_draw_string_centred(dpi, highlighted ? 1193 : 1191, 270, y + 11, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
 		}
 
 		y += 24;
