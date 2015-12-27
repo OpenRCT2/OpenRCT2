@@ -36,6 +36,7 @@
 #include "platform/platform.h"
 #include "ride/ride.h"
 #include "scenario.h"
+#include "scenario_sources.h"
 #include "title.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"

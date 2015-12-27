@@ -72,6 +72,17 @@ typedef struct {
 	uint32 scenario_count;		// 0x0C
 } rct_scenario_scores_header;
 
+typedef enum {
+	SCENARIO_SOURCE_RCT1_CLASSIC,
+	SCENARIO_SOURCE_RCT1_CORKSCREW,
+	SCENARIO_SOURCE_RCT1_LOOPY,
+	SCENARIO_SOURCE_RCT2_VANILLA,
+	SCENARIO_SOURCE_RCT2_WACKY,
+	SCENARIO_SOURCE_RCT2_TIME,
+	SCENARIO_SOURCE_REAL,
+	SCENARIO_SOURCE_OTHER
+} scenario_source;
+
 /**
  * Scenario basic structure, mainly for scenario select
  * size: 0x02B0
@@ -89,6 +100,8 @@ typedef struct {
 	sint32 flags;				// 0x0268
 	uint32 company_value;		// 0x026C
 	char completed_by[64];		// 0x0270
+	scenario_source source_game;// new in OpenRCT2
+	sint16 source_index;		// new in OpenRCT2
 } rct_scenario_basic;
 
 typedef struct {
