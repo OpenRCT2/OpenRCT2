@@ -390,6 +390,11 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				);
 				type_name = buffer;
 				break;
+			case MAP_ELEMENT_TYPE_CORRUPT:
+				// fall-through
+			default:
+				sprintf(buffer, "Unknown (type %d)", type);
+				type_name = buffer;
 		}
 
 		gfx_draw_string(dpi, type_name, 12, x, y);
