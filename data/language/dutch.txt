@@ -3918,6 +3918,9 @@ STR_5582    :Aanwijzer in venster vasthouden
 STR_5583    :{COMMA1DP16} m/s
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Heft de limieten op het tabblad Bedrijfsopties van een attractie op, waardoor je bijvoorbeeld kettingsheuvels met snelheden tot {VELOCITY} kunt hebben.
+STR_5586    :Winkels en kraampjes automatisch openen
+STR_5587    :{SMALLFONT}{BLACK}Als deze optie is ingeschakeld zullen winkels en kraampjes na plaatsing automatisch worden geopend.
+STR_5588    :{SMALLFONT}{BLACK}Multiplayer
 
 #############
 # Scenarios #
@@ -5945,6 +5948,56 @@ STR_NAME    :  'Donkere eeuwen'-thema
 STR_NAME    :  Mythologisch thema
 
 #################
+# Small objects #
+#################
+[BRBASE]
+STR_NAME    :Basisblok
+
+[BRBASE2]
+STR_NAME    :Basisblok
+
+[BRBASE3]
+STR_NAME    :Basisblok
+
+[TAL]
+STR_NAME    :Boom in alligatorvorm
+
+[TCB]
+STR_NAME    :Klaverenboom
+
+[TDF]
+STR_NAME    :Dolfijnenfontein
+
+[TDM]
+STR_NAME    :Ruitenboom
+
+[TEF]
+STR_NAME    :Olifantenfontein
+
+[TGS]
+STR_NAME    :Giraffenstandbeeld
+
+[THRS]
+STR_NAME    :Ruiterstandbeeld
+
+[THT]
+STR_NAME    :Hartenboom
+
+[TQF]
+STR_NAME    :Cupidofonteinen
+
+[TSD]
+STR_NAME    :Schoppenboom
+
+[TSH]
+STR_NAME    :Paardenstandbeeld
+
+[TSTD]
+STR_NAME    :Dolfijnenstandbeeld
+
+[TUS]
+STR_NAME    :Eenhoornstandbeeld
+#################
 # Large objects #
 #################
 [GLTHENT]
@@ -5962,8 +6015,128 @@ STR_NAME    :Rijtjeshuis
 #########
 # Walls #
 #########
+[WALLBB34]
+STR_NAME    :Stenen muur
+
+[WALLCBPC]
+STR_NAME    :Muur met valhek
+
+[WALLCFAR]
+STR_NAME    :Muur met boog
+
+[WALLCFPC]
+STR_NAME    :Muur met valhek
+
+[WALLCO16]
+STR_NAME    :Geplooide stalen muur
+
+[WALLIG16]
+STR_NAME    :Iglomuur
+
+[WALLIG24]
+STR_NAME    :Iglomuur
+
+[WALLJB16]
+STR_NAME    :Muur van zuurtjes
+
+[WALLLT32]
+STR_NAME    :Stalen traliewerk
+
+[WALLNT32]
+STR_NAME    :Tennisnetmuur
+
+[WALLNT33]
+STR_NAME    :Tennisnetmuur
+
+[WALLPOST]
+STR_NAME    :Paal
+
+[WALLST16]
+STR_NAME    :Stalen muur
+
+[WALLST32]
+STR_NAME    :Stalen muur
+
+[WALLST8]
+STR_NAME    :Stalen muur
+
+[WALLSTFN]
+STR_NAME    :Stalen hek
+
 [WALLTXGT]
 STR_NAME    :'Texas Giant'-bord
+
+[WALLWDPS]
+STR_NAME    :Hek van houten palen
+
+[WBR2]
+STR_NAME    :Stenen muur
+
+[WBR2A]
+STR_NAME    :Stenen muur
+
+[WBR3]
+STR_NAME    :Stenen muur
+
+[WC3]
+STR_NAME    :Romeinse zuilenmuur
+
+[WC16]
+STR_NAME    :Besneeuwd hek
+
+[WC17]
+STR_NAME    :Besneeuwde houten schutting
+
+[WC18]
+STR_NAME    :Besneeuwd hek van houten palen
+
+[WBW]
+STR_NAME    :Hek van botten
+
+[WCW1]
+STR_NAME    :Muur van speelkaarten
+
+[WCW2]
+STR_NAME    :Muur van speelkaarten
+
+[WEW]
+STR_NAME    :Egyptische muur
+
+[WFW1]
+STR_NAME    :Houten schutting
+
+[WFWG]
+STR_NAME    :Houten schutting
+
+[WJF]
+STR_NAME    :Junglehek
+
+[WMW]
+STR_NAME    :Muur in Marsstijl
+
+[WMWW]
+STR_NAME    :Houten hek
+
+[WPW1]
+STR_NAME    :Hek van houten palen
+
+[WPW2]
+STR_NAME    :Hek van houten palen
+
+[WPW3]
+STR_NAME    :Houten hek
+
+[WRW]
+STR_NAME    :Romeinse muur
+
+[WRWA]
+STR_NAME    :Romeinse muur
+
+[WWTW]
+STR_NAME    :Hoog houten hek
+
+[WWTWA]
+STR_NAME    :Houten hek
 
 ##################
 # Path additions #
