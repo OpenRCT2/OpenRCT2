@@ -897,4 +897,36 @@ void platform_get_exe_path(utf8 *outPath)
 	_wfullpath(exePath, tempPath, MAX_PATH);
 	WideCharToMultiByte(CP_UTF8, 0, exePath, countof(exePath), outPath, MAX_PATH, NULL, NULL);
 }
+
+bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
+{
+#ifndef __MINGW32__
+	wchar_t *fontFolder;
+	if (SUCCEEDED(SHGetKnownFolderPath(&FOLDERID_Fonts, 0, NULL, &fontFolder)))
+	{
+		// Convert wchar to utf8, then copy the font folder path to the buffer.
+		utf8 *outPathTemp = widechar_to_utf8(fontFolder);
+		strcpy(buffer, outPathTemp);
+		free(outPathTemp);
+
+		CoTaskMemFree(fontFolder);
+
+		// Append the requested font's file name.
+		const char separator[2] = { platform_get_path_separator(), 0 };
+		strcat(buffer, separator);
+		strcat(buffer, font->filename);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+#else
+	log_warning("MINGW-compatibility hack: falling back to C:\\Windows\\Fonts");
+	strcat(buffer, "C:\\Windows\\Fonts\\");
+	strcat(buffer, font->filename);
+	return true;
+#endif
+}
+
 #endif

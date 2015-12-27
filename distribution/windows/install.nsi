@@ -111,13 +111,9 @@ Section "!OpenRCT2" Section1
 
     SetShellVarContext all
 
-    ; Copy language files
-    SetOutPath "$INSTDIR\data\language\"
-    File ${PATH_ROOT}data\language\*.txt
-
     ; Copy data files
     SetOutPath "$INSTDIR\data\"
-    File /r ${PATH_ROOT}data\*
+    File /r ${PATH_ROOT}bin\data\*
 
     ; Copy the rest of the stuff
     SetOutPath "$INSTDIR\"
@@ -125,12 +121,12 @@ Section "!OpenRCT2" Section1
 	; Copy curl ca file
 	File ..\..\curl-ca-bundle.crt
 
-    ; Copy curl ca file
-    File ..\..\curl-ca-bundle.crt
-
     ; Copy text files
     File ..\changelog.txt
     Push "$INSTDIR\changelog.txt"
+    Call unix2dos
+    File ..\known_issues.txt
+    Push "$INSTDIR\known_issues.txt"
     Call unix2dos
     File ..\..\licence.txt
     Push "$INSTDIR\licence.txt"

@@ -19,20 +19,21 @@
 *****************************************************************************/
 
 #include "../addresses.h"
-#include "../config.h"
 #include "../audio/audio.h"
+#include "../config.h"
 #include "../game.h"
-#include "../management/news_item.h"
-#include "../management/research.h"
-#include "../object.h"
-#include "../rct1.h"
-#include "../ride/ride.h"
-#include "../localisation/localisation.h"
-#include "../world/scenery.h"
-#include "../ride/track.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../interface/themes.h"
+#include "../localisation/localisation.h"
+#include "../management/news_item.h"
+#include "../management/research.h"
+#include "../network/network.h"
+#include "../object.h"
+#include "../rct1.h"
+#include "../ride/ride.h"
+#include "../ride/track.h"
+#include "../world/scenery.h"
 
 #define _window_new_ride_current_tab RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_RIDE_LIST_SELECTED_TAB, uint8)
 
@@ -873,9 +874,9 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 		rideDescription = item.type + 512;
 	}
 
-	RCT2_GLOBAL(0x013CE952 + 0, rct_string_id) = rideName;
-	RCT2_GLOBAL(0x013CE952 + 2, rct_string_id) = rideDescription;
-	gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, width, 1690, 0);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, rct_string_id) = rideName;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, rct_string_id) = rideDescription;
+	gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, width, 1690, 0);
 
 	// Number of designs available
 	if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
@@ -933,7 +934,16 @@ static void window_new_ride_select(rct_window *w)
 	window_close(w);
 	window_close_construction_windows();
 
-	if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
+	bool allowTrackDesigns = true;
+#ifndef NETWORK_DISABLE
+	// TODO: FIX NETWORK TRACKS
+	// Until tracks work with the network this will disable them
+	if (network_get_mode() != NETWORK_MODE_NONE) {
+		allowTrackDesigns = false;
+	}
+#endif
+
+	if (allowTrackDesigns && ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
 		track_load_list(item);
 
 		char *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char);

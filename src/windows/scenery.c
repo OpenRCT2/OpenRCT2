@@ -1031,12 +1031,12 @@ void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
 		// -14
-		gfx_draw_string_right(dpi, STR_COST_LABEL, (void*)0x013CE952, 0,
+		gfx_draw_string_right(dpi, STR_COST_LABEL, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0,
 			w->x + w->width - 0x1A, w->y + w->height - 13);
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = sceneryEntry->name;
-	gfx_draw_string_left_clipped(dpi, 0x4A7, (void*)0x013CE952, 0,
+	gfx_draw_string_left_clipped(dpi, 0x4A7, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0,
 		w->x + 3, w->y + w->height - 13, w->width - 19);
 }
 

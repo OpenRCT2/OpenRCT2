@@ -104,6 +104,7 @@
     <ClCompile Include="src\scenario_list.c" />
     <ClCompile Include="src\windows\changelog.c" />
     <ClCompile Include="src\windows\network_status.c" />
+    <ClCompile Include="src\windows\news_options.c" />
     <ClCompile Include="src\windows\player_list.c" />
     <ClCompile Include="src\windows\server_list.c" />
     <ClCompile Include="src\windows\server_start.c" />
@@ -376,7 +377,7 @@
       <PreprocessorDefinitions>$(OpenRCT2_DEFINES);DEBUG;_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <ObjectFileName>$(IntDir)fake\%(RelativeDir)</ObjectFileName>
+      <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
       <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
       <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>

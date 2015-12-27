@@ -86,8 +86,8 @@ else (WIN32)
 	PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
 endif (WIN32)
 
-# Include libdl for dlopen
 if (UNIX)
+	# Include libdl for dlopen
 	set(DLLIB dl)
 endif (UNIX)
 
@@ -112,6 +112,13 @@ if (APPLE)
 	FIND_LIBRARY(ICONV_LIBRARIES NAMES iconv libiconv libiconv-2 c)
 	TARGET_LINK_LIBRARIES(${PROJECT} ${ICONV_LIBRARIES})
 endif (APPLE)
+
+if (UNIX AND NOT APPLE)
+	# FontConfig for TrueType fonts.
+	PKG_CHECK_MODULES(FONTCONFIG REQUIRED fontconfig)
+	INCLUDE_DIRECTORIES(${FONTCONFIG_INCLUDE_DIRS})
+	TARGET_LINK_LIBRARIES(${PROJECT} ${FONTCONFIG_LIBRARIES})
+endif (UNIX AND NOT APPLE)
 
 # Handle creating the rct2 text and data files on OS X and Linux
 # See details in src/openrct2.c:openrct2_setup_rct2_segment for how the values

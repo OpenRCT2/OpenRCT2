@@ -930,7 +930,7 @@ static void window_map_show_default_scenario_editor_buttons(rct_window *w) {
 	w->widgets[WIDX_MAP_SIZE_SPINNER].type = WWT_SPINNER;
 	w->widgets[WIDX_MAP_SIZE_SPINNER_UP].type = WWT_DROPDOWN_BUTTON;
 	w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].type = WWT_DROPDOWN_BUTTON;
-	RCT2_GLOBAL(0x013CE952 + 2, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 2;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 2;
 }
 
 static void window_map_inputsize_land(rct_window *w)
@@ -1399,7 +1399,8 @@ static const uint16 ElementTypeMaskColour[] = {
 	0x0000,			// MAP_ELEMENT_TYPE_ENTRANCE
 	0xFFFF,			// MAP_ELEMENT_TYPE_FENCE
 	0x0000,			// MAP_ELEMENT_TYPE_SCENERY_MULTIPLE
-	0xFFFF			// MAP_ELEMENT_TYPE_BANNER
+	0xFFFF,			// MAP_ELEMENT_TYPE_BANNER
+	0x0000,			// MAP_ELEMENT_TYPE_CORRUPT
 };
 
 static const uint16 ElementTypeAddColour[] = {
@@ -1410,7 +1411,8 @@ static const uint16 ElementTypeAddColour[] = {
 	0xBABA,			// MAP_ELEMENT_TYPE_ENTRANCE
 	0x0000,			// MAP_ELEMENT_TYPE_FENCE
 	0x6363,			// MAP_ELEMENT_TYPE_SCENERY_MULTIPLE
-	0x0000			// MAP_ELEMENT_TYPE_BANNER
+	0x0000,			// MAP_ELEMENT_TYPE_BANNER
+	0x4444,			// MAP_ELEMENT_TYPE_CORRUPT
 };
 
 enum {
@@ -1545,10 +1547,15 @@ static uint16 map_window_get_pixel_colour_peep(int x, int y)
 	if (!(mapElement->properties.surface.ownership & OWNERSHIP_OWNED))
 		colour = 10 | (colour & 0xFF00);
 
+	const size_t count = countof(ElementTypeAddColour);
 	while (!map_element_is_last_for_tile(mapElement++)) {
-		int mapElementType = map_element_get_type(mapElement);
-		colour &= ElementTypeMaskColour[mapElementType >> 2];
-		colour |= ElementTypeAddColour[mapElementType >> 2];
+		int mapElementType = map_element_get_type(mapElement) >> 2;
+		if (mapElementType >= count)
+		{
+			mapElementType = MAP_ELEMENT_TYPE_CORRUPT >> 2;
+		}
+		colour &= ElementTypeMaskColour[mapElementType];
+		colour |= ElementTypeAddColour[mapElementType];
 	}
 
 	return colour;

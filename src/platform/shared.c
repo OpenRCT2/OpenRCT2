@@ -443,7 +443,7 @@ void platform_process_messages()
 					SDL_RestoreWindow(gWindow);
 					SDL_MaximizeWindow(gWindow);
 				}
-				if (SDL_GetWindowFlags(gWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) {
+				if ((SDL_GetWindowFlags(gWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP) {
 					SDL_RestoreWindow(gWindow);
 					SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
 				}

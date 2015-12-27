@@ -33,6 +33,7 @@ enum WINDOW_NEWS_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
+	WIDX_SETTINGS,
 	WIDX_SCROLL
 };
 
@@ -40,7 +41,8 @@ static rct_widget window_news_widgets[] = {
 	{ WWT_FRAME,			0,	0,			399,	0,		299,	0x0FFFFFFFF,			STR_NONE },				// panel / background
 	{ WWT_CAPTION,			0,	1,			398,	1,		14,		STR_RECENT_MESSAGES,	STR_WINDOW_TITLE_TIP },	// title bar
 	{ WWT_CLOSEBOX,			0,	387,		397,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_SCROLL,			0,	4,			395,	18,		295,	2,						STR_NONE },				// scroll
+	{ WWT_FLATBTN,			0,	372,		395,	18,		41,		5201,					STR_NONE },				// settings
+	{ WWT_SCROLL,			0,	4,			395,	44,		295,	2,						STR_NONE },				// scroll
 	{ WIDGETS_END },
 };
 
@@ -103,7 +105,7 @@ void window_news_open()
 			0
 		);
 		window->widgets = window_news_widgets;
-		window->enabled_widgets = (1 << WIDX_CLOSE);
+		window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SETTINGS);
 		window_init_scroll_widgets(window);
 		window->news.var_480 = -1;
 	}
@@ -129,6 +131,9 @@ static void window_news_mouseup(rct_window *w, int widgetIndex)
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
+		break;
+	case WIDX_SETTINGS:
+		window_news_options_open();
 		break;
 	}
 }
@@ -291,8 +296,8 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 
 		// Date text
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_DATE_DAY_1 + newsItem->day - 1;
-		RCT2_GLOBAL(0x013CE952 + 2, uint16) = STR_MONTH_MARCH + (newsItem->month_year % 8);
-		gfx_draw_string_left(dpi, 2235, (void*)0x013CE952, 2, 4, y);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = STR_MONTH_MARCH + (newsItem->month_year % 8);
+		gfx_draw_string_left(dpi, 2235, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 2, 4, y);
 
 		// Item text
 		utf8 buffer[400];

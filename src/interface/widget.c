@@ -440,7 +440,7 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widge
 		gfx_draw_string_left_clipped(
 			dpi,
 			stringId,
-			(void*)0x013CE952,
+			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
 			colour,
 			l + 1,
 			t,
@@ -453,7 +453,7 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widge
 		gfx_draw_string_centred_clipped(
 			dpi,
 			stringId,
-			(void*)0x013CE952,
+			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
 			colour,
 			(w->x + w->x + widget->left + widget->right + 1) / 2 - 1,
 			t,
@@ -489,7 +489,7 @@ static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 
 	if (widget_is_disabled(w, widgetIndex))
 		colour |= 0x40;
-	gfx_draw_string_left(dpi, widget->image, (void*)0x013CE952, colour, l + 1, t);
+	gfx_draw_string_left(dpi, widget->image, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, colour, l + 1, t);
 }
 
 /**
@@ -576,7 +576,7 @@ static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 		colour = w->colours[widget->colour] & 0x7F;
 		if (widget_is_disabled(w, widgetIndex))
 			colour |= 0x40;
-		gfx_draw_string_left(dpi, widget->image, (void*)0x013CE952, colour, l, t);
+		gfx_draw_string_left(dpi, widget->image, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, colour, l, t);
 		textRight = l + gfx_get_string_width((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER) + 1;
 	}
 
@@ -679,7 +679,7 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 			width -= 10;
 	}
 	l += width / 2;
-	gfx_draw_string_centred_clipped(dpi, widget->image, (void*)0x013CE952, 34, l, t, width);
+	gfx_draw_string_centred_clipped(dpi, widget->image, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 34, l, t, width);
 }
 
 /**
@@ -723,7 +723,7 @@ static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	if (widget_is_disabled(w, widgetIndex))
 		colour |= 0x40;
 
-	gfx_draw_string_centred_clipped(dpi, widget->image, (void*)0x013CE952, colour, l, t, widget->right - widget->left - 2);
+	gfx_draw_string_centred_clipped(dpi, widget->image, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, colour, l, t, widget->right - widget->left - 2);
 }
 
 /**
@@ -767,7 +767,7 @@ static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 		colour |= 0x40;
 	}
 
-	gfx_draw_string_left_centred(dpi, (rct_string_id)widget->image, (void*)0x013CE952, colour, l + 14, yMid);
+	gfx_draw_string_left_centred(dpi, (rct_string_id)widget->image, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, colour, l + 14, yMid);
 }
 
 /**

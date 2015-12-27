@@ -399,7 +399,7 @@ static void window_editor_scenario_options_draw_tab_images(rct_window *w, rct_dr
 
 	// Tab 3
 	widget = &w->widgets[WIDX_TAB_3];
-	spriteIndex = STR_TAB_PARK;
+	spriteIndex = SPR_TAB_PARK;
 	gfx_draw_sprite(dpi, spriteIndex, w->x + widget->left, w->y + widget->top, 0);
 }
 

@@ -341,7 +341,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 		y += 15;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_UNKNOWN;
-		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, (void*)0x013CE952, 0, x, y);
+		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	} else {
 		// Research type
 		stringId = STR_RESEARCH_UNKNOWN;
@@ -373,11 +373,11 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 			uint16 expectedDay = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_DAY, uint8);
 			if (expectedDay != 255) {
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = 2289;
-				RCT2_GLOBAL(0x013CE952 + 2, uint16) = STR_DATE_DAY_1 + expectedDay;
-				RCT2_GLOBAL(0x013CE952 + 4, uint16) = STR_MONTH_MARCH + RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_MONTH, uint8);
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = STR_DATE_DAY_1 + expectedDay;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint16) = STR_MONTH_MARCH + RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_MONTH, uint8);
 			}
 		}
-		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, (void*)0x013CE952, 0, x, y);
+		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	}
 
 	// Last development

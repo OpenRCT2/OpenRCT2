@@ -1166,7 +1166,7 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 
 	// Misc tab
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_3))) {
-		sprite_idx = STR_TAB_PARK;
+		sprite_idx = SPR_TAB_PARK;
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_3].left, w->y + w->widgets[WIDX_TAB_3].top, 0);
 	}
 

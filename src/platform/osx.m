@@ -172,4 +172,20 @@ int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8
 	}
 }
 
+bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
+{
+	@autoreleasepool
+	{
+		CTFontDescriptorRef fontRef = CTFontDescriptorCreateWithNameAndSize((CFStringRef)[NSString stringWithUTF8String:font->font_name], 0.0);
+		CFURLRef url = (CFURLRef)CTFontDescriptorCopyAttribute(fontRef, kCTFontURLAttribute);
+		if (url) {
+			NSString *fontPath = [NSString stringWithString:[(NSURL *)CFBridgingRelease(url) path]];
+			strcpy(buffer, fontPath.UTF8String);
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
+
 #endif

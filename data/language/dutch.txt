@@ -1815,7 +1815,7 @@ STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Overige objecten
 STR_1814    :Acties
 STR_1815    :Gedachten
-STR_1816    :{SMALLFONT}{BLACK}Selecteer het type informatie dat je in de gastenlijst wilt zien
+STR_1816    :{SMALLFONT}{BLACK}Selecteer het type informatie dat je in de bezoekerslijst wilt zien
 STR_1817    :({COMMA16})
 STR_1818    :{WINDOW_COLOUR_2}Alle bezoekers
 STR_1819    :{WINDOW_COLOUR_2}Alle bezoekers (samengevat)
@@ -1862,10 +1862,10 @@ STR_1859    :klusjesmannen
 STR_1860    :monteurs
 STR_1861    :bewakers
 STR_1862    :entertainers
-STR_1863    :Klusjesman
-STR_1864    :Monteur
-STR_1865    :Bewaker
-STR_1866    :Entertainer
+STR_1863    :klusjesman
+STR_1864    :monteur
+STR_1865    :bewaker
+STR_1866    :entertainer
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
 STR_1868    :Kan het aantal rotaties niet aanpassen...
 STR_1869    :{WINDOW_COLOUR_2}Aantal rotaties:
@@ -1945,7 +1945,7 @@ STR_1940    :{SMALLFONT}{BLACK}Stemming, energie, hongerniveau e.d. van deze bez
 STR_1941    :{SMALLFONT}{BLACK}Tonen in welke attracties deze bezoeker is geweest
 STR_1942    :{SMALLFONT}{BLACK}Financiële informatie over deze bezoeker tonen
 STR_1943    :{SMALLFONT}{BLACK}Recente gedachten van deze bezoeker tonen
-STR_1944    :{SMALLFONT}{BLACK}Toon de dingen die de gast bij zich heeft
+STR_1944    :{SMALLFONT}{BLACK}Toon de dingen die de bezoeker bij zich heeft
 STR_1945    :{SMALLFONT}{BLACK}Orders en opties voor deze werknemer tonen
 STR_1946    :{SMALLFONT}{BLACK}Kostuum van deze entertainer selecteren
 STR_1947    :{SMALLFONT}{BLACK}Werkgebieden van het geselecteerde type werknemer weergeven en de dichtstbijzijnde werknemer lokaliseren
@@ -3511,7 +3511,7 @@ STR_5175    :Voer de naam van je Twitch-kanaal in
 STR_5176    :Twitch-integratie inschakelen
 STR_5177    :Schermmodus:
 STR_5178    :{SMALLFONT}{BLACK}Cheats voor financiën
-STR_5179    :{SMALLFONT}{BLACK}Cheats voor gasten
+STR_5179    :{SMALLFONT}{BLACK}Cheats voor bezoekers
 STR_5180    :{SMALLFONT}{BLACK}Cheats voor park
 STR_5181    :{SMALLFONT}{BLACK}Cheats voor attracties
 STR_5182    :{INT32}
@@ -3618,7 +3618,7 @@ STR_5282    :Attracties openen/sluiten via RCT1-stoplichten
 STR_5283    :Park openen/sluiten via RCT1-stoplichten
 STR_5284    :Scenarioselectie-lettertype in RCT1-stijl
 STR_5285    :KABOEM!
-STR_5286    :{SMALLFONT}{BLACK}Laat sommige gasten exploderen
+STR_5286    :{SMALLFONT}{BLACK}Laat sommige bezoekers exploderen
 STR_5287    :Attractie is al defect
 STR_5288    :Attractie is gesloten
 STR_5289    :Deze attractie kan niet defect raken
@@ -3918,6 +3918,9 @@ STR_5582    :Aanwijzer in venster vasthouden
 STR_5583    :{COMMA1DP16} m/s
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Heft de limieten op het tabblad Bedrijfsopties van een attractie op, waardoor je bijvoorbeeld kettingsheuvels met snelheden tot {VELOCITY} kunt hebben.
+STR_5586    :Winkels en kraampjes automatisch openen
+STR_5587    :{SMALLFONT}{BLACK}Als deze optie is ingeschakeld zullen winkels en kraampjes na plaatsing automatisch worden geopend.
+STR_5588    :{SMALLFONT}{BLACK}Multiplayer
 
 #############
 # Scenarios #
@@ -4285,7 +4288,7 @@ STR_CPTY    :2 passagiers per boot
 #CC
 [AE-SWIM]
 STR_NAME    :Zwembad
-STR_DESC    :Een steiger waarvan gasten het water in kunnen om een stukje te zwemmen. Door "The Amazing Earl".
+STR_DESC    :Een steiger waarvan bezoekers het water in kunnen om een stukje te zwemmen. Door "The Amazing Earl".
 STR_CPTY    :1 bezoeker per "boot"
 # End of Boat Ride / Bootverhuur
 
@@ -5636,12 +5639,12 @@ STR_DESC    :Toiletten in een gebouw in blokhutstijl.
 # Information Kiosks
 [INFOK]
 STR_NAME    :Informatiekiosk
-STR_DESC    :Een kiosk waar gasten kaarten van het park en paraplu's kunnen kopen.
+STR_DESC    :Een kiosk waar bezoekers kaarten van het park en paraplu's kunnen kopen.
 
 #CC
 [INFO1MKY]
 STR_NAME    :Informatiekiosk
-STR_DESC    :Een kiosk waar gasten kaarten van het park en paraplu's kunnen kopen.
+STR_DESC    :Een kiosk waar bezoekers kaarten van het park en paraplu's kunnen kopen.
 
 # End of Information Kiosks
 
@@ -5654,7 +5657,7 @@ STR_DESC    :Een geldautomaat die de bezoekers kunnen gebruiken als ze bijna doo
 # First Aid
 [FAID1]
 STR_NAME    :Eerste hulp
-STR_DESC    :Een gebouw waar misselijke gasten sneller kunnen opknappen.
+STR_DESC    :Een gebouw waar misselijke bezoekers sneller kunnen opknappen.
 # End of First Aid
 
 #################################
@@ -5945,6 +5948,56 @@ STR_NAME    :  'Donkere eeuwen'-thema
 STR_NAME    :  Mythologisch thema
 
 #################
+# Small objects #
+#################
+[BRBASE]
+STR_NAME    :Basisblok
+
+[BRBASE2]
+STR_NAME    :Basisblok
+
+[BRBASE3]
+STR_NAME    :Basisblok
+
+[TAL]
+STR_NAME    :Boom in alligatorvorm
+
+[TCB]
+STR_NAME    :Klaverenboom
+
+[TDF]
+STR_NAME    :Dolfijnenfontein
+
+[TDM]
+STR_NAME    :Ruitenboom
+
+[TEF]
+STR_NAME    :Olifantenfontein
+
+[TGS]
+STR_NAME    :Giraffenstandbeeld
+
+[THRS]
+STR_NAME    :Ruiterstandbeeld
+
+[THT]
+STR_NAME    :Hartenboom
+
+[TQF]
+STR_NAME    :Cupidofonteinen
+
+[TSD]
+STR_NAME    :Schoppenboom
+
+[TSH]
+STR_NAME    :Paardenstandbeeld
+
+[TSTD]
+STR_NAME    :Dolfijnenstandbeeld
+
+[TUS]
+STR_NAME    :Eenhoornstandbeeld
+#################
 # Large objects #
 #################
 [GLTHENT]
@@ -5962,8 +6015,128 @@ STR_NAME    :Rijtjeshuis
 #########
 # Walls #
 #########
+[WALLBB34]
+STR_NAME    :Stenen muur
+
+[WALLCBPC]
+STR_NAME    :Muur met valhek
+
+[WALLCFAR]
+STR_NAME    :Muur met boog
+
+[WALLCFPC]
+STR_NAME    :Muur met valhek
+
+[WALLCO16]
+STR_NAME    :Geplooide stalen muur
+
+[WALLIG16]
+STR_NAME    :Iglomuur
+
+[WALLIG24]
+STR_NAME    :Iglomuur
+
+[WALLJB16]
+STR_NAME    :Muur van zuurtjes
+
+[WALLLT32]
+STR_NAME    :Stalen traliewerk
+
+[WALLNT32]
+STR_NAME    :Tennisnetmuur
+
+[WALLNT33]
+STR_NAME    :Tennisnetmuur
+
+[WALLPOST]
+STR_NAME    :Paal
+
+[WALLST16]
+STR_NAME    :Stalen muur
+
+[WALLST32]
+STR_NAME    :Stalen muur
+
+[WALLST8]
+STR_NAME    :Stalen muur
+
+[WALLSTFN]
+STR_NAME    :Stalen hek
+
 [WALLTXGT]
 STR_NAME    :'Texas Giant'-bord
+
+[WALLWDPS]
+STR_NAME    :Hek van houten palen
+
+[WBR2]
+STR_NAME    :Stenen muur
+
+[WBR2A]
+STR_NAME    :Stenen muur
+
+[WBR3]
+STR_NAME    :Stenen muur
+
+[WC3]
+STR_NAME    :Romeinse zuilenmuur
+
+[WC16]
+STR_NAME    :Besneeuwd hek
+
+[WC17]
+STR_NAME    :Besneeuwde houten schutting
+
+[WC18]
+STR_NAME    :Besneeuwd hek van houten palen
+
+[WBW]
+STR_NAME    :Hek van botten
+
+[WCW1]
+STR_NAME    :Muur van speelkaarten
+
+[WCW2]
+STR_NAME    :Muur van speelkaarten
+
+[WEW]
+STR_NAME    :Egyptische muur
+
+[WFW1]
+STR_NAME    :Houten schutting
+
+[WFWG]
+STR_NAME    :Houten schutting
+
+[WJF]
+STR_NAME    :Junglehek
+
+[WMW]
+STR_NAME    :Muur in Marsstijl
+
+[WMWW]
+STR_NAME    :Houten hek
+
+[WPW1]
+STR_NAME    :Hek van houten palen
+
+[WPW2]
+STR_NAME    :Hek van houten palen
+
+[WPW3]
+STR_NAME    :Houten hek
+
+[WRW]
+STR_NAME    :Romeinse muur
+
+[WRWA]
+STR_NAME    :Romeinse muur
+
+[WWTW]
+STR_NAME    :Hoog houten hek
+
+[WWTWA]
+STR_NAME    :Houten hek
 
 ##################
 # Path additions #

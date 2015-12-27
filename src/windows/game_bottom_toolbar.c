@@ -388,7 +388,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 			(RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) < 0 ? 1391 : 1390),
 			x, y - 3,
 			(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) == 2 && RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, sint32) == WIDX_MONEY ? 2 : w->colours[0] & 0x7F),
-			(void*)0x013CE952
+			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS
 			);
 		y += 7;
 	}
@@ -466,7 +466,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 		x,
 		y,
 		(RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) == 2 && RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, sint32) == WIDX_DATE ? 2 : w->colours[0] & 0x7F),
-		(void*)0x013CE952
+		(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS
 	);
 
 	// Temperature
@@ -480,7 +480,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 		format = STR_FAHRENHEIT_VALUE;
 	}
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = temperature;
-	gfx_draw_string_left(dpi, format, (void*)0x013CE952, 0, x, y + 6);
+	gfx_draw_string_left(dpi, format, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y + 6);
 	x += 30;
 
 	// Current weather

@@ -474,59 +474,59 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 		switch (_window_ride_list_information_type) {
 		case INFORMATION_TYPE_STATUS:
 			ride_get_status(w->list_item_positions[i], &formatSecondary, &argument);
-			RCT2_GLOBAL(0x013CE952 + 2, sint32) = argument;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, sint32) = argument;
 			break;
 		case INFORMATION_TYPE_POPULARITY:
 			formatSecondary = STR_POPULARITY_UNKNOWN_LABEL;
 			if (ride->popularity != 255) {
 				formatSecondary = STR_POPULARITY_LABEL;
-				RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->popularity * 4;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride->popularity * 4;
 			}
 			break;
 		case INFORMATION_TYPE_SATISFACTION:
 			formatSecondary = STR_SATISFACTION_UNKNOWN_LABEL;
 			if (ride->satisfaction != 255) {
 				formatSecondary = STR_SATISFACTION_LABEL;
-				RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->satisfaction * 5;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride->satisfaction * 5;
 			}
 			break;
 		case INFORMATION_TYPE_PROFIT:
 			formatSecondary = 0;
 			if (ride->profit != MONEY32_UNDEFINED) {
 				formatSecondary = STR_PROFIT_LABEL;
-				RCT2_GLOBAL(0x013CE952 + 2, sint32) = ride->profit;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, sint32) = ride->profit;
 			}
 			break;
 		case INFORMATION_TYPE_QUEUE_LENGTH:
-			RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride_get_total_queue_length(ride);
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride_get_total_queue_length(ride);
 			formatSecondary = STR_QUEUE_EMPTY;
-			if (RCT2_GLOBAL(0x013CE952 + 2, uint16) == 1)
+			if (RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) == 1)
 				formatSecondary = STR_QUEUE_ONE_PERSON;
-			else if (RCT2_GLOBAL(0x013CE952 + 2, uint16) > 1)
+			else if (RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) > 1)
 				formatSecondary = STR_QUEUE_PEOPLE;
 			break;
 		case INFORMATION_TYPE_QUEUE_TIME:
-			RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride_get_max_queue_time(ride);
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride_get_max_queue_time(ride);
 			formatSecondary = STR_QUEUE_TIME_LABEL;
-			if (RCT2_GLOBAL(0x013CE952 + 2, uint16) > 1)
+			if (RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) > 1)
 				formatSecondary = STR_QUEUE_TIME_PLURAL_LABEL;
 			break;
 		case INFORMATION_TYPE_RELIABILITY:
 			// edx = RCT2_GLOBAL(0x009ACFA4 + (ride->var_001 * 4), uint32);
 
-			RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->reliability >> 8;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride->reliability >> 8;
 			formatSecondary = STR_RELIABILITY_LABEL;
 			break;
 		case INFORMATION_TYPE_DOWN_TIME:
 			// edx = RCT2_GLOBAL(0x009ACFA4 + (ride->var_001 * 4), uint32);
 
-			RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->downtime;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride->downtime;
 			formatSecondary = STR_DOWN_TIME_LABEL;
 			break;
 		case INFORMATION_TYPE_GUESTS_FAVOURITE:
 			formatSecondary = 0;
 			if (RCT2_ADDRESS(0x0097C3AF, uint8)[ride->type] == PAGE_RIDES) {
-				RCT2_GLOBAL(0x013CE952 + 2, uint16) = ride->guests_favourite;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride->guests_favourite;
 				formatSecondary = ride->guests_favourite == 1 ? STR_GUESTS_FAVOURITE_LABEL : STR_GUESTS_FAVOURITE_PLURAL_LABEL;
 			}
 			break;
@@ -537,7 +537,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 			format = 1192;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = formatSecondary;
-		gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 160, y - 1, 157);
+		gfx_draw_string_left_clipped(dpi, format, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 160, y - 1, 157);
 		y += 10;
 	}
 }
@@ -712,8 +712,8 @@ static void window_ride_list_close_all(rct_window *w)
 			continue;
 		if (ride->status == RIDE_STATUS_CLOSED)
 			continue;
-		RCT2_GLOBAL(0x013CE952 + 6, uint16) = w->scrolls[0].v_top;
-		RCT2_GLOBAL(0x013CE952 + 8, uint32) = w->scrolls[0].v_bottom;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint16) = w->scrolls[0].v_top;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint32) = w->scrolls[0].v_bottom;
 
 		ride_set_status(i, RIDE_STATUS_CLOSED);
 	}
@@ -729,8 +729,8 @@ static void window_ride_list_open_all(rct_window *w)
 			continue;
 		if (ride->status == RIDE_STATUS_OPEN)
 			continue;
-		RCT2_GLOBAL(0x013CE952 + 6, uint16) = w->scrolls[0].v_top;
-		RCT2_GLOBAL(0x013CE952 + 8, uint32) = w->scrolls[0].v_bottom;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint16) = w->scrolls[0].v_top;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint32) = w->scrolls[0].v_bottom;
 
 		ride_set_status(i, RIDE_STATUS_OPEN);
 	}
