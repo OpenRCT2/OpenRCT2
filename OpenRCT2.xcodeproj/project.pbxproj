@@ -1165,9 +1165,9 @@
 				D40F4E1D1C2528D5009582C9 /* Create Segment Files */,
 				D497D0741C20FD52002BF46A /* Sources */,
 				D497D0751C20FD52002BF46A /* Frameworks */,
+				D41B74201C210B190080A7B9 /* Embed Frameworks */,
 				D42C09D21C254F4E00309751 /* Build g2.dat */,
 				D497D0761C20FD52002BF46A /* Resources */,
-				D41B74201C210B190080A7B9 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
