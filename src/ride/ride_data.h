@@ -80,6 +80,7 @@ extern const uint8 costPerTrackPiece[0x60];
 extern const uint8 rideUnknownData1[0x60];
 extern const bool rideUnknownData2[0x60];
 extern const uint8 rideUnknownData3[0x60];
+extern const uint8 rideBonusValue[0x60];
 
 extern const rct_ride_name_convention RideNameConvention[96];
 extern const uint8 RideAvailableModes[];
