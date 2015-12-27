@@ -5427,7 +5427,7 @@ foundRideEntry:
 		}
 	}
 
-	memset(ride->num_customers, 0, 10 * sizeof(ride->num_customers));
+	memset(ride->num_customers, 0, sizeof(ride->num_customers));
 	ride->value = 0xFFFF;
 	ride->satisfaction = 255;
 	ride->satisfaction_time_out = 0;
