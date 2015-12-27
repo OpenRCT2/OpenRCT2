@@ -7373,14 +7373,14 @@ const uint32 ride_customers_per_hour(const rct_ride *ride) {
 // Calculates the number of customers for this ride in the last 5 minutes (or more correctly 9600 game ticks)
 const uint32 ride_customers_in_last_5_minutes(const rct_ride *ride) {
 	uint32 sum = ride->num_customers[0]
-				 + ride->num_customers[1]
-				 + ride->num_customers[2]
-				 + ride->num_customers[3]
-				 + ride->num_customers[4]
-				 + ride->num_customers[5]
-				 + ride->num_customers[6]
-				 + ride->num_customers[7]
-				 + ride->num_customers[8]
-				 + ride->num_customers[9];
+	             + ride->num_customers[1]
+	             + ride->num_customers[2]
+	             + ride->num_customers[3]
+	             + ride->num_customers[4]
+	             + ride->num_customers[5]
+	             + ride->num_customers[6]
+	             + ride->num_customers[7]
+	             + ride->num_customers[8]
+	             + ride->num_customers[9];
 	return sum;
 }
