@@ -1191,8 +1191,8 @@ static void window_options_invalidate(rct_window *w)
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 18, uint16) = (uint16)gConfigGeneral.fullscreen_height;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 12, uint16) = 2773 + gConfigGeneral.fullscreen_mode;
 
-		// disable resolution dropdown on "Fullscreen (desktop)"
-		if (gConfigGeneral.fullscreen_mode == 2){
+		// disable resolution dropdown on "Fullscreen (desktop)" and on "Windowed"
+		if ((gConfigGeneral.fullscreen_mode == 2)||(gConfigGeneral.fullscreen_mode == 0)){
 			w->disabled_widgets |= (1 << WIDX_RESOLUTION_DROPDOWN);
 			w->disabled_widgets |= (1 << WIDX_RESOLUTION);
 		}
