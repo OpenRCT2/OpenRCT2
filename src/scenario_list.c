@@ -22,6 +22,7 @@
 #include "platform/platform.h"
 #include "util/util.h"
 #include "scenario.h"
+#include "scenario_sources.h"
 
 // Scenario list
 int gScenarioListCount = 0;
@@ -41,6 +42,37 @@ rct_scenario_basic *get_scenario_by_filename(const char *filename)
 			return &gScenarioList[i];
 
 	return NULL;
+}
+
+sint16 get_scenario_index(rct_scenario_basic *scenario)
+{
+	for (int i = 0; i < NUM_ORIGINAL_SCENARIOS; i++) {
+		if (strcmp(original_scenario_names[i], scenario->name) == 0)
+			return i;
+	}
+
+	return -1;
+}
+
+scenario_source source_by_index(uint8 index)
+{
+	if (index >= SCENARIO_SOURCE_RCT1_CLASSIC_INDEX && index < SCENARIO_SOURCE_RCT1_CORKSCREW_INDEX) {
+		return SCENARIO_SOURCE_RCT1_CLASSIC;
+	} else if (index >= SCENARIO_SOURCE_RCT1_CORKSCREW_INDEX && index < SCENARIO_SOURCE_RCT1_LOOPY_INDEX) {
+		return SCENARIO_SOURCE_RCT1_CORKSCREW;
+	} else if (index >= SCENARIO_SOURCE_RCT1_LOOPY_INDEX && index < SCENARIO_SOURCE_RCT2_VANILLA_INDEX) {
+		return SCENARIO_SOURCE_RCT1_LOOPY;
+	} else if (index >= SCENARIO_SOURCE_RCT2_VANILLA_INDEX && index < SCENARIO_SOURCE_RCT2_WACKY_INDEX) {
+		return SCENARIO_SOURCE_RCT2_VANILLA;
+	} else if (index >= SCENARIO_SOURCE_RCT2_WACKY_INDEX && index < SCENARIO_SOURCE_RCT2_TIME_INDEX) {
+		return SCENARIO_SOURCE_RCT2_WACKY;
+	} else if (index >= SCENARIO_SOURCE_RCT2_TIME_INDEX && index < SCENARIO_SOURCE_REAL_INDEX) {
+		return SCENARIO_SOURCE_RCT2_TIME;
+	} else if (index >= SCENARIO_SOURCE_REAL_INDEX && index < NUM_ORIGINAL_SCENARIOS) {
+		return SCENARIO_SOURCE_REAL;
+	} else {
+		return SCENARIO_SOURCE_OTHER;
+	}
 }
 
 /**
@@ -130,6 +162,9 @@ static void scenario_list_add(const char *path)
 		safe_strncpy(scenario->name, s6Info.name, 64);
 		safe_strncpy(scenario->details, s6Info.details, 256);
 	}
+
+	sint16 index = get_scenario_index(scenario);
+	printf("Name: %-50s -- Index: %d -- Source: %d\n", scenario->name, index, source_by_index(index));
 }
 
 /**

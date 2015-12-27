@@ -149,7 +149,6 @@ static void window_scenarioselect_init_tabs()
 {
 	int show_pages = 0;
 	for (int i = 0; i < gScenarioListCount; i++) {
-		printf("%s\n", gScenarioList[i].name);
 		rct_scenario_basic* scenario = &gScenarioList[i];
 		if (scenario->flags & SCENARIO_FLAGS_VISIBLE)
 			show_pages |= 1 << scenario->category;
