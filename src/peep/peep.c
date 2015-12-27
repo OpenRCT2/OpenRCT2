@@ -1911,7 +1911,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 			peep->destination_y = y;
 			peep->destination_tolerence = 3;
 
-			ride->customer_counter++;
+			ride->cur_num_customers++;
 			peep_on_enter_or_exit_ride(peep, peep->current_ride, 0);
 			peep->sub_state = 17;
 			return;
@@ -1938,7 +1938,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 		peep->destination_y = y;
 		peep->current_car = 0;
 
-		ride->customer_counter++;
+		ride->cur_num_customers++;
 		peep_on_enter_or_exit_ride(peep, peep->current_ride, 0);
 		peep->sub_state = 14;
 		return;
@@ -2297,7 +2297,7 @@ static void peep_update_ride_sub_state_5(rct_peep* peep){
 			return;
 
 		vehicle->num_peeps++;
-		ride->customer_counter++;
+		ride->cur_num_customers++;
 
 		vehicle->friction += seated_peep->var_41;
 		invalidate_sprite_2((rct_sprite*)seated_peep);
@@ -2312,7 +2312,7 @@ static void peep_update_ride_sub_state_5(rct_peep* peep){
 	}
 
 	vehicle->num_peeps++;
-	ride->customer_counter++;
+	ride->cur_num_customers++;
 
 	vehicle->friction += peep->var_41;
 	invalidate_sprite_2((rct_sprite*)vehicle);
@@ -6767,7 +6767,7 @@ static int peep_interact_with_shop(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 		peep_window_state_update(peep);
 
 		peep->time_on_ride = 0;
-		ride->customer_counter++;
+		ride->cur_num_customers++;
 		if (peep->flags & PEEP_FLAGS_TRACKING){
 			RCT2_GLOBAL(0x0013CE952, rct_string_id) = peep->name_string_idx;
 			RCT2_GLOBAL(0x0013CE954, uint32) = peep->id;
@@ -8358,7 +8358,7 @@ loc_69B221:
 
 	ride->total_profit += (price - get_shop_item_cost(shopItem));
 	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
-	ride->customer_counter++;
+	ride->cur_num_customers++;
 	ride->total_customers++;
 	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
 
@@ -8379,7 +8379,7 @@ static bool peep_should_use_cash_machine(rct_peep *peep, int rideIndex)
 
 	rct_ride *ride = GET_RIDE(rideIndex);
 	ride_update_satisfaction(ride, peep->happiness >> 6);
-	ride->customer_counter++;
+	ride->cur_num_customers++;
 	ride->total_customers++;
 	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
 	return true;

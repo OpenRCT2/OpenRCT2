@@ -1832,23 +1832,17 @@ static void ride_update(int rideIndex)
 			ride_update_station(ride, i);
 
 	// Update financial statistics
-	ride->statistics_tick_counter++;
+	ride->num_customers_timeout++;
 
-	if (ride->statistics_tick_counter >= 960) {
+	if (ride->num_customers_timeout >= 960) {
 		// This is meant to update about every 30 seconds
-		ride->statistics_tick_counter = 0;
+		ride->num_customers_timeout = 0;
 
-		ride->customer_count_history[9] = ride->customer_count_history[8];
-		ride->customer_count_history[8] = ride->customer_count_history[7];
-		ride->customer_count_history[7] = ride->customer_count_history[6];
-		ride->customer_count_history[6] = ride->customer_count_history[5];
-		ride->customer_count_history[5] = ride->customer_count_history[4];
-		ride->customer_count_history[4] = ride->customer_count_history[3];
-		ride->customer_count_history[3] = ride->customer_count_history[2];
-		ride->customer_count_history[2] = ride->customer_count_history[1];
-		ride->customer_count_history[1] = ride->customer_count_history[0];
-		ride->customer_count_history[0] = ride->customer_counter;
-		ride->customer_counter = 0;
+		// Shift number of customers history, start of the array is the most recent one
+		memmove(ride->num_customers + 1, ride->num_customers, 9 * sizeof(*(ride->num_customers)));
+		ride->num_customers[0] = ride->cur_num_customers;
+
+		ride->cur_num_customers = 0;
 		ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
 
 		ride->income_per_hour = ride_calculate_income_per_hour(ride);
@@ -5380,8 +5374,8 @@ foundRideEntry:
 
 	ride->measurement_index = 255;
 	ride->excitement = (ride_rating)-1;
-	ride->customer_counter = 0;
-	ride->statistics_tick_counter = 0;
+	ride->cur_num_customers = 0;
+	ride->num_customers_timeout = 0;
 	ride->var_148 = 0;
 
 	ride->price = 0;
@@ -5433,17 +5427,16 @@ foundRideEntry:
 		}
 	}
 
-	ride->customer_counter = 0;
-	ride->customer_count_history[0] = 0;
-	ride->customer_count_history[1] = 0;
-	ride->customer_count_history[2] = 0;
-	ride->customer_count_history[3] = 0;
-	ride->customer_count_history[4] = 0;
-	ride->customer_count_history[5] = 0;
-	ride->customer_count_history[6] = 0;
-	ride->customer_count_history[7] = 0;
-	ride->customer_count_history[8] = 0;
-	ride->customer_count_history[9] = 0;
+	ride->num_customers[0] = 0;
+	ride->num_customers[1] = 0;
+	ride->num_customers[2] = 0;
+	ride->num_customers[3] = 0;
+	ride->num_customers[4] = 0;
+	ride->num_customers[5] = 0;
+	ride->num_customers[6] = 0;
+	ride->num_customers[7] = 0;
+	ride->num_customers[8] = 0;
+	ride->num_customers[9] = 0;
 
 	ride->value = 0xFFFF;
 	ride->satisfaction = 255;
@@ -7379,15 +7372,15 @@ const uint32 ride_customers_per_hour(const rct_ride *ride) {
 
 // Calculates the number of customers for this ride in the last 5 minutes (or more correctly 9600 game ticks)
 const uint32 ride_customers_in_last_5_minutes(const rct_ride *ride) {
-	uint32 sum = ride->customer_count_history[0]
-				 + ride->customer_count_history[1]
-				 + ride->customer_count_history[2]
-				 + ride->customer_count_history[3]
-				 + ride->customer_count_history[4]
-				 + ride->customer_count_history[5]
-				 + ride->customer_count_history[6]
-				 + ride->customer_count_history[7]
-				 + ride->customer_count_history[8]
-				 + ride->customer_count_history[9];
+	uint32 sum = ride->num_customers[0]
+				 + ride->num_customers[1]
+				 + ride->num_customers[2]
+				 + ride->num_customers[3]
+				 + ride->num_customers[4]
+				 + ride->num_customers[5]
+				 + ride->num_customers[6]
+				 + ride->num_customers[7]
+				 + ride->num_customers[8]
+				 + ride->num_customers[9];
 	return sum;
 }

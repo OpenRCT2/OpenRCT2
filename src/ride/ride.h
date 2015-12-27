@@ -201,9 +201,12 @@ typedef struct {
 	uint8 pad_11C[0x2];
 	uint8 num_sheltered_sections;   // 0x11E
 	uint8 var_11F;
-	uint16 customer_counter;        // Customer count in the current 960 game tick (about 30 seconds) interval
-	uint16 statistics_tick_counter; // Counts ticks to update customer intervals, resets each 960 game ticks.
-	uint16 customer_count_history[10]; // Customer count in the last 10 * 960 game ticks
+	// Customer counter in the current 960 game tick (about 30 seconds) interval
+	uint16 cur_num_customers;       // 0x120
+	// Counts ticks to update customer intervals, resets each 960 game ticks.
+	uint16 num_customers_timeout;   // 0x122
+	// Customer count in the last 10 * 960 game ticks (sliding window)
+	uint16 num_customers[10];       // 0x124
 	money16 price;					// 0x138
 	sint16 var_13A;
 	sint16 var_13C;
