@@ -260,9 +260,6 @@ static void window_scenarioselect_invalidate(rct_window *w)
 	w->pressed_widgets |= 1LL << (w->selected_tab + 4);
 }
 
-int gScenarioGroupingStyle = 1; // 1 = new, 2 = classic
-bool gScenarioEnableUnlocking = true;
-
 static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	int i, x, y, format;
@@ -282,7 +279,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		x = (widget->left + widget->right) / 2 + w->x;
 		y = (widget->top + widget->bottom) / 2 + w->y - 3;
 
-		if (gScenarioGroupingStyle == 1) {
+		if (gConfigGeneral.scenario_select_mode == 1) {
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = STR_SCENARIO_CATEGORY_RCT1_CLASSIC + i;
 		} else { // old-style
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = STR_BEGINNER_PARKS + i;
