@@ -84,6 +84,8 @@ function Do-Package()
     Copy-Item -Force          "$distDir\changelog.txt"         $tempDir -ErrorAction Stop
     Copy-Item -Force          "$distDir\known_issues.txt"      $tempDir -ErrorAction Stop
     Copy-Item -Force          "$distDir\readme.txt"            $tempDir -ErrorAction Stop
+    Copy-Item -Force          "$rootPath\contributors.md"      $tempDir -ErrorAction Stop
+    Copy-Item -Force          "$rootPath\licence.txt"          $tempDir -ErrorAction Stop
 
     # Create archive using 7z (renowned for speed and compression)
     $7zcmd = "7za"
