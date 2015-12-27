@@ -201,18 +201,12 @@ typedef struct {
 	uint8 pad_11C[0x2];
 	uint8 num_sheltered_sections;   // 0x11E
 	uint8 var_11F;
-	sint16 var_120;
-	sint16 var_122;
-	sint16 var_124;
-	sint16 var_126;
-	sint16 var_128;
-	sint16 var_12A;
-	sint16 var_12C;
-	sint16 var_12E;
-	uint16 age;						// 0x130
-	sint16 running_cost;			// 0x132
-	sint16 var_134;
-	sint16 var_136;
+	// Customer counter in the current 960 game tick (about 30 seconds) interval
+	uint16 cur_num_customers;       // 0x120
+	// Counts ticks to update customer intervals, resets each 960 game ticks.
+	uint16 num_customers_timeout;   // 0x122
+	// Customer count in the last 10 * 960 game ticks (sliding window)
+	uint16 num_customers[10];       // 0x124
 	money16 price;					// 0x138
 	sint16 var_13A;
 	sint16 var_13C;
@@ -1018,5 +1012,8 @@ void ride_reset_all_names();
 const uint8* ride_seek_available_modes(rct_ride *ride);
 
 void window_ride_construction_mouseup_demolish_next_piece(int x, int y, int z, int direction, int type);
+
+const uint32 ride_customers_per_hour(const rct_ride *ride);
+const uint32 ride_customers_in_last_5_minutes(const rct_ride *ride);
 
 #endif

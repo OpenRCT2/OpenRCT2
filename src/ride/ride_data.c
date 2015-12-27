@@ -585,6 +585,100 @@ const uint8 rideUnknownData3[0x60] = {
 	10,	// 59 LIM Launched Roller Coaster
 };
 
+// Data at 0x0097D21E
+const uint8 rideBonusValue[0x60] = {
+	85,  // 00 Spiral Roller coaster
+	90,  // 01 Stand Up Coaster
+	90,  // 02 Suspended Swinging
+	100, // 03 Inverted
+	60,  // 04 Steel Mini Coaster
+	50,  // 05 Mini Railroad
+	60,  // 06 Monorail
+	50,  // 07 Mini Suspended Coaster
+	40,  // 08 Boat Ride
+	55,  // 09 Wooden Wild Mine/Mouse
+	60,  // 0a Steeplechase/Motorbike/Soap
+	50,  // 0b Car Ride
+	65,  // 0c Launched Freefall
+	75,  // 0d Bobsleigh Coaster
+	45,  // 0e Observation Tower
+	95,  // 0f Looping Roller Coaster
+	55,  // 10 Dinghy Slide
+	85,  // 11 Mine Train Coaster
+	55,  // 12 Chairlift
+	100, // 13 Corkscrew Roller Coaster
+	40,  // 14 Maze
+	40,  // 15 Spiral Slide
+	55,  // 16 Go Karts
+	65,  // 17 Log Flume
+	70,  // 18 River Rapids
+	35,  // 19 Bumper Cars
+	35,  // 1a Pirate Ship
+	35,  // 1b Swinging Inverter Ship
+	15,  // 1c Food Stall
+	15,  // 1d (none)
+	15,  // 1e Drink Stall
+	15,  // 1f (none)
+	15,  // 20 Shop (all types)
+	45,  // 21 Merry Go Round
+	15,  // 22 Balloon Stall (maybe)
+	15,  // 23 Information Kiosk
+	5,   // 24 Bathroom
+	45,  // 25 Ferris Wheel
+	45,  // 26 Motion Simulator
+	45,  // 27 3D Cinema
+	55,  // 28 Topspin
+	30,  // 29 Space Rings
+	70,  // 2a Reverse Freefall Coaster
+	45,  // 2b Elevator
+	95,  // 2c Vertical Drop Roller Coaster
+	5,   // 2d ATM
+	40,  // 2e Twist
+	22,  // 2f Haunted House
+	5,   // 30 First Aid
+	39,  // 31 Circus Show
+	50,  // 32 Ghost Train
+	120, // 33 Twister Roller Coaster
+	105, // 34 Wooden Roller Coaster
+	65,  // 35 Side-Friction Roller Coaster
+	55,  // 36 Wild Mouse
+	100, // 37 Multi Dimension Coaster
+	100, // 38 (none)
+	100, // 39 Flying Roller Coaster
+	100, // 3a (none)
+	50,  // 3b Virginia Reel
+	65,  // 3c Splash Boats
+	45,  // 3d Mini Helicopters
+	100, // 3e Lay-down Roller Coaster
+	60,  // 3f Suspended Monorail
+	100, // 40 (none)
+	65,  // 41 Reverser Roller Coaster
+	35,  // 42 Heartline Twister Roller Coaster
+	23,  // 43 Mini Golf
+	120, // 44 Giga Coaster
+	45,  // 45 Roto-Drop
+	35,  // 46 Flying Saucers
+	22,  // 47 Crooked House
+	45,  // 48 Monorail Cycles
+	80,  // 49 Compact Inverted Coaster
+	60,  // 4a Water Coaster
+	70,  // 4b Air Powered Vertical Coaster
+	55,  // 4c Inverted Hairpin Coaster
+	35,  // 4d Magic Carpet
+	40,  // 4e Submarine Ride
+	65,  // 4f River Rafts
+	15,  // 50 (none)
+	45,  // 51 Enterprise
+	15,  // 52 (none)
+	15,  // 53 (none)
+	15,  // 54 (none)
+	100, // 55 (none)
+	75,  // 56 Inverted Impulse Coaster
+	60,  // 57 Mini Roller Coaster
+	70,  // 58 Mine Ride
+	55,  // 59 LIM Launched Roller Coaster
+};
+
 const rct_ride_name_convention RideNameConvention[96] = {
 	{ 1229,    1243,    1257,       0 }, // 00 Spiral Roller coaster
 	{ 1229,    1243,    1257,       0 }, // 01 Stand Up Coaster
