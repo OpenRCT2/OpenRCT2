@@ -2714,7 +2714,8 @@ void ride_measurement_update(rct_ride_measurement *measurement)
 	}
 
 	uint8 trackType = (vehicle->track_type >> 2) & 0xFF;
-	if (trackType == 216 || trackType == 123 || trackType == 9 || trackType == 63 || trackType == 147 || trackType == 155)
+	// All of these are track segments that can act as a block section.
+	if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_CABLE_LIFT_HILL || trackType == TRACK_ELEM_25_DEG_UP_TO_FLAT || trackType == TRACK_ELEM_60_DEG_UP_TO_FLAT || trackType == TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT || trackType == TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT)
 		if (vehicle->velocity == 0)
 			return;
 
@@ -3871,14 +3872,14 @@ int ride_check_block_brakes(rct_xy_element *input, rct_xy_element *output)
 
 	track_circuit_iterator_begin(&it, *input);
 	while (track_circuit_iterator_next(&it)) {
-		if (it.current.element->properties.track.type == 216) {
+		if (it.current.element->properties.track.type == TRACK_ELEM_BLOCK_BRAKES) {
 			type = it.last.element->properties.track.type;
-			if (type == 1) {
+			if (type == TRACK_ELEM_END_STATION) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION;
 				*output = it.current;
 				return 0;
 			}
-			if (type == 216) {
+			if (type == TRACK_ELEM_BLOCK_BRAKES) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_EACH_OTHER;
 				*output = it.current;
 				return 0;
@@ -4150,7 +4151,7 @@ static void ride_set_block_points(rct_xy_element *startElement)
 		case TRACK_ELEM_60_DEG_UP_TO_FLAT:
 		case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
 		case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-		case 216:		// block brakes
+		case TRACK_ELEM_BLOCK_BRAKES:
 			currentElement.element->flags &= ~(1 << 5);
 			break;
 		}
@@ -4262,7 +4263,7 @@ void ride_create_vehicles_find_first_block(rct_ride *ride, rct_xy_element *outXY
 			break;
 		case TRACK_ELEM_END_STATION:
 		case TRACK_ELEM_CABLE_LIFT_HILL:
-		case 216:
+		case TRACK_ELEM_BLOCK_BRAKES:
 			outXYElement->x = x;
 			outXYElement->y = y;
 			outXYElement->element = trackElement;
