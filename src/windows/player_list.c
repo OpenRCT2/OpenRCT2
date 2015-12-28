@@ -93,7 +93,11 @@ enum {
 	DDIDX_KICK
 };
 
+const int window_player_list_animation_divisor[] = { 4 };
+const int window_player_list_animation_frames[] = { 8 };
+
 static void window_player_list_refresh_list(rct_window *w);
+static void window_player_list_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi);
 
 static int _dropdownPlayerId;
 
@@ -175,6 +179,7 @@ static void window_player_list_dropdown(rct_window *w, int widgetIndex, int drop
 
 static void window_player_list_update(rct_window *w)
 {
+	w->frame_no++;
 	widget_invalidate(w, WIDX_TAB1 + w->page);
 }
 
@@ -258,11 +263,21 @@ static void window_player_list_invalidate(rct_window *w)
 
 static void window_player_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	window_draw_widgets(w, dpi);
-	gfx_draw_string_left(dpi, STR_PLAYER, w, w->colours[2], w->x + 6, 58 - 12 + w->y + 1);
-	gfx_draw_string_left(dpi, STR_PING, w, w->colours[2], w->x + 246, 58 - 12 + w->y + 1);
+	rct_string_id stringId;
+	int x, y;
 
-	gfx_draw_sprite(dpi, SPR_TAB_GUESTS_0, w->x + w->widgets[WIDX_TAB1].left, w->y + w->widgets[WIDX_TAB1].top, 0);
+	window_draw_widgets(w, dpi);
+	window_player_list_draw_tab_images(w, dpi);
+
+	// Columns
+	gfx_draw_string_left(dpi, STR_PLAYER, NULL, w->colours[2], w->x + 6, 58 - 12 + w->y + 1);
+	gfx_draw_string_left(dpi, STR_PING, NULL, w->colours[2], w->x + 246, 58 - 12 + w->y + 1);
+
+	// Number of players
+	stringId = w->no_list_items == 1 ? STR_X_PLAYER : STR_X_PLAYERS;
+	x = w->x + 4;
+	y = w->y + w->widgets[WIDX_LIST].bottom + 2;
+	gfx_draw_string_left(dpi, stringId, &w->no_list_items, w->colours[2], x, y);
 }
 
 static void window_player_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
@@ -319,4 +334,26 @@ static void window_player_list_refresh_list(rct_window *w)
 
 	w->selected_list_item = -1;
 	window_invalidate(w);
+}
+
+static void window_player_list_draw_tab_image(rct_window *w, rct_drawpixelinfo *dpi, int page, int spriteIndex)
+{
+	int widgetIndex = WIDX_TAB1 + page;
+
+	if (!(w->disabled_widgets & (1LL << widgetIndex))) {
+		if (w->page == page) {
+			int numFrames = window_player_list_animation_frames[w->page];
+			if (numFrames > 1) {
+				int frame = w->frame_no / window_player_list_animation_divisor[w->page];
+				spriteIndex += (frame % numFrames);
+			}
+		}
+
+		gfx_draw_sprite(dpi, spriteIndex, w->x + w->widgets[widgetIndex].left, w->y + w->widgets[widgetIndex].top, 0);
+	}
+}
+
+static void window_player_list_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi)
+{
+	window_player_list_draw_tab_image(w, dpi, 0, SPR_TAB_GUESTS_0);
 }
