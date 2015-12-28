@@ -3969,6 +3969,7 @@ STR_5627    :Group scenario list by:
 STR_5628    :Source game
 STR_5629    :Difficulty level
 STR_5630    :Enable unlocking of scenarios
+STR_5631    :{GREY}{STRINGID}
 
 #####################
 # Rides/attractions #

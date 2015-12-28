@@ -229,6 +229,7 @@ static void window_scenarioselect_scrollgetsize(rct_window *w, int scrollIndex, 
  */
 static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 {
+	int num_unlocks = 5;
 	for (int i = 0; i < gScenarioListCount; i++) {
 		rct_scenario_basic *scenario = &gScenarioList[i];
 
@@ -238,6 +239,18 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex
 
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;
+
+		if (gConfigGeneral.scenario_unlocking_enabled) {
+			if (num_unlocks <= 0)
+				break;
+
+			bool is_completed = scenario->flags & SCENARIO_FLAGS_COMPLETED;
+			if (is_completed) {
+				num_unlocks++;
+			} else {
+				num_unlocks--;
+			}
+		}
 
 		y -= 24;
 		if (y >= 0)
@@ -256,6 +269,7 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex
 static void window_scenarioselect_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
 {
 	rct_scenario_basic *selected = NULL;
+	int num_unlocks = 5;
 	for (int i = 0; i < gScenarioListCount; i++) {
 		rct_scenario_basic *scenario = &gScenarioList[i];
 		if ((gConfigGeneral.scenario_select_mode == 1 && scenario->source_game != w->selected_tab) ||
@@ -264,6 +278,14 @@ static void window_scenarioselect_scrollmouseover(rct_window *w, int scrollIndex
 
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;
+
+		if (gConfigGeneral.scenario_unlocking_enabled) {
+			if (num_unlocks <= 0)
+				break;
+
+			bool is_completed = scenario->flags & SCENARIO_FLAGS_COMPLETED;
+			num_unlocks += is_completed ? 1 : -1;
+		}
 
 		y -= 24;
 		if (y >= 0)
@@ -352,21 +374,20 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	int i, y, colour, highlighted, highlighted_format, unhighlighted_format;
-	rct_scenario_basic *scenario;
-
-	colour = ColourMapA[w->colours[1]].mid_light;
+	int colour = ColourMapA[w->colours[1]].mid_light;
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
 	gfx_clear(dpi, colour);
 
-	highlighted_format = (theme_get_preset()->features.rct1_scenario_font) ? 5139 : 1193;
-	unhighlighted_format = (theme_get_preset()->features.rct1_scenario_font) ? 5139 : 1191;
+	int highlighted_format = (theme_get_preset()->features.rct1_scenario_font) ? 5139 : 1193;
+	int unhighlighted_format = (theme_get_preset()->features.rct1_scenario_font) ? 5139 : 1191;
+	int disabled_format = 5619;
 
 	bool wide = gConfigGeneral.scenario_select_mode == 1;
 
-	y = 0;
-	for (i = 0; i < gScenarioListCount; i++) {
-		scenario = &gScenarioList[i];
+	int y = 0;
+	int num_unlocks = 5;
+	for (int i = 0; i < gScenarioListCount; i++) {
+		rct_scenario_basic *scenario = &gScenarioList[i];
 
 		if ((gConfigGeneral.scenario_select_mode == 1 && scenario->source_game != w->selected_tab) ||
 			(gConfigGeneral.scenario_select_mode == 2 && scenario->category != w->selected_tab))
@@ -378,19 +399,29 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 		if (y > dpi->y + dpi->height)
 			continue;
 
-		highlighted = w->scenario == scenario;
-
 		// Draw hover highlight
-		if (highlighted)
+		bool is_highlighted = w->highlighted_item == (int)scenario;
+		if (is_highlighted)
 			gfx_fill_rect(dpi, 0, y, w->width, y + 23, 0x02000031);
+
+		bool is_completed = scenario->flags & SCENARIO_FLAGS_COMPLETED;
+		bool is_disabled = false;
+		if (gConfigGeneral.scenario_unlocking_enabled) {
+			if (num_unlocks <= 0)
+				is_disabled = true;
+
+			num_unlocks += is_completed ? 1 : -1;
+		}
+
+		int format = is_disabled ? 5619 : (is_highlighted ? highlighted_format : unhighlighted_format);
 
 		// Draw scenario name
 		safe_strncpy((char*)0x009BC677, scenario->name, 64);
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 3165;
-		gfx_draw_string_centred(dpi, highlighted ? highlighted_format : unhighlighted_format, wide ? 270 : 210, y + 1, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+		gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 1, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
 
 		// Check if scenario is completed
-		if (scenario->flags & SCENARIO_FLAGS_COMPLETED) {
+		if (is_completed) {
 			// Draw completion tick
 			gfx_draw_sprite(dpi, 0x5A9F, wide ? 500 : 395, y + 1, 0);
 
@@ -398,7 +429,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			safe_strncpy((char*)0x009BC677, scenario->completed_by, 64);
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 2793;
 			RCT2_GLOBAL(0x013CE954, short) = 3165;
-			gfx_draw_string_centred(dpi, highlighted ? 1193 : 1191, wide ? 270 : 210, y + 11, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+			gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 11, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
 		}
 
 		y += 24;
