@@ -603,7 +603,7 @@ static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	i = (_window_guest_list_selected_tab == 1 ? w->list_information_type / 4 : 0);
 	gfx_draw_sprite(
 		dpi,
-		5568 + i,
+		SPR_TAB_GUESTS_0 + i,
 		window_guest_list_widgets[WIDX_TAB_2].left + w->x,
 		window_guest_list_widgets[WIDX_TAB_2].top + w->y, 0
 	);
