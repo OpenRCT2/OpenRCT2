@@ -24,6 +24,7 @@
 #include <dlfcn.h>
 #include <stdlib.h>
 #include "../util/util.h"
+#include "fontconfig/fontconfig.h"
 
 // See http://syprog.blogspot.ru/2011/12/listing-loaded-shared-objects-in-linux.html
 struct lmap {
@@ -161,6 +162,48 @@ int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8
 {
 	STUB();
 	return 0;
+}
+
+bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
+{
+	assert(buffer != NULL);
+	assert(font != NULL);
+
+	log_verbose("Looking for font %s with FontConfig.", font->font_name);
+	FcConfig* config = FcInitLoadConfigAndFonts();
+	if (!config)
+	{
+		log_error("Failed to initialize FontConfig library");
+		FcFini();
+		return false;
+	}
+	FcPattern* pat = FcNameParse((const FcChar8*) font->font_name);
+
+	FcConfigSubstitute(config, pat, FcMatchPattern);
+	FcDefaultSubstitute(pat);
+
+	bool found = false;
+	FcResult result = FcResultNoMatch;
+	FcPattern* match = FcFontMatch(config, pat, &result);
+
+	if (match)
+	{
+		FcChar8* filename = NULL;
+		if (FcPatternGetString(match, FC_FILE, 0, &filename) == FcResultMatch)
+		{
+			found = true;
+			safe_strncpy(buffer, (utf8*) filename, MAX_PATH);
+			log_verbose("FontConfig provided font %s", filename);
+		}
+		FcPatternDestroy(match);
+	} else {
+		log_warning("Failed to find required font.");
+	}
+
+	FcPatternDestroy(pat);
+	FcConfigDestroy(config);
+	FcFini();
+	return found;
 }
 
 #endif

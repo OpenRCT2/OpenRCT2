@@ -121,7 +121,10 @@ enum {
 	MAP_ELEMENT_TYPE_ENTRANCE = (4 << 2),
 	MAP_ELEMENT_TYPE_FENCE = (5 << 2),
 	MAP_ELEMENT_TYPE_SCENERY_MULTIPLE = (6 << 2),
-	MAP_ELEMENT_TYPE_BANNER = (7 << 2)
+	MAP_ELEMENT_TYPE_BANNER = (7 << 2),
+	// The corrupt element type is used for skipping drawing other following
+	// elements on a given tile.
+	MAP_ELEMENT_TYPE_CORRUPT = (8 << 2),
 };
 
 enum {

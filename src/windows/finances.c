@@ -640,7 +640,7 @@ static void window_finances_summary_invalidate(rct_window *w)
 	}
 
 	window_finances_set_pressed_tab(w);
-	RCT2_GLOBAL(0x013CE952 + 6, money32) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, money32) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
 }
 
 /**
@@ -1183,7 +1183,7 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 
 		noCampaignsActive = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
-		RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
 
 		// Set special parameters
 		switch (i) {
@@ -1191,7 +1191,7 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 		case ADVERTISING_CAMPAIGN_RIDE:
 			ride = GET_RIDE(gMarketingCampaignRideIndex[i]);
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ride->name;
-			RCT2_GLOBAL(0x013CE952 + 2, uint32) = ride->name_arguments;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
 			break;
 		case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ShopItemStringIds[gMarketingCampaignRideIndex[i]].plural;
@@ -1199,7 +1199,7 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 		}
 
 		// Advertisement
-		gfx_draw_string_left_clipped(dpi, STR_VOUCHERS_FOR_FREE_ENTRY_TO + i, (void*)0x013CE952, 0, x + 4, y, 296);
+		gfx_draw_string_left_clipped(dpi, STR_VOUCHERS_FOR_FREE_ENTRY_TO + i, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x + 4, y, 296);
 
 		// Duration
 		weeksRemaining = (gMarketingCampaignDaysLeft[i] % 128);

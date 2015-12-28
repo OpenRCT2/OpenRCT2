@@ -264,7 +264,7 @@ typedef struct rct_window {
 	uint16 frame_no;				// 0x48E updated every tic for motion in windows sprites
 	uint16 list_information_type;	// 0x490 0 for none, Used as current position of marquee in window_peep
 	sint16 var_492;
-	uint32 var_494;
+	uint32 highlighted_item;		// 0x494
 	uint8 var_498[0x14];
 	sint16 selected_tab;			// 0x4AC
 	sint16 var_4AE;
@@ -434,6 +434,7 @@ enum {
 	WC_TRACK_DELETE_PROMPT = 48,
 	WC_INSTALL_TRACK = 49,
 	WC_CLEAR_SCENERY = 50,
+	WC_NOTIFICATION_OPTIONS = 109,
 	WC_CHEATS = 110,
 	WC_RESEARCH = 111,
 	WC_VIEWPORT = 112,
@@ -627,6 +628,7 @@ void window_install_track_open(const char* path);
 void window_banner_open(rct_windownumber number);
 void window_sign_open(rct_windownumber number);
 void window_sign_small_open(rct_windownumber number);
+void window_news_options_open();
 void window_cheats_open();
 void window_player_list_open();
 void window_network_status_open(const char* text);

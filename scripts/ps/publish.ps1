@@ -5,6 +5,9 @@
 # - Creates a ZIP for distribution
 #########################################################
 param (
+    [Parameter(Position = 1)]
+    [string]$Task = "all",
+
     [string]$Server  = "",
     [string]$BuildNumber = "",
     [string]$GitBranch = "",
@@ -20,7 +23,7 @@ Import-Module "$scriptsPath\common.psm1" -DisableNameChecking
 $rootPath = Get-RootPath
 
 # Set build attributes
-function do-prepareSource()
+function Do-PrepareSource()
 {
     Write-Host "Setting build #defines..." -ForegroundColor Cyan
     if ($GitBranch -eq "")
@@ -48,19 +51,21 @@ function do-prepareSource()
 
     # Set the environment variable which the msbuild project will use
     $env:OPENRCT2_DEFINES = $defineString;
+    return 0
 }
 
 # Building OpenRCT2
-function do-build()
+function Do-Build()
 {
     Write-Host "Building OpenRCT2..." -ForegroundColor Cyan
     & "$scriptsPath\build.ps1" all -Rebuild
+    return $LASTEXITCODE
 }
 
 # Package
-function do-package()
+function Do-Package()
 {
-    Write-Host "Publishing OpenRCT2..." -ForegroundColor Cyan
+    Write-Host "Publishing OpenRCT2 as zip..." -ForegroundColor Cyan
     $releaseDir = "$rootPath\bin"
     $distDir    = "$rootPath\distribution"
     $tempDir    = "$rootPath\artifacts\temp"
@@ -79,6 +84,8 @@ function do-package()
     Copy-Item -Force          "$distDir\changelog.txt"         $tempDir -ErrorAction Stop
     Copy-Item -Force          "$distDir\known_issues.txt"      $tempDir -ErrorAction Stop
     Copy-Item -Force          "$distDir\readme.txt"            $tempDir -ErrorAction Stop
+    Copy-Item -Force          "$rootPath\contributors.md"      $tempDir -ErrorAction Stop
+    Copy-Item -Force          "$rootPath\licence.txt"          $tempDir -ErrorAction Stop
 
     # Create archive using 7z (renowned for speed and compression)
     $7zcmd = "7za"
@@ -89,19 +96,25 @@ function do-package()
         if (-not (AppExists($7zcmd)))
         {
             Write-Host "Publish script requires 7z to be in PATH" -ForegroundColor Red
-            exit 1
+            return 1
         }
     }
-    & $7zcmd a -tzip -mx9 $outZip "$tempDir\*"
+    & $7zcmd a -tzip -mx9 $outZip "$tempDir\*" | Write-Host
+    if ($LASTEXITCODE -ne 0)
+    {
+        Write-Host "Failed to create zip." -ForegroundColor Red
+        return 1
+    }
 
     # Remove temp directory
     Remove-Item -Force -Recurse $tempDir -ErrorAction SilentlyContinue
+    return 0
 }
 
 # Installer
-function do-installer()
+function Do-Installer()
 {
-    Write-Host "Publishing OpenRCT2..." -ForegroundColor Cyan
+    Write-Host "Publishing OpenRCT2 as installer..." -ForegroundColor Cyan
     $artifactsDir = "$rootPath\artifacts"
     $installerDir = "$rootPath\distribution\windows"
 
@@ -109,30 +122,62 @@ function do-installer()
     New-Item -Force -ItemType Directory $artifactsDir > $null
 
     # Create installer
-    & "$installerDir\build.ps1"
+    & "$installerDir\build.ps1" -BuildNumber $BuildNumber -GitBranch $GitBranch
     if ($LASTEXITCODE -ne 0)
     {
         Write-Host "Failed to create installer." -ForegroundColor Red
-        exit 1
+        if (Test-Path -PathType Leaf "$installerDir\win32.log")
+        {
+            Get-Content "$installerDir\win32.log" | Write-Host
+        }
+        return 1
     }
 
     $binaries = (Get-ChildItem "$installerDir\*.exe" | Sort-Object -Property LastWriteTime -Descending)
     if ($binaries -eq 0)
     {
         Write-Host "Unable to find created installer." -ForegroundColor Red
-        exit 1
+        return 1
     }
 
-    Copy-Item $binaries[0].FullName $artifactsDir
+    Move-Item $binaries[0].FullName $artifactsDir
+    return 0
 }
 
-do-prepareSource
-do-build
-if ($Installer)
+function Do-Task-Build()
 {
-    do-installer
+    if (($result = (Do-PrepareSource)) -ne 0) { return $result }
+    if (($result = (Do-Build        )) -ne 0) { return $result }
+    return 0
 }
-else
+
+function Do-Task-Package()
 {
-    do-package
+    if ($Installer)
+    {
+        if (($result = (Do-Installer)) -ne 0) { return $result }
+    }
+    else
+    {
+        if (($result = (Do-Package)) -ne 0) { return $result }
+    }
+    return 0
 }
+
+function Do-Task-All()
+{
+    if (($result = (Do-Task-Build  )) -ne 0) { return $result }
+    if (($result = (Do-Task-Package)) -ne 0) { return $result }
+    return 0
+}
+
+# Script entry point
+switch ($Task)
+{
+    "build"   { $result = Do-Task-Build   }
+    "package" { $result = Do-Task-Package }
+    "all"     { $result = Do-Task-All     }
+    default   { Write-Host "Unknown publish task." -ForegroundColor Red
+                $result = 1 }
+}
+exit $result

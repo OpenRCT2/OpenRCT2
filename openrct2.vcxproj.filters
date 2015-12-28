@@ -552,12 +552,13 @@
     <ClCompile Include="src\addresses.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ride\cable_lift.c">
+    <ClCompile Include="src\ride\cable_lift.c">
       <Filter>Source\Ride</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\drawing\supports.c">
+    <ClCompile Include="src\drawing\supports.c">
       <Filter>Source\Drawing</Filter>
     </ClCompile>
+    <ClCompile Include="src\windows\news_options.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">

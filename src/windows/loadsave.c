@@ -699,7 +699,6 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 			_listItemsCount++;
 		}
 		platform_enumerate_files_end(fileEnumHandle);
-		window_loadsave_sort_list(sortStartIndex, _listItemsCount - 1);
 
 		fileEnumHandle = platform_enumerate_files_begin(filter);
 		while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
@@ -728,6 +727,7 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 			_listItemsCount++;
 		}
 		platform_enumerate_files_end(fileEnumHandle);
+		window_loadsave_sort_list(sortStartIndex, _listItemsCount - 1);
 	}
 }
 

@@ -504,7 +504,7 @@ void window_guest_open(rct_peep* peep){
 		window->frame_no = 0;
 		window->list_information_type = 0;
 		window->var_492 = 0;
-		window->var_494 = 0;
+		window->highlighted_item = 0;
 		window_guest_disable_widgets(window);
 		window->min_width = 192;
 		window->min_height = 157;
@@ -835,7 +835,7 @@ void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	int eax = 0;
 
 	if (w->page == WINDOW_GUEST_OVERVIEW){
-		eax = w->var_494>>16;
+		eax = w->highlighted_item>>16;
 		eax &= 0xFFFC;
 	}
 	ebx += eax;
@@ -1111,27 +1111,27 @@ void window_guest_overview_invalidate(rct_window *w)
  *  rct2: 0x696F45
  */
 void window_guest_overview_update(rct_window* w){
-	int var_496 = w->var_494 >> 16;
+	int var_496 = w->highlighted_item >> 16;
 	var_496++;
 	var_496 %= 24;
-	w->var_494 &= 0x0000FFFF;
-	w->var_494 |= var_496 << 16;
+	w->highlighted_item &= 0x0000FFFF;
+	w->highlighted_item |= var_496 << 16;
 
 	widget_invalidate(w, WIDX_TAB_1);
 	widget_invalidate(w, WIDX_TAB_2);
 
 	w->list_information_type += 2;
 
-	if ((w->var_494 & 0xFFFF) == 0xFFFF)
-		w->var_494 &= 0xFFFF0000;
+	if ((w->highlighted_item & 0xFFFF) == 0xFFFF)
+		w->highlighted_item &= 0xFFFF0000;
 	else
-		w->var_494++;
+		w->highlighted_item++;
 
 	// Disable peep watching thought for multiplayer as its client specific
 	if (network_get_mode() == NETWORK_MODE_NONE) {
 		// Create the "I have the strangest feeling I am being watched thought"
-		if ((w->var_494 & 0xFFFF) >= 3840) {
-			if (!(w->var_494 & 0x3FF)) {
+		if ((w->highlighted_item & 0xFFFF) >= 3840) {
+			if (!(w->highlighted_item & 0x3FF)) {
 				int random = util_rand() & 0xFFFF;
 				if (random <= 0x2AAA) {
 					rct_peep* peep = GET_PEEP(w->number);
@@ -2186,7 +2186,7 @@ void window_guest_inventory_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (y >= maxY) break;
 		if (!peep_has_item(peep, item)) continue;
 
-		void *args = (void*)0x013CE952;
+		void *args = (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS;
 		rct_string_id stringId = window_guest_inventory_format_item(peep, item, (uint8*)args);
 		y += gfx_draw_string_left_wrapped(dpi, args, x, y, itemNameWidth, stringId, 0);
 		numItems++;

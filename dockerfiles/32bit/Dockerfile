@@ -26,4 +26,4 @@ RUN pacman -R --noconfirm gcc
 RUN yes | pacman -S gcc-libs-multilib
 RUN pacman -S --noconfirm gcc-multilib
 USER travis
-RUN yaourt -S --noconfirm lib32-jansson lib32-curl lib32-sdl2 lib32-sdl2_ttf lib32-speex
+RUN yaourt -S --noconfirm lib32-jansson lib32-curl lib32-sdl2 lib32-sdl2_ttf lib32-speex lib32-fontconfig

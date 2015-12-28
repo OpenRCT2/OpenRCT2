@@ -2,7 +2,8 @@
 # Script to install the latest dependencies for OpenRCT2
 #########################################################
 param (
-    [switch]$Force
+    [switch]$Force,
+    [switch]$Quiet
 )
 Write-Host "Installing OpenRCT2 development environment for Windows" -ForegroundColor Cyan
 
@@ -37,7 +38,7 @@ if ($currentLibsVersion -ge $libsVersion)
 $libsPathExists = Test-Path $libsPath
 if ($libsPathExists -and -not $updateLibs -and -not $Force)
 {
-    if (Prompt-User "Dependencies already exists, reinstall?")
+    if (-not $Quiet -and (Prompt-User "Dependencies already exists, reinstall?"))
     {
         $updateLibs = $true
     }

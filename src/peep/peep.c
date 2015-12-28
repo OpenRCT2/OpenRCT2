@@ -1327,11 +1327,13 @@ void peep_update_falling(rct_peep* peep){
 
 		peep_update_action(&x, &y, &xy_distance, peep);
 		if (peep->action == PEEP_ACTION_DROWNING) return;
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & 0x80000)){
+
+		if (gConfigNotifications.guest_died) {
 			RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
 			RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
-			news_item_add_to_queue(NEWS_ITEM_BLANK, 2347, peep->x | (peep->y << 16));
+			news_item_add_to_queue(NEWS_ITEM_BLANK, STR_NEWS_ITEM_GUEST_DROWNED, peep->x | (peep->y << 16));
 		}
+
 		RCT2_GLOBAL(0x135882E, uint16) += 25;
 		if (RCT2_GLOBAL(0x135882E, uint16) > 1000){
 			RCT2_GLOBAL(0x135882E, uint16) = 1000;
@@ -2120,11 +2122,13 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ri
 
 		rct_string_id msg_string;
 		if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_IN_RIDE)
-			msg_string = 1932;
+			msg_string = STR_PEEP_TRACKING_PEEP_IS_IN_X;
 		else
-			msg_string = 1933;
+			msg_string = STR_PEEP_TRACKING_PEEP_IS_ON_X;
 
-		news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, msg_string, peep->sprite_index);
+		if (gConfigNotifications.guest_on_ride) {
+			news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, msg_string, peep->sprite_index);
+		}
 	}
 
 	if (ride->type == RIDE_TYPE_SPIRAL_SLIDE){
@@ -3169,7 +3173,9 @@ static void peep_update_ride_sub_state_18(rct_peep* peep){
 		RCT2_GLOBAL(0x13CE958, uint16) = ride->name;
 		RCT2_GLOBAL(0x13CE95A, uint32) = ride->name_arguments;
 
-		news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, 1934, peep->sprite_index);
+		if (gConfigNotifications.guest_left_ride) {
+			news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_LEFT_RIDE_X, peep->sprite_index);
+		}
 	}
 
 	peep->var_79 = 0xFF;
@@ -5264,52 +5270,68 @@ void peep_problem_warnings_update()
 		--warning_throttle[0];
 	else if ( hunger_counter >= PEEP_HUNGER_WARNING_THRESHOLD && hunger_counter >= guests_in_park / 16) {
 		warning_throttle[0] = 4;
-		news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_ARE_HUNGRY, 20);
+		if (gConfigNotifications.guest_warnings) {
+			news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_ARE_HUNGRY, 20);
+		}
 	}
 
 	if (warning_throttle[1])
 		--warning_throttle[1];
 	else if (thirst_counter >= PEEP_THIRST_WARNING_THRESHOLD && thirst_counter >= guests_in_park / 16) {
 		warning_throttle[1] = 4;
-		news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_ARE_THIRSTY, 21);
+		if (gConfigNotifications.guest_warnings) {
+			news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_ARE_THIRSTY, 21);
+		}
 	}
 
 	if (warning_throttle[2])
 		--warning_throttle[2];
 	else if (bathroom_counter >= PEEP_BATHROOM_WARNING_THRESHOLD && bathroom_counter >= guests_in_park / 16) {
 		warning_throttle[2] = 4;
-		news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_CANT_FIND_BATHROOM, 22);
+		if (gConfigNotifications.guest_warnings) {
+			news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_CANT_FIND_BATHROOM, 22);
+		}
 	}
 
 	if (warning_throttle[3])
 		--warning_throttle[3];
 	else if (litter_counter >= PEEP_LITTER_WARNING_THRESHOLD && litter_counter >= guests_in_park / 32) {
 		warning_throttle[3] = 4;
-		news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_DISLIKE_LITTER, 26);
+		if (gConfigNotifications.guest_warnings) {
+			news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_DISLIKE_LITTER, 26);
+		}
 	}
 
 	if (warning_throttle[4])
 		--warning_throttle[4];
 	else if (disgust_counter >= PEEP_DISGUST_WARNING_THRESHOLD && disgust_counter >= guests_in_park / 32) {
 		warning_throttle[4] = 4;
-		news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_DISGUSTED_BY_PATHS, 31);
+		if (gConfigNotifications.guest_warnings) {
+			news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_DISGUSTED_BY_PATHS, 31);
+		}
 	}
 
 	if (warning_throttle[5])
 		--warning_throttle[5];
 	else if (vandalism_counter >= PEEP_VANDALISM_WARNING_THRESHOLD && vandalism_counter >= guests_in_park / 32) {
 		warning_throttle[5] = 4;
-		news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_DISLIKE_VANDALISM, 33);
+		if (gConfigNotifications.guest_warnings) {
+			news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_DISLIKE_VANDALISM, 33);
+		}
 	}
 
 	if (warning_throttle[6])
 		--warning_throttle[6];
 	else if (noexit_counter >= PEEP_NOEXIT_WARNING_THRESHOLD) {
 		warning_throttle[6] = 4;
-		news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_GETTING_LOST_OR_STUCK, 27);
+		if (gConfigNotifications.guest_warnings) {
+			news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_GETTING_LOST_OR_STUCK, 27);
+		}
 	} else if (lost_counter >= PEEP_LOST_WARNING_THRESHOLD) {
 		warning_throttle[6] = 4;
-		news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_GETTING_LOST_OR_STUCK, 16);
+		if (gConfigNotifications.guest_warnings) {
+			news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_GETTING_LOST_OR_STUCK, 16);
+		}
 	}
 }
 
@@ -6297,7 +6319,9 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 			RCT2_GLOBAL(0x0013CE954, uint32) = peep->id;
 			RCT2_GLOBAL(0x0013CE958, rct_string_id) = ride->name;
 			RCT2_GLOBAL(0x0013CE95A, uint32) = ride->name_arguments;
-			news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, 1931, peep->sprite_index);
+			if (gConfigNotifications.guest_queuing_for_ride) {
+				news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
+			}
 		}
 		return 1;
 	}
@@ -6339,7 +6363,9 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 			if (peep->flags & PEEP_FLAGS_TRACKING){
 				RCT2_GLOBAL(0x0013CE952, rct_string_id) = peep->name_string_idx;
 				RCT2_GLOBAL(0x0013CE954, uint32) = peep->id;
-				news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, 1935, peep->sprite_index);
+				if (gConfigNotifications.guest_left_park) {
+					news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_LEFT_PARK, peep->sprite_index);
+				}
 			}
 			return 1;
 		}
@@ -6674,7 +6700,9 @@ static int peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 			RCT2_GLOBAL(0x0013CE954, uint32) = peep->id;
 			RCT2_GLOBAL(0x0013CE958, rct_string_id) = ride->name;
 			RCT2_GLOBAL(0x0013CE95A, uint32) = ride->name_arguments;
-			news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, 1931, peep->sprite_index);
+			if (gConfigNotifications.guest_queuing_for_ride) {
+				news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
+			}
 		}
 
 		return peep_footpath_move_forward(peep, x, y, map_element, vandalism_present);
@@ -6746,7 +6774,9 @@ static int peep_interact_with_shop(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 			RCT2_GLOBAL(0x0013CE958, rct_string_id) = ride->name;
 			RCT2_GLOBAL(0x0013CE95A, uint32) = ride->name_arguments;
 			rct_string_id string_id = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? 1933 : 1932;
-			news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, string_id, peep->sprite_index);
+			if (gConfigNotifications.guest_used_facility) {
+				news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, string_id, peep->sprite_index);
+			}
 		}
 		return 1;
 	}
@@ -8287,7 +8317,9 @@ loc_69B221:
 		RCT2_GLOBAL(0x13CE952,uint16) = peep->name_string_idx;
 		RCT2_GLOBAL((0x13CE952 + 2), uint32) = peep->id;
 		RCT2_GLOBAL((0x13CE956 + 2), uint16) = (shopItem >= 32 ? STR_SHOP_ITEM_INDEFINITE_PHOTO2 + (shopItem - 32) : STR_SHOP_ITEM_INDEFINITE_BALLOON + shopItem);
-		news_item_add_to_queue(2, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, peep->sprite_index);
+		if (gConfigNotifications.guest_bought_item) {
+			news_item_add_to_queue(2, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, peep->sprite_index);
+		}
 	}
 
 	if (shop_item_is_food(shopItem))

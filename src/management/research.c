@@ -19,9 +19,11 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
+#include "../localisation/string_ids.h"
 #include "../management/finance.h"
 #include "../scenario.h"
 #include "../rct1.h"
@@ -202,8 +204,11 @@ void research_finish_item(sint32 entryIndex)
 		if (RCT2_GLOBAL(0x009AC06C, uint8) == 0) {
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) ?
 				rideEntry->name : base_ride_type + 2;
-			if (!gSilentResearch)
-				news_item_add_to_queue(NEWS_ITEM_RESEARCH, 2249, entryIndex);
+			if (!gSilentResearch) {
+				if (gConfigNotifications.ride_researched) {
+					news_item_add_to_queue(NEWS_ITEM_RESEARCH, STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE, entryIndex);
+				}
+			}
 		}
 
 		research_invalidate_related_windows();
@@ -218,8 +223,11 @@ void research_finish_item(sint32 entryIndex)
 		// I don't think 0x009AC06C is ever not 0, so probably redundant
 		if (RCT2_GLOBAL(0x009AC06C, uint8) == 0) {
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = scenerySetEntry->name;
-			if (!gSilentResearch)
-				news_item_add_to_queue(NEWS_ITEM_RESEARCH, 2250, entryIndex);
+			if (!gSilentResearch) {
+				if (gConfigNotifications.ride_researched) {
+					news_item_add_to_queue(NEWS_ITEM_RESEARCH, STR_NEWS_ITEM_RESEARCH_NEW_SCENERY_SET_AVAILABLE, entryIndex);
+				}
+			}
 		}
 
 		research_invalidate_related_windows();

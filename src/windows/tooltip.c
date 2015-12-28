@@ -92,7 +92,7 @@ void window_tooltip_show(rct_string_id id, int x, int y)
 	RCT2_GLOBAL(0x0142006C, sint32) = -1;
 	char* buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 
-	format_string(buffer, id, (void*)0x013CE952);
+	format_string(buffer, id, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
 
 	int tooltip_text_width;

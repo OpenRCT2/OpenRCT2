@@ -5,7 +5,7 @@ STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :스파이럴 롤러코스터
 STR_0003    :스탠드업 롤러코스터
-STR_0004    :서스펜디드 스윙 코스터
+STR_0004    :서스펜디드 스윙잉 코스터
 STR_0005    :인버티드 롤러코스터
 STR_0006    :주니어 롤러코스터
 STR_0007    :미니어처 레일웨이
@@ -940,7 +940,7 @@ STR_0934    :놀이기구 입구가 있습니다
 STR_0935    :놀이기구 출구가 있습니다
 STR_0936    :공원 입구가 있습니다
 STR_0937    :{SMALLFONT}{BLACK}보기 설정
-STR_0938    :{SMALLFONT}{BLACK}지형 높이와 경사를 보여줌
+STR_0938    :{SMALLFONT}{BLACK}지형의 높이나 경사를 조정합니다.
 STR_0939    :지하/내부 시야
 STR_0940    :땅 안 보이기
 STR_0941    :절벽 안 보이기
@@ -3918,6 +3918,14 @@ STR_5578    :러시아 루블 (R)
 STR_5579    :창 크기 조절 배수:
 STR_5580    :체코 코루나 (Kc)
 STR_5581    :FPS 보기
+STR_5582    :마우스 커서를 창 밖으로 나가지 못하게
+STR_5583    :{COMMA1DP16}m/s
+STR_5584    :국제단위(SI)법
+STR_5585    :{SMALLFONT}{BLACK}체인/발사 속력을 {VELOCITY}으로 만드는 것과 같이 일부 놀이기구 운행 제한을 없애줍니다
+STR_5586    :상점이나 가게를 자동으로 엶
+STR_5587    :{SMALLFONT}{BLACK}이 설정을 켜면 상점이나 가게를 건설하면 자동으로 열도록 만들어 줍니다.
+
+
 ###############################################################################
 ## RCT2 Objects
 ###############################################################################
@@ -4731,16 +4739,16 @@ STR_NAME    :Corrugated Steel Roof
 STR_NAME    :Corrugated Steel Base
 
 [CWBCRV32]
-STR_NAME    :Curved Wall
+STR_NAME    :곡선형 벽
 
 [CWBCRV33]
-STR_NAME    :Curved Block
+STR_NAME    :곡선형 블록
 
 [CWFCRV32]
-STR_NAME    :Curved Wall
+STR_NAME    :곡선형 벽
 
 [CWFCRV33]
-STR_NAME    :Curved Block
+STR_NAME    :곡선형 블록
 
 [FERN1]
 STR_NAME    :Giant Fern
@@ -4749,13 +4757,13 @@ STR_NAME    :Giant Fern
 STR_NAME    :Giant Grass
 
 [HANG1]
-STR_NAME    :Gallows
+STR_NAME    :교수대
 
 [HELMET1]
 STR_NAME    :American Football Helmet
 
 [ICECUBE]
-STR_NAME    :Ice Cube
+STR_NAME    :얼음 큐브
 
 [IGROOF]
 STR_NAME    :이글루 천장
@@ -4764,7 +4772,7 @@ STR_NAME    :이글루 천장
 STR_NAME    :젤리빈
 
 [JELBAB1]
-STR_NAME    :Jelly Baby
+STR_NAME    :젤리빈
 
 [JELDROP1]
 STR_NAME    :Fruit Drop
@@ -5055,16 +5063,16 @@ STR_NAME    :클레오파트라의 바늘
 STR_NAME    :이집트식 기둥
 
 [TERB]
-STR_NAME    :Stone Block
+STR_NAME    :돌 블록
 
 [TERS]
-STR_NAME    :Ruined Statue
+STR_NAME    :부서진 동상
 
 [TES1]
-STR_NAME    :Egyptian Statue
+STR_NAME    :이집트 동상
 
 [TF1]
-STR_NAME    :Fruit Tree
+STR_NAME    :과일 나무
 
 [TF2]
 STR_NAME    :과일 나무
@@ -5211,16 +5219,16 @@ STR_NAME    :나무
 STR_NAME    :Meyer's Blue Juniper Tree
 
 [TMC]
-STR_NAME    :Monterey Cypress Tree
+STR_NAME    :왕느릅나무
 
 [TMG]
-STR_NAME    :Magnolia Tree
+STR_NAME    :목련
 
 [TMJ]
-STR_NAME    :Junk
+STR_NAME    :잔해
 
 [TML]
-STR_NAME    :Logs
+STR_NAME    :나무
 
 [TMM1]
 STR_NAME    :Graveyard Monument
@@ -5754,28 +5762,28 @@ STR_NAME    :Town Hall
 STR_NAME    :Tavern
 
 [WWBANK]
-STR_NAME    :Bank
+STR_NAME    :은행
 
 [SSIG2]
-STR_NAME    :3D Sign
+STR_NAME    :3D 팻말
 
 [SSIG3]
-STR_NAME    :Vertical 3D Sign
+STR_NAME    :수직 3D 팻말
 
 [SSIG4]
-STR_NAME    :3D Sign
+STR_NAME    :3D 팻말
 
 [SSIG1]
-STR_NAME    :Scrolling Sign
+STR_NAME    :스크롤링 전광판
 
 [GLTHENT]
-STR_NAME    :'Goliath' Sign
+STR_NAME    :'골리앗' 팻말
 
 [PRSHIP]
-STR_NAME    :Pirate Ship
+STR_NAME    :해적선
 
 [SCOL]
-STR_NAME    :Roman Colosseum
+STR_NAME    :로마 콜로세움
 
 [SIP]
 STR_NAME    :Ice Palace
@@ -5811,7 +5819,7 @@ STR_NAME    :벽
 STR_NAME    :벽
 
 [WALLBB34]
-STR_NAME    :Stone Wall
+STR_NAME    :돌 벽
 
 [WALLBB8]
 STR_NAME    :벽
@@ -5826,7 +5834,7 @@ STR_NAME    :벽
 STR_NAME    :벽
 
 [WALLBRWN]
-STR_NAME    :Window
+STR_NAME    :창문
 
 [WALLCB16]
 STR_NAME    :벽
@@ -5838,7 +5846,7 @@ STR_NAME    :벽
 STR_NAME    :벽
 
 [WALLCBWN]
-STR_NAME    :Window
+STR_NAME    :창문
 
 [WALLCF16]
 STR_NAME    :벽
@@ -5850,10 +5858,10 @@ STR_NAME    :벽
 STR_NAME    :벽
 
 [WALLCFAR]
-STR_NAME    :벽 Arch
+STR_NAME    :벽 아치
 
 [WALLCFWN]
-STR_NAME    :Window
+STR_NAME    :창문
 
 [WALLCO16]
 STR_NAME    :Corrugated Steel Wall
@@ -5871,13 +5879,13 @@ STR_NAME    :벽
 STR_NAME    :벽
 
 [WALLIG16]
-STR_NAME    :Igloo Wall
+STR_NAME    :이글루 벽
 
 [WALLIG24]
-STR_NAME    :Igloo Wall
+STR_NAME    :이글루 벽
 
 [WALLJB16]
-STR_NAME    :Jellybean Wall
+STR_NAME    :젤리빈 벽
 
 [WALLJN32]
 STR_NAME    :벽
@@ -5895,19 +5903,19 @@ STR_NAME    :Railings
 STR_NAME    :벽
 
 [WALLNT32]
-STR_NAME    :Tennis Net Wall
+STR_NAME    :테니스 네트 벽
 
 [WALLNT33]
-STR_NAME    :Tennis Net Wall
+STR_NAME    :테니스 네트 벽
 
 [WALLPG32]
 STR_NAME    :벽
 
 [WALLPOST]
-STR_NAME    :Post
+STR_NAME    :기둥
 
 [WALLPR32]
-STR_NAME    :Rigging
+STR_NAME    :지붕
 
 [WALLPR33]
 STR_NAME    :벽
@@ -5922,7 +5930,7 @@ STR_NAME    :벽
 STR_NAME    :벽
 
 [WALLRK32]
-STR_NAME    :Rock Wall
+STR_NAME    :바위 벽
 
 [WALLRS16]
 STR_NAME    :벽
@@ -5955,16 +5963,16 @@ STR_NAME    :강철 벽
 STR_NAME    :강철 벽
 
 [WALLSTFN]
-STR_NAME    :Steel Fence
+STR_NAME    :강철 울타리
 
 [WALLSTWN]
 STR_NAME    :강철 벽
 
 [WALLTN32]
-STR_NAME    :Poles
+STR_NAME    :기둥
 
 [WALLTXGT]
-STR_NAME    :'Texas Giant' Sign
+STR_NAME    :'텍사스 자이언트' 팻말
 
 [WALLU132]
 STR_NAME    :벽
@@ -5973,55 +5981,55 @@ STR_NAME    :벽
 STR_NAME    :벽
 
 [WALLWD16]
-STR_NAME    :Wooden Wall
+STR_NAME    :나무 벽
 
 [WALLWD32]
-STR_NAME    :Wooden Wall
+STR_NAME    :나무 벽
 
 [WALLWD33]
-STR_NAME    :Wooden Wall
+STR_NAME    :나무 벽
 
 [WALLWD8]
-STR_NAME    :Wooden Wall
+STR_NAME    :나무 벽
 
 [WALLWDPS]
 STR_NAME    :Wooden Post Fence
 
 [WBR1]
-STR_NAME    :Brick Wall
+STR_NAME    :벽돌 벽
 
 [WBR1A]
-STR_NAME    :Brick Wall
+STR_NAME    :벽돌 벽
 
 [WBR2]
-STR_NAME    :Stone Wall
+STR_NAME    :돌 벽
 
 [WBR2A]
-STR_NAME    :Stone Wall
+STR_NAME    :돌 벽
 
 [WBR3]
-STR_NAME    :Stone Wall
+STR_NAME    :돌 벽
 
 [WBRG]
-STR_NAME    :Brick Wall
+STR_NAME    :벽돌 벽
 
 [WBW]
-STR_NAME    :Bone Fence
+STR_NAME    :뼈 울타리
 
 [WC1]
-STR_NAME    :Castle Wall
+STR_NAME    :성벽
 
 [WC10]
-STR_NAME    :Castle Wall
+STR_NAME    :성벽
 
 [WC11]
-STR_NAME    :Castle Wall
+STR_NAME    :성벽
 
 [WC12]
-STR_NAME    :Castle Wall
+STR_NAME    :성벽
 
 [WC13]
-STR_NAME    :Castle Wall
+STR_NAME    :성벽
 
 [WC14]
 STR_NAME    :벽
@@ -6030,37 +6038,37 @@ STR_NAME    :벽
 STR_NAME    :벽
 
 [WC16]
-STR_NAME    :Fence
+STR_NAME    :울타리
 
 [WC17]
-STR_NAME    :Wooden Fence
+STR_NAME    :나무 울타리
 
 [WC18]
 STR_NAME    :Wooden Post Wall
 
 [WC2]
-STR_NAME    :Castle Wall
+STR_NAME    :성벽
 
 [WC3]
 STR_NAME    :Roman Column Wall
 
 [WC4]
-STR_NAME    :Castle Wall
+STR_NAME    :성벽
 
 [WC5]
-STR_NAME    :Castle Wall
+STR_NAME    :성벽
 
 [WC6]
-STR_NAME    :Castle Wall
+STR_NAME    :성벽
 
 [WC7]
-STR_NAME    :Castle Wall
+STR_NAME    :성벽
 
 [WC8]
-STR_NAME    :Castle Wall
+STR_NAME    :성벽
 
 [WC9]
-STR_NAME    :Castle Wall
+STR_NAME    :성벽
 
 [WCH]
 STR_NAME    :Conifer Hedge
@@ -6075,19 +6083,19 @@ STR_NAME    :Playing Card Wall
 STR_NAME    :Playing Card Wall
 
 [WEW]
-STR_NAME    :Egyptian Wall
+STR_NAME    :이집트 벽
 
 [WFW1]
-STR_NAME    :Wooden Fence
+STR_NAME    :나무 울타리
 
 [WFWG]
-STR_NAME    :Wooden Fence
+STR_NAME    :나무 울타리
 
 [WHG]
-STR_NAME    :Hedge
+STR_NAME    :생울타리
 
 [WHGG]
-STR_NAME    :Hedge
+STR_NAME    :생울타리
 
 [WJF]
 STR_NAME    :Jungle Fence
@@ -6102,13 +6110,13 @@ STR_NAME    :Mesh Fence
 STR_NAME    :Martian Wall
 
 [WMWW]
-STR_NAME    :Wooden Fence
+STR_NAME    :나무 울타리
 
 [WPF]
-STR_NAME    :Fence
+STR_NAME    :울타리
 
 [WPFG]
-STR_NAME    :Fence
+STR_NAME    :울타리
 
 [WPW1]
 STR_NAME    :Wooden Post Wall
@@ -6117,7 +6125,7 @@ STR_NAME    :Wooden Post Wall
 STR_NAME    :Wooden Post Wall
 
 [WPW3]
-STR_NAME    :Wooden Fence
+STR_NAME    :나무 울타리
 
 [WRW]
 STR_NAME    :Roman Wall
@@ -6141,19 +6149,19 @@ STR_NAME    :Railings
 STR_NAME    :Tall Wooden Fence
 
 [WWTWA]
-STR_NAME    :Wooden Fence Wall
+STR_NAME    :나무 울타리 Wall
 
 [WALLBRDR]
-STR_NAME    :Doorway
+STR_NAME    :출입구
 
 [WALLCBDR]
-STR_NAME    :Doorway
+STR_NAME    :출입구
 
 [WALLCBPC]
 STR_NAME    :Portcullis Door
 
 [WALLCFDR]
-STR_NAME    :Doorway
+STR_NAME    :출입구
 
 [WALLCFPC]
 STR_NAME    :Portcullis Door
@@ -6285,10 +6293,10 @@ STR_NAME    :대기줄 TV
 STR_NAME    :추상적인 테마
 
 [SCGCANDY]
-STR_NAME    :Giant Candy Themeing
+STR_NAME    :대형 사탕 테마
 
 [SCGCLASS]
-STR_NAME    :Classical/Roman Themeing
+STR_NAME    :클래식/로마 테마
 
 [SCGEGYPT]
 STR_NAME    :이집트 테마
@@ -6300,7 +6308,7 @@ STR_NAME    :울타리와 벽
 STR_NAME    :정원
 
 [SCGGIANT]
-STR_NAME    :Giant Garden Themeing
+STR_NAME    :대형 정원 테마
 
 [SCGHALLO]
 STR_NAME    :으스스한 테마
@@ -6321,371 +6329,371 @@ STR_NAME    :화성 테마
 STR_NAME    :중세 테마
 
 [SCGMINE]
-STR_NAME    :Mine Themeing
+STR_NAME    :광산 테마
 
 [SCGORIEN]
-STR_NAME    :Pagoda Themeing
+STR_NAME    :탑 테마
 
 [SCGPATHX]
-STR_NAME    :Signs and Items for Footpaths
+STR_NAME    :팻말과 보도 아이템
 
 [SCGPIRAT]
-STR_NAME    :Pirates Themeing
+STR_NAME    :해적 테마
 
 [SCGSHRUB]
-STR_NAME    :관목s and Ornaments
+STR_NAME    :관목과 장식품
 
 [SCGSIXFL]
-STR_NAME    :식스 플래그 Themeing
+STR_NAME    :식스 플래그 테마
 
 [SCGSNOW]
-STR_NAME    :Snow and Ice Themeing
+STR_NAME    :눈과 얼음 테마
 
 [SCGSPACE]
-STR_NAME    :Space Themeing
+STR_NAME    :우주 테마
 
 [SCGSPOOK]
-STR_NAME    :Spooky Themeing
+STR_NAME    :으스스한 테마
 
 [SCGSPORT]
-STR_NAME    :Sports Themeing
+STR_NAME    :스포츠 테마
 
 [SCGTREES]
-STR_NAME    :나무s
+STR_NAME    :나무
 
 [SCGURBAN]
-STR_NAME    :Urban Themeing
+STR_NAME    :도시 테마
 
 [SCGWALLS]
-STR_NAME    :벽s and Roofs
+STR_NAME    :벽과 지붕
 
 [SCGWATER]
-STR_NAME    :Water Feature Themeing
+STR_NAME    :인공 폭포 테마
 
 [SCGWOND]
-STR_NAME    :Wonderland Themeing
+STR_NAME    :동화나라 테마
 
 [SCGWWEST]
-STR_NAME    :Wild West Themeing
+STR_NAME    :황량한 서부 테마
 
 [PKEMM]
-STR_NAME    :Park Entrance Gates
+STR_NAME    :공원 출입구
 
 [PKENT1]
-STR_NAME    :Traditional Park Entrance
+STR_NAME    :기본 공원 입구
 
 [PKESFH]
 STR_NAME    :Park Entrance Building
 
 [WTRCYAN]
-STR_NAME    :Natural Water
+STR_NAME    :기본 물
 
 [WTRGREEN]
-STR_NAME    :Acid Green Water
+STR_NAME    :독성 녹색 물
 
 [WTRGRN]
-STR_NAME    :Green Water
+STR_NAME    :녹색 물
 
 [WTRORNG]
-STR_NAME    :Orange Water
+STR_NAME    :오렌지색 물
 
 ###############################################################################
 ## Wacky Worlds Objects
 ###############################################################################
 [LONDONBS]
-STR_NAME    :London Bus Tram
-STR_DESC    :Replica trams
+STR_NAME    :런던 버스 전차
+STR_DESC    :전차 모형
 STR_CPTY    :차량당 10명의 승객
 
 [MINELIFT]
-STR_NAME    :Mine Lift
+STR_NAME    :탄광 엘리베이터
 STR_DESC    :Guests ride in an elevator up or down a vertical tower to get from one level to another
 STR_CPTY    :승객 16명
 
 [SANFTRAM]
-STR_NAME    :San Francisco Tram
-STR_DESC    :Replica trams
+STR_NAME    :샌프란시스코 전차
+STR_DESC    :전차 모형
 STR_CPTY    :차량당 10명의 승객
 
 [STEAMTRN]
-STR_NAME    :Maharaja Steam Train
+STR_NAME    :마하라자 증기 기관차
 STR_DESC    :Miniature steam trains consisting of a replica steam locomotive and tender, pulling closed-top wooden carriages
 STR_CPTY    :객차당 6명의 승객
 
 [BLACKCAB]
-STR_NAME    :London Taxi Black Cab Ride
+STR_NAME    :런던 택시 블랙 캡 라이드
 STR_DESC    :Powered vehicles in the shape of London Taxis
 STR_CPTY    :차량당 2명의 승객
 
 [CRNVBFLY]
-STR_NAME    :Carnival Float Ride - Butterfly Cars
+STR_NAME    :카니발 플로트 라이드 - 나비 차량
 STR_DESC    :Roller coaster cars in the shape of butterfly carnival floats
 STR_CPTY    :차량당 2명의 승객
 
 [CRNVFROG]
-STR_NAME    :Carnival Float Ride - Frog Cars
+STR_NAME    :카니발 플로트 라이드 - 개구리 차량
 STR_DESC    :Roller coaster cars in the shape of frog carnival floats
 STR_CPTY    :차량당 2명의 승객
 
 [CRNVLZRD]
-STR_NAME    :Carnival Float Ride - Lizard Cars
+STR_NAME    :카니발 플로트 라이드 - 도마뱀 차량
 STR_DESC    :Roller coaster cars in the shape of lizard carnival floats
 STR_CPTY    :차량당 2명의 승객
 
 [DRAGDODG]
-STR_NAME    :Chinese Dragonhead Ride
+STR_NAME    :차이니즈 드래곤헤드 라이드
 STR_DESC    :Self-drive electric dodgem cars
-STR_CPTY    :1 person per car
+STR_CPTY    :차량당 1명의 손님
 
 [HIPPORID]
-STR_NAME    :Hippo Ride
+STR_NAME    :히포 라이드
 STR_DESC    :Riders ride in a submerged submarine through an underwater course
 STR_CPTY    :차량당 5명의 승객
 
 [HUSKIE]
-STR_NAME    :Huskie Car
+STR_NAME    :허스키 카
 STR_DESC    :Powered vehicles in the shape of Huskie sleds which follow a track-based route
 STR_CPTY    :차량당 2명의 승객
 
 [KILLWHAL]
-STR_NAME    :Killer Whale
+STR_NAME    :범고래
 STR_DESC    :Riders ride in a submerged submarine through an underwater course
 STR_CPTY    :차량당 5명의 승객
 
 [SKIDOO]
-STR_NAME    :Skidoo Dodgems
+STR_NAME    :설상 스쿠터 범퍼카
 STR_DESC    :Self-drive electric dodgem cars
-STR_CPTY    :1 person per car
+STR_CPTY    :차량당 1명의 승객
 
 [ANACONDA]
-STR_NAME    :Anaconda Ride
+STR_NAME    :아나콘다 라이드
 STR_DESC    :Spacious trains with simple lap restraints
 STR_CPTY    :차량당 6명의 승객
 
 [BOMERANG]
-STR_NAME    :Boomerang Coaster
+STR_NAME    :부메랑 코스터
 STR_DESC    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
 STR_CPTY    :차량당 2명의 승객
 
 [BULLET]
-STR_NAME    :Bullet Coaster
+STR_NAME    :신칸센 코스터
 STR_DESC    :Roller coaster with Japanese Bullet Train themed cars
 STR_CPTY    :차량당 4명의 승객
 
 [CADDILAC]
-STR_NAME    :Limousine Rollercoaster
+STR_NAME    :리무진 롤러코스터
 STR_DESC    :Roller coaster with Limousine themed cars
 STR_CPTY    :차량당 4명의 승객
 
 [CONDORRD]
-STR_NAME    :Condor Ride
+STR_NAME    :콘도르 라이드
 STR_DESC    :Passengers ride face-down in a lying position, suspended in a Condor-shaped car from the single-rail track, swinging freely from side to side around corners
 STR_CPTY    :승객 1명 per car
 
 [CONGAEEL]
-STR_NAME    :Conga Eel Coaster
+STR_NAME    :콩가 뱀장어 코스터
 STR_DESC    :A compact steel-tracked roller coaster where the Eel-shaped train travels through corkscrews and loops
 STR_CPTY    :차량당 4명의 승객
 
 [DRAGON]
-STR_NAME    :Dragon Coaster
+STR_NAME    :드래곤 코스터
 STR_DESC    :Roller coaster with dragon-themed cars
 STR_CPTY    :차량당 4명의 승객
 
 [FOOTBALL]
-STR_NAME    :Football Ride
+STR_NAME    :풋볼 라이드
 STR_DESC    :Suspended roller coaster train consisting of football-shaped cars able to swing freely as the train goes around corners
 STR_CPTY    :차량당 4명의 승객
 
 [GORILLA]
-STR_NAME    :Gorilla Ride
+STR_NAME    :고릴라 라이드
 STR_DESC    :Suspended roller coaster train consisting of gorilla-shaped cars able to swing freely as the train goes around corners
 STR_CPTY    :차량당 4명의 승객
 
 [GRATWHTE]
-STR_NAME    :Great White Shark Ride
+STR_NAME    :대백상어 라이드
 STR_DESC    :Spacious trains with simple lap restraints
 STR_CPTY    :차량당 6명의 승객
 
 [JAGUARRD]
-STR_NAME    :Jaguar Ride
+STR_NAME    :재규어 라이드
 STR_DESC    :A compact roller coaster with individual cars and smooth twisting drops.
 STR_CPTY    :차량당 4명의 승객
 
 [KOLARIDE]
-STR_NAME    :Koala Ride
+STR_NAME    :코알라 라이드
 STR_DESC    :Large coaster car for the Reverse Freefall Coaster
 STR_CPTY    :차량당 8명의 승객
 
 [LIONRIDE]
-STR_NAME    :Lion Ride
+STR_NAME    :사자 라이드
 STR_DESC    :A compact roller coaster with individual cars and smooth twisting drops.
 STR_CPTY    :차량당 4명의 승객
 
 [MINECART]
-STR_NAME    :Mine Cart Ride
+STR_NAME    :탄광 카트 라이드
 STR_DESC    :우든 롤러코스터 차량 with padded seats and lap bar restraints
 STR_CPTY    :차량당 4명의 승객
 
 [OSTRICH]
-STR_NAME    :Ostrich Ride
+STR_NAME    :타조 라이드
 STR_DESC    :A looping roller coaster where the riders ride in a standing position
 STR_CPTY    :차량당 4명의 승객
 
 [PENGUINB]
-STR_NAME    :Penguin Bobsleigh
+STR_NAME    :펭귄 봅슬레이
 STR_DESC    :Riders career down a twisting track in penguin-shaped cars guided only by the curvature and banking of the semi-circular track
 STR_CPTY    :차량당 2명의 승객
 
 [POLARBER]
-STR_NAME    :Polar Bear Rollercoaster
+STR_NAME    :북극곰 롤러코스터
 STR_DESC    :Riders sit in pairs facing either forwards or backwards as they loop and twist through tight inversions
 STR_CPTY    :차량당 4명의 승객
 
 [RHINORID]
-STR_NAME    :Rhino Ride
+STR_NAME    :코뿔소 라이드
 STR_DESC    :A compact steel-tracked roller coaster with a spiral lift hill and cars with in-line seating
 STR_CPTY    :차량당 6명의 승객
 
 [ROCKET]
-STR_NAME    :1950's Rocket Ride
+STR_NAME    :1950년대 로켓 라이드
 STR_DESC    :Inverted roller coaster trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
 STR_CPTY    :차량당 4명의 승객
 
 [RSSNCRRD]
-STR_NAME    :Russian Cars
+STR_NAME    :러시아 차량
 STR_DESC    :Roller coaster cars in the shape of automobiles
 STR_CPTY    :차량당 4명의 승객
 
 [SEALS]
-STR_NAME    :Seals Rollercoaster
+STR_NAME    :물개 롤러코스터
 STR_DESC    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
 STR_CPTY    :차량당 4명의 승객
 
 [SLOTH]
-STR_NAME    :Sloth Ride
+STR_NAME    :나무늘보 라이드
 STR_DESC    :Suspended roller coaster train consisting of Sloth-shaped cars able to swing freely as the train goes around corners
 STR_CPTY    :차량당 4명의 승객
 
 [SPUTNIKR]
-STR_NAME    :Sputnik Suspended Flying Coaster
+STR_NAME    :스푸트니크 서스펜디드 플라잉 코스터
 STR_DESC    :Passengers ride face-down in a lying position, suspended in a specially designed car from the single-rail track, swinging freely from side to side around corners
 STR_CPTY    :승객 2명 per car
 
 [STGCCSTR]
-STR_NAME    :Stage Coach Rollercoaster
-STR_DESC    :우든 롤러코스터 차량 with padded seats and lap bar restraints
+STR_NAME    :역마차 롤러코스터
+STR_DESC    :좌석이 넓고 무릎에만 안전바가 있는 우든 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [SURFBRDC]
-STR_NAME    :Surfing Coaster
+STR_NAME    :서핑 코스터
 STR_DESC    :Riders ride in a standing position in wide coaster trains with specially designed restraints as they race down smooth drops and through multiple inversions
 STR_CPTY    :차량당 4명의 승객
 
 [TAXICSTR]
-STR_NAME    :Yellow Taxi Coaster
+STR_NAME    :옐로 택시 코스터
 STR_DESC    :A giant steel roller coaster capable of smooth drops and hills of over 300ft
 STR_CPTY    :차량당 4명의 승객
 
 [TGVTRAIN]
-STR_NAME    :TGV Train Roller Coaster
+STR_NAME    :TGV 트레인 롤러코스터
 STR_DESC    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
 STR_CPTY    :차량당 4명의 승객
 
 [TIGRTWST]
-STR_NAME    :Bengal Tiger Rollercoaster
+STR_NAME    :뱅갈 호랑이 롤러코스터
 STR_DESC    :Roller coaster cars capable of heartline twists
 STR_CPTY    :차량당 4명의 승객
 
 [WHICGRUB]
-STR_NAME    :Witchity Grub Ride
-STR_DESC    :Roller coaster trains with small Grub-shaped cars
+STR_NAME    :애벌레 라이드
+STR_DESC    :작은 유충 모양의 차량이 있는 롤러코스터 차량
 STR_CPTY    :차량당 2명의 승객
 
 [COFFEECU]
-STR_NAME    :Coffee Cup Ride
+STR_NAME    :커피 컵 라이드
 STR_DESC    :Riders ride in pairs of seats rotating around the ends of three long rotating arms
 STR_CPTY    :승객 18명
 
 [DIAMONDR]
-STR_NAME    :Diamond Ride
+STR_NAME    :다이아몬드 라이드
 STR_DESC    :Riders ride in pairs of seats rotating around the ends of three long rotating arms
 STR_CPTY    :승객 18명
 
 [FABERGE]
-STR_NAME    :Faberge Egg Ride
+STR_NAME    :파베르의 달걀 라이드
 STR_DESC    :Riders ride in pairs of seats rotating around the ends of three long rotating arms
 STR_CPTY    :승객 18명
 
 [FIGHTKIT]
-STR_NAME    :Fighting Kite Ride
+STR_NAME    :파이팅 카이트 라이드
 STR_DESC    :Riders ride in pairs of seats rotating around the ends of three long rotating arms
 STR_CPTY    :승객 18명
 
 [FIRECRAK]
-STR_NAME    :Fire Cracker Ride
+STR_NAME    :파이어 크래커 라이드
 STR_DESC    :Rotating wheel with suspended passenger pods, which first starts spinning and is then tilted up by a supporting arm
 STR_CPTY    :승객 16명
 
 [ITALYPOR]
-STR_NAME    :Italian Police Ride
+STR_NAME    :이탈리안 폴리스 라이드
 STR_DESC    :Riders ride in pairs of seats rotating around the ends of three long rotating arms
 STR_CPTY    :승객 18명
 
 [JUNKSWNG]
-STR_NAME    :Chinese Junk Swing Ride
+STR_NAME    :차이니즈 정크 스윙 라이드
 STR_DESC    :Ship is attached to an arm with a counterweight at the opposite end, and swings through a complete 360 degrees
 STR_CPTY    :승객 12명
 
 [CROCFLUM]
-STR_NAME    :Crocodile Ride
+STR_NAME    :악어 라이드
 STR_DESC    :Crocodile-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
 STR_CPTY    :보트당 4명의 승객
 
 [DHOWWATR]
-STR_NAME    :Dhow water ride
+STR_NAME    :다우 워터 라이드
 STR_DESC    :Decorative fishing boat, which the passengers paddle themselves
 STR_CPTY    :보트당 2명의 승객
 
 [DOLPHINR]
-STR_NAME    :Dolphin Ride
+STR_NAME    :돌고래 라이드
 STR_DESC    :Single-seater Dolphin-shaped vehicles which riders can drive themselves
 STR_CPTY    :1 rider per vehicle
 
 [MANDARIN]
-STR_NAME    :Mandarin Duck Water Ride
+STR_NAME    :원앙새 워터 라이드
 STR_DESC    :Swan shaped boat, propelled by the pedalling front seat passengers
 STR_CPTY    :보트당 4명의 승객
 
 [MANTARAY]
-STR_NAME    :Manta Ray Ride
+STR_NAME    :쥐가오리 라이드
 STR_DESC    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyor belt, accelerating down steep slopes to soak the riders with a giant splash
 STR_CPTY    :보트당 16명의 승객
 
 [OUTRIGGR]
-STR_NAME    :Outrigger Ride
+STR_NAME    :아웃리거 라이드
 STR_DESC    :Long canoes which the passengers paddle themselves
 STR_CPTY    :canoe당 2명의 승객
 
 [TUTLBOAT]
-STR_NAME    :Turtle Water Ride
+STR_NAME    :거북이 워터 라이드
 STR_DESC    :Small circular dinghies powered by a centrally-mounted motor controlled by the passengers
 STR_CPTY    :보트당 2명의 승객
 
 [1X1ATRE2]
-STR_NAME    :Vine Tree
+STR_NAME    :덩굴
 
 [1X1ATREE]
-STR_NAME    :Low 수풀
+STR_NAME    :키 작은 수풀
 
 [1X1BRANG]
-STR_NAME    :Boomerang
+STR_NAME    :부메랑
 
 [1X1DIDGE]
-STR_NAME    :Digeridoo
+STR_NAME    :디제리두
 
 [1X1EMUXX]
-STR_NAME    :Emu
+STR_NAME    :에뮤
 
 [1X1JUGT2]
 STR_NAME    :Small Rainforest Tree 1
@@ -6694,13 +6702,13 @@ STR_NAME    :Small Rainforest Tree 1
 STR_NAME    :Small Rainforest Tree 2
 
 [1X1KANGA]
-STR_NAME    :Kangaroo
+STR_NAME    :캥거루
 
 [1X1TERMM]
 STR_NAME    :Termite Mound
 
 [ADPANDA]
-STR_NAME    :Adult Panda
+STR_NAME    :어른 팬더
 
 [ANTILOPF]
 STR_NAME    :Antelope Female
@@ -6712,7 +6720,7 @@ STR_NAME    :Antelope Male
 STR_NAME    :Antelope Pair
 
 [BABPANDA]
-STR_NAME    :Baby Panda
+STR_NAME    :아기 팬더
 
 [BABYELE]
 STR_NAME    :Baby Indian Elephant
@@ -6724,52 +6732,52 @@ STR_NAME    :Ball Lantern
 STR_NAME    :Ball Lantern
 
 [BambooBs]
-STR_NAME    :Bamboo 수풀
+STR_NAME    :대나무 수풀
 
 [BAMBOOPL]
 STR_NAME    :Bamboo Plinth
 
 [BSTATUE1]
-STR_NAME    :Broken Statue
+STR_NAME    :부서진 동상
 
 [FSTATUE1]
 STR_NAME    :Fixed Statue
 
 [JACHTREE]
-STR_NAME    :Japanese Cherry Tree
+STR_NAME    :벚나무
 
 [JAPCHBLO]
-STR_NAME    :Japanese Cherry Blossom Tree
+STR_NAME    :벚나무
 
 [JAPPINTR]
-STR_NAME    :Japanese Pine Tree
+STR_NAME    :일본 소나무
 
 [JAPSNOTR]
-STR_NAME    :Japanese Snowball Tree
+STR_NAME    :까마귀밥나무
 
 [ORIEGONG]
-STR_NAME    :Asian Gong
+STR_NAME    :징
 
 [PCG]
-STR_NAME    :Pipe
+STR_NAME    :파이프
 
 [PCO]
-STR_NAME    :Pipe
+STR_NAME    :파이프
 
 [POSTBOX]
-STR_NAME    :British Post Box
+STR_NAME    :영국식 우편함
 
 [PST]
-STR_NAME    :Pipe
+STR_NAME    :파이프
 
 [PTJ]
-STR_NAME    :Pipe
+STR_NAME    :파이프
 
 [PTK]
-STR_NAME    :Pipe
+STR_NAME    :파이프
 
 [PVA]
-STR_NAME    :Pipe
+STR_NAME    :파이프
 
 [RBRICK01]
 STR_NAME    :Red Brick Inverted Roof Piece
@@ -6889,22 +6897,22 @@ STR_NAME    :Georgian Flat Roof Corner
 STR_NAME    :Georgian Roof Piece 7
 
 [ROOFICE1]
-STR_NAME    :Ice Roof
+STR_NAME    :눈 지붕
 
 [ROOFICE2]
-STR_NAME    :Ice Roof
+STR_NAME    :눈 지붕
 
 [ROOFICE3]
-STR_NAME    :Ice Roof
+STR_NAME    :눈 지붕
 
 [ROOFICE4]
-STR_NAME    :Ice Roof
+STR_NAME    :눈 지붕
 
 [ROOFICE5]
-STR_NAME    :Ice Roof
+STR_NAME    :눈 지붕
 
 [ROOFICE6]
-STR_NAME    :Ice Roof
+STR_NAME    :눈 지붕
 
 [RKREML01]
 STR_NAME    :Kremlin Minaret Piece 1
@@ -6970,28 +6978,28 @@ STR_NAME    :Curved Mud Wall Piece
 STR_NAME    :Mud Roof Piece
 
 [ROOFIG01]
-STR_NAME    :Igloo Wall
+STR_NAME    :이글루 벽
 
 [ROOFIG02]
-STR_NAME    :Igloo Wall
+STR_NAME    :이글루 벽
 
 [ROOFIG03]
-STR_NAME    :Igloo Wall
+STR_NAME    :이글루 벽
 
 [ROOFIG04]
-STR_NAME    :Igloo Wall
+STR_NAME    :이글루 벽
 
 [ROOFIG06]
-STR_NAME    :Igloo Wall
+STR_NAME    :이글루 벽
 
 [RSHOGI1]
-STR_NAME    :Shogi Roof
+STR_NAME    :장기 지붕
 
 [RSHOGI2]
-STR_NAME    :Shogi Roof
+STR_NAME    :장기 지붕
 
 [RSHOGI3]
-STR_NAME    :Shogi Roof
+STR_NAME    :장기 지붕
 
 [SMALLGEO]
 STR_NAME    :Small Geosphere
@@ -7054,7 +7062,7 @@ STR_NAME    :Tee Pee
 STR_NAME    :Wagon Wheel
 
 [SBH2SHLT]
-STR_NAME    :Search Light
+STR_NAME    :서치라이트
 
 [SBH3CAC1]
 STR_NAME    :선인장
@@ -7069,7 +7077,7 @@ STR_NAME    :선인장
 STR_NAME    :Cattle Skull
 
 [SBH3OSCR]
-STR_NAME    :Rollercoaster Award Statue
+STR_NAME    :롤러코스터 어워드 상
 
 [SBH3PLM1]
 STR_NAME    :야자수
@@ -7081,7 +7089,7 @@ STR_NAME    :야자수
 STR_NAME    :야자수
 
 [SBH3RT66]
-STR_NAME    :Route 66 Sign
+STR_NAME    :66번도 팻말
 
 [SBH4TOTM]
 STR_NAME    :Large Totem Pole
@@ -8299,10 +8307,10 @@ STR_NAME    :Ice Wall
 STR_NAME    :Ice Wall
 
 [WIGLOO1]
-STR_NAME    :Igloo Wall
+STR_NAME    :이글루 벽
 
 [WIGLOO2]
-STR_NAME    :Igloo Wall
+STR_NAME    :이글루 벽
 
 [WKREML07]
 STR_NAME    :Kremlin Wall Piece 5
@@ -8608,19 +8616,19 @@ STR_DESC    :Large capacity themed monorail trains with streamlined front and re
 STR_CPTY    :5 or 10 passengers per car
 
 [BMVOCTPS]
-STR_NAME    :Blob from Outer Space Ride
+STR_NAME    :외계 전망탑
 STR_DESC    :A themed rotating observation cabin which travels up a tall tower
 STR_CPTY    :승객 20명
 
 [CYCLOPSX]
 STR_NAME    :사이클롭스 라이드
 STR_DESC    :Riders drive the Eye of a Giant Cyclops
-STR_CPTY    :1 person per car
+STR_CPTY    :차량당 1명의 손님
 
 [FIGTKNIT]
-STR_NAME    :Fighting Knights Dodgem Cars
+STR_NAME    :파이팅 나이트 범퍼카
 STR_DESC    :Riders joust on Horse-themed dodgem cars
-STR_CPTY    :1 person per car
+STR_CPTY    :차량당 1명의 손님
 
 [FLWRPOWR]
 STR_NAME    :가든 파워 라이드
@@ -8628,241 +8636,241 @@ STR_DESC    :Small flower shaped dinghies powered by a centrally-mounted motor c
 STR_CPTY    :승객 1명 per car
 
 [FUNHOUSE]
-STR_NAME    :Fun House
+STR_NAME    :펀 하우스
 STR_DESC    :건물 containing moving walls and floors to disorientate people walking through it
 STR_CPTY    :손님 5명
 
 [HALOFMRS]
-STR_NAME    :Hall of Mirrors
+STR_NAME    :거울의 방
 STR_DESC    :건물 containing warped mirrors which distort the reflection of the viewer
 STR_CPTY    :손님 5명
 
 [HOVERCAR]
-STR_NAME    :Hover Car Ride
+STR_NAME    :호버 카 라이드
 STR_DESC    :Mag Lev technology has been implemented to create the illusion of futuristic hover cars
 STR_CPTY    :차량당 2명의 승객
 
 [MGR2]
-STR_NAME    :Double Deck Carousel
+STR_NAME    :2층 회전목마
 STR_DESC    :Traditional enclosed double-deck carousel with carved wooden horses
 STR_CPTY    :승객 32명
 
 [PEGASUSX]
-STR_NAME    :Pegasus Ride
+STR_NAME    :페가수스 라이드
 STR_DESC    :Powered vehicles in the shape of Pegasus drawing a cart, follow a track-based route
 STR_CPTY    :차량당 2명의 승객
 
 [SPOKPRSN]
-STR_NAME    :Haunted Jail House
-STR_DESC    :건물 containing dungeons and mannequins of incarcerated figures, to scare people walking through it
+STR_NAME    :귀신의 감옥집
+STR_DESC    :Building containing dungeons and mannequins of incarcerated figures, to scare people walking through it
 STR_CPTY    :손님 16명
 
 [TIMEMACH]
-STR_NAME    :Time Machine
+STR_NAME    :타임 머신
 STR_DESC    :Guests sit in a specially designed sphere, and experience the illusion of time travel
-STR_CPTY    :1 per guest
+STR_CPTY    :손님 1명
 
 [TRICATOP]
-STR_NAME    :Triceratops Dodgem Cars
+STR_NAME    :트리케라톱스 범퍼카
 STR_DESC    :Riders lock horns with each other in Triceratops dodgem cars
-STR_CPTY    :1 person per car
+STR_CPTY    :차량당 1명의 손님
 
 [BARNSTRM]
-STR_NAME    :BarnStorming Coaster
+STR_NAME    :선거 유세 코스터
 STR_DESC    :Riders sit in seats suspended beneath the track as they speed through giant loops, twists, and large swooping drops
 STR_CPTY    :차량당 4명의 승객
 
 [BATTRRAM]
-STR_NAME    :Battering Ram Coaster
+STR_NAME    :공성 망치 코스터
 STR_DESC    :A compact steel-tracked roller coaster with a spiral lift hill and cars with in-line seating
 STR_CPTY    :차량당 6명의 승객
 
 [BLCKDETH]
-STR_NAME    :Black Death Ride
+STR_NAME    :블랙 데스 라이드
 STR_DESC    :Riders career down a twisting track in Rat-shaped cars guided only by the curvature and banking of the semi-circular track
 STR_CPTY    :차량당 2명의 승객
 
 [CERBERUS]
-STR_NAME    :Cerberus Coaster
+STR_NAME    :케르베로스 코스터
 STR_DESC    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
 STR_CPTY    :차량당 4명의 승객
 
 [DRAGNFLY]
-STR_NAME    :Dragonfly Coaster
+STR_NAME    :잠자리 코스터
 STR_DESC    :Passengers ride suspended in a specially designed car from the single-rail track, swinging freely from side to side around corners
 STR_CPTY    :승객 2명 per car
 
 [GANSTRCR]
-STR_NAME    :Gangster Car Coaster
+STR_NAME    :갱스터 카 코스터
 STR_DESC    :1920s Themed Gangster cars are accelerated out of the station by linear induction motors to speed through twisting inversions
 STR_CPTY    :차량당 4명의 승객
 
 [HARPIESX]
-STR_NAME    :Harpies Coaster
+STR_NAME    :하피 코스터
 STR_DESC    :Riders are held in special harnesses in a lying-down position, travelling through twisted track and inversions either on their backs or facing the ground
 STR_CPTY    :차량당 4명의 승객
 
 [HOTRODXX]
-STR_NAME    :Hot Rod Coaster
+STR_NAME    :개조 자동차 코스터
 STR_DESC    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
 STR_CPTY    :차량당 2명의 승객
 
 [HOVERBKE]
-STR_NAME    :Hover Bike Ride
+STR_NAME    :호버 바이크 라이드
 STR_DESC    :Riders sit on futuristic bike-shaped vehicles which travel along a single-rail track
 STR_CPTY    :2 riders per vehicle
 
 [HOVRBORD]
-STR_NAME    :Hoverboard Coaster
+STR_NAME    :호버보드 코스터
 STR_DESC    :Guests ride on a futuristic hoverboard, swinging freely from side to side around corners
 STR_CPTY    :승객 2명 per car
 
 [JETPACKX]
-STR_NAME    :Jet Pack Booster
+STR_NAME    :제트 팩 부스터
 STR_DESC    :Riders sit in a vehicle which is launched up a vertical section of track
 STR_CPTY    :차량당 8명의 승객
 
 [JETPLANE]
-STR_NAME    :Jet Plane Coaster
+STR_NAME    :제트여객기 코스터
 STR_DESC    :A compact roller coaster with individual cars and smooth twisting drops
 STR_CPTY    :차량당 4명의 승객
 
 [JOUSTING]
-STR_NAME    :Jousting Knights Coaster
+STR_NAME    :저스팅 나이트 코스터
 STR_DESC    :Riders sit on the back of Horse-shaped vehicles along a single-rail track
 STR_CPTY    :2 riders per vehicle
 
 [POLCHASE]
-STR_NAME    :Police Chase Coaster
+STR_NAME    :폴리스 체이스 코스터
 STR_DESC    :A looping roller coaster where the riders ride in a sitting position
 STR_CPTY    :차량당 4명의 승객
 
 [POLICECR]
-STR_NAME    :Police Car Coaster
+STR_NAME    :폴리스 카 코스터
 STR_DESC    :1960s Themed Police cars run on wooden tracks, turning around on special reversing sections
 STR_CPTY    :차량당 6명의 승객
 
 [PTERODAC]
-STR_NAME    :Pterodactyl Coaster
+STR_NAME    :익룡 코스터
 STR_DESC    :Riders are held in comfortable seats below the track, travelling through twisted track to give the ultimate prehistoric flying experience
 STR_CPTY    :차량당 4명의 승객
 
 [RAPTORXX]
-STR_NAME    :Raptor Racers Coaster
+STR_NAME    :랩터 레이서 코스터
 STR_DESC    :Riders sit on the back of Raptor-shaped vehicles along a single-rail track
 STR_CPTY    :2 riders per vehicle
 
 [SEAPLANE]
-STR_NAME    :Seaplane Ride
+STR_NAME    :수상비행기 라이드
 STR_DESC    :Suspended roller coaster train consisting of cars able to swing freely as the train goes around corners
 STR_CPTY    :차량당 4명의 승객
 
 [STAMPHRD]
-STR_NAME    :Stampeding Herd Coaster
+STR_NAME    :소 떼 코스터
 STR_DESC    :A looping roller coaster with vehicles in the shape of a stampeding dinosaur herd.
 STR_CPTY    :차량당 4명의 승객
 
 [VALKYRIE]
-STR_NAME    :Valkyries Coaster
+STR_NAME    :발키리 코스터
 STR_DESC    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
 STR_CPTY    :차량당 6명의 승객
 
 [1920RACR]
-STR_NAME    :1920's Racing Cars
+STR_NAME    :1920년대 레이싱 카
 STR_DESC    :Riders race each other in a 1920's Race Car themed Go-Kart
 STR_CPTY    :Single-seater
 
 [CAVMNCAR]
-STR_NAME    :Caveman Cars
+STR_NAME    :석기시대 차
 STR_DESC    :Riders race each other in Stone-Age Go-Karts
 STR_CPTY    :Single-seater
 
 [DINOEGGS]
-STR_NAME    :공룡 Egg Ride
+STR_NAME    :공룡 알 라이드
 STR_DESC    :Riders ride in pairs, in themed seats rotating around an animated mother Dinosaur.
 STR_CPTY    :승객 18명
 
 [FLALMACE]
-STR_NAME    :Mace Ride
+STR_NAME    :메이스 라이드
 STR_DESC    :Riders sit on a themed chair which is attached to a motor driven spinning arm.
 STR_CPTY    :1 guest per chair
 
 [GINTSPDR]
-STR_NAME    :B-Movie Giant Spider Ride
+STR_NAME    :B급 영화 자이언트 스파이더 라이드
 STR_DESC    :Riders ride in pairs of themed seats which rotate around a large B-Movie Spider.
 STR_CPTY    :승객 18명
 
 [MICROBUS]
-STR_NAME    :MicroBus Ride
+STR_NAME    :마이크로버스 라이드
 STR_DESC    :Riders view a film inside the motion simulator pod while it is twisted and moved around by a hydraulic arm
 STR_CPTY    :승객 8명
 
 [NEPTUNEX]
-STR_NAME    :Neptune Ride
+STR_NAME    :넵튠 라이드
 STR_DESC    :Riders ride in pairs, in themed seats rotating around an animated statue of Neptune.
 STR_CPTY    :승객 18명
 
 [TOMMYGUN]
-STR_NAME    :Tommy Gun Ride
+STR_NAME    :기관 단총 라이드
 STR_DESC    :Riders ride in pairs of themed seats which rotate around a large replica Tommy Gun.
 STR_CPTY    :승객 18명
 
 [TREBUCHT]
-STR_NAME    :Trebuchet Ride
+STR_NAME    :투석기 라이드
 STR_DESC    :Passengers ride in a carriage suspended by two large arms, based on a Dark Age Siege Weapon
 STR_CPTY    :승객 8명
 
 [FLYGBOAT]
-STR_NAME    :Flying Boat Ride
+STR_NAME    :플라잉 보트 라이드
 STR_DESC    :Flying Boat shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
 STR_CPTY    :보트당 16명의 승객
 
 [OAKBAREL]
-STR_NAME    :Oak Barrel Ride
+STR_NAME    :참나무 통 라이드
 STR_DESC    :Oak Barrels meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
 STR_CPTY    :보트당 8명의 승객
 
 [RIVRSTYX]
-STR_NAME    :River Styx
+STR_NAME    :스틱스 강
 STR_DESC    :Raft-shaped boats gently meander around a river track
 STR_CPTY    :raft당 4명의 승객
 
 [TRILOBTE]
-STR_NAME    :Trilobite Boats
+STR_NAME    :삼엽충 보트
 STR_DESC    :Trilobite shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
 STR_CPTY    :보트당 16명의 승객
 
 [1920SAND]
-STR_NAME    :Art Deco Food Stall
-STR_DESC    :A stall selling Noodles and Fresh Lemonade
+STR_NAME    :아르데코 음식 상점
+STR_DESC    :국수와 신선한 레모네이드를 파는 가게
 
 [1960TSRT]
-STR_NAME    :꽃 Power T-Shirts
-STR_DESC    :Stall selling T-shirts with a flower motif
+STR_NAME    :사랑과 평화 티셔츠
+STR_DESC    :꽃무늬 티셔츠를 파는 상점
 
 [MEDISOUP]
-STR_NAME    :Witches Brew Soup
-STR_DESC    :A Stall selling a thick broth style soup
+STR_NAME    :마녀의 비약 수프
+STR_DESC    :걸쭉한 죽 스타일의 수프를 파는 가게
 
 [MKTSTAL1]
-STR_NAME    :Toffee Apple Market Stall
-STR_DESC    :A themed stall selling sticky toffee apples.
+STR_NAME    :사과 토피 사탕 시장 상점
+STR_DESC    :끈적거리는 사과 토피 사탕을 파는 가게
 
 [MKTSTAL2]
-STR_NAME    :Lemonade Market Stall
-STR_DESC    :A themed stall selling old style, fresh lemonade.
+STR_NAME    :레모네이드 시장 상점
+STR_DESC    :신선한 레모네이드를 파는 오래된 테마의 가게
 
 [MOONJUCE]
-STR_NAME    :Moon Juice
-STR_DESC    :A stall selling the latest soft drinks
+STR_NAME    :달빛 주스
+STR_DESC    :최신 청량음료를 파는 가게
 
 [MYTHOSEA]
-STR_NAME    :Neptune's Seafood Stall
-STR_DESC    :A stall selling Neptunes salty treats
+STR_NAME    :포세이돈의 해산물 가게
+STR_DESC    :포세이돈의 짭짤한 음식을 파는 가게
 
 [SOFTOYST]
-STR_NAME    :Soft Toy Stall
-STR_DESC    :A stall selling a cute soft toy Dinosaur
+STR_NAME    :봉제인형 가게
+STR_DESC    :귀엽고 부드러운 공룡 인형을 파는 가게
 
 [1920SLMP]
 STR_NAME    :Period Street Lamps
@@ -9276,13 +9284,13 @@ STR_NAME    :Small Angled Mammoth Fence
 STR_NAME    :Small Angled Mammoth Fence
 
 [MCASTL02]
-STR_NAME    :Castle Wall
+STR_NAME    :성벽
 
 [MCASTL03]
-STR_NAME    :Castle Wall
+STR_NAME    :성벽
 
 [MCASTL04]
-STR_NAME    :Castle Wall
+STR_NAME    :성벽
 
 [MCASTL05]
 STR_NAME    :Castle Ramparts Corner
@@ -9333,73 +9341,73 @@ STR_NAME    :Meteor Crater Wall with Crystals
 STR_NAME    :Minotaur Statue
 
 [OLDNYK01]
-STR_NAME    :New York Wall Piece
+STR_NAME    :뉴욕 벽 조각
 
 [OLDNYK02]
-STR_NAME    :New York Wall Piece
+STR_NAME    :뉴욕 벽 조각
 
 [OLDNYK03]
-STR_NAME    :New York Wall Piece
+STR_NAME    :뉴욕 벽 조각
 
 [OLDNYK04]
-STR_NAME    :New York Wall Piece
+STR_NAME    :뉴욕 벽 조각
 
 [OLDNYK05]
-STR_NAME    :New York Roof Piece
+STR_NAME    :뉴욕 지붕 조각
 
 [OLDNYK06]
-STR_NAME    :New York Corner Filler
+STR_NAME    :뉴욕 구석 충전제
 
 [OLDNYK07]
-STR_NAME    :New York Inverted Corner Piece
+STR_NAME    :반전된 뉴욕 구석 조각
 
 [OLDNYK08]
-STR_NAME    :New York Inverted Corner Piece
+STR_NAME    :반전된 뉴욕 구석 조각
 
 [OLDNYK09]
-STR_NAME    :New York Inverted Corner Piece
+STR_NAME    :반전된 뉴욕 구석 조각
 
 [OLDNYK10]
-STR_NAME    :New York Inverted Corner Piece
+STR_NAME    :반전된 뉴욕 구석 조각
 
 [OLDNYK11]
-STR_NAME    :New York Wall with Line
+STR_NAME    :선이 있는 뉴욕 벽
 
 [OLDNYK12]
-STR_NAME    :New York Washing Line
+STR_NAME    :뉴욕 빨랫줄
 
 [OLDNYK13]
-STR_NAME    :New York Wall with Line
+STR_NAME    :선이 있는 뉴욕 벽
 
 [OLDNYK14]
-STR_NAME    :New York Washing Line
+STR_NAME    :뉴욕 빨랫줄
 
 [OLDNYK15]
-STR_NAME    :New York Wall Piece
+STR_NAME    :뉴욕 벽 조각
 
 [OLDNYK16]
-STR_NAME    :New York Wall Piece
+STR_NAME    :뉴욕 벽 조각
 
 [OLDNYK17]
-STR_NAME    :New York Wall Piece
+STR_NAME    :뉴욕 벽 조각
 
 [OLDNYK18]
-STR_NAME    :New York Wall Piece
+STR_NAME    :뉴욕 벽 조각
 
 [OLDNYK19]
-STR_NAME    :New York Wall Piece
+STR_NAME    :뉴욕 벽 조각
 
 [OLDNYK31]
-STR_NAME    :New York Wall Piece
+STR_NAME    :뉴욕 벽 조각
 
 [OLDNYK33]
-STR_NAME    :New York Wall Piece
+STR_NAME    :뉴욕 벽 조각
 
 [OLDNYK34]
-STR_NAME    :New York Wall Piece
+STR_NAME    :뉴욕 벽 조각
 
 [OLDNYK35]
-STR_NAME    :New York Roof Piece
+STR_NAME    :뉴욕 지붕 조각
 
 [PRIMWAL1]
 STR_NAME    :Wood Fence with Dead Vines
@@ -10208,16 +10216,16 @@ STR_NAME    :Castle Entrance
 STR_NAME    :Large Elm Tree
 
 [OLDNYK24]
-STR_NAME    :New York Inverted Corner Roof
+STR_NAME    :뉴욕 Inverted Corner Roof
 
 [OLDNYK25]
-STR_NAME    :New York Roof Piece
+STR_NAME    :뉴욕 Roof Piece
 
 [OLDNYK26]
-STR_NAME    :New York Entrance
+STR_NAME    :뉴욕 Entrance
 
 [OLDNYK32]
-STR_NAME    :New York Roof Piece
+STR_NAME    :뉴욕 Roof Piece
 
 [1950SCAR]
 STR_NAME    :1950s Car
@@ -10370,28 +10378,28 @@ STR_NAME    :Meteor Crater Corner
 STR_NAME    :Meteor Crater Inverted Corner
 
 [OLDNYK20]
-STR_NAME    :New York Roof Piece
+STR_NAME    :뉴욕 Roof Piece
 
 [OLDNYK21]
-STR_NAME    :New York Wall Piece
+STR_NAME    :뉴욕 벽 조각
 
 [OLDNYK22]
-STR_NAME    :New York Wall Piece
+STR_NAME    :뉴욕 벽 조각
 
 [OLDNYK23]
-STR_NAME    :New York Wall Piece
+STR_NAME    :뉴욕 벽 조각
 
 [OLDNYK27]
-STR_NAME    :New York Wall Piece
+STR_NAME    :뉴욕 벽 조각
 
 [OLDNYK28]
-STR_NAME    :New York Wall Piece
+STR_NAME    :뉴욕 벽 조각
 
 [OLDNYK29]
-STR_NAME    :New York Wall Piece
+STR_NAME    :뉴욕 벽 조각
 
 [OLDNYK30]
-STR_NAME    :New York Wall Piece
+STR_NAME    :뉴욕 벽 조각
 
 [PEASTHUT]
 STR_NAME    :Peasant Hut
@@ -10706,12 +10714,12 @@ STR_DTLS    :식스 플래그의 빠진 놀이기구를 건설해보거나, 공�
 <Africa - African Diamond Mine>
 STR_SCNR    :아프리카 - 아프리카 다이아몬드 광산
 STR_PARK    :아프리카의 광산
-STR_DTLS    :You inherited a disused diamond mine, and find a valuable diamond.  You decide to invest that money to build a world-famous theme park.
+STR_DTLS    :다이아몬드 폐광을 물려받은 당신은 값비싼 다이아몬드를 발견했고 그 판매 수익으로 세계 일류의 테마파크를 짓기로 결심했습니다.
 
 <Africa - Oasis>
 STR_SCNR    :아프리카 - 오아시스
 STR_PARK    :신기루의 광기
-STR_DTLS    :A desert Oasis has been discovered and would provide a beautiful location for a park. Transport to the oasis has been provided.
+STR_DTLS    :사막에서 놀이공원을 짓기에 아주 적당한 오아시스를 발견했습니다. 오아시스로 가는 교통편은 이미 존재합니다.
 
 <Africa - Victoria Falls>
 STR_SCNR    :아프리카 - 빅토리아 폭포
@@ -10719,9 +10727,9 @@ STR_PARK    :폭포 너머
 STR_DTLS    :공원을 운영하기 충분하고 값싼 전기를 생산하는 수력 발전 댐이 지어졌습니다. 댐을 건설하느라 진 빚을 갚기 위해 높은 가치의 놀이공원을 지어야 합니다.
 
 <Antarctic - Ecological Salvage>
-STR_SCNR    :남극 - 생태학적 회복
-STR_PARK    :차가운 모험
-STR_DTLS    :The environment agency has turned to you to transform an old oil refinery ecological eyesore into a top tourist attraction. Land is cheap but loan interest is high. You can sell the old buildings for salvage.
+STR_SCNR    :남극 - 버려진 환경 복구
+STR_PARK    :얼음에 뒤덮인 모험
+STR_DTLS    :환경부에서 눈꼴사납고 낡은 정유 시설을 최고의 관광 명소로 만들어달라고 합니다. 땅값은 싸지만 대출 이자는 높습니다. 오래된 건물은 고철로 팔아 버릴 수 있습니다.
 
 <Asia - Great Wall of China Tourism Enhancement>
 STR_SCNR    :아시아 - 중국 만리장성의 관광 진흥
@@ -10731,22 +10739,22 @@ STR_DTLS    :관광 당국이 만리장성 주변의 땅에 놀이공원을 지�
 <Asia - Japanese Coastal Reclaim>
 STR_SCNR    :아시아 - 일본 연안 간척
 STR_PARK    :오키나와 해변
-STR_DTLS    :An existing park has run out of space. Your only option is to build out into the sea, and so you have taken out a loan. Height restrictions on your building are enforced due to foundations and earthquake risk.
+STR_DTLS    :기존 공원은 이미 공간이 모자랍니다. 대출을 받아서 바다로 확장해나갈 수밖에 없습니다. 지진 우려와 약한 기반을 이유로 건설 높이가 제한됩니다.
 
 <Asia - Maharaja Palace>
 STR_SCNR    :아시아 - 마하라자 궁전
 STR_PARK    :마하라자 공원
-STR_DTLS    :You have been commissioned by the Maharaja to bring entertainment to the large local population. Build a park inspired by the Maharaja's palace.
+STR_DTLS    :인도의 왕에게서 국민들에게 즐길 거리를 만들어달라는 임무를 받았습니다. 마하라자 궁전을 연상시키는 공원을 만들어보세요.
 
 <Australasia - Ayers Rock>
 STR_SCNR    :오스트레일리아 - 에어즈 록
 STR_PARK    :에어즈 어드벤처
-STR_DTLS    :You are helping Aboriginal people to build a park as part of a cultural awareness program. You need to get a large number of guests to educate them in the unique heritage of the Aboriginal people.
+STR_DTLS    :오스트레일리아 원주민들을 도와 공원을 문화 인식 프로그램의 일환으로 개발하려 합니다. 원주민들의 독특한 문화유산을 알리기 위해 많은 관광객을 모아야 합니다.
 
 <Australasia - Fun at the Beach>
 STR_SCNR    :오스트레일리아 - 해변의 즐거움
-STR_PARK    :Beach Barbecue Blast
-STR_DTLS    :A local entrepreneur's sealife park has gone bust. You already operate a small park and buy the other park from the construction company. Develop a big combined park.
+STR_PARK    :해변의 바베큐 파티
+STR_DTLS    :근처 지역 사업가의 해안 공원이 파산해버렸습니다. 이미 작은 공원을 운영하고 있는 당신은 건설사로부터 그 공원을 구입하였습니다. 두 공원을 합쳐 크게 사업을 확장해보세요.
 
 <Europe - European Cultural Festival>
 STR_SCNR    :유럽 - 유럽 문화 축제
@@ -10756,22 +10764,22 @@ STR_DTLS    :유럽 문화 축제의 경영권을 확보한 당신은 이제 유
 <Europe - Renovation>
 STR_SCNR    :유럽 - 혁신
 STR_PARK    :잿더미를 딛고
-STR_DTLS    :An old park has fallen into disrepair. You gain a European Union grant to return this deprived area to its former glory! You need to renovate the park and repay the grant.
+STR_DTLS    :방치되어 있는 낡은 공원이 있습니다. 이 공원이 과거에 누렸던 영광을 재현하기 위해 유럽 연합의 허가를 받았습니다! 허가를 받은 만큼 공원을 혁신해서 보답하세요.
 
 <N America - Extreme Hawaiian Island>
 STR_SCNR    :북 아메리카 - 최고의 하와이 섬
 STR_PARK    :왁자지껄 와이키키
-STR_DTLS    :The people of Hawaii are bored of surfing and are looking for something more intense. You need to build a park with this in mind to keep the area's tourist attraction rating high.
+STR_DTLS    :하와이 주민들이 이제 파도타기가 지겨워져서 좀 더 자극적인 뭔가를 원하고 있습니다. 주민들도 만족시키면서 이 지역의 관광객들이 찾아오고 싶어하는 공원을 만드세요.
 
 <North America - Grand Canyon>
 STR_SCNR    :북 아메리카 - 그랜드 캐니언
 STR_PARK    :불행의 계곡
-STR_DTLS    :이 아름다운 자연의 한 켠에 있는 제한적인 공간에 공원을 만들어야 합니다. 미국 원주민에게서 반대편 땅을 구입할 수 있습니다. 줄어들고 있는 마을 인구를 유지하기 위해서라도 목표를 달성해야 합니다.
+STR_DTLS    :이 아름답지만 제한적인 공간에 공원을 만들어야 합니다. 미국 원주민에게서 반대편 땅을 구입할 수 있습니다. 줄어들고 있는 마을 인구를 유지하기 위해서라도 목표를 달성해야 합니다.
 
 <North America - Rollercoaster Heaven>
 STR_SCNR    :북 아메리카 - 롤러코스터 천국
-STR_PARK    :Rollercoaster Heaven
-STR_DTLS    :You are a successful business tycoon on long sabbatical who desires to use this time transforming the city park into Rollercoaster Heaven. Money is no object!
+STR_PARK    :롤러코스터 천국
+STR_DTLS    :당신은 긴 휴식기를 가지는 동안 이 도시 공원을 롤러코스터 천국으로 바꾸고자 하는 성공한 사업 거물입니다. 돈은 문제가 되지 않는군요!
 
 <South America - Inca Lost City>
 STR_SCNR    :남 아메리카 - 잃어버린 도시 잉카
@@ -10780,8 +10788,8 @@ STR_DTLS    :이 지역의 관광산업을 보다 활기차게 만들기 위해�
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :남 아메리카 - 열대우림 고원
-STR_PARK    :Rainforest Romp
-STR_DTLS    :Space is limited in the precious rainforest - you must cram as much as possible into the existing clearing, in order to provide a viable alternative to the local timber industry.
+STR_PARK    :열대우림 고원
+STR_DTLS    :소중한 열대우림 속의 제한된 공간만을 받았습니다. 이곳의 벌목 산업을 대신할 수 있는 방법을 제공하기 위해 기존의 빈 공간을 최대한 많이 활용해야 합니다.
 
 <South America - Rio Carnival>
 STR_SCNR    :남 아메리카 - 리오 축제
@@ -10792,9 +10800,9 @@ STR_DTLS    :리오 근처의 작은 공원을 운영하고 있는데 은행이 
 ## Time Twister Scenarios
 ###############################################################################
 <Dark Age - Castle>
-STR_SCNR    :암흑 시대 - 성
+STR_SCNR    :암흑시대 - 성
 STR_PARK    :클리프사이드 성
-STR_DTLS    :Local members of the battle re-enactment society are rather serious about their hobby. They've entrusted you with the job of constructing a Dark Age theme park on the grounds of Cliffside Castle.
+STR_DTLS    :이 지역의 전투 재현 단체는 자신들의 취미를 진지하게 생각하고 있습니다. 그들은 당신에게 클리프사이드 성 부지에 암흑시대 테마파크를 건설해달라고 요청해왔습니다.
 
 <Dark Age - Robin Hood>
 STR_SCNR    :암흑 시대 - 로빈 후드
@@ -10809,32 +10817,32 @@ STR_DTLS    :먼 행성에서 생명체가 발견되었습니다. 외계인을 �
 <Future - Future World>
 STR_SCNR    :미래 - 미래 세계
 STR_PARK    :제미니 시티
-STR_DTLS    :Show off your inventive, utopian vision of the future - come up with a futuristic park design that incorporates state-of-the-art attractions.
+STR_DTLS    :당신의 미래에 대한 독창적이고 이상적인 시각을 보여줄 때입니다. 첨단의 매력이 느껴지는 미래의 공원 디자인을 제안해봅시다.
 
 <Mythological - Animatronic Film Set>
 STR_SCNR    :신화 - 영화 세트장
-STR_PARK    :Animatronic Antics
-STR_DTLS    :You have been given the task of running and improving an existing theme park, which has been built on an old film set. Build a tribute to the pioneering stop-motion animators who first brought mythical creatures to life on the silver screen.
+STR_PARK    :애니매트로닉 앤틱스
+STR_DTLS    :이번 임무는 옛 영화 세트장에 설립된 기존 테마파크를 운영하고 발전시키는 것입니다. 흑백 스크린에 신화 속 인물을 옮겨놓은 스톱 모션 애니메이션의 선구자들에게 이 공원을 헌정합시다.
 
 <Mythological - Cradle of Civilization>
 STR_SCNR    :신화 - 문명의 요람
 STR_PARK    :신화의 광기
-STR_DTLS    :You own an island of particular archaeological value. You've decided to fund its preservation by constructing a theme park based on the area's rich Mythological heritage.
+STR_DTLS    :특별한 고고학적 가치를 가진 섬을 소유하게 되었습니다. 이 지역의 풍부한 신화적 유산을 기반으로 한 테마파크를 건설해서 유산 보존 기금을 마련하기로 결정했습니다.
 
 <Prehistoric - After the Asteroid>
 STR_SCNR    :선사시대 - 소행성 충돌 후
 STR_PARK    :크레이터 대학살
-STR_DTLS    :당신은 오래된 운석공을 소유하고 있습니다. 기업가 정신을 발휘한 당신은 운석 테마 파크를 건설해서 쓸모없어 보이는 이 땅을 엄청난 행운의 땅으로 바꾸기로 결심햇습니다.
+STR_DTLS    :당신은 오래된 운석공을 소유하고 있습니다. 기업가 정신을 발휘한 당신은 운석 테마 파크를 건설해서 쓸모없어 보이는 이 땅을 엄청난 행운의 땅으로 바꾸기로 결심했습니다.
 
 <Prehistoric - Jurassic Safari>
 STR_SCNR    :선사시대 - 쥐라기 사파리
 STR_PARK    :코스터사우르스
-STR_DTLS    :You've been given the task of constructing a Jurassic era theme park. To optimize your visitors' access to the exotic plant and animal exhibits, you will need to build rides going over and into the valley.
+STR_DTLS    :당신은 쥐라기 시대 놀이공원을 건설하는 임무를 받았습니다. 색다른 식물과 동물 전시장에 관객이 쉽게 접근할 수 있도록 하려면, 계곡을 가로지르는 놀이기구를 만들어야 할 것입니다.
 
 <Prehistoric - Stone Age>
 STR_SCNR    :선사시대 - 석기시대
-STR_PARK    :Rocky Rambles
-STR_DTLS    :To thwart the highway developers and preserve the mysterious ancient stone circles, you will need to construct a Stone Age theme park and turn a profit. However, attracting visitors may pose a challenge, as the terrain is a tad inhospitable.
+STR_PARK    :돌무더기 산책
+STR_DTLS    :고속도로 개발자들을 막고 고대 열석을 보호하기 위해, 석기 시대 테마파크를 건설하여 수익을 내야 합니다. 하지만 사람이 살기 조금 힘든 곳인만큼 손님을 모으기가 어려울 것입니다.
 
 <Roaring Twenties - Prison Island>
 STR_SCNR    :광란의 20년대 - 감옥 섬
@@ -10849,14 +10857,14 @@ STR_DTLS    :할아버지의 슈나이더 컵 우승 75주년이 얼마 남지 �
 <Roaring Twenties - Skyscrapers>
 STR_SCNR    :광란의 20년대 - 마천루
 STR_PARK    :메트로폴리스
-STR_DTLS    :You own an empty lot near the low-rise part of town. To squeeze the most out of your urban property, build a skyscraper theme park inspired by the soaring art deco architecture of the twenties.
+STR_DTLS    :당신은 도시 저층부 근처의 빈 공간을 갖게 되었습니다. 최대한 이익을 많이 얻기 위해, 20년대에 유행했던 아르데코식 건축물을 본딴 마천루 테마파크를 지어보세요.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :로큰롤 - 플라워 파워
+STR_SCNR    :로큰롤 - 사랑과 평화
 STR_PARK    :우드스톡
 STR_DTLS    :매년 열리는 대형 음악 축제가 당신의 땅에서 열립니다. 최신 유행하는 놀이공원을 지어, 자유로운 영혼을 가진 관객들이 즐거워할 수 있게 만드세요.
 
 <Rock 'n' Roll - Rock 'n' Roll>
 STR_SCNR    :로큰롤 - 로큰롤
 STR_PARK    :로큰롤 부흥
-STR_DTLS    :This aging theme park has seen better days. Help the owner give it a retro rock 'n' roll makeover and turn the place into a successful venue.
+STR_DTLS    :이 오래된 놀이공원은 더 나은 미래를 기대하고 있습니다. 소유자를 도와 이 공원을 복고풍의 로큰롤 공원으로 바꾸어 성공적인 장소로 변모시켜보세요.

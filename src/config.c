@@ -202,6 +202,7 @@ config_property_definition _generalDefinitions[] = {
 	{ offsetof(general_configuration, window_scale),					"window_scale",					CONFIG_VALUE_TYPE_FLOAT,		{ .value_float = 1.0f },		NULL					},
 	{ offsetof(general_configuration, show_fps),						"show_fps",						CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(general_configuration, trap_cursor),						"trap_cursor",					CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(general_configuration, auto_open_shops),					"auto_open_shops",				CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 };
 
 config_property_definition _interfaceDefinitions[] = {
@@ -259,13 +260,34 @@ config_property_definition _networkDefinitions[] = {
 	{ offsetof(network_configuration, provider_website),				"provider_website",				CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL					}
 };
 
+config_property_definition _notificationsDefinitions[] = {
+	{ offsetof(notification_configuration, park_award),							"park_award",							CONFIG_VALUE_TYPE_BOOLEAN,	true,	NULL	},
+	{ offsetof(notification_configuration, park_marketing_campaign_finished),	"park_marketing_campaign_finished",		CONFIG_VALUE_TYPE_BOOLEAN,	true,	NULL	},
+	{ offsetof(notification_configuration, park_warnings),						"park_warnings",						CONFIG_VALUE_TYPE_BOOLEAN,	true,	NULL	},
+	{ offsetof(notification_configuration, park_rating_warnings),				"park_rating_warnings",					CONFIG_VALUE_TYPE_BOOLEAN,	true,	NULL	},
+	{ offsetof(notification_configuration, ride_broken_down),					"ride_broken_down",						CONFIG_VALUE_TYPE_BOOLEAN,	true,	NULL	},
+	{ offsetof(notification_configuration, ride_crashed),						"ride_crashed",							CONFIG_VALUE_TYPE_BOOLEAN,	true,	NULL	},
+	{ offsetof(notification_configuration, ride_warnings),						"ride_warnings",						CONFIG_VALUE_TYPE_BOOLEAN,	true,	NULL	},
+	{ offsetof(notification_configuration, ride_researched),					"ride_researched",						CONFIG_VALUE_TYPE_BOOLEAN,	true,	NULL	},
+	{ offsetof(notification_configuration, guest_warnings),						"guest_warnings",						CONFIG_VALUE_TYPE_BOOLEAN,	true,	NULL	},
+	{ offsetof(notification_configuration, guest_lost),							"guest_lost",							CONFIG_VALUE_TYPE_BOOLEAN,	false,	NULL	},
+	{ offsetof(notification_configuration, guest_left_park),					"guest_entered_left_park",				CONFIG_VALUE_TYPE_BOOLEAN,	true,	NULL	},
+	{ offsetof(notification_configuration, guest_queuing_for_ride),				"guest_queuing_for_ride",				CONFIG_VALUE_TYPE_BOOLEAN,	true,	NULL	},
+	{ offsetof(notification_configuration, guest_on_ride),						"guest_on_ride",						CONFIG_VALUE_TYPE_BOOLEAN,	true,	NULL	},
+	{ offsetof(notification_configuration, guest_left_ride),					"guest_left_ride",						CONFIG_VALUE_TYPE_BOOLEAN,	true,	NULL	},
+	{ offsetof(notification_configuration, guest_bought_item),					"guest_bought_item",					CONFIG_VALUE_TYPE_BOOLEAN,	true,	NULL	},
+	{ offsetof(notification_configuration, guest_used_facility),				"guest_used_facility",					CONFIG_VALUE_TYPE_BOOLEAN,	true,	NULL	},
+	{ offsetof(notification_configuration, guest_died),							"guest_died",							CONFIG_VALUE_TYPE_BOOLEAN,	true,	NULL	},
+};
+
 config_section_definition _sectionDefinitions[] = {
 	{ &gConfigGeneral, "general", _generalDefinitions, countof(_generalDefinitions) },
 	{ &gConfigInterface, "interface", _interfaceDefinitions, countof(_interfaceDefinitions) },
 	{ &gConfigSound, "sound", _soundDefinitions, countof(_soundDefinitions) },
 	{ &gConfigCheat, "cheat", _cheatDefinitions, countof(_cheatDefinitions) },
 	{ &gConfigTwitch, "twitch", _twitchDefinitions, countof(_twitchDefinitions) },
-	{ &gConfigNetwork, "network", _networkDefinitions, countof(_networkDefinitions) }
+	{ &gConfigNetwork, "network", _networkDefinitions, countof(_networkDefinitions) },
+	{ &gConfigNotifications, "notifications", _notificationsDefinitions, countof(_notificationsDefinitions) },
 };
 
 #pragma endregion
@@ -276,6 +298,7 @@ sound_configuration gConfigSound;
 cheat_configuration gConfigCheat;
 twitch_configuration gConfigTwitch;
 network_configuration gConfigNetwork;
+notification_configuration gConfigNotifications;
 themes_configuration gConfigThemes;
 title_sequences_configuration gConfigTitleSequences;
 
