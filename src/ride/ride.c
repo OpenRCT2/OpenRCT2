@@ -275,22 +275,11 @@ money16 get_shop_hot_value(int shopItem)
 money32 ride_calculate_income_per_hour(rct_ride *ride)
 {
 	rct_ride_type *entry;
-	money32 incomePerHour, priceMinusCost;
+	money32 customersPerHour, priceMinusCost;
 	int currentShopItem;
 
 	entry = GET_RIDE_ENTRY(ride->subtype);
-	incomePerHour =
-		ride->var_124 +
-		ride->var_126 +
-		ride->var_128 +
-		ride->var_12A +
-		ride->var_12C +
-		ride->var_12E +
-		ride->age +
-		ride->running_cost +
-		ride->var_134 +
-		ride->var_136;
-	incomePerHour *= 12;
+	customersPerHour = ride_customers_per_hour(ride);
 	priceMinusCost = ride->price;
 
 	currentShopItem = entry->shop_item;
@@ -310,8 +299,7 @@ money32 ride_calculate_income_per_hour(rct_ride *ride)
 			priceMinusCost /= 2;
 	}
 
-	incomePerHour *= priceMinusCost;
-	return incomePerHour;
+	return customersPerHour * priceMinusCost;
 }
 
 /**
@@ -1844,21 +1832,17 @@ static void ride_update(int rideIndex)
 			ride_update_station(ride, i);
 
 	// Update financial statistics
-	ride->var_122++;
-	if (ride->var_122 >= 960) {
-		ride->var_122 = 0;
+	ride->num_customers_timeout++;
 
-		ride->var_136 = ride->var_134;
-		ride->var_134 = ride->running_cost;
-		ride->running_cost = ride->age;
-		ride->age = ride->var_12E;
-		ride->var_12E = ride->var_12C;
-		ride->var_12C = ride->var_12A;
-		ride->var_12A = ride->var_128;
-		ride->var_128 = ride->var_126;
-		ride->var_126 = ride->var_124;
-		ride->var_124 = ride->var_120;
-		ride->var_120 = 0;
+	if (ride->num_customers_timeout >= 960) {
+		// This is meant to update about every 30 seconds
+		ride->num_customers_timeout = 0;
+
+		// Shift number of customers history, start of the array is the most recent one
+		memmove(ride->num_customers + 1, ride->num_customers, 9 * sizeof(*(ride->num_customers)));
+		ride->num_customers[0] = ride->cur_num_customers;
+
+		ride->cur_num_customers = 0;
 		ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
 
 		ride->income_per_hour = ride_calculate_income_per_hour(ride);
@@ -5390,8 +5374,8 @@ foundRideEntry:
 
 	ride->measurement_index = 255;
 	ride->excitement = (ride_rating)-1;
-	ride->var_120 = 0;
-	ride->var_122 = 0;
+	ride->cur_num_customers = 0;
+	ride->num_customers_timeout = 0;
 	ride->var_148 = 0;
 
 	ride->price = 0;
@@ -5443,19 +5427,7 @@ foundRideEntry:
 		}
 	}
 
-	// The next 10 variables are treated like an array of 10 items
-	ride->var_124 = 0;
-	ride->var_124 = 0;
-	ride->var_126 = 0;
-	ride->var_128 = 0;
-	ride->var_12A = 0;
-	ride->var_12C = 0;
-	ride->var_12E = 0;
-	ride->age = 0;
-	ride->running_cost = 0;
-	ride->var_134 = 0;
-	ride->var_136 = 0;
-
+	memset(ride->num_customers, 0, sizeof(ride->num_customers));
 	ride->value = 0xFFFF;
 	ride->satisfaction = 255;
 	ride->satisfaction_time_out = 0;
@@ -7381,4 +7353,24 @@ const uint8* ride_seek_available_modes(rct_ride *ride)
 	}
 
 	return availableModes;
+}
+
+// Gets the approximate value of customers per hour for this ride. Multiplies ride_customers_in_last_5_minutes() by 12.
+const uint32 ride_customers_per_hour(const rct_ride *ride) {
+	return ride_customers_in_last_5_minutes(ride) * 12;
+}
+
+// Calculates the number of customers for this ride in the last 5 minutes (or more correctly 9600 game ticks)
+const uint32 ride_customers_in_last_5_minutes(const rct_ride *ride) {
+	uint32 sum = ride->num_customers[0]
+	             + ride->num_customers[1]
+	             + ride->num_customers[2]
+	             + ride->num_customers[3]
+	             + ride->num_customers[4]
+	             + ride->num_customers[5]
+	             + ride->num_customers[6]
+	             + ride->num_customers[7]
+	             + ride->num_customers[8]
+	             + ride->num_customers[9];
+	return sum;
 }

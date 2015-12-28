@@ -900,7 +900,7 @@ void platform_get_exe_path(utf8 *outPath)
 
 bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
 {
-#ifndef __MINGW32__
+#if !defined(__MINGW32__) && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
 	wchar_t *fontFolder;
 	if (SUCCEEDED(SHGetKnownFolderPath(&FOLDERID_Fonts, 0, NULL, &fontFolder)))
 	{
@@ -922,7 +922,7 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
 		return false;
 	}
 #else
-	log_warning("MINGW-compatibility hack: falling back to C:\\Windows\\Fonts");
+	log_warning("Compatibility hack: falling back to C:\\Windows\\Fonts");
 	strcat(buffer, "C:\\Windows\\Fonts\\");
 	strcat(buffer, font->filename);
 	return true;
