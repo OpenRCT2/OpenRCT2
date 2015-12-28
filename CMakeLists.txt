@@ -43,6 +43,8 @@ else (DISABLE_NETWORK)
 	endif (WIN32)
 endif (DISABLE_NETWORK)
 
+option(STATIC "Create a static build.")
+
 set(DEBUG_LEVEL 0 CACHE STRING "Select debug level for compilation. Use value in range 0–3.")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
@@ -66,29 +68,30 @@ if (MINGW)
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fpack-struct=1")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpack-struct=1")
 	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static-libgcc -static-libstdc++")
-	if (CMAKE_HOST_UNIX)
-		set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static")
-	endif ()
+endif ()
+
+if (STATIC)
+	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static")
 endif ()
 
 # find and include SDL2
 PKG_CHECK_MODULES(SDL2 REQUIRED sdl2 SDL2_ttf)
-if (WIN32)
+if (STATIC)
 	# FreeType is required by SDL2_ttf, but not wired up properly in package
 	PKG_CHECK_MODULES(FREETYPE REQUIRED freetype2)
 	SET(SDL2LIBS ${SDL2_STATIC_LIBRARIES} ${FREETYPE_STATIC_LIBRARIES})
-else (WIN32)
+else (STATIC)
 	SET(SDL2LIBS ${SDL2_LIBRARIES})
-endif (WIN32)
+endif (STATIC)
 
 if (NOT DISABLE_HTTP_TWITCH)
 	PKG_CHECK_MODULES(LIBCURL REQUIRED libcurl)
 	PKG_CHECK_MODULES(JANSSON REQUIRED jansson>=2.7)
-	if (WIN32)
-		SET(HTTPLIBS ${LIBCURL_STATIC_LIBRARIES} ${JANSSON_STATIC_LIBRARIES} ssl crypto winmm.lib ws2_32)
-	else (WIN32)
+	if (STATIC)
+		SET(HTTPLIBS ${LIBCURL_STATIC_LIBRARIES} ${JANSSON_STATIC_LIBRARIES})
+	else (STATIC)
 		SET(HTTPLIBS ${LIBCURL_LIBRARIES} ${JANSSON_LIBRARIES})
-	endif (WIN32)
+	endif (STATIC)
 endif (NOT DISABLE_HTTP_TWITCH)
 
 # speex v1.1.15 is supplied in our zipped library, but distributions provide
@@ -188,10 +191,10 @@ set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 
 TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2LIBS} ${ORCTLIBS_LIB} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB} ${RCT2_SECTIONS})
 
-if (APPLE OR WIN32)
+if (APPLE OR STATIC)
 	FIND_LIBRARY(ICONV_LIBRARIES NAMES iconv libiconv libiconv-2 c)
 	TARGET_LINK_LIBRARIES(${PROJECT} ${ICONV_LIBRARIES})
-endif (APPLE OR WIN32)
+endif (APPLE OR STATIC)
 
 
 # CMake does not allow specifying a dependency chain which includes built-in
