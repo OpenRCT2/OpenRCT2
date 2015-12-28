@@ -1462,7 +1462,7 @@ STR_1459    :Baansoort
 STR_1460    :{SMALLFONT}{BLACK}Open baan in U-vorm
 STR_1461    :{SMALLFONT}{BLACK}Gesloten baan in O-vorm
 STR_1462    :Te steil voor een kettinglift
-STR_1463    :bezoekers
+STR_1463    :Bezoekers
 STR_1464    :Spiraal omhoog (klein)
 STR_1465    :Spiraal omhoog (groot)
 STR_1466    :Spiraal omlaag (klein)
@@ -3921,6 +3921,24 @@ STR_5585    :{SMALLFONT}{BLACK}Heft de limieten op het tabblad Bedrijfsopties va
 STR_5586    :Winkels en kraampjes automatisch openen
 STR_5587    :{SMALLFONT}{BLACK}Als deze optie is ingeschakeld zullen winkels en kraampjes na plaatsing automatisch worden geopend.
 STR_5588    :{SMALLFONT}{BLACK}Multiplayer
+STR_5589    :Berichtinstellingen
+STR_5590    :Als het park een prijs heeft gekregen
+STR_5591    :Als een marketingcampagne is afgelopen
+STR_5592    :Waarschuwingen over het park
+STR_5593    :Waarschuwingen over de parkwaardering
+STR_5594    :Als een attractie kapot is gegaan
+STR_5595    :Als een attractie is neergestort
+STR_5596    :Waarschuwingen over attracties
+STR_5597    :Als een nieuw type attractie of thema beschikbaar is
+STR_5598    :Waarschuwingen over bezoekers
+STR_5599    :Als een gevolgde bezoeker verdwaald is
+STR_5600    :Als een gevolgde bezoeker het park verlaten heeft
+STR_5601    :Als een gevolgde bezoeker in de rij staat voor een attractie
+STR_5602    :Als een gevolgde bezoeker een attractie is ingegaan
+STR_5603    :Als een gevolgde bezoeker een attractie is uitgegaan
+STR_5604    :Als een gevolgde bezoeker iets gekocht heeft
+STR_5605    :Als een gevolgde bezoeker een faciliteit gebruikt
+STR_5606    :Als een bezoeker is overleden
 
 #############
 # Scenarios #

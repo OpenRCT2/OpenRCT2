@@ -3918,6 +3918,32 @@ STR_5577    :Won Sul-Coreano(W)
 STR_5578    :Rublo Russo (R)
 STR_5579    :Fator escalar da janela:
 STR_5580    :Coroa Tcheca (Kc)
+STR_5581    :Mostrar FPS
+STR_5582    :Manter ponteiro do mouse dentro da janela
+STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
+STR_5584    :SI
+STR_5585    :{SMALLFONT}{BLACK}Destrava limites de operação na atração, permitindo coisas como corrente de elevação com {VELOCITY}
+STR_5586    :Abrir automaticamente lojas e barracas
+STR_5587    :{SMALLFONT}{BLACK}Quando habilitado, lojas e barracas serão abertas automaticamente depois de contruí-las
+STR_5588    :{SMALLFONT}{BLACK}Jogue com outros jogadores
+STR_5589    :Configurações de Notificação
+STR_5590    :Prêmios do parque
+STR_5591    :A campanha de marketing terminou
+STR_5592    :Avisos do parque
+STR_5593    :Avisos de classificação do parque
+STR_5594    :Atração quebrou
+STR_5595    :Atração bateu
+STR_5596    :Avisos de atração
+STR_5597    :Atração / Cernário pesquisado
+STR_5598    :Avisos de visitantes
+STR_5599    :Visitante está perdido
+STR_5600    :Visitante saiu do parque
+STR_5601    :Visitante está esperando na fila para atração
+STR_5602    :Visitante está na atração
+STR_5603    :Visitante saiu da atração
+STR_5604    :Visitante comprou um item
+STR_5605    :Visitante usou uma instalação
+STR_5606    :Visitante morreu
 
 #####################
 # Rides/attractions # 
