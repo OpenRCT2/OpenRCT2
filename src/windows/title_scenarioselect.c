@@ -112,6 +112,7 @@ static rct_window_event_list window_scenarioselect_events = {
 void window_scenarioselect_open()
 {
 	rct_window* window;
+	int window_width;
 
 	if (window_bring_to_front_by_class(WC_SCENARIO_SELECT) != NULL)
 		return;
@@ -119,8 +120,22 @@ void window_scenarioselect_open()
 	// Load scenario list
 	scenario_load_list();
 
+	// Shrink the window if we're showing scenarios by difficulty level.
+	if (gConfigGeneral.scenario_select_mode == 2)
+	{
+		window_width = 610;
+		window_scenarioselect_widgets[WIDX_BACKGROUND].right = 609;
+		window_scenarioselect_widgets[WIDX_TITLEBAR].right = 608;
+		window_scenarioselect_widgets[WIDX_CLOSE].left  = 597;
+		window_scenarioselect_widgets[WIDX_CLOSE].right = 607;
+		window_scenarioselect_widgets[WIDX_TABCONTENT].right = 609;
+		window_scenarioselect_widgets[WIDX_SCENARIOLIST].right = 433;
+	}
+	else
+		window_width = 733;
+
 	window = window_create_centred(
-		733,
+		window_width,
 		334,
 		&window_scenarioselect_events,
 		WC_SCENARIO_SELECT,
@@ -347,6 +362,8 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 	highlighted_format = (theme_get_preset()->features.rct1_scenario_font) ? 5139 : 1193;
 	unhighlighted_format = (theme_get_preset()->features.rct1_scenario_font) ? 5139 : 1191;
 
+	bool wide = gConfigGeneral.scenario_select_mode == 1;
+
 	y = 0;
 	for (i = 0; i < gScenarioListCount; i++) {
 		scenario = &gScenarioList[i];
@@ -370,18 +387,18 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 		// Draw scenario name
 		safe_strncpy((char*)0x009BC677, scenario->name, 64);
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 3165;
-		gfx_draw_string_centred(dpi, highlighted ? highlighted_format : unhighlighted_format, 270, y + 1, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+		gfx_draw_string_centred(dpi, highlighted ? highlighted_format : unhighlighted_format, wide ? 270 : 210, y + 1, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
 
 		// Check if scenario is completed
 		if (scenario->flags & SCENARIO_FLAGS_COMPLETED) {
 			// Draw completion tick
-			gfx_draw_sprite(dpi, 0x5A9F, 500, y + 1, 0);
+			gfx_draw_sprite(dpi, 0x5A9F, wide ? 500 : 395, y + 1, 0);
 
 			// Draw completion score
 			safe_strncpy((char*)0x009BC677, scenario->completed_by, 64);
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 2793;
 			RCT2_GLOBAL(0x013CE954, short) = 3165;
-			gfx_draw_string_centred(dpi, highlighted ? 1193 : 1191, 270, y + 11, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+			gfx_draw_string_centred(dpi, highlighted ? 1193 : 1191, wide ? 270 : 210, y + 11, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
 		}
 
 		y += 24;
