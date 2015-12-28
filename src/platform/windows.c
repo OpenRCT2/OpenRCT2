@@ -58,6 +58,11 @@ utf8 **windows_get_command_line_args(int *outNumArgs);
 //     return 0;
 // }
 
+/* DllMain is already defined in one of static libraries we implicitly depend
+ * on (libcrypto), which is their bug really, but since we don't do anything in
+ * here, just comment it out.
+ */
+#ifndef __MINGW32__
 /**
  * Entry point for when the DLL is loaded. This will be removed when OpenRCT2 can be built as a stand alone application.
  */
@@ -65,6 +70,7 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 {
 	return TRUE;
 }
+#endif // __MINGW32__
 
 /**
  * The function that is called directly from the host application (rct2.exe)'s WinMain. This will be removed when OpenRCT2 can
