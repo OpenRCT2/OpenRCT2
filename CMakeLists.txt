@@ -56,23 +56,38 @@ if (APPLE)
 	set_source_files_properties(${ORCT2_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c -fmodules")
 endif (APPLE)
 
-if (UNIX)
-	# force 32bit build for now and set necessary flags to compile code as is
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32 -std=gnu99 -fno-omit-frame-pointer -fno-pie")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -std=gnu++11 -fno-omit-frame-pointer -fno-pie")
-	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -m32")
-	set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_SHARED_LINKER_FLAGS})
-endif (UNIX)
+# force 32bit build for now and set necessary flags to compile code as is
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32 -std=gnu99 -fno-omit-frame-pointer -fno-pie")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -std=gnu++11 -fno-omit-frame-pointer -fno-pie")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -m32")
+set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_SHARED_LINKER_FLAGS})
+
+if (MINGW)
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fpack-struct=1")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpack-struct=1")
+	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static-libgcc -static-libstdc++")
+	if (CMAKE_HOST_UNIX)
+		set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static")
+	endif ()
+endif ()
 
 # find and include SDL2
 PKG_CHECK_MODULES(SDL2 REQUIRED sdl2 SDL2_ttf)
+if (WIN32)
+	# FreeType is required by SDL2_ttf, but not wired up properly in package
+	PKG_CHECK_MODULES(FREETYPE REQUIRED freetype2)
+	SET(SDL2LIBS ${SDL2_STATIC_LIBRARIES} ${FREETYPE_STATIC_LIBRARIES})
+else (WIN32)
+	SET(SDL2LIBS ${SDL2_LIBRARIES})
+endif (WIN32)
 
 if (NOT DISABLE_HTTP_TWITCH)
 	PKG_CHECK_MODULES(LIBCURL REQUIRED libcurl)
-	PKG_CHECK_MODULES(JANSSON REQUIRED jansson)
-	SET(HTTPLIBS ${LIBCURL_LIBRARIES} ${JANSSON_LIBRARIES})
+	PKG_CHECK_MODULES(JANSSON REQUIRED jansson>=2.7)
 	if (WIN32)
-		SET(HTTPLIBS ${HTTPLIBS} ssl crypto winmm.lib ws2_32)
+		SET(HTTPLIBS ${LIBCURL_STATIC_LIBRARIES} ${JANSSON_STATIC_LIBRARIES} ssl crypto winmm.lib ws2_32)
+	else (WIN32)
+		SET(HTTPLIBS ${LIBCURL_LIBRARIES} ${JANSSON_LIBRARIES})
 	endif (WIN32)
 endif (NOT DISABLE_HTTP_TWITCH)
 
@@ -107,11 +122,6 @@ else (WIN32)
 		)
 	add_custom_target(g2 DEPENDS ${PROJECT} g2.dat)
 endif (WIN32)
-
-if (APPLE)
-	FIND_LIBRARY(ICONV_LIBRARIES NAMES iconv libiconv libiconv-2 c)
-	TARGET_LINK_LIBRARIES(${PROJECT} ${ICONV_LIBRARIES})
-endif (APPLE)
 
 if (UNIX AND NOT APPLE)
 	# FontConfig for TrueType fonts.
@@ -176,7 +186,13 @@ endif (UNIX)
 # libopenrct2.dll -> openrct2.dll
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 
-TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2_LIBRARIES} ${ORCTLIBS_LIB} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB} ${RCT2_SECTIONS})
+TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2LIBS} ${ORCTLIBS_LIB} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB} ${RCT2_SECTIONS})
+
+if (APPLE OR WIN32)
+	FIND_LIBRARY(ICONV_LIBRARIES NAMES iconv libiconv libiconv-2 c)
+	TARGET_LINK_LIBRARIES(${PROJECT} ${ICONV_LIBRARIES})
+endif (APPLE OR WIN32)
+
 
 # CMake does not allow specifying a dependency chain which includes built-in
 # targets, like `install`, so we have to trick it and execute dependency ourselves.
