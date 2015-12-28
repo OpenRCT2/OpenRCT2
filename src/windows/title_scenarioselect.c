@@ -151,15 +151,20 @@ static void window_scenarioselect_init_tabs()
 	for (int i = 0; i < gScenarioListCount; i++) {
 		rct_scenario_basic* scenario = &gScenarioList[i];
 		if (scenario->flags & SCENARIO_FLAGS_VISIBLE)
-			show_pages |= 1 << scenario->category;
+		{
+			if (gConfigGeneral.scenario_select_mode == 1)
+				show_pages |= 1 << scenario->source_game;
+			else
+				show_pages |= 1 << scenario->category;
+		}
 	}
 
 	int x = 3;
 	for (int i = 0; i < 8; i++) {
 		rct_widget* widget = &window_scenarioselect_widgets[i + 4];
 		if (!(show_pages & (1 << i))) {
-//			widget->type = WWT_EMPTY;
-//			continue;
+			widget->type = WWT_EMPTY;
+			continue;
 		}
 
 		widget->type = WWT_TAB;
@@ -193,8 +198,11 @@ static void window_scenarioselect_scrollgetsize(rct_window *w, int scrollIndex, 
 	*height = 0;
 	for (int i = 0; i < gScenarioListCount; i++) {
 		rct_scenario_basic *scenario = &gScenarioList[i];
-		if (scenario->category != w->selected_tab)
+
+		if ((gConfigGeneral.scenario_select_mode == 1 && scenario->source_game != w->selected_tab) ||
+			(gConfigGeneral.scenario_select_mode == 2 && scenario->category != w->selected_tab))
 			continue;
+
 		if (scenario->flags & SCENARIO_FLAGS_VISIBLE)
 			*height += 24;
 	}
@@ -208,8 +216,11 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex
 {
 	for (int i = 0; i < gScenarioListCount; i++) {
 		rct_scenario_basic *scenario = &gScenarioList[i];
-		if (scenario->category != w->selected_tab)
+
+		if ((gConfigGeneral.scenario_select_mode == 1 && scenario->source_game != w->selected_tab) ||
+			(gConfigGeneral.scenario_select_mode == 2 && scenario->category != w->selected_tab))
 			continue;
+
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;
 
@@ -232,7 +243,11 @@ static void window_scenarioselect_scrollmouseover(rct_window *w, int scrollIndex
 	rct_scenario_basic *selected = NULL;
 	for (int i = 0; i < gScenarioListCount; i++) {
 		rct_scenario_basic *scenario = &gScenarioList[i];
-		if (scenario->category != w->selected_tab || !(scenario->flags & SCENARIO_FLAGS_VISIBLE))
+		if ((gConfigGeneral.scenario_select_mode == 1 && scenario->source_game != w->selected_tab) ||
+			(gConfigGeneral.scenario_select_mode == 2 && scenario->category != w->selected_tab))
+			continue;
+
+		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;
 
 		y -= 24;
@@ -335,8 +350,11 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 	y = 0;
 	for (i = 0; i < gScenarioListCount; i++) {
 		scenario = &gScenarioList[i];
-		if (scenario->category != w->selected_tab)
+
+		if ((gConfigGeneral.scenario_select_mode == 1 && scenario->source_game != w->selected_tab) ||
+			(gConfigGeneral.scenario_select_mode == 2 && scenario->category != w->selected_tab))
 			continue;
+
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;
 
