@@ -7,9 +7,112 @@
 #include "image_io.h"
 
 #ifdef USE_LIBPNG
+	static void my_png_read_data(png_structp png_ptr, png_bytep data, png_size_t length);
 	static void my_png_write_data(png_structp png_ptr, png_bytep data, png_size_t length);
 	static void my_png_flush(png_structp png_ptr);
 #endif
+
+bool image_io_png_read(uint8 **pixels, uint32 *width, uint32 *height, const utf8 *path)
+{
+#ifdef USE_LIBPNG
+	png_structp png_ptr;
+	png_infop info_ptr;
+	unsigned int sig_read = 0;
+
+	// Setup PNG structures
+	png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+	if (png_ptr == NULL) {
+		return false;
+	}
+ 
+	info_ptr = png_create_info_struct(png_ptr);
+	if (info_ptr == NULL) {
+		png_destroy_read_struct(&png_ptr, NULL, NULL);
+		return false;
+	}
+
+	// Open PNG file
+	SDL_RWops *fp = SDL_RWFromFile(path, "rb");
+	if (fp == NULL) {
+		return false;
+	}
+
+	// Set error handling
+	if (setjmp(png_jmpbuf(png_ptr))) {
+		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+		SDL_RWclose(fp);
+		return false;
+	}
+ 
+	// Setup png reading
+	png_set_read_fn(png_ptr, fp, my_png_read_data);
+	png_set_sig_bytes(png_ptr, sig_read);
+
+	// To simplify the reading process, convert 4-16 bit data to 24-32 bit data
+	png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND, NULL);
+ 
+	// Read header
+	png_uint_32 pngWidth, pngHeight;
+	int bit_depth, color_type, interlace_type;
+	png_get_IHDR(png_ptr, info_ptr, &pngWidth, &pngHeight, &bit_depth, &color_type, &interlace_type, NULL, NULL);
+
+	// Read pixels as 32bpp RGBA data
+	png_size_t rowBytes = png_get_rowbytes(png_ptr, info_ptr);
+	png_bytepp rowPointers = png_get_rows(png_ptr, info_ptr);
+	uint8 *pngPixels = (uint8*)malloc(pngWidth * pngHeight * 4);
+	uint8 *dst = pngPixels;
+	if (color_type == PNG_COLOR_TYPE_RGB) {
+		// 24-bit PNG (no alpha)
+		const png_size_t expectedRowSize = pngWidth * 3;
+		for (png_uint_32 i = 0; i < pngHeight; i++) {
+			assert(rowBytes == expectedRowSize);
+
+			uint8 *src = rowPointers[i];
+			for (png_uint_32 x = 0; x < pngWidth; x++) {
+				*dst++ = *src++;
+				*dst++ = *src++;
+				*dst++ = *src++;
+				*dst++ = 255;
+			}
+		}
+	} else {
+		// 32-bit PNG (with alpha)
+		const png_size_t expectedRowSize = pngWidth * 4;
+		for (png_uint_32 i = 0; i < pngHeight; i++) {
+			assert(rowBytes == expectedRowSize);
+
+			memcpy(dst, rowPointers[i], rowBytes);
+			dst += rowBytes;
+		}
+	}
+ 
+	// Close the PNG
+	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+	SDL_RWclose(fp);
+
+	// Return the output data
+	*pixels = (uint8*)pngPixels;
+	if (width != NULL) *width = pngWidth;
+	if (height != NULL) *height = pngHeight;
+	return true;
+#else
+	// Read the pixels as 32bpp RGBA
+	unsigned char *pngPixels;
+	unsigned int pngWidth, pngHeight;
+	unsigned int pngError = lodepng_decode_file(&pngPixels, &pngWidth, &pngHeight, path, LCT_RGBA, 8);
+	if (pngError != 0) {
+		free(pngPixels);
+		log_error("Error creating PNG data, %u: %s", pngError, lodepng_error_text(pngError));
+		return false;
+	}
+
+	// Return the output data
+	*pixels = (uint8*)pngPixels;
+	if (width != NULL) *width = pngWidth;
+	if (height != NULL) *height = pngHeight;
+	return true;
+#endif
+}
 
 bool image_io_png_write(const rct_drawpixelinfo *dpi, const rct_palette *palette, const utf8 *path)
 {
@@ -122,6 +225,12 @@ bool image_io_png_write(const rct_drawpixelinfo *dpi, const rct_palette *palette
 }
 
 #ifdef USE_LIBPNG
+
+static void my_png_read_data(png_structp png_ptr, png_bytep data, png_size_t length)
+{
+	SDL_RWops *file = (SDL_RWops*)png_get_io_ptr(png_ptr);
+	SDL_RWread(file, data, length, 1);
+}
 
 static void my_png_write_data(png_structp png_ptr, png_bytep data, png_size_t length)
 {
