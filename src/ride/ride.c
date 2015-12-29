@@ -2466,7 +2466,7 @@ rct_peep *find_closest_mechanic(int x, int y, int forInspection)
 	uint16 spriteIndex;
 	rct_peep *peep, *closestMechanic = NULL;
 
-	closestDistance = -1;
+	closestDistance = UINT_MAX;
 	FOR_ALL_STAFF(spriteIndex, peep) {
 		if (peep->staff_type != STAFF_TYPE_MECHANIC)
 			continue;
@@ -2493,15 +2493,15 @@ rct_peep *find_closest_mechanic(int x, int y, int forInspection)
 		if (peep->x == (sint16)0x8000)
 			continue;
 
-		// Should probably be euclidean or manhattan distance, this seems a bit naive
-		distance = max(abs(peep->x - x), abs(peep->y - y));
+		// manhattan distance
+		distance = abs(peep->x - x) + abs(peep->y - y);
 		if (distance < closestDistance) {
 			closestDistance = distance;
 			closestMechanic = peep;
 		}
 	}
 
-	return closestDistance == -1 ? NULL : closestMechanic;
+	return closestMechanic;
 }
 
 rct_peep *ride_get_assigned_mechanic(rct_ride *ride)
