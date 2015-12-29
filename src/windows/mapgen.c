@@ -391,7 +391,7 @@ static uint32 window_mapgen_page_hold_down_widgets[] = {
 
 #pragma endregion
 
-const int window_mapgen_tab_animation_loops[] = { 16, 16 };
+const int window_mapgen_tab_animation_loops[] = { 16, 16, 16 };
 
 #define MINIMUM_MAP_SIZE_TECHNICAL 15
 #define MAXIMUM_MAP_SIZE_TECHNICAL 256
@@ -429,7 +429,7 @@ static int _placeTrees = 1;
 
 static int	 _simplex_low = 6;
 static int	 _simplex_high = 10;
-static sint16 _simplex_base_freq = 60;
+static sint32 _simplex_base_freq = 60;
 static int	 _simplex_octaves = 4;
 
 rct_window *window_mapgen_open()

@@ -750,7 +750,7 @@ void format_string_part_from_raw(utf8 **dest, const utf8 *src, char **args)
 			}
 		} else if (code <= 'z') {
 			*(*dest)++ = code;
-		} else if (code < 142 || code == FORMAT_COMMA1DP16) {
+		} else if (code < FORMAT_COLOUR_CODE_START || code == FORMAT_COMMA1DP16) {
 			format_string_code(code, dest, args);
 		} else {
 			*dest = utf8_write_codepoint(*dest, code);
