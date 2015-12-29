@@ -184,6 +184,7 @@ void remove_element(int index)
 	rct_map_element *mapElement = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
 	mapElement += index;
 	map_element_remove(mapElement);
+	window_tile_inspector_item_count--;
 }
 
 // Swap element with its parent
