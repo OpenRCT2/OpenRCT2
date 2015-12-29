@@ -36,6 +36,7 @@
 #include "park.h"
 #include "sprite.h"
 #include "../config.h"
+#include "../openrct2.h"
 
 uint8 *gParkRatingHistory = RCT2_ADDRESS(RCT2_ADDRESS_PARK_RATING_HISTORY, uint8);
 uint8 *gGuestsInParkHistory = RCT2_ADDRESS(RCT2_ADDRESS_GUESTS_IN_PARK_HISTORY, uint8);
@@ -1144,4 +1145,45 @@ money32 park_place_ghost_entrance(int x, int y, int z, int direction)
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_EXISTS, uint8) |= (1 << 0);
 	}
 	return result;
+}
+
+bool validate_park(bool fix)
+{
+	// Rides
+	{
+		int i;
+		rct_ride *ride;
+		FOR_ALL_RIDES(i, ride) {
+			validate_ride(ride, fix);
+		}
+	}
+	// Peeps
+	{
+		int i;
+		rct_peep *peep;
+		FOR_ALL_PEEPS(i, peep) {
+			validate_peep(peep, fix);
+		}
+	}
+	return true;
+}
+
+int cmdline_for_validate(const char **argv, int argc)
+{
+	if (argc != 1) {
+		printf("Usage: openrct2 validate-only <file>\n");
+		return -1;
+	}
+
+	const char *inputPath = argv[0];
+
+	gOpenRCT2Headless = true;
+	if (openrct2_initialise()) {
+		rct2_open_file(inputPath);
+
+		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
+		validate_park(false);
+	}
+	openrct2_dispose();
+	return 1;
 }

@@ -1016,4 +1016,6 @@ void window_ride_construction_mouseup_demolish_next_piece(int x, int y, int z, i
 const uint32 ride_customers_per_hour(const rct_ride *ride);
 const uint32 ride_customers_in_last_5_minutes(const rct_ride *ride);
 
+bool validate_ride(rct_ride *ride, bool fix);
+
 #endif
