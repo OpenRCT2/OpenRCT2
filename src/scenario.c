@@ -846,19 +846,22 @@ int scenario_get_num_packed_objects_to_write()
  *
  *  rct2: 0x006AA26E
  */
-int scenario_write_packed_objects(SDL_RWops* rw)
+int scenario_write_packed_objects(SDL_RWops* rw, const long maxSize)
 {
 	int i;
 	rct_object_entry_extended *entry = (rct_object_entry_extended*)0x00F3F03C;
+	long availableSpace = maxSize;
 	for (i = 0; i < 721; i++, entry++) {
 		if (GET_RIDE_ENTRY(i) == (void *)0xFFFFFFFF || (entry->flags & 0xF0))
 			continue;
 
-		if (!write_object_file(rw, (rct_object_entry*)entry))
-			return 0;
+		long spaceUsed = write_object_file(rw, (rct_object_entry*)entry, availableSpace);
+		if (spaceUsed < 0)
+			return spaceUsed;
+		availableSpace -= spaceUsed;
 	}
 
-	return 1;
+	return maxSize - availableSpace;
 }
 
 /**
@@ -986,7 +989,7 @@ static void scenario_fix_ghosts(rct_s6_data *s6)
  *  rct2: 0x006754F5
  * @param flags bit 0: pack objects, 1: save as scenario
  */
-int scenario_save(SDL_RWops* rw, int flags)
+long scenario_save(SDL_RWops* rw, int flags, const long maxSize)
 {
 	rct_window *w;
 	rct_viewport *viewport;
@@ -1054,7 +1057,7 @@ int scenario_save(SDL_RWops* rw, int flags)
 
 	scenario_fix_ghosts(s6);
 	game_convert_strings_to_rct2(s6);
-	scenario_save_s6(rw, s6);
+	long scenario_size = scenario_save_s6(rw, s6, maxSize);
 
 	free(s6);
 
@@ -1064,7 +1067,7 @@ int scenario_save(SDL_RWops* rw, int flags)
 	gfx_invalidate_screen();
 	if (!(flags & 0x80000000))
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
-	return 1;
+	return scenario_size;
 }
 
 // Save game state without modifying any of the state for multiplayer
@@ -1124,7 +1127,7 @@ int scenario_save_network(SDL_RWops* rw)
 	memcpy(&s6->dword_010E63B8, (void*)0x010E63B8, 0x2E8570);
 
 	scenario_fix_ghosts(s6);
-	scenario_save_s6(rw, s6);
+	scenario_save_s6(rw, s6, -1);
 
 	free(s6);
 
@@ -1135,24 +1138,31 @@ int scenario_save_network(SDL_RWops* rw)
 	return 1;
 }
 
-bool scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6)
+long scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6, const long maxSize)
 {
 	uint8 *buffer;
 	sawyercoding_chunk_header chunkHeader;
 	int encodedLength;
-	long fileSize;
+	long fileSize = 0;
 	uint32 checksum;
 
 	buffer = malloc(0x600000);
 	if (buffer == NULL) {
 		log_error("Unable to allocate enough space for a write buffer.");
-		return false;
+		return -1;
 	}
 
 	// 0: Write header chunk
 	chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
 	chunkHeader.length = sizeof(rct_s6_header);
 	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->header, chunkHeader);
+	if (maxSize != -1 && (fileSize + encodedLength > maxSize))
+	{
+		free(buffer);
+		return -2;
+	} else {
+		fileSize += encodedLength;
+	}
 	SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 	// 1: Write scenario info chunk
@@ -1160,14 +1170,26 @@ bool scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6)
 		chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
 		chunkHeader.length = sizeof(rct_s6_info);
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->info, chunkHeader);
+		if (maxSize != -1 && (fileSize + encodedLength > maxSize))
+		{
+			free(buffer);
+			return -2;
+		} else {
+			fileSize += encodedLength;
+		}
 		SDL_RWwrite(rw, buffer, encodedLength, 1);
 	}
 
 	// 2: Write packed objects
 	if (s6->header.num_packed_objects > 0) {
-		if (!scenario_write_packed_objects(rw)) {
+		long availableSpace = -1;
+		if (maxSize != -1)
+		{
+			availableSpace = maxSize - fileSize;
+		}
+		if (!scenario_write_packed_objects(rw, availableSpace)) {
 			free(buffer);
-			return false;
+			return -1;
 		}
 	}
 
@@ -1175,18 +1197,39 @@ bool scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6)
 	chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
 	chunkHeader.length = 721 * sizeof(rct_object_entry);
 	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)s6->objects, chunkHeader);
+	if (maxSize != -1 && (fileSize + encodedLength > maxSize))
+	{
+		free(buffer);
+		return -2;
+	} else {
+		fileSize += encodedLength;
+	}
 	SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 	// 4: Misc fields (data, rand...) chunk
 	chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 	chunkHeader.length = 16;
 	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->elapsed_months, chunkHeader);
+	if (maxSize != -1 && (fileSize + encodedLength > maxSize))
+	{
+		free(buffer);
+		return -2;
+	} else {
+		fileSize += encodedLength;
+	}
 	SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 	// 5: Map elements + sprites and other fields chunk
 	chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 	chunkHeader.length = 0x180000;
 	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)s6->map_elements, chunkHeader);
+	if (maxSize != -1 && (fileSize + encodedLength > maxSize))
+	{
+		free(buffer);
+		return -2;
+	} else {
+		fileSize += encodedLength;
+	}
 	SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 	if (s6->header.type == S6_TYPE_SCENARIO) {
@@ -1194,54 +1237,117 @@ bool scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6)
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 0x27104C;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->dword_010E63B8, chunkHeader);
+		if (maxSize != -1 && (fileSize + encodedLength > maxSize))
+		{
+			free(buffer);
+			return -2;
+		} else {
+			fileSize += encodedLength;
+		}
 		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 7:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 4;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->guests_in_park, chunkHeader);
+		if (maxSize != -1 && (fileSize + encodedLength > maxSize))
+		{
+			free(buffer);
+			return -2;
+		} else {
+			fileSize += encodedLength;
+		}
 		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 8:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 8;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->last_guests_in_park, chunkHeader);
+		if (maxSize != -1 && (fileSize + encodedLength > maxSize))
+		{
+			free(buffer);
+			return -2;
+		} else {
+			fileSize += encodedLength;
+		}
 		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 9:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 2;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->park_rating, chunkHeader);
+		if (maxSize != -1 && (fileSize + encodedLength > maxSize))
+		{
+			free(buffer);
+			return -2;
+		} else {
+			fileSize += encodedLength;
+		}
 		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 10:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 1082;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->active_research_types, chunkHeader);
+		if (maxSize != -1 && (fileSize + encodedLength > maxSize))
+		{
+			free(buffer);
+			return -2;
+		} else {
+			fileSize += encodedLength;
+		}
 		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 11:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 16;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->current_expenditure, chunkHeader);
+		if (maxSize != -1 && (fileSize + encodedLength > maxSize))
+		{
+			free(buffer);
+			return -2;
+		} else {
+			fileSize += encodedLength;
+		}
 		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 12:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 4;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->park_value, chunkHeader);
+		if (maxSize != -1 && (fileSize + encodedLength > maxSize))
+		{
+			free(buffer);
+			return -2;
+		} else {
+			fileSize += encodedLength;
+		}
 		SDL_RWwrite(rw, buffer, encodedLength, 1);
 
 		// 13:
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 0x761E8;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->completed_company_value, chunkHeader);
+		if (maxSize != -1 && (fileSize + encodedLength > maxSize))
+		{
+			free(buffer);
+			return -2;
+		} else {
+			fileSize += encodedLength;
+		}
 		SDL_RWwrite(rw, buffer, encodedLength, 1);
 	} else {
 		// 6: Everything else...
 		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
 		chunkHeader.length = 0x2E8570;
 		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->dword_010E63B8, chunkHeader);
+		if (maxSize != -1 && (fileSize + encodedLength > maxSize))
+		{
+			free(buffer);
+			return -2;
+		} else {
+			fileSize += encodedLength;
+		}
 		SDL_RWwrite(rw, buffer, encodedLength, 1);
 	}
 
@@ -1258,9 +1364,15 @@ bool scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6)
 	free(buffer);
 
 	// Append the checksum
+	if (maxSize != -1 && (fileSize + sizeof(uint32) > maxSize))
+	{
+		// buffer already freed
+		return -2;
+	} // note no 'else' here
 	SDL_RWseek(rw, fileSize, RW_SEEK_SET);
 	SDL_RWwrite(rw, &checksum, sizeof(uint32), 1);
-	return true;
+	fileSize += sizeof(uint32);
+	return fileSize;
 }
 
 static void scenario_objective_check_guests_by()

@@ -35,7 +35,7 @@
 static const char *_screenshot_format_extension[] = { ".bmp", ".png" };
 
 static int screenshot_dump_bmp();
-static int screenshot_dump_png();
+static int screenshot_dump_png(const bool withSave);
 
 /**
  *
@@ -103,7 +103,7 @@ int screenshot_dump()
 	case SCREENSHOT_FORMAT_BMP:
 		return screenshot_dump_bmp();
 	case SCREENSHOT_FORMAT_PNG:
-		return screenshot_dump_png();
+		return screenshot_dump_png(true);
 	default:
 		return -1;
 	}
@@ -240,7 +240,7 @@ int screenshot_dump_bmp()
 	return index;
 }
 
-int screenshot_dump_png()
+int screenshot_dump_png(const bool withSave)
 {
 	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
 
@@ -260,6 +260,19 @@ int screenshot_dump_png()
 
 	lodepng_state_init(&state);
 	state.info_raw.colortype = LCT_PALETTE;
+
+	if (withSave)
+	{
+		LodePNGInfo *info_png = &state.info_png;
+		size_t size = 0x600000;
+		uint8 *buffer = malloc(size);
+		SDL_RWops *ops = SDL_RWFromMem(buffer, size);
+		long save_size = scenario_save(ops, 0x80000000, size);
+		log_warning("save_size = %d", save_size);
+		/* unknown_chunks_data[2] holds chunks that come after IDAT */
+		lodepng_chunk_create(&info_png->unknown_chunks_data[2], &info_png->unknown_chunks_size[2], save_size, "oRCt", buffer);
+		free(buffer);
+	}
 
 	// Get image size
 	width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
