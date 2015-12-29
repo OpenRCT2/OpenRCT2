@@ -58,10 +58,10 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 // Column offsets
 #define COL_X_TYPE (BW + 3) // Type
 #define COL_X_BH   (COL_X_TYPE + 200) // Base height
-#define COL_X_CH   (COL_X_BH + 25) // Clearance height
-#define COL_X_GF   (COL_X_CH + 25) // Ghost flag
-#define COL_X_BF   (COL_X_GF + 15) // Broken flag
-#define COL_X_LF   (COL_X_BF + 15) // Last for tile flag
+#define COL_X_CH   (COL_X_BH + 20) // Clearance height
+#define COL_X_GF   (COL_X_CH + 20) // Ghost flag
+#define COL_X_BF   (COL_X_GF + 12) // Broken flag
+#define COL_X_LF   (COL_X_BF + 12) // Last for tile flag
 
 rct_widget window_tile_inspector_widgets[] = {
 	{ WWT_FRAME,		0,	0,				WW - 1,				0,				WH - 1,						0x0FFFFFFFF,				STR_NONE },				// panel / background
@@ -69,7 +69,7 @@ rct_widget window_tile_inspector_widgets[] = {
 	{ WWT_CLOSEBOX,		0,	WW - 13,		WW - 3,				2,				13,							STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },	// close x button
 
 	// Map element list
-	{ WWT_SCROLL,		1,	BW + 3,			WW - 3,				29,				WH - SCROLL_BOTTOM_OFFSET,	2,							STR_NONE },				// scroll area
+	{ WWT_SCROLL,		1,	BW + 3,			WW - 3,				31,				WH - SCROLL_BOTTOM_OFFSET,	2,							STR_NONE },				// scroll area
 
 	// Buttons
 	{ WWT_CLOSEBOX,		1,	BX,				BW,					BY,				BH,							STR_INSERT_CORRUPT,			STR_INSERT_CORRUPT_TIP }, // Insert corrupt button
@@ -83,7 +83,7 @@ rct_widget window_tile_inspector_widgets[] = {
 	{ WWT_13,			1, COL_X_CH,	COL_X_GF - 1, 	16,		16 + 13,	STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT,	STR_TILE_INSPECTOR_CLEARANCE_HEIGHT },
 	{ WWT_13,			1, COL_X_GF,	COL_X_BF - 1, 	16,		16 + 13,	STR_TILE_INSPECTOR_FLAG_GHOST_SHORT,		STR_TILE_INSPECTOR_FLAG_GHOST },
 	{ WWT_13,			1, COL_X_BF,	COL_X_LF - 1, 	16,		16 + 13,	STR_TILE_INSPECTOR_FLAG_BROKEN_SHORT,		STR_TILE_INSPECTOR_FLAG_BROKEN },
-	{ WWT_13,			1, COL_X_LF,	WW - 2,			16,		16 + 13,	STR_TILE_INSPECTOR_FLAG_LAST_SHORT,			STR_TILE_INSPECTOR_FLAG_LAST },
+	{ WWT_13,			1, COL_X_LF,	WW - 3,			16,		16 + 13,	STR_TILE_INSPECTOR_FLAG_LAST_SHORT,			STR_TILE_INSPECTOR_FLAG_LAST },
 
 	{ WIDGETS_END },
 };
@@ -433,7 +433,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
 	window_tile_inspector_widgets[WIDX_TITLE].right = w->width - 2;
 	window_tile_inspector_widgets[WIDX_LIST].right = w->width - 3;
 	window_tile_inspector_widgets[WIDX_LIST].bottom = w->height - SCROLL_BOTTOM_OFFSET;
-	window_tile_inspector_widgets[WIDX_COLUMN_LAST].right = w->width - 2;
+	window_tile_inspector_widgets[WIDX_COLUMN_LAST].right = w->width - 3;
 }
 
 static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)

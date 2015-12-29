@@ -3677,8 +3677,8 @@ STR_5335    :Ride entrance
 STR_5336    :Ride exit
 STR_5337    :Park entrance
 STR_5338    :Element type
-STR_5339    :Base height
-STR_5340    :Clearance height
+STR_5339    :{SMALLFONT}{BLACK}Base height
+STR_5340    :{SMALLFONT}{BLACK}Clearance height
 STR_5341    :Flags
 STR_5342    :Choose a map tile
 STR_5343    :Automatically place staff
