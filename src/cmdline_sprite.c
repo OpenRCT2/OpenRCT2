@@ -21,6 +21,7 @@
 #include <lodepng/lodepng.h>
 #include "cmdline.h"
 #include "drawing/drawing.h"
+#include "image_io.h"
 #include "platform/platform.h"
 #include "util/util.h"
 #include "openrct2.h"
@@ -168,33 +169,11 @@ bool sprite_file_export(int spriteIndex, const char *outPath)
 	memcpy(spriteFilePalette, _standardPalette, 256 * 4);
 	gfx_rle_sprite_to_buffer(spriteHeader->offset, pixels, (uint8*)spriteFilePalette, &dpi, IMAGE_TYPE_NO_BACKGROUND, 0, spriteHeader->height, 0, spriteHeader->width);
 
-	LodePNGState pngState;
-	unsigned int pngError;
-	unsigned char* pngData;
-	size_t pngSize;
-
-	lodepng_state_init(&pngState);
-	pngState.info_raw.colortype = LCT_PALETTE;
-	lodepng_palette_add(&pngState.info_raw, 0, 0, 0, 0);
-	for (int i = 1; i < 256; i++) {
-		lodepng_palette_add(
-			&pngState.info_raw,
-			spriteFilePalette[i].r,
-			spriteFilePalette[i].g,
-			spriteFilePalette[i].b,
-			255
-		);
-	}
-
-	pngError = lodepng_encode(&pngData, &pngSize, pixels, spriteHeader->width, spriteHeader->height, &pngState);
-	if (pngError != 0) {
-		free(pngData);
-		fprintf(stderr, "Error creating PNG data, %u: %s", pngError, lodepng_error_text(pngError));
-		return false;
-	} else {
-		lodepng_save_file(pngData, pngSize, outPath);
-		free(pngData);
+	if (image_io_png_write(&dpi, (rct_palette*)spriteFilePalette, outPath)) {
 		return true;
+	} else {
+		fprintf(stderr, "Error writing PNG");
+		return false;
 	}
 }
 

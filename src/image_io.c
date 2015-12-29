@@ -61,6 +61,8 @@ bool image_io_png_write(const rct_drawpixelinfo *dpi, const rct_palette *palette
 		png_ptr, info_ptr, dpi->width, dpi->height, 8,
 		PNG_COLOR_TYPE_PALETTE, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT
 	);
+	png_byte transparentIndex = 0;
+	png_set_tRNS(png_ptr, info_ptr, &transparentIndex, 1, NULL);
 	png_write_info(png_ptr, info_ptr);
 
 	// Write pixels
@@ -89,7 +91,8 @@ bool image_io_png_write(const rct_drawpixelinfo *dpi, const rct_palette *palette
 	// Get image size
 	int stride = dpi->width + dpi->pitch;
 
-	for (int i = 0; i < 256; i++) {
+	lodepng_palette_add(&state.info_raw, 0, 0, 0, 0);
+	for (int i = 1; i < 256; i++) {
 		const rct_palette_entry *entry = &palette->entries[i];
 		uint8 r = entry->red;
 		uint8 g = entry->green;
@@ -100,6 +103,7 @@ bool image_io_png_write(const rct_drawpixelinfo *dpi, const rct_palette *palette
 
 	error = lodepng_encode(&png, &pngSize, dpi->bits, stride, dpi->height, &state);
 	if (error != 0) {
+		log_error("Error creating PNG data, %u: %s", error, lodepng_error_text(error));
 		free(png);
 		return false;
 	} else {
