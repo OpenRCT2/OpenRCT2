@@ -49,6 +49,7 @@
     <ClCompile Include="src\editor.c" />
     <ClCompile Include="src\game.c" />
     <ClCompile Include="src\hook.c" />
+    <ClCompile Include="src\image_io.c" />
     <ClCompile Include="src\input.c" />
     <ClCompile Include="src\interface\chat.c" />
     <ClCompile Include="src\interface\colour.c" />
@@ -217,6 +218,7 @@
     <ClInclude Include="src\editor.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\hook.h" />
+    <ClInclude Include="src\image_io.h" />
     <ClInclude Include="src\input.h" />
     <ClInclude Include="src\interface\chat.h" />
     <ClInclude Include="src\interface\colour.h" />
