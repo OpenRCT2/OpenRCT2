@@ -568,9 +568,9 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 
 		// Undo relative scroll offset, but keep the 3 pixel padding
 		x = -w->widgets[WIDX_LIST].left + 3;
-		const int ghost = element->flags & MAP_ELEMENT_FLAG_GHOST ? 1 : 0;
-		const int broken = element->flags & MAP_ELEMENT_FLAG_BROKEN ? 1 : 0;
-		const int last = element->flags & MAP_ELEMENT_FLAG_LAST_TILE ? 1 : 0;
+		int ghost = element->flags & MAP_ELEMENT_FLAG_GHOST ? 1 : 0;
+		int broken = element->flags & MAP_ELEMENT_FLAG_BROKEN ? 1 : 0;
+		int last = element->flags & MAP_ELEMENT_FLAG_LAST_TILE ? 1 : 0;
 		gfx_draw_string(dpi, type_name, 12, x + COL_X_TYPE, y);
 		gfx_draw_string_left(dpi, 5182, &base_height, 12, x + COL_X_BH, y);
 		gfx_draw_string_left(dpi, 5182, &clearance_height, 12, x + COL_X_CH, y);
