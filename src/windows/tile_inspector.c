@@ -91,7 +91,7 @@ static void window_tile_inspector_invalidate(rct_window *w);
 static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 
-static void window_tile_inspector_auto_set_arrow_buttons(rct_window *w);
+static void window_tile_inspector_auto_set_buttons(rct_window *w);
 
 static rct_window_event_list window_tile_inspector_events = {
 	window_tile_inspector_close,
@@ -232,6 +232,7 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 		corrupt_element(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
 		window_tile_inspector_item_count++;
 		w->scrolls[0].v_top = 0;
+		w->selected_list_item = 0;
 		window_invalidate(w);
 		break;
 	case WIDX_REMOVE:
@@ -242,13 +243,13 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_MOVE_DOWN:
 		swap_elements(w->selected_list_item, w->selected_list_item + 1);
 		w->selected_list_item++;
-		window_tile_inspector_auto_set_arrow_buttons(w);
+		window_tile_inspector_auto_set_buttons(w);
 		widget_invalidate(w, WIDX_LIST);
 		break;
 	case WIDX_MOVE_UP:
 		swap_elements(w->selected_list_item - 1, w->selected_list_item);
 		w->selected_list_item--;
-		window_tile_inspector_auto_set_arrow_buttons(w);
+		window_tile_inspector_auto_set_buttons(w);
 		widget_invalidate(w, WIDX_LIST);
 		break;
 	}
@@ -350,9 +351,19 @@ static void window_tile_inspector_scrollgetsize(rct_window *w, int scrollIndex, 
 	*height = window_tile_inspector_item_count * LIST_ITEM_HEIGHT;
 }
 
-static void window_tile_inspector_auto_set_arrow_buttons(rct_window *w)
+static void window_tile_inspector_auto_set_buttons(rct_window *w)
 {
-	// Enable/disable up arrow buttons when at the top
+	// Remove button
+	if (w->selected_list_item == -1) { // Check if anything is selected
+		w->disabled_widgets |= (1ULL << WIDX_REMOVE); 
+		w->enabled_widgets &= ~(1ULL << WIDX_REMOVE);
+	} else { // Nothing is selected
+		w->disabled_widgets &= ~(1ULL << WIDX_REMOVE);
+		w->enabled_widgets |= (1ULL << WIDX_REMOVE);
+	}
+	widget_invalidate(w, WIDX_REMOVE);
+
+	// Move Up button
 	if (w->selected_list_item == 0) { // Top element in list
 		w->disabled_widgets |= (1ULL << WIDX_MOVE_UP);
 		w->enabled_widgets &= ~(1ULL << WIDX_MOVE_UP);
@@ -362,6 +373,7 @@ static void window_tile_inspector_auto_set_arrow_buttons(rct_window *w)
 	}
 	widget_invalidate(w, WIDX_MOVE_UP);
 
+	// Move Down button
 	if (w->selected_list_item == window_tile_inspector_item_count - 1) { // Bottom element in list
 		w->disabled_widgets |= (1ULL << WIDX_MOVE_DOWN);
 		w->enabled_widgets &= ~(1ULL << WIDX_MOVE_DOWN);
@@ -380,11 +392,8 @@ static void window_tile_inspector_scrollmousedown(rct_window *w, int scrollIndex
 		return;
 	w->selected_list_item = index;
 
-	// Enable 'remove' button
-	w->disabled_widgets &= ~(1ULL << WIDX_REMOVE);
-	w->enabled_widgets |= (1ULL << WIDX_REMOVE);
-	// Enable/disable arrow buttons
-	window_tile_inspector_auto_set_arrow_buttons(w);
+	// Enable/disable buttons
+	window_tile_inspector_auto_set_buttons(w);
 }
 
 static void window_tile_inspector_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
