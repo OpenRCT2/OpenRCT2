@@ -205,7 +205,7 @@ char *safe_strncpy(char * destination, const char * source, size_t size)
 	if (!terminated)
 	{
 		result[size - 1] = '\0';
-		log_warning("Truncating string %s to %d bytes.", destination, size);
+		log_warning("Truncating string \"%s\" to %d bytes.", result, size);
 	}
 	return result;
 }

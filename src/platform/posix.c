@@ -50,10 +50,6 @@ utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
  */
 int main(int argc, const char **argv)
 {
-	//RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE) = hInstance;
-	//RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, LPSTR) = lpCmdLine;
-
-	STUB();
 	int run_game = cmdline_run(argv, argc);
 	if (run_game == 1)
 	{
@@ -372,7 +368,7 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 	char *npattern = malloc(length+1);
 	int converted;
 	converted = wcstombs(npattern, wpattern, length);
-	npattern[length] = '\0';
+	npattern[length - 1] = '\0';
 	if (converted == MAX_PATH) {
 		log_warning("truncated string %s", npattern);
 	}
