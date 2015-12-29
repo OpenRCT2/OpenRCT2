@@ -1056,7 +1056,7 @@ void save_game()
 }
 void save_game_as()
 {
-	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, gScenarioSavePath);
+	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, (char*)path_get_filename(gScenarioSavePath));
 }
 
 
