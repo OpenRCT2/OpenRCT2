@@ -331,7 +331,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		y = (widget->top + widget->bottom) / 2 + w->y - 3;
 
 		if (gConfigGeneral.scenario_select_mode == 1) {
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = STR_SCENARIO_CATEGORY_RCT1_CLASSIC + i;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = STR_SCENARIO_CATEGORY_RCT1 + i;
 		} else { // old-style
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = STR_BEGINNER_PARKS + i;
 		}

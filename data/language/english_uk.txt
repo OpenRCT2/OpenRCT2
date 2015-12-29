@@ -3957,10 +3957,10 @@ STR_5615    :L
 STR_5616    :{SMALLFONT}{BLACK}Last element for tile flag
 STR_5617    :{SMALLFONT}{BLACK}Move selected element up.
 STR_5618    :{SMALLFONT}{BLACK}Move selected element down.
-STR_5619    :RCT1 Classic
-STR_5620    :Corkscrew Follies
+STR_5619    :RollerCoaster Tycoon
+STR_5620    :Added Attractions
 STR_5621    :Loopy Landscapes
-STR_5622    :RCT2 Vanilla
+STR_5622    :RollerCoaster Tycoon 2
 STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :{OPENQUOTES}Real{ENDQUOTES} Parks

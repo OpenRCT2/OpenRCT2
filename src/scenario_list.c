@@ -56,7 +56,7 @@ sint16 get_scenario_index(rct_scenario_basic *scenario)
 	return -1;
 }
 
-void normalize_scenario_name(rct_scenario_basic *scenario)
+void normalise_scenario_name(rct_scenario_basic *scenario)
 {
 	char* name = scenario->name;
 
@@ -78,18 +78,18 @@ void normalize_scenario_name(rct_scenario_basic *scenario)
 
 scenario_source source_by_index(uint8 index)
 {
-	if (index >= SCENARIO_SOURCE_RCT1_CLASSIC_INDEX && index < SCENARIO_SOURCE_RCT1_CORKSCREW_INDEX) {
-		return SCENARIO_SOURCE_RCT1_CLASSIC;
-	} else if (index >= SCENARIO_SOURCE_RCT1_CORKSCREW_INDEX && index < SCENARIO_SOURCE_RCT1_LOOPY_INDEX) {
-		return SCENARIO_SOURCE_RCT1_CORKSCREW;
-	} else if (index >= SCENARIO_SOURCE_RCT1_LOOPY_INDEX && index < SCENARIO_SOURCE_RCT2_VANILLA_INDEX) {
-		return SCENARIO_SOURCE_RCT1_LOOPY;
-	} else if (index >= SCENARIO_SOURCE_RCT2_VANILLA_INDEX && index < SCENARIO_SOURCE_RCT2_WACKY_INDEX) {
-		return SCENARIO_SOURCE_RCT2_VANILLA;
-	} else if (index >= SCENARIO_SOURCE_RCT2_WACKY_INDEX && index < SCENARIO_SOURCE_RCT2_TIME_INDEX) {
-		return SCENARIO_SOURCE_RCT2_WACKY;
-	} else if (index >= SCENARIO_SOURCE_RCT2_TIME_INDEX && index < SCENARIO_SOURCE_REAL_INDEX) {
-		return SCENARIO_SOURCE_RCT2_TIME;
+	if (index >= SCENARIO_SOURCE_RCT1_INDEX && index < SCENARIO_SOURCE_RCT1_AA_INDEX) {
+		return SCENARIO_SOURCE_RCT1;
+	} else if (index >= SCENARIO_SOURCE_RCT1_AA_INDEX && index < SCENARIO_SOURCE_RCT1_LL_INDEX) {
+		return SCENARIO_SOURCE_RCT1_AA;
+	} else if (index >= SCENARIO_SOURCE_RCT1_LL_INDEX && index < SCENARIO_SOURCE_RCT2_INDEX) {
+		return SCENARIO_SOURCE_RCT1_LL;
+	} else if (index >= SCENARIO_SOURCE_RCT2_INDEX && index < SCENARIO_SOURCE_RCT2_WW_INDEX) {
+		return SCENARIO_SOURCE_RCT2;
+	} else if (index >= SCENARIO_SOURCE_RCT2_WW_INDEX && index < SCENARIO_SOURCE_RCT2_TT_INDEX) {
+		return SCENARIO_SOURCE_RCT2_WW;
+	} else if (index >= SCENARIO_SOURCE_RCT2_TT_INDEX && index < SCENARIO_SOURCE_REAL_INDEX) {
+		return SCENARIO_SOURCE_RCT2_TT;
 	} else if (index >= SCENARIO_SOURCE_REAL_INDEX && index < NUM_ORIGINAL_SCENARIOS) {
 		return SCENARIO_SOURCE_REAL;
 	} else {
@@ -186,7 +186,7 @@ static void scenario_list_add(const char *path)
 	}
 
 	// Normalize the name to make the scenario as recognisable as possible.
-	normalize_scenario_name(scenario);
+	normalise_scenario_name(scenario);
 
 	// Look up and store information regarding the origins of this scenario.
 	scenario->source_index = get_scenario_index(scenario);
