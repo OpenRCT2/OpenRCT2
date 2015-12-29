@@ -17,9 +17,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
+
 #pragma pack(1)
 
-#include <lodepng/lodepng.h>
+#ifdef USE_LIBPNG
+	#include <libpng/png.h>
+#else
+	#include <lodepng/lodepng.h>
+#endif
+
 #include "../addresses.h"
 #include "../config.h"
 #include "../drawing/drawing.h"
@@ -36,6 +42,13 @@ static const char *_screenshot_format_extension[] = { ".bmp", ".png" };
 
 static int screenshot_dump_bmp();
 static int screenshot_dump_png();
+
+bool screenshot_write_png(rct_drawpixelinfo *dpi, const char *path);
+
+#ifdef USE_LIBPNG
+	static void my_png_write_data(png_structp png_ptr, png_bytep data, png_size_t length);
+	static void my_png_flush(png_structp png_ptr);
+#endif
 
 /**
  *
@@ -242,80 +255,87 @@ int screenshot_dump_bmp()
 
 int screenshot_dump_png()
 {
-	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
-
-	int i, index, width, height, padding;
-	char path[MAX_PATH] = "";
-	unsigned int error;
-	unsigned char r, g, b, a = 255;
-
-	unsigned char* png;
-	size_t pngSize;
-	LodePNGState state;
-
 	// Get a free screenshot path
-	if ((index = screenshot_get_next_path(path, SCREENSHOT_FORMAT_PNG)) == -1)
+	int index;
+	char path[MAX_PATH] = "";
+	if ((index = screenshot_get_next_path(path, SCREENSHOT_FORMAT_PNG)) == -1) {
 		return -1;
-
-
-	lodepng_state_init(&state);
-	state.info_raw.colortype = LCT_PALETTE;
-
-	// Get image size
-	width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
-
-	padding = dpi->pitch;
-
-	for (i = 0; i < 256; i++) {
-		b = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 0];
-		g = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 1];
-		r = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 2];
-
-		lodepng_palette_add(&state.info_raw, r, g, b, a);
 	}
 
-	uint8* pixels = dpi->bits;
-
-	if (padding > 0) {
-		pixels = malloc(width * height);
-		if (!pixels) {
-			return -1;
-		}
-		uint8* src = dpi->bits;
-		uint8* dst = pixels;
-		for (int y = height; y > 0; y--) {
-			for (int x = width; x > 0; x--) {
-				*dst++ = *src++;
-			}
-			src += padding;
-		}
-	}
-
-	error = lodepng_encode(&png, &pngSize, pixels, width, height, &state);
-	if (error) {
-		log_error("Unable to save screenshot, %u: %s", lodepng_error_text(error));
-		index = -1;
+	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
+	if (screenshot_write_png(dpi, path)) {
+		return index;
 	} else {
-		SDL_RWops *file = SDL_RWFromFile(path, "wb");
-		if (file == NULL) {
-			log_error("Unable to save screenshot, %s", SDL_GetError());
-			index = -1;
-		} else {
-			SDL_RWwrite(file, png, pngSize, 1);
-			SDL_RWclose(file);
-		}
+		return -1;
 	}
-
-	free(png);
-	if ((utf8*)pixels != (utf8*)dpi->bits) {
-		free(pixels);
-	}
-	return index;
 }
 
 bool screenshot_write_png(rct_drawpixelinfo *dpi, const char *path)
 {
+#ifdef USE_LIBPNG
+	// Get image size
+	int stride = dpi->width + dpi->pitch;
+
+	// Setup PNG
+	png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+	if (png_ptr == NULL) {
+		return false;
+	}
+
+	png_infop info_ptr = png_create_info_struct(png_ptr);
+	if (info_ptr == NULL) {
+		png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
+		return false;
+	}
+
+	png_colorp palette = (png_colorp)png_malloc(png_ptr, PNG_MAX_PALETTE_LENGTH * sizeof(png_color));
+	for (int i = 0; i < 256; i++) {
+		palette[i].blue		= RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 0];
+		palette[i].green	= RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 1];
+		palette[i].red		= RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 2];
+	}
+
+	png_set_PLTE(png_ptr, info_ptr, palette, PNG_MAX_PALETTE_LENGTH);
+
+	// Open file for writing
+	SDL_RWops *file = SDL_RWFromFile(path, "wb");
+	if (file == NULL) {
+		png_free(png_ptr, palette);
+		png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
+		return false;
+	}
+	png_set_write_fn(png_ptr, file, my_png_write_data, my_png_flush);
+
+	// Set error handler
+	if (setjmp(png_jmpbuf(png_ptr))) {
+		png_free(png_ptr, palette);
+		png_destroy_write_struct(&png_ptr, &info_ptr);
+		SDL_RWclose(file);
+		return false;
+	}
+
+	// Write header
+	png_set_IHDR(
+		png_ptr, info_ptr, dpi->width, dpi->height, 8,
+		PNG_COLOR_TYPE_PALETTE, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT
+	);
+	png_write_info(png_ptr, info_ptr);
+
+	// Write pixels
+	uint8 *bits = dpi->bits;
+	for (int y = 0; y < dpi->height; y++) {
+		png_write_row(png_ptr, (png_const_bytep)bits);
+		bits += stride;
+	}
+
+	// Finish
+	png_write_end(png_ptr, NULL);
+	SDL_RWclose(file);
+
+	png_free(png_ptr, palette);
+	png_destroy_write_struct(&png_ptr, &info_ptr);
+	return true;
+#else
 	unsigned int error;
 	unsigned char* png;
 	size_t pngSize;
@@ -353,6 +373,7 @@ bool screenshot_write_png(rct_drawpixelinfo *dpi, const char *path)
 
 	free(png);
 	return true;
+#endif
 }
 
 void screenshot_giant()
@@ -577,3 +598,18 @@ int cmdline_for_screenshot(const char **argv, int argc)
 	openrct2_dispose();
 	return 1;
 }
+
+#ifdef USE_LIBPNG
+
+static void my_png_write_data(png_structp png_ptr, png_bytep data, png_size_t length)
+{
+	SDL_RWops *file = (SDL_RWops*)png_get_io_ptr(png_ptr);
+	SDL_RWwrite(file, data, length, 1);
+}
+
+static void my_png_flush(png_structp png_ptr)
+{
+
+}
+
+#endif
