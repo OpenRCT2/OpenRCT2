@@ -178,6 +178,14 @@ void corrupt_element(int x, int y) {
 	mapElement->type = (8 << 2);
 }
 
+void remove_element(int index)
+{
+	assert(index < window_tile_inspector_item_count);
+	rct_map_element *mapElement = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
+	mapElement += index;
+	map_element_remove(mapElement);
+}
+
 // Swap element with its parent
 void swap_elements(sint16 first, sint16 second)
 {
@@ -226,7 +234,8 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 		window_invalidate(w);
 		break;
 	case WIDX_REMOVE:
-		w->selected_list_item = 2;
+		remove_element(w->selected_list_item);
+		w->selected_list_item = -1;
 		widget_invalidate(w, WIDX_LIST);
 		break;
 	case WIDX_MOVE_DOWN:
@@ -456,11 +465,11 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 
 		// Fill colour for current list element
 		if (i == w->selected_list_item) // Currently selected element
-			gfx_fill_rect(dpi, x - 15, y, x + WW - 20, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].darker | 0x1000000);
+			gfx_fill_rect(dpi, x, y, x + MAX_WW - 20, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].darker | 0x1000000);
 		else if (i == window_tile_inspector_highlighted_index) // Hovering
-			gfx_fill_rect(dpi, x - 15, y, x + WW - 20, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark | 0x1000000);
+			gfx_fill_rect(dpi, x, y, x + MAX_WW - 20, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark | 0x1000000);
 		else if ((i & 1) != 0) // odd / even check
-			gfx_fill_rect(dpi, x - 15, y, x + WW - 20, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].lighter | 0x1000000);
+			gfx_fill_rect(dpi, x, y, x + MAX_WW - 20, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].lighter | 0x1000000);
 
 		switch (type) {
 			case MAP_ELEMENT_TYPE_SURFACE:
