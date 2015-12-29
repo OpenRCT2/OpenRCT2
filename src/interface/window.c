@@ -153,8 +153,6 @@ void window_dispatch_update_all()
 	//RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, sint16)++;
 	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
 		window_event_update_call(w);
-
-	RCT2_CALLPROC_EBPSAFE(0x006EE411);	// handle_text_input
 }
 
 void window_update_all_viewports()
@@ -1460,16 +1458,6 @@ void window_zoom_out(rct_window *w)
 }
 
 /**
- *
- *  rct2: 0x006EE308
- * DEPRECIATED please use the new text_input window.
- */
-void window_show_textinput(rct_window *w, int widgetIndex, uint16 title, uint16 text, int value)
-{
-	RCT2_CALLPROC_X(0x006EE308, title, text, value, widgetIndex, (int)w, 0, 0);
-}
-
-/**
  * Draws a window that is in the specified region.
  *  rct2: 0x006E756C
  * left (ax)
@@ -2425,7 +2413,6 @@ void textinput_cancel()
 	window_close_by_class(WC_TEXTINPUT);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_TEXTINPUT_WINDOWCLASS, uint8) != 255) {
-		RCT2_CALLPROC_EBPSAFE(0x006EE4E2);
 		w = window_find_by_number(
 			RCT2_GLOBAL(RCT2_ADDRESS_TEXTINPUT_WINDOWCLASS, rct_windowclass),
 			RCT2_GLOBAL(RCT2_ADDRESS_TEXTINPUT_WINDOWNUMBER, rct_windownumber)

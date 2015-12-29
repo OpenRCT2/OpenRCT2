@@ -23,5 +23,6 @@
 
 void tutorial_start(int type);
 void tutorial_stop();
+void sub_66EE54();
 
 #endif
