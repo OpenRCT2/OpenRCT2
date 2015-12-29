@@ -21,7 +21,7 @@
 #pragma pack(1)
 
 #ifdef USE_LIBPNG
-	#include <libpng/png.h>
+	#include <png.h>
 #else
 	#include <lodepng/lodepng.h>
 #endif
