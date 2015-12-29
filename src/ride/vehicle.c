@@ -3444,7 +3444,62 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
   */
 static void sub_6DA280(rct_vehicle *vehicle)
 {
-	RCT2_CALLPROC_X(0x006DA280, 0, 0, 0, 0, (int)vehicle, 0, 0);
+	rct_ride* ride = GET_RIDE(vehicle->ride);
+
+	rct_xy8 location = {
+		.x = (vehicle->x + RCT2_ADDRESS(0x00993CCC, sint16)[2 * (ride->boat_hire_return_direction & 3)]) / 32,
+		.y = (vehicle->y + RCT2_ADDRESS(0x00993CCE, sint16)[2 * (ride->boat_hire_return_direction & 3)]) / 32
+	};
+
+	if (*((uint16*)&location) == ride->boat_hire_return_position) {
+		vehicle->sub_state = 1;
+		vehicle->boat_location = location;
+		return;
+	}
+
+	vehicle->sub_state = 0;
+	uint8 curDirection = ((vehicle->sprite_direction + 19) >> 3) & 3;
+	uint8 randDirection = scenario_rand() & 3;
+
+	rct_ride_type* rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+	if (scenario_rand() & 1 && (!(rideEntry->flags & RIDE_ENTRY_FLAG_7) || vehicle->lost_time_out > 1920)) {
+		location = *((rct_xy8*)&ride->boat_hire_return_position);
+		rct_xy16 destLocation = {
+			.x = location.x * 32 - RCT2_ADDRESS(0x00993CCC, sint16)[2 * (ride->boat_hire_return_direction & 3)] + 16,
+			.y = location.y * 32 - RCT2_ADDRESS(0x00993CCE, sint16)[2 * (ride->boat_hire_return_direction & 3)] + 16
+		};
+
+		destLocation.x -= vehicle->x;
+		destLocation.y -= vehicle->y;
+
+		if (abs(destLocation.x) <= abs(destLocation.y)) {
+			randDirection = destLocation.x < 0 ? 3 : 1;
+		} else {
+			randDirection = destLocation.y < 0 ? 0 : 2;
+		}
+	}
+
+	static const sint8 rotations[] = { 0, 1, -1, 2 };
+	for (int i = 0; i < 4; i++) {
+		if (randDirection + rotations[i] == curDirection) {
+			continue;
+		}
+
+		sint16 x = vehicle->track_x + RCT2_ADDRESS(0x00993CCC, sint16)[2 * (randDirection + rotations[i] & 3)];
+		sint16 y = vehicle->track_y + RCT2_ADDRESS(0x00993CCE, sint16)[2 * (randDirection + rotations[i] & 3)];
+
+		if (!vehicle_is_boat_on_water(vehicle, x, y)) {
+			continue;
+		}
+		vehicle->boat_location.x = x / 32;
+		vehicle->boat_location.y = y / 32;
+		return;
+	}
+
+	sint16 x = vehicle->track_x + RCT2_ADDRESS(0x00993CCC, sint16)[2 * (curDirection & 3)];
+	sint16 y = vehicle->track_y + RCT2_ADDRESS(0x00993CCE, sint16)[2 * (curDirection & 3)];
+	vehicle->boat_location.x = x / 32;
+	vehicle->boat_location.y = y / 32;
 }
 
  /**
