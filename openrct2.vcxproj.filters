@@ -558,6 +558,9 @@
     <ClCompile Include="src\windows\news_options.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="src\image_io.c">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">
@@ -838,6 +841,9 @@
     </ClInclude>
     <ClInclude Include="src\core\Util.hpp">
       <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\image_io.h">
+      <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
