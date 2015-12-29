@@ -522,7 +522,12 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			type_name = buffer;
 			break;
 			case MAP_ELEMENT_TYPE_TRACK:
-				type_name = "Track"; // TODO: show type?
+				sprintf(
+					buffer,
+					"Track (%s)",
+					language_get_string(2 + GET_RIDE(element->properties.track.ride_index)->type)
+				);
+				type_name = buffer;
 				break;
 			case MAP_ELEMENT_TYPE_SCENERY:
 				sprintf(
