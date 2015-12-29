@@ -300,6 +300,23 @@ typedef union {
 	rct_crash_splash crash_splash;
 } rct_sprite;
 
+typedef struct {
+	uint8 sprite_width;             // 0x00
+	uint8 sprite_height_negative;   // 0x01
+	uint8 sprite_height_positive;   // 0x02
+	uint8 unused;                   // 0x03
+} rct_sprite_bounds;
+
+typedef struct {
+	uint32 base_image;   // 0x00
+	uint8* unkn_04;      // 0x04
+} rct_sprite_image;
+
+typedef struct {
+	rct_sprite_image *sprite_image;      // 0x00
+	rct_sprite_bounds *sprite_bounds;    // 0x04
+} rct_sprite_entry;
+
 enum {
 	SPRITE_MISC_0,
 	SPRITE_MISC_MONEY_EFFECT,
@@ -315,6 +332,10 @@ enum {
 
 // rct2: 0x010E63BC
 extern rct_sprite* g_sprite_list;
+
+// rct2: 0x00982708
+extern rct_sprite_entry* g_sprite_entries;
+
 
 rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();

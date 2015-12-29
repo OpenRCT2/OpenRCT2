@@ -503,7 +503,7 @@ void window_guest_open(rct_peep* peep){
 		window->viewport_focus_coordinates.y = 0;
 		window->frame_no = 0;
 		window->list_information_type = 0;
-		window->var_492 = 0;
+		window->picked_peep_frame = 0;
 		window->highlighted_item = 0;
 		window_guest_disable_widgets(window);
 		window->min_width = 192;
@@ -625,7 +625,7 @@ void window_guest_overview_mouse_up(rct_window *w, int widgetIndex)
 			return;
 		}
 
-		w->var_48C = peep->x;
+		w->picked_peep_old_x = peep->x;
 
 		remove_peep_from_ride(peep);
 		invalidate_sprite_2((rct_sprite*)peep);
@@ -830,7 +830,7 @@ void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER)
 		y++;
 
-	int ebx = *(RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2]) + 1;
+	int ebx = g_sprite_entries[peep->sprite_type].sprite_image->base_image + 1;
 
 	int eax = 0;
 
@@ -1182,7 +1182,7 @@ void window_guest_overview_tool_update(rct_window* w, int widgetIndex, int x, in
 		map_invalidate_selection_rect();
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
+	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, sint32) = -1;
 
 	int interactionType;
 	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_NONE, NULL, NULL, &interactionType, NULL, NULL);
@@ -1193,19 +1193,21 @@ void window_guest_overview_tool_update(rct_window* w, int widgetIndex, int x, in
 	y += 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, uint16) = x;
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, uint16) = y;
-	w->var_492++;
-	if (w->var_492 >= 48)w->var_492 = 0;
+	w->picked_peep_frame++;
+	if (w->picked_peep_frame >= 48) {
+		w->picked_peep_frame = 0;
+	}
 
 	rct_peep* peep;
 	peep = GET_PEEP(w->number);
-	int ebx = (RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2])[22];
-	ebx += w->var_492 >> 2;
+	uint32 imageId = g_sprite_entries[peep->sprite_type].sprite_image[11].base_image;
+	imageId += w->picked_peep_frame >> 2;
 
 	int ebp = peep->tshirt_colour << 19;
 	int ecx = peep->trousers_colour << 24;
 
-	ebx |= ebp | ecx | 0xA0000000;
-	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32) = ebx;
+	imageId |= ebp | ecx | 0xA0000000;
+	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, uint32) = imageId;
 }
 
 /**
@@ -1254,7 +1256,7 @@ void window_guest_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 	peep->state = 0;
 	peep_window_state_update(peep);
 	peep->action = 0xFF;
-	peep->var_6D = 0;
+	peep->special_sprite = 0;
 	peep->action_sprite_image_offset = 0;
 	peep->action_sprite_type = 0xFF;
 	peep->var_C4 = 0;
@@ -1279,7 +1281,7 @@ void window_guest_overview_tool_abort(rct_window *w, int widgetIndex)
 	if (peep->state != PEEP_STATE_PICKED)
 		return;
 
-	sprite_move( w->var_48C, peep->y, peep->z + 8, (rct_sprite*)peep);
+	sprite_move(w->picked_peep_old_x, peep->y, peep->z + 8, (rct_sprite*)peep);
 	invalidate_sprite_2((rct_sprite*)peep);
 
 	if (peep->x != (sint16)0x8000){
@@ -1287,13 +1289,13 @@ void window_guest_overview_tool_abort(rct_window *w, int widgetIndex)
 		peep->state = 0;
 		peep_window_state_update(peep);
 		peep->action = 0xFF;
-		peep->var_6D = 0;
+		peep->special_sprite = 0;
 		peep->action_sprite_image_offset = 0;
 		peep->action_sprite_type = 0;
 		peep->var_C4 = 0;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
+	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, sint32) = -1;
 }
 
 /**

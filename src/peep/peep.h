@@ -372,6 +372,12 @@ enum {
 	PEEP_RIDE_DECISION_THINKING = 1 << 2
 };
 
+// Flags used by peep->list_flags
+enum {
+	PEEP_LIST_FLAGS_VISIBLE = 1 << 8, // Peep is eligible to show in summarized guest list window (is inside park?)
+	PEEP_LIST_FLAGS_FLASHING = 1 << 9, // Peep belongs to highlighted group (flashes red on map)
+};
+
 typedef struct {
 	uint8 type;		//0
 	uint8 item;		//1
@@ -389,7 +395,7 @@ typedef struct {
 	// Height from center of sprite to bottom
 	uint8 sprite_height_negative;	// 0x09
 	uint16 sprite_index;			// 0x0A
-	uint16 var_0C;
+	uint16 list_flags;              // 0x0C Used for highlighting peeps on map with staff list or guest list open
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
@@ -408,7 +414,7 @@ typedef struct {
 	uint16 next_y;					// 0x26
 	uint8 next_z;					// 0x28
 	uint8 next_var_29;				// 0x29
-	uint8 outside_of_park;
+	uint8 outside_of_park;          // 0x2A
 	uint8 state;					// 0x2B
 	uint8 sub_state;				// 0x2C
 	uint8 sprite_type;				// 0x2D
@@ -458,9 +464,11 @@ typedef struct {
 			uint8 standing_flags;	//0x6C
 		};
 	};
-	uint8 var_6D;					// 0x6D
+	// Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
+	uint8 special_sprite;   	    // 0x6D
 	uint8 action_sprite_type;		// 0x6E
-	uint8 var_6F;
+	// Seems to be used like a local variable, as it's always set before calling sub_693BAB, which reads this again
+	uint8 next_action_sprite_type;    // 0x6F
 	uint8 action_sprite_image_offset; // 0x70
 	uint8 action;					// 0x71
 	uint8 action_frame;				// 0x72
@@ -488,7 +496,7 @@ typedef struct {
 	uint8 previous_ride;			// 0xAD
 	uint16 previous_ride_time_out;	// 0xAE
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
-	uint8 var_C4;					// 0xC4
+	uint8 var_C4;					// 0xC4 has something to do with peep falling, see peep.checkForPath
 	union {
 		uint8 staff_id;						// 0xC5
 		uint8 guest_heading_to_ride_id;		// 0xC5

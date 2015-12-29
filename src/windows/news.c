@@ -344,7 +344,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 					}
 				}
 
-				uint32 image_id = *RCT2_ADDRESS(0x00982708, uint32*)[sprite_type * 2];
+				uint32 image_id = g_sprite_entries[sprite_type].sprite_image->base_image;
 				image_id += 0xA0000001;
 				image_id |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24);
 
