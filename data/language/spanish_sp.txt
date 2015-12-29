@@ -770,64 +770,64 @@ STR_0765    :Visitante {INT32}
 STR_0766    :Visitante {INT32}
 STR_0767    :Visitante {INT32}
 STR_0768    :Handyman {INT32}
-STR_0769    :Mechanic {INT32}
-STR_0770    :Security Guard {INT32}
-STR_0771    :Entertainer {INT32}
-STR_0772    :Unnamed park{POP16}{POP16}
-STR_0773    :Unnamed park{POP16}{POP16}
-STR_0774    :Unnamed park{POP16}{POP16}
-STR_0775    :Unnamed park{POP16}{POP16}
-STR_0776    :Unnamed park{POP16}{POP16}
-STR_0777    :Unnamed park{POP16}{POP16}
+STR_0769    :Mecánico {INT32}
+STR_0770    :Guardia {INT32}
+STR_0771    :Animador {INT32}
+STR_0772    :Parque sin nombre{POP16}{POP16}
+STR_0773    :Parque sin nombre{POP16}{POP16}
+STR_0774    :Parque sin nombre{POP16}{POP16}
+STR_0775    :Parque sin nombre{POP16}{POP16}
+STR_0776    :Parque sin nombre{POP16}{POP16}
+STR_0777    :Parque sin nombre{POP16}{POP16}
 STR_0778    :Sign
-STR_0779    :1st
-STR_0780    :2nd
-STR_0781    :3rd
-STR_0782    :4th
-STR_0783    :5th
-STR_0784    :6th
-STR_0785    :7th
-STR_0786    :8th
-STR_0787    :9th
-STR_0788    :10th
-STR_0789    :11th
-STR_0790    :12th
-STR_0791    :13th
-STR_0792    :14th
-STR_0793    :15th
-STR_0794    :16th
-STR_0795    :17th
-STR_0796    :18th
-STR_0797    :19th
-STR_0798    :20th
-STR_0799    :21st
-STR_0800    :22nd
-STR_0801    :23rd
-STR_0802    :24th
-STR_0803    :25th
-STR_0804    :26th
-STR_0805    :27th
-STR_0806    :28th
-STR_0807    :29th
-STR_0808    :30th
-STR_0809    :31st
-STR_0810    :Jan
-STR_0811    :Feb
-STR_0812    :Mar
-STR_0813    :Apr
-STR_0814    :May
-STR_0815    :Jun
-STR_0816    :Jul
-STR_0817    :Aug
-STR_0818    :Sep
-STR_0819    :Oct
-STR_0820    :Nov
-STR_0821    :Dec
+STR_0779    :1
+STR_0780    :2
+STR_0781    :3
+STR_0782    :4
+STR_0783    :5
+STR_0784    :6
+STR_0785    :7
+STR_0786    :8
+STR_0787    :9
+STR_0788    :10
+STR_0789    :11
+STR_0790    :12
+STR_0791    :13
+STR_0792    :14
+STR_0793    :15
+STR_0794    :16
+STR_0795    :17
+STR_0796    :18
+STR_0797    :19
+STR_0798    :20
+STR_0799    :21
+STR_0800    :22
+STR_0801    :23
+STR_0802    :24
+STR_0803    :25
+STR_0804    :26
+STR_0805    :27
+STR_0806    :28
+STR_0807    :29
+STR_0808    :30
+STR_0809    :31
+STR_0810    :enero
+STR_0811    :feb
+STR_0812    :marzo
+STR_0813    :abr
+STR_0814    :mayo
+STR_0815    :jun
+STR_0816    :jul
+STR_0817    :agosto
+STR_0818    :sep
+STR_0819    :oct
+STR_0820    :nov
+STR_0821    :dic
 STR_0822    :Unable to access graphic data file
 STR_0823    :Missing or inaccessible data file
 STR_0824    :{BLACK}{CROSS}
-STR_0825    :Chosen name in use already
-STR_0826    :Too many names defined
+STR_0825    :Este nombre está usado
+STR_0826    :Demasiados nombres están usados
 STR_0827    :Not enough cash - requires {CURRENCY2DP}
 STR_0828    :{SMALLFONT}{BLACK}Close window
 STR_0829    :{SMALLFONT}{BLACK}Window title - Drag this to move window
@@ -849,7 +849,7 @@ STR_0843    :<not used anymore>
 STR_0844    :<not used anymore>
 STR_0845    :<not used anymore>
 STR_0846    :<not used anymore>
-STR_0847    :About 'OpenRCT2'
+STR_0847    :Sobre 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, all rights reserved
@@ -879,8 +879,8 @@ STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}{DOWN}
-STR_0877    :Too low !
-STR_0878    :Too high !
+STR_0877    :¡Demasiado bajo!
+STR_0878    :¡Demasiado alto!
 STR_0879    :Can't lower land here...
 STR_0880    :Can't raise land here...
 STR_0881    :Object in the way
@@ -893,22 +893,22 @@ STR_0887    :Quit Scenario Editor
 STR_0888    :Quit Roller Coaster Designer
 STR_0889    :Quit Track Designs Manager
 STR_0890    :SCR{COMMA16}.BMP
-STR_0891    :Screenshot
+STR_0891    :Una foto
 STR_0892    :Screenshot saved to disk as '{STRINGID}'
 STR_0893    :Screenshot failed !
 STR_0894    :Landscape data area full !
 STR_0895    :Can't build partly above and partly below ground
-STR_0896    :{POP16}{POP16}{STRINGID} Construction
-STR_0897    :Direction
-STR_0898    :{SMALLFONT}{BLACK}Left-hand curve
-STR_0899    :{SMALLFONT}{BLACK}Right-hand curve
-STR_0900    :{SMALLFONT}{BLACK}Left-hand curve (small radius)
-STR_0901    :{SMALLFONT}{BLACK}Right-hand curve (small radius)
-STR_0902    :{SMALLFONT}{BLACK}Left-hand curve (very small radius)
-STR_0903    :{SMALLFONT}{BLACK}Right-hand curve (very small radius)
-STR_0904    :{SMALLFONT}{BLACK}Left-hand curve (large radius)
-STR_0905    :{SMALLFONT}{BLACK}Right-hand curve (large radius)
-STR_0906    :{SMALLFONT}{BLACK}Straight
+STR_0896    :{POP16}{POP16}{STRINGID} Construcción
+STR_0897    :Dirección
+STR_0898    :{SMALLFONT}{BLACK}Curva izquierda
+STR_0899    :{SMALLFONT}{BLACK}Curva derecha
+STR_0900    :{SMALLFONT}{BLACK}Curva izquierda (pequeño)
+STR_0901    :{SMALLFONT}{BLACK}Curva derecha (pequeño)
+STR_0902    :{SMALLFONT}{BLACK}Curva izquierda (muy pequeño)
+STR_0903    :{SMALLFONT}{BLACK}Curva derecha (muy pequeño)
+STR_0904    :{SMALLFONT}{BLACK}Curva izquierda (grande)
+STR_0905    :{SMALLFONT}{BLACK}Curva derecha (grande)
+STR_0906    :{SMALLFONT}{BLACK}Derecho
 STR_0907    :Slope
 STR_0908    :Roll/Banking
 STR_0909    :Seat Rot.
@@ -1915,7 +1915,7 @@ STR_1907    :{WINDOW_COLOUR_2}Staff wages
 STR_1908    :{WINDOW_COLOUR_2}Marketing
 STR_1909    :{WINDOW_COLOUR_2}Research
 STR_1910    :{WINDOW_COLOUR_2}Loan interest
-STR_1911    :{BLACK} at {COMMA16}% per year
+STR_1911    :{BLACK} a {COMMA16}% por año
 STR_1912    :{MONTH}
 STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
@@ -1923,24 +1923,24 @@ STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Loan:
 STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Can't borrow any more money!
-STR_1919    :Not enough cash available!
+STR_1919    :¡Insuficiente dinero!
 STR_1920    :Can't pay back loan!
 STR_1921    :{SMALLFONT}{BLACK}Start a new game
 STR_1922    :{SMALLFONT}{BLACK}Continue playing a saved game
 STR_1923    :{SMALLFONT}{BLACK}Show tutorial
-STR_1924    :{SMALLFONT}{BLACK}Exit
+STR_1924    :{SMALLFONT}{BLACK}Salida
 STR_1925    :Can't place person here...
 STR_1926    :{SMALLFONT}
-STR_1927    :{YELLOW}{STRINGID} has broken down
-STR_1928    :{RED}{STRINGID} has crashed!
+STR_1927    :{YELLOW}{STRINGID} ha roto
+STR_1928    :¡{RED}{STRINGID} ha chocado!
 STR_1929    :{RED}{STRINGID} still hasn't been fixed{NEWLINE}Check where your mechanics are and consider organising them better
 STR_1930    :{SMALLFONT}{BLACK}Turn on/off tracking information for this guest - (If tracking is on, guest's movements will be reported in the message area)
 STR_1931    :{STRINGID} has joined the queue line for {STRINGID}
-STR_1932    :{STRINGID} is on {STRINGID}
-STR_1933    :{STRINGID} is in {STRINGID}
-STR_1934    :{STRINGID} has left {STRINGID}
-STR_1935    :{STRINGID} has left the park
-STR_1936    :{STRINGID} has bought {STRINGID}
+STR_1932    :{STRINGID} está en {STRINGID}
+STR_1933    :{STRINGID} está en {STRINGID}
+STR_1934    :{STRINGID} se va de {STRINGID}
+STR_1935    :{STRINGID} se va del parque
+STR_1936    :{STRINGID} compra {STRINGID}
 STR_1937    :{SMALLFONT}{BLACK}Show information about the subject of this message
 STR_1938    :{SMALLFONT}{BLACK}Show view of guest
 STR_1939    :{SMALLFONT}{BLACK}Show view of staff member
@@ -1992,93 +1992,93 @@ STR_1984    :{WINDOW_COLOUR_2}Fried Chicken price:
 STR_1985    :{WINDOW_COLOUR_2}Lemonade price:
 STR_1986    :{WINDOW_COLOUR_2}
 STR_1987    :{WINDOW_COLOUR_2}
-STR_1988    :Balloon
-STR_1989    :Cuddly Toy
-STR_1990    :Park Map
+STR_1988    :Globo
+STR_1989    :Juguete Mimoso
+STR_1990    :Mapa del Parque
 STR_1991    :On-Ride Photo
-STR_1992    :Umbrella
-STR_1993    :Drink
-STR_1994    :Burger
-STR_1995    :Chips
-STR_1996    :Ice Cream
+STR_1992    :Sombrilla
+STR_1993    :Bebida
+STR_1994    :Hamburguesa
+STR_1995    :Patatas Fritas
+STR_1996    :Helado
 STR_1997    :Candyfloss
 STR_1998    :Empty Can
-STR_1999    :Rubbish
+STR_1999    :Basura
 STR_2000    :Empty Burger Box
 STR_2001    :Pizza
 STR_2002    :Voucher
-STR_2003    :Popcorn
-STR_2004    :Hot Dog
-STR_2005    :Tentacle
-STR_2006    :Hat
+STR_2003    :Palomitas de Maíz
+STR_2004    :Perrito Caliente
+STR_2005    :Tentáculo
+STR_2006    :Gorra
 STR_2007    :Toffee Apple
-STR_2008    :T-Shirt
-STR_2009    :Doughnut
-STR_2010    :Coffee
+STR_2008    :Camiseta
+STR_2009    :Rosquilla
+STR_2010    :Café
 STR_2011    :Empty Cup
-STR_2012    :Fried Chicken
-STR_2013    :Lemonade
+STR_2012    :Pollo Frito
+STR_2013    :Limonada
 STR_2014    :Empty Box
 STR_2015    :Empty Bottle
-STR_2016    :Balloons
-STR_2017    :Cuddly Toys
-STR_2018    :Park Maps
+STR_2016    :Globos
+STR_2017    :Juguetes Mimosos
+STR_2018    :Mapas del parque
 STR_2019    :On-Ride Photos
-STR_2020    :Umbrellas
-STR_2021    :Drinks
-STR_2022    :Burgers
-STR_2023    :Chips
-STR_2024    :Ice Creams
+STR_2020    :Sombrillas
+STR_2021    :Bebidas
+STR_2022    :Hamburguesas
+STR_2023    :Patatas Fritas
+STR_2024    :Helados
 STR_2025    :Candyfloss
 STR_2026    :Empty Cans
-STR_2027    :Rubbish
+STR_2027    :Basuras
 STR_2028    :Empty Burger Boxes
 STR_2029    :Pizzas
 STR_2030    :Vouchers
-STR_2031    :Popcorn
-STR_2032    :Hot Dogs
-STR_2033    :Tentacles
-STR_2034    :Hats
+STR_2031    :Palomitas de Maíz
+STR_2032    :Perritos Calientes
+STR_2033    :Tentáculos
+STR_2034    :Gorras
 STR_2035    :Toffee Apples
-STR_2036    :T-Shirts
-STR_2037    :Doughnuts
-STR_2038    :Coffees
+STR_2036    :Camisetas
+STR_2037    :Rosquillas
+STR_2038    :Cafés
 STR_2039    :Empty Cups
-STR_2040    :Fried Chicken
-STR_2041    :Lemonade
+STR_2040    :Pollo Frito
+STR_2041    :Limonada
 STR_2042    :Empty Boxes
 STR_2043    :Empty Bottles
-STR_2044    :a Balloon
-STR_2045    :a Cuddly Toy
-STR_2046    :a Park Map
+STR_2044    :un Globo
+STR_2045    :un Juguete Mimoso
+STR_2046    :un Mapa del Parque
 STR_2047    :an On-Ride Photo
-STR_2048    :an Umbrella
-STR_2049    :a Drink
-STR_2050    :a Burger
-STR_2051    :some Chips
-STR_2052    :an Ice Cream
+STR_2048    :una Sombrilla
+STR_2049    :una Bebida
+STR_2050    :una Hamburguesa
+STR_2051    :unas Patatas Fritas
+STR_2052    :un Helado
 STR_2053    :some Candyfloss
 STR_2054    :an Empty Can
-STR_2055    :some Rubbish
+STR_2055    :una Basura
 STR_2056    :an Empty Burger Box
-STR_2057    :a Pizza
+STR_2057    :una Pizza
 STR_2058    :a Voucher
-STR_2059    :some Popcorn
-STR_2060    :a Hot Dog
-STR_2061    :a Tentacle
-STR_2062    :a Hat
+STR_2059    :unas Palomitas de Maíz
+STR_2060    :un Perrito Caliente
+STR_2061    :un Tentáculo
+STR_2062    :una Gorra
 STR_2063    :a Toffee Apple
-STR_2064    :a T-Shirt
-STR_2065    :a Doughnut
-STR_2066    :a Coffee
+STR_2064    :una Camiseta
+STR_2065    :una Rosquilla
+STR_2066    :un Café
 STR_2067    :an Empty Cup
-STR_2068    :some Fried Chicken
-STR_2069    :some Lemonade
+STR_2068    :unos Pollos Fritos
+STR_2069    :una Limonada
 STR_2070    :an Empty Box
 STR_2071    :an Empty Bottle
 STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Balloon
 STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Cuddly Toy
-STR_2074    :Map of {STRINGID}
+STR_2074    :Mapa de {STRINGID}
 STR_2075    :On-Ride Photo of {STRINGID}
 STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Umbrella
 STR_2077    :Drink
@@ -2240,18 +2240,18 @@ STR_2232    :Cable lift hill
 STR_2233    :{SMALLFONT}{BLACK}Park information
 STR_2234    :Recent Messages
 STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
-STR_2236    :January
-STR_2237    :February
-STR_2238    :March
-STR_2239    :April
-STR_2240    :May
-STR_2241    :June
-STR_2242    :July
-STR_2243    :August
-STR_2244    :September
-STR_2245    :October
-STR_2246    :November
-STR_2247    :December
+STR_2236    :Enero
+STR_2237    :Febrero
+STR_2238    :Marzo
+STR_2239    :Abril
+STR_2240    :Mayo
+STR_2241    :Junio
+STR_2242    :Julio
+STR_2243    :Agosto
+STR_2244    :Septiembre
+STR_2245    :Octubre
+STR_2246    :Noviembre
+STR_2247    :Diciembre
 STR_2248    :Can't demolish ride/attraction...
 STR_2249    :{BABYBLUE}New ride/attraction now available:{NEWLINE}{STRINGID}
 STR_2250    :{BABYBLUE}New scenery/themeing now available:{NEWLINE}{STRINGID}
@@ -2269,7 +2269,7 @@ STR_2261    :Minimum funding
 STR_2262    :Normal funding
 STR_2263    :Maximum funding
 STR_2264    :Research funding
-STR_2265    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY} per month
+STR_2265    :{WINDOW_COLOUR_2}Precio: {BLACK}{CURRENCY} por mes
 STR_2266    :Research priorities
 STR_2267    :Currently in development
 STR_2268    :Last development
@@ -2331,13 +2331,13 @@ STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m{SQUARED}
 STR_2324    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}sq.ft.
 STR_2325    :{SMALLFONT}{BLACK}Buy land to extend park
 STR_2326    :{SMALLFONT}{BLACK}Buy construction rights to allow construction above or below land outside the park
-STR_2327    :Options
-STR_2328    :{WINDOW_COLOUR_2}Currency:
-STR_2329    :{WINDOW_COLOUR_2}Distance and Speed:
-STR_2330    :{WINDOW_COLOUR_2}Temperature:
-STR_2331    :{WINDOW_COLOUR_2}Height Labels:
-STR_2332    :Units
-STR_2333    :Sound
+STR_2327    :Opciones
+STR_2328    :{WINDOW_COLOUR_2}Moneda:
+STR_2329    :{WINDOW_COLOUR_2}Distancia y Velocidad:
+STR_2330    :{WINDOW_COLOUR_2}Temperatura:
+STR_2331    :{WINDOW_COLOUR_2}Etiquetas de altitud:
+STR_2332    :Unidades
+STR_2333    :Sonido
 STR_2334    :Pounds ({POUND})
 STR_2335    :Dollars ($)
 STR_2336    :Franc (F)
@@ -2349,9 +2349,9 @@ STR_2341    :Guilders (fl.)
 STR_2342    :Krona (kr)
 STR_2343    :Euros ({EURO})
 STR_2344    :Imperial
-STR_2345    :Metric
-STR_2346    :Display
-STR_2347    :{RED}{STRINGID} has drowned!
+STR_2345    :Métrico
+STR_2346    :Monitor
+STR_2347    :{RED}{STRINGID} se ahoga!
 STR_2348    :{SMALLFONT}{BLACK}Show statistics for this staff member
 STR_2349    :{WINDOW_COLOUR_2}Wages: {BLACK}{CURRENCY} per month
 STR_2350    :{WINDOW_COLOUR_2}Employed: {BLACK}{MONTHYEAR}
@@ -2361,9 +2361,9 @@ STR_2353    :{WINDOW_COLOUR_2}Litter swept: {BLACK}{COMMA16}
 STR_2354    :{WINDOW_COLOUR_2}Bins emptied: {BLACK}{COMMA16}
 STR_2355    :{WINDOW_COLOUR_2}Rides fixed: {BLACK}{COMMA16}
 STR_2356    :{WINDOW_COLOUR_2}Rides inspected: {BLACK}{COMMA16}
-STR_2357    :House
-STR_2358    :Units
-STR_2359    :Real Values
+STR_2357    :Casa
+STR_2358    :Unidas
+STR_2359    :Valores Real
 STR_2360    :{WINDOW_COLOUR_2}Display Resolution:
 STR_2361    :Landscape Smoothing
 STR_2362    :{SMALLFONT}{BLACK}Toggle landscape tile edge smoothing on/off
