@@ -3945,10 +3945,10 @@ STR_5603    :Guest has left ride
 STR_5604    :Guest has bought item
 STR_5605    :Guest has used facility
 STR_5606    :Guest has died
-STR_5607    :RCT1 Classic
-STR_5608    :Corkscrew Follies
+STR_5607    :RollerCoaster Tycoon
+STR_5608    :Added Attractions
 STR_5609    :Loopy Landscapes
-STR_5610    :RCT2 Vanilla
+STR_5610    :RollerCoaster Tycoon 2
 STR_5611    :Wacky Worlds
 STR_5612    :Time Twister
 STR_5613    :{OPENQUOTES}Real{ENDQUOTES} Parks
