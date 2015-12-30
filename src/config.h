@@ -172,6 +172,8 @@ typedef struct {
 	uint8 show_fps;
 	uint8 trap_cursor;
 	uint8 auto_open_shops;
+	uint8 scenario_select_mode;
+	uint8 scenario_unlocking_enabled;
 } general_configuration;
 
 typedef struct {

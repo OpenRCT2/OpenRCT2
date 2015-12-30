@@ -40,20 +40,26 @@ enum {
 	WIDX_TAB3,
 	WIDX_TAB4,
 	WIDX_TAB5,
+	WIDX_TAB6,
+	WIDX_TAB7,
+	WIDX_TAB8,
 	WIDX_SCENARIOLIST
 };
 
 static rct_widget window_scenarioselect_widgets[] = {
-	{ WWT_FRAME,	0,	0,		609,	0,		333,	-1,						STR_NONE },				// panel / background
-	{ WWT_CAPTION,	0,	1,		608,	1,		14,		STR_SELECT_SCENARIO,	STR_WINDOW_TITLE_TIP },	// title bar
-	{ WWT_CLOSEBOX,	0,	597,	607,	2,		13,		824,					STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_IMGBTN,	1,	0,		609,	50,		333,	-1,						STR_NONE },				// tab content panel
+	{ WWT_FRAME,	0,	0,		733,	0,		333,	-1,						STR_NONE },				// panel / background
+	{ WWT_CAPTION,	0,	1,		732,	1,		14,		STR_SELECT_SCENARIO,	STR_WINDOW_TITLE_TIP },	// title bar
+	{ WWT_CLOSEBOX,	0,	721,	731,	2,		13,		824,					STR_CLOSE_WINDOW_TIP },	// close x button
+	{ WWT_IMGBTN,	1,	0,		733,	50,		333,	-1,						STR_NONE },				// tab content panel
 	{ WWT_TAB,		1,	3,		93,		17,		50,		0x200015BC,				STR_NONE },				// tab 1
 	{ WWT_TAB,		1,	94,		184,	17,		50,		0x200015BC,				STR_NONE },				// tab 2
 	{ WWT_TAB,		1,	185,	275,	17,		50,		0x200015BC,				STR_NONE },				// tab 3
 	{ WWT_TAB,		1,	276,	366,	17,		50,		0x200015BC,				STR_NONE },				// tab 4
 	{ WWT_TAB,		1,	367,	457,	17,		50,		0x200015BC,				STR_NONE },				// tab 5
-	{ WWT_SCROLL,	1,	3,		433,	54,		329,	2,						STR_NONE },				// level list
+	{ WWT_TAB,		1,	458,	593,	17,		50,		0x200015BC,				STR_NONE },				// tab 6
+	{ WWT_TAB,		1,	594,	684,	17,		50,		0x200015BC,				STR_NONE },				// tab 7
+	{ WWT_TAB,		1,	685,	775,	17,		50,		0x200015BC,				STR_NONE },				// tab 8
+	{ WWT_SCROLL,	1,	3,		555,	54,		329,	2,						STR_NONE },				// level list
 	{ WIDGETS_END },
 };
 
@@ -106,6 +112,7 @@ static rct_window_event_list window_scenarioselect_events = {
 void window_scenarioselect_open()
 {
 	rct_window* window;
+	int window_width;
 
 	if (window_bring_to_front_by_class(WC_SCENARIO_SELECT) != NULL)
 		return;
@@ -113,8 +120,22 @@ void window_scenarioselect_open()
 	// Load scenario list
 	scenario_load_list();
 
+	// Shrink the window if we're showing scenarios by difficulty level.
+	if (gConfigGeneral.scenario_select_mode == 2)
+	{
+		window_width = 610;
+		window_scenarioselect_widgets[WIDX_BACKGROUND].right = 609;
+		window_scenarioselect_widgets[WIDX_TITLEBAR].right = 608;
+		window_scenarioselect_widgets[WIDX_CLOSE].left  = 597;
+		window_scenarioselect_widgets[WIDX_CLOSE].right = 607;
+		window_scenarioselect_widgets[WIDX_TABCONTENT].right = 609;
+		window_scenarioselect_widgets[WIDX_SCENARIOLIST].right = 433;
+	}
+	else
+		window_width = 733;
+
 	window = window_create_centred(
-		610,
+		window_width,
 		334,
 		&window_scenarioselect_events,
 		WC_SCENARIO_SELECT,
@@ -123,7 +144,8 @@ void window_scenarioselect_open()
 	window->widgets = window_scenarioselect_widgets;
 
 	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2)
-							| (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_TAB5);
+							| (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_TAB5)
+							| (1 << WIDX_TAB6) | (1 << WIDX_TAB7) | (1 << WIDX_TAB8);
 
 	window_init_scroll_widgets(window);
 	window->viewport_focus_coordinates.var_480 = -1;
@@ -140,20 +162,21 @@ void window_scenarioselect_open()
  */
 static void window_scenarioselect_init_tabs()
 {
-	int i, x, show_pages;
-	rct_widget* widget;
-	rct_scenario_basic* scenario;
-
-	show_pages = 0;
-	for (i = 0; i < gScenarioListCount; i++) {
-		scenario = &gScenarioList[i];
+	int show_pages = 0;
+	for (int i = 0; i < gScenarioListCount; i++) {
+		rct_scenario_basic* scenario = &gScenarioList[i];
 		if (scenario->flags & SCENARIO_FLAGS_VISIBLE)
-			show_pages |= 1 << scenario->category;
+		{
+			if (gConfigGeneral.scenario_select_mode == 1)
+				show_pages |= 1 << scenario->source_game;
+			else
+				show_pages |= 1 << scenario->category;
+		}
 	}
 
-	x = 3;
-	for (i = 0; i < 5; i++) {
-		widget = &window_scenarioselect_widgets[i + 4];
+	int x = 3;
+	for (int i = 0; i < 8; i++) {
+		rct_widget* widget = &window_scenarioselect_widgets[i + 4];
 		if (!(show_pages & (1 << i))) {
 			widget->type = WWT_EMPTY;
 			continue;
@@ -174,7 +197,7 @@ static void window_scenarioselect_mouseup(rct_window *w, int widgetIndex)
 
 static void window_scenarioselect_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
-	if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB5) {
+	if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB8) {
 		w->selected_tab = widgetIndex - 4;
 		w->highlighted_item = 0;
 		window_invalidate(w);
@@ -187,14 +210,14 @@ static void window_scenarioselect_mousedown(int widgetIndex, rct_window*w, rct_w
 
 static void window_scenarioselect_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
-	int i;
-	rct_scenario_basic *scenario;
-
 	*height = 0;
-	for (i = 0; i < gScenarioListCount; i++) {
-		scenario = &gScenarioList[i];
-		if (scenario->category != w->selected_tab)
+	for (int i = 0; i < gScenarioListCount; i++) {
+		rct_scenario_basic *scenario = &gScenarioList[i];
+
+		if ((gConfigGeneral.scenario_select_mode == 1 && scenario->source_game != w->selected_tab) ||
+			(gConfigGeneral.scenario_select_mode == 2 && scenario->category != w->selected_tab))
 			continue;
+
 		if (scenario->flags & SCENARIO_FLAGS_VISIBLE)
 			*height += 24;
 	}
@@ -206,15 +229,28 @@ static void window_scenarioselect_scrollgetsize(rct_window *w, int scrollIndex, 
  */
 static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 {
-	int i;
-	rct_scenario_basic *scenario;
+	int num_unlocks = 5;
+	for (int i = 0; i < gScenarioListCount; i++) {
+		rct_scenario_basic *scenario = &gScenarioList[i];
 
-	for (i = 0; i < gScenarioListCount; i++) {
-		scenario = &gScenarioList[i];
-		if (scenario->category != w->selected_tab)
+		if ((gConfigGeneral.scenario_select_mode == 1 && scenario->source_game != w->selected_tab) ||
+			(gConfigGeneral.scenario_select_mode == 2 && scenario->category != w->selected_tab))
 			continue;
+
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;
+
+		if (gConfigGeneral.scenario_unlocking_enabled) {
+			if (num_unlocks <= 0)
+				break;
+
+			bool is_completed = scenario->flags & SCENARIO_FLAGS_COMPLETED;
+			if (is_completed) {
+				num_unlocks++;
+			} else {
+				num_unlocks--;
+			}
+		}
 
 		y -= 24;
 		if (y >= 0)
@@ -232,16 +268,24 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex
  */
 static void window_scenarioselect_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
 {
-	int i;
-	rct_scenario_basic *scenario, *selected;
-
-	selected = NULL;
-	for (i = 0; i < gScenarioListCount; i++) {
-		scenario = &gScenarioList[i];
-		if (scenario->category != w->selected_tab)
+	rct_scenario_basic *selected = NULL;
+	int num_unlocks = 5;
+	for (int i = 0; i < gScenarioListCount; i++) {
+		rct_scenario_basic *scenario = &gScenarioList[i];
+		if ((gConfigGeneral.scenario_select_mode == 1 && scenario->source_game != w->selected_tab) ||
+			(gConfigGeneral.scenario_select_mode == 2 && scenario->category != w->selected_tab))
 			continue;
+
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;
+
+		if (gConfigGeneral.scenario_unlocking_enabled) {
+			if (num_unlocks <= 0)
+				break;
+
+			bool is_completed = scenario->flags & SCENARIO_FLAGS_COMPLETED;
+			num_unlocks += is_completed ? 1 : -1;
+		}
 
 		y -= 24;
 		if (y >= 0)
@@ -261,7 +305,8 @@ static void window_scenarioselect_invalidate(rct_window *w)
 	colour_scheme_update(w);
 
 	w->pressed_widgets &= ~( (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2)
-						   | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_TAB5) );
+						   | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_TAB5)
+						   | (1 << WIDX_TAB6) | (1 << WIDX_TAB7) | (1 << WIDX_TAB8) );
 
 	w->pressed_widgets |= 1LL << (w->selected_tab + 4);
 }
@@ -277,15 +322,20 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	format = (theme_get_preset()->features.rct1_scenario_font) ? 5138 : 1193;
 
 	// Text for each tab
-	for (i = 0; i < 5; i++) {
+	for (i = 0; i < 8; i++) {
 		widget = &window_scenarioselect_widgets[WIDX_TAB1 + i];
 		if (widget->type == WWT_EMPTY)
 			continue;
 
 		x = (widget->left + widget->right) / 2 + w->x;
 		y = (widget->top + widget->bottom) / 2 + w->y - 3;
-		RCT2_GLOBAL(0x013CE952 + 0, short) = STR_BEGINNER_PARKS + i;
-		gfx_draw_string_centred_wrapped(dpi, (void*)0x013CE952, x, y, 87, format, 10);
+
+		if (gConfigGeneral.scenario_select_mode == 1) {
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = STR_SCENARIO_CATEGORY_RCT1 + i;
+		} else { // old-style
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = STR_BEGINNER_PARKS + i;
+		}
+		gfx_draw_string_centred_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 87, format, 10);
 	}
 
 	// Return if no scenario highlighted
@@ -297,75 +347,89 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
 	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
 	safe_strncpy((char*)0x009BC677, scenario->name, 64);
-	RCT2_GLOBAL(0x013CE952 + 0, short) = 3165;
-	gfx_draw_string_centred_clipped(dpi, 1193, (void*)0x013CE952, 0, x + 85, y, 170);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = 3165; // empty string
+	gfx_draw_string_centred_clipped(dpi, 1193, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x + 85, y, 170);
 	y += 15;
 
 	// Scenario details
 	safe_strncpy((char*)0x009BC677, scenario->details, 256);
-	RCT2_GLOBAL(0x013CE952 + 0, short) = 3165;
-	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, 1191, 0) + 5;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = 3165; // empty string
+	y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 170, 1191, 0) + 5;
 
 	// Scenario objective
-	RCT2_GLOBAL(0x013CE952 + 0, short) = scenario->objective_type + STR_OBJECTIVE_NONE;
-	RCT2_GLOBAL(0x013CE952 + 2, short) = scenario->objective_arg_3;
-	RCT2_GLOBAL(0x013CE952 + 4, short) = date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1);
-	RCT2_GLOBAL(0x013CE952 + 6, int) = scenario->objective_arg_2;
-	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, STR_OBJECTIVE, 0) + 5;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = scenario->objective_type + STR_OBJECTIVE_NONE;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, short) = scenario->objective_arg_3;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, short) = date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, int) = scenario->objective_arg_2;
+	y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 170, STR_OBJECTIVE, 0) + 5;
 
 	// Scenario score
 	if (scenario->flags & SCENARIO_FLAGS_COMPLETED) {
 		safe_strncpy((char*)0x009BC677, scenario->completed_by, 64);
-		RCT2_GLOBAL(0x013CE952 + 0, short) = 3165;
-		RCT2_GLOBAL(0x013CE952 + 2, int) = scenario->company_value;
-		y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = 3165; // empty string
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, int) = scenario->company_value;
+		y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);
 	}
 }
 
 static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	int i, y, colour, highlighted, highlighted_format, unhighlighted_format;
-	rct_scenario_basic *scenario;
-
-	colour = ColourMapA[w->colours[1]].mid_light;
+	int colour = ColourMapA[w->colours[1]].mid_light;
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
 	gfx_clear(dpi, colour);
 
-	highlighted_format = (theme_get_preset()->features.rct1_scenario_font) ? 5139 : 1193;
-	unhighlighted_format = (theme_get_preset()->features.rct1_scenario_font) ? 5139 : 1191;
+	int highlighted_format = (theme_get_preset()->features.rct1_scenario_font) ? 5139 : 1193;
+	int unhighlighted_format = (theme_get_preset()->features.rct1_scenario_font) ? 5139 : 1191;
+	int disabled_format = 5619;
 
-	y = 0;
-	for (i = 0; i < gScenarioListCount; i++) {
-		scenario = &gScenarioList[i];
-		if (scenario->category != w->selected_tab)
+	bool wide = gConfigGeneral.scenario_select_mode == 1;
+
+	int y = 0;
+	int num_unlocks = 5;
+	for (int i = 0; i < gScenarioListCount; i++) {
+		rct_scenario_basic *scenario = &gScenarioList[i];
+
+		if ((gConfigGeneral.scenario_select_mode == 1 && scenario->source_game != w->selected_tab) ||
+			(gConfigGeneral.scenario_select_mode == 2 && scenario->category != w->selected_tab))
 			continue;
+
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;
 
 		if (y > dpi->y + dpi->height)
 			continue;
 
-		highlighted = w->highlighted_item == (int)scenario;
-
 		// Draw hover highlight
-		if (highlighted)
+		bool is_highlighted = w->highlighted_item == (int)scenario;
+		if (is_highlighted)
 			gfx_fill_rect(dpi, 0, y, w->width, y + 23, 0x02000031);
+
+		bool is_completed = scenario->flags & SCENARIO_FLAGS_COMPLETED;
+		bool is_disabled = false;
+		if (gConfigGeneral.scenario_unlocking_enabled) {
+			if (num_unlocks <= 0)
+				is_disabled = true;
+
+			num_unlocks += is_completed ? 1 : -1;
+		}
+
+		int format = is_disabled ? 5619 : (is_highlighted ? highlighted_format : unhighlighted_format);
 
 		// Draw scenario name
 		safe_strncpy((char*)0x009BC677, scenario->name, 64);
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 3165;
-		gfx_draw_string_centred(dpi, highlighted ? highlighted_format : unhighlighted_format, 210, y + 1, 0, (void*)0x013CE952);
+		gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 1, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
 
 		// Check if scenario is completed
-		if (scenario->flags & SCENARIO_FLAGS_COMPLETED) {
+		if (is_completed) {
 			// Draw completion tick
-			gfx_draw_sprite(dpi, 0x5A9F, 395, y + 1, 0);
+			gfx_draw_sprite(dpi, 0x5A9F, wide ? 500 : 395, y + 1, 0);
 
 			// Draw completion score
 			safe_strncpy((char*)0x009BC677, scenario->completed_by, 64);
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 2793;
 			RCT2_GLOBAL(0x013CE954, short) = 3165;
-			gfx_draw_string_centred(dpi, highlighted ? 1193 : 1191, 210, y + 11, 0, (void*)0x013CE952);
+			gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 11, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
 		}
 
 		y += 24;
