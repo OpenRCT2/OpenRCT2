@@ -11,6 +11,8 @@
 		D41B73F11C21018C0080A7B9 /* libssl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73F01C21018C0080A7B9 /* libssl.tbd */; };
 		D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B741C1C210A7A0080A7B9 /* libiconv.tbd */; };
 		D41B74731C2125E50080A7B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D41B74721C2125E50080A7B9 /* Assets.xcassets */; };
+		D435325F1C3472E500BA219B /* libpng.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D435325E1C3472E500BA219B /* libpng.dylib */; };
+		D43532601C34730200BA219B /* libpng.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D435325E1C3472E500BA219B /* libpng.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D4ABAB061C2F812B0080CAD9 /* news_options.c in Sources */ = {isa = PBXBuildFile; fileRef = D4ABAB051C2F812B0080CAD9 /* news_options.c */; };
 		D4D4DF141C34697B0048BE43 /* image_io.c in Sources */ = {isa = PBXBuildFile; fileRef = D4D4DF121C34697B0048BE43 /* image_io.c */; };
 		D4EC47DF1C26342F0024B507 /* addresses.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC46D61C26342F0024B507 /* addresses.c */; };
@@ -198,6 +200,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				D43532601C34730200BA219B /* libpng.dylib in Embed Frameworks */,
 				D4EC48D01C2634C70024B507 /* libfreetype.dylib in Embed Frameworks */,
 				D4EC48D11C2634C70024B507 /* libjansson.dylib in Embed Frameworks */,
 				D4EC48D21C2634C70024B507 /* libSDL2.dylib in Embed Frameworks */,
@@ -215,6 +218,7 @@
 		D41B73F01C21018C0080A7B9 /* libssl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libssl.tbd; path = usr/lib/libssl.tbd; sourceTree = SDKROOT; };
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		D41B74721C2125E50080A7B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = distribution/osx/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		D435325E1C3472E500BA219B /* libpng.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpng.dylib; sourceTree = "<group>"; };
 		D4895D321C23EFDD000CD788 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = distribution/osx/Info.plist; sourceTree = SOURCE_ROOT; };
 		D497D0781C20FD52002BF46A /* OpenRCT2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenRCT2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4ABAB051C2F812B0080CAD9 /* news_options.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = news_options.c; sourceTree = "<group>"; };
@@ -558,6 +562,7 @@
 			files = (
 				D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */,
 				D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */,
+				D435325F1C3472E500BA219B /* libpng.dylib in Frameworks */,
 				D4EC48CA1C2634870024B507 /* libjansson.dylib in Frameworks */,
 				D4EC48CB1C2634870024B507 /* libSDL2.dylib in Frameworks */,
 				D4EC48CC1C2634870024B507 /* libSDL2_ttf.dylib in Frameworks */,
@@ -1100,6 +1105,7 @@
 			children = (
 				D4EC48C41C2634870024B507 /* libfreetype.dylib */,
 				D4EC48C51C2634870024B507 /* libjansson.dylib */,
+				D435325E1C3472E500BA219B /* libpng.dylib */,
 				D4EC48C61C2634870024B507 /* libSDL2.dylib */,
 				D4EC48C71C2634870024B507 /* libSDL2_ttf.dylib */,
 				D4EC48C81C2634870024B507 /* libspeexdsp.dylib */,
@@ -1513,7 +1519,10 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					USE_LIBPNG,
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
@@ -1555,7 +1564,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = SDL_INCLUDE_FRAMEWORK;
+				GCC_PREPROCESSOR_DEFINITIONS = USE_LIBPNG;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
@@ -1579,6 +1588,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/libxc/include",
 					"$(SRCROOT)/libxc/include/SDL2",
+					"$(SRCROOT)/libxc/include/libpng16",
 					"$(SRCROOT)/lib/",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/distribution/osx/Info.plist";
@@ -1624,6 +1634,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/libxc/include",
 					"$(SRCROOT)/libxc/include/SDL2",
+					"$(SRCROOT)/libxc/include/libpng16",
 					"$(SRCROOT)/lib/",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/distribution/osx/Info.plist";
