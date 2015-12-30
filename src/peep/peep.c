@@ -562,7 +562,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 						peep_head_for_nearest_ride_with_flags(peep, RIDE_TYPE_FLAG_SELLS_DRINKS);
 						break;
 					case PEEP_THOUGHT_TYPE_BATHROOM:
-						peep_head_for_nearest_ride_with_flags(peep, RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY);
+						peep_head_for_nearest_ride_with_flags(peep, RIDE_TYPE_FLAG_IS_BATHROOM);
 						break;
 					case PEEP_THOUGHT_RUNNING_OUT:
 						peep_head_for_nearest_ride_type(peep, RIDE_TYPE_CASH_MACHINE);
@@ -9053,7 +9053,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 	if (peep->x == (sint16)0x8000) return;
 	if (peep->guest_heading_to_ride_id != 255) {
 		ride = GET_RIDE(peep->guest_heading_to_ride_id);
-		if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & 0x03800000) {
+		if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & (RIDE_TYPE_FLAG_IS_BATHROOM | RIDE_TYPE_FLAG_SELLS_DRINKS | RIDE_TYPE_FLAG_SELLS_FOOD)) {
 			return;
 		}
 	}
