@@ -556,13 +556,13 @@ static void sub_68F41A(rct_peep *peep, int index)
 
 					switch (chosen_thought){
 					case PEEP_THOUGHT_TYPE_HUNGRY:
-						peep_head_for_nearest_ride_with_flags(peep, 0x00800000);
+						peep_head_for_nearest_ride_with_flags(peep, RIDE_TYPE_FLAG_SELLS_FOOD);
 						break;
 					case PEEP_THOUGHT_TYPE_THIRSTY:
-						peep_head_for_nearest_ride_with_flags(peep, 0x01000000);
+						peep_head_for_nearest_ride_with_flags(peep, RIDE_TYPE_FLAG_SELLS_DRINKS);
 						break;
 					case PEEP_THOUGHT_TYPE_BATHROOM:
-						peep_head_for_nearest_ride_with_flags(peep, 0x00200000);
+						peep_head_for_nearest_ride_with_flags(peep, RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY);
 						break;
 					case PEEP_THOUGHT_RUNNING_OUT:
 						peep_head_for_nearest_ride_type(peep, RIDE_TYPE_CASH_MACHINE);
@@ -9058,7 +9058,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 		}
 	}
 
-	if ((rideTypeFlags & 0x002000000) && peep_has_food(peep)) {
+	if ((rideTypeFlags & RIDE_TYPE_FLAG_IS_BATHROOM) && peep_has_food(peep)) {
 		return;
 	}
 
