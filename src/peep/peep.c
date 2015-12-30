@@ -556,13 +556,13 @@ static void sub_68F41A(rct_peep *peep, int index)
 
 					switch (chosen_thought){
 					case PEEP_THOUGHT_TYPE_HUNGRY:
-						peep_head_for_nearest_ride_with_flags(peep, 0x00800000);
+						peep_head_for_nearest_ride_with_flags(peep, RIDE_TYPE_FLAG_SELLS_FOOD);
 						break;
 					case PEEP_THOUGHT_TYPE_THIRSTY:
-						peep_head_for_nearest_ride_with_flags(peep, 0x01000000);
+						peep_head_for_nearest_ride_with_flags(peep, RIDE_TYPE_FLAG_SELLS_DRINKS);
 						break;
 					case PEEP_THOUGHT_TYPE_BATHROOM:
-						peep_head_for_nearest_ride_with_flags(peep, 0x00200000);
+						peep_head_for_nearest_ride_with_flags(peep, RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY);
 						break;
 					case PEEP_THOUGHT_RUNNING_OUT:
 						peep_head_for_nearest_ride_type(peep, RIDE_TYPE_CASH_MACHINE);
@@ -8960,12 +8960,12 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 	RCT2_GLOBAL(0x00F1ADB4, uint32) = 0;
 
 	// FIX Originally checked for a toy,.likely a mistake and should be a map
+	int rideIndex;
 	if ((peep->item_standard_flags & PEEP_ITEM_MAP) && rideType != RIDE_TYPE_FIRST_AID) {
 		// Consider all rides in the park
-		int i;
-		FOR_ALL_RIDES(i, ride) {
+		FOR_ALL_RIDES(rideIndex, ride) {
 			if (ride->type == rideType) {
-				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= (1u << (i & 0x1F));
+				RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
 			}
 		}
 	} else {
@@ -8979,7 +8979,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 					do {
 						if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
 
-						int rideIndex = mapElement->properties.track.ride_index;
+						rideIndex = mapElement->properties.track.ride_index;
 						ride = GET_RIDE(rideIndex);
 						if (ride->type == rideType) {
 							RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
@@ -9058,7 +9058,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 		}
 	}
 
-	if ((rideTypeFlags & 0x002000000) && peep_has_food(peep)) {
+	if ((rideTypeFlags & RIDE_TYPE_FLAG_IS_BATHROOM) && peep_has_food(peep)) {
 		return;
 	}
 
@@ -9072,12 +9072,12 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 	RCT2_GLOBAL(0x00F1ADB4, uint32) = 0;
 
 	// FIX Originally checked for a toy,.likely a mistake and should be a map
+	int rideIndex;
 	if (peep->item_standard_flags & PEEP_ITEM_MAP) {
 		// Consider all rides in the park
-		int i;
-		FOR_ALL_RIDES(i, ride) {
+		FOR_ALL_RIDES(rideIndex, ride) {
 			if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & rideTypeFlags) {
-				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= (1u << (i & 0x1F));
+				RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
 			}
 		}
 	} else {
@@ -9091,7 +9091,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 					do {
 						if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
 
-						int rideIndex = mapElement->properties.track.ride_index;
+						rideIndex = mapElement->properties.track.ride_index;
 						ride = GET_RIDE(rideIndex);
 						if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & rideTypeFlags) {
 							RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
