@@ -63,10 +63,8 @@ bool image_io_png_read(uint8 **pixels, uint32 *width, uint32 *height, const utf8
 	uint8 *dst = pngPixels;
 	if (color_type == PNG_COLOR_TYPE_RGB) {
 		// 24-bit PNG (no alpha)
-		const png_size_t expectedRowSize = pngWidth * 3;
+		assert(rowBytes == pngWidth * 3);
 		for (png_uint_32 i = 0; i < pngHeight; i++) {
-			assert(rowBytes == expectedRowSize);
-
 			uint8 *src = rowPointers[i];
 			for (png_uint_32 x = 0; x < pngWidth; x++) {
 				*dst++ = *src++;
@@ -77,10 +75,8 @@ bool image_io_png_read(uint8 **pixels, uint32 *width, uint32 *height, const utf8
 		}
 	} else {
 		// 32-bit PNG (with alpha)
-		const png_size_t expectedRowSize = pngWidth * 4;
+		assert(rowBytes == pngWidth * 4);
 		for (png_uint_32 i = 0; i < pngHeight; i++) {
-			assert(rowBytes == expectedRowSize);
-
 			memcpy(dst, rowPointers[i], rowBytes);
 			dst += rowBytes;
 		}
