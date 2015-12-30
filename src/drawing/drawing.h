@@ -69,6 +69,17 @@ typedef struct {
 	void *data;
 } rct_gx;
 
+typedef struct {
+	uint8 blue;
+	uint8 green;
+	uint8 red;
+	uint8 alpha;
+} rct_palette_entry;
+
+typedef struct {
+	rct_palette_entry entries[256];
+} rct_palette;
+
 #define SPRITE_ID_PALETTE_COLOUR_1(colourId) ((IMAGE_TYPE_USE_PALETTE << 28) | ((colourId) << 19))
 
 extern const uint16 palette_to_g1_offset[];

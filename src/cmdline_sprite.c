@@ -18,12 +18,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <lodepng/lodepng.h>
 #include "cmdline.h"
 #include "drawing/drawing.h"
+#include "image_io.h"
+#include "openrct2.h"
 #include "platform/platform.h"
 #include "util/util.h"
-#include "openrct2.h"
 
 #define MODE_DEFAULT 0
 #define MODE_CLOSEST 1
@@ -168,33 +168,11 @@ bool sprite_file_export(int spriteIndex, const char *outPath)
 	memcpy(spriteFilePalette, _standardPalette, 256 * 4);
 	gfx_rle_sprite_to_buffer(spriteHeader->offset, pixels, (uint8*)spriteFilePalette, &dpi, IMAGE_TYPE_NO_BACKGROUND, 0, spriteHeader->height, 0, spriteHeader->width);
 
-	LodePNGState pngState;
-	unsigned int pngError;
-	unsigned char* pngData;
-	size_t pngSize;
-
-	lodepng_state_init(&pngState);
-	pngState.info_raw.colortype = LCT_PALETTE;
-	lodepng_palette_add(&pngState.info_raw, 0, 0, 0, 0);
-	for (int i = 1; i < 256; i++) {
-		lodepng_palette_add(
-			&pngState.info_raw,
-			spriteFilePalette[i].r,
-			spriteFilePalette[i].g,
-			spriteFilePalette[i].b,
-			255
-		);
-	}
-
-	pngError = lodepng_encode(&pngData, &pngSize, pixels, spriteHeader->width, spriteHeader->height, &pngState);
-	if (pngError != 0) {
-		free(pngData);
-		fprintf(stderr, "Error creating PNG data, %u: %s", pngError, lodepng_error_text(pngError));
-		return false;
-	} else {
-		lodepng_save_file(pngData, pngSize, outPath);
-		free(pngData);
+	if (image_io_png_write(&dpi, (rct_palette*)spriteFilePalette, outPath)) {
 		return true;
+	} else {
+		fprintf(stderr, "Error writing PNG");
+		return false;
 	}
 }
 
@@ -261,16 +239,10 @@ typedef struct {
 
 bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **outBuffer, int *outBufferLength, int mode)
 {
-	unsigned char *pixels;
-	unsigned int width, height;
-	unsigned int pngError;
-
-	memcpy(spriteFilePalette, _standardPalette, 256 * 4);
-
-	pngError = lodepng_decode_file(&pixels, &width, &height, path, LCT_RGBA, 8);
-	if (pngError != 0) {
-		free(pixels);
-		fprintf(stderr, "Error creating PNG data, %u: %s", pngError, lodepng_error_text(pngError));
+	uint8 *pixels;
+	uint32 width, height;
+	if (!image_io_png_read(&pixels, &width, &height, path)) {
+		fprintf(stderr, "Error reading PNG");
 		return false;
 	}
 
@@ -279,6 +251,8 @@ bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **ou
 		free(pixels);
 		return false;
 	}
+
+	memcpy(spriteFilePalette, _standardPalette, 256 * 4);
 
 	uint8 *buffer = malloc((height * 2) + (width * height * 16));
 	memset(buffer, 0, (height * 2) + (width * height * 16));

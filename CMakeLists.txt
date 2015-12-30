@@ -45,6 +45,19 @@ endif (DISABLE_NETWORK)
 
 option(STATIC "Create a static build.")
 
+# Not required yet
+PKG_CHECK_MODULES(PNG libpng>=1.6)
+if (NOT PNG_FOUND)
+	PKG_CHECK_MODULES(PNG libpng16)
+endif (NOT PNG_FOUND)
+
+if (PNG_FOUND)
+	set (USE_LODEPNG FALSE)
+else (PNG_FOUND)
+	set (USE_LODEPNG TRUE)
+	message("Falling back to deprecated Lodepng for PNG support. Please upgrade your system to libpng 1.6")
+endif (PNG_FOUND)
+
 # Handle creating the rct2 text and data files on OS X and Linux
 # See details in src/openrct2.c:openrct2_setup_rct2_segment for how the values
 # were derived.
@@ -96,10 +109,16 @@ set(DEBUG_LEVEL 0 CACHE STRING "Select debug level for compilation. Use value in
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 
+if (USE_LODEPNG)
+	set (LODEPNG_SOURCES "lib/lodepng/*.c")
+else (USE_LODEPNG)
+	add_definitions(-DUSE_LIBPNG)
+endif (USE_LODEPNG)
+
 # include lib
 include_directories("lib/")
 # add source files
-file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp" "lib/argparse/*.c" "lib/cutest/*.c" "lib/lodepng/*.c")
+file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp" "lib/argparse/*.c" "lib/cutest/*.c" ${LODEPNG_SOURCES})
 if (APPLE)
 	file(GLOB_RECURSE ORCT2_MM_SOURCES "src/*.m")
 	set_source_files_properties(${ORCT2_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c -fmodules")
@@ -135,6 +154,12 @@ else (STATIC)
 	SET(SDL2LIBS ${SDL2_LIBRARIES})
 endif (STATIC)
 
+if (STATIC)
+	SET(PNGLIBS ${PNG_STATIC_LIBRARIES})
+else (STATIC)
+	SET(PNGLIBS ${PNG_LIBRARIES})
+endif (STATIC)
+
 if (NOT DISABLE_HTTP_TWITCH)
 	PKG_CHECK_MODULES(LIBCURL REQUIRED libcurl)
 	PKG_CHECK_MODULES(JANSSON REQUIRED jansson>=2.7)
@@ -165,9 +190,9 @@ if (UNIX)
 	set(DLLIB dl)
 endif (UNIX)
 
-INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLUDE_DIRS} ${SPEEX_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLUDE_DIRS} ${SPEEX_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS})
 
-LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${JANSSON_LIBRARY_DIRS} ${LIBCURL_LIBRARY_DIRS})
+LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${JANSSON_LIBRARY_DIRS} ${LIBCURL_LIBRARY_DIRS} ${PNG_LIBRARY_DIRS})
 
 if (WIN32)
 	# build as library for now, replace with add_executable
@@ -200,7 +225,7 @@ endif (UNIX AND NOT APPLE)
 # libopenrct2.dll -> openrct2.dll
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 
-TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2LIBS} ${ORCTLIBS_LIB} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB})
+TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2LIBS} ${ORCTLIBS_LIB} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB} ${PNGLIBS})
 
 if (APPLE OR STATIC)
 	FIND_LIBRARY(ICONV_LIBRARIES NAMES iconv libiconv libiconv-2 c)
