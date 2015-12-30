@@ -39,16 +39,16 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	WIDX_COLUMN_LAST = 13,
 };
 
-#define WW 500
-#define WH 400
+#define WW 450
+#define WH 200
 #define MIN_WW WW
 #define MAX_WW 1000
 #define MIN_WH 150
 #define MAX_WH 800
 
 #define BX 3 // Button's left side
-#define BW (BX + 148) // Button's right side
-#define BY 52 // Button's Top
+#define BW (BX + 138) // Button's right side
+#define BY 32 // Button's Top
 #define BH (BY + 11) // Button's Bottom
 #define BS 18
 
@@ -438,14 +438,13 @@ static void window_tile_inspector_invalidate(rct_window *w)
 
 static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	int x, y;
-	char buffer[256];
-
 	window_draw_widgets(w, dpi);
 
-	x = w->x + 20;
-	y = w->y + 15;
+	char buffer[256];
+	int x = w->x /*+ w->widgets[WIDX_LIST].left*/ + 3;
+	int y = w->y + w->height - 13;
 
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
 	if (window_tile_inspector_tile_x == -1) { // No tile selected
 		gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_CHOOSE_MSG, NULL, 12, x, y);
 	} else {
@@ -472,6 +471,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 
 	rct_map_element *element = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
 
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
 	do {
 		int type = map_element_get_type(element);
 		char *type_name;
