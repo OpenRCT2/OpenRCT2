@@ -552,8 +552,12 @@
     <ClCompile Include="src\addresses.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\drawing\supports.c" />
-    <ClCompile Include="src\windows\news_options.c" />
+    <ClCompile Include="src\drawing\supports.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\windows\news_options.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">
@@ -831,6 +835,9 @@
     </ClInclude>
     <ClInclude Include="src\version.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Util.hpp">
+      <Filter>Source\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
