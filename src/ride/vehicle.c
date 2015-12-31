@@ -3190,7 +3190,7 @@ static void loc_6DA9F9(rct_vehicle *vehicle, int x, int y, int bx, int dx)
 			(mapElement->properties.track.type << 2) |
 			(ride->boat_hire_return_direction & 3);
 
-		vehicle->var_34 = 0;
+		vehicle->track_progress = 0;
 		vehicle->status = VEHICLE_STATUS_TRAVELLING;
 		unk_F64E20->x = x;
 		unk_F64E20->y = y;
