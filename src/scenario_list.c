@@ -23,7 +23,6 @@
 #include "platform/platform.h"
 #include "util/util.h"
 #include "scenario.h"
-#include "scenario_sources.h"
 
 // Scenario list
 int gScenarioListCount = 0;
@@ -39,9 +38,6 @@ static void scenario_list_add(const char *path);
 static void scenario_list_sort();
 static int scenario_list_sort_by_name(const void *a, const void *b);
 static int scenario_list_sort_by_index(const void *a, const void *b);
-static sint32 get_scenario_index(utf8 *name);
-static void normalise_scenario_name(utf8 *name);
-static scenario_source source_by_index(sint32 index);
 
 static bool scenario_scores_load();
 static bool scenario_scores_legacy_load();
@@ -135,11 +131,14 @@ static void scenario_list_add(const utf8 *path)
 	safe_strncpy(newEntry->details, s6Info.details, sizeof(newEntry->details));
 
 	// Normalise the name to make the scenario as recognisable as possible.
-	normalise_scenario_name(newEntry->name);
+	scenario_normalise_name(newEntry->name);
 
 	// Look up and store information regarding the origins of this scenario.
-	newEntry->source_index = get_scenario_index(newEntry->name);
-	newEntry->source_game = source_by_index(newEntry->source_index);
+	scenario_source source;
+	sint32 index;
+	scenario_get_index_and_source(newEntry->name, &source, &index);
+	newEntry->source_index = index;
+	newEntry->source_game = source;
 }
 
 void scenario_list_dispose()
@@ -180,63 +179,6 @@ static int scenario_list_sort_by_index(const void *a, const void *b)
 		return scenario_list_sort_by_name(a, b);
 	}
 	return entryA->source_index - entryB->source_index;
-}
-
-static sint32 get_scenario_index(utf8 *name)
-{
-	for (sint32 i = 0; i < NUM_ORIGINAL_SCENARIOS; i++) {
-		if (_strcmpi(original_scenario_names[i], name) == 0) {
-			return i;
-		}
-	}
-	return -1;
-}
-
-static void normalise_scenario_name(utf8 *name)
-{
-	size_t nameLength = strlen(name);
-
-	// Strip "RCT(1|2)? *" prefix off scenario names.
-	if (nameLength >= 3 && (name[0] == 'R' && name[1] == 'C' && name[2] == 'T')) {
-		if (nameLength >= 4 && (name[3] == '1' || name[3] == '2')) {
-			log_verbose("Stripping RCT/1/2 from name: %s", name);
-			safe_strncpy(name, name + 4, 64);
-		} else {
-			safe_strncpy(name, name + 3, 64);
-		}
-
-		safe_strtrimleft(name, name, 64);
-	}
-
-	// American scenario titles should be converted to British name
-	// Don't worry, names will be translated using language packs later
-	for (int i = 0; i < NUM_ALIASES; i++) {
-		if (strcmp(scenario_aliases[(i * 2) + 1], name) == 0) {
-			log_verbose("Found alias: %s; will treat as: %s", name, scenario_aliases[i * 2]);
-			safe_strncpy(name, scenario_aliases[i * 2], 64);
-		}
-	}
-}
-
-static scenario_source source_by_index(sint32 index)
-{
-	if (index >= SCENARIO_SOURCE_RCT1_INDEX && index < SCENARIO_SOURCE_RCT1_AA_INDEX) {
-		return SCENARIO_SOURCE_RCT1;
-	} else if (index >= SCENARIO_SOURCE_RCT1_AA_INDEX && index < SCENARIO_SOURCE_RCT1_LL_INDEX) {
-		return SCENARIO_SOURCE_RCT1_AA;
-	} else if (index >= SCENARIO_SOURCE_RCT1_LL_INDEX && index < SCENARIO_SOURCE_RCT2_INDEX) {
-		return SCENARIO_SOURCE_RCT1_LL;
-	} else if (index >= SCENARIO_SOURCE_RCT2_INDEX && index < SCENARIO_SOURCE_RCT2_WW_INDEX) {
-		return SCENARIO_SOURCE_RCT2;
-	} else if (index >= SCENARIO_SOURCE_RCT2_WW_INDEX && index < SCENARIO_SOURCE_RCT2_TT_INDEX) {
-		return SCENARIO_SOURCE_RCT2_WW;
-	} else if (index >= SCENARIO_SOURCE_RCT2_TT_INDEX && index < SCENARIO_SOURCE_REAL_INDEX) {
-		return SCENARIO_SOURCE_RCT2_TT;
-	} else if (index >= SCENARIO_SOURCE_REAL_INDEX && index < NUM_ORIGINAL_SCENARIOS) {
-		return SCENARIO_SOURCE_REAL;
-	} else {
-		return SCENARIO_SOURCE_OTHER;
-	}
 }
 
 scenario_index_entry *scenario_list_find_by_path(const utf8 *path)

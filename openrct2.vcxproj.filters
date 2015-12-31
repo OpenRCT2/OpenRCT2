@@ -561,6 +561,9 @@
     <ClCompile Include="src\image_io.c">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="src\scenario_sources.c">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">
@@ -845,6 +848,5 @@
     <ClInclude Include="src\image_io.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="src\scenario_sources.h" />
   </ItemGroup>
 </Project>
