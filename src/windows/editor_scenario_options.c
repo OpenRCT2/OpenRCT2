@@ -543,15 +543,23 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		break;
 	case WIDX_INTEREST_RATE_INCREASE:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32) < 80) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32)++;
+			if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32) < 0) {
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32) = 0;
+			} else {
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32)++;
+			}
 		} else {
 			window_error_open(3254, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_INTEREST_RATE_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32) >= 0) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32)--;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32) > 0) {
+			if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32) > 80) {
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32) = 80;
+			} else {
+				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32)--;
+			}
 		} else {
 			window_error_open(3255, STR_NONE);
 		}
@@ -676,7 +684,9 @@ static void window_editor_scenario_options_financial_paint(rct_window *w, rct_dr
 
 		x = w->x + w->widgets[WIDX_INTEREST_RATE].left + 1;
 		y = w->y + w->widgets[WIDX_INTEREST_RATE].top;
-		gfx_draw_string_left(dpi, 3247, &RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32), 0, x, y);
+
+		money16 interestRate = (money16)clamp(INT16_MIN, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32), INT16_MAX);
+		gfx_draw_string_left(dpi, 3247, &interestRate, 0, x, y);
 	}
 }
 

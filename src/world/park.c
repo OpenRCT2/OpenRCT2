@@ -30,6 +30,7 @@
 #include "../management/research.h"
 #include "../peep/peep.h"
 #include "../ride/ride.h"
+#include "../ride/ride_data.h"
 #include "../scenario.h"
 #include "../world/map.h"
 #include "park.h"
@@ -285,12 +286,7 @@ money32 calculate_ride_value(rct_ride *ride)
 		return 0;
 
 	// Fair value * (...)
-	return (ride->value * 10) * (
-		ride->var_124 + ride->var_126 + ride->var_128 + ride->var_12A +
-		ride->var_12C + ride->var_12E + ride->age + ride->running_cost +
-		ride->var_134 + ride->var_136 +
-		*((uint8*)(0x0097D21E + (ride->type * 8))) * 4
-	);
+	return (ride->value * 10) * (ride_customers_in_last_5_minutes(ride) + rideBonusValue[ride->type] * 4);
 }
 
 /**
@@ -371,7 +367,7 @@ static int park_calculate_guest_generation_probability()
 			continue;
 
 		// Add guest score for ride type
-		suggestedMaxGuests += RCT2_GLOBAL(0x0097D21E + (ride->type * 8), uint8);
+		suggestedMaxGuests += rideBonusValue[ride->type];
 
 		// Add ride value
 		if (ride->value != RIDE_VALUE_UNDEFINED) {
@@ -402,7 +398,7 @@ static int park_calculate_guest_generation_probability()
 				continue;
 
 			// Bonus guests for good ride
-			suggestedMaxGuests += RCT2_GLOBAL(0x0097D21E + (ride->type * 8), uint8) * 2;
+			suggestedMaxGuests += rideBonusValue[ride->type] * 2;
 		}
 	}
 

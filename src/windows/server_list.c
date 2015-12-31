@@ -403,13 +403,11 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 		}
 
 		// Draw server information
-		if (highlighted) {
-			gfx_draw_string(dpi, serverDetails->address, colour, 3, y + 3);
+		if (highlighted && !str_is_null_or_empty(serverDetails->description)) {
+			gfx_draw_string(dpi, serverDetails->description, colour, 3, y + 3);
 		} else {
 			gfx_draw_string(dpi, serverDetails->name, colour, 3, y + 3);
 		}
-		//gfx_draw_string(dpi, serverDetails->description, w->colours[1], 3, y + 14);
-
 
 		int right = width - 3 - 14;
 

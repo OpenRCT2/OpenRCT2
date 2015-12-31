@@ -137,9 +137,7 @@ void window_install_track_open(const char* path)
 	strncpy(track_path, path, MAX_PATH);
 	track_path[MAX_PATH - 1] = '\0';
 
-	char* track_name_pointer = track_path;
-	while (*track_name_pointer++ != '\0');
-	while (*--track_name_pointer != '\\');
+	char* track_name_pointer = strrchr(track_path, platform_get_path_separator());
 	track_name_pointer++;
 
 	strncpy(track_dest_name, track_name_pointer, MAX_PATH);

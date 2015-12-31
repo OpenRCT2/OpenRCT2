@@ -3076,8 +3076,6 @@ int save_track_design(uint8 rideIndex){
 	char path[MAX_PATH];
 	substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), track_name);
 
-	strcat(path, ".TD6");
-
 	// Save track design
 	format_string(RCT2_ADDRESS(0x141ED68, char), 2306, NULL);
 
@@ -3184,6 +3182,7 @@ void window_track_list_format_name(utf8 *dst, const utf8 *src, int colour, bool 
 {
 	const utf8 *ch;
 	int codepoint;
+	char *lastDot = strrchr(src, '.');
 
 	if (colour != 0) {
 		dst = utf8_write_codepoint(dst, colour);
@@ -3192,8 +3191,8 @@ void window_track_list_format_name(utf8 *dst, const utf8 *src, int colour, bool 
 	if (quotes) dst = utf8_write_codepoint(dst, FORMAT_OPENQUOTES);
 
 	ch = src;
-	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
-		if (codepoint == '.') break;
+	while (lastDot > ch) {
+		codepoint = utf8_get_next(ch, &ch);
 		dst = utf8_write_codepoint(dst, codepoint);
 	}
 

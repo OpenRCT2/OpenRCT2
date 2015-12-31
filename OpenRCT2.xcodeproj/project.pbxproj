@@ -11,7 +11,10 @@
 		D41B73F11C21018C0080A7B9 /* libssl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73F01C21018C0080A7B9 /* libssl.tbd */; };
 		D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B741C1C210A7A0080A7B9 /* libiconv.tbd */; };
 		D41B74731C2125E50080A7B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D41B74721C2125E50080A7B9 /* Assets.xcassets */; };
+		D435325F1C3472E500BA219B /* libpng.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D435325E1C3472E500BA219B /* libpng.dylib */; };
+		D43532601C34730200BA219B /* libpng.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D435325E1C3472E500BA219B /* libpng.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D4ABAB061C2F812B0080CAD9 /* news_options.c in Sources */ = {isa = PBXBuildFile; fileRef = D4ABAB051C2F812B0080CAD9 /* news_options.c */; };
+		D4D4DF141C34697B0048BE43 /* image_io.c in Sources */ = {isa = PBXBuildFile; fileRef = D4D4DF121C34697B0048BE43 /* image_io.c */; };
 		D4EC47DF1C26342F0024B507 /* addresses.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC46D61C26342F0024B507 /* addresses.c */; };
 		D4EC47E01C26342F0024B507 /* audio.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC46D91C26342F0024B507 /* audio.c */; };
 		D4EC47E11C26342F0024B507 /* mixer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4EC46DB1C26342F0024B507 /* mixer.cpp */; };
@@ -197,6 +200,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				D43532601C34730200BA219B /* libpng.dylib in Embed Frameworks */,
 				D4EC48D01C2634C70024B507 /* libfreetype.dylib in Embed Frameworks */,
 				D4EC48D11C2634C70024B507 /* libjansson.dylib in Embed Frameworks */,
 				D4EC48D21C2634C70024B507 /* libSDL2.dylib in Embed Frameworks */,
@@ -214,9 +218,12 @@
 		D41B73F01C21018C0080A7B9 /* libssl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libssl.tbd; path = usr/lib/libssl.tbd; sourceTree = SDKROOT; };
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		D41B74721C2125E50080A7B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = distribution/osx/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		D435325E1C3472E500BA219B /* libpng.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpng.dylib; sourceTree = "<group>"; };
 		D4895D321C23EFDD000CD788 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = distribution/osx/Info.plist; sourceTree = SOURCE_ROOT; };
 		D497D0781C20FD52002BF46A /* OpenRCT2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenRCT2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4ABAB051C2F812B0080CAD9 /* news_options.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = news_options.c; sourceTree = "<group>"; };
+		D4D4DF121C34697B0048BE43 /* image_io.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = image_io.c; path = src/image_io.c; sourceTree = "<group>"; };
+		D4D4DF131C34697B0048BE43 /* image_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = image_io.h; path = src/image_io.h; sourceTree = "<group>"; };
 		D4EC46D61C26342F0024B507 /* addresses.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = addresses.c; path = src/addresses.c; sourceTree = "<group>"; };
 		D4EC46D71C26342F0024B507 /* addresses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = addresses.h; path = src/addresses.h; sourceTree = "<group>"; };
 		D4EC46D91C26342F0024B507 /* audio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = audio.c; sourceTree = "<group>"; };
@@ -555,6 +562,7 @@
 			files = (
 				D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */,
 				D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */,
+				D435325F1C3472E500BA219B /* libpng.dylib in Frameworks */,
 				D4EC48CA1C2634870024B507 /* libjansson.dylib in Frameworks */,
 				D4EC48CB1C2634870024B507 /* libSDL2.dylib in Frameworks */,
 				D4EC48CC1C2634870024B507 /* libSDL2_ttf.dylib in Frameworks */,
@@ -602,6 +610,8 @@
 				D4EC47031C26342F0024B507 /* game.h */,
 				D4EC47041C26342F0024B507 /* hook.c */,
 				D4EC47051C26342F0024B507 /* hook.h */,
+				D4D4DF121C34697B0048BE43 /* image_io.c */,
+				D4D4DF131C34697B0048BE43 /* image_io.h */,
 				D4EC47061C26342F0024B507 /* input.c */,
 				D4EC47071C26342F0024B507 /* input.h */,
 				D4EC47201C26342F0024B507 /* intro.c */,
@@ -1095,6 +1105,7 @@
 			children = (
 				D4EC48C41C2634870024B507 /* libfreetype.dylib */,
 				D4EC48C51C2634870024B507 /* libjansson.dylib */,
+				D435325E1C3472E500BA219B /* libpng.dylib */,
 				D4EC48C61C2634870024B507 /* libSDL2.dylib */,
 				D4EC48C71C2634870024B507 /* libSDL2_ttf.dylib */,
 				D4EC48C81C2634870024B507 /* libspeexdsp.dylib */,
@@ -1165,9 +1176,9 @@
 				D40F4E1D1C2528D5009582C9 /* Create Segment Files */,
 				D497D0741C20FD52002BF46A /* Sources */,
 				D497D0751C20FD52002BF46A /* Frameworks */,
+				D41B74201C210B190080A7B9 /* Embed Frameworks */,
 				D42C09D21C254F4E00309751 /* Build g2.dat */,
 				D497D0761C20FD52002BF46A /* Resources */,
-				D41B74201C210B190080A7B9 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1301,7 +1312,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cachedir=\".cache\"\nliburl=\"https://openrct2.website/files/orctlibs-osx.zip\"\n# keep in sync with version in build.sh\nsha256sum=\"2cec3958352477fbb876a5b6398722077084b5ff7e95a7d3cd67492abf5012fc\"\n\n[[ ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $sha256sum ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]] || [[ ! -f \"${SRCROOT}/$cachedir/orctlibs.zip\" ]]; then\n    if [[ ! -d \"${SRCROOT}/$cachedir\" ]]; then mkdir \"${SRCROOT}/$cachedir\"; fi\n    if [[ -f \"${SRCROOT}/$cachedir/orctlibs.zip\" ]]; then rm \"${SRCROOT}/$cachedir/orctlibs.zip\"; fi\n    curl -L -o \"${SRCROOT}/$cachedir/orctlibs.zip\" \"$liburl\"\n    if [[ -d \"${SRCROOT}/$cachedir/orctlibs\" ]]; then rm -rf \"${SRCROOT}/$cachedir/orctlibs\"; fi\n    mkdir \"${SRCROOT}/$cachedir/orctlibs\"\n    unzip -uaq -d \"${SRCROOT}/$cachedir/orctlibs\" \"${SRCROOT}/$cachedir/orctlibs.zip\"\nfi\n\nif [[ $outdated -eq 0 ]] || [[ ! -d \"${SRCROOT}/lib\" ]]; then\n    if [[ -d \"${SRCROOT}/lib\" ]]; then rm -r \"${SRCROOT}/lib\"; fi\n    cp -Rf \"${SRCROOT}/$cachedir/orctlibs/local\" \"${SRCROOT}/lib\"\nfi\nif [[ $outdated -eq 0 ]] || [[ ! -d \"${SRCROOT}/libxc\" ]]; then\n    if [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/libxc\"; fi\n    cp -Rf \"${SRCROOT}/$cachedir/orctlibs/glob\" \"${SRCROOT}/libxc\"\nfi\n\nif [[ $outdated -eq 0 ]]; then\n    newsha=$(shasum -a 256 \"${SRCROOT}/$cachedir/orctlibs.zip\" | cut -f1 -d\" \")\n    [[ \"$newsha\" == \"$sha256sum\" ]]\nfi";
+			shellScript = "cachedir=\".cache\"\nliburl=\"https://openrct2.website/files/orctlibs-osx.zip\"\n# keep in sync with version in build.sh\nsha256sum=\"02ebc8e7fd8b9b02b7144721784c5d96202a17398bc8652da163c8c85b66a7db\"\n\n[[ ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $sha256sum ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]] || [[ ! -f \"${SRCROOT}/$cachedir/orctlibs.zip\" ]]; then\n    if [[ ! -d \"${SRCROOT}/$cachedir\" ]]; then mkdir \"${SRCROOT}/$cachedir\"; fi\n    if [[ -f \"${SRCROOT}/$cachedir/orctlibs.zip\" ]]; then rm \"${SRCROOT}/$cachedir/orctlibs.zip\"; fi\n    curl -L -o \"${SRCROOT}/$cachedir/orctlibs.zip\" \"$liburl\"\n    if [[ -d \"${SRCROOT}/$cachedir/orctlibs\" ]]; then rm -rf \"${SRCROOT}/$cachedir/orctlibs\"; fi\n    mkdir \"${SRCROOT}/$cachedir/orctlibs\"\n    unzip -uaq -d \"${SRCROOT}/$cachedir/orctlibs\" \"${SRCROOT}/$cachedir/orctlibs.zip\"\nfi\n\nif [[ $outdated -eq 0 ]] || [[ ! -d \"${SRCROOT}/lib\" ]]; then\n    if [[ -d \"${SRCROOT}/lib\" ]]; then rm -r \"${SRCROOT}/lib\"; fi\n    cp -Rf \"${SRCROOT}/$cachedir/orctlibs/local\" \"${SRCROOT}/lib\"\nfi\nif [[ $outdated -eq 0 ]] || [[ ! -d \"${SRCROOT}/libxc\" ]]; then\n    if [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/libxc\"; fi\n    cp -Rf \"${SRCROOT}/$cachedir/orctlibs/glob\" \"${SRCROOT}/libxc\"\nfi\n\nif [[ $outdated -eq 0 ]]; then\n    newsha=$(shasum -a 256 \"${SRCROOT}/$cachedir/orctlibs.zip\" | cut -f1 -d\" \")\n    echo $newsha > \"${SRCROOT}/libversion\"\n    [[ \"$newsha\" == \"$sha256sum\" ]]\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1383,6 +1394,7 @@
 				D4EC48001C26342F0024B507 /* window.c in Sources */,
 				D4EC47F61C26342F0024B507 /* colour.c in Sources */,
 				D4EC486E1C26342F0024B507 /* track_manage.c in Sources */,
+				D4D4DF141C34697B0048BE43 /* image_io.c in Sources */,
 				D4EC48331C26342F0024B507 /* demolish_ride_prompt.c in Sources */,
 				D4EC48131C26342F0024B507 /* object_list.c in Sources */,
 				D4EC47ED1C26342F0024B507 /* scrolling_text.c in Sources */,
@@ -1507,7 +1519,10 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					USE_LIBPNG,
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
@@ -1549,7 +1564,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = SDL_INCLUDE_FRAMEWORK;
+				GCC_PREPROCESSOR_DEFINITIONS = USE_LIBPNG;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
@@ -1573,6 +1588,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/libxc/include",
 					"$(SRCROOT)/libxc/include/SDL2",
+					"$(SRCROOT)/libxc/include/libpng16",
 					"$(SRCROOT)/lib/",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/distribution/osx/Info.plist";
@@ -1618,6 +1634,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/libxc/include",
 					"$(SRCROOT)/libxc/include/SDL2",
+					"$(SRCROOT)/libxc/include/libpng16",
 					"$(SRCROOT)/lib/",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/distribution/osx/Info.plist";
