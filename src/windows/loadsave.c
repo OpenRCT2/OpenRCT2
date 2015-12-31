@@ -159,7 +159,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	_defaultName[0] = 0;
 
 	if (!str_is_null_or_empty(defaultName)) {
-		safe_strncpy(_defaultName, path_get_filename(defaultName), sizeof(_defaultName));
+		safe_strncpy(_defaultName, defaultName, sizeof(_defaultName));
 		path_remove_extension(_defaultName);
 	}
 
@@ -277,7 +277,7 @@ static void window_loadsave_close(rct_window *w)
 static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 {
 	int result;
-	char filename[MAX_PATH], filter[MAX_PATH];
+	char path[MAX_PATH], filter[MAX_PATH];
 
 	switch (widgetIndex){
 	case WIDX_CLOSE:
@@ -305,9 +305,9 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 		break;
 	}
 	case WIDX_BROWSE:
-		safe_strncpy(filename, _directory, MAX_PATH);
+		safe_strncpy(path, _directory, MAX_PATH);
 		if (_type & LOADSAVETYPE_SAVE)
-			strcat(filename, (char*)RCT2_ADDRESS_SCENARIO_NAME);
+			strcat(path, (char*)RCT2_ADDRESS_SCENARIO_NAME);
 
 		memset(filter, '\0', MAX_PATH);
 		safe_strncpy(filter, "*", MAX_PATH);
@@ -315,30 +315,30 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 
 		switch (_type) {
 		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
-			result = platform_open_common_file_dialog(1, (char*)language_get_string(STR_LOAD_GAME), filename, filter, _extension);
+			result = platform_open_common_file_dialog(1, (char*)language_get_string(STR_LOAD_GAME), path, filter, _extension);
 			break;
 		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
-			result = platform_open_common_file_dialog(0, (char*)language_get_string(STR_SAVE_GAME), filename, filter, _extension);
+			result = platform_open_common_file_dialog(0, (char*)language_get_string(STR_SAVE_GAME), path, filter, _extension);
 			break;
 		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
-			result = platform_open_common_file_dialog(1, (char*)language_get_string(STR_LOAD_LANDSCAPE), filename, filter, _extension);
+			result = platform_open_common_file_dialog(1, (char*)language_get_string(STR_LOAD_LANDSCAPE), path, filter, _extension);
 			break;
 		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
-			result = platform_open_common_file_dialog(0, (char*)language_get_string(STR_SAVE_LANDSCAPE), filename, filter, _extension);
+			result = platform_open_common_file_dialog(0, (char*)language_get_string(STR_SAVE_LANDSCAPE), path, filter, _extension);
 			break;
 		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
-			result = platform_open_common_file_dialog(0, (char*)language_get_string(STR_SAVE_SCENARIO), filename, filter, _extension);
+			result = platform_open_common_file_dialog(0, (char*)language_get_string(STR_SAVE_SCENARIO), path, filter, _extension);
 			break;
 		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
-			result = platform_open_common_file_dialog(1, (char*)language_get_string(1039), filename, filter, _extension);
+			result = platform_open_common_file_dialog(1, (char*)language_get_string(1039), path, filter, _extension);
 			break;
 		}
 
 		if (result) {
-			if (!has_extension(filename, _extension)) {
-				strncat(filename, _extension, MAX_PATH);
+			if (!has_extension(path, _extension)) {
+				strncat(path, _extension, MAX_PATH);
 			}
-			window_loadsave_select(w, filename);
+			window_loadsave_select(w, path);
 		}
 		break;
 	case WIDX_SORT_NAME:
@@ -573,15 +573,6 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 	}
 }
 
-static int compare_string_case_insensitive(char const *a, char const *b)
-{
-	for (;; a++, b++) {
-		int d = tolower(*a) - tolower(*b);
-		if (d != 0 || !*a)
-			return d;
-	}
-}
-
 static int list_item_sort(const void *a, const void *b)
 {
 	const loadsave_list_item *itemA = (loadsave_list_item*)a;
@@ -592,15 +583,15 @@ static int list_item_sort(const void *a, const void *b)
 
 	switch (gConfigGeneral.load_save_sort){
 	case SORT_NAME_ASCENDING:
-		return compare_string_case_insensitive(itemA->name, itemB->name);
+		return strcicmp(itemA->name, itemB->name);
 	case SORT_NAME_DESCENDING:
-		return -compare_string_case_insensitive(itemA->name, itemB->name);
+		return -strcicmp(itemA->name, itemB->name);
 	case SORT_DATE_DESCENDING:
 		return (int) -difftime(itemA->date_modified, itemB->date_modified);
 	case SORT_DATE_ASCENDING:
 		return (int) difftime(itemA->date_modified, itemB->date_modified);
 	default:
-		return compare_string_case_insensitive(itemA->name, itemB->name);
+		return strcicmp(itemA->name, itemB->name);
 	}
 }
 
@@ -745,7 +736,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
 		if (gLoadSaveTitleSequenceSave) {
 			utf8 newName[MAX_PATH];
-			char *extension = (char*)path_get_extension(path_get_filename(path));
+			char *extension = (char*)path_get_extension(path);
 			safe_strncpy(newName, path_get_filename(path), MAX_PATH);
 			if (_stricmp(extension, ".sv6") != 0 && _stricmp(extension, ".sc6") != 0)
 				strcat(newName, ".sv6");

@@ -15,9 +15,9 @@ fi
 # keep in sync with version in install.sh
 if [[ $(uname -s) == "Darwin" ]]; then
 	# keep in sync with version in Xcode project
-	sha256sum=2cec3958352477fbb876a5b6398722077084b5ff7e95a7d3cd67492abf5012fc
+	sha256sum=02ebc8e7fd8b9b02b7144721784c5d96202a17398bc8652da163c8c85b66a7db
 else
-	sha256sum=69ff98c9544838fb16384bc78af9dc1c452b9d01d919e43f5fec686d02c9bdd8
+	sha256sum=31c5e19d9f794bd5f0e75f20c2b4c3c4664d736b0a4d50c8cde14a9a9007b62d
 fi
 libVFile="./libversion"
 libdir="./lib"
@@ -62,10 +62,12 @@ pushd build
 		PARENT=$(readlink -f ../)
 		chmod a+rwx $(pwd)
 		chmod g+s $(pwd)
-		docker run -u travis -v $PARENT:/work/openrct2 -w /work/openrct2/build -i -t openrct2/openrct2:32bit-only bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && make"
+		# CMAKE and MAKE opts from environment
+		docker run -u travis -v $PARENT:/work/openrct2 -w /work/openrct2/build -i -t openrct2/openrct2:32bit-only bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && make $OPENRCT_MAKE_OPTS"
 	else
 		cmake -DCMAKE_BUILD_TYPE=Debug $OPENRCT2_CMAKE_OPTS ..
-		make
+		# NOT the same variable as above
+		make $OPENRCT2_MAKE_OPTS
 	fi
 popd
 

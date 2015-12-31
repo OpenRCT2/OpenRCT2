@@ -2,6 +2,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../sprites.h"
 
 enum {
 	NOTIFICATION_CATEGORY_PARK,
@@ -105,6 +106,7 @@ static rct_window_event_list window_news_options_events = {
 	NULL
 };
 
+static void window_news_options_set_page(rct_window *w, int page);
 static void window_news_options_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi);
 static bool *get_notification_value_ptr(const notification_def *ndef);
 
@@ -144,9 +146,7 @@ static void window_news_options_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_TAB_PARK:
 	case WIDX_TAB_RIDE:
 	case WIDX_TAB_GUEST:
-		w->page = widgetIndex - WIDX_TAB_PARK;
-		w->frame_no = 0;
-		window_invalidate(w);
+		window_news_options_set_page(w, widgetIndex - WIDX_TAB_PARK);
 		break;
 	default:
 	{
@@ -245,6 +245,15 @@ static void window_news_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_news_options_draw_tab_images(w, dpi);
 }
 
+static void window_news_options_set_page(rct_window *w, int page)
+{
+	if (w->page != page) {
+		w->page = page;
+		w->frame_no = 0;
+		window_invalidate(w);
+	}
+}
+
 const int window_news_option_tab_animation_divisor[] = { 1, 4, 4 };
 const int window_news_option_tab_animation_frames[] = { 1, 16, 8 };
 
@@ -267,9 +276,9 @@ static void window_news_options_draw_tab_image(rct_window *w, rct_drawpixelinfo 
 
 static void window_news_options_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	window_news_options_draw_tab_image(w, dpi, NOTIFICATION_CATEGORY_PARK, 5466);
-	window_news_options_draw_tab_image(w, dpi, NOTIFICATION_CATEGORY_RIDE, 5442);
-	window_news_options_draw_tab_image(w, dpi, NOTIFICATION_CATEGORY_GUEST, 5568);
+	window_news_options_draw_tab_image(w, dpi, NOTIFICATION_CATEGORY_PARK, SPR_TAB_PARK);
+	window_news_options_draw_tab_image(w, dpi, NOTIFICATION_CATEGORY_RIDE, SPR_TAB_RIDE_0);
+	window_news_options_draw_tab_image(w, dpi, NOTIFICATION_CATEGORY_GUEST, SPR_TAB_GUESTS_0);
 }
 
 static bool *get_notification_value_ptr(const notification_def *ndef)

@@ -93,7 +93,6 @@ static void input_scroll_part_update_vtop(rct_window *w, int widgetIndex, int sc
 static void input_scroll_part_update_vbottom(rct_window *w, int widgetIndex, int scroll_id);
 static void input_update_tooltip(rct_window *w, int widgetIndex, int x, int y);
 static void update_cursor_position();
-static void sub_6EA2AA(rct_window *w, int widgetIndex, int x, int y, int edi);
 
 #pragma region Mouse input
 
@@ -1479,11 +1478,9 @@ void game_handle_keyboard_input()
 		w = window_find_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
 		if (w != NULL) {
 			keyboard_shortcut_set(key);
-		}
-		else if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 1) {
+		} else if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 1) {
 			tutorial_stop();
-		}
-		else {
+		} else {
 			w = window_find_by_class(WC_TEXTINPUT);
 			if (w != NULL) {
 				window_text_input_key(w, key);
@@ -1493,77 +1490,9 @@ void game_handle_keyboard_input()
 		}
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 0)
-		return;
-
-	// Tutorial and the modifier key
-	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 1) {
-		int eax, ebx, ecx, edx, esi, edi, ebp;
-		RCT2_CALLFUNC_X(0x0066EEB4, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-		eax &= 0xFF;
-		RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = eax;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 4) {
-			window_tooltip_close();
-			if ((w = window_get_main()) != NULL) {
-				RCT2_CALLPROC_X(0x006EA2AA, 0, 0, 0, 0, (int)w, RCT2_GLOBAL(0x009DEA72, uint16), 0);
-				RCT2_GLOBAL(0x009DEA72, uint16)++;
-			}
-		}
+	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 0) {
+		game_handle_keyboard_input_for_tutorial();
 	}
-	else {
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 4)) {
-			window_tooltip_close();
-			if ((w = window_get_main()) != NULL) {
-				sub_6EA2AA(w, 0, 0, 0, RCT2_GLOBAL(0x009DEA72, uint16));
-				RCT2_GLOBAL(0x009DEA72, uint16)++;
-			}
-		}
-
-		// Write tutorial input
-		RCT2_CALLPROC_X(0x0066EEE1, RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8), 0, 0, 0, 0, 0, 0);
-	}
-}
-
-static void sub_6EA2AA(rct_window *w, int widgetIndex, int x, int y, int edi)
-{
-	RCT2_CALLPROC_X(0x006EA2AA, 0, 0, 0, 0, (int)w, RCT2_GLOBAL(0x009DEA72, uint16), 0);
-	return;
-
-	rct_window *tooltipWindow;
-
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = w->classification;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = w->number;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = widgetIndex;
-
-	rct_string_id stringId = window_event_tooltip_call(w, widgetIndex);
-	if (stringId == (rct_string_id)STR_NONE)
-		return;
-
-	tooltipWindow = window_find_by_class(WC_TOOLTIP);
-	if (tooltipWindow == NULL)
-		return;
-
-	char *buffer = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
-
-	RCT2_GLOBAL(0x0142006C, uint32) = edi;
-	format_string(buffer, edi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
-	int width = gfx_get_string_width_new_lined(buffer);
-	width = min(width, 196);
-
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
-
-	int numLines, fontHeight;
-	gfx_wrap_string(buffer, width + 1, &numLines, &fontHeight);
-
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TEXT_HEIGHT, uint16) = numLines;
-	tooltipWindow->widgets[0].right = width + 3;
-	tooltipWindow->widgets[0].bottom = ((numLines + 1) * 10) + 4;
-
-	char *tooltipBuffer = (char*)RCT2_ADDRESS_TOOLTIP_TEXT_BUFFER;
-	memcpy(tooltipBuffer, buffer, 512);
-
-	window_tooltip_open(w, widgetIndex, x, y);
 }
 
 /**

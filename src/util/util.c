@@ -61,62 +61,55 @@ bool filename_valid_characters(const utf8 *filename)
 
 const char *path_get_filename(const utf8 *path)
 {
-	const char *result, *ch;
+	// Find last slash or backslash in the path
+	char *filename = strrchr(path, platform_get_path_separator());
 
-	result = path;
-	for (ch = path; *ch != 0; ch++) {
-		if (*ch == '/' || *ch == '\\') {
-			if (*(ch + 1) != 0)
-				result = ch + 1;
-		}
+	// Checks if the path is valid (e.g. not just a file name)
+	if (filename == NULL)
+	{
+		log_warning("Invalid path given: %s", path);
+		// Return the input string to keep things working
+		return path;
 	}
 
-	return result;
+	// Increase pointer by one, to get rid of the slashes
+	filename++;
+
+	return filename;
 }
 
 const char *path_get_extension(const utf8 *path)
 {
-	const char *extension = NULL;
-	const char *ch = path;
-	while (*ch != 0) {
-		if (*ch == '.')
-			extension = ch;
+	// Get the filename from the path
+	const char *filename = path_get_filename(path);
 
-		ch++;
-	}
+	// Try to find the most-right dot in the filename
+	char *extension = strrchr(filename, '.');
+
+	// When no dot was found, return a pointer to the null-terminator
 	if (extension == NULL)
-		extension = ch;
+		extension = strrchr(filename, '\0');
+
 	return extension;
 }
 
 void path_set_extension(utf8 *path, const utf8 *newExtension)
 {
-	char *extension = NULL;
-	char *ch = path;
-	while (*ch != 0) {
-		if (*ch == '.')
-			extension = ch;
-
-		ch++;
-	}
-	if (extension == NULL)
-		extension = ch;
-
+	// Append a dot to the filename if the new extension doesn't start with it
+	char *endOfString = strrchr(path, '\0');
 	if (newExtension[0] != '.')
-		*extension++ = '.';
+		*endOfString++ = '.';
 
-	strcpy(extension, newExtension);
+	// Append the extension to the path
+	// No existing extensions should be removed ("ride.TD6" -> "ride.TD6.TD6")
+	safe_strncpy(endOfString, newExtension, MAX_PATH - (endOfString - path) - 1);
 }
 
 void path_remove_extension(utf8 *path)
 {
-	char *ch = path + strlen(path);
-	for (--ch; ch >= path; --ch) {
-		if (*ch == '.') {
-			*ch = '\0';
-			break;
-		}
-	}
+	// Find last dot in filename, and replace it with a null-terminator
+	char *lastDot = strrchr(path, '.');
+	if (*lastDot) *lastDot = '\0';
 }
 
 bool readentirefile(const utf8 *path, void **outBuffer, int *outLength)
@@ -212,7 +205,7 @@ char *safe_strncpy(char * destination, const char * source, size_t size)
 	if (!terminated)
 	{
 		result[size - 1] = '\0';
-		log_warning("Truncating string %s to %d bytes.", destination, size);
+		log_warning("Truncating string \"%s\" to %d bytes.", result, size);
 	}
 	return result;
 }

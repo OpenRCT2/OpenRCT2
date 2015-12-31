@@ -57,8 +57,8 @@ void platform_get_exe_path(utf8 *outPath)
 	}
 	int exeDelimiterIndex = (int)(exeDelimiter - exePath);
 
+	exePath[exeDelimiterIndex] = '\0';
 	safe_strncpy(outPath, exePath, exeDelimiterIndex + 1);
-	outPath[exeDelimiterIndex] = '\0';
 }
 
 bool platform_check_steam_overlay_attached() {
