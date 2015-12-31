@@ -488,19 +488,19 @@ static void window_mapgen_base_mouseup(rct_window *w, int widgetIndex)
 		gfx_invalidate_screen();
 		break;
 	case WIDX_MAP_SIZE:
-		((uint16*)TextInputDescriptionArgs)[0] = MINIMUM_MAP_SIZE_PRACTICAL;
-		((uint16*)TextInputDescriptionArgs)[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
+		TextInputDescriptionArgs[0] = MINIMUM_MAP_SIZE_PRACTICAL;
+		TextInputDescriptionArgs[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
 		// Practical map size is 2 lower than the technical map size
 		window_text_input_open(w, WIDX_MAP_SIZE, 5130, 5131, 5182, _mapSize - 2, 4);
 		break;
 	case WIDX_BASE_HEIGHT:
-		((uint16*)TextInputDescriptionArgs)[0] = (BASESIZE_MIN - 12) / 2;
-		((uint16*)TextInputDescriptionArgs)[1] = (BASESIZE_MAX - 12) / 2;
+		TextInputDescriptionArgs[0] = (BASESIZE_MIN - 12) / 2;
+		TextInputDescriptionArgs[1] = (BASESIZE_MAX - 12) / 2;
 		window_text_input_open(w, WIDX_BASE_HEIGHT, 5183, 5184, 5182, (_baseHeight - 12) / 2, 3);
 		break;
 	case WIDX_WATER_LEVEL:
-		((uint16*)TextInputDescriptionArgs)[0] = (WATERLEVEL_MIN - 12) / 2;
-		((uint16*)TextInputDescriptionArgs)[1] = (WATERLEVEL_MAX - 12) / 2;
+		TextInputDescriptionArgs[0] = (WATERLEVEL_MIN - 12) / 2;
+		TextInputDescriptionArgs[1] = (WATERLEVEL_MAX - 12) / 2;
 		window_text_input_open(w, WIDX_WATER_LEVEL, 5185, 5186, 5182, (_waterLevel - 12) / 2, 3);
 		break;
 	}
@@ -583,7 +583,7 @@ static void window_mapgen_base_dropdown(rct_window *w, int widgetIndex, int drop
 
 		type = (dropdownIndex == -1) ?
 			_floorTexture :
-			*((uint32*)&gDropdownItemsArgs[dropdownIndex]) - SPR_FLOOR_TEXTURE_GRASS;
+			(uint32)gDropdownItemsArgs[dropdownIndex] - SPR_FLOOR_TEXTURE_GRASS;
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) == type) {
 			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) = 255;
@@ -599,7 +599,7 @@ static void window_mapgen_base_dropdown(rct_window *w, int widgetIndex, int drop
 
 		type = (dropdownIndex == -1) ?
 			_wallTexture :
-			*((uint32*)&gDropdownItemsArgs[dropdownIndex]) - SPR_WALL_TEXTURE_ROCK;
+			(uint32)gDropdownItemsArgs[dropdownIndex] - SPR_WALL_TEXTURE_ROCK;
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) == type) {
 			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) = 255;
@@ -790,8 +790,8 @@ static void window_mapgen_simplex_mouseup(rct_window *w, int widgetIndex)
 		window_mapgen_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_SIMPLEX_MAP_SIZE:
-		((uint16*)TextInputDescriptionArgs)[0] = MINIMUM_MAP_SIZE_PRACTICAL;
-		((uint16*)TextInputDescriptionArgs)[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
+		TextInputDescriptionArgs[0] = MINIMUM_MAP_SIZE_PRACTICAL;
+		TextInputDescriptionArgs[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
 		// Practical map size is 2 lower than the technical map size
 		window_text_input_open(w, WIDX_SIMPLEX_MAP_SIZE, 5130, 5131, 5182, _mapSize - 2, 4);
 		break;
@@ -916,7 +916,7 @@ static void window_mapgen_simplex_dropdown(rct_window *w, int widgetIndex, int d
 
 		type = (dropdownIndex == -1) ?
 		_floorTexture :
-					  *((uint32*)&gDropdownItemsArgs[dropdownIndex]) - SPR_FLOOR_TEXTURE_GRASS;
+					  (uint32)gDropdownItemsArgs[dropdownIndex] - SPR_FLOOR_TEXTURE_GRASS;
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) == type) {
 			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) = 255;
@@ -933,7 +933,7 @@ static void window_mapgen_simplex_dropdown(rct_window *w, int widgetIndex, int d
 
 		type = (dropdownIndex == -1) ?
 		_wallTexture :
-					 *((uint32*)&gDropdownItemsArgs[dropdownIndex]) - SPR_WALL_TEXTURE_ROCK;
+					 (uint32)gDropdownItemsArgs[dropdownIndex] - SPR_WALL_TEXTURE_ROCK;
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) == type) {
 			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) = 255;

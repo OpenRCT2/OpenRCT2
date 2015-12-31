@@ -27,11 +27,13 @@
 #include "../ride/ride.h"
 #include "../ride/vehicle.h"
 #include "../world/park.h"
+#include "../management/research.h"
+#include "../scenario.h"
 #include "colour.h"
 
 struct rct_window;
 union rct_window_event;
-extern uint8 TextInputDescriptionArgs[8];
+extern uint16 TextInputDescriptionArgs[4];
 extern char gTextBoxInput[512];
 extern int gMaxTextBoxInputLength;
 extern int gTextBoxFrameNo;
@@ -264,7 +266,13 @@ typedef struct rct_window {
 	uint16 frame_no;				// 0x48E updated every tic for motion in windows sprites
 	uint16 list_information_type;	// 0x490 0 for none, Used as current position of marquee in window_peep
 	sint16 var_492;
-	uint32 highlighted_item;		// 0x494
+	union {							// 0x494
+		uint32 highlighted_item;
+		uint16 ride_colour;
+		rct_research_item* research_item;
+		rct_object_entry* object_entry;
+		rct_scenario_basic* scenario;
+	};
 	uint8 var_498[0x14];
 	sint16 selected_tab;			// 0x4AC
 	sint16 var_4AE;

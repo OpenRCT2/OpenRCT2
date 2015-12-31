@@ -324,7 +324,7 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			item = gDropdownItemsFormat[i];
 			if (item == (uint16)-1 || item == (uint16)-2) {
 				// Image item
-				image = *((uint32*)&gDropdownItemsArgs[i]);
+				image = (uint32)gDropdownItemsArgs[i];
 				if (item == (uint16)-2 && gDropdownHighlightedIndex == i)
 					image++;
 

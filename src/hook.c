@@ -30,6 +30,14 @@ void* g_hooktableaddress = 0;
 int g_hooktableoffset = 0;
 int g_maxhooks = 1000;
 
+// This macro writes a little-endian 4-byte long value into *data
+// It is used to avoid type punning.
+#define write_address_strictalias(data, addr) \
+	*(data + 0) = ((addr) & 0x000000ff) >> 0; \
+	*(data + 1) = ((addr) & 0x0000ff00) >> 8; \
+	*(data + 2) = ((addr) & 0x00ff0000) >> 16; \
+	*(data + 3) = ((addr) & 0xff000000) >> 24;
+
 void hookfunc(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister)
 {
 	int i = 0;
@@ -118,7 +126,9 @@ void hookfunc(int address, int newaddress, int stacksize, int registerargs[], in
 	}
 
 	data[i++] = 0xE8; // call
-	*((int *)&data[i]) = (newaddress - address - i - 4); i += 4;
+
+	write_address_strictalias(&data[i], newaddress - address - i - 4);
+	i += 4;
 
 	// returnlocation:
 
@@ -220,7 +230,10 @@ void addhook(int address, int newaddress, int stacksize, int registerargs[], int
 	char data[9];
 	int i = 0;
 	data[i++] = 0xE9; // jmp
-	*((int *)&data[i]) = hookaddress - address - i - 4; i += 4;
+
+	write_address_strictalias(&data[i], hookaddress - address - i - 4);
+	i += 4;
+
 	data[i++] = 0xC3; // retn
 #ifdef _WIN32
 	WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);

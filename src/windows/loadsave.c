@@ -311,7 +311,7 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 
 		memset(filter, '\0', MAX_PATH);
 		safe_strncpy(filter, "*", MAX_PATH);
-		strncat(filter, _extension, MAX_PATH);
+		strncat(filter, _extension, MAX_PATH - strnlen(filter, MAX_PATH) - 1);
 
 		switch (_type) {
 		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
@@ -336,7 +336,7 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 
 		if (result) {
 			if (!has_extension(path, _extension)) {
-				strncat(path, _extension, MAX_PATH);
+				strncat(path, _extension, sizeof(path) - strnlen(path, sizeof(path)) - 1);
 			}
 			window_loadsave_select(w, path);
 		}
@@ -684,7 +684,7 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 			listItem = &_listItems[_listItemsCount];
 			memset(listItem->path, '\0', MAX_PATH);
 			safe_strncpy(listItem->path, directory, MAX_PATH);
-			strncat(listItem->path, subDir, MAX_PATH);
+			strncat(listItem->path, subDir, MAX_PATH - strnlen(listItem->path, MAX_PATH) - 1);
 			safe_strncpy(listItem->name, subDir, sizeof(listItem->name));
 			listItem->type = TYPE_DIRECTORY;
 			_listItemsCount++;
@@ -700,7 +700,7 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 
 			listItem = &_listItems[_listItemsCount];
 			safe_strncpy(listItem->path, directory, sizeof(listItem->path));
-			strncat(listItem->path, fileInfo.path, sizeof(listItem->path));
+			strncat(listItem->path, fileInfo.path, sizeof(listItem->path) - strnlen(listItem->path, MAX_PATH) - 1);
 			listItem->type = TYPE_FILE;
 			listItem->date_modified = platform_file_get_modified_time(listItem->path);
 
