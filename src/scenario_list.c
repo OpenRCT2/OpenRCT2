@@ -20,9 +20,10 @@
 
 #include "addresses.h"
 #include "config.h"
+#include "localisation/localisation.h"
 #include "platform/platform.h"
-#include "util/util.h"
 #include "scenario.h"
+#include "util/util.h"
 
 // Scenario list
 int gScenarioListCount = 0;
@@ -171,6 +172,32 @@ static void scenario_list_add(const utf8 *path, uint64 timestamp)
 	scenario_get_index_and_source(newEntry->name, &source, &index);
 	newEntry->source_index = index;
 	newEntry->source_game = source;
+
+	// Translate scenario name and details
+	utf8 filenameWithoutExtension[MAX_PATH];
+	safe_strncpy(filenameWithoutExtension, filename, sizeof(filenameWithoutExtension));
+	path_remove_extension(filenameWithoutExtension);
+	
+	rct_string_id localisedStringIds[3];
+	if (language_get_localised_scenario_strings(filename, localisedStringIds)) {
+		if (localisedStringIds[0] != (rct_string_id)STR_NONE) {
+			safe_strncpy(newEntry->name, language_get_string(localisedStringIds[0]), 64);
+		}
+		if (localisedStringIds[2] != (rct_string_id)STR_NONE) {
+			safe_strncpy(newEntry->details, language_get_string(localisedStringIds[2]), 256);
+		}
+	} else {
+		// Checks for a scenario string object (possibly for localisation)
+		if ((s6Info.entry.flags & 0xFF) != 255) {
+			if (object_get_scenario_text(&s6Info.entry)) {
+				rct_stex_entry* stex_entry = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, rct_stex_entry*);
+				format_string(newEntry->name, stex_entry->scenario_name, NULL);
+				format_string(newEntry->details, stex_entry->details, NULL);
+				object_free_scenario_text();
+			}
+		}
+	}
+
 }
 
 void scenario_list_dispose()
