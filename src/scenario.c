@@ -58,13 +58,11 @@ static void scenario_objective_check();
  * Loads only the basic information from a scenario.
  *  rct2: 0x006761D6
  */
-int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info)
+bool scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info)
 {
-	SDL_RWops* rw;
-
 	log_verbose("loading scenario details, %s", path);
 
-	rw = SDL_RWFromFile(path, "rb");
+	SDL_RWops* rw = SDL_RWFromFile(path, "rb");
 	if (rw != NULL) {
 		// Read first chunk
 		sawyercoding_read_chunk(rw, (uint8*)header);
@@ -72,49 +70,16 @@ int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *in
 			// Read second chunk
 			sawyercoding_read_chunk(rw, (uint8*)info);
 			SDL_RWclose(rw);
-			RCT2_GLOBAL(0x009AA00C, uint8) = 0;
-
-			// Get filename
-			utf8 filename[MAX_PATH];
-			const char *temp_filename = path_get_filename(path);
-			int len = strnlen(temp_filename, MAX_PATH);
-			safe_strncpy(filename, temp_filename, MAX_PATH);
-			if (len == MAX_PATH)
-			{
-				filename[MAX_PATH - 1] = '\0';
-				log_warning("truncated string %s", filename);
-			}
-			path_remove_extension(filename);
-
-			rct_string_id localisedStringIds[3];
-			if (language_get_localised_scenario_strings(filename, localisedStringIds)) {
-				if (localisedStringIds[0] != (rct_string_id)STR_NONE) {
-					safe_strncpy(info->name, language_get_string(localisedStringIds[0]), 64);
-				}
-				if (localisedStringIds[2] != (rct_string_id)STR_NONE) {
-					safe_strncpy(info->details, language_get_string(localisedStringIds[2]), 256);
-				}
-			} else {
-				// Checks for a scenario string object (possibly for localisation)
-				if ((info->entry.flags & 0xFF) != 255) {
-					if (object_get_scenario_text(&info->entry)) {
-						rct_stex_entry* stex_entry = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, rct_stex_entry*);
-						format_string(info->name, stex_entry->scenario_name, NULL);
-						format_string(info->details, stex_entry->details, NULL);
-						RCT2_GLOBAL(0x009AA00C, uint8) = stex_entry->var_06;
-						object_free_scenario_text();
-					}
-				}
-			}
-			return 1;
+			return true;
+		} else {
+			log_error("invalid scenario, %s", path);
+			SDL_RWclose(rw);
+			return false;
 		}
-		SDL_RWclose(rw);
 	}
 
-	log_error("invalid scenario, %s", path);
-	// RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, sint8) = -1;
-	// RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, sint16) = 3011;
-	return 0;
+	log_error("unable to open scenario, %s", path);
+	return false;
 }
 
 /**

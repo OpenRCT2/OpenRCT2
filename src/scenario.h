@@ -461,7 +461,7 @@ scenario_index_entry *scenario_list_find_by_filename(const utf8 *filename);
 scenario_index_entry *scenario_list_find_by_path(const utf8 *path);
 scenario_highscore_entry *scenario_highscore_insert();
 void scenario_highscore_free(scenario_highscore_entry *highscore);
-int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info);
+bool scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info);
 int scenario_load(const char *path);
 int scenario_load_and_play_from_path(const char *path);
 void scenario_begin();

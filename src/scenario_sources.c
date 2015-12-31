@@ -225,7 +225,7 @@ void scenario_normalise_name(utf8 *name)
 {
 	size_t nameLength = strlen(name);
 
-	// Strip "RCT(1|2)? *" prefix off scenario names.
+	// Strip "RCT(1|2)?" prefix off scenario names.
 	if (nameLength >= 3 && (name[0] == 'R' && name[1] == 'C' && name[2] == 'T')) {
 		if (nameLength >= 4 && (name[3] == '1' || name[3] == '2')) {
 			log_verbose("Stripping RCT/1/2 from name: %s", name);
@@ -233,9 +233,10 @@ void scenario_normalise_name(utf8 *name)
 		} else {
 			safe_strncpy(name, name + 3, 64);
 		}
-
-		safe_strtrimleft(name, name, 64);
 	}
+	
+	// Trim (for the sake of the above and WW / TT scenarios
+	safe_strtrimleft(name, name, 64);
 
 	// American scenario titles should be converted to British name
 	// Don't worry, names will be translated using language packs later
