@@ -438,7 +438,6 @@ void scenario_success()
 			} else {
 				scenario_highscore_free(scenario->highscore);
 			}
-			scenario->highscore->fileNameRoot = scenario->path_root;
 			scenario->highscore->fileName = (utf8*)path_get_filename(scenario->path);
 			scenario->highscore->name = NULL;
 			scenario->highscore->company_value = companyValue;

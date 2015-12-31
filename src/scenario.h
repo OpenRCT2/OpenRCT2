@@ -421,18 +421,16 @@ enum {
 };
 
 typedef struct {
-	uint8 fileNameRoot;
 	utf8 *fileName;
 	utf8 *name;
 	money32 company_value;
 } scenario_highscore_entry;
 
 typedef struct {
-	uint8 path_root;
 	utf8 path[MAX_PATH];
+	uint64 timestamp;
 
 	// Category / sequence
-	uint8 flags;
 	uint8 category;
 	uint8 source_game;
 	sint16 source_index;
@@ -448,11 +446,6 @@ typedef struct {
 	utf8 details[256];
 } scenario_index_entry;
 
-enum {
-	SCENARIO_ROOT_RCT2,
-	SCENARIO_ROOT_USER,
-};
-
 // Scenario list
 extern int gScenarioListCount;
 extern int gScenarioListCapacity;
@@ -466,7 +459,6 @@ void scenario_load_list();
 void scenario_list_dispose();
 scenario_index_entry *scenario_list_find_by_filename(const utf8 *filename);
 scenario_index_entry *scenario_list_find_by_path(const utf8 *path);
-scenario_index_entry *scenario_list_find_by_root_path(uint8 root, const utf8 *filename);
 scenario_highscore_entry *scenario_highscore_insert();
 void scenario_highscore_free(scenario_highscore_entry *highscore);
 int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info);

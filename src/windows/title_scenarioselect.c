@@ -187,14 +187,12 @@ static void window_scenarioselect_init_tabs()
 	int show_pages = 0;
 	for (int i = 0; i < gScenarioListCount; i++) {
 		scenario_index_entry *scenario = &gScenarioList[i];
-		if (scenario->flags & SCENARIO_FLAGS_VISIBLE) {
 			if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
 				show_pages |= 1 << scenario->source_game;
 			} else {
 				show_pages |= 1 << scenario->category;
 			}
 		}
-	}
 
 	int x = 3;
 	for (int i = 0; i < 8; i++) {
@@ -220,7 +218,7 @@ static void window_scenarioselect_mouseup(rct_window *w, int widgetIndex)
 {
 	if (widgetIndex == WIDX_CLOSE) {
 		window_close(w);
-}
+	}
 }
 
 static void window_scenarioselect_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
@@ -263,18 +261,18 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex
 		switch (listItem->type) {
 		case LIST_ITEM_TYPE_HEADING:
 			y -= 18;
-				break;
+			break;
 		case LIST_ITEM_TYPE_SCENARIO:
-		y -= 24;
+			y -= 24;
 			if (y < 0 && !listItem->scenario.is_locked) {
-		audio_play_sound_panned(SOUND_CLICK_1, w->width / 2 + w->x, 0, 0, 0);
+				audio_play_sound_panned(SOUND_CLICK_1, w->width / 2 + w->x, 0, 0, 0);
 				scenario_load_and_play_from_path(listItem->scenario.scenario->path);
 			}
-		break;
-	}
+			break;
+		}
 		if (y < 0) {
 			break;
-}
+		}
 	}
 }
 
@@ -295,11 +293,11 @@ static void window_scenarioselect_scrollmouseover(rct_window *w, int scrollIndex
 			if (y < 0 && !listItem->scenario.is_locked) {
 				selected = listItem->scenario.scenario;
 			}
-				break;
+			break;
 		}
 		if (y < 0) {
-		break;
-	}
+			break;
+		}
 	}
 
 	if (w->highlighted_item != (uint32)selected) {
@@ -329,7 +327,9 @@ static void window_scenarioselect_invalidate(rct_window *w)
 	int windowHeight = w->height;
 	window_scenarioselect_widgets[WIDX_BACKGROUND].bottom = windowHeight - 1;
 	window_scenarioselect_widgets[WIDX_TABCONTENT].bottom = windowHeight - 1;
-	window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = windowHeight - 5;
+
+	const int bottomMargin = gConfigGeneral.debugging_tools ? 17 : 5;
+	window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = windowHeight - bottomMargin;
 }
 
 static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -364,6 +364,12 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (scenario == NULL)
 		return;
 
+	// Scenario path
+	if (gConfigGeneral.debugging_tools) {
+		const utf8 *path = scenario->path;
+		gfx_draw_string_left(dpi, 1170, (void*)&path, w->colours[1], w->x + 3, w->y + w->height - 3 - 11);
+	}
+
 	// Scenario name
 	x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
 	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
@@ -386,7 +392,11 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Scenario score
 	if (scenario->highscore != NULL) {
-		safe_strncpy((char*)0x009BC677, scenario->highscore->name, 64);
+		const utf8 *completedByName = "???";
+		if (!str_is_null_or_empty(scenario->highscore->name)) {
+			completedByName = scenario->highscore->name;
+		}
+		safe_strncpy((char*)0x009BC677, completedByName, 64);
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = 3165; // empty string
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, int) = scenario->highscore->company_value;
 		y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);
@@ -421,36 +431,40 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			y += 18;
 			break;
 		case LIST_ITEM_TYPE_SCENARIO:;
-		// Draw hover highlight
+			// Draw hover highlight
 			scenario_index_entry *scenario = listItem->scenario.scenario;
 			bool isHighlighted = w->highlighted_item == (uint32)scenario;
 			if (isHighlighted) {
-			gfx_fill_rect(dpi, 0, y, w->width, y + 23, 0x02000031);
-		}
+				gfx_fill_rect(dpi, 0, y, w->width, y + 23, 0x02000031);
+			}
 
 			bool isCompleted = scenario->highscore != NULL;
 			bool isDisabled = listItem->scenario.is_locked;
 
-		// Draw scenario name
-		rct_string_id placeholderStringId = 3165;
-		safe_strncpy((char*)language_get_string(placeholderStringId), scenario->name, 64);
+			// Draw scenario name
+			rct_string_id placeholderStringId = 3165;
+			safe_strncpy((char*)language_get_string(placeholderStringId), scenario->name, 64);
 			int format = isDisabled ? 865 : (isHighlighted ? highlighted_format : unhighlighted_format);
 			colour = isDisabled ? w->colours[1] | 0x40 : COLOUR_BLACK;
-		gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 1, colour, &placeholderStringId);
+			gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 1, colour, &placeholderStringId);
 
-		// Check if scenario is completed
+			// Check if scenario is completed
 			if (isCompleted) {
-			// Draw completion tick
-			gfx_draw_sprite(dpi, 0x5A9F, wide ? 500 : 395, y + 1, 0);
+				// Draw completion tick
+				gfx_draw_sprite(dpi, 0x5A9F, wide ? 500 : 395, y + 1, 0);
 
-			// Draw completion score
-			safe_strncpy((char*)language_get_string(placeholderStringId), scenario->highscore->name, 64);
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, rct_string_id) = 2793;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, rct_string_id) = placeholderStringId;
-			gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 11, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
-		}
+				// Draw completion score
+				const utf8 *completedByName = "???";
+				if (!str_is_null_or_empty(scenario->highscore->name)) {
+					completedByName = scenario->highscore->name;
+				}
+				safe_strncpy((char*)language_get_string(placeholderStringId), completedByName, 64);
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, rct_string_id) = 2793;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, rct_string_id) = placeholderStringId;
+				gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 11, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+			}
 
-		y += 24;
+			y += 24;
 			break;
 		}
 	}
@@ -482,7 +496,7 @@ static void draw_category_heading(rct_window *w, rct_drawpixelinfo *dpi, int lef
 	lineY++;
 	gfx_draw_line(dpi, left, lineY, strLeft, lineY, darkColour);
 	gfx_draw_line(dpi, strRight, lineY, right, lineY, darkColour);
-	}
+}
 
 static void initialise_list_items(rct_window *w)
 {
@@ -557,10 +571,6 @@ static bool is_scenario_visible(rct_window *w, scenario_index_entry *scenario)
 	if ((gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN && scenario->source_game != w->selected_tab) ||
 		(gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY && scenario->category != w->selected_tab)
 	) {
-		return false;
-	}
-
-	if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE)) {
 		return false;
 	}
 
