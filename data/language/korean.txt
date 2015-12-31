@@ -4599,7 +4599,7 @@ STR_NAME    :핫도그 가게
 STR_DESC    :핫도그를 파는 가게
 
 [ICECR1]
-STR_NAME    :과일 아이스크림 가게
+STR_NAME    :아이스크림 가게
 STR_DESC    :과일 아이스크림을 파는 가게
 
 [ICECR2]
