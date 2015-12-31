@@ -1183,7 +1183,7 @@ rct_window *window_ride_open(int rideIndex)
 	w->frame_no = 0;
 	w->list_information_type = 0;
 	w->var_492 = 0;
-	w->highlighted_item = 0;
+	w->ride_colour = 0;
 	window_ride_disable_tabs(w);
 	w->min_width = 316;
 	w->min_height = 180;
@@ -3722,7 +3722,7 @@ static void window_ride_set_track_colour_scheme(rct_window *w, int x, int y)
 	uint8 newColourScheme;
 	int interactionType, z, direction;
 
-	newColourScheme = (uint8)(*((uint16*)&w->highlighted_item));
+	newColourScheme = (uint8)w->ride_colour;
 
 	rct_xy16 mapCoord = { 0 };
 	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_RIDE, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
@@ -3812,7 +3812,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 
 	ride = GET_RIDE(w->number);
 	rideEntry = ride_get_entry(ride);
-	colourSchemeIndex = *((uint16*)&w->highlighted_item);
+	colourSchemeIndex = w->ride_colour;
 	dropdownWidget = widget - 1;
 
 	switch (widgetIndex) {
@@ -3952,20 +3952,20 @@ static void window_ride_colour_dropdown(rct_window *w, int widgetIndex, int drop
 
 	switch (widgetIndex) {
 	case WIDX_TRACK_COLOUR_SCHEME_DROPDOWN:
-		*((uint16*)&w->highlighted_item) = dropdownIndex;
+		w->ride_colour = (uint16)dropdownIndex;
 		window_invalidate(w);
 		break;
 	case WIDX_TRACK_MAIN_COLOUR:
-		game_do_command(0, (0 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_APPEARANCE, *((uint16*)&w->highlighted_item), 0);
+		game_do_command(0, (0 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_APPEARANCE, w->ride_colour, 0);
 		break;
 	case WIDX_TRACK_ADDITIONAL_COLOUR:
-		game_do_command(0, (1 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_APPEARANCE, *((uint16*)&w->highlighted_item), 0);
+		game_do_command(0, (1 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_APPEARANCE, w->ride_colour, 0);
 		break;
 	case WIDX_TRACK_SUPPORT_COLOUR:
-		game_do_command(0, (4 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_APPEARANCE, *((uint16*)&w->highlighted_item), 0);
+		game_do_command(0, (4 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_APPEARANCE, w->ride_colour, 0);
 		break;
 	case WIDX_MAZE_STYLE_DROPDOWN:
-		game_do_command(0, (4 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_APPEARANCE, *((uint16*)&w->highlighted_item), 0);
+		game_do_command(0, (4 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_APPEARANCE, w->ride_colour, 0);
 		break;
 	case WIDX_ENTRANCE_STYLE_DROPDOWN:
 		game_do_command(0, (6 << 8) | 1, 0, (window_ride_entrance_style_list[dropdownIndex] << 8) | w->number, GAME_COMMAND_SET_RIDE_APPEARANCE, 0, 0);
@@ -4052,7 +4052,7 @@ static void window_ride_colour_invalidate(rct_window *w)
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
 
 	// Track colours
-	int colourScheme = *((uint16*)&w->highlighted_item);
+	int colourScheme = w->ride_colour;
 	trackColour = ride_get_track_colour(ride, colourScheme);
 
 	// Maze style
@@ -4221,7 +4221,7 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (widget->type != WWT_EMPTY)
 		gfx_fill_rect(dpi, w->x + widget->left + 1, w->y + widget->top + 1, w->x + widget->right - 1, w->y + widget->bottom - 1, 12);
 
-	trackColour = ride_get_track_colour(ride, *((uint16*)&w->highlighted_item));
+	trackColour = ride_get_track_colour(ride, w->ride_colour);
 
 	//
 	if (rideEntry->shop_item == 0xFF) {

@@ -286,7 +286,7 @@ static void window_ride_list_dropdown(rct_window *w, int widgetIndex, int dropdo
 		if (dropdownIndex == -1)
 			return;
 
-		_window_ride_list_information_type = *((uint32*)&gDropdownItemsArgs[dropdownIndex]) - STR_STATUS;
+		_window_ride_list_information_type = (uint32)gDropdownItemsArgs[dropdownIndex] - STR_STATUS;
 		window_invalidate(w);
 	}
 }

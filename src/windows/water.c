@@ -181,8 +181,8 @@ static void window_water_textinput(rct_window *w, int widgetIndex, char *text)
 
 static void window_water_inputsize(rct_window *w)
 {
-	((uint16*)TextInputDescriptionArgs)[0] = MINIMUM_TOOL_SIZE;
-	((uint16*)TextInputDescriptionArgs)[1] = MAXIMUM_TOOL_SIZE;
+	TextInputDescriptionArgs[0] = MINIMUM_TOOL_SIZE;
+	TextInputDescriptionArgs[1] = MAXIMUM_TOOL_SIZE;
 	window_text_input_open(w, WIDX_PREVIEW, 5128, 5129, STR_NONE, STR_NONE, 3);
 }
 

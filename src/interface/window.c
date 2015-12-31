@@ -41,7 +41,7 @@
 
 rct_window* g_window_list = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window);
 
-uint8 TextInputDescriptionArgs[8];
+uint16 TextInputDescriptionArgs[4];
 widget_identifier gCurrentTextBox = { { 255, 0 }, 0 };
 char gTextBoxInput[512] = { 0 };
 int gMaxTextBoxInputLength = 0;

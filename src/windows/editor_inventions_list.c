@@ -155,8 +155,6 @@ static rct_window_event_list window_editor_inventions_list_drag_events = {
 
 rct_research_item *_editorInventionsListDraggedItem;
 
-#define WindowHighlightedItem(w) *((rct_research_item**)&(w->highlighted_item))
-
 static void window_editor_inventions_list_drag_open(rct_research_item *researchItem);
 static void move_research_item(rct_research_item *beforeItem);
 
@@ -437,7 +435,7 @@ static void move_research_item(rct_research_item *beforeItem)
 
 	w = window_find_by_class(WC_EDITOR_INVENTION_LIST);
 	if (w != NULL) {
-		WindowHighlightedItem(w) = NULL;
+		w->research_item = NULL;
 		window_invalidate(w);
 	}
 }
@@ -549,7 +547,7 @@ void window_editor_inventions_list_open()
 	window_init_scroll_widgets(w);
 	w->var_4AE = 0;
 	w->selected_tab = 0;
-	WindowHighlightedItem(w) = NULL;
+	w->research_item = NULL;
 	_editorInventionsListDraggedItem = NULL;
 }
 
@@ -668,8 +666,8 @@ static void window_editor_inventions_list_scrollmouseover(rct_window *w, int scr
 	rct_research_item *researchItem;
 
 	researchItem = window_editor_inventions_list_get_item_from_scroll_y(scrollIndex, y);
-	if (researchItem != WindowHighlightedItem(w)) {
-		WindowHighlightedItem(w) = researchItem;
+	if (researchItem != w->research_item) {
+		w->research_item = researchItem;
 		window_invalidate(w);
 	}
 }
@@ -770,7 +768,7 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
 
 	researchItem = _editorInventionsListDraggedItem;
 	if (researchItem == NULL)
-		researchItem = WindowHighlightedItem(w);
+		researchItem = w->research_item;
 	// If the research item is null or a list separator.
 	if (researchItem == NULL || researchItem->entryIndex < 0)
 		return;
@@ -842,7 +840,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
 			continue;
 
 		colour = 142;
-		if (WindowHighlightedItem(w) == researchItem) {
+		if (w->research_item == researchItem) {
 			if (_editorInventionsListDraggedItem == NULL) {
 				// Highlight
 				top = itemY;
@@ -939,8 +937,8 @@ static void window_editor_inventions_list_drag_cursor(rct_window *w, int widgetI
 	inventionListWindow = window_find_by_class(WC_EDITOR_INVENTION_LIST);
 	if (inventionListWindow != NULL) {
 		researchItem = get_research_item_at(x, y);
-		if (researchItem != WindowHighlightedItem(inventionListWindow)) {
-			WindowHighlightedItem(inventionListWindow) = researchItem;
+		if (researchItem != inventionListWindow->research_item) {
+			inventionListWindow = (rct_window *)researchItem;
 			window_invalidate(inventionListWindow);
 		}
 	}
