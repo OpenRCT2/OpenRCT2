@@ -187,12 +187,10 @@ static void window_scenarioselect_init_tabs()
 	int show_pages = 0;
 	for (int i = 0; i < gScenarioListCount; i++) {
 		scenario_index_entry *scenario = &gScenarioList[i];
-		if (scenario->flags & SCENARIO_FLAGS_VISIBLE) {
-			if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
-				show_pages |= 1 << scenario->source_game;
-			} else {
-				show_pages |= 1 << scenario->category;
-			}
+		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
+			show_pages |= 1 << scenario->source_game;
+		} else {
+			show_pages |= 1 << scenario->category;
 		}
 	}
 
@@ -329,7 +327,9 @@ static void window_scenarioselect_invalidate(rct_window *w)
 	int windowHeight = w->height;
 	window_scenarioselect_widgets[WIDX_BACKGROUND].bottom = windowHeight - 1;
 	window_scenarioselect_widgets[WIDX_TABCONTENT].bottom = windowHeight - 1;
-	window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = windowHeight - 5;
+
+	const int bottomMargin = gConfigGeneral.debugging_tools ? 17 : 5;
+	window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = windowHeight - bottomMargin;
 }
 
 static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -364,6 +364,12 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (scenario == NULL)
 		return;
 
+	// Scenario path
+	if (gConfigGeneral.debugging_tools) {
+		const utf8 *path = scenario->path;
+		gfx_draw_string_left(dpi, 1170, (void*)&path, w->colours[1], w->x + 3, w->y + w->height - 3 - 11);
+	}
+
 	// Scenario name
 	x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
 	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
@@ -386,7 +392,11 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Scenario score
 	if (scenario->highscore != NULL) {
-		safe_strncpy((char*)0x009BC677, scenario->highscore->name, 64);
+		const utf8 *completedByName = "???";
+		if (!str_is_null_or_empty(scenario->highscore->name)) {
+			completedByName = scenario->highscore->name;
+		}
+		safe_strncpy((char*)0x009BC677, completedByName, 64);
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = 3165; // empty string
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, int) = scenario->highscore->company_value;
 		y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);
@@ -444,7 +454,11 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				gfx_draw_sprite(dpi, 0x5A9F, wide ? 500 : 395, y + 1, 0);
 
 				// Draw completion score
-				safe_strncpy((char*)language_get_string(placeholderStringId), scenario->highscore->name, 64);
+				const utf8 *completedByName = "???";
+				if (!str_is_null_or_empty(scenario->highscore->name)) {
+					completedByName = scenario->highscore->name;
+				}
+				safe_strncpy((char*)language_get_string(placeholderStringId), completedByName, 64);
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, rct_string_id) = 2793;
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, rct_string_id) = placeholderStringId;
 				gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 11, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
@@ -557,10 +571,6 @@ static bool is_scenario_visible(rct_window *w, scenario_index_entry *scenario)
 	if ((gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN && scenario->source_game != w->selected_tab) ||
 		(gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY && scenario->category != w->selected_tab)
 	) {
-		return false;
-	}
-
-	if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE)) {
 		return false;
 	}
 

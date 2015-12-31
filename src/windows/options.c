@@ -664,8 +664,7 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 		case WIDX_DEBUGGING_TOOLS:
 			gConfigGeneral.debugging_tools ^= 1;
 			config_save_default();
-			window_invalidate(w);
-			window_invalidate_by_class(WC_TOP_TOOLBAR);
+			gfx_invalidate_screen();
 			break;
 		case WIDX_TEST_UNFINISHED_TRACKS:
 			gConfigGeneral.test_unfinished_tracks ^= 1;
