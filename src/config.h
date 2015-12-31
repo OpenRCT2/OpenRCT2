@@ -128,6 +128,11 @@ enum {
 	SORT_DATE_DESCENDING,
 };
 
+enum {
+	SCENARIO_SELECT_MODE_DIFFICULTY,
+	SCENARIO_SELECT_MODE_ORIGIN,
+};
+
 typedef struct {
 	uint8 play_intro;
 	uint8 confirmation_prompt;

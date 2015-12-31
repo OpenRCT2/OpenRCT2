@@ -1,5 +1,5 @@
 #define NUM_ORIGINAL_SCENARIOS 136
-#define NUM_ALIASES 5
+#define NUM_ALIASES 6
 
 #define SCENARIO_SOURCE_RCT1_INDEX 0
 #define SCENARIO_SOURCE_RCT1_AA_INDEX 22
@@ -10,15 +10,16 @@
 #define SCENARIO_SOURCE_REAL_INDEX 128
 
 const char * const scenario_aliases[NUM_ALIASES * 2] = {
-	"Katie's World",	"Katie's Dreamland",
-	"Dinky Park",		"Pokey Park",
-	"Aqua Park",		"White Water Park",
-	"Mothball Mountain","Mystic Mountain",
-	"Big Pier",			"Paradise Pier"
+	"Katie's Dreamland",	"Katie's World",	
+	"Pokey Park",			"Dinky Park",		
+	"White Water Park",		"Aqua Park",		
+	"Mystic Mountain",		"Mothball Mountain",
+	"Paradise Pier",		"Big Pier",
+	"Paradise Pier 2",		"Big Pier 2",
 };
 
 const char * const original_scenario_names[NUM_ORIGINAL_SCENARIOS] = {
-	 // RCT Classic
+	// RCT
 	"Forest Frontiers",
 	"Dynamite Dunes",
 	"Leafy Lake",
@@ -42,7 +43,7 @@ const char * const original_scenario_names[NUM_ORIGINAL_SCENARIOS] = {
 	"Thunder Rock",
 	"Mega Park",
 
-	 // RCT: Corkscrew Follies
+	 // RCT: Added Attractions
 	"Whispering Cliffs",
 	"Three Monkeys Park",
 	"Canary Mines",
@@ -81,7 +82,7 @@ const char * const original_scenario_names[NUM_ORIGINAL_SCENARIOS] = {
 	"Razor Rocks",
 	"Crater Lake",
 	"Vertigo Views",
-	"Big Pier 2",
+	"Paradise Pier 2",
 	"Dragon's Cove",
 	"Good Knight Park",
 	"Wacky Warren",
@@ -106,7 +107,7 @@ const char * const original_scenario_names[NUM_ORIGINAL_SCENARIOS] = {
 	"Venus Ponds",
 	"Micro Park",
 
-	 // RCT2 Vanilla
+	// RCT2
 	"Crazy Castle",
 	"Electric Fields",
 	"Factory Capers",
@@ -123,7 +124,7 @@ const char * const original_scenario_names[NUM_ORIGINAL_SCENARIOS] = {
 	"Lucky Lake",
 	"Rainbow Summit",
 
-	 // RCT2 Wacky Worlds
+	// RCT2: Wacky Worlds
 	"Africa - Victoria Falls",
 	"Asia - Great Wall of China Tourism Enhancement",
 	"North America - Grand Canyon",
@@ -142,7 +143,7 @@ const char * const original_scenario_names[NUM_ORIGINAL_SCENARIOS] = {
 	"N. America - Extreme Hawaiian Island",
 	"South America - Rain Forest Plateau",
 
-	 // RCT2 Time Twister
+	// RCT2: Time Twister
 	"Dark Age - Robin Hood",
 	"Prehistoric - After the Asteroid",
 	"Roaring Twenties - Prison Island",
@@ -158,7 +159,7 @@ const char * const original_scenario_names[NUM_ORIGINAL_SCENARIOS] = {
 	"Roaring Twenties - Skyscrapers",
 	"Rock 'n' Roll - Rock 'n' Roll",
 
-	 // Real parks
+	// Real parks
 	"Alton Towers",
 	"Heide-Park",
 	"Blackpool Pleasure Beach",

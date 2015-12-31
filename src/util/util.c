@@ -210,6 +210,70 @@ char *safe_strncpy(char * destination, const char * source, size_t size)
 	return result;
 }
 
+char *safe_strcat(char *destination, const char *source, size_t size)
+{
+	assert(destination != NULL);
+	assert(source != NULL);
+
+	if (size == 0) {
+		return destination;
+	}
+
+	char *result = destination;
+
+	size_t i;
+	for (i = 0; i < size; i++) {
+		if (*destination == '\0') {
+			break;
+		} else {
+			destination++;
+		}
+	}
+
+	bool terminated = false;
+	for (; i < size; i++) {
+		if (*source != '\0') {
+			*destination++ = *source++;
+		} else {
+			*destination = *source;
+			terminated = true;
+			break;
+		}
+	}
+
+	if (!terminated) {
+		result[size - 1] = '\0';
+		log_warning("Truncating string \"%s\" to %d bytes.", result, size);
+	}
+
+	return result;
+}
+
+char *safe_strcat_path(char *destination, const char *source, size_t size)
+{
+	const char pathSeparator = platform_get_path_separator();
+
+	size_t length = strlen(destination);
+	if (length >= size - 1) {
+		return destination;
+	}
+
+	if (destination[length - 1] != pathSeparator) {
+		destination[length] = pathSeparator;
+		destination[length + 1] = '\0';
+	}
+
+	return safe_strcat(destination, source, size);
+}
+
+char *safe_strtrimleft(char *destination, const char *source, size_t size)
+{
+	while (*source == ' ' && *source != '\0') {
+		source++;
+	}
+	return safe_strncpy(destination, source, size);
+}
+
 bool utf8_is_bom(const char *str)
 {
 	return str[0] == (char)0xEF && str[1] == (char)0xBB && str[2] == (char)0xBF;

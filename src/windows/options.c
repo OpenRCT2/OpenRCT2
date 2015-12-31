@@ -1179,6 +1179,7 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 				gConfigGeneral.scenario_select_mode = dropdownIndex;
 				config_save_default();
 				window_invalidate(w);
+				window_close_by_class(WC_SCENARIO_SELECT);
 			}
 			break;
 		}
@@ -1530,7 +1531,9 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		gfx_draw_string_left(dpi, STR_OPTIONS_SCENARIO_GROUPING, NULL, w->colours[1], w->x + 10, w->y + window_options_controls_and_interface_widgets[WIDX_SCENARIO_GROUPING].top + 1);
 		gfx_draw_string_left_clipped(
 			dpi,
-			gConfigGeneral.scenario_select_mode == 0 ? STR_OPTIONS_SCENARIO_DIFFICULTY : STR_OPTIONS_SCENARIO_ORIGIN,
+			gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY ?
+				STR_OPTIONS_SCENARIO_DIFFICULTY :
+				STR_OPTIONS_SCENARIO_ORIGIN,
 			NULL,
 			w->colours[1],
 			w->x + window_options_controls_and_interface_widgets[WIDX_SCENARIO_GROUPING].left + 1,
