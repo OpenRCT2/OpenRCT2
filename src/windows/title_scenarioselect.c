@@ -30,6 +30,29 @@
 #include "../interface/themes.h"
 #include "../util/util.h"
 
+#define INITIAL_NUM_UNLOCKED_SCENARIOS 5
+
+enum {
+	LIST_ITEM_TYPE_HEADING,
+	LIST_ITEM_TYPE_SCENARIO,
+	LIST_ITEM_TYPE_END,
+};
+
+typedef struct {
+	uint8 type;
+	union {
+		struct {
+			rct_string_id string_id;
+		} heading;
+		struct {
+			scenario_index_entry *scenario;
+			bool is_locked;
+		} scenario;
+	};
+} sc_list_item;
+
+static sc_list_item *_listItems = NULL;
+
 enum {
 	WIDX_BACKGROUND,
 	WIDX_TITLEBAR,
@@ -65,6 +88,7 @@ static rct_widget window_scenarioselect_widgets[] = {
 
 static void window_scenarioselect_init_tabs();
 
+static void window_scenarioselect_close(rct_window *w);
 static void window_scenarioselect_mouseup(rct_window *w, int widgetIndex);
 static void window_scenarioselect_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_scenarioselect_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
@@ -75,7 +99,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 
 static rct_window_event_list window_scenarioselect_events = {
-	NULL,
+	window_scenarioselect_close,
 	window_scenarioselect_mouseup,
 	NULL,
 	window_scenarioselect_mousedown,
@@ -105,6 +129,11 @@ static rct_window_event_list window_scenarioselect_events = {
 	window_scenarioselect_scrollpaint
 };
 
+static void draw_category_heading(rct_window *w, rct_drawpixelinfo *dpi, int left, int right, int y, rct_string_id stringId);
+static void initialise_list_items(rct_window *w);
+static bool is_scenario_visible(rct_window *w, scenario_index_entry *scenario);
+static bool is_locking_enabled(rct_window *w);
+
 /**
  *
  *  rct2: 0x006781B5
@@ -112,7 +141,8 @@ static rct_window_event_list window_scenarioselect_events = {
 void window_scenarioselect_open()
 {
 	rct_window* window;
-	int window_width;
+	int windowWidth;
+	int windowHeight = 334;
 
 	if (window_bring_to_front_by_class(WC_SCENARIO_SELECT) != NULL)
 		return;
@@ -122,37 +152,30 @@ void window_scenarioselect_open()
 
 	// Shrink the window if we're showing scenarios by difficulty level.
 	if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY) {
-		window_width = 610;
-		window_scenarioselect_widgets[WIDX_BACKGROUND].right = 609;
-		window_scenarioselect_widgets[WIDX_TITLEBAR].right = 608;
-		window_scenarioselect_widgets[WIDX_CLOSE].left  = 597;
-		window_scenarioselect_widgets[WIDX_CLOSE].right = 607;
-		window_scenarioselect_widgets[WIDX_TABCONTENT].right = 609;
-		window_scenarioselect_widgets[WIDX_SCENARIOLIST].right = 433;
+		windowWidth = 610;
 	} else {
-		window_width = 733;
+		windowWidth = 733;
 	}
 
 	window = window_create_centred(
-		window_width,
-		334,
+		windowWidth,
+		windowHeight,
 		&window_scenarioselect_events,
 		WC_SCENARIO_SELECT,
 		WF_10
 	);
 	window->widgets = window_scenarioselect_widgets;
-
 	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2)
 							| (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_TAB5)
 							| (1 << WIDX_TAB6) | (1 << WIDX_TAB7) | (1 << WIDX_TAB8);
+	window_scenarioselect_init_tabs();
+
+	window->selected_tab = 0;
+	initialise_list_items(window);
 
 	window_init_scroll_widgets(window);
 	window->viewport_focus_coordinates.var_480 = -1;
 	window->highlighted_item = 0;
-
-	window_scenarioselect_init_tabs();
-
-	window->selected_tab = 0;
 }
 
 /**
@@ -188,10 +211,16 @@ static void window_scenarioselect_init_tabs()
 	}
 }
 
+static void window_scenarioselect_close(rct_window *w)
+{
+	SafeFree(_listItems);
+}
+
 static void window_scenarioselect_mouseup(rct_window *w, int widgetIndex)
 {
-	if (widgetIndex == WIDX_CLOSE)
+	if (widgetIndex == WIDX_CLOSE) {
 		window_close(w);
+	}
 }
 
 static void window_scenarioselect_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
@@ -199,6 +228,7 @@ static void window_scenarioselect_mousedown(int widgetIndex, rct_window*w, rct_w
 	if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB8) {
 		w->selected_tab = widgetIndex - 4;
 		w->highlighted_item = 0;
+		initialise_list_items(w);
 		window_invalidate(w);
 		window_event_resize_call(w);
 		window_event_invalidate_call(w);
@@ -209,17 +239,18 @@ static void window_scenarioselect_mousedown(int widgetIndex, rct_window*w, rct_w
 
 static void window_scenarioselect_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
-	*height = 0;
-	for (int i = 0; i < gScenarioListCount; i++) {
-		scenario_index_entry *scenario = &gScenarioList[i];
-
-		if ((gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN && scenario->source_game != w->selected_tab) ||
-			(gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY && scenario->category != w->selected_tab))
-			continue;
-
-		if (scenario->flags & SCENARIO_FLAGS_VISIBLE)
-			*height += 24;
+	int y = 0;
+	for (sc_list_item *listItem = _listItems; listItem->type != LIST_ITEM_TYPE_END; listItem++) {
+		switch (listItem->type) {
+		case LIST_ITEM_TYPE_HEADING:
+			y += 18;
+			break;
+		case LIST_ITEM_TYPE_SCENARIO:
+			y += 24;
+			break;
+		}
 	}
+	*height = y;
 }
 
 /**
@@ -228,36 +259,22 @@ static void window_scenarioselect_scrollgetsize(rct_window *w, int scrollIndex, 
  */
 static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 {
-	int num_unlocks = 5;
-	for (int i = 0; i < gScenarioListCount; i++) {
-		scenario_index_entry *scenario = &gScenarioList[i];
-
-		if ((gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN && scenario->source_game != w->selected_tab) ||
-			(gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY && scenario->category != w->selected_tab))
-			continue;
-
-		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
-			continue;
-
-		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN && gConfigGeneral.scenario_unlocking_enabled) {
-			if (num_unlocks <= 0)
-				break;
-
-			bool is_completed = scenario->highscore != NULL;
-			if (is_completed) {
-				num_unlocks++;
-			} else {
-				num_unlocks--;
+	for (sc_list_item *listItem = _listItems; listItem->type != LIST_ITEM_TYPE_END; listItem++) {
+		switch (listItem->type) {
+		case LIST_ITEM_TYPE_HEADING:
+			y -= 18;
+			break;
+		case LIST_ITEM_TYPE_SCENARIO:
+			y -= 24;
+			if (y < 0 && !listItem->scenario.is_locked) {
+				audio_play_sound_panned(SOUND_CLICK_1, w->width / 2 + w->x, 0, 0, 0);
+				scenario_load_and_play_from_path(listItem->scenario.scenario->path);
 			}
+			break;
 		}
-
-		y -= 24;
-		if (y >= 0)
-			continue;
-
-		audio_play_sound_panned(SOUND_CLICK_1, w->width / 2 + w->x, 0, 0, 0);
-		scenario_load_and_play_from_path(scenario->path);
-		break;
+		if (y < 0) {
+			break;
+		}
 	}
 }
 
@@ -268,31 +285,23 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex
 static void window_scenarioselect_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
 {
 	scenario_index_entry *selected = NULL;
-	int num_unlocks = 5;
-	for (int i = 0; i < gScenarioListCount; i++) {
-		scenario_index_entry *scenario = &gScenarioList[i];
-		if ((gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN && scenario->source_game != w->selected_tab) ||
-			(gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY && scenario->category != w->selected_tab))
-			continue;
-
-		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
-			continue;
-
-		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN && gConfigGeneral.scenario_unlocking_enabled) {
-			if (num_unlocks <= 0)
-				break;
-
-			bool is_completed = scenario->highscore != NULL;
-			num_unlocks += is_completed ? 1 : -1;
+	for (sc_list_item *listItem = _listItems; listItem->type != LIST_ITEM_TYPE_END; listItem++) {
+		switch (listItem->type) {
+		case LIST_ITEM_TYPE_HEADING:
+			y -= 18;
+			break;
+		case LIST_ITEM_TYPE_SCENARIO:
+			y -= 24;
+			if (y < 0 && !listItem->scenario.is_locked) {
+				selected = listItem->scenario.scenario;
+			}
+			break;
 		}
-
-		y -= 24;
-		if (y >= 0)
-			continue;
-
-		selected = scenario;
-		break;
+		if (y < 0) {
+			break;
+		}
 	}
+
 	if (w->highlighted_item != (uint32)selected) {
 		w->highlighted_item = (uint32)selected;
 		window_invalidate(w);
@@ -308,6 +317,19 @@ static void window_scenarioselect_invalidate(rct_window *w)
 						   | (1 << WIDX_TAB6) | (1 << WIDX_TAB7) | (1 << WIDX_TAB8) );
 
 	w->pressed_widgets |= 1LL << (w->selected_tab + 4);
+
+	int windowWidth = w->width;
+	window_scenarioselect_widgets[WIDX_BACKGROUND].right = windowWidth - 1;
+	window_scenarioselect_widgets[WIDX_TITLEBAR].right = windowWidth - 2;
+	window_scenarioselect_widgets[WIDX_CLOSE].left  = windowWidth - 13;
+	window_scenarioselect_widgets[WIDX_CLOSE].right = windowWidth - 3;
+	window_scenarioselect_widgets[WIDX_TABCONTENT].right = windowWidth - 1;
+	window_scenarioselect_widgets[WIDX_SCENARIOLIST].right = windowWidth - 179;
+
+	int windowHeight = w->height;
+	window_scenarioselect_widgets[WIDX_BACKGROUND].bottom = windowHeight - 1;
+	window_scenarioselect_widgets[WIDX_TABCONTENT].bottom = windowHeight - 1;
+	window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = windowHeight - 5;
 }
 
 static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -383,56 +405,178 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 
 	bool wide = gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN;
 
+	rct_widget *listWidget = &w->widgets[WIDX_SCENARIOLIST];
+	int listWidth = listWidget->right - listWidget->left - 12;
+
 	int y = 0;
-	int num_unlocks = 5;
+	for (sc_list_item *listItem = _listItems; listItem->type != LIST_ITEM_TYPE_END; listItem++) {
+		if (y > dpi->y + dpi->height) {
+			continue;
+		}
+
+		switch (listItem->type) {
+		case LIST_ITEM_TYPE_HEADING:;
+			const int horizontalRuleMargin = 4;
+			draw_category_heading(w, dpi, horizontalRuleMargin, listWidth - horizontalRuleMargin, y + 2, listItem->heading.string_id);
+			y += 18;
+			break;
+		case LIST_ITEM_TYPE_SCENARIO:;
+			// Draw hover highlight
+			scenario_index_entry *scenario = listItem->scenario.scenario;
+			bool isHighlighted = w->highlighted_item == (uint32)scenario;
+			if (isHighlighted) {
+				gfx_fill_rect(dpi, 0, y, w->width, y + 23, 0x02000031);
+			}
+
+			bool isCompleted = scenario->highscore != NULL;
+			bool isDisabled = listItem->scenario.is_locked;
+
+			// Draw scenario name
+			rct_string_id placeholderStringId = 3165;
+			safe_strncpy((char*)language_get_string(placeholderStringId), scenario->name, 64);
+			int format = isDisabled ? 865 : (isHighlighted ? highlighted_format : unhighlighted_format);
+			colour = isDisabled ? w->colours[1] | 0x40 : COLOUR_BLACK;
+			gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 1, colour, &placeholderStringId);
+
+			// Check if scenario is completed
+			if (isCompleted) {
+				// Draw completion tick
+				gfx_draw_sprite(dpi, 0x5A9F, wide ? 500 : 395, y + 1, 0);
+
+				// Draw completion score
+				safe_strncpy((char*)language_get_string(placeholderStringId), scenario->highscore->name, 64);
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, rct_string_id) = 2793;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, rct_string_id) = placeholderStringId;
+				gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 11, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+			}
+
+			y += 24;
+			break;
+		}
+	}
+}
+
+static void draw_category_heading(rct_window *w, rct_drawpixelinfo *dpi, int left, int right, int y, rct_string_id stringId)
+{
+	uint8 baseColour = w->colours[1];
+	uint8 lightColour = ColourMapA[baseColour].lighter;
+	uint8 darkColour = ColourMapA[baseColour].mid_dark;
+
+	// Draw string
+	int centreX = (left + right) / 2;
+	gfx_draw_string_centred(dpi, stringId, centreX, y, baseColour, NULL);
+	
+	// Get string dimensions
+	utf8 *buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, utf8);
+	format_string(buffer, stringId, NULL);
+	int categoryStringHalfWidth = (gfx_get_string_width(buffer) / 2) + 4;
+	int strLeft = centreX - categoryStringHalfWidth;
+	int strRight = centreX + categoryStringHalfWidth;
+
+	// Draw light horizontal rule
+	int lineY = y + 4;
+	gfx_draw_line(dpi, left, lineY, strLeft, lineY, lightColour);
+	gfx_draw_line(dpi, strRight, lineY, right, lineY, lightColour);
+
+	// Draw dark horizontal rule
+	lineY++;
+	gfx_draw_line(dpi, left, lineY, strLeft, lineY, darkColour);
+	gfx_draw_line(dpi, strRight, lineY, right, lineY, darkColour);
+}
+
+static void initialise_list_items(rct_window *w)
+{
+	SafeFree(_listItems);
+
+	int capacity = gScenarioListCount + 16;
+	int length = 0;
+	_listItems = malloc(capacity * sizeof(sc_list_item));
+
+	int numUnlocks = INITIAL_NUM_UNLOCKED_SCENARIOS;
+	uint8 currentHeading = UINT8_MAX;
 	for (int i = 0; i < gScenarioListCount; i++) {
 		scenario_index_entry *scenario = &gScenarioList[i];
-
-		if ((gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN && scenario->source_game != w->selected_tab) ||
-			(gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY && scenario->category != w->selected_tab))
+		if (!is_scenario_visible(w, scenario)) {
 			continue;
-
-		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
-			continue;
-
-		if (y > dpi->y + dpi->height)
-			continue;
-
-		// Draw hover highlight
-		bool is_highlighted = w->highlighted_item == (int)scenario;
-		if (is_highlighted) {
-			gfx_fill_rect(dpi, 0, y, w->width, y + 23, 0x02000031);
 		}
 
-		bool is_completed = scenario->highscore != NULL;
-		bool is_disabled = false;
-		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN && gConfigGeneral.scenario_unlocking_enabled) {
-			if (num_unlocks <= 0) {
-				is_disabled = true;
+		sc_list_item *listItem;
+
+		// Category heading
+		rct_string_id headingStringId = STR_NONE;
+		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
+			if (currentHeading != scenario->category) {
+				currentHeading = scenario->category;
+				headingStringId = STR_BEGINNER_PARKS + currentHeading;
 			}
-			num_unlocks += is_completed ? 1 : -1;
+		} else {
+			if (currentHeading != scenario->source_game) {
+				currentHeading = scenario->source_game;
+				headingStringId = STR_SCENARIO_CATEGORY_RCT1 + currentHeading;
+			}
+		}
+		if (headingStringId != (rct_string_id)STR_NONE) {
+			// Ensure list capacity
+			if (length == capacity) {
+				capacity += 32;
+				_listItems = realloc(_listItems, capacity * sizeof(sc_list_item));
+			}
+			listItem = &_listItems[length++];
+
+			listItem->type = LIST_ITEM_TYPE_HEADING;
+			listItem->heading.string_id = headingStringId;
 		}
 
-
-		// Draw scenario name
-		rct_string_id placeholderStringId = 3165;
-		safe_strncpy((char*)language_get_string(placeholderStringId), scenario->name, 64);
-		int format = is_disabled ? 865 : (is_highlighted ? highlighted_format : unhighlighted_format);
-		colour = is_disabled ? w->colours[1] | 0x40 : COLOUR_BLACK;
-		gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 1, colour, &placeholderStringId);
-
-		// Check if scenario is completed
-		if (is_completed) {
-			// Draw completion tick
-			gfx_draw_sprite(dpi, 0x5A9F, wide ? 500 : 395, y + 1, 0);
-
-			// Draw completion score
-			safe_strncpy((char*)language_get_string(placeholderStringId), scenario->highscore->name, 64);
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, rct_string_id) = 2793;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, rct_string_id) = placeholderStringId;
-			gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 11, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+		// Ensure list capacity
+		if (length == capacity) {
+			capacity += 32;
+			_listItems = realloc(_listItems, capacity * sizeof(sc_list_item));
 		}
+		listItem = &_listItems[length++];
 
-		y += 24;
+		// Scenario
+		listItem->type = LIST_ITEM_TYPE_SCENARIO;
+		listItem->scenario.scenario = scenario;
+		if (is_locking_enabled(w)) {
+			listItem->scenario.is_locked = numUnlocks <= 0;
+			if (scenario->highscore == NULL) {
+				numUnlocks--;
+			}
+		} else {
+			listItem->scenario.is_locked = false;
+		}
 	}
+
+	length++;
+	_listItems = realloc(_listItems, length * sizeof(sc_list_item));
+	_listItems[length - 1].type = LIST_ITEM_TYPE_END;
+}
+
+static bool is_scenario_visible(rct_window *w, scenario_index_entry *scenario)
+{
+	if ((gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN && scenario->source_game != w->selected_tab) ||
+		(gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY && scenario->category != w->selected_tab)
+	) {
+		return false;
+	}
+
+	if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE)) {
+		return false;
+	}
+
+	return true;
+}
+
+static bool is_locking_enabled(rct_window *w)
+{
+	if (gConfigGeneral.scenario_select_mode != SCENARIO_SELECT_MODE_ORIGIN) {
+		return false;
+	}
+	if (!gConfigGeneral.scenario_unlocking_enabled) {
+		return false;
+	}
+	if (w->selected_tab >= 6) {
+		return false;
+	}
+	return true;
 }

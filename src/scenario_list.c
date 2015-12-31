@@ -165,6 +165,9 @@ static int scenario_list_sort_by_name(const void *a, const void *b)
 	const scenario_index_entry *entryA = (const scenario_index_entry*)a;
 	const scenario_index_entry *entryB = (const scenario_index_entry*)b;
 
+	if (entryA->source_game != entryB->source_game) {
+		return entryA->source_game - entryB->source_game;
+	}
 	return strcmp(entryA->name, entryB->name);
 }
 
