@@ -429,13 +429,7 @@ void scenario_success()
 	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = companyValue;
 	peep_applause();
 
-	uint8 scenarioRoot = SCENARIO_ROOT_RCT2;
-	scenario_index_entry *scenario = scenario_list_find_by_root_path(scenarioRoot, _scenarioFileName);
-	if (scenario == NULL) {
-		scenarioRoot = SCENARIO_ROOT_USER;
-		scenario = scenario_list_find_by_root_path(scenarioRoot, _scenarioFileName);
-	}
-
+	scenario_index_entry *scenario = scenario_list_find_by_filename(_scenarioFileName);
 	if (scenario != NULL) {
 		// Check if record company value has been broken
 		if (scenario->highscore == NULL || scenario->highscore->company_value < companyValue) {
@@ -444,7 +438,7 @@ void scenario_success()
 			} else {
 				scenario_highscore_free(scenario->highscore);
 			}
-			scenario->highscore->fileNameRoot = scenarioRoot;
+			scenario->highscore->fileNameRoot = scenario->path_root;
 			scenario->highscore->fileName = (utf8*)path_get_filename(scenario->path);
 			scenario->highscore->name = NULL;
 			scenario->highscore->company_value = companyValue;
@@ -464,13 +458,7 @@ void scenario_success()
  */
 void scenario_success_submit_name(const char *name)
 {
-	uint8 scenarioRoot = SCENARIO_ROOT_RCT2;
-	scenario_index_entry *scenario = scenario_list_find_by_root_path(scenarioRoot, _scenarioFileName);
-	if (scenario == NULL) {
-		scenarioRoot = SCENARIO_ROOT_USER;
-		scenario = scenario_list_find_by_root_path(scenarioRoot, _scenarioFileName);
-	}
-
+	scenario_index_entry *scenario = scenario_list_find_by_filename(_scenarioFileName);
 	if (scenario != NULL) {
 		money32 scenarioWinCompanyValue = RCT2_GLOBAL(0x013587C0, money32);
 		if (scenario->highscore->company_value == scenarioWinCompanyValue) {
