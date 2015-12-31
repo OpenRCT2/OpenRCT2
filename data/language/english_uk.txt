@@ -3945,6 +3945,19 @@ STR_5603    :Guest has left ride
 STR_5604    :Guest has bought item
 STR_5605    :Guest has used facility
 STR_5606    :Guest has died
+STR_5607    :RollerCoaster Tycoon
+STR_5608    :Added Attractions
+STR_5609    :Loopy Landscapes
+STR_5610    :RollerCoaster Tycoon 2
+STR_5611    :Wacky Worlds
+STR_5612    :Time Twister
+STR_5613    :{OPENQUOTES}Real{ENDQUOTES} Parks
+STR_5614    :Other Parks
+STR_5615    :Group scenario list by:
+STR_5616    :Source game
+STR_5617    :Difficulty level
+STR_5618    :Enable unlocking of scenarios
+STR_5619    :{GREY}{STRINGID}
 
 #####################
 # Rides/attractions #

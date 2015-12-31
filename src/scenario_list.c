@@ -19,9 +19,11 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "config.h"
 #include "platform/platform.h"
 #include "util/util.h"
 #include "scenario.h"
+#include "scenario_sources.h"
 
 // Scenario list
 int gScenarioListCount = 0;
@@ -30,7 +32,8 @@ rct_scenario_basic *gScenarioList = NULL;
 
 static void scenario_list_add(const char *path);
 static void scenario_list_sort();
-static int scenario_list_sort_compare(const void *a, const void *b);
+static int scenario_list_sort_by_name(const void *a, const void *b);
+static int scenario_list_sort_by_index(const void *a, const void *b);
 static int scenario_scores_load();
 
 rct_scenario_basic *get_scenario_by_filename(const char *filename)
@@ -41,6 +44,57 @@ rct_scenario_basic *get_scenario_by_filename(const char *filename)
 			return &gScenarioList[i];
 
 	return NULL;
+}
+
+sint16 get_scenario_index(rct_scenario_basic *scenario)
+{
+	for (int i = 0; i < NUM_ORIGINAL_SCENARIOS; i++) {
+		if (strcmp(original_scenario_names[i], scenario->name) == 0)
+			return i;
+	}
+
+	return -1;
+}
+
+void normalise_scenario_name(rct_scenario_basic *scenario)
+{
+	char* name = scenario->name;
+
+	// Strip "RCT2 " prefix off scenario names.
+	if (name[0] == 'R' && name[1] == 'C' && name[2] == 'T' && name[3] == '2') {
+		log_verbose("Stripping RCT2 from name: %s", name);
+		safe_strncpy(scenario->name, name + 5, 64);
+	}
+
+	// American scenario titles should be handled by their British counterpart, internally.
+	for (int i = 0; i < NUM_ALIASES; i++) {
+		if (strcmp(scenario_aliases[i * 2], name) == 0)
+		{
+			log_verbose("Found alias: %s; will treat as: %s", scenario->name, scenario_aliases[i * 2 + 1]);
+			safe_strncpy(scenario->name, scenario_aliases[i * 2 + 1], 64);
+		}
+	}
+}
+
+scenario_source source_by_index(uint8 index)
+{
+	if (index >= SCENARIO_SOURCE_RCT1_INDEX && index < SCENARIO_SOURCE_RCT1_AA_INDEX) {
+		return SCENARIO_SOURCE_RCT1;
+	} else if (index >= SCENARIO_SOURCE_RCT1_AA_INDEX && index < SCENARIO_SOURCE_RCT1_LL_INDEX) {
+		return SCENARIO_SOURCE_RCT1_AA;
+	} else if (index >= SCENARIO_SOURCE_RCT1_LL_INDEX && index < SCENARIO_SOURCE_RCT2_INDEX) {
+		return SCENARIO_SOURCE_RCT1_LL;
+	} else if (index >= SCENARIO_SOURCE_RCT2_INDEX && index < SCENARIO_SOURCE_RCT2_WW_INDEX) {
+		return SCENARIO_SOURCE_RCT2;
+	} else if (index >= SCENARIO_SOURCE_RCT2_WW_INDEX && index < SCENARIO_SOURCE_RCT2_TT_INDEX) {
+		return SCENARIO_SOURCE_RCT2_WW;
+	} else if (index >= SCENARIO_SOURCE_RCT2_TT_INDEX && index < SCENARIO_SOURCE_REAL_INDEX) {
+		return SCENARIO_SOURCE_RCT2_TT;
+	} else if (index >= SCENARIO_SOURCE_REAL_INDEX && index < NUM_ORIGINAL_SCENARIOS) {
+		return SCENARIO_SOURCE_REAL;
+	} else {
+		return SCENARIO_SOURCE_OTHER;
+	}
 }
 
 /**
@@ -130,6 +184,13 @@ static void scenario_list_add(const char *path)
 		safe_strncpy(scenario->name, s6Info.name, 64);
 		safe_strncpy(scenario->details, s6Info.details, 256);
 	}
+
+	// Normalize the name to make the scenario as recognisable as possible.
+	normalise_scenario_name(scenario);
+
+	// Look up and store information regarding the origins of this scenario.
+	scenario->source_index = get_scenario_index(scenario);
+	scenario->source_game = source_by_index(scenario->source_index);
 }
 
 /**
@@ -140,14 +201,25 @@ static void scenario_list_add(const char *path)
 */
 static void scenario_list_sort()
 {
-	qsort(gScenarioList, gScenarioListCount, sizeof(rct_scenario_basic), scenario_list_sort_compare);
+	if (gConfigGeneral.scenario_select_mode == 1) // and not tabIndex > REAL, OTHER
+		qsort(gScenarioList, gScenarioListCount, sizeof(rct_scenario_basic), scenario_list_sort_by_index);
+	else
+		qsort(gScenarioList, gScenarioListCount, sizeof(rct_scenario_basic), scenario_list_sort_by_name);
+}
+
+static int scenario_list_sort_by_index(const void *a, const void *b)
+{
+	if (((rct_scenario_basic*)a)->source_game == SCENARIO_SOURCE_OTHER && ((rct_scenario_basic*)b)->source_game == SCENARIO_SOURCE_OTHER)
+		return scenario_list_sort_by_name(a, b);
+
+	return ((rct_scenario_basic*)a)->source_index - ((rct_scenario_basic*)b)->source_index;
 }
 
 /**
  * Basic scenario information compare function for sorting.
  *  rct2: 0x00677C08
  */
-static int scenario_list_sort_compare(const void *a, const void *b)
+static int scenario_list_sort_by_name(const void *a, const void *b)
 {
 	return strcmp(((rct_scenario_basic*)a)->name, ((rct_scenario_basic*)b)->name);
 }
