@@ -428,6 +428,7 @@ typedef struct {
 } scenario_highscore_entry;
 
 typedef struct {
+	uint8 path_root;
 	utf8 path[MAX_PATH];
 
 	// Category / sequence
@@ -463,6 +464,7 @@ extern int gFirstTimeSave;
 bool scenario_scores_save();
 void scenario_load_list();
 void scenario_list_dispose();
+scenario_index_entry *scenario_list_find_by_filename(const utf8 *filename);
 scenario_index_entry *scenario_list_find_by_path(const utf8 *path);
 scenario_index_entry *scenario_list_find_by_root_path(uint8 root, const utf8 *filename);
 scenario_highscore_entry *scenario_highscore_insert();

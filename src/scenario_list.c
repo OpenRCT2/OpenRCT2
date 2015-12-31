@@ -33,8 +33,8 @@ int gScenarioHighscoreListCount = 0;
 int gScenarioHighscoreListCapacity = 0;
 scenario_highscore_entry *gScenarioHighscoreList = NULL;
 
-static void scenario_list_include(const utf8 *directory);
-static void scenario_list_add(const char *path);
+static void scenario_list_include(uint8 pathRoot, const utf8 *directory);
+static void scenario_list_add(uint8 pathRoot, const char *path);
 static void scenario_list_sort();
 static int scenario_list_sort_by_name(const void *a, const void *b);
 static int scenario_list_sort_by_index(const void *a, const void *b);
@@ -59,18 +59,18 @@ void scenario_load_list()
 	// Get scenario directory from RCT2
 	safe_strncpy(directory, gConfigGeneral.game_path, sizeof(directory));
 	safe_strcat_path(directory, "Scenarios", sizeof(directory));
-	scenario_list_include(directory);
+	scenario_list_include(SCENARIO_ROOT_RCT2, directory);
 
 	// Get scenario directory from user directory
 	platform_get_user_directory(directory, "scenario");
-	scenario_list_include(directory);
+	scenario_list_include(SCENARIO_ROOT_USER, directory);
 
 	scenario_list_sort();
 	scenario_scores_load();
 	scenario_scores_legacy_load();
 }
 
-static void scenario_list_include(const utf8 *directory)
+static void scenario_list_include(uint8 pathRoot, const utf8 *directory)
 {
 	int handle;
 	file_info fileInfo;
@@ -85,7 +85,7 @@ static void scenario_list_include(const utf8 *directory)
 		utf8 path[MAX_PATH];
 		safe_strncpy(path, directory, sizeof(pattern));
 		safe_strcat_path(path, fileInfo.path, sizeof(pattern));
-		scenario_list_add(path);
+		scenario_list_add(pathRoot, path);
 	}
 	platform_enumerate_files_end(handle);
 
@@ -96,12 +96,12 @@ static void scenario_list_include(const utf8 *directory)
 		utf8 path[MAX_PATH];
 		safe_strncpy(path, directory, sizeof(pattern));
 		safe_strcat_path(path, subDirectory, sizeof(pattern));
-		scenario_list_include(path);
+		scenario_list_include(pathRoot, path);
 	}
 	platform_enumerate_directories_end(handle);
 }
 
-static void scenario_list_add(const utf8 *path)
+static void scenario_list_add(uint8 pathRoot, const utf8 *path)
 {
 	// Load the basic scenario information
 	rct_s6_header s6Header;
@@ -119,6 +119,7 @@ static void scenario_list_add(const utf8 *path)
 	gScenarioListCount++;
 
 	// Set new entry
+	newEntry->path_root = pathRoot;
 	safe_strncpy(newEntry->path, path, sizeof(newEntry->path));
 	newEntry->category = s6Info.category;
 	newEntry->flags = SCENARIO_FLAGS_VISIBLE;
@@ -179,6 +180,17 @@ static int scenario_list_sort_by_index(const void *a, const void *b)
 		return scenario_list_sort_by_name(a, b);
 	}
 	return entryA->source_index - entryB->source_index;
+}
+
+scenario_index_entry *scenario_list_find_by_filename(const utf8 *filename)
+{
+	for (int i = 0; i < gScenarioListCount; i++) {
+		const utf8 *scenarioFilename = path_get_filename(gScenarioList[i].path);
+		if (_strcmpi(filename, scenarioFilename) == 0) {
+			return &gScenarioList[i];
+		}
+	}
+	return NULL;
 }
 
 scenario_index_entry *scenario_list_find_by_path(const utf8 *path)
@@ -336,7 +348,7 @@ static bool scenario_scores_load()
 		SDL_RWread(file, &highscore->company_value, sizeof(highscore->company_value), 1);
 
 		// Attach highscore to correct scenario entry
-		scenario_index_entry *scenarioIndexEntry = scenario_list_find_by_root_path(highscore->fileNameRoot, highscore->fileName);
+		scenario_index_entry *scenarioIndexEntry = scenario_list_find_by_filename(highscore->fileName);
 		if (scenarioIndexEntry != NULL) {
 			scenarioIndexEntry->highscore = highscore;
 		}
