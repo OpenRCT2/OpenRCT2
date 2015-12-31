@@ -219,19 +219,6 @@ int scenario_load(const char *path)
 	return 0;
 }
 
-/**
- *
- *  rct2: 0x00678282
- * scenario (ebx)
- */
-int scenario_load_and_play(const rct_scenario_basic *scenario)
-{
-	char path[MAX_PATH];
-
-	substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), scenario->path);
-	return scenario_load_and_play_from_path(path);
-}
-
 int scenario_load_and_play_from_path(const char *path)
 {
 	window_close_construction_windows();
@@ -437,29 +424,35 @@ void scenario_failure()
  */
 void scenario_success()
 {
-	int i;
-	rct_scenario_basic* scenario;
-	uint32 current_val = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, uint32);
+	const money32 companyValue = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = current_val;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = companyValue;
 	peep_applause();
 
-	for (i = 0; i < gScenarioListCount; i++) {
-		scenario = &gScenarioList[i];
+	uint8 scenarioRoot = SCENARIO_ROOT_RCT2;
+	scenario_index_entry *scenario = scenario_list_find_by_root_path(scenarioRoot, _scenarioFileName);
+	if (scenario == NULL) {
+		scenarioRoot = SCENARIO_ROOT_USER;
+		scenario = scenario_list_find_by_root_path(scenarioRoot, _scenarioFileName);
+	}
 
-		if (strequals(scenario->path, _scenarioFileName, 256, true)) {
-			// Check if record company value has been broken
-			if ((scenario->flags & SCENARIO_FLAGS_COMPLETED) && scenario->company_value >= current_val)
-				break;
+	if (scenario != NULL) {
+		// Check if record company value has been broken
+		if (scenario->highscore == NULL || scenario->highscore->company_value < companyValue) {
+			if (scenario->highscore == NULL) {
+				scenario->highscore = scenario_highscore_insert();
+			} else {
+				scenario_highscore_free(scenario->highscore);
+			}
+			scenario->highscore->fileNameRoot = scenarioRoot;
+			scenario->highscore->fileName = (utf8*)path_get_filename(scenario->path);
+			scenario->highscore->name = NULL;
+			scenario->highscore->company_value = companyValue;
 
 			// Allow name entry
 			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
-			scenario->company_value = current_val;
-			scenario->flags |= SCENARIO_FLAGS_COMPLETED;
-			scenario->completed_by[0] = 0;
-			RCT2_GLOBAL(0x013587C0, uint32) = current_val;
+			RCT2_GLOBAL(0x013587C0, money32) = companyValue;
 			scenario_scores_save();
-			break;
 		}
 	}
 	scenario_end();
@@ -471,21 +464,19 @@ void scenario_success()
  */
 void scenario_success_submit_name(const char *name)
 {
-	int i;
-	rct_scenario_basic* scenario;
-	uint32 scenarioWinCompanyValue;
+	uint8 scenarioRoot = SCENARIO_ROOT_RCT2;
+	scenario_index_entry *scenario = scenario_list_find_by_root_path(scenarioRoot, _scenarioFileName);
+	if (scenario == NULL) {
+		scenarioRoot = SCENARIO_ROOT_USER;
+		scenario = scenario_list_find_by_root_path(scenarioRoot, _scenarioFileName);
+	}
 
-	for (i = 0; i < gScenarioListCount; i++) {
-		scenario = &gScenarioList[i];
-
-		if (strequals(scenario->path, _scenarioFileName, 256, true)) {
-			scenarioWinCompanyValue = RCT2_GLOBAL(0x013587C0, uint32);
-			if (scenario->company_value == scenarioWinCompanyValue) {
-				safe_strncpy(scenario->completed_by, name, 64);
-				safe_strncpy((char*)0x013587D8, name, 32);
-				scenario_scores_save();
-			}
-			break;
+	if (scenario != NULL) {
+		money32 scenarioWinCompanyValue = RCT2_GLOBAL(0x013587C0, money32);
+		if (scenario->highscore->company_value == scenarioWinCompanyValue) {
+			scenario->highscore->name = _strdup(name);
+			safe_strncpy((char*)0x013587D8, name, 32);
+			scenario_scores_save();
 		}
 	}
 

@@ -100,8 +100,8 @@ typedef struct {
 	sint32 flags;				// 0x0268
 	uint32 company_value;		// 0x026C
 	char completed_by[64];		// 0x0270
-	uint8 source_game;			// new in OpenRCT2
-	sint16 source_index;		// new in OpenRCT2
+	// uint8 source_game;			// new in OpenRCT2
+	// sint16 source_index;		// new in OpenRCT2
 } rct_scenario_basic;
 
 typedef struct {
@@ -420,20 +420,55 @@ enum {
 	OBJECTIVE_MONTHLY_FOOD_INCOME
 };
 
+typedef struct {
+	uint8 fileNameRoot;
+	utf8 *fileName;
+	utf8 *name;
+	money32 company_value;
+} scenario_highscore_entry;
+
+typedef struct {
+	utf8 path[MAX_PATH];
+
+	// Category / sequence
+	uint8 flags;
+	uint8 category;
+	uint8 source_game;
+	sint16 source_index;
+
+	// Objective
+	uint8 objective_type;
+	uint8 objective_arg_1;
+	sint32 objective_arg_2;
+	sint16 objective_arg_3;
+	scenario_highscore_entry *highscore;
+
+	utf8 name[64];
+	utf8 details[256];
+} scenario_index_entry;
+
+enum {
+	SCENARIO_ROOT_RCT2,
+	SCENARIO_ROOT_USER,
+};
+
 // Scenario list
 extern int gScenarioListCount;
 extern int gScenarioListCapacity;
-extern rct_scenario_basic *gScenarioList;
+extern scenario_index_entry *gScenarioList;
 
 extern char gScenarioSavePath[MAX_PATH];
 extern int gFirstTimeSave;
 
-int scenario_scores_save();
+bool scenario_scores_save();
 void scenario_load_list();
-rct_scenario_basic *get_scenario_by_filename(const char *filename);
+void scenario_list_dispose();
+scenario_index_entry *scenario_list_find_by_path(const utf8 *path);
+scenario_index_entry *scenario_list_find_by_root_path(uint8 root, const utf8 *filename);
+scenario_highscore_entry *scenario_highscore_insert();
+void scenario_highscore_free(scenario_highscore_entry *highscore);
 int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info);
 int scenario_load(const char *path);
-int scenario_load_and_play(const rct_scenario_basic *scenario);
 int scenario_load_and_play_from_path(const char *path);
 void scenario_begin();
 void scenario_update();

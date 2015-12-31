@@ -121,8 +121,7 @@ void window_scenarioselect_open()
 	scenario_load_list();
 
 	// Shrink the window if we're showing scenarios by difficulty level.
-	if (gConfigGeneral.scenario_select_mode == 2)
-	{
+	if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY) {
 		window_width = 610;
 		window_scenarioselect_widgets[WIDX_BACKGROUND].right = 609;
 		window_scenarioselect_widgets[WIDX_TITLEBAR].right = 608;
@@ -130,9 +129,9 @@ void window_scenarioselect_open()
 		window_scenarioselect_widgets[WIDX_CLOSE].right = 607;
 		window_scenarioselect_widgets[WIDX_TABCONTENT].right = 609;
 		window_scenarioselect_widgets[WIDX_SCENARIOLIST].right = 433;
-	}
-	else
+	} else {
 		window_width = 733;
+	}
 
 	window = window_create_centred(
 		window_width,
@@ -164,14 +163,14 @@ static void window_scenarioselect_init_tabs()
 {
 	int show_pages = 0;
 	for (int i = 0; i < gScenarioListCount; i++) {
-		rct_scenario_basic* scenario = &gScenarioList[i];
-		if (scenario->flags & SCENARIO_FLAGS_VISIBLE)
-		{
-			if (gConfigGeneral.scenario_select_mode == 1)
+		scenario_index_entry *scenario = &gScenarioList[i];
+		if (scenario->flags & SCENARIO_FLAGS_VISIBLE) {
+			if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
 				show_pages |= 1 << scenario->source_game;
-			else
+			} else {
 				show_pages |= 1 << scenario->category;
 		}
+	}
 	}
 
 	int x = 3;
@@ -212,10 +211,10 @@ static void window_scenarioselect_scrollgetsize(rct_window *w, int scrollIndex, 
 {
 	*height = 0;
 	for (int i = 0; i < gScenarioListCount; i++) {
-		rct_scenario_basic *scenario = &gScenarioList[i];
+		scenario_index_entry *scenario = &gScenarioList[i];
 
-		if ((gConfigGeneral.scenario_select_mode == 1 && scenario->source_game != w->selected_tab) ||
-			(gConfigGeneral.scenario_select_mode == 2 && scenario->category != w->selected_tab))
+		if ((gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN && scenario->source_game != w->selected_tab) ||
+			(gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY && scenario->category != w->selected_tab))
 			continue;
 
 		if (scenario->flags & SCENARIO_FLAGS_VISIBLE)
@@ -231,20 +230,20 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex
 {
 	int num_unlocks = 5;
 	for (int i = 0; i < gScenarioListCount; i++) {
-		rct_scenario_basic *scenario = &gScenarioList[i];
+		scenario_index_entry *scenario = &gScenarioList[i];
 
-		if ((gConfigGeneral.scenario_select_mode == 1 && scenario->source_game != w->selected_tab) ||
-			(gConfigGeneral.scenario_select_mode == 2 && scenario->category != w->selected_tab))
+		if ((gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN && scenario->source_game != w->selected_tab) ||
+			(gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY && scenario->category != w->selected_tab))
 			continue;
 
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;
 
-		if (gConfigGeneral.scenario_unlocking_enabled) {
+		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN && gConfigGeneral.scenario_unlocking_enabled) {
 			if (num_unlocks <= 0)
 				break;
 
-			bool is_completed = scenario->flags & SCENARIO_FLAGS_COMPLETED;
+			bool is_completed = scenario->highscore != NULL;
 			if (is_completed) {
 				num_unlocks++;
 			} else {
@@ -257,7 +256,7 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex
 			continue;
 
 		audio_play_sound_panned(SOUND_CLICK_1, w->width / 2 + w->x, 0, 0, 0);
-		scenario_load_and_play(scenario);
+		scenario_load_and_play_from_path(scenario->path);
 		break;
 	}
 }
@@ -268,22 +267,22 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex
  */
 static void window_scenarioselect_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
 {
-	rct_scenario_basic *selected = NULL;
+	scenario_index_entry *selected = NULL;
 	int num_unlocks = 5;
 	for (int i = 0; i < gScenarioListCount; i++) {
-		rct_scenario_basic *scenario = &gScenarioList[i];
-		if ((gConfigGeneral.scenario_select_mode == 1 && scenario->source_game != w->selected_tab) ||
-			(gConfigGeneral.scenario_select_mode == 2 && scenario->category != w->selected_tab))
+		scenario_index_entry *scenario = &gScenarioList[i];
+		if ((gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN && scenario->source_game != w->selected_tab) ||
+			(gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY && scenario->category != w->selected_tab))
 			continue;
 
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
 			continue;
 
-		if (gConfigGeneral.scenario_unlocking_enabled) {
+		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN && gConfigGeneral.scenario_unlocking_enabled) {
 			if (num_unlocks <= 0)
 				break;
 
-			bool is_completed = scenario->flags & SCENARIO_FLAGS_COMPLETED;
+			bool is_completed = scenario->highscore != NULL;
 			num_unlocks += is_completed ? 1 : -1;
 		}
 
@@ -315,7 +314,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	int i, x, y, format;
 	rct_widget *widget;
-	rct_scenario_basic *scenario;
+	scenario_index_entry *scenario;
 
 	window_draw_widgets(w, dpi);
 
@@ -330,7 +329,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		x = (widget->left + widget->right) / 2 + w->x;
 		y = (widget->top + widget->bottom) / 2 + w->y - 3;
 
-		if (gConfigGeneral.scenario_select_mode == 1) {
+		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = STR_SCENARIO_CATEGORY_RCT1 + i;
 		} else { // old-style
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = STR_BEGINNER_PARKS + i;
@@ -339,7 +338,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 
 	// Return if no scenario highlighted
-	scenario = w->scenario;
+	scenario = (scenario_index_entry*)w->highlighted_item;
 	if (scenario == NULL)
 		return;
 
@@ -364,10 +363,10 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 170, STR_OBJECTIVE, 0) + 5;
 
 	// Scenario score
-	if (scenario->flags & SCENARIO_FLAGS_COMPLETED) {
-		safe_strncpy((char*)0x009BC677, scenario->completed_by, 64);
+	if (scenario->highscore != NULL) {
+		safe_strncpy((char*)0x009BC677, scenario->highscore->name, 64);
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = 3165; // empty string
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, int) = scenario->company_value;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, int) = scenario->highscore->company_value;
 		y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);
 	}
 }
@@ -382,15 +381,15 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 	int unhighlighted_format = (theme_get_preset()->features.rct1_scenario_font) ? 5139 : 1191;
 	int disabled_format = 5619;
 
-	bool wide = gConfigGeneral.scenario_select_mode == 1;
+	bool wide = gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN;
 
 	int y = 0;
 	int num_unlocks = 5;
 	for (int i = 0; i < gScenarioListCount; i++) {
-		rct_scenario_basic *scenario = &gScenarioList[i];
+		scenario_index_entry *scenario = &gScenarioList[i];
 
-		if ((gConfigGeneral.scenario_select_mode == 1 && scenario->source_game != w->selected_tab) ||
-			(gConfigGeneral.scenario_select_mode == 2 && scenario->category != w->selected_tab))
+		if ((gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN && scenario->source_game != w->selected_tab) ||
+			(gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY && scenario->category != w->selected_tab))
 			continue;
 
 		if (!(scenario->flags & SCENARIO_FLAGS_VISIBLE))
@@ -401,24 +400,26 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 
 		// Draw hover highlight
 		bool is_highlighted = w->highlighted_item == (int)scenario;
-		if (is_highlighted)
+		if (is_highlighted) {
 			gfx_fill_rect(dpi, 0, y, w->width, y + 23, 0x02000031);
+		}
 
-		bool is_completed = scenario->flags & SCENARIO_FLAGS_COMPLETED;
+		bool is_completed = scenario->highscore != NULL;
 		bool is_disabled = false;
-		if (gConfigGeneral.scenario_unlocking_enabled) {
-			if (num_unlocks <= 0)
+		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN && gConfigGeneral.scenario_unlocking_enabled) {
+			if (num_unlocks <= 0) {
 				is_disabled = true;
-
+			}
 			num_unlocks += is_completed ? 1 : -1;
 		}
 
-		int format = is_disabled ? 5619 : (is_highlighted ? highlighted_format : unhighlighted_format);
 
 		// Draw scenario name
-		safe_strncpy((char*)0x009BC677, scenario->name, 64);
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 3165;
-		gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 1, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+		rct_string_id placeholderStringId = 3165;
+		safe_strncpy((char*)language_get_string(placeholderStringId), scenario->name, 64);
+		int format = is_disabled ? 865 : (is_highlighted ? highlighted_format : unhighlighted_format);
+		colour = is_disabled ? w->colours[1] | 0x40 : COLOUR_BLACK;
+		gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 1, colour, &placeholderStringId);
 
 		// Check if scenario is completed
 		if (is_completed) {
@@ -426,9 +427,9 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			gfx_draw_sprite(dpi, 0x5A9F, wide ? 500 : 395, y + 1, 0);
 
 			// Draw completion score
-			safe_strncpy((char*)0x009BC677, scenario->completed_by, 64);
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 2793;
-			RCT2_GLOBAL(0x013CE954, short) = 3165;
+			safe_strncpy((char*)language_get_string(placeholderStringId), scenario->highscore->name, 64);
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, rct_string_id) = 2793;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, rct_string_id) = placeholderStringId;
 			gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 11, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
 		}
 

@@ -845,5 +845,6 @@
     <ClInclude Include="src\image_io.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="src\scenario_sources.h" />
   </ItemGroup>
 </Project>
