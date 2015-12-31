@@ -505,12 +505,12 @@ static void initialise_list_items(rct_window *w)
 		// Category heading
 		rct_string_id headingStringId = STR_NONE;
 		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
-			if (currentHeading != scenario->category) {
+			if (w->selected_tab != 6 && currentHeading != scenario->category) {
 				currentHeading = scenario->category;
 				headingStringId = STR_BEGINNER_PARKS + currentHeading;
 			}
 		} else {
-			if (currentHeading != scenario->source_game) {
+			if (w->selected_tab < 3 && currentHeading != scenario->source_game) {
 				currentHeading = scenario->source_game;
 				headingStringId = STR_SCENARIO_CATEGORY_RCT1 + currentHeading;
 			}

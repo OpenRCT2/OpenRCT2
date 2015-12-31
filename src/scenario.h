@@ -484,4 +484,7 @@ void scenario_success();
 void scenario_success_submit_name(const char *name);
 void scenario_autosave_check();
 
+bool scenario_get_index_and_source(const utf8 *name, scenario_source *source, sint32 *index);
+void scenario_normalise_name(utf8 *name);
+
 #endif
