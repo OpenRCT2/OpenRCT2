@@ -3385,7 +3385,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 				vehicle->track_y = dx;
 			}
 
-			vehicle->remaining_distance = RCT2_ADDRESS(0x009A36C8, uint32)[edi * 2];
+			vehicle->remaining_distance -= RCT2_ADDRESS(0x009A36C8, uint32)[edi * 2];
 			unk_F64E20->x = x;
 			unk_F64E20->y = y;
 			if (vehicle->remaining_distance < 0x368A) {
@@ -3473,9 +3473,9 @@ static void sub_6DA280(rct_vehicle *vehicle)
 		destLocation.y -= vehicle->y;
 
 		if (abs(destLocation.x) <= abs(destLocation.y)) {
-			randDirection = destLocation.x < 0 ? 3 : 1;
+			randDirection = destLocation.y < 0 ? 3 : 1;
 		} else {
-			randDirection = destLocation.y < 0 ? 0 : 2;
+			randDirection = destLocation.x < 0 ? 0 : 2;
 		}
 	}
 
@@ -3488,7 +3488,7 @@ static void sub_6DA280(rct_vehicle *vehicle)
 		sint16 x = vehicle->track_x + RCT2_ADDRESS(0x00993CCC, sint16)[2 * (randDirection + rotations[i] & 3)];
 		sint16 y = vehicle->track_y + RCT2_ADDRESS(0x00993CCE, sint16)[2 * (randDirection + rotations[i] & 3)];
 
-		if (!vehicle_is_boat_on_water(vehicle, x, y)) {
+		if (vehicle_is_boat_on_water(vehicle, x, y)) {
 			continue;
 		}
 		vehicle->boat_location.x = x / 32;
@@ -6495,7 +6495,7 @@ static bool vehicle_update_motion_collision_detection(
 			uint32 ecx = vehicle->var_44 + collideVehicle->var_44;
 			ecx = ((ecx >> 1) * 30) >> 8;
 			
-			if (x + y >= ecx) continue;
+			if (x_diff + y_diff >= ecx) continue;
 			
 			if (!(collideType->flags_b & VEHICLE_ENTRY_FLAG_B_14)){
 				mayCollide = true;
@@ -6531,7 +6531,8 @@ static bool vehicle_update_motion_collision_detection(
 	vehicle->var_C4++;
 	if (vehicle->var_C4 < 200) {
 		vehicle->update_flags |= VEHICLE_UPDATE_FLAG_6;
-		*otherVehicleIndex = collideId;
+		if (otherVehicleIndex != NULL)
+			*otherVehicleIndex = collideId;
 		return true;
 	}
 
@@ -6568,7 +6569,8 @@ static bool vehicle_update_motion_collision_detection(
 	}
 		
 	vehicle->update_flags |= VEHICLE_UPDATE_FLAG_6;
-	*otherVehicleIndex = collideId;
+	if (otherVehicleIndex != NULL)
+		*otherVehicleIndex = collideId;
 	return true;
 }
 
