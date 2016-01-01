@@ -3955,6 +3955,8 @@ STR_5613    :B
 STR_5614    :{SMALLFONT}{BLACK}Broken flag
 STR_5615    :L
 STR_5616    :{SMALLFONT}{BLACK}Last element for tile flag
+STR_5617    :{SMALLFONT}{BLACK}Move selected element up.
+STR_5618    :{SMALLFONT}{BLACK}Move selected element down.
 
 #####################
 # Rides/attractions #
