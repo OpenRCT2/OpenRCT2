@@ -16,182 +16,183 @@ const scenario_alias ScenarioAliases[] = {
 };
 
 typedef struct {
+	const uint8 id;
 	const utf8 *title;
 	const uint8 category;
 } scenario_title_desc;
 
 // RCT
 const scenario_title_desc ScenarioTitlesRCT1[] = {
-	{ "Forest Frontiers",		SCENARIO_CATEGORY_BEGINNER		},
-	{ "Dynamite Dunes",			SCENARIO_CATEGORY_BEGINNER		},
-	{ "Leafy Lake",				SCENARIO_CATEGORY_BEGINNER		},
-	{ "Diamond Heights",		SCENARIO_CATEGORY_BEGINNER		},
-	{ "Evergreen Gardens",		SCENARIO_CATEGORY_BEGINNER		},
-	{ "Bumbly Beach",			SCENARIO_CATEGORY_BEGINNER		},
-	{ "Trinity Islands",		SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Katie's Dreamland",		SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Pokey Park",				SCENARIO_CATEGORY_CHALLENGING	},
-	{ "White Water Park",		SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Millennium Mines",		SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Karts & Coasters",		SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Mel's World",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Mystic Mountain",		SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Pacific Pyramids",		SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Crumbly Woods",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Paradise Pier",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Lightning Peaks",		SCENARIO_CATEGORY_EXPERT		},
-	{ "Ivory Towers",			SCENARIO_CATEGORY_EXPERT		},
-	{ "Rainbow Valley",			SCENARIO_CATEGORY_EXPERT		},
-	{ "Thunder Rock",			SCENARIO_CATEGORY_EXPERT		},
-	{ "Mega Park",				SCENARIO_CATEGORY_OTHER			},
+	{ SC_FOREST_FRONTIERS,			"Forest Frontiers",		SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_DYNAMITE_DUNES,			"Dynamite Dunes",		SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_LEAFY_LAKES,				"Leafy Lake",			SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_DIAMOND_HEIGHTS,			"Diamond Heights",		SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_EVERGREEN_GARDENS,			"Evergreen Gardens",	SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_BUMBLY_BEACH,				"Bumbly Beach",			SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_TRINITY_ISLANDS,			"Trinity Islands",		SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_KATIES_DREAMLAND,			"Katie's Dreamland",	SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_POKEY_PARK,				"Pokey Park",			SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_WHITE_WATER_PARK,			"White Water Park",		SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_MILLENNIUM_MINES,			"Millennium Mines",		SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_KARTS_COASTERS,			"Karts & Coasters",		SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_MELS_WORLD,				"Mel's World",			SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_MYSTIC_MOUNTAIN,			"Mystic Mountain",		SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_PACIFIC_PYRAMIDS,			"Pacific Pyramids",		SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_CRUMBLY_WOODS,				"Crumbly Woods",		SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_PARADISE_PIER,				"Paradise Pier",		SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_LIGHTNING_PEAKS,			"Lightning Peaks",		SCENARIO_CATEGORY_EXPERT		},
+	{ SC_IVORY_TOWERS,				"Ivory Towers",			SCENARIO_CATEGORY_EXPERT		},
+	{ SC_RAINBOW_VALLEY,			"Rainbow Valley",		SCENARIO_CATEGORY_EXPERT		},
+	{ SC_THUNDER_ROCK,				"Thunder Rock",			SCENARIO_CATEGORY_EXPERT		},
+	{ SC_MEGA_PARK,					"Mega Park",			SCENARIO_CATEGORY_OTHER			},
 };
 
 // RCT: Added Attractions
 const scenario_title_desc ScenarioTitlesRCT1AA[] = {
-	{ "Whispering Cliffs",		SCENARIO_CATEGORY_BEGINNER		},
-	{ "Three Monkeys Park",		SCENARIO_CATEGORY_BEGINNER		},
-	{ "Canary Mines",			SCENARIO_CATEGORY_BEGINNER		},
-	{ "Barony Bridge",			SCENARIO_CATEGORY_BEGINNER		},
-	{ "Funtopia",				SCENARIO_CATEGORY_BEGINNER		},
-	{ "Haunted Harbor",			SCENARIO_CATEGORY_BEGINNER		},
-	{ "Fun Fortress",			SCENARIO_CATEGORY_BEGINNER		},
-	{ "Future World",			SCENARIO_CATEGORY_BEGINNER		},
-	{ "Gentle Glen",			SCENARIO_CATEGORY_BEGINNER		},
-	{ "Jolly Jungle",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Hydro Hills",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Sprightly Park",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Magic Quarters",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Fruit Farm",				SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Butterfly Dam",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Coaster Canyon",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Thunderstorm Park",		SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Harmonic Hills",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Roman Village",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Swamp Cove",				SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Adrenaline Heights",		SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Utopia",					SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Rotting Heights",		SCENARIO_CATEGORY_EXPERT		},
-	{ "Fiasco Forest",			SCENARIO_CATEGORY_EXPERT		},
-	{ "Pickle Park",			SCENARIO_CATEGORY_EXPERT		},
-	{ "Giggle Downs",			SCENARIO_CATEGORY_EXPERT		},
-	{ "Mineral Park",			SCENARIO_CATEGORY_EXPERT		},
-	{ "Coaster Crazy",			SCENARIO_CATEGORY_EXPERT		},
-	{ "Urban Park",				SCENARIO_CATEGORY_EXPERT		},
-	{ "Geoffrey Gardens",		SCENARIO_CATEGORY_EXPERT		},
+	{ SC_WHISPERING_CLIFFS,			"Whispering Cliffs",	SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_THREE_MONKEYS_PARK,		"Three Monkeys Park",	SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_CANARY_MINES,				"Canary Mines",			SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_BARONY_BRIDGE,				"Barony Bridge",		SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_FUNTOPIA,					"Funtopia",				SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_HAUNTED_HARBOR,			"Haunted Harbor",		SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_FUN_FORTRESS,				"Fun Fortress",			SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_FUTURE_WORLD,				"Future World",			SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_GENTLE_GLEN,				"Gentle Glen",			SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_JOLLY_JUNGLE,				"Jolly Jungle",			SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_HYDRO_HILLS,				"Hydro Hills",			SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_SPRIGHTLY_PARK,			"Sprightly Park",		SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_MAGIC_QUARTERS,			"Magic Quarters",		SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_FRUIT_FARM,				"Fruit Farm",			SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_BUTTERFLY_DAM,				"Butterfly Dam",		SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_COASTER_CANYON,			"Coaster Canyon",		SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_THUNDERSTORM_PARK,			"Thunderstorm Park",	SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_HARMONIC_HILLS,			"Harmonic Hills",		SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_ROMAN_VILLAGE,				"Roman Village",		SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_SWAMP_COVE,				"Swamp Cove",			SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_ADRENALINE_HEIGHTS,		"Adrenaline Heights",	SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_UTOPIA,					"Utopia",				SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_ROTTING_HEIGHTS,			"Rotting Heights",		SCENARIO_CATEGORY_EXPERT		},
+	{ SC_FIASCO_FOREST,				"Fiasco Forest",		SCENARIO_CATEGORY_EXPERT		},
+	{ SC_PICKLE_PARK,				"Pickle Park",			SCENARIO_CATEGORY_EXPERT		},
+	{ SC_GIGGLE_DOWNS,				"Giggle Downs",			SCENARIO_CATEGORY_EXPERT		},
+	{ SC_MINERAL_PARK,				"Mineral Park",			SCENARIO_CATEGORY_EXPERT		},
+	{ SC_COASTER_CRAZY,				"Coaster Crazy",		SCENARIO_CATEGORY_EXPERT		},
+	{ SC_URBAN_PARK,				"Urban Park",			SCENARIO_CATEGORY_EXPERT		},
+	{ SC_GEOFFREY_GARDENS,			"Geoffrey Gardens",		SCENARIO_CATEGORY_EXPERT		},
 };
 
 // RCT: Loopy Landscapes
 const scenario_title_desc ScenarioTitlesRCT1LL[] = {
-	{ "Iceberg Islands",		SCENARIO_CATEGORY_BEGINNER		},
-	{ "Volcania",				SCENARIO_CATEGORY_BEGINNER		},
-	{ "Arid Heights",			SCENARIO_CATEGORY_BEGINNER		},
-	{ "Razor Rocks",			SCENARIO_CATEGORY_BEGINNER		},
-	{ "Crater Lake",			SCENARIO_CATEGORY_BEGINNER		},
-	{ "Vertigo Views",			SCENARIO_CATEGORY_BEGINNER		},
-	{ "Paradise Pier 2",		SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Dragon's Cove",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Good Knight Park",		SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Wacky Warren",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Grand Glacier",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Crazy Craters",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Dusty Desert",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Woodworm Park",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Icarus Park",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Sunny Swamps",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Frightmare Hills",		SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Thunder Rocks",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Octagon Park",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Pleasure Island",		SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Icicle Worlds",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Tiny Towers",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Southern Sands",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Nevermore Park",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Pacifica",				SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Urban Jungle",			SCENARIO_CATEGORY_EXPERT		},
-	{ "Terror Town",			SCENARIO_CATEGORY_EXPERT		},
-	{ "Megaworld Park",			SCENARIO_CATEGORY_EXPERT		},
-	{ "Venus Ponds",			SCENARIO_CATEGORY_EXPERT		},
-	{ "Micro Park",				SCENARIO_CATEGORY_EXPERT		},
+	{	SC_ICEBERG_ISLANDS,			"Iceberg Islands",		SCENARIO_CATEGORY_BEGINNER		},
+	{	SC_VOLCANIA,				"Volcania",				SCENARIO_CATEGORY_BEGINNER		},
+	{	SC_ARID_HEIGHTS,			"Arid Heights",			SCENARIO_CATEGORY_BEGINNER		},
+	{	SC_RAZOR_ROCKS,				"Razor Rocks",			SCENARIO_CATEGORY_BEGINNER		},
+	{	SC_CRATER_LAKE,				"Crater Lake",			SCENARIO_CATEGORY_BEGINNER		},
+	{	SC_VERTIGO_VIEWS,			"Vertigo Views",		SCENARIO_CATEGORY_BEGINNER		},
+	{	SC_PARADISE_PIER_2,			"Paradise Pier 2",		SCENARIO_CATEGORY_CHALLENGING	},
+	{	SC_DRAGONS_COVE,			"Dragon's Cove",		SCENARIO_CATEGORY_CHALLENGING	},
+	{	SC_GOOD_KNIGHT_PARK,		"Good Knight Park",		SCENARIO_CATEGORY_CHALLENGING	},
+	{	SC_WACKY_WARREN,			"Wacky Warren",			SCENARIO_CATEGORY_CHALLENGING	},
+	{	SC_GRAND_GLACIER,			"Grand Glacier",		SCENARIO_CATEGORY_CHALLENGING	},
+	{	SC_CRAZY_CRATERS,			"Crazy Craters",		SCENARIO_CATEGORY_CHALLENGING	},
+	{	SC_DUSTY_DESERT,			"Dusty Desert",			SCENARIO_CATEGORY_CHALLENGING	},
+	{	SC_WOODWORM_PARK,			"Woodworm Park",		SCENARIO_CATEGORY_CHALLENGING	},
+	{	SC_ICARUS_PARK,				"Icarus Park",			SCENARIO_CATEGORY_CHALLENGING	},
+	{	SC_SUNNY_SWAMPS,			"Sunny Swamps",			SCENARIO_CATEGORY_CHALLENGING	},
+	{	SC_FRIGHTMARE_HILLS,		"Frightmare Hills",		SCENARIO_CATEGORY_CHALLENGING	},
+	{	SC_THUNDER_ROCKS,			"Thunder Rocks",		SCENARIO_CATEGORY_CHALLENGING	},
+	{	SC_OCTAGON_PARK,			"Octagon Park",			SCENARIO_CATEGORY_CHALLENGING	},
+	{	SC_PLEASURE_ISLAND,			"Pleasure Island",		SCENARIO_CATEGORY_CHALLENGING	},
+	{	SC_ICICLE_WORLDS,			"Icicle Worlds",		SCENARIO_CATEGORY_CHALLENGING	},
+	{	SC_SOUTHERN_SANDS,			"Tiny Towers",			SCENARIO_CATEGORY_CHALLENGING	},
+	{	SC_TINY_TOWERS,				"Southern Sands",		SCENARIO_CATEGORY_CHALLENGING	},
+	{	SC_NEVERMORE_PARK,			"Nevermore Park",		SCENARIO_CATEGORY_CHALLENGING	},
+	{	SC_PACIFICA,				"Pacifica",				SCENARIO_CATEGORY_CHALLENGING	},
+	{	SC_URBAN_JUNGLE,			"Urban Jungle",			SCENARIO_CATEGORY_EXPERT		},
+	{	SC_TERROR_TOWN,				"Terror Town",			SCENARIO_CATEGORY_EXPERT		},
+	{	SC_MEGAWORLD_PARK,			"Megaworld Park",		SCENARIO_CATEGORY_EXPERT		},
+	{	SC_VENUS_PONDS,				"Venus Ponds",			SCENARIO_CATEGORY_EXPERT		},
+	{	SC_MICRO_PARK,				"Micro Park",			SCENARIO_CATEGORY_EXPERT		},
 };
 
 // RCT2
 const scenario_title_desc ScenarioTitlesRCT2[] = {
-	{ "Crazy Castle",			SCENARIO_CATEGORY_BEGINNER		},
-	{ "Electric Fields",		SCENARIO_CATEGORY_BEGINNER		},
-	{ "Factory Capers",			SCENARIO_CATEGORY_BEGINNER		},
-	{ "Amity Airfield",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Botany Breakers",		SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Bumbly Bazaar",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Dusty Greens",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Fungus Woods",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Gravity Gardens",		SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Infernal Views",			SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Alpine Adventures",		SCENARIO_CATEGORY_EXPERT		},
-	{ "Extreme Heights",		SCENARIO_CATEGORY_EXPERT		},
-	{ "Ghost Town",				SCENARIO_CATEGORY_EXPERT		},
-	{ "Lucky Lake",				SCENARIO_CATEGORY_EXPERT		},
-	{ "Rainbow Summit",			SCENARIO_CATEGORY_EXPERT		},
+	{ SC_UNIDENTIFIED,				"Crazy Castle",			SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_UNIDENTIFIED,				"Electric Fields",		SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_UNIDENTIFIED,				"Factory Capers",		SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_UNIDENTIFIED,				"Amity Airfield",		SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_UNIDENTIFIED,				"Botany Breakers",		SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_UNIDENTIFIED,				"Bumbly Bazaar",		SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_UNIDENTIFIED,				"Dusty Greens",			SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_UNIDENTIFIED,				"Fungus Woods",			SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_UNIDENTIFIED,				"Gravity Gardens",		SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_UNIDENTIFIED,				"Infernal Views",		SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_UNIDENTIFIED,				"Alpine Adventures",	SCENARIO_CATEGORY_EXPERT		},
+	{ SC_UNIDENTIFIED,				"Extreme Heights",		SCENARIO_CATEGORY_EXPERT		},
+	{ SC_UNIDENTIFIED,				"Ghost Town",			SCENARIO_CATEGORY_EXPERT		},
+	{ SC_UNIDENTIFIED,				"Lucky Lake",			SCENARIO_CATEGORY_EXPERT		},
+	{ SC_UNIDENTIFIED,				"Rainbow Summit",		SCENARIO_CATEGORY_EXPERT		},
 };
 
 // RCT2: Wacky Worlds
 const scenario_title_desc ScenarioTitlesRCT2WW[] = {
-	{ "Africa - Victoria Falls",							SCENARIO_CATEGORY_BEGINNER		},
-	{ "Asia - Great Wall of China Tourism Enhancement",		SCENARIO_CATEGORY_BEGINNER		},
-	{ "North America - Grand Canyon",						SCENARIO_CATEGORY_BEGINNER		},
-	{ "South America - Rio Carnival",						SCENARIO_CATEGORY_BEGINNER		},
-	{ "Africa - African Diamond Mine",						SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Asia - Maharaja Palace",								SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Australasia - Ayers Rock",							SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Europe - European Cultural Festival",				SCENARIO_CATEGORY_CHALLENGING	},
-	{ "North America - Rollercoaster Heaven",				SCENARIO_CATEGORY_CHALLENGING	},
-	{ "South America - Inca Lost City",						SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Africa - Oasis",										SCENARIO_CATEGORY_EXPERT		},
-	{ "Antarctic - Ecological Salvage",						SCENARIO_CATEGORY_EXPERT		},
-	{ "Asia - Japanese Coastal Reclaim",					SCENARIO_CATEGORY_EXPERT		},
-	{ "Australasia - Fun at the Beach",						SCENARIO_CATEGORY_EXPERT		},
-	{ "Europe - Renovation",								SCENARIO_CATEGORY_EXPERT		},
-	{ "N. America - Extreme Hawaiian Island",				SCENARIO_CATEGORY_EXPERT		},
-	{ "South America - Rain Forest Plateau",				SCENARIO_CATEGORY_EXPERT		},
+	{ SC_UNIDENTIFIED,				"Africa - Victoria Falls",							SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_UNIDENTIFIED,				"Asia - Great Wall of China Tourism Enhancement",	SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_UNIDENTIFIED,				"North America - Grand Canyon",						SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_UNIDENTIFIED,				"South America - Rio Carnival",						SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_UNIDENTIFIED,				"Africa - African Diamond Mine",					SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_UNIDENTIFIED,				"Asia - Maharaja Palace",							SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_UNIDENTIFIED,				"Australasia - Ayers Rock",							SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_UNIDENTIFIED,				"Europe - European Cultural Festival",				SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_UNIDENTIFIED,				"North America - Rollercoaster Heaven",				SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_UNIDENTIFIED,				"South America - Inca Lost City",					SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_UNIDENTIFIED,				"Africa - Oasis",									SCENARIO_CATEGORY_EXPERT		},
+	{ SC_UNIDENTIFIED,				"Antarctic - Ecological Salvage",					SCENARIO_CATEGORY_EXPERT		},
+	{ SC_UNIDENTIFIED,				"Asia - Japanese Coastal Reclaim",					SCENARIO_CATEGORY_EXPERT		},
+	{ SC_UNIDENTIFIED,				"Australasia - Fun at the Beach",					SCENARIO_CATEGORY_EXPERT		},
+	{ SC_UNIDENTIFIED,				"Europe - Renovation",								SCENARIO_CATEGORY_EXPERT		},
+	{ SC_UNIDENTIFIED,				"N. America - Extreme Hawaiian Island",				SCENARIO_CATEGORY_EXPERT		},
+	{ SC_UNIDENTIFIED,				"South America - Rain Forest Plateau",				SCENARIO_CATEGORY_EXPERT		},
 };
 
 // RCT2: Time Twister
 const scenario_title_desc ScenarioTitlesRCT2TT[] = {
-	{ "Dark Age - Robin Hood",								SCENARIO_CATEGORY_BEGINNER		},
-	{ "Prehistoric - After the Asteroid",					SCENARIO_CATEGORY_BEGINNER		},
-	{ "Roaring Twenties - Prison Island",					SCENARIO_CATEGORY_BEGINNER		},
-	{ "Rock 'n' Roll - Flower Power",						SCENARIO_CATEGORY_BEGINNER		},
-	{ "Dark Age - Castle",									SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Future - First Encounters",							SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Mythological - Animatronic Film Set",				SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Prehistoric - Jurassic Safari",						SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Roaring Twenties - Schneider Cup",					SCENARIO_CATEGORY_CHALLENGING	},
-	{ "Future - Future World",								SCENARIO_CATEGORY_EXPERT		},
-	{ "Mythological - Cradle of Civilisation",				SCENARIO_CATEGORY_EXPERT		},
-	{ "Prehistoric - Stone Age",							SCENARIO_CATEGORY_EXPERT		},
-	{ "Roaring Twenties - Skyscrapers",						SCENARIO_CATEGORY_EXPERT		},
-	{ "Rock 'n' Roll - Rock 'n' Roll",						SCENARIO_CATEGORY_EXPERT		},
+	{ SC_UNIDENTIFIED,				"Dark Age - Robin Hood",							SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_UNIDENTIFIED,				"Prehistoric - After the Asteroid",					SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_UNIDENTIFIED,				"Roaring Twenties - Prison Island",					SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_UNIDENTIFIED,				"Rock 'n' Roll - Flower Power",						SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_UNIDENTIFIED,				"Dark Age - Castle",								SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_UNIDENTIFIED,				"Future - First Encounters",						SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_UNIDENTIFIED,				"Mythological - Animatronic Film Set",				SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_UNIDENTIFIED,				"Prehistoric - Jurassic Safari",					SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_UNIDENTIFIED,				"Roaring Twenties - Schneider Cup",					SCENARIO_CATEGORY_CHALLENGING	},
+	{ SC_UNIDENTIFIED,				"Future - Future World",							SCENARIO_CATEGORY_EXPERT		},
+	{ SC_UNIDENTIFIED,				"Mythological - Cradle of Civilisation",			SCENARIO_CATEGORY_EXPERT		},
+	{ SC_UNIDENTIFIED,				"Prehistoric - Stone Age",							SCENARIO_CATEGORY_EXPERT		},
+	{ SC_UNIDENTIFIED,				"Roaring Twenties - Skyscrapers",					SCENARIO_CATEGORY_EXPERT		},
+	{ SC_UNIDENTIFIED,				"Rock 'n' Roll - Rock 'n' Roll",					SCENARIO_CATEGORY_EXPERT		},
 };
 
 // Real parks
 const scenario_title_desc ScenarioTitlesRealParks[] = {
-	{ "Alton Towers",				SCENARIO_CATEGORY_REAL	},
-	{ "Heide-Park",					SCENARIO_CATEGORY_REAL	},
-	{ "Blackpool Pleasure Beach",	SCENARIO_CATEGORY_REAL	},
-	{ "Six Flags Belgium",			SCENARIO_CATEGORY_REAL	},
-	{ "Six Flags Great Adventure",	SCENARIO_CATEGORY_REAL	},
-	{ "Six Flags Holland",			SCENARIO_CATEGORY_REAL	},
-	{ "Six Flags Magic Mountain",	SCENARIO_CATEGORY_REAL	},
-	{ "Six Flags over Texas",		SCENARIO_CATEGORY_REAL	},
+	{ SC_UNIDENTIFIED,	"Alton Towers",								SCENARIO_CATEGORY_REAL	},
+	{ SC_UNIDENTIFIED,	"Heide-Park",								SCENARIO_CATEGORY_REAL	},
+	{ SC_UNIDENTIFIED,	"Blackpool Pleasure Beach",					SCENARIO_CATEGORY_REAL	},
+	{ SC_UNIDENTIFIED,	"Six Flags Belgium",						SCENARIO_CATEGORY_REAL	},
+	{ SC_UNIDENTIFIED,	"Six Flags Great Adventure",				SCENARIO_CATEGORY_REAL	},
+	{ SC_UNIDENTIFIED,	"Six Flags Holland",						SCENARIO_CATEGORY_REAL	},
+	{ SC_UNIDENTIFIED,	"Six Flags Magic Mountain",					SCENARIO_CATEGORY_REAL	},
+	{ SC_UNIDENTIFIED,	"Six Flags over Texas",						SCENARIO_CATEGORY_REAL	},
 };
 
 // Other parks
 const scenario_title_desc ScenarioTitlesRCT2BuildYourOwnParks[] = {
-	{ "Build your own Six Flags Belgium",			SCENARIO_CATEGORY_OTHER	},
-	{ "Build your own Six Flags Great Adventure",	SCENARIO_CATEGORY_OTHER	},
-	{ "Build your own Six Flags Holland",			SCENARIO_CATEGORY_OTHER	},
-	{ "Build your own Six Flags Magic Mountain",	SCENARIO_CATEGORY_OTHER	},
-	{ "Build your own Six Flags Park",				SCENARIO_CATEGORY_OTHER	},
-	{ "Build your own Six Flags over Texas",		SCENARIO_CATEGORY_OTHER	},
+	{ SC_UNIDENTIFIED,	"Build your own Six Flags Belgium",			SCENARIO_CATEGORY_OTHER	},
+	{ SC_UNIDENTIFIED,	"Build your own Six Flags Great Adventure",	SCENARIO_CATEGORY_OTHER	},
+	{ SC_UNIDENTIFIED,	"Build your own Six Flags Holland",			SCENARIO_CATEGORY_OTHER	},
+	{ SC_UNIDENTIFIED,	"Build your own Six Flags Magic Mountain",	SCENARIO_CATEGORY_OTHER	},
+	{ SC_UNIDENTIFIED,	"Build your own Six Flags Park",			SCENARIO_CATEGORY_OTHER	},
+	{ SC_UNIDENTIFIED,	"Build your own Six Flags over Texas",		SCENARIO_CATEGORY_OTHER	},
 };
 
 const struct {
@@ -216,6 +217,32 @@ bool scenario_get_source_desc(const utf8 *name, source_desc *outDesc)
 		for (int j = 0; j < ScenarioTitlesBySource[i].count; j++) {
 			const scenario_title_desc *desc = &ScenarioTitlesBySource[i].titles[j];
 			if (_strcmpi(name, desc->title) == 0) {
+				outDesc->title = desc->title;
+				outDesc->source = i;
+				outDesc->index = currentIndex;
+				outDesc->category = desc->category;
+				return true;
+			}
+			currentIndex++;
+		}
+	}
+
+	outDesc->source = SCENARIO_SOURCE_OTHER;
+	outDesc->index = -1;
+	outDesc->category = SCENARIO_CATEGORY_OTHER;
+	return false;
+}
+
+bool scenario_get_source_desc_by_id(uint8 id, source_desc *outDesc)
+{
+	assert(outDesc != NULL);
+
+	sint32 currentIndex = 0;
+	for (int i = 0; i < countof(ScenarioTitlesBySource); i++) {
+		for (int j = 0; j < ScenarioTitlesBySource[i].count; j++) {
+			const scenario_title_desc *desc = &ScenarioTitlesBySource[i].titles[j];
+			if (id == desc->id) {
+				outDesc->title = desc->title;
 				outDesc->source = i;
 				outDesc->index = currentIndex;
 				outDesc->category = desc->category;

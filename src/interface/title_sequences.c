@@ -63,9 +63,18 @@ void title_sequence_change_preset(int preset)
 	if (preset >= 0 && preset < gConfigTitleSequences.num_presets) {
 		switch (preset) {
 		case 0:
-			gConfigInterface.current_title_sequence_preset = "*RCT2";
+			gConfigInterface.current_title_sequence_preset = "*RCT1";
 			break;
 		case 1:
+			gConfigInterface.current_title_sequence_preset = "*RCT1AA";
+			break;
+		case 2:
+			gConfigInterface.current_title_sequence_preset = "*RCT1AALL";
+			break;
+		case 3:
+			gConfigInterface.current_title_sequence_preset = "*RCT2";
+			break;
+		case 4:
 			gConfigInterface.current_title_sequence_preset = "*OPENRCT2";
 			break;
 		default:

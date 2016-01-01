@@ -996,15 +996,14 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 				gDropdownItemsArgs[i] = (uint32)&gConfigTitleSequences.presets[i].name;
 			}
 
-			window_dropdown_show_text_custom_width(
+			window_dropdown_show_text(
 				w->x + widget->left,
 				w->y + widget->top,
 				widget->bottom - widget->top + 1,
 				w->colours[1],
 				DROPDOWN_FLAG_STAY_OPEN,
-				num_items,
-				widget->right - widget->left - 3
-				);
+				num_items
+			);
 
 			dropdown_set_checked(gCurrentPreviewTitleSequence, true);
 			break;
