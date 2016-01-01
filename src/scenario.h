@@ -434,6 +434,7 @@ typedef struct {
 	uint8 category;
 	uint8 source_game;
 	sint16 source_index;
+	uint16 sc_id;
 
 	// Objective
 	uint8 objective_type;
@@ -448,6 +449,7 @@ typedef struct {
 
 typedef struct {
 	const utf8 *title;
+	uint8 id;
 	uint8 source;
 	sint32 index;
 	uint8 category;
