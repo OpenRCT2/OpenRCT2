@@ -3945,7 +3945,7 @@ STR_5603    :Guest has left ride
 STR_5604    :Guest has bought item
 STR_5605    :Guest has used facility
 STR_5606    :Guest has died
-STR_5607    :Remove
+STR_5607    :{SMALLFONT}{BLACK}Forcefully remove selected map element.
 STR_5608    :BH
 STR_5609    :CH
 STR_5610    :{SMALLFONT}{BLACK}Remove the currently selected map element. This will forcefully remove it, so no cash will be used/gained. Use with caution.

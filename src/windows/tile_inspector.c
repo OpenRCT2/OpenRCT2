@@ -26,6 +26,7 @@
 #include "../world/scenery.h"
 #include "../world/map.h"
 #include "../world/footpath.h"
+#include "../sprites.h"
 
 enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -39,51 +40,51 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	WIDX_COLUMN_LAST = 13,
 };
 
-#define WW 450
+#define WW 400
 #define WH 200
 #define MIN_WW WW
-#define MAX_WW 1000
+#define MAX_WW WW
 #define MIN_WH 150
 #define MAX_WH 800
 
-#define BX 3 // Button's left side
-#define BW (BX + 138) // Button's right side
-#define BY 32 // Button's Top
-#define BH (BY + 11) // Button's Bottom
-#define BS 18
+#define BW (WW - 5) // Button's right side
+#define BX (BW - 23) // Button's left side
+#define BY 17 // Button's Top
+#define BH (BY + 23) // Button's Bottom
+#define BS 24
 
 #define SCROLL_BOTTOM_OFFSET 15
 #define LIST_ITEM_HEIGHT 11
 
 // Column offsets
-#define COL_X_TYPE (BW + 3) // Type
-#define COL_X_BH   (COL_X_TYPE + 200) // Base height
+#define COL_X_TYPE 2 // Type
+#define COL_X_BH   (COL_X_TYPE + 300) // Base height
 #define COL_X_CH   (COL_X_BH + 20) // Clearance height
 #define COL_X_GF   (COL_X_CH + 20) // Ghost flag
 #define COL_X_BF   (COL_X_GF + 12) // Broken flag
 #define COL_X_LF   (COL_X_BF + 12) // Last for tile flag
 
 rct_widget window_tile_inspector_widgets[] = {
-	{ WWT_FRAME,		0,	0,				WW - 1,				0,				WH - 1,						0x0FFFFFFFF,				STR_NONE },				// panel / background
-	{ WWT_CAPTION,		0,	1,				WW - 2,				1,				14,							STR_TILE_INSPECTOR_TITLE,	STR_WINDOW_TITLE_TIP },	// title bar
-	{ WWT_CLOSEBOX,		0,	WW - 13,		WW - 3,				2,				13,							STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },	// close x button
+	{ WWT_FRAME,		0,	0,				WW - 1,				0,				WH - 1,		0x0FFFFFFFF,				STR_NONE },				// panel / background
+	{ WWT_CAPTION,		0,	1,				WW - 2,				1,				14,			STR_TILE_INSPECTOR_TITLE,	STR_WINDOW_TITLE_TIP },	// title bar
+	{ WWT_CLOSEBOX,		0,	WW - 13,		WW - 3,				2,				13,			STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },	// close x button
 
 	// Map element list
-	{ WWT_SCROLL,		1,	BW + 3,			WW - 3,				31,				WH - SCROLL_BOTTOM_OFFSET,	2,							STR_NONE },				// scroll area
+	{ WWT_SCROLL,		1,	2,				WW - 3,				57,				WH - SCROLL_BOTTOM_OFFSET,	2,							STR_NONE },				// scroll area
 
 	// Buttons
-	{ WWT_CLOSEBOX,		1,	BX,				BW,					BY,				BH,							STR_INSERT_CORRUPT,			STR_INSERT_CORRUPT_TIP }, // Insert corrupt button
-	{ WWT_CLOSEBOX,		1,	BX,				BW,					BY + BS,		BH + BS,					5607,						5608 },					// Remove button
-	{ WWT_CLOSEBOX,	1,	BX,				BX + BW / 2 - 1,	BY + BS * 3,	BH + BS * 3,				5375,						5390 },					// Move down
-	{ WWT_CLOSEBOX,	1,	BX + BW / 2, 	BW,					BY + BS * 3,	BH + BS * 3,				5376,						5391 },					// Move up
+	{ WWT_FLATBTN,		1,	BX,				BW,					BY,				BH,			SPR_MAP,		STR_INSERT_CORRUPT_TIP }, // Insert corrupt button
+	{ WWT_FLATBTN,		1,  BX - BS * 1,	BW - BS * 1,		BY,				BH,			SPR_DEMOLISH,	5607 },					// Remove button
+	{ WWT_CLOSEBOX, 	1,	BX - BS * 2,	BW - BS * 2,		BY,				BY + 11, 	5375,			5390 },					// Move down
+	{ WWT_CLOSEBOX, 	1,	BX - BS * 2, 	BW - BS * 2,		BH - 11,		BH, 		5376,			5391 },					// Move up
 
 	// Column headers
-	{ WWT_13,			1, COL_X_TYPE,	COL_X_BH - 1, 	16,		16 + 13,	STR_TILE_INSPECTOR_ELEMENT_TYPE,			STR_NONE },
-	{ WWT_13,			1, COL_X_BH,	COL_X_CH - 1, 	16,		16 + 13,	STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT,		STR_TILE_INSPECTOR_BASE_HEIGHT },
-	{ WWT_13,			1, COL_X_CH,	COL_X_GF - 1, 	16,		16 + 13,	STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT,	STR_TILE_INSPECTOR_CLEARANCE_HEIGHT },
-	{ WWT_13,			1, COL_X_GF,	COL_X_BF - 1, 	16,		16 + 13,	STR_TILE_INSPECTOR_FLAG_GHOST_SHORT,		STR_TILE_INSPECTOR_FLAG_GHOST },
-	{ WWT_13,			1, COL_X_BF,	COL_X_LF - 1, 	16,		16 + 13,	STR_TILE_INSPECTOR_FLAG_BROKEN_SHORT,		STR_TILE_INSPECTOR_FLAG_BROKEN },
-	{ WWT_13,			1, COL_X_LF,	WW - 3,			16,		16 + 13,	STR_TILE_INSPECTOR_FLAG_LAST_SHORT,			STR_TILE_INSPECTOR_FLAG_LAST },
+	{ WWT_13,			1, COL_X_TYPE,	COL_X_BH - 1, 	42,		42 + 13,	STR_TILE_INSPECTOR_ELEMENT_TYPE,			STR_NONE },
+	{ WWT_13,			1, COL_X_BH,	COL_X_CH - 1, 	42,		42 + 13,	STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT,		STR_TILE_INSPECTOR_BASE_HEIGHT },
+	{ WWT_13,			1, COL_X_CH,	COL_X_GF - 1, 	42,		42 + 13,	STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT,	STR_TILE_INSPECTOR_CLEARANCE_HEIGHT },
+	{ WWT_13,			1, COL_X_GF,	COL_X_BF - 1, 	42,		42 + 13,	STR_TILE_INSPECTOR_FLAG_GHOST_SHORT,		STR_TILE_INSPECTOR_FLAG_GHOST },
+	{ WWT_13,			1, COL_X_BF,	COL_X_LF - 1, 	42,		42 + 13,	STR_TILE_INSPECTOR_FLAG_BROKEN_SHORT,		STR_TILE_INSPECTOR_FLAG_BROKEN },
+	{ WWT_13,			1, COL_X_LF,	WW - 3,			42,		42 + 13,	STR_TILE_INSPECTOR_FLAG_LAST_SHORT,			STR_TILE_INSPECTOR_FLAG_LAST },
 
 	{ WIDGETS_END },
 };
@@ -247,10 +248,10 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_CORRUPT:
 		corrupt_element(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
-		window_tile_inspector_item_count++;
 		w->scrolls[0].v_top = 0;
-		w->selected_list_item = 0;
-		window_invalidate(w);
+		w->selected_list_item = window_tile_inspector_item_count++;
+		window_tile_inspector_auto_set_buttons(w);
+		widget_invalidate(w, WIDX_LIST);
 		break;
 	case WIDX_REMOVE:
 		remove_element(w->selected_list_item);
@@ -382,7 +383,7 @@ static void window_tile_inspector_auto_set_buttons(rct_window *w)
 	widget_invalidate(w, WIDX_REMOVE);
 
 	// Move Up button
-	if (w->selected_list_item == 0) { // Top element in list
+	if (w->selected_list_item <= 0) { // Top element in list, or -1
 		w->disabled_widgets |= (1ULL << WIDX_MOVE_UP);
 		w->enabled_widgets &= ~(1ULL << WIDX_MOVE_UP);
 	} else { // Not the top element in the list
@@ -392,7 +393,7 @@ static void window_tile_inspector_auto_set_buttons(rct_window *w)
 	widget_invalidate(w, WIDX_MOVE_UP);
 
 	// Move Down button
-	if (w->selected_list_item == window_tile_inspector_item_count - 1) { // Bottom element in list
+	if (w->selected_list_item == window_tile_inspector_item_count - 1 || w->selected_list_item == -1) { // Bottom element in list, or -1
 		w->disabled_widgets |= (1ULL << WIDX_MOVE_DOWN);
 		w->enabled_widgets &= ~(1ULL << WIDX_MOVE_DOWN);
 	} else { // Not the bottom element in the list
@@ -573,11 +574,11 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 		}
 
 		// Undo relative scroll offset, but keep the 3 pixel padding
-		x = -w->widgets[WIDX_LIST].left + 3;
+		x = -w->widgets[WIDX_LIST].left;
 		int ghost = element->flags & MAP_ELEMENT_FLAG_GHOST ? 1 : 0;
 		int broken = element->flags & MAP_ELEMENT_FLAG_BROKEN ? 1 : 0;
 		int last = element->flags & MAP_ELEMENT_FLAG_LAST_TILE ? 1 : 0;
-		gfx_draw_string(dpi, type_name, 12, x + COL_X_TYPE, y);
+		gfx_draw_string(dpi, type_name, 12, x + COL_X_TYPE + 3, y); // 3px padding
 		gfx_draw_string_left(dpi, 5182, &base_height, 12, x + COL_X_BH, y);
 		gfx_draw_string_left(dpi, 5182, &clearance_height, 12, x + COL_X_CH, y);
 		gfx_draw_string_left(dpi, 5182, &ghost, 12, x + COL_X_GF, y);
