@@ -255,6 +255,7 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_REMOVE:
 		remove_element(w->selected_list_item);
 		w->selected_list_item = -1;
+		window_tile_inspector_auto_set_buttons(w);
 		widget_invalidate(w, WIDX_LIST);
 		break;
 	case WIDX_MOVE_DOWN:
