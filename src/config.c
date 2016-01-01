@@ -1407,11 +1407,23 @@ void title_sequences_set_default()
 
 	platform_get_openrct_data_path(dataPath);
 
-	// Load OpenRCT2 title sequence
+	// RCT1 title sequence
+	sprintf(path, "%s%c%s%c%s%c", dataPath, sep, "title", sep, "rct1", sep);
+	title_sequence_open(path, language_get_string(5305));
+
+	// RCT1 (AA) title sequence
+	sprintf(path, "%s%c%s%c%s%c", dataPath, sep, "title", sep, "rct1aa", sep);
+	title_sequence_open(path, language_get_string(5306));
+
+	// RCT1 (AA + LL) title sequence
+	sprintf(path, "%s%c%s%c%s%c", dataPath, sep, "title", sep, "rct1aall", sep);
+	title_sequence_open(path, language_get_string(5307));
+
+	// RCT2 title sequence
 	sprintf(path, "%s%c%s%c%s%c", dataPath, sep, "title", sep, "rct2", sep);
 	title_sequence_open(path, language_get_string(5308));
 
-	// Load OpenRCT2 title sequence
+	// OpenRCT2 title sequence
 	sprintf(path, "%s%c%s%c%s%c", dataPath, sep, "title", sep, "openrct2", sep);
 	title_sequence_open(path, language_get_string(5309));
 }
@@ -1432,11 +1444,20 @@ void title_sequences_load_presets()
 	platform_enumerate_directories_end(dirEnumHandle);
 
 	// Check which title sequence is the current one
-	if (_stricmp(gConfigInterface.current_title_sequence_preset, "*RCT2") == 0) {
+	if (_stricmp(gConfigInterface.current_title_sequence_preset, "*RCT1") == 0) {
 		gCurrentTitleSequence = 0;
 	}
-	else if (_stricmp(gConfigInterface.current_title_sequence_preset, "*OPENRCT2") == 0) {
+	else if (_stricmp(gConfigInterface.current_title_sequence_preset, "*RCT1AA") == 0) {
 		gCurrentTitleSequence = 1;
+	}
+	else if (_stricmp(gConfigInterface.current_title_sequence_preset, "*RCT1AALL") == 0) {
+		gCurrentTitleSequence = 2;
+	}
+	else if (_stricmp(gConfigInterface.current_title_sequence_preset, "*RCT2") == 0) {
+		gCurrentTitleSequence = 3;
+	}
+	else if (_stricmp(gConfigInterface.current_title_sequence_preset, "*OPENRCT2") == 0) {
+		gCurrentTitleSequence = 4;
 	}
 	else {
 		for (i = TITLE_SEQUENCE_DEFAULT_PRESETS; i < gConfigTitleSequences.num_presets; i++) {
@@ -1567,6 +1588,9 @@ static void title_sequence_open(const char *path, const char *customName)
 				command.command = TITLE_SCRIPT_END;
 			} else if (_stricmp(token, "LOADMM") == 0) {
 				command.command = TITLE_SCRIPT_LOADMM;
+			} else if (_stricmp(token, "LOADRCT1") == 0) {
+				command.command = TITLE_SCRIPT_LOADRCT1;
+				command.saveIndex = atoi(part1) & 0xFF;
 			}
 		}
 		if (command.command != 0xFF) {
