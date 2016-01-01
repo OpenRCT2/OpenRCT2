@@ -219,6 +219,7 @@ bool scenario_get_source_desc(const utf8 *name, source_desc *outDesc)
 			const scenario_title_desc *desc = &ScenarioTitlesBySource[i].titles[j];
 			if (_strcmpi(name, desc->title) == 0) {
 				outDesc->title = desc->title;
+				outDesc->id = desc->id;
 				outDesc->source = i;
 				outDesc->index = currentIndex;
 				outDesc->category = desc->category;
@@ -228,6 +229,8 @@ bool scenario_get_source_desc(const utf8 *name, source_desc *outDesc)
 		}
 	}
 
+	outDesc->title = NULL;
+	outDesc->id = SC_UNIDENTIFIED;
 	outDesc->source = SCENARIO_SOURCE_OTHER;
 	outDesc->index = -1;
 	outDesc->category = SCENARIO_CATEGORY_OTHER;
@@ -244,6 +247,7 @@ bool scenario_get_source_desc_by_id(uint8 id, source_desc *outDesc)
 			const scenario_title_desc *desc = &ScenarioTitlesBySource[i].titles[j];
 			if (id == desc->id) {
 				outDesc->title = desc->title;
+				outDesc->id = desc->id;
 				outDesc->source = i;
 				outDesc->index = currentIndex;
 				outDesc->category = desc->category;
@@ -253,6 +257,8 @@ bool scenario_get_source_desc_by_id(uint8 id, source_desc *outDesc)
 		}
 	}
 
+	outDesc->title = NULL;
+	outDesc->id = SC_UNIDENTIFIED;
 	outDesc->source = SCENARIO_SOURCE_OTHER;
 	outDesc->index = -1;
 	outDesc->category = SCENARIO_CATEGORY_OTHER;

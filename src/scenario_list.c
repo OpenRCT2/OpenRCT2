@@ -170,10 +170,12 @@ static void scenario_list_add(const utf8 *path, uint64 timestamp)
 	// Look up and store information regarding the origins of this scenario.
 	source_desc desc;
 	if (scenario_get_source_desc(newEntry->name, &desc)) {
+		newEntry->sc_id = desc.id;
 		newEntry->source_index = desc.index;
 		newEntry->source_game = desc.source;
 		newEntry->category = desc.category;
 	} else {
+		newEntry->sc_id = SC_UNIDENTIFIED;
 		newEntry->source_index = -1;
 		if (newEntry->category == SCENARIO_CATEGORY_REAL) {
 			newEntry->source_game = SCENARIO_SOURCE_REAL;

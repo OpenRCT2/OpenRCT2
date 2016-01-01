@@ -506,6 +506,11 @@ static void initialise_list_items(rct_window *w)
 	int length = 0;
 	_listItems = malloc(capacity * sizeof(sc_list_item));
 
+	// Mega park unlock
+	const uint32 rct1RequiredCompletedScenarios = (1 << SC_MEGA_PARK) - 1;
+	uint32 rct1CompletedScenarios = 0;
+	int megaParkListItemIndex = -1;
+
 	int numUnlocks = INITIAL_NUM_UNLOCKED_SCENARIOS;
 	uint8 currentHeading = UINT8_MAX;
 	for (int i = 0; i < gScenarioListCount; i++) {
@@ -555,6 +560,16 @@ static void initialise_list_items(rct_window *w)
 			listItem->scenario.is_locked = numUnlocks <= 0;
 			if (scenario->highscore == NULL) {
 				numUnlocks--;
+			} else {
+				// Mark RCT1 scenario as completed
+				if (scenario->sc_id < SC_MEGA_PARK) {
+					rct1CompletedScenarios |= 1 << scenario->sc_id;
+				}
+			}
+
+			// If scenario is Mega Park, keep a reference to it
+			if (scenario->sc_id == SC_MEGA_PARK) {
+				megaParkListItemIndex = length - 1;
 			}
 		} else {
 			listItem->scenario.is_locked = false;
@@ -564,6 +579,31 @@ static void initialise_list_items(rct_window *w)
 	length++;
 	_listItems = realloc(_listItems, length * sizeof(sc_list_item));
 	_listItems[length - 1].type = LIST_ITEM_TYPE_END;
+
+	// Mega park handling
+	if (megaParkListItemIndex != -1) {
+		bool megaParkLocked = (rct1CompletedScenarios & rct1RequiredCompletedScenarios) != rct1RequiredCompletedScenarios;
+		_listItems[megaParkListItemIndex].scenario.is_locked = megaParkLocked;
+#ifdef HIDE_MEGA_PARK
+		if (megaParkLocked) {
+			// Remove mega park
+			int remainingItems = length - megaParkListItemIndex - 1;
+			memmove(&_listItems[megaParkListItemIndex], &_listItems[megaParkListItemIndex + 1], remainingItems);
+
+			// Remove empty headings
+			int i = 0;
+			for (sc_list_item *listItem = _listItems; listItem->type != LIST_ITEM_TYPE_END; listItem++) {
+				if (listItem->type == LIST_ITEM_TYPE_HEADING && (listItem + 1)->type != LIST_ITEM_TYPE_SCENARIO) {
+					remainingItems = length - i - 1;
+					memmove(&_listItems[i], &_listItems[i + 1], remainingItems);
+					listItem--;
+				} else {
+					i++;
+				}
+			}
+		}
+#endif
+	}
 }
 
 static bool is_scenario_visible(rct_window *w, scenario_index_entry *scenario)
