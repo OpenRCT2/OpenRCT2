@@ -174,7 +174,11 @@ static void scenario_list_add(const utf8 *path, uint64 timestamp)
 		newEntry->category = desc.category;
 	} else {
 		newEntry->source_index = -1;
-		newEntry->source_game = SCENARIO_SOURCE_OTHER;
+		if (newEntry->category == SCENARIO_CATEGORY_REAL) {
+			newEntry->source_game = SCENARIO_SOURCE_REAL;
+		} else {
+			newEntry->source_game = SCENARIO_SOURCE_OTHER;
+		}
 	}
 
 	// Translate scenario name and details
