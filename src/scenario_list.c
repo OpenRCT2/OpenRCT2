@@ -167,11 +167,15 @@ static void scenario_list_add(const utf8 *path, uint64 timestamp)
 	scenario_normalise_name(newEntry->name);
 
 	// Look up and store information regarding the origins of this scenario.
-	scenario_source source;
-	sint32 index;
-	scenario_get_index_and_source(newEntry->name, &source, &index);
-	newEntry->source_index = index;
-	newEntry->source_game = source;
+	source_desc desc;
+	if (scenario_get_source_desc(newEntry->name, &desc)) {
+		newEntry->source_index = desc.index;
+		newEntry->source_game = desc.source;
+		newEntry->category = desc.category;
+	} else {
+		newEntry->source_index = -1;
+		newEntry->source_game = SCENARIO_SOURCE_OTHER;
+	}
 
 	// Translate scenario name and details
 	utf8 filenameWithoutExtension[MAX_PATH];
@@ -235,7 +239,11 @@ static int scenario_list_sort_by_index(const void *a, const void *b)
 	const scenario_index_entry *entryB = (const scenario_index_entry*)b;
 
 	if (entryA->source_game == SCENARIO_SOURCE_OTHER && entryB->source_game == SCENARIO_SOURCE_OTHER) {
-		return scenario_list_sort_by_name(a, b);
+		if (entryA->category == entryB->category) {
+			return scenario_list_sort_by_name(a, b);
+		} else {
+			return entryA->category - entryB->category;
+		}
 	}
 	return entryA->source_index - entryB->source_index;
 }
