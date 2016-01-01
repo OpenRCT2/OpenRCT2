@@ -7,12 +7,13 @@ typedef struct {
 } scenario_alias;
 
 const scenario_alias ScenarioAliases[] = {
-	{ "Katie's Dreamland",		"Katie's World"			},
-	{ "Pokey Park",				"Dinky Park"			},
-	{ "White Water Park",		"Aqua Park"				},
-	{ "Mystic Mountain",		"Mothball Mountain"		},
-	{ "Paradise Pier",			"Big Pier"				},
-	{ "Paradise Pier 2",		"Big Pier 2"			},
+	{ "Katie's Dreamland",						"Katie's World"								},
+	{ "Pokey Park",								"Dinky Park"								},
+	{ "White Water Park",						"Aqua Park"									},
+	{ "Mystic Mountain",						"Mothball Mountain"							},
+	{ "Paradise Pier",							"Big Pier"									},
+	{ "Paradise Pier 2",						"Big Pier 2"								},
+	{ "Mythological - Cradle of Civilisation",	"Mythological - Cradle of Civilization"		},
 };
 
 typedef struct {
