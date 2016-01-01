@@ -299,10 +299,7 @@ static void title_do_next_script_opcode()
 	uint8 script_opcode, script_operand;
 	rct_window* w;
 	gTitleScriptCommand++;
-	if (gTitleScriptCommand <= 1 || *(_currentScript - 1) != TITLE_SCRIPT_END)
-		script_opcode = *_currentScript++;
-	else
-		script_opcode = *_currentScript;
+	script_opcode = *_currentScript++;
 	if (gTitleScriptSkipTo != -1) {
 		if (gTitleScriptSkipTo == gTitleScriptCommand) {
 			gTitleScriptSkipTo = -1;
