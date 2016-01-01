@@ -165,7 +165,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 };
 
 #define WW 			310
-#define WH 			300
+#define WH 			302
 
 #define MAIN_OPTIONS_WIDGETS \
 	{ WWT_FRAME,			0,	0,		WW-1,	0,		WH-1,	STR_NONE,			STR_NONE }, \
@@ -256,9 +256,9 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
 	{ WWT_CHECKBOX,			2,	155,	299,	229,		240,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,	STR_NONE },							// Recent messages
 
 	{ WWT_CHECKBOX,			2,	10,		299,	254,		265,	STR_SELECT_BY_TRACK_TYPE,				STR_SELECT_BY_TRACK_TYPE_TIP },		// Select by track type
-	{ WWT_DROPDOWN,			2,	155,	299,	267,		278,	STR_NONE,								STR_NONE },							// Scenario select mode
-	{ WWT_DROPDOWN_BUTTON,	2,	288,	298,	268,		277,	STR_DROPDOWN_GLYPH,						STR_NONE },
-	{ WWT_CHECKBOX,			2,	10,		299,	281,		292,	STR_OPTIONS_SCENARIO_UNLOCKING,			STR_NONE },							// Unlocking of scenarios
+	{ WWT_DROPDOWN,			2,	155,	299,	269,		280,	STR_NONE,								STR_NONE },							// Scenario select mode
+	{ WWT_DROPDOWN_BUTTON,	2,	288,	298,	270,		279,	STR_DROPDOWN_GLYPH,						STR_NONE },
+	{ WWT_CHECKBOX,			2,	18,		299,	284,		295,	STR_OPTIONS_SCENARIO_UNLOCKING,			STR_NONE },							// Unlocking of scenarios
 	{ WIDGETS_END },
 };
 
@@ -654,7 +654,7 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 		case WIDX_SCENARIO_UNLOCKING:
 			gConfigGeneral.scenario_unlocking_enabled ^= 1;
 			config_save_default();
-			window_invalidate_by_class(WC_SCENARIO_SELECT);
+			window_close_by_class(WC_SCENARIO_SELECT);
 			break;
 		}
 		break;
@@ -1364,6 +1364,12 @@ static void window_options_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_SELECT_BY_TRACK_TYPE, gConfigInterface.select_by_track_type);
 		widget_set_checkbox_value(w, WIDX_SCENARIO_UNLOCKING, gConfigGeneral.scenario_unlocking_enabled);
 
+		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
+			w->disabled_widgets &= ~(1ULL << WIDX_SCENARIO_UNLOCKING);
+		} else {
+			w->disabled_widgets |= (1ULL << WIDX_SCENARIO_UNLOCKING);
+		}
+
 		window_options_controls_and_interface_widgets[WIDX_THEMES].type = WWT_DROPDOWN;
 		window_options_controls_and_interface_widgets[WIDX_THEMES_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_controls_and_interface_widgets[WIDX_THEMES_BUTTON].type = WWT_DROPDOWN_BUTTON;
@@ -1431,6 +1437,15 @@ static void window_options_invalidate(rct_window *w)
 		window_options_twitch_widgets[WIDX_NEWS_CHECKBOX].type = WWT_CHECKBOX;
 		break;
 	}
+
+	// Automatically adjust window height to fit widgets
+	int y = 0;
+	for (widget = &w->widgets[WIDX_PAGE_START]; widget->type != WWT_LAST; widget++) {
+		y = max(y, widget->bottom);
+	}
+	w->height = y + 6;
+	w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+	w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
 }
 
 static void window_options_update(rct_window *w)
