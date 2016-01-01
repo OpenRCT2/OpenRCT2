@@ -36,6 +36,7 @@
 #include "dropdown.h"
 #include "error.h"
 #include "../util/util.h"
+#include "../world/footpath.h"
 
 
 enum {
@@ -577,7 +578,6 @@ static void setup_in_use_selection_flags(){
 	map_element_iterator_begin(&iter);
 	do {
 		uint16 type;
-		uint8 path_additions;
 		rct_banner* banner;
 
 		switch (map_element_get_type(iter.element)) {
@@ -591,10 +591,9 @@ static void setup_in_use_selection_flags(){
 			assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
 			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_PATHS][type] |= (1 << 0);
 
-			path_additions = iter.element->properties.path.additions & 0xF;
-			if (path_additions){
-				path_additions--;
-				RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_PATH_BITS][path_additions] |= (1 << 0);
+			if (footpath_element_has_path_scenery(iter.element)) {
+				uint8 path_additions = footpath_element_get_path_scenery_index(iter.element);
+				RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_PATH_BITS][path_additions] |= 1;
 			}
 			break;
 		case MAP_ELEMENT_TYPE_SCENERY:

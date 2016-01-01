@@ -483,7 +483,7 @@ static void cheat_fix_vandalism()
 		if (map_element_get_type(it.element) != MAP_ELEMENT_TYPE_PATH)
 			continue;
 
-		if ((it.element->properties.path.additions & 0x0F) == 0)
+		if (!footpath_element_has_path_scenery(it.element))
 			continue;
 
 		it.element->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
@@ -511,10 +511,10 @@ static void cheat_remove_litter()
 		if (map_element_get_type(it.element) != MAP_ELEMENT_TYPE_PATH)
 			continue;
 
-		if ((it.element->properties.path.additions & 0x0F) == 0)
+		if (!footpath_element_has_path_scenery(it.element))
 			continue;
 
-		sceneryEntry = g_pathBitSceneryEntries[(it.element->properties.path.additions & 0xF) - 1];
+		sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(it.element)];
 		if(sceneryEntry->path_bit.var_06 & (1 << 0))
 			it.element->properties.path.addition_status = 0xFF;
 

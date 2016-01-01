@@ -28,6 +28,7 @@
 #include "map.h"
 #include "park.h"
 #include "scenery.h"
+#include "footpath.h"
 
 void scenery_increase_age(int x, int y, rct_map_element *mapElement);
 
@@ -40,10 +41,9 @@ void scenery_update_tile(int x, int y)
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY) {
 			scenery_update_age(x, y, mapElement);
 		} else if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
-			int additions = mapElement->properties.path.additions & 0x0F;
-			if (additions != 0 && !(mapElement->properties.path.additions & 0x80)) {
+			if (footpath_element_has_path_scenery(mapElement) && !footpath_element_path_scenery_is_ghost(mapElement)) {
 				rct_scenery_entry *sceneryEntry;
-				sceneryEntry = g_pathBitSceneryEntries[additions - 1];
+				sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(mapElement)];
 				if (sceneryEntry->path_bit.var_06 & PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER) {
 					jumping_fountain_begin(JUMPING_FOUNTAIN_TYPE_WATER, x, y, mapElement);
 				} else if (sceneryEntry->path_bit.var_06 & PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW) {

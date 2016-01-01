@@ -291,7 +291,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		return info->type;
 
 	case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
-		sceneryEntry = g_pathBitSceneryEntries[(mapElement->properties.path.additions & 0x0F) - 1];
+		sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(mapElement)];
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
 		if (mapElement->flags & 0x20) {
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = 3124;

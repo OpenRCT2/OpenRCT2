@@ -26,30 +26,75 @@
 #include "../world/scenery.h"
 #include "../world/map.h"
 #include "../world/footpath.h"
+#include "../sprites.h"
 
 enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
+	WIDX_LIST,
 	WIDX_CORRUPT,
-	WIDX_CONTENT_PANEL,
-	WIDX_SCROLL
+	WIDX_REMOVE,
+	WIDX_MOVE_DOWN,
+	WIDX_MOVE_UP,
+	WIDX_COLUMN_TYPE,
+	WIDX_COLUMN_BASEHEIGHT,
+	WIDX_COLUMN_CLEARANCEHEIGHT,
+	WIDX_COLUMN_GHOSTFLAG,
+	WIDX_COLUMN_BROKENFLAG,
+	WIDX_COLUMN_LASTFLAG,
 };
 
-#define WW 500
-#define WH 400
+#define WW 400
+#define WH 200
+#define MIN_WW WW
+#define MAX_WW WW
 #define MIN_WH 150
 #define MAX_WH 800
 
+#define BW (WW - 5) // Button's right side
+#define BX (BW - 23) // Button's left side
+#define BY 17 // Button's Top
+#define BH (BY + 23) // Button's Bottom
+#define BS 24
+
+#define SCROLL_BOTTOM_OFFSET 15
+#define LIST_ITEM_HEIGHT 11
+
+// Column offsets
+#define COL_X_TYPE 3 // Type
+#define COL_X_BH   (COL_X_TYPE + 300) // Base height
+#define COL_X_CH   (COL_X_BH + 20) // Clearance height
+#define COL_X_GF   (COL_X_CH + 20) // Ghost flag
+#define COL_X_BF   (COL_X_GF + 12) // Broken flag
+#define COL_X_LF   (COL_X_BF + 12) // Last for tile flag
+
 rct_widget window_tile_inspector_widgets[] = {
-	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		0x0FFFFFFFF,						STR_NONE },				// panel / background
-	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			STR_TILE_INSPECTOR_TITLE,			STR_WINDOW_TITLE_TIP },	// title bar
-	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,			STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_CLOSEBOX,			1,	WW - 150,	WW - 3,	18,		39,			STR_INSERT_CORRUPT,					STR_INSERT_CORRUPT_TIP },
-	{ WWT_RESIZE,			1,	0,			WW - 1,	43,		WH - 1,		0x0FFFFFFFF,						STR_NONE },				// content panel
-	{ WWT_SCROLL,			1,	3,			WW - 3,	65,		WH - 30,	2,									STR_NONE },				// scroll area
+	{ WWT_FRAME,		0,	0,				WW - 1,				0,				WH - 1,		0x0FFFFFFFF,				STR_NONE },				// panel / background
+	{ WWT_CAPTION,		0,	1,				WW - 2,				1,				14,			STR_TILE_INSPECTOR_TITLE,	STR_WINDOW_TITLE_TIP },	// title bar
+	{ WWT_CLOSEBOX,		0,	WW - 13,		WW - 3,				2,				13,			STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },	// close x button
+
+	// Map element list
+	{ WWT_SCROLL,		1,	3,				WW - 4,				57,				WH - SCROLL_BOTTOM_OFFSET,	2,			STR_NONE },				// scroll area
+
+	// Buttons
+	{ WWT_FLATBTN,		1,	BX,				BW,					BY,				BH,			SPR_MAP,		STR_INSERT_CORRUPT_TIP }, // Insert corrupt button
+	{ WWT_FLATBTN,		1,  BX - BS * 1,	BW - BS * 1,		BY,				BH,			SPR_DEMOLISH,	5607 }, // Remove button
+	{ WWT_CLOSEBOX, 	1,	BX - BS * 2,	BW - BS * 2,		BY,				BY + 11, 	5375,			5617 }, // Move down
+	{ WWT_CLOSEBOX, 	1,	BX - BS * 2, 	BW - BS * 2,		BH - 11,		BH, 		5376,			5618 }, // Move up
+
+	// Column headers
+	{ WWT_13,			1, COL_X_TYPE,	COL_X_BH - 1, 	42,		42 + 13,	STR_NONE,	STR_NONE }, // Type
+	{ WWT_13,			1, COL_X_BH,	COL_X_CH - 1, 	42,		42 + 13,	STR_NONE,	STR_TILE_INSPECTOR_BASE_HEIGHT }, // Base height
+	{ WWT_13,			1, COL_X_CH,	COL_X_GF - 1, 	42,		42 + 13,	STR_NONE,	STR_TILE_INSPECTOR_CLEARANCE_HEIGHT }, // Clearance height
+	{ WWT_13,			1, COL_X_GF,	COL_X_BF - 1, 	42,		42 + 13,	STR_NONE,	STR_TILE_INSPECTOR_FLAG_GHOST }, // Ghost flag
+	{ WWT_13,			1, COL_X_BF,	COL_X_LF - 1, 	42,		42 + 13,	STR_NONE,	STR_TILE_INSPECTOR_FLAG_BROKEN }, // Broken flag
+	{ WWT_13,			1, COL_X_LF,	WW - 3,			42,		42 + 13,	STR_NONE,	STR_TILE_INSPECTOR_FLAG_LAST }, // Last of tile flag
+
 	{ WIDGETS_END },
 };
+
+static sint16 window_tile_inspector_highlighted_index = -1;
 
 static int window_tile_inspector_tile_x;
 static int window_tile_inspector_tile_y;
@@ -58,14 +103,18 @@ static int window_tile_inspector_item_count;
 static void window_tile_inspector_close(rct_window *w);
 static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex);
 static void window_tile_inspector_resize(rct_window *w);
+static void window_title_editor_update(rct_window *w);
 static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, int x, int y);
 static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int x, int y);
 static void window_tile_inspector_tool_abort(rct_window *w, int widgetIndex);
 static void window_tile_inspector_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_tile_inspector_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
 static void window_tile_inspector_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
 static void window_tile_inspector_invalidate(rct_window *w);
 static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
+
+static void window_tile_inspector_auto_set_buttons(rct_window *w);
 
 static rct_window_event_list window_tile_inspector_events = {
 	window_tile_inspector_close,
@@ -74,7 +123,7 @@ static rct_window_event_list window_tile_inspector_events = {
 	NULL,
 	NULL,
 	NULL,
-	NULL,
+	window_title_editor_update,
 	NULL,
 	NULL,
 	window_tile_inspector_tool_update,
@@ -84,7 +133,7 @@ static rct_window_event_list window_tile_inspector_events = {
 	window_tile_inspector_tool_abort,
 	NULL,
 	window_tile_inspector_scrollgetsize,
-	NULL,
+	window_tile_inspector_scrollmousedown,
 	NULL,
 	window_tile_inspector_scrollmouseover,
 	NULL,
@@ -118,16 +167,17 @@ void window_tile_inspector_open()
 	);
 	window->widgets = window_tile_inspector_widgets;
 	window->enabled_widgets = (1 << WIDX_CLOSE);
-	window->disabled_widgets = (1 << WIDX_CORRUPT);
+	window->disabled_widgets = (1 << WIDX_CORRUPT) | (1 << WIDX_MOVE_UP) | (1 << WIDX_MOVE_DOWN) | (1 << WIDX_REMOVE);
 
 	window_init_scroll_widgets(window);
 	window->colours[0] = 7;
 	window->colours[1] = 7;
 	window->colours[2] = 7;
-	window->min_width = WW;
+	window->min_width = MIN_WW;
 	window->min_height = MIN_WH;
-	window->max_width = WW;
+	window->max_width = MAX_WW;
 	window->max_height = MAX_WH;
+	window->selected_list_item = -1;
 
 	window_tile_inspector_tile_x = -1;
 	window_tile_inspector_tile_y = -1;
@@ -151,6 +201,50 @@ void corrupt_element(int x, int y) {
 	mapElement->type = (8 << 2);
 }
 
+void remove_element(int index)
+{
+	assert(index < window_tile_inspector_item_count);
+	rct_map_element *mapElement = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
+	mapElement += index;
+	map_element_remove(mapElement);
+	window_tile_inspector_item_count--;
+}
+
+// Swap element with its parent
+void swap_elements(sint16 first, sint16 second)
+{
+	rct_map_element *mapElement;
+	rct_map_element *firstElement = NULL;
+	rct_map_element *secondElement = NULL;
+	mapElement = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
+
+	// swap_elements shouldn't be called when there is only one element on the tile
+	assert(!map_element_is_last_for_tile(mapElement));
+
+	// Search for the elements
+	sint16 i = 0;
+	do {
+		if (i == first) firstElement = mapElement;
+		if (i == second) secondElement = mapElement;
+		i++;
+
+		// Check if both elements have been found
+		if (firstElement != NULL && secondElement != NULL)
+			break;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	// Swap their memory
+	rct_map_element temp = *firstElement;
+	*firstElement = *secondElement;
+	*secondElement = temp;
+
+	// Swap the 'last map element for tile' flag if either one of them was last
+	if (map_element_is_last_for_tile(firstElement) || map_element_is_last_for_tile(secondElement)) {
+		firstElement->flags ^= MAP_ELEMENT_FLAG_LAST_TILE;
+		secondElement->flags ^= MAP_ELEMENT_FLAG_LAST_TILE;
+	}
+}
+
 static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 {
 	switch (widgetIndex) {
@@ -159,9 +253,28 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_CORRUPT:
 		corrupt_element(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
-		window_tile_inspector_item_count++;
 		w->scrolls[0].v_top = 0;
-		window_invalidate(w);
+		w->selected_list_item = window_tile_inspector_item_count++;
+		window_tile_inspector_auto_set_buttons(w);
+		widget_invalidate(w, WIDX_LIST);
+		break;
+	case WIDX_REMOVE:
+		remove_element(w->selected_list_item);
+		w->selected_list_item = -1;
+		window_tile_inspector_auto_set_buttons(w);
+		widget_invalidate(w, WIDX_LIST);
+		break;
+	case WIDX_MOVE_DOWN:
+		swap_elements(w->selected_list_item, w->selected_list_item + 1);
+		w->selected_list_item++;
+		window_tile_inspector_auto_set_buttons(w);
+		widget_invalidate(w, WIDX_LIST);
+		break;
+	case WIDX_MOVE_UP:
+		swap_elements(w->selected_list_item - 1, w->selected_list_item);
+		w->selected_list_item--;
+		window_tile_inspector_auto_set_buttons(w);
+		widget_invalidate(w, WIDX_LIST);
 		break;
 	}
 }
@@ -177,6 +290,16 @@ static void window_tile_inspector_resize(rct_window *w)
 	if (w->height < w->min_height) {
 		window_invalidate(w);
 		w->height = w->min_height;
+	}
+}
+
+static void window_title_editor_update(rct_window *w)
+{
+	// Check if the mouse is hovering over the list
+	if (!widget_is_highlighted(w, WIDX_LIST))
+	{
+		window_tile_inspector_highlighted_index = -1;
+		widget_invalidate(w, WIDX_LIST);
 	}
 }
 
@@ -229,8 +352,13 @@ static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int 
 
 	window_tile_inspector_item_count = numItems;
 
+	// Enable 'insert corrupt element' button
 	w->enabled_widgets |= (1 << WIDX_CORRUPT);
 	w->disabled_widgets &= ~(1ULL << WIDX_CORRUPT);
+	// undo selection and buttons affecting it
+	w->selected_list_item = -1;
+	w->disabled_widgets |= (1ULL << WIDX_MOVE_UP) | (1ULL << WIDX_MOVE_DOWN) | (1ULL << WIDX_REMOVE);
+	w->enabled_widgets &= ~((1ULL << WIDX_MOVE_UP) | (1ULL << WIDX_MOVE_DOWN) | (1ULL << WIDX_REMOVE));
 
 	w->scrolls[0].v_top = 0;
 	window_invalidate(w);
@@ -244,12 +372,63 @@ static void window_tile_inspector_tool_abort(rct_window *w, int widgetIndex)
 static void window_tile_inspector_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
 	*width = WW - 30;
-	*height = window_tile_inspector_item_count * 11;
+	*height = window_tile_inspector_item_count * LIST_ITEM_HEIGHT;
+}
+
+static void window_tile_inspector_auto_set_buttons(rct_window *w)
+{
+	// Remove button
+	if (w->selected_list_item == -1) { // Check if anything is selected
+		w->disabled_widgets |= (1ULL << WIDX_REMOVE); 
+		w->enabled_widgets &= ~(1ULL << WIDX_REMOVE);
+	} else { // Nothing is selected
+		w->disabled_widgets &= ~(1ULL << WIDX_REMOVE);
+		w->enabled_widgets |= (1ULL << WIDX_REMOVE);
+	}
+	widget_invalidate(w, WIDX_REMOVE);
+
+	// Move Up button
+	if (w->selected_list_item <= 0) { // Top element in list, or -1
+		w->disabled_widgets |= (1ULL << WIDX_MOVE_UP);
+		w->enabled_widgets &= ~(1ULL << WIDX_MOVE_UP);
+	} else { // Not the top element in the list
+		w->enabled_widgets |= (1ULL << WIDX_MOVE_UP);
+		w->disabled_widgets &= ~(1ULL << WIDX_MOVE_UP);
+	}
+	widget_invalidate(w, WIDX_MOVE_UP);
+
+	// Move Down button
+	if (w->selected_list_item == window_tile_inspector_item_count - 1 || w->selected_list_item == -1) { // Bottom element in list, or -1
+		w->disabled_widgets |= (1ULL << WIDX_MOVE_DOWN);
+		w->enabled_widgets &= ~(1ULL << WIDX_MOVE_DOWN);
+	} else { // Not the bottom element in the list
+		w->enabled_widgets |= (1ULL << WIDX_MOVE_DOWN);
+		w->disabled_widgets &= ~(1ULL << WIDX_MOVE_DOWN);
+	}
+	widget_invalidate(w, WIDX_MOVE_DOWN);
+}
+
+static void window_tile_inspector_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
+{
+	// Because the list items are displayed in reverse order, subtract the number from the amount of elements
+	sint16 index = window_tile_inspector_item_count - (y - 1) / LIST_ITEM_HEIGHT - 1;
+	if (index < 0 || index >= window_tile_inspector_item_count)
+		return;
+	w->selected_list_item = index;
+
+	// Enable/disable buttons
+	window_tile_inspector_auto_set_buttons(w);
 }
 
 static void window_tile_inspector_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
 {
-	window_invalidate(w);
+	sint16 index = window_tile_inspector_item_count - (y - 1) / LIST_ITEM_HEIGHT - 1;
+	if (index < 0 || index >= window_tile_inspector_item_count)
+		window_tile_inspector_highlighted_index = -1;
+	else
+		window_tile_inspector_highlighted_index = index;
+
+	widget_invalidate(w, WIDX_LIST);
 }
 
 static void window_tile_inspector_invalidate(rct_window *w)
@@ -258,28 +437,53 @@ static void window_tile_inspector_invalidate(rct_window *w)
 	window_tile_inspector_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 	window_tile_inspector_widgets[WIDX_CLOSE].left = w->width - 13;
 	window_tile_inspector_widgets[WIDX_CLOSE].right = w->width - 3;
-	window_tile_inspector_widgets[WIDX_CONTENT_PANEL].right = w->width - 1;
-	window_tile_inspector_widgets[WIDX_CONTENT_PANEL].bottom = w->height - 1;
-	window_tile_inspector_widgets[WIDX_SCROLL].bottom = w->height - 30;
+	window_tile_inspector_widgets[WIDX_TITLE].right = w->width - 2;
+	window_tile_inspector_widgets[WIDX_LIST].right = w->width - 4;
+	window_tile_inspector_widgets[WIDX_LIST].bottom = w->height - SCROLL_BOTTOM_OFFSET;
+	window_tile_inspector_widgets[WIDX_COLUMN_LASTFLAG].right = w->width - 3;
 }
 
 static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	int x, y;
-	char buffer[256];
-
 	window_draw_widgets(w, dpi);
 
-	x = w->x + 20;
-	y = w->y + 25;
+	char buffer[256];
+	int x = w->x /*+ w->widgets[WIDX_LIST].left*/ + 3;
+	int y = w->y + w->height - 13;
 
-	if (window_tile_inspector_tile_x == -1) {
+	// Set medium font size
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
 
-		// No tile selected
+	// Draw column headers
+	rct_widget *widget;
+	if ((widget= &w->widgets[WIDX_COLUMN_TYPE])->type != WWT_EMPTY) {
+		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_ELEMENT_TYPE, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+	}
+	if ((widget = &w->widgets[WIDX_COLUMN_BASEHEIGHT])->type != WWT_EMPTY)
+	{
+		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+	}
+	if ((widget = &w->widgets[WIDX_COLUMN_CLEARANCEHEIGHT])->type != WWT_EMPTY)
+	{
+		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+	}
+	if ((widget = &w->widgets[WIDX_COLUMN_GHOSTFLAG])->type != WWT_EMPTY)
+	{
+		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_FLAG_GHOST_SHORT, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+	}
+	if ((widget = &w->widgets[WIDX_COLUMN_BROKENFLAG])->type != WWT_EMPTY)
+	{
+		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_FLAG_BROKEN_SHORT, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+	}
+	if ((widget = &w->widgets[WIDX_COLUMN_LASTFLAG])->type != WWT_EMPTY)
+	{
+		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_FLAG_LAST_SHORT, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+	}
+
+	// Draw coordinates
+	if (window_tile_inspector_tile_x == -1) { // No tile selected
 		gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_CHOOSE_MSG, NULL, 12, x, y);
-
 	} else {
-
 		sprintf(
 			buffer,
 			"X: %d, Y: %d",
@@ -288,21 +492,14 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		);
 
 		gfx_draw_string(dpi, buffer, 12, x, y);
-
 	}
-
-	y += 25;
-
-	draw_string_left_underline(dpi, STR_TILE_INSPECTOR_ELEMENT_TYPE, NULL, 12, x, y);
-	draw_string_left_underline(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT, NULL, 12, x + 200, y);
-	draw_string_left_underline(dpi, STR_TILE_INSPECTOR_CLEARANGE_HEIGHT, NULL, 12, x + 280, y);
-	draw_string_left_underline(dpi, STR_TILE_INSPECTOR_FLAGS, NULL, 12, x + 390, y);
-
 }
 
 static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	int x = 15, y = 11 * (window_tile_inspector_item_count - 1), i = 0;
+	int x = 3;
+	int y = LIST_ITEM_HEIGHT * (window_tile_inspector_item_count - 1);
+	int i = 0;
 	char buffer[256];
 
 	if (window_tile_inspector_tile_x == -1)
@@ -310,15 +507,21 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 
 	rct_map_element *element = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
 
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
 	do {
-
 		int type = map_element_get_type(element);
 		char *type_name;
 		int base_height = element->base_height;
 		int clearance_height = element->clearance_height;
 
-		if ((i & 1) != 0)
-			gfx_fill_rect(dpi, x - 15, y, x + WW - 20, y + 11, ColourMapA[w->colours[1]].lighter | 0x1000000);
+		// Fill colour for current list element
+		const int list_width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
+		if (i == w->selected_list_item) // Currently selected element
+			gfx_fill_rect(dpi, 0, y, list_width, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].darker | 0x1000000);
+		else if (i == window_tile_inspector_highlighted_index) // Hovering
+			gfx_fill_rect(dpi, 0, y, list_width, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark | 0x1000000);
+		else if ((i & 1) != 0) // odd / even check
+			gfx_fill_rect(dpi, 0, y, list_width, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].lighter | 0x1000000);
 
 		switch (type) {
 			case MAP_ELEMENT_TYPE_SURFACE:
@@ -332,28 +535,35 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				break;
 			case MAP_ELEMENT_TYPE_PATH:
 			{
-				// TODO: use these
-				uint8 pathType, pathDirection;
-				pathType = element->properties.path.type >> 2;
-				pathDirection = element->properties.path.type & 3;
+				const uint8 pathType = footpath_element_get_type(element);
+				const uint8 pathHasScenery = footpath_element_has_path_scenery(element);
+				const uint8 pathAdditionType = footpath_element_get_path_scenery_index(element);
 				if (footpath_element_is_queue(element)) {
 					sprintf(
-						buffer,
-						"Queue for (%d)",
-						element->properties.path.ride_index
+						buffer, "Queue (%s)%s%s for (%d)",
+						language_get_string(g_pathSceneryEntries[pathType]->name), // Path name
+						pathHasScenery ? " with " : "", // Adds " with " when there is something on the path
+						pathHasScenery ? language_get_string(g_pathBitSceneryEntries[pathAdditionType]->name) : "", // Path addition name
+						element->properties.path.ride_index // Ride index for queue
 					);
 				} else {
 					sprintf(
-						buffer,
-						"Path (%s)",
-						"" // TODO: queue? has bins? has benches? e.t.c.
+						buffer, "Path (%s)%s%s",
+						language_get_string(g_pathSceneryEntries[pathType]->name), // Path name
+						pathHasScenery ? " with " : "", // Adds " with " when there is something on the path
+						pathHasScenery ? language_get_string(g_pathBitSceneryEntries[pathAdditionType]->name) : "" // Path addition name
 					);
 				}
 			}
 			type_name = buffer;
 			break;
 			case MAP_ELEMENT_TYPE_TRACK:
-				type_name = "Track"; // TODO: show type?
+				sprintf(
+					buffer,
+					"Track (%s)",
+					language_get_string(2 + GET_RIDE(element->properties.track.ride_index)->type)
+				);
+				type_name = buffer;
 				break;
 			case MAP_ELEMENT_TYPE_SCENERY:
 				sprintf(
@@ -397,24 +607,19 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				type_name = buffer;
 		}
 
-		gfx_draw_string(dpi, type_name, 12, x, y);
-		gfx_draw_string_left(dpi, 5182, &base_height, 12, x + 200, y);
-		gfx_draw_string_left(dpi, 5182, &clearance_height, 12, x + 280, y);
+		// Undo relative scroll offset, but keep the 3 pixel padding
+		x = -w->widgets[WIDX_LIST].left;
+		const bool ghost = (element->flags & MAP_ELEMENT_FLAG_GHOST) != 0;
+		const bool broken = (element->flags & MAP_ELEMENT_FLAG_BROKEN) != 0;
+		const bool last = (element->flags & MAP_ELEMENT_FLAG_LAST_TILE) != 0;
+		gfx_draw_string(dpi, type_name, 12, x + COL_X_TYPE + 3, y); // 3px padding
+		gfx_draw_string_left(dpi, 5182, &base_height, 12, x + COL_X_BH, y);
+		gfx_draw_string_left(dpi, 5182, &clearance_height, 12, x + COL_X_CH, y);
+		if (ghost) gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1], x + COL_X_GF, y);
+		if (broken) gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1], x + COL_X_BF, y);
+		if (last) gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1], x + COL_X_LF, y);
 
-		uint8 flags = element->flags;
-		char j;
-
-		buffer[8] = '\0';
-
-		for (j = 7; j >= 0; j--, flags >>= 1) {
-			buffer[j] = flags & 1 ? '1' : '0';
-		}
-
-		gfx_draw_string(dpi, buffer, 12, x + 390, y);
-
-		y -= 11;
+		y -= LIST_ITEM_HEIGHT;
 		i++;
-
 	} while (!map_element_is_last_for_tile(element++));
-
 }
