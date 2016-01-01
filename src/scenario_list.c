@@ -39,6 +39,7 @@ static void scenario_list_add(const utf8 *path, uint64 timestamp);
 static void scenario_list_sort();
 static int scenario_list_sort_by_name(const void *a, const void *b);
 static int scenario_list_sort_by_index(const void *a, const void *b);
+static void scenario_translate(scenario_index_entry *scenarioEntry, const rct_object_entry *stexObjectEntry);
 
 static bool scenario_scores_load();
 static void scenario_scores_legacy_get_path(utf8 *outPath);
@@ -181,31 +182,34 @@ static void scenario_list_add(const utf8 *path, uint64 timestamp)
 		}
 	}
 
-	// Translate scenario name and details
+	scenario_translate(newEntry, &s6Info.entry);
+}
+
+static void scenario_translate(scenario_index_entry *scenarioEntry, const rct_object_entry *stexObjectEntry)
+{
 	utf8 filenameWithoutExtension[MAX_PATH];
-	safe_strncpy(filenameWithoutExtension, filename, sizeof(filenameWithoutExtension));
+	safe_strncpy(filenameWithoutExtension, scenarioEntry->path, sizeof(filenameWithoutExtension));
 	path_remove_extension(filenameWithoutExtension);
 	
 	rct_string_id localisedStringIds[3];
-	if (language_get_localised_scenario_strings(filename, localisedStringIds)) {
+	if (language_get_localised_scenario_strings(filenameWithoutExtension, localisedStringIds)) {
 		if (localisedStringIds[0] != (rct_string_id)STR_NONE) {
-			safe_strncpy(newEntry->name, language_get_string(localisedStringIds[0]), 64);
+			safe_strncpy(scenarioEntry->name, language_get_string(localisedStringIds[0]), 64);
 		}
 		if (localisedStringIds[2] != (rct_string_id)STR_NONE) {
-			safe_strncpy(newEntry->details, language_get_string(localisedStringIds[2]), 256);
+			safe_strncpy(scenarioEntry->details, language_get_string(localisedStringIds[2]), 256);
 		}
 	} else {
 		// Checks for a scenario string object (possibly for localisation)
-		if ((s6Info.entry.flags & 0xFF) != 255) {
-			if (object_get_scenario_text(&s6Info.entry)) {
+		if ((stexObjectEntry->flags & 0xFF) != 255) {
+			if (object_get_scenario_text((rct_object_entry*)stexObjectEntry)) {
 				rct_stex_entry* stex_entry = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, rct_stex_entry*);
-				format_string(newEntry->name, stex_entry->scenario_name, NULL);
-				format_string(newEntry->details, stex_entry->details, NULL);
+				format_string(scenarioEntry->name, stex_entry->scenario_name, NULL);
+				format_string(scenarioEntry->details, stex_entry->details, NULL);
 				object_free_scenario_text();
 			}
 		}
 	}
-
 }
 
 void scenario_list_dispose()
