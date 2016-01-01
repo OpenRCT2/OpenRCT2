@@ -221,21 +221,12 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 		window_loadsave_populate_list(w, includeNewItem, path, ".sc6");
 		break;
 	case LOADSAVETYPE_SCENARIO:
-		/*
-		Uncomment when user scenarios are separated
-
 		platform_get_user_directory(path, "scenario");
 		if (!platform_ensure_directory_exists(path)) {
-		log_error("Unable to create scenarios directory.");
-		window_close(w);
-		return NULL;
+			log_error("Unable to create scenarios directory.");
+			window_close(w);
+			return NULL;
 		}
-		*/
-
-		safe_strncpy(path, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), MAX_PATH);
-		ch = strchr(path, '*');
-		if (ch != NULL)
-			*ch = 0;
 
 		window_loadsave_populate_list(w, includeNewItem, path, ".sc6");
 		break;
