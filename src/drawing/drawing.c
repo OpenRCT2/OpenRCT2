@@ -485,7 +485,7 @@ void redraw_rain()
 void gfx_invalidate_pickedup_peep()
 {
 	if (RCT2_GLOBAL(0x009ABDF2, uint32) != 0) {
-		int sprite = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32);
+		int sprite = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, sint32);
 		if (sprite != -1) {
 			sprite = sprite & 0x7FFFF;
 
@@ -506,10 +506,10 @@ void gfx_draw_pickedup_peep()
 		return;
 
 	// Draw picked-up peep
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32) != 0xFFFFFFFF) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, uint32) != 0xFFFFFFFF) {
 		gfx_draw_sprite(
 			(rct_drawpixelinfo*)RCT2_ADDRESS_SCREEN_DPI,
-			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32),
+			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, uint32),
 			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, sint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16), 0
 		);

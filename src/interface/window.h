@@ -262,10 +262,16 @@ typedef struct rct_window {
 		error_variables error;
 	};
 	sint16 page;					// 0x48A
-	sint16 var_48C;
+	union {
+		sint16 picked_peep_old_x;   // 0x48C staff/guest window: peep x gets set to 0x8000 on pickup, this is the old value
+		sint16 var_48C;
+	};
 	uint16 frame_no;				// 0x48E updated every tic for motion in windows sprites
 	uint16 list_information_type;	// 0x490 0 for none, Used as current position of marquee in window_peep
-	sint16 var_492;
+	union {
+		sint16 picked_peep_frame;   // 0x492 Animation frame of picked peep in staff window and guest window
+		sint16 var_492;
+	};
 	union {							// 0x494
 		uint32 highlighted_item;
 		uint16 ride_colour;

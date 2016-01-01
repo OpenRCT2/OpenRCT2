@@ -109,7 +109,8 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 
 	int newStaffId = i;
 
-	int _eax, _ebx, _ecx = _cx, _edx;
+	int _eax, _ebx, _ecx = _cx;
+	rct_sprite_bounds *spriteBounds;
 	_ebx = _bl;
 
 	rct_peep* newPeep = &(create_sprite(_bl)->peep);
@@ -129,7 +130,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		newPeep->sprite_identifier = 1;
 		newPeep->window_invalidate_flags = 0;
 		newPeep->action = PEEP_ACTION_NONE_2;
-		newPeep->var_6D = 0;
+		newPeep->special_sprite = 0;
 		newPeep->action_sprite_image_offset = 0;
 		newPeep->no_action_frame_no = 0;
 		newPeep->action_sprite_type = 0;
@@ -181,10 +182,10 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		newPeep->name_string_idx = staff_type + 0x300;
 		newPeep->sprite_type = _eax;
 
-		_edx = RCT2_ADDRESS(0x0098270C, uint32)[_eax * 2];
-		newPeep->sprite_width = *((uint8*)_edx);
-		newPeep->sprite_height_negative = *((uint8*)(_edx + 1));
-		newPeep->sprite_height_positive = *((uint8*)(_edx + 2));
+		spriteBounds = g_sprite_entries[_eax].sprite_bounds;
+		newPeep->sprite_width = spriteBounds->sprite_width;
+		newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
+		newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;
 
 		if ((gConfigGeneral.auto_staff_placement != 0) != ((SDL_GetModState() & KMOD_SHIFT) != 0)) {
 			newPeep->state = PEEP_STATE_FALLING;

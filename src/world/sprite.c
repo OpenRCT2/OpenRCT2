@@ -29,6 +29,8 @@
 
 rct_sprite* g_sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
 
+rct_sprite_entry* g_sprite_entries = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_ENTRIES, rct_sprite_entry);
+
 static uint16 sprite_get_first_in_quadrant(int x, int y)
 {
 	int offset = ((x & 0x1FE0) << 3) | (y >> 5);
