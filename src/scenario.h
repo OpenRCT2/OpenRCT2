@@ -402,7 +402,7 @@ enum {
 	SCENARIO_CATEGORY_CHALLENGING,
 	SCENARIO_CATEGORY_EXPERT,
 	SCENARIO_CATEGORY_REAL,
-	SCENARIO_CATEGORY_BUILDYOUROWN
+	SCENARIO_CATEGORY_OTHER
 };
 
 enum {
@@ -446,6 +446,12 @@ typedef struct {
 	utf8 details[256];
 } scenario_index_entry;
 
+typedef struct {
+	uint8 source;
+	sint32 index;
+	uint8 category;
+} source_desc;
+
 // Scenario list
 extern int gScenarioListCount;
 extern int gScenarioListCapacity;
@@ -478,7 +484,7 @@ void scenario_success();
 void scenario_success_submit_name(const char *name);
 void scenario_autosave_check();
 
-bool scenario_get_index_and_source(const utf8 *name, scenario_source *source, sint32 *index);
+bool scenario_get_source_desc(const utf8 *name, source_desc *outDesc);
 void scenario_normalise_name(utf8 *name);
 
 #endif
