@@ -37,7 +37,12 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	WIDX_REMOVE,
 	WIDX_MOVE_DOWN,
 	WIDX_MOVE_UP,
-	WIDX_COLUMN_LAST = 13,
+	WIDX_COLUMN_TYPE,
+	WIDX_COLUMN_BASEHEIGHT,
+	WIDX_COLUMN_CLEARANCEHEIGHT,
+	WIDX_COLUMN_GHOSTFLAG,
+	WIDX_COLUMN_BROKENFLAG,
+	WIDX_COLUMN_LASTFLAG,
 };
 
 #define WW 400
@@ -57,7 +62,7 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 #define LIST_ITEM_HEIGHT 11
 
 // Column offsets
-#define COL_X_TYPE 2 // Type
+#define COL_X_TYPE 3 // Type
 #define COL_X_BH   (COL_X_TYPE + 300) // Base height
 #define COL_X_CH   (COL_X_BH + 20) // Clearance height
 #define COL_X_GF   (COL_X_CH + 20) // Ghost flag
@@ -70,21 +75,21 @@ rct_widget window_tile_inspector_widgets[] = {
 	{ WWT_CLOSEBOX,		0,	WW - 13,		WW - 3,				2,				13,			STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },	// close x button
 
 	// Map element list
-	{ WWT_SCROLL,		1,	2,				WW - 3,				57,				WH - SCROLL_BOTTOM_OFFSET,	2,							STR_NONE },				// scroll area
+	{ WWT_SCROLL,		1,	3,				WW - 4,				57,				WH - SCROLL_BOTTOM_OFFSET,	2,			STR_NONE },				// scroll area
 
 	// Buttons
 	{ WWT_FLATBTN,		1,	BX,				BW,					BY,				BH,			SPR_MAP,		STR_INSERT_CORRUPT_TIP }, // Insert corrupt button
-	{ WWT_FLATBTN,		1,  BX - BS * 1,	BW - BS * 1,		BY,				BH,			SPR_DEMOLISH,	5607 },					// Remove button
-	{ WWT_CLOSEBOX, 	1,	BX - BS * 2,	BW - BS * 2,		BY,				BY + 11, 	5375,			5390 },					// Move down
-	{ WWT_CLOSEBOX, 	1,	BX - BS * 2, 	BW - BS * 2,		BH - 11,		BH, 		5376,			5391 },					// Move up
+	{ WWT_FLATBTN,		1,  BX - BS * 1,	BW - BS * 1,		BY,				BH,			SPR_DEMOLISH,	5607 }, // Remove button
+	{ WWT_CLOSEBOX, 	1,	BX - BS * 2,	BW - BS * 2,		BY,				BY + 11, 	5375,			5390 }, // Move down
+	{ WWT_CLOSEBOX, 	1,	BX - BS * 2, 	BW - BS * 2,		BH - 11,		BH, 		5376,			5391 }, // Move up
 
 	// Column headers
-	{ WWT_13,			1, COL_X_TYPE,	COL_X_BH - 1, 	42,		42 + 13,	STR_TILE_INSPECTOR_ELEMENT_TYPE,			STR_NONE },
-	{ WWT_13,			1, COL_X_BH,	COL_X_CH - 1, 	42,		42 + 13,	STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT,		STR_TILE_INSPECTOR_BASE_HEIGHT },
-	{ WWT_13,			1, COL_X_CH,	COL_X_GF - 1, 	42,		42 + 13,	STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT,	STR_TILE_INSPECTOR_CLEARANCE_HEIGHT },
-	{ WWT_13,			1, COL_X_GF,	COL_X_BF - 1, 	42,		42 + 13,	STR_TILE_INSPECTOR_FLAG_GHOST_SHORT,		STR_TILE_INSPECTOR_FLAG_GHOST },
-	{ WWT_13,			1, COL_X_BF,	COL_X_LF - 1, 	42,		42 + 13,	STR_TILE_INSPECTOR_FLAG_BROKEN_SHORT,		STR_TILE_INSPECTOR_FLAG_BROKEN },
-	{ WWT_13,			1, COL_X_LF,	WW - 3,			42,		42 + 13,	STR_TILE_INSPECTOR_FLAG_LAST_SHORT,			STR_TILE_INSPECTOR_FLAG_LAST },
+	{ WWT_13,			1, COL_X_TYPE,	COL_X_BH - 1, 	42,		42 + 13,	STR_NONE,	STR_NONE }, // Type
+	{ WWT_13,			1, COL_X_BH,	COL_X_CH - 1, 	42,		42 + 13,	STR_NONE,	STR_TILE_INSPECTOR_BASE_HEIGHT }, // Base height
+	{ WWT_13,			1, COL_X_CH,	COL_X_GF - 1, 	42,		42 + 13,	STR_NONE,	STR_TILE_INSPECTOR_CLEARANCE_HEIGHT }, // Clearance height
+	{ WWT_13,			1, COL_X_GF,	COL_X_BF - 1, 	42,		42 + 13,	STR_NONE,	STR_TILE_INSPECTOR_FLAG_GHOST }, // Ghost flag
+	{ WWT_13,			1, COL_X_BF,	COL_X_LF - 1, 	42,		42 + 13,	STR_NONE,	STR_TILE_INSPECTOR_FLAG_BROKEN }, // Broken flag
+	{ WWT_13,			1, COL_X_LF,	WW - 3,			42,		42 + 13,	STR_NONE,	STR_TILE_INSPECTOR_FLAG_LAST }, // Last of tile flag
 
 	{ WIDGETS_END },
 };
@@ -433,9 +438,9 @@ static void window_tile_inspector_invalidate(rct_window *w)
 	window_tile_inspector_widgets[WIDX_CLOSE].left = w->width - 13;
 	window_tile_inspector_widgets[WIDX_CLOSE].right = w->width - 3;
 	window_tile_inspector_widgets[WIDX_TITLE].right = w->width - 2;
-	window_tile_inspector_widgets[WIDX_LIST].right = w->width - 3;
+	window_tile_inspector_widgets[WIDX_LIST].right = w->width - 4;
 	window_tile_inspector_widgets[WIDX_LIST].bottom = w->height - SCROLL_BOTTOM_OFFSET;
-	window_tile_inspector_widgets[WIDX_COLUMN_LAST].right = w->width - 3;
+	window_tile_inspector_widgets[WIDX_COLUMN_LASTFLAG].right = w->width - 3;
 }
 
 static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -446,7 +451,36 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int x = w->x /*+ w->widgets[WIDX_LIST].left*/ + 3;
 	int y = w->y + w->height - 13;
 
+	// Set medium font size
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
+
+	// Draw column headers
+	rct_widget *widget;
+	if ((widget= &w->widgets[WIDX_COLUMN_TYPE])->type != WWT_EMPTY) {
+		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_ELEMENT_TYPE, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+	}
+	if ((widget = &w->widgets[WIDX_COLUMN_BASEHEIGHT])->type != WWT_EMPTY)
+	{
+		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+	}
+	if ((widget = &w->widgets[WIDX_COLUMN_CLEARANCEHEIGHT])->type != WWT_EMPTY)
+	{
+		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+	}
+	if ((widget = &w->widgets[WIDX_COLUMN_GHOSTFLAG])->type != WWT_EMPTY)
+	{
+		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_FLAG_GHOST_SHORT, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+	}
+	if ((widget = &w->widgets[WIDX_COLUMN_BROKENFLAG])->type != WWT_EMPTY)
+	{
+		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_FLAG_BROKEN_SHORT, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+	}
+	if ((widget = &w->widgets[WIDX_COLUMN_LASTFLAG])->type != WWT_EMPTY)
+	{
+		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_FLAG_LAST_SHORT, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+	}
+
+	// Draw coordinates
 	if (window_tile_inspector_tile_x == -1) { // No tile selected
 		gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_CHOOSE_MSG, NULL, 12, x, y);
 	} else {
