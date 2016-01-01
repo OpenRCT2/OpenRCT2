@@ -609,15 +609,15 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 
 		// Undo relative scroll offset, but keep the 3 pixel padding
 		x = -w->widgets[WIDX_LIST].left;
-		int ghost = element->flags & MAP_ELEMENT_FLAG_GHOST ? 1 : 0;
-		int broken = element->flags & MAP_ELEMENT_FLAG_BROKEN ? 1 : 0;
-		int last = element->flags & MAP_ELEMENT_FLAG_LAST_TILE ? 1 : 0;
+		const bool ghost = (element->flags & MAP_ELEMENT_FLAG_GHOST) != 0;
+		const bool broken = (element->flags & MAP_ELEMENT_FLAG_BROKEN) != 0;
+		const bool last = (element->flags & MAP_ELEMENT_FLAG_LAST_TILE) != 0;
 		gfx_draw_string(dpi, type_name, 12, x + COL_X_TYPE + 3, y); // 3px padding
 		gfx_draw_string_left(dpi, 5182, &base_height, 12, x + COL_X_BH, y);
 		gfx_draw_string_left(dpi, 5182, &clearance_height, 12, x + COL_X_CH, y);
-		gfx_draw_string_left(dpi, 5182, &ghost, 12, x + COL_X_GF, y);
-		gfx_draw_string_left(dpi, 5182, &broken, 12, x + COL_X_BF, y);
-		gfx_draw_string_left(dpi, 5182, &last, 12, x + COL_X_LF, y);
+		if (ghost) gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1], x + COL_X_GF, y);
+		if (broken) gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1], x + COL_X_BF, y);
+		if (last) gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1], x + COL_X_LF, y);
 
 		y -= LIST_ITEM_HEIGHT;
 		i++;
