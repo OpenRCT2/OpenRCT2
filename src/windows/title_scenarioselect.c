@@ -86,7 +86,7 @@ static rct_widget window_scenarioselect_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_scenarioselect_init_tabs();
+static void window_scenarioselect_init_tabs(rct_window *w);
 
 static void window_scenarioselect_close(rct_window *w);
 static void window_scenarioselect_mouseup(rct_window *w, int widgetIndex);
@@ -168,9 +168,8 @@ void window_scenarioselect_open()
 	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2)
 							| (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_TAB5)
 							| (1 << WIDX_TAB6) | (1 << WIDX_TAB7) | (1 << WIDX_TAB8);
-	window_scenarioselect_init_tabs();
-
-	window->selected_tab = 0;
+	
+	window_scenarioselect_init_tabs(window);
 	initialise_list_items(window);
 
 	window_init_scroll_widgets(window);
@@ -182,22 +181,27 @@ void window_scenarioselect_open()
  *
  *  rct2: 0x00677C8A
  */
-static void window_scenarioselect_init_tabs()
+static void window_scenarioselect_init_tabs(rct_window *w)
 {
-	int show_pages = 0;
+	int showPages = 0;
 	for (int i = 0; i < gScenarioListCount; i++) {
 		scenario_index_entry *scenario = &gScenarioList[i];
 		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
-			show_pages |= 1 << scenario->source_game;
+			showPages |= 1 << scenario->source_game;
 		} else {
-			show_pages |= 1 << scenario->category;
+			showPages |= 1 << scenario->category;
 		}
+	}
+
+	int firstPage = bitscanforward(showPages);
+	if (firstPage != -1) {
+		w->selected_tab = firstPage;
 	}
 
 	int x = 3;
 	for (int i = 0; i < 8; i++) {
-		rct_widget* widget = &window_scenarioselect_widgets[i + 4];
-		if (!(show_pages & (1 << i))) {
+		rct_widget* widget = &w->widgets[i + 4];
+		if (!(showPages & (1 << i))) {
 			widget->type = WWT_EMPTY;
 			continue;
 		}
