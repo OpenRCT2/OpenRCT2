@@ -6545,12 +6545,12 @@ static bool vehicle_update_motion_collision_detection(
 			}
 		}
 		else if (vehicle->sprite_direction == 8) {
-			if (vehicle->x >= collideVehicle->x) {
+			if (vehicle->y >= collideVehicle->y) {
 				return false;
 			}
 		}
 		else if (vehicle->sprite_direction == 16) {
-			if (vehicle->y >= collideVehicle->y) {
+			if (vehicle->x >= collideVehicle->x) {
 				return false;
 			}
 		}
