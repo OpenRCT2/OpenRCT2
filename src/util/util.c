@@ -67,7 +67,6 @@ const char *path_get_filename(const utf8 *path)
 	// Checks if the path is valid (e.g. not just a file name)
 	if (filename == NULL)
 	{
-		log_warning("Invalid path given: %s", path);
 		// Return the input string to keep things working
 		return path;
 	}
@@ -78,6 +77,8 @@ const char *path_get_filename(const utf8 *path)
 	return filename;
 }
 
+// Returns the extension (dot inclusive) from the given path, or the end of the
+// string when no extension was found.
 const char *path_get_extension(const utf8 *path)
 {
 	// Get the filename from the path
@@ -93,23 +94,28 @@ const char *path_get_extension(const utf8 *path)
 	return extension;
 }
 
-void path_set_extension(utf8 *path, const utf8 *newExtension)
+void path_set_extension(utf8 *path, const utf8 *newExtension, bool replaceExistingExtension)
 {
+	// First remove the current extension
+	if (replaceExistingExtension)
+		path_remove_extension(path);
+
 	// Append a dot to the filename if the new extension doesn't start with it
 	char *endOfString = strrchr(path, '\0');
 	if (newExtension[0] != '.')
 		*endOfString++ = '.';
 
 	// Append the extension to the path
-	// No existing extensions should be removed ("ride.TD6" -> "ride.TD6.TD6")
 	safe_strncpy(endOfString, newExtension, MAX_PATH - (endOfString - path) - 1);
 }
 
 void path_remove_extension(utf8 *path)
 {
 	// Find last dot in filename, and replace it with a null-terminator
-	char *lastDot = strrchr(path, '.');
-	if (lastDot != NULL) *lastDot = '\0';
+	char *lastDot = strrchr(path_get_filename(path), '.');
+	if (lastDot != NULL) {
+		*lastDot = '\0';
+	}
 }
 
 bool readentirefile(const utf8 *path, void **outBuffer, int *outLength)

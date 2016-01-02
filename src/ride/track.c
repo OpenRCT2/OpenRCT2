@@ -3116,7 +3116,7 @@ int save_track_design(uint8 rideIndex){
 		return 1;
 	}
 
-	path_set_extension(path, "TD6");
+	path_set_extension(path, "TD6", false);
 
 	save_track_to_file(RCT2_ADDRESS(0x009D8178, rct_track_td6), path);
 
