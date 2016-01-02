@@ -398,11 +398,18 @@ enum {
 #define S6_MAGIC_NUMBER 0x00031144
 
 enum {
+	// RCT2 categories (keep order)
 	SCENARIO_CATEGORY_BEGINNER,
 	SCENARIO_CATEGORY_CHALLENGING,
 	SCENARIO_CATEGORY_EXPERT,
 	SCENARIO_CATEGORY_REAL,
-	SCENARIO_CATEGORY_OTHER
+	SCENARIO_CATEGORY_OTHER,
+
+	// OpenRCT2 categories
+	SCENARIO_CATEGORY_DLC,
+	SCENARIO_CATEGORY_BUILD_YOUR_OWN,
+
+	SCENARIO_CATEGORY_COUNT
 };
 
 enum {
@@ -454,6 +461,8 @@ typedef struct {
 	sint32 index;
 	uint8 category;
 } source_desc;
+
+extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
 // Scenario list
 extern int gScenarioListCount;

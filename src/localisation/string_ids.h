@@ -2254,6 +2254,9 @@ enum {
 	STR_OPTIONS_SCENARIO_DIFFICULTY = 5629,
 	STR_OPTIONS_SCENARIO_UNLOCKING = 5630,
 
+	STR_DLC_PARKS = 5631,
+	STR_BUILD_YOUR_OWN_PARKS = 5632,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

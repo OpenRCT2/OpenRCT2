@@ -37,7 +37,7 @@ scenario_highscore_entry *gScenarioHighscoreList = NULL;
 static void scenario_list_include(const utf8 *directory);
 static void scenario_list_add(const utf8 *path, uint64 timestamp);
 static void scenario_list_sort();
-static int scenario_list_sort_by_name(const void *a, const void *b);
+static int scenario_list_sort_by_category(const void *a, const void *b);
 static int scenario_list_sort_by_index(const void *a, const void *b);
 static void scenario_translate(scenario_index_entry *scenarioEntry, const rct_object_entry *stexObjectEntry);
 
@@ -222,19 +222,29 @@ static void scenario_list_sort()
 
 	compareFunc = gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN ?
 		scenario_list_sort_by_index :
-		scenario_list_sort_by_name;
+		scenario_list_sort_by_category;
 
 	qsort(gScenarioList, gScenarioListCount, sizeof(scenario_index_entry), compareFunc);
 }
 
-static int scenario_list_sort_by_name(const void *a, const void *b)
+static int scenario_list_category_compare(int categoryA, int categoryB)
+{
+	if (categoryA == categoryB) return 0;
+	if (categoryA == SCENARIO_CATEGORY_DLC) return -1;
+	if (categoryB == SCENARIO_CATEGORY_DLC) return 1;
+	if (categoryA == SCENARIO_CATEGORY_BUILD_YOUR_OWN) return -1;
+	if (categoryB == SCENARIO_CATEGORY_BUILD_YOUR_OWN) return 1;
+	return sgn(categoryA - categoryB);
+}
+
+static int scenario_list_sort_by_category(const void *a, const void *b)
 {
 	const scenario_index_entry *entryA = (const scenario_index_entry*)a;
 	const scenario_index_entry *entryB = (const scenario_index_entry*)b;
 
 	// Order by category
 	if (entryA->category != entryB->category) {
-		return entryA->category - entryB->category;
+		return scenario_list_category_compare(entryA->category, entryB->category);
 	}
 
 	// Then by source game / name
@@ -266,9 +276,9 @@ static int scenario_list_sort_by_index(const void *a, const void *b)
 	default:
 		if (entryA->source_index == -1 && entryB->source_index == -1) {
 			if (entryA->category == entryB->category) {
-				return scenario_list_sort_by_name(a, b);
+				return scenario_list_sort_by_category(a, b);
 			} else {
-				return entryA->category - entryB->category;
+				return scenario_list_category_compare(entryA->category, entryB->category);
 			}
 		} else if (entryA->source_index == -1) {
 			return 1;
@@ -278,13 +288,7 @@ static int scenario_list_sort_by_index(const void *a, const void *b)
 			return entryA->source_index - entryB->source_index;
 		}
 	case SCENARIO_SOURCE_REAL:
-		return scenario_list_sort_by_name(a, b);
-	case SCENARIO_SOURCE_OTHER:
-		if (entryA->category == entryB->category) {
-			return scenario_list_sort_by_name(a, b);
-		} else {
-			return entryA->category - entryB->category;
-		}
+		return scenario_list_sort_by_category(a, b);
 	}
 }
 

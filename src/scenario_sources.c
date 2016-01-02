@@ -191,26 +191,35 @@ const scenario_title_desc ScenarioTitlesRealParks[] = {
 };
 
 // Other parks
-const scenario_title_desc ScenarioTitlesRCT2BuildYourOwnParks[] = {
-	{ SC_UNIDENTIFIED,	"Build your own Six Flags Belgium",			SCENARIO_CATEGORY_OTHER	},
-	{ SC_UNIDENTIFIED,	"Build your own Six Flags Great Adventure",	SCENARIO_CATEGORY_OTHER	},
-	{ SC_UNIDENTIFIED,	"Build your own Six Flags Holland",			SCENARIO_CATEGORY_OTHER	},
-	{ SC_UNIDENTIFIED,	"Build your own Six Flags Magic Mountain",	SCENARIO_CATEGORY_OTHER	},
-	{ SC_UNIDENTIFIED,	"Build your own Six Flags Park",			SCENARIO_CATEGORY_OTHER	},
-	{ SC_UNIDENTIFIED,	"Build your own Six Flags over Texas",		SCENARIO_CATEGORY_OTHER	},
+const scenario_title_desc ScenarioTitlesOtherParks[] = {
+	{ SC_UNIDENTIFIED,	"Fort Anachronism",								SCENARIO_CATEGORY_DLC				},
+	{ SC_UNIDENTIFIED,	"PC Player",									SCENARIO_CATEGORY_DLC				},
+	{ SC_UNIDENTIFIED,	"PC Gaming World",								SCENARIO_CATEGORY_DLC				},
+	{ SC_UNIDENTIFIED,	"gameplay",										SCENARIO_CATEGORY_DLC				},
+	{ SC_UNIDENTIFIED,	"Panda World",									SCENARIO_CATEGORY_DLC				},
+	{ SC_UNIDENTIFIED,	"Competition Land 1",							SCENARIO_CATEGORY_DLC				},
+	{ SC_UNIDENTIFIED,	"Competition Land 2",							SCENARIO_CATEGORY_DLC				},
+	{ SC_UNIDENTIFIED,	"Build your own Six Flags Belgium",				SCENARIO_CATEGORY_BUILD_YOUR_OWN	},
+	{ SC_UNIDENTIFIED,	"Build your own Six Flags Great Adventure",		SCENARIO_CATEGORY_BUILD_YOUR_OWN	},
+	{ SC_UNIDENTIFIED,	"Build your own Six Flags Holland",				SCENARIO_CATEGORY_BUILD_YOUR_OWN	},
+	{ SC_UNIDENTIFIED,	"Build your own Six Flags Magic Mountain",		SCENARIO_CATEGORY_BUILD_YOUR_OWN	},
+	{ SC_UNIDENTIFIED,	"Build your own Six Flags Park",				SCENARIO_CATEGORY_BUILD_YOUR_OWN	},
+	{ SC_UNIDENTIFIED,	"Build your own Six Flags over Texas",			SCENARIO_CATEGORY_BUILD_YOUR_OWN	},
 };
 
+#define DEFINE_SCENARIO_TITLE_DESC_GROUP(x) { countof(x), x }
 const struct {
 	int count;
 	const scenario_title_desc * const titles;
 } ScenarioTitlesBySource[] = {
-	{ countof(ScenarioTitlesRCT1),						ScenarioTitlesRCT1				},
-	{ countof(ScenarioTitlesRCT1AA),					ScenarioTitlesRCT1AA			},
-	{ countof(ScenarioTitlesRCT1LL),					ScenarioTitlesRCT1LL			},
-	{ countof(ScenarioTitlesRCT2),						ScenarioTitlesRCT2				},
-	{ countof(ScenarioTitlesRCT2WW),					ScenarioTitlesRCT2WW			},
-	{ countof(ScenarioTitlesRCT2TT),					ScenarioTitlesRCT2TT			},
-	{ countof(ScenarioTitlesRealParks),					ScenarioTitlesRealParks			},
+	DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT1),
+	DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT1AA),
+	DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT1LL),
+	DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT2),
+	DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT2WW),
+	DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT2TT),
+	DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRealParks),
+	DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesOtherParks),
 };
 
 bool scenario_get_source_desc(const utf8 *name, source_desc *outDesc)

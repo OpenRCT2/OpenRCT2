@@ -45,6 +45,17 @@
 #include "world/sprite.h"
 #include "world/water.h"
 
+const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
+	STR_BEGINNER_PARKS,
+	STR_CHALLENGING_PARKS,
+	STR_EXPERT_PARKS,
+	STR_REAL_PARKS,
+	STR_OTHER_PARKS,
+
+	STR_DLC_PARKS,
+	STR_BUILD_YOUR_OWN_PARKS,
+};
+
 static char _scenarioPath[MAX_PATH];
 static const char *_scenarioFileName = "";
 

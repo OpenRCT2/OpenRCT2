@@ -189,7 +189,11 @@ static void window_scenarioselect_init_tabs(rct_window *w)
 		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
 			showPages |= 1 << scenario->source_game;
 		} else {
-			showPages |= 1 << scenario->category;
+			int category = scenario->category;
+			if (category > SCENARIO_CATEGORY_OTHER) {
+				category = SCENARIO_CATEGORY_OTHER;
+			}
+			showPages |= 1 << category;
 		}
 		}
 
@@ -358,7 +362,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = STR_SCENARIO_CATEGORY_RCT1 + i;
 		} else { // old-style
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = STR_BEGINNER_PARKS + i;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = ScenarioCategoryStringIds[i];
 		}
 		gfx_draw_string_centred_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 87, format, 10);
 	}
@@ -415,7 +419,6 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 
 	int highlighted_format = (theme_get_preset()->features.rct1_scenario_font) ? 5139 : 1193;
 	int unhighlighted_format = (theme_get_preset()->features.rct1_scenario_font) ? 5139 : 1191;
-	int disabled_format = 5619;
 
 	bool wide = gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN;
 
@@ -528,14 +531,25 @@ static void initialise_list_items(rct_window *w)
 		// Category heading
 		rct_string_id headingStringId = STR_NONE;
 		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
-			if (w->selected_tab != 6 && currentHeading != scenario->category) {
+			if (w->selected_tab != SCENARIO_SOURCE_REAL && currentHeading != scenario->category) {
 				currentHeading = scenario->category;
-				headingStringId = STR_BEGINNER_PARKS + currentHeading;
+				headingStringId = ScenarioCategoryStringIds[currentHeading];
 			}
 		} else {
-			if (w->selected_tab < 3 && currentHeading != scenario->source_game) {
-				currentHeading = scenario->source_game;
-				headingStringId = STR_SCENARIO_CATEGORY_RCT1 + currentHeading;
+			if (w->selected_tab <= SCENARIO_CATEGORY_EXPERT) {
+				if (currentHeading != scenario->source_game) {
+					currentHeading = scenario->source_game;
+					headingStringId = STR_SCENARIO_CATEGORY_RCT1 + currentHeading;
+				}
+			} else if (w->selected_tab == SCENARIO_CATEGORY_OTHER) {
+				int category = scenario->category;
+				if (category <= SCENARIO_CATEGORY_REAL) {
+					category = SCENARIO_CATEGORY_OTHER;
+				}
+				if (currentHeading != category) {
+					currentHeading = category;
+					headingStringId = ScenarioCategoryStringIds[category];
+				}
 			}
 		}
 		if (headingStringId != (rct_string_id)STR_NONE) {
@@ -612,12 +626,19 @@ static void initialise_list_items(rct_window *w)
 
 static bool is_scenario_visible(rct_window *w, scenario_index_entry *scenario)
 {
-	if ((gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN && scenario->source_game != w->selected_tab) ||
-		(gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY && scenario->category != w->selected_tab)
-	) {
-		return false;
+	if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
+		if (scenario->source_game != w->selected_tab) {
+			return false;
+		}
+	} else {
+		int category = scenario->category;
+		if (category > SCENARIO_CATEGORY_OTHER) {
+			category = SCENARIO_CATEGORY_OTHER;
+		}
+		if (category != w->selected_tab) {
+			return false;
+		}
 	}
-
 	return true;
 }
 
