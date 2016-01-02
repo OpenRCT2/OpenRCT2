@@ -7,6 +7,7 @@ typedef struct {
 } scenario_alias;
 
 const scenario_alias ScenarioAliases[] = {
+	// UK - US differences:
 	{ "Katie's Dreamland",						"Katie's World"								},
 	{ "Pokey Park",								"Dinky Park"								},
 	{ "White Water Park",						"Aqua Park"									},
@@ -14,6 +15,9 @@ const scenario_alias ScenarioAliases[] = {
 	{ "Paradise Pier",							"Big Pier"									},
 	{ "Paradise Pier 2",						"Big Pier 2"								},
 	{ "Mythological - Cradle of Civilisation",	"Mythological - Cradle of Civilization"		},
+
+	// RCT1 pack by RCTScenarioLover has a mistake:
+	{ "Geoffrey Gardens",						"Geoffery Gardens"							},
 };
 
 typedef struct {
