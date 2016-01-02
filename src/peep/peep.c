@@ -1726,7 +1726,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 		}
 		else{
 			chosen_train = ride->train_at_station[peep->current_ride_station];
-		}	
+		}
 		if (chosen_train == 0xFF){
 			return;
 		}

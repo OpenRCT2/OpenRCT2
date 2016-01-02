@@ -1316,7 +1316,7 @@ const uint16 RideCrookedHouseLength[1] = {
 };
 
 /* rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
-const rct_ride_lift_data RideLiftData[] = { 
+const rct_ride_lift_data RideLiftData[] = {
 	{ SOUND_LIFT_3, 7, 7 }, // Spiral Roller coaster
 	{ SOUND_LIFT_1, 4, 6 }, // Stand Up Coaster
 	{ SOUND_LIFT_1, 4, 6 }, // Suspended Swinging

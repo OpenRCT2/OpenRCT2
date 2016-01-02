@@ -6027,7 +6027,7 @@ int get_turn_count_3_elements(rct_ride* ride, uint8 type) {
 		break;
 	case 1:
 		turn_count = &ride->turn_count_banked;
-		break;		
+		break;
 	case 2:
 		turn_count = &ride->turn_count_sloped;
 		break;
@@ -6044,7 +6044,7 @@ int get_turn_count_4_plus_elements(rct_ride* ride, uint8 type) {
 	case 0:
 	case 1:
 		return 0;
-	case 2:		
+	case 2:
 		turn_count = &ride->turn_count_sloped;
 		break;
 	default:

@@ -82,13 +82,13 @@ typedef struct {
 	uint8 ride_type[3];						// 0x00C
 	uint8 min_cars_in_train;				// 0x00F
 	uint8 max_cars_in_train;				// 0x010
-	uint8 cars_per_flat_ride;				// 0x011	
+	uint8 cars_per_flat_ride;				// 0x011
 	// Number of cars that can't hold passengers
-	uint8 zero_cars;						// 0x012	
+	uint8 zero_cars;						// 0x012
 	// The index to the vehicle type displayed in
 	// the vehicle tab.
 	uint8 tab_vehicle;						// 0x013
-	uint8 default_vehicle;					// 0x014	
+	uint8 default_vehicle;					// 0x014
 	// Convert from first - fourth vehicle to
 	// vehicle structure
 	uint8 front_vehicle;					// 0x015
@@ -200,7 +200,7 @@ typedef struct {
 	uint16 var_10C;
 	// Next 3 variables are related (XXXX XYYY ZZZa aaaa)
 	uint16 turn_count_default;		// 0x10E X = current turn count
-	uint16 turn_count_banked;		// 0x110 
+	uint16 turn_count_banked;		// 0x110
 	uint16 turn_count_sloped;		// 0x112 X = number turns > 3 elements
 	union {
 		uint8 inversions;			// 0x114 (???X XXXX)
@@ -410,8 +410,8 @@ enum {
 	RIDE_ENTRY_FLAG_16 = 1 << 16, // 0x10000
 	RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES = 1 << 17, // 0x20000
 	RIDE_ENTRY_FLAG_18 = 1 << 18, // 0x40000
-	RIDE_ENTRY_FLAG_19 = 1 << 19, // 0x80000	
-	// Must be set with swing mode 1 as well. 
+	RIDE_ENTRY_FLAG_19 = 1 << 19, // 0x80000
+	// Must be set with swing mode 1 as well.
 	RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2 = 1 << 20, // 0x100000
 	RIDE_ENTRY_FLAG_21 = 1 << 21, // 0x200000
 	RIDE_ENTRY_FLAG_22 = 1 << 22, // 0x400000
