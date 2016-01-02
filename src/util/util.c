@@ -109,7 +109,7 @@ void path_remove_extension(utf8 *path)
 {
 	// Find last dot in filename, and replace it with a null-terminator
 	char *lastDot = strrchr(path, '.');
-	if (*lastDot) *lastDot = '\0';
+	if (lastDot != NULL) *lastDot = '\0';
 }
 
 bool readentirefile(const utf8 *path, void **outBuffer, int *outLength)
