@@ -277,7 +277,7 @@ typedef struct rct_window {
 		uint16 ride_colour;
 		rct_research_item* research_item;
 		rct_object_entry* object_entry;
-		rct_scenario_basic* scenario;
+		scenario_index_entry* highlighted_scenario;
 	};
 	uint8 var_498[0x14];
 	sint16 selected_tab;			// 0x4AC

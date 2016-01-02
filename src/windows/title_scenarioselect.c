@@ -174,7 +174,7 @@ void window_scenarioselect_open()
 
 	window_init_scroll_widgets(window);
 	window->viewport_focus_coordinates.var_480 = -1;
-	window->highlighted_item = 0;
+	window->highlighted_scenario = NULL;
 }
 
 /**
@@ -233,7 +233,7 @@ static void window_scenarioselect_mousedown(int widgetIndex, rct_window*w, rct_w
 {
 	if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB8) {
 		w->selected_tab = widgetIndex - 4;
-		w->highlighted_item = 0;
+		w->highlighted_scenario = NULL;
 		initialise_list_items(w);
 		window_invalidate(w);
 		window_event_resize_call(w);
@@ -308,8 +308,8 @@ static void window_scenarioselect_scrollmouseover(rct_window *w, int scrollIndex
 		}
 	}
 
-	if (w->highlighted_item != (uint32)selected) {
-		w->highlighted_item = (uint32)selected;
+	if (w->highlighted_scenario != selected) {
+		w->highlighted_scenario = selected;
 		window_invalidate(w);
 	}
 }
@@ -368,9 +368,10 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 
 	// Return if no scenario highlighted
-	scenario = (scenario_index_entry*)w->highlighted_item;
-	if (scenario == NULL)
+	scenario = w->highlighted_scenario;
+	if (scenario == NULL) {
 		return;
+	}
 
 	// Scenario path
 	if (gConfigGeneral.debugging_tools) {
@@ -440,7 +441,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 		case LIST_ITEM_TYPE_SCENARIO:;
 			// Draw hover highlight
 			scenario_index_entry *scenario = listItem->scenario.scenario;
-			bool isHighlighted = w->highlighted_item == (uint32)scenario;
+			bool isHighlighted = w->highlighted_scenario == scenario;
 			if (isHighlighted) {
 				gfx_fill_rect(dpi, 0, y, w->width, y + 23, 0x02000031);
 			}
