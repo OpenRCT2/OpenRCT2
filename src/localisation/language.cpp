@@ -47,6 +47,13 @@ enum {
 	RCT2_LANGUAGE_ID_END = 255
 };
 
+static TTFFontSetDescriptor TTFFontMSGothic = {{
+	{ "msgothic_02.ttf",	"MS PGothic",	9,		1,		0,		15,		nullptr },
+	{ "msgothic_02.ttf",	"MS PGothic",	12,		1,		0,		17,		nullptr },
+	{ "msgothic_02.ttf",	"MS PGothic",	12,		1,		0,		17,		nullptr },
+	{ "msgothic_02.ttf",	"MS PGothic",	13,		1,		0,		20,		nullptr },
+}};
+
 static TTFFontSetDescriptor TTFFontMingLiu = {{
 	{ "msjh.ttc",		"JhengHei",	9,		-1,		-3,		6,		nullptr },
 	{ "mingliu.ttc",	"MingLiU",	11,		1,		1,		12,		nullptr },
@@ -94,6 +101,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
 	{ "ko",			"Korean",					"Korean",					"korean",					&TTFFontGulim,			RCT2_LANGUAGE_ID_KOREAN					},	// LANGUAGE_KOREAN
 	{ "ru-RU",		"Russian",					"Russian",					"russian",					&TTFFontArial,			RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_RUSSIAN
 	{ "cz-CZ",		"Czech",					"Czech",					"czech",					&TTFFontArial,			RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_CZECH
+	{ "jp-JP",		"Japanese",					"Japanese",					"japanese",					&TTFFontMSGothic,		RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_JAPANESE
 };
 
 int gCurrentLanguage = LANGUAGE_UNDEFINED;
