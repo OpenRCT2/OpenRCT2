@@ -268,13 +268,12 @@ void scenario_begin()
 	safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, s6Info->name, 64);
 
 	{
-		// Get filename
-		utf8 filename[MAX_PATH];
-		safe_strncpy(filename, _scenarioFileName, sizeof(filename));
-		path_remove_extension(filename);
+		utf8 normalisedName[64];
+		safe_strncpy(normalisedName, s6Info->name, sizeof(normalisedName));
+		scenario_normalise_name(normalisedName);
 
 		rct_string_id localisedStringIds[3];
-		if (language_get_localised_scenario_strings(filename, localisedStringIds)) {
+		if (language_get_localised_scenario_strings(normalisedName, localisedStringIds)) {
 			if (localisedStringIds[0] != (rct_string_id)STR_NONE) {
 				safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(localisedStringIds[0]), 32);
 			}

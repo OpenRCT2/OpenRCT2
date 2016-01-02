@@ -71,7 +71,6 @@ void scenario_load_list()
 	scenario_list_sort();
 	scenario_scores_load();
 
-
 	utf8 scoresPath[MAX_PATH];
 	scenario_scores_legacy_get_path(scoresPath);
 	scenario_scores_legacy_load(scoresPath);
@@ -189,12 +188,8 @@ static void scenario_list_add(const utf8 *path, uint64 timestamp)
 
 static void scenario_translate(scenario_index_entry *scenarioEntry, const rct_object_entry *stexObjectEntry)
 {
-	utf8 filenameWithoutExtension[MAX_PATH];
-	safe_strncpy(filenameWithoutExtension, scenarioEntry->path, sizeof(filenameWithoutExtension));
-	path_remove_extension(filenameWithoutExtension);
-	
 	rct_string_id localisedStringIds[3];
-	if (language_get_localised_scenario_strings(filenameWithoutExtension, localisedStringIds)) {
+	if (language_get_localised_scenario_strings(scenarioEntry->name, localisedStringIds)) {
 		if (localisedStringIds[0] != (rct_string_id)STR_NONE) {
 			safe_strncpy(scenarioEntry->name, language_get_string(localisedStringIds[0]), 64);
 		}
