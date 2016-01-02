@@ -5410,7 +5410,7 @@ static void sub_6DAB4C_chunk_3(rct_vehicle *vehicle)
 	RCT2_GLOBAL(0x00F64E0C, sint32) = (nextVelocity >> 10) * 42;
 }
 
-static void loc_6DB1B0(rct_vehicle *vehicle, rct_map_element *mapElement)
+static void vehicle_update_block_breaks_open_previous_section(rct_vehicle *vehicle, rct_map_element *mapElement)
 {
 	int x = vehicle->track_x;
 	int y = vehicle->track_y;
@@ -5420,7 +5420,9 @@ static void loc_6DB1B0(rct_vehicle *vehicle, rct_map_element *mapElement)
 		if (!track_block_get_previous(x, y, mapElement, &trackBeginEnd)) {
 			return;
 		}
-		if (trackBeginEnd.begin_x == vehicle->track_x && trackBeginEnd.begin_y == vehicle->track_y) {
+		if (trackBeginEnd.begin_x == vehicle->track_x && 
+			trackBeginEnd.begin_y == vehicle->track_y && 
+			mapElement == trackBeginEnd.begin_element) {
 			return;
 		}
 
@@ -5434,7 +5436,7 @@ static void loc_6DB1B0(rct_vehicle *vehicle, rct_map_element *mapElement)
 	if (mapElement == NULL) {
 		return;
 	}
-	mapElement->flags &= ~(1 << 5);
+	mapElement->flags &= ~MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED;
 	map_invalidate_element(x, y, mapElement);
 
 	int trackType = mapElement->properties.track.type;
@@ -6691,14 +6693,14 @@ bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle *vehicle, ui
 
 	if (track_element_is_block_start(mapElement)) {
 		if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
-			mapElement->flags |= (1 << 5);
+			mapElement->flags |= MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED;
 			if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_END_STATION) {
 				if (!(rideEntry->vehicles[0].flags_b & VEHICLE_ENTRY_FLAG_B_3)) {
 					audio_play_sound_at_location(SOUND_49, vehicle->track_x, vehicle->track_y, vehicle->track_z);
 				}
 			}
 			map_invalidate_element(vehicle->track_x, vehicle->track_z, mapElement);
-			loc_6DB1B0(vehicle, mapElement);
+			vehicle_update_block_breaks_open_previous_section(vehicle, mapElement);
 		}
 	}
 
