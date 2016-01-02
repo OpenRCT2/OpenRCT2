@@ -97,12 +97,11 @@ const rct_vehicle_info *vehicle_get_move_info(int cd, int typeAndDirection, int 
 }
 
 const uint8 DoorOpenSoundIds[] = {
-	SOUND_WATER_2,
-	SOUND_DOOR_OPEN
+	SOUND_DOOR_OPEN,
+	SOUND_62
 };
 
 const uint8 DoorCloseSoundIds[] = {
-	SOUND_62,
 	SOUND_DOOR_CLOSE,
 	SOUND_62
 };
@@ -2024,7 +2023,7 @@ void vehicle_update_test_finish(rct_vehicle* vehicle) {
 		totalTime += ride->time[i];
 	}
 
-	totalTime = min(totalTime, 1);
+	totalTime = max(totalTime, 1);
 	ride->average_speed = ride->average_speed / totalTime;
 
 	window_invalidate_by_number(WC_RIDE, vehicle->ride);
@@ -6202,9 +6201,9 @@ static void vehicle_play_scenery_door_open_sound(rct_vehicle *vehicle, rct_map_e
 	rct_scenery_entry *wallEntry = g_wallSceneryEntries[mapElement->properties.fence.type];
 	int doorSoundType = (wallEntry->wall.flags2 >> 1) & 3;
 	if (doorSoundType != 0) {
-		int soundId = DoorOpenSoundIds[doorSoundType];
+		int soundId = DoorOpenSoundIds[doorSoundType - 1];
 		if (soundId != 255) {
-			audio_play_sound_at_location(doorSoundType, vehicle->x, vehicle->track_y, vehicle->track_z);
+			audio_play_sound_at_location(soundId, vehicle->x, vehicle->track_y, vehicle->track_z);
 		}
 	}
 }
@@ -6218,9 +6217,9 @@ static void vehicle_play_scenery_door_close_sound(rct_vehicle *vehicle, rct_map_
 	rct_scenery_entry *wallEntry = g_wallSceneryEntries[mapElement->properties.fence.type];
 	int doorSoundType = (wallEntry->wall.flags2 >> 1) & 3;
 	if (doorSoundType != 0) {
-		int soundId = DoorCloseSoundIds[doorSoundType];
+		int soundId = DoorCloseSoundIds[doorSoundType - 1];
 		if (soundId != 255) {
-			audio_play_sound_at_location(doorSoundType, vehicle->x, vehicle->track_y, vehicle->track_z);
+			audio_play_sound_at_location(soundId, vehicle->x, vehicle->track_y, vehicle->track_z);
 		}
 	}
 }
