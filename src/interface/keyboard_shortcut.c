@@ -472,12 +472,14 @@ static void shortcut_screenshot()
 
 static void shortcut_reduce_game_speed()
 {
-	game_reduce_game_speed();
+	if (network_get_mode() == NETWORK_MODE_NONE)
+		game_reduce_game_speed();
 }
 
 static void shortcut_increase_game_speed()
 {
-	game_increase_game_speed();
+	if (network_get_mode() == NETWORK_MODE_NONE)
+		game_increase_game_speed();
 }
 
 static void shortcut_open_cheat_window()
