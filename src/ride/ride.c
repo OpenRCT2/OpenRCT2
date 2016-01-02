@@ -2914,7 +2914,15 @@ static bool ride_does_vehicle_colour_exist(uint8 ride_sub_type, vehicle_colour *
 
 static int ride_get_unused_preset_vehicle_colour(uint8 ride_type, uint8 ride_sub_type)
 {
+	if (ride_sub_type >= 128)
+	{
+		return 0;
+	}
 	rct_ride_type *rideEntry = GET_RIDE_ENTRY(ride_sub_type);
+	if (rideEntry == (rct_ride_type *)0xFFFFFFFF)
+	{
+		return 0;
+	}
 	vehicle_colour_preset_list *presetList = rideEntry->vehicle_preset_list;
 	if (presetList->count == 255)
 		return 255;
@@ -3588,6 +3596,12 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 
 	uint8 ride_id = *edx & 0xFF;
 	rct_ride* ride = GET_RIDE(ride_id);
+	if (ride->type == RIDE_TYPE_NULL)
+	{
+		log_warning("Invalid game command.");
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 
 	uint8 flags = *ebx & 0xFF;
 	uint8 new_value = (*ebx >> 8) & 0xFF;
@@ -4606,6 +4620,11 @@ int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplying)
 	rct_xy_element trackElement, problematicTrackElement;
 
 	ride = GET_RIDE(rideIndex);
+	if (ride->type == RIDE_TYPE_NULL)
+	{
+		log_warning("Invalid ride type for ride %u", rideIndex);
+		return 0;
+	}
 
 	window_close_by_number(WC_RIDE_CONSTRUCTION, rideIndex);
 
@@ -4864,6 +4883,12 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS * 4;
 
 	ride = GET_RIDE(rideIndex);
+	if (ride->type == RIDE_TYPE_NULL)
+	{
+		log_warning("Invalid game command for ride %u", rideIndex);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	RCT2_GLOBAL(0x00F43484, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32);
 
 	switch (targetStatus) {
@@ -4944,6 +4969,7 @@ void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		if (nameChunkOffset < 0)
 			nameChunkOffset = 2;
 		nameChunkOffset *= 12;
+		nameChunkOffset = min(nameChunkOffset, countof(newName) - 12);
 		RCT2_GLOBAL(newName + nameChunkOffset + 0, uint32) = *edx;
 		RCT2_GLOBAL(newName + nameChunkOffset + 4, uint32) = *ebp;
 		RCT2_GLOBAL(newName + nameChunkOffset + 8, uint32) = *edi;
@@ -5162,6 +5188,10 @@ static int ride_get_random_colour_preset_index(uint8 ride_type)
 {
 	const track_colour_preset_list *colourPresets;
 	const track_colour *colours;
+	if (ride_type >= 128)
+	{
+		return 0;
+	}
 
 	colourPresets = RCT2_ADDRESS(0x0097D934, track_colour_preset_list*)[ride_type];
 
@@ -5265,6 +5295,11 @@ money32 ride_create(int type, int subType, int flags, int *outRideIndex, int *ou
 foundRideEntry:
 	rideEntryIndex = subType;
 	rideIndex = ride_get_empty_slot();
+	if (subType >= 128)
+	{
+		log_warning("Invalid request for ride type %u", subType);
+		return MONEY32_UNDEFINED;
+	}
 	if (rideIndex == -1) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_MANY_RIDES;
 		return MONEY32_UNDEFINED;
@@ -5287,6 +5322,11 @@ foundRideEntry:
 
 	ride = GET_RIDE(rideIndex);
 	rideEntry = GET_RIDE_ENTRY(rideEntryIndex);
+	if (rideEntry == (rct_ride_type *)0xFFFFFFFF)
+	{
+		log_warning("Invalid request for ride %u", rideIndex);
+		return MONEY32_UNDEFINED;
+	}
 	ride->type = type;
 	ride->subtype = rideEntryIndex;
 	ride_set_colour_preset(ride, *outRideColour & 0xFF);
@@ -5596,7 +5636,13 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = 0;
-	rct_ride *ride = &g_ride_list[ride_id];
+	rct_ride *ride = GET_RIDE(ride_id);
+	if (ride->type == RIDE_TYPE_NULL)
+	{
+		log_warning("Invalid game command for ride %u", ride_id);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	int x = 0, y = 0, z = 0;
 	if(ride->overall_view != (uint16)-1){
 		x = ((ride->overall_view & 0xFF) * 32) + 16;
@@ -5724,25 +5770,61 @@ void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, in
 		uint8 type = *ebx >> 8;
 		uint8 value = *edx >> 8;
 		int index = *edi;
-		rct_ride *ride = &g_ride_list[ride_id];
+		if (index < 0) {
+			log_warning("Invalid game command, index %d out of bounds", index);
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+		rct_ride *ride = GET_RIDE(ride_id);
+		if (ride->type == RIDE_TYPE_NULL) {
+			log_warning("Invalid game command, ride_id = %u", ride_id);
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+		*ebx = 0;
 		switch(type){
 			case 0:
+				if (index >= countof(ride->track_colour_main)) {
+					log_warning("Invalid game command, index %d out of bounds", index);
+					*ebx = MONEY32_UNDEFINED;
+					break;
+				}
 				ride->track_colour_main[index] = value;
 				gfx_invalidate_screen();
 				break;
 			case 1:
+				if (index >= countof(ride->track_colour_additional)) {
+					log_warning("Invalid game command, index %d out of bounds", index);
+					*ebx = MONEY32_UNDEFINED;
+					break;
+				}
 				ride->track_colour_additional[index] = value;
 				gfx_invalidate_screen();
 				break;
 			case 2:
+				if (index >= countof(ride->vehicle_colours)) {
+					log_warning("Invalid game command, index %d out of bounds", index);
+					*ebx = MONEY32_UNDEFINED;
+					break;
+				}
 				*((uint8*)(&ride->vehicle_colours[index])) = value;
 				ride_update_vehicle_colours(ride_id);
 				break;
 			case 3:
+				if (index >= countof(ride->vehicle_colours)) {
+					log_warning("Invalid game command, index %d out of bounds", index);
+					*ebx = MONEY32_UNDEFINED;
+					break;
+				}
 				*((uint8*)(&ride->vehicle_colours[index]) + 1) = value;
 				ride_update_vehicle_colours(ride_id);
 				break;
 			case 4:
+				if (index >= countof(ride->track_colour_supports)) {
+					log_warning("Invalid game command, index %d out of bounds", index);
+					*ebx = MONEY32_UNDEFINED;
+					break;
+				}
 				ride->track_colour_supports[index] = value;
 				gfx_invalidate_screen();
 				break;
@@ -5761,13 +5843,17 @@ void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, in
 				gfx_invalidate_screen();
 				break;
 			case 7:
+				if (index >= countof(ride->vehicle_colours_extended)) {
+					log_warning("Invalid game command, index %d out of bounds", index);
+					*ebx = MONEY32_UNDEFINED;
+					break;
+				}
 				ride->vehicle_colours_extended[index] = value;
 				ride_update_vehicle_colours(ride_id);
 				break;
 		}
 		window_invalidate_by_number(WC_RIDE, ride_id);
 	}
-	*ebx = 0;
 }
 
 /**
@@ -5780,21 +5866,28 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 	uint8 ride_number;
 	money16 price;
 	rct_ride *ride;
-	rct_ride_type *ride_type;
+	rct_ride_type *rideEntry;
 	bool secondary_price;
 
 	flags = *ebx;
 	ride_number = (*edx & 0xFF);
 	ride = GET_RIDE(ride_number);
-	ride_type = gRideTypeList[ride->subtype];
+	rideEntry = GET_RIDE_ENTRY(ride->subtype);
 	price = *edi;
 	secondary_price = (*edx >> 8);
+
+	if (rideEntry == (rct_ride_type *)0xFFFFFFFF)
+	{
+		log_warning("Invalid game command for ride %u", ride_number);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 
 	//eax
 	//ebx flags
 	//ecx ecx
 	//edx ride_number
-	//ebp ride_type
+	//ebp rideEntry
 
 	*ebx = 0; // for cost check - changing ride price does not cost anything
 
@@ -5803,7 +5896,7 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 		if (!secondary_price) {
 			shop_item = 0x1F;
 			if (ride->type != RIDE_TYPE_TOILETS) {
-				shop_item = ride_type->shop_item;
+				shop_item = rideEntry->shop_item;
 				if (shop_item == 0xFF) {
 					ride->price = price;
 					window_invalidate_by_class(WC_RIDE);
@@ -5818,7 +5911,7 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 			}
 		}
 		else {
-			shop_item = ride_type->shop_item_secondary;
+			shop_item = rideEntry->shop_item_secondary;
 			if (shop_item == 0xFF) {
 				shop_item = RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8);
 				if ((ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0) {
@@ -5835,12 +5928,12 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 			}
 		}
 		ride = GET_RIDE(0);
-		ride_type = gRideTypeList[ride->subtype];
+		rideEntry = GET_RIDE_ENTRY(ride->subtype);
 		uint8 count = 0;
 		while (count < 0xFF) {
 			if (ride->type != 0xFF) {
 				if (ride->type != RIDE_TYPE_TOILETS || shop_item != 0x1F) {
-					if (ride_type->shop_item == shop_item) {
+					if (rideEntry->shop_item == shop_item) {
 						ride->price = price;
 						window_invalidate_by_number(WC_RIDE, count);
 					}
@@ -5850,8 +5943,8 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 					window_invalidate_by_number(WC_RIDE, count);
 				}
 				// If the shop item is the same or an on-ride photo
-				if (ride_type->shop_item_secondary == shop_item ||
-					(ride_type->shop_item_secondary == 0xFF &&
+				if (rideEntry->shop_item_secondary == shop_item ||
+					(rideEntry->shop_item_secondary == 0xFF &&
 					(shop_item == 0x3 || shop_item == 0x20 || shop_item == 0x21 || shop_item == 0x22))) {
 
 					ride->price_secondary = price;
@@ -5860,7 +5953,7 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 			}
 			count++;
 			ride++;
-			ride_type = gRideTypeList[ride->subtype];
+			rideEntry = GET_RIDE_ENTRY(ride->subtype);
 		}
 	}
 }
@@ -6749,6 +6842,12 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 	value = (*edx >> 8) & 0xFF;
 
 	ride = GET_RIDE(rideIndex);
+	if (ride->type == RIDE_TYPE_NULL)
+	{
+		log_warning("Invalid game command for ride %u", rideIndex);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS * 4;
 
@@ -7090,6 +7189,11 @@ void game_command_place_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int 
 
 money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex, uint8 station_num, uint8 flags){
 	rct_ride* ride = GET_RIDE(rideIndex);
+	if (ride->type == RIDE_TYPE_NULL)
+	{
+		log_warning("Invalide ride id %u for entrance/exit removal", rideIndex);
+		return MONEY32_UNDEFINED;
+	}
 
 	if (!(flags & GAME_COMMAND_FLAG_GHOST)){
 		if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode){
@@ -7110,6 +7214,11 @@ money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex, uint8 
 
 		uint8 found = 0;
 		rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+		if (mapElement == NULL)
+		{
+			log_warning("Invalid coordinates for entrance/exit removal x = %d, y = %d", x, y);
+			return MONEY32_UNDEFINED;
+		}
 		do{
 			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
 				continue;
