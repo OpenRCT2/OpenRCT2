@@ -94,12 +94,17 @@ const char *path_get_extension(const utf8 *path)
 	return extension;
 }
 
-void path_set_extension(utf8 *path, const utf8 *newExtension, bool replaceExistingExtension)
+void path_set_extension(utf8 *path, const utf8 *newExtension)
 {
-	// First remove the current extension
-	if (replaceExistingExtension)
+	// Remove existing extension (check first if there is one)
+	if (path_get_extension(path) < strrchr(path, '\0'))
 		path_remove_extension(path);
+	// Append new extension
+	path_append_extension(path, newExtension);
+}
 
+void path_append_extension(utf8 *path, const utf8 *newExtension)
+{
 	// Append a dot to the filename if the new extension doesn't start with it
 	char *endOfString = strrchr(path, '\0');
 	if (newExtension[0] != '.')
@@ -113,9 +118,10 @@ void path_remove_extension(utf8 *path)
 {
 	// Find last dot in filename, and replace it with a null-terminator
 	char *lastDot = strrchr(path_get_filename(path), '.');
-	if (lastDot != NULL) {
+	if (lastDot != NULL)
 		*lastDot = '\0';
-	}
+	else
+		log_warning("No extension found. (path = %s)", path);
 }
 
 bool readentirefile(const utf8 *path, void **outBuffer, int *outLength)

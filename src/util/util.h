@@ -32,7 +32,8 @@ bool filename_valid_characters(const utf8 *filename);
 
 const char *path_get_filename(const utf8 *path);
 const char *path_get_extension(const utf8 *path);
-void path_set_extension(utf8 *path, const utf8 *newExtension, bool replaceExistingExtension);
+void path_set_extension(utf8 *path, const utf8 *newExtension);
+void path_append_extension(utf8 *path, const utf8 *newExtension);
 void path_remove_extension(utf8 *path);
 bool readentirefile(const utf8 *path, void **outBuffer, int *outLength);
 
