@@ -604,172 +604,172 @@ STR_0599    :A compact roller coaster with individual cars and smooth twisting d
 STR_0600    :Powered mine trains career along a smooth and twisted track layout
 STR_0601    :
 STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
-STR_0603    :Guest {INT32}
-STR_0604    :Guest {INT32}
-STR_0605    :Guest {INT32}
-STR_0606    :Guest {INT32}
-STR_0607    :Guest {INT32}
-STR_0608    :Guest {INT32}
-STR_0609    :Guest {INT32}
-STR_0610    :Guest {INT32}
-STR_0611    :Guest {INT32}
-STR_0612    :Guest {INT32}
-STR_0613    :Guest {INT32}
-STR_0614    :Guest {INT32}
-STR_0615    :Guest {INT32}
-STR_0616    :Guest {INT32}
-STR_0617    :Guest {INT32}
-STR_0618    :Guest {INT32}
-STR_0619    :Guest {INT32}
-STR_0620    :Guest {INT32}
-STR_0621    :Guest {INT32}
-STR_0622    :Guest {INT32}
-STR_0623    :Guest {INT32}
-STR_0624    :Guest {INT32}
-STR_0625    :Guest {INT32}
-STR_0626    :Guest {INT32}
-STR_0627    :Guest {INT32}
-STR_0628    :Guest {INT32}
-STR_0629    :Guest {INT32}
-STR_0630    :Guest {INT32}
-STR_0631    :Guest {INT32}
-STR_0632    :Guest {INT32}
-STR_0633    :Guest {INT32}
-STR_0634    :Guest {INT32}
-STR_0635    :Guest {INT32}
-STR_0636    :Guest {INT32}
-STR_0637    :Guest {INT32}
-STR_0638    :Guest {INT32}
-STR_0639    :Guest {INT32}
-STR_0640    :Guest {INT32}
-STR_0641    :Guest {INT32}
-STR_0642    :Guest {INT32}
-STR_0643    :Guest {INT32}
-STR_0644    :Guest {INT32}
-STR_0645    :Guest {INT32}
-STR_0646    :Guest {INT32}
-STR_0647    :Guest {INT32}
-STR_0648    :Guest {INT32}
-STR_0649    :Guest {INT32}
-STR_0650    :Guest {INT32}
-STR_0651    :Guest {INT32}
-STR_0652    :Guest {INT32}
-STR_0653    :Guest {INT32}
-STR_0654    :Guest {INT32}
-STR_0655    :Guest {INT32}
-STR_0656    :Guest {INT32}
-STR_0657    :Guest {INT32}
-STR_0658    :Guest {INT32}
-STR_0659    :Guest {INT32}
-STR_0660    :Guest {INT32}
-STR_0661    :Guest {INT32}
-STR_0662    :Guest {INT32}
-STR_0663    :Guest {INT32}
-STR_0664    :Guest {INT32}
-STR_0665    :Guest {INT32}
-STR_0666    :Guest {INT32}
-STR_0667    :Guest {INT32}
-STR_0668    :Guest {INT32}
-STR_0669    :Guest {INT32}
-STR_0670    :Guest {INT32}
-STR_0671    :Guest {INT32}
-STR_0672    :Guest {INT32}
-STR_0673    :Guest {INT32}
-STR_0674    :Guest {INT32}
-STR_0675    :Guest {INT32}
-STR_0676    :Guest {INT32}
-STR_0677    :Guest {INT32}
-STR_0678    :Guest {INT32}
-STR_0679    :Guest {INT32}
-STR_0680    :Guest {INT32}
-STR_0681    :Guest {INT32}
-STR_0682    :Guest {INT32}
-STR_0683    :Guest {INT32}
-STR_0684    :Guest {INT32}
-STR_0685    :Guest {INT32}
-STR_0686    :Guest {INT32}
-STR_0687    :Guest {INT32}
-STR_0688    :Guest {INT32}
-STR_0689    :Guest {INT32}
-STR_0690    :Guest {INT32}
-STR_0691    :Guest {INT32}
-STR_0692    :Guest {INT32}
-STR_0693    :Guest {INT32}
-STR_0694    :Guest {INT32}
-STR_0695    :Guest {INT32}
-STR_0696    :Guest {INT32}
-STR_0697    :Guest {INT32}
-STR_0698    :Guest {INT32}
-STR_0699    :Guest {INT32}
-STR_0700    :Guest {INT32}
-STR_0701    :Guest {INT32}
-STR_0702    :Guest {INT32}
-STR_0703    :Guest {INT32}
-STR_0704    :Guest {INT32}
-STR_0705    :Guest {INT32}
-STR_0706    :Guest {INT32}
-STR_0707    :Guest {INT32}
-STR_0708    :Guest {INT32}
-STR_0709    :Guest {INT32}
-STR_0710    :Guest {INT32}
-STR_0711    :Guest {INT32}
-STR_0712    :Guest {INT32}
-STR_0713    :Guest {INT32}
-STR_0714    :Guest {INT32}
-STR_0715    :Guest {INT32}
-STR_0716    :Guest {INT32}
-STR_0717    :Guest {INT32}
-STR_0718    :Guest {INT32}
-STR_0719    :Guest {INT32}
-STR_0720    :Guest {INT32}
-STR_0721    :Guest {INT32}
-STR_0722    :Guest {INT32}
-STR_0723    :Guest {INT32}
-STR_0724    :Guest {INT32}
-STR_0725    :Guest {INT32}
-STR_0726    :Guest {INT32}
-STR_0727    :Guest {INT32}
-STR_0728    :Guest {INT32}
-STR_0729    :Guest {INT32}
-STR_0730    :Guest {INT32}
-STR_0731    :Guest {INT32}
-STR_0732    :Guest {INT32}
-STR_0733    :Guest {INT32}
-STR_0734    :Guest {INT32}
-STR_0735    :Guest {INT32}
-STR_0736    :Guest {INT32}
-STR_0737    :Guest {INT32}
-STR_0738    :Guest {INT32}
-STR_0739    :Guest {INT32}
-STR_0740    :Guest {INT32}
-STR_0741    :Guest {INT32}
-STR_0742    :Guest {INT32}
-STR_0743    :Guest {INT32}
-STR_0744    :Guest {INT32}
-STR_0745    :Guest {INT32}
-STR_0746    :Guest {INT32}
-STR_0747    :Guest {INT32}
-STR_0748    :Guest {INT32}
-STR_0749    :Guest {INT32}
-STR_0750    :Guest {INT32}
-STR_0751    :Guest {INT32}
-STR_0752    :Guest {INT32}
-STR_0753    :Guest {INT32}
-STR_0754    :Guest {INT32}
-STR_0755    :Guest {INT32}
-STR_0756    :Guest {INT32}
-STR_0757    :Guest {INT32}
-STR_0758    :Guest {INT32}
-STR_0759    :Guest {INT32}
-STR_0760    :Guest {INT32}
-STR_0761    :Guest {INT32}
-STR_0762    :Guest {INT32}
-STR_0763    :Guest {INT32}
-STR_0764    :Guest {INT32}
-STR_0765    :Guest {INT32}
-STR_0766    :Guest {INT32}
-STR_0767    :Guest {INT32}
-STR_0768    :Handyman {INT32}
+STR_0603    :来客{INT32}
+STR_0604    :来客{INT32}
+STR_0605    :来客{INT32}
+STR_0606    :来客{INT32}
+STR_0607    :来客{INT32}
+STR_0608    :来客{INT32}
+STR_0609    :来客{INT32}
+STR_0610    :来客{INT32}
+STR_0611    :来客{INT32}
+STR_0612    :来客{INT32}
+STR_0613    :来客{INT32}
+STR_0614    :来客{INT32}
+STR_0615    :来客{INT32}
+STR_0616    :来客{INT32}
+STR_0617    :来客{INT32}
+STR_0618    :来客{INT32}
+STR_0619    :来客{INT32}
+STR_0620    :来客{INT32}
+STR_0621    :来客{INT32}
+STR_0622    :来客{INT32}
+STR_0623    :来客{INT32}
+STR_0624    :来客{INT32}
+STR_0625    :来客{INT32}
+STR_0626    :来客{INT32}
+STR_0627    :来客{INT32}
+STR_0628    :来客{INT32}
+STR_0629    :来客{INT32}
+STR_0630    :来客{INT32}
+STR_0631    :来客{INT32}
+STR_0632    :来客{INT32}
+STR_0633    :来客{INT32}
+STR_0634    :来客{INT32}
+STR_0635    :来客{INT32}
+STR_0636    :来客{INT32}
+STR_0637    :来客{INT32}
+STR_0638    :来客{INT32}
+STR_0639    :来客{INT32}
+STR_0640    :来客{INT32}
+STR_0641    :来客{INT32}
+STR_0642    :来客{INT32}
+STR_0643    :来客{INT32}
+STR_0644    :来客{INT32}
+STR_0645    :来客{INT32}
+STR_0646    :来客{INT32}
+STR_0647    :来客{INT32}
+STR_0648    :来客{INT32}
+STR_0649    :来客{INT32}
+STR_0650    :来客{INT32}
+STR_0651    :来客{INT32}
+STR_0652    :来客{INT32}
+STR_0653    :来客{INT32}
+STR_0654    :来客{INT32}
+STR_0655    :来客{INT32}
+STR_0656    :来客{INT32}
+STR_0657    :来客{INT32}
+STR_0658    :来客{INT32}
+STR_0659    :来客{INT32}
+STR_0660    :来客{INT32}
+STR_0661    :来客{INT32}
+STR_0662    :来客{INT32}
+STR_0663    :来客{INT32}
+STR_0664    :来客{INT32}
+STR_0665    :来客{INT32}
+STR_0666    :来客{INT32}
+STR_0667    :来客{INT32}
+STR_0668    :来客{INT32}
+STR_0669    :来客{INT32}
+STR_0670    :来客{INT32}
+STR_0671    :来客{INT32}
+STR_0672    :来客{INT32}
+STR_0673    :来客{INT32}
+STR_0674    :来客{INT32}
+STR_0675    :来客{INT32}
+STR_0676    :来客{INT32}
+STR_0677    :来客{INT32}
+STR_0678    :来客{INT32}
+STR_0679    :来客{INT32}
+STR_0680    :来客{INT32}
+STR_0681    :来客{INT32}
+STR_0682    :来客{INT32}
+STR_0683    :来客{INT32}
+STR_0684    :来客{INT32}
+STR_0685    :来客{INT32}
+STR_0686    :来客{INT32}
+STR_0687    :来客{INT32}
+STR_0688    :来客{INT32}
+STR_0689    :来客{INT32}
+STR_0690    :来客{INT32}
+STR_0691    :来客{INT32}
+STR_0692    :来客{INT32}
+STR_0693    :来客{INT32}
+STR_0694    :来客{INT32}
+STR_0695    :来客{INT32}
+STR_0696    :来客{INT32}
+STR_0697    :来客{INT32}
+STR_0698    :来客{INT32}
+STR_0699    :来客{INT32}
+STR_0700    :来客{INT32}
+STR_0701    :来客{INT32}
+STR_0702    :来客{INT32}
+STR_0703    :来客{INT32}
+STR_0704    :来客{INT32}
+STR_0705    :来客{INT32}
+STR_0706    :来客{INT32}
+STR_0707    :来客{INT32}
+STR_0708    :来客{INT32}
+STR_0709    :来客{INT32}
+STR_0710    :来客{INT32}
+STR_0711    :来客{INT32}
+STR_0712    :来客{INT32}
+STR_0713    :来客{INT32}
+STR_0714    :来客{INT32}
+STR_0715    :来客{INT32}
+STR_0716    :来客{INT32}
+STR_0717    :来客{INT32}
+STR_0718    :来客{INT32}
+STR_0719    :来客{INT32}
+STR_0720    :来客{INT32}
+STR_0721    :来客{INT32}
+STR_0722    :来客{INT32}
+STR_0723    :来客{INT32}
+STR_0724    :来客{INT32}
+STR_0725    :来客{INT32}
+STR_0726    :来客{INT32}
+STR_0727    :来客{INT32}
+STR_0728    :来客{INT32}
+STR_0729    :来客{INT32}
+STR_0730    :来客{INT32}
+STR_0731    :来客{INT32}
+STR_0732    :来客{INT32}
+STR_0733    :来客{INT32}
+STR_0734    :来客{INT32}
+STR_0735    :来客{INT32}
+STR_0736    :来客{INT32}
+STR_0737    :来客{INT32}
+STR_0738    :来客{INT32}
+STR_0739    :来客{INT32}
+STR_0740    :来客{INT32}
+STR_0741    :来客{INT32}
+STR_0742    :来客{INT32}
+STR_0743    :来客{INT32}
+STR_0744    :来客{INT32}
+STR_0745    :来客{INT32}
+STR_0746    :来客{INT32}
+STR_0747    :来客{INT32}
+STR_0748    :来客{INT32}
+STR_0749    :来客{INT32}
+STR_0750    :来客{INT32}
+STR_0751    :来客{INT32}
+STR_0752    :来客{INT32}
+STR_0753    :来客{INT32}
+STR_0754    :来客{INT32}
+STR_0755    :来客{INT32}
+STR_0756    :来客{INT32}
+STR_0757    :来客{INT32}
+STR_0758    :来客{INT32}
+STR_0759    :来客{INT32}
+STR_0760    :来客{INT32}
+STR_0761    :来客{INT32}
+STR_0762    :来客{INT32}
+STR_0763    :来客{INT32}
+STR_0764    :来客{INT32}
+STR_0765    :来客{INT32}
+STR_0766    :来客{INT32}
+STR_0767    :来客{INT32}
+STR_0768    :便利屋 {INT32}
 STR_0769    :Mechanic {INT32}
 STR_0770    :Security Guard {INT32}
 STR_0771    :Entertainer {INT32}
@@ -779,7 +779,7 @@ STR_0774    :Unnamed park{POP16}{POP16}
 STR_0775    :Unnamed park{POP16}{POP16}
 STR_0776    :Unnamed park{POP16}{POP16}
 STR_0777    :Unnamed park{POP16}{POP16}
-STR_0778    :Sign
+STR_0778    :バナー
 STR_0779    :1日
 STR_0780    :2日
 STR_0781    :3日
@@ -893,7 +893,7 @@ STR_0887    :Quit Scenario Editor
 STR_0888    :Quit Roller Coaster Designer
 STR_0889    :Quit Track Designs Manager
 STR_0890    :SCR{COMMA16}.BMP
-STR_0891    :Screenshot
+STR_0891    :スクリーンショット
 STR_0892    :Screenshot saved to disk as '{STRINGID}'
 STR_0893    :Screenshot failed !
 STR_0894    :Landscape data area full !
@@ -974,7 +974,7 @@ STR_0968    :+360{DEGREE}
 STR_0969    :+405{DEGREE}
 STR_0970    :+450{DEGREE}
 STR_0971    :+495{DEGREE}
-STR_0972    :Cancel
+STR_0972    :キャンセル
 STR_0973    :OK
 STR_0974    :Rides
 STR_0975    :Shops and Stalls
@@ -1170,7 +1170,7 @@ STR_1164    :{STRINGID}{NEWLINE}(Right-Click to Remove)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
 STR_1166    :Can't lower water level here...
 STR_1167    :Can't raise water level here...
-STR_1168    :Options
+STR_1168    :設定
 STR_1169    :(None)
 STR_1170    :{STRING}
 STR_1171    :{RED}Closed - - 
@@ -1465,7 +1465,7 @@ STR_1459    :Track style
 STR_1460    :{SMALLFONT}{BLACK}'U' shaped open track
 STR_1461    :{SMALLFONT}{BLACK}'O' shaped enclosed track
 STR_1462    :Too steep for lift hill
-STR_1463    :Guests
+STR_1463    :来客
 STR_1464    :Helix up (small)
 STR_1465    :Helix up (large)
 STR_1466    :Helix down (small)
@@ -1695,14 +1695,14 @@ STR_1689    :Block brakes
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Cost: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Cost: {BLACK}from {CURRENCY}
-STR_1693    :{SMALLFONT}{BLACK}Guests
+STR_1693    :{SMALLFONT}{BLACK}来客
 STR_1694    :{SMALLFONT}{BLACK}Staff
 STR_1695    :{SMALLFONT}{BLACK}Income and costs
 STR_1696    :{SMALLFONT}{BLACK}Customer information
 STR_1697    :Cannot place these on queue line area
 STR_1698    :Can only place these on queue area
 STR_1699    :Too many people in game
-STR_1700    :Hire new Handyman
+STR_1700    :便利屋を雇います
 STR_1701    :Hire new Mechanic
 STR_1702    :Hire new Security Guard
 STR_1703    :Hire new Entertainer
@@ -1756,8 +1756,8 @@ STR_1750    :{DURATION}
 STR_1751    :Can't change time limit for ride...
 STR_1752    :{SMALLFONT}{BLACK}Show list of individual guests in park
 STR_1753    :{SMALLFONT}{BLACK}Show summarised list of guests in park
-STR_1754    :{BLACK}{COMMA16} guests
-STR_1755    :{BLACK}{COMMA16} guest
+STR_1754    :{BLACK}{COMMA16} 来客
+STR_1755    :{BLACK}{COMMA16} 来客
 STR_1756    :{WINDOW_COLOUR_2}Admission price:
 STR_1757    :{WINDOW_COLOUR_2}Reliability: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Build mode
@@ -1848,9 +1848,9 @@ STR_1842    :Favourite of: {COMMA16} guest
 STR_1843    :Favourite of: {COMMA16} guests
 STR_1844    :{SMALLFONT}{BLACK}Select information type to show in ride/attraction list
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} guests
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} guests
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} guests
+STR_1846    :{COMMA16}人の来客
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16}人の来客
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16}人の来客
 STR_1849    :{WINDOW_COLOUR_2}Play music
 STR_1850    :{SMALLFONT}{BLACK}Select whether music should be played for this ride
 STR_1851    :{WINDOW_COLOUR_2}Running cost: {BLACK}{CURRENCY2DP} per hour
@@ -1861,11 +1861,11 @@ STR_1855    :{WINDOW_COLOUR_2}Built: {BLACK}{COMMA16} Years Ago
 STR_1856    :{WINDOW_COLOUR_2}Profit per item sold: {BLACK}{CURRENCY2DP}
 STR_1857    :{WINDOW_COLOUR_2}Loss per item sold: {BLACK}{CURRENCY2DP}
 STR_1858    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY2DP} per month
-STR_1859    :Handymen
+STR_1859    :便利屋
 STR_1860    :Mechanics
 STR_1861    :Security Guards
 STR_1862    :Entertainers
-STR_1863    :Handyman
+STR_1863    :便利屋
 STR_1864    :Mechanic
 STR_1865    :Security Guard
 STR_1866    :Entertainer
@@ -1880,15 +1880,15 @@ STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY2DP} per hour
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect Rides
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix Rides
-STR_1878    :{WINDOW_COLOUR_2}Inspection:
-STR_1879    :Every 10 minutes
-STR_1880    :Every 20 minutes
-STR_1881    :Every 30 minutes
-STR_1882    :Every 45 minutes
-STR_1883    :Every hour
-STR_1884    :Every 2 hours
-STR_1885    :Never
-STR_1886    :Inspecting {STRINGID}
+STR_1878    :{WINDOW_COLOUR_2}改めるの:
+STR_1879    :毎10分
+STR_1880    :毎20分
+STR_1881    :毎30分
+STR_1882    :毎45分
+STR_1883    :毎1時間
+STR_1884    :毎2時間
+STR_1885    :改めない
+STR_1886    :{STRINGID}を改めります
 STR_1887    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}{COMMA16} minutes
 STR_1888    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}more than 4 hours
 STR_1889    :{WINDOW_COLOUR_2}Down-Time: {MOVE_X}{255}{BLACK}{COMMA16}%
@@ -2025,24 +2025,24 @@ STR_2017    :Cuddly Toys
 STR_2018    :Park Maps
 STR_2019    :On-Ride Photos
 STR_2020    :Umbrellas
-STR_2021    :Drinks
-STR_2022    :Burgers
-STR_2023    :Chips
-STR_2024    :Ice Creams
-STR_2025    :Candyfloss
-STR_2026    :Empty Cans
-STR_2027    :Rubbish
+STR_2021    :ドリンク
+STR_2022    :バーガー
+STR_2023    :フライ
+STR_2024    :ソフトクリーム
+STR_2025    :綿菓子
+STR_2026    :空き缶
+STR_2027    :ごみ
 STR_2028    :Empty Burger Boxes
-STR_2029    :Pizzas
+STR_2029    :ピザ
 STR_2030    :Vouchers
-STR_2031    :Popcorn
-STR_2032    :Hot Dogs
+STR_2031    :ポップコーン
+STR_2032    :ホットドッグ
 STR_2033    :Tentacles
-STR_2034    :Hats
+STR_2034    :帽子
 STR_2035    :Toffee Apples
-STR_2036    :T-Shirts
-STR_2037    :Doughnuts
-STR_2038    :Coffees
+STR_2036    :ティーシャツ
+STR_2037    :ドーナツ
+STR_2038    :コーヒー
 STR_2039    :Empty Cups
 STR_2040    :Fried Chicken
 STR_2041    :Lemonade
@@ -2331,13 +2331,13 @@ STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m{SQUARED}
 STR_2324    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}sq.ft.
 STR_2325    :{SMALLFONT}{BLACK}Buy land to extend park
 STR_2326    :{SMALLFONT}{BLACK}Buy construction rights to allow construction above or below land outside the park
-STR_2327    :Options
-STR_2328    :{WINDOW_COLOUR_2}Currency:
-STR_2329    :{WINDOW_COLOUR_2}Distance and Speed:
-STR_2330    :{WINDOW_COLOUR_2}Temperature:
-STR_2331    :{WINDOW_COLOUR_2}Height Labels:
-STR_2332    :Units
-STR_2333    :Sound
+STR_2327    :設定
+STR_2328    :{WINDOW_COLOUR_2}通貨:
+STR_2329    :{WINDOW_COLOUR_2}距離と速力:
+STR_2330    :{WINDOW_COLOUR_2}温度:
+STR_2331    :{WINDOW_COLOUR_2}高さのマーカー:
+STR_2332    :単位
+STR_2333    :効果音
 STR_2334    :パウンド ({POUND})
 STR_2335    :ドル ($)
 STR_2336    :フラン (F)
@@ -2345,7 +2345,7 @@ STR_2337    :ドイツマルク (DM)
 STR_2338    :円 ({YEN})
 STR_2339    :ペセタ (Pts)
 STR_2340    :リラ (L)
-STR_2341    :Guilders (fl.)
+STR_2341    :フローリン (fl.)
 STR_2342    :クローナ (kr)
 STR_2343    :ユーロ ({EURO})
 STR_2344    :Imperial
@@ -2440,7 +2440,7 @@ STR_2432    :{BLACK}Vouchers for half-price entry to {STRINGID}
 STR_2433    :{BLACK}Vouchers for free {STRINGID}
 STR_2434    :{BLACK}Advertising campaign for {STRINGID}
 STR_2435    :{BLACK}Advertising campaign for {STRINGID}
-STR_2436    :1 week
+STR_2436    :1週間
 STR_2437    :<not used anymore>
 STR_2438    :<not used anymore>
 STR_2439    :<not used anymore>
@@ -2727,26 +2727,26 @@ STR_2718    :Up
 STR_2719    :New file
 STR_2720    :{UINT16}秒
 STR_2721    :{UINT16}秒
-STR_2722    :{UINT16}分:{UINT16}sec
-STR_2723    :{UINT16}分:{UINT16}secs
-STR_2724    :{UINT16}分:{UINT16}sec
-STR_2725    :{UINT16}分:{UINT16}secs
+STR_2722    :{UINT16}分{UINT16}秒
+STR_2723    :{UINT16}分{UINT16}秒
+STR_2724    :{UINT16}分{UINT16}秒
+STR_2725    :{UINT16}分{UINT16}秒
 STR_2726    :{UINT16}分
 STR_2727    :{UINT16}分
-STR_2728    :{UINT16}時間:{UINT16}min
-STR_2729    :{UINT16}時間:{UINT16}mins
-STR_2730    :{UINT16}時間:{UINT16}min
-STR_2731    :{UINT16}時間:{UINT16}mins
+STR_2728    :{UINT16}時{UINT16}分
+STR_2729    :{UINT16}時{UINT16}分
+STR_2730    :{UINT16}時{UINT16}分
+STR_2731    :{UINT16}時{UINT16}分
 STR_2732    :{COMMA16}ft
 STR_2733    :{COMMA16}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
-STR_2736    :{MONTH}, 第{COMMA16}年
-STR_2737    :{STRINGID} {MONTH}, 第{COMMA16}年
+STR_2736    :{MONTH}月 {COMMA16}年
+STR_2737    :{STRINGID} {MONTH}月 {COMMA16}年
 STR_2738    :Title screen music:
 STR_2739    :None
-STR_2740    :ローラーコースター タイクーン 1
-STR_2741    :ローラーコースター タイクーン 2
+STR_2740    :RollerCoaster Tycoon 1
+STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat not found
 STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat in your RCT2 installation.
 STR_2744    :[
@@ -2782,7 +2782,7 @@ STR_2772    :Faster Gamespeed
 STR_2773    :Windowed
 STR_2774    :Fullscreen
 STR_2775    :Fullscreen (desktop)
-STR_2776    :Language:
+STR_2776    :言語:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Viewport #{COMMA16}
@@ -2998,7 +2998,7 @@ STR_2987    :{SMALLFONT}{BLACK}Set this banner as a 'no-entry' sign for guests
 STR_2988    :{SMALLFONT}{BLACK}Demolish this banner
 STR_2989    :{SMALLFONT}{BLACK}Select main colour
 STR_2990    :{SMALLFONT}{BLACK}Select text colour
-STR_2991    :Sign
+STR_2991    :バナー
 STR_2992    :Sign text
 STR_2993    :Enter new text for this sign:
 STR_2994    :{SMALLFONT}{BLACK}Change text on sign
@@ -3138,7 +3138,7 @@ STR_3127    :{WINDOW_COLOUR_2}Nausea Factor: {BLACK}+{COMMA16}%
 STR_3128    :Save Track Design
 STR_3129    :Save Track Design with Scenery
 STR_3130    :Save
-STR_3131    :Cancel
+STR_3131    :キャンセル
 STR_3132    :{BLACK}Click items of scenery to select them to be saved with track design...
 STR_3133    :Unable to build this on a slope
 STR_3134    :{RED}(Design includes scenery which is unavailable)
@@ -3449,11 +3449,11 @@ STR_3436    :{SMALLFONT}{BLACK}While waiting for our first riders, we could cust
 STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
 STR_3438    :Unable to remove all scenery from here...
 STR_3439    :Clear Scenery
-STR_3440    :Page 1
-STR_3441    :Page 2
-STR_3442    :Page 3
-STR_3443    :Page 4
-STR_3444    :Page 5
+STR_3440    :1ページ目
+STR_3441    :2ページ目
+STR_3442    :3ページ目
+STR_3443    :4ページ目
+STR_3444    :5ページ目
 STR_3445    :Set Patrol Area
 STR_3446    :Cancel Patrol Area
 
@@ -3498,10 +3498,10 @@ STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the t
 STR_5157    :Unlock all prices
 STR_5158    :Quit to menu
 STR_5159    :Exit OpenRCT2
-STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Year {POP16}{COMMA16}
+STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID} {POP16}{COMMA16}年
 STR_5161    :Date Format:
-STR_5162    :Day/Month/Year
-STR_5163    :Month/Day/Year
+STR_5162    :日月年
+STR_5163    :月日年
 STR_5164    :Twitch Channel name
 STR_5165    :Name peeps after followers
 STR_5166    :{SMALLFONT}{BLACK}Will name peeps after channel's Twitch followers
@@ -3634,8 +3634,8 @@ STR_5292    :{SMALLFONT}{BLACK}Force a breakdown
 STR_5293    :{SMALLFONT}{BLACK}Close ride/attraction
 STR_5294    :{SMALLFONT}{BLACK}Test ride/attraction
 STR_5295    :{SMALLFONT}{BLACK}Open ride/attraction
-STR_5296    :{SMALLFONT}{BLACK}Close park
-STR_5297    :{SMALLFONT}{BLACK}Open park
+STR_5296    :{SMALLFONT}{BLACK}遊園地を閉める
+STR_5297    :{SMALLFONT}{BLACK}遊園地を開ける
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :{SMALLFONT}{BLACK}Quick fire staff
@@ -3643,10 +3643,10 @@ STR_5301    :{MEDIUMFONT}{BLACK}Clear your loan
 STR_5302    :Clear loan
 STR_5303    :Allow building in pause mode
 STR_5304    :Title Sequence:
-STR_5305    :ローラーコースター タイクーン  1
-STR_5306    :ローラーコースター タイクーン  1 (AA)
-STR_5307    :ローラーコースター タイクーン  1 (AA + 遊園地再生計画)
-STR_5308    :ローラーコースター タイクーン  2
+STR_5305    :RollerCoaster Tycoon 1
+STR_5306    :RollerCoaster Tycoon 1 (AA)
+STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
+STR_5308    :RollerCoaster Tycoon 2
 STR_5309    :OpenRCT2
 STR_5310    :ランダム
 STR_5311    :{SMALLFONT}{BLACK}デバグツール
@@ -3888,9 +3888,9 @@ STR_5546    :{SMALLFONT}{BLACK}Bright pink
 STR_5547    :{SMALLFONT}{BLACK}Light pink
 STR_5548    :Show all operating modes
 STR_5549    :年月日
-STR_5550    :{POP16}{POP16}第{COMMA16}年, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
-STR_5551    :Year/Day/Month
-STR_5552    :{POP16}{POP16}第{COMMA16}年, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
+STR_5550    :{POP16}{POP16}{COMMA16}年 {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_5551    :年日月
+STR_5552    :{POP16}{POP16}{COMMA16}年 {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5553    :Pause game when Steam overlay is open
 STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
 STR_5555    :Show vehicles from other track types
