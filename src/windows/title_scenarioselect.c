@@ -375,8 +375,11 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Scenario path
 	if (gConfigGeneral.debugging_tools) {
-		const utf8 *path = scenario->path;
-		gfx_draw_string_left(dpi, 1170, (void*)&path, w->colours[1], w->x + 3, w->y + w->height - 3 - 11);
+		utf8 path[MAX_PATH];
+		shorten_path(path, sizeof(path), scenario->path, w->width - 6);
+
+		const utf8 *pathPtr = path;
+		gfx_draw_string_left(dpi, 1170, (void*)&pathPtr, w->colours[1], w->x + 3, w->y + w->height - 3 - 11);
 	}
 
 	// Scenario name
