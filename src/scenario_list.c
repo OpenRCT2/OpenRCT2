@@ -232,10 +232,22 @@ static int scenario_list_sort_by_name(const void *a, const void *b)
 	const scenario_index_entry *entryA = (const scenario_index_entry*)a;
 	const scenario_index_entry *entryB = (const scenario_index_entry*)b;
 
-	if (entryA->source_game != entryB->source_game) {
-		return entryA->source_game - entryB->source_game;
+	// Order by category
+	if (entryA->category != entryB->category) {
+		return entryA->category - entryB->category;
 	}
-	return strcmp(entryA->name, entryB->name);
+
+	// Then by source game / name
+	switch (entryA->category) {
+	default:
+		if (entryA->source_game != entryB->source_game) {
+			return entryA->source_game - entryB->source_game;
+		}
+		return strcmp(entryA->name, entryB->name);
+	case SCENARIO_CATEGORY_REAL:
+	case SCENARIO_CATEGORY_OTHER:
+		return strcmp(entryA->name, entryB->name);
+	}
 }
 
 static int scenario_list_sort_by_index(const void *a, const void *b)
@@ -243,14 +255,37 @@ static int scenario_list_sort_by_index(const void *a, const void *b)
 	const scenario_index_entry *entryA = (const scenario_index_entry*)a;
 	const scenario_index_entry *entryB = (const scenario_index_entry*)b;
 
-	if (entryA->source_game == SCENARIO_SOURCE_OTHER && entryB->source_game == SCENARIO_SOURCE_OTHER) {
+	// Order by source game
+	if (entryA->source_game != entryB->source_game) {
+		return entryA->source_game - entryB->source_game;
+	}
+
+	// Then by index / category / name
+	uint8 sourceGame = entryA->source_game;
+	switch (sourceGame) {
+	default:
+		if (entryA->source_index == -1 && entryB->source_index == -1) {
+			if (entryA->category == entryB->category) {
+				return scenario_list_sort_by_name(a, b);
+			} else {
+				return entryA->category - entryB->category;
+			}
+		} else if (entryA->source_index == -1) {
+			return 1;
+		} else if (entryB->source_index == -1) {
+			return -1;
+		} else {
+			return entryA->source_index - entryB->source_index;
+		}
+	case SCENARIO_SOURCE_REAL:
+		return scenario_list_sort_by_name(a, b);
+	case SCENARIO_SOURCE_OTHER:
 		if (entryA->category == entryB->category) {
 			return scenario_list_sort_by_name(a, b);
 		} else {
 			return entryA->category - entryB->category;
 		}
 	}
-	return entryA->source_index - entryB->source_index;
 }
 
 scenario_index_entry *scenario_list_find_by_filename(const utf8 *filename)
