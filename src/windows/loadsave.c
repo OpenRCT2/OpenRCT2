@@ -160,7 +160,6 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 
 	if (!str_is_null_or_empty(defaultName)) {
 		safe_strncpy(_defaultName, defaultName, sizeof(_defaultName));
-		path_remove_extension(_defaultName);
 	}
 
 	w = window_bring_to_front_by_class(WC_LOADSAVE);
