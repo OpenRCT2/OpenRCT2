@@ -42,6 +42,9 @@ int bitcount(int source);
 bool strequals(const char *a, const char *b, int length, bool caseInsensitive);
 int strcicmp(char const *a, char const *b);
 char *safe_strncpy(char * destination, const char * source, size_t num);
+char *safe_strcat(char *destination, const char *source, size_t size);
+char *safe_strcat_path(char *destination, const char *source, size_t size);
+char *safe_strtrimleft(char *destination, const char *source, size_t size);
 
 bool utf8_is_bom(const char *str);
 bool str_is_null_or_empty(const char *str);

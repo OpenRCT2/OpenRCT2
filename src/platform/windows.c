@@ -935,4 +935,17 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
 #endif
 }
 
+datetime64 platform_get_datetime_now_utc()
+{
+	// Get file time
+	FILETIME fileTime;
+	GetSystemTimeAsFileTime(&fileTime);
+	uint64 fileTime64 = ((uint64)fileTime.dwHighDateTime << 32ULL) | ((uint64)fileTime.dwLowDateTime);
+
+	// File time starts from: 1601-01-01T00:00:00Z
+	// Convert to start from: 0001-01-01T00:00:00Z
+	datetime64 utcNow = fileTime64 - 504911232000000000ULL;
+	return utcNow;
+}
+
 #endif

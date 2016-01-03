@@ -64,6 +64,7 @@ rct_xy16 _titleScriptCurrentCentralPosition = { -1, -1 };
 #define ZOOM(d)				TITLE_SCRIPT_ZOOM, d
 #define RESTART()			TITLE_SCRIPT_RESTART
 #define LOAD(i)				TITLE_SCRIPT_LOAD, i
+#define LOADRCT1(i)			TITLE_SCRIPT_LOADRCT1, i
 
 static const uint8 _magicMountainScript[] = {
 	LOADMM(),
@@ -298,10 +299,7 @@ static void title_do_next_script_opcode()
 	uint8 script_opcode, script_operand;
 	rct_window* w;
 	gTitleScriptCommand++;
-	if (gTitleScriptCommand <= 1 || *(_currentScript - 1) != TITLE_SCRIPT_END)
-		script_opcode = *_currentScript++;
-	else
-		script_opcode = *_currentScript;
+	script_opcode = *_currentScript++;
 	if (gTitleScriptSkipTo != -1) {
 		if (gTitleScriptSkipTo == gTitleScriptCommand) {
 			gTitleScriptSkipTo = -1;
@@ -421,6 +419,38 @@ static void title_do_next_script_opcode()
 				}
 			}
 		}
+		break;
+	case TITLE_SCRIPT_LOADRCT1:
+		script_operand = (*_currentScript++);
+
+		source_desc sourceDesc;
+		if (!scenario_get_source_desc_by_id(script_operand, &sourceDesc) || sourceDesc.index == -1) {
+			log_fatal("Invalid scenario id.");
+			exit(-1);
+		}
+
+		const utf8 *path = NULL;
+		for (int i = 0; i < gScenarioListCount; i++) {
+			if (gScenarioList[i].source_index == sourceDesc.index) {
+				path = gScenarioList[i].path;
+				break;
+			}
+		}
+
+		if (path == NULL || !title_load_park(path)) {
+			script_opcode = *_currentScript;
+			while (script_opcode != TITLE_SCRIPT_LOADRCT1 && script_opcode != TITLE_SCRIPT_RESTART && script_opcode != TITLE_SCRIPT_END) {
+				title_skip_opcode();
+				script_opcode = *_currentScript;
+			}
+			if (script_opcode == TITLE_SCRIPT_RESTART) {
+				title_sequence_change_preset(4);
+				title_refresh_sequence();
+				config_save_default();
+				return;
+			}
+		}
+		gTitleScriptSave = 0xFF;
 		break;
 	}
 	window_invalidate_by_class(WC_TITLE_EDITOR);
@@ -688,6 +718,9 @@ bool title_refresh_sequence()
 				hasInvalidSave = true;
 			hasLoad = true;
 		}
+		else if (title->commands[i].command == TITLE_SCRIPT_LOADRCT1) {
+			hasLoad = true;
+		}
 		else if (title->commands[i].command == TITLE_SCRIPT_LOADMM) {
 			hasLoad = true;
 		}
@@ -711,6 +744,9 @@ bool title_refresh_sequence()
 		for (int i = 0; i < title->num_commands; i++) {
 			*scriptPtr++ = title->commands[i].command;
 			switch (title->commands[i].command) {
+			case TITLE_SCRIPT_LOADRCT1:
+				*scriptPtr++ = title->commands[i].saveIndex;
+				break;
 			case TITLE_SCRIPT_LOAD:
 				src = title->saves[title->commands[i].saveIndex];
 				do {

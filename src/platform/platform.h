@@ -166,6 +166,8 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer);
 
 bool platform_check_steam_overlay_attached();
 
+datetime64 platform_get_datetime_now_utc();
+
 // BSD and OS X has MAP_ANON instead of MAP_ANONYMOUS
 #ifndef MAP_ANONYMOUS
 	#define MAP_ANONYMOUS MAP_ANON

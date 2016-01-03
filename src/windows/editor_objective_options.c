@@ -534,9 +534,9 @@ static void window_editor_objective_options_show_category_dropdown(rct_window *w
 
 	dropdownWidget = &w->widgets[WIDX_CATEGORY];
 
-	for (i = 0; i < 5; i++) {
+	for (i = SCENARIO_CATEGORY_BEGINNER; i <= SCENARIO_CATEGORY_OTHER; i++) {
 		gDropdownItemsFormat[i] = 1142;
-		gDropdownItemsArgs[i] = STR_BEGINNER_PARKS + i;
+		gDropdownItemsArgs[i] = ScenarioCategoryStringIds[i];
 	}
 	window_dropdown_show_text_custom_width(
 		w->x + dropdownWidget->left,
@@ -1036,7 +1036,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	// Scenario category value
 	x = w->x + w->widgets[WIDX_CATEGORY].left + 1;
 	y = w->y + w->widgets[WIDX_CATEGORY].top;
-	stringId = STR_BEGINNER_PARKS + s6Info->category;
+	stringId = ScenarioCategoryStringIds[s6Info->category];
 	gfx_draw_string_left(dpi, 1193, &stringId, 0, x, y);
 }
 
