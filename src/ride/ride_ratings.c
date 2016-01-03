@@ -981,7 +981,7 @@ static rating_tuple get_banked_turns_rating(rct_ride* ride) {
  */
 static rating_tuple get_sloped_turns_rating(rct_ride* ride) {
 	rating_tuple rating;
-	
+
 	int no_4_plus_turns = get_turn_count_4_plus_elements(ride, 2);
 	int no_3_turns = get_turn_count_3_elements(ride, 2);
 	int no_2_turns = get_turn_count_2_elements(ride, 2);

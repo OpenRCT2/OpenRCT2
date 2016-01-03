@@ -82,7 +82,7 @@ static rct_xy16 loc_7667AC[] = {
 
 /**
  *
- *  rct2: 0x0142811C 
+ *  rct2: 0x0142811C
  * Can be calculated as Rounddown(34*sin(x)+0.5)
  * where x is in 7.5 deg segments.
  */
@@ -1028,7 +1028,7 @@ static void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-		sub_98199C(0, 45, imageId, 0, height, 28, 28, rotation);	
+		sub_98199C(0, 45, imageId, 0, height, 28, 28, rotation);
 	} else {
 		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
@@ -1099,7 +1099,7 @@ static void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 dir
 		RCT2_GLOBAL(0x009DEA52, uint16) = direction == 3 ? 28 : 2;
 		RCT2_GLOBAL(0x009DEA54, uint16) = direction == 0 ? 28 : 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-		sub_98199C(0, 29, imageId, 0, height, lengthY, lengthX, rotation);	
+		sub_98199C(0, 29, imageId, 0, height, lengthY, lengthX, rotation);
 	} else {
 		// Door image or base
 		RCT2_GLOBAL(0x009DEA52, uint16) = direction == 3 ? 28 : 2;

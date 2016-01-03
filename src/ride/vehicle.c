@@ -6426,37 +6426,37 @@ static bool vehicle_update_motion_collision_detection(
 	rct_vehicle *vehicle, sint16 x, sint16 y, sint16 z, uint16* otherVehicleIndex
 ) {
 	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_1) return false;
-	
+
 	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
-	
+
 	if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_6)){
 		vehicle->var_C4 = 0;
 		rct_vehicle* collideVehicle = GET_VEHICLE(*otherVehicleIndex);
-		
+
 		if (vehicle == collideVehicle) return false;
-		
+
 		sint32 x_diff = abs(x - collideVehicle->x);
 		if (x_diff > 0x7FFF) return false;
-		
+
 		sint32 y_diff = abs(y - collideVehicle->y);
 		if (y_diff > 0x7FFF) return false;
-		
+
 		if (x_diff + y_diff > 0xFFFF) return false;
-		
+
 		sint32 z_diff = abs(z - collideVehicle->z);
 		if (x_diff + y_diff + z_diff > 0xFFFF) return false;
-		
+
 		uint16 ecx = min(vehicle->var_44 + collideVehicle->var_44, 560);
 		ecx = ((ecx >> 1) * 30) >> 8;
-		
+
 		if (x_diff + y_diff + z_diff >=  ecx) return false;
-		
+
 		uint8 direction = (vehicle->sprite_direction - collideVehicle->sprite_direction + 7) & 0x1F;
 		if (direction >= 0xF) return false;
-		
+
 		return true;
 	}
-	
+
 	uint16 eax = ((x / 32) << 8) + (y / 32);
 	// TODO change to using a better technique
 	uint32* ebp = RCT2_ADDRESS(0x009A37C4, uint32);
@@ -6468,53 +6468,53 @@ static bool vehicle_update_motion_collision_detection(
 		for(; collideId != 0xFFFF; collideId = collideVehicle->next_in_quadrant){
 			collideVehicle = GET_VEHICLE(collideId);
 			if (collideVehicle == vehicle) continue;
-			
+
 			if (collideVehicle->sprite_identifier != SPRITE_IDENTIFIER_VEHICLE) continue;
-			
+
 			sint32 z_diff = abs(collideVehicle->z - z);
-			
+
 			if (z_diff > 16) continue;
-			
+
 			rct_ride_type_vehicle* collideType = vehicle_get_vehicle_entry(collideVehicle);
-			
+
 			if (!(collideType->flags_b & VEHICLE_ENTRY_FLAG_B_6)) continue;
-			
+
 			sint32 x_diff = abs(collideVehicle->x - x);
 			if (x_diff > 0x7FFF) continue;
-			
+
 			sint32 y_diff = abs(collideVehicle->y - y);
 			if (y_diff > 0x7FFF) continue;
-			
+
 			if (x_diff + y_diff > 0xFFFF) continue;
-			
+
 			uint8 cl = min(vehicle->var_CD, collideVehicle->var_CD);
 			uint8 ch = max(vehicle->var_CD, collideVehicle->var_CD);
 			if (cl != ch){
 				if (cl == 5 && ch == 6) continue;
 			}
-			
+
 			uint32 ecx = vehicle->var_44 + collideVehicle->var_44;
 			ecx = ((ecx >> 1) * 30) >> 8;
-			
+
 			if (x_diff + y_diff >= ecx) continue;
-			
+
 			if (!(collideType->flags_b & VEHICLE_ENTRY_FLAG_B_14)){
 				mayCollide = true;
 				break;
 			}
-			
+
 			uint8 direction = (vehicle->sprite_direction - collideVehicle->sprite_direction - 6) & 0x1F;
-			
+
 			if (direction < 0x14) continue;
-			
+
 			sint16 next_x_diff = abs(x + RCT2_ADDRESS(0x009A3B04, sint16)[vehicle->sprite_direction*2]-collideVehicle->x);
 			sint16 next_y_diff = abs(y + RCT2_ADDRESS(0x009A3B06, sint16)[vehicle->sprite_direction*2]-collideVehicle->y);
-			
+
 			if (next_x_diff + next_y_diff < x_diff + y_diff){
 				mayCollide = true;
 				break;
 			}
-		
+
 		}
 		if (mayCollide == true) {
 			break;
@@ -6523,12 +6523,12 @@ static bool vehicle_update_motion_collision_detection(
 		// TODO change this
 		eax += *ebp;
 	}
-	
+
 	if (mayCollide == false) {
 		vehicle->var_C4 = 0;
 		return false;
 	}
-	
+
 	vehicle->var_C4++;
 	if (vehicle->var_C4 < 200) {
 		vehicle->update_flags |= VEHICLE_UPDATE_FLAG_6;
@@ -6538,7 +6538,7 @@ static bool vehicle_update_motion_collision_detection(
 	}
 
 	// TODO Is it possible for collideVehicle to be NULL?
-	
+
 	if (vehicle->status == VEHICLE_STATUS_MOVING_TO_END_OF_STATION){
 		if (vehicle->sprite_direction == 0) {
 			if (vehicle->x <= collideVehicle->x) {
@@ -6561,14 +6561,14 @@ static bool vehicle_update_motion_collision_detection(
 			}
 		}
 	}
-	
+
 	if (collideVehicle->status == VEHICLE_STATUS_TRAVELLING_BOAT &&
 		vehicle->status != VEHICLE_STATUS_ARRIVING &&
 		vehicle->status != VEHICLE_STATUS_TRAVELLING
 	) {
 		return false;
 	}
-		
+
 	vehicle->update_flags |= VEHICLE_UPDATE_FLAG_6;
 	if (otherVehicleIndex != NULL)
 		*otherVehicleIndex = collideId;
