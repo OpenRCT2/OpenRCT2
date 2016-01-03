@@ -117,6 +117,7 @@ void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const 
  * Default directory fallback is:
  *   - (command line argument)
  *   - <exePath>/data
+ *   - /usr/local/share/openrct2
  *   - /var/lib/openrct2
  *   - /usr/share/openrct2
  */
@@ -127,6 +128,7 @@ void platform_posix_sub_resolve_openrct_data_path(utf8 *out) {
 		// defined in CMakeLists.txt
 		ORCT2_RESOURCE_DIR,
 #endif // ORCT2_RESOURCE_DIR
+		"/usr/local/share/openrct2",
 		"/var/lib/openrct2",
 		"/usr/share/openrct2",
 	};
