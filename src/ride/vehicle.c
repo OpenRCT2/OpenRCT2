@@ -7063,10 +7063,13 @@ bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, u
 		0
 		);
 
-loc_6DBB08:;
+	bool nextTileBackwards = true;
+	int direction;
+//loc_6DBB08:;
 	sint16 x = vehicle->track_x;
 	sint16 y = vehicle->track_y;
 	sint16 z = 0;
+
 	switch (vehicle->var_CD) {
 	case 3:
 		vehicle->var_CD = 1;
@@ -7078,34 +7081,15 @@ loc_6DBB08:;
 		vehicle->var_CD = 6;
 		break;
 	case 2:
-	case 9:
-	case 10:
-	case 11:
-	case 12:
-	case 13:
-	case 14:
+	case 4:
 		vehicle->var_CD = 2;
-	loc_6DBB4F:
-		{
-			rct_xy_element input;
-			rct_xy_element output;
-			int outputZ;
-			int outputDirection;
-
-			input.x = x;
-			input.y = y;
-			input.element = mapElement;
-			if (track_block_get_next(&input, &output, &outputZ, &outputDirection)) {
-				return false;
-			}
-			mapElement = output.element;
-			goto loc_6DBC3B;
-		}
+		nextTileBackwards = false;
+		break;
 	}
 
-loc_6DBB7E:;
-	int direction;
-	{
+
+	if (nextTileBackwards == true) {
+	//loc_6DBB7E:;
 		track_begin_end trackBeginEnd;
 		if (!track_block_get_previous(x, y, mapElement, &trackBeginEnd)) {
 			return false;
@@ -7141,8 +7125,22 @@ loc_6DBB7E:;
 		z = trackBeginEnd.begin_z;
 		direction = trackBeginEnd.begin_direction;
 	}
+	else {
+	//loc_6DBB4F:;
+		rct_xy_element input;
+		rct_xy_element output;
+		int outputZ;
 
-loc_6DBC3B:
+		input.x = x;
+		input.y = y;
+		input.element = mapElement;
+		if (track_block_get_next(&input, &output, &outputZ, &direction)) {
+			return false;
+		}
+		mapElement = output.element;
+	}
+
+//loc_6DBC3B:
 	vehicle->track_x = x;
 	vehicle->track_y = y;
 	vehicle->track_z = z;
