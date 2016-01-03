@@ -36,6 +36,7 @@
 #include <dirent.h>
 #include <fnmatch.h>
 #include <locale.h>
+#include <sys/time.h>
 #include <time.h>
 
 // The name of the mutex used to prevent multiple instances of the game from running
@@ -757,17 +758,14 @@ datetime64 platform_get_datetime_now_utc()
 {
 	const datetime64 epochAsTicks = 621355968000000000;
 
-	// Get current time
-	time_t rawtime;
-	time(&rawtime);
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
 
-	// Convert to UTC epoch
-	struct tm *utcTM = gmtime(&rawtime);
-	time_t utcEpoch = mktime(utcTM);
+	uint64 utcEpoch = tv.tv_sec;
 
 	// Epoch starts from: 1970-01-01T00:00:00Z
 	// Convert to ticks from 0001-01-01T00:00:00Z
-	uint64 utcEpochTicks = (uint64)utcEpoch * 10000000ULL;
+	uint64 utcEpochTicks = (uint64)tv.tv_sec * 10000000ULL + tv.tv_usec * 10;
 	datetime64 utcNow = epochAsTicks + utcEpochTicks;
 	return utcNow;
 }
