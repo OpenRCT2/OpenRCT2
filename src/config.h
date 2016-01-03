@@ -179,6 +179,7 @@ typedef struct {
 	uint8 auto_open_shops;
 	uint8 scenario_select_mode;
 	uint8 scenario_unlocking_enabled;
+	uint8 scenario_hide_mega_park;
 } general_configuration;
 
 typedef struct {

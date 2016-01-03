@@ -606,8 +606,7 @@ static void initialise_list_items(rct_window *w)
 	if (megaParkListItemIndex != -1) {
 		bool megaParkLocked = (rct1CompletedScenarios & rct1RequiredCompletedScenarios) != rct1RequiredCompletedScenarios;
 		_listItems[megaParkListItemIndex].scenario.is_locked = megaParkLocked;
-#ifdef HIDE_MEGA_PARK
-		if (megaParkLocked) {
+		if (megaParkLocked && gConfigGeneral.scenario_hide_mega_park) {
 			// Remove mega park
 			int remainingItems = length - megaParkListItemIndex - 1;
 			memmove(&_listItems[megaParkListItemIndex], &_listItems[megaParkListItemIndex + 1], remainingItems);
@@ -624,7 +623,6 @@ static void initialise_list_items(rct_window *w)
 				}
 			}
 		}
-#endif
 	}
 }
 
