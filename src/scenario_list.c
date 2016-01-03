@@ -385,6 +385,7 @@ static bool scenario_scores_legacy_load(const utf8 *path)
 				highscore->fileName = _strdup(scBasic.path);
 				highscore->name = _strdup(scBasic.completed_by);
 				highscore->company_value = (money32)scBasic.company_value;
+				highscore->timestamp = DATETIME64_MIN;
 				highscoresDirty = true;
 			}
 
@@ -431,6 +432,7 @@ static bool scenario_scores_load()
 		highscore->fileName = io_read_string(file);
 		highscore->name = io_read_string(file);
 		SDL_RWread(file, &highscore->company_value, sizeof(highscore->company_value), 1);
+		SDL_RWread(file, &highscore->timestamp, sizeof(highscore->timestamp), 1);
 
 		// Attach highscore to correct scenario entry
 		scenario_index_entry *scenarioIndexEntry = scenario_list_find_by_filename(highscore->fileName);
@@ -467,6 +469,7 @@ bool scenario_scores_save()
 		io_write_string(file, highscore->fileName);
 		io_write_string(file, highscore->name);
 		SDL_RWwrite(file, &highscore->company_value, sizeof(highscore->company_value), 1);
+		SDL_RWwrite(file, &highscore->timestamp, sizeof(highscore->timestamp), 1);
 	}
 	SDL_RWclose(file);
 

@@ -753,4 +753,23 @@ uint8 platform_get_locale_temperature_format(){
 	return TEMPERATURE_FORMAT_C;
 }
 
+datetime64 platform_get_datetime_now_utc()
+{
+	const datetime64 epochAsTicks = 621355968000000000;
+
+	// Get current time
+	time_t rawtime;
+	time(&rawtime);
+
+	// Convert to UTC epoch
+	struct tm *utcTM = gmtime(&rawtime);
+	time_t utcEpoch = mktime(utcTM);
+
+	// Epoch starts from: 1970-01-01T00:00:00Z
+	// Convert to ticks from 0001-01-01T00:00:00Z
+	uint64 utcEpochTicks = (uint64)utcEpoch * 10000000ULL;
+	datetime64 utcNow = epochAsTicks + utcEpochTicks;
+	return utcNow;
+}
+
 #endif

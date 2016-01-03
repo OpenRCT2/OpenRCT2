@@ -416,6 +416,7 @@ void scenario_success()
 			scenario->highscore->fileName = _strdup(path_get_filename(scenario->path));
 			scenario->highscore->name = NULL;
 			scenario->highscore->company_value = companyValue;
+			scenario->highscore->timestamp = platform_get_datetime_now_utc();
 
 			// Allow name entry
 			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;

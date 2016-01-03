@@ -431,6 +431,7 @@ typedef struct {
 	utf8 *fileName;
 	utf8 *name;
 	money32 company_value;
+	datetime64 timestamp;
 } scenario_highscore_entry;
 
 typedef struct {
