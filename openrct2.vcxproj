@@ -200,10 +200,13 @@
     <ClInclude Include="src\common.h" />
     <ClInclude Include="src\config.h" />
     <ClInclude Include="src\core\Console.hpp" />
+    <ClInclude Include="src\core\Diagnostics.hpp" />
     <ClInclude Include="src\core\Exception.hpp" />
     <ClInclude Include="src\core\FileStream.hpp" />
+    <ClInclude Include="src\core\Guard.hpp" />
     <ClInclude Include="src\core\IDisposable.hpp" />
     <ClInclude Include="src\core\IStream.hpp" />
+    <ClInclude Include="src\core\List.hpp" />
     <ClInclude Include="src\core\Math.hpp" />
     <ClInclude Include="src\core\Memory.hpp" />
     <ClInclude Include="src\core\Path.hpp" />

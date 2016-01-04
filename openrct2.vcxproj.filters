@@ -887,5 +887,8 @@
     <ClInclude Include="src\core\Path.hpp">
       <Filter>Source\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\List.hpp" />
+    <ClInclude Include="src\core\Guard.hpp" />
+    <ClInclude Include="src\core\Diagnostics.hpp" />
   </ItemGroup>
 </Project>
