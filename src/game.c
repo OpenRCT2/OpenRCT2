@@ -57,6 +57,9 @@
 #include "world/scenery.h"
 #include "world/sprite.h"
 #include "world/water.h"
+#include <time.h>
+
+#define NUMBER_OF_AUTOSAVES_TO_KEEP 9
 
 int gGameSpeed = 1;
 float gDayNightCycle = 0;
@@ -1059,16 +1062,99 @@ void save_game_as()
 	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, (char*)path_get_filename(gScenarioSavePath));
 }
 
+int compare_autosave_file_paths (const void * a, const void * b ) {
+	return strcmp(*(char **)a, *(char **)b);
+}
+
+void limit_autosave_count(const size_t numberOfFilesToKeep)
+{
+	int fileEnumHandle = 0;
+
+	size_t autosavesCount = 0;
+	size_t numAutosavesToDelete = 0;
+
+	file_info fileInfo;
+	
+	utf8 filter[MAX_PATH];
+	
+	utf8 **autosaveFiles = NULL;
+	
+	size_t i=0;
+	
+	platform_get_user_directory(filter, "save");
+	strncat(filter, "autosave_*.sv6", sizeof(filter) - strnlen(filter, MAX_PATH) - 1);
+	
+	// At first, count how many autosaves there are
+	fileEnumHandle = platform_enumerate_files_begin(filter);
+	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
+		autosavesCount++;
+	}
+	platform_enumerate_files_end(fileEnumHandle);
+	
+	// If there are fewer autosaves than the number of files to keep we don't need to delete anything
+	if(autosavesCount <= numberOfFilesToKeep) {
+		return;
+	}
+	
+	autosaveFiles = (utf8**) malloc(sizeof(utf8*) * autosavesCount);
+	
+	fileEnumHandle = platform_enumerate_files_begin(filter);
+	for(i = 0; i < autosavesCount; i++) {
+		autosaveFiles[i] = (utf8*)malloc(sizeof(utf8) * MAX_PATH);
+		memset(autosaveFiles[i], 0, sizeof(utf8) * MAX_PATH);
+		
+		if(platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
+			platform_get_user_directory(autosaveFiles[i], "save");
+			strcat(autosaveFiles[i], fileInfo.path);
+		}
+	}
+	platform_enumerate_files_end(fileEnumHandle);
+
+	qsort (autosaveFiles, autosavesCount, sizeof (char*), compare_autosave_file_paths);
+
+	// calculate how many saves we need to delete.
+	numAutosavesToDelete = autosavesCount - numberOfFilesToKeep;
+	
+	i=0;
+	while (numAutosavesToDelete > 0) {
+		platform_file_delete(autosaveFiles[i]);
+		
+		i++;
+		numAutosavesToDelete--;
+	}
+	
+	
+	for(i = 0; i < autosavesCount; i++) {
+		free(autosaveFiles[i]);
+	}
+	
+	free(autosaveFiles);
+}
 
 void game_autosave()
 {
 	utf8 path[MAX_PATH];
 	utf8 backupPath[MAX_PATH];
+	utf8 timeString[21]="";
+	
+	time_t rawtime;
+	struct tm * timeinfo;
+	
+	time ( &rawtime );
+	timeinfo = localtime ( &rawtime );
 
+	limit_autosave_count(NUMBER_OF_AUTOSAVES_TO_KEEP);
+	
+	snprintf(timeString, 20, "%d-%02d-%02d_%02d-%02d-%02d", 1900+timeinfo->tm_year, 1+timeinfo->tm_mon, timeinfo->tm_mday, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+	
+	
 	platform_get_user_directory(path, "save");
 	safe_strncpy(backupPath, path, MAX_PATH);
 
-	strcat(path, "autosave.sv6");
+	strcat(path, "autosave_");
+	strcat(path, timeString);
+	strcat(path, ".sv6");
+	
 	strcat(backupPath, "autosave.sv6.bak");
 
 	if (platform_file_exists(path)) {
