@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "../drawing/drawing.h"
 #include "../localisation/localisation.h"
+#include "../input.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 
@@ -74,7 +75,7 @@ void window_tooltip_reset(int x, int y)
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, uint16) = y;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, uint8) = 255;
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 1;
+	gInputState = INPUT_STATE_NORMAL;
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~(1 << 4);
 }
 

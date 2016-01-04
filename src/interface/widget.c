@@ -978,7 +978,7 @@ int widget_is_disabled(rct_window *w, int widgetIndex)
 
 int widget_is_pressed(rct_window *w, int widgetIndex)
 {
-	int inputState = RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8);
+	int inputState = gInputState;
 
 	if (w->pressed_widgets & (1LL << widgetIndex))
 		return 1;

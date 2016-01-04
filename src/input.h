@@ -24,6 +24,19 @@
 #include "interface/window.h"
 
 enum {
+	INPUT_STATE_RESET,
+	INPUT_STATE_NORMAL,
+	INPUT_STATE_WIDGET_PRESSED,
+	INPUT_STATE_POSITIONING_WINDOW,
+	INPUT_STATE_VIEWPORT_RIGHT,
+	INPUT_STATE_DROPDOWN_ACTIVE,
+	INPUT_STATE_VIEWPORT_LEFT,
+	INPUT_STATE_SCROLL_LEFT,
+	INPUT_STATE_RESIZING,
+	INPUT_STATE_SCROLL_RIGHT
+};
+
+enum {
 	INPUT_FLAG_WIDGET_PRESSED = (1 << 0),
 
 	// The dropdown can stay open if the mouse is released, set on flag DROPDOWN_FLAG_STAY_OPEN
@@ -46,6 +59,8 @@ enum {
 
 	INPUT_FLAG_VIEWPORT_SCROLLING = (1 << 7)
 };
+
+extern uint8 gInputState;
 
 void title_handle_keyboard_input();
 void game_handle_input();
