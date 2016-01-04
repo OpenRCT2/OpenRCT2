@@ -15,7 +15,7 @@ fi
 # keep in sync with version in install.sh
 if [[ $(uname -s) == "Darwin" ]]; then
 	# keep in sync with version in Xcode project
-	sha256sum=02ebc8e7fd8b9b02b7144721784c5d96202a17398bc8652da163c8c85b66a7db
+	sha256sum=6562ce9e1f37f125e3345bfd8b961777800436bf607b30dc7c964e0e6991ad2c
 else
 	sha256sum=31c5e19d9f794bd5f0e75f20c2b4c3c4664d736b0a4d50c8cde14a9a9007b62d
 fi
