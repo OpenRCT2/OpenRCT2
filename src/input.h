@@ -61,6 +61,7 @@ enum {
 };
 
 extern uint8 gInputState;
+extern uint8 gInputFlags;
 
 void title_handle_keyboard_input();
 void game_handle_input();

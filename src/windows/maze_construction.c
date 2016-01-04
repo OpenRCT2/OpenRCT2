@@ -194,7 +194,7 @@ static void window_maze_construction_entrance_mouseup(rct_window *w, int widgetI
 	RCT2_GLOBAL(0x00F44191, uint8) = widgetIndex == WIDX_MAZE_ENTRANCE ? 0 : 1;
 	RCT2_GLOBAL(0x00F44192, uint8) = (uint8)w->number;
 	RCT2_GLOBAL(0x00F44193, uint8) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+	gInputFlags |= INPUT_FLAG_6;
 
 	sub_6C9627();
 
@@ -311,7 +311,7 @@ static void window_maze_construction_update(rct_window *w)
 	case RIDE_CONSTRUCTION_STATE_BACK:
 	case RIDE_CONSTRUCTION_STATE_SELECTED:
 		if (
-			(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
+			(gInputFlags & INPUT_FLAG_TOOL_ACTIVE) &&
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == WC_RIDE_CONSTRUCTION
 		) {
 			tool_cancel();

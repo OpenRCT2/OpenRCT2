@@ -237,7 +237,7 @@ static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 static int window_land_rights_should_close()
 {
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE))
+	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
 		return 1;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_PARK_INFORMATION)
 		return 1;

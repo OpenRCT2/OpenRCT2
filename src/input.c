@@ -51,6 +51,7 @@ static int _dragWidgetIndex, _dragScrollIndex;
 static int _originalWindowWidth, _originalWindowHeight;
 
 uint8 gInputState;
+uint8 gInputFlags;
 
 typedef struct {
 	uint32 x, y;
@@ -127,7 +128,7 @@ void game_handle_input()
 			game_handle_input_mouse(x, y, state & 0xFF);
 		}
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_5) {
+		if (gInputFlags & INPUT_FLAG_5) {
 			game_handle_input_mouse(x, y, state);
 		}
 		else if (x != 0x80000000) {
@@ -360,7 +361,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 
 			if (w->classification != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass) ||
 				w->number != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber) ||
-				!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)) break;
+				!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE)) break;
 
 			w = window_find_by_number(
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
@@ -375,7 +376,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 
 			gInputState = INPUT_STATE_RESET;
 			if (RCT2_GLOBAL(0x9DE52E, rct_windownumber) != w->number)break;
-			if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)){
+			if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE)){
 				w = window_find_by_number(
 					RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
 					RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber)
@@ -385,7 +386,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 				window_event_tool_up_call(w, RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16), x, y);
 			}
 			else{
-				if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_4))
+				if ((gInputFlags & INPUT_FLAG_4))
 					break;
 
 				viewport_interaction_left_click(x, y);
@@ -500,7 +501,7 @@ static void input_viewport_drag_begin(rct_window *w, int x, int y)
 	platform_get_cursor_position(&_dragX, &_dragY);
 	platform_hide_cursor();
 
-	// RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_5;
+	// gInputFlags |= INPUT_FLAG_5;
 }
 
 static void input_viewport_drag_continue()
@@ -1011,14 +1012,14 @@ static void input_widget_left(int x, int y, rct_window *w, int widgetIndex)
 		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) = y;
 		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass) = windowClass;
 		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber) = windowNumber;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) {
+		if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE) {
 			w = window_find_by_number(
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber)
 				);
 			if (w != NULL) {
 				window_event_tool_down_call(w, RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16), x, y);
-				RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_4;
+				gInputFlags |= INPUT_FLAG_4;
 			}
 		}
 		break;
@@ -1036,7 +1037,7 @@ static void input_widget_left(int x, int y, rct_window *w, int widgetIndex)
 			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass) = windowClass;
 			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber) = windowNumber;
 			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16) = widgetIndex;
-			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_WIDGET_PRESSED;
+			gInputFlags |= INPUT_FLAG_WIDGET_PRESSED;
 			gInputState = INPUT_STATE_WIDGET_PRESSED;
 			RCT2_GLOBAL(0x009DE528, uint16) = 1;
 
@@ -1073,7 +1074,7 @@ void process_mouse_over(int x, int y)
 			switch (window->widgets[widgetId].type){
 
 			case WWT_VIEWPORT:
-				if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, int) & INPUT_FLAG_TOOL_ACTIVE) == 0) {
+				if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE)) {
 					if (viewport_interaction_left_over(x, y)) {
 						sub_6ED990(CURSOR_HAND_POINT);
 						return;
@@ -1155,7 +1156,7 @@ void process_mouse_over(int x, int y)
  */
 void process_mouse_tool(int x, int y)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
+	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
 	{
 		rct_window* w = window_find_by_number(
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
@@ -1209,9 +1210,9 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 			window_event_mouse_down_call(w, widgetIndex);
 		}
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_WIDGET_PRESSED) return;
+		if (gInputFlags & INPUT_FLAG_WIDGET_PRESSED) return;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_WIDGET_PRESSED;
+		gInputFlags |= INPUT_FLAG_WIDGET_PRESSED;
 		widget_invalidate_by_number(cursor_w_class, cursor_w_number, widgetIndex);
 		return;
 	case 3:
@@ -1238,9 +1239,9 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 					if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
 						goto dropdown_cleanup;
 					dropdown_index = -1;
-					if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_DROPDOWN_STAY_OPEN){
-						if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_DROPDOWN_MOUSE_UP)){
-							RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_DROPDOWN_MOUSE_UP;
+					if (gInputFlags & INPUT_FLAG_DROPDOWN_STAY_OPEN){
+						if (!(gInputFlags & INPUT_FLAG_DROPDOWN_MOUSE_UP)){
+							gInputFlags |= INPUT_FLAG_DROPDOWN_MOUSE_UP;
 							return;
 						}
 					}
@@ -1248,8 +1249,8 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 
 				window_close_by_class(WC_DROPDOWN);
 				cursor_w = window_find_by_number(cursor_w_class, cursor_w_number);
-				if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_WIDGET_PRESSED) {
-					RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= 0xFFFE;
+				if (gInputFlags & INPUT_FLAG_WIDGET_PRESSED) {
+					gInputFlags &= ~INPUT_FLAG_WIDGET_PRESSED;
 					widget_invalidate_by_number(cursor_w_class, cursor_w_number, cursor_widgetIndex);
 				}
 
@@ -1292,8 +1293,8 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 	RCT2_GLOBAL(0x9DE528, uint16) = 0;
 	if (gInputState != INPUT_STATE_DROPDOWN_ACTIVE){
 		// Hold down widget and drag outside of area??
-		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_WIDGET_PRESSED){
-			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= 0xFFFE;
+		if (gInputFlags & INPUT_FLAG_WIDGET_PRESSED){
+			gInputFlags &= ~INPUT_FLAG_WIDGET_PRESSED;
 			widget_invalidate_by_number(cursor_w_class, cursor_w_number, cursor_widgetIndex);
 		}
 		return;
@@ -1615,11 +1616,11 @@ void game_handle_edge_scroll()
 	// Scroll viewport
 	if (scrollX != 0) {
 		mainWindow->saved_view_x += scrollX * (12 << mainWindow->viewport->zoom);
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_VIEWPORT_SCROLLING;
+		gInputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
 	}
 	if (scrollY != 0) {
 		mainWindow->saved_view_y += scrollY * (12 << mainWindow->viewport->zoom);
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_VIEWPORT_SCROLLING;
+		gInputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
 	}
 }
 
@@ -1684,11 +1685,11 @@ void game_handle_key_scroll()
 	// Scroll viewport
 	if (scrollX != 0) {
 		mainWindow->saved_view_x += scrollX * (12 << mainWindow->viewport->zoom);
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_VIEWPORT_SCROLLING;
+		gInputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
 	}
 	if (scrollY != 0) {
 		mainWindow->saved_view_y += scrollY * (12 << mainWindow->viewport->zoom);
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_VIEWPORT_SCROLLING;
+		gInputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
 	}
 }
 

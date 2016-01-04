@@ -136,7 +136,7 @@ static void shortcut_cancel_construction_mode()
 	window = window_find_by_class(WC_ERROR);
 	if (window != NULL)
 		window_close(window);
-	else if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
+	else if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
 		tool_cancel();
 }
 

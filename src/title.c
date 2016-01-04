@@ -538,7 +538,7 @@ void title_update()
 		audio_start_title_music();
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~0x80;
+	gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
 
 	window_map_tooltip_update_visibility();
 	window_dispatch_update_all();

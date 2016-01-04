@@ -379,7 +379,7 @@ void news_item_open_subject(int type, int subject)
 			if (window != NULL) {
 				window_invalidate(window);
 				if (!tool_set(window, 9, 0)) {
-					RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+					gInputFlags |= INPUT_FLAG_6;
 					window_scenery_open();
 				}
 			}

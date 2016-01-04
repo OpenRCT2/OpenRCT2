@@ -294,8 +294,8 @@ void game_update()
 			if (gInputState == INPUT_STATE_RESET ||
 				gInputState == INPUT_STATE_NORMAL
 			) {
-				if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_VIEWPORT_SCROLLING) {
-					RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
+				if (gInputFlags & INPUT_FLAG_VIEWPORT_SCROLLING) {
+					gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
 					break;
 				}
 			} else {
@@ -313,7 +313,7 @@ void game_update()
 
 	RCT2_GLOBAL(0x009A8C28, uint8) = 0;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
+	gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
 
 	// the flickering frequency is reduced by 4, compared to the original
 	// it was done due to inability to reproduce original frequency
@@ -773,10 +773,10 @@ int game_load_sv6(SDL_RWops* rw)
 
 	if (!load_success){
 		set_load_objects_fail_reason();
-		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_5){
+		if (gInputFlags & INPUT_FLAG_5){
 			//call 0x0040705E Sets cursor position and something else. Calls maybe wind func 8 probably pointless
 			RCT2_GLOBAL(0x14241BC, uint32) = 0;
-			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_5;
+			gInputFlags &= ~INPUT_FLAG_5;
 		}
 
 		return 0;//This never gets called
@@ -867,10 +867,10 @@ int game_load_network(SDL_RWops* rw)
 
 	if (!load_success){
 		set_load_objects_fail_reason();
-		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_5){
+		if (gInputFlags & INPUT_FLAG_5){
 			//call 0x0040705E Sets cursor position and something else. Calls maybe wind func 8 probably pointless
 			RCT2_GLOBAL(0x14241BC, uint32) = 0;
-			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_5;
+			gInputFlags &= ~INPUT_FLAG_5;
 		}
 
 		return 0;//This never gets called
@@ -1215,8 +1215,8 @@ void game_load_or_quit_no_save_prompt()
 	} else if (RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) == 1) {
 		game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 		tool_cancel();
-		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_5) {
-			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_5;
+		if (gInputFlags & INPUT_FLAG_5) {
+			gInputFlags &= ~INPUT_FLAG_5;
 		}
 		gGameSpeed = 1;
 		title_load();
