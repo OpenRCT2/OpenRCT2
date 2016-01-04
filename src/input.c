@@ -79,9 +79,10 @@ static void input_window_position_end(rct_window *w, int x, int y);
 static void input_window_resize_begin(rct_window *w, int widgetIndex, int x, int y);
 static void input_window_resize_continue(rct_window *w, int x, int y);
 static void input_window_resize_end();
-static void input_viewport_drag_begin(rct_window *w, int x, int y);
-static void input_viewport_drag_continue();
+static void input_viewport_drag_begin(rct_window *w, int x, int y, bool touch);
+static void input_viewport_drag_continue(int x, int y, bool touch);
 static void input_viewport_drag_end();
+
 static void input_scroll_begin();
 static void input_scroll_continue(rct_window *w, int widgetIndex, int state, int x, int y);
 static void input_scroll_end();
@@ -302,7 +303,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 
 			if (widget->type == WWT_VIEWPORT) {
 				if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO)))
-					input_viewport_drag_begin(w, x, y);
+					input_viewport_drag_begin(w, x, y, false);
 			}
 			else if (widget->type == WWT_SCROLL) {
 				input_scroll_drag_begin(x, y, w, widget, widgetIndex);
@@ -327,7 +328,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 		break;
 	case INPUT_STATE_VIEWPORT_RIGHT:
 		if (state == 0) {
-			input_viewport_drag_continue();
+			input_viewport_drag_continue(x, y, false);
 		}
 		else if (state == 4) {
 			input_viewport_drag_end();
@@ -335,6 +336,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 				// If the user pressed the right mouse button for less than 500 ticks, interpret as right click
 				viewport_interaction_right_click(x, y);
 			}
+
 		}
 		break;
 	case INPUT_STATE_DROPDOWN_ACTIVE:
@@ -369,7 +371,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 
 			window_event_tool_drag_call(w, RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16), x, y);
 		}
-		else if (state == 2){
+		else if ((!gCursorState.touch && state == 2) || (gCursorState.touch && state == 1)){
 
 			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 0;
 			if (RCT2_GLOBAL(0x9DE52E, rct_windownumber) != w->number)break;
@@ -386,9 +388,18 @@ static void game_handle_input_mouse(int x, int y, int state)
 				if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_4))
 					break;
 
-				viewport_interaction_left_click(x, y);
+				if (!viewport_interaction_left_click(x, y) && gCursorState.touch) {
+					input_viewport_drag_begin(w, x, y, true);
+					RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_VIEWPORT_TOUCH_DRAG;
+				}
 			}
 		}
+		break;
+	case INPUT_STATE_VIEWPORT_TOUCH_DRAG:
+		if (state == 0)
+			input_viewport_drag_continue(x, y, true);
+		else
+			input_viewport_drag_end();
 		break;
 	case INPUT_STATE_SCROLL_LEFT:
 		if (state == 0)
@@ -488,26 +499,28 @@ static void input_window_resize_end()
 
 #pragma region Viewport dragging
 
-static void input_viewport_drag_begin(rct_window *w, int x, int y)
+static void input_viewport_drag_begin(rct_window *w, int x, int y, bool touch)
 {
 	w->flags &= ~WF_SCROLLING_TO_LOCATION;
 	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_VIEWPORT_RIGHT;
 	_dragWindowClass = w->classification;
 	_dragWindowNumber = w->number;
 	RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_DRAG_START, sint16) = 0;
-	platform_get_cursor_position(&_dragX, &_dragY);
+	if (touch) {
+		_dragX = x;
+		_dragY = y;
+	} else  platform_get_cursor_position(&_dragX, &_dragY);
 	platform_hide_cursor();
 
 	// RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_5;
 }
 
-static void input_viewport_drag_continue()
+static void input_viewport_drag_continue(int newDragX, int newDragY, bool touch)
 {
-	int dx, dy, newDragX, newDragY;
+	int dx, dy;
 	rct_window *w;
 	rct_viewport *viewport;
-
-	platform_get_cursor_position(&newDragX, &newDragY);
+	if (!touch)  platform_get_cursor_position(&newDragX, &newDragY);
 
 	dx = newDragX - _dragX;
 	dy = newDragY - _dragY;
@@ -527,19 +540,30 @@ static void input_viewport_drag_continue()
 			// As the user moved the mouse, don't interpret it as right click in any case.
 			RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_DRAG_START, sint16) = 1000;
 
-			dx <<= viewport->zoom + 1;
-			dy <<= viewport->zoom + 1;
-			if (gConfigGeneral.invert_viewport_drag){
+			if (touch) {
+				dx <<= viewport->zoom;
+				dy <<= viewport->zoom;
 				w->saved_view_x -= dx;
 				w->saved_view_y -= dy;
 			} else {
-				w->saved_view_x += dx;
-				w->saved_view_y += dy;
+				dx <<= viewport->zoom + 1;
+				dy <<= viewport->zoom + 1;
+				if (gConfigGeneral.invert_viewport_drag) {
+					w->saved_view_x -= dx;
+					w->saved_view_y -= dy;
+				} else {
+					w->saved_view_x += dx;
+					w->saved_view_y += dy;
+				}
 			}
 		}
 	}
 
-	platform_set_cursor_position(_dragX, _dragY);
+	if (!touch)  platform_set_cursor_position(_dragX, _dragY);
+	else {
+		_dragX = newDragX;
+		_dragY = newDragY;
+	}
 }
 
 static void input_viewport_drag_end()
@@ -1018,6 +1042,10 @@ static void input_widget_left(int x, int y, rct_window *w, int widgetIndex)
 				window_event_tool_down_call(w, RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16), x, y);
 				RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_4;
 			}
+		}
+		if (!viewport_interaction_left_over(x, y) && gCursorState.touch) {
+			input_viewport_drag_begin(w, x, y, true);
+			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = INPUT_STATE_VIEWPORT_TOUCH_DRAG;
 		}
 		break;
 	case WWT_CAPTION:
