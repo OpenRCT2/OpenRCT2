@@ -3672,8 +3672,8 @@ STR_5335    :Attraktionseingang
 STR_5336    :Attraktionsausgang
 STR_5337    :Parkeingang
 STR_5338    :Elementtyp
-STR_5339    :Basishöhe
-STR_5340    :Lichte Höhe
+STR_5339    :{SMALLFONT}{BLACK}Basishöhe
+STR_5340    :{SMALLFONT}{BLACK}Lichte Höhe
 STR_5341    :Kennzeichen
 STR_5342    :Eine Kachel auf der Karte auswählen
 STR_5343    :Personal automatisch platzieren
@@ -3898,7 +3898,7 @@ STR_5561    :Sprache konnte nicht geladen werden
 STR_5562    :WARNUNG!
 STR_5563    :Diese Funktion ist derzeit instabil und mit erhöhter Vorsicht zu verwenden.
 STR_5564    :Fehlerhaftes Element einf.
-STR_5565    :{SMALLFONT}{BLACK}Fügt ein fehlerhaftes Kartenelement auf der Kachel ein, dadurch werden alle Elemente darüber versteckt.
+STR_5565    :{SMALLFONT}{BLACK}Fügt ein fehlerhaftes Kartenelement auf{NEWLINE}der Kachel ein, dadurch werden alle Elemente darüber versteckt.
 STR_5566    :Passwort:
 STR_5567    :Veröffentlichen
 STR_5568    :Passwort benötigt
@@ -3919,6 +3919,39 @@ STR_5582    :Mauszeiger im Fenster fangen
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Hebt Beschränkungen von Attraktionen auf, um Dinge wie {VELOCITY} schnelle Lifthügel zu erlauben
+STR_5586    :Läden und Stände automatisch öffnen
+STR_5587    :{SMALLFONT}{BLACK}Wenn aktiviert, werden Läden und Stände nach dem Bauen automatisch geöffnet
+STR_5588    :{SMALLFONT}{BLACK}Mit anderen Spielern spielen
+STR_5589    :Benachrichtigungseinstellungen
+STR_5590    :Parkauszeichnungen
+STR_5591    :Marketingkampage wurde beendet
+STR_5592    :Parkwarnungen
+STR_5593    :Parkbewertungswarnungen
+STR_5594    :Attraktion ist ausgefallen
+STR_5595    :Attraktion ist verunglückt
+STR_5596    :Attraktionswarnungen
+STR_5597    :Attraktion / Szenerie erforscht
+STR_5598    :Besucherwarnungen
+STR_5599    :Besucher hat sich verirrt
+STR_5600    :Besucher hat den Park verlassen
+STR_5601    :Besucher steht für eine Attraktion schlange
+STR_5602    :Besucher ist auf einer Attraktion
+STR_5603    :Besucher hat eine Attraktion verlassen
+STR_5604    :Besucher hat einen Gegenstand gekauft
+STR_5605    :Besucher hat eine Einrichtung benutzt
+STR_5606    :Besucher ist gestorben
+STR_5607    :{SMALLFONT}{BLACK}Erzwingt das Löschen des{NEWLINE}ausgewählten Elements
+STR_5608    :BH
+STR_5609    :LH
+STR_5610    :{SMALLFONT}{BLACK}Entfernt das ausgewählte Kartenelement. Das Löschen wird erzwungen und dadurch kein Geld verwendet/gutgeschrieben. Mit Vorsicht zu verwenden.
+STR_5611    :G
+STR_5612    :{SMALLFONT}{BLACK}Flag für Ghost-Element
+STR_5613    :D
+STR_5614    :{SMALLFONT}{BLACK}Flag für defektes Element
+STR_5615    :L
+STR_5616    :{SMALLFONT}{BLACK}Flag für letztes Element der Kachel
+STR_5617    :{SMALLFONT}{BLACK}Ausgewähltes Element nach oben bewegen
+STR_5618    :{SMALLFONT}{BLACK}Ausgewähltes Element nach unten bewegen
 
 #######################
 # Bahnen/Attraktionen # 
