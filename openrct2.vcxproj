@@ -119,7 +119,6 @@
     <ClCompile Include="test\ride\ride_ratings_test.c" />
     <ClCompile Include="test\tests.c" />
     <ClCompile Include="src\title.c" />
-    <ClCompile Include="src\tutorial.c" />
     <ClCompile Include="src\util\sawyercoding.c" />
     <ClCompile Include="src\util\util.c" />
     <ClCompile Include="src\windows\about.c" />
@@ -271,7 +270,6 @@
     <ClInclude Include="test\ride\ride_ratings_test.h" />
     <ClInclude Include="test\tests.h" />
     <ClInclude Include="src\title.h" />
-    <ClInclude Include="src\tutorial.h" />
     <ClInclude Include="src\util\sawyercoding.h" />
     <ClInclude Include="src\util\util.h" />
     <ClInclude Include="src\windows\dropdown.h" />
