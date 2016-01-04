@@ -6510,8 +6510,8 @@ static bool vehicle_update_motion_collision_detection(
 
 			if (direction < 0x14) continue;
 
-			sint16 next_x_diff = abs(x + RCT2_ADDRESS(0x009A3B04, sint16)[vehicle->sprite_direction*2]-collideVehicle->x);
-			sint16 next_y_diff = abs(y + RCT2_ADDRESS(0x009A3B06, sint16)[vehicle->sprite_direction*2]-collideVehicle->y);
+			sint16 next_x_diff = abs(x + RCT2_ADDRESS(0x009A3B04, sint16)[((4 + vehicle->sprite_direction) >> 3) * 2] - collideVehicle->x);
+			sint16 next_y_diff = abs(y + RCT2_ADDRESS(0x009A3B06, sint16)[((4 + vehicle->sprite_direction) >> 3) *2]-collideVehicle->y);
 
 			if (next_x_diff + next_y_diff < x_diff + y_diff){
 				mayCollide = true;
