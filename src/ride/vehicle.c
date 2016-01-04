@@ -3929,7 +3929,7 @@ static void vehicle_update_showing_film(rct_vehicle *vehicle)
 		return;
 
 	totalTime = RideFilmLength[vehicle->sub_state];
-	currentTime = vehicle->var_4C + 1;
+	currentTime = ((sint16)vehicle->var_4C) + 1;
 	if (currentTime <= totalTime) {
 		vehicle->var_4C = currentTime;
 	}
