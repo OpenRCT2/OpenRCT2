@@ -33,7 +33,7 @@ rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int d
 	current->velocity = 0;
 	current->acceleration = 0;
 	current->var_4A = 0;
-	current->var_4C = 0;
+	current->swinging_car_var_0 = 0;
 	current->var_4E = 0;
 	current->restraints_position = 0;
 	current->var_BA = 0;

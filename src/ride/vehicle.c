@@ -642,7 +642,7 @@ static int vehicle_open_restraints(rct_vehicle* vehicle){
 	do {
 		vehicle = GET_VEHICLE(vehicle_id);
 
-		vehicle->var_4C = 0;
+		vehicle->swinging_car_var_0 = 0;
 		vehicle->var_4E = 0;
 		vehicle->var_4A = 0;
 
@@ -1672,7 +1672,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		vehicle->sub_state = 0;
 		vehicle_invalidate_window(vehicle);
 		vehicle->var_CE = 0;
-		vehicle->var_4C = 0xFFFF;
+		vehicle->current_time = -1;
 		vehicle_update_swinging(vehicle);
 		break;
 	case RIDE_MODE_ROTATION:
@@ -1680,7 +1680,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		vehicle->sub_state = 0;
 		vehicle_invalidate_window(vehicle);
 		vehicle->var_CE = 0;
-		vehicle->var_4C = 0xFFFF;
+		vehicle->current_time = -1;
 		vehicle_update_rotating(vehicle);
 		break;
 	case RIDE_MODE_FILM_AVENGING_AVIATORS:
@@ -1690,7 +1690,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		if (ride->mode == RIDE_MODE_FILM_THRILL_RIDERS)
 			vehicle->sub_state = 1;
 		vehicle_invalidate_window(vehicle);
-		vehicle->var_4C = 0xFFFF;
+		vehicle->current_time = -1;
 		vehicle_update_simulator_operating(vehicle);
 		break;
 	case RIDE_MODE_BEGINNERS:
@@ -1710,7 +1710,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 			vehicle->sub_state = 2;
 			break;
 		}
-		vehicle->var_4C = 0xFFFF;
+		vehicle->current_time = -1;
 		vehicle->var_1F = 0;
 		vehicle->var_20 = 0;
 		vehicle_update_top_spin_operating(vehicle);
@@ -1721,7 +1721,8 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		vehicle->sub_state = vehicle->var_1F;
 		vehicle_invalidate_window(vehicle);
 		vehicle->var_CE = 0;
-		vehicle->var_4C = 0x808;
+		vehicle->ferris_wheel_var_0 = 8;
+		vehicle->ferris_wheel_var_1 = 8;
 		vehicle_update_ferris_wheel_rotating(vehicle);
 		break;
 	case RIDE_MODE_3D_FILM_MOUSE_TAILS:
@@ -1740,14 +1741,14 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 			vehicle->sub_state = 2;
 			break;
 		}
-		vehicle->var_4C = 0xFFFF;
+		vehicle->current_time = -1;
 		vehicle_update_showing_film(vehicle);
 		break;
 	case RIDE_MODE_CIRCUS_SHOW:
 		vehicle->status = VEHICLE_STATUS_DOING_CIRCUS_SHOW;
 		vehicle->sub_state = 0;
 		vehicle_invalidate_window(vehicle);
-		vehicle->var_4C = 0xFFFF;
+		vehicle->current_time = -1;
 		vehicle_update_doing_circus_show(vehicle);
 		break;
 	case RIDE_MODE_SPACE_RINGS:
@@ -1755,7 +1756,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		vehicle->sub_state = 0;
 		vehicle_invalidate_window(vehicle);
 		vehicle->var_1F = 0;
-		vehicle->var_4C = 0xFFFF;
+		vehicle->current_time = -1;
 		vehicle_update_space_rings_operating(vehicle);
 		break;
 	case RIDE_MODE_HAUNTED_HOUSE:
@@ -1763,7 +1764,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		vehicle->sub_state = 0;
 		vehicle_invalidate_window(vehicle);
 		vehicle->var_1F = 0;
-		vehicle->var_4C = 0xFFFF;
+		vehicle->current_time = -1;
 		vehicle_update_haunted_house_operating(vehicle);
 		break;
 	case RIDE_MODE_CROOKED_HOUSE:
@@ -1771,7 +1772,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		vehicle->sub_state = 0;
 		vehicle_invalidate_window(vehicle);
 		vehicle->var_1F = 0;
-		vehicle->var_4C = 0xFFFF;
+		vehicle->current_time = -1;
 		vehicle_update_crooked_house_operating(vehicle);
 		break;
 	default:
@@ -3542,12 +3543,12 @@ static void vehicle_update_swinging(rct_vehicle* vehicle) {
 			swingState += 4;
 	}
 	uint8* edi = RCT2_ADDRESS(0x0099F9D0, uint8*)[swingState];
-	uint8 al = edi[(uint16)(vehicle->var_4C + 1)];
+	uint8 al = edi[(uint16)(vehicle->current_time + 1)];
 
 	// 0x80 indicates that a complete swing has been
 	// completed and the next swing can start
 	if (al != 0x80) {
-		vehicle->var_4C++;
+		vehicle->current_time++;
 		if (al == vehicle->var_1F)
 			return;
 		// Used to know which sprite to draw
@@ -3556,7 +3557,7 @@ static void vehicle_update_swinging(rct_vehicle* vehicle) {
 		return;
 	}
 
-	vehicle->var_4C = 0xFFFF;
+	vehicle->current_time = -1;
 	vehicle->var_CE++;
 	if (ride->status != RIDE_STATUS_CLOSED) {
 		// It takes 3 swings to get into full swing
@@ -3595,22 +3596,25 @@ static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle) {
 		return;
 
 	rct_ride* ride = GET_RIDE(vehicle->ride);
-	if (((vehicle->var_4C -= 0x100) & 0xFF00) != 0)
+	if ((vehicle->ferris_wheel_var_1 -= 1) != 0)
 		return;
 
-	sint8 var_4C = vehicle->var_4C & 0xFF;
+	sint8 ferris_wheel_var_0 = vehicle->ferris_wheel_var_0;
 
-	if (var_4C == 3) {
-		vehicle->var_4C = (0xFF & var_4C) | (0xFF00 & (var_4C << 8));
+	if (ferris_wheel_var_0 == 3) {
+		vehicle->ferris_wheel_var_0 = ferris_wheel_var_0;
+		vehicle->ferris_wheel_var_1 = ferris_wheel_var_0;
 	}
-	else if (var_4C < 3) {
-		if (var_4C != -8)
-			var_4C--;
-		vehicle->var_4C = (0xFF & var_4C) | (0xFF00 & (-var_4C << 8));
+	else if (ferris_wheel_var_0 < 3) {
+		if (ferris_wheel_var_0 != -8)
+			ferris_wheel_var_0--;
+		vehicle->ferris_wheel_var_0 = ferris_wheel_var_0;
+		vehicle->ferris_wheel_var_1 = -ferris_wheel_var_0;
 	}
 	else {
-		var_4C--;
-		vehicle->var_4C = (0xFF & var_4C) | (0xFF00 & (var_4C << 8));
+		ferris_wheel_var_0--;
+		vehicle->ferris_wheel_var_0 = ferris_wheel_var_0;
+		vehicle->ferris_wheel_var_1 = ferris_wheel_var_0;
 	}
 
 	uint8 rotation = vehicle->var_1F;
@@ -3642,13 +3646,12 @@ static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle) {
 		}
 
 		if (shouldStop) {
-			var_4C = (sint8)(vehicle->var_4C & 0xFF);
-			vehicle->var_4C &= 0xFF00;
-			vehicle->var_4C |= 0xFF & (-abs(var_4C));
+			ferris_wheel_var_0 = vehicle->ferris_wheel_var_0;
+			vehicle->ferris_wheel_var_0 = -abs(ferris_wheel_var_0);
 		}
 	}
 
-	if ((sint8)(vehicle->var_4C & 0xFF) != -8)
+	if (vehicle->ferris_wheel_var_0 != -8)
 		return;
 
 	subState = vehicle->sub_state;
@@ -3677,9 +3680,9 @@ static void vehicle_update_simulator_operating(rct_vehicle* vehicle) {
 
 	uint8* edi = RCT2_ADDRESS(0x009A042C, uint8*)[vehicle->sub_state];
 
-	uint8 al = edi[(uint16)(vehicle->var_4C + 1)];
+	uint8 al = edi[(uint16)(vehicle->current_time + 1)];
 	if (al != 0xFF) {
-		vehicle->var_4C++;
+		vehicle->current_time++;
 		if (al == vehicle->var_1F)
 			return;
 		vehicle->var_1F = al;
@@ -3715,7 +3718,7 @@ static void vehicle_update_rotating(rct_vehicle* vehicle) {
 		edi = RCT2_ADDRESS(0x0099EB1C, uint8*)[vehicle->sub_state];
 	}
 
-	sint32 var_4C = (sint16)vehicle->var_4C;
+	sint32 var_4C = (sint16)vehicle->current_time;
 	if (RCT2_GLOBAL(0x00F64E34, uint8) == BREAKDOWN_CONTROL_FAILURE) {
 		var_4C += (ride->var_1AC >> 6) + 1;
 	}
@@ -3723,7 +3726,7 @@ static void vehicle_update_rotating(rct_vehicle* vehicle) {
 
 	uint8 al = edi[(uint32)var_4C];
 	if (al != 0xFF) {
-		vehicle->var_4C = (uint16)var_4C;
+		vehicle->current_time = (uint16)var_4C;
 		if (al == vehicle->var_1F)
 			return;
 		vehicle->var_1F = al;
@@ -3731,7 +3734,7 @@ static void vehicle_update_rotating(rct_vehicle* vehicle) {
 		return;
 	}
 
-	vehicle->var_4C = 0xFFFF;
+	vehicle->current_time = -1;
 	vehicle->var_CE++;
 	if (RCT2_GLOBAL(0x00F64E34, uint8) != BREAKDOWN_CONTROL_FAILURE) {
 		bool shouldStop = true;
@@ -3781,9 +3784,9 @@ static void vehicle_update_space_rings_operating(rct_vehicle* vehicle) {
 
 	uint8* edi = RCT2_ADDRESS(0x009A0ACC, uint8*)[vehicle->sub_state];
 
-	uint8 al = edi[(uint16)(vehicle->var_4C + 1)];
+	uint8 al = edi[(uint16)(vehicle->current_time + 1)];
 	if (al != 0xFF) {
-		vehicle->var_4C++;
+		vehicle->current_time++;
 		if (al == vehicle->var_1F)
 			return;
 		vehicle->var_1F = al;
@@ -3818,7 +3821,7 @@ static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle) {
 	uint16* edi = RCT2_ADDRESS(0x009A0ABC, uint16*)[vehicle->sub_state];
 
 	uint16 ax = *edi;
-	if ((uint16)(vehicle->var_4C + 1) > ax) {
+	if ((uint16)(vehicle->current_time + 1) > ax) {
 		vehicle->status = VEHICLE_STATUS_ARRIVING;
 		vehicle_invalidate_window(vehicle);
 		vehicle->sub_state = 0;
@@ -3826,8 +3829,8 @@ static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle) {
 		return;
 	}
 
-	vehicle->var_4C++;
-	switch (vehicle->var_4C) {
+	vehicle->current_time++;
+	switch (vehicle->current_time) {
 	case 45:
 		audio_play_sound_at_location(
 			SOUND_HAUNTED_HOUSE_SCARE,
@@ -3875,7 +3878,7 @@ static void vehicle_update_crooked_house_operating(rct_vehicle* vehicle) {
 	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
 		return;
 
-	if ((uint16)(vehicle->var_4C + 1) >  RideCrookedHouseLength[vehicle->sub_state]) {
+	if ((uint16)(vehicle->current_time + 1) >  RideCrookedHouseLength[vehicle->sub_state]) {
 		vehicle->status = VEHICLE_STATUS_ARRIVING;
 		vehicle_invalidate_window(vehicle);
 		vehicle->sub_state = 0;
@@ -3883,7 +3886,7 @@ static void vehicle_update_crooked_house_operating(rct_vehicle* vehicle) {
 		return;
 	}
 
-	vehicle->var_4C++;
+	vehicle->current_time++;
 }
 
 /**
@@ -3896,14 +3899,14 @@ static void vehicle_update_top_spin_operating(rct_vehicle* vehicle) {
 
 	uint8* edi = RCT2_ADDRESS(0x009A12E0, uint8*)[vehicle->sub_state];
 
-	uint8 al = edi[((sint16)vehicle->var_4C + 1) * 2];
+	uint8 al = edi[(vehicle->current_time + 1) * 2];
 	if (al != 0xFF) {
-		vehicle->var_4C = (sint16)vehicle->var_4C + 1;
+		vehicle->current_time = vehicle->current_time + 1;
 		if (al != vehicle->var_1F) {
 			vehicle->var_1F = al;
 			vehicle_invalidate(vehicle);
 		}
-		al = edi[vehicle->var_4C * 2 + 1];
+		al = edi[vehicle->current_time * 2 + 1];
 		if (al != vehicle->var_20) {
 			vehicle->var_20 = al;
 			vehicle_invalidate(vehicle);
@@ -3929,9 +3932,9 @@ static void vehicle_update_showing_film(rct_vehicle *vehicle)
 		return;
 
 	totalTime = RideFilmLength[vehicle->sub_state];
-	currentTime = ((sint16)vehicle->var_4C) + 1;
+	currentTime = vehicle->current_time + 1;
 	if (currentTime <= totalTime) {
-		vehicle->var_4C = currentTime;
+		vehicle->current_time = currentTime;
 	}
 	else {
 		vehicle->status = VEHICLE_STATUS_ARRIVING;
@@ -3953,9 +3956,9 @@ static void vehicle_update_doing_circus_show(rct_vehicle *vehicle)
 		return;
 
 	totalTime = *(RCT2_ADDRESS(0x009A0AB4, uint16*)[vehicle->sub_state]);
-	currentTime = vehicle->var_4C + 1;
+	currentTime = vehicle->current_time + 1;
 	if (currentTime <= totalTime) {
-		vehicle->var_4C = currentTime;
+		vehicle->current_time = currentTime;
 	} else {
 		vehicle->status = VEHICLE_STATUS_ARRIVING;
 		vehicle_invalidate_window(vehicle);
@@ -5568,7 +5571,7 @@ static int vehicle_get_swing_amount(rct_vehicle *vehicle)
 static void vehicle_update_swinging_car(rct_vehicle *vehicle)
 {
 	sint32 dword_F64E08 = RCT2_GLOBAL(0x00F64E08, sint32);
-	vehicle->var_4E = (-(sint16)vehicle->var_4C) >> 6;
+	vehicle->var_4E = (-vehicle->swinging_car_var_0) >> 6;
 	int swingAmount = vehicle_get_swing_amount(vehicle);
 	if (swingAmount < 0) {
 		vehicle->var_4E -= dword_F64E08 >> (-swingAmount);
@@ -5624,9 +5627,9 @@ static void vehicle_update_swinging_car(rct_vehicle *vehicle)
 		}
 	}
 
-	vehicle->var_4C += vehicle->var_4E;
+	vehicle->swinging_car_var_0 += vehicle->var_4E;
 	vehicle->var_4E -= vehicle->var_4E >> 5;
-	sint16 ax = vehicle->var_4C;
+	sint16 ax = vehicle->swinging_car_var_0;
 	if (ax > dx) {
 		ax = dx;
 		vehicle->var_4E = 0;
@@ -5636,7 +5639,7 @@ static void vehicle_update_swinging_car(rct_vehicle *vehicle)
 		vehicle->var_4E = 0;
 	}
 
-	vehicle->var_4C = ax;
+	vehicle->swinging_car_var_0 = ax;
 	uint8 bl = 11;
 	if (ax >= -10012) {
 		bl = 12;
@@ -6987,7 +6990,7 @@ loc_6DB8A5:
 
 	if ((vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_9) && moveInfo->var_07 != 0) {
 		vehicle->var_4A = 0;
-		vehicle->var_4C = 0;
+		vehicle->swinging_car_var_0 = 0;
 		vehicle->var_4E = 0;
 	}
 
@@ -7265,7 +7268,7 @@ loc_6DBD42:
 
 	if ((vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_9) && regs.bl != 0) {
 		vehicle->var_4A = 0;
-		vehicle->var_4C = 0;
+		vehicle->swinging_car_var_0 = 0;
 		vehicle->var_4E = 0;
 	}
 
@@ -7914,7 +7917,7 @@ loc_6DC8A1:
 	if (rideEntry->vehicles[0].flags_b & VEHICLE_ENTRY_FLAG_B_9) {
 		if (vehicle->var_1F != 0) {
 			vehicle->var_4A = 0;
-			vehicle->var_4C = 0;
+			vehicle->swinging_car_var_0 = 0;
 			vehicle->var_4E = 0;
 		}
 	}
@@ -8054,7 +8057,7 @@ loc_6DCC2C:
 	if (rideEntry->vehicles[0].flags_b & VEHICLE_ENTRY_FLAG_B_9) {
 		if (vehicle->var_1F != 0) {
 			vehicle->var_4A = 0;
-			vehicle->var_4C = 0;
+			vehicle->swinging_car_var_0 = 0;
 			vehicle->var_4E = 0;
 		}
 	}

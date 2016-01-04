@@ -140,7 +140,14 @@ typedef struct {
 	uint16 update_flags;			// 0x48
 	uint8 var_4A;
 	uint8 current_station;			// 0x4B
-	uint16 var_4C;
+	union {
+		sint16 swinging_car_var_0;	// 0x4C
+		sint16 current_time;		// 0x4C
+		struct {
+			sint8 ferris_wheel_var_0;	// 0x4C
+			sint8 ferris_wheel_var_1;	// 0x4D
+		};
+	};
 	uint16 var_4E;
 	uint8 status;					// 0x50
 	uint8 sub_state;				// 0x51
