@@ -35,7 +35,6 @@
 #include "platform/platform.h"
 #include "ride/ride_data.h"
 #include "scenario.h"
-#include "tutorial.h"
 #include "windows/tooltip.h"
 #include "windows/dropdown.h"
 #include "world/banner.h"
@@ -95,7 +94,6 @@ static void input_scroll_part_update_vthumb(rct_window *w, int widgetIndex, int 
 static void input_scroll_part_update_vtop(rct_window *w, int widgetIndex, int scroll_id);
 static void input_scroll_part_update_vbottom(rct_window *w, int widgetIndex, int scroll_id);
 static void input_update_tooltip(rct_window *w, int widgetIndex, int x, int y);
-static void update_cursor_position();
 
 #pragma region Mouse input
 
@@ -118,7 +116,6 @@ void game_handle_input()
 			window_event_unknown_07_call(w);
 
 		sub_6EA73F();
-		update_cursor_position();
 
 		for (;;) {
 			game_get_next_input(&x, &y, &state);
@@ -162,8 +159,6 @@ static void game_get_next_input(int *x, int *y, int *state)
 	*x = eax->x;
 	*y = eax->y;
 	*state = eax->state;
-
-	// NOTE this function lacks tutorial logic
 }
 
 /**
@@ -1435,11 +1430,10 @@ void game_handle_keyboard_input()
 
 	if (!gConsoleOpen) {
 		// Handle mouse scrolling
-		if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 0)
-			if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, uint8) != 0)
-				if (gInputState == INPUT_STATE_NORMAL)
-					if (!(RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 3))
-						game_handle_edge_scroll();
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, uint8) != 0)
+			if (gInputState == INPUT_STATE_NORMAL)
+				if (!(RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 3))
+					game_handle_edge_scroll();
 
 		// Handle modifier keys and key scrolling
 		RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
@@ -1450,8 +1444,7 @@ void game_handle_keyboard_input()
 				RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 2;
 			if (gKeysState[SDL_SCANCODE_LALT] || gKeysState[SDL_SCANCODE_RALT])
 				RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 4;
-			if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 0)
-				game_handle_key_scroll();
+			game_handle_key_scroll();
 		}
 	}
 
@@ -1481,8 +1474,6 @@ void game_handle_keyboard_input()
 		w = window_find_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
 		if (w != NULL) {
 			keyboard_shortcut_set(key);
-		} else if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) == 1) {
-			tutorial_stop();
 		} else {
 			w = window_find_by_class(WC_TEXTINPUT);
 			if (w != NULL) {
@@ -1491,10 +1482,6 @@ void game_handle_keyboard_input()
 				keyboard_shortcut_handle(key);
 			}
 		}
-	}
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 0) {
-		game_handle_keyboard_input_for_tutorial();
 	}
 }
 
@@ -1690,25 +1677,5 @@ void game_handle_key_scroll()
 	if (scrollY != 0) {
 		mainWindow->saved_view_y += scrollY * (12 << mainWindow->viewport->zoom);
 		gInputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
-	}
-}
-
-/**
- *
- *  rct2: 0x006E8346
- */
-static void update_cursor_position()
-{
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8)) {
-	case 0:
-		// RCT2_GLOBAL(0x0142004C, sint32) = RCT2_GLOBAL(0x0142406C, sint32);
-		// RCT2_GLOBAL(0x01420050, sint32) = RCT2_GLOBAL(0x01424070, sint32);
-		break;
-	case 1:
-		// read tutorial cursor position
-		break;
-	case 2:
-		// write tutorial cursor position
-		break;
 	}
 }

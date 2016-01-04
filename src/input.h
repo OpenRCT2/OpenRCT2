@@ -66,7 +66,6 @@ extern uint8 gInputFlags;
 void title_handle_keyboard_input();
 void game_handle_input();
 void game_handle_keyboard_input();
-void game_handle_keyboard_input_for_tutorial();
 
 void store_mouse_input(int state);
 

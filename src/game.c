@@ -46,7 +46,6 @@
 #include "ride/track.h"
 #include "scenario.h"
 #include "title.h"
-#include "tutorial.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
 #include "windows/error.h"

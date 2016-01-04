@@ -91,7 +91,6 @@
 		D4EC48281C26342F0024B507 /* scenario_list.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC476D1C26342F0024B507 /* scenario_list.c */; };
 		D4EC48291C26342F0024B507 /* scenario.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC476E1C26342F0024B507 /* scenario.c */; };
 		D4EC482A1C26342F0024B507 /* title.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC47711C26342F0024B507 /* title.c */; };
-		D4EC482B1C26342F0024B507 /* tutorial.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC47731C26342F0024B507 /* tutorial.c */; };
 		D4EC482C1C26342F0024B507 /* sawyercoding.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC47761C26342F0024B507 /* sawyercoding.c */; };
 		D4EC482D1C26342F0024B507 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC47781C26342F0024B507 /* util.c */; };
 		D4EC482E1C26342F0024B507 /* about.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC477B1C26342F0024B507 /* about.c */; };
@@ -372,8 +371,6 @@
 		D4EC47701C26342F0024B507 /* sprites.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sprites.h; path = src/sprites.h; sourceTree = "<group>"; };
 		D4EC47711C26342F0024B507 /* title.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = title.c; path = src/title.c; sourceTree = "<group>"; };
 		D4EC47721C26342F0024B507 /* title.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = title.h; path = src/title.h; sourceTree = "<group>"; };
-		D4EC47731C26342F0024B507 /* tutorial.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tutorial.c; path = src/tutorial.c; sourceTree = "<group>"; };
-		D4EC47741C26342F0024B507 /* tutorial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tutorial.h; path = src/tutorial.h; sourceTree = "<group>"; };
 		D4EC47761C26342F0024B507 /* sawyercoding.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sawyercoding.c; sourceTree = "<group>"; };
 		D4EC47771C26342F0024B507 /* sawyercoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sawyercoding.h; sourceTree = "<group>"; };
 		D4EC47781C26342F0024B507 /* util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = util.c; sourceTree = "<group>"; };
@@ -634,8 +631,6 @@
 				D4EC47701C26342F0024B507 /* sprites.h */,
 				D4EC47711C26342F0024B507 /* title.c */,
 				D4EC47721C26342F0024B507 /* title.h */,
-				D4EC47731C26342F0024B507 /* tutorial.c */,
-				D4EC47741C26342F0024B507 /* tutorial.h */,
 				D4163F671C2A044D00B83136 /* version.h */,
 			);
 			name = Sources;
@@ -1385,7 +1380,6 @@
 				D4EC48231C26342F0024B507 /* station.c in Sources */,
 				D4EC484D1C26342F0024B507 /* new_ride.c in Sources */,
 				D4EC484A1C26342F0024B507 /* music_credits.c in Sources */,
-				D4EC482B1C26342F0024B507 /* tutorial.c in Sources */,
 				D4EC48241C26342F0024B507 /* track.c in Sources */,
 				D4EC47DF1C26342F0024B507 /* addresses.c in Sources */,
 				D4EC484B1C26342F0024B507 /* network_status.c in Sources */,

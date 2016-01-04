@@ -85,7 +85,6 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, rct_window *w, int colour, int x, int y, uint8 factor);
 static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rct_window *w);
-static void window_game_bottom_toolbar_draw_tutorial_text(rct_drawpixelinfo *dpi, rct_window *w);
 
 /**
  *
@@ -358,8 +357,6 @@ static void window_game_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *d
 
 	if (!news_item_is_queue_empty())
 		window_game_bottom_toolbar_draw_news_item(dpi, w);
-	else if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8))
-		window_game_bottom_toolbar_draw_tutorial_text(dpi, w);
 }
 
 static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, rct_window *w)
@@ -597,16 +594,6 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 		gfx_draw_sprite(dpi, SPR_GRAPH, x, y, 0);
 		break;
 	}
-}
-
-static void window_game_bottom_toolbar_draw_tutorial_text(rct_drawpixelinfo *dpi, rct_window *w)
-{
-	int x, y;
-
-	x = (window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].left + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right) / 2 + w->x;
-	y = window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].top + w->y + 2;
-	gfx_draw_string_centred(dpi, STR_TUTORIAL, x, y, 32, 0);
-	gfx_draw_string_centred(dpi, STR_PRESS_KEY_OR_MOUSE_BUTTON_FOR_CONTROL, x, y + 10, 32, 0);
 }
 
 /**
