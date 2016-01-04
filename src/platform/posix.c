@@ -499,8 +499,8 @@ bool platform_file_move(const utf8 *srcPath, const utf8 *dstPath)
 
 bool platform_file_delete(const utf8 *path)
 {
-	STUB();
-	return 0;
+	int ret = unlink(path);
+	return ret == 0;
 }
 
 wchar_t *regular_to_wchar(const char* src)
