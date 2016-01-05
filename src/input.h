@@ -69,6 +69,7 @@ typedef struct {
 extern uint8 gInputState;
 extern uint8 gInputFlags;
 
+extern widget_ref gHoverWidget;
 extern widget_ref gPressedWidget;
 
 extern uint16 gTooltipNotShownTicks;

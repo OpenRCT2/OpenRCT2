@@ -22,6 +22,7 @@
 #include "../audio/audio.h"
 #include "../config.h"
 #include "../editor.h"
+#include "../input.h"
 #include "../scenario.h"
 #include "../sprites.h"
 #include "../localisation/localisation.h"
@@ -535,10 +536,11 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 + w->y, 0);
 
 			int textColour = w->colours[1] & 0x7F;
-
-			if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, uint8) == WC_BOTTOM_TOOLBAR &&
-				RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, uint8) == WIDX_PREVIOUS_STEP_BUTTON)
+			if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR &&
+				gHoverWidget.widget_index == WIDX_PREVIOUS_STEP_BUTTON
+			) {
 				textColour = 2;
+			}
 
 			short textX = (window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 30 +
 				window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right) / 2 + w->x;
@@ -559,9 +561,11 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 			int textColour = w->colours[1] & 0x7F;
 
-			if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, uint8) == WC_BOTTOM_TOOLBAR &&
-				RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, uint8) == WIDX_NEXT_STEP_BUTTON)
+			if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR &&
+				gHoverWidget.widget_index == WIDX_NEXT_STEP_BUTTON
+			) {
 				textColour = 2;
+			}
 
 			short textX = (window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left +
 				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 30) / 2 + w->x;

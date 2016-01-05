@@ -993,12 +993,9 @@ int widget_is_pressed(rct_window *w, int widgetIndex)
 
 int widget_is_highlighted(rct_window *w, int widgetIndex)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) != w->classification)
-		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWNUMBER, rct_windownumber) != w->number)
-		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, sint32) != widgetIndex)
-		return 0;
+	if (gHoverWidget.window_classification != w->classification) return 0;
+	if (gHoverWidget.window_number != w->number) return 0;
+	if (gHoverWidget.widget_index != widgetIndex) return 0;
 	return 1;
 }
 

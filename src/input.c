@@ -72,6 +72,7 @@ static sint32 _originalWindowHeight;
 uint8 gInputState;
 uint8 gInputFlags;
 
+widget_ref gHoverWidget;
 widget_ref gPressedWidget;
 
 uint16 gTooltipNotShownTicks;
@@ -930,18 +931,17 @@ static void input_widget_over_change_check(rct_windowclass windowClass, rct_wind
 		return;
 
 	// Check if the widget that the cursor was over, has changed
-	if (
-		windowClass != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) ||
-		windowNumber != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWNUMBER, rct_windownumber) ||
-		widgetIndex != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, uint16)
-		) {
+	if (windowClass != gHoverWidget.window_classification ||
+		windowNumber != gHoverWidget.window_number ||
+		widgetIndex != gHoverWidget.widget_index
+	) {
 		// Invalidate last widget cursor was on if widget is a flat button
 		input_widget_over_flatbutton_invalidate();
 
 		// Set new cursor over widget
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass) = windowClass;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWNUMBER, rct_windownumber) = windowNumber;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, uint16) = widgetIndex;
+		gHoverWidget.window_classification = windowClass;
+		gHoverWidget.window_number = windowNumber;
+		gHoverWidget.widget_index = widgetIndex;
 
 		// Invalidate new widget cursor is on if widget is a flat button
 		if (windowClass != 255)
@@ -955,20 +955,16 @@ static void input_widget_over_change_check(rct_windowclass windowClass, rct_wind
  */
 static void input_widget_over_flatbutton_invalidate()
 {
-	rct_window *w = window_find_by_number(
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass),
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWNUMBER, rct_windownumber)
-		);
-	if (w == NULL)
-		return;
-
-	window_event_invalidate_call(w);
-	if (w->widgets[RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, rct_windownumber)].type == WWT_FLATBTN) {
-		widget_invalidate_by_number(
-			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWCLASS, rct_windowclass),
-			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WINDOWNUMBER, rct_windownumber),
-			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_OVER_WIDGETINDEX, rct_windownumber)
+	rct_window *w = window_find_by_number(gHoverWidget.window_classification, gHoverWidget.window_number);
+	if (w != NULL) {
+		window_event_invalidate_call(w);
+		if (w->widgets[gHoverWidget.widget_index].type == WWT_FLATBTN) {
+			widget_invalidate_by_number(
+				gHoverWidget.window_classification,
+				gHoverWidget.window_number,
+				gHoverWidget.widget_index
 			);
+		}
 	}
 }
 
