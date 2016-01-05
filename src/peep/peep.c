@@ -8065,6 +8065,9 @@ static void peep_on_exit_ride(rct_peep *peep, int rideIndex)
 	peep->happiness = peep->happiness_growth_rate;
 	peep->nausea = peep->nausea_growth_rate;
 	peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_STATS;
+	
+	if (peep->flags & PEEP_FLAGS_LEAVING_PARK)
+		peep->flags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
 
 	if (peep_should_go_on_ride_again(peep, ride)) {
 		peep->guest_heading_to_ride_id = rideIndex;
