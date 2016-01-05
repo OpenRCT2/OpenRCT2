@@ -8,7 +8,7 @@ STR_0003    :스탠드업 롤러코스터
 STR_0004    :서스펜디드 스윙잉 코스터
 STR_0005    :인버티드 롤러코스터
 STR_0006    :주니어 롤러코스터
-STR_0007    :미니어처 레일웨이
+STR_0007    :모형 기차
 STR_0008    :모노레일
 STR_0009    :미니 서스펜디드 롤러코스터
 STR_0010    :보트 라이드
@@ -47,7 +47,7 @@ STR_0042    :톱 스핀
 STR_0043    :스페이스 링
 STR_0044    :역방향 자유낙하 코스터
 STR_0045    :리프트
-STR_0046    :버티컬 드롭 롤러코스터
+STR_0046    :수직 낙하 롤러코스터
 STR_0047    :현금 지급기
 STR_0048    :트위스트
 STR_0049    :귀신의 집
@@ -518,7 +518,7 @@ STR_0513    :손님들이 일어선 자세로 탑승하는 루핑 롤러코스�
 STR_0514    :코너를 돌 때 롤러코스터 트랙 아래에 달린 차량이 흔들리는 열차입니다.
 STR_0515    :복잡하고 꼬인 트랙 요소를 가진 트랙 아래를 달리는 스틸 롤러코스터 차량입니다.
 STR_0516    :큰 놀이기구를 탈 용기가 없는 사람들을 위한 얌전한 롤러코스터입니다.
-STR_0517    :손님들이 협궤 선로를 따라 달리는 미니어처 열차에 탑승하는 놀이기구입니다.
+STR_0517    :손님들이 협궤 선로를 따라 달리는 모형 열차에 탑승하는 놀이기구입니다.
 STR_0518    :손님들이 모노레일 트랙을 따라 달리는 전기 차량에 탑승하는 놀이기구입니다.
 STR_0519    :손님들이 단선 트랙 아래에 달려서 코너를 돌 때마다 좌우로 흔들리는 작은 차량에 탑승하는 놀이기구입니다.
 STR_0520    :손님들이 물 위를 다니는 배를 운전하거나 또는 저을 수 있는 선착장입니다.
@@ -2222,7 +2222,7 @@ STR_2214    :게임 일시정지 중에는 건설할 수 없습니다!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}F
-STR_2218    :{RED}{STRINGID}(놀이기구: {STRINGID})(이)가 {STRINGID}(으)로 아직 돌아오지 않았습니다!{NEWLINE}놀이기구가 멈춰있거나 Check whether it is stuck or has 상점ed
+STR_2218    :{RED}{POP16}{POP16}{STRINGID}의 {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{STRINGID}(이)가 {POP16}{POP16}{POP16}{STRINGID}으로 아직 돌아오지 않았습니다!{NEWLINE}놀이기구가 멈춰있거나 오도가도 못하고 있는지 확인하세요.
 STR_2219    :{RED}{COMMA16}명의 손님이 {STRINGID} 사고로 사망하였습니다!
 STR_2220    :{WINDOW_COLOUR_2}공원 등급: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}공원 등급: {COMMA16}
@@ -2366,7 +2366,7 @@ STR_2358    :유닛
 STR_2359    :실제 값
 STR_2360    :{WINDOW_COLOUR_2}해상도:
 STR_2361    :땅 테두리를 부드럽게
-STR_2362    :{SMALLFONT}{BLACK}땅의 테두리를 부드럽게 보입니다
+STR_2362    :{SMALLFONT}{BLACK}땅의 테두리를 부드럽게 보이게 만듭니다
 STR_2363    :땅에 격자선 보이기
 STR_2364    :{SMALLFONT}{BLACK}땅에 격자선을 보여줍니다
 STR_2365    :은행이 대출을 증가시키는 것을 거절했습니다!
@@ -3844,8 +3844,8 @@ STR_5504    :{SMALLFONT}{BLACK}멀티플레이 창을 엽니다
 STR_5505    :서버에 접속할 수 없습니다
 STR_5506    :손님이 격렬도를 무시하고 탐
 STR_5507    :미화원이 기본적으로 잔디를 깎음
-STR_5508    :올바르지 않은 체크합을 가진 파일 불러오기 허용
-STR_5509    :{SMALLFONT}{BLACK}데모에서 저장한 시나리오나 손상된 저장 파일과 같이 올바르지 않은 체크합을 가진 시나리오나 저장 파일을 불러오는 것을 허용합니다.
+STR_5508    :올바르지 않은 검사합을 가진 파일 불러오기 허용
+STR_5509    :{SMALLFONT}{BLACK}데모에서 저장한 시나리오나 손상된 저장 파일과 같이 올바르지 않은 검사합을 가진 시나리오나 저장 파일을 불러오는 것을 허용합니다.
 STR_5510    :기본 사운드 장치
 STR_5511    :(알 수 없음)
 STR_5512    :다른 이름으로 저장
@@ -3943,14 +3943,481 @@ STR_5603    :손님의 놀이기구 하차
 STR_5604    :손님의 물건 구입
 STR_5605    :손님의 시설 사용
 STR_5606    :손님의 사망
+STR_5607    :{SMALLFONT}{BLACK}선택한 맵 요소를 강제로 제거합니다.
+STR_5608    :BH
+STR_5609    :CH
+STR_5610    :{SMALLFONT}{BLACK}현재 선택한 맵 요소를 제거합니다. 강제로 삭제하기 때문에 돈이 들어오거나 빠지진 않을 것입니다. 주의해서 사용하세요.
+STR_5611    :G
+STR_5612    :{SMALLFONT}{BLACK}유령 플래그
+STR_5613    :B
+STR_5614    :{SMALLFONT}{BLACK}깨짐 플래그
+STR_5615    :L
+STR_5616    :{SMALLFONT}{BLACK}타일 플래그의 마지막 요소
+STR_5617    :{SMALLFONT}{BLACK}선택한 요소를 위로 이동합니다.
+STR_5618    :{SMALLFONT}{BLACK}선택한 요소를 아래로 이동합니다.
+STR_5619    :롤러코스터 타이쿤
+STR_5620    :애디드 어트랙션
+STR_5621    :루피 랜드스케이프
+STR_5622    :롤러코스터 타이쿤 2
+STR_5623    :와키 월드
+STR_5624    :타임 트위스터
+STR_5625    :{OPENQUOTES}실제{ENDQUOTES} 공원
+STR_5626    :기타 공원
+STR_5627    :시나리오 목록 분류 방식:
+STR_5628    :게임별
+STR_5629    :난이도별
+STR_5630    :시나리오 클리어시 새 시나리오 열기 켜기
+STR_5631    :오리지널 다운로드 콘텐츠 공원
+STR_5632    :직접 만들기...
 
+#############
+# Scenarios #
+################
+# RCT Original #
+################
+<Forest Frontiers>
+STR_SCNR    :Forest Frontiers
+STR_PARK    :미개척된 숲
+STR_DTLS    :깊은 숲 속 넓은 공터에 번창한 놀이공원을 건설하세요.
+
+<Dynamite Dunes>
+STR_SCNR    :Dynamite Dunes
+STR_PARK    :다이너마이트 모래언덕
+STR_DTLS    :사막 한가운데 건설된 이 놀이공원에는 롤러코스터 한 대만이 있지만 확장할 수 있는 곳이 많습니다.
+
+<Leafy Lake>
+STR_SCNR    :Leafy Lake
+STR_PARK    :나뭇잎 호수
+STR_DTLS    :처음부터 시작하여 큰 호수 주변에 놀이공원을 건설하세요.
+
+<Diamond Heights>
+STR_SCNR    :Diamond Heights
+STR_PARK    :다이아몬드 언덕
+STR_DTLS    :다이아몬드 언덕은 멋진 놀이기구를 통해 이미 성공한 놀이공원입니다. 공원의 가치를 두 배로 늘려 보세요.
+
+<Evergreen Gardens>
+STR_SCNR    :Evergreen Gardens
+STR_PARK    :상록수 정원
+STR_DTLS    :아름다운 상록수 정원을 번창한 놀이공원으로 바꿔보세요.
+
+<Bumbly Beach>
+STR_SCNR    :Bumbly Beach
+STR_PARK    :범블리 해변
+STR_DTLS    :범블리 해변의 작은 놀이공원을 번창한 놀이공원으로 발전시키세요.
+
+<Trinity Islands>
+STR_SCNR    :Trinity Islands
+STR_PARK    :삼위일체 섬
+STR_DTLS    :몇 개의 섬이 이 새로운 공원의 기반입니다.
+
+<Katie's Dreamland>
+STR_SCNR    :Katie's Dreamland
+STR_PARK    :케이티의 드림랜드
+STR_DTLS    :몇 개의 놀이기구와 확장할 공간이 있는 작은 놀이공원으로, 여러분의 목표는 공원 가치를 두 배로 늘리는 것입니다.
+
+<Pokey Park>
+STR_SCNR    :Pokey Park
+STR_PARK    :비좁은 공원
+STR_DTLS    :대대적인 확장을 해야하는 비좁은 놀이공원
+
+<White Water Park>
+STR_SCNR    :White Water Park
+STR_PARK    :맑은 물 공원
+STR_DTLS    :훌륭한 물 놀이기구를 몇 개 갖고있지만 확장이 필요한 공원
+
+<Millennium Mines>
+STR_SCNR    :Millennium Mines
+STR_PARK    :밀레니엄 광산
+STR_DTLS    :버려져있는 커다란 탄광을 관광시설에서 놀이공원으로 바꿔보세요.
+
+<Karts & Coasters>
+STR_SCNR    :Karts & Coasters
+STR_PARK    :카트 & 코스터
+STR_DTLS    :몇 개의 고 카트 트랙과 우든 롤러코스터만이 숲 속에 숨겨져 있는 대형 놀이공원
+
+<Mel's World>
+STR_SCNR    :Mel's World
+STR_PARK    :멜의 세계
+STR_DTLS    :이 놀이공원에는 잘 디자인된 현대식 놀이기구가 있지만 아직도 확장해야 할 곳이 많습니다.
+
+<Mystic Mountain>
+STR_SCNR    :Mystic Mountain
+STR_PARK    :신비한 산
+STR_DTLS    :비밀스런 숲 속 언덕에 처음부터 놀이공원을 건설하세요.
+
+<Pacific Pyramids>
+STR_SCNR    :Pacific Pyramids
+STR_PARK    :평화로운 피라미드
+STR_DTLS    :이집트 유적 관광지를 번창한 놀이공원으로 바꿔 보세요.
+
+<Crumbly Woods>
+STR_SCNR    :Crumbly Woods
+STR_PARK    :부서지기 쉬운 숲
+STR_DTLS    :잘 디자인되었지만 다소 낡은 놀이기구를 가진 대형 공원입니다. 오래된 놀이기구를 교체하거나 새로운 놀이기구를 추가하여 보다 인기있는 공원을 만들어보세요.
+
+<Paradise Pier>
+STR_SCNR    :Paradise Pier
+STR_PARK    :파라다이스 부두
+STR_DTLS    :이 조용한 마을의 부두를 번창한 놀이공원으로 바꿔보세요.
+
+<Lightning Peaks>
+STR_SCNR    :Lightning Peaks
+STR_PARK    :번개치는 산꼭대기
+STR_DTLS    :번개치는 산꼭대기의 아름다운 산은 경치를 즐기며 산책을 즐기는 사람들에게 인기가 높습니다. 사용 가능한 땅을 이용해서 스릴을 찾는 새로운 고객을 유혹해보세요.
+
+<Ivory Towers>
+STR_SCNR    :Ivory Towers
+STR_PARK    :상아 탑
+STR_DTLS    :문제가 몇 가지 있지만 잘 구성된 공원
+
+<Rainbow Valley>
+STR_SCNR    :Rainbow Valley
+STR_PARK    :무지개 계곡
+STR_DTLS    :무지개 계곡의 지역 당국은 풍경을 바꾸거나 큰 나무를 제거할 수 없게 했지만, 이 지역을 개발하여 대형 놀이공원으로 바꿔야만 합니다.
+
+<Thunder Rock>
+STR_SCNR    :Thunder Rock
+STR_PARK    :천둥 바위
+STR_DTLS    :천둥 바위는 사막 한가운데에서 많은 관광객을 끌어 모으고 있습니다. 사용 가능한 공간을 이용해 놀이기구를 건설해서 더 많은 사람들을 끌어 보세요.
+
+<Mega Park>
+STR_SCNR    :Mega Park
+STR_PARK    :대공원
+STR_DTLS    :그냥 즐기세요!
+
+## Added Attractions
+<Whispering Cliffs>
+STR_SCNR    :Whispering Cliffs
+STR_PARK    :속삭이는 절벽
+STR_DTLS    :해변의 절벽을 인기있는 놀이공원으로 발전시키세요.
+
+<Three Monkeys Park>
+STR_SCNR    :Three Monkeys Park
+STR_PARK    :세 원숭이 공원
+STR_DTLS    :개발 중인 이 거대한 공원의 한 가운데에는 동시에 경주하는 거대한 세 쌍둥이 스틸 롤러코스터가 있습니다.
+
+<Canary Mines>
+STR_SCNR    :Canary Mines
+STR_PARK    :카나리아 광산
+STR_DTLS    :이 버려진 탄광은 모형 기차와 수직 낙하 롤러코스터로 이미 관광객의 인기를 끌고 있습니다.
+
+<Barony Bridge>
+STR_SCNR    :Barony Bridge
+STR_PARK    :남작의 다리
+STR_DTLS    :필요없는 오래된 다리를 놀이공원으로 개발할 수 있습니다.
+
+<Funtopia>
+STR_SCNR    :Funtopia
+STR_PARK    :펀토피아
+STR_DTLS    :고속도로 양쪽을 잘 활용한 이 공원은 이미 몇 가지 놀이기구를 운영하고 있습니다.
+
+<Haunted Harbor>
+STR_SCNR    :Haunted Harbor
+STR_PARK    :유령 항구
+STR_DTLS    :지역 당국은 특정 놀이기구는 파괴할 수 없다는 조건을 걸고 이 작은 해변 공원 근처의 땅을 저렴하게 팔기로 합의했습니다.
+
+<Fun Fortress>
+STR_SCNR    :Fun Fortress
+STR_PARK    :즐거운 요새
+STR_DTLS    :이 성은 놀이공원으로 탈바꿈하기 위해 온전히 당신의 소유가 되었습니다.
+
+<Future World>
+STR_SCNR    :Future World
+STR_PARK    :미래 세계
+STR_DTLS    :이 미래지향적인 공원에는 새로운 놀이기구를 그 외계 지형 위에 지을 많은 공간이 있습니다.
+
+<Gentle Glen>
+STR_SCNR    :Gentle Glen
+STR_PARK    :얌전한 골짜기
+STR_DTLS    :이 지역의 주민들은 격렬하지 않고 얌전한 놀이기구를 선호하기 때문에 이 공원을 그들의 취향에 맞게 확장하는 것이 여러분의 임무입니다.
+
+<Jolly Jungle>
+STR_SCNR    :Jolly Jungle
+STR_PARK    :즐거운 정글
+STR_DTLS    :정글 속 깊은 곳에 놀이공원으로 탈바꿈할 수 있는 넓은 대지가 있습니다.
+
+<Hydro Hills>
+STR_SCNR    :Hydro Hills
+STR_PARK    :하이드로 언덕
+STR_DTLS    :몇 개의 호수를 기반으로 새로운 공원을 건설할 수 있습니다.
+
+<Sprightly Park>
+STR_SCNR    :Sprightly Park
+STR_PARK    :활기 넘치는 공원
+STR_DTLS    :이 오래된 공원에는 아주 역사적인 놀이기구가 많이 있지만 심각한 적자에 시달리고 있습니다.
+
+<Magic Quarters>
+STR_SCNR    :Magic Quarters
+STR_PARK    :매직 쿼터
+STR_DTLS    :비어있는 넓은 지역의 일부분을 아름다운 풍경의 테마파크로 개발될 준비가 되었습니다.
+
+<Fruit Farm>
+STR_SCNR    :Fruit Farm
+STR_PARK    :과일 농장
+STR_DTLS    :무성한 과일 농장에 모형 기차를 건설해서 수익을 극대화하고 있습니다. 여러분의 임무는 이 농장을 최고의 놀이공원으로 만드는 것입니다.
+
+<Butterfly Dam>
+STR_SCNR    :Butterfly Dam
+STR_PARK    :나비 댐
+STR_DTLS    :댐 주변 지역을 놀이공원으로 개발할 수 있습니다.
+
+<Coaster Canyon>
+STR_SCNR    :Coaster Canyon
+STR_PARK    코스터 협곡
+STR_DTLS    :광대한 협곡을 테마파크로 개발할 수 있습니다.
+
+<Thunderstorm Park>
+STR_SCNR    :Thunderstorm Park
+STR_PARK    :폭풍우 공원
+STR_DTLS    :날씨가 너무 습해서 거대한 피라미드를 짓고 몇몇 놀이기구를 그 밑에 두기로 했습니다.
+
+<Harmonic Hills>
+STR_SCNR    :Harmonic Hills
+STR_PARK    :조화로운 언덕
+STR_DTLS    :지역 당국은 이 공원에서 나무 높이 이상의 건설을 허용하지 않습니다.
+
+<Roman Village>
+STR_SCNR    :Roman Village
+STR_PARK    :로마의 마을
+STR_DTLS    :이 로마 스타일의 테마파크에 놀이기구와 롤러코스터를 추가해서 더욱 발전시켜보세요.
+
+<Swamp Cove>
+STR_SCNR    :Swamp Cove
+STR_PARK    :습지 골짜기
+STR_DTLS    :몇 개의 작은 섬에 부분 부분 건설된 이 공원에는 이미 중앙에 한 쌍의 거대한 롤러코스터가 있습니다.
+
+<Adrenaline Heights>
+STR_SCNR    :Adrenaline Heights
+STR_PARK    :아드레날린 언덕
+STR_DTLS    :격렬한 스릴을 즐기는 사람들을 위한 공원을 건설하세요.
+
+<Utopia Park>
+STR_SCNR    :Utopia Park
+STR_PARK    :유토피아 공원
+STR_DTLS    :사막 한가운데의 오아시스에 놀이공원을 건설해보세요.
+
+<Rotting Heights>
+STR_SCNR    :Rotting Heights
+STR_PARK    :썩어버린 언덕
+STR_DTLS    :지나치게 성장해서 황폐화되어버린 이 곳을 다시 멋진 공원으로 바꿀 수 있습니까?
+
+<Fiasco Forest>
+STR_SCNR    :Fiasco Forest
+STR_PARK    :실패한 숲
+STR_DTLS    :위험하고 잘못 설계된 놀이기구가 많이 있습니다. 공원을 둘러보고 문제를 수정할 시간과 예산이 매우 부족합니다.
+
+<Pickle Park>
+STR_SCNR    :Pickle Park
+STR_PARK    :피클 공원
+STR_DTLS    :지역 당국에서는 광고나 홍보를 허용하지 않으므로 이 공원은 사람들의 입을 통해서만 알릴 수 있습니다.
+
+<Giggle Downs>
+STR_SCNR    :Giggle Downs
+STR_PARK    :웃기는 구릉 지대
+STR_DTLS    :이 넓은 공원의 중앙에는 네 쌍둥이 스티플체이스 놀이기구가 있습니다.
+
+<Mineral Park>
+STR_SCNR    :Mineral Park
+STR_PARK    :광물 공원
+STR_DTLS    :이 버려진 채석장을 스릴을 찾는 사람들을 유혹할만한 장소로 바꿔보세요.
+
+<Coaster Crazy>
+STR_SCNR    :Coaster Crazy
+STR_PARK    :미친 코스터
+STR_DTLS    :이 산악 지대에 다양한 롤러코스터를 건설해보세요. 예산은 한정되어 있지만 시간은 제한이 없습니다.
+
+<Urban Park>
+STR_SCNR    :Urban Park
+STR_PARK    :도시 공원
+STR_DTLS    :이 작은 공원은 이 도시뿐만 아니라 근교 도시의 주민들에게까지 인기를 모으고 있습니다.
+
+<Geoffrey Gardens>
+STR_SCNR    :Geoffrey Gardens
+STR_PARK    :제프리의 정원
+STR_DTLS    :대규모의 정원 공원을 북적이는 놀이공원으로 바꿔해야 합니다.
+
+
+## Loopy Landscapes
+<Iceberg Islands>
+STR_SCNR    :Iceberg Islands
+STR_PARK    :빙산 섬
+STR_DTLS    :빙산이 이 야심찬 놀이공원에 차가운 이미지를 더하고 있습니다.
+
+<Volcania>
+STR_SCNR    :Volcania
+STR_PARK    :볼케이니아
+STR_DTLS    :이번 롤러코스터 건설 도전에서는 휴화산이 무대가 됩니다.
+
+<Arid Heights>
+STR_SCNR    :Arid Heights
+STR_PARK    :건조한 언덕
+STR_DTLS    :아무런 재정적 제한 없는 상황에서, 지속적으로 손님들을 행복하게 만들 수 있는 공원을 사막에 건설해보세요.
+
+<Razor Rocks>
+STR_SCNR    :Razor Rocks
+STR_PARK    :날카로운 바위
+STR_DTLS    :여러분의 임무는 날카로운 바위 사이에 롤러코스터로 가득한 거대한 공원을 만드는 것입니다.
+
+<Crater Lake>
+STR_SCNR    :Crater Lake
+STR_PARK    :분화구 호수
+STR_DTLS    :이 공원의 부지는 고대 분화구에 만들어진긴 커다란 호수입니다.
+
+<Vertigo Views>
+STR_SCNR    :Vertigo Views
+STR_PARK    :어지러운 풍경
+STR_DTLS    :이 거대한 공원에는 이미 훌륭한 하이퍼코스터가 있습니다. 여러분의 임무는 그 매출을 아주 극대화시키는 것입니다.
+
+<Paradise Pier 2>
+STR_SCNR    :Paradise Pier 2
+STR_PARK    :파라다이스 부두 2
+STR_DTLS    :파라다이스 부두는 바다 위의 산책로를 확장했습니다. 여러분의 임무는 이 새로운 공간을 이용하여 공원을 확장하는 것 입니다.
+
+<Dragon's Cove>
+STR_SCNR    :Dragon's Cove
+STR_PARK    :용의 동굴
+STR_DTLS    :이번 롤러코스터 건설 도전에서는 해안 동굴이 무대가 됩니다.
+
+<Good Knight Park>
+STR_SCNR    :Good Knight Park
+STR_PARK    :훌륭한 기사 공원
+STR_DTLS    :한 쌍의 롤러코스터가 있는 성을 더 큰 놀이공원으로 발전시켜야 합니다.
+
+<Wacky Warren>
+STR_SCNR    :Wacky Warren
+STR_PARK    :괴짜 미로
+STR_DTLS    :대부분의 보도와 롤러코스터가 지하에 있는 공원입니다.
+
+<Grand Glacier>
+STR_SCNR    :Grand Glacier
+STR_PARK    :웅장한 빙하
+STR_DTLS    :놀이공원으로 만들기 위해 당신에게 빙하가 가득한 계곡이 주어졌습니다.
+
+<Crazy Craters>
+STR_SCNR    :Crazy Craters
+STR_PARK    :미친 분화구
+STR_DTLS    :돈이 필요없는 머나먼 세상에서, 여러분은 사람들을 행복하게 해줄 놀이공원을 건설해야 합니다.
+
+<Dusty Desert>
+STR_SCNR    :Dusty Desert
+STR_PARK    :먼지투성이 사막
+STR_DTLS    :이 사막 공원에 있는 다섯 대의 롤러코스터를 완성하십시오.
+
+<Woodworm Park>
+STR_SCNR    :Woodworm Park
+STR_PARK    :나무좀벌레 공원
+STR_DTLS    :이 역사적인 공원에는 오직 오래된 스타일의 놀이기구만을 건설할 수 있습니다.
+
+<Icarus Park>
+STR_SCNR    :Icarus Park
+STR_PARK    :이카루스 공원
+STR_DTLS    :이 외계 공원을 개발하여 최대한의 매출을 올리세요.
+
+<Sunny Swamps>
+STR_SCNR    :Sunny Swamps
+STR_PARK    :맑은 늪지
+STR_DTLS    :이 잘 구성된 놀이공원에는 이미 몇 개의 놀이기구가 있지만, 아직 확장할 수 있는 공간은 충분합니다.
+
+<Frightmare Hills>
+STR_SCNR    :Frightmare Hills
+STR_PARK    :무시무시한 언덕
+STR_DTLS    :거대한 롤러코스터가 공원 가운데에 있는 무시무시한 공원
+
+<Thunder Rocks>
+STR_SCNR    :Thunder Rocks
+STR_PARK    :천둥 바위들
+STR_DTLS    :놀이공원의 기초가 될 두 개의 커다란 바위가 사막의 모래 위에 솟아 있습니다.
+
+<Octagon Park>
+STR_SCNR    :Octagon Park
+STR_PARK    :팔각형 공원
+STR_DTLS    :이 거대한 공원에 여러분은 10개의 거대한 롤러코스터를 디자인하고 만들어야 합니다.
+
+<Pleasure Island>
+STR_SCNR    :Pleasure Island
+STR_PARK    :즐거운 섬
+STR_DTLS    :길고 가느다란 섬에서 롤러코스터 건설에 도전해보세요.
+
+<Icicle Worlds>
+STR_SCNR    :Icicle Worlds
+STR_PARK    :고드름 세상
+STR_DTLS    :얼음으로 덮인 땅을 번창하는 놀이공원으로 바꿔보세요.
+
+<Southern Sands>
+STR_SCNR    :Southern Sands
+STR_PARK    :남부 사막
+STR_DTLS    :빈틈없이 세워진 롤러코스터가 있는 사막 공원이 확장을 위해 여러분에게 주어졌습니다.
+
+<Tiny Towers>
+STR_SCNR    :Tiny Towers
+STR_PARK    :조그마한 탑
+STR_DTLS    :이 조그마한 공원에 있는 다섯 개의 미완성된 롤러코스터를 모두 완성해야 합니다.
+
+<Nevermore Park>
+STR_SCNR    :Nevermore Park
+STR_PARK    :네버모어 공원
+STR_DTLS    :공원 주변에 참신한 운송수단이 설치된 거대한 공원
+
+<Pacifica>
+STR_SCNR    :Pacifica
+STR_PARK    :패시피카
+STR_DTLS    :놀이공원으로 개발하기 위해 이 거대한 섬이 여러분에게 주어졌습니다.
+
+<Urban Jungle>
+STR_SCNR    :Urban Jungle
+STR_PARK    :도시의 정글
+STR_DTLS    :버려진 거대한 마천루 빌딩은 놀이공원 개발자에게는 독특한 기회일 것입니다.
+
+<Terror Town>
+STR_SCNR    :Terror Town
+STR_PARK    :공포스러운 마을
+STR_DTLS    :놀이공원으로 개발하기 위해 이 도시 지역이 여러분에게 주어졌습니다.
+
+<Megaworld Park>
+STR_SCNR    :Megaworld Park
+STR_PARK    :대세상 공원
+STR_DTLS    :이미 놀이기구로 가득한 거대한 공원을 확장해야 합니다.
+
+<Venus Ponds>
+STR_SCNR    :Venus Ponds
+STR_PARK    :비너스의 연못
+STR_DTLS    :멀리 떨어진 행성에 있는 이 지역을 놀이공원으로 바꿔야 합니다.
+
+<Micro Park>
+STR_SCNR    :Micro Park
+STR_PARK    :마이크로 공원
+STR_DTLS    :세상에서 가장 작지만 수익이 좋은 공원을 만들어보세요.
+
+## Real Parks from RCT1
+# None of them had details
+<Alton Towers>
+STR_SCNR    :Alton Towers
+STR_PARK    :알턴 타워스
+STR_DTLS    :
+
+<Heide-Park>
+STR_SCNR    :Heide-Park
+STR_PARK    :하이데 파르크
+STR_DTLS    :
+
+<Blackpool Pleasure Beach>
+STR_SCNR    :Blackpool Pleasure Beach
+STR_PARK    :블랙풀 플레져 비치
+STR_DTLS    :
+
+## Misc parks from RCT1
+# Had no details
+<Fort Anachronism>
+STR_SCNR    :Fort Anachronism
+STR_PARK    :역사적인 성채
+STR_DTLS    :
 
 ###############################################################################
 ## RCT2 Objects
 ###############################################################################
 [AML1]
 STR_NAME    :미국 스타일 증기 기관차
-STR_DESC    :부드러운 천으로 된 지붕을 가진 나무 객차와 증기 기관차 모형으로 이루어진 미니어처 증기 기관차 차량
+STR_DESC    :부드러운 천으로 된 지붕을 가진 나무 객차와 증기 기관차 모형으로 이루어진 모형 증기 기관차 차량
 STR_CPTY    :차량당 6명의 승객
 
 [CLIFT1]
@@ -3985,12 +4452,12 @@ STR_CPTY    :차량당 4명의 승객
 
 [NRL]
 STR_NAME    :증기 기관차
-STR_DESC    :나무 객차와 증기 기관차 모형으로 이루어진 미니어처 증기 기관차 차량
+STR_DESC    :나무 객차와 증기 기관차 모형으로 이루어진 모형 증기 기관차 차량
 STR_CPTY    :객차당 6명의 승객
 
 [NRL2]
 STR_NAME    :천장이 있는 증기 기관차
-STR_DESC    :부드러운 천으로 된 지붕을 가진 나무 객차와 증기 기관차 모형으로 이루어진 미니어처 증기 기관차 차량
+STR_DESC    :부드러운 천으로 된 지붕을 가진 나무 객차와 증기 기관차 모형으로 이루어진 모형 증기 기관차 차량
 STR_CPTY    :객차당 6명의 승객
 
 [SMONO]
@@ -4040,7 +4507,7 @@ STR_CPTY    :승객 32명
 
 [GOLF1]
 STR_NAME    :미니 골프
-STR_DESC    :미니어처 골프 게임
+STR_DESC    :모형 골프 게임
 STR_CPTY    :
 
 [GTC]
@@ -4184,7 +4651,7 @@ STR_DESC    :탑승자들이 선 자세로 낙하와 여러 특수 트랙을 즐
 STR_CPTY    :차량당 4명의 승객
 
 [BMVD]
-STR_NAME    :버티컬 드롭 롤러코스터
+STR_NAME    :수직 낙하 롤러코스터
 STR_DESC    :자유 낙하의 극한 경험을 선사하기 위해 완전히 수직 경사 트랙을 따라 하강하는 아주 폭이 넓은 차량
 STR_CPTY    :차량당 6명의 승객
 

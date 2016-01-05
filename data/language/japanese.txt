@@ -829,12 +829,12 @@ STR_0824    :{BLACK}{CROSS}
 STR_0825    :Chosen name in use already
 STR_0826    :Too many names defined
 STR_0827    :Not enough cash - requires {CURRENCY2DP}
-STR_0828    :{SMALLFONT}{BLACK}Close window
-STR_0829    :{SMALLFONT}{BLACK}Window title - Drag this to move window
-STR_0830    :{SMALLFONT}{BLACK}Zoom view in
-STR_0831    :{SMALLFONT}{BLACK}Zoom view out
-STR_0832    :{SMALLFONT}{BLACK}Rotate view 90{DEGREE} clockwise
-STR_0833    :{SMALLFONT}{BLACK}Pause game
+STR_0828    :{SMALLFONT}{BLACK}ウィンドウを閉める
+STR_0829    :{SMALLFONT}{BLACK}ウィンドウのタイトル - これをドラッグさせる
+STR_0830    :{SMALLFONT}{BLACK}ズームアウト
+STR_0831    :{SMALLFONT}{BLACK}ズームイン
+STR_0832    :{SMALLFONT}{BLACK}時計回90{DEGREE}りに移動させる
+STR_0833    :{SMALLFONT}{BLACK}ゲームをポーズする
 STR_0834    :{SMALLFONT}{BLACK}Disk and game options
 STR_0835    :Game initialisation failed
 STR_0836    :Unable to start game in a minimised state
@@ -884,14 +884,14 @@ STR_0878    :高すぎる!
 STR_0879    :Can't lower land here...
 STR_0880    :Can't raise land here...
 STR_0881    :Object in the way
-STR_0882    :Load Game
-STR_0883    :Save Game
-STR_0884    :Load Landscape
-STR_0885    :Save Landscape
-STR_0886    :Quit Game
-STR_0887    :Quit Scenario Editor
-STR_0888    :Quit Roller Coaster Designer
-STR_0889    :Quit Track Designs Manager
+STR_0882    :ゲームを再更新する
+STR_0883    :ゲームをセーブする
+STR_0884    :景色を再更新する
+STR_0885    :景色をセーブする
+STR_0886    :ゲームを閉じる
+STR_0887    :Scenario Editorを閉じる
+STR_0888    :Roller Coaster Designerを閉じる
+STR_0889    :Track Designs Managerを閉じる
 STR_0890    :SCR{COMMA16}.BMP
 STR_0891    :スクリーンショット
 STR_0892    :Screenshot saved to disk as '{STRINGID}'
@@ -952,9 +952,9 @@ STR_0946    :Cancel
 STR_0947    :Save this before loading ?
 STR_0948    :Save this before quitting ?
 STR_0949    :Save this before quitting ?
-STR_0950    :Load Game
-STR_0951    :Quit Game
-STR_0952    :Quit Game
+STR_0950    :ゲームを再更新する
+STR_0951    :ゲームを閉じる
+STR_0952    :ゲームを閉じる
 STR_0953    :Load Landscape
 STR_0954    :
 STR_0955    :{SMALLFONT}{BLACK}Select seat rotation angle for this track section
@@ -1112,11 +1112,11 @@ STR_1106    :Crashing!
 STR_1107    :Crashed!
 STR_1108    :Travelling at {VELOCITY}
 STR_1109    :Swinging
-STR_1110    :Rotating
-STR_1111    :Rotating
+STR_1110    :回転させる
+STR_1111    :回転させる
 STR_1112    :Operating
 STR_1113    :Showing film
-STR_1114    :Rotating
+STR_1114    :回転させる
 STR_1115    :Operating
 STR_1116    :Operating
 STR_1117    :Doing circus show
@@ -3819,7 +3819,7 @@ STR_5477    :Map rendering
 STR_5478    :Controls
 STR_5479    :Toolbar
 STR_5480    :Show toolbar buttons for:
-STR_5481    :Themes
+STR_5481    :スタイル
 STR_5482    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}1 minute
 STR_5483    :{BLACK}({COMMA16} weeks remaining)
 STR_5484    :{BLACK}({COMMA16} week remaining)
@@ -3850,7 +3850,7 @@ STR_5508    :Allow loading files with incorrect checksums
 STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves that have an incorrect checksum, like the scenarios from the demo or damaged saves.
 STR_5510    :Default sound device
 STR_5511    :(UNKNOWN)
-STR_5512    :Save Game As
+STR_5512    :名前を保存
 STR_5513    :(Quick) save game
 STR_5514    :Disable vandalism
 STR_5515    :{SMALLFONT}{BLACK}Stops guests from vandalising your park when they're angry

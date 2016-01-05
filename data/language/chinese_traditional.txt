@@ -3946,6 +3946,32 @@ STR_5603    :遊客已離開遊樂設施
 STR_5604    :遊客已購買物品
 STR_5605    :遊客已使用設施
 STR_5606    :遊客已死亡
+STR_5607    :{SMALLFONT}{BLACK}強制移除選中的地圖元素.
+STR_5608    :BH
+STR_5609    :CH
+STR_5610    :{SMALLFONT}{BLACK}移除選中的地圖元素. 使用時請注意. 因為強制移除地圖元素並不會對遊戲中的現金做成影響.
+STR_5611    :G
+STR_5612    :{SMALLFONT}{BLACK}Ghost flag
+STR_5613    :B
+STR_5614    :{SMALLFONT}{BLACK}Broken flag
+STR_5615    :L
+STR_5616    :{SMALLFONT}{BLACK}Last element for tile flag
+STR_5617    :{SMALLFONT}{BLACK}將選中的元素移到上面.
+STR_5618    :{SMALLFONT}{BLACK}將選中的元素移到下面.
+STR_5619    :夢幻遊樂園
+STR_5620    :夢幻遊樂園: 資料片1
+STR_5621    :夢幻遊樂園: 資料片2
+STR_5622    :模擬樂園2
+STR_5623    :瘋狂世界
+STR_5624    :時空歷險
+STR_5625    :{OPENQUOTES}真實的{ENDQUOTES}樂園
+STR_5626    :其他樂園
+STR_5627    :樂園列表的排序方式:
+STR_5628    :出處的遊戲
+STR_5629    :困難程度
+STR_5630    :允許劇情解鎖
+STR_5631    :額外下載的官方樂園
+STR_5632    :建設你的..
 
 
 #####################
