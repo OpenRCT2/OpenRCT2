@@ -41,6 +41,8 @@
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
 
+#define FILE_BUFFER_SIZE 4096
+
 utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
 utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
@@ -492,7 +494,45 @@ int platform_get_drives(){
 
 bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite)
 {
-	STUB();
+	log_verbose("Copying %s to %s", srcPath, dstPath);
+
+	FILE *dstFile;
+
+ 	if (overwrite) {
+		dstFile = fopen(dstPath, "wb");
+	} else {
+		dstFile = fopen(dstPath, "wbx");
+	}
+
+	if (dstFile != NULL) {
+		if (errno == EEXIST) {
+			log_warning("platform_file_copy: Not overwriting %s, because overwrite flag == false", dstPath);
+			return 0;
+		}
+
+		log_error("Could not open destination file %s for copying", dstPath);
+		return 0;
+	}
+
+	// Open both files and check whether they are opened correctly
+	FILE *srcFile = fopen(srcPath, "rb");
+	if (!srcFile) {
+		fclose(dstFile);
+		log_error("Could not open source file %s for copying", srcPath);
+		return 0;
+	}
+
+	size_t amount_read = 0;
+
+	char* buffer = (char*) malloc(FILE_BUFFER_SIZE);
+	while ((amount_read = fread(buffer, FILE_BUFFER_SIZE, 1, srcFile))) {
+		fwrite(buffer, amount_read, 1, dstFile);
+	}
+
+	fclose(srcFile);
+	fclose(dstFile);
+	free(buffer);
+
 	return 0;
 }
 
