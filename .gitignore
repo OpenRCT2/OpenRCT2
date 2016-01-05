@@ -278,4 +278,4 @@ data/g2.dat
 #################
 
 # KDE folder settings
-*.directory
+.directory
