@@ -29,6 +29,7 @@
 #include "drawing/drawing.h"
 #include "editor.h"
 #include "game.h"
+#include "input.h"
 #include "interface/chat.h"
 #include "interface/console.h"
 #include "interface/viewport.h"
@@ -92,7 +93,7 @@ int rct2_init()
 
 	config_reset_shortcut_keys();
 	config_shortcut_keys_load();
-	RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
+	gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
 	// config_load();
 
 	object_list_load();

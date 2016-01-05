@@ -95,7 +95,7 @@ void window_map_tooltip_update_visibility()
 	if (
 		_cursorHoldDuration < 25 ||
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS, sint16) == -1 ||
-		(RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 3) ||
+		(gInputPlaceObjectModifier & 3) ||
 		window_find_by_class(WC_ERROR) != NULL
 	) {
 		window_close_by_class(WC_MAP_TOOLTIP);

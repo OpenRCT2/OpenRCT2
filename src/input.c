@@ -71,6 +71,7 @@ static sint32 _originalWindowHeight;
 
 uint8 gInputState;
 uint8 gInputFlags;
+uint8 gInputPlaceObjectModifier;
 
 widget_ref gHoverWidget;
 widget_ref gPressedWidget;
@@ -1388,14 +1389,14 @@ void title_handle_keyboard_input()
 
 	if (!gConsoleOpen) {
 		// Handle modifier keys and key scrolling
-		RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
+		gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
 		if (RCT2_GLOBAL(0x009E2B64, uint32) != 1) {
 			if (gKeysState[SDL_SCANCODE_LSHIFT] || gKeysState[SDL_SCANCODE_RSHIFT])
-				RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 1;
+				gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_SHIFT_Z;
 			if (gKeysState[SDL_SCANCODE_LCTRL] || gKeysState[SDL_SCANCODE_RCTRL])
-				RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 2;
+				gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_COPY_Z;
 			if (gKeysState[SDL_SCANCODE_LALT] || gKeysState[SDL_SCANCODE_RALT])
-				RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 4;
+				gInputPlaceObjectModifier |= 4;
 		}
 	}
 
@@ -1415,7 +1416,7 @@ void title_handle_keyboard_input()
 			continue;
 		}
 
-		key |= RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) << 8;
+		key |= gInputPlaceObjectModifier << 8;
 
 		w = window_find_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
 		if (w != NULL) {
@@ -1438,20 +1439,26 @@ void game_handle_keyboard_input()
 
 	if (!gConsoleOpen) {
 		// Handle mouse scrolling
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, uint8) != 0)
-			if (gInputState == INPUT_STATE_NORMAL)
-				if (!(RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 3))
+		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, uint8) != 0) {
+			if (gInputState == INPUT_STATE_NORMAL) {
+				if (!(gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_SHIFT_Z | PLACE_OBJECT_MODIFIER_COPY_Z))) {
 					game_handle_edge_scroll();
+				}
+			}
+		}
 
 		// Handle modifier keys and key scrolling
-		RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
+		gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
 		if (RCT2_GLOBAL(0x009E2B64, uint32) != 1) {
-			if (gKeysState[SDL_SCANCODE_LSHIFT] || gKeysState[SDL_SCANCODE_RSHIFT])
-				RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 1;
-			if (gKeysState[SDL_SCANCODE_LCTRL] || gKeysState[SDL_SCANCODE_RCTRL])
-				RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 2;
-			if (gKeysState[SDL_SCANCODE_LALT] || gKeysState[SDL_SCANCODE_RALT])
-				RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) |= 4;
+			if (gKeysState[SDL_SCANCODE_LSHIFT] || gKeysState[SDL_SCANCODE_RSHIFT]) {
+				gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_SHIFT_Z;
+			}
+			if (gKeysState[SDL_SCANCODE_LCTRL] || gKeysState[SDL_SCANCODE_RCTRL]) {
+				gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_COPY_Z;
+			}
+			if (gKeysState[SDL_SCANCODE_LALT] || gKeysState[SDL_SCANCODE_RALT]) {
+				gInputPlaceObjectModifier |= 4;
+			}
 			game_handle_key_scroll();
 		}
 	}
@@ -1477,7 +1484,7 @@ void game_handle_keyboard_input()
 			continue;
 		}
 
-		key |= RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) << 8;
+		key |= gInputPlaceObjectModifier << 8;
 
 		w = window_find_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
 		if (w != NULL) {
