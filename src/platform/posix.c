@@ -538,10 +538,7 @@ void platform_enumerate_directories_end(int handle)
 }
 
 int platform_get_drives(){
-	/*
-	return GetLogicalDrives();
-	*/
-	STUB();
+	// POSIX systems do not know drives. Return 0.
 	return 0;
 }
 
