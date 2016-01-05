@@ -203,7 +203,7 @@ bool openrct2_initialise()
 	gOpenRCT2ShowChangelog = true;
 	if (gConfigGeneral.last_run_version != NULL && (strcmp(gConfigGeneral.last_run_version, OPENRCT2_VERSION) == 0))
 		gOpenRCT2ShowChangelog = false;
-	gConfigGeneral.last_run_version = OPENRCT2_VERSION;
+	gConfigGeneral.last_run_version = strndup(OPENRCT2_VERSION, strlen(OPENRCT2_VERSION));
 	config_save_default();
 
 	// TODO add configuration option to allow multiple instances

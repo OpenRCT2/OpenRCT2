@@ -1,4 +1,5 @@
 version: 0.0.4.{build}
+os: Previous Visual Studio 2015
 build_script:
 - ps: >-
     .\setenv.ps1

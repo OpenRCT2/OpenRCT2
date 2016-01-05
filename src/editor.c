@@ -138,7 +138,7 @@ void editor_convert_save_to_scenario_callback(int result)
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
 	s6Info->editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
-	s6Info->category = SCENARIO_CATEGORY_BUILDYOUROWN;
+	s6Info->category = SCENARIO_CATEGORY_OTHER;
 	viewport_init_all();
 	news_item_init_queue();
 	window_editor_main_open();
@@ -328,7 +328,7 @@ static int editor_read_s6(const char *path)
 				s6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 		} else {
 			s6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
-			s6Info->category = SCENARIO_CATEGORY_BUILDYOUROWN;
+			s6Info->category = SCENARIO_CATEGORY_OTHER;
 			format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
 		}
 

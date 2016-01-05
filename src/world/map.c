@@ -645,15 +645,18 @@ int map_is_location_owned(int x, int y, int z)
 {
 	rct_map_element *mapElement;
 
+	// This check is to avoid throwing lots of messages in logs.
 	if (x < (256 * 32) && y < (256 * 32)) {
 		mapElement = map_get_surface_element_at(x / 32, y / 32);
-		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED)
-			return 1;
-
-		if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) {
-			z /= 8;
-			if (z < mapElement->base_height || z - 2 > mapElement->base_height)
+		if (mapElement != NULL) {
+			if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED)
 				return 1;
+
+			if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) {
+				z /= 8;
+				if (z < mapElement->base_height || z - 2 > mapElement->base_height)
+					return 1;
+			}
 		}
 	}
 
@@ -708,6 +711,12 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 	money32 cost;
 
 	rct_scenery_entry *entry = g_smallSceneryEntries[scenery_type];
+	if (entry == (rct_scenery_entry *)0xFFFFFFFF)
+	{
+		log_warning("Invalid game command for scenery removal, scenery_type = %u", scenery_type);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	cost = entry->small_scenery.removal_price * 10;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
@@ -793,6 +802,12 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 
 	bool element_found = false;
 	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+	if (map_element == NULL)
+	{
+		log_warning("Invalid game command for scenery removal, x = %d, y = %d", x, y);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	do {
 		if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
 			continue;
@@ -2128,6 +2143,11 @@ static money32 smooth_land_tile(int direction, uint8 flags, int x, int y, int ta
 
 	// Get height of tile
 	rct_map_element *mapElement = map_get_surface_element_at(x >> 5, y >> 5);
+	if (mapElement == NULL)
+	{
+		log_warning("Invalid coordinates for land smoothing, x = %d, y = %d", x, y);
+		return MONEY32_UNDEFINED;
+	}
 	int baseZ = map_get_corner_height(mapElement, direction);
 
 	// Check if tile is same height as target tile
@@ -2200,6 +2220,11 @@ money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int mapTop
 	x = mapLeft;
 	y = mapTop;
 	mapElement = map_get_surface_element_at(x >> 5, y >> 5);
+	if (mapElement == NULL)
+	{
+		log_warning("Invalid coordinates for land smoothing, x = %d, y = %d", x, y);
+		return MONEY32_UNDEFINED;
+	}
 	int slope = mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
 	if (slope != 0) {
 		commandType = command == 0xFFFF ? GAME_COMMAND_RAISE_LAND : GAME_COMMAND_LOWER_LAND;
@@ -3294,12 +3319,25 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 		return;
 	}
 
+	if (entry_index >= 128)
+	{
+		log_warning("Invalid game command for scenery placement, entry_index = %u", entry_index);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+
 	if (!sub_68B044()) {
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
 
 	rct_scenery_entry* scenery_entry = RCT2_ADDRESS(RCT2_ADDRESS_LARGE_SCENERY_ENTRIES, rct_scenery_entry*)[entry_index];
+	if (scenery_entry == (rct_scenery_entry *)0xFFFFFFFF)
+	{
+		log_warning("Invalid game command for scenery placement, entry_index = %u", entry_index);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	if(scenery_entry->large_scenery.var_11 != 0xFF){
 		banner_id = create_new_banner(flags);
 
@@ -4284,6 +4322,10 @@ bool map_element_is_underground(rct_map_element *mapElement)
 rct_map_element *map_get_large_scenery_segment(int x, int y, int z, int direction, int sequence)
 {
 	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	if (mapElement == NULL)
+	{
+		return NULL;
+	}
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
 			continue;
@@ -4767,6 +4809,12 @@ void game_command_place_park_entrance(int* eax, int* ebx, int* ecx, int* edx, in
 void game_command_set_banner_name(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {
 	static char newName[128];
 
+	if ((*ecx >= MAX_BANNERS) || (*ecx < 0))
+	{
+		log_warning("Invalid game command for setting banner name, banner id = %d", *ecx);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	rct_banner* banner = &gBanners[*ecx];
 
 	int nameChunkIndex = *eax & 0xFFFF;
@@ -4776,6 +4824,7 @@ void game_command_set_banner_name(int* eax, int* ebx, int* ecx, int* edx, int* e
 	if (nameChunkOffset < 0)
 		nameChunkOffset = 2;
 	nameChunkOffset *= 12;
+	nameChunkOffset = min(nameChunkOffset, countof(newName) - 12);
 	RCT2_GLOBAL(newName + nameChunkOffset + 0, uint32) = *edx;
 	RCT2_GLOBAL(newName + nameChunkOffset + 4, uint32) = *ebp;
 	RCT2_GLOBAL(newName + nameChunkOffset + 8, uint32) = *edi;
@@ -4811,6 +4860,12 @@ void game_command_set_banner_name(int* eax, int* ebx, int* ecx, int* edx, int* e
 void game_command_set_sign_name(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {
 	static char newName[128];
 
+	if ((*ecx >= MAX_BANNERS) || (*ecx < 0))
+	{
+		log_warning("Invalid game command for setting sign name, banner id = %d", *ecx);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	rct_banner* banner = &gBanners[*ecx];
 	int x = banner->x << 5;
 	int y = banner->y << 5;
@@ -4822,6 +4877,7 @@ void game_command_set_sign_name(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	if (nameChunkOffset < 0)
 		nameChunkOffset = 2;
 	nameChunkOffset *= 12;
+	nameChunkOffset = min(nameChunkOffset, countof(newName) - 12);
 	RCT2_GLOBAL(newName + nameChunkOffset + 0, uint32) = *edx;
 	RCT2_GLOBAL(newName + nameChunkOffset + 4, uint32) = *ebp;
 	RCT2_GLOBAL(newName + nameChunkOffset + 8, uint32) = *edi;
@@ -4866,6 +4922,12 @@ void game_command_set_sign_name(int* eax, int* ebx, int* ecx, int* edx, int* esi
 }
 
 void game_command_set_banner_style(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {
+	if ((*ecx >= MAX_BANNERS) || (*ecx < 0))
+	{
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_INVALID_SELECTION_OF_OBJECTS;
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	rct_banner* banner = &gBanners[*ecx];
 
 	banner->colour = (uint8)*edx;

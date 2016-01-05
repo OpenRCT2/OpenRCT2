@@ -5,6 +5,8 @@
 - Feature: Add SI units as a new measurement system for distance / speed.
 - Feature: Update alternative font selection mechanism for all platforms.
 - Feature: Allow enabling / disabling of different notifications.
+- Feature: Improved tile inspector.
+- Feature: Integrate RCT1 style scenario select with optional unlock progression.
 - Fix: [#2126] Ferris Wheels set to "backward rotation" stop working (original bug)
 - Fix: [#2449] Turning off Day/Night Circle while it is night doesn't reset back to day
 

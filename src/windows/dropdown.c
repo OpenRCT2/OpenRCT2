@@ -160,9 +160,9 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 	memcpy((void*)0x009DEBA4, gDropdownItemsFormat, 40 * 2);
 	memcpy((void*)0x009DEBF4, gDropdownItemsArgs, 40 * 8);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP);
+	gInputFlags &= ~(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP);
 	if (flags & DROPDOWN_FLAG_STAY_OPEN)
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_DROPDOWN_STAY_OPEN;
+		gInputFlags |= INPUT_FLAG_DROPDOWN_STAY_OPEN;
 
 	window_dropdown_close();
 	_dropdown_num_columns = 1;
@@ -204,7 +204,7 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 	gDropdownItemsDisabled = 0;
 	gDropdownItemsChecked = 0;
 	gDropdownIsColour = false;
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, sint8) = INPUT_STATE_DROPDOWN_ACTIVE;
+	gInputState = INPUT_STATE_DROPDOWN_ACTIVE;
 }
 
 /**
@@ -230,9 +230,9 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 	memcpy((void*)0x009DEBA4, gDropdownItemsFormat, 40 * 2);
 	memcpy((void*)0x009DEBF4, gDropdownItemsArgs, 40 * 8);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP);
+	gInputFlags &= ~(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP);
 	if (flags & DROPDOWN_FLAG_STAY_OPEN)
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_DROPDOWN_STAY_OPEN;
+		gInputFlags |= INPUT_FLAG_DROPDOWN_STAY_OPEN;
 
 	// Close existing dropdown
 	window_dropdown_close();
@@ -274,7 +274,7 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 	gDropdownHighlightedIndex = -1;
 	gDropdownItemsDisabled = 0;
 	gDropdownItemsChecked = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, sint8) = INPUT_STATE_DROPDOWN_ACTIVE;
+	gInputState = INPUT_STATE_DROPDOWN_ACTIVE;
 
 	// Copy the following properties until all use of it is decompiled
 	gDropdownHighlightedIndex = gDropdownHighlightedIndex;
@@ -324,7 +324,7 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			item = gDropdownItemsFormat[i];
 			if (item == (uint16)-1 || item == (uint16)-2) {
 				// Image item
-				image = *((uint32*)&gDropdownItemsArgs[i]);
+				image = (uint32)gDropdownItemsArgs[i];
 				if (item == (uint16)-2 && gDropdownHighlightedIndex == i)
 					image++;
 

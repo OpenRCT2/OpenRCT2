@@ -109,7 +109,8 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 
 	int newStaffId = i;
 
-	int _eax, _ebx, _ecx = _cx, _edx;
+	int _eax, _ebx, _ecx = _cx;
+	rct_sprite_bounds *spriteBounds;
 	_ebx = _bl;
 
 	rct_peep* newPeep = &(create_sprite(_bl)->peep);
@@ -129,7 +130,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		newPeep->sprite_identifier = 1;
 		newPeep->window_invalidate_flags = 0;
 		newPeep->action = PEEP_ACTION_NONE_2;
-		newPeep->var_6D = 0;
+		newPeep->special_sprite = 0;
 		newPeep->action_sprite_image_offset = 0;
 		newPeep->no_action_frame_no = 0;
 		newPeep->action_sprite_type = 0;
@@ -181,10 +182,10 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		newPeep->name_string_idx = staff_type + 0x300;
 		newPeep->sprite_type = _eax;
 
-		_edx = RCT2_ADDRESS(0x0098270C, uint32)[_eax * 2];
-		newPeep->sprite_width = *((uint8*)_edx);
-		newPeep->sprite_height_negative = *((uint8*)(_edx + 1));
-		newPeep->sprite_height_positive = *((uint8*)(_edx + 2));
+		spriteBounds = g_sprite_entries[_eax].sprite_bounds;
+		newPeep->sprite_width = spriteBounds->sprite_width;
+		newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
+		newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;
 
 		if ((gConfigGeneral.auto_staff_placement != 0) != ((SDL_GetModState() & KMOD_SHIFT) != 0)) {
 			newPeep->state = PEEP_STATE_FALLING;
@@ -292,7 +293,13 @@ void game_command_set_staff_order(int *eax, int *ebx, int *ecx, int *edx, int *e
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_WAGES * 4;
 	uint8 order_id = *ebx >> 8;
 	uint16 sprite_id = *edx;
-	if(*ebx & GAME_COMMAND_FLAG_APPLY){
+	if (sprite_id >= MAX_SPRITES)
+	{
+		log_warning("Invalid game command, sprite_id = %u", sprite_id);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		rct_peep *peep = &g_sprite_list[sprite_id].peep;
 		if(order_id & 0x80){ // change costume
 			uint8 sprite_type = order_id & ~0x80;
@@ -365,7 +372,19 @@ void game_command_fire_staff_member(int *eax, int *ebx, int *ecx, int *edx, int 
 	if(*ebx & GAME_COMMAND_FLAG_APPLY){
 		window_close_by_class(WC_FIRE_PROMPT);
 		uint16 sprite_id = *edx;
+		if (sprite_id >= MAX_SPRITES)
+		{
+			log_warning("Invalid game command, sprite_id = %u", sprite_id);
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
 		rct_peep *peep = &g_sprite_list[sprite_id].peep;
+		if (peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP || peep->type != PEEP_TYPE_STAFF)
+		{
+			log_warning("Invalid game command, peep->sprite_identifier = %u, peep->type = %u", peep->sprite_identifier, peep->type);
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
 		remove_peep_from_ride(peep);
 		peep_sprite_remove(peep);
 	}

@@ -20,10 +20,12 @@
 
 #include "../addresses.h"
 #include "../config.h"
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
+#include "../input.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../localisation/date.h"
+#include "../localisation/localisation.h"
 #include "../management/news_item.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
@@ -31,7 +33,6 @@
 #include "../world/climate.h"
 #include "../world/park.h"
 #include "../world/sprite.h"
-#include "../interface/themes.h"
 
 enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
 	WIDX_LEFT_OUTSET,
@@ -85,7 +86,6 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, rct_window *w, int colour, int x, int y, uint8 factor);
 static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rct_window *w);
-static void window_game_bottom_toolbar_draw_tutorial_text(rct_drawpixelinfo *dpi, rct_window *w);
 
 /**
  *
@@ -358,8 +358,6 @@ static void window_game_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *d
 
 	if (!news_item_is_queue_empty())
 		window_game_bottom_toolbar_draw_news_item(dpi, w);
-	else if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8))
-		window_game_bottom_toolbar_draw_tutorial_text(dpi, w);
 }
 
 static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, rct_window *w)
@@ -551,7 +549,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 			}
 		}
 
-		uint32 image_id_base = *RCT2_ADDRESS(0x00982708, uint32*)[peep->sprite_type * 2];
+		uint32 image_id_base = g_sprite_entries[peep->sprite_type].sprite_image->base_image;
 		image_id_base += w->frame_no & 0xFFFFFFFC;
 		image_id_base++;
 
@@ -599,16 +597,6 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 	}
 }
 
-static void window_game_bottom_toolbar_draw_tutorial_text(rct_drawpixelinfo *dpi, rct_window *w)
-{
-	int x, y;
-
-	x = (window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].left + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right) / 2 + w->x;
-	y = window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].top + w->y + 2;
-	gfx_draw_string_centred(dpi, STR_TUTORIAL, x, y, 32, 0);
-	gfx_draw_string_centred(dpi, STR_PRESS_KEY_OR_MOUSE_BUTTON_FOR_CONTROL, x, y + 10, 32, 0);
-}
-
 /**
  *
  *  rct2: 0x0066C6D8
@@ -633,7 +621,7 @@ static void window_game_bottom_toolbar_cursor(rct_window *w, int widgetIndex, in
 	case WIDX_GUESTS:
 	case WIDX_PARK_RATING:
 	case WIDX_DATE:
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = 2000;
+		gTooltipTimeout = 2000;
 		break;
 	}
 }

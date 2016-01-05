@@ -45,6 +45,17 @@
 #include "world/sprite.h"
 #include "world/water.h"
 
+const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
+	STR_BEGINNER_PARKS,
+	STR_CHALLENGING_PARKS,
+	STR_EXPERT_PARKS,
+	STR_REAL_PARKS,
+	STR_OTHER_PARKS,
+
+	STR_DLC_PARKS,
+	STR_BUILD_YOUR_OWN_PARKS,
+};
+
 static char _scenarioPath[MAX_PATH];
 static const char *_scenarioFileName = "";
 
@@ -58,13 +69,11 @@ static void scenario_objective_check();
  * Loads only the basic information from a scenario.
  *  rct2: 0x006761D6
  */
-int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info)
+bool scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info)
 {
-	SDL_RWops* rw;
-
 	log_verbose("loading scenario details, %s", path);
 
-	rw = SDL_RWFromFile(path, "rb");
+	SDL_RWops* rw = SDL_RWFromFile(path, "rb");
 	if (rw != NULL) {
 		// Read first chunk
 		sawyercoding_read_chunk(rw, (uint8*)header);
@@ -72,49 +81,16 @@ int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *in
 			// Read second chunk
 			sawyercoding_read_chunk(rw, (uint8*)info);
 			SDL_RWclose(rw);
-			RCT2_GLOBAL(0x009AA00C, uint8) = 0;
-
-			// Get filename
-			utf8 filename[MAX_PATH];
-			const char *temp_filename = path_get_filename(path);
-			int len = strnlen(temp_filename, MAX_PATH);
-			safe_strncpy(filename, temp_filename, MAX_PATH);
-			if (len == MAX_PATH)
-			{
-				filename[MAX_PATH - 1] = '\0';
-				log_warning("truncated string %s", filename);
-			}
-			path_remove_extension(filename);
-
-			rct_string_id localisedStringIds[3];
-			if (language_get_localised_scenario_strings(filename, localisedStringIds)) {
-				if (localisedStringIds[0] != (rct_string_id)STR_NONE) {
-					safe_strncpy(info->name, language_get_string(localisedStringIds[0]), 64);
-				}
-				if (localisedStringIds[2] != (rct_string_id)STR_NONE) {
-					safe_strncpy(info->details, language_get_string(localisedStringIds[2]), 256);
-				}
-			} else {
-				// Checks for a scenario string object (possibly for localisation)
-				if ((info->entry.flags & 0xFF) != 255) {
-					if (object_get_scenario_text(&info->entry)) {
-						rct_stex_entry* stex_entry = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, rct_stex_entry*);
-						format_string(info->name, stex_entry->scenario_name, NULL);
-						format_string(info->details, stex_entry->details, NULL);
-						RCT2_GLOBAL(0x009AA00C, uint8) = stex_entry->var_06;
-						object_free_scenario_text();
-					}
-				}
-			}
-			return 1;
+			return true;
+		} else {
+			log_error("invalid scenario, %s", path);
+			SDL_RWclose(rw);
+			return false;
 		}
-		SDL_RWclose(rw);
 	}
 
-	log_error("invalid scenario, %s", path);
-	// RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, sint8) = -1;
-	// RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, sint16) = 3011;
-	return 0;
+	log_error("unable to open scenario, %s", path);
+	return false;
 }
 
 /**
@@ -219,19 +195,6 @@ int scenario_load(const char *path)
 	return 0;
 }
 
-/**
- *
- *  rct2: 0x00678282
- * scenario (ebx)
- */
-int scenario_load_and_play(const rct_scenario_basic *scenario)
-{
-	char path[MAX_PATH];
-
-	substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), scenario->path);
-	return scenario_load_and_play_from_path(path);
-}
-
 int scenario_load_and_play_from_path(const char *path)
 {
 	window_close_construction_windows();
@@ -316,13 +279,12 @@ void scenario_begin()
 	safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, s6Info->name, 64);
 
 	{
-		// Get filename
-		utf8 filename[MAX_PATH];
-		safe_strncpy(filename, _scenarioFileName, sizeof(filename));
-		path_remove_extension(filename);
+		utf8 normalisedName[64];
+		safe_strncpy(normalisedName, s6Info->name, sizeof(normalisedName));
+		scenario_normalise_name(normalisedName);
 
 		rct_string_id localisedStringIds[3];
-		if (language_get_localised_scenario_strings(filename, localisedStringIds)) {
+		if (language_get_localised_scenario_strings(normalisedName, localisedStringIds)) {
 			if (localisedStringIds[0] != (rct_string_id)STR_NONE) {
 				safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(localisedStringIds[0]), 32);
 			}
@@ -437,29 +399,29 @@ void scenario_failure()
  */
 void scenario_success()
 {
-	int i;
-	rct_scenario_basic* scenario;
-	uint32 current_val = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, uint32);
+	const money32 companyValue = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = current_val;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = companyValue;
 	peep_applause();
 
-	for (i = 0; i < gScenarioListCount; i++) {
-		scenario = &gScenarioList[i];
-
-		if (strequals(scenario->path, _scenarioFileName, 256, true)) {
-			// Check if record company value has been broken
-			if ((scenario->flags & SCENARIO_FLAGS_COMPLETED) && scenario->company_value >= current_val)
-				break;
+	scenario_index_entry *scenario = scenario_list_find_by_filename(_scenarioFileName);
+	if (scenario != NULL) {
+		// Check if record company value has been broken
+		if (scenario->highscore == NULL || scenario->highscore->company_value < companyValue) {
+			if (scenario->highscore == NULL) {
+				scenario->highscore = scenario_highscore_insert();
+			} else {
+				scenario_highscore_free(scenario->highscore);
+			}
+			scenario->highscore->fileName = _strdup(path_get_filename(scenario->path));
+			scenario->highscore->name = NULL;
+			scenario->highscore->company_value = companyValue;
+			scenario->highscore->timestamp = platform_get_datetime_now_utc();
 
 			// Allow name entry
 			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
-			scenario->company_value = current_val;
-			scenario->flags |= SCENARIO_FLAGS_COMPLETED;
-			scenario->completed_by[0] = 0;
-			RCT2_GLOBAL(0x013587C0, uint32) = current_val;
+			RCT2_GLOBAL(0x013587C0, money32) = companyValue;
 			scenario_scores_save();
-			break;
 		}
 	}
 	scenario_end();
@@ -471,21 +433,13 @@ void scenario_success()
  */
 void scenario_success_submit_name(const char *name)
 {
-	int i;
-	rct_scenario_basic* scenario;
-	uint32 scenarioWinCompanyValue;
-
-	for (i = 0; i < gScenarioListCount; i++) {
-		scenario = &gScenarioList[i];
-
-		if (strequals(scenario->path, _scenarioFileName, 256, true)) {
-			scenarioWinCompanyValue = RCT2_GLOBAL(0x013587C0, uint32);
-			if (scenario->company_value == scenarioWinCompanyValue) {
-				safe_strncpy(scenario->completed_by, name, 64);
-				safe_strncpy((char*)0x013587D8, name, 32);
-				scenario_scores_save();
-			}
-			break;
+	scenario_index_entry *scenario = scenario_list_find_by_filename(_scenarioFileName);
+	if (scenario != NULL) {
+		money32 scenarioWinCompanyValue = RCT2_GLOBAL(0x013587C0, money32);
+		if (scenario->highscore->company_value == scenarioWinCompanyValue) {
+			scenario->highscore->name = _strdup(name);
+			safe_strncpy((char*)0x013587D8, name, 32);
+			scenario_scores_save();
 		}
 	}
 

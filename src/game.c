@@ -46,7 +46,6 @@
 #include "ride/track.h"
 #include "scenario.h"
 #include "title.h"
-#include "tutorial.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
 #include "windows/error.h"
@@ -57,6 +56,9 @@
 #include "world/scenery.h"
 #include "world/sprite.h"
 #include "world/water.h"
+#include <time.h>
+
+#define NUMBER_OF_AUTOSAVES_TO_KEEP 9
 
 int gGameSpeed = 1;
 float gDayNightCycle = 0;
@@ -288,11 +290,11 @@ void game_update()
 			RCT2_GLOBAL(0x009E2D74, uint32) = 0;
 			break;
 		} else {
-			if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == INPUT_STATE_RESET ||
-				RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) == INPUT_STATE_NORMAL
+			if (gInputState == INPUT_STATE_RESET ||
+				gInputState == INPUT_STATE_NORMAL
 			) {
-				if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_VIEWPORT_SCROLLING) {
-					RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
+				if (gInputFlags & INPUT_FLAG_VIEWPORT_SCROLLING) {
+					gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
 					break;
 				}
 			} else {
@@ -310,7 +312,7 @@ void game_update()
 
 	RCT2_GLOBAL(0x009A8C28, uint8) = 0;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
+	gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
 
 	// the flickering frequency is reduced by 4, compared to the original
 	// it was done due to inability to reproduce original frequency
@@ -770,10 +772,10 @@ int game_load_sv6(SDL_RWops* rw)
 
 	if (!load_success){
 		set_load_objects_fail_reason();
-		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_5){
+		if (gInputFlags & INPUT_FLAG_5){
 			//call 0x0040705E Sets cursor position and something else. Calls maybe wind func 8 probably pointless
 			RCT2_GLOBAL(0x14241BC, uint32) = 0;
-			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_5;
+			gInputFlags &= ~INPUT_FLAG_5;
 		}
 
 		return 0;//This never gets called
@@ -864,10 +866,10 @@ int game_load_network(SDL_RWops* rw)
 
 	if (!load_success){
 		set_load_objects_fail_reason();
-		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_5){
+		if (gInputFlags & INPUT_FLAG_5){
 			//call 0x0040705E Sets cursor position and something else. Calls maybe wind func 8 probably pointless
 			RCT2_GLOBAL(0x14241BC, uint32) = 0;
-			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_5;
+			gInputFlags &= ~INPUT_FLAG_5;
 		}
 
 		return 0;//This never gets called
@@ -1059,16 +1061,99 @@ void save_game_as()
 	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, (char*)path_get_filename(gScenarioSavePath));
 }
 
+int compare_autosave_file_paths (const void * a, const void * b ) {
+	return strcmp(*(char **)a, *(char **)b);
+}
+
+void limit_autosave_count(const size_t numberOfFilesToKeep)
+{
+	int fileEnumHandle = 0;
+
+	size_t autosavesCount = 0;
+	size_t numAutosavesToDelete = 0;
+
+	file_info fileInfo;
+	
+	utf8 filter[MAX_PATH];
+	
+	utf8 **autosaveFiles = NULL;
+	
+	size_t i=0;
+	
+	platform_get_user_directory(filter, "save");
+	strncat(filter, "autosave_*.sv6", sizeof(filter) - strnlen(filter, MAX_PATH) - 1);
+	
+	// At first, count how many autosaves there are
+	fileEnumHandle = platform_enumerate_files_begin(filter);
+	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
+		autosavesCount++;
+	}
+	platform_enumerate_files_end(fileEnumHandle);
+	
+	// If there are fewer autosaves than the number of files to keep we don't need to delete anything
+	if(autosavesCount <= numberOfFilesToKeep) {
+		return;
+	}
+	
+	autosaveFiles = (utf8**) malloc(sizeof(utf8*) * autosavesCount);
+	
+	fileEnumHandle = platform_enumerate_files_begin(filter);
+	for(i = 0; i < autosavesCount; i++) {
+		autosaveFiles[i] = (utf8*)malloc(sizeof(utf8) * MAX_PATH);
+		memset(autosaveFiles[i], 0, sizeof(utf8) * MAX_PATH);
+		
+		if(platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
+			platform_get_user_directory(autosaveFiles[i], "save");
+			strcat(autosaveFiles[i], fileInfo.path);
+		}
+	}
+	platform_enumerate_files_end(fileEnumHandle);
+
+	qsort (autosaveFiles, autosavesCount, sizeof (char*), compare_autosave_file_paths);
+
+	// calculate how many saves we need to delete.
+	numAutosavesToDelete = autosavesCount - numberOfFilesToKeep;
+	
+	i=0;
+	while (numAutosavesToDelete > 0) {
+		platform_file_delete(autosaveFiles[i]);
+		
+		i++;
+		numAutosavesToDelete--;
+	}
+	
+	
+	for(i = 0; i < autosavesCount; i++) {
+		free(autosaveFiles[i]);
+	}
+	
+	free(autosaveFiles);
+}
 
 void game_autosave()
 {
 	utf8 path[MAX_PATH];
 	utf8 backupPath[MAX_PATH];
+	utf8 timeString[21]="";
+	
+	time_t rawtime;
+	struct tm * timeinfo;
+	
+	time ( &rawtime );
+	timeinfo = localtime ( &rawtime );
 
+	limit_autosave_count(NUMBER_OF_AUTOSAVES_TO_KEEP);
+	
+	snprintf(timeString, 20, "%d-%02d-%02d_%02d-%02d-%02d", 1900+timeinfo->tm_year, 1+timeinfo->tm_mon, timeinfo->tm_mday, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+	
+	
 	platform_get_user_directory(path, "save");
 	safe_strncpy(backupPath, path, MAX_PATH);
 
-	strcat(path, "autosave.sv6");
+	strcat(path, "autosave_");
+	strcat(path, timeString);
+	strcat(path, ".sv6");
+	
 	strcat(backupPath, "autosave.sv6.bak");
 
 	if (platform_file_exists(path)) {
@@ -1129,8 +1214,8 @@ void game_load_or_quit_no_save_prompt()
 	} else if (RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) == 1) {
 		game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 		tool_cancel();
-		if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_5) {
-			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_5;
+		if (gInputFlags & INPUT_FLAG_5) {
+			gInputFlags &= ~INPUT_FLAG_5;
 		}
 		gGameSpeed = 1;
 		title_load();

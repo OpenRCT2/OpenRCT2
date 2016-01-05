@@ -3099,7 +3099,7 @@ int save_track_design(uint8 rideIndex){
 		return 1;
 	}
 
-	path_set_extension(path, "TD6");
+	path_append_extension(path, "TD6");
 
 	save_track_to_file(RCT2_ADDRESS(0x009D8178, rct_track_td6), path);
 
@@ -3292,6 +3292,14 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 		rideIndex = _edi & 0xFF;
 	}
 
+	rct_ride* ride = GET_RIDE(rideIndex);
+	if (ride->type == RIDE_TYPE_NULL)
+	{
+		log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+
 	money32 cost = 0;
 	if (!(flags & GAME_COMMAND_FLAG_APPLY)){
 		RCT2_GLOBAL(0x00F44150, uint8) = 0;
@@ -3348,7 +3356,6 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 	if (num_circuits == 0) num_circuits = 1;
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (num_circuits << 8), 0, rideIndex | (9 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 
-	rct_ride* ride = GET_RIDE(rideIndex);
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
 
@@ -4494,6 +4501,11 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 
 	uint8 found = 0;
 	rct_map_element* mapElement = map_get_first_element_at(originX / 32, originY / 32);
+	if (mapElement == NULL)
+	{
+		log_warning("Invalid coordinates for track removal. x = %d, y = %d", originX, originY);
+		return MONEY32_UNDEFINED;
+	}
 	do{
 		if (mapElement->base_height * 8 != originZ)
 			continue;
@@ -4781,6 +4793,12 @@ void game_command_set_brakes_speed(int *eax, int *ebx, int *ecx, int *edx, int *
 	}
 
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	if (mapElement == NULL)
+	{
+		log_warning("Invalid game command for setting brakes speed. x = %d, y = %d", x, y);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	do {
 		if (mapElement->base_height * 8 != z)
 			continue;

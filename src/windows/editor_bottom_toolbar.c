@@ -375,7 +375,7 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 	s6Info->editor_step = 255;
 
 	// Ensure path has .SC6 extension
-	path_set_extension(path, ".SC6");
+	path_append_extension(path, ".SC6");
 
 	// Save the scenario
 	parkFlagsBackup = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);

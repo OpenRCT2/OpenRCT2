@@ -210,7 +210,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 	} else if (pathItemType != 0) {
 		if (
 			!(flags & GAME_COMMAND_FLAG_GHOST) &&
-			(mapElement->properties.path.additions & 0x0F) == pathItemType &&
+			footpath_element_get_path_scenery(mapElement) == pathItemType &&
 			!(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)
 		) {
 			if (flags & GAME_COMMAND_FLAG_4)
@@ -249,14 +249,17 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		if (flags & GAME_COMMAND_FLAG_4)
 			return MONEY32_UNDEFINED;
 
+		// Should place a ghost?
 		if (flags & GAME_COMMAND_FLAG_GHOST) {
-			if (mapElement->properties.path.additions & 0x0F) {
+			// Check if there is something on the path already
+			if (footpath_element_has_path_scenery(mapElement)) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NONE;
 				return MONEY32_UNDEFINED;
 			}
 
+			// There is nothing yet - check if we should place a ghost
 			if (flags & GAME_COMMAND_FLAG_APPLY)
-				mapElement->properties.path.additions |= 0x80;
+				footpath_scenery_set_is_ghost(mapElement, true);
 		}
 
 		if (!(flags & GAME_COMMAND_FLAG_APPLY))
@@ -264,12 +267,12 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 
 		if (
 			(pathItemType != 0 && !(flags & GAME_COMMAND_FLAG_GHOST)) ||
-			(pathItemType == 0 && (mapElement->properties.path.additions & 0x80))
+			(pathItemType == 0 && footpath_element_path_scenery_is_ghost(mapElement))
 		) {
-			mapElement->properties.path.additions &= ~0x80;
+			footpath_scenery_set_is_ghost(mapElement, false);
 		}
 
-		mapElement->properties.path.additions = (mapElement->properties.path.additions & 0xF0) | pathItemType;
+		footpath_element_set_path_scenery(mapElement, pathItemType);
 		mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
 		if (pathItemType != 0) {
 			rct_scenery_entry* scenery_entry = g_pathBitSceneryEntries[pathItemType - 1];
@@ -292,7 +295,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 
 		mapElement->properties.path.type = (mapElement->properties.path.type & 0x0F) | (type << 4);
 		mapElement->type = (mapElement->type & 0xFE) | (type >> 7);
-		mapElement->properties.path.additions = (mapElement->properties.path.additions & 0xF0) | pathItemType;
+		footpath_element_set_path_scenery(mapElement, pathItemType);
 		mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
 
 		loc_6A6620(flags, x, y, mapElement);
@@ -1579,7 +1582,7 @@ bool footpath_element_is_sloped(rct_map_element *mapElement)
 	return mapElement->properties.path.type & 4;
 }
 
-int footpath_element_get_slope_direction(rct_map_element *mapElement)
+uint8 footpath_element_get_slope_direction(rct_map_element *mapElement)
 {
 	return mapElement->properties.path.type & 3;
 }
@@ -1592,6 +1595,45 @@ bool footpath_element_is_queue(rct_map_element *mapElement)
 bool footpath_element_is_wide(rct_map_element *mapElement)
 {
 	return mapElement->type & 2;
+}
+
+bool footpath_element_has_path_scenery(rct_map_element *mapElement)
+{
+	return (mapElement->properties.path.additions & 0xF) > 0;
+}
+
+uint8 footpath_element_get_path_scenery(rct_map_element *mapElement)
+{
+	return mapElement->properties.path.additions & 0xF;
+}
+
+void footpath_element_set_path_scenery(rct_map_element *mapElement, uint8 pathSceneryType)
+{
+	mapElement->properties.path.additions = (mapElement->properties.path.additions & 0xF0) | pathSceneryType;
+}
+
+uint8 footpath_element_get_path_scenery_index(rct_map_element *mapElement)
+{
+	return footpath_element_get_path_scenery(mapElement) - 1;
+}
+
+bool footpath_element_path_scenery_is_ghost(rct_map_element *mapElement)
+{
+	return (mapElement->properties.path.additions & 0x80) == 0x80;
+}
+
+void footpath_scenery_set_is_ghost(rct_map_element *mapElement, bool isGhost)
+{
+	// Remove ghost flag
+	mapElement->properties.path.additions &= ~0x80;
+	// Set flag if it should be a ghost
+	if (isGhost)
+		mapElement->properties.path.additions |= 0x80;
+}
+
+uint8 footpath_element_get_type(rct_map_element *mapElement)
+{
+	return mapElement->properties.path.type >> 4;
 }
 
 /**

@@ -144,8 +144,6 @@ static void window_loadsave_sort_list(int index, int endIndex);
 
 static int has_extension(char *path, char *extension);
 
-static void shorten_path(char* path, char* buffer, int available_width);
-
 static rct_window *window_overwrite_prompt_open(const char *name, const char *path);
 
 rct_window *window_loadsave_open(int type, char *defaultName)
@@ -160,7 +158,6 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 
 	if (!str_is_null_or_empty(defaultName)) {
 		safe_strncpy(_defaultName, defaultName, sizeof(_defaultName));
-		path_remove_extension(_defaultName);
 	}
 
 	w = window_bring_to_front_by_class(WC_LOADSAVE);
@@ -221,21 +218,12 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 		window_loadsave_populate_list(w, includeNewItem, path, ".sc6");
 		break;
 	case LOADSAVETYPE_SCENARIO:
-		/*
-		Uncomment when user scenarios are separated
-
 		platform_get_user_directory(path, "scenario");
 		if (!platform_ensure_directory_exists(path)) {
-		log_error("Unable to create scenarios directory.");
-		window_close(w);
-		return NULL;
+			log_error("Unable to create scenarios directory.");
+			window_close(w);
+			return NULL;
 		}
-		*/
-
-		safe_strncpy(path, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), MAX_PATH);
-		ch = strchr(path, '*');
-		if (ch != NULL)
-			*ch = 0;
 
 		window_loadsave_populate_list(w, includeNewItem, path, ".sc6");
 		break;
@@ -306,12 +294,13 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 	}
 	case WIDX_BROWSE:
 		safe_strncpy(path, _directory, MAX_PATH);
-		if (_type & LOADSAVETYPE_SAVE)
-			strcat(path, (char*)RCT2_ADDRESS_SCENARIO_NAME);
+		if (_type & LOADSAVETYPE_SAVE) {
+			strcat(path, _defaultName);
+		}
 
 		memset(filter, '\0', MAX_PATH);
 		safe_strncpy(filter, "*", MAX_PATH);
-		strncat(filter, _extension, MAX_PATH);
+		strncat(filter, _extension, MAX_PATH - strnlen(filter, MAX_PATH) - 1);
 
 		switch (_type) {
 		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
@@ -336,7 +325,7 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 
 		if (result) {
 			if (!has_extension(path, _extension)) {
-				strncat(path, _extension, MAX_PATH);
+				strncat(path, _extension, sizeof(path) - strnlen(path, sizeof(path)) - 1);
 			}
 			window_loadsave_select(w, path);
 		}
@@ -480,8 +469,9 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
 
-	if (_shortenedDirectory[0] == '\0')
-		shorten_path(_directory, _shortenedDirectory, w->width - 8);
+	if (_shortenedDirectory[0] == '\0') {
+		shorten_path(_shortenedDirectory, sizeof(_shortenedDirectory), _directory, w->width - 8);
+	}
 
 	utf8 buffer[256];
 
@@ -508,41 +498,6 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	else
 		id = STR_NONE;
 	gfx_draw_string_centred_clipped(dpi, STR_DATE, &id, 1, w->x + 4 + (w->width - 8) * 3 / 4, w->y + 50, (w->width - 8) / 2);
-}
-
-static void shorten_path(char* path, char* buffer, int available_width){
-	int length = strlen(path);
-
-	// Return full string if it fits
-	if (gfx_get_string_width(path) <= available_width){
-		strcpy(buffer, path);
-		return;
-	}
-
-	// Count path separators
-	int path_separators = 0;
-	for (int x = 0; x < length; x++)
-		if (path[x] == platform_get_path_separator())
-			path_separators++;
-
-	// TODO: Replace with unicode ellipsis when supported
-	strcpy(buffer, "...");
-
-	// Abreviate beginning with xth separator
-
-	int begin = -1;
-	for (int x = 0; x < path_separators; x++){
-		do {
-			begin++;
-		} while (path[begin] != platform_get_path_separator());
-
-		strcpy(buffer + 3, path + begin);
-		if (gfx_get_string_width(buffer) <= available_width)
-			return;
-	}
-
-	strcpy(buffer, path);
-	return;
 }
 
 static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
@@ -684,7 +639,7 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 			listItem = &_listItems[_listItemsCount];
 			memset(listItem->path, '\0', MAX_PATH);
 			safe_strncpy(listItem->path, directory, MAX_PATH);
-			strncat(listItem->path, subDir, MAX_PATH);
+			strncat(listItem->path, subDir, MAX_PATH - strnlen(listItem->path, MAX_PATH) - 1);
 			safe_strncpy(listItem->name, subDir, sizeof(listItem->name));
 			listItem->type = TYPE_DIRECTORY;
 			_listItemsCount++;
@@ -700,7 +655,7 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 
 			listItem = &_listItems[_listItemsCount];
 			safe_strncpy(listItem->path, directory, sizeof(listItem->path));
-			strncat(listItem->path, fileInfo.path, sizeof(listItem->path));
+			strncat(listItem->path, fileInfo.path, sizeof(listItem->path) - strnlen(listItem->path, MAX_PATH) - 1);
 			listItem->type = TYPE_FILE;
 			listItem->date_modified = platform_file_get_modified_time(listItem->path);
 

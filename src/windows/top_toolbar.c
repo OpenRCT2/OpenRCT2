@@ -310,7 +310,7 @@ static void window_top_toolbar_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_SCENERY:
 		if (!tool_set(w, WIDX_SCENERY, 0)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+			gInputFlags |= INPUT_FLAG_6;
 			window_scenery_open();
 		}
 		break;
@@ -3117,12 +3117,12 @@ void toggle_footpath_window()
  */
 void toggle_land_window(rct_window *topToolbar, int widgetIndex)
 {
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 7) {
+	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == WC_TOP_TOOLBAR && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 7) {
 		tool_cancel();
 	} else {
 		show_gridlines();
 		tool_set(topToolbar, widgetIndex, 18);
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+		gInputFlags |= INPUT_FLAG_6;
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 		window_land_open();
 	}
@@ -3134,12 +3134,12 @@ void toggle_land_window(rct_window *topToolbar, int widgetIndex)
  */
 void toggle_clear_scenery_window(rct_window *topToolbar, int widgetIndex)
 {
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 16) {
+	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == WC_TOP_TOOLBAR && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 16) {
 		tool_cancel();
 	} else {
 		show_gridlines();
 		tool_set(topToolbar, widgetIndex, 12);
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+		gInputFlags |= INPUT_FLAG_6;
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 2;
 		window_clear_scenery_open();
 	}
@@ -3151,12 +3151,12 @@ void toggle_clear_scenery_window(rct_window *topToolbar, int widgetIndex)
  */
 void toggle_water_window(rct_window *topToolbar, int widgetIndex)
 {
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 8) {
+	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == WC_TOP_TOOLBAR && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 8) {
 		tool_cancel();
 	} else {
 		show_gridlines();
 		tool_set(topToolbar, widgetIndex, 19);
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+		gInputFlags |= INPUT_FLAG_6;
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 		window_water_open();
 	}
@@ -3168,7 +3168,7 @@ void toggle_water_window(rct_window *topToolbar, int widgetIndex)
  */
 bool land_tool_is_active()
 {
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE))
+	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
 		return false;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_TOP_TOOLBAR)
 		return false;

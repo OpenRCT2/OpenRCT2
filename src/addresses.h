@@ -63,6 +63,7 @@
 // are implemented in C. Sometimes memory locations are still used even if
 // they aren't directly referenced, for example when a game is saved and
 // loaded, large chunks of data is read and written to.
+#define RCT2_ADDRESS_SPRITE_ENTRIES					0x00982708
 
 #define RCT2_ADDRESS_EASTEREGG_NAMES				0x00988C20
 
@@ -191,7 +192,7 @@
 
 #define RCT2_ADDRESS_TICKS_SINCE_DRAG_START         0x009DE540
 
-#define RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE			0x009DE550
+#define RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE            0x009DE550
 #define RCT2_ADDRESS_PICKEDUP_PEEP_X				0x009DE554
 #define RCT2_ADDRESS_PICKEDUP_PEEP_Y				0x009DE556
 

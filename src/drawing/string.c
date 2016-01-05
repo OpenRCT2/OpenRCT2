@@ -21,9 +21,10 @@
 #include "../addresses.h"
 #include "../interface/colour.h"
 #include "../localisation/localisation.h"
-#include "../sprites.h"
-#include "../world/map.h"
 #include "../platform/platform.h"
+#include "../sprites.h"
+#include "../util/util.h"
+#include "../world/map.h"
 #include "drawing.h"
 
 static int ttf_get_string_width(const utf8 *text);
@@ -1354,4 +1355,41 @@ void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, const utf8 *text, in
 
 	gLastDrawStringX = info.x;
 	gLastDrawStringY = info.y;
+}
+
+void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, int availableWidth)
+{
+	int length = strlen(path);
+
+	// Return full string if it fits
+	if (gfx_get_string_width((char*)path) <= availableWidth) {
+		safe_strncpy(buffer, path, bufferSize);
+		return;
+	}
+
+	// Count path separators
+	int path_separators = 0;
+	for (int x = 0; x < length; x++) {
+		if (path[x] == platform_get_path_separator()) {
+			path_separators++;
+		}
+	}
+
+	// TODO: Replace with unicode ellipsis when supported
+	safe_strncpy(buffer, "...", bufferSize);
+
+	// Abreviate beginning with xth separator
+	int begin = -1;
+	for (int x = 0; x < path_separators; x++){
+		do {
+			begin++;
+		} while (path[begin] != platform_get_path_separator());
+
+		safe_strncpy(buffer + 3, path + begin, bufferSize - 3);
+		if (gfx_get_string_width(buffer) <= availableWidth) {
+			return;
+		}
+	}
+
+	safe_strncpy(buffer, path, bufferSize);
 }

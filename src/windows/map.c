@@ -241,7 +241,7 @@ void window_map_open()
 static void window_map_close(rct_window *w)
 {
 	free(RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32*));
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
+	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) &&
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == w->classification &&
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, uint16) == w->number) {
 		tool_cancel();
@@ -319,7 +319,7 @@ static void window_map_mouseup(rct_window *w, int widgetIndex)
 			break;
 
 		RCT2_GLOBAL(0x9E32D2, sint8) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+		gInputFlags |= INPUT_FLAG_6;
 
 		show_gridlines();
 		show_land_rights();
@@ -740,7 +740,7 @@ static void window_map_invalidate(rct_window *w)
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) {
 		// scenario editor: build park entrance selected, show rotate button
 		if (
-			(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
+			(gInputFlags & INPUT_FLAG_TOOL_ACTIVE) &&
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == WC_MAP &&
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == WIDX_BUILD_PARK_ENTRANCE
 		) {
@@ -752,7 +752,7 @@ static void window_map_invalidate(rct_window *w)
 
 		// If any tool is active
 		if (
-			(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) &&
+			(gInputFlags & INPUT_FLAG_TOOL_ACTIVE) &&
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == WC_MAP
 		) {
 			// if not in set land rights mode: show the default scenario editor buttons
@@ -935,15 +935,15 @@ static void window_map_show_default_scenario_editor_buttons(rct_window *w) {
 
 static void window_map_inputsize_land(rct_window *w)
 {
-	((uint16*)TextInputDescriptionArgs)[0] = MINIMUM_TOOL_SIZE;
-	((uint16*)TextInputDescriptionArgs)[1] = MAXIMUM_TOOL_SIZE;
+	TextInputDescriptionArgs[0] = MINIMUM_TOOL_SIZE;
+	TextInputDescriptionArgs[1] = MAXIMUM_TOOL_SIZE;
 	window_text_input_open(w, WIDX_LAND_TOOL, 5128, 5129, STR_NONE, STR_NONE, 3);
 }
 
 static void window_map_inputsize_map(rct_window *w)
 {
-	((uint16*)TextInputDescriptionArgs)[0] = MINIMUM_MAP_SIZE_PRACTICAL;
-	((uint16*)TextInputDescriptionArgs)[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
+	TextInputDescriptionArgs[0] = MINIMUM_MAP_SIZE_PRACTICAL;
+	TextInputDescriptionArgs[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
 	window_text_input_open(w, WIDX_MAP_SIZE_SPINNER, 5130, 5131, STR_NONE, STR_NONE, 4);
 }
 
@@ -1028,7 +1028,7 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo *dpi)
 
 		color = 0x14;
 
-		if ((peep->var_0C & 0x200) != 0) {
+		if ((peep->list_flags & PEEP_LIST_FLAGS_FLASHING) != 0) {
 			if (peep->type == PEEP_TYPE_STAFF) {
 				if ((RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 3)) != 0) {
 					color = 0x8A;

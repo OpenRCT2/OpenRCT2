@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "../drawing/drawing.h"
 #include "../localisation/localisation.h"
+#include "../input.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 
@@ -70,12 +71,12 @@ static rct_window_event_list window_tooltip_events = {
 
 void window_tooltip_reset(int x, int y)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, uint16) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, uint16) = y;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, uint8) = 255;
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8) = 1;
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~(1 << 4);
+	gTooltipCursorX = x;
+	gTooltipCursorY = y;
+	gTooltipTimeout = 0;
+	gTooltipWidget.window_classification = 255;
+	gInputState = INPUT_STATE_NORMAL;
+	gInputFlags &= ~INPUT_FLAG_4;
 }
 
 uint8* gTooltip_text_buffer = RCT2_ADDRESS(RCT2_ADDRESS_TOOLTIP_TEXT_BUFFER, uint8);
@@ -134,7 +135,7 @@ void window_tooltip_show(rct_string_id id, int x, int y)
 		);
 	w->widgets = window_tooltip_widgets;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, uint16) = 0;
+	gTooltipNotShownTicks = 0;
 }
 
 /**
@@ -153,9 +154,9 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 	if (widget->tooltip == 0xFFFF)
 		return;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = widgetWindow->classification;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = widgetWindow->number;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = widgetIndex;
+	gTooltipWidget.window_classification = widgetWindow->classification;
+	gTooltipWidget.window_number = widgetWindow->number;
+	gTooltipWidget.widget_index = widgetIndex;
 
 	if (window_event_tooltip_call(widgetWindow, widgetIndex) == (rct_string_id)STR_NONE)
 		return;
@@ -170,8 +171,8 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 void window_tooltip_close()
 {
 	window_close_by_class(WC_TOOLTIP);
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = 255;
+	gTooltipTimeout = 0;
+	gTooltipWidget.window_classification = 255;
 	RCT2_GLOBAL(0x0142006C, sint32) = -1;
 	RCT2_GLOBAL(0x009DE51E, uint8) = 0;
 }
@@ -192,7 +193,7 @@ static void window_tooltip_onclose(rct_window *w)
 static void window_tooltip_update(rct_window *w)
 {
 	if (RCT2_GLOBAL(0x009DE51E, uint8) == 0)
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, uint16) = 0;
+		gTooltipNotShownTicks = 0;
 }
 
 /**

@@ -262,6 +262,48 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 	return INVALID_HANDLE;
 }
 
+/**
+ * Due to FindFirstFile / FindNextFile searching for DOS names as well, *.doc also matches *.docx which isn't what the pattern
+ * specified. This will verify if a filename does indeed match the pattern we asked for.
+ * @remarks Based on algorithm (http://xoomer.virgilio.it/acantato/dev/wildcard/wildmatch.html)
+ */
+static bool match_wildcard(const wchar_t *fileName, const wchar_t *pattern)
+{
+	while (*fileName != '\0') {
+		switch (*pattern) {
+		case '?':
+			if (*fileName == '.') {
+				return false;
+			}
+			break;
+		case '*':
+			do {
+				pattern++;
+			} while (*pattern == '*');
+			if (*pattern == '\0') {
+				return false;
+			}
+			while (*fileName != '\0') {
+				if (match_wildcard(fileName++, pattern)) {
+					return true;
+				}
+			}
+			return false;
+		default:
+			if (toupper(*fileName) != toupper(*pattern)) {
+				return false;
+			}
+			break;
+		}
+		pattern++;
+		fileName++;
+	}
+	while (*pattern == '*') {
+		++fileName;
+	}
+	return *pattern == '\0';
+}
+
 bool platform_enumerate_files_next(int handle, file_info *outFileInfo)
 {
 	bool result;
@@ -270,17 +312,27 @@ bool platform_enumerate_files_next(int handle, file_info *outFileInfo)
 
 	enumFileInfo = &_enumerateFileInfoList[handle];
 
-	if (enumFileInfo->handle == NULL) {
-		findFileHandle = FindFirstFileW(enumFileInfo->pattern, &enumFileInfo->data);
-		if (findFileHandle != INVALID_HANDLE_VALUE) {
-			enumFileInfo->handle = findFileHandle;
-			result = true;
-		} else {
-			result = false;
-		}
+	// Get pattern (just filename part)
+	const wchar_t *patternWithoutDirectory = wcsrchr(enumFileInfo->pattern, '\\');
+	if (patternWithoutDirectory == NULL) {
+		patternWithoutDirectory = enumFileInfo->pattern;
 	} else {
-		result = FindNextFileW(enumFileInfo->handle, &enumFileInfo->data);
+		patternWithoutDirectory++;
 	}
+
+	do {
+		if (enumFileInfo->handle == NULL) {
+			findFileHandle = FindFirstFileW(enumFileInfo->pattern, &enumFileInfo->data);
+			if (findFileHandle != INVALID_HANDLE_VALUE) {
+				enumFileInfo->handle = findFileHandle;
+				result = true;
+			} else {
+				result = false;
+			}
+		} else {
+			result = FindNextFileW(enumFileInfo->handle, &enumFileInfo->data);
+		}
+	} while (result && !match_wildcard(enumFileInfo->data.cFileName, patternWithoutDirectory));
 
 	if (result) {
 		outFileInfo->path = enumFileInfo->outFilename = widechar_to_utf8(enumFileInfo->data.cFileName);
@@ -933,6 +985,19 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
 	strcat(buffer, font->filename);
 	return true;
 #endif
+}
+
+datetime64 platform_get_datetime_now_utc()
+{
+	// Get file time
+	FILETIME fileTime;
+	GetSystemTimeAsFileTime(&fileTime);
+	uint64 fileTime64 = ((uint64)fileTime.dwHighDateTime << 32ULL) | ((uint64)fileTime.dwLowDateTime);
+
+	// File time starts from: 1601-01-01T00:00:00Z
+	// Convert to start from: 0001-01-01T00:00:00Z
+	datetime64 utcNow = fileTime64 - 504911232000000000ULL;
+	return utcNow;
 }
 
 #endif

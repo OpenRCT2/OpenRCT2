@@ -389,7 +389,7 @@ void window_track_place_open()
 	w->enabled_widgets = 4 | 8 | 0x10 | 0x20;
 	window_init_scroll_widgets(w);
 	tool_set(w, 6, 12);
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+	gInputFlags |= INPUT_FLAG_6;
 	window_push_others_right(w);
 	show_gridlines();
 	_window_track_place_last_cost = MONEY32_UNDEFINED;
@@ -449,7 +449,7 @@ static void window_track_place_mouseup(rct_window *w, int widgetIndex)
  */
 static void window_track_place_update(rct_window *w)
 {
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE))
+	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
 		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_TRACK_DESIGN_PLACE)
 			window_close(w);
 }

@@ -120,7 +120,6 @@
     <ClCompile Include="test\ride\ride_ratings_test.c" />
     <ClCompile Include="test\tests.c" />
     <ClCompile Include="src\title.c" />
-    <ClCompile Include="src\tutorial.c" />
     <ClCompile Include="src\util\sawyercoding.c" />
     <ClCompile Include="src\util\util.c" />
     <ClCompile Include="src\windows\about.c" />
@@ -266,13 +265,13 @@
     <ClInclude Include="src\ride\track_paint.h" />
     <ClInclude Include="src\ride\vehicle.h" />
     <ClInclude Include="src\scenario.h" />
+    <ClCompile Include="src\scenario_sources.c" />
     <ClInclude Include="src\sprites.h" />
     <ClInclude Include="src\version.h" />
     <ClInclude Include="test\management\finance_test.h" />
     <ClInclude Include="test\ride\ride_ratings_test.h" />
     <ClInclude Include="test\tests.h" />
     <ClInclude Include="src\title.h" />
-    <ClInclude Include="src\tutorial.h" />
     <ClInclude Include="src\util\sawyercoding.h" />
     <ClInclude Include="src\util\util.h" />
     <ClInclude Include="src\windows\dropdown.h" />

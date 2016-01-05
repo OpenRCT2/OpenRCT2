@@ -358,17 +358,15 @@ int object_entry_compare(const rct_object_entry *a, const rct_object_entry *b)
 	if (a->flags & 0xF0) {
 		if ((a->flags & 0x0F) != (b->flags & 0x0F))
 			return 0;
-		if (*((uint32*)a->name) != *((uint32*)b->name))
-			return 0;
-		if (*((uint32*)(&a->name[4])) != *((uint32*)(&b->name[4])))
+		int match = memcmp(a->name, b->name, 8);
+		if (match)
 			return 0;
 	}
 	else {
 		if (a->flags != b->flags)
 			return 0;
-		if (*((uint32*)a->name) != *((uint32*)b->name))
-			return 0;
-		if (*((uint32*)(&a->name[4])) != *((uint32*)(&b->name[4])))
+		int match = memcmp(a->name, b->name, 8);
+		if (match)
 			return 0;
 		if (a->checksum != b->checksum)
 			return 0;

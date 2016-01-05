@@ -978,7 +978,7 @@ int widget_is_disabled(rct_window *w, int widgetIndex)
 
 int widget_is_pressed(rct_window *w, int widgetIndex)
 {
-	int inputState = RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, uint8);
+	int inputState = gInputState;
 
 	if (w->pressed_widgets & (1LL << widgetIndex))
 		return 1;
@@ -987,7 +987,7 @@ int widget_is_pressed(rct_window *w, int widgetIndex)
 			return 0;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber) != w->number)
 			return 0;
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_WIDGET_PRESSED))
+		if (!(gInputFlags & INPUT_FLAG_WIDGET_PRESSED))
 			return 0;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, sint32) == widgetIndex)
 			return 1;
@@ -1008,7 +1008,7 @@ int widget_is_highlighted(rct_window *w, int widgetIndex)
 
 int widget_is_active_tool(rct_window *w, int widgetIndex)
 {
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE))
+	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
 		return 0;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != w->classification)
 		return 0;
