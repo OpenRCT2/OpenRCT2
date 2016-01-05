@@ -591,8 +591,7 @@ bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite
 
 bool platform_file_move(const utf8 *srcPath, const utf8 *dstPath)
 {
-	STUB();
-	return 0;
+	return rename(srcPath, dstPath) == 0;
 }
 
 bool platform_file_delete(const utf8 *path)
