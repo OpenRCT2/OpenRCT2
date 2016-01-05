@@ -357,10 +357,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 		input_state_widget_pressed(x, y, state, widgetIndex, w, widget);
 		break;
 	case INPUT_STATE_VIEWPORT_LEFT:
-		w = window_find_by_number(
-			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass),
-			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber)
-		);
+		w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
 		if (w == NULL) {
 			gInputState = INPUT_STATE_RESET;
 			break;
@@ -373,8 +370,8 @@ static void game_handle_input_mouse(int x, int y, int state)
 				break;
 			}
 
-			if (w->classification != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass) ||
-				w->number != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber) ||
+			if (w->classification != _dragWidget.window_classification ||
+				w->number != _dragWidget.window_number ||
 				!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
 			) {
 				break;
@@ -1021,10 +1018,10 @@ static void input_widget_left(int x, int y, rct_window *w, int widgetIndex)
 		break;
 	case WWT_VIEWPORT:
 		gInputState = INPUT_STATE_VIEWPORT_LEFT;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_X, uint16) = x;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) = y;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWCLASS, rct_windowclass) = windowClass;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber) = windowNumber;
+		_dragX = x;
+		_dragY = y;
+		_dragWidget.window_classification = windowClass;
+		_dragWidget.window_number = windowNumber;
 		if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE) {
 			w = window_find_by_number(
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
