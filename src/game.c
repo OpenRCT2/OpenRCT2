@@ -1058,7 +1058,10 @@ void save_game()
 }
 void save_game_as()
 {
-	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, (char*)path_get_filename(gScenarioSavePath));
+	char name[MAX_PATH];
+	safe_strncpy(name, path_get_filename(gScenarioSavePath), MAX_PATH);
+	path_remove_extension(name);
+	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, name);
 }
 
 int compare_autosave_file_paths (const void * a, const void * b ) {

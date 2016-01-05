@@ -154,7 +154,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	int includeNewItem;
 	rct_window* w;
 	_type = type;
-	_defaultName[0] = 0;
+	_defaultName[0] = '\0';
 
 	if (!str_is_null_or_empty(defaultName)) {
 		safe_strncpy(_defaultName, defaultName, sizeof(_defaultName));
