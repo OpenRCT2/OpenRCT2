@@ -81,7 +81,7 @@ void window_map_tooltip_update_visibility()
 
 	cursorX = RCT2_GLOBAL(0x0142406C, sint32);
 	cursorY = RCT2_GLOBAL(0x01424070, sint32);
-	inputFlags = RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32);
+	inputFlags = gInputFlags;
 
 	// Check for cursor movement
 	_cursorHoldDuration++;

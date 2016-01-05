@@ -270,9 +270,6 @@
     <ClCompile Include="src\title.c">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\tutorial.c">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\localisation\date.c">
       <Filter>Source\Localisation</Filter>
     </ClCompile>
@@ -564,6 +561,9 @@
     <ClCompile Include="src\image_io.c">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="src\scenario_sources.c">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">
@@ -690,9 +690,6 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="src\title.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="src\tutorial.h">
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="src\localisation\date.h">

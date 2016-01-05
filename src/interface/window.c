@@ -41,7 +41,7 @@
 
 rct_window* g_window_list = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window);
 
-uint8 TextInputDescriptionArgs[8];
+uint16 TextInputDescriptionArgs[4];
 widget_identifier gCurrentTextBox = { { 255, 0 }, 0 };
 char gTextBoxInput[512] = { 0 };
 int gMaxTextBoxInputLength = 0;
@@ -150,7 +150,7 @@ void window_dispatch_update_all()
 	rct_window *w;
 
 	RCT2_GLOBAL(0x01423604, sint32)++;
-	//RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, sint16)++;
+	// gTooltipNotShownTicks++;
 	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
 		window_event_update_call(w);
 }
@@ -306,7 +306,7 @@ static void window_all_wheel_input()
 		return;
 
 	// Check window cursor is over
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_5)) {
+	if (!(gInputFlags & INPUT_FLAG_5)) {
 		w = window_find_from_point(gCursorState.x, gCursorState.y);
 		if (w != NULL) {
 			// Check if main window
@@ -1727,7 +1727,7 @@ void window_set_resize(rct_window *w, int minWidth, int minHeight, int maxWidth,
  */
 int tool_set(rct_window *w, int widgetIndex, int tool)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) {
+	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE) {
 		if (
 			w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) &&
 			w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) &&
@@ -1740,8 +1740,8 @@ int tool_set(rct_window *w, int widgetIndex, int tool)
 		}
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_TOOL_ACTIVE;
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_6;
+	gInputFlags |= INPUT_FLAG_TOOL_ACTIVE;
+	gInputFlags &= ~INPUT_FLAG_6;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = tool;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) = w->classification;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) = w->number;
@@ -1757,8 +1757,8 @@ void tool_cancel()
 {
 	rct_window *w;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) {
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_TOOL_ACTIVE;
+	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE) {
+		gInputFlags &= ~INPUT_FLAG_TOOL_ACTIVE;
 
 		map_invalidate_selection_rect();
 		map_invalidate_map_selection_tiles();

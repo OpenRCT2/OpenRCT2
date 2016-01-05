@@ -36,6 +36,7 @@
 #include "dropdown.h"
 #include "error.h"
 #include "../util/util.h"
+#include "../world/footpath.h"
 
 
 enum {
@@ -419,7 +420,7 @@ void window_editor_object_selection_open()
 	window->var_4AE = 0;
 	window->selected_tab = 0;
 	window->selected_list_item = -1;
-	window->highlighted_item = 0xFFFFFFFF;
+	window->object_entry = (rct_object_entry *) 0xFFFFFFFF;
 	window->min_width = 600;
 	window->min_height = 400;
 	window->max_width = 1200;
@@ -577,7 +578,6 @@ static void setup_in_use_selection_flags(){
 	map_element_iterator_begin(&iter);
 	do {
 		uint16 type;
-		uint8 path_additions;
 		rct_banner* banner;
 
 		switch (map_element_get_type(iter.element)) {
@@ -591,10 +591,9 @@ static void setup_in_use_selection_flags(){
 			assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
 			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_PATHS][type] |= (1 << 0);
 
-			path_additions = iter.element->properties.path.additions & 0xF;
-			if (path_additions){
-				path_additions--;
-				RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_PATH_BITS][path_additions] |= (1 << 0);
+			if (footpath_element_has_path_scenery(iter.element)) {
+				uint8 path_additions = footpath_element_get_path_scenery_index(iter.element);
+				RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_PATH_BITS][path_additions] |= 1;
 			}
 			break;
 		case MAP_ELEMENT_TYPE_SCENERY:
@@ -836,7 +835,7 @@ static void window_editor_object_selection_mouseup(rct_window *w, int widgetInde
 		visible_list_refresh(w);
 
 		w->selected_list_item = -1;
-		w->highlighted_item = 0xFFFFFFFF;
+		w->object_entry = (rct_object_entry *) 0xFFFFFFFF;
 		w->scrolls[0].v_top = 0;
 		object_free_scenario_text();
 		window_invalidate(w);
@@ -856,7 +855,7 @@ static void window_editor_object_selection_mouseup(rct_window *w, int widgetInde
 		visible_list_refresh(w);
 
 		w->selected_list_item = -1;
-		w->highlighted_item = 0xFFFFFFFF;
+		w->object_entry = (rct_object_entry *) 0xFFFFFFFF;
 		w->scrolls[0].v_top = 0;
 		object_free_scenario_text();
 		window_invalidate(w);
@@ -1051,7 +1050,7 @@ static void window_editor_object_selection_scroll_mouseover(rct_window *w, int s
 		return;
 
 	w->selected_list_item = selectedObject;
-	w->highlighted_item = (uint32)installedEntry;
+	w->object_entry = installedEntry;
 	object_free_scenario_text();
 	if (selectedObject != -1)
 		object_get_scenario_text(installedEntry);
@@ -1342,7 +1341,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	if (w->selected_list_item == -1 || stex_entry == NULL)
 		return;
 
-	highlightedEntry = (rct_object_entry*)w->highlighted_item;
+	highlightedEntry = w->object_entry;
 	type = highlightedEntry->flags & 0x0F;
 
 	// Draw preview
@@ -1458,7 +1457,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 
 			// Highlight background
 			colour = 142;
-			if (listItem->entry == (rct_object_entry*)w->highlighted_item && !(*listItem->flags & OBJECT_SELECTION_FLAG_6)) {
+			if (listItem->entry == w->object_entry && !(*listItem->flags & OBJECT_SELECTION_FLAG_6)) {
 				gfx_fill_rect(dpi, 0, y, w->width, y + 11, 0x2000031);
 				colour = 14;
 			}
@@ -1515,7 +1514,7 @@ static void window_editor_object_set_page(rct_window *w, int page)
 
 	w->selected_tab = page;
 	w->selected_list_item = -1;
-	w->highlighted_item = 0xFFFFFFFF;
+	w->object_entry = (rct_object_entry *)0xFFFFFFFF;
 	w->scrolls[0].v_top = 0;
 	object_free_scenario_text();
 

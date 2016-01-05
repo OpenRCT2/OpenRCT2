@@ -33,11 +33,11 @@ int run_all_tests();
 #include "../src/scenario.h"
 
 static void test_load_scenario(CuTest* tc, const char* file_name) {
-	const rct_scenario_basic* scenario = get_scenario_by_filename(file_name);
+	const scenario_index_entry* scenario = scenario_list_find_by_path(file_name);
 	if (scenario == NULL) {
 		CuFail(tc, "Could not load scenario");
 	}
-	scenario_load_and_play(scenario);
+	scenario_load_and_play_from_path(scenario->name);
 }
 
 #endif

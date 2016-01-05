@@ -22,6 +22,7 @@
 #include "../config.h"
 #include "../drawing/drawing.h"
 #include "../drawing/supports.h"
+#include "../input.h"
 #include "../localisation/localisation.h"
 #include "../ride/ride_data.h"
 #include "../ride/track_data.h"
@@ -101,11 +102,11 @@ void viewport_init_all()
 	RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*) = NULL;
 
 	// ?
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_STATE, sint8) = INPUT_STATE_RESET;
+	gInputFlags = 0;
+	gInputState = INPUT_STATE_RESET;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass) = -1;
-	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, sint16) = -1;
+	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, sint32) = -1;
+	gTooltipNotShownTicks = -1;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) = 0;
 	RCT2_GLOBAL(0x009DEA50, sint16) = -1;
 	textinput_cancel();

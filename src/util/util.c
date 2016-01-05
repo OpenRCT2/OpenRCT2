@@ -67,7 +67,6 @@ const char *path_get_filename(const utf8 *path)
 	// Checks if the path is valid (e.g. not just a file name)
 	if (filename == NULL)
 	{
-		log_warning("Invalid path given: %s", path);
 		// Return the input string to keep things working
 		return path;
 	}
@@ -78,6 +77,8 @@ const char *path_get_filename(const utf8 *path)
 	return filename;
 }
 
+// Returns the extension (dot inclusive) from the given path, or the end of the
+// string when no extension was found.
 const char *path_get_extension(const utf8 *path)
 {
 	// Get the filename from the path
@@ -95,21 +96,32 @@ const char *path_get_extension(const utf8 *path)
 
 void path_set_extension(utf8 *path, const utf8 *newExtension)
 {
+	// Remove existing extension (check first if there is one)
+	if (path_get_extension(path) < strrchr(path, '\0'))
+		path_remove_extension(path);
+	// Append new extension
+	path_append_extension(path, newExtension);
+}
+
+void path_append_extension(utf8 *path, const utf8 *newExtension)
+{
 	// Append a dot to the filename if the new extension doesn't start with it
 	char *endOfString = strrchr(path, '\0');
 	if (newExtension[0] != '.')
 		*endOfString++ = '.';
 
 	// Append the extension to the path
-	// No existing extensions should be removed ("ride.TD6" -> "ride.TD6.TD6")
 	safe_strncpy(endOfString, newExtension, MAX_PATH - (endOfString - path) - 1);
 }
 
 void path_remove_extension(utf8 *path)
 {
 	// Find last dot in filename, and replace it with a null-terminator
-	char *lastDot = strrchr(path, '.');
-	if (*lastDot) *lastDot = '\0';
+	char *lastDot = strrchr(path_get_filename(path), '.');
+	if (lastDot != NULL)
+		*lastDot = '\0';
+	else
+		log_warning("No extension found. (path = %s)", path);
 }
 
 bool readentirefile(const utf8 *path, void **outBuffer, int *outLength)
@@ -208,6 +220,70 @@ char *safe_strncpy(char * destination, const char * source, size_t size)
 		log_warning("Truncating string \"%s\" to %d bytes.", result, size);
 	}
 	return result;
+}
+
+char *safe_strcat(char *destination, const char *source, size_t size)
+{
+	assert(destination != NULL);
+	assert(source != NULL);
+
+	if (size == 0) {
+		return destination;
+	}
+
+	char *result = destination;
+
+	size_t i;
+	for (i = 0; i < size; i++) {
+		if (*destination == '\0') {
+			break;
+		} else {
+			destination++;
+		}
+	}
+
+	bool terminated = false;
+	for (; i < size; i++) {
+		if (*source != '\0') {
+			*destination++ = *source++;
+		} else {
+			*destination = *source;
+			terminated = true;
+			break;
+		}
+	}
+
+	if (!terminated) {
+		result[size - 1] = '\0';
+		log_warning("Truncating string \"%s\" to %d bytes.", result, size);
+	}
+
+	return result;
+}
+
+char *safe_strcat_path(char *destination, const char *source, size_t size)
+{
+	const char pathSeparator = platform_get_path_separator();
+
+	size_t length = strlen(destination);
+	if (length >= size - 1) {
+		return destination;
+	}
+
+	if (destination[length - 1] != pathSeparator) {
+		destination[length] = pathSeparator;
+		destination[length + 1] = '\0';
+	}
+
+	return safe_strcat(destination, source, size);
+}
+
+char *safe_strtrimleft(char *destination, const char *source, size_t size)
+{
+	while (*source == ' ' && *source != '\0') {
+		source++;
+	}
+	return safe_strncpy(destination, source, size);
 }
 
 bool utf8_is_bom(const char *str)

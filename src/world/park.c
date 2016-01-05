@@ -871,6 +871,7 @@ void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		if (nameChunkOffset < 0)
 			nameChunkOffset = 2;
 		nameChunkOffset *= 12;
+		nameChunkOffset = min(nameChunkOffset, countof(newName) - 12);
 		RCT2_GLOBAL(newName + nameChunkOffset + 0, uint32) = *edx;
 		RCT2_GLOBAL(newName + nameChunkOffset + 4, uint32) = *ebp;
 		RCT2_GLOBAL(newName + nameChunkOffset + 8, uint32) = *edi;

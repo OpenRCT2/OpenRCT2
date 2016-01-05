@@ -200,11 +200,11 @@ static uint8 peep_assess_surroundings(sint16 center_x, sint16 center_y, sint16 c
 
 				switch (map_element_get_type(mapElement)){
 				case MAP_ELEMENT_TYPE_PATH:
-					if ((mapElement->properties.path.additions & 0xF) == 0)
+					if (!footpath_element_has_path_scenery(mapElement))
 						break;
 
-					scenery = g_pathBitSceneryEntries[(mapElement->properties.path.additions & 0x0F) - 1];
-					if (mapElement->properties.path.additions & (1 << 7))
+					scenery = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(mapElement)];
+					if (footpath_element_path_scenery_is_ghost(mapElement))
 						break;
 
 					if (scenery->path_bit.var_06 &
@@ -620,9 +620,10 @@ static void sub_68F41A(rct_peep *peep, int index)
 					if (mapElement->base_height != peep->next_z)
 						continue;
 
-					uint8 additions = mapElement->properties.path.additions & 0xF;
-					if (additions != 0 && mapElement->properties.path.additions & (1 << 7)){
-						rct_scenery_entry *sceneryEntry = g_pathBitSceneryEntries[additions - 1];
+					// Check if the footpath has ghost path scenery on it
+					if (footpath_element_has_path_scenery(mapElement) && footpath_element_path_scenery_is_ghost(mapElement)){
+						uint8 pathSceneryIndex = footpath_element_get_path_scenery_index(mapElement);
+						rct_scenery_entry *sceneryEntry = g_pathBitSceneryEntries[pathSceneryIndex];
 						if (sceneryEntry->path_bit.var_06 & (1 << 8)){
 							found = 1;
 						}
@@ -803,10 +804,17 @@ static void sub_68F41A(rct_peep *peep, int index)
 	}
 }
 
-/* some sort of check to see if peep is connected to the ground?? */
-int sub_68F3AE(rct_peep* peep){
+/*
+ * rct2: 0x68F3AE
+ * Set peep state to falling if path below has gone missing, return 1 if current path is valid, 0 if peep starts falling
+ */
+int checkForPath(rct_peep *peep){
 	peep->var_C4++;
-	if ((peep->var_C4 & 0xF) != (peep->sprite_index & 0xF))return 1;
+	if ((peep->var_C4 & 0xF) != (peep->sprite_index & 0xF)){
+		// This condition makes the check happen less often so the peeps hover for a short,
+		// random time when a path below them has been deleted
+		return 1;
+	}
 
 	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
 
@@ -819,10 +827,14 @@ int sub_68F3AE(rct_peep* peep){
 
 	do {
 		if (map_element_get_type(map_element) == map_type){
-			if (z == map_element->base_height)return 1;
+			if (z == map_element->base_height) {
+				// Found a suitable path
+				return 1;
+			}
 		}
 	} while (!map_element_is_last_for_tile(map_element++));
 
+	// Found no suitable path
 	peep_decrement_num_riders(peep);
 	peep->state = PEEP_STATE_FALLING;
 	peep_window_state_update(peep);
@@ -830,31 +842,31 @@ int sub_68F3AE(rct_peep* peep){
 }
 
 void sub_693B58(rct_peep* peep){
-	int ebx;
-	if (peep->action >= 0xFE){
-		ebx = RCT2_ADDRESS(0x981D8C, uint8)[peep->var_6D];
+	uint8 action_sprite_type;
+	if (peep->action >= PEEP_ACTION_NONE_1){ // PEEP_ACTION_NONE_1 or PEEP_ACTION_NONE_2
+		action_sprite_type = RCT2_ADDRESS(0x981D8C, uint8)[peep->special_sprite];
 	}
 	else{
-		ebx = RCT2_ADDRESS(0x981D8F, uint8)[peep->action];
+		action_sprite_type = RCT2_ADDRESS(0x981D8F, uint8)[peep->action];
 	}
-	if (ebx == peep->action_sprite_type)return;
+	if (action_sprite_type == peep->action_sprite_type)return;
 
 	invalidate_sprite_2((rct_sprite*)peep);
-	peep->action_sprite_type = ebx;
+	peep->action_sprite_type = action_sprite_type;
 
-	uint8* edx = RCT2_ADDRESS(0x98270C, uint8*)[peep->sprite_type * 2];
-	peep->sprite_width = edx[ebx * 4];
-	peep->sprite_height_negative = edx[ebx * 4 + 1];
-	peep->sprite_height_positive = edx[ebx * 4 + 2];
+	rct_sprite_bounds* spriteBounds = g_sprite_entries[peep->sprite_type].sprite_bounds;
+	peep->sprite_width = spriteBounds[action_sprite_type].sprite_width;
+	peep->sprite_height_negative =  spriteBounds[action_sprite_type].sprite_height_negative;
+	peep->sprite_height_positive =  spriteBounds[action_sprite_type].sprite_height_positive;
 	// This is pointless as nothing will have changed.
 	invalidate_sprite_2((rct_sprite*)peep);
 }
 
 /* 0x00693BE5 */
 void sub_693BE5(rct_peep* peep, uint8 al){
-	if (al == peep->var_6D)return;
+	if (al == peep->special_sprite)return;
 
-	peep->var_6D = al;
+	peep->special_sprite = al;
 
 	// If NONE_1 or NONE_2
 	if (peep->action >= PEEP_ACTION_NONE_1){
@@ -998,8 +1010,8 @@ int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep
 		*x = peep->x + RCT2_ADDRESS(0x981D7C, uint16)[direction / 4];
 		*y = peep->y + RCT2_ADDRESS(0x981D7E, uint16)[direction / 4];
 		peep->no_action_frame_no++;
-		uint32* edi = RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2];
-		uint8* _edi = (uint8*)(edi[peep->action_sprite_type * 2 + 1]);
+		rct_sprite_image * edi = g_sprite_entries[peep->sprite_type].sprite_image;
+		uint8* _edi = (edi[peep->action_sprite_type]).unkn_04;
 		if (peep->no_action_frame_no >= *_edi){
 			peep->no_action_frame_no = 0;
 		}
@@ -1007,8 +1019,8 @@ int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep
 		return 1;
 	}
 
-	uint32* edi = RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2];
-	uint8* _edi = (uint8*)(edi[peep->action_sprite_type * 2 + 1]);
+	rct_sprite_image * edi = g_sprite_entries[peep->sprite_type].sprite_image;
+	uint8* _edi = (edi[peep->action_sprite_type]).unkn_04;
 	peep->action_frame++;
 	int ebx = _edi[peep->action_frame + 1];
 
@@ -1090,12 +1102,12 @@ void set_sprite_type(rct_peep* peep, uint8 type){
 
 	if (peep->state == PEEP_STATE_SITTING){
 		peep->action = PEEP_ACTION_NONE_1;
-		peep->var_6F = 7;
+		peep->next_action_sprite_type = 7;
 		sub_693BAB(peep);
 	}
 	if (peep->state == PEEP_STATE_WATCHING){
 		peep->action = PEEP_ACTION_NONE_1;
-		peep->var_6F = 2;
+		peep->next_action_sprite_type = 2;
 		sub_693BAB(peep);
 	}
 }
@@ -1458,7 +1470,7 @@ void peep_try_get_up_from_sitting(rct_peep* peep){
  */
 void peep_update_sitting(rct_peep* peep){
 	if (peep->sub_state == 0){
-		if (!sub_68F3AE(peep))return;
+		if (!checkForPath(peep))return;
 		//691541
 
 		sub_693C9E(peep);
@@ -1475,7 +1487,7 @@ void peep_update_sitting(rct_peep* peep){
 		peep->sprite_direction = ((peep->var_37 + 2) & 3) * 8;
 		invalidate_sprite_2((rct_sprite*)peep);
 		peep->action = 254;
-		peep->var_6F = 7;
+		peep->next_action_sprite_type = 7;
 		sub_693BAB(peep);
 
 		peep->sub_state++;
@@ -3414,7 +3426,7 @@ static void peep_update_fixing(int steps, rct_peep* peep){
  *  rct2: 0x69185D
  */
 static void peep_update_queuing(rct_peep* peep){
-	if (!sub_68F3AE(peep)){
+	if (!checkForPath(peep)){
 		remove_peep_from_queue(peep);
 		return;
 	}
@@ -3465,7 +3477,7 @@ static void peep_update_queuing(rct_peep* peep){
 		}
 	}
 	else{
-		if (!(peep->time_in_queue & 0x3F) && peep->action == 0xFE && peep->var_6F == 2){
+		if (!(peep->time_in_queue & 0x3F) && peep->action == 0xFE && peep->next_action_sprite_type == 2){
 			switch (peep->sprite_type){
 			case 0xF:
 			case 0x10:
@@ -3518,7 +3530,7 @@ static void peep_update_queuing(rct_peep* peep){
  */
 static void peep_update_mowing(rct_peep* peep){
 	peep->var_E2 = 0;
-	if (!sub_68F3AE(peep))return;
+	if (!checkForPath(peep))return;
 
 	invalidate_sprite_2((rct_sprite*)peep);
 	while (1){
@@ -3566,7 +3578,7 @@ static void peep_update_mowing(rct_peep* peep){
 static void peep_update_watering(rct_peep* peep){
 	peep->var_E2 = 0;
 	if (peep->sub_state == 0){
-		if (!sub_68F3AE(peep))return;
+		if (!checkForPath(peep))return;
 
 		sub_693C9E(peep);
 		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
@@ -3622,7 +3634,7 @@ static void peep_update_emptying_bin(rct_peep* peep){
 	peep->var_E2 = 0;
 
 	if (peep->sub_state == 0){
-		if (!sub_68F3AE(peep))return;
+		if (!checkForPath(peep))return;
 
 		sub_693C9E(peep);
 		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
@@ -3661,16 +3673,16 @@ static void peep_update_emptying_bin(rct_peep* peep){
 			}
 		}
 
-		if ((map_element->properties.path.additions & 0x0F) == 0) {
+		if (!footpath_element_has_path_scenery(map_element)) {
 			peep_state_reset(peep);
 			return;
 		}
 
-		rct_scenery_entry* scenery_entry = g_pathBitSceneryEntries[(map_element->properties.path.additions & 0xF) - 1];
+		rct_scenery_entry* scenery_entry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(map_element)];
 		if (
 			!(scenery_entry->path_bit.var_06 & 1)
 			|| map_element->flags & (1 << 5)
-			|| map_element->properties.path.additions & (1 << 7)
+			|| footpath_element_path_scenery_is_ghost(map_element)
 		) {
 			peep_state_reset(peep);
 			return;
@@ -3691,7 +3703,7 @@ static void peep_update_emptying_bin(rct_peep* peep){
  */
 static void peep_update_sweeping(rct_peep* peep){
 	peep->var_E2 = 0;
-	if (!sub_68F3AE(peep))return;
+	if (!checkForPath(peep))return;
 
 	invalidate_sprite_2((rct_sprite*)peep);
 
@@ -3726,7 +3738,7 @@ static void peep_update_sweeping(rct_peep* peep){
  *  rct2: 0x6902A2
  */
 static void peep_update_1(rct_peep* peep){
-	if (!sub_68F3AE(peep))return;
+	if (!checkForPath(peep))return;
 
 	peep_decrement_num_riders(peep);
 
@@ -3795,7 +3807,7 @@ static void peep_update_leaving_park(rct_peep* peep){
  */
 static void peep_update_watching(rct_peep* peep){
 	if (peep->sub_state == 0){
-		if (!sub_68F3AE(peep))return;
+		if (!checkForPath(peep))return;
 
 		sub_693C9E(peep);
 		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
@@ -3807,7 +3819,7 @@ static void peep_update_watching(rct_peep* peep){
 		invalidate_sprite_2((rct_sprite*)peep);
 
 		peep->action = 0xFE;
-		peep->var_6F = 2;
+		peep->next_action_sprite_type = 2;
 
 		sub_693BAB(peep);
 
@@ -3925,16 +3937,14 @@ static int peep_update_walking_find_bench(rct_peep* peep){
 		}
 	}
 
-	uint8 additions = map_element->properties.path.additions & 0xF;
-
-	if (!additions) return 0;
-	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[additions - 1];
+	if (!footpath_element_has_path_scenery(map_element)) return 0;
+	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(map_element)];
 
 	if (!(sceneryEntry->path_bit.var_06 & 0x2))return 0;
 
 	if (map_element->flags & MAP_ELEMENT_FLAG_BROKEN)return 0;
 
-	if (map_element->properties.path.additions & 0x80)return 0;
+	if (footpath_element_path_scenery_is_ghost(map_element)) return 0;
 
 	int edges = (map_element->properties.path.edges & 0xF) ^ 0xF;
 	if (edges == 0) return 0;
@@ -4002,16 +4012,14 @@ static int peep_update_walking_find_bin(rct_peep* peep){
 		}
 	}
 
-	uint8 additions = map_element->properties.path.additions & 0xF;
-
-	if (!additions) return 0;
-	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[additions - 1];
+	if (!footpath_element_has_path_scenery(map_element)) return 0;
+	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(map_element)];
 
 	if (!(sceneryEntry->path_bit.var_06 & 0x1))return 0;
 
 	if (map_element->flags & MAP_ELEMENT_FLAG_BROKEN)return 0;
 
-	if (map_element->properties.path.additions & 0x80)return 0;
+	if (footpath_element_path_scenery_is_ghost(map_element)) return 0;
 
 	int edges = (map_element->properties.path.edges & 0xF) ^ 0xF;
 	if (edges == 0) return 0;
@@ -4085,16 +4093,14 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
 		}
 	}
 
-	uint8 additions = map_element->properties.path.additions & 0xF;
-
-	if (!additions) return;
-	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[additions - 1];
+	if (!footpath_element_has_path_scenery(map_element)) return;
+	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(map_element)];
 
 	if (!(sceneryEntry->path_bit.var_06 & 0x4))return;
 
 	if (map_element->flags & MAP_ELEMENT_FLAG_BROKEN)return;
 
-	if (map_element->properties.path.additions & 0x80)return;
+	if (footpath_element_path_scenery_is_ghost(map_element))return;
 
 	int edges = map_element->properties.path.edges & 0xF;
 	if (edges == 0xF) return;
@@ -4132,7 +4138,7 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
  */
 static void peep_update_buying(rct_peep* peep)
 {
-	if (!sub_68F3AE(peep))return;
+	if (!checkForPath(peep))return;
 
 	rct_ride* ride = GET_RIDE(peep->current_ride);
 	if (ride->type == RIDE_TYPE_NULL || ride->status != RIDE_STATUS_OPEN){
@@ -4225,7 +4231,7 @@ static void peep_update_buying(rct_peep* peep)
  */
 static void peep_update_using_bin(rct_peep* peep){
 	if (peep->sub_state == 0){
-		if (!sub_68F3AE(peep))return;
+		if (!checkForPath(peep))return;
 
 		sub_693C9E(peep);
 		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
@@ -4255,13 +4261,12 @@ static void peep_update_using_bin(rct_peep* peep){
 			}
 		}
 
-		uint8 additions = map_element->properties.path.additions & 0x0F;
-		if (!additions){
+		if (!footpath_element_has_path_scenery(map_element)){
 			peep_state_reset(peep);
 			return;
 		}
 
-		rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[additions - 1];
+		rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(map_element)];
 		if (!(sceneryEntry->path_bit.var_06 & 1)){
 			peep_state_reset(peep);
 			return;
@@ -4272,7 +4277,7 @@ static void peep_update_using_bin(rct_peep* peep){
 			return;
 		}
 
-		if (map_element->properties.path.additions & 0x80){
+		if (footpath_element_path_scenery_is_ghost(map_element)){
 			peep_state_reset(peep);
 			return;
 		}
@@ -4400,7 +4405,7 @@ static void peep_update_heading_to_inspect(rct_peep* peep){
 			return;
 		}
 
-		if (!sub_68F3AE(peep))return;
+		if (!checkForPath(peep))return;
 
 		sub_693C9E(peep);
 
@@ -4513,7 +4518,7 @@ static void peep_update_answering(rct_peep* peep){
 			return;
 		}
 
-		if (!sub_68F3AE(peep))return;
+		if (!checkForPath(peep))return;
 
 		sub_693C9E(peep);
 
@@ -4656,11 +4661,8 @@ static int peep_update_patrolling_find_bin(rct_peep* peep){
 			return 0;
 	}
 
-	uint8 additions = map_element->properties.path.additions & 0xF;
-
-	if (additions == 0)return 0;
-
-	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[additions - 1];
+	if (!footpath_element_has_path_scenery(map_element)) return 0;
+	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(map_element)];
 
 	if (!(sceneryEntry->path_bit.var_06 & 1))
 		return 0;
@@ -4668,7 +4670,7 @@ static int peep_update_patrolling_find_bin(rct_peep* peep){
 	if (map_element->flags & MAP_ELEMENT_FLAG_BROKEN)
 		return 0;
 
-	if (map_element->properties.path.additions & 0x80)
+	if (footpath_element_path_scenery_is_ghost(map_element))
 		return 0;
 
 	uint8 bin_positions = map_element->properties.path.edges & 0xF;
@@ -4768,7 +4770,7 @@ static int peep_update_patrolling_find_sweeping(rct_peep* peep){
  */
 static void peep_update_patrolling(rct_peep* peep){
 
-	if (!sub_68F3AE(peep))return;
+	if (!checkForPath(peep))return;
 
 	sub_693C9E(peep);
 	if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
@@ -4808,7 +4810,7 @@ static void peep_update_patrolling(rct_peep* peep){
  *  rct2: 0x0069030A
  */
 static void peep_update_walking(rct_peep* peep){
-	if (!sub_68F3AE(peep))return;
+	if (!checkForPath(peep))return;
 
 	if (peep->flags & PEEP_FLAGS_WAVING){
 		if (peep->action >= PEEP_ACTION_NONE_1){
@@ -4958,13 +4960,11 @@ static void peep_update_walking(rct_peep* peep){
 		}
 	}
 
-	uint8 additions = map_element->properties.path.additions & 0xF;
-
 	int ebp = 15;
 
-	if (additions){
-		if (!(map_element->properties.path.additions & 0x80)){
-			rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[additions - 1];
+	if (footpath_element_has_path_scenery(map_element)) {
+		if (!footpath_element_path_scenery_is_ghost(map_element)) {
+			rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(map_element)];
 
 			if (!(sceneryEntry->path_bit.var_06 & 0x2)) ebp = 9;
 		}
@@ -5484,7 +5484,7 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->outside_of_park = 1;
 	peep->state = PEEP_STATE_FALLING;
 	peep->action = PEEP_ACTION_NONE_2;
-	peep->var_6D = 0;
+	peep->special_sprite = 0;
 	peep->action_sprite_image_offset = 0;
 	peep->no_action_frame_no = 0;
 	peep->action_sprite_type = 0;
@@ -5492,10 +5492,10 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->favourite_ride = 0xFF;
 	peep->favourite_ride_rating = 0;
 
-	uint8* edx = RCT2_ADDRESS(0x98270C, uint8*)[peep->sprite_type * 2];
-	peep->sprite_width = edx[peep->action_sprite_type * 4];
-	peep->sprite_height_negative = edx[peep->action_sprite_type * 4 + 1];
-	peep->sprite_height_positive = edx[peep->action_sprite_type * 4 + 2];
+	rct_sprite_bounds* spriteBounds = g_sprite_entries[peep->sprite_type].sprite_bounds;
+	peep->sprite_width = spriteBounds[peep->action_sprite_type].sprite_width;
+	peep->sprite_height_negative = spriteBounds[peep->action_sprite_type].sprite_height_negative;
+	peep->sprite_height_positive = spriteBounds[peep->action_sprite_type].sprite_height_positive;
 
 	peep->sprite_direction = 0;
 
@@ -6160,14 +6160,15 @@ void peep_set_map_tooltip(rct_peep *peep)
 
 
 void sub_693BAB(rct_peep* peep) {
-	uint8 bl = peep->var_6F;
-	if (bl != peep->action_sprite_type) {
+	// TBD: Add nextActionSpriteType as function parameter and make peep->next_action_sprite_type obsolete?
+	uint8 nextActionSpriteType = peep->next_action_sprite_type;
+	if (nextActionSpriteType != peep->action_sprite_type) {
 		invalidate_sprite_2((rct_sprite*)peep);
-		peep->action_sprite_type = bl;
-		uint8* edx = RCT2_ADDRESS(0x98270C, uint8*)[peep->sprite_type * 2];
-		peep->sprite_width = edx[bl * 4];
-		peep->sprite_height_negative = edx[bl * 4 + 1];
-		peep->sprite_height_positive = edx[bl * 4 + 2];
+		peep->action_sprite_type = nextActionSpriteType;
+		rct_sprite_bounds* spriteBounds = g_sprite_entries[peep->sprite_type].sprite_bounds;
+		peep->sprite_width = spriteBounds[nextActionSpriteType].sprite_width;
+		peep->sprite_height_negative = spriteBounds[nextActionSpriteType].sprite_height_negative;
+		peep->sprite_height_positive = spriteBounds[nextActionSpriteType].sprite_height_positive;
 		invalidate_sprite_2((rct_sprite*)peep);
 	}
 }
@@ -6235,7 +6236,7 @@ static int peep_update_queue_position(rct_peep* peep){
 		return 1;
 
 	peep->action = PEEP_ACTION_NONE_1;
-	peep->var_6F = 2;
+	peep->next_action_sprite_type = 2;
 	if (RCT2_GLOBAL(0x00F1AEF1, uint8) != 0xFE)
 		invalidate_sprite_2((rct_sprite*)peep);
 	return 1;
@@ -6629,7 +6630,7 @@ static int peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 
 	// 0x00F1AEE2
 	bool vandalism_present = false;
-	if ((map_element->properties.path.additions & 0xF) != 0 &&
+	if (footpath_element_has_path_scenery(map_element) &&
 		(map_element->flags & MAP_ELEMENT_FLAG_BROKEN) &&
 		(map_element->properties.path.edges & 0xF) != 0xF){
 		vandalism_present = 1;

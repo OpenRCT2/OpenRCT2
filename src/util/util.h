@@ -33,6 +33,7 @@ bool filename_valid_characters(const utf8 *filename);
 const char *path_get_filename(const utf8 *path);
 const char *path_get_extension(const utf8 *path);
 void path_set_extension(utf8 *path, const utf8 *newExtension);
+void path_append_extension(utf8 *path, const utf8 *newExtension);
 void path_remove_extension(utf8 *path);
 bool readentirefile(const utf8 *path, void **outBuffer, int *outLength);
 
@@ -41,6 +42,9 @@ int bitcount(int source);
 bool strequals(const char *a, const char *b, int length, bool caseInsensitive);
 int strcicmp(char const *a, char const *b);
 char *safe_strncpy(char * destination, const char * source, size_t num);
+char *safe_strcat(char *destination, const char *source, size_t size);
+char *safe_strcat_path(char *destination, const char *source, size_t size);
+char *safe_strtrimleft(char *destination, const char *source, size_t size);
 
 bool utf8_is_bom(const char *str);
 bool str_is_null_or_empty(const char *str);

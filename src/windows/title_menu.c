@@ -22,13 +22,13 @@
 #include "../config.h"
 #include "../editor.h"
 #include "../game.h"
+#include "../input.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
-#include "../tutorial.h"
 #include "dropdown.h"
-#include "../interface/themes.h"
 
 enum {
 	WIDX_START_NEW_GAME,
@@ -148,19 +148,7 @@ static void window_title_menu_mouseup(rct_window *w, int widgetIndex)
 
 static void window_title_menu_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
-	if (widgetIndex == WIDX_SHOW_TUTORIAL) {
-		gDropdownItemsFormat[0] = STR_TUTORIAL_BEGINNERS;
-		gDropdownItemsFormat[1] = STR_TUTORIAL_CUSTOM_RIDES;
-		gDropdownItemsFormat[2] = STR_TUTORIAL_ROLLER_COASTER;
-		window_dropdown_show_text(
-			w->x + widget->left,
-			w->y + widget->top,
-			widget->bottom - widget->top + 1,
-			w->colours[0] | 0x80,
-			DROPDOWN_FLAG_STAY_OPEN,
-			3
-		);
-	} else if (widgetIndex == WIDX_GAME_TOOLS) {
+	if (widgetIndex == WIDX_GAME_TOOLS) {
 		gDropdownItemsFormat[0] = STR_SCENARIO_EDITOR;
 		gDropdownItemsFormat[1] = STR_CONVERT_SAVED_GAME_TO_SCENARIO;
 		gDropdownItemsFormat[2] = STR_ROLLER_COASTER_DESIGNER;
@@ -178,9 +166,7 @@ static void window_title_menu_mousedown(int widgetIndex, rct_window*w, rct_widge
 
 static void window_title_menu_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	if (widgetIndex == WIDX_SHOW_TUTORIAL) {
-		tutorial_start(dropdownIndex);
-	} else if (widgetIndex == WIDX_GAME_TOOLS) {
+	if (widgetIndex == WIDX_GAME_TOOLS) {
 		switch (dropdownIndex) {
 		case 0:
 			editor_load();
@@ -200,7 +186,7 @@ static void window_title_menu_dropdown(rct_window *w, int widgetIndex, int dropd
 
 static void window_title_menu_cursor(rct_window *w, int widgetIndex, int x, int y, int *cursorId)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, sint16) = 2000;
+	gTooltipTimeout = 2000;
 }
 
 static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi)

@@ -13,6 +13,7 @@
 		D41B74731C2125E50080A7B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D41B74721C2125E50080A7B9 /* Assets.xcassets */; };
 		D435325F1C3472E500BA219B /* libpng.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D435325E1C3472E500BA219B /* libpng.dylib */; };
 		D43532601C34730200BA219B /* libpng.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D435325E1C3472E500BA219B /* libpng.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D46105CE1C38828D00DB1EE3 /* scenario_sources.c in Sources */ = {isa = PBXBuildFile; fileRef = D46105CD1C38828D00DB1EE3 /* scenario_sources.c */; };
 		D4ABAB061C2F812B0080CAD9 /* news_options.c in Sources */ = {isa = PBXBuildFile; fileRef = D4ABAB051C2F812B0080CAD9 /* news_options.c */; };
 		D4D4DF141C34697B0048BE43 /* image_io.c in Sources */ = {isa = PBXBuildFile; fileRef = D4D4DF121C34697B0048BE43 /* image_io.c */; };
 		D4EC47DF1C26342F0024B507 /* addresses.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC46D61C26342F0024B507 /* addresses.c */; };
@@ -90,7 +91,6 @@
 		D4EC48281C26342F0024B507 /* scenario_list.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC476D1C26342F0024B507 /* scenario_list.c */; };
 		D4EC48291C26342F0024B507 /* scenario.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC476E1C26342F0024B507 /* scenario.c */; };
 		D4EC482A1C26342F0024B507 /* title.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC47711C26342F0024B507 /* title.c */; };
-		D4EC482B1C26342F0024B507 /* tutorial.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC47731C26342F0024B507 /* tutorial.c */; };
 		D4EC482C1C26342F0024B507 /* sawyercoding.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC47761C26342F0024B507 /* sawyercoding.c */; };
 		D4EC482D1C26342F0024B507 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC47781C26342F0024B507 /* util.c */; };
 		D4EC482E1C26342F0024B507 /* about.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC477B1C26342F0024B507 /* about.c */; };
@@ -219,6 +219,7 @@
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		D41B74721C2125E50080A7B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = distribution/osx/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		D435325E1C3472E500BA219B /* libpng.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpng.dylib; sourceTree = "<group>"; };
+		D46105CD1C38828D00DB1EE3 /* scenario_sources.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = scenario_sources.c; path = src/scenario_sources.c; sourceTree = "<group>"; };
 		D4895D321C23EFDD000CD788 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = distribution/osx/Info.plist; sourceTree = SOURCE_ROOT; };
 		D497D0781C20FD52002BF46A /* OpenRCT2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenRCT2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4ABAB051C2F812B0080CAD9 /* news_options.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = news_options.c; sourceTree = "<group>"; };
@@ -370,8 +371,6 @@
 		D4EC47701C26342F0024B507 /* sprites.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sprites.h; path = src/sprites.h; sourceTree = "<group>"; };
 		D4EC47711C26342F0024B507 /* title.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = title.c; path = src/title.c; sourceTree = "<group>"; };
 		D4EC47721C26342F0024B507 /* title.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = title.h; path = src/title.h; sourceTree = "<group>"; };
-		D4EC47731C26342F0024B507 /* tutorial.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tutorial.c; path = src/tutorial.c; sourceTree = "<group>"; };
-		D4EC47741C26342F0024B507 /* tutorial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tutorial.h; path = src/tutorial.h; sourceTree = "<group>"; };
 		D4EC47761C26342F0024B507 /* sawyercoding.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sawyercoding.c; sourceTree = "<group>"; };
 		D4EC47771C26342F0024B507 /* sawyercoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sawyercoding.h; sourceTree = "<group>"; };
 		D4EC47781C26342F0024B507 /* util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = util.c; sourceTree = "<group>"; };
@@ -626,13 +625,12 @@
 				D4EC47591C26342F0024B507 /* rct2.c */,
 				D4EC475A1C26342F0024B507 /* rct2.h */,
 				D4EC476D1C26342F0024B507 /* scenario_list.c */,
+				D46105CD1C38828D00DB1EE3 /* scenario_sources.c */,
 				D4EC476E1C26342F0024B507 /* scenario.c */,
 				D4EC476F1C26342F0024B507 /* scenario.h */,
 				D4EC47701C26342F0024B507 /* sprites.h */,
 				D4EC47711C26342F0024B507 /* title.c */,
 				D4EC47721C26342F0024B507 /* title.h */,
-				D4EC47731C26342F0024B507 /* tutorial.c */,
-				D4EC47741C26342F0024B507 /* tutorial.h */,
 				D4163F671C2A044D00B83136 /* version.h */,
 			);
 			name = Sources;
@@ -1312,7 +1310,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cachedir=\".cache\"\nliburl=\"https://openrct2.website/files/orctlibs-osx.zip\"\n# keep in sync with version in build.sh\nsha256sum=\"02ebc8e7fd8b9b02b7144721784c5d96202a17398bc8652da163c8c85b66a7db\"\n\n[[ ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $sha256sum ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]] || [[ ! -f \"${SRCROOT}/$cachedir/orctlibs.zip\" ]]; then\n    if [[ ! -d \"${SRCROOT}/$cachedir\" ]]; then mkdir \"${SRCROOT}/$cachedir\"; fi\n    if [[ -f \"${SRCROOT}/$cachedir/orctlibs.zip\" ]]; then rm \"${SRCROOT}/$cachedir/orctlibs.zip\"; fi\n    curl -L -o \"${SRCROOT}/$cachedir/orctlibs.zip\" \"$liburl\"\n    if [[ -d \"${SRCROOT}/$cachedir/orctlibs\" ]]; then rm -rf \"${SRCROOT}/$cachedir/orctlibs\"; fi\n    mkdir \"${SRCROOT}/$cachedir/orctlibs\"\n    unzip -uaq -d \"${SRCROOT}/$cachedir/orctlibs\" \"${SRCROOT}/$cachedir/orctlibs.zip\"\nfi\n\nif [[ $outdated -eq 0 ]] || [[ ! -d \"${SRCROOT}/lib\" ]]; then\n    if [[ -d \"${SRCROOT}/lib\" ]]; then rm -r \"${SRCROOT}/lib\"; fi\n    cp -Rf \"${SRCROOT}/$cachedir/orctlibs/local\" \"${SRCROOT}/lib\"\nfi\nif [[ $outdated -eq 0 ]] || [[ ! -d \"${SRCROOT}/libxc\" ]]; then\n    if [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/libxc\"; fi\n    cp -Rf \"${SRCROOT}/$cachedir/orctlibs/glob\" \"${SRCROOT}/libxc\"\nfi\n\nif [[ $outdated -eq 0 ]]; then\n    newsha=$(shasum -a 256 \"${SRCROOT}/$cachedir/orctlibs.zip\" | cut -f1 -d\" \")\n    echo $newsha > \"${SRCROOT}/libversion\"\n    [[ \"$newsha\" == \"$sha256sum\" ]]\nfi";
+			shellScript = "cachedir=\".cache\"\nliburl=\"https://openrct2.website/files/orctlibs-osx.zip\"\n# keep in sync with version in build.sh\nsha256sum=\"6562ce9e1f37f125e3345bfd8b961777800436bf607b30dc7c964e0e6991ad2c\"\n\n[[ ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $sha256sum ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]] || [[ ! -f \"${SRCROOT}/$cachedir/orctlibs.zip\" ]]; then\n    if [[ ! -d \"${SRCROOT}/$cachedir\" ]]; then mkdir \"${SRCROOT}/$cachedir\"; fi\n    if [[ -f \"${SRCROOT}/$cachedir/orctlibs.zip\" ]]; then rm \"${SRCROOT}/$cachedir/orctlibs.zip\"; fi\n    curl -L -o \"${SRCROOT}/$cachedir/orctlibs.zip\" \"$liburl\"\n    if [[ -d \"${SRCROOT}/$cachedir/orctlibs\" ]]; then rm -rf \"${SRCROOT}/$cachedir/orctlibs\"; fi\n    mkdir \"${SRCROOT}/$cachedir/orctlibs\"\n    unzip -uaq -d \"${SRCROOT}/$cachedir/orctlibs\" \"${SRCROOT}/$cachedir/orctlibs.zip\"\nfi\n\nif [[ $outdated -eq 0 ]] || [[ ! -d \"${SRCROOT}/lib\" ]]; then\n    if [[ -d \"${SRCROOT}/lib\" ]]; then rm -r \"${SRCROOT}/lib\"; fi\n    cp -Rf \"${SRCROOT}/$cachedir/orctlibs/local\" \"${SRCROOT}/lib\"\nfi\nif [[ $outdated -eq 0 ]] || [[ ! -d \"${SRCROOT}/libxc\" ]]; then\n    if [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/libxc\"; fi\n    cp -Rf \"${SRCROOT}/$cachedir/orctlibs/glob\" \"${SRCROOT}/libxc\"\nfi\n\nif [[ $outdated -eq 0 ]]; then\n    newsha=$(shasum -a 256 \"${SRCROOT}/$cachedir/orctlibs.zip\" | cut -f1 -d\" \")\n    echo $newsha > \"${SRCROOT}/libversion\"\n    [[ \"$newsha\" == \"$sha256sum\" ]]\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1382,7 +1380,6 @@
 				D4EC48231C26342F0024B507 /* station.c in Sources */,
 				D4EC484D1C26342F0024B507 /* new_ride.c in Sources */,
 				D4EC484A1C26342F0024B507 /* music_credits.c in Sources */,
-				D4EC482B1C26342F0024B507 /* tutorial.c in Sources */,
 				D4EC48241C26342F0024B507 /* track.c in Sources */,
 				D4EC47DF1C26342F0024B507 /* addresses.c in Sources */,
 				D4EC484B1C26342F0024B507 /* network_status.c in Sources */,
@@ -1450,6 +1447,7 @@
 				D4EC482D1C26342F0024B507 /* util.c in Sources */,
 				D4EC47EA1C26342F0024B507 /* line.c in Sources */,
 				D4EC48271C26342F0024B507 /* vehicle.c in Sources */,
+				D46105CE1C38828D00DB1EE3 /* scenario_sources.c in Sources */,
 				D4EC48281C26342F0024B507 /* scenario_list.c in Sources */,
 				D4EC48581C26342F0024B507 /* scenery.c in Sources */,
 				D4EC48061C26342F0024B507 /* LanguagePack.cpp in Sources */,

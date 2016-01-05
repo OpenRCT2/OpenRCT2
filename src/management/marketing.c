@@ -155,6 +155,13 @@ void game_command_start_campaign(int* eax, int* ebx, int* ecx, int* edx, int* es
 	int rideOrItem = (*edx >> 8) & 0xFF;
 	int numWeeks = (*ebx >> 8) & 0xFF;
 
+	if (type < 0 || type >= countof(AdvertisingCampaignPricePerWeek))
+	{
+		log_warning("Invalid game command, type = %d", type);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_MARKETING * 4;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 3048;
