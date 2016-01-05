@@ -22,12 +22,13 @@
 #include "../config.h"
 #include "../editor.h"
 #include "../game.h"
+#include "../input.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "dropdown.h"
-#include "../interface/themes.h"
 
 enum {
 	WIDX_START_NEW_GAME,
@@ -185,7 +186,7 @@ static void window_title_menu_dropdown(rct_window *w, int widgetIndex, int dropd
 
 static void window_title_menu_cursor(rct_window *w, int widgetIndex, int x, int y, int *cursorId)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, sint16) = 2000;
+	gTooltipTimeout = 2000;
 }
 
 static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi)

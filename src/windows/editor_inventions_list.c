@@ -910,8 +910,8 @@ static void window_editor_inventions_list_drag_open(rct_research_item *researchI
 	window_editor_inventions_list_drag_widgets[0].right = stringWidth;
 
 	w = window_create(
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, uint16) - (stringWidth / 2),
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, uint16) - 7,
+		gTooltipCursorX - (stringWidth / 2),
+		gTooltipCursorY - 7,
 		stringWidth,
 		14,
 		&window_editor_inventions_list_drag_events,
@@ -920,9 +920,7 @@ static void window_editor_inventions_list_drag_open(rct_research_item *researchI
 	);
 	w->widgets = window_editor_inventions_list_drag_widgets;
 	w->colours[1] = 2;
-	input_window_position_begin(
-		w, 0, RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, uint16)
-	);
+	input_window_position_begin(w, 0, gTooltipCursorX, gTooltipCursorY);
 }
 
 /**

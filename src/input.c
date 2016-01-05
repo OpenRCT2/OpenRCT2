@@ -52,6 +52,12 @@ static int _originalWindowWidth, _originalWindowHeight;
 uint8 gInputState;
 uint8 gInputFlags;
 
+uint16 gTooltipNotShownTicks;
+uint16 gTooltipTimeout;
+widget_ref gTooltipWidget;
+sint32 gTooltipCursorX;
+sint32 gTooltipCursorY;
+
 typedef struct {
 	uint32 x, y;
 	uint32 state; //1 = LeftDown 2 = LeftUp 3 = RightDown 4 = RightUp
@@ -436,10 +442,10 @@ static void input_window_position_continue(rct_window *w, int wdx, int wdy, int 
 static void input_window_position_end(rct_window *w, int x, int y)
 {
 	gInputState = INPUT_STATE_NORMAL;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint8) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = _dragWindowClass;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = _dragWindowNumber;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = _dragWidgetIndex;
+	gTooltipTimeout = 0;
+	gTooltipWidget.window_classification = _dragWindowClass;
+	gTooltipWidget.window_number = _dragWindowNumber;
+	gTooltipWidget.widget_index = _dragWidgetIndex;
 	window_event_moved_call(w, x, y);
 }
 
@@ -476,10 +482,10 @@ static void input_window_resize_continue(rct_window *w, int x, int y)
 static void input_window_resize_end()
 {
 	gInputState = INPUT_STATE_NORMAL;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint8) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = _dragWindowClass;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = _dragWindowNumber;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = _dragWidgetIndex;
+	gTooltipTimeout = 0;
+	gTooltipWidget.window_classification = _dragWindowClass;
+	gTooltipWidget.window_number = _dragWindowNumber;
+	gTooltipWidget.widget_index = _dragWidgetIndex;
 }
 
 #pragma endregion
@@ -560,8 +566,8 @@ static void input_scroll_begin(rct_window *w, int widgetIndex, int x, int y)
 	RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16) = widgetIndex;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass) = w->classification;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber) = w->number;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, uint16) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, uint16) = y;
+	gTooltipCursorX = x;
+	gTooltipCursorY = y;
 
 	int eax, ebx, scroll_area, scroll_id;
 	scroll_id = 0; // safety
@@ -645,9 +651,7 @@ static void input_scroll_continue(rct_window *w, int widgetIndex, int state, int
 	widget_scroll_get_part(w, widget, x, y, &x2, &y2, &scroll_part, &scroll_id);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_AREA, uint16) == SCROLL_PART_HSCROLLBAR_THUMB){
-		int temp_x = x;
-		x -= RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, uint16);
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, uint16) = temp_x;
+		gTooltipCursorX = x - gTooltipCursorX;
 		input_scroll_part_update_hthumb(w, widgetIndex, x, scroll_id);
 		return;
 	}
@@ -902,9 +906,9 @@ static void input_widget_over(int x, int y, rct_window *w, int widgetIndex)
 		input_update_tooltip(w, widgetIndex, x, y);
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, sint16) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, sint16) = y;
+	gTooltipTimeout = 0;
+	gTooltipCursorX = x;
+	gTooltipCursorY = y;
 }
 
 /**
@@ -1250,10 +1254,10 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 				}
 
 				gInputState = INPUT_STATE_NORMAL;
-				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = 0;
-				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = cursor_widgetIndex;
-				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) = cursor_w_class;
-				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) = cursor_w_number;
+				gTooltipTimeout = 0;
+				gTooltipWidget.widget_index = cursor_widgetIndex;
+				gTooltipWidget.window_classification = cursor_w_class;
+				gTooltipWidget.window_number = cursor_w_number;
 				window_event_dropdown_call(cursor_w, cursor_widgetIndex, dropdown_index);
 			}
 		dropdown_cleanup:
@@ -1262,8 +1266,8 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 		if (state == 3) return;
 
 		gInputState = INPUT_STATE_NORMAL;
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) = cursor_widgetIndex;
+		gTooltipTimeout = 0;
+		gTooltipWidget.widget_index = cursor_widgetIndex;
 
 		if (!w)
 			break;
@@ -1326,36 +1330,34 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 
 static void input_update_tooltip(rct_window *w, int widgetIndex, int x, int y)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) == 255) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, uint16) < 500 ||
-			(RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_X, sint16) == x &&
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_CURSOR_Y, sint16) == y)
-			) {
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, uint16);
+	if (gTooltipWidget.window_classification == 255) {
+		if (gTooltipNotShownTicks < 500 || (gTooltipCursorX == x && gTooltipCursorY == y)) {
+			gTooltipTimeout = RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, uint16);
 
-			int bp = 2000;
-			if (RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, uint16) >= 1)
-				bp = 0;
-			if (bp > RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16)) {
-				RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, sint16)++;
+			int time = 2000;
+			if (gTooltipNotShownTicks >= 1) {
+				time = 0;
+			}
+			if (time > gTooltipTimeout) {
+				gTooltipNotShownTicks++;
 				return;
 			}
 
 			window_tooltip_open(w, widgetIndex, x, y);
 		}
-	}
-	else {
-		if (((w != NULL) &&
-			(RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_CLASS, rct_windowclass) != w->classification ||
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WINDOW_NUMBER, rct_windownumber) != w->number)) ||
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_WIDGET_INDEX, uint16) != widgetIndex
-			) {
+	} else {
+		if ((
+				(w != NULL) &&
+				(gTooltipWidget.window_classification != w->classification || gTooltipWidget.window_number != w->number)
+			) ||
+			gTooltipWidget.widget_index != widgetIndex
+		) {
 			window_tooltip_close();
 		}
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) += RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, uint16);
-		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) < 8000)
-			return;
-		window_close_by_class(WC_TOOLTIP);
+		gTooltipTimeout += RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, uint16);
+		if (gTooltipTimeout >= 8000) {
+			window_close_by_class(WC_TOOLTIP);
+		}
 	}
 }
 

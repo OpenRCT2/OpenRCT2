@@ -60,8 +60,20 @@ enum {
 	INPUT_FLAG_VIEWPORT_SCROLLING = (1 << 7)
 };
 
+typedef struct {
+	rct_windowclass window_classification;
+	rct_windownumber window_number;
+	uint8 widget_index;
+} widget_ref;
+
 extern uint8 gInputState;
 extern uint8 gInputFlags;
+
+extern uint16 gTooltipNotShownTicks;
+extern uint16 gTooltipTimeout;
+extern widget_ref gTooltipWidget;
+extern sint32 gTooltipCursorX;
+extern sint32 gTooltipCursorY;
 
 void title_handle_keyboard_input();
 void game_handle_input();

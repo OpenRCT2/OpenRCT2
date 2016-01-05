@@ -20,10 +20,12 @@
 
 #include "../addresses.h"
 #include "../config.h"
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
+#include "../input.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../localisation/date.h"
+#include "../localisation/localisation.h"
 #include "../management/news_item.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
@@ -31,7 +33,6 @@
 #include "../world/climate.h"
 #include "../world/park.h"
 #include "../world/sprite.h"
-#include "../interface/themes.h"
 
 enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
 	WIDX_LEFT_OUTSET,
@@ -620,7 +621,7 @@ static void window_game_bottom_toolbar_cursor(rct_window *w, int widgetIndex, in
 	case WIDX_GUESTS:
 	case WIDX_PARK_RATING:
 	case WIDX_DATE:
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TIMEOUT, uint16) = 2000;
+		gTooltipTimeout = 2000;
 		break;
 	}
 }
