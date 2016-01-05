@@ -72,6 +72,8 @@ static sint32 _originalWindowHeight;
 uint8 gInputState;
 uint8 gInputFlags;
 
+widget_ref gPressedWidget;
+
 uint16 gTooltipNotShownTicks;
 uint16 gTooltipTimeout;
 widget_ref gTooltipWidget;
@@ -574,9 +576,9 @@ static void input_scroll_begin(rct_window *w, int widgetIndex, int x, int y)
 	widget = &w->widgets[widgetIndex];
 
 	gInputState = INPUT_STATE_SCROLL_LEFT;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16) = widgetIndex;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass) = w->classification;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber) = w->number;
+	gPressedWidget.window_classification = w->classification;
+	gPressedWidget.window_number = w->number;
+	gPressedWidget.widget_index = widgetIndex;
 	gTooltipCursorX = x;
 	gTooltipCursorY = y;
 
@@ -646,15 +648,10 @@ static void input_scroll_continue(rct_window *w, int widgetIndex, int state, int
 	assert(w != NULL);
 
 	widget = &w->widgets[widgetIndex];
-	if (widgetIndex != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32)){
-		invalidate_scroll();
-		return;
-	}
-	if (w->classification != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8)){
-		invalidate_scroll();
-		return;
-	}
-	if (w->number != RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, uint16)){
+	if (w->classification != gPressedWidget.window_classification ||
+		w->number != gPressedWidget.window_number ||
+		widgetIndex != gPressedWidget.widget_index
+	) {
 		invalidate_scroll();
 		return;
 	}
@@ -1044,9 +1041,9 @@ static void input_widget_left(int x, int y, rct_window *w, int widgetIndex)
 			audio_play_sound_panned(SOUND_CLICK_1, w->x + (widget->left + widget->right) / 2, 0, 0, 0);
 
 			// Set new cursor down widget
-			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass) = windowClass;
-			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber) = windowNumber;
-			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint16) = widgetIndex;
+			gPressedWidget.window_classification = windowClass;
+			gPressedWidget.window_number = windowNumber;
+			gPressedWidget.widget_index = widgetIndex;
 			gInputFlags |= INPUT_FLAG_WIDGET_PRESSED;
 			gInputState = INPUT_STATE_WIDGET_PRESSED;
 			RCT2_GLOBAL(0x009DE528, uint16) = 1;
@@ -1192,9 +1189,9 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 
 	rct_windowclass cursor_w_class;
 	rct_windownumber cursor_w_number;
-	cursor_w_class = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass);
-	cursor_w_number = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber);
-	int cursor_widgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32);
+	cursor_w_class = gPressedWidget.window_classification;
+	cursor_w_number = gPressedWidget.window_number;
+	int cursor_widgetIndex = gPressedWidget.widget_index;
 
 	rct_window *cursor_w = window_find_by_number(cursor_w_class, cursor_w_number);
 	if (cursor_w == NULL) {
@@ -1547,20 +1544,13 @@ void sub_6ED990(char cursor_id){
  */
 void invalidate_scroll()
 {
-	rct_window* wind = window_find_by_number(
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8),
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, uint16)
-		);
-	if (wind == NULL) return;
-
-	int scroll_id = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_ID, uint32);
-	//Reset to basic scroll
-	wind->scrolls[scroll_id / sizeof(rct_scroll)].flags &= 0xFF11;
-
-	window_invalidate_by_number(
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, uint8),
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, uint16)
-		);
+	rct_window* w = window_find_by_number(gPressedWidget.window_classification, gPressedWidget.window_number);
+	if (w != NULL) {
+		// Reset to basic scroll
+		int scrollId = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SCROLL_ID, uint32);
+		w->scrolls[scrollId / sizeof(rct_scroll)].flags &= 0xFF11;
+		window_invalidate_by_number(gPressedWidget.window_classification, gPressedWidget.window_number);
+	}
 }
 
 /**

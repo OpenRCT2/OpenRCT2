@@ -104,7 +104,7 @@ void viewport_init_all()
 	// ?
 	gInputFlags = 0;
 	gInputState = INPUT_STATE_RESET;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass) = -1;
+	gPressedWidget.window_classification = 255;
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, sint32) = -1;
 	gTooltipNotShownTicks = -1;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) = 0;

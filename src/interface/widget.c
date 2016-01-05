@@ -978,19 +978,15 @@ int widget_is_disabled(rct_window *w, int widgetIndex)
 
 int widget_is_pressed(rct_window *w, int widgetIndex)
 {
-	int inputState = gInputState;
-
-	if (w->pressed_widgets & (1LL << widgetIndex))
+	if (w->pressed_widgets & (1LL << widgetIndex)) {
 		return 1;
-	if (inputState == INPUT_STATE_WIDGET_PRESSED || inputState == INPUT_STATE_DROPDOWN_ACTIVE) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass) != w->classification)
-			return 0;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWNUMBER, rct_windownumber) != w->number)
-			return 0;
-		if (!(gInputFlags & INPUT_FLAG_WIDGET_PRESSED))
-			return 0;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, sint32) == widgetIndex)
-			return 1;
+	}
+	if (gInputState == INPUT_STATE_WIDGET_PRESSED || gInputState == INPUT_STATE_DROPDOWN_ACTIVE) {
+		if (!(gInputFlags & INPUT_FLAG_WIDGET_PRESSED)) return 0;
+		if (gPressedWidget.window_classification != w->classification) return 0;
+		if (gPressedWidget.window_number != w->number) return 0;
+		if (gPressedWidget.widget_index != widgetIndex) return 0;
+		return 1;
 	}
 	return 0;
 }

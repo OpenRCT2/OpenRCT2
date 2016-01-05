@@ -502,7 +502,7 @@ static rct_research_item *get_research_item_at(int x, int y)
 		widgetIndex = window_find_widget_from_point(w, x, y);
 		widget = &w->widgets[widgetIndex];
 		if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32) = widgetIndex;
+			gPressedWidget.widget_index = widgetIndex;
 			widget_scroll_get_part(w, widget, x, y, &outX, &outY, &outScrollArea, &outScrollId);
 			if (outScrollArea == SCROLL_PART_VIEW) {
 				outScrollId = outScrollId == 0 ? 0 : 1;
