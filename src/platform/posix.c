@@ -37,6 +37,12 @@
 #include "../openrct2.h"
 #include "../util/util.h"
 #include "platform.h"
+#include <dirent.h>
+#include <fnmatch.h>
+#include <locale.h>
+#include <sys/time.h>
+#include <time.h>
+#include <fts.h>
 
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
@@ -167,8 +173,53 @@ bool platform_ensure_directory_exists(const utf8 *path)
 
 bool platform_directory_delete(const utf8 *path)
 {
-	STUB();
-	return true;
+	log_verbose("Recursively deleting directory %s", path);
+
+	FTS *ftsp;
+	FTSENT *p, *chp;
+
+	// fts_open only accepts non const paths, so we have to take a copy
+	char* ourPath = (char*)malloc(strlen(path) + 1);
+	strcpy(ourPath, path);
+
+	utf8* const patharray[2] = {ourPath, NULL};
+	if ((ftsp = fts_open(patharray, FTS_COMFOLLOW | FTS_LOGICAL | FTS_NOCHDIR, NULL)) == NULL) {
+		log_error("fts_open returned NULL");
+		return 0;
+	}
+
+	chp = fts_children(ftsp, 0);
+	if (chp == NULL) {
+		log_verbose("No files to traverse, deleting directory %s", path);
+		remove(path);
+		return 1; // No files to traverse
+	}
+
+	while ((p = fts_read(ftsp)) != NULL) {
+		switch (p->fts_info) {
+			case FTS_DP: // Directory postorder, which means
+						 // the directory is empty
+						 
+			case FTS_F:  // File
+				if(remove(p->fts_path)) {
+					log_error("Could not remove %s", p->fts_path);
+					fts_close(ftsp);
+					free(ourPath);
+					return 0;
+				}
+				break;
+			case FTS_ERR:
+				log_error("Error traversing %s", path);
+				fts_close(ftsp);
+				free(ourPath);
+				return 0;
+		}
+	}
+
+	free(ourPath);
+	fts_close(ftsp);
+
+	return 1;
 }
 
 bool platform_lock_single_instance()
