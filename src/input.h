@@ -69,7 +69,7 @@ enum {
 typedef struct {
 	rct_windowclass window_classification;
 	rct_windownumber window_number;
-	uint8 widget_index;
+	rct_widgetindex widget_index;
 } widget_ref;
 
 extern uint8 gInputState;

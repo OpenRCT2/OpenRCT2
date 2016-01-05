@@ -224,7 +224,7 @@ static void input_scroll_drag_begin(int x, int y, rct_window* w, rct_widget* wid
  */
 static void input_scroll_drag_continue(int x, int y, rct_window* w)
 {
-	uint8 widgetIndex = _dragWidget.widget_index;
+	rct_widgetindex widgetIndex = _dragWidget.widget_index;
 	uint8 scrollIndex = _dragScrollIndex;
 
 	rct_widget* widget = &w->widgets[widgetIndex];
