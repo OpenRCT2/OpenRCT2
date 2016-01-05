@@ -891,7 +891,7 @@ money32 get_shop_item_cost(int shopItem);
 money16 get_shop_base_value(int shopItem);
 money16 get_shop_hot_value(int shopItem);
 money16 get_shop_cold_value(int shopItem);
-int sub_6CAF80(int rideIndex, rct_xy_element *output);
+bool ride_try_get_origin_element(int rideIndex, rct_xy_element *output);
 int ride_find_track_gap(rct_xy_element *input, rct_xy_element *output);
 void ride_construct_new(ride_list_item listItem);
 void ride_construct(int rideIndex);

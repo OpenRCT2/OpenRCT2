@@ -310,15 +310,11 @@ money32 ride_calculate_income_per_hour(rct_ride *ride)
  * dl ride index
  * esi result map element
  */
-int sub_6CAF80(int rideIndex, rct_xy_element *output)
+bool ride_try_get_origin_element(int rideIndex, rct_xy_element *output)
 {
+	rct_map_element *resultMapElement = NULL;
+
 	map_element_iterator it;
-	rct_map_element *resultMapElement;
-	int foundSpecialTrackPiece;
-
-	resultMapElement = NULL;
-	foundSpecialTrackPiece = 0;
-
 	map_element_iterator_begin(&it);
 	do {
 		if (map_element_get_type(it.element) != MAP_ELEMENT_TYPE_TRACK)
@@ -329,9 +325,9 @@ int sub_6CAF80(int rideIndex, rct_xy_element *output)
 		// Found a track piece for target ride
 
 		// Check if its not the station or ??? (but allow end piece of station)
-		int specialTrackPiece = (
-			it.element->properties.track.type != 2 &&
-			it.element->properties.track.type != 3 &&
+		bool specialTrackPiece = (
+			it.element->properties.track.type != TRACK_ELEM_BEGIN_STATION &&
+			it.element->properties.track.type != TRACK_ELEM_MIDDLE_STATION &&
 			(RCT2_ADDRESS(0x0099BA64, uint8)[it.element->properties.track.type * 16] & 0x10)
 		);
 
@@ -347,8 +343,7 @@ int sub_6CAF80(int rideIndex, rct_xy_element *output)
 		}
 
 		if (specialTrackPiece) {
-			foundSpecialTrackPiece = 1;
-			return 1;
+			return true;
 		}
 	} while (map_element_iterator_next(&it));
 
@@ -875,7 +870,7 @@ void ride_construct(int rideIndex)
 	rct_xy_element trackElement;
 	rct_window *w;
 
-	if (sub_6CAF80(rideIndex, &trackElement)) {
+	if (ride_try_get_origin_element(rideIndex, &trackElement)) {
 		ride_find_track_gap(&trackElement, &trackElement);
 
 		w = window_get_main();
@@ -4552,7 +4547,7 @@ void loc_6B51C0(int rideIndex)
 		z = ride->station_heights[i] * 8;
 		window_scroll_to_location(w, x, y, z);
 
-		sub_6CAF80(rideIndex, &trackElement);
+		ride_try_get_origin_element(rideIndex, &trackElement);
 		ride_find_track_gap(&trackElement, &trackElement);
 		ride_modify(&trackElement);
 
