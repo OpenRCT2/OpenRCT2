@@ -132,12 +132,21 @@ enum {
 	SCENARIO_SELECT_MODE_DIFFICULTY,
 	SCENARIO_SELECT_MODE_ORIGIN,
 };
+typedef struct {
+	utf8string game_path;
+	utf8string game_path_slash;
+	utf8string saved_game_path;
+	utf8string scenario_path;
+	utf8string landscapes_path;
+	utf8string object_data_path;
+	utf8string tracks_path;
+	utf8string saved_game_path_2;
+} game_path_configuration;
 
 typedef struct {
 	uint8 play_intro;
 	uint8 confirmation_prompt;
 	uint8 screenshot_format;
-	utf8string game_path;
 	sint8 measurement_format;
 	sint8 temperature_format;
 	sint8 currency_format;
@@ -325,6 +334,7 @@ typedef struct {
 	uint8 modifier;
 } shortcut_entry;
 
+extern game_path_configuration gConfigGamePath;
 extern general_configuration gConfigGeneral;
 extern interface_configuration gConfigInterface;
 extern sound_configuration gConfigSound;
