@@ -43,9 +43,10 @@
 #include <sys/time.h>
 #include <time.h>
 #include <fts.h>
+#include <sys/file.h>
 
 // The name of the mutex used to prevent multiple instances of the game from running
-#define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
+#define SINGLE_INSTANCE_MUTEX_NAME "openrct2.lock"
 
 #define FILE_BUFFER_SIZE 4096
 
@@ -226,7 +227,32 @@ bool platform_directory_delete(const utf8 *path)
 
 bool platform_lock_single_instance()
 {
-	STUB();
+	char pidFilePath[MAX_PATH];
+	char separator = platform_get_path_separator();
+
+	strncpy(pidFilePath, _userDataDirectoryPath, MAX_PATH);
+	strncat(pidFilePath, &separator, 1);
+	strncat(pidFilePath, SINGLE_INSTANCE_MUTEX_NAME, 
+			MAX_PATH - strnlen(pidFilePath, MAX_PATH) - 1);
+
+	// We will never close this file manually. The operating system will
+	// take care of that, because flock keeps the lock as long as the 
+	// file is open and closes it automatically on file close.
+	// This is intentional.
+	int pidFile = open(pidFilePath, O_CREAT | O_RDWR, 0666);
+
+	if (pidFile == -1) {
+		log_warning("Cannot open lock file for writing.");
+		return false;
+	}
+	if (flock(pidFile, LOCK_EX | LOCK_NB) == -1) {
+		if (errno == EWOULDBLOCK) {
+			log_warning("Another OpenRCT2 session has been found running.");
+			return false;
+		}
+		log_error("flock returned an uncatched errno: %d", errno);
+		return false;
+	}
 	return true;
 }
 
