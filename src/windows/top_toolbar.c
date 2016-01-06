@@ -2638,27 +2638,21 @@ void window_top_toolbar_land_tool_drag(short x, short y)
 
 	sint16 tile_height = -16 / (1 << viewport->zoom);
 
-	int y_diff = y - RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16);
-
+	int y_diff = y - gInputDragLastY;
 	if (y_diff <= tile_height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) += tile_height;
+		gInputDragLastY += tile_height;
 
 		selection_raise_land(GAME_COMMAND_FLAG_APPLY);
 
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) = MONEY32_UNDEFINED;
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) = MONEY32_UNDEFINED;
-		return;
-	}
-
-	if (y_diff >= -tile_height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) -= tile_height;
+	} else if (y_diff >= -tile_height) {
+		gInputDragLastY -= tile_height;
 
 		selection_lower_land(GAME_COMMAND_FLAG_APPLY);
 
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) = MONEY32_UNDEFINED;
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) = MONEY32_UNDEFINED;
-
-		return;
 	}
 }
 
@@ -2684,10 +2678,10 @@ void window_top_toolbar_water_tool_drag(short x, short y)
 	sint16 dx = 0xFFF0;
 	dx >>= viewport->zoom;
 
-	y -= RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16);
+	y -= gInputDragLastY;
 
 	if (y <= dx) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) += dx;
+		gInputDragLastY += dx;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_RAISE_WATER_LEVEL_HERE;
 
@@ -2709,7 +2703,7 @@ void window_top_toolbar_water_tool_drag(short x, short y)
 	dx = -dx;
 
 	if (y >= dx) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) += dx;
+		gInputDragLastY += dx;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_LOWER_WATER_LEVEL_HERE;
 

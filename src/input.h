@@ -76,6 +76,9 @@ extern uint8 gInputState;
 extern uint8 gInputFlags;
 extern uint8 gInputPlaceObjectModifier;
 
+extern sint32 gInputDragLastX;
+extern sint32 gInputDragLastY;
+
 extern widget_ref gHoverWidget;
 extern widget_ref gPressedWidget;
 
