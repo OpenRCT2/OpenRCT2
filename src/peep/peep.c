@@ -78,7 +78,7 @@ static void peep_ride_is_too_intense(rct_peep *peep, int rideIndex, bool peepAtR
 static void peep_chose_not_to_go_on_ride(rct_peep *peep, int rideIndex, bool peepAtRide, bool updateLastRide);
 static void peep_tried_to_enter_full_queue(rct_peep *peep, int rideIndex);
 static bool peep_should_go_to_shop(rct_peep *peep, int rideIndex, bool peepAtShop);
-static void sub_69A98C(rct_peep *peep);
+static void peep_reset_pathfind_goal(rct_peep *peep);
 static void sub_68FD3A(rct_peep *peep);
 static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideSeatToView);
 static int peep_get_height_on_slope(rct_peep *peep, int x, int y);
@@ -4388,7 +4388,7 @@ static void peep_update_heading_to_inspect(rct_peep* peep){
 
 	if (peep->sub_state == 0){
 		peep->var_74 = 0;
-		sub_69A98C(peep);
+		peep_reset_pathfind_goal(peep);
 		peep->sub_state = 2;
 	}
 
@@ -4498,7 +4498,7 @@ static void peep_update_answering(rct_peep* peep){
 			peep->sub_state = 2;
 			peep_window_state_update(peep);
 			peep->var_74 = 0;
-			sub_69A98C(peep);
+			peep_reset_pathfind_goal(peep);
 			return;
 		}
 		sint16 x, y, xy_distance;
@@ -5579,10 +5579,10 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->cash_in_pocket = cash;
 	peep->cash_spent = 0;
 	peep->time_in_park = -1;
-	peep->var_CC.x = 0xFF;
-	peep->var_CC.y = 0xFF;
-	peep->var_CC.z = 0xFF;
-	peep->var_CC.direction = 0xFF;
+	peep->pathfind_goal.x = 0xFF;
+	peep->pathfind_goal.y = 0xFF;
+	peep->pathfind_goal.z = 0xFF;
+	peep->pathfind_goal.direction = 0xFF;
 	peep->item_standard_flags = 0;
 	peep->item_extra_flags = 0;
 	peep->guest_heading_to_ride_id = 0xFF;
@@ -7131,70 +7131,112 @@ uint8 sub_69A60A(rct_peep* peep){
 
 /**
  *
+ *  rct2: 0x0069A997
+ */
+static int sub_69A997(sint16 x, sint16 y, uint8 z, int test_edge) {
+	int eax = x, ebx, ecx = y, edx = z, esi, edi = 0xFFFF, ebp = test_edge;
+	RCT2_CALLFUNC_X(0x0069A997, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	return edi;
+}
+
+/**
+ *
  *  rct2: 0x0069A5F0
  */
-static int sub_69A5F0(sint16 x, sint16 y, sint16 z, rct_peep *peep, rct_map_element *map_element){
-	//RCT2_GLOBAL(0x00F1AEDC, uint8) = sub_69A60A(peep);
+static int guest_pathfind_choose_direction(sint16 x, sint16 y, sint16 z, rct_peep *peep, rct_map_element *map_element) {
+	RCT2_GLOBAL(0x00F1AEDC, uint8) = sub_69A60A(peep);
+	uint8 x_goal = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X, sint16) / 32;
+	uint8 y_goal = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) / 32;
+	uint8 z_goal = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Z, uint8);
 
-	//// Redundant check to make sure peep is not null??
-	//sint16 start_x = RCT2_GLOBAL(0x00F1AECE, sint16);
-	//sint16 start_y = RCT2_GLOBAL(0x00F1AED0, sint16);
-	//uint8 start_z = RCT2_GLOBAL(0x00F1AED2, uint8);
-	//
-	//uint8 edges = 0xF;
-	//if (peep->var_CC.x == (start_x / 32) &&
-	//	peep->var_CC.y == (start_y / 32) &&
-	//	peep->var_CC.z == start_z){
+	uint8 edges = 0xF;
+	if (peep->pathfind_goal.x == x_goal &&
+            peep->pathfind_goal.y == y_goal &&
+            peep->pathfind_goal.z == z_goal) {
+		for (int i = 0; i < 4; ++i) {
+			if (peep->pathfind_history[i].x == x / 32 &&
+					peep->pathfind_history[i].y == y / 32 &&
+					peep->pathfind_history[i].z == z) {
+				edges = peep->pathfind_history[i].direction & 0xF;
+				break;
+			}
+		}
+	}
 
-	//	uint8 index = 0;
-	//	for (; index < 4; ++index){
-	//		if (peep->var_D0[index].x == x &&
-	//			peep->var_D0[index].y == y &&
-	//			peep->var_D0[index].z == z){
-	//			edges = peep->var_D0[index].direction & 0xF;
-	//			break;
-	//		}
-	//	}
-	//}
+	rct_map_element *dest_map_element = map_get_first_element_at(x / 32, y / 32);
+	bool found = false;
+	do {
+		if (dest_map_element->base_height != z) continue;
+		if (map_element_get_type(dest_map_element) != MAP_ELEMENT_TYPE_PATH) continue;
+		found = true;
+		break;
+	} while (!map_element_is_last_for_tile(dest_map_element++));
+	if (!found) return -1;
 
-	//bool found = false;
-	//rct_map_element *destMapElement = map_get_first_element_at(x / 32, y / 32);
-	//do{
-	//	if (destMapElement->base_height != z)
-	//		continue;
+	edges &= path_get_permitted_edges(dest_map_element);
+	if (edges == 0) return -1;
 
-	//	if (map_element_get_type(destMapElement) != MAP_ELEMENT_TYPE_PATH)
-	//		continue;
+	int chosen_edge = bitscanforward(edges);
+	if (edges & ~(1 << chosen_edge)) {
+		uint16 best_score = 0xFFFF;
+		uint8 best_sub = 0xFF;
 
-	//	found = true;
-	//	break;
-	//} while (!map_element_is_last_for_tile(destMapElement++));
+		for (int test_edge = chosen_edge; test_edge != -1; test_edge = bitscanforward(edges)) {
+			edges &= ~(1 << test_edge);
+			uint8 height = z;
+			int k = RCT2_GLOBAL(0x00F1AEDC, int);
+			if (footpath_element_is_sloped(dest_map_element) &&
+					footpath_element_get_slope_direction(dest_map_element) == test_edge)
+				height += 0x2;
 
-	//sint8 chosenDirection = 0xF;
-	//if (!found){
-	//	chosenDirection = 0xF;
-	//	//goto 69A89C
-	//}
+			RCT2_GLOBAL(0x00F1AED3, uint8) = 0xFF;
+			RCT2_GLOBAL(0x00F1AED4, int) = RCT2_GLOBAL(0x00F1AED8, int);
+			RCT2_GLOBAL(0x00F1AEDE, uint16) = 0;
+			uint16 score = sub_69A997(x, y, height, test_edge);
+			RCT2_GLOBAL(0x00F1AEDC, int) = k;
 
-	//edges &= path_get_permitted_edges(destMapElement);
-	//if (edges == 0){
-	//	chosenDirection = 0xF;
-	//	// goto 69A89C
-	//}
+			if (score < best_score || (score == best_score && RCT2_GLOBAL(0x00F1AED3, uint8) < best_sub)) {
+                chosen_edge = test_edge;
+				best_score = score;
+				best_sub = RCT2_GLOBAL(0x00F1AED3, uint8);
+			}
+		}
+	}
 
-	//chosenDirection = bitscanforward(edges);
-	//if (edges & ~(1 << chosenDirection) == 0){
-	//	// goto 69A8A1 chosenDirection
-	//}
+    // May be redundant, but shouldn't be removed until it's confirmed that sub_69A997 doesn't modify them
+	x_goal = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X, sint16) / 32;
+	y_goal = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) / 32;
+	z_goal = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Z, uint8);
 
-	//for (; chosenDirection != -1; chosenDirection = bitscanforward(edges)){
-	//	edges &= ~(1 << chosenDirection);
-	//	//69a814
-	//}
-	////69a895
-	int eax = x, ebx, ecx = y, edx = z, esi = (int)peep, ebp, edi = (int)map_element;
-	RCT2_CALLFUNC_X(0x0069A5F0, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return ebp;
+	if (peep->pathfind_goal.direction > 3 ||
+			peep->pathfind_goal.x != x_goal ||
+			peep->pathfind_goal.y != y_goal ||
+			peep->pathfind_goal.z != z_goal) {
+		peep->pathfind_goal.x = x_goal;
+		peep->pathfind_goal.y = y_goal;
+		peep->pathfind_goal.z = z_goal;
+		peep->pathfind_goal.direction = 0;
+		memset(peep->pathfind_history, 0xFF, sizeof(peep->pathfind_history)); // Clear pathfinding history
+	}
+
+	for (int i = 0; i < 4; ++i) {
+		if (peep->pathfind_history[i].x == x / 32 &&
+				peep->pathfind_history[i].y == y / 32 &&
+				peep->pathfind_history[i].z == z) {
+			peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
+			return chosen_edge;
+		}
+	}
+
+	int i = peep->pathfind_goal.direction++;
+	peep->pathfind_goal.direction &= 0x3;
+	peep->pathfind_history[i].x = x / 32;
+	peep->pathfind_history[i].y = y / 32;
+	peep->pathfind_history[i].z = z;
+	peep->pathfind_history[i].direction = 0xF;
+	peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
+
+	return chosen_edge;
 }
 
 /**
@@ -7224,14 +7266,14 @@ static int guest_path_find_entering_park(rct_peep *peep, rct_map_element *map_el
 	sint16 x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[chosenEntrance];
 	sint16 y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[chosenEntrance];
 	sint16 z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, sint16)[chosenEntrance];
-	RCT2_GLOBAL(0x00F1AECE, sint16) = x;
-	RCT2_GLOBAL(0x00F1AED0, sint16) = y;
-	RCT2_GLOBAL(0x00F1AED2, uint8) = z / 8;
+	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X, sint16) = x;
+	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) = y;
+	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Z, uint8) = z / 8;
 
 	RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
 	RCT2_GLOBAL(0x00F1AEE1, uint8) = 0xFF;
 
-	int chosenDirection = sub_69A5F0(peep->next_x, peep->next_y, peep->next_z, peep, map_element);
+	int chosenDirection = guest_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep, map_element);
 
 	if (chosenDirection == -1)
 		return guest_path_find_aimless(peep, edges);
@@ -7256,9 +7298,9 @@ static int guest_path_find_leaving_park(rct_peep *peep, rct_map_element *map_ele
 	uint8 z = peepSpawn->z * 2;
 	uint8 direction = peepSpawn->direction;
 
-	RCT2_GLOBAL(0x00F1AECE, sint16) = x;
-	RCT2_GLOBAL(0x00F1AED0, sint16) = y;
-	RCT2_GLOBAL(0x00F1AED2, uint8) = z;
+	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X, sint16) = x;
+	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) = y;
+	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Z, uint8) = z;
 
 	if (x == peep->next_x && y == peep->next_y){
 		return peep_move_one_tile(direction, peep);
@@ -7266,7 +7308,7 @@ static int guest_path_find_leaving_park(rct_peep *peep, rct_map_element *map_ele
 
 	RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
 	RCT2_GLOBAL(0x00F1AEE1, uint8) = 0xFF;
-	direction = sub_69A5F0(peep->next_x, peep->next_y, peep->next_z, peep, map_element);
+	direction = guest_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep, map_element);
 	if (direction == 0xFF)
 		return guest_path_find_aimless(peep, edges);
 	else
@@ -7314,14 +7356,14 @@ static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_el
 	sint16 x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[entranceNum];
 	sint16 y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[entranceNum];
 	sint16 z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, sint16)[entranceNum];
-	RCT2_GLOBAL(0x00F1AECE, sint16) = x;
-	RCT2_GLOBAL(0x00F1AED0, sint16) = y;
-	RCT2_GLOBAL(0x00F1AED2, uint8) = z / 8;
+	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X, sint16) = x;
+	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) = y;
+	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Z, uint8) = z / 8;
 
 	RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
 	RCT2_GLOBAL(0x00F1AEE1, uint8) = 0xFF;
 
-	int chosenDirection = sub_69A5F0(peep->next_x, peep->next_y, peep->next_z, peep, map_element);
+	int chosenDirection = guest_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep, map_element);
 
 	if (chosenDirection == -1)
 		return guest_path_find_aimless(peep, edges);
@@ -7625,12 +7667,12 @@ static int guest_path_finding(rct_peep* peep)
 	z = ride->station_heights[closestStationNum];
 
 	get_ride_queue_end(&x, &y, &z, closestDist);
-	RCT2_GLOBAL(0x00F1AECE, sint16) = x;
-	RCT2_GLOBAL(0x00F1AED0, sint16) = y;
-	RCT2_GLOBAL(0x00F1AED2, uint8) = (uint8)z;
+	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X, sint16) = x;
+	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) = y;
+	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Z, uint8) = (uint8)z;
 	RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
 
-	direction = sub_69A5F0(peep->next_x, peep->next_y, peep->next_z, peep, mapElement);
+	direction = guest_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep, mapElement);
 	if (direction == -1){
 		return guest_path_find_aimless(peep, edges);
 	}
@@ -8078,7 +8120,7 @@ static void peep_on_exit_ride(rct_peep *peep, int rideIndex)
 	if (peep_should_go_on_ride_again(peep, ride)) {
 		peep->guest_heading_to_ride_id = rideIndex;
 		peep->peep_is_lost_countdown = 200;
-		sub_69A98C(peep);
+		peep_reset_pathfind_goal(peep);
 
 		rct_window *w = window_find_by_number(WC_PEEP, peep->sprite_index);
 		if (w != NULL) {
@@ -8299,7 +8341,7 @@ loc_69B221:
 		peep->umbrella_colour = ride->track_colour_main[0];
 
 	if (shopItem == SHOP_ITEM_MAP)
-		sub_69A98C(peep);
+		peep_reset_pathfind_goal(peep);
 
 	uint16 dl;
 	if (shopItem >= 32)
@@ -8399,12 +8441,12 @@ static bool peep_should_use_cash_machine(rct_peep *peep, int rideIndex)
  *
  *  rct2: 0x0069A98C
  */
-static void sub_69A98C(rct_peep *peep)
+static void peep_reset_pathfind_goal(rct_peep *peep)
 {
-	peep->var_CC.x = 0xFF;
-	peep->var_CC.y = 0xFF;
-	peep->var_CC.z = 0xFF;
-	peep->var_CC.direction = 0xFF;
+	peep->pathfind_goal.x = 0xFF;
+	peep->pathfind_goal.y = 0xFF;
+	peep->pathfind_goal.z = 0xFF;
+	peep->pathfind_goal.direction = 0xFF;
 }
 
 /**
@@ -8925,7 +8967,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 	// Head to that ride
 	peep->guest_heading_to_ride_id = mostExcitingRideIndex;
 	peep->peep_is_lost_countdown = 200;
-	sub_69A98C(peep);
+	peep_reset_pathfind_goal(peep);
 
 	// Invalidate windows
 	rct_window *w = window_find_by_number(WC_PEEP, peep->sprite_index);
@@ -9036,7 +9078,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 	// Head to that ride
 	peep->guest_heading_to_ride_id = closestRideIndex;
 	peep->peep_is_lost_countdown = 200;
-	sub_69A98C(peep);
+	peep_reset_pathfind_goal(peep);
 
 	// Invalidate windows
 	rct_window *w = window_find_by_number(WC_PEEP, peep->sprite_index);
@@ -9148,7 +9190,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 	// Head to that ride
 	peep->guest_heading_to_ride_id = closestRideIndex;
 	peep->peep_is_lost_countdown = 200;
-	sub_69A98C(peep);
+	peep_reset_pathfind_goal(peep);
 
 	// Invalidate windows
 	rct_window *w = window_find_by_number(WC_PEEP, peep->sprite_index);
