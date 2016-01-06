@@ -377,23 +377,20 @@ int object_entry_compare(const rct_object_entry *a, const rct_object_entry *b)
 
 int object_calculate_checksum(const rct_object_entry *entry, const uint8 *data, int dataLength)
 {
-	int i;
-	const char *eee = (char*)entry;
-	int checksum = 0xF369A75B;
-	char *ccc = (char*)&checksum;
+	const uint8 *entryBytePtr = (uint8*)entry;
 
-	*ccc ^= eee[0];
+	uint32 checksum = 0xF369A75B;
+	checksum ^= entryBytePtr[0];
 	checksum = rol32(checksum, 11);
-	for (i = 4; i < 12; i++) {
-		*ccc ^= eee[i];
+	for (int i = 4; i < 12; i++) {
+		checksum ^= entryBytePtr[i];
 		checksum = rol32(checksum, 11);
 	}
-	for (i = 0; i < dataLength; i++) {
-		*ccc ^= data[i];
+	for (int i = 0; i < dataLength; i++) {
+		checksum ^= data[i];
 		checksum = rol32(checksum, 11);
 	}
-
-	return checksum;
+	return (int)checksum;
 }
 
 /**
