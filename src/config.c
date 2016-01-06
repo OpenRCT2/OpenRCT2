@@ -837,10 +837,10 @@ static void config_init_directories()
 	for(i =2; i < countof(_gamePathDefinitions)-1; i++)
 	{
 		size_t offset = _gamePathDefinitions[i].offset;
-		void *root = (&gConfigGamePath);
-		utf8string *path = root + (size_t)offset;
+		size_t root = (size_t)(&gConfigGamePath);
+		utf8string *path = (utf8string *)(root + offset);
 		size_t malloc_size = strlen(gConfigGamePath.game_path_slash) +strlen(subDirectories[i]) + strlen(separator);
-		malloc_size += fileExtensions[i] == NULL ?:strlen(fileExtensions[i]);
+		malloc_size += fileExtensions[i] == NULL?0:strlen(fileExtensions[i]);
 
 		SafeFree(*path);
 		*path = malloc(malloc_size);
