@@ -139,10 +139,11 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 	memcpy(extended_entry, &openedEntry, sizeof(rct_object_entry));
 	extended_entry->chunk_size = *chunkSize;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_CHUNK_POINTER, uint8*) = chunk;
+	gLastLoadedObjectChunkData = chunk;
 
-	if (RCT2_GLOBAL(0x9ADAFD, uint8) != 0)
+	if (RCT2_GLOBAL(0x9ADAFD, uint8) != 0) {
 		object_paint(objectType, 0, groupIndex, objectType, 0, (int)chunk, 0, 0);
+	}
 	return 1;
 }
 
@@ -159,7 +160,7 @@ int object_load(int groupIndex, rct_object_entry *entry, int* chunkSize)
 
 	RCT2_GLOBAL(0xF42B64, uint32) = groupIndex;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) == 0) {
+	if (gInstalledObjectsCount == 0) {
 		RCT2_GLOBAL(0xF42BD9, uint8) = 0;
 		log_error("Object Load failed due to no items installed check.");
 		return 1;
@@ -277,9 +278,9 @@ int object_load_packed(SDL_RWops* rw)
 	extended_entry->chunk_size = chunkSize;
 
 	// Ensure the entry does not already exist.
-	rct_object_entry *installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32)){
-		for (uint32 i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); ++i){
+	rct_object_entry *installedObject = gInstalledObjects;
+	if (gInstalledObjectsCount){
+		for (uint32 i = 0; i < gInstalledObjectsCount; ++i){
 			if (object_entry_compare(&entry, installedObject)){
 				object_unload_all();
 				return 0;
@@ -1521,7 +1522,7 @@ int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi,
  */
 int object_get_scenario_text(rct_object_entry *entry)
 {
-	rct_object_entry *installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	rct_object_entry *installedObject = gInstalledObjects;
 
 	installedObject = object_list_find(entry);
 

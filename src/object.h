@@ -93,6 +93,13 @@ typedef struct {
 extern rct_object_entry_group object_entry_groups[];
 extern char gTempObjectLoadName[9];
 
+extern uint32 gInstalledObjectsCount;
+extern rct_object_entry *gInstalledObjects;
+extern uint32 gNumInstalledRCT2Objects;
+extern uint32 gNumInstalledCustomObjects;
+
+extern void *gLastLoadedObjectChunkData;
+
 int object_load_entry(const utf8 *path, rct_object_entry *outEntry);
 void object_list_load();
 void set_load_objects_fail_reason();

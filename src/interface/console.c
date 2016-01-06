@@ -724,12 +724,12 @@ static int cc_twitch(const utf8 **argv, int argc)
 static void editor_load_selected_objects_console()
 {
 	uint8 *selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry *installed_entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	rct_object_entry *installed_entry = gInstalledObjects;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) == 0)
+	if (gInstalledObjectsCount == 0)
 		return;
 
-	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i != 0; i--, selection_flags++) {
+	for (int i = gInstalledObjectsCount; i != 0; i--, selection_flags++) {
 		if (*selection_flags & 1) {
 			uint8 entry_index, entry_type;
 			if (!find_object_in_entry_group(installed_entry, &entry_type, &entry_index)){
