@@ -324,7 +324,7 @@ void scenario_begin()
 	strncat(gScenarioSavePath, parkName, sizeof(gScenarioSavePath) - strlen(gScenarioSavePath) - 1);
 	strncat(gScenarioSavePath, ".sv6", sizeof(gScenarioSavePath) - strlen(gScenarioSavePath) - 1);
 
-	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)RCT2_ADDRESS_SAVED_GAMES_PATH);
+	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)gConfigGamePath.saved_game_path);
 	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2 + strlen((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2), gScenarioSavePath);
 	strcat((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, ".SV6");
 
@@ -379,7 +379,7 @@ void scenario_end()
 
 void scenario_set_filename(const char *value)
 {
-	substitute_path(_scenarioPath, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), value);
+	substitute_path(_scenarioPath, gConfigGamePath.scenario_path, value);
 	_scenarioFileName = path_get_filename(_scenarioPath);
 }
 

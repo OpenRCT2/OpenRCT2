@@ -333,7 +333,7 @@ static int show_save_scenario_dialog(char *resultPath)
 
 
 	format_string(title, STR_SAVE_SCENARIO, NULL);
-	substitute_path(filename, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), s6Info->name);
+	substitute_path(filename, gConfigGamePath.scenario_path, s6Info->name);
 	strcat(filename, ".SC6");
 	format_string(filterName, STR_RCT2_SCENARIO_FILE, NULL);
 

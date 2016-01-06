@@ -270,7 +270,7 @@ static void track_list_query_directory(int *outTotalFiles){
 	*outTotalFiles = 0;
 
 	// Enumerate through each track in the directory
-	enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char));
+	enumFileHandle = platform_enumerate_files_begin(gConfigGamePath.tracks_path);
 	if (enumFileHandle == INVALID_HANDLE)
 		return;
 
@@ -428,7 +428,7 @@ void track_load_list(ride_list_item item)
 		uint8* new_file_pointer = new_track_file;
 		file_info enumFileInfo;
 
-		int enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char));
+		int enumFileHandle = platform_enumerate_files_begin(gConfigGamePath.tracks_path);
 		if (enumFileHandle == INVALID_HANDLE)
 		{
 			free(new_file_pointer);
@@ -439,7 +439,7 @@ void track_load_list(ride_list_item item)
 			if (new_file_pointer > new_track_file + 0x3FF00)break;
 
 			char path[MAX_PATH];
-			substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), enumFileInfo.path);
+			substitute_path(path, gConfigGamePath.tracks_path, enumFileInfo.path);
 
 			rct_track_td6* loaded_track = load_track_design(path);
 			if (loaded_track){
@@ -2269,7 +2269,7 @@ rct_track_design *track_get_info(int index, uint8** preview)
 		RCT2_ADDRESS(RCT2_ADDRESS_TRACK_DESIGN_INDEX_CACHE, uint32)[i] = index;
 
 		char track_path[MAX_PATH] = { 0 };
-		substitute_path(track_path, (char*)RCT2_ADDRESS_TRACKS_PATH, (char *)trackDesignList + (index * 128));
+		substitute_path(track_path, (char*)gConfigGamePath.tracks_path, (char *)trackDesignList + (index * 128));
 
 		rct_track_td6* loaded_track = NULL;
 
@@ -2324,13 +2324,13 @@ int track_rename(const char *text)
 	}
 
 	char new_path[MAX_PATH];
-	substitute_path(new_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), text);
+	substitute_path(new_path, gConfigGamePath.tracks_path, text);
 	strcat(new_path, ".TD6");
 
 	rct_window* w = window_find_by_class(WC_TRACK_DESIGN_LIST);
 
 	char old_path[MAX_PATH];
-	substitute_path(old_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), &RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char)[128 * w->track_list.var_482]);
+	substitute_path(old_path, gConfigGamePath.tracks_path, &RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char)[128 * w->track_list.var_482]);
 
 	if (!platform_file_move(old_path, new_path)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED;
@@ -2359,7 +2359,7 @@ int track_delete()
 	rct_window* w = window_find_by_class(WC_TRACK_DESIGN_LIST);
 
 	char path[MAX_PATH];
-	substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), &RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char)[128 * w->track_list.var_482]);
+	substitute_path(path, gConfigGamePath.tracks_path, &RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char)[128 * w->track_list.var_482]);
 
 	if (!platform_file_delete(path)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED;
@@ -3091,7 +3091,7 @@ int save_track_design(uint8 rideIndex){
 	format_string(track_name, ride->name, &ride->name_arguments);
 
 	char path[MAX_PATH];
-	substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), track_name);
+	substitute_path(path, gConfigGamePath.tracks_path, track_name);
 
 	// Save track design
 	format_string(RCT2_ADDRESS(0x141ED68, char), 2306, NULL);
@@ -3237,7 +3237,7 @@ int install_track(char* source_path, char* dest_name){
 	strcat(track_name, ".TD4");
 
 	char dest_path[MAX_PATH];
-	substitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), track_name);
+	substitute_path(dest_path, gConfigGamePath.tracks_path, track_name);
 
 	if (platform_file_exists(dest_path))
 		return 2;
@@ -3248,13 +3248,13 @@ int install_track(char* source_path, char* dest_name){
 	// Check if .TD6 file exists under that name
 	strcat(track_name, ".TD6");
 
-	substitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), track_name);
+	substitute_path(dest_path, gConfigGamePath.tracks_path, track_name);
 
 	if (platform_file_exists(dest_path))
 		return 2;
 
 	// Set path for actual copy
-	substitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), dest_name);
+	substitute_path(dest_path, gConfigGamePath.tracks_path, dest_name);
 
 	return platform_file_copy(source_path, dest_path, false);
 }
