@@ -93,11 +93,13 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 	}
 	SDL_RWclose(rw);
 
-
+	int calculatedChecksum=object_calculate_checksum(&openedEntry, chunk, *chunkSize);
 
 	// Calculate and check checksum
-	if (object_calculate_checksum(&openedEntry, chunk, *chunkSize) != openedEntry.checksum) {
-		log_error("Object Load failed due to checksum failure.");
+	if (calculatedChecksum != openedEntry.checksum) {
+		char buffer[100];
+		sprintf(buffer, "Object Load failed due to checksum failure: calculated checksum %d, object says %d.", calculatedChecksum, (int)openedEntry.checksum);
+		log_error(buffer);
 		RCT2_GLOBAL(0x00F42BD9, uint8) = 2;
 		rct2_free(chunk);
 		return 0;
@@ -233,7 +235,7 @@ int object_load_packed(SDL_RWops* rw)
 	}
 
 	if (object_calculate_checksum(&entry, chunk, chunkSize) != entry.checksum){
-		log_error("Checksum missmatch from packed object: %.8s", entry.name);
+		log_error("Checksum mismatch from packed object: %.8s", entry.name);
 		rct2_free(chunk);
 		return 0;
 	}
@@ -355,7 +357,7 @@ void object_unload(rct_object_entry *entry)
 int object_entry_compare(const rct_object_entry *a, const rct_object_entry *b)
 {
 	// If an official object don't bother checking checksum
-	if (a->flags & 0xF0) {
+	if ((a->flags & 0xF0) || (b->flags & 0xF0)) {
 		if ((a->flags & 0x0F) != (b->flags & 0x0F))
 			return 0;
 		int match = memcmp(a->name, b->name, 8);
@@ -1569,7 +1571,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 
 			if (object_paint(openedEntry.flags & 0x0F, 2, 0, 0, 0, (int)chunk, 0, 0)) {
 				// This is impossible for STEX entries to fail.
-				log_error("Opened object failed paitn test.");
+				log_error("Opened object failed paint test.");
 				RCT2_GLOBAL(0x00F42BD9, uint8) = 3;
 				free(chunk);
 				return 0;
