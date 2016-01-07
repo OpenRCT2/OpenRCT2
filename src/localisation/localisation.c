@@ -760,7 +760,7 @@ void format_string_part_from_raw(utf8 **dest, const utf8 *src, char **args)
 
 void format_string_part(utf8 **dest, rct_string_id format, char **args)
 {
-	if (format == (rct_string_id)STR_NONE) {
+	if (format == STR_NONE) {
 		**dest = 0;
 	} else if (format < 0x8000) {
 		// Language string

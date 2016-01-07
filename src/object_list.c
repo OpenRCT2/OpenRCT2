@@ -773,7 +773,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 	// Always extract only the vehicle type, since the track type is always displayed in the left column, to prevent duplicate track names.
 	rct_string_id nameStringId = object_get_name_string_id(entry, chunk);
-	if (nameStringId == (rct_string_id)STR_NONE) {
+	if (nameStringId == STR_NONE) {
 		nameStringId = (rct_string_id)RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32);
 	}
 

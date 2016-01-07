@@ -556,7 +556,7 @@ static void initialise_list_items(rct_window *w)
 				}
 			}
 		}
-		if (headingStringId != (rct_string_id)STR_NONE) {
+		if (headingStringId != STR_NONE) {
 			// Ensure list capacity
 			if (length == capacity) {
 				capacity += 32;

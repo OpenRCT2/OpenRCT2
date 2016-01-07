@@ -285,13 +285,13 @@ void scenario_begin()
 
 		rct_string_id localisedStringIds[3];
 		if (language_get_localised_scenario_strings(normalisedName, localisedStringIds)) {
-			if (localisedStringIds[0] != (rct_string_id)STR_NONE) {
+			if (localisedStringIds[0] != STR_NONE) {
 				safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(localisedStringIds[0]), 32);
 			}
-			if (localisedStringIds[1] != (rct_string_id)STR_NONE) {
+			if (localisedStringIds[1] != STR_NONE) {
 				park_set_name(language_get_string(localisedStringIds[1]));
 			}
-			if (localisedStringIds[2] != (rct_string_id)STR_NONE) {
+			if (localisedStringIds[2] != STR_NONE) {
 				safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, language_get_string(localisedStringIds[2]), 256);
 			}
 		} else {

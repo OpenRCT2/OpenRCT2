@@ -111,7 +111,7 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 
 	// Enter in the the text input buffer any existing
 	// text.
-	if (existing_text != (rct_string_id)STR_NONE)
+	if (existing_text != STR_NONE)
 		format_string(text_input, existing_text, &existing_args);
 
 	// In order to prevent strings that exceed the maxLength
