@@ -684,7 +684,7 @@ static void top_spin_paint_tile_6(uint8 rideIndex, uint8 trackSequence, uint8 di
 	RCT2_GLOBAL(0x141E9CA, uint16) = 32;
 	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
 	RCT2_GLOBAL(0x141E9D0, uint16) = height + 2;
-	RCT2_GLOBAL(0x141E9D0, uint16) = 32;
+	RCT2_GLOBAL(0x141E9D2, uint16) = 32;
 	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
 
 	height += 110;
