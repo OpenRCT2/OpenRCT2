@@ -1531,6 +1531,10 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 
 	rideIndex = mapElement->properties.track.ride_index;
 	ride = GET_RIDE(rideIndex);
+	if (ride->type == RIDE_TYPE_NULL) {
+		log_error("Attempted to paint invalid ride: %d", rideIndex);
+		return;
+	}
 
 	// HACK Set entrance style to plain if none to stop glitch until entrance track piece is implemented
 	bool isEntranceStyleNone = false;
