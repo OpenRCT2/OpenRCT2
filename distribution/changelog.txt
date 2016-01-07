@@ -7,6 +7,7 @@
 - Feature: Allow enabling / disabling of different notifications.
 - Feature: Improved tile inspector.
 - Feature: Integrate RCT1 style scenario select with optional unlock progression.
+- Fix: [#1333] Rides never become safe again after a crash.
 - Fix: [#2126] Ferris Wheels set to "backward rotation" stop working (original bug)
 - Fix: [#2449] Turning off Day/Night Circle while it is night doesn't reset back to day
 - Fix: [#2650] Server did not validate actions send from clients (caused error box and desynchronisation)

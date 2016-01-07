@@ -132,8 +132,8 @@ void finance_pay_ride_upkeep()
 		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)) {
 			ride->build_date = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
 			ride->reliability = RIDE_INITIAL_RELIABILITY;
-
 		}
+
 		if (ride->status != RIDE_STATUS_CLOSED && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
 			sint16 upkeep = ride->upkeep_cost;
 			if (upkeep != -1) {
@@ -141,6 +141,10 @@ void finance_pay_ride_upkeep()
 				ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 				finance_payment(upkeep, RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS);
 			}
+		}
+
+		if (ride->last_crash_type != RIDE_CRASH_TYPE_NONE) {
+			ride->last_crash_type--;
 		}
 	}
 }
