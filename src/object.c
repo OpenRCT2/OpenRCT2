@@ -83,12 +83,12 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 	uint8 *chunk;
 
 	if (*chunkSize == 0xFFFFFFFF) {
-		chunk = rct2_malloc(0x600000);
+		chunk = (uint8*)malloc(0x600000);
 		*chunkSize = sawyercoding_read_chunk(rw, chunk);
 		chunk = rct2_realloc(chunk, *chunkSize);
 	}
 	else {
-		chunk = rct2_malloc(*chunkSize);
+		chunk = (uint8*)malloc(*chunkSize);
 		*chunkSize = sawyercoding_read_chunk(rw, chunk);
 	}
 	SDL_RWclose(rw);
@@ -101,7 +101,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 		sprintf(buffer, "Object Load failed due to checksum failure: calculated checksum %d, object says %d.", calculatedChecksum, (int)openedEntry.checksum);
 		log_error(buffer);
 		RCT2_GLOBAL(0x00F42BD9, uint8) = 2;
-		rct2_free(chunk);
+		free(chunk);
 		return 0;
 	}
 
@@ -110,14 +110,14 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 	if (!object_test(objectType, chunk)) {
 		log_error("Object Load failed due to paint failure.");
 		RCT2_GLOBAL(0x00F42BD9, uint8) = 3;
-		rct2_free(chunk);
+		free(chunk);
 		return 0;
 	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) >= 0x4726E){
 		log_error("Object Load failed due to too many images loaded.");
 		RCT2_GLOBAL(0x00F42BD9, uint8) = 4;
-		rct2_free(chunk);
+		free(chunk);
 		return 0;
 	}
 
@@ -127,7 +127,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 			if (groupIndex + 1 >= object_entry_group_counts[objectType]) {
 				log_error("Object Load failed due to too many objects of a certain type.");
 				RCT2_GLOBAL(0x00F42BD9, uint8) = 5;
-				rct2_free(chunk);
+				free(chunk);
 				return 0;
 			}
 		}
@@ -196,7 +196,7 @@ int write_object_file(SDL_RWops *rw, rct_object_entry* entry)
 	object_unload(type, chunk);
 
 	rct_object_entry_extended* installed_entry = &object_entry_groups[type].entries[entryGroupIndex];
-	uint8* dst_buffer = malloc(0x600000);
+	uint8* dst_buffer = (uint8*)malloc(0x600000);
 	memcpy(dst_buffer, installed_entry, sizeof(rct_object_entry));
 
 	uint32 size_dst = sizeof(rct_object_entry);
@@ -227,7 +227,7 @@ int object_load_packed(SDL_RWops* rw)
 
 	SDL_RWread(rw, &entry, 16, 1);
 
-	uint8* chunk = rct2_malloc(0x600000);
+	uint8* chunk = (uint8*)malloc(0x600000);
 	uint32 chunkSize = sawyercoding_read_chunk(rw, chunk);
 	chunk = rct2_realloc(chunk, chunkSize);
 
@@ -238,7 +238,7 @@ int object_load_packed(SDL_RWops* rw)
 
 	if (object_calculate_checksum(&entry, chunk, chunkSize) != entry.checksum){
 		log_error("Checksum mismatch from packed object: %.8s", entry.name);
-		rct2_free(chunk);
+		free(chunk);
 		return 0;
 	}
 
@@ -246,13 +246,13 @@ int object_load_packed(SDL_RWops* rw)
 
 	if (!object_test(type, chunk)) {
 		log_error("Packed object failed paint test.");
-		rct2_free(chunk);
+		free(chunk);
 		return 0;
 	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) >= 0x4726E){
 		log_error("Packed object has too many images.");
-		rct2_free(chunk);
+		free(chunk);
 		return 0;
 	}
 
@@ -268,7 +268,7 @@ int object_load_packed(SDL_RWops* rw)
 		// This should never occur. Objects are not loaded before installing a
 		// packed object. So there is only one object loaded at this point.
 		log_error("Too many objects of the same type loaded.");
-		rct2_free(chunk);
+		free(chunk);
 		return 0;
 	}
 
@@ -352,7 +352,7 @@ void object_unload_chunk(rct_object_entry *entry)
 
 	object_unload(object_type, chunk);
 
-	rct2_free(chunk);
+	free(chunk);
 	object_entry_groups[object_type].chunks[object_index] = (uint8*)-1;
 }
 
@@ -1650,12 +1650,12 @@ int object_get_scenario_text(rct_object_entry *entry)
 
 			uint8 *chunk;
 			if (chunkSize == 0xFFFFFFFF) {
-				chunk = malloc(0x600000);
+				chunk = (uint8*)malloc(0x600000);
 				chunkSize = sawyercoding_read_chunk(rw, chunk);
 				chunk = realloc(chunk, chunkSize);
 			}
 			else {
-				chunk = malloc(chunkSize);
+				chunk = (uint8*)malloc(chunkSize);
 				sawyercoding_read_chunk(rw, chunk);
 			}
 			SDL_RWclose(rw);
