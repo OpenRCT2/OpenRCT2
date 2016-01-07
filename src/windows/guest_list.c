@@ -572,10 +572,11 @@ static void window_guest_list_invalidate(rct_window *w)
 	window_guest_list_widgets[WIDX_TITLE].right = w->width - 2;
 	window_guest_list_widgets[WIDX_CLOSE].left = w->width - 13;
 	window_guest_list_widgets[WIDX_CLOSE].right = w->width - 3;
-
 	window_guest_list_widgets[WIDX_GUEST_LIST].right = w->width - 4;
 	window_guest_list_widgets[WIDX_GUEST_LIST].bottom = w->height - 15;
 	window_guest_list_widgets[WIDX_PAGE_DROPDOWN].image = _window_guest_list_selected_page + 3440;
+	window_guest_list_widgets[WIDX_TRACKING].left = 321 - 350 + w->width;
+	window_guest_list_widgets[WIDX_TRACKING].right = 344 - 350 + w->width;
 }
 
 /**

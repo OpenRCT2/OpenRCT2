@@ -104,9 +104,9 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
 	WIDX_STAFF_LIST_LIST,
 	WIDX_STAFF_LIST_UNIFORM_COLOR_PICKER,
 	WIDX_STAFF_LIST_HIRE_BUTTON,
+	WIDX_STAFF_LIST_QUICK_FIRE,
 	WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON,
 	WIDX_STAFF_LIST_MAP,
-	WIDX_STAFF_LIST_QUICK_FIRE,
 };
 
 static rct_widget window_staff_list_widgets[] = {
@@ -121,9 +121,9 @@ static rct_widget window_staff_list_widgets[] = {
 	{ WWT_SCROLL,			1,	3,		316,	72,		266,	3,								STR_NONE },							// staff list
 	{ WWT_COLORBTN,			1,	130,	141,	58,		69,		STR_NONE,						STR_UNIFORM_COLOUR_TIP },			// uniform color picker
 	{ WWT_DROPDOWN_BUTTON,	0,	165,	309,	17,		29,		STR_NONE,						STR_HIRE_STAFF_TIP },				// hire button
+	{ WWT_FLATBTN,			1,	243,	266,	46,		69,		SPR_DEMOLISH,					5300 },								// quick fire staff
 	{ WWT_FLATBTN,			1,	267,	290,	46,		69,		5175,							STR_SHOW_PATROL_AREA_TIP },			// show staff patrol area tool
 	{ WWT_FLATBTN,			1,	291,	314,	46,		69,		5192,							STR_SHOW_STAFF_ON_MAP_TIP },		// show staff on map button
-	{ WWT_FLATBTN,			1,	243,	266,	46,		69,		SPR_DEMOLISH,					5300 },		// quick fire staff
 	{ WIDGETS_END },
 };
 
@@ -485,7 +485,7 @@ void window_staff_list_invalidate(rct_window *w)
 	uint8 tabIndex = RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8);
 	uint8 widgetIndex = tabIndex + 4;
 
-	w->pressed_widgets = pressed_widgets | (1 << widgetIndex);
+	w->pressed_widgets = pressed_widgets | (1ULL << widgetIndex);
 	window_staff_list_widgets[WIDX_STAFF_LIST_HIRE_BUTTON].image = STR_HIRE_HANDYMAN + tabIndex;
 	window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOR_PICKER].type = WWT_EMPTY;
 
@@ -496,9 +496,9 @@ void window_staff_list_invalidate(rct_window *w)
 			0x600013C3;
 	}
 	if (_quick_fire_mode)
-		w->pressed_widgets |= (1 << WIDX_STAFF_LIST_QUICK_FIRE);
+		w->pressed_widgets |= (1ULL << WIDX_STAFF_LIST_QUICK_FIRE);
 	else
-		w->pressed_widgets &= ~(1 << WIDX_STAFF_LIST_QUICK_FIRE);
+		w->pressed_widgets &= ~(1ULL << WIDX_STAFF_LIST_QUICK_FIRE);
 
 	window_staff_list_widgets[WIDX_STAFF_LIST_BACKGROUND].right = w->width - 1;
 	window_staff_list_widgets[WIDX_STAFF_LIST_BACKGROUND].bottom = w->height - 1;
@@ -509,6 +509,14 @@ void window_staff_list_invalidate(rct_window *w)
 	window_staff_list_widgets[WIDX_STAFF_LIST_CLOSE].right = w->width - 2 - 0x0B + 0x0A;
 	window_staff_list_widgets[WIDX_STAFF_LIST_LIST].right = w->width - 4;
 	window_staff_list_widgets[WIDX_STAFF_LIST_LIST].bottom = w->height - 0x0F;
+	window_staff_list_widgets[WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON].left = 243 - 320 + w->width;
+	window_staff_list_widgets[WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON].right = 266 - 320 + w->width;
+	window_staff_list_widgets[WIDX_STAFF_LIST_MAP].left = 267 - 320 + w->width;
+	window_staff_list_widgets[WIDX_STAFF_LIST_MAP].right = 290 - 320 + w->width;
+	window_staff_list_widgets[WIDX_STAFF_LIST_QUICK_FIRE].left = 291 - 320 + w->width;
+	window_staff_list_widgets[WIDX_STAFF_LIST_QUICK_FIRE].right = 314 - 320 + w->width;
+	window_staff_list_widgets[WIDX_STAFF_LIST_HIRE_BUTTON].left = 165 - 320 + w->width;
+	window_staff_list_widgets[WIDX_STAFF_LIST_HIRE_BUTTON].right = 309 - 320 + w->width;
 }
 
 /**
