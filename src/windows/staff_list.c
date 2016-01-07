@@ -308,13 +308,11 @@ void window_staff_list_update(rct_window *w)
 	} else {
 		widget_invalidate(w, WIDX_STAFF_LIST_HANDYMEN_TAB + RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8));
 		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) |= (1 << 2);
-		FOR_ALL_PEEPS(spriteIndex, peep) {
-			if (peep->type == PEEP_TYPE_STAFF) {
-				peep->list_flags &= ~(PEEP_LIST_FLAGS_FLASHING);
+		FOR_ALL_STAFF(spriteIndex, peep) {
+			peep->list_flags &= ~(PEEP_LIST_FLAGS_FLASHING);
 
-				if (peep->staff_type == RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8)) {
-					peep->list_flags |= PEEP_LIST_FLAGS_FLASHING;
-				}
+			if (peep->staff_type == RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8)) {
+				peep->list_flags |= PEEP_LIST_FLAGS_FLASHING;
 			}
 		}
 	}
@@ -401,8 +399,8 @@ void window_staff_list_scrollgetsize(rct_window *w, int scrollIndex, int *width,
 	rct_peep *peep;
 
 	uint16 staffCount = 0;
-	FOR_ALL_PEEPS(spriteIndex, peep) {
-		if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8))
+	FOR_ALL_STAFF(spriteIndex, peep) {
+		if (peep->staff_type == RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8))
 			staffCount++;
 	}
 
@@ -435,10 +433,7 @@ void window_staff_list_scrollmousedown(rct_window *w, int scrollIndex, int x, in
 	rct_peep *peep;
 
 	i = y / 10;
-	FOR_ALL_PEEPS(spriteIndex, peep) {
-		if (peep->type != PEEP_TYPE_STAFF)
-			continue;
-
+	FOR_ALL_STAFF(spriteIndex, peep) {
 		if (peep->staff_type != RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8))
 			continue;
 
@@ -626,8 +621,8 @@ void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
 	y = 0;
 	i = 0;
 	selectedTab = RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8);
-	FOR_ALL_PEEPS(spriteIndex, peep) {
-		if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == selectedTab) {
+	FOR_ALL_STAFF(spriteIndex, peep) {
+		if (peep->staff_type == selectedTab) {
 			if (y > dpi->y + dpi->height) {
 				break;
 			}
