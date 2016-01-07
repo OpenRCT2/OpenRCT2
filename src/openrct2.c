@@ -167,10 +167,10 @@ static void openrct2_copy_original_user_files_over()
 	utf8 path[MAX_PATH];
 
 	platform_get_user_directory(path, "save");
-	openrct2_copy_files_over((utf8*)gConfigGamePath.saved_game_path, path, ".sv6");
+	openrct2_copy_files_over((utf8*)gConfigGamePath.saved_game, path, ".sv6");
 
 	platform_get_user_directory(path, "landscape");
-	openrct2_copy_files_over((utf8*)gConfigGamePath.landscapes_path, path, ".sc6");
+	openrct2_copy_files_over((utf8*)gConfigGamePath.landscapes, path, ".sc6");
 }
 
 bool openrct2_initialise()

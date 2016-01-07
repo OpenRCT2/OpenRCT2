@@ -748,7 +748,7 @@ static int cc_load_object(const utf8 **argv, int argc) {
 	if (argc > 0) {
 		utf8 path[MAX_PATH];
 
-		substitute_path(path, gConfigGamePath.object_data_path, argv[0]);
+		substitute_path(path, gConfigGamePath.object_data, argv[0]);
 		// Require pointer to start of filename
 		utf8* last_char = path + strlen(path);
 		strcat(path, ".DAT\0");

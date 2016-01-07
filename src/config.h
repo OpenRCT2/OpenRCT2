@@ -133,13 +133,13 @@ enum {
 	SCENARIO_SELECT_MODE_ORIGIN,
 };
 typedef struct {
-	utf8string game_path;
-	utf8string saved_game_path;
-	utf8string scenario_path;
-	utf8string landscapes_path;
-	utf8string object_data_path;
-	utf8string tracks_path;
-	utf8string saved_game_path_2;
+	utf8string installed_game;
+	utf8string saved_game;
+	utf8string scenario;
+	utf8string landscapes;
+	utf8string object_data;
+	utf8string tracks;
+	utf8string buffer;
 } game_path_configuration;
 
 typedef struct {

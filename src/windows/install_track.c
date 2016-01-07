@@ -182,7 +182,7 @@ static void window_install_track_select(rct_window *w, int index)
 		1);
 
 	char track_path[MAX_PATH] = { 0 };
-	substitute_path(track_path, (char*)gConfigGamePath.tracks_path, trackDesignItem);
+	substitute_path(track_path, (char*)gConfigGamePath.tracks, trackDesignItem);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
 		window_track_manage_open();
