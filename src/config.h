@@ -134,7 +134,6 @@ enum {
 };
 typedef struct {
 	utf8string game_path;
-	utf8string game_path_slash;
 	utf8string saved_game_path;
 	utf8string scenario_path;
 	utf8string landscapes_path;

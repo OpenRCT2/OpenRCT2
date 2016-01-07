@@ -162,7 +162,6 @@ config_enum_definition _dateFormatEnum[] = {
 #pragma region Section / property definitions
 config_property_definition _gamePathDefinitions[] = {
 	{ offsetof(game_path_configuration, game_path),						"game_path",					CONFIG_VALUE_TYPE_STRING,		{ .value_string = NULL },		NULL					},
-	{ offsetof(game_path_configuration, game_path_slash),				"game_path_slash",				CONFIG_VALUE_TYPE_STRING,		{ .value_string = NULL },		NULL					},
 	{ offsetof(game_path_configuration, saved_game_path),				"saved_game_path",				CONFIG_VALUE_TYPE_STRING,		{ .value_string = NULL },		NULL					},
 	{ offsetof(game_path_configuration, scenario_path),					"scenario_path",				CONFIG_VALUE_TYPE_STRING,		{ .value_string = NULL },		NULL					},
 	{ offsetof(game_path_configuration, landscapes_path),				"landscapes_path",				CONFIG_VALUE_TYPE_STRING,		{ .value_string = NULL },		NULL					},
@@ -825,26 +824,26 @@ static bool config_find_rct2_path(utf8 *resultPath)
 static void config_init_directories()
 {
 	char separator[] = {platform_get_path_separator(), 0};
-	char *subDirectories[] = {NULL, NULL, "Saved games\0", "Scenarios\0", "Landscapes", "ObjData", "Tracks"};
-	char *fileExtensions[] = {NULL, NULL, "\0", "*.SC6", "*.SC6", "*.DAT", "*.TD?" };
+	char *subDirectories[] = {NULL, "Saved games\0", "Scenarios\0", "Landscapes", "ObjData", "Tracks"};
+	char *fileExtensions[] = {NULL, "\0", "*.SC6", "*.SC6", "*.DAT", "*.TD?" };
 	int i;
+	utf8string root_directory_slash =NULL;
 
-	SafeFree(gConfigGamePath.game_path_slash);
-	gConfigGamePath.game_path_slash = malloc(strlen(gConfigGamePath.game_path + strlen(separator)));
-	safe_strcat(gConfigGamePath.game_path_slash, gConfigGamePath.game_path, MAX_PATH);
-	safe_strcat(gConfigGamePath.game_path_slash, separator, MAX_PATH);
+	root_directory_slash = malloc(strlen(gConfigGamePath.game_path + strlen(separator)));
+	safe_strcat(root_directory_slash, gConfigGamePath.game_path, MAX_PATH);
+	safe_strcat(root_directory_slash, separator, MAX_PATH);
 
 	for(i =2; i < countof(_gamePathDefinitions)-1; i++)
 	{
 		size_t offset = _gamePathDefinitions[i].offset;
 		size_t root = (size_t)(&gConfigGamePath);
 		utf8string *path = (utf8string *)(root + offset);
-		size_t malloc_size = strlen(gConfigGamePath.game_path_slash) +strlen(subDirectories[i]) + strlen(separator);
+		size_t malloc_size = strlen(root_directory_slash) + strlen(subDirectories[i]) + strlen(separator);
 		malloc_size += fileExtensions[i] == NULL?0:strlen(fileExtensions[i]);
 
 		SafeFree(*path);
 		*path = malloc(malloc_size);
-		safe_strcat(*path, gConfigGamePath.game_path_slash, MAX_PATH);
+		safe_strncpy(*path, root_directory_slash, MAX_PATH);
 		safe_strcat(*path, subDirectories[i], MAX_PATH);
 		safe_strcat(*path, separator, MAX_PATH);
 		safe_strcat(*path, fileExtensions[i], MAX_PATH);
@@ -853,6 +852,8 @@ static void config_init_directories()
 	SafeFree(gConfigGamePath.saved_game_path_2);
 	gConfigGamePath.saved_game_path_2 = malloc(strlen(gConfigGamePath.saved_game_path));
 	safe_strncpy(gConfigGamePath.saved_game_path_2, gConfigGamePath.saved_game_path, MAX_PATH);
+
+	free(root_directory_slash);
 }
 
 bool config_find_or_browse_install_directory()
