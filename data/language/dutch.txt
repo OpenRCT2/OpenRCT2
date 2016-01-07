@@ -3989,7 +3989,7 @@ STR_DTLS    :Bouw vanaf het begin een pretpark rond een groot meer.
 <Diamond Heights>
 STR_SCNR    :Diamond Heights
 STR_PARK    :Diamond Heights
-STR_DTLS    :Diamond Heights is al een succesvol pretpark met fantastische attractions - verander het om de waarde ervan te verdubbelen.
+STR_DTLS    :Diamond Heights is al een succesvol pretpark met fantastische attracties - verander het om de waarde ervan te verdubbelen.
 
 <Evergreen Gardens>
 STR_SCNR    :Evergreen Gardens
@@ -3999,87 +3999,87 @@ STR_DTLS    :Verander de schitterende Evergreen Gardens in een bloeiend pretpark
 <Bumbly Beach>
 STR_SCNR    :Bumbly Beach
 STR_PARK    :Bumbly Beach
-STR_DTLS    :Develop Bumbly Beach's small amusement park into a thriving theme park
+STR_DTLS    :Verander het kleine amusementspark van Bumbly Beach in een succesvol pretpark.
 
 <Trinity Islands>
 STR_SCNR    :Trinity Islands
 STR_PARK    :Trinity Islands
-STR_DTLS    :Several islands form the basis for this new park
+STR_DTLS    :Verscheidene eilanden vormen de basis voor dit nieuwe park.
 
 <Katie's Dreamland>
 STR_SCNR    :Katie's Dreamland
 STR_PARK    :Katie's Dreamland
-STR_DTLS    :A small theme park with a few rides and room for expansion - Your aim is to double the park value
+STR_DTLS    :Een klein pretpark met een paar attracties en ruimte voor uitbreiding - jouw doel is om de parkwaarde te verdubbelen.
 
 <Pokey Park>
 STR_SCNR    :Pokey Park
 STR_PARK    :Pokey Park
-STR_DTLS    :A small, cramped amusement park which requires major expansion
+STR_DTLS    :Een klein, krap pretpark dat grote uitbreiding vereist.
 
 <White Water Park>
 STR_SCNR    :White Water Park
 STR_PARK    :White Water Park
-STR_DTLS    :A park with some excellent water-based rides requires expansion
+STR_DTLS    :Een park met enkele uitstekende waterattracties vereist uitbreiding
 
 <Millennium Mines>
 STR_SCNR    :Millennium Mines
 STR_PARK    :Millennium Mines
-STR_DTLS    :Convert a large abandoned mine from a tourist attraction into a theme park
+STR_DTLS    :Verander een grote verlaten mijn, een toeristische attractie, in een pretpark.
 
 <Karts & Coasters>
 STR_SCNR    :Karts & Coasters
 STR_PARK    :Karts & Coasters
-STR_DTLS    :A large park hidden in the forest, with only go-kart tracks and wooden roller coasters
+STR_DTLS    :Een groot park, verscholen in het bos, met alleen kartbanen en houten achtbanen.
 
 <Mel's World>
 STR_SCNR    :Mel's World
 STR_PARK    :Mel's World
-STR_DTLS    :This theme park has some well-designed modern rides, but plenty of space for expansion
+STR_DTLS    :Dit pretpark heeft goed ontworpen, moderne attractions, maar heeft ook veel ruimte voor uitbreiding.
 
 <Mystic Mountain>
 STR_SCNR    :Mystic Mountain
 STR_PARK    :Mystic Mountain
-STR_DTLS    :In the hilly forests of Mystic Mountain, build a theme park from scratch
+STR_DTLS    :Bouw vanaf het begin een pretpark in de heuvelachtige bossen van Mystic Mountain.
 
 <Pacific Pyramids>
 STR_SCNR    :Pacific Pyramids
 STR_PARK    :Pacific Pyramids
-STR_DTLS    :Convert the Egyptian Ruins tourist attraction into a thriving theme park
+STR_DTLS    :Verander de Egyptische ruïnes, een toeristische attractions, in een bloeiend pretpark.
 
 <Crumbly Woods>
 STR_SCNR    :Crumbly Woods
 STR_PARK    :Crumbly Woods
-STR_DTLS    :A large park with well-designed but rather old rides - Replace the old rides or add new rides to make the park more popular
+STR_DTLS    :Een groot park met goed ontwerpen maar nogal oude attracties - vervang de oude attracties of voeg nieuwe toe om het park populairder te maken.
 
 <Paradise Pier>
 STR_SCNR    :Paradise Pier
 STR_PARK    :Paradise Pier
-STR_DTLS    :Convert this sleepy town's pier into a thriving attraction
+STR_DTLS    :Verander de pier van dit slaperige stadje in een bloeiende attractie.
 
 <Lightning Peaks>
 STR_SCNR    :Lightning Peaks
 STR_PARK    :Lightning Peaks
-STR_DTLS    :The beautiful mountains of Lightning Peaks are popular with walkers and sightseers - Use the available land to attract a new thrill-seeking clientele
+STR_DTLS    :De mooie bergen van Lightning Peaks zijn populair bij wandelaars en toeristen. Gebruik de beschikbare grond om nieuwe sensatiezoekende klanten aan te trekken.
 
 <Ivory Towers>
 STR_SCNR    :Ivory Towers
 STR_PARK    :Ivory Towers
-STR_DTLS    :A well-established park, which has a few problems
+STR_DTLS    :Een reeds gevestigd park dat wat problemen heeft.
 
 <Rainbow Valley>
 STR_SCNR    :Rainbow Valley
 STR_PARK    :Rainbow Valley
-STR_DTLS    :Rainbow Valley's local authority won't allow any landscape changes or large tree removal, but you must develop the area into a large theme park
+STR_DTLS    :Van de gemeenteraad van Rainbow Valley mag het landschap niet gewijzigd worden en mogen er geen grote bomen worden gekapt, maar je moet het gebied ontwikkelen tot een groot pretpark.
 
 <Thunder Rock>
 STR_SCNR    :Thunder Rock
 STR_PARK    :Thunder Rock
-STR_DTLS    :Thunder Rock stands in the middle of a desert and attracts many tourists - Use the available space to build rides to attract more people
+STR_DTLS    :Thunder Rock staat midden in een woestijn en trekt veel toeristen aan. Gebruik de beschikbare ruimte om attracties te bouwen en meer mensen aan te trekken.
 
 <Mega Park>
 STR_SCNR    :Mega Park
 STR_PARK    :Mega Park
-STR_DTLS    :Just for fun!
+STR_DTLS    :Gewoon voor de lol!
 
 ## Added Attractions
 <Whispering Cliffs>
