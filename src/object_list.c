@@ -130,7 +130,7 @@ static void object_list_sort()
 	bufferSize = (int)entry - (int)*objectBuffer;
 
 	// Create new buffer
-	newBuffer = rct2_malloc(bufferSize);
+	newBuffer = (rct_object_entry*)malloc(bufferSize);
 	destEntry = newBuffer;
 	if (_installedObjectFilters) {
 		newFilters = malloc(numObjects * sizeof(rct_object_filters));
@@ -378,11 +378,11 @@ static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int file
 
 				if (SDL_RWread(file, &filterVersion, sizeof(filterVersion), 1) == 1) {
 					if (filterVersion == FILTER_VERSION) {
-						if (_installedObjectFilters)
+						if (_installedObjectFilters != NULL) {
 							free(_installedObjectFilters);
+						}
 						_installedObjectFilters = malloc(sizeof(rct_object_filters) * pluginHeader.object_list_no_items);
 						if (SDL_RWread(file, _installedObjectFilters, sizeof(rct_object_filters) * pluginHeader.object_list_no_items, 1) == 1) {
-
 							SDL_RWclose(file);
 							reset_loaded_objects();
 							object_list_examine();
