@@ -212,7 +212,7 @@ void reset_loaded_objects()
 		for (int j = 0; j < object_entry_group_counts[type]; j++){
 			uint8* chunk = object_entry_groups[type].chunks[j];
 			if (chunk != (uint8*)-1)
-				object_paint(type, 0, j, type, 0, (int)chunk, 0, 0);
+				object_load(type, chunk, j);
 		}
 	}
 }
@@ -548,7 +548,7 @@ int object_read_and_load_entries(SDL_RWops* rw)
 		}
 
 		// Load the obect
-		if (!object_load(entryGroupIndex, &entries[i], NULL)) {
+		if (!object_load_chunk(entryGroupIndex, &entries[i], NULL)) {
 			log_error("failed to load entry: %.8s", entries[i].name);
 			memcpy((char*)0x13CE952, &entries[i], sizeof(rct_object_entry));
 			load_fail = 1;
@@ -579,7 +579,7 @@ void object_unload_all()
 	for (i = 0; i < OBJECT_ENTRY_GROUP_COUNT; i++)
 		for (j = 0; j < object_entry_group_counts[i]; j++)
 			if (object_entry_groups[i].chunks[j] != (uint8*)0xFFFFFFFF)
-				object_unload((rct_object_entry*)&object_entry_groups[i].entries[j]);
+				object_unload_chunk((rct_object_entry*)&object_entry_groups[i].entries[j]);
 
 	reset_loaded_objects();
 }
@@ -760,7 +760,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 			log_error("Incorrect number of vanilla RCT2 objects.");
 			gNumInstalledRCT2Objects--;
 			gInstalledObjectsCount--;
-			object_unload(entry);
+			object_unload_chunk(entry);
 			return 0;
 		}
 	}
@@ -806,7 +806,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 	uint32 size_of_object = installed_entry_pointer - (uint8*)installed_entry;
 
-	object_unload(entry);
+	object_unload_chunk(entry);
 
 	return size_of_object;
 }

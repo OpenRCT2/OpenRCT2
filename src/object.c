@@ -107,7 +107,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 
 	objectType = openedEntry.flags & 0x0F;
 
-	if (object_paint(objectType, 2, 0, objectType, 0, (int)chunk, 0, 0)) {
+	if (!object_test(objectType, chunk)) {
 		log_error("Object Load failed due to paint failure.");
 		RCT2_GLOBAL(0x00F42BD9, uint8) = 3;
 		rct2_free(chunk);
@@ -142,7 +142,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 	gLastLoadedObjectChunkData = chunk;
 
 	if (RCT2_GLOBAL(0x9ADAFD, uint8) != 0) {
-		object_paint(objectType, 0, groupIndex, objectType, 0, (int)chunk, 0, 0);
+		object_load(objectType, chunk, groupIndex);
 	}
 	return 1;
 }
@@ -151,7 +151,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
  *
  *  rct2: 0x006A985D
  */
-int object_load(int groupIndex, rct_object_entry *entry, int* chunkSize)
+int object_load_chunk(int groupIndex, rct_object_entry *entry, int* chunkSize)
 {
 	// Alow chunkSize to be null
 	int tempChunkSize;
@@ -184,7 +184,8 @@ int object_load(int groupIndex, rct_object_entry *entry, int* chunkSize)
  *  ebx: file
  *  ebp: entry
  */
-int write_object_file(SDL_RWops *rw, rct_object_entry* entry){
+int write_object_file(SDL_RWops *rw, rct_object_entry* entry)
+{
 	uint8 entryGroupIndex = 0, type = 0;
 	uint8* chunk = 0;
 
@@ -192,7 +193,7 @@ int write_object_file(SDL_RWops *rw, rct_object_entry* entry){
 
 	chunk = object_entry_groups[type].chunks[entryGroupIndex];
 
-	object_paint(type, 1, entryGroupIndex, type, 0, (int)chunk, 0, 0);
+	object_unload(type, chunk);
 
 	rct_object_entry_extended* installed_entry = &object_entry_groups[type].entries[entryGroupIndex];
 	uint8* dst_buffer = malloc(0x600000);
@@ -243,7 +244,7 @@ int object_load_packed(SDL_RWops* rw)
 
 	int type = entry.flags & 0x0F;
 
-	if (object_paint(type, 2, 0, type, 0, (int)chunk, 0, 0)) {
+	if (!object_test(type, chunk)) {
 		log_error("Packed object failed paint test.");
 		rct2_free(chunk);
 		return 0;
@@ -340,7 +341,7 @@ int object_load_packed(SDL_RWops* rw)
  *
  *  rct2: 0x006A9CAF
  */
-void object_unload(rct_object_entry *entry)
+void object_unload_chunk(rct_object_entry *entry)
 {
 	uint8 object_type, object_index;
 	if (!find_object_in_entry_group(entry, &object_type, &object_index)){
@@ -349,7 +350,7 @@ void object_unload(rct_object_entry *entry)
 
 	uint8* chunk = object_entry_groups[object_type].chunks[object_index];
 
-	object_paint(object_type, 1, 0, 0, 0, (int)chunk, 0, 0);
+	object_unload(object_type, chunk);
 
 	rct2_free(chunk);
 	object_entry_groups[object_type].chunks[object_index] = (uint8*)-1;
@@ -431,1089 +432,1186 @@ int object_chunk_load_image_directory(uint8_t** chunk)
 	return image_start_no;
 }
 
+typedef bool (*object_load_func)(void *objectEntry, uint32 entryIndex);
+typedef void (*object_unload_func)(void *objectEntry);
+typedef bool (*object_test_func)(void *objectEntry);
+typedef void (*object_paint_func)(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y);
+typedef rct_string_id (*object_desc_func)(void *objectEntry);
+
 /**
- *
- *  rct2: 0x006DE83E
+ * Represents addresses for virtual object functions.
  */
-int paint_ride_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
+typedef struct {
+	object_load_func load;
+	object_unload_func unload;
+	object_test_func test;
+	object_paint_func paint;
+	object_desc_func desc;
+} object_type_vtable;
+
+///////////////////////////////////////////////////////////////////////////////
+// Ride (rct2: 0x006E6E2A)
+///////////////////////////////////////////////////////////////////////////////
+
+static bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
 {
-	if ((flags & 0xFF) == 0){
-		// esi
-		rct_ride_type* ride_type = (rct_ride_type*)esi;
+	rct_ride_type *rideEntry = (rct_ride_type*)objectEntry;
 
-		// After ride_type is 3 string tables
-		uint8_t* chunk = (uint8*)(ride_type + 1);
-		ride_type->name = object_get_localised_text(&chunk, ecx, ebx, 0);
-		ride_type->description = object_get_localised_text(&chunk, ecx, ebx, 1);
+	// After rideEntry is 3 string tables
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_ride_type));
+	rideEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_RIDE, entryIndex, 0);
+	rideEntry->description = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_RIDE, entryIndex, 1);
 
-		//TODO: Move to its own function when ride construction window is merged.
-		if(gConfigInterface.select_by_track_type) {
-			ride_type->enabledTrackPieces = 0xFFFFFFFFFFFFFFFF;
+	//TODO: Move to its own function when ride construction window is merged.
+	if (gConfigInterface.select_by_track_type) {
+		rideEntry->enabledTrackPieces = 0xFFFFFFFFFFFFFFFF;
+	}
+
+	object_get_localised_text(&extendedEntryData, OBJECT_TYPE_RIDE, entryIndex, 2);
+	rideEntry->vehicle_preset_list = (vehicle_colour_preset_list*)extendedEntryData;
+
+	// If Unknown struct size is 0xFF then there are 32 3 byte structures
+	uint8 unknown_size = *extendedEntryData++;
+	if (unknown_size != 0xFF) {
+		extendedEntryData += unknown_size * 3;
+	} else {
+		extendedEntryData += 0x60;
+	}
+
+	sint8 *peep_loading_positions = (sint8*)extendedEntryData;
+	// Peep loading positions variable size
+	// 4 different vehicle subtypes are available
+	for (int i = 0; i < 4; i++){
+		uint16 no_peep_positions = *extendedEntryData++;
+		// If no_peep_positions is 0xFF then no_peep_positions is a word
+		if (no_peep_positions == 0xFF) {
+			no_peep_positions = *((uint16*)extendedEntryData);
+			extendedEntryData += 2;
 		}
+		extendedEntryData += no_peep_positions;
+	}
 
-		object_get_localised_text(&chunk, ecx, ebx, 2);
-		ride_type->vehicle_preset_list = (vehicle_colour_preset_list*)chunk;
+	int images_offset = object_chunk_load_image_directory(&extendedEntryData);
+	rideEntry->images_offset = images_offset;
 
-		// If Unknown struct size is 0xFF then there are 32 3 byte structures
-		uint8 unknown_size = *chunk++;
-		if (unknown_size != 0xFF)
-		{
-			chunk += unknown_size * 3;
-		}
-		else {
-			chunk += 0x60;
-		}
+	int cur_vehicle_images_offset = images_offset + 3;
 
-		sint8* peep_loading_positions = (sint8 *)chunk;
-		// Peep loading positions variable size
-		// 4 different vehicle subtypes are available
-		for (int i = 0; i < 4; ++i){
-			uint16 no_peep_positions = *chunk++;
-			// If no_peep_positions is 0xFF then no_peep_positions is a word
-			if (no_peep_positions == 0xFF)
-			{
-				no_peep_positions = *((uint16_t*)chunk);
-				chunk += 2;
-			}
-			chunk += no_peep_positions;
-		}
+	for (int i = 0; i < 4; i++) {
+		rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[i];
 
-		int images_offset = object_chunk_load_image_directory(&chunk);
-		ride_type->images_offset = images_offset;
-
-		int cur_vehicle_images_offset = images_offset + 3;
-
-		for (int i = 0; i < 4; ++i){
-			rct_ride_type_vehicle* rideVehicleEntry = &ride_type->vehicles[i];
-
-			if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT) {
-				int al = 1;
-				if (rideVehicleEntry->var_14 & 2) {
-					al = 13;
-					if ((rideVehicleEntry->var_14 & 0x820) != 0x820) {
-						al = 7;
-						if (!(rideVehicleEntry->var_14 & 0x20)) {
-							if (!(rideVehicleEntry->var_14 & 0x800)) {
-								al = 5;
-								if (rideVehicleEntry->var_14 & 0x200) {
-									al = 3;
-								}
+		if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT) {
+			int al = 1;
+			if (vehicleEntry->var_14 & 2) {
+				al = 13;
+				if ((vehicleEntry->var_14 & 0x820) != 0x820) {
+					al = 7;
+					if (!(vehicleEntry->var_14 & 0x20)) {
+						if (!(vehicleEntry->var_14 & 0x800)) {
+							al = 5;
+							if (vehicleEntry->var_14 & 0x200) {
+								al = 3;
 							}
 						}
 					}
 				}
-				rideVehicleEntry->var_03 = al;
-				// 0x6DE90B
+			}
+			vehicleEntry->var_03 = al;
+			// 0x6DE90B
 
-				al = 0x20;
-				if (!(rideVehicleEntry->var_12 & 0x4000))
-				{
-					al = 1;
-					if (rideVehicleEntry->var_14 & 0x80)
-					{
-						if (rideVehicleEntry->var_11 != 6)
-						{
-							al = 2;
-							if (!(rideVehicleEntry->var_12 & 0x80)) al = 4;
+			al = 0x20;
+			if (!(vehicleEntry->var_12 & 0x4000)) {
+				al = 1;
+				if (vehicleEntry->var_14 & 0x80) {
+					if (vehicleEntry->var_11 != 6) {
+						al = 2;
+						if (!(vehicleEntry->var_12 & 0x80)) {
+							al = 4;
 						}
 					}
 				}
-				if (rideVehicleEntry->var_12 & 0x1000) al = rideVehicleEntry->special_frames;
-				rideVehicleEntry->var_02 = al;
-				// 0x6DE946
+			}
+			if (vehicleEntry->var_12 & 0x1000) {
+				al = vehicleEntry->special_frames;
+			}
+			vehicleEntry->var_02 = al;
+			// 0x6DE946
 
-				rideVehicleEntry->var_16 = rideVehicleEntry->var_02 * rideVehicleEntry->var_03;
-				rideVehicleEntry->base_image_id = cur_vehicle_images_offset;
-				int image_index = rideVehicleEntry->base_image_id;
+			vehicleEntry->var_16 = vehicleEntry->var_02 * vehicleEntry->var_03;
+			vehicleEntry->base_image_id = cur_vehicle_images_offset;
+			int image_index = vehicleEntry->base_image_id;
 
-				if (rideVehicleEntry->car_visual != VEHICLE_VISUAL_RIVER_RAPIDS) {
-					int b = rideVehicleEntry->var_16 * 32;
+			if (vehicleEntry->car_visual != VEHICLE_VISUAL_RIVER_RAPIDS) {
+				int b = vehicleEntry->var_16 * 32;
 
-					if (rideVehicleEntry->var_12 & 0x800) b /= 2;
-					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15) b /= 8;
+				if (vehicleEntry->var_12 & 0x800) b /= 2;
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15) b /= 8;
+
+				image_index += b;
+
+				// Incline 25
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES) {
+					vehicleEntry->var_20 = image_index;
+					b = vehicleEntry->var_16 * 72;
+					if (vehicleEntry->var_12 & 0x4000)
+						b = vehicleEntry->var_16 * 16;
 
 					image_index += b;
-
-					// Incline 25
-					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES) {
-						rideVehicleEntry->var_20 = image_index;
-						b = rideVehicleEntry->var_16 * 72;
-						if (rideVehicleEntry->var_12 & 0x4000)
-							b = rideVehicleEntry->var_16 * 16;
-
-						image_index += b;
-					}
-
-					// Incline 60
-					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_STEEP_SLOPES) {
-						rideVehicleEntry->var_24 = image_index;
-						b = rideVehicleEntry->var_16 * 80;
-						image_index += b;
-					}
-					// Verticle
-					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
-						rideVehicleEntry->var_28 = image_index;
-						b = rideVehicleEntry->var_16 * 116;
-						image_index += b;
-					}
-					// Unknown
-					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES) {
-						rideVehicleEntry->var_2C = image_index;
-						b = rideVehicleEntry->var_16 * 24;
-						image_index += b;
-					}
-
-					// Bank
-					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED) {
-						rideVehicleEntry->var_30 = image_index;
-						b = rideVehicleEntry->var_16 * 80;
-						image_index += b;
-					}
-
-					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS) {
-						rideVehicleEntry->var_34 = image_index;
-						b = rideVehicleEntry->var_16 * 40;
-						image_index += b;
-					}
-
-					// Track half? Up/Down
-					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS) {
-						rideVehicleEntry->var_38 = image_index;
-						b = rideVehicleEntry->var_16 * 128;
-						image_index += b;
-					}
-					// Unknown
-					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS) {
-						rideVehicleEntry->var_3C = image_index;
-						b = rideVehicleEntry->var_16 * 16;
-						image_index += b;
-					}
-					// Unknown
-					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS) {
-						rideVehicleEntry->var_40 = image_index;
-						b = rideVehicleEntry->var_16 * 16;
-						image_index += b;
-					}
-
-					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS) {
-						rideVehicleEntry->var_44 = image_index;
-						b = rideVehicleEntry->var_16 * 128;
-						image_index += b;
-					}
-
-					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS) {
-						rideVehicleEntry->var_48 = image_index;
-						b = rideVehicleEntry->var_16 * 16;
-						image_index += b;
-					}
-
-					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_CORKSCREWS) {
-						rideVehicleEntry->var_4C = image_index;
-						b = rideVehicleEntry->var_16 * 80;
-						image_index += b;
-					}
-					// Unknown
-					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION) {
-						rideVehicleEntry->var_1C = image_index;
-						b = rideVehicleEntry->var_16 * 12;
-						image_index += b;
-					}
-
-					if (rideVehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_14) {
-						// Same offset as above???
-						rideVehicleEntry->var_4C = image_index;
-						b = rideVehicleEntry->var_16 * 32;
-						image_index += b;
-					}
-
-				}
-				else{
-					image_index += rideVehicleEntry->var_16 * 36;
-				}
-				// No vehicle images
-				rideVehicleEntry->no_vehicle_images = image_index - cur_vehicle_images_offset;
-
-				// Move the offset over this vehicles images. Including peeps
-				cur_vehicle_images_offset = image_index + rideVehicleEntry->no_seating_rows * rideVehicleEntry->no_vehicle_images;
-				// 0x6DEB0D
-
-				if (!(rideVehicleEntry->var_12 & 0x400)){
-					int num_images = cur_vehicle_images_offset - rideVehicleEntry->base_image_id;
-					if (rideVehicleEntry->var_12 & 0x2000){
-						num_images *= 2;
-					}
-
-					set_vehicle_type_image_max_sizes(rideVehicleEntry, num_images);
 				}
 
-				sint8 no_positions = *peep_loading_positions++;
-				if (no_positions == -1)
-				{
-					// The no_positions is 16 bit skip over
-					peep_loading_positions += 2;
+				// Incline 60
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_STEEP_SLOPES) {
+					vehicleEntry->var_24 = image_index;
+					b = vehicleEntry->var_16 * 80;
+					image_index += b;
 				}
-				rideVehicleEntry->peep_loading_positions = peep_loading_positions;
-			}
-		}
-
-		// 0x6DEB71
-		if (RCT2_GLOBAL(0x9ADAFD, uint8_t) == 0)
-		{
-			for (int i = 0; i < 3; ++i){
-				int dl = ride_type->ride_type[i];
-
-				if (dl == 0xFF)continue;
-
-				uint8 *typeToRideEntryIndexMap = RCT2_ADDRESS(0x009E32F8, uint8);
-
-				while (dl >= 0){
-					if (*typeToRideEntryIndexMap++ == 0xFF)dl--;
+				// Verticle
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
+					vehicleEntry->var_28 = image_index;
+					b = vehicleEntry->var_16 * 116;
+					image_index += b;
+				}
+				// Unknown
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES) {
+					vehicleEntry->var_2C = image_index;
+					b = vehicleEntry->var_16 * 24;
+					image_index += b;
 				}
 
-				typeToRideEntryIndexMap--;
-				uint8 previous_entry = ebx;
-				while (typeToRideEntryIndexMap < RCT2_ADDRESS(0x9E34E4, uint8)){
-					uint8 backup_entry = *typeToRideEntryIndexMap;
-					*typeToRideEntryIndexMap++ = previous_entry;
-					previous_entry = backup_entry;
+				// Bank
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED) {
+					vehicleEntry->var_30 = image_index;
+					b = vehicleEntry->var_16 * 80;
+					image_index += b;
 				}
-			}
-		}
 
-		// 0x6DEBAA
-		if (RCT2_GLOBAL(0x9ADAF4, sint32) != 0xFFFFFFFF) *RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
-
-		int di = ride_type->ride_type[0] | (ride_type->ride_type[1] << 8) | (ride_type->ride_type[2] << 16);
-
-		if ((ride_type->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) && !rideTypeShouldLoseSeparateFlag(ride_type)) di |= 0x1000000;
-
-		RCT2_GLOBAL(0xF433DD, uint32) = di;
-		return 0;// flags;
-	}
-	else if ((flags & 0xFF) == 1){
-		// Object Unload
-
-		rct_ride_type* ride_type = (rct_ride_type*)esi;
-		ride_type->name = 0;
-		ride_type->description = 0;
-		ride_type->images_offset = 0;
-
-		for (int i = 0; i < 4; ++i){
-			rct_ride_type_vehicle* rideVehicleEntry = &ride_type->vehicles[i];
-
-			rideVehicleEntry->base_image_id = 0;
-			rideVehicleEntry->var_1C = 0;
-			rideVehicleEntry->var_20 = 0;
-			rideVehicleEntry->var_24 = 0;
-			rideVehicleEntry->var_28 = 0;
-			rideVehicleEntry->var_2C = 0;
-			rideVehicleEntry->var_30 = 0;
-			rideVehicleEntry->var_34 = 0;
-			rideVehicleEntry->var_38 = 0;
-			rideVehicleEntry->var_3C = 0;
-			rideVehicleEntry->var_40 = 0;
-			rideVehicleEntry->var_44 = 0;
-			rideVehicleEntry->var_48 = 0;
-			rideVehicleEntry->var_4C = 0;
-			rideVehicleEntry->no_vehicle_images = 0;
-			rideVehicleEntry->var_16 = 0;
-
-			if (!(rideVehicleEntry->var_12 & 0x400)){
-				rideVehicleEntry->sprite_width = 0;
-				rideVehicleEntry->sprite_height_negative = 0;
-				rideVehicleEntry->sprite_height_positive = 0;
-			}
-			rideVehicleEntry->var_02 = 0;
-			rideVehicleEntry->var_03 = 0;
-			rideVehicleEntry->peep_loading_positions = 0;
-		}
-
-		ride_type->vehicle_preset_list = NULL;
-		return flags;
-	}
-	else if ((flags & 0xFF) == 2){
-
-		rct_ride_type* ride_type = (rct_ride_type*)esi;
-
-		if (ride_type->excitement_multipler > 75) return 1;
-		if (ride_type->intensity_multipler > 75) return 1;
-		if (ride_type->nausea_multipler > 75) return 1;
-		return 0;
-	}
-	else if ((flags & 0xFF) == 3){
-		// Paint object picture and description
-
-		rct_ride_type* ride_type = (rct_ride_type*)ebp;
-		int x = ecx, y = edx;
-
-		if (!((flags >> 8) & 0xFF))
-		{
-			int image_id = ride_type->images_offset;
-			if (ride_type->ride_type[0] == 0xFF)
-			{
-				image_id++;
-				if (ride_type->ride_type[1] == 0xFF) image_id++;
-			}
-			gfx_draw_sprite(dpi, image_id, x - 56, y - 56, ebp);
-			return flags;
-		}
-		else
-		{
-			rct_window* w = (rct_window*)esi;
-			int width = w->x + w->width - x - 4;
-
-			int format_args = ride_type->description;
-			if (!(ride_type->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(ride_type))
-			{
-				format_args = ride_type->ride_type[0];
-				if ((format_args & 0xFF) == 0xFF)
-				{
-					format_args = ride_type->ride_type[1];
-					if ((format_args & 0xFF) == 0xFF) format_args = ride_type->ride_type[2];
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS) {
+					vehicleEntry->var_34 = image_index;
+					b = vehicleEntry->var_16 * 40;
+					image_index += b;
 				}
-				format_args += 0x200;
-			}
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = format_args;
-			gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y + 5, width, 1191, 0);
-			return flags;
-		}
-	}
 
-	return flags;
-}
-
-/**
- *
- *  rct2: 0x006E3466
- */
-int paint_small_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
-{
-	if ((flags & 0xFF) == 0){
-		// Object Load
-
-		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
-		uint8* chunk = (uint8*)(esi + 0x1C);
-
-		scenery_type->name = object_get_localised_text(&chunk, ecx, ebx, 0);
-
-		scenery_type->small_scenery.scenery_tab_id = 0xFF;
-
-		if (*chunk != 0xFF){
-			uint8 entry_type, entry_index;
-			if (find_object_in_entry_group((rct_object_entry*)chunk, &entry_type, &entry_index)){
-				scenery_type->small_scenery.scenery_tab_id = entry_index;
-			}
-		}
-
-		chunk += sizeof(rct_object_entry);
-
-		if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG16){
-			scenery_type->small_scenery.var_10 = (uint32)chunk;
-			while (*++chunk != 0xFF);
-			chunk++;
-		}
-
-		scenery_type->image = object_chunk_load_image_directory(&chunk);
-
-		if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) *RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
-	}
-	else if ((flags & 0xFF) == 1){
-		// Object Unload
-
-		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
-		scenery_type->name = 0;
-		scenery_type->image = 0;
-		scenery_type->small_scenery.var_10 = 0;
-		scenery_type->small_scenery.scenery_tab_id = 0;
-	}
-	else if ((flags & 0xFF) == 2){
-		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
-
-		if (scenery_type->small_scenery.price <= 0)return 1;
-
-		if (scenery_type->small_scenery.removal_price > 0) return 0;
-
-		// Make sure you don't make a profit when placing then removing.
-		if (-scenery_type->small_scenery.removal_price > scenery_type->small_scenery.price)return 1;
-
-		return 0;
-	}
-	else if ((flags & 0xFF) == 3){
-		int x = ecx, y = edx;
-		if (!((flags >> 8) & 0xFF))
-		{
-			rct_scenery_entry* scenery_type = (rct_scenery_entry*)ebp;
-
-			dpi = clip_drawpixelinfo(dpi, x - 56, 112, y - 56, 112);
-			if (dpi == NULL) return flags;
-
-			int image_id = scenery_type->image;
-
-			if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR){
-				image_id |= 0x20D00000;
-
-				if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
-					image_id |= 0x92000000;
-			}
-
-			x = 56;
-			y = scenery_type->small_scenery.height / 4 + 78;
-
-			if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE){
-				if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE){
-					y -= 12;
+				// Track half? Up/Down
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS) {
+					vehicleEntry->var_38 = image_index;
+					b = vehicleEntry->var_16 * 128;
+					image_index += b;
 				}
+				// Unknown
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS) {
+					vehicleEntry->var_3C = image_index;
+					b = vehicleEntry->var_16 * 16;
+					image_index += b;
+				}
+				// Unknown
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS) {
+					vehicleEntry->var_40 = image_index;
+					b = vehicleEntry->var_16 * 16;
+					image_index += b;
+				}
+
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS) {
+					vehicleEntry->var_44 = image_index;
+					b = vehicleEntry->var_16 * 128;
+					image_index += b;
+				}
+
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS) {
+					vehicleEntry->var_48 = image_index;
+					b = vehicleEntry->var_16 * 16;
+					image_index += b;
+				}
+
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_CORKSCREWS) {
+					vehicleEntry->var_4C = image_index;
+					b = vehicleEntry->var_16 * 80;
+					image_index += b;
+				}
+				// Unknown
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION) {
+					vehicleEntry->var_1C = image_index;
+					b = vehicleEntry->var_16 * 12;
+					image_index += b;
+				}
+
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_14) {
+					// Same offset as above???
+					vehicleEntry->var_4C = image_index;
+					b = vehicleEntry->var_16 * 32;
+					image_index += b;
+				}
+			} else {
+				image_index += vehicleEntry->var_16 * 36;
+			}
+			// No vehicle images
+			vehicleEntry->no_vehicle_images = image_index - cur_vehicle_images_offset;
+
+			// Move the offset over this vehicles images. Including peeps
+			cur_vehicle_images_offset = image_index + vehicleEntry->no_seating_rows * vehicleEntry->no_vehicle_images;
+			// 0x6DEB0D
+
+			if (!(vehicleEntry->var_12 & 0x400)) {
+				int num_images = cur_vehicle_images_offset - vehicleEntry->base_image_id;
+				if (vehicleEntry->var_12 & 0x2000) {
+					num_images *= 2;
+				}
+
+				set_vehicle_type_image_max_sizes(vehicleEntry, num_images);
 			}
 
-			gfx_draw_sprite(dpi, image_id, x, y, 0);
-
-			if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG10){
-				image_id = scenery_type->image + 0x44500004;
-
-				if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
-					image_id |= 0x92000000;
-
-				gfx_draw_sprite(dpi, image_id, x, y, 0);
+			sint8 no_positions = *peep_loading_positions++;
+			if (no_positions == -1) {
+				// The no_positions is 16 bit skip over
+				peep_loading_positions += 2;
 			}
-
-			if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG8){
-				image_id = scenery_type->image + 4;
-
-				if (scenery_type->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
-					image_id |= 0x92000000;
-
-				gfx_draw_sprite(dpi, image_id, x, y, 0);
-			}
-
-			rct2_free(dpi);
+			vehicleEntry->peep_loading_positions = peep_loading_positions;
 		}
 	}
-	return flags;
-}
 
-/**
- *
- *  rct2: 0x006B92A7
- */
-int paint_large_scenery(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
-{
-	if ((flags & 0xFF) == 0){
-		// Object Load
-
-		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
-		uint8* chunk = (uint8*)(esi + 0x1A);
-
-		scenery_type->name = object_get_localised_text(&chunk, ecx, ebx, 0);
-
-		scenery_type->large_scenery.scenery_tab_id = 0xFF;
-
-		if (*chunk != 0xFF){
-			uint8 entry_type, entry_index;
-			if (find_object_in_entry_group((rct_object_entry*)chunk, &entry_type, &entry_index)){
-				scenery_type->large_scenery.scenery_tab_id = entry_index;
-			}
-		}
-
-		chunk += sizeof(rct_object_entry);
-
-		if (scenery_type->large_scenery.flags & (1<<2)){
-			scenery_type->large_scenery.var_12 = (uint32)chunk;
-			chunk += 1038;
-		}
-
-		scenery_type->large_scenery.tiles = (rct_large_scenery_tile*)chunk;
-
-		// skip over large scenery tiles
-		while (*((uint16*)chunk) != 0xFFFF){
-			chunk += sizeof(rct_large_scenery_tile);
-		}
-
-		chunk += 2;
-
-		int image_id = object_chunk_load_image_directory(&chunk);
-		if (scenery_type->large_scenery.flags & (1 << 2)){
-			scenery_type->large_scenery.var_16 = image_id;
-
-			uint8* edx = (uint8*)scenery_type->large_scenery.var_12;
-			if (!(edx[0xC] & 1)){
-				image_id += edx[0xD] * 4;
-			}
-			else{
-				image_id += edx[0xD] * 2;
-			}
-		}
-		scenery_type->image = image_id;
-
-		if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) *RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
-	}
-	else if ((flags & 0xFF) == 1){
-		// Object Unload
-
-		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
-		scenery_type->name = 0;
-		scenery_type->image = 0;
-		scenery_type->large_scenery.tiles = 0;
-		scenery_type->large_scenery.scenery_tab_id = 0;
-		scenery_type->large_scenery.var_12 = 0;
-		scenery_type->large_scenery.var_16 = 0;
-	}
-	else if ((flags & 0xFF) == 2){
-		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
-
-		if (scenery_type->large_scenery.price <= 0)return 1;
-
-		if (scenery_type->large_scenery.removal_price > 0) return 0;
-
-		// Make sure you don't make a profit when placing then removing.
-		if (-scenery_type->large_scenery.removal_price > scenery_type->large_scenery.price)return 1;
-
-		return 0;
-	}
-	else if ((flags & 0xFF) == 3){
-		int x = ecx, y = edx;
-		if (!((flags >> 8) & 0xFF))
-		{
-			rct_scenery_entry* scenery_type = (rct_scenery_entry*)ebp;
-
-			int image_id = scenery_type->image | 0xB2D00000;
-
-			gfx_draw_sprite(dpi, image_id, x, y - 39, 0);
-		}
-	}
-	return flags;
-}
-
-/**
- *
- *  rct2: 0x006E5A25
- */
-int paint_wall(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
-{
-	if ((flags & 0xFF) == 0){
-		// Object Load
-
-		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
-		uint8* chunk = (uint8*)(esi + 0xE);
-
-		scenery_type->name = object_get_localised_text(&chunk, ecx, ebx, 0);
-
-		scenery_type->wall.scenery_tab_id = 0xFF;
-
-		if (*chunk != 0xFF){
-			uint8 entry_type, entry_index;
-			if (find_object_in_entry_group((rct_object_entry*)chunk, &entry_type, &entry_index)){
-				scenery_type->wall.scenery_tab_id = entry_index;
-			}
-		}
-
-		chunk += sizeof(rct_object_entry);
-
-		scenery_type->image = object_chunk_load_image_directory(&chunk);
-
-		if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) *RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
-	}
-	else if ((flags & 0xFF) == 1){
-		// Object Unload
-
-		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
-		scenery_type->name = 0;
-		scenery_type->image = 0;
-		scenery_type->wall.scenery_tab_id = 0;
-	}
-	else if ((flags & 0xFF) == 2){
-		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
-
-		if (scenery_type->wall.price <= 0)return 1;
-
-		return 0;
-	}
-	else if ((flags & 0xFF) == 3){
-		int x = ecx, y = edx;
-
-		if (!((flags >> 8) & 0xFF))
-		{
-			rct_scenery_entry* scenery_type = (rct_scenery_entry*)ebp;
-
-			dpi = clip_drawpixelinfo(dpi, x - 56, 112, y - 56, 112);
-			if (dpi == NULL) return flags;
-
-			int image_id = scenery_type->image;
-
-
-			image_id |= 0x20D00000;
-
-			if (scenery_type->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
-				image_id |= 0x92000000;
-
-
-			x = 70;
-			y = scenery_type->wall.height * 2 + 72;
-
-			gfx_draw_sprite(dpi, image_id, x, y, 0);
-
-			if (scenery_type->wall.flags & WALL_SCENERY_FLAG2){
-				image_id = scenery_type->image + 0x44500006;
-
-				gfx_draw_sprite(dpi, image_id, x, y, 0);
-			}
-			else if (scenery_type->wall.flags & WALL_SCENERY_FLAG5){
-				image_id++;
-
-				gfx_draw_sprite(dpi, image_id, x, y, 0);
-			}
-			rct2_free(dpi);
-		}
-	}
-	return flags;
-}
-
-/**
- *
- *  rct2: 0x006BA84E
- */
-int paint_banner(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
-{
-	if ((flags & 0xFF) == 0){
-		// Object Load
-
-		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
-		uint8* chunk = (uint8*)(esi + 0xC);
-
-		scenery_type->name = object_get_localised_text(&chunk, ecx, ebx, 0);
-
-		scenery_type->banner.scenery_tab_id = 0xFF;
-
-		if (*chunk != 0xFF){
-			uint8 entry_type, entry_index;
-			if (find_object_in_entry_group((rct_object_entry*)chunk, &entry_type, &entry_index)){
-				scenery_type->banner.scenery_tab_id = entry_index;
-			}
-		}
-
-		chunk += sizeof(rct_object_entry);
-
-		scenery_type->image = object_chunk_load_image_directory(&chunk);
-
-		if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) *RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
-	}
-	else if ((flags & 0xFF) == 1){
-		// Object Unload
-
-		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
-		scenery_type->name = 0;
-		scenery_type->image = 0;
-		scenery_type->banner.scenery_tab_id = 0;
-	}
-	else if ((flags & 0xFF) == 2){
-		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
-			if (scenery_type->banner.price <= 0)return 1;
-
-		return 0;
-	}
-	else if ((flags & 0xFF) == 3){
-		int x = ecx, y = edx;
-
-		if (!((flags >> 8) & 0xFF))
-		{
-			rct_scenery_entry* scenery_type = (rct_scenery_entry*)ebp;
-
-			int image_id = scenery_type->image;
-
-			image_id |= 0x20D00000;
-
-
-			gfx_draw_sprite(dpi, image_id, x, y, 0);
-
-			gfx_draw_sprite(dpi, image_id + 1, x, y, 0);
-		}
-	}
-	return flags;
-}
-
-//rct2: 0x006A8621
-int paint_path_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
-{
-	if ((flags & 0xFF) == 0){
-		// Object Load
-
-		rct_path_type* path_type = (rct_path_type*)esi;
-		// String table starts after path entry
-		// Note there are 2 spare bytes after
-		// the path entry.
-		uint8* chunk = (uint8*)(esi + 0xE);
-
-		// Only 1 string table for paths
-		path_type->string_idx = object_get_localised_text(&chunk, ecx, ebx, 0);
-
-		int image_id = object_chunk_load_image_directory(&chunk);
-		path_type->image = image_id;
-		path_type->bridge_image = image_id + 109;
-
-		if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) *RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
-
-		RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = 0;
-		// Set the default path for when opening footpath window
-		for (int i = 0; i < object_entry_group_counts[OBJECT_TYPE_PATHS]; ++i){
-			rct_path_type* path_type_entry = (rct_path_type*)object_entry_groups[OBJECT_TYPE_PATHS].chunks[i];
-			if ((uint32)path_type_entry == 0xFFFFFFFF) continue;
-			if (!(path_type_entry->flags & 4))
-			{
-				RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = i;
-				break;
-			}
-			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = i;
-
-		}
-	}
-	else if ((flags & 0xFF) == 1){
-		// Object Unload
-
-		rct_path_type* path_type = (rct_path_type*)esi;
-		path_type->string_idx = 0;
-		path_type->image = 0;
-		path_type->bridge_image = 0;
-	}
-	else if ((flags & 0xFF) == 2){
-
-		rct_path_type* path_type = (rct_path_type*)esi;
-		if (path_type->var_0A >= 2) return 1;//actually the carry bit should be set (stc)
-		else return 0;
-	}
-	else if ((flags & 0xFF) == 3){
-		rct_path_type* path_type = (rct_path_type*)ebp;
-		if (!((flags >> 8) & 0xFF))
-		{
-			//Draws preview for scenario editor!
-			gfx_draw_sprite(dpi, path_type->image + 71, ecx - 49, edx - 17, ebp);
-			gfx_draw_sprite(dpi, path_type->image + 72, ecx + 4, edx - 17, ebp);
-		}
-
-	}
-	return flags;
-}
-
-/**
- *
- *  rct2: 0x006A86E2
- */
-int paint_path_bit(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
-{
-	if ((flags & 0xFF) == 0){
-		// Object Load
-
-		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
-		uint8* chunk = (uint8*)(esi + 0xE);
-
-		scenery_type->name = object_get_localised_text(&chunk, ecx, ebx, 0);
-
-		scenery_type->path_bit.scenery_tab_id = 0xFF;
-
-		if (*chunk != 0xFF){
-			uint8 entry_type, entry_index;
-			if (find_object_in_entry_group((rct_object_entry*)chunk, &entry_type, &entry_index)){
-				scenery_type->path_bit.scenery_tab_id = entry_index;
-			}
-		}
-
-		chunk += sizeof(rct_object_entry);
-
-		scenery_type->image = object_chunk_load_image_directory(&chunk);
-
-		if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) *RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
-	}
-	else if ((flags & 0xFF) == 1){
-		// Object Unload
-
-		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
-		scenery_type->name = 0;
-		scenery_type->image = 0;
-		scenery_type->path_bit.scenery_tab_id = 0;
-	}
-	else if ((flags & 0xFF) == 2){
-		rct_scenery_entry* scenery_type = (rct_scenery_entry*)esi;
-
-			if (scenery_type->path_bit.price <= 0)return 1;
-
-		return 0;
-	}
-	else if ((flags & 0xFF) == 3){
-		int x = ecx, y = edx;
-
-		if (!((flags >> 8) & 0xFF))
-		{
-			rct_scenery_entry* scenery_type = (rct_scenery_entry*)ebp;
-
-			int image_id = scenery_type->image;
-
-			x -= 22;
-			y -= 24;
-
-			gfx_draw_sprite(dpi, image_id, x, y, 0);
-		}
-	}
-	return flags;
-}
-
-/**
- *
- *  rct2: 0x006B93AA
- */
-int paint_scenery_set(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
-{
-	if ((flags & 0xFF) == 0){
-		// Object Load
-
-		rct_scenery_set_entry* scenery_set = (rct_scenery_set_entry*)esi;
-		uint8* chunk = (uint8*)(esi + sizeof(rct_scenery_set_entry));
-
-		scenery_set->name = object_get_localised_text(&chunk, ecx, ebx, 0);
-
-		rct_object_entry* entry_objects = NULL;
-		uint8* eax = RCT2_GLOBAL(0x9ADAF4, uint8*);
-		if ((uint32)eax != 0xFFFFFFFF){
-			*((uint16*)eax) = 0;
-			entry_objects = (rct_object_entry*)(eax + 2);
-		}
-
-		scenery_set->entry_count = 0;
-		scenery_set->var_107 = 0;
-
-		for (; *chunk != 0xFF; chunk += sizeof(rct_object_entry)){
-			scenery_set->var_107++;
-
-			if (entry_objects != NULL){
-				memcpy(entry_objects, chunk, sizeof(rct_object_entry));
-				entry_objects++;
-				(*(eax + 1))++;
-			}
-			uint8 entry_type;
-			uint8 entry_index = 0;
-			if (!find_object_in_entry_group((rct_object_entry*)chunk, &entry_type, &entry_index))
+	// 0x6DEB71
+	if (RCT2_GLOBAL(0x9ADAFD, uint8) == 0) {
+		for (int i = 0; i < 3; i++) {
+			int dl = rideEntry->ride_type[i];
+			if (dl == 0xFF) {
 				continue;
-
-			uint16 scenery_entry = entry_index;
-
-			switch (entry_type){
-			case OBJECT_TYPE_SMALL_SCENERY:
-				break;
-			case OBJECT_TYPE_LARGE_SCENERY:
-				scenery_entry |= 0x300;
-				break;
-			case OBJECT_TYPE_WALLS:
-				scenery_entry |= 0x200;
-				break;
-			case OBJECT_TYPE_PATH_BITS:
-				scenery_entry |= 0x100;
-				break;
-			default:
-				scenery_entry |= 0x400;
-				break;
 			}
 
-			scenery_set->scenery_entries[scenery_set->entry_count++] = scenery_entry;
-		}
+			uint8 *typeToRideEntryIndexMap = RCT2_ADDRESS(0x009E32F8, uint8);
+			while (dl >= 0) {
+				if (*typeToRideEntryIndexMap++ == 0xFF) {
+					dl--;
+				}
+			}
 
-		chunk++;
-
-		scenery_set->image = object_chunk_load_image_directory(&chunk);
-	}
-	else if ((flags & 0xFF) == 1){
-		// Object Unload
-
-		rct_scenery_set_entry* scenery_set = (rct_scenery_set_entry*)esi;
-		scenery_set->name = 0;
-		scenery_set->image = 0;
-		scenery_set->entry_count = 0;
-		scenery_set->var_107 = 0;
-
-		memset(scenery_set->scenery_entries, 0, 256);
-	}
-	else if ((flags & 0xFF) == 2){
-		return 0;
-	}
-	else if ((flags & 0xFF) == 3){
-		int x = ecx, y = edx;
-
-		rct_scenery_set_entry* scenery_set = (rct_scenery_set_entry*)ebp;
-
-		if (!((flags >> 8) & 0xFF))
-		{
-			int image_id = scenery_set->image;
-
-			image_id += 0x20600001;
-
-			gfx_draw_sprite(dpi, image_id, x - 15, y - 14, 0);
-		}
-		else{
-			RCT2_GLOBAL(0x13CE952, uint16) = scenery_set->var_107;
-
-			gfx_draw_string_left(dpi, 3167, RCT2_ADDRESS(0x13CE952, void), 0, x, y);
+			typeToRideEntryIndexMap--;
+			uint8 previous_entry = entryIndex;
+			while (typeToRideEntryIndexMap < RCT2_ADDRESS(0x9E34E4, uint8)){
+				uint8 backup_entry = *typeToRideEntryIndexMap;
+				*typeToRideEntryIndexMap++ = previous_entry;
+				previous_entry = backup_entry;
+			}
 		}
 	}
-	return flags;
+
+	// 0x6DEBAA
+	if (RCT2_GLOBAL(0x9ADAF4, sint32) != 0xFFFFFFFF) {
+		*RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	}
+
+	int di = rideEntry->ride_type[0] | (rideEntry->ride_type[1] << 8) | (rideEntry->ride_type[2] << 16);
+
+	if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) && !rideTypeShouldLoseSeparateFlag(rideEntry)) {
+		di |= 0x1000000;
+	}
+
+	RCT2_GLOBAL(0xF433DD, uint32) = di;
+	return true;
 }
 
-
-//rct2: 0x00666E42
-int paint_park_entrance_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
+static void object_type_ride_unload(void *objectEntry)
 {
-	if ((flags & 0xFF) == 0){
-		// Object Load
+	rct_ride_type *rideEntry = (rct_ride_type*)objectEntry;
+	rideEntry->name = 0;
+	rideEntry->description = 0;
+	rideEntry->images_offset = 0;
 
-		rct_entrance_type* entrance_type = (rct_entrance_type*)esi;
-		uint8* pStringTable = (uint8*)(esi + sizeof(rct_entrance_type));
+	for (int i = 0; i < 4; i++) {
+		rct_ride_type_vehicle* rideVehicleEntry = &rideEntry->vehicles[i];
 
-		entrance_type->string_idx = object_get_localised_text(&pStringTable, ecx, ebx, 0);
+		rideVehicleEntry->base_image_id = 0;
+		rideVehicleEntry->var_1C = 0;
+		rideVehicleEntry->var_20 = 0;
+		rideVehicleEntry->var_24 = 0;
+		rideVehicleEntry->var_28 = 0;
+		rideVehicleEntry->var_2C = 0;
+		rideVehicleEntry->var_30 = 0;
+		rideVehicleEntry->var_34 = 0;
+		rideVehicleEntry->var_38 = 0;
+		rideVehicleEntry->var_3C = 0;
+		rideVehicleEntry->var_40 = 0;
+		rideVehicleEntry->var_44 = 0;
+		rideVehicleEntry->var_48 = 0;
+		rideVehicleEntry->var_4C = 0;
+		rideVehicleEntry->no_vehicle_images = 0;
+		rideVehicleEntry->var_16 = 0;
 
-		entrance_type->image_id = object_chunk_load_image_directory(&pStringTable);
-
-		if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) *RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
-	}
-	else if ((flags & 0xFF) == 1){
-		// Object Unload
-
-		rct_entrance_type* entrance_type = (rct_entrance_type*)esi;
-		entrance_type->string_idx = 0;
-		entrance_type->image_id = 0;
-	}
-	else if ((flags & 0xFF) == 2){
-		return 0;
-	}
-	else if ((flags & 0xFF) == 3){
-		int x = ecx, y = edx;
-		if (!((flags >> 8) & 0xFF))
-		{
-			rct_entrance_type* entrance_type = (rct_entrance_type*)ebp;
-
-			dpi = clip_drawpixelinfo(dpi, x - 56, 112, y - 56, 112);
-			if (dpi == NULL) return flags;
-
-			int image_id = entrance_type->image_id;
-
-			gfx_draw_sprite(dpi, image_id + 1, 24, 68, ebp);
-			gfx_draw_sprite(dpi, image_id, 56, 84, ebp);
-			gfx_draw_sprite(dpi, image_id + 2, 88, 100, ebp);
-
-			rct2_free(dpi);
+		if (!(rideVehicleEntry->var_12 & 0x400)) {
+			rideVehicleEntry->sprite_width = 0;
+			rideVehicleEntry->sprite_height_negative = 0;
+			rideVehicleEntry->sprite_height_positive = 0;
 		}
+		rideVehicleEntry->var_02 = 0;
+		rideVehicleEntry->var_03 = 0;
+		rideVehicleEntry->peep_loading_positions = 0;
 	}
-	return flags;
+
+	rideEntry->vehicle_preset_list = NULL;
 }
 
-//rct2: 0x006E6E2A
-int paint_water_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
+static bool object_type_ride_test(void *objectEntry)
 {
-	if ((flags & 0xFF) == 0){
-		// Object Load
-
-		rct_water_type* water_type = (rct_water_type*)esi;
-
-		uint8_t* pStringTable = (uint8_t*)(esi + sizeof(rct_water_type));
-		water_type->string_idx = object_get_localised_text(&pStringTable, ecx, ebx, 0);
-
-		int image_id = object_chunk_load_image_directory(&pStringTable);
-		water_type->image_id = image_id;
-		water_type->var_06 = image_id + 1;
-		water_type->var_0A = image_id + 4;
-
-		if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) *RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
-
-		if (RCT2_GLOBAL(0x9ADAFD, uint8_t) == 0)
-		{
-			load_palette();
-			gfx_invalidate_screen();
-		}
-	}
-	else if ((flags & 0xFF) == 1){
-		// Object Unload
-
-		rct_water_type* water_type = (rct_water_type*)esi;
-		water_type->string_idx = 0;
-		water_type->image_id = 0;
-		water_type->var_06 = 0;
-		water_type->var_0A = 0;
-	}
-	else if ((flags & 0xFF) == 2){
-		return 0;
-	}
-	else if ((flags & 0xFF) == 3){
-		if (!((flags >> 8) & 0xFF))
-			gfx_draw_string_centred(dpi, 3326, ecx, edx, 0, (void*)esi);
-	}
-	return flags;
+	rct_ride_type* rideEntry = (rct_ride_type*)objectEntry;
+	if (rideEntry->excitement_multipler > 75) return false;
+	if (rideEntry->intensity_multipler > 75) return false;
+	if (rideEntry->nausea_multipler > 75) return false;
+	return true;
 }
 
-//rct2: 0x0066B355
-int paint_stex_entry(int flags, int ebx, int ecx, int edx, rct_drawpixelinfo* dpi, int esi, int ebp)
+static void object_type_ride_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
-	if ((flags & 0xFF) == 0){
-		// Object Load
-
-		rct_stex_entry* stex_entry = (rct_stex_entry*)esi;
-		uint8_t* pStringTable = (uint8_t*)(esi + 8);
-		stex_entry->scenario_name = object_get_localised_text(&pStringTable, ecx, ebx, 0);
-		stex_entry->park_name = object_get_localised_text(&pStringTable, ecx, ebx, 1);
-		stex_entry->details = object_get_localised_text(&pStringTable, ecx, ebx, 2);
-		if (RCT2_GLOBAL(0x9ADAF4, int) != -1) RCT2_GLOBAL(0x9ADAF4, uint16_t*)[0] = 0;
-	}
-	else if ((flags & 0xFF) == 1){
-		// Object Unload
-
-		rct_stex_entry* stex_entry = (rct_stex_entry*)esi;
-		stex_entry->scenario_name = 0;
-		stex_entry->park_name = 0;
-		stex_entry->details = 0;
-	}
-	else if ((flags & 0xFF) == 2){
-		return 0;
-	}
-	else if ((flags & 0xFF) == 3){
-		int x = ecx, y = edx;
-		rct_stex_entry* stex_entry = (rct_stex_entry*)ebp;
-		rct_window* w = (rct_window*)esi;
-
-		if (!((flags >> 8) & 0xFF)) {
-			gfx_draw_string_centred(dpi, 0xCFE, x, y, 0, NULL);
-		}
-		else{
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = stex_entry->details;
-			int width = w->x + w->width - 4 - x;
-			gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, width, 3168, 0);
+	rct_ride_type *rideEntry = (rct_ride_type*)objectEntry;
+	int imageId = rideEntry->images_offset;
+	if (rideEntry->ride_type[0] == 0xFF) {
+		imageId++;
+		if (rideEntry->ride_type[1] == 0xFF) {
+			imageId++;
 		}
 	}
-	return flags;
+	gfx_draw_sprite(dpi, imageId, x - 56, y - 56, 0);
 }
 
-int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+static rct_string_id object_type_ride_desc(void *objectEntry)
 {
-	switch (type)
-	{
-	case OBJECT_TYPE_RIDE:
-		return paint_ride_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
-	case OBJECT_TYPE_SMALL_SCENERY:
-		return paint_small_scenery(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
-	case OBJECT_TYPE_LARGE_SCENERY:
-		return paint_large_scenery(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
-	case OBJECT_TYPE_WALLS:
-		return paint_wall(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
-	case OBJECT_TYPE_BANNERS:
-		return paint_banner(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
-	case OBJECT_TYPE_PATHS:
-		return paint_path_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
-	case OBJECT_TYPE_PATH_BITS:
-		return paint_path_bit(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
-	case OBJECT_TYPE_SCENERY_SETS:
-		return paint_scenery_set(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
-	case OBJECT_TYPE_PARK_ENTRANCE:
-		return paint_park_entrance_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
-	case OBJECT_TYPE_WATER:
-		return paint_water_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
-	case OBJECT_TYPE_SCENARIO_TEXT:
-		return paint_stex_entry(eax, ebx, ecx, edx, (rct_drawpixelinfo*)edi, esi, ebp);
-	default:
-		assert(false);
-		return 0;
+	rct_ride_type *rideEntry = (rct_ride_type*)objectEntry;
+
+	// Get description
+	rct_string_id stringId = rideEntry->description;
+	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
+		uint8 rideType = rideEntry->ride_type[0];
+		if (rideType == 0xFF) {
+			rideType = rideEntry->ride_type[1];
+			if (rideType == 0xFF) {
+				rideType = rideEntry->ride_type[2];
+			}
+		}
+		stringId = 512 + rideType;
 	}
+	return stringId;
+}
+
+static const object_type_vtable object_type_ride_vtable[] = {
+	object_type_ride_load,
+	object_type_ride_unload,
+	object_type_ride_test,
+	object_type_ride_paint,
+	object_type_ride_desc
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Small Scenery (rct2: 0x006E3466)
+///////////////////////////////////////////////////////////////////////////////
+
+static bool object_type_small_scenery_load(void *objectEntry, uint32 entryIndex)
+{
+	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + (size_t)0x1C);
+
+	sceneryEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_SMALL_SCENERY, entryIndex, 0);
+	sceneryEntry->small_scenery.scenery_tab_id = 0xFF;
+	if (*extendedEntryData != 0xFF) {
+		uint8 entry_type, entry_index;
+		if (find_object_in_entry_group((rct_object_entry*)extendedEntryData, &entry_type, &entry_index)) {
+			sceneryEntry->small_scenery.scenery_tab_id = entry_index;
+		}
+	}
+
+	extendedEntryData += sizeof(rct_object_entry);
+	if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG16){
+		sceneryEntry->small_scenery.var_10 = (uint32)extendedEntryData;
+		while (*++extendedEntryData != 0xFF);
+		extendedEntryData++;
+	}
+
+	sceneryEntry->image = object_chunk_load_image_directory(&extendedEntryData);
+	if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) {
+		*RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	}
+
+	return true;
+}
+
+static void object_type_small_scenery_unload(void *objectEntry)
+{
+	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
+	sceneryEntry->name = 0;
+	sceneryEntry->image = 0;
+	sceneryEntry->small_scenery.var_10 = 0;
+	sceneryEntry->small_scenery.scenery_tab_id = 0;
+}
+
+static bool object_type_small_scenery_test(void *objectEntry)
+{
+	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
+
+	if (sceneryEntry->small_scenery.price <= 0) return false;
+	if (sceneryEntry->small_scenery.removal_price > 0) return true;
+
+	// Make sure you don't make a profit when placing then removing.
+	if (-sceneryEntry->small_scenery.removal_price > sceneryEntry->small_scenery.price) return false;
+
+	return true;
+}
+
+static void object_type_small_scenery_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+{
+	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
+	dpi = clip_drawpixelinfo(dpi, x - 56, 112, y - 56, 112);
+	if (dpi == NULL) {
+		return;
+	}
+
+	int imageId = sceneryEntry->image;
+	if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR) {
+		imageId |= 0x20D00000;
+		if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
+			imageId |= 0x92000000;
+		}
+	}
+
+	x = 56;
+	y = sceneryEntry->small_scenery.height / 4 + 78;
+	if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) {
+		if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE) {
+			y -= 12;
+		}
+	}
+
+	gfx_draw_sprite(dpi, imageId, x, y, 0);
+	if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG10) {
+		imageId = sceneryEntry->image + 0x44500004;
+		if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
+			imageId |= 0x92000000;
+		}
+
+		gfx_draw_sprite(dpi, imageId, x, y, 0);
+	}
+
+	if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG8) {
+		imageId = sceneryEntry->image + 4;
+		if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
+			imageId |= 0x92000000;
+		}
+
+		gfx_draw_sprite(dpi, imageId, x, y, 0);
+	}
+
+	rct2_free(dpi);
+}
+
+static rct_string_id object_type_small_scenery_desc(void *objectEntry)
+{
+	return STR_NONE;
+}
+
+static const object_type_vtable object_type_small_scenery_vtable[] = {
+	object_type_small_scenery_load,
+	object_type_small_scenery_unload,
+	object_type_small_scenery_test,
+	object_type_small_scenery_paint,
+	object_type_small_scenery_desc
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Large Scenery (rct2: 0x006B92A7)
+///////////////////////////////////////////////////////////////////////////////
+
+static bool object_type_large_scenery_load(void *objectEntry, uint32 entryIndex)
+{
+	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + (size_t)0x1A);
+
+	sceneryEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_LARGE_SCENERY, entryIndex, 0);
+	sceneryEntry->large_scenery.scenery_tab_id = 0xFF;
+	if (*extendedEntryData != 0xFF) {
+		uint8 entry_type, entry_index;
+		if (find_object_in_entry_group((rct_object_entry*)extendedEntryData, &entry_type, &entry_index)) {
+			sceneryEntry->large_scenery.scenery_tab_id = entry_index;
+		}
+	}
+
+	extendedEntryData += sizeof(rct_object_entry);
+	if (sceneryEntry->large_scenery.flags & (1 << 2)) {
+		sceneryEntry->large_scenery.var_12 = (uint32)extendedEntryData;
+		extendedEntryData += 1038;
+	}
+
+	sceneryEntry->large_scenery.tiles = (rct_large_scenery_tile*)extendedEntryData;
+
+	// skip over large scenery tiles
+	while (*((uint16*)extendedEntryData) != 0xFFFF){
+		extendedEntryData += sizeof(rct_large_scenery_tile);
+	}
+
+	extendedEntryData += 2;
+
+	int imageId = object_chunk_load_image_directory(&extendedEntryData);
+	if (sceneryEntry->large_scenery.flags & (1 << 2)){
+		sceneryEntry->large_scenery.var_16 = imageId;
+
+		uint8* edx = (uint8*)sceneryEntry->large_scenery.var_12;
+		if (!(edx[0xC] & 1)) {
+			imageId += edx[0xD] * 4;
+		} else{
+			imageId += edx[0xD] * 2;
+		}
+	}
+	sceneryEntry->image = imageId;
+	if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) {
+		*RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	}
+
+	return true;
+}
+
+static void object_type_large_scenery_unload(void *objectEntry)
+{
+	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
+	sceneryEntry->name = 0;
+	sceneryEntry->image = 0;
+	sceneryEntry->large_scenery.tiles = 0;
+	sceneryEntry->large_scenery.scenery_tab_id = 0;
+	sceneryEntry->large_scenery.var_12 = 0;
+	sceneryEntry->large_scenery.var_16 = 0;
+}
+
+static bool object_type_large_scenery_test(void *objectEntry)
+{
+	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
+
+	if (sceneryEntry->large_scenery.price <= 0) return false;
+	if (sceneryEntry->large_scenery.removal_price > 0) return true;
+
+	// Make sure you don't make a profit when placing then removing.
+	if (-sceneryEntry->large_scenery.removal_price > sceneryEntry->large_scenery.price) return false;
+
+	return true;
+}
+
+static void object_type_large_scenery_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+{
+	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
+
+	int imageId = sceneryEntry->image | 0xB2D00000;
+	gfx_draw_sprite(dpi, imageId, x, y - 39, 0);
+}
+
+static rct_string_id object_type_large_scenery_desc(void *objectEntry)
+{
+	return STR_NONE;
+}
+
+static const object_type_vtable object_type_large_scenery_vtable[] = {
+	object_type_large_scenery_load,
+	object_type_large_scenery_unload,
+	object_type_large_scenery_test,
+	object_type_large_scenery_paint,
+	object_type_large_scenery_desc
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Wall (rct2: 0x006E5A25)
+///////////////////////////////////////////////////////////////////////////////
+
+static bool object_type_wall_load(void *objectEntry, uint32 entryIndex)
+{
+	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + (size_t)0x0E);
+
+	sceneryEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_WALLS, entryIndex, 0);
+	sceneryEntry->wall.scenery_tab_id = 0xFF;
+	if (*extendedEntryData != 0xFF){
+		uint8 entry_type, entry_index;
+		if (find_object_in_entry_group((rct_object_entry*)extendedEntryData, &entry_type, &entry_index)) {
+			sceneryEntry->wall.scenery_tab_id = entry_index;
+		}
+	}
+
+	extendedEntryData += sizeof(rct_object_entry);
+	sceneryEntry->image = object_chunk_load_image_directory(&extendedEntryData);
+
+	if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) {
+		*RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	}
+
+	return true;
+
+}
+
+static void object_type_wall_unload(void *objectEntry)
+{
+	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
+	sceneryEntry->name = 0;
+	sceneryEntry->image = 0;
+	sceneryEntry->wall.scenery_tab_id = 0;
+}
+
+static bool object_type_wall_test(void *objectEntry)
+{
+	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
+	if (sceneryEntry->wall.price <= 0) return false;
+	return true;
+}
+
+static void object_type_wall_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+{
+	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
+	dpi = clip_drawpixelinfo(dpi, x - 56, 112, y - 56, 112);
+	if (dpi == NULL) {
+		return;
+	}
+
+	int imageId = sceneryEntry->image;
+	imageId |= 0x20D00000;
+	if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
+		imageId |= 0x92000000;
+	}
+
+	x = 70;
+	y = sceneryEntry->wall.height * 2 + 72;
+	gfx_draw_sprite(dpi, imageId, x, y, 0);
+	
+	if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG2){
+		imageId = sceneryEntry->image + 0x44500006;
+		gfx_draw_sprite(dpi, imageId, x, y, 0);
+	} else if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG5){
+		imageId++;
+		gfx_draw_sprite(dpi, imageId, x, y, 0);
+	}
+
+	rct2_free(dpi);
+}
+
+static rct_string_id object_type_wall_desc(void *objectEntry)
+{
+	return STR_NONE;
+}
+
+static const object_type_vtable object_type_wall_vtable[] = {
+	object_type_wall_load,
+	object_type_wall_unload,
+	object_type_wall_test,
+	object_type_wall_paint,
+	object_type_wall_desc
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Banner (rct2: 0x006BA84E)
+///////////////////////////////////////////////////////////////////////////////
+
+static bool object_type_banner_load(void *objectEntry, uint32 entryIndex)
+{
+	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + (size_t)0x0C);
+
+	sceneryEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_BANNERS, entryIndex, 0);
+	sceneryEntry->banner.scenery_tab_id = 0xFF;
+	if (*extendedEntryData != 0xFF){
+		uint8 entry_type, entry_index;
+		if (find_object_in_entry_group((rct_object_entry*)extendedEntryData, &entry_type, &entry_index)){
+			sceneryEntry->banner.scenery_tab_id = entry_index;
+		}
+	}
+
+	extendedEntryData += sizeof(rct_object_entry);
+	sceneryEntry->image = object_chunk_load_image_directory(&extendedEntryData);
+
+	if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) {
+		*RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	}
+
+	return true;
+}
+
+static void object_type_banner_unload(void *objectEntry)
+{
+	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
+	sceneryEntry->name = 0;
+	sceneryEntry->image = 0;
+	sceneryEntry->banner.scenery_tab_id = 0;
+}
+
+static bool object_type_banner_test(void *objectEntry)
+{
+	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
+	if (sceneryEntry->banner.price <= 0) return false;
+	return true;
+}
+
+static void object_type_banner_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+{
+	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
+
+	int imageId = sceneryEntry->image | 0x20D00000;
+	gfx_draw_sprite(dpi, imageId, x, y, 0);
+	gfx_draw_sprite(dpi, imageId + 1, x, y, 0);
+}
+
+static rct_string_id object_type_banner_desc(void *objectEntry)
+{
+	return STR_NONE;
+}
+
+static const object_type_vtable object_type_banner_vtable[] = {
+	object_type_banner_load,
+	object_type_banner_unload,
+	object_type_banner_test,
+	object_type_banner_paint,
+	object_type_banner_desc
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Path (rct2: 0x006A8621)
+///////////////////////////////////////////////////////////////////////////////
+
+static bool object_type_path_load(void *objectEntry, uint32 entryIndex)
+{
+	rct_path_type *pathEntry = (rct_path_type*)objectEntry;
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + (size_t)0x0E);
+
+	pathEntry->string_idx = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_PATHS, entryIndex, 0);
+
+	int imageId = object_chunk_load_image_directory(&extendedEntryData);
+	pathEntry->image = imageId;
+	pathEntry->bridge_image = imageId + 109;
+
+	if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) {
+		*RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = 0;
+	// Set the default path for when opening footpath window
+	for (int i = 0; i < object_entry_group_counts[OBJECT_TYPE_PATHS]; i++) {
+		rct_path_type *pathEntry2 = (rct_path_type*)object_entry_groups[OBJECT_TYPE_PATHS].chunks[i];
+		if (pathEntry2 == (rct_path_type*)-1) {
+			continue;
+		}
+		if (!(pathEntry2->flags & 4)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = i;
+			break;
+		}
+		RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = i;
+	}
+
+	return true;
+}
+
+static void object_type_path_unload(void *objectEntry)
+{
+	rct_path_type *pathEntry = (rct_path_type*)objectEntry;
+	pathEntry->string_idx = 0;
+	pathEntry->image = 0;
+	pathEntry->bridge_image = 0;
+}
+
+static bool object_type_path_test(void *objectEntry)
+{
+	rct_path_type *pathEntry = (rct_path_type*)objectEntry;
+	if (pathEntry->var_0A >= 2) return false;
+	return true;
+}
+
+static void object_type_path_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+{
+	rct_path_type *pathEntry = (rct_path_type*)objectEntry;
+	gfx_draw_sprite(dpi, pathEntry->image + 71, x - 49, y - 17, 0);
+	gfx_draw_sprite(dpi, pathEntry->image + 72, x + 4, y - 17, 0);
+}
+
+static rct_string_id object_type_path_desc(void *objectEntry)
+{
+	return STR_NONE;
+}
+
+static const object_type_vtable object_type_path_vtable[] = {
+	object_type_path_load,
+	object_type_path_unload,
+	object_type_path_test,
+	object_type_path_paint,
+	object_type_path_desc
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Path Item (rct2: 0x006A86E2)
+///////////////////////////////////////////////////////////////////////////////
+
+static bool object_type_path_bit_load(void *objectEntry, uint32 entryIndex)
+{
+	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + (size_t)0x0E);
+
+	sceneryEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_PATH_BITS, entryIndex, 0);
+	sceneryEntry->path_bit.scenery_tab_id = 0xFF;
+	if (*extendedEntryData != 0xFF) {
+		uint8 entry_type, entry_index;
+		if (find_object_in_entry_group((rct_object_entry*)extendedEntryData, &entry_type, &entry_index)){
+			sceneryEntry->path_bit.scenery_tab_id = entry_index;
+		}
+	}
+
+	extendedEntryData += sizeof(rct_object_entry);
+	sceneryEntry->image = object_chunk_load_image_directory(&extendedEntryData);
+
+	if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) {
+		*RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	}
+
+	return true;
+}
+
+static void object_type_path_bit_unload(void *objectEntry)
+{
+	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
+	sceneryEntry->name = 0;
+	sceneryEntry->image = 0;
+	sceneryEntry->path_bit.scenery_tab_id = 0;
+}
+
+static bool object_type_path_bit_test(void *objectEntry)
+{
+	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
+	if (sceneryEntry->path_bit.price <= 0) return false;
+	return true;
+}
+
+static void object_type_path_bit_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+{
+	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
+	gfx_draw_sprite(dpi, sceneryEntry->image, x - 22, y - 24, 0);
+}
+
+static rct_string_id object_type_path_bit_desc(void *objectEntry)
+{
+	return STR_NONE;
+}
+
+static const object_type_vtable object_type_path_bit_vtable[] = {
+	object_type_path_bit_load,
+	object_type_path_bit_unload,
+	object_type_path_bit_test,
+	object_type_path_bit_paint,
+	object_type_path_bit_desc
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Scenery Set (rct2: 0x006B93AA)
+///////////////////////////////////////////////////////////////////////////////
+
+static bool object_type_scenery_set_load(void *objectEntry, uint32 entryIndex)
+{
+	rct_scenery_set_entry *scenerySetEntry = (rct_scenery_set_entry*)objectEntry;
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_scenery_set_entry));
+
+	scenerySetEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_SCENERY_SETS, entryIndex, 0);
+	
+	rct_object_entry *entryObjects = NULL;
+	uint8 *eax = RCT2_GLOBAL(0x9ADAF4, uint8*);
+	if ((uint32)eax != 0xFFFFFFFF){
+		*((uint16*)eax) = 0;
+		entryObjects = (rct_object_entry*)(eax + 2);
+	}
+
+	scenerySetEntry->entry_count = 0;
+	scenerySetEntry->var_107 = 0;
+
+	for (; *extendedEntryData != 0xFF; extendedEntryData += sizeof(rct_object_entry)) {
+		scenerySetEntry->var_107++;
+
+		if (entryObjects != NULL){
+			memcpy(entryObjects, extendedEntryData, sizeof(rct_object_entry));
+			entryObjects++;
+			(*(eax + 1))++;
+		}
+		uint8 entry_type;
+		uint8 entry_index = 0;
+		if (!find_object_in_entry_group((rct_object_entry*)extendedEntryData, &entry_type, &entry_index))
+			continue;
+
+		uint16 scenery_entry = entry_index;
+
+		switch (entry_type){
+		case OBJECT_TYPE_SMALL_SCENERY:
+			break;
+		case OBJECT_TYPE_LARGE_SCENERY:
+			scenery_entry |= 0x300;
+			break;
+		case OBJECT_TYPE_WALLS:
+			scenery_entry |= 0x200;
+			break;
+		case OBJECT_TYPE_PATH_BITS:
+			scenery_entry |= 0x100;
+			break;
+		default:
+			scenery_entry |= 0x400;
+			break;
+		}
+
+		scenerySetEntry->scenery_entries[scenerySetEntry->entry_count++] = scenery_entry;
+	}
+
+	extendedEntryData++;
+	scenerySetEntry->image = object_chunk_load_image_directory(&extendedEntryData);
+
+	return true;
+}
+
+static void object_type_scenery_set_unload(void *objectEntry)
+{
+	rct_scenery_set_entry *scenerySetEntry = (rct_scenery_set_entry*)objectEntry;
+	scenerySetEntry->name = 0;
+	scenerySetEntry->image = 0;
+	scenerySetEntry->entry_count = 0;
+	scenerySetEntry->var_107 = 0;
+	memset(scenerySetEntry->scenery_entries, 0, 256);
+}
+
+static bool object_type_scenery_set_test(void *objectEntry)
+{
+	return true;
+}
+
+static void object_type_scenery_set_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+{
+	rct_scenery_set_entry *scenerySetEntry = (rct_scenery_set_entry*)objectEntry;
+	int imageId = scenerySetEntry->image + 0x20600001;
+	gfx_draw_sprite(dpi, imageId, x - 15, y - 14, 0);
+}
+
+static rct_string_id object_type_scenery_set_desc(void *objectEntry)
+{
+	return STR_NONE;
+}
+
+static const object_type_vtable object_type_scenery_set_vtable[] = {
+	object_type_scenery_set_load,
+	object_type_scenery_set_unload,
+	object_type_scenery_set_test,
+	object_type_scenery_set_paint,
+	object_type_scenery_set_desc
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Park Entrance (rct2: 0x00666E42)
+///////////////////////////////////////////////////////////////////////////////
+
+bool object_type_park_entrance_load(void *objectEntry, uint32 entryIndex)
+{
+	rct_entrance_type *entranceType = (rct_entrance_type*)objectEntry;
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_entrance_type));
+
+	entranceType->string_idx = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_PARK_ENTRANCE, entryIndex, 0);
+	entranceType->image_id = object_chunk_load_image_directory(&extendedEntryData);
+
+	if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) {
+		*RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	}
+
+	return true;
+}
+
+static void object_type_park_entrance_unload(void *objectEntry)
+{
+	rct_entrance_type *entranceType = (rct_entrance_type*)objectEntry;
+	entranceType->string_idx = 0;
+	entranceType->image_id = 0;
+}
+
+static bool object_type_park_entrance_test(void *objectEntry)
+{
+	return true;
+}
+
+static void object_type_park_entrance_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+{
+	rct_entrance_type *entranceType = (rct_entrance_type*)objectEntry;
+
+	dpi = clip_drawpixelinfo(dpi, x - 56, 112, y - 56, 112);
+	if (dpi == NULL) {
+		return;
+	}
+
+	int imageId = entranceType->image_id;
+	gfx_draw_sprite(dpi, imageId + 1, 24, 68, 0);
+	gfx_draw_sprite(dpi, imageId, 56, 84, 0);
+	gfx_draw_sprite(dpi, imageId + 2, 88, 100, 0);
+
+	rct2_free(dpi);
+}
+
+static rct_string_id object_type_park_entrance_desc(void *objectEntry)
+{
+	return STR_NONE;
+}
+
+static const object_type_vtable object_type_park_entrance_vtable[] = {
+	object_type_park_entrance_load,
+	object_type_park_entrance_unload,
+	object_type_park_entrance_test,
+	object_type_park_entrance_paint,
+	object_type_park_entrance_desc
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Water (rct2: 0x006E6E2A)
+///////////////////////////////////////////////////////////////////////////////
+
+static bool object_type_water_load(void *objectEntry, uint32 entryIndex)
+{
+	rct_water_type *waterEntry = (rct_water_type*)objectEntry;
+
+	uint8 *pStringTable = (uint8*)((size_t)objectEntry + sizeof(rct_water_type));
+	waterEntry->string_idx = object_get_localised_text(&pStringTable, OBJECT_TYPE_WATER, entryIndex, 0);
+
+	int imageId = object_chunk_load_image_directory(&pStringTable);
+	waterEntry->image_id = imageId;
+	waterEntry->var_06 = imageId + 1;
+	waterEntry->var_0A = imageId + 4;
+
+	if (RCT2_GLOBAL(0x009ADAF4, uint32) != 0xFFFFFFFF) {
+		*RCT2_GLOBAL(0x009ADAF4, uint16*) = 0;
+	}
+
+	if (RCT2_GLOBAL(0x009ADAFD, uint8) == 0) {
+		load_palette();
+		gfx_invalidate_screen();
+	}
+
+	return true;
+}
+
+static void object_type_water_unload(void *objectEntry)
+{
+	rct_water_type *waterEntry = (rct_water_type*)objectEntry;
+	waterEntry->string_idx = 0;
+	waterEntry->image_id = 0;
+	waterEntry->var_06 = 0;
+	waterEntry->var_0A = 0;
+}
+
+static bool object_type_water_test(void *objectEntry)
+{
+	return true;
+}
+
+static void object_type_water_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+{
+	// Write (no image)
+	gfx_draw_string_centred(dpi, 3326, x, y, 0, NULL);
+}
+
+static rct_string_id object_type_water_desc(void *objectEntry)
+{
+	return STR_NONE;
+}
+
+static const object_type_vtable object_type_water_vtable[] = {
+	object_type_water_load,
+	object_type_water_unload,
+	object_type_water_test,
+	object_type_water_paint,
+	object_type_water_desc
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Stex (rct2: 0x0066B355)
+///////////////////////////////////////////////////////////////////////////////
+
+static bool object_type_stex_load(void *objectEntry, uint32 entryIndex)
+{
+	rct_stex_entry *stexEntry = (rct_stex_entry*)objectEntry;
+	uint8 *stringTable = (uint8*)((size_t)objectEntry + (size_t)0x08);
+	
+	stexEntry->scenario_name = object_get_localised_text(&stringTable, OBJECT_TYPE_SCENARIO_TEXT, entryIndex, 0);
+	stexEntry->park_name = object_get_localised_text(&stringTable, OBJECT_TYPE_SCENARIO_TEXT, entryIndex, 1);
+	stexEntry->details = object_get_localised_text(&stringTable, OBJECT_TYPE_SCENARIO_TEXT, entryIndex, 2);
+
+	if (RCT2_GLOBAL(0x9ADAF4, int) != -1) {
+		RCT2_GLOBAL(0x9ADAF4, uint16*)[0] = 0;
+	}
+
+	return true;
+}
+
+static void object_type_stex_unload(void *objectEntry)
+{
+	rct_stex_entry *stexEntry = (rct_stex_entry*)objectEntry;
+	stexEntry->scenario_name = 0;
+	stexEntry->park_name = 0;
+	stexEntry->details = 0;
+}
+
+static bool object_type_stex_test(void *objectEntry)
+{
+	return true;
+}
+
+static void object_type_stex_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+{
+	// Write (no image)
+	gfx_draw_string_centred(dpi, 3326, x, y, 0, NULL);
+}
+
+static rct_string_id object_type_stex_desc(void *objectEntry)
+{
+	rct_stex_entry *stexEntry = (rct_stex_entry*)objectEntry;
+	return stexEntry->details;
+}
+
+static const object_type_vtable object_type_stex_vtable[] = {
+	object_type_stex_load,
+	object_type_stex_unload,
+	object_type_stex_test,
+	object_type_stex_paint,
+	object_type_stex_desc
+};
+
+///////////////////////////////////////////////////////////////////////////////
+
+static const object_type_vtable * const object_type_vtables[] = {
+	object_type_ride_vtable,
+	object_type_small_scenery_vtable,
+	object_type_large_scenery_vtable,
+	object_type_wall_vtable,
+	object_type_banner_vtable,
+	object_type_path_vtable,
+	object_type_path_bit_vtable,
+	object_type_scenery_set_vtable,
+	object_type_park_entrance_vtable,
+	object_type_water_vtable,
+	object_type_stex_vtable
+};
+
+bool object_load(int type, void *objectEntry, uint32 entryIndex)
+{
+	assert(type >= OBJECT_TYPE_RIDE && type <= OBJECT_TYPE_SCENARIO_TEXT);
+	const object_type_vtable *vtable = object_type_vtables[type];
+	return vtable->load(objectEntry, entryIndex) ? 0 : 1;
+}
+
+void object_unload(int type, void *objectEntry)
+{
+	assert(type >= OBJECT_TYPE_RIDE && type <= OBJECT_TYPE_SCENARIO_TEXT);
+	const object_type_vtable *vtable = object_type_vtables[type];
+	vtable->unload(objectEntry);
+}
+
+bool object_test(int type, void *objectEntry)
+{
+	assert(type >= OBJECT_TYPE_RIDE && type <= OBJECT_TYPE_SCENARIO_TEXT);
+	const object_type_vtable *vtable = object_type_vtables[type];
+	return vtable->test(objectEntry);
+}
+
+void object_paint(int type, void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+{
+	assert(type >= OBJECT_TYPE_RIDE && type <= OBJECT_TYPE_SCENARIO_TEXT);
+	const object_type_vtable *vtable = object_type_vtables[type];
+	vtable->paint(objectEntry, dpi, x, y);
+}
+
+rct_string_id object_desc(int type, void *objectEntry)
+{
+	assert(type >= OBJECT_TYPE_RIDE && type <= OBJECT_TYPE_SCENARIO_TEXT);
+	const object_type_vtable *vtable = object_type_vtables[type];
+	return vtable->desc(objectEntry);
 }
 
 /**
@@ -1570,7 +1668,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 				return 0;
 			}
 
-			if (object_paint(openedEntry.flags & 0x0F, 2, 0, 0, 0, (int)chunk, 0, 0)) {
+			if (!object_test(openedEntry.flags & 0x0F, chunk)) {
 				// This is impossible for STEX entries to fail.
 				log_error("Opened object failed paint test.");
 				RCT2_GLOBAL(0x00F42BD9, uint8) = 3;
@@ -1593,7 +1691,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 			memcpy(gTempObjectLoadName, openedEntry.name, 8);
 			// Not used??
 			RCT2_GLOBAL(0x009ADAFD, uint8) = 1;
-			object_paint(openedEntry.flags & 0x0F, 0, 0, 0, 0, (int)chunk, 0, 0);
+			object_load(openedEntry.flags & 0x0F, chunk, 0);
 			// Tell text to be loaded into normal address
 			RCT2_GLOBAL(0x009ADAFC, uint8) = 0;
 			// Not used??

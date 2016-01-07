@@ -3173,7 +3173,7 @@ rct_track_design *temp_track_get_info(char* path, uint8** preview)
 			return NULL;
 		}
 
-		if (!object_load(0, &loaded_track->vehicle_object, NULL)){
+		if (!object_load_chunk(0, &loaded_track->vehicle_object, NULL)){
 			if (preview != NULL) *preview = NULL;
 			log_error("Failed to load track (vehicle load fail): %s", path);
 			return NULL;

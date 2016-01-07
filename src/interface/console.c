@@ -734,7 +734,7 @@ static void editor_load_selected_objects_console()
 			uint8 entry_index, entry_type;
 			if (!find_object_in_entry_group(installed_entry, &entry_type, &entry_index)){
 				int chunk_size;
-				if (!object_load(-1, installed_entry, &chunk_size)) {
+				if (!object_load_chunk(-1, installed_entry, &chunk_size)) {
 					log_error("Failed to load entry %.8s", installed_entry->name);
 				}
 			}
@@ -773,7 +773,7 @@ static int cc_load_object(const utf8 **argv, int argc) {
 					}
 					else {
 						// Load the obect
-						if (!object_load(entryGroupIndex, &entry, NULL)) {
+						if (!object_load_chunk(entryGroupIndex, &entry, NULL)) {
 							console_writeline_error("Could not load object file.");
 						}
 						else {
