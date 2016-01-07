@@ -38,8 +38,6 @@
 #include "../util/util.h"
 #include "../world/footpath.h"
 
-void object_desc(int type, void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y);
-
 enum {
 	FILTER_RCT2 = (1 << 0),
 	FILTER_WW = (1 << 1),
@@ -1395,9 +1393,17 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	gfx_draw_string_centred_clipped(dpi, stringId, NULL, 0, x, y, width);
 
 	// Draw description of object
-	x = w->x + w->widgets[WIDX_LIST].right + 4;
-	y += 15;
-	object_desc(type, stex_entry, w, dpi, x, y);
+	stringId = object_desc(type, stex_entry);
+	if (stringId != STR_NONE) {
+		x = w->x + w->widgets[WIDX_LIST].right + 4;
+		y += 15;
+		int width = w->x + w->width - x - 4;
+		if (type == OBJECT_TYPE_SCENARIO_TEXT) {
+			gfx_draw_string_left_wrapped(dpi, &stringId, x, y, width, 3168, 0);
+		} else {
+			gfx_draw_string_left_wrapped(dpi, &stringId, x, y + 5, width, 1191, 0);
+		}
+	}
 
 	// Draw object source
 	source = (highlightedEntry->flags & 0xF0) >> 4;

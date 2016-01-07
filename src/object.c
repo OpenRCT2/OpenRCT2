@@ -436,7 +436,7 @@ typedef bool (*object_load_func)(void *objectEntry, uint32 entryIndex);
 typedef void (*object_unload_func)(void *objectEntry);
 typedef bool (*object_test_func)(void *objectEntry);
 typedef void (*object_paint_func)(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y);
-typedef void (*object_desc_func)(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y);
+typedef rct_string_id (*object_desc_func)(void *objectEntry);
 
 /**
  * Represents addresses for virtual object functions.
@@ -769,7 +769,7 @@ static void object_type_ride_paint(void *objectEntry, rct_drawpixelinfo *dpi, si
 	gfx_draw_sprite(dpi, imageId, x - 56, y - 56, 0);
 }
 
-static void object_type_ride_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static rct_string_id object_type_ride_desc(void *objectEntry)
 {
 	rct_ride_type *rideEntry = (rct_ride_type*)objectEntry;
 
@@ -785,10 +785,7 @@ static void object_type_ride_desc(void *objectEntry, rct_window *w, rct_drawpixe
 		}
 		stringId = 512 + rideType;
 	}
-
-	// Draw description
-	int width = w->x + w->width - x - 4;
-	gfx_draw_string_left_wrapped(dpi, &stringId, x, y + 5, width, 1191, 0);
+	return stringId;
 }
 
 static const object_type_vtable object_type_ride_vtable[] = {
@@ -900,9 +897,9 @@ static void object_type_small_scenery_paint(void *objectEntry, rct_drawpixelinfo
 	rct2_free(dpi);
 }
 
-static void object_type_small_scenery_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static rct_string_id object_type_small_scenery_desc(void *objectEntry)
 {
-	// Not required
+	return STR_NONE;
 }
 
 static const object_type_vtable object_type_small_scenery_vtable[] = {
@@ -997,9 +994,9 @@ static void object_type_large_scenery_paint(void *objectEntry, rct_drawpixelinfo
 	gfx_draw_sprite(dpi, imageId, x, y - 39, 0);
 }
 
-static void object_type_large_scenery_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static rct_string_id object_type_large_scenery_desc(void *objectEntry)
 {
-	// Not required
+	return STR_NONE;
 }
 
 static const object_type_vtable object_type_large_scenery_vtable[] = {
@@ -1083,9 +1080,9 @@ static void object_type_wall_paint(void *objectEntry, rct_drawpixelinfo *dpi, si
 	rct2_free(dpi);
 }
 
-static void object_type_wall_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static rct_string_id object_type_wall_desc(void *objectEntry)
 {
-	// Not required
+	return STR_NONE;
 }
 
 static const object_type_vtable object_type_wall_vtable[] = {
@@ -1148,9 +1145,9 @@ static void object_type_banner_paint(void *objectEntry, rct_drawpixelinfo *dpi, 
 	gfx_draw_sprite(dpi, imageId + 1, x, y, 0);
 }
 
-static void object_type_banner_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static rct_string_id object_type_banner_desc(void *objectEntry)
 {
-	// Not required
+	return STR_NONE;
 }
 
 static const object_type_vtable object_type_banner_vtable[] = {
@@ -1219,9 +1216,9 @@ static void object_type_path_paint(void *objectEntry, rct_drawpixelinfo *dpi, si
 	gfx_draw_sprite(dpi, pathEntry->image + 72, x + 4, y - 17, 0);
 }
 
-static void object_type_path_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static rct_string_id object_type_path_desc(void *objectEntry)
 {
-	// Not required
+	return STR_NONE;
 }
 
 static const object_type_vtable object_type_path_vtable[] = {
@@ -1281,9 +1278,9 @@ static void object_type_path_bit_paint(void *objectEntry, rct_drawpixelinfo *dpi
 	gfx_draw_sprite(dpi, sceneryEntry->image, x - 22, y - 24, 0);
 }
 
-static void object_type_path_bit_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static rct_string_id object_type_path_bit_desc(void *objectEntry)
 {
-	// Not required
+	return STR_NONE;
 }
 
 static const object_type_vtable object_type_path_bit_vtable[] = {
@@ -1378,9 +1375,9 @@ static void object_type_scenery_set_paint(void *objectEntry, rct_drawpixelinfo *
 	gfx_draw_sprite(dpi, imageId, x - 15, y - 14, 0);
 }
 
-static void object_type_scenery_set_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static rct_string_id object_type_scenery_set_desc(void *objectEntry)
 {
-	// Not required
+	return STR_NONE;
 }
 
 static const object_type_vtable object_type_scenery_set_vtable[] = {
@@ -1439,9 +1436,9 @@ static void object_type_park_entrance_paint(void *objectEntry, rct_drawpixelinfo
 	rct2_free(dpi);
 }
 
-static void object_type_park_entrance_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static rct_string_id object_type_park_entrance_desc(void *objectEntry)
 {
-	// Not required
+	return STR_NONE;
 }
 
 static const object_type_vtable object_type_park_entrance_vtable[] = {
@@ -1500,9 +1497,9 @@ static void object_type_water_paint(void *objectEntry, rct_drawpixelinfo *dpi, s
 	gfx_draw_string_centred(dpi, 3326, x, y, 0, NULL);
 }
 
-static void object_type_water_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static rct_string_id object_type_water_desc(void *objectEntry)
 {
-	// Not required
+	return STR_NONE;
 }
 
 static const object_type_vtable object_type_water_vtable[] = {
@@ -1552,12 +1549,10 @@ static void object_type_stex_paint(void *objectEntry, rct_drawpixelinfo *dpi, si
 	gfx_draw_string_centred(dpi, 3326, x, y, 0, NULL);
 }
 
-static void object_type_stex_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static rct_string_id object_type_stex_desc(void *objectEntry)
 {
 	rct_stex_entry *stexEntry = (rct_stex_entry*)objectEntry;
-	rct_string_id stringId = stexEntry->details;
-	int width = w->x + w->width - 4 - x;
-	gfx_draw_string_left_wrapped(dpi, &stringId, x, y, width, 3168, 0);
+	return stexEntry->details;
 }
 
 static const object_type_vtable object_type_stex_vtable[] = {
@@ -1612,11 +1607,11 @@ void object_paint(int type, void *objectEntry, rct_drawpixelinfo *dpi, sint32 x,
 	vtable->paint(objectEntry, dpi, x, y);
 }
 
-void object_desc(int type, void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+rct_string_id object_desc(int type, void *objectEntry)
 {
 	assert(type >= OBJECT_TYPE_RIDE && type <= OBJECT_TYPE_SCENARIO_TEXT);
 	const object_type_vtable *vtable = object_type_vtables[type];
-	vtable->desc(objectEntry, w, dpi, x, y);
+	return vtable->desc(objectEntry);
 }
 
 /**

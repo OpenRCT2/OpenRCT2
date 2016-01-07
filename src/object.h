@@ -133,5 +133,6 @@ bool object_load(int type, void *objectEntry, uint32 entryIndex);
 void object_unload(int type, void *objectEntry);
 bool object_test(int type, void *objectEntry);
 void object_paint(int type, void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y);
+rct_string_id object_desc(int type, void *objectEntry);
 
 #endif
