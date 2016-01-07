@@ -349,7 +349,7 @@ static void rct1_load_default_objects()
 				continue;
 			}
 
-			if (!object_load(j, &entries[j], NULL)) {
+			if (!object_load_chunk(j, &entries[j], NULL)) {
 				error_string_quit(0x99990000 + (i * 0x100) + j, -1);
 				return;
 			}
@@ -359,7 +359,7 @@ static void rct1_load_default_objects()
 	// Water is a special case
 	rct_object_entry *waterEntries = (rct_object_entry*)RCT1DefaultObjects[9].entries;
 	rct_object_entry *waterEntry = &waterEntries[RCT2_GLOBAL(0x01358841, uint8) == 0 ? 0 : 1];
-	if (!object_load(0, waterEntry, NULL)) {
+	if (!object_load_chunk(0, waterEntry, NULL)) {
 		error_string_quit(0x99990900, -1);
 		return;
 	}

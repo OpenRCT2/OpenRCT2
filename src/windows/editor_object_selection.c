@@ -38,6 +38,7 @@
 #include "../util/util.h"
 #include "../world/footpath.h"
 
+void object_desc(int type, void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y);
 
 enum {
 	FILTER_RCT2 = (1 << 0),
@@ -757,7 +758,7 @@ void unload_unselected_objects(){
 	for (int i = gInstalledObjectsCount; i > 0; --i){
 		if (!(*selection_flags & OBJECT_SELECTION_FLAG_SELECTED)){
 			remove_selected_objects_from_research(installedObject);
-			object_unload(installedObject);
+			object_unload_chunk(installedObject);
 		}
 		selection_flags++;
 		installedObject = object_get_next(installedObject);
@@ -1348,7 +1349,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	widget = &w->widgets[WIDX_PREVIEW];
 	x = w->x + (widget->left + widget->right) / 2 + 1;
 	y = w->y + (widget->top + widget->bottom) / 2 + 1;
-	object_paint(type, 3, type, x, y, 0, (int)dpi, (int)stex_entry);
+	object_paint(type, stex_entry, dpi, x, y);
 
 	// Draw name of object
 	x = w->x + (widget->left + widget->right) / 2 + 1;
@@ -1396,7 +1397,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	// Draw description of object
 	x = w->x + w->widgets[WIDX_LIST].right + 4;
 	y += 15;
-	object_paint(type, 259, type, x, y, (int)w, (int)dpi, (int)stex_entry);
+	object_desc(type, stex_entry, w, dpi, x, y);
 
 	// Draw object source
 	source = (highlightedEntry->flags & 0xF0) >> 4;
@@ -1981,7 +1982,7 @@ static void editor_load_selected_objects()
 			uint8 entry_index, entry_type;
 			if (!find_object_in_entry_group(installed_entry, &entry_type, &entry_index)){
 				int chunk_size;
-				if (!object_load(-1, installed_entry, &chunk_size)) {
+				if (!object_load_chunk(-1, installed_entry, &chunk_size)) {
 					log_error("Failed to load entry %.8s", installed_entry->name);
 				}
 			}

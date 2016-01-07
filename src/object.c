@@ -107,7 +107,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 
 	objectType = openedEntry.flags & 0x0F;
 
-	if (object_paint(objectType, 2, 0, objectType, 0, (int)chunk, 0, 0)) {
+	if (!object_test(objectType, chunk)) {
 		log_error("Object Load failed due to paint failure.");
 		RCT2_GLOBAL(0x00F42BD9, uint8) = 3;
 		rct2_free(chunk);
@@ -142,7 +142,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 	gLastLoadedObjectChunkData = chunk;
 
 	if (RCT2_GLOBAL(0x9ADAFD, uint8) != 0) {
-		object_paint(objectType, 0, groupIndex, objectType, 0, (int)chunk, 0, 0);
+		object_load(objectType, chunk, groupIndex);
 	}
 	return 1;
 }
@@ -151,7 +151,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
  *
  *  rct2: 0x006A985D
  */
-int object_load(int groupIndex, rct_object_entry *entry, int* chunkSize)
+int object_load_chunk(int groupIndex, rct_object_entry *entry, int* chunkSize)
 {
 	// Alow chunkSize to be null
 	int tempChunkSize;
@@ -184,7 +184,8 @@ int object_load(int groupIndex, rct_object_entry *entry, int* chunkSize)
  *  ebx: file
  *  ebp: entry
  */
-int write_object_file(SDL_RWops *rw, rct_object_entry* entry){
+int write_object_file(SDL_RWops *rw, rct_object_entry* entry)
+{
 	uint8 entryGroupIndex = 0, type = 0;
 	uint8* chunk = 0;
 
@@ -192,7 +193,7 @@ int write_object_file(SDL_RWops *rw, rct_object_entry* entry){
 
 	chunk = object_entry_groups[type].chunks[entryGroupIndex];
 
-	object_paint(type, 1, entryGroupIndex, type, 0, (int)chunk, 0, 0);
+	object_unload(type, chunk);
 
 	rct_object_entry_extended* installed_entry = &object_entry_groups[type].entries[entryGroupIndex];
 	uint8* dst_buffer = malloc(0x600000);
@@ -243,7 +244,7 @@ int object_load_packed(SDL_RWops* rw)
 
 	int type = entry.flags & 0x0F;
 
-	if (object_paint(type, 2, 0, type, 0, (int)chunk, 0, 0)) {
+	if (!object_test(type, chunk)) {
 		log_error("Packed object failed paint test.");
 		rct2_free(chunk);
 		return 0;
@@ -340,7 +341,7 @@ int object_load_packed(SDL_RWops* rw)
  *
  *  rct2: 0x006A9CAF
  */
-void object_unload(rct_object_entry *entry)
+void object_unload_chunk(rct_object_entry *entry)
 {
 	uint8 object_type, object_index;
 	if (!find_object_in_entry_group(entry, &object_type, &object_index)){
@@ -349,7 +350,7 @@ void object_unload(rct_object_entry *entry)
 
 	uint8* chunk = object_entry_groups[object_type].chunks[object_index];
 
-	object_paint(object_type, 1, 0, 0, 0, (int)chunk, 0, 0);
+	object_unload(object_type, chunk);
 
 	rct2_free(chunk);
 	object_entry_groups[object_type].chunks[object_index] = (uint8*)-1;
@@ -434,7 +435,7 @@ int object_chunk_load_image_directory(uint8_t** chunk)
 typedef bool (*object_load_func)(void *objectEntry, uint32 entryIndex);
 typedef void (*object_unload_func)(void *objectEntry);
 typedef bool (*object_test_func)(void *objectEntry);
-typedef void (*object_paint_func)(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y);
+typedef void (*object_paint_func)(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y);
 typedef void (*object_desc_func)(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y);
 
 /**
@@ -452,7 +453,7 @@ typedef struct {
 // Ride (rct2: 0x006E6E2A)
 ///////////////////////////////////////////////////////////////////////////////
 
-bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
+static bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
 {
 	rct_ride_type *rideEntry = (rct_ride_type*)objectEntry;
 
@@ -706,7 +707,7 @@ bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
 	return true;
 }
 
-void object_type_ride_unload(void *objectEntry)
+static void object_type_ride_unload(void *objectEntry)
 {
 	rct_ride_type *rideEntry = (rct_ride_type*)objectEntry;
 	rideEntry->name = 0;
@@ -746,7 +747,7 @@ void object_type_ride_unload(void *objectEntry)
 	rideEntry->vehicle_preset_list = NULL;
 }
 
-bool object_type_ride_test(void *objectEntry)
+static bool object_type_ride_test(void *objectEntry)
 {
 	rct_ride_type* rideEntry = (rct_ride_type*)objectEntry;
 	if (rideEntry->excitement_multipler > 75) return false;
@@ -755,7 +756,7 @@ bool object_type_ride_test(void *objectEntry)
 	return true;
 }
 
-void object_type_ride_paint(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_ride_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	rct_ride_type *rideEntry = (rct_ride_type*)objectEntry;
 	int imageId = rideEntry->images_offset;
@@ -768,7 +769,7 @@ void object_type_ride_paint(void *objectEntry, rct_window *w, rct_drawpixelinfo 
 	gfx_draw_sprite(dpi, imageId, x - 56, y - 56, 0);
 }
 
-void object_type_ride_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_ride_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	rct_ride_type *rideEntry = (rct_ride_type*)objectEntry;
 
@@ -790,7 +791,7 @@ void object_type_ride_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *
 	gfx_draw_string_left_wrapped(dpi, &stringId, x, y + 5, width, 1191, 0);
 }
 
-const object_type_vtable object_type_ride_vtable[] = {
+static const object_type_vtable object_type_ride_vtable[] = {
 	object_type_ride_load,
 	object_type_ride_unload,
 	object_type_ride_test,
@@ -802,7 +803,7 @@ const object_type_vtable object_type_ride_vtable[] = {
 // Small Scenery (rct2: 0x006E3466)
 ///////////////////////////////////////////////////////////////////////////////
 
-bool object_type_small_scenery_load(void *objectEntry, uint32 entryIndex)
+static bool object_type_small_scenery_load(void *objectEntry, uint32 entryIndex)
 {
 	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
 	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + (size_t)0x1C);
@@ -831,7 +832,7 @@ bool object_type_small_scenery_load(void *objectEntry, uint32 entryIndex)
 	return true;
 }
 
-void object_type_small_scenery_unload(void *objectEntry)
+static void object_type_small_scenery_unload(void *objectEntry)
 {
 	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
 	sceneryEntry->name = 0;
@@ -840,7 +841,7 @@ void object_type_small_scenery_unload(void *objectEntry)
 	sceneryEntry->small_scenery.scenery_tab_id = 0;
 }
 
-bool object_type_small_scenery_test(void *objectEntry)
+static bool object_type_small_scenery_test(void *objectEntry)
 {
 	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
 
@@ -853,7 +854,7 @@ bool object_type_small_scenery_test(void *objectEntry)
 	return true;
 }
 
-void object_type_small_scenery_paint(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_small_scenery_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
 	dpi = clip_drawpixelinfo(dpi, x - 56, 112, y - 56, 112);
@@ -899,12 +900,12 @@ void object_type_small_scenery_paint(void *objectEntry, rct_window *w, rct_drawp
 	rct2_free(dpi);
 }
 
-void object_type_small_scenery_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_small_scenery_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	// Not required
 }
 
-const object_type_vtable object_type_small_scenery_vtable[] = {
+static const object_type_vtable object_type_small_scenery_vtable[] = {
 	object_type_small_scenery_load,
 	object_type_small_scenery_unload,
 	object_type_small_scenery_test,
@@ -916,7 +917,7 @@ const object_type_vtable object_type_small_scenery_vtable[] = {
 // Large Scenery (rct2: 0x006B92A7)
 ///////////////////////////////////////////////////////////////////////////////
 
-bool object_type_large_scenery_load(void *objectEntry, uint32 entryIndex)
+static bool object_type_large_scenery_load(void *objectEntry, uint32 entryIndex)
 {
 	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
 	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + (size_t)0x1A);
@@ -964,7 +965,7 @@ bool object_type_large_scenery_load(void *objectEntry, uint32 entryIndex)
 	return true;
 }
 
-void object_type_large_scenery_unload(void *objectEntry)
+static void object_type_large_scenery_unload(void *objectEntry)
 {
 	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
 	sceneryEntry->name = 0;
@@ -975,7 +976,7 @@ void object_type_large_scenery_unload(void *objectEntry)
 	sceneryEntry->large_scenery.var_16 = 0;
 }
 
-bool object_type_large_scenery_test(void *objectEntry)
+static bool object_type_large_scenery_test(void *objectEntry)
 {
 	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
 
@@ -988,7 +989,7 @@ bool object_type_large_scenery_test(void *objectEntry)
 	return true;
 }
 
-void object_type_large_scenery_paint(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_large_scenery_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
 
@@ -996,12 +997,12 @@ void object_type_large_scenery_paint(void *objectEntry, rct_window *w, rct_drawp
 	gfx_draw_sprite(dpi, imageId, x, y - 39, 0);
 }
 
-void object_type_large_scenery_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_large_scenery_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	// Not required
 }
 
-const object_type_vtable object_type_large_scenery_vtable[] = {
+static const object_type_vtable object_type_large_scenery_vtable[] = {
 	object_type_large_scenery_load,
 	object_type_large_scenery_unload,
 	object_type_large_scenery_test,
@@ -1013,7 +1014,7 @@ const object_type_vtable object_type_large_scenery_vtable[] = {
 // Wall (rct2: 0x006E5A25)
 ///////////////////////////////////////////////////////////////////////////////
 
-bool object_type_wall_load(void *objectEntry, uint32 entryIndex)
+static bool object_type_wall_load(void *objectEntry, uint32 entryIndex)
 {
 	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
 	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + (size_t)0x0E);
@@ -1038,7 +1039,7 @@ bool object_type_wall_load(void *objectEntry, uint32 entryIndex)
 
 }
 
-void object_type_wall_unload(void *objectEntry)
+static void object_type_wall_unload(void *objectEntry)
 {
 	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
 	sceneryEntry->name = 0;
@@ -1046,14 +1047,14 @@ void object_type_wall_unload(void *objectEntry)
 	sceneryEntry->wall.scenery_tab_id = 0;
 }
 
-bool object_type_wall_test(void *objectEntry)
+static bool object_type_wall_test(void *objectEntry)
 {
 	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
 	if (sceneryEntry->wall.price <= 0) return false;
 	return true;
 }
 
-void object_type_wall_paint(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_wall_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
 	dpi = clip_drawpixelinfo(dpi, x - 56, 112, y - 56, 112);
@@ -1082,12 +1083,12 @@ void object_type_wall_paint(void *objectEntry, rct_window *w, rct_drawpixelinfo 
 	rct2_free(dpi);
 }
 
-void object_type_wall_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_wall_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	// Not required
 }
 
-const object_type_vtable object_type_wall_vtable[] = {
+static const object_type_vtable object_type_wall_vtable[] = {
 	object_type_wall_load,
 	object_type_wall_unload,
 	object_type_wall_test,
@@ -1099,7 +1100,7 @@ const object_type_vtable object_type_wall_vtable[] = {
 // Banner (rct2: 0x006BA84E)
 ///////////////////////////////////////////////////////////////////////////////
 
-bool object_type_banner_load(void *objectEntry, uint32 entryIndex)
+static bool object_type_banner_load(void *objectEntry, uint32 entryIndex)
 {
 	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
 	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + (size_t)0x0C);
@@ -1123,7 +1124,7 @@ bool object_type_banner_load(void *objectEntry, uint32 entryIndex)
 	return true;
 }
 
-void object_type_banner_unload(void *objectEntry)
+static void object_type_banner_unload(void *objectEntry)
 {
 	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
 	sceneryEntry->name = 0;
@@ -1131,14 +1132,14 @@ void object_type_banner_unload(void *objectEntry)
 	sceneryEntry->banner.scenery_tab_id = 0;
 }
 
-bool object_type_banner_test(void *objectEntry)
+static bool object_type_banner_test(void *objectEntry)
 {
 	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
 	if (sceneryEntry->banner.price <= 0) return false;
 	return true;
 }
 
-void object_type_banner_paint(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_banner_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
 
@@ -1147,12 +1148,12 @@ void object_type_banner_paint(void *objectEntry, rct_window *w, rct_drawpixelinf
 	gfx_draw_sprite(dpi, imageId + 1, x, y, 0);
 }
 
-void object_type_banner_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_banner_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	// Not required
 }
 
-const object_type_vtable object_type_banner_vtable[] = {
+static const object_type_vtable object_type_banner_vtable[] = {
 	object_type_banner_load,
 	object_type_banner_unload,
 	object_type_banner_test,
@@ -1164,7 +1165,7 @@ const object_type_vtable object_type_banner_vtable[] = {
 // Path (rct2: 0x006A8621)
 ///////////////////////////////////////////////////////////////////////////////
 
-bool object_type_path_load(void *objectEntry, uint32 entryIndex)
+static bool object_type_path_load(void *objectEntry, uint32 entryIndex)
 {
 	rct_path_type *pathEntry = (rct_path_type*)objectEntry;
 	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + (size_t)0x0E);
@@ -1196,7 +1197,7 @@ bool object_type_path_load(void *objectEntry, uint32 entryIndex)
 	return true;
 }
 
-void object_type_path_unload(void *objectEntry)
+static void object_type_path_unload(void *objectEntry)
 {
 	rct_path_type *pathEntry = (rct_path_type*)objectEntry;
 	pathEntry->string_idx = 0;
@@ -1204,26 +1205,26 @@ void object_type_path_unload(void *objectEntry)
 	pathEntry->bridge_image = 0;
 }
 
-bool object_type_path_test(void *objectEntry)
+static bool object_type_path_test(void *objectEntry)
 {
 	rct_path_type *pathEntry = (rct_path_type*)objectEntry;
 	if (pathEntry->var_0A >= 2) return false;
 	return true;
 }
 
-void object_type_path_paint(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_path_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	rct_path_type *pathEntry = (rct_path_type*)objectEntry;
 	gfx_draw_sprite(dpi, pathEntry->image + 71, x - 49, y - 17, 0);
 	gfx_draw_sprite(dpi, pathEntry->image + 72, x + 4, y - 17, 0);
 }
 
-void object_type_path_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_path_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	// Not required
 }
 
-const object_type_vtable object_type_path_vtable[] = {
+static const object_type_vtable object_type_path_vtable[] = {
 	object_type_path_load,
 	object_type_path_unload,
 	object_type_path_test,
@@ -1235,7 +1236,7 @@ const object_type_vtable object_type_path_vtable[] = {
 // Path Item (rct2: 0x006A86E2)
 ///////////////////////////////////////////////////////////////////////////////
 
-bool object_type_path_bit_load(void *objectEntry, uint32 entryIndex)
+static bool object_type_path_bit_load(void *objectEntry, uint32 entryIndex)
 {
 	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
 	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + (size_t)0x0E);
@@ -1259,7 +1260,7 @@ bool object_type_path_bit_load(void *objectEntry, uint32 entryIndex)
 	return true;
 }
 
-void object_type_path_bit_unload(void *objectEntry)
+static void object_type_path_bit_unload(void *objectEntry)
 {
 	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
 	sceneryEntry->name = 0;
@@ -1267,25 +1268,25 @@ void object_type_path_bit_unload(void *objectEntry)
 	sceneryEntry->path_bit.scenery_tab_id = 0;
 }
 
-bool object_type_path_bit_test(void *objectEntry)
+static bool object_type_path_bit_test(void *objectEntry)
 {
 	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
 	if (sceneryEntry->path_bit.price <= 0) return false;
 	return true;
 }
 
-void object_type_path_bit_paint(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_path_bit_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
 	gfx_draw_sprite(dpi, sceneryEntry->image, x - 22, y - 24, 0);
 }
 
-void object_type_path_bit_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_path_bit_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	// Not required
 }
 
-const object_type_vtable object_type_path_bit_vtable[] = {
+static const object_type_vtable object_type_path_bit_vtable[] = {
 	object_type_path_bit_load,
 	object_type_path_bit_unload,
 	object_type_path_bit_test,
@@ -1297,7 +1298,7 @@ const object_type_vtable object_type_path_bit_vtable[] = {
 // Scenery Set (rct2: 0x006B93AA)
 ///////////////////////////////////////////////////////////////////////////////
 
-bool object_type_scenery_set_load(void *objectEntry, uint32 entryIndex)
+static bool object_type_scenery_set_load(void *objectEntry, uint32 entryIndex)
 {
 	rct_scenery_set_entry *scenerySetEntry = (rct_scenery_set_entry*)objectEntry;
 	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_scenery_set_entry));
@@ -1355,7 +1356,7 @@ bool object_type_scenery_set_load(void *objectEntry, uint32 entryIndex)
 	return true;
 }
 
-void object_type_scenery_set_unload(void *objectEntry)
+static void object_type_scenery_set_unload(void *objectEntry)
 {
 	rct_scenery_set_entry *scenerySetEntry = (rct_scenery_set_entry*)objectEntry;
 	scenerySetEntry->name = 0;
@@ -1365,24 +1366,24 @@ void object_type_scenery_set_unload(void *objectEntry)
 	memset(scenerySetEntry->scenery_entries, 0, 256);
 }
 
-bool object_type_scenery_set_test(void *objectEntry)
+static bool object_type_scenery_set_test(void *objectEntry)
 {
 	return true;
 }
 
-void object_type_scenery_set_paint(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_scenery_set_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	rct_scenery_set_entry *scenerySetEntry = (rct_scenery_set_entry*)objectEntry;
 	int imageId = scenerySetEntry->image + 0x20600001;
 	gfx_draw_sprite(dpi, imageId, x - 15, y - 14, 0);
 }
 
-void object_type_scenery_set_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_scenery_set_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	// Not required
 }
 
-const object_type_vtable object_type_scenery_set_vtable[] = {
+static const object_type_vtable object_type_scenery_set_vtable[] = {
 	object_type_scenery_set_load,
 	object_type_scenery_set_unload,
 	object_type_scenery_set_test,
@@ -1409,19 +1410,19 @@ bool object_type_park_entrance_load(void *objectEntry, uint32 entryIndex)
 	return true;
 }
 
-void object_type_park_entrance_unload(void *objectEntry)
+static void object_type_park_entrance_unload(void *objectEntry)
 {
 	rct_entrance_type *entranceType = (rct_entrance_type*)objectEntry;
 	entranceType->string_idx = 0;
 	entranceType->image_id = 0;
 }
 
-bool object_type_park_entrance_test(void *objectEntry)
+static bool object_type_park_entrance_test(void *objectEntry)
 {
 	return true;
 }
 
-void object_type_park_entrance_paint(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_park_entrance_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	rct_entrance_type *entranceType = (rct_entrance_type*)objectEntry;
 
@@ -1438,12 +1439,12 @@ void object_type_park_entrance_paint(void *objectEntry, rct_window *w, rct_drawp
 	rct2_free(dpi);
 }
 
-void object_type_park_entrance_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_park_entrance_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	// Not required
 }
 
-const object_type_vtable object_type_park_entrance_vtable[] = {
+static const object_type_vtable object_type_park_entrance_vtable[] = {
 	object_type_park_entrance_load,
 	object_type_park_entrance_unload,
 	object_type_park_entrance_test,
@@ -1455,7 +1456,7 @@ const object_type_vtable object_type_park_entrance_vtable[] = {
 // Water (rct2: 0x006E6E2A)
 ///////////////////////////////////////////////////////////////////////////////
 
-bool object_type_water_load(void *objectEntry, uint32 entryIndex)
+static bool object_type_water_load(void *objectEntry, uint32 entryIndex)
 {
 	rct_water_type *waterEntry = (rct_water_type*)objectEntry;
 
@@ -1479,7 +1480,7 @@ bool object_type_water_load(void *objectEntry, uint32 entryIndex)
 	return true;
 }
 
-void object_type_water_unload(void *objectEntry)
+static void object_type_water_unload(void *objectEntry)
 {
 	rct_water_type *waterEntry = (rct_water_type*)objectEntry;
 	waterEntry->string_idx = 0;
@@ -1488,23 +1489,23 @@ void object_type_water_unload(void *objectEntry)
 	waterEntry->var_0A = 0;
 }
 
-bool object_type_water_test(void *objectEntry)
+static bool object_type_water_test(void *objectEntry)
 {
 	return true;
 }
 
-void object_type_water_paint(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_water_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	// Write (no image)
 	gfx_draw_string_centred(dpi, 3326, x, y, 0, NULL);
 }
 
-void object_type_water_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_water_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	// Not required
 }
 
-const object_type_vtable object_type_water_vtable[] = {
+static const object_type_vtable object_type_water_vtable[] = {
 	object_type_water_load,
 	object_type_water_unload,
 	object_type_water_test,
@@ -1516,7 +1517,7 @@ const object_type_vtable object_type_water_vtable[] = {
 // Stex (rct2: 0x0066B355)
 ///////////////////////////////////////////////////////////////////////////////
 
-bool object_type_stex_load(void *objectEntry, uint32 entryIndex)
+static bool object_type_stex_load(void *objectEntry, uint32 entryIndex)
 {
 	rct_stex_entry *stexEntry = (rct_stex_entry*)objectEntry;
 	uint8 *stringTable = (uint8*)((size_t)objectEntry + (size_t)0x08);
@@ -1532,7 +1533,7 @@ bool object_type_stex_load(void *objectEntry, uint32 entryIndex)
 	return true;
 }
 
-void object_type_stex_unload(void *objectEntry)
+static void object_type_stex_unload(void *objectEntry)
 {
 	rct_stex_entry *stexEntry = (rct_stex_entry*)objectEntry;
 	stexEntry->scenario_name = 0;
@@ -1540,18 +1541,18 @@ void object_type_stex_unload(void *objectEntry)
 	stexEntry->details = 0;
 }
 
-bool object_type_stex_test(void *objectEntry)
+static bool object_type_stex_test(void *objectEntry)
 {
 	return true;
 }
 
-void object_type_stex_paint(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_stex_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	// Write (no image)
 	gfx_draw_string_centred(dpi, 3326, x, y, 0, NULL);
 }
 
-void object_type_stex_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+static void object_type_stex_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	rct_stex_entry *stexEntry = (rct_stex_entry*)objectEntry;
 	rct_string_id stringId = stexEntry->details;
@@ -1559,7 +1560,7 @@ void object_type_stex_desc(void *objectEntry, rct_window *w, rct_drawpixelinfo *
 	gfx_draw_string_left_wrapped(dpi, &stringId, x, y, width, 3168, 0);
 }
 
-const object_type_vtable object_type_stex_vtable[] = {
+static const object_type_vtable object_type_stex_vtable[] = {
 	object_type_stex_load,
 	object_type_stex_unload,
 	object_type_stex_test,
@@ -1569,7 +1570,7 @@ const object_type_vtable object_type_stex_vtable[] = {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-const object_type_vtable * const object_type_vtables[] = {
+static const object_type_vtable * const object_type_vtables[] = {
 	object_type_ride_vtable,
 	object_type_small_scenery_vtable,
 	object_type_large_scenery_vtable,
@@ -1583,30 +1584,39 @@ const object_type_vtable * const object_type_vtables[] = {
 	object_type_stex_vtable
 };
 
-int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+bool object_load(int type, void *objectEntry, uint32 entryIndex)
 {
 	assert(type >= OBJECT_TYPE_RIDE && type <= OBJECT_TYPE_SCENARIO_TEXT);
-
 	const object_type_vtable *vtable = object_type_vtables[type];
-	switch (eax & 0xFF) {
-	case 0:
-		return vtable->load((void*)esi, ebx) ? 0 : 1;
-	case 1:
-		vtable->unload((void*)esi);
-		return 0;
-	case 2:
-		return vtable->test((void*)esi) ? 0 : 1;
-	case 3:
-		if (((eax >> 8) & 0xFF) == 0) {
-			vtable->paint((void*)ebp, (rct_window*)esi, (rct_drawpixelinfo*)edi, ecx, edx);
-		} else {
-			vtable->desc((void*)ebp, (rct_window*)esi, (rct_drawpixelinfo*)edi, ecx, edx);
-		}
-		return 0;
-	default:
-		assert(false);
-		return 0;
-	}
+	return vtable->load(objectEntry, entryIndex) ? 0 : 1;
+}
+
+void object_unload(int type, void *objectEntry)
+{
+	assert(type >= OBJECT_TYPE_RIDE && type <= OBJECT_TYPE_SCENARIO_TEXT);
+	const object_type_vtable *vtable = object_type_vtables[type];
+	vtable->unload(objectEntry);
+}
+
+bool object_test(int type, void *objectEntry)
+{
+	assert(type >= OBJECT_TYPE_RIDE && type <= OBJECT_TYPE_SCENARIO_TEXT);
+	const object_type_vtable *vtable = object_type_vtables[type];
+	return vtable->test(objectEntry);
+}
+
+void object_paint(int type, void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+{
+	assert(type >= OBJECT_TYPE_RIDE && type <= OBJECT_TYPE_SCENARIO_TEXT);
+	const object_type_vtable *vtable = object_type_vtables[type];
+	vtable->paint(objectEntry, dpi, x, y);
+}
+
+void object_desc(int type, void *objectEntry, rct_window *w, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
+{
+	assert(type >= OBJECT_TYPE_RIDE && type <= OBJECT_TYPE_SCENARIO_TEXT);
+	const object_type_vtable *vtable = object_type_vtables[type];
+	vtable->desc(objectEntry, w, dpi, x, y);
 }
 
 /**
@@ -1663,7 +1673,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 				return 0;
 			}
 
-			if (object_paint(openedEntry.flags & 0x0F, 2, 0, 0, 0, (int)chunk, 0, 0)) {
+			if (!object_test(openedEntry.flags & 0x0F, chunk)) {
 				// This is impossible for STEX entries to fail.
 				log_error("Opened object failed paint test.");
 				RCT2_GLOBAL(0x00F42BD9, uint8) = 3;
@@ -1686,7 +1696,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 			memcpy(gTempObjectLoadName, openedEntry.name, 8);
 			// Not used??
 			RCT2_GLOBAL(0x009ADAFD, uint8) = 1;
-			object_paint(openedEntry.flags & 0x0F, 0, 0, 0, 0, (int)chunk, 0, 0);
+			object_load(openedEntry.flags & 0x0F, chunk, 0);
 			// Tell text to be loaded into normal address
 			RCT2_GLOBAL(0x009ADAFC, uint8) = 0;
 			// Not used??

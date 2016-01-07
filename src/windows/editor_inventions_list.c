@@ -787,7 +787,7 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
 	if (chunk == NULL || chunk == (void*)0xFFFFFFFF)
 		return;
 
-	object_paint(objectEntryType, 3, objectEntryType, x, y, 0, (int)dpi, (int)chunk);
+	object_paint(objectEntryType, chunk, dpi, x, y);
 
 	// Item name
 	x = w->x + ((widget->left + widget->right) / 2) + 1;
