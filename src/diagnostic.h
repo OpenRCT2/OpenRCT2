@@ -75,8 +75,16 @@ enum {
 
 extern int _log_levels[DIAGNOSTIC_LEVEL_COUNT];
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 void diagnostic_log(int diagnosticLevel, const char *format, ...);
 void diagnostic_log_with_location(int diagnosticLevel, const char *file, const char *function, int line, const char *format, ...);
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #ifdef _MSC_VER
 
