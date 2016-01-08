@@ -459,15 +459,6 @@
     <ClCompile Include="src\windows\themes.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="test\tests.c">
-      <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="test\management\finance_test.c">
-      <Filter>Test\Management</Filter>
-    </ClCompile>
-    <ClCompile Include="test\ride\ride_ratings_test.c">
-      <Filter>Test\Ride</Filter>
-    </ClCompile>
     <ClCompile Include="src\windows\tile_inspector.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -564,6 +555,7 @@
     <ClCompile Include="src\core\Stopwatch.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\argparse\argparse.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">
