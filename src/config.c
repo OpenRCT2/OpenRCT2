@@ -160,6 +160,16 @@ config_enum_definition _dateFormatEnum[] = {
 #pragma endregion
 
 #pragma region Section / property definitions
+config_property_definition _gamePathDefinitions[] = {
+	{ offsetof(game_path_configuration, installed_game),						"installed_game",					CONFIG_VALUE_TYPE_STRING,		{ .value_string = NULL },		NULL					},
+	{ offsetof(game_path_configuration, saved_game),				"saved_game",				CONFIG_VALUE_TYPE_STRING,		{ .value_string = NULL },		NULL					},
+	{ offsetof(game_path_configuration, scenario),					"scenario",				CONFIG_VALUE_TYPE_STRING,		{ .value_string = NULL },		NULL					},
+	{ offsetof(game_path_configuration, landscapes),				"landscapes",				CONFIG_VALUE_TYPE_STRING,		{ .value_string = NULL },		NULL					},
+	{ offsetof(game_path_configuration, object_data),				"object_data",				CONFIG_VALUE_TYPE_STRING,		{ .value_string = NULL },		NULL					},
+	{ offsetof(game_path_configuration, tracks),					"tracks_",				CONFIG_VALUE_TYPE_STRING,		{ .value_string = NULL },		NULL					},
+	{ offsetof(game_path_configuration, buffer),					"buffer",			CONFIG_VALUE_TYPE_STRING,		{ .value_string = NULL },		NULL					},
+
+};
 
 config_property_definition _generalDefinitions[] = {
 	{ offsetof(general_configuration, always_show_gridlines),			"always_show_gridlines",		CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
@@ -171,7 +181,6 @@ config_property_definition _generalDefinitions[] = {
 	{ offsetof(general_configuration, fullscreen_mode),					"fullscreen_mode",				CONFIG_VALUE_TYPE_UINT8,		0,								NULL					},
 	{ offsetof(general_configuration, fullscreen_height),				"fullscreen_height",			CONFIG_VALUE_TYPE_SINT32,		-1,								NULL					},
 	{ offsetof(general_configuration, fullscreen_width),				"fullscreen_width",				CONFIG_VALUE_TYPE_SINT32,		-1,								NULL					},
-	{ offsetof(general_configuration, game_path),						"game_path",					CONFIG_VALUE_TYPE_STRING,		{ .value_string = NULL },		NULL					},
 	{ offsetof(general_configuration, landscape_smoothing),				"landscape_smoothing",			CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
 	{ offsetof(general_configuration, language),						"language",						CONFIG_VALUE_TYPE_UINT16,		LANGUAGE_ENGLISH_UK,			_languageEnum			},
 	{ offsetof(general_configuration, measurement_format),				"measurement_format",			CONFIG_VALUE_TYPE_UINT8,		MEASUREMENT_FORMAT_METRIC,	_measurementFormatEnum	},
@@ -285,6 +294,7 @@ config_property_definition _notificationsDefinitions[] = {
 };
 
 config_section_definition _sectionDefinitions[] = {
+	{ &gConfigGamePath, "game_path", _gamePathDefinitions, countof(_gamePathDefinitions) },
 	{ &gConfigGeneral, "general", _generalDefinitions, countof(_generalDefinitions) },
 	{ &gConfigInterface, "interface", _interfaceDefinitions, countof(_interfaceDefinitions) },
 	{ &gConfigSound, "sound", _soundDefinitions, countof(_soundDefinitions) },
@@ -296,6 +306,7 @@ config_section_definition _sectionDefinitions[] = {
 
 #pragma endregion
 
+game_path_configuration gConfigGamePath;
 general_configuration gConfigGeneral;
 interface_configuration gConfigInterface;
 sound_configuration gConfigSound;
@@ -810,24 +821,57 @@ static bool config_find_rct2_path(utf8 *resultPath)
 	return false;
 }
 
+static void config_init_directories()
+{
+	char separator[] = {platform_get_path_separator(), 0};
+	char *subDirectories[] = {NULL, "Saved games\0", "Scenarios\0", "Landscapes", "ObjData", "Tracks"};
+	char *fileExtensions[] = {NULL, "\0", "*.SC6", "*.SC6", "*.DAT", "*.TD?" };
+	int i;
+
+	utf8string root_directory_slash = malloc(MAX_PATH);
+	safe_strcat(root_directory_slash, gConfigGamePath.installed_game, MAX_PATH);
+	safe_strcat(root_directory_slash, separator, MAX_PATH);
+
+	for(i =2; i < countof(_gamePathDefinitions)-1; i++)
+	{
+		size_t offset = _gamePathDefinitions[i].offset;
+		size_t root = (size_t)(&gConfigGamePath);
+		utf8string *path = (utf8string *)(root + offset);
+
+		SafeFree(*path);
+		*path = malloc(MAX_PATH);
+		safe_strncpy(*path, root_directory_slash, MAX_PATH);
+		safe_strcat(*path, subDirectories[i], MAX_PATH);
+		safe_strcat(*path, separator, MAX_PATH);
+		safe_strcat(*path, fileExtensions[i], MAX_PATH);
+	}
+
+	SafeFree(gConfigGamePath.buffer);
+	gConfigGamePath.buffer = malloc(MAX_PATH);
+	safe_strncpy(gConfigGamePath.buffer, gConfigGamePath.saved_game, MAX_PATH);
+
+	SafeFree(root_directory_slash);
+}
+
 bool config_find_or_browse_install_directory()
 {
 	utf8 path[MAX_PATH];
 	utf8 *installPath;
 
 	if (config_find_rct2_path(path)) {
-		SafeFree(gConfigGeneral.game_path);
-		gConfigGeneral.game_path = malloc(strlen(path) + 1);
-		safe_strncpy(gConfigGeneral.game_path, path, MAX_PATH);
+		SafeFree(gConfigGamePath.installed_game);
+		gConfigGamePath.installed_game = malloc(strlen(path) + 1);
+		safe_strncpy(gConfigGamePath.installed_game, path, MAX_PATH);
 	} else {
 		platform_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
 		installPath = platform_open_directory_browser("Please select your RCT2 directory");
 		if (installPath == NULL)
 			return false;
 
-		SafeFree(gConfigGeneral.game_path);
-		gConfigGeneral.game_path = installPath;
+		SafeFree(gConfigGamePath.installed_game);
+		gConfigGamePath.installed_game = installPath;
 	}
+	config_init_directories();
 
 	return true;
 }
