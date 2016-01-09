@@ -235,23 +235,21 @@ static void set_all_land_owned()
  *
  *  rct2: 0x006758C0
  */
-void editor_load_landscape(const char *path)
+bool editor_load_landscape(const utf8 *path)
 {
 	window_close_construction_windows();
 
 	char *extension = strrchr(path, '.');
 	if (extension != NULL) {
 		if (_stricmp(extension, ".sv4") == 0) {
-			editor_load_landscape_from_sv4(path);
-			return;
+			return editor_load_landscape_from_sv4(path);
 		} else if (_stricmp(extension, ".sc4") == 0) {
-			editor_load_landscape_from_sc4(path);
-			return;
+			return editor_load_landscape_from_sc4(path);
 		}
 	}
 
 	// Load SC6 / SV6
-	editor_read_s6(path);
+	return editor_read_s6(path);
 }
 
 /**

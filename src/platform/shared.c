@@ -339,7 +339,7 @@ static void platform_resize(int width, int height)
 	gfx_invalidate_screen();
 
 	// Check if the window has been resized in windowed mode and update the config file accordingly
-	// This is called in rct2_update_2 and is only called after resizing a window has finished
+	// This is called in rct2_update and is only called after resizing a window has finished
 	const int nonWindowFlags =
 		SDL_WINDOW_MAXIMIZED | SDL_WINDOW_MINIMIZED | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP;
 	if (!(flags & nonWindowFlags)) {

@@ -704,8 +704,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 				window_close(w);
 			}
 			window_loadsave_invoke_callback(MODAL_RESULT_OK);
-		}
-		else if (game_load_save(path)) {
+		} else if (game_load_save(path)) {
 			if (_loadsaveType & LOADSAVETYPE_NETWORK) {
 				network_begin_server(gConfigNetwork.default_port);
 			}
@@ -716,9 +715,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			window_close(w);
 			gfx_invalidate_screen();
 			window_loadsave_invoke_callback(MODAL_RESULT_OK);
-			rct2_endupdate();
-		}
-		else {
+		} else {
 			// 1050, not the best message...
 			window_error_open(STR_LOAD_GAME, 1050);
 			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
@@ -730,7 +727,6 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			int success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 1 : 0);
 			SDL_RWclose(rw);
 			if (success) {
-
 				safe_strncpy(gScenarioSavePath, path, MAX_PATH);
 				gFirstTimeSave = 0;
 
@@ -749,13 +745,10 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		}
 		break;
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
-		editor_load_landscape(path);
-		if (1) {
+		if (editor_load_landscape(path)) {
 			gfx_invalidate_screen();
 			window_loadsave_invoke_callback(MODAL_RESULT_OK);
-			rct2_endupdate();
-		}
-		else {
+		} else {
 			// 1050, not the best message...
 			window_error_open(STR_LOAD_LANDSCAPE, 1050);
 			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);

@@ -20,7 +20,6 @@
 
 #pragma warning(disable : 4996) // GetVersionExA deprecated
 
-#include <setjmp.h>
 #include <time.h>
 #include "addresses.h"
 #include "audio/audio.h"
@@ -65,9 +64,6 @@ int rct2_init_directories();
 int rct2_startup_checks();
 
 static void rct2_draw_fps();
-static void rct2_update_2();
-
-static jmp_buf _end_update_jump;
 
 void rct2_quit()
 {
@@ -217,27 +213,6 @@ int rct2_startup_checks()
 		return 0;
 
 	return 1;
-}
-
-void rct2_update()
-{
-	// Set 0x009DE564 to the value of esp
-	// RCT2 sets the stack pointer to the value of this address when ending the current game tick from anywhere
-	#ifdef _MSC_VER
-	__asm {
-		mov eax, 009DE564h
-		mov [eax], esp
-	}
-	#else
-	__asm__ ( "\
-	\n\
-		movl $0x009DE564, %%eax 	\n\
-		movl %%esp, (%%eax) 	\n\
-	 " : : : "eax" );
-	#endif
-
-	if (!setjmp(_end_update_jump))
-		rct2_update_2();
 }
 
 void rct2_draw()
@@ -426,7 +401,7 @@ int check_files_integrity()
 	return 1;
 }
 
-void rct2_update_2()
+void rct2_update()
 {
 	int tick, tick2;
 
@@ -457,11 +432,6 @@ void rct2_update_2()
 	twitch_update();
 	chat_update();
 	console_update();
-}
-
-void rct2_endupdate()
-{
-	longjmp(_end_update_jump, 0);
 }
 
 /**
