@@ -80,7 +80,6 @@ function Do-Package()
     Copy-Item -Force          "$releaseDir\openrct2.exe"       $tempDir -ErrorAction Stop
     Copy-Item -Force          "$releaseDir\openrct2.dll"       $tempDir -ErrorAction Stop
     Copy-Item -Force          "$releaseDir\curl-ca-bundle.crt" $tempDir -ErrorAction Stop
-    Copy-Item -Force          "$releaseDir\SDL2.dll"           $tempDir -ErrorAction Stop
     Copy-Item -Force          "$distDir\changelog.txt"         $tempDir -ErrorAction Stop
     Copy-Item -Force          "$distDir\known_issues.txt"      $tempDir -ErrorAction Stop
     Copy-Item -Force          "$distDir\readme.txt"            $tempDir -ErrorAction Stop
