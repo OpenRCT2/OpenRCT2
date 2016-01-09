@@ -118,7 +118,7 @@ endif (USE_LODEPNG)
 # include lib
 include_directories("lib/")
 # add source files
-file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp" "lib/argparse/*.c" ${LODEPNG_SOURCES})
+file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp" ${LODEPNG_SOURCES})
 if (APPLE)
 	file(GLOB_RECURSE ORCT2_MM_SOURCES "src/*.m")
 	set_source_files_properties(${ORCT2_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c -fmodules")
