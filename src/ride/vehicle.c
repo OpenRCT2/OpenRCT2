@@ -2158,6 +2158,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 				RIDE_INVALIDATE_RIDE_MAIN |
 				RIDE_INVALIDATE_RIDE_LIST |
 				RIDE_INVALIDATE_RIDE_MAINTENANCE;
+			ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
 			ride->inspection_station = vehicle->current_station;
 			ride->breakdown_reason = ride->breakdown_reason_pending;
 			vehicle->velocity = 0;
