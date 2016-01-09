@@ -91,6 +91,11 @@ char platform_get_path_separator()
 	return '/';
 }
 
+const char *platform_get_new_line()
+{
+	return "\n";
+}
+
 bool platform_file_exists(const utf8 *path)
 {
 	wchar_t *wPath = utf8_to_widechar(path);
