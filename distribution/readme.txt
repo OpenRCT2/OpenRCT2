@@ -1,5 +1,5 @@
-Last updated:    2015-12-04
-Release version: 0.0.3-1-beta
+Last updated:    2016-09-01
+Release version: 0.0.4.0-beta
 ------------------------------------------------------------------------
 
 
@@ -68,11 +68,10 @@ following information in your bug report:
 
 3.0) Supported platforms
 ---- -------------------
-OpenRCT2 currently requires the original RollerCoaster Tycoon 2 binary. While
-this is still the case, the only supported platform is Windows. OpenRCT2 can
-still be played on other operating systems either via a virtual machine or a
-compatibility layer application such as Wine. Further instructions can be found
-on GitHub.
+OpenRCT2 is currently supported on Windows XP and above, many distributions of
+Linux and OSX 10.7. OpenRCT2 will only work on x86 architectures as the
+original RollerCoaster Tycoon 2 binary is still required to run the game.
+Further instructions can be found on GitHub.
 
 4.0) Installing and running OpenRCT2
 ---- ------------------------------
@@ -82,7 +81,7 @@ be installed, or you have downloaded an installer, which will automatically
 extract OpenRCT2 in the given directory.
 
 OpenRCT2 requires an installation of RollerCoaster Tycoon 2 (RCT2) to run. You
-must have either installed the original RCT2 disc, the GOG version or the steam
+must have either installed the original RCT2 disc, the GOG version or the Steam
 version. Alternatively you can manually specify the location of where your RCT2
 data files are. These may be directly copied of the original disc and placed in
 a directory of your choice.
@@ -105,7 +104,7 @@ the RCT2 install path.
 
 If you are running Windows and have set a DPI scale, OpenRCT2 might look blury.
 This is because OpenRCT2 currently uses the original RollerCoaster Tycoon 2
-binary as a application host. However you can manually configure this binary to
+binary as an application host. However you can manually configure this binary to
 not be scaled. This will make the game more crisp, but may result in the
 interface being too small to see clearly and less ergonomic to use. To stop DPI
 scaling, right click the binary itself (openrct2.exe) in the install directory
@@ -116,8 +115,9 @@ select properties. Select the compatibility tab, check
 If you wish to use Steam Overlay or capture game for video recording or
 streaming, you might have to enable hardware display in the options window.
 This will still render the graphics on the CPU but the pixel data will be
-displayed using either DirectX or OpenGL. This might slow down the game but can
-also make the game look smoother.
+displayed using either DirectX or OpenGL. This may also enable vertical
+synchronisation if supported by your graphics card and you have enabled
+"Uncap FPS".
 
 5.0) Development
 ---- -----------
@@ -148,12 +148,13 @@ the complete licence text, see the file 'licence.txt'. This licence applies
 to all files in this distribution, except as noted below.
 
 argparse | MIT licence.
-CuTest   | zlib licence.
 Jansson  | MIT licence.
 libcURL  | MIT (or Modified BSD-style) licence.
 libspeex | BSD-style license.
-LodePNG  | zlib licence.
+libpng   | libpng licence.
 SDL2     | zlib licence.
+SDL2 TTF | zlib licence.
+zlib     | zlib licence.
 
 Licences for sub-libraries used by the above may vary. For more information, visit the libraries' respective official websites.
 
