@@ -141,7 +141,6 @@ Section "!OpenRCT2" Section1
     ; Copy executable
     File /oname=openrct2.exe ${BINARY_DIR}\openrct2.exe
     File /oname=openrct2.dll ${BINARY_DIR}\openrct2.dll
-    File /oname=SDL2.dll ${BINARY_DIR}\SDL2.dll
 
     ; Create the Registry Entries
     WriteRegStr HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Comments" "Visit ${APPURLLINK}"
@@ -207,7 +206,6 @@ Section "Uninstall"
     Delete "$INSTDIR\contributors.md"
     Delete "$INSTDIR\openrct2.exe"
     Delete "$INSTDIR\openrct2.dll"
-    Delete "$INSTDIR\SDL2.dll"
     Delete "$INSTDIR\licence.txt"
     Delete "$INSTDIR\INSTALL.LOG"
     Delete "$INSTDIR\crash.log"
