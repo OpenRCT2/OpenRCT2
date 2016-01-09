@@ -13,13 +13,13 @@ $scriptsPath = Split-Path $Script:MyInvocation.MyCommand.Path
 Import-Module "$scriptsPath\common.psm1" -DisableNameChecking
 
 # Constants
-$libsUrl = "https://openrct2.website/files/orctlibs-vs.zip"
-$libsVersion = 4
+$libsUrl = "https://openrct2.website/files/openrct2-libs-vs2015.zip"
+$libsVersion = 5
 
 # Get paths
 $rootPath        = Get-RootPath
 $libsPath        = Join-Path $rootPath "lib"
-$zipPath         = Join-Path $libsPath "orctlibs.zip"
+$zipPath         = Join-Path $libsPath "openrct2-libs-vs2015.zip"
 $libsVersionPath = Join-Path $libsPath "libversion"
 
 # Check if we need to update the dependencies
