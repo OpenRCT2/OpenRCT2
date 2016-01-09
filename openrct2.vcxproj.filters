@@ -56,6 +56,9 @@
     <Filter Include="Source\Core">
       <UniqueIdentifier>{28a808eb-9017-44cc-939b-f828fd1e2e7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\argparse">
+      <UniqueIdentifier>{b1a4d0cf-f4a1-4a38-934c-369d4c129a85}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="openrct2.exe">
@@ -555,7 +558,9 @@
     <ClCompile Include="src\core\Stopwatch.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\argparse\argparse.c" />
+    <ClCompile Include="src\argparse\argparse.c">
+      <Filter>Source\argparse</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">
@@ -842,6 +847,9 @@
     </ClInclude>
     <ClInclude Include="src\core\Stopwatch.hpp">
       <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\argparse\argparse.h">
+      <Filter>Source\argparse</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

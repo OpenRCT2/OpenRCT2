@@ -8,17 +8,11 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
-		Release with Tests|Win32 = Release with Tests|Win32
-		Release XP|Win32 = Release XP|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D24D94F6-2A74-480C-B512-629C306CE92F}.Debug|Win32.ActiveCfg = Debug|Win32
 		{D24D94F6-2A74-480C-B512-629C306CE92F}.Debug|Win32.Build.0 = Debug|Win32
-		{D24D94F6-2A74-480C-B512-629C306CE92F}.Release with Tests|Win32.ActiveCfg = Release with Tests|Win32
-		{D24D94F6-2A74-480C-B512-629C306CE92F}.Release with Tests|Win32.Build.0 = Release with Tests|Win32
-		{D24D94F6-2A74-480C-B512-629C306CE92F}.Release XP|Win32.ActiveCfg = Release XP|Win32
-		{D24D94F6-2A74-480C-B512-629C306CE92F}.Release XP|Win32.Build.0 = Release XP|Win32
 		{D24D94F6-2A74-480C-B512-629C306CE92F}.Release|Win32.ActiveCfg = Release|Win32
 		{D24D94F6-2A74-480C-B512-629C306CE92F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
