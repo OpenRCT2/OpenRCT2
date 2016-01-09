@@ -234,7 +234,8 @@ unknown:
     }
 
 end:
-    memmove(this->out + this->cpidx, this->argv,
+    memmove((void*)(this->out + this->cpidx),
+		    this->argv,
             this->argc * sizeof(*this->out));
     this->out[this->cpidx + this->argc] = NULL;
 
@@ -271,7 +272,7 @@ argparse_usage(struct argparse *this)
         } else if (options->type == ARGPARSE_OPT_STRING) {
             len += strlen("=<str>");
         }
-        len = ceil((float)len / 4) * 4;
+        len = ((len + 3) / 4) * 4;
         if (usage_opts_width < len) {
             usage_opts_width = len;
         }
