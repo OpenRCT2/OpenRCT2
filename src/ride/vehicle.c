@@ -714,7 +714,6 @@ static int vehicle_open_restraints(rct_vehicle* vehicle){
 
 				ride->breakdown_reason = ride->breakdown_reason_pending;
 			}
-
 		}
 		else{
 			if (vehicle->restraints_position + 20 > 0xFF){
@@ -722,10 +721,9 @@ static int vehicle_open_restraints(rct_vehicle* vehicle){
 				continue;
 			}
 			vehicle->restraints_position += 20;
-			vehicle_invalidate(vehicle);
-			ebp++;
 		}
-
+		vehicle_invalidate(vehicle);
+		ebp++;
 	} while ((vehicle_id = vehicle->next_vehicle_on_train) != 0xFFFF);
 
 	return ebp;
