@@ -187,7 +187,6 @@
 		D4EC48D41C2634C70024B507 /* libspeexdsp.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D4EC48C81C2634870024B507 /* libspeexdsp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D4EC48DF1C2634E90024B507 /* argparse.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC48D61C2634E90024B507 /* argparse.c */; };
 		D4EC48E01C2634E90024B507 /* CuTest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC48D91C2634E90024B507 /* CuTest.c */; };
-		D4EC48E21C2634E90024B507 /* lodepng.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC48DD1C2634E90024B507 /* lodepng.c */; };
 		D4EC48E61C2637710024B507 /* g2.dat in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E31C2637710024B507 /* g2.dat */; };
 		D4EC48E71C2637710024B507 /* language in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E41C2637710024B507 /* language */; };
 		D4EC48E81C2637710024B507 /* title in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E51C2637710024B507 /* title */; };
@@ -547,8 +546,6 @@
 		D4EC48D91C2634E90024B507 /* CuTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = CuTest.c; sourceTree = "<group>"; };
 		D4EC48DA1C2634E90024B507 /* CuTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CuTest.h; sourceTree = "<group>"; };
 		D4EC48DB1C2634E90024B507 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
-		D4EC48DD1C2634E90024B507 /* lodepng.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lodepng.c; sourceTree = "<group>"; };
-		D4EC48DE1C2634E90024B507 /* lodepng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lodepng.h; sourceTree = "<group>"; };
 		D4EC48E31C2637710024B507 /* g2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = g2.dat; path = data/g2.dat; sourceTree = SOURCE_ROOT; };
 		D4EC48E41C2637710024B507 /* language */ = {isa = PBXFileReference; lastKnownFileType = folder; name = language; path = data/language; sourceTree = SOURCE_ROOT; };
 		D4EC48E51C2637710024B507 /* title */ = {isa = PBXFileReference; lastKnownFileType = folder; name = title; path = data/title; sourceTree = SOURCE_ROOT; };
@@ -651,7 +648,6 @@
 			children = (
 				D4EC48D51C2634E90024B507 /* argparse */,
 				D4EC48D81C2634E90024B507 /* cutest */,
-				D4EC48DC1C2634E90024B507 /* lodepng */,
 			);
 			name = "Source Libraries";
 			sourceTree = "<group>";
@@ -1152,16 +1148,6 @@
 			path = lib/cutest;
 			sourceTree = "<group>";
 		};
-		D4EC48DC1C2634E90024B507 /* lodepng */ = {
-			isa = PBXGroup;
-			children = (
-				D4EC48DD1C2634E90024B507 /* lodepng.c */,
-				D4EC48DE1C2634E90024B507 /* lodepng.h */,
-			);
-			name = lodepng;
-			path = lib/lodepng;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1464,7 +1450,6 @@
 				D4EC47F81C26342F0024B507 /* graph.c in Sources */,
 				D4EC48111C26342F0024B507 /* network.cpp in Sources */,
 				D4EC47FF1C26342F0024B507 /* widget.c in Sources */,
-				D4EC48E21C2634E90024B507 /* lodepng.c in Sources */,
 				D4EC48691C26342F0024B507 /* title_options.c in Sources */,
 				D4EC48471C26342F0024B507 /* map_tooltip.c in Sources */,
 				D4EC483F1C26342F0024B507 /* guest.c in Sources */,
