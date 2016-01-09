@@ -109,21 +109,26 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
 	WIDX_STAFF_LIST_MAP,
 };
 
+#define WW 320
+#define WH 270
+#define MAX_WW 500
+#define MAX_WH 450
+
 static rct_widget window_staff_list_widgets[] = {
-	{ WWT_FRAME,			0,	0,		319,	0,		269,	0x0FFFFFFFF,					STR_NONE },							// panel / background
-	{ WWT_CAPTION,			0,	1,		318,	1,		14,		STR_STAFF,						STR_WINDOW_TITLE_TIP },				// title bar
-	{ WWT_CLOSEBOX,			0,	307,	317,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },				// close button
-	{ WWT_RESIZE,			1,	0,		319,	43,		269,	0x0FFFFFFFF,					STR_NONE },							// tab content panel
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x02000144E,					STR_STAFF_HANDYMEN_TAB_TIP },		// handymen tab
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x02000144E,					STR_STAFF_MECHANICS_TAB_TIP },		// mechanics tab
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x02000144E,					STR_STAFF_SECURITY_TAB_TIP },		// security guards tab
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x02000144E,					STR_STAFF_ENTERTAINERS_TAB_TIP },	// entertainers tab
-	{ WWT_SCROLL,			1,	3,		316,	72,		266,	3,								STR_NONE },							// staff list
-	{ WWT_COLORBTN,			1,	130,	141,	58,		69,		STR_NONE,						STR_UNIFORM_COLOUR_TIP },			// uniform color picker
-	{ WWT_DROPDOWN_BUTTON,	0,	165,	309,	17,		29,		STR_NONE,						STR_HIRE_STAFF_TIP },				// hire button
-	{ WWT_FLATBTN,			1,	243,	266,	46,		69,		SPR_DEMOLISH,					5300 },								// quick fire staff
-	{ WWT_FLATBTN,			1,	267,	290,	46,		69,		5175,							STR_SHOW_PATROL_AREA_TIP },			// show staff patrol area tool
-	{ WWT_FLATBTN,			1,	291,	314,	46,		69,		5192,							STR_SHOW_STAFF_ON_MAP_TIP },		// show staff on map button
+	{ WWT_FRAME,			0,	0,			319,		0,		269,	0x0FFFFFFFF,	STR_NONE },							// panel / background
+	{ WWT_CAPTION,			0,	1,			318,		1,		14,		STR_STAFF,		STR_WINDOW_TITLE_TIP },				// title bar
+	{ WWT_CLOSEBOX,			0,	307,		317,		2,		13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP },				// close button
+	{ WWT_RESIZE,			1,	0,			319,		43,		269,	0x0FFFFFFFF,	STR_NONE },							// tab content panel
+	{ WWT_TAB,				1,	3,			33,			17,		43,		0x02000144E,	STR_STAFF_HANDYMEN_TAB_TIP },		// handymen tab
+	{ WWT_TAB,				1,	34,			64,			17,		43,		0x02000144E,	STR_STAFF_MECHANICS_TAB_TIP },		// mechanics tab
+	{ WWT_TAB,				1,	65,			95,			17,		43,		0x02000144E,	STR_STAFF_SECURITY_TAB_TIP },		// security guards tab
+	{ WWT_TAB,				1,	96,			126,		17,		43,		0x02000144E,	STR_STAFF_ENTERTAINERS_TAB_TIP },	// entertainers tab
+	{ WWT_SCROLL,			1,	3,			316,		72,		266,	3,				STR_NONE },							// staff list
+	{ WWT_COLORBTN,			1,	130,		141,		58,		69,		STR_NONE,		STR_UNIFORM_COLOUR_TIP },			// uniform color picker
+	{ WWT_DROPDOWN_BUTTON,	0,	WW - 155,	WW - 11,	17,		29,		STR_NONE,		STR_HIRE_STAFF_TIP },				// hire button
+	{ WWT_FLATBTN,			1,	WW - 77,	WW - 54,	46,		69,		SPR_DEMOLISH,	5300 },								// quick fire staff
+	{ WWT_FLATBTN,			1,	WW - 53,	WW - 30,	46,		69,		5175,			STR_SHOW_PATROL_AREA_TIP },			// show staff patrol area tool
+	{ WWT_FLATBTN,			1,	WW - 29,	WW - 6,		46,		69,		5192,			STR_SHOW_STAFF_ON_MAP_TIP },		// show staff on map button
 	{ WIDGETS_END },
 };
 
@@ -152,7 +157,7 @@ void window_staff_list_open()
 	if (window != NULL)
 		return;
 
-	window = window_create_auto_pos(320, 270, &window_staff_list_events, WC_STAFF_LIST, WF_10 | WF_RESIZABLE);
+	window = window_create_auto_pos(WW, WH, &window_staff_list_events, WC_STAFF_LIST, WF_10 | WF_RESIZABLE);
 	window->widgets = window_staff_list_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_STAFF_LIST_CLOSE) |
@@ -171,10 +176,10 @@ void window_staff_list_open()
 	window->list_information_type = 0;
 
 	window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOR_PICKER].type = WWT_EMPTY;
-	window->min_width = 320;
-	window->min_height = 270;
-	window->max_width = 500;
-	window->max_height = 450;
+	window->min_width = WW;
+	window->min_height = WH;
+	window->max_width = MAX_WW;
+	window->max_height = MAX_WH;
 	_quick_fire_mode = false;
 }
 
@@ -240,8 +245,8 @@ static void window_staff_list_mouseup(rct_window *w, int widgetIndex)
 */
 static void window_staff_list_resize(rct_window *w)
 {
-	w->min_width = 320;
-	w->min_height = 270;
+	w->min_width = WW;
+	w->min_height = WH;
 	if (w->width < w->min_width) {
 		w->width = w->min_width;
 		window_invalidate(w);
@@ -509,14 +514,14 @@ void window_staff_list_invalidate(rct_window *w)
 	window_staff_list_widgets[WIDX_STAFF_LIST_CLOSE].right = w->width - 2 - 0x0B + 0x0A;
 	window_staff_list_widgets[WIDX_STAFF_LIST_LIST].right = w->width - 4;
 	window_staff_list_widgets[WIDX_STAFF_LIST_LIST].bottom = w->height - 0x0F;
-	window_staff_list_widgets[WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON].left = 243 - 320 + w->width;
-	window_staff_list_widgets[WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON].right = 266 - 320 + w->width;
-	window_staff_list_widgets[WIDX_STAFF_LIST_MAP].left = 267 - 320 + w->width;
-	window_staff_list_widgets[WIDX_STAFF_LIST_MAP].right = 290 - 320 + w->width;
-	window_staff_list_widgets[WIDX_STAFF_LIST_QUICK_FIRE].left = 291 - 320 + w->width;
-	window_staff_list_widgets[WIDX_STAFF_LIST_QUICK_FIRE].right = 314 - 320 + w->width;
-	window_staff_list_widgets[WIDX_STAFF_LIST_HIRE_BUTTON].left = 165 - 320 + w->width;
-	window_staff_list_widgets[WIDX_STAFF_LIST_HIRE_BUTTON].right = 309 - 320 + w->width;
+	window_staff_list_widgets[WIDX_STAFF_LIST_QUICK_FIRE].left = w->width - 77;
+	window_staff_list_widgets[WIDX_STAFF_LIST_QUICK_FIRE].right = w->width - 54;
+	window_staff_list_widgets[WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON].left = w->width - 53;
+	window_staff_list_widgets[WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON].right = w->width - 30;
+	window_staff_list_widgets[WIDX_STAFF_LIST_MAP].left = w->width - 29;
+	window_staff_list_widgets[WIDX_STAFF_LIST_MAP].right = w->width - 6;
+	window_staff_list_widgets[WIDX_STAFF_LIST_HIRE_BUTTON].left = w->width - 155;
+	window_staff_list_widgets[WIDX_STAFF_LIST_HIRE_BUTTON].right = w->width - 11;
 }
 
 /**
