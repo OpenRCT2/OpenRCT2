@@ -760,7 +760,7 @@ void format_string_part_from_raw(utf8 **dest, const utf8 *src, char **args)
 
 void format_string_part(utf8 **dest, rct_string_id format, char **args)
 {
-	if (format == (rct_string_id)STR_NONE) {
+	if (format == STR_NONE) {
 		**dest = 0;
 	} else if (format < 0x8000) {
 		// Language string
@@ -832,7 +832,8 @@ void format_string_to_upper(utf8 *dest, rct_string_id format, void *args)
  *  error  (eax)
  *  format (bx)
  */
-void error_string_quit(int error, rct_string_id format){
+void error_string_quit(int error, rct_string_id format)
+{
 	RCT2_GLOBAL(0x14241A0, uint32) = error;
 	RCT2_GLOBAL(0x9E2DA0, uint32) = 1;
 
@@ -845,7 +846,6 @@ void error_string_quit(int error, rct_string_id format){
 	}
 	RCT2_GLOBAL(0x9E2D9C, uint32) = 1;
 	rct2_exit();
-	rct2_endupdate();
 }
 
 void generate_string_file()

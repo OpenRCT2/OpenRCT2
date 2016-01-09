@@ -543,7 +543,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	RCT2_GLOBAL(0x009A8C28, uint8)--;
 
 	// Show error window
-	if (RCT2_GLOBAL(0x009A8C28, uint8) == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8) && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED))
+	if (RCT2_GLOBAL(0x009A8C28, uint8) == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8) && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
 		window_error_open(RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16), RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16));
 
 	return MONEY32_UNDEFINED;
@@ -637,33 +637,6 @@ static int open_load_game_dialog()
 static void load_landscape()
 {
 	window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE, NULL);
-	return;
-
-	if (open_landscape_file_dialog() == 0) {
-		gfx_invalidate_screen();
-	} else {
-		// Set default filename
-		char *esi = (char*)0x0141EF67;
-		while (1) {
-			esi++;
-			if (*esi == '.')
-				break;
-			if (*esi != 0)
-				continue;
-			strcpy(esi, ".SC6");
-			break;
-		}
-		safe_strncpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)0x0141EF68, MAX_PATH);
-
-		editor_load_landscape((char*)0x0141EF68);
-		if (1) {
-			gfx_invalidate_screen();
-			rct2_endupdate();
-		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
-			rct2_endupdate();
-		}
-	}
 }
 
 /**
@@ -887,7 +860,7 @@ int game_load_network(SDL_RWops* rw)
  *
  *  rct2: 0x00675E1B
  */
-int game_load_save(const char *path)
+bool game_load_save(const utf8 *path)
 {
 	log_verbose("loading saved game, %s", path);
 
@@ -901,22 +874,24 @@ int game_load_save(const char *path)
 		log_error("unable to open %s", path);
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
-		return 0;
+		return false;
 	}
 
-	if (!game_load_sv6(rw)) {
-		title_load();
-		rct2_endupdate();
-		SDL_RWclose(rw);
-		return 0;
-	}
+	bool result = game_load_sv6(rw);
 	SDL_RWclose(rw);
 
-	game_load_init();
-	if (network_get_mode() == NETWORK_MODE_SERVER) {
-		network_send_map();
+	if (result) {
+		game_load_init();
+		if (network_get_mode() == NETWORK_MODE_SERVER) {
+			network_send_map();
+		}
+		return true;
+	} else {
+		// If loading the SV6 failed, the current park state will be corrupted
+		// so just go back to the title screen.
+		title_load();
+		return false;
 	}
-	return 1;
 }
 
 void game_load_init()
@@ -978,41 +953,6 @@ void reset_all_sprite_quadrant_placements()
 
 /**
  *
- *  rct2: 0x0066DBB7
- */
-static void load_game()
-{
-	window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
-	return;
-
-	if (open_load_game_dialog() == 0) {
-		gfx_invalidate_screen();
-	} else {
-		// Set default filename
-		char *esi = (char*)0x0141EF67;
-		while (1) {
-			esi++;
-			if (*esi == '.')
-				break;
-			if (*esi != 0)
-				continue;
-			strcpy(esi, ".SV6");
-			break;
-		}
-		safe_strncpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)0x0141EF68, MAX_PATH);
-
-		if (game_load_save((char *)0x0141EF68)) {
-			gfx_invalidate_screen();
-			rct2_endupdate();
-		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
-			rct2_endupdate();
-		}
-	}
-}
-
-/**
- *
  *  rct2: 0x006750E9
  */
 static int show_save_game_dialog(char *resultPath)
@@ -1058,7 +998,10 @@ void save_game()
 }
 void save_game_as()
 {
-	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, (char*)path_get_filename(gScenarioSavePath));
+	char name[MAX_PATH];
+	safe_strncpy(name, path_get_filename(gScenarioSavePath), MAX_PATH);
+	path_remove_extension(name);
+	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, name);
 }
 
 int compare_autosave_file_paths (const void * a, const void * b ) {
@@ -1193,8 +1136,6 @@ void rct2_exit_reason(rct_string_id title, rct_string_id body){
  */
 void rct2_exit()
 {
-	//audio_close();
-	//Post quit message does not work in 0x6e3879 as its windows only.
 	openrct2_finish();
 }
 
@@ -1207,10 +1148,11 @@ void game_load_or_quit_no_save_prompt()
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) < 1) {
 		game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 		tool_cancel();
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
 			load_landscape();
-		else
-			load_game();
+		} else {
+			window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
+		}
 	} else if (RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) == 1) {
 		game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 		tool_cancel();
@@ -1219,7 +1161,6 @@ void game_load_or_quit_no_save_prompt()
 		}
 		gGameSpeed = 1;
 		title_load();
-		rct2_endupdate();
 	} else {
 		rct2_exit();
 	}

@@ -158,7 +158,7 @@ void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y
 	gTooltipWidget.window_number = widgetWindow->number;
 	gTooltipWidget.widget_index = widgetIndex;
 
-	if (window_event_tooltip_call(widgetWindow, widgetIndex) == (rct_string_id)STR_NONE)
+	if (window_event_tooltip_call(widgetWindow, widgetIndex) == STR_NONE)
 		return;
 
 	window_tooltip_show(widget->tooltip, x, y);

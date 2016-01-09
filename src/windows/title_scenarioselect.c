@@ -28,6 +28,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../interface/themes.h"
+#include "../title.h"
 #include "../util/util.h"
 
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5
@@ -274,7 +275,9 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex
 			y -= 24;
 			if (y < 0 && !listItem->scenario.is_locked) {
 				audio_play_sound_panned(SOUND_CLICK_1, w->width / 2 + w->x, 0, 0, 0);
-				scenario_load_and_play_from_path(listItem->scenario.scenario->path);
+				if (!scenario_load_and_play_from_path(listItem->scenario.scenario->path)) {
+					title_load();
+				}
 			}
 			break;
 		}
@@ -556,7 +559,7 @@ static void initialise_list_items(rct_window *w)
 				}
 			}
 		}
-		if (headingStringId != (rct_string_id)STR_NONE) {
+		if (headingStringId != STR_NONE) {
 			// Ensure list capacity
 			if (length == capacity) {
 				capacity += 32;

@@ -98,6 +98,13 @@ static void load_object_filter(rct_object_entry* entry, uint8* chunk, rct_object
 
 static rct_object_filters *_installedObjectFilters = NULL;
 
+uint32 gInstalledObjectsCount;
+rct_object_entry *gInstalledObjects;
+uint32 gNumInstalledRCT2Objects;
+uint32 gNumInstalledCustomObjects;
+
+void *gLastLoadedObjectChunkData;
+
 static void get_plugin_path(utf8 *outPath)
 {
 	platform_get_user_directory(outPath, NULL);
@@ -112,8 +119,8 @@ static void object_list_sort()
 	char *objectName, *lowestString;
 	uint8 *copied;
 
-	objectBuffer = &RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
-	numObjects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32);
+	objectBuffer = &gInstalledObjects;
+	numObjects = gInstalledObjectsCount;
 	copied = calloc(numObjects, sizeof(uint8));
 
 	// Get buffer size
@@ -123,7 +130,7 @@ static void object_list_sort()
 	bufferSize = (int)entry - (int)*objectBuffer;
 
 	// Create new buffer
-	newBuffer = rct2_malloc(bufferSize);
+	newBuffer = (rct_object_entry*)malloc(bufferSize);
 	destEntry = newBuffer;
 	if (_installedObjectFilters) {
 		newFilters = malloc(numObjects * sizeof(rct_object_filters));
@@ -155,7 +162,7 @@ static void object_list_sort()
 	}
 
 	// Replace old buffer
-	rct2_free(*objectBuffer);
+	free(*objectBuffer);
 	*objectBuffer = newBuffer;
 	if (_installedObjectFilters) {
 		free(_installedObjectFilters);
@@ -165,27 +172,29 @@ static void object_list_sort()
 	free(copied);
 }
 
+static uint32 object_list_count_custom_objects()
+{
+	uint32 numCustomObjects = 0;
+	rct_object_entry *object = gInstalledObjects;
+	for (uint32 i = 0; i < gInstalledObjectsCount; i++) {
+		if ((object->flags & 0xF0) == 0) {
+			numCustomObjects++;
+		}
+		object = object_get_next(object);
+	}
+
+	gNumInstalledCustomObjects = numCustomObjects;
+	return numCustomObjects;
+}
+
 /**
  *
  *  rct2: 0x006A93CD
  */
 static void object_list_examine()
 {
-	int i;
-	rct_object_entry *object;
-
-	RCT2_GLOBAL(RCT2_ADDRESS_CUSTOM_OBJECTS_INSTALLED, uint8) = 0;
-
-	object = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
-	for (i = 0; i < RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32); i++) {
-		if (!(object->flags & 0xF0))
-			RCT2_GLOBAL(RCT2_ADDRESS_CUSTOM_OBJECTS_INSTALLED, uint8) |= 1;
-
-		object = object_get_next(object);
-	}
+	object_list_count_custom_objects();
 	object_list_sort();
-
-	// Create a search index
 	object_list_create_hash_table();
 }
 
@@ -203,7 +212,7 @@ void reset_loaded_objects()
 		for (int j = 0; j < object_entry_group_counts[type]; j++){
 			uint8* chunk = object_entry_groups[type].chunks[j];
 			if (chunk != (uint8*)-1)
-				object_paint(type, 0, j, type, 0, (int)chunk, 0, 0);
+				object_load(type, chunk, j);
 		}
 	}
 }
@@ -256,27 +265,17 @@ void object_list_load()
 	totalFiles = (totalFiles & ~0xFF) | 1;
 	totalFiles = rol32(totalFiles, 24);
 
-	if (object_list_cache_load(totalFiles, totalFileSize, fileDateModifiedChecksum))
+	if (object_list_cache_load(totalFiles, totalFileSize, fileDateModifiedChecksum)) {
 		return;
-
-	// Reload object list
-
-	// RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS used to control if this was the first time loading objects
-	// and display the starting RCT2 for the first time message.
-	//if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS, uint8) != 0)
-	//	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FIRST_TIME_LOAD_OBJECTS, uint8) = 0;
-
-	reset_loaded_objects();
-
-	// Dispose installed object list
-	if (RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, sint32) != -1) {
-		rct2_free(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*));
-		RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, sint32) = -1;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*) = rct2_malloc(4096);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, int) == -1){
+	// Dispose installed object list
+	reset_loaded_objects();
+	SafeFree(gInstalledObjects);
+
+	gInstalledObjectsCount = 0;
+	gInstalledObjects = (rct_object_entry*)malloc(4096);
+	if (gInstalledObjects == NULL) {
 		log_error("Failed to allocate memory for object list");
 		rct2_exit_reason(835, 3162);
 		return;
@@ -284,9 +283,8 @@ void object_list_load()
 
 	uint32 fileCount = 0;
 	uint32 objectCount = 0;
-	uint32 current_item_offset = 0;
-	uint32 next_offset = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_ORIGINAL_RCT2_OBJECT_COUNT, uint32) = 0;
+	size_t currentEntryOffset = 0;
+	gNumInstalledRCT2Objects = 0;
 
 	log_verbose("building cache of available objects...");
 
@@ -297,15 +295,14 @@ void object_list_load()
 
 	enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char));
 	if (enumFileHandle != INVALID_HANDLE) {
-		uint32 installed_buffer_size = 0x1000;
-
+		size_t installedObjectsCapacity = 4096;
 		while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo)) {
 			fileCount++;
 
-			if ((installed_buffer_size - current_item_offset) <= 2842){
-				installed_buffer_size += 0x1000;
-				RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*) = rct2_realloc(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*), installed_buffer_size);
-				if (RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, int) == -1){
+			if ((installedObjectsCapacity - currentEntryOffset) <= 2842){
+				installedObjectsCapacity += 4096;
+				gInstalledObjects = (rct_object_entry*)realloc(gInstalledObjects, installedObjectsCapacity);
+				if (gInstalledObjects == NULL) {
 					log_error("Failed to allocate memory for object list");
 					rct2_exit_reason(835, 3162);
 					return;
@@ -316,23 +313,17 @@ void object_list_load()
 			substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), enumFileInfo.path);
 
 			rct_object_entry entry;
-			if (!object_load_entry(path, &entry))
-				continue;
-
-			if (_installedObjectFilters)
+			if (object_load_entry(path, &entry)) {
 				_installedObjectFilters = realloc(_installedObjectFilters, sizeof(rct_object_filters) * (objectCount + 1));
-			else
-				_installedObjectFilters = malloc(sizeof(rct_object_filters) * (objectCount + 1));
 
-			rct_object_entry* installed_entry = (rct_object_entry*)(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, uint8*) + current_item_offset);
-			rct_object_filters filter;
-
-			next_offset = install_object_entry(&entry, installed_entry, enumFileInfo.path, &filter);
-			if (next_offset) {
-				current_item_offset += next_offset;
-
-				_installedObjectFilters[objectCount] = filter;
-				objectCount++;
+				rct_object_entry *installedEntry = (rct_object_entry*)((size_t)gInstalledObjects + currentEntryOffset);
+				rct_object_filters filter;
+				size_t newEntrySize = install_object_entry(&entry, installedEntry, enumFileInfo.path, &filter);
+				if (newEntrySize != 0) {
+					_installedObjectFilters[objectCount] = filter;
+					objectCount++;
+					currentEntryOffset += newEntrySize;
+				}
 			}
 		}
 		platform_enumerate_files_end(enumFileHandle);
@@ -340,7 +331,7 @@ void object_list_load()
 
 	reset_loaded_objects();
 
-	object_list_cache_save(fileCount, totalFileSize, fileDateModifiedChecksum, current_item_offset);
+	object_list_cache_save(fileCount, totalFileSize, fileDateModifiedChecksum, currentEntryOffset);
 
 	// Reload track list
 	ride_list_item ride_list;
@@ -375,26 +366,23 @@ static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int file
 			pluginHeader.date_modified_checksum == fileDateModifiedChecksum
 		) {
 			// Dispose installed object list
-			if (RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, sint32) != -1) {
-				rct2_free(RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*));
-				RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, sint32) = -1;
-			}
+			SafeFree(gInstalledObjects);
 
 			// Read installed object list
-			RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*) = rct2_malloc(pluginHeader.object_list_size);
-			if (SDL_RWread(file, RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, void*), pluginHeader.object_list_size, 1) == 1) {
-				RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) = pluginHeader.object_list_no_items;
+			gInstalledObjects = (rct_object_entry*)malloc(pluginHeader.object_list_size);
+			if (SDL_RWread(file, gInstalledObjects, pluginHeader.object_list_size, 1) == 1) {
+				gInstalledObjectsCount = pluginHeader.object_list_no_items;
 
 				if (pluginHeader.object_list_no_items != (pluginHeader.total_files & 0xFFFFFF))
 					log_error("Potential mismatch in file numbers. Possible corrupt file. Consider deleting plugin.dat.");
 
 				if (SDL_RWread(file, &filterVersion, sizeof(filterVersion), 1) == 1) {
 					if (filterVersion == FILTER_VERSION) {
-						if (_installedObjectFilters)
+						if (_installedObjectFilters != NULL) {
 							free(_installedObjectFilters);
+						}
 						_installedObjectFilters = malloc(sizeof(rct_object_filters) * pluginHeader.object_list_no_items);
 						if (SDL_RWread(file, _installedObjectFilters, sizeof(rct_object_filters) * pluginHeader.object_list_no_items, 1) == 1) {
-
 							SDL_RWclose(file);
 							reset_loaded_objects();
 							object_list_examine();
@@ -441,7 +429,7 @@ static int object_list_cache_save(int fileCount, uint64 totalFileSize, int fileD
 	pluginHeader.total_file_size = (uint32)totalFileSize;
 	pluginHeader.date_modified_checksum = fileDateModifiedChecksum;
 	pluginHeader.object_list_size = currentItemOffset;
-	pluginHeader.object_list_no_items = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32);
+	pluginHeader.object_list_no_items = gInstalledObjectsCount;
 
 	get_plugin_path(path);
 	file = SDL_RWFromFile(path,"wb");
@@ -451,9 +439,9 @@ static int object_list_cache_save(int fileCount, uint64 totalFileSize, int fileD
 	}
 
 	SDL_RWwrite(file, &pluginHeader, sizeof(rct_plugin_header), 1);
-	SDL_RWwrite(file, RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, uint8*), pluginHeader.object_list_size, 1);
+	SDL_RWwrite(file, gInstalledObjects, pluginHeader.object_list_size, 1);
 	SDL_RWwrite(file, &filterVersion, sizeof(filterVersion), 1);
-	SDL_RWwrite(file, _installedObjectFilters, sizeof(rct_object_filters) * RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32), 1);
+	SDL_RWwrite(file, _installedObjectFilters, sizeof(rct_object_filters) * gInstalledObjectsCount, 1);
 	SDL_RWclose(file);
 	return 1;
 }
@@ -468,7 +456,8 @@ int check_object_entry(rct_object_entry *entry)
  *
  *  rct2: 0x006AB344
  */
-void object_create_identifier_name(char* string_buffer, const rct_object_entry* object){
+void object_create_identifier_name(char* string_buffer, const rct_object_entry* object)
+{
 	for (uint8 i = 0; i < 8; ++i){
 		if (object->name[i] != ' '){
 			*string_buffer++ = object->name[i];
@@ -559,7 +548,7 @@ int object_read_and_load_entries(SDL_RWops* rw)
 		}
 
 		// Load the obect
-		if (!object_load(entryGroupIndex, &entries[i], NULL)) {
+		if (!object_load_chunk(entryGroupIndex, &entries[i], NULL)) {
 			log_error("failed to load entry: %.8s", entries[i].name);
 			memcpy((char*)0x13CE952, &entries[i], sizeof(rct_object_entry));
 			load_fail = 1;
@@ -590,7 +579,7 @@ void object_unload_all()
 	for (i = 0; i < OBJECT_ENTRY_GROUP_COUNT; i++)
 		for (j = 0; j < object_entry_group_counts[i]; j++)
 			if (object_entry_groups[i].chunks[j] != (uint8*)0xFFFFFFFF)
-				object_unload((rct_object_entry*)&object_entry_groups[i].entries[j]);
+				object_unload_chunk((rct_object_entry*)&object_entry_groups[i].entries[j]);
 
 	reset_loaded_objects();
 }
@@ -617,7 +606,7 @@ uint32 object_get_hash_code(rct_object_entry *object)
 void object_list_create_hash_table()
 {
 	rct_object_entry *installedObject;
-	int numInstalledObjects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32);
+	int numInstalledObjects = gInstalledObjectsCount;
 
 	if (_installedObjectHashTable != NULL)
 		free(_installedObjectHashTable);
@@ -626,7 +615,7 @@ void object_list_create_hash_table()
 	_installedObjectHashTable = calloc(_installedObjectHashTableSize, sizeof(rct_object_entry*));
 	_installedObjectHashTableCollisions = 0;
 
-	installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	installedObject = gInstalledObjects;
 	for (int i = 0; i < numInstalledObjects; i++) {
 		uint32 hash = object_get_hash_code(installedObject);
 		uint32 index = hash % _installedObjectHashTableSize;
@@ -740,7 +729,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = 0xF26E;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32)++;
+	gInstalledObjectsCount++;
 
 	// This is a variable used by object_load to decide if it should
 	// use object_paint on the entry.
@@ -755,7 +744,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 		log_error("Object Load File failed. Potentially corrupt file: %.8s", entry->name);
 		RCT2_GLOBAL(0x009ADAF4, sint32) = -1;
 		RCT2_GLOBAL(0x009ADAFD, uint8) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32)--;
+		gInstalledObjectsCount--;
 		return 0;
 	}
 
@@ -766,25 +755,25 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 	RCT2_GLOBAL(0x009ADAFD, uint8) = 0;
 
 	if ((entry->flags & 0xF0) == 0x80) {
-		RCT2_GLOBAL(RCT2_ADDRESS_ORIGINAL_RCT2_OBJECT_COUNT, uint32)++;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_ORIGINAL_RCT2_OBJECT_COUNT, uint32) > 772){
+		gNumInstalledRCT2Objects++;
+		if (gNumInstalledRCT2Objects > 772){
 			log_error("Incorrect number of vanilla RCT2 objects.");
-			RCT2_GLOBAL(RCT2_ADDRESS_ORIGINAL_RCT2_OBJECT_COUNT, uint32)--;
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32)--;
-			object_unload(entry);
+			gNumInstalledRCT2Objects--;
+			gInstalledObjectsCount--;
+			object_unload_chunk(entry);
 			return 0;
 		}
 	}
 	*((sint32*)installed_entry_pointer) = chunk_size;
 	installed_entry_pointer += 4;
 
-	uint8* chunk = RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_CHUNK_POINTER, uint8*); // Loaded in object_load
+	uint8* chunk = (uint8*)gLastLoadedObjectChunkData; // Loaded in object_load
 
 	load_object_filter(entry, chunk, filter);
 
 	// Always extract only the vehicle type, since the track type is always displayed in the left column, to prevent duplicate track names.
 	rct_string_id nameStringId = object_get_name_string_id(entry, chunk);
-	if (nameStringId == (rct_string_id)STR_NONE) {
+	if (nameStringId == STR_NONE) {
 		nameStringId = (rct_string_id)RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32);
 	}
 
@@ -817,7 +806,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 	uint32 size_of_object = installed_entry_pointer - (uint8*)installed_entry;
 
-	object_unload(entry);
+	object_unload_chunk(entry);
 
 	return size_of_object;
 }

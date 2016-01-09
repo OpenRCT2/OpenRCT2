@@ -1042,21 +1042,44 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
 
 		int srcScanSkip = surface->pitch - width;
 		int dstScanSkip = dpi->width + dpi->pitch - width;
-		for (int yy = 0; yy < height; yy++) {
-			for (int xx = 0; xx < width; xx++) {
-				if (*src != 0) {
-					*dst = colour;
-					if (info->flags & TEXT_DRAW_FLAG_INSET) {
-						*(dst + width + dstScanSkip + 1) = info->palette[3];
-					} else if (info->flags & TEXT_DRAW_FLAG_OUTLINE) {
-						*(dst + width + dstScanSkip + 1) = info->palette[3];
+		uint8 *dst_orig = dst;
+		uint8 *src_orig = src;
+
+		// Draw shadow/outline
+		if (info->flags & TEXT_DRAW_FLAG_OUTLINE) {
+			for (int yy = 0; yy < height - 0; yy++) {
+				for (int xx = 0; xx < width - 0; xx++) {
+					if (*src != 0) {
+						*(dst + 1) = info->palette[3]; // right
+						*(dst - 1) = info->palette[3]; // left
+						*(dst - width - dstScanSkip) = info->palette[3]; // top
+						*(dst + width + dstScanSkip) = info->palette[3]; // bottom
 					}
+					src++;
+					dst++;
 				}
-				src++;
-				dst++;
+				// Skip any remaining bits
+				src += srcScanSkip;
+				dst += dstScanSkip;
 			}
-			src += srcScanSkip;
-			dst += dstScanSkip;
+		}
+		{
+			dst = dst_orig;
+			src = src_orig;
+			for (int yy = 0; yy < height; yy++) {
+				for (int xx = 0; xx < width; xx++) {
+					if (*src != 0) {
+						if (info->flags & TEXT_DRAW_FLAG_INSET) {
+							*(dst + width + dstScanSkip + 1) = info->palette[3];
+						}
+						*dst = colour;
+					}
+					src++;
+					dst++;
+				}
+				src += srcScanSkip;
+				dst += dstScanSkip;
+			}
 		}
 
 		if (SDL_MUSTLOCK(surface)) {

@@ -135,7 +135,7 @@ const char *language_get_string(rct_string_id id)
 {
 	const char *openrctString = nullptr;
 
-	if (id == (rct_string_id)STR_NONE)
+	if (id == STR_NONE)
 		return nullptr;
 
 	if (_languageCurrent != nullptr)
@@ -356,7 +356,7 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 	name[8] = 0;
 
 	rct_string_id stringId = _languageCurrent->GetObjectOverrideStringId(name, tableindex);
-	if (stringId != (rct_string_id)STR_NONE) {
+	if (stringId != STR_NONE) {
 		return stringId;
 	}
 
@@ -423,9 +423,9 @@ bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_s
 	outStringIds[1] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 1);
 	outStringIds[2] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 2);
 	return
-		outStringIds[0] != (rct_string_id)STR_NONE ||
-		outStringIds[1] != (rct_string_id)STR_NONE ||
-		outStringIds[2] != (rct_string_id)STR_NONE;
+		outStringIds[0] != STR_NONE ||
+		outStringIds[1] != STR_NONE ||
+		outStringIds[2] != STR_NONE;
 }
 
 }

@@ -566,8 +566,6 @@ rct_window *window_ride_construction_open()
  */
 static void window_ride_construction_close(rct_window *w)
 {
-	rct_xy_element mapElement;
-
 	sub_6C9627();
 	viewport_set_visibility(0);
 
@@ -584,8 +582,7 @@ static void window_ride_construction_close(rct_window *w)
 	hide_gridlines();
 
 	uint8 rideIndex = _currentRideIndex;
-	if (sub_6CAF80(rideIndex, &mapElement) || network_get_mode() == NETWORK_MODE_CLIENT) {
-
+	if (ride_try_get_origin_element(rideIndex, NULL)) {
 		rct_ride *ride = GET_RIDE(rideIndex);
 		if (ride->mode == RIDE_MODE_SHOP_STALL && gConfigGeneral.auto_open_shops) {
 			ride->status = RIDE_STATUS_OPEN;
@@ -1799,7 +1796,7 @@ void window_ride_construction_mouseup_demolish_next_piece(int x, int y, int z, i
 		b4 = _currentTrackLiftHill;
 		ride_construction_set_default_next_piece();
 		sub_6C84CE();
-		if (!sub_6CAF80(_currentRideIndex, NULL)) {
+		if (!ride_try_get_origin_element(_currentRideIndex, NULL)) {
 			sub_6CC3FB(_currentRideIndex);
 			_currentTrackPieceDirection = direction;
 			if (!(slope & 0x100)) {
@@ -1866,7 +1863,7 @@ static void window_ride_construction_rotate(rct_window *w)
 static void window_ride_construction_entrance_click(rct_window *w)
 {
 	if (tool_set(w, WIDX_ENTRANCE, 12)) {
-		if (!sub_6CAF80(_currentRideIndex, NULL)) {
+		if (!ride_try_get_origin_element(_currentRideIndex, NULL)) {
 			sub_6CC3FB(_currentRideIndex);
 		}
 	} else {
@@ -1890,7 +1887,7 @@ static void window_ride_construction_entrance_click(rct_window *w)
 static void window_ride_construction_exit_click(rct_window *w)
 {
 	if (tool_set(w, WIDX_EXIT, 12)) {
-		if (!sub_6CAF80(_currentRideIndex, NULL)) {
+		if (!ride_try_get_origin_element(_currentRideIndex, NULL)) {
 			sub_6CC3FB(_currentRideIndex);
 		}
 	} else {
@@ -1964,7 +1961,7 @@ static bool ride_get_place_position_from_screen_position(int screenX, int screen
 	rct_viewport *viewport;
 
 	if (!_trackPlaceCtrlState) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 2) {
+		if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z) {
 			get_map_coordinates_from_pos(screenX, screenY, 0xFCCA, &mapX, &mapY, &interactionType, &mapElement, &viewport);
 			if (interactionType != 0) {
 				_trackPlaceCtrlZ = mapElement->base_height * 8;
@@ -1972,20 +1969,20 @@ static bool ride_get_place_position_from_screen_position(int screenX, int screen
 			}
 		}
 	} else {
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 2)) {
+		if (!(gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)) {
 			_trackPlaceCtrlState = false;
 		}
 	}
 
 	if (!_trackPlaceShiftState) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 1) {
+		if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z) {
 			_trackPlaceShiftState = true;
 			_trackPlaceShiftStartScreenX = screenX;
 			_trackPlaceShiftStartScreenY = screenY;
 			_trackPlaceShiftZ = 0;
 		}
 	} else {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 1) {
+		if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z) {
 			_trackPlaceShiftZ = floor2(_trackPlaceShiftStartScreenY - screenY + 4, 8);
 			screenX = _trackPlaceShiftStartScreenX;
 			screenY = _trackPlaceShiftStartScreenY;
@@ -3648,7 +3645,10 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 				w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 				if (w != NULL) {
 					if (ride_are_all_possible_entrances_and_exits_built(ride)) {
-						window_close(w);
+						// Clients don't necessarily have any ride built at this point
+						if (network_get_mode() == NETWORK_MODE_NONE) {
+							window_close(w);
+						}
 					} else {
 						window_event_mouse_up_call(w, WIDX_ENTRANCE);
 					}

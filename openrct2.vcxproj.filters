@@ -564,6 +564,9 @@
     <ClCompile Include="src\scenario_sources.c">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\Stopwatch.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">
@@ -850,6 +853,12 @@
     </ClInclude>
     <ClInclude Include="src\image_io.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\stopwatch.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Stopwatch.hpp">
+      <Filter>Source\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -190,10 +190,10 @@ static void scenario_translate(scenario_index_entry *scenarioEntry, const rct_ob
 {
 	rct_string_id localisedStringIds[3];
 	if (language_get_localised_scenario_strings(scenarioEntry->name, localisedStringIds)) {
-		if (localisedStringIds[0] != (rct_string_id)STR_NONE) {
+		if (localisedStringIds[0] != STR_NONE) {
 			safe_strncpy(scenarioEntry->name, language_get_string(localisedStringIds[0]), 64);
 		}
-		if (localisedStringIds[2] != (rct_string_id)STR_NONE) {
+		if (localisedStringIds[2] != STR_NONE) {
 			safe_strncpy(scenarioEntry->details, language_get_string(localisedStringIds[2]), 256);
 		}
 	} else {

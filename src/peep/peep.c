@@ -7279,6 +7279,12 @@ static int guest_path_find_leaving_park(rct_peep *peep, rct_map_element *map_ele
  */
 static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_element, uint8 edges){
 	uint8 entranceNum;
+	
+	// Resolves already-corrupt guests (e.g. loaded from save)
+	if (peep->flags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN &&
+		(peep->current_ride >= 4 ||
+		 RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[peep->current_ride] == (sint16)0x8000)
+		) peep->flags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
 
 	if (!(peep->flags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN)){
 		uint8 chosenEntrance = 0xFF;
@@ -8065,6 +8071,9 @@ static void peep_on_exit_ride(rct_peep *peep, int rideIndex)
 	peep->happiness = peep->happiness_growth_rate;
 	peep->nausea = peep->nausea_growth_rate;
 	peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_STATS;
+	
+	if (peep->flags & PEEP_FLAGS_LEAVING_PARK)
+		peep->flags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
 
 	if (peep_should_go_on_ride_again(peep, ride)) {
 		peep->guest_heading_to_ride_id = rideIndex;

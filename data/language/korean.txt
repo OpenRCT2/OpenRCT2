@@ -830,10 +830,10 @@ STR_0825    :이미 사용 중인 이름입니다
 STR_0826    :이름이 너무 많이 지정되었습니다
 STR_0827    :돈이 부족합니다 - {CURRENCY2DP} 만큼의 돈이 더 필요합니다
 STR_0828    :{SMALLFONT}{BLACK}창 닫기
-STR_0829    :{SMALLFONT}{BLACK}창 제목 - 창을 움직이려면 여기를 드래그하세요
+STR_0829    :{SMALLFONT}{BLACK}창 제목 - 창을{NEWLINE}움직이려면 드래그하세요
 STR_0830    :{SMALLFONT}{BLACK}화면 확대하기
 STR_0831    :{SMALLFONT}{BLACK}화면 축소하기
-STR_0832    :{SMALLFONT}{BLACK}게임 화면을 시계방향으로 90{DEGREE}도 회전하기
+STR_0832    :{SMALLFONT}{BLACK}게임 화면을 시계방향으로{NEWLINE}90{DEGREE} 회전하기
 STR_0833    :{SMALLFONT}{BLACK}게임 일시정지
 STR_0834    :{SMALLFONT}{BLACK}디스크 및 게임 옵션
 STR_0835    :게임 초기화 실패
@@ -1010,8 +1010,8 @@ STR_1004    :{POP16}{POP16}{POP16}{STRINGID} -  닫을 수 없습니다...
 STR_1005    :{POP16}{POP16}{POP16}{STRINGID}의 건설을 시작할 수 없습니다...
 STR_1006    :먼저 닫아야 합니다
 STR_1007    :차량을 충분히 만들 수 없습니다
-STR_1008    :{SMALLFONT}{BLACK}놀이기구/시설을 개장/폐장/테스트합니다
-STR_1009    :{SMALLFONT}{BLACK}모든 놀이기구/시설을 개장/폐장합니다
+STR_1008    :{SMALLFONT}{BLACK}놀이기구/시설{NEWLINE}을 개장/폐장/테스트합니다
+STR_1009    :{SMALLFONT}{BLACK}모든 놀이기구/시설{NEWLINE}을 개장/폐장합니다
 STR_1010    :{SMALLFONT}{BLACK}공원을 열거나 닫습니다
 STR_1011    :모두 닫기
 STR_1012    :모두 열기
@@ -1404,16 +1404,16 @@ STR_1398    :{SMALLFONT}{BLACK}측정 및 테스트 데이터
 STR_1399    :{SMALLFONT}{BLACK}그래프
 STR_1400    :입구
 STR_1401    :출구
-STR_1402    :{SMALLFONT}{BLACK}놀이기구/시설의 입구를 건설하거나 이동합니다
-STR_1403    :{SMALLFONT}{BLACK}놀이기구/시설의 출구를 건설하거나 이동합니다
+STR_1402    :{SMALLFONT}{BLACK}놀이기구/시설의 입구를 건설하거{NEWLINE}나 이동합니다
+STR_1403    :{SMALLFONT}{BLACK}놀이기구/시설의 출구를 건설하거{NEWLINE}나 이동합니다
 STR_1404    :{SMALLFONT}{BLACK}90{DEGREE} 회전
 STR_1405    :{SMALLFONT}{BLACK}반전
-STR_1406    :{SMALLFONT}{BLACK}풍경을 켜거나 끕니다 (단 사용할 수 있는 경우에만 켜짐)
+STR_1406    :{SMALLFONT}{BLACK}풍경을 켜거나 끕니다 (단 사용할{NEWLINE}수 있는 경우에만 켜짐)
 STR_1407    :{WINDOW_COLOUR_2}건설하기...
 STR_1408    :{WINDOW_COLOUR_2}예상 가격: {BLACK}{CURRENCY}
 STR_1409    :탑승장 출입구
 STR_1410    :버티컬 타워
-STR_1411    :{STRINGID}(이)가 중간에 있습니다
+STR_1411    :{STRINGID}(이)가{NEWLINE}중간에 있습니다
 STR_1412    :{WINDOW_COLOUR_3}이 종류의 놀이기구는 데이터를 기록할 수 없습니다
 STR_1413    :{WINDOW_COLOUR_3}다음 {STRINGID}(이)가 {STRINGID}(을)를 출발할 때 데이터를 기록합니다
 STR_1414    :{SMALLFONT}{BLACK}{DURATION}
@@ -1754,8 +1754,8 @@ STR_1748    :{SMALLFONT}{BLACK}놀이기구 탑승 시간 제한
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1750    :{DURATION}
 STR_1751    :놀이기구의 탑승 시간을 변경할 수 없습니다...
-STR_1752    :{SMALLFONT}{BLACK}공원에 있는 손님의 모든 명단을 보여줍니다
-STR_1753    :{SMALLFONT}{BLACK}공원에 있는 손님을 항목별로 묶어서 보여줍니다
+STR_1752    :{SMALLFONT}{BLACK}공원에 있는 손님의 모든 명단{NEWLINE}을 보여줍니다
+STR_1753    :{SMALLFONT}{BLACK}공원에 있는 손님을 항목별로 묶어{NEWLINE}서 보여줍니다
 STR_1754    :{BLACK}{COMMA16} 손님
 STR_1755    :{BLACK}{COMMA16} 손님
 STR_1756    :{WINDOW_COLOUR_2}입장료:
@@ -1766,7 +1766,7 @@ STR_1760    :{SMALLFONT}{BLACK}채우기 모드
 STR_1761    :{SMALLFONT}{BLACK}이 방향으로 미로 건설
 STR_1762    :폭포
 STR_1763    :급류
-STR_1764    :Log Bumps
+STR_1764    :통나무 장애물
 STR_1765    :탑승 사진 섹션
 STR_1766    :역방향 턴테이블
 STR_1767    :회전 터널
@@ -1797,10 +1797,10 @@ STR_1791    :{WINDOW_COLOUR_2}유니폼 색상:
 STR_1792    :{STRINGID} 고장 연락을 받음
 STR_1793    :점검을 위해 {STRINGID}(으)로 이동 중
 STR_1794    :{STRINGID} 수리 중
-STR_1795    :라디오 연락에 응답 중
+STR_1795    :무전기 연락에 응답 중
 STR_1796    :고장이 나서 수리가 필요함
 STR_1797    :이 놀이기구에서는 변경할 수 없는 설정입니다
-STR_1798    :쇼용돌이
+STR_1798    :소용돌이
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :안전 차단
 STR_1801    :안전 벨트가 닫힌 채로 안 열림
@@ -1818,7 +1818,7 @@ STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :기타 오브젝트
 STR_1814    :행동
 STR_1815    :생각
-STR_1816    :{SMALLFONT}{BLACK}손님 목록에서 보여줄 정보의 종류를 선택하세요
+STR_1816    :{SMALLFONT}{BLACK}손님 목록에서 보여줄 정보의 종류{NEWLINE}를 선택하세요
 STR_1817    :({COMMA16})
 STR_1818    :{WINDOW_COLOUR_2}모든 손님
 STR_1819    :{WINDOW_COLOUR_2}모든 손님 (항목별 분류)
@@ -1826,7 +1826,7 @@ STR_1820    :{WINDOW_COLOUR_2}{STRINGID} 손님
 STR_1821    :{WINDOW_COLOUR_2}{STRINGID} 손님 생각
 STR_1822    :{WINDOW_COLOUR_2}{POP16}{STRINGID}에 대한 손님 생각
 STR_1823    :{SMALLFONT}{BLACK}이 놀이기구/시설에 대한 손님들의 생각을 보여줍니다
-STR_1824    :{SMALLFONT}{BLACK}이 놀이기구/시설에 있는 손님을 보여줍니다
+STR_1824    :{SMALLFONT}{BLACK}이 놀이기구/시설에 있는 손님{NEWLINE}을 보여줍니다
 STR_1825    :{SMALLFONT}{BLACK}이 놀이기구/시설에서 기다리고 있는 손님을 보여줍니다
 STR_1826    :상태
 STR_1827    :인기도
@@ -1852,7 +1852,7 @@ STR_1846    :{COMMA16} 손님
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} 손님
 STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} 손님
 STR_1849    :{WINDOW_COLOUR_2}음악 재생
-STR_1850    :{SMALLFONT}{BLACK}이 놀이기구에 배경음악을 재생할지를 선택합니다
+STR_1850    :{SMALLFONT}{BLACK}이 놀이기구에 배경음악{NEWLINE}을 재생할지를 선택합니다
 STR_1851    :{WINDOW_COLOUR_2}유지비: {BLACK}시간당 {CURRENCY2DP}
 STR_1852    :{WINDOW_COLOUR_2}유지비: {BLACK}알 수 없음
 STR_1853    :{WINDOW_COLOUR_2}건설 시점: {BLACK}올해
@@ -1892,7 +1892,7 @@ STR_1886    :{STRINGID} 점검 중
 STR_1887    :{WINDOW_COLOUR_2}지난 점검 이후 지난 시간: {BLACK}{COMMA16}분
 STR_1888    :{WINDOW_COLOUR_2}지난 점검 이후 지난 시간: {BLACK}4시간 이상
 STR_1889    :{WINDOW_COLOUR_2}고장률: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1890    :{SMALLFONT}{BLACK}정비기술자가 놀이기구를 얼마나 자주 점검할 지 선택
+STR_1890    :{SMALLFONT}{BLACK}정비기술자가 놀이기구를 얼마{NEWLINE}나 자주 점검할 지 선택하세요
 STR_1891    :공원에 아직 {STRINGID}(이)가 없습니다!
 # The following two strings were used to display an error when the disc was missing.
 # This has been replaced in OpenRCT2.
@@ -1934,7 +1934,7 @@ STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} 고장 발생
 STR_1928    :{RED}{STRINGID} 충돌!
 STR_1929    :{RED}{STRINGID} - 아직 수리되지 않음{NEWLINE}정비기술자의 위치와 업무 효율을 점검하세요
-STR_1930    :{SMALLFONT}{BLACK}이 손님의 행동을 추적합니다. (이 설정을 켜면 이 손님의 모든 행동을 메시지 창으로 알려줍니다)
+STR_1930    :{SMALLFONT}{BLACK}이 손님의 행동을 추적합니다.{NEWLINE}(이 설정을 켜면 이 손님의 모든 행동을 메시지 창으로 알려줍니다)
 STR_1931    :{STRINGID} - {STRINGID}(을)를 타기 위해 대기줄에 섰습니다
 STR_1932    :{STRINGID} - {STRINGID}(을)를 탔습니다
 STR_1933    :{STRINGID} - {STRINGID} 안에 있습니다
@@ -2366,7 +2366,7 @@ STR_2358    :유닛
 STR_2359    :실제 값
 STR_2360    :{WINDOW_COLOUR_2}해상도:
 STR_2361    :땅 테두리를 부드럽게
-STR_2362    :{SMALLFONT}{BLACK}땅의 테두리를 부드럽게 보이게 만듭니다
+STR_2362    :{SMALLFONT}{BLACK}땅의 테두리를 부드럽게{NEWLINE}보이게 만듭니다
 STR_2363    :땅에 격자선 보이기
 STR_2364    :{SMALLFONT}{BLACK}땅에 격자선을 보여줍니다
 STR_2365    :은행이 대출을 증가시키는 것을 거절했습니다!
@@ -2492,7 +2492,7 @@ STR_2484    :{WINDOW_COLOUR_2}주간 수익: {RED}{CURRENCY2DP}
 STR_2485    :조작
 STR_2486    :일반
 STR_2487    :손님들의 '실제' 이름을 표시
-STR_2488    :{SMALLFONT}{BLACK}손님들의 이름을 '실제' 이름으로 보여줄지 번호로 보여줄지를 선택합니다
+STR_2488    :{SMALLFONT}{BLACK}손님들의 이름을 '실제' 이름으로 보여줄지{NEWLINE}번호로 보여줄지를 선택합니다
 STR_2489    :단축키 설정...
 STR_2490    :키보드 단축키
 STR_2491    :단축키 초기화
@@ -2805,7 +2805,7 @@ STR_2794    :{WINDOW_COLOUR_2}달성: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2
 STR_2795    :정렬
 STR_2796    :{SMALLFONT}{BLACK}놀이기구 목록을 정보 종류에 따라 정렬하여 표시합니다.
 STR_2797    :화면 가장자리에 커서를 가져가면 화면을 스크롤
-STR_2798    :{SMALLFONT}{BLACK}화면 가장자리에 마우스 커서를 가까이 대면 게임 화면을 스크롤할지를 선택합니다
+STR_2798    :{SMALLFONT}{BLACK}화면 가장자리에 마우스 커서{NEWLINE}를 가까이 대면 게임 화면{NEWLINE}을 스크롤할지를 선택합니다
 STR_2799    :{SMALLFONT}{BLACK}지정되어 있는 조작 키를 확인하거나 변경합니다
 STR_2800    :{WINDOW_COLOUR_2}총 입장료: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}입장료로 벌어들인 수익: {BLACK}{CURRENCY2DP}
@@ -3127,7 +3127,7 @@ STR_3116    :{SMALLFONT}{BLACK}트랙 디자인을 저장합니다 (놀이기구
 STR_3117    :{BLACK}정비기술자에게 연락 중...
 STR_3118    :{BLACK}{STRINGID}(이)가 놀이기구로 향하고 있음
 STR_3119    :{BLACK}{STRINGID}(이)가 놀이기구를 수리하고 있음
-STR_3120    :{SMALLFONT}{BLACK}가까운 정비기술자를 찾아서 놀이기구를 수리하게 합니다
+STR_3120    :{SMALLFONT}{BLACK}가까운 정비기술자를 찾아{NEWLINE}서 놀이기구를 수리하게 합니다
 STR_3121    :정비기술자가 근처에 없거나 모두 바쁩니다
 STR_3122    :{WINDOW_COLOUR_2}이 놀이기구를 좋아하는 손님: {BLACK}{COMMA16}명
 STR_3123    :{WINDOW_COLOUR_2}이 놀이기구를 좋아하는 손님: {BLACK}{COMMA16}명
@@ -3151,7 +3151,7 @@ STR_3140    :케이블 리프트 힐은 탑승장 바로 다음에 건설해야 
 STR_3141    :케이블 리프트 힐을 사용하면 2바퀴 이상 차량을 운용할 수 없습니다
 STR_3142    :{WINDOW_COLOUR_2}수용량: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}손님을 지도에 표시합니다
-STR_3144    :{SMALLFONT}{BLACK}놀이기구와 시설을 지도에 표시합니다
+STR_3144    :{SMALLFONT}{BLACK}놀이기구와 시설을 지도{NEWLINE}에 표시합니다
 STR_3145    :{SMALLFONT}{BLACK}왼쪽으로 {STRINGID} 스크롤
 STR_3146    :{SMALLFONT}{BLACK}오른쪽으로 {STRINGID} 스크롤
 STR_3147    :{SMALLFONT}{BLACK}왼쪽으로 {STRINGID} 빠르게 스크롤
@@ -3246,13 +3246,13 @@ STR_3235    :{SMALLFONT}{BLACK}재정 관련 설정을 보여줍니다
 STR_3236    :{SMALLFONT}{BLACK}손님 관련 설정을 보여줍니다
 STR_3237    :{SMALLFONT}{BLACK}공원 관련 설정을 보여줍니다
 STR_3238    :돈 무제한
-STR_3239    :{SMALLFONT}{BLACK}재정적 제한이 없도록 이 공원의 돈을 '무제한'으로 만듭니다
+STR_3239    :{SMALLFONT}{BLACK}재정적 제한이 없도록 이 공원{NEWLINE}의 돈을 '무제한'으로 만듭니다
 STR_3240    :{WINDOW_COLOUR_2}초기 재정:
 STR_3241    :{WINDOW_COLOUR_2}초기 대출:
 STR_3242    :{WINDOW_COLOUR_2}최대 대출금:
 STR_3243    :{WINDOW_COLOUR_2}연 이자율:
 STR_3244    :광고 이벤트를 금지
-STR_3245    :{SMALLFONT}{BLACK}광고나 이벤트를 진행할 수 없도록 금지합니다
+STR_3245    :{SMALLFONT}{BLACK}광고나 이벤트를 진행할 수 없도{NEWLINE}록 금지합니다
 STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
 STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
 STR_3248    :초기 보유 자금을 더 이상 늘릴 수 없습니다!
@@ -3264,9 +3264,9 @@ STR_3253    :최대 대출금을 더 이상 줄일 수 없습니다!
 STR_3254    :이자율을 더 이상 늘릴 수 없습니다!
 STR_3255    :이자율을 더 이상 줄일 수 없습니다!
 STR_3256    :손님들이 격렬하지 않은 놀이기구를 선호함
-STR_3257    :{SMALLFONT}{BLACK}손님들이 일반적으로 덜 격렬한 놀이기구를 선호하게 만들지를 선택합니다
+STR_3257    :{SMALLFONT}{BLACK}손님들이 일반적으로 덜 격렬{NEWLINE}한 놀이기구를 선호하게 만들지를 선택합니다
 STR_3258    :손님들이 격렬한 놀이기구를 선호함
-STR_3259    :{SMALLFONT}{BLACK}손님들이 일반적으로 더욱 격렬한 놀이기구를 선호하게 만들지를 선택합니다
+STR_3259    :{SMALLFONT}{BLACK}손님들이 일반적으로 더욱 격렬{NEWLINE}한 놀이기구를 선호하게 만들지를 선택합니다
 STR_3260    :{WINDOW_COLOUR_2}각 손님의 보유금 (평균):
 STR_3261    :{WINDOW_COLOUR_2}손님의 초기 행복도:
 STR_3262    :{WINDOW_COLOUR_2}손님의 초기 배고픔:
@@ -3283,7 +3283,7 @@ STR_3272    :{SMALLFONT}{BLACK}높은 건축물의 건설을 금지합니다
 STR_3273    :공원 등급 난이도 상승
 STR_3274    :{SMALLFONT}{BLACK}공원 등급값이 더 급변하게 만듭니다
 STR_3275    :손님 생성 난이도 상승
-STR_3276    :{SMALLFONT}{BLACK}공원에 손님을 유치하기 더 어렵게 만듭니다
+STR_3276    :{SMALLFONT}{BLACK}공원에 손님을 유치하기 더 어렵{NEWLINE}게 만듭니다
 STR_3277    :{WINDOW_COLOUR_2}땅 구입 비용:
 STR_3278    :{WINDOW_COLOUR_2}건설권 구입 비용:
 STR_3279    :놀이기구 탑승료만 받기
@@ -3341,7 +3341,7 @@ STR_3330    :공원이 소유한 땅이 하나도 없습니다
 STR_3331    :공원 입구에서 지도 가장자리로 이어지는 길이 이어지지 않았거나 너무 복잡합니다. 1칸 너비의 길을 코너나 교차로가 최대한 없도록 하여 만들어야 합니다.
 STR_3332    :공원 입구가 잘못된 방향을 향하고 있거나 지도 가장자리로 가는 길이 없습니다
 STR_3333    :게임 저장시 사용한 오브젝트를 같이 포함하여 저장
-STR_3334    :{SMALLFONT}{BLACK}필요한 경우 플러그 인 오브젝트(기본적으로 지원하지 않고 사용자가 추가된 오브젝트)를 저장된 게임 파일이나 시나리오 파일과 함께 저장합니다. 이러면 그 추가 오브젝트를 갖고 있지 않은 다른 사람이 이 파일을 불러올 때 자동으로 그 오브젝트를 설치하게 되지만 파일 용량이 늘어납니다
+STR_3334    :{SMALLFONT}{BLACK}필요한 경우 내장된 오브젝트(기본 오브젝트가 아닌 사용자가{NEWLINE}추가한 오브젝트)를 게임 저장 파일이나 시나리오 파일 내부에 함께 저장합니다.{NEWLINE}이러면 그 추가 오브젝트를 갖고 있지 않은 다른 사람이 이 파일을 불러올 때{NEWLINE}자동으로 그 오브젝트를 설치하게 됩니다. 다만 게임 저장 파일{NEWLINE}용량이 늘어납니다
 STR_3335    :롤러코스터 디자이너 - 놀이기구 종류 & 차량을 선택하세요
 STR_3336    :트랙 디자인 매니저 - 놀이기구 종류를 선택하세요
 STR_3337    :<더 이상 사용하지 않음>
@@ -3372,7 +3372,7 @@ STR_3361    :트랙 디자인이 너무 많습니다. 일부가 표시되지 않
 STR_3362    :<더 이상 사용하지 않음>
 STR_3363    :<더 이상 사용하지 않음>
 STR_3364    :고급
-STR_3365    :{SMALLFONT}{BLACK}조형물 그룹과 함께 조형물 각각을 따로 선택할 수 있게 허용합니다
+STR_3365    :{SMALLFONT}{BLACK}조형물 그룹과 함께 조형물{NEWLINE}각각을 따로 선택할 수 있게 허용합니다
 STR_3366    :{BLACK}= 놀이기구
 STR_3367    :{BLACK}= 음식 상점
 STR_3368    :{BLACK}= 음료수 상점
@@ -3387,7 +3387,7 @@ STR_3376    :새 트랙 디자인 설치...
 STR_3377    :{SMALLFONT}{BLACK}새 트랙 디자인 파일 설치
 STR_3378    :설치
 STR_3379    :취소
-STR_3380    :U이 트랙 디자인 파일을 설치할 수 없습니다...
+STR_3380    :이 트랙 디자인 파일을 설치할 수 없습니다...
 STR_3381    :파일이 적합하지 않거나 유효하지 않은 데이터를 포함하고 있습니다
 STR_3382    :파일 복사에 실패하였습니다
 STR_3383    :트랙 디자인에 지정할 새 이름을 선택하세요
@@ -3492,7 +3492,7 @@ STR_5152    :.
 STR_5153    :테마 수정...
 STR_5154    :하드웨어 디스플레이
 STR_5155    :완성되지 않은 트랙의 테스트 허용
-STR_5156    :{SMALLFONT}{BLACK}대부분의 놀이기구 종류에서 트랙이 완성되지 않아도 테스트를 할 수 있도록 허용합니다. 블록 섹션 모드에는 적용되지 않습니다
+STR_5156    :{SMALLFONT}{BLACK}대부분의 놀이기구 종류에서 트랙{NEWLINE}을 완성되지 않아도 테스트를{NEWLINE}할 수 있도록 허용합니다. 블록 섹션 모드에는 적용되지 않습니다
 STR_5157    :모든 가격 잠금 해제
 STR_5158    :종료하고 메뉴로
 STR_5159    :OpenRCT2 종료
@@ -3504,13 +3504,13 @@ STR_5164    :트위치 채널 이름
 STR_5165    :손님 이름을 팔로워 이름을 따서 붙이기
 STR_5166    :{SMALLFONT}{BLACK}트위치 채널의 팔로워 이름을 따서 손님 이름으로 사용합니다
 STR_5167    :팔로워 손님 추적
-STR_5168    :{SMALLFONT}{BLACK}채널의 트위치 팔로워 이름을 딴 손님을 추적합니다
+STR_5168    :{SMALLFONT}{BLACK}채널의 트위치 팔로워 이름을{NEWLINE}딴 손님을 추적합니다
 STR_5169    :손님 이름을 트위치 채팅의 접속자 이름을 따서 붙이기
 STR_5170    :{SMALLFONT}{BLACK}트위치 채팅의 접속자 이름을 따서 손님 이름으로 사용합니다
 STR_5171    :채팅 인원 추적
-STR_5172    :{SMALLFONT}{BLACK}트위치 채팅에 참가하고 있는 사람들의 이름을 딴 손님의 행적을 추적합니다
+STR_5172    :{SMALLFONT}{BLACK}트위치 채팅에 참가하고 있는 사람들의 이름을 딴 손님의{NEWLINE}행적을 추적합니다
 STR_5173    :트위치 채팅 내용을 뉴스로 전송
-STR_5174    :{SMALLFONT}{BLACK}트위치의 채팅 메시지를 !news를 이용하여 게임 메시지로 알려줍니다
+STR_5174    :{SMALLFONT}{BLACK}트위치의 채팅 메시지를{NEWLINE}!news를 이용하여 게임 메시지로 알려줍니다
 STR_5175    :트위치 채널 이름 입력
 STR_5176    :트위치 통합 허용
 STR_5177    :풀 스크린 모드:
@@ -3629,9 +3629,9 @@ STR_5289    :이 놀이기구는 고장이 나지 않습니다
 STR_5290    :놀이기구 수리
 STR_5291    :강제로 고장낼 수 없습니다
 STR_5292    :{SMALLFONT}{BLACK}강제로 고장을 냅니다
-STR_5293    :{SMALLFONT}{BLACK}놀이기구/시설을 닫습니다
-STR_5294    :{SMALLFONT}{BLACK}놀이기구/시설을 테스트합니다
-STR_5295    :{SMALLFONT}{BLACK}놀이기구/시설을 엽니다
+STR_5293    :{SMALLFONT}{BLACK}놀이기구/시설{NEWLINE}을 닫습니다
+STR_5294    :{SMALLFONT}{BLACK}놀이기구/시설{NEWLINE}을 테스트합니다
+STR_5295    :{SMALLFONT}{BLACK}놀이기구/시설{NEWLINE}을 엽니다
 STR_5296    :{SMALLFONT}{BLACK}공원을 닫습니다
 STR_5297    :{SMALLFONT}{BLACK}공원을 엽니다
 STR_5298    :{RED}{STRINGID}
@@ -3706,7 +3706,7 @@ STR_5366    :보통
 STR_5367    :빠름
 STR_5368    :충돌 이력 제거
 STR_5369    :공원 설정...
-STR_5370    :{SMALLFONT}{BLACK}제한, 손님 생성, 돈 등의{NEWLINE}공원과 관련된 설정을 수정하려면{NEWLINE}이 버튼을 클릭하세요.
+STR_5370    :{SMALLFONT}{BLACK}제한, 손님 생성, 돈 등의{NEWLINE}공원과 관련된 설정을 수정{NEWLINE}하려면 이 버튼을 클릭하세요.
 STR_5371    :오브젝트 선택
 STR_5372    :마우스 오른쪽 드래그시 좌우 반전
 STR_5373    :이름 {STRINGID}
@@ -3845,13 +3845,13 @@ STR_5505    :서버에 접속할 수 없습니다
 STR_5506    :손님이 격렬도를 무시하고 탐
 STR_5507    :미화원이 기본적으로 잔디를 깎음
 STR_5508    :올바르지 않은 검사합을 가진 파일 불러오기 허용
-STR_5509    :{SMALLFONT}{BLACK}데모에서 저장한 시나리오나 손상된 저장 파일과 같이 올바르지 않은 검사합을 가진 시나리오나 저장 파일을 불러오는 것을 허용합니다.
+STR_5509    :{SMALLFONT}{BLACK}데모에서 저장한 시나리오{NEWLINE}나 손상된 저장 파일과 같이 올바르지 않은 검사합을 가진 시나리오나 저장 파일을 불러오는 것을 허용합니다.
 STR_5510    :기본 사운드 장치
 STR_5511    :(알 수 없음)
 STR_5512    :다른 이름으로 저장
 STR_5513    :게임 간편 저장
 STR_5514    :기물을 파손하지 않게 하기
-STR_5515    :{SMALLFONT}{BLACK}손님이 화가 났을 때 기물을 파손하지 않도록 설정합니다
+STR_5515    :{SMALLFONT}{BLACK}손님이 화가 났을 때{NEWLINE}기물을 파손하지 않도록 설정합니다
 STR_5516    :{SMALLFONT}{BLACK}검은색
 STR_5517    :{SMALLFONT}{BLACK}회색
 STR_5518    :{SMALLFONT}{BLACK}흰색
@@ -3896,7 +3896,7 @@ STR_5556    :플레이어 추방
 STR_5557    :비동기화 이후에 계속 접속 (멀티플레이)
 STR_5558    :이 설정을 적용하기 위해서는 재시작해야합니다
 STR_5559    :점검 시간 10분으로
-STR_5560    :{SMALLFONT}{BLACK}모든 놀이기구의 점검 시간을 '매 10분마다'로 설정합니다
+STR_5560    :{SMALLFONT}{BLACK}모든 놀이기구의 점검{NEWLINE}시간을 '매 10분마다'로 설정합니다
 STR_5561    :언어 파일을 불러오는 데 실패하였습니다
 STR_5562    :경고!
 STR_5563    :이 기능은 현재 불안정하여 오류가 나올 수 있습니다
@@ -3921,9 +3921,9 @@ STR_5581    :FPS 보기
 STR_5582    :마우스 커서를 창 밖으로 나가지 못하게
 STR_5583    :{COMMA1DP16}m/s
 STR_5584    :국제단위(SI)법
-STR_5585    :{SMALLFONT}{BLACK}체인/발사 속력을 {VELOCITY}으로 만드는 것과 같이 일부 놀이기구 운행 제한을 없애줍니다
+STR_5585    :{SMALLFONT}{BLACK}체인/발사 속력을 {VELOCITY}으로 만드는 것처럼, 일부 놀이기구 운행 제한을 없애줍니다
 STR_5586    :상점이나 가게를 자동으로 엶
-STR_5587    :{SMALLFONT}{BLACK}이 설정을 켜면 상점이나 가게를 건설하면 자동으로 열도록 만들어 줍니다.
+STR_5587    :{SMALLFONT}{BLACK}이 설정을 켜면 상점이나{NEWLINE}가게를 건설한 뒤에 자동으로{NEWLINE}열도록 만들어 줍니다.
 STR_5588    :{SMALLFONT}{BLACK}다른 참가자와 함께 플레이합니다.
 STR_5589    :알림 설정
 STR_5590    :공원 수상 내역
@@ -3943,7 +3943,7 @@ STR_5603    :손님의 놀이기구 하차
 STR_5604    :손님의 물건 구입
 STR_5605    :손님의 시설 사용
 STR_5606    :손님의 사망
-STR_5607    :{SMALLFONT}{BLACK}선택한 맵 요소를 강제로 제거합니다.
+STR_5607    :{SMALLFONT}{BLACK}선택한 맵 요소를 강제{NEWLINE}로 제거합니다.
 STR_5608    :BH
 STR_5609    :CH
 STR_5610    :{SMALLFONT}{BLACK}현재 선택한 맵 요소를 제거합니다. 강제로 삭제하기 때문에 돈이 들어오거나 빠지진 않을 것입니다. 주의해서 사용하세요.
@@ -6953,7 +6953,7 @@ STR_CPTY    :차량당 1명의 승객
 
 [ANACONDA]
 STR_NAME    :아나콘다 라이드
-STR_DESC    :Spacious trains with simple lap restraints
+STR_DESC    :간단한 안전바가 있는 널찍한 차량
 STR_CPTY    :차량당 6명의 승객
 
 [BOMERANG]
@@ -6963,12 +6963,12 @@ STR_CPTY    :차량당 2명의 승객
 
 [BULLET]
 STR_NAME    :신칸센 코스터
-STR_DESC    :Roller coaster with Japanese Bullet Train themed cars
+STR_DESC    :일본 신칸센 테마의 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [CADDILAC]
 STR_NAME    :리무진 롤러코스터
-STR_DESC    :Roller coaster with Limousine themed cars
+STR_DESC    :리무진 테마의 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [CONDORRD]
@@ -6983,7 +6983,7 @@ STR_CPTY    :차량당 4명의 승객
 
 [DRAGON]
 STR_NAME    :드래곤 코스터
-STR_DESC    :Roller coaster with dragon-themed cars
+STR_DESC    :드래곤 테마의 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [FOOTBALL]
@@ -6998,12 +6998,12 @@ STR_CPTY    :차량당 4명의 승객
 
 [GRATWHTE]
 STR_NAME    :대백상어 라이드
-STR_DESC    :Spacious trains with simple lap restraints
+STR_DESC    :간단한 안전바가 있는 널찍한 차량
 STR_CPTY    :차량당 6명의 승객
 
 [JAGUARRD]
 STR_NAME    :재규어 라이드
-STR_DESC    :A compact roller coaster with individual cars and smooth twisting drops.
+STR_DESC    :개별적인 차량이 부드러운 트위스트 낙하를 짜임새 있게 내려오는 롤러코스터
 STR_CPTY    :차량당 4명의 승객
 
 [KOLARIDE]
@@ -7048,7 +7048,7 @@ STR_CPTY    :차량당 4명의 승객
 
 [RSSNCRRD]
 STR_NAME    :러시아 차량
-STR_DESC    :Roller coaster cars in the shape of automobiles
+STR_DESC    :자동차 모양의 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [SEALS]
@@ -7088,7 +7088,7 @@ STR_CPTY    :차량당 4명의 승객
 
 [TIGRTWST]
 STR_NAME    :뱅갈 호랑이 롤러코스터
-STR_DESC    :Roller coaster cars capable of heartline twists
+STR_DESC    :하트라인 트위스트에서 사용할 수 있는 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [WHICGRUB]
@@ -7158,7 +7158,7 @@ STR_CPTY    :보트당 16명의 승객
 
 [OUTRIGGR]
 STR_NAME    :아웃리거 라이드
-STR_DESC    :Long canoes which the passengers paddle themselves
+STR_DESC    :탑승객들이 스스로 페달을 밟는 긴 카누
 STR_CPTY    :카누당 2명의 승객
 
 [TUTLBOAT]
@@ -7185,52 +7185,52 @@ STR_NAME    :디제리두
 STR_NAME    :에뮤
 
 [1X1JUGT2]
-STR_NAME    :Small Rainforest Tree 1
+STR_NAME    :작은 열대우림 나무 1
 
 [1X1JUGT3]
-STR_NAME    :Small Rainforest Tree 2
+STR_NAME    :작은 열대우림 나무 2
 
 [1X1KANGA]
 STR_NAME    :캥거루
 
 [1X1TERMM]
-STR_NAME    :Termite Mound
+STR_NAME    :흰개미 언덕
 
 [ADPANDA]
 STR_NAME    :어른 팬더
 
 [ANTILOPF]
-STR_NAME    :Antelope Female
+STR_NAME    :암컷 영양
 
 [ANTILOPM]
-STR_NAME    :Antelope Male
+STR_NAME    :수컷 영양
 
 [ANTILOPP]
-STR_NAME    :Antelope Pair
+STR_NAME    :영양 한 쌍
 
 [BABPANDA]
 STR_NAME    :아기 팬더
 
 [BABYELE]
-STR_NAME    :Baby Indian Elephant
+STR_NAME    :아기 인도 코끼리
 
 [BALLLAN2]
-STR_NAME    :Ball Lantern
+STR_NAME    :공 모양 초롱
 
 [BALLLANT]
-STR_NAME    :Ball Lantern
+STR_NAME    :공 모양 초롱
 
 [BambooBs]
 STR_NAME    :대나무 수풀
 
 [BAMBOOPL]
-STR_NAME    :Bamboo Plinth
+STR_NAME    :대나무 주추
 
 [BSTATUE1]
 STR_NAME    :부서진 동상
 
 [FSTATUE1]
-STR_NAME    :Fixed Statue
+STR_NAME    :고정된 동상
 
 [JACHTREE]
 STR_NAME    :벚나무
@@ -7269,121 +7269,121 @@ STR_NAME    :파이프
 STR_NAME    :파이프
 
 [RBRICK01]
-STR_NAME    :Red Brick Inverted 지붕 Piece
+STR_NAME    :붉은 벽돌 뒤집한 지붕 조각
 
 [RBRICK02]
-STR_NAME    :Red Brick Corner 지붕 Piece
+STR_NAME    :붉은 벽돌 구석 지붕 조각
 
 [RBRICK03]
-STR_NAME    :Red Brick Flat 지붕 Edge Piece
+STR_NAME    :붉은 벽돌 평평한 지붕 가장자리 조각
 
 [RBRICK04]
-STR_NAME    :Red Brick Flat 지붕 Corner
+STR_NAME    :붉은 벽돌 평평한 지붕 구석
 
 [RBRICK05]
-STR_NAME    :Red Brick 지붕 Piece 2
+STR_NAME    :붉은 벽돌 지붕 조각 2
 
 [RBRICK07]
-STR_NAME    :Red Brick 지붕 Piece 3
+STR_NAME    :붉은 벽돌 지붕 조각 3
 
 [RBRICK08]
-STR_NAME    :Red Brick 지붕 Piece 1
+STR_NAME    :붉은 벽돌 지붕 조각 1
 
 [RCORR01]
-STR_NAME    :Corrugated 지붕 Piece
+STR_NAME    :물결 무늬 지붕 조각
 
 [RCORR02]
-STR_NAME    :Corrugated 지붕 Piece
+STR_NAME    :물결 무늬 지붕 조각
 
 [RCORR03]
-STR_NAME    :Corrugated 지붕 Piece
+STR_NAME    :물결 무늬 지붕 조각
 
 [RCORR04]
-STR_NAME    :Corrugated 지붕 Piece
+STR_NAME    :물결 무늬 지붕 조각
 
 [RCORR05]
-STR_NAME    :Corrugated 지붕 Piece
+STR_NAME    :물결 무늬 지붕 조각
 
 [RCORR07]
-STR_NAME    :Corrugated 지붕 Piece
+STR_NAME    :물결 무늬 지붕 조각
 
 [RCORR08]
-STR_NAME    :Corrugated 지붕 Piece
+STR_NAME    :물결 무늬 지붕 조각
 
 [RCORR09]
-STR_NAME    :Corrugated 지붕 Piece
+STR_NAME    :물결 무늬 지붕 조각
 
 [RCORR10]
-STR_NAME    :Corrugated 지붕 Piece
+STR_NAME    :물결 무늬 지붕 조각
 
 [RCORR11]
-STR_NAME    :Corrugated 지붕 Piece
+STR_NAME    :물결 무늬 지붕 조각
 
 [RDRAB05]
-STR_NAME    :Drab Small Tower Minaret 기본
+STR_NAME    :칙칙하고 작은 뾰족탑 기본
 
 [RDRAB06]
-STR_NAME    :Drab Small Tower Top or Mid-Section
+STR_NAME    :칙칙하고 작은 탑 상단 또는 중간 섹션
 
 [RDRAB07]
-STR_NAME    :Drab Small Tower 기본
+STR_NAME    :칙칙하고 작은 탑 기본
 
 [RDRAB08]
-STR_NAME    :Drab Minaret Piece 1
+STR_NAME    :칙칙한 뾰족탑 조각 1
 
 [RDRAB09]
-STR_NAME    :Drab Minaret Piece 2
+STR_NAME    :칙칙한 뾰족탑 조각 2
 
 [RDRAB10]
-STR_NAME    :Drab Minaret Piece 3
+STR_NAME    :칙칙한 뾰족탑 조각 3
 
 [RDRAB11]
-STR_NAME    :Drab 지붕 Piece 1
+STR_NAME    :칙칙한 지붕 조각 1
 
 [RDRAB12]
-STR_NAME    :Drab 지붕 Piece 2
+STR_NAME    :칙칙한 지붕 조각 2
 
 [RDRAB13]
-STR_NAME    :Drab 지붕 Piece 3
+STR_NAME    :칙칙한 지붕 조각 3
 
 [RDRAB14]
-STR_NAME    :Drab 지붕 Piece 4
+STR_NAME    :칙칙한 지붕 조각 4
 
 [RGEORG01]
-STR_NAME    :Georgian 지붕 End Piece 1
+STR_NAME    :조지아식 지붕 끄트머리 조각 1
 
 [RGEORG02]
-STR_NAME    :Georgian 지붕 End Piece 2
+STR_NAME    :조지아식 지붕 끄트머리 조각 2
 
 [RGEORG03]
-STR_NAME    :Georgian 지붕 Piece 1
+STR_NAME    :조지아식 지붕 조각 1
 
 [RGEORG04]
-STR_NAME    :Georgian 지붕 Piece 2
+STR_NAME    :조지아식 지붕 조각 2
 
 [RGEORG05]
-STR_NAME    :Georgian 지붕 Piece 3
+STR_NAME    :조지아식 지붕 조각 3
 
 [RGEORG06]
-STR_NAME    :Georgian 지붕 Piece 4
+STR_NAME    :조지아식 지붕 조각 4
 
 [RGEORG07]
-STR_NAME    :Georgian 지붕 Piece 5
+STR_NAME    :조지아식 지붕 조각 5
 
 [RGEORG08]
-STR_NAME    :Georgian Ground Floor Wall Piece 7
+STR_NAME    :조지아식 현관문 벽 조각 7
 
 [RGEORG09]
-STR_NAME    :Georgian Flat 지붕 Edge 1
+STR_NAME    :조지아식 평평한 지붕 가장자리 1
 
 [RGEORG10]
-STR_NAME    :Georgian Flat 지붕 Edge 2
+STR_NAME    :조지아식 평평한 지붕 가장자리 2
 
 [RGEORG11]
-STR_NAME    :Georgian Flat 지붕 Corner
+STR_NAME    :조지아식 평평한 지붕 구석
 
 [RGEORG12]
-STR_NAME    :Georgian 지붕 Piece 7
+STR_NAME    :조지아식 지붕 조각 7
 
 [ROOFICE1]
 STR_NAME    :눈 지붕
@@ -7404,67 +7404,67 @@ STR_NAME    :눈 지붕
 STR_NAME    :눈 지붕
 
 [RKREML01]
-STR_NAME    :Kremlin Minaret Piece 1
+STR_NAME    :크렘린 성탑 조각 1
 
 [RKREML02]
-STR_NAME    :Kremlin Minaret Piece 2
+STR_NAME    :크렘린 성탑 조각 2
 
 [RKREML03]
-STR_NAME    :Kremlin Minaret Piece 3
+STR_NAME    :크렘린 성탑 조각 3
 
 [RKREML04]
-STR_NAME    :Kremlin 지붕 Piece 1
+STR_NAME    :크렘린 지붕 조각 1
 
 [RKREML05]
-STR_NAME    :Kremlin 지붕 Piece 2
+STR_NAME    :크렘린 지붕 조각 2
 
 [RKREML06]
-STR_NAME    :Kremlin Small Tower Mid-Section
+STR_NAME    :크렘린 작은 탑 중간 섹션
 
 [RKREML07]
-STR_NAME    :Kremlin Small Tower 기본
+STR_NAME    :크렘린 작은 탑 기본
 
 [RKREML11]
-STR_NAME    :Kremlin Small Tower Minaret 기본
+STR_NAME    :크렘린 작은 뾰족탑 기본
 
 [RLOG01]
-STR_NAME    :Log Cabin 지붕 Piece
+STR_NAME    :통나무집 지붕 조각
 
 [RLOG02]
-STR_NAME    :Log Cabin 지붕 Piece
+STR_NAME    :통나무집 지붕 조각
 
 [RLOG03]
-STR_NAME    :Log Cabin Wall Piece
+STR_NAME    :통나무집 벽 조각
 
 [RLOG04]
-STR_NAME    :Log Cabin Wall Piece
+STR_NAME    :통나무집 벽 조각
 
 [RLOG05]
-STR_NAME    :Log Cabin 지붕 Piece
+STR_NAME    :통나무집 지붕 조각
 
 [RMARBLE1]
-STR_NAME    :Marble 지붕
+STR_NAME    :대리석 지붕
 
 [RMARBLE2]
-STR_NAME    :Marble 지붕
+STR_NAME    :대리석 지붕
 
 [RMARBLE3]
-STR_NAME    :Marble 지붕
+STR_NAME    :대리석 지붕
 
 [RMARBLE4]
-STR_NAME    :Marble 지붕
+STR_NAME    :대리석 지붕
 
 [RMUD01]
-STR_NAME    :곡선형 Mud Wall Piece
+STR_NAME    :곡선형 진흙 벽 조각
 
 [RMUD02]
-STR_NAME    :곡선형 Mud Wall Piece
+STR_NAME    :곡선형 진흙 벽 조각
 
 [RMUD03]
-STR_NAME    :곡선형 Mud Wall Piece
+STR_NAME    :곡선형 진흙 벽 조각
 
 [RMUD05]
-STR_NAME    :Mud 지붕 Piece
+STR_NAME    :진흙 지붕 조각
 
 [ROOFIG01]
 STR_NAME    :이글루 벽
@@ -7491,64 +7491,64 @@ STR_NAME    :장기 지붕
 STR_NAME    :장기 지붕
 
 [SMALLGEO]
-STR_NAME    :Small Geosphere
+STR_NAME    :작은 지오스피어
 
 [VERTPIPE]
-STR_NAME    :Ice Pipe Section
+STR_NAME    :얼음 파이프 섹션
 
 [ICEBARL1]
-STR_NAME    :Iced Barrels
+STR_NAME    :눈 덮인 통
 
 [ICEBARL2]
-STR_NAME    :Iced Barrels
+STR_NAME    :눈 덮인 통
 
 [ICEBARL3]
-STR_NAME    :Iced Barrels
+STR_NAME    :눈 덮인 통
 
 [PIPEVENT]
-STR_NAME    :Ice Pipe Vent
+STR_NAME    :얼음 배기관
 
 [PIPEBASE]
-STR_NAME    :Ice Pipe 기본
+STR_NAME    :얼음 파이프 기본
 
 [RTUDOR01]
-STR_NAME    :Tudor 지붕 Piece 1
+STR_NAME    :튜더식 지붕 조각 1
 
 [RTUDOR02]
-STR_NAME    :Tudor 지붕 Piece 1 Extender Piece
+STR_NAME    :튜더식 지붕 조각 1 확장 조각
 
 [RTUDOR03]
-STR_NAME    :Tudor 지붕 Piece 2
+STR_NAME    :튜더식 지붕 조각 2
 
 [RWDAUB01]
-STR_NAME    :Wattle & Daub 지붕
+STR_NAME    :초벽 지붕
 
 [RWDAUB02]
-STR_NAME    :Wattle & Daub 지붕
+STR_NAME    :초벽 지붕
 
 [RWDAUB03]
-STR_NAME    :Wattle & Daub 지붕
+STR_NAME    :초벽 지붕
 
 [SB1HSPB1]
-STR_NAME    :Suspension Bridge 기본 Piece
+STR_NAME    :현수교 기본 조각
 
 [SB1HSPB2]
-STR_NAME    :Suspension Bridge 기본 Spacer Piece
+STR_NAME    :현수교 기본 간격 조각
 
 [SB1HSPB3]
-STR_NAME    :Suspension Bridge Mid Section Piece
+STR_NAME    :현수교 중간 섹션 조각
 
 [SB2PALM1]
-STR_NAME    :Cabana Porch
+STR_NAME    :탈의실 베란다
 
 [SB2SKY01]
-STR_NAME    :Stone Skyscraper Stairway 기본
+STR_NAME    :석재 마천루 계단 기본
 
 [SBH1TEPE]
-STR_NAME    :Tee Pee
+STR_NAME    :원뿔형 천막
 
 [SBH1WGWH]
-STR_NAME    :Wagon Wheel
+STR_NAME    :수레바퀴
 
 [SBH2SHLT]
 STR_NAME    :서치라이트
@@ -7563,7 +7563,7 @@ STR_NAME    :선인장
 STR_NAME    :선인장
 
 [SBH3CSKL]
-STR_NAME    :Cattle Skull
+STR_NAME    :소 두개골
 
 [SBH3OSCR]
 STR_NAME    :롤러코스터 어워드 상
@@ -7581,589 +7581,589 @@ STR_NAME    :야자수
 STR_NAME    :66번도 팻말
 
 [SBH4TOTM]
-STR_NAME    :Large Totem Pole
+STR_NAME    :커다란 토템 기둥
 
 [SBSKYS01]
-STR_NAME    :Stone Skyscaper Wall Piece
+STR_NAME    :석재 마천루 벽 조각
 
 [SBSKYS02]
-STR_NAME    :Stone Skyscaper Wall Piece
+STR_NAME    :석재 마천루 벽 조각
 
 [SBSKYS03]
-STR_NAME    :Skyscraper Lift Piece
+STR_NAME    :마천루 엘리베이터 조각
 
 [SBSKYS04]
-STR_NAME    :Skyscraper Lift Piece
+STR_NAME    :마천루 엘리베이터 조각
 
 [SBSKYS05]
-STR_NAME    :Skyscaper Metal Set 1 Convex Piece
+STR_NAME    :마천루 철제 세트 1 볼록한 조각
 
 [SBSKYS06]
-STR_NAME    :Skyscaper Metal Set 1 Concave Piece
+STR_NAME    :마천루 철제 세트 1 오목한 조각
 
 [SBSKYS07]
-STR_NAME    :Skyscaper Metal Set 2 Convex Piece
+STR_NAME    :마천루 철제 세트 2 볼록한 조각
 
 [SBSKYS08]
-STR_NAME    :Skyscaper Metal Set 2 Concave Piece
+STR_NAME    :마천루 철제 세트 2 오목한 조각
 
 [SBSKYS09]
-STR_NAME    :Skyscaper Metal Set 2 Concave Piece
+STR_NAME    :마천루 철제 세트 2 오목한 조각
 
 [SBSKYS10]
-STR_NAME    :Skyscaper Concave Piece
+STR_NAME    :마천루 오목한 조각
 
 [SBSKYS11]
-STR_NAME    :Skyscraper Concave 지붕
+STR_NAME    :마천루 오목한 지붕
 
 [SBSKYS12]
-STR_NAME    :Skyscaper Convex Piece
+STR_NAME    :마천루 볼록한 조각
 
 [SBSKYS13]
-STR_NAME    :Skyscaper Convex 지붕
+STR_NAME    :마천루 볼록한 지붕
 
 [SBSKYS14]
-STR_NAME    :Sky Scraper 지붕 Piece
+STR_NAME    :마천루 지붕 조각
 
 [SBSKYS15]
-STR_NAME    :Sky Scraper 지붕 Piece
+STR_NAME    :마천루 지붕 조각
 
 [SBSKYS16]
-STR_NAME    :Sky Scraper 지붕 Piece
+STR_NAME    :마천루 지붕 조각
 
 [SBSKYS17]
-STR_NAME    :Sky Scraper 지붕 Piece
+STR_NAME    :마천루 지붕 조각
 
 [SBSKYS18]
-STR_NAME    :Sky Scraper 지붕 Piece
+STR_NAME    :마천루 지붕 조각
 
 [SBWIND01]
-STR_NAME    :Wind Sculpted Concave Wall Corner
+STR_NAME    :풍화된 오목한 벽 구석
 
 [SBWIND02]
-STR_NAME    :Wind Sculpted Concave 지붕 Corner
+STR_NAME    :풍화된 오목한 지붕 구석
 
 [SBWIND03]
-STR_NAME    :Wind Sculpted Concave Wall Corner
+STR_NAME    :풍화된 오목한 벽 구석
 
 [SBWIND04]
-STR_NAME    :Wind Sculpted Convex Wall Corner
+STR_NAME    :풍화된 볼록한 벽 구석
 
 [SBWIND05]
-STR_NAME    :Wind Sculpted Convex 지붕 Corner
+STR_NAME    :풍화된 볼록한 지붕 구석
 
 [SBWIND06]
-STR_NAME    :Wind Sculpted Convex Wall Corner
+STR_NAME    :풍화된 볼록한 벽 구석
 
 [SBWIND07]
-STR_NAME    :Wind Sculpted Rock Formation 기본
+STR_NAME    :풍화된 바위 층 기반
 
 [SBWIND08]
-STR_NAME    :Wind Sculpted Rock Formation 기본
+STR_NAME    :풍화된 바위 층 기반
 
 [SBWIND09]
-STR_NAME    :Wind Sculpted Rock Formation Mid Section
+STR_NAME    :풍화된 바위 층 중간 섹션
 
 [SBWIND10]
-STR_NAME    :Wind Sculpted Rock Formation Mid Section
+STR_NAME    :풍화된 바위 층 중간 섹션
 
 [SBWIND11]
-STR_NAME    :Wind Sculpted Rock Formation Mid Section
+STR_NAME    :풍화된 바위 층 중간 섹션
 
 [SBWIND12]
-STR_NAME    :Wind Sculpted Rock Formation Mid Section
+STR_NAME    :풍화된 바위 층 중간 섹션
 
 [SBWIND13]
-STR_NAME    :Wind Sculpted Rock Formation Top
+STR_NAME    :풍화된 바위 층 꼭대기
 
 [SBWIND14]
-STR_NAME    :Wind Sculpted Rock Formation Top
+STR_NAME    :풍화된 바위 층 꼭대기
 
 [SBWIND15]
-STR_NAME    :Wind Sculpted 지붕 Flat 지붕 Piece
+STR_NAME    :풍화된 지붕 평평한 지붕 조각
 
 [SBWIND16]
-STR_NAME    :Wind Sculpted 지붕 Flat 지붕 Piece
+STR_NAME    :풍화된 지붕 평평한 지붕 조각
 
 [SBWIND17]
-STR_NAME    :Wind Sculpted 지붕 Flat 지붕 Piece
+STR_NAME    :풍화된 지붕 평평한 지붕 조각
 
 [SBWIND18]
-STR_NAME    :Wind Sculpted Floor Piece
+STR_NAME    :풍화된 바닥 조각
 
 [SBWIND19]
-STR_NAME    :Wind Sculpted Floor Piece
+STR_NAME    :풍화된 바닥 조각
 
 [SBWIND20]
-STR_NAME    :Wind Sculpted Wall 기본
+STR_NAME    :풍화된 벽 기본
 
 [SBWIND21]
-STR_NAME    :Wind Sculpted Wall 기본
+STR_NAME    :풍화된 벽 기본
 
 [SBWPLM01]
-STR_NAME    :Cabana Top
+STR_NAME    :탈의실 파라솔
 
 [SBWPLM02]
-STR_NAME    :Cabana Porch
+STR_NAME    :탈의실 베란다
 
 [SBWPLM03]
-STR_NAME    :Cabana 지붕 Piece
+STR_NAME    :탈의실 지붕 조각
 
 [SBWPLM04]
-STR_NAME    :Cabana 지붕 Piece
+STR_NAME    :탈의실 지붕 조각
 
 [SBWPLM05]
-STR_NAME    :Cabana 지붕 Piece
+STR_NAME    :탈의실 지붕 조각
 
 [SBWPLM06]
-STR_NAME    :Cabana Wall Piece
+STR_NAME    :탈의실 벽 조각
 
 [SBWPLM07]
-STR_NAME    :Cabana Wall Piece
+STR_NAME    :탈의실 벽 조각
 
 [SBWPLM08]
-STR_NAME    :Cabana Wall Piece
+STR_NAME    :탈의실 벽 조각
 
 [TALLLAN1]
-STR_NAME    :Tall Lantern
+STR_NAME    :키 큰 초롱
 
 [TALLLAN2]
-STR_NAME    :Tall Lantern
+STR_NAME    :키 큰 초롱
 
 [TERRARMY]
-STR_NAME    :Terracotta Army
+STR_NAME    :병마용
 
 [TJBLOCK1]
-STR_NAME    :Maharaja Palace Piece
+STR_NAME    :마하라자 궁전 조각
 
 [TJBLOCK2]
-STR_NAME    :Maharaja Palace Piece
+STR_NAME    :마하라자 궁전 조각
 
 [TJBLOCK3]
-STR_NAME    :Maharaja Palace Piece
+STR_NAME    :마하라자 궁전 조각
 
 [TNT1]
-STR_NAME    :TNT Stack
+STR_NAME    :TNT 무더기
 
 [TNT2]
-STR_NAME    :TNT Barrels
+STR_NAME    :TNT 통
 
 [TNT3]
-STR_NAME    :TNT Detonator
+STR_NAME    :TNT 기폭장치
 
 [TNT4]
-STR_NAME    :TNT Crates
+STR_NAME    :TNT 상자
 
 [TRCKPRT1]
-STR_NAME    :Diamond Cart
+STR_NAME    :다이아몬드 카트
 
 [TRCKPRT2]
-STR_NAME    :Empty Cart
+STR_NAME    :빈 카트
 
 [TRCKPRT3]
-STR_NAME    :Diamond Shaft
+STR_NAME    :다이아몬드 수갱
 
 [TRCKPRT4]
-STR_NAME    :Cart Shaft
+STR_NAME    :카트 수갱
 
 [TRCKPRT5]
-STR_NAME    :Track Bend
+STR_NAME    :굽은 트랙
 
 [TRCKPRT6]
-STR_NAME    :Track Broke
+STR_NAME    :끊어진 트랙
 
 [TRCKPRT7]
-STR_NAME    :Track End
+STR_NAME    :끄트머리 트랙
 
 [TRCKPRT8]
-STR_NAME    :Track Split
+STR_NAME    :분기 트랙
 
 [TRCKPRT9]
-STR_NAME    :Track Straight
+STR_NAME    :직선 트랙
 
 [UKPHONE]
-STR_NAME    :British Telephone Box
+STR_NAME    :영국 공중전화 박스
 
 [WABORG01]
-STR_NAME    :Aboriginal Art Set Piece
+STR_NAME    :호주 원주민 토착 예술 세트 조각
 
 [WABORG02]
-STR_NAME    :Aboriginal Art Set Piece
+STR_NAME    :호주 원주민 토착 예술 세트 조각
 
 [WABORG03]
-STR_NAME    :Aboriginal Art Set Piece
+STR_NAME    :호주 원주민 토착 예술 세트 조각
 
 [WABORG04]
-STR_NAME    :Aboriginal Art Set Piece
+STR_NAME    :호주 원주민 토착 예술 세트 조각
 
 [WABORG05]
-STR_NAME    :Aboriginal Art Set Piece
+STR_NAME    :호주 원주민 토착 예술 세트 조각
 
 [WABORG06]
-STR_NAME    :Aboriginal Art Set Piece
+STR_NAME    :호주 원주민 토착 예술 세트 조각
 
 [WABORG07]
-STR_NAME    :Aboriginal Art Set Piece
+STR_NAME    :호주 원주민 토착 예술 세트 조각
 
 [WABORG08]
-STR_NAME    :Aboriginal Art Set Piece
+STR_NAME    :호주 원주민 토착 예술 세트 조각
 
 [WAZTEC01]
-STR_NAME    :Temple 지붕 Piece
+STR_NAME    :사원 지붕 조각
 
 [WAZTEC02]
-STR_NAME    :Temple 지붕 Piece
+STR_NAME    :사원 지붕 조각
 
 [WAZTEC03]
-STR_NAME    :Temple Wall Piece
+STR_NAME    :사원 벽 조각
 
 [WAZTEC04]
-STR_NAME    :Temple Wall Piece
+STR_NAME    :사원 벽 조각
 
 [WAZTEC05]
-STR_NAME    :Temple Wall Piece
+STR_NAME    :사원 벽 조각
 
 [WAZTEC06]
-STR_NAME    :Temple Wall Piece
+STR_NAME    :사원 벽 조각
 
 [WAZTEC07]
-STR_NAME    :Temple Wall Piece
+STR_NAME    :사원 벽 조각
 
 [WAZTEC08]
-STR_NAME    :Temple Wall Piece
+STR_NAME    :사원 벽 조각
 
 [WAZTEC09]
-STR_NAME    :Temple Wall Piece
+STR_NAME    :사원 벽 조각
 
 [WAZTEC10]
-STR_NAME    :Temple Wall Piece
+STR_NAME    :사원 벽 조각
 
 [WAZTEC11]
-STR_NAME    :Temple Wall Corner Piece
+STR_NAME    :사원 벽 구석 조각
 
 [WAZTEC12]
-STR_NAME    :Temple Wall Corner Piece
+STR_NAME    :사원 벽 구석 조각
 
 [WAZTEC13]
-STR_NAME    :Temple Wall Piece
+STR_NAME    :사원 벽 조각
 
 [WAZTEC14]
-STR_NAME    :Temple Wall Piece
+STR_NAME    :사원 벽 조각
 
 [WAZTEC15]
-STR_NAME    :Temple 지붕 Piece
+STR_NAME    :사원 지붕 조각
 
 [WAZTEC16]
-STR_NAME    :Temple 지붕 Piece
+STR_NAME    :사원 지붕 조각
 
 [WAZTEC17]
-STR_NAME    :Temple 지붕 Piece
+STR_NAME    :사원 지붕 조각
 
 [WAZTEC18]
-STR_NAME    :Temple 지붕 Piece
+STR_NAME    :사원 지붕 조각
 
 [WAZTEC19]
-STR_NAME    :Temple 지붕 Piece
+STR_NAME    :사원 지붕 조각
 
 [WAZTEC20]
-STR_NAME    :Temple Stairway Piece
+STR_NAME    :사원 계단 조각
 
 [WAZTEC21]
-STR_NAME    :Temple Stairway Piece
+STR_NAME    :사원 계단 조각
 
 [WAZTEC22]
-STR_NAME    :Temple Wall Piece
+STR_NAME    :사원 벽 조각
 
 [WAZTEC23]
-STR_NAME    :Temple Wall Piece
+STR_NAME    :사원 벽 조각
 
 [WAZTEC24]
-STR_NAME    :Temple Wall Piece
+STR_NAME    :사원 벽 조각
 
 [WAZTEC25]
-STR_NAME    :Temple Wall Piece
+STR_NAME    :사원 벽 조각
 
 [WAZTEC26]
-STR_NAME    :Temple Wall Corner Piece
+STR_NAME    :사원 벽 구석 조각
 
 [WAZTEC27]
-STR_NAME    :Temple Wall Corner Piece
+STR_NAME    :사원 벽 구석 조각
 
 [WCUZCO01]
-STR_NAME    :Monumental Wall Piece
+STR_NAME    :기념물 벽 조각
 
 [WCUZCO02]
-STR_NAME    :Monumental Broken Wall Piece
+STR_NAME    :기념물 부서진 벽 조각
 
 [WCUZCO03]
-STR_NAME    :Monumental Wall Piece
+STR_NAME    :기념물 벽 조각
 
 [WCUZCO04]
-STR_NAME    :Monumental Broken Wall Piece
+STR_NAME    :기념물 부서진 벽 조각
 
 [WCUZCO05]
-STR_NAME    :Monumental Wall Piece
+STR_NAME    :기념물 벽 조각
 
 [WCUZCO06]
-STR_NAME    :Monumental Broken Wall Piece
+STR_NAME    :기념물 부서진 벽 조각
 
 [WCUZCO07]
-STR_NAME    :Monumental Wall Piece
+STR_NAME    :기념물 벽 조각
 
 [WCUZCO08]
-STR_NAME    :Monumental Broken Wall Piece
+STR_NAME    :기념물 부서진 벽 조각
 
 [WCUZCO09]
-STR_NAME    :Monumental Wall Piece
+STR_NAME    :기념물 벽 조각
 
 [WCUZCO10]
-STR_NAME    :Monumental Broken Wall Piece
+STR_NAME    :기념물 부서진 벽 조각
 
 [WCUZCO11]
-STR_NAME    :Monumental Wall Piece
+STR_NAME    :기념물 벽 조각
 
 [WCUZCO12]
-STR_NAME    :Monumental Broken Wall Piece
+STR_NAME    :기념물 부서진 벽 조각
 
 [WCUZCO13]
-STR_NAME    :Monumental Broken Wall Piece
+STR_NAME    :기념물 부서진 벽 조각
 
 [WCUZCO14]
-STR_NAME    :Monumental Broken Wall Piece
+STR_NAME    :기념물 부서진 벽 조각
 
 [WCUZCO15]
-STR_NAME    :Monumental Broken Wall Piece
+STR_NAME    :기념물 부서진 벽 조각
 
 [WCUZCO16]
-STR_NAME    :Monumental Broken Wall Piece
+STR_NAME    :기념물 부서진 벽 조각
 
 [WCUZCO17]
-STR_NAME    :Monumental Wall Piece
+STR_NAME    :기념물 벽 조각
 
 [WCUZCO18]
-STR_NAME    :Monumental Broken Wall Piece
+STR_NAME    :기념물 부서진 벽 조각
 
 [WCUZCO19]
-STR_NAME    :Monumental Stairway Piece
+STR_NAME    :기념물 계단 조각
 
 [WCUZCO20]
-STR_NAME    :Monumental Stairway Piece
+STR_NAME    :기념물 계단 조각
 
 [WCUZCO21]
-STR_NAME    :Monumental Wall Corner Piece
+STR_NAME    :기념물 벽 구석 조각
 
 [WCUZCO22]
-STR_NAME    :Monumental Wall Corner Piece
+STR_NAME    :기념물 벽 구석 조각
 
 [WCUZCO23]
-STR_NAME    :Monumental Wall Corner Piece
+STR_NAME    :기념물 벽 구석 조각
 
 [WCUZCO24]
-STR_NAME    :Monumental Wall Corner Piece
+STR_NAME    :기념물 벽 구석 조각
 
 [WCUZCO25]
-STR_NAME    :Monumental Stairway Piece
+STR_NAME    :기념물 계단 조각
 
 [WCUZCO26]
-STR_NAME    :Monumental Stairway Piece
+STR_NAME    :기념물 계단 조각
 
 [WCUZCO27]
-STR_NAME    :Monumental Wall Piece
+STR_NAME    :기념물 벽 조각
 
 [WCUZCO28]
-STR_NAME    :Monumental Broken Wall Piece
+STR_NAME    :기념물 부서진 벽 조각
 
 [WDRAB09]
-STR_NAME    :Drab Step-up Piece 1
+STR_NAME    :칙칙한 Step-up 조각 1
 
 [WDRAB10]
-STR_NAME    :Drab Wall Piece 9
+STR_NAME    :칙칙한 벽 조각 9
 
 [WDRAB11]
-STR_NAME    :Drab Wall Piece 10
+STR_NAME    :칙칙한 벽 조각 10
 
 [WDRAB12]
-STR_NAME    :Drab Wall Piece 11
+STR_NAME    :칙칙한 벽 조각 11
 
 [WDRAB13]
-STR_NAME    :Drab Step-up Piece 2
+STR_NAME    :칙칙하고 점진적인 조각 2
 
 [WGEORG07]
-STR_NAME    :Georgian Ground Floor Wall Piece 4
+STR_NAME    :조지아식 지면 바닥 벽 조각 4
 
 [WGEORG08]
-STR_NAME    :Georgian Ground Floor Wall Piece 5
+STR_NAME    :조지아식 지면 바닥 벽 조각 5
 
 [WGEORG09]
-STR_NAME    :Georgian Ground Floor Wall Piece 6
+STR_NAME    :조지아식 지면 바닥 벽 조각 6
 
 [WGEORG10]
-STR_NAME    :Georgian Wall Piece 4
+STR_NAME    :조지아식 벽 조각 4
 
 [WGEORG11]
-STR_NAME    :Georgian Wall Piece 5
+STR_NAME    :조지아식 벽 조각 5
 
 [WGEORG12]
-STR_NAME    :Georgian Wall Piece 6
+STR_NAME    :조지아식 벽 조각 6
 
 [WKREML01]
-STR_NAME    :Kremlin Step-up Wall Piece 1
+STR_NAME    :크렘린 점진적 벽 조각 1
 
 [WKREML02]
-STR_NAME    :Kremlin Step-up Wall Piece 2
+STR_NAME    :크렘린 점진적 벽 조각 2
 
 [WKREML03]
-STR_NAME    :Kremlin Wall Piece 1
+STR_NAME    :크렘린 벽 조각 1
 
 [WKREML04]
-STR_NAME    :Kremlin Wall Piece 2
+STR_NAME    :크렘린 벽 조각 2
 
 [WKREML05]
-STR_NAME    :Kremlin Wall Piece 3
+STR_NAME    :크렘린 벽 조각 3
 
 [WKREML06]
-STR_NAME    :Kremlin Wall Piece 4
+STR_NAME    :크렘린 벽 조각 4
 
 [WMAYAN01]
-STR_NAME    :Lost City Wall Piece
+STR_NAME    :잃어버린 도시 벽 조각
 
 [WMAYAN02]
-STR_NAME    :Lost City Flat 지붕 Piece
+STR_NAME    :잃어버린 도시 평평한 지붕 조각
 
 [WMAYAN03]
-STR_NAME    :Lost City Wall Piece
+STR_NAME    :잃어버린 도시 벽 조각
 
 [WMAYAN04]
-STR_NAME    :Lost City Wall Piece
+STR_NAME    :잃어버린 도시 벽 조각
 
 [WMAYAN05]
-STR_NAME    :Lost City Wall Piece
+STR_NAME    :잃어버린 도시 벽 조각
 
 [WMAYAN06]
-STR_NAME    :Lost City Wall Piece
+STR_NAME    :잃어버린 도시 벽 조각
 
 [WMAYAN07]
-STR_NAME    :Lost City Wall Piece
+STR_NAME    :잃어버린 도시 벽 조각
 
 [WMAYAN08]
-STR_NAME    :Lost City Wall Piece
+STR_NAME    :잃어버린 도시 벽 조각
 
 [WMAYAN09]
-STR_NAME    :Lost City Wall Piece
+STR_NAME    :잃어버린 도시 벽 조각
 
 [WMAYAN10]
-STR_NAME    :Lost City Wall Piece
+STR_NAME    :잃어버린 도시 벽 조각
 
 [WMAYAN11]
-STR_NAME    :Lost City Wall Piece
+STR_NAME    :잃어버린 도시 벽 조각
 
 [WMAYAN12]
-STR_NAME    :Lost City Stairway Piece
+STR_NAME    :잃어버린 도시 계단 조각
 
 [WMAYAN13]
-STR_NAME    :Lost City Stairway Piece
+STR_NAME    :잃어버린 도시 계단 조각
 
 [WMAYAN14]
-STR_NAME    :Lost City Stairway Piece
+STR_NAME    :잃어버린 도시 계단 조각
 
 [WMAYAN15]
-STR_NAME    :Lost City Stairway Piece
+STR_NAME    :잃어버린 도시 계단 조각
 
 [WMAYAN16]
-STR_NAME    :Lost City Stairway Piece
+STR_NAME    :잃어버린 도시 계단 조각
 
 [WMAYAN17]
-STR_NAME    :Lost City Column Piece
+STR_NAME    :잃어버린 도시 기둥 조각
 
 [WMAYAN18]
-STR_NAME    :Lost City Column Piece
+STR_NAME    :잃어버린 도시 기둥 조각
 
 [WMAYAN20]
-STR_NAME    :Lost City Wall Piece
+STR_NAME    :잃어버린 도시 벽 조각
 
 [WMAYAN21]
-STR_NAME    :Lost City Flat 지붕 Piece
+STR_NAME    :잃어버린 도시 평평한 지붕 조각
 
 [WMAYAN22]
-STR_NAME    :Lost City Flat 지붕 Piece
+STR_NAME    :잃어버린 도시 평평한 지붕 조각
 
 [WMAYAN23]
-STR_NAME    :Lost City Wall Corner Piece
+STR_NAME    :잃어버린 도시 벽 구석 조각
 
 [WMAYAN24]
-STR_NAME    :Lost City Wall Corner Piece
+STR_NAME    :잃어버린 도시 벽 구석 조각
 
 [WMAYAN25]
-STR_NAME    :Lost City Wall Corner Piece
+STR_NAME    :잃어버린 도시 벽 구석 조각
 
 [WMAYAN26]
-STR_NAME    :Lost City Wall Corner Piece
+STR_NAME    :잃어버린 도시 벽 구석 조각
 
 [WNAUTI01]
-STR_NAME    :Nautical 지붕 Piece
+STR_NAME    :Nautical 지붕 조각
 
 [WNAUTI02]
-STR_NAME    :Nautical 지붕 Piece
+STR_NAME    :Nautical 지붕 조각
 
 [WNAUTI03]
-STR_NAME    :Nautical 지붕 Piece
+STR_NAME    :Nautical 지붕 조각
 
 [WNAUTI04]
-STR_NAME    :Nautical 지붕 Piece
+STR_NAME    :Nautical 지붕 조각
 
 [WNAUTI05]
-STR_NAME    :Nautical 지붕 Piece
+STR_NAME    :Nautical 지붕 조각
 
 [WTUDOR12]
-STR_NAME    :Tudor Wall Piece 4
+STR_NAME    :튜더식 벽 조각 4
 
 [WTUDOR13]
-STR_NAME    :Tudor Ground Bay Wall Piece
+STR_NAME    :튜더식 Ground Bay 벽 조각
 
 [WTUDOR14]
-STR_NAME    :Tudor Ground Floor Wall Piece 1
+STR_NAME    :튜더식 Ground Floor 벽 조각 1
 
 [WTUDOR15]
-STR_NAME    :Tudor Ground Floor Wall Piece 2
+STR_NAME    :튜더식 Ground Floor 벽 조각 2
 
 [WTUDOR16]
-STR_NAME    :Tudor Ground Floor Wall Piece 3
+STR_NAME    :튜더식 Ground Floor 벽 조각 3
 
 [WTUDOR17]
-STR_NAME    :Tudor Ground Floor Wall Piece 4
+STR_NAME    :튜더식 Ground Floor 벽 조각 4
 
 [WTUDOR18]
-STR_NAME    :Tudor Ground Floor Wall Piece 5
+STR_NAME    :튜더식 Ground Floor 벽 조각 5
 
 [CAMPFANI]
 STR_NAME    :Animated Camp Fire
 
 [CONVEYR1]
-STR_NAME    :Conveyer Belt Corner
+STR_NAME    :컨베이어 벨트 구석
 
 [CONVEYR2]
-STR_NAME    :Conveyer Belt Rise
+STR_NAME    :컨베이어 벨트 상승
 
 [CONVEYR3]
-STR_NAME    :Conveyer Belt End
+STR_NAME    :컨베이어 벨트 끄트머리
 
 [CONVEYR4]
-STR_NAME    :Conveyer Belt Straight
+STR_NAME    :곧은 컨베이어 벨트
 
 [CONVEYR5]
-STR_NAME    :Conveyer Belt Corner Reverse
+STR_NAME    :컨베이어 벨트 구석 역방향
 
 [FISHHOLE]
 STR_NAME    :Fish Hole
 
 [FLAMNGO1]
-STR_NAME    :Flamingo Feeding
+STR_NAME    :먹이를 먹는 홍학
 
 [FLAMNGO2]
-STR_NAME    :Flamingo Looking
+STR_NAME    :쳐다보는 홍학
 
 [FLAMNGO3]
-STR_NAME    :Flamingo Preening
+STR_NAME    :몸치장을 하는 홍학
 
 [FOUNTARC]
 STR_NAME    :Australian Fountain Set 2
@@ -8223,10 +8223,10 @@ STR_NAME    :Oil Pump
 STR_NAME    :Animated Balloons
 
 [WCUZFOUN]
-STR_NAME    :Monumental Fountain
+STR_NAME    :기념물 Fountain
 
 [WROPECOR]
-STR_NAME    :Nautical Corner 지붕 Railing
+STR_NAME    :Nautical 구석 지붕 Railing
 
 [WROPESWA]
 STR_NAME    :Nautical 지붕 Railing
@@ -8241,13 +8241,13 @@ STR_NAME    :Aboriginal Snake Artwork
 STR_NAME    :Aboriginal Spirit Artwork
 
 [1X2AZT01]
-STR_NAME    :Temple Wall Piece with Head
+STR_NAME    :사원 벽 조각 with Head
 
 [1X2AZT02]
-STR_NAME    :Temple Broken Wall Piece with Head
+STR_NAME    :사원 부서진 벽 조각 with Head
 
 [1X2LGCHM]
-STR_NAME    :Log Cabin Side Chimney
+STR_NAME    :통나무집 Side Chimney
 
 [AFRCLION]
 STR_NAME    :Lion
@@ -8262,19 +8262,19 @@ STR_NAME    :Tractor
 STR_NAME    :Zebra
 
 [1X4BRG01]
-STR_NAME    :Suspension Bridge Start side 1
+STR_NAME    :현수교 Start side 1
 
 [1X4BRG02]
-STR_NAME    :Suspension Bridge Start side 2
+STR_NAME    :현수교 Start side 2
 
 [1X4BRG03]
-STR_NAME    :Suspension Bridge Tower side 1
+STR_NAME    :현수교 Tower side 1
 
 [1X4BRG04]
-STR_NAME    :Suspension Bridge Tower side 2
+STR_NAME    :현수교 Tower side 2
 
 [1X4BRG05]
-STR_NAME    :Suspension Bridge Cable Section
+STR_NAME    :현수교 Cable Section
 
 [3X3ATRE1]
 STR_NAME    :Jungle Tree 2
@@ -8340,34 +8340,34 @@ STR_NAME    :Large Rainforest Tree
 STR_NAME    :Washington Statue
 
 [RDRAB01]
-STR_NAME    :Drab Large Tower Mid-Section
+STR_NAME    :칙칙한 Large Tower Mid-Section
 
 [RDRAB02]
-STR_NAME    :Drab Large Tower 기본
+STR_NAME    :칙칙한 Large Tower 기본
 
 [RDRAB03]
-STR_NAME    :Drab Large Tower Top
+STR_NAME    :칙칙한 Large Tower Top
 
 [RDRAB04]
-STR_NAME    :Drab Large Tower Broken 기본
+STR_NAME    :칙칙한 Large Tower 부서진 기본
 
 [REDWOOD]
 STR_NAME    :Redwood Tree
 
 [RKREML08]
-STR_NAME    :Kremlin Large Tower 기본
+STR_NAME    :크렘린 Large Tower 기본
 
 [RKREML09]
-STR_NAME    :Kremlin Large Tower Top
+STR_NAME    :크렘린 Large Tower Top
 
 [RKREML10]
-STR_NAME    :Kremlin Large Tower Mid-Section
+STR_NAME    :크렘린 Large Tower Mid-Section
 
 [RTUDOR05]
-STR_NAME    :Tudor 지붕 Piece 3
+STR_NAME    :튜더식 지붕 조각 3
 
 [RTUDOR06]
-STR_NAME    :Tudor 지붕 Piece 4
+STR_NAME    :튜더식 지붕 조각 4
 
 [SHIVA]
 STR_NAME    :Shiva
@@ -8379,13 +8379,13 @@ STR_NAME    :동상 of Liberty
 STR_NAME    :Sputnik
 
 [TAJMCBSE]
-STR_NAME    :Maharaja Palace Tower 기본
+STR_NAME    :마하라자 궁전 Tower 기본
 
 [TAJMCOLM]
-STR_NAME    :Maharaja Palace Tower Column
+STR_NAME    :마하라자 궁전 Tower Column
 
 [TAJMCTOP]
-STR_NAME    :Maharaja Palace Tower Top
+STR_NAME    :마하라자 궁전 Tower Top
 
 [1X2GLAMA]
 STR_NAME    :Gold Llama
@@ -8439,10 +8439,10 @@ STR_NAME    :Geisha
 STR_NAME    :Good Samurai
 
 [GWOCTUR1]
-STR_NAME    :Great Wall Of China Turret Straight
+STR_NAME    :Great 벽 Of China Turret Straight
 
 [GWOCTUR2]
-STR_NAME    :Great Wall Of China Turret Corner
+STR_NAME    :Great 벽 Of China Turret 구석
 
 [HELIPAD]
 STR_NAME    :Helipad
@@ -8454,10 +8454,10 @@ STR_NAME    :Ice Formation
 STR_NAME    :Ice Formation
 
 [MBSKYR01]
-STR_NAME    :Sky Scraper 지붕 Piece
+STR_NAME    :마천루 지붕 조각
 
 [MBSKYR02]
-STR_NAME    :Sky Scraper Tip
+STR_NAME    :마천루 Tip
 
 [OVRGRWNT]
 STR_NAME    :Old Overgrown Tree
@@ -8484,316 +8484,316 @@ STR_NAME    :Space Orbs
 STR_NAME    :Sunken Ship
 
 [TAJMDOME]
-STR_NAME    :Maharaja Palace Dome
+STR_NAME    :마하라자 궁전 Dome
 
 [WINDMILL]
 STR_NAME    :Windmill
 
 [TMARCH1]
-STR_NAME    :Maharaja Palace Arch 1
+STR_NAME    :마하라자 궁전 Arch 1
 
 [TMARCH2]
-STR_NAME    :Maharaja Palace Arch 2
+STR_NAME    :마하라자 궁전 Arch 2
 
 [W2CORR01]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [W2CORR02]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [W2CORR03]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [W2CORR04]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [W2CORR05]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [W2CORR06]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [W2CORR07]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [W2CORR08]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [W3CORR01]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [W3CORR02]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [W3CORR03]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [W3CORR04]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [W3CORR05]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [W3CORR06]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [W3CORR07]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [W3CORR08]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [WALLNA01]
-STR_NAME    :Nautical Wall Piece
+STR_NAME    :Nautical 벽 조각
 
 [WALLNA02]
-STR_NAME    :Nautical Wall Piece
+STR_NAME    :Nautical 벽 조각
 
 [WALLNA03]
-STR_NAME    :Nautical Wall Piece
+STR_NAME    :Nautical 벽 조각
 
 [WALLNA04]
-STR_NAME    :Nautical Wall Piece
+STR_NAME    :Nautical 벽 조각
 
 [WALLNA05]
-STR_NAME    :Nautical Wall Piece
+STR_NAME    :Nautical 벽 조각
 
 [WALLNA06]
-STR_NAME    :Nautical Wall Piece
+STR_NAME    :Nautical 벽 조각
 
 [WALLNA07]
-STR_NAME    :Nautical Wall Piece
+STR_NAME    :Nautical 벽 조각
 
 [WALLNA08]
-STR_NAME    :Nautical Wall Piece
+STR_NAME    :Nautical 벽 조각
 
 [WALLNA09]
-STR_NAME    :Nautical Wall Piece
+STR_NAME    :Nautical 벽 조각
 
 [WALLNA10]
-STR_NAME    :Nautical Wall Piece
+STR_NAME    :Nautical 벽 조각
 
 [WALLNA11]
-STR_NAME    :Nautical Wall Piece
+STR_NAME    :Nautical 벽 조각
 
 [WALLNA12]
-STR_NAME    :Nautical Wall Piece
+STR_NAME    :Nautical 벽 조각
 
 [WALLNA13]
-STR_NAME    :Nautical Wall Piece
+STR_NAME    :Nautical 벽 조각
 
 [WALLNA14]
-STR_NAME    :Nautical Wall Piece
+STR_NAME    :Nautical 벽 조각
 
 [WWDAUB01]
-STR_NAME    :Wattle & Daub Wall
+STR_NAME    :초벽 벽
 
 [WWDAUB02]
-STR_NAME    :Wattle & Daub Wall
+STR_NAME    :초벽 벽
 
 [WWDAUB03]
-STR_NAME    :Wattle & Daub Wall
+STR_NAME    :초벽 벽
 
 [WWDAUB04]
-STR_NAME    :Wattle & Daub Wall
+STR_NAME    :초벽 벽
 
 [WWDAUB05]
-STR_NAME    :Wattle & Daub Wall
+STR_NAME    :초벽 벽
 
 [WWDAUB06]
-STR_NAME    :Wattle & Daub Wall
+STR_NAME    :초벽 벽
 
 [WWDAUB07]
-STR_NAME    :Wattle & Daub Wall
+STR_NAME    :초벽 벽
 
 [WBambo01]
-STR_NAME    :Bamboo Wall
+STR_NAME    :Bamboo 벽
 
 [WBambo02]
-STR_NAME    :Bamboo Wall
+STR_NAME    :Bamboo 벽
 
 [WBambo03]
-STR_NAME    :Bamboo Wall
+STR_NAME    :Bamboo 벽
 
 [WBAMBO04]
-STR_NAME    :Bamboo Wall
+STR_NAME    :Bamboo 벽
 
 [WBambo05]
-STR_NAME    :Bamboo Wall
+STR_NAME    :Bamboo 벽
 
 [WBambo11]
-STR_NAME    :Bamboo Wall
+STR_NAME    :Bamboo 벽
 
 [WBambo12]
-STR_NAME    :Bamboo Wall
+STR_NAME    :Bamboo 벽
 
 [WBambo13]
-STR_NAME    :Bamboo Wall
+STR_NAME    :Bamboo 벽
 
 [WBambo14]
-STR_NAME    :Bamboo Wall
+STR_NAME    :Bamboo 벽
 
 [WBambo15]
-STR_NAME    :Bamboo Wall
+STR_NAME    :Bamboo 벽
 
 [WBambo21]
-STR_NAME    :Bamboo Wall
+STR_NAME    :Bamboo 벽
 
 [WBRICK01]
-STR_NAME    :Red Brick Wall Piece 1
+STR_NAME    :붉은 벽돌 벽 조각 1
 
 [WBRICK02]
-STR_NAME    :Red Brick Wall Piece 2
+STR_NAME    :붉은 벽돌 벽 조각 2
 
 [WBRICK03]
-STR_NAME    :Red Brick Wall Piece 3
+STR_NAME    :붉은 벽돌 벽 조각 3
 
 [WBRICK04]
-STR_NAME    :Red Brick Wall Piece 4
+STR_NAME    :붉은 벽돌 벽 조각 4
 
 [WBRICK05]
-STR_NAME    :Red Brick Wall Piece 5
+STR_NAME    :붉은 벽돌 벽 조각 5
 
 [WBRICK08]
-STR_NAME    :Red Brick Wall Piece 8
+STR_NAME    :붉은 벽돌 벽 조각 8
 
 [WBRICK11]
-STR_NAME    :Red Brick Wall Piece 11
+STR_NAME    :붉은 벽돌 벽 조각 11
 
 [WBRICK12]
-STR_NAME    :Red Brick Wall Piece 12
+STR_NAME    :붉은 벽돌 벽 조각 12
 
 [WBRICK13]
-STR_NAME    :Red Brick Wall Piece 13
+STR_NAME    :붉은 벽돌 벽 조각 13
 
 [WCORR01]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [WCORR02]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [WCORR03]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [WCORR04]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [WCORR05]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [WCORR06]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [WCORR07]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [WCORR08]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [WCORR09]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [WCORR10]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [WCORR11]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [WCORR12]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [WCORR13]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [WCORR14]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [WCORR15]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [WCORR16]
-STR_NAME    :Corrugated Wall Piece
+STR_NAME    :물결 무늬 벽 조각
 
 [WDRAB01]
-STR_NAME    :Drab Wall Piece 1
+STR_NAME    :칙칙한 벽 조각 1
 
 [WDRAB02]
-STR_NAME    :Drab Wall Piece 2
+STR_NAME    :칙칙한 벽 조각 2
 
 [WDRAB03]
-STR_NAME    :Drab Wall Piece 3
+STR_NAME    :칙칙한 벽 조각 3
 
 [WDRAB04]
-STR_NAME    :Drab Wall Piece 4
+STR_NAME    :칙칙한 벽 조각 4
 
 [WDRAB05]
-STR_NAME    :Drab Wall Piece 5
+STR_NAME    :칙칙한 벽 조각 5
 
 [WDRAB06]
-STR_NAME    :Drab Wall Piece 6
+STR_NAME    :칙칙한 벽 조각 6
 
 [WDRAB07]
-STR_NAME    :Drab Wall Piece 7
+STR_NAME    :칙칙한 벽 조각 7
 
 [WDRAB08]
-STR_NAME    :Drab Wall Piece 8
+STR_NAME    :칙칙한 벽 조각 8
 
 [WGEORG01]
-STR_NAME    :Georgian Wall Piece 1
+STR_NAME    :조지아식 벽 조각 1
 
 [WGEORG02]
-STR_NAME    :Georgian Ground Floor Wall Piece 1
+STR_NAME    :조지아식 Ground Floor 벽 조각 1
 
 [WGEORG03]
-STR_NAME    :Georgian Wall Piece 2
+STR_NAME    :조지아식 벽 조각 2
 
 [WGEORG04]
-STR_NAME    :Georgian Ground Floor Wall Piece 2
+STR_NAME    :조지아식 Ground Floor 벽 조각 2
 
 [WGEORG05]
-STR_NAME    :Georgian Wall Piece 3
+STR_NAME    :조지아식 벽 조각 3
 
 [WGEORG06]
-STR_NAME    :Georgian Ground Floor Wall Piece 3
+STR_NAME    :조지아식 Ground Floor 벽 조각 3
 
 [WGWOC1]
-STR_NAME    :Great Wall Of China Front Wall Section
+STR_NAME    :Great 벽 Of China Front 벽 Section
 
 [WGWOC2]
-STR_NAME    :Great Wall Of China Rear Wall Section
+STR_NAME    :Great 벽 Of China Rear 벽 Section
 
 [WGWOC3]
-STR_NAME    :Great Wall Of China Step up Wall Section
+STR_NAME    :Great 벽 Of China Step up 벽 Section
 
 [WALLICE1]
-STR_NAME    :Ice Wall
+STR_NAME    :Ice 벽
 
 [WALLICE2]
-STR_NAME    :Ice Wall
+STR_NAME    :Ice 벽
 
 [WALLICE3]
-STR_NAME    :Ice Wall
+STR_NAME    :Ice 벽
 
 [WALLICE4]
-STR_NAME    :Ice Wall
+STR_NAME    :Ice 벽
 
 [WALLICE5]
-STR_NAME    :Ice Wall
+STR_NAME    :Ice 벽
 
 [WALLICE6]
-STR_NAME    :Ice Wall
+STR_NAME    :Ice 벽
 
 [WALLICE7]
-STR_NAME    :Ice Wall
+STR_NAME    :Ice 벽
 
 [WALLICE8]
-STR_NAME    :Ice Wall
+STR_NAME    :Ice 벽
 
 [WALLICE9]
-STR_NAME    :Ice Wall
+STR_NAME    :Ice 벽
 
 [WALLIC10]
-STR_NAME    :Ice Wall
+STR_NAME    :Ice 벽
 
 [WIGLOO1]
 STR_NAME    :이글루 벽
@@ -8802,244 +8802,244 @@ STR_NAME    :이글루 벽
 STR_NAME    :이글루 벽
 
 [WKREML07]
-STR_NAME    :Kremlin Wall Piece 5
+STR_NAME    :크렘린 벽 조각 5
 
 [WKREML08]
-STR_NAME    :Kremlin Wall Piece 6
+STR_NAME    :크렘린 벽 조각 6
 
 [WKREML09]
-STR_NAME    :Kremlin Wall Piece 7
+STR_NAME    :크렘린 벽 조각 7
 
 [WKREML10]
-STR_NAME    :Kremlin Wall Piece 8
+STR_NAME    :크렘린 벽 조각 8
 
 [WLOG01]
-STR_NAME    :Log Cabin Wall Piece
+STR_NAME    :통나무집 벽 조각
 
 [WLOG02]
-STR_NAME    :Log Cabin Wall Piece
+STR_NAME    :통나무집 벽 조각
 
 [WLOG03]
-STR_NAME    :Log Cabin Wall Piece
+STR_NAME    :통나무집 벽 조각
 
 [WLOG04]
-STR_NAME    :Log Cabin Wall Piece
+STR_NAME    :통나무집 벽 조각
 
 [WLOG05]
-STR_NAME    :Log Cabin Wall Piece
+STR_NAME    :통나무집 벽 조각
 
 [WLOG06]
-STR_NAME    :Log Cabin Wall Piece
+STR_NAME    :통나무집 벽 조각
 
 [WMARBLE1]
-STR_NAME    :Ornate Marble Wall
+STR_NAME    :Ornate 대리석 벽
 
 [WMARBLE2]
-STR_NAME    :Ornate Marble Wall
+STR_NAME    :Ornate 대리석 벽
 
 [WMARBLE3]
-STR_NAME    :Ornate Marble Wall
+STR_NAME    :Ornate 대리석 벽
 
 [WMARBLE4]
-STR_NAME    :Ornate Marble Wall
+STR_NAME    :Ornate 대리석 벽
 
 [WMARBLE5]
-STR_NAME    :Ornate Marble Wall
+STR_NAME    :Ornate 대리석 벽
 
 [WMARBLE6]
-STR_NAME    :Ornate Marble Wall
+STR_NAME    :Ornate 대리석 벽
 
 [WMARBPL1]
-STR_NAME    :Plain Marble Wall
+STR_NAME    :Plain 대리석 벽
 
 [WMARBPL2]
-STR_NAME    :Plain Marble Wall
+STR_NAME    :Plain 대리석 벽
 
 [WMARBPL3]
-STR_NAME    :Plain Marble Wall
+STR_NAME    :Plain 대리석 벽
 
 [WMARBPL4]
-STR_NAME    :Plain Marble Wall
+STR_NAME    :Plain 대리석 벽
 
 [WMARBPL5]
-STR_NAME    :Plain Marble Wall
+STR_NAME    :Plain 대리석 벽
 
 [WMARBPL6]
-STR_NAME    :Plain Marble Wall
+STR_NAME    :Plain 대리석 벽
 
 [WMARBPL7]
-STR_NAME    :Plain Marble Wall
+STR_NAME    :Plain 대리석 벽
 
 [WMUD01]
-STR_NAME    :Mud Wall Piece
+STR_NAME    :진흙 벽 조각
 
 [WMUD02]
-STR_NAME    :Mud Wall Piece
+STR_NAME    :진흙 벽 조각
 
 [WMUD03]
-STR_NAME    :Mud Wall Piece
+STR_NAME    :진흙 벽 조각
 
 [WMUD04]
-STR_NAME    :Mud Wall Piece
+STR_NAME    :진흙 벽 조각
 
 [WMUD05]
-STR_NAME    :Mud Wall Piece
+STR_NAME    :진흙 벽 조각
 
 [WMUD06]
-STR_NAME    :Mud Wall Piece
+STR_NAME    :진흙 벽 조각
 
 [WMUD07]
-STR_NAME    :Mud Wall Piece
+STR_NAME    :진흙 벽 조각
 
 [WMUD08]
-STR_NAME    :Mud Wall Piece
+STR_NAME    :진흙 벽 조각
 
 [WPALM01]
-STR_NAME    :Cabana Wall Piece
+STR_NAME    :탈의실 벽 조각
 
 [WPALM02]
-STR_NAME    :Cabana Wall Piece
+STR_NAME    :탈의실 벽 조각
 
 [WPALM03]
-STR_NAME    :Cabana Wall Piece
+STR_NAME    :탈의실 벽 조각
 
 [WPALM04]
-STR_NAME    :Cabana Wall Piece
+STR_NAME    :탈의실 벽 조각
 
 [WPALM05]
-STR_NAME    :Cabana Wall Piece
+STR_NAME    :탈의실 벽 조각
 
 [WSHOGI01]
-STR_NAME    :Shogi Wall
+STR_NAME    :Shogi 벽
 
 [WSHOGI02]
-STR_NAME    :Shogi Wall
+STR_NAME    :Shogi 벽
 
 [WSHOGI03]
-STR_NAME    :Shogi Wall
+STR_NAME    :Shogi 벽
 
 [WSHOGI04]
-STR_NAME    :Shogi Wall
+STR_NAME    :Shogi 벽
 
 [WSHOGI05]
-STR_NAME    :Shogi Wall
+STR_NAME    :Shogi 벽
 
 [WSHOGI06]
-STR_NAME    :Shogi Wall
+STR_NAME    :Shogi 벽
 
 [WSHOGI07]
-STR_NAME    :Shogi Wall
+STR_NAME    :Shogi 벽
 
 [WSHOGI08]
-STR_NAME    :Shogi Wall
+STR_NAME    :Shogi 벽
 
 [WSHOGI09]
-STR_NAME    :Shogi Wall
+STR_NAME    :Shogi 벽
 
 [WSHOGI10]
-STR_NAME    :Shogi Wall
+STR_NAME    :Shogi 벽
 
 [WSHOGI11]
-STR_NAME    :Shogi Wall
+STR_NAME    :Shogi 벽
 
 [WSHOGI12]
-STR_NAME    :Shogi Wall
+STR_NAME    :Shogi 벽
 
 [WSHOGI13]
-STR_NAME    :Shogi Wall
+STR_NAME    :Shogi 벽
 
 [WSHOGI14]
-STR_NAME    :Shogi Wall
+STR_NAME    :Shogi 벽
 
 [WSHOGI15]
-STR_NAME    :Shogi Wall
+STR_NAME    :Shogi 벽
 
 [WSHOGI16]
-STR_NAME    :Shogi Wall
+STR_NAME    :Shogi 벽
 
 [WSHOGI17]
-STR_NAME    :Shogi Wall
+STR_NAME    :Shogi 벽
 
 [WSKYSC01]
-STR_NAME    :Skyscaper Metal Set 2 Wall Piece
+STR_NAME    :마천루 철제 세트 2 벽 조각
 
 [WSKYSC02]
-STR_NAME    :Skyscaper Metal Set 2 Wall Piece
+STR_NAME    :마천루 철제 세트 2 벽 조각
 
 [WSKYSC03]
-STR_NAME    :Skyscaper Metal Set 1 Wall Piece
+STR_NAME    :마천루 철제 세트 1 벽 조각
 
 [WSKYSC04]
-STR_NAME    :Skyscaper Lift Section Piece
+STR_NAME    :Skyscaper Lift Section 조각
 
 [WSKYSC05]
-STR_NAME    :Skyscaper Lift Section Piece
+STR_NAME    :Skyscaper Lift Section 조각
 
 [WSKYSC06]
-STR_NAME    :Sky Scraper Wall Piece
+STR_NAME    :마천루 벽 조각
 
 [WSKYSC07]
-STR_NAME    :Skyscaper Lift Section Piece
+STR_NAME    :Skyscaper Lift Section 조각
 
 [WSKYSC08]
-STR_NAME    :Sky Scraper Wall Piece
+STR_NAME    :마천루 벽 조각
 
 [WSKYSC09]
-STR_NAME    :Sky Scraper Wall Piece
+STR_NAME    :마천루 벽 조각
 
 [WSKYSC10]
-STR_NAME    :Stone Skyscaper Wall Piece
+STR_NAME    :석재 마천루 벽 조각
 
 [WSKYSC11]
-STR_NAME    :Stone Skyscaper Wall Piece
+STR_NAME    :석재 마천루 벽 조각
 
 [WSKYSC12]
-STR_NAME    :Stone Skyscaper Wall Piece
+STR_NAME    :석재 마천루 벽 조각
 
 [WTUDOR01]
-STR_NAME    :Tudor Ground Floor Wall Piece 1
+STR_NAME    :튜더식 Ground Floor 벽 조각 1
 
 [WTUDOR02]
-STR_NAME    :Tudor Ground Floor Wall Piece 2
+STR_NAME    :튜더식 Ground Floor 벽 조각 2
 
 [WTUDOR03]
-STR_NAME    :Tudor Ground Floor Wall Piece 3
+STR_NAME    :튜더식 Ground Floor 벽 조각 3
 
 [WTUDOR04]
-STR_NAME    :Tudor Ground Floor Wall Piece 4
+STR_NAME    :튜더식 Ground Floor 벽 조각 4
 
 [WTUDOR05]
-STR_NAME    :Tudor Ground Floor Wall Piece 5
+STR_NAME    :튜더식 Ground Floor 벽 조각 5
 
 [WTUDOR06]
-STR_NAME    :Tudor Ground Floor Wall Piece 6
+STR_NAME    :튜더식 Ground Floor 벽 조각 6
 
 [WTUDOR07]
-STR_NAME    :Tudor Ground Floor Wall Piece 7
+STR_NAME    :튜더식 Ground Floor 벽 조각 7
 
 [WTUDOR08]
-STR_NAME    :Tudor Ground Floor Wall Piece 8
+STR_NAME    :튜더식 Ground Floor 벽 조각 8
 
 [WTUDOR09]
-STR_NAME    :Tudor Wall Piece 1
+STR_NAME    :튜더식 벽 조각 1
 
 [WTUDOR10]
-STR_NAME    :Tudor Wall Piece 2
+STR_NAME    :튜더식 벽 조각 2
 
 [WTUDOR11]
-STR_NAME    :Tudor Wall Piece 3
+STR_NAME    :튜더식 벽 조각 3
 
 [WWIND03]
-STR_NAME    :Wind Sculpted Wall Piece
+STR_NAME    :풍화된 벽 조각
 
 [WWIND04]
-STR_NAME    :Wind Sculpted Wall Piece
+STR_NAME    :풍화된 벽 조각
 
 [WWIND05]
-STR_NAME    :Wind Sculpted Wall Piece
+STR_NAME    :풍화된 벽 조각
 
 [WWIND06]
-STR_NAME    :Wind Sculpted Wall Piece
+STR_NAME    :풍화된 벽 조각
 
 [WBamboPC]
 STR_NAME    :대나무 벽
@@ -9383,82 +9383,82 @@ STR_NAME    :Magical Shield
 STR_NAME    :Magical Sword
 
 [ARTDEC01]
-STR_NAME    :Art Deco Wall Section
+STR_NAME    :Art Deco 벽 Section
 
 [ARTDEC02]
-STR_NAME    :Art Deco Inverted Corner Section
+STR_NAME    :Art Deco Inverted 구석 Section
 
 [ARTDEC03]
-STR_NAME    :Art Deco Wall with Door
+STR_NAME    :Art Deco 벽 with Door
 
 [ARTDEC04]
-STR_NAME    :Art Deco Wall with Windows
+STR_NAME    :Art Deco 벽 with Windows
 
 [ARTDEC05]
-STR_NAME    :Art Deco Wall with Windows
+STR_NAME    :Art Deco 벽 with Windows
 
 [ARTDEC06]
 STR_NAME    :Art Deco Top Section
 
 [ARTDEC07]
-STR_NAME    :Art Deco Corner Section
+STR_NAME    :Art Deco 구석 Section
 
 [ARTDEC08]
-STR_NAME    :Art Deco Top Corner Section
+STR_NAME    :Art Deco Top 구석 Section
 
 [ARTDEC09]
-STR_NAME    :Art Deco Wall Section
+STR_NAME    :Art Deco 벽 Section
 
 [ARTDEC10]
-STR_NAME    :Art Deco Wall Section
+STR_NAME    :Art Deco 벽 Section
 
 [ARTDEC11]
-STR_NAME    :Art Deco Corner with Windows
+STR_NAME    :Art Deco 구석 with Windows
 
 [ARTDEC12]
-STR_NAME    :Art Deco Corner with Railings
+STR_NAME    :Art Deco 구석 with Railings
 
 [ARTDEC13]
-STR_NAME    :Art Deco Top Corner Section
+STR_NAME    :Art Deco Top 구석 Section
 
 [ARTDEC14]
-STR_NAME    :Art Deco Corner with Windows
+STR_NAME    :Art Deco 구석 with Windows
 
 [ARTDEC15]
-STR_NAME    :Art Deco Wall Section
+STR_NAME    :Art Deco 벽 Section
 
 [ARTDEC16]
-STR_NAME    :Art Deco Wall Section
+STR_NAME    :Art Deco 벽 Section
 
 [ARTDEC17]
-STR_NAME    :Art Deco Wall Section
+STR_NAME    :Art Deco 벽 Section
 
 [ARTDEC18]
 STR_NAME    :Art Deco Top Section
 
 [ARTDEC19]
-STR_NAME    :Art Deco Wall Section
+STR_NAME    :Art Deco 벽 Section
 
 [ARTDEC20]
-STR_NAME    :Art Deco Wall Section
+STR_NAME    :Art Deco 벽 Section
 
 [ARTDEC21]
-STR_NAME    :Art Deco Wall with Railings
+STR_NAME    :Art Deco 벽 with Railings
 
 [ARTDEC22]
-STR_NAME    :Art Deco Wall with Railings
+STR_NAME    :Art Deco 벽 with Railings
 
 [ARTDEC23]
-STR_NAME    :Art Deco Wall with Railings
+STR_NAME    :Art Deco 벽 with Railings
 
 [ARTDEC24]
-STR_NAME    :Art Deco Wall with Railings
+STR_NAME    :Art Deco 벽 with Railings
 
 [ARTDEC28]
 STR_NAME    :Art Deco 지붕 Section
 
 [ARTDEC29]
-STR_NAME    :Art Deco Inverted Corner Section
+STR_NAME    :Art Deco Inverted 구석 Section
 
 [BIGBASSX]
 STR_NAME    :대형 Bass Guitar
@@ -9473,13 +9473,13 @@ STR_NAME    :Motorcycle
 STR_NAME    :Motorcycle
 
 [ELECFEN5]
-STR_NAME    :Electric Fence Inverted Corner Piece
+STR_NAME    :Electric Fence Inverted 구석 조각
 
 [FIREMANX]
 STR_NAME    :Animatronic Fireman
 
 [FUTSKY16]
-STR_NAME    :Sandstone Skyscraper Mid Slope Corner
+STR_NAME    :Sandstone Skyscraper Mid Slope 구석
 
 [FUTSKY17]
 STR_NAME    :Sandstone Skyscraper Filler
@@ -9488,13 +9488,13 @@ STR_NAME    :Sandstone Skyscraper Filler
 STR_NAME    :Sandstone Skyscraper Doorway
 
 [FUTSKY19]
-STR_NAME    :Sandstone Skyscraper Bottom Corner
+STR_NAME    :Sandstone Skyscraper Bottom 구석
 
 [FUTSKY21]
-STR_NAME    :Sandstone Skyscraper Mid Wall Section
+STR_NAME    :Sandstone Skyscraper Mid 벽 Section
 
 [FUTSKY23]
-STR_NAME    :Sandstone Skyscraper Inverted Corner Top
+STR_NAME    :Sandstone Skyscraper Inverted 구석 Top
 
 [FUTSKY29]
 STR_NAME    :Sandstone Skyscraper Bottom 곡선형 Slope
@@ -9509,13 +9509,13 @@ STR_NAME    :Sandstone Skyscraper Mid 곡선형 Slope
 STR_NAME    :Sandstone Skyscraper 곡선형 Slope Top
 
 [FUTSKY52]
-STR_NAME    :Sandstone Skyscraper Bottom Inverted Corner
+STR_NAME    :Sandstone Skyscraper Bottom Inverted 구석
 
 [FUTSKY53]
-STR_NAME    :Sandstone Skyscraper Mid Corner
+STR_NAME    :Sandstone Skyscraper Mid 구석
 
 [FUTSKY54]
-STR_NAME    :Obsidian SkyScraper 지붕 Piece
+STR_NAME    :Obsidian SkyScraper 지붕 조각
 
 [GLDCHEST]
 STR_NAME    :Treasure Chest
@@ -9536,10 +9536,10 @@ STR_NAME    :Heavenly Baths Arch
 STR_NAME    :Heavenly Baths Arch
 
 [HEVBTH08]
-STR_NAME    :Heavenly Baths Stairway
+STR_NAME    :Heavenly Baths 계단
 
 [HEVBTH09]
-STR_NAME    :Heavenly Baths Stairway
+STR_NAME    :Heavenly Baths 계단
 
 [HEVBTH10]
 STR_NAME    :Heavenly Baths Architecture
@@ -9572,160 +9572,160 @@ STR_NAME    :Heavenly Bath 지붕
 STR_NAME    :Heavenly Bath 지붕
 
 [HRBWAL01]
-STR_NAME    :Harbour Wall
+STR_NAME    :Harbour 벽
 
 [HRBWAL02]
-STR_NAME    :Harbour Wall with Fishing Gear
+STR_NAME    :Harbour 벽 with Fishing Gear
 
 [HRBWAL03]
-STR_NAME    :Harbour Wall with Moor
+STR_NAME    :Harbour 벽 with Moor
 
 [HRBWAL04]
-STR_NAME    :Harbour Wall with Moor
+STR_NAME    :Harbour 벽 with Moor
 
 [HRBWAL05]
-STR_NAME    :Harbour Wall with Moor
+STR_NAME    :Harbour 벽 with Moor
 
 [HRBWAL06]
-STR_NAME    :Harbour Wall with Moor
+STR_NAME    :Harbour 벽 with Moor
 
 [HURCLULS]
 STR_NAME    :Hercules
 
 [INDWAL01]
-STR_NAME    :Industrial Wall Set
+STR_NAME    :Industrial 벽 Set
 
 [INDWAL02]
-STR_NAME    :Industrial Wall Set
+STR_NAME    :Industrial 벽 Set
 
 [INDWAL03]
-STR_NAME    :Industrial Wall Set
+STR_NAME    :Industrial 벽 Set
 
 [INDWAL04]
-STR_NAME    :Industrial Wall Set
+STR_NAME    :Industrial 벽 Set
 
 [INDWAL05]
-STR_NAME    :Industrial 지붕 Corner Piece
+STR_NAME    :Industrial 지붕 구석 조각
 
 [INDWAL06]
-STR_NAME    :Industrial 지붕 Corner Piece
+STR_NAME    :Industrial 지붕 구석 조각
 
 [INDWAL07]
-STR_NAME    :Industrial Wall with Doorway
+STR_NAME    :Industrial 벽 with Doorway
 
 [INDWAL08]
-STR_NAME    :Industrial Wall with Doorway
+STR_NAME    :Industrial 벽 with Doorway
 
 [INDWAL09]
-STR_NAME    :Industrial Wall with Doorway
+STR_NAME    :Industrial 벽 with Doorway
 
 [INDWAL10]
-STR_NAME    :Industrial Wall with Doorway
+STR_NAME    :Industrial 벽 with Doorway
 
 [INDWAL11]
-STR_NAME    :Industrial Wall with Doorway
+STR_NAME    :Industrial 벽 with Doorway
 
 [INDWAL12]
-STR_NAME    :Industrial Wall with Doorway
+STR_NAME    :Industrial 벽 with Doorway
 
 [INDWAL13]
-STR_NAME    :Industrial Wall with Doorway
+STR_NAME    :Industrial 벽 with Doorway
 
 [INDWAL14]
-STR_NAME    :Industrial Wall Corner Piece
+STR_NAME    :Industrial 벽 구석 조각
 
 [INDWAL15]
-STR_NAME    :Industrial Wall Corner Piece
+STR_NAME    :Industrial 벽 구석 조각
 
 [INDWAL16]
-STR_NAME    :Industrial Wall with Window
+STR_NAME    :Industrial 벽 with Window
 
 [INDWAL17]
-STR_NAME    :Industrial Wall with Window
+STR_NAME    :Industrial 벽 with Window
 
 [INDWAL18]
-STR_NAME    :Industrial Wall with Window
+STR_NAME    :Industrial 벽 with Window
 
 [INDWAL19]
-STR_NAME    :Industrial Wall with Window
+STR_NAME    :Industrial 벽 with Window
 
 [INDWAL20]
-STR_NAME    :Industrial 지붕 Piece
+STR_NAME    :Industrial 지붕 조각
 
 [INDWAL21]
-STR_NAME    :Industrial 지붕 Piece
+STR_NAME    :Industrial 지붕 조각
 
 [INDWAL22]
-STR_NAME    :Industrial 지붕 Piece
+STR_NAME    :Industrial 지붕 조각
 
 [INDWAL23]
-STR_NAME    :Industrial 지붕 Piece
+STR_NAME    :Industrial 지붕 조각
 
 [INDWAL24]
-STR_NAME    :Industrial 지붕 Piece
+STR_NAME    :Industrial 지붕 조각
 
 [INDWAL25]
-STR_NAME    :Industrial 지붕 Piece
+STR_NAME    :Industrial 지붕 조각
 
 [INDWAL26]
-STR_NAME    :Industrial 지붕 Piece
+STR_NAME    :Industrial 지붕 조각
 
 [INDWAL27]
-STR_NAME    :Industrial 지붕 Piece
+STR_NAME    :Industrial 지붕 조각
 
 [INDWAL28]
-STR_NAME    :Industrial 지붕 Piece
+STR_NAME    :Industrial 지붕 조각
 
 [INDWAL29]
-STR_NAME    :Industrial 지붕 Piece
+STR_NAME    :Industrial 지붕 조각
 
 [INDWAL30]
-STR_NAME    :Industrial Wall with Window
+STR_NAME    :Industrial 벽 with Window
 
 [INDWAL31]
-STR_NAME    :Industrial Wall with Window
+STR_NAME    :Industrial 벽 with Window
 
 [INDWAL32]
-STR_NAME    :Industrial Wall with Window
+STR_NAME    :Industrial 벽 with Window
 
 [JAILXX01]
-STR_NAME    :Prison Wall Piece
+STR_NAME    :Prison 벽 조각
 
 [JAILXX02]
-STR_NAME    :Prison Wall Piece
+STR_NAME    :Prison 벽 조각
 
 [JAILXX03]
-STR_NAME    :Prison Wall Piece
+STR_NAME    :Prison 벽 조각
 
 [JAILXX04]
-STR_NAME    :Prison Wall Piece
+STR_NAME    :Prison 벽 조각
 
 [JAILXX05]
-STR_NAME    :Prison Wall Piece
+STR_NAME    :Prison 벽 조각
 
 [JAILXX06]
-STR_NAME    :Prison Wall Piece
+STR_NAME    :Prison 벽 조각
 
 [JAILXX07]
-STR_NAME    :Prison Wall 지붕
+STR_NAME    :Prison 벽 지붕
 
 [JAILXX08]
-STR_NAME    :Prison Inverted Piece
+STR_NAME    :Prison Inverted 조각
 
 [JAILXX09]
-STR_NAME    :Prison Inverted Piece
+STR_NAME    :Prison Inverted 조각
 
 [JAILXX10]
-STR_NAME    :Prison Inverted Piece
+STR_NAME    :Prison Inverted 조각
 
 [JAILXX11]
-STR_NAME    :Prison Inverted Piece
+STR_NAME    :Prison Inverted 조각
 
 [JAILXX12]
-STR_NAME    :Prison Inverted Piece
+STR_NAME    :Prison Inverted 조각
 
 [JAILXX13]
-STR_NAME    :Prison Inverted Piece
+STR_NAME    :Prison Inverted 조각
 
 [JAILXX14]
 STR_NAME    :Prison Watch Tower Stairs
@@ -9737,10 +9737,10 @@ STR_NAME    :Prison Watch Tower Stairs
 STR_NAME    :Prison Watch Tower
 
 [JAILXX20]
-STR_NAME    :Prison Wall Corner
+STR_NAME    :Prison 벽 구석
 
 [JAILXX21]
-STR_NAME    :Prison Wall Corner
+STR_NAME    :Prison 벽 구석
 
 [JAZZMBR1]
 STR_NAME    :Jazz Band Member
@@ -9782,25 +9782,25 @@ STR_NAME    :성벽
 STR_NAME    :성벽
 
 [MCASTL05]
-STR_NAME    :Castle Ramparts Corner
+STR_NAME    :Castle Ramparts 구석
 
 [MCASTL06]
 STR_NAME    :Castle Ramparts
 
 [MCASTL07]
-STR_NAME    :Castle Ramparts Corner
+STR_NAME    :Castle Ramparts 구석
 
 [MCASTL08]
-STR_NAME    :Castle Ramparts Inverted Corner
+STR_NAME    :Castle Ramparts Inverted 구석
 
 [MCASTL09]
-STR_NAME    :Castle Corner Piece
+STR_NAME    :Castle 구석 조각
 
 [MCASTL10]
-STR_NAME    :Castle Ramparts Corner
+STR_NAME    :Castle Ramparts 구석
 
 [MCASTL19]
-STR_NAME    :Castle Corner Piece
+STR_NAME    :Castle 구석 조각
 
 [MDBUCKET]
 STR_NAME    :Bucket
@@ -9815,16 +9815,16 @@ STR_NAME    :Farm Tools
 STR_NAME    :Archery Target
 
 [METEORCR]
-STR_NAME    :Meteor Crater Corner
+STR_NAME    :Meteor Crater 구석
 
 [METEORST]
-STR_NAME    :Meteor Crater Wall
+STR_NAME    :Meteor Crater 벽
 
 [METRCRS1]
-STR_NAME    :Meteor Crater Wall with Crystals
+STR_NAME    :Meteor Crater 벽 with Crystals
 
 [METRCRS2]
-STR_NAME    :Meteor Crater Wall with Crystals
+STR_NAME    :Meteor Crater 벽 with Crystals
 
 [MINOTAUR]
 STR_NAME    :Minotaur Statue
@@ -9908,52 +9908,52 @@ STR_NAME    :Wood Fence with Dead Vines
 STR_NAME    :Wood Fence with Dead Vines
 
 [PSNTWL02]
-STR_NAME    :Dark Age Village Lower Wall Piece
+STR_NAME    :Dark Age Village Lower 벽 조각
 
 [PSNTWL03]
-STR_NAME    :Dark Age Village Lower Wall Piece
+STR_NAME    :Dark Age Village Lower 벽 조각
 
 [PSNTWL04]
-STR_NAME    :Dark Age Village Lower Wall Piece
+STR_NAME    :Dark Age Village Lower 벽 조각
 
 [PSNTWL05]
-STR_NAME    :Dark Age Village Lower Wall Piece
+STR_NAME    :Dark Age Village Lower 벽 조각
 
 [PSNTWL06]
-STR_NAME    :Dark Age Village Lower Wall Piece
+STR_NAME    :Dark Age Village Lower 벽 조각
 
 [PSNTWL07]
-STR_NAME    :Dark Age Village Lower Wall Piece
+STR_NAME    :Dark Age Village Lower 벽 조각
 
 [PSNTWL08]
-STR_NAME    :Dark Age Village Lower Corner Piece
+STR_NAME    :Dark Age Village Lower 구석 조각
 
 [PSNTWL09]
-STR_NAME    :Dark Age Village Upper Wall Piece
+STR_NAME    :Dark Age Village Upper 벽 조각
 
 [PSNTWL10]
-STR_NAME    :Dark Age Village Upper Wall Piece
+STR_NAME    :Dark Age Village Upper 벽 조각
 
 [PSNTWL11]
-STR_NAME    :Dark Age Village Upper Wall Piece
+STR_NAME    :Dark Age Village Upper 벽 조각
 
 [PSNTWL12]
-STR_NAME    :Dark Age Village Upper Wall Piece
+STR_NAME    :Dark Age Village Upper 벽 조각
 
 [PSNTWL13]
-STR_NAME    :Dark Age Village Upper Wall Piece
+STR_NAME    :Dark Age Village Upper 벽 조각
 
 [PSNTWL14]
-STR_NAME    :Dark Age Village 지붕 Piece
+STR_NAME    :Dark Age Village 지붕 조각
 
 [PSNTWL15]
-STR_NAME    :Dark Age Village Inverted 지붕 Piece
+STR_NAME    :Dark Age Village Inverted 지붕 조각
 
 [PSNTWL16]
-STR_NAME    :Dark Age Village 지붕 Piece
+STR_NAME    :Dark Age Village 지붕 조각
 
 [PSNTWL17]
-STR_NAME    :Dark Age Village 지붕 Piece
+STR_NAME    :Dark Age Village 지붕 조각
 
 [PSNTWL20]
 STR_NAME    :Dark Age Village Window Box 지붕
@@ -9962,7 +9962,7 @@ STR_NAME    :Dark Age Village Window Box 지붕
 STR_NAME    :Dark Age Village Window Box 지붕
 
 [PSNTWL23]
-STR_NAME    :Dark Age Village Upper Corner Piece
+STR_NAME    :Dark Age Village Upper 구석 조각
 
 [PSNTWL24]
 STR_NAME    :Dark Age Village Window Box
@@ -9977,30 +9977,30 @@ STR_NAME    :Dark Age Village Window Box 지붕
 STR_NAME    :Dark Age Village Window Box 지붕
 
 [PSNTWL31]
-STR_NAME    :Dark Age Village Corner 지붕 Piece
+STR_NAME    :Dark Age Village 구석 지붕 조각
 
 [RDMETO03]
-STR_NAME    :Red Meteor Crater Wall
+STR_NAME    :Red Meteor Crater 벽
 
 [RDMETO04]
-STR_NAME    :Red Meteor Crater Inverted Corner
+STR_NAME    :Red Meteor Crater Inverted 구석
 
 [RUNWAY01]
-STR_NAME    :Runway Piece
+STR_NAME    :Runway 조각
 
 [RUNWAY02]
-STR_NAME    :Runway Piece
+STR_NAME    :Runway 조각
 
 [RUNWAY03]
-STR_NAME    :Runway Corner Piece
+STR_NAME    :Runway 구석 조각
 [RUNWAY04]
-STR_NAME    :Runway Edge Piece
+STR_NAME    :Runway Edge 조각
 
 [RUNWAY05]
-STR_NAME    :Runway Piece
+STR_NAME    :Runway 조각
 
 [RUNWAY06]
-STR_NAME    :Runway Inverted Corner Piece
+STR_NAME    :Runway Inverted 구석 조각
 
 [SCHNCRSH]
 STR_NAME    :Wrecked Seaplane
@@ -10228,7 +10228,7 @@ STR_NAME    :Animatronic Knight
 STR_NAME    :Dragon Attacking
 
 [ELECFEN1]
-STR_NAME    :Electric Fence Corner Piece
+STR_NAME    :Electric Fence 구석 조각
 
 [ELECFEN2]
 STR_NAME    :Electric Fence
@@ -10237,7 +10237,7 @@ STR_NAME    :Electric Fence
 STR_NAME    :Electric Fence with Light
 
 [ELECFEN4]
-STR_NAME    :Electric Fence Broken
+STR_NAME    :Electric Fence 부서진
 
 [EVALIEN1]
 STR_NAME    :Animatronic Evil Alien
@@ -10273,34 +10273,34 @@ STR_NAME    :Sandstone Skyscraper Walkway
 STR_NAME    :Sandstone Skyscraper Filler
 
 [FUTSKY03]
-STR_NAME    :Sandstone Skyscraper Bottom Corner
+STR_NAME    :Sandstone Skyscraper Bottom 구석
 
 [FUTSKY04]
 STR_NAME    :Sandstone Skyscraper 곡선형 Slope Top
 
 [FUTSKY05]
-STR_NAME    :Sandstone Skyscraper Corner Top
+STR_NAME    :Sandstone Skyscraper 구석 Top
 
 [FUTSKY06]
 STR_NAME    :Sandstone Skyscraper Mid 곡선형 Slope
 
 [FUTSKY07]
-STR_NAME    :Sandstone Skyscraper Mid Wall Section
+STR_NAME    :Sandstone Skyscraper Mid 벽 Section
 
 [FUTSKY08]
-STR_NAME    :Sandstone Skyscraper Mid Wall Section
+STR_NAME    :Sandstone Skyscraper Mid 벽 Section
 
 [FUTSKY09]
-STR_NAME    :Sandstone Skyscraper Mid Wall Section
+STR_NAME    :Sandstone Skyscraper Mid 벽 Section
 
 [FUTSKY10]
 STR_NAME    :Sandstone Skyscraper Bottom Slope 기본
 
 [FUTSKY11]
-STR_NAME    :Sandstone Skyscraper Mid Corner
+STR_NAME    :Sandstone Skyscraper Mid 구석
 
 [FUTSKY12]
-STR_NAME    :Sandstone Skyscraper Mid Wall Section
+STR_NAME    :Sandstone Skyscraper Mid 벽 Section
 
 [FUTSKY13]
 STR_NAME    :Sandstone Skyscraper 지붕 Spire
@@ -10315,34 +10315,34 @@ STR_NAME    :Sandstone Skyscraper Docking Bay
 STR_NAME    :Sandstone Skyscraper Walkway
 
 [FUTSKY36]
-STR_NAME    :Obsidian SkyScraper Door Piece
+STR_NAME    :Obsidian SkyScraper Door 조각
 
 [FUTSKY37]
-STR_NAME    :Obsidian SkyScraper Shallow Slope Corner
+STR_NAME    :Obsidian SkyScraper Shallow Slope 구석
 
 [FUTSKY38]
-STR_NAME    :Obsidian SkyScraper Shallow Sloped Wall
+STR_NAME    :Obsidian SkyScraper Shallow Sloped 벽
 
 [FUTSKY39]
-STR_NAME    :Obsidian SkyScraper Shallow Slope Corner
+STR_NAME    :Obsidian SkyScraper Shallow Slope 구석
 
 [FUTSKY40]
-STR_NAME    :Obsidian SkyScraper Steep Sloped Wall
+STR_NAME    :Obsidian SkyScraper Steep Sloped 벽
 
 [FUTSKY41]
-STR_NAME    :Obsidian SkyScraper Steep Sloped Wall
+STR_NAME    :Obsidian SkyScraper Steep Sloped 벽
 
 [FUTSKY44]
-STR_NAME    :Obsidian SkyScraper Steep Sloped Wall
+STR_NAME    :Obsidian SkyScraper Steep Sloped 벽
 
 [FUTSKY46]
-STR_NAME    :Obsidian SkyScraper Steep Slope Corner
+STR_NAME    :Obsidian SkyScraper Steep Slope 구석
 
 [FUTSKY47]
-STR_NAME    :Obsidian SkyScraper Wall
+STR_NAME    :Obsidian SkyScraper 벽
 
 [FUTSKY48]
-STR_NAME    :Obsidian SkyScraper Wall with Window
+STR_NAME    :Obsidian SkyScraper 벽 with Window
 
 [FWRPRDC1]
 STR_NAME    :Groovy Dancer
@@ -10381,7 +10381,7 @@ STR_NAME    :Singer with Quiff
 STR_NAME    :Heavenly Bath Pool
 
 [HEVBTH02]
-STR_NAME    :Heavenly Bath Pool Corner
+STR_NAME    :Heavenly Bath Pool 구석
 
 [HEVBTH03]
 STR_NAME    :Heavenly Baths Fountain
@@ -10438,7 +10438,7 @@ STR_NAME    :Super Computer Large CPU
 STR_NAME    :Laser Fence
 
 [LASERX02]
-STR_NAME    :Laser Fence Corner
+STR_NAME    :Laser Fence 구석
 
 [MDUSASTA]
 STR_NAME    :Animatronic Medusa
@@ -10651,34 +10651,34 @@ STR_NAME    :Animatronic Waving King
 STR_NAME    :Witches around Cauldron
 
 [ARTDEC25]
-STR_NAME    :Art Deco Corner with Windows
+STR_NAME    :Art Deco 구석 with Windows
 
 [ARTDEC26]
-STR_NAME    :Art Deco Corner with Railings
+STR_NAME    :Art Deco 구석 with Railings
 
 [ARTDEC27]
-STR_NAME    :Art Deco Top Corner Section
+STR_NAME    :Art Deco Top 구석 Section
 
 [FUTSKY20]
-STR_NAME    :Sandstone Skyscraper Bottom Inverted Corner
+STR_NAME    :Sandstone Skyscraper Bottom Inverted 구석
 
 [FUTSKY22]
-STR_NAME    :Sandstone Skyscraper Bottom Inverted Corner
+STR_NAME    :Sandstone Skyscraper Bottom Inverted 구석
 
 [FUTSKY24]
-STR_NAME    :Sandstone Skyscraper Bottom Inverted Corner
+STR_NAME    :Sandstone Skyscraper Bottom Inverted 구석
 
 [FUTSKY25]
-STR_NAME    :Sandstone Skyscraper Bottom Inverted Corner
+STR_NAME    :Sandstone Skyscraper Bottom Inverted 구석
 
 [FUTSKY26]
-STR_NAME    :Sandstone Skyscraper Bottom Inverted Corner
+STR_NAME    :Sandstone Skyscraper Bottom Inverted 구석
 
 [FUTSKY28]
 STR_NAME    :Sandstone Walkway T-Junction
 
 [FUTSKY30]
-STR_NAME    :Sandstone Walkway Corner
+STR_NAME    :Sandstone Walkway 구석
 
 [FUTSKY31]
 STR_NAME    :Sandstone Walkway Cross Section
@@ -10693,7 +10693,7 @@ STR_NAME    :Prison Door
 STR_NAME    :Large Oak
 
 [MCASTL01]
-STR_NAME    :Castle Inverted Corner
+STR_NAME    :Castle Inverted 구석
 
 [MCASTL11]
 STR_NAME    :Castle Portcullis
@@ -10705,16 +10705,16 @@ STR_NAME    :Castle Entrance
 STR_NAME    :Large Elm Tree
 
 [OLDNYK24]
-STR_NAME    :뉴욕 Inverted Corner 지붕
+STR_NAME    :뉴욕 Inverted 구석 지붕
 
 [OLDNYK25]
-STR_NAME    :뉴욕 지붕 Piece
+STR_NAME    :뉴욕 지붕 조각
 
 [OLDNYK26]
 STR_NAME    :뉴욕 Entrance
 
 [OLDNYK32]
-STR_NAME    :뉴욕 지붕 Piece
+STR_NAME    :뉴욕 지붕 조각
 
 [1950SCAR]
 STR_NAME    :1950s Car
@@ -10762,10 +10762,10 @@ STR_NAME    :대형 Drum Kit
 STR_NAME    :Cave Entrance
 
 [CORNS2X2]
-STR_NAME    :Roman Palace Corner Piece
+STR_NAME    :Roman Palace 구석 조각
 
 [CORVS2X2]
-STR_NAME    :Roman Palace Corner Piece
+STR_NAME    :Roman Palace 구석 조각
 
 [CRATR2X2]
 STR_NAME    :Small Meteor Crater
@@ -10819,13 +10819,13 @@ STR_NAME    :Robin Hood's Hut
 STR_NAME    :Robin Hood's Hut
 
 [HRBWAL07]
-STR_NAME    :Harbour Wall Corner Piece
+STR_NAME    :Harbour 벽 구석 조각
 
 [HRBWAL08]
-STR_NAME    :Harbour Wall Corner Piece
+STR_NAME    :Harbour 벽 구석 조각
 
 [HRBWAL09]
-STR_NAME    :Harbour Wall with Dock
+STR_NAME    :Harbour 벽 with Dock
 
 [HRBWAL11]
 STR_NAME    :Harbour Dock
@@ -10843,31 +10843,31 @@ STR_NAME    :Jet Aeroplane
 STR_NAME    :Jet Aeroplane
 
 [MCASTL13]
-STR_NAME    :Castle Tower Corner Piece
+STR_NAME    :Castle Tower 구석 조각
 
 [MCASTL14]
-STR_NAME    :Castle Tower Corner Piece
+STR_NAME    :Castle Tower 구석 조각
 
 [MCASTL15]
-STR_NAME    :Castle Tower Cross Piece
+STR_NAME    :Castle Tower Cross 조각
 
 [MCASTL16]
-STR_NAME    :Castle Tower Straight Piece
+STR_NAME    :Castle Tower Straight 조각
 
 [MCASTL17]
-STR_NAME    :Castle Tower T Piece
+STR_NAME    :Castle Tower T 조각
 
 [MCASTL18]
-STR_NAME    :Castle Tower T Piece
+STR_NAME    :Castle Tower T 조각
 
 [METOAN01]
-STR_NAME    :Meteor Crater Corner
+STR_NAME    :Meteor Crater 구석
 
 [METOAN02]
-STR_NAME    :Meteor Crater Inverted Corner
+STR_NAME    :Meteor Crater Inverted 구석
 
 [OLDNYK20]
-STR_NAME    :뉴욕 지붕 Piece
+STR_NAME    :뉴욕 지붕 조각
 
 [OLDNYK21]
 STR_NAME    :뉴욕 벽 조각
@@ -10912,13 +10912,13 @@ STR_NAME    :Plough
 STR_NAME    :Period Sailing Yacht
 
 [PSNTWL26]
-STR_NAME    :Dark Age Village 지붕 Piece
+STR_NAME    :Dark Age Village 지붕 조각
 
 [PSNTWL27]
-STR_NAME    :Dark Age Village Corner 지붕 Piece
+STR_NAME    :Dark Age Village 구석 지붕 조각
 
 [PSNTWL28]
-STR_NAME    :Dark Age Village Inverted 지붕 Piece
+STR_NAME    :Dark Age Village Inverted 지붕 조각
 
 [RDMET2X2]
 STR_NAME    :Small Red Meteor Crater
@@ -10927,37 +10927,37 @@ STR_NAME    :Small Red Meteor Crater
 STR_NAME    :Large Red Meteor Crater
 
 [RDMETO01]
-STR_NAME    :Red Meteor Crater Corner
+STR_NAME    :Red Meteor Crater 구석
 
 [RDMETO02]
-STR_NAME    :Red Meteor Crater Corner
+STR_NAME    :Red Meteor Crater 구석
 
 [ROBNCAMP]
 STR_NAME    :Robin Hood's Camp
 
 [ROMNC2X2]
-STR_NAME    :Roman Palace Corner Piece
+STR_NAME    :Roman Palace 구석 조각
 
 [ROMNE2X1]
-STR_NAME    :Roman Palace End Piece
+STR_NAME    :Roman Palace End 조각
 
 [ROMNM2X2]
 STR_NAME    :Roman Palace Cross Section
 
 [ROMNS2X2]
-STR_NAME    :Roman Palace Straight Piece
+STR_NAME    :Roman Palace Straight 조각
 
 [ROMVC2X2]
-STR_NAME    :Roman Palace Corner Piece
+STR_NAME    :Roman Palace 구석 조각
 
 [ROMVE2X1]
-STR_NAME    :Roman Palace End Piece
+STR_NAME    :Roman Palace End 조각
 
 [ROMVM2X2]
 STR_NAME    :Roman Palace Cross Section
 
 [ROMVS2X2]
-STR_NAME    :Roman Palace Straight Piece
+STR_NAME    :Roman Palace Straight 조각
 
 [SCHNPIT2]
 STR_NAME    :Seaplane Pits
@@ -10972,16 +10972,16 @@ STR_NAME    :Marquee
 STR_NAME    :Luxury Liner Bow
 
 [SHIPM4X4]
-STR_NAME    :Luxury Liner Mid Section
+STR_NAME    :Luxury Liner 중간 섹션
 
 [SHIPS4X4]
 STR_NAME    :Luxury Liner Stern
 
 [STRGS2X2]
-STR_NAME    :Roman Palace Straight Piece
+STR_NAME    :Roman Palace Straight 조각
 
 [STRVS2X2]
-STR_NAME    :Roman Palace Straight Piece
+STR_NAME    :Roman Palace Straight 조각
 
 [TAVERNXX]
 STR_NAME    :Dark Ages Tavern
@@ -11220,7 +11220,7 @@ STR_SCNR    :남극 - 버려진 환경 복구
 STR_PARK    :얼음에 뒤덮인 모험
 STR_DTLS    :환경부에서 눈꼴사납고 낡은 정유 시설을 최고의 관광 명소로 만들어달라고 합니다. 땅값은 싸지만 대출 이자는 높습니다. 오래된 건물은 고철로 팔아 버릴 수 있습니다.
 
-<Asia - Great Wall of China Tourism Enhancement>
+<Asia - Great 벽 of China Tourism Enhancement>
 STR_SCNR    :아시아 - 중국 만리장성의 관광 진흥
 STR_PARK    :만리장성
 STR_DTLS    :관광 당국이 만리장성 주변의 땅에 놀이공원을 지어서 관광객 수를 늘리기로 결정했습니다. 돈이 문제가 아니군요!

@@ -38,7 +38,6 @@
 #include "../util/util.h"
 #include "../world/footpath.h"
 
-
 enum {
 	FILTER_RCT2 = (1 << 0),
 	FILTER_WW = (1 << 1),
@@ -321,14 +320,14 @@ static int visible_list_sort_ride_type(const void *rawA, const void *rawB)
 
 static void visible_list_refresh(rct_window *w)
 {
-	int numObjects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, sint32);
+	int numObjects = gInstalledObjectsCount;
 
 	visible_list_dispose();
 	_listItems = malloc(numObjects * sizeof(list_item));
 	_numListItems = 0;
 
 	list_item *currentListItem = &_listItems[0];
-	rct_object_entry *entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	rct_object_entry *entry = gInstalledObjects;
 	uint8 *itemFlags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 	for (int i = 0; i < numObjects; i++) {
 		rct_object_filters *filter = get_object_filter(i);
@@ -436,10 +435,10 @@ void window_editor_object_selection_open()
 static void setup_track_manager_objects(){
 	uint8 ride_list[128] = { 0 };
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	rct_object_entry* installedObject = gInstalledObjects;
 	uint16 num_objects = 0;
 
-	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
+	for (int i = gInstalledObjectsCount; i > 0; --i){
 		uint8 object_type = installedObject->flags & 0xF;
 		if (object_type == OBJECT_TYPE_RIDE){
 			*selection_flags |= OBJECT_SELECTION_FLAG_6;
@@ -503,10 +502,10 @@ static void setup_track_manager_objects(){
  */
 static void setup_track_designer_objects(){
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	rct_object_entry* installedObject = gInstalledObjects;
 	uint16 num_objects = 0;
 
-	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
+	for (int i = gInstalledObjectsCount; i > 0; --i){
 		uint8 object_type = installedObject->flags & 0xF;
 		if (object_type == OBJECT_TYPE_RIDE){
 			*selection_flags |= OBJECT_SELECTION_FLAG_6;
@@ -640,9 +639,9 @@ static void setup_in_use_selection_flags(){
 	}
 
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	rct_object_entry* installedObject = gInstalledObjects;
 
-	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
+	for (int i = gInstalledObjectsCount; i > 0; --i){
 		*selection_flags &= ~OBJECT_SELECTION_FLAG_IN_USE;
 
 		uint8 entry_type, entry_index;
@@ -666,7 +665,7 @@ static void setup_in_use_selection_flags(){
  *  rct2: 0x006AB211
  */
 static int sub_6AB211(){
-	uint32 total_objects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32);
+	uint32 total_objects = gInstalledObjectsCount;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) = rct2_malloc(total_objects);
 
@@ -681,9 +680,9 @@ static int sub_6AB211(){
 		RCT2_ADDRESS(0x00F433E1, uint16)[object_type] = 0;
 	}
 
-	rct_object_entry* installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	rct_object_entry* installedObject = gInstalledObjects;
 
-	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
+	for (int i = gInstalledObjectsCount; i > 0; --i){
 		uint8 object_type = installedObject->flags & 0xF;
 		RCT2_ADDRESS(0x00F433E1, uint16)[object_type]++;
 
@@ -752,12 +751,12 @@ void remove_selected_objects_from_research(rct_object_entry* installedObject){
  */
 void unload_unselected_objects(){
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	rct_object_entry* installedObject = gInstalledObjects;
 
-	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
+	for (int i = gInstalledObjectsCount; i > 0; --i){
 		if (!(*selection_flags & OBJECT_SELECTION_FLAG_SELECTED)){
 			remove_selected_objects_from_research(installedObject);
-			object_unload(installedObject);
+			object_unload_chunk(installedObject);
 		}
 		selection_flags++;
 		installedObject = object_get_next(installedObject);
@@ -1348,7 +1347,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	widget = &w->widgets[WIDX_PREVIEW];
 	x = w->x + (widget->left + widget->right) / 2 + 1;
 	y = w->y + (widget->top + widget->bottom) / 2 + 1;
-	object_paint(type, 3, type, x, y, 0, (int)dpi, (int)stex_entry);
+	object_paint(type, stex_entry, dpi, x, y);
 
 	// Draw name of object
 	x = w->x + (widget->left + widget->right) / 2 + 1;
@@ -1394,9 +1393,17 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	gfx_draw_string_centred_clipped(dpi, stringId, NULL, 0, x, y, width);
 
 	// Draw description of object
-	x = w->x + w->widgets[WIDX_LIST].right + 4;
-	y += 15;
-	object_paint(type, 259, type, x, y, (int)w, (int)dpi, (int)stex_entry);
+	stringId = object_desc(type, stex_entry);
+	if (stringId != STR_NONE) {
+		x = w->x + w->widgets[WIDX_LIST].right + 4;
+		y += 15;
+		int width = w->x + w->width - x - 4;
+		if (type == OBJECT_TYPE_SCENARIO_TEXT) {
+			gfx_draw_string_left_wrapped(dpi, &stringId, x, y, width, 3168, 0);
+		} else {
+			gfx_draw_string_left_wrapped(dpi, &stringId, x, y + 5, width, 1191, 0);
+		}
+	}
 
 	// Draw object source
 	source = (highlightedEntry->flags & 0xF0) >> 4;
@@ -1577,9 +1584,9 @@ void reset_selected_object_count_and_size(){
 	uint32 total_object_size = 0;
 
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	rct_object_entry* installedObject = gInstalledObjects;
 
-	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
+	for (int i = gInstalledObjectsCount; i > 0; --i){
 		uint8 object_type = installedObject->flags & 0xF;
 
 		if (*selection_flags & OBJECT_SELECTION_FLAG_SELECTED){
@@ -1613,9 +1620,9 @@ void reset_selected_object_count_and_size(){
  */
 void set_required_object_flags(rct_object_entry* required_object){
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	rct_object_entry* installedObject = gInstalledObjects;
 
-	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
+	for (int i = gInstalledObjectsCount; i > 0; --i){
 		if (object_entry_compare(required_object, installedObject)){
 			*selection_flags |= OBJECT_SELECTION_FLAG_REQUIRED;
 
@@ -1656,15 +1663,15 @@ void set_required_object_flags(rct_object_entry* required_object){
  */
 void reset_required_object_flags(){
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
+	for (int i = gInstalledObjectsCount; i > 0; --i){
 		*selection_flags &= ~OBJECT_SELECTION_FLAG_REQUIRED;
 		selection_flags++;
 	}
 
 	selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	rct_object_entry* installedObject = gInstalledObjects;
 
-	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
+	for (int i = gInstalledObjectsCount; i > 0; --i){
 		if (*selection_flags & OBJECT_SELECTION_FLAG_SELECTED){
 			uint8* pos = (uint8*)installedObject;
 			// Skip sizeof(rct_object_entry)
@@ -1734,10 +1741,10 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 
 	selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 	// There was previously a check to make sure the object list had an item
-	rct_object_entry* installedObject = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	rct_object_entry* installedObject = gInstalledObjects;
 
 	uint8 not_found = 1;
-	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i){
+	for (int i = gInstalledObjectsCount; i > 0; --i){
 		if (object_entry_compare(entry, installedObject)){
 			not_found = 0;
 			break;
@@ -1971,17 +1978,17 @@ static void window_editor_object_selection_manage_tracks()
 static void editor_load_selected_objects()
 {
 	uint8 *selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry *installed_entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	rct_object_entry *installed_entry = gInstalledObjects;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) == 0)
+	if (gInstalledObjectsCount == 0)
 		return;
 
-	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i != 0; i--, selection_flags++) {
+	for (int i = gInstalledObjectsCount; i != 0; i--, selection_flags++) {
 		if (*selection_flags & OBJECT_SELECTION_FLAG_SELECTED) {
 			uint8 entry_index, entry_type;
 			if (!find_object_in_entry_group(installed_entry, &entry_type, &entry_index)){
 				int chunk_size;
-				if (!object_load(-1, installed_entry, &chunk_size)) {
+				if (!object_load_chunk(-1, installed_entry, &chunk_size)) {
 					log_error("Failed to load entry %.8s", installed_entry->name);
 				}
 			}
@@ -2100,14 +2107,14 @@ static bool filter_chunks(rct_object_entry *entry, rct_object_filters *filter)
 static void filter_update_counts()
 {
 	if (!_FILTER_ALL || strlen(_filter_string) > 0) {
-		rct_object_entry *installed_entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+		rct_object_entry *installed_entry = gInstalledObjects;
 		rct_object_filters *filter;
 		uint8 type;
 		for (int i = 0; i < 11; i++) {
 			_filter_object_counts[i] = 0;
 		}
-		for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i > 0; --i) {
-			filter = get_object_filter(RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) - i);
+		for (int i = gInstalledObjectsCount; i > 0; --i) {
+			filter = get_object_filter(gInstalledObjectsCount - i);
 			type = installed_entry->flags & 0xF;
 			if (filter_source(installed_entry) && filter_string(installed_entry, filter) && filter_chunks(installed_entry, filter)) {
 				_filter_object_counts[type]++;

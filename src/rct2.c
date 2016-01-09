@@ -20,7 +20,6 @@
 
 #pragma warning(disable : 4996) // GetVersionExA deprecated
 
-#include <setjmp.h>
 #include <time.h>
 #include "addresses.h"
 #include "audio/audio.h"
@@ -29,6 +28,7 @@
 #include "drawing/drawing.h"
 #include "editor.h"
 #include "game.h"
+#include "input.h"
 #include "interface/chat.h"
 #include "interface/console.h"
 #include "interface/viewport.h"
@@ -54,6 +54,61 @@
 #include "world/scenery.h"
 #include "world/sprite.h"
 
+// rct2: 0x0097F67C
+const char * const RCT2FilePaths[PATH_ID_END] = {
+	"Data\\g1.dat",
+	"Data\\plugin.dat",
+	"Data\\css1.dat",
+	"Data\\css2.dat",
+	"Data\\css4.dat",
+	"Data\\css5.dat",
+	"Data\\css6.dat",
+	"Data\\css7.dat",
+	"Data\\css8.dat",
+	"Data\\css9.dat",
+	"Data\\css11.dat",
+	"Data\\css12.dat",
+	"Data\\css13.dat",
+	"Data\\css14.dat",
+	"Data\\css15.dat",
+	"Data\\css3.dat",
+	"Data\\css17.dat",
+	"Data\\css18.dat",
+	"Data\\css19.dat",
+	"Data\\css20.dat",
+	"Data\\css21.dat",
+	"Data\\css22.dat",
+	"Saved Games\\scores.dat",
+	"Data\\css23.dat",
+	"Data\\css24.dat",
+	"Data\\css25.dat",
+	"Data\\css26.dat",
+	"Data\\css27.dat",
+	"Data\\css28.dat",
+	"Data\\css29.dat",
+	"Data\\css30.dat",
+	"Data\\css31.dat",
+	"Data\\css32.dat",
+	"Data\\css33.dat",
+	"Data\\css34.dat",
+	"Data\\css35.dat",
+	"Data\\css36.dat",
+	"Data\\css37.dat",
+	"Data\\css38.dat",
+	"Data\\CUSTOM1.WAV",
+	"Data\\CUSTOM2.WAV",
+	"Data\\css39.dat",
+	"Data\\css40.dat",
+	"Data\\css41.dat",
+	"Scenarios\\Six Flags Magic Mountain.SC6",
+	"Data\\css42.dat",
+	"Data\\css43.dat",
+	"Data\\css44.dat",
+	"Data\\css45.dat",
+	"Data\\css46.dat",
+	"Data\\css50.dat"
+};
+
 uint32 gCurrentDrawCount = 0;
 
 typedef struct tm tm_t;
@@ -64,9 +119,6 @@ int rct2_init_directories();
 int rct2_startup_checks();
 
 static void rct2_draw_fps();
-static void rct2_update_2();
-
-static jmp_buf _end_update_jump;
 
 void rct2_quit()
 {
@@ -92,7 +144,7 @@ int rct2_init()
 
 	config_reset_shortcut_keys();
 	config_shortcut_keys_load();
-	RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) = 0;
+	gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
 	// config_load();
 
 	object_list_load();
@@ -212,31 +264,7 @@ int rct2_startup_checks()
 	if (!check_file_paths())
 		return 0;
 
-	if (!check_files_integrity())
-		return 0;
-
 	return 1;
-}
-
-void rct2_update()
-{
-	// Set 0x009DE564 to the value of esp
-	// RCT2 sets the stack pointer to the value of this address when ending the current game tick from anywhere
-	#ifdef _MSC_VER
-	__asm {
-		mov eax, 009DE564h
-		mov [eax], esp
-	}
-	#else
-	__asm__ ( "\
-	\n\
-		movl $0x009DE564, %%eax 	\n\
-		movl %%esp, (%%eax) 	\n\
-	 " : : : "eax" );
-	#endif
-
-	if (!setjmp(_end_update_jump))
-		rct2_update_2();
 }
 
 void rct2_draw()
@@ -343,11 +371,12 @@ int rct2_open_file(const char *path)
  *  rct2: 0x00674C95
  */
 int check_file_paths()
-	{
-	for (int pathId = 0; pathId < PATH_ID_END; pathId++)
-		if (!check_file_path(pathId))
-	return 0;
-
+{
+	for (int pathId = 0; pathId < PATH_ID_END; pathId++) {
+		if (!check_file_path(pathId)) {
+			return 0;
+		}
+	}
 	return 1;
 }
 
@@ -363,69 +392,34 @@ int check_file_path(int pathId)
 	switch (pathId) {
 	case PATH_ID_G1:
 		if (file == NULL) {
-			// A data file is missing from the installation directory. The original implementation
-			// asks for a CD-ROM path at this point and stores it in cdrom_path @ 0x9AA318.
-			// The file_on_cdrom[pathId] @ 0x009AA0B flag is set to 1 as well.
-			// For PATH_ID_SIXFLAGS_MAGICMOUNTAIN (and the now removed PATH_ID_SIXFLAGS_BUILDYOUROWN),
-			// the original implementation always assumes they are stored on CD-ROM.
-			// This has been removed for now for the sake of simplicity and could be added
-			// later in a more convenient way using the INI file.
 			log_fatal("Could not find file %s", path);
 			return 0;
 		}
 		break;
 
 	case PATH_ID_CUSTOM1:
-		if (file != NULL)
-			gRideMusicInfoList[36]->length = (uint32)SDL_RWsize(file); // Store file size in music_custom1_size @ 0x009AF164
+		if (file != NULL) {
+			// Store file size in music_custom1_size @ 0x009AF164
+			gRideMusicInfoList[36]->length = (uint32)SDL_RWsize(file);
+		}
 		break;
 
 	case PATH_ID_CUSTOM2:
-		if (file != NULL)
-			gRideMusicInfoList[37]->length = (uint32)SDL_RWsize(file); // Store file size in music_custom2_size @ 0x009AF16E
+		if (file != NULL) {
+			// Store file size in music_custom2_size @ 0x009AF16E
+			gRideMusicInfoList[37]->length = (uint32)SDL_RWsize(file);
+		}
 		break;
 	}
 
-	if (file != NULL)
+	if (file != NULL) {
 		SDL_RWclose(file);
-
-	return 1;
-}
-
-/**
- *
- *  rct2: 0x00674C0B
- */
-int check_files_integrity()
-	{
-	int i;
-	const char *path;
-#ifdef _WIN32
-	HANDLE file;
-		WIN32_FIND_DATA find_data;
-
-	for (i = 0; files_to_check[i].pathId != PATH_ID_END; i++) {
-		path = get_file_path(files_to_check[i].pathId);
-		file = FindFirstFile(path, &find_data);
-
-		if (file == INVALID_HANDLE_VALUE || find_data.nFileSizeLow != files_to_check[i].fileSize) {
-			if (file != INVALID_HANDLE_VALUE)
-				FindClose(file);
-
-			log_fatal("Integrity check failed for %s", path);
-			return 0;
-		}
-
-		FindClose(file);
 	}
-#else
-	STUB();
-#endif // _WIN32
 
 	return 1;
 }
 
-void rct2_update_2()
+void rct2_update()
 {
 	int tick, tick2;
 
@@ -458,30 +452,19 @@ void rct2_update_2()
 	console_update();
 }
 
-void rct2_endupdate()
-{
-	longjmp(_end_update_jump, 0);
-}
-
 /**
  *
  *  rct2: 0x00674E6C
  */
 const utf8 *get_file_path(int pathId)
 {
-	static utf8 path[MAX_PATH]; // get_file_path_buffer @ 0x009E3605
-
-	// The original implementation checks if the file is on CD-ROM here (file_on_cdrom[pathId] @ 0x009AA0B1).
-	// If so, the CD-ROM path (cdrom_path @ 0x9AA318) is used instead. This has been removed for now for
-	// the sake of simplicity.
+	static utf8 path[MAX_PATH];
 	strcpy(path, gConfigGeneral.game_path);
 
 	// Make sure base path is terminated with a slash
-	if (strlen(path) == 0 || path[strlen(path) - 1] != platform_get_path_separator())
-	{
-		if (strlen(path) >= MAX_PATH - 1)
-		{
-			log_error("Path for %s too long", file_paths[pathId]);
+	if (strlen(path) == 0 || path[strlen(path) - 1] != platform_get_path_separator()) {
+		if (strlen(path) >= MAX_PATH - 1) {
+			log_error("Path for %s too long", RCT2FilePaths[pathId]);
 			path[0] = '\0';
 			return path;
 		}
@@ -491,16 +474,14 @@ const utf8 *get_file_path(int pathId)
 	}
 
 	// Concatenate file path
-	if (strlen(path) + strlen(file_paths[pathId]) > MAX_PATH) {
-		log_error("Path for %s too long", file_paths[pathId]);
+	if (strlen(path) + strlen(RCT2FilePaths[pathId]) > MAX_PATH) {
+		log_error("Path for %s too long", RCT2FilePaths[pathId]);
 		path[0] = '\0';
 		return path;
 	}
 
 	char *pathp = path + strnlen(path, sizeof(path));
-
-	strcat(path, file_paths[pathId]);
-
+	strcat(path, RCT2FilePaths[pathId]);
 	while (*pathp) {
 		if (*pathp == '\\') *pathp = platform_get_path_separator();
 		pathp++;

@@ -43,6 +43,7 @@ typedef void wndproc(struct rct_window*, union rct_window_event*);
 
 typedef uint8 rct_windowclass;
 typedef uint16 rct_windownumber;
+typedef sint16 rct_widgetindex;
 
 typedef struct {
 	rct_windowclass classification;

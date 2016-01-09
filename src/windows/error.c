@@ -91,13 +91,13 @@ void window_error_open(rct_string_id title, rct_string_id message)
 
 	// Format the title
 	dst = utf8_write_codepoint(dst, FORMAT_BLACK);
-	if (title != (rct_string_id)STR_NONE) {
+	if (title != STR_NONE) {
 		format_string(dst, title, args);
 		dst = get_string_end(dst);
 	}
 
 	// Format the message
-	if (message != (rct_string_id)STR_NONE) {
+	if (message != STR_NONE) {
 		dst = utf8_write_codepoint(dst, FORMAT_NEWLINE);
 		format_string(dst, message, args);
 		dst = get_string_end(dst);

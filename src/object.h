@@ -22,6 +22,7 @@
 #define _OBJECT_H_
 
 #include "common.h"
+#include "drawing/drawing.h"
 #include "platform/platform.h"
 
 // First 0xF of rct_object_entry->flags
@@ -93,6 +94,13 @@ typedef struct {
 extern rct_object_entry_group object_entry_groups[];
 extern char gTempObjectLoadName[9];
 
+extern uint32 gInstalledObjectsCount;
+extern rct_object_entry *gInstalledObjects;
+extern uint32 gNumInstalledRCT2Objects;
+extern uint32 gNumInstalledCustomObjects;
+
+extern void *gLastLoadedObjectChunkData;
+
 int object_load_entry(const utf8 *path, rct_object_entry *outEntry);
 void object_list_load();
 void set_load_objects_fail_reason();
@@ -101,15 +109,14 @@ int object_load_packed(SDL_RWops* rw);
 void object_unload_all();
 
 int check_object_entry(rct_object_entry *entry);
-int object_load(int groupIndex, rct_object_entry *entry, int* chunk_size);
 int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSize, const rct_object_entry *installedObject);
-void object_unload(rct_object_entry *entry);
+int object_load_chunk(int groupIndex, rct_object_entry *entry, int* chunk_size);
+void object_unload_chunk(rct_object_entry *entry);
 int object_get_scenario_text(rct_object_entry *entry);
 void object_free_scenario_text();
 int object_get_length(rct_object_entry *entry);
 int object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
 int object_calculate_checksum(const rct_object_entry *entry, const uint8 *data, int dataLength);
-int object_paint(int type, int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
 rct_object_entry *object_get_next(rct_object_entry *entry);
 int write_object_file(SDL_RWops* rw, rct_object_entry* entry);
 void reset_loaded_objects();
@@ -121,5 +128,11 @@ rct_object_entry *object_list_find(rct_object_entry *entry);
 char *object_get_name(rct_object_entry *entry);
 
 rct_object_filters *get_object_filter(int index);
+
+bool object_load(int type, void *objectEntry, uint32 entryIndex);
+void object_unload(int type, void *objectEntry);
+bool object_test(int type, void *objectEntry);
+void object_paint(int type, void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y);
+rct_string_id object_desc(int type, void *objectEntry);
 
 #endif

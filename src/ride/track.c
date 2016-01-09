@@ -2677,7 +2677,7 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 	rct_xy_element trackElement;
 	track_begin_end trackBeginEnd;
 
-	if (sub_6CAF80(rideIndex, &trackElement) == 0){
+	if (!ride_try_get_origin_element(rideIndex, &trackElement)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
 		return 0;
 	}
@@ -3156,7 +3156,7 @@ rct_track_design *temp_track_get_info(char* path, uint8** preview)
 			return NULL;
 		}
 
-		if (!object_load(0, &loaded_track->vehicle_object, NULL)){
+		if (!object_load_chunk(0, &loaded_track->vehicle_object, NULL)){
 			if (preview != NULL) *preview = NULL;
 			log_error("Failed to load track (vehicle load fail): %s", path);
 			return NULL;

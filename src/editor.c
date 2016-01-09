@@ -129,7 +129,7 @@ void editor_convert_save_to_scenario_callback(int result)
 
 	rct_stex_entry* stex = g_stexEntries[0];
 	if ((int)stex != 0xFFFFFFFF) {
-		object_unload((rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
+		object_unload_chunk((rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
 		reset_loaded_objects();
 
 		format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
@@ -235,23 +235,21 @@ static void set_all_land_owned()
  *
  *  rct2: 0x006758C0
  */
-void editor_load_landscape(const char *path)
+bool editor_load_landscape(const utf8 *path)
 {
 	window_close_construction_windows();
 
 	char *extension = strrchr(path, '.');
 	if (extension != NULL) {
 		if (_stricmp(extension, ".sv4") == 0) {
-			editor_load_landscape_from_sv4(path);
-			return;
+			return editor_load_landscape_from_sv4(path);
 		} else if (_stricmp(extension, ".sc4") == 0) {
-			editor_load_landscape_from_sc4(path);
-			return;
+			return editor_load_landscape_from_sc4(path);
 		}
 	}
 
 	// Load SC6 / SV6
-	editor_read_s6(path);
+	return editor_read_s6(path);
 }
 
 /**
@@ -464,7 +462,7 @@ static int editor_read_s6(const char *path)
 
 		rct_stex_entry* stex = g_stexEntries[0];
 		if ((int)stex != 0xFFFFFFFF) {
-			object_unload((rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
+			object_unload_chunk((rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
 			reset_loaded_objects();
 
 			format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
@@ -567,8 +565,8 @@ static void editor_finalise_main_view()
 
 static bool editor_check_object_group_at_least_one_selected(int objectType)
 {
-	uint32 numObjects = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32);
-	rct_object_entry *entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	uint32 numObjects = gInstalledObjectsCount;
+	rct_object_entry *entry = gInstalledObjects;
 	uint8 *objectFlag = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 	for (uint32 i = 0; i < numObjects; i++) {
 		if ((entry->flags & 0x0F) == objectType && (*objectFlag & 1)) {

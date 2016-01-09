@@ -104,7 +104,7 @@ void viewport_init_all()
 	// ?
 	gInputFlags = 0;
 	gInputState = INPUT_STATE_RESET;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WINDOWCLASS, rct_windowclass) = -1;
+	gPressedWidget.window_classification = 255;
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, sint32) = -1;
 	gTooltipNotShownTicks = -1;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) = 0;
@@ -1531,6 +1531,10 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 
 	rideIndex = mapElement->properties.track.ride_index;
 	ride = GET_RIDE(rideIndex);
+	if (ride->type == RIDE_TYPE_NULL) {
+		log_error("Attempted to paint invalid ride: %d", rideIndex);
+		return;
+	}
 
 	// HACK Set entrance style to plain if none to stop glitch until entrance track piece is implemented
 	bool isEntranceStyleNone = false;

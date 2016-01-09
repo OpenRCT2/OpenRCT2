@@ -272,3 +272,10 @@ openrct2.id*
 openrct2.nam
 openrct2.til
 data/g2.dat
+
+#################
+## Linux
+#################
+
+# KDE folder settings
+.directory

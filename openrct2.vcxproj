@@ -35,6 +35,7 @@
     <ClCompile Include="src\cmdline.c" />
     <ClCompile Include="src\cmdline_sprite.c" />
     <ClCompile Include="src\config.c" />
+    <ClCompile Include="src\core\Stopwatch.cpp" />
     <ClCompile Include="src\cursors.c" />
     <ClCompile Include="src\diagnostic.c" />
     <ClCompile Include="src\drawing\drawing.c" />
@@ -208,6 +209,8 @@
     <ClInclude Include="src\core\IStream.hpp" />
     <ClInclude Include="src\core\Math.hpp" />
     <ClInclude Include="src\core\Memory.hpp" />
+    <ClInclude Include="src\core\stopwatch.h" />
+    <ClInclude Include="src\core\Stopwatch.hpp" />
     <ClInclude Include="src\core\StringBuilder.hpp" />
     <ClInclude Include="src\core\StringReader.hpp" />
     <ClInclude Include="src\core\Util.hpp" />

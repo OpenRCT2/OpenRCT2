@@ -502,7 +502,7 @@ static rct_research_item *get_research_item_at(int x, int y)
 		widgetIndex = window_find_widget_from_point(w, x, y);
 		widget = &w->widgets[widgetIndex];
 		if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DOWN_WIDGETINDEX, uint32) = widgetIndex;
+			gPressedWidget.widget_index = widgetIndex;
 			widget_scroll_get_part(w, widget, x, y, &outX, &outY, &outScrollArea, &outScrollId);
 			if (outScrollArea == SCROLL_PART_VIEW) {
 				outScrollId = outScrollId == 0 ? 0 : 1;
@@ -787,7 +787,7 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
 	if (chunk == NULL || chunk == (void*)0xFFFFFFFF)
 		return;
 
-	object_paint(objectEntryType, 3, objectEntryType, x, y, 0, (int)dpi, (int)chunk);
+	object_paint(objectEntryType, chunk, dpi, x, y);
 
 	// Item name
 	x = w->x + ((widget->left + widget->right) / 2) + 1;
