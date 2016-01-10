@@ -3203,10 +3203,6 @@ static void loc_6DA9F9(rct_vehicle *vehicle, int x, int y, int bx, int dx)
 static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 {
 	// RCT2_CALLPROC_X(0x006DA717, 0, 0, 0, 0, (int)vehicle, 0, 0);
-
-	////////////////////////////////////////////////
-	// TODO fix bugs with this function
-	////////////////////////////////////////////////
 	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
 	vehicle->velocity += vehicle->acceleration;
 	RCT2_GLOBAL(0x00F64E08, sint32) = vehicle->velocity;
@@ -3228,7 +3224,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 		vehicle_invalidate(vehicle);
 
 		for (;;) {
-		loc_6DA7A5:
+			// loc_6DA7A5
 			vehicle->var_35++;
 			int x = (vehicle->boat_location.x * 32) + 16;
 			int y = (vehicle->boat_location.y * 32) + 16;
@@ -3314,7 +3310,13 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 			y = vehicle->y + RCT2_ADDRESS(0x009A36C6, sint16)[edi * 4];
 			z = vehicle->z;
 			if (vehicle_update_motion_collision_detection(vehicle, x, y, z, NULL)) {
-				goto loc_6DAA79;
+				vehicle->remaining_distance = 0;
+				if (vehicle->sprite_direction == vehicle->var_34) {
+					vehicle->sprite_direction ^= (1 << 4);
+					sub_6DA280(vehicle);
+					vehicle->sprite_direction ^= (1 << 4);
+				}
+				break;
 			}
 
 			int bx = floor2(x, 32);
@@ -3340,14 +3342,14 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 						if (vehicle->sprite_direction == vehicle->var_34) {
 							sub_6DA280(vehicle);
 						}
-						goto loc_6DAAAB;
+						break;
 					}
 
 					if (!(ride->boat_hire_return_direction & 1)) {
 						uint16 bp = y & 0x1F;
 						if (bp == 16) {
 							loc_6DA9F9(vehicle, x, y, bx, dx);
-							goto loc_6DAAAB;
+							break;
 						}
 						if (bp <= 16) {
 							x = unk_F64E20->x;
@@ -3361,7 +3363,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 						uint16 bp = x & 0x1F;
 						if (bp == 16) {
 							loc_6DA9F9(vehicle, x, y, bx, dx);
-							goto loc_6DAAAB;
+							break;
 						}
 						if (bp <= 16) {
 							x = unk_F64E20->x + 1;
@@ -3378,7 +3380,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 						unk_F64E20->x = x;
 						unk_F64E20->y = y;
 					}
-					goto loc_6DAAAB;
+					break;
 				}
 				vehicle->track_x = bx;
 				vehicle->track_y = dx;
@@ -3388,20 +3390,11 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 			unk_F64E20->x = x;
 			unk_F64E20->y = y;
 			if (vehicle->remaining_distance < 0x368A) {
-				goto loc_6DAAAB;
+				break;
 			}
 			RCT2_GLOBAL(0x00F64E10, uint32)++;
 		}
 
-	loc_6DAA79:
-		vehicle->remaining_distance = 0;
-		if (vehicle->sprite_direction == vehicle->var_34) {
-			vehicle->sprite_direction ^= (1 << 4);
-			sub_6DA280(vehicle);
-			vehicle->sprite_direction ^= (1 << 4);
-		}
-
-	loc_6DAAAB:
 		sprite_move(
 			unk_F64E20->x,
 			unk_F64E20->y,
@@ -6481,10 +6474,10 @@ static bool vehicle_update_motion_collision_detection(
 
 			if (!(collideType->flags_b & VEHICLE_ENTRY_FLAG_B_6)) continue;
 
-			sint32 x_diff = abs(collideVehicle->x - x);
+			uint32 x_diff = abs(collideVehicle->x - x);
 			if (x_diff > 0x7FFF) continue;
 
-			sint32 y_diff = abs(collideVehicle->y - y);
+			uint32 y_diff = abs(collideVehicle->y - y);
 			if (y_diff > 0x7FFF) continue;
 
 			if (x_diff + y_diff > 0xFFFF) continue;
@@ -6509,8 +6502,8 @@ static bool vehicle_update_motion_collision_detection(
 
 			if (direction < 0x14) continue;
 
-			sint16 next_x_diff = abs(x + RCT2_ADDRESS(0x009A3B04, sint16)[((4 + vehicle->sprite_direction) >> 3) * 2] - collideVehicle->x);
-			sint16 next_y_diff = abs(y + RCT2_ADDRESS(0x009A3B06, sint16)[((4 + vehicle->sprite_direction) >> 3) *2]-collideVehicle->y);
+			uint32 next_x_diff = abs(x + RCT2_ADDRESS(0x009A3B04, sint16)[((4 + vehicle->sprite_direction) >> 3) * 2] - collideVehicle->x);
+			uint32 next_y_diff = abs(y + RCT2_ADDRESS(0x009A3B06, sint16)[((4 + vehicle->sprite_direction) >> 3) * 2] - collideVehicle->y);
 
 			if (next_x_diff + next_y_diff < x_diff + y_diff){
 				mayCollide = true;
@@ -6817,7 +6810,7 @@ loc_6DB41D:
 		}
 	}
 
-loc_6DB500:
+	// loc_6DB500
 	// Update VEHICLE_UPDATE_FLAG_0
 	vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_0;
 	if (track_element_is_lift_hill(mapElement)) {
@@ -6935,7 +6928,7 @@ loc_6DAEB9:
 	vehicle->track_progress = regs.ax;
 	vehicle_update_handle_water_splash(vehicle);
 
-loc_6DB706:;
+	// loc_6DB706
 	moveInfo = vehicle_get_move_info(
 		vehicle->var_CD,
 		vehicle->track_type,
@@ -6975,7 +6968,7 @@ loc_6DB706:;
 		y = vehicle->y + moveInfo2->y;
 	}
 
-loc_6DB8A5:
+	// loc_6DB8A5
 	regs.ebx = RCT2_ADDRESS(0x009A2930, sint32)[regs.ebx];
 	vehicle->remaining_distance -= regs.ebx;
 	unk_F64E20->x = x;
@@ -7003,7 +6996,7 @@ loc_6DB8A5:
 		}
 	}
 
-loc_6DB928:
+	// loc_6DB928
 	if (vehicle->remaining_distance < 0x368A) {
 		return true;
 	}
@@ -7239,7 +7232,7 @@ loc_6DBA33:;
 		}
 	}
 
-loc_6DBD42:
+	// loc_6DBD42
 	vehicle->track_progress = regs.ax;
 	const rct_vehicle_info* moveInfo = vehicle_get_move_info(
 		vehicle->var_CD,
@@ -7280,7 +7273,7 @@ loc_6DBD42:
 		}
 	}
 
-loc_6DBE3F:
+	// loc_6DBE3F
 	if ((sint32)vehicle->remaining_distance >= 0) {
 		return true;
 	}
@@ -7432,14 +7425,14 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 				continue;
 			}
 		}
-	loc_6DBF20:
+		// loc_6DBF20
 		sprite_move(unk_F64E20->x, unk_F64E20->y, unk_F64E20->z, (rct_sprite*)car);
 		invalidate_sprite_2((rct_sprite*)car);
 
 	loc_6DBF3E:
 		sub_6DBF3E(car);
 
-	loc_6DC0F7:
+		// loc_6DC0F7
 		if (car->update_flags & VEHICLE_UPDATE_FLAG_0) {
 			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
 		}
@@ -7453,7 +7446,7 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 			spriteId = car->prev_vehicle_on_ride;
 		}
 	}
-loc_6DC144:
+	// loc_6DC144
 	vehicle = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
 	//eax
 	sint32 totalAcceleration = 0;
@@ -7739,7 +7732,7 @@ loc_6DC476:
 		vehicle->var_D5 &= ~(1 << 3);
 	}
 
-loc_6DC5B8:;
+	// loc_6DC5B8
 	const rct_vehicle_info* moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, 0);
 
 	// There are two bytes before the move info list
@@ -7839,7 +7832,7 @@ loc_6DC743:
 			vehicle->track_progress++;
 			break;
 		case 1: // loc_6DC7ED
-			vehicle->var_D3 = moveInfo->z;
+			vehicle->var_D3 = (uint8)moveInfo->z;
 			vehicle->track_progress++;
 			break;
 		case 2: // loc_6DC800
@@ -7864,7 +7857,7 @@ loc_6DC743:
 					z = 8;
 				}
 			}
-			vehicle->var_D4 = z;
+			vehicle->var_D4 = (uint8)z;
 			vehicle->var_C5 = 0;
 			vehicle->track_progress++;
 			break;
@@ -7884,7 +7877,7 @@ loc_6DC743:
 		}
 	}
 
-loc_6DC8A1:
+	// loc_6DC8A1
 	x = vehicle->track_x + moveInfo->x;
 	y = vehicle->track_y + moveInfo->y;
 	z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
