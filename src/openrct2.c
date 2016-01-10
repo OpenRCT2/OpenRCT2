@@ -1,3 +1,4 @@
+
 /*****************************************************************************
  * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
@@ -162,13 +163,17 @@ static void openrct2_set_exe_path()
  */
 static void openrct2_copy_original_user_files_over()
 {
-	utf8 path[MAX_PATH];
+	utf8 user_path[MAX_PATH];
+	utf8 rct2_path[MAX_PATH];
 
-	platform_get_user_directory(path, "save");
-	openrct2_copy_files_over((utf8*)RCT2_ADDRESS_SAVED_GAMES_PATH, path, ".sv6");
+	platform_get_user_directory(user_path, "save");
+	get_rct2_directory(rct2_path, "Saved Games");
+	openrct2_copy_files_over((utf8*)rct2_path, user_path, ".sv6");
 
-	platform_get_user_directory(path, "landscape");
-	openrct2_copy_files_over((utf8*)RCT2_ADDRESS_LANDSCAPES_PATH, path, ".sc6");
+	platform_get_user_directory(user_path, "landscape");
+	get_rct2_directory(rct2_path, "Landscapes");
+	safe_strcat_path(rct2_path, "*.SC6", sizeof(rct2_path));
+	openrct2_copy_files_over((utf8*)rct2_path, user_path, ".sc6");
 }
 
 bool openrct2_initialise()

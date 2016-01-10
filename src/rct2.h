@@ -276,6 +276,7 @@ void get_system_info();
 void get_system_time();
 void get_local_time();
 void rct2_quit();
+void get_rct2_directory(utf8 *outPath, const utf8 *subDirectory);
 
 int rct2_open_file(const char *path);
 

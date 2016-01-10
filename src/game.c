@@ -620,8 +620,12 @@ static void game_load_or_quit(int *eax, int *ebx, int *ecx, int *edx, int *esi, 
 static int open_landscape_file_dialog()
 {
 	int result;
+	char path[MAX_PATH];
+
 	format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, STR_LOAD_LANDSCAPE_DIALOG_TITLE, 0);
-	safe_strcpy((char*)0x0141EF68, (char*)RCT2_ADDRESS_LANDSCAPES_PATH, MAX_PATH);
+	get_rct2_directory(path, "Landscapes");
+	safe_strcat_path(path, "*.SC6", sizeof(path));
+	safe_strncpy((char*)0x0141EF68, (char*)path, MAX_PATH);
 	format_string((char*)0x0141EE68, STR_RCT2_LANDSCAPE_FILE, 0);
 	audio_pause_sounds();
 	result = platform_open_common_file_dialog(1, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68, "*.SV6;*.SV4;*.SC6", (char*)0x0141EE68);
@@ -637,8 +641,10 @@ static int open_landscape_file_dialog()
 static int open_load_game_dialog()
 {
 	int result;
+	char path[MAX_PATH];
 	format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, STR_LOAD_GAME_DIALOG_TITLE, 0);
-	safe_strcpy((char*)0x0141EF68, (char*)RCT2_ADDRESS_SAVED_GAMES_PATH, MAX_PATH);
+	get_rct2_directory(path, "Saved Games");
+	safe_strncpy((char*)0x0141EF68, (char*)path, MAX_PATH);
 	format_string((char*)0x0141EE68, STR_RCT2_SAVED_GAME, 0);
 	audio_pause_sounds();
 	result = platform_open_common_file_dialog(1, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68, "*.SV6", (char*)0x0141EE68);

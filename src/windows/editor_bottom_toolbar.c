@@ -330,10 +330,12 @@ static int show_save_scenario_dialog(char *resultPath)
 	char title[256];
 	char filename[MAX_PATH];
 	char filterName[256];
-
+	char path[MAX_PATH];
 
 	format_string(title, STR_SAVE_SCENARIO, NULL);
-	substitute_path(filename, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), s6Info->name);
+	get_rct2_directory(path, "Scenarios");
+	safe_strcat_path(path, "*.SC6", sizeof(path));
+	substitute_path(filename, path, s6Info->name);
 	strcat(filename, ".SC6");
 	format_string(filterName, STR_RCT2_SCENARIO_FILE, NULL);
 
