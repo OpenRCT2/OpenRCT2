@@ -108,7 +108,7 @@ int cmdline_run(const char **argv, int argc)
 	 */
 	int k=0;
 	for (int i=0; i < argc; ++i)
-		if (strcmp(argv[k], "-NSDocumentRevisionsDebugMode") != 0)
+		if (strcmp(argv[k], "-NSDocumentRevisionsDebugMode") != 0 && strncmp(argv[k], "-psn_", 5) != 0)
 			mutableArgv[k++] = (char *) argv[i];
 	argc = k;
 #else
